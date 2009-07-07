@@ -111,7 +111,7 @@ void xs_reinit(void)
 
     /* Try to initialize emulator engine */
     xs_init_emu_engine(&xs_cfg.playerEngine, &xs_status);
-    
+
     /* Get settings back, in case the chosen emulator backend changed them */
     xs_cfg.audioFrequency = xs_status.audioFrequency;
     xs_cfg.audioBitsPerSample = xs_status.audioBitsPerSample;
@@ -219,7 +219,7 @@ void xs_play_file(InputPlayback *pb)
 
     assert(pb);
     assert(xs_status.sidPlayer != NULL);
-    
+
     XSDEBUG("play '%s'\n", pb->filename);
 
     XS_MUTEX_LOCK(xs_status);
@@ -240,7 +240,7 @@ void xs_play_file(InputPlayback *pb)
         xs_status.tuneInfo = NULL;
         return;
     }
-    
+
     g_free(tmpFilename);
     tmpFilename = NULL;
 
@@ -273,7 +273,7 @@ void xs_play_file(InputPlayback *pb)
         XS_MUTEX_UNLOCK(xs_status);
         goto xs_err_exit;
     }
-    
+
     if (xs_status.oversampleEnable) {
         oversampleBuffer = (gchar *) g_malloc(XS_AUDIOBUF_SIZE * xs_status.oversampleFactor);
         if (oversampleBuffer == NULL) {
@@ -298,11 +298,11 @@ void xs_play_file(InputPlayback *pb)
         XS_MUTEX_UNLOCK(xs_status);
         goto xs_err_exit;
     }
-        
+
     /* Open the audio output */
     XSDEBUG("open audio output (%d, %d, %d)\n",
         xs_status.audioFormat, xs_status.audioFrequency, xs_status.audioChannels);
-        
+
     if (!pb->output->open_audio(xs_status.audioFormat, xs_status.audioFrequency, xs_status.audioChannels)) {
         xs_error("Couldn't open audio output (fmt=%x, freq=%i, nchan=%i)!\n",
             xs_status.audioFormat,
@@ -327,7 +327,7 @@ void xs_play_file(InputPlayback *pb)
 
     tmpTitle = aud_tuple_formatter_process_string(tmpTuple,
         xs_cfg.titleOverride ? xs_cfg.titleFormat : aud_get_gentitle_format());
-    
+
     XSDEBUG("foobar #4\n");
     XS_MUTEX_LOCK(xs_status);
     pb->set_params(pb,
@@ -336,9 +336,9 @@ void xs_play_file(InputPlayback *pb)
         -1,
         xs_status.audioFrequency,
         xs_status.audioChannels);
-        
+
     g_free(tmpTitle);
-    
+
     XS_MUTEX_UNLOCK(xs_status);
     XSDEBUG("playing\n");
     while (pb->playing) {
@@ -369,7 +369,7 @@ void xs_play_file(InputPlayback *pb)
         /* I <3 visualice/haujobb */
         pb->pass_audio(pb, xs_status.audioFormat, xs_status.audioChannels,
             audioGot, audioBuffer, NULL);
-        
+
         XS_MUTEX_UNLOCK(xs_status);
 
         /* Wait a little */
@@ -407,7 +407,7 @@ void xs_play_file(InputPlayback *pb)
 
 xs_err_exit:
     XSDEBUG("out of playing loop\n");
-    
+
     /* Close audio output plugin */
     if (audioOpen) {
         XSDEBUG("close audio #2\n");
@@ -447,7 +447,7 @@ xs_err_exit:
 void xs_stop(InputPlayback *pb)
 {
     (void) pb;
-    
+
     XSDEBUG("stop requested\n");
 
     /* Lock xs_status and stop playing thread */
@@ -463,7 +463,7 @@ void xs_stop(InputPlayback *pb)
     }
 
     XSDEBUG("done, updating status\n");
-    
+
     /* Free tune information */
     XS_MUTEX_LOCK(xs_status);
     xs_status.sidPlayer->plrDeleteSID(&xs_status);
@@ -547,15 +547,15 @@ static void xs_get_song_tuple_info(Tuple *pResult, xs_tuneinfo_t *pInfo, gint su
         default: tmpStr = "?"; break;
     }
     aud_tuple_associate_string(pResult, -1, "sid-model", tmpStr);
-    
+
     /* Get sub-tune information, if available */
     if (subTune < 0 || pInfo->startTune > pInfo->nsubTunes)
         subTune = pInfo->startTune;
-    
+
     if ((subTune > 0) && (subTune <= pInfo->nsubTunes)) {
         gint tmpInt = pInfo->subTunes[subTune - 1].tuneLength;
         aud_tuple_associate_int(pResult, FIELD_LENGTH, NULL, (tmpInt < 0) ? -1 : tmpInt * 1000);
-        
+
         tmpInt = pInfo->subTunes[subTune - 1].tuneSpeed;
         if (tmpInt > 0) {
             switch (tmpInt) {
@@ -575,7 +575,7 @@ static void xs_get_song_tuple_info(Tuple *pResult, xs_tuneinfo_t *pInfo, gint su
         aud_tuple_associate_string(pResult, -1, "sid-speed", tmpStr);
     } else
         subTune = 1;
-    
+
     aud_tuple_associate_int(pResult, FIELD_SUBSONG_NUM, NULL, pInfo->nsubTunes);
     aud_tuple_associate_int(pResult, FIELD_SUBSONG_ID, NULL, subTune);
     aud_tuple_associate_int(pResult, FIELD_TRACK_NUMBER, NULL, subTune);
@@ -584,6 +584,22 @@ static void xs_get_song_tuple_info(Tuple *pResult, xs_tuneinfo_t *pInfo, gint su
         aud_tuple_associate_string(pResult, FIELD_FORMATTER, NULL, xs_cfg.titleFormat);
 }
 
+static void fill_subtunes (Tuple * tuple, xs_tuneinfo_t * info)
+{
+    gint count, found;
+
+    tuple->subtunes = g_new (gint, info->nsubTunes);
+    found = 0;
+
+    for (count = 0; count < info->nsubTunes; count ++)
+    {
+        if (1 + count == info->startTune || ! xs_cfg.subAutoMinOnly ||
+         info->subTunes[count].tuneLength >= xs_cfg.subAutoMinTime)
+            tuple->subtunes[found ++] = 1 + count;
+    }
+
+    tuple->nsubtunes = found;
+}
 
 Tuple * xs_get_song_tuple(gchar *filename)
 {
@@ -609,8 +625,12 @@ Tuple * xs_get_song_tuple(gchar *filename)
 
     if (!tmpInfo)
         return result;
-    
+
     xs_get_song_tuple_info(result, tmpInfo, tmpTune);
+
+    if (xs_cfg.subAutoEnable && tmpInfo->nsubTunes > 1 && tmpTune < 0)
+        fill_subtunes (result, tmpInfo);
+
     xs_tuneinfo_free(tmpInfo);
 
     return result;
@@ -653,29 +673,12 @@ Tuple *xs_probe_for_tuple(gchar *filename, xs_file_t *fd)
 
     if (!tmpInfo)
         return result;
-    
+
     xs_get_song_tuple_info(result, tmpInfo, tmpTune);
 
-    /* Set subtunes */
-    if (xs_cfg.subAutoEnable && tmpInfo->nsubTunes > 1 && tmpTune < 0) {
-        gint i, n;
-        result->subtunes = g_new(gint, tmpInfo->nsubTunes);
-        for (n = 0, i = 1; i <= tmpInfo->nsubTunes; i++) {
-            gboolean doAdd = FALSE;
-                    
-            if (xs_cfg.subAutoMinOnly) {
-                if (i == tmpInfo->startTune ||
-                    tmpInfo->subTunes[i - 1].tuneLength >= xs_cfg.subAutoMinTime)
-                    doAdd = TRUE;
-            } else
-                doAdd = TRUE;
-                    
-            if (doAdd) result->subtunes[n++] = i;
-        }
-        result->nsubtunes = n;
-    } else
-        result->nsubtunes = 0;
-    
+    if (xs_cfg.subAutoEnable && tmpInfo->nsubTunes > 1 && tmpTune < 0)
+        fill_subtunes (result, tmpInfo);
+
     xs_tuneinfo_free(tmpInfo);
 
     return result;
