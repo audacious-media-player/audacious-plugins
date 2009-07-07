@@ -518,6 +518,7 @@ void flac_play_file (InputPlayback* input) {
     }
 
     if (FALSE == read_metadata(fd, main_decoder, main_info)) {
+        reset_info(main_info, TRUE);
         _ERROR("Could not prepare file for playing!");
         _LEAVE;
     }
