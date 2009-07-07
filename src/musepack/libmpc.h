@@ -94,23 +94,11 @@ typedef struct MpcInfo
     unsigned  year;
 };
 
-static void       mpcOpenPlugin();
-static void       mpcAboutBox();
-static void       mpcConfigBox();
 static void       toggleSwitch(GtkWidget*, gpointer);
 static void       saveConfigBox(GtkWidget*, gpointer);
-static int        mpcIsOurFile(char*);
-static int        mpcIsOurFD(char*,VFSFile*);
-static void       mpcPlay(InputPlayback *data);
-static void       mpcStop(InputPlayback *data);
-static void       mpcPause(InputPlayback *data, short);
-static void       mpcSeek(InputPlayback *data, int);
 //static void       mpcSetEq(int, float, float*);
-static int        mpcGetTime(InputPlayback *data);
-static void       mpcGetSongInfo(char*, char**, int*);
 static void       freeTags(MpcInfo&);
 static MpcInfo    getTags(const char*);
-static void       mpcFileInfoBox(char*);
 static void       mpcGtkPrintLabel(GtkWidget*, const char*, ...);
 static GtkWidget* mpcGtkTagLabel(const char*, int, int, int, int, GtkWidget*);
 static GtkWidget* mpcGtkTagEntry(int, int, int, int, int, GtkWidget*);
@@ -131,7 +119,6 @@ static double     getOffset();
 static void       setOffset(double);
 static bool       isPause();
 static void       setReplaygain(mpc_streaminfo&, mpc_decoder&);
-static Tuple *    mpcGetSongTuple(char *);
 
 #ifdef MPC_FIXED_POINT
 inline static int shiftSigned(MPC_SAMPLE_FORMAT val, int shift)

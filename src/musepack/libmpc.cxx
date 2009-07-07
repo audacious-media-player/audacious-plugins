@@ -8,41 +8,6 @@ using TagLib::Tag;
 using TagLib::String;
 using TagLib::APE::ItemListMap;
 
-const gchar *mpc_fmts[] = { "mpc", NULL };
-
-InputPlugin MpcPlugin = {
-    NULL,           //File Handle               FILE* handle
-    NULL,           //Filename                  char* filename
-    (gchar *)"Musepack Audio Plugin",
-    mpcOpenPlugin,  //Open Plugin               [CALLBACK]
-    NULL,           //Cleanup                   [UNUSED]
-    mpcAboutBox,    //Show About box            [CALLBACK]
-    mpcConfigBox,   //Show Configure box        [CALLBACK]
-    FALSE,          //Enabled/Disabled          [BOOLEAN]
-    mpcIsOurFile,   //Check if it's our file    [CALLBACK]
-    NULL,           //Scan the directory        [UNUSED]
-    mpcPlay,        //Play                      [CALLBACK]
-    mpcStop,        //Stop                      [CALLBACK]
-    mpcPause,       //Pause                     [CALLBACK]
-    mpcSeek,        //Seek                      [CALLBACK]
-    mpcGetTime,     //Get Time                  [CALLBACK]
-    NULL,           //Get Volume                [UNUSED]
-    NULL,           //Set Volume                [UNUSED]
-    NULL,           //Obsolete                  [UNUSED]
-    NULL,           //Visual plugins            add_vis_pcm(int time, AFormat fmt, int nch, int length, void *ptr)
-    NULL,           //Set Info Settings         set_info(char *title, int length, int rate, int freq, int nch)
-    NULL,           //set Info Text             set_info_text(char* text)
-    mpcGetSongInfo, //Get Title String callback [CALLBACK]
-    mpcFileInfoBox, //Show File Info Box        [CALLBACK]
-    mpcGetSongTuple,//Acquire tuple for song    [CALLBACK]
-    mpcIsOurFD,
-    (gchar **)mpc_fmts
-};
-
-InputPlugin *mpc_iplist[] = { &MpcPlugin, NULL };
-
-DECLARE_PLUGIN(musepack, NULL, NULL, mpc_iplist, NULL, NULL, NULL, NULL,NULL);
-
 static PluginConfig pluginConfig = {0};
 static Widgets      widgets      = {0};
 static MpcDecoder   mpcDecoder   = {0};
@@ -121,7 +86,7 @@ mpc_reader_setup_file_vfs(mpc_reader_file *p_reader, VFSFile *input)
     aud_vfs_fseek(input, 0, SEEK_SET);
 }
 
-static void mpcOpenPlugin()
+extern "C" void mpcOpenPlugin()
 {
     mcs_handle_t *cfg;
     cfg = aud_cfg_db_open();
@@ -132,7 +97,7 @@ static void mpcOpenPlugin()
     aud_cfg_db_close(cfg);
 }
 
-static void mpcAboutBox()
+extern "C" void mpcAboutBox()
 {
     GtkWidget* aboutBox = widgets.aboutBox;
     if (aboutBox)
@@ -148,7 +113,7 @@ static void mpcAboutBox()
     }
 }
 
-static void mpcConfigBox()
+extern "C" void mpcConfigBox()
 {
     GtkWidget* configBox = widgets.configBox;
     if(configBox)
@@ -271,7 +236,7 @@ static void saveConfigBox(GtkWidget* p_Widget, gpointer p_Data)
     gtk_widget_destroy (widgets.configBox);
 }
 
-static gint mpcIsOurFile(gchar* p_Filename)
+extern "C" gint mpcIsOurFile(gchar* p_Filename)
 {
     VFSFile *file;
     gchar magic[3];
@@ -286,7 +251,7 @@ static gint mpcIsOurFile(gchar* p_Filename)
     return 0;
 }
 
-static gint mpcIsOurFD(gchar* p_Filename, VFSFile* file)
+extern "C" gint mpcIsOurFD(gchar* p_Filename, VFSFile* file)
 {
     gchar magic[3];
     aud_vfs_fread(magic, 1, 3, file);
@@ -295,7 +260,7 @@ static gint mpcIsOurFD(gchar* p_Filename, VFSFile* file)
     return 0;
 }
 
-static void mpcPlay(InputPlayback *data)
+extern "C" void mpcPlay(InputPlayback *data)
 {
     mpcDecoder.offset   = -1;
     mpcDecoder.isAlive  = true;
@@ -306,7 +271,7 @@ static void mpcPlay(InputPlayback *data)
     decodeStream(data);
 }
 
-static void mpcStop(InputPlayback *data)
+extern "C" void mpcStop(InputPlayback *data)
 {
     setAlive(false);
     if (threadHandle)
@@ -321,7 +286,7 @@ static void mpcStop(InputPlayback *data)
     }
 }
 
-static void mpcPause(InputPlayback *data, short p_Pause)
+extern "C" void mpcPause(InputPlayback *data, short p_Pause)
 {
     lockAcquire();
     mpcDecoder.isPause = p_Pause;
@@ -329,7 +294,7 @@ static void mpcPause(InputPlayback *data, short p_Pause)
     lockRelease();
 }
 
-static void mpcSeek(InputPlayback *data, int p_Offset)
+extern "C" void mpcSeek(InputPlayback *data, int p_Offset)
 {
     lockAcquire();
     mpcDecoder.offset = static_cast<double> (p_Offset);
@@ -337,14 +302,14 @@ static void mpcSeek(InputPlayback *data, int p_Offset)
     lockRelease();
 }
 
-static gint mpcGetTime(InputPlayback *data)
+extern "C" gint mpcGetTime(InputPlayback *data)
 {
     if(!isAlive())
         return -1;
     return data->output->output_time();
 }
 
-static Tuple *mpcGetSongTuple(gchar* p_Filename)
+extern "C" Tuple *mpcGetSongTuple(gchar* p_Filename)
 {
     VFSFile *input = aud_vfs_fopen(p_Filename, "rb");
     Tuple *tuple = NULL;
@@ -393,7 +358,7 @@ static Tuple *mpcGetSongTuple(gchar* p_Filename)
     return tuple;
 }
 
-static void mpcGetSongInfo(char* p_Filename, char** p_Title, int* p_Length)
+extern "C" void mpcGetSongInfo(char* p_Filename, char** p_Title, int* p_Length)
 {
     VFSFile *input = aud_vfs_fopen(p_Filename, "rb");
     if(input)
@@ -463,7 +428,7 @@ static MpcInfo getTags(const gchar* p_Filename)
     return tags;
 }
 
-static void mpcFileInfoBox(char* p_Filename)
+extern "C" void mpcFileInfoBox(char* p_Filename)
 {
     GtkWidget* infoBox = widgets.infoBox;
 
