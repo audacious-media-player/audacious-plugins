@@ -34,13 +34,11 @@ InputPlugin flac_ip = {
     .init = flac_init,
     .cleanup = flac_cleanup,
     .about = flac_aboutbox,
-    .is_our_file = flac_is_our_file,
     .play_file = flac_play_file,
     .stop = flac_stop,
     .pause = flac_pause,
     .mseek = flac_mseek,
     .seek = flac_seek,
-    .get_song_info = flac_get_song_info,
     .get_song_tuple = flac_get_song_tuple,	// get a tuple
     .is_our_file_from_vfs = flac_is_our_fd,	// version of is_our_file which is handed an FD
     .vfs_extensions = flac_fmts			// vector of fileextensions allowed by the plugin
@@ -238,31 +236,6 @@ gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
     INFO_UNLOCK(test_info);
 
     _LEAVE TRUE;
-}
-
-/* --- */
-
-gboolean flac_is_our_file(gchar* filename) {
-
-    VFSFile* fd;
-    gboolean ret;
-
-    _ENTER;
-
-    _DEBUG("Testing file: %s", filename);
-    /*
-     * Open the file
-     */
-    if (NULL == (fd = aud_vfs_fopen(filename, "rb"))) {
-        _ERROR("Could not open file for reading! (%s)", filename);
-        _LEAVE FALSE;
-    }
-
-    ret = flac_is_our_fd(filename, fd);
-
-    aud_vfs_fclose(fd);
-
-    _LEAVE ret;
 }
 
 /* --- */
@@ -597,55 +570,6 @@ void flac_mseek(InputPlayback* input, gulong millisecond) {
 void flac_seek(InputPlayback* input, gint time) {
     gulong millisecond = time * 1000;
     flac_mseek(input, millisecond);
-}
-
-/* --- */
-
-void flac_get_song_info(gchar* filename, gchar** title, gint* length) {
-
-    gint l;
-    VFSFile* fd;
-
-    _ENTER;
-
-    _DEBUG("Testing file: %s", filename);
-    /*
-     * Open the file
-     */
-    if (NULL == (fd = aud_vfs_fopen(filename, "rb"))) {
-        _ERROR("Could not open file for reading! (%s)", filename);
-        _LEAVE;
-    }
-
-    INFO_LOCK(test_info);
-
-    if (FALSE == read_metadata(fd, test_decoder, test_info)) {
-        _ERROR("Could not read file info!");
-        *length = -1;
-        *title = g_strdup("");
-        reset_info(test_info, TRUE);
-        INFO_UNLOCK(test_info);
-        _LEAVE;
-    }
-
-    /*
-     * Calculate the stream length (milliseconds)
-     */
-    if (0 == test_info->stream.samplerate) {
-        _ERROR("Invalid sample rate for stream!");
-        l = -1;
-    } else {
-        l = (test_info->stream.samples / test_info->stream.samplerate) * 1000;
-        _DEBUG("Stream length: %d seconds", l/1000);
-    }
-
-    *length = l;
-    *title = get_title(filename, test_info);
-
-    reset_info(test_info, TRUE);
-    INFO_UNLOCK(test_info);
-
-    _LEAVE;
 }
 
 /* --- */
