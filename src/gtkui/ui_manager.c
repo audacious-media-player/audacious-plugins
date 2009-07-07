@@ -22,7 +22,6 @@
 #include "ui_manager.h"
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
-#include "actions-equalizer.h"
 
 #if 0
 /* this header contains prototypes for plugin-available menu functions */

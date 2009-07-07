@@ -48,7 +48,7 @@ Interface gtkui_interface = {
     .fini = _ui_finalize,
 };
 
-SIMPLE_INTERFACE_PLUGIN("gtkui", &gtkui_interface); 
+SIMPLE_INTERFACE_PLUGIN("gtkui", &gtkui_interface);
 
 typedef struct {
     gint tab_id;
@@ -136,9 +136,11 @@ ui_populate_playlist_notebook(void)
 static gboolean
 window_configured_cb(gpointer data)
 {
+#if 0
     GtkWindow *window = GTK_WINDOW(data);
     gtk_window_get_position(window, &aud_cfg->player_x, &aud_cfg->player_y);
     gtk_window_get_size(window, &aud_cfg->player_width, &aud_cfg->player_height);
+#endif
 
     return FALSE;
 }
@@ -259,8 +261,10 @@ ui_playlist_update(Playlist *playlist, gpointer user_data)
 static void
 ui_mainwin_real_show()
 {
+#if 0
     if (aud_cfg->save_window_position)
         gtk_window_move(GTK_WINDOW(window), aud_cfg->player_x, aud_cfg->player_y);
+#endif
     gtk_widget_show(window);
     gtk_window_present(GTK_WINDOW(window));
     aud_cfg->player_visible = TRUE;
@@ -269,8 +273,10 @@ ui_mainwin_real_show()
 static void
 ui_mainwin_real_hide()
 {
+#if 0
     if (aud_cfg->save_window_position)
         gtk_window_get_position(GTK_WINDOW(window), &aud_cfg->player_x, &aud_cfg->player_y);
+#endif
     gtk_widget_hide(window);
     aud_cfg->player_visible = FALSE;
 }
@@ -367,11 +373,11 @@ ui_slider_button_press_cb(GtkWidget *widget, GdkEventButton *event,
                           gpointer user_data)
 {
     slider_is_moving = TRUE;
-    
+
     /* HACK: clicking with the left mouse button moves the slider
        to the location of the click. */
     if (event->button == 1) event->button = 2;
-	
+
     return FALSE;
 }
 
@@ -381,7 +387,7 @@ ui_slider_button_release_cb(GtkWidget *widget, GdkEventButton *event,
 {
     /* HACK: see ui_slider_button_press_cb */
     if (event->button == 1) event->button = 2;
-    
+
     slider_is_moving = FALSE;
     return FALSE;
 }
@@ -506,8 +512,10 @@ _ui_initialize(void)
               *button_previous, *button_next;
     GtkWidget *menu;
     GtkAccelGroup *accel;
+#if 0
     gint x = aud_cfg->player_x;
     gint y = aud_cfg->player_y;
+#endif
 
     gint lvol = 0, rvol = 0; /* Left and Right for the volume control */
 
@@ -518,11 +526,13 @@ _ui_initialize(void)
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), 450, 150);
 
+#if 0
     if(aud_cfg->save_window_position && aud_cfg->player_width && aud_cfg->player_height)
         gtk_window_resize(GTK_WINDOW(window),
                             aud_cfg->player_width, aud_cfg->player_height);
     if(aud_cfg->save_window_position && aud_cfg->player_x != -1)
         gtk_window_move(GTK_WINDOW(window), x, y);
+#endif
 
     g_signal_connect(G_OBJECT(window), "configure-event",
                      G_CALLBACK(window_configured_cb), window);

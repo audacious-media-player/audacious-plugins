@@ -60,12 +60,6 @@ static int ab_position_b = -1;
 /* toggleactionentries actions */
 
 void
-action_anamode_peaks( GtkToggleAction * action )
-{
-    aud_cfg->analyzer_peaks = gtk_toggle_action_get_active( action );
-}
-
-void
 action_playback_noplaylistadvance( GtkToggleAction * action )
 {
     aud_cfg->no_playlist_advance = gtk_toggle_action_get_active( action );
