@@ -313,6 +313,7 @@ static gpointer flac_play_loop(gpointer arg) {
     if (NULL == (play_buffer = g_malloc(BUFFER_SIZE_BYTE))) {
         _ERROR("Could not allocate conversion buffer");
         playback->playing = FALSE;
+        reset_info(main_info, TRUE);
         _LEAVE NULL;
     }
 
@@ -327,6 +328,7 @@ static gpointer flac_play_loop(gpointer arg) {
                                       main_info->stream.samplerate,
                                       main_info->stream.channels)) {
         g_free(play_buffer);
+        reset_info(main_info, TRUE);
         playback->playing = FALSE;
         _ERROR("Could not open output plugin!");
         _LEAVE NULL;
@@ -461,6 +463,7 @@ static gpointer flac_play_loop(gpointer arg) {
     _DEBUG("Audio device closed");
 
     g_free(play_buffer);
+    reset_info(main_info, TRUE);
 
     if (FALSE == FLAC__stream_decoder_flush(main_decoder)) {
         _ERROR("Could not flush decoder state!");
