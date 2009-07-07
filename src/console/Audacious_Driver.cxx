@@ -235,7 +235,7 @@ static char* format_and_free_ti( Tuple* ti, int* length )
 	return result;
 }
 
-static Tuple *get_song_tuple( gchar *path )
+extern "C" Tuple *get_song_tuple( gchar *path )
 {
 	Tuple* result = NULL;
 	File_Handler fh( path );
@@ -299,7 +299,7 @@ static void* play_loop_track( gpointer arg )
 	return NULL;
 }
 
-static void play_file( InputPlayback *playback )
+extern "C" void play_file( InputPlayback *playback )
 {
         char* path = playback->filename;
 	unload_file();
@@ -385,13 +385,13 @@ static void play_file( InputPlayback *playback )
         play_loop_track( playback );
 }
 
-static void seek( InputPlayback * data, gint time )
+extern "C" void seek( InputPlayback * data, gint time )
 {
 	// TODO: use thread-safe atomic set
 	pending_seek = time;
 }
 
-static void console_stop(InputPlayback *playback)
+extern "C" void console_stop(InputPlayback *playback)
 {
 	playback->playing = 0;
 	if ( decode_thread )
@@ -403,12 +403,12 @@ static void console_stop(InputPlayback *playback)
 	unload_file();
 }
 
-static void console_pause(InputPlayback * playback, gshort p)
+extern "C" void console_pause(InputPlayback * playback, gshort p)
 {
 	playback->output->pause(p);
 }
 
-static Tuple *probe_for_tuple(gchar *filename, VFSFile *fd)
+extern "C" Tuple *probe_for_tuple(gchar *filename, VFSFile *fd)
 {
 	File_Handler fh(filename, fd);
 	
@@ -422,12 +422,12 @@ static Tuple *probe_for_tuple(gchar *filename, VFSFile *fd)
 
 // Setup
 
-static void console_init(void)
+extern "C" void console_init(void)
 {
 	console_cfg_load();
 }
 
-void console_aboutbox(void)
+extern "C" void console_aboutbox(void)
 {
 	static GtkWidget * aboutbox = NULL;
 
@@ -444,43 +444,3 @@ void console_aboutbox(void)
 				G_CALLBACK(gtk_widget_destroyed), &aboutbox);
 	}
 }
-
-const gchar *gme_fmts[] = { "ay", "gbs", "gym", "hes", "kss", "nsf", "nsfe", 
-		      "sap", "spc", "vgm", "vgz", NULL };
-
-InputPlugin console_ip =
-{
-	NULL,
-	NULL,
-	(gchar *)"Game console audio module decoder",
-	console_init,
-	NULL,
-	console_aboutbox,
-	console_cfg_ui,
-	FALSE,
-	NULL,
-	NULL,
-	play_file,
-	console_stop,
-	console_pause,
-	seek,
-	NULL,
-	NULL,
-	NULL,   
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	get_song_tuple,
-	NULL,
-	(gchar **)gme_fmts,
-	NULL,
-	probe_for_tuple,
-	TRUE
-};
-
-InputPlugin *console_iplist[] = { &console_ip, NULL };
-
-SIMPLE_INPUT_PLUGIN(console, console_iplist);

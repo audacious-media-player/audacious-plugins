@@ -49,7 +49,8 @@ SRCS = Audacious_Config.cxx    \
        Vgm_Emu_Impl.cxx        \
        Ym2413_Emu.cxx          \
        Ym2612_Emu.cxx          \
-       Zlib_Inflater.cxx
+       Zlib_Inflater.cxx       \
+       plugin.c
 
 include ../../buildsys.mk
 include ../../extra.mk
