@@ -43,13 +43,15 @@ SRCS = plugin.cxx		\
        gui/main.cxx		\
        gui/support.cxx		\
        gui/interface.cxx	\
-       gui/callbacks.cxx
+       gui/callbacks.cxx	\
+       plugin_main.c
 
 include ../../buildsys.mk
 include ../../extra.mk
 
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
+LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
 CXXFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS}  ${GTK_CFLAGS} ${GLIB_CFLAGS}  -I.. -I../.. -I../../intl
