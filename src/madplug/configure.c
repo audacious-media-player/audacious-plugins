@@ -53,7 +53,7 @@ static PreferencesWidget title_settings[] = {
 static void
 update_config()
 {
-    if (audmad_config->id3_format != NULL)
+    if (audmad_config->id3_format)
         g_free(audmad_config->id3_format);
 
     memcpy(audmad_config, &config, sizeof(config));
@@ -81,10 +81,8 @@ static void
 configure_win_cancel(GtkWidget *widget, gpointer data)
 {
     AUDDBG("cancel\n");
-    if (config.id3_format != NULL) {
-        g_free(config.id3_format);
-        config.id3_format = NULL;
-    }
+    g_free(config.id3_format);
+    config.id3_format = NULL;
     gtk_widget_destroy(configure_win);
 }
 
@@ -116,8 +114,7 @@ audmad_configure(void)
     }
 
     memcpy(&config, audmad_config, sizeof(config));
-    if (audmad_config->id3_format != NULL)
-        config.id3_format = g_strdup(audmad_config->id3_format);
+    config.id3_format = g_strdup(audmad_config->id3_format);
 
     configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_type_hint(GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
