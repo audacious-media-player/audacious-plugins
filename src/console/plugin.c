@@ -1,21 +1,21 @@
 #include <audacious/plugin.h>
 
-extern void console_init(void);
-extern void console_aboutbox(void);
-extern void console_cfg_ui(void);
-extern void play_file(InputPlayback *playback);
-extern void console_stop(InputPlayback *playback);
-extern void console_pause(InputPlayback * playback, gshort p);
-extern void seek(InputPlayback * data, gint time);
-extern Tuple *get_song_tuple(gchar *path);
-extern Tuple *probe_for_tuple(gchar *filename, VFSFile *fd);
+void console_init(void);
+void console_aboutbox(void);
+void console_cfg_ui(void);
+void play_file(InputPlayback *playback);
+void console_stop(InputPlayback *playback);
+void console_pause(InputPlayback * playback, gshort p);
+void seek(InputPlayback * data, gint time);
+Tuple *get_song_tuple(gchar *path);
+Tuple *probe_for_tuple(gchar *filename, VFSFile *fd);
 
-const gchar *gme_fmts[] = { "ay", "gbs", "gym", "hes", "kss", "nsf", "nsfe", 
+static const gchar *gme_fmts[] = { "ay", "gbs", "gym", "hes", "kss", "nsf", "nsfe", 
 		      "sap", "spc", "vgm", "vgz", NULL };
 
-InputPlugin console_ip =
+static InputPlugin console_ip =
 {
-	.description = (gchar *)"Game console audio module decoder",
+	.description = "Game console audio module decoder",
 	.init = console_init,
 	.about = console_aboutbox,
 	.configure = console_cfg_ui,
@@ -33,4 +33,3 @@ InputPlugin console_ip =
 InputPlugin *console_iplist[] = { &console_ip, NULL };
 
 SIMPLE_INPUT_PLUGIN(console, console_iplist);
-

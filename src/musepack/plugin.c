@@ -1,23 +1,23 @@
 #include <audacious/plugin.h>
 
-extern void mpcOpenPlugin();
-extern void mpcAboutBox();
-extern void mpcConfigBox();
-extern gint mpcIsOurFile(gchar* p_Filename);
-extern gint mpcIsOurFD(gchar* p_Filename, VFSFile* file);
-extern void mpcPlay(InputPlayback *data);
-extern void mpcStop(InputPlayback *data);
-extern void mpcPause(InputPlayback *data, short p_Pause);
-extern void mpcSeek(InputPlayback *data, int p_Offset);
-extern gint mpcGetTime(InputPlayback *data);
-extern Tuple *mpcGetSongTuple(gchar* p_Filename);
-extern void mpcGetSongInfo(char* p_Filename, char** p_Title, int* p_Length);
-extern void mpcFileInfoBox(char* p_Filename);
+void mpcOpenPlugin();
+void mpcAboutBox();
+void mpcConfigBox();
+gint mpcIsOurFile(gchar* p_Filename);
+gint mpcIsOurFD(gchar* p_Filename, VFSFile* file);
+void mpcPlay(InputPlayback *data);
+void mpcStop(InputPlayback *data);
+void mpcPause(InputPlayback *data, short p_Pause);
+void mpcSeek(InputPlayback *data, int p_Offset);
+gint mpcGetTime(InputPlayback *data);
+Tuple *mpcGetSongTuple(gchar* p_Filename);
+void mpcGetSongInfo(char* p_Filename, char** p_Title, int* p_Length);
+void mpcFileInfoBox(char* p_Filename);
 
 static const gchar *mpc_fmts[] = { "mpc", NULL };
 
-InputPlugin MpcPlugin = {
-    .description = (gchar *)"Musepack Audio Plugin",
+static InputPlugin MpcPlugin = {
+    .description = "Musepack Audio Plugin",
     .init = mpcOpenPlugin,              //Open Plugin               [CALLBACK]
     .about = mpcAboutBox,               //Show About box            [CALLBACK]
     .configure = mpcConfigBox,          //Show Configure box        [CALLBACK]
@@ -38,4 +38,3 @@ InputPlugin MpcPlugin = {
 InputPlugin *mpc_iplist[] = { &MpcPlugin, NULL };
 
 DECLARE_PLUGIN(musepack, NULL, NULL, mpc_iplist, NULL, NULL, NULL, NULL,NULL);
-
