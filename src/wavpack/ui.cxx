@@ -36,7 +36,7 @@ static GtkWidget *genre_entry;
 static GtkWidget *user_comment_entry;
 static char *filename;
 
-void
+extern "C" void
 wv_about_box()
 {
     static GtkWidget *about_window;
@@ -101,7 +101,7 @@ close_window(GtkWidget * w, gpointer data)
     gtk_widget_destroy(window);
 }
 
-void
+extern "C" void
 wv_file_info_box(char *fn)
 {
     gchar *tmp;
@@ -446,7 +446,7 @@ rg_switch_cb(GtkWidget * w, gpointer data)
                                                           (w)));
 }
 
-void
+extern "C" void
 wv_configure(void)
 {
 

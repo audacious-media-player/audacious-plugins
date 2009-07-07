@@ -25,65 +25,22 @@ extern "C" {
 #define SAMPLE_SIZE(a) (a == 8 ? sizeof(guint8) : (a == 16 ? sizeof(guint16) : sizeof(guint32)))
 #define SAMPLE_FMT(a) (a == 8 ? FMT_S8 : (a == 16 ? FMT_S16_NE : (a == 24 ? FMT_S24_NE : FMT_S32_NE)))
 
-static void wv_load_config();
-static gint wv_is_our_fd(gchar *filename, VFSFile *file);
-static Tuple *wv_probe_for_tuple(gchar *filename, VFSFile *file);
-static void wv_play(InputPlayback *);
-static void wv_stop(InputPlayback *);
-static void wv_pause(InputPlayback *, gshort);
-static void wv_seek(InputPlayback *, gint);
-static gint wv_get_time(InputPlayback *);
-static void wv_get_song_info(gchar *, gchar **, gint *);
+// in plugin.c
+extern InputPlugin wvpack;
+
 static gchar *generate_title(const gchar *, WavpackContext *ctx);
 static gint isSeek;
 static gshort paused;
 static gboolean killDecodeThread;
 static gboolean AudioError;
 static GThread *thread_handle;
-static Tuple *wv_get_song_tuple(gchar *);
 
 // in ui.cxx
-void wv_configure();
-void wv_about_box(void);
-void wv_file_info_box(gchar *);
 extern gboolean clipPreventionEnabled;
 extern gboolean dynBitrateEnabled;
 extern gboolean replaygainEnabled;
 extern gboolean albumReplaygainEnabled;
 extern gboolean openedAudio;
-
-const gchar *wv_fmts[] = { "wv", NULL };
-
-InputPlugin wvpack = {
-    NULL,                       //handle
-    NULL,                       //filename
-    (gchar *)"WavPack Audio Plugin",
-    wv_load_config,
-    NULL,
-    wv_about_box,
-    wv_configure,
-    FALSE,
-    NULL,
-    NULL,                       //no use
-    wv_play,
-    wv_stop,
-    wv_pause,
-    wv_seek,
-    wv_get_time,
-    NULL,                       //get volume
-    NULL,                       //set volume
-    NULL,                       //cleanup
-    NULL,                       //obsolete
-    NULL,                       //add_vis
-    NULL,
-    wv_get_song_info,
-    wv_file_info_box,           //info box
-    wv_get_song_tuple,
-    wv_is_our_fd,
-    (gchar **)wv_fmts,
-    NULL,			// high precision seeking
-    wv_probe_for_tuple		// probe for a tuple
-};
 
 gint32 read_bytes (void *id, void *data, gint32 bcount)
 {
@@ -277,11 +234,7 @@ public:
     }
 };
 
-InputPlugin *wv_iplist[] = { &wvpack, NULL };
-
-DECLARE_PLUGIN(wavpack, NULL, NULL, wv_iplist, NULL, NULL, NULL, NULL,NULL);
-
-static gint
+extern "C" gint
 wv_is_our_fd(gchar *filename, VFSFile *file)
 {
     WavpackDecoder d(&wvpack);
@@ -368,7 +321,7 @@ DecodeThread(InputPlayback *playback)
     return end_thread();
 }
 
-static void
+extern "C" void
 wv_play(InputPlayback *data)
 {
     paused = 0;
@@ -439,7 +392,7 @@ generate_title(const gchar *fn, WavpackContext *ctx)
     return displaytitle;
 }
 
-static Tuple *
+extern "C" Tuple *
 wv_get_song_tuple(gchar *filename)
 {
     Tuple *ti;
@@ -455,7 +408,7 @@ wv_get_song_tuple(gchar *filename)
     return ti;
 }
 
-static Tuple *
+extern "C" Tuple *
 wv_probe_for_tuple(gchar *filename, VFSFile *file)
 {
     Tuple *ti;
@@ -469,7 +422,7 @@ wv_probe_for_tuple(gchar *filename, VFSFile *file)
     return ti;
 }
 
-static void
+extern "C" void
 wv_get_song_info(gchar *filename, gchar **title, gint *length)
 {
     assert(filename != NULL);
@@ -491,7 +444,7 @@ wv_get_song_info(gchar *filename, gchar **title, gint *length)
     AUDDBG("title for %s = %s\n", filename, *title);
 }
 
-static gint
+extern "C" gint
 wv_get_time(InputPlayback *data)
 {
     if (data->output == NULL)
@@ -503,20 +456,20 @@ wv_get_time(InputPlayback *data)
     return data->output->output_time();
 }
 
-static void
+extern "C" void
 wv_seek(InputPlayback *data, gint sec)
 {
     isSeek = sec;
     data->output->flush((gint) (1000 * isSeek));
 }
 
-static void
+extern "C" void
 wv_pause(InputPlayback *data, gshort pause)
 {
     data->output->pause(paused = pause);
 }
 
-static void
+extern "C" void
 wv_stop(InputPlayback *data)
 {
     killDecodeThread = true;
@@ -533,7 +486,7 @@ wv_stop(InputPlayback *data)
 
 }
 
-static void
+extern "C" void
 wv_load_config()
 {
     mcs_handle_t *cfg;
