@@ -1,5 +1,6 @@
 /*
  * mad plugin for audacious
+ * Copyright (C) 2009 Tomasz Moń
  * Copyright (C) 2005-2007 William Pitcock, Yoshiki Yazawa
  *
  * Portions derived from xmms-mad:
@@ -24,55 +25,38 @@
 #include "plugin.h"
 
 #include <gtk/gtk.h>
+#include <audacious/preferences.h>
 #include <math.h>
 
 static GtkWidget *configure_win = NULL;
-static audmad_config_t *oldconfig = NULL; // undo storage
 
-static audmad_config_t *
-duplicate_config(audmad_config_t *orig)
-{
-    audmad_config_t *copy = g_memdup(orig, sizeof(audmad_config_t));
+static audmad_config_t config;
 
-    copy->id3_format = g_strdup(orig->id3_format);
+static PreferencesWidget metadata_settings_elements[] = {
+    {WIDGET_CHK_BTN, N_("Enable fast play-length calculation"), &config.fast_play_time_calc, NULL, NULL, FALSE},
+    {WIDGET_CHK_BTN, N_("Parse XING headers"), &config.use_xing, NULL, NULL, FALSE},
+    {WIDGET_CHK_BTN, N_("Use SJIS to write ID3 tags (not recommended)"), &config.sjis, NULL, NULL, FALSE},
+};
 
-    return copy;
-}
+static PreferencesWidget metadata_settings[] = {
+    {WIDGET_BOX, N_("Metadata Settings"), NULL, NULL, NULL, FALSE,
+        {.box = {metadata_settings_elements,
+                 G_N_ELEMENTS(metadata_settings_elements),
+                 FALSE /* vertical */, TRUE /* frame */}}},
+};
+
+static PreferencesWidget title_settings[] = {
+    {WIDGET_CHK_BTN, N_("Override generic titles"), &config.title_override, NULL, NULL, FALSE},
+    {WIDGET_ENTRY, N_("ID3 format:"), &config.id3_format, NULL, NULL, TRUE, {.entry = {FALSE}}, VALUE_STRING},
+};
 
 static void
-dispose_config(audmad_config_t *config)
+update_config()
 {
-    g_free(config->id3_format);
-    g_free(config);
-}
+    if (audmad_config->id3_format)
+        g_free(audmad_config->id3_format);
 
-static void
-update_config(gpointer widgets)
-{
-    const gchar *text = NULL;
-
-    GtkWidget *fast_playback = g_object_get_data(widgets, "fast_playback");
-    GtkWidget *use_xing = g_object_get_data(widgets, "use_xing");
-    GtkWidget *sjis = g_object_get_data(widgets, "sjis");
-    GtkWidget *title_override = g_object_get_data(widgets, "title_override");
-    GtkWidget *title_id3_entry = g_object_get_data(widgets, "title_id3_entry");
-
-    //metadata
-    audmad_config->fast_play_time_calc =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(fast_playback));
-    audmad_config->use_xing =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_xing));
-    audmad_config->sjis =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(sjis));
-
-    //text
-    audmad_config->title_override =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(title_override));
-
-    text = gtk_entry_get_text(GTK_ENTRY(title_id3_entry));
-    g_free(audmad_config->id3_format);
-    audmad_config->id3_format = g_strdup(text);
-
+    memcpy(audmad_config, &config, sizeof(config));
 }
 
 static void
@@ -94,27 +78,22 @@ save_config(void)
 }
 
 static void
-configure_win_cancel(GtkWidget *widget, gpointer widgets)
+configure_win_cancel(GtkWidget *widget, gpointer data)
 {
     AUDDBG("cancel\n");
-    dispose_config(audmad_config);
-    audmad_config = oldconfig;
-    oldconfig = NULL;
-    save_config();
+    g_free(config.id3_format);
+    config.id3_format = NULL;
     gtk_widget_destroy(configure_win);
-    g_object_unref(widgets);
 }
 
 static void
-configure_win_ok(GtkWidget *widget, gpointer widgets)
+configure_win_ok(GtkWidget *widget, gpointer data)
 {
     AUDDBG("ok\n");
-    update_config(widgets);
+    update_config();
     save_config();
     gtk_widget_destroy(configure_win);
-    g_object_unref(widgets);
-    dispose_config(oldconfig);
-    oldconfig = NULL;
+    config.id3_format = NULL;
 }
 
 static void
@@ -122,57 +101,20 @@ configure_destroy(GtkWidget *w, gpointer data)
 {
 }
 
-static void
-simple_update_cb(GtkWidget *w, gpointer widgets)
-{
-    update_config(widgets);
-    save_config();
-}
-
-static void
-entry_changed_cb(GtkWidget *w, gpointer widgets)
-{
-    simple_update_cb(w, widgets);
-}
-
-static void
-title_override_cb(GtkWidget *w, gpointer widgets)
-{
-    GtkWidget *title_override = g_object_get_data(widgets, "title_override");
-    GtkWidget *title_id3_entry = g_object_get_data(widgets, "title_id3_entry");
-    GtkWidget *title_id3_label = g_object_get_data(widgets, "title_id3_label");
-    gboolean override = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(title_override));
-
-    update_config(widgets);
-    save_config();
-
-    gtk_widget_set_sensitive(title_id3_entry, override);
-    gtk_widget_set_sensitive(title_id3_label, override);
-}
-
 void
 audmad_configure(void)
 {
     GtkWidget *vbox;
     GtkWidget *bbox, *ok, *cancel;
-    GtkWidget *notebook, *vbox2, *title_id3_label, *title_id3_box;
-    GtkWidget * fast_playback, * use_xing, * sjis;
-    GtkWidget *title_override, *title_id3_entry;
-    GtkWidget * metadataFrame, * metadata_vbox;
-
-    gpointer widgets = g_object_new(G_TYPE_OBJECT, NULL);
-
-    if(oldconfig) {
-        dispose_config(oldconfig);
-        oldconfig = NULL;
-    }
-
-    oldconfig = duplicate_config(audmad_config); //for undo
+    GtkWidget *notebook, *vbox2;
 
     if (configure_win != NULL) {
         gtk_widget_show(configure_win);
         return;
     }
+
+    memcpy(&config, audmad_config, sizeof(config));
+    config.id3_format = g_strdup(audmad_config->id3_format);
 
     configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_type_hint(GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
@@ -199,35 +141,7 @@ audmad_configure(void)
 
     vbox2 = gtk_vbox_new(FALSE, 5);
 
-    // metadata frame
-    metadataFrame = gtk_frame_new(_("Metadata Settings"));
-    gtk_container_border_width(GTK_CONTAINER(metadataFrame), 5);
-
-    metadata_vbox = gtk_vbox_new(FALSE, 5);
-
-    gtk_container_add(GTK_CONTAINER(metadataFrame), metadata_vbox);
-    gtk_container_add(GTK_CONTAINER(vbox2), metadataFrame);
-
-    fast_playback =
-        gtk_check_button_new_with_label(_("Enable fast play-length calculation"));
-    g_object_set_data(widgets, "fast_playback", fast_playback);
-    gtk_box_pack_start(GTK_BOX(metadata_vbox), fast_playback, FALSE, FALSE, 0);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(fast_playback),
-                                 audmad_config->fast_play_time_calc);
-    g_signal_connect(G_OBJECT(fast_playback), "clicked", G_CALLBACK(simple_update_cb), widgets);
-
-    use_xing = gtk_check_button_new_with_label(_("Parse XING headers"));
-    g_object_set_data(widgets, "use_xing", use_xing);
-    gtk_box_pack_start(GTK_BOX(metadata_vbox), use_xing, FALSE, FALSE, 0);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_xing),
-                                 audmad_config->use_xing);
-    g_signal_connect(G_OBJECT(use_xing), "clicked", G_CALLBACK(simple_update_cb), widgets);
-
-    sjis = gtk_check_button_new_with_label(_("Use SJIS to write ID3 tags (not recommended)"));
-    g_object_set_data(widgets, "sjis", sjis);
-    gtk_box_pack_start(GTK_BOX(metadata_vbox), sjis, FALSE, FALSE, 0);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(sjis), audmad_config->sjis);
-    g_signal_connect(G_OBJECT(sjis), "clicked", G_CALLBACK(simple_update_cb), widgets);
+    aud_create_widgets(GTK_BOX(vbox2), metadata_settings, G_N_ELEMENTS(metadata_settings));
 
     // add to notebook
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, gtk_label_new(_("General")));
@@ -236,29 +150,7 @@ audmad_configure(void)
 
     vbox2 = gtk_vbox_new(FALSE, 5);
 
-    title_override = gtk_check_button_new_with_label(_("Override generic titles"));
-    g_object_set_data(widgets, "title_override", title_override);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(title_override),
-                                 audmad_config->title_override);
-    gtk_box_pack_start(GTK_BOX(vbox2), title_override, FALSE,
-                       FALSE, 0);
-    g_signal_connect(G_OBJECT(title_override), "clicked",
-                     G_CALLBACK(title_override_cb), widgets);
-
-    title_id3_box = gtk_hbox_new(FALSE, 5);
-    gtk_box_pack_start(GTK_BOX(vbox2), title_id3_box, FALSE, FALSE, 0);
-
-    title_id3_label = gtk_label_new(_("ID3 format:"));
-    g_object_set_data(widgets, "title_id3_label", title_id3_label);
-    gtk_box_pack_start(GTK_BOX(title_id3_box), title_id3_label, FALSE, FALSE, 0);
-    gtk_widget_set_sensitive(title_id3_label, audmad_config->title_override);
-
-    title_id3_entry = gtk_entry_new();
-    g_object_set_data(widgets, "title_id3_entry", title_id3_entry);
-    gtk_entry_set_text(GTK_ENTRY(title_id3_entry), audmad_config->id3_format);
-    gtk_box_pack_start(GTK_BOX(title_id3_box), title_id3_entry, TRUE, TRUE, 0);
-    g_signal_connect(title_id3_entry, "changed", G_CALLBACK(entry_changed_cb), widgets);
-    gtk_widget_set_sensitive(title_id3_entry, audmad_config->title_override);
+    aud_create_widgets(GTK_BOX(vbox2), title_settings, G_N_ELEMENTS(title_settings));
 
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, gtk_label_new(_("Title")));
 
@@ -275,14 +167,14 @@ audmad_configure(void)
     cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
 
     g_signal_connect(G_OBJECT(cancel), "clicked",
-                     G_CALLBACK(configure_win_cancel), widgets);
+                     G_CALLBACK(configure_win_cancel), NULL);
 
     gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
 
     ok = gtk_button_new_from_stock(GTK_STOCK_OK);
 
     g_signal_connect(G_OBJECT(ok), "clicked",
-                     G_CALLBACK(configure_win_ok), widgets);
+                     G_CALLBACK(configure_win_ok), NULL);
 
     gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
     gtk_widget_grab_default(ok);
