@@ -869,6 +869,8 @@ playlistwin_scrolled(GtkWidget * widget,
     case GDK_SCROLL_UP:
         playlistwin_scroll (-3);
         break;
+    default:
+        break;
     }
 }
 
