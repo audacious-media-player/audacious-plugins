@@ -396,7 +396,7 @@ static void cdaudio_init()
 	aud_uri_set_plugin("cdda://", &inputplugin);
 
         trackinfo = NULL;
-        monitor_source = g_timeout_add_seconds (1, monitor, NULL);
+        monitor_source = g_timeout_add (1000, monitor, NULL);
 	aud_hook_associate ("playlist load", check_playlist, NULL);
 }
 

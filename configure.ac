@@ -139,14 +139,14 @@ PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 2.1],
 
 dnl Check for GTK/GLib/GThread/Pango/DBus
 
-PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.16.0 gthread-2.0],
-    [ADD_PC_REQUIRES([glib-2.0 >= 2.16.0])],
-    [AC_MSG_ERROR([Cannot find Glib2 >= 2.16.0])]
+PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.12.0 gthread-2.0],
+    [ADD_PC_REQUIRES([glib-2.0 >= 2.12.0])],
+    [AC_MSG_ERROR([Cannot find Glib2 >= 2.12.0])]
 )
 
-PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.10.0],
-    [ADD_PC_REQUIRES([gtk+-2.0 >= 2.10.0])],
-    [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.10.0])]
+PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.8.0],
+    [ADD_PC_REQUIRES([gtk+-2.0 >= 2.8.0])],
+    [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.8.0])]
 )
 
 AC_ARG_ENABLE(gio, [ --enable-gio    enable GIO support (default=yes)],
@@ -633,7 +633,7 @@ AC_ARG_ENABLE(vorbis,
 )
 
 if test "x$enable_vorbis" = "xyes"; then
-    PKG_CHECK_MODULES(OGG_VORBIS, [ogg >= 1.0 vorbis >= 1.2 vorbisfile >= 1.2],
+    PKG_CHECK_MODULES(OGG_VORBIS, [ogg >= 1.0 vorbis >= 1.1 vorbisfile >= 1.1],
         [have_oggvorbis=yes],
         [AC_MSG_WARN([*** Cannot find libogg/libvorbis, Ogg Vorbis support will not be built ***])
          have_oggvorbis=no]
