@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2006  Audacious development team.
+ *  Copyright (C) 2005-2009  Audacious development team.
  *
  *  BMP - Cross-platform multimedia player
  *  Copyright (C) 2003-2004  BMP development team.
@@ -60,8 +60,8 @@
 #include "images/audacious_playlist.xpm"
 
 Playlist * active_playlist;
-int active_length;
-char * active_title;
+gint active_length;
+gchar * active_title;
 GtkWidget * playlistwin, * playlistwin_list;
 
 static GMutex *resize_mutex = NULL;
@@ -314,22 +314,23 @@ playlistwin_release(GtkWidget * widget,
     return FALSE;
 }
 
-static void playlistwin_scroll (int num)
+static void playlistwin_scroll (gboolean up)
 {
-    int rows, first;
+    gint rows, first;
 
     ui_skinned_playlist_row_info (playlistwin_list, & rows, & first);
-    ui_skinned_playlist_scroll_to (playlistwin_list, first + num);
+    ui_skinned_playlist_scroll_to (playlistwin_list, first + (up ? -1 : 1) *
+     rows / 3);
 }
 
 static void playlistwin_scroll_up_pushed (void)
 {
-    playlistwin_scroll(-3);
+    playlistwin_scroll (TRUE);
 }
 
 static void playlistwin_scroll_down_pushed (void)
 {
-    playlistwin_scroll(3);
+    playlistwin_scroll (FALSE);
 }
 
 static void
@@ -864,10 +865,10 @@ playlistwin_scrolled(GtkWidget * widget,
     switch (event->direction)
     {
     case GDK_SCROLL_DOWN:
-        playlistwin_scroll (3);
+        playlistwin_scroll (FALSE);
         break;
     case GDK_SCROLL_UP:
-        playlistwin_scroll (-3);
+        playlistwin_scroll (TRUE);
         break;
     default:
         break;
@@ -1255,14 +1256,13 @@ static void get_title (void)
 {
     GList * playlists;
 
-    if (active_title)
-        g_free (active_title);
+    g_free (active_title);
 
     playlists = aud_playlist_get_playlists ();
 
     active_title = playlists->next ? g_strdup_printf ("%s (%d of %d)",
      active_playlist->title, 1 + g_list_index (playlists, active_playlist),
-     g_list_length (playlists)) : 0;
+     g_list_length (playlists)) : NULL;
 }
 
 static void update_cb (void * playlist, void * unused)
@@ -1304,7 +1304,7 @@ playlistwin_create(void)
 {
     active_playlist = aud_playlist_get_active ();
     active_length = aud_playlist_get_length (active_playlist);
-    active_title = 0;
+    active_title = NULL;
     get_title ();
 
     resize_mutex = g_mutex_new();
@@ -1314,7 +1314,7 @@ playlistwin_create(void)
 
     gtk_window_add_accel_group(GTK_WINDOW(playlistwin), ui_manager_get_accel_group());
 
-    // calls playlistwin_update, so we don't need to
+    /* calls playlistwin_update */
     ui_skinned_playlist_follow (playlistwin_list);
 
     aud_hook_associate ("playlist position", follow_cb, 0);
