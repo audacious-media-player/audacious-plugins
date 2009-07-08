@@ -129,7 +129,6 @@ EFFECT_PLUGINS="audiocompress crystalizer ladspa voice_removal sndstretch stereo
 GENERAL_PLUGINS="song_change alarm skins vfstrace gtkui"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
-TRANSPORT_PLUGINS="gio"
 
 dnl Check for Audacious
 
@@ -150,10 +149,16 @@ PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.10.0],
     [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.10.0])]
 )
 
-PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0],
-    [ADD_PC_REQUIRES([gio-2.0 >= 2.0])],
-    [AC_MSG_ERROR([Cannot find GIO >= 2.0])]
-)
+AC_ARG_ENABLE(gio, [ --enable-gio    enable GIO support (default=yes)],
+ enable_gio=$enableval, enable_gio=yes)
+
+if test "x$enable_gio" = "xyes"; then
+    PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0], [ADD_PC_REQUIRES([gio-2.0 >=
+     2.0])], [AC_MSG_ERROR([Cannot find GIO >= 2.0])])
+    TRANSPORT_PLUGINS="gio"
+else
+    TRANSPORT_PLUGINS="unix-io"
+fi
 
 PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
     [ADD_PC_REQUIRES([pango >= 1.8.0])],
@@ -331,7 +336,7 @@ if test "x$enable_altivec" = "xyes"; then
        SIMD_CFLAGS=-maltivec
        AC_SUBST(SIMD_CFLAGS)],
       [DCT64=dct64.c]
-  )    
+  )
 fi
 AC_SUBST(DCT64)
 
@@ -373,7 +378,7 @@ AC_ARG_ENABLE(mp3,
 )
 
 if test "x$enable_mp3" = "xyes"; then
-    AM_PATH_LIBMAD([enable_mp3=yes], 
+    AM_PATH_LIBMAD([enable_mp3=yes],
         [AC_MSG_WARN([*** Cannot find libmad, mp3 plugin will not be built ***])
          enable_mp3=no]
     )
@@ -651,7 +656,7 @@ AC_ARG_ENABLE(flacng,
 )
 
 if test "x$enable_flacng" = "xyes"; then
-    AM_PATH_LIBFLAC([have_flacng=yes], 
+    AM_PATH_LIBFLAC([have_flacng=yes],
         [AC_MSG_WARN([*** Cannot find libFLAC, FLACng will not be built ***])
          have_flacng=no]
     )
@@ -746,7 +751,7 @@ AC_ARG_ENABLE(musepack,
 )
 
 if test "x$enable_musepack" = "xyes"; then
-    PKG_CHECK_MODULES(TAGLIB, [taglib >= 1.4], [ 
+    PKG_CHECK_MODULES(TAGLIB, [taglib >= 1.4], [
        AC_CHECK_HEADERS(mpcdec/config_types.h,, [
            enable_musepack=no
        ])
@@ -1175,7 +1180,7 @@ if test "$enable_cdaudio_ng" = "yes"; then
    AC_SUBST(CDIO_LIBS)
    AC_SUBST(CDIO_CFLAGS)],
    [AC_MSG_WARN([*** Cannot find libcdio_cdda 0.70 or newer, cdaudio-ng will not be built ***])
-   enable_cdaudio_ng=no] 
+   enable_cdaudio_ng=no]
 )
 fi
 
@@ -1339,7 +1344,7 @@ fi
 AC_SUBST(MTP_LIBS)
 AC_SUBST(MTP_CFLAGS)
 
-dnl *** Bluetooth audio suport 
+dnl *** Bluetooth audio suport
 
 AC_ARG_ENABLE(bluetooth,
 [  --disable-bluetooth           disable bluetooth audio support. (default=enabled)],
