@@ -96,15 +96,15 @@ configure_init(void)
 }
 
 static PreferencesTab preferences_tabs[] = {
-	{N_("General"), metadata_settings, G_N_ELEMENTS(metadata_settings)},
-	{N_("Title"), title_settings, G_N_ELEMENTS(title_settings)},
+    {N_("General"), metadata_settings, G_N_ELEMENTS(metadata_settings)},
+    {N_("Title"), title_settings, G_N_ELEMENTS(title_settings)},
 };
 
 PluginPreferences preferences = {
-	.title = N_("MPEG Audio Plugin Configuration"),
-	.tabs = preferences_tabs,
-	.n_tabs = G_N_ELEMENTS(preferences_tabs),
-	.init = configure_init,
-	.apply = configure_apply,
-	.cleanup = configure_cleanup,
+    .title = N_("MPEG Audio Plugin Configuration"),
+    .tabs = preferences_tabs,
+    .n_tabs = G_N_ELEMENTS(preferences_tabs),
+    .init = configure_init,
+    .apply = configure_apply,
+    .cleanup = configure_cleanup,
 };
