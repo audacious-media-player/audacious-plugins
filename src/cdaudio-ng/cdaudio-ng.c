@@ -2,7 +2,7 @@
  * Audacious CD Digital Audio plugin
  *
  * Copyright (c) 2007 Calin Crisan <ccrisan@gmail.com>
- * Portions copyright (c) 2009 John Lindgren <john.lindgren@tds.net>
+ * Copyright 2009 John Lindgren
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #include "configure.h"
 
 
-#define DEBUG 0
+#define DEBUG FALSE
 
 #define cdaudio_error(...) printf (__VA_ARGS__)
 
@@ -88,17 +88,16 @@ static gint			cdaudio_get_time(InputPlayback *pinputplayback);
 static gint			cdaudio_get_volume(gint *l, gint *r);
 static gint			cdaudio_set_volume(gint l, gint r);
 static void			cdaudio_cleanup(void);
-static Tuple            	*create_tuple_from_trackinfo_and_filename(gchar *filename);
+static Tuple * create_tuple_from_trackinfo_and_filename (gchar * filename);
 static void			dae_play_loop(dae_params_t *pdae_params);
 static void scan_cd (void);
 static void			refresh_trackinfo(void);
-static gboolean                 show_noaudiocd_info();
 static gint			calculate_track_length(gint startlsn, gint endlsn);
-static gint			find_trackno_from_filename(gchar *filename);
+static gint find_trackno_from_filename (const gchar * filename);
 
 
 static InputPlugin inputplugin = {
-	.description = "CD Audio Plugin NG",
+	.description = "Audio CD Plugin",
 	.init = cdaudio_init,
 	.about = cdaudio_about,
 	.configure = cdaudio_configure,
@@ -111,7 +110,8 @@ static InputPlugin inputplugin = {
 	.get_volume = cdaudio_get_volume,
 	.set_volume = cdaudio_set_volume,
 	.cleanup = cdaudio_cleanup,
-	.get_song_tuple = create_tuple_from_trackinfo_and_filename
+	.get_song_tuple = create_tuple_from_trackinfo_and_filename,
+	.have_subtune = TRUE,
 };
 
 InputPlugin *cdaudio_iplist[] = { &inputplugin, NULL };
@@ -168,20 +168,6 @@ static gboolean is_our_playlist (Playlist * playlist)
     }
 
     return found;
-}
-
-/* main thread only */
-static void add_cd_to_playlist (Playlist * playlist, gint first, gint last)
-{
-    static gchar filename [] = "cdda://track00.cda";
-    gint track;
-
-    for (track = first; track <= last; track ++)
-    {
-        filename [12] = '0' + track / 10;
-        filename [13] = '0' + track % 10;
-        aud_playlist_add (playlist, filename);
-    }
 }
 
 /* main thread only */
@@ -281,34 +267,17 @@ static void check_playlist (gpointer hook_data, gpointer user_data)
 static void play_cd (GtkMenuItem * item, gpointer user_data)
 {
     Playlist * playlist = aud_playlist_get_active ();
-    gint first, last;
-
-    if (! get_disk_info (& first, & last))
-    {
-        show_noaudiocd_info ();
-        return;
-    }
 
     audacious_drct_stop ();
     aud_playlist_clear (playlist);
-    add_cd_to_playlist (playlist, first, last);
+    aud_playlist_add (playlist, "cdda://");
     audacious_drct_play ();
 }
 
 /* main thread only */
 static void add_cd (GtkMenuItem * item, gpointer user_data)
 {
-    Playlist * playlist = aud_playlist_get_active ();
-    gint first, last;
-
-    if (! get_disk_info (& first, & last))
-    {
-        show_noaudiocd_info ();
-        return;
-    }
-
-    purge_playlist (playlist);
-    add_cd_to_playlist (playlist, first, last);
+    aud_playlist_add (aud_playlist_get_active (), "cdda://");
 }
 
 /* main thread only */
@@ -408,14 +377,13 @@ static void cdaudio_about()
 	if (about_window) {
             gtk_window_present(GTK_WINDOW(about_window));
 	} else {
-            about_window = audacious_info_dialog(_("About CD Audio Plugin NG"),
+            about_window = audacious_info_dialog(_("About Audio CD Plugin"),
 	    _("Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
 	    "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
 	    "\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
 	    "Also thank you Tony Vroon for mentoring & guiding me.\n\n"
-	     "This was a Google Summer of Code 2007 project.\n\nPortions "
-	     "copyright (c) 2009 John Lindgren <john.lindgren@tds.net>"),
-	     _("OK"), FALSE, NULL, NULL);
+	     "This was a Google Summer of Code 2007 project.\n\n"
+	     "Copyright 2009 John Lindgren"), _("Close"), FALSE, NULL, NULL);
 
 	    g_signal_connect(G_OBJECT(about_window), "destroy",	G_CALLBACK(gtk_widget_destroyed), &about_window);
         }
@@ -459,52 +427,41 @@ static void cdaudio_set_fullinfo(trackinfo_t *t,
 	cdaudio_set_strinfo(t, performer, name, genre);
 }
 
-/* main thread only */
-static gboolean play_cd_cb (gpointer user_data)
-{
-    play_cd (NULL, NULL);
-    return FALSE;
-}
-
 /* play thread only */
 static void cdaudio_play_file(InputPlayback *pinputplayback)
 {
+    gint trackno = find_trackno_from_filename (pinputplayback->filename);
     Tuple * tuple;
     gchar * title;
-    gint trackno;
 
-    if (! strcmp (pinputplayback->filename, "cdda://"))
+    if (trackno == -1)
     {
-        pinputplayback->playing = TRUE;
-        pinputplayback->set_pb_ready (pinputplayback);
-        pinputplayback->playing = FALSE;
-        g_timeout_add (0, play_cd_cb, NULL);
+        cdaudio_error ("Invalid URI %s.\n", pinputplayback->filename);
         return;
     }
 
-    trackno = find_trackno_from_filename (pinputplayback->filename);
+    /* calls check_disk, warns on error */
     tuple = create_tuple_from_trackinfo_and_filename (pinputplayback->filename);
+
+    if (tuple == NULL)
+        return;
+
     title = aud_tuple_formatter_make_title_string (tuple,
      aud_get_gentitle_format ());
     aud_tuple_free (tuple);
 
     g_mutex_lock (mutex);
 
-    check_disk ();
-
-    if (! trackinfo || trackno < firsttrackno || trackno > lasttrackno)
-    {
-        cdaudio_error ("Cannot play track.\n");
-        g_free (title);
+    /* slim chance that these have changed since create_tuple */
+    if (trackinfo == NULL || trackno < firsttrackno || trackno > lasttrackno)
         goto UNLOCK;
-    }
 
-	pinputplayback->playing = TRUE;
-	playing_track = trackno;
-	is_paused = FALSE;
+    pinputplayback->set_params (pinputplayback, title, calculate_track_length
+     (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 1411200, 44100, 2);
 
-	pinputplayback->set_params(pinputplayback, title, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 1411200, 44100, 2);
-	g_free(title);
+    pinputplayback->playing = TRUE;
+    playing_track = trackno;
+    is_paused = FALSE;
 
 	if (cdng_cfg.use_dae)
 	{
@@ -538,6 +495,7 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 
 UNLOCK:
     g_mutex_unlock (mutex);
+    g_free (title);
 }
 
 /* main thread only */
@@ -745,20 +703,39 @@ static void cdaudio_cleanup(void)
 }
 
 /* thread safe */
-static Tuple *create_tuple_from_trackinfo_and_filename(gchar *filename)
+static Tuple * create_tuple_from_trackinfo_and_filename (gchar * filename)
 {
-    Tuple * tuple;
-    int trackno;
+    Tuple * tuple = NULL;
+    gint trackno;
 
     g_mutex_lock (mutex);
 
-    tuple = aud_tuple_new_from_filename (filename);
-    trackno = find_trackno_from_filename (filename);
-
     check_disk ();
 
-    if (! trackinfo || trackno < firsttrackno || trackno > lasttrackno)
-        goto UNLOCK;
+    if (trackinfo == NULL)
+        goto DONE;
+
+    if (! strcmp (filename, "cdda://"))
+    {
+        tuple = aud_tuple_new_from_filename (filename);
+        tuple->nsubtunes = 1 + lasttrackno - firsttrackno;
+        tuple->subtunes = g_malloc (sizeof * tuple->subtunes * tuple->nsubtunes);
+
+        for (trackno = firsttrackno; trackno <= lasttrackno; trackno ++)
+            tuple->subtunes[trackno - firsttrackno] = trackno;
+
+        goto DONE;
+    }
+
+    trackno = find_trackno_from_filename (filename);
+
+    if (trackno < firsttrackno || trackno > lasttrackno)
+    {
+        cdaudio_error ("Track %d not found.\n", trackno);
+        goto DONE;
+    }
+
+    tuple = aud_tuple_new_from_filename (filename);
 
 	if(strlen(trackinfo[trackno].performer)) {
 		aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, trackinfo[trackno].performer);
@@ -771,7 +748,6 @@ static Tuple *create_tuple_from_trackinfo_and_filename(gchar *filename)
 	}
 
 	aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, trackno);
-	aud_tuple_associate_string(tuple, -1, "ext", "cda"); //XXX should do? --yaz
 
 	aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL,
 		calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
@@ -779,9 +755,8 @@ static Tuple *create_tuple_from_trackinfo_and_filename(gchar *filename)
 	if(strlen(trackinfo[trackno].genre)) {
 		aud_tuple_associate_string(tuple, FIELD_GENRE, NULL,  trackinfo[trackno].genre);
 	}
-	//tuple->year = 0; todo: set the year
 
-UNLOCK:
+DONE:
     g_mutex_unlock (mutex);
     return tuple;
 }
@@ -878,46 +853,13 @@ static void dae_play_loop(dae_params_t *pdae_params)
 	g_free(buffer);
 }
 
-/* main thread only */
-static void destroy_dialog (GtkWidget * dialog, gint response,
- GtkWidget * * reference)
-{
-    gtk_widget_destroy (dialog);
-    * reference = 0;
-}
-
-/* main thread only */
-static gboolean show_noaudiocd_info()
-{
-        static GtkWidget * dialog = 0;
-
-        if (dialog)
-            gtk_window_present (GTK_WINDOW (dialog));
-        else
-        {
-            dialog = gtk_message_dialog_new_with_markup (NULL,
-			   GTK_DIALOG_DESTROY_WITH_PARENT,
-			   GTK_MESSAGE_ERROR,
-			   GTK_BUTTONS_OK,
-			   _("No audio CD found."));
-            gtk_widget_show (dialog);
-            g_signal_connect (G_OBJECT (dialog), "response",
-             G_CALLBACK (destroy_dialog), & dialog);
-        }
-
-        return TRUE;
-}
-
 /* mutex must be locked */
 static void scan_cd (void)
 {
-    int trackno;
+    gint trackno;
 
-    if (trackinfo)
-    {
-        g_free (trackinfo);
-        trackinfo = 0;
-    }
+    g_free (trackinfo);
+    trackinfo = NULL;
 
 	/* find an available, audio capable, cd drive  */
 	if (cdng_cfg.device != NULL && strlen(cdng_cfg.device) > 0) {
@@ -1020,7 +962,8 @@ static void scan_cd (void)
 		}
 		else {
 			cdaudio_set_strinfo(&trackinfo[trackno], "", "", "");
-			g_snprintf(trackinfo[trackno].name, DEF_STRING_LEN, "CD Audio Track %02u", trackno);
+			snprintf (trackinfo[trackno].name, DEF_STRING_LEN,
+			 "Track %d", trackno);
 		}
 	}
 
@@ -1136,17 +1079,14 @@ static void scan_cd (void)
     return;
 
 ERROR:
-    if (trackinfo)
-    {
-        g_free (trackinfo);
-        trackinfo = 0;
-    }
+    g_free (trackinfo);
+    trackinfo = NULL;
 }
 
 /* mutex must be locked */
 static void refresh_trackinfo (void)
 {
-    if (! trackinfo || ! pcdio || cdio_get_media_changed (pcdio))
+    if (trackinfo == NULL || pcdio == NULL || cdio_get_media_changed (pcdio))
         scan_cd ();
 }
 
@@ -1157,13 +1097,13 @@ static gint calculate_track_length(gint startlsn, gint endlsn)
 }
 
 /* thread safe (mutex may be locked) */
-static gint find_trackno_from_filename(gchar *filename)
+static gint find_trackno_from_filename (const gchar * filename)
 {
-	gchar tracknostr[3];
-	if ((filename == NULL) || strlen(filename) <= 6)
-		return -1;
+    gint track;
 
-	strncpy(tracknostr, filename + strlen(filename) - 6, 2);
-	tracknostr[2] = '\0';
-	return strtol(tracknostr, NULL, 10);
+    if (strncmp (filename, "cdda://?", 8) || sscanf (filename + 8, "%d",
+     & track) != 1)
+        return -1;
+
+    return track;
 }
