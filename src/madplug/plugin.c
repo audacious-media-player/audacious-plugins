@@ -716,8 +716,6 @@ audmad_error(char *error, ...)
 #endif                          /* !NOGUI */
 }
 
-extern void audmad_configure();
-
 static void
 __set_and_free(Tuple *tuple, gint nfield, gchar *name, gchar *value)
 {
@@ -896,13 +894,15 @@ audmad_probe_for_tuple(char *filename, VFSFile *fd)
     return __audmad_get_song_tuple(filename, fd);
 }
 
-static gchar *fmts[] = { "mp3", "mp2", "mpg", "bmu", NULL };
+static const gchar *fmts[] = { "mp3", "mp2", "mpg", "bmu", NULL };
+
+extern PluginPreferences preferences;
 
 InputPlugin mad_ip = {
     .description = "MPEG Audio Plugin",
     .init = audmad_init,
     .about = audmad_about,
-    .configure = audmad_configure,
+    .settings = &preferences,
     .play_file = audmad_play_file,
     .stop = audmad_stop,
     .pause = audmad_pause,
@@ -911,7 +911,7 @@ InputPlugin mad_ip = {
     .get_song_info = audmad_get_song_info,
     .get_song_tuple = audmad_get_song_tuple,
     .is_our_file_from_vfs = audmad_is_our_fd,
-    .vfs_extensions = fmts,
+    .vfs_extensions = (gchar**)fmts,
     .mseek = audmad_mseek,
     .probe_for_tuple = audmad_probe_for_tuple,
     .update_song_tuple = audmad_update_song_tuple,

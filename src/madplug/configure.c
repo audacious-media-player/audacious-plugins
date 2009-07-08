@@ -24,11 +24,8 @@
 
 #include "plugin.h"
 
-#include <gtk/gtk.h>
 #include <audacious/preferences.h>
 #include <math.h>
-
-static GtkWidget *configure_win = NULL;
 
 static audmad_config_t config;
 
@@ -53,10 +50,10 @@ static PreferencesWidget title_settings[] = {
 static void
 update_config()
 {
-    if (audmad_config->id3_format)
-        g_free(audmad_config->id3_format);
+    g_free(audmad_config->id3_format);
 
     memcpy(audmad_config, &config, sizeof(config));
+    audmad_config->id3_format = g_strdup(config.id3_format);
 }
 
 static void
@@ -78,106 +75,36 @@ save_config(void)
 }
 
 static void
-configure_win_cancel(GtkWidget *widget, gpointer data)
+configure_cleanup()
 {
-    AUDDBG("cancel\n");
     g_free(config.id3_format);
     config.id3_format = NULL;
-    gtk_widget_destroy(configure_win);
 }
 
 static void
-configure_win_ok(GtkWidget *widget, gpointer data)
+configure_apply()
 {
-    AUDDBG("ok\n");
     update_config();
     save_config();
-    gtk_widget_destroy(configure_win);
-    config.id3_format = NULL;
 }
 
 static void
-configure_destroy(GtkWidget *w, gpointer data)
+configure_init(void)
 {
-}
-
-void
-audmad_configure(void)
-{
-    GtkWidget *vbox;
-    GtkWidget *bbox, *ok, *cancel;
-    GtkWidget *notebook, *vbox2;
-
-    if (configure_win != NULL) {
-        gtk_widget_show(configure_win);
-        return;
-    }
-
     memcpy(&config, audmad_config, sizeof(config));
     config.id3_format = g_strdup(audmad_config->id3_format);
-
-    configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_type_hint(GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
-
-    g_signal_connect(G_OBJECT(configure_win), "destroy",
-                       G_CALLBACK(gtk_widget_destroyed), &configure_win);
-    g_signal_connect(G_OBJECT(configure_win), "destroy",
-                       G_CALLBACK(configure_destroy), &configure_win);
-
-    gtk_window_set_title(GTK_WINDOW(configure_win),
-                         _("MPEG Audio Plugin Configuration"));
-    gtk_window_set_policy(GTK_WINDOW(configure_win), FALSE, FALSE, FALSE);
-    gtk_container_border_width(GTK_CONTAINER(configure_win), 10);
-
-    vbox = gtk_vbox_new(FALSE, 10);
-    gtk_container_add(GTK_CONTAINER(configure_win), vbox);
-
-    notebook = gtk_notebook_new();
-    gtk_box_pack_start(GTK_BOX(vbox), notebook, FALSE, FALSE, 0);
-
-
-    /********************************************************************************/
-
-
-    vbox2 = gtk_vbox_new(FALSE, 5);
-
-    aud_create_widgets(GTK_BOX(vbox2), metadata_settings, G_N_ELEMENTS(metadata_settings));
-
-    // add to notebook
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, gtk_label_new(_("General")));
-
-
-
-    vbox2 = gtk_vbox_new(FALSE, 5);
-
-    aud_create_widgets(GTK_BOX(vbox2), title_settings, G_N_ELEMENTS(title_settings));
-
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, gtk_label_new(_("Title")));
-
-
-
-    /*********************************************************************************/
-
-
-    bbox = gtk_hbutton_box_new();
-    gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-    gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
-    gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
-
-    cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-
-    g_signal_connect(G_OBJECT(cancel), "clicked",
-                     G_CALLBACK(configure_win_cancel), NULL);
-
-    gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
-
-    ok = gtk_button_new_from_stock(GTK_STOCK_OK);
-
-    g_signal_connect(G_OBJECT(ok), "clicked",
-                     G_CALLBACK(configure_win_ok), NULL);
-
-    gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
-    gtk_widget_grab_default(ok);
-
-    gtk_widget_show_all(configure_win);
 }
+
+static PreferencesTab preferences_tabs[] = {
+	{N_("General"), metadata_settings, G_N_ELEMENTS(metadata_settings)},
+	{N_("Title"), title_settings, G_N_ELEMENTS(title_settings)},
+};
+
+PluginPreferences preferences = {
+	.title = N_("MPEG Audio Plugin Configuration"),
+	.tabs = preferences_tabs,
+	.n_tabs = G_N_ELEMENTS(preferences_tabs),
+	.init = configure_init,
+	.apply = configure_apply,
+	.cleanup = configure_cleanup,
+};
