@@ -288,7 +288,7 @@ static void* play_loop_track( gpointer arg )
 			}
 		}
 		playback->pass_audio( playback, 
-			FMT_S16_NE, 1, sizeof buf, buf, 
+			FMT_S16_NE, 2, sizeof buf, buf, 
 			&playback->playing );
 	}
 	
