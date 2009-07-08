@@ -161,7 +161,7 @@ MessageBox (const char *title, const char *text, const char *button)
 
 /***** Dialog boxes *****/
 
-static void
+extern "C" void
 adplug_about (void)
 {
   if (!about_win)
@@ -242,7 +242,7 @@ config_fl_row_unselect (GtkCList * fl, gint row, gint col,
   pl->remove ((CPlayerDesc *) gtk_clist_get_row_data (fl, row));
 }
 
-static void
+extern "C" void
 adplug_config (void)
 {
   GtkDialog *config_dlg = GTK_DIALOG (gtk_dialog_new ());
@@ -476,10 +476,10 @@ factory (VFSFile * fd, Copl * newopl)
   return CAdPlug::factory (fd, newopl, conf.players);
 }
 
-static void adplug_stop (InputPlayback * data);
-static void adplug_play (InputPlayback * data);
-
-
+extern "C" {
+void adplug_stop(InputPlayback * data);
+void adplug_play(InputPlayback * data);
+}
 
 static void
 subsong_slider (GtkAdjustment * adj)
@@ -501,7 +501,7 @@ close_infobox (GtkDialog * infodlg)
   }
 }
 
-static void
+extern "C" void
 adplug_info_box (char *filename)
 {
   CSilentopl tmpopl;
@@ -674,7 +674,7 @@ adplug_info_box (char *filename)
 
 /***** Main player (!! threaded !!) *****/
 
-static Tuple*
+extern "C" Tuple*
 adplug_get_tuple (char *filename)
 {
   CSilentopl tmpopl;
@@ -892,7 +892,7 @@ play_loop (void *data)
 
 /***** Informational *****/
 
-static int
+extern "C" int
 adplug_is_our_fd (gchar * filename, VFSFile * fd)
 {
   CSilentopl tmpopl;
@@ -912,7 +912,7 @@ adplug_is_our_fd (gchar * filename, VFSFile * fd)
   return FALSE;
 }
 
-static int
+extern "C" int
 adplug_get_time (InputPlayback * data)
 {
   if (audio_error)
@@ -928,7 +928,7 @@ adplug_get_time (InputPlayback * data)
   return playback->output->output_time ();
 }
 
-static void
+extern "C" void
 adplug_song_info (char *filename, char **title, int *length)
 {
   *length = -1;
@@ -941,7 +941,7 @@ adplug_song_info (char *filename, char **title, int *length)
 
 /***** Player control *****/
 
-static void
+extern "C" void
 adplug_play (InputPlayback * data)
 {
   char *filename = data->filename;
@@ -982,7 +982,7 @@ adplug_play (InputPlayback * data)
   dbg_printf (".\n");
 }
 
-static void
+extern "C" void
 adplug_stop (InputPlayback * playback)
 {
   dbg_printf ("adplug_stop(): join, ");
@@ -993,14 +993,14 @@ adplug_stop (InputPlayback * playback)
   dbg_printf (".\n");
 }
 
-static void
+extern "C" void
 adplug_pause (InputPlayback * playback, short paused)
 {
   dbg_printf ("adplug_pause(%d)\n", paused);
   playback->output->pause (paused);
 }
 
-static void
+extern "C" void
 adplug_seek (InputPlayback * data, int time)
 {
   dbg_printf ("adplug_seek(%d)\n", time);
@@ -1011,7 +1011,7 @@ adplug_seek (InputPlayback * data, int time)
 
 #define CFG_VERSION "AdPlug"
 
-static void
+extern "C" void
 adplug_init (void)
 {
   dbg_printf ("adplug_init(): open, ");
@@ -1063,7 +1063,7 @@ adplug_init (void)
   dbg_printf (".\n");
 }
 
-static void
+extern "C" void
 adplug_quit (void)
 {
   dbg_printf ("adplug_quit(): open, ");
@@ -1100,46 +1100,3 @@ adplug_quit (void)
   aud_cfg_db_close (db);
   dbg_printf (".\n");
 }
-
-/***** Plugin (exported) *****/
-
-const gchar *fmts[] =
-    { "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
-      "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
-      "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
-      "sng", "wlf", "xad", "xsm",
-      NULL };
-
-InputPlugin adplug_ip = {
-  NULL,                         // handle (filled by XMMS)
-  NULL,                         // filename (filled by XMMS)
-  (gchar *)ADPLUG_NAME,                  // plugin description
-  adplug_init,                  // plugin functions...
-  adplug_quit,
-  adplug_about,
-  adplug_config,
-  FALSE,
-  NULL,
-  NULL,
-  adplug_play,
-  adplug_stop,
-  adplug_pause,
-  adplug_seek,
-  adplug_get_time,
-  NULL,                         // get_volume (handled by output plugin)
-  NULL,                         // set_volume (...)
-  NULL,                         // OBSOLETE - DO NOT USE!
-  NULL,                         // add_vis_pcm (filled by XMMS)
-  NULL,                         // set_info (filled by XMMS)
-  NULL,                         // set_info_text (filled by XMMS)
-  adplug_song_info,
-  adplug_info_box,
-  adplug_get_tuple,
-  adplug_is_our_fd,
-  (gchar **)fmts,
-};
-
-InputPlugin *adplug_iplist[] = { &adplug_ip, NULL };
-
-DECLARE_PLUGIN(adplug, NULL, NULL, adplug_iplist, NULL, NULL, NULL, NULL,NULL);
-
