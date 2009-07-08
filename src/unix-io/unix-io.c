@@ -193,7 +193,7 @@ static void unix_rewind (VFSFile * file)
 
 static gboolean unix_feof (VFSFile * file)
 {
-    guchar test = unix_getc (file);
+    gint test = unix_getc (file);
 
     if (test == EOF)
         return TRUE;
