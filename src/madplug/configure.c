@@ -104,6 +104,7 @@ PluginPreferences preferences = {
     .title = N_("MPEG Audio Plugin Configuration"),
     .tabs = preferences_tabs,
     .n_tabs = G_N_ELEMENTS(preferences_tabs),
+    .type = PREFERENCES_TAB,
     .init = configure_init,
     .apply = configure_apply,
     .cleanup = configure_cleanup,

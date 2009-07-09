@@ -337,3 +337,20 @@ create_cfgdlg(void)
   return vbox2;
 }
 
+/* TODO: don't use WIDGET_CUSTOM there */
+static PreferencesWidget settings[] = {
+    {WIDGET_CUSTOM, NULL, NULL, NULL, NULL, FALSE, {.populate = create_cfgdlg}},
+};
+
+static PreferencesTab preferences_tabs[] = {
+    {NULL, settings, G_N_ELEMENTS(settings)},
+};
+
+PluginPreferences preferences = {
+    .title = N_("Scrobbler"),
+    .imgurl = DATA_DIR "/images/audioscrobbler.png",
+    .tabs = preferences_tabs,
+    .n_tabs = G_N_ELEMENTS(preferences_tabs),
+    .type = PREFERENCES_PAGE,
+};
+

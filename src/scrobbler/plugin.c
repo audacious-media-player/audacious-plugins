@@ -42,7 +42,6 @@ static void cleanup(void);
 static void *xs_thread(void *);
 static void *hs_thread(void *);
 static int sc_going, ge_going;
-static GtkWidget *cfgdlg;
 static gboolean submit;
 
 static GMutex *m_scrobbler;
@@ -53,12 +52,15 @@ static GMutex *hs_mutex, *xs_mutex;
 static GCond *hs_cond, *xs_cond;
 guint track_timeout;
 
+extern PluginPreferences preferences;
+
 static GeneralPlugin scrobbler_gp =
 {
 	.description = "Scrobbler Plugin",
 	.init = init,
 	.about = about_show,
-	.cleanup = cleanup
+	.cleanup = cleanup,
+	.settings = &preferences,
 };
 
 static gboolean ishttp(const char *a)
@@ -216,15 +218,12 @@ void stop(void) {
 static void init(void)
 {
     start();
-    cfgdlg = create_cfgdlg();
-    aud_prefswin_page_new(cfgdlg, "Scrobbler", DATA_DIR "/images/audioscrobbler.png");
 }
 
 static void cleanup(void)
 {
     stop();
     configure_cleanup();
-    aud_prefswin_page_destroy(cfgdlg);
 }
 
 static void *xs_thread(void *data __attribute__((unused)))
