@@ -245,8 +245,7 @@ static void mixer_card_cb(GtkWidget * widget, gpointer card)
 
 void alsaplug_configure(void)
 {
-	GtkWidget *vbox, *notebook;
-	GtkWidget *dev_vbox, *adevice_frame, *adevice_box;
+        GtkWidget * vbox, * adevice_frame, * adevice_box;
 	GtkWidget *mixer_frame, *mixer_box, *mixer_table, *mixer_card_om;
 	GtkWidget *mixer_card_label, *mixer_device_label;
 	GtkWidget *bbox, *ok, *cancel;
@@ -259,31 +258,25 @@ void alsaplug_configure(void)
 		return;
 	}
 
-	configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_signal_connect(GTK_OBJECT(configure_win), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-			   &configure_win);
-	gtk_window_set_title(GTK_WINDOW(configure_win),
-			     _("ALSA Driver configuration"));
-	gtk_window_set_policy(GTK_WINDOW(configure_win),
-			      FALSE, TRUE, FALSE);
-	gtk_container_border_width(GTK_CONTAINER(configure_win), 10);
+        configure_win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_title ((GtkWindow *) configure_win, _ ("ALSA Output "
+         "Plugin Preferences"));
+        gtk_window_set_type_hint ((GtkWindow *) configure_win,
+         GDK_WINDOW_TYPE_HINT_DIALOG);
+        gtk_window_set_resizable ((GtkWindow *) configure_win, FALSE);
+        gtk_container_set_border_width ((GtkContainer *) configure_win, 6);
+        g_signal_connect ((GObject *) configure_win, "destroy", (GCallback)
+         gtk_widget_destroyed, & configure_win);
 
-	vbox = gtk_vbox_new(FALSE, 10);
-	gtk_container_add(GTK_CONTAINER(configure_win), vbox);
+        vbox = gtk_vbox_new (FALSE, 6);
+        gtk_container_add ((GtkContainer *) configure_win, vbox);
 
-	notebook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
+        adevice_frame = gtk_frame_new (_ ("Device:"));
+        gtk_box_pack_start ((GtkBox *) vbox, adevice_frame, FALSE, FALSE, 0);
 
-	dev_vbox = gtk_vbox_new(FALSE, 5);
-	gtk_container_set_border_width(GTK_CONTAINER(dev_vbox), 5);
-
-	adevice_frame = gtk_frame_new(_("Audio device:"));
-	gtk_box_pack_start(GTK_BOX(dev_vbox), adevice_frame, FALSE, FALSE, 0);
-
-	adevice_box = gtk_vbox_new(FALSE, 5);
-	gtk_container_set_border_width(GTK_CONTAINER(adevice_box), 5);
-	gtk_container_add(GTK_CONTAINER(adevice_frame), adevice_box);
+        adevice_box = gtk_vbox_new (FALSE, 6);
+        gtk_container_set_border_width ((GtkContainer *) adevice_box, 6);
+        gtk_container_add ((GtkContainer *) adevice_frame, adevice_box);
 
 	devices_combo = gtk_combo_new();
 	gtk_box_pack_start(GTK_BOX(adevice_box), devices_combo,
@@ -292,12 +285,12 @@ void alsaplug_configure(void)
 	gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(devices_combo)->entry),
 			   alsaplug_cfg.pcm_device);
 
-	mixer_frame = gtk_frame_new(_("Mixer:"));
-	gtk_box_pack_start(GTK_BOX(dev_vbox), mixer_frame, FALSE, FALSE, 0);
+        mixer_frame = gtk_frame_new (_ ("Mixer:"));
+        gtk_box_pack_start ((GtkBox *) vbox, mixer_frame, FALSE, FALSE, 0);
 
-	mixer_box = gtk_vbox_new(FALSE, 5);
-	gtk_container_set_border_width(GTK_CONTAINER(mixer_box), 5);
-	gtk_container_add(GTK_CONTAINER(mixer_frame), mixer_box);
+        mixer_box = gtk_vbox_new (FALSE, 6);
+        gtk_container_set_border_width ((GtkContainer *) mixer_box, 6);
+        gtk_container_add ((GtkContainer *) mixer_frame, mixer_box);
 
 	mixer_table = gtk_table_new(2, 2, FALSE);
 	gtk_table_set_row_spacings(GTK_TABLE(mixer_table), 5);
@@ -330,9 +323,6 @@ void alsaplug_configure(void)
 
 	gtk_table_attach(GTK_TABLE(mixer_table), mixer_devices_combo,
 			 1, 2, 1, 2, GTK_FILL | GTK_EXPAND, 0, 0, 0);
-
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dev_vbox,
-				 gtk_label_new(_("Device settings")));
 
 	bbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
