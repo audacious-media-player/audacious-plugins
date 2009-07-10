@@ -40,7 +40,7 @@
 #include <audacious/i18n.h>
 
 
-#include <audacious/audtag.h>
+#include <libaudtag/audtag.h>
 
 
 #include "avcodec.h"
