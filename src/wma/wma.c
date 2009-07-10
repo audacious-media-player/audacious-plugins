@@ -39,6 +39,10 @@
 #include <audacious/output.h>
 #include <audacious/i18n.h>
 
+
+#include <audacious/audtag.h>
+
+
 #include "avcodec.h"
 #include "avformat.h"
 
@@ -223,7 +227,10 @@ static void _assoc_int(Tuple *tuple, const gint nfield, const gint val)
 
 static Tuple *wma_get_song_tuple(gchar * filename)
 {
-    Tuple *ti = aud_tuple_new_from_filename(filename);
+    printf("wma get tuple song\n");
+    const char* c = str_twenty_to_space(filename);
+    Tuple *ti = aud_tuple_new_from_filename(c);
+/*
     AVFormatContext *in = NULL;
 
     if (av_open_input_file(&in, str_twenty_to_space(filename), NULL, 0, NULL) < 0)
@@ -244,6 +251,11 @@ static Tuple *wma_get_song_tuple(gchar * filename)
     _assoc_int(ti, FIELD_LENGTH, in->duration / 1000);
 
     av_close_input_file(in);
+*/
+
+    tag_init();
+
+    ti = tag_tuple_read(ti);
 
     return ti;
 }
