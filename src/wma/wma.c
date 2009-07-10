@@ -165,6 +165,7 @@ static void wma_init(void)
     avcodec_init();
     avcodec_register_all();
     av_register_all();
+    tag_init();
 }
 
 static int wma_is_our_fd(char *filename, VFSFile *fd)
@@ -213,25 +214,10 @@ static void wma_seek(InputPlayback *playback, int time)
     while(wma_decode && wma_seekpos!=-1) g_usleep(10000);
 }
 
-static void _assoc_string(Tuple *tuple, const gint nfield, const gchar *str)
-{
-    if (strlen(str) > 0)
-        aud_tuple_associate_string(tuple, nfield, NULL, str);
-}
-
-static void _assoc_int(Tuple *tuple, const gint nfield, const gint val)
-{
-    if (val > 0)
-        aud_tuple_associate_int(tuple, nfield, NULL, val);
-}
-
 static Tuple *wma_get_song_tuple(gchar * filename)
 {
-    printf("wma get tuple song\n");
     const char* c = str_twenty_to_space(filename);
     Tuple *ti = aud_tuple_new_from_filename(c);
-
-    tag_init();
 
     ti = tag_tuple_read(ti);
 
@@ -242,18 +228,11 @@ static gchar *get_song_title(AVFormatContext *in, gchar * filename)
 {
     gchar *ret = NULL;
     Tuple *ti = aud_tuple_new_from_filename(filename);
+    
+    ti = tag_tuple_read(ti);
 
     aud_tuple_associate_string(ti, FIELD_CODEC, NULL, "Windows Media Audio (WMA)");
     aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
-
-    _assoc_string(ti, FIELD_TITLE, in->title);
-    _assoc_string(ti, FIELD_ARTIST, in->author);
-    _assoc_string(ti, FIELD_ALBUM, in->album);
-    _assoc_string(ti, FIELD_COMMENT, in->comment);
-    _assoc_string(ti, FIELD_GENRE, in->genre);
-    _assoc_int(ti, FIELD_YEAR, in->year);
-    _assoc_int(ti, FIELD_TRACK_NUMBER, in->track);
-    _assoc_int(ti, FIELD_LENGTH, in->duration / 1000);
 
     ret = aud_tuple_formatter_make_title_string(ti, aud_get_gentitle_format());
 
