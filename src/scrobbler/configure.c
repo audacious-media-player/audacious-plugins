@@ -342,15 +342,11 @@ static PreferencesWidget settings[] = {
     {WIDGET_CUSTOM, NULL, NULL, NULL, NULL, FALSE, {.populate = create_cfgdlg}},
 };
 
-static PreferencesTab preferences_tabs[] = {
-    {NULL, settings, G_N_ELEMENTS(settings)},
-};
-
 PluginPreferences preferences = {
     .title = N_("Scrobbler"),
     .imgurl = DATA_DIR "/images/audioscrobbler.png",
-    .tabs = preferences_tabs,
-    .n_tabs = G_N_ELEMENTS(preferences_tabs),
+    .prefs = settings,
+    .n_prefs = G_N_ELEMENTS(settings),
     .type = PREFERENCES_PAGE,
 };
 
