@@ -230,28 +230,6 @@ static Tuple *wma_get_song_tuple(gchar * filename)
     printf("wma get tuple song\n");
     const char* c = str_twenty_to_space(filename);
     Tuple *ti = aud_tuple_new_from_filename(c);
-/*
-    AVFormatContext *in = NULL;
-
-    if (av_open_input_file(&in, str_twenty_to_space(filename), NULL, 0, NULL) < 0)
-        return NULL;
-
-    aud_tuple_associate_string(ti, FIELD_CODEC, NULL, "Windows Media Audio (WMA)");
-    aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
-
-    av_find_stream_info(in);
-
-    _assoc_string(ti, FIELD_TITLE, in->title);
-    _assoc_string(ti, FIELD_ARTIST, in->author);
-    _assoc_string(ti, FIELD_ALBUM, in->album);
-    _assoc_string(ti, FIELD_COMMENT, in->comment);
-    _assoc_string(ti, FIELD_GENRE, in->genre);
-    _assoc_int(ti, FIELD_YEAR, in->year);
-    _assoc_int(ti, FIELD_TRACK_NUMBER, in->track);
-    _assoc_int(ti, FIELD_LENGTH, in->duration / 1000);
-
-    av_close_input_file(in);
-*/
 
     tag_init();
 
