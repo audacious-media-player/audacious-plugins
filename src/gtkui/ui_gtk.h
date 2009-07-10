@@ -21,5 +21,6 @@
 #define UI_NEW_H
 
 extern Interface gtkui_interface;
+void show_preferences_window(void);
 
 #endif

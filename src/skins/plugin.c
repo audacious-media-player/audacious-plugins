@@ -43,7 +43,6 @@ Interface skins_interface =
 
 SIMPLE_INTERFACE_PLUGIN("skinned", &skins_interface);
 gboolean plugin_is_active = FALSE;
-static GtkWidget *cfgdlg;
 
 static void skins_free_paths(void) {
     int i;
@@ -93,12 +92,6 @@ gboolean skins_init(void) {
     gint h_vol[2];
     aud_input_get_volume(&h_vol[0], &h_vol[1]);
     aud_hook_call("volume set", h_vol);
-
-    skins_interface.ops->create_prefs_window();
-    cfgdlg = skins_configure();
-    aud_prefswin_page_new(cfgdlg, N_("Skinned Interface"), DATA_DIR "/images/appearance.png");
-
-    aud_hook_call("create prefswin", NULL);
 
     if (audacious_drct_get_playing ())
         ui_main_evlistener_playback_begin (0, 0);
@@ -153,4 +146,20 @@ void skins_about(void) {
                    _("OK"), FALSE, NULL, NULL);
 
     g_signal_connect(G_OBJECT(about_window), "destroy",	G_CALLBACK(gtk_widget_destroyed), &about_window);
+}
+
+void show_preferences_window(void) {
+    static GtkWidget **prefswin = NULL;
+    static GtkWidget *cfgdlg;
+
+    if ((prefswin != NULL) && (*prefswin != NULL)) {
+        gtk_window_present(GTK_WINDOW(*prefswin));
+        return;
+    }
+
+    prefswin = skins_interface.ops->create_prefs_window();
+    cfgdlg = skins_configure();
+    aud_prefswin_page_new(cfgdlg, N_("Skinned Interface"), DATA_DIR "/images/appearance.png");
+
+    gtk_widget_show_all(*prefswin);
 }
