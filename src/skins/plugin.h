@@ -44,5 +44,6 @@ extern Interface skins_interface;
 gboolean skins_init(void);
 gboolean skins_cleanup(void);
 void skins_about(void);
+void show_preferences_window(void);
 
 #endif

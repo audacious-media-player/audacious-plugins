@@ -2700,7 +2700,7 @@ action_playback_stop( void )
 void
 action_preferences( void )
 {
-    skins_interface.ops->show_prefs_window();
+    show_preferences_window();
 }
 
 void

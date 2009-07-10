@@ -95,16 +95,21 @@ configure_init(void)
     config.id3_format = g_strdup(audmad_config->id3_format);
 }
 
-static PreferencesTab preferences_tabs[] = {
+static NotebookTab preferences_tabs[] = {
     {N_("General"), metadata_settings, G_N_ELEMENTS(metadata_settings)},
     {N_("Title"), title_settings, G_N_ELEMENTS(title_settings)},
 };
 
+static PreferencesWidget prefs[] = {
+    {WIDGET_NOTEBOOK, NULL, NULL, NULL, NULL, FALSE,
+        {.notebook = {preferences_tabs, G_N_ELEMENTS(preferences_tabs)}}},
+};
+
 PluginPreferences preferences = {
     .title = N_("MPEG Audio Plugin Configuration"),
-    .tabs = preferences_tabs,
-    .n_tabs = G_N_ELEMENTS(preferences_tabs),
-    .type = PREFERENCES_TAB,
+    .prefs = prefs,
+    .n_prefs = G_N_ELEMENTS(prefs),
+    .type = PREFERENCES_WINDOW,
     .init = configure_init,
     .apply = configure_apply,
     .cleanup = configure_cleanup,

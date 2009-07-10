@@ -157,6 +157,19 @@ window_destroy(GtkWidget *widget, gpointer data)
     gtk_main_quit();
 }
 
+void show_preferences_window(void) {
+    static GtkWidget **prefswin = NULL;
+
+    if ((prefswin != NULL) && (*prefswin != NULL)) {
+        gtk_window_present(GTK_WINDOW(*prefswin));
+        return;
+    }
+
+    prefswin = gtkui_interface.ops->create_prefs_window();
+
+    gtk_widget_show_all(*prefswin);
+}
+
 static void
 button_open_pressed()
 {
