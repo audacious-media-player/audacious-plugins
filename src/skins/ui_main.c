@@ -2700,7 +2700,7 @@ action_playback_stop( void )
 void
 action_preferences( void )
 {
-    show_preferences_window();
+    show_preferences_window(TRUE);
 }
 
 void

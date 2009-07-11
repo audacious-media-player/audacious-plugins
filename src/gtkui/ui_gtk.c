@@ -38,7 +38,7 @@ static gint update_song_timeout_source = 0;
 
 static gulong volume_change_handler_id;
 
-static gboolean _ui_initialize(void);
+static gboolean _ui_initialize(InterfaceCbs *cbs);
 static gboolean _ui_finalize(void);
 
 Interface gtkui_interface = {
@@ -157,17 +157,23 @@ window_destroy(GtkWidget *widget, gpointer data)
     gtk_main_quit();
 }
 
-void show_preferences_window(void) {
+void show_preferences_window(gboolean show) {
     static GtkWidget **prefswin = NULL;
 
-    if ((prefswin != NULL) && (*prefswin != NULL)) {
-        gtk_window_present(GTK_WINDOW(*prefswin));
-        return;
+    if (show) {
+        if ((prefswin != NULL) && (*prefswin != NULL)) {
+            gtk_window_present(GTK_WINDOW(*prefswin));
+            return;
+        }
+
+        prefswin = gtkui_interface.ops->create_prefs_window();
+
+        gtk_widget_show_all(*prefswin);
+    } else {
+        if ((prefswin != NULL) && (*prefswin != NULL)) {
+            gtkui_interface.ops->destroy_prefs_window();
+        }
     }
-
-    prefswin = gtkui_interface.ops->create_prefs_window();
-
-    gtk_widget_show_all(*prefswin);
 }
 
 static void
@@ -512,7 +518,7 @@ ui_hooks_disassociate(void)
 }
 
 static gboolean
-_ui_initialize(void)
+_ui_initialize(InterfaceCbs *cbs)
 {
     Playlist *playlist;
     GtkWidget *vbox;        /* the main vertical box */
@@ -640,6 +646,9 @@ _ui_initialize(void)
 
     if (audacious_drct_get_playing())
         ui_playback_begin(0, 0);
+
+    /* Register interface callbacks */
+    cbs->show_prefs_window = show_preferences_window;
 
     gtk_main();
 

@@ -73,7 +73,7 @@ static void skins_init_paths() {
     g_free(xdg_cache_home);
 }
 
-gboolean skins_init(void) {
+gboolean skins_init(InterfaceCbs *cbs) {
     plugin_is_active = TRUE;
     g_log_set_handler(NULL, G_LOG_LEVEL_WARNING, g_log_default_handler, NULL);
 
@@ -103,6 +103,9 @@ gboolean skins_init(void) {
     if (config.equalizer_visible) equalizerwin_show(TRUE);
     if (config.playlist_visible)
        playlistwin_show (1);
+
+    /* Register interface callbacks */
+    cbs->show_prefs_window = show_preferences_window;
 
     gtk_main();
 
@@ -148,18 +151,24 @@ void skins_about(void) {
     g_signal_connect(G_OBJECT(about_window), "destroy",	G_CALLBACK(gtk_widget_destroyed), &about_window);
 }
 
-void show_preferences_window(void) {
+void show_preferences_window(gboolean show) {
     static GtkWidget **prefswin = NULL;
-    static GtkWidget *cfgdlg;
 
-    if ((prefswin != NULL) && (*prefswin != NULL)) {
-        gtk_window_present(GTK_WINDOW(*prefswin));
-        return;
+    if (show) {
+        if ((prefswin != NULL) && (*prefswin != NULL)) {
+            gtk_window_present(GTK_WINDOW(*prefswin));
+            return;
+        }
+        GtkWidget *cfgdlg;
+
+        prefswin = skins_interface.ops->create_prefs_window();
+        cfgdlg = skins_configure();
+        aud_prefswin_page_new(cfgdlg, N_("Skinned Interface"), DATA_DIR "/images/appearance.png");
+
+        gtk_widget_show_all(*prefswin);
+    } else {
+        if ((prefswin != NULL) && (*prefswin != NULL)) {
+            skins_interface.ops->destroy_prefs_window();
+        }
     }
-
-    prefswin = skins_interface.ops->create_prefs_window();
-    cfgdlg = skins_configure();
-    aud_prefswin_page_new(cfgdlg, N_("Skinned Interface"), DATA_DIR "/images/appearance.png");
-
-    gtk_widget_show_all(*prefswin);
 }
