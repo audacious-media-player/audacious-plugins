@@ -2308,7 +2308,7 @@ mainwin_update_song_info(void)
     gchar stime_prefix;
 
     if (ab_position_a != -1 && ab_position_b != -1 && time > ab_position_b)
-        audacious_drct_seek(ab_position_a/1000);
+        audacious_drct_seek (ab_position_a);
 
     playlistwin_set_time(time, length, config.timer_mode);
 
