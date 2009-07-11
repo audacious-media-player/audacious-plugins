@@ -25,34 +25,34 @@
 #include "player.h"
 
 gboolean xfplayer_input_playing() {
-	return audacious_drct_get_playing();
+    return audacious_drct_get_playing();
 }
 
 gint xfplaylist_get_position() {
-	Playlist *playlist = aud_playlist_get_active();
-	return aud_playlist_get_position(playlist);
+    Playlist *playlist = aud_playlist_get_active();
+    return aud_playlist_get_position(playlist);
 }
 
 gchar *xfplaylist_get_filename(gint pos) {
-	Playlist *playlist = aud_playlist_get_active();
-	char *uri = aud_playlist_get_filename(playlist, pos);
-	return g_strdup(uri);
+    Playlist *playlist = aud_playlist_get_active();
+    char *uri = aud_playlist_get_filename(playlist, pos);
+    return g_strdup(uri);
 }
 
 gchar *xfplaylist_get_songtitle(gint pos) {
-	Playlist *playlist = aud_playlist_get_active();
-	return aud_playlist_get_songtitle(playlist, pos);
+    Playlist *playlist = aud_playlist_get_active();
+    return aud_playlist_get_songtitle(playlist, pos);
 }
 
 gint xfplaylist_current_length() {
-	Playlist *playlist = aud_playlist_get_active();
-	return aud_playlist_get_current_length(playlist);
+    Playlist *playlist = aud_playlist_get_active();
+    return aud_playlist_get_current_length(playlist);
 }
 
 GList *xfplayer_get_output_list() {
-	return aud_get_output_list();
+    return aud_get_output_list();
 }
 
 gboolean xfplayer_check_realtime_priority() {
-	return FALSE;
+    return FALSE;
 }
