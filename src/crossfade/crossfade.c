@@ -38,10 +38,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-
-#ifdef HAVE_DLFCN_H
-#  include <dlfcn.h>
-#endif
 #include <unistd.h>
 #include <signal.h>
 #include <sys/time.h>
@@ -101,17 +97,11 @@ static OutputPlugin *xfade_oplist[] = { &xfade_op_private.xfade_op, NULL };
 DECLARE_PLUGIN(crossfade, NULL, NULL, NULL, xfade_oplist, NULL, NULL, NULL);
 
 /* internal prototypes */
-static void load_symbols();
 static gint open_output();
 static void buffer_reset(buffer_t *buf, config_t *cfg);
 static void *buffer_thread_f(void *arg);
 static void sync_output();
 static gint calc_bitrate();
-
-/* special XMMS symbols (dynamically looked up, see xfade_init) */
-static gboolean *xmms_playlist_get_info_going = NULL;   /* XMMS */
-static gboolean *xmms_is_quitting             = NULL;   /* XMMS */
-static gboolean *input_stopped_for_restart    = NULL;   /* XMMS */
 
 /* This function has been stolen from libxmms/util.c. */
 void xfade_usleep(gint usec)
@@ -154,7 +144,6 @@ static plugin_config_t the_op_config = DEFAULT_OP_CONFIG;
 static gboolean input_playing = FALSE;
 
        gboolean output_opened     = FALSE;
-       gboolean output_restart    = FALSE;  /* used by XMMS 'songchange' patch */
 static gint     output_flush_time = 0;
        gint     output_offset     = 0;
 static gint64   output_written    = 0;
@@ -413,65 +402,10 @@ xfade_init()
 	if (!(the_op = find_output()))
 		DEBUG(("[crossfade] init: could not find any output!\n"));
 
-	/* load any dynamic linked symbols */
-	load_symbols();
-
 	/* realize config -- will also setup the pre-mixing effect plugin */
 	xfade_realize_config();
 
 	return OUTPUT_PLUGIN_INIT_NO_DEVICES;
-}
-
-static void
-load_symbols()
-{
-#ifdef HAVE_DLFCN_H
-	void *handle;
-	char *error;
-	gchar **xmms_cfg;
-	gchar * (*get_gentitle_format)();
-
-	/* open ourselves (that is, the XMMS binary) */
-	handle = dlopen(NULL, RTLD_NOW);
-	if (!handle)
-	{
-		DEBUG(("[crossfade] init: dlopen(NULL) failed!\n"));
-		return;
-	}
-
-	/* check for XMMS patches */
-	DEBUG(("[crossfade] load_symbols: input_stopped_for_restart:"));
-	input_stopped_for_restart = dlsym(handle, "input_stopped_for_restart");
-	DEBUG((!(error = dlerror())? " found\n" : " missing\n"));
-
-	DEBUG(("[crossfade] load_symbols: is_quitting:"));
-	xmms_is_quitting = dlsym(handle, "is_quitting");
-	DEBUG((!(error = dlerror())? " found\n" : " missing\n"));
-
-	DEBUG(("[crossfade] load_symbols: playlist_get_fadeinfo:"));
-	playlist_get_fadeinfo = dlsym(handle, "playlist_get_fadeinfo");
-	DEBUG((!(error = dlerror())? " found\n" : " missing\n"));
-
-	/* check for some XMMS functions */
-	xmms_playlist_get_info_going = dlsym(handle, "playlist_get_info_going");
-	xmms_input_get_song_info     = dlsym(handle, "input_get_song_info");
-
-	/* HACK: direct access to XMMS' config 'gentitle_format' */
-	xmms_cfg = dlsym(handle, "cfg");
-	get_gentitle_format = dlsym(handle, "xmms_get_gentitle_format");
-	if (xmms_cfg && get_gentitle_format)
-	{
-		gchar *format = get_gentitle_format();
-
-		int i = 128;
-		gchar **p = (gchar **)xmms_cfg;
-		for (i = 128; i > 0 && *p != format; i--, p++);
-		if (*p == format)
-			xmms_gentitle_format = p;
-	}
-
-	dlclose(handle);
-#endif
 }
 
 void
@@ -852,29 +786,6 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
 		
 	DEBUG(("[crossfade] open_audio: bname=\"%s\"\n", g_basename(file)));
 	DEBUG(("[crossfade] open_audio: title=\"%s\"\n", title));
-
-#if 0
-	/* HACK: try to get comment and track number from xmms by sneaking in a custom title format */
-	if (xmms_gentitle_format)
-	{
-		gchar *old_gentitle_format = *xmms_gentitle_format;
-
-		gchar *temp_title  = NULL;
-		gint   temp_length = 0;
-
-		xmms_input_get_song_info(file, &temp_title, &temp_length);
-		DEBUG(("[crossfade] open_audio: TITLE: %s\n", temp_title));
-		g_free(temp_title);
-		
-		*xmms_gentitle_format = "%n/%c";
-
-		xmms_input_get_song_info(file, &temp_title, &temp_length);
-		DEBUG(("[crossfade] open_audio: TRACK/COMMENT: %s\n", temp_title));
-		g_free(temp_title);
-
-		*xmms_gentitle_format = old_gentitle_format;
-	}
-#endif
 
 	/* is this an automatic crossfade? */
 	if (last_filename && (fade_config == &config->fc[FADE_CONFIG_XFADE]))
@@ -1422,18 +1333,12 @@ buffer_thread_f(void *arg)
 				buffer->silence_len = MS2B(100);
 			}
 
-			/* 0.3.9: Check for timeout only if we have not been stopped for restart */
-			/* 0.3.11: When using the songchange hack, depend on it's output_restart 
-			 *         flag. Without the hack, use the configuration's dialog songchange
-			 *         timeout setting instead of a fixed timeout value. */
-			if (input_stopped_for_restart && !output_restart)
+			if (!input_playing && config->fc[FADE_CONFIG_STOP].type == FADE_TYPE_NONE)
 			{
-				if (playing)
-					DEBUG(("[crossfade] buffer_thread_f: timeout:"
-					       " stopping after %ld ms (songchange patch)\n", timeout));
 				stopping = TRUE;
+				DEBUG(("[crossfade] buffer_thread_f: input stopped after %ld ms\n", timeout));
 			}
-			else if (((timeout < 0) || (timeout >= config->songchange_timeout && !output_restart)) && !input_playing)
+			else if (((timeout < 0) || (timeout >= config->songchange_timeout)) && !input_playing)
 			{
 				if (playing)
 					DEBUG(("[crossfade] buffer_thread_f: timeout:"
@@ -1856,45 +1761,6 @@ xfade_close_audio()
 				stopped = TRUE;
 		}
 
-		/* HACK: If playlist_get_info_going is not true here,
-		 *       XMMS is about to exit. In this case, we stop
-		 *       the buffer thread before returning from this
-		 *       function. Otherwise, SEGFAULT may occur when
-		 *       XMMS tries to cleanup an output plugin which
-		 *       we are still using.
-		 *
-		 * NOTE: Not quite. There still are some problems when
-		 *       XMMS is exitting while a song is playing. So
-		 *       this HACK has been enabled again.
-		 *
-		 * NOTE: Another thing: If output_keep_opened is enabled,
-		 *       close_audio() is never called, so that the patch
-		 *       can not work.
-		 */
-#if 1
-		if ((xmms_is_quitting && *xmms_is_quitting)
-		 || (xmms_playlist_get_info_going && !*xmms_playlist_get_info_going))
-		{
-			DEBUG(("[crossfade] close: stop (about to quit)\n"))
-
-			/* wait for buffer thread to clean up and terminate */
-			stopped = TRUE;
-#if 1
-			MUTEX_UNLOCK(&buffer_mutex);
-			if (THREAD_JOIN(buffer_thread))
-				PERROR("[crossfade] close: phtread_join()");
-			MUTEX_LOCK(&buffer_mutex);
-#else				
-			while (output_opened)
-			{
-				MUTEX_UNLOCK(&buffer_mutex);
-				xfade_usleep(10000);
-				MUTEX_LOCK(&buffer_mutex);
-			}
-#endif
-		}
-		else
-#endif
 			DEBUG(("[crossfade] close: stop\n"));
 
 		fade_config = &config->fc[FADE_CONFIG_MANUAL];
