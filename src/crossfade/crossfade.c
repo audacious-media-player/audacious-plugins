@@ -1075,11 +1075,13 @@ xfade_write_audio(void *ptr, int length)
 	if (length <= 0)
 		return;
 
+    /* Commenting out for now
+     * fix clicks while using with samplerate converter - Michal
 	if (length & 3)
 	{
 		DEBUG(("[crossfade] write_audio: truncating %d bytes!\n", length & 3));
 		length &= -4;
-	}
+	}*/
 
 	/* update input accumulator (using input format size) */
 	streampos += length;
