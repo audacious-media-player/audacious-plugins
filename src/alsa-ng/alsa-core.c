@@ -305,7 +305,7 @@ alsaplug_init(void)
 static gint
 alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
 {
-    gint err, bitwidth, ringbuf_size;
+    gint err, bitwidth, ringbuf_size, buf_size;
     snd_pcm_format_t afmt;
     snd_pcm_hw_params_t *hwparams = NULL;
 
@@ -342,11 +342,15 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
 
     bitwidth = snd_pcm_format_physical_width(afmt);
     bps = (rate * bitwidth * nch) >> 3;
-    ringbuf_size = aud_cfg->output_buffer_size * bps / 1000;
+
+    buf_size = aud_cfg->output_buffer_size ? aud_cfg->output_buffer_size : 500;
+    ringbuf_size = buf_size * bps / 1000;
+
     if (alsaplug_ringbuffer_init(&pcm_ringbuf, ringbuf_size) == -1) {
         _ERROR("alsaplug_ringbuffer_init failed");
         return -1;
     }
+
     pcm_going = TRUE;
     flush_request = -1;
 
