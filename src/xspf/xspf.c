@@ -119,17 +119,19 @@ static xmlChar *xspf_path_to_uri(const xmlChar *path)
 }
 
 
-/* Adds a file to playlist after node */
-static GList * xspf_add_file(xmlNode *track, const gchar *filename,
-            Playlist *playlist, GList *node, const gchar *base)
+static void xspf_add_file(xmlNode *track, const gchar *filename,
+            gint pos, const gchar *base)
 {
     xmlNode *nptr;
     Tuple *tuple;
     gchar *location = NULL;
+    Playlist *playlist = aud_playlist_get_active();
+
 
     tuple = aud_tuple_new();
     aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
     aud_tuple_associate_int(tuple, FIELD_MTIME, NULL, -1);
+
 
     for (nptr = track->children; nptr != NULL; nptr = nptr->next) {
         if (nptr->type == XML_ELEMENT_NODE) {
@@ -199,33 +201,25 @@ static GList * xspf_add_file(xmlNode *track, const gchar *filename,
         AUDDBG("tuple->file_path = %s\n", aud_tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
 
         /* add file to playlist */
-        node = aud_playlist_load_ins_file_tuple_after_node(playlist, location, filename, node, tuple);
+        aud_playlist_load_ins_file_tuple(playlist, location, filename, pos, tuple);
+        pos++;
     }
 
     g_free(location);
-    
-    return node;
 }
 
 
-/* Add all "track" elements from tracklist to the playlist */
 static void xspf_find_track(xmlNode *tracklist, const gchar *filename,
             gint pos, const gchar *base)
 {
-    xmlNode *nptr = NULL;
-    Playlist *playlist = aud_playlist_get_active();
-
-    PLAYLIST_LOCK(playlist);
-    GList *node = aud_get_playlist_nth(playlist, pos);
+    xmlNode *nptr;
 
     for (nptr = tracklist->children; nptr != NULL; nptr = nptr->next) {
         if (nptr->type == XML_ELEMENT_NODE &&
             !xmlStrcmp(nptr->name, (xmlChar *)"track")) {
-            node = xspf_add_file(nptr, filename, playlist, node, base);
+            xspf_add_file(nptr, filename, pos, base);
         }
     }
-
-    PLAYLIST_UNLOCK(playlist);
 }
 
 
