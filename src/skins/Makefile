@@ -29,8 +29,7 @@ SRCS = plugin.c \
        ui_playlist_evlisteners.c \
        ui_manager.c \
        ui_hints.c \
-       ui_skinselector.c \
-       icons-stock.c
+       ui_skinselector.c
 
 DATA = Skins/Classic/balance.png	\
        Skins/Classic/cbuttons.png	\

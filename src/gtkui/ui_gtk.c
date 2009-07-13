@@ -538,6 +538,9 @@ _ui_initialize(InterfaceCbs *cbs)
 
     gint lvol = 0, rvol = 0; /* Left and Right for the volume control */
 
+    gtkui_interface.ops->set_default_icon();
+    gtkui_interface.ops->register_stock_icons();
+
     ui_manager_init();
     ui_manager_create_menus();
 

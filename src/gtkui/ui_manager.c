@@ -28,10 +28,9 @@
 #include "ui_plugin_menu.h"
 #endif
 
-#include "icons-stock.h"
-
 #include <audacious/plugin.h>
 #include <audacious/ui_plugin_menu.h>
+#include <audacious/icons-stock.h>
 
 static GtkUIManager *ui_manager = NULL;
 

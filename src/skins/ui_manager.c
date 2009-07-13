@@ -35,12 +35,12 @@
    TimerMode enum; move that enum elsewhere so we can get rid of this include */
 #include "ui_main.h"
 
-#include "icons-stock.h"
 #if 0
 #include "sync-menu.h"
 #endif
 #include "plugin.h"
 #include <audacious/ui_plugin_menu.h>
+#include <audacious/icons-stock.h>
 
 static GtkUIManager *ui_manager = NULL;
 

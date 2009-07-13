@@ -56,7 +56,7 @@
 #include "ui_skinned_playlist_slider.h"
 #include "ui_skinned_playlist.h"
 
-#include "icons-stock.h"
+#include <audacious/icons-stock.h>
 #include "images/audacious_playlist.xpm"
 
 Playlist * active_playlist;

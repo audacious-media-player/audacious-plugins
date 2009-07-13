@@ -23,10 +23,10 @@
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_manager.h"
-#include "icons-stock.h"
 #include "ui_main_evlisteners.h"
 #include "ui_playlist_evlisteners.h"
 #include <audacious/i18n.h>
+#include <audacious/icons-stock.h>
 #include <libintl.h>
 
 #include "ui_playlist_manager.h"
@@ -82,7 +82,9 @@ gboolean skins_init(InterfaceCbs *cbs) {
 
     ui_main_check_theme_engine();
 
-    register_aud_stock_icons();
+    skins_interface.ops->set_default_icon();
+    skins_interface.ops->register_stock_icons();
+
     ui_manager_init();
     ui_manager_create_menus();
 

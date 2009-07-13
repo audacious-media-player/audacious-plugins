@@ -50,7 +50,6 @@
 
 #include "ui_main.h"
 #include "ui_dock.h"
-#include "icons-stock.h"
 #include "actions-mainwin.h"
 #include "ui_manager.h"
 #include "ui_equalizer.h"
@@ -69,6 +68,7 @@
 #include "ui_skinned_playlist.h"
 #include "ui_main_evlisteners.h"
 #include <audacious/plugin.h>
+#include <audacious/icons-stock.h>
 #include "skins_cfg.h"
 
 static GTimeVal cb_time;
