@@ -2108,16 +2108,53 @@ xfade_buffer_playing()
      *  2) the output plugin's buffer_playing() (this function) returns FALSE
      */
 
+    fade_config_t *fc;
+    gint out_len, in_len, offset, length;
+
+    fc = &config->fc[FADE_CONFIG_XFADE];
 
     if (paused)
         playing = FALSE;
     else
+    {
         playing =
             (is_http && (buffer->used > 0) && the_op->buffer_playing())
             || the_op->buffer_playing()
             || (buffer->reopen >= 0)
             || (buffer->silence > 0)
             || (buffer->silence_len > 0);
+
+        if (playing && fc->type != FADE_TYPE_NONE)
+        {
+            out_len = xfade_cfg_fadeout_len(fc);
+            in_len  = xfade_cfg_fadein_len(fc);
+            offset  = xfade_cfg_offset(fc);
+
+            switch (fc->type)
+            {
+                case FADE_TYPE_SIMPLE_XF:
+                    length = out_len;
+                    break;
+
+                case FADE_TYPE_ADVANCED_XF:
+                    if (in_len > out_len)
+                        length = in_len;
+                    else
+                        length = out_len;
+
+                    if (offset < 0 && -offset > length)
+                        length = -offset;
+                    else if (offset > length)
+                        length = offset;
+                    break;
+                default:
+                    length = 0;
+            }
+
+            if (audacious_drct_get_time() + length >= audacious_drct_get_length())
+                return FALSE;
+        }
+    }
 
 #ifdef DEBUG_HARDCORE
     DEBUG(("[crossfade] buffer_playing: %d\n", playing));
