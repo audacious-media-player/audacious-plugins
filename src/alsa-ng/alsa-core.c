@@ -308,6 +308,7 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
     gint err, bitwidth, ringbuf_size, buf_size;
     snd_pcm_format_t afmt;
     snd_pcm_hw_params_t *hwparams = NULL;
+    guint rate_ = rate;
 
     afmt = alsaplug_format_convert(fmt);
     if (afmt == SND_PCM_FORMAT_UNKNOWN)
@@ -331,7 +332,14 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
     snd_pcm_hw_params_set_access(pcm_handle, hwparams, SND_PCM_ACCESS_RW_INTERLEAVED);
     snd_pcm_hw_params_set_format(pcm_handle, hwparams, afmt);
     snd_pcm_hw_params_set_channels(pcm_handle, hwparams, nch);
-    snd_pcm_hw_params_set_rate(pcm_handle, hwparams, rate, 0);
+    snd_pcm_hw_params_set_rate_resample(pcm_handle, hwparams, 1);
+
+    snd_pcm_hw_params_set_rate_near(pcm_handle, hwparams, &rate_, 0);
+    if (rate_ != rate)
+    {
+        _ERROR("sample rate %d is not supported (got %d)", rate, rate_);
+        return -1;
+    }
 
     err = snd_pcm_hw_params(pcm_handle, hwparams);
     if (err < 0)
