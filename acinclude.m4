@@ -222,7 +222,7 @@ int main()
     CFLAGS="$aud_my_save_CFLAGS"
 ])
 
-dnl AltiVec support 
+dnl AltiVec support
 dnl ===============
 AUD_ARG_ENABLE([altivec], [yes], [AltiVec support],
 [
@@ -231,12 +231,19 @@ AUD_ARG_ENABLE([altivec], [yes], [AltiVec support],
         AC_DEFINE([HAVE_ALTIVEC], 1, [Define to 1 if your system has AltiVec.])
         AC_DEFINE([HAVE_ALTIVEC_H], 1, [Define to 1 if your system has an altivec.h file.])
         AC_DEFINE([ARCH_POWERPC], 1, [Define to 1 if your system is a PowerPC.])
-        SIMD_CFLAGS="-maltivec"
+        case $target in
+             *-apple-*)
+             SIMD_CFLAGS="-mpim-altivec"
+             ;;
+             *)
+             SIMD_CFLAGS="-maltivec"
+             ;;
+        esac
         AC_SUBST([SIMD_CFLAGS])
     ],[
         enable_altivec="no"
     ])
-])    
+])
 
 ])
 
