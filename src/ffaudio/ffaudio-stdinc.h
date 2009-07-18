@@ -20,7 +20,19 @@
 #ifndef __FFAUDIO_STDINC_H__GUARD
 #define __FFAUDIO_STDINC_H__GUARD
 
+#include "ffaudio-debug.h"
+
+#include <audacious/plugin.h>
+#include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>
+
+URLProtocol audvfs_protocol;
+
+extern int av_open_input_vfsfile(AVFormatContext **ic_ptr, const char *filename, VFSFile *fd,
+                       AVInputFormat *fmt,
+                       int buf_size,
+                       AVFormatParameters *ap);
+extern void av_close_input_vfsfile(AVFormatContext *s);
 
 #endif
