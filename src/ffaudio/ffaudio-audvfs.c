@@ -95,11 +95,11 @@ static int audvfsptr_open(URLContext *h, const char *filename, int flags)
 }
 
 URLProtocol audvfsptr_protocol = {
-    "audvfsptr",
-    audvfsptr_open,
-    audvfs_read,
-    audvfs_write,
-    NULL,
-    audvfs_close,
+    .name = "audvfsptr",
+    .url_open = audvfsptr_open,
+    .url_read = audvfs_read,
+    .url_write = audvfs_write,
+    .url_seek = audvfs_seek,
+    .url_close = audvfs_close,
 };
 
