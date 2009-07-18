@@ -151,6 +151,7 @@ ffaudio_play_file(InputPlayback *playback)
             if (ret == AVERROR_EOF)
             {
                 _DEBUG("eof reached");
+                break;
             } else
             {
                 _DEBUG("av_read_frame error %d", ret);
