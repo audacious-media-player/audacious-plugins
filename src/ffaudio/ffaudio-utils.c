@@ -73,19 +73,19 @@ int av_open_input_vfsfile(AVFormatContext **ic_ptr, const char *filename, VFSFil
 {
     int err, must_open_file, file_opened;
     uint8_t buf[buf_size];
-    AVProbeData probe_data = {}, *pd = &probe_data;
-    ByteIOContext pb1 = {}, *pb = &pb1;
+    AVProbeData pd = {};
+    ByteIOContext pb = {};
 
     file_opened = 0;
-    pd->filename = "";
+    pd.filename = "";
     if (filename)
-        pd->filename = filename;
-    pd->buf = buf;
-    pd->buf_size = 0;
+        pd.filename = filename;
+    pd.buf = buf;
+    pd.buf_size = 0;
 
     if (!fmt) {
         /* guess format if no file can be opened  */
-        fmt = av_probe_input_format(pd, 0);
+        fmt = av_probe_input_format(&pd, 0);
     }
 
     /* do not open file if the format does not need it. XXX: specific
@@ -97,25 +97,33 @@ int av_open_input_vfsfile(AVFormatContext **ic_ptr, const char *filename, VFSFil
 
     if (!fmt || must_open_file) {
         /* if no file needed do not try to open one */
-        if (url_vfdopen(pb, fd) < 0) {
+        if (url_vfdopen(&pb, fd) < 0) {
             err = AVERROR_IO;
             _DEBUG("i/o error");
             goto fail;
         }
         file_opened = 1;
         if (buf_size > 0) {
-            url_setbufsize(pb, buf_size);
+            url_setbufsize(&pb, buf_size);
         }
         if (!fmt) {
             /* read probe data */
-            pd->buf_size = get_buffer(pb, pd->buf, buf_size);
-            url_fseek(pb, 0, SEEK_SET);
+            pd.buf_size = get_buffer(&pb, pd.buf, buf_size);
+            _DEBUG("pd.buf_size = %d", pd.buf_size);
+            _DEBUG("error = %s", strerror(pb.error));
+            url_fseek(&pb, 0, SEEK_SET);
         }
     }
 
+    pd.filename = "";
+    if (filename)
+        pd.filename = filename;
+    pd.buf = buf;
+    pd.buf_size = 0;
+
     /* guess file format */
     if (!fmt) {
-        fmt = av_probe_input_format(pd, 1);
+        fmt = av_probe_input_format(&pd, 1);
     }
 
     /* if still no format found, error */
@@ -125,7 +133,7 @@ int av_open_input_vfsfile(AVFormatContext **ic_ptr, const char *filename, VFSFil
         goto fail;
     }
 
-    err = av_open_input_stream(ic_ptr, pb, filename, fmt, ap);
+    err = av_open_input_stream(ic_ptr, &pb, filename, fmt, ap);
     if (err) {
         _DEBUG("fail %d", err);
         goto fail;

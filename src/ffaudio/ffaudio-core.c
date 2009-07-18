@@ -27,8 +27,7 @@
 void
 ffaudio_init(void)
 {
-    AVCodec *c = NULL;
-
+    avcodec_init();
     av_register_all();
 
     _DEBUG("registering audvfs protocol");
@@ -94,9 +93,8 @@ ffaudio_play_file(InputPlayback *playback)
     AVCodec *codec = NULL;
     AVCodecContext *c = NULL;
     AVFormatContext *ic = NULL;
-    uint8_t *inbuf_ptr;
-    int out_size, size, len;
-    AVPacket pkt;
+    int out_size, len;
+    AVPacket pkt = {};
     guint8 outbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
     int i;
     gchar *uribuf;
@@ -106,7 +104,7 @@ ffaudio_play_file(InputPlayback *playback)
 
     _DEBUG("opening %s", uribuf);
 
-    if (av_open_input_file(&ic, playback->filename + 5, NULL, 16384, NULL) < 0)
+    if (av_open_input_file(&ic, uribuf, NULL, 0, NULL) < 0)
        return;
 
     for(i = 0; i < ic->nb_streams; i++)
@@ -144,32 +142,45 @@ ffaudio_play_file(InputPlayback *playback)
 
     while(playback->playing)
     {
+        gint size;
+        guint8 *data_p;
+
         if (av_read_frame(ic, &pkt) < 0)
+        {
+            _DEBUG("av_read_frame error");
             break;
+        }
+
+        if (pkt.size == 0)
+        {
+            _DEBUG("eof reached, breaking out of loop");
+            break;
+        }
 
         size = pkt.size;
-        inbuf_ptr = pkt.data;
+        data_p = pkt.data;
+        out_size = sizeof(outbuf);
+        memset(outbuf, '\0', sizeof(outbuf));
 
-        if (size == 0) 
-            break;
-
-        while (size > 0)
+        _DEBUG("size = %d", size);
+        len = avcodec_decode_audio2(c, (short *)outbuf, &out_size, data_p, size);
+        if (len < 0)
         {
-            len = avcodec_decode_audio2(c, (short *)outbuf, &out_size, inbuf_ptr, size);
-            if(len < 0) break;
-
-            if (out_size <= 0)
-                continue;
-
-            playback->pass_audio(playback, FMT_S16_NE,
-                                 c->channels, out_size, (short *)outbuf, NULL);
-
-            size -= len;
-            inbuf_ptr += len;
-
-            if (pkt.data)
-                av_free_packet(&pkt);
+            _DEBUG("codec failure, breaking out of loop");
+            break;
         }
+
+        if (out_size <= 0)
+        {
+            _DEBUG("no output PCM, continuing");
+            continue;
+        }
+
+        playback->pass_audio(playback, FMT_S16_NE,
+                             c->channels, out_size, (short *)outbuf, NULL);
+
+        if (pkt.data)
+            av_free_packet(&pkt);
     }
 
     _DEBUG("decode loop finished, shutting down");
@@ -186,12 +197,19 @@ ffaudio_play_file(InputPlayback *playback)
     playback->output->close_audio();
 }
 
+void
+ffaudio_stop(InputPlayback *playback)
+{
+    playback->playing = 0;
+}
+
 gchar *ffaudio_fmts[] = { "mpc", NULL };
 
 InputPlugin ffaudio_ip = {
     .init = ffaudio_init,
     .is_our_file_from_vfs = ffaudio_probe,
     .play_file = ffaudio_play_file,
+    .stop = ffaudio_stop,
     .description = "FFaudio Plugin",
     .vfs_extensions = ffaudio_fmts,
 };

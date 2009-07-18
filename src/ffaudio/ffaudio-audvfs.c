@@ -19,7 +19,6 @@
 
 #include "ffaudio-stdinc.h"
 
-/* standard file protocol */
 static int audvfs_open(URLContext *h, const char *filename, int flags)
 {
     VFSFile *file;
@@ -53,15 +52,9 @@ static int audvfs_write(URLContext *h, unsigned char *buf, int size)
 /* XXX: use llseek */
 static goffset audvfs_seek(URLContext *h, goffset pos, int whence)
 {
-    int result = 0;
     VFSFile *file;
     file = h->priv_data;
-    result = aud_vfs_fseek(file, pos, whence);
-    if (result == 0)
-	result = aud_vfs_ftell(file);
-    else
-        result = -1;
-    return result;
+    return aud_vfs_fseek(file, whence, pos);
 }
 
 static int audvfs_close(URLContext *h)
@@ -76,8 +69,7 @@ URLProtocol audvfs_protocol = {
     audvfs_open,
     audvfs_read,
     audvfs_write,
-    audvfs_seek,
+    NULL,
     audvfs_close,
-    NULL
 };
 
