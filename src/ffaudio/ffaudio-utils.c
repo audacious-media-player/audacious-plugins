@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#define FFAUDIO_DEBUG
 #include "ffaudio-stdinc.h"
 
 int url_vopen(URLContext **puc, VFSFile *fd)
@@ -26,12 +27,13 @@ int url_vopen(URLContext **puc, VFSFile *fd)
     int err = 0;
 
     up = &audvfs_protocol;
-    uc = av_malloc(sizeof(URLContext) + strlen(fd->uri ? fd->uri : ""));
+    uc = av_malloc(sizeof(URLContext) + strlen(fd->uri) + 1);
     if (!uc) {
         err = -ENOMEM;
         goto fail;
     }
-    strcpy(uc->filename, fd->uri ? fd->uri : "");
+    uc->filename = (char *) &uc[1];
+    strcpy(uc->filename, fd->uri);
     uc->prot = up;
     uc->flags = URL_RDONLY;
     uc->is_streamed = 0; /* default = not streamed */
@@ -71,8 +73,8 @@ int av_open_input_vfsfile(AVFormatContext **ic_ptr, const char *filename, VFSFil
 {
     int err, must_open_file, file_opened;
     uint8_t buf[buf_size];
-    AVProbeData probe_data, *pd = &probe_data;
-    ByteIOContext pb1, *pb = &pb1;
+    AVProbeData probe_data = {}, *pd = &probe_data;
+    ByteIOContext pb1 = {}, *pb = &pb1;
 
     file_opened = 0;
     pd->filename = "";
@@ -97,6 +99,7 @@ int av_open_input_vfsfile(AVFormatContext **ic_ptr, const char *filename, VFSFil
         /* if no file needed do not try to open one */
         if (url_vfdopen(pb, fd) < 0) {
             err = AVERROR_IO;
+            _DEBUG("i/o error");
             goto fail;
         }
         file_opened = 1;
@@ -105,7 +108,7 @@ int av_open_input_vfsfile(AVFormatContext **ic_ptr, const char *filename, VFSFil
         }
         if (!fmt) {
             /* read probe data */
-            pd->buf_size = get_buffer(pb, buf, buf_size);
+            pd->buf_size = get_buffer(pb, pd->buf, buf_size);
             url_fseek(pb, 0, SEEK_SET);
         }
     }
@@ -118,12 +121,15 @@ int av_open_input_vfsfile(AVFormatContext **ic_ptr, const char *filename, VFSFil
     /* if still no format found, error */
     if (!fmt) {
         err = AVERROR_NOFMT;
+        _DEBUG("probe failed");
         goto fail;
     }
 
     err = av_open_input_stream(ic_ptr, pb, filename, fmt, ap);
-    if (err)
+    if (err) {
+        _DEBUG("fail %d", err);
         goto fail;
+    }
     return 0;
  fail:
     *ic_ptr = NULL;

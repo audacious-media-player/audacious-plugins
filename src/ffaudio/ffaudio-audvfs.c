@@ -24,12 +24,10 @@ static int audvfs_open(URLContext *h, const char *filename, int flags)
 {
     VFSFile *file;
 
-    g_print("%s\n", filename);
-
     if (flags & URL_WRONLY) {
-	file = aud_vfs_fopen(filename, "wb");
+	file = aud_vfs_fopen(filename + 7, "wb");
     } else {
-	file = aud_vfs_fopen(filename, "rb");
+	file = aud_vfs_fopen(filename + 7, "rb");
     }
     
     if (file == NULL)

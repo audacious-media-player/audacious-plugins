@@ -29,19 +29,6 @@ ffaudio_init(void)
 {
     AVCodec *c = NULL;
 
-    _DEBUG("initializing avcodec");
-    avcodec_init();
-
-    _DEBUG("registering all codecs");
-    avcodec_register_all();
-
-    _DEBUG("avcodec initialized, following codecs are supported");
-    while ((c = av_codec_next(c)) != NULL)
-    {
-        _DEBUG("  - %s", c->name);         
-    }
-
-    _DEBUG("registering all formats");
     av_register_all();
 
     _DEBUG("registering audvfs protocol");
@@ -60,8 +47,12 @@ ffaudio_probe(gchar *filename, VFSFile *file)
 
     _DEBUG("probing for %s, filehandle %p", filename, file);
 
-    if (av_open_input_vfsfile(&ic2, filename, file, NULL, 0, NULL) < 0)
+    if (av_open_input_vfsfile(&ic2, filename, file, NULL, 16384, NULL) < 0) {
+        _DEBUG("ic2 is NULL");
         return 0;
+    }
+
+    _DEBUG("file opened, %p", ic2);
 
     for (i = 0; i < ic2->nb_streams; i++)
     {
@@ -78,25 +69,121 @@ ffaudio_probe(gchar *filename, VFSFile *file)
     if (!codec2)
         return 0;
 
+    _DEBUG("got codec %s, doublechecking", codec2->name);
+
     av_find_stream_info(ic2);
 
     codec2 = avcodec_find_decoder(c2->codec_id);
 
     if (!codec2)
     {
-        av_close_input_vfsfile(ic2);
+        av_close_input_file(ic2);
         return 0;
     }
 
-    av_close_input_vfsfile(ic2);
+    av_close_input_file(ic2);
+
+    _DEBUG("probe success for %s", codec2->name);
 
     return 1;
 }
 
 void
-ffaudio_play(InputPlayback *playback)
+ffaudio_play_file(InputPlayback *playback)
 {
+    AVCodec *codec = NULL;
+    AVCodecContext *c = NULL;
+    AVFormatContext *ic = NULL;
+    uint8_t *inbuf_ptr;
+    int out_size, size, len;
+    AVPacket pkt;
+    guint8 outbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
+    int i;
+    gchar *uribuf;
 
+    uribuf = g_alloca(strlen(playback->filename) + 8);
+    sprintf(uribuf, "audvfs:%s", playback->filename);
+
+    _DEBUG("opening %s", uribuf);
+
+    if (av_open_input_file(&ic, playback->filename + 5, NULL, 16384, NULL) < 0)
+       return;
+
+    for(i = 0; i < ic->nb_streams; i++)
+    {
+        c = ic->streams[i]->codec;
+        if(c->codec_type == CODEC_TYPE_AUDIO)
+        {
+            av_find_stream_info(ic);
+            codec = avcodec_find_decoder(c->codec_id);
+            if (codec)
+                break;
+        }
+    }
+
+    if (!codec)
+        return;
+
+    _DEBUG("got codec %s, opening", codec->name);
+
+    if (avcodec_open(c, codec) < 0)
+        return;
+
+    _DEBUG("opening audio output");
+
+    if (playback->output->open_audio(FMT_S16_NE, c->sample_rate, c->channels) <= 0)
+        return;
+
+    _DEBUG("setting parameters");
+
+    playback->set_params(playback, playback->filename, -1, c->bit_rate, c->sample_rate, c->channels);
+    playback->playing = 1;
+    playback->set_pb_ready(playback);
+
+    _DEBUG("playback ready, entering decode loop");
+
+    while(playback->playing)
+    {
+        if (av_read_frame(ic, &pkt) < 0)
+            break;
+
+        size = pkt.size;
+        inbuf_ptr = pkt.data;
+
+        if (size == 0) 
+            break;
+
+        while (size > 0)
+        {
+            len = avcodec_decode_audio2(c, (short *)outbuf, &out_size, inbuf_ptr, size);
+            if(len < 0) break;
+
+            if (out_size <= 0)
+                continue;
+
+            playback->pass_audio(playback, FMT_S16_NE,
+                                 c->channels, out_size, (short *)outbuf, NULL);
+
+            size -= len;
+            inbuf_ptr += len;
+
+            if (pkt.data)
+                av_free_packet(&pkt);
+        }
+    }
+
+    _DEBUG("decode loop finished, shutting down");
+
+    playback->playing = 0;
+
+    if (pkt.data)
+        av_free_packet(&pkt);
+    if (c)
+        avcodec_close(c);
+    if (ic)
+        av_close_input_file(ic);
+
+    playback->output->close_audio();
 }
 
 gchar *ffaudio_fmts[] = { "mpc", NULL };
@@ -104,6 +191,7 @@ gchar *ffaudio_fmts[] = { "mpc", NULL };
 InputPlugin ffaudio_ip = {
     .init = ffaudio_init,
     .is_our_file_from_vfs = ffaudio_probe,
+    .play_file = ffaudio_play_file,
     .description = "FFaudio Plugin",
     .vfs_extensions = ffaudio_fmts,
 };
