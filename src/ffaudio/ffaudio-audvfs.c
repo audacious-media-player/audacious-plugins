@@ -67,6 +67,8 @@ static int64_t audvfs_seek(URLContext *h, int64_t pos, int whence)
 {
     VFSFile *file;
     file = h->priv_data;
+    if (whence == AVSEEK_SIZE)
+        return aud_vfs_fsize(file);
     return aud_vfs_fseek(file, pos, whence);
 }
 
