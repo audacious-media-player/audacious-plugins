@@ -144,11 +144,21 @@ ffaudio_play_file(InputPlayback *playback)
     {
         gint size;
         guint8 *data_p;
+        gint ret;
 
-        if (av_read_frame(ic, &pkt) < 0)
+        if ((ret = av_read_frame(ic, &pkt)) < 0)
         {
-            _DEBUG("av_read_frame error");
-            break;
+            if (ret == AVERROR_EOF)
+            {
+                _DEBUG("eof reached");
+            } else
+            {
+                _DEBUG("av_read_frame error %d", ret);
+            }
+            if (url_ferror(ic->pb))
+                break;
+            else
+                continue;
         }
 
         if (pkt.size == 0)
@@ -159,26 +169,33 @@ ffaudio_play_file(InputPlayback *playback)
 
         size = pkt.size;
         data_p = pkt.data;
-        out_size = sizeof(outbuf);
-        memset(outbuf, 0, sizeof(outbuf));
-
-        _DEBUG("size = %d", size);
-        len = avcodec_decode_audio2(c, (gint16 *)outbuf, &out_size, data_p, size);
-        if (len < 0)
+        
+        while (size > 0)
         {
-            _DEBUG("codec failure, breaking out of loop");
-            break;
+            out_size = sizeof(outbuf);
+            memset(outbuf, 0, sizeof(outbuf));
+
+            _DEBUG("size = %d", size);
+            len = avcodec_decode_audio2(c, (gint16 *)outbuf, &out_size, data_p, size);
+            if (len < 0)
+            {
+                _DEBUG("codec failure, breaking out of loop");
+                break;
+            }
+            
+            size -= len;
+            data_p += len;
+
+            if (out_size <= 0)
+            {
+                _DEBUG("no output PCM, continuing");
+                continue;
+            }
+
+            playback->pass_audio(playback, FMT_S16_NE,
+                      c->channels, out_size, (gint16 *)outbuf, NULL);
         }
-
-        if (out_size <= 0)
-        {
-            _DEBUG("no output PCM, continuing");
-            continue;
-        }
-
-        playback->pass_audio(playback, FMT_S16_NE,
-                             c->channels, out_size, (gint16 *)outbuf, NULL);
-
+        
         if (pkt.data)
             av_free_packet(&pkt);
     }
@@ -195,6 +212,7 @@ ffaudio_play_file(InputPlayback *playback)
         av_close_input_file(ic);
 
     playback->output->close_audio();
+    _DEBUG("exiting thread");
 }
 
 void
