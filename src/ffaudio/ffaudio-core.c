@@ -134,7 +134,7 @@ ffaudio_play_file(InputPlayback *playback)
 
     _DEBUG("setting parameters");
 
-    playback->set_params(playback, playback->filename, -1, c->bit_rate, c->sample_rate, c->channels);
+    playback->set_params(playback, playback->filename, ic->duration / 1000, c->bit_rate, c->sample_rate, c->channels);
     playback->playing = 1;
     playback->set_pb_ready(playback);
 
