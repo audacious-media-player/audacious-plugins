@@ -203,7 +203,7 @@ ffaudio_stop(InputPlayback *playback)
     playback->playing = 0;
 }
 
-gchar *ffaudio_fmts[] = { "mpc", NULL };
+gchar *ffaudio_fmts[] = { "mpc", "wma", "shn", NULL };
 
 InputPlugin ffaudio_ip = {
     .init = ffaudio_init,
