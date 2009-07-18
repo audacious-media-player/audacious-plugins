@@ -65,11 +65,11 @@ static int audvfs_close(URLContext *h)
 }
 
 URLProtocol audvfs_protocol = {
-    "audvfs",
-    audvfs_open,
-    audvfs_read,
-    audvfs_write,
-    NULL,
-    audvfs_close,
+    .name = "audvfs",
+    .url_open = audvfs_open,
+    .url_read = audvfs_read,
+    .url_write = audvfs_write,
+    .url_seek = NULL,
+    .url_close = audvfs_close,
 };
 
