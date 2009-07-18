@@ -203,7 +203,7 @@ ffaudio_stop(InputPlayback *playback)
     playback->playing = 0;
 }
 
-gchar *ffaudio_fmts[] = { "mpc", "wma", "shn", NULL };
+static gchar *ffaudio_fmts[] = { "mpc", "wma", "shn", NULL };
 
 InputPlugin ffaudio_ip = {
     .init = ffaudio_init,
@@ -214,6 +214,6 @@ InputPlugin ffaudio_ip = {
     .vfs_extensions = ffaudio_fmts,
 };
 
-InputPlugin *ffaudio_iplist[] = { &ffaudio_ip, NULL };
+static InputPlugin *ffaudio_iplist[] = { &ffaudio_ip, NULL };
 
 SIMPLE_INPUT_PLUGIN(ffaudio, ffaudio_iplist);
