@@ -19,14 +19,27 @@
 
 #include "ffaudio-stdinc.h"
 
+int av_strstart(const char *str, const char *pfx, const char **ptr)
+{
+    while (*pfx && *pfx == *str) {
+        pfx++;
+        str++;
+    }
+    if (!*pfx && ptr)
+        *ptr = str;
+    return !*pfx;
+}
+
 static int audvfs_open(URLContext *h, const char *filename, int flags)
 {
     VFSFile *file;
 
+    av_strstart(filename, "audvfs:", &filename);
+
     if (flags & URL_WRONLY) {
-	file = aud_vfs_fopen(filename + 7, "wb");
+	file = aud_vfs_fopen(filename, "wb");
     } else {
-	file = aud_vfs_fopen(filename + 7, "rb");
+	file = aud_vfs_fopen(filename, "rb");
     }
     
     if (file == NULL)
@@ -67,6 +80,23 @@ static int audvfs_close(URLContext *h)
 URLProtocol audvfs_protocol = {
     "audvfs",
     audvfs_open,
+    audvfs_read,
+    audvfs_write,
+    NULL,
+    audvfs_close,
+};
+
+static int audvfsptr_open(URLContext *h, const char *filename, int flags)
+{
+    av_strstart(filename, "audvfsptr:", &filename);
+
+    h->priv_data = (gpointer) strtoul(filename, NULL, 16);
+    return 0;
+}
+
+URLProtocol audvfsptr_protocol = {
+    "audvfsptr",
+    audvfsptr_open,
     audvfs_read,
     audvfs_write,
     NULL,

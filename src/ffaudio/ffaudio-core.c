@@ -33,6 +33,9 @@ ffaudio_init(void)
     _DEBUG("registering audvfs protocol");
     av_register_protocol(&audvfs_protocol);
 
+    _DEBUG("registering audvfsptr protocol");
+    av_register_protocol(&audvfsptr_protocol);
+
     _DEBUG("initialization completed");
 }
 
@@ -43,10 +46,12 @@ ffaudio_probe(gchar *filename, VFSFile *file)
     AVCodecContext *c2 = NULL;
     AVFormatContext *ic2 = NULL;
     gint i;
+    gchar uribuf[100];
 
     _DEBUG("probing for %s, filehandle %p", filename, file);
 
-    if (av_open_input_vfsfile(&ic2, filename, file, NULL, 16384, NULL) < 0) {
+    g_snprintf(uribuf, 100, "audvfsptr:%p", file);
+    if (av_open_input_file(&ic2, uribuf, NULL, 0, NULL) < 0) {
         _DEBUG("ic2 is NULL");
         return 0;
     }
@@ -75,12 +80,7 @@ ffaudio_probe(gchar *filename, VFSFile *file)
     codec2 = avcodec_find_decoder(c2->codec_id);
 
     if (!codec2)
-    {
-        av_close_input_file(ic2);
         return 0;
-    }
-
-    av_close_input_file(ic2);
 
     _DEBUG("probe success for %s", codec2->name);
 

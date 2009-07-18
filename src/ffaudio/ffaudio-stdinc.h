@@ -28,6 +28,7 @@
 #include <libavutil/avutil.h>
 
 URLProtocol audvfs_protocol;
+URLProtocol audvfsptr_protocol;
 
 extern int av_open_input_vfsfile(AVFormatContext **ic_ptr, const char *filename, VFSFile *fd,
                        AVInputFormat *fmt,
