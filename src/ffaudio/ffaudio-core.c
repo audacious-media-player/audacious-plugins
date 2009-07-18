@@ -160,10 +160,10 @@ ffaudio_play_file(InputPlayback *playback)
         size = pkt.size;
         data_p = pkt.data;
         out_size = sizeof(outbuf);
-        memset(outbuf, '\0', sizeof(outbuf));
+        memset(outbuf, 0, sizeof(outbuf));
 
         _DEBUG("size = %d", size);
-        len = avcodec_decode_audio2(c, (short *)outbuf, &out_size, data_p, size);
+        len = avcodec_decode_audio2(c, (gint16 *)outbuf, &out_size, data_p, size);
         if (len < 0)
         {
             _DEBUG("codec failure, breaking out of loop");
@@ -177,7 +177,7 @@ ffaudio_play_file(InputPlayback *playback)
         }
 
         playback->pass_audio(playback, FMT_S16_NE,
-                             c->channels, out_size, (short *)outbuf, NULL);
+                             c->channels, out_size, (gint16 *)outbuf, NULL);
 
         if (pkt.data)
             av_free_packet(&pkt);
@@ -203,7 +203,7 @@ ffaudio_stop(InputPlayback *playback)
     playback->playing = 0;
 }
 
-gchar *ffaudio_fmts[] = { "mpc", "wma", "shn", NULL };
+static gchar *ffaudio_fmts[] = { "mpc", "wma", "shn", NULL };
 
 InputPlugin ffaudio_ip = {
     .init = ffaudio_init,
@@ -214,6 +214,6 @@ InputPlugin ffaudio_ip = {
     .vfs_extensions = ffaudio_fmts,
 };
 
-InputPlugin *ffaudio_iplist[] = { &ffaudio_ip, NULL };
+static InputPlugin *ffaudio_iplist[] = { &ffaudio_ip, NULL };
 
 SIMPLE_INPUT_PLUGIN(ffaudio, ffaudio_iplist);
