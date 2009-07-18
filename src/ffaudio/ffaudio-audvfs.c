@@ -54,7 +54,7 @@ static goffset audvfs_seek(URLContext *h, goffset pos, int whence)
 {
     VFSFile *file;
     file = h->priv_data;
-    return aud_vfs_fseek(file, whence, pos);
+    return aud_vfs_fseek(file, pos, whence);
 }
 
 static int audvfs_close(URLContext *h)
