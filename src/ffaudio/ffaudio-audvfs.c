@@ -50,7 +50,7 @@ static int audvfs_write(URLContext *h, unsigned char *buf, int size)
 }
 
 /* XXX: use llseek */
-static goffset audvfs_seek(URLContext *h, goffset pos, int whence)
+static int64_t audvfs_seek(URLContext *h, int64_t pos, int whence)
 {
     VFSFile *file;
     file = h->priv_data;
@@ -69,7 +69,7 @@ URLProtocol audvfs_protocol = {
     .url_open = audvfs_open,
     .url_read = audvfs_read,
     .url_write = audvfs_write,
-    .url_seek = NULL,
+    .url_seek = audvfs_seek,
     .url_close = audvfs_close,
 };
 
