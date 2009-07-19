@@ -24,8 +24,8 @@
  * Plugin glue.                                                                    *
  ***********************************************************************************/
 
-GMutex *seek_mutex;
-GCond *seek_cond;
+GMutex *seek_mutex = NULL;
+GCond *seek_cond = NULL;
 gint64 seek_value = -1;
 
 static void
@@ -45,6 +45,14 @@ ffaudio_init(void)
     seek_cond = g_cond_new();
 
     _DEBUG("initialization completed");
+}
+
+static void
+ffaudio_cleanup(void)
+{
+    _DEBUG("cleaning up");
+    g_mutex_free(seek_mutex);
+    g_cond_free(seek_cond); 
 }
 
 static gint
@@ -312,6 +320,7 @@ static gchar *ffaudio_fmts[] = {
 
 InputPlugin ffaudio_ip = {
     .init = ffaudio_init,
+    .cleanup = ffaudio_cleanup,
     .is_our_file_from_vfs = ffaudio_probe,
     .play_file = ffaudio_play_file,
     .stop = ffaudio_stop,
