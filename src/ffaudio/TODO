@@ -1,0 +1,8 @@
+ffaudio todo
+------------
+
+- Integrate ffaudio with build system.
+
+- Tagging: reading should probably be done through ffmpeg (unless there is a reason not to), writing through libaudtag.
+
+- Removing crappy plugins which use the same codebase and merging it into ffaudio.
