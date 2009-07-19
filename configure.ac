@@ -766,16 +766,38 @@ if test "x$enable_musepack" = "xyes"; then
         AC_SUBST(TAGLIB_CFLAGS)
 fi
 
+dnl *** FFaudio
+
+have_ffaudio="no"
+AC_ARG_ENABLE(ffaudio,
+    [  --disable-ffaudio       disable ffaudio plugin (default=enabled)],
+    [enable_ffaudio=$enableval],
+    [enable_ffaudio="yes"]
+)
+
+if test "x$enable_ffaudio" = "xyes"; then
+    PKG_CHECK_MODULES(FFMPEG, [libavformat >= 52.17.0  libavcodec >= 51.57.2  libavutil >= 49.7.0],
+                      [have_ffaudio="yes"], [have_ffaudio="no"])
+fi
+
+if test "x$have_ffaudio" = "xyes"; then
+    INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"
+fi
+
 dnl *** WMA
 
+have_wma="no"
 AC_ARG_ENABLE(wma,
-    [  --disable-wma           disable wma plugin. (default=enabled)],
+    [  --disable-wma           disable wma plugin. (default=enabled; deprecated)],
     [enable_wma=$enableval],
     [enable_wma=yes]
 )
 
-if test "x$enable_wma" = "xyes"; then
+if test "x$have_ffaudio" = "xno"; then
+    if test "x$enable_wma" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS wma"
+        have_wma="yes"
+    fi
 fi
 
 dnl *** Monkey's Audio
@@ -1662,7 +1684,8 @@ echo "  Input Plugins"
 echo "  -------------"
 echo "  MPEG 1/2/3 (madplug):                   $enable_mp3"
 echo "  MPEG 4 Audio (AAC):                     $enable_aac"
-echo "  Windows Media Audio (wma):              $enable_wma"
+echo "  FFaudio (ffaudio):                      $have_ffaudio"
+echo "  Windows Media Audio (wma):              $have_wma"
 echo "  Monkey's Audio (ape):                   $enable_ape"
 echo "  Module decoder (modplug):               $have_modplug"
 echo "  MIDI modular plugin (amidi-plug):       $enable_amidiplug"
