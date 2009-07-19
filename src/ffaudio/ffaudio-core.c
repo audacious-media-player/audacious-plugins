@@ -423,6 +423,9 @@ static gchar *ffaudio_fmts[] = {
     /* MPEG 2/4 AC3 */
     "ac3",
 
+    /* WAV (PCM or GSM payload) */
+    "wav",
+
     /* end of table */
     NULL
 };
