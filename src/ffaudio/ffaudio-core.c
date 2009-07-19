@@ -155,7 +155,9 @@ ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c)
     }
 
     if (c != NULL)
-        aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, c->bit_rate);
+    {
+        aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, c->bit_rate / 1000);
+    }
 }
 
 
@@ -210,7 +212,8 @@ ffaudio_play_file(InputPlayback *playback)
     AVPacket pkt = {};
     guint8 outbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
     gint i, stream_id;
-    gchar *uribuf;
+    Tuple *tuple;
+    gchar *uribuf, *title;
 
     uribuf = g_alloca(strlen(playback->filename) + 8);
     sprintf(uribuf, "audvfs:%s", playback->filename);
@@ -249,9 +252,9 @@ ffaudio_play_file(InputPlayback *playback)
 
     _DEBUG("setting parameters");
 
-    Tuple *tuple = aud_tuple_new_from_filename(playback->filename);
+    tuple = aud_tuple_new_from_filename(playback->filename);
     ffaudio_get_tuple_data(tuple, ic, c);
-    gchar *title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
+    title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
     
     playback->set_params(playback, title, ic->duration / 1000, c->bit_rate, c->sample_rate, c->channels);
     g_free(title);
