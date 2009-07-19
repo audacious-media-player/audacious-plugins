@@ -26,7 +26,7 @@
 
 GMutex *seek_mutex;
 GCond *seek_cond;
-gint seek_value = -1;
+gint64 seek_value = -1;
 
 void
 ffaudio_init(void)
@@ -169,7 +169,7 @@ ffaudio_play_file(InputPlayback *playback)
         if (seek_value != -1)
         {
             playback->output->flush(seek_value * 1000);
-            av_seek_frame(ic, -1, seek_value * 1000000, AVSEEK_FLAG_ANY);
+            av_seek_frame(ic, -1, seek_value * AV_TIME_BASE, AVSEEK_FLAG_ANY);
             seek_value = -1;
             g_cond_signal(seek_cond);
         }
