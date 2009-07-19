@@ -286,6 +286,9 @@ static gchar *ffaudio_fmts[] = {
     /* atrac3 */
     "aa3", "oma",
 
+    /* MPEG 2/4 AC3 */
+    "ac3",
+
     /* end of table */
     NULL
 };
