@@ -205,6 +205,13 @@ ffaudio_play_file(InputPlayback *playback)
             out_size = sizeof(outbuf);
             memset(outbuf, 0, sizeof(outbuf));
 
+            g_mutex_lock(seek_mutex);
+            if (seek_value != -1) {
+                g_mutex_unlock(seek_mutex);
+                break;
+            }
+            g_mutex_unlock(seek_mutex);
+            
             len = avcodec_decode_audio2(c, (gint16 *)outbuf, &out_size, data_p, size);
             if (len < 0)
             {
@@ -230,6 +237,12 @@ ffaudio_play_file(InputPlayback *playback)
 
                 outbuf_p += writeoff;
                 out_size -= writeoff;
+                g_mutex_lock(seek_mutex);
+                if (seek_value != -1) {
+                    g_mutex_unlock(seek_mutex);
+                    break;
+                }
+                g_mutex_unlock(seek_mutex);
             }
         }
         
