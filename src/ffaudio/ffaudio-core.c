@@ -109,7 +109,7 @@ ffaudio_play_file(InputPlayback *playback)
     AVCodecContext *c = NULL;
     AVFormatContext *ic = NULL;
     AVStream *s = NULL;
-    gint out_size, len;
+    gint out_size, len, errcount;
     AVPacket pkt = {};
     guint8 outbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
     gint i, stream_id;
@@ -158,12 +158,14 @@ ffaudio_play_file(InputPlayback *playback)
 
     _DEBUG("playback ready, entering decode loop");
 
-    while(playback->playing)
+    errcount = 0;
+    while (playback->playing)
     {
         gint size;
         guint8 *data_p;
         gint ret;
 
+        /* Perform seek, if requested */
         g_mutex_lock(seek_mutex);
 
         if (seek_value != -1)
@@ -176,6 +178,7 @@ ffaudio_play_file(InputPlayback *playback)
 
         g_mutex_unlock(seek_mutex);
 
+        /* Read next frame (or more) of data */
         if ((ret = av_read_frame(ic, &pkt)) < 0)
         {
             if (ret == AVERROR_EOF)
@@ -183,12 +186,15 @@ ffaudio_play_file(InputPlayback *playback)
                 _DEBUG("eof reached");
                 break;
             }
-	    else
+            else
             {
-                _DEBUG("av_read_frame error %d", ret);
-                break;
+                if (++errcount > 4) {
+                    _DEBUG("av_read_frame error %d, giving up.", ret);
+                    break;
+                }
             }
-        }
+        } else
+            errcount = 0;
 
         size = pkt.size;
         data_p = pkt.data;
