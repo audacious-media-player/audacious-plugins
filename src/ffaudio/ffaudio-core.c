@@ -20,6 +20,8 @@
 #define FFAUDIO_DEBUG
 #include "ffaudio-stdinc.h"
 
+#define FFAUDIO_METADATA 1
+
 /***********************************************************************************
  * Plugin glue.                                                                    *
  ***********************************************************************************/
@@ -110,6 +112,94 @@ ffaudio_probe(gchar *filename, VFSFile *file)
     return 1;
 }
 
+#ifdef FFAUDIO_METADATA
+static void
+copy_tuple_meta(Tuple *tuple, AVFormatContext *ic, const TupleValueType ttype, const gint field, const gchar *key)
+{
+    AVMetadataTag *tag = NULL;
+
+    if (ic->metadata != NULL)
+        tag = av_metadata_get(ic->metadata, key, NULL, AV_METADATA_IGNORE_SUFFIX);
+
+    if (tag != NULL)
+    {
+        fprintf(stderr, "%s -> %s\n", tag->key, tag->value);
+        switch (ttype) {
+        case TUPLE_STRING:
+            aud_tuple_associate_string(tuple, field, NULL, tag->value);
+            break;
+
+        case TUPLE_INT:
+            aud_tuple_associate_int(tuple, field, NULL, atoi(tag->value));
+            break;
+        
+        default:
+            break;
+        }
+    }
+}
+
+static void
+ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c)
+{
+    if (ic != NULL)
+    {
+        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_ARTIST, "author");
+        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_TITLE, "title");
+        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_ALBUM, "album");
+        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_PERFORMER, "performer");
+        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_COPYRIGHT, "copyright");
+        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_GENRE, "genre");
+        copy_tuple_meta(tuple, ic, TUPLE_INT, FIELD_YEAR, "year");
+        copy_tuple_meta(tuple, ic, TUPLE_INT, FIELD_TRACK_NUMBER, "track");
+        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, ic->duration / 1000);
+    }
+
+    if (c != NULL)
+        aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, c->bit_rate);
+}
+
+
+static Tuple *
+ffaudio_get_song_tuple(gchar *filename)
+{
+    Tuple *tuple = aud_tuple_new_from_filename(filename);
+    AVCodec *codec = NULL;
+    AVCodecContext *c = NULL;
+    AVFormatContext *ic = NULL;
+    AVStream *s = NULL;
+    gchar *uribuf;
+    gint i;
+    
+    if (tuple == NULL) return NULL;
+    
+    uribuf = g_alloca(strlen(filename) + 8);
+    sprintf(uribuf, "audvfs:%s", filename);
+    if (av_open_input_file(&ic, uribuf, NULL, 0, NULL) < 0)
+    {
+        tuple_free(tuple);
+        return NULL;
+    }
+    
+    for (i = 0; i < ic->nb_streams; i++)
+    {
+        s = ic->streams[i];
+        c = s->codec;
+        if (c->codec_type == CODEC_TYPE_AUDIO)
+        {
+            av_find_stream_info(ic);
+            codec = avcodec_find_decoder(c->codec_id);
+            if (codec != NULL)
+                break;
+        }
+    }
+
+    ffaudio_get_tuple_data(tuple, ic, c);
+    return tuple;
+}
+    
+#endif
+
 static void
 ffaudio_play_file(InputPlayback *playback)
 {
@@ -131,21 +221,21 @@ ffaudio_play_file(InputPlayback *playback)
     if (av_open_input_file(&ic, uribuf, NULL, 0, NULL) < 0)
        return;
 
-    for(i = 0; i < ic->nb_streams; i++)
+    for (i = 0; i < ic->nb_streams; i++)
     {
         s = ic->streams[i];
         c = s->codec;
-        if(c->codec_type == CODEC_TYPE_AUDIO)
+        if (c->codec_type == CODEC_TYPE_AUDIO)
         {
             av_find_stream_info(ic);
             codec = avcodec_find_decoder(c->codec_id);
             stream_id = i;
-            if (codec)
+            if (codec != NULL)
                 break;
         }
     }
 
-    if (!codec)
+    if (codec == NULL)
         return;
 
     _DEBUG("got codec %s, opening", codec->name);
@@ -160,7 +250,14 @@ ffaudio_play_file(InputPlayback *playback)
 
     _DEBUG("setting parameters");
 
-    playback->set_params(playback, playback->filename, ic->duration / 1000, c->bit_rate, c->sample_rate, c->channels);
+    Tuple *tuple = aud_tuple_new_from_filename(playback->filename);
+    ffaudio_get_tuple_data(tuple, ic, c);
+    gchar *title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
+    
+    playback->set_params(playback, title, ic->duration / 1000, c->bit_rate, c->sample_rate, c->channels);
+    g_free(title);
+    tuple_free(tuple);
+    
     playback->playing = 1;
     playback->set_pb_ready(playback);
 
@@ -326,6 +423,9 @@ InputPlugin ffaudio_ip = {
     .stop = ffaudio_stop,
     .pause = ffaudio_pause,
     .seek = ffaudio_seek,
+#ifdef FFAUDIO_METADATA
+    .get_song_tuple = ffaudio_get_song_tuple,
+#endif
     .description = "FFaudio Plugin",
     .vfs_extensions = ffaudio_fmts,
 };
