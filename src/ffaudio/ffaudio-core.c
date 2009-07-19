@@ -28,7 +28,7 @@ GMutex *seek_mutex;
 GCond *seek_cond;
 gint64 seek_value = -1;
 
-void
+static void
 ffaudio_init(void)
 {
     avcodec_init();
@@ -47,7 +47,7 @@ ffaudio_init(void)
     _DEBUG("initialization completed");
 }
 
-gint
+static gint
 ffaudio_probe(gchar *filename, VFSFile *file)
 {
     AVCodec *codec2 = NULL;
@@ -102,7 +102,7 @@ ffaudio_probe(gchar *filename, VFSFile *file)
     return 1;
 }
 
-void
+static void
 ffaudio_play_file(InputPlayback *playback)
 {
     AVCodec *codec = NULL;
@@ -269,19 +269,19 @@ ffaudio_play_file(InputPlayback *playback)
     _DEBUG("exiting thread");
 }
 
-void
+static void
 ffaudio_stop(InputPlayback *playback)
 {
     playback->playing = 0;
 }
 
-void
+static void
 ffaudio_pause(InputPlayback *playback, short p)
 {
     playback->output->pause(p);
 }
 
-void
+static void
 ffaudio_seek(InputPlayback *playback, gint seek)
 {
     g_mutex_lock(seek_mutex);
