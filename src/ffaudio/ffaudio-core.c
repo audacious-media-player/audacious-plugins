@@ -268,6 +268,9 @@ static gchar *ffaudio_fmts[] = {
     /* shorten */
     "shn",
 
+    /* atrac3 */
+    "aa3", "oma",
+
     /* end of table */
     NULL
 };
