@@ -90,9 +90,14 @@ URLProtocol audvfs_protocol = {
 
 static int audvfsptr_open(URLContext *h, const char *filename, int flags)
 {
+    VFSFile *p;
+
     av_strstart(filename, "audvfsptr:", &filename);
 
-    h->priv_data = (gpointer) strtoul(filename, NULL, 16);
+    p = (VFSFile *) strtoul(filename, NULL, 16);
+    h->priv_data = aud_vfs_dup(p);
+    aud_vfs_rewind(p);
+
     return 0;
 }
 

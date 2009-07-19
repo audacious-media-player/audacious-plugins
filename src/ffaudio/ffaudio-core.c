@@ -24,6 +24,10 @@
  * Plugin glue.                                                                    *
  ***********************************************************************************/
 
+GMutex *seek_mutex;
+GCond *seek_cond;
+gint seek_value = -1;
+
 void
 ffaudio_init(void)
 {
@@ -36,6 +40,10 @@ ffaudio_init(void)
     _DEBUG("registering audvfsptr protocol");
     av_register_protocol(&audvfsptr_protocol);
 
+    _DEBUG("creating seek mutex/cond");
+    seek_mutex = g_mutex_new();
+    seek_cond = g_cond_new();
+
     _DEBUG("initialization completed");
 }
 
@@ -45,14 +53,14 @@ ffaudio_probe(gchar *filename, VFSFile *file)
     AVCodec *codec2 = NULL;
     AVCodecContext *c2 = NULL;
     AVFormatContext *ic2 = NULL;
-    gint i;
+    gint i, ret;
     gchar uribuf[100];
 
     _DEBUG("probing for %s, filehandle %p", filename, file);
 
     g_snprintf(uribuf, 100, "audvfsptr:%p", file);
-    if (av_open_input_file(&ic2, uribuf, NULL, 0, NULL) < 0) {
-        _DEBUG("ic2 is NULL");
+    if ((ret = av_open_input_file(&ic2, uribuf, NULL, 0, NULL)) < 0) {
+        _DEBUG("ic2 is NULL, ret %d/%s", ret, strerror(-ret));
         return 0;
     }
 
@@ -71,7 +79,10 @@ ffaudio_probe(gchar *filename, VFSFile *file)
     }
 
     if (!codec2)
+    {
+        av_close_input_file(ic2);
         return 0;
+    }
 
     _DEBUG("got codec %s, doublechecking", codec2->name);
 
@@ -80,9 +91,13 @@ ffaudio_probe(gchar *filename, VFSFile *file)
     codec2 = avcodec_find_decoder(c2->codec_id);
 
     if (!codec2)
+    {
+        av_close_input_file(ic2);
         return 0;
+    }
 
     _DEBUG("probe success for %s", codec2->name);
+    av_close_input_file(ic2);
 
     return 1;
 }
@@ -93,10 +108,11 @@ ffaudio_play_file(InputPlayback *playback)
     AVCodec *codec = NULL;
     AVCodecContext *c = NULL;
     AVFormatContext *ic = NULL;
-    int out_size, len;
+    AVStream *s = NULL;
+    gint out_size, len;
     AVPacket pkt = {};
     guint8 outbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
-    int i;
+    gint i, stream_id;
     gchar *uribuf;
 
     uribuf = g_alloca(strlen(playback->filename) + 8);
@@ -109,11 +125,13 @@ ffaudio_play_file(InputPlayback *playback)
 
     for(i = 0; i < ic->nb_streams; i++)
     {
-        c = ic->streams[i]->codec;
+        s = ic->streams[i];
+        c = s->codec;
         if(c->codec_type == CODEC_TYPE_AUDIO)
         {
             av_find_stream_info(ic);
             codec = avcodec_find_decoder(c->codec_id);
+            stream_id = i;
             if (codec)
                 break;
         }
@@ -146,26 +164,30 @@ ffaudio_play_file(InputPlayback *playback)
         guint8 *data_p;
         gint ret;
 
+        g_mutex_lock(seek_mutex);
+
+        if (seek_value != -1)
+        {
+            playback->output->flush(seek_value * 1000);
+            av_seek_frame(ic, -1, seek_value * 1000000, AVSEEK_FLAG_ANY);
+            seek_value = -1;
+            g_cond_signal(seek_cond);
+        }
+
+        g_mutex_unlock(seek_mutex);
+
         if ((ret = av_read_frame(ic, &pkt)) < 0)
         {
             if (ret == AVERROR_EOF)
             {
                 _DEBUG("eof reached");
                 break;
-            } else
+            }
+	    else
             {
                 _DEBUG("av_read_frame error %d", ret);
-            }
-            if (url_ferror(ic->pb))
                 break;
-            else
-                continue;
-        }
-
-        if (pkt.size == 0)
-        {
-            _DEBUG("eof reached, breaking out of loop");
-            break;
+            }
         }
 
         size = pkt.size;
@@ -176,7 +198,6 @@ ffaudio_play_file(InputPlayback *playback)
             out_size = sizeof(outbuf);
             memset(outbuf, 0, sizeof(outbuf));
 
-            _DEBUG("size = %d", size);
             len = avcodec_decode_audio2(c, (gint16 *)outbuf, &out_size, data_p, size);
             if (len < 0)
             {
@@ -222,13 +243,42 @@ ffaudio_stop(InputPlayback *playback)
     playback->playing = 0;
 }
 
-static gchar *ffaudio_fmts[] = { "mpc", "wma", "shn", NULL };
+void
+ffaudio_pause(InputPlayback *playback, short p)
+{
+    playback->output->pause(p);
+}
+
+void
+ffaudio_seek(InputPlayback *playback, gint seek)
+{
+    g_mutex_lock(seek_mutex);
+    seek_value = seek;
+    g_cond_wait(seek_cond, seek_mutex);
+    g_mutex_unlock(seek_mutex);
+}
+
+static gchar *ffaudio_fmts[] = { 
+    /* musepack, SV7/SV8 */
+    "mpc", "mp+", "mpp",
+
+    /* windows media audio */
+    "wma",
+
+    /* shorten */
+    "shn",
+
+    /* end of table */
+    NULL
+};
 
 InputPlugin ffaudio_ip = {
     .init = ffaudio_init,
     .is_our_file_from_vfs = ffaudio_probe,
     .play_file = ffaudio_play_file,
     .stop = ffaudio_stop,
+    .pause = ffaudio_pause,
+    .seek = ffaudio_seek,
     .description = "FFaudio Plugin",
     .vfs_extensions = ffaudio_fmts,
 };
