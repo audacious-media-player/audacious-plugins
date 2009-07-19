@@ -195,6 +195,7 @@ ffaudio_play_file(InputPlayback *playback)
         
         while (size > 0)
         {
+            guint8 *outbuf_p = outbuf;
             out_size = sizeof(outbuf);
             memset(outbuf, 0, sizeof(outbuf));
 
@@ -214,8 +215,16 @@ ffaudio_play_file(InputPlayback *playback)
                 continue;
             }
 
-            playback->pass_audio(playback, FMT_S16_NE,
-                      c->channels, out_size, (gint16 *)outbuf, NULL);
+            while (out_size > 0)
+            {
+                gsize writeoff = out_size >= 512 ? 512 : out_size;
+
+                playback->pass_audio(playback, FMT_S16_NE,
+                          c->channels, out_size >= 512 ? 512 : out_size, (gint16 *)outbuf_p, &playback->playing);
+
+                outbuf_p += writeoff;
+                out_size -= writeoff;
+            }
         }
         
         if (pkt.data)
