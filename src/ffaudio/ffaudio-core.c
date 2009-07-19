@@ -199,7 +199,7 @@ ffaudio_play_file(InputPlayback *playback)
         size = pkt.size;
         data_p = pkt.data;
         
-        while (size > 0)
+        while (size > 0 && playback->playing)
         {
             guint8 *outbuf_p = outbuf;
             out_size = sizeof(outbuf);
@@ -221,7 +221,7 @@ ffaudio_play_file(InputPlayback *playback)
                 continue;
             }
 
-            while (out_size > 0)
+            while (out_size > 0 && playback->playing)
             {
                 gsize writeoff = out_size >= 512 ? 512 : out_size;
 
