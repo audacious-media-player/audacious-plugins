@@ -65,11 +65,27 @@ static int audvfs_write(URLContext *h, unsigned char *buf, int size)
 /* XXX: use llseek */
 static int64_t audvfs_seek(URLContext *h, int64_t pos, int whence)
 {
+    int64_t res, siz;
     VFSFile *file;
     file = h->priv_data;
+    siz = aud_vfs_fsize(file);
+
     if (whence == AVSEEK_SIZE)
-        return aud_vfs_fsize(file);
-    return aud_vfs_fseek(file, pos, whence);
+        return siz;
+    
+    if (whence == SEEK_SET && pos > siz)
+        return AVERROR(EPIPE);
+    
+    if (aud_vfs_fseek(file, pos, whence) == 0)
+    {
+        if (whence == SEEK_SET)
+            res = pos;
+        else
+            res = aud_vfs_ftell(file);
+    } else
+        res = AVERROR(EPIPE);
+        
+    return res;
 }
 
 static int audvfs_close(URLContext *h)
