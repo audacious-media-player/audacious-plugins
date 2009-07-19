@@ -30,10 +30,4 @@
 URLProtocol audvfs_protocol;
 URLProtocol audvfsptr_protocol;
 
-extern int av_open_input_vfsfile(AVFormatContext **ic_ptr, const char *filename, VFSFile *fd,
-                       AVInputFormat *fmt,
-                       int buf_size,
-                       AVFormatParameters *ap);
-extern void av_close_input_vfsfile(AVFormatContext *s);
-
 #endif
