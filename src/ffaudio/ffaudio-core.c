@@ -123,7 +123,6 @@ copy_tuple_meta(Tuple *tuple, AVFormatContext *ic, const TupleValueType ttype, c
 
     if (tag != NULL)
     {
-        fprintf(stderr, "%s -> %s\n", tag->key, tag->value);
         switch (ttype) {
         case TUPLE_STRING:
             aud_tuple_associate_string(tuple, field, NULL, tag->value);
