@@ -920,7 +920,7 @@ void FASTCALL MMU_write8(u32 proc, u32 adr, u8 val)
            }
         }
 
-	if (adr & 0xFF800000 == 0x04800000)
+	if ((adr & 0xFF800000) == 0x04800000)
 	{
 		/* is wifi hardware, dont intermix with regular hardware registers */
 		/* FIXME handle 8 bit writes */
@@ -1503,7 +1503,7 @@ void FASTCALL MMU_write16(u32 proc, u32 adr, u16 val)
 							break;
 							
                                                 case 1 : /* firmware memory device */
-                                                        if(spicnt & 0x3 != 0)      /* check SPI baudrate (must be 4mhz) */
+                                                        if((spicnt & 0x3) != 0)      /* check SPI baudrate (must be 4mhz) */
 							{
 								T1WriteWord(MMU.MMU_MEM[proc][(REG_SPIDATA >> 20) & 0xff], REG_SPIDATA & 0xfff, 0);
 								break;
@@ -1916,7 +1916,7 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
            }
         }
 
-		if (adr & 0xFF800000 == 0x04800000) {
+		if ((adr & 0xFF800000) == 0x04800000) {
 		/* access to non regular hw registers */
 		/* return to not overwrite valid data */
 			return ;

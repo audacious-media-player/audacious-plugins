@@ -139,7 +139,7 @@ void xsf_play(InputPlayback *data)
 		while (data->playing && !seek && !data->eof)
 		{
 			xsf_gen(samples, seglen);
-			xsf_update(samples, seglen * 4, data);
+			xsf_update((guint8 *)samples, seglen * 4, data);
 
 			if (data->output->output_time() > length)
 				data->eof = TRUE;
@@ -221,7 +221,7 @@ void xsf_play(InputPlayback *data)
 	data->playing = FALSE;
 }
 
-void xsf_update(unsigned char *buffer, long count, InputPlayback *playback)
+void xsf_update(guint8 *buffer, long count, InputPlayback *playback)
 {
 	const int mask = ~((((16 / 8) * 2)) - 1);
 
