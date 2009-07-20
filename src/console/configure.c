@@ -1,34 +1,46 @@
 /*
  * Audacious: Cross platform multimedia player
- * Copyright (c) 2005  Audacious Team
+ * Copyright (c) 2005-2009 Audacious Team
  *
  * Driver for Game_Music_Emu library. See details at:
  * http://www.slack.net/~ant/libs/
  *
- * Libconsole preferences GUI by Giacomo Lozito
+ * Preferences GUI by Giacomo Lozito
  */
 
 #include "config.h"
-
+#include "configure.h"
 #include <glib.h>
+#include <gtk/gtk.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
-#include <gtk/gtk.h>
-#include "Audacious_Config.h"
+
+#define CON_CFGID "console"
+
+AudaciousConsoleConfig audcfg = {
+    180,
+    FALSE,
+    32000,
+    0,
+    0,
+    FALSE,
+    0,
+    FALSE
+};
+
 
 // TODO: add UI for echo
-
 void console_cfg_load( void )
 {
     mcs_handle_t *db = aud_cfg_db_open();
-    aud_cfg_db_get_int(db, "console", "loop_length", &audcfg.loop_length);
-    aud_cfg_db_get_bool(db, "console", "resample", &audcfg.resample);
-    aud_cfg_db_get_int(db, "console", "resample_rate", &audcfg.resample_rate);
-    aud_cfg_db_get_int(db, "console", "treble", &audcfg.treble);
-    aud_cfg_db_get_int(db, "console", "bass", &audcfg.bass);
-    aud_cfg_db_get_bool(db, "console", "ignore_spc_length", &audcfg.ignore_spc_length);
-    aud_cfg_db_get_int(db, "console", "echo", &audcfg.echo);
-    aud_cfg_db_get_bool(db, "console", "inc_spc_reverb", &audcfg.inc_spc_reverb);
+    aud_cfg_db_get_int(db, CON_CFGID, "loop_length", &audcfg.loop_length);
+    aud_cfg_db_get_bool(db, CON_CFGID, "resample", &audcfg.resample);
+    aud_cfg_db_get_int(db, CON_CFGID, "resample_rate", &audcfg.resample_rate);
+    aud_cfg_db_get_int(db, CON_CFGID, "treble", &audcfg.treble);
+    aud_cfg_db_get_int(db, CON_CFGID, "bass", &audcfg.bass);
+    aud_cfg_db_get_bool(db, CON_CFGID, "ignore_spc_length", &audcfg.ignore_spc_length);
+    aud_cfg_db_get_int(db, CON_CFGID, "echo", &audcfg.echo);
+    aud_cfg_db_get_bool(db, CON_CFGID, "inc_spc_reverb", &audcfg.inc_spc_reverb);
     aud_cfg_db_close(db);
 }
 
@@ -36,14 +48,14 @@ void console_cfg_load( void )
 void console_cfg_save( void )
 {
     mcs_handle_t *db = aud_cfg_db_open();
-    aud_cfg_db_set_int(db, "console", "loop_length", audcfg.loop_length);
-    aud_cfg_db_set_bool(db, "console", "resample", audcfg.resample);
-    aud_cfg_db_set_int(db, "console", "resample_rate", audcfg.resample_rate);
-    aud_cfg_db_set_int(db, "console", "treble", audcfg.treble);
-    aud_cfg_db_set_int(db, "console", "bass", audcfg.bass);
-    aud_cfg_db_set_bool(db, "console", "ignore_spc_length", audcfg.ignore_spc_length);
-    aud_cfg_db_set_int(db, "console", "echo", audcfg.echo);
-    aud_cfg_db_set_bool(db, "console", "inc_spc_reverb", audcfg.inc_spc_reverb);
+    aud_cfg_db_set_int(db, CON_CFGID, "loop_length", audcfg.loop_length);
+    aud_cfg_db_set_bool(db, CON_CFGID, "resample", audcfg.resample);
+    aud_cfg_db_set_int(db, CON_CFGID, "resample_rate", audcfg.resample_rate);
+    aud_cfg_db_set_int(db, CON_CFGID, "treble", audcfg.treble);
+    aud_cfg_db_set_int(db, CON_CFGID, "bass", audcfg.bass);
+    aud_cfg_db_set_bool(db, CON_CFGID, "ignore_spc_length", audcfg.ignore_spc_length);
+    aud_cfg_db_set_int(db, CON_CFGID, "echo", audcfg.echo);
+    aud_cfg_db_set_bool(db, CON_CFGID, "inc_spc_reverb", audcfg.inc_spc_reverb);
     aud_cfg_db_close(db);
 }
 
@@ -98,7 +110,7 @@ static void i_cfg_ev_toggle_resample( GtkToggleButton *tbt , gpointer val_hbox )
 }
 
 
-void console_cfg_ui( void )
+void console_cfg_ui(void)
 {
     static GtkWidget *configwin = NULL;
     GtkWidget *configwin_vbox;
@@ -115,12 +127,12 @@ void console_cfg_ui( void )
     GtkWidget /* *hseparator, */ *hbuttonbox, *button_ok, *button_cancel;
     GtkWidget *configwin_notebook;
 
-    if ( configwin != NULL )
+    if (configwin != NULL)
         return;
 
     configwin = gtk_window_new( GTK_WINDOW_TOPLEVEL );
     gtk_window_set_type_hint( GTK_WINDOW(configwin), GDK_WINDOW_TYPE_HINT_DIALOG );
-    gtk_window_set_title( GTK_WINDOW(configwin), _("Console Music Decoder") );
+    gtk_window_set_title( GTK_WINDOW(configwin), _("Game Console Music Decoder") );
     gtk_container_set_border_width( GTK_CONTAINER(configwin), 10 );
     g_signal_connect( G_OBJECT(configwin) , "destroy" ,
                       G_CALLBACK(gtk_widget_destroyed) , &configwin );
