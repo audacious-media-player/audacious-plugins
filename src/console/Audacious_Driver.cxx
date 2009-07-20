@@ -115,7 +115,7 @@ gint ConsoleFileHandler::load(gint sample_rate)
     m_emu = gme_new_emu(m_type, sample_rate);
     if (m_emu == NULL)
     {
-        log_err( "Out of memory" );
+        log_err("Out of memory allocating emulator engine. Fatal error.");
         return 1;
     }
     
@@ -322,14 +322,13 @@ extern "C" void console_play_file(InputPlayback *playback)
         }
         g_mutex_unlock(seek_mutex);
         
-        /* fill and play buffer of audio */
-        // TODO: see if larger buffer helps efficiency
+        /* Fill and play buffer of audio */
         gint const buf_size = 1024;
         Music_Emu::sample_t buf[buf_size];
         if (end_delay)
         {
             // TODO: remove delay once host doesn't cut the end of track off
-            if ( !--end_delay )
+            if (!--end_delay)
                 playback->playing = 0;
             memset(buf, 0, sizeof(buf));
         }
@@ -348,7 +347,6 @@ extern "C" void console_play_file(InputPlayback *playback)
     // stop playing
     playback->output->close_audio();
     playback->playing = 0;
-    return;
 }
 
 extern "C" void console_seek(InputPlayback *data, gint time)
