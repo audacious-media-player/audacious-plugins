@@ -319,7 +319,7 @@ ffaudio_play_file(InputPlayback *playback)
             g_mutex_unlock(seek_mutex);
             
             /* Decode whatever we can of the frame data */
-#if (LIBAVCODEC_VERSION_MAJOR < 52) && (LIBAVCODEC_VERSION_MINOR < 26)
+#if (LIBAVCODEC_VERSION_MAJOR <= 52) && (LIBAVCODEC_VERSION_MINOR <= 25)
             len = avcodec_decode_audio2(c, (gint16 *)outbuf, &out_size, tmp.data, tmp.size);
 #else
             len = avcodec_decode_audio3(c, (gint16 *)outbuf, &out_size, &tmp);
