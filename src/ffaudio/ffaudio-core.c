@@ -149,6 +149,7 @@ ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVC
         copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_PERFORMER, "performer");
         copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_COPYRIGHT, "copyright");
         copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_GENRE, "genre");
+        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_COMMENT, "comment");
         copy_tuple_meta(tuple, ic, TUPLE_INT, FIELD_YEAR, "year");
         copy_tuple_meta(tuple, ic, TUPLE_INT, FIELD_TRACK_NUMBER, "track");
         aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, ic->duration / 1000);
