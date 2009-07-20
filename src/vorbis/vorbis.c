@@ -60,13 +60,13 @@
 
 extern vorbis_config_t vorbis_cfg;
 
-static Tuple *get_song_tuple(gchar *filename);
-static int vorbis_check_fd(char *filename, VFSFile *stream);
+static Tuple *get_song_tuple(const gchar *filename);
+static gint vorbis_check_fd(const gchar *filename, VFSFile *stream);
 static void vorbis_play(InputPlayback *data);
 static void vorbis_stop(InputPlayback *data);
-static void vorbis_pause(InputPlayback *data, short p);
-static void vorbis_seek(InputPlayback *data, int time);
-static gchar *vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * fn);
+static void vorbis_pause(InputPlayback *data, gshort p);
+static void vorbis_seek(InputPlayback *data, gint time);
+static gchar *vorbis_generate_title(OggVorbis_File * vorbisfile, const gchar * fn);
 static void vorbis_aboutbox(void);
 static void vorbis_init(void);
 static void vorbis_cleanup(void);
@@ -129,8 +129,8 @@ static GCond * control_cond;
 gchar **vorbis_tag_encoding_list = NULL;
 static GtkWidget *about_window;
 
-static int
-vorbis_check_fd(char *filename, VFSFile *stream)
+static gint
+vorbis_check_fd(const gchar *filename, VFSFile *stream)
 {
     OggVorbis_File vfile;       /* avoid thread interaction */
     gint result;
@@ -552,7 +552,7 @@ static void _aud_tuple_associate_string(Tuple *tuple, const gint nfield, const g
  * Ok, nhjm449! Are you *happy* now?!  -nenolod
  */
 static Tuple *
-get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename)
+get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
 {
     VFSVorbisFile *vfd = (VFSVorbisFile *) vorbisfile->datasource;
     Tuple *tuple = NULL;
@@ -601,7 +601,7 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename)
 }
 
 static Tuple *
-get_song_tuple(gchar *filename)
+get_song_tuple(const gchar *filename)
 {
     VFSFile *stream = NULL;
     OggVorbis_File vfile;          /* avoid thread interaction */
@@ -636,7 +636,7 @@ get_song_tuple(gchar *filename)
 }
 
 static gchar *
-vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
+vorbis_generate_title(OggVorbis_File * vorbisfile, const gchar * filename)
 {
     /* Caller should hold vf_mutex */
     gchar *displaytitle = NULL;

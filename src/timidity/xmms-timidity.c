@@ -219,7 +219,7 @@ void xmmstimid_conf_ok(GtkButton *button, gpointer user_data) {
 	gtk_widget_hide(xmmstimid_conf_wnd);
 }
 
-static gint xmmstimid_is_our_fd( gchar * filename, VFSFile * fp )
+static gint xmmstimid_is_our_fd( const gchar * filename, VFSFile * fp )
 {
 	gchar magic_bytes[4];
 

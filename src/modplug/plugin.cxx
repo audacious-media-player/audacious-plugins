@@ -19,7 +19,7 @@ void Init(void)
     gModplugXMMS.Init();
 }
 
-int CanPlayFileFromVFS(char* aFilename, VFSFile *VFSFile)
+gint CanPlayFileFromVFS(const char* aFilename, VFSFile *VFSFile)
 {
     AUDDBG("aFilename=%s\n", aFilename);
     if(gModplugXMMS.CanPlayFileFromVFS(aFilename, VFSFile))
@@ -60,7 +60,7 @@ int GetTime(InputPlayback *data)
         return (int)(lTime * 1000);
 }
 
-Tuple* GetSongTuple(char* aFilename)
+Tuple* GetSongTuple(const gchar* aFilename)
 {
     return gModplugXMMS.GetSongTuple(aFilename);
 }

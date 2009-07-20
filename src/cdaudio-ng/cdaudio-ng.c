@@ -79,7 +79,7 @@ static int monitor_source;
 static void			cdaudio_init(void);
 static void			cdaudio_about(void);
 static void			cdaudio_configure(void);
-static gint			cdaudio_is_our_file(gchar *filename);
+static gint			cdaudio_is_our_file(const gchar *filename);
 static void			cdaudio_play_file(InputPlayback *pinputplayback);
 static void			cdaudio_stop(InputPlayback *pinputplayback);
 static void			cdaudio_pause(InputPlayback *pinputplayback, gshort paused);
@@ -88,7 +88,7 @@ static gint			cdaudio_get_time(InputPlayback *pinputplayback);
 static gint			cdaudio_get_volume(gint *l, gint *r);
 static gint			cdaudio_set_volume(gint l, gint r);
 static void			cdaudio_cleanup(void);
-static Tuple * create_tuple_from_trackinfo_and_filename (gchar * filename);
+static Tuple * create_tuple_from_trackinfo_and_filename (const gchar * filename);
 static void			dae_play_loop(dae_params_t *pdae_params);
 static void scan_cd (void);
 static void			refresh_trackinfo(void);
@@ -403,7 +403,7 @@ static void cdaudio_configure()
 }
 
 /* thread safe (mutex may be locked) */
-static gint cdaudio_is_our_file(gchar *filename)
+static gint cdaudio_is_our_file(const gchar *filename)
 {
     return ! strncmp (filename, "cdda://", 7);
 }
@@ -703,7 +703,7 @@ static void cdaudio_cleanup(void)
 }
 
 /* thread safe */
-static Tuple * create_tuple_from_trackinfo_and_filename (gchar * filename)
+static Tuple * create_tuple_from_trackinfo_and_filename (const gchar * filename)
 {
     Tuple * tuple = NULL;
     gint trackno;

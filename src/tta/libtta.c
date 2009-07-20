@@ -57,16 +57,16 @@
 
 static void init ();
 static void cleanup ();
-static int  is_our_file (char *filename);
+static gint is_our_file (const gchar *filename);
 static void play_file (InputPlayback *playback);
-static void tta_pause (InputPlayback *playback, short paused);
+static void tta_pause (InputPlayback *playback, gshort paused);
 static void stop (InputPlayback *playback);
 static void mseek (InputPlayback *playback, gulong millisec);
-static void seek (InputPlayback *playback, int sec);
-static void get_song_info (char *filename, char **title, int *length);
-static void file_info (char *filename);
+static void seek (InputPlayback *playback, gint sec);
+static void get_song_info (gchar *filename, gchar **title, gint *length);
+static void file_info (gchar *filename);
 static void about ();
-static Tuple *get_song_tuple(char *filename);
+static Tuple *get_song_tuple(const gchar *filename);
 //static gchar *extname(const char *filename);
 
 static GThread *decode_thread = NULL;
@@ -435,8 +435,8 @@ file_info (char *filename)
 	gtk_widget_set_sensitive(info_frame, TRUE);
 }
 
-static int
-is_our_file (char *filename)
+static gint
+is_our_file (const gchar *filename)
 {
 	gchar *ext = strrchr(filename, '.');
 
@@ -505,7 +505,7 @@ play_file (InputPlayback *playback)
 }
 
 static void
-tta_pause (InputPlayback *playback, short paused)
+tta_pause (InputPlayback *playback, gshort paused)
 {
 	playback->output->pause (paused);
 }
@@ -537,14 +537,14 @@ mseek (InputPlayback *data, gulong millisec)
 }
 
 static void
-seek (InputPlayback *data, int sec)
+seek (InputPlayback *data, gint sec)
 {
     gulong millisec = 1000 * sec;
     mseek(data, millisec);
 }
 
 static Tuple *
-get_song_tuple(char *filename)
+get_song_tuple(const gchar *filename)
 {
 	Tuple *tuple = NULL;
 	tta_info *ttainfo;
@@ -594,7 +594,7 @@ get_song_tuple(char *filename)
 
 #if 0
 static gchar *
-extname(const char *filename)
+extname(const gchar *filename)
 {
 	gchar *ext = strrchr(filename, '.');
 

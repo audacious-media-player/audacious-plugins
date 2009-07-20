@@ -29,15 +29,15 @@ static void        mp4_init(void);
 /*
 static void        mp4_about(void);
 */
-static int         mp4_is_our_file(char *);
+static gint        mp4_is_our_file(const gchar *);
 static void        mp4_play(InputPlayback *);
 static void        mp4_stop(InputPlayback *);
-static void        mp4_pause(InputPlayback *, short);
-static void        mp4_seek(InputPlayback *, int);
+static void        mp4_pause(InputPlayback *, gshort);
+static void        mp4_seek(InputPlayback *, gint);
 static void        mp4_cleanup(void);
-static void        mp4_get_song_title_len(char *filename, char **, int *);
-static Tuple*      mp4_get_song_tuple(char *);
-static int         mp4_is_our_fd(char *, VFSFile *);
+static void        mp4_get_song_title_len(gchar *filename, gchar **, gint *);
+static Tuple*      mp4_get_song_tuple(const char *);
+static gint        mp4_is_our_fd(const char *, VFSFile *);
 
 static gchar *fmts[] = { "m4a", "mp4", "aac", NULL };
 
@@ -221,7 +221,7 @@ static int aac_probe(unsigned char *buffer, int len)
   return pos;
 }
 
-static int mp4_is_our_file(char *filename)
+static gint mp4_is_our_file(const gchar *filename)
 {
   VFSFile *file;
   gchar* extension;
@@ -258,7 +258,7 @@ static int mp4_is_our_file(char *filename)
   return 0;
 }
 
-static int mp4_is_our_fd(char *filename, VFSFile* file)
+static gint mp4_is_our_fd(const gchar *filename, VFSFile* file)
 {
   gchar* extension;
   gchar magic[8];
@@ -320,7 +320,7 @@ static void mp4_cleanup(void)
 {
 }
 
-static Tuple *mp4_get_song_tuple_base(char *filename, VFSFile *mp4fh)
+static Tuple *mp4_get_song_tuple_base(const gchar *filename, VFSFile *mp4fh)
 {
     mp4ff_callback_t *mp4cb = g_malloc0(sizeof(mp4ff_callback_t));
     mp4ff_t *mp4file;
@@ -448,7 +448,7 @@ static Tuple *mp4_get_song_tuple_base(char *filename, VFSFile *mp4fh)
     return ti;
 }
 
-static Tuple *mp4_get_song_tuple(char *filename)
+static Tuple *mp4_get_song_tuple(const gchar *filename)
 {
     Tuple *tuple;
     VFSFile *mp4fh;

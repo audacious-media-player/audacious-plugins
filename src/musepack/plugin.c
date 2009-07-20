@@ -3,15 +3,15 @@
 void mpcOpenPlugin();
 void mpcAboutBox();
 void mpcConfigBox();
-gint mpcIsOurFile(gchar* p_Filename);
-gint mpcIsOurFD(gchar* p_Filename, VFSFile* file);
+gint mpcIsOurFile(const gchar* p_Filename);
+gint mpcIsOurFD(const gchar* p_Filename, VFSFile* file);
 void mpcPlay(InputPlayback *data);
 void mpcStop(InputPlayback *data);
-void mpcPause(InputPlayback *data, short p_Pause);
-void mpcSeek(InputPlayback *data, int p_Offset);
+void mpcPause(InputPlayback *data, gshort p_Pause);
+void mpcSeek(InputPlayback *data, gint p_Offset);
 gint mpcGetTime(InputPlayback *data);
-Tuple *mpcGetSongTuple(gchar* p_Filename);
-void mpcGetSongInfo(char* p_Filename, char** p_Title, int* p_Length);
+Tuple *mpcGetSongTuple(const gchar* p_Filename);
+void mpcGetSongInfo(gchar* p_Filename, gchar** p_Title, gint* p_Length);
 void mpcFileInfoBox(char* p_Filename);
 
 static const gchar *mpc_fmts[] = { "mpc", NULL };

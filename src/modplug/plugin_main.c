@@ -5,12 +5,12 @@ void ShowAboutBox(void);
 void ShowConfigureBox(void);
 void PlayFile(InputPlayback *data);
 void Stop(InputPlayback *data);
-void Pause(InputPlayback *data, short aPaused);
-void Seek(InputPlayback *data, int aTime);
-int GetTime(InputPlayback *data);
+void Pause(InputPlayback *data, gshort aPaused);
+void Seek(InputPlayback *data, gint aTime);
+gint GetTime(InputPlayback *data);
 void ShowFileInfoBox(char* aFilename);
-Tuple* GetSongTuple(char* aFilename);
-int CanPlayFileFromVFS(char* aFilename, VFSFile *VFSFile);
+Tuple* GetSongTuple(const gchar* aFilename);
+gint CanPlayFileFromVFS(const gchar* aFilename, VFSFile *VFSFile);
 
 static const gchar *fmts[] =
     { "amf", "ams", "dbm", "dbf", "dsm", "far", "mdl", "stm", "ult", "mt2",

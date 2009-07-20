@@ -53,7 +53,7 @@ int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 }
 
 static gint seek = 0;
-Tuple *xsf_tuple(gchar *filename)
+Tuple *xsf_tuple(const gchar *filename)
 {
 	Tuple *t;
 	corlett_t *c;
@@ -260,7 +260,7 @@ void xsf_pause(InputPlayback *playback, short p)
 	playback->output->pause(p);
 }
 
-int xsf_is_our_fd(gchar *filename, VFSFile *file)
+gint xsf_is_our_fd(const gchar *filename, VFSFile *file)
 {
 	gchar magic[4];
 	aud_vfs_fread(magic, 1, 4, file);

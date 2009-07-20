@@ -170,7 +170,7 @@ void flac_cleanup(void)
 
 /* --- */
 
-gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
+gboolean flac_is_our_fd(const gchar* filename, VFSFile* fd) {
 
     _ENTER;
 
@@ -578,7 +578,7 @@ void flac_seek(InputPlayback* input, gint time) {
 
 /* --- */
 
-Tuple *flac_get_song_tuple(gchar* filename) {
+Tuple *flac_get_song_tuple(const gchar* filename) {
 
     VFSFile *fd;
     Tuple *tuple;

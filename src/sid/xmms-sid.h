@@ -170,8 +170,8 @@ void        xs_stop(InputPlayback *);
 void        xs_pause(InputPlayback *, short);
 void        xs_seek(InputPlayback *, gint);
 gint        xs_get_time(InputPlayback *);
-Tuple *     xs_get_song_tuple(gchar *);
-Tuple *     xs_probe_for_tuple(gchar *, xs_file_t *);
+Tuple *     xs_get_song_tuple(const gchar *);
+Tuple *     xs_probe_for_tuple(const gchar *, xs_file_t *);
 void        xs_about(void);
 
 void        xs_error(const char *, ...);

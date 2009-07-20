@@ -155,7 +155,6 @@ gint ConsoleFileHandler::load(gint sample_rate)
 static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const gint track)
 {
     Tuple *ti = aud_tuple_new_from_filename(path);
-
     if (ti != NULL)
     {
         gint length;
@@ -193,7 +192,7 @@ static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const g
     return ti;
 }
 
-extern "C" Tuple * console_get_song_tuple(gchar *filename)
+extern "C" Tuple * console_get_song_tuple(const gchar *filename)
 {
     ConsoleFileHandler fh(filename);
 
@@ -204,12 +203,12 @@ extern "C" Tuple * console_get_song_tuple(gchar *filename)
     {
         track_info_t info;
         if (!log_err(fh.m_emu->track_info(&info, fh.m_track < 0 ? 0 : fh.m_track)))
-            return get_track_ti(fh.m_path, &info, fh.m_track);
+            return get_track_ti(filename, &info, fh.m_track);
     }
     return NULL;
 }
 
-extern "C" Tuple * console_probe_for_tuple(gchar *filename, VFSFile *fd)
+extern "C" Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
     ConsoleFileHandler fh(filename, fd);
     

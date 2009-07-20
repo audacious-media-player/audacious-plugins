@@ -56,7 +56,7 @@ ffaudio_cleanup(void)
 }
 
 static gint
-ffaudio_probe(gchar *filename, VFSFile *file)
+ffaudio_probe(const gchar *filename, VFSFile *file)
 {
     AVCodec *codec2 = NULL;
     AVCodecContext *c2 = NULL;
@@ -164,7 +164,7 @@ ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVC
 }
 
 static Tuple *
-ffaudio_get_song_tuple(gchar *filename)
+ffaudio_get_song_tuple(const gchar *filename)
 {
     Tuple *tuple = aud_tuple_new_from_filename(filename);
     AVCodec *codec = NULL;

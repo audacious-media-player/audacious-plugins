@@ -581,7 +581,7 @@ static void xs_fill_subtunes(Tuple *tuple, xs_tuneinfo_t *info)
 }
 
 
-Tuple * xs_get_song_tuple(gchar *filename)
+Tuple * xs_get_song_tuple(const gchar *filename)
 {
     Tuple *tuple;
     gchar *tmpFilename;
@@ -617,7 +617,7 @@ Tuple * xs_get_song_tuple(gchar *filename)
 }
 
 
-Tuple * xs_probe_for_tuple(gchar *filename, xs_file_t *fd)
+Tuple * xs_probe_for_tuple(const gchar *filename, xs_file_t *fd)
 {
     Tuple *tuple;
     gchar *tmpFilename;

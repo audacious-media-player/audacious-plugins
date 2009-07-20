@@ -64,8 +64,8 @@ vtx_init(void)
         aud_cfg_db_close(db);
 }
 
-int
-vtx_is_our_fd (char *filename, VFSFile *fp)
+gint
+vtx_is_our_fd (const gchar *filename, VFSFile *fp)
 {
   char buf[2];
     
@@ -73,8 +73,8 @@ vtx_is_our_fd (char *filename, VFSFile *fp)
   return (!strncasecmp (buf, "ay", 2) || !strncasecmp (buf, "ym", 2));
 }
 
-int
-vtx_is_our_file (char *filename)
+gint
+vtx_is_our_file (const gchar *filename)
 {
   gboolean ret;
   VFSFile *fp;
@@ -110,7 +110,7 @@ vtx_get_song_tuple_from_vtx(const gchar *filename, ayemu_vtx_t *in)
 }
 
 Tuple *
-vtx_get_song_tuple(gchar *filename)
+vtx_get_song_tuple(const gchar *filename)
 {
   ayemu_vtx_t tmp;
 
@@ -259,7 +259,7 @@ vtx_stop (InputPlayback *playback)
 
 /* seek to specified number of seconds */
 void
-vtx_seek (InputPlayback *playback, int time)
+vtx_seek (InputPlayback *playback, gint time)
 {
   if (time * 50 < vtx.hdr.regdata_size / 14)
     {
@@ -274,14 +274,14 @@ vtx_seek (InputPlayback *playback, int time)
 
 /* Pause or unpause */
 void
-vtx_pause (InputPlayback *playback, short p)
+vtx_pause (InputPlayback *playback, gshort p)
 {
   playback->output->pause (p);
 }
 
 /* Function to grab the title string */
 void
-vtx_get_song_info (char *filename, char **title, int *length)
+vtx_get_song_info (gchar *filename, gchar **title, gint *length)
 {
   ayemu_vtx_t tmp;
   

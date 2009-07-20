@@ -57,8 +57,8 @@
 
 static GThread *pb_thread;
 static gpointer demac_decode_loop(InputPlayback *pb);
-static Tuple *demac_get_tuple(char *filename);
-static Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd);
+static Tuple *demac_get_tuple(const gchar *filename);
+static Tuple *demac_probe_for_tuple (const gchar *uri, VFSFile *vfd);
 
 static GMutex *demac_mutex;
 static volatile int seek_to_msec = -1;
@@ -71,7 +71,7 @@ static GtkWidget *about_window = NULL;
 # include "crc.c"
 #endif
 
-static gboolean demac_probe_vfs(char *filename, VFSFile* input_file) {
+static gint demac_probe_vfs(const gchar *filename, VFSFile* input_file) {
     APEContext *ctx;
 
     ctx = calloc(sizeof(APEContext), 1);
@@ -275,7 +275,7 @@ static void destroy_cb(mowgli_dictionary_elem_t *delem, void *privdata) {
     g_free(delem->data);
 }
 
-Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
+Tuple *demac_probe_for_tuple (const gchar *uri, VFSFile *vfd) {
     AUDDBG("** demac: plugin.c: demac_probe_for_tuple()\n");
     gchar codec_string[32];
 
@@ -320,7 +320,7 @@ Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
     return tpl;
 }
 
-Tuple *demac_get_tuple(char *filename) {
+Tuple *demac_get_tuple(const gchar *filename) {
   AUDDBG("** demac: plugin.c: demac_get_tuple()\n");
   VFSFile *vfd;
 

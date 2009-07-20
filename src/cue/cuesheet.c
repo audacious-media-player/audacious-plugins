@@ -109,7 +109,7 @@ cue_cleanup(void)
 }
 
 Tuple *
-probe_for_tuple(gchar *uri, VFSFile *fd)
+probe_for_tuple(const gchar *uri, VFSFile *fd)
 {
     Tuple *tuple = NULL;
 
@@ -131,7 +131,7 @@ probe_for_tuple(gchar *uri, VFSFile *fd)
 
 
 int
-is_our_file(gchar *filename)
+is_our_file(const gchar *filename)
 {
 	gchar *ext;
 
@@ -186,7 +186,7 @@ _aud_tuple_copy_field(Tuple *tuple, Tuple *tuple2, const gint nfield, const gcha
 /* this function will be called back for subtune-info in adding to
  * playlist. */
 Tuple *
-get_song_tuple(gchar *uri) /* *.cue or *.cue?1- */
+get_song_tuple(const gchar *uri) /* *.cue or *.cue?1- */
 {
     Tuple *phys_tuple = NULL, *out;
     ProbeResult *pr = NULL;
@@ -516,7 +516,7 @@ get_full_length(gchar *cue_file)
 }
 
 void
-cache_cue_file(gchar *f)
+cache_cue_file(const gchar *f)
 {
     /* Here we check if the cue_cuefile is the same, because then we do not need to read the cuefile */
     if (cue_cuefile != NULL && f != NULL)

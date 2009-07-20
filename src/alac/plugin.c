@@ -76,7 +76,7 @@ static void alac_about(void)
 			 &aboutbox);
 }
 
-gboolean is_our_fd(char *filename, VFSFile* input_file)
+gint is_our_fd(const gchar *filename, VFSFile* input_file)
 {
     demux_res_t demux_res;
     stream_t *input_stream;
@@ -113,7 +113,7 @@ static int get_duration(demux_res_t *demux_res)
     return (samples * 1000) / demux_res->sample_rate;
 }
 
-Tuple *build_aud_tuple_from_demux(demux_res_t *demux_res, char *path)
+Tuple *build_aud_tuple_from_demux(demux_res_t *demux_res, const gchar *path)
 {
     Tuple *ti = aud_tuple_new_from_filename(path);
 
@@ -137,7 +137,7 @@ Tuple *build_aud_tuple_from_demux(demux_res_t *demux_res, char *path)
     return ti;
 }
 
-Tuple *build_tuple(char *filename)
+Tuple *build_tuple(const gchar *filename)
 {
     demux_res_t demux_res;
     VFSFile *input_file;

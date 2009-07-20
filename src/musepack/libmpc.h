@@ -36,7 +36,7 @@ extern "C"
 #define M_LN10    2.3025850929940456840179914546843642
 #endif
 
-typedef struct PluginConfig
+struct PluginConfig
 {
     gboolean clipPrevention;
     gboolean dynamicBitrate;
@@ -45,7 +45,7 @@ typedef struct PluginConfig
     gboolean isEq;
 };
 
-typedef struct Widgets
+struct Widgets
 {
     GtkWidget* aboutBox;
     GtkWidget* configBox;
@@ -64,7 +64,7 @@ typedef struct Widgets
     GtkWidget* fileEntry;
 };
 
-typedef struct MpcDecoder
+struct MpcDecoder
 {
     gchar*     isError;
     double     offset;
@@ -73,7 +73,7 @@ typedef struct MpcDecoder
     bool       isPause;
 };
 
-typedef struct TrackInfo
+struct TrackInfo
 {
     gint   bitrate;
     gchar* display;
@@ -82,7 +82,7 @@ typedef struct TrackInfo
     gint   channels;
 };
 
-typedef struct MpcInfo
+struct MpcInfo
 {
     gchar*    title;
     gchar*    artist;

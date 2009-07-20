@@ -236,7 +236,7 @@ static void saveConfigBox(GtkWidget* p_Widget, gpointer p_Data)
     gtk_widget_destroy (widgets.configBox);
 }
 
-extern "C" gint mpcIsOurFile(gchar* p_Filename)
+extern "C" gint mpcIsOurFile(const gchar* p_Filename)
 {
     VFSFile *file;
     gchar magic[3];
@@ -251,7 +251,7 @@ extern "C" gint mpcIsOurFile(gchar* p_Filename)
     return 0;
 }
 
-extern "C" gint mpcIsOurFD(gchar* p_Filename, VFSFile* file)
+extern "C" gint mpcIsOurFD(const gchar* p_Filename, VFSFile* file)
 {
     gchar magic[3];
     aud_vfs_fread(magic, 1, 3, file);
@@ -309,7 +309,7 @@ extern "C" gint mpcGetTime(InputPlayback *data)
     return data->output->output_time();
 }
 
-extern "C" Tuple *mpcGetSongTuple(gchar* p_Filename)
+extern "C" Tuple *mpcGetSongTuple(const gchar* p_Filename)
 {
     VFSFile *input = aud_vfs_fopen(p_Filename, "rb");
     Tuple *tuple = NULL;

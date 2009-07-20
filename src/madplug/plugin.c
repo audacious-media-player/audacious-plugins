@@ -283,7 +283,7 @@ static gchar *mp3_ver_table[4] = { "2.5", "INVALID", "2", "1" };
 
 // audacious vfs fast version
 static gint
-audmad_is_our_fd(gchar *filename, VFSFile *fin)
+audmad_is_our_fd(const gchar *filename, VFSFile *fin)
 {
     gchar *ext = extname(filename);
     const gint max_resync_bytes = 32, max_resync_tries = 8;
@@ -725,7 +725,7 @@ __set_and_free(Tuple *tuple, gint nfield, gchar *name, gchar *value)
 
 // tuple stuff
 static Tuple *
-__audmad_get_song_tuple(char *filename, VFSFile *fd)
+__audmad_get_song_tuple(const gchar *filename, VFSFile *fd)
 {
     Tuple *tuple = NULL;
     gchar *string = NULL;
@@ -878,13 +878,13 @@ __audmad_get_song_tuple(char *filename, VFSFile *fd)
 }
 
 static Tuple *
-audmad_get_song_tuple(char *filename)
+audmad_get_song_tuple(const gchar *filename)
 {
     return __audmad_get_song_tuple(filename, NULL);
 }
 
 static Tuple *
-audmad_probe_for_tuple(char *filename, VFSFile *fd)
+audmad_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
     if (!audmad_is_our_fd(filename, fd))
         return NULL;

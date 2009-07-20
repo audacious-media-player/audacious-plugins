@@ -58,13 +58,13 @@ static GThread *wma_decode_thread;
 char description[64];
 static void wma_about(void);
 static void wma_init(void);
-static int wma_is_our_fd(char *filename, VFSFile *fd);
+static gint wma_is_our_fd(const gchar *filename, VFSFile *fd);
 static void wma_play_file(InputPlayback *data);
 static void wma_stop(InputPlayback *data);
-static void wma_seek(InputPlayback *data, int time);
-static void wma_do_pause(InputPlayback *data, short p);
-static void wma_get_song_info(char *filename, char **title, int *length);
-static Tuple *wma_get_song_tuple(char *filename);
+static void wma_seek(InputPlayback *data, gint time);
+static void wma_do_pause(InputPlayback *data, gshort p);
+static void wma_get_song_info(gchar *filename, gchar **title, gint *length);
+static Tuple *wma_get_song_tuple(const gchar *filename);
 static char *wsong_title;
 static int wsong_time;
 
@@ -90,13 +90,14 @@ InputPlugin *wma_iplist[] = { &wma_ip, NULL };
 
 DECLARE_PLUGIN(wma, NULL, NULL, wma_iplist, NULL, NULL, NULL, NULL, NULL);
 
-static gchar *str_twenty_to_space(gchar * str)
+static gchar *str_twenty_to_space(const gchar * str)
 {
-    gchar *match, *match_end;
+    gchar *res, *match, *match_end;
 
     g_return_val_if_fail(str != NULL, NULL);
+    res = g_strdup(str);
 
-    while ((match = strstr(str, "%20"))) {
+    while ((match = strstr(res, "%20")) != NULL) {
         match_end = match + 3;
         *match++ = ' ';
         while (*match_end)
@@ -104,13 +105,13 @@ static gchar *str_twenty_to_space(gchar * str)
         *match = 0;
     }
 
-    return str;
+    return res;
 }
 
 static void wma_about(void)
 {
-    char *title;
-    char *message;
+    gchar *title;
+    gchar *message;
 
     if (dialog1) return;
 
@@ -168,7 +169,7 @@ static void wma_init(void)
     tag_init();
 }
 
-static int wma_is_our_fd(char *filename, VFSFile *fd)
+static gint wma_is_our_fd(const gchar *filename, VFSFile *fd)
 {
     AVCodec *codec2 = NULL;
     AVCodecContext *c2 = NULL;
@@ -203,21 +204,22 @@ static int wma_is_our_fd(char *filename, VFSFile *fd)
     return 1;
 }
 
-static void wma_do_pause(InputPlayback *playback, short p)
+static void wma_do_pause(InputPlayback *playback, gshort p)
 {
     wma_pause = p;
 }
 
-static void wma_seek(InputPlayback *playback, int time)
+static void wma_seek(InputPlayback *playback, gint time)
 {
     wma_seekpos = time;
     while(wma_decode && wma_seekpos!=-1) g_usleep(10000);
 }
 
-static Tuple *wma_get_song_tuple(gchar * filename)
+static Tuple *wma_get_song_tuple(const gchar * filename)
 {
-    const char* c = str_twenty_to_space(filename);
+    gchar *c = str_twenty_to_space(filename);
     Tuple *ti = aud_tuple_new_from_filename(c);
+    g_free(c);
 
     ti = tag_tuple_read(ti);
 
@@ -247,7 +249,7 @@ static guint get_song_time(AVFormatContext *in)
         return 0;
 }
 
-static void wma_get_song_info(char *filename, char **title_real, int *len_real)
+static void wma_get_song_info(gchar *filename, gchar **title_real, gint *len_real)
 {
     Tuple *tuple = wma_get_song_tuple(filename);
 

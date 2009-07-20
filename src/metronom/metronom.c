@@ -90,7 +90,7 @@ static void metronom_about(void)
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &box);
 }
 
-static int metronom_is_our_file(char *filename)
+static gint metronom_is_our_file(const gchar *filename)
 {
 	if (!strncmp(filename, "tact://", 7))
 		return TRUE;

@@ -95,7 +95,7 @@ static SF_VIRTUAL_IO sf_virtual_io =
 
 
 static SNDFILE *
-open_sndfile_from_uri(gchar *filename, VFSFile **vfsfile, SF_INFO *tmp_sfinfo)
+open_sndfile_from_uri(const gchar *filename, VFSFile **vfsfile, SF_INFO *tmp_sfinfo)
 {
     SNDFILE *snd_file = NULL;
     *vfsfile = aud_vfs_fopen(filename, "rb");
@@ -136,7 +136,7 @@ plugin_cleanup (void)
 }
 
 static void
-fill_song_tuple (gchar *filename, Tuple *ti)
+fill_song_tuple (const gchar *filename, Tuple *ti)
 {
     VFSFile *vfsfile = NULL;
     SNDFILE *tmp_sndfile;
@@ -345,7 +345,7 @@ get_title(gchar *filename)
 }
 
 static gint
-is_our_file (gchar *filename)
+is_our_file (const gchar *filename)
 {
     VFSFile *vfsfile = NULL;
     SNDFILE *tmp_sndfile;
@@ -531,7 +531,7 @@ file_seek (InputPlayback *playback, gint time)
 }
 
 static Tuple*
-get_song_tuple (gchar *filename)
+get_song_tuple (const gchar *filename)
 {
     Tuple *ti = aud_tuple_new_from_filename(filename);
     fill_song_tuple(filename, ti);
@@ -539,7 +539,7 @@ get_song_tuple (gchar *filename)
 }
 
 static gint
-is_our_file_from_vfs(gchar *filename, VFSFile *fin)
+is_our_file_from_vfs(const gchar *filename, VFSFile *fin)
 {
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;

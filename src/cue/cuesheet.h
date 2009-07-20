@@ -45,21 +45,21 @@ extern InputPlayback *real_ip;
 extern InputPlayback *caller_ip;
 
 /* prototypes */
-void cache_cue_file(gchar *f);
+void cache_cue_file(const gchar *f);
 void free_cue_info(void);
 void fix_cue_argument(char *line);
-int is_our_file(gchar *filename);
+gint is_our_file(const gchar *filename);
 void play(InputPlayback *data);
 void play_cue_uri(InputPlayback *data, gchar *uri);
 void mseek(InputPlayback *data, gulong time);
 void seek(InputPlayback *data, gint time);
 void stop(InputPlayback *data);
 void cue_pause(InputPlayback *data, short);
-Tuple *get_song_tuple(gchar *uri);
+Tuple *get_song_tuple(const gchar *uri);
 void cue_init(void);
 gint get_time(InputPlayback *playback);
 void cue_cleanup(void);
 gpointer watchdog_func(gpointer data);
-Tuple *probe_for_tuple(gchar *songFilename, VFSFile *fd);
+Tuple *probe_for_tuple(const gchar *songFilename, VFSFile *fd);
 
 #endif

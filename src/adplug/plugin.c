@@ -6,13 +6,13 @@ void adplug_about(void);
 void adplug_config(void);
 void adplug_stop(InputPlayback * data);
 void adplug_play(InputPlayback * data);
-void adplug_pause(InputPlayback * playback, short paused);
-void adplug_seek(InputPlayback * data, int time);
+void adplug_pause(InputPlayback * playback, gshort paused);
+void adplug_seek(InputPlayback * data, gint time);
 int adplug_get_time(InputPlayback * data);
-void adplug_song_info(char *filename, char **title, int *length);
+void adplug_song_info(gchar *filename, gchar **title, gint *length);
 void adplug_info_box(char *filename);
-Tuple* adplug_get_tuple(char *filename);
-int adplug_is_our_fd(gchar * filename, VFSFile * fd);
+Tuple* adplug_get_tuple(const gchar *filename);
+int adplug_is_our_fd(const gchar * filename, VFSFile * fd);
 
 static const gchar *fmts[] =
     { "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",

@@ -27,12 +27,12 @@ extern InputPlugin xmmstimid_ip;
 static void xmmstimid_init(void);
 static void xmmstimid_about(void);
 static void xmmstimid_configure(void);
-static int xmmstimid_is_our_fd(gchar * filename, VFSFile * fp );
+static gint xmmstimid_is_our_fd(const gchar * filename, VFSFile * fp );
 static void xmmstimid_play_file(InputPlayback * playback);
 static void xmmstimid_stop(InputPlayback * playback);
 static void xmmstimid_pause(InputPlayback * playback, short p);
 static void xmmstimid_seek(InputPlayback * playback, int time);
-static int xmmstimid_get_time(InputPlayback * playback);
+static gint xmmstimid_get_time(InputPlayback * playback);
 static void xmmstimid_cleanup(void);
 static void xmmstimid_get_song_info(gchar *filename, gchar **title, gint *length);
 

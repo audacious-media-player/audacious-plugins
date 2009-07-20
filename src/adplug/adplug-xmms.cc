@@ -502,7 +502,7 @@ close_infobox (GtkDialog * infodlg)
 }
 
 extern "C" void
-adplug_info_box (char *filename)
+adplug_info_box (const gchar *filename)
 {
   CSilentopl tmpopl;
   VFSFile *fd = aud_vfs_buffered_file_new_from_uri (filename);
@@ -675,7 +675,7 @@ adplug_info_box (char *filename)
 /***** Main player (!! threaded !!) *****/
 
 extern "C" Tuple*
-adplug_get_tuple (char *filename)
+adplug_get_tuple (const gchar *filename)
 {
   CSilentopl tmpopl;
   VFSFile *fd = aud_vfs_buffered_file_new_from_uri (filename);
@@ -893,7 +893,7 @@ play_loop (void *data)
 /***** Informational *****/
 
 extern "C" int
-adplug_is_our_fd (gchar * filename, VFSFile * fd)
+adplug_is_our_fd (const gchar * filename, VFSFile * fd)
 {
   CSilentopl tmpopl;
 
@@ -929,7 +929,7 @@ adplug_get_time (InputPlayback * data)
 }
 
 extern "C" void
-adplug_song_info (char *filename, char **title, int *length)
+adplug_song_info (gchar *filename, gchar **title, gint *length)
 {
   *length = -1;
   *title = NULL;
@@ -994,14 +994,14 @@ adplug_stop (InputPlayback * playback)
 }
 
 extern "C" void
-adplug_pause (InputPlayback * playback, short paused)
+adplug_pause (InputPlayback * playback, gshort paused)
 {
   dbg_printf ("adplug_pause(%d)\n", paused);
   playback->output->pause (paused);
 }
 
 extern "C" void
-adplug_seek (InputPlayback * data, int time)
+adplug_seek (InputPlayback * data, gint time)
 {
   dbg_printf ("adplug_seek(%d)\n", time);
   plr.seek = time * 1000;       // time is in seconds, but we count in ms

@@ -96,7 +96,7 @@ int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 
 static gint seek = 0;
 
-Tuple *psf2_tuple(gchar *filename)
+Tuple *psf2_tuple(const gchar *filename)
 {
 	Tuple *t;
 	corlett_t *c;
@@ -279,7 +279,7 @@ void psf2_pause(InputPlayback *playback, short p)
 	playback->output->pause(p);
 }
 
-int psf2_is_our_fd(gchar *filename, VFSFile *file)
+int psf2_is_our_fd(const gchar *filename, VFSFile *file)
 {
 	uint8 magic[4];
 	aud_vfs_fread(magic, 1, 4, file);

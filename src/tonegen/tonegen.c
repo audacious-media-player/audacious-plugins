@@ -64,7 +64,7 @@ static void tone_about(void)
 	}
 }
 
-static int tone_is_our_file(char *filename)
+static gint tone_is_our_file(const gchar *filename)
 {
 	if (!strncmp(filename, "tone://", 7))
 		return TRUE;

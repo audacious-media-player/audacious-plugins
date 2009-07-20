@@ -13,8 +13,8 @@
 #include <audacious/plugin.h>
 #include "configure.h"
 
-Tuple * console_get_song_tuple(gchar *path);
-Tuple * console_probe_for_tuple(gchar *filename, VFSFile *fd);
+Tuple * console_get_song_tuple(const gchar *path);
+Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd);
 void console_play_file(InputPlayback *playback);
 void console_seek(InputPlayback *data, gint time);
 void console_stop(InputPlayback *playback);
