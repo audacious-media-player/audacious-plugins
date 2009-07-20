@@ -10,7 +10,7 @@
 void
 vtx_about (void)
 {
-  static GtkWidget *box;
+  static GtkWidget *box = NULL;
   if (box) {
       gtk_window_present(GTK_WINDOW(box));
   } else {
