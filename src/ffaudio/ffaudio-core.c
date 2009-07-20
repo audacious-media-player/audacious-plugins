@@ -64,11 +64,11 @@ ffaudio_probe(gchar *filename, VFSFile *file)
     AVCodecContext *c2 = NULL;
     AVFormatContext *ic2 = NULL;
     gint i, ret;
-    gchar uribuf[100];
+    gchar uribuf[64];
 
     _DEBUG("probing for %s, filehandle %p", filename, file);
 
-    g_snprintf(uribuf, 100, "audvfsptr:%p", file);
+    g_snprintf(uribuf, sizeof(uribuf), "audvfsptr:%p", file);
     if ((ret = av_open_input_file(&ic2, uribuf, NULL, 0, NULL)) < 0) {
         _DEBUG("ic2 is NULL, ret %d/%s", ret, strerror(-ret));
         return 0;
