@@ -26,9 +26,9 @@
  * Plugin glue.                                                                    *
  ***********************************************************************************/
 
-GMutex *seek_mutex = NULL;
-GCond *seek_cond = NULL;
-gint64 seek_value = -1;
+static GMutex *seek_mutex = NULL;
+static GCond *seek_cond = NULL;
+static gint64 seek_value = -1;
 
 static void
 ffaudio_init(void)
