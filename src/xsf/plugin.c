@@ -276,9 +276,9 @@ void xsf_Seek(InputPlayback *playback, int time)
 	seek = time * 1000;
 }
 
-gchar *xsf_fmts[] = { "2sf", "mini2sf", NULL };
+static gchar *xsf_fmts[] = { "2sf", "mini2sf", NULL };
 
-InputPlugin xsf_ip =
+static InputPlugin xsf_ip =
 {
 	.description = "2SF Audio Plugin",
 	.play_file = xsf_play,
@@ -290,7 +290,7 @@ InputPlugin xsf_ip =
 	.vfs_extensions = xsf_fmts,
 };
 
-InputPlugin *xsf_iplist[] = { &xsf_ip, NULL };
+static InputPlugin *xsf_iplist[] = { &xsf_ip, NULL };
 
 DECLARE_PLUGIN(psf2, NULL, NULL, xsf_iplist, NULL, NULL, NULL, NULL, NULL);
 
