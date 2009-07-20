@@ -26,9 +26,9 @@
  * Plugin glue.                                                                    *
  ***********************************************************************************/
 
-GMutex *seek_mutex = NULL;
-GCond *seek_cond = NULL;
-gint64 seek_value = -1;
+static GMutex *seek_mutex = NULL;
+static GCond *seek_cond = NULL;
+static gint64 seek_value = -1;
 
 static void
 ffaudio_init(void)
@@ -393,7 +393,7 @@ ffaudio_stop(InputPlayback *playback)
 }
 
 static void
-ffaudio_pause(InputPlayback *playback, short p)
+ffaudio_pause(InputPlayback *playback, gshort p)
 {
     playback->output->pause(p);
 }
