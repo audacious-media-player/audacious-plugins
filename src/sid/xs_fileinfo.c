@@ -179,7 +179,7 @@ void xs_fileinfo(gchar * filename)
      * no information can be found for the new file. Hmm...
      */
 #ifdef AUDACIOUS_PLUGIN
-    xs_get_trackinfo(filename, &tmpFilename, &n);
+    tmpFilename = aud_filename_split_subtune(filename, &n);
 #else
     tmpFilename = filename;
 #endif    

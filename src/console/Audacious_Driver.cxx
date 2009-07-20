@@ -67,17 +67,10 @@ ConsoleFileHandler::ConsoleFileHandler(const gchar *path, VFSFile *fd)
     m_type  = 0;
     m_track = -1;
 
-    m_path = g_strdup(path);
+    m_path = aud_filename_split_subtune(path, &m_track);
     if (m_path == NULL)
         return;
 
-    gchar *sep = strrchr(m_path, '?');
-    if (sep != NULL && g_ascii_isdigit(*(sep + 1)))
-    {
-        *sep = '\0';
-        m_track = atoi(sep + 1) - 1;
-    }
-    
     // open vfs
     if (fd != NULL)
         vfs_in.reset(fd);

@@ -175,7 +175,6 @@ Tuple *     xs_probe_for_tuple(const gchar *, xs_file_t *);
 void        xs_about(void);
 
 void        xs_error(const char *, ...);
-gboolean    xs_get_trackinfo(const gchar *, gchar **, gint *);
 
 
 /* Debugging

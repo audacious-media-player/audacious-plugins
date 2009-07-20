@@ -176,43 +176,13 @@ void xs_close(void)
 
 
 /*
- * Check whether the given file is handled by this plugin
- */
-static gchar * xs_has_tracknumber(gchar *filename)
-{
-    gchar *sep = xs_strrchr(filename, '?');
-    if (sep && g_ascii_isdigit(*(sep + 1)))
-        return sep;
-    else
-        return NULL;
-}
-
-gboolean xs_get_trackinfo(const gchar *filename, gchar **result, gint *track)
-{
-    gchar *sep;
-
-    *result = g_strdup(filename);
-    sep = xs_has_tracknumber(*result);
-
-    if (sep) {
-        *sep = '\0';
-        *track = atoi(sep + 1);
-        return TRUE;
-    } else {
-        *track = -1;
-        return FALSE;
-    }
-}
-
-
-/*
  * Start playing the given file
  */
 void xs_play_file(InputPlayback *pb)
 {
     xs_tuneinfo_t *tmpTune;
     gboolean audioOpen = FALSE;
-    gint audioGot, tmpLength, subTune;
+    gint audioGot, tmpLength, subTune = -1;
     gchar *tmpFilename, *audioBuffer = NULL, *oversampleBuffer = NULL, *tmpTitle;
     Tuple *tmpTuple;
 
@@ -221,10 +191,11 @@ void xs_play_file(InputPlayback *pb)
 
     XSDEBUG("play '%s'\n", pb->filename);
 
-    XS_MUTEX_LOCK(xs_status);
+    tmpFilename = aud_filename_split_subtune(pb->filename, &subTune);
+    if (tmpFilename == NULL) return;
 
     /* Get tune information */
-    xs_get_trackinfo(pb->filename, &tmpFilename, &subTune);
+    XS_MUTEX_LOCK(xs_status);
     if ((xs_status.tuneInfo = xs_status.sidPlayer->plrGetSIDInfo(tmpFilename)) == NULL) {
         XS_MUTEX_UNLOCK(xs_status);
         g_free(tmpFilename);
@@ -586,10 +557,11 @@ Tuple * xs_get_song_tuple(const gchar *filename)
     Tuple *tuple;
     gchar *tmpFilename;
     xs_tuneinfo_t *tmpInfo;
-    gint tmpTune;
+    gint tmpTune = -1;
 
     /* Get information from URL */
-    xs_get_trackinfo(filename, &tmpFilename, &tmpTune);
+    tmpFilename = aud_filename_split_subtune(filename, &tmpTune);
+    if (tmpFilename == NULL) return NULL;
 
     tuple = aud_tuple_new_from_filename(tmpFilename);
     if (tuple == NULL) {
@@ -622,7 +594,7 @@ Tuple * xs_probe_for_tuple(const gchar *filename, xs_file_t *fd)
     Tuple *tuple;
     gchar *tmpFilename;
     xs_tuneinfo_t *tmpInfo;
-    gint tmpTune;
+    gint tmpTune = -1;
 
     assert(xs_status.sidPlayer != NULL);
 
@@ -636,9 +608,10 @@ Tuple * xs_probe_for_tuple(const gchar *filename, xs_file_t *fd)
     }
     XS_MUTEX_UNLOCK(xs_status);
 
-
     /* Get information from URL */
-    xs_get_trackinfo(filename, &tmpFilename, &tmpTune);
+    tmpFilename = aud_filename_split_subtune(filename, &tmpTune);
+    if (tmpFilename == NULL) return NULL;
+
     tuple = aud_tuple_new_from_filename(tmpFilename);
     if (tuple == NULL) {
         g_free(tmpFilename);
