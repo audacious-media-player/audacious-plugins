@@ -46,8 +46,6 @@
 #include "avcodec.h"
 #include "avformat.h"
 
-static const gchar * PLUGIN_NAME = "Audacious-WMA";
-static const gchar * PLUGIN_VERSION = "v.1.0.5";
 static const int ST_BUFF = 1024;
 
 static int wma_decode = 0;
@@ -68,7 +66,6 @@ static Tuple *wma_get_song_tuple(const gchar *filename);
 static char *wsong_title;
 static int wsong_time;
 
-static GtkWidget *dialog1, *button1, *label1;
 static gchar *fmts[] = { "wma", NULL };
 
 InputPlugin wma_ip =
@@ -110,55 +107,29 @@ static gchar *str_twenty_to_space(const gchar * str)
 
 static void wma_about(void)
 {
-    gchar *title;
-    gchar *message;
+    static GtkWidget *about_dialog = NULL;
 
-    if (dialog1) return;
+    if (about_dialog != NULL) return;
 
-    title = (char *)g_malloc(80);
-    message = (char *)g_malloc(1000);
-    memset(title, 0, 80);
-    memset(message, 0, 1000);
+    about_dialog = audacious_info_dialog(
+        _("About Audacious-WMA"),
+        _("Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
+          "the BEEP-WMA plugin which is Copyright (C) 2004,2005 Mokrushin I.V. aka McMCC (mcmcc@mail.ru)\n"
+          "and the BMP-WMA plugin which is Copyright (C) 2004 Roman Bogorodskiy <bogorodskiy@inbox.ru>.\n"
+          "This plugin based on source code " LIBAVCODEC_IDENT "\nby Fabrice Bellard from "
+          "http://ffmpeg.sourceforge.net.\n\n"
+          "This program is free software; you can redistribute it and/or modify \n"
+          "it under the terms of the GNU General Public License as published by \n"
+          "the Free Software Foundation; either version 2 of the License, or \n"
+          "(at your option) any later version. \n\n"
+          "This program is distributed in the hope that it will be useful, \n"
+          "but WITHOUT ANY WARRANTY; without even the implied warranty of \n"
+          "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. \n"
+          "See the GNU General Public License for more details.\n"),
+          _("Ok"), FALSE, NULL, NULL);
 
-    sprintf(title, _("About %s"), PLUGIN_NAME);
-    sprintf(message, "%s %s\n\n%s", PLUGIN_NAME, PLUGIN_VERSION,
-            _("Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
-              "the BEEP-WMA plugin which is Copyright (C) 2004,2005 Mokrushin I.V. aka McMCC (mcmcc@mail.ru)\n"
-              "and the BMP-WMA plugin which is Copyright (C) 2004 Roman Bogorodskiy <bogorodskiy@inbox.ru>.\n"
-              "This plugin based on source code " LIBAVCODEC_IDENT "\nby Fabrice Bellard from"
-              "http://ffmpeg.sourceforge.net.\n\n"
-              "This program is free software; you can redistribute it and/or modify \n"
-              "it under the terms of the GNU General Public License as published by \n"
-              "the Free Software Foundation; either version 2 of the License, or \n"
-              "(at your option) any later version. \n\n"
-              "This program is distributed in the hope that it will be useful, \n"
-              "but WITHOUT ANY WARRANTY; without even the implied warranty of \n"
-              "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. \n"
-              "See the GNU General Public License for more details.\n"
-             ));
-
-    dialog1 = gtk_dialog_new();
-    g_signal_connect(G_OBJECT(dialog1), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed), &dialog1);
-    gtk_window_set_title(GTK_WINDOW(dialog1), title);
-    gtk_window_set_resizable(GTK_WINDOW(dialog1), FALSE);
-    gtk_container_set_border_width(GTK_CONTAINER(dialog1), 5);
-    label1 = gtk_label_new(message);
-    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog1)->vbox), label1, TRUE, TRUE, 0);
-    gtk_widget_show(label1);
-
-    button1 = gtk_button_new_with_label(_(" Close "));
-    g_signal_connect_swapped(G_OBJECT(button1), "clicked",
-                             G_CALLBACK(gtk_widget_destroy),
-                             GTK_OBJECT(dialog1));
-    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog1)->action_area), button1,
-                       FALSE, FALSE, 0);
-
-    gtk_widget_show(button1);
-    gtk_widget_show(dialog1);
-    gtk_widget_grab_focus(button1);
-    g_free(title);
-    g_free(message);
+    g_signal_connect(G_OBJECT(about_dialog), "destroy",
+        G_CALLBACK(gtk_widget_destroyed), &about_dialog);
 }
 
 static void wma_init(void)
