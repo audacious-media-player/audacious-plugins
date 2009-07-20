@@ -651,6 +651,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     gulong      samplerate = 0;
     guchar      channels = 0;
     gulong      buffervalid = 0;
+    gulong	ret = 0;
     gchar       *ttemp = NULL, *stemp = NULL;
     gchar       *temp = g_strdup(filename);
     gchar       *xmmstitle = NULL;
@@ -747,9 +748,14 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         {
             buffervalid -= bufferconsumed;
             memmove(streambuffer, &streambuffer[bufferconsumed], buffervalid);
-            buffervalid += aud_vfs_fread(&streambuffer[buffervalid], 1,
+            ret = aud_vfs_fread(&streambuffer[buffervalid], 1,
                          BUFFER_SIZE-buffervalid, file);
+            buffervalid += ret;
             bufferconsumed = 0;
+
+            /* XXX: buffer underrun on a shoutcast stream, well this is unpleasant. --nenolod */
+            if (ret == 0 && remote == TRUE)
+                break;
 
             ttemp = aud_vfs_get_metadata(file, "stream-name");
 
