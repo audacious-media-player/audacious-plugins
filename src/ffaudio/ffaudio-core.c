@@ -139,7 +139,7 @@ copy_tuple_meta(Tuple *tuple, AVFormatContext *ic, const TupleValueType ttype, c
 }
 
 static void
-ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c)
+ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVCodec *codec)
 {
     if (ic != NULL)
     {
@@ -157,6 +157,11 @@ ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c)
     if (c != NULL)
     {
         aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, c->bit_rate / 1000);
+    }
+    
+    if (codec != NULL && codec->long_name != NULL)
+    {
+        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, codec->long_name);
     }
 }
 
@@ -195,7 +200,7 @@ ffaudio_get_song_tuple(gchar *filename)
         }
     }
 
-    ffaudio_get_tuple_data(tuple, ic, c);
+    ffaudio_get_tuple_data(tuple, ic, c, codec);
     return tuple;
 }
     
@@ -257,7 +262,7 @@ ffaudio_play_file(InputPlayback *playback)
 
 #ifdef FFAUDIO_METADATA
     tuple = aud_tuple_new_from_filename(playback->filename);
-    ffaudio_get_tuple_data(tuple, ic, c);
+    ffaudio_get_tuple_data(tuple, ic, c, codec);
     title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
     tuple_free(tuple);
 #else
