@@ -43,14 +43,13 @@
  */
 xs_status_t xs_status;
 XS_MUTEX(xs_status);
-static XS_THREAD_T xs_decode_thread;
 
 static void xs_get_song_tuple_info(Tuple *pResult, xs_tuneinfo_t *pInfo, gint subTune);
 
 /*
  * Error messages
  */
-void xs_error(const char *fmt, ...)
+void xs_error(const gchar *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
@@ -59,7 +58,7 @@ void xs_error(const char *fmt, ...)
 }
 
 #ifdef DEBUG
-void XSDEBUG(const char *fmt, ...)
+void XSDEBUG(const gchar *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
@@ -261,11 +260,6 @@ void xs_play_file(InputPlayback *pb)
     XSDEBUG("subtune #%i selected (#%d wanted), initializing...\n", xs_status.currSong, subTune);
 
 
-    /* We are ready */
-    xs_decode_thread = g_thread_self();
-    XSDEBUG("playing thread = %p\n", xs_decode_thread);
-
-
     /* Allocate audio buffer */
     audioBuffer = (gchar *) g_malloc(XS_AUDIOBUF_SIZE);
     if (audioBuffer == NULL) {
@@ -367,7 +361,8 @@ void xs_play_file(InputPlayback *pb)
         }
 
         /* I <3 visualice/haujobb */
-        pb->pass_audio(pb, xs_status.audioFormat, xs_status.audioChannels,
+        pb->pass_audio(pb, xs_status.audioFormat,
+            xs_status.audioChannels,
             audioGot, audioBuffer, NULL);
 
         XS_MUTEX_UNLOCK(xs_status);
@@ -381,26 +376,17 @@ void xs_play_file(InputPlayback *pb)
         if (xs_cfg.playMaxTimeEnable) {
             if (xs_cfg.playMaxTimeUnknown) {
                 if (tmpLength < 0 &&
-                    pb->output->output_time() >= xs_cfg.playMaxTime * 1000) {
+                    pb->output->output_time() >= xs_cfg.playMaxTime * 1000)
                     pb->playing = FALSE;
-                    xs_status.isPlaying = FALSE;
-                    pb->eof = TRUE;
-                }
             } else {
-                if (pb->output->output_time() >= xs_cfg.playMaxTime * 1000) {
+                if (pb->output->output_time() >= xs_cfg.playMaxTime * 1000)
                     pb->playing = FALSE;
-                    xs_status.isPlaying = FALSE;
-                    pb->eof = TRUE;
-                }
             }
         }
 
         if (tmpLength >= 0) {
-            if (pb->output->output_time() >= tmpLength * 1000) {
+            if (pb->output->output_time() >= tmpLength * 1000)
                 pb->playing = FALSE;
-                xs_status.isPlaying = FALSE;
-                pb->eof = TRUE;
-            }
         }
         XS_MUTEX_UNLOCK(xs_status);
     }
@@ -427,6 +413,11 @@ xs_err_exit:
     pb->playing = FALSE;
     xs_status.isPlaying = FALSE;
     pb->eof = TRUE;
+
+    /* Free tune information */
+    xs_status.sidPlayer->plrDeleteSID(&xs_status);
+    xs_tuneinfo_free(xs_status.tuneInfo);
+    xs_status.tuneInfo = NULL;
     XS_MUTEX_UNLOCK(xs_status);
 
     /* Exit the playing thread */
@@ -446,8 +437,6 @@ xs_err_exit:
  */
 void xs_stop(InputPlayback *pb)
 {
-    (void) pb;
-
     XSDEBUG("stop requested\n");
 
     /* Lock xs_status and stop playing thread */
@@ -457,19 +446,10 @@ void xs_stop(InputPlayback *pb)
         pb->playing = FALSE;
         xs_status.isPlaying = FALSE;
         XS_MUTEX_UNLOCK(xs_status);
-        XS_THREAD_JOIN(xs_decode_thread);
     } else {
         XS_MUTEX_UNLOCK(xs_status);
     }
 
-    XSDEBUG("done, updating status\n");
-
-    /* Free tune information */
-    XS_MUTEX_LOCK(xs_status);
-    xs_status.sidPlayer->plrDeleteSID(&xs_status);
-    xs_tuneinfo_free(xs_status.tuneInfo);
-    xs_status.tuneInfo = NULL;
-    XS_MUTEX_UNLOCK(xs_status);
     XSDEBUG("ok\n");
 }
 
