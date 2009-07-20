@@ -516,9 +516,9 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *pInfo, gint subT
 
     aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, pInfo->sidName);
     aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, pInfo->sidComposer);
-    aud_tuple_associate_string(tuple, FIELD_GENRE, NULL, "SID-tune");
     aud_tuple_associate_string(tuple, FIELD_COPYRIGHT, NULL, pInfo->sidCopyright);
     aud_tuple_associate_string(tuple, -1, "sid-format", pInfo->sidFormat);
+    aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "Commodore 64 SID PlaySID/RSID");
 
     switch (pInfo->sidModel) {
         case XS_SIDMODEL_6581: tmpStr = "6581"; break;
