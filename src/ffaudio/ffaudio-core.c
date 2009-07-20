@@ -284,8 +284,7 @@ ffaudio_play_file(InputPlayback *playback)
     errcount = 0;
     while (playback->playing)
     {
-        gint size;
-        guint8 *data_p;
+        AVPacket tmp;
         gint ret;
 
         /* Perform seek, if requested */
@@ -319,10 +318,9 @@ ffaudio_play_file(InputPlayback *playback)
         } else
             errcount = 0;
 
-        size = pkt.size;
-        data_p = pkt.data;
-        
-        while (size > 0 && playback->playing)
+        memcpy(&tmp, &pkt, sizeof(tmp));
+
+        while (tmp.size > 0 && playback->playing)
         {
             guint8 *outbuf_p = outbuf;
             out_size = sizeof(outbuf);
@@ -337,15 +335,19 @@ ffaudio_play_file(InputPlayback *playback)
             g_mutex_unlock(seek_mutex);
             
             /* Decode whatever we can of the frame data */
-            len = avcodec_decode_audio2(c, (gint16 *)outbuf, &out_size, data_p, size);
+#if (LIBAVCODEC_VERSION_MAJOR < 52) && (LIBAVCODEC_VERSION_MINOR < 26)
+            len = avcodec_decode_audio2(c, (gint16 *)outbuf, &out_size, tmp.data, tmp.size);
+#else
+            len = avcodec_decode_audio3(c, (gint16 *)outbuf, &out_size, &tmp);
+#endif
             if (len < 0)
             {
                 _DEBUG("codec failure, breaking out of loop");
                 break;
             }
             
-            size -= len;
-            data_p += len;
+            tmp.size -= len;
+            tmp.data += len;
 
             if (out_size <= 0)
             {
