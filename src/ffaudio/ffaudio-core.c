@@ -393,7 +393,7 @@ ffaudio_stop(InputPlayback *playback)
 }
 
 static void
-ffaudio_pause(InputPlayback *playback, short p)
+ffaudio_pause(InputPlayback *playback, gshort p)
 {
     playback->output->pause(p);
 }
