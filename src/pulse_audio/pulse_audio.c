@@ -28,6 +28,7 @@
 
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
+#include <audacious/auddrct.h>
 #include <audacious/i18n.h>
 
 #include <pulse/pulseaudio.h>
@@ -65,12 +66,9 @@ do { \
 
 static const char* get_song_name(void) {
     static char t[256];
-    gint pos;
     char *str, *u;
-    Playlist *playlist = aud_playlist_get_active();
 
-    pos = aud_playlist_get_position(playlist);
-    if (!(str = aud_playlist_get_songtitle(playlist, pos)))
+    if (!(str = audacious_drct_pl_get_file (audacious_drct_pl_get_pos ())))
         return "Playback Stream";
 
     snprintf(t, sizeof(t), "%s", u = pa_locale_to_utf8(str));
