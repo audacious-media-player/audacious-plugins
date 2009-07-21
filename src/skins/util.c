@@ -172,7 +172,7 @@ static const struct {
     {FMT_S24_LE, SAD_SAMPLE_S24_LE},
     {FMT_S24_BE, SAD_SAMPLE_S24_BE},
     {FMT_S24_NE, SAD_SAMPLE_S24},
-    
+
     {FMT_U24_LE, SAD_SAMPLE_U24_LE},
     {FMT_U24_BE, SAD_SAMPLE_U24_BE},
     {FMT_U24_NE, SAD_SAMPLE_U24},
@@ -180,11 +180,11 @@ static const struct {
     {FMT_S32_LE, SAD_SAMPLE_S32_LE},
     {FMT_S32_BE, SAD_SAMPLE_S32_BE},
     {FMT_S32_NE, SAD_SAMPLE_S32},
-    
+
     {FMT_U32_LE, SAD_SAMPLE_U32_LE},
     {FMT_U32_BE, SAD_SAMPLE_U32_BE},
     {FMT_U32_NE, SAD_SAMPLE_U32},
-    
+
     {FMT_FLOAT, SAD_SAMPLE_FLOAT},
     {FMT_FIXED32, SAD_SAMPLE_FIXED32},
 };
@@ -750,7 +750,7 @@ read_ini_string(INIFile *inifile, const gchar *section, const gchar *key)
     gchar *value = NULL;
     gpointer section_hash, key_hash;
     GHashTable *section_table;
-    
+
     g_return_val_if_fail(inifile, NULL);
 
     section_string = g_string_new(section);
@@ -1093,7 +1093,7 @@ construct_uri(gchar *string, const gchar *playlist_name) // uri, path and anythi
     return uri;
 }
 
-/* 
+/*
  * minimize number of realloc's:
  *  - set N to nearest power of 2 not less then N
  *  - double it
@@ -1119,4 +1119,22 @@ make_directory(const gchar * path, mode_t mode)
 
     g_printerr(_("Could not create directory (%s): %s\n"), path,
                g_strerror(errno));
+}
+
+void insert_drag_list (gint playlist, gint position, const gchar * list)
+{
+    struct index * add = index_new ();
+
+    while (1)
+    {
+        const gchar * newline = strstr (list, "\r\n");
+
+        if (newline == NULL)
+            break;
+
+        index_append (add, g_strndup (list, newline - list));
+        list = newline + 2;
+    }
+
+    aud_playlist_entry_insert_batch (playlist, position, add, NULL);
 }

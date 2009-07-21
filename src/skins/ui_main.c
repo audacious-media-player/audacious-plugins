@@ -71,6 +71,7 @@
 #include <audacious/plugin.h>
 #include <audacious/icons-stock.h>
 #include "skins_cfg.h"
+#include "util.h"
 
 static GTimeVal cb_time;
 static const int TRISTATE_THRESHOLD = 200;
@@ -936,8 +937,7 @@ mainwin_drag_data_received(GtkWidget * widget,
 
     playlist = aud_playlist_get_active ();
     aud_playlist_entry_delete (playlist, 0, aud_playlist_entry_count (playlist));
-    aud_playlist_entry_insert (playlist, 0, g_strdup ((gchar *)
-     selection_data->data), NULL);
+    insert_drag_list (playlist, 0, (const gchar *) selection_data->data);
     aud_playlist_set_playing (playlist);
     audacious_drct_initiate();
 }
@@ -2248,6 +2248,8 @@ mainwin_create_window(void)
                      G_CALLBACK(mainwin_scrolled), NULL);
 
     aud_drag_dest_set(mainwin);
+    g_signal_connect ((GObject *) mainwin, "drag-data-received", (GCallback)
+     mainwin_drag_data_received, 0);
 
     g_signal_connect(mainwin, "key_press_event",
                      G_CALLBACK(mainwin_keypress), NULL);
