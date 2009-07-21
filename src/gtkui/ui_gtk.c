@@ -21,6 +21,8 @@
 #include <gtk/gtk.h>
 
 #include <audacious/plugin.h>
+#include <libaudgui/ui_fileopener.h>
+#include <libaudgui/ui_gtk.h>
 
 #include "ui_gtk.h"
 #include "ui_playlist_widget.h"
@@ -179,13 +181,13 @@ void show_preferences_window(gboolean show) {
 static void
 button_open_pressed()
 {
-    gtkui_interface.ops->filebrowser_show(TRUE);
+    run_filebrowser(TRUE);
 }
 
 static void
 button_add_pressed()
 {
-    gtkui_interface.ops->filebrowser_show(FALSE);
+    run_filebrowser(FALSE);
 }
 
 static void
@@ -538,7 +540,7 @@ _ui_initialize(InterfaceCbs *cbs)
 
     gint lvol = 0, rvol = 0; /* Left and Right for the volume control */
 
-    gtkui_interface.ops->set_default_icon();
+    aud_set_default_icon();
     gtkui_interface.ops->register_stock_icons();
 
     ui_manager_init();
@@ -652,6 +654,9 @@ _ui_initialize(InterfaceCbs *cbs)
 
     /* Register interface callbacks */
     cbs->show_prefs_window = show_preferences_window;
+    cbs->run_filebrowser = run_filebrowser;
+    cbs->hide_filebrowser = hide_filebrowser;
+
 
     gtk_main();
 

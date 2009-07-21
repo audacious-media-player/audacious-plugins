@@ -57,6 +57,7 @@
 #include "ui_skinned_playlist.h"
 
 #include <audacious/icons-stock.h>
+#include <libaudgui/ui_fileopener.h>
 #include "images/audacious_playlist.xpm"
 
 Playlist * active_playlist;
@@ -1520,7 +1521,7 @@ action_playlist_remove_unselected(void)
 void
 action_playlist_add_files(void)
 {
-    skins_interface.ops->filebrowser_show(FALSE); /* FALSE = NO_PLAY_BUTTON */
+    run_filebrowser(FALSE); /* FALSE = NO_PLAY_BUTTON */
 }
 
 void

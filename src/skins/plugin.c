@@ -27,6 +27,8 @@
 #include "ui_playlist_evlisteners.h"
 #include <audacious/i18n.h>
 #include <audacious/icons-stock.h>
+#include <libaudgui/ui_gtk.h>
+#include <libaudgui/ui_fileopener.h>
 #include <libintl.h>
 
 #include "ui_playlist_manager.h"
@@ -82,7 +84,7 @@ gboolean skins_init(InterfaceCbs *cbs) {
 
     ui_main_check_theme_engine();
 
-    skins_interface.ops->set_default_icon();
+    aud_set_default_icon();
     skins_interface.ops->register_stock_icons();
 
     ui_manager_init();
@@ -108,6 +110,8 @@ gboolean skins_init(InterfaceCbs *cbs) {
 
     /* Register interface callbacks */
     cbs->show_prefs_window = show_preferences_window;
+    cbs->run_filebrowser = run_filebrowser;
+    cbs->hide_filebrowser = hide_filebrowser;
 
     gtk_main();
 

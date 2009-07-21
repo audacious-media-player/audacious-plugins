@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <libaudgui/ui_fileopener.h>
 
 /* GDK including */
 #include "platform/smartinclude.h"
@@ -1584,7 +1585,7 @@ mainwin_general_menu_callback(gpointer data,
             action_about_audacious();
             break;
         case MAINWIN_GENERAL_PLAYFILE: {
-            skins_interface.ops->filebrowser_show(FALSE); /* FALSE = NO_PLAY_BUTTON */
+            run_filebrowser(FALSE); /* FALSE = NO_PLAY_BUTTON */
             break;
         }
         case MAINWIN_GENERAL_PLAYLOCATION:
@@ -2592,7 +2593,7 @@ action_about_audacious( void )
 void
 action_play_file( void )
 {
-    skins_interface.ops->filebrowser_show(TRUE); /* TRUE = PLAY_BUTTON */
+    run_filebrowser(TRUE); /* TRUE = PLAY_BUTTON */
 }
 
 void

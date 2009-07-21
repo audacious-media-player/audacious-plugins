@@ -48,6 +48,7 @@
 #endif
 
 #include <audacious/plugin.h>
+#include <libaudgui/ui_fileopener.h>
 #include "ui_gtk.h"
 #include "../skins/ui_playlist_manager.h"
 #include "util.h"
@@ -95,7 +96,7 @@ action_about_audacious( void )
 void
 action_play_file( void )
 {
-    gtkui_interface.ops->filebrowser_show(TRUE);
+    run_filebrowser(TRUE);
 }
 
 void
@@ -542,7 +543,7 @@ action_playlist_remove_unselected(void)
 void
 action_playlist_add_files(void)
 {
-    gtkui_interface.ops->filebrowser_show(FALSE);
+    run_filebrowser(FALSE);
 }
 
 void
