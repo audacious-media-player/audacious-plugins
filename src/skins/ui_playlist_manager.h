@@ -20,6 +20,8 @@
 #ifndef AUDACIOUS_UI_PLAYLIST_MANAGER_H
 #define AUDACIOUS_UI_PLAYLIST_MANAGER_H
 
+#include <gtk/gtk.h>
+
 extern GtkWidget * playman_win;
 
 void playlist_manager_update ( void );

@@ -45,7 +45,6 @@ void action_playlist_remove_all(void);
 void action_playlist_remove_selected(void);
 void action_playlist_remove_unselected(void);
 
-/* void action_playlist_add_cd(void); - this is no longer needed, as the respective menu entry is added from within the cdaudio plugin */
 void action_playlist_add_url(void);
 void action_playlist_add_files(void);
 
@@ -59,7 +58,6 @@ void action_playlist_sort_by_filename(void);
 void action_playlist_sort_by_full_path(void);
 void action_playlist_sort_by_date(void);
 void action_playlist_sort_by_track_number(void);
-void action_playlist_sort_by_playlist_entry(void);
 
 void action_playlist_sort_selected_by_title(void);
 void action_playlist_sort_selected_by_album(void);
@@ -68,7 +66,6 @@ void action_playlist_sort_selected_by_filename(void);
 void action_playlist_sort_selected_by_full_path(void);
 void action_playlist_sort_selected_by_date(void);
 void action_playlist_sort_selected_by_track_number(void);
-void action_playlist_sort_selected_by_playlist_entry(void);
 
 void action_playlist_track_info(void);
 void action_queue_toggle(void);

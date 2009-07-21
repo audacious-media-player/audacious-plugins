@@ -63,7 +63,8 @@ void ui_skinned_playlist_set_font (GtkWidget * list, const gchar * font);
 void ui_skinned_playlist_update (GtkWidget * widget);
 void ui_skinned_playlist_follow (GtkWidget * widget);
 gboolean ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event);
-void ui_skinned_playlist_row_info (GtkWidget * widget, gint * rows, gint * first);
+void ui_skinned_playlist_row_info (GtkWidget * widget, gint * rows, gint *
+ first, gint * focused);
 void ui_skinned_playlist_scroll_to (GtkWidget * widget, gint row);
 void ui_skinned_playlist_hover (GtkWidget * widget, gint x, gint y);
 int ui_skinned_playlist_hover_end (GtkWidget * widget);

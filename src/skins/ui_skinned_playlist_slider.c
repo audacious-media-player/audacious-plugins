@@ -198,7 +198,7 @@ static void ui_skinned_playlist_slider_size_allocate(GtkWidget *widget, GtkAlloc
 }
 
 static gboolean ui_skinned_playlist_slider_expose(GtkWidget *widget, GdkEventExpose *event) {
-    int rows, first, y;
+    gint rows, first, focused, y;
 
     UiSkinnedPlaylistSlider *ps = UI_SKINNED_PLAYLIST_SLIDER (widget);
     UiSkinnedPlaylistSliderPrivate *priv = UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(ps);
@@ -207,7 +207,7 @@ static gboolean ui_skinned_playlist_slider_expose(GtkWidget *widget, GdkEventExp
     GdkPixbuf *obj = NULL;
     obj = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, priv->width, priv->height);
 
-    ui_skinned_playlist_row_info (priv->list, & rows, & first);
+    ui_skinned_playlist_row_info (priv->list, & rows, & first, & focused);
 
     if (active_length > rows)
         y = first * (priv->height - 19) / (active_length - rows);
@@ -244,12 +244,12 @@ void ui_skinned_playlist_slider_update (GtkWidget * widget)
 }
 
 static void ui_skinned_playlist_slider_set_position(GtkWidget *widget, gint y) {
-    int rows, first;
+    gint rows, first, focused;
     UiSkinnedPlaylistSliderPrivate *priv = UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(widget);
 
     y = CLAMP(y, 0, priv->height - 19);
 
-    ui_skinned_playlist_row_info (priv->list, & rows, & first);
+    ui_skinned_playlist_row_info (priv->list, & rows, & first, & focused);
     ui_skinned_playlist_scroll_to (priv->list, y * (active_length - rows)
      / (priv->height - 19));
 }
@@ -257,12 +257,12 @@ static void ui_skinned_playlist_slider_set_position(GtkWidget *widget, gint y) {
 static gboolean ui_skinned_playlist_slider_button_press(GtkWidget *widget, GdkEventButton *event) {
     UiSkinnedPlaylistSlider *ps = UI_SKINNED_PLAYLIST_SLIDER (widget);
     UiSkinnedPlaylistSliderPrivate *priv = UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(widget);
-    int rows, first, n;
+    gint rows, first, focused, n;
 
     if (event->button != 1 && event->button != 2)
         return TRUE;
 
-    ui_skinned_playlist_row_info (priv->list, & rows, & first);
+    ui_skinned_playlist_row_info (priv->list, & rows, & first, & focused);
 
     gint y = event->y;
     if (event->type == GDK_BUTTON_PRESS) {

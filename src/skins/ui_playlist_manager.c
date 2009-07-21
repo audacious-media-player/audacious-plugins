@@ -31,7 +31,7 @@
 #define DISABLE_MANAGER_UPDATE() g_object_set_data(G_OBJECT(listview),"opt1",GINT_TO_POINTER(1))
 #define ENABLE_MANAGER_UPDATE() g_object_set_data(G_OBJECT(listview),"opt1",GINT_TO_POINTER(0))
 
-GtkWidget * playman_win = 0;
+GtkWidget * playman_win = NULL;
 
 /* in this enum, place the columns according to visualization order
    (information not displayed in columns should be placed right before PLLIST_NUMCOLS) */
@@ -39,7 +39,7 @@ enum
 {
     PLLIST_COL_NAME = 0,
     PLLIST_COL_ENTRIESNUM,
-    PLLIST_PLPOINTER,
+    PLLIST_NUMBER,
     PLLIST_TEXT_WEIGHT,
     PLLIST_NUMCOLS
 };
@@ -48,96 +48,33 @@ enum
 static GtkTreeIter
 playlist_manager_populate ( GtkListStore * store )
 {
-    GList *playlists = NULL;
-    Playlist *active, *iter_playlist, *next_playlist;
-    GtkTreeIter iter, insert, next, active_iter;
-    gboolean valid, have_active_iter;
+    gint playlists, active, playlist;
+    GtkTreeIter iter, active_iter;
+    gboolean have_active_iter = FALSE;
 
-    active = aud_playlist_get_active();
-    playlists = aud_playlist_get_playlists();
-    valid = gtk_tree_model_get_iter_first( GTK_TREE_MODEL(store) , &iter );
-    have_active_iter = FALSE;
-    while ( playlists != NULL )
+    playlists = aud_playlist_count ();
+    active = aud_playlist_get_active ();
+
+    while (gtk_tree_model_get_iter_first ((GtkTreeModel *) store, & iter))
+        gtk_list_store_remove (store, & iter);
+
+    for (playlist = 0; playlist < playlists; playlist ++)
     {
-        GList *entries = NULL;
-        gint entriesnum = 0;
-        gchar *pl_name = NULL;
-        Playlist *playlist = (Playlist*)playlists->data;
+        gint entriesnum = aud_playlist_entry_count (playlist);
+        const gchar * pl_name = aud_playlist_get_title (playlist);
 
-        if(playlist != active) //XXX the active playlist has been locked in playlist_new_from_selected()
-            PLAYLIST_LOCK(playlist);
+        gtk_list_store_append (store, & iter);
 
-        /* for each playlist, pick name and number of entries */
-        pl_name = (gchar*)aud_playlist_get_current_name( playlist );
-        for (entries = playlist->entries; entries; entries = g_list_next(entries))
-            entriesnum++;
-
-        if(playlist != active)
-            PLAYLIST_UNLOCK(playlist);
-
-        /* update the tree model conservatively */
-
-        if ( !valid )
-        {
-            /* append */
-            gtk_list_store_append( store , &insert );
-            goto store_set;
-        }
-
-        gtk_tree_model_get( GTK_TREE_MODEL(store) , &iter ,
-                PLLIST_PLPOINTER , &iter_playlist , -1 );
-
-        if ( playlist == iter_playlist )
-        {
-            /* already have - just update */
-            insert = iter;
-            valid = gtk_tree_model_iter_next( GTK_TREE_MODEL(store) , &iter );
-            goto store_set;
-        }
-
-        /* handle movement/deletion/insertion of single elements */
-        if ( gtk_tree_model_iter_next( GTK_TREE_MODEL(store) , &next ) )
-        {
-            gtk_tree_model_get( GTK_TREE_MODEL(store) , &next ,
-                    PLLIST_PLPOINTER , &next_playlist , -1 );
-            if ( playlist == next_playlist )
-            {
-                /* remove */
-                gtk_list_store_remove( store , &iter );
-                iter = next;
-                valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(store), &iter);
-                goto next_playlist;
-            }
-        }
-
-        /* insert */
-        gtk_list_store_insert_before( store , &insert , &iter );
-
-store_set:
-        gtk_list_store_set( store, &insert,
-                            PLLIST_COL_NAME , pl_name ,
-                            PLLIST_COL_ENTRIESNUM , entriesnum ,
-                            PLLIST_PLPOINTER , playlist ,
+        gtk_list_store_set (store, & iter, PLLIST_COL_NAME, pl_name,
+         PLLIST_COL_ENTRIESNUM, entriesnum, PLLIST_NUMBER, playlist,
                             PLLIST_TEXT_WEIGHT , playlist == active ?
                                 PANGO_WEIGHT_BOLD : PANGO_WEIGHT_NORMAL ,
                             -1 );
         if ( !have_active_iter && playlist == active )
         {
-            active_iter = insert;
+            active_iter = iter;
             have_active_iter = TRUE;
         }
-
-next_playlist:
-        playlists = g_list_next(playlists);
-    }
-
-    while (valid)
-    {
-        /* remove any other elements */
-        next = iter;
-        valid = gtk_tree_model_iter_next( GTK_TREE_MODEL(store) , &next );
-        gtk_list_store_remove( store , &iter );
-        iter = next;
     }
 
     if ( !have_active_iter )
@@ -150,27 +87,20 @@ next_playlist:
 static void
 playlist_manager_cb_new ( gpointer listview )
 {
-    GList *playlists = NULL;
-    Playlist *newpl = NULL;
+    gint playlists = aud_playlist_count ();
     GtkTreeIter iter;
     GtkListStore *store;
-    gchar *pl_name = NULL;
 
     /* this ensures that playlist_manager_update() will
        not perform update, since we're already doing it here */
     DISABLE_MANAGER_UPDATE();
 
-    newpl = aud_playlist_new();
-    pl_name = (gchar*)aud_playlist_get_current_name( newpl );
-    playlists = aud_playlist_get_playlists();
-    aud_playlist_add_playlist( newpl );
+    aud_playlist_insert (playlists);
 
     store = (GtkListStore*)gtk_tree_view_get_model( GTK_TREE_VIEW(listview) );
     gtk_list_store_append( store , &iter );
-    gtk_list_store_set( store, &iter,
-                        PLLIST_COL_NAME , pl_name ,
-                        PLLIST_COL_ENTRIESNUM , 0 ,
-                        PLLIST_PLPOINTER , newpl ,
+    gtk_list_store_set (store, & iter, PLLIST_COL_NAME, aud_playlist_get_title
+     (playlists), PLLIST_COL_ENTRIESNUM, 0, PLLIST_NUMBER, playlists,
                         PLLIST_TEXT_WEIGHT , PANGO_WEIGHT_NORMAL ,
                         -1 );
 
@@ -186,13 +116,14 @@ playlist_manager_cb_del ( gpointer listview )
     GtkTreeSelection *listsel = gtk_tree_view_get_selection( GTK_TREE_VIEW(listview) );
     GtkTreeModel *store;
     GtkTreeIter iter;
-    Playlist *active;
+    gint active;
     gboolean was_active;
 
     if ( gtk_tree_selection_get_selected( listsel , &store , &iter ) == TRUE )
     {
-        Playlist *playlist = NULL;
-        gtk_tree_model_get( store, &iter, PLLIST_PLPOINTER , &playlist , -1 );
+        gint playlist;
+
+        gtk_tree_model_get (store, & iter, PLLIST_NUMBER, & playlist, -1);
 
         active = aud_playlist_get_active();
         was_active = ( playlist == active );
@@ -200,7 +131,7 @@ playlist_manager_cb_del ( gpointer listview )
         if ( gtk_tree_model_iter_n_children( store , NULL ) < 2 )
         {
             /* let playlist_manager_update() handle the deletion of the last playlist */
-            aud_playlist_remove_playlist( playlist );
+            aud_playlist_delete (playlist);
         }
         else
         {
@@ -208,7 +139,7 @@ playlist_manager_cb_del ( gpointer listview )
             /* this ensures that playlist_manager_update() will
                not perform update, since we're already doing it here */
             DISABLE_MANAGER_UPDATE();
-            aud_playlist_remove_playlist( playlist );
+            aud_playlist_delete (playlist);
             ENABLE_MANAGER_UPDATE();
         }
 
@@ -217,8 +148,7 @@ playlist_manager_cb_del ( gpointer listview )
             /* update bolded playlist */
             active = aud_playlist_get_active();
             do {
-                gtk_tree_model_get( store , &iter ,
-                        PLLIST_PLPOINTER , &playlist , -1 );
+                gtk_tree_model_get (store, & iter, PLLIST_NUMBER, & playlist, -1);
                 gtk_list_store_set( GTK_LIST_STORE(store) , &iter ,
                         PLLIST_TEXT_WEIGHT , playlist == active ?
                             PANGO_WEIGHT_BOLD : PANGO_WEIGHT_NORMAL ,
@@ -237,14 +167,14 @@ playlist_manager_cb_lv_dclick ( GtkTreeView * listview , GtkTreePath * path ,
 {
     GtkTreeModel *store;
     GtkTreeIter iter;
-    Playlist *playlist = NULL, *active;
+    gint playlist, active;
 
     store = gtk_tree_view_get_model( GTK_TREE_VIEW(listview) );
     if ( gtk_tree_model_get_iter( store , &iter , path ) == TRUE )
     {
-        gtk_tree_model_get( store , &iter , PLLIST_PLPOINTER , &playlist , -1 );
+        gtk_tree_model_get (store, & iter, PLLIST_NUMBER, & playlist, -1);
         DISABLE_MANAGER_UPDATE();
-        aud_playlist_select_playlist( playlist );
+        aud_playlist_set_active (playlist);
         ENABLE_MANAGER_UPDATE();
     }
 
@@ -253,8 +183,7 @@ playlist_manager_cb_lv_dclick ( GtkTreeView * listview , GtkTreePath * path ,
         /* update bolded playlist */
         active = aud_playlist_get_active();
         do {
-            gtk_tree_model_get( store , &iter ,
-                    PLLIST_PLPOINTER , &playlist , -1 );
+            gtk_tree_model_get (store, & iter, PLLIST_NUMBER, & playlist, -1);
             gtk_list_store_set( GTK_LIST_STORE(store) , &iter ,
                     PLLIST_TEXT_WEIGHT , playlist == active ?
                         PANGO_WEIGHT_BOLD : PANGO_WEIGHT_NORMAL ,
@@ -295,10 +224,11 @@ playlist_manager_cb_lv_name_edited ( GtkCellRendererText *cell , gchar *path_str
 
     if ( gtk_tree_model_get_iter_from_string( store , &iter , path_string ) == TRUE )
     {
-        Playlist *playlist = NULL;
-        gtk_tree_model_get( GTK_TREE_MODEL(store), &iter, PLLIST_PLPOINTER , &playlist , -1 );
+        gint playlist;
+
+        gtk_tree_model_get (store, & iter, PLLIST_NUMBER, & playlist, -1);
         DISABLE_MANAGER_UPDATE();
-        aud_playlist_set_current_name( playlist , new_text );
+        aud_playlist_set_title (playlist, new_text);
         ENABLE_MANAGER_UPDATE();
         gtk_list_store_set( GTK_LIST_STORE(store), &iter, PLLIST_COL_NAME , new_text , -1 );
     }
@@ -337,19 +267,11 @@ playlist_manager_cb_keypress ( GtkWidget *win , GdkEventKey *event )
 }
 
 void playlist_manager_catch_changes (void) {
-   aud_hook_associate ("playlist create", (HookFunction) playlist_manager_update,
-    0);
-   aud_hook_associate ("playlist destroy",
-    (HookFunction) playlist_manager_update, 0);
    aud_hook_associate ("playlist update", (HookFunction) playlist_manager_update,
     0);
 }
 
 void playlist_manager_uncatch_changes (void) {
-   aud_hook_dissociate ("playlist create",
-    (HookFunction) playlist_manager_update);
-   aud_hook_dissociate ("playlist destroy",
-    (HookFunction) playlist_manager_update);
    aud_hook_dissociate ("playlist update",
     (HookFunction) playlist_manager_update);
 }
@@ -397,12 +319,12 @@ playlist_manager_ui_show ( void )
        ----------------------------------------------
        G_TYPE_STRING -> playlist name
        G_TYPE_UINT -> number of entries in playlist
-       G_TYPE_POINTER -> playlist pointer (Playlist*)
+       G_TYPE_INT -> playlist number (gint)
        PANGO_TYPE_WEIGHT -> font weight
        ----------------------------------------------
        */
-    pl_store = gtk_list_store_new( PLLIST_NUMCOLS ,
-            G_TYPE_STRING , G_TYPE_UINT , G_TYPE_POINTER , PANGO_TYPE_WEIGHT );
+    pl_store = gtk_list_store_new (PLLIST_NUMCOLS, G_TYPE_STRING, G_TYPE_UINT,
+     G_TYPE_INT, PANGO_TYPE_WEIGHT);
     active_iter = playlist_manager_populate( pl_store );
 
     playman_pl_lv_frame = gtk_frame_new( NULL );
@@ -499,8 +421,6 @@ playlist_manager_update ( void )
     /* this function is called whenever there is a change in playlist, such as
        playlist created/deleted or entry added/deleted in a playlist; if the playlist
        manager is active, it should be updated to keep consistency of information */
-
-    /* CAREFUL! this currently locks/unlocks all the playlists */
 
     if ( playman_win != NULL )
     {

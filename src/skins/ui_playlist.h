@@ -68,9 +68,9 @@ void playlistwin_set_sinfo_scroll(gboolean scroll);
 gint playlistwin_list_get_visible_count(void);
 gint playlistwin_list_get_first(void);
 
-extern Playlist * active_playlist;
-extern int active_length;
-extern char * active_title;
+extern gint active_playlist;
+extern gchar * active_title;
+extern glong active_length;
 extern GtkWidget * playlistwin, * playlistwin_list;
 
 #endif /* AUDACIOUS_UI_PLAYLIST_H */

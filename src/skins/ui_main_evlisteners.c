@@ -34,16 +34,13 @@
 
 static gint song_info_timeout_source = 0;
 
-typedef struct {
-    gint bitrate;
-    gint samplerate;
-    gint channels;
-} PlaylistEventInfoChange;
-
 static void
 ui_main_evlistener_title_change(gpointer hook_data, gpointer user_data)
 {
-    mainwin_set_song_title (hook_data);
+    gchar * title = aud_playback_get_title ();
+
+    mainwin_set_song_title (title);
+    g_free (title);
 }
 
 static void
@@ -131,12 +128,12 @@ static void seek_cb (void * unused, void * another)
     ui_svis_clear_data (mainwin_svis);
 }
 
-static void
-ui_main_evlistener_playlist_info_change(gpointer hook_data, gpointer user_data)
+static void info_change (void * hook_data, void * user_data)
 {
-    PlaylistEventInfoChange *msg = (PlaylistEventInfoChange *) hook_data;
+    gint bitrate, samplerate, channels;
 
-    mainwin_set_song_info(msg->bitrate, msg->samplerate, msg->channels);
+    audacious_drct_get_info (& bitrate, & samplerate, & channels);
+    mainwin_set_song_info (bitrate, samplerate, channels);
 }
 
 static void
@@ -327,7 +324,7 @@ ui_main_evlistener_init(void)
     aud_hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
     aud_hook_associate("playback play file", ui_main_evlistener_playback_play_file, NULL);
     aud_hook_associate ("playback seek", seek_cb, 0);
-    aud_hook_associate("playlist info change", ui_main_evlistener_playlist_info_change, NULL);
+    aud_hook_associate ("info change", info_change, NULL);
     aud_hook_associate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top, NULL);
     aud_hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
     aud_hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
@@ -350,7 +347,7 @@ ui_main_evlistener_dissociate(void)
     aud_hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
     aud_hook_dissociate("playback play file", ui_main_evlistener_playback_play_file);
     aud_hook_dissociate ("playback seek", seek_cb);
-    aud_hook_dissociate("playlist info change", ui_main_evlistener_playlist_info_change);
+    aud_hook_dissociate ("info change", info_change);
     aud_hook_dissociate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top);
     aud_hook_dissociate("mainwin show", ui_main_evlistener_mainwin_show);
     aud_hook_dissociate("equalizerwin show", ui_main_evlistener_equalizerwin_show);

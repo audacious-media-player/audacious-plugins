@@ -1200,7 +1200,6 @@ void
 action_equ_save_auto_preset(void)
 {
     gchar *name;
-    Playlist *playlist = aud_playlist_get_active();
 
     if (equalizerwin_save_auto_window)
         gtk_window_present(GTK_WINDOW(equalizerwin_save_auto_window));
@@ -1214,8 +1213,10 @@ action_equ_save_auto_preset(void)
                                         G_CALLBACK(equalizerwin_save_auto_ok),
                                         G_CALLBACK(equalizerwin_save_auto_select));
 
-    name = aud_playlist_get_filename(playlist, aud_playlist_get_position(playlist));
-    if (name) {
+    name = audacious_drct_pl_get_file (audacious_drct_pl_get_pos ());
+
+    if (name != NULL)
+    {
         gtk_entry_set_text(GTK_ENTRY(equalizerwin_save_auto_entry),
                            g_basename(name));
         g_free(name);
@@ -1235,7 +1236,6 @@ action_equ_save_preset_file(void)
     GtkWidget *dialog;
     gchar *file_uri;
     gchar *songname;
-    Playlist *playlist = aud_playlist_get_active();
     gint i;
 
     dialog = make_filebrowser(Q_("Save equalizer preset"), TRUE);
@@ -1252,8 +1252,10 @@ action_equ_save_preset_file(void)
         g_free(file_uri);
     }
 
-    songname = aud_playlist_get_filename(playlist, aud_playlist_get_position(playlist));
-    if (songname) {
+    songname = audacious_drct_pl_get_file (audacious_drct_pl_get_pos ());
+
+    if (songname != NULL)
+    {
         gchar *eqname = g_strdup_printf("%s.%s", songname,
                                         aud_cfg->eqpreset_extension);
         g_free(songname);
