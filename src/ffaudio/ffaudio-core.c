@@ -240,7 +240,7 @@ ffaudio_play_file(InputPlayback *playback)
     if (codec == NULL)
         return;
 
-    _DEBUG("got codec %s, opening", codec->name);
+    _DEBUG("got codec %s for stream index %d, opening", codec->name, stream_id);
 
     if (avcodec_open(c, codec) < 0)
         return;
@@ -302,8 +302,12 @@ ffaudio_play_file(InputPlayback *playback)
         } else
             errcount = 0;
 
+        /* Skip the other streams */
+        if (pkt.stream_index != stream_id)
+            continue;
+        
+        /* Decode and play packet/frame */
         memcpy(&tmp, &pkt, sizeof(tmp));
-
         while (tmp.size > 0 && playback->playing)
         {
             guint8 *outbuf_p = outbuf;
