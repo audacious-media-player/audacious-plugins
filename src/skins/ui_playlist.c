@@ -1004,8 +1004,7 @@ static void drag_drop (GtkWidget * widget, GdkDragContext * context, gint x,
 static void drag_data_received (GtkWidget * widget, GdkDragContext * context,
  gint x, gint y, GtkSelectionData * data, guint info, guint time, void * unused)
 {
-    aud_playlist_entry_insert (active_playlist, drop_position, g_strdup
-     ((gchar *) data->data), NULL);
+    insert_drag_list (active_playlist, drop_position, (const gchar *) data->data);
     drop_position = -1;
 }
 
