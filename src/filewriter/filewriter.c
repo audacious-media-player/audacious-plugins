@@ -195,18 +195,18 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     const gchar *directory;
     gint pos;
     gint rv;
-    Playlist *playlist;
+    gint playlist;
 
     input.format = fmt;
     input.frequency = rate;
     input.channels = nch;
 
     playlist = aud_playlist_get_active();
-    if(!playlist)
+    if (!playlist)
         return 0;
 
     pos = aud_playlist_get_position(playlist);
-    tuple = aud_playlist_get_tuple(playlist, pos);
+    tuple = (Tuple*) aud_playlist_entry_get_tuple(playlist, pos);
     if(!tuple)
         return 0;
 
