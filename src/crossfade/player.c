@@ -29,24 +29,20 @@ gboolean xfplayer_input_playing() {
 }
 
 gint xfplaylist_get_position() {
-    Playlist *playlist = aud_playlist_get_active();
-    return aud_playlist_get_position(playlist);
+    return audacious_drct_pl_get_pos();
 }
 
 gchar *xfplaylist_get_filename(gint pos) {
-    Playlist *playlist = aud_playlist_get_active();
-    char *uri = aud_playlist_get_filename(playlist, pos);
+    char *uri = audacious_drct_pl_get_file(pos); 
     return g_strdup(uri);
 }
 
 gchar *xfplaylist_get_songtitle(gint pos) {
-    Playlist *playlist = aud_playlist_get_active();
-    return aud_playlist_get_songtitle(playlist, pos);
+    return audacious_drct_pl_get_title(pos);
 }
 
 gint xfplaylist_current_length() {
-    Playlist *playlist = aud_playlist_get_active();
-    return aud_playlist_get_current_length(playlist);
+    return audacious_drct_pl_get_length();
 }
 
 GList *xfplayer_get_output_list() {

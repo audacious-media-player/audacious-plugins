@@ -32,7 +32,6 @@
 #  include <glib.h>
 
 #include <audacious/plugin.h>
-#include <audacious/playlist.h>
 #include <audacious/auddrct.h>
 #include <audacious/configdb.h>
 #include <audacious/util.h>
