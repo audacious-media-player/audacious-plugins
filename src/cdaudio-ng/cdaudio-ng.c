@@ -129,103 +129,34 @@ static void check_disk (void)
         cdaudio_error ("No audio CD found.\n");
 }
 
-/* thread safe */
-static gboolean get_disk_info (gint * first, gint * last)
-{
-    g_mutex_lock (mutex);
-
-    check_disk ();
-
-    if (trackinfo == NULL)
-    {
-        g_mutex_unlock (mutex);
-        return FALSE;
-    }
-
-    * first = firsttrackno;
-    * last = lasttrackno;
-
-    g_mutex_unlock (mutex);
-    return TRUE;
-}
-
 /* main thread only */
-static gboolean is_our_playlist (Playlist * playlist)
+static void purge_playlist (gint playlist)
 {
-    gint length = aud_playlist_get_length (playlist);
-    gboolean found = FALSE;
+    gint length = aud_playlist_entry_count (playlist);
     gint count;
-    gchar * filename;
-
-    for (count = 0; ! found && count < length; count ++)
-    {
-        filename = aud_playlist_get_filename (playlist, count);
-
-        if (cdaudio_is_our_file (filename))
-            found = TRUE;
-
-        g_free (filename);
-    }
-
-    return found;
-}
-
-/* main thread only */
-static void purge_playlist (Playlist * playlist)
-{
-    gint length = aud_playlist_get_length (playlist);
-    gint count;
-    gchar * filename;
+    const gchar * filename;
 
     for (count = 0; count < length; count ++)
     {
-        filename = aud_playlist_get_filename (playlist, count);
+        filename = aud_playlist_entry_get_filename (playlist, count);
 
         if (cdaudio_is_our_file (filename))
         {
-            aud_playlist_delete_index (playlist, count);
+            aud_playlist_entry_delete (playlist, count, 1);
             count --;
             length --;
         }
-
-        g_free (filename);
     }
 }
 
 /* main thread only */
 static void purge_all_playlists (void)
 {
-    GList * list;
+    gint playlists = aud_playlist_count ();
+    gint count;
 
-    for (list = aud_playlist_get_playlists (); list != NULL; list = list->next)
-        purge_playlist (list->data);
-}
-
-/* main thread only */
-static void trim_playlist (Playlist * playlist, gint first, gint last)
-{
-    gint length = aud_playlist_get_length (playlist);
-    gint count, track;
-    gchar * filename;
-
-    for (count = 0; count < length; count ++)
-    {
-        filename = aud_playlist_get_filename (playlist, count);
-
-        if (cdaudio_is_our_file (filename))
-        {
-            track = find_trackno_from_filename (filename);
-
-            if (track < first || track > last)
-            {
-                aud_playlist_delete_index (playlist, count);
-                count --;
-                length --;
-            }
-        }
-
-        g_free (filename);
-    }
+    for (count = 0; count < playlists; count ++)
+        purge_playlist (count);
 }
 
 /* main thread only */
@@ -250,34 +181,21 @@ static gboolean monitor (gpointer unused)
 }
 
 /* main thread only */
-static void check_playlist (gpointer hook_data, gpointer user_data)
-{
-    gint first, last;
-
-    if (! is_our_playlist (hook_data))
-        return;
-
-    if (get_disk_info (& first, & last))
-        trim_playlist (hook_data, first, last);
-    else
-        purge_all_playlists ();
-}
-
-/* main thread only */
 static void play_cd (GtkMenuItem * item, gpointer user_data)
 {
-    Playlist * playlist = aud_playlist_get_active ();
+    gint playlist = aud_playlist_get_active ();
 
-    audacious_drct_stop ();
-    aud_playlist_clear (playlist);
-    aud_playlist_add (playlist, "cdda://");
+    aud_playlist_entry_delete (playlist, 0, aud_playlist_entry_count (playlist));
+    aud_playlist_entry_insert (playlist, 0, g_strdup ("cdda://"), NULL);
+    aud_playlist_set_playing (playlist);
     audacious_drct_play ();
 }
 
 /* main thread only */
 static void add_cd (GtkMenuItem * item, gpointer user_data)
 {
-    aud_playlist_add (aud_playlist_get_active (), "cdda://");
+    aud_playlist_entry_insert (aud_playlist_get_active (), -1, g_strdup
+     ("cdda://"), NULL);
 }
 
 /* main thread only */
@@ -366,7 +284,6 @@ static void cdaudio_init()
 
         trackinfo = NULL;
         monitor_source = g_timeout_add (1000, monitor, NULL);
-	aud_hook_associate ("playlist load", check_playlist, NULL);
 }
 
 /* main thread only */
@@ -669,7 +586,6 @@ static void cdaudio_cleanup(void)
              menu_items [2 * count + 1]);
         }
 
-	aud_hook_dissociate ("playlist load", check_playlist);
         g_source_remove (monitor_source);
 
 	if (pcdio != NULL) {
