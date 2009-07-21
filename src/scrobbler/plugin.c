@@ -69,19 +69,18 @@ static gboolean ishttp(const char *a)
 	return aud_str_has_prefix_nocase(a, "http://") || aud_str_has_prefix_nocase(a, "https://");
 }
 
-static void aud_hook_playback_begin(gpointer aud_hook_data, gpointer user_data)
+static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 {
-	PlaylistEntry *entry = (PlaylistEntry *) aud_hook_data;
+	gint playlist = aud_playlist_get_active();
+	gint pos = aud_playlist_get_position(playlist);
 
-	g_return_if_fail(entry != NULL);
-
-	if (entry->length < 30)
+	if (aud_playlist_entry_get_length(playlist, pos) < (glong)30)
 	{
 		pdebug(" *** not submitting due to entry->length < 30", DEBUG);
 		return;
 	}
 
-	if (ishttp(entry->filename))
+	if (ishttp(aud_playlist_entry_get_filename(playlist, pos)))
 	{
 		pdebug(" *** not submitting due to HTTP source", DEBUG);
 		return;
@@ -249,12 +248,13 @@ static void *xs_thread(void *data __attribute__((unused)))
 
 		if (submit)
 		{
-			Playlist *playlist;
+			gint playlist, pos;
 
 			pdebug("Submitting song.", DEBUG);
 
 			playlist = aud_playlist_get_active();
-			tuple = aud_playlist_get_tuple(playlist, aud_playlist_get_position(playlist));
+			pos = aud_playlist_get_position(playlist);
+			tuple = (Tuple*) aud_playlist_entry_get_tuple(playlist, pos);
 
 			if (tuple == NULL)
 				continue;
