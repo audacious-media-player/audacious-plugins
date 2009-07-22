@@ -108,8 +108,7 @@ action_play_location( void )
 void
 action_ab_set( void )
 {
-    Playlist *playlist = aud_playlist_get_active();
-    if (aud_playlist_get_current_length(playlist) != -1)
+    if (audacious_drct_get_length () > 0)
     {
         if (ab_position_a == -1)
         {
@@ -133,21 +132,16 @@ action_ab_set( void )
     }
 }
 
-void
-action_ab_clear( void )
+void action_ab_clear (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-    if (aud_playlist_get_current_length(playlist) != -1)
-    {
-        ab_position_a = ab_position_b = -1;
-        /* release info text */
-    }
+    ab_position_a = -1;
+    ab_position_b = -1;
+    /* release info text */
 }
 
-void
-action_current_track_info( void )
+void action_current_track_info (void)
 {
-    aud_playlist_fileinfo_current(aud_playlist_get_active());
+    aud_fileinfo_show_current ();
 }
 
 void
@@ -156,11 +150,9 @@ action_jump_to_file( void )
     gtkui_interface.ops->jump_to_track_show();
 }
 
-void
-action_jump_to_playlist_start( void )
+void action_jump_to_playlist_start (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-    aud_playlist_set_position(playlist, 0);
+    audacious_drct_pl_set_pos (0);
 }
 
 static void
@@ -169,7 +161,6 @@ mainwin_jump_to_time_cb(GtkWidget * widget,
 {
     guint min = 0, sec = 0, params;
     gint time;
-    Playlist *playlist = aud_playlist_get_active();
 
     params = sscanf(gtk_entry_get_text(GTK_ENTRY(entry)), "%u:%u",
                     &min, &sec);
@@ -180,12 +171,8 @@ mainwin_jump_to_time_cb(GtkWidget * widget,
     else
         return;
 
-    if (aud_playlist_get_current_length(playlist) > -1 &&
-        time <= (aud_playlist_get_current_length(playlist) / 1000))
-    {
-        audacious_drct_seek(time);
-        gtk_widget_destroy(mainwin_jtt);
-    }
+    audacious_drct_seek (time);
+    gtk_widget_destroy (mainwin_jtt);
 }
 
 
@@ -294,32 +281,24 @@ action_jump_to_time( void )
     mainwin_jump_to_time();
 }
 
-void
-action_playback_next( void )
+void action_playback_next (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-    aud_playlist_next(playlist);
+    audacious_drct_pl_next ();
 }
 
-void
-action_playback_previous( void )
+void action_playback_previous (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-    aud_playlist_prev(playlist);
+    audacious_drct_pl_prev ();
 }
 
-void
-action_playback_play( void )
+void action_playback_play (void)
 {
     if (ab_position_a != -1)
-        audacious_drct_seek(ab_position_a / 1000);
-    if (audacious_drct_get_paused()) {
-        audacious_drct_pause();
-        return;
-    }
-
-    if (aud_playlist_get_length(aud_playlist_get_active()))
-        audacious_drct_play();
+        audacious_drct_seek (ab_position_a);
+    else if (audacious_drct_get_paused ())
+        audacious_drct_pause ();
+    else
+        audacious_drct_play ();
 }
 
 void
@@ -346,198 +325,180 @@ action_quit( void )
     audacious_drct_quit();
 }
 
-void action_playlist_track_info(void)
+void action_playlist_track_info (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
+    gint playlist = aud_playlist_get_active ();
 
-    /* Show the first selected file, or the current file if nothing is
-     * selected */
-    GList *list = aud_playlist_get_selected(playlist);
-    if (list) {
-        aud_playlist_fileinfo(playlist, GPOINTER_TO_INT(list->data));
-        g_list_free(list);
-    }
+    if (aud_playlist_selected_count (playlist) == 0)
+        aud_fileinfo_show_current ();
     else
-        aud_playlist_fileinfo_current(playlist);
+    {
+        gint entries = aud_playlist_entry_count (playlist);
+        gint count;
+
+        for (count = 0; count < entries; count ++)
+        {
+            if (aud_playlist_entry_get_selected (playlist, count))
+                break;
+        }
+
+        aud_fileinfo_show (playlist, count);
+    }
 }
 
-void action_queue_toggle(void)
+void action_queue_toggle (void)
 {
-    aud_playlist_queue(aud_playlist_get_active());
+    gint playlist = aud_playlist_get_active ();
+    gint queued = aud_playlist_queue_count (playlist);
+
+    if (queued == 0)
+        aud_playlist_queue_insert_selected (playlist, 0);
+    else
+        aud_playlist_queue_delete (playlist, 0, queued);
 }
 
-void action_playlist_sort_by_playlist_entry(void)
+void action_playlist_sort_by_track_number (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort(playlist, PLAYLIST_SORT_PLAYLIST);
+    aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TRACK);
 }
 
-void action_playlist_sort_by_track_number(void)
+void action_playlist_sort_by_title (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort(playlist, PLAYLIST_SORT_TRACK);
+    aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE);
 }
 
-void action_playlist_sort_by_title(void)
+void action_playlist_sort_by_album (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort(playlist, PLAYLIST_SORT_TITLE);
+    aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM);
 }
 
-void action_playlist_sort_by_album(void)
+void action_playlist_sort_by_artist (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort(playlist, PLAYLIST_SORT_ALBUM);
+    aud_playlist_sort_by_scheme (aud_playlist_get_active (),
+     PLAYLIST_SORT_ARTIST);
 }
 
-void action_playlist_sort_by_artist(void)
+void action_playlist_sort_by_full_path (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort(playlist, PLAYLIST_SORT_ARTIST);
+    aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH);
 }
 
-void action_playlist_sort_by_full_path(void)
+void action_playlist_sort_by_date (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort(playlist, PLAYLIST_SORT_PATH);
+    aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_DATE);
 }
 
-void action_playlist_sort_by_date(void)
+void action_playlist_sort_by_filename (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort(playlist, PLAYLIST_SORT_DATE);
+    aud_playlist_sort_by_scheme (aud_playlist_get_active (),
+     PLAYLIST_SORT_FILENAME);
 }
 
-void action_playlist_sort_by_filename(void)
+void action_playlist_sort_selected_by_track_number (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort(playlist, PLAYLIST_SORT_FILENAME);
+    aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (),
+     PLAYLIST_SORT_TRACK);
 }
 
-void action_playlist_sort_selected_by_playlist_entry(void)
+void action_playlist_sort_selected_by_title (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort_selected(playlist, PLAYLIST_SORT_PLAYLIST);
+    aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (),
+     PLAYLIST_SORT_TITLE);
 }
 
-void action_playlist_sort_selected_by_track_number(void)
+void action_playlist_sort_selected_by_album (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort_selected(playlist, PLAYLIST_SORT_TRACK);
+    aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (),
+     PLAYLIST_SORT_ALBUM);
 }
 
-void action_playlist_sort_selected_by_title(void)
+void action_playlist_sort_selected_by_artist (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort_selected(playlist, PLAYLIST_SORT_TITLE);
+    aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (),
+     PLAYLIST_SORT_ARTIST);
 }
 
-void action_playlist_sort_selected_by_album(void)
+void action_playlist_sort_selected_by_full_path (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort_selected(playlist, PLAYLIST_SORT_ALBUM);
+    aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (),
+     PLAYLIST_SORT_PATH);
 }
 
-void action_playlist_sort_selected_by_artist(void)
+void action_playlist_sort_selected_by_date (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort_selected(playlist, PLAYLIST_SORT_ARTIST);
+    aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (),
+     PLAYLIST_SORT_DATE);
 }
 
-void action_playlist_sort_selected_by_full_path(void)
+void action_playlist_sort_selected_by_filename (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort_selected(playlist, PLAYLIST_SORT_PATH);
+    aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (),
+     PLAYLIST_SORT_FILENAME);
 }
 
-void action_playlist_sort_selected_by_date(void)
+void action_playlist_randomize_list (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort_selected(playlist, PLAYLIST_SORT_DATE);
+    aud_playlist_randomize (aud_playlist_get_active ());
 }
 
-void action_playlist_sort_selected_by_filename(void)
+void action_playlist_reverse_list (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_sort_selected(playlist, PLAYLIST_SORT_FILENAME);
+    aud_playlist_reverse (aud_playlist_get_active ());
 }
 
-void action_playlist_randomize_list(void)
+void action_playlist_clear_queue (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_random(playlist);
+    gint playlist = aud_playlist_get_active ();
+    aud_playlist_queue_delete (playlist, 0, aud_playlist_queue_count (playlist));
 }
 
-void action_playlist_reverse_list(void)
+void action_playlist_remove_unavailable (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_reverse(playlist);
+    aud_playlist_remove_failed (aud_playlist_get_active ());
 }
 
-void
-action_playlist_clear_queue(void)
+void action_playlist_remove_dupes_by_title (void)
 {
-    aud_playlist_clear_queue(aud_playlist_get_active());
+    aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (),
+     PLAYLIST_SORT_TITLE);
 }
 
-void
-action_playlist_remove_unavailable(void)
+void action_playlist_remove_dupes_by_filename (void)
 {
-    aud_playlist_remove_dead_files(aud_playlist_get_active());
+    aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (),
+     PLAYLIST_SORT_FILENAME);
 }
 
-void
-action_playlist_remove_dupes_by_title(void)
+void action_playlist_remove_dupes_by_full_path (void)
 {
-    aud_playlist_remove_duplicates(aud_playlist_get_active(), PLAYLIST_DUPS_TITLE);
+    aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (),
+     PLAYLIST_SORT_PATH);
 }
 
-void
-action_playlist_remove_dupes_by_filename(void)
+void action_playlist_remove_all (void)
 {
-    aud_playlist_remove_duplicates(aud_playlist_get_active(), PLAYLIST_DUPS_FILENAME);
+    gint playlist = aud_playlist_get_active ();
+
+    aud_playlist_entry_delete (playlist, 0, aud_playlist_entry_count (playlist));
 }
 
-void
-action_playlist_remove_dupes_by_full_path(void)
+void action_playlist_remove_selected (void)
 {
-    aud_playlist_remove_duplicates(aud_playlist_get_active(), PLAYLIST_DUPS_PATH);
+    aud_playlist_delete_selected (aud_playlist_get_active ());
 }
 
-void
-action_playlist_remove_all(void)
+void action_playlist_remove_unselected (void)
 {
-    aud_playlist_clear(aud_playlist_get_active());
-}
+    gint playlist = aud_playlist_get_active ();
+    gint entries = aud_playlist_entry_count (playlist);
+    gint count;
 
-void
-action_playlist_remove_selected(void)
-{
-    aud_playlist_delete(aud_playlist_get_active(), FALSE);
-}
+    for (count = 0; count < entries; count ++)
+        aud_playlist_entry_set_selected (playlist, count,
+         ! aud_playlist_entry_get_selected (playlist, count));
 
-void
-action_playlist_remove_unselected(void)
-{
-    aud_playlist_delete(aud_playlist_get_active(), TRUE);
+    aud_playlist_delete_selected (playlist);
+    aud_playlist_select_all (playlist, TRUE);
 }
 
 void
@@ -552,32 +513,30 @@ action_playlist_add_url(void)
     gtkui_interface.ops->urlopener_show();
 }
 
-void
-action_playlist_new( void )
+void action_playlist_new (void)
 {
-    Playlist *new_pl = aud_playlist_new();
-    aud_playlist_add_playlist(new_pl);
-    aud_playlist_select_playlist(new_pl);
+    gint playlist = aud_playlist_count ();
+
+    aud_playlist_insert (playlist);
+    aud_playlist_set_active (playlist);
 }
 
-void
-action_playlist_prev( void )
+void action_playlist_prev (void)
 {
-    aud_playlist_select_prev();
+    aud_playlist_set_active (aud_playlist_get_active () - 1);
 }
 
-void
-action_playlist_next( void )
+void action_playlist_next (void)
 {
-    aud_playlist_select_next();
+    aud_playlist_set_active (aud_playlist_get_active () + 1);
 }
 
-void
-action_playlist_delete( void )
+void action_playlist_delete (void)
 {
-    aud_playlist_remove_playlist( aud_playlist_get_active() );
+    aud_playlist_delete (aud_playlist_get_active ());
 }
 
+#if 0
 static void
 on_static_toggle(GtkToggleButton *button, gpointer data)
 {
@@ -599,6 +558,7 @@ on_relative_toggle(GtkToggleButton *button, gpointer data)
         playlist->attribute | PLAYLIST_USE_RELATIVE :
         playlist->attribute & ~PLAYLIST_USE_RELATIVE;
 }
+#endif
 
 static gchar *
 playlist_file_selection_save(const gchar * title,
@@ -606,8 +566,10 @@ playlist_file_selection_save(const gchar * title,
 {
     GtkWidget *dialog;
     gchar *filename;
+#if 0
     GtkWidget *hbox;
     GtkWidget *toggle, *toggle2;
+#endif
 
     g_return_val_if_fail(title != NULL, NULL);
 
@@ -615,6 +577,7 @@ playlist_file_selection_save(const gchar * title,
     gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), aud_cfg->playlist_path);
     gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), default_filename);
 
+#if 0
     hbox = gtk_hbox_new(FALSE, 5);
 
     /* static playlist */
@@ -633,6 +596,7 @@ playlist_file_selection_save(const gchar * title,
 
     gtk_widget_show_all(hbox);
     gtk_file_chooser_set_extra_widget(GTK_FILE_CHOOSER(dialog), hbox);
+#endif
 
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
@@ -739,9 +703,8 @@ playlistwin_save_playlist(const gchar * filename)
 void
 action_playlist_save_list(void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    const gchar *default_filename = aud_playlist_get_current_name(playlist);
+    const gchar * default_filename = aud_playlist_get_filename
+     (aud_playlist_get_active ());
 
     gchar *dot = NULL, *basename = NULL;
     gchar *filename =
@@ -780,19 +743,18 @@ action_playlist_save_default_list(void)
 static void
 playlistwin_load_playlist(const gchar * filename)
 {
-    const gchar *title;
-    Playlist *playlist = aud_playlist_get_active();
+    gint playlist = aud_playlist_get_active();
 
     g_return_if_fail(filename != NULL);
 
     aud_str_replace_in(&aud_cfg->playlist_path, g_path_get_dirname(filename));
 
-    aud_playlist_clear(playlist);
+    aud_playlist_entry_delete (playlist, 0, aud_playlist_entry_count (playlist));
+    aud_playlist_insert_playlist (playlist, 0, filename);
+    aud_playlist_set_filename (playlist, filename);
 
-    aud_playlist_load(playlist, filename);
-    title = aud_playlist_get_current_name(playlist);
-    if(!title || !title[0])
-        aud_playlist_set_current_name(playlist, filename);
+    if (aud_playlist_get_title (playlist) == NULL)
+        aud_playlist_set_title (playlist, filename);
 }
 
 static gchar *
@@ -822,9 +784,8 @@ playlist_file_selection_load(const gchar * title,
 void
 action_playlist_load_list(void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    const gchar *default_filename = aud_playlist_get_current_name(playlist);
+    const gchar * default_filename = aud_playlist_get_filename
+     (aud_playlist_get_active ());
     gchar *filename =
         playlist_file_selection_load(_("Load Playlist"), default_filename);
 
@@ -834,12 +795,9 @@ action_playlist_load_list(void)
     }
 }
 
-void
-action_playlist_refresh_list(void)
+void action_playlist_refresh_list (void)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
-    aud_playlist_read_info_selection(playlist);
+    aud_playlist_rescan (aud_playlist_get_active ());
 }
 
 void

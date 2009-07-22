@@ -232,10 +232,6 @@ static GtkActionEntry action_entries_playlist_sort[] = {
 	  N_("Sorts the list by track number."),
 	  G_CALLBACK(action_playlist_sort_by_track_number) },
 
-	{ "playlist sort by playlist entry", NULL , N_("By Playlist Entry"), NULL,
-	  N_("Sorts the list by playlist entry."),
-	  G_CALLBACK(action_playlist_sort_by_playlist_entry) },
-
 	{ "playlist sort selected menu", GTK_STOCK_GO_DOWN , N_("Sort Selected") },
 
 	{ "playlist sort selected by title", NULL , N_("By Title"), NULL,
@@ -265,10 +261,6 @@ static GtkActionEntry action_entries_playlist_sort[] = {
 	{ "playlist sort selected by track number", NULL , N_("By Track Number"), NULL,
 	  N_("Sorts the list by track number."),
 	  G_CALLBACK(action_playlist_sort_selected_by_track_number) },
-
-	{ "playlist sort selected by playlist entry", NULL, N_("By Playlist Entry"), NULL,
-	  N_("Sorts the list by playlist entry."),
-	  G_CALLBACK(action_playlist_sort_selected_by_playlist_entry) },
 };
 
 static GtkActionEntry action_entries_others[] = {

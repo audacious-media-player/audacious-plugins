@@ -59,7 +59,6 @@ void action_playlist_sort_by_filename(void);
 void action_playlist_sort_by_full_path(void);
 void action_playlist_sort_by_date(void);
 void action_playlist_sort_by_track_number(void);
-void action_playlist_sort_by_playlist_entry(void);
 
 void action_playlist_sort_selected_by_title(void);
 void action_playlist_sort_selected_by_album(void);
@@ -68,7 +67,6 @@ void action_playlist_sort_selected_by_filename(void);
 void action_playlist_sort_selected_by_full_path(void);
 void action_playlist_sort_selected_by_date(void);
 void action_playlist_sort_selected_by_track_number(void);
-void action_playlist_sort_selected_by_playlist_entry(void);
 
 void action_playlist_track_info(void);
 void action_queue_toggle(void);

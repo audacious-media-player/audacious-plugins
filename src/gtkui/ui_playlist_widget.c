@@ -92,7 +92,7 @@ _ui_playlist_widget_get_drop_index(GtkTreeView *widget, GdkDragContext *context,
 
         /* in lower 1/3 of row? use next row as target */
         gtk_tree_view_get_background_area(widget, path, gtk_tree_view_get_column(widget, 0), &rect);
-        
+
         if (cy >= rect.height * 2 / 3.0)
         {
             gtk_tree_path_free(path);
@@ -107,7 +107,7 @@ _ui_playlist_widget_get_drop_index(GtkTreeView *widget, GdkDragContext *context,
     }
 
     return ins_pos;
-} 
+}
 
 static void
 _ui_playlist_widget_drag_data_received(GtkTreeView *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info2, guint time)
@@ -323,9 +323,8 @@ ui_playlist_widget_update(GtkWidget *widget)
         g_free(desc_buf);
         desc_buf = NULL;
 
-        if (length_buf)
-            g_free(length);
-        length = NULL;
+        g_free (length_buf);
+        length_buf = NULL;
 
         valid = gtk_tree_model_iter_next(store, &iter);
     }
