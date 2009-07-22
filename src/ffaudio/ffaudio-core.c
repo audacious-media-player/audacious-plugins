@@ -306,8 +306,10 @@ ffaudio_play_file(InputPlayback *playback)
             errcount = 0;
 
         /* Ignore any other substreams */
-        if (pkt.stream_index != stream_id)
+        if (pkt.stream_index != stream_id) {
+            av_free_packet(&pkt);
             continue;
+        }
         
         /* Decode and play packet/frame */
         memcpy(&tmp, &pkt, sizeof(tmp));
