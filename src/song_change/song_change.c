@@ -28,7 +28,7 @@ static GtkWidget *configure(void);
 static void songchange_playback_begin(gpointer unused, gpointer unused2);
 static void songchange_playback_end(gpointer unused, gpointer unused2);
 static void songchange_playlist_eof(gpointer unused, gpointer unused2);
-static void songchange_playback_ttc(gpointer, gpointer);
+//static void songchange_playback_ttc(gpointer, gpointer);
 
 typedef struct
 {
