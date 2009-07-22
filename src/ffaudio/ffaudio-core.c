@@ -315,7 +315,6 @@ ffaudio_play_file(InputPlayback *playback)
         {
             gint len, out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
             guint8 *outbuf_p = outbuf;
-            memset(outbuf, 0, sizeof(outbuf));
 
             /* Check for seek request and bail out if we have one */
             g_mutex_lock(seek_mutex);
