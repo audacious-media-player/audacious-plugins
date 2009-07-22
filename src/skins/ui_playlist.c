@@ -683,7 +683,9 @@ playlistwin_load_playlist(const gchar * filename)
      (active_playlist));
     aud_playlist_insert_playlist (active_playlist, 0, filename);
     aud_playlist_set_filename (active_playlist, filename);
-    aud_playlist_set_title (active_playlist, filename);
+
+    if (aud_playlist_get_title (active_playlist) == NULL)
+        aud_playlist_set_title (active_playlist, filename);
 }
 
 static gchar *
@@ -1257,6 +1259,7 @@ static void update_cb (void * unused, void * another)
 
 static void follow_cb (void * unused, void * another)
 {
+    update_cb (NULL, NULL); /* make sure we have correct playlist info */
     ui_skinned_playlist_follow (playlistwin_list);
 }
 
