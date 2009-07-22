@@ -208,10 +208,13 @@ ffaudio_play_file(InputPlayback *playback)
     AVCodecContext *c = NULL;
     AVFormatContext *ic = NULL;
     AVStream *s = NULL;
-    gint errcount;
     AVPacket pkt = {};
-    guint8 *outbuf;
-    gint i, stream_id;
+    guint8 *outbuf = NULL, *resbuf = NULL;
+    gint i, stream_id, out_channels, errcount;
+    gint in_sample_size, out_sample_size;
+    ReSampleContext *resctx = NULL;
+    gboolean resample = FALSE;
+    AFormat out_fmt;
     gchar *uribuf, *title;
     Tuple *tuple;
 
@@ -238,21 +241,60 @@ ffaudio_play_file(InputPlayback *playback)
     }
 
     if (codec == NULL)
-        return;
+        goto error_exit;
 
     _DEBUG("got codec %s for stream index %d, opening", codec->name, stream_id);
 
     if (avcodec_open(c, codec) < 0)
-        return;
+        goto error_exit;
 
+    /* Determine if audio conversion or resampling is needed */
+    out_channels = c->channels;
+    in_sample_size = av_get_bits_per_sample_format(c->sample_fmt) / 8;
+    out_sample_size = av_get_bits_per_sample_format(SAMPLE_FMT_S16) / 8;
+
+    if (c->channels > 2)
+        resample = TRUE;
+    
+    switch (c->sample_fmt) {
+        case SAMPLE_FMT_U8: out_fmt = FMT_U8; break;
+        case SAMPLE_FMT_S16: out_fmt = FMT_S16_NE; break;
+        case SAMPLE_FMT_S32: out_fmt = FMT_S32_NE; break;
+        case SAMPLE_FMT_FLT: out_fmt = FMT_FLOAT; break;
+        default: resample = TRUE; break;
+    }
+    
+    if (resample)
+    {
+        /* Initialize resampling context */
+        out_channels = 2;
+        out_fmt = FMT_S16_NE;
+
+        _DEBUG("resampling needed chn=%d, rate=%d, fmt=%d -> chn=%d, rate=%d, fmt=S16NE",
+            c->channels, c->sample_rate, c->sample_fmt,
+            out_channels, c->sample_rate);
+
+        resctx = av_audio_resample_init(
+            out_channels, c->channels,
+            c->sample_rate, c->sample_rate,
+            SAMPLE_FMT_S16, c->sample_fmt,
+            16, 10, 0, 0.8);
+
+        if (resctx == NULL)
+            goto error_exit;
+    }
+    
+    /* Open audio output */
     _DEBUG("opening audio output");
 
-    if (playback->output->open_audio(FMT_S16_NE, c->sample_rate, c->channels) <= 0)
-        return;
+    if (playback->output->open_audio(out_fmt, c->sample_rate, out_channels) <= 0)
+        goto error_exit;
+
+    /* Allocate output buffer aligned to 16 byte boundary */
+    outbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
+    resbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
 
     _DEBUG("setting parameters");
-
-
     tuple = aud_tuple_new_from_filename(playback->filename);
     ffaudio_get_tuple_data(tuple, ic, c, codec);
     title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
@@ -263,12 +305,9 @@ ffaudio_play_file(InputPlayback *playback)
     playback->playing = 1;
     playback->set_pb_ready(playback);
     
-    /* Allocate output buffer aligned to 16 byte boundary */
-    outbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE + 64);
+    errcount = 0;
 
     _DEBUG("playback ready, entering decode loop");
-
-    errcount = 0;
     while (playback->playing)
     {
         AVPacket tmp;
@@ -317,7 +356,7 @@ ffaudio_play_file(InputPlayback *playback)
         while (tmp.size > 0 && playback->playing)
         {
             gint len, out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
-            guint8 *outbuf_p = outbuf;
+            guint8 *outbuf_p;
 
             /* Check for seek request and bail out if we have one */
             g_mutex_lock(seek_mutex);
@@ -347,13 +386,26 @@ ffaudio_play_file(InputPlayback *playback)
                 _DEBUG("no output PCM, continuing (out_size=%d, pkt.size=%d)", out_size, pkt.size);
                 continue;
             }
+            
+            /* Perform audio resampling if necessary */
+            if (resample)
+            {
+                out_size = audio_resample(resctx,
+                    (gint16 *)resbuf, (gint16 *)outbuf,
+                    out_size / in_sample_size) * out_sample_size;
+                outbuf_p = resbuf;
+            }
+            else
+                outbuf_p = outbuf;
 
+            /* Output audio in small blocks */
             while (out_size > 0 && playback->playing)
             {
                 gsize writeoff = out_size >= 512 ? 512 : out_size;
 
-                playback->pass_audio(playback, FMT_S16_NE,
-                          c->channels, out_size >= 512 ? 512 : out_size, (gint16 *)outbuf_p, &playback->playing);
+                playback->pass_audio(playback, out_fmt,
+                    c->channels, out_size >= 512 ? 512 : out_size,
+                    (gint16 *)outbuf_p, NULL);
 
                 outbuf_p += writeoff;
                 out_size -= writeoff;
@@ -372,17 +424,21 @@ ffaudio_play_file(InputPlayback *playback)
             av_free_packet(&pkt);
     }
 
+error_exit:
+
     _DEBUG("decode loop finished, shutting down");
 
     playback->playing = 0;
 
     av_free(outbuf);
-    
+    av_free(resbuf);
+    if (resctx != NULL)
+        audio_resample_close(resctx);
     if (pkt.data)
         av_free_packet(&pkt);
-    if (c)
+    if (c != NULL)
         avcodec_close(c);
-    if (ic)
+    if (ic != NULL)
         av_close_input_file(ic);
 
     playback->output->close_audio();
