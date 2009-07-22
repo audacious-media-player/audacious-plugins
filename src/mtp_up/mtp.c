@@ -37,7 +37,6 @@ gboolean mtp_initialised = FALSE;
 LIBMTP_mtpdevice_t *mtp_device = NULL;
 LIBMTP_progressfunc_t *callback;
 LIBMTP_file_t *filelist;
-Playlist *active_playlist;
 
 static gboolean plugin_active = FALSE,exiting=FALSE;
 
@@ -98,10 +97,10 @@ gboolean free_device(void)
 
 GList * get_upload_list()
 {
+#if 0
     Tuple *tuple;
     GList *node=NULL,*up_list=NULL;
-    PlaylistEntry *entry;
-    Playlist *current_play = aud_playlist_get_active();
+    gint current_play = aud_playlist_get_active();
 
     node = current_play->entries;
     PLAYLIST_LOCK(current_play);            /*needed so that the user doesn't modify the selection*/ 
@@ -118,6 +117,9 @@ GList * get_upload_list()
     }
     PLAYLIST_UNLOCK(current_play);
     return g_list_reverse(up_list);
+#else
+    return NULL;
+#endif
 }
 
 LIBMTP_track_t *track_metadata(Tuple *from_tuple)
