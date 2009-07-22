@@ -300,7 +300,8 @@ ffaudio_play_file(InputPlayback *playback)
                 if (++errcount > 4) {
                     _DEBUG("av_read_frame error %d, giving up.", ret);
                     break;
-                }
+                } else
+                    continue;
             }
         } else
             errcount = 0;
