@@ -609,7 +609,10 @@ static gpointer update_thread_core(gpointer user_data)
 
 static void streaminfo_add_to_playlist(streaminfo_t *streaminfo)
 {
-    if (strlen(streaminfo->playlist_url) > 0) {
+        gint playlist = aud_playlist_get_active();
+        gint entrycount = aud_playlist_entry_count(playlist);
+
+        if (strlen(streaminfo->playlist_url) > 0) {
 		debug("fetching stream playlist for station '%s' from '%s'\n", streaminfo->name, streaminfo->playlist_url);
 		if (!fetch_remote_to_local_file(streaminfo->playlist_url, PLAYLIST_TEMP_FILE)) {
 		    failure("shoutcast: stream playlist '%s' could not be downloaded to '%s'\n", streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
@@ -617,12 +620,12 @@ static void streaminfo_add_to_playlist(streaminfo_t *streaminfo)
 		}
 		debug("stream playlist '%s' successfuly downloaded to '%s'\n", streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
 
-	   	aud_playlist_add(aud_playlist_get_active(), PLAYLIST_TEMP_FILE);
+	   	aud_playlist_entry_insert(aud_playlist_get_active(), entrycount, PLAYLIST_TEMP_FILE, NULL);
 		debug("stream playlist '%s' added\n", streaminfo->playlist_url);
 	}
 
 	if (strlen(streaminfo->url) > 0) {
-		aud_playlist_add(aud_playlist_get_active(), streaminfo->url);
+		aud_playlist_entry_insert(aud_playlist_get_active(), entrycount, streaminfo->url, NULL);
 		debug("stream '%s' added\n", streaminfo->url);
 	}
 }
