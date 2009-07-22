@@ -160,14 +160,14 @@ si_ui_statusicon_popup_show ( gpointer evbox )
   if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "timer_active" )) == 1 )
   {
     Tuple *tuple;
-    Playlist *pl_active = aud_playlist_get_active();
+    gint pl_active = aud_playlist_get_active();
     gint pos = aud_playlist_get_position(pl_active);
     GtkWidget *popup = g_object_get_data( G_OBJECT(evbox) , "popup" );
 
-    tuple = aud_playlist_get_tuple( pl_active , pos );
+    tuple = (Tuple*) aud_playlist_entry_get_tuple( pl_active , pos );
     if ( ( tuple == NULL ) || ( aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) < 1 ) )
     {
-      gchar *title = aud_playlist_get_songtitle( pl_active , pos );
+      gchar *title = (gchar*) aud_playlist_entry_get_title( pl_active , pos );
       audacious_fileinfopopup_show_from_title( popup , title );
       g_free( title );
     }
@@ -234,41 +234,45 @@ static void
 si_ui_statusicon_cb_aud_hook_tchange ( gpointer plentry_gp , gpointer prevs_gp )
 {
   si_aud_hook_tchange_prevs_t *prevs = prevs_gp;
-  PlaylistEntry *pl_entry = plentry_gp;
+  gint pl_entry = GPOINTER_TO_INT(plentry_gp);
+  gint playlist = aud_playlist_get_active();
   gboolean upd_pop = FALSE;
 
-  if ( pl_entry != NULL )
+  if (pl_entry >= 0)
   {
+    gchar *pl_entry_filename = (gchar*) aud_playlist_entry_get_filename(playlist, pl_entry);
+    gchar *pl_entry_title = (gchar*) aud_playlist_entry_get_title(playlist, pl_entry);
+
     if ( ( prevs->title != NULL ) && ( prevs->filename != NULL ) )
     {
-      if ( ( pl_entry->filename != NULL ) &&
-           ( !strcmp(pl_entry->filename,prevs->filename) ) )
+      if ( ( pl_entry_filename != NULL ) &&
+           ( !strcmp(pl_entry_filename, prevs->filename) ) )
       {
-        if ( ( pl_entry->title != NULL ) &&
-             ( strcmp(pl_entry->title,prevs->title) ) )
+        if ( ( pl_entry_title != NULL ) &&
+             ( strcmp(pl_entry_title, prevs->title) ) )
         {
           g_free( prevs->title );
-          prevs->title = g_strdup(pl_entry->title);
+          prevs->title = g_strdup(pl_entry_title);
           upd_pop = TRUE;
         }
       }
       else
       {
         g_free(prevs->filename);
-        prevs->filename = g_strdup(pl_entry->filename);
+        prevs->filename = g_strdup(pl_entry_filename);
         /* if filename changes, reset title as well */
         g_free(prevs->title);
-        prevs->title = g_strdup(pl_entry->title);
+        prevs->title = g_strdup(pl_entry_title);
       }
     }
     else
     {
       if ( prevs->title != NULL )
         g_free(prevs->title);
-      prevs->title = g_strdup(pl_entry->title);
+      prevs->title = g_strdup(pl_entry_title);
       if ( prevs->filename != NULL )
         g_free(prevs->filename);
-      prevs->filename = g_strdup(pl_entry->filename);
+      prevs->filename = g_strdup(pl_entry_filename);
     }
   }
 
