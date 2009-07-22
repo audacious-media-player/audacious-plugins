@@ -52,9 +52,6 @@
 
 #ifdef USE_CHARDET
 #  include "../libguess/libguess.h"
-#  ifdef HAVE_UDET
-#    include <libudet_c.h>
-#  endif
 #endif
 
 /*
@@ -359,7 +356,7 @@ read_ini_string(INIFile *inifile, const gchar *section, const gchar *key)
     gchar *value = NULL;
     gpointer section_hash, key_hash;
     GHashTable *section_table;
-    
+
     g_return_val_if_fail(inifile, NULL);
 
     section_string = g_string_new(section);
