@@ -180,7 +180,7 @@ static void cleanup(void)
 	aud_hook_dissociate("playback begin", songchange_playback_begin);
 	aud_hook_dissociate("playback end", songchange_playback_end);
 	aud_hook_dissociate("playlist end reached", songchange_playlist_eof);
-      aud_hook_dissociate( "playlist set info" , songchange_playback_ttc);
+//      aud_hook_dissociate( "playlist set info" , songchange_playback_ttc);
 
 	if ( ttc_prevs != NULL )
 	{
@@ -454,7 +454,7 @@ static void init(void)
 	ttc_prevs = g_malloc0(sizeof(songchange_playback_ttc_prevs_t));
 	ttc_prevs->title = NULL;
 	ttc_prevs->filename = NULL;
-	aud_hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
+//	aud_hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
 
 	configure_ok_cb(NULL, NULL);
 }
@@ -487,6 +487,7 @@ songchange_playback_end(gpointer unused, gpointer unused2)
 	g_free(current_file);
 }
 
+#if 0
 static void
 songchange_playback_ttc(gpointer plentry_gp, gpointer prevs_gp)
 {
@@ -532,6 +533,7 @@ songchange_playback_ttc(gpointer plentry_gp, gpointer prevs_gp)
     }
   }
 }
+#endif
 
 static void
 songchange_playlist_eof(gpointer unused, gpointer unused2)

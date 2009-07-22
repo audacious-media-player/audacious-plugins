@@ -247,7 +247,7 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 {
     gint rv;
     gint pos;
-    Playlist *playlist;
+    gint playlist;
 
     if (ep_playing == TRUE)
         return 0;
@@ -279,7 +279,7 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
         return 0;
 
     pos = aud_playlist_get_position(playlist);
-    tuple = aud_playlist_get_tuple(playlist, pos);
+    tuple = aud_playlist_entry_get_tuple(playlist, pos);
 
     plugin = plugin_new;
 
