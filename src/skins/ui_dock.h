@@ -39,7 +39,6 @@ gboolean dock_is_moving(GtkWindow * w);
 void dock_shade (GList * window_list, GtkWindow * widget, int new_height);
 
 void dock_window_set_decorated (GtkWidget * widget);
-void dock_window_resize (GtkWindow * widget, int width, int height);
 
 GList *get_dock_window_list();
 

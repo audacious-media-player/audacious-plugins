@@ -127,12 +127,11 @@ equalizerwin_set_scaled(gboolean ds)
     else
         height = 116;
 
-    if (config.scaled) {
-        dock_window_resize(GTK_WINDOW(equalizerwin), 275 * config.scale_factor,
-            height * config.scale_factor);
-    } else {
-        dock_window_resize(GTK_WINDOW(equalizerwin), 275, height);
-    }
+    if (config.scaled)
+        gtk_window_resize ((GtkWindow *) equalizerwin, 275 *
+         config.scale_factor, height * config.scale_factor);
+    else
+        gtk_window_resize ((GtkWindow *) equalizerwin, 275, height);
 
     skinned = (SkinnedWindow *) equalizerwin;
     fixed = (GtkFixed *) skinned->normal;

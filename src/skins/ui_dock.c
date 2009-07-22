@@ -239,17 +239,6 @@ docked_list_move(GList * list, gint x, gint y)
     }
 }
 
-void dock_window_resize (GtkWindow * widget, int width, int height) {
-  GdkGeometry hints;
-   hints.min_width = width;
-   hints.min_height = height;
-   hints.max_width = width;
-   hints.max_height = height;
-   gtk_window_resize (widget, width, height);
-   gtk_window_set_geometry_hints (widget, 0, & hints,
-    GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
-}
-
 static void move_attached (GtkWindow * window, GList * * others, int offset) {
   int x, y, width, height, x2, y2;
   GList * move, * scan, * next;
@@ -292,7 +281,8 @@ void dock_shade (GList * window_list, GtkWindow * window, int new_height) {
          move_attached (move->data, & others, new_height - height);
       g_list_free (others);
    }
-   dock_window_resize (window, width, new_height);
+
+    gtk_window_resize (window, width, new_height);
 }
 
 void
