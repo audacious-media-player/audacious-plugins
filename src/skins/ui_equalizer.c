@@ -194,6 +194,7 @@ equalizerwin_eq_changed(void)
     for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
         aud_cfg->equalizer_bands[i] = equalizerwin_get_band(i);
 
+    ui_skinned_equalizer_graph_update (equalizerwin_graph);
     aud_hook_call("equalizer changed", NULL);
 }
 

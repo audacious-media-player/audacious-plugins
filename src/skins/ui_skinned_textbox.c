@@ -51,7 +51,7 @@ struct _UiSkinnedTextboxPrivate {
     gboolean         scroll_back;
     gint             nominal_y, nominal_height;
     gint             scroll_timeout;
-    gint             font_ascent, font_descent;
+    gint crop;
     PangoFontDescription *font;
     gchar            *fontname;
     gchar            *pixbuf_text;
@@ -513,16 +513,13 @@ void ui_skinned_textbox_set_xfont(GtkWidget *widget, gboolean use_xfont, const g
     text_get_extents(fontname,
                      "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz ",
                      NULL, NULL, &ascent, &descent);
-    priv->font_ascent = ascent;
-    priv->font_descent = descent;
-
 
     if (priv->font == NULL)
         return;
 
-    textbox->height = priv->font_ascent; /* The real height of the text is
-     ascent - descent (descent is negative), but we cut off descent pixels from
-     the top to make it fit better. See textbox_generate_xfont_pixmap. */
+    textbox->height = ascent - descent;
+    priv->crop = textbox->height / 5;
+    textbox->height -= priv->crop;
 }
 
 void ui_skinned_textbox_set_text(GtkWidget *widget, const gchar *text) {
@@ -586,8 +583,7 @@ static void textbox_generate_xfont_pixmap(UiSkinnedTextbox *textbox, const gchar
     layout = gtk_widget_create_pango_layout(mainwin, pixmaptext);
     pango_layout_set_font_description(layout, priv->font);
 
-    gdk_draw_layout (pixmap, gc, 0, priv->font_descent, layout); /* See
-     explanation in ui_skinned_textbox_set_xfont. */
+    gdk_draw_layout (pixmap, gc, 0, - priv->crop, layout);
     g_object_unref(layout);
 
     g_object_unref(maskgc);

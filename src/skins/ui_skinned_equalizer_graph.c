@@ -278,5 +278,11 @@ static void ui_skinned_equalizer_graph_toggle_scaled(UiSkinnedEqualizerGraph *eq
                                         equalizer_graph->height*(equalizer_graph->scaled ? config.scale_factor : 1));
 
     if (GTK_WIDGET_DRAWABLE (widget))
-        ui_skinned_equalizer_graph_expose (widget, 0);
+        ui_skinned_equalizer_graph_expose (widget, NULL);
+}
+
+void ui_skinned_equalizer_graph_update (GtkWidget * graph)
+{
+    if (GTK_WIDGET_DRAWABLE (graph))
+        ui_skinned_equalizer_graph_expose (graph, NULL);
 }

@@ -57,6 +57,7 @@ struct _UiSkinnedEqualizerGraphClass {
 };
 
 GtkWidget* ui_skinned_equalizer_graph_new(GtkWidget *fixed, gint x, gint y);
+void ui_skinned_equalizer_graph_update (GtkWidget * graph);
 
 #ifdef __cplusplus
 }
