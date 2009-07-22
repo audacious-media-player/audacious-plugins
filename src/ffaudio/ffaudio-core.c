@@ -208,9 +208,9 @@ ffaudio_play_file(InputPlayback *playback)
     AVCodecContext *c = NULL;
     AVFormatContext *ic = NULL;
     AVStream *s = NULL;
-    gint out_size, len, errcount;
+    gint errcount;
     AVPacket pkt = {};
-    guint8 outbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
+    guint8 *outbuf;
     gint i, stream_id;
     gchar *uribuf, *title;
     Tuple *tuple;
@@ -262,6 +262,9 @@ ffaudio_play_file(InputPlayback *playback)
     
     playback->playing = 1;
     playback->set_pb_ready(playback);
+    
+    /* Allocate output buffer aligned to 16 byte boundary */
+    outbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE + 64);
 
     _DEBUG("playback ready, entering decode loop");
 
@@ -302,7 +305,7 @@ ffaudio_play_file(InputPlayback *playback)
         } else
             errcount = 0;
 
-        /* Skip the other streams */
+        /* Ignore any other substreams */
         if (pkt.stream_index != stream_id)
             continue;
         
@@ -310,8 +313,8 @@ ffaudio_play_file(InputPlayback *playback)
         memcpy(&tmp, &pkt, sizeof(tmp));
         while (tmp.size > 0 && playback->playing)
         {
+            gint len, out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
             guint8 *outbuf_p = outbuf;
-            out_size = sizeof(outbuf);
             memset(outbuf, 0, sizeof(outbuf));
 
             /* Check for seek request and bail out if we have one */
@@ -339,7 +342,7 @@ ffaudio_play_file(InputPlayback *playback)
 
             if (out_size <= 0)
             {
-                _DEBUG("no output PCM, continuing");
+                _DEBUG("no output PCM, continuing (out_size=%d, pkt.size=%d)", out_size, pkt.size);
                 continue;
             }
 
@@ -371,6 +374,8 @@ ffaudio_play_file(InputPlayback *playback)
 
     playback->playing = 0;
 
+    av_free(outbuf);
+    
     if (pkt.data)
         av_free_packet(&pkt);
     if (c)
