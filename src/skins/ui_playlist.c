@@ -854,7 +854,6 @@ playlistwin_press(GtkWidget * widget,
                   gpointer callback_data)
 {
     gint xpos, ypos;
-    GtkRequisition req;
 
     gtk_window_get_position(GTK_WINDOW(playlistwin), &xpos, &ypos);
 
@@ -873,51 +872,27 @@ playlistwin_press(GtkWidget * widget,
             playlistwin_resize_y = config.playlist_height - event->y;
         }
     }
-    else if (event->button == 1 && REGION_L(12, 37, 29, 11)) {
+    else if (event->button == 1 && REGION_L(12, 37, 29, 11))
         /* ADD button menu */
-        gtk_widget_size_request(playlistwin_pladd_menu, &req);
-        ui_manager_popup_menu_show(GTK_MENU(playlistwin_pladd_menu),
-                   xpos + 12,
-                   (ypos + playlistwin_get_height()) - 8 - req.height,
-                   event->button,
-                   event->time);
-    }
-    else if (event->button == 1 && REGION_L(41, 66, 29, 11)) {
+        ui_popup_menu_show(UI_MENU_PLAYLIST_ADD, xpos + 12, ypos +
+         playlistwin_get_height() - 8, FALSE, TRUE, event->button, event->time);
+    else if (event->button == 1 && REGION_L(41, 66, 29, 11))
         /* SUB button menu */
-        gtk_widget_size_request(playlistwin_pldel_menu, &req);
-        ui_manager_popup_menu_show(GTK_MENU(playlistwin_pldel_menu),
-                   xpos + 40,
-                   (ypos + playlistwin_get_height()) - 8 - req.height,
-                   event->button,
-                   event->time);
-    }
-    else if (event->button == 1 && REGION_L(70, 95, 29, 11)) {
+        ui_popup_menu_show(UI_MENU_PLAYLIST_REMOVE, xpos + 40, ypos +
+         playlistwin_get_height() - 8, FALSE, TRUE, event->button, event->time);
+    else if (event->button == 1 && REGION_L(70, 95, 29, 11))
         /* SEL button menu */
-        gtk_widget_size_request(playlistwin_plsel_menu, &req);
-        ui_manager_popup_menu_show(GTK_MENU(playlistwin_plsel_menu),
-                   xpos + 68,
-                   (ypos + playlistwin_get_height()) - 8 - req.height,
-                   event->button,
-                   event->time);
-    }
-    else if (event->button == 1 && REGION_L(99, 124, 29, 11)) {
+        ui_popup_menu_show(UI_MENU_PLAYLIST_SELECT, xpos + 68, ypos +
+         playlistwin_get_height() - 8, FALSE, TRUE, event->button, event->time);
+    else if (event->button == 1 && REGION_L(99, 124, 29, 11))
         /* MISC button menu */
-        gtk_widget_size_request(playlistwin_plsort_menu, &req);
-        ui_manager_popup_menu_show(GTK_MENU(playlistwin_plsort_menu),
-                   xpos + 100,
-                   (ypos + playlistwin_get_height()) - 8 - req.height,
-                   event->button,
-                   event->time);
-    }
-    else if (event->button == 1 && REGION_R(46, 23, 29, 11)) {
+        ui_popup_menu_show(UI_MENU_PLAYLIST_SORT, xpos + 100, ypos +
+         playlistwin_get_height() - 8, FALSE, TRUE, event->button, event->time);
+    else if (event->button == 1 && REGION_R(46, 23, 29, 11))
         /* LIST button menu */
-        gtk_widget_size_request(playlistwin_pllist_menu, &req);
-        ui_manager_popup_menu_show(GTK_MENU(playlistwin_pllist_menu),
-                   xpos + playlistwin_get_width() - req.width - 12,
-                   (ypos + playlistwin_get_height()) - 8 - req.height,
-                   event->button,
-                   event->time);
-    }
+        ui_popup_menu_show(UI_MENU_PLAYLIST_GENERAL, xpos +
+         playlistwin_get_width() - 12, ypos + playlistwin_get_height() - 8,
+         TRUE, TRUE, event->button, event->time);
     else if (event->button == 1 && event->type == GDK_BUTTON_PRESS &&
              (config.easy_move || event->y < 14))
     {
@@ -931,14 +906,9 @@ playlistwin_press(GtkWidget * widget,
             dock_move_release(GTK_WINDOW(playlistwin));
         return TRUE;
     }
-    else if (event->button == 3) {
-        /*
-         * Pop up the main menu a few pixels down to avoid
-         * anything to be selected initially.
-         */
-        ui_manager_popup_menu_show(GTK_MENU(mainwin_general_menu), event->x_root,
-                                event->y_root + 2, 3, event->time);
-    }
+    else if (event->button == 3)
+        ui_popup_menu_show(UI_MENU_PLAYLIST, event->x_root, event->y_root,
+         FALSE, FALSE, 3, event->time);
 
     return TRUE;
 }
