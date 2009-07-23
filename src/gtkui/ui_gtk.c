@@ -217,7 +217,7 @@ static void ui_playlist_destroyed(void *data, void *unused)
     ui_playlist_destroy_tab(GPOINTER_TO_INT(data));
 }
 
-static void ui_mainwin_real_show()
+static void ui_mainwin_show()
 {
     if (config.save_window_position)
         gtk_window_move(GTK_WINDOW(window), config.player_x, config.player_y);
@@ -226,7 +226,7 @@ static void ui_mainwin_real_show()
     gtk_window_present(GTK_WINDOW(window));
 }
 
-static void ui_mainwin_real_hide()
+static void ui_mainwin_hide()
 {
     if (config.save_window_position)
         gtk_window_get_position(GTK_WINDOW(window), &config.player_x, &config.player_y);
@@ -235,19 +235,20 @@ static void ui_mainwin_real_hide()
 }
 
 
-static void ui_mainwin_show(gpointer hook_data, gpointer user_data)
+static void ui_mainwin_toggle_visibility(gpointer hook_data, gpointer user_data)
 {
     gboolean *show = (gboolean *) hook_data;
 
     config.player_visible = *show;
+    aud_cfg->player_visible = *show;
 
     if (*show)
     {
-        ui_mainwin_real_show();
+        ui_mainwin_show();
     }
     else
     {
-        ui_mainwin_real_hide();
+        ui_mainwin_hide();
     }
 }
 
@@ -414,7 +415,7 @@ static void ui_hooks_associate(void)
     aud_hook_associate("playlist insert", ui_playlist_created, NULL);
     aud_hook_associate("playlist delete", ui_playlist_destroyed, NULL);
     aud_hook_associate("playlist update", ui_set_song_info, NULL);
-    aud_hook_associate("mainwin show", ui_mainwin_show, NULL);
+    aud_hook_associate("mainwin show", ui_mainwin_toggle_visibility, NULL);
 }
 
 static void ui_hooks_disassociate(void)
@@ -427,7 +428,7 @@ static void ui_hooks_disassociate(void)
     aud_hook_dissociate("playlist insert", ui_playlist_created);
     aud_hook_dissociate("playlist delete", ui_playlist_destroyed);
     aud_hook_dissociate("playlist update", ui_set_song_info);
-    aud_hook_dissociate("mainwin show", ui_mainwin_show);
+    aud_hook_dissociate("mainwin show", ui_mainwin_toggle_visibility);
 }
 
 static gboolean _ui_initialize(InterfaceCbs * cbs)
@@ -530,7 +531,10 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     ui_set_song_info(NULL, NULL);
 
-    gtk_widget_show_all(window);
+    gtk_widget_show_all(vbox);
+
+    if (config.player_visible)
+        ui_mainwin_toggle_visibility(&config.player_visible, NULL);
 
     ui_clear_song_info();
 
