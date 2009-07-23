@@ -24,6 +24,7 @@
 #include <libaudgui/ui_fileopener.h>
 #include <libaudgui/ui_gtk.h>
 
+#include "gtkui_cfg.h"
 #include "ui_gtk.h"
 #include "ui_playlist_widget.h"
 #include "ui_manager.h"
@@ -112,11 +113,9 @@ ui_populate_playlist_notebook(void)
 static gboolean
 window_configured_cb(gpointer data)
 {
-#if 0
     GtkWindow *window = GTK_WINDOW(data);
-    gtk_window_get_position(window, &aud_cfg->player_x, &aud_cfg->player_y);
-    gtk_window_get_size(window, &aud_cfg->player_width, &aud_cfg->player_height);
-#endif
+    gtk_window_get_position(window, &config.player_x, &config.player_y);
+    gtk_window_get_size(window, &config.player_width, &config.player_height);
 
     return FALSE;
 }
@@ -234,24 +233,20 @@ static void ui_playlist_destroyed (void * data, void * unused)
 static void
 ui_mainwin_real_show()
 {
-#if 0
-    if (aud_cfg->save_window_position)
-        gtk_window_move(GTK_WINDOW(window), aud_cfg->player_x, aud_cfg->player_y);
-#endif
+    if (config.save_window_position)
+        gtk_window_move(GTK_WINDOW(window), config.player_x, config.player_y);
+
     gtk_widget_show(window);
     gtk_window_present(GTK_WINDOW(window));
-    aud_cfg->player_visible = TRUE;
 }
 
 static void
 ui_mainwin_real_hide()
 {
-#if 0
-    if (aud_cfg->save_window_position)
-        gtk_window_get_position(GTK_WINDOW(window), &aud_cfg->player_x, &aud_cfg->player_y);
-#endif
+    if (config.save_window_position)
+        gtk_window_get_position(GTK_WINDOW(window), &config.player_x, &config.player_y);
+
     gtk_widget_hide(window);
-    aud_cfg->player_visible = FALSE;
 }
 
 
@@ -259,6 +254,8 @@ static void
 ui_mainwin_show(gpointer hook_data, gpointer user_data)
 {
     gboolean *show = (gboolean*)hook_data;
+
+    config.player_visible = *show;
 
     if (*show)
     {
@@ -442,29 +439,29 @@ gtk_markup_label_new(const gchar *str)
 static void
 ui_hooks_associate(void)
 {
-    aud_hook_associate ("title change", ui_set_song_info, NULL);
+    aud_hook_associate("title change", ui_set_song_info, NULL);
     aud_hook_associate("playback seek", (HookFunction) ui_update_song_info, NULL);
-    aud_hook_associate("playback begin", (HookFunction) ui_playback_begin, NULL);
-    aud_hook_associate("playback stop", (HookFunction) ui_playback_stop, NULL);
-    aud_hook_associate("playback end", (HookFunction) ui_playback_end, NULL);
-    aud_hook_associate ("playlist insert", ui_playlist_created, NULL);
-    aud_hook_associate ("playlist delete", ui_playlist_destroyed, NULL);
-    aud_hook_associate ("playlist update", ui_set_song_info, NULL);
-    aud_hook_associate("mainwin show", (HookFunction) ui_mainwin_show, NULL);
+    aud_hook_associate("playback begin", ui_playback_begin, NULL);
+    aud_hook_associate("playback stop", ui_playback_stop, NULL);
+    aud_hook_associate("playback end", ui_playback_end, NULL);
+    aud_hook_associate("playlist insert", ui_playlist_created, NULL);
+    aud_hook_associate("playlist delete", ui_playlist_destroyed, NULL);
+    aud_hook_associate("playlist update", ui_set_song_info, NULL);
+    aud_hook_associate("mainwin show", ui_mainwin_show, NULL);
 }
 
 static void
 ui_hooks_disassociate(void)
 {
-    aud_hook_dissociate ("title change", ui_set_song_info);
+    aud_hook_dissociate("title change", ui_set_song_info);
     aud_hook_dissociate("playback seek", (HookFunction) ui_update_song_info);
-    aud_hook_dissociate("playback begin", (HookFunction) ui_playback_begin);
-    aud_hook_dissociate("playback stop", (HookFunction) ui_playback_stop);
-    aud_hook_dissociate("playback end", (HookFunction) ui_playback_end);
-    aud_hook_dissociate ("playlist insert", ui_playlist_created);
-    aud_hook_dissociate ("playlist delete", ui_playlist_destroyed);
-    aud_hook_dissociate ("playlist update", ui_set_song_info);
-    aud_hook_dissociate("mainwin show", (HookFunction) ui_mainwin_show);
+    aud_hook_dissociate("playback begin", ui_playback_begin);
+    aud_hook_dissociate("playback stop", ui_playback_stop);
+    aud_hook_dissociate("playback end", ui_playback_end);
+    aud_hook_dissociate("playlist insert", ui_playlist_created);
+    aud_hook_dissociate("playlist delete", ui_playlist_destroyed);
+    aud_hook_dissociate("playlist update", ui_set_song_info);
+    aud_hook_dissociate("mainwin show", ui_mainwin_show);
 }
 
 static gboolean
@@ -480,12 +477,10 @@ _ui_initialize(InterfaceCbs *cbs)
               *button_previous, *button_next;
     GtkWidget *menu;
     GtkAccelGroup *accel;
-#if 0
-    gint x = aud_cfg->player_x;
-    gint y = aud_cfg->player_y;
-#endif
 
     gint lvol = 0, rvol = 0; /* Left and Right for the volume control */
+
+    gtkui_cfg_load();
 
     aud_set_default_icon();
     gtkui_interface.ops->register_stock_icons();
@@ -494,15 +489,15 @@ _ui_initialize(InterfaceCbs *cbs)
     ui_manager_create_menus();
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size(GTK_WINDOW(window), 450, 150);
+    gtk_window_set_default_size(GTK_WINDOW(window), MAINWIN_DEFAULT_WIDTH, MAINWIN_DEFAULT_HEIGHT);
 
-#if 0
-    if(aud_cfg->save_window_position && aud_cfg->player_width && aud_cfg->player_height)
-        gtk_window_resize(GTK_WINDOW(window),
-                            aud_cfg->player_width, aud_cfg->player_height);
-    if(aud_cfg->save_window_position && aud_cfg->player_x != -1)
-        gtk_window_move(GTK_WINDOW(window), x, y);
-#endif
+    if (config.save_window_position && config.player_width && config.player_height)
+        gtk_window_resize(GTK_WINDOW(window), config.player_width, config.player_height);
+
+    if (config.save_window_position && config.player_x != -1)
+        gtk_window_move(GTK_WINDOW(window), config.player_x, config.player_y);
+    else
+        gtk_window_move(GTK_WINDOW(window), MAINWIN_DEFAULT_POS_X, MAINWIN_DEFAULT_POS_Y);
 
     g_signal_connect(G_OBJECT(window), "configure-event",
                      G_CALLBACK(window_configured_cb), window);
@@ -510,7 +505,6 @@ _ui_initialize(InterfaceCbs *cbs)
                      G_CALLBACK(window_delete), NULL);
     g_signal_connect(G_OBJECT(window), "destroy",
                      G_CALLBACK(window_destroy), NULL);
-
 
     vbox = gtk_vbox_new(FALSE, 0);
     gtk_container_add(GTK_CONTAINER(window), vbox);
@@ -603,7 +597,6 @@ _ui_initialize(InterfaceCbs *cbs)
     cbs->run_filebrowser = run_filebrowser;
     cbs->hide_filebrowser = hide_filebrowser;
 
-
     gtk_main();
 
     return TRUE;
@@ -612,6 +605,8 @@ _ui_initialize(InterfaceCbs *cbs)
 static gboolean
 _ui_finalize(void)
 {
+    gtkui_cfg_save();
+    gtkui_cfg_free();
     ui_hooks_disassociate();
     return TRUE;
 }

@@ -1,6 +1,7 @@
 PLUGIN = gtkui${PLUGIN_SUFFIX}
 
-SRCS = ui_gtk.c \
+SRCS = gtkui_cfg.c \
+       ui_gtk.c \
        ui_manager.c \
        ui_playlist_widget.c \
        ui_playlist_manager.c \
