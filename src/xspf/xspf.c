@@ -145,24 +145,10 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
 
     if (location != NULL)
     {
-        gchar *scratch = NULL;
+        tuple_set_filename(tuple, location);
 
-        /* filename and path in tuple must be unescaped. */
-        scratch = aud_uri_to_display_basename(location);
-        aud_tuple_associate_string(tuple, FIELD_FILE_NAME, NULL, scratch);
-        g_free(scratch);
-
-        scratch = aud_uri_to_display_dirname(location);
-        aud_tuple_associate_string(tuple, FIELD_FILE_PATH, NULL, scratch);
-        g_free(scratch);
-
-        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, strrchr(location, '.'));
-
-        AUDDBG("tuple->file_name = %s\n", aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
-        AUDDBG("tuple->file_path = %s\n", aud_tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
-
-        index_append (filenames, location);
-        index_append (tuples, tuple);
+        index_append(filenames, location);
+        index_append(tuples, tuple);
     }
 }
 
