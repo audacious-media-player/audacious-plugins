@@ -30,7 +30,8 @@ gtkui_cfg_t gtkui_default_config = {
     .player_visible = TRUE,
 };
 
-typedef struct gtkui_cfg_boolent_t {
+typedef struct gtkui_cfg_boolent_t
+{
     gchar const *be_vname;
     gboolean *be_vloc;
     gboolean be_wrt;
@@ -43,7 +44,8 @@ static gtkui_cfg_boolent gtkui_boolents[] = {
 
 static gint ncfgbent = G_N_ELEMENTS(gtkui_boolents);
 
-typedef struct gtkui_cfg_nument_t {
+typedef struct gtkui_cfg_nument_t
+{
     gchar const *ie_vname;
     gint *ie_vloc;
     gboolean ie_wrt;
@@ -58,7 +60,8 @@ static gtkui_cfg_nument gtkui_numents[] = {
 
 static gint ncfgient = G_N_ELEMENTS(gtkui_numents);
 
-typedef struct gtkui_cfg_strent_t {
+typedef struct gtkui_cfg_strent_t
+{
     gchar const *se_vname;
     gchar **se_vloc;
     gboolean se_wrt;
@@ -77,7 +80,7 @@ void gtkui_cfg_free()
     {
         if (*(gtkui_strents[i].se_vloc) != NULL)
         {
-            g_free( *(gtkui_strents[i].se_vloc) );
+            g_free(*(gtkui_strents[i].se_vloc));
             *(gtkui_strents[i].se_vloc) = NULL;
         }
     }
@@ -92,23 +95,17 @@ void gtkui_cfg_load()
 
     for (i = 0; i < ncfgbent; ++i)
     {
-        aud_cfg_db_get_bool(cfgfile, "gtkui",
-                            gtkui_boolents[i].be_vname,
-                            gtkui_boolents[i].be_vloc);
+        aud_cfg_db_get_bool(cfgfile, "gtkui", gtkui_boolents[i].be_vname, gtkui_boolents[i].be_vloc);
     }
 
     for (i = 0; i < ncfgient; ++i)
     {
-        aud_cfg_db_get_int(cfgfile, "gtkui",
-                           gtkui_numents[i].ie_vname,
-                           gtkui_numents[i].ie_vloc);
+        aud_cfg_db_get_int(cfgfile, "gtkui", gtkui_numents[i].ie_vname, gtkui_numents[i].ie_vloc);
     }
 
     for (i = 0; i < ncfgsent; ++i)
     {
-        aud_cfg_db_get_string(cfgfile, "gtkui",
-                              gtkui_strents[i].se_vname,
-                              gtkui_strents[i].se_vloc);
+        aud_cfg_db_get_string(cfgfile, "gtkui", gtkui_strents[i].se_vname, gtkui_strents[i].se_vloc);
     }
 
     aud_cfg_db_close(cfgfile);
@@ -123,25 +120,19 @@ void gtkui_cfg_save()
     for (i = 0; i < ncfgsent; ++i)
     {
         if (gtkui_strents[i].se_wrt)
-            aud_cfg_db_set_string(cfgfile, "gtkui",
-                                  gtkui_strents[i].se_vname,
-                                  *gtkui_strents[i].se_vloc);
+            aud_cfg_db_set_string(cfgfile, "gtkui", gtkui_strents[i].se_vname, *gtkui_strents[i].se_vloc);
     }
 
     for (i = 0; i < ncfgbent; ++i)
     {
         if (gtkui_boolents[i].be_wrt)
-            aud_cfg_db_set_bool(cfgfile, "gtkui",
-                                gtkui_boolents[i].be_vname,
-                                *gtkui_boolents[i].be_vloc);
+            aud_cfg_db_set_bool(cfgfile, "gtkui", gtkui_boolents[i].be_vname, *gtkui_boolents[i].be_vloc);
     }
 
     for (i = 0; i < ncfgient; ++i)
     {
         if (gtkui_numents[i].ie_wrt)
-            aud_cfg_db_set_int(cfgfile, "gtkui",
-                               gtkui_numents[i].ie_vname,
-                               *gtkui_numents[i].ie_vloc);
+            aud_cfg_db_set_int(cfgfile, "gtkui", gtkui_numents[i].ie_vname, *gtkui_numents[i].ie_vloc);
     }
 
     aud_cfg_db_close(cfgfile);

@@ -23,8 +23,8 @@
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
 
-void ui_playlist_widget_set_current(GtkWidget *treeview, gint pos);
-void ui_playlist_widget_update(GtkWidget *widget);
-GtkWidget * ui_playlist_widget_new (gint playlist);
+void ui_playlist_widget_set_current(GtkWidget * treeview, gint pos);
+void ui_playlist_widget_update(GtkWidget * widget);
+GtkWidget *ui_playlist_widget_new(gint playlist);
 
 #endif

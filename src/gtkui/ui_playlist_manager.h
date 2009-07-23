@@ -20,7 +20,7 @@
 #ifndef AUDACIOUS_UI_PLAYLIST_MANAGER_H
 #define AUDACIOUS_UI_PLAYLIST_MANAGER_H
 
-void playlist_manager_update ( void );
-void playlist_manager_ui_show ( void );
+void playlist_manager_update(void);
+void playlist_manager_ui_show(void);
 
 #endif /* AUDACIOUS_UI_PLAYLIST_MANAGER_H */

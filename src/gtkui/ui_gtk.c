@@ -29,7 +29,7 @@
 #include "ui_playlist_widget.h"
 #include "ui_manager.h"
 
-static GtkWidget *window;      /* the main window */
+static GtkWidget *window;       /* the main window */
 static GtkWidget *label_time;
 static GtkWidget *slider;
 static GtkWidget *playlist_notebook;
@@ -41,7 +41,7 @@ static gint update_song_timeout_source = 0;
 
 static gulong volume_change_handler_id;
 
-static gboolean _ui_initialize(InterfaceCbs *cbs);
+static gboolean _ui_initialize(InterfaceCbs * cbs);
 static gboolean _ui_finalize(void);
 
 Interface gtkui_interface = {
@@ -53,65 +53,56 @@ Interface gtkui_interface = {
 
 SIMPLE_INTERFACE_PLUGIN("gtkui", &gtkui_interface);
 
-static struct index * pages;
+static struct index *pages;
 
-static void ui_playlist_create_tab (gint playlist)
+static void ui_playlist_create_tab(gint playlist)
 {
-    GtkWidget * scrollwin, * treeview;
+    GtkWidget *scrollwin, *treeview;
     GtkWidget *label;
 
     scrollwin = gtk_scrolled_window_new(NULL, NULL);
-    index_insert (pages, playlist, scrollwin);
-    g_object_set_data ((GObject *) scrollwin, "playlist", GINT_TO_POINTER
-     (playlist));
+    index_insert(pages, playlist, scrollwin);
+    g_object_set_data((GObject *) scrollwin, "playlist", GINT_TO_POINTER(playlist));
 
-    treeview = ui_playlist_widget_new (playlist);
-    g_object_set_data ((GObject *) scrollwin, "treeview", treeview);
+    treeview = ui_playlist_widget_new(playlist);
+    g_object_set_data((GObject *) scrollwin, "treeview", treeview);
 
-    gtk_container_add ((GtkContainer *) scrollwin, treeview);
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollwin),
-                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-    gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrollwin),
-                                        GTK_SHADOW_IN);
+    gtk_container_add((GtkContainer *) scrollwin, treeview);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollwin), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+    gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrollwin), GTK_SHADOW_IN);
     gtk_widget_show_all(scrollwin);
 
-    label = gtk_label_new (aud_playlist_get_title (playlist));
-    gtk_notebook_append_page ((GtkNotebook *) playlist_notebook, scrollwin,
-     label);
+    label = gtk_label_new(aud_playlist_get_title(playlist));
+    gtk_notebook_append_page((GtkNotebook *) playlist_notebook, scrollwin, label);
 }
 
-static void ui_playlist_destroy_tab (gint playlist)
+static void ui_playlist_destroy_tab(gint playlist)
 {
-    GtkWidget * page = index_get (pages, playlist);
+    GtkWidget *page = index_get(pages, playlist);
 
-    gtk_notebook_remove_page ((GtkNotebook *) playlist_notebook,
-     gtk_notebook_page_num ((GtkNotebook *) playlist_notebook, page));
-    index_delete (pages, playlist, 1);
+    gtk_notebook_remove_page((GtkNotebook *) playlist_notebook, gtk_notebook_page_num((GtkNotebook *) playlist_notebook, page));
+    index_delete(pages, playlist, 1);
 }
 
-static void ui_playlist_change_tab (GtkNotebook * notebook, GtkNotebookPage *
- notebook_page, gint page_num, void * unused)
+static void ui_playlist_change_tab(GtkNotebook * notebook, GtkNotebookPage * notebook_page, gint page_num, void *unused)
 {
-    GtkWidget * page = gtk_notebook_get_nth_page (notebook, page_num);
+    GtkWidget *page = gtk_notebook_get_nth_page(notebook, page_num);
 
-    aud_playlist_set_active (GPOINTER_TO_INT (g_object_get_data ((GObject *)
-     page, "playlist")));
+    aud_playlist_set_active(GPOINTER_TO_INT(g_object_get_data((GObject *) page, "playlist")));
 }
 
-static void
-ui_populate_playlist_notebook(void)
+static void ui_populate_playlist_notebook(void)
 {
-    gint playlists = aud_playlist_count ();
+    gint playlists = aud_playlist_count();
     gint count;
 
-    pages = index_new ();
+    pages = index_new();
 
-    for (count = 0; count < playlists; count ++)
-        ui_playlist_create_tab (count);
+    for (count = 0; count < playlists; count++)
+        ui_playlist_create_tab(count);
 }
 
-static gboolean
-window_configured_cb(gpointer data)
+static gboolean window_configured_cb(gpointer data)
 {
     GtkWindow *window = GTK_WINDOW(data);
     gtk_window_get_position(window, &config.player_x, &config.player_y);
@@ -120,23 +111,24 @@ window_configured_cb(gpointer data)
     return FALSE;
 }
 
-static gboolean
-window_delete()
+static gboolean window_delete()
 {
     return FALSE;
 }
 
-static void
-window_destroy(GtkWidget *widget, gpointer data)
+static void window_destroy(GtkWidget * widget, gpointer data)
 {
     gtk_main_quit();
 }
 
-void show_preferences_window(gboolean show) {
+void show_preferences_window(gboolean show)
+{
     static GtkWidget **prefswin = NULL;
 
-    if (show) {
-        if ((prefswin != NULL) && (*prefswin != NULL)) {
+    if (show)
+    {
+        if ((prefswin != NULL) && (*prefswin != NULL))
+        {
             gtk_window_present(GTK_WINDOW(*prefswin));
             return;
         }
@@ -144,62 +136,58 @@ void show_preferences_window(gboolean show) {
         prefswin = gtkui_interface.ops->create_prefs_window();
 
         gtk_widget_show_all(*prefswin);
-    } else {
-        if ((prefswin != NULL) && (*prefswin != NULL)) {
+    }
+    else
+    {
+        if ((prefswin != NULL) && (*prefswin != NULL))
+        {
             gtkui_interface.ops->destroy_prefs_window();
         }
     }
 }
 
-static void
-button_open_pressed()
+static void button_open_pressed()
 {
     run_filebrowser(TRUE);
 }
 
-static void
-button_add_pressed()
+static void button_add_pressed()
 {
     run_filebrowser(FALSE);
 }
 
-static void
-button_play_pressed()
+static void button_play_pressed()
 {
     audacious_drct_play();
 }
 
-static void
-button_pause_pressed()
+static void button_pause_pressed()
 {
     audacious_drct_pause();
 }
 
-static void
-button_stop_pressed()
+static void button_stop_pressed()
 {
     audacious_drct_stop();
     return;
 }
 
-static void
-button_previous_pressed()
+static void button_previous_pressed()
 {
-    audacious_drct_pl_prev ();
+    audacious_drct_pl_prev();
 }
 
-static void
-button_next_pressed()
+static void button_next_pressed()
 {
-    audacious_drct_pl_next ();
+    audacious_drct_pl_next();
 }
 
-static void ui_set_song_info (void * unused, void * another)
+static void ui_set_song_info(void *unused, void *another)
 {
     gint length = audacious_drct_get_length();
-    gint playlist = aud_playlist_get_active ();
-    GtkWidget * page = index_get (pages, playlist);
-    GtkWidget * treeview = g_object_get_data ((GObject *) page, "treeview");
+    gint playlist = aud_playlist_get_active();
+    GtkWidget *page = index_get(pages, playlist);
+    GtkWidget *treeview = g_object_get_data((GObject *) page, "treeview");
 
     if (!g_signal_handler_is_connected(slider, slider_change_handler_id))
         return;
@@ -210,28 +198,26 @@ static void ui_set_song_info (void * unused, void * another)
     /* block "value-changed" signal handler to prevent skipping track
        if the next track is shorter than the previous one --desowin */
     g_signal_handler_block(slider, slider_change_handler_id);
-    gtk_range_set_range(GTK_RANGE(slider), 0.0, (gdouble)length);
+    gtk_range_set_range(GTK_RANGE(slider), 0.0, (gdouble) length);
     g_signal_handler_unblock(slider, slider_change_handler_id);
 
     gtk_widget_show(label_time);
 
-    ui_playlist_widget_set_current (treeview, aud_playlist_get_position
-     (playlist));
-    ui_playlist_widget_update (treeview);
+    ui_playlist_widget_set_current(treeview, aud_playlist_get_position(playlist));
+    ui_playlist_widget_update(treeview);
 }
 
-static void ui_playlist_created (void * data, void * unused)
+static void ui_playlist_created(void *data, void *unused)
 {
-    ui_playlist_create_tab (GPOINTER_TO_INT (data));
+    ui_playlist_create_tab(GPOINTER_TO_INT(data));
 }
 
-static void ui_playlist_destroyed (void * data, void * unused)
+static void ui_playlist_destroyed(void *data, void *unused)
 {
-    ui_playlist_destroy_tab (GPOINTER_TO_INT (data));
+    ui_playlist_destroy_tab(GPOINTER_TO_INT(data));
 }
 
-static void
-ui_mainwin_real_show()
+static void ui_mainwin_real_show()
 {
     if (config.save_window_position)
         gtk_window_move(GTK_WINDOW(window), config.player_x, config.player_y);
@@ -240,8 +226,7 @@ ui_mainwin_real_show()
     gtk_window_present(GTK_WINDOW(window));
 }
 
-static void
-ui_mainwin_real_hide()
+static void ui_mainwin_real_hide()
 {
     if (config.save_window_position)
         gtk_window_get_position(GTK_WINDOW(window), &config.player_x, &config.player_y);
@@ -250,10 +235,9 @@ ui_mainwin_real_hide()
 }
 
 
-static void
-ui_mainwin_show(gpointer hook_data, gpointer user_data)
+static void ui_mainwin_show(gpointer hook_data, gpointer user_data)
 {
-    gboolean *show = (gboolean*)hook_data;
+    gboolean *show = (gboolean *) hook_data;
 
     config.player_visible = *show;
 
@@ -267,8 +251,7 @@ ui_mainwin_show(gpointer hook_data, gpointer user_data)
     }
 }
 
-static void
-ui_update_time_info(gint time)
+static void ui_update_time_info(gint time)
 {
     gchar text[128];
     gint length = audacious_drct_get_length();
@@ -276,15 +259,11 @@ ui_update_time_info(gint time)
     time /= 1000;
     length /= 1000;
 
-    g_snprintf(text, sizeof(text)/sizeof(gchar),
-               "<tt><b>%d:%.2d/%d:%.2d</b></tt>",
-               time / 60, time % 60,
-               length / 60, length % 60);
+    g_snprintf(text, sizeof(text) / sizeof(gchar), "<tt><b>%d:%.2d/%d:%.2d</b></tt>", time / 60, time % 60, length / 60, length % 60);
     gtk_label_set_markup(GTK_LABEL(label_time), text);
 }
 
-static gboolean
-ui_update_song_info(gpointer hook_data, gpointer user_data)
+static gboolean ui_update_song_info(gpointer hook_data, gpointer user_data)
 {
     if (!audacious_drct_get_playing())
     {
@@ -302,7 +281,7 @@ ui_update_song_info(gpointer hook_data, gpointer user_data)
         return TRUE;
 
     g_signal_handler_block(slider, slider_change_handler_id);
-    gtk_range_set_value(GTK_RANGE(slider), (gdouble)time);
+    gtk_range_set_value(GTK_RANGE(slider), (gdouble) time);
     g_signal_handler_unblock(slider, slider_change_handler_id);
 
     ui_update_time_info(time);
@@ -310,15 +289,13 @@ ui_update_song_info(gpointer hook_data, gpointer user_data)
     return TRUE;
 }
 
-static void
-ui_clear_song_info()
+static void ui_clear_song_info()
 {
     gtk_widget_hide(label_time);
     gtk_range_set_value(GTK_RANGE(slider), 0);
 }
 
-static gboolean
-ui_slider_value_changed_cb(GtkRange *range, gpointer user_data)
+static gboolean ui_slider_value_changed_cb(GtkRange * range, gpointer user_data)
 {
     gint seek_;
 
@@ -331,80 +308,71 @@ ui_slider_value_changed_cb(GtkRange *range, gpointer user_data)
     return TRUE;
 }
 
-static gboolean
-ui_slider_change_value_cb(GtkRange *range, GtkScrollType scroll)
+static gboolean ui_slider_change_value_cb(GtkRange * range, GtkScrollType scroll)
 {
     ui_update_time_info(gtk_range_get_value(range));
     return FALSE;
 }
 
-static gboolean
-ui_slider_button_press_cb(GtkWidget *widget, GdkEventButton *event,
-                          gpointer user_data)
+static gboolean ui_slider_button_press_cb(GtkWidget * widget, GdkEventButton * event, gpointer user_data)
 {
     slider_is_moving = TRUE;
 
     /* HACK: clicking with the left mouse button moves the slider
        to the location of the click. */
-    if (event->button == 1) event->button = 2;
+    if (event->button == 1)
+        event->button = 2;
 
     return FALSE;
 }
 
-static gboolean
-ui_slider_button_release_cb(GtkWidget *widget, GdkEventButton *event,
-                            gpointer user_data)
+static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton * event, gpointer user_data)
 {
     /* HACK: see ui_slider_button_press_cb */
-    if (event->button == 1) event->button = 2;
+    if (event->button == 1)
+        event->button = 2;
 
     slider_is_moving = FALSE;
     return FALSE;
 }
 
-static gboolean
-ui_volume_value_changed_cb(GtkButton *button, gdouble volume, gpointer user_data)
+static gboolean ui_volume_value_changed_cb(GtkButton * button, gdouble volume, gpointer user_data)
 {
-    audacious_drct_set_volume((gint)volume, (gint)volume);
+    audacious_drct_set_volume((gint) volume, (gint) volume);
 
     return TRUE;
 }
 
-static void
-ui_playback_begin(gpointer hook_data, gpointer user_data)
+static void ui_playback_begin(gpointer hook_data, gpointer user_data)
 {
     ui_update_song_info(NULL, NULL);
 
     /* update song info 4 times a second */
-    update_song_timeout_source =
-        g_timeout_add(250, (GSourceFunc) ui_update_song_info, NULL);
+    update_song_timeout_source = g_timeout_add(250, (GSourceFunc) ui_update_song_info, NULL);
 }
 
-static void
-ui_playback_stop(gpointer hook_data, gpointer user_data)
+static void ui_playback_stop(gpointer hook_data, gpointer user_data)
 {
-    gint playlist = aud_playlist_get_active ();
-    GtkWidget * page = index_get (pages, playlist);
-    GtkWidget * treeview = g_object_get_data ((GObject *) page, "treeview");
+    gint playlist = aud_playlist_get_active();
+    GtkWidget *page = index_get(pages, playlist);
+    GtkWidget *treeview = g_object_get_data((GObject *) page, "treeview");
 
-    if (update_song_timeout_source) {
+    if (update_song_timeout_source)
+    {
         g_source_remove(update_song_timeout_source);
         update_song_timeout_source = 0;
     }
 
     ui_clear_song_info();
-    ui_playlist_widget_set_current (treeview, -1);
+    ui_playlist_widget_set_current(treeview, -1);
 }
 
-static void
-ui_playback_end(gpointer hook_data, gpointer user_data)
+static void ui_playback_end(gpointer hook_data, gpointer user_data)
 {
     ui_update_song_info(NULL, NULL);
 }
 
-static GtkWidget *
-gtk_toolbar_button_add(GtkWidget *toolbar, void(*callback)(),
-                       const gchar *stock_id)
+static GtkWidget *gtk_toolbar_button_add(GtkWidget * toolbar, void (*callback) (), const gchar * stock_id)
 {
     GtkWidget *button = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(button), stock_id);
@@ -414,30 +382,29 @@ gtk_toolbar_button_add(GtkWidget *toolbar, void(*callback)(),
     /* remove label */
     GtkBox *box = GTK_BOX(gtk_bin_get_child(GTK_BIN(gtk_bin_get_child(GTK_BIN(button)))));
     GList *iter;
-    for (iter = box->children; iter; iter = g_list_next(iter)) {
+    for (iter = box->children; iter; iter = g_list_next(iter))
+    {
         GtkBoxChild *child = (GtkBoxChild *) iter->data;
-        if (GTK_IS_LABEL(child->widget)) {
+        if (GTK_IS_LABEL(child->widget))
+        {
             gtk_label_set_text(GTK_LABEL(child->widget), NULL);
             break;
         }
     }
 
     gtk_box_pack_start(GTK_BOX(toolbar), button, TRUE, TRUE, 0);
-    g_signal_connect(G_OBJECT(button), "clicked",
-                     G_CALLBACK(callback), NULL);
+    g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(callback), NULL);
     return button;
 }
 
-static GtkWidget *
-gtk_markup_label_new(const gchar *str)
+static GtkWidget *gtk_markup_label_new(const gchar * str)
 {
     GtkWidget *label = gtk_label_new(str);
     g_object_set(G_OBJECT(label), "use-markup", TRUE, NULL);
     return label;
 }
 
-static void
-ui_hooks_associate(void)
+static void ui_hooks_associate(void)
 {
     aud_hook_associate("title change", ui_set_song_info, NULL);
     aud_hook_associate("playback seek", (HookFunction) ui_update_song_info, NULL);
@@ -450,8 +417,7 @@ ui_hooks_associate(void)
     aud_hook_associate("mainwin show", ui_mainwin_show, NULL);
 }
 
-static void
-ui_hooks_disassociate(void)
+static void ui_hooks_disassociate(void)
 {
     aud_hook_dissociate("title change", ui_set_song_info);
     aud_hook_dissociate("playback seek", (HookFunction) ui_update_song_info);
@@ -464,21 +430,18 @@ ui_hooks_disassociate(void)
     aud_hook_dissociate("mainwin show", ui_mainwin_show);
 }
 
-static gboolean
-_ui_initialize(InterfaceCbs *cbs)
+static gboolean _ui_initialize(InterfaceCbs * cbs)
 {
-    GtkWidget *vbox;        /* the main vertical box */
-    GtkWidget *tophbox;     /* box to contain toolbar and shbox */
-    GtkWidget *buttonbox;   /* contains buttons like "open", "next" */
-    GtkWidget *shbox;       /* box for volume control + slider + time combo --nenolod */
-    GtkWidget *plbox;       /* box for playlist and volume control */
-    GtkWidget *button_open, *button_add,
-              *button_play, *button_pause, *button_stop,
-              *button_previous, *button_next;
+    GtkWidget *vbox;            /* the main vertical box */
+    GtkWidget *tophbox;         /* box to contain toolbar and shbox */
+    GtkWidget *buttonbox;       /* contains buttons like "open", "next" */
+    GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
+    GtkWidget *plbox;           /* box for playlist and volume control */
+    GtkWidget *button_open, *button_add, *button_play, *button_pause, *button_stop, *button_previous, *button_next;
     GtkWidget *menu;
     GtkAccelGroup *accel;
 
-    gint lvol = 0, rvol = 0; /* Left and Right for the volume control */
+    gint lvol = 0, rvol = 0;    /* Left and Right for the volume control */
 
     gtkui_cfg_load();
 
@@ -499,12 +462,9 @@ _ui_initialize(InterfaceCbs *cbs)
     else
         gtk_window_move(GTK_WINDOW(window), MAINWIN_DEFAULT_POS_X, MAINWIN_DEFAULT_POS_Y);
 
-    g_signal_connect(G_OBJECT(window), "configure-event",
-                     G_CALLBACK(window_configured_cb), window);
-    g_signal_connect(G_OBJECT(window), "delete-event",
-                     G_CALLBACK(window_delete), NULL);
-    g_signal_connect(G_OBJECT(window), "destroy",
-                     G_CALLBACK(window_destroy), NULL);
+    g_signal_connect(G_OBJECT(window), "configure-event", G_CALLBACK(window_configured_cb), window);
+    g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), NULL);
+    g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(window_destroy), NULL);
 
     vbox = gtk_vbox_new(FALSE, 0);
     gtk_container_add(GTK_CONTAINER(window), vbox);
@@ -519,20 +479,13 @@ _ui_initialize(InterfaceCbs *cbs)
     gtk_box_pack_start(GTK_BOX(vbox), tophbox, FALSE, TRUE, 0);
 
     buttonbox = gtk_hbox_new(FALSE, 0);
-    button_open = gtk_toolbar_button_add(buttonbox, button_open_pressed,
-                                         GTK_STOCK_OPEN);
-    button_add = gtk_toolbar_button_add(buttonbox, button_add_pressed,
-                                        GTK_STOCK_ADD);
-    button_play = gtk_toolbar_button_add(buttonbox, button_play_pressed,
-                                         GTK_STOCK_MEDIA_PLAY);
-    button_pause = gtk_toolbar_button_add(buttonbox, button_pause_pressed,
-                                          GTK_STOCK_MEDIA_PAUSE);
-    button_stop = gtk_toolbar_button_add(buttonbox, button_stop_pressed,
-                                         GTK_STOCK_MEDIA_STOP);
-    button_previous = gtk_toolbar_button_add(buttonbox, button_previous_pressed,
-                                             GTK_STOCK_MEDIA_PREVIOUS);
-    button_next = gtk_toolbar_button_add(buttonbox, button_next_pressed,
-                                         GTK_STOCK_MEDIA_NEXT);
+    button_open = gtk_toolbar_button_add(buttonbox, button_open_pressed, GTK_STOCK_OPEN);
+    button_add = gtk_toolbar_button_add(buttonbox, button_add_pressed, GTK_STOCK_ADD);
+    button_play = gtk_toolbar_button_add(buttonbox, button_play_pressed, GTK_STOCK_MEDIA_PLAY);
+    button_pause = gtk_toolbar_button_add(buttonbox, button_pause_pressed, GTK_STOCK_MEDIA_PAUSE);
+    button_stop = gtk_toolbar_button_add(buttonbox, button_stop_pressed, GTK_STOCK_MEDIA_STOP);
+    button_previous = gtk_toolbar_button_add(buttonbox, button_previous_pressed, GTK_STOCK_MEDIA_PREVIOUS);
+    button_next = gtk_toolbar_button_add(buttonbox, button_next_pressed, GTK_STOCK_MEDIA_NEXT);
 
     gtk_box_pack_start(GTK_BOX(tophbox), buttonbox, FALSE, FALSE, 0);
 
@@ -551,9 +504,9 @@ _ui_initialize(InterfaceCbs *cbs)
     volume = gtk_volume_button_new();
     gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
     /* Set the default volume to the balance average.
-        (I'll add balance control later) -Ryan */
+       (I'll add balance control later) -Ryan */
     audacious_drct_get_volume(&lvol, &rvol);
-    gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), (lvol+rvol)/2);
+    gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), (lvol + rvol) / 2);
     gtk_box_pack_start(GTK_BOX(shbox), volume, FALSE, FALSE, 0);
 
     plbox = gtk_hbox_new(FALSE, 0);
@@ -565,25 +518,17 @@ _ui_initialize(InterfaceCbs *cbs)
     ui_hooks_associate();
     ui_populate_playlist_notebook();
 
-    g_signal_connect(playlist_notebook, "switch-page",
-                     G_CALLBACK(ui_playlist_change_tab), NULL);
+    g_signal_connect(playlist_notebook, "switch-page", G_CALLBACK(ui_playlist_change_tab), NULL);
 
-    slider_change_handler_id =
-        g_signal_connect(slider, "value-changed",
-                         G_CALLBACK(ui_slider_value_changed_cb), NULL);
+    slider_change_handler_id = g_signal_connect(slider, "value-changed", G_CALLBACK(ui_slider_value_changed_cb), NULL);
 
-    g_signal_connect(slider, "change-value",
-                     G_CALLBACK(ui_slider_change_value_cb), NULL);
-    g_signal_connect(slider, "button-press-event",
-                     G_CALLBACK(ui_slider_button_press_cb), NULL);
-    g_signal_connect(slider, "button-release-event",
-                     G_CALLBACK(ui_slider_button_release_cb), NULL);
+    g_signal_connect(slider, "change-value", G_CALLBACK(ui_slider_change_value_cb), NULL);
+    g_signal_connect(slider, "button-press-event", G_CALLBACK(ui_slider_button_press_cb), NULL);
+    g_signal_connect(slider, "button-release-event", G_CALLBACK(ui_slider_button_release_cb), NULL);
 
-    volume_change_handler_id =
-    g_signal_connect(volume, "value-changed",
-                     G_CALLBACK(ui_volume_value_changed_cb), NULL);
+    volume_change_handler_id = g_signal_connect(volume, "value-changed", G_CALLBACK(ui_volume_value_changed_cb), NULL);
 
-    ui_set_song_info (NULL, NULL);
+    ui_set_song_info(NULL, NULL);
 
     gtk_widget_show_all(window);
 
@@ -602,8 +547,7 @@ _ui_initialize(InterfaceCbs *cbs)
     return TRUE;
 }
 
-static gboolean
-_ui_finalize(void)
+static gboolean _ui_finalize(void)
 {
     gtkui_cfg_save();
     gtkui_cfg_free();

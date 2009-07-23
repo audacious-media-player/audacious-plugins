@@ -28,7 +28,8 @@
 #define MAINWIN_DEFAULT_POS_X     100
 #define MAINWIN_DEFAULT_POS_Y     100
 
-typedef struct {
+typedef struct
+{
     gint player_x, player_y;
     gint player_width, player_height;
     gboolean save_window_position;

@@ -25,7 +25,8 @@
 
 #include "ui_manager.h"
 
-enum {
+enum
+{
     COLUMN_NUM = 0,
     COLUMN_TEXT,
     COLUMN_TIME,
@@ -34,14 +35,14 @@ enum {
     N_COLUMNS
 };
 
-typedef struct {
+typedef struct
+{
     gint old_index;
     gint new_index;
     GtkTreeRowReference *ref;
 } UiPlaylistDragTracker;
 
-static gint
-ui_playlist_widget_get_index_from_path(GtkTreePath *path)
+static gint ui_playlist_widget_get_index_from_path(GtkTreePath * path)
 {
     gint *pos;
 
@@ -53,8 +54,7 @@ ui_playlist_widget_get_index_from_path(GtkTreePath *path)
     return pos[0];
 }
 
-static void
-_ui_playlist_widget_drag_begin(GtkTreeView *widget, GdkDragContext *context, gpointer data)
+static void _ui_playlist_widget_drag_begin(GtkTreeView * widget, GdkDragContext * context, gpointer data)
 {
     UiPlaylistDragTracker *t = g_slice_new0(UiPlaylistDragTracker);
     GtkTreeModel *model;
@@ -78,8 +78,7 @@ _ui_playlist_widget_drag_begin(GtkTreeView *widget, GdkDragContext *context, gpo
     g_object_set_data(G_OBJECT(widget), "ui_playlist_drag_context", t);
 }
 
-static int
-_ui_playlist_widget_get_drop_index(GtkTreeView *widget, GdkDragContext *context, gint x, gint y)
+static int _ui_playlist_widget_get_drop_index(GtkTreeView * widget, GdkDragContext * context, gint x, gint y)
 {
     GtkTreePath *path;
     gint cx, cy, ins_pos = -1;
@@ -109,8 +108,7 @@ _ui_playlist_widget_get_drop_index(GtkTreeView *widget, GdkDragContext *context,
     return ins_pos;
 }
 
-static void
-_ui_playlist_widget_drag_data_received(GtkTreeView *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info2, guint time)
+static void _ui_playlist_widget_drag_data_received(GtkTreeView * widget, GdkDragContext * context, gint x, gint y, GtkSelectionData * data, guint info2, guint time)
 {
     UiPlaylistDragTracker *t;
     t = g_object_get_data(G_OBJECT(widget), "ui_playlist_drag_context");
@@ -118,8 +116,7 @@ _ui_playlist_widget_drag_data_received(GtkTreeView *widget, GdkDragContext *cont
     t->new_index = _ui_playlist_widget_get_drop_index(widget, context, x, y);
 }
 
-static void
-_ui_playlist_widget_drag_end(GtkTreeView *widget, GdkDragContext *context, gpointer data)
+static void _ui_playlist_widget_drag_end(GtkTreeView * widget, GdkDragContext * context, gpointer data)
 {
     gint playlist = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "my_playlist"));
     gint delta;
@@ -140,8 +137,7 @@ _ui_playlist_widget_drag_end(GtkTreeView *widget, GdkDragContext *context, gpoin
     g_signal_handler_unblock(G_OBJECT(sel), handler_id);
 }
 
-static void
-_ui_playlist_widget_selection_update(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer playlist_p)
+static void _ui_playlist_widget_selection_update(GtkTreeModel * model, GtkTreePath * path, GtkTreeIter * iter, gpointer playlist_p)
 {
     gint entry;
 
@@ -150,8 +146,7 @@ _ui_playlist_widget_selection_update(GtkTreeModel *model, GtkTreePath *path, Gtk
     aud_playlist_entry_set_selected(GPOINTER_TO_INT(playlist_p), entry, TRUE);
 }
 
-static void
-_ui_playlist_widget_selection_changed(GtkTreeSelection *selection, gpointer playlist_p)
+static void _ui_playlist_widget_selection_changed(GtkTreeSelection * selection, gpointer playlist_p)
 {
     gint playlist = GPOINTER_TO_INT(playlist_p);
 
@@ -160,8 +155,7 @@ _ui_playlist_widget_selection_changed(GtkTreeSelection *selection, gpointer play
     gtk_tree_selection_selected_foreach(selection, _ui_playlist_widget_selection_update, playlist_p);
 }
 
-static void
-ui_playlist_widget_change_song(GtkTreeView *treeview, guint pos)
+static void ui_playlist_widget_change_song(GtkTreeView * treeview, guint pos)
 {
     gint playlist = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(treeview), "my_playlist"));
     aud_playlist_set_position(playlist, pos);
@@ -170,9 +164,7 @@ ui_playlist_widget_change_song(GtkTreeView *treeview, guint pos)
         audacious_drct_play();
 }
 
-static void
-ui_playlist_widget_set_title_active(GtkTreeModel *model, gint pos,
-                                    gboolean active)
+static void ui_playlist_widget_set_title_active(GtkTreeModel * model, gint pos, gboolean active)
 {
     GtkTreeIter iter;
     GtkTreePath *path;
@@ -180,14 +172,12 @@ ui_playlist_widget_set_title_active(GtkTreeModel *model, gint pos,
     path = gtk_tree_path_new_from_indices(pos, -1);
     gtk_tree_model_get_iter(model, &iter, path);
 
-    gtk_list_store_set(GTK_LIST_STORE(model), &iter,
-                       COLUMN_WEIGHT, active ? PANGO_WEIGHT_BOLD : PANGO_WEIGHT_NORMAL, -1);
+    gtk_list_store_set(GTK_LIST_STORE(model), &iter, COLUMN_WEIGHT, active ? PANGO_WEIGHT_BOLD : PANGO_WEIGHT_NORMAL, -1);
 
     gtk_tree_path_free(path);
 }
 
-void
-ui_playlist_widget_set_current(GtkWidget *treeview, gint pos)
+void ui_playlist_widget_set_current(GtkWidget * treeview, gint pos)
 {
     GtkTreeModel *model;
     GtkTreePath *path;
@@ -211,7 +201,7 @@ ui_playlist_widget_set_current(GtkWidget *treeview, gint pos)
             if (gtk_tree_view_get_visible_range(GTK_TREE_VIEW(treeview), &start_path, &end_path))
             {
                 start_pos = gtk_tree_path_get_indices(start_path);
-                end_pos   = gtk_tree_path_get_indices(end_path);
+                end_pos = gtk_tree_path_get_indices(end_path);
 
                 /* autoscroll only if the current track is invisible */
                 if (start_pos != NULL && end_pos != NULL && (pos >= *end_pos || pos <= *start_pos))
@@ -229,8 +219,7 @@ ui_playlist_widget_set_current(GtkWidget *treeview, gint pos)
     g_object_set_data(G_OBJECT(treeview), "current", GINT_TO_POINTER(pos));
 }
 
-static void
-ui_playlist_widget_jump(GtkTreeView * treeview, gpointer data)
+static void ui_playlist_widget_jump(GtkTreeView * treeview, gpointer data)
 {
     GtkTreeModel *model;
     GtkTreeSelection *selection;
@@ -250,34 +239,29 @@ ui_playlist_widget_jump(GtkTreeView * treeview, gpointer data)
     ui_playlist_widget_change_song(treeview, pos);
 }
 
-static gboolean
-ui_playlist_widget_keypress_cb(GtkWidget * widget,
-                            GdkEventKey * event,
-                            gpointer data)
+static gboolean ui_playlist_widget_keypress_cb(GtkWidget * widget, GdkEventKey * event, gpointer data)
 {
-    switch (event->keyval) {
-    case GDK_KP_Enter:
-        ui_playlist_widget_jump(GTK_TREE_VIEW(widget), NULL);
-        return TRUE;
-    default:
-        return FALSE;
+    switch (event->keyval)
+    {
+      case GDK_KP_Enter:
+          ui_playlist_widget_jump(GTK_TREE_VIEW(widget), NULL);
+          return TRUE;
+      default:
+          return FALSE;
     };
 }
 
-static gboolean
-ui_playlist_widget_button_press_cb(GtkWidget *widget, GdkEventButton *event)
+static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventButton * event)
 {
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
     {
-        ui_manager_popup_menu_show(GTK_MENU(playlistwin_popup_menu), event->x_root,
-                                   event->y_root + 2, 3, event->time);
+        ui_manager_popup_menu_show(GTK_MENU(playlistwin_popup_menu), event->x_root, event->y_root + 2, 3, event->time);
     }
 
     return FALSE;
 }
 
-void
-ui_playlist_widget_update(GtkWidget *widget)
+void ui_playlist_widget_update(GtkWidget * widget)
 {
     guint row, length;
     gboolean valid;
@@ -295,13 +279,15 @@ ui_playlist_widget_update(GtkWidget *widget)
     playlist = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "my_playlist"));
     length = aud_playlist_entry_count(playlist);
 
-    for (row = 0; row < length; row++) {
+    for (row = 0; row < length; row++)
+    {
         const gchar *title = aud_playlist_entry_get_title(playlist, row);
         gint length = aud_playlist_entry_get_length(playlist, row);
 
         if (title)
             desc_buf = g_strdup(title);
-        else {
+        else
+        {
             const gchar *filename = aud_playlist_entry_get_filename(playlist, row);
             if (strchr(filename, '/'))
                 desc_buf = aud_str_to_utf8(strrchr(filename, '/') + 1);
@@ -309,60 +295,60 @@ ui_playlist_widget_update(GtkWidget *widget)
                 desc_buf = aud_str_to_utf8(filename);
         }
 
-        if (length != -1) {
+        if (length != -1)
+        {
             length_buf = g_strdup_printf("%d:%-2.2d", length / 60000, (length / 1000) % 60);
         }
 
         if (!valid)
             gtk_list_store_append(GTK_LIST_STORE(store), &iter);
-        gtk_list_store_set(GTK_LIST_STORE(store), &iter,
-                           COLUMN_NUM, row + 1, COLUMN_TEXT, desc_buf,
-                           COLUMN_TIME, length_buf,
-                           COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL, -1);
+        gtk_list_store_set(GTK_LIST_STORE(store), &iter, COLUMN_NUM, row + 1, COLUMN_TEXT, desc_buf, COLUMN_TIME, length_buf, COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL, -1);
 
         g_free(desc_buf);
         desc_buf = NULL;
 
-        g_free (length_buf);
+        g_free(length_buf);
         length_buf = NULL;
 
         valid = gtk_tree_model_iter_next(store, &iter);
     }
 
     /* remove additional rows */
-    while (valid) {
+    while (valid)
+    {
         valid = gtk_list_store_remove(GTK_LIST_STORE(store), &iter);
     }
 
     ui_playlist_widget_set_current(widget, aud_playlist_get_position(playlist));
 }
 
-static gboolean
-ui_playlist_widget_fill(gpointer treeview)
+static gboolean ui_playlist_widget_fill(gpointer treeview)
 {
     gint playlist;
     gchar *desc_buf = NULL;
     gchar *length_buf = NULL;
     guint row, length;
     GtkTreeIter iter;
-    GtkListStore *store = (GtkListStore*)gtk_tree_view_get_model( GTK_TREE_VIEW(treeview) );
+    GtkListStore *store = (GtkListStore *) gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
 
     /* detach model from treeview before fill */
     g_object_ref(store);
-    gtk_tree_view_set_model( GTK_TREE_VIEW(treeview), NULL );
+    gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), NULL);
 
     gtk_list_store_clear(store);
 
     playlist = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(treeview), "my_playlist"));
     length = aud_playlist_entry_count(playlist);
 
-    for (row = 0; row < length; row++) {
+    for (row = 0; row < length; row++)
+    {
         const gchar *title = aud_playlist_entry_get_title(playlist, row);
         gint length = aud_playlist_entry_get_length(playlist, row);
 
         if (title)
             desc_buf = g_strdup(title);
-        else {
+        else
+        {
             const gchar *filename = aud_playlist_entry_get_filename(playlist, row);
             if (strchr(filename, '/'))
                 desc_buf = aud_str_to_utf8(strrchr(filename, '/') + 1);
@@ -370,15 +356,13 @@ ui_playlist_widget_fill(gpointer treeview)
                 desc_buf = aud_str_to_utf8(filename);
         }
 
-        if (length != -1) {
+        if (length != -1)
+        {
             length_buf = g_strdup_printf("%d:%-2.2d", length / 60000, (length / 1000) % 60);
         }
 
         gtk_list_store_append(GTK_LIST_STORE(store), &iter);
-        gtk_list_store_set(GTK_LIST_STORE(store), &iter,
-                           COLUMN_NUM, row + 1, COLUMN_TEXT, desc_buf,
-                           COLUMN_TIME, length_buf,
-                           COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL, -1);
+        gtk_list_store_set(GTK_LIST_STORE(store), &iter, COLUMN_NUM, row + 1, COLUMN_TEXT, desc_buf, COLUMN_TIME, length_buf, COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL, -1);
 
         g_free(desc_buf);
         desc_buf = NULL;
@@ -395,8 +379,7 @@ ui_playlist_widget_fill(gpointer treeview)
     return FALSE;
 }
 
-GtkWidget *
-ui_playlist_widget_new(gint playlist)
+GtkWidget *ui_playlist_widget_new(gint playlist)
 {
     GtkWidget *treeview;
     GtkListStore *store;
@@ -425,8 +408,7 @@ ui_playlist_widget_new(gint playlist)
     renderer = gtk_cell_renderer_text_new();
     gtk_tree_view_column_pack_start(column, renderer, TRUE);
     gtk_tree_view_column_set_attributes(column, renderer, "text", COLUMN_TEXT, "weight", COLUMN_WEIGHT, NULL);
-    g_object_set(G_OBJECT(renderer), "ypad", 0, "ellipsize-set", TRUE,
-                 "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+    g_object_set(G_OBJECT(renderer), "ypad", 0, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
     renderer = gtk_cell_renderer_text_new();
     gtk_tree_view_column_pack_start(column, renderer, FALSE);
@@ -435,27 +417,20 @@ ui_playlist_widget_new(gint playlist)
 
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 
-    g_signal_connect(treeview, "row-activated",
-                     G_CALLBACK(ui_playlist_widget_jump), NULL);
+    g_signal_connect(treeview, "row-activated", G_CALLBACK(ui_playlist_widget_jump), NULL);
 
-    g_signal_connect(treeview, "key-press-event",
-                     G_CALLBACK(ui_playlist_widget_keypress_cb), NULL);
-    g_signal_connect(treeview, "button-press-event",
-                     G_CALLBACK(ui_playlist_widget_button_press_cb), NULL);
+    g_signal_connect(treeview, "key-press-event", G_CALLBACK(ui_playlist_widget_keypress_cb), NULL);
+    g_signal_connect(treeview, "button-press-event", G_CALLBACK(ui_playlist_widget_button_press_cb), NULL);
 
-    g_signal_connect(treeview, "drag-begin",
-                     G_CALLBACK(_ui_playlist_widget_drag_begin), NULL);
-    g_signal_connect(treeview, "drag-data-received",
-                     G_CALLBACK(_ui_playlist_widget_drag_data_received), NULL);
-    g_signal_connect(treeview, "drag-end",
-                     G_CALLBACK(_ui_playlist_widget_drag_end), NULL);
+    g_signal_connect(treeview, "drag-begin", G_CALLBACK(_ui_playlist_widget_drag_begin), NULL);
+    g_signal_connect(treeview, "drag-data-received", G_CALLBACK(_ui_playlist_widget_drag_data_received), NULL);
+    g_signal_connect(treeview, "drag-end", G_CALLBACK(_ui_playlist_widget_drag_end), NULL);
 
     g_object_set_data(G_OBJECT(treeview), "current", GINT_TO_POINTER(-1));
     g_object_set_data(G_OBJECT(treeview), "my_playlist", GINT_TO_POINTER(playlist));
 
     selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
-    selection_changed_handler_id = g_signal_connect(selection, "changed",
-                                                    G_CALLBACK(_ui_playlist_widget_selection_changed), GINT_TO_POINTER(playlist));
+    selection_changed_handler_id = g_signal_connect(selection, "changed", G_CALLBACK(_ui_playlist_widget_selection_changed), GINT_TO_POINTER(playlist));
     g_object_set_data(G_OBJECT(treeview), "selection_changed_handler_id", GINT_TO_POINTER(selection_changed_handler_id));
 
     ui_playlist_widget_fill(treeview);
