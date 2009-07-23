@@ -95,31 +95,25 @@ gboolean free_device(void)
     return TRUE;        
 }
 
-GList * get_upload_list()
+GList *
+get_upload_list(void)
 {
-#if 0
     Tuple *tuple;
-    GList *node=NULL,*up_list=NULL;
+    GList *up_list=NULL;
     gint current_play = aud_playlist_get_active();
+    gint i = (aud_playlist_entry_count(current_play) - 1);
 
-    node = current_play->entries;
-    PLAYLIST_LOCK(current_play);            /*needed so that the user doesn't modify the selection*/ 
-    while (node)                            /*while creating the list of files to be uploaded*/
+    for (; i >= 0; i--)
     {
-        entry = PLAYLIST_ENTRY(node->data);
-        if (entry->selected)  
+        if (aud_playlist_entry_get_selected(current_play, i))
         {
-            tuple = entry->tuple;
-            up_list=g_list_prepend(up_list,tuple);        
-            entry->selected = FALSE;
+            tuple = aud_playlist_entry_get_tuple(current_play, i);
+            aud_playlist_entry_set_selected(current_play, i, FALSE);
+            up_list = g_list_prepend(up_list, tuple);
         }
-        node = g_list_next(node);
     }
-    PLAYLIST_UNLOCK(current_play);
+
     return g_list_reverse(up_list);
-#else
-    return NULL;
-#endif
 }
 
 LIBMTP_track_t *track_metadata(Tuple *from_tuple)
