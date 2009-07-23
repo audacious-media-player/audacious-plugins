@@ -53,9 +53,6 @@
 
 #ifdef USE_CHARDET
 #  include "../libguess/libguess.h"
-#  ifdef HAVE_UDET
-#    include <libudet_c.h>
-#  endif
 #endif
 
 #include "plugin.h"
