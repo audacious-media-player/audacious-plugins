@@ -58,6 +58,7 @@
 
 #include <audacious/icons-stock.h>
 #include <libaudgui/ui_fileopener.h>
+#include <libaudgui/ui_urlopener.h>
 #include "images/audacious_playlist.xpm"
 
 gint active_playlist;
@@ -1491,7 +1492,7 @@ action_playlist_add_files(void)
 void
 action_playlist_add_url(void)
 {
-    skins_interface.ops->urlopener_show();
+    show_add_url_window();
 }
 
 void action_playlist_new (void)

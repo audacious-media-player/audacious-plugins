@@ -37,6 +37,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <libaudgui/ui_fileopener.h>
+#include <libaudgui/ui_urlopener.h>
 
 /* GDK including */
 #include "platform/smartinclude.h"
@@ -2570,7 +2571,7 @@ action_play_file( void )
 void
 action_play_location( void )
 {
-    skins_interface.ops->urlopener_show();
+    show_add_url_window();
 }
 
 void

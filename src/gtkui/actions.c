@@ -49,6 +49,7 @@
 
 #include <audacious/plugin.h>
 #include <libaudgui/ui_fileopener.h>
+#include <libaudgui/ui_urlopener.h>
 #include "ui_gtk.h"
 #include "../skins/ui_playlist_manager.h"
 #include "util.h"
@@ -102,7 +103,7 @@ action_play_file( void )
 void
 action_play_location( void )
 {
-    gtkui_interface.ops->urlopener_show();
+    show_add_url_window();
 }
 
 void
@@ -510,7 +511,7 @@ action_playlist_add_files(void)
 void
 action_playlist_add_url(void)
 {
-    gtkui_interface.ops->urlopener_show();
+    show_add_url_window();
 }
 
 void action_playlist_new (void)
