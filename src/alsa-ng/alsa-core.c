@@ -363,7 +363,7 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
     bitwidth = snd_pcm_format_physical_width(afmt);
     bps = (rate * bitwidth * nch) >> 3;
 
-    buf_size = aud_cfg->output_buffer_size ? aud_cfg->output_buffer_size : 500;
+    buf_size = MAX(aud_cfg->output_buffer_size, 100);
     ringbuf_size = buf_size * bps / 1000;
 
     if (alsaplug_ringbuffer_init(&pcm_ringbuf, ringbuf_size) == -1) {
