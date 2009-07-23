@@ -36,11 +36,6 @@
 #include <gtk/gtk.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include <math.h>
-
-#include "platform/smartinclude.h"
-#include <errno.h>
 
 #ifdef HAVE_FTS_H
 #  include <sys/types.h>
@@ -48,102 +43,9 @@
 #  include <fts.h>
 #endif
 
-#include <audacious/input.h>
-#include <audacious/playback.h>
-
-#ifdef USE_CHARDET
-#  include "../libguess/libguess.h"
-#endif
+#include <libaudcore/audstrings.h>
 
 #include "plugin.h"
-
-/*
- * find <file> in directory <dirname> or subdirectories.  return
- * pointer to complete filename which has to be freed by calling
- * "g_free()" after use. Returns NULL if file could not be found.
- */
-
-/* somebody tell me how to make use of those funcs from string.h that are in core... */
-gboolean
-str_has_suffix_nocase(const gchar * str, const gchar * suffix)
-{
-    return (strcasecmp(str + strlen(str) - strlen(suffix), suffix) == 0);
-}
-
-static gchar *
-str_replace_char(gchar * str, gchar old, gchar new)
-{
-    gchar *match;
-
-    g_return_val_if_fail(str != NULL, NULL);
-
-    match = str;
-    while ((match = strchr(match, old)))
-        *match = new;
-
-    return str;
-}
-
-static gchar *
-str_replace_drive_letter(gchar * str)
-{
-    gchar *match, *match_end;
-
-    g_return_val_if_fail(str != NULL, NULL);
-
-    while ((match = strstr(str, ":\\"))) {
-        match--;
-        match_end = match + 3;
-        *match++ = '/';
-        while (*match_end)
-            *match++ = *match_end++;
-        *match = 0; /* the end of line */
-    }
-
-    return str;
-}
-
-gchar *
-convert_dos_path(gchar * path)
-{
-    g_return_val_if_fail(path != NULL, NULL);
-
-    /* replace drive letter with '/' */
-    str_replace_drive_letter(path);
-
-    /* replace '\' with '/' */
-    str_replace_char(path, '\\', '/');
-
-    return path;
-}
-
-gchar *
-escape_shell_chars(const gchar * string)
-{
-    const gchar *special = "$`\"\\";    /* Characters to escape */
-    const gchar *in = string;
-    gchar *out, *escaped;
-    gint num = 0;
-
-    while (*in != '\0')
-        if (strchr(special, *in++))
-            num++;
-
-    escaped = g_malloc(strlen(string) + num + 1);
-
-    in = string;
-    out = escaped;
-
-    while (*in != '\0') {
-        if (strchr(special, *in))
-            *out++ = '\\';
-        *out++ = *in++;
-    }
-    *out = '\0';
-
-    return escaped;
-}
-
 
 typedef struct {
     const gchar *to_match;
@@ -151,52 +53,7 @@ typedef struct {
     gboolean found;
 } FindFileContext;
 
-static const struct {
-    AFormat afmt;
-    SAD_sample_format sadfmt;
-} format_table[] = {
-    {FMT_U8, SAD_SAMPLE_U8},
-    {FMT_S8, SAD_SAMPLE_S8},
-
-    {FMT_S16_LE, SAD_SAMPLE_S16_LE},
-    {FMT_S16_BE, SAD_SAMPLE_S16_BE},
-    {FMT_S16_NE, SAD_SAMPLE_S16},
-
-    {FMT_U16_LE, SAD_SAMPLE_U16_LE},
-    {FMT_U16_BE, SAD_SAMPLE_U16_BE},
-    {FMT_U16_NE, SAD_SAMPLE_U16},
-
-    {FMT_S24_LE, SAD_SAMPLE_S24_LE},
-    {FMT_S24_BE, SAD_SAMPLE_S24_BE},
-    {FMT_S24_NE, SAD_SAMPLE_S24},
-
-    {FMT_U24_LE, SAD_SAMPLE_U24_LE},
-    {FMT_U24_BE, SAD_SAMPLE_U24_BE},
-    {FMT_U24_NE, SAD_SAMPLE_U24},
-
-    {FMT_S32_LE, SAD_SAMPLE_S32_LE},
-    {FMT_S32_BE, SAD_SAMPLE_S32_BE},
-    {FMT_S32_NE, SAD_SAMPLE_S32},
-
-    {FMT_U32_LE, SAD_SAMPLE_U32_LE},
-    {FMT_U32_BE, SAD_SAMPLE_U32_BE},
-    {FMT_U32_NE, SAD_SAMPLE_U32},
-
-    {FMT_FLOAT, SAD_SAMPLE_FLOAT},
-    {FMT_FIXED32, SAD_SAMPLE_FIXED32},
-};
-
-SAD_sample_format
-sadfmt_from_afmt(AFormat fmt)
-{
-    int i;
-    for (i = 0; i < sizeof(format_table) / sizeof(format_table[0]); i++) {
-        if (format_table[i].afmt == fmt) return format_table[i].sadfmt;
-    }
-
-    return -1;
-}
-
+static void make_directory(const gchar *path, mode_t mode);
 
 static gboolean
 find_file_func(const gchar * path, const gchar * basename, gpointer data)
@@ -361,8 +218,7 @@ archive_extract_tbz2(const gchar * archive, const gchar * dest)
 }
 
 
-ArchiveType
-archive_get_type(const gchar * filename)
+static ArchiveType archive_get_type(const gchar *filename)
 {
     gint i = 0;
 
@@ -491,9 +347,8 @@ del_directory(const gchar * dirname)
 
 #else                           /* !HAVE_FTS */
 
-gboolean
-del_directory_func(const gchar * path, const gchar * basename,
-                   gpointer params)
+static gboolean del_directory_func(const gchar *path, const gchar *basename,
+ void *params)
 {
     if (!strcmp(basename, ".") || !strcmp(path, ".."))
         return FALSE;
@@ -808,30 +663,6 @@ string_to_garray(const gchar * str)
     return (array);
 }
 
-void
-glist_movedown(GList * list)
-{
-    gpointer temp;
-
-    if (g_list_next(list)) {
-        temp = list->data;
-        list->data = list->next->data;
-        list->next->data = temp;
-    }
-}
-
-void
-glist_moveup(GList * list)
-{
-    gpointer temp;
-
-    if (g_list_previous(list)) {
-        temp = list->data;
-        list->data = list->prev->data;
-        list->prev->data = temp;
-    }
-}
-
 /* text_get_extents() taken from The GIMP (C) Spencer Kimball, Peter
  * Mattis et al */
 gboolean
@@ -956,160 +787,7 @@ make_filebrowser(const gchar *title, gboolean save)
     return dialog;
 }
 
-/**
- * util_info_dialog:
- * @title: The title of the message to show.
- * @text: The text of the message to show.
- * @button_text: The text of the button which will close the messagebox.
- * @modal: Whether or not the messagebox should be modal.
- * @button_action: Code to execute on when the messagebox is closed, or %NULL.
- * @action_data: Optional opaque data to pass to @button_action.
- *
- * Displays a message box.
- *
- * Return value: A GTK widget handle for the message box.
- **/
-GtkWidget *
-util_info_dialog(const gchar * title, const gchar * text,
-                 const gchar * button_text, gboolean modal,
-                 GCallback button_action, gpointer action_data)
-{
-  GtkWidget *dialog;
-  GtkWidget *dialog_vbox, *dialog_hbox, *dialog_bbox;
-  GtkWidget *dialog_bbox_b1;
-  GtkWidget *dialog_textlabel;
-  GtkWidget *dialog_icon;
-
-  dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_type_hint( GTK_WINDOW(dialog) , GDK_WINDOW_TYPE_HINT_DIALOG );
-  gtk_window_set_modal( GTK_WINDOW(dialog) , modal );
-  gtk_window_set_title( GTK_WINDOW(dialog) , title );
-  gtk_container_set_border_width( GTK_CONTAINER(dialog) , 10 );
-
-  dialog_vbox = gtk_vbox_new( FALSE , 0 );
-  dialog_hbox = gtk_hbox_new( FALSE , 0 );
-
-  /* icon */
-  dialog_icon = gtk_image_new_from_stock( GTK_STOCK_DIALOG_INFO , GTK_ICON_SIZE_DIALOG );
-  gtk_box_pack_start( GTK_BOX(dialog_hbox) , dialog_icon , FALSE , FALSE , 2 );
-
-  /* label */
-  dialog_textlabel = gtk_label_new( text );
-  /* gtk_label_set_selectable( GTK_LABEL(dialog_textlabel) , TRUE ); */
-  gtk_box_pack_start( GTK_BOX(dialog_hbox) , dialog_textlabel , TRUE , TRUE , 2 );
-
-  gtk_box_pack_start( GTK_BOX(dialog_vbox) , dialog_hbox , FALSE , FALSE , 2 );
-  gtk_box_pack_start( GTK_BOX(dialog_vbox) , gtk_hseparator_new() , FALSE , FALSE , 4 );
-
-  dialog_bbox = gtk_hbutton_box_new();
-  gtk_button_box_set_layout( GTK_BUTTON_BOX(dialog_bbox) , GTK_BUTTONBOX_END );
-  dialog_bbox_b1 = gtk_button_new_with_label( button_text );
-  g_signal_connect_swapped( G_OBJECT(dialog_bbox_b1) , "clicked" ,
-                            G_CALLBACK(gtk_widget_destroy) , dialog );
-  if ( button_action )
-    g_signal_connect( G_OBJECT(dialog_bbox_b1) , "clicked" ,
-                      button_action , action_data );
-
-  gtk_container_add( GTK_CONTAINER(dialog_bbox) , dialog_bbox_b1 );
-  gtk_box_pack_start( GTK_BOX(dialog_vbox) , dialog_bbox , FALSE , FALSE , 0 );
-
-  gtk_container_add( GTK_CONTAINER(dialog) , dialog_vbox );
-
-  GTK_WIDGET_SET_FLAGS( dialog_bbox_b1 , GTK_CAN_DEFAULT);
-  gtk_widget_grab_default( dialog_bbox_b1 );
-
-  gtk_widget_show_all(dialog);
-
-  return dialog;
-}
-
-
-/**
- * util_get_localdir:
- *
- * Returns a string with the full path of Audacious local datadir (where config files are placed).
- * It's useful in order to put in the right place custom config files for audacious plugins.
- *
- * Return value: a string with full path of Audacious local datadir (should be freed after use)
- **/
-gchar*
-util_get_localdir(void)
-{
-  gchar *datadir;
-  gchar *tmp;
-
-  if ( (tmp = getenv("XDG_CONFIG_HOME")) == NULL )
-    datadir = g_build_filename( g_get_home_dir() , ".config" , "audacious" ,  NULL );
-  else
-    datadir = g_build_filename( tmp , "audacious" , NULL );
-
-  return datadir;
-}
-
-
-gchar *
-construct_uri(gchar *string, const gchar *playlist_name) // uri, path and anything else
-{
-    gchar *filename = g_strdup(string);
-    gchar *tmp, *path;
-    gchar *uri = NULL;
-
-    /* try to translate dos path */
-    convert_dos_path(filename); /* in place replacement */
-
-    // make full path uri here
-    // case 1: filename is raw full path or uri
-    if (filename[0] == '/' || strstr(filename, "://")) {
-        uri = g_filename_to_uri(filename, NULL, NULL);
-        if(!uri) {
-            uri = g_strdup(filename);
-        }
-        g_free(filename);
-    }
-    // case 2: filename is not raw full path nor uri, playlist path is full path
-    // make full path by replacing last part of playlist path with filename. (using g_build_filename)
-    else if (playlist_name[0] == '/' || strstr(playlist_name, "://")) {
-        path = g_filename_from_uri(playlist_name, NULL, NULL);
-        if (!path) {
-            path = g_strdup(playlist_name);
-        }
-        tmp = strrchr(path, '/'); *tmp = '\0';
-        tmp = g_build_filename(path, filename, NULL);
-        g_free(path); g_free(filename);
-        uri = g_filename_to_uri(tmp, NULL, NULL);
-        g_free(tmp);
-    }
-    // case 3: filename is not raw full path nor uri, playlist path is not full path
-    // just abort.
-    else {
-        g_free(filename);
-        return NULL;
-    }
-
-    AUDDBG("uri=%s\n", uri);
-    return uri;
-}
-
-/*
- * minimize number of realloc's:
- *  - set N to nearest power of 2 not less then N
- *  - double it
- *
- *  -- asphyx
- *
- * XXX: what's so smart about this?? seems wasteful and silly. --nenolod
- */
-gpointer
-smart_realloc(gpointer ptr, gsize *size)
-{
-    *size = (size_t)pow(2, ceil(log(*size) / log(2)) + 1);
-    if (ptr != NULL) free(ptr);
-    ptr = malloc(*size);
-    return ptr;
-}
-
-void
-make_directory(const gchar * path, mode_t mode)
+static void make_directory(const gchar *path, mode_t mode)
 {
     if (g_mkdir_with_parents(path, mode) == 0)
         return;
