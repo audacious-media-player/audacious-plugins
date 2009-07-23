@@ -511,16 +511,16 @@ mainwin_refresh_hints(void)
     mainwin_refresh_visible();
 
     if (config.player_shaded)
-        gtk_window_resize ((GtkWindow *) mainwin, MAINWIN_SHADED_WIDTH *
-         MAINWIN_SCALE_FACTOR, MAINWIN_SHADED_HEIGHT * MAINWIN_SCALE_FACTOR);
+        resize_window(mainwin, MAINWIN_SHADED_WIDTH * MAINWIN_SCALE_FACTOR,
+         MAINWIN_SHADED_HEIGHT * MAINWIN_SCALE_FACTOR);
     else if (aud_active_skin->properties.mainwin_height > 0 &&
      aud_active_skin->properties.mainwin_width > 0)
-        gtk_window_resize ((GtkWindow *) mainwin,
-         aud_active_skin->properties.mainwin_width * MAINWIN_SCALE_FACTOR,
-         aud_active_skin->properties.mainwin_height * MAINWIN_SCALE_FACTOR);
+        resize_window(mainwin, aud_active_skin->properties.mainwin_width *
+         MAINWIN_SCALE_FACTOR, aud_active_skin->properties.mainwin_height *
+         MAINWIN_SCALE_FACTOR);
     else
-        gtk_window_resize ((GtkWindow *) mainwin, MAINWIN_WIDTH *
-         MAINWIN_SCALE_FACTOR, MAINWIN_HEIGHT * MAINWIN_SCALE_FACTOR);
+        resize_window(mainwin, MAINWIN_WIDTH * MAINWIN_SCALE_FACTOR,
+         MAINWIN_HEIGHT * MAINWIN_SCALE_FACTOR);
 }
 
 void

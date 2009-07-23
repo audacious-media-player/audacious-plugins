@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2008  Audacious development team
+ *  Copyright (C) 2005-2009  Audacious development team
  *
  *  Based on BMP:
  *  Copyright (C) 2003-2004  BMP development team.
@@ -1134,4 +1134,23 @@ void insert_drag_list (gint playlist, gint position, const gchar * list)
     }
 
     aud_playlist_entry_insert_batch (playlist, position, add, NULL);
+}
+
+void resize_window(GtkWidget *window, gint width, gint height)
+{
+    /* As of GTK+ 2.16, gtk_window_resize is broken on fixed size windows and
+     * needs this workaround. */
+    if (!gtk_window_get_resizable((GtkWindow *) window))
+    {
+        GdkGeometry hints;
+
+        hints.min_width = width;
+        hints.min_height = height;
+        hints.max_width = width;
+        hints.max_height = height;
+        gtk_window_set_geometry_hints((GtkWindow *) window, NULL, &hints,
+         GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
+    }
+
+    gtk_window_resize((GtkWindow *) window, width, height);
 }

@@ -31,6 +31,7 @@
 #include "ui_skinned_window.h"
 
 #include "platform/smartinclude.h"
+#include "util.h"
 
 static GList *dock_window_list = NULL;
 
@@ -258,11 +259,12 @@ static void move_attached (GtkWindow * window, GList * * others, int offset) {
    move_skinned_window (SKINNED_WINDOW (window), x, y + offset);
 }
 
-void dock_shade (GList * window_list, GtkWindow * window, int new_height) {
-  int x, y, width, height, x2, y2;
-  GList * move, * others, * scan, * next;
+void dock_shade(GList *window_list, GtkWindow *window, gint new_height)
+{
+    gint x, y, width, height, x2, y2;
+    GList *move, *others, *scan, *next;
 
-   gtk_window_get_size (window, & width, & height);
+    gtk_window_get_size(window, &width, &height);
 
    if (! config.show_wm_decorations) {
       gtk_window_get_position (window, & x, & y);
@@ -282,7 +284,7 @@ void dock_shade (GList * window_list, GtkWindow * window, int new_height) {
       g_list_free (others);
    }
 
-    gtk_window_resize (window, width, new_height);
+    resize_window((GtkWidget *) window, width, new_height);
 }
 
 void

@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2008  Audacious development team
+ *  Copyright (C) 2005-2009  Audacious development team
  *
  *  Based on BMP:
  *  Copyright (C) 2003-2004  BMP development team
@@ -98,6 +98,7 @@ gpointer smart_realloc(gpointer ptr, gsize *size);
 void make_directory(const gchar * path, mode_t mode);
 
 void insert_drag_list (gint playlist, gint position, const gchar * list);
+void resize_window(GtkWidget *window, gint width, gint height);
 
 G_END_DECLS
 

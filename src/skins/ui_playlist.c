@@ -241,10 +241,10 @@ playlistwin_set_shade(gboolean shaded)
         playlistwin_set_sinfo_scroll(FALSE);
     }
 
+    playlistwin_set_geometry_hints(config.playlist_shaded);
+
     dock_shade(get_dock_window_list(), GTK_WINDOW(playlistwin),
                playlistwin_get_height());
-
-    playlistwin_set_geometry_hints(config.playlist_shaded);
 }
 
 static void
@@ -565,9 +565,8 @@ playlistwin_motion(GtkWidget * widget,
         {
             playlistwin_resize(event->x + playlistwin_resize_x,
                                event->y + playlistwin_resize_y);
-            gdk_window_resize(playlistwin->window,
-                              config.playlist_width, playlistwin_get_height());
-            gdk_flush();
+            resize_window(playlistwin, config.playlist_width,
+             playlistwin_get_height());
         }
     }
     else if (dock_is_moving(GTK_WINDOW(playlistwin)))
