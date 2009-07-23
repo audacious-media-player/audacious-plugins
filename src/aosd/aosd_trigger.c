@@ -171,49 +171,34 @@ aosd_trigger_utf8convert ( gchar * str )
 /* TRIGGER FUNCTIONS */
 
 static void
-aosd_trigger_func_pb_start_onoff ( gboolean turn_on )
+aosd_trigger_func_pb_start_onoff(gboolean turn_on)
 {
-  if ( turn_on == TRUE )
-    aud_hook_associate( "playback begin" , aosd_trigger_func_pb_start_cb , NULL );
+  if (turn_on == TRUE)
+    aud_hook_associate("playback begin", aosd_trigger_func_pb_start_cb, NULL);
   else
-    aud_hook_dissociate( "playback begin" , aosd_trigger_func_pb_start_cb );
+    aud_hook_dissociate("playback begin", aosd_trigger_func_pb_start_cb);
   return;
 }
 
 static void
-aosd_trigger_func_pb_start_cb ( gpointer plentry_gp , gpointer unused )
+aosd_trigger_func_pb_start_cb(gpointer hook_data, gpointer user_data)
 {
-  if ( plentry_gp != NULL )
-  {
-    gint pl_entry = GPOINTER_TO_INT(plentry_gp);
-    gint playlist = aud_playlist_get_active();
+    gchar *title = audacious_drct_pl_get_title(audacious_drct_pl_get_pos());
 
-    gchar *pl_entry_title = (gchar*) aud_playlist_entry_get_title(playlist, pl_entry);
+    if (title != NULL)
+    {
+        gchar *utf8_title = aosd_trigger_utf8convert(title);
 
-    gchar *title, *utf8_title;
-    if ( pl_entry_title != NULL )
-    {
-      /* if there is a proper title, use it */
-      title = g_strdup(pl_entry_title);
+        if (g_utf8_validate(utf8_title, -1, NULL) == TRUE)
+        {
+            gchar *utf8_title_markup = g_markup_printf_escaped(
+                "<span font_desc='%s'>%s</span>", global_config->osd->text.fonts_name[0], utf8_title);
+            aosd_osd_display(utf8_title_markup, global_config->osd, FALSE);
+            g_free(utf8_title_markup);
+        }
+        g_free(utf8_title);
     }
-    else
-    {
-      /* pick what we have as song title */
-      gint pos = aud_playlist_get_position(playlist);
-      title = (gchar*) aud_playlist_entry_get_title(playlist, pos);
-    }
-    utf8_title = aosd_trigger_utf8convert( title );
-    if ( g_utf8_validate( utf8_title , -1 , NULL ) == TRUE )
-    {
-      gchar *utf8_title_markup = g_markup_printf_escaped(
-        "<span font_desc='%s'>%s</span>" , global_config->osd->text.fonts_name[0] , utf8_title );
-      aosd_osd_display( utf8_title_markup , global_config->osd , FALSE );
-      g_free( utf8_title_markup );
-    }
-    g_free( utf8_title );
-    g_free( title );
-  }
-  return;
+    return;
 }
 
 typedef struct
@@ -416,7 +401,6 @@ aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
   aosd_osd_display( utf8_title_markup , global_config->osd , FALSE );
   g_free( utf8_title_markup );
   g_free( utf8_title );
-  g_free( title );
   return;
 }
 
