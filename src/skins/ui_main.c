@@ -509,14 +509,17 @@ mainwin_refresh_hints(void)
 
     mainwin_refresh_visible();
 
-    /* window size, mainwinWidth && mainwinHeight properties */
-    if (aud_active_skin->properties.mainwin_height && aud_active_skin->properties.mainwin_width)
-    {
-        dock_window_resize(GTK_WINDOW(mainwin), config.player_shaded ? MAINWIN_SHADED_WIDTH * MAINWIN_SCALE_FACTOR : aud_active_skin->properties.mainwin_width * MAINWIN_SCALE_FACTOR,
-                           config.player_shaded ? MAINWIN_SHADED_HEIGHT * MAINWIN_SCALE_FACTOR : aud_active_skin->properties.mainwin_height * MAINWIN_SCALE_FACTOR);
-
-        gdk_flush();
-    }
+    if (config.player_shaded)
+        gtk_window_resize ((GtkWindow *) mainwin, MAINWIN_SHADED_WIDTH *
+         MAINWIN_SCALE_FACTOR, MAINWIN_SHADED_HEIGHT * MAINWIN_SCALE_FACTOR);
+    else if (aud_active_skin->properties.mainwin_height > 0 &&
+     aud_active_skin->properties.mainwin_width > 0)
+        gtk_window_resize ((GtkWindow *) mainwin,
+         aud_active_skin->properties.mainwin_width * MAINWIN_SCALE_FACTOR,
+         aud_active_skin->properties.mainwin_height * MAINWIN_SCALE_FACTOR);
+    else
+        gtk_window_resize ((GtkWindow *) mainwin, MAINWIN_WIDTH *
+         MAINWIN_SCALE_FACTOR, MAINWIN_HEIGHT * MAINWIN_SCALE_FACTOR);
 }
 
 void
@@ -1495,19 +1498,10 @@ mainwin_set_noplaylistadvance(gboolean no_advance)
 static void
 mainwin_set_scaled(gboolean scaled)
 {
-    gint height;
     GList * list;
     SkinnedWindow * skinned;
     GtkFixed * fixed;
     GtkFixedChild * child;
-
-    if (config.player_shaded)
-        height = MAINWIN_SHADED_HEIGHT;
-    else
-        height = aud_active_skin->properties.mainwin_height;
-
-    dock_window_resize(GTK_WINDOW(mainwin), config.player_shaded ? MAINWIN_SHADED_WIDTH : aud_active_skin->properties.mainwin_width,
-                       config.player_shaded ? MAINWIN_SHADED_HEIGHT : aud_active_skin->properties.mainwin_height);
 
     skinned = (SkinnedWindow *) mainwin;
     fixed = (GtkFixed *) skinned->normal;

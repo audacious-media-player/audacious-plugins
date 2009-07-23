@@ -127,12 +127,11 @@ equalizerwin_set_scaled(gboolean ds)
     else
         height = 116;
 
-    if (config.scaled) {
-        dock_window_resize(GTK_WINDOW(equalizerwin), 275 * config.scale_factor,
-            height * config.scale_factor);
-    } else {
-        dock_window_resize(GTK_WINDOW(equalizerwin), 275, height);
-    }
+    if (config.scaled)
+        gtk_window_resize ((GtkWindow *) equalizerwin, 275 *
+         config.scale_factor, height * config.scale_factor);
+    else
+        gtk_window_resize ((GtkWindow *) equalizerwin, 275, height);
 
     skinned = (SkinnedWindow *) equalizerwin;
     fixed = (GtkFixed *) skinned->normal;
@@ -194,6 +193,7 @@ equalizerwin_eq_changed(void)
     for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
         aud_cfg->equalizer_bands[i] = equalizerwin_get_band(i);
 
+    ui_skinned_equalizer_graph_update (equalizerwin_graph);
     aud_hook_call("equalizer changed", NULL);
 }
 

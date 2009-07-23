@@ -87,6 +87,7 @@ static gboolean playlistwin_select_search_kp_cb(GtkWidget *entry,
 static gboolean playlistwin_resizing = FALSE;
 static gint playlistwin_resize_x, playlistwin_resize_y;
 static int drop_position;
+static gboolean song_changed;
 
 gboolean
 playlistwin_is_shaded(void)
@@ -1249,18 +1250,22 @@ static void update_cb (void * unused, void * another)
     if (active_playlist != old)
     {
         ui_skinned_playlist_scroll_to (playlistwin_list, 0);
-        // calls playlistwin_update, so we don't need to
-        ui_skinned_playlist_follow (playlistwin_list);
-        return;
+        song_changed = TRUE;
     }
 
-    playlistwin_update ();
+    if (song_changed)
+    {
+        /* calls playlistwin_update */
+        ui_skinned_playlist_follow (playlistwin_list);
+        song_changed = FALSE;
+    }
+    else
+        playlistwin_update ();
 }
 
 static void follow_cb (void * unused, void * another)
 {
-    update_cb (NULL, NULL); /* make sure we have correct playlist info */
-    ui_skinned_playlist_follow (playlistwin_list);
+    song_changed = TRUE;
 }
 
 static void destroy_cb (GtkObject * object, void * unused)
@@ -1286,6 +1291,7 @@ playlistwin_create(void)
 
     /* calls playlistwin_update */
     ui_skinned_playlist_follow (playlistwin_list);
+    song_changed = FALSE;
 
     aud_hook_associate ("playlist position", follow_cb, 0);
     aud_hook_associate ("playlist update", update_cb, 0);

@@ -803,8 +803,8 @@ __audmad_get_song_tuple(const gchar *filename, VFSFile *fd)
         return NULL;
     }
 
-    tuple = aud_tuple_new();
-    aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
+    tuple = tuple_new();
+    tuple_set_filename(tuple, filename);
 
     id3file = id3_file_vfsopen(fd, ID3_FILE_MODE_READONLY);
 
@@ -828,10 +828,6 @@ __audmad_get_song_tuple(const gchar *filename, VFSFile *fd)
                 string = NULL;
             }
 
-            __set_and_free(tuple, FIELD_FILE_NAME, NULL, aud_uri_to_display_basename(filename));
-            __set_and_free(tuple, FIELD_FILE_PATH, NULL, aud_uri_to_display_dirname(filename));
-            aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(filename));
-
             // length
             length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
             aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
@@ -851,9 +847,6 @@ __audmad_get_song_tuple(const gchar *filename, VFSFile *fd)
         id3_file_close(id3file);
     } // id3file
     else { // no id3tag
-        __set_and_free(tuple, FIELD_FILE_NAME, NULL, aud_uri_to_display_basename(filename));
-        __set_and_free(tuple, FIELD_FILE_PATH, NULL, aud_uri_to_display_dirname(filename));
-        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(filename));
         // length
         length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
         aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);

@@ -299,7 +299,22 @@ alsaplug_init(void)
     if (alsaplug_cfg.mixer_card == NULL)
         alsaplug_cfg.mixer_card = g_strdup("default");
 
+    if (!alsaplug_mixer_new(&amixer))
+        mixer_ready = TRUE;
+
     return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+}
+
+static void alsaplug_cleanup(void)
+{
+    if (mixer_ready == TRUE)
+    {
+        snd_mixer_detach(amixer, alsaplug_cfg.mixer_card);
+        snd_mixer_close(amixer);
+
+        amixer = NULL;
+        mixer_ready = FALSE;
+    }
 }
 
 static gint
@@ -316,9 +331,6 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
         _ERROR("unsupported format requested: %d -> %d", fmt, afmt);
         return -1;
     }
-
-    if (!alsaplug_mixer_new(&amixer))
-        mixer_ready = TRUE;
 
     if ((err = snd_pcm_open(&pcm_handle, alsaplug_cfg.pcm_device, SND_PCM_STREAM_PLAYBACK, 0)) < 0)
     {
@@ -383,15 +395,6 @@ alsaplug_close_audio(void)
         g_thread_join(audio_thread);
 
     audio_thread = NULL;
-
-    if (mixer_ready == TRUE)
-    {
-        snd_mixer_detach(amixer, alsaplug_cfg.mixer_card);
-        snd_mixer_close(amixer);
-
-        amixer = NULL;
-        mixer_ready = FALSE;
-    }
 }
 
 static void
@@ -512,6 +515,7 @@ static OutputPlugin alsa_op = {
     .description = "ALSA Output Plugin (-ng)",
     .probe_priority = 1,
     .init = alsaplug_init,
+    .cleanup = alsaplug_cleanup,
     .open_audio = alsaplug_open_audio,
     .close_audio = alsaplug_close_audio,
     .write_audio = alsaplug_write_audio,
