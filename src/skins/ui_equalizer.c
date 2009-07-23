@@ -223,7 +223,8 @@ equalizerwin_presets_pushed(void)
     gint x, y;
 
     gdk_window_get_pointer(NULL, &x, &y, &modmask);
-    ui_manager_popup_menu_show(GTK_MENU(equalizerwin_presets_menu), x, y, 1, GDK_CURRENT_TIME);
+    ui_popup_menu_show(UI_MENU_EQUALIZER_PRESET, x, y, FALSE, FALSE, 1,
+     GDK_CURRENT_TIME);
 }
 
 static void
@@ -243,14 +244,12 @@ equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
             dock_move_release(GTK_WINDOW(equalizerwin));
         return TRUE;
     }
-    if (event->button == 3) {
-        /*
-         * Pop up the main menu a few pixels down to avoid
-         * anything to be selected initially.
-         */
-       ui_manager_popup_menu_show(GTK_MENU(mainwin_general_menu), event->x_root,
-                                event->y_root + 2, 3, event->time);
-       return TRUE;
+
+    if (event->button == 3)
+    {
+        ui_popup_menu_show(UI_MENU_MAIN, event->x_root, event->y_root, FALSE,
+         FALSE, 3, event->time);
+        return TRUE;
     }
 
     return FALSE;

@@ -264,10 +264,9 @@ mainwin_menubtn_cb(void)
 {
     gint x, y;
     gtk_window_get_position(GTK_WINDOW(mainwin), &x, &y);
-    ui_manager_popup_menu_show(GTK_MENU(mainwin_general_menu),
-                               x + 6 * MAINWIN_SCALE_FACTOR ,
-                               y + MAINWIN_SHADED_HEIGHT * MAINWIN_SCALE_FACTOR,
-                               1, GDK_CURRENT_TIME);
+    ui_popup_menu_show(UI_MENU_MAIN, x + 6 * MAINWIN_SCALE_FACTOR, y +
+     MAINWIN_SHADED_HEIGHT * MAINWIN_SCALE_FACTOR, FALSE, FALSE, 1,
+     GDK_CURRENT_TIME);
 }
 
 void
@@ -295,18 +294,18 @@ mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
             config.vis_type = VIS_ANALYZER;
 
         mainwin_vis_set_type(config.vis_type);
-    } else if (event->button == 3) {
-       ui_manager_popup_menu_show(GTK_MENU(mainwin_visualization_menu),
-                                   event->x_root, event->y_root, 3,
-                                   event->time);
     }
+    else if (event->button == 3)
+        ui_popup_menu_show(UI_MENU_VISUALIZATION, event->x_root, event->y_root,
+         FALSE, FALSE, 3, event->time);
+
     return TRUE;
 }
 
 static void show_main_menu (GdkEventButton * event, void * unused)
 {
-    ui_manager_popup_menu_show ((GtkMenu *) mainwin_general_menu, event->x_root,
-     event->y_root, event->button, event->time);
+    ui_popup_menu_show(UI_MENU_MAIN, event->x_root, event->y_root, FALSE, FALSE,
+     event->button, event->time);
 }
 
 static gchar *mainwin_tb_old_text = NULL;
@@ -688,28 +687,12 @@ mainwin_mouse_button_press(GtkWidget * widget,
                                      aud_active_skin->properties.mainwin_stop_y, 23, 18) ||
             mainwin_widget_contained(event, aud_active_skin->properties.mainwin_next_x,
                                      aud_active_skin->properties.mainwin_next_y, 23, 18))
-        {
+            ui_popup_menu_show(UI_MENU_PLAYBACK, event->x_root, event->y_root,
+             FALSE, FALSE, 3, event->time);
+        else
+            ui_popup_menu_show(UI_MENU_MAIN, event->x_root, event->y_root,
+             FALSE, FALSE, 3, event->time);
 
-            ui_manager_popup_menu_show(GTK_MENU(mainwin_playback_menu),
-                                       event->x_root,
-                                       event->y_root, 3, event->time);
-
-        } else {
-            /*
-             * Pop up the main menu a few pixels down.
-             * This will avoid that anything is selected
-             * if one right-clicks to focus the window
-             * without raising it.
-             *
-             ***MD I think the above is stupid, people don't expect this
-             *
-             */
-
-            ui_manager_popup_menu_show(GTK_MENU(mainwin_general_menu),
-                                       event->x_root,
-                                       event->y_root, 3, event->time);
-
-        }
         return TRUE;
     }
 
@@ -1689,9 +1672,8 @@ mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
 {
     switch (i) {
         case MENUROW_OPTIONS:
-            ui_manager_popup_menu_show(GTK_MENU(mainwin_view_menu),
-                                       event->x_root, event->y_root, 1,
-                                       event->time);
+            ui_popup_menu_show(UI_MENU_VIEW, event->x_root, event->y_root,
+             FALSE, FALSE, 1, event->time);
             break;
         case MENUROW_ALWAYS:
             gtk_toggle_action_set_active(
@@ -1709,9 +1691,8 @@ mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
                                          UI_SKINNED_MENUROW(mainwin_menurow)->scale_selected );
             break;
         case MENUROW_VISUALIZATION:
-            ui_manager_popup_menu_show(GTK_MENU(mainwin_visualization_menu),
-                                       event->x_root, event->y_root, 1,
-                                       event->time);
+            ui_popup_menu_show(UI_MENU_VISUALIZATION, event->x_root,
+             event->y_root, FALSE, FALSE, 1, event->time);
             break;
         case MENUROW_NONE:
             break;
@@ -1969,11 +1950,11 @@ static void mainwin_info_double_clicked_cb (void)
     aud_fileinfo_show_current ();
 }
 
-static void
-mainwin_info_right_clicked_cb(GtkWidget *widget, GdkEventButton *event)
+static void mainwin_info_right_clicked_cb(GtkWidget *widget, GdkEventButton
+ *event)
 {
-    ui_manager_popup_menu_show(GTK_MENU(mainwin_songname_menu),
-                               event->x_root, event->y_root, 3, event->time);
+    ui_popup_menu_show(UI_MENU_SONGNAME, event->x_root, event->y_root, FALSE,
+     FALSE, 3, event->time);
 }
 
 static void

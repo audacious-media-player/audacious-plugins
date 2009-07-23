@@ -620,7 +620,6 @@ ui_manager_init ( void )
 static GtkWidget *carbon_menubar;
 #endif
 
-
 void
 ui_manager_create_menus ( void )
 {
@@ -635,18 +634,6 @@ ui_manager_create_menus ( void )
     g_error_free( gerr );
     return;
   }
-
-  /* create GtkMenu widgets using path from xml definitions */
-  mainwin_songname_menu = ui_manager_get_popup_menu( ui_manager , "/mainwin-menus/songname-menu" );
-  mainwin_visualization_menu = ui_manager_get_popup_menu( ui_manager , "/mainwin-menus/main-menu/visualization" );
-  mainwin_playback_menu = ui_manager_get_popup_menu( ui_manager , "/mainwin-menus/main-menu/playback" );
-  mainwin_playlist_menu = ui_manager_get_popup_menu( ui_manager , "/mainwin-menus/main-menu/playlist" );
-  mainwin_view_menu = ui_manager_get_popup_menu( ui_manager , "/mainwin-menus/main-menu/view" );
-  mainwin_general_menu = ui_manager_get_popup_menu( ui_manager , "/mainwin-menus/main-menu" );
-
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/mainwin-menus/main-menu/plugins-menu")), aud_get_plugin_menu
-   (AUDACIOUS_MENU_MAIN));
 
 #ifdef GDK_WINDOWING_QUARTZ
   gtk_ui_manager_add_ui_from_file( ui_manager , DATA_DIR "/ui/carbon-menubar.ui" , &gerr );
@@ -671,33 +658,6 @@ ui_manager_create_menus ( void )
     return;
   }
 
-  playlistwin_popup_menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/playlist-rightclick-menu");
-
-  playlistwin_pladd_menu  = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/add-menu");
-  playlistwin_pldel_menu  = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/del-menu");
-  playlistwin_plsel_menu  = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/select-menu");
-  playlistwin_plsort_menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/misc-menu");
-  playlistwin_pllist_menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/playlist-menu");
-
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/playlist-menus/playlist-menu/plugins-menu")),
-   aud_get_plugin_menu (AUDACIOUS_MENU_PLAYLIST));
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/playlist-menus/playlist-rightclick-menu/plugins-menu")),
-   aud_get_plugin_menu (AUDACIOUS_MENU_PLAYLIST_RCLICK));
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/playlist-menus/add-menu/plugins-menu")), aud_get_plugin_menu
-   (AUDACIOUS_MENU_PLAYLIST_ADD));
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/playlist-menus/del-menu/plugins-menu")), aud_get_plugin_menu
-   (AUDACIOUS_MENU_PLAYLIST_REMOVE));
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/playlist-menus/select-menu/plugins-menu")),
-   aud_get_plugin_menu (AUDACIOUS_MENU_PLAYLIST_SELECT));
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/playlist-menus/misc-menu/plugins-menu")), aud_get_plugin_menu
-   (AUDACIOUS_MENU_PLAYLIST_MISC));
-
   gtk_ui_manager_add_ui_from_file( ui_manager , DATA_DIR "/ui/equalizer.ui" , &gerr );
 
   if ( gerr != NULL )
@@ -706,11 +666,205 @@ ui_manager_create_menus ( void )
     g_error_free( gerr );
     return;
   }
-
-  equalizerwin_presets_menu = ui_manager_get_popup_menu(ui_manager, "/equalizer-menus/preset-menu");
-  return;
 }
 
+static GtkWidget *menu_creator_main(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+    {
+        menu = ui_manager_get_popup_menu(ui_manager, "/mainwin-menus/main-menu");
+
+        gtk_menu_item_set_submenu((GtkMenuItem *)gtk_ui_manager_get_widget
+         (ui_manager, "/mainwin-menus/main-menu/plugins-menu"),
+         aud_get_plugin_menu(AUDACIOUS_MENU_MAIN));
+    }
+
+    return menu;
+}
+
+static GtkWidget *menu_creator_playback(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+        menu = ui_manager_get_popup_menu(ui_manager, "/mainwin-menus/main-menu/"
+         "playback");
+
+    return menu;
+}
+
+static GtkWidget *menu_creator_playlist(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+        menu = ui_manager_get_popup_menu(ui_manager, "/mainwin-menus/main-menu/"
+         "playlist");
+
+    return menu;
+}
+
+static GtkWidget *menu_creator_songname(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+        menu = ui_manager_get_popup_menu(ui_manager, "/mainwin-menus/"
+         "songname-menu");
+
+    return menu;
+}
+
+static GtkWidget *menu_creator_view(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+        menu = ui_manager_get_popup_menu(ui_manager, "/mainwin-menus/main-menu/"
+         "view");
+
+    return menu;
+}
+
+static GtkWidget *menu_creator_visualization(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+        menu = ui_manager_get_popup_menu(ui_manager, "/mainwin-menus/main-menu/"
+         "visualization");
+
+    return menu;
+}
+
+static GtkWidget *menu_creator_playlist_add(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+    {
+        menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/add-menu");
+
+        gtk_menu_item_set_submenu((GtkMenuItem *)gtk_ui_manager_get_widget
+         (ui_manager, "/playlist-menus/add-menu/plugins-menu"),
+         aud_get_plugin_menu(AUDACIOUS_MENU_PLAYLIST_ADD));
+    }
+
+    return menu;
+}
+
+static GtkWidget *menu_creator_playlist_remove(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+    {
+        menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/del-menu");
+
+        gtk_menu_item_set_submenu((GtkMenuItem *)gtk_ui_manager_get_widget
+         (ui_manager, "/playlist-menus/del-menu/plugins-menu"),
+         aud_get_plugin_menu(AUDACIOUS_MENU_PLAYLIST_REMOVE));
+    }
+
+    return menu;
+}
+
+static GtkWidget *menu_creator_playlist_select(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+    {
+        menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/"
+         "select-menu");
+
+        gtk_menu_item_set_submenu((GtkMenuItem *)gtk_ui_manager_get_widget
+         (ui_manager, "/playlist-menus/select-menu/plugins-menu"),
+         aud_get_plugin_menu(AUDACIOUS_MENU_PLAYLIST_SELECT));
+    }
+
+    return menu;
+}
+
+static GtkWidget *menu_creator_playlist_sort(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+    {
+        menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/misc-menu");
+
+        gtk_menu_item_set_submenu((GtkMenuItem *)gtk_ui_manager_get_widget
+         (ui_manager, "/playlist-menus/misc-menu/plugins-menu"),
+         aud_get_plugin_menu(AUDACIOUS_MENU_PLAYLIST_MISC));
+    }
+
+    return menu;
+}
+
+static GtkWidget *menu_creator_playlist_general(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+    {
+        menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/"
+         "playlist-menu");
+
+        gtk_menu_item_set_submenu((GtkMenuItem *)gtk_ui_manager_get_widget
+         (ui_manager, "/playlist-menus/playlist-menu/plugins-menu"),
+         aud_get_plugin_menu(AUDACIOUS_MENU_PLAYLIST));
+    }
+
+    return menu;
+}
+
+static GtkWidget *menu_creator_playlist_context(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+    {
+        menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/"
+         "playlist-rightclick-menu");
+
+        gtk_menu_item_set_submenu((GtkMenuItem *)gtk_ui_manager_get_widget
+         (ui_manager, "/playlist-menus/playlist-rightclick-menu/plugins-menu"),
+         aud_get_plugin_menu(AUDACIOUS_MENU_PLAYLIST_RCLICK));
+    }
+
+    return menu;
+}
+
+static GtkWidget *menu_creator_equalizer_preset(void)
+{
+    static GtkWidget *menu = NULL;
+
+    if (menu == NULL)
+        menu = ui_manager_get_popup_menu(ui_manager, "/equalizer-menus/"
+         "preset-menu");
+
+    return menu;
+}
+
+static GtkWidget *(*menu_creators[UI_MENUS])(void) =
+{
+    menu_creator_main,
+    menu_creator_playback,
+    menu_creator_playlist,
+    menu_creator_songname,
+    menu_creator_view,
+    menu_creator_visualization,
+    menu_creator_playlist_add,
+    menu_creator_playlist_remove,
+    menu_creator_playlist_select,
+    menu_creator_playlist_sort,
+    menu_creator_playlist_general,
+    menu_creator_playlist_context,
+    menu_creator_equalizer_preset,
+};
 
 GtkAccelGroup *
 ui_manager_get_accel_group ( void )
@@ -730,35 +884,25 @@ ui_manager_get_popup_menu ( GtkUIManager * self , const gchar * path )
     return NULL;
 }
 
-
-static void
-menu_popup_pos_func (GtkMenu * menu , gint * x , gint * y , gboolean * push_in , gint * point )
+static void menu_positioner(GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
+ void *data)
 {
-  GtkRequisition requisition;
-  gint screen_width;
-  gint screen_height;
+    GtkRequisition request;
 
-  gtk_widget_size_request(GTK_WIDGET(menu), &requisition);
+    gtk_widget_size_request((GtkWidget *)menu, &request);
 
-  screen_width = gdk_screen_width();
-  screen_height = gdk_screen_height();
-
-  *x = CLAMP(point[0] - 2, 0, MAX(0, screen_width - requisition.width));
-  *y = CLAMP(point[1] - 2, 0, MAX(0, screen_height - requisition.height));
-
-  *push_in = FALSE;
+    *x = ((gint *)data)[0] - ((gint *)data)[2] * request.width;
+    *y = ((gint *)data)[1] - ((gint *)data)[3] * request.height;
+    *push_in = TRUE;
 }
 
-
-void
-ui_manager_popup_menu_show ( GtkMenu * menu , gint x , gint y , guint button , guint time )
+void ui_popup_menu_show(gint id, gint x, gint y, gboolean leftward, gboolean
+ upward, gint button, gint time)
 {
-  gint pos[2];
-  pos[0] = x;
-  pos[1] = y;
+    gint position[4] = {x, y, leftward, upward};
 
-  gtk_menu_popup( menu , NULL , NULL ,
-    (GtkMenuPositionFunc) menu_popup_pos_func , pos , button , time );
+    gtk_menu_popup ((GtkMenu *)menu_creators[id](), NULL, NULL, menu_positioner,
+     position, button, time);
 }
 
 void

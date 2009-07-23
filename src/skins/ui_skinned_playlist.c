@@ -1026,8 +1026,8 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
                     select_single (private, FALSE, position);
             }
 
-            ui_manager_popup_menu_show ((GtkMenu *) playlistwin_popup_menu,
-             event->x_root, event->y_root, 3, event->time);
+            ui_popup_menu_show (UI_MENU_PLAYLIST_CONTEXT, event->x_root,
+             event->y_root, FALSE, FALSE, 3, event->time);
             break;
           default:
             return FALSE;

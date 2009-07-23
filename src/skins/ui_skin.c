@@ -407,8 +407,17 @@ skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const gchar * path_p)
 
     pm = &skin->pixmaps[id];
     GdkPixbuf *pix = gdk_pixbuf_new_from_file(filename, NULL);
-    pm->pixbuf = audacious_create_colorized_pixbuf(pix, config.colorize_r, config.colorize_g, config.colorize_b);
-    g_object_unref(pix);
+
+    if (config.colorize_r == 255 && config.colorize_g == 255 &&
+     config.colorize_b == 255)
+        pm->pixbuf = pix;
+    else
+    {
+        pm->pixbuf = audacious_create_colorized_pixbuf(pix, config.colorize_r,
+         config.colorize_g, config.colorize_b);
+        g_object_unref(pix);
+    }
+
     pm->width = gdk_pixbuf_get_width(pm->pixbuf);
     pm->height = gdk_pixbuf_get_height(pm->pixbuf);
     pm->current_width = pm->width;
