@@ -262,11 +262,13 @@ equalizerwin_close_cb(void)
     equalizerwin_show(FALSE);
 }
 
-static gboolean
-equalizerwin_delete(GtkWidget * widget,
-                    gpointer data)
+static gboolean equalizerwin_delete(GtkWidget *widget, void *data)
 {
-    equalizerwin_show(FALSE);
+    if (config.show_wm_decorations)
+        equalizerwin_show(FALSE);
+    else
+        audacious_drct_quit();
+
     return TRUE;
 }
 

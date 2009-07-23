@@ -943,10 +943,13 @@ playlistwin_press(GtkWidget * widget,
     return TRUE;
 }
 
-static gboolean
-playlistwin_delete(GtkWidget * w, gpointer data)
+static gboolean playlistwin_delete(GtkWidget *widget, void *data)
 {
-    playlistwin_show (0);
+    if (config.show_wm_decorations)
+        playlistwin_show(FALSE);
+    else
+        audacious_drct_quit();
+
     return TRUE;
 }
 
