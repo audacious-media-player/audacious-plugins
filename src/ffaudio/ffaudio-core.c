@@ -318,10 +318,13 @@ ffaudio_play_file(InputPlayback *playback)
         /* Perform seek, if requested */
         g_mutex_lock(seek_mutex);
 
-        if (seek_value != -1)
+        if (seek_value >= 0)
         {
             playback->output->flush(seek_value * 1000);
-            av_seek_frame(ic, -1, seek_value * AV_TIME_BASE, AVSEEK_FLAG_ANY);
+            if (av_seek_frame(ic, -1, seek_value * AV_TIME_BASE, AVSEEK_FLAG_ANY) < 0)
+            {
+                _DEBUG("error while seeking");
+            }
             seek_value = -1;
             g_cond_signal(seek_cond);
         }
