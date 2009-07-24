@@ -38,9 +38,6 @@
 #include <libintl.h>
 
 skins_cfg_t config;
-
-
-static GtkWidget *cfg_win = NULL;
 GtkWidget *skin_view;
 GtkWidget *skin_refresh_button;
 static GtkWidget *colorize_settings = NULL;
@@ -418,7 +415,6 @@ create_colorize_settings(void)
     gtk_container_set_border_width(GTK_CONTAINER(colorize_settings), 12);
     gtk_window_set_title(GTK_WINDOW(colorize_settings), _("Color Adjustment"));
     gtk_window_set_type_hint(GTK_WINDOW(colorize_settings), GDK_WINDOW_TYPE_HINT_DIALOG);
-    gtk_window_set_transient_for(GTK_WINDOW(colorize_settings), GTK_WINDOW(cfg_win));
 
     vbox = gtk_vbox_new(FALSE, 12);
     gtk_container_add(GTK_CONTAINER(colorize_settings), vbox);
@@ -650,8 +646,6 @@ GtkWidget* skins_configure(void) {
     g_signal_connect_after(G_OBJECT(skin_view), "realize",
                            G_CALLBACK(on_skin_view_realize),
                            NULL);
-
-    gtk_window_present(GTK_WINDOW(cfg_win));
 
     return appearance_page_vbox;
 }
