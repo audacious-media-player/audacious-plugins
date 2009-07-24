@@ -18,7 +18,9 @@
  */
 
 #define FFAUDIO_DEBUG
+#include "config.h"
 #include "ffaudio-stdinc.h"
+#include <audacious/i18n.h>
 
 /***********************************************************************************
  * Plugin glue.                                                                    *
@@ -489,6 +491,36 @@ static gchar *ffaudio_fmts[] = {
     NULL
 };
 
+static void
+ffaudio_about(void)
+{
+    static GtkWidget *aboutbox = NULL;
+    
+    if (aboutbox == NULL)
+    {
+        gchar *formats = g_strjoinv(", ", ffaudio_fmts);
+        gchar *description = g_strdup_printf(
+        _("Multi-format audio decoding plugin for Audacious based on \n"
+        "FFmpeg multimedia framework (http://www.ffmpeg.org/) \n"
+        "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n\n"
+        "Supported formats: %s\n\n"
+        "Audacious plugin by: \n"
+        "            William Pitcock <nenolod@nenolod.net>,\n"
+        "            Matti Hämäläinen <ccr@tnsp.org>\n"),
+        formats);
+
+        aboutbox = audacious_info_dialog(
+            _("About FFaudio Plugin"),
+            description, _("Ok"), FALSE, NULL, NULL);
+
+        g_free(formats);
+        g_free(description);
+
+        g_signal_connect(G_OBJECT(aboutbox), "destroy",
+            G_CALLBACK(gtk_widget_destroyed), &aboutbox);
+    }
+}
+
 InputPlugin ffaudio_ip = {
     .init = ffaudio_init,
     .cleanup = ffaudio_cleanup,
@@ -498,6 +530,7 @@ InputPlugin ffaudio_ip = {
     .pause = ffaudio_pause,
     .seek = ffaudio_seek,
     .get_song_tuple = ffaudio_get_song_tuple,
+    .about = ffaudio_about,
     .description = "FFaudio Plugin",
     .vfs_extensions = ffaudio_fmts,
 };

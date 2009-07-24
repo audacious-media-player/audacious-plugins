@@ -32,8 +32,8 @@ static void console_aboutbox(void)
         _("About the Game Console Music Decoder"),
         _("Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
         "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-        "Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
-        "        Shay Green <gblargg@gmail.com>, \n"),
+        "Audacious implementation by: William Pitcock <nenolod@dereferenced.org>, \n"
+        "        Shay Green <gblargg@gmail.com>\n"),
         _("Ok"),
         FALSE, NULL, NULL);
         g_signal_connect(G_OBJECT(aboutbox), "destroy",
