@@ -418,11 +418,8 @@ input_read_tag(struct mad_info_t *info)
     info->title = aud_tuple_formatter_make_title_string(tuple, audmad_config->title_override == TRUE ?
         audmad_config->id3_format : aud_get_gentitle_format());
 
-    // for connection via proxy, we have to stop transfer once. I can't explain the reason.
-    if (info->infile != NULL) {
-        aud_vfs_fseek(info->infile, -1, SEEK_SET); // an impossible request
+    if (info->infile != NULL)
         aud_vfs_fseek(info->infile, curpos, SEEK_SET);
-    }
 
     AUDDBG("e: input_read_tag\n");
 }
