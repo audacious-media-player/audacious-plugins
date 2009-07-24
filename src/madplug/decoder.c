@@ -389,20 +389,6 @@ decode_loop(gpointer arg)
     mad_stream_options(&stream, MAD_OPTION_IGNORECRC);
     mad_synth_init(&synth);
 
-    /* set mainwin title */
-    if (info->title)
-        g_free(info->title);
-    info->title = aud_tuple_formatter_make_title_string(info->tuple, audmad_config->title_override == TRUE ?
-                                       audmad_config->id3_format : aud_get_gentitle_format());
-
-    info->length = mad_timer_count (info->duration, MAD_UNITS_MILLISECONDS);
-
-    if (info->length == 0)
-        info->length = -1;
-
-    info->playback->set_params (info->playback, info->title, info->length,
-     info->bitrate, info->freq, info->channels);
-
     info->resync = 0;
     info->buffer = malloc (1024);
     info->buffer_size = 1024;

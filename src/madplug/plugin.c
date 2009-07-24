@@ -552,6 +552,15 @@ audmad_play_file(InputPlayback *playback)
         */
     }
 
+    g_free (info.title);
+    info.title = aud_tuple_formatter_make_title_string (info.tuple,
+     audmad_config->title_override ? audmad_config->id3_format :
+     aud_get_gentitle_format ());
+    info.length = mad_timer_count (info.duration, MAD_UNITS_MILLISECONDS);
+
+    playback->set_params (playback, info.title, info.length, info.bitrate,
+     info.freq, info.channels);
+
     rg_info.track_gain = info.replaygain_track_scale;
     rg_info.track_peak = info.replaygain_track_peak;
     rg_info.album_gain = info.replaygain_album_scale;
