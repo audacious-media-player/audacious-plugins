@@ -324,7 +324,9 @@ ffaudio_play_file(InputPlayback *playback)
             if (av_seek_frame(ic, -1, seek_value * AV_TIME_BASE, AVSEEK_FLAG_ANY) < 0)
             {
                 _DEBUG("error while seeking");
-            }
+            } else
+                errcount = 0;
+            
             seek_value = -1;
             g_cond_signal(seek_cond);
         }
