@@ -26,3 +26,19 @@ Candidates with problems:
   * Musepack (mpc): SV7 files seem to work okay, however SV8 files
     cause severe artifacts when seeked and under some circumstances
     apparently cause the decoder to corrupt stack -> crash.
+
+Other notes:
+
+  * AAC: FFmpeg currently only supports AAC-LC, though there have been
+    discussions on ffmpeg-devel about adding SBR (Spectral Band Replication,
+    needed for HE-AAC v1) and PS (Parametric Stereo, needed for HE-AAC v2
+    together with SBR).
+
+    For now, FAAD-based decoder provides better compatibility, like
+    "AAC+" which actually is HE-AAC v2.
+
+  * Movie formats: Playing audio from AVI, MOV, etc. files is possible,
+    maybe we should enable this?
+
+  * RealAudio formats: FFmpeg supports some Real codecs, but the demuxer
+    seems to get duration etc. wrong lots of the time.
