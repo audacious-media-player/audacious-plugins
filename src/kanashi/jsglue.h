@@ -35,3 +35,8 @@ extern JSBool kanashi_js_is_beat(JSContext *cx_, JSObject *obj, uintN argc, jsva
 extern JSBool kanashi_js_get_canvas_width(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
 extern JSBool kanashi_js_get_canvas_height(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
 
+extern JSBool kanashi_js_get_pcm_data(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
+
+extern JSBool kanashi_js_translate_polar_x(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
+extern JSBool kanashi_js_translate_polar_y(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
+
