@@ -70,6 +70,8 @@ ConsoleFileHandler::ConsoleFileHandler(const gchar *path, VFSFile *fd)
     m_path = aud_filename_split_subtune(path, &m_track);
     if (m_path == NULL)
         return;
+    
+    m_track -= 1;
 
     // open vfs
     if (fd != NULL)
