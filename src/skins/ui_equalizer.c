@@ -518,8 +518,11 @@ equalizerwin_show(gboolean show)
         gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
     else
     {
-        config.equalizer_visible = show;
-        aud_cfg->equalizer_visible = show;
+        if (show != config.equalizer_visible) {
+            config.equalizer_visible = show;
+            config.equalizer_visible_prev = !show;
+            aud_cfg->equalizer_visible = show;
+        }
 
         if (show)
            equalizerwin_real_show ();

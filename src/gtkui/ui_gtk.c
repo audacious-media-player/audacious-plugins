@@ -237,12 +237,12 @@ static void ui_mainwin_hide()
 
 static void ui_mainwin_toggle_visibility(gpointer hook_data, gpointer user_data)
 {
-    gboolean *show = (gboolean *) hook_data;
+    gboolean show = GPOINTER_TO_INT(hook_data);
 
-    config.player_visible = *show;
-    aud_cfg->player_visible = *show;
+    config.player_visible = show;
+    aud_cfg->player_visible = show;
 
-    if (*show)
+    if (show)
     {
         ui_mainwin_show();
     }
@@ -250,6 +250,11 @@ static void ui_mainwin_toggle_visibility(gpointer hook_data, gpointer user_data)
     {
         ui_mainwin_hide();
     }
+}
+
+static void ui_toggle_visibility(void)
+{
+    ui_mainwin_toggle_visibility(GINT_TO_POINTER(!config.player_visible), NULL);
 }
 
 static void ui_update_time_info(gint time)
@@ -534,7 +539,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     gtk_widget_show_all(vbox);
 
     if (config.player_visible)
-        ui_mainwin_toggle_visibility(&config.player_visible, NULL);
+        ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
 
     ui_clear_song_info();
 
@@ -545,6 +550,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     cbs->show_prefs_window = show_preferences_window;
     cbs->run_filebrowser = run_filebrowser;
     cbs->hide_filebrowser = hide_filebrowser;
+    cbs->toggle_visibility = ui_toggle_visibility;
 
     gtk_main();
 

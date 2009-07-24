@@ -146,8 +146,8 @@ ui_main_evlistener_mainwin_set_always_on_top(gpointer hook_data, gpointer user_d
 static void
 ui_main_evlistener_mainwin_show(gpointer hook_data, gpointer user_data)
 {
-    gboolean *show = (gboolean*)hook_data;
-    mainwin_show(*show);
+    gboolean show = GPOINTER_TO_INT(hook_data);
+    mainwin_show(show);
 }
 
 static void

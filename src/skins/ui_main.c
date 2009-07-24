@@ -1455,8 +1455,11 @@ void mainwin_show (gboolean show)
         gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
     else
     {
-        config.player_visible = show;
-        aud_cfg->player_visible = show;
+        if (show != config.player_visible) {
+            config.player_visible = show;
+            config.player_visible_prev = !show;
+            aud_cfg->player_visible = show;
+        }
 
         if (show)
            mainwin_real_show ();

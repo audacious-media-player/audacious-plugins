@@ -83,40 +83,7 @@ si_about ( void )
 void
 si_audacious_toggle_visibility ( void )
 {
-  const Interface *interface = aud_interface_get_current();
-  gboolean gtkui = FALSE;
-
-  if (g_strcmp0(interface->id, "gtkui") == 0)
-    gtkui = TRUE;
-
-  /* use the window visibility status to toggle show/hide
-     (if at least one is visible, hide) */
-  if (( audacious_drct_main_win_is_visible() == TRUE ) ||
-      ( audacious_drct_eq_win_is_visible() == TRUE && !gtkui ) ||
-      ( audacious_drct_pl_win_is_visible() == TRUE && !gtkui ))
-  {
-    /* remember the visibility status of the player windows */
-    si_cfg.mw_visib_prevstatus = audacious_drct_main_win_is_visible();
-    si_cfg.ew_visib_prevstatus = audacious_drct_eq_win_is_visible();
-    si_cfg.pw_visib_prevstatus = audacious_drct_pl_win_is_visible();
-    /* now hide all of them */
-    if ( si_cfg.mw_visib_prevstatus == TRUE )
-      audacious_drct_main_win_toggle( FALSE );
-    if ( si_cfg.ew_visib_prevstatus == TRUE && !gtkui )
-      audacious_drct_eq_win_toggle( FALSE );
-    if ( si_cfg.pw_visib_prevstatus == TRUE && !gtkui )
-      audacious_drct_pl_win_toggle( FALSE );
-  }
-  else
-  {
-    /* show the windows that were visible before */
-    if ( si_cfg.mw_visib_prevstatus == TRUE )
-      audacious_drct_main_win_toggle( TRUE );
-    if ( si_cfg.ew_visib_prevstatus == TRUE && !gtkui )
-      audacious_drct_eq_win_toggle( TRUE );
-    if ( si_cfg.pw_visib_prevstatus == TRUE && !gtkui )
-      audacious_drct_pl_win_toggle( TRUE );
-  }
+  aud_interface_toggle_visibility();
 }
 
 void

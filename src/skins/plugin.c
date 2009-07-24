@@ -46,6 +46,8 @@ Interface skins_interface =
 SIMPLE_INTERFACE_PLUGIN("skinned", &skins_interface);
 gboolean plugin_is_active = FALSE;
 
+static void toggle_visibility(void);
+
 static void skins_free_paths(void) {
     int i;
 
@@ -112,6 +114,7 @@ gboolean skins_init(InterfaceCbs *cbs) {
     cbs->show_prefs_window = show_preferences_window;
     cbs->run_filebrowser = run_filebrowser;
     cbs->hide_filebrowser = hide_filebrowser;
+    cbs->toggle_visibility = toggle_visibility;
 
     gtk_main();
 
@@ -176,5 +179,37 @@ void show_preferences_window(gboolean show) {
         if ((prefswin != NULL) && (*prefswin != NULL)) {
             skins_interface.ops->destroy_prefs_window();
         }
+    }
+}
+
+static void toggle_visibility(void)
+{
+    /* use the window visibility status to toggle show/hide
+       (if at least one is visible, hide) */
+    if ((config.player_visible == TRUE ) ||
+        (config.equalizer_visible == TRUE) ||
+        (config.playlist_visible == TRUE))
+    {
+        /* remember the visibility status of the player windows */
+        config.player_visible_prev = config.player_visible;
+        config.equalizer_visible_prev = config.equalizer_visible;
+        config.playlist_visible_prev = config.playlist_visible;
+        /* now hide all of them */
+        if (config.player_visible_prev == TRUE)
+            mainwin_show(FALSE);
+        if (config.equalizer_visible_prev == TRUE)
+            equalizerwin_show(FALSE);
+        if (config.playlist_visible_prev == TRUE)
+            playlistwin_show(FALSE);
+    }
+    else
+    {
+        /* show the windows that were visible before */
+        if (config.player_visible_prev == TRUE)
+            mainwin_show(TRUE);
+        if (config.equalizer_visible_prev == TRUE)
+            equalizerwin_show(TRUE);
+        if (config.playlist_visible_prev == TRUE)
+            playlistwin_show(TRUE);
     }
 }

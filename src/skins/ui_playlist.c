@@ -1308,8 +1308,11 @@ void playlistwin_show (char show)
         gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
     else
     {
-        config.playlist_visible = show;
-        aud_cfg->playlist_visible = show;
+        if (show != config.playlist_visible) {
+            config.playlist_visible = show;
+            config.playlist_visible_prev = !show;
+            aud_cfg->playlist_visible = show;
+        }
 
         if (show)
            playlistwin_real_show ();
