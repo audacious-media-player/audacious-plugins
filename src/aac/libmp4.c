@@ -29,7 +29,6 @@ static void        mp4_init(void);
 /*
 static void        mp4_about(void);
 */
-static gint        mp4_is_our_file(const gchar *);
 static void        mp4_play(InputPlayback *);
 static void        mp4_stop(InputPlayback *);
 static void        mp4_pause(InputPlayback *, gshort);
@@ -52,7 +51,6 @@ InputPlugin mp4_ip =
 /*
     .about = mp4_about,
 */
-    .is_our_file = mp4_is_our_file,
     .play_file = mp4_play,
     .stop = mp4_stop,
     .pause = mp4_pause,
@@ -219,43 +217,6 @@ static int aac_probe(unsigned char *buffer, int len)
   g_print("\nAAC_PROBE: ret %d\n", pos);
 #endif
   return pos;
-}
-
-static gint mp4_is_our_file(const gchar *filename)
-{
-  VFSFile *file;
-  gchar* extension;
-  gchar magic[8];
-
-  memset(magic, '\0', 8);
-
-  extension = strrchr(filename, '.');
-  if ((file = aud_vfs_fopen(filename, "rb"))) {
-      aud_vfs_fread(magic, 1, 8, file);
-      aud_vfs_rewind(file);
-      if (parse_aac_stream(file) == TRUE) {
-           aud_vfs_fclose(file);
-           return TRUE;
-      }
-      if (!memcmp(magic, "ID3", 3)) {       // ID3 tag bolted to the front, obfuscated magic bytes
-          aud_vfs_fclose(file);
-          if (extension &&(
-                  !strcasecmp(extension, ".mp4") || // official extension
-                  !strcasecmp(extension, ".m4a") || // Apple mp4 extension
-                  !strcasecmp(extension, ".aac")    // old MPEG2/4-AAC extension
-                  ))
-              return 1;
-          else {
-              return 0;
-          }
-      }
-      if (!memcmp(&magic[4], "ftyp", 4)) {
-          aud_vfs_fclose(file);
-          return 1;
-      }
-      aud_vfs_fclose(file);
-  }
-  return 0;
 }
 
 static gint mp4_is_our_fd(const gchar *filename, VFSFile* file)
