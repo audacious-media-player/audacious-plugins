@@ -389,10 +389,7 @@ ffaudio_play_file(InputPlayback *playback)
             tmp.data += len;
 
             if (out_size <= 0)
-            {
-                _DEBUG("no output PCM, continuing (out_size=%d, pkt.size=%d)", out_size, pkt.size);
                 continue;
-            }
             
             /* Perform audio resampling if necessary */
             if (resample)
