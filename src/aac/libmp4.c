@@ -1,3 +1,4 @@
+#include "config.h"
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <string.h>
@@ -26,9 +27,7 @@
 #define AAC_MAGIC     (unsigned char [4]) { 0xFF, 0xF9, 0x5C, 0x80 }
 
 static void        mp4_init(void);
-/*
 static void        mp4_about(void);
-*/
 static void        mp4_play(InputPlayback *);
 static void        mp4_stop(InputPlayback *);
 static void        mp4_pause(InputPlayback *, gshort);
@@ -46,11 +45,9 @@ gboolean        buffer_playing;
 
 InputPlugin mp4_ip =
 {
-    .description = "MP4 Audio Plugin",
+    .description = "MP4 AAC decoder",
     .init = mp4_init,
-/*
     .about = mp4_about,
-*/
     .play_file = mp4_play,
     .stop = mp4_stop,
     .pause = mp4_pause,
@@ -245,25 +242,28 @@ static gint mp4_is_our_fd(const gchar *filename, VFSFile* file)
 }
 
 /* XXX TODO: Figure out cause of freaky symbol collision and resurrect
+ */
 static void mp4_about(void)
 {
-    static GtkWidget aboutbox = NULL;
-    gchar *about_text;
+    static GtkWidget *aboutbox = NULL;
 
-    about_text = g_strjoin ("", _("Using libfaad2-"), FAAD2_VERSION,
-				_(" for decoding.\n"
-				  "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
-				  "Copyright (c) 2005-2006 Audacious team"), NULL);
+    if (aboutbox == NULL)
+    {
+        gchar *about_text = g_strdup_printf(
+            _("Using libfaad2-%s for decoding.\n"
+            "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
+            "Copyright (c) 2005-2006 Audacious team"), FAAD2_VERSION);
 
-    aboutbox = audacious_info_dialog(_("About MP4 AAC player plugin"),
-				 about_text,
-				 _("Ok"), FALSE, NULL, NULL);
+        aboutbox = audacious_info_dialog(
+            _("About MP4 AAC decoder plugin"),
+            about_text, _("Ok"), FALSE, NULL, NULL);
 
-    g_signal_connect(G_OBJECT(aboutbox), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed), &aboutbox);
-    g_free(about_text);
+        g_signal_connect(G_OBJECT(aboutbox), "destroy",
+            G_CALLBACK(gtk_widget_destroyed), &aboutbox);
+
+        g_free(about_text);
+    }
 }
-*/
 
 static void mp4_pause(InputPlayback *playback, short flag)
 {
