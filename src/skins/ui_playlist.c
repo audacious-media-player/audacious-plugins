@@ -1260,6 +1260,9 @@ playlistwin_create(void)
 
     playlistwin_create_widgets();
 
+    gtk_widget_show_all (((SkinnedWindow *) playlistwin)->normal);
+    gtk_widget_show_all (((SkinnedWindow *) playlistwin)->shaded);
+
     gtk_window_add_accel_group(GTK_WINDOW(playlistwin), ui_manager_get_accel_group());
 
     /* calls playlistwin_update */
@@ -1276,7 +1279,6 @@ static void playlistwin_real_show (void)
 {
     ui_skinned_button_set_inside(mainwin_pl, TRUE);
 
-    gtk_widget_show_all(playlistwin);
     if (!config.playlist_shaded)
         gtk_widget_hide(playlistwin_sinfo);
     gtk_window_present(GTK_WINDOW(playlistwin));

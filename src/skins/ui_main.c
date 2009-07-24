@@ -2181,6 +2181,9 @@ static void show_widgets (void)
     gtk_widget_set_no_show_all (mainwin_monostereo, 1);
     gtk_widget_set_no_show_all (mainwin_othertext, 1);
 
+    gtk_widget_show_all (((SkinnedWindow *) mainwin)->normal);
+    gtk_widget_show_all (((SkinnedWindow *) mainwin)->shaded);
+
     ui_skinned_window_set_shade (mainwin, config.player_shaded);
 }
 

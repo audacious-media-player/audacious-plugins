@@ -481,6 +481,9 @@ equalizerwin_create(void)
     gtk_window_add_accel_group( GTK_WINDOW(equalizerwin) , ui_manager_get_accel_group() );
 
     equalizerwin_create_widgets();
+
+    gtk_widget_show_all (((SkinnedWindow *) equalizerwin)->normal);
+    gtk_widget_show_all (((SkinnedWindow *) equalizerwin)->shaded);
 }
 
 static void equalizerwin_real_show (void)
@@ -492,7 +495,6 @@ static void equalizerwin_real_show (void)
         gtk_widget_set_size_request(equalizerwin, 275,
                                     (config.equalizer_shaded ? 14 : 116));
     ui_skinned_button_set_inside(mainwin_eq, TRUE);
-    gtk_widget_show_all(equalizerwin);
 
     gtk_window_present(GTK_WINDOW(equalizerwin));
 }

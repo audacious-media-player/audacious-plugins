@@ -264,14 +264,25 @@ void ui_skinned_window_draw_all(GtkWidget *widget) {
     gtk_widget_queue_draw (widget);
 }
 
-void ui_skinned_window_set_shade(GtkWidget *widget, gboolean shaded) {
-    if (shaded) {
-        gtk_container_remove(GTK_CONTAINER(widget), SKINNED_WINDOW(widget)->normal);
-        gtk_container_add(GTK_CONTAINER(widget), SKINNED_WINDOW(widget)->shaded);
-        gtk_widget_show_all(SKINNED_WINDOW(widget)->shaded);
-    } else {
-        gtk_container_remove(GTK_CONTAINER(widget), SKINNED_WINDOW(widget)->shaded);
-        gtk_container_add(GTK_CONTAINER(widget), SKINNED_WINDOW(widget)->normal);
-        gtk_widget_show_all(SKINNED_WINDOW(widget)->normal);
+void ui_skinned_window_set_shade (GtkWidget * widget, gboolean shaded)
+{
+    SkinnedWindow * skinned = (SkinnedWindow *) widget;
+    GtkWidget * old, * new;
+
+    if (shaded)
+    {
+        old = skinned->normal;
+        new = skinned->shaded;
     }
+    else
+    {
+        old = skinned->shaded;
+        new = skinned->normal;
+    }
+
+    if (gtk_widget_get_parent (old) == NULL)
+        return;
+
+    gtk_container_remove ((GtkContainer *) skinned, old);
+    gtk_container_add ((GtkContainer *) skinned, new);
 }

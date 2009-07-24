@@ -185,8 +185,6 @@ aud_active_skin_load(const gchar * path)
     ui_skinned_window_draw_all(equalizerwin);
     ui_skinned_window_draw_all(playlistwin);
 
-    playlistwin_update ();
-
     SkinPixmap *pixmap;
     pixmap = &aud_active_skin->pixmaps[SKIN_POSBAR];
     /* last 59 pixels of SKIN_POSBAR are knobs (normal and selected) */
@@ -195,14 +193,13 @@ aud_active_skin_load(const gchar * path)
     return TRUE;
 }
 
-void
-skin_pixmap_free(SkinPixmap * p)
+static void skin_pixmap_free (SkinPixmap * pixmap)
 {
-    g_return_if_fail(p != NULL);
-    g_return_if_fail(p->pixbuf != NULL);
-
-    g_object_unref(p->pixbuf);
-    p->pixbuf = NULL;
+    if (pixmap->pixbuf != NULL)
+    {
+        g_object_unref (pixmap->pixbuf);
+        pixmap->pixbuf = NULL;
+    }
 }
 
 Skin *
@@ -407,6 +404,9 @@ skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const gchar * path_p)
 
     pm = &skin->pixmaps[id];
     GdkPixbuf *pix = gdk_pixbuf_new_from_file(filename, NULL);
+
+    if (pix == NULL)
+        return FALSE;
 
     if (config.colorize_r == 255 && config.colorize_g == 255 &&
      config.colorize_b == 255)
@@ -1431,7 +1431,7 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
         skin_numbers_generate_dash(skin);
 
     filename = find_file_recursively(path, "pledit.txt");
-    inifile = aud_open_ini_file(filename);
+    inifile = (filename != NULL) ? aud_open_ini_file (filename) : NULL;
 
     skin->colors[SKIN_PLEDIT_NORMAL] =
         skin_load_color(inifile, "Text", "Normal", "#2499ff");
