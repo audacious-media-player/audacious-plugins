@@ -274,6 +274,9 @@ static JSFunctionSpec js_global_functions[] = {
     JS_FS("is_beat",                    kanashi_js_is_beat,                    0,      0,      0),
     JS_FS("get_canvas_width",           kanashi_js_get_canvas_width,           0,      0,      0),
     JS_FS("get_canvas_height",          kanashi_js_get_canvas_height,          0,      0,      0),
+    JS_FS("get_pcm_data",               kanashi_js_get_pcm_data,               0,      0,      0),
+    JS_FS("translate_polar_x",          kanashi_js_translate_polar_x,          1,      0,      0),
+    JS_FS("translate_polar_y",          kanashi_js_translate_polar_y,          1,      0,      0),
     JS_FS_END
 };
 

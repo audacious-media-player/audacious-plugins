@@ -176,3 +176,59 @@ kanashi_js_get_canvas_height(JSContext *cx_, JSObject *obj, uintN argc, jsval *a
     *rval = INT_TO_JSVAL(kanashi_image_data->height);
     return JS_TRUE;
 }
+
+JSBool
+kanashi_js_get_sound_data(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+{
+    jsval *ar = JS_NewArrayObject(cx_, 0, NULL);
+    gint i;
+
+    JS_AddRoot(ar);
+
+    for (i = 0; i < 256; i++)
+    {
+        jsval *tuple = JS_NewArrayObject(cx_, 0, NULL);
+
+        JS_AddRoot(tuple);
+
+        JS_SetElement(cx_, tuple, 0, INT_TO_JSVAL(kanashi_sound_data->pcm_data[0][i * 2]));
+        JS_SetElement(cx_, tuple, 1, INT_TO_JSVAL(kanashi_sound_data->pcm_data[1][i * 2]));
+
+        JS_SetElement(cx_, ar, i, tuple);
+
+        JS_RemoveRoot(tuple);
+    }
+
+    JS_RemoveRoot(ar);
+
+    *rval = ar;
+    return JS_TRUE;
+}
+
+JSBool
+kanashi_js_translate_polar_x(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+{
+    gint x;
+
+    if (!JS_ConvertArguments(cx_, argc, argv, "i", &x))
+        return JS_FALSE;
+
+    x *= kanashi_image_data->width;
+
+    *rval = INT_TO_JSVAL(x);
+    return JS_TRUE;
+}
+
+JSBool
+kanashi_js_translate_polar_y(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+{
+    gint y;
+
+    if (!JS_ConvertArguments(cx_, argc, argv, "i", &x))
+        return JS_FALSE;
+
+    y *= kanashi_image_data->height;
+
+    *rval = INT_TO_JSVAL(y);
+    return JS_TRUE;
+}
