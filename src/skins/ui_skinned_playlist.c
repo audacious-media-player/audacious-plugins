@@ -613,7 +613,7 @@ static gint calc_position (UiSkinnedPlaylistPrivate * private, gint y)
 {
     gint position;
 
-    if (y < 0)
+    if (y < private->offset)
         return -1;
 
     position = private->first + (y - private->offset) / private->row_height;
@@ -1027,8 +1027,9 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
                     select_single (private, FALSE, position);
             }
 
-            ui_popup_menu_show (UI_MENU_PLAYLIST_CONTEXT, event->x_root,
-             event->y_root, FALSE, FALSE, 3, event->time);
+            ui_popup_menu_show ((position == -1) ? UI_MENU_PLAYLIST :
+             UI_MENU_PLAYLIST_CONTEXT, event->x_root, event->y_root, FALSE,
+             FALSE, 3, event->time);
             break;
           default:
             return FALSE;
