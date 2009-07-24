@@ -406,6 +406,7 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
         gdk_cairo_set_source_color (cr, skin_get_color (aud_active_skin,
          SKIN_PLEDIT_NORMAL));
         pango_cairo_show_layout (cr, layout);
+        g_object_unref(layout);
     }
 
     for (i = priv->first; i < priv->first + priv->rows && i < active_length; i ++)
