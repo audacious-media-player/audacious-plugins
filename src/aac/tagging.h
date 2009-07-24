@@ -25,7 +25,6 @@
 #include <unistd.h>
 
 #include "mp4ff.h"
-#include "xmms-id3.h"
 
 /* XXX: We will need the same for AAC eventually */
 extern gchar *audmp4_get_artist(mp4ff_t *);

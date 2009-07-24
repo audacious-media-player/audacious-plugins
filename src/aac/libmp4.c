@@ -19,7 +19,7 @@
  * We use this for sanity checks, among other things, as mp4ff needs
  * a labotomy sometimes.
  */
-#define BUFFER_SIZE FAAD_MIN_STREAMSIZE*64
+#define BUFFER_SIZE (FAAD_MIN_STREAMSIZE*64)
 
 /*
  * AAC_MAGIC is the pattern that marks the beginning of an MP4 container.
@@ -235,14 +235,10 @@ static gint mp4_is_our_fd(const gchar *filename, VFSFile* file)
       !strcasecmp(extension, ".aac")    // old MPEG2/4-AAC extension
     ))
       return 1;
-    else
-      return 0;
   }
   return 0;
 }
 
-/* XXX TODO: Figure out cause of freaky symbol collision and resurrect
- */
 static void mp4_about(void)
 {
     static GtkWidget *aboutbox = NULL;
@@ -267,7 +263,7 @@ static void mp4_about(void)
 
 static void mp4_pause(InputPlayback *playback, short flag)
 {
-   pause_flag = flag;
+    pause_flag = flag;
 }
 
 static void mp4_seek(InputPlayback *data, int time)
@@ -308,7 +304,7 @@ static Tuple *mp4_get_song_tuple_base(const gchar *filename, VFSFile *mp4fh)
     mp4cb->seek = mp4_seek_callback;
     mp4cb->user_data = mp4fh;
 
-    if (!(mp4file = mp4ff_open_read(mp4cb))) {
+    if ((mp4file = mp4ff_open_read(mp4cb)) == NULL) {
         g_free(mp4cb);
         aud_vfs_fclose(mp4fh);
     } else {
@@ -334,15 +330,14 @@ static Tuple *mp4_get_song_tuple_base(const gchar *filename, VFSFile *mp4fh)
         decoder = faacDecOpen();
         mp4ff_get_decoder_config(mp4file, mp4track, &buffer, &bufferSize);
 
-        if ( !buffer ) {
+        if (!buffer) {
             faacDecClose(decoder);
             // clean up
             g_free(mp4cb);
             aud_vfs_fclose(mp4fh);
             return FALSE;
         }
-        if ( faacDecInit2(decoder, buffer, bufferSize,
-                  &samplerate, &channels) < 0 ) {
+        if (faacDecInit2(decoder, buffer, bufferSize, &samplerate, &channels) < 0) {
             faacDecClose(decoder);
 
             // clean up
@@ -358,7 +353,6 @@ static Tuple *mp4_get_song_tuple_base(const gchar *filename, VFSFile *mp4fh)
         }
 
         g_free(buffer);
-
         faacDecClose(decoder);
 
         msDuration = ((float)numSamples * (float)(framesize - 1.0)/(float)samplerate) * 1000;
@@ -429,7 +423,7 @@ static void mp4_get_song_title_len(char *filename, char **title, int *len)
     (*len) = -1;
 }
 
-static gchar   *mp4_get_song_title(char *filename)
+static gchar *mp4_get_song_title(char *filename)
 {
     gchar *title;
     Tuple *tuple = mp4_get_song_tuple(filename);
@@ -462,9 +456,8 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         return TRUE;
     }
 
-    gchar *xmmstitle = NULL;
-    xmmstitle = mp4_get_song_title(filename);
-    if(xmmstitle == NULL)
+    gchar *xmmstitle = xmmstitle = mp4_get_song_title(filename);
+    if (xmmstitle == NULL)
         xmmstitle = g_strdup(filename);
 
     decoder = faacDecOpen();
