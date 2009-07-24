@@ -215,7 +215,7 @@ ffaudio_play_file(InputPlayback *playback)
     gint i, stream_id, out_channels, errcount;
     gint in_sample_size, out_sample_size;
     ReSampleContext *resctx = NULL;
-    gboolean resample = FALSE;
+    gboolean do_resampling = FALSE;
     AFormat out_fmt;
     gchar *uribuf, *title;
     Tuple *tuple;
@@ -256,17 +256,17 @@ ffaudio_play_file(InputPlayback *playback)
     out_sample_size = av_get_bits_per_sample_format(SAMPLE_FMT_S16) / 8;
 
     if (c->channels > 2)
-        resample = TRUE;
+        do_resampling = TRUE;
     
     switch (c->sample_fmt) {
         case SAMPLE_FMT_U8: out_fmt = FMT_U8; break;
         case SAMPLE_FMT_S16: out_fmt = FMT_S16_NE; break;
         case SAMPLE_FMT_S32: out_fmt = FMT_S32_NE; break;
         case SAMPLE_FMT_FLT: out_fmt = FMT_FLOAT; break;
-        default: resample = TRUE; break;
+        default: do_resampling = TRUE; break;
     }
     
-    if (resample)
+    if (do_resampling)
     {
         /* Initialize resampling context */
         out_channels = 2;
@@ -353,7 +353,8 @@ ffaudio_play_file(InputPlayback *playback)
             errcount = 0;
 
         /* Ignore any other substreams */
-        if (pkt.stream_index != stream_id) {
+        if (pkt.stream_index != stream_id)
+        {
             av_free_packet(&pkt);
             continue;
         }
@@ -392,7 +393,7 @@ ffaudio_play_file(InputPlayback *playback)
                 continue;
             
             /* Perform audio resampling if necessary */
-            if (resample)
+            if (do_resampling)
             {
                 out_size = audio_resample(resctx,
                     (gint16 *)resbuf, (gint16 *)outbuf,
