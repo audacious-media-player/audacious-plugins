@@ -1283,8 +1283,8 @@ gint neon_aud_vfs_truncate_impl(VFSFile* file, glong size) {
 gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
 
     struct neon_handle* h = (struct neon_handle*)file->handle;
-    long newpos;
-    long content_length;
+    glong newpos;
+    glong content_length;
 
     _ENTER;
 
@@ -1319,11 +1319,11 @@ gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
     _DEBUG("<%p> Position to seek to: %ld, current: %ld", h, newpos, h->pos);
     if (0 > newpos) {
         _ERROR("<%p> Can not seek before start of stream", h);
-	_LEAVE -1;
+        _LEAVE -1;
     }
 
     if (newpos >= content_length) {
-        _ERROR("<%p> Can not seek beyond end of stream", h);
+        _ERROR("<%p> Can not seek beyond end of stream (%ld >= %ld)", h, newpos, content_length);
         _LEAVE -1;
     }
 
