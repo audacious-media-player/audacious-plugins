@@ -784,22 +784,6 @@ if test "x$have_ffaudio" = "xyes"; then
     INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"
 fi
 
-dnl *** WMA
-
-have_wma="no"
-AC_ARG_ENABLE(wma,
-    [  --disable-wma           disable wma plugin. (default=enabled; deprecated)],
-    [enable_wma=$enableval],
-    [enable_wma=yes]
-)
-
-if test "x$have_ffaudio" = "xno"; then
-    if test "x$enable_wma" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS wma"
-        have_wma="yes"
-    fi
-fi
-
 dnl *** Monkey's Audio
 
 AC_ARG_ENABLE(ape,
@@ -1685,7 +1669,6 @@ echo "  -------------"
 echo "  MPEG 1/2/3 (madplug):                   $enable_mp3"
 echo "  MPEG 4 Audio (AAC):                     $enable_aac"
 echo "  FFaudio (ffaudio):                      $have_ffaudio"
-echo "  Windows Media Audio (wma):              $have_wma"
 echo "  Monkey's Audio (ape):                   $enable_ape"
 echo "  Module decoder (modplug):               $have_modplug"
 echo "  MIDI modular plugin (amidi-plug):       $enable_amidiplug"
