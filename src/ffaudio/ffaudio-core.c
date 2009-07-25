@@ -290,7 +290,10 @@ ffaudio_play_file(InputPlayback *playback)
     _DEBUG("opening audio output");
 
     if (playback->output->open_audio(out_fmt, c->sample_rate, out_channels) <= 0)
+    {
+        playback->error = TRUE;
         goto error_exit;
+    }
 
     /* Allocate output buffer aligned to 16 byte boundary */
     outbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
