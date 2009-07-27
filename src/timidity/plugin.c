@@ -50,8 +50,17 @@ static GtkToggleButton *xmmstimid_conf_rate_11000, *xmmstimid_conf_rate_22000, *
 static GtkToggleButton *xmmstimid_conf_bits_8, *xmmstimid_conf_bits_16;
 static GtkToggleButton *xmmstimid_conf_channels_1, *xmmstimid_conf_channels_2;
 
+static gboolean xmmstimid_engine_init(void)
+{
+    if (mid_init(xmmstimid_cfg.config_file) != 0)
+        xmmstimid_initialized = FALSE;
+    else
+        xmmstimid_initialized = TRUE;
 
-void xmmstimid_init(void)
+    return xmmstimid_initialized;
+}
+
+static void xmmstimid_init(void)
 {
     mcs_handle_t *db;
 
@@ -74,12 +83,8 @@ void xmmstimid_init(void)
     aud_cfg_db_get_int(db, TIMID_CFGID, "channels", &xmmstimid_cfg.channels);
     aud_cfg_db_close(db);
 
-    if (mid_init(xmmstimid_cfg.config_file) != 0)
-    {
-        xmmstimid_initialized = FALSE;
-        return;
-    }
-    xmmstimid_initialized = TRUE;
+    if (!xmmstimid_engine_init())
+        g_warning("TiMidity engine initialization failed!");
 }
 
 static void xmmstimid_cleanup(void)
@@ -229,6 +234,9 @@ static gint xmmstimid_is_our_fd(const gchar * filename, VFSFile * fp)
 {
     gchar magic_bytes[4];
 
+    if (!xmmstimid_initialized)
+        FALSE;
+
     aud_vfs_fread(magic_bytes, 1, 4, fp);
 
     if (!memcmp(magic_bytes, "MThd", 4))
@@ -257,12 +265,8 @@ static Tuple *xmmstimid_get_song_tuple(const gchar * filename)
     if (tuple == NULL)
         return NULL;
 
-    if (!xmmstimid_initialized)
-    {
-        xmmstimid_init();
-        if (!xmmstimid_initialized)
-            return tuple;
-    }
+    if (!xmmstimid_initialized && !xmmstimid_engine_init())
+        return tuple;
 
     stream = mid_istream_open_file(filename);
     if (stream == NULL)
@@ -308,16 +312,18 @@ static void xmmstimid_play_file(InputPlayback * playback)
     guint8 *buffer;
     AFormat fmt;
 
-    if (!xmmstimid_initialized)
+    if (!xmmstimid_initialized && !xmmstimid_engine_init())
     {
-        xmmstimid_init();
-        if (!xmmstimid_initialized)
-            return;
+        g_warning("TiMidity engine not initialized!");
+        return;
     }
 
     stream = mid_istream_open_file(playback->filename);
     if (stream == NULL)
+    {
+        g_warning("Could not open MIDI stream %s", playback->filename);
         return;
+    }
 
     xmmstimid_opts.rate = xmmstimid_cfg.rate;
     xmmstimid_opts.format = (xmmstimid_cfg.bits == 16) ? MID_AUDIO_S16LSB : MID_AUDIO_S8;
@@ -329,6 +335,7 @@ static void xmmstimid_play_file(InputPlayback * playback)
 
     if (xmmstimid_song == NULL)
     {
+        g_warning("Couldn't load MIDI file");
         playback->set_title(playback, _("Couldn't load MIDI file"));
         return;
     }
@@ -336,6 +343,7 @@ static void xmmstimid_play_file(InputPlayback * playback)
     fmt = (xmmstimid_opts.format == MID_AUDIO_S16LSB) ? FMT_S16_LE : FMT_S8;
     if (playback->output->open_audio(fmt, xmmstimid_opts.rate, xmmstimid_opts.channels) == 0)
     {
+        g_warning("Could not open audio output (%d, %d, %d)", fmt, xmmstimid_opts.rate, xmmstimid_opts.channels);
         playback->error = TRUE;
         mid_song_free(xmmstimid_song);
         return;
@@ -345,10 +353,11 @@ static void xmmstimid_play_file(InputPlayback * playback)
     playback->set_params(playback, aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL), mid_song_get_total_time(xmmstimid_song), 0, xmmstimid_opts.rate, xmmstimid_opts.channels);
     tuple_free(tuple);
 
-    buffer_size = ((xmmstimid_opts.format == MID_AUDIO_S16LSB) ? 16 : 8) * xmmstimid_opts.channels / 8 * xmmstimid_opts.buffer_size;
+    buffer_size = ((xmmstimid_opts.format == MID_AUDIO_S16LSB) ? 16 : 8) * xmmstimid_opts.channels * xmmstimid_opts.buffer_size / 8;
 
     if ((buffer = g_malloc(buffer_size)) == NULL)
     {
+        g_warning("Audio buffer allocation failed");
         mid_song_free(xmmstimid_song);
         return;
     }
@@ -387,7 +396,6 @@ static void xmmstimid_play_file(InputPlayback * playback)
         }
 
     }
-
     playback->output->close_audio();
     playback->playing = FALSE;
     mid_song_free(xmmstimid_song);
