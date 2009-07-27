@@ -1,6 +1,6 @@
 PLUGIN = tta${PLUGIN_SUFFIX}
 
-SRCS = libtta.c	\
+SRCS = plugin.c	\
        ttadec.c
 
 include ../../buildsys.mk
