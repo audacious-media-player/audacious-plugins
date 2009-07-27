@@ -614,39 +614,6 @@ audmad_seek(InputPlayback *playback, gint time)
  * Scan the given file or URL.
  * Fills in the title string and the track length in milliseconds.
  */
-static void
-audmad_get_song_info(char *url, char **title, int *length)
-{
-    struct mad_info_t myinfo;
-#ifdef AUD_DEBUG
-    gchar *tmp = g_filename_to_utf8(url, -1, NULL, NULL, NULL);
-    AUDDBG("f: audmad_get_song_info: %s\n", tmp);
-    g_free(tmp);
-#endif                          /* DEBUG */
-
-    if (input_init(&myinfo, url, NULL) == FALSE) {
-        AUDDBG("error initialising input\n");
-        return;
-    }
-
-    if (input_get_info(&myinfo, info.remote ? TRUE : audmad_config->fast_play_time_calc) == TRUE) {
-        if(aud_tuple_get_string(myinfo.tuple, -1, "track-name"))
-            *title = g_strdup(aud_tuple_get_string(myinfo.tuple, -1, "track-name"));
-        else
-            *title = g_strdup(url);
-
-        *length = aud_tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL);
-        if(*length == -1)
-            *length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
-    }
-    else {
-        *title = g_strdup(url);
-        *length = -1;
-    }
-    input_term(&myinfo);
-    AUDDBG("e: audmad_get_song_info\n");
-}
-
 static gboolean
 audmad_fill_info(struct mad_info_t *info, VFSFile *fd)
 {
@@ -910,7 +877,6 @@ InputPlugin mad_ip = {
     .pause = audmad_pause,
     .seek = audmad_seek,
     .cleanup = audmad_cleanup,
-    .get_song_info = audmad_get_song_info,
     .get_song_tuple = audmad_get_song_tuple,
     .is_our_file_from_vfs = audmad_is_our_fd,
     .vfs_extensions = (gchar**)fmts,

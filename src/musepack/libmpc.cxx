@@ -350,35 +350,12 @@ extern "C" Tuple *mpcGetSongTuple(const gchar* p_Filename)
     }
     else
     {
-        gchar* temp = g_strdup_printf("[xmms-musepack] mpcGetSongInfo is unable to open %s\n", p_Filename);
+        gchar* temp = g_strdup_printf("[xmms-musepack] mpcGetSongTuple is unable to open %s\n", p_Filename);
         perror(temp);
         g_free(temp);
     }
 
     return tuple;
-}
-
-extern "C" void mpcGetSongInfo(char* p_Filename, char** p_Title, int* p_Length)
-{
-    VFSFile *input = aud_vfs_fopen(p_Filename, "rb");
-    if(input)
-    {
-        MpcInfo tags = getTags(p_Filename);
-        *p_Title = mpcGenerateTitle(tags, p_Filename);
-        freeTags(tags);
-        mpc_streaminfo info;
-        mpc_reader_file reader;
-        mpc_reader_setup_file_vfs(&reader, input);
-        mpc_streaminfo_read(&info, &reader.reader);
-        *p_Length = static_cast<int> (1000 * mpc_streaminfo_get_length(&info));
-        aud_vfs_fclose(input);
-    }
-    else
-    {
-        gchar* temp = g_strdup_printf("[xmms-musepack] mpcGetSongInfo is unable to open %s\n", p_Filename);
-        perror(temp);
-        g_free(temp);
-    }
 }
 
 static void freeTags(MpcInfo& tags)

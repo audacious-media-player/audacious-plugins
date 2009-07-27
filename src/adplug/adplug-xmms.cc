@@ -928,17 +928,6 @@ adplug_get_time (InputPlayback * data)
   return playback->output->output_time ();
 }
 
-extern "C" void
-adplug_song_info (gchar *filename, gchar **title, gint *length)
-{
-  *length = -1;
-  *title = NULL;
-
-  Tuple* ti = adplug_get_tuple( filename );
-  if ( ti )
-    *title = format_and_free_ti( ti, length );
-}
-
 /***** Player control *****/
 
 extern "C" void

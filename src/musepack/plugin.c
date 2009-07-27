@@ -11,7 +11,6 @@ void mpcPause(InputPlayback *data, gshort p_Pause);
 void mpcSeek(InputPlayback *data, gint p_Offset);
 gint mpcGetTime(InputPlayback *data);
 Tuple *mpcGetSongTuple(const gchar* p_Filename);
-void mpcGetSongInfo(gchar* p_Filename, gchar** p_Title, gint* p_Length);
 void mpcFileInfoBox(char* p_Filename);
 
 static const gchar *mpc_fmts[] = { "mpc", NULL };
@@ -28,7 +27,6 @@ static InputPlugin MpcPlugin = {
     .pause = mpcPause,                  //Pause                     [CALLBACK]
     .seek = mpcSeek,                    //Seek                      [CALLBACK]
     .get_time = mpcGetTime,             //Get Time                  [CALLBACK]
-    .get_song_info = mpcGetSongInfo,    //Get Title String callback [CALLBACK]
     .file_info_box = mpcFileInfoBox,    //Show File Info Box        [CALLBACK]
     .get_song_tuple = mpcGetSongTuple,  //Acquire tuple for song    [CALLBACK]
     .is_our_file_from_vfs = mpcIsOurFD,
