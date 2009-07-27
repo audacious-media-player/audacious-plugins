@@ -283,7 +283,7 @@ static Tuple *xmmstimid_get_song_tuple(const gchar * filename)
     if (song == NULL)
         return tuple;
 
-    if ((tmp = mid_song_get_meta(song, MID_SONG_TRACK_NAME)) == NULL)
+    if ((tmp = mid_song_get_meta(song, MID_SONG_TEXT)) == NULL)
         tmp = aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL);
     aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, tmp);
 

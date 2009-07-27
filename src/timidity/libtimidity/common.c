@@ -22,9 +22,7 @@
    */
 
 #include <config.h>
-
 #include <stdlib.h>
-#include <string.h>
 
 /* I guess "rb" should be right for any libc */
 #define OPEN_MODE "rb"
@@ -35,116 +33,92 @@
 #include "common.h"
 
 /* The paths in this list will be tried whenever we're reading a file */
-static PathList *pathlist = NULL; /* This is a linked list */
+static PathList *pathlist = NULL;       /* This is a linked list */
 
 /* This is meant to find and open files for reading */
-VFSFile *open_file(char *name)
+VFSFile *open_file(gchar * name)
 {
-  VFSFile *fp;
-  gchar* uri;
+    PathList *plp = pathlist;
+    VFSFile *fp = NULL;
+    gchar *uri, *tmp;
 
-  if (!name || !(*name))
+    if (name == NULL || !*name)
     {
-      DEBUG_MSG("Attempted to open nameless file.\n");
-      return 0;
+        DEBUG_MSG("Attempted to open nameless file.\n");
+        return NULL;
     }
 
-  /* First try the given name */
+    /* First try the given name */
+    DEBUG_MSG("Trying to open %s\n", name);
+    fp = NULL;
+    if (g_path_is_absolute(name))
+        tmp = g_strdup(name);
+    else
+    {
+        gchar *cwd = g_get_current_dir();
+        tmp = g_build_filename(cwd, name, NULL);
+        g_free(cwd);
+    }
 
-  DEBUG_MSG("Trying to open %s\n", name);
-  fp = NULL;
-  uri = g_filename_to_uri(name, NULL, NULL); 
-  if (aud_vfs_file_test(uri, G_FILE_TEST_EXISTS)) {
-    fp = aud_vfs_fopen(uri, OPEN_MODE);
-  }
-  g_free(uri);
-  if (fp)
-    return fp;
+    uri = g_filename_to_uri(tmp, NULL, NULL);
+    g_free(tmp);
 
-  if (name[0] != PATH_SEP)
-  {
-    char current_filename[1024];
-    PathList *plp = pathlist;
-    int l;
+    if (aud_vfs_file_test(uri, G_FILE_TEST_EXISTS))
+        fp = aud_vfs_fopen(uri, OPEN_MODE);
+    g_free(uri);
 
-    while (plp)  /* Try along the path then */
-      {
-	*current_filename = 0;
-	l = strlen(plp->path);
-	if(l)
-	  {
-	    strcpy(current_filename, plp->path);
-	    if(current_filename[l - 1] != PATH_SEP)
-	    {
-	      current_filename[l] = PATH_SEP;
-	      current_filename[l + 1] = '\0';
-	    }
-	  }
-	strcat(current_filename, name);
-	DEBUG_MSG("Trying to open %s\n", current_filename);
-	fp = NULL;
-	uri = g_filename_to_uri(current_filename, NULL, NULL);
-	if (aud_vfs_file_test(uri, G_FILE_TEST_EXISTS)) {
-	  fp = aud_vfs_fopen(uri, OPEN_MODE);
-	}
-	g_free(uri);
-	if (fp)
-	  return fp;
-	plp = plp->next;
-      }
-  }
-  
-  /* Nothing could be opened. */
-  DEBUG_MSG("Could not open %s\n", name);
-  return 0;
-}
+    if (fp != NULL)
+        return fp;
 
-/* This'll allocate memory or die. */
-void *safe_malloc(size_t count)
-{
-  void *p;
+    while (plp != NULL)
+    {
+        tmp = g_build_filename(plp->path, name, NULL);
+        uri = g_filename_to_uri(tmp, NULL, NULL);
+        g_free(tmp);
 
-  p = malloc(count);
+        DEBUG_MSG("Trying to open %s\n", tmp);
 
-#ifdef DEBUG
-  if (p == NULL)
-    DEBUG_MSG("Sorry. Couldn't malloc %d bytes.\n", count);
-#endif
+        if (aud_vfs_file_test(uri, G_FILE_TEST_EXISTS))
+            fp = aud_vfs_fopen(uri, OPEN_MODE);
+        g_free(uri);
+        if (fp != NULL)
+            return fp;
+        plp = plp->next;
+    }
 
-  return p;
+    /* Nothing could be opened. */
+    DEBUG_MSG("Could not open %s\n", name);
+    return NULL;
 }
 
 /* This adds a directory to the path list */
 void add_to_pathlist(char *s)
 {
-  PathList *plp = safe_malloc(sizeof(PathList));
+    PathList *plp = g_malloc(sizeof(PathList));
 
-  if (plp == NULL)
-      return;
+    if (plp == NULL)
+        return;
 
-  plp->path = safe_malloc(strlen(s) + 1);
-  if (plp->path == NULL)
-  {
-      free(plp);
-      return;
-  }
-
-  strcpy(plp->path, s);
-  plp->next = pathlist;
-  pathlist = plp;
+    plp->path = g_strdup(s);
+    plp->next = pathlist;
+    pathlist = plp;
 }
 
 void free_pathlist(void)
 {
     PathList *plp = pathlist;
-    PathList *next;
 
-    while (plp)
+    while (plp != NULL)
     {
-	next = plp->next;
-	free(plp->path);
-	free(plp);
-	plp = next;
+        PathList *next = plp->next;
+        g_free(plp->path);
+        g_free(plp);
+        plp = next;
     }
     pathlist = NULL;
+}
+
+void *safe_malloc(gsize count)
+{
+    return malloc(count);
 }
