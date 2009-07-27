@@ -233,12 +233,13 @@ static void tta_play_file(InputPlayback * playback)
 
     while (playback->playing)
     {
-        /* Check for seek request and bail out if we have one */
+        /* Check if we have a seek request and handle it */
         g_mutex_lock(seek_mutex);
         if (seek_value >= 0)
         {
             set_position(seek_value);
             playback->output->flush(seek_value * SEEK_STEP);
+            seek_value = -1;
             g_cond_signal(seek_cond);
         }
         g_mutex_unlock(seek_mutex);
