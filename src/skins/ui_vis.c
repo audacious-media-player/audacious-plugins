@@ -673,6 +673,6 @@ void ui_vis_timeout_func(GtkWidget *widget, guchar * data) {
             vis->data[i] = data[i];
     }
 
-    if (GTK_WIDGET_DRAWABLE (widget))
-        ui_vis_expose (widget, 0);
+    if (GTK_WIDGET_DRAWABLE(widget))
+        gtk_widget_queue_draw(widget);
 }
