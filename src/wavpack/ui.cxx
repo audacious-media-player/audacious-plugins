@@ -102,7 +102,7 @@ close_window(GtkWidget * w, gpointer data)
 }
 
 extern "C" void
-wv_file_info_box(char *fn)
+wv_file_info_box(const gchar *fn)
 {
     gchar *tmp;
     gint time, minutes, seconds;

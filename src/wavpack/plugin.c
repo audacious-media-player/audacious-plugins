@@ -11,7 +11,7 @@ gint wv_get_time(InputPlayback *data);
 Tuple *wv_get_song_tuple(const gchar *filename);
 gint wv_is_our_fd(const gchar *filename, VFSFile *file);
 Tuple *wv_probe_for_tuple(const gchar *filename, VFSFile *file);
-void wv_file_info_box(gchar *);
+void wv_file_info_box(const gchar *);
 
 static gchar *wv_fmts[] = { "wv", NULL };
 

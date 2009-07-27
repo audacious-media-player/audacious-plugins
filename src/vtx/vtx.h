@@ -10,6 +10,6 @@
 #include <audacious/plugin.h>
 
 void vtx_about(void);
-void vtx_file_info(char *filename);
+void vtx_file_info(const gchar *filename);
 
 #endif

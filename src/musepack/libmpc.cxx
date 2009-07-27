@@ -405,7 +405,7 @@ static MpcInfo getTags(const gchar* p_Filename)
     return tags;
 }
 
-extern "C" void mpcFileInfoBox(char* p_Filename)
+extern "C" void mpcFileInfoBox(const gchar* p_Filename)
 {
     GtkWidget* infoBox = widgets.infoBox;
 

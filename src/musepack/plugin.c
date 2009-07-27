@@ -11,7 +11,7 @@ void mpcPause(InputPlayback *data, gshort p_Pause);
 void mpcSeek(InputPlayback *data, gint p_Offset);
 gint mpcGetTime(InputPlayback *data);
 Tuple *mpcGetSongTuple(const gchar* p_Filename);
-void mpcFileInfoBox(char* p_Filename);
+void mpcFileInfoBox(const gchar* p_Filename);
 
 static const gchar *mpc_fmts[] = { "mpc", NULL };
 
