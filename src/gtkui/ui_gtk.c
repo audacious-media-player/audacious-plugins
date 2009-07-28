@@ -257,6 +257,19 @@ static void ui_toggle_visibility(void)
     ui_mainwin_toggle_visibility(GINT_TO_POINTER(!config.player_visible), NULL);
 }
 
+static void ui_show_error(const gchar * markup)
+{
+    GtkWidget *dialog =
+        gtk_message_dialog_new_with_markup(GTK_WINDOW(window),
+                                           GTK_DIALOG_DESTROY_WITH_PARENT,
+                                           GTK_MESSAGE_ERROR,
+                                           GTK_BUTTONS_OK,
+                                           _(markup));
+
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+}
+
 static void ui_update_time_info(gint time)
 {
     gchar text[128];
@@ -551,6 +564,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     cbs->run_filebrowser = run_filebrowser;
     cbs->hide_filebrowser = hide_filebrowser;
     cbs->toggle_visibility = ui_toggle_visibility;
+    cbs->show_error = ui_show_error;
 
     gtk_main();
 

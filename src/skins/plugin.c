@@ -47,6 +47,7 @@ SIMPLE_INTERFACE_PLUGIN("skinned", &skins_interface);
 gboolean plugin_is_active = FALSE;
 
 static void toggle_visibility(void);
+static void show_error_message(const gchar * markup);
 
 static void skins_free_paths(void) {
     int i;
@@ -115,6 +116,7 @@ gboolean skins_init(InterfaceCbs *cbs) {
     cbs->run_filebrowser = run_filebrowser;
     cbs->hide_filebrowser = hide_filebrowser;
     cbs->toggle_visibility = toggle_visibility;
+    cbs->show_error = show_error_message;
 
     gtk_main();
 
@@ -213,3 +215,17 @@ static void toggle_visibility(void)
             playlistwin_show(TRUE);
     }
 }
+
+static void show_error_message(const gchar * markup)
+{
+    GtkWidget *dialog =
+        gtk_message_dialog_new_with_markup(GTK_WINDOW(mainwin),
+                                           GTK_DIALOG_DESTROY_WITH_PARENT,
+                                           GTK_MESSAGE_ERROR,
+                                           GTK_BUTTONS_OK,
+                                           _(markup));
+
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+}
+
