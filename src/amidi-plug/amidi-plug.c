@@ -19,15 +19,15 @@
 */
 
 #include "amidi-plug.h"
+#include <audacious/plugin.h>
 
 InputPlugin *amidiplug_iplist[] = { &amidiplug_ip, NULL };
 
 DECLARE_PLUGIN(amidi-plug, NULL, NULL, amidiplug_iplist, NULL, NULL, NULL, NULL, NULL);
 
-static gboolean amidiplug_detect_by_content( gchar * filename_uri , VFSFile * fp )
+static gint amidiplug_is_our_file_from_vfs( const gchar *filename_uri , VFSFile *fp )
 {
   gchar magic_bytes[4];
-  gint res = 0;
 
   if ( fp == NULL )
     return FALSE;
@@ -60,30 +60,6 @@ static gboolean amidiplug_detect_by_content( gchar * filename_uri , VFSFile * fp
 
   return FALSE;
 }
-
-
-static gint amidiplug_is_our_file( gchar * filename_uri )
-{
-  VFSFile * fp;
-  gboolean result = FALSE;
-
-  fp = VFS_FOPEN( filename_uri , "rb" );
-
-  if ( fp == NULL )
-    return FALSE;
-
-  result = amidiplug_detect_by_content( filename_uri , fp );
-  VFS_FCLOSE( fp );
-
-  return result;
-}
-
-
-static gint amidiplug_is_our_file_from_vfs( gchar *filename_uri , VFSFile *fp )
-{
-  return amidiplug_detect_by_content( filename_uri , fp );
-}
-
 
 static void amidiplug_init( void )
 {
@@ -131,7 +107,7 @@ static void amidiplug_aboutbox( void )
 }
 
 
-static void amidiplug_file_info_box( gchar * filename_uri )
+static void amidiplug_file_info_box( const gchar * filename_uri )
 {
   i_fileinfo_gui( filename_uri );
 }
@@ -309,13 +285,20 @@ static gint amidiplug_set_volume( gint  l , gint  r )
 }
 
 
-static void amidiplug_get_song_info( gchar * filename_uri , gchar ** title , gint * length )
+static Tuple * amidiplug_get_song_tuple( const gchar *filename_uri )
 {
   /* song title, get it from the filename */
-  gchar * filename = g_filename_from_uri( filename_uri , NULL , NULL );
-  if ( !filename ) filename = g_strdup( filename_uri );
-  *title = G_PATH_GET_BASENAME(filename_uri);
-  g_free( filename );
+  Tuple *tuple = aud_tuple_new_from_filename(filename_uri);
+  gchar *title, *filename = g_filename_from_uri(filename_uri, NULL, NULL);
+  
+  if (filename != NULL)
+      title = g_path_get_basename(filename_uri);
+  else
+      title = g_strdup(filename_uri);
+  
+  aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, title);
+  g_free(title);
+  g_free(filename);
 
   /* sure, it's possible to calculate the length of a MIDI file anytime,
      but the file must be entirely parsed to calculate it; this could
@@ -327,16 +310,12 @@ static void amidiplug_get_song_info( gchar * filename_uri , gchar ** title , gin
     midifile_t mf;
 
     if ( i_midi_parse_from_filename( filename_uri , &mf ) )
-      *length = (gint)(mf.length / 1000);
-    else
-      *length = -1;
+      aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, mf.length / 1000);
 
     i_midi_free( &mf );
   }
-  else
-    *length = -1;
 
-  return;
+  return tuple;
 }
 
 
