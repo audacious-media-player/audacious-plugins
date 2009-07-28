@@ -266,8 +266,12 @@ static void ui_show_error(const gchar * markup)
                                            GTK_BUTTONS_OK,
                                            _(markup));
 
-    gtk_dialog_run(GTK_DIALOG(dialog));
-    gtk_widget_destroy(dialog);
+    gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
+    gtk_widget_show(GTK_WIDGET(dialog));
+
+    g_signal_connect_swapped(dialog, "response",
+                             G_CALLBACK(gtk_widget_destroy),
+                             dialog);
 }
 
 static void ui_update_time_info(gint time)
