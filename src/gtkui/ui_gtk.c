@@ -182,12 +182,19 @@ static void button_next_pressed()
     audacious_drct_pl_next();
 }
 
-static void ui_set_song_info(void *unused, void *another)
+static void ui_playlist_update(gpointer hook_data, gpointer user_data)
 {
-    gint length = audacious_drct_get_length();
     gint playlist = aud_playlist_get_active();
     GtkWidget *page = index_get(pages, playlist);
     GtkWidget *treeview = g_object_get_data((GObject *) page, "treeview");
+
+    ui_playlist_widget_set_current(treeview, aud_playlist_get_position(playlist));
+    ui_playlist_widget_update(treeview);
+}
+
+static void ui_set_song_info(void *unused, void *another)
+{
+    gint length = audacious_drct_get_length();
 
     if (!g_signal_handler_is_connected(slider, slider_change_handler_id))
         return;
@@ -203,8 +210,7 @@ static void ui_set_song_info(void *unused, void *another)
 
     gtk_widget_show(label_time);
 
-    ui_playlist_widget_set_current(treeview, aud_playlist_get_position(playlist));
-    ui_playlist_widget_update(treeview);
+    ui_playlist_update(NULL, NULL);
 }
 
 static void ui_playlist_created(void *data, void *unused)
@@ -436,7 +442,7 @@ static void ui_hooks_associate(void)
     aud_hook_associate("playback end", ui_playback_end, NULL);
     aud_hook_associate("playlist insert", ui_playlist_created, NULL);
     aud_hook_associate("playlist delete", ui_playlist_destroyed, NULL);
-    aud_hook_associate("playlist update", ui_set_song_info, NULL);
+    aud_hook_associate("playlist update", ui_playlist_update, NULL);
     aud_hook_associate("mainwin show", ui_mainwin_toggle_visibility, NULL);
 }
 
@@ -449,7 +455,7 @@ static void ui_hooks_disassociate(void)
     aud_hook_dissociate("playback end", ui_playback_end);
     aud_hook_dissociate("playlist insert", ui_playlist_created);
     aud_hook_dissociate("playlist delete", ui_playlist_destroyed);
-    aud_hook_dissociate("playlist update", ui_set_song_info);
+    aud_hook_dissociate("playlist update", ui_playlist_update);
     aud_hook_dissociate("mainwin show", ui_mainwin_toggle_visibility);
 }
 
