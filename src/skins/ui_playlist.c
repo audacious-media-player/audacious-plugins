@@ -1141,7 +1141,7 @@ playlistwin_create_window(void)
 {
     GdkPixbuf *icon;
 
-    playlistwin = ui_skinned_window_new("playlist");
+    playlistwin = ui_skinned_window_new("playlist", &config.playlist_x, &config.playlist_y);
     gtk_window_set_title(GTK_WINDOW(playlistwin), _("Audacious Playlist Editor"));
     gtk_window_set_role(GTK_WINDOW(playlistwin), "playlist");
     gtk_window_set_default_size(GTK_WINDOW(playlistwin),
@@ -1157,10 +1157,6 @@ playlistwin_create_window(void)
     icon = gdk_pixbuf_new_from_xpm_data((const gchar **) audacious_playlist_icon);
     gtk_window_set_icon(GTK_WINDOW(playlistwin), icon);
     g_object_unref(icon);
-
-    if (config.save_window_position)
-        gtk_window_move(GTK_WINDOW(playlistwin),
-                        config.playlist_x, config.playlist_y);
 
     gtk_widget_add_events(playlistwin, GDK_POINTER_MOTION_MASK |
                           GDK_FOCUS_CHANGE_MASK | GDK_BUTTON_MOTION_MASK |
@@ -1286,10 +1282,6 @@ static void playlistwin_real_show (void)
 
 static void playlistwin_real_hide (void)
 {
-    if (config.save_window_position)
-        gtk_window_get_position ((GtkWindow *) playlistwin, & config.playlist_x,
-         & config.playlist_y);
-
     gtk_widget_hide(playlistwin);
     ui_skinned_button_set_inside(mainwin_pl, FALSE);
 

@@ -45,7 +45,7 @@ struct _SkinnedWindow
 {
   GtkWindow window;
 
-  gint x,y;
+  gint *x, *y;
   gint type;
   GtkWidget *normal;
   GtkWidget *shaded;
@@ -57,7 +57,7 @@ struct _SkinnedWindowClass
 };
 
 extern GType ui_skinned_window_get_type(void);
-extern GtkWidget *ui_skinned_window_new(const gchar *wmclass_name);
+extern GtkWidget *ui_skinned_window_new(const gchar *wmclass_name, gint *x, gint *y);
 void ui_skinned_window_draw_all(GtkWidget *widget);
 void ui_skinned_window_set_shade(GtkWidget *widget, gboolean shaded);
 

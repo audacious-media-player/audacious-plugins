@@ -35,6 +35,8 @@
 
 static void ui_skinned_window_class_init(SkinnedWindowClass *klass);
 static void ui_skinned_window_init(GtkWidget *widget);
+static void ui_skinned_window_show(GtkWidget *widget);
+static void ui_skinned_window_hide(GtkWidget *widget);
 static GtkWindowClass *parent = NULL;
 
 GType
@@ -185,6 +187,8 @@ ui_skinned_window_class_init(SkinnedWindowClass *klass)
 
     parent = g_type_class_peek_parent(klass);
 
+    widget_class->show = ui_skinned_window_show;
+    widget_class->hide = ui_skinned_window_hide;
     widget_class->motion_notify_event = ui_skinned_window_motion_notify_event;
     widget_class->focus_in_event = ui_skinned_window_focus_in;
     widget_class->focus_out_event = ui_skinned_window_focus_out;
@@ -193,22 +197,32 @@ ui_skinned_window_class_init(SkinnedWindowClass *klass)
     widget_class->map = ui_skinned_window_map;
 }
 
-void
-ui_skinned_window_hide(SkinnedWindow *window)
+static void
+ui_skinned_window_hide(GtkWidget *widget)
 {
-    g_return_if_fail(SKINNED_CHECK_WINDOW(window));
+    SkinnedWindow *window;
 
-    gtk_window_get_position(GTK_WINDOW(window), &window->x, &window->y);
-    gtk_widget_hide(GTK_WIDGET(window));
+    g_return_if_fail(SKINNED_CHECK_WINDOW(widget));
+
+    window = SKINNED_WINDOW(widget);
+
+    if (window->x != NULL && window->y != NULL)
+        gtk_window_get_position(GTK_WINDOW(window), window->x, window->y);
+    GTK_WIDGET_CLASS(parent)->hide(widget);
 }
 
-void
-ui_skinned_window_show(SkinnedWindow *window)
+static void
+ui_skinned_window_show(GtkWidget *widget)
 {
-    g_return_if_fail(SKINNED_CHECK_WINDOW(window));
+    SkinnedWindow *window;
 
-    gtk_window_move(GTK_WINDOW(window), window->x, window->y);
-    gtk_widget_show_all(GTK_WIDGET(window));
+    g_return_if_fail(SKINNED_CHECK_WINDOW(widget));
+
+    window = SKINNED_WINDOW(widget);
+
+    if (window->x != NULL && window->y != NULL)
+        gtk_window_move(GTK_WINDOW(window), *(window->x), *(window->y));
+    GTK_WIDGET_CLASS(parent)->show(widget);
 }
 
 static void
@@ -216,12 +230,12 @@ ui_skinned_window_init(GtkWidget *widget)
 {
     SkinnedWindow *window;
     window = SKINNED_WINDOW(widget);
-    window->x = -1;
-    window->y = -1;
+    window->x = NULL;
+    window->y = NULL;
 }
 
 GtkWidget *
-ui_skinned_window_new(const gchar *wmclass_name)
+ui_skinned_window_new(const gchar *wmclass_name, gint *x, gint *y)
 {
     GtkWidget *widget = g_object_new(ui_skinned_window_get_type(), NULL);
     GtkWindow *window = GTK_WINDOW(widget);
@@ -247,6 +261,8 @@ ui_skinned_window_new(const gchar *wmclass_name)
     if (!strcmp(wmclass_name, "playlist"))
         SKINNED_WINDOW(widget)->type = WINDOW_PLAYLIST;
 
+    SKINNED_WINDOW(widget)->x = x;
+    SKINNED_WINDOW(widget)->y = y;
     SKINNED_WINDOW(widget)->normal = gtk_fixed_new();
     SKINNED_WINDOW(widget)->shaded = gtk_fixed_new();
     g_object_ref(SKINNED_WINDOW(widget)->normal);

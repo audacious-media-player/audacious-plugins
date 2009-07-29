@@ -125,10 +125,10 @@ gboolean skins_init(InterfaceCbs *cbs) {
 
 gboolean skins_cleanup(void) {
     if (plugin_is_active == TRUE) {
-        skins_cfg_save();
         gtk_widget_destroy (mainwin);
         gtk_widget_destroy (equalizerwin);
         gtk_widget_destroy (playlistwin);
+        skins_cfg_save();
 
         if (playman_win)
             gtk_widget_destroy (playman_win);
