@@ -56,8 +56,8 @@ struct _SkinnedWindowClass
   GtkWindowClass        parent_class;
 };
 
-extern GType ui_skinned_window_get_type(void);
-extern GtkWidget *ui_skinned_window_new(const gchar *wmclass_name, gint *x, gint *y);
+GType ui_skinned_window_get_type(void);
+GtkWidget *ui_skinned_window_new(const gchar *wmclass_name, gint *x, gint *y);
 void ui_skinned_window_draw_all(GtkWidget *widget);
 void ui_skinned_window_set_shade(GtkWidget *widget, gboolean shaded);
 
