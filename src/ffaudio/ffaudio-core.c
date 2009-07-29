@@ -21,7 +21,7 @@
 #include "config.h"
 #include "ffaudio-stdinc.h"
 #include <audacious/i18n.h>
-
+#include <libaudtag/audtag.h>
 /***********************************************************************************
  * Plugin glue.                                                                    *
  ***********************************************************************************/
@@ -38,14 +38,14 @@ ffaudio_init(void)
 
     _DEBUG("registering audvfs protocol");
     av_register_protocol(&audvfs_protocol);
-
+    
     _DEBUG("registering audvfsptr protocol");
     av_register_protocol(&audvfsptr_protocol);
 
     _DEBUG("creating seek mutex/cond");
     seek_mutex = g_mutex_new();
     seek_cond = g_cond_new();
-
+    tag_init();
     _DEBUG("initialization completed");
 }
 
@@ -202,7 +202,16 @@ ffaudio_get_song_tuple(const gchar *filename)
     ffaudio_get_tuple_data(tuple, ic, c, codec);
     return tuple;
 }
-    
+
+gboolean
+ffaudio_update_song_tuple(Tuple *tuple, VFSFile *fd)
+{
+    Tuple* ti = tag_tuple_read(fd);
+    tag_tuple_write_to_file(tuple, fd);
+
+    return TRUE;
+}
+
 static void
 ffaudio_play_file(InputPlayback *playback)
 {
@@ -539,6 +548,7 @@ InputPlugin ffaudio_ip = {
     .about = ffaudio_about,
     .description = "FFaudio Plugin",
     .vfs_extensions = ffaudio_fmts,
+    .update_song_tuple = ffaudio_update_song_tuple,
 };
 
 static InputPlugin *ffaudio_iplist[] = { &ffaudio_ip, NULL };
