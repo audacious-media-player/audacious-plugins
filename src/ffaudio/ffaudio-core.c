@@ -206,7 +206,6 @@ ffaudio_get_song_tuple(const gchar *filename)
 gboolean
 ffaudio_update_song_tuple(Tuple *tuple, VFSFile *fd)
 {
-    Tuple* ti = tag_tuple_read(fd);
     tag_tuple_write_to_file(tuple, fd);
 
     return TRUE;
