@@ -53,6 +53,7 @@
     #define debug(...)
 #endif
 
+#define warn(...) fprintf(stderr, "cdaudio-ng: " __VA_ARGS__)
 
 static GMutex * mutex;
 static GCond * control_cond;
@@ -122,15 +123,10 @@ static void cdaudio_error (const gchar *message_format, ...)
 {
     va_list args;
     gchar *msg = NULL;
-    gchar *format;
-
-    format = g_strdup_printf("cdaudio-ng: %s", message_format);
 
     va_start (args, message_format);
-    msg = g_markup_vprintf_escaped (format, args);
+    msg = g_markup_vprintf_escaped (message_format, args);
     va_end (args);
-
-    g_free(format);
 
     aud_event_queue_with_data_free("interface show error", msg);
 }
@@ -143,6 +139,20 @@ static void check_disk (void)
 
     if (trackinfo == NULL)
         cdaudio_error ("No audio CD found.");
+}
+
+/* thread safe */
+static gboolean check_disk_safe (void)
+{
+    gboolean disk;
+
+    g_mutex_lock (mutex);
+
+    check_disk ();
+    disk = (trackinfo != NULL);
+
+    g_mutex_unlock (mutex);
+    return disk;
 }
 
 /* main thread only */
@@ -201,6 +211,9 @@ static void play_cd (GtkMenuItem * item, gpointer user_data)
 {
     gint playlist = aud_playlist_get_active ();
 
+    if (! check_disk_safe ())
+        return;
+
     aud_playlist_entry_delete (playlist, 0, aud_playlist_entry_count (playlist));
     aud_playlist_entry_insert (playlist, 0, g_strdup ("cdda://"), NULL);
     aud_playlist_set_playing (playlist);
@@ -210,6 +223,9 @@ static void play_cd (GtkMenuItem * item, gpointer user_data)
 /* main thread only */
 static void add_cd (GtkMenuItem * item, gpointer user_data)
 {
+    if (! check_disk_safe ())
+        return;
+
     aud_playlist_entry_insert (aud_playlist_get_active (), -1, g_strdup
      ("cdda://"), NULL);
 }
@@ -373,11 +389,14 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
         return;
     }
 
-    /* calls check_disk, warns on error */
+    /* calls refresh_trackinfo if needed */
     tuple = create_tuple_from_trackinfo_and_filename (pinputplayback->filename);
 
     if (tuple == NULL)
+    {
+        cdaudio_error ("Track %d not found.", trackno);
         return;
+    }
 
     title = aud_tuple_formatter_make_title_string (tuple,
      aud_get_gentitle_format ());
@@ -642,10 +661,14 @@ static Tuple * create_tuple_from_trackinfo_and_filename (const gchar * filename)
 
     g_mutex_lock (mutex);
 
-    check_disk ();
+    if (trackinfo == NULL)
+        refresh_trackinfo ();
 
     if (trackinfo == NULL)
+    {
+        warn ("No audio CD found.\n");
         goto DONE;
+    }
 
     if (! strcmp (filename, "cdda://"))
     {
@@ -663,7 +686,7 @@ static Tuple * create_tuple_from_trackinfo_and_filename (const gchar * filename)
 
     if (trackno < firsttrackno || trackno > lasttrackno)
     {
-        cdaudio_error ("Track %d not found.", trackno);
+        warn ("Track %d not found.\n", trackno);
         goto DONE;
     }
 
@@ -812,10 +835,9 @@ static void scan_cd (void)
 			}
 			debug("found cd drive \"%s\" with audio capable media\n", *ppcd_drives);
 		}
-		else {
-			cdaudio_error("Unable to find or access a CDDA capable drive.");
+		else
 			goto ERROR;
-		}
+
 		if (ppcd_drives != NULL && *ppcd_drives != NULL)
 			cdio_free_device_list(ppcd_drives);
 	}
