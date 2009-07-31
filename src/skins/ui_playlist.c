@@ -162,11 +162,17 @@ static void playlistwin_update_sinfo (void)
     g_free(info);
 }
 
-void playlistwin_update (void)
+static void real_update (void)
 {
     ui_skinned_playlist_update (playlistwin_list);
     playlistwin_update_info ();
     playlistwin_update_sinfo ();
+}
+
+void playlistwin_update (void)
+{
+    if (! aud_playlist_update_pending ())
+        real_update ();
 }
 
 static void
@@ -1224,12 +1230,11 @@ static void update_cb (void * unused, void * another)
 
     if (song_changed)
     {
-        /* calls playlistwin_update */
         ui_skinned_playlist_follow (playlistwin_list);
         song_changed = FALSE;
     }
-    else
-        playlistwin_update ();
+
+    real_update ();
 }
 
 static void follow_cb (void * unused, void * another)
