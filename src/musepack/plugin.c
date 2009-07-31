@@ -13,7 +13,7 @@ gint mpcGetTime(InputPlayback *data);
 Tuple *mpcGetSongTuple(const gchar* p_Filename);
 void mpcFileInfoBox(const gchar* p_Filename);
 
-static const gchar *mpc_fmts[] = { "mpc", NULL };
+static gchar *mpc_fmts[] = { "mpc", NULL };
 
 static InputPlugin MpcPlugin = {
     .description = "Musepack Audio Plugin",
@@ -30,9 +30,9 @@ static InputPlugin MpcPlugin = {
     .file_info_box = mpcFileInfoBox,    //Show File Info Box        [CALLBACK]
     .get_song_tuple = mpcGetSongTuple,  //Acquire tuple for song    [CALLBACK]
     .is_our_file_from_vfs = mpcIsOurFD,
-    .vfs_extensions = (gchar **)mpc_fmts
+    .vfs_extensions = mpc_fmts
 };
 
-InputPlugin *mpc_iplist[] = { &MpcPlugin, NULL };
+static InputPlugin *mpc_iplist[] = { &MpcPlugin, NULL };
 
 DECLARE_PLUGIN(musepack, NULL, NULL, mpc_iplist, NULL, NULL, NULL, NULL,NULL);

@@ -47,7 +47,6 @@ struct PluginConfig
 
 struct Widgets
 {
-    GtkWidget* aboutBox;
     GtkWidget* configBox;
     GtkWidget* bitrateCheck;
     GtkWidget* clippingCheck;

@@ -80,10 +80,7 @@ mpc_reader_setup_file_vfs(mpc_reader_file *p_reader, VFSFile *input)
 
     p_reader->file = (FILE *) input; // no worries, it gets cast back -nenolod
     p_reader->is_seekable = TRUE;    // XXX streams
-
-    aud_vfs_fseek(input, 0, SEEK_END);
-    p_reader->file_size = aud_vfs_ftell(input);
-    aud_vfs_fseek(input, 0, SEEK_SET);
+    p_reader->file_size = aud_vfs_fsize(input);
 }
 
 extern "C" void mpcOpenPlugin()
@@ -99,26 +96,21 @@ extern "C" void mpcOpenPlugin()
 
 extern "C" void mpcAboutBox()
 {
-    GtkWidget* aboutBox = widgets.aboutBox;
-    if (aboutBox)
-        gdk_window_raise(aboutBox->window);
-    else
+    static GtkWidget* aboutBox = NULL;
+    if (aboutBox == NULL)
     {
-        char* titleText      = g_strdup_printf(_("Musepack Decoder Plugin 1.2"));
-        const char* contentText = _("Plugin code by\nBenoit Amiaux\nMartin Spuler\nKuniklo\n\nGet latest version at http://musepack.net\n");
-        const char* buttonText  = _("Nevermind");
+        gchar* titleText      = g_strdup_printf(_("Musepack Decoder Plugin 1.2"));
+        const gchar* contentText = _("Plugin code by\nBenoit Amiaux\nMartin Spuler\nKuniklo\n\nGet latest version at http://musepack.net\n");
+        const gchar* buttonText  = _("Nevermind");
         aboutBox = audacious_info_dialog(titleText, contentText, buttonText, FALSE, NULL, NULL);
-        widgets.aboutBox = aboutBox;
-        g_signal_connect(G_OBJECT(aboutBox), "destroy", G_CALLBACK(gtk_widget_destroyed), &widgets.aboutBox);
+        g_signal_connect(G_OBJECT(aboutBox), "destroy", G_CALLBACK(gtk_widget_destroyed), &aboutBox);
     }
 }
 
 extern "C" void mpcConfigBox()
 {
     GtkWidget* configBox = widgets.configBox;
-    if(configBox)
-        gdk_window_raise(configBox->window);
-    else
+    if (configBox == NULL)
     {
         configBox = gtk_window_new(GTK_WINDOW_TOPLEVEL);
         gtk_window_set_type_hint(GTK_WINDOW(configBox), GDK_WINDOW_TYPE_HINT_DIALOG);
@@ -290,8 +282,8 @@ extern "C" void mpcPause(InputPlayback *data, short p_Pause)
 {
     lockAcquire();
     mpcDecoder.isPause = p_Pause;
-    data->output->pause(p_Pause);
     lockRelease();
+    data->output->pause(p_Pause);
 }
 
 extern "C" void mpcSeek(InputPlayback *data, int p_Offset)
@@ -519,7 +511,7 @@ extern "C" void mpcFileInfoBox(const gchar* p_Filename)
         GtkWidget* albumGainLabel = mpcGtkLabel(infoVbox);
 
         VFSFile *input = aud_vfs_fopen(p_Filename, "rb");
-        if(input)
+        if (input != NULL)
         {
             mpc_streaminfo info;
             mpc_reader_file reader;
@@ -713,7 +705,8 @@ static void* decodeStream(InputPlayback *data)
     lockAcquire();
     gchar* filename = data->filename;
     VFSFile *input = aud_vfs_fopen(filename, "rb");
-    if (!input)
+
+    if (input == NULL)
     {
         mpcDecoder.isError = g_strdup_printf("[xmms-musepack] decodeStream is unable to open %s", filename);
         return endThread(filename, input, true);
@@ -750,7 +743,7 @@ static void* decodeStream(InputPlayback *data)
     setReplaygain(info, decoder);
 
     MPC_SAMPLE_FORMAT sampleBuffer[MPC_DECODER_BUFFER_LENGTH];
-    char xmmsBuffer[MPC_DECODER_BUFFER_LENGTH * 4];
+    gchar xmmsBuffer[MPC_DECODER_BUFFER_LENGTH * 4];
 
     if (!data->output->open_audio(FMT_S16_LE, track.sampleFreq, track.channels))
     {
@@ -758,12 +751,13 @@ static void* decodeStream(InputPlayback *data)
         return endThread(filename, input, true);
     }
     else
-    {
         mpcDecoder.isOutput = true;
-    }
 
     lockRelease();
 
+    data->playing = 1;
+    data->set_pb_ready(data);
+    
     gint counter = 2 * track.sampleFreq / 3;
     while (isAlive())
     {
