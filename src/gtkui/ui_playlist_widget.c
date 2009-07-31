@@ -269,14 +269,36 @@ static void ui_playlist_widget_jump(GtkTreeView * treeview, gpointer data)
 
 static gboolean ui_playlist_widget_keypress_cb(GtkWidget * widget, GdkEventKey * event, gpointer data)
 {
-    switch (event->keyval)
+    switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
-      case GDK_KP_Enter:
-          ui_playlist_widget_jump(GTK_TREE_VIEW(widget), NULL);
-          return TRUE;
+      case 0:
+        switch (event->keyval)
+        {
+          case GDK_KP_Enter:
+            ui_playlist_widget_jump(GTK_TREE_VIEW(widget), NULL);
+            return TRUE;
+          default:
+            return FALSE;
+        }
+        break;
+      case GDK_MOD1_MASK:
+      {
+        if ((event->keyval == GDK_Up) || (event->keyval == GDK_Down)) {
+            gint playlist = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "my_playlist"));
+            /* Copy the event, so we can get the selection to move as well */
+            GdkEvent * ev = gdk_event_copy((GdkEvent *) event);
+            ((GdkEventKey *) ev)->state = 0;
+
+            aud_playlist_shift_selected(playlist, (event->keyval == GDK_Up) ? -1 : 1);
+            gtk_propagate_event(widget, ev);
+            gdk_event_free(ev);
+            return TRUE;
+        }
+      }
       default:
-          return FALSE;
-    };
+        return FALSE;
+    }
+    return FALSE;
 }
 
 static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventButton * event)
