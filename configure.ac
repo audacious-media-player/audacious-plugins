@@ -149,7 +149,7 @@ PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.8.0],
     [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.8.0])]
 )
 
-AC_ARG_ENABLE(gio, [ --enable-gio    enable GIO support (default=yes)],
+AC_ARG_ENABLE(gio, [  --enable-gio            enable GIO support (default=yes)],
  enable_gio=$enableval, enable_gio=yes)
 
 if test "x$enable_gio" = "xyes"; then
@@ -1296,7 +1296,7 @@ dnl *** End of Scrobbler checks ***
 dnl *** neon http plugin ***
 
 AC_ARG_ENABLE(neon,
-[  --enable-neon           enable neon support (experimental).  (default=disabled)],
+[  --enable-neon           enable neon HTTP support (default=yes)],
 [have_neon=$enableval],
 [have_neon=yes])
 
