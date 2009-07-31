@@ -82,6 +82,7 @@ static int _ui_playlist_widget_get_drop_index(GtkTreeView * widget, GdkDragConte
 {
     GtkTreePath *path;
     gint cx, cy, ins_pos = -1;
+    gint playlist = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "my_playlist"));
 
     gdk_window_get_geometry(gtk_tree_view_get_bin_window(widget), &cx, &cy, NULL, NULL, NULL);
 
@@ -98,20 +99,31 @@ static int _ui_playlist_widget_get_drop_index(GtkTreeView * widget, GdkDragConte
 
             if (gtk_tree_view_get_path_at_pos(widget, x, y + rect.height, &path, NULL, &cx, &cy))
                 ins_pos = ui_playlist_widget_get_index_from_path(path);
+
+            /* last entry */
+            if (ins_pos == -1) {
+                ins_pos = aud_playlist_entry_count(playlist) - 1;
+            }
         }
         else
             ins_pos = ui_playlist_widget_get_index_from_path(path);
 
         gtk_tree_path_free(path);
+    } else {
+        /* selected items are moved below all other entries */
+        ins_pos = aud_playlist_entry_count(playlist) - 1;
     }
 
     return ins_pos;
 }
 
-static void _ui_playlist_widget_drag_data_received(GtkTreeView * widget, GdkDragContext * context, gint x, gint y, GtkSelectionData * data, guint info2, guint time)
+static void _ui_playlist_widget_drag_motion(GtkTreeView * widget, GdkDragContext * context, gint x, gint y, guint time, gpointer user_data)
 {
     UiPlaylistDragTracker *t;
     t = g_object_get_data(G_OBJECT(widget), "ui_playlist_drag_context");
+
+    /* FIXME: this happens whilst dragging items from other applications */
+    g_return_if_fail(t != NULL);
 
     t->new_index = _ui_playlist_widget_get_drop_index(widget, context, x, y);
 }
@@ -125,6 +137,8 @@ static void _ui_playlist_widget_drag_end(GtkTreeView * widget, GdkDragContext * 
     GtkTreeSelection *sel;
 
     t = g_object_get_data(G_OBJECT(widget), "ui_playlist_drag_context");
+
+    g_return_if_fail(t != NULL);
 
     delta = t->new_index - t->old_index;
 
@@ -142,6 +156,9 @@ static void _ui_playlist_widget_selection_update(GtkTreeModel * model, GtkTreePa
     gint entry;
 
     gtk_tree_model_get(model, iter, COLUMN_NUM, &entry, -1);
+
+    /* paths are numbered from 1, playlist index start from 0 */
+    entry -= 1;
 
     aud_playlist_entry_set_selected(GPOINTER_TO_INT(playlist_p), entry, TRUE);
 }
@@ -394,6 +411,7 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
 
     gtk_tree_view_set_reorderable(GTK_TREE_VIEW(treeview), TRUE);
     gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(treeview), TRUE);
+    gtk_drag_dest_set_track_motion(treeview, TRUE);
 
     column = gtk_tree_view_column_new();
     gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), FALSE);
@@ -423,7 +441,7 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
     g_signal_connect(treeview, "button-press-event", G_CALLBACK(ui_playlist_widget_button_press_cb), NULL);
 
     g_signal_connect(treeview, "drag-begin", G_CALLBACK(_ui_playlist_widget_drag_begin), NULL);
-    g_signal_connect(treeview, "drag-data-received", G_CALLBACK(_ui_playlist_widget_drag_data_received), NULL);
+    g_signal_connect(treeview, "drag-motion", G_CALLBACK(_ui_playlist_widget_drag_motion), NULL);
     g_signal_connect(treeview, "drag-end", G_CALLBACK(_ui_playlist_widget_drag_end), NULL);
 
     g_object_set_data(G_OBJECT(treeview), "current", GINT_TO_POINTER(-1));
