@@ -1268,30 +1268,33 @@ case "$host" in
     ;;
 esac
 
-dnl *** Scrobbler ***
+dnl *** libcurl ***
 
-scrobbler="yes"
-have_lastfm="no"
+have_curl=yes
 
-dnl libcurl check
-
-my_cv_curl_vers=NONE
-dnl check is the plain-text version of the required version
-check="7.9.7"
-dnl check_hex must be UPPERCASE if any hex letters are present
-check_hex="070907"
-
-PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7], [], [scrobbler="no"])
+PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7], [], [have_curl="no"])
 AC_SUBST(CURL_CFLAGS)
 AC_SUBST(CURL_LIBS)
 
-if test "x$scrobbler" = "xyes"; then
+dnl *** scrobbler ***
+
+AC_ARG_ENABLE(scrobbler,
+ [  --enable-scrobbler      enable scrobbler support (default=yes if libcurl present)],
+ [scrobbler=$enableval], [scrobbler=$have_curl])
+
+if test $scrobbler = yes; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
-	TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS lastfm"
-	have_lastfm="yes"
 fi
 
-dnl *** End of Scrobbler checks ***
+dnl *** lastfm ***
+
+AC_ARG_ENABLE(lastfm,
+ [  --enable-lastfm         enable lastfm support (default=yes if scrobbler enabled)],
+ [have_lastfm=$enableval], [have_lastfm=$scrobbler])
+
+if test $have_lastfm = yes; then
+	TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS lastfm"
+fi
 
 dnl *** neon http plugin ***
 
