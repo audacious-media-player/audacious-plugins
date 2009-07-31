@@ -1280,9 +1280,9 @@ dnl *** scrobbler ***
 
 AC_ARG_ENABLE(scrobbler,
  [  --enable-scrobbler      enable scrobbler support (default=yes if libcurl present)],
- [scrobbler=$enableval], [scrobbler=$have_curl])
+ [have_scrobbler=$enableval], [have_scrobbler=$have_curl])
 
-if test $scrobbler = yes; then
+if test "x$scrobbler" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
 fi
 
@@ -1290,9 +1290,14 @@ dnl *** lastfm ***
 
 AC_ARG_ENABLE(lastfm,
  [  --enable-lastfm         enable lastfm support (default=yes if scrobbler enabled)],
- [have_lastfm=$enableval], [have_lastfm=$scrobbler])
+ [have_lastfm=$enableval], [have_lastfm=yes])
 
-if test $have_lastfm = yes; then
+if test "x$have_scrobbler" != "xyes"; then
+	AC_MSG_RESULT([*** lastfm plugin disabled because scrobbler plugin is disabled ***])
+	have_lastfm=no
+fi
+
+if test "x$have_lastfm" = "yes"; then
 	TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS lastfm"
 fi
 
@@ -1709,7 +1714,7 @@ echo "  Control via event device (evdev-plug):  $have_evdevplug"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  LIRC:                                   $have_lirc"
-echo "  AudioScrobbler Client:                  $scrobbler"
+echo "  AudioScrobbler Client:                  $have_scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
 echo "  Bluetooth audio support:                $have_bluetooth"
 echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
