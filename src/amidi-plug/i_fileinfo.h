@@ -24,7 +24,7 @@
 #include "i_common.h"
 
 
-void i_fileinfo_gui( gchar * );
+void i_fileinfo_gui( const gchar * );
 
 
 #endif /* !_I_FILEINFO_H */

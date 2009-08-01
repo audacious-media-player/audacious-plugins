@@ -68,15 +68,15 @@
 #define MAX_GENRE 256
 
 typedef struct {
-	unsigned char  name[MAX_LINE];
-	unsigned char  title[MAX_LINE];
-	unsigned char  artist[MAX_LINE];
-	unsigned char  album[MAX_LINE];
-	unsigned char  comment[MAX_LINE];
-	unsigned char  year[MAX_YEAR];
-	unsigned char  track[MAX_TRACK];
-	unsigned char  genre[MAX_GENRE];
-	unsigned char  id3has;
+	gchar *name,
+	      *title,
+	      *artist,
+	      *album,
+	      *comment,
+	      *year,
+	      *track,
+	      *genre;
+    gboolean id3has;
 } id3_info;
 
 typedef struct {

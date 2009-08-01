@@ -255,17 +255,14 @@ void skins_cfg_save() {
 
     int i;
 
-    if (config.save_window_position)
+    if (config.save_window_position == FALSE)
     {
-        if (GTK_WIDGET_VISIBLE (mainwin))
-            gtk_window_get_position ((GtkWindow *) mainwin, & config.player_x,
-             & config.player_y);
-        if (GTK_WIDGET_VISIBLE (equalizerwin))
-            gtk_window_get_position ((GtkWindow *) equalizerwin,
-             & config.equalizer_x, & config.equalizer_y);
-        if (GTK_WIDGET_VISIBLE (playlistwin))
-            gtk_window_get_position ((GtkWindow *) playlistwin,
-             & config.playlist_x, & config.playlist_y);
+        config.player_x = MAINWIN_DEFAULT_POS_X;
+        config.player_y = MAINWIN_DEFAULT_POS_Y;
+        config.equalizer_x = EQUALIZER_DEFAULT_POS_X;
+        config.equalizer_y = EQUALIZER_DEFAULT_POS_Y;
+        config.playlist_x = PLAYLISTWIN_DEFAULT_POS_X;
+        config.playlist_y = PLAYLISTWIN_DEFAULT_POS_Y;
     }
 
     for (i = 0; i < ncfgsent; ++i) {

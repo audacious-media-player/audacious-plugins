@@ -17,11 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#define FFAUDIO_DEBUG
 #include "config.h"
 #include "ffaudio-stdinc.h"
 #include <audacious/i18n.h>
-
+#include <libaudtag/audtag.h>
 /***********************************************************************************
  * Plugin glue.                                                                    *
  ***********************************************************************************/
@@ -45,7 +44,7 @@ ffaudio_init(void)
     _DEBUG("creating seek mutex/cond");
     seek_mutex = g_mutex_new();
     seek_cond = g_cond_new();
-
+    tag_init();
     _DEBUG("initialization completed");
 }
 
@@ -54,7 +53,7 @@ ffaudio_cleanup(void)
 {
     _DEBUG("cleaning up");
     g_mutex_free(seek_mutex);
-    g_cond_free(seek_cond); 
+    g_cond_free(seek_cond);
 }
 
 static gint
@@ -130,7 +129,7 @@ copy_tuple_meta(Tuple *tuple, AVFormatContext *ic, const TupleValueType ttype, c
         case TUPLE_INT:
             aud_tuple_associate_int(tuple, field, NULL, atoi(tag->value));
             break;
-        
+
         default:
             break;
         }
@@ -158,7 +157,7 @@ ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVC
     {
         aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, c->bit_rate / 1000);
     }
-    
+
     if (codec != NULL && codec->long_name != NULL)
     {
         aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, codec->long_name);
@@ -175,9 +174,9 @@ ffaudio_get_song_tuple(const gchar *filename)
     AVStream *s = NULL;
     gchar *uribuf;
     gint i;
-    
+
     if (tuple == NULL) return NULL;
-    
+
     uribuf = g_alloca(strlen(filename) + 8);
     sprintf(uribuf, "audvfs:%s", filename);
     if (av_open_input_file(&ic, uribuf, NULL, 0, NULL) < 0)
@@ -185,7 +184,7 @@ ffaudio_get_song_tuple(const gchar *filename)
         tuple_free(tuple);
         return NULL;
     }
-    
+
     for (i = 0; i < ic->nb_streams; i++)
     {
         s = ic->streams[i];
@@ -202,7 +201,15 @@ ffaudio_get_song_tuple(const gchar *filename)
     ffaudio_get_tuple_data(tuple, ic, c, codec);
     return tuple;
 }
-    
+
+gboolean
+ffaudio_update_song_tuple(Tuple *tuple, VFSFile *fd)
+{
+    tag_tuple_write_to_file(tuple, fd);
+
+    return TRUE;
+}
+
 static void
 ffaudio_play_file(InputPlayback *playback)
 {
@@ -257,7 +264,7 @@ ffaudio_play_file(InputPlayback *playback)
 
     if (c->channels > 2)
         do_resampling = TRUE;
-    
+
     switch (c->sample_fmt) {
         case SAMPLE_FMT_U8: out_fmt = FMT_U8; break;
         case SAMPLE_FMT_S16: out_fmt = FMT_S16_NE; break;
@@ -265,7 +272,7 @@ ffaudio_play_file(InputPlayback *playback)
         case SAMPLE_FMT_FLT: out_fmt = FMT_FLOAT; break;
         default: do_resampling = TRUE; break;
     }
-    
+
     if (do_resampling)
     {
         /* Initialize resampling context */
@@ -285,7 +292,7 @@ ffaudio_play_file(InputPlayback *playback)
         if (resctx == NULL)
             goto error_exit;
     }
-    
+
     /* Open audio output */
     _DEBUG("opening audio output");
 
@@ -306,10 +313,10 @@ ffaudio_play_file(InputPlayback *playback)
     tuple_free(tuple);
     playback->set_params(playback, title, ic->duration / 1000, c->bit_rate, c->sample_rate, c->channels);
     g_free(title);
-    
+
     playback->playing = 1;
     playback->set_pb_ready(playback);
-    
+
     errcount = 0;
 
     _DEBUG("playback ready, entering decode loop");
@@ -329,7 +336,7 @@ ffaudio_play_file(InputPlayback *playback)
                 _DEBUG("error while seeking");
             } else
                 errcount = 0;
-            
+
             seek_value = -1;
             g_cond_signal(seek_cond);
         }
@@ -361,7 +368,7 @@ ffaudio_play_file(InputPlayback *playback)
             av_free_packet(&pkt);
             continue;
         }
-        
+
         /* Decode and play packet/frame */
         memcpy(&tmp, &pkt, sizeof(tmp));
         while (tmp.size > 0 && playback->playing)
@@ -376,7 +383,7 @@ ffaudio_play_file(InputPlayback *playback)
                 break;
             }
             g_mutex_unlock(seek_mutex);
-            
+
             /* Decode whatever we can of the frame data */
 #if (LIBAVCODEC_VERSION_MAJOR <= 52) && (LIBAVCODEC_VERSION_MINOR <= 25)
             len = avcodec_decode_audio2(c, (gint16 *)outbuf, &out_size, tmp.data, tmp.size);
@@ -388,13 +395,13 @@ ffaudio_play_file(InputPlayback *playback)
                 _DEBUG("codec failure, breaking out of loop");
                 break;
             }
-            
+
             tmp.size -= len;
             tmp.data += len;
 
             if (out_size <= 0)
                 continue;
-            
+
             /* Perform audio resampling if necessary */
             if (do_resampling)
             {
@@ -427,7 +434,7 @@ ffaudio_play_file(InputPlayback *playback)
                 g_mutex_unlock(seek_mutex);
             }
         }
-        
+
         if (pkt.data)
             av_free_packet(&pkt);
     }
@@ -474,7 +481,7 @@ ffaudio_seek(InputPlayback *playback, gint seek)
     g_mutex_unlock(seek_mutex);
 }
 
-static gchar *ffaudio_fmts[] = { 
+static gchar *ffaudio_fmts[] = {
     /* musepack, SV7/SV8 */
     "mpc", "mp+", "mpp",
 
@@ -501,7 +508,7 @@ static void
 ffaudio_about(void)
 {
     static GtkWidget *aboutbox = NULL;
-    
+
     if (aboutbox == NULL)
     {
         gchar *formats = g_strjoinv(", ", ffaudio_fmts);
@@ -539,6 +546,7 @@ InputPlugin ffaudio_ip = {
     .about = ffaudio_about,
     .description = "FFaudio Plugin",
     .vfs_extensions = ffaudio_fmts,
+    .update_song_tuple = ffaudio_update_song_tuple,
 };
 
 static InputPlugin *ffaudio_iplist[] = { &ffaudio_ip, NULL };

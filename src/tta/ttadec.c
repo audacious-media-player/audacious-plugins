@@ -458,6 +458,16 @@ void close_tta_file (tta_info *info) {
 		aud_vfs_fclose (info->HANDLE);
 		info->HANDLE = NULL;
 	}
+	
+	g_free(info->ID3.name);
+	g_free(info->ID3.title);
+	g_free(info->ID3.artist);
+	g_free(info->ID3.album);
+	g_free(info->ID3.comment);
+	g_free(info->ID3.year);
+	g_free(info->ID3.track);
+	g_free(info->ID3.genre);
+	info->ID3.id3has = FALSE;
 }
 
 void player_stop () {

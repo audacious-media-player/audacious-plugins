@@ -33,7 +33,6 @@ static void        mp4_stop(InputPlayback *);
 static void        mp4_pause(InputPlayback *, gshort);
 static void        mp4_seek(InputPlayback *, gint);
 static void        mp4_cleanup(void);
-static void        mp4_get_song_title_len(gchar *filename, gchar **, gint *);
 static Tuple*      mp4_get_song_tuple(const char *);
 static gint        mp4_is_our_fd(const char *, VFSFile *);
 
@@ -53,7 +52,6 @@ InputPlugin mp4_ip =
     .pause = mp4_pause,
     .seek = mp4_seek,
     .cleanup = mp4_cleanup,
-    .get_song_info = mp4_get_song_title_len,
     .get_song_tuple = mp4_get_song_tuple,
     .is_our_file_from_vfs = mp4_is_our_fd,
     .vfs_extensions = fmts,
@@ -415,12 +413,6 @@ static Tuple *mp4_get_song_tuple(const gchar *filename)
     tuple = mp4_get_song_tuple_base(filename, mp4fh);
 
     return tuple;
-}
-
-static void mp4_get_song_title_len(char *filename, char **title, int *len)
-{
-    (*title) = mp4_get_song_title(filename);
-    (*len) = -1;
 }
 
 static gchar *mp4_get_song_title(char *filename)

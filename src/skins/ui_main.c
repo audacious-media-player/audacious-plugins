@@ -1437,10 +1437,6 @@ static void mainwin_real_show (void)
 
 static void mainwin_real_hide (void)
 {
-    if (config.save_window_position)
-        gtk_window_get_position ((GtkWindow *) mainwin, & config.player_x,
-         & config.player_y);
-
     gtk_widget_hide(mainwin);
     start_stop_visual ();
 }
@@ -2206,7 +2202,7 @@ mainwin_create_window(void)
 {
     gint width, height;
 
-    mainwin = ui_skinned_window_new("player");
+    mainwin = ui_skinned_window_new("player", &config.player_x, &config.player_y);
     gtk_window_set_title(GTK_WINDOW(mainwin), _("Audacious"));
     gtk_window_set_role(GTK_WINDOW(mainwin), "player");
     gtk_window_set_resizable(GTK_WINDOW(mainwin), FALSE);
@@ -2220,9 +2216,6 @@ mainwin_create_window(void)
     }
 
     gtk_widget_set_size_request(mainwin, width, height);
-
-    if (config.save_window_position)
-        gtk_window_move(GTK_WINDOW(mainwin), config.player_x, config.player_y);
 
     g_signal_connect(mainwin, "button_press_event",
                      G_CALLBACK(mainwin_mouse_button_press), NULL);

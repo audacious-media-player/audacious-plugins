@@ -17,11 +17,16 @@
  */
 
 #include <audacious/plugin.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else
+#define PRIu64 "llu"
+#endif
 
 VFSFile *(*vfs_fopen_impl)(const gchar *path, const gchar *mode) = NULL;
 gint (*vfs_fclose_impl)(VFSFile * file) = NULL;
-size_t (*vfs_fread_impl)(gpointer ptr, size_t size, size_t nmemb, VFSFile *file) = NULL;
-size_t (*vfs_fwrite_impl)(gconstpointer ptr, size_t size, size_t nmemb, VFSFile *file) = NULL;
+gsize (*vfs_fread_impl)(gpointer ptr, gsize size, gsize nmemb, VFSFile *file) = NULL;
+gsize (*vfs_fwrite_impl)(gconstpointer ptr, gsize size, gsize nmemb, VFSFile *file) = NULL;
 gint (*vfs_getc_impl)(VFSFile *stream) = NULL;
 gint (*vfs_ungetc_impl)(gint c, VFSFile *stream) = NULL;
 gint (*vfs_fseek_impl)(VFSFile *file, glong offset, gint whence) = NULL;
@@ -53,24 +58,26 @@ vt_vfs_fclose_impl(VFSFile *file)
     return ret;
 }
 
-size_t
-vt_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile *file)
+gsize
+vt_vfs_fread_impl(gpointer ptr, gsize size, gsize nmemb, VFSFile *file)
 {
-    size_t ret;
+    gsize ret;
 
     ret = vfs_fread_impl(ptr, size, nmemb, file);
-    g_print("%p fread       : size:%lu : nmemb:%lu : ret:%lu\n", file, size, nmemb, ret);
+    g_print("%p fread       : size:%" PRIu64 " : nmemb:%" PRIu64 " : ret:%" PRIu64 "\n",
+        file, (guint64) size, (guint64) nmemb, (guint64) ret);
 
     return ret;
 }
 
-size_t
-vt_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile *file)
+gsize
+vt_vfs_fwrite_impl(gconstpointer ptr, gsize size, gsize nmemb, VFSFile *file)
 {
-    size_t ret;
+    gsize ret;
 
     ret = vfs_fwrite_impl(ptr, size, nmemb, file);
-    g_print("%p fwrite      : size:%lu : nmemb:%lu : ret:%lu\n", file, size, nmemb, ret);
+    g_print("%p fwrite      : size:%" PRIu64 " : nmemb:%" PRIu64 " : ret:%" PRIu64 "\n",
+        file, (guint64) size, (guint64) nmemb, (guint64) ret);
 
     return ret;
 }

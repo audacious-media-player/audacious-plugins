@@ -111,7 +111,7 @@ midievent_t * i_midi_file_new_event(midifile_track_t * track, gint sysex_length)
 {
   midievent_t * event;
 
-  event = malloc(sizeof(midievent_t) + sysex_length);
+  event = g_malloc(sizeof(midievent_t) + sysex_length);
   /* check_mem(event); */
 
   event->next = NULL;
@@ -315,7 +315,7 @@ gint i_midi_file_read_track( midifile_t * mf , midifile_track_t * track ,
                   event = i_midi_file_new_event(track, 0);
                   event->type = SND_SEQ_EVENT_META_TEXT;
                   event->tick = tick;
-                  event->data.metat = calloc( len + 1 , sizeof(gchar) );
+                  event->data.metat = g_new0( gchar , len + 1 );
                   for ( ic = 0 ; ic < len ; ic++ )
                     event->data.metat[ic] = i_midi_file_read_byte(mf);
                   event->data.metat[len] = '\0';
@@ -335,7 +335,7 @@ gint i_midi_file_read_track( midifile_t * mf , midifile_track_t * track ,
                   event = i_midi_file_new_event(track, 0);
                   event->type = SND_SEQ_EVENT_META_LYRIC;
                   event->tick = tick;
-                  event->data.metat = calloc( len + 1 , sizeof(gchar) );
+                  event->data.metat = g_new0( gchar , len + 1 );
                   for ( ic = 0 ; ic < len ; ic++ )
                     event->data.metat[ic] = i_midi_file_read_byte(mf);
                   event->data.metat[len] = '\0';
@@ -397,7 +397,7 @@ gint i_midi_file_parse_smf( midifile_t * mf , gint port_count )
     return 0;
   }
 
-  mf->tracks = calloc( mf->num_tracks , sizeof(midifile_track_t) );
+  mf->tracks = g_new0( midifile_track_t, mf->num_tracks );
   if ( !mf->tracks )
   {
     g_warning( "out of memory\n" );
@@ -519,6 +519,9 @@ void i_midi_init( midifile_t * mf )
 
 void i_midi_free( midifile_t * mf )
 {
+  g_free(mf->file_name);
+  mf->file_name = NULL;
+  
   if ( mf->tracks )
   {
     gint i;
@@ -533,12 +536,12 @@ void i_midi_free( midifile_t * mf )
         event = event->next;
         if (( event_tmp->type == SND_SEQ_EVENT_META_TEXT ) ||
             ( event_tmp->type == SND_SEQ_EVENT_META_LYRIC ))
-          free( event_tmp->data.metat );
-        free( event_tmp );
+          g_free( event_tmp->data.metat );
+        g_free( event_tmp );
       }
     }
     /* free track array */
-    free( mf->tracks );
+    g_free( mf->tracks );
     mf->tracks = NULL;
   }
 }
@@ -743,7 +746,7 @@ void i_midi_get_bpm( midifile_t * mf , gint * bpm , gint * wavg_bpm )
 
 
 /* helper function that parses a midi file; returns 1 on success, 0 otherwise */
-gint i_midi_parse_from_filename( gchar * filename , midifile_t * mf )
+gint i_midi_parse_from_filename( const gchar * filename , midifile_t * mf )
 {
   i_midi_init( mf );
   DEBUGMSG( "PARSE_FROM_FILENAME requested, opening file: %s\n" , filename );
@@ -753,7 +756,7 @@ gint i_midi_parse_from_filename( gchar * filename , midifile_t * mf )
     g_warning( "Cannot open %s\n" , filename );
     return 0;
   }
-  mf->file_name = filename;
+  mf->file_name = g_strdup(filename);
 
   switch( i_midi_file_read_id( mf ) )
   {

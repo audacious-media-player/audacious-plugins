@@ -223,8 +223,8 @@ static void move_skinned_window (SkinnedWindow * window, int x, int y)
 {
     gtk_window_move (GTK_WINDOW (window), x, y);
 
-    window->x = x;
-    window->y = y;
+    *(window->x) = x;
+    *(window->y) = y;
 }
 
 static void

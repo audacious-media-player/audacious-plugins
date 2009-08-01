@@ -75,7 +75,7 @@ void ShowConfigureBox(void)
     ShowConfigureWindow(gModplugXMMS.GetModProps());
 }
 
-void ShowFileInfoBox(char* aFilename)
+void ShowFileInfoBox(const gchar* aFilename)
 {
     ShowInfoWindow(aFilename);
 }

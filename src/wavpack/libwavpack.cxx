@@ -422,28 +422,6 @@ wv_probe_for_tuple(gchar *filename, VFSFile *file)
     return ti;
 }
 
-extern "C" void
-wv_get_song_info(gchar *filename, gchar **title, gint *length)
-{
-    assert(filename != NULL);
-    WavpackDecoder d(&wvpack);
-
-    if (!d.attach(filename)) {
-        printf("wavpack: Error opening file: \"%s\"\n", filename);
-        return;
-    }
-
-    gint sample_rate = WavpackGetSampleRate(d.ctx);
-#ifdef AUD_DEBUG
-    gint num_channels = WavpackGetNumChannels(d.ctx);
-#endif
-    AUDDBG("reading %s at %d rate with %d channels\n", filename, sample_rate, num_channels);
-
-    *length = (gint)(WavpackGetNumSamples(d.ctx) / sample_rate) * 1000,
-    *title = generate_title(filename, d.ctx);
-    AUDDBG("title for %s = %s\n", filename, *title);
-}
-
 extern "C" gint
 wv_get_time(InputPlayback *data)
 {

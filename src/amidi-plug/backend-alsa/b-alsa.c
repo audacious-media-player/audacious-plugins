@@ -715,12 +715,12 @@ gint i_seq_port_wparse( gchar * wportlist )
     ++sc.dest_port_num;
 
   /* check if there is already an allocated array and free it */
-  if ( sc.dest_port )
-    free( sc.dest_port );
+  g_free( sc.dest_port );
+  sc.dest_port = NULL;
 
   if ( sc.dest_port_num > 0 )
   /* allocate the array of writable ports */
-    sc.dest_port = calloc( sc.dest_port_num , sizeof(snd_seq_addr_t) );
+    sc.dest_port = g_new0( snd_seq_addr_t, sc.dest_port_num );
 
   for ( i = 0 ; i < sc.dest_port_num ; i++ )
   {

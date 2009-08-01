@@ -435,7 +435,7 @@ equalizerwin_create_window(void)
     width = 275;
     height = config.equalizer_shaded ? 14 : 116;
 
-    equalizerwin = ui_skinned_window_new("equalizer");
+    equalizerwin = ui_skinned_window_new("equalizer", &config.equalizer_x, &config.equalizer_y);
     gtk_window_set_title(GTK_WINDOW(equalizerwin), _("Audacious Equalizer"));
     gtk_window_set_role(GTK_WINDOW(equalizerwin), "equalizer");
     gtk_window_set_resizable(GTK_WINDOW(equalizerwin), FALSE);
@@ -457,10 +457,6 @@ equalizerwin_create_window(void)
     g_object_unref(icon);
 
     gtk_widget_set_app_paintable(equalizerwin, TRUE);
-
-    if (config.save_window_position)
-        gtk_window_move(GTK_WINDOW(equalizerwin),
-                        config.equalizer_x, config.equalizer_y);
 
     g_signal_connect(equalizerwin, "delete_event",
                      G_CALLBACK(equalizerwin_delete), NULL);
@@ -501,10 +497,6 @@ static void equalizerwin_real_show (void)
 
 static void equalizerwin_real_hide (void)
 {
-    if (config.save_window_position)
-        gtk_window_get_position ((GtkWindow *) equalizerwin,
-         & config.equalizer_x, & config.equalizer_y);
-
     gtk_widget_hide(equalizerwin);
     ui_skinned_button_set_inside(mainwin_eq, FALSE);
 }

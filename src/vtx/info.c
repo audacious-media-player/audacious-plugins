@@ -3,7 +3,7 @@
 #include <audacious/output.h>
 #include <audacious/i18n.h>
 
-void vtx_file_info(gchar *filename)
+void vtx_file_info(const gchar *filename)
 {
   static GtkWidget *box;
   ayemu_vtx_t vtx;

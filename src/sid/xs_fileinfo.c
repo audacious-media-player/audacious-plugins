@@ -167,7 +167,7 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 }
 
 
-void xs_fileinfo(gchar * filename)
+void xs_fileinfo(const gchar * filename)
 {
     GtkWidget *tmpMenuItem, *tmpMenu, *tmpOptionMenu;
     xs_tuneinfo_t *tmpInfo;

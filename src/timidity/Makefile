@@ -2,7 +2,7 @@ PLUGIN = timidity${PLUGIN_SUFFIX}
 
 SRCS = callbacks.c			\
        interface.c			\
-       xmms-timidity.c			\
+       plugin.c				\
        libtimidity/common.c		\
        libtimidity/instrum.c		\
        libtimidity/instrum_dls.c	\
@@ -20,6 +20,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS}  ${GTK_CFLAGS} ${GLIB_CFLAGS}  -I../.. -I./libtimidity
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS}  ${GTK_CFLAGS} ${GLIB_CFLAGS}  -I../..
 CFLAGS += ${PLUGIN_CFLAGS}
 LIBS += ${GTK_LIBS} ${GLIB_LIBS}  ${MOWGLI_LIBS}

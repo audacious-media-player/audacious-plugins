@@ -3,6 +3,7 @@
  *
  * Copyright (c) 2007 Calin Crisan <ccrisan@gmail.com>
  * Copyright 2009 John Lindgren
+ * Copyright 2009 Tomasz Moń <desowin@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,14 +47,13 @@
 
 #define DEBUG FALSE
 
-#define cdaudio_error(...) printf (__VA_ARGS__)
-
 #if DEBUG
     #define debug(...) printf (__VA_ARGS__)
 #else
     #define debug(...)
 #endif
 
+#define warn(...) fprintf(stderr, "cdaudio-ng: " __VA_ARGS__)
 
 static GMutex * mutex;
 static GCond * control_cond;
@@ -119,6 +119,18 @@ InputPlugin *cdaudio_iplist[] = { &inputplugin, NULL };
 DECLARE_PLUGIN(cdaudio, NULL, NULL, cdaudio_iplist, NULL, NULL, NULL, NULL, NULL);
 
 
+static void cdaudio_error (const gchar *message_format, ...)
+{
+    va_list args;
+    gchar *msg = NULL;
+
+    va_start (args, message_format);
+    msg = g_markup_vprintf_escaped (message_format, args);
+    va_end (args);
+
+    aud_event_queue_with_data_free("interface show error", msg);
+}
+
 /* mutex must be locked */
 static void check_disk (void)
 {
@@ -126,7 +138,21 @@ static void check_disk (void)
         refresh_trackinfo ();
 
     if (trackinfo == NULL)
-        cdaudio_error ("No audio CD found.\n");
+        cdaudio_error ("No audio CD found.");
+}
+
+/* thread safe */
+static gboolean check_disk_safe (void)
+{
+    gboolean disk;
+
+    g_mutex_lock (mutex);
+
+    check_disk ();
+    disk = (trackinfo != NULL);
+
+    g_mutex_unlock (mutex);
+    return disk;
 }
 
 /* main thread only */
@@ -185,6 +211,9 @@ static void play_cd (GtkMenuItem * item, gpointer user_data)
 {
     gint playlist = aud_playlist_get_active ();
 
+    if (! check_disk_safe ())
+        return;
+
     aud_playlist_entry_delete (playlist, 0, aud_playlist_entry_count (playlist));
     aud_playlist_entry_insert (playlist, 0, g_strdup ("cdda://"), NULL);
     aud_playlist_set_playing (playlist);
@@ -194,6 +223,9 @@ static void play_cd (GtkMenuItem * item, gpointer user_data)
 /* main thread only */
 static void add_cd (GtkMenuItem * item, gpointer user_data)
 {
+    if (! check_disk_safe ())
+        return;
+
     aud_playlist_entry_insert (aud_playlist_get_active (), -1, g_strdup
      ("cdda://"), NULL);
 }
@@ -224,7 +256,7 @@ static void cdaudio_init()
 	cdng_cfg.proxy_password = g_strdup("");
 
 	if ((db = aud_cfg_db_open()) == NULL) {
-		cdaudio_error("Failed to read configuration.\n");
+		cdaudio_error("Failed to read configuration.");
                 return;
 	}
 
@@ -253,7 +285,7 @@ static void cdaudio_init()
          cdng_cfg.cddb_http, cdng_cfg.device);
 
 	if (!cdio_init()) {
-		cdaudio_error("Failed to initialize cdio subsystem.\n");
+		cdaudio_error("Failed to initialize cdio subsystem.");
                 return;
 	}
 
@@ -353,15 +385,18 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 
     if (trackno == -1)
     {
-        cdaudio_error ("Invalid URI %s.\n", pinputplayback->filename);
+        cdaudio_error ("Invalid URI %s.", pinputplayback->filename);
         return;
     }
 
-    /* calls check_disk, warns on error */
+    /* calls refresh_trackinfo if needed */
     tuple = create_tuple_from_trackinfo_and_filename (pinputplayback->filename);
 
     if (tuple == NULL)
+    {
+        cdaudio_error ("Track %d not found.", trackno);
         return;
+    }
 
     title = aud_tuple_formatter_make_title_string (tuple,
      aud_get_gentitle_format ());
@@ -383,7 +418,7 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 	if (cdng_cfg.use_dae)
 	{
 		if (pinputplayback->output->open_audio(FMT_S16_LE, 44100, 2) == 0) {
-			cdaudio_error("Failed to open audio output.\n");
+			cdaudio_error("Failed to open audio output.");
                         goto UNLOCK;
 		}
 
@@ -405,7 +440,7 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 		cdio_lsn_to_msf(trackinfo[trackno].startlsn, &startmsf);
 		cdio_lsn_to_msf(trackinfo[trackno].endlsn, &endmsf);
 		if (cdio_audio_play_msf(pcdio, &startmsf, &endmsf) != DRIVER_OP_SUCCESS) {
-			cdaudio_error("Failed to play analog audio CD.\n");
+			cdaudio_error("Failed to play analog audio CD.");
                         goto UNLOCK;
 		}
 	}
@@ -434,7 +469,7 @@ static void cdaudio_stop (InputPlayback * playback)
     else
     {
         if (cdio_audio_stop (pcdio) != DRIVER_OP_SUCCESS)
-            cdaudio_error ("Cannot stop analog CD.\n");
+            cdaudio_error ("Cannot stop analog CD.");
     }
 
 UNLOCK:
@@ -455,12 +490,12 @@ static void cdaudio_pause(InputPlayback *pinputplayback, gshort paused)
         if (paused)
         {
             if (cdio_audio_pause (pcdio) != DRIVER_OP_SUCCESS)
-                cdaudio_error ("Cannot pause analog CD.\n");
+                cdaudio_error ("Cannot pause analog CD.");
         }
         else
         {
             if (cdio_audio_resume (pcdio) != DRIVER_OP_SUCCESS)
-                cdaudio_error ("Cannot resume analog CD.\n");
+                cdaudio_error ("Cannot resume analog CD.");
         }
     }
 
@@ -485,7 +520,7 @@ static void cdaudio_seek (InputPlayback * playback, gint time)
 		cdio_lsn_to_msf(trackinfo[playing_track].endlsn, &endmsf);
 
 		if (cdio_audio_play_msf(pcdio, &startmsf, &endmsf) != DRIVER_OP_SUCCESS)
-			cdaudio_error("Failed to play analog CD\n");
+			cdaudio_error("Failed to play analog CD");
     }
 
     g_mutex_unlock (mutex);
@@ -509,7 +544,7 @@ static gint cdaudio_get_time (InputPlayback * playback)
     {
 		cdio_subchannel_t subchannel;
 		if (cdio_audio_read_subchannel(pcdio, &subchannel) != DRIVER_OP_SUCCESS) {
-			cdaudio_error("Failed to read analog CD subchannel.\n");
+			cdaudio_error("Failed to read analog CD subchannel.");
 			goto UNLOCK;
 		}
 		gint currlsn = cdio_msf_to_lsn(&subchannel.abs_addr);
@@ -535,7 +570,7 @@ static gint cdaudio_get_volume(gint *l, gint *r)
 	else {
 		cdio_audio_volume_t volume;
 		if (cdio_audio_get_volume(pcdio, &volume) != DRIVER_OP_SUCCESS) {
-			cdaudio_error("Failed to retrieve analog CD volume.\n");
+			cdaudio_error("Failed to retrieve analog CD volume.");
 
                         g_mutex_unlock (mutex);
 			return FALSE;
@@ -560,7 +595,7 @@ static gint cdaudio_set_volume(gint l, gint r)
 	else {
 		cdio_audio_volume_t volume = {{l, r, 0, 0}};
 		if (cdio_audio_set_volume(pcdio, &volume) != DRIVER_OP_SUCCESS) {
-			cdaudio_error("cdaudio-ng: failed to set analog cd volume\n");
+			cdaudio_error("cdaudio-ng: failed to set analog cd volume");
 
                         g_mutex_unlock (mutex);
 			return FALSE;
@@ -626,10 +661,14 @@ static Tuple * create_tuple_from_trackinfo_and_filename (const gchar * filename)
 
     g_mutex_lock (mutex);
 
-    check_disk ();
+    if (trackinfo == NULL)
+        refresh_trackinfo ();
 
     if (trackinfo == NULL)
+    {
+        warn ("No audio CD found.\n");
         goto DONE;
+    }
 
     if (! strcmp (filename, "cdda://"))
     {
@@ -647,7 +686,7 @@ static Tuple * create_tuple_from_trackinfo_and_filename (const gchar * filename)
 
     if (trackno < firsttrackno || trackno > lasttrackno)
     {
-        cdaudio_error ("Track %d not found.\n", trackno);
+        warn ("Track %d not found.\n", trackno);
         goto DONE;
     }
 
@@ -729,11 +768,11 @@ static void dae_play_loop(dae_params_t *pdae_params)
 		}
 
 		if (cdio_read_audio_sectors(pcdio, buffer, pdae_params->currlsn, lsncount) != DRIVER_OP_SUCCESS) {
-			cdaudio_error ("Cannot read sector.\n");
+			cdaudio_error ("Cannot read sector.");
 			read_error_counter++;
 			if (read_error_counter >= 2) {
 				read_error_counter = 0;
-				cdaudio_error("This CD can no longer be played, stopping.\n");
+				cdaudio_error("This CD can no longer be played, stopping.");
 				break;
 			}
 		}
@@ -781,7 +820,7 @@ static void scan_cd (void)
 	if (cdng_cfg.device != NULL && strlen(cdng_cfg.device) > 0) {
 		pcdio = cdio_open(cdng_cfg.device, DRIVER_UNKNOWN);
 		if (pcdio == NULL) {
-			cdaudio_error("Failed to open CD device \"%s\".\n", cdng_cfg.device);
+			cdaudio_error("Failed to open CD device \"%s\".", cdng_cfg.device);
 			goto ERROR;
 		}
 	}
@@ -791,15 +830,14 @@ static void scan_cd (void)
 		if (ppcd_drives != NULL && *ppcd_drives != NULL) { /* we have at least one audio capable cd drive */
 			pcdio = cdio_open(*ppcd_drives, DRIVER_UNKNOWN);
 			if (pcdio == NULL) {
-				cdaudio_error("Failed to open CD.\n");
+				cdaudio_error("Failed to open CD.");
 				goto ERROR;
 			}
 			debug("found cd drive \"%s\" with audio capable media\n", *ppcd_drives);
 		}
-		else {
-			cdaudio_error("Unable to find or access a CDDA capable drive.\n");
+		else
 			goto ERROR;
-		}
+
 		if (ppcd_drives != NULL && *ppcd_drives != NULL)
 			cdio_free_device_list(ppcd_drives);
 	}
@@ -808,7 +846,7 @@ static void scan_cd (void)
 	if (cdng_cfg.limitspeed > 0 && cdng_cfg.use_dae) {
 		debug("setting drive speed limit to %dx\n", cdng_cfg.limitspeed);
 		if (cdio_set_speed(pcdio, cdng_cfg.limitspeed) != DRIVER_OP_SUCCESS)
-			cdaudio_error("Failed to set drive speed to %dx.\n", cdng_cfg.limitspeed);
+			cdaudio_error("Failed to set drive speed to %dx.", cdng_cfg.limitspeed);
 	}
 
 	/* general track initialization */
@@ -816,7 +854,7 @@ static void scan_cd (void)
 	firsttrackno = cdio_get_first_track_num(pcdrom_drive->p_cdio);
 	lasttrackno = cdio_get_last_track_num(pcdrom_drive->p_cdio);
 	if (firsttrackno == CDIO_INVALID_TRACK || lasttrackno == CDIO_INVALID_TRACK) {
-		cdaudio_error("Failed to retrieve first/last track number.\n");
+		cdaudio_error("Failed to retrieve first/last track number.");
 		goto ERROR;
 	}
 	debug("first track is %d and last track is %d\n", firsttrackno, lasttrackno);
@@ -835,7 +873,7 @@ static void scan_cd (void)
 			"", "", "");
 
 		if (trackinfo[trackno].startlsn == CDIO_INVALID_LSN || trackinfo[trackno].endlsn == CDIO_INVALID_LSN) {
-                    cdaudio_error ("Cannot read start/end LSN for track %d.\n",
+                    cdaudio_error ("Cannot read start/end LSN for track %d.",
                      trackno);
                     goto ERROR;
 		}
@@ -893,7 +931,7 @@ static void scan_cd (void)
 		if (cdng_cfg.use_cddb) {
 			pcddb_conn = cddb_new();
 			if (pcddb_conn == NULL)
-				cdaudio_error("Failed to create the cddb connection.\n");
+				cdaudio_error("Failed to create the cddb connection.");
 			else {
 				debug("getting CDDB info\n");
 
@@ -942,9 +980,9 @@ static void scan_cd (void)
 				gint matches;
 				if ((matches = cddb_query(pcddb_conn, pcddb_disc)) == -1) {
 					if (cddb_errno(pcddb_conn) == CDDB_ERR_OK)
-						cdaudio_error("Failed to query the CDDB server\n");
+						cdaudio_error("Failed to query the CDDB server");
 					else
-						cdaudio_error("Failed to query the CDDB server: %s\n", cddb_error_str(cddb_errno(pcddb_conn)));
+						cdaudio_error("Failed to query the CDDB server: %s", cddb_error_str(cddb_errno(pcddb_conn)));
 
 					cddb_disc_destroy(pcddb_disc);
 					pcddb_disc = NULL;
@@ -961,7 +999,7 @@ static void scan_cd (void)
 
 						cddb_read(pcddb_conn, pcddb_disc);
 						if (cddb_errno(pcddb_conn) != CDDB_ERR_OK) {
-							cdaudio_error("failed to read the cddb info: %s\n", cddb_error_str(cddb_errno(pcddb_conn)));
+							cdaudio_error("failed to read the cddb info: %s", cddb_error_str(cddb_errno(pcddb_conn)));
 							cddb_disc_destroy(pcddb_disc);
 							pcddb_disc = NULL;
 						}

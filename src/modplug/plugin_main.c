@@ -8,7 +8,7 @@ void Stop(InputPlayback *data);
 void Pause(InputPlayback *data, gshort aPaused);
 void Seek(InputPlayback *data, gint aTime);
 gint GetTime(InputPlayback *data);
-void ShowFileInfoBox(char* aFilename);
+void ShowFileInfoBox(const gchar* aFilename);
 Tuple* GetSongTuple(const gchar* aFilename);
 gint CanPlayFileFromVFS(const gchar* aFilename, VFSFile *VFSFile);
 

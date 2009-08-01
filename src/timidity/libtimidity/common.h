@@ -20,13 +20,14 @@
 
    common.h
 */
+#include <glib.h>
 
 typedef struct {
-  char *path;
+  gchar *path;
   void *next;
 } PathList;
 
-extern VFSFile *open_file(char *name);
-extern void add_to_pathlist(char *s);
-extern void *safe_malloc(size_t count);
+extern VFSFile *open_file(gchar *name);
+extern void add_to_pathlist(gchar *s);
+extern void *safe_malloc(gsize count);
 extern void free_pathlist(void);

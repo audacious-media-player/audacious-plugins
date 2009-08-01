@@ -29,9 +29,7 @@
 
 #include "i_common.h"
 #include <audacious/plugin.h>
-#include <audacious/output.h>
 #include <audacious/auddrct.h>
-#include <pthread.h>
 #include "i_vfslayer.h"
 #include "i_backend.h"
 #include "i_configure.h"
@@ -72,8 +70,7 @@ static void amidiplug_init( void );
 static void amidiplug_cleanup( void );
 static void amidiplug_aboutbox( void );
 static void amidiplug_configure( void );
-static gint amidiplug_is_our_file( gchar * );
-static gint amidiplug_is_our_file_from_vfs( gchar * , VFSFile * );
+static gint amidiplug_is_our_file_from_vfs( const gchar * , VFSFile * );
 static void amidiplug_play( InputPlayback * );
 static void amidiplug_stop( InputPlayback * );
 static void amidiplug_pause( InputPlayback *, gshort );
@@ -81,8 +78,8 @@ static void amidiplug_seek( InputPlayback *, gint );
 static gint amidiplug_get_time( InputPlayback * );
 static gint amidiplug_get_volume( gint * , gint * );
 static gint amidiplug_set_volume( gint , gint );
-static void amidiplug_get_song_info( gchar * , gchar ** , gint * );
-static void amidiplug_file_info_box( gchar * );
+static Tuple *amidiplug_get_song_tuple( const gchar * );
+static void amidiplug_file_info_box( const gchar * );
 
 InputPlugin amidiplug_ip =
 {
@@ -90,7 +87,6 @@ InputPlugin amidiplug_ip =
   .init = amidiplug_init,			/* init */
   .about = amidiplug_aboutbox,			/* aboutbox */
   .configure = amidiplug_configure,			/* configure */
-  .is_our_file = amidiplug_is_our_file,		/* is_our_file */
   .play_file = amidiplug_play,			/* play_file */
   .stop = amidiplug_stop,			/* stop */
   .pause = amidiplug_pause,			/* pause */
@@ -99,7 +95,7 @@ InputPlugin amidiplug_ip =
   .get_volume = amidiplug_get_volume,			/* get_volume */
   .set_volume = amidiplug_set_volume,			/* set_volume */
   .cleanup = amidiplug_cleanup,			/* cleanup */
-  .get_song_info = amidiplug_get_song_info,		/* get_song_info */
+  .get_song_tuple = amidiplug_get_song_tuple,		/* get_song_info */
   .file_info_box = amidiplug_file_info_box,		/* file_info_box */
   .is_our_file_from_vfs = amidiplug_is_our_file_from_vfs,	/* is_our_file_from_vfs */
   .vfs_extensions = amidiplug_vfs_extensions		/* aud_vfs_extensions */
