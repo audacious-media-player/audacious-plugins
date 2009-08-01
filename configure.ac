@@ -742,30 +742,6 @@ else
     have_modplug="no"
 fi
 
-dnl *** Musepack
-
-AC_ARG_ENABLE(musepack,
-    [  --disable-musepack      disable musepack input plugin (default=enabled)],
-    [enable_musepack=$enableval],
-    [enable_musepack="yes"]
-)
-
-if test "x$enable_musepack" = "xyes"; then
-    PKG_CHECK_MODULES(TAGLIB, [taglib >= 1.4], [
-       AC_CHECK_HEADERS(mpcdec/config_types.h,, [
-           enable_musepack=no
-       ])
-    ], [enable_musepack=no])
-else
-    AC_MSG_RESULT([*** Musepack plugin disabled per user request ***])
-    enable_musepack=no
-fi
-
-if test "x$enable_musepack" = "xyes"; then
-        INPUT_PLUGINS="$INPUT_PLUGINS musepack"
-        AC_SUBST(TAGLIB_CFLAGS)
-fi
-
 dnl *** FFaudio
 
 have_ffaudio="no"
@@ -1699,7 +1675,6 @@ echo "  Nintendo DS audio (xsf):                yes [experimental]"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      yes"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
-echo "  Musepack support (musepack):            $enable_musepack"
 echo "  TrueAudio (tta):                        $enable_tta"
 echo "  Metronom:                               yes"
 echo
