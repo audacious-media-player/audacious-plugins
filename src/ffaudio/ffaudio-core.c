@@ -361,7 +361,7 @@ ffaudio_play_file(InputPlayback *playback)
             playback->output->flush(seek_value * 1000);
             if (av_seek_frame(ic, -1, seek_value * AV_TIME_BASE, AVSEEK_FLAG_ANY) < 0)
             {
-                _DEBUG("error while seeking");
+                _ERROR("error while seeking");
             } else
                 errcount = 0;
 
@@ -382,7 +382,7 @@ ffaudio_play_file(InputPlayback *playback)
             else
             {
                 if (++errcount > 4) {
-                    _DEBUG("av_read_frame error %d, giving up.", ret);
+                    _ERROR("av_read_frame error %d, giving up.", ret);
                     break;
                 } else
                     continue;
