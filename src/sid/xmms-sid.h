@@ -174,13 +174,14 @@ Tuple *     xs_get_song_tuple(const gchar *);
 Tuple *     xs_probe_for_tuple(const gchar *, xs_file_t *);
 void        xs_about(void);
 
-void        xs_error(const char *, ...);
+void        xs_verror(const gchar *, va_list);
+void        xs_error(const gchar *, ...);
 
 
 /* Debugging
  */
 #ifdef DEBUG
-void    XSDEBUG(const char *, ...);
+void    XSDEBUG(const gchar *, ...);
 #else
 #  define XSDEBUG(...) /* stub */
 #endif
