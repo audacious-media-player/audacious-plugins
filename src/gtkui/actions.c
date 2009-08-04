@@ -50,6 +50,7 @@
 #include <audacious/plugin.h>
 #include <libaudgui/ui_fileopener.h>
 #include <libaudgui/ui_urlopener.h>
+#include <libaudgui/ui_jumptotrack.h>
 #include "ui_gtk.h"
 #include "../skins/ui_playlist_manager.h"
 #include "util.h"
@@ -139,7 +140,7 @@ void action_current_track_info(void)
 
 void action_jump_to_file(void)
 {
-    gtkui_interface.ops->jump_to_track_show();
+    ui_jump_to_track();
 }
 
 void action_jump_to_playlist_start(void)
