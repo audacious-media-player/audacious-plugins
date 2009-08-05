@@ -48,9 +48,7 @@
 #endif
 
 #include <audacious/plugin.h>
-#include <libaudgui/ui_fileopener.h>
-#include <libaudgui/ui_urlopener.h>
-#include <libaudgui/ui_jumptotrack.h>
+#include <libaudgui/libaudgui.h>
 #include "ui_gtk.h"
 #include "../skins/ui_playlist_manager.h"
 #include "util.h"
@@ -92,12 +90,12 @@ void action_about_audacious(void)
 
 void action_play_file(void)
 {
-    run_filebrowser(TRUE);
+    audgui_run_filebrowser(TRUE);
 }
 
 void action_play_location(void)
 {
-    show_add_url_window();
+    audgui_show_add_url_window();
 }
 
 void action_ab_set(void)
@@ -140,7 +138,7 @@ void action_current_track_info(void)
 
 void action_jump_to_file(void)
 {
-    ui_jump_to_track();
+    audgui_jump_to_track();
 }
 
 void action_jump_to_playlist_start(void)
@@ -465,12 +463,12 @@ void action_playlist_remove_unselected(void)
 
 void action_playlist_add_files(void)
 {
-    run_filebrowser(FALSE);
+    audgui_run_filebrowser(FALSE);
 }
 
 void action_playlist_add_url(void)
 {
-    show_add_url_window();
+    audgui_show_add_url_window();
 }
 
 void action_playlist_new(void)

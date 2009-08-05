@@ -26,10 +26,7 @@
 #include "ui_main_evlisteners.h"
 #include "ui_playlist_evlisteners.h"
 #include <audacious/i18n.h>
-#include <libaudgui/ui_gtk.h>
-#include <libaudgui/ui_fileopener.h>
-#include <libaudgui/ui_jumptotrack.h>
-#include <libaudgui/icons-stock.h>
+#include <libaudgui/libaudgui.h>
 #include <libintl.h>
 
 #include "ui_playlist_manager.h"
@@ -88,8 +85,8 @@ gboolean skins_init(InterfaceCbs *cbs) {
 
     ui_main_check_theme_engine();
 
-    aud_set_default_icon();
-    register_aud_stock_icons();
+    audgui_set_default_icon();
+    audgui_register_stock_icons();
 
     ui_manager_init();
     ui_manager_create_menus();
@@ -114,12 +111,12 @@ gboolean skins_init(InterfaceCbs *cbs) {
 
     /* Register interface callbacks */
     cbs->show_prefs_window = show_preferences_window;
-    cbs->run_filebrowser = run_filebrowser;
-    cbs->hide_filebrowser = hide_filebrowser;
+    cbs->run_filebrowser = audgui_run_filebrowser;
+    cbs->hide_filebrowser = audgui_hide_filebrowser;
     cbs->toggle_visibility = toggle_visibility;
     cbs->show_error = show_error_message;
-    cbs->show_jump_to_track = ui_jump_to_track;
-    cbs->hide_jump_to_track = ui_jump_to_track_hide;
+    cbs->show_jump_to_track = audgui_jump_to_track;
+    cbs->hide_jump_to_track = audgui_jump_to_track_hide;
 
     gtk_main();
 

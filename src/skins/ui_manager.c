@@ -40,7 +40,7 @@
 #endif
 #include "plugin.h"
 #include <audacious/ui_plugin_menu.h>
-#include <libaudgui/icons-stock.h>
+#include <libaudgui/libaudgui.h>
 
 static GtkUIManager *ui_manager = NULL;
 

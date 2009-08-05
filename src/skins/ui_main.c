@@ -36,9 +36,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include <libaudgui/ui_fileopener.h>
-#include <libaudgui/ui_urlopener.h>
-#include <libaudgui/ui_jumptotrack.h>
+#include <libaudgui/libaudgui.h>
 
 /* GDK including */
 #include "platform/smartinclude.h"
@@ -71,7 +69,6 @@
 #include "ui_skinned_playlist.h"
 #include "ui_main_evlisteners.h"
 #include <audacious/plugin.h>
-#include <libaudgui/icons-stock.h>
 #include "skins_cfg.h"
 #include "util.h"
 
@@ -1534,7 +1531,7 @@ mainwin_general_menu_callback(gpointer data,
             action_about_audacious();
             break;
         case MAINWIN_GENERAL_PLAYFILE: {
-            run_filebrowser(FALSE); /* FALSE = NO_PLAY_BUTTON */
+            audgui_run_filebrowser(FALSE); /* FALSE = NO_PLAY_BUTTON */
             break;
         }
         case MAINWIN_GENERAL_PLAYLOCATION:
@@ -2546,13 +2543,13 @@ action_about_audacious( void )
 void
 action_play_file( void )
 {
-    run_filebrowser(TRUE); /* TRUE = PLAY_BUTTON */
+    audgui_run_filebrowser(TRUE); /* TRUE = PLAY_BUTTON */
 }
 
 void
 action_play_location( void )
 {
-    show_add_url_window();
+    audgui_show_add_url_window();
 }
 
 void
@@ -2601,7 +2598,7 @@ action_current_track_info( void )
 void
 action_jump_to_file( void )
 {
-    ui_jump_to_track();
+    audgui_jump_to_track();
 }
 
 void

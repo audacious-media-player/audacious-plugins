@@ -56,9 +56,7 @@
 #include "ui_skinned_playlist_slider.h"
 #include "ui_skinned_playlist.h"
 
-#include <libaudgui/icons-stock.h>
-#include <libaudgui/ui_fileopener.h>
-#include <libaudgui/ui_urlopener.h>
+#include <libaudgui/libaudgui.h>
 #include "images/audacious_playlist.xpm"
 
 gint active_playlist;
@@ -1460,13 +1458,13 @@ void action_playlist_remove_unselected (void)
 void
 action_playlist_add_files(void)
 {
-    run_filebrowser(FALSE); /* FALSE = NO_PLAY_BUTTON */
+    audgui_run_filebrowser(FALSE); /* FALSE = NO_PLAY_BUTTON */
 }
 
 void
 action_playlist_add_url(void)
 {
-    show_add_url_window();
+    audgui_show_add_url_window();
 }
 
 void action_playlist_new (void)

@@ -21,10 +21,7 @@
 #include <gtk/gtk.h>
 
 #include <audacious/plugin.h>
-#include <libaudgui/ui_fileopener.h>
-#include <libaudgui/ui_gtk.h>
-#include <libaudgui/icons-stock.h>
-#include <libaudgui/ui_jumptotrack.h>
+#include <libaudgui/libaudgui.h>
 
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
@@ -150,12 +147,12 @@ void show_preferences_window(gboolean show)
 
 static void button_open_pressed()
 {
-    run_filebrowser(TRUE);
+    audgui_run_filebrowser(TRUE);
 }
 
 static void button_add_pressed()
 {
-    run_filebrowser(FALSE);
+    audgui_run_filebrowser(FALSE);
 }
 
 static void button_play_pressed()
@@ -476,8 +473,8 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     gtkui_cfg_load();
 
-    aud_set_default_icon();
-    register_aud_stock_icons();
+    audgui_set_default_icon();
+    audgui_register_stock_icons();
 
     ui_manager_init();
     ui_manager_create_menus();
@@ -573,12 +570,12 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     /* Register interface callbacks */
     cbs->show_prefs_window = show_preferences_window;
-    cbs->run_filebrowser = run_filebrowser;
-    cbs->hide_filebrowser = hide_filebrowser;
+    cbs->run_filebrowser = audgui_run_filebrowser;
+    cbs->hide_filebrowser = audgui_hide_filebrowser;
     cbs->toggle_visibility = ui_toggle_visibility;
     cbs->show_error = ui_show_error;
-    cbs->show_jump_to_track = ui_jump_to_track;
-    cbs->hide_jump_to_track = ui_jump_to_track_hide;
+    cbs->show_jump_to_track = audgui_jump_to_track;
+    cbs->hide_jump_to_track = audgui_jump_to_track_hide;
 
     gtk_main();
 
