@@ -758,7 +758,9 @@ void ui_skinned_playlist_update (GtkWidget * widget)
      ((UiSkinnedPlaylist *) widget);
 
     calc_layout (private);
-    private->focused = adjust_position (private, TRUE, 0);
+
+    if (private->focused != -1)
+        private->focused = adjust_position (private, TRUE, 0);
 
     gtk_widget_queue_draw (widget);
 
