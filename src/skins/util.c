@@ -809,11 +809,21 @@ void insert_drag_list(gint playlist, gint position, const gchar *list)
     while (1)
     {
         const gchar *newline = strstr(list, "\r\n");
+        gchar * filename;
 
         if (newline == NULL)
             break;
 
-        index_append(add, g_strndup(list, newline - list));
+        filename = g_strndup (list, newline - list);
+
+        if (vfs_file_test (filename, G_FILE_TEST_IS_DIR))
+        {
+            aud_playlist_add_folder (filename);
+            g_free (filename);
+        }
+        else
+            index_append (add, filename);
+
         list = newline + 2;
     }
 
