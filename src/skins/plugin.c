@@ -117,6 +117,8 @@ gboolean skins_init(InterfaceCbs *cbs) {
     cbs->show_error = show_error_message;
     cbs->show_jump_to_track = audgui_jump_to_track;
     cbs->hide_jump_to_track = audgui_jump_to_track_hide;
+    cbs->show_about_window = audgui_show_about_window;
+    cbs->hide_about_window = audgui_hide_about_window;
 
     gtk_main();
 

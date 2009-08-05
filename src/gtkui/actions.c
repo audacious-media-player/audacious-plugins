@@ -85,7 +85,7 @@ void action_stop_after_current_song(GtkToggleAction * action)
 
 void action_about_audacious(void)
 {
-    gtkui_interface.ops->aboutwin_show();
+    audgui_show_about_window();
 }
 
 void action_play_file(void)

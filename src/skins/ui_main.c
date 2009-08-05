@@ -2537,7 +2537,7 @@ action_viewtime( GtkAction *action, GtkRadioAction *current )
 void
 action_about_audacious( void )
 {
-    skins_interface.ops->aboutwin_show();
+    audgui_show_about_window();
 }
 
 void
