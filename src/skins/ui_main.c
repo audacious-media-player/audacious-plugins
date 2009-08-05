@@ -38,6 +38,7 @@
 #include <sys/types.h>
 #include <libaudgui/ui_fileopener.h>
 #include <libaudgui/ui_urlopener.h>
+#include <libaudgui/ui_jumptotrack.h>
 
 /* GDK including */
 #include "platform/smartinclude.h"
@@ -70,7 +71,7 @@
 #include "ui_skinned_playlist.h"
 #include "ui_main_evlisteners.h"
 #include <audacious/plugin.h>
-#include <audacious/icons-stock.h>
+#include <libaudgui/icons-stock.h>
 #include "skins_cfg.h"
 #include "util.h"
 
@@ -2600,7 +2601,7 @@ action_current_track_info( void )
 void
 action_jump_to_file( void )
 {
-    skins_interface.ops->jump_to_track_show();
+    ui_jump_to_track();
 }
 
 void

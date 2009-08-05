@@ -49,11 +49,16 @@ static void xs_get_song_tuple_info(Tuple *pResult, xs_tuneinfo_t *pInfo, gint su
 /*
  * Error messages
  */
+void xs_verror(const gchar *fmt, va_list ap)
+{
+    g_logv("AUD-SID", G_LOG_LEVEL_WARNING, fmt, ap);
+}
+
 void xs_error(const gchar *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    g_logv("AUD-SID", G_LOG_LEVEL_WARNING, fmt, ap);
+    xs_verror(fmt, ap);
     va_end(ap);
 }
 

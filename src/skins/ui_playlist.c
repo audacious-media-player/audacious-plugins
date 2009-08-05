@@ -56,7 +56,7 @@
 #include "ui_skinned_playlist_slider.h"
 #include "ui_skinned_playlist.h"
 
-#include <audacious/icons-stock.h>
+#include <libaudgui/icons-stock.h>
 #include <libaudgui/ui_fileopener.h>
 #include <libaudgui/ui_urlopener.h>
 #include "images/audacious_playlist.xpm"

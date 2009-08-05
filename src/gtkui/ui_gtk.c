@@ -23,6 +23,8 @@
 #include <audacious/plugin.h>
 #include <libaudgui/ui_fileopener.h>
 #include <libaudgui/ui_gtk.h>
+#include <libaudgui/icons-stock.h>
+#include <libaudgui/ui_jumptotrack.h>
 
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
@@ -475,7 +477,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     gtkui_cfg_load();
 
     aud_set_default_icon();
-    gtkui_interface.ops->register_stock_icons();
+    register_aud_stock_icons();
 
     ui_manager_init();
     ui_manager_create_menus();
@@ -575,6 +577,8 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     cbs->hide_filebrowser = hide_filebrowser;
     cbs->toggle_visibility = ui_toggle_visibility;
     cbs->show_error = ui_show_error;
+    cbs->show_jump_to_track = ui_jump_to_track;
+    cbs->hide_jump_to_track = ui_jump_to_track_hide;
 
     gtk_main();
 

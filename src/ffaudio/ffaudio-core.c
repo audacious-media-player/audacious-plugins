@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#define FFAUDIO_DEBUG
 #include "config.h"
 #include "ffaudio-stdinc.h"
 #include <audacious/i18n.h>
@@ -57,58 +58,81 @@ ffaudio_cleanup(void)
 }
 
 static gint
+ffaudio_check_codec(AVCodec *codec)
+{
+    /* Blacklist certain codecs here (see TODO for more information) */
+    switch (codec->id) {
+        case CODEC_ID_MP1:
+        case CODEC_ID_MP2:
+        case CODEC_ID_MP3:
+        case CODEC_ID_FLAC:
+        case CODEC_ID_VORBIS:
+        case CODEC_ID_AAC:
+        case CODEC_ID_TTA:
+
+        case CODEC_ID_MUSEPACK8:
+            _DEBUG("refusing blacklisted codec");
+            return 0;
+        default:
+            return 1;
+    }
+}
+
+static gint
 ffaudio_probe(const gchar *filename, VFSFile *file)
 {
-    AVCodec *codec2 = NULL;
-    AVCodecContext *c2 = NULL;
-    AVFormatContext *ic2 = NULL;
+    AVCodec *codec = NULL;
+    AVCodecContext *c = NULL;
+    AVFormatContext *ic = NULL;
     gint i, ret;
     gchar uribuf[64];
 
     _DEBUG("probing for %s, filehandle %p", filename, file);
 
     g_snprintf(uribuf, sizeof(uribuf), "audvfsptr:%p", file);
-    if ((ret = av_open_input_file(&ic2, uribuf, NULL, 0, NULL)) < 0) {
-        _DEBUG("ic2 is NULL, ret %d/%s", ret, strerror(-ret));
+    if ((ret = av_open_input_file(&ic, uribuf, NULL, 0, NULL)) < 0) {
+        _DEBUG("ic is NULL, ret %d/%s", ret, strerror(-ret));
         return 0;
     }
 
-    _DEBUG("file opened, %p", ic2);
+    _DEBUG("file opened, %p", ic);
 
-    for (i = 0; i < ic2->nb_streams; i++)
+    for (i = 0; i < ic->nb_streams; i++)
     {
-        c2 = ic2->streams[i]->codec;
-        if(c2->codec_type == CODEC_TYPE_AUDIO)
+        c = ic->streams[i]->codec;
+        if (c->codec_type == CODEC_TYPE_AUDIO)
         {
-            av_find_stream_info(ic2);
-            codec2 = avcodec_find_decoder(c2->codec_id);
-            if (codec2)
+            av_find_stream_info(ic);
+            codec = avcodec_find_decoder(c->codec_id);
+            if (codec != NULL)
                 break;
         }
     }
 
-    if (!codec2)
+    if (codec == NULL)
     {
-        av_close_input_file(ic2);
+        av_close_input_file(ic);
         return 0;
     }
 
-    _DEBUG("got codec %s, doublechecking", codec2->name);
+#ifdef FFAUDIO_DOUBLECHECK
+    _DEBUG("got codec %s, doublechecking", codec->name);
 
-    av_find_stream_info(ic2);
+    av_find_stream_info(ic);
 
-    codec2 = avcodec_find_decoder(c2->codec_id);
+    codec = avcodec_find_decoder(c->codec_id);
 
-    if (!codec2)
+    if (codec == NULL)
     {
-        av_close_input_file(ic2);
+        av_close_input_file(ic);
         return 0;
     }
+#endif
 
-    _DEBUG("probe success for %s", codec2->name);
-    av_close_input_file(ic2);
+    _DEBUG("probe success for %s", codec->name);
+    av_close_input_file(ic);
 
-    return 1;
+    return ffaudio_check_codec(codec);
 }
 
 static void
@@ -222,7 +246,7 @@ ffaudio_play_file(InputPlayback *playback)
     gint i, stream_id, out_channels, errcount;
     gint in_sample_size, out_sample_size;
     ReSampleContext *resctx = NULL;
-    gboolean do_resampling = FALSE;
+    gboolean codec_opened = FALSE, do_resampling = FALSE;
     AFormat out_fmt;
     gchar *uribuf, *title;
     Tuple *tuple;
@@ -254,8 +278,13 @@ ffaudio_play_file(InputPlayback *playback)
 
     _DEBUG("got codec %s for stream index %d, opening", codec->name, stream_id);
 
+    if (!ffaudio_check_codec(codec))
+        goto error_exit;
+
     if (avcodec_open(c, codec) < 0)
         goto error_exit;
+
+    codec_opened = TRUE;
 
     /* Determine if audio conversion or resampling is needed */
     out_channels = c->channels;
@@ -333,7 +362,7 @@ ffaudio_play_file(InputPlayback *playback)
             playback->output->flush(seek_value * 1000);
             if (av_seek_frame(ic, -1, seek_value * AV_TIME_BASE, AVSEEK_FLAG_ANY) < 0)
             {
-                _DEBUG("error while seeking");
+                _ERROR("error while seeking");
             } else
                 errcount = 0;
 
@@ -354,7 +383,7 @@ ffaudio_play_file(InputPlayback *playback)
             else
             {
                 if (++errcount > 4) {
-                    _DEBUG("av_read_frame error %d, giving up.", ret);
+                    _ERROR("av_read_frame error %d, giving up.", ret);
                     break;
                 } else
                     continue;
@@ -451,7 +480,7 @@ error_exit:
         audio_resample_close(resctx);
     if (pkt.data)
         av_free_packet(&pkt);
-    if (c != NULL)
+    if (codec_opened)
         avcodec_close(c);
     if (ic != NULL)
         av_close_input_file(ic);
