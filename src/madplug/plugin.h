@@ -123,7 +123,7 @@ extern GCond * mad_cond, * control_cond;
 void audmad_config_compute(struct audmad_config_t *config);
 void input_process_remote_metadata(struct mad_info_t *info);
 gpointer decode_loop(gpointer arg);
-void audmad_error(gchar * fmt, ...);
+void audmad_error(gchar * format, ...);
 void audmad_configure(void);
 
 #endif                          /* !AUD_MAD_H */
