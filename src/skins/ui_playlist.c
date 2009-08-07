@@ -1496,12 +1496,9 @@ void action_playlist_save_list (void)
      (active_playlist));
 }
 
-void
-action_playlist_save_default_list(void)
+void action_playlist_save_all_playlists (void)
 {
-#if 0
-    aud_playlist_save (active_playlist, aud_paths[BMP_PATH_PLAYLIST_FILE]);
-#endif
+    aud_save_all_playlists ();
 }
 
 void action_playlist_load_list (void)
