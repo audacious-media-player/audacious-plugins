@@ -124,7 +124,7 @@ static size_t unix_fread (gpointer ptr, size_t size, size_t nitems, VFSFile *
         total += readed;
     }
 
-    return total / size;
+    return (size > 0) ? total / size : 0;
 }
 
 static size_t unix_fwrite (gconstpointer ptr, size_t size, size_t nitems,
@@ -147,7 +147,7 @@ static size_t unix_fwrite (gconstpointer ptr, size_t size, size_t nitems,
         total += written;
     }
 
-    return total / size;
+    return (size > 0) ? total / size : 0;
 }
 
 static gint unix_fseek (VFSFile * file, glong offset, gint whence)
