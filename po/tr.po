@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
-"POT-Creation-Date: 2009-07-06 22:56-0400\n"
+"POT-Creation-Date: 2009-08-07 19:51-0400\n"
 "PO-Revision-Date: 2007-12-22 23:09+0200\n"
 "Last-Translator: Onur Küçük <onur@pardus.org.tr>\n"
 "Language-Team: Turkish\n"
@@ -23,6 +23,45 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
+
+#: src/aac/libmp4.c:247
+#, fuzzy, c-format
+msgid ""
+"Using libfaad2-%s for decoding.\n"
+"FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
+"Copyright (c) 2005-2006 Audacious team"
+msgstr ""
+" kullanılıyor.\n"
+"FAAD2 AAC/HE-AAC/HE-AACv2/DRM çözücüsü (c) Nero AG, www.nero.com\n"
+"Telif Hakkı (c) 2005-2006 Audacious ekibi"
+
+#: src/aac/libmp4.c:252
+#, fuzzy
+msgid "About MP4 AAC decoder plugin"
+msgstr "MP4 AAC oynatıcı eklentisi hakkında"
+
+#: src/aac/libmp4.c:253 src/adplug/adplug-xmms.cc:180
+#: src/adplug/adplug-xmms.cc:263 src/adplug/adplug-xmms.cc:524
+#: src/alac/plugin.c:72 src/audiocompress/audacious-glue.c:110
+#: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:225
+#: src/console/plugin.c:37 src/crossfade/configure.c:1175
+#: src/crystalizer/crystalizer.c:113 src/demac/plugin.c:366
+#: src/echo_plugin/gui.c:24 src/echo_plugin/gui.c:135 src/esd/about.c:48
+#: src/ffaudio/ffaudio-core.c:556 src/filewriter/filewriter.c:187
+#: src/icecast/icecast.c:241 src/jack/configure.c:144 src/jack/jack.c:424
+#: src/kanashi/plugin.c:263 src/madplug/plugin.c:658
+#: src/metronom/metronom.c:91 src/modplug/gui/main.cxx:52 src/null/null.c:65
+#: src/null/null.c:108 src/OSS4/OSS4.c:55 src/OSS/OSS.c:54
+#: src/paranormal-ng/plugin.c:282 src/paranormal/plugin.c:290
+#: src/scrobbler/gtkstuff.c:22 src/sndfile/plugin.c:584
+#: src/statusicon/si_ui.c:630 src/stereo_plugin/stereo.c:52
+#: src/stereo_plugin/stereo.c:115 src/sun/about.c:37 src/sun/configure.c:557
+#: src/timidity/interface.c:223 src/timidity/plugin.c:110
+#: src/tonegen/tonegen.c:56 src/tta/plugin.c:90 src/tta/plugin.c:166
+#: src/vorbis/vorbis.c:695 src/vtx/about.c:26 src/vtx/info.c:38
+#: src/wavpack/ui.cxx:53 src/wavpack/ui.cxx:552
+msgid "Ok"
+msgstr "Tamam"
 
 #: src/adplug/adplug-xmms.cc:169
 msgid "About "
@@ -51,48 +90,23 @@ msgstr ""
 "kütüphanesini kullanmaktadır.\n"
 "AdPlug kitaplık sürümü: "
 
-#: src/adplug/adplug-xmms.cc:180 src/adplug/adplug-xmms.cc:263
-#: src/adplug/adplug-xmms.cc:524 src/alac/plugin.c:72
-#: src/audiocompress/audacious-glue.c:110
-#: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:225
-#: src/console/Audacious_Driver.cxx:441 src/crossfade/configure.c:1175
-#: src/crystalizer/crystalizer.c:113 src/demac/plugin.c:366
-#: src/echo_plugin/gui.c:24 src/echo_plugin/gui.c:135 src/esd/about.c:48
-#: src/filewriter/filewriter.c:187 src/icecast/icecast.c:241
-#: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:263
-#: src/madplug/plugin.c:686 src/madplug/plugin.c:710
-#: src/metronom/metronom.c:87 src/modplug/gui/main.cxx:52
-#: src/musepack/libmpc.cxx:228 src/null/null.c:65 src/null/null.c:108
-#: src/OSS4/OSS4.c:55 src/OSS/OSS.c:52 src/paranormal-ng/plugin.c:282
-#: src/paranormal/plugin.c:290 src/scrobbler/gtkstuff.c:22
-#: src/sndfile/plugin.c:584 src/statusicon/si_ui.c:626
-#: src/stereo_plugin/stereo.c:52 src/stereo_plugin/stereo.c:115
-#: src/sun/about.c:37 src/sun/configure.c:557 src/timidity/interface.c:223
-#: src/timidity/xmms-timidity.c:117 src/tonegen/tonegen.c:61
-#: src/tta/libtta.c:150 src/tta/libtta.c:264 src/tta/libtta.c:399
-#: src/vorbis/vorbis.c:695 src/vtx/about.c:26 src/vtx/info.c:38
-#: src/wavpack/ui.cxx:53 src/wavpack/ui.cxx:552
-msgid "Ok"
-msgstr "Tamam"
-
 #: src/adplug/adplug-xmms.cc:254
 msgid "AdPlug :: Configuration"
 msgstr "AdPlug :: Yapılandırması"
 
 #: src/adplug/adplug-xmms.cc:273 src/alarm/interface.c:1398
-#: src/alsa-ng/alsa-configure.c:348 src/audiocompress/audacious-glue.c:565
+#: src/alsa-ng/alsa-configure.c:338 src/audiocompress/audacious-glue.c:565
 #: src/cdaudio-ng/configure.c:229 src/crossfade/interface-2.0.c:1508
 #: src/crystalizer/crystalizer.c:122 src/echo_plugin/gui.c:143
 #: src/jack/configure.c:151 src/modplug/gui/interface.cxx:715
-#: src/modplug/gui/modplug.glade:1668 src/musepack/libmpc.cxx:233
-#: src/musepack/libmpc.cxx:553 src/null/null.c:109
+#: src/modplug/gui/modplug.glade:1668 src/null/null.c:109
 #: src/stereo_plugin/stereo.c:124 src/sun/configure.c:565
 #: src/timidity/interface.c:231 src/wavpack/ui.cxx:277 src/wavpack/ui.cxx:559
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/adplug/adplug-xmms.cc:289 src/console/Audacious_Config.cxx:140
-#: src/madplug/configure.c:233 src/modplug/gui/interface.cxx:629
+#: src/adplug/adplug-xmms.cc:289 src/console/configure.c:152
+#: src/madplug/configure.c:99 src/modplug/gui/interface.cxx:629
 #: src/modplug/gui/interface.cxx:888 src/modplug/gui/modplug.glade:1404
 #: src/modplug/gui/modplug.glade:1804
 msgid "General"
@@ -146,7 +160,7 @@ msgid "Frequency"
 msgstr "Sıklık"
 
 #: src/adplug/adplug-xmms.cc:376 src/adplug/adplug-xmms.cc:580
-#: src/console/Audacious_Config.cxx:142 src/gtkui/ui_manager.c:63
+#: src/console/configure.c:154 src/gtkui/ui_manager.c:62
 #: src/skins/ui_manager.c:166
 msgid "Playback"
 msgstr "Çal"
@@ -200,7 +214,7 @@ msgstr "AdPlug :: Dosya Bilgisi"
 msgid "Filename"
 msgstr "Dosya adı"
 
-#: src/adplug/adplug-xmms.cc:557 src/skins/ui_playlist.c:379
+#: src/adplug/adplug-xmms.cc:557 src/skins/ui_playlist.c:361
 msgid "Title: "
 msgstr "Başlık: "
 
@@ -264,7 +278,7 @@ msgstr "Hız: "
 msgid "Timer: "
 msgstr "Sayaç: "
 
-#: src/adplug/adplug-xmms.cc:731 src/console/Audacious_Config.cxx:220
+#: src/adplug/adplug-xmms.cc:731 src/console/configure.c:232
 #: src/sid/xmms-sid.glade:332 src/sid/xs_interface.c:354
 msgid "Hz"
 msgstr "Hz"
@@ -310,10 +324,10 @@ msgstr ""
 "http://www.snika.uklinux.net/xmms-alarm/"
 
 #: src/alarm/interface.c:71 src/bluetooth/scan_gui.c:149
-#: src/crossfade/interface-2.0.c:1945 src/lirc/about.c:115
-#: src/modplug/gui/interface.cxx:972 src/modplug/gui/modplug.glade:2030
-#: src/sid/xmms-sid.glade:3837 src/sid/xs_about.c:214
-#: src/sid/xs_interface.c:1825
+#: src/cdaudio-ng/cdaudio-ng.c:335 src/crossfade/interface-2.0.c:1945
+#: src/lirc/about.c:115 src/modplug/gui/interface.cxx:972
+#: src/modplug/gui/modplug.glade:2030 src/sid/xmms-sid.glade:3837
+#: src/sid/xs_about.c:214 src/sid/xs_interface.c:1825
 msgid "Close"
 msgstr "Kapat"
 
@@ -326,12 +340,12 @@ msgid "This is your wakeup call."
 msgstr "Bu sizin uyandırma çağrınız."
 
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389
-#: src/alsa-ng/alsa-configure.c:342 src/bluetooth/bluetooth.c:114
-#: src/cdaudio-ng/cdaudio-ng.c:418 src/crossfade/interface-2.0.c:1503
-#: src/flacng/plugin.c:705 src/gnomeshortcuts/gnomeshortcuts.c:310
-#: src/hotkey/gui.c:670 src/modplug/gui/interface.cxx:703
-#: src/modplug/gui/modplug.glade:1642 src/pulse_audio/pulse_audio.c:760
-#: src/scrobbler/gtkstuff.c:42 src/sid/xs_config.c:319 src/skins/plugin.c:153
+#: src/alsa-ng/alsa-configure.c:332 src/bluetooth/bluetooth.c:114
+#: src/crossfade/interface-2.0.c:1503 src/flacng/plugin.c:634
+#: src/gnomeshortcuts/gnomeshortcuts.c:310 src/hotkey/gui.c:670
+#: src/modplug/gui/interface.cxx:703 src/modplug/gui/modplug.glade:1642
+#: src/pulse_audio/pulse_audio.c:758 src/scrobbler/gtkstuff.c:42
+#: src/sid/xs_config.c:319 src/skins/plugin.c:162
 #: src/streambrowser/streambrowser.c:328
 msgid "OK"
 msgstr "Tamam"
@@ -404,7 +418,7 @@ msgstr "Alarmın çalacağı günleri seçiniz"
 #: src/alarm/interface.c:708 src/alarm/interface.c:756
 #: src/alarm/interface.c:804 src/alarm/interface.c:852
 #: src/alarm/interface.c:900 src/OSS/configure.c:169
-#: src/skins/ui_manager.c:445 src/skins/ui_manager.c:466
+#: src/skins/ui_manager.c:438 src/skins/ui_manager.c:459
 msgid "Default"
 msgstr "Öntanımlı"
 
@@ -619,7 +633,7 @@ msgstr ""
 "    toggle button if you want it to be shown.\n"
 
 #: src/alarm/interface.c:1366 src/crossfade/interface-2.0.c:1918
-#: src/gtkui/ui_manager.c:281 src/skins/ui_manager.c:384
+#: src/gtkui/ui_manager.c:272 src/skins/ui_manager.c:377
 msgid "Help"
 msgstr "Yardım"
 
@@ -640,31 +654,28 @@ msgstr "Bilinmeyen ses kartı"
 msgid "Default PCM device (%s)"
 msgstr "Varsayılan PCM aygıtı (%s)"
 
-#: src/alsa-ng/alsa-configure.c:267
-msgid "ALSA Driver configuration"
-msgstr "ALSA Sürücüsü ayarları"
+#: src/alsa-ng/alsa-configure.c:262
+#, fuzzy
+msgid "ALSA Output Plugin Preferences"
+msgstr "Durum Simgesi Eklentisi - Tercihler"
 
-#: src/alsa-ng/alsa-configure.c:281 src/OSS4/configure.c:207
-#: src/OSS/configure.c:217 src/sun/configure.c:181
-msgid "Audio device:"
-msgstr "Ses aygıtı:"
+#: src/alsa-ng/alsa-configure.c:274
+#, fuzzy
+msgid "Device:"
+msgstr "Aygıtlar"
 
-#: src/alsa-ng/alsa-configure.c:295
+#: src/alsa-ng/alsa-configure.c:288
 msgid "Mixer:"
 msgstr "Karıştırıcı:"
 
-#: src/alsa-ng/alsa-configure.c:307
+#: src/alsa-ng/alsa-configure.c:300
 msgid "Mixer card:"
 msgstr "Karıştırıcı kart:"
 
-#: src/alsa-ng/alsa-configure.c:320 src/OSS/configure.c:260
+#: src/alsa-ng/alsa-configure.c:313 src/OSS/configure.c:260
 #: src/sun/configure.c:218
 msgid "Mixer device:"
 msgstr "Karıştırıcı aygıt:"
-
-#: src/alsa-ng/alsa-configure.c:335
-msgid "Device settings"
-msgstr "Karıştırıcı ayarları"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -1493,19 +1504,19 @@ msgstr "İçbükey Dikdörtgen"
 msgid "None"
 msgstr "Hiçbiri"
 
-#: src/aosd/aosd_trigger.c:74
+#: src/aosd/aosd_trigger.c:73
 msgid "Playback Start"
 msgstr "Çalmayı Başlat"
 
-#: src/aosd/aosd_trigger.c:75
+#: src/aosd/aosd_trigger.c:74
 msgid "Triggers OSD when a playlist entry is played."
 msgstr "Parça listesindeki girdi oynatıldığında OSD'yi başlatır."
 
-#: src/aosd/aosd_trigger.c:79
+#: src/aosd/aosd_trigger.c:78
 msgid "Title Change"
 msgstr "Başlık Değiştirme"
 
-#: src/aosd/aosd_trigger.c:80
+#: src/aosd/aosd_trigger.c:79
 msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
@@ -1515,27 +1526,27 @@ msgstr ""
 "ise OSD'yi tetikler. Bu yetenek özellikle İnternet üzerinden dinlenen "
 "yayınlarda başlık değişikliği olduğunda bu ayar faydalı oluyor."
 
-#: src/aosd/aosd_trigger.c:86
+#: src/aosd/aosd_trigger.c:85
 msgid "Volume Change"
 msgstr "Ses Değiştirme"
 
-#: src/aosd/aosd_trigger.c:87
+#: src/aosd/aosd_trigger.c:86
 msgid "Triggers OSD when volume is changed."
 msgstr "Ses değiştiğinde OSD'yi başlatır."
 
-#: src/aosd/aosd_trigger.c:91
+#: src/aosd/aosd_trigger.c:90
 msgid "Pause On"
 msgstr "Bekletme Açık"
 
-#: src/aosd/aosd_trigger.c:92
+#: src/aosd/aosd_trigger.c:91
 msgid "Triggers OSD when playback is paused."
 msgstr "Çalma bekletildiğinde OSD'yi başlatır."
 
-#: src/aosd/aosd_trigger.c:96
+#: src/aosd/aosd_trigger.c:95
 msgid "Pause Off"
 msgstr "Bekletme Kapalı"
 
-#: src/aosd/aosd_trigger.c:97
+#: src/aosd/aosd_trigger.c:96
 msgid "Triggers OSD when playback is unpaused."
 msgstr "Çalmaya yeniden başladığında OSD'yi başlatır."
 
@@ -1991,8 +2002,8 @@ msgstr ""
 msgid "Rescan"
 msgstr "Dikdörtgen"
 
-#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:65
-#: src/gtkui/ui_manager.c:66 src/hotkey/gui.c:69 src/skins/ui_manager.c:168
+#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:64
+#: src/gtkui/ui_manager.c:65 src/hotkey/gui.c:69 src/skins/ui_manager.c:168
 #: src/skins/ui_manager.c:169
 #, fuzzy
 msgid "Play"
@@ -2022,20 +2033,21 @@ msgstr "Bulanık alan: Renk seçimi"
 msgid "Options:"
 msgstr "Seçenekler:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:377
+#: src/cdaudio-ng/cdaudio-ng.c:296
 #, fuzzy
 msgid "Play CD"
 msgstr "Oynatma süresi:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:386
+#: src/cdaudio-ng/cdaudio-ng.c:305
 msgid "Add CD"
 msgstr "CD Ekle"
 
-#: src/cdaudio-ng/cdaudio-ng.c:411
-msgid "About CD Audio Plugin NG"
-msgstr "CD Audio Eklentisi Hakkında"
+#: src/cdaudio-ng/cdaudio-ng.c:329
+#, fuzzy
+msgid "About Audio CD Plugin"
+msgstr "FLAC Ses Eklentisi Hakkında"
 
-#: src/cdaudio-ng/cdaudio-ng.c:412
+#: src/cdaudio-ng/cdaudio-ng.c:330
 #, fuzzy
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
@@ -2048,7 +2060,7 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2007 project.\n"
 "\n"
-"Portions copyright (c) 2009 John Lindgren <john.lindgren@tds.net>"
+"Copyright 2009 John Lindgren"
 msgstr ""
 "Copyright (c) 2007, Calin Crisan <ccrisan@gmail.com> ve The Audacious "
 "Takımı.\n"
@@ -2061,10 +2073,6 @@ msgstr ""
 "teşekkürler.\n"
 "\n"
 "Bu bir Google Summer of Code 2007 projesidir."
-
-#: src/cdaudio-ng/cdaudio-ng.c:902
-msgid "No audio CD found."
-msgstr ""
 
 #: src/cdaudio-ng/configure.c:143
 msgid "CD Audio Plugin Configuration"
@@ -2111,54 +2119,55 @@ msgstr ""
 msgid "Override default device: "
 msgstr "Öntanımlı aygıtın üstüne yaz: "
 
-#: src/console/Audacious_Config.cxx:123
-msgid "Console Music Decoder"
+#: src/console/configure.c:135
+#, fuzzy
+msgid "Game Console Music Decoder"
 msgstr "Konsol Müzik Çözücüsü"
 
-#: src/console/Audacious_Config.cxx:157
+#: src/console/configure.c:169
 msgid "Bass:"
 msgstr "Bas:"
 
-#: src/console/Audacious_Config.cxx:161 src/console/Audacious_Config.cxx:172
-#: src/console/Audacious_Config.cxx:193
+#: src/console/configure.c:173 src/console/configure.c:184
+#: src/console/configure.c:205
 msgid "secs"
 msgstr "saniye"
 
-#: src/console/Audacious_Config.cxx:168
+#: src/console/configure.c:180
 msgid "Treble:"
 msgstr "Tiz:"
 
-#: src/console/Audacious_Config.cxx:189
+#: src/console/configure.c:201
 msgid "Default song length:"
 msgstr "Varsayılan şarkı uzunluğu:"
 
-#: src/console/Audacious_Config.cxx:195 src/modplug/gui/interface.cxx:269
+#: src/console/configure.c:207 src/modplug/gui/interface.cxx:269
 #: src/modplug/gui/modplug.glade:338 src/sid/xmms-sid.glade:1243
 #: src/sid/xs_interface.c:666
 msgid "Resampling"
 msgstr "Yeniden örnekleme"
 
-#: src/console/Audacious_Config.cxx:201
+#: src/console/configure.c:213
 msgid "Enable audio resampling"
 msgstr "Ses örneklemesini etkinleştir"
 
-#: src/console/Audacious_Config.cxx:216
+#: src/console/configure.c:228
 msgid "Resampling rate:"
 msgstr "Örnekleme oranı:"
 
-#: src/console/Audacious_Config.cxx:231
+#: src/console/configure.c:243
 msgid "SPC"
 msgstr "SPC"
 
-#: src/console/Audacious_Config.cxx:232
+#: src/console/configure.c:244
 msgid "Ignore length from SPC tags"
 msgstr "SPC etiketlerindeki uzunluğu gözardı et"
 
-#: src/console/Audacious_Config.cxx:233
+#: src/console/configure.c:245
 msgid "Increase reverb"
 msgstr "Derinliği artır"
 
-#: src/console/Audacious_Config.cxx:258
+#: src/console/configure.c:270
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
@@ -2166,16 +2175,18 @@ msgstr ""
 "Saniyelerle belirtilen varsayılan şarkı uzunluğu, uzunluk bilgisi bulunmayan "
 "parçalar için kullanılır (örneğin özyinelenen izler)."
 
-#: src/console/Audacious_Driver.cxx:436
-msgid "About the Console Music Decoder"
+#: src/console/plugin.c:32
+#, fuzzy
+msgid "About the Game Console Music Decoder"
 msgstr "Konsol Müzik Çözücüsü Hakkında"
 
-#: src/console/Audacious_Driver.cxx:437
+#: src/console/plugin.c:33
+#, fuzzy
 msgid ""
 "Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
 "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
-"        Shay Green <gblargg@gmail.com>"
+"Audacious implementation by: William Pitcock <nenolod@dereferenced.org>, \n"
+"        Shay Green <gblargg@gmail.com>\n"
 msgstr ""
 "Game_Music_Emu 0.5.2 tabanlı konsol müzik çözücüsü.\n"
 "Desteklenen biçimler: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
@@ -2211,8 +2222,8 @@ msgstr "Swing"
 
 #: src/crossfade/configure.c:326 src/crossfade/configure.c:351
 #: src/crossfade/interface-2.0.c:522 src/crossfade/interface-2.0.c:633
-#: src/crossfade/interface-2.0.c:637 src/gtkui/ui_manager.c:68
-#: src/gtkui/ui_manager.c:69 src/skins/ui_manager.c:171
+#: src/crossfade/interface-2.0.c:637 src/gtkui/ui_manager.c:67
+#: src/gtkui/ui_manager.c:68 src/skins/ui_manager.c:171
 #: src/skins/ui_manager.c:172
 #, fuzzy
 msgid "Pause"
@@ -2883,7 +2894,7 @@ msgid "Advanced options"
 msgstr "Gelişmiş ayarlar"
 
 #: src/crossfade/interface-2.0.c:1457 src/sid/xmms-sid.glade:1774
-#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:437
+#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:430
 msgid "Delete"
 msgstr "Sil"
 
@@ -2892,17 +2903,17 @@ msgstr "Sil"
 msgid "New"
 msgstr "New Age"
 
-#: src/crossfade/interface-2.0.c:1482 src/skins/ui_manager.c:434
+#: src/crossfade/interface-2.0.c:1482 src/skins/ui_manager.c:427
 msgid "Load"
 msgstr ""
 
-#: src/crossfade/interface-2.0.c:1487 src/musepack/libmpc.cxx:547
-#: src/sid/xmms-sid.glade:1732 src/sid/xs_interface.c:833
-#: src/skins/ui_manager.c:436 src/wavpack/ui.cxx:265
+#: src/crossfade/interface-2.0.c:1487 src/sid/xmms-sid.glade:1732
+#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:429
+#: src/wavpack/ui.cxx:265
 msgid "Save"
 msgstr "Kaydet"
 
-#: src/crossfade/interface-2.0.c:1492 src/skins/ui_equalizer.c:965
+#: src/crossfade/interface-2.0.c:1492 src/skins/ui_equalizer.c:963
 msgid "Presets"
 msgstr ""
 
@@ -3268,7 +3279,7 @@ msgstr ""
 "Tanınmamış bir aygıt için ilişkilendirme penceresi açılamıyor.\n"
 "Aygıtın düzgün bir şekilde sisteme takılı olduğundan emin olun."
 
-#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:710
+#: src/evdev-plug/ed_ui.c:319
 msgid "Error"
 msgstr "Hata"
 
@@ -3414,6 +3425,25 @@ msgstr ""
 "http://www.develia.org/projects.php?p=audacious#evdevplug\n"
 "\n"
 "Giacomo Lozito tarafından yazılmıştır\n"
+
+#: src/ffaudio/ffaudio-core.c:545
+#, c-format
+msgid ""
+"Multi-format audio decoding plugin for Audacious based on \n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/) \n"
+"Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
+"\n"
+"Supported formats: %s\n"
+"\n"
+"Audacious plugin by: \n"
+"            William Pitcock <nenolod@nenolod.net>,\n"
+"            Matti Hämäläinen <ccr@tnsp.org>\n"
+msgstr ""
+
+#: src/ffaudio/ffaudio-core.c:555
+#, fuzzy
+msgid "About FFaudio Plugin"
+msgstr "FLAC Ses Eklentisi Hakkında"
 
 #: src/filewriter/filewriter.c:172
 msgid "About FileWriter-Plugin"
@@ -3693,11 +3723,11 @@ msgstr "Vorbis Kodlayıcı Ayarları"
 msgid "Quality level (0 - 10):"
 msgstr "Kalite seviyesi (0 - 10):"
 
-#: src/flacng/plugin.c:697
+#: src/flacng/plugin.c:626
 msgid "FLAC Audio Plugin "
 msgstr "FLAC Ses Eklentisi "
 
-#: src/flacng/plugin.c:698
+#: src/flacng/plugin.c:627
 msgid ""
 "\n"
 "\n"
@@ -3713,7 +3743,7 @@ msgstr ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 
-#: src/flacng/plugin.c:703
+#: src/flacng/plugin.c:632
 msgid "About FLAC Audio Plugin"
 msgstr "FLAC Ses Eklentisi Hakkında"
 
@@ -3736,47 +3766,47 @@ msgstr ""
 "Telif Hakkı (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 
-#: src/gtkui/actions.c:206 src/skins/ui_main.c:821
+#: src/gtkui/actions.c:177 src/skins/ui_main.c:789
 msgid "Can't jump to time when no track is being played.\n"
 msgstr ""
 
-#: src/gtkui/actions.c:221 src/gtkui/ui_manager.c:320
-#: src/gtkui/ui_manager.c:321 src/skins/ui_main.c:836
-#: src/skins/ui_manager.c:423 src/skins/ui_manager.c:424
+#: src/gtkui/actions.c:192 src/gtkui/ui_manager.c:311
+#: src/gtkui/ui_manager.c:312 src/skins/ui_main.c:804
+#: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 #, fuzzy
 msgid "Jump to Time"
 msgstr "Dosyaya Atla:"
 
-#: src/gtkui/actions.c:240 src/skins/ui_main.c:857
+#: src/gtkui/actions.c:209 src/skins/ui_main.c:825
 #, fuzzy
 msgid "minutes:seconds"
 msgstr "dakika"
 
-#: src/gtkui/actions.c:250 src/skins/ui_main.c:867
+#: src/gtkui/actions.c:219 src/skins/ui_main.c:835
 #, fuzzy
 msgid "Track length:"
 msgstr "Parça ses yüksekliği:"
 
-#: src/gtkui/actions.c:620 src/skins/ui_playlist.c:784
+#: src/gtkui/actions.c:532 src/skins/ui_playlist.c:761
 #, fuzzy
 msgid "Save as Static Playlist"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/actions.c:627 src/skins/ui_playlist.c:791
+#: src/gtkui/actions.c:538 src/skins/ui_playlist.c:768
 msgid "Use Relative Path"
 msgstr ""
 
-#: src/gtkui/actions.c:658 src/skins/ui_playlist.c:625
+#: src/gtkui/actions.c:563 src/skins/ui_playlist.c:602
 #, c-format
 msgid "Error writing playlist \"%s\": %s"
 msgstr ""
 
-#: src/gtkui/actions.c:680 src/skins/ui_playlist.c:647
+#: src/gtkui/actions.c:578 src/skins/ui_playlist.c:624
 #, c-format
 msgid "%s already exist. Continue?"
 msgstr ""
 
-#: src/gtkui/actions.c:695 src/skins/ui_playlist.c:662
+#: src/gtkui/actions.c:589 src/skins/ui_playlist.c:639
 #, c-format
 msgid ""
 "<b><big>Unable to save playlist.</big></b>\n"
@@ -3784,510 +3814,499 @@ msgid ""
 "Unknown file type for '%s'.\n"
 msgstr ""
 
-#: src/gtkui/actions.c:747 src/skins/ui_playlist.c:826
+#: src/gtkui/actions.c:630 src/skins/ui_playlist.c:804
 #, fuzzy
 msgid "Save Playlist"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/actions.c:828 src/skins/ui_playlist.c:813
+#: src/gtkui/actions.c:704 src/skins/ui_playlist.c:791
 #, fuzzy
 msgid "Load Playlist"
 msgstr "Hızlı Parça Listesi Bilgisi"
 
-#: src/gtkui/ui_gtk.c:46
+#: src/gtkui/ui_gtk.c:48
 msgid "GTK Foobar-like Interface"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:42 src/gtkui/ui_manager.c:43
+#: src/gtkui/ui_manager.c:41 src/gtkui/ui_manager.c:42
 #: src/skins/ui_manager.c:54 src/skins/ui_manager.c:55
 msgid "Stop after Current Song"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:45 src/gtkui/ui_manager.c:46
+#: src/gtkui/ui_manager.c:44 src/gtkui/ui_manager.c:45
 #: src/skins/ui_manager.c:57 src/skins/ui_manager.c:58
 #, fuzzy
 msgid "Peaks"
 msgstr "Pranks"
 
-#: src/gtkui/ui_manager.c:48 src/gtkui/ui_manager.c:49
+#: src/gtkui/ui_manager.c:47 src/gtkui/ui_manager.c:48
 #: src/skins/ui_manager.c:60 src/skins/ui_manager.c:61
 #, fuzzy
 msgid "Repeat"
 msgstr "Beat"
 
-#: src/gtkui/ui_manager.c:51 src/gtkui/ui_manager.c:52
+#: src/gtkui/ui_manager.c:50 src/gtkui/ui_manager.c:51
 #: src/skins/ui_manager.c:63 src/skins/ui_manager.c:64
 msgid "Shuffle"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:54 src/gtkui/ui_manager.c:55
+#: src/gtkui/ui_manager.c:53 src/gtkui/ui_manager.c:54
 #: src/skins/ui_manager.c:66 src/skins/ui_manager.c:67
 msgid "No Playlist Advance"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:71 src/gtkui/ui_manager.c:72 src/hotkey/gui.c:71
+#: src/gtkui/ui_manager.c:70 src/gtkui/ui_manager.c:71 src/hotkey/gui.c:71
 #: src/skins/ui_manager.c:174 src/skins/ui_manager.c:175
 #, fuzzy
 msgid "Stop"
 msgstr "Durdur:"
 
-#: src/gtkui/ui_manager.c:74 src/gtkui/ui_manager.c:75
+#: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74
 #: src/skins/ui_manager.c:177 src/skins/ui_manager.c:178
 #, fuzzy
 msgid "Previous"
 msgstr "Önceki Parça:"
 
-#: src/gtkui/ui_manager.c:77 src/gtkui/ui_manager.c:78
+#: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77
 #: src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
 #, fuzzy
 msgid "Next"
 msgstr "Metin"
 
-#: src/gtkui/ui_manager.c:83 src/skins/ui_manager.c:186
+#: src/gtkui/ui_manager.c:82 src/skins/ui_manager.c:186
 #, fuzzy
 msgid "Visualization"
 msgstr "Kurum:"
 
-#: src/gtkui/ui_manager.c:84 src/skins/ui_manager.c:187
+#: src/gtkui/ui_manager.c:83 src/skins/ui_manager.c:187
 msgid "Visualization Mode"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:85 src/skins/ui_manager.c:188
+#: src/gtkui/ui_manager.c:84 src/skins/ui_manager.c:188
 msgid "Analyzer Mode"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:86 src/skins/ui_manager.c:189
+#: src/gtkui/ui_manager.c:85 src/skins/ui_manager.c:189
 msgid "Scope Mode"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:87 src/skins/ui_manager.c:190
+#: src/gtkui/ui_manager.c:86 src/skins/ui_manager.c:190
 msgid "Voiceprint Mode"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:88 src/skins/ui_manager.c:191
+#: src/gtkui/ui_manager.c:87 src/skins/ui_manager.c:191
 msgid "WindowShade VU Mode"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:89 src/skins/ui_manager.c:192
+#: src/gtkui/ui_manager.c:88 src/skins/ui_manager.c:192
 msgid "Analyzer Falloff"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:90 src/skins/ui_manager.c:193
+#: src/gtkui/ui_manager.c:89 src/skins/ui_manager.c:193
 msgid "Peaks Falloff"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:95 src/gtkui/ui_playlist_manager.c:403
-#: src/skins/ui_manager.c:198 src/skins/ui_playlist_manager.c:421
+#: src/gtkui/ui_manager.c:94 src/gtkui/ui_playlist_manager.c:310
+#: src/skins/ui_manager.c:198 src/skins/ui_playlist_manager.c:343
 #, fuzzy
 msgid "Playlist"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/ui_manager.c:97 src/gtkui/ui_manager.c:98
+#: src/gtkui/ui_manager.c:96 src/gtkui/ui_manager.c:97
 #: src/skins/ui_manager.c:200 src/skins/ui_manager.c:201
 #, fuzzy
 msgid "New Playlist"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/ui_manager.c:100 src/gtkui/ui_manager.c:101
+#: src/gtkui/ui_manager.c:99 src/gtkui/ui_manager.c:100
 #: src/skins/ui_manager.c:203 src/skins/ui_manager.c:204
 #, fuzzy
 msgid "Select Next Playlist"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/ui_manager.c:103 src/gtkui/ui_manager.c:104
+#: src/gtkui/ui_manager.c:102 src/gtkui/ui_manager.c:103
 #: src/skins/ui_manager.c:206 src/skins/ui_manager.c:207
 #, fuzzy
 msgid "Select Previous Playlist"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/ui_manager.c:106 src/gtkui/ui_manager.c:107
+#: src/gtkui/ui_manager.c:105 src/gtkui/ui_manager.c:106
 #: src/skins/ui_manager.c:209 src/skins/ui_manager.c:210
 #, fuzzy
 msgid "Delete Playlist"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/ui_manager.c:109 src/skins/ui_manager.c:212
+#: src/gtkui/ui_manager.c:108 src/skins/ui_manager.c:212
 msgid "Load List"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:110 src/skins/ui_manager.c:213
+#: src/gtkui/ui_manager.c:109 src/skins/ui_manager.c:213
 msgid "Loads a playlist file into the selected playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:112 src/skins/ui_manager.c:215
+#: src/gtkui/ui_manager.c:111 src/skins/ui_manager.c:215
 #, fuzzy
 msgid "Save List"
 msgstr "Kaydet"
 
-#: src/gtkui/ui_manager.c:113 src/skins/ui_manager.c:216
+#: src/gtkui/ui_manager.c:112 src/skins/ui_manager.c:216
 #, fuzzy
 msgid "Saves the selected playlist."
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/ui_manager.c:115 src/skins/ui_manager.c:218
+#: src/gtkui/ui_manager.c:114
 #, fuzzy
 msgid "Save Default List"
 msgstr "Varsayılan (%s)"
 
-#: src/gtkui/ui_manager.c:116 src/skins/ui_manager.c:219
+#: src/gtkui/ui_manager.c:115
 msgid "Saves the selected playlist to the default location."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:119 src/skins/ui_manager.c:222
+#: src/gtkui/ui_manager.c:118 src/skins/ui_manager.c:223
 msgid "Refresh List"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:120 src/skins/ui_manager.c:223
+#: src/gtkui/ui_manager.c:119 src/skins/ui_manager.c:224
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:123 src/skins/ui_manager.c:226
+#: src/gtkui/ui_manager.c:122 src/skins/ui_manager.c:227
 msgid "List Manager"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:124 src/skins/ui_manager.c:227
+#: src/gtkui/ui_manager.c:123 src/skins/ui_manager.c:228
 msgid "Opens the playlist manager."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:130 src/skins/ui_manager.c:233
+#: src/gtkui/ui_manager.c:129 src/skins/ui_manager.c:234
 msgid "View"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:134 src/skins/ui_manager.c:237
+#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:238
 msgid "Add Internet Address..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:135 src/skins/ui_manager.c:238
+#: src/gtkui/ui_manager.c:134 src/skins/ui_manager.c:239
 msgid "Adds a remote track to the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:138 src/skins/ui_manager.c:241
+#: src/gtkui/ui_manager.c:137 src/skins/ui_manager.c:242
 msgid "Add Files..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:139 src/skins/ui_manager.c:242
+#: src/gtkui/ui_manager.c:138 src/skins/ui_manager.c:243
 #, fuzzy
 msgid "Adds files to the playlist."
 msgstr "Parça listesine alttınılar ekle"
 
-#: src/gtkui/ui_manager.c:144 src/skins/ui_manager.c:247
+#: src/gtkui/ui_manager.c:143 src/skins/ui_manager.c:248
 msgid "Search and Select"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:145 src/skins/ui_manager.c:248
+#: src/gtkui/ui_manager.c:144 src/skins/ui_manager.c:249
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:148 src/skins/ui_manager.c:251
+#: src/gtkui/ui_manager.c:147 src/skins/ui_manager.c:252
 #, fuzzy
 msgid "Invert Selection"
 msgstr "Biçim seçimi"
 
-#: src/gtkui/ui_manager.c:149 src/skins/ui_manager.c:252
+#: src/gtkui/ui_manager.c:148 src/skins/ui_manager.c:253
 msgid "Inverts the selected and unselected entries."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:152 src/skins/ui_manager.c:255
+#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:256
 #, fuzzy
 msgid "Select All"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/ui_manager.c:153 src/skins/ui_manager.c:256
+#: src/gtkui/ui_manager.c:152 src/skins/ui_manager.c:257
 msgid "Selects all of the playlist entries."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:156 src/skins/ui_manager.c:259
+#: src/gtkui/ui_manager.c:155 src/skins/ui_manager.c:260
 #, fuzzy
 msgid "Select None"
 msgstr "Deri Dosyasını Seçin"
 
-#: src/gtkui/ui_manager.c:157 src/skins/ui_manager.c:260
+#: src/gtkui/ui_manager.c:156 src/skins/ui_manager.c:261
 msgid "Deselects all of the playlist entries."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:162 src/skins/ui_manager.c:265
+#: src/gtkui/ui_manager.c:161 src/skins/ui_manager.c:266
 #, fuzzy
 msgid "Remove All"
 msgstr "Kaldır"
 
-#: src/gtkui/ui_manager.c:163 src/skins/ui_manager.c:266
+#: src/gtkui/ui_manager.c:162 src/skins/ui_manager.c:267
 msgid "Removes all entries from the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:166 src/skins/ui_manager.c:269
+#: src/gtkui/ui_manager.c:165 src/skins/ui_manager.c:270
 msgid "Clear Queue"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:167 src/skins/ui_manager.c:270
+#: src/gtkui/ui_manager.c:166 src/skins/ui_manager.c:271
 msgid "Clears the queue associated with this playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:170 src/skins/ui_manager.c:273
+#: src/gtkui/ui_manager.c:169 src/skins/ui_manager.c:274
 msgid "Remove Unavailable Files"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:171 src/skins/ui_manager.c:274
+#: src/gtkui/ui_manager.c:170 src/skins/ui_manager.c:275
 msgid "Removes unavailable files from the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:174 src/skins/ui_manager.c:277
+#: src/gtkui/ui_manager.c:173 src/skins/ui_manager.c:278
 msgid "Remove Duplicates"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:176 src/gtkui/ui_manager.c:208
-#: src/gtkui/ui_manager.c:242 src/skins/ui_manager.c:279
-#: src/skins/ui_manager.c:311 src/skins/ui_manager.c:345
+#: src/gtkui/ui_manager.c:175 src/gtkui/ui_manager.c:207
+#: src/gtkui/ui_manager.c:237 src/skins/ui_manager.c:280
+#: src/skins/ui_manager.c:312 src/skins/ui_manager.c:342
 #, fuzzy
 msgid "By Title"
 msgstr "Başlık"
 
-#: src/gtkui/ui_manager.c:177 src/skins/ui_manager.c:280
+#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:281
 msgid "Removes duplicate entries from the playlist by title."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:180 src/gtkui/ui_manager.c:220
-#: src/gtkui/ui_manager.c:254 src/skins/ui_manager.c:283
-#: src/skins/ui_manager.c:323 src/skins/ui_manager.c:357
+#: src/gtkui/ui_manager.c:179 src/gtkui/ui_manager.c:219
+#: src/gtkui/ui_manager.c:249 src/skins/ui_manager.c:284
+#: src/skins/ui_manager.c:324 src/skins/ui_manager.c:354
 #, fuzzy
 msgid "By Filename"
 msgstr "Dosya adı"
 
-#: src/gtkui/ui_manager.c:181 src/skins/ui_manager.c:284
+#: src/gtkui/ui_manager.c:180 src/skins/ui_manager.c:285
 msgid "Removes duplicate entries from the playlist by filename."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:184 src/gtkui/ui_manager.c:224
-#: src/gtkui/ui_manager.c:258 src/skins/ui_manager.c:287
-#: src/skins/ui_manager.c:327 src/skins/ui_manager.c:361
+#: src/gtkui/ui_manager.c:183 src/gtkui/ui_manager.c:223
+#: src/gtkui/ui_manager.c:253 src/skins/ui_manager.c:288
+#: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
 #, fuzzy
 msgid "By Path + Filename"
 msgstr "Dosya adı"
 
-#: src/gtkui/ui_manager.c:185 src/skins/ui_manager.c:288
+#: src/gtkui/ui_manager.c:184 src/skins/ui_manager.c:289
 msgid "Removes duplicate entries from the playlist by their full path."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:188 src/skins/ui_manager.c:291
+#: src/gtkui/ui_manager.c:187 src/skins/ui_manager.c:292
 msgid "Remove Unselected"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:189 src/skins/ui_manager.c:292
+#: src/gtkui/ui_manager.c:188 src/skins/ui_manager.c:293
 msgid "Remove unselected entries from the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:192 src/skins/ui_manager.c:295
+#: src/gtkui/ui_manager.c:191 src/skins/ui_manager.c:296
 msgid "Remove Selected"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:193 src/skins/ui_manager.c:296
+#: src/gtkui/ui_manager.c:192 src/skins/ui_manager.c:297
 msgid "Remove selected entries from the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:198 src/skins/ui_manager.c:301
+#: src/gtkui/ui_manager.c:197 src/skins/ui_manager.c:302
 msgid "Randomize List"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:199 src/skins/ui_manager.c:302
+#: src/gtkui/ui_manager.c:198 src/skins/ui_manager.c:303
 msgid "Randomizes the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:202 src/skins/ui_manager.c:305
+#: src/gtkui/ui_manager.c:201 src/skins/ui_manager.c:306
 msgid "Reverse List"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:306
+#: src/gtkui/ui_manager.c:202 src/skins/ui_manager.c:307
 msgid "Reverses the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:309
+#: src/gtkui/ui_manager.c:205 src/skins/ui_manager.c:310
 #, fuzzy
 msgid "Sort List"
 msgstr "Sanatçı:"
 
-#: src/gtkui/ui_manager.c:209 src/gtkui/ui_manager.c:243
-#: src/skins/ui_manager.c:312 src/skins/ui_manager.c:346
+#: src/gtkui/ui_manager.c:208 src/gtkui/ui_manager.c:238
+#: src/skins/ui_manager.c:313 src/skins/ui_manager.c:343
 msgid "Sorts the list by title."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:212 src/gtkui/ui_manager.c:246
-#: src/skins/ui_manager.c:315 src/skins/ui_manager.c:349
+#: src/gtkui/ui_manager.c:211 src/gtkui/ui_manager.c:241
+#: src/skins/ui_manager.c:316 src/skins/ui_manager.c:346
 #, fuzzy
 msgid "By Album"
 msgstr "Albüm:"
 
-#: src/gtkui/ui_manager.c:213 src/gtkui/ui_manager.c:247
-#: src/skins/ui_manager.c:316 src/skins/ui_manager.c:350
+#: src/gtkui/ui_manager.c:212 src/gtkui/ui_manager.c:242
+#: src/skins/ui_manager.c:317 src/skins/ui_manager.c:347
 msgid "Sorts the list by album."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:216 src/gtkui/ui_manager.c:250
-#: src/skins/ui_manager.c:319 src/skins/ui_manager.c:353
+#: src/gtkui/ui_manager.c:215 src/gtkui/ui_manager.c:245
+#: src/skins/ui_manager.c:320 src/skins/ui_manager.c:350
 #, fuzzy
 msgid "By Artist"
 msgstr "Sanatçı:"
 
-#: src/gtkui/ui_manager.c:217 src/gtkui/ui_manager.c:251
-#: src/skins/ui_manager.c:320 src/skins/ui_manager.c:354
+#: src/gtkui/ui_manager.c:216 src/gtkui/ui_manager.c:246
+#: src/skins/ui_manager.c:321 src/skins/ui_manager.c:351
 msgid "Sorts the list by artist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:221 src/gtkui/ui_manager.c:255
-#: src/skins/ui_manager.c:324 src/skins/ui_manager.c:358
+#: src/gtkui/ui_manager.c:220 src/gtkui/ui_manager.c:250
+#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
 msgid "Sorts the list by filename."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:225 src/gtkui/ui_manager.c:259
-#: src/skins/ui_manager.c:328 src/skins/ui_manager.c:362
+#: src/gtkui/ui_manager.c:224 src/gtkui/ui_manager.c:254
+#: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 msgid "Sorts the list by full pathname."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:228 src/gtkui/ui_manager.c:262
-#: src/skins/ui_manager.c:331 src/skins/ui_manager.c:365
+#: src/gtkui/ui_manager.c:227 src/gtkui/ui_manager.c:257
+#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
 #, fuzzy
 msgid "By Date"
 msgstr "Tarih:"
 
-#: src/gtkui/ui_manager.c:229 src/gtkui/ui_manager.c:263
-#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:366
+#: src/gtkui/ui_manager.c:228 src/gtkui/ui_manager.c:258
+#: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "Sorts the list by modification time."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:232 src/gtkui/ui_manager.c:266
-#: src/skins/ui_manager.c:335 src/skins/ui_manager.c:369
+#: src/gtkui/ui_manager.c:231 src/gtkui/ui_manager.c:261
+#: src/skins/ui_manager.c:336 src/skins/ui_manager.c:366
 #, fuzzy
 msgid "By Track Number"
 msgstr "Parça numarası:"
 
-#: src/gtkui/ui_manager.c:233 src/gtkui/ui_manager.c:267
-#: src/skins/ui_manager.c:336 src/skins/ui_manager.c:370
+#: src/gtkui/ui_manager.c:232 src/gtkui/ui_manager.c:262
+#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
 msgid "Sorts the list by track number."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:236 src/gtkui/ui_manager.c:270
-#: src/skins/ui_manager.c:339 src/skins/ui_manager.c:373
-#, fuzzy
-msgid "By Playlist Entry"
-msgstr "Hızlı Parça Listesi Bilgisi"
-
-#: src/gtkui/ui_manager.c:237 src/gtkui/ui_manager.c:271
-#: src/skins/ui_manager.c:340 src/skins/ui_manager.c:374
-msgid "Sorts the list by playlist entry."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:240 src/skins/ui_manager.c:343
+#: src/gtkui/ui_manager.c:235 src/skins/ui_manager.c:340
 #, fuzzy
 msgid "Sort Selected"
 msgstr "Biçim seçimi"
 
-#: src/gtkui/ui_manager.c:280 src/skins/ui_manager.c:383
+#: src/gtkui/ui_manager.c:271 src/skins/ui_manager.c:376
 #, fuzzy
 msgid "File"
 msgstr "Filtreler"
 
-#: src/gtkui/ui_manager.c:283 src/skins/ui_manager.c:386
+#: src/gtkui/ui_manager.c:274 src/skins/ui_manager.c:379
 msgid "Plugin Services"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:285 src/gtkui/ui_manager.c:288
-#: src/skins/ui_manager.c:388 src/skins/ui_manager.c:391
+#: src/gtkui/ui_manager.c:276 src/gtkui/ui_manager.c:279
+#: src/skins/ui_manager.c:381 src/skins/ui_manager.c:384
 #, fuzzy
 msgid "View Track Details"
 msgstr "Parça Kazancı Kullan"
 
-#: src/gtkui/ui_manager.c:286 src/gtkui/ui_manager.c:289
-#: src/skins/ui_manager.c:389 src/skins/ui_manager.c:392
+#: src/gtkui/ui_manager.c:277 src/gtkui/ui_manager.c:280
+#: src/skins/ui_manager.c:382 src/skins/ui_manager.c:385
 msgid "View track details"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:291 src/gtkui/ui_manager.c:292
-#: src/skins/ui_manager.c:394 src/skins/ui_manager.c:395
+#: src/gtkui/ui_manager.c:282 src/gtkui/ui_manager.c:283
+#: src/skins/ui_manager.c:387 src/skins/ui_manager.c:388
 #, fuzzy
 msgid "About Audacious"
 msgstr "LIRC Audacious Eklentisi Hakkında"
 
-#: src/gtkui/ui_manager.c:294 src/skins/ui_manager.c:397
+#: src/gtkui/ui_manager.c:285 src/skins/ui_manager.c:390
 #, fuzzy
 msgid "Play File"
 msgstr "Oynatma süresi:"
 
-#: src/gtkui/ui_manager.c:295 src/skins/ui_manager.c:398
+#: src/gtkui/ui_manager.c:286 src/skins/ui_manager.c:391
 #, fuzzy
 msgid "Load and play a file"
 msgstr "Çalıcı başladığında SF'yi yükle"
 
-#: src/gtkui/ui_manager.c:297 src/skins/ui_manager.c:400
+#: src/gtkui/ui_manager.c:288 src/skins/ui_manager.c:393
 #, fuzzy
 msgid "Play Location"
 msgstr "Yer:"
 
-#: src/gtkui/ui_manager.c:298 src/skins/ui_manager.c:401
+#: src/gtkui/ui_manager.c:289 src/skins/ui_manager.c:394
 #, fuzzy
 msgid "Play media from the selected location"
 msgstr "Seçilen eylemi onayla"
 
-#: src/gtkui/ui_manager.c:300 src/skins/ui_manager.c:403
+#: src/gtkui/ui_manager.c:291 src/skins/ui_manager.c:396
 msgid "Plugin services"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:302 src/skins/ui_manager.c:405
+#: src/gtkui/ui_manager.c:293 src/skins/ui_manager.c:398
 msgid "Preferences"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:303 src/skins/ui_manager.c:406
+#: src/gtkui/ui_manager.c:294 src/skins/ui_manager.c:399
 msgid "Open preferences window"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:305 src/skins/ui_manager.c:408
+#: src/gtkui/ui_manager.c:296 src/skins/ui_manager.c:401
 #, fuzzy
 msgid "_Quit"
 msgstr "Kalite"
 
-#: src/gtkui/ui_manager.c:306 src/skins/ui_manager.c:409
+#: src/gtkui/ui_manager.c:297 src/skins/ui_manager.c:402
 #, fuzzy
 msgid "Quit Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_manager.c:308 src/gtkui/ui_manager.c:309
-#: src/skins/ui_manager.c:411 src/skins/ui_manager.c:412
+#: src/gtkui/ui_manager.c:299 src/gtkui/ui_manager.c:300
+#: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
 msgid "Set A-B"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:311 src/gtkui/ui_manager.c:312
-#: src/skins/ui_manager.c:414 src/skins/ui_manager.c:415
+#: src/gtkui/ui_manager.c:302 src/gtkui/ui_manager.c:303
+#: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
 msgid "Clear A-B"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:314 src/gtkui/ui_manager.c:315
-#: src/skins/ui_manager.c:417 src/skins/ui_manager.c:418
+#: src/gtkui/ui_manager.c:305 src/gtkui/ui_manager.c:306
+#: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
 msgid "Jump to Playlist Start"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:317 src/gtkui/ui_manager.c:318 src/hotkey/gui.c:78
-#: src/skins/ui_manager.c:420 src/skins/ui_manager.c:421
+#: src/gtkui/ui_manager.c:308 src/gtkui/ui_manager.c:309 src/hotkey/gui.c:78
+#: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
 #, fuzzy
 msgid "Jump to File"
 msgstr "Dosyaya Atla:"
 
-#: src/gtkui/ui_manager.c:323 src/skins/ui_manager.c:426
+#: src/gtkui/ui_manager.c:314 src/skins/ui_manager.c:419
 msgid "Queue Toggle"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:324 src/skins/ui_manager.c:427
+#: src/gtkui/ui_manager.c:315 src/skins/ui_manager.c:420
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr ""
 
-#: src/gtkui/ui_playlist_manager.c:364 src/skins/ui_playlist_manager.c:382
+#: src/gtkui/ui_playlist_manager.c:277 src/skins/ui_playlist_manager.c:304
 #, fuzzy
 msgid "Playlist Manager"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/ui_playlist_manager.c:410 src/skins/ui_playlist_manager.c:428
+#: src/gtkui/ui_playlist_manager.c:313 src/skins/ui_playlist_manager.c:350
 msgid "Entries"
 msgstr ""
 
-#: src/gtkui/ui_playlist_manager.c:425 src/skins/ui_playlist_manager.c:443
+#: src/gtkui/ui_playlist_manager.c:324 src/skins/ui_playlist_manager.c:365
 #, fuzzy
 msgid "_Rename"
 msgstr "Dosya adı"
@@ -4735,7 +4754,7 @@ msgstr "Kaldır"
 msgid "LADSPA Plugin Catalog"
 msgstr "LADSPA Eklenti Kataloğu"
 
-#: src/lastfm/lastfm.c:94
+#: src/lastfm/lastfm.c:93
 msgid ""
 "<b><big>Couldn't initialize the last.fm radio plugin.</big></b>\n"
 "\n"
@@ -4837,42 +4856,42 @@ msgstr "%s: LIRC bağlantısı kesildi\n"
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr ""
 
-#: src/madplug/configure.c:186
-msgid "MPEG Audio Plugin Configuration"
-msgstr "MPEG Ses Eklentisi Yapılandırması"
-
-#: src/madplug/configure.c:203
-#, fuzzy
-msgid "Metadata Settings"
-msgstr "Karıştırıcı Ayarları:"
-
-#: src/madplug/configure.c:212
+#: src/madplug/configure.c:33
 msgid "Enable fast play-length calculation"
 msgstr "Hızlı parça uzunluğu hesaplamayı etkinleştir"
 
-#: src/madplug/configure.c:219
+#: src/madplug/configure.c:34
 msgid "Parse XING headers"
 msgstr "XING başlıklarını işle"
 
-#: src/madplug/configure.c:226
+#: src/madplug/configure.c:35
 #, fuzzy
 msgid "Use SJIS to write ID3 tags (not recommended)"
 msgstr "ID3 etiketini yazarken UTF-8 yerine SjIS kullan"
 
-#: src/madplug/configure.c:239 src/vorbis/configure.c:100
+#: src/madplug/configure.c:39
+#, fuzzy
+msgid "Metadata Settings"
+msgstr "Karıştırıcı Ayarları:"
+
+#: src/madplug/configure.c:46 src/vorbis/configure.c:100
 msgid "Override generic titles"
 msgstr "Genel başlıkları geçersiz kıl"
 
-#: src/madplug/configure.c:251
+#: src/madplug/configure.c:47
 msgid "ID3 format:"
 msgstr "ID3 biçimi:"
 
-#: src/madplug/configure.c:263 src/sid/xmms-sid.glade:2610
+#: src/madplug/configure.c:100 src/sid/xmms-sid.glade:2610
 #: src/sid/xs_interface.c:1103
 msgid "Title"
 msgstr "Başlık"
 
-#: src/madplug/plugin.c:668
+#: src/madplug/configure.c:109
+msgid "MPEG Audio Plugin Configuration"
+msgstr "MPEG Ses Eklentisi Yapılandırması"
+
+#: src/madplug/plugin.c:640
 #, c-format
 msgid ""
 "Audacious MPEG Audio Plugin\n"
@@ -4903,7 +4922,7 @@ msgstr ""
 "ReplayGain desteği:\n"
 "    Samuel Krempp"
 
-#: src/madplug/plugin.c:684
+#: src/madplug/plugin.c:656
 msgid "About MPEG Audio Plugin"
 msgstr "MPEG Ses Eklentisi Hakkında"
 
@@ -4925,12 +4944,12 @@ msgstr ""
 "örneğin tact://77 ile dakikada 77 vurgu ya da\n"
 "tact://60*3/4 ile 60 bpm yi 3/4 tact ile"
 
-#: src/metronom/metronom.c:197 src/metronom/metronom.c:261
+#: src/metronom/metronom.c:146
 #, c-format
 msgid "Tact generator: %d bpm"
 msgstr "Takt oluşturucu: %d bpm"
 
-#: src/metronom/metronom.c:199 src/metronom/metronom.c:263
+#: src/metronom/metronom.c:148
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "Takt oluşturucu: %d bpm %d/%d"
@@ -5173,195 +5192,17 @@ msgstr "Resim dosyası bulunamadı: %s"
 msgid "Upload selected track(s)"
 msgstr ""
 
-#: src/mtp_up/mtp.c:294
+#: src/mtp_up/mtp.c:290
 msgid "Upload in progress..."
 msgstr ""
 
-#: src/mtp_up/mtp.c:303
+#: src/mtp_up/mtp.c:299
 msgid "MTP device handler"
 msgstr ""
 
-#: src/mtp_up/mtp.c:307
+#: src/mtp_up/mtp.c:303
 msgid "Disconnect the device"
 msgstr ""
-
-#: src/musepack/libmpc.cxx:142
-msgid "Musepack Decoder Plugin 1.2"
-msgstr "Musepack Dekoder Eklentisi 1.2"
-
-#: src/musepack/libmpc.cxx:143
-msgid ""
-"Plugin code by\n"
-"Benoit Amiaux\n"
-"Martin Spuler\n"
-"Kuniklo\n"
-"\n"
-"Get latest version at http://musepack.net\n"
-msgstr ""
-"Eklenti kodu\n"
-"Benoit Amiaux\n"
-"Martin Spuler\n"
-"Kuniklo\n"
-"\n"
-"Son sürümüne http://musepack.net adresinden ulaşabilirsiniz\n"
-
-#: src/musepack/libmpc.cxx:144
-msgid "Nevermind"
-msgstr "Boşver"
-
-#: src/musepack/libmpc.cxx:162
-msgid "Musepack Decoder Configuration"
-msgstr "Musepack Çözücüsü Yapılandırması"
-
-#: src/musepack/libmpc.cxx:172
-msgid "General Settings"
-msgstr "Genel Ayarlar"
-
-#: src/musepack/libmpc.cxx:179 src/wavpack/ui.cxx:488
-msgid "Enable Dynamic Bitrate Display"
-msgstr "Dinamik Bitoranı Görüntülemeyi Etkinleştir"
-
-#: src/musepack/libmpc.cxx:183 src/wavpack/ui.cxx:494
-msgid "Plugin"
-msgstr "Eklenti"
-
-#: src/musepack/libmpc.cxx:186
-msgid "ReplayGain Settings"
-msgstr "ReplayGain Ayarları"
-
-#: src/musepack/libmpc.cxx:193 src/wavpack/ui.cxx:506
-msgid "Enable Clipping Prevention"
-msgstr " Çatlama Korumasını Etkinleştir"
-
-#: src/musepack/libmpc.cxx:198 src/wavpack/ui.cxx:511
-msgid "Enable ReplayGain"
-msgstr "ReplayGain Etkinleştir"
-
-#: src/musepack/libmpc.cxx:203
-msgid "ReplayGain Type"
-msgstr "ReplayGain Türü"
-
-#: src/musepack/libmpc.cxx:211
-msgid "Use Track Gain"
-msgstr "Parça Kazancı Kullan"
-
-#: src/musepack/libmpc.cxx:215
-msgid "Use Album Gain"
-msgstr "Albüm Kazancı Kullan"
-
-#: src/musepack/libmpc.cxx:220 src/wavpack/ui.cxx:543
-msgid "ReplayGain"
-msgstr "ReplayGain"
-
-#: src/musepack/libmpc.cxx:487 src/sid/xmms-sid.glade:3338
-#: src/sid/xs_interface.c:1649 src/tta/libtta.c:301 src/wavpack/ui.cxx:149
-msgid "Filename:"
-msgstr "Dosya adı:"
-
-#: src/musepack/libmpc.cxx:502
-msgid "Musepack Tag"
-msgstr "Musepack Etiketi"
-
-#: src/musepack/libmpc.cxx:510 src/tta/libtta.c:320 src/wavpack/ui.cxx:169
-msgid "Title:"
-msgstr "Başlık:"
-
-#: src/musepack/libmpc.cxx:514 src/tta/libtta.c:330 src/wavpack/ui.cxx:181
-msgid "Artist:"
-msgstr "Sanatçı:"
-
-#: src/musepack/libmpc.cxx:518 src/tta/libtta.c:341 src/wavpack/ui.cxx:193
-msgid "Album:"
-msgstr "Albüm:"
-
-#: src/musepack/libmpc.cxx:522 src/tta/libtta.c:352 src/wavpack/ui.cxx:205
-msgid "Comment:"
-msgstr "Yorum:"
-
-#: src/musepack/libmpc.cxx:526 src/tta/libtta.c:363 src/wavpack/ui.cxx:218
-msgid "Year:"
-msgstr "Yıl:"
-
-#: src/musepack/libmpc.cxx:531
-msgid "Track:"
-msgstr "Parça:"
-
-#: src/musepack/libmpc.cxx:536 src/tta/libtta.c:387 src/wavpack/ui.cxx:246
-msgid "Genre:"
-msgstr "Tür:"
-
-#: src/musepack/libmpc.cxx:550 src/wavpack/ui.cxx:271
-msgid "Remove Tag"
-msgstr "Etiketi kaldır"
-
-#: src/musepack/libmpc.cxx:558
-msgid "Musepack Info"
-msgstr "Musepack Bilgi"
-
-#: src/musepack/libmpc.cxx:591
-#, c-format
-msgid "Streamversion %d"
-msgstr "Yayın sürümü %d"
-
-#: src/musepack/libmpc.cxx:592
-#, c-format
-msgid "Encoder: %s"
-msgstr "Enkoder: %s"
-
-#: src/musepack/libmpc.cxx:593
-#, c-format
-msgid "Profile: %s"
-msgstr "Profil: %s"
-
-#: src/musepack/libmpc.cxx:594
-#, c-format
-msgid "Average bitrate: %6.1f kbps"
-msgstr "Ortalama bitoranı: %6.1f kbps"
-
-#: src/musepack/libmpc.cxx:595
-#, c-format
-msgid "Samplerate: %d Hz"
-msgstr "Örnekleme oranı: %d Hz"
-
-#: src/musepack/libmpc.cxx:596
-#, c-format
-msgid "Channels: %d"
-msgstr "Kanallar: %d"
-
-#: src/musepack/libmpc.cxx:597
-#, c-format
-msgid "Length: %d:\\%.2d"
-msgstr "Uzunluk: %d:\\%.2d"
-
-#: src/musepack/libmpc.cxx:598
-#, c-format
-msgid "File size: %d Bytes"
-msgstr "Dosya boyutu: %d Bayt"
-
-#: src/musepack/libmpc.cxx:599
-#, c-format
-msgid "Track Peak: %5u"
-msgstr "Parça Zirvesi: %5u"
-
-#: src/musepack/libmpc.cxx:600
-#, c-format
-msgid "Track Gain: %-+2.2f dB"
-msgstr "Paça Kazancı: %-+2.2f dB"
-
-#: src/musepack/libmpc.cxx:601
-#, c-format
-msgid "Album Peak: %5u"
-msgstr "Albüm Zirvesi: %5u"
-
-#: src/musepack/libmpc.cxx:602
-#, c-format
-msgid "Album Gain: %-+5.2f dB"
-msgstr "Albüm Kazancı: %-+5.2f dB"
-
-#: src/musepack/libmpc.cxx:630 src/tta/libtta.c:410 src/wavpack/ui.cxx:405
-#, c-format
-msgid "File Info - %s"
-msgstr "Dosya Bilgisi - %s"
 
 #: src/null/null.c:59
 msgid "Null output plugin "
@@ -5390,6 +5231,10 @@ msgstr "Gerçekzamanlı çalış"
 #: src/OSS4/configure.c:191 src/OSS/configure.c:201
 msgid "OSS Driver configuration"
 msgstr "OSS Sürücüsü ayarları"
+
+#: src/OSS4/configure.c:207 src/OSS/configure.c:217 src/sun/configure.c:181
+msgid "Audio device:"
+msgstr "Ses aygıtı:"
 
 #: src/OSS4/configure.c:229 src/OSS/configure.c:239 src/OSS/configure.c:280
 msgid "Use alternate device:"
@@ -5465,11 +5310,11 @@ msgstr "Varsayılan (%s)"
 msgid "Volume controls Master not PCM"
 msgstr "Ses ayarı PCM değil, ana kanalı ayarlasın"
 
-#: src/OSS/OSS.c:37
+#: src/OSS/OSS.c:39
 msgid "About OSS Driver"
 msgstr "OSS Sürücüsü Hakkında"
 
-#: src/OSS/OSS.c:38
+#: src/OSS/OSS.c:40
 msgid ""
 "Audacious OSS Driver\n"
 "\n"
@@ -5507,11 +5352,11 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
-#: src/pulse_audio/pulse_audio.c:744
+#: src/pulse_audio/pulse_audio.c:742
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "Audacious PulseAudio Çıktı Eklentisi Hakkında"
 
-#: src/pulse_audio/pulse_audio.c:745
+#: src/pulse_audio/pulse_audio.c:743
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -5569,6 +5414,11 @@ msgstr "<b>Last.FM</b>"
 #: src/scrobbler/configure.c:287
 msgid "<b>Gerpok</b>"
 msgstr "<b>Gerpok</b>"
+
+#: src/scrobbler/configure.c:346
+#, fuzzy
+msgid "Scrobbler"
+msgstr "Scrobbler Hatası"
 
 #: src/scrobbler/gtkstuff.c:18
 msgid ""
@@ -5917,7 +5767,7 @@ msgid "Use"
 msgstr "Kullan"
 
 #: src/sid/xmms-sid.glade:1753 src/sid/xs_interface.c:841
-#: src/skins/ui_manager.c:435
+#: src/skins/ui_manager.c:428
 msgid "Import"
 msgstr "İçe aktar"
 
@@ -6136,6 +5986,11 @@ msgstr "Değişiklikleri kabul et ve güncelle"
 msgid "Audacious-SID Fileinfo"
 msgstr "Audacious SID Dosya Bilgisi"
 
+#: src/sid/xmms-sid.glade:3338 src/sid/xs_interface.c:1649
+#: src/wavpack/ui.cxx:149
+msgid "Filename:"
+msgstr "Dosya adı:"
+
 #: src/sid/xmms-sid.glade:3366 src/sid/xs_interface.c:1657
 msgid "Songname:"
 msgstr "Şarkı adı:"
@@ -6197,7 +6052,7 @@ msgstr "Evet"
 msgid "No"
 msgstr "Hayır"
 
-#: src/sid/xs_about.c:84 src/wma/wma.c:118
+#: src/sid/xs_about.c:84
 #, c-format
 msgid "About %s"
 msgstr "%s Hakkında"
@@ -6216,129 +6071,129 @@ msgstr "Genel bilgi"
 msgid "Tune #%i: "
 msgstr "Tını #%i: "
 
-#: src/skins/plugin.c:99
-msgid "Skinned Interface"
-msgstr ""
-
-#: src/skins/plugin.c:151
+#: src/skins/plugin.c:160
 msgid "About Skinned GUI"
 msgstr ""
 
-#: src/skins/plugin.c:152
+#: src/skins/plugin.c:161
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 msgstr ""
 
-#: src/skins/skins_cfg.c:326
+#: src/skins/plugin.c:179
+msgid "Skinned Interface"
+msgstr ""
+
+#: src/skins/skins_cfg.c:328
 #, fuzzy
 msgid "_Player:"
 msgstr "Oynatma süresi:"
 
-#: src/skins/skins_cfg.c:326
+#: src/skins/skins_cfg.c:328
 msgid "Select main player window font:"
 msgstr ""
 
-#: src/skins/skins_cfg.c:327
+#: src/skins/skins_cfg.c:329
 #, fuzzy
 msgid "_Playlist:"
 msgstr "Parça Listesini Seç"
 
-#: src/skins/skins_cfg.c:327
+#: src/skins/skins_cfg.c:329
 #, fuzzy
 msgid "Select playlist font:"
 msgstr "Parça Listesini Seç"
 
-#: src/skins/skins_cfg.c:331
+#: src/skins/skins_cfg.c:333
 #, fuzzy
 msgid "<b>_Fonts</b>"
 msgstr "<b>Dosya ismi: </b>"
 
-#: src/skins/skins_cfg.c:333
+#: src/skins/skins_cfg.c:335
 #, fuzzy
 msgid "Use Bitmap fonts if available"
 msgstr "Varsa CDDB kullan"
 
-#: src/skins/skins_cfg.c:333
+#: src/skins/skins_cfg.c:335
 msgid ""
 "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
 "strings."
 msgstr ""
 
-#: src/skins/skins_cfg.c:334
+#: src/skins/skins_cfg.c:336
 #, fuzzy
 msgid "<b>_Miscellaneous</b>"
 msgstr "<b>Hizmetler</b>"
 
-#: src/skins/skins_cfg.c:335
+#: src/skins/skins_cfg.c:337
 msgid "Show separators in playlist"
 msgstr ""
 
-#: src/skins/skins_cfg.c:337
+#: src/skins/skins_cfg.c:339
 msgid "Show window manager decoration"
 msgstr ""
 
-#: src/skins/skins_cfg.c:338
+#: src/skins/skins_cfg.c:340
 msgid "This enables the window manager to show decorations for windows."
 msgstr ""
 
-#: src/skins/skins_cfg.c:339
+#: src/skins/skins_cfg.c:341
 msgid "Use two-way text scroller"
 msgstr ""
 
-#: src/skins/skins_cfg.c:340
+#: src/skins/skins_cfg.c:342
 msgid ""
 "If selected, the file information text in the main window will scroll back "
 "and forth. If not selected, the text will only scroll in one direction."
 msgstr ""
 
-#: src/skins/skins_cfg.c:341
+#: src/skins/skins_cfg.c:343
 msgid "Disable inline gtk theme"
 msgstr ""
 
-#: src/skins/skins_cfg.c:342
+#: src/skins/skins_cfg.c:345
 msgid "Random skin on play"
 msgstr ""
 
-#: src/skins/skins_cfg.c:343
+#: src/skins/skins_cfg.c:346
 msgid "Allow loading incomplete skins"
 msgstr ""
 
-#: src/skins/skins_cfg.c:344
+#: src/skins/skins_cfg.c:347
 msgid ""
 "If selected, audacious won't refuse loading broken skins. Use only if your "
 "favourite skin doesn't work"
 msgstr ""
 
-#: src/skins/skins_cfg.c:410
+#: src/skins/skins_cfg.c:413
 msgid "Color Adjustment"
 msgstr ""
 
-#: src/skins/skins_cfg.c:417
+#: src/skins/skins_cfg.c:419
 msgid ""
 "Audacious allows you to alter the color balance of the skinned UI. The "
 "sliders below will allow you to do this."
 msgstr ""
 
-#: src/skins/skins_cfg.c:427
+#: src/skins/skins_cfg.c:429
 #, fuzzy
 msgid "Blue"
 msgstr "Blues"
 
-#: src/skins/skins_cfg.c:434
+#: src/skins/skins_cfg.c:436
 msgid "Green"
 msgstr ""
 
-#: src/skins/skins_cfg.c:441
+#: src/skins/skins_cfg.c:443
 msgid "Red"
 msgstr ""
 
-#: src/skins/skins_cfg.c:582
+#: src/skins/skins_cfg.c:584
 #, fuzzy
 msgid "<b>_Skin</b>"
 msgstr "<b>Dosya ismi: </b>"
 
-#: src/skins/ui_equalizer.c:438
+#: src/skins/ui_equalizer.c:439
 #, fuzzy
 msgid "Audacious Equalizer"
 msgstr "Ekolayzır"
@@ -6348,39 +6203,39 @@ msgstr "Ekolayzır"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/skins/ui_main.c:348 src/skins/ui_main.c:2252
+#: src/skins/ui_main.c:348 src/skins/ui_main.c:2204
 #, fuzzy
 msgid "Audacious"
 msgstr "%s - Audacious"
 
-#: src/skins/ui_main.c:545
+#: src/skins/ui_main.c:547
 #, fuzzy
 msgid "VBR"
 msgstr "VBR/ABR"
 
-#: src/skins/ui_main.c:563
+#: src/skins/ui_main.c:565
 #, fuzzy
 msgid "stereo"
 msgstr "Stereo"
 
-#: src/skins/ui_main.c:563
+#: src/skins/ui_main.c:565
 #, fuzzy
 msgid "mono"
 msgstr "Mono"
 
-#: src/skins/ui_main.c:988
+#: src/skins/ui_main.c:958
 msgid "Audacious - visibility warning"
 msgstr ""
 
-#: src/skins/ui_main.c:991
+#: src/skins/ui_main.c:961
 msgid "Show main player window"
 msgstr ""
 
-#: src/skins/ui_main.c:992
+#: src/skins/ui_main.c:962
 msgid "Ignore"
 msgstr ""
 
-#: src/skins/ui_main.c:998
+#: src/skins/ui_main.c:968
 msgid ""
 "Audacious has been started with all of its windows hidden.\n"
 "You may want to show the player window again to control Audacious; "
@@ -6388,15 +6243,15 @@ msgid ""
 "(such as the statusicon plugin)."
 msgstr ""
 
-#: src/skins/ui_main.c:1004
+#: src/skins/ui_main.c:974
 msgid "Always ignore, show/hide is controlled remotely"
 msgstr ""
 
-#: src/skins/ui_main.c:1049
+#: src/skins/ui_main.c:1019
 msgid "Audacious - broken GTK engine usage warning"
 msgstr ""
 
-#: src/skins/ui_main.c:1057
+#: src/skins/ui_main.c:1027
 #, c-format
 msgid ""
 "<big><b>Broken GTK engine in use</b></big>\n"
@@ -6410,66 +6265,66 @@ msgid ""
 "To use these features, please consider using a different GTK theme engine."
 msgstr ""
 
-#: src/skins/ui_main.c:1068
+#: src/skins/ui_main.c:1038
 msgid "Do not display this warning again"
 msgstr ""
 
-#: src/skins/ui_main.c:1315
+#: src/skins/ui_main.c:1274
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
 msgstr ""
 
-#: src/skins/ui_main.c:1345
+#: src/skins/ui_main.c:1304
 #, fuzzy, c-format
 msgid "Volume: %d%%"
 msgstr "Ses: (%)"
 
-#: src/skins/ui_main.c:1373
+#: src/skins/ui_main.c:1332
 #, c-format
 msgid "Balance: %d%% left"
 msgstr ""
 
-#: src/skins/ui_main.c:1377
+#: src/skins/ui_main.c:1336
 msgid "Balance: center"
 msgstr ""
 
-#: src/skins/ui_main.c:1381
+#: src/skins/ui_main.c:1340
 #, c-format
 msgid "Balance: %d%% right"
 msgstr ""
 
-#: src/skins/ui_main.c:1692
+#: src/skins/ui_main.c:1642
 #, fuzzy
 msgid "Options Menu"
 msgstr "Seçenekler"
 
-#: src/skins/ui_main.c:1696
+#: src/skins/ui_main.c:1646
 msgid "Disable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:1698
+#: src/skins/ui_main.c:1648
 msgid "Enable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:1701
+#: src/skins/ui_main.c:1651
 #, fuzzy
 msgid "File Info Box"
 msgstr "Dosya Bilgisi"
 
-#: src/skins/ui_main.c:1705
+#: src/skins/ui_main.c:1655
 msgid "Disable 'GUI Scaling'"
 msgstr ""
 
-#: src/skins/ui_main.c:1707
+#: src/skins/ui_main.c:1657
 #, fuzzy
 msgid "Enable 'GUI Scaling'"
 msgstr "Ses örneklemesini etkinleştir"
 
-#: src/skins/ui_main.c:1710
+#: src/skins/ui_main.c:1660
 msgid "Visualization Menu"
 msgstr ""
 
-#: src/skins/ui_main.c:1757
+#: src/skins/ui_main.c:1705
 msgid ""
 "<b><big>Couldn't open audio.</big></b>\n"
 "\n"
@@ -6623,109 +6478,120 @@ msgstr ""
 msgid "Time Remaining"
 msgstr ""
 
-#: src/skins/ui_manager.c:439 src/skins/ui_manager.c:460
-#: src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:218
+#, fuzzy
+msgid "Save All Playlists"
+msgstr "Parça Listesini Seç"
+
+#: src/skins/ui_manager.c:219
+msgid ""
+"Saves all the playlists that are open. Note that this is done automatically "
+"when Audacious quits."
+msgstr ""
+
+#: src/skins/ui_manager.c:432 src/skins/ui_manager.c:453
+#: src/skins/ui_manager.c:468
 #, fuzzy
 msgid "Preset"
 msgstr "Port"
 
-#: src/skins/ui_manager.c:440
+#: src/skins/ui_manager.c:433
 msgid "Load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:442 src/skins/ui_manager.c:463
-#: src/skins/ui_manager.c:478
+#: src/skins/ui_manager.c:435 src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:471
 msgid "Auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:443
+#: src/skins/ui_manager.c:436
 msgid "Load auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:446
+#: src/skins/ui_manager.c:439
 #, fuzzy
 msgid "Load default preset into equalizer"
 msgstr "Öntanımlı değerleri yükle"
 
-#: src/skins/ui_manager.c:448
+#: src/skins/ui_manager.c:441
 #, fuzzy
 msgid "Zero"
 msgstr "Retro"
 
-#: src/skins/ui_manager.c:449
+#: src/skins/ui_manager.c:442
 msgid "Set equalizer preset levels to zero"
 msgstr ""
 
-#: src/skins/ui_manager.c:451
+#: src/skins/ui_manager.c:444
 #, fuzzy
 msgid "From file"
 msgstr "Profil: %s"
 
-#: src/skins/ui_manager.c:452
+#: src/skins/ui_manager.c:445
 #, fuzzy
 msgid "Load preset from file"
 msgstr "Dosya okunamıyor\n"
 
-#: src/skins/ui_manager.c:454
+#: src/skins/ui_manager.c:447
 msgid "From WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:455
+#: src/skins/ui_manager.c:448
 msgid "Load preset from WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:450
 msgid "WinAMP Presets"
 msgstr ""
 
-#: src/skins/ui_manager.c:458
+#: src/skins/ui_manager.c:451
 msgid "Import WinAMP presets"
 msgstr ""
 
-#: src/skins/ui_manager.c:461
+#: src/skins/ui_manager.c:454
 msgid "Save preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:464
+#: src/skins/ui_manager.c:457
 msgid "Save auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:467
+#: src/skins/ui_manager.c:460
 #, fuzzy
 msgid "Save default preset"
 msgstr "Öntanımlı değerleri yükle"
 
-#: src/skins/ui_manager.c:469
+#: src/skins/ui_manager.c:462
 #, fuzzy
 msgid "To file"
 msgstr "STIL dosyası:"
 
-#: src/skins/ui_manager.c:470
+#: src/skins/ui_manager.c:463
 msgid "Save preset to file"
 msgstr ""
 
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:465
 msgid "To WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:473
+#: src/skins/ui_manager.c:466
 msgid "Save preset to WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:476
+#: src/skins/ui_manager.c:469
 #, fuzzy
 msgid "Delete preset"
 msgstr "Sil"
 
-#: src/skins/ui_manager.c:479
+#: src/skins/ui_manager.c:472
 msgid "Delete auto-load preset"
 msgstr ""
 
-#: src/skins/ui_playlist.c:363
+#: src/skins/ui_playlist.c:345
 msgid "Search entries in active playlist"
 msgstr ""
 
-#: src/skins/ui_playlist.c:371
+#: src/skins/ui_playlist.c:353
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -6733,34 +6599,34 @@ msgid ""
 "for."
 msgstr ""
 
-#: src/skins/ui_playlist.c:386
+#: src/skins/ui_playlist.c:368
 #, fuzzy
 msgid "Album: "
 msgstr "Albüm:"
 
-#: src/skins/ui_playlist.c:393
+#: src/skins/ui_playlist.c:375
 #, fuzzy
 msgid "Artist: "
 msgstr "Sanatçı:"
 
-#: src/skins/ui_playlist.c:400
+#: src/skins/ui_playlist.c:382
 #, fuzzy
 msgid "Filename: "
 msgstr "Dosya adı:"
 
-#: src/skins/ui_playlist.c:408
+#: src/skins/ui_playlist.c:390
 msgid "Clear previous selection before searching"
 msgstr ""
 
-#: src/skins/ui_playlist.c:411
+#: src/skins/ui_playlist.c:393
 msgid "Automatically toggle queue for matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:414
+#: src/skins/ui_playlist.c:396
 msgid "Create a new playlist with matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:1195
+#: src/skins/ui_playlist.c:1149
 #, fuzzy
 msgid "Audacious Playlist Editor"
 msgstr "Hızlı Parça Listesi Bilgisi"
@@ -6817,7 +6683,7 @@ msgstr ""
 msgid "Unarchived Winamp 2.x skin"
 msgstr ""
 
-#: src/skins/util.c:1120
+#: src/skins/util.c:801
 #, fuzzy, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "sidFilename ('%s') ayrılamadı\n"
@@ -6971,11 +6837,11 @@ msgstr "Uyum"
 msgid "The orientation of the tray"
 msgstr "Sistem ikonu canlandırması"
 
-#: src/statusicon/si_ui.c:620
+#: src/statusicon/si_ui.c:624
 msgid "About Status Icon Plugin"
 msgstr "Durum Simgesi Eklentisi Hakkında"
 
-#: src/statusicon/si_ui.c:622
+#: src/statusicon/si_ui.c:626
 msgid ""
 "\n"
 "written by Giacomo Lozito < james@develia.org >\n"
@@ -6988,35 +6854,35 @@ msgstr ""
 "\n"
 "Bu eklenti durum simgesinin sistem araç cubuğunda görüntülenmesini sağlar.\n"
 
-#: src/statusicon/si_ui.c:694
+#: src/statusicon/si_ui.c:698
 msgid "Status Icon Plugin - Preferences"
 msgstr "Durum Simgesi Eklentisi - Tercihler"
 
-#: src/statusicon/si_ui.c:705
+#: src/statusicon/si_ui.c:709
 msgid "Right-Click Menu"
 msgstr "Sağ-Tık Menüsü"
 
-#: src/statusicon/si_ui.c:710
+#: src/statusicon/si_ui.c:714
 msgid "Audacious standard menu"
 msgstr "Audacious standart menü"
 
-#: src/statusicon/si_ui.c:715
+#: src/statusicon/si_ui.c:719
 msgid "Small playback menu #1"
 msgstr "Küçük oynatma menüsü #1"
 
-#: src/statusicon/si_ui.c:720
+#: src/statusicon/si_ui.c:724
 msgid "Small playback menu #2"
 msgstr "Küçük oynatma menüsü #2"
 
-#: src/statusicon/si_ui.c:743
+#: src/statusicon/si_ui.c:747
 msgid "Mouse Scroll Action"
 msgstr "Fare Tekerleği Eylemi"
 
-#: src/statusicon/si_ui.c:748
+#: src/statusicon/si_ui.c:752
 msgid "Change volume"
 msgstr "Ses seviyesini değiştir"
 
-#: src/statusicon/si_ui.c:753
+#: src/statusicon/si_ui.c:757
 msgid "Change playing song"
 msgstr "Çalan şarkıyı değiştir"
 
@@ -7162,7 +7028,12 @@ msgstr "Örnekleme Genişliği"
 msgid "TiMidity Configuration File"
 msgstr "TiMidity Yapılandırma Dosyası"
 
-#: src/timidity/xmms-timidity.c:115
+#: src/timidity/plugin.c:108
+#, c-format
+msgid "TiMidity Plugin %s"
+msgstr "TiMidity Eklentisi %s"
+
+#: src/timidity/plugin.c:109
 msgid ""
 "TiMidity Plugin\n"
 "http://libtimidity.sourceforge.net\n"
@@ -7172,20 +7043,15 @@ msgstr ""
 "http://libtimidity.sourceforge.net\n"
 "Konstantin Korikov"
 
-#: src/timidity/xmms-timidity.c:116
-#, c-format
-msgid "TiMidity Plugin %s"
-msgstr "TiMidity Eklentisi %s"
-
-#: src/timidity/xmms-timidity.c:333
+#: src/timidity/plugin.c:339
 msgid "Couldn't load MIDI file"
 msgstr "MIDI dosyası yüklenemedi"
 
-#: src/tonegen/tonegen.c:55
+#: src/tonegen/tonegen.c:50
 msgid "About Tone Generator"
 msgstr "Ton Oluşturucusu Hakkında"
 
-#: src/tonegen/tonegen.c:57
+#: src/tonegen/tonegen.c:52
 msgid ""
 "Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
 "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
@@ -7199,52 +7065,52 @@ msgstr ""
 "Kullanmak için bir URL ekleyin: tone://frequency1;frequency2;frequency3;...\n"
 "ör: 2000Hz ton ve 2005Hz ton çalmak için tone://2000;2005"
 
-#: src/tonegen/tonegen.c:166
+#: src/tonegen/tonegen.c:106
 #, c-format
 msgid "%s %.1f Hz"
 msgstr "%s %.1f Hz"
 
-#: src/tonegen/tonegen.c:166
+#: src/tonegen/tonegen.c:106
 msgid "Tone Generator: "
 msgstr "Ton Oluşturucu: "
 
-#: src/tta/libtta.c:127
+#: src/tta/plugin.c:68
 msgid "Can't open file\n"
 msgstr "Dosya açılamıyor\n"
 
-#: src/tta/libtta.c:130
+#: src/tta/plugin.c:71
 msgid "Not supported file format\n"
 msgstr "Desteklenmeyen dosya biçimi\n"
 
-#: src/tta/libtta.c:133
+#: src/tta/plugin.c:74
 msgid "File is corrupted\n"
 msgstr "Dosya bozuk\n"
 
-#: src/tta/libtta.c:136
+#: src/tta/plugin.c:77
 msgid "Can't read from file\n"
 msgstr "Dosya okunamıyor\n"
 
-#: src/tta/libtta.c:139
+#: src/tta/plugin.c:80
 msgid "Insufficient memory available\n"
 msgstr "Hafıza yetersiz\n"
 
-#: src/tta/libtta.c:142
+#: src/tta/plugin.c:83
 msgid "Output plugin error\n"
 msgstr "Çıktı eklentisi hatası\n"
 
-#: src/tta/libtta.c:145
+#: src/tta/plugin.c:86
 msgid "Unknown error\n"
 msgstr "Bilinmeyen hata\n"
 
-#: src/tta/libtta.c:149
+#: src/tta/plugin.c:90
 msgid "TTA Decoder Error"
 msgstr "TTA Dekoder Hatası"
 
-#: src/tta/libtta.c:258
+#: src/tta/plugin.c:160
 msgid "TTA input plugin "
 msgstr "TTA girdi eklentisi"
 
-#: src/tta/libtta.c:259
+#: src/tta/plugin.c:161
 msgid ""
 " for BMP\n"
 "Copyright (c) 2004 True Audio Software\n"
@@ -7252,17 +7118,9 @@ msgstr ""
 " BMP eklentisi\n"
 "Copyright (c) 2004 True Audio Software\n"
 
-#: src/tta/libtta.c:262
+#: src/tta/plugin.c:165
 msgid "About True Audio Plugin"
 msgstr "True Audio Eklentisi Hakkında"
-
-#: src/tta/libtta.c:313
-msgid "ID3 Tag:"
-msgstr "ID3 Etiketi:"
-
-#: src/tta/libtta.c:375 src/wavpack/ui.cxx:231
-msgid "Track number:"
-msgstr "Parça numarası:"
 
 #: src/vorbis/configure.c:82
 msgid "Ogg Vorbis Audio Plugin Configuration"
@@ -7360,6 +7218,38 @@ msgstr ""
 msgid "Ape2 Tag"
 msgstr "Ape2 Etiketi"
 
+#: src/wavpack/ui.cxx:169
+msgid "Title:"
+msgstr "Başlık:"
+
+#: src/wavpack/ui.cxx:181
+msgid "Artist:"
+msgstr "Sanatçı:"
+
+#: src/wavpack/ui.cxx:193
+msgid "Album:"
+msgstr "Albüm:"
+
+#: src/wavpack/ui.cxx:205
+msgid "Comment:"
+msgstr "Yorum:"
+
+#: src/wavpack/ui.cxx:218
+msgid "Year:"
+msgstr "Yıl:"
+
+#: src/wavpack/ui.cxx:231
+msgid "Track number:"
+msgstr "Parça numarası:"
+
+#: src/wavpack/ui.cxx:246
+msgid "Genre:"
+msgstr "Tür:"
+
+#: src/wavpack/ui.cxx:271
+msgid "Remove Tag"
+msgstr "Etiketi kaldır"
+
 #: src/wavpack/ui.cxx:284
 msgid "Wavpack Info:"
 msgstr "Wavpack Bilgisi:"
@@ -7415,6 +7305,11 @@ msgstr "Başlık Kazancı: ?"
 msgid "Album Gain: ?"
 msgstr "Albüm Kazancı: ?"
 
+#: src/wavpack/ui.cxx:405
+#, c-format
+msgid "File Info - %s"
+msgstr "Dosya Bilgisi - %s"
+
 #: src/wavpack/ui.cxx:467
 msgid "Wavpack Configuration"
 msgstr "Wavpack Yapılandırması"
@@ -7423,9 +7318,25 @@ msgstr "Wavpack Yapılandırması"
 msgid "General Plugin Settings:"
 msgstr "Genel Eklenti Ayarları:"
 
+#: src/wavpack/ui.cxx:488
+msgid "Enable Dynamic Bitrate Display"
+msgstr "Dinamik Bitoranı Görüntülemeyi Etkinleştir"
+
+#: src/wavpack/ui.cxx:494
+msgid "Plugin"
+msgstr "Eklenti"
+
 #: src/wavpack/ui.cxx:498
 msgid "ReplayGain Settings:"
 msgstr "ReplayGain Ayarları:"
+
+#: src/wavpack/ui.cxx:506
+msgid "Enable Clipping Prevention"
+msgstr " Çatlama Korumasını Etkinleştir"
+
+#: src/wavpack/ui.cxx:511
+msgid "Enable ReplayGain"
+msgstr "ReplayGain Etkinleştir"
 
 #: src/wavpack/ui.cxx:516
 msgid "ReplayGain Type:"
@@ -7439,26 +7350,128 @@ msgstr "Parçada Gain/Peak kullan"
 msgid "use Album Gain/Peak"
 msgstr "Albümde Gain/Peak kullan"
 
-#: src/wma/wma.c:120
-msgid ""
-"Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
-"the BEEP-WMA plugin which is Copyright (C) 2004,2005 Mokrushin I.V. aka "
-"McMCC (mcmcc@mail.ru)\n"
-"and the BMP-WMA plugin which is Copyright (C) 2004 Roman Bogorodskiy "
-"<bogorodskiy@inbox.ru>.\n"
-"This plugin based on source code "
-msgstr ""
-"Audacious için kullanılmak üzere Tony Vroon (chainsaw@gentoo.org) "
-"tarafından\n"
-"BEEP-WMA eklentisi Copyright (C) 2004,2005 Mokrushin I.V. aka McMCC "
-"(mcmcc@mail.ru)\n"
-"ve BMP-WMA eklentisi Copyright (C) 2004 Roman Bogorodskiy <bogorodskiy@inbox."
-"ru>. baz alınarak hazırlanmıştır\n"
-"Bu eklenti hazırlanırken kaynak kod baz alınmıştır"
+#: src/wavpack/ui.cxx:543
+msgid "ReplayGain"
+msgstr "ReplayGain"
 
-#: src/wma/wma.c:145
-msgid " Close "
-msgstr " Kapat "
+#~ msgid "ALSA Driver configuration"
+#~ msgstr "ALSA Sürücüsü ayarları"
+
+#~ msgid "Device settings"
+#~ msgstr "Karıştırıcı ayarları"
+
+#~ msgid "About CD Audio Plugin NG"
+#~ msgstr "CD Audio Eklentisi Hakkında"
+
+#, fuzzy
+#~ msgid "By Playlist Entry"
+#~ msgstr "Hızlı Parça Listesi Bilgisi"
+
+#~ msgid "Musepack Decoder Plugin 1.2"
+#~ msgstr "Musepack Dekoder Eklentisi 1.2"
+
+#~ msgid ""
+#~ "Plugin code by\n"
+#~ "Benoit Amiaux\n"
+#~ "Martin Spuler\n"
+#~ "Kuniklo\n"
+#~ "\n"
+#~ "Get latest version at http://musepack.net\n"
+#~ msgstr ""
+#~ "Eklenti kodu\n"
+#~ "Benoit Amiaux\n"
+#~ "Martin Spuler\n"
+#~ "Kuniklo\n"
+#~ "\n"
+#~ "Son sürümüne http://musepack.net adresinden ulaşabilirsiniz\n"
+
+#~ msgid "Nevermind"
+#~ msgstr "Boşver"
+
+#~ msgid "Musepack Decoder Configuration"
+#~ msgstr "Musepack Çözücüsü Yapılandırması"
+
+#~ msgid "General Settings"
+#~ msgstr "Genel Ayarlar"
+
+#~ msgid "ReplayGain Settings"
+#~ msgstr "ReplayGain Ayarları"
+
+#~ msgid "ReplayGain Type"
+#~ msgstr "ReplayGain Türü"
+
+#~ msgid "Use Track Gain"
+#~ msgstr "Parça Kazancı Kullan"
+
+#~ msgid "Use Album Gain"
+#~ msgstr "Albüm Kazancı Kullan"
+
+#~ msgid "Musepack Tag"
+#~ msgstr "Musepack Etiketi"
+
+#~ msgid "Track:"
+#~ msgstr "Parça:"
+
+#~ msgid "Musepack Info"
+#~ msgstr "Musepack Bilgi"
+
+#~ msgid "Streamversion %d"
+#~ msgstr "Yayın sürümü %d"
+
+#~ msgid "Encoder: %s"
+#~ msgstr "Enkoder: %s"
+
+#~ msgid "Profile: %s"
+#~ msgstr "Profil: %s"
+
+#~ msgid "Average bitrate: %6.1f kbps"
+#~ msgstr "Ortalama bitoranı: %6.1f kbps"
+
+#~ msgid "Samplerate: %d Hz"
+#~ msgstr "Örnekleme oranı: %d Hz"
+
+#~ msgid "Channels: %d"
+#~ msgstr "Kanallar: %d"
+
+#~ msgid "Length: %d:\\%.2d"
+#~ msgstr "Uzunluk: %d:\\%.2d"
+
+#~ msgid "File size: %d Bytes"
+#~ msgstr "Dosya boyutu: %d Bayt"
+
+#~ msgid "Track Peak: %5u"
+#~ msgstr "Parça Zirvesi: %5u"
+
+#~ msgid "Track Gain: %-+2.2f dB"
+#~ msgstr "Paça Kazancı: %-+2.2f dB"
+
+#~ msgid "Album Peak: %5u"
+#~ msgstr "Albüm Zirvesi: %5u"
+
+#~ msgid "Album Gain: %-+5.2f dB"
+#~ msgstr "Albüm Kazancı: %-+5.2f dB"
+
+#~ msgid "ID3 Tag:"
+#~ msgstr "ID3 Etiketi:"
+
+#~ msgid ""
+#~ "Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
+#~ "the BEEP-WMA plugin which is Copyright (C) 2004,2005 Mokrushin I.V. aka "
+#~ "McMCC (mcmcc@mail.ru)\n"
+#~ "and the BMP-WMA plugin which is Copyright (C) 2004 Roman Bogorodskiy "
+#~ "<bogorodskiy@inbox.ru>.\n"
+#~ "This plugin based on source code "
+#~ msgstr ""
+#~ "Audacious için kullanılmak üzere Tony Vroon (chainsaw@gentoo.org) "
+#~ "tarafından\n"
+#~ "BEEP-WMA eklentisi Copyright (C) 2004,2005 Mokrushin I.V. aka McMCC "
+#~ "(mcmcc@mail.ru)\n"
+#~ "ve BMP-WMA eklentisi Copyright (C) 2004 Roman Bogorodskiy "
+#~ "<bogorodskiy@inbox.ru>. baz alınarak hazırlanmıştır\n"
+#~ "Bu eklenti hazırlanırken kaynak kod baz alınmıştır"
+
+#~ msgid " Close "
+#~ msgstr " Kapat "
 
 #~ msgid "Sample rate mismatch"
 #~ msgstr "Örnekleme oranı uyumsuzluğu"
@@ -7502,18 +7515,6 @@ msgstr " Kapat "
 
 #~ msgid "Using libfaad2-"
 #~ msgstr "Çözme işlemi için libfaad2-"
-
-#~ msgid ""
-#~ " for decoding.\n"
-#~ "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
-#~ "Copyright (c) 2005-2006 Audacious team"
-#~ msgstr ""
-#~ " kullanılıyor.\n"
-#~ "FAAD2 AAC/HE-AAC/HE-AACv2/DRM çözücüsü (c) Nero AG, www.nero.com\n"
-#~ "Telif Hakkı (c) 2005-2006 Audacious ekibi"
-
-#~ msgid "About MP4 AAC player plugin"
-#~ msgstr "MP4 AAC oynatıcı eklentisi hakkında"
 
 #~ msgid "About ALSA Driver"
 #~ msgstr "ALSA Sürücüsü Hakkında"

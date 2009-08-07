@@ -29,12 +29,11 @@ src/blur_scope/config.c
 src/cdaudio-ng/cdaudio-ng.c
 src/cdaudio-ng/configure.c
 src/console/abstract_file.cxx
-src/console/Audacious_Config.cxx
-src/console/Audacious_Driver.cxx
 src/console/Ay_Apu.cxx
 src/console/Ay_Emu.cxx
 src/console/Blip_Buffer.cxx
 src/console/Classic_Emu.cxx
+src/console/configure.c
 src/console/Data_Reader.cxx
 src/console/Dual_Resampler.cxx
 src/console/Fir_Resampler.cxx
@@ -51,6 +50,7 @@ src/console/Music_Emu.cxx
 src/console/Nes_Apu.cxx
 src/console/Nsfe_Emu.cxx
 src/console/Nsf_Emu.cxx
+src/console/plugin.c
 src/console/Sap_Emu.cxx
 src/console/Spc_Cpu.cxx
 src/console/Spc_Dsp.cxx
@@ -68,6 +68,7 @@ src/esd/configure.c
 src/evdev-plug/ed.c
 src/evdev-plug/ed_internals.c
 src/evdev-plug/ed_ui.c
+src/ffaudio/ffaudio-core.c
 src/filewriter/filewriter.c
 src/filewriter/mp3.c
 src/filewriter/vorbis.c
@@ -96,7 +97,6 @@ src/modplug/gui/main.cxx
 src/modplug/gui/modplug.glade
 src/modplug/gui/support.cxx
 src/mtp_up/mtp.c
-src/musepack/libmpc.cxx
 src/null/null.c
 src/OSS4/configure.c
 src/OSS4/OSS4.c
@@ -138,13 +138,11 @@ src/streambrowser/streambrowser.c
 src/sun/about.c
 src/sun/configure.c
 src/timidity/interface.c
-src/timidity/xmms-timidity.c
+src/timidity/plugin.c
 src/tonegen/tonegen.c
-src/tta/libtta.c
+src/tta/plugin.c
 src/vorbis/configure.c
 src/vorbis/vorbis.c
 src/vtx/about.c
 src/vtx/info.c
 src/wavpack/ui.cxx
-src/wma/libffwma/wmadec.c
-src/wma/wma.c
