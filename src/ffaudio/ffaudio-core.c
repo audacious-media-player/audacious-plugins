@@ -222,6 +222,7 @@ ffaudio_get_song_tuple(const gchar *filename)
     }
 
     ffaudio_get_tuple_data(tuple, ic, c, codec);
+    av_close_input_file (ic);
     return tuple;
 }
 
