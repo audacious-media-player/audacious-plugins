@@ -654,7 +654,9 @@ static void select_single (UiSkinnedPlaylistPrivate * private, gboolean
     if (position == -1)
         return;
 
-    aud_playlist_entry_set_selected (active_playlist, private->focused, FALSE);
+    if (private->focused != -1)
+        aud_playlist_entry_set_selected (active_playlist, private->focused,
+         FALSE);
 
     if (aud_playlist_selected_count (active_playlist) > 0)
         aud_playlist_select_all (active_playlist, FALSE);
@@ -669,7 +671,6 @@ static void select_extend (UiSkinnedPlaylistPrivate * private, gboolean
  relative, gint position)
 {
     gint count, sign;
-    gboolean was;
 
     position = adjust_position (private, relative, position);
 
@@ -678,15 +679,10 @@ static void select_extend (UiSkinnedPlaylistPrivate * private, gboolean
 
     count = adjust_position (private, TRUE, 0);
     sign = (position > count) ? 1 : -1;
-    was = aud_playlist_entry_get_selected (active_playlist, count) &&
-     aud_playlist_entry_get_selected (active_playlist, count - sign);
 
     for (; count != position; count += sign)
-    {
-        was = (was || ! aud_playlist_entry_get_selected (active_playlist,
-         count + sign));
-        aud_playlist_entry_set_selected (active_playlist, count, was);
-    }
+        aud_playlist_entry_set_selected (active_playlist, count,
+         ! aud_playlist_entry_get_selected (active_playlist, count + sign));
 
     aud_playlist_entry_set_selected (active_playlist, position, TRUE);
 
@@ -758,7 +754,9 @@ void ui_skinned_playlist_update (GtkWidget * widget)
      ((UiSkinnedPlaylist *) widget);
 
     calc_layout (private);
-    private->focused = adjust_position (private, TRUE, 0);
+
+    if (private->focused != -1)
+        private->focused = adjust_position (private, TRUE, 0);
 
     gtk_widget_queue_draw (widget);
 

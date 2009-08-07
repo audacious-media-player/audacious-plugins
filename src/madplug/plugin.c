@@ -47,10 +47,6 @@ GCond * mad_cond, * control_cond;
 static GThread *decode_thread; /**< the single decoder thread */
 static struct mad_info_t info;   /**< info for current track */
 
-#ifndef NOGUI
-static GtkWidget *error_dialog = 0;
-#endif
-
 static gint mp3_bitrate_table[5][16] = {
   { 0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448, -1 }, /* MPEG1 L1 */
   { 0, 32, 48, 56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320, 384, -1 }, /* MPEG1 L2 */
@@ -668,28 +664,19 @@ audmad_about()
 }
 
 /**
- * Display a GTK box containing the given error message.
- * Taken from mpg123 plugin.
+ * Direct interface to show given error message.
  */
 void
-audmad_error(char *error, ...)
+audmad_error(gchar *format, ...)
 {
-#ifndef NOGUI
-    if (!error_dialog) {
-        va_list args;
-        char string[256];
-        va_start(args, error);
-        vsnprintf(string, 256, error, args);
-        va_end(args);
-        GDK_THREADS_ENTER();
-        error_dialog =
-            audacious_info_dialog(_("Error"), string, _("Ok"), FALSE, 0, 0);
-        gtk_signal_connect(GTK_OBJECT(error_dialog), "destroy",
-                           GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-                           &error_dialog);
-        GDK_THREADS_LEAVE();
-    }
-#endif                          /* !NOGUI */
+    va_list args;
+    gchar *msg = NULL;
+
+    va_start (args, format);
+    msg = g_markup_vprintf_escaped (format, args);
+    va_end (args);
+
+    aud_event_queue_with_data_free("interface show error", msg);
 }
 
 static void
