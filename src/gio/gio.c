@@ -139,7 +139,7 @@ gio_aud_vfs_fread_impl(gpointer ptr,
     }
 
     ret = (g_input_stream_read(G_INPUT_STREAM(handle->istream), (ptr + count), (realsize - count), NULL, NULL) + count);
-    return (ret / size);
+    return (size > 0) ? ret / size : 0;
 }
 
 size_t
@@ -157,7 +157,7 @@ gio_aud_vfs_fwrite_impl(gconstpointer ptr,
     handle = (VFSGIOHandle *) file->handle;
 
     ret = g_output_stream_write(G_OUTPUT_STREAM(handle->ostream), ptr, size * nmemb, NULL, NULL);
-    return (ret / size);
+    return (size > 0) ? ret / size : 0;
 }
 
 gint
