@@ -17,6 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#define FFAUDIO_DEBUG 1     /* Enable generic debug output */
+#undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
+#undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
+
+
 #include "config.h"
 #include "ffaudio-stdinc.h"
 #include <audacious/i18n.h>
@@ -61,6 +66,7 @@ ffaudio_check_codec(AVCodec *codec)
 {
     /* Blacklist certain codecs here (see TODO for more information) */
     switch (codec->id) {
+#ifndef FFAUDIO_NO_BLACKLIST
         case CODEC_ID_MP1:
         case CODEC_ID_MP2:
         case CODEC_ID_MP3:
@@ -68,10 +74,10 @@ ffaudio_check_codec(AVCodec *codec)
         case CODEC_ID_VORBIS:
         case CODEC_ID_AAC:
         case CODEC_ID_TTA:
-
         case CODEC_ID_MUSEPACK8:
             _DEBUG("refusing blacklisted codec");
             return 0;
+#endif
         default:
             return 1;
     }
