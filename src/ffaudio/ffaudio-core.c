@@ -1,6 +1,7 @@
 /*
  * Audacious FFaudio Plugin
  * Copyright © 2009 William Pitcock <nenolod@dereferenced.org>
+ *                  Matti Hämäläinen <ccr@tnsp.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -574,13 +575,19 @@ ffaudio_about(void)
     {
         gchar *formats = g_strjoinv(", ", ffaudio_fmts);
         gchar *description = g_strdup_printf(
-        _("Multi-format audio decoding plugin for Audacious based on \n"
-        "FFmpeg multimedia framework (http://www.ffmpeg.org/) \n"
-        "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n\n"
-        "Supported formats: %s\n\n"
-        "Audacious plugin by: \n"
+        _("Multi-format audio decoding plugin for Audacious based on\n"
+        "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+        "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
+        "\n"
+        "FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
+        "\n"
+        "Supported formats: %s\n"
+        "\n"
+        "Audacious plugin by:\n"
         "            William Pitcock <nenolod@nenolod.net>,\n"
         "            Matti Hämäläinen <ccr@tnsp.org>\n"),
+        LIBAVFORMAT_VERSION_MAJOR, LIBAVFORMAT_VERSION_MINOR, LIBAVFORMAT_VERSION_MICRO,
+        LIBAVCODEC_VERSION_MAJOR, LIBAVCODEC_VERSION_MINOR, LIBAVCODEC_VERSION_MICRO,
         formats);
 
         aboutbox = audacious_info_dialog(
