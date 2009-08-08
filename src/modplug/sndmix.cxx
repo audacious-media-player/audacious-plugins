@@ -16,7 +16,7 @@
 
 // SNDMIX: These are global flags for playback control
 LONG CSoundFile::m_nStreamVolume = 0x8000;
-UINT CSoundFile::m_nMaxMixChannels = 32;
+UINT CSoundFile::m_nMaxMixChannels = 256;
 // Mixing Configuration (SetWaveConfig)
 DWORD CSoundFile::gdwSysInfo = 0;
 DWORD CSoundFile::gnChannels = 1;
