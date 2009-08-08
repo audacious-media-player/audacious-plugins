@@ -464,6 +464,7 @@ static void cdaudio_stop (InputPlayback * playback)
     {
         g_mutex_unlock (mutex);
         g_thread_join (playback->thread);
+        playback->thread = NULL;
         g_mutex_lock (mutex);
     }
     else
