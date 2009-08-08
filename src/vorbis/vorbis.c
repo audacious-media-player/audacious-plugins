@@ -118,7 +118,6 @@ DECLARE_PLUGIN(vorbis, NULL, NULL, vorbis_iplist, NULL, NULL, NULL, NULL, NULL);
 
 static OggVorbis_File vf;
 
-static GThread *thread;
 static volatile int seekneeded;
 static volatile char pause_flag;
 static int samplerate, channels;
@@ -465,20 +464,13 @@ vorbis_play(InputPlayback *playback)
     seekneeded = -1;
     pause_flag = 0;
 
-    thread = g_thread_self();
     playback->set_pb_ready(playback);
     vorbis_play_loop(playback);
 }
 
-static void
-vorbis_stop(InputPlayback *playback)
+static void vorbis_stop (InputPlayback * playback)
 {
-    if (playback->playing) {
-        playback->playing = 0;
-        AUDDBG("waiting for playback thread finished\n");
-        g_thread_join(thread);
-        AUDDBG("playback finished\n");
-    }
+    playback->playing = FALSE;
 }
 
 static void
