@@ -965,20 +965,27 @@ playlistwin_set_time(gint time, gint length, TimerMode mode)
 static void drag_motion (GtkWidget * widget, GdkDragContext * context, gint x,
  gint y, guint time, void * unused)
 {
-    ui_skinned_playlist_hover (playlistwin_list, x - 12, y - 20);
+    if (! config.playlist_shaded)
+        ui_skinned_playlist_hover (playlistwin_list, x - 12, y - 20);
 }
 
 static void drag_leave (GtkWidget * widget, GdkDragContext * context, guint time,
  void * unused)
 {
-    ui_skinned_playlist_hover_end (playlistwin_list);
+    if (! config.playlist_shaded)
+        ui_skinned_playlist_hover_end (playlistwin_list);
 }
 
 static void drag_drop (GtkWidget * widget, GdkDragContext * context, gint x,
  gint y, guint time, void * unused)
 {
-    ui_skinned_playlist_hover (playlistwin_list, x - 12, y - 20);
-    drop_position = ui_skinned_playlist_hover_end (playlistwin_list);
+    if (config.playlist_shaded)
+        drop_position = -1;
+    else
+    {
+        ui_skinned_playlist_hover (playlistwin_list, x - 12, y - 20);
+        drop_position = ui_skinned_playlist_hover_end (playlistwin_list);
+    }
 }
 
 static void drag_data_received (GtkWidget * widget, GdkDragContext * context,
