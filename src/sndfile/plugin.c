@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005 Audacious development team.
+ *  Copyright (C) 2005,2009 Audacious development team.
  *
  *  Based on the xmms_sndfile input plugin:
  *  Copyright (C) 2000, 2002 Erik de Castro Lopo
@@ -26,6 +26,11 @@
  *   - pausing works now
  *   - fixed some potential race conditions when dealing with NFS.
  *   - TITLE_LEN removed
+ *
+ * Re-cleaned up 09-Aug-2009 (ccr):
+ *   - removed threading madness.
+ *   - improved locking.
+ *   - misc. cleanups.
  */
 
 #include "config.h"
