@@ -368,7 +368,7 @@ play_start (InputPlayback *playback)
     SF_INFO sfinfo;
     VFSFile *vfsfile = NULL;
     gchar *song_title;
-    gshort buffer[BUFFER_SIZE];
+    gshort buffer[BUFFER_SIZE], *buffer_p;
     gint samples, song_length;
 
     song_title = get_title(playback->filename);
@@ -401,8 +401,27 @@ play_start (InputPlayback *playback)
         samples = sf_read_short (sndfile, buffer, BUFFER_SIZE);
 
         if (samples > 0 && playback->playing) {
-            playback->pass_audio(playback, FMT_S16_NE, sfinfo.channels, 
-                samples * sizeof(buffer[0]), buffer, &playback->playing);
+            buffer_p = &buffer[0];
+            
+            /* Output audio in small blocks */
+            while (samples > 0 && playback->playing)
+            {
+                gint writeoff = samples >= 512 ? 512 : samples;
+
+                playback->pass_audio(playback, FMT_S16_NE, sfinfo.channels,
+                    writeoff * sizeof(buffer[0]), buffer_p, NULL);
+
+                buffer_p += writeoff;
+                samples -= writeoff;
+
+                /* Check for seek request and bail out if we have one */
+                g_mutex_lock(seek_mutex);
+                if (seek_value != -1) {
+                    g_mutex_unlock(seek_mutex);
+                    break;
+                }
+                g_mutex_unlock(seek_mutex);
+            }
         }
         else
         {

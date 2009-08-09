@@ -478,10 +478,10 @@ ffaudio_play_file(InputPlayback *playback)
             /* Output audio in small blocks */
             while (out_size > 0 && playback->playing)
             {
-                gsize writeoff = out_size >= 512 ? 512 : out_size;
+                gint writeoff = out_size >= 512 ? 512 : out_size;
 
                 playback->pass_audio(playback, out_fmt,
-                    c->channels, out_size >= 512 ? 512 : out_size,
+                    c->channels, writeoff,
                     (gint16 *)outbuf_p, NULL);
 
                 outbuf_p += writeoff;
