@@ -83,7 +83,7 @@ static void fill_playlist()
     gnt_tree_set_selected(GNT_TREE(playlist_widget), GINT_TO_POINTER(pos+1));
 }
 
-static void update_song_time()
+static gboolean update_song_time(gpointer data)
 {
     gint time = audacious_drct_get_output_time() / 1000;
     gchar *text;
@@ -91,6 +91,8 @@ static void update_song_time()
     text = g_strdup_printf("[%02i:%02i]", time / 60, time % 60);
     gnt_label_set_text(GNT_LABEL(time_widget), text);
     g_free(text);
+
+    return TRUE;
 }
 
 static void update_playback_status()
@@ -114,7 +116,7 @@ static void update_playback_title()
 
 static void set_song_info(gpointer hook_data, gpointer user_data)
 {
-    update_song_time();
+    update_song_time(NULL);
     update_playback_title();
 }
 
@@ -214,7 +216,7 @@ static void ui_playback_begin(gpointer hook_data, gpointer user_data)
     set_song_info(NULL, NULL);
 
     /* update song info 4 times a second */
-    update_song_timeout_source = g_timeout_add(250, (GSourceFunc) update_song_time, NULL);
+    update_song_timeout_source = g_timeout_add(250, update_song_time, NULL);
 }
 
 static void ui_playback_stop(gpointer hook_data, gpointer user_data)
