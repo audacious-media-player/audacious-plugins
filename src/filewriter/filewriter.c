@@ -48,7 +48,7 @@ enum fileext_t
 };
 
 static gint fileext = WAV;
-static gchar *fileext_str[] =
+static const gchar *fileext_str[FILEEXT_MAX] =
 {
     "wav",
 #ifdef FILEWRITER_MP3
@@ -159,7 +159,7 @@ static OutputPluginInitStatus file_init(void)
     if (plugin->init)
         plugin->init(&file_write_output);
 
-    return OUTPUT_PLUGIN_INIT_NO_DEVICES;
+    return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
 void file_about(void)
@@ -202,12 +202,12 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     input.channels = nch;
 
     playlist = aud_playlist_get_active();
-    if (!playlist)
+    if (playlist < 0)
         return 0;
 
     pos = aud_playlist_get_position(playlist);
     tuple = (Tuple*) aud_playlist_entry_get_tuple(playlist, pos);
-    if(!tuple)
+    if (tuple == NULL)
         return 0;
 
     if (filenamefromtags)
@@ -230,7 +230,6 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     }
     if (filename == NULL)
         filename = g_strdup_printf("aud-%d", pos);
-
 
     if (prependnumber)
     {
@@ -256,7 +255,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     output_file = aud_vfs_fopen(filename, "w");
     g_free(filename);
 
-    if (!output_file)
+    if (output_file == NULL)
         return 0;
 
     convert_init(fmt, plugin->format_required, nch);
@@ -285,10 +284,8 @@ static void file_close(void)
     plugin->close();
     convert_free();
 
-    if (output_file)
-    {
+    if (output_file != NULL)
         aud_vfs_fclose(output_file);
-    }
     output_file = NULL;
 }
 
