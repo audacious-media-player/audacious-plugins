@@ -1,6 +1,7 @@
 /*
  * Audacious FFaudio Plugin
  * Copyright © 2009 William Pitcock <nenolod@dereferenced.org>
+ *                  Matti Hämäläinen <ccr@tnsp.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +17,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+
+#define FFAUDIO_DEBUG 1     /* Enable generic debug output */
+#undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
+#undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
+
 
 #include "config.h"
 #include "ffaudio-stdinc.h"
@@ -61,6 +67,7 @@ ffaudio_check_codec(AVCodec *codec)
 {
     /* Blacklist certain codecs here (see TODO for more information) */
     switch (codec->id) {
+#ifndef FFAUDIO_NO_BLACKLIST
         case CODEC_ID_MP1:
         case CODEC_ID_MP2:
         case CODEC_ID_MP3:
@@ -68,10 +75,10 @@ ffaudio_check_codec(AVCodec *codec)
         case CODEC_ID_VORBIS:
         case CODEC_ID_AAC:
         case CODEC_ID_TTA:
-
         case CODEC_ID_MUSEPACK8:
             _DEBUG("refusing blacklisted codec");
             return 0;
+#endif
         default:
             return 1;
     }
@@ -134,23 +141,54 @@ ffaudio_probe(const gchar *filename, VFSFile *file)
     return ffaudio_check_codec(codec);
 }
 
+typedef struct {
+    TupleValueType ttype;   /* Tuple field value type */
+    gint field;             /* Tuple field constant or if -1, use prim_key as field key */
+    gchar *prim_key;        /* Primary FFmpeg metadata key, matches any with this suffix  */
+    gchar *alt_keys[5];     /* Fallback keys, strict (but case-insensitive) matching */
+} ffaudio_meta_t;
+
+static const ffaudio_meta_t metaentries[] = {
+    { TUPLE_STRING, FIELD_ARTIST,       "author",    { "hor", NULL } },
+    { TUPLE_STRING, FIELD_TITLE,        "title",     { "le", NULL } },
+    { TUPLE_STRING, FIELD_ALBUM,        "album",     { "WM/AlbumTitle", NULL } },
+    { TUPLE_STRING, FIELD_PERFORMER,    "performer", { NULL } },
+    { TUPLE_STRING, FIELD_COPYRIGHT,    "copyright", { NULL } },
+    { TUPLE_STRING, FIELD_GENRE,        "genre",     { "WM/Genre", NULL } },
+    { TUPLE_STRING, FIELD_COMMENT,      "comment",   { NULL } },
+    { TUPLE_STRING, -1,                 "lyrics",    { "WM/Lyrics", NULL } },
+    { TUPLE_INT,    FIELD_YEAR,         "year",      { "WM/Year", NULL } },
+    { TUPLE_INT,    FIELD_TRACK_NUMBER, "track",     { "WM/TrackNumber", NULL } },
+};
+
+static const gint n_metaentries = sizeof(metaentries) / sizeof(metaentries[0]);
+
 static void
-copy_tuple_meta(Tuple *tuple, AVFormatContext *ic, const TupleValueType ttype, const gint field, const gchar *key)
+ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
 {
     AVMetadataTag *tag = NULL;
 
     if (ic->metadata != NULL)
-        tag = av_metadata_get(ic->metadata, key, NULL, AV_METADATA_IGNORE_SUFFIX);
+    {
+        tag = av_metadata_get(ic->metadata, m->prim_key, NULL, AV_METADATA_IGNORE_SUFFIX);
+        if (tag == NULL) {
+            gint i;
+            for (i = 0; tag == NULL && m->alt_keys[i] != NULL; i++)
+                tag = av_metadata_get(ic->metadata, m->alt_keys[i], NULL, 0);
+        }
+    }
 
     if (tag != NULL)
     {
-        switch (ttype) {
+        const gchar *key_name = (m->field < 0) ? m->prim_key : NULL;
+
+        switch (m->ttype) {
         case TUPLE_STRING:
-            aud_tuple_associate_string(tuple, field, NULL, tag->value);
+            aud_tuple_associate_string(tuple, m->field, key_name, tag->value);
             break;
 
         case TUPLE_INT:
-            aud_tuple_associate_int(tuple, field, NULL, atoi(tag->value));
+            aud_tuple_associate_int(tuple, m->field, key_name, atoi(tag->value));
             break;
 
         default:
@@ -164,15 +202,10 @@ ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVC
 {
     if (ic != NULL)
     {
-        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_ARTIST, "author");
-        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_TITLE, "title");
-        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_ALBUM, "album");
-        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_PERFORMER, "performer");
-        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_COPYRIGHT, "copyright");
-        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_GENRE, "genre");
-        copy_tuple_meta(tuple, ic, TUPLE_STRING, FIELD_COMMENT, "comment");
-        copy_tuple_meta(tuple, ic, TUPLE_INT, FIELD_YEAR, "year");
-        copy_tuple_meta(tuple, ic, TUPLE_INT, FIELD_TRACK_NUMBER, "track");
+        gint i;
+        for (i = 0; i < n_metaentries; i++)
+            ffaudio_get_meta(tuple, ic, &metaentries[i]);
+
         aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, ic->duration / 1000);
     }
 
@@ -445,10 +478,10 @@ ffaudio_play_file(InputPlayback *playback)
             /* Output audio in small blocks */
             while (out_size > 0 && playback->playing)
             {
-                gsize writeoff = out_size >= 512 ? 512 : out_size;
+                gint writeoff = out_size >= 512 ? 512 : out_size;
 
                 playback->pass_audio(playback, out_fmt,
-                    c->channels, out_size >= 512 ? 512 : out_size,
+                    c->channels, writeoff,
                     (gint16 *)outbuf_p, NULL);
 
                 outbuf_p += writeoff;
@@ -526,9 +559,6 @@ static gchar *ffaudio_fmts[] = {
     /* MPEG 2/4 AC3 */
     "ac3",
 
-    /* WAV (PCM or GSM payload) */
-    "wav",
-
     /* end of table */
     NULL
 };
@@ -542,13 +572,19 @@ ffaudio_about(void)
     {
         gchar *formats = g_strjoinv(", ", ffaudio_fmts);
         gchar *description = g_strdup_printf(
-        _("Multi-format audio decoding plugin for Audacious based on \n"
-        "FFmpeg multimedia framework (http://www.ffmpeg.org/) \n"
-        "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n\n"
-        "Supported formats: %s\n\n"
-        "Audacious plugin by: \n"
+        _("Multi-format audio decoding plugin for Audacious based on\n"
+        "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+        "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
+        "\n"
+        "FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
+        "\n"
+        "Supported formats: %s\n"
+        "\n"
+        "Audacious plugin by:\n"
         "            William Pitcock <nenolod@nenolod.net>,\n"
         "            Matti Hämäläinen <ccr@tnsp.org>\n"),
+        LIBAVFORMAT_VERSION_MAJOR, LIBAVFORMAT_VERSION_MINOR, LIBAVFORMAT_VERSION_MICRO,
+        LIBAVCODEC_VERSION_MAJOR, LIBAVCODEC_VERSION_MINOR, LIBAVCODEC_VERSION_MICRO,
         formats);
 
         aboutbox = audacious_info_dialog(

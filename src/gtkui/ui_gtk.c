@@ -36,7 +36,7 @@ static GtkWidget *volume;
 
 static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
-static gint update_song_timeout_source = 0;
+static guint update_song_timeout_source = 0;
 
 static gulong volume_change_handler_id;
 
@@ -586,6 +586,12 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
 static gboolean _ui_finalize(void)
 {
+    if (update_song_timeout_source)
+    {
+        g_source_remove(update_song_timeout_source);
+        update_song_timeout_source = 0;
+    }
+
     gtkui_cfg_save();
     gtkui_cfg_free();
     ui_hooks_disassociate();

@@ -286,8 +286,6 @@ void xs_play_file(InputPlayback *pb)
 
     audioOpen = TRUE;
 
-    pb->set_pb_ready(pb);
-
     /* Set song information for current subtune */
     XSDEBUG("foobar #1\n");
     xs_status.sidPlayer->plrUpdateSIDInfo(&xs_status);
@@ -308,6 +306,8 @@ void xs_play_file(InputPlayback *pb)
         xs_status.audioChannels);
 
     g_free(tmpTitle);
+
+    pb->set_pb_ready(pb);
 
     XS_MUTEX_UNLOCK(xs_status);
     XSDEBUG("playing\n");

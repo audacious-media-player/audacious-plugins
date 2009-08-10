@@ -44,7 +44,6 @@ GCond * mad_cond, * control_cond;
 /*
  * static variables
  */
-static GThread *decode_thread; /**< the single decoder thread */
 static struct mad_info_t info;   /**< info for current track */
 
 static gint mp3_bitrate_table[5][16] = {
@@ -498,20 +497,17 @@ audmad_stop(InputPlayback *playback)
     info.playback = playback;
     g_mutex_unlock(mad_mutex);
 
-    if (decode_thread) {
-
+    if (playback->thread != NULL)
+    {
         g_mutex_lock(mad_mutex);
         info.playback->playing = 0;
         g_mutex_unlock(mad_mutex);
         g_cond_signal(mad_cond);
 
-        AUDDBG("waiting for thread\n");
-        g_thread_join(decode_thread);
-        AUDDBG("thread done\n");
+        g_thread_join (playback->thread);
+        playback->thread = NULL;
 
         input_term(&info);
-        decode_thread = NULL;
-
     }
     AUDDBG("e: audmad_stop\n");
 }
@@ -576,7 +572,6 @@ audmad_play_file(InputPlayback *playback)
     info.playback->playing = 1;
     g_mutex_unlock(pb_mutex);
 
-    decode_thread = g_thread_self();
     playback->set_pb_ready(playback);
     decode_loop(&info);
     input_term (& info);
