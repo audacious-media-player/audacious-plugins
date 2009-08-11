@@ -20,7 +20,6 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-
 #include <audacious/plugin.h>
 
 #include "ui_manager.h"
@@ -311,13 +310,29 @@ static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventB
     return FALSE;
 }
 
+static void ui_playlist_add_store(gint playlist, guint row, gboolean valid, void *store, GtkTreeIter *iter)
+{
+    gint length = aud_playlist_entry_get_length(playlist, row);
+    gchar *length_buf, *desc_buf = g_strdup(aud_playlist_entry_get_title(playlist, row));
+
+    if (length != -1)
+        length_buf = g_strdup_printf("%d:%-2.2d", length / 60000, (length / 1000) % 60);
+    else
+        length_buf = NULL;
+
+    if (!valid)
+        gtk_list_store_append(GTK_LIST_STORE(store), iter);
+    gtk_list_store_set(GTK_LIST_STORE(store), iter, COLUMN_NUM, row + 1, COLUMN_TEXT, desc_buf, COLUMN_TIME, length_buf, COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL, -1);
+
+    g_free(desc_buf);
+    g_free(length_buf);
+}
+
 void ui_playlist_widget_update(GtkWidget * widget)
 {
     guint row, length;
     gboolean valid;
 
-    gchar *desc_buf = NULL;
-    gchar *length_buf = NULL;
     GtkTreeIter iter;
     gint playlist;
     GtkTreeModel *store;
@@ -331,35 +346,7 @@ void ui_playlist_widget_update(GtkWidget * widget)
 
     for (row = 0; row < length; row++)
     {
-        const gchar *title = aud_playlist_entry_get_title(playlist, row);
-        gint length = aud_playlist_entry_get_length(playlist, row);
-
-        if (title)
-            desc_buf = g_strdup(title);
-        else
-        {
-            const gchar *filename = aud_playlist_entry_get_filename(playlist, row);
-            if (strchr(filename, '/'))
-                desc_buf = aud_str_to_utf8(strrchr(filename, '/') + 1);
-            else
-                desc_buf = aud_str_to_utf8(filename);
-        }
-
-        if (length != -1)
-        {
-            length_buf = g_strdup_printf("%d:%-2.2d", length / 60000, (length / 1000) % 60);
-        }
-
-        if (!valid)
-            gtk_list_store_append(GTK_LIST_STORE(store), &iter);
-        gtk_list_store_set(GTK_LIST_STORE(store), &iter, COLUMN_NUM, row + 1, COLUMN_TEXT, desc_buf, COLUMN_TIME, length_buf, COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL, -1);
-
-        g_free(desc_buf);
-        desc_buf = NULL;
-
-        g_free(length_buf);
-        length_buf = NULL;
-
+        ui_playlist_add_store(playlist, row, valid, store, &iter);
         valid = gtk_tree_model_iter_next(store, &iter);
     }
 
@@ -375,8 +362,6 @@ void ui_playlist_widget_update(GtkWidget * widget)
 static gboolean ui_playlist_widget_fill(gpointer treeview)
 {
     gint playlist;
-    gchar *desc_buf = NULL;
-    gchar *length_buf = NULL;
     guint row, length;
     GtkTreeIter iter;
     GtkListStore *store = (GtkListStore *) gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
@@ -391,36 +376,7 @@ static gboolean ui_playlist_widget_fill(gpointer treeview)
     length = aud_playlist_entry_count(playlist);
 
     for (row = 0; row < length; row++)
-    {
-        const gchar *title = aud_playlist_entry_get_title(playlist, row);
-        gint length = aud_playlist_entry_get_length(playlist, row);
-
-        if (title)
-            desc_buf = g_strdup(title);
-        else
-        {
-            const gchar *filename = aud_playlist_entry_get_filename(playlist, row);
-            if (strchr(filename, '/'))
-                desc_buf = aud_str_to_utf8(strrchr(filename, '/') + 1);
-            else
-                desc_buf = aud_str_to_utf8(filename);
-        }
-
-        if (length != -1)
-        {
-            length_buf = g_strdup_printf("%d:%-2.2d", length / 60000, (length / 1000) % 60);
-        }
-
-        gtk_list_store_append(GTK_LIST_STORE(store), &iter);
-        gtk_list_store_set(GTK_LIST_STORE(store), &iter, COLUMN_NUM, row + 1, COLUMN_TEXT, desc_buf, COLUMN_TIME, length_buf, COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL, -1);
-
-        g_free(desc_buf);
-        desc_buf = NULL;
-
-        if (length_buf)
-            g_free(length_buf);
-        length_buf = NULL;
-    }
+        ui_playlist_add_store(playlist, row, FALSE, store, &iter);
 
     /* attach liststore to treeview */
     gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store));

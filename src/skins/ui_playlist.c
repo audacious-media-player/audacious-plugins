@@ -36,6 +36,7 @@
 
 #include "platform/smartinclude.h"
 
+#include <inttypes.h>
 #include <unistd.h>
 #include <errno.h>
 
@@ -128,22 +129,24 @@ playlistwin_get_height(void)
 static void playlistwin_update_info (void)
 {
     gchar *text, *sel_text, *tot_text;
-    glong selection, total;
+    gint64 selection, total;
 
     total = aud_playlist_get_total_length (active_playlist) / 1000;
     selection = aud_playlist_get_selected_length (active_playlist) / 1000;
 
     if (selection >= 3600)
-        sel_text = g_strdup_printf ("%ld:%02ld:%02ld", selection / 3600,
-         selection / 60 % 60, selection % 60);
+        sel_text = g_strdup_printf ("%" PRId64 ":%02" PRId64 ":%02" PRId64,
+        selection / 3600, selection / 60 % 60, selection % 60);
     else
-        sel_text = g_strdup_printf ("%ld:%02ld", selection / 60, selection % 60);
+        sel_text = g_strdup_printf ("%" PRId64 ":%02" PRId64,
+        selection / 60, selection % 60);
 
     if (total >= 3600)
-        tot_text = g_strdup_printf ("%ld:%02ld:%02ld", total / 3600, total / 60
-         % 60, total % 60);
+        tot_text = g_strdup_printf ("%" PRId64 ":%02" PRId64 ":%02" PRId64,
+        total / 3600, total / 60 % 60, total % 60);
     else
-        tot_text = g_strdup_printf ("%ld:%02ld", total / 60, total % 60);
+        tot_text = g_strdup_printf ("%" PRId64 ":%02" PRId64,
+        total / 60, total % 60);
 
     text = g_strconcat(sel_text, "/", tot_text, NULL);
     ui_skinned_textbox_set_text (playlistwin_info, text);
