@@ -31,4 +31,6 @@ typedef struct {
     gchar *title_encoding;
 } vorbis_config_t;
 
+extern vorbis_config_t vorbis_cfg;
+
 #endif                          /* __VORBIS_H__ */

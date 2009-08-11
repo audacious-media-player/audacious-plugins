@@ -28,14 +28,10 @@
 /*#define AUD_DEBUG
 #define DEBUG*/
 
-#define REMOVE_NONEXISTANT_TAG(x)   if (x != NULL && !*x) { x = NULL; }
-
 #include <glib.h>
 
 #include <stdlib.h>
 #include <math.h>
-#include <string.h>
-#include <fcntl.h>
 
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
@@ -46,10 +42,6 @@
 
 #include "vorbis.h"
 
-extern vorbis_config_t vorbis_cfg;
-
-static long vorbis_interleave_buffer(float **pcm, int samples, int ch,
-                                     float *pcmout);
 
 static size_t ovcb_read(void *ptr, size_t size, size_t nmemb,
                         void *datasource);
