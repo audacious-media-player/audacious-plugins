@@ -16,7 +16,6 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#define FLACNG_DEBUG
 
 #include "flacng.h"
 #include <audacious/output.h>
@@ -590,7 +589,6 @@ Tuple *flac_get_song_tuple(const gchar* filename) {
      * Open the file
      */
 
-    _DEBUG ("OPEN %s", filename);
     if (NULL == (fd = aud_vfs_fopen(filename, "rb"))) {
         _ERROR("Could not open file for reading! (%s)", filename);
         _LEAVE NULL;

@@ -81,8 +81,8 @@ void reset_info(callback_info* info, gboolean close_fd) {
     if (close_fd && (NULL != info->input_stream)) {
         _DEBUG("Closing fd");
         aud_vfs_fclose(info->input_stream);
+        info->input_stream = NULL;
     }
-    info->input_stream = NULL;
 
     // memset(info->output_buffer, 0, BUFFER_SIZE * sizeof(int16_t));
     info->buffer_free = BUFFER_SIZE_SAMP;
@@ -105,14 +105,14 @@ void reset_info(callback_info* info, gboolean close_fd) {
     g_free(info->comment.comment);
     g_free(info->comment.date);
     memset(&(info->comment), 0, sizeof(info->comment));
-    
+
     g_free(info->replaygain.ref_loud);
     g_free(info->replaygain.track_gain);
     g_free(info->replaygain.track_peak);
     g_free(info->replaygain.album_gain);
     g_free(info->replaygain.album_peak);
     memset(&(info->replaygain), 0, sizeof(info->replaygain));
-    
+
     info->metadata_changed = FALSE;
 
     _LEAVE;
@@ -346,7 +346,7 @@ void add_comment(callback_info* info, gchar* key, gchar* value) {
 ReplayGainInfo get_replay_gain(callback_info *info) {
 
     ReplayGainInfo rg;
-    
+
     if (info->replaygain.has_rg) {
 	rg.track_gain = (info->replaygain.track_gain
 			 ? atof(info->replaygain.track_gain)
