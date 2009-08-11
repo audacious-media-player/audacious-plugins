@@ -176,7 +176,7 @@ void show_preferences_window(gboolean show) {
 
         prefswin = skins_interface.ops->create_prefs_window();
         cfgdlg = skins_configure();
-        aud_prefswin_page_new(cfgdlg, N_("Skinned Interface"), DATA_DIR "/images/appearance.png");
+        skins_interface.ops->prefswin_page_new(cfgdlg, N_("Skinned Interface"), DATA_DIR "/images/appearance.png");
 
         gtk_widget_show_all(*prefswin);
     } else {

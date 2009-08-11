@@ -305,7 +305,7 @@ scan_file(struct mad_info_t * info, gboolean fast)
 
 static void seek (struct mad_info_t * info)
 {
-    if (info->length == -1)
+    if (info->length <= 0)
         goto DONE;
 
     if (aud_vfs_fseek (info->infile, info->size * (long long) info->seek /
