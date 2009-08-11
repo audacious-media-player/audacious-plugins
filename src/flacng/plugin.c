@@ -581,7 +581,7 @@ void flac_seek(InputPlayback* input, gint time) {
 Tuple *flac_get_song_tuple(const gchar* filename) {
 
     VFSFile *fd;
-    Tuple *tuple;
+    Tuple * tuple = NULL;
 
     _ENTER;
 
@@ -596,15 +596,12 @@ Tuple *flac_get_song_tuple(const gchar* filename) {
 
     INFO_LOCK(test_info);
 
-    if (FALSE == read_metadata(fd, test_decoder, test_info)) {
-        _ERROR("Could not read metadata tuple for file <%s>", filename);
-        reset_info(test_info, TRUE);
-        INFO_UNLOCK(test_info);
-        _LEAVE NULL;
-    }
+    if (read_metadata (fd, test_decoder, test_info))
+        tuple = get_tuple (filename, test_info);
+    else
+        _ERROR ("Could not read metadata tuple for file <%s>", filename);
 
-    tuple = get_tuple(filename, test_info);
-
+    aud_vfs_fclose (fd);
     reset_info(test_info, TRUE);
     INFO_UNLOCK(test_info);
 
