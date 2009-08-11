@@ -10,8 +10,6 @@
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
-extern GMutex *vf_mutex;
-
 static GtkWidget *vorbis_configurewin = NULL;
 static GtkWidget *vbox;
 

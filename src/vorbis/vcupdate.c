@@ -42,8 +42,6 @@
 
 static gboolean write_and_pivot_files(vcedit_state * state);
 
-extern GMutex *vf_mutex;
-
 static mowgli_dictionary_t *
 dictionary_from_vorbis_comment(vorbis_comment * vc)
 {
@@ -126,13 +124,10 @@ vorbis_update_song_tuple (Tuple *tuple, VFSFile *fd)
 
     if(!tuple || !fd) return FALSE;
     
-    g_mutex_lock(vf_mutex);
-
     state = vcedit_new_state();
 
     if(vcedit_open(state, fd) < 0) {
         vcedit_clear(state);
-        g_mutex_unlock(vf_mutex);
         return FALSE;
     }
     
@@ -154,7 +149,6 @@ vorbis_update_song_tuple (Tuple *tuple, VFSFile *fd)
     ret = write_and_pivot_files(state);
 
     vcedit_clear(state);
-    g_mutex_unlock(vf_mutex);
 
     return ret;
 }
