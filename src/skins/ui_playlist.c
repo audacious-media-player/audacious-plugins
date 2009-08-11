@@ -1335,7 +1335,16 @@ void action_playlist_track_info(void)
 
 void action_queue_toggle (void)
 {
-    aud_playlist_queue_insert_selected (active_playlist, -1);
+    gint rows, first, focused, at;
+
+    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first, & focused);
+    at = (focused == -1) ? -1 : aud_playlist_queue_find_entry (active_playlist,
+     focused);
+
+    if (at == -1)
+        aud_playlist_queue_insert_selected (active_playlist, -1);
+    else
+        aud_playlist_queue_delete (active_playlist, at, 1);
 }
 
 void action_playlist_sort_by_track_number (void)
