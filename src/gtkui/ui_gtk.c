@@ -187,6 +187,9 @@ static void ui_playlist_update(gpointer hook_data, gpointer user_data)
     GtkWidget *page = index_get(pages, playlist);
     GtkWidget *treeview = g_object_get_data((GObject *) page, "treeview");
 
+    if (GPOINTER_TO_INT(hook_data) <= PLAYLIST_UPDATE_SELECTION) /* cheating */
+        return;
+
     ui_playlist_widget_set_current(treeview, aud_playlist_get_position(playlist));
     ui_playlist_widget_update(treeview);
 }
@@ -209,7 +212,7 @@ static void ui_set_song_info(void *unused, void *another)
 
     gtk_widget_show(label_time);
 
-    ui_playlist_update(NULL, NULL);
+    ui_playlist_update(GINT_TO_POINTER(PLAYLIST_UPDATE_METADATA), NULL);
 }
 
 static void ui_playlist_created(void *data, void *unused)
