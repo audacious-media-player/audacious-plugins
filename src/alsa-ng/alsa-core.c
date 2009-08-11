@@ -222,10 +222,14 @@ alsaplug_write_buffer(gpointer data, gint length)
         else
         {
             gint err = snd_pcm_recover(pcm_handle, wr_frames, 1);
-            if (err < 0)
-                _ERROR("(write) snd_pcm_recover: %s", snd_strerror(err));
 
-            return;
+            _DEBUG ("snd_pcm_writei error: %s", snd_strerror (wr_frames));
+
+            if (err < 0)
+            {
+                _ERROR ("snd_pcm_recover error: %s", snd_strerror (err));
+                return;
+            }
         }
     }
 }
