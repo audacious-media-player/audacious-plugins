@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-/* #define FLACNG_DEBUG */
+#define FLACNG_DEBUG
 
 #include "flacng.h"
 #include <audacious/output.h>
@@ -561,7 +561,7 @@ void flac_mseek(InputPlayback* input, gulong millisecond) {
         _LEAVE;
     }
 
-    _DEBUG("Requesting seek to %d", millisecond);
+    _DEBUG ("Requesting seek to %lu", millisecond);
     seek_to = millisecond;
 
     while (-1 != seek_to) {
@@ -589,6 +589,8 @@ Tuple *flac_get_song_tuple(const gchar* filename) {
     /*
      * Open the file
      */
+
+    _DEBUG ("OPEN %s", filename);
     if (NULL == (fd = aud_vfs_fopen(filename, "rb"))) {
         _ERROR("Could not open file for reading! (%s)", filename);
         _LEAVE NULL;
@@ -601,7 +603,6 @@ Tuple *flac_get_song_tuple(const gchar* filename) {
     else
         _ERROR ("Could not read metadata tuple for file <%s>", filename);
 
-    aud_vfs_fclose (fd);
     reset_info(test_info, TRUE);
     INFO_UNLOCK(test_info);
 
