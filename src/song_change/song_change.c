@@ -411,14 +411,14 @@ static PreferencesWidget elements[] = {
     {WIDGET_LABEL, N_("You can use the following format strings which\n"
                       "will be substituted before calling the command\n"
                       "(not all are useful for the end-of-playlist command).\n\n"
-                      "%%F: Frequency (in hertz)\n"
-                      "%%c: Number of channels\n"
-                      "%%f: filename (full path)\n"
-                      "%%l: length (in milliseconds)\n"
-                      "%%n or %%s: Song name\n"
-                      "%%r: Rate (in bits per second)\n"
-                      "%%t: Playlist position (%%02d)\n"
-                      "%%p: Currently playing (1 or 0)"), NULL, NULL, NULL, FALSE},
+                      "%F: Frequency (in hertz)\n"
+                      "%c: Number of channels\n"
+                      "%f: filename (full path)\n"
+                      "%l: length (in milliseconds)\n"
+                      "%n or %s: Song name\n"
+                      "%r: Rate (in bits per second)\n"
+                      "%t: Playlist position (%02d)\n"
+                      "%p: Currently playing (1 or 0)"), NULL, NULL, NULL, FALSE},
 };
 
 static GtkWidget *
