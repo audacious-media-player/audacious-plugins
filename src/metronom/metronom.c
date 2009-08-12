@@ -27,6 +27,7 @@
 #define TACT_ID_MAX     12
 #define TACT_FORM_MAX   8
 
+#define AUDIO_FREQ      (44100)
 #define BUF_SAMPLES     512
 #define BUF_BYTES       (BUF_SAMPLES * 2)
 #define MAX_AMPL        (GINT16_TO_LE((1 << 15) - 1))
@@ -162,7 +163,7 @@ static void metronom_play(InputPlayback * playback)
     gint datalast = datamiddle;
     gint data_form[TACT_FORM_MAX];
 
-    if (playback->output->open_audio(FMT_S16_LE, 44100, 1) == 0)
+    if (playback->output->open_audio(FMT_S16_LE, AUDIO_FREQ, 1) == 0)
     {
         playback->error = TRUE;
         goto error_exit;
@@ -174,10 +175,10 @@ static void metronom_play(InputPlayback * playback)
         goto error_exit;
     }
     
-    playback->set_params(playback, name, -1, 16 * 44100, 44100, 1);
+    playback->set_params(playback, name, -1, sizeof(data[0]) * 8 * AUDIO_FREQ, AUDIO_FREQ, 1);
     g_free(name);
 
-    tact = 60 * 44100 / pmetronom.bpm;
+    tact = 60 * AUDIO_FREQ / pmetronom.bpm;
 
     /* prepare weighted amplitudes */
     for (num = 0; num < pmetronom.num; num++)
