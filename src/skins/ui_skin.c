@@ -292,31 +292,18 @@ skin_set_default_vis_color(Skin * skin)
            sizeof(skin_default_viscolor));
 }
 
-gchar *
-skin_pixmap_locate(const gchar * dirname, gchar ** basenames)
+gchar * skin_pixmap_locate (const gchar * dirname, gchar * * basenames)
 {
-    gchar *filename;
+    gchar * filename = NULL;
     gint i;
 
-    for (i = 0; basenames[i]; i++)
+    for (i = 0; basenames[i] != NULL; i ++)
     {
-        filename = g_strdup_printf ("%s/%s", dirname, basenames[i]);
-
-        if (aud_vfs_file_test (filename, G_FILE_TEST_IS_REGULAR))
-            return filename;
-
-        g_free (filename);
+        if ((filename = find_file_case_path (dirname, basenames[i])) != NULL)
+            break;
     }
 
-    // Case-insensitive search; much slower.
-    for (i = 0; basenames[i]; i++)
-    if (!(filename = find_path_recursively(dirname, basenames[i])))
-        g_free(filename);
-    else
-        return filename;
-
-    /* can't find any targets -- sorry */
-    return NULL;
+    return filename;
 }
 
 /**
@@ -657,7 +644,7 @@ skin_parse_hints(Skin * skin, gchar *path_p)
     if (path_p == NULL)
         return;
 
-    filename = find_file_recursively(path_p, "skin.hints");
+    filename = find_file_case_uri (path_p, "skin.hints");
 
     if (filename == NULL)
         return;
@@ -1274,8 +1261,8 @@ skin_create_transparent_mask(const gchar * path,
     guint i, j;
     gint k;
 
-    if (path)
-        filename = find_file_recursively(path, file);
+    if (path != NULL)
+        filename = find_file_case_uri (path, file);
 
     /* filename will be null if path wasn't set */
     if (!filename)
@@ -1351,8 +1338,7 @@ skin_load_viscolor(Skin * skin, const gchar * path, const gchar * basename)
 
     skin_set_default_vis_color(skin);
 
-    filename = find_file_recursively(path, basename);
-    if (!filename)
+    if ((filename = find_file_case_uri (path, basename)) == NULL)
         return;
 
     if (!(file = aud_vfs_fopen(filename, "r"))) {
@@ -1430,7 +1416,7 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
         skin->pixmaps[SKIN_NUMBERS].width < 108 )
         skin_numbers_generate_dash(skin);
 
-    filename = find_file_recursively(path, "pledit.txt");
+    filename = find_file_case_uri (path, "pledit.txt");
     inifile = (filename != NULL) ? aud_open_ini_file (filename) : NULL;
 
     skin->colors[SKIN_PLEDIT_NORMAL] =
@@ -1572,11 +1558,14 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     }
 
 #ifndef _WIN32
-    if (!config.disable_inline_gtk && !archive) {
-        gtkrcpath = find_path_recursively(skin->path, "gtkrc");
-        if (gtkrcpath != NULL)
-            skin_set_gtk_theme(settings, skin);
-        g_free(gtkrcpath);
+    if (! config.disable_inline_gtk && ! archive)
+    {
+        gtkrcpath = g_strdup_printf ("%s/gtk-2.0/gtkrc", skin->path);
+
+        if (g_file_test (gtkrcpath, G_FILE_TEST_IS_REGULAR))
+            skin_set_gtk_theme (settings, skin);
+
+        g_free (gtkrcpath);
     }
 #endif
 

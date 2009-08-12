@@ -31,6 +31,7 @@
 
 #include "util.h"
 
+#include <dirent.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
@@ -56,69 +57,51 @@ typedef struct
 
 static void make_directory(const gchar *path, mode_t mode);
 
-static gboolean find_file_func(const gchar *path, const gchar *basename,
-                               gpointer data)
+gchar * find_file_case (const gchar * folder, const gchar * basename)
 {
-    FindFileContext *context = data;
+    gchar * found = NULL;
+    DIR * handle;
+    struct dirent * entry;
 
-    if (strlen(path) > FILENAME_MAX)
-    {
-        AUDDBG("Ignoring path: name too long (%s)\n", path);
-        return TRUE;
-    }
+    if ((handle = opendir (folder)) == NULL)
+        return NULL;
 
-    if (aud_vfs_file_test(path, G_FILE_TEST_IS_REGULAR))
+    while ((entry = readdir (handle)) != NULL)
     {
-        if (!strcasecmp(basename, context->to_match))
+        if (! strcasecmp (entry->d_name, basename))
         {
-            context->match = g_strdup(path);
-            context->found = TRUE;
-            return TRUE;
+            found = g_strdup (entry->d_name);
+            break;
         }
     }
-    else if (aud_vfs_file_test(path, G_FILE_TEST_IS_DIR))
-    {
-        dir_foreach(path, find_file_func, context, NULL);
-        if (context->found)
-            return TRUE;
-    }
 
-    return FALSE;
+    closedir (handle);
+    return found;
 }
 
-gchar *find_file_recursively(const gchar *path, const gchar *filename)
+gchar * find_file_case_path (const gchar * folder, const gchar * basename)
 {
-    FindFileContext context;
-    gchar *out = NULL;
+    gchar * found, * path;
 
-    context.to_match = filename;
-    context.match = NULL;
-    context.found = FALSE;
+    if ((found = find_file_case (folder, basename)) == NULL)
+        return NULL;
 
-    dir_foreach(path, find_file_func, &context, NULL);
-
-    if (context.match)
-    {
-        out = g_filename_to_uri(context.match, NULL, NULL);
-        g_free(context.match);
-    }
-
-    return out;
+    path = g_strdup_printf ("%s/%s", folder, found);
+    g_free (found);
+    return path;
 }
 
-gchar *find_path_recursively(const gchar *path, const gchar *filename)
+gchar * find_file_case_uri (const gchar * folder, const gchar * basename)
 {
-    FindFileContext context;
+    gchar * found, * uri;
 
-    context.to_match = filename;
-    context.match = NULL;
-    context.found = FALSE;
+    if ((found = find_file_case_path (folder, basename)) == NULL)
+        return NULL;
 
-    dir_foreach(path, find_file_func, &context, NULL);
-
-    return context.match;
+    uri = g_filename_to_uri (found, NULL, NULL);
+    g_free (found);
+    return uri;
 }
-
 
 typedef enum
 {
