@@ -21,6 +21,7 @@
 #define FFAUDIO_DEBUG 1     /* Enable generic debug output */
 #undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
+#define FFAUDIO_USE_AUDTAG  /* Use Audacious tagging library */
 
 
 #include "config.h"
@@ -256,11 +257,15 @@ ffaudio_get_song_tuple(const gchar *filename)
 
     ffaudio_get_tuple_data(tuple, ic, c, codec);
     av_close_input_file (ic);
-    VFSFile * fd = vfs_fopen(filename,"r");
-    tuple = tag_tuple_read(tuple,fd);
+
+#ifdef FFAUDIO_USE_AUDTAG
+    VFSFile * fd = vfs_fopen(filename, "rb");
+    tuple = tag_tuple_read(tuple, fd);
+#endif
     return tuple;
 }
 
+#ifdef FFAUDIO_USE_AUDTAG
 gboolean
 ffaudio_update_song_tuple(Tuple *tuple, VFSFile *fd)
 {
@@ -268,6 +273,7 @@ ffaudio_update_song_tuple(Tuple *tuple, VFSFile *fd)
 
     return TRUE;
 }
+#endif
 
 static void
 ffaudio_play_file(InputPlayback *playback)
@@ -613,7 +619,9 @@ InputPlugin ffaudio_ip = {
     .about = ffaudio_about,
     .description = "FFaudio Plugin",
     .vfs_extensions = ffaudio_fmts,
+#ifdef FFAUDIO_USE_AUDTAG
     .update_song_tuple = ffaudio_update_song_tuple,
+#endif
 };
 
 static InputPlugin *ffaudio_iplist[] = { &ffaudio_ip, NULL };
