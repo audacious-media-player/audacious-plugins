@@ -413,8 +413,12 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
     {
         gint i_length = aud_playlist_entry_get_length (active_playlist, i);
 
-        g_snprintf (length, sizeof (length), "%d:%02d", i_length / 60000,
-         i_length / 1000 % 60);
+        if (i_length > 0)
+            g_snprintf (length, sizeof (length), "%d:%02d", i_length / 60000,
+             i_length / 1000 % 60);
+        else
+            length[0] = 0;
+
         tpadding_dwidth = MAX (tpadding_dwidth, strlen (length));
 
         if (aud_playlist_entry_get_selected (active_playlist, i))
@@ -441,8 +445,11 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
         if (pos != -1)
             g_snprintf(queuepos, sizeof(queuepos), "%d", pos + 1);
 
-        g_snprintf (length, sizeof (length), "%d:%02d", i_length / 60000,
-         i_length / 1000 % 60);
+        if (i_length > 0)
+            g_snprintf (length, sizeof (length), "%d:%02d", i_length / 60000,
+             i_length / 1000 % 60);
+        else
+            length[0] = 0;
 
         strncat(tail, length, sizeof(tail) - 1);
         tail_len = strlen(tail);
