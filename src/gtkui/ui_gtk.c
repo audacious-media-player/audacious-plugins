@@ -26,6 +26,7 @@
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
 #include "ui_playlist_widget.h"
+#include "ui_playlist_model.h"
 #include "ui_manager.h"
 
 static GtkWidget *window;       /* the main window */
@@ -61,7 +62,6 @@ static void ui_playlist_create_tab(gint playlist)
 
     scrollwin = gtk_scrolled_window_new(NULL, NULL);
     index_insert(pages, playlist, scrollwin);
-    g_object_set_data(G_OBJECT(scrollwin), "playlist", GINT_TO_POINTER(playlist));
 
     treeview = ui_playlist_widget_new(playlist);
     g_object_set_data(G_OBJECT(scrollwin), "treeview", treeview);
@@ -86,8 +86,11 @@ static void ui_playlist_destroy_tab(gint playlist)
 static void ui_playlist_change_tab(GtkNotebook * notebook, GtkNotebookPage * notebook_page, gint page_num, void *unused)
 {
     GtkWidget *page = gtk_notebook_get_nth_page(notebook, page_num);
+    GtkTreeView *treeview = g_object_get_data(G_OBJECT(page), "treeview");
+    GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
+    UiPlaylistModel *model = UI_PLAYLIST_MODEL(tree_model);
 
-    aud_playlist_set_active(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(page), "playlist")));
+    aud_playlist_set_active(model->playlist);
 }
 
 static void ui_populate_playlist_notebook(void)
