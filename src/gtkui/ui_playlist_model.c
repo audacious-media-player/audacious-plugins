@@ -473,10 +473,31 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
 }
 
 static void
+ui_playlist_model_playlist_delete(gpointer hook_data, gpointer user_data)
+{
+    UiPlaylistModel *model = UI_PLAYLIST_MODEL(user_data);
+    gint playlist = GPOINTER_TO_INT(hook_data);
+
+    if (model->playlist > playlist)
+    {
+        model->playlist--;
+        return;
+    }
+
+    /* should happen only if GtkTreeView wasn't yet destroyed */
+    if (model->playlist == playlist)
+    {
+        model->num_rows = 0;
+        model->playlist = -1;
+    }
+}
+
+static void
 ui_playlist_model_associate_hooks(UiPlaylistModel *model)
 {
     aud_hook_associate("playlist position", ui_playlist_model_position_change, model);
     aud_hook_associate("playlist update", ui_playlist_model_playlist_update, model);
+    aud_hook_associate("playlist delete", ui_playlist_model_playlist_delete, model);
 }
 
 static void
@@ -484,5 +505,6 @@ ui_playlist_model_dissociate_hooks(UiPlaylistModel *model)
 {
     aud_hook_dissociate_full("playlist position", ui_playlist_model_position_change, model);
     aud_hook_dissociate_full("playlist update", ui_playlist_model_playlist_update, model);
+    aud_hook_dissociate_full("playlist delete", ui_playlist_model_playlist_delete, model);
 }
 
