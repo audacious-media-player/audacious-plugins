@@ -157,7 +157,8 @@ static void playlistwin_update_info (void)
 
 static void playlistwin_update_sinfo (void)
 {
-    gchar * info = aud_playback_get_title ();
+    gchar * info = audacious_drct_get_playing () ? aud_playback_get_title () :
+     NULL;
 
     ui_skinned_textbox_set_text (playlistwin_sinfo, (info == NULL) ? "" : info);
     g_free(info);
