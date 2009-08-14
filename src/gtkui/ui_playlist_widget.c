@@ -186,6 +186,8 @@ static void _ui_playlist_widget_selection_changed(GtkTreeSelection * selection, 
 static void ui_playlist_widget_change_song(GtkTreeView * treeview, guint pos)
 {
     gint playlist = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(treeview), "my_playlist"));
+
+    aud_playlist_set_playing(playlist);
     aud_playlist_set_position(playlist, pos);
 
     if (!audacious_drct_get_playing())
