@@ -182,10 +182,13 @@ ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
     if (tag != NULL)
     {
         const gchar *key_name = (m->field < 0) ? m->prim_key : NULL;
+        gchar *tmp;
 
         switch (m->ttype) {
         case TUPLE_STRING:
-            aud_tuple_associate_string(tuple, m->field, key_name, tag->value);
+            tmp = aud_str_to_utf8(tag->value);
+            aud_tuple_associate_string(tuple, m->field, key_name, tmp);
+            g_free(tmp);
             break;
 
         case TUPLE_INT:
