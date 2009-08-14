@@ -482,7 +482,7 @@ ui_playlist_model_associate_hooks(UiPlaylistModel *model)
 static void
 ui_playlist_model_dissociate_hooks(UiPlaylistModel *model)
 {
-    aud_hook_dissociate("playlist position", ui_playlist_model_position_change);
-    aud_hook_dissociate("playlist update", ui_playlist_model_playlist_update);
+    aud_hook_dissociate_full("playlist position", ui_playlist_model_position_change, model);
+    aud_hook_dissociate_full("playlist update", ui_playlist_model_playlist_update, model);
 }
 
