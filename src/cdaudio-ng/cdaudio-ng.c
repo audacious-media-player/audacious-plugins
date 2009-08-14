@@ -379,38 +379,36 @@ static void cdaudio_set_fullinfo(trackinfo_t *t,
 /* play thread only */
 static void cdaudio_play_file(InputPlayback *pinputplayback)
 {
-    gint trackno = find_trackno_from_filename (pinputplayback->filename);
-    Tuple * tuple;
-    gchar * title;
+    gint trackno;
+
+    g_mutex_lock (mutex);
+
+    if (trackinfo == NULL)
+    {
+        refresh_trackinfo ();
+
+        if (trackinfo == NULL)
+        {
+            cdaudio_error ("No audio CD found.");
+            goto UNLOCK;
+        }
+    }
+
+    trackno = find_trackno_from_filename (pinputplayback->filename);
 
     if (trackno == -1)
     {
         cdaudio_error ("Invalid URI %s.", pinputplayback->filename);
-        return;
+        goto UNLOCK;
     }
 
-    /* calls refresh_trackinfo if needed */
-    tuple = create_tuple_from_trackinfo_and_filename (pinputplayback->filename);
-
-    if (tuple == NULL)
+    if (trackno < firsttrackno || trackno > lasttrackno)
     {
         cdaudio_error ("Track %d not found.", trackno);
-        return;
+        goto UNLOCK;
     }
 
-    title = aud_tuple_formatter_make_title_string (tuple,
-     aud_get_gentitle_format ());
-    aud_tuple_free (tuple);
-
-    g_mutex_lock (mutex);
-
-    /* slim chance that these have changed since create_tuple */
-    if (trackinfo == NULL || trackno < firsttrackno || trackno > lasttrackno)
-        goto UNLOCK;
-
-    pinputplayback->set_params (pinputplayback, title, calculate_track_length
-     (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 1411200, 44100, 2);
-
+    pinputplayback->set_params (pinputplayback, NULL, 0, 1411200, 44100, 2);
     pinputplayback->playing = TRUE;
     playing_track = trackno;
     is_paused = FALSE;
@@ -447,7 +445,6 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 
 UNLOCK:
     g_mutex_unlock (mutex);
-    g_free (title);
 }
 
 /* main thread only */
@@ -510,6 +507,9 @@ static void cdaudio_seek (InputPlayback * playback, gint time)
 
     if (cdng_cfg.use_dae)
     {
+        if (pdae_params == NULL)
+            goto UNLOCK;
+
         pdae_params->seektime = time * 1000;
         g_cond_broadcast (control_cond);
     }
@@ -524,6 +524,7 @@ static void cdaudio_seek (InputPlayback * playback, gint time)
 			cdaudio_error("Failed to play analog CD");
     }
 
+UNLOCK:
     g_mutex_unlock (mutex);
 }
 
