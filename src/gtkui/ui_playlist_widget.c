@@ -23,6 +23,7 @@
 #include <audacious/plugin.h>
 
 #include "ui_manager.h"
+#include "ui_playlist_model.h"
 
 enum
 {
@@ -193,6 +194,7 @@ static void ui_playlist_widget_change_song(GtkTreeView * treeview, guint pos)
 
 static void ui_playlist_widget_set_title_active(GtkTreeModel * model, gint pos, gboolean active)
 {
+#if 0
     GtkTreeIter iter;
     GtkTreePath *path;
 
@@ -202,6 +204,7 @@ static void ui_playlist_widget_set_title_active(GtkTreeModel * model, gint pos, 
     gtk_list_store_set(GTK_LIST_STORE(model), &iter, COLUMN_WEIGHT, active ? PANGO_WEIGHT_BOLD : PANGO_WEIGHT_NORMAL, -1);
 
     gtk_tree_path_free(path);
+#endif
 }
 
 void ui_playlist_widget_set_current(GtkWidget * treeview, gint pos)
@@ -309,9 +312,10 @@ static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventB
 
     return FALSE;
 }
-
+#if 0
 static void ui_playlist_add_store(gint playlist, guint row, gboolean valid, void *store, GtkTreeIter *iter)
 {
+
     gint length = aud_playlist_entry_get_length(playlist, row);
     gchar *length_buf, *desc_buf = g_strdup(aud_playlist_entry_get_title(playlist, row));
 
@@ -326,10 +330,12 @@ static void ui_playlist_add_store(gint playlist, guint row, gboolean valid, void
 
     g_free(desc_buf);
     g_free(length_buf);
-}
 
+}
+#endif
 void ui_playlist_widget_update(GtkWidget * widget)
 {
+#if 0
     guint row, length;
     gboolean valid;
 
@@ -357,10 +363,12 @@ void ui_playlist_widget_update(GtkWidget * widget)
     }
 
     ui_playlist_widget_set_current(widget, aud_playlist_get_position(playlist));
+#endif
 }
 
 static gboolean ui_playlist_widget_fill(gpointer treeview)
 {
+#if 0
     gint playlist;
     guint row, length;
     GtkTreeIter iter;
@@ -381,22 +389,22 @@ static gboolean ui_playlist_widget_fill(gpointer treeview)
     /* attach liststore to treeview */
     gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store));
     g_object_unref(store);
-
+#endif
     return FALSE;
 }
 
 GtkWidget *ui_playlist_widget_new(gint playlist)
 {
     GtkWidget *treeview;
-    GtkListStore *store;
+    UiPlaylistModel *model;
     GtkCellRenderer *renderer;
     GtkTreeViewColumn *column;
     GtkTreeSelection *selection;
     gulong selection_changed_handler_id;
 
-    store = gtk_list_store_new(N_COLUMNS, G_TYPE_UINT, G_TYPE_STRING, G_TYPE_STRING, PANGO_TYPE_WEIGHT, G_TYPE_POINTER);
-    treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
-    g_object_unref(store);
+    model = ui_playlist_model_new(playlist);
+    treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
+    g_object_unref(model);
 
     gtk_tree_view_set_reorderable(GTK_TREE_VIEW(treeview), TRUE);
     gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(treeview), TRUE);
