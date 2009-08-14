@@ -382,10 +382,7 @@ ffaudio_play_file(InputPlayback *playback)
     _DEBUG("setting parameters");
     tuple = aud_tuple_new_from_filename(playback->filename);
     ffaudio_get_tuple_data(tuple, ic, c, codec);
-    title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
-    tuple_free(tuple);
-    playback->set_params(playback, title, ic->duration / 1000, c->bit_rate, c->sample_rate, c->channels);
-    g_free(title);
+    playback->set_tuple(playback, tuple);
 
     playback->playing = 1;
     playback->set_pb_ready(playback);
