@@ -1152,10 +1152,6 @@ mainwin_play_pushed(void)
 {
     if (ab_position_a != -1)
         audacious_drct_seek(ab_position_a / 1000);
-    if (audacious_drct_get_paused()) {
-        audacious_drct_pause();
-        return;
-    }
 
     audacious_drct_play ();
 }
