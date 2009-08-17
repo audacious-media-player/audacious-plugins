@@ -99,9 +99,12 @@ gboolean skins_init(InterfaceCbs *cbs) {
     aud_hook_call("volume set", h_vol);
 
     if (audacious_drct_get_playing ())
-        ui_main_evlistener_playback_begin (0, 0);
-    if (audacious_drct_get_paused ())
-        ui_main_evlistener_playback_pause (0, 0);
+    {
+        ui_main_evlistener_playback_begin (NULL, NULL);
+
+        if (audacious_drct_get_paused ())
+            ui_main_evlistener_playback_pause (NULL, NULL);
+    }
 
     if (config.player_visible)
        mainwin_show (1);
