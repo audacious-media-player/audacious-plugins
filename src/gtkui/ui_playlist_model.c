@@ -173,7 +173,9 @@ ui_playlist_model_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeP
     indices = gtk_tree_path_get_indices(path);
     depth = gtk_tree_path_get_depth(path);
 
-    g_assert(depth == 1); /* top level, items have no children */
+    /* top level, items have no children */
+    if (depth != 1)
+        return FALSE;
 
     n = indices[0];
 
@@ -418,21 +420,18 @@ static void
 ui_playlist_model_position_change(gpointer hook_data, gpointer user_data)
 {
     UiPlaylistModel *model = UI_PLAYLIST_MODEL(user_data);
+    gint playlist = GPOINTER_TO_INT(hook_data);
+
+    if (model->playlist != playlist)
+        return;
 
     if (model->position != -1)
     {
         ui_playlist_model_row_changed(model, model->position); /* remove bold */
     }
 
-    if (model->playlist == aud_playlist_get_active())
-    {
-        model->position = aud_playlist_get_position(model->playlist);
-        ui_playlist_model_row_changed(model, model->position); /* set bold */
-    }
-    else
-    {
-        model->position = -1;
-    }
+    model->position = aud_playlist_get_position(model->playlist);
+    ui_playlist_model_row_changed(model, model->position); /* set bold */
 }
 
 static void
