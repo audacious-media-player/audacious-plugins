@@ -292,7 +292,7 @@ ffaudio_play_file(InputPlayback *playback)
     ReSampleContext *resctx = NULL;
     gboolean codec_opened = FALSE, do_resampling = FALSE;
     AFormat out_fmt;
-    gchar *uribuf, *title;
+    gchar *uribuf;
     Tuple *tuple;
 
     uribuf = g_alloca(strlen(playback->filename) + 8);
