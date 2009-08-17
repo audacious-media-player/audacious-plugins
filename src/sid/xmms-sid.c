@@ -293,12 +293,7 @@ void xs_play_file(InputPlayback *pb)
     xs_get_song_tuple_info(tmpTuple, tmpTune, xs_status.currSong);
     XS_MUTEX_UNLOCK(xs_status);
     pb->set_tuple(pb, tmpTuple);
-
-/*
-    tmpTitle = aud_tuple_formatter_process_string(tmpTuple,
-        xs_cfg.titleOverride ? xs_cfg.titleFormat : aud_get_gentitle_format());
-*/
-
+    pb->set_params(pb, NULL, 0, -1, xs_status.audioFrequency, xs_status.audioChannels);
     pb->set_pb_ready(pb);
 
     XS_MUTEX_UNLOCK(xs_status);
