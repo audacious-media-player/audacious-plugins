@@ -383,7 +383,8 @@ ffaudio_play_file(InputPlayback *playback)
     tuple = aud_tuple_new_from_filename(playback->filename);
     ffaudio_get_tuple_data(tuple, ic, c, codec);
     playback->set_tuple(playback, tuple);
-
+    playback->set_params(playback, NULL, 0, c->bit_rate, c->sample_rate,
+     c->channels);
     playback->playing = 1;
     playback->set_pb_ready(playback);
 
