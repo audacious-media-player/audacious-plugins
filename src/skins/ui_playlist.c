@@ -1290,9 +1290,6 @@ playlistwin_create(void)
 static void playlistwin_real_show (void)
 {
     ui_skinned_button_set_inside(mainwin_pl, TRUE);
-
-    if (!config.playlist_shaded)
-        gtk_widget_hide(playlistwin_sinfo);
     gtk_window_present(GTK_WINDOW(playlistwin));
 }
 

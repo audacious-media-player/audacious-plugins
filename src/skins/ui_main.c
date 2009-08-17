@@ -526,7 +526,6 @@ mainwin_set_song_info(gint bitrate,
                       gint n_channels)
 {
     char * bitrate_text, * text;
-    gchar *title;
 
     GDK_THREADS_ENTER();
     if (bitrate != -1) {
@@ -568,9 +567,6 @@ mainwin_set_song_info(gint bitrate,
     g_free (bitrate_text);
     g_free (text);
 
-    title = aud_playback_get_title ();
-    mainwin_set_song_title(title);
-    g_free(title);
     GDK_THREADS_LEAVE();
 }
 
