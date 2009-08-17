@@ -1246,9 +1246,11 @@ static void update_cb (void * unused, void * another)
     real_update ();
 }
 
-static void follow_cb (void * unused, void * another)
+static void follow_cb (void * data, void * another)
 {
-    song_changed = TRUE;
+    /* active_playlist may be out of date at this point */
+    if (GPOINTER_TO_INT (data) == aud_playlist_get_active ())
+        song_changed = TRUE;
 }
 
 static void destroy_cb (GtkObject * object, void * unused)
