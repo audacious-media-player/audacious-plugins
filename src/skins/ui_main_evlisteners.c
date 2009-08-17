@@ -92,6 +92,7 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
         g_timeout_add (250, (GSourceFunc) mainwin_update_song_info, NULL);
 
     ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
+    ui_main_evlistener_title_change (NULL, NULL);
 }
 
 static void

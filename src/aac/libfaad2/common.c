@@ -1,19 +1,19 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
 ** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
-**  
+**
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software 
+** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 ** Any non-GPL usage of this software or parts of this software is strictly
@@ -202,9 +202,6 @@ static const  uint8_t    Parity [256] = {  // parity
     1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0
 };
 
-static uint32_t  __r1 = 1;
-static uint32_t  __r2 = 1;
-
 
 /*
  *  This is a simple random number generator with good quality for audio purposes.
@@ -253,26 +250,6 @@ static uint32_t ones32(uint32_t x)
     x += (x >> 16);
 
     return (x & 0x0000003f);
-}
-
-static uint32_t floor_log2(uint32_t x)
-{
-#if 1
-    x |= (x >> 1);
-    x |= (x >> 2);
-    x |= (x >> 4);
-    x |= (x >> 8);
-    x |= (x >> 16);
-
-    return (ones32(x) - 1);
-#else
-    uint32_t count = 0;
-
-    while (x >>= 1)
-        count++;
-
-    return count;
-#endif
 }
 
 /* returns position of first bit that is not 0 from msb,
