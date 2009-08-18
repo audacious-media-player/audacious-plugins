@@ -283,7 +283,7 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
     gchar *ext = extname(filename);
     const gint max_resync_bytes = 32, max_resync_tries = 8;
     guint32 head = 0;
-    guchar chkbuf[8096];
+    guchar chkbuf[8192];
     gint state,
          tries = 0,
          chksize = 0,
