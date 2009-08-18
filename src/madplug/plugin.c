@@ -283,21 +283,18 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
     gchar *ext = extname(filename);
     const gint max_resync_bytes = 32, max_resync_tries = 8;
     guint32 head = 0;
-    guchar chkbuf[1024];
+    guchar chkbuf[8096];
     gint state,
-         next = -1,
          tries = 0,
          chksize = 0,
          chkpos = 0,
          chkcount = 0,
          res, resync_max = -1,
          skip = 0;
-    glong streampos = 0;
     mp3_frame_t frame, prev;
 
     enum {
         STATE_HEADERS,
-        STATE_REBUFFER,
         STATE_VALIDATE,
         STATE_GOTO_NEXT,
         STATE_GET_NEXT,
@@ -322,8 +319,13 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
         return 0;
     }
 
-    state = STATE_REBUFFER;
-    next = STATE_HEADERS;
+    if ((chksize = aud_vfs_fread (chkbuf, 1, sizeof chkbuf, fin)) == 0)
+    {
+        g_message ("Rejecting %s; cannot read from file.", filename);
+        return FALSE;
+    }
+
+    state = STATE_HEADERS;
 
     /* Check stream data for frame header(s). We employ a simple
      * state-machine approach here to find number of sequential
@@ -357,18 +359,6 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
                 if (memcmp(&chkbuf[chkpos], "RIFF", 4) == 0 &&
                     memcmp(&chkbuf[chkpos+8], "RMP3", 4) == 0)
                     return 1;
-            }
-            break;
-
-        case STATE_REBUFFER:
-            streampos = aud_vfs_ftell(fin);
-            if ((chksize = aud_vfs_fread(chkbuf, 1, sizeof(chkbuf), fin)) == 0) {
-                state = STATE_FATAL;
-                LULZ("fatal error rebuffering @ %08lx!\n", streampos);
-            } else {
-                chkpos = 0;
-                state = next;
-                LULZ("rebuffered = %d bytes @ %08lx\n", chksize, streampos);
             }
             break;
 
@@ -422,16 +412,8 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
                 chkpos += skip;
                 state = STATE_GET_NEXT;
             } else {
-                /* No, re-fill buffer and try again .. */
-                glong tmppos = skip - (chksize - chkpos);
-#ifdef MADPROBE_DEBUG
-                gint tmpres = aud_vfs_fseek(fin, tmppos, SEEK_CUR);
-#else
-		aud_vfs_fseek(fin, tmppos, SEEK_CUR);
-#endif
-                LOL("[skipping: %ld -> %d]\n", tmppos, tmpres);
-                next = STATE_GET_NEXT;
-                state = STATE_REBUFFER;
+                g_message ("Rejecting %s: out of data.", filename);
+                return FALSE;
             }
             break;
 
@@ -474,11 +456,6 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
                         break;
                     }
                 }
-            }
-            if (state == STATE_RESYNC_DO) {
-                /* Not found, refill buffer */
-                next = state;
-                state = STATE_REBUFFER;
             }
             break;
         }
