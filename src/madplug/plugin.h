@@ -61,13 +61,11 @@ struct mad_info_t
     guint channels;
     gint frames;    /**< total mp3 frames or -1 */
     gint size;      /**< file size in bytes or -1 */
-    gchar *title;   /**< title for xmms */
     mad_timer_t duration;   /**< total play time */
     struct id3_tag *tag;
     struct id3_file *id3file;
     struct xing xing;
     Tuple *tuple;          /* audacious tuple data */
-    gchar *prev_title;           /* used to optimize set_info calls */
 
     /* replay parameters */
     double replaygain_album_scale;
@@ -106,8 +104,6 @@ typedef struct audmad_config_t
     gboolean fast_play_time_calc;
     gboolean use_xing;
     gboolean sjis;
-    gboolean title_override;
-    gchar *id3_format;
 } audmad_config_t;
 
 // global variables

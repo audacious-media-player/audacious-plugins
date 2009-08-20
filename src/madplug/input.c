@@ -1,6 +1,6 @@
 /*
  * mad plugin for audacious
- * Copyright (C) 2005-2007 William Pitcock, Yoshiki Yazawa
+ * Copyright (C) 2005-2009 William Pitcock, Yoshiki Yazawa, John Lindgren
  *
  * Portions derived from xmms-mad:
  * Copyright (C) 2001-2002 Sam Clegg - See COPYING
@@ -414,75 +414,49 @@ input_read_tag(struct mad_info_t *info)
     aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
     aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
 
-    info->title = aud_tuple_formatter_make_title_string(tuple, audmad_config->title_override == TRUE ?
-        audmad_config->id3_format : aud_get_gentitle_format());
-
     if (info->infile != NULL)
         aud_vfs_fseek(info->infile, curpos, SEEK_SET);
 
     AUDDBG("e: input_read_tag\n");
 }
 
-void
-input_process_remote_metadata(struct mad_info_t *info)
+static gchar * get_stream_metadata (VFSFile * file, const gchar * name)
 {
-    gboolean metadata = FALSE;
+    gchar * raw = aud_vfs_get_metadata (file, name);
+    gchar * converted = (raw != NULL) ? aud_str_to_utf8 (raw) : NULL;
 
-    if(info->remote && mad_timer_count(info->duration, MAD_UNITS_SECONDS) <= 0){
-        gchar *tmp;
+    g_free (raw);
+    return converted;
+}
 
-#ifdef DEBUG_INTENSIVELY
-        AUDDBG("process_remote_meta\n");
-#endif
-        g_free(info->title);
-        info->title = NULL;
-        aud_tuple_disassociate(info->tuple, FIELD_TITLE, NULL);
-        aud_tuple_disassociate(info->tuple, FIELD_ALBUM, NULL);
+static gboolean update_stream_metadata (VFSFile * file, const gchar * name,
+ Tuple * tuple, gint item)
+{
+    const gchar * old = aud_tuple_get_string (tuple, item, NULL);
+    gchar * new = get_stream_metadata (file, name);
+    gboolean changed = (new != NULL && (old == NULL || strcmp (old, new)));
 
-        tmp = aud_vfs_get_metadata(info->infile, "track-name");
-        if(tmp){
-            metadata = TRUE;
-            gchar *scratch = aud_str_to_utf8(tmp);
-            aud_tuple_associate_string(info->tuple, FIELD_TITLE, NULL, scratch);
-            g_free(scratch);
-            g_free(tmp);
-        }
+    if (changed)
+        aud_tuple_associate_string (tuple, item, NULL, new);
 
-        tmp = aud_vfs_get_metadata(info->infile, "stream-name");
-        if(tmp){
-            metadata = TRUE;
-            gchar *scratch = aud_str_to_utf8(tmp);
-            aud_tuple_associate_string(info->tuple, FIELD_ALBUM, NULL, scratch);
-            aud_tuple_associate_string(info->tuple, -1, "stream", scratch);
-            g_free(scratch);
-            g_free(tmp);
-        }
+    g_free (new);
+    return changed;
+}
 
-        if (metadata)
-            tmp = aud_tuple_formatter_process_string(info->tuple, "${?title:${title}}${?stream: (${stream})}");
-        else {
-            gchar *realfn = g_filename_from_uri(info->filename, NULL, NULL);
-            gchar *tmp2 = g_path_get_basename(realfn ? realfn : info->filename); // info->filename is uri. --yaz
-            tmp = aud_str_to_utf8(tmp2);
-            g_free(tmp2);
-            g_free(realfn);
-//            tmp = g_strdup(g_basename(info->filename)); //XXX maybe ok. --yaz
-        }
+void input_process_remote_metadata (struct mad_info_t * info)
+{
+    gboolean changed = FALSE;
 
-        /* call set_info only if tmp is different from prev_tmp */
-        if ( ( ( info->prev_title != NULL ) && ( strcmp(info->prev_title,tmp) ) ) ||
-             ( info->prev_title == NULL ) )
-        {
-            info->playback->set_params(info->playback, tmp,
-                                 -1, // indicate the stream is unseekable
-                                 info->bitrate, info->freq, info->channels);
-            if (info->prev_title)
-                g_free(info->prev_title);
-            info->prev_title = g_strdup(tmp);
-        }
+    changed = changed || update_stream_metadata (info->infile, "track-name",
+     info->tuple, FIELD_TITLE);
+    changed = changed || update_stream_metadata (info->infile, "stream-name",
+     info->tuple, FIELD_ALBUM);
 
-        g_free(tmp);
-    }
+    if (! changed)
+        return;
+
+    mowgli_object_ref (info->tuple);
+    info->playback->set_tuple (info->playback, info->tuple);
 }
 
 
@@ -515,15 +489,6 @@ input_get_info(struct mad_info_t *info, gboolean fast_scan)
     /* reset the input file to the start */
     aud_vfs_fseek(info->infile, 0, SEEK_SET);
     info->offset = 0;
-
-    /* use the filename for the title as a last resort */
-    if (!info->title) {
-        char *pos = strrchr(info->filename, DIR_SEPARATOR); //XXX info->filename is uri. --yaz
-        if (pos)
-            info->title = g_strdup(pos + 1);
-        else
-            info->title = g_strdup(info->filename); //XXX info->filename is uri. --yaz
-    }
 
     AUDDBG("e: input_get_info\n");
     return TRUE;
@@ -569,7 +534,6 @@ input_term(struct mad_info_t * info)
 {
     AUDDBG("f: input_term\n");
 
-    g_free(info->title);
     g_free(info->url);
     g_free(info->filename);
     if (info->infile)
@@ -588,8 +552,6 @@ input_term(struct mad_info_t * info)
         aud_tuple_free(info->tuple);
         info->tuple = NULL;
     }
-
-    g_free(info->prev_title);
 
     /* set everything to zero in case it gets used again. */
     memset(info, 0, sizeof(struct mad_info_t));

@@ -100,8 +100,6 @@ audmad_init()
     audmad_config->fast_play_time_calc = TRUE;
     audmad_config->use_xing = TRUE;
     audmad_config->sjis = FALSE;
-    audmad_config->title_override = FALSE;
-
 
     db = aud_cfg_db_open();
     if (db) {
@@ -112,12 +110,6 @@ audmad_init()
                             &audmad_config->use_xing);
         aud_cfg_db_get_bool(db, "MAD", "sjis", &audmad_config->sjis);
 
-        //text
-        aud_cfg_db_get_bool(db, "MAD", "title_override",
-                            &audmad_config->title_override);
-        aud_cfg_db_get_string(db, "MAD", "id3_format",
-                              &audmad_config->id3_format);
-
         aud_cfg_db_close(db);
     }
 
@@ -127,16 +119,12 @@ audmad_init()
     control_mutex = g_mutex_new ();
     control_cond = g_cond_new ();
 
-    if (!audmad_config->id3_format)
-        audmad_config->id3_format = g_strdup("(none)");
-
     aud_mime_set_plugin("audio/mpeg", mad_plugin);
 }
 
 static void
 audmad_cleanup()
 {
-    g_free(audmad_config->id3_format);
     g_free(audmad_config);
 
     g_cond_free(mad_cond);
@@ -521,14 +509,12 @@ audmad_play_file(InputPlayback *playback)
         */
     }
 
-    g_free (info.title);
-    info.title = aud_tuple_formatter_make_title_string (info.tuple,
-     audmad_config->title_override ? audmad_config->id3_format :
-     aud_get_gentitle_format ());
     info.length = mad_timer_count (info.duration, MAD_UNITS_MILLISECONDS);
 
-    playback->set_params (playback, info.title, info.length, info.bitrate,
-     info.freq, info.channels);
+    mowgli_object_ref (info.tuple);
+    playback->set_tuple (playback, info.tuple);
+    playback->set_params (playback, NULL, 0, info.bitrate, info.freq,
+     info.channels);
 
     rg_info.track_gain = info.replaygain_track_scale;
     rg_info.track_peak = info.replaygain_track_peak;
@@ -707,7 +693,7 @@ __audmad_get_song_tuple(const gchar *filename, VFSFile *fd)
                 gchar *scratch;
 
                 scratch = aud_str_to_utf8(tmp);
-                aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, scratch);
+                aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, scratch);
                 g_free(tmp);
                 g_free(scratch);
 

@@ -42,18 +42,10 @@ static PreferencesWidget metadata_settings[] = {
                  FALSE /* vertical */, TRUE /* frame */}}},
 };
 
-static PreferencesWidget title_settings[] = {
-    {WIDGET_CHK_BTN, N_("Override generic titles"), &config.title_override, NULL, NULL, FALSE},
-    {WIDGET_ENTRY, N_("ID3 format:"), &config.id3_format, NULL, NULL, TRUE, {.entry = {FALSE}}, VALUE_STRING},
-};
-
 static void
 update_config()
 {
-    g_free(audmad_config->id3_format);
-
     memcpy(audmad_config, &config, sizeof(config));
-    audmad_config->id3_format = g_strdup(config.id3_format);
 }
 
 static void
@@ -67,18 +59,7 @@ save_config(void)
     aud_cfg_db_set_bool(db, "MAD", "use_xing", audmad_config->use_xing);
     aud_cfg_db_set_bool(db, "MAD", "sjis", audmad_config->sjis);
 
-    //text
-    aud_cfg_db_set_bool(db, "MAD", "title_override", audmad_config->title_override);
-    aud_cfg_db_set_string(db, "MAD", "id3_format", audmad_config->id3_format);
-
     aud_cfg_db_close(db);
-}
-
-static void
-configure_cleanup()
-{
-    g_free(config.id3_format);
-    config.id3_format = NULL;
 }
 
 static void
@@ -92,12 +73,10 @@ static void
 configure_init(void)
 {
     memcpy(&config, audmad_config, sizeof(config));
-    config.id3_format = g_strdup(audmad_config->id3_format);
 }
 
 static NotebookTab preferences_tabs[] = {
     {N_("General"), metadata_settings, G_N_ELEMENTS(metadata_settings)},
-    {N_("Title"), title_settings, G_N_ELEMENTS(title_settings)},
 };
 
 static PreferencesWidget prefs[] = {
@@ -112,5 +91,4 @@ PluginPreferences preferences = {
     .type = PREFERENCES_WINDOW,
     .init = configure_init,
     .apply = configure_apply,
-    .cleanup = configure_cleanup,
 };
