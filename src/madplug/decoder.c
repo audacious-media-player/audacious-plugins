@@ -86,14 +86,6 @@ scan_file(struct mad_info_t * info, gboolean fast)
     info->bitrate = 0;
     info->duration = mad_timer_zero; // should be cleared before loop, if we use it as break condition.
 
-    if(info->fileinfo_request == TRUE) {
-        aud_tuple_associate_int(info->tuple, FIELD_LENGTH, NULL, -1);
-        info->fileinfo_request = FALSE;
-    }
-
-    AUDDBG("f: scan_file\n");
-    AUDDBG("scan_file frames = %d\n", info->frames);
-
     while (1) {
         remainder = stream.bufend - stream.next_frame;
 
@@ -143,21 +135,8 @@ scan_file(struct mad_info_t * info, gboolean fast)
             }
             info->frames++;
 
-#ifdef DEBUG_INTENSIVELY
-            AUDDBG("header bitrate = %ld\n", header.bitrate);
-            AUDDBG("duration = %ul\n",
-                      mad_timer_count(header.duration,
-                                      MAD_UNITS_MILLISECONDS));
-            AUDDBG("size = %d\n", stream.next_frame - stream.this_frame);
-#endif
-            if(aud_tuple_get_int(info->tuple, FIELD_LENGTH, NULL) == -1)
-                mad_timer_add(&info->duration, header.duration);
-            else {
-                gint length = aud_tuple_get_int(info->tuple, FIELD_LENGTH, NULL);
+            mad_timer_add (& info->duration, header.duration);
 
-                info->duration.seconds = length / 1000;
-                info->duration.fraction = length % 1000;
-            }
             data_used += stream.next_frame - stream.this_frame;
             if (info->frames == 1) {
                 /* most of these *should* remain constant */
@@ -228,37 +207,21 @@ scan_file(struct mad_info_t * info, gboolean fast)
                 if(info->size != 0)
                     info->frames = (info->size - tagsize) / frame_size;
 
-                AUDDBG("info->frames = %d\n", info->frames);
-
-                if(aud_tuple_get_int(info->tuple, FIELD_LENGTH, NULL) == -1) {
-                    if(xing_bitrate > 0.0) {
-                        /* calc duration with xing info */
-                        double tmp = 8 * (double)info->xing.bytes * 1000 / xing_bitrate;
-                        info->duration.seconds = (guint)(tmp / 1000);
-                        info->duration.fraction = (guint)(tmp - info->duration.seconds * 1000);
-                    }
-                    else {
-                        info->duration.seconds /= N_AVERAGE_FRAMES;
-                        info->duration.fraction /= N_AVERAGE_FRAMES;
-                        mad_timer_multiply(&info->duration, info->frames);
-                    }
-                }
-                else {
-                    gint length = aud_tuple_get_int(info->tuple, FIELD_LENGTH, NULL);
+                if (xing_bitrate > 0)
+                {
+                    gint length = (gfloat) info->xing.bytes * 8000 /
+                     xing_bitrate;
 
                     info->duration.seconds = length / 1000;
                     info->duration.fraction = length % 1000;
                 }
-#ifdef AUD_DEBUG
-                AUDDBG("using fast playtime calculation\n");
-                AUDDBG("data used = %d [tagsize=%d framesize=%f]\n",
-                          data_used, tagsize, frame_size);
-                AUDDBG("frames = %d, frequency = %d, channels = %d\n",
-                          info->frames, info->freq, info->channels);
-                long millis = mad_timer_count(info->duration,
-                                              MAD_UNITS_MILLISECONDS);
-                AUDDBG("duration = %ld:%02ld\n", millis / 1000 / 60, (millis / 1000) % 60);
-#endif                          /* DEBUG */
+                else
+                {
+                    info->duration.seconds /= N_AVERAGE_FRAMES;
+                    info->duration.fraction /= N_AVERAGE_FRAMES;
+                    mad_timer_multiply (& info->duration, info->frames);
+                }
+
                 break;
             }
         } /* while */
@@ -283,10 +246,7 @@ scan_file(struct mad_info_t * info, gboolean fast)
     mad_stream_finish(&stream);
     xing_finish(&info->xing);
 
-    AUDDBG("scan_file: info->frames = %d\n", info->frames);
-    AUDDBG("e: scan_file\n");
-
-    return (info->frames != 0 || info->remote == TRUE);
+    return (info->frames > 0);
 }
 
 static void seek (struct mad_info_t * info)

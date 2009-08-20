@@ -82,16 +82,11 @@ struct mad_info_t
     gchar *mp3gain_minmax_str;
 
     /* data access */
-    gchar *url;
     gchar *filename;
     VFSFile *infile;
     gint offset;
 
-    /* flags */
-    gboolean remote;
-    gboolean fileinfo_request;
-
-    // used in decoding
+    /* used in decoding */
     int length;
     char resync;
     unsigned char * buffer;

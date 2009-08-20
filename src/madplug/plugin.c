@@ -1,6 +1,7 @@
 /*
  * mad plugin for audacious
- * Copyright (C) 2005-2007 William Pitcock, Yoshiki Yazawa, Eugene Zagidullin
+ * Copyright (C) 2005-2009 William Pitcock, Yoshiki Yazawa, Eugene Zagidullin,
+ *  John Lindgren
  *
  * Portions derived from xmms-mad:
  * Copyright (C) 2001-2002 Sam Clegg - See COPYING
@@ -291,8 +292,6 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
         STATE_FATAL
     };
 
-    info.remote = aud_vfs_is_remote(filename);
-
     /* I've seen some flac files beginning with id3 frames..
        so let's exclude known non-mp3 filename extensions */
     if ((ext != NULL) &&
@@ -366,13 +365,9 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
                         /* Not similar frame... */
                         LOL(" .. but does not match (%d)!\n", chkcount);
                         state = STATE_RESYNC;
-                    } else if (chkcount >= info.remote ? 2 : 3) {
-                        /* Okay, accept this stream */
-                        LOL(" .. accepted as mp3!!!\n");
-                        return 1;
-                    } else {
-                        LOL(" .. match %d\n", chkcount);
                     }
+                    else if (chkcount >= 3)
+                        return TRUE;
                 } else {
                     /* First valid frame of sequence */
                     memcpy(&prev, &frame, sizeof(mp3_frame_t));
@@ -480,7 +475,6 @@ audmad_stop(InputPlayback *playback)
 static void
 audmad_play_file(InputPlayback *playback)
 {
-    gboolean rtn;
     gchar *url = playback->filename;
     ReplayGainInfo rg_info;
 
@@ -497,19 +491,12 @@ audmad_play_file(InputPlayback *playback)
         return;
     }
 
-    // remote access must use fast scan.
-    rtn = input_get_info(&info, aud_vfs_is_remote(url) ? TRUE : audmad_config->fast_play_time_calc);
-
-    if (rtn == FALSE) {
-        g_message("error reading input info");
-        /*
-         * return;
-         * commenting this return seems to be a hacky fix for the damn lastfm plugin playback
-         * that used to work only for nenolod because of his fsck-ing lastfm subscription :p
-        */
+    if (! input_get_info (& info))
+    {
+        g_warning ("Unable to get info for %s.", playback->filename);
+        input_term (& info);
+        return;
     }
-
-    info.length = mad_timer_count (info.duration, MAD_UNITS_MILLISECONDS);
 
     mowgli_object_ref (info.tuple);
     playback->set_tuple (playback, info.tuple);
@@ -564,27 +551,6 @@ audmad_seek(InputPlayback *playback, gint time)
     audmad_mseek(playback, time * 1000);
 }
 
-/**
- * Scan the given file or URL.
- * Fills in the title string and the track length in milliseconds.
- */
-static gboolean
-audmad_fill_info(struct mad_info_t *info, VFSFile *fd)
-{
-    if (fd == NULL || info == NULL) return FALSE;
-    AUDDBG("f: audmad_fill_info(): %s\n", fd->uri);
-
-    if (input_init(info, fd->uri, fd) == FALSE) {
-        AUDDBG("audmad_fill_info(): error initialising input\n");
-        return FALSE;
-    }
-
-    info->fileinfo_request = FALSE; /* we don't need to read tuple again */
-
-    return input_get_info (info, aud_vfs_is_remote (fd->uri) ? TRUE :
-     audmad_config->fast_play_time_calc);
-}
-
 static void
 audmad_about()
 {
@@ -637,175 +603,42 @@ audmad_error(gchar *format, ...)
     aud_event_queue_with_data_free("interface show error", msg);
 }
 
-static void
-__set_and_free(Tuple *tuple, gint nfield, gchar *name, gchar *value)
+static Tuple * audmad_probe_for_tuple (const gchar * filename, VFSFile * handle)
 {
-    aud_tuple_associate_string(tuple, nfield, name, value);
-    g_free(value);
-}
+    struct mad_info_t info;
+    Tuple * tuple;
 
-// tuple stuff
-static Tuple *
-__audmad_get_song_tuple(const gchar *filename, VFSFile *fd)
-{
-    Tuple *tuple = NULL;
-    gchar *string = NULL;
+    aud_vfs_fseek (handle, 0, SEEK_SET);
 
-    struct id3_file *id3file = NULL;
-    struct id3_tag *tag = NULL;
+    if (! input_init (& info, filename, handle))
+        return NULL;
 
-    struct mad_info_t myinfo;
-
-    gboolean local_fd = FALSE;
-    int length;
-
-#ifdef AUD_DEBUG
-    string = aud_str_to_utf8(filename);
-    AUDDBG("f: mad: audmad_get_song_tuple: %s\n", string);
-    g_free(string);
-    string = NULL;
-#endif
-
-    /* isn't is obfuscated? --eugene */
-
-    if(info.remote && mad_timer_count(info.duration, MAD_UNITS_SECONDS) <= 0){
-        if((fd && aud_vfs_is_streaming(fd)) || (info.playback && info.playback->playing)) {
-            gchar *tmp = NULL;
-            tuple = aud_tuple_new_from_filename(filename);
-
-#ifdef AUD_DEBUG
-            if(info.playback)
-                AUDDBG("info.playback->playing = %d\n",info.playback->playing);
-#endif
-            tmp = aud_vfs_get_metadata(info.infile ? info.infile : fd, "track-name");
-            if(tmp){
-                gchar *scratch;
-
-                scratch = aud_str_to_utf8(tmp);
-                aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, scratch);
-                g_free(tmp);
-                g_free(scratch);
-
-                tmp = NULL;
-            }
-            tmp = aud_vfs_get_metadata(info.infile ? info.infile : fd, "stream-name");
-            if(tmp){
-                gchar *scratch;
-
-                scratch = aud_str_to_utf8(tmp);
-                aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, scratch);
-                g_free(tmp);
-                g_free(scratch);
-
-                tmp = NULL;
-            }
-
-            AUDDBG("audmad_get_song_tuple: track_name = %s\n", aud_tuple_get_string(tuple, -1, "track-name"));
-            AUDDBG("audmad_get_song_tuple: stream_name = %s\n", aud_tuple_get_string(tuple, -1, "stream-name"));
-            aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
-            aud_tuple_associate_int(tuple, FIELD_MTIME, NULL, 0); // this indicates streaming
-            AUDDBG("get_song_tuple: remote: tuple\n");
-            return tuple;
-        }
-        AUDDBG("get_song_tuple: remote: NULL\n");
-    } /* info.remote  */
-
-    // if !fd, pre-open the file with aud_vfs_fopen() and reuse fd.
-    if(!fd) {
-        fd = aud_vfs_fopen(filename, "rb");
-        if(!fd)
-            return NULL;
-        local_fd = TRUE;
-    }
-
-    if (!audmad_fill_info(&myinfo, fd)) {
-        AUDDBG("get_song_tuple: error obtaining info\n");
-        if (local_fd) aud_vfs_fclose(fd);
+    if (! input_get_info (& info))
+    {
+        input_term (& info);
         return NULL;
     }
 
-    tuple = tuple_new();
-    tuple_set_filename(tuple, filename);
-
-    id3file = id3_file_vfsopen(fd, ID3_FILE_MODE_READONLY);
-
-    if (id3file) {
-
-        tag = id3_file_tag(id3file);
-        if (tag) {
-            __set_and_free(tuple, FIELD_ARTIST, NULL, input_id3_get_string(tag, ID3_FRAME_ARTIST));
-            __set_and_free(tuple, FIELD_ALBUM, NULL, input_id3_get_string(tag, ID3_FRAME_ALBUM));
-            __set_and_free(tuple, FIELD_TITLE, NULL, input_id3_get_string(tag, ID3_FRAME_TITLE));
-
-            // year
-            string = NULL;
-            string = input_id3_get_string(tag, ID3_FRAME_YEAR); //TDRC
-            if (!string)
-                string = input_id3_get_string(tag, "TYER");
-
-            if (string) {
-                aud_tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(string));
-                g_free(string);
-                string = NULL;
-            }
-
-            // length
-            length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
-            aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
-
-            // track number
-            string = input_id3_get_string(tag, ID3_FRAME_TRACK);
-            if (string) {
-                aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(string));
-                g_free(string);
-                string = NULL;
-            }
-            // genre
-            __set_and_free(tuple, FIELD_GENRE, NULL, input_id3_get_string(tag, ID3_FRAME_GENRE));
-            __set_and_free(tuple, FIELD_COMMENT, NULL, input_id3_get_string(tag, ID3_FRAME_COMMENT));
-            AUDDBG("genre = %s\n", aud_tuple_get_string(tuple, FIELD_GENRE, NULL));
-        }
-        id3_file_close(id3file);
-    } // id3file
-    else { // no id3tag
-        // length
-        length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
-        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
-    }
-
-    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
-    aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, myinfo.bitrate / 1000);
-
-    string = g_strdup_printf("MPEG-1 Audio Layer %d", myinfo.mpeg_layer);
-    aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, string);
-    g_free(string);
-
-    aud_tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "audio/mpeg");
-
-    input_term(&myinfo);
-
-    if(local_fd)
-        aud_vfs_fclose(fd);
-
-    AUDDBG("e: mad: audmad_get_song_tuple\n");
+    tuple = info.tuple;
+    mowgli_object_ref (tuple);
+    input_term (& info);
     return tuple;
 }
 
-static Tuple *
-audmad_get_song_tuple(const gchar *filename)
+static Tuple * audmad_get_song_tuple (const gchar * filename)
 {
-    return __audmad_get_song_tuple(filename, NULL);
-}
+    VFSFile * handle;
+    Tuple * tuple;
 
-static Tuple *
-audmad_probe_for_tuple(const gchar *filename, VFSFile *fd)
-{
-    if (!audmad_is_our_fd(filename, fd))
+    if ((handle = aud_vfs_fopen (filename, "r")) == NULL)
+    {
+        g_warning ("Cannot open %s.\n", filename);
         return NULL;
+    }
 
-    aud_vfs_rewind(fd);
-
-    return __audmad_get_song_tuple(filename, fd);
+    tuple = audmad_probe_for_tuple (filename, handle);
+    aud_vfs_fclose (handle);
+    return tuple;
 }
 
 static const gchar *fmts[] = { "mp3", "mp2", "mpg", "bmu", NULL };
