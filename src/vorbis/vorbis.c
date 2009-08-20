@@ -193,35 +193,6 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
     return tuple;
 }
 
-static gchar *
-vorbis_generate_title(OggVorbis_File * vorbisfile, const gchar * filename)
-{
-    gchar *displaytitle, *tmp;
-    Tuple *input;
-
-    input = get_aud_tuple_for_vorbisfile(vorbisfile, filename);
-
-    displaytitle = aud_tuple_formatter_make_title_string(
-        input, vorbis_cfg.tag_override ? vorbis_cfg.tag_format : aud_get_gentitle_format());
-
-    if ((tmp = aud_vfs_get_metadata(((VFSVorbisFile *) vorbisfile->datasource)->fd, "stream-name")) != NULL)
-    {
-        gchar *old = displaytitle;
-
-        aud_tuple_associate_string(input, -1, "stream", tmp);
-        aud_tuple_associate_string(input, FIELD_TITLE, NULL, old);
-
-        displaytitle = aud_tuple_formatter_process_string(input, "${?title:${title}}${?stream: (${stream})}");
-
-        g_free(old);
-        g_free(tmp);
-    }
-
-    aud_tuple_free(input);
-
-    return displaytitle;
-}
-
 static gfloat atof_no_locale (const gchar * string)
 {
     gfloat result = 0;
@@ -316,17 +287,16 @@ vorbis_interleave_buffer(float **pcm, int samples, int ch, float *pcmout)
 static void
 vorbis_play(InputPlayback *playback)
 {
-    gchar *title = NULL;
     gboolean streaming;
     vorbis_info *vi;
     OggVorbis_File vf;
     VFSVorbisFile *fd = NULL;
     VFSFile *stream = NULL;
-    glong timercount = 0;
     gint last_section = -1;
     ReplayGainInfo rg_info;
     gfloat pcmout[PCM_BUFSIZE*sizeof(float)], **pcm;
-    gint bytes, channels, samplerate, br, duration;
+    gint bytes, channels, samplerate, br;
+    gint since_update = 0;
 
     playback->error = FALSE;
     seek_value = -1;
@@ -355,15 +325,14 @@ vorbis_play(InputPlayback *playback)
         goto play_cleanup;
     }
 
-    duration = streaming ? -1 : ov_time_total(&vf, -1);
     br = vi->bitrate_nominal;
     channels = vi->channels;
     samplerate = vi->rate;
 
-    title = vorbis_generate_title(&vf, playback->filename);
     vorbis_update_replaygain(&vf, &rg_info);
     playback->set_replaygain_info(playback, &rg_info);
-    playback->set_params(playback, title, duration * 1000, br, samplerate, channels);
+    playback->set_params (playback, NULL, 0, br, samplerate, channels);
+
     if (!playback->output->open_audio(FMT_FLOAT, samplerate, channels)) {
         playback->error = TRUE;
         goto play_cleanup;
@@ -387,12 +356,6 @@ vorbis_play(InputPlayback *playback)
         g_mutex_lock (seek_mutex);
         if (seek_value >= 0)
         {
-            /* We need to guard against seeking to the end, or things don't
-             * work right.  Instead, just seek to one second prior to this.
-             */
-            if (duration > 0 && seek_value >= duration)
-                seek_value = duration - 1;
-
             playback->output->flush(seek_value * 1000);
             ov_time_seek(&vf, seek_value);
             seek_value = -1;
@@ -415,6 +378,18 @@ vorbis_play(InputPlayback *playback)
         }
 
         bytes = vorbis_interleave_buffer (pcm, bytes, channels, pcmout);
+
+        /* Is there a better way to know when to update? -jlindgren */
+        if (since_update >= 100)
+        {
+            Tuple * tuple = get_aud_tuple_for_vorbisfile (& vf,
+             playback->filename);
+
+            playback->set_tuple (playback, tuple);
+            since_update = 0;
+        }
+        else
+            since_update ++;
 
         if (current_section <= last_section) {
             /*
@@ -458,15 +433,7 @@ stop_processing:
              * set total play time, bitrate, rate, and channels of
              * current section
              */
-            g_free(title);
-            title = vorbis_generate_title(&vf, playback->filename);
-
-            if (duration != -1)
-                duration = ov_time_total(&vf, -1) * 1000;
-
-            playback->set_params(playback, title, duration, br, samplerate, channels);
-
-            timercount = playback->output->output_time();
+            playback->set_params (playback, NULL, 0, br, samplerate, channels);
 
             last_section = current_section;
 
@@ -476,7 +443,6 @@ stop_processing:
 play_cleanup:
 
     playback->output->close_audio();
-    g_free(title);
     ov_clear(&vf);
     playback->playing = 0;
 }
