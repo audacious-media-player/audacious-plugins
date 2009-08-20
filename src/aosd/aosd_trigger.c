@@ -218,11 +218,11 @@ aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
     prevs = g_malloc0(sizeof(aosd_pb_titlechange_prevs_t));
     prevs->title = NULL;
     prevs->filename = NULL;
-    aud_hook_associate( "playlist set info" , aosd_trigger_func_pb_titlechange_cb , prevs );
+    aud_hook_associate( "title change" , aosd_trigger_func_pb_titlechange_cb , prevs );
   }
   else
   {
-    aud_hook_dissociate( "playlist set info" , aosd_trigger_func_pb_titlechange_cb );
+    aud_hook_dissociate( "title change" , aosd_trigger_func_pb_titlechange_cb );
     if ( prevs != NULL )
     {
       if ( prevs->title != NULL ) g_free( prevs->title );
@@ -240,8 +240,8 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
   if ( aud_ip_state->playing )
   {
     aosd_pb_titlechange_prevs_t *prevs = prevs_gp;
-    gint pl_entry = GPOINTER_TO_INT(plentry_gp);
-    gint playlist = aud_playlist_get_active();
+    gint playlist = aud_playlist_get_playing();
+    gint pl_entry = aud_playlist_get_position(playlist);
     gchar *pl_entry_filename = (gchar*) aud_playlist_entry_get_filename(playlist, pl_entry);
     gchar *pl_entry_title = (gchar*) aud_playlist_entry_get_title(playlist, pl_entry);
 
