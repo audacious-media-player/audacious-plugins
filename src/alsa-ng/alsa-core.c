@@ -326,7 +326,9 @@ static void alsaplug_cleanup(void)
     gint error = expression; \
     if (error) \
     { \
-        _ERROR (name "failed: %s.\n", snd_strerror (error)); \
+        _ERROR (name " failed: %s.\n", snd_strerror (error)); \
+        snd_pcm_close (pcm_handle); \
+        pcm_handle = NULL; \
         return -1; \
     } \
 }
