@@ -42,6 +42,14 @@ typedef struct
     GtkTreeRowReference *ref;
 } UiPlaylistDragTracker;
 
+static gint ui_playlist_widget_get_playlist(GtkTreeView *treeview)
+{
+    GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
+    UiPlaylistModel *model = UI_PLAYLIST_MODEL(tree_model);
+
+    return model->playlist;
+}
+
 static gint ui_playlist_widget_get_index_from_path(GtkTreePath * path)
 {
     gint *pos;
@@ -87,7 +95,7 @@ static int _ui_playlist_widget_get_drop_index(GtkTreeView * widget, GdkDragConte
 {
     GtkTreePath *path;
     gint cx, cy, ins_pos = -1;
-    gint playlist = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "my_playlist"));
+    gint playlist = ui_playlist_widget_get_playlist(widget);
 
     gdk_window_get_geometry(gtk_tree_view_get_bin_window(widget), &cx, &cy, NULL, NULL, NULL);
 
@@ -135,7 +143,7 @@ static void _ui_playlist_widget_drag_motion(GtkTreeView * widget, GdkDragContext
 
 static void _ui_playlist_widget_drag_data_received(GtkTreeView * widget, GdkDragContext * context, gint x, gint y, GtkSelectionData *data, guint info, guint time, gpointer user_data)
 {
-    gint playlist = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "my_playlist"));
+    gint playlist = ui_playlist_widget_get_playlist(widget);
     gint delta;
 
     UiPlaylistDragTracker *t;
@@ -185,7 +193,7 @@ static void _ui_playlist_widget_selection_changed(GtkTreeSelection * selection, 
 
 static void ui_playlist_widget_change_song(GtkTreeView * treeview, guint pos)
 {
-    gint playlist = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(treeview), "my_playlist"));
+    gint playlist = ui_playlist_widget_get_playlist(treeview);
 
     aud_playlist_set_playing(playlist);
     aud_playlist_set_position(playlist, pos);
@@ -231,7 +239,7 @@ static gboolean ui_playlist_widget_keypress_cb(GtkWidget * widget, GdkEventKey *
       case GDK_MOD1_MASK:
       {
         if ((event->keyval == GDK_Up) || (event->keyval == GDK_Down)) {
-            gint playlist = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "my_playlist"));
+            gint playlist = ui_playlist_widget_get_playlist(GTK_TREE_VIEW(widget));
             /* Copy the event, so we can get the selection to move as well */
             GdkEvent * ev = gdk_event_copy((GdkEvent *) event);
             ((GdkEventKey *) ev)->state = 0;
@@ -306,8 +314,6 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
     g_signal_connect(treeview, "drag-motion", G_CALLBACK(_ui_playlist_widget_drag_motion), NULL);
     g_signal_connect(treeview, "drag-data-received", G_CALLBACK(_ui_playlist_widget_drag_data_received), NULL);
     g_signal_connect(treeview, "drag-end", G_CALLBACK(_ui_playlist_widget_drag_end), NULL);
-
-    g_object_set_data(G_OBJECT(treeview), "my_playlist", GINT_TO_POINTER(playlist));
 
     selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
     selection_changed_handler_id = g_signal_connect(selection, "changed", G_CALLBACK(_ui_playlist_widget_selection_changed), GINT_TO_POINTER(playlist));

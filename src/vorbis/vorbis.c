@@ -222,6 +222,38 @@ vorbis_generate_title(OggVorbis_File * vorbisfile, const gchar * filename)
     return displaytitle;
 }
 
+static gfloat atof_no_locale (const gchar * string)
+{
+    gfloat result = 0;
+    gboolean negative = FALSE;
+
+    if (* string == '+')
+        string ++;
+    else if (* string == '-')
+    {
+        negative = TRUE;
+        string ++;
+    }
+
+    while (* string >= '0' && * string <= '9')
+        result = 10 * result + (* string ++ - '0');
+
+    if (* string == '.')
+    {
+        gfloat place = 0.1;
+
+        string ++;
+
+        while (* string >= '0' && * string <= '9')
+        {
+            result += (* string ++ - '0') * place;
+            place *= 0.1;
+        }
+    }
+
+    return negative ? -result : result;
+}
+
 static gboolean
 vorbis_update_replaygain(OggVorbis_File *vf, ReplayGainInfo *rg_info)
 {
@@ -229,22 +261,39 @@ vorbis_update_replaygain(OggVorbis_File *vf, ReplayGainInfo *rg_info)
     gchar *rg_gain, *rg_peak;
 
     if (vf == NULL || rg_info == NULL || (comment = ov_comment(vf, -1)) == NULL)
+    {
+        #ifdef DEBUG
+        printf ("No replay gain info.\n");
+        #endif
         return FALSE;
+    }
 
     rg_gain = vorbis_comment_query(comment, "replaygain_album_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_audiophile", 0);    /* Old */
-    rg_info->album_gain = rg_gain != NULL ? atof(rg_gain) : 0.0;
+    rg_info->album_gain = (rg_gain != NULL) ? atof_no_locale (rg_gain) : 0.0;
+    #ifdef DEBUG
+    printf ("Album gain: %s (%f)\n", rg_gain, rg_info->album_gain);
+    #endif
 
     rg_gain = vorbis_comment_query(comment, "replaygain_track_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_radio", 0);    /* Old */
-    rg_info->track_gain = rg_gain != NULL ? atof(rg_gain) : 0.0;
+    rg_info->track_gain = (rg_gain != NULL) ? atof_no_locale (rg_gain) : 0.0;
+    #ifdef DEBUG
+    printf ("Track gain: %s (%f)\n", rg_gain, rg_info->track_gain);
+    #endif
 
     rg_peak = vorbis_comment_query(comment, "replaygain_album_peak", 0);
-    rg_info->album_peak = rg_peak != NULL ? atof(rg_peak) : 0.0;
+    rg_info->album_peak = rg_peak != NULL ? atof_no_locale (rg_peak) : 0.0;
+    #ifdef DEBUG
+    printf ("Album peak: %s (%f)\n", rg_peak, rg_info->album_peak);
+    #endif
 
     rg_peak = vorbis_comment_query(comment, "replaygain_track_peak", 0);
     if (!rg_peak) rg_peak = vorbis_comment_query(comment, "rg_peak", 0);  /* Old */
-    rg_info->track_peak = rg_peak != NULL ? atof(rg_peak) : 0.0;
+    rg_info->track_peak = rg_peak != NULL ? atof_no_locale (rg_peak) : 0.0;
+    #ifdef DEBUG
+    printf ("Track peak: %s (%f)\n", rg_peak, rg_info->track_peak);
+    #endif
 
     return TRUE;
 }

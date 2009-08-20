@@ -60,7 +60,6 @@ struct mad_info_t
     guint mode;     /**< mpeg stereo mode */
     guint channels;
     gint frames;    /**< total mp3 frames or -1 */
-    gint fmt;       /**< sample format */
     gint size;      /**< file size in bytes or -1 */
     gchar *title;   /**< title for xmms */
     mad_timer_t duration;   /**< total play time */

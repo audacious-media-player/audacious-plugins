@@ -321,13 +321,22 @@ static void alsaplug_cleanup(void)
     }
 }
 
+#define CHECK_FAIL(expression, name) \
+{ \
+    gint error = expression; \
+    if (error) \
+    { \
+        _ERROR (name "failed: %s.\n", snd_strerror (error)); \
+        return -1; \
+    } \
+}
+
 static gint
 alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
 {
     gint err, bitwidth, ringbuf_size, buf_size;
     snd_pcm_format_t afmt;
     snd_pcm_hw_params_t *hwparams = NULL;
-    guint rate_ = rate;
 
     afmt = alsaplug_format_convert(fmt);
     if (afmt == SND_PCM_FORMAT_UNKNOWN)
@@ -345,24 +354,16 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
 
     snd_pcm_hw_params_alloca(&hwparams);
     snd_pcm_hw_params_any(pcm_handle, hwparams);
-    snd_pcm_hw_params_set_access(pcm_handle, hwparams, SND_PCM_ACCESS_RW_INTERLEAVED);
-    snd_pcm_hw_params_set_format(pcm_handle, hwparams, afmt);
-    snd_pcm_hw_params_set_channels(pcm_handle, hwparams, nch);
-    snd_pcm_hw_params_set_rate_resample(pcm_handle, hwparams, 1);
 
-    snd_pcm_hw_params_set_rate_near(pcm_handle, hwparams, &rate_, 0);
-    if (rate_ != rate)
-    {
-        _ERROR("sample rate %d is not supported (got %d)", rate, rate_);
-        return -1;
-    }
-
-    err = snd_pcm_hw_params(pcm_handle, hwparams);
-    if (err < 0)
-    {
-        _ERROR("snd_pcm_hw_params failed: %s", snd_strerror(err));
-        return -1;
-    }
+    CHECK_FAIL (snd_pcm_hw_params_set_access (pcm_handle, hwparams,
+     SND_PCM_ACCESS_RW_INTERLEAVED), "snd_pcm_hw_params_set_access");
+    CHECK_FAIL (snd_pcm_hw_params_set_format (pcm_handle, hwparams, afmt),
+     "snd_pcm_hw_params_set_format");
+    CHECK_FAIL (snd_pcm_hw_params_set_channels (pcm_handle, hwparams, nch),
+     "snd_pcm_hw_params_set_channels");
+    CHECK_FAIL (snd_pcm_hw_params_set_rate (pcm_handle, hwparams, rate, 0),
+     "snd_pcm_hw_params_set_rate");
+    CHECK_FAIL (snd_pcm_hw_params (pcm_handle, hwparams), "snd_pcm_hw_params");
 
     bitwidth = snd_pcm_format_physical_width(afmt);
     bps = (rate * bitwidth * nch) >> 3;

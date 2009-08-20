@@ -1,6 +1,6 @@
 /*
  * mad plugin for audacious
- * Copyright (C) 2005-2007 William Pitcock, Yoshiki Yazawa
+ * Copyright (C) 2005-2009 William Pitcock, Yoshiki Yazawa, John Lindgren
  *
  * Portions derived from xmms-mad:
  * Copyright (C) 2001-2002 Sam Clegg - See COPYING
@@ -33,43 +33,29 @@
 
 #define error(...) fprintf (stderr, "madplug: " __VA_ARGS__)
 
-void
-write_output(struct mad_info_t *info, struct mad_pcm *pcm,
-             struct mad_header *header)
+static void write_output (struct mad_info_t * info, struct mad_pcm * pcm,
+ struct mad_header * header)
 {
-    unsigned int nsamples;
-    mad_fixed_t const *left_ch, *right_ch;
-    mad_fixed_t *output;
-    int outlen = 0;
-    int outbyte = 0;
-    int pos = 0;
+    gint channels = MAD_NCHANNELS (header);
+    gfloat * data = g_malloc (sizeof (gfloat) * channels * pcm->length);
+    gfloat * end = data + channels * pcm->length;
+    gint channel;
 
-    nsamples = pcm->length;
-    left_ch = pcm->samples[0];
-    right_ch = pcm->samples[1];
-    outlen = nsamples * MAD_NCHANNELS(header);
-    outbyte = outlen * sizeof(mad_fixed_t);
+    for (channel = 0; channel < channels; channel ++)
+    {
+        const mad_fixed_t * from = pcm->samples[channel];
+        gfloat * to = data + channel;
 
-    output = (mad_fixed_t *) g_malloc(outbyte);
-
-    while (nsamples--) {
-        output[pos++] = *left_ch++;
-
-        if (MAD_NCHANNELS(header) == 2) {
-            output[pos++] = *right_ch++;
+        while (to < end)
+        {
+            * to = (gfloat) (* from ++) / (1 << 28);
+            to += channels;
         }
     }
 
-    assert(pos == outlen);
-    if (!info->playback->playing) {
-        g_free(output);
-        return;
-    }
-
-    info->playback->pass_audio(info->playback,
-                               info->fmt, MAD_NCHANNELS(header), outbyte, output,
-                               &(info->playback->playing));
-    g_free(output);
+    info->playback->pass_audio (info->playback, FMT_FLOAT, channels, sizeof
+     (gfloat) * channels * pcm->length, data, NULL);
+    g_free (data);
 }
 
 /**
@@ -395,7 +381,7 @@ decode_loop(gpointer arg)
     mad_stream_buffer (& stream, info->buffer, 0);
     info->stream = & stream;
 
-    if (! info->playback->output->open_audio (info->fmt, info->freq,
+    if (! info->playback->output->open_audio (FMT_FLOAT, info->freq,
      info->channels))
     {
         error ("open_audio failed: %s.\n", info->playback->output->description);
@@ -436,7 +422,7 @@ decode_loop(gpointer arg)
             info->freq = frame.header.samplerate;
             info->channels = MAD_NCHANNELS (& frame.header);
 
-            if (! info->playback->output->open_audio (info->fmt, info->freq,
+            if (! info->playback->output->open_audio (FMT_FLOAT, info->freq,
              info->channels))
             {
                 error ("open_audio failed: %s.\n",
