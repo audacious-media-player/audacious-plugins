@@ -2149,23 +2149,23 @@ mainwin_create_widgets(void)
 
 static void show_widgets (void)
 {
-    gtk_widget_set_no_show_all (mainwin_minus_num, 1);
-    gtk_widget_set_no_show_all (mainwin_10min_num, 1);
-    gtk_widget_set_no_show_all (mainwin_min_num, 1);
-    gtk_widget_set_no_show_all (mainwin_10sec_num, 1);
-    gtk_widget_set_no_show_all (mainwin_sec_num, 1);
-    gtk_widget_set_no_show_all (mainwin_stime_min, 1);
-    gtk_widget_set_no_show_all (mainwin_stime_sec, 1);
-    gtk_widget_set_no_show_all (mainwin_position, 1);
-    gtk_widget_set_no_show_all (mainwin_sposition, 1);
+    gtk_widget_set_no_show_all (mainwin_minus_num, TRUE);
+    gtk_widget_set_no_show_all (mainwin_10min_num, TRUE);
+    gtk_widget_set_no_show_all (mainwin_min_num, TRUE);
+    gtk_widget_set_no_show_all (mainwin_10sec_num, TRUE);
+    gtk_widget_set_no_show_all (mainwin_sec_num, TRUE);
+    gtk_widget_set_no_show_all (mainwin_stime_min, TRUE);
+    gtk_widget_set_no_show_all (mainwin_stime_sec, TRUE);
+    gtk_widget_set_no_show_all (mainwin_position, TRUE);
+    gtk_widget_set_no_show_all (mainwin_sposition, TRUE);
 
-    gtk_widget_set_no_show_all (mainwin_info, 1);
-    gtk_widget_set_no_show_all (mainwin_vis, 1);
-    gtk_widget_set_no_show_all (mainwin_menurow, 1);
-    gtk_widget_set_no_show_all (mainwin_rate_text, 1);
-    gtk_widget_set_no_show_all (mainwin_freq_text, 1);
-    gtk_widget_set_no_show_all (mainwin_monostereo, 1);
-    gtk_widget_set_no_show_all (mainwin_othertext, 1);
+    gtk_widget_set_no_show_all (mainwin_info, TRUE);
+    gtk_widget_set_no_show_all (mainwin_vis, TRUE);
+    gtk_widget_set_no_show_all (mainwin_menurow, TRUE);
+    gtk_widget_set_no_show_all (mainwin_rate_text, TRUE);
+    gtk_widget_set_no_show_all (mainwin_freq_text, TRUE);
+    gtk_widget_set_no_show_all (mainwin_monostereo, TRUE);
+    gtk_widget_set_no_show_all (mainwin_othertext, TRUE);
 
     gtk_widget_show_all (((SkinnedWindow *) mainwin)->normal);
     gtk_widget_show_all (((SkinnedWindow *) mainwin)->shaded);

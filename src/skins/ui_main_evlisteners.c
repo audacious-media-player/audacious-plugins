@@ -80,13 +80,17 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
 
     gtk_widget_show (mainwin_stime_min);
     gtk_widget_show (mainwin_stime_sec);
-    gtk_widget_show (mainwin_sposition);
     gtk_widget_show (mainwin_minus_num);
     gtk_widget_show (mainwin_10min_num);
     gtk_widget_show (mainwin_min_num);
     gtk_widget_show (mainwin_10sec_num);
     gtk_widget_show (mainwin_sec_num);
-    gtk_widget_show (mainwin_position);
+
+    if (audacious_drct_get_length () > 0)
+    {
+        gtk_widget_show (mainwin_position);
+        gtk_widget_show (mainwin_sposition);
+    }
 
     song_info_timeout_source =
         g_timeout_add (250, (GSourceFunc) mainwin_update_song_info, NULL);
