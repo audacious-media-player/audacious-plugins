@@ -418,8 +418,8 @@ decode_loop(gpointer arg)
 
         if (info->vbr && (iteration % 40 == 0))
         {
-            info->playback->set_params (info->playback, info->title,
-             info->length, info->bitrate, info->freq, info->channels);
+            info->playback->set_params (info->playback, NULL, 0,
+                info->bitrate, info->freq, info->channels);
         }
 
         iteration ++;
