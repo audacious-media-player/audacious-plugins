@@ -2,8 +2,9 @@
  * some functions for MP4 files
 */
 
+#include "config.h"
 #include "mp4ff.h"
-#include "faad.h"
+#include "neaacdec.h"
 #include <audacious/plugin.h>
 
 const gchar *mp4AudioNames[] = {

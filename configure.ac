@@ -700,8 +700,30 @@ AC_ARG_ENABLE(aac,
     [enable_aac=yes]
 )
 
-if test "x$enable_aac" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS aac"
+if test x$enable_aac = xyes; then
+	FAAD_LIBS="-lfaad -lmp4ff"
+	FAAD_CFLAGS=
+
+	AC_CHECK_HEADER(faad.h,,enable_aac=no)
+	if test x$enable_aac = xyes; then
+		AC_CHECK_DECL(FAAD2_VERSION,,enable_aac=no,[#include <faad.h>])
+	fi
+	if test x$enable_aac = xyes; then
+		AC_CHECK_DECL(faacDecInit2,,enable_aac=no,[#include <faad.h>])
+	fi
+	if test x$enable_aac = xyes; then
+		AC_CHECK_LIB(faad,faacDecInit2,[MP4FF_SUBDIR="mp4ff";MP4FF_LIB="mp4ff/libmp4ff.la"],enable_aac=no)
+		if test x$enable_aac = xno; then
+			enable_aac=yes
+			AC_CHECK_LIB(faad,NeAACDecInit2,[MP4FF_SUBDIR="mp4ff";MP4FF_LIB="mp4ff/libmp4ff.la"],enable_aac=no)
+		fi
+	fi
+fi
+
+if test x$enable_aac = xyes; then
+    AC_SUBST(FAAD_CFLAGS)
+    AC_SUBST(FAAD_LIBS)
+    INPUT_PLUGINS="$INPUT_PLUGINS aac"
 fi
 
 dnl *** sndfile

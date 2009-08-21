@@ -667,7 +667,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
                      &samplerate,
                      &channels);
 #ifdef DEBUG
-    g_print("samplerate: %d, channels: %d\n", samplerate, channels);
+    g_print("samplerate: %lu, channels: %d\n", samplerate, channels);
 #endif
     if(playback->output->open_audio(FMT_S16_NE,samplerate,channels) == FALSE){
         g_print("AAC: Output Error\n");
@@ -756,7 +756,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 
         if((samplesdecoded <= 0) && !sample_buffer){
 #ifdef DEBUG
-            g_print("AAC: decoded %d samples!\n", samplesdecoded);
+            g_print("AAC: decoded %lu samples!\n", samplesdecoded);
 #endif
             continue;
         }
