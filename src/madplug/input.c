@@ -80,9 +80,10 @@ input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
     info->size = -1;
     info->freq = -1;
     info->seek = -1;
-    info->duration = mad_timer_zero;
     info->filename = g_strdup(url);
+    info->length = 0;
     info->tuple = NULL;
+    info->playback = NULL;
 
     // from input_read_replaygain()
     info->replaygain_track_peak = 0.0;
@@ -450,8 +451,8 @@ gboolean input_get_info (struct mad_info_t * info)
      audmad_config->fast_play_time_calc))
         return FALSE;
 
-    info->length = mad_timer_count (info->duration, MAD_UNITS_MILLISECONDS);
-    tuple_associate_int (info->tuple, FIELD_LENGTH, NULL, info->length);
+    if (info->length > 0)
+        tuple_associate_int (info->tuple, FIELD_LENGTH, NULL, info->length);
 
     /* reset the input file to the start */
     aud_vfs_fseek(info->infile, 0, SEEK_SET);

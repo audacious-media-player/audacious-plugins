@@ -171,7 +171,7 @@ audmad_update_song_tuple(Tuple *tuple, VFSFile *fd)
     if(!id3_tag_findframe(id3tag, "TLEN", 0) && input_init(&songinfo, fd->uri, fd)) {
         AUDDBG("update TLEN frame\n");
         input_get_info (& songinfo);
-        text = g_strdup_printf("%ld", mad_timer_count(songinfo.duration, MAD_UNITS_MILLISECONDS));
+        text = g_strdup_printf ("%d", songinfo.length);
         AUDDBG("TLEN: \"%s\"\n", text);
         update_id3_frame(id3tag, "TLEN", text, 0);
         g_free(text);

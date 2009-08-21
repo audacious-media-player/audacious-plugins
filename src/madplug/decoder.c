@@ -76,6 +76,7 @@ scan_file(struct mad_info_t * info, gboolean fast)
     guint bitrate_frames = 0;
     double xing_bitrate = 0.0;
     double accum_bitrate = 0.0;
+    mad_timer_t timer = mad_timer_zero;
 
     mad_stream_init(&stream);
     mad_stream_options(&stream, 0); // check CRC
@@ -84,7 +85,6 @@ scan_file(struct mad_info_t * info, gboolean fast)
     xing_init(&info->xing);
 
     info->bitrate = 0;
-    info->duration = mad_timer_zero; // should be cleared before loop, if we use it as break condition.
 
     while (1) {
         remainder = stream.bufend - stream.next_frame;
@@ -135,7 +135,7 @@ scan_file(struct mad_info_t * info, gboolean fast)
             }
             info->frames++;
 
-            mad_timer_add (& info->duration, header.duration);
+            mad_timer_add (& timer, header.duration);
 
             data_used += stream.next_frame - stream.this_frame;
             if (info->frames == 1) {
@@ -198,29 +198,12 @@ scan_file(struct mad_info_t * info, gboolean fast)
             }
         no_xing:
             if (fast && info->frames >= N_AVERAGE_FRAMES) {
-                float frame_size = ((double) data_used) / N_AVERAGE_FRAMES;
-
-                AUDDBG("bitrate = %ld samplerate = %d\n", header.bitrate, header.samplerate);
-                AUDDBG("data_used = %d info->frames = %d info->size = %d tagsize = %d frame_size = %lf\n",
-                          data_used, info->frames, info->size, tagsize, frame_size);
-
-                if(info->size != 0)
-                    info->frames = (info->size - tagsize) / frame_size;
-
                 if (xing_bitrate > 0)
-                {
-                    gint length = (gfloat) info->xing.bytes * 8000 /
+                    info->length = (gfloat) info->xing.bytes * 8000 /
                      xing_bitrate;
-
-                    info->duration.seconds = length / 1000;
-                    info->duration.fraction = length % 1000;
-                }
-                else
-                {
-                    info->duration.seconds /= N_AVERAGE_FRAMES;
-                    info->duration.fraction /= N_AVERAGE_FRAMES;
-                    mad_timer_multiply (& info->duration, info->frames);
-                }
+                else if (info->size > 0)
+                    info->length = (gint64) mad_timer_count (timer,
+                     MAD_UNITS_MILLISECONDS) * info->size / data_used;
 
                 break;
             }

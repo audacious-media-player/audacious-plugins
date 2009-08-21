@@ -61,7 +61,6 @@ struct mad_info_t
     guint channels;
     gint frames;    /**< total mp3 frames or -1 */
     gint size;      /**< file size in bytes or -1 */
-    mad_timer_t duration;   /**< total play time */
     struct id3_tag *tag;
     struct id3_file *id3file;
     struct xing xing;
