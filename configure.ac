@@ -149,16 +149,15 @@ PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.8.0],
     [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.8.0])]
 )
 
+TRANSPORT_PLUGINS="unix-io"
+
 AC_ARG_ENABLE(gio, [  --enable-gio            enable GIO support (default=yes)],
  enable_gio=$enableval, enable_gio=yes)
 
 if test "x$enable_gio" = "xyes"; then
     PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0], [ADD_PC_REQUIRES([gio-2.0 >=
      2.0])], [AC_MSG_ERROR([Cannot find GIO >= 2.0])])
-    TRANSPORT_PLUGINS="gio"
-else
-    TRANSPORT_PLUGINS="unix-io"
-fi
+    TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS gio"
 
 PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
     [ADD_PC_REQUIRES([pango >= 1.8.0])],

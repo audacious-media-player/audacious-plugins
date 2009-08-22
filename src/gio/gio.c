@@ -308,22 +308,6 @@ gio_aud_vfs_fsize_impl(VFSFile * file)
     return size;
 }
 
-VFSConstructor file_const = {
-    .uri_id = "file://",
-    .vfs_fopen_impl = gio_aud_vfs_fopen_impl,
-    .vfs_fclose_impl = gio_aud_vfs_fclose_impl,
-    .vfs_fread_impl = gio_aud_vfs_fread_impl,
-    .vfs_fwrite_impl = gio_aud_vfs_fwrite_impl,
-    .vfs_getc_impl = gio_aud_vfs_getc_impl,
-    .vfs_ungetc_impl = gio_aud_vfs_ungetc_impl,
-    .vfs_fseek_impl = gio_aud_vfs_fseek_impl,
-    .vfs_rewind_impl = gio_aud_vfs_rewind_impl,
-    .vfs_ftell_impl = gio_aud_vfs_ftell_impl,
-    .vfs_feof_impl = gio_aud_vfs_feof_impl,
-    .vfs_truncate_impl = gio_aud_vfs_truncate_impl,
-    .vfs_fsize_impl = gio_aud_vfs_fsize_impl
-};
-
 static void init(void)
 {
     gint i;
@@ -331,8 +315,6 @@ static void init(void)
 
     gvfs = g_vfs_get_default();
     schemes = g_vfs_get_supported_uri_schemes(gvfs);
-
-    aud_vfs_register_transport(&file_const);
 
     for (i = 0; schemes[i] != NULL; i++) {
          VFSConstructor *c;
