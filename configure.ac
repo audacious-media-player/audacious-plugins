@@ -706,17 +706,16 @@ if test x$enable_aac = xyes; then
 
 	AC_CHECK_HEADER(faad.h,,enable_aac=no)
 	if test x$enable_aac = xyes; then
-		AC_CHECK_DECL(FAAD2_VERSION,,enable_aac=no,[#include <faad.h>])
+		AC_CHECK_DECL(FAAD2_VERSION,,enable_aac=no,[#include <neaacdec.h>])
 	fi
 	if test x$enable_aac = xyes; then
-		AC_CHECK_DECL(faacDecInit2,,enable_aac=no,[#include <faad.h>])
+		AC_CHECK_DECL(NeAACDecInit2,,enable_aac=no,[#include <neaacdec.h>])
 	fi
 	if test x$enable_aac = xyes; then
-		AC_CHECK_LIB(faad,faacDecInit2,[MP4FF_SUBDIR="mp4ff";MP4FF_LIB="mp4ff/libmp4ff.la"],enable_aac=no)
-		if test x$enable_aac = xno; then
-			enable_aac=yes
-			AC_CHECK_LIB(faad,NeAACDecInit2,[MP4FF_SUBDIR="mp4ff";MP4FF_LIB="mp4ff/libmp4ff.la"],enable_aac=no)
-		fi
+		AC_CHECK_LIB(faad,NeAACDecInit2,,enable_aac=no)
+	fi
+	if test x$enable_aac = xyes; then
+		AC_CHECK_LIB(mp4ff,mp4ff_get_decoder_config,,enable_aac=no)
 	fi
 fi
 
