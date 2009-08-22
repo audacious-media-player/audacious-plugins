@@ -118,7 +118,6 @@ static void mp4_stop(InputPlayback *playback)
         buffer_playing = FALSE;
         playback->playing = 0; //XXX should acquire lock?
         g_thread_join(decodeThread);
-        playback->output->close_audio();
     }
 }
 
