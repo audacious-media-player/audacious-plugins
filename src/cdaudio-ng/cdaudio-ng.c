@@ -776,7 +776,7 @@ static void do_seek (void)
 /* unlocks mutex temporarily */
 static void dae_play_loop (dae_params_t * pdae_params)
 {
-    InputPlayback *playback;
+    InputPlayback * playback = pdae_params->pplayback;
     guchar *buffer = g_new (guchar, CDDA_DAE_FRAMES * CDIO_CD_FRAMESIZE_RAW);
 
     cdio_lseek (pcdio, pdae_params->startlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
@@ -785,11 +785,11 @@ static void dae_play_loop (dae_params_t * pdae_params)
 
     //pdae_params->endlsn += 75 * 3;
 
-    while (pdae_params->pplayback->playing)
+    while (playback->playing)
     {
         if (is_paused)
         {
-            pdae_params->pplayback->output->pause (1);
+            playback->output->pause (1);
 
             while (is_paused)
             {
@@ -799,7 +799,7 @@ static void dae_play_loop (dae_params_t * pdae_params)
                 g_cond_wait (control_cond, mutex);
             }
 
-            pdae_params->pplayback->output->pause (0);
+            playback->output->pause (0);
         }
 
         if (pdae_params->seektime != -1)
@@ -835,8 +835,6 @@ static void dae_play_loop (dae_params_t * pdae_params)
         else
             read_error_counter = 0;
 
-        playback = pdae_params->pplayback;
-
         g_mutex_unlock (mutex);
 
         gint remainingbytes = lsncount * CDIO_CD_FRAMESIZE_RAW;
@@ -861,8 +859,15 @@ static void dae_play_loop (dae_params_t * pdae_params)
         pdae_params->currlsn += lsncount;
     }
 
-    pdae_params->pplayback->playing = FALSE;
-    pdae_params->pplayback->output->close_audio ();
+    if (playback->playing)
+    {
+        while (playback->output->buffer_playing ())
+            g_usleep (20000);
+
+        playback->playing = FALSE;
+    }
+
+    playback->output->close_audio ();
     g_free (buffer);
 }
 
