@@ -326,6 +326,7 @@ static gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
         {
             DEBUG ("Audio already open and in requested format.\n");
             alsa_time = 0;
+            alsa_leave_open = FALSE;
         }
         else
         {
