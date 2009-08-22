@@ -243,25 +243,6 @@ else
     have_esd=no
 fi
 
-dnl Check for PulseAudio
-
-AC_ARG_ENABLE( pulse,
-    [  --disable-pulse         disable PulseAudio output plugin (default=enabled)],
-    [enable_pulse=$enableval],
-    [enable_pulse="yes"]
-)
-
-if test "x$enable_pulse" = "xyes"; then
-    PKG_CHECK_MODULES(PULSE, [libpulse >= 0.9.9],
-         [have_pulse=yes
-          OUTPUT_PLUGINS="$OUTPUT_PLUGINS pulse_audio"],
-         [have_pulse=no]
-    )
-else
-    AC_MSG_RESULT([*** pulseaudio output plugin disabled per user request ***])
-    have_pulse=no
-fi
-
 dnl *** CoreAudio
 
 AC_ARG_ENABLE(coreaudio,
@@ -1660,7 +1641,6 @@ echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  Enlightenment Sound Daemon (esd):       $have_esd"
 echo "  Jack Audio Connection Kit (jack):       $have_jack"
 echo "  BSD/SUN audio output (sun):             $have_sun"
-echo "  PulseAudio sound server (pulse_audio):  $have_pulse"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
 echo "  FileWriter:                             $enable_filewriter"
 echo "    -> FileWriter MP3 output part:        $have_lame"
