@@ -70,7 +70,6 @@ typedef struct  _mp4cfg
 } Mp4Config;
 
 static Mp4Config mp4cfg;
-static GThread   *decodeThread;
 GStaticMutex     mutex = G_STATIC_MUTEX_INIT;
 static int       seekPosition = -1;
 static volatile char pause_flag;
@@ -106,7 +105,6 @@ static void mp4_play(InputPlayback *playback)
 {
     buffer_playing = TRUE;
     playback->playing = 1; //XXX should acquire lock?
-    decodeThread = g_thread_self();
     playback->set_pb_ready(playback);
     mp4_decode(playback);
 }
@@ -117,7 +115,8 @@ static void mp4_stop(InputPlayback *playback)
     {
         buffer_playing = FALSE;
         playback->playing = 0; //XXX should acquire lock?
-        g_thread_join(decodeThread);
+        g_thread_join (playback->thread);
+        playback->thread = NULL;
     }
 }
 
