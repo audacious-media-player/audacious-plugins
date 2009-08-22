@@ -812,12 +812,9 @@ static void dae_play_loop (dae_params_t * pdae_params)
              1) ? CDDA_DAE_FRAMES : (pdae_params->endlsn -
                                      pdae_params->currlsn + 1);
 
-        /* check too see if we have reached the end of the song */
+        /* check to see if we have reached the end of the song */
         if (lsncount <= 0)
-        {
-            sleep (3);
             break;
-        }
 
         if (cdio_read_audio_sectors
             (pcdio, buffer, pdae_params->currlsn,
