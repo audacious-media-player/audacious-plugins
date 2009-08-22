@@ -39,7 +39,7 @@
 
 #define ERROR(...) fprintf (stderr, "alsa-gapless: " __VA_ARGS__)
 
-#if 0
+#if 1
 #define DEBUG(...) ERROR (__VA_ARGS__)
 #else
 #define DEBUG(...)
@@ -326,6 +326,7 @@ static gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
         {
             DEBUG ("Audio already open and in requested format.\n");
             alsa_time = 0;
+            alsa_leave_open = FALSE;
         }
         else
         {
@@ -538,7 +539,7 @@ FAILED:
 static OutputPlugin alsa_plugin =
 {
     .description = "ALSA Gapless Output Plugin (experimental)",
-    .probe_priority = 10, /* very low -- it's experimental */
+    .probe_priority = 0, /* lowest -- it's experimental */
     .init = alsa_init,
     .cleanup = alsa_cleanup,
     .open_audio = alsa_open_audio,
