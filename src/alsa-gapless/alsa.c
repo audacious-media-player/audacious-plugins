@@ -274,6 +274,9 @@ static void alsa_cleanup (void)
     if (alsa_handle != NULL)
         real_close ();
 
+    snd_mixer_detach (alsa_mixer, "default");
+    snd_mixer_close (alsa_mixer);
+
     g_mutex_unlock (alsa_mutex);
     g_mutex_unlock (pump_mutex);
 
