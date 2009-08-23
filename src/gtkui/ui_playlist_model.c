@@ -417,21 +417,19 @@ ui_playlist_model_row_deleted(UiPlaylistModel *model, gint n)
 }
 
 static void
-ui_playlist_model_position_change(gpointer hook_data, gpointer user_data)
+ui_playlist_model_update_position(UiPlaylistModel *model, gint position)
 {
-    UiPlaylistModel *model = UI_PLAYLIST_MODEL(user_data);
-    gint playlist = GPOINTER_TO_INT(hook_data);
-
-    if (model->playlist != playlist)
-        return;
-
     if (model->position != -1)
     {
         ui_playlist_model_row_changed(model, model->position); /* remove bold */
     }
 
-    model->position = aud_playlist_get_position(model->playlist);
-    ui_playlist_model_row_changed(model, model->position); /* set bold */
+    model->position = position;
+
+    if (model->position != -1)
+    {
+        ui_playlist_model_row_changed(model, model->position); /* set bold */
+    }
 }
 
 static void
@@ -439,9 +437,16 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
 {
     UiPlaylistModel *model = UI_PLAYLIST_MODEL(user_data);
     gint type = GPOINTER_TO_INT(hook_data);
+    gint position;
 
     if (model->playlist != aud_playlist_get_active())
         return;
+
+    position = aud_playlist_get_position(model->playlist);
+    if (position != model->position)
+    {
+        ui_playlist_model_update_position(model, position);
+    }
 
     if (type == PLAYLIST_UPDATE_STRUCTURE)
     {
@@ -494,7 +499,6 @@ ui_playlist_model_playlist_delete(gpointer hook_data, gpointer user_data)
 static void
 ui_playlist_model_associate_hooks(UiPlaylistModel *model)
 {
-    aud_hook_associate("playlist position", ui_playlist_model_position_change, model);
     aud_hook_associate("playlist update", ui_playlist_model_playlist_update, model);
     aud_hook_associate("playlist delete", ui_playlist_model_playlist_delete, model);
 }
@@ -502,7 +506,6 @@ ui_playlist_model_associate_hooks(UiPlaylistModel *model)
 static void
 ui_playlist_model_dissociate_hooks(UiPlaylistModel *model)
 {
-    aud_hook_dissociate_full("playlist position", ui_playlist_model_position_change, model);
     aud_hook_dissociate_full("playlist update", ui_playlist_model_playlist_update, model);
     aud_hook_dissociate_full("playlist delete", ui_playlist_model_playlist_delete, model);
 }
