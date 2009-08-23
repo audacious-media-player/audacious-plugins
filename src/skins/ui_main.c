@@ -2239,11 +2239,22 @@ mainwin_create(void)
     aud_hook_associate ("show main menu", (HookFunction) show_main_menu, 0);
 }
 
-gboolean
-mainwin_update_song_info(void)
+static void mainwin_update_volume (void)
 {
-    if (!audacious_drct_get_playing())
-        return FALSE;
+    gint volume, balance;
+
+    audacious_drct_get_volume_main (& volume);
+    audacious_drct_get_volume_balance (& balance);
+    mainwin_set_volume_slider (volume);
+    mainwin_set_balance_slider (balance);
+}
+
+void mainwin_update_song_info (void)
+{
+    mainwin_update_volume ();
+
+    if (! audacious_drct_get_playing ())
+        return;
 
     gint time = audacious_drct_get_time();
     gint length = audacious_drct_get_length();
@@ -2311,8 +2322,6 @@ mainwin_update_song_info(void)
         ui_skinned_horizontal_slider_set_position(mainwin_position, 0);
         ui_skinned_horizontal_slider_set_position(mainwin_sposition, 1);
     }
-
-    return TRUE;
 }
 
 static gboolean

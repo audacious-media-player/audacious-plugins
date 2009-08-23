@@ -76,7 +76,16 @@ static void skins_init_paths() {
     g_free(xdg_cache_home);
 }
 
-gboolean skins_init(InterfaceCbs *cbs) {
+static gboolean update_cb (void * unused)
+{
+    mainwin_update_song_info ();
+    return TRUE;
+}
+
+gboolean skins_init (InterfaceCbs * cbs)
+{
+    gint update_source;
+
     plugin_is_active = TRUE;
     g_log_set_handler(NULL, G_LOG_LEVEL_WARNING, g_log_default_handler, NULL);
 
@@ -94,10 +103,6 @@ gboolean skins_init(InterfaceCbs *cbs) {
     init_skins(config.skin);
     mainwin_setup_menus();
 
-    gint h_vol[2];
-    aud_input_get_volume(&h_vol[0], &h_vol[1]);
-    aud_hook_call("volume set", h_vol);
-
     if (audacious_drct_get_playing ())
     {
         ui_main_evlistener_playback_begin (NULL, NULL);
@@ -105,6 +110,8 @@ gboolean skins_init(InterfaceCbs *cbs) {
         if (audacious_drct_get_paused ())
             ui_main_evlistener_playback_pause (NULL, NULL);
     }
+    else
+        mainwin_update_song_info ();
 
     if (config.player_visible)
        mainwin_show (1);
@@ -123,7 +130,9 @@ gboolean skins_init(InterfaceCbs *cbs) {
     cbs->show_about_window = audgui_show_about_window;
     cbs->hide_about_window = audgui_hide_about_window;
 
-    gtk_main();
+    update_source = g_timeout_add (250, update_cb, NULL);
+    gtk_main ();
+    g_source_remove (update_source);
 
     return TRUE;
 }
