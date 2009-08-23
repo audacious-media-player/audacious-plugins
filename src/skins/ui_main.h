@@ -159,7 +159,7 @@ void mainwin_general_menu_callback(gpointer cb_data,
                                    guint action,
                                    GtkWidget * widget);
 
-gboolean mainwin_update_song_info(void);
+void mainwin_update_song_info (void);
 void mainwin_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
                                 gint x,

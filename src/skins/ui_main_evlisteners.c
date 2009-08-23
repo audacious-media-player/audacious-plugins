@@ -32,8 +32,6 @@
 #include "ui_skinned_window.h"
 #include "skins_cfg.h"
 
-static gint song_info_timeout_source = 0;
-
 static void
 ui_main_evlistener_title_change(gpointer hook_data, gpointer user_data)
 {
@@ -47,28 +45,6 @@ static void
 ui_main_evlistener_hide_seekbar(gpointer hook_data, gpointer user_data)
 {
     mainwin_disable_seekbar();
-}
-
-static void
-ui_main_evlistener_volume_change(gpointer hook_data, gpointer user_data)
-{
-    gint *h_vol = (gint *) hook_data;
-    gint vl, vr, b, v;
-
-    vl = CLAMP(h_vol[0], 0, 100);
-    vr = CLAMP(h_vol[1], 0, 100);
-    v = MAX(vl, vr);
-    if (vl > vr)
-        b = (gint) rint(((gdouble) vr / vl) * 100) - 100;
-    else if (vl < vr)
-        b = 100 - (gint) rint(((gdouble) vl / vr) * 100);
-    else
-        b = 0;
-
-    mainwin_set_volume_slider(v);
-    equalizerwin_set_volume_slider(v);
-    mainwin_set_balance_slider(b);
-    equalizerwin_set_balance_slider(b);
 }
 
 void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
@@ -92,9 +68,6 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
         gtk_widget_show (mainwin_sposition);
     }
 
-    song_info_timeout_source =
-        g_timeout_add (250, (GSourceFunc) mainwin_update_song_info, NULL);
-
     ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
     ui_main_evlistener_title_change (NULL, NULL);
 }
@@ -102,9 +75,6 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
 static void
 ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
 {
-    if (song_info_timeout_source)
-        g_source_remove(song_info_timeout_source);
-
     mainwin_clear_song_info ();
     mainwin_set_stopaftersong (FALSE);
 }
@@ -322,7 +292,6 @@ ui_main_evlistener_init(void)
 {
     aud_hook_associate("title change", ui_main_evlistener_title_change, NULL);
     aud_hook_associate("hide seekbar", ui_main_evlistener_hide_seekbar, NULL);
-    aud_hook_associate("volume set", ui_main_evlistener_volume_change, NULL);
     aud_hook_associate("playback begin", ui_main_evlistener_playback_begin, NULL);
     aud_hook_associate("playback stop", ui_main_evlistener_playback_stop, NULL);
     aud_hook_associate("playback pause", ui_main_evlistener_playback_pause, NULL);
@@ -345,7 +314,6 @@ ui_main_evlistener_dissociate(void)
 {
     aud_hook_dissociate("title change", ui_main_evlistener_title_change);
     aud_hook_dissociate("hide seekbar", ui_main_evlistener_hide_seekbar);
-    aud_hook_dissociate("volume set", ui_main_evlistener_volume_change);
     aud_hook_dissociate("playback begin", ui_main_evlistener_playback_begin);
     aud_hook_dissociate("playback stop", ui_main_evlistener_playback_stop);
     aud_hook_dissociate("playback pause", ui_main_evlistener_playback_pause);
