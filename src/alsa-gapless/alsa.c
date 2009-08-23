@@ -36,7 +36,7 @@
 
 #define ERROR(...) fprintf (stderr, "alsa-gapless: " __VA_ARGS__)
 
-#if 1
+#if 0
 #define DEBUG(...) ERROR (__VA_ARGS__)
 #else
 #define DEBUG(...)
@@ -256,6 +256,8 @@ static OutputPluginInitStatus alsa_init (void)
 
     if (alsa_mixer_elem == NULL)
         ERROR ("PCM mixer element not found, volume control disabled.\n");
+
+    CHECK (snd_mixer_selem_set_playback_volume_range, alsa_mixer_elem, 0, 100);
 
     return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 
@@ -563,6 +565,8 @@ static void alsa_get_volume (gint * left, gint * right)
     if (alsa_mixer_elem == NULL)
         goto FAILED;
 
+    CHECK (snd_mixer_handle_events, alsa_mixer);
+
     if (snd_mixer_selem_is_playback_mono (alsa_mixer_elem))
     {
         CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_elem,
@@ -597,6 +601,8 @@ static void alsa_set_volume (gint left, gint right)
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_elem,
          SND_MIXER_SCHN_FRONT_RIGHT, right);
     }
+
+    CHECK (snd_mixer_handle_events, alsa_mixer);
 
 FAILED:
     return;
