@@ -136,8 +136,7 @@ static void * pump (void * unused)
 }
 
 /* pump_mutex must be locked */
-/* alsa_mutex must NOT be locked */
-static void wait_for_pump (void)
+static void check_pump_started (void)
 {
     if (pump_thread == NULL)
     {
@@ -145,8 +144,6 @@ static void wait_for_pump (void)
         pump_thread = g_thread_create (pump, NULL, TRUE, NULL);
         g_mutex_lock (pump_mutex); /* pump steals our first lock */
     }
-
-    g_cond_wait (pump_cond, pump_mutex);
 }
 
 /* alsa_mutex must be locked */
@@ -223,6 +220,7 @@ static void real_close (void)
 }
 
 /* alsa_mutex must be locked */
+/* pump_mutex must be locked */
 static gboolean real_buffer_playing (void)
 {
     snd_pcm_status_t * status;
@@ -351,12 +349,12 @@ static gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
         else
         {
             DEBUG ("Audio already open but not in requested format.\n");
+            check_pump_started ();
 
             while (real_buffer_playing ())
             {
                 g_mutex_unlock (alsa_mutex);
-                g_cond_signal (pump_cond);
-                wait_for_pump ();
+                g_cond_wait (pump_cond, pump_mutex);
                 g_mutex_lock (alsa_mutex);
             }
 
@@ -398,6 +396,7 @@ static gboolean close_cb (void * unused)
     g_mutex_lock (pump_mutex);
     g_mutex_lock (alsa_mutex);
 
+    check_pump_started ();
     playing = real_buffer_playing ();
 
     if (! playing)
@@ -446,7 +445,8 @@ static void alsa_write_audio (void * data, gint length)
         if (! length)
             break;
 
-        wait_for_pump ();
+        check_pump_started ();
+        g_cond_wait (pump_cond, pump_mutex);
     }
 
     g_mutex_unlock (pump_mutex);
