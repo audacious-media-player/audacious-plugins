@@ -27,6 +27,7 @@
 #include <stdlib.h>
 
 #include <glib.h>
+#include <gtk/gtk.h>
 #include <alsa/asoundlib.h>
 #include <audacious/plugin.h>
 
@@ -372,24 +373,6 @@ static gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
     return result;
 }
 
-static gboolean close_cb (void * unused);
-
-static void alsa_close_audio (void)
-{
-    g_mutex_lock (pump_mutex);
-    g_mutex_lock (alsa_mutex);
-
-    DEBUG ("Close requested.\n");
-
-    if (alsa_leave_open && snd_pcm_state (alsa_handle) != SND_PCM_STATE_PAUSED)
-        alsa_close_source = g_timeout_add (300, close_cb, NULL);
-    else
-        real_close ();
-
-    g_mutex_unlock (alsa_mutex);
-    g_mutex_unlock (pump_mutex);
-}
-
 static gboolean close_cb (void * unused)
 {
     gboolean playing;
@@ -409,6 +392,22 @@ static gboolean close_cb (void * unused)
     g_mutex_unlock (alsa_mutex);
     g_mutex_unlock (pump_mutex);
     return playing;
+}
+
+static void alsa_close_audio (void)
+{
+    g_mutex_lock (pump_mutex);
+    g_mutex_lock (alsa_mutex);
+
+    DEBUG ("Close requested.\n");
+
+    if (alsa_leave_open && snd_pcm_state (alsa_handle) != SND_PCM_STATE_PAUSED)
+        alsa_close_source = g_timeout_add (300, close_cb, NULL);
+    else
+        real_close ();
+
+    g_mutex_unlock (alsa_mutex);
+    g_mutex_unlock (pump_mutex);
 }
 
 static void alsa_write_audio (void * data, gint length)
@@ -539,6 +538,7 @@ static void alsa_flush (gint time)
     alsa_time = (gint64) time * 1000;
     alsa_buffer_data_start = 0;
     alsa_buffer_data_length = 0;
+
     CHECK (snd_pcm_drop, alsa_handle);
     CHECK (snd_pcm_prepare, alsa_handle);
 
