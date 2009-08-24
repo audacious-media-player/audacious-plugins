@@ -59,6 +59,7 @@ static GCond * pump_cond;
 
 static snd_pcm_format_t alsa_format;
 static gint alsa_channels, alsa_rate;
+static gboolean alsa_paused;
 
 static void * alsa_buffer;
 static gint alsa_buffer_length, alsa_buffer_data_start, alsa_buffer_data_length;
@@ -102,6 +103,10 @@ static void * pump (void * unused)
             break;
 
         g_mutex_lock (alsa_mutex);
+
+        /* Bleh. Software pause for broken ALSA drivers. */
+        if (alsa_paused)
+            goto FAILED;
 
         snd_pcm_status_alloca (& status);
         CHECK (snd_pcm_status, alsa_handle, status);
@@ -170,6 +175,7 @@ static gboolean real_open (snd_pcm_format_t format, gint rate, gint channels)
     alsa_format = format;
     alsa_channels = channels;
     alsa_rate = rate;
+    alsa_paused = FALSE;
 
     alsa_buffer_length = snd_pcm_frames_to_bytes (alsa_handle, (gint64)
      LARGE_BUFFER * rate / 1000);
@@ -401,7 +407,7 @@ static void alsa_close_audio (void)
 
     DEBUG ("Close requested.\n");
 
-    if (alsa_leave_open && snd_pcm_state (alsa_handle) != SND_PCM_STATE_PAUSED)
+    if (alsa_leave_open && ! alsa_paused)
         alsa_close_source = g_timeout_add (300, close_cb, NULL);
     else
         real_close ();
@@ -551,6 +557,7 @@ static void alsa_pause (gshort pause)
     g_mutex_lock (alsa_mutex);
 
     DEBUG ("%sause.\n", pause ? "P" : "Unp");
+    alsa_paused = pause;
     CHECK (snd_pcm_pause, alsa_handle, pause);
 
 FAILED:
