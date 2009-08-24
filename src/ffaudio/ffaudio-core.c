@@ -568,6 +568,9 @@ static gchar *ffaudio_fmts[] = {
     /* MPEG 2/4 AC3 */
     "ac3",
 
+    /* monkey's audio */
+    "ape",
+
     /* end of table */
     NULL
 };
