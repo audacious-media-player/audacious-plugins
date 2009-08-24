@@ -21,7 +21,6 @@
  * To do:
  *
  * Make devices configurable.
- * Add "About" dialog.
  */
 
 #include <stdio.h>
@@ -608,6 +607,44 @@ FAILED:
     return;
 }
 
+static void about_response (GtkDialog * dialog, gint response, void * unused)
+{
+    gtk_widget_destroy ((GtkWidget *) dialog);
+}
+
+void alsa_about (void)
+{
+    const char markup[] = "<b>ALSA Gapless Output Plugin for Audacious</b>\n"
+     "Copyright 2009 John Lindgren\n\n"
+     "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
+     "code served as a reference when the ALSA manual was not enough.\n\n"
+     "Redistribution and use in source and binary forms, with or without "
+     "modification, are permitted provided that the following conditions are "
+     "met:\n\n"
+     "1. Redistributions of source code must retain the above copyright "
+     "notice, this list of conditions, and the following disclaimer.\n\n"
+     "2. Redistributions in binary form must reproduce the above copyright "
+     "notice, this list of conditions, and the following disclaimer in the "
+     "documentation provided with the distribution.\n\n"
+     "This software is provided \"as is\" and without any warranty, express or "
+     "implied. In no event shall the authors be liable for any damages arising "
+     "from the use of this software.";
+
+    static GtkWidget * window = NULL;
+
+    if (window == NULL)
+    {
+        window = gtk_message_dialog_new_with_markup (NULL, 0, GTK_MESSAGE_INFO,
+         GTK_BUTTONS_OK, markup);
+        g_signal_connect ((GObject *) window, "response", (GCallback)
+         about_response, NULL);
+        g_signal_connect ((GObject *) window, "destroy", (GCallback)
+         gtk_widget_destroyed, & window);
+    }
+
+    gtk_window_present ((GtkWindow *) window);
+}
+
 static OutputPlugin alsa_plugin =
 {
     .description = "ALSA Gapless Output Plugin (experimental)",
@@ -625,6 +662,7 @@ static OutputPlugin alsa_plugin =
     .pause = alsa_pause,
     .set_volume = alsa_set_volume,
     .get_volume = alsa_get_volume,
+    .about = alsa_about,
     #if 0 /* not written yet */
     .configure = alsa_configure,
     #endif
