@@ -59,13 +59,12 @@ static GCond * pump_cond;
 
 static snd_pcm_format_t alsa_format;
 static gint alsa_channels, alsa_rate;
-static gboolean alsa_paused;
 
 static void * alsa_buffer;
 static gint alsa_buffer_length, alsa_buffer_data_start, alsa_buffer_data_length;
 
 static GThread * pump_thread;
-static gboolean pump_quit;
+static gboolean pump_paused, pump_quit;
 
 static gint64 alsa_time; /* microseconds */
 static gboolean alsa_leave_open;
@@ -95,18 +94,19 @@ static void * pump (void * unused)
         GTimeVal wake;
         gint writable;
 
-        g_get_current_time (& wake);
-        g_time_val_add (& wake, 1000 * SMALL_BUFFER / 2);
-        g_cond_timed_wait (pump_cond, pump_mutex, & wake);
+        if (pump_paused)
+            g_cond_wait (pump_cond, pump_mutex);
+        else
+        {
+            g_get_current_time (& wake);
+            g_time_val_add (& wake, 1000 * SMALL_BUFFER / 2);
+            g_cond_timed_wait (pump_cond, pump_mutex, & wake);
+        }
 
         if (pump_quit)
             break;
 
         g_mutex_lock (alsa_mutex);
-
-        /* Bleh. Software pause for broken ALSA drivers. */
-        if (alsa_paused)
-            goto FAILED;
 
         snd_pcm_status_alloca (& status);
         CHECK (snd_pcm_status, alsa_handle, status);
@@ -175,7 +175,6 @@ static gboolean real_open (snd_pcm_format_t format, gint rate, gint channels)
     alsa_format = format;
     alsa_channels = channels;
     alsa_rate = rate;
-    alsa_paused = FALSE;
 
     alsa_buffer_length = snd_pcm_frames_to_bytes (alsa_handle, (gint64)
      LARGE_BUFFER * rate / 1000);
@@ -184,6 +183,7 @@ static gboolean real_open (snd_pcm_format_t format, gint rate, gint channels)
     alsa_buffer_data_length = 0;
 
     pump_thread = NULL;
+    pump_paused = FALSE;
     pump_quit = FALSE;
 
     alsa_time = 0;
@@ -407,7 +407,7 @@ static void alsa_close_audio (void)
 
     DEBUG ("Close requested.\n");
 
-    if (alsa_leave_open && ! alsa_paused)
+    if (alsa_leave_open && ! pump_paused)
         alsa_close_source = g_timeout_add (300, close_cb, NULL);
     else
         real_close ();
@@ -554,14 +554,17 @@ FAILED:
 
 static void alsa_pause (gshort pause)
 {
+    g_mutex_lock (pump_mutex);
     g_mutex_lock (alsa_mutex);
 
     DEBUG ("%sause.\n", pause ? "P" : "Unp");
-    alsa_paused = pause;
+    pump_paused = pause;
+    g_cond_signal (pump_cond);
     CHECK (snd_pcm_pause, alsa_handle, pause);
 
 FAILED:
     g_mutex_unlock (alsa_mutex);
+    g_mutex_unlock (pump_mutex);
 }
 
 static void alsa_get_volume (gint * left, gint * right)
