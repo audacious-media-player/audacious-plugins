@@ -17,6 +17,7 @@
  */
 
 #include <audacious/plugin.h>
+#include "config.h"
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
 #else
