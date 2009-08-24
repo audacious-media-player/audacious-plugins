@@ -264,6 +264,7 @@ ffaudio_get_song_tuple(const gchar *filename)
 #ifdef FFAUDIO_USE_AUDTAG
     VFSFile * fd = vfs_fopen(filename, "rb");
     tuple = tag_tuple_read(tuple, fd);
+    vfs_fclose(fd);
 #endif
     return tuple;
 }
@@ -382,6 +383,11 @@ ffaudio_play_file(InputPlayback *playback)
     _DEBUG("setting parameters");
     tuple = aud_tuple_new_from_filename(playback->filename);
     ffaudio_get_tuple_data(tuple, ic, c, codec);
+#ifdef FFAUDIO_USE_AUDTAG
+    VFSFile * fd = vfs_fopen(playback->filename, "rb");
+    tuple = tag_tuple_read(tuple, fd);
+    vfs_fclose(fd);
+#endif
     playback->set_tuple(playback, tuple);
     playback->set_params(playback, NULL, 0, c->bit_rate, c->sample_rate,
      c->channels);
