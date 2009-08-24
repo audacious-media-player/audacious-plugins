@@ -66,6 +66,7 @@ ov_callbacks vorbis_callbacks_stream = {
 static volatile gint seek_value = -1;
 static GMutex * seek_mutex = NULL;
 static GCond * seek_cond = NULL;
+static gboolean pause_flag;
 
 gchar **vorbis_tag_encoding_list = NULL;
 
@@ -284,6 +285,18 @@ vorbis_interleave_buffer(float **pcm, int samples, int ch, float *pcmout)
 #define PCM_FRAMES 1024
 #define PCM_BUFSIZE (PCM_FRAMES * 2)
 
+/* seek_mutex must be locked */
+static void seek_if_needed (InputPlayback * playback, OggVorbis_File * vf)
+{
+    if (seek_value >= 0)
+    {
+        playback->output->flush (1000 * seek_value);
+        ov_time_seek (vf, seek_value);
+        seek_value = -1;
+        g_cond_signal (seek_cond);
+    }
+}
+
 static void
 vorbis_play(InputPlayback *playback)
 {
@@ -300,6 +313,7 @@ vorbis_play(InputPlayback *playback)
 
     playback->error = FALSE;
     seek_value = -1;
+    pause_flag = FALSE;
     memset(&vf, 0, sizeof(vf));
 
     if ((stream = aud_vfs_fopen(playback->filename, "r")) == NULL) {
@@ -354,15 +368,27 @@ vorbis_play(InputPlayback *playback)
         gint current_section = last_section;
 
         g_mutex_lock (seek_mutex);
-        if (seek_value >= 0)
-        {
-            playback->output->flush(seek_value * 1000);
-            ov_time_seek(&vf, seek_value);
-            seek_value = -1;
-            g_cond_signal(seek_cond);
-        }
-        g_mutex_unlock (seek_mutex);
 
+        if (pause_flag)
+        {
+            playback->output->pause (TRUE);
+            g_cond_signal (seek_cond);
+
+            while (pause_flag)
+            {
+                if (! playback->playing)
+                    goto play_cleanup;
+
+                seek_if_needed (playback, & vf);
+                g_cond_wait (seek_cond, seek_mutex);
+            }
+
+            playback->output->pause (FALSE);
+            g_cond_signal (seek_cond);
+        }
+
+        seek_if_needed (playback, & vf);
+        g_mutex_unlock (seek_mutex);
 
         bytes = ov_read_float(&vf, &pcm, PCM_FRAMES, &current_section);
         if (bytes == OV_HOLE)
@@ -447,25 +473,32 @@ play_cleanup:
     playback->playing = 0;
 }
 
-static void
-vorbis_stop (InputPlayback * playback)
+static void vorbis_stop (InputPlayback * playback)
 {
+    g_mutex_lock (seek_mutex);
     playback->playing = FALSE;
+    g_cond_signal (seek_cond);
+    g_mutex_unlock (seek_mutex);
+    g_thread_join (playback->thread);
+    playback->thread = NULL;
 }
 
-static void
-vorbis_pause(InputPlayback *playback, gshort p)
+static void vorbis_pause (InputPlayback * playback, gshort p)
 {
-    playback->output->pause(p);
+    g_mutex_lock (seek_mutex);
+    pause_flag = p;
+    g_cond_signal (seek_cond);
+    g_cond_wait (seek_cond, seek_mutex);
+    g_mutex_unlock (seek_mutex);
 }
 
-static void
-vorbis_seek(InputPlayback *data, gint time)
+static void vorbis_seek (InputPlayback * data, gint time)
 {
-    g_mutex_lock(seek_mutex);
+    g_mutex_lock (seek_mutex);
     seek_value = time;
-    g_cond_wait(seek_cond, seek_mutex);
-    g_mutex_unlock(seek_mutex);
+    g_cond_signal (seek_cond);
+    g_cond_wait (seek_cond, seek_mutex);
+    g_mutex_unlock (seek_mutex);
 }
 
 static Tuple *
