@@ -36,7 +36,7 @@
 
 #define ERROR(...) fprintf (stderr, "alsa-gapless: " __VA_ARGS__)
 
-#if 0
+#if 1
 #define DEBUG(...) ERROR (__VA_ARGS__)
 #else
 #define DEBUG(...)
