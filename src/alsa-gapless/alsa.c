@@ -258,7 +258,14 @@ static OutputPluginInitStatus alsa_init (void)
     alsa_mixer_elem = snd_mixer_find_selem (alsa_mixer, selem_id);
 
     if (alsa_mixer_elem == NULL)
-        ERROR ("PCM mixer element not found, volume control disabled.\n");
+    {
+        DEBUG ("PCM mixer element not found, trying Master.\n");
+        snd_mixer_selem_id_set_name (selem_id, "Master");
+        alsa_mixer_elem = snd_mixer_find_selem (alsa_mixer, selem_id);
+    }
+
+    if (alsa_mixer_elem == NULL)
+        ERROR ("No suitable mixer element found, volume control disabled.\n");
     else
         CHECK (snd_mixer_selem_set_playback_volume_range, alsa_mixer_elem, 0,
          100);
