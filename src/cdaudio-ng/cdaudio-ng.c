@@ -477,14 +477,15 @@ static void cdaudio_stop (InputPlayback * playback)
     if (!playback->playing)
         goto UNLOCK;
 
-    playback->playing = 0;
+    playback->playing = FALSE;
 
     if (cdng_cfg.use_dae)
     {
+        g_cond_signal (control_cond);
         g_mutex_unlock (mutex);
         g_thread_join (playback->thread);
         playback->thread = NULL;
-        g_mutex_lock (mutex);
+        return;
     }
     else
     {
@@ -504,7 +505,10 @@ static void cdaudio_pause (InputPlayback * pinputplayback, gshort paused)
     is_paused = paused;
 
     if (cdng_cfg.use_dae)
-        g_cond_broadcast (control_cond);
+    {
+        g_cond_signal (control_cond);
+        g_cond_wait (control_cond, mutex);
+    }
     else
     {
         if (paused)
@@ -533,7 +537,8 @@ static void cdaudio_seek (InputPlayback * playback, gint time)
             goto UNLOCK;
 
         pdae_params->seektime = time * 1000;
-        g_cond_broadcast (control_cond);
+        g_cond_signal (control_cond);
+        g_cond_wait (control_cond, mutex);
     }
     else
     {
@@ -778,6 +783,7 @@ static void dae_play_loop (dae_params_t * pdae_params)
 {
     InputPlayback * playback = pdae_params->pplayback;
     guchar *buffer = g_new (guchar, CDDA_DAE_FRAMES * CDIO_CD_FRAMESIZE_RAW);
+    gboolean paused = FALSE;
 
     cdio_lseek (pcdio, pdae_params->startlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
 
@@ -787,23 +793,24 @@ static void dae_play_loop (dae_params_t * pdae_params)
 
     while (playback->playing)
     {
-        if (is_paused)
+        if (pdae_params->seektime >= 0)
         {
-            playback->output->pause (1);
-
-            while (is_paused)
-            {
-                if (pdae_params->seektime != -1)
-                    do_seek ();
-
-                g_cond_wait (control_cond, mutex);
-            }
-
-            playback->output->pause (0);
+            do_seek ();
+            g_cond_signal (control_cond);
         }
 
-        if (pdae_params->seektime != -1)
-            do_seek ();
+        if (is_paused != paused)
+        {
+            playback->output->pause (is_paused);
+            paused = is_paused;
+            g_cond_signal (control_cond);
+        }
+
+        if (paused)
+        {
+            g_cond_wait (control_cond, mutex);
+            continue;
+        }
 
         /* compute the actual number of sectors to read */
         gint lsncount =
