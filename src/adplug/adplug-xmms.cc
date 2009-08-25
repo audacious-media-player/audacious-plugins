@@ -82,12 +82,11 @@ static struct
   char *songtitle;
   float time_ms;
   bool playing;
-  GThread *play_thread;
   GtkLabel *infobox;
   GtkDialog *infodlg;
 } plr =
 {
-0, 0, 0, 0, -1, "", NULL, 0.0f, false, 0, NULL, NULL};
+0, 0, 0, 0, -1, "", NULL, 0.0f, false, NULL, NULL};
 
 static InputPlayback *playback;
 
@@ -963,7 +962,6 @@ adplug_play (InputPlayback * data)
 
   // start player func
   dbg_printf ("play");
-  plr.play_thread =  g_thread_self();
   playback->playing = TRUE;
   playback->set_pb_ready(playback);
   play_loop(playback);
@@ -976,7 +974,8 @@ adplug_stop (InputPlayback * playback)
 {
   dbg_printf ("adplug_stop(): join, ");
   plr.playing = false;
-  g_thread_join (plr.play_thread);  // stop player thread
+  g_thread_join (playback->thread);  // stop player thread
+  playback->thread = NULL;  // and keep the core from meddling
   dbg_printf ("close");
   playback->output->close_audio ();
   dbg_printf (".\n");
