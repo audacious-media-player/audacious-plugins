@@ -54,7 +54,6 @@ callback_info* main_info;
 gboolean plugin_initialized = FALSE;
 glong seek_to = -1;
 static volatile char pause_flag = 0;
-static GThread* thread = NULL;
 
 /* === */
 
@@ -513,7 +512,6 @@ void flac_play_file (InputPlayback* input) {
 
     input->set_params(input, get_title(input->filename, main_info), l, -1, main_info->stream.samplerate, main_info->stream.channels);
 
-    thread = g_thread_self();
     input->set_pb_ready(input);
     flac_play_loop(input);
 
@@ -528,15 +526,13 @@ void flac_stop(InputPlayback* input) {
 
     input->playing = FALSE;
 
-    if (NULL != thread) {
-        /*
-         * Wait for the decoder thread to finish
-         */
-        _DEBUG("Waiting for decoder thread to die...");
-        g_thread_join(thread);
-        thread = NULL;
-        _DEBUG("Decoder thread has finished");
-    }
+    /*
+     * Wait for the decoder thread to finish
+     */
+    _DEBUG("Waiting for decoder thread to die...");
+    g_thread_join (input->thread);
+    input->thread = NULL;
+    _DEBUG("Decoder thread has finished");
 
     reset_info(main_info, TRUE);
 
