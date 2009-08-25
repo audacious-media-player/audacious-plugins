@@ -259,8 +259,9 @@ static OutputPluginInitStatus alsa_init (void)
 
     if (alsa_mixer_elem == NULL)
         ERROR ("PCM mixer element not found, volume control disabled.\n");
-
-    CHECK (snd_mixer_selem_set_playback_volume_range, alsa_mixer_elem, 0, 100);
+    else
+        CHECK (snd_mixer_selem_set_playback_volume_range, alsa_mixer_elem, 0,
+         100);
 
     return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 
