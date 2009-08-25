@@ -285,18 +285,6 @@ vorbis_interleave_buffer(float **pcm, int samples, int ch, float *pcmout)
 #define PCM_FRAMES 1024
 #define PCM_BUFSIZE (PCM_FRAMES * 2)
 
-/* seek_mutex must be locked */
-static void seek_if_needed (InputPlayback * playback, OggVorbis_File * vf)
-{
-    if (seek_value >= 0)
-    {
-        playback->output->flush (1000 * seek_value);
-        ov_time_seek (vf, seek_value);
-        seek_value = -1;
-        g_cond_signal (seek_cond);
-    }
-}
-
 static void
 vorbis_play(InputPlayback *playback)
 {
@@ -310,6 +298,7 @@ vorbis_play(InputPlayback *playback)
     gfloat pcmout[PCM_BUFSIZE*sizeof(float)], **pcm;
     gint bytes, channels, samplerate, br;
     gint since_update = 0;
+    gboolean paused = FALSE;
 
     playback->error = FALSE;
     seek_value = -1;
@@ -352,8 +341,8 @@ vorbis_play(InputPlayback *playback)
         goto play_cleanup;
     }
 
-    playback->playing = 1;
-    playback->eof = 0;
+    playback->playing = TRUE;
+    playback->eof = FALSE;
     playback->set_pb_ready(playback);
 
     /*
@@ -369,25 +358,28 @@ vorbis_play(InputPlayback *playback)
 
         g_mutex_lock (seek_mutex);
 
-        if (pause_flag)
+        if (seek_value >= 0)
         {
-            playback->output->pause (TRUE);
-            g_cond_signal (seek_cond);
-
-            while (pause_flag)
-            {
-                if (! playback->playing)
-                    goto play_cleanup;
-
-                seek_if_needed (playback, & vf);
-                g_cond_wait (seek_cond, seek_mutex);
-            }
-
-            playback->output->pause (FALSE);
+            ov_time_seek (& vf, seek_value);
+            playback->output->flush (1000 * seek_value);
+            seek_value = -1;
             g_cond_signal (seek_cond);
         }
 
-        seek_if_needed (playback, & vf);
+        if (pause_flag != paused)
+        {
+            playback->output->pause (pause_flag);
+            paused = pause_flag;
+            g_cond_signal (seek_cond);
+        }
+
+        if (paused)
+        {
+            g_cond_wait (seek_cond, seek_mutex);
+            g_mutex_unlock (seek_mutex);
+            continue;
+        }
+
         g_mutex_unlock (seek_mutex);
 
         bytes = ov_read_float(&vf, &pcm, PCM_FRAMES, &current_section);
