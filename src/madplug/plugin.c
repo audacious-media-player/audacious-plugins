@@ -449,27 +449,16 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
     return 0;
 }
 
-static void
-audmad_stop(InputPlayback *playback)
+static void audmad_stop (InputPlayback * playback)
 {
-    AUDDBG("f: audmad_stop\n");
-    g_mutex_lock(mad_mutex);
-    info.playback = playback;
-    g_mutex_unlock(mad_mutex);
+    g_mutex_lock (control_mutex);
+    info.playback->playing = FALSE;
+    g_cond_signal (control_cond);
+    g_mutex_unlock (control_mutex);
+    g_thread_join (playback->thread);
+    playback->thread = NULL;
 
-    if (playback->thread != NULL)
-    {
-        g_mutex_lock(mad_mutex);
-        info.playback->playing = 0;
-        g_mutex_unlock(mad_mutex);
-        g_cond_signal(mad_cond);
-
-        g_thread_join (playback->thread);
-        playback->thread = NULL;
-
-        input_term(&info);
-    }
-    AUDDBG("e: audmad_stop\n");
+    input_term (& info);
 }
 
 static void
@@ -515,11 +504,11 @@ audmad_play_file(InputPlayback *playback)
     playback->set_replaygain_info(playback, &rg_info);
 
     info.seek = -1;
-    info.pause = 0;
+    info.pause = FALSE;
 
     g_mutex_lock(pb_mutex);
     info.playback = playback;
-    info.playback->playing = 1;
+    info.playback->playing = TRUE;
     g_mutex_unlock(pb_mutex);
 
     playback->set_pb_ready(playback);
@@ -527,28 +516,27 @@ audmad_play_file(InputPlayback *playback)
     input_term (& info);
 }
 
-static void
-audmad_pause(InputPlayback *playback, short paused)
+static void audmad_pause (InputPlayback * playback, short paused)
 {
     g_mutex_lock (control_mutex);
     info.pause = paused;
-    g_cond_broadcast (control_cond);
+    g_cond_signal (control_cond);
+    g_cond_wait (control_cond, control_mutex);
     g_mutex_unlock (control_mutex);
 }
 
-static void
-audmad_mseek(InputPlayback *playback, gulong millisecond)
+static void audmad_mseek (InputPlayback * playback, gulong millisecond)
 {
     g_mutex_lock (control_mutex);
     info.seek = millisecond;
-    g_cond_broadcast (control_cond);
+    g_cond_signal (control_cond);
+    g_cond_wait (control_cond, control_mutex);
     g_mutex_unlock (control_mutex);
 }
 
-static void
-audmad_seek(InputPlayback *playback, gint time)
+static void audmad_seek (InputPlayback * playback, gint time)
 {
-    audmad_mseek(playback, time * 1000);
+    audmad_mseek (playback, time * 1000);
 }
 
 static void

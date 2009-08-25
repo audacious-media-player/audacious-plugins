@@ -49,7 +49,7 @@ struct mad_info_t
     InputPlayback *playback;
 
     /* seek time */
-    gulong seek;      /**< seek time in milliseconds */
+    gint seek;      /**< seek time in milliseconds */
     char pause;
 
     /* song info */

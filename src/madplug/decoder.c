@@ -271,36 +271,12 @@ static char fill_buffer (struct mad_info_t * info)
     return (readed > 0);
 }
 
-static void watch_controls (struct mad_info_t * info)
-{
-    g_mutex_lock (control_mutex);
-
-    if (info->pause)
-    {
-        info->playback->output->pause (1);
-
-        while (info->pause)
-        {
-            if (info->seek != -1)
-                seek (info);
-
-            g_cond_wait (control_cond, control_mutex);
-        }
-
-        info->playback->output->pause (0);
-    }
-
-    if (info->seek != -1)
-        seek (info);
-
-    g_mutex_unlock (control_mutex);
-}
-
 gpointer
 decode_loop(gpointer arg)
 {
     int skip, current;
     unsigned int iteration = 0;
+    gboolean paused = FALSE;
 
     /* mad structs */
     struct mad_stream stream;
@@ -333,8 +309,31 @@ decode_loop(gpointer arg)
 
     while (info->playback->playing)
     {
-        watch_controls (info);
-        input_process_remote_metadata(info);
+        g_mutex_lock (control_mutex);
+
+        if (info->seek >= 0)
+        {
+            seek (info);
+            g_cond_signal (control_cond);
+        }
+
+        if (info->pause != paused)
+        {
+            info->playback->output->pause (info->pause);
+            paused = info->pause;
+            g_cond_signal (control_cond);
+        }
+
+        if (paused)
+        {
+            g_cond_wait (control_cond, control_mutex);
+            g_mutex_unlock (control_mutex);
+            continue;
+        }
+
+        g_mutex_unlock (control_mutex);
+
+        input_process_remote_metadata (info);
 
         if (info->resync)
             stream.sync = 0;
@@ -431,27 +430,8 @@ decode_loop(gpointer arg)
         break;
     }
 
-    if (info->playback->playing) {
-        GTimeVal sleeptime;
-
-        info->playback->output->buffer_free();
-        info->playback->output->buffer_free();
-        while (info->playback->output->buffer_playing()) {
-
-            AUDDBG("f: buffer_playing=%d\n", info->playback->output->buffer_playing());
-
-            g_get_current_time(&sleeptime);
-            g_time_val_add(&sleeptime, 500000);
-
-            g_mutex_lock(mad_mutex);
-            g_cond_timed_wait(mad_cond, mad_mutex, &sleeptime);
-            g_mutex_unlock(mad_mutex);
-            if (!info->playback->playing) {
-                break;
-            }
-
-        }
-    }
+    while (info->playback->playing && info->playback->output->buffer_playing ())
+        g_usleep (50000);
 
 CLEAN_UP:
     free (info->buffer);
