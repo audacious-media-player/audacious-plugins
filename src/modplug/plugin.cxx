@@ -36,7 +36,7 @@ void PlayFile(InputPlayback *data)
 
 void Stop(InputPlayback *data)
 {
-    gModplugXMMS.Stop();
+    gModplugXMMS.Stop(data);
 }
 
 void Pause(InputPlayback *data, short aPaused)
