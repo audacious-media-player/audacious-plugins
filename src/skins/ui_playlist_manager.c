@@ -346,6 +346,8 @@ playlist_manager_ui_show ( void )
             NULL );
     gtk_tree_view_column_set_expand( GTK_TREE_VIEW_COLUMN(playman_pl_lv_col_name) , TRUE );
     gtk_tree_view_append_column( GTK_TREE_VIEW(playman_pl_lv), playman_pl_lv_col_name );
+    gtk_tree_view_column_set_sort_column_id( GTK_TREE_VIEW_COLUMN(playman_pl_lv_col_name), PLLIST_COL_NAME );
+
     playman_pl_lv_col_entriesnum = gtk_tree_view_column_new_with_attributes(
             _("Entries") , playman_pl_lv_textrndr_entriesnum ,
             "text" , PLLIST_COL_ENTRIESNUM ,
