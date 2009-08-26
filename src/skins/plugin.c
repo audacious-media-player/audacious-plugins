@@ -44,6 +44,8 @@ Interface skins_interface =
 SIMPLE_INTERFACE_PLUGIN("skinned", &skins_interface);
 gboolean plugin_is_active = FALSE;
 
+static gint update_source;
+
 static void toggle_visibility(void);
 static void show_error_message(const gchar * markup);
 
@@ -84,8 +86,6 @@ static gboolean update_cb (void * unused)
 
 gboolean skins_init (InterfaceCbs * cbs)
 {
-    gint update_source;
-
     plugin_is_active = TRUE;
     g_log_set_handler(NULL, G_LOG_LEVEL_WARNING, g_log_default_handler, NULL);
 
@@ -131,14 +131,19 @@ gboolean skins_init (InterfaceCbs * cbs)
     cbs->hide_about_window = audgui_hide_about_window;
 
     update_source = g_timeout_add (250, update_cb, NULL);
-    gtk_main ();
-    g_source_remove (update_source);
 
+    gtk_main ();
     return TRUE;
 }
 
-gboolean skins_cleanup(void) {
-    if (plugin_is_active == TRUE) {
+gboolean skins_cleanup (void)
+{
+    if (plugin_is_active)
+    {
+        mainwin_unhook ();
+        playlistwin_unhook ();
+        g_source_remove (update_source);
+
         gtk_widget_destroy (mainwin);
         gtk_widget_destroy (equalizerwin);
         gtk_widget_destroy (playlistwin);
@@ -149,8 +154,6 @@ gboolean skins_cleanup(void) {
 
         cleanup_skins();
         skins_free_paths();
-        ui_main_evlistener_dissociate();
-        ui_playlist_evlistener_dissociate();
         skins_cfg_free();
         ui_manager_destroy();
         plugin_is_active = FALSE;

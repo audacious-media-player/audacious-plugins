@@ -59,6 +59,7 @@ void playlistwin_set_shade_menu_cb(gboolean shaded);
 void playlistwin_set_shade(gboolean shaded);
 void playlistwin_shade_toggle(void);
 void playlistwin_create(void);
+void playlistwin_unhook (void);
 void playlistwin_hide_timer(void);
 void playlistwin_set_time(gint time, gint length, TimerMode mode);
 void playlistwin_show (char show);
