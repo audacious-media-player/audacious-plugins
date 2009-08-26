@@ -17,40 +17,12 @@
  * the use of this software.
  */
 
-/*
- * To do:
- *
- * Make devices configurable.
- */
-
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <glib.h>
-#include <gtk/gtk.h>
-#include <alsa/asoundlib.h>
-#include <audacious/plugin.h>
+#include "alsa.h"
 
 #define SMALL_BUFFER 100 /* milliseconds */
 #define LARGE_BUFFER 1000 /* milliseconds */
 
-#define ERROR(...) fprintf (stderr, "alsa-gapless: " __VA_ARGS__)
-
-#if 1
-#define DEBUG(...) ERROR (__VA_ARGS__)
-#else
-#define DEBUG(...)
-#endif
-
-#define CHECK(function, ...) \
-do { \
-    gint error = function (__VA_ARGS__); \
-    if (error < 0) \
-    { \
-        ERROR (#function " failed: %s.\n", snd_strerror (error)); \
-        goto FAILED; \
-    } \
-} while (0)
+static const gchar * preferred_mixer_elements[] = {"PCM", "Wave", "Master"};
 
 static GMutex * alsa_mutex;
 static snd_pcm_t * alsa_handle;
@@ -70,7 +42,7 @@ static gboolean alsa_leave_open, alsa_paused;
 static gint alsa_close_source, alsa_paused_time;
 
 static snd_mixer_t * alsa_mixer;
-static snd_mixer_elem_t * alsa_mixer_elem;
+static snd_mixer_elem_t * alsa_mixer_element;
 
 static void send_audio (void * data, gint length)
 {
@@ -146,12 +118,14 @@ static void check_pump_started (void)
 /* alsa_mutex must be locked */
 static gboolean real_open (snd_pcm_format_t format, gint rate, gint channels)
 {
+    gchar * code = alsa_config_override ? g_strdup_printf ("hw:%d,%d",
+     alsa_config_card, alsa_config_device) : g_strdup ("default");
     snd_pcm_hw_params_t * params;
     guint time = 1000 * SMALL_BUFFER;
 
-    DEBUG ("Opening audio: %s, %d channels, %d Hz.\n", snd_pcm_format_name
-     (format), channels, rate);
-    CHECK (snd_pcm_open, & alsa_handle, "default", SND_PCM_STREAM_PLAYBACK, 0);
+    DEBUG ("Opening PCM device %s for %s, %d channels, %d Hz.\n", code,
+     snd_pcm_format_name (format), channels, rate);
+    CHECK (snd_pcm_open, & alsa_handle, code, SND_PCM_STREAM_PLAYBACK, 0);
 
     snd_pcm_hw_params_alloca (& params);
     CHECK (snd_pcm_hw_params_any, alsa_handle, params);
@@ -182,6 +156,7 @@ static gboolean real_open (snd_pcm_format_t format, gint rate, gint channels)
     alsa_paused = FALSE;
     alsa_close_source = 0;
 
+    g_free (code);
     return TRUE;
 
 FAILED:
@@ -191,6 +166,7 @@ FAILED:
         alsa_handle = NULL;
     }
 
+    g_free (code);
     return FALSE;
 }
 
@@ -239,57 +215,35 @@ static gboolean real_buffer_playing (void)
     return (alsa_buffer_data_length > 0 || snd_pcm_avail (alsa_handle) > 0);
 }
 
-static OutputPluginInitStatus alsa_init (void)
+OutputPluginInitStatus alsa_init (void)
 {
-    snd_mixer_selem_id_t * selem_id;
-
     DEBUG ("Initialize.\n");
+    alsa_config_load ();
+
     alsa_mutex = g_mutex_new ();
     alsa_handle = NULL;
     pump_cond = g_cond_new ();
 
-    CHECK (snd_mixer_open, & alsa_mixer, 0);
-    CHECK (snd_mixer_attach, alsa_mixer, "default");
-    CHECK (snd_mixer_selem_register, alsa_mixer, NULL, NULL);
-    CHECK (snd_mixer_load, alsa_mixer);
-
-    snd_mixer_selem_id_alloca (& selem_id);
-    snd_mixer_selem_id_set_name (selem_id, "PCM");
-    alsa_mixer_elem = snd_mixer_find_selem (alsa_mixer, selem_id);
-
-    if (alsa_mixer_elem == NULL)
-    {
-        DEBUG ("PCM mixer element not found, trying Master.\n");
-        snd_mixer_selem_id_set_name (selem_id, "Master");
-        alsa_mixer_elem = snd_mixer_find_selem (alsa_mixer, selem_id);
-    }
-
-    if (alsa_mixer_elem == NULL)
-        ERROR ("No suitable mixer element found, volume control disabled.\n");
-    else
-        CHECK (snd_mixer_selem_set_playback_volume_range, alsa_mixer_elem, 0,
-         100);
+    alsa_open_mixer ();
 
     return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
-
-FAILED:
-    return OUTPUT_PLUGIN_INIT_NO_DEVICES;
 }
 
-static void alsa_cleanup (void)
+void alsa_cleanup (void)
 {
     DEBUG ("Cleanup.\n");
+    alsa_config_save ();
+
     g_mutex_lock (alsa_mutex);
 
     if (alsa_handle != NULL)
         real_close ();
 
-    snd_mixer_detach (alsa_mixer, "default");
-    snd_mixer_close (alsa_mixer);
-
     g_mutex_unlock (alsa_mutex);
     g_mutex_free (alsa_mutex);
     g_cond_free (pump_cond);
+
+    alsa_close_mixer ();
 }
 
 static snd_pcm_format_t convert_aud_format (AFormat aud_format)
@@ -335,7 +289,7 @@ static snd_pcm_format_t convert_aud_format (AFormat aud_format)
     return SND_PCM_FORMAT_UNKNOWN;
 }
 
-static gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
+gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
 {
     snd_pcm_format_t format = convert_aud_format (aud_format);
     gint result;
@@ -384,7 +338,7 @@ static gboolean close_cb (void * unused)
 
     if (! playing)
     {
-        DEBUG ("Buffer empty, closing audio.\n");
+        DEBUG ("Buffer empty; closing audio.\n");
         real_close ();
     }
 
@@ -392,7 +346,7 @@ static gboolean close_cb (void * unused)
     return playing;
 }
 
-static void alsa_close_audio (void)
+void alsa_close_audio (void)
 {
     DEBUG ("Close requested.\n");
     g_mutex_lock (alsa_mutex);
@@ -405,7 +359,7 @@ static void alsa_close_audio (void)
     g_mutex_unlock (alsa_mutex);
 }
 
-static void alsa_write_audio (void * data, gint length)
+void alsa_write_audio (void * data, gint length)
 {
     g_mutex_lock (alsa_mutex);
 
@@ -443,7 +397,7 @@ static void alsa_write_audio (void * data, gint length)
     g_mutex_unlock (alsa_mutex);
 }
 
-static gint alsa_written_time (void)
+gint alsa_written_time (void)
 {
     gint time;
 
@@ -462,7 +416,7 @@ static gint alsa_written_time (void)
  * audio at any given time.
  */
 
-static gint alsa_output_time (void)
+gint alsa_output_time (void)
 {
     gint time;
 
@@ -489,7 +443,7 @@ static gint alsa_output_time (void)
  * from polling "buffer_free", we pretend that we always have free buffer space.
  */
 
-static gint alsa_buffer_free (void)
+gint alsa_buffer_free (void)
 {
     return 1048576; /* no decoder should ever pass 1 MB at once */
 }
@@ -505,9 +459,9 @@ static gint alsa_buffer_free (void)
  * also use it as our clue to let the buffer keep playing.
  */
 
-static gint alsa_buffer_playing (void)
+gint alsa_buffer_playing (void)
 {
-    DEBUG ("Song ending, not closing audio.\n");
+    DEBUG ("Song ending; not closing audio.\n");
     g_mutex_lock (alsa_mutex);
 
     alsa_leave_open = TRUE;
@@ -516,9 +470,9 @@ static gint alsa_buffer_playing (void)
     return 0;
 }
 
-static void alsa_flush (gint time)
+void alsa_flush (gint time)
 {
-    DEBUG ("Seek requested, discarding buffer.\n");
+    DEBUG ("Seek requested; discarding buffer.\n");
     g_mutex_lock (alsa_mutex);
 
     alsa_time = (gint64) time * 1000;
@@ -535,7 +489,7 @@ FAILED:
     g_mutex_unlock (alsa_mutex);
 }
 
-static void alsa_pause (gshort pause)
+void alsa_pause (gshort pause)
 {
     DEBUG ("%sause.\n", pause ? "P" : "Unp");
     g_mutex_lock (alsa_mutex);
@@ -553,26 +507,93 @@ FAILED:
     g_mutex_unlock (alsa_mutex);
 }
 
-static void alsa_get_volume (gint * left, gint * right)
+static snd_mixer_elem_t * get_mixer_element (const gchar * name)
+{
+    snd_mixer_selem_id_t * selem_id;
+    snd_mixer_elem_t * element;
+
+    snd_mixer_selem_id_alloca (& selem_id);
+    snd_mixer_selem_id_set_name (selem_id, alsa_config_mixer_element);
+    element = snd_mixer_find_selem (alsa_mixer, selem_id);
+
+    DEBUG ("%s mixer element %s.\n", (element != NULL) ? "Opened" : "Failed to "
+     "open", name);
+
+    return element;
+}
+
+void alsa_open_mixer (void)
+{
+    gchar * code = alsa_config_override ? g_strdup_printf ("hw:%d",
+     alsa_config_card) : g_strdup ("default");
+
+    DEBUG ("Opening mixer card %s.\n", code);
+    CHECK (snd_mixer_open, & alsa_mixer, 0);
+    CHECK (snd_mixer_attach, alsa_mixer, code);
+    CHECK (snd_mixer_selem_register, alsa_mixer, NULL, NULL);
+    CHECK (snd_mixer_load, alsa_mixer);
+
+    if (alsa_config_override)
+        alsa_mixer_element = get_mixer_element (alsa_config_mixer_element);
+    else
+    {
+        gint count;
+
+        alsa_mixer_element = NULL;
+
+        for (count = 0; alsa_mixer_element == NULL && count < G_N_ELEMENTS
+         (preferred_mixer_elements); count ++)
+            alsa_mixer_element = get_mixer_element
+             (preferred_mixer_elements[count]);
+    }
+
+    if (alsa_mixer_element == NULL)
+    {
+        ERROR ("Mixer element not found; volume control disabled.\n");
+        goto FAILED;
+    }
+
+    CHECK (snd_mixer_selem_set_playback_volume_range, alsa_mixer_element, 0, 100);
+
+    g_free (code);
+    return;
+
+FAILED:
+    if (alsa_mixer != NULL)
+    {
+        snd_mixer_close (alsa_mixer);
+        alsa_mixer = NULL;
+    }
+
+    g_free (code);
+}
+
+void alsa_close_mixer (void)
+{
+    if (alsa_mixer != NULL)
+        snd_mixer_close (alsa_mixer);
+}
+
+void alsa_get_volume (gint * left, gint * right)
 {
     glong left_l = 0, right_l = 0;
 
-    if (alsa_mixer_elem == NULL)
+    if (alsa_mixer == NULL)
         goto FAILED;
 
     CHECK (snd_mixer_handle_events, alsa_mixer);
 
-    if (snd_mixer_selem_is_playback_mono (alsa_mixer_elem))
+    if (snd_mixer_selem_is_playback_mono (alsa_mixer_element))
     {
-        CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_elem,
+        CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_MONO, & left_l);
         right_l = left_l;
     }
     else
     {
-        CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_elem,
+        CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_FRONT_LEFT, & left_l);
-        CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_elem,
+        CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_FRONT_RIGHT, & right_l);
     }
 
@@ -581,19 +602,19 @@ FAILED:
     * right = right_l;
 }
 
-static void alsa_set_volume (gint left, gint right)
+void alsa_set_volume (gint left, gint right)
 {
-    if (alsa_mixer_elem == NULL)
+    if (alsa_mixer == NULL)
         goto FAILED;
 
-    if (snd_mixer_selem_is_playback_mono (alsa_mixer_elem))
-        CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_elem,
+    if (snd_mixer_selem_is_playback_mono (alsa_mixer_element))
+        CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_MONO, MAX (left, right));
     else
     {
-        CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_elem,
+        CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_FRONT_LEFT, left);
-        CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_elem,
+        CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_FRONT_RIGHT, right);
     }
 
@@ -602,67 +623,3 @@ static void alsa_set_volume (gint left, gint right)
 FAILED:
     return;
 }
-
-static void about_response (GtkDialog * dialog, gint response, void * unused)
-{
-    gtk_widget_destroy ((GtkWidget *) dialog);
-}
-
-void alsa_about (void)
-{
-    const char markup[] = "<b>ALSA Gapless Output Plugin for Audacious</b>\n"
-     "Copyright 2009 John Lindgren\n\n"
-     "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
-     "code served as a reference when the ALSA manual was not enough.\n\n"
-     "Redistribution and use in source and binary forms, with or without "
-     "modification, are permitted provided that the following conditions are "
-     "met:\n\n"
-     "1. Redistributions of source code must retain the above copyright "
-     "notice, this list of conditions, and the following disclaimer.\n\n"
-     "2. Redistributions in binary form must reproduce the above copyright "
-     "notice, this list of conditions, and the following disclaimer in the "
-     "documentation provided with the distribution.\n\n"
-     "This software is provided \"as is\" and without any warranty, express or "
-     "implied. In no event shall the authors be liable for any damages arising "
-     "from the use of this software.";
-
-    static GtkWidget * window = NULL;
-
-    if (window == NULL)
-    {
-        window = gtk_message_dialog_new_with_markup (NULL, 0, GTK_MESSAGE_INFO,
-         GTK_BUTTONS_OK, markup);
-        g_signal_connect ((GObject *) window, "response", (GCallback)
-         about_response, NULL);
-        g_signal_connect ((GObject *) window, "destroy", (GCallback)
-         gtk_widget_destroyed, & window);
-    }
-
-    gtk_window_present ((GtkWindow *) window);
-}
-
-static OutputPlugin alsa_plugin =
-{
-    .description = "ALSA Gapless Output Plugin (experimental)",
-    .probe_priority = 0, /* lowest -- it's experimental */
-    .init = alsa_init,
-    .cleanup = alsa_cleanup,
-    .open_audio = alsa_open_audio,
-    .close_audio = alsa_close_audio,
-    .write_audio = alsa_write_audio,
-    .written_time = alsa_written_time,
-    .output_time = alsa_output_time,
-    .buffer_free = alsa_buffer_free,
-    .buffer_playing = alsa_buffer_playing,
-    .flush = alsa_flush,
-    .pause = alsa_pause,
-    .set_volume = alsa_set_volume,
-    .get_volume = alsa_get_volume,
-    .about = alsa_about,
-    #if 0 /* not written yet */
-    .configure = alsa_configure,
-    #endif
-};
-
-OutputPlugin * alsa_plugin_list[] = {& alsa_plugin, NULL};
-SIMPLE_OUTPUT_PLUGIN (alsa-gapless, alsa_plugin_list);

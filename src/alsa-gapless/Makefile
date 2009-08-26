@@ -1,6 +1,8 @@
 PLUGIN = alsa-gapless${PLUGIN_SUFFIX}
 
-SRCS = alsa.c
+SRCS = alsa.c \
+       config.c \
+       plugin.c \
 
 include ../../buildsys.mk
 include ../../extra.mk
