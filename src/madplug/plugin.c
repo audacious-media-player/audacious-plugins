@@ -519,18 +519,28 @@ audmad_play_file(InputPlayback *playback)
 static void audmad_pause (InputPlayback * playback, short paused)
 {
     g_mutex_lock (control_mutex);
-    info.pause = paused;
-    g_cond_signal (control_cond);
-    g_cond_wait (control_cond, control_mutex);
+
+    if (playback->playing)
+    {
+        info.pause = paused;
+        g_cond_signal (control_cond);
+        g_cond_wait (control_cond, control_mutex);
+    }
+
     g_mutex_unlock (control_mutex);
 }
 
 static void audmad_mseek (InputPlayback * playback, gulong millisecond)
 {
     g_mutex_lock (control_mutex);
-    info.seek = millisecond;
-    g_cond_signal (control_cond);
-    g_cond_wait (control_cond, control_mutex);
+
+    if (playback->playing)
+    {
+        info.seek = millisecond;
+        g_cond_signal (control_cond);
+        g_cond_wait (control_cond, control_mutex);
+    }
+
     g_mutex_unlock (control_mutex);
 }
 

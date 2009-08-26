@@ -433,6 +433,8 @@ decode_loop(gpointer arg)
     while (info->playback->playing && info->playback->output->buffer_playing ())
         g_usleep (50000);
 
+    info->playback->output->close_audio ();
+
 CLEAN_UP:
     free (info->buffer);
     mad_frame_finish (& frame);
@@ -442,7 +444,6 @@ CLEAN_UP:
     aud_tuple_free(info->tuple);
     info->tuple = NULL;
 
-    info->playback->output->close_audio();
     g_mutex_lock(mad_mutex);
     info->playback->playing = 0;
     g_mutex_unlock(mad_mutex);
