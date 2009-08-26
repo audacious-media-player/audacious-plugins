@@ -37,6 +37,10 @@ ui_main_evlistener_title_change(gpointer hook_data, gpointer user_data)
 {
     gchar * title = aud_playback_get_title ();
 
+    /* may be called asynchronously */
+    if (! audacious_drct_get_playing ())
+        return;
+
     mainwin_set_song_title (title);
     g_free (title);
 }
@@ -106,6 +110,10 @@ static void seek_cb (void * unused, void * another)
 static void info_change (void * hook_data, void * user_data)
 {
     gint bitrate, samplerate, channels;
+
+    /* may be called asynchronously */
+    if (! audacious_drct_get_playing ())
+        return;
 
     audacious_drct_get_info (& bitrate, & samplerate, & channels);
     mainwin_set_song_info (bitrate, samplerate, channels);
