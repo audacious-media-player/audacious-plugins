@@ -247,7 +247,7 @@ ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVC
 static Tuple *
 ffaudio_get_song_tuple(const gchar *filename)
 {
-    Tuple *tuple;
+    Tuple *tuple = aud_tuple_new_from_filename(filename);
 
     VFSFile * fd = vfs_fopen(filename, "rb");
     tuple = tag_tuple_read(tuple, fd);
@@ -305,6 +305,7 @@ ffaudio_get_song_tuple(const gchar *filename)
 
     return tuple;
 }
+
 #endif
 
 static void
@@ -437,7 +438,7 @@ ffaudio_play_file(InputPlayback *playback)
         /* Perform seek, if requested */
         g_mutex_lock(seek_mutex);
 
-        if (seek_value >= 0 && ffaudio_codec_is_seekable(c) != 0)
+        if (seek_value >= 0 && ffaudio_codec_is_seekable(codec) != 0)
         {
             playback->output->flush(seek_value * 1000);
             if (av_seek_frame(ic, -1, seek_value * AV_TIME_BASE, AVSEEK_FLAG_ANY) < 0)
