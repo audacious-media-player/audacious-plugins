@@ -151,7 +151,7 @@ PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.8.0],
 
 TRANSPORT_PLUGINS="unix-io"
 
-AC_ARG_ENABLE(gio, [  --enable-gio            enable GIO support (default=yes)],
+AC_ARG_ENABLE(gio, [  --disable-gio           disable GIO support (default=enabled)],
  enable_gio=$enableval, enable_gio=yes)
 
 if test "x$enable_gio" = "xyes"; then
@@ -166,7 +166,7 @@ PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
 )
 
 AC_ARG_ENABLE(dbus,
-	[  --enable-dbus		  enable DBus support (default=yes)],
+	[  --disable-dbus          disable DBus support (default=enabled)],
 			enable_dbus=$enableval, enable_dbus=yes)
 if test "x$enable_dbus" = "xyes"; then
 	PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60],
@@ -1245,7 +1245,7 @@ AC_SUBST(CURL_LIBS)
 dnl *** scrobbler ***
 
 AC_ARG_ENABLE(scrobbler,
- [  --enable-scrobbler      enable scrobbler support (default=yes if libcurl present)],
+ [  --disable-scrobbler     disable scrobbler support (default=enabled if libcurl present)],
  [have_scrobbler=$enableval], [have_scrobbler=$have_curl])
 
 if test "x$scrobbler" = "xyes"; then
@@ -1255,7 +1255,7 @@ fi
 dnl *** lastfm ***
 
 AC_ARG_ENABLE(lastfm,
- [  --enable-lastfm         enable lastfm support (default=yes if scrobbler enabled)],
+ [  --disable-lastfm        disable lastfm support (default=enabled if scrobbler enabled)],
  [have_lastfm=$enableval], [have_lastfm=yes])
 
 if test "x$have_scrobbler" != "xyes"; then
@@ -1270,7 +1270,7 @@ fi
 dnl *** neon http plugin ***
 
 AC_ARG_ENABLE(neon,
-[  --enable-neon           enable neon HTTP support (default=yes)],
+[  --disable-neon          disable neon HTTP support (default=enabled)],
 [have_neon=$enableval],
 [have_neon=yes])
 
