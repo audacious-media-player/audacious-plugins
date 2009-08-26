@@ -262,22 +262,22 @@ kanashi_load_preset(const char *filename)
 }
 
 static JSFunctionSpec js_global_functions[] = {
-    JS_FS("value_reduce",               kanashi_js_fade,                       1,      0,      0),
-    JS_FS("value_invert",               kanashi_js_invert,                     0,      0,      0),
-    JS_FS("blur",                       kanashi_js_blur,                       1,      0,      0),
-    JS_FS("mosaic",                     kanashi_js_mosaic,                     1,      0,      0),
-    JS_FS("set_colormap_gradient",      kanashi_js_set_colormap_gradient,      5,      0,      0),
-    JS_FS("render_horizontal_waveform", kanashi_js_render_horizontal_waveform, 2,      0,      0),
-    JS_FS("render_vertical_waveform",   kanashi_js_render_vertical_waveform,   2,      0,      0),
-    JS_FS("render_line",                kanashi_js_render_line,                5,      0,      0),
-    JS_FS("render_dot",                 kanashi_js_render_dot,                 3,      0,      0),
-    JS_FS("is_beat",                    kanashi_js_is_beat,                    0,      0,      0),
-    JS_FS("get_canvas_width",           kanashi_js_get_canvas_width,           0,      0,      0),
-    JS_FS("get_canvas_height",          kanashi_js_get_canvas_height,          0,      0,      0),
-    JS_FS("get_pcm_data",               kanashi_js_get_pcm_data,               0,      0,      0),
-    JS_FS("translate_polar_x",          kanashi_js_translate_polar_x,          1,      0,      0),
-    JS_FS("translate_polar_y",          kanashi_js_translate_polar_y,          1,      0,      0),
-    JS_FS_END
+    {"value_reduce",               kanashi_js_fade,                       1,      0,      0},
+    {"value_invert",               kanashi_js_invert,                     0,      0,      0},
+    {"blur",                       kanashi_js_blur,                       1,      0,      0},
+    {"mosaic",                     kanashi_js_mosaic,                     1,      0,      0},
+    {"set_colormap_gradient",      kanashi_js_set_colormap_gradient,      5,      0,      0},
+    {"render_horizontal_waveform", kanashi_js_render_horizontal_waveform, 2,      0,      0},
+    {"render_vertical_waveform",   kanashi_js_render_vertical_waveform,   2,      0,      0},
+    {"render_line",                kanashi_js_render_line,                5,      0,      0},
+    {"render_dot",                 kanashi_js_render_dot,                 3,      0,      0},
+    {"is_beat",                    kanashi_js_is_beat,                    0,      0,      0},
+    {"get_canvas_width",           kanashi_js_get_canvas_width,           0,      0,      0},
+    {"get_canvas_height",          kanashi_js_get_canvas_height,          0,      0,      0},
+    {"get_pcm_data",               kanashi_js_get_pcm_data,               0,      0,      0},
+    {"translate_polar_x",          kanashi_js_translate_polar_x,          1,      0,      0},
+    {"translate_polar_y",          kanashi_js_translate_polar_y,          1,      0,      0},
+    {},
 };
 
 gboolean
@@ -310,7 +310,7 @@ kanashi_init(void)
     if (cx == NULL)
         return FALSE;
     JS_SetOptions(cx, JSOPTION_VAROBJFIX);
-    JS_SetVersion(cx, JSVERSION_LATEST);
+    JS_SetVersion(cx, JSVERSION_1_7);
     JS_SetErrorReporter(cx, kanashi_report_js_error);
     JS_SetBranchCallback(cx, kanashi_branch_callback_hook);
 

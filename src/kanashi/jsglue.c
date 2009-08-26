@@ -178,7 +178,7 @@ kanashi_js_get_canvas_height(JSContext *cx_, JSObject *obj, uintN argc, jsval *a
 }
 
 JSBool
-kanashi_js_get_sound_data(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+kanashi_js_get_pcm_data(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
 {
     JSObject *ar = JS_NewArrayObject(cx_, 0, NULL);
     gint i;
