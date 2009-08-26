@@ -242,6 +242,30 @@ ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVC
     }
 }
 
+#ifdef FFAUDIO_USE_AUDTAG
+
+static Tuple *
+ffaudio_get_song_tuple(const gchar *filename)
+{
+    Tuple *tuple;
+
+    VFSFile * fd = vfs_fopen(filename, "rb");
+    tuple = tag_tuple_read(tuple, fd);
+    vfs_fclose(fd);
+
+    return tuple;
+}
+
+gboolean
+ffaudio_update_song_tuple(Tuple *tuple, VFSFile *fd)
+{
+    tag_tuple_write_to_file(tuple, fd);
+
+    return TRUE;
+}
+
+#else
+
 static Tuple *
 ffaudio_get_song_tuple(const gchar *filename)
 {
@@ -279,21 +303,7 @@ ffaudio_get_song_tuple(const gchar *filename)
     ffaudio_get_tuple_data(tuple, ic, c, codec);
     av_close_input_file (ic);
 
-#ifdef FFAUDIO_USE_AUDTAG
-    VFSFile * fd = vfs_fopen(filename, "rb");
-    tuple = tag_tuple_read(tuple, fd);
-    vfs_fclose(fd);
-#endif
     return tuple;
-}
-
-#ifdef FFAUDIO_USE_AUDTAG
-gboolean
-ffaudio_update_song_tuple(Tuple *tuple, VFSFile *fd)
-{
-    tag_tuple_write_to_file(tuple, fd);
-
-    return TRUE;
 }
 #endif
 
