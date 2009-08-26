@@ -380,6 +380,7 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
 
     pcm_going = TRUE;
     flush_request = -1;
+    paused = FALSE;
 
     audio_thread = g_thread_create(alsaplug_loop, NULL, TRUE, NULL);
     return 1;
