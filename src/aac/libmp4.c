@@ -597,7 +597,6 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     gulong      buffervalid = 0;
     gulong	ret = 0;
     gchar       *ttemp = NULL, *stemp = NULL;
-    gchar       *temp = g_strdup(filename);
     gchar       *xmmstitle = NULL;
     gint        bitrate;
     gboolean    remote = aud_str_has_prefix_nocase(filename, "http:") ||
@@ -640,7 +639,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         g_free(ttemp);
     }
     else
-        xmmstitle = g_strdup(g_basename(temp));
+        xmmstitle = NULL;
 
     ttemp = aud_vfs_get_metadata(file, "content-bitrate");
     if (ttemp != NULL && *ttemp != '0')
@@ -679,7 +678,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         return;
     }
 
-    playback->set_params(playback, xmmstitle, -1, bitrate, samplerate, channels);
+    playback->set_params (playback, xmmstitle, 0, bitrate, samplerate, channels);
     playback->output->flush(0);
 
     while(buffer_playing && buffervalid > 0 && streambuffer != NULL)
