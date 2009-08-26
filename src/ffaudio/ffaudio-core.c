@@ -77,8 +77,25 @@ ffaudio_check_codec(AVCodec *codec)
         case CODEC_ID_VORBIS:
         case CODEC_ID_AAC:
         case CODEC_ID_TTA:
-        case CODEC_ID_MUSEPACK8:
             _DEBUG("refusing blacklisted codec");
+            return 0;
+#endif
+        default:
+            return 1;
+    }
+}
+
+static gint
+ffaudio_codec_is_seekable(AVCodec *codec)
+{
+    /*
+     * Blacklist certain codecs from seeking, which have problems.  Codecs which have
+     * problems with seeking should have bugs reported to upstream FFmpeg.  --nenolod
+     */
+    switch (codec->id) {
+#ifndef FFAUDIO_NO_BLACKLIST
+        case CODEC_ID_MUSEPACK8:
+            _DEBUG("codec is blacklisted from seeking");
             return 0;
 #endif
         default:
@@ -410,7 +427,7 @@ ffaudio_play_file(InputPlayback *playback)
         /* Perform seek, if requested */
         g_mutex_lock(seek_mutex);
 
-        if (seek_value >= 0)
+        if (seek_value >= 0 && ffaudio_codec_is_seekable(c) != 0)
         {
             playback->output->flush(seek_value * 1000);
             if (av_seek_frame(ic, -1, seek_value * AV_TIME_BASE, AVSEEK_FLAG_ANY) < 0)
@@ -419,6 +436,11 @@ ffaudio_play_file(InputPlayback *playback)
             } else
                 errcount = 0;
 
+            seek_value = -1;
+            g_cond_signal(seek_cond);
+        }
+        else
+        {
             seek_value = -1;
             g_cond_signal(seek_cond);
         }
