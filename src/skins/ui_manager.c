@@ -714,7 +714,7 @@ static GtkWidget * create_menu (gint id)
              templates[id].plug_name);
             GtkWidget * sub = aud_get_plugin_menu (templates[id].plug_id);
 
-            gtk_menu_item_set_submenu ((GtkMenuItem *) item, sub);
+            gtk_menu_item_set_submenu (GTK_MENU_ITEM(item), sub);
         }
     }
 
@@ -744,7 +744,7 @@ static void menu_positioner(GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
 {
     GtkRequisition request;
 
-    gtk_widget_size_request((GtkWidget *)menu, &request);
+    gtk_widget_size_request(GTK_WIDGET(menu), &request);
 
     *x = ((gint *)data)[0] - ((gint *)data)[2] * request.width;
     *y = ((gint *)data)[1] - ((gint *)data)[3] * request.height;
@@ -756,33 +756,33 @@ void ui_popup_menu_show(gint id, gint x, gint y, gboolean leftward, gboolean
 {
     gint position[4] = {x, y, leftward, upward};
 
-    gtk_menu_popup ((GtkMenu *) create_menu (id), NULL, NULL, menu_positioner,
+    gtk_menu_popup (GTK_MENU(create_menu (id)), NULL, NULL, menu_positioner,
      position, button, time);
 }
 
 void
 ui_manager_destroy( void )
 {
-    g_object_unref((GObject*)toggleaction_group_others);
-    g_object_unref((GObject*)radioaction_group_anamode);
-    g_object_unref((GObject*)radioaction_group_anatype);
-    g_object_unref((GObject*)radioaction_group_scomode);
-    g_object_unref((GObject*)radioaction_group_vprmode);
-    g_object_unref((GObject*)radioaction_group_wshmode);
-    g_object_unref((GObject*)radioaction_group_anafoff);
-    g_object_unref((GObject*)radioaction_group_peafoff);
-    g_object_unref((GObject*)radioaction_group_vismode);
-    g_object_unref((GObject*)radioaction_group_viewtime);
-    g_object_unref((GObject*)action_group_playback);
-    g_object_unref((GObject*)action_group_playlist);
-    g_object_unref((GObject*)action_group_visualization);
-    g_object_unref((GObject*)action_group_view);
-    g_object_unref((GObject*)action_group_others);
-    g_object_unref((GObject*)action_group_playlist_add);
-    g_object_unref((GObject*)action_group_playlist_select);
-    g_object_unref((GObject*)action_group_playlist_delete);
-    g_object_unref((GObject*)action_group_playlist_sort);
-    g_object_unref((GObject*)action_group_equalizer);
-    g_object_unref((GObject*)ui_manager);
+    g_object_unref(G_OBJECT(toggleaction_group_others));
+    g_object_unref(G_OBJECT(radioaction_group_anamode));
+    g_object_unref(G_OBJECT(radioaction_group_anatype));
+    g_object_unref(G_OBJECT(radioaction_group_scomode));
+    g_object_unref(G_OBJECT(radioaction_group_vprmode));
+    g_object_unref(G_OBJECT(radioaction_group_wshmode));
+    g_object_unref(G_OBJECT(radioaction_group_anafoff));
+    g_object_unref(G_OBJECT(radioaction_group_peafoff));
+    g_object_unref(G_OBJECT(radioaction_group_vismode));
+    g_object_unref(G_OBJECT(radioaction_group_viewtime));
+    g_object_unref(G_OBJECT(action_group_playback));
+    g_object_unref(G_OBJECT(action_group_playlist));
+    g_object_unref(G_OBJECT(action_group_visualization));
+    g_object_unref(G_OBJECT(action_group_view));
+    g_object_unref(G_OBJECT(action_group_others));
+    g_object_unref(G_OBJECT(action_group_playlist_add));
+    g_object_unref(G_OBJECT(action_group_playlist_select));
+    g_object_unref(G_OBJECT(action_group_playlist_delete));
+    g_object_unref(G_OBJECT(action_group_playlist_sort));
+    g_object_unref(G_OBJECT(action_group_equalizer));
+    g_object_unref(G_OBJECT(ui_manager));
 }
 
