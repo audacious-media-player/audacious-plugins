@@ -29,9 +29,6 @@
 static void        mp4_init(void);
 static void        mp4_about(void);
 static void        mp4_play(InputPlayback *);
-static void        mp4_stop(InputPlayback *);
-static void        mp4_pause(InputPlayback *, gshort);
-static void        mp4_seek(InputPlayback *, gint);
 static void        mp4_cleanup(void);
 static Tuple*      mp4_get_song_tuple(const char *);
 static gint        mp4_is_our_fd(const char *, VFSFile *);
@@ -40,26 +37,11 @@ static gchar *fmts[] = { "m4a", "mp4", "aac", NULL };
 
 static void *   mp4_decode(void *);
 static gchar *  mp4_get_song_title(char *filename);
-gboolean        buffer_playing;
 
-InputPlugin mp4_ip =
-{
-    .description = "MP4 AAC decoder",
-    .init = mp4_init,
-    .about = mp4_about,
-    .play_file = mp4_play,
-    .stop = mp4_stop,
-    .pause = mp4_pause,
-    .seek = mp4_seek,
-    .cleanup = mp4_cleanup,
-    .get_song_tuple = mp4_get_song_tuple,
-    .is_our_file_from_vfs = mp4_is_our_fd,
-    .vfs_extensions = fmts,
-};
-
-InputPlugin *mp4_iplist[] = { &mp4_ip, NULL };
-
-DECLARE_PLUGIN(mp4, NULL, NULL, mp4_iplist, NULL, NULL, NULL, NULL, NULL);
+static GMutex * seek_mutex;
+static GCond * seek_cond;
+static gboolean pause_flag;
+static gint seek_value;
 
 typedef struct  _mp4cfg
 {
@@ -70,9 +52,6 @@ typedef struct  _mp4cfg
 } Mp4Config;
 
 static Mp4Config mp4cfg;
-GStaticMutex     mutex = G_STATIC_MUTEX_INIT;
-static int       seekPosition = -1;
-static volatile char pause_flag;
 
 void getMP4info(char*);
 int getAACTrack(mp4ff_t *);
@@ -96,28 +75,63 @@ static guint32 mp4_seek_callback(void *data, guint64 pos)
 static void mp4_init(void)
 {
     mp4cfg.file_type = FILE_UNKNOWN;
-    seekPosition = -1;
-    pause_flag = 0;
-    return;
+
+    seek_mutex = g_mutex_new ();
+    seek_cond = g_cond_new ();
 }
 
 static void mp4_play(InputPlayback *playback)
 {
-    buffer_playing = TRUE;
-    playback->playing = 1; //XXX should acquire lock?
+    seek_value = -1;
+    pause_flag = FALSE;
+    playback->playing = TRUE;
+
     playback->set_pb_ready(playback);
     mp4_decode(playback);
 }
 
-static void mp4_stop(InputPlayback *playback)
+static void mp4_stop (InputPlayback * playback)
 {
-    if (buffer_playing)
+    g_mutex_lock (seek_mutex);
+
+    if (playback->playing)
     {
-        buffer_playing = FALSE;
-        playback->playing = 0; //XXX should acquire lock?
+        playback->playing = FALSE;
+        g_cond_signal (seek_cond);
+        g_mutex_unlock (seek_mutex);
         g_thread_join (playback->thread);
         playback->thread = NULL;
     }
+    else
+        g_mutex_unlock (seek_mutex);
+}
+
+static void mp4_pause (InputPlayback * playback, gshort p)
+{
+    g_mutex_lock (seek_mutex);
+
+    if (playback->playing)
+    {
+        pause_flag = p;
+        g_cond_signal (seek_cond);
+        g_cond_wait (seek_cond, seek_mutex);
+    }
+
+    g_mutex_unlock (seek_mutex);
+}
+
+static void mp4_seek (InputPlayback * playback, gint time)
+{
+    g_mutex_lock (seek_mutex);
+
+    if (playback->playing)
+    {
+        seek_value = time;
+        g_cond_signal (seek_cond);
+        g_cond_wait (seek_cond, seek_mutex);
+    }
+
+    g_mutex_unlock (seek_mutex);
 }
 
 /*
@@ -257,20 +271,10 @@ static void mp4_about(void)
     }
 }
 
-static void mp4_pause(InputPlayback *playback, short flag)
-{
-    pause_flag = flag;
-}
-
-static void mp4_seek(InputPlayback *data, int time)
-{
-    seekPosition = time;
-    while(buffer_playing && seekPosition != -1)
-        g_usleep(10000);
-}
-
 static void mp4_cleanup(void)
 {
+    g_mutex_free (seek_mutex);
+    g_cond_free (seek_cond);
 }
 
 static Tuple *mp4_get_song_tuple_base(const gchar *filename, VFSFile *mp4fh)
@@ -439,6 +443,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     guint       numSamples;
     gulong      sampleID = 1;
     guint       framesize = 1024;
+    gboolean paused = FALSE;
 
     if (mp4track < 0)
     {
@@ -484,32 +489,38 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
             mp4ff_get_avg_bitrate( mp4file, mp4track ),
             samplerate,channels);
 
-    while ( buffer_playing ) {
+    while (playback->playing)
+    {
         void*           sampleBuffer;
         NeAACDecFrameInfo    frameInfo;
         gint            rc;
 
-        /* Seek if seek position has changed */
-        if ( seekPosition!=-1 ) {
-            sampleID =  (float)seekPosition*(float)samplerate/(float)(framesize - 1.0);
-            playback->output->flush(seekPosition*1000);
-            seekPosition = -1;
+        g_mutex_lock (seek_mutex);
+
+        if (seek_value >= 0)
+        {
+            sampleID = (gint64) seek_value * samplerate / (framesize - 1);
+            playback->output->flush (seek_value * 1000);
+            seek_value = -1;
+            g_cond_signal (seek_cond);
         }
 
-        if (pause_flag) {
-           playback->output->pause (1);
-           while (pause_flag) {
-              if (seekPosition != -1) {
-                 playback->output->flush (seekPosition * 1000);
-                 sampleID = (long long) seekPosition * samplerate / (framesize - 1);
-                 seekPosition = -1;
-              }
-              g_usleep(50000);
-           }
-           playback->output->pause (0);
+        if (pause_flag != paused)
+        {
+            playback->output->pause (pause_flag);
+            paused = pause_flag;
+            g_cond_signal (seek_cond);
         }
 
-        /* Otherwise continue playing */
+        if (paused)
+        {
+            g_cond_wait (seek_cond, seek_mutex);
+            g_mutex_unlock (seek_mutex);
+            continue;
+        }
+
+        g_mutex_unlock (seek_mutex);
+
         buffer=NULL;
         bufferSize=0;
 
@@ -521,14 +532,10 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
                 g_usleep(10000);
             }
 
-            playback->output->flush(seekPosition*1000);
             playback->output->close_audio();
             NeAACDecClose(decoder);
 
-            g_static_mutex_lock(&mutex);
-            buffer_playing = FALSE;
-            playback->playing = 0;
-            g_static_mutex_unlock(&mutex);
+            playback->playing = FALSE;
             return FALSE;
         }
         rc= mp4ff_read_sample(mp4file, mp4track,
@@ -569,16 +576,9 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
             buffer=NULL;
             bufferSize=0;
         }
-        if (buffer_playing == FALSE)
-        {
-            playback->output->close_audio();
-            return FALSE;
-        }
-        playback->pass_audio(playback,
-                   FMT_S16_NE,
-                   channels,
-                   frameInfo.samples<<1,
-                   sampleBuffer, &buffer_playing);
+
+        playback->pass_audio (playback, FMT_S16_NE, channels, 2 *
+         frameInfo.samples, sampleBuffer, NULL);
     }
 
     playback->output->close_audio();
@@ -601,23 +601,22 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     gint        bitrate;
     gboolean    remote = aud_str_has_prefix_nocase(filename, "http:") ||
 			 aud_str_has_prefix_nocase(filename, "https:");
+    gboolean paused = FALSE;
 
     aud_vfs_rewind(file);
     if((decoder = NeAACDecOpen()) == NULL){
         g_print("AAC: Open Decoder Error\n");
         aud_vfs_fclose(file);
-        buffer_playing = FALSE;
-        playback->playing = 0;
-        g_static_mutex_unlock(&mutex);
+
+        playback->playing = FALSE;
         return;
     }
     if((buffervalid = aud_vfs_fread(streambuffer, 1, BUFFER_SIZE, file))==0){
         g_print("AAC: Error reading file\n");
         aud_vfs_fclose(file);
-        buffer_playing = FALSE;
-        playback->playing = 0;
         NeAACDecClose(decoder);
-        g_static_mutex_unlock(&mutex);
+
+        playback->playing = FALSE;
         return;
     }
     if(!strncmp((char*)streambuffer, "ID3", 3)){
@@ -672,20 +671,43 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         aud_vfs_fclose(file);
         playback->output->close_audio();
         g_free(xmmstitle);
-        buffer_playing = FALSE;
-        playback->playing = 0;
-        g_static_mutex_unlock(&mutex);
+
+        playback->playing = FALSE;
         return;
     }
 
     playback->set_params (playback, xmmstitle, 0, bitrate, samplerate, channels);
     playback->output->flush(0);
 
-    while(buffer_playing && buffervalid > 0 && streambuffer != NULL)
+    while (playback->playing && buffervalid > 0 && streambuffer != NULL)
     {
         NeAACDecFrameInfo    finfo;
         unsigned long   samplesdecoded;
         char*       sample_buffer = NULL;
+
+        g_mutex_lock (seek_mutex);
+
+        if (seek_value >= 0)
+        {
+            seek_value = -1;
+            g_cond_signal (seek_cond);
+        }
+
+        if (pause_flag != paused)
+        {
+            playback->output->pause (pause_flag);
+            paused = pause_flag;
+            g_cond_signal (seek_cond);
+        }
+
+        if (paused)
+        {
+            g_cond_wait (seek_cond, seek_mutex);
+            g_mutex_unlock (seek_mutex);
+            continue;
+        }
+
+        g_mutex_unlock (seek_mutex);
 
         if(bufferconsumed > 0)
         {
@@ -758,22 +780,16 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
             continue;
         }
 
-        playback->pass_audio(playback,
-                   FMT_S16_LE, channels,
-                   samplesdecoded<<1, sample_buffer, &buffer_playing);
+        playback->pass_audio (playback, FMT_S16_LE, channels, 2 *
+         samplesdecoded, sample_buffer, NULL);
     }
     playback->output->buffer_free();
     playback->output->close_audio();
-    buffer_playing = FALSE;
-    playback->playing = 0;
     NeAACDecClose(decoder);
     g_free(xmmstitle);
     aud_vfs_fclose(file);
-    seekPosition = -1;
 
-    buffer_playing = FALSE;
-    playback->playing = 0;
-    g_static_mutex_unlock(&mutex);
+    playback->playing = FALSE;
 }
 
 static void *mp4_decode( void *args )
@@ -787,11 +803,6 @@ static void *mp4_decode( void *args )
     char *filename = playback->filename;
 
     mp4fh = aud_vfs_buffered_file_new_from_uri(filename);
-
-    g_static_mutex_lock(&mutex);
-    seekPosition= -1;
-    buffer_playing= TRUE;
-    g_static_mutex_unlock(&mutex);
 
     if (mp4fh == NULL)
         return NULL;
@@ -820,3 +831,22 @@ static void *mp4_decode( void *args )
 
     return NULL;
 }
+
+InputPlugin mp4_ip =
+{
+    .description = "MP4 AAC decoder",
+    .init = mp4_init,
+    .about = mp4_about,
+    .play_file = mp4_play,
+    .stop = mp4_stop,
+    .pause = mp4_pause,
+    .seek = mp4_seek,
+    .cleanup = mp4_cleanup,
+    .get_song_tuple = mp4_get_song_tuple,
+    .is_our_file_from_vfs = mp4_is_our_fd,
+    .vfs_extensions = fmts,
+};
+
+InputPlugin * mp4_iplist[] = {& mp4_ip, NULL};
+
+DECLARE_PLUGIN (mp4, NULL, NULL, mp4_iplist, NULL, NULL, NULL, NULL, NULL);
