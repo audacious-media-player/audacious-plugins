@@ -2179,14 +2179,6 @@ static gboolean delete_cb (GtkWidget * widget, GdkEvent * event, void * unused)
     return 1;
 }
 
-static void destroy_cb (GtkObject * object, void * unused)
-{
-    if (mainwin_timeout_id)
-        g_source_remove (mainwin_timeout_id);
-
-    aud_hook_dissociate ("show main menu", (HookFunction) show_main_menu);
-}
-
 static void
 mainwin_create_window(void)
 {
@@ -2223,7 +2215,15 @@ mainwin_create_window(void)
 
     g_signal_connect ((GObject *) mainwin, "delete-event", (GCallback) delete_cb,
      0);
-    g_signal_connect ((GObject *) mainwin, "destroy", (GCallback) destroy_cb, 0);
+}
+
+void mainwin_unhook (void)
+{
+    if (mainwin_timeout_id)
+        g_source_remove (mainwin_timeout_id);
+
+    aud_hook_dissociate ("show main menu", (HookFunction) show_main_menu);
+    ui_main_evlistener_dissociate ();
 }
 
 void

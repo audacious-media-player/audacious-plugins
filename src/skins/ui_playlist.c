@@ -1253,12 +1253,6 @@ static void follow_cb (void * data, void * another)
         song_changed = TRUE;
 }
 
-static void destroy_cb (GtkObject * object, void * unused)
-{
-    aud_hook_dissociate ("playlist position", follow_cb);
-    aud_hook_dissociate ("playlist update", update_cb);
-}
-
 void
 playlistwin_create(void)
 {
@@ -1283,8 +1277,13 @@ playlistwin_create(void)
 
     aud_hook_associate ("playlist position", follow_cb, 0);
     aud_hook_associate ("playlist update", update_cb, 0);
-    g_signal_connect ((GObject *) playlistwin, "destroy", (GCallback) destroy_cb,
-     0);
+}
+
+void playlistwin_unhook (void)
+{
+    aud_hook_dissociate ("playlist position", follow_cb);
+    aud_hook_dissociate ("playlist update", update_cb);
+    ui_playlist_evlistener_dissociate ();
 }
 
 static void playlistwin_real_show (void)
