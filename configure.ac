@@ -151,12 +151,15 @@ PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.8.0],
 
 TRANSPORT_PLUGINS="unix-io"
 
-AC_ARG_ENABLE(gio, [  --disable-gio           disable GIO support (default=enabled)],
+AC_ARG_ENABLE(gio, [  --disable-gio           disable GIO support (default=enabled if GIO present)],
  enable_gio=$enableval, enable_gio=yes)
 
 if test "x$enable_gio" = "xyes"; then
     PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0], [ADD_PC_REQUIRES([gio-2.0 >=
-     2.0])], [AC_MSG_ERROR([Cannot find GIO >= 2.0])])
+     2.0])], [enable_gio=no])
+fi
+
+if test "x$enable_gio" = "xyes"; then
     TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS gio"
 fi
 
@@ -1705,7 +1708,7 @@ echo "  projectM 1.x (GL milkdrop):             $have_projectm1"
 echo
 echo "  Transport"
 echo "  ---------"
-echo "  gio transport:                          yes"
+echo "  gio transport:                          $enable_gio"
 echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
 echo "  lastfm transport:                       $have_lastfm"
