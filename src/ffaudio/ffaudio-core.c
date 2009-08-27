@@ -410,8 +410,7 @@ ffaudio_play_file(InputPlayback *playback)
     vfs_fclose(fd);
 #endif
     playback->set_tuple(playback, tuple);
-    playback->set_params(playback, NULL, 0, c->bit_rate, c->sample_rate,
-     c->channels);
+    playback->set_params(playback, NULL, 0, c->bit_rate, c->sample_rate, c->channels);
 
     g_mutex_lock (seek_mutex);
 
@@ -419,10 +418,10 @@ ffaudio_play_file(InputPlayback *playback)
     seek_value = -1;
     pause_flag = FALSE;
     playback->set_pb_ready(playback);
+    errcount = 0;
 
     g_mutex_unlock (seek_mutex);
 
-    errcount = 0;
 
     /* seek_mutex is locked at loop entry */
     while (playback->playing)
@@ -430,7 +429,7 @@ ffaudio_play_file(InputPlayback *playback)
         AVPacket tmp;
         gint ret;
 
-        g_mutex_lock (seek_mutex);
+        g_mutex_lock(seek_mutex);
 
         if (seek_value >= 0 && ffaudio_codec_is_seekable(codec) != 0)
         {
@@ -452,14 +451,15 @@ ffaudio_play_file(InputPlayback *playback)
 
         if (pause_flag != paused)
         {
-            playback->output->pause (pause_flag);
+            playback->output->pause(pause_flag);
             paused = pause_flag;
-            g_cond_signal (seek_cond);
+            g_cond_signal(seek_cond);
         }
 
         if (paused)
         {
-            g_cond_wait (seek_cond, seek_mutex);
+            g_cond_wait(seek_cond, seek_mutex);
+            g_mutex_unlock(seek_mutex);
             continue;
         }
 
@@ -475,7 +475,8 @@ ffaudio_play_file(InputPlayback *playback)
             }
             else
             {
-                if (++errcount > 4) {
+                if (++errcount > 4)
+                {
                     _ERROR("av_read_frame error %d, giving up.", ret);
                     break;
                 } else
@@ -500,7 +501,8 @@ ffaudio_play_file(InputPlayback *playback)
 
             /* Check for seek request and bail out if we have one */
             g_mutex_lock(seek_mutex);
-            if (seek_value != -1) {
+            if (seek_value != -1)
+            {
                 g_mutex_unlock(seek_mutex);
                 break;
             }
@@ -549,7 +551,8 @@ ffaudio_play_file(InputPlayback *playback)
 
                 /* Check for seek request and bail out if we have one */
                 g_mutex_lock(seek_mutex);
-                if (seek_value != -1) {
+                if (seek_value != -1)
+                {
                     g_mutex_unlock(seek_mutex);
                     break;
                 }
@@ -561,21 +564,19 @@ ffaudio_play_file(InputPlayback *playback)
             av_free_packet(&pkt);
     }
 
-    g_mutex_lock (seek_mutex);
+    g_mutex_lock(seek_mutex);
 
-    while (playback->playing && playback->output->buffer_playing ())
+    while (playback->playing && playback->output->buffer_playing())
         g_usleep (20000);
 
-    playback->playing = FALSE;
-
-    g_cond_signal (seek_cond); /* wake up any waiting request */
-    g_mutex_unlock (seek_mutex);
+    g_cond_signal(seek_cond); /* wake up any waiting request */
+    g_mutex_unlock(seek_mutex);
 
 error_exit:
 
     _DEBUG("decode loop finished, shutting down");
 
-    playback->playing = 0;
+    playback->playing = FALSE;
 
     av_free(outbuf);
     av_free(resbuf);
@@ -592,42 +593,42 @@ error_exit:
     _DEBUG("exiting thread");
 }
 
-static void ffaudio_stop (InputPlayback * playback)
+static void ffaudio_stop(InputPlayback * playback)
 {
-    g_mutex_lock (seek_mutex);
+    g_mutex_lock(seek_mutex);
     playback->playing = FALSE;
-    g_cond_signal (seek_cond);
-    g_mutex_unlock (seek_mutex);
-    g_thread_join (playback->thread);
+    g_cond_signal(seek_cond);
+    g_mutex_unlock(seek_mutex);
+    g_thread_join(playback->thread);
     playback->thread = NULL;
 }
 
-static void ffaudio_pause (InputPlayback * playback, gshort p)
+static void ffaudio_pause(InputPlayback * playback, gshort p)
 {
-    g_mutex_lock (seek_mutex);
+    g_mutex_lock(seek_mutex);
 
     if (playback->playing)
     {
         pause_flag = p;
-        g_cond_signal (seek_cond);
-        g_cond_wait (seek_cond, seek_mutex);
+        g_cond_signal(seek_cond);
+        g_cond_wait(seek_cond, seek_mutex);
     }
 
-    g_mutex_unlock (seek_mutex);
+    g_mutex_unlock(seek_mutex);
 }
 
-static void ffaudio_seek (InputPlayback * playback, gint time)
+static void ffaudio_seek(InputPlayback * playback, gint time)
 {
-    g_mutex_lock (seek_mutex);
+    g_mutex_lock(seek_mutex);
 
     if (playback->playing)
     {
         seek_value = time;
-        g_cond_signal (seek_cond);
-        g_cond_wait (seek_cond, seek_mutex);
+        g_cond_signal(seek_cond);
+        g_cond_wait(seek_cond, seek_mutex);
     }
 
-    g_mutex_unlock (seek_mutex);
+    g_mutex_unlock(seek_mutex);
 }
 
 static gchar *ffaudio_fmts[] = {
