@@ -1054,9 +1054,11 @@ check_set( GtkActionGroup * action_group ,
 {
     /* check_set noew uses gtkaction */
     GtkAction *action = gtk_action_group_get_action( action_group , action_name );
-    if ( action != NULL )
+    if (action != NULL)
         gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , is_on );
-    return;
+
+    if (action != NULL && action_name != NULL)
+        aud_event_queue(action_name, GINT_TO_POINTER(is_on));
 }
 
 void
