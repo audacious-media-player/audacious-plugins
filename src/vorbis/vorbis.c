@@ -458,9 +458,10 @@ stop_processing:
         }
     } /* main loop */
 
+    playback->output->close_audio ();
+
 play_cleanup:
 
-    playback->output->close_audio();
     ov_clear(&vf);
     playback->playing = 0;
 }
