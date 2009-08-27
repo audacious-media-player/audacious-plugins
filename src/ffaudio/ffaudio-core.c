@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#define FFAUDIO_DEBUG 1     /* Enable generic debug output */
+//#define FFAUDIO_DEBUG       /* Enable generic debug output */
 #undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
-#define FFAUDIO_USE_AUDTAG  /* Use Audacious tagging library */
+//#define FFAUDIO_USE_AUDTAG  /* Use Audacious tagging library */
 
 
 #include "config.h"
