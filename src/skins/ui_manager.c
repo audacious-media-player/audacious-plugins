@@ -215,8 +215,8 @@ static GtkActionEntry action_entries_playlist[] = {
         { "playlist save", GTK_STOCK_SAVE, N_("Save List"), "<Shift>S",
           N_("Saves the selected playlist."), G_CALLBACK(action_playlist_save_list) },
 
-        { "playlist save all", GTK_STOCK_SAVE, N_ ("Save All Playlists"),
-         "<Alt>S", N_ ("Saves all the playlists that are open. Note that this "
+        { "playlist save all", GTK_STOCK_SAVE, N_("Save All Playlists"),
+         "<Alt>S", N_("Saves all the playlists that are open. Note that this "
          "is done automatically when Audacious quits."),
          action_playlist_save_all_playlists},
 

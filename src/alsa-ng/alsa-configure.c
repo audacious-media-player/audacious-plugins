@@ -259,7 +259,7 @@ void alsaplug_configure(void)
 	}
 
         configure_win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_title ((GtkWindow *) configure_win, _ ("ALSA Output "
+        gtk_window_set_title ((GtkWindow *) configure_win, _("ALSA Output "
          "Plugin Preferences"));
         gtk_window_set_type_hint ((GtkWindow *) configure_win,
          GDK_WINDOW_TYPE_HINT_DIALOG);
@@ -271,7 +271,7 @@ void alsaplug_configure(void)
         vbox = gtk_vbox_new (FALSE, 6);
         gtk_container_add ((GtkContainer *) configure_win, vbox);
 
-        adevice_frame = gtk_frame_new (_ ("Device:"));
+        adevice_frame = gtk_frame_new (_("Device:"));
         gtk_box_pack_start ((GtkBox *) vbox, adevice_frame, FALSE, FALSE, 0);
 
         adevice_box = gtk_vbox_new (FALSE, 6);
@@ -285,7 +285,7 @@ void alsaplug_configure(void)
 	gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(devices_combo)->entry),
 			   alsaplug_cfg.pcm_device);
 
-        mixer_frame = gtk_frame_new (_ ("Mixer:"));
+        mixer_frame = gtk_frame_new (_("Mixer:"));
         gtk_box_pack_start ((GtkBox *) vbox, mixer_frame, FALSE, FALSE, 0);
 
         mixer_box = gtk_vbox_new (FALSE, 6);

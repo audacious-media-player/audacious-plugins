@@ -561,7 +561,7 @@ mainwin_set_song_info(gint bitrate,
         bitrate_text = g_strdup_printf ("%d kbps", bitrate);
 
     text = g_strdup_printf ("%s, %d kHz, %s", bitrate_text, frequency / 1000,
-     (n_channels > 1) ? _ ("stereo") : _ ("mono"));
+     (n_channels > 1) ? _("stereo") : _("mono"));
 
     ui_skinned_textbox_set_text (mainwin_othertext, text);
     g_free (bitrate_text);

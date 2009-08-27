@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins2_22062009\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
-"POT-Creation-Date: 2009-08-07 19:51-0400\n"
+"POT-Creation-Date: 2009-08-27 11:54-0400\n"
 "PO-Revision-Date: 2009-06-25 00:40+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
-#: src/aac/libmp4.c:247
+#: src/aac/libmp4.c:259
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -25,39 +25,38 @@ msgid ""
 "Copyright (c) 2005-2006 Audacious team"
 msgstr ""
 
-#: src/aac/libmp4.c:252
+#: src/aac/libmp4.c:264
 #, fuzzy
 msgid "About MP4 AAC decoder plugin"
 msgstr "Par MPEG audio spraudni"
 
-#: src/aac/libmp4.c:253 src/adplug/adplug-xmms.cc:180
-#: src/adplug/adplug-xmms.cc:263 src/adplug/adplug-xmms.cc:524
-#: src/alac/plugin.c:72 src/audiocompress/audacious-glue.c:110
-#: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:225
+#: src/aac/libmp4.c:265 src/adplug/adplug-xmms.cc:179
+#: src/adplug/adplug-xmms.cc:262 src/adplug/adplug-xmms.cc:523
+#: src/audiocompress/audacious-glue.c:110
+#: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:273
 #: src/console/plugin.c:37 src/crossfade/configure.c:1175
-#: src/crystalizer/crystalizer.c:113 src/demac/plugin.c:366
-#: src/echo_plugin/gui.c:24 src/echo_plugin/gui.c:135 src/esd/about.c:48
-#: src/ffaudio/ffaudio-core.c:556 src/filewriter/filewriter.c:187
-#: src/icecast/icecast.c:241 src/jack/configure.c:144 src/jack/jack.c:424
-#: src/kanashi/plugin.c:263 src/madplug/plugin.c:658
-#: src/metronom/metronom.c:91 src/modplug/gui/main.cxx:52 src/null/null.c:65
-#: src/null/null.c:108 src/OSS4/OSS4.c:55 src/OSS/OSS.c:54
-#: src/paranormal-ng/plugin.c:282 src/paranormal/plugin.c:290
-#: src/scrobbler/gtkstuff.c:22 src/sndfile/plugin.c:584
-#: src/statusicon/si_ui.c:630 src/stereo_plugin/stereo.c:52
-#: src/stereo_plugin/stereo.c:115 src/sun/about.c:37 src/sun/configure.c:557
-#: src/timidity/interface.c:223 src/timidity/plugin.c:110
-#: src/tonegen/tonegen.c:56 src/tta/plugin.c:90 src/tta/plugin.c:166
-#: src/vorbis/vorbis.c:695 src/vtx/about.c:26 src/vtx/info.c:38
-#: src/wavpack/ui.cxx:53 src/wavpack/ui.cxx:552
+#: src/crystalizer/crystalizer.c:113 src/echo_plugin/gui.c:24
+#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:677
+#: src/filewriter/filewriter.c:187 src/icecast/icecast.c:241
+#: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:263
+#: src/madplug/plugin.c:580 src/metronom/metronom.c:92
+#: src/modplug/gui/main.cxx:52 src/null/null.c:65 src/null/null.c:108
+#: src/OSS4/OSS4.c:58 src/OSS/OSS.c:54 src/paranormal-ng/plugin.c:282
+#: src/paranormal/plugin.c:290 src/scrobbler/gtkstuff.c:22
+#: src/sndfile/plugin.c:502 src/statusicon/si_ui.c:630
+#: src/stereo_plugin/stereo.c:52 src/stereo_plugin/stereo.c:115
+#: src/sun/about.c:37 src/sun/configure.c:557 src/timidity/interface.c:223
+#: src/timidity/plugin.c:110 src/tonegen/tonegen.c:56 src/tta/plugin.c:90
+#: src/tta/plugin.c:166 src/vorbis/vorbis.c:561 src/vtx/about.c:26
+#: src/vtx/info.c:38 src/wavpack/ui.cxx:53 src/wavpack/ui.cxx:552
 msgid "Ok"
 msgstr "Labi"
 
-#: src/adplug/adplug-xmms.cc:169
+#: src/adplug/adplug-xmms.cc:168
 msgid "About "
 msgstr "Par"
 
-#: src/adplug/adplug-xmms.cc:173
+#: src/adplug/adplug-xmms.cc:172
 msgid ""
 "\n"
 "Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
@@ -78,13 +77,13 @@ msgstr ""
 "Šis spraudnis izmanto AdPlug bibliotēku, autortiesības (C) Simon Peter u.c.\n"
 "Saistītās AdPlug bibliotēkas versija: "
 
-#: src/adplug/adplug-xmms.cc:254
+#: src/adplug/adplug-xmms.cc:253
 msgid "AdPlug :: Configuration"
 msgstr "AdPlug :: Konfigurācija"
 
-#: src/adplug/adplug-xmms.cc:273 src/alarm/interface.c:1398
+#: src/adplug/adplug-xmms.cc:272 src/alarm/interface.c:1398
 #: src/alsa-ng/alsa-configure.c:338 src/audiocompress/audacious-glue.c:565
-#: src/cdaudio-ng/configure.c:229 src/crossfade/interface-2.0.c:1508
+#: src/cdaudio-ng/configure.c:278 src/crossfade/interface-2.0.c:1508
 #: src/crystalizer/crystalizer.c:122 src/echo_plugin/gui.c:143
 #: src/jack/configure.c:151 src/modplug/gui/interface.cxx:715
 #: src/modplug/gui/modplug.glade:1668 src/null/null.c:109
@@ -93,49 +92,49 @@ msgstr "AdPlug :: Konfigurācija"
 msgid "Cancel"
 msgstr "Atcelt"
 
-#: src/adplug/adplug-xmms.cc:289 src/console/configure.c:152
-#: src/madplug/configure.c:99 src/modplug/gui/interface.cxx:629
+#: src/adplug/adplug-xmms.cc:288 src/console/configure.c:152
+#: src/madplug/configure.c:79 src/modplug/gui/interface.cxx:629
 #: src/modplug/gui/interface.cxx:888 src/modplug/gui/modplug.glade:1404
 #: src/modplug/gui/modplug.glade:1804
 msgid "General"
 msgstr "Vispārīgi"
 
-#: src/adplug/adplug-xmms.cc:301
+#: src/adplug/adplug-xmms.cc:300
 msgid "Sound quality"
 msgstr "Skaņas kvalitāte"
 
-#: src/adplug/adplug-xmms.cc:306 src/modplug/gui/interface.cxx:188
+#: src/adplug/adplug-xmms.cc:305 src/modplug/gui/interface.cxx:188
 #: src/modplug/gui/modplug.glade:113
 msgid "Resolution"
 msgstr "Izšķirtspēja"
 
-#: src/adplug/adplug-xmms.cc:308
+#: src/adplug/adplug-xmms.cc:307
 msgid "8bit"
 msgstr "8bit"
 
-#: src/adplug/adplug-xmms.cc:313
+#: src/adplug/adplug-xmms.cc:312
 msgid "16bit"
 msgstr "16bit"
 
-#: src/adplug/adplug-xmms.cc:321 src/modplug/gui/interface.cxx:219
+#: src/adplug/adplug-xmms.cc:320 src/modplug/gui/interface.cxx:219
 #: src/modplug/gui/modplug.glade:199 src/timidity/interface.c:149
 msgid "Channels"
 msgstr "Kanāli"
 
-#: src/adplug/adplug-xmms.cc:323 src/filewriter/mp3.c:951
+#: src/adplug/adplug-xmms.cc:322 src/filewriter/mp3.c:951
 #: src/sid/xmms-sid.glade:157 src/sid/xs_interface.c:301
 #: src/timidity/interface.c:166
 msgid "Mono"
 msgstr "Mono"
 
-#: src/adplug/adplug-xmms.cc:328 src/filewriter/mp3.c:946
+#: src/adplug/adplug-xmms.cc:327 src/filewriter/mp3.c:946
 #: src/modplug/gui/interface.cxx:205 src/modplug/gui/modplug.glade:159
 #: src/sid/xmms-sid.glade:176 src/sid/xs_interface.c:308
 #: src/timidity/interface.c:174
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/adplug/adplug-xmms.cc:332
+#: src/adplug/adplug-xmms.cc:331
 msgid ""
 "Setting stereo is not recommended, unless you need to. This won't add any "
 "stereo effects to the sound - OPL2 is just mono - but eats up more CPU power!"
@@ -144,21 +143,21 @@ msgstr ""
 "nepievienos skaņai stereo efektu (OPL2 ir tikai mono), bet patērēs vairāk "
 "procesora resursu!"
 
-#: src/adplug/adplug-xmms.cc:340
+#: src/adplug/adplug-xmms.cc:339
 msgid "Frequency"
 msgstr "Frekvence"
 
-#: src/adplug/adplug-xmms.cc:376 src/adplug/adplug-xmms.cc:580
+#: src/adplug/adplug-xmms.cc:375 src/adplug/adplug-xmms.cc:579
 #: src/console/configure.c:154 src/gtkui/ui_manager.c:62
 #: src/skins/ui_manager.c:166
 msgid "Playback"
 msgstr "Atskaņošana"
 
-#: src/adplug/adplug-xmms.cc:380
+#: src/adplug/adplug-xmms.cc:379
 msgid "Detect songend"
 msgstr "Noteikt dziesmas beigas"
 
-#: src/adplug/adplug-xmms.cc:384
+#: src/adplug/adplug-xmms.cc:383
 msgid ""
 "If enabled, XMMS will detect a song's ending, stop it and advance in the "
 "playlist. If disabled, XMMS won't take notice of a song's ending and loop it "
@@ -168,23 +167,23 @@ msgstr ""
 "priekšu repertuārā. Ja izslēgts, XMMS neievēros dziesmas beigas un atkārtos "
 "to."
 
-#: src/adplug/adplug-xmms.cc:395
+#: src/adplug/adplug-xmms.cc:394
 msgid "Formats"
 msgstr "Formāti"
 
-#: src/adplug/adplug-xmms.cc:402
+#: src/adplug/adplug-xmms.cc:401
 msgid "Format selection"
 msgstr "Formāta izvēle"
 
-#: src/adplug/adplug-xmms.cc:405
+#: src/adplug/adplug-xmms.cc:404
 msgid "Format"
 msgstr "Formāts"
 
-#: src/adplug/adplug-xmms.cc:405
+#: src/adplug/adplug-xmms.cc:404
 msgid "Extension"
 msgstr "Paplašinājums"
 
-#: src/adplug/adplug-xmms.cc:445
+#: src/adplug/adplug-xmms.cc:444
 msgid ""
 "Selected file types will be recognized and played back by this plugin. "
 "Deselected types will be ignored to make room for other plugins to play "
@@ -193,94 +192,82 @@ msgstr ""
 "Šis spraudnis atpazīs un atskaņos izvēlētos faila tipus. Neizvēlētie tipi "
 "tiks ignorēti, lai atļautu tos atskaņot citiem spraudņiem."
 
-#: src/adplug/adplug-xmms.cc:531
+#: src/adplug/adplug-xmms.cc:530
 msgid "AdPlug :: File Info"
 msgstr "AdPlug :: Faila informācija"
 
-#: src/adplug/adplug-xmms.cc:553 src/amidi-plug/i_configure-fluidsynth.c:448
+#: src/adplug/adplug-xmms.cc:552 src/amidi-plug/i_configure-fluidsynth.c:448
 msgid "Filename"
 msgstr "Faila nosaukums"
 
-#: src/adplug/adplug-xmms.cc:557 src/skins/ui_playlist.c:361
+#: src/adplug/adplug-xmms.cc:556 src/skins/ui_playlist.c:365
 msgid "Title: "
 msgstr "Nosaukums: "
 
-#: src/adplug/adplug-xmms.cc:558
+#: src/adplug/adplug-xmms.cc:557
 msgid "Author: "
 msgstr "Autors: "
 
-#: src/adplug/adplug-xmms.cc:559
+#: src/adplug/adplug-xmms.cc:558
 msgid "File Type: "
 msgstr "Faila tips: "
 
-#: src/adplug/adplug-xmms.cc:560
+#: src/adplug/adplug-xmms.cc:559
 msgid "Subsongs: "
 msgstr "Apakšdziesmas: "
 
-#: src/adplug/adplug-xmms.cc:561
+#: src/adplug/adplug-xmms.cc:560
 msgid "Instruments: "
 msgstr "Instrumenti: "
 
-#: src/adplug/adplug-xmms.cc:566
+#: src/adplug/adplug-xmms.cc:565
 msgid "Orders: "
 msgstr "Kārtības: "
 
-#: src/adplug/adplug-xmms.cc:567
+#: src/adplug/adplug-xmms.cc:566
 msgid "Patterns: "
 msgstr "Paraugi: "
 
-#: src/adplug/adplug-xmms.cc:571
+#: src/adplug/adplug-xmms.cc:570
 msgid "Song"
 msgstr "Dziesma"
 
-#: src/adplug/adplug-xmms.cc:597
+#: src/adplug/adplug-xmms.cc:596
 msgid "Instrument name"
 msgstr "Instrumenta nosaukums"
 
-#: src/adplug/adplug-xmms.cc:639
+#: src/adplug/adplug-xmms.cc:638
 msgid "Song message"
 msgstr "Dziesmas ziņojums"
 
-#: src/adplug/adplug-xmms.cc:661
+#: src/adplug/adplug-xmms.cc:660
 msgid "Subsong selection"
 msgstr "Apakšdziesmas izvēle"
 
-#: src/adplug/adplug-xmms.cc:725
+#: src/adplug/adplug-xmms.cc:724
 msgid "Order: "
 msgstr "Kārtība: "
 
-#: src/adplug/adplug-xmms.cc:726
+#: src/adplug/adplug-xmms.cc:725
 msgid "Pattern: "
 msgstr "Paraugs: "
 
-#: src/adplug/adplug-xmms.cc:728
+#: src/adplug/adplug-xmms.cc:727
 msgid "Row: "
 msgstr "Rinda: "
 
-#: src/adplug/adplug-xmms.cc:729
+#: src/adplug/adplug-xmms.cc:728
 msgid "Speed: "
 msgstr "Ātrums: "
 
-#: src/adplug/adplug-xmms.cc:730
+#: src/adplug/adplug-xmms.cc:729
 msgid "Timer: "
 msgstr "Taimeris: "
 
-#: src/adplug/adplug-xmms.cc:731 src/console/configure.c:232
+#: src/adplug/adplug-xmms.cc:730 src/console/configure.c:232
 #: src/sid/xmms-sid.glade:332 src/sid/xs_interface.c:354
 msgid "Hz"
 msgstr "Hz"
-
-#: src/alac/plugin.c:69
-msgid "About Apple Lossless Audio Plugin"
-msgstr "Par Apple Lossless Audio spraudni"
-
-#: src/alac/plugin.c:70
-msgid ""
-"Copyright (c) 2006 Audacious team\n"
-"Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"
-msgstr ""
-"Autortiesības (c) 2006 Audacious komanda\n"
-"Daļas (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"
 
 #: src/alarm/interface.c:34
 msgid "About XMMS Alarm"
@@ -311,7 +298,7 @@ msgstr ""
 "http://www.snika.uklinux.net/xmms-alarm/"
 
 #: src/alarm/interface.c:71 src/bluetooth/scan_gui.c:149
-#: src/cdaudio-ng/cdaudio-ng.c:335 src/crossfade/interface-2.0.c:1945
+#: src/cdaudio-ng/cdaudio-ng.c:350 src/crossfade/interface-2.0.c:1945
 #: src/lirc/about.c:115 src/modplug/gui/interface.cxx:972
 #: src/modplug/gui/modplug.glade:2030 src/sid/xmms-sid.glade:3837
 #: src/sid/xs_about.c:214 src/sid/xs_interface.c:1825
@@ -328,11 +315,10 @@ msgstr "Šis ir jūsu mošanās zvans."
 
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389
 #: src/alsa-ng/alsa-configure.c:332 src/bluetooth/bluetooth.c:114
-#: src/crossfade/interface-2.0.c:1503 src/flacng/plugin.c:634
+#: src/crossfade/interface-2.0.c:1503 src/flacng/plugin.c:633
 #: src/gnomeshortcuts/gnomeshortcuts.c:310 src/hotkey/gui.c:670
 #: src/modplug/gui/interface.cxx:703 src/modplug/gui/modplug.glade:1642
-#: src/pulse_audio/pulse_audio.c:758 src/scrobbler/gtkstuff.c:42
-#: src/sid/xs_config.c:319 src/skins/plugin.c:162
+#: src/scrobbler/gtkstuff.c:42 src/sid/xs_config.c:319 src/skins/plugin.c:177
 #: src/streambrowser/streambrowser.c:328
 msgid "OK"
 msgstr "Labi"
@@ -639,6 +625,31 @@ msgstr "Jūsu atgādinājums šodienai ir.."
 msgid "Thankyou"
 msgstr "Paldies"
 
+#: src/alsa-gapless/config.c:274
+#, fuzzy
+msgid "ALSA Gapless Output Plugin Preferences"
+msgstr "Statusa ikonas spraudnis - iestatījumi"
+
+#: src/alsa-gapless/config.c:281
+#, fuzzy
+msgid "Override default devices"
+msgstr "Aizstāt noklusēto ierīci: "
+
+#: src/alsa-gapless/config.c:300
+#, fuzzy
+msgid "Card:"
+msgstr "Komanda:"
+
+#: src/alsa-gapless/config.c:302 src/alsa-ng/alsa-configure.c:274
+#, fuzzy
+msgid "Device:"
+msgstr "Ierīces"
+
+#: src/alsa-gapless/config.c:304
+#, fuzzy
+msgid "Mixer element:"
+msgstr "Miksera ierīce:"
+
 #: src/alsa-ng/alsa-configure.c:153
 #, fuzzy
 msgid "Unknown soundcard"
@@ -653,11 +664,6 @@ msgstr "Noklusētais (%s)"
 #, fuzzy
 msgid "ALSA Output Plugin Preferences"
 msgstr "Statusa ikonas spraudnis - iestatījumi"
-
-#: src/alsa-ng/alsa-configure.c:274
-#, fuzzy
-msgid "Device:"
-msgstr "Ierīces"
 
 #: src/alsa-ng/alsa-configure.c:288
 #, fuzzy
@@ -1736,7 +1742,7 @@ msgstr "Noformējums"
 msgid "Trigger"
 msgstr "Palaidējs"
 
-#: src/aosd/aosd_ui.c:1076 src/cdaudio-ng/configure.c:163
+#: src/aosd/aosd_ui.c:1076 src/cdaudio-ng/configure.c:189
 #: src/modplug/gui/interface.cxx:689 src/modplug/gui/modplug.glade:1603
 #: src/sid/xmms-sid.glade:3220 src/sid/xs_interface.c:1302
 msgid "Misc"
@@ -2039,20 +2045,20 @@ msgstr "Blur Scope: krāsu izvēle"
 msgid "Options:"
 msgstr "Iestatījumi:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:296
+#: src/cdaudio-ng/cdaudio-ng.c:304
 msgid "Play CD"
 msgstr "Atskaņot CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:305
+#: src/cdaudio-ng/cdaudio-ng.c:314
 msgid "Add CD"
 msgstr "Pievienot CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:329
+#: src/cdaudio-ng/cdaudio-ng.c:342
 #, fuzzy
 msgid "About Audio CD Plugin"
 msgstr "Par FLAC audio spraudni"
 
-#: src/cdaudio-ng/cdaudio-ng.c:330
+#: src/cdaudio-ng/cdaudio-ng.c:344
 #, fuzzy
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
@@ -2078,47 +2084,47 @@ msgstr ""
 "\n"
 "Atsevišķu daļu autortiesības (c) 2009 John Lindgren <john.lindgren@tds.net>"
 
-#: src/cdaudio-ng/configure.c:143
+#: src/cdaudio-ng/configure.c:166
 msgid "CD Audio Plugin Configuration"
 msgstr "CD Audio spraudņa konfigurācija"
 
-#: src/cdaudio-ng/configure.c:153
+#: src/cdaudio-ng/configure.c:178
 msgid "Digital audio extraction"
 msgstr "Ciparu audio ekstrakcija"
 
-#: src/cdaudio-ng/configure.c:158
+#: src/cdaudio-ng/configure.c:183
 msgid "Title information"
 msgstr "Nosaukuma informācija"
 
-#: src/cdaudio-ng/configure.c:175
+#: src/cdaudio-ng/configure.c:202
 msgid "Limit read speed to: "
 msgstr "Ierobežot nolases ātrumu līdz: "
 
-#: src/cdaudio-ng/configure.c:182
+#: src/cdaudio-ng/configure.c:213
 msgid "Use cd-text if available"
 msgstr "Izmantot cd-text, ja pieejams"
 
-#: src/cdaudio-ng/configure.c:186
+#: src/cdaudio-ng/configure.c:220
 msgid "Use CDDB if available"
 msgstr "Izmantot CDDB, ja pieejams"
 
-#: src/cdaudio-ng/configure.c:190
+#: src/cdaudio-ng/configure.c:226
 msgid "Server: "
 msgstr "Serveris: "
 
-#: src/cdaudio-ng/configure.c:193
+#: src/cdaudio-ng/configure.c:230
 msgid "Path: "
 msgstr "Ceļš: "
 
-#: src/cdaudio-ng/configure.c:196
+#: src/cdaudio-ng/configure.c:234
 msgid "Port: "
 msgstr "Ports: "
 
-#: src/cdaudio-ng/configure.c:205
+#: src/cdaudio-ng/configure.c:247
 msgid "Use HTTP instead of CDDBP"
 msgstr "Lietot HTTP nevis CDDBP"
 
-#: src/cdaudio-ng/configure.c:213
+#: src/cdaudio-ng/configure.c:259
 msgid "Override default device: "
 msgstr "Aizstāt noklusēto ierīci: "
 
@@ -2319,7 +2325,7 @@ msgstr ""
 msgid "Crossfade Configuration"
 msgstr "Sapludināšanas konfigurācija"
 
-#: src/crossfade/interface-2.0.c:340 src/filewriter/filewriter.c:467
+#: src/crossfade/interface-2.0.c:340 src/filewriter/filewriter.c:464
 #: src/icecast/icecast.c:645 src/ladspa/ladspa.c:1121
 msgid "Configure"
 msgstr "Konfigurēt"
@@ -3012,24 +3018,6 @@ msgstr "Konfigurēt Crystalizer"
 msgid "Effect intensity:"
 msgstr "Efekta intensitāte:"
 
-#: src/demac/plugin.c:361
-msgid "About Monkey's Audio Plugin"
-msgstr "Par Monkey's Audio spraudni"
-
-#: src/demac/plugin.c:362
-msgid ""
-"Copyright (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
-"Based on ffape decoder, Copyright (C) 2007 Benjamin Zores\n"
-"ffape itself based on libdemac by Dave Chapman\n"
-"\n"
-"ffape is a part of FFmpeg project, http://ffmpeg.mplayerhq.hu/"
-msgstr ""
-"Autortiesības (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
-"Balstīts uz ffape dekodētāju, autortiesības (C) 2007 Benjamin Zores\n"
-"ffape balstīts uz libdemac, autors Dave Chapman\n"
-"\n"
-"ffape ir daļa no FFmpeg projekta, http://ffmpeg.mplayerhq.hu/"
-
 #: src/echo_plugin/gui.c:9
 msgid ""
 "Echo Plugin\n"
@@ -3508,21 +3496,23 @@ msgstr ""
 "\n"
 "autors Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:545
+#: src/ffaudio/ffaudio-core.c:660
 #, c-format
 msgid ""
-"Multi-format audio decoding plugin for Audacious based on \n"
-"FFmpeg multimedia framework (http://www.ffmpeg.org/) \n"
+"Multi-format audio decoding plugin for Audacious based on\n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
 "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
+"\n"
+"FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
 "\n"
 "Supported formats: %s\n"
 "\n"
-"Audacious plugin by: \n"
+"Audacious plugin by:\n"
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:555
+#: src/ffaudio/ffaudio-core.c:676
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "Par FLAC audio spraudni"
@@ -3566,47 +3556,47 @@ msgstr ""
 "Ja tā nav, rakstiet uz Free Software Foundation, Inc., 51 Franklin Street,\n"
 "Fifth Floor, Boston, MA 02110-1301, USA.\n"
 
-#: src/filewriter/filewriter.c:437
+#: src/filewriter/filewriter.c:434
 msgid "File Writer Configuration"
 msgstr "Failu rakstītāja konfigurācija"
 
-#: src/filewriter/filewriter.c:449
+#: src/filewriter/filewriter.c:446
 msgid "Output file format:"
 msgstr "Izvades faila formāts:"
 
-#: src/filewriter/filewriter.c:482
+#: src/filewriter/filewriter.c:479
 msgid "Save into original directory"
 msgstr "Saglabāt oriģinālajā mapē"
 
-#: src/filewriter/filewriter.c:487
+#: src/filewriter/filewriter.c:484
 msgid "Save into custom directory"
 msgstr "Saglabāt pielāgotā mapē"
 
-#: src/filewriter/filewriter.c:499
+#: src/filewriter/filewriter.c:496
 msgid "Output file folder:"
 msgstr "Izvades faila mape:"
 
-#: src/filewriter/filewriter.c:503
+#: src/filewriter/filewriter.c:500
 msgid "Pick a folder"
 msgstr "Izvēlieties mapi"
 
-#: src/filewriter/filewriter.c:523
+#: src/filewriter/filewriter.c:520
 msgid "Get filename from:"
 msgstr "Iegūt faila nosaukumu no:"
 
-#: src/filewriter/filewriter.c:526
+#: src/filewriter/filewriter.c:523
 msgid "original file tags"
 msgstr "oriģinālajām faila birkām"
 
-#: src/filewriter/filewriter.c:532
+#: src/filewriter/filewriter.c:529
 msgid "original filename"
 msgstr "oriģinālā faila nosaukuma"
 
-#: src/filewriter/filewriter.c:542
+#: src/filewriter/filewriter.c:539
 msgid "Don't strip file name extension"
 msgstr "Neatmest faila paplašinājumu"
 
-#: src/filewriter/filewriter.c:546
+#: src/filewriter/filewriter.c:543
 msgid ""
 "If enabled, the extension from the original filename will not be stripped "
 "before adding the new file extension to the end."
@@ -3614,7 +3604,7 @@ msgstr ""
 "Ja ieslēgts, paplašinājums no oriģinālā faila nosaukuma netiks atmests pirms "
 "jaunā faila paplašinājuma pievienošanas beigās."
 
-#: src/filewriter/filewriter.c:560
+#: src/filewriter/filewriter.c:557
 msgid "Prepend track number to filename"
 msgstr "Pievienot celiņa numuru pirms faila nosaukuma"
 
@@ -3801,11 +3791,11 @@ msgstr "Vorbis kodētāja konfigurācija"
 msgid "Quality level (0 - 10):"
 msgstr "Kvalitātes līmenis (0 - 10):"
 
-#: src/flacng/plugin.c:626
+#: src/flacng/plugin.c:625
 msgid "FLAC Audio Plugin "
 msgstr "FLAC audio spraudnis"
 
-#: src/flacng/plugin.c:627
+#: src/flacng/plugin.c:626
 msgid ""
 "\n"
 "\n"
@@ -3821,7 +3811,7 @@ msgstr ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 
-#: src/flacng/plugin.c:632
+#: src/flacng/plugin.c:631
 msgid "About FLAC Audio Plugin"
 msgstr "Par FLAC audio spraudni"
 
@@ -3843,43 +3833,62 @@ msgstr ""
 "Autortiesības (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 
-#: src/gtkui/actions.c:177 src/skins/ui_main.c:789
+#: src/gntui/fileselector.c:85 src/gntui/gntui.c:273
+msgid "Open Files"
+msgstr ""
+
+#: src/gntui/fileselector.c:85 src/gntui/gntui.c:272
+#, fuzzy
+msgid "Add Files"
+msgstr "Pievienot failus..."
+
+#: src/gntui/gntui.c:271
+#, fuzzy
+msgid "Audacious2"
+msgstr "Audacious"
+
+#: src/gntui/gntui.c:312
+#, fuzzy
+msgid "gnt interface"
+msgstr "Apdarinātā saskarne"
+
+#: src/gtkui/actions.c:177 src/skins/ui_main.c:785
 msgid "Can't jump to time when no track is being played.\n"
 msgstr "Nevar pāriet uz noteiktu laiku, ja nekas netiek atskaņots.\n"
 
 #: src/gtkui/actions.c:192 src/gtkui/ui_manager.c:311
-#: src/gtkui/ui_manager.c:312 src/skins/ui_main.c:804
+#: src/gtkui/ui_manager.c:312 src/skins/ui_main.c:800
 #: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Jump to Time"
 msgstr "Pāriet uz laiku"
 
-#: src/gtkui/actions.c:209 src/skins/ui_main.c:825
+#: src/gtkui/actions.c:209 src/skins/ui_main.c:821
 msgid "minutes:seconds"
 msgstr "minūtes:sekundes"
 
-#: src/gtkui/actions.c:219 src/skins/ui_main.c:835
+#: src/gtkui/actions.c:219 src/skins/ui_main.c:831
 msgid "Track length:"
 msgstr "Celiņa garums:"
 
-#: src/gtkui/actions.c:532 src/skins/ui_playlist.c:761
+#: src/gtkui/actions.c:532 src/skins/ui_playlist.c:765
 msgid "Save as Static Playlist"
 msgstr "Saglabāt kā statisko repertuāru"
 
-#: src/gtkui/actions.c:538 src/skins/ui_playlist.c:768
+#: src/gtkui/actions.c:538 src/skins/ui_playlist.c:772
 msgid "Use Relative Path"
 msgstr "Izmantot relatīvo ceļu"
 
-#: src/gtkui/actions.c:563 src/skins/ui_playlist.c:602
+#: src/gtkui/actions.c:563 src/skins/ui_playlist.c:606
 #, c-format
 msgid "Error writing playlist \"%s\": %s"
 msgstr "Kļūda rakstot repertuāru \"%s\": %s"
 
-#: src/gtkui/actions.c:578 src/skins/ui_playlist.c:624
+#: src/gtkui/actions.c:578 src/skins/ui_playlist.c:628
 #, c-format
 msgid "%s already exist. Continue?"
 msgstr "%s jau pastāv. Turpināt?"
 
-#: src/gtkui/actions.c:589 src/skins/ui_playlist.c:639
+#: src/gtkui/actions.c:589 src/skins/ui_playlist.c:643
 #, c-format
 msgid ""
 "<b><big>Unable to save playlist.</big></b>\n"
@@ -3890,15 +3899,15 @@ msgstr ""
 "\n"
 "Nezināms faila tips '%s'.\n"
 
-#: src/gtkui/actions.c:630 src/skins/ui_playlist.c:804
+#: src/gtkui/actions.c:630 src/skins/ui_playlist.c:808
 msgid "Save Playlist"
 msgstr "Saglabāt repertuāru"
 
-#: src/gtkui/actions.c:704 src/skins/ui_playlist.c:791
+#: src/gtkui/actions.c:704 src/skins/ui_playlist.c:795
 msgid "Load Playlist"
 msgstr "Ielādēt repertuāru"
 
-#: src/gtkui/ui_gtk.c:48
+#: src/gtkui/ui_gtk.c:49
 msgid "GTK Foobar-like Interface"
 msgstr ""
 
@@ -4338,11 +4347,11 @@ msgstr "Ieslēdz/izslēdz repertuāra ieraksta ierindošanu."
 msgid "Playlist Manager"
 msgstr "Repertuāru pārvaldnieks"
 
-#: src/gtkui/ui_playlist_manager.c:313 src/skins/ui_playlist_manager.c:350
+#: src/gtkui/ui_playlist_manager.c:315 src/skins/ui_playlist_manager.c:352
 msgid "Entries"
 msgstr "Ieraksti"
 
-#: src/gtkui/ui_playlist_manager.c:324 src/skins/ui_playlist_manager.c:365
+#: src/gtkui/ui_playlist_manager.c:326 src/skins/ui_playlist_manager.c:367
 msgid "_Rename"
 msgstr "Pā_rdēvēt"
 
@@ -4894,24 +4903,11 @@ msgstr "Izmantot SJIS ID3 birku rakstīšanai (nav ieteicams)"
 msgid "Metadata Settings"
 msgstr "Metadatu iestatījumi"
 
-#: src/madplug/configure.c:46 src/vorbis/configure.c:100
-msgid "Override generic titles"
-msgstr "Aizstāt vispārīgos nosaukumus"
-
-#: src/madplug/configure.c:47
-msgid "ID3 format:"
-msgstr "ID3 formāts:"
-
-#: src/madplug/configure.c:100 src/sid/xmms-sid.glade:2610
-#: src/sid/xs_interface.c:1103
-msgid "Title"
-msgstr "Nosaukums"
-
-#: src/madplug/configure.c:109
+#: src/madplug/configure.c:88
 msgid "MPEG Audio Plugin Configuration"
 msgstr "MPEG audio spraudņa konfigurācija"
 
-#: src/madplug/plugin.c:640
+#: src/madplug/plugin.c:562
 #, c-format
 msgid ""
 "Audacious MPEG Audio Plugin\n"
@@ -4942,15 +4938,15 @@ msgstr ""
 "Normalizēšanas atbalsta autors:\n"
 "    Samuel Krempp"
 
-#: src/madplug/plugin.c:656
+#: src/madplug/plugin.c:578
 msgid "About MPEG Audio Plugin"
 msgstr "Par MPEG audio spraudni"
 
-#: src/metronom/metronom.c:86
+#: src/metronom/metronom.c:87
 msgid "About Metronom"
 msgstr "Par Metronom"
 
-#: src/metronom/metronom.c:87
+#: src/metronom/metronom.c:88
 msgid ""
 "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
@@ -4964,12 +4960,12 @@ msgstr ""
 "piem., tact://77 , lai atskaņotu 77 sitienus minūtē\n"
 "vai tact://60*3/4 , lai atskaņotu 60 sit./min. 3/4 taktīs"
 
-#: src/metronom/metronom.c:146
+#: src/metronom/metronom.c:147
 #, c-format
 msgid "Tact generator: %d bpm"
 msgstr "Takts ģenerators: %d sit./min."
 
-#: src/metronom/metronom.c:148
+#: src/metronom/metronom.c:149
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "Takts ģenerators: %d sit./min. %d/%d"
@@ -5302,7 +5298,12 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
+"USA.\n"
+"\n"
+"Note: For any issues regarding this plugin (including patches and \n"
+"suggestions) please contact the maintainer, and NO other \n"
+"Audacious developers\n"
+"\n"
 msgstr ""
 "Audacious OSSv4 dzinis\n"
 "\n"
@@ -5368,45 +5369,6 @@ msgstr ""
 "GNU GPL licenses kopijai vajadzētu būt saņemtai kopā ar šo programmu.\n"
 "Ja tā nav, rakstiet uz Free Software Foundation, Inc., 51 Franklin Street,\n"
 "Fifth Floor, Boston, MA 02110-1301, USA."
-
-#: src/pulse_audio/pulse_audio.c:742
-msgid "About Audacious PulseAudio Output Plugin"
-msgstr "Par Audacious PulseAudio izvades spraudni"
-
-#: src/pulse_audio/pulse_audio.c:743
-#, fuzzy
-msgid ""
-"Audacious PulseAudio Output Plugin\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Audacious PulseAudio izvades spraudnis\n"
-"\n"
-" Šī ir brīvā programmatūra. Jūs varat to izplatīt un/vai modificēt saskaņā\n"
-"ar GNU GPL licenses nosacījumiem, kurus publicējis Free Software\n"
-"Foundation; lietojiet licenses 2. versiju, vai arī (pēc jūsu izvēles)\n"
-"jebkuru vēlāku versiju.\n"
-"\n"
-"Šī programma tiek izplatīta cerot, ka tā būs noderīga, bet BEZ JEBKĀDAS\n"
-"GARANTIJAS; pat PIEPRASĪJUMA vai NODERĪBAS ĪPAŠAM MĒRĶIM garantijas.\n"
-"Sīkākai informācijai skatiet GNU General Public License.\n"
-"\n"
-"GNU GPL licenses kopijai vajadzētu būt saņemtai kopā ar šo programmu.\n"
-"Ja tā nav, rakstiet uz Free Software Foundation, Inc., 51 Franklin Street,\n"
-"Fifth Floor, Boston, MA 02110-1301, USA.\n"
 
 #: src/scrobbler/configure.c:171
 msgid "<b>Services</b>"
@@ -5923,6 +5885,10 @@ msgstr ""
 msgid "Song title format:"
 msgstr "Dziesmas nosaukuma formāts:"
 
+#: src/sid/xmms-sid.glade:2610 src/sid/xs_interface.c:1103
+msgid "Title"
+msgstr "Nosaukums"
+
 #: src/sid/xmms-sid.glade:2654 src/sid/xs_interface.c:1129
 msgid ""
 "If enabled, sub-tunes of each file will be added to playlist. If disabled, "
@@ -6092,11 +6058,11 @@ msgstr "Vispārējā informācija"
 msgid "Tune #%i: "
 msgstr "Melodija #%i: "
 
-#: src/skins/plugin.c:160
+#: src/skins/plugin.c:175
 msgid "About Skinned GUI"
 msgstr "Par apdarināto GLS"
 
-#: src/skins/plugin.c:161
+#: src/skins/plugin.c:176
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -6104,7 +6070,7 @@ msgstr ""
 "Autortiesības (c) 2008, autors Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 
-#: src/skins/plugin.c:179
+#: src/skins/plugin.c:194
 msgid "Skinned Interface"
 msgstr "Apdarinātā saskarne"
 
@@ -6226,35 +6192,35 @@ msgstr "Audacious balansieris"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/skins/ui_main.c:348 src/skins/ui_main.c:2204
+#: src/skins/ui_main.c:348 src/skins/ui_main.c:2188
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/skins/ui_main.c:547
+#: src/skins/ui_main.c:546
 msgid "VBR"
 msgstr "VBR"
 
-#: src/skins/ui_main.c:565
+#: src/skins/ui_main.c:564
 msgid "stereo"
 msgstr "stereo"
 
-#: src/skins/ui_main.c:565
+#: src/skins/ui_main.c:564
 msgid "mono"
 msgstr "mono"
 
-#: src/skins/ui_main.c:958
+#: src/skins/ui_main.c:954
 msgid "Audacious - visibility warning"
 msgstr "Audacious - redzamības brīdinājums"
 
-#: src/skins/ui_main.c:961
+#: src/skins/ui_main.c:957
 msgid "Show main player window"
 msgstr "Rādīt galveno atskaņotāja logu"
 
-#: src/skins/ui_main.c:962
+#: src/skins/ui_main.c:958
 msgid "Ignore"
 msgstr "Ignorēt"
 
-#: src/skins/ui_main.c:968
+#: src/skins/ui_main.c:964
 msgid ""
 "Audacious has been started with all of its windows hidden.\n"
 "You may want to show the player window again to control Audacious; "
@@ -6266,15 +6232,15 @@ msgstr ""
 "Audacious. Ja nē, jums nāksies to kontrolēt attālināti ar 'audtool' vai "
 "spraudņu (piemēram, sistēmjoslas ikonas spraudņa) palīdzību."
 
-#: src/skins/ui_main.c:974
+#: src/skins/ui_main.c:970
 msgid "Always ignore, show/hide is controlled remotely"
 msgstr "Vienmēr ignorēt, rādīt/slēpt tiek kontrolēts attālināti"
 
-#: src/skins/ui_main.c:1019
+#: src/skins/ui_main.c:1015
 msgid "Audacious - broken GTK engine usage warning"
 msgstr "Audacious - salauzta GTK dzinēja izmantošanas brīdinājums"
 
-#: src/skins/ui_main.c:1027
+#: src/skins/ui_main.c:1023
 #, c-format
 msgid ""
 "<big><b>Broken GTK engine in use</b></big>\n"
@@ -6296,63 +6262,63 @@ msgstr ""
 "\n"
 "Lai izmantotu šīs iespējas, lūdzu, izmantojiet citu GTK tēmu dzinēju."
 
-#: src/skins/ui_main.c:1038
+#: src/skins/ui_main.c:1034
 msgid "Do not display this warning again"
 msgstr "Vairs nerādīt šo brīdinājumu"
 
-#: src/skins/ui_main.c:1274
+#: src/skins/ui_main.c:1266
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
 msgstr "Pārlekt uz:%d:%-2.2d/%d:%-2.2d (%d%%)"
 
-#: src/skins/ui_main.c:1304
+#: src/skins/ui_main.c:1296
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Skaļums: %d%%"
 
-#: src/skins/ui_main.c:1332
+#: src/skins/ui_main.c:1324
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Balanss: %d%% pa kreisi"
 
-#: src/skins/ui_main.c:1336
+#: src/skins/ui_main.c:1328
 msgid "Balance: center"
 msgstr "Balanss: centrs"
 
-#: src/skins/ui_main.c:1340
+#: src/skins/ui_main.c:1332
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Balanss: %d%% pa labi"
 
-#: src/skins/ui_main.c:1642
+#: src/skins/ui_main.c:1634
 msgid "Options Menu"
 msgstr "Iestatījumu izvēlne"
 
-#: src/skins/ui_main.c:1646
+#: src/skins/ui_main.c:1638
 msgid "Disable 'Always On Top'"
 msgstr "Izslēgt 'Vienmēr virspusē'"
 
-#: src/skins/ui_main.c:1648
+#: src/skins/ui_main.c:1640
 msgid "Enable 'Always On Top'"
 msgstr "Ieslēgt 'Vienmēr virspusē'"
 
-#: src/skins/ui_main.c:1651
+#: src/skins/ui_main.c:1643
 msgid "File Info Box"
 msgstr "Faila info lodziņš"
 
-#: src/skins/ui_main.c:1655
+#: src/skins/ui_main.c:1647
 msgid "Disable 'GUI Scaling'"
 msgstr "Atslēgt 'GLS mērogošana'"
 
-#: src/skins/ui_main.c:1657
+#: src/skins/ui_main.c:1649
 msgid "Enable 'GUI Scaling'"
 msgstr "Ieslēgt 'GLS mērogošana'"
 
-#: src/skins/ui_main.c:1660
+#: src/skins/ui_main.c:1652
 msgid "Visualization Menu"
 msgstr "Vizualizēšanas izvēlne"
 
-#: src/skins/ui_main.c:1705
+#: src/skins/ui_main.c:1697
 msgid ""
 "<b><big>Couldn't open audio.</big></b>\n"
 "\n"
@@ -6602,11 +6568,11 @@ msgstr "Dzēst sākumuzstādījumu"
 msgid "Delete auto-load preset"
 msgstr "Dzēst auto-ielādes sākumuzstādījumu"
 
-#: src/skins/ui_playlist.c:345
+#: src/skins/ui_playlist.c:349
 msgid "Search entries in active playlist"
 msgstr "Meklēt ierakstus aktīvajā repertuārā"
 
-#: src/skins/ui_playlist.c:353
+#: src/skins/ui_playlist.c:357
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -6617,31 +6583,31 @@ msgstr ""
 "jāizmanto regulāro izteiksmju sintakse, reģistrnejutīga. Ja neziniet, kā "
 "regulārās izteiksmes darbojas, vienkārši nosaukuma daļu tam, ko meklējat."
 
-#: src/skins/ui_playlist.c:368
+#: src/skins/ui_playlist.c:372
 msgid "Album: "
 msgstr "Albums: "
 
-#: src/skins/ui_playlist.c:375
+#: src/skins/ui_playlist.c:379
 msgid "Artist: "
 msgstr "Izpildītājs: "
 
-#: src/skins/ui_playlist.c:382
+#: src/skins/ui_playlist.c:386
 msgid "Filename: "
 msgstr "Faila nosaukums: "
 
-#: src/skins/ui_playlist.c:390
+#: src/skins/ui_playlist.c:394
 msgid "Clear previous selection before searching"
 msgstr "Notīrīt iepriekšējo iezīmējumu pirms meklēšanas"
 
-#: src/skins/ui_playlist.c:393
+#: src/skins/ui_playlist.c:397
 msgid "Automatically toggle queue for matching entries"
 msgstr "Automātiski pārslēgt ierindošanu atbilstošajiem ierakstiem"
 
-#: src/skins/ui_playlist.c:396
+#: src/skins/ui_playlist.c:400
 msgid "Create a new playlist with matching entries"
 msgstr "Izveidot jaunu repertuāru no atbilstošajiem ierakstiem"
 
-#: src/skins/ui_playlist.c:1149
+#: src/skins/ui_playlist.c:1160
 msgid "Audacious Playlist Editor"
 msgstr "Audacious repertuāra redaktors"
 
@@ -6697,16 +6663,16 @@ msgstr "Arhivēta Winamp 2.x apdare"
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Atarhivēta Winamp 2.x apdare"
 
-#: src/skins/util.c:801
+#: src/skins/util.c:784
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "Neizdevās izveidot mapi (%s): %s\n"
 
-#: src/sndfile/plugin.c:567
+#: src/sndfile/plugin.c:485
 msgid "About sndfile plugin"
 msgstr "Par sndfile spraudni"
 
-#: src/sndfile/plugin.c:568
+#: src/sndfile/plugin.c:486
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -6769,48 +6735,44 @@ msgstr "Augstums"
 msgid "SndStretch - Configuration"
 msgstr "SndStretch - konfigurācija"
 
-#: src/song_change/song_change.c:310
-msgid "Commands"
-msgstr "Komandas"
-
-#: src/song_change/song_change.c:317
+#: src/song_change/song_change.c:395
 msgid "Command to run when Audacious starts a new song."
 msgstr "Komanda, ko palaist, kad Audacious sāk atskaņot jaunu dziesmu."
 
-#: src/song_change/song_change.c:326 src/song_change/song_change.c:348
-#: src/song_change/song_change.c:369 src/song_change/song_change.c:390
+#: src/song_change/song_change.c:396 src/song_change/song_change.c:400
+#: src/song_change/song_change.c:404 src/song_change/song_change.c:408
 msgid "Command:"
 msgstr "Komanda:"
 
-#: src/song_change/song_change.c:340
+#: src/song_change/song_change.c:399
 msgid "Command to run toward the end of a song."
 msgstr "Komanda, ko palaist dziesmas beigās."
 
-#: src/song_change/song_change.c:360
+#: src/song_change/song_change.c:403
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Komanda, ko palaist, kad Audacious sasniedz repertuāra beigas."
 
-#: src/song_change/song_change.c:381
+#: src/song_change/song_change.c:407
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "Komanda, ko palaist, kad nomainās dziesmas nosaukums (piem., tīkla plūsmas)."
 
-#: src/song_change/song_change.c:402
-#, c-format
+#: src/song_change/song_change.c:411
+#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
 "(not all are useful for the end-of-playlist command).\n"
 "\n"
-"%%F: Frequency (in hertz)\n"
-"%%c: Number of channels\n"
-"%%f: filename (full path)\n"
-"%%l: length (in milliseconds)\n"
-"%%n or %%s: Song name\n"
-"%%r: Rate (in bits per second)\n"
-"%%t: Playlist position (%%02d)\n"
-"%%p: Currently playing (1 or 0)"
+"%F: Frequency (in hertz)\n"
+"%c: Number of channels\n"
+"%f: filename (full path)\n"
+"%l: length (in milliseconds)\n"
+"%n or %s: Song name\n"
+"%r: Rate (in bits per second)\n"
+"%t: Playlist position (%02d)\n"
+"%p: Currently playing (1 or 0)"
 msgstr ""
 "Varat izmantot sekojošā formāta virknes, kuras\n"
 "pirms komandas izsaukšanas tiks aizvietotas\n"
@@ -6825,13 +6787,22 @@ msgstr ""
 "%%t: Repertuāra pozīcija (%%02d)\n"
 "%%p: Pašreiz atskaņo (1 vai 0)"
 
-#: src/song_change/song_change.c:427
+#: src/song_change/song_change.c:435
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
 "<span size='small'>Parametrus, kuri tiek padoti čaulai, vajadzētu ietvert "
 "pēdiņās. Pretējā gadījumā rodas risks drošībai.</span>"
+
+#: src/song_change/song_change.c:446
+msgid "Commands"
+msgstr "Komandas"
+
+#: src/song_change/song_change.c:482
+#, fuzzy
+msgid "Song Change"
+msgstr "Dziesmas ziņojums"
 
 #: src/spectrum/spectrum.c:89
 msgid "Spectrum Analyzer"
@@ -7124,23 +7095,27 @@ msgstr ""
 msgid "About True Audio Plugin"
 msgstr "Par True Audio spraudni"
 
-#: src/vorbis/configure.c:82
+#: src/vorbis/configure.c:80
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ogg Vorbis Audio spraudņa konfigurācija"
 
-#: src/vorbis/configure.c:92
+#: src/vorbis/configure.c:90
 msgid "Ogg Vorbis Tags:"
 msgstr "Ogg Vorbis birkas:"
 
-#: src/vorbis/configure.c:113
+#: src/vorbis/configure.c:98
+msgid "Override generic titles"
+msgstr "Aizstāt vispārīgos nosaukumus"
+
+#: src/vorbis/configure.c:111
 msgid "Title format:"
 msgstr "Nosaukuma formāts:"
 
-#: src/vorbis/vorbis.c:676
+#: src/vorbis/vorbis.c:542
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Par Ogg Vorbis Audio spraudni"
 
-#: src/vorbis/vorbis.c:682
+#: src/vorbis/vorbis.c:548
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -7354,6 +7329,75 @@ msgstr "lietot albuma normalizēšanu/maksimumu"
 #: src/wavpack/ui.cxx:543
 msgid "ReplayGain"
 msgstr "Normalizēšana"
+
+#~ msgid "About Apple Lossless Audio Plugin"
+#~ msgstr "Par Apple Lossless Audio spraudni"
+
+#~ msgid ""
+#~ "Copyright (c) 2006 Audacious team\n"
+#~ "Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"
+#~ msgstr ""
+#~ "Autortiesības (c) 2006 Audacious komanda\n"
+#~ "Daļas (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"
+
+#~ msgid "About Monkey's Audio Plugin"
+#~ msgstr "Par Monkey's Audio spraudni"
+
+#~ msgid ""
+#~ "Copyright (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
+#~ "Based on ffape decoder, Copyright (C) 2007 Benjamin Zores\n"
+#~ "ffape itself based on libdemac by Dave Chapman\n"
+#~ "\n"
+#~ "ffape is a part of FFmpeg project, http://ffmpeg.mplayerhq.hu/"
+#~ msgstr ""
+#~ "Autortiesības (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
+#~ "Balstīts uz ffape dekodētāju, autortiesības (C) 2007 Benjamin Zores\n"
+#~ "ffape balstīts uz libdemac, autors Dave Chapman\n"
+#~ "\n"
+#~ "ffape ir daļa no FFmpeg projekta, http://ffmpeg.mplayerhq.hu/"
+
+#~ msgid "ID3 format:"
+#~ msgstr "ID3 formāts:"
+
+#~ msgid "About Audacious PulseAudio Output Plugin"
+#~ msgstr "Par Audacious PulseAudio izvades spraudni"
+
+#, fuzzy
+#~ msgid ""
+#~ "Audacious PulseAudio Output Plugin\n"
+#~ "\n"
+#~ " This program is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as published by\n"
+#~ "the Free Software Foundation; either version 2 of the License, or\n"
+#~ "(at your option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License\n"
+#~ "along with this program; if not, write to the Free Software\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
+#~ "USA."
+#~ msgstr ""
+#~ "Audacious PulseAudio izvades spraudnis\n"
+#~ "\n"
+#~ " Šī ir brīvā programmatūra. Jūs varat to izplatīt un/vai modificēt "
+#~ "saskaņā\n"
+#~ "ar GNU GPL licenses nosacījumiem, kurus publicējis Free Software\n"
+#~ "Foundation; lietojiet licenses 2. versiju, vai arī (pēc jūsu izvēles)\n"
+#~ "jebkuru vēlāku versiju.\n"
+#~ "\n"
+#~ "Šī programma tiek izplatīta cerot, ka tā būs noderīga, bet BEZ JEBKĀDAS\n"
+#~ "GARANTIJAS; pat PIEPRASĪJUMA vai NODERĪBAS ĪPAŠAM MĒRĶIM garantijas.\n"
+#~ "Sīkākai informācijai skatiet GNU General Public License.\n"
+#~ "\n"
+#~ "GNU GPL licenses kopijai vajadzētu būt saņemtai kopā ar šo programmu.\n"
+#~ "Ja tā nav, rakstiet uz Free Software Foundation, Inc., 51 Franklin "
+#~ "Street,\n"
+#~ "Fifth Floor, Boston, MA 02110-1301, USA.\n"
 
 #, fuzzy
 #~ msgid "ALSA Driver configuration"

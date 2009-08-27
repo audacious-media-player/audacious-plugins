@@ -1,8 +1,8 @@
 # Please don't update this file manually - use ./update-potfiles.sh instead!
 src/aac/libmp4.c
 src/adplug/adplug-xmms.cc
-src/alac/plugin.c
 src/alarm/interface.c
+src/alsa-gapless/config.c
 src/alsa-ng/alsa-configure.c
 src/amidi-plug/amidi-plug.c
 src/amidi-plug/backend-alsa/b-alsa.c
@@ -61,7 +61,6 @@ src/console/Ym2612_Emu.cxx
 src/crossfade/configure.c
 src/crossfade/interface-2.0.c
 src/crystalizer/crystalizer.c
-src/demac/plugin.c
 src/echo_plugin/gui.c
 src/esd/about.c
 src/esd/configure.c
@@ -74,6 +73,8 @@ src/filewriter/mp3.c
 src/filewriter/vorbis.c
 src/flacng/plugin.c
 src/gnomeshortcuts/gnomeshortcuts.c
+src/gntui/fileselector.c
+src/gntui/gntui.c
 src/gtkui/actions.c
 src/gtkui/ui_gtk.c
 src/gtkui/ui_manager.c
@@ -104,7 +105,6 @@ src/OSS/configure.c
 src/OSS/OSS.c
 src/paranormal-ng/plugin.c
 src/paranormal/plugin.c
-src/pulse_audio/pulse_audio.c
 src/scrobbler/configure.c
 src/scrobbler/gerpok.c
 src/scrobbler/gtkstuff.c

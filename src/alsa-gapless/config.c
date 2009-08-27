@@ -271,14 +271,14 @@ static void create_window (void)
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_type_hint ((GtkWindow *) window, GDK_WINDOW_TYPE_HINT_DIALOG);
     gtk_window_set_resizable ((GtkWindow *) window, FALSE);
-    gtk_window_set_title ((GtkWindow *) window, _ ("ALSA Gapless Output Plugin "
+    gtk_window_set_title ((GtkWindow *) window, _("ALSA Gapless Output Plugin "
      "Preferences"));
     gtk_container_set_border_width ((GtkContainer *) window, 6);
 
     vbox = gtk_vbox_new (FALSE, 6);
     gtk_container_add ((GtkContainer *) window, vbox);
 
-    override_check = gtk_check_button_new_with_label (_ ("Override default "
+    override_check = gtk_check_button_new_with_label (_("Override default "
      "devices"));
     gtk_box_pack_start ((GtkBox *) vbox, override_check, FALSE, FALSE, 0);
 
@@ -297,11 +297,11 @@ static void create_window (void)
     else
         gtk_list_store_clear (mixer_element_list);
 
-    gtk_box_pack_start ((GtkBox *) vbox, combo_new (_ ("Card:"), card_list,
+    gtk_box_pack_start ((GtkBox *) vbox, combo_new (_("Card:"), card_list,
      & card_combo), FALSE, FALSE, 0);
-    gtk_box_pack_start ((GtkBox *) vbox, combo_new (_ ("Device:"), device_list,
+    gtk_box_pack_start ((GtkBox *) vbox, combo_new (_("Device:"), device_list,
      & device_combo), FALSE, FALSE, 0);
-    gtk_box_pack_start ((GtkBox *) vbox, combo_new (_ ("Mixer element:"),
+    gtk_box_pack_start ((GtkBox *) vbox, combo_new (_("Mixer element:"),
      mixer_element_list, & mixer_element_combo), FALSE, FALSE, 0);
 
     hbox = gtk_hbox_new (FALSE, 6);
