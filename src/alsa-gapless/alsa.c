@@ -46,11 +46,26 @@ static snd_mixer_elem_t * alsa_mixer_element;
 
 static void send_audio (void * data, gint length)
 {
-    gint result = snd_pcm_writei (alsa_handle, data, snd_pcm_bytes_to_frames
-     (alsa_handle, length));
+    while (length > 0)
+    {
+        gint result = snd_pcm_writei (alsa_handle, data, snd_pcm_bytes_to_frames
+         (alsa_handle, length));
 
-    if (result < 0)
-        CHECK (snd_pcm_recover, alsa_handle, result, 0);
+        if (result < 0)
+        {
+            CHECK (snd_pcm_recover, alsa_handle, result, 0);
+            result = 0;
+        }
+
+#if DEEP_DEBUG
+        DEBUG ("Wrote %d frames (%d attempted).\n", result, (gint)
+         snd_pcm_bytes_to_frames (alsa_handle, length));
+#endif
+
+        result = snd_pcm_frames_to_bytes (alsa_handle, result);
+        data = (gint8 *) data + result;
+        length -= result;
+    }
 
 FAILED:
     return;
