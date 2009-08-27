@@ -460,6 +460,7 @@ ffaudio_play_file(InputPlayback *playback)
         if (paused)
         {
             g_cond_wait (seek_cond, seek_mutex);
+            g_mutex_unlock(seek_mutex);
             continue;
         }
 
