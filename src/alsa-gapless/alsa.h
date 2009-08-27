@@ -33,6 +33,10 @@
 #define DEBUG(...)
 #endif
 
+#if SND_LIB_VERSION < 0x010014 /* 1.0.20 */
+#define snd_pcm_avail snd_pcm_avail_update
+#endif
+
 #define CHECK(function, ...) \
 do { \
     gint error = function (__VA_ARGS__); \
