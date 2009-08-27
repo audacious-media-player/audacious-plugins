@@ -43,6 +43,7 @@ static gboolean xmmstimid_initialized = FALSE;
 static GMutex *seek_mutex = NULL;
 static GCond *seek_cond = NULL;
 static gint seek_value = -1;
+static gshort pause_flag = 0;
 
 static GtkWidget *xmmstimid_conf_wnd = NULL;
 static GtkEntry *xmmstimid_conf_config_file;
@@ -311,6 +312,7 @@ static void xmmstimid_play_file(InputPlayback * playback)
     MidSongOptions xmmstimid_opts;
     Tuple *tuple;
     gsize buffer_size;
+    gshort paused = 0;
     guint8 *buffer;
     AFormat fmt;
 
@@ -370,57 +372,94 @@ static void xmmstimid_play_file(InputPlayback * playback)
     playback->eof = FALSE;
     playback->set_pb_ready(playback);
 
-    while (playback->playing)
+    while (playback->playing && !playback->eof)
     {
         gsize bytes_read;
 
         g_mutex_lock(seek_mutex);
+
         if (seek_value >= 0)
         {
             mid_song_seek(xmmstimid_song, seek_value * 1000);
             playback->output->flush(seek_value * 1000);
             seek_value = -1;
-            bytes_read = 0;
             g_cond_signal(seek_cond);
         }
+
+        if (pause_flag != paused)
+        {
+            playback->output->pause(pause_flag);
+            paused = pause_flag;
+            g_cond_signal(seek_cond);
+        }
+
+        if (paused)
+        {
+            g_cond_wait(seek_cond, seek_mutex);
+            g_mutex_unlock(seek_mutex);
+            continue;
+        }
+
         g_mutex_unlock(seek_mutex);
 
         bytes_read = mid_song_read_wave(xmmstimid_song, buffer, buffer_size);
 
         if (bytes_read > 0)
-        {
-            playback->pass_audio(playback, fmt, xmmstimid_opts.channels, bytes_read, buffer, &playback->playing);
-        }
+            playback->pass_audio(playback, fmt, xmmstimid_opts.channels, bytes_read, buffer, NULL);
         else
-        {
             playback->eof = TRUE;
-            playback->playing = FALSE;
-        }
-
     }
 
-    playback->output->close_audio();
+    g_mutex_lock(seek_mutex);
+
+    while (playback->playing && playback->output->buffer_playing())
+        g_usleep (20000);
+
     playback->playing = FALSE;
+
+    g_cond_signal(seek_cond); /* wake up any waiting request */
+    g_mutex_unlock(seek_mutex);
+
+    playback->output->close_audio();
     mid_song_free(xmmstimid_song);
     g_free(buffer);
 }
 
 static void xmmstimid_stop(InputPlayback * playback)
 {
+    g_mutex_lock(seek_mutex);
     playback->playing = FALSE;
+    g_cond_signal(seek_cond);
+    g_mutex_unlock(seek_mutex);
+    g_thread_join(playback->thread);
+    playback->thread = NULL;
 }
 
 static void xmmstimid_pause(InputPlayback * playback, gshort p)
 {
-    playback->output->pause(p);
+    g_mutex_lock(seek_mutex);
+
+    if (playback->playing)
+    {
+        pause_flag = p;
+        g_cond_signal(seek_cond);
+        g_cond_wait(seek_cond, seek_mutex);
+    }
+
+    g_mutex_unlock(seek_mutex);
 }
 
 static void xmmstimid_seek(InputPlayback * playback, gint time)
 {
     g_mutex_lock(seek_mutex);
-    seek_value = time;
-    playback->eof = FALSE;
-    g_cond_wait(seek_cond, seek_mutex);
+
+    if (playback->playing)
+    {
+        seek_value = time;
+        g_cond_signal(seek_cond);
+        g_cond_wait(seek_cond, seek_mutex);
+    }
+
     g_mutex_unlock(seek_mutex);
 }
 
