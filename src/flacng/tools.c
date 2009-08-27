@@ -176,15 +176,15 @@ gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info*
 
 /* --- */
 
-Tuple* get_tuple(const gchar* filename, callback_info* info) {
-
+Tuple* get_tuple(VFSFile* fd, callback_info* info)
+{
     Tuple *out;
 
     _ENTER;
 
     _DEBUG("Using callback_info %s", info->name);
 
-    out = aud_tuple_new_from_filename(filename);
+    out = aud_tuple_new_from_filename(fd->uri);
 
     aud_tuple_associate_string(out, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
     aud_tuple_associate_string(out, FIELD_QUALITY, NULL, "lossless");
@@ -215,28 +215,6 @@ Tuple* get_tuple(const gchar* filename, callback_info* info) {
     _DEBUG("Tuple created: [%p]", out);
 
     _LEAVE out;
-}
-
-/* --- */
-
-gchar* get_title(const gchar* filename, callback_info* info) {
-
-    Tuple *input;
-    gchar *title;
-
-    _ENTER;
-
-    _DEBUG("Using callback_info %s", info->name);
-
-    input = get_tuple(filename, info);
-
-    title = aud_tuple_formatter_make_title_string(input, aud_get_gentitle_format());
-
-    aud_tuple_free(input);
-
-    _DEBUG("Title created: <%s>", title);
-
-    _LEAVE title;
 }
 
 /* --- */

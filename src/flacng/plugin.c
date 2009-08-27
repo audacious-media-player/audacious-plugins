@@ -486,7 +486,8 @@ static gpointer flac_play_loop(gpointer arg)
 
 void flac_play_file(InputPlayback *playback)
 {
-    VFSFile* fd;
+    VFSFile *fd;
+    Tuple *tuple;
 
     _ENTER;
 
@@ -508,11 +509,15 @@ void flac_play_file(InputPlayback *playback)
         _ERROR("Could not prepare file for playing!");
         _LEAVE;
     }
+    else
+        tuple = get_tuple(fd, main_info);
+
 
     seek_value = -1;
     pause_flag = FALSE;
     playback->playing = TRUE;
 
+    playback->set_tuple(playback, tuple);
     playback->set_params(playback, NULL, 0, -1, main_info->stream.samplerate, main_info->stream.channels);
     playback->set_pb_ready(playback);
 
@@ -594,8 +599,8 @@ static Tuple *flac_get_song_tuple(const gchar* filename)
 
     INFO_LOCK(test_info);
 
-    if (read_metadata (fd, test_decoder, test_info))
-        tuple = get_tuple (filename, test_info);
+    if (read_metadata(fd, test_decoder, test_info))
+        tuple = get_tuple(fd, test_info);
     else
         _ERROR ("Could not read metadata tuple for file <%s>", filename);
 
