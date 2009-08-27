@@ -44,7 +44,7 @@ VFSFile *open_file(gchar * name)
 
     if (name == NULL || !*name)
     {
-        DEBUG_MSG("Attempted to open nameless file.\n");
+        DEBUG_MSG("Attempted to open NULL or nameless file.\n");
         return NULL;
     }
 
@@ -78,7 +78,7 @@ VFSFile *open_file(gchar * name)
 
         DEBUG_MSG("Trying to open %s\n", tmp);
 
-        if (aud_vfs_file_test(uri, G_FILE_TEST_EXISTS))
+        if (uri != NULL && aud_vfs_file_test(uri, G_FILE_TEST_EXISTS))
             fp = aud_vfs_fopen(uri, OPEN_MODE);
         g_free(uri);
         if (fp != NULL)

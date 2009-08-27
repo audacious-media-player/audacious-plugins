@@ -52,9 +52,12 @@ static GtkToggleButton *xmmstimid_conf_channels_1, *xmmstimid_conf_channels_2;
 
 static gboolean xmmstimid_engine_init(void)
 {
-    if (mid_init(xmmstimid_cfg.config_file) != 0)
+    gint ret = mid_init(xmmstimid_cfg.config_file);
+    if (ret != 0)
+    {
+        g_warning("mid_init(%s) retured %d", xmmstimid_cfg.config_file, ret);
         xmmstimid_initialized = FALSE;
-    else
+    } else
         xmmstimid_initialized = TRUE;
 
     return xmmstimid_initialized;
@@ -76,7 +79,7 @@ static void xmmstimid_init(void)
     db = aud_cfg_db_open();
 
     if (!aud_cfg_db_get_string(db, TIMID_CFGID, "config_file", &xmmstimid_cfg.config_file))
-        xmmstimid_cfg.config_file = g_strdup("/etc/timidity/timidity.cfg");
+        xmmstimid_cfg.config_file = g_strdup("/etc/timidity.cfg");
 
     aud_cfg_db_get_int(db, TIMID_CFGID, "samplerate", &xmmstimid_cfg.rate);
     aud_cfg_db_get_int(db, TIMID_CFGID, "bits", &xmmstimid_cfg.bits);
@@ -283,15 +286,14 @@ static Tuple *xmmstimid_get_song_tuple(const gchar * filename)
     if (song == NULL)
         return tuple;
 
-    if ((tmp = mid_song_get_meta(song, MID_SONG_TEXT)) == NULL)
-        tmp = aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL);
-    aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, tmp);
+    if ((tmp = mid_song_get_meta(song, MID_SONG_TEXT)) != NULL)
+        aud_tuple_associate_string_rel(tuple, FIELD_TITLE, NULL, aud_str_to_utf8(tmp));
 
     if ((tmp = mid_song_get_meta(song, MID_SONG_COPYRIGHT)) != NULL)
-        aud_tuple_associate_string(tuple, FIELD_COPYRIGHT, NULL, tmp);
+        aud_tuple_associate_string_rel(tuple, FIELD_COPYRIGHT, NULL, aud_str_to_utf8(tmp));
 
     if ((tmp = mid_song_get_meta(song, MID_SONG_TEXT)) != NULL)
-        aud_tuple_associate_string(tuple, FIELD_COMMENT, NULL, tmp);
+        aud_tuple_associate_string_rel(tuple, FIELD_COMMENT, NULL, aud_str_to_utf8(tmp));
 
     aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, mid_song_get_total_time(song));
     aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "TiMidity MIDI");
@@ -350,7 +352,7 @@ static void xmmstimid_play_file(InputPlayback * playback)
     }
 
     tuple = xmmstimid_get_song_tuple(playback->filename);
-    playback->set_params(playback, aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL), mid_song_get_total_time(xmmstimid_song), 0, xmmstimid_opts.rate, xmmstimid_opts.channels);
+    playback->set_params(playback, NULL, 0, 0, xmmstimid_opts.rate, xmmstimid_opts.channels);
     tuple_free(tuple);
 
     buffer_size = ((xmmstimid_opts.format == MID_AUDIO_S16LSB) ? 16 : 8) * xmmstimid_opts.channels * xmmstimid_opts.buffer_size / 8;
@@ -396,6 +398,7 @@ static void xmmstimid_play_file(InputPlayback * playback)
         }
 
     }
+
     playback->output->close_audio();
     playback->playing = FALSE;
     mid_song_free(xmmstimid_song);
