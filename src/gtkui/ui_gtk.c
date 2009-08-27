@@ -37,6 +37,7 @@ static GtkWidget *volume;
 
 static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
+static gint slider_position;
 static guint update_song_timeout_source = 0;
 
 static gulong volume_change_handler_id;
@@ -324,6 +325,8 @@ static gboolean ui_slider_value_changed_cb(GtkRange * range, gpointer user_data)
        we should do mseek here. --nenolod */
     audacious_drct_seek(seek_ != 0 ? seek_ : 1);
 
+    slider_is_moving = FALSE;
+
     return TRUE;
 }
 
@@ -336,6 +339,7 @@ static gboolean ui_slider_change_value_cb(GtkRange * range, GtkScrollType scroll
 static gboolean ui_slider_button_press_cb(GtkWidget * widget, GdkEventButton * event, gpointer user_data)
 {
     slider_is_moving = TRUE;
+    slider_position = gtk_range_get_value(GTK_RANGE(widget));
 
     /* HACK: clicking with the left mouse button moves the slider
        to the location of the click. */
@@ -351,7 +355,9 @@ static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton *
     if (event->button == 1)
         event->button = 2;
 
-    slider_is_moving = FALSE;
+    if (slider_position == (gint) gtk_range_get_value(GTK_RANGE(widget)))
+        slider_is_moving = FALSE;
+
     return FALSE;
 }
 
