@@ -23,7 +23,6 @@
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
 //#define FFAUDIO_USE_AUDTAG  /* Use Audacious tagging library */
 
-
 #include "config.h"
 #include "ffaudio-stdinc.h"
 #include <audacious/i18n.h>
@@ -421,6 +420,8 @@ ffaudio_play_file(InputPlayback *playback)
     pause_flag = FALSE;
     playback->set_pb_ready(playback);
 
+    g_mutex_unlock (seek_mutex);
+
     errcount = 0;
 
     /* seek_mutex is locked at loop entry */
@@ -428,6 +429,8 @@ ffaudio_play_file(InputPlayback *playback)
     {
         AVPacket tmp;
         gint ret;
+
+        g_mutex_lock (seek_mutex);
 
         if (seek_value >= 0 && ffaudio_codec_is_seekable(codec) != 0)
         {
@@ -556,14 +559,16 @@ ffaudio_play_file(InputPlayback *playback)
 
         if (pkt.data)
             av_free_packet(&pkt);
-
-        g_mutex_lock (seek_mutex);
     }
+
+    g_mutex_lock (seek_mutex);
 
     while (playback->playing && playback->output->buffer_playing ())
         g_usleep (20000);
 
     playback->playing = FALSE;
+
+    g_cond_signal (seek_cond); /* wake up any waiting request */
     g_mutex_unlock (seek_mutex);
 
 error_exit:
