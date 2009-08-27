@@ -145,7 +145,7 @@ OutputPlugin *ice_oplist[] = { &ice_op, NULL };
 
 EffectPlugin *ice_eplist[] = { &ice_ep, NULL };
 
-DECLARE_PLUGIN(icecast, NULL, NULL, NULL, ice_oplist, ice_eplist, NULL, NULL, NULL, NULL)
+DECLARE_PLUGIN(icecast, NULL, NULL, NULL, ice_oplist, ice_eplist, NULL, NULL, NULL)
 
 static void set_plugin(void)
 {
