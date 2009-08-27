@@ -64,10 +64,10 @@ static guint32 mp4_read_callback(void *data, void *buffer, guint32 len)
     return aud_vfs_fread(buffer, 1, len, (VFSFile *) data);
 }
 
-static guint32 mp4_seek_callback(void *data, guint64 pos)
+static guint32 mp4_seek_callback (void * data, guint64 pos)
 {
-    if (data == NULL)
-        return -1;
+    g_return_val_if_fail (data != NULL, -1);
+    g_return_val_if_fail (pos <= G_MAXLONG, -1);
 
     return aud_vfs_fseek((VFSFile *) data, pos, SEEK_SET);
 }
