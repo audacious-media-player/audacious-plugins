@@ -47,7 +47,7 @@ static GCond *seek_cond;
 static glong seek_value = -1;
 
 
-/* Virtual file access wrappers for libsndfile 
+/* Virtual file access wrappers for libsndfile
  */
 static sf_count_t
 sf_get_filelen (void *user_data)
@@ -225,7 +225,7 @@ fill_song_tuple (const gchar *filename, Tuple *ti)
         default:
             format = "Unknown sndfile";
     }
-    
+
     switch (sfinfo.format & SF_FORMAT_SUBMASK)
     {
         case SF_FORMAT_PCM_S8:
@@ -318,27 +318,8 @@ fill_song_tuple (const gchar *filename, Tuple *ti)
 
     aud_tuple_associate_string(ti, FIELD_CODEC, NULL, codec);
     g_free(codec);
-    
+
     aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, lossy ? "lossy" : "lossless");
-}
-
-static gchar *
-get_title(gchar *filename)
-{
-    Tuple *tuple;
-    gchar *title;
-
-    tuple = aud_tuple_new_from_filename(filename);
-    fill_song_tuple(filename, tuple);
-    title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
-    if (*title == '\0')
-    {
-        g_free(title);
-        title = g_strdup(aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
-    }
-
-    aud_tuple_free(tuple);
-    return title;
 }
 
 static gint
@@ -367,20 +348,12 @@ play_start (InputPlayback *playback)
     SNDFILE *sndfile = NULL;
     SF_INFO sfinfo;
     VFSFile *vfsfile = NULL;
-    gchar *song_title;
     gshort buffer[BUFFER_SIZE], *buffer_p;
-    gint samples, song_length;
-
-    song_title = get_title(playback->filename);
+    gint samples;
 
     sndfile = open_sndfile_from_uri(playback->filename, &vfsfile, &sfinfo);
     if (sndfile == NULL)
         return;
-
-    if (sfinfo.samplerate > 0)
-        song_length = (gint) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate);
-    else
-        song_length = 0;
 
     if (!playback->output->open_audio(FMT_S16_NE, sfinfo.samplerate, sfinfo.channels))
     {
@@ -389,8 +362,8 @@ play_start (InputPlayback *playback)
         return;
     }
 
-    playback->set_params(playback, song_title, song_length, 32 * sfinfo.samplerate, sfinfo.samplerate, sfinfo.channels);
-    g_free (song_title);
+    playback->set_params (playback, NULL, 0, 32 * sfinfo.samplerate,
+     sfinfo.samplerate, sfinfo.channels);
 
     playback->playing = TRUE;
     playback->set_pb_ready(playback);
@@ -402,7 +375,7 @@ play_start (InputPlayback *playback)
 
         if (samples > 0 && playback->playing) {
             buffer_p = &buffer[0];
-            
+
             /* Output audio in small blocks */
             while (samples > 0 && playback->playing)
             {
