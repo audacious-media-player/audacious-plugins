@@ -79,6 +79,12 @@ static void * pump (void * unused)
 
         snd_pcm_status_alloca (& status);
         CHECK (snd_pcm_status, alsa_handle, status);
+
+#if DEEP_DEBUG
+        DEBUG ("avail = %ld\n", snd_pcm_status_get_avail (status));
+        DEBUG ("delay = %ld\n", snd_pcm_status_get_delay (status));
+#endif
+
         writable = snd_pcm_frames_to_bytes (alsa_handle,
          snd_pcm_status_get_avail (status));
         writable = MIN (writable, alsa_buffer_data_length);
@@ -212,7 +218,18 @@ FAILED:
 /* alsa_mutex must be locked */
 static gboolean real_buffer_playing (void)
 {
-    return (alsa_buffer_data_length > 0 || snd_pcm_avail (alsa_handle) > 0);
+    snd_pcm_status_t * status;
+
+    if (alsa_buffer_data_length > 0)
+        return TRUE;
+
+    snd_pcm_status_alloca (& status);
+    CHECK (snd_pcm_status, alsa_handle, status);
+
+    return (snd_pcm_status_get_delay (status) > 0);
+
+FAILED:
+    return FALSE;
 }
 
 OutputPluginInitStatus alsa_init (void)
