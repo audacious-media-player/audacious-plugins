@@ -414,6 +414,8 @@ ffaudio_play_file(InputPlayback *playback)
     playback->set_params(playback, NULL, 0, c->bit_rate, c->sample_rate,
      c->channels);
 
+    g_mutex_lock (seek_mutex);
+
     playback->playing = TRUE;
     seek_value = -1;
     pause_flag = FALSE;
@@ -421,14 +423,11 @@ ffaudio_play_file(InputPlayback *playback)
 
     errcount = 0;
 
-    _DEBUG("playback ready, entering decode loop");
+    /* seek_mutex is locked at loop entry */
     while (playback->playing)
     {
         AVPacket tmp;
         gint ret;
-
-        /* Perform seek, if requested */
-        g_mutex_lock(seek_mutex);
 
         if (seek_value >= 0 && ffaudio_codec_is_seekable(codec) != 0)
         {
@@ -458,7 +457,6 @@ ffaudio_play_file(InputPlayback *playback)
         if (paused)
         {
             g_cond_wait (seek_cond, seek_mutex);
-            g_mutex_unlock (seek_mutex);
             continue;
         }
 
@@ -558,7 +556,15 @@ ffaudio_play_file(InputPlayback *playback)
 
         if (pkt.data)
             av_free_packet(&pkt);
+
+        g_mutex_lock (seek_mutex);
     }
+
+    while (playback->playing && playback->output->buffer_playing ())
+        g_usleep (20000);
+
+    playback->playing = FALSE;
+    g_mutex_unlock (seek_mutex);
 
 error_exit:
 
@@ -594,18 +600,28 @@ static void ffaudio_stop (InputPlayback * playback)
 static void ffaudio_pause (InputPlayback * playback, gshort p)
 {
     g_mutex_lock (seek_mutex);
-    pause_flag = p;
-    g_cond_signal (seek_cond);
-    g_cond_wait (seek_cond, seek_mutex);
+
+    if (playback->playing)
+    {
+        pause_flag = p;
+        g_cond_signal (seek_cond);
+        g_cond_wait (seek_cond, seek_mutex);
+    }
+
     g_mutex_unlock (seek_mutex);
 }
 
-static void ffaudio_seek (InputPlayback * data, gint time)
+static void ffaudio_seek (InputPlayback * playback, gint time)
 {
     g_mutex_lock (seek_mutex);
-    seek_value = time;
-    g_cond_signal (seek_cond);
-    g_cond_wait (seek_cond, seek_mutex);
+
+    if (playback->playing)
+    {
+        seek_value = time;
+        g_cond_signal (seek_cond);
+        g_cond_wait (seek_cond, seek_mutex);
+    }
+
     g_mutex_unlock (seek_mutex);
 }
 
