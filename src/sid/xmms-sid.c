@@ -477,9 +477,9 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *pInfo, gint subT
 {
     gchar *tmpStr, tmpStr2[64];
 
-    aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, pInfo->sidName);
-    aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, pInfo->sidComposer);
-    aud_tuple_associate_string(tuple, FIELD_COPYRIGHT, NULL, pInfo->sidCopyright);
+    aud_tuple_associate_string_rel(tuple, FIELD_TITLE, NULL, aud_str_to_utf8(pInfo->sidName));
+    aud_tuple_associate_string_rel(tuple, FIELD_ARTIST, NULL, aud_str_to_utf8(pInfo->sidComposer));
+    aud_tuple_associate_string_rel(tuple, FIELD_COPYRIGHT, NULL, aud_str_to_utf8(pInfo->sidCopyright));
     aud_tuple_associate_string(tuple, -1, "sid-format", pInfo->sidFormat);
     aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "Commodore 64 SID PlaySID/RSID");
 
