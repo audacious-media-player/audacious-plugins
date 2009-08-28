@@ -73,12 +73,15 @@ FAILED:
 
 static void * pump (void * unused)
 {
+    snd_pcm_status_t * status;
+
     g_mutex_lock (alsa_mutex);
     g_cond_signal (pump_cond);
 
+    snd_pcm_status_alloca (& status);
+
     while (1)
     {
-        snd_pcm_status_t * status;
         GTimeVal wake;
         gint writable;
 
@@ -94,7 +97,6 @@ static void * pump (void * unused)
         if (pump_quit)
             break;
 
-        snd_pcm_status_alloca (& status);
         CHECK (snd_pcm_status, alsa_handle, status);
 
 #if DEEP_DEBUG
