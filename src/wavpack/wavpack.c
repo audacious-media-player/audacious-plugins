@@ -144,7 +144,7 @@ void wv_play(InputPlayback * playback)
     num_samples = WavpackGetNumSamples(ctx);
     length = num_samples / sample_rate;
 
-    fprintf(stderr, "reading WavPack file, %dHz, %d channels and %dbits, num_samples=%d\n", sample_rate, num_channels, bits_per_sample, num_samples);
+//    fprintf(stderr, "reading WavPack file, %dHz, %d channels and %dbits, num_samples=%d\n", sample_rate, num_channels, bits_per_sample, num_samples);
 
     if (!playback->output->open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
     {
