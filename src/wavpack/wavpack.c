@@ -13,38 +13,48 @@
 #define SAMPLE_FMT(a) (a == 8 ? FMT_S8 : (a == 16 ? FMT_S16_NE : (a == 24 ? FMT_S24_NE : FMT_S32_NE)))
 
 
+/* Global mutexes etc.
+ */
 static GMutex *ctrl_mutex = NULL;
 static GCond *ctrl_cond = NULL;
 static gint64 seek_value = -1;
 static gboolean pause_flag;
 
 
-static gint32 wv_read_bytes(void *id, void *data, gint32 bcount)
+/* Audacious VFS wrappers for Wavpack stream reading
+ */
+static gint32
+wv_read_bytes(void *id, void *data, gint32 bcount)
 {
     return aud_vfs_fread(data, 1, bcount, (VFSFile *) id);
 }
 
-static guint32 wv_get_pos(void *id)
+static guint32
+wv_get_pos(void *id)
 {
     return aud_vfs_ftell((VFSFile *) id);
 }
 
-static gint wv_set_pos_abs(void *id, guint32 pos)
+static gint
+wv_set_pos_abs(void *id, guint32 pos)
 {
     return aud_vfs_fseek((VFSFile *) id, pos, SEEK_SET);
 }
 
-static gint wv_set_pos_rel(void *id, gint32 delta, gint mode)
+static gint
+wv_set_pos_rel(void *id, gint32 delta, gint mode)
 {
     return aud_vfs_fseek((VFSFile *) id, delta, mode);
 }
 
-static gint wv_push_back_byte(void *id, gint c)
+static gint
+wv_push_back_byte(void *id, gint c)
 {
     return aud_vfs_ungetc(c, (VFSFile *) id);
 }
 
-static guint32 wv_get_length(void *id)
+static guint32
+wv_get_length(void *id)
 {
     VFSFile *file = (VFSFile *) id;
 
@@ -174,7 +184,8 @@ void wv_play(InputPlayback * playback)
     {
         gint ret;
         guint samples_left;
-        
+
+        /* Handle seek and pause requests */
         g_mutex_lock(ctrl_mutex);
 
         if (seek_value >= 0)
@@ -201,6 +212,7 @@ void wv_play(InputPlayback * playback)
 
         g_mutex_unlock(ctrl_mutex);
 
+        /* Decode audio data */
         samples_left = num_samples - WavpackGetSampleIndex(ctx);
 
         ret = WavpackUnpackSamples(ctx, input, BUFFER_SIZE);
@@ -213,6 +225,7 @@ void wv_play(InputPlayback * playback)
         }
         else
         {
+            /* Perform audio data conversion and output */
             guint i;
             gint32 *rp = input;
             gint8 *wp = output;
