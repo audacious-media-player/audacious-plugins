@@ -59,38 +59,49 @@ fileinfo_close_window(GtkWidget * w, gpointer filename)
 void
 wv_file_info_box(const gchar * fn)
 {
-    gchar *tmp, *filename;
-    gint time, minutes, seconds;
-    gchar error_buff[1024];      // TODO: fixme!
-    WavPackTag tag;
-
-    if (fn == NULL) return;
-
-    WavpackContext *ctx = WavpackOpenFileInput(fn, error_buff, OPEN_TAGS | OPEN_WVC, 0);
-    if (ctx == NULL)
-    {
-        g_warning("Error opening file: \"%s: %s\"\n", fn, error_buff);
-        return;
-    }
-#ifdef AUD_DEBUG
-    gint sample_rate = WavpackGetSampleRate(ctx);
-    gint num_channels = WavpackGetNumChannels(ctx);
-#endif
-    wv_get_tags(&tag, ctx);
-    AUDDBG("opened %s at %d rate with %d channels\n", fn, sample_rate, num_channels);
-
-    filename = g_strdup(fn);
     static GtkWidget *info_frame, *info_box, *bitrate_label, *rate_label;
     static GtkWidget *version_label, *bits_per_sample_label;
     static GtkWidget *channel_label, *length_label, *filesize_label;
     static GtkWidget *peakTitle_label, *peakAlbum_label, *gainTitle_label;
     static GtkWidget *gainAlbum_label, *filename_entry, *tag_frame;
+    gint time, minutes, seconds;
+    gchar *tmp, error[1024]; // TODO: fixme!
+    WavpackContext *ctx;
+    WavPackTag tag;
+    VFSFile *fd;
+
+    if (fn == NULL)
+        return;
+
+    fd = aud_vfs_fopen(fn, "rb");
+    if (fd == NULL)
+        return;
+
+    ctx = WavpackOpenFileInputEx(&wv_readers, fd, NULL, error, OPEN_TAGS, 0);
+
+    if (ctx == NULL)
+    {
+        aud_vfs_fclose(fd);
+        g_warning("Error opening file: \"%s: %s\"\n", fn, error);
+        return;
+    }
+
+#ifdef AUD_DEBUG
+    gint sample_rate = WavpackGetSampleRate(ctx);
+    gint num_channels = WavpackGetNumChannels(ctx);
+#endif
+
+    wv_get_tags(&tag, ctx);
+    AUDDBG("opened %s at %d rate with %d channels\n", fn, sample_rate, num_channels);
+
 
     if (!window)
     {
         GtkWidget *hbox, *label, *filename_hbox, *vbox, *left_vbox;
         GtkWidget *table, *bbox, *cancel_button;
         GtkWidget *save_button, *remove_button;
+
+        gchar *filename = g_strdup(fn);
 
         window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
         gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
@@ -181,17 +192,17 @@ wv_file_info_box(const gchar * fn)
         gtk_box_pack_start(GTK_BOX(left_vbox), bbox, FALSE, FALSE, 0);
 
         save_button = gtk_button_new_with_label(_("Save"));
-        g_signal_connect(G_OBJECT(save_button), "clicked", G_CALLBACK(tag_save_cb), NULL);
+        g_signal_connect(G_OBJECT(save_button), "clicked", G_CALLBACK(tag_save_cb), filename);
         GTK_WIDGET_SET_FLAGS(save_button, GTK_CAN_DEFAULT);
         gtk_box_pack_start(GTK_BOX(bbox), save_button, TRUE, TRUE, 0);
 
         remove_button = gtk_button_new_with_label(_("Remove Tag"));
-        g_signal_connect_swapped(G_OBJECT(remove_button), "clicked", G_CALLBACK(tag_remove_cb), NULL);
+        g_signal_connect(G_OBJECT(remove_button), "clicked", G_CALLBACK(tag_remove_cb), filename);
         GTK_WIDGET_SET_FLAGS(remove_button, GTK_CAN_DEFAULT);
         gtk_box_pack_start(GTK_BOX(bbox), remove_button, TRUE, TRUE, 0);
 
         cancel_button = gtk_button_new_with_label(_("Cancel"));
-        g_signal_connect_swapped(G_OBJECT(cancel_button), "clicked", G_CALLBACK(fileinfo_close_window), NULL);
+        g_signal_connect(G_OBJECT(cancel_button), "clicked", G_CALLBACK(fileinfo_close_window), filename);
         GTK_WIDGET_SET_FLAGS(cancel_button, GTK_CAN_DEFAULT);
         gtk_box_pack_start(GTK_BOX(bbox), cancel_button, TRUE, TRUE, 0);
         gtk_widget_grab_default(cancel_button);
@@ -313,6 +324,8 @@ wv_file_info_box(const gchar * fn)
     tmp = g_strdup_printf(_("File Info - %s"), g_basename(fn));
     gtk_window_set_title(GTK_WINDOW(window), tmp);
     g_free(tmp);
+
+    aud_vfs_fclose(fd);
 }
 
 static GtkWidget *wv_configurewin = NULL;
