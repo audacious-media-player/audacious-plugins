@@ -4,6 +4,7 @@
  * Copyright (C) 2007 William Pitcock <nenolod@sacredspiral.co.uk>
  * Copyright (C) 2008 Cristi Măgherușan <majeru@gentoo.ro>
  * Copyright (C) 2008 Eugene Zagidullin <e.asphyx@gmail.com>
+ * Copyright (C) 2009 Audacious Developers
  *
  * ReplayGain processing Copyright (C) 2002 Gian-Carlo Pascutto <gcp@sjeng.org>
  *
@@ -341,9 +342,13 @@ vorbis_play(InputPlayback *playback)
         goto play_cleanup;
     }
 
+    g_mutex_lock (seek_mutex);
+
     playback->playing = TRUE;
     playback->eof = FALSE;
     playback->set_pb_ready(playback);
+
+    g_mutex_unlock (seek_mutex);
 
     /*
      * Note that chaining changes things here; A vorbis file may
@@ -352,11 +357,17 @@ vorbis_play(InputPlayback *playback)
      * using the ov_ interface.
      */
 
-    while (playback->playing)
+    while (1)
     {
         gint current_section = last_section;
 
         g_mutex_lock (seek_mutex);
+
+        if (! playback->playing)
+        {
+            g_mutex_unlock (seek_mutex);
+            break;
+        }
 
         if (seek_value >= 0)
         {
@@ -463,34 +474,54 @@ stop_processing:
 play_cleanup:
 
     ov_clear(&vf);
-    playback->playing = 0;
+
+    g_mutex_lock (seek_mutex);
+    playback->playing = FALSE;
+    g_cond_signal (seek_cond); /* wake up any waiting request */
+    g_mutex_unlock (seek_mutex);
 }
 
 static void vorbis_stop (InputPlayback * playback)
 {
     g_mutex_lock (seek_mutex);
-    playback->playing = FALSE;
-    g_cond_signal (seek_cond);
-    g_mutex_unlock (seek_mutex);
-    g_thread_join (playback->thread);
-    playback->thread = NULL;
+
+    if (playback->playing)
+    {
+        playback->playing = FALSE;
+        g_cond_signal (seek_cond);
+        g_mutex_unlock (seek_mutex);
+        g_thread_join (playback->thread);
+        playback->thread = NULL;
+    }
+    else
+        g_mutex_unlock (seek_mutex);
 }
 
 static void vorbis_pause (InputPlayback * playback, gshort p)
 {
     g_mutex_lock (seek_mutex);
-    pause_flag = p;
-    g_cond_signal (seek_cond);
-    g_cond_wait (seek_cond, seek_mutex);
+
+    if (playback->playing)
+    {
+        pause_flag = p;
+        g_cond_signal (seek_cond);
+        g_cond_wait (seek_cond, seek_mutex);
+    }
+
     g_mutex_unlock (seek_mutex);
 }
 
-static void vorbis_seek (InputPlayback * data, gint time)
+static void vorbis_seek (InputPlayback * playback, gint time)
 {
     g_mutex_lock (seek_mutex);
-    seek_value = time;
-    g_cond_signal (seek_cond);
-    g_cond_wait (seek_cond, seek_mutex);
+
+    if (playback->playing)
+    {
+        seek_value = time;
+        g_cond_signal (seek_cond);
+        g_cond_wait (seek_cond, seek_mutex);
+    }
+
     g_mutex_unlock (seek_mutex);
 }
 
