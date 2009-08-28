@@ -1,9 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <wchar.h>
 #include <audacious/plugin.h>
 #include "tags.h"
 
@@ -36,14 +30,14 @@ static const char*  GenreList [] = {
     "SynthPop"
 };
 
-struct APETagFooterStruct {
+typedef struct APETagFooterStruct {
     unsigned char ID[8];
     unsigned char Version[4];
     unsigned char Length[4];
     unsigned char TagCount[4];
     unsigned char Flags[4];
     unsigned char Reserved[8];
-};
+} APE;
 
 typedef struct {
     char *key;
@@ -51,7 +45,7 @@ typedef struct {
     unsigned char *value;
     size_t valuelen;
     unsigned int flags;
-} TagItem;
+} WavPackTagItem;
 
 unsigned long
 Read_LE_Uint32(const unsigned char *p)

@@ -1,59 +1,14 @@
-// #define AUD_DEBUG 1
 
-#include <assert.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <unistd.h>
-extern "C" {
-#include <wavpack/wavpack.h>
-#include <audacious/plugin.h>
-#include <audacious/i18n.h>
-}
+#include "config.h"
+#include "common.h"
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <math.h>
-#include "tags.h"
-#include "../../config.h"
-#ifndef M_LN10
-#define M_LN10   2.3025850929940456840179914546843642
-#endif
+#include <audacious/plugin.h>
+#include <audacious/i18n.h>
 
-void load_tag(ape_tag *tag, WavpackContext *ctx);
-gboolean clipPreventionEnabled;
-gboolean dynBitrateEnabled;
-gboolean replaygainEnabled;
-gboolean albumReplaygainEnabled;
-gboolean openedAudio;
-static GtkWidget *window = NULL;
-static GtkWidget *title_entry;
-static GtkWidget *album_entry;
-static GtkWidget *performer_entry;
-static GtkWidget *tracknumber_entry;
-static GtkWidget *date_entry;
-static GtkWidget *genre_entry;
-static GtkWidget *user_comment_entry;
-static char *filename;
-
-extern "C" void
-wv_about_box()
-{
-    static GtkWidget *about_window;
-
-    if (about_window)
-        gdk_window_raise(about_window->window);
-
-    about_window =
-        audacious_info_dialog(g_strdup_printf
-                          (_("Wavpack Decoder Plugin %s"), VERSION),
-                          (_("Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n\n"
-                           "Some of the plugin code was by Miles Egan\n"
-                           "Visit the Wavpack site at http://www.wavpack.com/\n")),
-                          (_("Ok")), FALSE, NULL, NULL);
-    g_signal_connect(G_OBJECT(about_window), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed), &about_window);
-}
+static GtkWidget *window = NULL,
+        *title_entry, *album_entry, *performer_entry, *tracknumber_entry,
+        *date_entry, *genre_entry, *user_comment_entry;
 
 static void
 label_set_text(GtkWidget * label, const char *str, ...)
@@ -70,17 +25,17 @@ label_set_text(GtkWidget * label, const char *str, ...)
 }
 
 static void
-remove_cb(GtkWidget * w, gpointer data)
+tag_remove_cb(GtkWidget * w, gpointer filename)
 {
-    DeleteTag(filename);
+//    DeleteTag((gchar *) filename);
     g_free(filename);
     gtk_widget_destroy(window);
 }
 
 static void
-save_cb(GtkWidget * w, gpointer data)
+tag_save_cb(GtkWidget * w, gpointer filename)
 {
-    ape_tag Tag;
+    WavPackTag Tag;
 
     strncpy(Tag.title, gtk_entry_get_text(GTK_ENTRY(title_entry)), MAX_LEN);
     strncpy(Tag.artist, gtk_entry_get_text(GTK_ENTRY(performer_entry)), MAX_LEN);
@@ -89,37 +44,39 @@ save_cb(GtkWidget * w, gpointer data)
     strncpy(Tag.track, gtk_entry_get_text(GTK_ENTRY(tracknumber_entry)), MAX_LEN2);
     strncpy(Tag.year, gtk_entry_get_text(GTK_ENTRY(date_entry)), MAX_LEN2);
     strncpy(Tag.genre, gtk_entry_get_text(GTK_ENTRY(genre_entry)), MAX_LEN);
-    WriteAPE2Tag(filename, &Tag);
+//    WriteAPE2Tag((gchar *) filename, &Tag);
     g_free(filename);
     gtk_widget_destroy(window);
 }
 
 static void
-close_window(GtkWidget * w, gpointer data)
+fileinfo_close_window(GtkWidget * w, gpointer filename)
 {
     g_free(filename);
     gtk_widget_destroy(window);
 }
 
-extern "C" void
-wv_file_info_box(const gchar *fn)
+void
+wv_file_info_box(const gchar * fn)
 {
-    gchar *tmp;
+    gchar *tmp, *filename;
     gint time, minutes, seconds;
-    ape_tag tag;
+    gchar error_buff[1024];      // TODO: fixme!
+    WavPackTag tag;
 
-    assert(fn != NULL);
-    char error_buff[4096]; // TODO: fixme!
+    if (fn == NULL) return;
+
     WavpackContext *ctx = WavpackOpenFileInput(fn, error_buff, OPEN_TAGS | OPEN_WVC, 0);
-    if (ctx == NULL) {
-        printf("wavpack: Error opening file: \"%s: %s\"\n", fn, error_buff);
+    if (ctx == NULL)
+    {
+        g_warning("Error opening file: \"%s: %s\"\n", fn, error_buff);
         return;
     }
 #ifdef AUD_DEBUG
-    int sample_rate = WavpackGetSampleRate(ctx);
-    int num_channels = WavpackGetNumChannels(ctx);
+    gint sample_rate = WavpackGetSampleRate(ctx);
+    gint num_channels = WavpackGetNumChannels(ctx);
 #endif
-    load_tag(&tag, ctx);
+    wv_get_tags(&tag, ctx);
     AUDDBG("opened %s at %d rate with %d channels\n", fn, sample_rate, num_channels);
 
     filename = g_strdup(fn);
@@ -129,15 +86,15 @@ wv_file_info_box(const gchar *fn)
     static GtkWidget *peakTitle_label, *peakAlbum_label, *gainTitle_label;
     static GtkWidget *gainAlbum_label, *filename_entry, *tag_frame;
 
-    if (!window) {
+    if (!window)
+    {
         GtkWidget *hbox, *label, *filename_hbox, *vbox, *left_vbox;
         GtkWidget *table, *bbox, *cancel_button;
         GtkWidget *save_button, *remove_button;
 
         window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
         gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
-        g_signal_connect(G_OBJECT(window), "destroy",
-                         G_CALLBACK(gtk_widget_destroyed), &window);
+        g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_widget_destroyed), &window);
         gtk_container_set_border_width(GTK_CONTAINER(window), 10);
 
         vbox = gtk_vbox_new(FALSE, 10);
@@ -150,8 +107,7 @@ wv_file_info_box(const gchar *fn)
         gtk_box_pack_start(GTK_BOX(filename_hbox), label, FALSE, TRUE, 0);
         filename_entry = gtk_entry_new();
         gtk_editable_set_editable(GTK_EDITABLE(filename_entry), FALSE);
-        gtk_box_pack_start(GTK_BOX(filename_hbox), filename_entry,
-                           TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(filename_hbox), filename_entry, TRUE, TRUE, 0);
 
         hbox = gtk_hbox_new(FALSE, 10);
         gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
@@ -168,94 +124,56 @@ wv_file_info_box(const gchar *fn)
 
         label = gtk_label_new(_("Title:"));
         gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
-        gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1,
-                         GTK_FILL, GTK_FILL, 5, 5);
+        gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1, GTK_FILL, GTK_FILL, 5, 5);
 
         title_entry = gtk_entry_new();
-        gtk_table_attach(GTK_TABLE(table), title_entry, 1, 4, 0, 1,
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK),
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK), 0, 5);
+        gtk_table_attach(GTK_TABLE(table), title_entry, 1, 4, 0, 1, (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), 0, 5);
 
         label = gtk_label_new(_("Artist:"));
         gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
-        gtk_table_attach(GTK_TABLE(table), label, 0, 1, 1, 2,
-                         GTK_FILL, GTK_FILL, 5, 5);
+        gtk_table_attach(GTK_TABLE(table), label, 0, 1, 1, 2, GTK_FILL, GTK_FILL, 5, 5);
 
         performer_entry = gtk_entry_new();
-        gtk_table_attach(GTK_TABLE(table), performer_entry, 1, 4, 1, 2,
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK),
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK), 0, 5);
+        gtk_table_attach(GTK_TABLE(table), performer_entry, 1, 4, 1, 2, (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), 0, 5);
 
         label = gtk_label_new(_("Album:"));
         gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
-        gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3,
-                         GTK_FILL, GTK_FILL, 5, 5);
+        gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3, GTK_FILL, GTK_FILL, 5, 5);
 
         album_entry = gtk_entry_new();
-        gtk_table_attach(GTK_TABLE(table), album_entry, 1, 4, 2, 3,
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK),
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK), 0, 5);
+        gtk_table_attach(GTK_TABLE(table), album_entry, 1, 4, 2, 3, (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), 0, 5);
 
         label = gtk_label_new(_("Comment:"));
         gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
-        gtk_table_attach(GTK_TABLE(table), label, 0, 1, 3, 4,
-                         GTK_FILL, GTK_FILL, 5, 5);
+        gtk_table_attach(GTK_TABLE(table), label, 0, 1, 3, 4, GTK_FILL, GTK_FILL, 5, 5);
 
         user_comment_entry = gtk_entry_new();
-        gtk_table_attach(GTK_TABLE(table), user_comment_entry, 1, 4, 3,
-                         4,
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK),
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK), 0, 5);
+        gtk_table_attach(GTK_TABLE(table), user_comment_entry, 1, 4, 3, 4, (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), 0, 5);
 
         label = gtk_label_new(_("Year:"));
         gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
-        gtk_table_attach(GTK_TABLE(table), label, 0, 1, 4, 5,
-                         GTK_FILL, GTK_FILL, 5, 5);
+        gtk_table_attach(GTK_TABLE(table), label, 0, 1, 4, 5, GTK_FILL, GTK_FILL, 5, 5);
 
         date_entry = gtk_entry_new();
         gtk_widget_set_size_request(date_entry, 60, -1);
-        gtk_table_attach(GTK_TABLE(table), date_entry, 1, 2, 4, 5,
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK),
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK), 0, 5);
+        gtk_table_attach(GTK_TABLE(table), date_entry, 1, 2, 4, 5, (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), 0, 5);
 
         label = gtk_label_new(_("Track number:"));
         gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
-        gtk_table_attach(GTK_TABLE(table), label, 2, 3, 4, 5,
-                         GTK_FILL, GTK_FILL, 5, 5);
+        gtk_table_attach(GTK_TABLE(table), label, 2, 3, 4, 5, GTK_FILL, GTK_FILL, 5, 5);
 
         tracknumber_entry = gtk_entry_new();
         gtk_entry_set_max_length(GTK_ENTRY(tracknumber_entry), 4);
         gtk_widget_set_size_request(tracknumber_entry, 20, -1);
-        gtk_table_attach(GTK_TABLE(table), tracknumber_entry, 3, 4, 4,
-                         5,
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK),
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK), 0, 5);
+        gtk_table_attach(GTK_TABLE(table), tracknumber_entry, 3, 4, 4, 5, (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), 0, 5);
 
         label = gtk_label_new(_("Genre:"));
         gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
-        gtk_table_attach(GTK_TABLE(table), label, 0, 1, 5, 6,
-                         GTK_FILL, GTK_FILL, 5, 5);
+        gtk_table_attach(GTK_TABLE(table), label, 0, 1, 5, 6, GTK_FILL, GTK_FILL, 5, 5);
 
         genre_entry = gtk_entry_new();
         gtk_widget_set_size_request(genre_entry, 20, -1);
-        gtk_table_attach(GTK_TABLE(table), genre_entry, 1, 4, 5,
-                         6,
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK),
-                         (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
-                                             GTK_SHRINK), 0, 5);
+        gtk_table_attach(GTK_TABLE(table), genre_entry, 1, 4, 5, 6, (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), 0, 5);
 
         bbox = gtk_hbutton_box_new();
         gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
@@ -263,20 +181,17 @@ wv_file_info_box(const gchar *fn)
         gtk_box_pack_start(GTK_BOX(left_vbox), bbox, FALSE, FALSE, 0);
 
         save_button = gtk_button_new_with_label(_("Save"));
-        g_signal_connect(G_OBJECT(save_button), "clicked",
-                         G_CALLBACK(save_cb), NULL);
+        g_signal_connect(G_OBJECT(save_button), "clicked", G_CALLBACK(tag_save_cb), NULL);
         GTK_WIDGET_SET_FLAGS(save_button, GTK_CAN_DEFAULT);
         gtk_box_pack_start(GTK_BOX(bbox), save_button, TRUE, TRUE, 0);
 
         remove_button = gtk_button_new_with_label(_("Remove Tag"));
-        g_signal_connect_swapped(G_OBJECT(remove_button), "clicked",
-                                 G_CALLBACK(remove_cb), NULL);
+        g_signal_connect_swapped(G_OBJECT(remove_button), "clicked", G_CALLBACK(tag_remove_cb), NULL);
         GTK_WIDGET_SET_FLAGS(remove_button, GTK_CAN_DEFAULT);
         gtk_box_pack_start(GTK_BOX(bbox), remove_button, TRUE, TRUE, 0);
 
         cancel_button = gtk_button_new_with_label(_("Cancel"));
-        g_signal_connect_swapped(G_OBJECT(cancel_button), "clicked",
-                                 G_CALLBACK(close_window), NULL);
+        g_signal_connect_swapped(G_OBJECT(cancel_button), "clicked", G_CALLBACK(fileinfo_close_window), NULL);
         GTK_WIDGET_SET_FLAGS(cancel_button, GTK_CAN_DEFAULT);
         gtk_box_pack_start(GTK_BOX(bbox), cancel_button, TRUE, TRUE, 0);
         gtk_widget_grab_default(cancel_button);
@@ -291,10 +206,8 @@ wv_file_info_box(const gchar *fn)
 
         version_label = gtk_label_new("");
         gtk_misc_set_alignment(GTK_MISC(version_label), 0, 0);
-        gtk_label_set_justify(GTK_LABEL(version_label),
-                              GTK_JUSTIFY_LEFT);
-        gtk_box_pack_start(GTK_BOX(info_box), version_label, FALSE,
-                           FALSE, 0);
+        gtk_label_set_justify(GTK_LABEL(version_label), GTK_JUSTIFY_LEFT);
+        gtk_box_pack_start(GTK_BOX(info_box), version_label, FALSE, FALSE, 0);
 
         bits_per_sample_label = gtk_label_new("");
         gtk_misc_set_alignment(GTK_MISC(bits_per_sample_label), 0, 0);
@@ -324,32 +237,27 @@ wv_file_info_box(const gchar *fn)
         filesize_label = gtk_label_new("");
         gtk_misc_set_alignment(GTK_MISC(filesize_label), 0, 0);
         gtk_label_set_justify(GTK_LABEL(filesize_label), GTK_JUSTIFY_LEFT);
-        gtk_box_pack_start(GTK_BOX(info_box), filesize_label, FALSE,
-                           FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(info_box), filesize_label, FALSE, FALSE, 0);
 
         peakTitle_label = gtk_label_new("");
         gtk_misc_set_alignment(GTK_MISC(peakTitle_label), 0, 0);
         gtk_label_set_justify(GTK_LABEL(peakTitle_label), GTK_JUSTIFY_LEFT);
-        gtk_box_pack_start(GTK_BOX(info_box), peakTitle_label, FALSE,
-                           FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(info_box), peakTitle_label, FALSE, FALSE, 0);
 
         peakAlbum_label = gtk_label_new("");
         gtk_misc_set_alignment(GTK_MISC(peakAlbum_label), 0, 0);
         gtk_label_set_justify(GTK_LABEL(peakAlbum_label), GTK_JUSTIFY_LEFT);
-        gtk_box_pack_start(GTK_BOX(info_box), peakAlbum_label, FALSE,
-                           FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(info_box), peakAlbum_label, FALSE, FALSE, 0);
 
         gainTitle_label = gtk_label_new("");
         gtk_misc_set_alignment(GTK_MISC(gainTitle_label), 0, 0);
         gtk_label_set_justify(GTK_LABEL(gainTitle_label), GTK_JUSTIFY_LEFT);
-        gtk_box_pack_start(GTK_BOX(info_box), gainTitle_label, FALSE,
-                           FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(info_box), gainTitle_label, FALSE, FALSE, 0);
 
         gainAlbum_label = gtk_label_new("");
         gtk_misc_set_alignment(GTK_MISC(gainAlbum_label), 0, 0);
         gtk_label_set_justify(GTK_LABEL(gainAlbum_label), GTK_JUSTIFY_LEFT);
-        gtk_box_pack_start(GTK_BOX(info_box), gainAlbum_label, FALSE,
-                           FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(info_box), gainAlbum_label, FALSE, FALSE, 0);
 
         gtk_widget_show_all(window);
     }
@@ -382,11 +290,11 @@ wv_file_info_box(const gchar *fn)
     label_set_text(length_label, _("length: %d:%.2d"), minutes, seconds);
     label_set_text(filesize_label, _("file size: %d Bytes"), WavpackGetFileSize(ctx));
     /*
-    label_set_text(peakTitle_label, _("Title Peak: %5u"), 100);
-    label_set_text(peakAlbum_label, _("Album Peak: %5u"), 100);
-    label_set_text(gainTitle_label, _("Title Gain: %-+5.2f dB"), 100.0);
-    label_set_text(gainAlbum_label, _("Album Gain: %-+5.2f dB"), 100.0);
-    */
+       label_set_text(peakTitle_label, _("Title Peak: %5u"), 100);
+       label_set_text(peakAlbum_label, _("Album Peak: %5u"), 100);
+       label_set_text(gainTitle_label, _("Title Gain: %-+5.2f dB"), 100.0);
+       label_set_text(gainAlbum_label, _("Album Gain: %-+5.2f dB"), 100.0);
+     */
     label_set_text(peakTitle_label, _("Title Peak: ?"));
     label_set_text(peakAlbum_label, _("Album Peak: ?"));
     label_set_text(gainTitle_label, _("Title Gain: ?"));
@@ -411,6 +319,21 @@ static GtkWidget *wv_configurewin = NULL;
 static GtkWidget *vbox, *notebook;
 static GtkWidget *rg_switch, *rg_clip_switch, *rg_track_gain, *rg_dyn_bitrate;
 
+void
+wv_read_config(void)
+{
+    mcs_handle_t *cfg;
+
+    cfg = aud_cfg_db_open();
+    aud_cfg_db_get_bool(cfg, "wavpack", "clip_prevention",
+                          &wv_cfg.clipPreventionEnabled);
+    aud_cfg_db_get_bool(cfg, "wavpack", "album_replaygain",
+                          &wv_cfg.albumReplaygainEnabled);
+    aud_cfg_db_get_bool(cfg, "wavpack", "dyn_bitrate", &wv_cfg.dynBitrateEnabled);
+    aud_cfg_db_get_bool(cfg, "wavpack", "replaygain", &wv_cfg.replaygainEnabled);
+    aud_cfg_db_close(cfg);
+}
+
 static void
 wv_configurewin_ok(GtkWidget * widget, gpointer data)
 {
@@ -418,35 +341,31 @@ wv_configurewin_ok(GtkWidget * widget, gpointer data)
     GtkToggleButton *tb;
 
     tb = GTK_TOGGLE_BUTTON(rg_switch);
-    replaygainEnabled = gtk_toggle_button_get_active(tb);
+    wv_cfg.replaygainEnabled = gtk_toggle_button_get_active(tb);
     tb = GTK_TOGGLE_BUTTON(rg_clip_switch);
-    clipPreventionEnabled = gtk_toggle_button_get_active(tb);
+    wv_cfg.clipPreventionEnabled = gtk_toggle_button_get_active(tb);
     tb = GTK_TOGGLE_BUTTON(rg_dyn_bitrate);
-    dynBitrateEnabled = gtk_toggle_button_get_active(tb);
+    wv_cfg.dynBitrateEnabled = gtk_toggle_button_get_active(tb);
     tb = GTK_TOGGLE_BUTTON(rg_track_gain);
-    albumReplaygainEnabled = !gtk_toggle_button_get_active(tb);
+    wv_cfg.albumReplaygainEnabled = !gtk_toggle_button_get_active(tb);
 
     cfg = aud_cfg_db_open();
-
-    aud_cfg_db_set_bool(cfg, "wavpack", "clip_prevention",
-                           clipPreventionEnabled);
-    aud_cfg_db_set_bool(cfg, "wavpack", "album_replaygain",
-                           albumReplaygainEnabled);
-    aud_cfg_db_set_bool(cfg, "wavpack", "dyn_bitrate", dynBitrateEnabled);
-    aud_cfg_db_set_bool(cfg, "wavpack", "replaygain", replaygainEnabled);
+    aud_cfg_db_set_bool(cfg, "wavpack", "clip_prevention", wv_cfg.clipPreventionEnabled);
+    aud_cfg_db_set_bool(cfg, "wavpack", "album_replaygain", wv_cfg.albumReplaygainEnabled);
+    aud_cfg_db_set_bool(cfg, "wavpack", "dyn_bitrate", wv_cfg.dynBitrateEnabled);
+    aud_cfg_db_set_bool(cfg, "wavpack", "replaygain", wv_cfg.replaygainEnabled);
     aud_cfg_db_close(cfg);
+
     gtk_widget_destroy(wv_configurewin);
 }
 
 static void
 rg_switch_cb(GtkWidget * w, gpointer data)
 {
-    gtk_widget_set_sensitive(GTK_WIDGET(data),
-                             gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
-                                                          (w)));
+    gtk_widget_set_sensitive(GTK_WIDGET(data), gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)));
 }
 
-extern "C" void
+void
 wv_configure(void)
 {
 
@@ -454,17 +373,15 @@ wv_configure(void)
     GtkWidget *bbox, *ok, *cancel;
     GtkWidget *rg_type_frame, *rg_type_vbox, *rg_album_gain;
 
-    if (wv_configurewin != NULL) {
+    if (wv_configurewin != NULL)
+    {
         gdk_window_raise(wv_configurewin->window);
         return;
     }
 
     wv_configurewin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    g_signal_connect(G_OBJECT(wv_configurewin), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed),
-                     &wv_configurewin);
-    gtk_window_set_title(GTK_WINDOW(wv_configurewin),
-                         _("Wavpack Configuration"));
+    g_signal_connect(G_OBJECT(wv_configurewin), "destroy", G_CALLBACK(gtk_widget_destroyed), &wv_configurewin);
+    gtk_window_set_title(GTK_WINDOW(wv_configurewin), _("Wavpack Configuration"));
     gtk_window_set_resizable(GTK_WINDOW(wv_configurewin), FALSE);
     gtk_container_set_border_width(GTK_CONTAINER(wv_configurewin), 10);
 
@@ -484,14 +401,11 @@ wv_configure(void)
     gtk_container_set_border_width(GTK_CONTAINER(rg_vbox), 5);
     gtk_container_add(GTK_CONTAINER(rg_frame), rg_vbox);
 
-    rg_dyn_bitrate =
-        gtk_check_button_new_with_label(_("Enable Dynamic Bitrate Display"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_dyn_bitrate),
-                                 dynBitrateEnabled);
+    rg_dyn_bitrate = gtk_check_button_new_with_label(_("Enable Dynamic Bitrate Display"));
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_dyn_bitrate), wv_cfg.dynBitrateEnabled);
     gtk_box_pack_start(GTK_BOX(rg_vbox), rg_dyn_bitrate, FALSE, FALSE, 0);
 
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), rg_frame,
-                             gtk_label_new(_("Plugin")));
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), rg_frame, gtk_label_new(_("Plugin")));
 
     /* Replay Gain.. */
 
@@ -502,45 +416,34 @@ wv_configure(void)
     gtk_container_set_border_width(GTK_CONTAINER(rg_vbox), 5);
     gtk_container_add(GTK_CONTAINER(rg_frame), rg_vbox);
 
-    rg_clip_switch =
-        gtk_check_button_new_with_label(_("Enable Clipping Prevention"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_clip_switch),
-                                 clipPreventionEnabled);
+    rg_clip_switch = gtk_check_button_new_with_label(_("Enable Clipping Prevention"));
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_clip_switch), wv_cfg.clipPreventionEnabled);
     gtk_box_pack_start(GTK_BOX(rg_vbox), rg_clip_switch, FALSE, FALSE, 0);
 
     rg_switch = gtk_check_button_new_with_label(_("Enable ReplayGain"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_switch),
-                                 replaygainEnabled);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_switch), wv_cfg.replaygainEnabled);
     gtk_box_pack_start(GTK_BOX(rg_vbox), rg_switch, FALSE, FALSE, 0);
 
     rg_type_frame = gtk_frame_new(_("ReplayGain Type:"));
     gtk_box_pack_start(GTK_BOX(rg_vbox), rg_type_frame, FALSE, FALSE, 0);
 
-    g_signal_connect(G_OBJECT(rg_switch), "toggled",
-                     G_CALLBACK(rg_switch_cb), rg_type_frame);
+    g_signal_connect(G_OBJECT(rg_switch), "toggled", G_CALLBACK(rg_switch_cb), rg_type_frame);
 
     rg_type_vbox = gtk_vbox_new(FALSE, 5);
     gtk_container_set_border_width(GTK_CONTAINER(rg_type_vbox), 5);
     gtk_container_add(GTK_CONTAINER(rg_type_frame), rg_type_vbox);
 
-    rg_track_gain =
-        gtk_radio_button_new_with_label(NULL, _("use Track Gain/Peak"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_track_gain),
-                                 !albumReplaygainEnabled);
+    rg_track_gain = gtk_radio_button_new_with_label(NULL, _("use Track Gain/Peak"));
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_track_gain), !wv_cfg.albumReplaygainEnabled);
     gtk_box_pack_start(GTK_BOX(rg_type_vbox), rg_track_gain, FALSE, FALSE, 0);
 
-    rg_album_gain =
-        gtk_radio_button_new_with_label(gtk_radio_button_get_group
-                                        (GTK_RADIO_BUTTON(rg_track_gain)),
-                                        _("use Album Gain/Peak"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_album_gain),
-                                 albumReplaygainEnabled);
+    rg_album_gain = gtk_radio_button_new_with_label(gtk_radio_button_get_group(GTK_RADIO_BUTTON(rg_track_gain)), _("use Album Gain/Peak"));
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_album_gain), wv_cfg.albumReplaygainEnabled);
     gtk_box_pack_start(GTK_BOX(rg_type_vbox), rg_album_gain, FALSE, FALSE, 0);
 
-    gtk_widget_set_sensitive(rg_type_frame, replaygainEnabled);
+    gtk_widget_set_sensitive(rg_type_frame, wv_cfg.replaygainEnabled);
 
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), rg_frame,
-                             gtk_label_new(_("ReplayGain")));
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), rg_frame, gtk_label_new(_("ReplayGain")));
 
     /* Buttons */
 
@@ -550,16 +453,13 @@ wv_configure(void)
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
     ok = gtk_button_new_with_label(_("Ok"));
-    g_signal_connect(G_OBJECT(ok), "clicked",
-                     G_CALLBACK(wv_configurewin_ok), NULL);
+    g_signal_connect(G_OBJECT(ok), "clicked", G_CALLBACK(wv_configurewin_ok), NULL);
     GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
     gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
     gtk_widget_grab_default(ok);
 
     cancel = gtk_button_new_with_label(_("Cancel"));
-    g_signal_connect_swapped(G_OBJECT(cancel), "clicked",
-                             G_CALLBACK(gtk_widget_destroy),
-                             G_OBJECT(wv_configurewin));
+    g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(wv_configurewin));
     GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
     gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
 
