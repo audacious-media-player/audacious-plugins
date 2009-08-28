@@ -259,8 +259,13 @@ static void *xs_thread(void *data __attribute__((unused)))
 			if (tuple == NULL)
 				continue;
 
+			mowgli_object_ref(tuple);
+
 			if (ishttp(aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL)))
+			{
+				mowgli_object_unref(tuple);
 				continue;
+			}
 
 			if (aud_tuple_get_string(tuple, FIELD_ARTIST, NULL) != NULL &&
 				aud_tuple_get_string(tuple, FIELD_TITLE, NULL) != NULL)
@@ -281,6 +286,7 @@ static void *xs_thread(void *data __attribute__((unused)))
 				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);
 
 			submit = FALSE;
+			mowgli_object_unref(tuple);
 		}
 
 		g_get_current_time(&sleeptime);
