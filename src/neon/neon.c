@@ -586,17 +586,22 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
         ret = ne_begin_request(handle->request);
     }
 
-    switch (ret) {
+    switch (ret)
+    {
         case NE_OK:
-            if ((status->code > 199) && (status->code < 300)) {
+            if (status->code > 199 && status->code < 300)
+            {
                 /* URL opened OK */
                 _DEBUG("<%p> URL opened OK", handle);
                 handle->content_start = startbyte;
                 handle->pos = startbyte;
                 handle_headers(handle);
                 _LEAVE 0;
-                break;
             }
+            else
+                goto ERROR;
+
+            break;
 
         case NE_REDIRECT:
             /* We hit a redirect. Handle it. */
@@ -615,6 +620,7 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
             break;
 
         default:
+        ERROR:
             /* Something went wrong. */
             _ERROR("<%p> Could not open URL: %d (%d)", handle, ret, status->code);
             if (0 != ret) {
