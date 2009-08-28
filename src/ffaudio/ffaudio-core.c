@@ -51,7 +51,11 @@ ffaudio_init(void)
     _DEBUG("creating seek mutex/cond");
     ctrl_mutex = g_mutex_new();
     ctrl_cond = g_cond_new();
+
+#ifdef FFAUDIO_USE_AUDTAG
     tag_init();
+#endif
+
     _DEBUG("initialization completed");
 }
 
@@ -412,7 +416,7 @@ ffaudio_play_file(InputPlayback *playback)
     playback->set_tuple(playback, tuple);
     playback->set_params(playback, NULL, 0, c->bit_rate, c->sample_rate, c->channels);
 
-    g_mutex_lock (ctrl_mutex);
+    g_mutex_lock(ctrl_mutex);
 
     playback->playing = TRUE;
     seek_value = -1;
@@ -420,7 +424,7 @@ ffaudio_play_file(InputPlayback *playback)
     playback->set_pb_ready(playback);
     errcount = 0;
 
-    g_mutex_unlock (ctrl_mutex);
+    g_mutex_unlock(ctrl_mutex);
 
 
     /* ctrl_mutex is locked at loop entry */
@@ -439,15 +443,9 @@ ffaudio_play_file(InputPlayback *playback)
                 _ERROR("error while seeking");
             } else
                 errcount = 0;
-
-            seek_value = -1;
-            g_cond_signal(ctrl_cond);
         }
-        else
-        {
-            seek_value = -1;
-            g_cond_signal(ctrl_cond);
-        }
+        seek_value = -1;
+        g_cond_signal(ctrl_cond);
 
         if (pause_flag != paused)
         {
@@ -567,7 +565,7 @@ ffaudio_play_file(InputPlayback *playback)
     g_mutex_lock(ctrl_mutex);
 
     while (playback->playing && playback->output->buffer_playing())
-        g_usleep (20000);
+        g_usleep(20000);
 
     g_cond_signal(ctrl_cond); /* wake up any waiting request */
     g_mutex_unlock(ctrl_mutex);
