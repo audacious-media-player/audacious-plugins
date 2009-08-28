@@ -137,6 +137,10 @@ PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 2.1],
     [AC_MSG_ERROR([Cannot find Audacious 2.1 or later, have you installed audacious yet?])]
 )
 
+CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS"
+CPPFLAGS="$CPPFLAGS $AUDACIOUS_CPPFLAGS"
+LDFLAGS="$LDFLAGS $AUDACIOUS_LIBS"
+
 dnl Check for GTK/GLib/GThread/Pango/DBus
 
 PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.12.0 gthread-2.0],
