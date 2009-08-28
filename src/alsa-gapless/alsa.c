@@ -346,7 +346,10 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
             check_pump_started ();
 
             while (real_buffer_playing ())
+            {
+                g_cond_signal (pump_cond);
                 g_cond_wait (pump_cond, alsa_mutex);
+            }
 
             real_close ();
         }
@@ -423,6 +426,7 @@ void alsa_write_audio (void * data, gint length)
             break;
 
         check_pump_started ();
+        g_cond_signal (pump_cond);
         g_cond_wait (pump_cond, alsa_mutex);
     }
 
