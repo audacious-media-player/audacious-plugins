@@ -71,9 +71,11 @@ FAILED:
     return;
 }
 
-/* alsa_mutex must be locked */
 static void * pump (void * unused)
 {
+    g_mutex_lock (alsa_mutex);
+    g_cond_signal (pump_cond);
+
     while (1)
     {
         snd_pcm_status_t * status;
@@ -122,6 +124,7 @@ static void * pump (void * unused)
         g_cond_signal (pump_cond);
     }
 
+    g_mutex_unlock (alsa_mutex);
     return NULL;
 }
 
@@ -132,7 +135,7 @@ static void check_pump_started (void)
     {
         DEBUG ("Starting playback.\n");
         pump_thread = g_thread_create (pump, NULL, TRUE, NULL);
-        g_mutex_lock (alsa_mutex); /* pump steals our first lock */
+        g_cond_wait (pump_cond, alsa_mutex);
     }
 }
 
@@ -204,7 +207,8 @@ static void real_close (void)
         pump_quit = TRUE;
         g_cond_signal (pump_cond);
         g_mutex_unlock (alsa_mutex);
-        g_thread_join (pump_thread); /* alsa_mutex remains locked */
+        g_thread_join (pump_thread);
+        g_mutex_lock (alsa_mutex);
     }
 
     g_free (alsa_buffer);
