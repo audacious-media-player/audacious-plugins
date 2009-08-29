@@ -25,16 +25,6 @@
 #include "ui_manager.h"
 #include "ui_playlist_model.h"
 
-enum
-{
-    COLUMN_NUM = 0,
-    COLUMN_TEXT,
-    COLUMN_TIME,
-    COLUMN_WEIGHT,
-    COLUMN_ENTRYPTR,
-    N_COLUMNS
-};
-
 typedef struct
 {
     gint old_index;
@@ -174,7 +164,7 @@ static void _ui_playlist_widget_selection_update(GtkTreeModel * model, GtkTreePa
 {
     gint entry;
 
-    gtk_tree_model_get(model, iter, COLUMN_NUM, &entry, -1);
+    gtk_tree_model_get(model, iter, PLAYLIST_COLUMN_NUM, &entry, -1);
 
     /* paths are numbered from 1, playlist index start from 0 */
     entry -= 1;
@@ -290,17 +280,17 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
 
     renderer = gtk_cell_renderer_text_new();
     gtk_tree_view_column_pack_start(column, renderer, FALSE);
-    gtk_tree_view_column_set_attributes(column, renderer, "text", COLUMN_NUM, "weight", COLUMN_WEIGHT, NULL);
+    gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_NUM, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
     g_object_set(G_OBJECT(renderer), "ypad", 0, NULL);
 
     renderer = gtk_cell_renderer_text_new();
     gtk_tree_view_column_pack_start(column, renderer, TRUE);
-    gtk_tree_view_column_set_attributes(column, renderer, "text", COLUMN_TEXT, "weight", COLUMN_WEIGHT, NULL);
+    gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_TEXT, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
     g_object_set(G_OBJECT(renderer), "ypad", 0, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
     renderer = gtk_cell_renderer_text_new();
     gtk_tree_view_column_pack_start(column, renderer, FALSE);
-    gtk_tree_view_column_set_attributes(column, renderer, "text", COLUMN_TIME, "weight", COLUMN_WEIGHT, NULL);
+    gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_TIME, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
     g_object_set(G_OBJECT(renderer), "ypad", 0, "xalign", 1.0, NULL);
 
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
