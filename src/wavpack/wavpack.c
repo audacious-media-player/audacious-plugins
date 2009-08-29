@@ -359,7 +359,7 @@ wv_get_tuple_from_file(const gchar * filename, VFSFile * fd, gchar *error)
     aud_tuple_associate_int(res, FIELD_TRACK_NUMBER, NULL, atoi(tag.track));
     aud_tuple_associate_int(res, FIELD_YEAR, NULL, atoi(tag.year));
     aud_tuple_associate_int(res, FIELD_LENGTH, NULL, 
-        (WavpackGetNumSamples(ctx) * 1000) / WavpackGetSampleRate(ctx));
+        ((guint64) WavpackGetNumSamples(ctx) * 1000) / (guint64) WavpackGetSampleRate(ctx));
 
     WavpackCloseFile(ctx);
 
