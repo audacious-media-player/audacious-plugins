@@ -104,8 +104,6 @@ resize_video (guint w, guint h)
   kanashi_image_data->surface[0] = g_malloc0 (w * h);
   kanashi_image_data->surface[1] = g_malloc0 (w * h);
 
-  gtk_window_resize(GTK_WINDOW(win), w, h);
-
   g_static_mutex_unlock(&kanashi_mutex);
 }
 
@@ -252,6 +250,7 @@ kanashi_init(void)
     win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_type_hint(GTK_WINDOW(win), GDK_WINDOW_TYPE_HINT_DIALOG);
     gtk_window_set_title(GTK_WINDOW(win), "Kanashi");
+    gtk_window_resize(GTK_WINDOW(win), 640, 360);
     gtk_widget_realize(win);
 
     area = gtk_drawing_area_new();
