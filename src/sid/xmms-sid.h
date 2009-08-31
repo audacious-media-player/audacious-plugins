@@ -70,12 +70,12 @@ extern "C" {
  * Do notice, however, that it also affects the update frequency of
  * XMMS's visualization plugins... 
  */
-#define XS_AUDIOBUF_SIZE        (2*1024)
+#define XS_AUDIOBUF_SIZE        (1024)
 
 /* Size of data buffer used for SID-tune MD5 hash calculation.
  * If this is too small, the computed hash will be incorrect.
  * Largest SID files I've seen are ~70kB. */
-#define XS_SIDBUF_SIZE          (80*1024)
+#define XS_SIDBUF_SIZE          (128*1024)
 
 /* libSIDPlay1/2 constants (copied from internal headers/source)
  * For some stupid reason these are not available in public
