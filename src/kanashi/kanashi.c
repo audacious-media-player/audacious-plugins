@@ -50,6 +50,7 @@ JSContext *cx = NULL;
 JSObject  *global = NULL;
 
 GStaticMutex kanashi_mutex = G_STATIC_MUTEX_INIT;
+gint render_timeout = 0;
 
 /* **************** drawing doodads **************** */
 static void
@@ -71,10 +72,10 @@ set_colormap (void)
   cmap = gdk_rgb_cmap_new(colors, 256);
 }
 
-static void
-blit_to_screen (void)
+static gboolean
+blit_to_screen (gpointer unused)
 {
-  GDK_THREADS_ENTER();
+  g_static_mutex_lock(&kanashi_mutex);
 
   set_colormap();
 
@@ -82,7 +83,9 @@ blit_to_screen (void)
                          kanashi_image_data->width, kanashi_image_data->height, GDK_RGB_DITHER_NONE, 
                          kanashi_image_data->surface[0], kanashi_image_data->width, cmap);
 
-  GDK_THREADS_LEAVE();
+  g_static_mutex_unlock(&kanashi_mutex);
+
+  return TRUE;
 }
 
 static void
@@ -122,6 +125,9 @@ kanashi_cleanup (void)
     }
   if (kanashi_sound_data)
     g_free (kanashi_sound_data);
+
+  if (render_timeout)
+    g_source_remove(render_timeout);
 }
 
 /* Renders one frame and handles the SDL window */
@@ -138,8 +144,6 @@ kanashi_render (void)
       printf("something broke\n");
 
   g_static_mutex_unlock(&kanashi_mutex);
-
-  blit_to_screen();
 }
 
 /* this MUST be called if a builtin's output is to surface[1]
@@ -305,6 +309,8 @@ kanashi_init(void)
     kanashi_load_preset(PRESET_PATH "/nenolod_-_kanashi_default.js");
 
     GDK_THREADS_LEAVE();
+
+    render_timeout = g_timeout_add(16, blit_to_screen, NULL);
 
     return TRUE;
 }
