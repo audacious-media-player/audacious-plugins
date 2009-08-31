@@ -24,16 +24,15 @@
 #include <unistd.h>
 #include <math.h>
 
-#include <SDL.h>
-
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
 #include "kanashi.h"
 #include "jsglue.h"
 
-/* SDL stuffs */
-SDL_Surface *screen;
+GtkWidget *win = NULL;
+GtkWidget *area = NULL;
+GdkRgbCmap *cmap = NULL;
 
 /* Globals */
 struct kanashi_rc         *kanashi_rc;
@@ -50,33 +49,47 @@ JSRuntime *rt = NULL;
 JSContext *cx = NULL;
 JSObject  *global = NULL;
 
+GStaticMutex kanashi_mutex = G_STATIC_MUTEX_INIT;
 
 /* **************** drawing doodads **************** */
+static void
+set_colormap (void)
+{
+  guint32 colors[256];
+  gint i;
+
+  if (cmap != NULL)
+      gdk_rgb_cmap_free(cmap);
+
+  for (i = 0; i < 256; i++) {
+     colors[i] =
+         (kanashi_image_data->cmap[i].r << 16) |
+         (kanashi_image_data->cmap[i].g << 8) |
+         (kanashi_image_data->cmap[i].b);
+  }
+
+  cmap = gdk_rgb_cmap_new(colors, 256);
+}
 
 static void
 blit_to_screen (void)
 {
-  int j;
+  GDK_THREADS_ENTER();
 
-  SDL_LockSurface(screen);
+  set_colormap();
 
-  SDL_SetPalette(screen, SDL_LOGPAL|SDL_PHYSPAL,
-		 (SDL_Color*)kanashi_image_data->cmap, 0, 256);
-  SDL_SetAlpha(screen, 0, 255);
+  gdk_draw_indexed_image(area->window, area->style->white_gc, 0, 0,
+                         kanashi_image_data->width, kanashi_image_data->height, GDK_RGB_DITHER_NONE, 
+                         kanashi_image_data->surface[0], kanashi_image_data->width, cmap);
 
-  for (j=0; j<kanashi_image_data->height; j++)
-      memcpy(screen->pixels + j*screen->pitch,
-	     kanashi_image_data->surface[0] + j*kanashi_image_data->width,
-	     kanashi_image_data->width);
-
-  SDL_UnlockSurface(screen);
-
-  SDL_Flip(screen);
+  GDK_THREADS_LEAVE();
 }
 
 static void
 resize_video (guint w, guint h)
 {
+  g_static_mutex_lock(&kanashi_mutex);
+
   kanashi_image_data->width = w;
   kanashi_image_data->height = h;
 
@@ -88,46 +101,16 @@ resize_video (guint w, guint h)
   kanashi_image_data->surface[0] = g_malloc0 (w * h);
   kanashi_image_data->surface[1] = g_malloc0 (w * h);
 
-  screen = SDL_SetVideoMode (w, h, 8, SDL_HWSURFACE |
-			     SDL_HWPALETTE | SDL_RESIZABLE | SDL_DOUBLEBUF);
-  if (! screen)
-    kanashi_fatal_error ("Unable to create a new SDL window: %s",
-		    SDL_GetError ());
-}
+  gtk_window_resize(GTK_WINDOW(win), w, h);
 
-static void
-take_screenshot (void)
-{
-  char fname[32];
-  struct stat buf;
-  int i=0;
-
-  do
-    sprintf (fname, "kanashi_%05d.bmp", ++i);
-  while (stat (fname, &buf) == 0);
-
-  SDL_SaveBMP (screen, fname);
-}
-
-/* FIXME: This should resize the video to a user-set
-   fullscreen res */
-static void
-toggle_fullscreen (void)
-{
-  SDL_WM_ToggleFullScreen (screen);  
-  if (SDL_ShowCursor (SDL_QUERY) == SDL_ENABLE)
-    SDL_ShowCursor (SDL_DISABLE);
-  else
-    SDL_ShowCursor (SDL_ENABLE);
+  g_static_mutex_unlock(&kanashi_mutex);
 }
 
 /* **************** basic renderer management **************** */
 void
 kanashi_cleanup (void)
 {
-  SDL_FreeSurface (screen);
-  SDL_Quit ();
-
+  gtk_widget_destroy(win);
 
   if (kanashi_image_data)
     {
@@ -145,46 +128,18 @@ kanashi_cleanup (void)
 void
 kanashi_render (void)
 {
-  SDL_Event event;
   jsval rval;
 
-  /* Handle window events */
-  while (SDL_PollEvent (&event))
-    {
-      switch (event.type)
-	{
-	case SDL_QUIT:
-	  kanashi_quit ();
-	  g_assert_not_reached ();
-	case SDL_KEYDOWN:
-	  switch (event.key.keysym.sym)
-	    {
-	    case SDLK_ESCAPE:
-	      kanashi_quit ();
-	      g_assert_not_reached ();
-	    case SDLK_RETURN:
-	      if (event.key.keysym.mod & (KMOD_ALT | KMOD_META))
-		toggle_fullscreen ();
-	      break;
-	    case SDLK_BACKQUOTE:
-	      take_screenshot ();
-	      break;
-	    default:
-              break;
-	    }
-	  break;
-	case SDL_VIDEORESIZE:
-	  resize_video (event.resize.w, event.resize.h);	  
-	  break;
-	}
-    }
-
   kanashi_new_beat = kanashi_is_new_beat();
+
+  g_static_mutex_lock(&kanashi_mutex);
 
   if (!JS_CallFunctionName(cx, global, "render_scene", 0, NULL, &rval))
       printf("something broke\n");
 
-  blit_to_screen ();
+  g_static_mutex_unlock(&kanashi_mutex);
+
+  blit_to_screen();
 }
 
 /* this MUST be called if a builtin's output is to surface[1]
@@ -285,15 +240,22 @@ kanashi_init(void)
 {
     int i;
 
+    GDK_THREADS_ENTER();
+
     kanashi_sound_data = g_new0 (struct kanashi_sound_data, 1);
     kanashi_image_data = g_new0 (struct kanashi_image_data, 1);
 
-    if (SDL_Init (SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_NOPARACHUTE) < 0)
-        kanashi_fatal_error ("Unable to initialize SDL: %s", SDL_GetError ());
+    win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_type_hint(GTK_WINDOW(win), GDK_WINDOW_TYPE_HINT_DIALOG);
+    gtk_window_set_title(GTK_WINDOW(win), "Kanashi");
+    gtk_widget_realize(win);
+
+    area = gtk_drawing_area_new();
+    gtk_container_add(GTK_CONTAINER(win), area);
+    gtk_widget_realize(area);
+    gtk_widget_show_all(win);
 
     resize_video (640, 360);
-
-    SDL_WM_SetCaption ("Kanashi", PACKAGE);
 
     for (i=0; i<360; i++)
     {
@@ -303,12 +265,19 @@ kanashi_init(void)
 
     rt = JS_NewRuntime(8L * 1024L * 1024L);
     if (rt == NULL)
+    {
+        GDK_THREADS_LEAVE();
         return FALSE;
+    }
 
     /* Create a context. */
     cx = JS_NewContext(rt, 8192);
     if (cx == NULL)
+    {
+        GDK_THREADS_LEAVE();
         return FALSE;
+    }
+
     JS_SetOptions(cx, JSOPTION_VAROBJFIX);
     JS_SetVersion(cx, JSVERSION_1_7);
     JS_SetErrorReporter(cx, kanashi_report_js_error);
@@ -316,15 +285,26 @@ kanashi_init(void)
 
     global = JS_NewObject(cx, &global_class, NULL, NULL);
     if (global == NULL)
+    {
+        GDK_THREADS_LEAVE();
         return FALSE;
+    }
 
     if (!JS_InitStandardClasses(cx, global))
+    {
+        GDK_THREADS_LEAVE();
         return FALSE;
+    }
 
     if (!JS_DefineFunctions(cx, global, js_global_functions))
+    {
+        GDK_THREADS_LEAVE();
         return FALSE;
+    }
 
     kanashi_load_preset(PRESET_PATH "/nenolod_-_kanashi_default.js");
+
+    GDK_THREADS_LEAVE();
 
     return TRUE;
 }
