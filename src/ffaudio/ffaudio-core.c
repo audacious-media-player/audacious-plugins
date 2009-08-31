@@ -88,7 +88,7 @@ ffaudio_check_codec(AVCodec *codec)
     }
 }
 
-static gint
+static gboolean
 ffaudio_codec_is_seekable(AVCodec *codec)
 {
     /*
@@ -99,10 +99,10 @@ ffaudio_codec_is_seekable(AVCodec *codec)
 #ifndef FFAUDIO_NO_BLACKLIST
         case CODEC_ID_MUSEPACK8:
             _DEBUG("codec is blacklisted from seeking");
-            return 0;
+            return FALSE;
 #endif
         default:
-            return 1;
+            return TRUE;
     }
 }
 
@@ -319,7 +319,7 @@ ffaudio_play_file(InputPlayback *playback)
     AFormat out_fmt;
     gchar *uribuf;
     Tuple *tuple;
-    gboolean paused = FALSE;
+    gboolean paused = FALSE, seekable;
 
     uribuf = g_alloca(strlen(playback->filename) + 8);
     sprintf(uribuf, "audvfs:%s", playback->filename);
@@ -423,6 +423,7 @@ ffaudio_play_file(InputPlayback *playback)
     pause_flag = FALSE;
     playback->set_pb_ready(playback);
     errcount = 0;
+    seekable = ffaudio_codec_is_seekable(codec);
 
     g_mutex_unlock(ctrl_mutex);
 
@@ -435,7 +436,7 @@ ffaudio_play_file(InputPlayback *playback)
 
         g_mutex_lock(ctrl_mutex);
 
-        if (seek_value >= 0 && ffaudio_codec_is_seekable(codec) != 0)
+        if (seek_value >= 0 && seekable)
         {
             playback->output->flush(seek_value * 1000);
             if (av_seek_frame(ic, -1, seek_value * AV_TIME_BASE, AVSEEK_FLAG_ANY) < 0)
@@ -501,8 +502,16 @@ ffaudio_play_file(InputPlayback *playback)
             g_mutex_lock(ctrl_mutex);
             if (seek_value != -1)
             {
-                g_mutex_unlock(ctrl_mutex);
-                break;
+                if (!seekable)
+                {
+                    seek_value = -1;
+                    g_cond_signal(ctrl_cond);
+                }
+                else
+                {
+                    g_mutex_unlock(ctrl_mutex);
+                    break;
+                }
             }
             g_mutex_unlock(ctrl_mutex);
 
@@ -551,8 +560,16 @@ ffaudio_play_file(InputPlayback *playback)
                 g_mutex_lock(ctrl_mutex);
                 if (seek_value != -1)
                 {
-                    g_mutex_unlock(ctrl_mutex);
-                    break;
+                    if (!seekable)
+                    {
+                        seek_value = -1;
+                        g_cond_signal(ctrl_cond);
+                    }
+                    else
+                    {
+                        g_mutex_unlock(ctrl_mutex);
+                        break;
+                    }
                 }
                 g_mutex_unlock(ctrl_mutex);
             }
