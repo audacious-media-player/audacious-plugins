@@ -38,8 +38,6 @@
 
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
-#include <SDL.h>
-#include <SDL_thread.h>
 
 #include "kanashi.h"
 
@@ -56,9 +54,9 @@ GCond *render_cond;
 extern GStaticMutex kanashi_mutex;
 
 static gboolean kanashi_done = FALSE;
-jmp_buf quit_jmp;
-gboolean timeout_set = FALSE;
-guint quit_timeout;
+static jmp_buf quit_jmp;
+static gboolean timeout_set = FALSE;
+static guint quit_timeout;
 
 /* Sound stuffs */
 static gboolean new_pcm_data = FALSE;
@@ -103,11 +101,7 @@ DECLARE_PLUGIN(kanashi, NULL, NULL, NULL, NULL, NULL, NULL, kanashi_vplist,NULL)
 static gpointer
 draw_thread_fn (gpointer data)
 {
-  /* Used when kanashi_quit is called from this thread */
-  if (setjmp (quit_jmp) != 0)
-    kanashi_done = TRUE;
-
-  while (! kanashi_done)
+  while (kanashi_done == FALSE)
     {
       g_mutex_lock(sound_data_mutex);
 
@@ -135,6 +129,8 @@ draw_thread_fn (gpointer data)
       kanashi_render ();
       g_mutex_unlock(config_mutex);
     }
+
+  g_print("exit\n");
 
   kanashi_cleanup ();
 
@@ -192,6 +188,7 @@ kanashi_xmms_cleanup (void)
   if (draw_thread)
     {
       kanashi_done = TRUE;
+      g_cond_signal(render_cond);
       g_thread_join(draw_thread);
       draw_thread = NULL;
     }
