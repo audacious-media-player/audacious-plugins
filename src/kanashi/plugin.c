@@ -41,20 +41,19 @@
 #include <SDL.h>
 #include <SDL_thread.h>
 
-#ifdef _POSIX_PRIORITY_SCHEDULING
-#include <sched.h>
-#endif
-
 #include "kanashi.h"
 
 /* Error reporting dlg */
 static GtkWidget *err_dialog;
+extern GtkWidget *kanashi_win;
 
 /* Draw thread stuff */
 /* FIXME: Do I need mutex for kanashi_done? */
-static SDL_Thread *draw_thread = NULL;
-static SDL_mutex *sound_data_mutex;
-static SDL_mutex *config_mutex;
+static GThread *draw_thread = NULL;
+static GMutex *sound_data_mutex;
+static GMutex *config_mutex;
+GCond *render_cond;
+extern GStaticMutex kanashi_mutex;
 
 static gboolean kanashi_done = FALSE;
 jmp_buf quit_jmp;
@@ -75,6 +74,14 @@ static void kanashi_xmms_configure (void);
 static void kanashi_xmms_render_pcm (gint16 data[2][512]);
 static void kanashi_xmms_render_freq (gint16 data[2][256]);
 
+static GtkWidget *
+kanashi_get_widget(void)
+{
+  g_print("get widget\n");
+
+  return kanashi_win;
+}
+
 static VisPlugin kanashi_vp = 
 {
   .description = "Kanashi",
@@ -85,52 +92,25 @@ static VisPlugin kanashi_vp =
   .about = kanashi_xmms_about,
   .configure = kanashi_xmms_configure,
   .render_pcm = kanashi_xmms_render_pcm,
-  .render_freq = kanashi_xmms_render_freq
+  .render_freq = kanashi_xmms_render_freq,
+  .get_widget = kanashi_get_widget,
 };
 
 VisPlugin *kanashi_vplist[] = { &kanashi_vp, NULL };
 
 DECLARE_PLUGIN(kanashi, NULL, NULL, NULL, NULL, NULL, NULL, kanashi_vplist,NULL);
 
-static guint framerate = 60, lastticks = 0, framecount = 0;
-
-static void
-kanashi_framerate_delay(void)
-{
-  guint current, target, delay;
-
-  framecount++;
-
-  current = SDL_GetTicks();
-  target = lastticks + ((float) framecount * (1000.0 / framerate));
-
-  if (current <= target)
-    {
-      delay = target - current;
-      SDL_Delay(delay);
-    }
-  else
-    {
-      lastticks = current;
-      framecount = 0;
-    }
-}
-
-static int
+static gpointer
 draw_thread_fn (gpointer data)
 {
-  gfloat fps = 0.0;
-  guint last_time = 0, last_second = 0;
-  guint this_time;
-  kanashi_init ();
-
   /* Used when kanashi_quit is called from this thread */
   if (setjmp (quit_jmp) != 0)
     kanashi_done = TRUE;
 
   while (! kanashi_done)
     {
-      SDL_mutexP (sound_data_mutex);
+      g_mutex_lock(sound_data_mutex);
+
       if (new_freq_data)
 	{
 	  memcpy (kanashi_sound_data->freq_data, tmp_freq_data,
@@ -143,34 +123,22 @@ draw_thread_fn (gpointer data)
 		  sizeof (gint16) * 2 * 512);
 	  new_freq_data = FALSE;
 	}
-      SDL_mutexV (sound_data_mutex);
-      SDL_mutexP (config_mutex);
-      kanashi_framerate_delay ();
+
+      g_mutex_unlock(sound_data_mutex);
+
+      g_mutex_lock(config_mutex);
+
+      g_static_mutex_lock(&kanashi_mutex);
+      g_cond_wait(render_cond, g_static_mutex_get_mutex(&kanashi_mutex));
+      g_static_mutex_unlock(&kanashi_mutex);
+
       kanashi_render ();
-      SDL_mutexV (config_mutex);
-
-      /* Compute the FPS */
-      this_time = SDL_GetTicks ();
-
-      fps = fps * .95 + (1000. / (gfloat) (this_time - last_time)) * .05;
-      if (this_time > 2000 + last_second)
-        {
-          last_second = this_time;
-          g_print ("FPS: %f\n", fps);
-        }
-      last_time = this_time;
-
-#ifdef _POSIX_PRIORITY_SCHEDULING
-      sched_yield();
-#endif
+      g_mutex_unlock(config_mutex);
     }
-
-  /* Just in case a kanashi_quit () was called in the loop */
-/*    SDL_mutexV (sound_data_mutex); */
 
   kanashi_cleanup ();
 
-  return 0;
+  return NULL;
 }
 
 /* Is there a better way to do this? this = messy
@@ -192,17 +160,20 @@ quit_timeout_fn (gpointer data)
 static void
 kanashi_xmms_init (void)
 {
-  sound_data_mutex = SDL_CreateMutex ();
-  config_mutex = SDL_CreateMutex ();
-  if (! sound_data_mutex)
-    kanashi_fatal_error ("Unable to create a new mutex: %s",
-		    SDL_GetError ());
+  kanashi_init ();
+
+  sound_data_mutex = g_mutex_new();
+  config_mutex = g_mutex_new();
+  render_cond = g_cond_new();
+
+  if (sound_data_mutex == NULL)
+    kanashi_fatal_error ("Unable to create a new mutex");
 
   kanashi_done = FALSE;
-  draw_thread = SDL_CreateThread (draw_thread_fn, NULL);
-  if (! draw_thread)
-    kanashi_fatal_error ("Unable to create a new thread: %s",
-		    SDL_GetError ());
+
+  draw_thread = g_thread_create(draw_thread_fn, NULL, TRUE, NULL);
+  if (draw_thread == NULL)
+    kanashi_fatal_error ("Unable to create a new thread");
 
   /* Add a gtk timeout to test for quits */
   quit_timeout = gtk_timeout_add (1000, quit_timeout_fn, NULL);
@@ -221,20 +192,26 @@ kanashi_xmms_cleanup (void)
   if (draw_thread)
     {
       kanashi_done = TRUE;
-      SDL_WaitThread (draw_thread, NULL);
+      g_thread_join(draw_thread);
       draw_thread = NULL;
     }
 
   if (sound_data_mutex)
     {
-      SDL_DestroyMutex (sound_data_mutex);
+      g_mutex_free (sound_data_mutex);
       sound_data_mutex = NULL;
     }
 
   if (config_mutex)
     {
-      SDL_DestroyMutex (config_mutex);
+      g_mutex_free (config_mutex);
       config_mutex = NULL;
+    }
+
+  if (render_cond)
+    {
+      g_cond_free (render_cond);
+      render_cond = NULL;
     }
 }
 
@@ -269,30 +246,30 @@ kanashi_xmms_configure (void)
   /* We should already have a GDK_THREADS_ENTER
      but we need to give it config_mutex */
   if (config_mutex)
-    SDL_mutexP (config_mutex);
+    g_mutex_lock (config_mutex);
 
   kanashi_configure ();
 
   if (config_mutex)
-    SDL_mutexV (config_mutex);
+    g_mutex_unlock (config_mutex);
 }
 
 static void
 kanashi_xmms_render_pcm (gint16 data[2][512])
 {
-  SDL_mutexP (sound_data_mutex);
+  g_mutex_lock (sound_data_mutex);
   memcpy (tmp_pcm_data, data, sizeof (gint16) * 2 * 512);
   new_pcm_data = TRUE;
-  SDL_mutexV (sound_data_mutex);
+  g_mutex_unlock (sound_data_mutex);
 }
 
 static void
 kanashi_xmms_render_freq (gint16 data[2][256])
 {
-  SDL_mutexP (sound_data_mutex);
+  g_mutex_lock (sound_data_mutex);
   memcpy (tmp_freq_data, data, sizeof (gint16) * 2 * 256);
   new_freq_data = TRUE;
-  SDL_mutexV (sound_data_mutex);
+  g_mutex_unlock (sound_data_mutex);
 }
 
 /* **************** kanashi.h stuff **************** */
@@ -311,7 +288,7 @@ kanashi_fatal_error (const char *fmt, ...)
   GtkWidget *close, *label;
 
   /* Don't wanna try to lock GDK if we already have it */
-  if (draw_thread && SDL_ThreadID () == SDL_GetThreadID (draw_thread))
+  if (draw_thread && g_thread_self() == draw_thread)
     GDK_THREADS_ENTER ();
 
   /* now report the error... */
@@ -342,7 +319,7 @@ kanashi_fatal_error (const char *fmt, ...)
   gtk_widget_show (dialog);
   gtk_widget_grab_focus (dialog);
 
-  if (draw_thread && SDL_ThreadID () == SDL_GetThreadID (draw_thread))
+  if (draw_thread && g_thread_self() == draw_thread)
     GDK_THREADS_LEAVE ();
 
   kanashi_quit ();
@@ -367,7 +344,7 @@ kanashi_error (const char *fmt, ...)
      get stuck trying to lock a mutex that this thread
      already owns since this fn can be called from either
      thread */
-  if (draw_thread && SDL_ThreadID () == SDL_GetThreadID (draw_thread))
+  if (draw_thread && g_thread_self() == draw_thread)
     GDK_THREADS_ENTER ();
 
   if (! err_dialog)
@@ -405,7 +382,7 @@ kanashi_error (const char *fmt, ...)
   gtk_widget_show (err_dialog);
   gtk_widget_grab_focus (err_dialog);
 
-  if (draw_thread && SDL_ThreadID () == SDL_GetThreadID (draw_thread))
+  if (draw_thread && g_thread_self() == draw_thread)
     GDK_THREADS_LEAVE ();
 }
 
@@ -417,7 +394,7 @@ kanashi_error (const char *fmt, ...)
 void
 kanashi_quit (void)
 {
-  if (draw_thread && SDL_ThreadID () == SDL_GetThreadID (draw_thread))
+  if (draw_thread && g_thread_self() == draw_thread)
     {
       /* We're in the draw thread so be careful */
       longjmp (quit_jmp, 1);

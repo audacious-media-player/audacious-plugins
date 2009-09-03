@@ -30,8 +30,7 @@
 #include "kanashi.h"
 #include "jsglue.h"
 
-GtkWidget *win = NULL;
-GtkWidget *area = NULL;
+GtkWidget *kanashi_win = NULL;
 GdkRgbCmap *cmap = NULL;
 
 /* Globals */
@@ -51,6 +50,7 @@ JSObject  *global = NULL;
 
 GStaticMutex kanashi_mutex = G_STATIC_MUTEX_INIT;
 gint render_timeout = 0;
+extern GCond *render_cond;
 
 /* **************** drawing doodads **************** */
 static void
@@ -79,10 +79,11 @@ blit_to_screen (gpointer unused)
 
   set_colormap();
 
-  gdk_draw_indexed_image(area->window, area->style->white_gc, 0, 0,
+  gdk_draw_indexed_image(kanashi_win->window, kanashi_win->style->white_gc, 0, 0,
                          kanashi_image_data->width, kanashi_image_data->height, GDK_RGB_DITHER_NONE, 
                          kanashi_image_data->surface[0], kanashi_image_data->width, cmap);
 
+  g_cond_signal(render_cond);
   g_static_mutex_unlock(&kanashi_mutex);
 
   return TRUE;
@@ -111,8 +112,6 @@ resize_video (guint w, guint h)
 void
 kanashi_cleanup (void)
 {
-  gtk_widget_destroy(win);
-
   if (kanashi_image_data)
     {
       if (kanashi_image_data->surface[0])
@@ -238,25 +237,26 @@ static JSFunctionSpec js_global_functions[] = {
 };
 
 gboolean
+kanashi_reconfigure(GtkWidget *widget, GdkEventConfigure *event, gpointer unused)
+{
+    resize_video (event->width, event->height);
+
+    return FALSE;
+}
+
+gboolean
 kanashi_init(void)
 {
     int i;
 
-    GDK_THREADS_ENTER();
-
     kanashi_sound_data = g_new0 (struct kanashi_sound_data, 1);
     kanashi_image_data = g_new0 (struct kanashi_image_data, 1);
 
-    win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_type_hint(GTK_WINDOW(win), GDK_WINDOW_TYPE_HINT_DIALOG);
-    gtk_window_set_title(GTK_WINDOW(win), "Kanashi");
-    gtk_window_resize(GTK_WINDOW(win), 640, 360);
-    gtk_widget_realize(win);
-
-    area = gtk_drawing_area_new();
-    gtk_container_add(GTK_CONTAINER(win), area);
-    gtk_widget_realize(area);
-    gtk_widget_show_all(win);
+    kanashi_win = gtk_drawing_area_new();
+    gtk_widget_realize(kanashi_win);
+    gtk_widget_set_size_request(kanashi_win, 640, 360);
+    gtk_widget_show(kanashi_win);
+    g_signal_connect(G_OBJECT(kanashi_win), "configure-event", G_CALLBACK(kanashi_reconfigure), NULL);
 
     resize_video (640, 360);
 
@@ -306,8 +306,6 @@ kanashi_init(void)
     }
 
     kanashi_load_preset(PRESET_PATH "/nenolod_-_kanashi_default.js");
-
-    GDK_THREADS_LEAVE();
 
     render_timeout = g_timeout_add(16, blit_to_screen, NULL);
 
