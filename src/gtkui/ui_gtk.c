@@ -73,7 +73,7 @@ static void ui_playlist_create_tab(gint playlist)
     gtk_widget_show_all(scrollwin);
 
     label = gtk_label_new(aud_playlist_get_title(playlist));
-    gtk_notebook_append_page((GtkNotebook *) playlist_notebook, scrollwin, label);
+    gtk_notebook_append_page(GTK_NOTEBOOK(playlist_notebook), scrollwin, label);
 }
 
 static void ui_playlist_destroy_tab(gint playlist)
@@ -84,14 +84,33 @@ static void ui_playlist_destroy_tab(gint playlist)
     index_delete(pages, playlist, 1);
 }
 
+static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
+{
+    GtkWidget *label;
+
+    g_return_val_if_fail(parent != NULL, NULL);
+    g_return_val_if_fail(name != NULL, NULL);
+
+    label = gtk_label_new(name);
+    gtk_notebook_append_page(GTK_NOTEBOOK(playlist_notebook), parent, label);
+}
+
+static void ui_stop_gtk_plugin(GtkWidget *parent)
+{
+    gtk_notebook_remove_page(GTK_NOTEBOOK(playlist_notebook), gtk_notebook_page_num(GTK_NOTEBOOK(playlist_notebook), parent));
+}
+
 static void ui_playlist_change_tab(GtkNotebook * notebook, GtkNotebookPage * notebook_page, gint page_num, void *unused)
 {
     GtkWidget *page = gtk_notebook_get_nth_page(notebook, page_num);
     GtkTreeView *treeview = g_object_get_data(G_OBJECT(page), "treeview");
-    GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
-    UiPlaylistModel *model = UI_PLAYLIST_MODEL(tree_model);
 
-    aud_playlist_set_active(model->playlist);
+    if (treeview != NULL) {
+        GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
+        UiPlaylistModel *model = UI_PLAYLIST_MODEL(tree_model);
+
+        aud_playlist_set_active(model->playlist);
+    }
 }
 
 static void ui_populate_playlist_notebook(void)
@@ -568,6 +587,8 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     cbs->hide_jump_to_track = audgui_jump_to_track_hide;
     cbs->show_about_window = audgui_show_about_window;
     cbs->hide_about_window = audgui_hide_about_window;
+    cbs->run_gtk_plugin = ui_run_gtk_plugin;
+    cbs->stop_gtk_plugin = ui_stop_gtk_plugin;
 
     gtk_main();
 
