@@ -431,12 +431,15 @@ wv_cleanup(void)
 
 static gchar *wv_fmts[] = { "wv", NULL };
 
+extern PluginPreferences preferences;
+
 static InputPlugin wvpack = {
     .description = "WavPack decoder",
     .init = wv_init,
     .cleanup = wv_cleanup,
     .about = wv_about_box,
     .configure = wv_configure,
+    .settings = &preferences,
     .play_file = wv_play,
     .stop = wv_stop,
     .pause = wv_pause,
