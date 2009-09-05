@@ -414,6 +414,7 @@ configure_init(void)
 {
     wv_read_config();
     memcpy(&config, &wv_cfg, sizeof(config));
+    dummy = !config.albumReplaygainEnabled;
 }
 
 PluginPreferences preferences = {
