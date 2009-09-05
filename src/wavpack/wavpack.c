@@ -438,7 +438,6 @@ static InputPlugin wvpack = {
     .init = wv_init,
     .cleanup = wv_cleanup,
     .about = wv_about_box,
-    .configure = wv_configure,
     .settings = &preferences,
     .play_file = wv_play,
     .stop = wv_stop,

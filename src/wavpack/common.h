@@ -30,6 +30,5 @@ extern WavpackStreamReader wv_readers;
 void wv_get_tags(WavPackTag * tag, WavpackContext * ctx);
 void wv_read_config(void);
 void wv_file_info_box(const gchar * fn);
-void wv_configure(void);
 
 #endif /* WAVPACK_COMMON_H */
