@@ -1279,7 +1279,7 @@ mainwin_position_release_cb(GtkWidget *widget, gint pos)
     gint length, time;
 
     length = audacious_drct_get_length();
-    time = (length * pos) / 219;
+    time = (gint64) length * pos / 219;
     audacious_drct_seek(time);
     mainwin_release_info_text();
 }
@@ -2314,8 +2314,10 @@ void mainwin_update_song_info (void)
             ui_skinned_horizontal_slider_set_position(mainwin_sposition, 13);
         }
         /* update the slider position ONLY if there is not a seek in progress */
-        else if (seek_state == MAINWIN_SEEK_NIL)  {
-            ui_skinned_horizontal_slider_set_position(mainwin_position, (time * 219) / length);
+        else if (seek_state == MAINWIN_SEEK_NIL)
+        {
+            ui_skinned_horizontal_slider_set_position (mainwin_position,
+             (gint64) time * 219 / length);
             ui_skinned_horizontal_slider_set_position(mainwin_sposition,
                                                       ((time * 12) / length) + 1);
         }
