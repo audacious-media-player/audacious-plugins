@@ -19,9 +19,20 @@ static GtkWidget *title_tag_override, *title_tag_box, *title_tag_entry,
 vorbis_config_t vorbis_cfg;
 
 static void
-vorbis_configurewin_ok(GtkWidget * widget, gpointer data)
+vorbis_save_config()
 {
     mcs_handle_t *db;
+
+    db = aud_cfg_db_open();
+    aud_cfg_db_set_bool(db, "vorbis", "tag_override",
+                        vorbis_cfg.tag_override);
+    aud_cfg_db_set_string(db, "vorbis", "tag_format", vorbis_cfg.tag_format);
+    aud_cfg_db_close(db);
+}
+
+static void
+vorbis_configurewin_ok(GtkWidget * widget, gpointer data)
+{
     GtkToggleButton *tb;
 
 	if (vorbis_cfg.tag_format != NULL)
@@ -32,11 +43,7 @@ vorbis_configurewin_ok(GtkWidget * widget, gpointer data)
     tb = GTK_TOGGLE_BUTTON(title_tag_override);
     vorbis_cfg.tag_override = gtk_toggle_button_get_active(tb);
 
-    db = aud_cfg_db_open();
-    aud_cfg_db_set_bool(db, "vorbis", "tag_override",
-                        vorbis_cfg.tag_override);
-    aud_cfg_db_set_string(db, "vorbis", "tag_format", vorbis_cfg.tag_format);
-    aud_cfg_db_close(db);
+    vorbis_save_config();
     gtk_widget_destroy(vorbis_configurewin);
 }
 
@@ -143,3 +150,52 @@ vorbis_configure(void)
 
     gtk_widget_show_all(vorbis_configurewin);
 }
+
+vorbis_config_t config; /* temporary config */
+
+static PreferencesWidget settings_elements[] = {
+    {WIDGET_CHK_BTN, N_("Override generic titles"), &config.tag_override, NULL, NULL, FALSE},
+    {WIDGET_ENTRY, N_("Title format:"), &config.tag_format, NULL, NULL, TRUE, {.entry = {FALSE}}, VALUE_STRING},
+};
+
+static PreferencesWidget prefs[] = {
+    {WIDGET_BOX, N_("Ogg Vorbis Tags"), NULL, NULL, NULL, FALSE,
+        {.box = {settings_elements,
+                 G_N_ELEMENTS(settings_elements),
+                 FALSE /* vertical */, TRUE /* frame */}}},
+};
+
+static void
+configure_apply()
+{
+    vorbis_cfg.tag_override = config.tag_override;
+
+    g_free(vorbis_cfg.tag_format);
+    vorbis_cfg.tag_format = g_strdup(config.tag_format);
+
+    vorbis_save_config();
+}
+
+static void
+configure_init(void)
+{
+    memcpy(&config, &vorbis_cfg, sizeof(config));
+    config.tag_format = g_strdup(vorbis_cfg.tag_format);
+}
+
+static void
+configure_cleanup(void)
+{
+    g_free(config.tag_format);
+    config.tag_format = NULL;
+}
+
+PluginPreferences preferences = {
+    .title = N_("Ogg Vorbis Audio Plugin Configuration"),
+    .prefs = prefs,
+    .n_prefs = G_N_ELEMENTS(prefs),
+    .type = PREFERENCES_WINDOW,
+    .init = configure_init,
+    .apply = configure_apply,
+    .cleanup = configure_cleanup,
+};

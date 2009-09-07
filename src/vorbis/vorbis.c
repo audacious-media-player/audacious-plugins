@@ -719,6 +719,7 @@ ovcb_tell(void *datasource)
     return aud_vfs_ftell(handle->fd);
 }
 
+extern PluginPreferences preferences;
 
 static gchar *vorbis_fmts[] = { "ogg", "ogm", "oga", NULL };
 
@@ -727,6 +728,7 @@ static InputPlugin vorbis_ip = {
     .init = vorbis_init,
     .about = vorbis_aboutbox,
     .configure = vorbis_configure,
+    .settings = &preferences,
     .play_file = vorbis_play,
     .stop = vorbis_stop,
     .pause = vorbis_pause,
