@@ -1255,7 +1255,7 @@ AC_ARG_ENABLE(scrobbler,
  [  --disable-scrobbler     disable scrobbler support (default=enabled if libcurl present)],
  [have_scrobbler=$enableval], [have_scrobbler=$have_curl])
 
-if test "x$scrobbler" = "xyes"; then
+if test "x$have_scrobbler" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
 fi
 
