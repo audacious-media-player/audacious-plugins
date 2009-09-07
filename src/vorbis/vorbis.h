@@ -12,7 +12,6 @@ typedef struct {
 
 extern ov_callbacks vorbis_callbacks;
 
-void vorbis_configure(void);
 gboolean vorbis_update_song_tuple (Tuple *tuple, VFSFile *fd);
 
 typedef struct {

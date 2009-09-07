@@ -727,7 +727,6 @@ static InputPlugin vorbis_ip = {
     .description = "Ogg Vorbis Audio Plugin",
     .init = vorbis_init,
     .about = vorbis_aboutbox,
-    .configure = vorbis_configure,
     .settings = &preferences,
     .play_file = vorbis_play,
     .stop = vorbis_stop,
