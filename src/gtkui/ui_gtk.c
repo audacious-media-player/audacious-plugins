@@ -253,6 +253,9 @@ static void button_next_pressed()
 
 static void ui_set_song_info(void *unused, void *another)
 {
+    gchar *title = aud_playback_get_title();
+    gchar *title_s = g_strdup_printf("%s - Audacious", title);
+
     gint length = audacious_drct_get_length();
 
     if (!g_signal_handler_is_connected(slider, slider_change_handler_id))
@@ -268,6 +271,9 @@ static void ui_set_song_info(void *unused, void *another)
     g_signal_handler_unblock(slider, slider_change_handler_id);
 
     gtk_widget_show(label_time);
+
+    gtk_window_set_title(GTK_WINDOW(window), title_s);
+    g_free(title_s);
 }
 
 static void ui_playlist_created(void *data, void *unused)
@@ -377,6 +383,7 @@ static gboolean ui_update_song_info(gpointer hook_data, gpointer user_data)
 
 static void ui_clear_song_info()
 {
+    gtk_window_set_title(GTK_WINDOW(window), "Audacious");
     gtk_widget_hide(label_time);
     gtk_range_set_value(GTK_RANGE(slider), 0);
 }
@@ -537,6 +544,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), MAINWIN_DEFAULT_WIDTH, MAINWIN_DEFAULT_HEIGHT);
+    gtk_window_set_title(GTK_WINDOW(window), "Audacious");
 
     if (config.save_window_position && config.player_width && config.player_height)
         gtk_window_resize(GTK_WINDOW(window), config.player_width, config.player_height);
