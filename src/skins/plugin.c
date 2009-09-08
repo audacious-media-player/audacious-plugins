@@ -21,6 +21,7 @@
 
 #include "plugin.h"
 #include "skins_cfg.h"
+#include "ui_main.h"
 #include "ui_skin.h"
 #include "ui_manager.h"
 #include "ui_main_evlisteners.h"
@@ -47,6 +48,8 @@ gboolean plugin_is_active = FALSE;
 static gint update_source;
 
 static void toggle_visibility(void);
+static void toggle_shuffle(void);
+static void toggle_repeat(void);
 static void show_error_message(const gchar * markup);
 
 static void skins_free_paths(void) {
@@ -129,6 +132,8 @@ gboolean skins_init (InterfaceCbs * cbs)
     cbs->hide_jump_to_track = audgui_jump_to_track_hide;
     cbs->show_about_window = audgui_show_about_window;
     cbs->hide_about_window = audgui_hide_about_window;
+    cbs->toggle_shuffle = toggle_shuffle;
+    cbs->toggle_repeat = toggle_repeat;
 
     update_source = g_timeout_add (250, update_cb, NULL);
 
@@ -231,6 +236,16 @@ static void toggle_visibility(void)
         if (config.playlist_visible_prev == TRUE)
             playlistwin_show(TRUE);
     }
+}
+
+static void toggle_shuffle(void)
+{
+    mainwin_shuffle_pushed(aud_cfg->shuffle);
+}
+
+static void toggle_repeat(void)
+{
+    mainwin_repeat_pushed(aud_cfg->repeat);
 }
 
 static void show_error_message(const gchar * markup)
