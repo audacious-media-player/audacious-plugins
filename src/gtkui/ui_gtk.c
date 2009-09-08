@@ -75,6 +75,7 @@ static void ui_playlist_create_tab(gint playlist)
 
     label = gtk_label_new(aud_playlist_get_title(playlist));
     gtk_notebook_append_page(GTK_NOTEBOOK(playlist_notebook), scrollwin, label);
+    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(playlist_notebook), index_count(pages) > 1 ? TRUE : FALSE);
 }
 
 static void ui_playlist_destroy_tab(gint playlist)
@@ -83,6 +84,7 @@ static void ui_playlist_destroy_tab(gint playlist)
 
     gtk_notebook_remove_page(GTK_NOTEBOOK(playlist_notebook), gtk_notebook_page_num(GTK_NOTEBOOK(playlist_notebook), page));
     index_delete(pages, playlist, 1);
+    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(playlist_notebook), index_count(pages) > 1 ? TRUE : FALSE);
 }
 
 static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
@@ -595,6 +597,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     gtk_box_pack_start(GTK_BOX(vbox), plbox, TRUE, TRUE, 0);
 
     playlist_notebook = gtk_notebook_new();
+    gtk_notebook_set_show_border(GTK_NOTEBOOK(playlist_notebook), FALSE);
 
     if (config.vis_position != VIS_IN_TABS)
     {
