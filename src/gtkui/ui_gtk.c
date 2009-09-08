@@ -34,6 +34,7 @@ static GtkWidget *label_time;
 static GtkWidget *slider;
 static GtkWidget *playlist_notebook;
 static GtkWidget *volume;
+static GtkWidget *vispane_root = NULL;
 
 static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
@@ -88,16 +89,60 @@ static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
 {
     GtkWidget *label;
 
-    g_return_val_if_fail(parent != NULL, NULL);
-    g_return_val_if_fail(name != NULL, NULL);
+    g_return_if_fail(parent != NULL);
+    g_return_if_fail(name != NULL);
 
-    label = gtk_label_new(name);
-    gtk_notebook_append_page(GTK_NOTEBOOK(playlist_notebook), parent, label);
+    switch (config.vis_position) {
+        case VIS_ON_TOP:
+        case VIS_ON_BOTTOM:
+        case VIS_ON_LEFT:
+        case VIS_ON_RIGHT: {
+                /* FIXME: nested panes */
+                GtkWidget *w = gtk_paned_get_child1(GTK_PANED(vispane_root));
+                if (w == NULL) {
+                    gtk_paned_add1(GTK_PANED(vispane_root), parent);
+                    break;
+                }
+
+                w = gtk_paned_get_child2(GTK_PANED(vispane_root));
+                if (w == NULL) {
+                    gtk_paned_add2(GTK_PANED(vispane_root), parent);
+                    break;
+                }
+            }
+            break;
+        case VIS_IN_TABS:
+        default:
+            label = gtk_label_new(name);
+            gtk_notebook_append_page(GTK_NOTEBOOK(playlist_notebook), parent, label);
+    }
 }
 
 static void ui_stop_gtk_plugin(GtkWidget *parent)
 {
-    gtk_notebook_remove_page(GTK_NOTEBOOK(playlist_notebook), gtk_notebook_page_num(GTK_NOTEBOOK(playlist_notebook), parent));
+    switch (config.vis_position) {
+        case VIS_ON_TOP:
+        case VIS_ON_BOTTOM:
+        case VIS_ON_LEFT:
+        case VIS_ON_RIGHT: {
+                /* FIXME: nested panes */
+                GtkWidget *w = gtk_paned_get_child1(GTK_PANED(vispane_root));
+                if (w == parent) {
+                    gtk_container_remove(GTK_CONTAINER(vispane_root), w);
+                    break;
+                }
+
+                w = gtk_paned_get_child2(GTK_PANED(vispane_root));
+                if (w == parent) {
+                    gtk_container_remove(GTK_CONTAINER(vispane_root), w);
+                    break;
+                }
+            }
+            break;
+        case VIS_IN_TABS:
+        default:
+            gtk_notebook_remove_page(GTK_NOTEBOOK(playlist_notebook), gtk_notebook_page_num(GTK_NOTEBOOK(playlist_notebook), parent));
+    }
 }
 
 static void ui_playlist_change_tab(GtkNotebook * notebook, GtkNotebookPage * notebook_page, gint page_num, void *unused)
@@ -550,7 +595,53 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     gtk_box_pack_start(GTK_BOX(vbox), plbox, TRUE, TRUE, 0);
 
     playlist_notebook = gtk_notebook_new();
-    gtk_box_pack_end(GTK_BOX(plbox), playlist_notebook, TRUE, TRUE, 0);
+
+    if (config.vis_position != VIS_IN_TABS)
+    {
+        GtkWidget *pane = NULL;
+
+        g_print("vis not in tabs : %d\n", config.vis_position);
+
+        if (config.vis_position == VIS_ON_LEFT)
+        {
+            pane = gtk_hpaned_new();
+            gtk_paned_add2(GTK_PANED(pane), playlist_notebook);
+
+            vispane_root = gtk_vpaned_new();
+            gtk_paned_add1(GTK_PANED(pane), vispane_root);
+        }
+        else if (config.vis_position == VIS_ON_RIGHT)
+        {
+            pane = gtk_hpaned_new();
+            gtk_paned_add1(GTK_PANED(pane), playlist_notebook);
+
+            vispane_root = gtk_vpaned_new();
+            gtk_paned_add2(GTK_PANED(pane), vispane_root);
+        }
+        else if (config.vis_position == VIS_ON_TOP)
+        {
+            pane = gtk_vpaned_new();
+            gtk_paned_add2(GTK_PANED(pane), playlist_notebook);
+
+            vispane_root = gtk_hpaned_new();
+            gtk_paned_add1(GTK_PANED(pane), vispane_root);
+        }
+        else if (config.vis_position == VIS_ON_BOTTOM)
+        {
+            pane = gtk_vpaned_new();
+            gtk_paned_add1(GTK_PANED(pane), playlist_notebook);
+
+            vispane_root = gtk_hpaned_new();
+            gtk_paned_add2(GTK_PANED(pane), vispane_root);
+        }
+
+        if (pane != NULL)
+            gtk_box_pack_end(GTK_BOX(plbox), pane, TRUE, TRUE, 0);
+    }
+    else {
+        g_print("vis in tabs\n");
+        gtk_box_pack_end(GTK_BOX(plbox), playlist_notebook, TRUE, TRUE, 0);
+    }
 
     ui_hooks_associate();
     ui_populate_playlist_notebook();
