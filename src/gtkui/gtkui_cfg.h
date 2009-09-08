@@ -28,12 +28,21 @@
 #define MAINWIN_DEFAULT_POS_X     100
 #define MAINWIN_DEFAULT_POS_Y     100
 
+typedef enum {
+    VIS_IN_TABS = 0,
+    VIS_ON_LEFT,
+    VIS_ON_RIGHT,
+    VIS_ON_TOP,
+    VIS_ON_BOTTOM
+} VisPosition;
+
 typedef struct
 {
     gint player_x, player_y;
     gint player_width, player_height;
     gboolean save_window_position;
     gboolean player_visible;
+    VisPosition vis_position;
 } gtkui_cfg_t;
 
 extern gtkui_cfg_t config;

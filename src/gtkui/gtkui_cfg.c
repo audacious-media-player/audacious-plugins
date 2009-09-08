@@ -28,6 +28,7 @@ gtkui_cfg_t gtkui_default_config = {
     .player_height = MAINWIN_DEFAULT_HEIGHT,
     .save_window_position = TRUE,
     .player_visible = TRUE,
+    .vis_position = VIS_IN_TABS,
 };
 
 typedef struct gtkui_cfg_boolent_t
@@ -56,6 +57,7 @@ static gtkui_cfg_nument gtkui_numents[] = {
     {"player_y", &config.player_y, TRUE},
     {"player_width", &config.player_width, TRUE},
     {"player_height", &config.player_height, TRUE},
+    {"vis_position", &config.vis_position, TRUE},
 };
 
 static gint ncfgient = G_N_ELEMENTS(gtkui_numents);
