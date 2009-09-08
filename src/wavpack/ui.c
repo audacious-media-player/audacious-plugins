@@ -328,10 +328,6 @@ wv_file_info_box(const gchar * fn)
     aud_vfs_fclose(fd);
 }
 
-static GtkWidget *wv_configurewin = NULL;
-static GtkWidget *vbox, *notebook;
-static GtkWidget *rg_switch, *rg_clip_switch, *rg_track_gain, *rg_dyn_bitrate;
-
 void
 wv_read_config(void)
 {
@@ -348,19 +344,9 @@ wv_read_config(void)
 }
 
 static void
-wv_configurewin_ok(GtkWidget * widget, gpointer data)
+wv_save_config(void)
 {
     mcs_handle_t *cfg;
-    GtkToggleButton *tb;
-
-    tb = GTK_TOGGLE_BUTTON(rg_switch);
-    wv_cfg.replaygainEnabled = gtk_toggle_button_get_active(tb);
-    tb = GTK_TOGGLE_BUTTON(rg_clip_switch);
-    wv_cfg.clipPreventionEnabled = gtk_toggle_button_get_active(tb);
-    tb = GTK_TOGGLE_BUTTON(rg_dyn_bitrate);
-    wv_cfg.dynBitrateEnabled = gtk_toggle_button_get_active(tb);
-    tb = GTK_TOGGLE_BUTTON(rg_track_gain);
-    wv_cfg.albumReplaygainEnabled = !gtk_toggle_button_get_active(tb);
 
     cfg = aud_cfg_db_open();
     aud_cfg_db_set_bool(cfg, "wavpack", "clip_prevention", wv_cfg.clipPreventionEnabled);
@@ -368,113 +354,74 @@ wv_configurewin_ok(GtkWidget * widget, gpointer data)
     aud_cfg_db_set_bool(cfg, "wavpack", "dyn_bitrate", wv_cfg.dynBitrateEnabled);
     aud_cfg_db_set_bool(cfg, "wavpack", "replaygain", wv_cfg.replaygainEnabled);
     aud_cfg_db_close(cfg);
+}
 
-    gtk_widget_destroy(wv_configurewin);
+static WavPackConfig config;
+
+static PreferencesWidget plugin_settings_elements[] = {
+    {WIDGET_CHK_BTN, N_("Enable Dynamic Bitrate Display"), &config.dynBitrateEnabled, NULL, NULL, FALSE},
+};
+
+static PreferencesWidget plugin_settings[] = {
+    {WIDGET_BOX, N_("General Plugin Settings"), NULL, NULL, NULL, FALSE,
+        {.box = {plugin_settings_elements,
+                 G_N_ELEMENTS(plugin_settings_elements),
+                 FALSE /* vertical */, TRUE /* frame */}}},
+};
+
+static gboolean dummy;
+
+static PreferencesWidget replaygain_type_elements[] = {
+    {WIDGET_RADIO_BTN, N_("use Track Gain/Peak"), &dummy /* if it's false, then album replay gain is true and vice versa */, NULL, NULL, FALSE},
+    {WIDGET_RADIO_BTN, N_("use Album Gain/Peak"), &config.albumReplaygainEnabled, NULL, NULL, FALSE},
+};
+
+static PreferencesWidget replaygain_settings_elements[] = {
+    {WIDGET_CHK_BTN, N_("Enable Clipping Prevention"), &config.clipPreventionEnabled, NULL, NULL, FALSE},
+    {WIDGET_CHK_BTN, N_("Enable ReplayGain"), &config.replaygainEnabled, NULL, NULL, FALSE},
+    {WIDGET_BOX, N_("ReplayGain Type"), NULL, NULL, NULL, TRUE,
+        {.box = {replaygain_type_elements,
+                 G_N_ELEMENTS(replaygain_type_elements),
+                 FALSE /* vertical */, TRUE /* frame */}}},
+};
+
+static PreferencesWidget replaygain_settings[] = {
+    {WIDGET_BOX, N_("ReplayGain Settings"), NULL, NULL, NULL, FALSE,
+        {.box = {replaygain_settings_elements,
+                 G_N_ELEMENTS(replaygain_settings_elements),
+                 FALSE /* vertical */, TRUE /* frame */}}},
+};
+
+static NotebookTab preferences_tabs[] = {
+    {N_("Plugin"), plugin_settings, G_N_ELEMENTS(plugin_settings)},
+    {N_("ReplayGain"), replaygain_settings, G_N_ELEMENTS(replaygain_settings)},
+};
+
+static PreferencesWidget prefs[] = {
+    {WIDGET_NOTEBOOK, NULL, NULL, NULL, NULL, FALSE,
+        {.notebook = {preferences_tabs, G_N_ELEMENTS(preferences_tabs)}}},
+};
+
+static void
+configure_apply()
+{
+    memcpy(&wv_cfg, &config, sizeof(config));
+    wv_save_config();
 }
 
 static void
-rg_switch_cb(GtkWidget * w, gpointer data)
+configure_init(void)
 {
-    gtk_widget_set_sensitive(GTK_WIDGET(data), gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w)));
+    wv_read_config();
+    memcpy(&config, &wv_cfg, sizeof(config));
+    dummy = !config.albumReplaygainEnabled;
 }
 
-void
-wv_configure(void)
-{
-
-    GtkWidget *rg_frame, *rg_vbox;
-    GtkWidget *bbox, *ok, *cancel;
-    GtkWidget *rg_type_frame, *rg_type_vbox, *rg_album_gain;
-
-    if (wv_configurewin != NULL)
-    {
-        gdk_window_raise(wv_configurewin->window);
-        return;
-    }
-
-    wv_configurewin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    g_signal_connect(G_OBJECT(wv_configurewin), "destroy", G_CALLBACK(gtk_widget_destroyed), &wv_configurewin);
-    gtk_window_set_title(GTK_WINDOW(wv_configurewin), _("Wavpack Configuration"));
-    gtk_window_set_resizable(GTK_WINDOW(wv_configurewin), FALSE);
-    gtk_container_set_border_width(GTK_CONTAINER(wv_configurewin), 10);
-
-    vbox = gtk_vbox_new(FALSE, 10);
-    gtk_container_add(GTK_CONTAINER(wv_configurewin), vbox);
-
-    notebook = gtk_notebook_new();
-    gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
-
-
-    /* Plugin Settings */
-
-    rg_frame = gtk_frame_new(_("General Plugin Settings:"));
-    gtk_container_set_border_width(GTK_CONTAINER(rg_frame), 5);
-
-    rg_vbox = gtk_vbox_new(FALSE, 10);
-    gtk_container_set_border_width(GTK_CONTAINER(rg_vbox), 5);
-    gtk_container_add(GTK_CONTAINER(rg_frame), rg_vbox);
-
-    rg_dyn_bitrate = gtk_check_button_new_with_label(_("Enable Dynamic Bitrate Display"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_dyn_bitrate), wv_cfg.dynBitrateEnabled);
-    gtk_box_pack_start(GTK_BOX(rg_vbox), rg_dyn_bitrate, FALSE, FALSE, 0);
-
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), rg_frame, gtk_label_new(_("Plugin")));
-
-    /* Replay Gain.. */
-
-    rg_frame = gtk_frame_new(_("ReplayGain Settings:"));
-    gtk_container_set_border_width(GTK_CONTAINER(rg_frame), 5);
-
-    rg_vbox = gtk_vbox_new(FALSE, 10);
-    gtk_container_set_border_width(GTK_CONTAINER(rg_vbox), 5);
-    gtk_container_add(GTK_CONTAINER(rg_frame), rg_vbox);
-
-    rg_clip_switch = gtk_check_button_new_with_label(_("Enable Clipping Prevention"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_clip_switch), wv_cfg.clipPreventionEnabled);
-    gtk_box_pack_start(GTK_BOX(rg_vbox), rg_clip_switch, FALSE, FALSE, 0);
-
-    rg_switch = gtk_check_button_new_with_label(_("Enable ReplayGain"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_switch), wv_cfg.replaygainEnabled);
-    gtk_box_pack_start(GTK_BOX(rg_vbox), rg_switch, FALSE, FALSE, 0);
-
-    rg_type_frame = gtk_frame_new(_("ReplayGain Type:"));
-    gtk_box_pack_start(GTK_BOX(rg_vbox), rg_type_frame, FALSE, FALSE, 0);
-
-    g_signal_connect(G_OBJECT(rg_switch), "toggled", G_CALLBACK(rg_switch_cb), rg_type_frame);
-
-    rg_type_vbox = gtk_vbox_new(FALSE, 5);
-    gtk_container_set_border_width(GTK_CONTAINER(rg_type_vbox), 5);
-    gtk_container_add(GTK_CONTAINER(rg_type_frame), rg_type_vbox);
-
-    rg_track_gain = gtk_radio_button_new_with_label(NULL, _("use Track Gain/Peak"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_track_gain), !wv_cfg.albumReplaygainEnabled);
-    gtk_box_pack_start(GTK_BOX(rg_type_vbox), rg_track_gain, FALSE, FALSE, 0);
-
-    rg_album_gain = gtk_radio_button_new_with_label(gtk_radio_button_get_group(GTK_RADIO_BUTTON(rg_track_gain)), _("use Album Gain/Peak"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_album_gain), wv_cfg.albumReplaygainEnabled);
-    gtk_box_pack_start(GTK_BOX(rg_type_vbox), rg_album_gain, FALSE, FALSE, 0);
-
-    gtk_widget_set_sensitive(rg_type_frame, wv_cfg.replaygainEnabled);
-
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), rg_frame, gtk_label_new(_("ReplayGain")));
-
-    /* Buttons */
-
-    bbox = gtk_hbutton_box_new();
-    gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-    gtk_box_set_spacing(GTK_BOX(bbox), 5);
-    gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
-
-    ok = gtk_button_new_with_label(_("Ok"));
-    g_signal_connect(G_OBJECT(ok), "clicked", G_CALLBACK(wv_configurewin_ok), NULL);
-    GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
-    gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
-    gtk_widget_grab_default(ok);
-
-    cancel = gtk_button_new_with_label(_("Cancel"));
-    g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(wv_configurewin));
-    GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
-    gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
-
-    gtk_widget_show_all(wv_configurewin);
-}
+PluginPreferences preferences = {
+    .title = N_("Wavpack Configuration"),
+    .prefs = prefs,
+    .n_prefs = G_N_ELEMENTS(prefs),
+    .type = PREFERENCES_WINDOW,
+    .init = configure_init,
+    .apply = configure_apply,
+};

@@ -1255,7 +1255,7 @@ AC_ARG_ENABLE(scrobbler,
  [  --disable-scrobbler     disable scrobbler support (default=enabled if libcurl present)],
  [have_scrobbler=$enableval], [have_scrobbler=$have_curl])
 
-if test "x$scrobbler" = "xyes"; then
+if test "x$have_scrobbler" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
 fi
 
@@ -1425,7 +1425,8 @@ AC_ARG_ENABLE(projectm-1.0,
 
 if test "$have_projectm1" = "yes"; then
 	PKG_CHECK_MODULES(LIBPROJECTM1, [libprojectM >= 1.1], [have_projectm1="yes"], [have_projectm1="no"])
-	if test x$libprjM = xno; then
+	PKG_CHECK_MODULES(GTKGLEXT, [gtkglext-1.0], [have_projectm1="yes"], [have_projectm1="no"])
+	if test "xhave_projectm1" = "xno"; then
 	        AC_MSG_WARN([*** libprojectM not found.
 	                        libprojectM is needed to build this package.
 	                        You can download libprojectM at http://projectm.sf.net/])

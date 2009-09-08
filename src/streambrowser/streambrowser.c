@@ -620,12 +620,12 @@ static void streaminfo_add_to_playlist(streaminfo_t *streaminfo)
 		}
 		debug("stream playlist '%s' successfuly downloaded to '%s'\n", streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
 
-	   	aud_playlist_entry_insert(aud_playlist_get_active(), entrycount, PLAYLIST_TEMP_FILE, NULL);
+	   	aud_playlist_insert_playlist(aud_playlist_get_active(), entrycount, PLAYLIST_TEMP_FILE);
 		debug("stream playlist '%s' added\n", streaminfo->playlist_url);
 	}
 
 	if (strlen(streaminfo->url) > 0) {
-		aud_playlist_entry_insert(aud_playlist_get_active(), entrycount, streaminfo->url, NULL);
+		aud_playlist_insert_playlist(aud_playlist_get_active(), entrycount, streaminfo->url);
 		debug("stream '%s' added\n", streaminfo->url);
 	}
 }
