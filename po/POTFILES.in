@@ -24,7 +24,6 @@ src/bluetooth/agent.c
 src/bluetooth/bluetooth.c
 src/bluetooth/gui.c
 src/bluetooth/scan_gui.c
-src/blur_scope/blur_scope.c
 src/blur_scope/config.c
 src/cdaudio-ng/cdaudio-ng.c
 src/cdaudio-ng/configure.c
@@ -145,4 +144,5 @@ src/vorbis/configure.c
 src/vorbis/vorbis.c
 src/vtx/about.c
 src/vtx/info.c
-src/wavpack/ui.cxx
+src/wavpack/ui.c
+src/wavpack/wavpack.c

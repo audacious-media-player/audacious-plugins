@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
-"POT-Creation-Date: 2009-08-27 11:54-0400\n"
+"POT-Creation-Date: 2009-09-16 02:13+0300\n"
 "PO-Revision-Date: 2007-03-14 02:18+0100\n"
 "Last-Translator: Andrej Herceg <herceg.andrej@zoznam.sk>\n"
 "Language-Team: \n"
@@ -35,9 +35,9 @@ msgstr "O module Flac"
 #: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:273
 #: src/console/plugin.c:37 src/crossfade/configure.c:1175
 #: src/crystalizer/crystalizer.c:113 src/echo_plugin/gui.c:24
-#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:677
+#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:698
 #: src/filewriter/filewriter.c:187 src/icecast/icecast.c:241
-#: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:263
+#: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:237
 #: src/madplug/plugin.c:580 src/metronom/metronom.c:92
 #: src/modplug/gui/main.cxx:52 src/null/null.c:65 src/null/null.c:108
 #: src/OSS4/OSS4.c:58 src/OSS/OSS.c:54 src/paranormal-ng/plugin.c:282
@@ -45,9 +45,9 @@ msgstr "O module Flac"
 #: src/sndfile/plugin.c:502 src/statusicon/si_ui.c:630
 #: src/stereo_plugin/stereo.c:52 src/stereo_plugin/stereo.c:115
 #: src/sun/about.c:37 src/sun/configure.c:557 src/timidity/interface.c:223
-#: src/timidity/plugin.c:110 src/tonegen/tonegen.c:56 src/tta/plugin.c:90
-#: src/tta/plugin.c:166 src/vorbis/vorbis.c:561 src/vtx/about.c:26
-#: src/vtx/info.c:38 src/wavpack/ui.cxx:53 src/wavpack/ui.cxx:552
+#: src/timidity/plugin.c:114 src/tonegen/tonegen.c:56 src/tta/plugin.c:90
+#: src/tta/plugin.c:166 src/vorbis/vorbis.c:592 src/vtx/about.c:26
+#: src/vtx/info.c:38 src/wavpack/wavpack.c:408
 msgid "Ok"
 msgstr "OK"
 
@@ -88,7 +88,7 @@ msgstr "AMIDI-Plug - nastavenie"
 #: src/jack/configure.c:151 src/modplug/gui/interface.cxx:715
 #: src/modplug/gui/modplug.glade:1668 src/null/null.c:109
 #: src/stereo_plugin/stereo.c:124 src/sun/configure.c:565
-#: src/timidity/interface.c:231 src/wavpack/ui.cxx:277 src/wavpack/ui.cxx:559
+#: src/timidity/interface.c:231 src/wavpack/ui.c:204
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -317,7 +317,7 @@ msgstr ""
 #: src/crossfade/interface-2.0.c:1503 src/flacng/plugin.c:633
 #: src/gnomeshortcuts/gnomeshortcuts.c:310 src/hotkey/gui.c:670
 #: src/modplug/gui/interface.cxx:703 src/modplug/gui/modplug.glade:1642
-#: src/scrobbler/gtkstuff.c:42 src/sid/xs_config.c:319 src/skins/plugin.c:177
+#: src/scrobbler/gtkstuff.c:42 src/sid/xs_config.c:319 src/skins/plugin.c:182
 #: src/streambrowser/streambrowser.c:328
 msgid "OK"
 msgstr "OK"
@@ -1951,22 +1951,6 @@ msgstr "Obdĺžnik"
 msgid "Play"
 msgstr "Spôsob prehrávania:"
 
-#: src/blur_scope/blur_scope.c:52
-msgid "/Toggle Decorations"
-msgstr "/Prepnúť zobrazenie dekorácií"
-
-#: src/blur_scope/blur_scope.c:54
-msgid "/-"
-msgstr "/-"
-
-#: src/blur_scope/blur_scope.c:55
-msgid "/Close"
-msgstr "/Zatvoriť"
-
-#: src/blur_scope/blur_scope.c:179
-msgid "Blur scope"
-msgstr "Blur scope"
-
 #: src/blur_scope/config.c:71
 msgid "Blur Scope: Color selection"
 msgstr "Blur Scope: Výber farby"
@@ -2839,8 +2823,7 @@ msgid "Load"
 msgstr ""
 
 #: src/crossfade/interface-2.0.c:1487 src/sid/xmms-sid.glade:1732
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:429
-#: src/wavpack/ui.cxx:265
+#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:429 src/wavpack/ui.c:194
 msgid "Save"
 msgstr "Uložiť"
 
@@ -3343,7 +3326,7 @@ msgstr ""
 "< james@develia.org >\n"
 "\n"
 
-#: src/ffaudio/ffaudio-core.c:660
+#: src/ffaudio/ffaudio-core.c:681
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -3359,7 +3342,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:676
+#: src/ffaudio/ffaudio-core.c:697
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "Modul Flac Audio"
@@ -3756,7 +3739,7 @@ msgstr ""
 msgid "Load Playlist"
 msgstr "Okno->Zoznam skladieb"
 
-#: src/gtkui/ui_gtk.c:49
+#: src/gtkui/ui_gtk.c:51
 msgid "GTK Foobar-like Interface"
 msgstr ""
 
@@ -5778,7 +5761,7 @@ msgstr ""
 "OSD pre Audacious"
 
 #: src/sid/xmms-sid.glade:3338 src/sid/xs_interface.c:1649
-#: src/wavpack/ui.cxx:149
+#: src/wavpack/ui.c:117
 msgid "Filename:"
 msgstr "Meno súboru:"
 
@@ -5869,17 +5852,17 @@ msgstr "Všeobecné"
 msgid "Tune #%i: "
 msgstr ""
 
-#: src/skins/plugin.c:175
+#: src/skins/plugin.c:180
 msgid "About Skinned GUI"
 msgstr ""
 
-#: src/skins/plugin.c:176
+#: src/skins/plugin.c:181
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 msgstr ""
 
-#: src/skins/plugin.c:194
+#: src/skins/plugin.c:199
 msgid "Skinned Interface"
 msgstr ""
 
@@ -5999,7 +5982,7 @@ msgstr "Okno->Ekvalizér"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/skins/ui_main.c:348 src/skins/ui_main.c:2188
+#: src/skins/ui_main.c:348 src/skins/ui_main.c:2190
 #, fuzzy
 msgid "Audacious"
 msgstr "%s - Audacious"
@@ -6065,62 +6048,62 @@ msgstr ""
 msgid "Do not display this warning again"
 msgstr ""
 
-#: src/skins/ui_main.c:1266
+#: src/skins/ui_main.c:1268
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
 msgstr ""
 
-#: src/skins/ui_main.c:1296
+#: src/skins/ui_main.c:1298
 #, fuzzy, c-format
 msgid "Volume: %d%%"
 msgstr "Hlasitosť (%):"
 
-#: src/skins/ui_main.c:1324
+#: src/skins/ui_main.c:1326
 #, c-format
 msgid "Balance: %d%% left"
 msgstr ""
 
-#: src/skins/ui_main.c:1328
+#: src/skins/ui_main.c:1330
 msgid "Balance: center"
 msgstr ""
 
-#: src/skins/ui_main.c:1332
+#: src/skins/ui_main.c:1334
 #, c-format
 msgid "Balance: %d%% right"
 msgstr ""
 
-#: src/skins/ui_main.c:1634
+#: src/skins/ui_main.c:1636
 #, fuzzy
 msgid "Options Menu"
 msgstr "Nastavenia:"
 
-#: src/skins/ui_main.c:1638
+#: src/skins/ui_main.c:1640
 msgid "Disable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:1640
+#: src/skins/ui_main.c:1642
 msgid "Enable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:1643
+#: src/skins/ui_main.c:1645
 #, fuzzy
 msgid "File Info Box"
 msgstr "Informácie o súbore - %s"
 
-#: src/skins/ui_main.c:1647
+#: src/skins/ui_main.c:1649
 msgid "Disable 'GUI Scaling'"
 msgstr ""
 
-#: src/skins/ui_main.c:1649
+#: src/skins/ui_main.c:1651
 #, fuzzy
 msgid "Enable 'GUI Scaling'"
 msgstr "Povoliť prevzorkovanie zvuku"
 
-#: src/skins/ui_main.c:1652
+#: src/skins/ui_main.c:1654
 msgid "Visualization Menu"
 msgstr ""
 
-#: src/skins/ui_main.c:1697
+#: src/skins/ui_main.c:1699
 msgid ""
 "<b><big>Couldn't open audio.</big></b>\n"
 "\n"
@@ -6818,12 +6801,12 @@ msgstr "Šírka vzorky"
 msgid "TiMidity Configuration File"
 msgstr "Konfiguračný súbor TiMidity"
 
-#: src/timidity/plugin.c:108
+#: src/timidity/plugin.c:112
 #, c-format
 msgid "TiMidity Plugin %s"
 msgstr "Modul TiMidity %s"
 
-#: src/timidity/plugin.c:109
+#: src/timidity/plugin.c:113
 msgid ""
 "TiMidity Plugin\n"
 "http://libtimidity.sourceforge.net\n"
@@ -6833,7 +6816,7 @@ msgstr ""
 "http://libtimidity.sourceforge.net\n"
 "napísal Konstantin Korikov"
 
-#: src/timidity/plugin.c:339
+#: src/timidity/plugin.c:343
 msgid "Couldn't load MIDI file"
 msgstr "MIDI súbor sa nepodarilo načítať"
 
@@ -6916,27 +6899,28 @@ msgstr ""
 msgid "About True Audio Plugin"
 msgstr "O module Ogg Vorbis Audio"
 
-#: src/vorbis/configure.c:80
-msgid "Ogg Vorbis Audio Plugin Configuration"
-msgstr "Nastavenie modulu Ogg Vorbis"
-
-#: src/vorbis/configure.c:90
-msgid "Ogg Vorbis Tags:"
-msgstr "Značky Ogg Vorbis:"
-
-#: src/vorbis/configure.c:98
+#: src/vorbis/configure.c:29
 msgid "Override generic titles"
 msgstr "Používať vlastný formát názvu"
 
-#: src/vorbis/configure.c:111
+#: src/vorbis/configure.c:30
 msgid "Title format:"
 msgstr "Formát názvu:"
 
-#: src/vorbis/vorbis.c:542
+#: src/vorbis/configure.c:34
+#, fuzzy
+msgid "Ogg Vorbis Tags"
+msgstr "Značky Ogg Vorbis:"
+
+#: src/vorbis/configure.c:66
+msgid "Ogg Vorbis Audio Plugin Configuration"
+msgstr "Nastavenie modulu Ogg Vorbis"
+
+#: src/vorbis/vorbis.c:573
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "O module Ogg Vorbis Audio"
 
-#: src/vorbis/vorbis.c:548
+#: src/vorbis/vorbis.c:579
 #, fuzzy
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
@@ -6986,12 +6970,163 @@ msgid ""
 "Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
 
-#: src/wavpack/ui.cxx:49
+#: src/wavpack/ui.c:129
+msgid "Ape2 Tag"
+msgstr ""
+
+#: src/wavpack/ui.c:136
+msgid "Title:"
+msgstr "Názov:"
+
+#: src/wavpack/ui.c:143
+msgid "Artist:"
+msgstr "Umelec:"
+
+#: src/wavpack/ui.c:150
+msgid "Album:"
+msgstr "Album:"
+
+#: src/wavpack/ui.c:157
+msgid "Comment:"
+msgstr "Komentár:"
+
+#: src/wavpack/ui.c:164
+msgid "Year:"
+msgstr ""
+
+#: src/wavpack/ui.c:172
+msgid "Track number:"
+msgstr "Číslo stopy:"
+
+#: src/wavpack/ui.c:181
+msgid "Genre:"
+msgstr "Žáner:"
+
+#: src/wavpack/ui.c:199
+msgid "Remove Tag"
+msgstr "Odstrániť značku"
+
+#: src/wavpack/ui.c:210
+msgid "Wavpack Info:"
+msgstr ""
+
+#: src/wavpack/ui.c:296
+#, fuzzy, c-format
+msgid "version %d"
+msgstr "Verzia:"
+
+#: src/wavpack/ui.c:297
+#, c-format
+msgid "average bitrate: %6.1f kbps"
+msgstr ""
+
+#: src/wavpack/ui.c:298
+#, fuzzy, c-format
+msgid "samplerate: %d Hz"
+msgstr "Vzorkovacia frekvencia: %d Hz"
+
+#: src/wavpack/ui.c:299
+#, fuzzy, c-format
+msgid "bits per sample: %d"
+msgstr "Bitov na vzorku: %d"
+
+#: src/wavpack/ui.c:300
+#, fuzzy, c-format
+msgid "channels: %d"
+msgstr "Počet kanálov: %d"
+
+#: src/wavpack/ui.c:301
+#, fuzzy, c-format
+msgid "length: %d:%.2d"
+msgstr ""
+"\n"
+"Celková dĺžka: %d:%d\n"
+
+#: src/wavpack/ui.c:302
+#, fuzzy, c-format
+msgid "file size: %d Bytes"
+msgstr "Veľkosť súboru: %ld B"
+
+#: src/wavpack/ui.c:309
+#, fuzzy
+msgid "Title Peak: ?"
+msgstr "Názov:"
+
+#: src/wavpack/ui.c:310
+#, fuzzy
+msgid "Album Peak: ?"
+msgstr "Vrchol albumu:"
+
+#: src/wavpack/ui.c:311
+#, fuzzy
+msgid "Title Gain: ?"
+msgstr "Zmena názvu"
+
+#: src/wavpack/ui.c:312
+#, fuzzy
+msgid "Album Gain: ?"
+msgstr "Zosilnenie albumu:"
+
+#: src/wavpack/ui.c:324
+#, c-format
+msgid "File Info - %s"
+msgstr "Informácie o súbore - %s"
+
+#: src/wavpack/ui.c:362
+msgid "Enable Dynamic Bitrate Display"
+msgstr ""
+
+#: src/wavpack/ui.c:366
+#, fuzzy
+msgid "General Plugin Settings"
+msgstr "Nastavenia zosilnenia prehrávania:"
+
+#: src/wavpack/ui.c:375
+msgid "use Track Gain/Peak"
+msgstr "použiť zosilnenie podľa vrcholu v skladbe"
+
+#: src/wavpack/ui.c:376
+msgid "use Album Gain/Peak"
+msgstr "použiť zosilnenie podľa vrcholu na albume"
+
+#: src/wavpack/ui.c:380
+msgid "Enable Clipping Prevention"
+msgstr "Povoliť prevenciu orezania"
+
+#: src/wavpack/ui.c:381
+msgid "Enable ReplayGain"
+msgstr "Zapnúť zosilnenie pri prehrávaní"
+
+#: src/wavpack/ui.c:382
+#, fuzzy
+msgid "ReplayGain Type"
+msgstr "Typ zosilnenia:"
+
+#: src/wavpack/ui.c:389
+#, fuzzy
+msgid "ReplayGain Settings"
+msgstr "Nastavenia zosilnenia prehrávania:"
+
+#: src/wavpack/ui.c:396
+#, fuzzy
+msgid "Plugin"
+msgstr "Modul LIRC"
+
+#: src/wavpack/ui.c:397
+msgid "ReplayGain"
+msgstr "Zosilnenie prehrávanie"
+
+#: src/wavpack/ui.c:421
+#, fuzzy
+msgid "Wavpack Configuration"
+msgstr "Nastavenia Flac"
+
+#: src/wavpack/wavpack.c:404
 #, fuzzy, c-format
 msgid "Wavpack Decoder Plugin %s"
 msgstr "Modul Ozvena %s"
 
-#: src/wavpack/ui.cxx:50
+#: src/wavpack/wavpack.c:405
 msgid ""
 "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
 "\n"
@@ -6999,154 +7134,23 @@ msgid ""
 "Visit the Wavpack site at http://www.wavpack.com/\n"
 msgstr ""
 
-#: src/wavpack/ui.cxx:162
-msgid "Ape2 Tag"
-msgstr ""
+#~ msgid "/Toggle Decorations"
+#~ msgstr "/Prepnúť zobrazenie dekorácií"
 
-#: src/wavpack/ui.cxx:169
-msgid "Title:"
-msgstr "Názov:"
+#~ msgid "/-"
+#~ msgstr "/-"
 
-#: src/wavpack/ui.cxx:181
-msgid "Artist:"
-msgstr "Umelec:"
+#~ msgid "/Close"
+#~ msgstr "/Zatvoriť"
 
-#: src/wavpack/ui.cxx:193
-msgid "Album:"
-msgstr "Album:"
+#~ msgid "Blur scope"
+#~ msgstr "Blur scope"
 
-#: src/wavpack/ui.cxx:205
-msgid "Comment:"
-msgstr "Komentár:"
+#~ msgid "ReplayGain Settings:"
+#~ msgstr "Nastavenia zosilnenia prehrávania:"
 
-#: src/wavpack/ui.cxx:218
-msgid "Year:"
-msgstr ""
-
-#: src/wavpack/ui.cxx:231
-msgid "Track number:"
-msgstr "Číslo stopy:"
-
-#: src/wavpack/ui.cxx:246
-msgid "Genre:"
-msgstr "Žáner:"
-
-#: src/wavpack/ui.cxx:271
-msgid "Remove Tag"
-msgstr "Odstrániť značku"
-
-#: src/wavpack/ui.cxx:284
-msgid "Wavpack Info:"
-msgstr ""
-
-#: src/wavpack/ui.cxx:377
-#, fuzzy, c-format
-msgid "version %d"
-msgstr "Verzia:"
-
-#: src/wavpack/ui.cxx:378
-#, c-format
-msgid "average bitrate: %6.1f kbps"
-msgstr ""
-
-#: src/wavpack/ui.cxx:379
-#, fuzzy, c-format
-msgid "samplerate: %d Hz"
-msgstr "Vzorkovacia frekvencia: %d Hz"
-
-#: src/wavpack/ui.cxx:380
-#, fuzzy, c-format
-msgid "bits per sample: %d"
-msgstr "Bitov na vzorku: %d"
-
-#: src/wavpack/ui.cxx:381
-#, fuzzy, c-format
-msgid "channels: %d"
-msgstr "Počet kanálov: %d"
-
-#: src/wavpack/ui.cxx:382
-#, fuzzy, c-format
-msgid "length: %d:%.2d"
-msgstr ""
-"\n"
-"Celková dĺžka: %d:%d\n"
-
-#: src/wavpack/ui.cxx:383
-#, fuzzy, c-format
-msgid "file size: %d Bytes"
-msgstr "Veľkosť súboru: %ld B"
-
-#: src/wavpack/ui.cxx:390
-#, fuzzy
-msgid "Title Peak: ?"
-msgstr "Názov:"
-
-#: src/wavpack/ui.cxx:391
-#, fuzzy
-msgid "Album Peak: ?"
-msgstr "Vrchol albumu:"
-
-#: src/wavpack/ui.cxx:392
-#, fuzzy
-msgid "Title Gain: ?"
-msgstr "Zmena názvu"
-
-#: src/wavpack/ui.cxx:393
-#, fuzzy
-msgid "Album Gain: ?"
-msgstr "Zosilnenie albumu:"
-
-#: src/wavpack/ui.cxx:405
-#, c-format
-msgid "File Info - %s"
-msgstr "Informácie o súbore - %s"
-
-#: src/wavpack/ui.cxx:467
-#, fuzzy
-msgid "Wavpack Configuration"
-msgstr "Nastavenia Flac"
-
-#: src/wavpack/ui.cxx:480
-#, fuzzy
-msgid "General Plugin Settings:"
-msgstr "Nastavenia zosilnenia prehrávania:"
-
-#: src/wavpack/ui.cxx:488
-msgid "Enable Dynamic Bitrate Display"
-msgstr ""
-
-#: src/wavpack/ui.cxx:494
-#, fuzzy
-msgid "Plugin"
-msgstr "Modul LIRC"
-
-#: src/wavpack/ui.cxx:498
-msgid "ReplayGain Settings:"
-msgstr "Nastavenia zosilnenia prehrávania:"
-
-#: src/wavpack/ui.cxx:506
-msgid "Enable Clipping Prevention"
-msgstr "Povoliť prevenciu orezania"
-
-#: src/wavpack/ui.cxx:511
-msgid "Enable ReplayGain"
-msgstr "Zapnúť zosilnenie pri prehrávaní"
-
-#: src/wavpack/ui.cxx:516
-msgid "ReplayGain Type:"
-msgstr "Typ zosilnenia:"
-
-#: src/wavpack/ui.cxx:527
-msgid "use Track Gain/Peak"
-msgstr "použiť zosilnenie podľa vrcholu v skladbe"
-
-#: src/wavpack/ui.cxx:535
-msgid "use Album Gain/Peak"
-msgstr "použiť zosilnenie podľa vrcholu na albume"
-
-#: src/wavpack/ui.cxx:543
-msgid "ReplayGain"
-msgstr "Zosilnenie prehrávanie"
+#~ msgid "ReplayGain Type:"
+#~ msgstr "Typ zosilnenia:"
 
 #, fuzzy
 #~ msgid "About Apple Lossless Audio Plugin"
@@ -7217,14 +7221,6 @@ msgstr "Zosilnenie prehrávanie"
 #, fuzzy
 #~ msgid "General Settings"
 #~ msgstr "Nastavenia mixéru:"
-
-#, fuzzy
-#~ msgid "ReplayGain Settings"
-#~ msgstr "Nastavenia zosilnenia prehrávania:"
-
-#, fuzzy
-#~ msgid "ReplayGain Type"
-#~ msgstr "Typ zosilnenia:"
 
 #, fuzzy
 #~ msgid "Use Track Gain"

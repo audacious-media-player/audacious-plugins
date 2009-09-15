@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
-"POT-Creation-Date: 2009-08-27 11:54-0400\n"
+"POT-Creation-Date: 2009-09-16 02:13+0300\n"
 "PO-Revision-Date: 2008-07-08 13:10+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -43,9 +43,9 @@ msgstr "MP4 AAC プレイヤプラグインについて"
 #: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:273
 #: src/console/plugin.c:37 src/crossfade/configure.c:1175
 #: src/crystalizer/crystalizer.c:113 src/echo_plugin/gui.c:24
-#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:677
+#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:698
 #: src/filewriter/filewriter.c:187 src/icecast/icecast.c:241
-#: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:263
+#: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:237
 #: src/madplug/plugin.c:580 src/metronom/metronom.c:92
 #: src/modplug/gui/main.cxx:52 src/null/null.c:65 src/null/null.c:108
 #: src/OSS4/OSS4.c:58 src/OSS/OSS.c:54 src/paranormal-ng/plugin.c:282
@@ -53,9 +53,9 @@ msgstr "MP4 AAC プレイヤプラグインについて"
 #: src/sndfile/plugin.c:502 src/statusicon/si_ui.c:630
 #: src/stereo_plugin/stereo.c:52 src/stereo_plugin/stereo.c:115
 #: src/sun/about.c:37 src/sun/configure.c:557 src/timidity/interface.c:223
-#: src/timidity/plugin.c:110 src/tonegen/tonegen.c:56 src/tta/plugin.c:90
-#: src/tta/plugin.c:166 src/vorbis/vorbis.c:561 src/vtx/about.c:26
-#: src/vtx/info.c:38 src/wavpack/ui.cxx:53 src/wavpack/ui.cxx:552
+#: src/timidity/plugin.c:114 src/tonegen/tonegen.c:56 src/tta/plugin.c:90
+#: src/tta/plugin.c:166 src/vorbis/vorbis.c:592 src/vtx/about.c:26
+#: src/vtx/info.c:38 src/wavpack/wavpack.c:408
 msgid "Ok"
 msgstr "OK"
 
@@ -96,7 +96,7 @@ msgstr "AdPlug :: 設定"
 #: src/jack/configure.c:151 src/modplug/gui/interface.cxx:715
 #: src/modplug/gui/modplug.glade:1668 src/null/null.c:109
 #: src/stereo_plugin/stereo.c:124 src/sun/configure.c:565
-#: src/timidity/interface.c:231 src/wavpack/ui.cxx:277 src/wavpack/ui.cxx:559
+#: src/timidity/interface.c:231 src/wavpack/ui.c:204
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -325,7 +325,7 @@ msgstr "目覚ましです."
 #: src/crossfade/interface-2.0.c:1503 src/flacng/plugin.c:633
 #: src/gnomeshortcuts/gnomeshortcuts.c:310 src/hotkey/gui.c:670
 #: src/modplug/gui/interface.cxx:703 src/modplug/gui/modplug.glade:1642
-#: src/scrobbler/gtkstuff.c:42 src/sid/xs_config.c:319 src/skins/plugin.c:177
+#: src/scrobbler/gtkstuff.c:42 src/sid/xs_config.c:319 src/skins/plugin.c:182
 #: src/streambrowser/streambrowser.c:328
 msgid "OK"
 msgstr "OK"
@@ -2013,22 +2013,6 @@ msgstr "CD を再スキャン"
 msgid "Play"
 msgstr "演奏"
 
-#: src/blur_scope/blur_scope.c:52
-msgid "/Toggle Decorations"
-msgstr "/装飾の切り替え"
-
-#: src/blur_scope/blur_scope.c:54
-msgid "/-"
-msgstr "/-"
-
-#: src/blur_scope/blur_scope.c:55
-msgid "/Close"
-msgstr "/閉じる"
-
-#: src/blur_scope/blur_scope.c:179
-msgid "Blur scope"
-msgstr "ブラースコープ"
-
 #: src/blur_scope/config.c:71
 msgid "Blur Scope: Color selection"
 msgstr "ブラースコープ: 色の選択"
@@ -2901,8 +2885,7 @@ msgid "Load"
 msgstr "読み込み"
 
 #: src/crossfade/interface-2.0.c:1487 src/sid/xmms-sid.glade:1732
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:429
-#: src/wavpack/ui.cxx:265
+#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:429 src/wavpack/ui.c:194
 msgid "Save"
 msgstr "保存"
 
@@ -3401,7 +3384,7 @@ msgstr ""
 "Giacomo Lozito によって書かれた.\n"
 "\n"
 
-#: src/ffaudio/ffaudio-core.c:660
+#: src/ffaudio/ffaudio-core.c:681
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -3417,7 +3400,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:676
+#: src/ffaudio/ffaudio-core.c:697
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "FLAC オーディオプラグインについて"
@@ -3813,7 +3796,7 @@ msgstr "プレイリストの保存"
 msgid "Load Playlist"
 msgstr "プレイリストの読み込み"
 
-#: src/gtkui/ui_gtk.c:49
+#: src/gtkui/ui_gtk.c:51
 msgid "GTK Foobar-like Interface"
 msgstr ""
 
@@ -5883,7 +5866,7 @@ msgid "Audacious-SID Fileinfo"
 msgstr "Audacious-SID ファイル情報"
 
 #: src/sid/xmms-sid.glade:3338 src/sid/xs_interface.c:1649
-#: src/wavpack/ui.cxx:149
+#: src/wavpack/ui.c:117
 msgid "Filename:"
 msgstr "ファイル名:"
 
@@ -5967,11 +5950,11 @@ msgstr "一般情報"
 msgid "Tune #%i: "
 msgstr "チューン #%i:"
 
-#: src/skins/plugin.c:175
+#: src/skins/plugin.c:180
 msgid "About Skinned GUI"
 msgstr "スキン GUI について"
 
-#: src/skins/plugin.c:176
+#: src/skins/plugin.c:181
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -5979,7 +5962,7 @@ msgstr ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 
-#: src/skins/plugin.c:194
+#: src/skins/plugin.c:199
 msgid "Skinned Interface"
 msgstr ""
 
@@ -6099,7 +6082,7 @@ msgstr "Audacious イコライザ"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/skins/ui_main.c:348 src/skins/ui_main.c:2188
+#: src/skins/ui_main.c:348 src/skins/ui_main.c:2190
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -6174,59 +6157,59 @@ msgstr ""
 msgid "Do not display this warning again"
 msgstr "次回からこの警告を表示しない"
 
-#: src/skins/ui_main.c:1266
+#: src/skins/ui_main.c:1268
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
 msgstr "移動先: %d:%-2.2d/%d:%-2.2d (%d%%)"
 
-#: src/skins/ui_main.c:1296
+#: src/skins/ui_main.c:1298
 #, c-format
 msgid "Volume: %d%%"
 msgstr "音量: %d%%"
 
-#: src/skins/ui_main.c:1324
+#: src/skins/ui_main.c:1326
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "バランス: %d%% 左"
 
-#: src/skins/ui_main.c:1328
+#: src/skins/ui_main.c:1330
 msgid "Balance: center"
 msgstr "バランス: 中央"
 
-#: src/skins/ui_main.c:1332
+#: src/skins/ui_main.c:1334
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "バランス: %d%% 右"
 
-#: src/skins/ui_main.c:1634
+#: src/skins/ui_main.c:1636
 msgid "Options Menu"
 msgstr "オプションメニュー"
 
-#: src/skins/ui_main.c:1638
+#: src/skins/ui_main.c:1640
 msgid "Disable 'Always On Top'"
 msgstr "「常に最前面に配置」無効"
 
-#: src/skins/ui_main.c:1640
+#: src/skins/ui_main.c:1642
 msgid "Enable 'Always On Top'"
 msgstr "「常に最前面に配置」有効"
 
-#: src/skins/ui_main.c:1643
+#: src/skins/ui_main.c:1645
 msgid "File Info Box"
 msgstr "ファイル情報ボックス"
 
-#: src/skins/ui_main.c:1647
+#: src/skins/ui_main.c:1649
 msgid "Disable 'GUI Scaling'"
 msgstr "「GUI スケーリング」無効"
 
-#: src/skins/ui_main.c:1649
+#: src/skins/ui_main.c:1651
 msgid "Enable 'GUI Scaling'"
 msgstr "「GUI スケーリング」有効"
 
-#: src/skins/ui_main.c:1652
+#: src/skins/ui_main.c:1654
 msgid "Visualization Menu"
 msgstr "視覚化メニュー"
 
-#: src/skins/ui_main.c:1697
+#: src/skins/ui_main.c:1699
 msgid ""
 "<b><big>Couldn't open audio.</big></b>\n"
 "\n"
@@ -6917,12 +6900,12 @@ msgstr "サンプリング幅"
 msgid "TiMidity Configuration File"
 msgstr "TiMidity 設定ファイル"
 
-#: src/timidity/plugin.c:108
+#: src/timidity/plugin.c:112
 #, c-format
 msgid "TiMidity Plugin %s"
 msgstr "TiMidity プラグイン %s"
 
-#: src/timidity/plugin.c:109
+#: src/timidity/plugin.c:113
 msgid ""
 "TiMidity Plugin\n"
 "http://libtimidity.sourceforge.net\n"
@@ -6932,7 +6915,7 @@ msgstr ""
 "http://libtimidity.sourceforge.net\n"
 "Konstantin Korikov による"
 
-#: src/timidity/plugin.c:339
+#: src/timidity/plugin.c:343
 msgid "Couldn't load MIDI file"
 msgstr "MIDI ファイルを読み込めません"
 
@@ -7011,27 +6994,28 @@ msgstr ""
 msgid "About True Audio Plugin"
 msgstr "True Audio プラグインについて"
 
-#: src/vorbis/configure.c:80
-msgid "Ogg Vorbis Audio Plugin Configuration"
-msgstr "Ogg Vorbis オーディオプラグインの設定"
-
-#: src/vorbis/configure.c:90
-msgid "Ogg Vorbis Tags:"
-msgstr "Ogg Vorbis タグ:"
-
-#: src/vorbis/configure.c:98
+#: src/vorbis/configure.c:29
 msgid "Override generic titles"
 msgstr "オリジナルのタイトルを上書きする"
 
-#: src/vorbis/configure.c:111
+#: src/vorbis/configure.c:30
 msgid "Title format:"
 msgstr "タイトルの書式:"
 
-#: src/vorbis/vorbis.c:542
+#: src/vorbis/configure.c:34
+#, fuzzy
+msgid "Ogg Vorbis Tags"
+msgstr "Ogg Vorbis タグ:"
+
+#: src/vorbis/configure.c:66
+msgid "Ogg Vorbis Audio Plugin Configuration"
+msgstr "Ogg Vorbis オーディオプラグインの設定"
+
+#: src/vorbis/vorbis.c:573
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Ogg Vorbis オーディオ プラグインについて"
 
-#: src/vorbis/vorbis.c:548
+#: src/vorbis/vorbis.c:579
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -7089,12 +7073,153 @@ msgstr ""
 "\n"
 "Audacious 実装は Pavel Vymetalek <pvymetalek@seznam.cz> による"
 
-#: src/wavpack/ui.cxx:49
+#: src/wavpack/ui.c:129
+msgid "Ape2 Tag"
+msgstr "Ape2 タグ"
+
+#: src/wavpack/ui.c:136
+msgid "Title:"
+msgstr "タイトル:"
+
+#: src/wavpack/ui.c:143
+msgid "Artist:"
+msgstr "アーティスト:"
+
+#: src/wavpack/ui.c:150
+msgid "Album:"
+msgstr "アルバム名:"
+
+#: src/wavpack/ui.c:157
+msgid "Comment:"
+msgstr "コメント:"
+
+#: src/wavpack/ui.c:164
+msgid "Year:"
+msgstr "年:"
+
+#: src/wavpack/ui.c:172
+msgid "Track number:"
+msgstr "トラック番号:"
+
+#: src/wavpack/ui.c:181
+msgid "Genre:"
+msgstr "ジャンル:"
+
+#: src/wavpack/ui.c:199
+msgid "Remove Tag"
+msgstr "タグの削除"
+
+#: src/wavpack/ui.c:210
+msgid "Wavpack Info:"
+msgstr "Wavpack 情報:"
+
+#: src/wavpack/ui.c:296
+#, c-format
+msgid "version %d"
+msgstr "バージョン %d"
+
+#: src/wavpack/ui.c:297
+#, c-format
+msgid "average bitrate: %6.1f kbps"
+msgstr "平均ビットレート: %6.1f kbps"
+
+#: src/wavpack/ui.c:298
+#, c-format
+msgid "samplerate: %d Hz"
+msgstr "サンプリングレート: %d Hz"
+
+#: src/wavpack/ui.c:299
+#, c-format
+msgid "bits per sample: %d"
+msgstr "ビット/サンプリング: %d"
+
+#: src/wavpack/ui.c:300
+#, c-format
+msgid "channels: %d"
+msgstr "チャンネル数: %d"
+
+#: src/wavpack/ui.c:301
+#, c-format
+msgid "length: %d:%.2d"
+msgstr "長さ: %d:%.2d"
+
+#: src/wavpack/ui.c:302
+#, c-format
+msgid "file size: %d Bytes"
+msgstr "ファイルサイズ: %d Bytes"
+
+#: src/wavpack/ui.c:309
+msgid "Title Peak: ?"
+msgstr "タイトルピーク: ?"
+
+#: src/wavpack/ui.c:310
+msgid "Album Peak: ?"
+msgstr "アルバムピーク: ?"
+
+#: src/wavpack/ui.c:311
+msgid "Title Gain: ?"
+msgstr "タイトルゲイン: ?"
+
+#: src/wavpack/ui.c:312
+msgid "Album Gain: ?"
+msgstr "アルバムゲイン: ?"
+
+#: src/wavpack/ui.c:324
+#, c-format
+msgid "File Info - %s"
+msgstr "ファイル情報 - %s"
+
+#: src/wavpack/ui.c:362
+msgid "Enable Dynamic Bitrate Display"
+msgstr "動的ビットレート表示を有効にする"
+
+#: src/wavpack/ui.c:366
+#, fuzzy
+msgid "General Plugin Settings"
+msgstr "一般的なプラグイン設定:"
+
+#: src/wavpack/ui.c:375
+msgid "use Track Gain/Peak"
+msgstr "トラックのゲイン/ピークを使用する"
+
+#: src/wavpack/ui.c:376
+msgid "use Album Gain/Peak"
+msgstr "アルバムのゲイン/ピークを使用する"
+
+#: src/wavpack/ui.c:380
+msgid "Enable Clipping Prevention"
+msgstr "クリッピング回避機能を有効にする"
+
+#: src/wavpack/ui.c:381
+msgid "Enable ReplayGain"
+msgstr "リプレイゲインを有効にする"
+
+#: src/wavpack/ui.c:382
+msgid "ReplayGain Type"
+msgstr "リプレイゲインの種類"
+
+#: src/wavpack/ui.c:389
+msgid "ReplayGain Settings"
+msgstr "リプレイゲインの設定"
+
+#: src/wavpack/ui.c:396
+msgid "Plugin"
+msgstr "プラグイン"
+
+#: src/wavpack/ui.c:397
+msgid "ReplayGain"
+msgstr "リプレイゲイン"
+
+#: src/wavpack/ui.c:421
+msgid "Wavpack Configuration"
+msgstr "Wavpack 設定"
+
+#: src/wavpack/wavpack.c:404
 #, c-format
 msgid "Wavpack Decoder Plugin %s"
 msgstr "Wavpack デコーダプラグイン %s"
 
-#: src/wavpack/ui.cxx:50
+#: src/wavpack/wavpack.c:405
 msgid ""
 "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
 "\n"
@@ -7106,145 +7231,23 @@ msgstr ""
 "プラグインコードの一部は Miles Egan による\n"
 "Wavpack のサイト http://www.wavpack.com/ をご覧ください\n"
 
-#: src/wavpack/ui.cxx:162
-msgid "Ape2 Tag"
-msgstr "Ape2 タグ"
+#~ msgid "/Toggle Decorations"
+#~ msgstr "/装飾の切り替え"
 
-#: src/wavpack/ui.cxx:169
-msgid "Title:"
-msgstr "タイトル:"
+#~ msgid "/-"
+#~ msgstr "/-"
 
-#: src/wavpack/ui.cxx:181
-msgid "Artist:"
-msgstr "アーティスト:"
+#~ msgid "/Close"
+#~ msgstr "/閉じる"
 
-#: src/wavpack/ui.cxx:193
-msgid "Album:"
-msgstr "アルバム名:"
+#~ msgid "Blur scope"
+#~ msgstr "ブラースコープ"
 
-#: src/wavpack/ui.cxx:205
-msgid "Comment:"
-msgstr "コメント:"
+#~ msgid "ReplayGain Settings:"
+#~ msgstr "リプレイゲインの設定:"
 
-#: src/wavpack/ui.cxx:218
-msgid "Year:"
-msgstr "年:"
-
-#: src/wavpack/ui.cxx:231
-msgid "Track number:"
-msgstr "トラック番号:"
-
-#: src/wavpack/ui.cxx:246
-msgid "Genre:"
-msgstr "ジャンル:"
-
-#: src/wavpack/ui.cxx:271
-msgid "Remove Tag"
-msgstr "タグの削除"
-
-#: src/wavpack/ui.cxx:284
-msgid "Wavpack Info:"
-msgstr "Wavpack 情報:"
-
-#: src/wavpack/ui.cxx:377
-#, c-format
-msgid "version %d"
-msgstr "バージョン %d"
-
-#: src/wavpack/ui.cxx:378
-#, c-format
-msgid "average bitrate: %6.1f kbps"
-msgstr "平均ビットレート: %6.1f kbps"
-
-#: src/wavpack/ui.cxx:379
-#, c-format
-msgid "samplerate: %d Hz"
-msgstr "サンプリングレート: %d Hz"
-
-#: src/wavpack/ui.cxx:380
-#, c-format
-msgid "bits per sample: %d"
-msgstr "ビット/サンプリング: %d"
-
-#: src/wavpack/ui.cxx:381
-#, c-format
-msgid "channels: %d"
-msgstr "チャンネル数: %d"
-
-#: src/wavpack/ui.cxx:382
-#, c-format
-msgid "length: %d:%.2d"
-msgstr "長さ: %d:%.2d"
-
-#: src/wavpack/ui.cxx:383
-#, c-format
-msgid "file size: %d Bytes"
-msgstr "ファイルサイズ: %d Bytes"
-
-#: src/wavpack/ui.cxx:390
-msgid "Title Peak: ?"
-msgstr "タイトルピーク: ?"
-
-#: src/wavpack/ui.cxx:391
-msgid "Album Peak: ?"
-msgstr "アルバムピーク: ?"
-
-#: src/wavpack/ui.cxx:392
-msgid "Title Gain: ?"
-msgstr "タイトルゲイン: ?"
-
-#: src/wavpack/ui.cxx:393
-msgid "Album Gain: ?"
-msgstr "アルバムゲイン: ?"
-
-#: src/wavpack/ui.cxx:405
-#, c-format
-msgid "File Info - %s"
-msgstr "ファイル情報 - %s"
-
-#: src/wavpack/ui.cxx:467
-msgid "Wavpack Configuration"
-msgstr "Wavpack 設定"
-
-#: src/wavpack/ui.cxx:480
-msgid "General Plugin Settings:"
-msgstr "一般的なプラグイン設定:"
-
-#: src/wavpack/ui.cxx:488
-msgid "Enable Dynamic Bitrate Display"
-msgstr "動的ビットレート表示を有効にする"
-
-#: src/wavpack/ui.cxx:494
-msgid "Plugin"
-msgstr "プラグイン"
-
-#: src/wavpack/ui.cxx:498
-msgid "ReplayGain Settings:"
-msgstr "リプレイゲインの設定:"
-
-#: src/wavpack/ui.cxx:506
-msgid "Enable Clipping Prevention"
-msgstr "クリッピング回避機能を有効にする"
-
-#: src/wavpack/ui.cxx:511
-msgid "Enable ReplayGain"
-msgstr "リプレイゲインを有効にする"
-
-#: src/wavpack/ui.cxx:516
-msgid "ReplayGain Type:"
-msgstr "リプレイゲインの種類:"
-
-#: src/wavpack/ui.cxx:527
-msgid "use Track Gain/Peak"
-msgstr "トラックのゲイン/ピークを使用する"
-
-#: src/wavpack/ui.cxx:535
-msgid "use Album Gain/Peak"
-msgstr "アルバムのゲイン/ピークを使用する"
-
-#: src/wavpack/ui.cxx:543
-msgid "ReplayGain"
-msgstr "リプレイゲイン"
+#~ msgid "ReplayGain Type:"
+#~ msgstr "リプレイゲインの種類:"
 
 #~ msgid "About Apple Lossless Audio Plugin"
 #~ msgstr "Apple Lossless オーディオプラグインについて"
@@ -7355,12 +7358,6 @@ msgstr "リプレイゲイン"
 
 #~ msgid "General Settings"
 #~ msgstr "一般的な設定"
-
-#~ msgid "ReplayGain Settings"
-#~ msgstr "リプレイゲインの設定"
-
-#~ msgid "ReplayGain Type"
-#~ msgstr "リプレイゲインの種類"
 
 #~ msgid "Use Track Gain"
 #~ msgstr "トラックゲインを使用する"

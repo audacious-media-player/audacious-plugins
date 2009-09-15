@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
-"POT-Creation-Date: 2009-08-27 11:54-0400\n"
+"POT-Creation-Date: 2009-09-16 02:13+0300\n"
 "PO-Revision-Date: 2007-12-22 23:09+0200\n"
 "Last-Translator: Onur Küçük <onur@pardus.org.tr>\n"
 "Language-Team: Turkish\n"
@@ -46,9 +46,9 @@ msgstr "MP4 AAC oynatıcı eklentisi hakkında"
 #: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:273
 #: src/console/plugin.c:37 src/crossfade/configure.c:1175
 #: src/crystalizer/crystalizer.c:113 src/echo_plugin/gui.c:24
-#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:677
+#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:698
 #: src/filewriter/filewriter.c:187 src/icecast/icecast.c:241
-#: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:263
+#: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:237
 #: src/madplug/plugin.c:580 src/metronom/metronom.c:92
 #: src/modplug/gui/main.cxx:52 src/null/null.c:65 src/null/null.c:108
 #: src/OSS4/OSS4.c:58 src/OSS/OSS.c:54 src/paranormal-ng/plugin.c:282
@@ -56,9 +56,9 @@ msgstr "MP4 AAC oynatıcı eklentisi hakkında"
 #: src/sndfile/plugin.c:502 src/statusicon/si_ui.c:630
 #: src/stereo_plugin/stereo.c:52 src/stereo_plugin/stereo.c:115
 #: src/sun/about.c:37 src/sun/configure.c:557 src/timidity/interface.c:223
-#: src/timidity/plugin.c:110 src/tonegen/tonegen.c:56 src/tta/plugin.c:90
-#: src/tta/plugin.c:166 src/vorbis/vorbis.c:561 src/vtx/about.c:26
-#: src/vtx/info.c:38 src/wavpack/ui.cxx:53 src/wavpack/ui.cxx:552
+#: src/timidity/plugin.c:114 src/tonegen/tonegen.c:56 src/tta/plugin.c:90
+#: src/tta/plugin.c:166 src/vorbis/vorbis.c:592 src/vtx/about.c:26
+#: src/vtx/info.c:38 src/wavpack/wavpack.c:408
 msgid "Ok"
 msgstr "Tamam"
 
@@ -100,7 +100,7 @@ msgstr "AdPlug :: Yapılandırması"
 #: src/jack/configure.c:151 src/modplug/gui/interface.cxx:715
 #: src/modplug/gui/modplug.glade:1668 src/null/null.c:109
 #: src/stereo_plugin/stereo.c:124 src/sun/configure.c:565
-#: src/timidity/interface.c:231 src/wavpack/ui.cxx:277 src/wavpack/ui.cxx:559
+#: src/timidity/interface.c:231 src/wavpack/ui.c:204
 msgid "Cancel"
 msgstr "İptal"
 
@@ -331,7 +331,7 @@ msgstr "Bu sizin uyandırma çağrınız."
 #: src/crossfade/interface-2.0.c:1503 src/flacng/plugin.c:633
 #: src/gnomeshortcuts/gnomeshortcuts.c:310 src/hotkey/gui.c:670
 #: src/modplug/gui/interface.cxx:703 src/modplug/gui/modplug.glade:1642
-#: src/scrobbler/gtkstuff.c:42 src/sid/xs_config.c:319 src/skins/plugin.c:177
+#: src/scrobbler/gtkstuff.c:42 src/sid/xs_config.c:319 src/skins/plugin.c:182
 #: src/streambrowser/streambrowser.c:328
 msgid "OK"
 msgstr "Tamam"
@@ -2015,22 +2015,6 @@ msgstr "Dikdörtgen"
 msgid "Play"
 msgstr "Oynatma süresi:"
 
-#: src/blur_scope/blur_scope.c:52
-msgid "/Toggle Decorations"
-msgstr "/Geçiş Dekorasyonları"
-
-#: src/blur_scope/blur_scope.c:54
-msgid "/-"
-msgstr "/-"
-
-#: src/blur_scope/blur_scope.c:55
-msgid "/Close"
-msgstr "/Kapat"
-
-#: src/blur_scope/blur_scope.c:179
-msgid "Blur scope"
-msgstr "Bulanık Alan"
-
 #: src/blur_scope/config.c:71
 msgid "Blur Scope: Color selection"
 msgstr "Bulanık alan: Renk seçimi"
@@ -2914,8 +2898,7 @@ msgid "Load"
 msgstr ""
 
 #: src/crossfade/interface-2.0.c:1487 src/sid/xmms-sid.glade:1732
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:429
-#: src/wavpack/ui.cxx:265
+#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:429 src/wavpack/ui.c:194
 msgid "Save"
 msgstr "Kaydet"
 
@@ -3418,7 +3401,7 @@ msgstr ""
 "\n"
 "Giacomo Lozito tarafından yazılmıştır\n"
 
-#: src/ffaudio/ffaudio-core.c:660
+#: src/ffaudio/ffaudio-core.c:681
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -3434,7 +3417,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:676
+#: src/ffaudio/ffaudio-core.c:697
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "FLAC Ses Eklentisi Hakkında"
@@ -3836,7 +3819,7 @@ msgstr "Parça Listesini Seç"
 msgid "Load Playlist"
 msgstr "Hızlı Parça Listesi Bilgisi"
 
-#: src/gtkui/ui_gtk.c:49
+#: src/gtkui/ui_gtk.c:51
 msgid "GTK Foobar-like Interface"
 msgstr ""
 
@@ -5954,7 +5937,7 @@ msgid "Audacious-SID Fileinfo"
 msgstr "Audacious SID Dosya Bilgisi"
 
 #: src/sid/xmms-sid.glade:3338 src/sid/xs_interface.c:1649
-#: src/wavpack/ui.cxx:149
+#: src/wavpack/ui.c:117
 msgid "Filename:"
 msgstr "Dosya adı:"
 
@@ -6038,17 +6021,17 @@ msgstr "Genel bilgi"
 msgid "Tune #%i: "
 msgstr "Tını #%i: "
 
-#: src/skins/plugin.c:175
+#: src/skins/plugin.c:180
 msgid "About Skinned GUI"
 msgstr ""
 
-#: src/skins/plugin.c:176
+#: src/skins/plugin.c:181
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 msgstr ""
 
-#: src/skins/plugin.c:194
+#: src/skins/plugin.c:199
 msgid "Skinned Interface"
 msgstr ""
 
@@ -6170,7 +6153,7 @@ msgstr "Ekolayzır"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/skins/ui_main.c:348 src/skins/ui_main.c:2188
+#: src/skins/ui_main.c:348 src/skins/ui_main.c:2190
 #, fuzzy
 msgid "Audacious"
 msgstr "%s - Audacious"
@@ -6236,62 +6219,62 @@ msgstr ""
 msgid "Do not display this warning again"
 msgstr ""
 
-#: src/skins/ui_main.c:1266
+#: src/skins/ui_main.c:1268
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
 msgstr ""
 
-#: src/skins/ui_main.c:1296
+#: src/skins/ui_main.c:1298
 #, fuzzy, c-format
 msgid "Volume: %d%%"
 msgstr "Ses: (%)"
 
-#: src/skins/ui_main.c:1324
+#: src/skins/ui_main.c:1326
 #, c-format
 msgid "Balance: %d%% left"
 msgstr ""
 
-#: src/skins/ui_main.c:1328
+#: src/skins/ui_main.c:1330
 msgid "Balance: center"
 msgstr ""
 
-#: src/skins/ui_main.c:1332
+#: src/skins/ui_main.c:1334
 #, c-format
 msgid "Balance: %d%% right"
 msgstr ""
 
-#: src/skins/ui_main.c:1634
+#: src/skins/ui_main.c:1636
 #, fuzzy
 msgid "Options Menu"
 msgstr "Seçenekler"
 
-#: src/skins/ui_main.c:1638
+#: src/skins/ui_main.c:1640
 msgid "Disable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:1640
+#: src/skins/ui_main.c:1642
 msgid "Enable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:1643
+#: src/skins/ui_main.c:1645
 #, fuzzy
 msgid "File Info Box"
 msgstr "Dosya Bilgisi"
 
-#: src/skins/ui_main.c:1647
+#: src/skins/ui_main.c:1649
 msgid "Disable 'GUI Scaling'"
 msgstr ""
 
-#: src/skins/ui_main.c:1649
+#: src/skins/ui_main.c:1651
 #, fuzzy
 msgid "Enable 'GUI Scaling'"
 msgstr "Ses örneklemesini etkinleştir"
 
-#: src/skins/ui_main.c:1652
+#: src/skins/ui_main.c:1654
 msgid "Visualization Menu"
 msgstr ""
 
-#: src/skins/ui_main.c:1697
+#: src/skins/ui_main.c:1699
 msgid ""
 "<b><big>Couldn't open audio.</big></b>\n"
 "\n"
@@ -7000,12 +6983,12 @@ msgstr "Örnekleme Genişliği"
 msgid "TiMidity Configuration File"
 msgstr "TiMidity Yapılandırma Dosyası"
 
-#: src/timidity/plugin.c:108
+#: src/timidity/plugin.c:112
 #, c-format
 msgid "TiMidity Plugin %s"
 msgstr "TiMidity Eklentisi %s"
 
-#: src/timidity/plugin.c:109
+#: src/timidity/plugin.c:113
 msgid ""
 "TiMidity Plugin\n"
 "http://libtimidity.sourceforge.net\n"
@@ -7015,7 +6998,7 @@ msgstr ""
 "http://libtimidity.sourceforge.net\n"
 "Konstantin Korikov"
 
-#: src/timidity/plugin.c:339
+#: src/timidity/plugin.c:343
 msgid "Couldn't load MIDI file"
 msgstr "MIDI dosyası yüklenemedi"
 
@@ -7094,27 +7077,28 @@ msgstr ""
 msgid "About True Audio Plugin"
 msgstr "True Audio Eklentisi Hakkında"
 
-#: src/vorbis/configure.c:80
-msgid "Ogg Vorbis Audio Plugin Configuration"
-msgstr "Ogg Vorbis Ses Eklentisi Yapılandırması"
-
-#: src/vorbis/configure.c:90
-msgid "Ogg Vorbis Tags:"
-msgstr "Ogg Vorbis Etiketleri:"
-
-#: src/vorbis/configure.c:98
+#: src/vorbis/configure.c:29
 msgid "Override generic titles"
 msgstr "Genel başlıkları geçersiz kıl"
 
-#: src/vorbis/configure.c:111
+#: src/vorbis/configure.c:30
 msgid "Title format:"
 msgstr "Başlık biçimi:"
 
-#: src/vorbis/vorbis.c:542
+#: src/vorbis/configure.c:34
+#, fuzzy
+msgid "Ogg Vorbis Tags"
+msgstr "Ogg Vorbis Etiketleri:"
+
+#: src/vorbis/configure.c:66
+msgid "Ogg Vorbis Audio Plugin Configuration"
+msgstr "Ogg Vorbis Ses Eklentisi Yapılandırması"
+
+#: src/vorbis/vorbis.c:573
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "OGG Vorbis Ses Eklentisi Hakkında"
 
-#: src/vorbis/vorbis.c:548
+#: src/vorbis/vorbis.c:579
 #, fuzzy
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
@@ -7173,12 +7157,153 @@ msgstr ""
 "\n"
 "Audacious desteği Pavel Vymetalek <pvymetalek@seznam.cz>"
 
-#: src/wavpack/ui.cxx:49
+#: src/wavpack/ui.c:129
+msgid "Ape2 Tag"
+msgstr "Ape2 Etiketi"
+
+#: src/wavpack/ui.c:136
+msgid "Title:"
+msgstr "Başlık:"
+
+#: src/wavpack/ui.c:143
+msgid "Artist:"
+msgstr "Sanatçı:"
+
+#: src/wavpack/ui.c:150
+msgid "Album:"
+msgstr "Albüm:"
+
+#: src/wavpack/ui.c:157
+msgid "Comment:"
+msgstr "Yorum:"
+
+#: src/wavpack/ui.c:164
+msgid "Year:"
+msgstr "Yıl:"
+
+#: src/wavpack/ui.c:172
+msgid "Track number:"
+msgstr "Parça numarası:"
+
+#: src/wavpack/ui.c:181
+msgid "Genre:"
+msgstr "Tür:"
+
+#: src/wavpack/ui.c:199
+msgid "Remove Tag"
+msgstr "Etiketi kaldır"
+
+#: src/wavpack/ui.c:210
+msgid "Wavpack Info:"
+msgstr "Wavpack Bilgisi:"
+
+#: src/wavpack/ui.c:296
+#, c-format
+msgid "version %d"
+msgstr "sürüm %d"
+
+#: src/wavpack/ui.c:297
+#, c-format
+msgid "average bitrate: %6.1f kbps"
+msgstr "ortalama bitoranı: %6.1f kbps"
+
+#: src/wavpack/ui.c:298
+#, c-format
+msgid "samplerate: %d Hz"
+msgstr "örnekleme oranı: %d Hz"
+
+#: src/wavpack/ui.c:299
+#, c-format
+msgid "bits per sample: %d"
+msgstr "bit/örnekleme: %d"
+
+#: src/wavpack/ui.c:300
+#, c-format
+msgid "channels: %d"
+msgstr "kanallar: %d"
+
+#: src/wavpack/ui.c:301
+#, c-format
+msgid "length: %d:%.2d"
+msgstr "uzunluk: %d:%.2d"
+
+#: src/wavpack/ui.c:302
+#, c-format
+msgid "file size: %d Bytes"
+msgstr "dosya boyutu: %d Byte"
+
+#: src/wavpack/ui.c:309
+msgid "Title Peak: ?"
+msgstr "Başlık Doruğu: ?"
+
+#: src/wavpack/ui.c:310
+msgid "Album Peak: ?"
+msgstr "Albüm Doruğu: ?"
+
+#: src/wavpack/ui.c:311
+msgid "Title Gain: ?"
+msgstr "Başlık Kazancı: ?"
+
+#: src/wavpack/ui.c:312
+msgid "Album Gain: ?"
+msgstr "Albüm Kazancı: ?"
+
+#: src/wavpack/ui.c:324
+#, c-format
+msgid "File Info - %s"
+msgstr "Dosya Bilgisi - %s"
+
+#: src/wavpack/ui.c:362
+msgid "Enable Dynamic Bitrate Display"
+msgstr "Dinamik Bitoranı Görüntülemeyi Etkinleştir"
+
+#: src/wavpack/ui.c:366
+#, fuzzy
+msgid "General Plugin Settings"
+msgstr "Genel Eklenti Ayarları:"
+
+#: src/wavpack/ui.c:375
+msgid "use Track Gain/Peak"
+msgstr "Parçada Gain/Peak kullan"
+
+#: src/wavpack/ui.c:376
+msgid "use Album Gain/Peak"
+msgstr "Albümde Gain/Peak kullan"
+
+#: src/wavpack/ui.c:380
+msgid "Enable Clipping Prevention"
+msgstr " Çatlama Korumasını Etkinleştir"
+
+#: src/wavpack/ui.c:381
+msgid "Enable ReplayGain"
+msgstr "ReplayGain Etkinleştir"
+
+#: src/wavpack/ui.c:382
+msgid "ReplayGain Type"
+msgstr "ReplayGain Türü"
+
+#: src/wavpack/ui.c:389
+msgid "ReplayGain Settings"
+msgstr "ReplayGain Ayarları"
+
+#: src/wavpack/ui.c:396
+msgid "Plugin"
+msgstr "Eklenti"
+
+#: src/wavpack/ui.c:397
+msgid "ReplayGain"
+msgstr "ReplayGain"
+
+#: src/wavpack/ui.c:421
+msgid "Wavpack Configuration"
+msgstr "Wavpack Yapılandırması"
+
+#: src/wavpack/wavpack.c:404
 #, c-format
 msgid "Wavpack Decoder Plugin %s"
 msgstr "Wavpack Dekoder Eklentisi %s"
 
-#: src/wavpack/ui.cxx:50
+#: src/wavpack/wavpack.c:405
 msgid ""
 "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
 "\n"
@@ -7190,145 +7315,23 @@ msgstr ""
 "Eklenti kodunun bir kısmı Miles Egan tarafından hazırlanmıştır\n"
 "Wavpack sitesine http://www.wavpack.com/ adresinden ulaşabilirsiniz\n"
 
-#: src/wavpack/ui.cxx:162
-msgid "Ape2 Tag"
-msgstr "Ape2 Etiketi"
+#~ msgid "/Toggle Decorations"
+#~ msgstr "/Geçiş Dekorasyonları"
 
-#: src/wavpack/ui.cxx:169
-msgid "Title:"
-msgstr "Başlık:"
+#~ msgid "/-"
+#~ msgstr "/-"
 
-#: src/wavpack/ui.cxx:181
-msgid "Artist:"
-msgstr "Sanatçı:"
+#~ msgid "/Close"
+#~ msgstr "/Kapat"
 
-#: src/wavpack/ui.cxx:193
-msgid "Album:"
-msgstr "Albüm:"
+#~ msgid "Blur scope"
+#~ msgstr "Bulanık Alan"
 
-#: src/wavpack/ui.cxx:205
-msgid "Comment:"
-msgstr "Yorum:"
+#~ msgid "ReplayGain Settings:"
+#~ msgstr "ReplayGain Ayarları:"
 
-#: src/wavpack/ui.cxx:218
-msgid "Year:"
-msgstr "Yıl:"
-
-#: src/wavpack/ui.cxx:231
-msgid "Track number:"
-msgstr "Parça numarası:"
-
-#: src/wavpack/ui.cxx:246
-msgid "Genre:"
-msgstr "Tür:"
-
-#: src/wavpack/ui.cxx:271
-msgid "Remove Tag"
-msgstr "Etiketi kaldır"
-
-#: src/wavpack/ui.cxx:284
-msgid "Wavpack Info:"
-msgstr "Wavpack Bilgisi:"
-
-#: src/wavpack/ui.cxx:377
-#, c-format
-msgid "version %d"
-msgstr "sürüm %d"
-
-#: src/wavpack/ui.cxx:378
-#, c-format
-msgid "average bitrate: %6.1f kbps"
-msgstr "ortalama bitoranı: %6.1f kbps"
-
-#: src/wavpack/ui.cxx:379
-#, c-format
-msgid "samplerate: %d Hz"
-msgstr "örnekleme oranı: %d Hz"
-
-#: src/wavpack/ui.cxx:380
-#, c-format
-msgid "bits per sample: %d"
-msgstr "bit/örnekleme: %d"
-
-#: src/wavpack/ui.cxx:381
-#, c-format
-msgid "channels: %d"
-msgstr "kanallar: %d"
-
-#: src/wavpack/ui.cxx:382
-#, c-format
-msgid "length: %d:%.2d"
-msgstr "uzunluk: %d:%.2d"
-
-#: src/wavpack/ui.cxx:383
-#, c-format
-msgid "file size: %d Bytes"
-msgstr "dosya boyutu: %d Byte"
-
-#: src/wavpack/ui.cxx:390
-msgid "Title Peak: ?"
-msgstr "Başlık Doruğu: ?"
-
-#: src/wavpack/ui.cxx:391
-msgid "Album Peak: ?"
-msgstr "Albüm Doruğu: ?"
-
-#: src/wavpack/ui.cxx:392
-msgid "Title Gain: ?"
-msgstr "Başlık Kazancı: ?"
-
-#: src/wavpack/ui.cxx:393
-msgid "Album Gain: ?"
-msgstr "Albüm Kazancı: ?"
-
-#: src/wavpack/ui.cxx:405
-#, c-format
-msgid "File Info - %s"
-msgstr "Dosya Bilgisi - %s"
-
-#: src/wavpack/ui.cxx:467
-msgid "Wavpack Configuration"
-msgstr "Wavpack Yapılandırması"
-
-#: src/wavpack/ui.cxx:480
-msgid "General Plugin Settings:"
-msgstr "Genel Eklenti Ayarları:"
-
-#: src/wavpack/ui.cxx:488
-msgid "Enable Dynamic Bitrate Display"
-msgstr "Dinamik Bitoranı Görüntülemeyi Etkinleştir"
-
-#: src/wavpack/ui.cxx:494
-msgid "Plugin"
-msgstr "Eklenti"
-
-#: src/wavpack/ui.cxx:498
-msgid "ReplayGain Settings:"
-msgstr "ReplayGain Ayarları:"
-
-#: src/wavpack/ui.cxx:506
-msgid "Enable Clipping Prevention"
-msgstr " Çatlama Korumasını Etkinleştir"
-
-#: src/wavpack/ui.cxx:511
-msgid "Enable ReplayGain"
-msgstr "ReplayGain Etkinleştir"
-
-#: src/wavpack/ui.cxx:516
-msgid "ReplayGain Type:"
-msgstr "ReplayGain Türü:"
-
-#: src/wavpack/ui.cxx:527
-msgid "use Track Gain/Peak"
-msgstr "Parçada Gain/Peak kullan"
-
-#: src/wavpack/ui.cxx:535
-msgid "use Album Gain/Peak"
-msgstr "Albümde Gain/Peak kullan"
-
-#: src/wavpack/ui.cxx:543
-msgid "ReplayGain"
-msgstr "ReplayGain"
+#~ msgid "ReplayGain Type:"
+#~ msgstr "ReplayGain Türü:"
 
 #~ msgid "About Apple Lossless Audio Plugin"
 #~ msgstr "Apple Kayıpsız Ses Eklentisi Hakkında"
@@ -7429,12 +7432,6 @@ msgstr "ReplayGain"
 
 #~ msgid "General Settings"
 #~ msgstr "Genel Ayarlar"
-
-#~ msgid "ReplayGain Settings"
-#~ msgstr "ReplayGain Ayarları"
-
-#~ msgid "ReplayGain Type"
-#~ msgstr "ReplayGain Türü"
 
 #~ msgid "Use Track Gain"
 #~ msgstr "Parça Kazancı Kullan"

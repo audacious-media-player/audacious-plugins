@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.4.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
-"POT-Creation-Date: 2009-08-27 11:54-0400\n"
+"POT-Creation-Date: 2009-09-16 02:13+0300\n"
 "PO-Revision-Date: 2007-08-28 20:44+0200\n"
 "Last-Translator: Daniel Patriche <m4st3rth0r@gmail.com>\n"
 "Language-Team: Romanian <audacious@atheme.org>\n"
@@ -41,9 +41,9 @@ msgstr "Despre plugin-ul decodor MP4·AAC"
 #: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:273
 #: src/console/plugin.c:37 src/crossfade/configure.c:1175
 #: src/crystalizer/crystalizer.c:113 src/echo_plugin/gui.c:24
-#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:677
+#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:698
 #: src/filewriter/filewriter.c:187 src/icecast/icecast.c:241
-#: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:263
+#: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:237
 #: src/madplug/plugin.c:580 src/metronom/metronom.c:92
 #: src/modplug/gui/main.cxx:52 src/null/null.c:65 src/null/null.c:108
 #: src/OSS4/OSS4.c:58 src/OSS/OSS.c:54 src/paranormal-ng/plugin.c:282
@@ -51,9 +51,9 @@ msgstr "Despre plugin-ul decodor MP4·AAC"
 #: src/sndfile/plugin.c:502 src/statusicon/si_ui.c:630
 #: src/stereo_plugin/stereo.c:52 src/stereo_plugin/stereo.c:115
 #: src/sun/about.c:37 src/sun/configure.c:557 src/timidity/interface.c:223
-#: src/timidity/plugin.c:110 src/tonegen/tonegen.c:56 src/tta/plugin.c:90
-#: src/tta/plugin.c:166 src/vorbis/vorbis.c:561 src/vtx/about.c:26
-#: src/vtx/info.c:38 src/wavpack/ui.cxx:53 src/wavpack/ui.cxx:552
+#: src/timidity/plugin.c:114 src/tonegen/tonegen.c:56 src/tta/plugin.c:90
+#: src/tta/plugin.c:166 src/vorbis/vorbis.c:592 src/vtx/about.c:26
+#: src/vtx/info.c:38 src/wavpack/wavpack.c:408
 msgid "Ok"
 msgstr "Ok"
 
@@ -94,7 +94,7 @@ msgstr "AdPlug·::·Configurare"
 #: src/jack/configure.c:151 src/modplug/gui/interface.cxx:715
 #: src/modplug/gui/modplug.glade:1668 src/null/null.c:109
 #: src/stereo_plugin/stereo.c:124 src/sun/configure.c:565
-#: src/timidity/interface.c:231 src/wavpack/ui.cxx:277 src/wavpack/ui.cxx:559
+#: src/timidity/interface.c:231 src/wavpack/ui.c:204
 msgid "Cancel"
 msgstr "Anulează"
 
@@ -324,7 +324,7 @@ msgstr "Acesta este semnalul de deșteptare."
 #: src/crossfade/interface-2.0.c:1503 src/flacng/plugin.c:633
 #: src/gnomeshortcuts/gnomeshortcuts.c:310 src/hotkey/gui.c:670
 #: src/modplug/gui/interface.cxx:703 src/modplug/gui/modplug.glade:1642
-#: src/scrobbler/gtkstuff.c:42 src/sid/xs_config.c:319 src/skins/plugin.c:177
+#: src/scrobbler/gtkstuff.c:42 src/sid/xs_config.c:319 src/skins/plugin.c:182
 #: src/streambrowser/streambrowser.c:328
 msgid "OK"
 msgstr "Ok"
@@ -1917,25 +1917,6 @@ msgstr "Dreptunghi"
 msgid "Play"
 msgstr "Pauză pentru"
 
-#: src/blur_scope/blur_scope.c:52
-#, fuzzy
-msgid "/Toggle Decorations"
-msgstr "Schimbă Coada"
-
-#: src/blur_scope/blur_scope.c:54
-msgid "/-"
-msgstr "/-"
-
-#: src/blur_scope/blur_scope.c:55
-#, fuzzy
-msgid "/Close"
-msgstr "Închide"
-
-#: src/blur_scope/blur_scope.c:179
-#, fuzzy
-msgid "Blur scope"
-msgstr "Scop din Puncte"
-
 #: src/blur_scope/config.c:71
 msgid "Blur Scope: Color selection"
 msgstr ""
@@ -2804,8 +2785,7 @@ msgid "Load"
 msgstr "Încarcă"
 
 #: src/crossfade/interface-2.0.c:1487 src/sid/xmms-sid.glade:1732
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:429
-#: src/wavpack/ui.cxx:265
+#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:429 src/wavpack/ui.c:194
 #, fuzzy
 msgid "Save"
 msgstr "Salvează"
@@ -3268,7 +3248,7 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:660
+#: src/ffaudio/ffaudio-core.c:681
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -3284,7 +3264,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:676
+#: src/ffaudio/ffaudio-core.c:697
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "Despre plugin-ul·Apple·Lossless·Audio"
@@ -3684,7 +3664,7 @@ msgstr "Selectați Playlist-ul"
 msgid "Load Playlist"
 msgstr "AdPlug·::·Informații despre fișier"
 
-#: src/gtkui/ui_gtk.c:49
+#: src/gtkui/ui_gtk.c:51
 msgid "GTK Foobar-like Interface"
 msgstr ""
 
@@ -5681,7 +5661,7 @@ msgid "Audacious-SID Fileinfo"
 msgstr "Developerii Audacious:"
 
 #: src/sid/xmms-sid.glade:3338 src/sid/xs_interface.c:1649
-#: src/wavpack/ui.cxx:149
+#: src/wavpack/ui.c:117
 #, fuzzy
 msgid "Filename:"
 msgstr "Fișier:"
@@ -5775,17 +5755,17 @@ msgstr "AdPlug·::·Informații despre fișier"
 msgid "Tune #%i: "
 msgstr "Pornește"
 
-#: src/skins/plugin.c:175
+#: src/skins/plugin.c:180
 msgid "About Skinned GUI"
 msgstr ""
 
-#: src/skins/plugin.c:176
+#: src/skins/plugin.c:181
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 msgstr ""
 
-#: src/skins/plugin.c:194
+#: src/skins/plugin.c:199
 msgid "Skinned Interface"
 msgstr ""
 
@@ -5907,7 +5887,7 @@ msgstr "Egalizator Audacious"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/skins/ui_main.c:348 src/skins/ui_main.c:2188
+#: src/skins/ui_main.c:348 src/skins/ui_main.c:2190
 #, fuzzy
 msgid "Audacious"
 msgstr "%s - Audacious"
@@ -5973,62 +5953,62 @@ msgstr ""
 msgid "Do not display this warning again"
 msgstr ""
 
-#: src/skins/ui_main.c:1266
+#: src/skins/ui_main.c:1268
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
 msgstr ""
 
-#: src/skins/ui_main.c:1296
+#: src/skins/ui_main.c:1298
 #, fuzzy, c-format
 msgid "Volume: %d%%"
 msgstr "Volum: %d%%"
 
-#: src/skins/ui_main.c:1324
+#: src/skins/ui_main.c:1326
 #, c-format
 msgid "Balance: %d%% left"
 msgstr ""
 
-#: src/skins/ui_main.c:1328
+#: src/skins/ui_main.c:1330
 msgid "Balance: center"
 msgstr ""
 
-#: src/skins/ui_main.c:1332
+#: src/skins/ui_main.c:1334
 #, c-format
 msgid "Balance: %d%% right"
 msgstr ""
 
-#: src/skins/ui_main.c:1634
+#: src/skins/ui_main.c:1636
 #, fuzzy
 msgid "Options Menu"
 msgstr "Meniu de Opțiuni"
 
-#: src/skins/ui_main.c:1638
+#: src/skins/ui_main.c:1640
 msgid "Disable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:1640
+#: src/skins/ui_main.c:1642
 msgid "Enable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:1643
+#: src/skins/ui_main.c:1645
 #, fuzzy
 msgid "File Info Box"
 msgstr "AdPlug·::·Informații despre fișier"
 
-#: src/skins/ui_main.c:1647
+#: src/skins/ui_main.c:1649
 msgid "Disable 'GUI Scaling'"
 msgstr ""
 
-#: src/skins/ui_main.c:1649
+#: src/skins/ui_main.c:1651
 #, fuzzy
 msgid "Enable 'GUI Scaling'"
 msgstr "Activează proxy"
 
-#: src/skins/ui_main.c:1652
+#: src/skins/ui_main.c:1654
 msgid "Visualization Menu"
 msgstr ""
 
-#: src/skins/ui_main.c:1697
+#: src/skins/ui_main.c:1699
 msgid ""
 "<b><big>Couldn't open audio.</big></b>\n"
 "\n"
@@ -6691,19 +6671,19 @@ msgstr ""
 msgid "TiMidity Configuration File"
 msgstr "AdPlug·::·Informații despre fișier"
 
-#: src/timidity/plugin.c:108
+#: src/timidity/plugin.c:112
 #, fuzzy, c-format
 msgid "TiMidity Plugin %s"
 msgstr "Plugin de intrare: %s"
 
-#: src/timidity/plugin.c:109
+#: src/timidity/plugin.c:113
 msgid ""
 "TiMidity Plugin\n"
 "http://libtimidity.sourceforge.net\n"
 "by Konstantin Korikov"
 msgstr ""
 
-#: src/timidity/plugin.c:339
+#: src/timidity/plugin.c:343
 #, fuzzy
 msgid "Couldn't load MIDI file"
 msgstr "Încarcă și redă un fișier"
@@ -6786,29 +6766,30 @@ msgstr ""
 msgid "About True Audio Plugin"
 msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
-#: src/vorbis/configure.c:80
-msgid "Ogg Vorbis Audio Plugin Configuration"
-msgstr ""
-
-#: src/vorbis/configure.c:90
-msgid "Ogg Vorbis Tags:"
-msgstr ""
-
-#: src/vorbis/configure.c:98
+#: src/vorbis/configure.c:29
 msgid "Override generic titles"
 msgstr ""
 
-#: src/vorbis/configure.c:111
+#: src/vorbis/configure.c:30
 #, fuzzy
 msgid "Title format:"
 msgstr "Formatul titlului:"
 
-#: src/vorbis/vorbis.c:542
+#: src/vorbis/configure.c:34
+#, fuzzy
+msgid "Ogg Vorbis Tags"
+msgstr "AdPlug·::·Informații despre fișier"
+
+#: src/vorbis/configure.c:66
+msgid "Ogg Vorbis Audio Plugin Configuration"
+msgstr ""
+
+#: src/vorbis/vorbis.c:573
 #, fuzzy
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
-#: src/vorbis/vorbis.c:548
+#: src/vorbis/vorbis.c:579
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -6844,12 +6825,172 @@ msgid ""
 "Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
 
-#: src/wavpack/ui.cxx:49
+#: src/wavpack/ui.c:129
+msgid "Ape2 Tag"
+msgstr ""
+
+#: src/wavpack/ui.c:136
+#, fuzzy
+msgid "Title:"
+msgstr "Titlu: "
+
+#: src/wavpack/ui.c:143
+#, fuzzy
+msgid "Artist:"
+msgstr "Artist"
+
+#: src/wavpack/ui.c:150
+#, fuzzy
+msgid "Album:"
+msgstr "Album"
+
+#: src/wavpack/ui.c:157
+#, fuzzy
+msgid "Comment:"
+msgstr "Comentariu"
+
+#: src/wavpack/ui.c:164
+#, fuzzy
+msgid "Year:"
+msgstr "Anul"
+
+#: src/wavpack/ui.c:172
+#, fuzzy
+msgid "Track number:"
+msgstr "Numărul Trackului"
+
+#: src/wavpack/ui.c:181
+#, fuzzy
+msgid "Genre:"
+msgstr "Genul"
+
+#: src/wavpack/ui.c:199
+#, fuzzy
+msgid "Remove Tag"
+msgstr "Șterge Duplicatele"
+
+#: src/wavpack/ui.c:210
+#, fuzzy
+msgid "Wavpack Info:"
+msgstr "AdPlug·::·Informații despre fișier"
+
+#: src/wavpack/ui.c:296
+#, c-format
+msgid "version %d"
+msgstr "versiunea %d"
+
+#: src/wavpack/ui.c:297
+#, c-format
+msgid "average bitrate: %6.1f kbps"
+msgstr "bitrate-ul mediu: %6.1f kbps"
+
+#: src/wavpack/ui.c:298
+#, fuzzy, c-format
+msgid "samplerate: %d Hz"
+msgstr "Rata de eșantionare [Hz]:"
+
+#: src/wavpack/ui.c:299
+#, fuzzy, c-format
+msgid "bits per sample: %d"
+msgstr "Foloseste coperta per-fișier"
+
+#: src/wavpack/ui.c:300
+#, fuzzy, c-format
+msgid "channels: %d"
+msgstr "Canale"
+
+#: src/wavpack/ui.c:301
+#, fuzzy, c-format
+msgid "length: %d:%.2d"
+msgstr "Mărimea track-ului"
+
+#: src/wavpack/ui.c:302
+#, fuzzy, c-format
+msgid "file size: %d Bytes"
+msgstr "AdPlug·::·Informații despre fișier"
+
+#: src/wavpack/ui.c:309
+#, fuzzy
+msgid "Title Peak: ?"
+msgstr "Formatul titlului:"
+
+#: src/wavpack/ui.c:310
+#, fuzzy
+msgid "Album Peak: ?"
+msgstr "<span size=\"small\">Album</span>"
+
+#: src/wavpack/ui.c:311
+#, fuzzy
+msgid "Title Gain: ?"
+msgstr "Formatul titlului:"
+
+#: src/wavpack/ui.c:312
+#, fuzzy
+msgid "Album Gain: ?"
+msgstr "<span size=\"small\">Album</span>"
+
+#: src/wavpack/ui.c:324
+#, fuzzy, c-format
+msgid "File Info - %s"
+msgstr "AdPlug·::·Informații despre fișier"
+
+#: src/wavpack/ui.c:362
+msgid "Enable Dynamic Bitrate Display"
+msgstr ""
+
+#: src/wavpack/ui.c:366
+#, fuzzy
+msgid "General Plugin Settings"
+msgstr "Lista plugin-urilor _Generale"
+
+#: src/wavpack/ui.c:375
+msgid "use Track Gain/Peak"
+msgstr ""
+
+#: src/wavpack/ui.c:376
+msgid "use Album Gain/Peak"
+msgstr ""
+
+#: src/wavpack/ui.c:380
+#, fuzzy
+msgid "Enable Clipping Prevention"
+msgstr "Activează proxy"
+
+#: src/wavpack/ui.c:381
+#, fuzzy
+msgid "Enable ReplayGain"
+msgstr "Activează modul 'Mărime Dublă'"
+
+#: src/wavpack/ui.c:382
+#, fuzzy
+msgid "ReplayGain Type"
+msgstr "Tipul Fișierului: "
+
+#: src/wavpack/ui.c:389
+#, fuzzy
+msgid "ReplayGain Settings"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
+
+#: src/wavpack/ui.c:396
+#, fuzzy
+msgid "Plugin"
+msgstr "Plugin de intrare: %s"
+
+#: src/wavpack/ui.c:397
+msgid "ReplayGain"
+msgstr ""
+
+#: src/wavpack/ui.c:421
+#, fuzzy
+msgid "Wavpack Configuration"
+msgstr "AdPlug·::·Configurare"
+
+#: src/wavpack/wavpack.c:404
 #, fuzzy, c-format
 msgid "Wavpack Decoder Plugin %s"
 msgstr "Lista plugin-urilor _Generale"
 
-#: src/wavpack/ui.cxx:50
+#: src/wavpack/wavpack.c:405
 msgid ""
 "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
 "\n"
@@ -6857,165 +6998,28 @@ msgid ""
 "Visit the Wavpack site at http://www.wavpack.com/\n"
 msgstr ""
 
-#: src/wavpack/ui.cxx:162
-msgid "Ape2 Tag"
-msgstr ""
-
-#: src/wavpack/ui.cxx:169
 #, fuzzy
-msgid "Title:"
-msgstr "Titlu: "
+#~ msgid "/Toggle Decorations"
+#~ msgstr "Schimbă Coada"
 
-#: src/wavpack/ui.cxx:181
+#~ msgid "/-"
+#~ msgstr "/-"
+
 #, fuzzy
-msgid "Artist:"
-msgstr "Artist"
+#~ msgid "/Close"
+#~ msgstr "Închide"
 
-#: src/wavpack/ui.cxx:193
 #, fuzzy
-msgid "Album:"
-msgstr "Album"
+#~ msgid "Blur scope"
+#~ msgstr "Scop din Puncte"
 
-#: src/wavpack/ui.cxx:205
 #, fuzzy
-msgid "Comment:"
-msgstr "Comentariu"
+#~ msgid "ReplayGain Settings:"
+#~ msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
-#: src/wavpack/ui.cxx:218
 #, fuzzy
-msgid "Year:"
-msgstr "Anul"
-
-#: src/wavpack/ui.cxx:231
-#, fuzzy
-msgid "Track number:"
-msgstr "Numărul Trackului"
-
-#: src/wavpack/ui.cxx:246
-#, fuzzy
-msgid "Genre:"
-msgstr "Genul"
-
-#: src/wavpack/ui.cxx:271
-#, fuzzy
-msgid "Remove Tag"
-msgstr "Șterge Duplicatele"
-
-#: src/wavpack/ui.cxx:284
-#, fuzzy
-msgid "Wavpack Info:"
-msgstr "AdPlug·::·Informații despre fișier"
-
-#: src/wavpack/ui.cxx:377
-#, c-format
-msgid "version %d"
-msgstr "versiunea %d"
-
-#: src/wavpack/ui.cxx:378
-#, c-format
-msgid "average bitrate: %6.1f kbps"
-msgstr "bitrate-ul mediu: %6.1f kbps"
-
-#: src/wavpack/ui.cxx:379
-#, fuzzy, c-format
-msgid "samplerate: %d Hz"
-msgstr "Rata de eșantionare [Hz]:"
-
-#: src/wavpack/ui.cxx:380
-#, fuzzy, c-format
-msgid "bits per sample: %d"
-msgstr "Foloseste coperta per-fișier"
-
-#: src/wavpack/ui.cxx:381
-#, fuzzy, c-format
-msgid "channels: %d"
-msgstr "Canale"
-
-#: src/wavpack/ui.cxx:382
-#, fuzzy, c-format
-msgid "length: %d:%.2d"
-msgstr "Mărimea track-ului"
-
-#: src/wavpack/ui.cxx:383
-#, fuzzy, c-format
-msgid "file size: %d Bytes"
-msgstr "AdPlug·::·Informații despre fișier"
-
-#: src/wavpack/ui.cxx:390
-#, fuzzy
-msgid "Title Peak: ?"
-msgstr "Formatul titlului:"
-
-#: src/wavpack/ui.cxx:391
-#, fuzzy
-msgid "Album Peak: ?"
-msgstr "<span size=\"small\">Album</span>"
-
-#: src/wavpack/ui.cxx:392
-#, fuzzy
-msgid "Title Gain: ?"
-msgstr "Formatul titlului:"
-
-#: src/wavpack/ui.cxx:393
-#, fuzzy
-msgid "Album Gain: ?"
-msgstr "<span size=\"small\">Album</span>"
-
-#: src/wavpack/ui.cxx:405
-#, fuzzy, c-format
-msgid "File Info - %s"
-msgstr "AdPlug·::·Informații despre fișier"
-
-#: src/wavpack/ui.cxx:467
-#, fuzzy
-msgid "Wavpack Configuration"
-msgstr "AdPlug·::·Configurare"
-
-#: src/wavpack/ui.cxx:480
-#, fuzzy
-msgid "General Plugin Settings:"
-msgstr "Lista plugin-urilor _Generale"
-
-#: src/wavpack/ui.cxx:488
-msgid "Enable Dynamic Bitrate Display"
-msgstr ""
-
-#: src/wavpack/ui.cxx:494
-#, fuzzy
-msgid "Plugin"
-msgstr "Plugin de intrare: %s"
-
-#: src/wavpack/ui.cxx:498
-#, fuzzy
-msgid "ReplayGain Settings:"
-msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
-
-#: src/wavpack/ui.cxx:506
-#, fuzzy
-msgid "Enable Clipping Prevention"
-msgstr "Activează proxy"
-
-#: src/wavpack/ui.cxx:511
-#, fuzzy
-msgid "Enable ReplayGain"
-msgstr "Activează modul 'Mărime Dublă'"
-
-#: src/wavpack/ui.cxx:516
-#, fuzzy
-msgid "ReplayGain Type:"
-msgstr "Tipul Fișierului: "
-
-#: src/wavpack/ui.cxx:527
-msgid "use Track Gain/Peak"
-msgstr ""
-
-#: src/wavpack/ui.cxx:535
-msgid "use Album Gain/Peak"
-msgstr ""
-
-#: src/wavpack/ui.cxx:543
-msgid "ReplayGain"
-msgstr ""
+#~ msgid "ReplayGain Type:"
+#~ msgstr "Tipul Fișierului: "
 
 #~ msgid "About Apple Lossless Audio Plugin"
 #~ msgstr "Despre plugin-ul·Apple·Lossless·Audio"
@@ -7057,14 +7061,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "General Settings"
 #~ msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
-
-#, fuzzy
-#~ msgid "ReplayGain Settings"
-#~ msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
-
-#, fuzzy
-#~ msgid "ReplayGain Type"
-#~ msgstr "Tipul Fișierului: "
 
 #, fuzzy
 #~ msgid "Use Track Gain"
@@ -7673,10 +7669,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Album peak:"
 #~ msgstr "<span size=\"small\">Album</span>"
-
-#, fuzzy
-#~ msgid " Ogg Vorbis Info "
-#~ msgstr "AdPlug·::·Informații despre fișier"
 
 #, fuzzy
 #~ msgid "Bit rate:"
