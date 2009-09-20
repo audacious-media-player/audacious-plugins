@@ -22,8 +22,6 @@
 #define SMALL_BUFFER 100 /* milliseconds */
 #define LARGE_BUFFER 1000 /* milliseconds */
 
-static const gchar * preferred_mixer_elements[] = {"PCM", "Wave", "Master"};
-
 static GMutex * alsa_mutex;
 static snd_pcm_t * alsa_handle;
 static GCond * pump_cond;
@@ -144,14 +142,13 @@ static void check_pump_started (void)
 /* alsa_mutex must be locked */
 static gboolean real_open (snd_pcm_format_t format, gint rate, gint channels)
 {
-    gchar * code = alsa_config_override ? g_strdup_printf ("hw:%d,%d",
-     alsa_config_card, alsa_config_device) : g_strdup ("default");
     snd_pcm_hw_params_t * params;
     guint time = 1000 * SMALL_BUFFER;
 
-    DEBUG ("Opening PCM device %s for %s, %d channels, %d Hz.\n", code,
-     snd_pcm_format_name (format), channels, rate);
-    CHECK (snd_pcm_open, & alsa_handle, code, SND_PCM_STREAM_PLAYBACK, 0);
+    DEBUG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
+     alsa_config_pcm, snd_pcm_format_name (format), channels, rate);
+    CHECK (snd_pcm_open, & alsa_handle, alsa_config_pcm,
+     SND_PCM_STREAM_PLAYBACK, 0);
 
     snd_pcm_hw_params_alloca (& params);
     CHECK (snd_pcm_hw_params_any, alsa_handle, params);
@@ -182,7 +179,6 @@ static gboolean real_open (snd_pcm_format_t format, gint rate, gint channels)
     alsa_paused = FALSE;
     alsa_close_source = 0;
 
-    g_free (code);
     return TRUE;
 
 FAILED:
@@ -192,7 +188,6 @@ FAILED:
         alsa_handle = NULL;
     }
 
-    g_free (code);
     return FALSE;
 }
 
@@ -545,55 +540,32 @@ FAILED:
     g_mutex_unlock (alsa_mutex);
 }
 
-static snd_mixer_elem_t * get_mixer_element (const gchar * name)
-{
-    snd_mixer_selem_id_t * selem_id;
-    snd_mixer_elem_t * element;
-
-    snd_mixer_selem_id_alloca (& selem_id);
-    snd_mixer_selem_id_set_name (selem_id, alsa_config_mixer_element);
-    element = snd_mixer_find_selem (alsa_mixer, selem_id);
-
-    DEBUG ("%s mixer element %s.\n", (element != NULL) ? "Opened" : "Failed to "
-     "open", name);
-
-    return element;
-}
-
 void alsa_open_mixer (void)
 {
-    gchar * code = alsa_config_override ? g_strdup_printf ("hw:%d",
-     alsa_config_card) : g_strdup ("default");
+    snd_mixer_selem_id_t * selem_id;
 
-    DEBUG ("Opening mixer card %s.\n", code);
+    alsa_mixer = NULL;
+
+    if (alsa_config_mixer_element == NULL)
+        goto FAILED;
+
+    DEBUG ("Opening mixer card %s.\n", alsa_config_mixer);
     CHECK (snd_mixer_open, & alsa_mixer, 0);
-    CHECK (snd_mixer_attach, alsa_mixer, code);
+    CHECK (snd_mixer_attach, alsa_mixer, alsa_config_mixer);
     CHECK (snd_mixer_selem_register, alsa_mixer, NULL, NULL);
     CHECK (snd_mixer_load, alsa_mixer);
 
-    if (alsa_config_override)
-        alsa_mixer_element = get_mixer_element (alsa_config_mixer_element);
-    else
-    {
-        gint count;
-
-        alsa_mixer_element = NULL;
-
-        for (count = 0; alsa_mixer_element == NULL && count < G_N_ELEMENTS
-         (preferred_mixer_elements); count ++)
-            alsa_mixer_element = get_mixer_element
-             (preferred_mixer_elements[count]);
-    }
+    snd_mixer_selem_id_alloca (& selem_id);
+    snd_mixer_selem_id_set_name (selem_id, alsa_config_mixer_element);
+    alsa_mixer_element = snd_mixer_find_selem (alsa_mixer, selem_id);
 
     if (alsa_mixer_element == NULL)
     {
-        ERROR ("Mixer element not found; volume control disabled.\n");
+        ERROR ("snd_mixer_find_selem failed.\n");
         goto FAILED;
     }
 
     CHECK (snd_mixer_selem_set_playback_volume_range, alsa_mixer_element, 0, 100);
-
-    g_free (code);
     return;
 
 FAILED:
@@ -602,8 +574,6 @@ FAILED:
         snd_mixer_close (alsa_mixer);
         alsa_mixer = NULL;
     }
-
-    g_free (code);
 }
 
 void alsa_close_mixer (void)

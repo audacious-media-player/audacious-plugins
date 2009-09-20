@@ -62,10 +62,7 @@ void alsa_open_mixer (void);
 void alsa_close_mixer (void);
 
 /* config.c */
-extern gboolean alsa_config_override;
-extern gint alsa_config_card;
-extern gint alsa_config_device;
-extern gchar * alsa_config_mixer_element;
+extern gchar * alsa_config_pcm, * alsa_config_mixer, * alsa_config_mixer_element;
 
 void alsa_config_load (void);
 void alsa_config_save (void);
