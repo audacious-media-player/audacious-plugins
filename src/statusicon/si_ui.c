@@ -22,7 +22,6 @@
 #include "si_audacious.h"
 #include "si_cfg.h"
 #include "si_common.h"
-#include "gtktrayicon.h"
 #include <audacious/ui_fileinfopopup.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
@@ -289,144 +288,6 @@ si_ui_statusicon_cb_aud_hook_tchange ( gpointer plentry_gp , gpointer prevs_gp )
   }
 }
 
-
-static gboolean
-si_ui_statusicon_cb_popup ( GtkWidget * evbox , GdkEvent * event )
-{
-  if ((event->type == GDK_LEAVE_NOTIFY || event->type == GDK_ENTER_NOTIFY) &&
-    event->crossing.detail == GDK_NOTIFY_INFERIOR)
-      return FALSE;
-
-  if ( event->type != GDK_KEY_PRESS && event->type != GDK_KEY_RELEASE )
-  {
-    GtkWidget *event_widget = gtk_get_event_widget( event );
-    if ( event_widget != evbox )
-      return FALSE;
-  }
-
-  switch (event->type)
-  {
-    case GDK_EXPOSE:
-      /* do nothing */
-      break;
-
-    case GDK_ENTER_NOTIFY:
-        si_ui_statusicon_popup_timer_start( evbox );
-      break;
-
-     case GDK_LEAVE_NOTIFY:
-       si_ui_statusicon_popup_timer_stop( evbox );
-       if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "popup_active" )) == 1 )
-         si_ui_statusicon_popup_hide( evbox );
-       break;
-
-     case GDK_MOTION_NOTIFY:
-       break; /* ignore */
-
-     case GDK_BUTTON_PRESS:
-     case GDK_BUTTON_RELEASE:
-     case GDK_KEY_PRESS:
-     case GDK_KEY_RELEASE:
-     case GDK_PROXIMITY_IN:
-     case GDK_SCROLL:
-       si_ui_statusicon_popup_timer_stop( evbox );
-       if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "popup_active" )) == 1 )
-         si_ui_statusicon_popup_hide( evbox );
-       break;
-
-     default:
-       break;
-  }
-
-  return FALSE;
-}
-
-
-static void
-si_ui_statusicon_image_update ( GtkWidget * image )
-{
-  GdkPixbuf *si_pixbuf, *si_scaled_pixbuf;
-  gint size = GPOINTER_TO_INT(g_object_get_data( G_OBJECT(image) , "size" ));
-  static gchar *wmname = NULL;
-
-  AUDDBG("WM reported proposed icon size: %d\n", size);
-
-  /* sometimes, KDE won't give the correct size-allocation; workaround this */
-  if ( wmname == NULL )
-  {
-    GdkScreen *screen = gdk_screen_get_default();
-    if ( screen != NULL )
-      wmname = (gchar*)gdk_x11_screen_get_window_manager_name( screen );
-      AUDDBG("WM name: %s\n", wmname);
-  }
-  if ( ( size <= 1 || size > 22 ) && ( wmname != NULL ) && !strcmp("KWin",wmname) )
-    size = 22;
-	GtkIconTheme *theme;
-	GtkIconInfo *info;
-	int *array;
-	int i;
-	const gchar *path;
-	gboolean scalable = FALSE;
-	gboolean catch = FALSE;
-
-	theme = gtk_icon_theme_get_default ();
-	array = gtk_icon_theme_get_icon_sizes (theme, "audacious");
-	if (array[0] != 0) {
-		for (i = 0; array[i] != 0; i++) {
-			if (array[i] == -1)
-				scalable = TRUE;
-			if (array[i] == 22)
-				catch = TRUE;
-		}
-	}
-	g_free (array);
-	if (catch) {
-		info = gtk_icon_theme_lookup_icon (theme, "audacious", 22, GTK_ICON_LOOKUP_NO_SVG);
-		path = gtk_icon_info_get_filename (info);
-		si_pixbuf = gdk_pixbuf_new_from_file (path, NULL);
-	} else if (scalable) {
-		info = gtk_icon_theme_lookup_icon (theme, "audacious", -1, GTK_ICON_LOOKUP_FORCE_SVG);
-		path = gtk_icon_info_get_filename (info);
-		si_pixbuf = gdk_pixbuf_new_from_file (path, NULL);
-
-	} else {
-		si_pixbuf = gdk_pixbuf_new_from_file (DATA_DIR "/images/audacious_player.xpm", NULL);
-	}
-  si_scaled_pixbuf = gdk_pixbuf_scale_simple( si_pixbuf , size , size , GDK_INTERP_BILINEAR );
-  gtk_image_set_from_pixbuf( GTK_IMAGE(image) , si_scaled_pixbuf );
-  g_object_unref( si_pixbuf );
-  g_object_unref( si_scaled_pixbuf );
-
-  return;
-}
-
-
-static void
-si_ui_statusicon_cb_image_sizalloc ( GtkWidget * image , GtkAllocation * allocation , gpointer si_applet )
-{
-  /*GtkOrientation orientation;*/
-  static gint prev_size = 0;
-  gint size = 0;
-
-  /*orientation = _aud_gtk_tray_icon_get_orientation( AUD_GTK_TRAY_ICON(si_applet) );
-  if ( orientation == GTK_ORIENTATION_HORIZONTAL )
-    size = allocation->height;
-  else
-    size = allocation->width;*/
-
-  size = MAX(allocation->height, allocation->width); /* some WMs doesn't report orientation correctly --asphyx */
-
-  if ( prev_size != size )
-  {
-    prev_size = size;
-    g_object_set_data( G_OBJECT(image) , "size" , GINT_TO_POINTER(size) );
-    si_ui_statusicon_image_update( image );
-  }
-
-  return;
-}
-
-
 static void
 si_ui_statusicon_smallmenu_show ( gint x, gint y, guint button, guint32 time , gpointer evbox )
 {
@@ -548,8 +409,6 @@ si_ui_statusicon_enable ( gboolean enable )
                       G_CALLBACK(si_ui_statusicon_cb_btpress) , NULL );
     g_signal_connect( G_OBJECT(si_applet) , "scroll-event" ,
                       G_CALLBACK(si_ui_statusicon_cb_btscroll) , NULL );
-//    g_signal_connect_after( G_OBJECT(si_applet) , "event-after" ,
-//                            G_CALLBACK(si_ui_statusicon_cb_popup) , NULL );
 
     gtk_status_icon_set_visible(si_applet, TRUE);
 

@@ -1,7 +1,6 @@
 PLUGIN = statusicon${PLUGIN_SUFFIX}
 
-SRCS = gtktrayicon-x11.c	\
-       si.c			\
+SRCS = si.c			\
        si_cfg.c			\
        si_ui.c
 
