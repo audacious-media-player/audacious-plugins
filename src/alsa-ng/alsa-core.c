@@ -310,20 +310,39 @@ alsaplug_loop(gpointer unused)
 }
 
 /********************************************************************************
+ * Device management.                                                           *
+ ********************************************************************************/
+
+static gboolean
+alsaplug_devices_exist(void)
+{
+    gpointer *hints = NULL;
+    gboolean ret = FALSE;    
+
+    if (snd_device_name_hint(-1, "pcm", &hints) < 0)
+        return ret;
+
+    if (hints[0] != NULL)
+        ret = TRUE;
+
+    snd_device_name_free_hint(hints);
+
+    return ret;       
+}
+
+/********************************************************************************
  * Output Plugin API implementation.                                            *
  ********************************************************************************/
 
 static OutputPluginInitStatus
 alsaplug_init(void)
 {
-    gint card = -1;
+    if (!alsaplug_devices_exist())
+        return OUTPUT_PLUGIN_INIT_NO_DEVICES;
 
     pcm_state_mutex = g_mutex_new();
     pcm_state_cond = g_cond_new();
     pcm_flush_cond = g_cond_new();
-
-    if (snd_card_next(&card) != 0)
-        return OUTPUT_PLUGIN_INIT_NO_DEVICES;
 
     alsaplug_get_config();
     if (alsaplug_cfg.pcm_device == NULL)
@@ -346,6 +365,24 @@ static void alsaplug_cleanup(void)
 
         amixer = NULL;
         mixer_ready = FALSE;
+    }
+
+    if (pcm_state_mutex != NULL)
+    {
+        g_mutex_free(pcm_state_mutex);
+        pcm_state_mutex = NULL;
+    }
+
+    if (pcm_state_cond != NULL)
+    {
+        g_cond_free(pcm_state_cond);
+        pcm_state_cond = NULL;
+    }
+
+    if (pcm_flush_cond != NULL)
+    {
+        g_cond_free(pcm_flush_cond);
+        pcm_flush_cond = NULL;
     }
 }
 
