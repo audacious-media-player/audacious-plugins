@@ -28,8 +28,6 @@
 static GtkWidget *configure_win = NULL;
 static GtkWidget *devices_combo, *mixer_devices_combo;
 
-static gint current_mixer_card;
-
 gint alsaplug_mixer_new_for_card(snd_mixer_t **mixer, const gchar *card);
 
 #define GET_TOGGLE(tb) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(tb))
@@ -39,7 +37,6 @@ static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 {
 	g_free(alsaplug_cfg.pcm_device);
 	alsaplug_cfg.pcm_device = GET_CHARS(GTK_COMBO(devices_combo)->entry);
-	alsaplug_cfg.mixer_card = g_strdup_printf("hw:%d", current_mixer_card);
 	alsaplug_cfg.mixer_device = GET_CHARS(GTK_COMBO(mixer_devices_combo)->entry);
 
 	gtk_widget_destroy(configure_win);
@@ -47,8 +44,7 @@ static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 	/* Save configuration */
 	mcs_handle_t *cfgfile = aud_cfg_db_open();
 	aud_cfg_db_set_string(cfgfile, "alsaplug", "pcm_device", alsaplug_cfg.pcm_device);
-	aud_cfg_db_set_string(cfgfile, "alsaplug", "mixer_card", alsaplug_cfg.mixer_card);
-	aud_cfg_db_set_string(cfgfile, "alsaplug","mixer_device", alsaplug_cfg.mixer_device);
+	aud_cfg_db_set_string(cfgfile, "alsaplug", "mixer_device", alsaplug_cfg.mixer_device);
 	aud_cfg_db_close(cfgfile);
 }
 
@@ -56,47 +52,8 @@ void alsaplug_get_config(void)
 {
 	mcs_handle_t *cfgfile = aud_cfg_db_open();
 	aud_cfg_db_get_string(cfgfile, "alsaplug", "pcm_device", &alsaplug_cfg.pcm_device);
-	aud_cfg_db_get_string(cfgfile, "alsaplug", "mixer_card", &alsaplug_cfg.mixer_card);
-	aud_cfg_db_get_string(cfgfile, "alsaplug","mixer_device", &alsaplug_cfg.mixer_device);
+	aud_cfg_db_get_string(cfgfile, "alsaplug", "mixer_device", &alsaplug_cfg.mixer_device);
 	aud_cfg_db_close(cfgfile);
-}
-
-static gint get_cards(GtkOptionMenu *omenu, GtkSignalFunc cb)
-{
-	GtkWidget *menu, *item;
-	gint card = -1, err, set = 0, curr = -1;
-
-	menu = gtk_menu_new();
-	if ((err = snd_card_next(&card)) != 0)
-		g_warning("snd_next_card() failed: %s", snd_strerror(err));
-
-	while (card > -1)
-	{
-		gchar *label;
-
-		curr++;
-		if ((err = snd_card_get_name(card, &label)) != 0)
-		{
-			g_warning("snd_carg_get_name() failed: %s",
-				  snd_strerror(err));
-			break;
-		}
-
-		item = gtk_menu_item_new_with_label(label);
-		gtk_signal_connect(GTK_OBJECT(item), "activate", cb,
-				   GINT_TO_POINTER(card));
-		gtk_widget_show(item);
-		gtk_menu_append(GTK_MENU(menu), item);
-		if ((err = snd_card_next(&card)) != 0)
-		{
-			g_warning("snd_next_card() failed: %s",
-				  snd_strerror(err));
-			break;
-		}
-	}
-
-	gtk_option_menu_set_menu(omenu, menu);
-	return set;
 }
 
 static gint get_mixer_devices(GtkCombo *combo, const gchar *card)
@@ -196,14 +153,13 @@ static void get_devices_for_card(GtkCombo *combo, gint card)
 	snd_ctl_close(ctl);
 }
 
-
-
 static void get_devices(GtkCombo *combo)
 {
 	GtkWidget *item;
 	gint card = -1;
 	gint err = 0;
 	gchar *descr;
+	gpointer *hints = NULL;
 
 	descr = g_strdup_printf(_("Default PCM device (%s)"), "default");
 	item = gtk_list_item_new_with_label(descr);
@@ -211,6 +167,32 @@ static void get_devices(GtkCombo *combo)
 	g_free(descr);
 	gtk_combo_set_item_string(combo, GTK_ITEM(item), "default");
 	gtk_container_add(GTK_CONTAINER(combo->list), item);
+
+	if ((err = snd_device_name_hint(-1, "pcm", &hints)) == 0)
+	{
+		for (card = 0; hints[card] != NULL; card++)
+		{
+			gchar *name = snd_device_name_get_hint(hints[card], "NAME");
+			gchar *desc = snd_device_name_get_hint(hints[card], "DESC");
+			gchar **descnames = g_strsplit(desc, "\n", 0);
+
+			gchar *buf = g_strconcat(descnames[0],
+					descnames[1] != NULL ? " - " : "",
+					descnames[1] != NULL ? descnames[1] : "",
+					" (", name, ")", NULL);
+
+			item = gtk_list_item_new_with_label(buf);
+			gtk_widget_show(item);
+
+			gtk_combo_set_item_string(combo, GTK_ITEM(item), name);
+			gtk_container_add(GTK_CONTAINER(combo->list), item);
+		
+			g_strfreev(descnames);
+			g_free(buf);
+		}
+
+		snd_device_name_free_hint(hints);
+	}
 
 	if ((err = snd_card_next(&card)) != 0)
 	{
@@ -230,43 +212,25 @@ static void get_devices(GtkCombo *combo)
 	}
 }
 
-static void mixer_card_cb(GtkWidget * widget, gpointer card)
-{
-	gchar scratch[128];
-
-	if (current_mixer_card == GPOINTER_TO_INT(card))
-		return;
-	current_mixer_card = GPOINTER_TO_INT(card);
-
-	snprintf(scratch, 128, "hw:%d", current_mixer_card);
-	get_mixer_devices(GTK_COMBO(mixer_devices_combo),
-			  scratch);
-}
-
 void alsaplug_configure(void)
 {
         GtkWidget * vbox, * adevice_frame, * adevice_box;
-	GtkWidget *mixer_frame, *mixer_box, *mixer_table, *mixer_card_om;
-	GtkWidget *mixer_card_label, *mixer_device_label;
+	GtkWidget *mixer_frame;
 	GtkWidget *bbox, *ok, *cancel;
 
-	gint mset;
-
-	if (configure_win)
+	if (configure_win != NULL)
 	{
                 gtk_window_present(GTK_WINDOW(configure_win));
 		return;
 	}
 
         configure_win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_title ((GtkWindow *) configure_win, _("ALSA Output "
-         "Plugin Preferences"));
-        gtk_window_set_type_hint ((GtkWindow *) configure_win,
-         GDK_WINDOW_TYPE_HINT_DIALOG);
+        gtk_window_set_title ((GtkWindow *) configure_win, _("ALSA Output Plugin Preferences"));
+        gtk_window_set_type_hint ((GtkWindow *) configure_win, GDK_WINDOW_TYPE_HINT_DIALOG);
         gtk_window_set_resizable ((GtkWindow *) configure_win, FALSE);
+
         gtk_container_set_border_width ((GtkContainer *) configure_win, 6);
-        g_signal_connect ((GObject *) configure_win, "destroy", (GCallback)
-         gtk_widget_destroyed, & configure_win);
+        g_signal_connect ((GObject *) configure_win, "destroy", G_CALLBACK(gtk_widget_destroyed), &configure_win);
 
         vbox = gtk_vbox_new (FALSE, 6);
         gtk_container_add ((GtkContainer *) configure_win, vbox);
@@ -288,41 +252,12 @@ void alsaplug_configure(void)
         mixer_frame = gtk_frame_new (_("Mixer:"));
         gtk_box_pack_start ((GtkBox *) vbox, mixer_frame, FALSE, FALSE, 0);
 
-        mixer_box = gtk_vbox_new (FALSE, 6);
-        gtk_container_set_border_width ((GtkContainer *) mixer_box, 6);
-        gtk_container_add ((GtkContainer *) mixer_frame, mixer_box);
-
-	mixer_table = gtk_table_new(2, 2, FALSE);
-	gtk_table_set_row_spacings(GTK_TABLE(mixer_table), 5);
-	gtk_table_set_col_spacings(GTK_TABLE(mixer_table), 5);
-	gtk_box_pack_start(GTK_BOX(mixer_box), mixer_table, FALSE, FALSE, 0);
-
-	mixer_card_label = gtk_label_new(_("Mixer card:"));
-	gtk_label_set_justify(GTK_LABEL(mixer_card_label), GTK_JUSTIFY_LEFT);
-	gtk_misc_set_alignment(GTK_MISC(mixer_card_label), 0, 0.5);
-	gtk_table_attach(GTK_TABLE(mixer_table), mixer_card_label,
-			 0, 1, 0, 1, GTK_FILL, 0, 0, 0);
-
-	mixer_card_om = gtk_option_menu_new();
-	mset = get_cards(GTK_OPTION_MENU(mixer_card_om),
-			 (GtkSignalFunc)mixer_card_cb);
-
-	gtk_table_attach(GTK_TABLE(mixer_table), mixer_card_om,
-			 1, 2, 0, 1, GTK_FILL | GTK_EXPAND, GTK_FILL, 0, 0);
-
-	mixer_device_label = gtk_label_new(_("Mixer device:"));
-	gtk_label_set_justify(GTK_LABEL(mixer_device_label), GTK_JUSTIFY_LEFT);
-	gtk_misc_set_alignment(GTK_MISC(mixer_device_label), 0, 0.5);
-	gtk_table_attach(GTK_TABLE(mixer_table), mixer_device_label,
-			 0, 1, 1, 2, GTK_FILL, 0, 0, 0);
 	mixer_devices_combo = gtk_combo_new();
-	gtk_option_menu_set_history(GTK_OPTION_MENU(mixer_card_om), mset);
-	get_mixer_devices(GTK_COMBO(mixer_devices_combo), alsaplug_cfg.mixer_card);
+	get_mixer_devices(GTK_COMBO(mixer_devices_combo), alsaplug_cfg.pcm_device);
 	gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(mixer_devices_combo)->entry),
 			   alsaplug_cfg.mixer_device);
 
-	gtk_table_attach(GTK_TABLE(mixer_table), mixer_devices_combo,
-			 1, 2, 1, 2, GTK_FILL | GTK_EXPAND, 0, 0, 0);
+	gtk_container_add(GTK_CONTAINER(mixer_frame), mixer_devices_combo);
 
 	bbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
