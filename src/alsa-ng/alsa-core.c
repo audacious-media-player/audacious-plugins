@@ -28,6 +28,11 @@ static gboolean pcm_going = FALSE;
 static GThread *audio_thread = NULL;
 static gint bps;
 
+static gint loopbufsize = 384000;
+static gint looppostsize = 2048;
+static gint looppresize;
+static gboolean prefill = TRUE;
+
 static gsize wr_total = 0;
 static gsize wr_hwframes = 0;
 
@@ -225,6 +230,12 @@ alsaplug_write_buffer(gpointer data, gint length)
 
             _DEBUG ("snd_pcm_writei error: %s", snd_strerror (wr_frames));
 
+            if (wr_frames == -EPIPE)
+            {
+                _DEBUG ("prefilling due to buffer underrun.");
+                prefill = TRUE;
+            }
+
             if (err < 0)
             {
                 _ERROR ("snd_pcm_recover error: %s", snd_strerror (err));
@@ -237,7 +248,7 @@ alsaplug_write_buffer(gpointer data, gint length)
 static gpointer
 alsaplug_loop(gpointer unused)
 {
-    guchar buf[2048];
+    guchar buf[loopbufsize];
     int size;
 
     while (pcm_going)
@@ -264,12 +275,29 @@ alsaplug_loop(gpointer unused)
             continue;
         }
 
-        if (size > sizeof buf)
-            size = sizeof buf;
+        if (prefill)
+        {
+            if (size > loopbufsize)
+                size = loopbufsize;
 
-        alsaplug_ringbuffer_read (& pcm_ringbuf, buf, size);
+            if (size >= looppresize)
+            {
+                alsaplug_ringbuffer_read (&pcm_ringbuf, buf, size);
+                prefill = FALSE;
+            }
+        }
+        else
+        {
+            if (size > looppostsize)
+                size = looppostsize;
+
+            alsaplug_ringbuffer_read (&pcm_ringbuf, buf, size);
+        }
+
         g_mutex_unlock (pcm_state_mutex);
-        alsaplug_write_buffer (buf, size);
+
+        if (!prefill)
+            alsaplug_write_buffer (buf, size);
     }
 
     snd_pcm_drain(pcm_handle);
@@ -373,14 +401,21 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
     buf_size = MAX(aud_cfg->output_buffer_size, 100);
     ringbuf_size = buf_size * bps / 1000;
 
-    if (alsaplug_ringbuffer_init(&pcm_ringbuf, ringbuf_size) == -1) {
+    if (alsaplug_ringbuffer_init(&pcm_ringbuf, ringbuf_size) == -1)
+    {
         _ERROR("alsaplug_ringbuffer_init failed");
         return -1;
     }
 
+    if (loopbufsize >= ringbuf_size)
+        looppresize = (ringbuf_size / 2);
+    else
+        looppresize = loopbufsize;
+
     pcm_going = TRUE;
     flush_request = -1;
     paused = FALSE;
+    prefill = TRUE;
 
     audio_thread = g_thread_create(alsaplug_loop, NULL, TRUE, NULL);
     return 1;
@@ -510,7 +545,10 @@ static void
 alsaplug_pause(short p)
 {
     g_mutex_lock (pcm_state_mutex);
+
     paused = p;
+    prefill = !paused;
+
     g_cond_broadcast (pcm_state_cond);
     g_mutex_unlock (pcm_state_mutex);
 }
