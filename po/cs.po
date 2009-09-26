@@ -5,12 +5,24 @@
 # Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004.
 # Petr Pisar <petr.pisar@atlas.cz>, 2007, 2008, 2009.
 #
+# clicks (sound) → praskání, praskot 
+# crossfade → přechod
+# gapless → vázaný
+# mixer → směšovač
+# next (song) → další (skladba)
+# pause (playback) → pozastavit (přehrávání)
+# play (a song) → hrát (skladbu)
+# previous (song) → předchozí (skladba)
+# skin → téma
+# stop (playback) → zastavit (přehrávání)
+# tag (metadata) → popisky
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious-plugins 7db0ff833754\n"
+"Project-Id-Version: audacious-plugins b1d3416f8f00\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
 "POT-Creation-Date: 2009-09-16 02:13+0300\n"
-"PO-Revision-Date: 2009-03-29 20:21+0200\n"
+"PO-Revision-Date: 2009-09-22 16:06+0200\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,20 +30,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/aac/libmp4.c:259
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Audacious team"
 msgstr ""
-" pro dekódování.\n"
+"Pro dekódování použito libfaad2-%s.\n"
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM dekodér © Nero AG, www.nero.com\n"
 "Copyright © 2005–2006 tým Audacious"
 
 #: src/aac/libmp4.c:264
-#, fuzzy
 msgid "About MP4 AAC decoder plugin"
-msgstr "O MP4 AAC modulu"
+msgstr "O modulu dekodéru MP4 AAC"
 
 #: src/aac/libmp4.c:265 src/adplug/adplug-xmms.cc:179
 #: src/adplug/adplug-xmms.cc:262 src/adplug/adplug-xmms.cc:523
@@ -627,28 +638,24 @@ msgid "Thankyou"
 msgstr "Děkuji"
 
 #: src/alsa-gapless/config.c:274
-#, fuzzy
 msgid "ALSA Gapless Output Plugin Preferences"
-msgstr "Modul stavové ikony – Nastavení"
+msgstr "Nastavení vázaného výstupního modulu ALSY"
 
 #: src/alsa-gapless/config.c:281
-#, fuzzy
 msgid "Override default devices"
-msgstr "Přebít výchozí zařízení: "
+msgstr "Přebít výchozí zařízení"
 
 #: src/alsa-gapless/config.c:300
-#, fuzzy
 msgid "Card:"
-msgstr "Příkaz:"
+msgstr "Karta:"
 
 #: src/alsa-gapless/config.c:302 src/alsa-ng/alsa-configure.c:274
 msgid "Device:"
 msgstr "Zařízení:"
 
 #: src/alsa-gapless/config.c:304
-#, fuzzy
 msgid "Mixer element:"
-msgstr "Zařízení mixéru:"
+msgstr "Prvek směšovače:"
 
 #: src/alsa-ng/alsa-configure.c:153
 msgid "Unknown soundcard"
@@ -660,9 +667,8 @@ msgid "Default PCM device (%s)"
 msgstr "Implicitní PCM zařízení (%s)"
 
 #: src/alsa-ng/alsa-configure.c:262
-#, fuzzy
 msgid "ALSA Output Plugin Preferences"
-msgstr "Modul stavové ikony – Nastavení"
+msgstr "Nastavení výstupního modulu ALSY"
 
 #: src/alsa-ng/alsa-configure.c:288
 msgid "Mixer:"
@@ -670,12 +676,12 @@ msgstr "Mixér:"
 
 #: src/alsa-ng/alsa-configure.c:300
 msgid "Mixer card:"
-msgstr "Karta s mixérem:"
+msgstr "Karta se směšovačem:"
 
 #: src/alsa-ng/alsa-configure.c:313 src/OSS/configure.c:260
 #: src/sun/configure.c:218
 msgid "Mixer device:"
-msgstr "Zařízení mixéru:"
+msgstr "Zařízení směšovače:"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -763,11 +769,11 @@ msgstr "Zvuková karta: "
 
 #: src/amidi-plug/i_configure-alsa.c:396
 msgid "Mixer control: "
-msgstr "Ovládání mixéru: "
+msgstr "Ovládání směšovače: "
 
 #: src/amidi-plug/i_configure-alsa.c:408
 msgid "Mixer settings"
-msgstr "Nastavení mixéru"
+msgstr "Nastavení směšovače"
 
 #: src/amidi-plug/i_configure-alsa.c:421
 msgid ""
@@ -790,11 +796,12 @@ msgid ""
 "manipulate the mixer control you select here. If you're using wavetable "
 "synthesizer ports, you'll probably want to select the Synth control here."
 msgstr ""
-"* Vyberte kartu mixéru ALSY *\n"
+"* Vyberte kartu se směšovačem ALSY *\n"
 "Backend ALSY posílá výstup přímo skrz ALSU. Efekty a výstupní moduly "
 "přehrávače nebudou použity. Během přehrávání jezdec ovládající hlasitost "
-"bude pracovat s mixérem, který zde vyberete. Používáte-li porty tabulkového "
-"syntetizátoru, pravděpodobně zde budete chtít vybrat „Ovládání syntézy“."
+"bude pracovat se směšovačem, který zde vyberete. Používáte-li porty "
+"tabulkového syntetizátoru, pravděpodobně zde budete chtít vybrat "
+"„Ovládání syntézy“."
 
 #: src/amidi-plug/i_configure-alsa.c:433
 msgid ""
@@ -804,11 +811,12 @@ msgid ""
 "will manipulate the mixer control you select here. If you're using wavetable "
 "synthesizer ports, you'll probably want to select the Synth control here."
 msgstr ""
-"* Vyberte ovládání mixéru ALSY *\n"
+"* Vyberte ovládání směšovače ALSY *\n"
 "Backend ALSY posílá výstup přímo skrz ALSU. Efekty a výstupní moduly "
 "přehrávače nebudou použity. Během přehrávání jezdec ovládající hlasitost "
-"bude pracovat s mixérem, který zde vyberete. Používáte-li porty tabulkového "
-"syntetizátoru, pravděpodobně zde budete chtít vybrat „Ovládání syntézy“."
+"bude pracovat se směšovačem, který zde vyberete. Používáte-li porty "
+"tabulkového syntetizátoru, pravděpodobně zde budete chtít vybrat "
+"„Ovládání syntézy“."
 
 #: src/amidi-plug/i_configure-alsa.c:444
 msgid "ALSA Backend not loaded or not available"
@@ -883,7 +891,7 @@ msgid ""
 msgstr ""
 "* Výběr backendu *\n"
 "AMIDI-Plug pracuje s backendy modulárním způsobem. Zde byste si měli vybrat "
-"svůj backend, tj. způsob, jakým způsobem se buda zacházet s MIDI událostmi a "
+"svůj backend, tj. způsob, jakým způsobem se bude zacházet s MIDI událostmi a "
 "jak budou hrány.\n"
 "Jestliže na zvukové kartě máte hardwarový syntetizátor a ALSA jej podporuje, "
 "je rozumné použít backend ALSY. Taktéž přijde vhod, máte cokoliv jiného, "
@@ -939,7 +947,7 @@ msgstr ""
 "přehrání. Na příklad délka skladby bude vypočtena ihned po přidání MIDI "
 "souboru do seznamu skladeb. Vypněte tuto funkci, požadujete-li rychlejší "
 "nahrávání seznamu skladeb (obzvláště má-li mnoho MIDI souborů), zapněte tuto "
-"funkcu, potřebujete-li vidět délku skladeb ihned po načtení seznamu."
+"funkci, potřebujete-li vidět délku skladeb ihned po načtení seznamu."
 
 #: src/amidi-plug/i_configure-ap.c:353
 msgid ""
@@ -1284,7 +1292,7 @@ msgid ""
 "in the SoundFont."
 msgstr ""
 "* Sbor syntetizátoru *\n"
-"Z dokumentace FluidSynth: je-li nastaveno na „ano“, modul efektu sbotu je "
+"Z dokumentace FluidSynth: je-li nastaveno na „ano“, modul efektu sboru je "
 "aktivován. Pamatujte, že při aktivovaném modulu sboru je množství signálu "
 "zasílaného tomuto modulu závislé na generátoru „zasílání sboru“, který je "
 "definován v SoundFontu."
@@ -1513,9 +1521,9 @@ msgstr "Konkávní obdélník"
 # FIXME: Utilize gettext context feature to distinguish between None (style)
 # and None (keys).
 # http://bugzilla.atheme.org/show_bug.cgi?id=48
+# Not problem anymore TODO: Check it
 #: src/aosd/aosd_style.c:87 src/crossfade/configure.c:356
 #: src/crossfade/interface-2.0.c:594 src/crossfade/interface-2.0.c:1047
-#, fuzzy
 msgid "None"
 msgstr "Žádný"
 
@@ -1898,50 +1906,50 @@ msgstr "Použít"
 #: src/bluetooth/agent.c:356 src/bluetooth/agent.c:397
 #, c-format
 msgid "Pairing request for '%s'"
-msgstr ""
+msgstr "Požadavek na spárování „%s“"
 
 #: src/bluetooth/agent.c:544
 #, c-format
 msgid "Authorization request for %s"
-msgstr ""
+msgstr "Požadavek na autorizaci %s"
 
 #: src/bluetooth/agent.c:728
 #, c-format
 msgid "Created bonding with %s"
-msgstr ""
+msgstr "Vazba s %s vytvořena"
 
 #: src/bluetooth/agent.c:756
 #, c-format
 msgid "Removed bonding with %s"
-msgstr ""
+msgstr "Vazba s %s odstraněna"
 
 #: src/bluetooth/agent.c:808
 msgid "Device has been switched off"
-msgstr ""
+msgstr "Zařízení bylo vypnuto"
 
 #: src/bluetooth/agent.c:811
 msgid "Device has been made non-discoverable"
-msgstr ""
+msgstr "Zařízení bylo učiněno neobjevitelným"
 
 #: src/bluetooth/agent.c:813
 msgid "Device has been made connectable"
-msgstr ""
+msgstr "Zařízení bylo učiněno připojitelným"
 
 #: src/bluetooth/agent.c:815
 msgid "Device has been made discoverable"
-msgstr ""
+msgstr "Zařízení bylo učiněno objevitelným"
 
 #: src/bluetooth/agent.c:817
 msgid "Device has been made limited discoverable"
-msgstr ""
+msgstr "Zařízení bylo učiněno omezeně objevitelným"
 
 #: src/bluetooth/agent.c:819
 msgid "Device has been switched into pairing mode"
-msgstr ""
+msgstr "Zařízení bylo přepnuto do režimu párování"
 
 #: src/bluetooth/bluetooth.c:105
 msgid "Bluetooth headset support plugin"
-msgstr ""
+msgstr "Modul podporující náhlavní sady s bluetooth"
 
 #: src/bluetooth/bluetooth.c:106
 msgid ""
@@ -1955,66 +1963,67 @@ msgid ""
 "can be configured using the Audacious Global Hotkey plugin or ohter tools \n"
 "provided by your window manager\n"
 msgstr ""
+"Podpora náhlavních sad s bluetooth\n"
+"Copyright © 2008 Paula Stanciu <paula.stanciu@gmail.com>\n"
+"Toto byl projekt GSoC 2008 – Poděkování patří mému učiteli Tony Vroonovi "
+"a týmu Audacious\n"
+" \n"
+"Aby fungoval AVRCP, potřebuje zavést do jádra modul uinput.\n"
+"Tlačítka náhlavní sady se tak budou jevit jako normální multimediální\n"
+"klávesy a mohou být nastaveny pomocí Audacious modulu Globální horké\n"
+"klávesy nebo jinými nástroji, které poskytuje váš správce oken.\n"
 
 #: src/bluetooth/gui.c:148
 msgid "Producer"
-msgstr ""
+msgstr "Výrobce"
 
 #: src/bluetooth/gui.c:221
-#, fuzzy
 msgid "Available Headsets"
-msgstr "Dostupné backendy"
+msgstr "Dostupné náhlavní sady"
 
 #: src/bluetooth/gui.c:224
-#, fuzzy
 msgid "Current Headset"
-msgstr "Současná"
+msgstr "Současná náhlavní sada"
 
 #: src/bluetooth/gui.c:227
-#, fuzzy
 msgid "_Refresh"
-msgstr "Rychlost překreslování"
+msgstr "_Obnovit"
 
 #: src/bluetooth/gui.c:231
-#, fuzzy
 msgid "_Connect"
-msgstr "Spojení"
+msgstr "_Spojit"
 
 #: src/bluetooth/gui.c:237
-#, fuzzy
 msgid "_Close"
-msgstr "Zavřít"
+msgstr "_Zavřít"
 
 #: src/bluetooth/gui.c:274
-#, fuzzy
 msgid "Class"
-msgstr "Klasika"
+msgstr "Třída"
 
 #: src/bluetooth/gui.c:278
-#, fuzzy
 msgid "Address:"
-msgstr "Adresa zařízení"
+msgstr "Adresa:"
 
 #: src/bluetooth/scan_gui.c:69
 msgid "Bonding finish!"
-msgstr ""
+msgstr "Vazba vytvořena!"
 
 #: src/bluetooth/scan_gui.c:76
 msgid "No devices found!"
-msgstr ""
+msgstr "Žádné zařízení nenalezeno!"
 
 #: src/bluetooth/scan_gui.c:119
 msgid "Scanning..."
-msgstr ""
+msgstr "Vyhledává se…"
 
 #: src/bluetooth/scan_gui.c:122
 msgid "Pairing..."
-msgstr ""
+msgstr "Páruje se…"
 
 #: src/bluetooth/scan_gui.c:138
-#, fuzzy
 msgid "Rescan"
-msgstr "Znovu prohlédnout CD"
+msgstr "Znovu vyhledat"
 
 #: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:64
 #: src/gtkui/ui_manager.c:65 src/hotkey/gui.c:69 src/skins/ui_manager.c:168
@@ -2039,12 +2048,10 @@ msgid "Add CD"
 msgstr "Přidat CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:342
-#, fuzzy
 msgid "About Audio CD Plugin"
-msgstr "O zvukovém modulu FLAC"
+msgstr "O zásuvném modulu zvukových CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:344
-#, fuzzy
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -2058,7 +2065,7 @@ msgid ""
 "\n"
 "Copyright 2009 John Lindgren"
 msgstr ""
-"Copyright © 2007, Calin Crisan <ccrisan@gmail.com> a Tým Audacious.\n"
+"Copyright © 2007, Calin Crisan <ccrisan@gmail.com> a tým Audacious.\n"
 "\n"
 "Mnoho díků patří vývojářům libcdio <http://www.gnu.org/software/libcdio/>\n"
 "\ta vývojářům libcddb <http://libcddb.sourceforge.net/>.\n"
@@ -2066,6 +2073,8 @@ msgstr ""
 "Také děkuji tobě, Tony Vroone, za rady a vedení.\n"
 "\n"
 "Toto byl projekt z Google Summer of Code 2007."
+"\n"
+"Copyright 2009 John Lindgren"
 
 #: src/cdaudio-ng/configure.c:166
 msgid "CD Audio Plugin Configuration"
@@ -2112,9 +2121,8 @@ msgid "Override default device: "
 msgstr "Přebít výchozí zařízení: "
 
 #: src/console/configure.c:135
-#, fuzzy
 msgid "Game Console Music Decoder"
-msgstr "Dekodér konzolové hudby"
+msgstr "Dekodér hudby pro herní konzole"
 
 #: src/console/configure.c:169
 msgid "Bass:"
@@ -2153,7 +2161,7 @@ msgstr "SPC"
 
 #: src/console/configure.c:244
 msgid "Ignore length from SPC tags"
-msgstr "Ignorovat délku z SPC tagů"
+msgstr "Ignorovat délku z SPC popisků"
 
 #: src/console/configure.c:245
 msgid "Increase reverb"
@@ -2168,12 +2176,10 @@ msgstr ""
 "neposkytují informace o délce (např. nekonečné smyčky)."
 
 #: src/console/plugin.c:32
-#, fuzzy
 msgid "About the Game Console Music Decoder"
-msgstr "O dekodéru konzolové hudby"
+msgstr "O dekodéru hudby pro herní konzole"
 
 #: src/console/plugin.c:33
-#, fuzzy
 msgid ""
 "Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
 "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
@@ -2182,35 +2188,32 @@ msgid ""
 msgstr ""
 "Dekodér konzolové hudby založený na Game_Music_Emu 0.5.2\n"
 "Podporované formáty: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"Implementace v Audacious: William Pitcock <nenold@nenold.net>,\n"
-"        Shay Green <gblargg@gmail.com>"
+"Implementace v Audacious: William Pitcock <nenold@dereferenced.org>,\n"
+"        Shay Green <gblargg@gmail.com>\n"
 
 #: src/crossfade/configure.c:315
 msgid "Start of playback"
-msgstr ""
+msgstr "Začátek přehrávání"
 
 #: src/crossfade/configure.c:316
 msgid "Automatic songchange"
-msgstr ""
+msgstr "Automatická změna skladby"
 
 #: src/crossfade/configure.c:322
-#, fuzzy
 msgid "Manual songchange"
-msgstr "Jakékoliv změny zamítnout"
+msgstr "Ruční změna skladby"
 
 #: src/crossfade/configure.c:323
 msgid "Manual stop"
-msgstr ""
+msgstr "Ruční zastavení"
 
 #: src/crossfade/configure.c:324
-#, fuzzy
 msgid "End of playlist"
-msgstr "Okno → Seznam skladeb"
+msgstr "Konec seznamu skladeb"
 
 #: src/crossfade/configure.c:325
-#, fuzzy
 msgid "Seeking"
-msgstr "Swing"
+msgstr "Posun"
 
 #: src/crossfade/configure.c:326 src/crossfade/configure.c:351
 #: src/crossfade/interface-2.0.c:522 src/crossfade/interface-2.0.c:633
@@ -2221,50 +2224,42 @@ msgid "Pause"
 msgstr "Pozastavit"
 
 #: src/crossfade/configure.c:348
-#, fuzzy
 msgid "Reopen output device"
-msgstr "Ponechat výstup otevřený"
+msgstr "Znovu otevřít výstupní zařízení"
 
 #: src/crossfade/configure.c:349
 msgid "Flush output device"
-msgstr ""
+msgstr "Vyprázdnit výstupní zařízení"
 
 #: src/crossfade/configure.c:350
 msgid "None (gapless/off)"
-msgstr ""
+msgstr "Nic (vázaně/vypnuto)"
 
 #: src/crossfade/configure.c:352
-#, fuzzy
 msgid "Simple crossfade"
-msgstr "Vzorkovací kmitočet:"
+msgstr "Jednoduchý přechod"
 
 #: src/crossfade/configure.c:353
-#, fuzzy
 msgid "Advanced crossfade"
-msgstr "Pokročilé nastavení"
+msgstr "Pokročilý přechod"
 
 #: src/crossfade/configure.c:354
-#, fuzzy
 msgid "Fadein"
-msgstr "Rozsvícení:"
+msgstr "Zesilující přechod"
 
 #: src/crossfade/configure.c:355
-#, fuzzy
 msgid "Fadeout"
-msgstr "Pohasnutí:"
+msgstr "Slábnoucí přechod"
 
 #: src/crossfade/configure.c:357
-#, fuzzy
 msgid "Fadeout/Fadein"
-msgstr "Pohasnutí:"
+msgstr "Zesílení/Zeslabení"
 
 #: src/crossfade/configure.c:1152
-#, fuzzy
 msgid "About Crossfade Plugin"
-msgstr "O modulu Crossfade"
+msgstr "O modulu Crossfade (přechodu)"
 
 #: src/crossfade/configure.c:1153
-#, fuzzy
 msgid ""
 "Audacious Crossfade Plugin\n"
 "\n"
@@ -2291,71 +2286,70 @@ msgid ""
 "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
 "USA."
 msgstr ""
+"Modul přechodu pro Audacious\n"
 "\n"
-"Copyright (C) 2000-2004 Peter Eisenlohr <peter@eisenlohr.org>\n"
+"Copyright © 2009 William Pitcock <nenolod@atheme.org>\n"
 "\n"
-"založeno na původním OSS modulu, copyright (C) 1998-2000\n"
+"… částečně založeno na XMMS-Crossfade:\n"
+"Copyright © 2000–2009 Peter Eisenlohr <peter@eisenlohr.org>\n"
+"\n"
+"založeno na původním Výstupní OSS modulu, copyright © 1998–2000\n"
 "Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson a 4Front Technologies\n"
 "\n"
-"  Tento program je svobodný software; můžete jej šířit a/nebo měnit\n"
+"Tento program je svobodný software; můžete jej šířit a/nebo měnit\n"
 "pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
-"Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
+"Free Software Foundation a to buď ve verzi 2, nebo (dle vaší volby)\n"
 "libovolné novější.\n"
 "\n"
-"Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
-"ZÁRUKY a to ani záruky obchodovatelnosti nebo vhodnosti pro\n"
-"JAKÝKOLIV účel. Více informací najdete v GNU GPL.\n"
+"Tento program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
+"ZÁRUKY a to ani odvozené záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
+"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
 "\n"
 "S tímto programem byste měli obdržet kopii GNU GPL. Pokud se\n"
-"tak nestalo, obraťte se na Free Software Foundation,\n"
-"Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
-"USA. Český překlad naleznete na webové adrese\n"
-"http://www.gnu.cz/licence.html."
+"tak nestalo, obraťte se na Free Software Foundation, Inc.\n"
+"59 Temple Place - Suite 330, Boston, MA 02111-1307, USA."
 
 #: src/crossfade/interface-2.0.c:292
-#, fuzzy
 msgid "Crossfade Configuration"
-msgstr "Nastavení ModPlugu"
+msgstr "Nastavení přechodů"
 
 #: src/crossfade/interface-2.0.c:340 src/filewriter/filewriter.c:464
 #: src/icecast/icecast.c:645 src/ladspa/ladspa.c:1121
 msgid "Configure"
 msgstr "Nastavit"
 
+# Toto je tlačítko „About“ ve výběru výstupního podmodulu modulu Crossfade
 #: src/crossfade/interface-2.0.c:345
-#, fuzzy
 msgid "About"
-msgstr "O "
+msgstr "O výstupu"
 
 #: src/crossfade/interface-2.0.c:350
-#, fuzzy
 msgid "Output plugin"
-msgstr "OSS výstupní modul"
+msgstr "Výstupní modul"
 
 #: src/crossfade/interface-2.0.c:363
-#, fuzzy
 msgid "Throttle Output"
-msgstr "O aRts výstupu"
+msgstr "Škrtit výstup"
 
 #: src/crossfade/interface-2.0.c:371
-#, fuzzy
 msgid "Max block size (bytes):"
-msgstr "Velikost (v bajtech):"
+msgstr "Maximální velikost bloku (v bajtech):"
 
 #: src/crossfade/interface-2.0.c:382
-#, fuzzy
 msgid "Force close/reopen on songchange"
-msgstr "Vynutit znovuotevření zvuku, když se typ zvuku změní"
+msgstr "Vynutit uzavření/otevření při změně skladby"
 
 #: src/crossfade/interface-2.0.c:386
 msgid "Plugin compatibility options"
-msgstr ""
+msgstr "Volby kompatibility modulu"
 
 #: src/crossfade/interface-2.0.c:390
 msgid ""
 "When modifying the Output Options or the Mixing buffer size, you need to "
 "stop/restart playback for the settings to take effect."
 msgstr ""
+"Když změníte volby výstupu nebo velikost směšovacího bufferu, bude třeba "
+"zastavit/restartovat přehrávání, aby se změny projevily."
 
 #: src/crossfade/interface-2.0.c:395
 msgid "Output"
@@ -2363,7 +2357,7 @@ msgstr "Výstup"
 
 #: src/crossfade/interface-2.0.c:409
 msgid "Mixing buffer size (ms):"
-msgstr "Velikost vyrovnávací paměti mixéru (ms):"
+msgstr "Velikost vyrovnávací paměti směšovače (ms):"
 
 #: src/crossfade/interface-2.0.c:418
 msgid ""
@@ -2373,11 +2367,15 @@ msgid ""
 "done on-the-fly and do not depend on mixing buffer space.\n"
 "Default: n/a - calculated automatically"
 msgstr ""
+"Určuje velikost směšovacího bufferu. Vyrovnávací paměť směšovače je nutná "
+"pro pausy, zeslabování, pozicování (tj. prokládání konce a začátku dvou "
+"skladeb) a zabíjení závěrečných pomlk. Zesilování a zabíjení úvodních pomlk "
+"je prováděno za běhu a nezávisí na směšovacím bufferu.\n"
+"Standardně: nedefinováno – vypočteno automaticky"
 
 #: src/crossfade/interface-2.0.c:421
-#, fuzzy
 msgid "auto"
-msgstr "Auto"
+msgstr "automaticky"
 
 #: src/crossfade/interface-2.0.c:424
 msgid ""
@@ -2389,7 +2387,7 @@ msgstr ""
 
 #: src/crossfade/interface-2.0.c:430
 msgid "Set parameters for:"
-msgstr ""
+msgstr "Nastavit parametry pro:"
 
 #: src/crossfade/interface-2.0.c:438
 msgid ""
@@ -2403,10 +2401,20 @@ msgid ""
 "* End of playlist: After the last song in the playlist has been played\n"
 "* Seeking: When seeking within the current song"
 msgstr ""
+"Vybírá způsob změny skladby, který chcete nastavit:\n"
+"* Začátek přehrávání: Když přehrávání započne stiskem HRÁT\n"
+"* Automatická změna skladby: Když je dosaženo konce jedné skladby a seznam "
+"skladeb přejde na další skladbu\n"
+"* Ruční změna skladby: Když ručně vyberete jinou skladbu, například "
+"stisknutím DALŠÍ/PŘEDCHOZÍ\n"
+"* Ruční zastavení: Když se stiskne tlačítko ZASTAVIT\n"
+"* Konec seznamu skladeb: Po dokončení přehrávání poslední skladby na "
+"seznamu\n" 
+"* Posun: Při změně polohy uvnitř současné skladby" 
 
 #: src/crossfade/interface-2.0.c:452
 msgid "Crossfade/Transition type:"
-msgstr ""
+msgstr "Druh přechodu:"
 
 #: src/crossfade/interface-2.0.c:460
 msgid ""
@@ -2425,6 +2433,17 @@ msgid ""
 "* Advanced crossfade: Allows you to configure the crossfade in more detail.\n"
 "* Fade-out: Fade-out at 'Manual stop' or 'End of playlist'."
 msgstr ""
+"Vybírá přechod, který se použije při změně skladby způsobem vybraným výše:\n"
+"* Zesílení: Zesílení na „Začátku přehrávání“\n"
+"* Znovu otevřít vstupní zařízení: Vynutí uzavření/otevření výstupního "
+"modulu. Toto zcela jistě způsobí pomlky a praskot, avšak některé moduly to "
+"potřebují.\n"
+"* Nic (vázaně/vypnuto): Vázaný režim. Zařízení ponechá otevřené, ale "
+"neuplatní žádné přechody.\n"
+"* Jednoduchý přechod: Vytvoří jednoduchý přechod mezi mezi předchozí a "
+"další skladbou.\n"
+"* Pokročilý přechod: Umožní podrobnější nastavení přechodu.\n"
+"* Zeslabení: Zeslabí při „Ručním zastavení“ a na „Konci seznamu skladeb“."
 
 #: src/crossfade/interface-2.0.c:481
 msgid "Reopen"
@@ -2435,7 +2454,6 @@ msgstr "Znovu otevřít"
 #: src/crossfade/interface-2.0.c:706 src/crossfade/interface-2.0.c:831
 #: src/crossfade/interface-2.0.c:906 src/crossfade/interface-2.0.c:968
 #: src/crossfade/interface-2.0.c:1021
-#, fuzzy
 msgid "Length (ms):"
 msgstr "Délka (ms):"
 
@@ -2444,6 +2462,8 @@ msgid ""
 "Specify the length of the silence to be inserted between the tracks.\n"
 "Default: 2000"
 msgstr ""
+"Určuje délku ticha, které bude vloženo mezi stopy.\n"
+"Standardně: 2000"
 
 #: src/crossfade/interface-2.0.c:516 src/crossfade/interface-2.0.c:566
 #: src/crossfade/interface-2.0.c:744 src/crossfade/interface-2.0.c:1194
@@ -2462,79 +2482,74 @@ msgstr "Počáteční hlasitost (%):"
 
 #: src/crossfade/interface-2.0.c:563 src/crossfade/interface-2.0.c:851
 msgid "Set the duration for the fadein of the next song."
-msgstr ""
+msgstr "Nastaví délku trvání zesílení další skladby."
 
 #: src/crossfade/interface-2.0.c:578 src/crossfade/interface-2.0.c:873
 #: src/crossfade/interface-2.0.c:935
-#, fuzzy, c-format
 msgid ""
 "Set the start volume. XMMS-crossfade will fade from this volume to 100% "
 "during the time specified above.\n"
 "Default: 0"
 msgstr ""
-"Zadejte počáteční hlasitost. Crossfade bude hlasitost zesilovat od této "
-"hodnoty na 100% hlasitost během doby specifikované výše.\n"
+"Nastavuje počáteční hlasitost. XMMS-crossfade bude hlasitost zesilovat "
+"od této hodnoty na 100% hlasitost během doby určené výše.\n"
 "Standardně: 0"
 
 #: src/crossfade/interface-2.0.c:581 src/crossfade/interface-2.0.c:876
 #: src/crossfade/interface-2.0.c:938 src/crossfade/interface-2.0.c:942
-#, fuzzy
 msgid "Fade in"
-msgstr "Rozsvícení:"
+msgstr "Zesílení"
 
 #: src/crossfade/interface-2.0.c:585
 msgid "Flush"
-msgstr ""
+msgstr "Vyprázdnit"
 
 #: src/crossfade/interface-2.0.c:673
 msgid ""
 "Specify the length of the crosssfade.\n"
 "Default: depends on songchange type"
 msgstr ""
+"Určuje délku přechodu.\n"
+"Standardně: závisí na způsobu změny skladby"
 
 #: src/crossfade/interface-2.0.c:676
-#, fuzzy
 msgid "Crossfade"
-msgstr "Crossover"
+msgstr "Přechod"
 
 #: src/crossfade/interface-2.0.c:680
-#, fuzzy
 msgid "Simple XF"
-msgstr "Vzorky"
+msgstr "Jednoduchý přechod"
 
 #: src/crossfade/interface-2.0.c:716
 msgid "Set the duration for the fadeout of the previous song."
-msgstr ""
+msgstr "Nastaví délku trvání zeslabení předchozí skladby."
 
 #: src/crossfade/interface-2.0.c:725 src/crossfade/interface-2.0.c:987
 msgid "End volume (%):"
 msgstr "Koncová hlasitost (%):"
 
 #: src/crossfade/interface-2.0.c:735 src/crossfade/interface-2.0.c:997
-#, fuzzy, c-format
 msgid ""
 "Set the end volume. XMMS-crossfade will fade from 100% to this volume during "
 "the time specified above.\n"
 "Default: 0"
 msgstr ""
-"Zadejte koncovou hlasitost. Crossfade ztiší hudbu ze sta procent na tuto "
-"hodnotu během výše specifikované doby.\n"
+"Nastaví koncovou hlasitost. XMMS-crossfade ztiší hudbu ze 100 % na tuto "
+"hodnotu během výše určené doby.\n"
 "Standardně: 0"
 
 #: src/crossfade/interface-2.0.c:748 src/crossfade/interface-2.0.c:1000
 #: src/crossfade/interface-2.0.c:1038
-#, fuzzy
 msgid "Fade out"
-msgstr "Pohasnutí:"
+msgstr "Zeslabení"
 
 #: src/crossfade/interface-2.0.c:769
-#, fuzzy
 msgid "Custom (ms):"
-msgstr "vlastní "
+msgstr "Vlastní (ms):"
 
 #: src/crossfade/interface-2.0.c:772
 msgid "Set a custom offset."
-msgstr ""
+msgstr "Nastaví vlastní pozici."
 
 #: src/crossfade/interface-2.0.c:780
 msgid ""
@@ -2545,38 +2560,45 @@ msgid ""
 "* A value of 0 means that the songs are concatenated seamlessly.\n"
 "* Positive values will yield insert silence inbetween.."
 msgstr ""
+"Řídí, kolik konce z předchozí skladby a začátku z další skladby se bude "
+"překrývat\n"
+"* Záporné hodnoty značí, že další skladba by měla začít dříve, než "
+"předchozí dosáhne konce.\n"
+"* Hodnota rovna 0 znamená, že skladby budou spojeny bez pomlky.\n"
+"* Kladné hodnoty způsobí vložení pomlky mezi skladby."
 
+# Offset → Pozice
 #: src/crossfade/interface-2.0.c:783
 msgid "None (0 ms)"
-msgstr ""
+msgstr "Žádná (0 ms)"
 
 #: src/crossfade/interface-2.0.c:788
 msgid ""
 "Don't overlap the two songs. The next song will start immediatelly after the "
 "previous has ended."
 msgstr ""
+"Skladby se nebudou překrývat. Další skladba začne okamžitě, jakmile "
+"předchozí skončí."
 
 #: src/crossfade/interface-2.0.c:792
 msgid "Lock to fadeout length"
-msgstr ""
+msgstr "Zarovnat na délku zeslabení"
 
 #: src/crossfade/interface-2.0.c:797
-#, fuzzy
 msgid "Overlap by the fadeout duration specified above."
-msgstr "Otevře okno s informacemi o výše vybraném modulu."
+msgstr "Překryv bude roven délce trvání zeslabení určené výše."
 
 #: src/crossfade/interface-2.0.c:801
 msgid "Lock to fadein length"
-msgstr ""
+msgstr "Zarovnat na délku zesílení"
 
 #: src/crossfade/interface-2.0.c:806
 msgid "Overlap by the fadein duration specified below.."
-msgstr ""
+msgstr "Překryv bude roven délce trvání zesílení určené níže."
 
 #: src/crossfade/interface-2.0.c:810
-#, fuzzy
 msgid "Offset"
-msgstr "Žádný"
+msgstr "Pozice"
 
 #: src/crossfade/interface-2.0.c:854
 msgid " Enable"
@@ -2584,24 +2606,23 @@ msgstr "Povolit"
 
 #: src/crossfade/interface-2.0.c:860
 msgid "Lock to Fade-out"
-msgstr ""
+msgstr "Zarovnat na zeslabení"
 
 #: src/crossfade/interface-2.0.c:865
 msgid "Use the same settings as fade-out."
-msgstr ""
+msgstr "Použít stejné nastavení jako u zeslabení."
 
 #: src/crossfade/interface-2.0.c:880
-#, fuzzy
 msgid "Advanced XF"
-msgstr "Pokročilé"
+msgstr "Pokročilý přechod"
 
 #: src/crossfade/interface-2.0.c:926
 msgid "Set the duration for the fadein when starting playback."
-msgstr ""
+msgstr "Nastaví délku trvání zesílení, když začne přehrávání."
 
 #: src/crossfade/interface-2.0.c:978
 msgid "Set the duration for the fadeout of the last song."
-msgstr ""
+msgstr "Nastaví délku trvání zeslabení poslední skladby."
 
 #: src/crossfade/interface-2.0.c:1031
 msgid ""
@@ -2610,20 +2631,22 @@ msgid ""
 "shut down during playback.\n"
 "Default: 500"
 msgstr ""
+"Řídí, jak dlouhá pomlka se přidá za konec poslední skladby. Tímto způsobem "
+"lze zabránit praskání, které některé zvukové karty vydávají, když jsou "
+"vypnuty během přehrávání.\n"
+"Standardně: 500"
 
 #: src/crossfade/interface-2.0.c:1034
-#, fuzzy
 msgid "Additional silence"
-msgstr "Dodatečný příkaz"
+msgstr "Dodatečná pomlka"
 
 #: src/crossfade/interface-2.0.c:1073
-#, fuzzy
 msgid ""
 "Set the duration for the fadeout when pausing.\n"
 "Default: 100"
 msgstr ""
-"Zadejte maximální délku pauzy na konci skladby.\n"
-"Standardně: 500"
+"Nastaví délku trvání zeslabení při pozastavení.\n"
+"Standardně: 100"
 
 #: src/crossfade/interface-2.0.c:1082
 msgid ""
@@ -2631,38 +2654,38 @@ msgid ""
 "you can avoid the clicks some soundcards produce when entering pause.\n"
 "Default: 100"
 msgstr ""
+"Řídí, jak dlouhá pomlka se přidá za pozastavení přehrávání. Tímto způsobem "
+"lze zabránit praskání, které některé zvukové karty vydávají, když jsou "
+"pozastaveny.\n"
+"Standardně: 100"
 
 #: src/crossfade/interface-2.0.c:1091
-#, fuzzy
 msgid ""
 "Set the duration for the fadein when unpausing.\n"
 "Default: 100"
 msgstr ""
-"Zadejte maximální délku pauzy na konci skladby.\n"
-"Standardně: 500"
+"Nastaví délku trvání zesílení při obnovení pozastaveného přehrávání.\n"
+"Standardně: 100"
 
 #: src/crossfade/interface-2.0.c:1100
-#, fuzzy
 msgid "Fade out (ms):"
-msgstr "Pohasnutí:"
+msgstr "Zeslabení (ms):"
 
 #: src/crossfade/interface-2.0.c:1110
 msgid "Silence (ms):"
 msgstr "Ticho (ms):"
 
 #: src/crossfade/interface-2.0.c:1120
-#, fuzzy
 msgid "Fade in (ms):"
-msgstr "Rozsvícení:"
+msgstr "Zesílení (ms):"
 
 #: src/crossfade/interface-2.0.c:1124 src/crossfade/interface-2.0.c:1128
 msgid "Fade out / Fade in"
-msgstr ""
+msgstr "Zeslabení/Zesílení"
 
 #: src/crossfade/interface-2.0.c:1133
-#, fuzzy
 msgid "Crossfader"
-msgstr "Crossover"
+msgstr "Filtr přechodu"
 
 #: src/crossfade/interface-2.0.c:1160
 msgid ""
@@ -2683,17 +2706,16 @@ msgstr ""
 "Standardně: 512"
 
 #: src/crossfade/interface-2.0.c:1178 src/crossfade/interface-2.0.c:1221
-#, fuzzy
 msgid "Max. length (ms):"
-msgstr "Délka (ms):"
+msgstr "Maximální délka (ms):"
 
 #: src/crossfade/interface-2.0.c:1189 src/crossfade/interface-2.0.c:1232
 msgid "Max. level (16bit sample):"
-msgstr ""
+msgstr "Maximální úroveň (16b vzorek):"
 
 #: src/crossfade/interface-2.0.c:1200
 msgid "Leading gap killer"
-msgstr ""
+msgstr "Zabiják úvodních pomlk"
 
 #: src/crossfade/interface-2.0.c:1243
 msgid ""
@@ -2715,19 +2737,19 @@ msgstr ""
 
 #: src/crossfade/interface-2.0.c:1255
 msgid "Lock to Leading"
-msgstr ""
+msgstr "Zarovnat na úvod"
 
 #: src/crossfade/interface-2.0.c:1260
 msgid "Use the same settings as above."
-msgstr ""
+msgstr "Použít stejné nastavení jako výše."
 
 #: src/crossfade/interface-2.0.c:1268
 msgid "Trailing gap killer"
-msgstr ""
+msgstr "Zabiják závěrečných pomlk"
 
 #: src/crossfade/interface-2.0.c:1281
 msgid "Skip to next zero crossing"
-msgstr ""
+msgstr "Přeskočit na další nulový přechod"
 
 #: src/crossfade/interface-2.0.c:1284
 msgid ""
@@ -2737,6 +2759,10 @@ msgid ""
 "the sample values.\n"
 "Default: On"
 msgstr ""
+"Je-li zapnuto, XMMS-crossing bude brát zvláštní ohled na praskání "
+"u předzeslabených (vázaných) stop. XMMS-crossing odřízne konec předchozí "
+"skladby (začátek další skladby) pouze při nulovém přechodu hodnot vzorků.\n"
+"Standardně: zapnuto"
 
 #: src/crossfade/interface-2.0.c:1286 src/crossfade/interface-2.0.c:1440
 msgid "Advanced"
@@ -2744,7 +2770,7 @@ msgstr "Pokročilé"
 
 #: src/crossfade/interface-2.0.c:1290
 msgid "Gap Killer"
-msgstr ""
+msgstr "Zabiják pomlk"
 
 #: src/crossfade/interface-2.0.c:1309
 msgid "Write debug output to <stderr>"
@@ -2759,11 +2785,16 @@ msgid ""
 "captured from <stderr>.\n"
 "Default: Off"
 msgstr ""
+"Sleduje, co se děje v XMMS-crossfade. Pokud si myslíte, že jste našli chybu "
+"v XMMS-crossfade, prosím, zapněte tuto volbu a pošlete mi výstup.\n"
+"Poznamenejme, že byste zakázat ladicí výstup, pokud pouštíte XMMS "
+"z Netscapu. Netscape vás jinak zahltí dialogy s ladicím výstupem zachyceným "
+"na <stderr> (standardním chybovém výstupu).\n"
+"Standardně: vypnuto"
 
 #: src/crossfade/interface-2.0.c:1314
-#, fuzzy
 msgid "Debug options"
-msgstr "Pokročilé nastavení"
+msgstr "Ladicí volby"
 
 #: src/crossfade/interface-2.0.c:1327
 msgid "Enable volume control"
@@ -2774,38 +2805,41 @@ msgid ""
 "Enables/disables XMMS volume and balance controls.\n"
 "Default: On"
 msgstr ""
+"Zapne/vypne ovládání hlasitosti a vyvážení v XMMS.\n"
+"Standardně: zapnuto"
 
 #: src/crossfade/interface-2.0.c:1332
 msgid "Reverse balance"
-msgstr ""
+msgstr "Obrátit vyvážení"
 
 #: src/crossfade/interface-2.0.c:1335
 msgid ""
 "Reverses left and right with the balance control.\n"
 "Default: Off"
 msgstr ""
+"Prohodí levou a pravou stranu v ovládání vyvážení.\n"
+"Standardně: vypnuto"
 
 #: src/crossfade/interface-2.0.c:1337
 msgid "Software Mixer"
-msgstr "Softwarový mixér"
+msgstr "Softwarový směšovač"
 
 #: src/crossfade/interface-2.0.c:1340
 msgid ""
 "Enable software mixer. Usefull for output plugins without mixer support.\n"
 "Default: Off"
 msgstr ""
-"Povolit softwarový mixér. Užitečné pro výstupní moduly bez podpory mixování "
-"zvuku.\n"
+"Povolit softwarový směšovač. Užitečné pro výstupní moduly bez podpory "
+"mixování zvuku.\n"
 "Standardně: vypnuto"
 
 #: src/crossfade/interface-2.0.c:1342
-#, fuzzy
 msgid "Volume control options"
-msgstr "Zařízení ovládání hlasitosti:"
+msgstr "Volby řídící hlasitosti"
 
 #: src/crossfade/interface-2.0.c:1359
 msgid "Songchange timeout (ms):"
-msgstr ""
+msgstr "Časový limit na změnu skladby (ms):"
 
 #: src/crossfade/interface-2.0.c:1368
 msgid ""
@@ -2813,11 +2847,14 @@ msgid ""
 "song. If this timeout is exceeded, the output plugin/device is closed.\n"
 "Default: 100"
 msgstr ""
+"Časový limit na změnu skladby je maximální čas, po který XMMS-crosfade čeká "
+"na další skladbu. Bude-li tento limit překročen, bude výstupní "
+"modul/zařízení uzavřeno.\n"
+"Standardně: 100"
 
 #: src/crossfade/interface-2.0.c:1375
-#, fuzzy
 msgid "Mixing buffer preload (ms):"
-msgstr "Velikost vyrovnávací paměti mixéru (ms):"
+msgstr "Předplnění směšovacího bufferu (ms):"
 
 #: src/crossfade/interface-2.0.c:1384
 msgid ""
@@ -2826,14 +2863,19 @@ msgid ""
 "the output plugin does preloading on its own.\n"
 "Default: 0"
 msgstr ""
+"Říká, kolik dat má XMMS-crossfade načíst do bufferu před tím, než začne "
+"zapisovat do výstupního modulu/zařízení. Tato hodnotu může být obvykle 0, "
+"protože výstupní modul si dělá předplnění po svém.\n"
+"Standardně: 0"
 
 #: src/crossfade/interface-2.0.c:1391
 msgid "Don't  crossfade"
-msgstr ""
+msgstr "Nedělat přechody u "
 
+# Navazuje na "Don't  crossfade"
 #: src/crossfade/interface-2.0.c:1396
 msgid "successive tracks"
-msgstr ""
+msgstr "následujících stop"
 
 #: src/crossfade/interface-2.0.c:1399
 msgid ""
@@ -2843,11 +2885,16 @@ msgid ""
 "enabled) will be used for the songchange.\n"
 "Default: On"
 msgstr ""
+"Tato volba zapíná automatické rozpoznávání stop, které již přechod nebo "
+"vázání obsahují, jako je běžné u některých kompilací nebo na většině živých "
+"alb. Jsou-li takové stopy nalezeny, bude vytváření přechodu zakázáno a "
+"pouze zabiják pomlk (je-li povolen) bude použit při změně skladby.\n"
+"Standardně: zapnuto"
 
+# Navazuje na "Don't  crossfade"
 #: src/crossfade/interface-2.0.c:1401
-#, fuzzy
 msgid "same file"
-msgstr "Ze souboru"
+msgstr "téhož souboru"
 
 #: src/crossfade/interface-2.0.c:1404
 msgid ""
@@ -2855,10 +2902,13 @@ msgid ""
 "you have only one file in the playlist and 'repeat' turned on.\n"
 "Default: Off"
 msgstr ""
+"Tato volba vypíná přechody mezi stejným souborem. To se může přihodit, "
+"máte-li v seznamu skladeb pouze jeden soubor a je-li zapnuto „opakování“.\n"
+"Standardně: vypnuto"
 
 #: src/crossfade/interface-2.0.c:1406
 msgid "Enable HTTP buffer underrun workaround"
-msgstr ""
+msgstr "Zapnout obcházení podtečení HTTP bufferu"
 
 #: src/crossfade/interface-2.0.c:1409 src/crossfade/interface-2.0.c:1429
 msgid ""
@@ -2866,11 +2916,13 @@ msgid ""
 "Unfortunatelly, it also breaks crossfading.\n"
 "Default: Off"
 msgstr ""
+"Zapněte tuto volbu, pokud máte problémy s přehráváním internetových HTTP "
+"zvukových proudů. Naneštěstí tato funkce rozbíjí přechody.\n"
+"Standardně: vypnuto"
 
 #: src/crossfade/interface-2.0.c:1415
-#, fuzzy
 msgid "Limit OP buffer usage (ms):"
-msgstr "Velikost vyrovnávací paměti mixéru (ms):"
+msgstr "Omezit buffer výstupního modulu (ms):"
 
 #: src/crossfade/interface-2.0.c:1418
 msgid ""
@@ -2879,6 +2931,10 @@ msgid ""
 "between pressing STOP/NEXT/PREV and the new song actually being played. \n"
 "Default: Off"
 msgstr ""
+"Je-li tato volba zapnuta, XMMS-crossfade omezí množství dat, která "
+"bufferuje výstupní modul. Takto lze zkrátit zpoždění mezi stisknutím "
+"ZASTAVIT/DALŠÍ/PŘEDCHOZÍ a skutečným přehráváním nové skladby.\n"
+"Standardně: vypnuto"
 
 #: src/crossfade/interface-2.0.c:1424
 msgid ""
@@ -2892,7 +2948,7 @@ msgstr ""
 
 #: src/crossfade/interface-2.0.c:1427
 msgid "Use Quantaudio timing comments"
-msgstr ""
+msgstr "Použít časové komentáře Quantaudio"
 
 #: src/crossfade/interface-2.0.c:1431
 msgid "Keep output opened"
@@ -2920,9 +2976,8 @@ msgid "Delete"
 msgstr "Smazat"
 
 #: src/crossfade/interface-2.0.c:1461
-#, fuzzy
 msgid "New"
-msgstr "New Age"
+msgstr "Nový"
 
 #: src/crossfade/interface-2.0.c:1482 src/skins/ui_manager.c:427
 msgid "Load"
@@ -3253,19 +3308,16 @@ msgstr ""
 "přeskakuji.\n"
 
 #: src/evdev-plug/ed_ui.c:212
-#, fuzzy
 msgid "Detected"
-msgstr "Rozpoznat konec skladby"
+msgstr "Nalezeno"
 
 #: src/evdev-plug/ed_ui.c:217
-#, fuzzy
 msgid "Custom"
-msgstr "vlastní "
+msgstr "Vlastní"
 
 #: src/evdev-plug/ed_ui.c:223
-#, fuzzy
 msgid "Not Detected"
-msgstr "Seřadit vybrané"
+msgstr "Nenalezeno"
 
 #: src/evdev-plug/ed_ui.c:275 src/evdev-plug/ed_ui.c:411
 #: src/evdev-plug/ed_ui.c:874
@@ -3321,9 +3373,8 @@ msgid "Device file:"
 msgstr "Soubor zařízení:"
 
 #: src/evdev-plug/ed_ui.c:404
-#, fuzzy
 msgid "(custom)"
-msgstr "vlastní "
+msgstr "(vlastní)"
 
 #: src/evdev-plug/ed_ui.c:412
 msgid ""
@@ -3440,18 +3491,27 @@ msgid ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
+"Víceformátový zvuk dekódující modul pro Audacious založený na\n"
+"multimediálním systému FFmpeg (http://www.ffmpeg.org/)\n"
+"Copyright © 2000–2009 Fabrice Bellard aj.\n"
+"\n"
+"FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
+"\n"
+"Podporované formáty: %s\n"
+"\n"
+"Modul do Audacious napsali:\n"
+"            William Pitcock <nenolod@nenolod.net>,\n"
+"            Matti Hämäläinen <ccr@tnsp.org>\n"
 
 #: src/ffaudio/ffaudio-core.c:697
-#, fuzzy
 msgid "About FFaudio Plugin"
-msgstr "O zvukovém modulu FLAC"
+msgstr "O modulu FFaudio"
 
 #: src/filewriter/filewriter.c:172
 msgid "About FileWriter-Plugin"
 msgstr "O modulu FileWriter"
 
 #: src/filewriter/filewriter.c:173
-#, fuzzy
 msgid ""
 "FileWriter-Plugin\n"
 "\n"
@@ -3470,7 +3530,7 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Modul ESounD programu Audacious\n"
+"Modul FileWriter\n"
 "\n"
 "Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
 "pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
@@ -3478,8 +3538,8 @@ msgstr ""
 "libovolné novější.\n"
 "\n"
 "Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
-"ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
-"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
+"ZÁRUKY a to ani odvozené záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
+"JAKÝKOLIV ÚČEL. Více informací naleznete v GNU GPL.\n"
 "\n"
 "S tímto programem byste měli obdržet kopii GNU GPL. Pokud se\n"
 "tak nestalo, obraťte se na Free Software Foundation, Inc.,\n"
@@ -3647,7 +3707,7 @@ msgid ""
 "For use with players that do not support low bitrate mp3 (Apex AD600-A DVD/"
 "mp3 player)"
 msgstr ""
-"Pro použití v přehrávačích, které nepodporují nízkotokové MP3 (přehrávač "
+"Pro použití v přehrávačích, které nepodporují úzkopásmové MP3 (přehrávač "
 "Apex AD600-A DVD/MP3)"
 
 #: src/filewriter/mp3.c:1183
@@ -3698,19 +3758,19 @@ msgstr "Parametry ID3:"
 
 #: src/filewriter/mp3.c:1325
 msgid "Force addition of version 2 tag"
-msgstr "Vynutit přidání značek verze 2"
+msgstr "Vynutit přidání popisků verze 2"
 
 #: src/filewriter/mp3.c:1335
 msgid "Only add v1 tag"
-msgstr "Přidávat jen značky verze 1"
+msgstr "Přidávat jen popisky verze 1"
 
 #: src/filewriter/mp3.c:1342
 msgid "Only add v2 tag"
-msgstr "Přidávat jen značky verze 2"
+msgstr "Přidávat jen popisky verze 2"
 
 #: src/filewriter/mp3.c:1363
 msgid "Tags"
-msgstr "Značky"
+msgstr "Popisky"
 
 #: src/filewriter/vorbis.c:278
 msgid "Vorbis Encoder Configuration"
@@ -3771,13 +3831,12 @@ msgid "Add Files"
 msgstr "Přidat soubory"
 
 #: src/gntui/gntui.c:271
-#, fuzzy
 msgid "Audacious2"
-msgstr "Audacious"
+msgstr "Audacious2"
 
 #: src/gntui/gntui.c:312
 msgid "gnt interface"
-msgstr ""
+msgstr "Rozhraní gnt"
 
 #: src/gtkui/actions.c:177 src/skins/ui_main.c:785
 msgid "Can't jump to time when no track is being played.\n"
@@ -3836,7 +3895,7 @@ msgstr "Načíst seznam skladeb"
 
 #: src/gtkui/ui_gtk.c:51
 msgid "GTK Foobar-like Interface"
-msgstr ""
+msgstr "Rozhraní GTK podobné Foobaru"
 
 #: src/gtkui/ui_manager.c:41 src/gtkui/ui_manager.c:42
 #: src/skins/ui_manager.c:54 src/skins/ui_manager.c:55
@@ -4131,15 +4190,13 @@ msgstr "Seřadí seznam podle názvu."
 
 #: src/gtkui/ui_manager.c:211 src/gtkui/ui_manager.c:241
 #: src/skins/ui_manager.c:316 src/skins/ui_manager.c:346
-#, fuzzy
 msgid "By Album"
-msgstr "Album:"
+msgstr "Podle alba"
 
 #: src/gtkui/ui_manager.c:212 src/gtkui/ui_manager.c:242
 #: src/skins/ui_manager.c:317 src/skins/ui_manager.c:347
-#, fuzzy
 msgid "Sorts the list by album."
-msgstr "Seřadí seznam podle názvu."
+msgstr "Seřadí seznam podle alba."
 
 #: src/gtkui/ui_manager.c:215 src/gtkui/ui_manager.c:245
 #: src/skins/ui_manager.c:320 src/skins/ui_manager.c:350
@@ -4273,9 +4330,8 @@ msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Povolí/zakáže položku ve frontě seznamu skladeb."
 
 #: src/gtkui/ui_playlist_manager.c:277 src/skins/ui_playlist_manager.c:304
-#, fuzzy
 msgid "Playlist Manager"
-msgstr "Správce seznamů"
+msgstr "Správce seznamů skladeb"
 
 #: src/gtkui/ui_playlist_manager.c:315 src/skins/ui_playlist_manager.c:352
 msgid "Entries"
@@ -4402,12 +4458,10 @@ msgstr ""
 "\n"
 
 #: src/icecast/icecast.c:226
-#, fuzzy
 msgid "About Icecast-Plugin"
-msgstr "O modulu ozvěny"
+msgstr "O modulu Icecast"
 
 #: src/icecast/icecast.c:227
-#, fuzzy
 msgid ""
 "Icecast-Plugin\n"
 "\n"
@@ -4426,7 +4480,7 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Modul ESounD programu Audacious\n"
+"Modul Icecast\n"
 "\n"
 "Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
 "pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
@@ -4434,8 +4488,8 @@ msgstr ""
 "libovolné novější.\n"
 "\n"
 "Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
-"ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
-"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
+"ZÁRUKY a to ani odvozené záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
+"JAKÝKOLIV ÚČEL. Více informací naleznete v GNU GPL.\n"
 "\n"
 "S tímto programem byste měli obdržet kopii GNU GPL. Pokud se\n"
 "tak nestalo, obraťte se na Free Software Foundation, Inc.,\n"
@@ -4444,119 +4498,116 @@ msgstr ""
 #: src/icecast/icecast.c:293
 #, c-format
 msgid "Error setting hostname: %s\n"
-msgstr ""
+msgstr "Chyba při nastavování názvu stroje: %s\n"
 
 #: src/icecast/icecast.c:299
 #, c-format
 msgid "Error setting protocol: %s\n"
-msgstr ""
+msgstr "Chyba při nastavování protokolu: %s\n"
 
 #: src/icecast/icecast.c:305
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting port: %s\n"
-msgstr "Chyba při zapisování seznamu skladeb „%s“: %s"
+msgstr "Chyba při nastavování portu: %s\n"
 
 #: src/icecast/icecast.c:311
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting password: %s\n"
-msgstr "Chyba při zapisování seznamu skladeb „%s“: %s"
+msgstr "Chyba při nastavování hesla: %s\n"
 
 #: src/icecast/icecast.c:317
 #, c-format
 msgid "Error setting mount: %s\n"
-msgstr ""
+msgstr "Chyba při nastavování bodu připojení: %s\n"
 
 #: src/icecast/icecast.c:323
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting stream %s: %s\n"
-msgstr "Chyba při zapisování seznamu skladeb „%s“: %s"
+msgstr "Chyba při nastavování proudu %s: %s\n"
 
 #: src/icecast/icecast.c:323
 msgid "public"
-msgstr ""
+msgstr "veřejný"
 
 #: src/icecast/icecast.c:323
 msgid "private"
-msgstr ""
+msgstr "soukromý"
 
 #: src/icecast/icecast.c:329
 #, c-format
 msgid "Error setting stream name: %s\n"
-msgstr ""
+msgstr "Chyba při nastavování názvu proudu: %s\n"
 
 #: src/icecast/icecast.c:335
 #, c-format
 msgid "Error setting stream genre: %s\n"
-msgstr ""
+msgstr "Chyba při nastavování žánru proudu: %s\n"
 
 #: src/icecast/icecast.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting stream URL: %s\n"
-msgstr "Chyba při zapisování seznamu skladeb „%s“: %s"
+msgstr "Chyba při nastavování URL proudu: %s\n"
 
 #: src/icecast/icecast.c:347
 #, c-format
 msgid "Error setting stream description: %s\n"
-msgstr ""
+msgstr "Chyba při nastavování popisu proudu: %s\n"
 
 #: src/icecast/icecast.c:353 src/icecast/icecast.c:359
 #, c-format
 msgid "Error setting user: %s\n"
-msgstr ""
+msgstr "Chyba při nastavování uživatele: %s\n"
 
 #: src/icecast/icecast.c:365
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to server: %s\n"
-msgstr "Znovu se připojit k serveru LIRC"
+msgstr "Chyba při připojování se k serveru: %s\n"
 
 #: src/icecast/icecast.c:519 src/icecast/icecast.c:715
 #: src/scrobbler/configure.c:148 src/scrobbler/configure.c:225
-#, fuzzy
 msgid "Change password"
-msgstr "Změnit hranou skladbu"
+msgstr "Změnit heslo"
 
 #: src/icecast/icecast.c:620
-#, fuzzy
 msgid "Icecast Configuration"
-msgstr "Nastavení MP3"
+msgstr "Nastavení Icecastu"
 
 #: src/icecast/icecast.c:631
-#, fuzzy
 msgid "Output stream format:"
-msgstr "Formát výstupního souboru:"
+msgstr "Formát výstupního proudu:"
 
 #: src/icecast/icecast.c:655
-#, fuzzy
 msgid "Server address:"
-msgstr "Adresa zařízení"
+msgstr "Adresa serveru:"
 
 #: src/icecast/icecast.c:661
 msgid "Server hostname or IP address"
-msgstr ""
+msgstr "Název stroje serveru nebo IP adresa"
 
 #: src/icecast/icecast.c:666
 msgid "Server port number"
-msgstr ""
+msgstr "Číslo portu serveru"
 
 #: src/icecast/icecast.c:679
-#, fuzzy
 msgid "Mount point:"
-msgstr "Font %i:"
+msgstr "Bod připojení:"
 
 #: src/icecast/icecast.c:685
 msgid "Mount point for the stream"
-msgstr ""
+msgstr "Bod připojení proudu"
 
 #: src/icecast/icecast.c:694
-#, fuzzy
 msgid "User name:"
-msgstr "Přístupové jméno:"
+msgstr "Uživatelské jméno:"
 
 #: src/icecast/icecast.c:700
 msgid ""
 "Icecast source user name for the stream; depends on your server settings.\n"
 "The default value is \"source\""
 msgstr ""
+"Uživatelské jméno icecastového zdroje pro tento proud. Závisí na nastavení "
+"vašeho serveru.\n"
+"Výchozí hodnota je „source“."
 
 #: src/icecast/icecast.c:704 src/scrobbler/configure.c:199
 #: src/scrobbler/configure.c:261
@@ -4565,79 +4616,84 @@ msgstr "Heslo:"
 
 #: src/icecast/icecast.c:709
 msgid "Icecast source user password"
-msgstr ""
+msgstr "Uživatelské jméno icecastového zdroje"
 
 #: src/icecast/icecast.c:730
-#, fuzzy
 msgid "Connection timeout (seconds):"
-msgstr "Režim připojení:"
+msgstr "Časový limit připojení (sekundy):"
 
 #: src/icecast/icecast.c:734
 msgid ""
 "Amount of time before plugin closes connection to server when no audio data "
 "available"
 msgstr ""
+"Doba, po které modul uzavře spojení se serverem, když nebudou k dispozici "
+"žádná zvuková data"
 
 #: src/icecast/icecast.c:747
-#, fuzzy
 msgid "Buffer size (bytes):"
-msgstr "Velikost vyrovnávací paměti (ms):"
+msgstr "Velikost vyrovnávací paměti (bajty):"
 
 #: src/icecast/icecast.c:751
 msgid ""
 "Internal buffer size\n"
 "Try to increase this if you are experiencing audio skipping on client side"
 msgstr ""
+"Velikost vnitřního bufferu\n"
+"Zkuste tuto hodnotu zvýšit, pokud na straně klienta přeskakuje zvuk"
 
 #: src/icecast/icecast.c:762
 msgid "Flush buffer if "
-msgstr ""
+msgstr "Vyprázdnit vyrovnávací paměť, když "
 
 #: src/icecast/icecast.c:766
 msgid "Determines when to flush internal buffer to prevent its overflow"
-msgstr ""
+msgstr "Určuje, kdy bude vnitřní buffer vyprázdněn jakožto prevence před jeho "
+"přetečením"
 
 #: src/icecast/icecast.c:774
 msgid "percents are filled"
-msgstr ""
+msgstr "procent je zaplněno"
 
 #: src/icecast/icecast.c:782
 msgid "Stream is public"
-msgstr ""
+msgstr "Proud je veřejný"
 
 #: src/icecast/icecast.c:783
 msgid ""
 "Setting this asks the server to list the stream in any directories it knows "
 "about"
 msgstr ""
+"Tímto nastavením vyžádáte server, aby zaregistroval proud v každém "
+"adresáři, který zná"
 
 #: src/icecast/icecast.c:792
-#, fuzzy
 msgid "Stream name:"
-msgstr "Název stopy:"
+msgstr "Název proudu:"
 
 #: src/icecast/icecast.c:804
 msgid "Stream URL:"
-msgstr ""
+msgstr "URL proudu:"
 
 #: src/icecast/icecast.c:810
 msgid "The URL of a site about this stream"
-msgstr ""
+msgstr "URL stránky pojednávající o tomto proudu"
 
 #: src/icecast/icecast.c:817
 msgid "Stream genre:"
-msgstr ""
+msgstr "Žánr proudu:"
 
 #: src/icecast/icecast.c:823
 msgid ""
 "The genre (or genres) of the stream. This is usually a keyword list, eg "
 "\"pop rock rap\""
 msgstr ""
+"Žánr (nebo žánry) proudu. Obvykle se jedná o seznam klíčových slov, "
+"například „pop rock rap“."
 
 #: src/icecast/icecast.c:830
-#, fuzzy
 msgid "Stream description:"
-msgstr "Popis:"
+msgstr "Popis proudu:"
 
 #: src/jack/configure.c:69
 msgid "Connect to all available jack ports"
@@ -4828,7 +4884,7 @@ msgstr "Rozebrat hlavičku XING"
 
 #: src/madplug/configure.c:35
 msgid "Use SJIS to write ID3 tags (not recommended)"
-msgstr "Pro zápis ID3 tagů použít SJIS (nedoporučuje se)"
+msgstr "Pro zápis ID3 popisků použít SJIS (nedoporučuje se)"
 
 #: src/madplug/configure.c:39
 msgid "Metadata Settings"
@@ -5207,7 +5263,6 @@ msgid "About OSSv4 Driver"
 msgstr "O OSSv4 ovladači"
 
 #: src/OSS4/OSS4.c:39
-#, fuzzy
 msgid ""
 "Audacious OSSv4 Driver\n"
 "\n"
@@ -5245,12 +5300,16 @@ msgstr ""
 "libovolné novější.\n"
 "\n"
 "Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
-"ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
-"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
+"ZÁRUKY a to ani odvozené záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
+"JAKÝKOLIV ÚČEL. Více informací naleznete v GNU GPL.\n"
 "\n"
 "S tímto programem byste měli obdržet kopii GNU GPL. Pokud se tak\n"
 "nestalo, obraťte se na Free Software Foundation, Inc.,\n"
 "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"\n"
+"Poznámka: V záležitosti tohoto modulu (včetně patchů nebo návrhů),\n"
+"prosíme, kontaktujte jeho správce a NE ostatní vývojáře Audacious.\n"
+"\n"
 
 #: src/OSS/configure.c:151
 #, c-format
@@ -5308,9 +5367,8 @@ msgid "Username:"
 msgstr "Přístupové jméno:"
 
 #: src/scrobbler/configure.c:207
-#, fuzzy
 msgid "Scrobbler URL:"
-msgstr "Chyba Scrobbleru"
+msgstr "URL Scrobbleru:"
 
 #: src/scrobbler/configure.c:239
 msgid "<b>Last.FM</b>"
@@ -5321,9 +5379,8 @@ msgid "<b>Gerpok</b>"
 msgstr "<b>Gerpok</b>"
 
 #: src/scrobbler/configure.c:346
-#, fuzzy
 msgid "Scrobbler"
-msgstr "Chyba Scrobbleru"
+msgstr "Scrobbler"
 
 #: src/scrobbler/gtkstuff.c:18
 msgid ""
@@ -5847,7 +5904,7 @@ msgid ""
 "from STIL database when HVSC SIDs are played."
 msgstr ""
 "Je-li tato volba povolena (a databáze a HVSC konfigurace níže správně "
-"nastavena), Audacious-SID použije a zobrazí dodatečné infomrace z databáze "
+"nastavena), Audacious-SID použije a zobrazí dodatečné informace z databáze "
 "STIL, je-li hrána skladba z HVSC."
 
 #: src/sid/xmms-sid.glade:2827 src/sid/xs_interface.c:1179
@@ -5974,9 +6031,8 @@ msgid "About %s"
 msgstr "O %s"
 
 #: src/sid/xs_config.c:319
-#, fuzzy
 msgid " Error"
-msgstr "Chyba"
+msgstr " Chyba"
 
 #: src/sid/xs_fileinfo.c:232
 msgid "General info"
@@ -6001,7 +6057,7 @@ msgstr ""
 
 #: src/skins/plugin.c:199
 msgid "Skinned Interface"
-msgstr ""
+msgstr "Témata rozhraní"
 
 #: src/skins/skins_cfg.c:328
 msgid "_Player:"
@@ -6017,7 +6073,7 @@ msgstr "_Seznamu skladeb:"
 
 #: src/skins/skins_cfg.c:329
 msgid "Select playlist font:"
-msgstr "Vybrte font pro seznam skladeb:"
+msgstr "Vyberte font pro seznam skladeb:"
 
 #: src/skins/skins_cfg.c:333
 msgid "<b>_Fonts</b>"
@@ -6069,9 +6125,8 @@ msgid "Disable inline gtk theme"
 msgstr "Zakázat vnitřní téma GTK"
 
 #: src/skins/skins_cfg.c:345
-#, fuzzy
 msgid "Random skin on play"
-msgstr "Sklady v seznamu seřadí náhodně."
+msgstr "Při přehrávání zvolit náhodné téma"
 
 #: src/skins/skins_cfg.c:346
 msgid "Allow loading incomplete skins"
@@ -6400,15 +6455,16 @@ msgid "Time Remaining"
 msgstr "Zbývající čas"
 
 #: src/skins/ui_manager.c:218
-#, fuzzy
 msgid "Save All Playlists"
-msgstr "Uložit seznam skladeb"
+msgstr "Uložit všechny seznamy skladeb"
 
 #: src/skins/ui_manager.c:219
 msgid ""
 "Saves all the playlists that are open. Note that this is done automatically "
 "when Audacious quits."
 msgstr ""
+"Uloží všechny seznamy skladeb, které jsou otevřeny. Vezměte na vědomí, že "
+"toto bude rovněž provedeno při ukončení Audacious."
 
 #: src/skins/ui_manager.c:432 src/skins/ui_manager.c:453
 #: src/skins/ui_manager.c:468
@@ -6696,7 +6752,6 @@ msgstr ""
 "proudech)."
 
 #: src/song_change/song_change.c:411
-#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -6715,14 +6770,14 @@ msgstr ""
 "před spuštěním příkazu nahrazeny (ne všechny jsou užitečné\n"
 "pro příkaz spouštěný na konci seznamu skladeb).\n"
 "\n"
-"%%F: frekvence (v hertzech)\n"
-"%%c: počet kanálů\n"
-"%%f: jméno souboru (celá cesta)\n"
-"%%l: délka (v milisekundách)\n"
-"%%n nebo %%s: název skladby\n"
-"%%r: datový tok (v bitech za sekundu)\n"
-"%%t: pozice v seznamu skladeb (%%02d)\n"
-"%%p: právě se hraje (1, nebo 0)"
+"%F: Frekvence (v hertzech)\n"
+"%c: Počet kanálů\n"
+"%f: Název souboru (celá cesta)\n"
+"%l: Délka (v milisekundách)\n"
+"%n nebo %s: Název skladby\n"
+"%r: Datový tok (v bitech za sekundu)\n"
+"%t: Pozice v seznamu skladeb (%02d)\n"
+"%p: Právě se hraje (1, nebo 0)"
 
 #: src/song_change/song_change.c:435
 msgid ""
@@ -6737,9 +6792,8 @@ msgid "Commands"
 msgstr "Příkazy"
 
 #: src/song_change/song_change.c:482
-#, fuzzy
 msgid "Song Change"
-msgstr "Zpráva skladby"
+msgstr "Změna skladby"
 
 #: src/spectrum/spectrum.c:89
 msgid "Spectrum Analyzer"
@@ -6822,42 +6876,35 @@ msgid "Configure Extra Stereo"
 msgstr "Nastavit Extra sterou"
 
 #: src/streambrowser/gui/streambrowser_win.c:62
-#, fuzzy
 msgid "Search:"
-msgstr "Rok:"
+msgstr "Hledat:"
 
 #: src/streambrowser/gui/streambrowser_win.c:81
 #: src/streambrowser/gui/streambrowser_win.c:370
 msgid "Add Bookmark"
-msgstr ""
+msgstr "Přidat záložku"
 
 #: src/streambrowser/gui/streambrowser_win.c:95
-#, fuzzy
 msgid "Stream browser"
-msgstr "procházet:"
+msgstr "Prohlížeč proudů"
 
 #: src/streambrowser/gui/streambrowser_win.c:319
-#, fuzzy
 msgid "Stream name"
-msgstr "Jméno nástroje"
+msgstr "Název proudu"
 
 #: src/streambrowser/gui/streambrowser_win.c:326
-#, fuzzy
 msgid "Now playing"
-msgstr "Nový seznam skladeb"
+msgstr "Právě hraje"
 
 #: src/streambrowser/gui/streambrowser_win.c:367
-#, fuzzy
 msgid "Remove Bookmark"
-msgstr "Odstranit tag"
+msgstr "Odstranit záložku"
 
 #: src/streambrowser/streambrowser.c:322
-#, fuzzy
 msgid "About Stream Browser"
-msgstr "O modulu OSS"
+msgstr "O prohlížeči proudů"
 
 #: src/streambrowser/streambrowser.c:323
-#, fuzzy
 msgid ""
 "Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -6872,19 +6919,20 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2008 project."
 msgstr ""
-"Copyright © 2007, Calin Crisan <ccrisan@gmail.com> a Tým Audacious.\n"
+"Copyright © 2008 Calin Crisan <ccrisan@gmail.com> a tým Audacious.\n"
 "\n"
-"Mnoho díků patří vývojářům libcdio <http://www.gnu.org/software/libcdio/>\n"
-"\ta vývojářům libcddb <http://libcddb.sourceforge.net/>.\n"
+"Toto je jednoduchý prohlížeč proudů, který obsahuje nejpopulárnější adresáře "
+"proudů.\n"
+"Mnoho díků patří vývojářům Streamtuneru <http://www.nongnu.org/streamtuner>,\n"
+"\ta samozřejmě celé komunitě kolem Audacious.\n"
 "\n"
-"Také děkuji tobě, Tony Vroone, za rady a vedení.\n"
+"Také děkuji tobě, Tony Vroone, za rady a vedení, opět.\n"
 "\n"
-"Toto byl projekt z Google Summer of Code 2007."
+"Toto byl projekt z Google Summer of Code 2008."
 
 #: src/streambrowser/streambrowser.c:350 src/streambrowser/streambrowser.c:356
-#, fuzzy
 msgid "Streambrowser"
-msgstr "procházet:"
+msgstr "Prohlížeč proudů"
 
 #: src/sun/about.c:33
 msgid "About the Sun Driver"
@@ -7045,9 +7093,8 @@ msgid "Title format:"
 msgstr "Formát názvu:"
 
 #: src/vorbis/configure.c:34
-#, fuzzy
 msgid "Ogg Vorbis Tags"
-msgstr "Popisky Ogg Vorbis:"
+msgstr "Popisky Ogg Vorbis"
 
 #: src/vorbis/configure.c:66
 msgid "Ogg Vorbis Audio Plugin Configuration"
@@ -7150,7 +7197,7 @@ msgstr "Žánr:"
 
 #: src/wavpack/ui.c:199
 msgid "Remove Tag"
-msgstr "Odstranit tag"
+msgstr "Odstranit popisek"
 
 #: src/wavpack/ui.c:210
 msgid "Wavpack Info:"
@@ -7217,9 +7264,8 @@ msgid "Enable Dynamic Bitrate Display"
 msgstr "Zapnout zobrazování dynamického datového toku"
 
 #: src/wavpack/ui.c:366
-#, fuzzy
 msgid "General Plugin Settings"
-msgstr "Obecná nastavení modulu:"
+msgstr "Obecná nastavení modulu"
 
 #: src/wavpack/ui.c:375
 msgid "use Track Gain/Peak"
@@ -7294,7 +7340,7 @@ msgstr ""
 
 #~ msgid "About Apple Lossless Audio Plugin"
 #~ msgstr ""
-#~ "O modulu Apple Lossless Audio (applovský bezztrátový zvukový formát)"
+#~ "O modulu Apple Lossless Audio (applovký bezztrátový zvukový formát)"
 
 #~ msgid ""
 #~ "Copyright (c) 2006 Audacious team\n"
@@ -7466,7 +7512,7 @@ msgstr ""
 #~ "Pro použití v Audacious upravil Tony Vroon (chainsaw@gentoo.org)\n"
 #~ "z BEEP-WMA modulu, na který má práva © 2004, 2005 Mokrushin I. V. alias "
 #~ "McMCC (mcmcc@mail.ru)\n"
-#~ "a BMP-WMA moudlu, jehož autorem je © 2004 Roman Bogorodskiy "
+#~ "a BMP-WMA modulu, jehož autorem je © 2004 Roman Bogorodskiy "
 #~ "<bogorodskiy@inbox.ru>.\n"
 #~ "Tento modul je postaven na otevřeném zdrojovém kódu "
 
@@ -7635,11 +7681,6 @@ msgstr ""
 #~ msgid "auto-M/S mode"
 #~ msgstr "režim auto–M/S"
 
-# Don't know what is it
-#, fuzzy
-#~ msgid "_Random"
-#~ msgstr "_Náhodný"
-
 #~ msgid "Show track numbers in playlist"
 #~ msgstr "Zobrazovat pořadová čísla v seznamu skladeb"
 
@@ -7800,7 +7841,7 @@ msgstr ""
 #~ msgstr "STILDB „%s“ nelze otevřít\n"
 
 #~ msgid "Dither output when rounding to 16-bit"
-#~ msgstr "Diterovat výstup při zaokrouhlování na 16 bitů"
+#~ msgstr "Ditherovat výstup při zaokrouhlování na 16 bitů"
 
 #~ msgid "Base gain (dB):"
 #~ msgstr "Základní zesílení (dB):"
@@ -8329,10 +8370,10 @@ msgstr ""
 #~ msgstr "Chyba!"
 
 #~ msgid "Failed to modify tag (open)"
-#~ msgstr "Změna tagu se nezdařila (otevření)"
+#~ msgstr "Změna popisku se nezdařila (otevření)"
 
 #~ msgid "Failed to modify tag (close)"
-#~ msgstr "Změna tagu se nezdařila (zavření)"
+#~ msgstr "Změna popisku se nezdařila (zavření)"
 
 #~ msgid "Failed to modify tag"
 #~ msgstr "Nepodařilo se upravit informace"
@@ -8769,7 +8810,7 @@ msgstr ""
 #~ msgstr "řečtiny (MacGreek)"
 
 #~ msgid "Gujarati (MacGujarati)"
-#~ msgstr "gujarantštiny (MacGujarati)"
+#~ msgstr "gudžarátštiny (MacGujarati)"
 
 #~ msgid "Gurmukhi (MacGurmukhi)"
 #~ msgstr "gurmukhi (MacGurmukhi)"
@@ -8811,7 +8852,7 @@ msgstr ""
 #~ msgstr "západních jazyků (MacRoman)"
 
 #~ msgid "Tag Handling"
-#~ msgstr "Zpracování tagů"
+#~ msgstr "Zpracování popisků"
 
 #~ msgid "Convert Character Set"
 #~ msgstr "Změnit znakovou sadu"
@@ -8836,7 +8877,7 @@ msgstr ""
 #~ msgstr "Bez zesíleného přehrávání"
 
 #~ msgid "Dither 24bps to 16bps"
-#~ msgstr "Diterací převést 24 bitů na 16"
+#~ msgstr "Ditherací převést 24 bitů na 16"
 
 #~ msgid "With ReplayGain"
 #~ msgstr "Se zesíleným přehráváním"
@@ -8848,7 +8889,7 @@ msgstr ""
 #~ msgstr "vysoké"
 
 #~ msgid "Dither to"
-#~ msgstr "Diterovat na"
+#~ msgstr "Ditherovat na"
 
 #~ msgid "16 bps"
 #~ msgstr "16 b/s"
@@ -9014,7 +9055,7 @@ msgstr ""
 #~ msgstr ""
 #~ "Bohužel, váš systém nepodporuje vlákna.\n"
 #~ "\n"
-#~ "Pokud máte linux založený na libc5 a knihovny Glib a GTK+ byly "
+#~ "Pokud máte Linux založený na libc5 a knihovny Glib a GTK+ byly "
 #~ "nainstalovány dříve\n"
 #~ "než LinuxThreads, budete muset Glib a GTK+ přeložit znovu.\n"
 
@@ -9365,7 +9406,7 @@ msgstr ""
 #~ msgstr "<b>Metadata</b>"
 
 #~ msgid "Load metadata (tag information) from music files."
-#~ msgstr "Načíst metadata (tagy) z hudebních souborů."
+#~ msgstr "Načíst metadata (informace popisků) z hudebních souborů."
 
 #~ msgid "Load metadata when adding the file to the playlist or opening it"
 #~ msgstr ""
@@ -9957,13 +9998,13 @@ msgstr ""
 #~ "být ohrožena bezpečnost počítače. Chcete přesto pokračovat?"
 
 #~ msgid "Convert non-UTF8 ID3 tags to UTF8"
-#~ msgstr "Převést ID3 tagy z jiných kódování do UTF-8"
+#~ msgstr "Převést ID3 popisky z jiných kódování do UTF-8"
 
 #~ msgid "ID3 encoding:"
 #~ msgstr "Kódování ID3:"
 
 #~ msgid "Convert non-UTF8 Vorbis tags to UTF8"
-#~ msgstr "Převést Vorbis tagy z jiných kódování do UTF-8"
+#~ msgstr "Převést Vorbis popisky z jiných kódování do UTF-8"
 
 #~ msgid "Vorbis encoding:"
 #~ msgstr "Vorbis - kódování:"
