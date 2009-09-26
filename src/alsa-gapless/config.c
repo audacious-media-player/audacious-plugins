@@ -60,10 +60,10 @@ static gboolean list_has_member (GtkListStore * list, const gchar * text)
 static void get_defined_pcms (gboolean capture, void (* found) (const gchar *
  name, const gchar * description))
 {
-	void * * hints = NULL;
+    void * * hints = NULL;
     gint count;
 
-	CHECK (snd_device_name_hint, -1, "pcm", & hints);
+    CHECK (snd_device_name_hint, -1, "pcm", & hints);
 
     for (count = 0; hints[count] != NULL; count ++)
     {
@@ -83,7 +83,7 @@ static void get_defined_pcms (gboolean capture, void (* found) (const gchar *
     }
 
 FAILED:
-	if (hints != NULL)
+    if (hints != NULL)
         snd_device_name_free_hint (hints);
 }
 
