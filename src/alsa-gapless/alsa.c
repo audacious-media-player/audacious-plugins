@@ -536,7 +536,13 @@ void alsa_pause (gshort pause)
 
     CHECK (snd_pcm_pause, alsa_handle, pause);
 
+    g_mutex_unlock (alsa_mutex);
+    return;
+
 FAILED:
+    if (! pause) /* try to recover if unpause fails */
+        snd_pcm_prepare (alsa_handle);
+
     g_mutex_unlock (alsa_mutex);
 }
 
