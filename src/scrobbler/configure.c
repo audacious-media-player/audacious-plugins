@@ -101,14 +101,18 @@ static gboolean apply_config_changes(gpointer data) {
     return FALSE;
 }
 
-void configure_cleanup(void) {
+void configure_apply(void) {
     if (apply_timeout) { /* config has been changed, but wasn't saved yet */
         g_source_remove(apply_timeout);
-        apply_timeout = 0;
-        saveconfig();
+        apply_config_changes(NULL);
     }
+}
+
+void configure_cleanup(void) {
     g_free(pwd);
     g_free(ge_pwd);
+    pwd = NULL;
+    ge_pwd = NULL;
 }
 
 static void
@@ -348,5 +352,7 @@ PluginPreferences preferences = {
     .prefs = settings,
     .n_prefs = G_N_ELEMENTS(settings),
     .type = PREFERENCES_PAGE,
+    .apply = configure_apply,
+    .cleanup = configure_cleanup,
 };
 

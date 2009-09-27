@@ -3,7 +3,7 @@
 
 #include <libaudcore/tuple.h>
 
-#define SC_CURL_TIMEOUT 5
+#define SC_CURL_TIMEOUT 60
 
 gboolean sc_timeout(gpointer data);
 

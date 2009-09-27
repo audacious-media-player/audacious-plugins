@@ -222,7 +222,6 @@ static void init(void)
 static void cleanup(void)
 {
     stop();
-    configure_cleanup();
 }
 
 static void *xs_thread(void *data __attribute__((unused)))
