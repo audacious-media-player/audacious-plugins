@@ -715,6 +715,9 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
             }
         }
 
+        if (! strcmp("https", handle->purl->scheme))
+            ne_ssl_trust_default_ca(handle->session);
+
         _DEBUG("<%p> Creating request", handle);
         ret = open_request(handle, startbyte);
 
