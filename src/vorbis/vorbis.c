@@ -298,8 +298,8 @@ vorbis_play(InputPlayback *playback)
     ReplayGainInfo rg_info;
     gfloat pcmout[PCM_BUFSIZE*sizeof(float)], **pcm;
     gint bytes, channels, samplerate, br;
-    gint since_update = 0;
     gboolean paused = FALSE;
+    gchar * title = NULL;
 
     playback->error = FALSE;
     seek_value = -1;
@@ -408,17 +408,20 @@ vorbis_play(InputPlayback *playback)
 
         bytes = vorbis_interleave_buffer (pcm, bytes, channels, pcmout);
 
-        /* Is there a better way to know when to update? -jlindgren */
-        if (since_update >= 100)
-        {
-            Tuple * tuple = get_aud_tuple_for_vorbisfile (& vf,
-             playback->filename);
+        { /* try to detect when metadata has changed */
+            vorbis_comment * comment = ov_comment (& vf, -1);
+            const gchar * new_title = (comment == NULL) ? NULL :
+             vorbis_comment_query (comment, "title", 0);
 
-            playback->set_tuple (playback, tuple);
-            since_update = 0;
+            if (new_title != NULL && (title == NULL || strcmp (title, new_title)))
+            {
+                g_free (title);
+                title = g_strdup (new_title);
+
+                playback->set_tuple (playback, get_aud_tuple_for_vorbisfile
+                 (& vf, playback->filename));
+            }
         }
-        else
-            since_update ++;
 
         if (current_section <= last_section) {
             /*
@@ -474,6 +477,7 @@ stop_processing:
 play_cleanup:
 
     ov_clear(&vf);
+    g_free (title);
 
     g_mutex_lock (seek_mutex);
     playback->playing = FALSE;
