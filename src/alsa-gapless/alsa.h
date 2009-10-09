@@ -37,7 +37,7 @@
 do { \
     gint error = function (__VA_ARGS__); \
     if (error < 0) { \
-        ERROR (#function " failed: %s.\n", snd_strerror (error)); \
+        ERROR ("%s failed: %s.\n", #function, snd_strerror (error)); \
         goto FAILED; \
     } \
 } while (0)
