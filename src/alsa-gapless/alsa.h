@@ -33,8 +33,6 @@
 #define DEBUG(...)
 #endif
 
-#define DEEP_DEBUG 0
-
 #define CHECK(function, ...) \
 do { \
     gint error = function (__VA_ARGS__); \
