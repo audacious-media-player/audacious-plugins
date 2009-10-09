@@ -152,10 +152,10 @@ static gboolean real_open (snd_pcm_format_t format, gint rate, gint channels)
     CHECK (snd_pcm_hw_params_set_format, alsa_handle, params, format);
     CHECK (snd_pcm_hw_params_set_channels, alsa_handle, params, channels);
     CHECK (snd_pcm_hw_params_set_rate, alsa_handle, params, rate, 0);
-    useconds = 1000 * LEAST_BUFFER;
+    useconds = 1000 * (LEAST_BUFFER * 7 / 8);
     CHECK (snd_pcm_hw_params_set_buffer_time_min, alsa_handle, params,
      & useconds, 0);
-    useconds = 1000 * MAX (LEAST_BUFFER, aud_cfg->output_buffer_size / 2);
+    useconds = 1000 * MAX (LEAST_BUFFER * 9 / 8, aud_cfg->output_buffer_size / 2);
     CHECK (snd_pcm_hw_params_set_buffer_time_max, alsa_handle, params,
      & useconds, 0);
     CHECK (snd_pcm_hw_params, alsa_handle, params);
