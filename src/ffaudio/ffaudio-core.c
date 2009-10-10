@@ -312,7 +312,7 @@ ffaudio_play_file(InputPlayback *playback)
     AVStream *s = NULL;
     AVPacket pkt = {};
     guint8 *outbuf = NULL, *resbuf = NULL;
-    gint i, stream_id, out_channels, errcount;
+    gint i, stream_id, errcount;
     gint in_sample_size, out_sample_size;
     ReSampleContext *resctx = NULL;
     gboolean codec_opened = FALSE, do_resampling = FALSE;
@@ -357,12 +357,8 @@ ffaudio_play_file(InputPlayback *playback)
     codec_opened = TRUE;
 
     /* Determine if audio conversion or resampling is needed */
-    out_channels = c->channels;
     in_sample_size = av_get_bits_per_sample_format(c->sample_fmt) / 8;
     out_sample_size = av_get_bits_per_sample_format(SAMPLE_FMT_S16) / 8;
-
-    if (c->channels > 2)
-        do_resampling = TRUE;
 
     switch (c->sample_fmt) {
         case SAMPLE_FMT_U8: out_fmt = FMT_U8; break;
@@ -375,15 +371,14 @@ ffaudio_play_file(InputPlayback *playback)
     if (do_resampling)
     {
         /* Initialize resampling context */
-        out_channels = 2;
         out_fmt = FMT_S16_NE;
 
         _DEBUG("resampling needed chn=%d, rate=%d, fmt=%d -> chn=%d, rate=%d, fmt=S16NE",
             c->channels, c->sample_rate, c->sample_fmt,
-            out_channels, c->sample_rate);
+            c->channels, c->sample_rate);
 
         resctx = av_audio_resample_init(
-            out_channels, c->channels,
+            c->channels, c->channels,
             c->sample_rate, c->sample_rate,
             SAMPLE_FMT_S16, c->sample_fmt,
             16, 10, 0, 0.8);
@@ -395,7 +390,7 @@ ffaudio_play_file(InputPlayback *playback)
     /* Open audio output */
     _DEBUG("opening audio output");
 
-    if (playback->output->open_audio(out_fmt, c->sample_rate, out_channels) <= 0)
+    if (playback->output->open_audio(out_fmt, c->sample_rate, c->channels) <= 0)
     {
         playback->error = TRUE;
         goto error_exit;
