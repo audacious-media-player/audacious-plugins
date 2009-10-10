@@ -340,7 +340,6 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
          alsa_rate)
         {
             DEBUG ("Audio already open and in requested format.\n");
-            alsa_time = 0;
             alsa_leave_open = FALSE;
         }
         else
@@ -386,6 +385,8 @@ void alsa_close_audio (void)
 
     if (alsa_leave_open)
     {
+        alsa_time = 0;
+
         if (alsa_paused) /* buffering never completed */
             start_playback ();
 
