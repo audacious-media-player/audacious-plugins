@@ -313,7 +313,7 @@ ffaudio_play_file(InputPlayback *playback)
     AVPacket pkt = {};
     guint8 *outbuf = NULL, *resbuf = NULL;
     gint i, stream_id, errcount;
-    gint in_sample_size, out_sample_size;
+    gint in_sample_size, out_sample_size, chunk_size;
     ReSampleContext *resctx = NULL;
     gboolean codec_opened = FALSE, do_resampling = FALSE;
     AFormat out_fmt;
@@ -359,6 +359,7 @@ ffaudio_play_file(InputPlayback *playback)
     /* Determine if audio conversion or resampling is needed */
     in_sample_size = av_get_bits_per_sample_format(c->sample_fmt) / 8;
     out_sample_size = av_get_bits_per_sample_format(SAMPLE_FMT_S16) / 8;
+    chunk_size = out_sample_size * c->channels * (c->sample_rate / 50);
 
     switch (c->sample_fmt) {
         case SAMPLE_FMT_U8: out_fmt = FMT_U8; break;
@@ -542,7 +543,7 @@ ffaudio_play_file(InputPlayback *playback)
             /* Output audio in small blocks */
             while (out_size > 0 && playback->playing)
             {
-                gint writeoff = out_size >= 512 ? 512 : out_size;
+                gint writeoff = MIN (chunk_size, out_size);
 
                 playback->pass_audio(playback, out_fmt,
                     c->channels, writeoff,
