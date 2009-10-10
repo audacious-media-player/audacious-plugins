@@ -584,6 +584,8 @@ ffaudio_play_file(InputPlayback *playback)
     while (playback->playing && playback->output->buffer_playing())
         g_usleep(20000);
 
+    playback->output->close_audio();
+
     g_cond_signal(ctrl_cond); /* wake up any waiting request */
     g_mutex_unlock(ctrl_mutex);
 
@@ -604,7 +606,6 @@ error_exit:
     if (ic != NULL)
         av_close_input_file(ic);
 
-    playback->output->close_audio();
     _DEBUG("exiting thread");
 }
 
