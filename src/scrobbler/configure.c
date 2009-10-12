@@ -56,35 +56,35 @@ static void saveconfig(void)
         aud_md5state_t md5state;
         unsigned char md5pword[16], ge_md5pword[16];
 
-        if (uid != NULL && uid[0] != '\0' &&
-            pwd != NULL && pwd[0] != '\0')
-        {
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "username", (char *)uid);
+        if (pwd != NULL && pwd[0] != '\0') {
             aud_md5_init(&md5state);
-            aud_md5_append(&md5state, (unsigned const char *)pwd, strlen(pwd));
+            aud_md5_append(&md5state, (guchar *)pwd, strlen(pwd));
             aud_md5_finish(&md5state, md5pword);
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "password",
-                                 hexify((char*)md5pword, sizeof(md5pword)));
-        } else if (!uid || uid[0] == '\0') {
+                                 hexify((gchar*)md5pword, sizeof(md5pword)));
+        }
+        if (uid != NULL && uid[0] != '\0') {
+            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "username", (gchar *)uid);
+        } else {
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "username", "");
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "password", "");
         }
-        
+
         if (url != NULL && url[0] != '\0')
-        	aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", (char *)url);
-       	else if (!url || url[0] == '\0')
+        	aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", (gchar *)url);
+       	else
        		aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", LASTFM_HS_URL);
 
-        if (ge_uid != NULL && ge_uid[0] != '\0' &&
-            ge_pwd != NULL && ge_pwd[0] != '\0')
-        {
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", (char *)ge_uid);
+        if (ge_pwd != NULL && ge_pwd[0] != '\0') {
             aud_md5_init(&md5state);
-            aud_md5_append(&md5state, (unsigned const char *)ge_pwd, strlen(ge_pwd));
+            aud_md5_append(&md5state, (guchar *)ge_pwd, strlen(ge_pwd));
             aud_md5_finish(&md5state, ge_md5pword);
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_password",
-                                  hexify((char*)ge_md5pword, sizeof(ge_md5pword)));
-        } else if (!ge_uid || ge_uid[0] == '\0') {
+                                  hexify((gchar*)ge_md5pword, sizeof(ge_md5pword)));
+        }
+        if (ge_uid != NULL && ge_uid[0] != '\0') {
+            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", (gchar *)ge_uid);
+        } else {
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", "");
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_password", "");
         }
