@@ -129,7 +129,6 @@ src/sndfile/plugin.c
 src/sndstretch/sndstretch_xmms.c
 src/song_change/song_change.c
 src/spectrum/spectrum.c
-src/statusicon/gtktrayicon-x11.c
 src/statusicon/si_ui.c
 src/stereo_plugin/stereo.c
 src/streambrowser/gui/streambrowser_win.c

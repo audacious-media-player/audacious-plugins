@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
-"POT-Creation-Date: 2009-09-16 02:13+0300\n"
+"POT-Creation-Date: 2009-10-13 09:27-0400\n"
 "PO-Revision-Date: 2008-07-08 13:10+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -43,18 +43,18 @@ msgstr "MP4 AAC プレイヤプラグインについて"
 #: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:273
 #: src/console/plugin.c:37 src/crossfade/configure.c:1175
 #: src/crystalizer/crystalizer.c:113 src/echo_plugin/gui.c:24
-#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:698
+#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:695
 #: src/filewriter/filewriter.c:187 src/icecast/icecast.c:241
 #: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:237
 #: src/madplug/plugin.c:580 src/metronom/metronom.c:92
 #: src/modplug/gui/main.cxx:52 src/null/null.c:65 src/null/null.c:108
 #: src/OSS4/OSS4.c:58 src/OSS/OSS.c:54 src/paranormal-ng/plugin.c:282
 #: src/paranormal/plugin.c:290 src/scrobbler/gtkstuff.c:22
-#: src/sndfile/plugin.c:502 src/statusicon/si_ui.c:630
+#: src/sndfile/plugin.c:502 src/statusicon/si_ui.c:468
 #: src/stereo_plugin/stereo.c:52 src/stereo_plugin/stereo.c:115
 #: src/sun/about.c:37 src/sun/configure.c:557 src/timidity/interface.c:223
 #: src/timidity/plugin.c:114 src/tonegen/tonegen.c:56 src/tta/plugin.c:90
-#: src/tta/plugin.c:166 src/vorbis/vorbis.c:592 src/vtx/about.c:26
+#: src/tta/plugin.c:166 src/vorbis/vorbis.c:596 src/vtx/about.c:26
 #: src/vtx/info.c:38 src/wavpack/wavpack.c:408
 msgid "Ok"
 msgstr "OK"
@@ -90,7 +90,7 @@ msgid "AdPlug :: Configuration"
 msgstr "AdPlug :: 設定"
 
 #: src/adplug/adplug-xmms.cc:272 src/alarm/interface.c:1398
-#: src/alsa-ng/alsa-configure.c:338 src/audiocompress/audacious-glue.c:565
+#: src/alsa-ng/alsa-configure.c:273 src/audiocompress/audacious-glue.c:565
 #: src/cdaudio-ng/configure.c:278 src/crossfade/interface-2.0.c:1508
 #: src/crystalizer/crystalizer.c:122 src/echo_plugin/gui.c:143
 #: src/jack/configure.c:151 src/modplug/gui/interface.cxx:715
@@ -321,7 +321,7 @@ msgid "This is your wakeup call."
 msgstr "目覚ましです."
 
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389
-#: src/alsa-ng/alsa-configure.c:332 src/bluetooth/bluetooth.c:114
+#: src/alsa-ng/alsa-configure.c:267 src/bluetooth/bluetooth.c:114
 #: src/crossfade/interface-2.0.c:1503 src/flacng/plugin.c:633
 #: src/gnomeshortcuts/gnomeshortcuts.c:310 src/hotkey/gui.c:670
 #: src/modplug/gui/interface.cxx:703 src/modplug/gui/modplug.glade:1642
@@ -631,57 +631,58 @@ msgstr "今日のリマインダは.."
 msgid "Thankyou"
 msgstr "ありがとう"
 
-#: src/alsa-gapless/config.c:274
+#: src/alsa-gapless/config.c:203
+#, fuzzy
+msgid "Default PCM device"
+msgstr "デフォルト PCM デバイス (%s)"
+
+#: src/alsa-gapless/config.c:229
+#, fuzzy
+msgid "Default mixer device"
+msgstr "デフォルト PCM デバイス (%s)"
+
+#: src/alsa-gapless/config.c:433
 #, fuzzy
 msgid "ALSA Gapless Output Plugin Preferences"
 msgstr "ステータスアイコンプラグイン - 設定"
 
-#: src/alsa-gapless/config.c:281
+#: src/alsa-gapless/config.c:440
 #, fuzzy
-msgid "Override default devices"
-msgstr "デフォルトデバイスを上書きする: "
+msgid "PCM device:"
+msgstr "ミキサデバイス:"
 
-#: src/alsa-gapless/config.c:300
-#, fuzzy
-msgid "Card:"
-msgstr "コマンド:"
+#: src/alsa-gapless/config.c:442 src/OSS/configure.c:260
+#: src/sun/configure.c:218
+msgid "Mixer device:"
+msgstr "ミキサデバイス:"
 
-#: src/alsa-gapless/config.c:302 src/alsa-ng/alsa-configure.c:274
-#, fuzzy
-msgid "Device:"
-msgstr "デバイス"
-
-#: src/alsa-gapless/config.c:304
+#: src/alsa-gapless/config.c:444
 #, fuzzy
 msgid "Mixer element:"
 msgstr "ミキサデバイス:"
 
-#: src/alsa-ng/alsa-configure.c:153
+#: src/alsa-ng/alsa-configure.c:110
 msgid "Unknown soundcard"
 msgstr "不明なサウンドカード"
 
-#: src/alsa-ng/alsa-configure.c:208
+#: src/alsa-ng/alsa-configure.c:164
 #, c-format
 msgid "Default PCM device (%s)"
 msgstr "デフォルト PCM デバイス (%s)"
 
-#: src/alsa-ng/alsa-configure.c:262
+#: src/alsa-ng/alsa-configure.c:228
 #, fuzzy
 msgid "ALSA Output Plugin Preferences"
 msgstr "ステータスアイコンプラグイン - 設定"
 
-#: src/alsa-ng/alsa-configure.c:288
+#: src/alsa-ng/alsa-configure.c:238
+#, fuzzy
+msgid "Device:"
+msgstr "デバイス"
+
+#: src/alsa-ng/alsa-configure.c:252
 msgid "Mixer:"
 msgstr "ミキサ:"
-
-#: src/alsa-ng/alsa-configure.c:300
-msgid "Mixer card:"
-msgstr "ミキサカード:"
-
-#: src/alsa-ng/alsa-configure.c:313 src/OSS/configure.c:260
-#: src/sun/configure.c:218
-msgid "Mixer device:"
-msgstr "ミキサデバイス:"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -3384,7 +3385,7 @@ msgstr ""
 "Giacomo Lozito によって書かれた.\n"
 "\n"
 
-#: src/ffaudio/ffaudio-core.c:681
+#: src/ffaudio/ffaudio-core.c:678
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -3400,7 +3401,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:697
+#: src/ffaudio/ffaudio-core.c:694
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "FLAC オーディオプラグインについて"
@@ -4473,7 +4474,7 @@ msgid "Error connecting to server: %s\n"
 msgstr "LIRC サーバに再接続"
 
 #: src/icecast/icecast.c:519 src/icecast/icecast.c:715
-#: src/scrobbler/configure.c:148 src/scrobbler/configure.c:225
+#: src/scrobbler/configure.c:152 src/scrobbler/configure.c:229
 #, fuzzy
 msgid "Change password"
 msgstr "演奏曲の変更"
@@ -4521,8 +4522,8 @@ msgid ""
 "The default value is \"source\""
 msgstr ""
 
-#: src/icecast/icecast.c:704 src/scrobbler/configure.c:199
-#: src/scrobbler/configure.c:261
+#: src/icecast/icecast.c:704 src/scrobbler/configure.c:203
+#: src/scrobbler/configure.c:265
 msgid "Password:"
 msgstr "パスワード:"
 
@@ -5264,28 +5265,28 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA. へ手紙を書いて下さい."
 
-#: src/scrobbler/configure.c:171
+#: src/scrobbler/configure.c:175
 msgid "<b>Services</b>"
 msgstr "<b>サービス</b>"
 
-#: src/scrobbler/configure.c:193 src/scrobbler/configure.c:255
+#: src/scrobbler/configure.c:197 src/scrobbler/configure.c:259
 msgid "Username:"
 msgstr "ユーザ名:"
 
-#: src/scrobbler/configure.c:207
+#: src/scrobbler/configure.c:211
 #, fuzzy
 msgid "Scrobbler URL:"
 msgstr "Scrobbler エラー"
 
-#: src/scrobbler/configure.c:239
+#: src/scrobbler/configure.c:243
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:287
+#: src/scrobbler/configure.c:291
 msgid "<b>Gerpok</b>"
 msgstr "<b>Gerpok</b>"
 
-#: src/scrobbler/configure.c:346
+#: src/scrobbler/configure.c:350
 #, fuzzy
 msgid "Scrobbler"
 msgstr "Scrobbler エラー"
@@ -6702,19 +6703,11 @@ msgstr "曲メッセージ"
 msgid "Spectrum Analyzer"
 msgstr "スペクトラムアナライザ"
 
-#: src/statusicon/gtktrayicon-x11.c:133
-msgid "Orientation"
-msgstr "向き"
-
-#: src/statusicon/gtktrayicon-x11.c:134
-msgid "The orientation of the tray"
-msgstr "トレイの向き"
-
-#: src/statusicon/si_ui.c:624
+#: src/statusicon/si_ui.c:462
 msgid "About Status Icon Plugin"
 msgstr "ステータスアイコン プラグインについて"
 
-#: src/statusicon/si_ui.c:626
+#: src/statusicon/si_ui.c:464
 msgid ""
 "\n"
 "written by Giacomo Lozito < james@develia.org >\n"
@@ -6728,35 +6721,35 @@ msgstr ""
 "このプラグインは, ウィンドウマネージャの\n"
 "システムトレイエリアに置かれるステータスアイコンを提供します.\n"
 
-#: src/statusicon/si_ui.c:698
+#: src/statusicon/si_ui.c:536
 msgid "Status Icon Plugin - Preferences"
 msgstr "ステータスアイコンプラグイン - 設定"
 
-#: src/statusicon/si_ui.c:709
+#: src/statusicon/si_ui.c:547
 msgid "Right-Click Menu"
 msgstr "右クリックメニュー"
 
-#: src/statusicon/si_ui.c:714
+#: src/statusicon/si_ui.c:552
 msgid "Audacious standard menu"
 msgstr "Audacious 標準メニュー"
 
-#: src/statusicon/si_ui.c:719
+#: src/statusicon/si_ui.c:557
 msgid "Small playback menu #1"
 msgstr "小型再生メニュー #1"
 
-#: src/statusicon/si_ui.c:724
+#: src/statusicon/si_ui.c:562
 msgid "Small playback menu #2"
 msgstr "小型再生メニュー #2"
 
-#: src/statusicon/si_ui.c:747
+#: src/statusicon/si_ui.c:585
 msgid "Mouse Scroll Action"
 msgstr "マウススクロールの動作"
 
-#: src/statusicon/si_ui.c:752
+#: src/statusicon/si_ui.c:590
 msgid "Change volume"
 msgstr "音量の変更"
 
-#: src/statusicon/si_ui.c:757
+#: src/statusicon/si_ui.c:595
 msgid "Change playing song"
 msgstr "演奏曲の変更"
 
@@ -7011,11 +7004,11 @@ msgstr "Ogg Vorbis タグ:"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ogg Vorbis オーディオプラグインの設定"
 
-#: src/vorbis/vorbis.c:573
+#: src/vorbis/vorbis.c:577
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Ogg Vorbis オーディオ プラグインについて"
 
-#: src/vorbis/vorbis.c:579
+#: src/vorbis/vorbis.c:583
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -7230,6 +7223,23 @@ msgstr ""
 "\n"
 "プラグインコードの一部は Miles Egan による\n"
 "Wavpack のサイト http://www.wavpack.com/ をご覧ください\n"
+
+#, fuzzy
+#~ msgid "Override default devices"
+#~ msgstr "デフォルトデバイスを上書きする: "
+
+#, fuzzy
+#~ msgid "Card:"
+#~ msgstr "コマンド:"
+
+#~ msgid "Mixer card:"
+#~ msgstr "ミキサカード:"
+
+#~ msgid "Orientation"
+#~ msgstr "向き"
+
+#~ msgid "The orientation of the tray"
+#~ msgstr "トレイの向き"
 
 #~ msgid "/Toggle Decorations"
 #~ msgstr "/装飾の切り替え"

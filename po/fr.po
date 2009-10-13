@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious-plugins 2.1\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
-"POT-Creation-Date: 2009-09-16 02:13+0300\n"
+"POT-Creation-Date: 2009-10-13 09:27-0400\n"
 "PO-Revision-Date: 2009-07-07 06:27+0100\n"
 "Last-Translator: Stany Henry <StrassBoy@gmail.com>\n"
 "Language-Team: \n"
@@ -39,18 +39,18 @@ msgstr "À propos du module audio \"MPEG\""
 #: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:273
 #: src/console/plugin.c:37 src/crossfade/configure.c:1175
 #: src/crystalizer/crystalizer.c:113 src/echo_plugin/gui.c:24
-#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:698
+#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:695
 #: src/filewriter/filewriter.c:187 src/icecast/icecast.c:241
 #: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:237
 #: src/madplug/plugin.c:580 src/metronom/metronom.c:92
 #: src/modplug/gui/main.cxx:52 src/null/null.c:65 src/null/null.c:108
 #: src/OSS4/OSS4.c:58 src/OSS/OSS.c:54 src/paranormal-ng/plugin.c:282
 #: src/paranormal/plugin.c:290 src/scrobbler/gtkstuff.c:22
-#: src/sndfile/plugin.c:502 src/statusicon/si_ui.c:630
+#: src/sndfile/plugin.c:502 src/statusicon/si_ui.c:468
 #: src/stereo_plugin/stereo.c:52 src/stereo_plugin/stereo.c:115
 #: src/sun/about.c:37 src/sun/configure.c:557 src/timidity/interface.c:223
 #: src/timidity/plugin.c:114 src/tonegen/tonegen.c:56 src/tta/plugin.c:90
-#: src/tta/plugin.c:166 src/vorbis/vorbis.c:592 src/vtx/about.c:26
+#: src/tta/plugin.c:166 src/vorbis/vorbis.c:596 src/vtx/about.c:26
 #: src/vtx/info.c:38 src/wavpack/wavpack.c:408
 msgid "Ok"
 msgstr "OK"
@@ -89,7 +89,7 @@ msgid "AdPlug :: Configuration"
 msgstr "Configuration du module \"AdPlug\""
 
 #: src/adplug/adplug-xmms.cc:272 src/alarm/interface.c:1398
-#: src/alsa-ng/alsa-configure.c:338 src/audiocompress/audacious-glue.c:565
+#: src/alsa-ng/alsa-configure.c:273 src/audiocompress/audacious-glue.c:565
 #: src/cdaudio-ng/configure.c:278 src/crossfade/interface-2.0.c:1508
 #: src/crystalizer/crystalizer.c:122 src/echo_plugin/gui.c:143
 #: src/jack/configure.c:151 src/modplug/gui/interface.cxx:715
@@ -327,7 +327,7 @@ msgid "This is your wakeup call."
 msgstr "L'appel du réveil... ;-)"
 
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389
-#: src/alsa-ng/alsa-configure.c:332 src/bluetooth/bluetooth.c:114
+#: src/alsa-ng/alsa-configure.c:267 src/bluetooth/bluetooth.c:114
 #: src/crossfade/interface-2.0.c:1503 src/flacng/plugin.c:633
 #: src/gnomeshortcuts/gnomeshortcuts.c:310 src/hotkey/gui.c:670
 #: src/modplug/gui/interface.cxx:703 src/modplug/gui/modplug.glade:1642
@@ -659,57 +659,58 @@ msgstr "Le pense-bête du jour est..."
 msgid "Thankyou"
 msgstr "Merci"
 
-#: src/alsa-gapless/config.c:274
+#: src/alsa-gapless/config.c:203
+#, fuzzy
+msgid "Default PCM device"
+msgstr "Périphérique PCM par défaut (%s)"
+
+#: src/alsa-gapless/config.c:229
+#, fuzzy
+msgid "Default mixer device"
+msgstr "Périphérique PCM par défaut (%s)"
+
+#: src/alsa-gapless/config.c:433
 #, fuzzy
 msgid "ALSA Gapless Output Plugin Preferences"
 msgstr "Préférences de \"Status Icon\""
 
-#: src/alsa-gapless/config.c:281
+#: src/alsa-gapless/config.c:440
 #, fuzzy
-msgid "Override default devices"
-msgstr "Remplacer le périphérique par défaut : "
+msgid "PCM device:"
+msgstr "Canal de mélange audio :"
 
-#: src/alsa-gapless/config.c:300
-#, fuzzy
-msgid "Card:"
-msgstr "Commande :"
+#: src/alsa-gapless/config.c:442 src/OSS/configure.c:260
+#: src/sun/configure.c:218
+msgid "Mixer device:"
+msgstr "Canal de mélange audio :"
 
-#: src/alsa-gapless/config.c:302 src/alsa-ng/alsa-configure.c:274
-#, fuzzy
-msgid "Device:"
-msgstr "Périphériques"
-
-#: src/alsa-gapless/config.c:304
+#: src/alsa-gapless/config.c:444
 #, fuzzy
 msgid "Mixer element:"
 msgstr "Canal de mélange audio :"
 
-#: src/alsa-ng/alsa-configure.c:153
+#: src/alsa-ng/alsa-configure.c:110
 msgid "Unknown soundcard"
 msgstr "Carte son inconnue"
 
-#: src/alsa-ng/alsa-configure.c:208
+#: src/alsa-ng/alsa-configure.c:164
 #, c-format
 msgid "Default PCM device (%s)"
 msgstr "Périphérique PCM par défaut (%s)"
 
-#: src/alsa-ng/alsa-configure.c:262
+#: src/alsa-ng/alsa-configure.c:228
 #, fuzzy
 msgid "ALSA Output Plugin Preferences"
 msgstr "Préférences de \"Status Icon\""
 
-#: src/alsa-ng/alsa-configure.c:288
+#: src/alsa-ng/alsa-configure.c:238
+#, fuzzy
+msgid "Device:"
+msgstr "Périphériques"
+
+#: src/alsa-ng/alsa-configure.c:252
 msgid "Mixer:"
 msgstr "Mélangeur audio"
-
-#: src/alsa-ng/alsa-configure.c:300
-msgid "Mixer card:"
-msgstr "Carte du mélangeur audio : "
-
-#: src/alsa-ng/alsa-configure.c:313 src/OSS/configure.c:260
-#: src/sun/configure.c:218
-msgid "Mixer device:"
-msgstr "Canal de mélange audio :"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -3657,7 +3658,7 @@ msgstr ""
 "Écrit par Giacomo Lozito < james@develia.org >\n"
 "\n"
 
-#: src/ffaudio/ffaudio-core.c:681
+#: src/ffaudio/ffaudio-core.c:678
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -3673,7 +3674,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:697
+#: src/ffaudio/ffaudio-core.c:694
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "À propos du module \"FLAC\""
@@ -4778,7 +4779,7 @@ msgid "Error connecting to server: %s\n"
 msgstr "Erreur lors de la connexion au server : %s\n"
 
 #: src/icecast/icecast.c:519 src/icecast/icecast.c:715
-#: src/scrobbler/configure.c:148 src/scrobbler/configure.c:225
+#: src/scrobbler/configure.c:152 src/scrobbler/configure.c:229
 msgid "Change password"
 msgstr "Modifier le mot de passe"
 
@@ -4823,8 +4824,8 @@ msgstr ""
 "paramètres du serveur).\n"
 "La valeur par défaut est \"source\"."
 
-#: src/icecast/icecast.c:704 src/scrobbler/configure.c:199
-#: src/scrobbler/configure.c:261
+#: src/icecast/icecast.c:704 src/scrobbler/configure.c:203
+#: src/scrobbler/configure.c:265
 msgid "Password:"
 msgstr "Mot de passe :"
 
@@ -5612,27 +5613,27 @@ msgstr ""
 "Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,\n"
 "MA 02110-1301, USA."
 
-#: src/scrobbler/configure.c:171
+#: src/scrobbler/configure.c:175
 msgid "<b>Services</b>"
 msgstr "<b>Services</b>"
 
-#: src/scrobbler/configure.c:193 src/scrobbler/configure.c:255
+#: src/scrobbler/configure.c:197 src/scrobbler/configure.c:259
 msgid "Username:"
 msgstr "Utilisateur :"
 
-#: src/scrobbler/configure.c:207
+#: src/scrobbler/configure.c:211
 msgid "Scrobbler URL:"
 msgstr "URL de \"Scrobbler\" :"
 
-#: src/scrobbler/configure.c:239
+#: src/scrobbler/configure.c:243
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:287
+#: src/scrobbler/configure.c:291
 msgid "<b>Gerpok</b>"
 msgstr "<b>Gerpok</b>"
 
-#: src/scrobbler/configure.c:346
+#: src/scrobbler/configure.c:350
 #, fuzzy
 msgid "Scrobbler"
 msgstr "URL de \"Scrobbler\" :"
@@ -7108,19 +7109,11 @@ msgstr "Commentaires"
 msgid "Spectrum Analyzer"
 msgstr "Analyseur Spectral"
 
-#: src/statusicon/gtktrayicon-x11.c:133
-msgid "Orientation"
-msgstr "Orientation"
-
-#: src/statusicon/gtktrayicon-x11.c:134
-msgid "The orientation of the tray"
-msgstr "Définit l'orientation de l'icône"
-
-#: src/statusicon/si_ui.c:624
+#: src/statusicon/si_ui.c:462
 msgid "About Status Icon Plugin"
 msgstr "À propos du module \"Status Icon\""
 
-#: src/statusicon/si_ui.c:626
+#: src/statusicon/si_ui.c:464
 msgid ""
 "\n"
 "written by Giacomo Lozito < james@develia.org >\n"
@@ -7134,35 +7127,35 @@ msgstr ""
 "Ce module affiche une icône de statut dans l'espace\n"
 "de notification du gestionnaire de fenêtres.\n"
 
-#: src/statusicon/si_ui.c:698
+#: src/statusicon/si_ui.c:536
 msgid "Status Icon Plugin - Preferences"
 msgstr "Préférences de \"Status Icon\""
 
-#: src/statusicon/si_ui.c:709
+#: src/statusicon/si_ui.c:547
 msgid "Right-Click Menu"
 msgstr "Menu disponible via le clic droit :"
 
-#: src/statusicon/si_ui.c:714
+#: src/statusicon/si_ui.c:552
 msgid "Audacious standard menu"
 msgstr "Menu standard d'Audacious"
 
-#: src/statusicon/si_ui.c:719
+#: src/statusicon/si_ui.c:557
 msgid "Small playback menu #1"
 msgstr "Menu de lecture compact #1"
 
-#: src/statusicon/si_ui.c:724
+#: src/statusicon/si_ui.c:562
 msgid "Small playback menu #2"
 msgstr "Menu de lecture compact #2"
 
-#: src/statusicon/si_ui.c:747
+#: src/statusicon/si_ui.c:585
 msgid "Mouse Scroll Action"
 msgstr "Effet du défilement de la souris :"
 
-#: src/statusicon/si_ui.c:752
+#: src/statusicon/si_ui.c:590
 msgid "Change volume"
 msgstr "Changement du volume"
 
-#: src/statusicon/si_ui.c:757
+#: src/statusicon/si_ui.c:595
 msgid "Change playing song"
 msgstr "Changement du titre en cours de lecture"
 
@@ -7427,11 +7420,11 @@ msgstr "Métadonnées \"Ogg Vorbis\" :"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Configuration du module audio \"Ogg Vorbis\""
 
-#: src/vorbis/vorbis.c:573
+#: src/vorbis/vorbis.c:577
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "À propos du module audio \"Ogg Vorbis\""
 
-#: src/vorbis/vorbis.c:579
+#: src/vorbis/vorbis.c:583
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -7656,6 +7649,23 @@ msgstr ""
 "\n"
 "Vous pouvez visiter le site \"Wavpack\" à l'adresse suivante :\n"
 "http://www.wavpack.com/\n"
+
+#, fuzzy
+#~ msgid "Override default devices"
+#~ msgstr "Remplacer le périphérique par défaut : "
+
+#, fuzzy
+#~ msgid "Card:"
+#~ msgstr "Commande :"
+
+#~ msgid "Mixer card:"
+#~ msgstr "Carte du mélangeur audio : "
+
+#~ msgid "Orientation"
+#~ msgstr "Orientation"
+
+#~ msgid "The orientation of the tray"
+#~ msgstr "Définit l'orientation de l'icône"
 
 #~ msgid "/Toggle Decorations"
 #~ msgstr "/Montrer les décorations"
