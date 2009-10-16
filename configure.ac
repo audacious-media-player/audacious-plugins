@@ -1476,7 +1476,7 @@ AC_ARG_ENABLE(filewriter_mp3,
 )
 
 if test "x$enable_filewriter_mp3" = "xyes"; then
-   AC_CHECK_LIB(mp3lame -lm, lame_init, [have_lame=yes], [have_lame=no])
+   AC_CHECK_LIB(mp3lame -lm, lame_get_id3v2_tag, [have_lame=yes], [have_lame=no])
    if test "x$have_lame" = "xyes"; then
       AC_DEFINE(FILEWRITER_MP3, 1, [Define if MP3 output part should be built])
 	  FILEWRITER_LIBS="$FILEWRITER_LIBS -lmp3lame"
