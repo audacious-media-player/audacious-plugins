@@ -23,8 +23,8 @@
 
 static OutputPlugin plugin =
 {
-    .description = "ALSA Gapless Output Plugin (experimental)",
-    .probe_priority = 0, /* experimental */
+    .description = "ALSA Gapless Output Plugin",
+    .probe_priority = 2,
     .init = alsa_init,
     .cleanup = alsa_cleanup,
     .open_audio = alsa_open_audio,
