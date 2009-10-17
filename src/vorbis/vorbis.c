@@ -371,8 +371,8 @@ vorbis_play(InputPlayback *playback)
 
         if (seek_value >= 0)
         {
-            ov_time_seek (& vf, seek_value);
-            playback->output->flush (1000 * seek_value);
+            ov_time_seek (& vf, (double) seek_value / 1000);
+            playback->output->flush (seek_value);
             seek_value = -1;
             g_cond_signal (seek_cond);
         }
@@ -515,7 +515,7 @@ static void vorbis_pause (InputPlayback * playback, gshort p)
     g_mutex_unlock (seek_mutex);
 }
 
-static void vorbis_seek (InputPlayback * playback, gint time)
+static void vorbis_mseek (InputPlayback * playback, gulong time)
 {
     g_mutex_lock (seek_mutex);
 
@@ -527,6 +527,11 @@ static void vorbis_seek (InputPlayback * playback, gint time)
     }
 
     g_mutex_unlock (seek_mutex);
+}
+
+static void vorbis_seek (InputPlayback * playback, gint time)
+{
+    vorbis_mseek (playback, 1000 * time);
 }
 
 static Tuple *
@@ -736,6 +741,7 @@ static InputPlugin vorbis_ip = {
     .stop = vorbis_stop,
     .pause = vorbis_pause,
     .seek = vorbis_seek,
+    .mseek = vorbis_mseek,
     .cleanup = vorbis_cleanup,
     .get_song_tuple = get_song_tuple,
     .is_our_file_from_vfs = vorbis_check_fd,

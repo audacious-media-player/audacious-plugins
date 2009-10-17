@@ -2350,15 +2350,11 @@ mainwin_idle_func(gpointer data)
         {
             gint np;
             if (seek_state == MAINWIN_SEEK_REV)
-                np = seek_initial_pos - labs((gulong)(now_dur/100)); /* seek back */
+                np = seek_initial_pos - now_dur / 50;
             else
-                np = seek_initial_pos + labs((gulong)(now_dur/100)); /* seek forward */
+                np = seek_initial_pos + now_dur / 50;
 
-            /* boundaries check */
-            if (np < 0 )
-                np = 0;
-            else if ( np > 219 )
-                np = 219;
+            np = CLAMP (np, 0, 219);
 
             ui_skinned_horizontal_slider_set_position( mainwin_position , np );
             mainwin_position_motion_cb( mainwin_position, np );
