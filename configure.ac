@@ -956,7 +956,7 @@ else
 fi
 
 if test "x$have_alsa" = "xyes"; then
-	OUTPUT_PLUGINS="$OUTPUT_PLUGINS alsa-ng alsa-gapless"
+	OUTPUT_PLUGINS="$OUTPUT_PLUGINS alsa-gapless"
 fi
 
 
