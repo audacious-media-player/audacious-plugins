@@ -37,12 +37,8 @@ static GtkUIManager *ui_manager = NULL;
 /* toggle action entries */
 
 static GtkToggleActionEntry toggleaction_entries_others[] = {
-#if 0
     {"stop after current song", NULL, N_("Stop after Current Song"), "<Ctrl>M",
      N_("Stop after Current Song"), G_CALLBACK(action_stop_after_current_song), FALSE},
-
-    {"anamode peaks", NULL, N_("Peaks"), NULL,
-     N_("Peaks"), G_CALLBACK(action_anamode_peaks), FALSE},
 
     {"playback repeat", NULL, N_("Repeat"), "R",
      N_("Repeat"), G_CALLBACK(action_playback_repeat), FALSE},
@@ -52,7 +48,6 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
 
     {"playback no playlist advance", NULL, N_("No Playlist Advance"), "<Ctrl>N",
      N_("No Playlist Advance"), G_CALLBACK(action_playback_noplaylistadvance), FALSE},
-#endif
 };
 
 /* normal actions */
@@ -271,7 +266,7 @@ static GtkActionEntry action_entries_others[] = {
     {"file", NULL, N_("File")},
     {"help", NULL, N_("Help")},
 
-    {"plugins-menu", AUD_STOCK_PLUGIN, N_("Plugin Services")},
+    {"plugins-menu", NULL, N_("Components")},
 
     {"current track info", GTK_STOCK_INFO, N_("View Track Details"), "I",
      N_("View track details"), G_CALLBACK(action_current_track_info)},
@@ -412,7 +407,7 @@ void ui_manager_create_menus(void)
     mainwin_view_menu = ui_manager_get_popup_menu(ui_manager, "/mainwin-menus/main-menu/view");
     mainwin_general_menu = ui_manager_get_popup_menu(ui_manager, "/mainwin-menus/main-menu");
 
-    gtk_menu_item_set_submenu(GTK_MENU_ITEM(gtk_ui_manager_get_widget(ui_manager, "/mainwin-menus/main-menu/plugins-menu")), aud_get_plugin_menu(AUDACIOUS_MENU_MAIN));
+    gtk_menu_item_set_submenu(GTK_MENU_ITEM(gtk_ui_manager_get_widget(ui_manager, "/mainwin-menus/plugins-menu")), aud_get_plugin_menu(AUDACIOUS_MENU_MAIN));
 
 #ifdef GDK_WINDOWING_QUARTZ
     gtk_ui_manager_add_ui_from_file(ui_manager, DATA_DIR "/ui/carbon-menubar.ui", &gerr);
