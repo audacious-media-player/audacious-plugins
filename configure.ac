@@ -689,7 +689,7 @@ AC_ARG_ENABLE(aac,
 )
 
 if test x$enable_aac = xyes; then
-	FAAD_LIBS="-lfaad -lmp4ff"
+	FAAD_LIBS="-lfaad"
 	FAAD_CFLAGS=
 
 	AC_CHECK_HEADER(faad.h,,enable_aac=no)
@@ -701,9 +701,6 @@ if test x$enable_aac = xyes; then
 	fi
 	if test x$enable_aac = xyes; then
 		AC_CHECK_LIB(faad,NeAACDecInit2,,enable_aac=no)
-	fi
-	if test x$enable_aac = xyes; then
-		AC_CHECK_LIB(mp4ff,mp4ff_get_decoder_config,,enable_aac=no)
 	fi
 fi
 
