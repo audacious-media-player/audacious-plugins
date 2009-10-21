@@ -1442,18 +1442,6 @@ if test "x$have_projectm1" = "xyes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS projectm-1.0"
 fi
 
-dnl *** TTA
-
-AC_ARG_ENABLE(tta,
-    [  --disable-tta           disable TrueAudio plugin (default=enabled) ],
-    [enable_tta=$enableval],
-    [enable_tta=yes]
-)
-
-if test "x$enable_tta" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS tta"
-fi
-
 dnl *** FileWriter
 
 AC_ARG_ENABLE(filewriter,
@@ -1668,7 +1656,6 @@ echo "  Nintendo DS audio (xsf):                yes [experimental]"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      yes"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
-echo "  TrueAudio (tta):                        $enable_tta"
 echo "  Metronom:                               yes"
 echo
 echo "  General"
