@@ -79,7 +79,6 @@ ffaudio_check_codec(AVCodec *codec)
         case CODEC_ID_FLAC:
         case CODEC_ID_VORBIS:
         case CODEC_ID_AAC:
-        case CODEC_ID_TTA:
             _DEBUG("refusing blacklisted codec");
             return 0;
 #endif
