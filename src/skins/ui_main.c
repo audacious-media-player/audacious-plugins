@@ -72,23 +72,16 @@
 #include "skins_cfg.h"
 #include "util.h"
 
-static GTimeVal cb_time;
-static const int TRISTATE_THRESHOLD = 200;
-
-enum {
-    MAINWIN_SEEK_REV = -1,
-    MAINWIN_SEEK_NIL,
-    MAINWIN_SEEK_FWD
-};
+#define SEEK_THRESHOLD 200 /* milliseconds */
+#define SEEK_TIMEOUT 100 /* milliseconds */
+#define SEEK_SPEED 50 /* milliseconds per pixel */
 
 GtkWidget *mainwin = NULL;
 
 static gint balance;
+static gint seek_source = 0, seek_start, seek_event_time, seek_time;
 
 static GtkWidget *mainwin_jtt = NULL;
-
-static gint seek_state = MAINWIN_SEEK_NIL;
-static gint seek_initial_pos = 0;
 
 static GtkWidget *mainwin_menubtn, *mainwin_minimize, *mainwin_shade, *mainwin_close;
 static GtkWidget *mainwin_shaded_menubtn, *mainwin_shaded_minimize, *mainwin_shaded_shade, *mainwin_shaded_close;
@@ -123,8 +116,6 @@ static GtkWidget *mainwin_monostereo;
 static GtkWidget *mainwin_srew, *mainwin_splay, *mainwin_spause;
 static GtkWidget *mainwin_sstop, *mainwin_sfwd, *mainwin_seject, *mainwin_about;
 
-static gint mainwin_timeout_id;
-
 static gboolean mainwin_info_text_locked = FALSE;
 static guint mainwin_volume_release_timeout = 0;
 
@@ -132,7 +123,6 @@ static int ab_position_a = -1;
 static int ab_position_b = -1;
 
 static void mainwin_refresh_visible(void);
-static gint mainwin_idle_func(gpointer data);
 
 static void set_timer_mode_menu_cb(TimerMode mode);
 static void set_timer_mode(TimerMode mode);
@@ -1067,86 +1057,74 @@ mainwin_eject_pushed(void)
     action_play_file();
 }
 
-void
-mainwin_rev_pushed(void)
+static gboolean seek_timeout (void * rewind)
 {
-    g_get_current_time(&cb_time);
+    struct timeval tv;
+    gint now, held, position;
 
-    seek_initial_pos = ui_skinned_horizontal_slider_get_position(mainwin_position);
-    seek_state = MAINWIN_SEEK_REV;
-    mainwin_timeout_id = g_timeout_add(MAINWIN_UPDATE_INTERVAL,
-                                       (GSourceFunc) mainwin_idle_func, NULL);
+    gettimeofday (& tv, NULL);
+    now = tv.tv_sec % 86400 * 1000 + tv.tv_usec / 1000;
+    held = (now >= seek_time) ? now - seek_time : 86400000 + now - seek_time;
+
+    if (held < SEEK_THRESHOLD)
+        return TRUE;
+
+    if (GPOINTER_TO_INT (rewind))
+        position = seek_start - held / SEEK_SPEED;
+    else
+        position = seek_start + held / SEEK_SPEED;
+
+    position = CLAMP (position, 0, 219);
+    ui_skinned_horizontal_slider_set_position (mainwin_position, position);
+    mainwin_position_motion_cb (mainwin_position, position);
+
+    return TRUE;
 }
 
-void
-mainwin_rev_release(void)
+static gboolean seek_press (GtkWidget * widget, GdkEventButton * event,
+ void * rewind)
 {
-    GTimeVal now_time;
-    GTimeVal delta_time;
-    gulong now_dur;
+    struct timeval tv;
 
-    g_source_remove (mainwin_timeout_id);
-    mainwin_timeout_id = 0;
-    seek_state = MAINWIN_SEEK_NIL;
+    if (event->button != 1 || seek_source != 0)
+        return FALSE;
 
-    g_get_current_time(&now_time);
+    seek_start = ui_skinned_horizontal_slider_get_position (mainwin_position);
+    seek_event_time = event->time;
+    gettimeofday (& tv, NULL);
+    seek_time = tv.tv_sec % 86400 * 1000 + tv.tv_usec / 1000;
 
-    delta_time.tv_usec = now_time.tv_usec - cb_time.tv_usec;
-    delta_time.tv_sec = now_time.tv_sec - cb_time.tv_sec;
+    seek_source = g_timeout_add (SEEK_TIMEOUT, seek_timeout, rewind);
 
-    now_dur = labs((delta_time.tv_sec * 1000) + (glong) (delta_time.tv_usec / 1000));
+    return FALSE;
+}
 
-    if ( now_dur <= TRISTATE_THRESHOLD )
+static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
+ void * rewind)
+{
+    gint held;
+
+    if (event->button != 1)
+        return FALSE;
+
+    held = (event->time >= seek_event_time) ? event->time - seek_event_time :
+     86400000 + event->time - seek_event_time;
+
+    if (held < SEEK_THRESHOLD)
     {
-        /* interpret as 'skip to previous song' */
-        audacious_drct_pl_prev ();
+        if (GPOINTER_TO_INT (rewind))
+            audacious_drct_pl_prev ();
+        else
+            audacious_drct_pl_next ();
     }
     else
-    {
-        /* interpret as 'seek' */
-        mainwin_position_release_cb( mainwin_position, ui_skinned_horizontal_slider_get_position(mainwin_position) );
-    }
-}
+        mainwin_position_release_cb (mainwin_position,
+         ui_skinned_horizontal_slider_get_position (mainwin_position));
 
-void
-mainwin_fwd_pushed(void)
-{
-    g_get_current_time(&cb_time);
+    g_source_remove (seek_source);
+    seek_source = 0;
 
-    seek_initial_pos = ui_skinned_horizontal_slider_get_position(mainwin_position);
-    seek_state = MAINWIN_SEEK_FWD;
-    mainwin_timeout_id = g_timeout_add(MAINWIN_UPDATE_INTERVAL,
-                                       (GSourceFunc) mainwin_idle_func, NULL);
-}
-
-void
-mainwin_fwd_release(void)
-{
-    GTimeVal now_time;
-    GTimeVal delta_time;
-    gulong now_dur;
-
-    g_source_remove (mainwin_timeout_id);
-    mainwin_timeout_id = 0;
-    seek_state = MAINWIN_SEEK_NIL;
-
-    g_get_current_time(&now_time);
-
-    delta_time.tv_usec = now_time.tv_usec - cb_time.tv_usec;
-    delta_time.tv_sec = now_time.tv_sec - cb_time.tv_sec;
-
-    now_dur = labs((delta_time.tv_sec * 1000) + (glong) (delta_time.tv_usec / 1000));
-
-    if ( now_dur <= TRISTATE_THRESHOLD )
-    {
-        /* interpret as 'skip to next song' */
-        audacious_drct_pl_next ();
-    }
-    else
-    {
-        /* interpret as 'seek' */
-        mainwin_position_release_cb( mainwin_position, ui_skinned_horizontal_slider_get_position(mainwin_position) );
-    }
+    return FALSE;
 }
 
 void
@@ -1975,14 +1953,18 @@ mainwin_create_widgets(void)
     mainwin_rew = ui_skinned_button_new();
     ui_skinned_push_button_setup(mainwin_rew, SKINNED_WINDOW(mainwin)->normal,
                                  16, 88, 23, 18, 0, 0, 0, 18, SKIN_CBUTTONS);
-    g_signal_connect(mainwin_rew, "pressed", mainwin_rev_pushed, NULL);
-    g_signal_connect(mainwin_rew, "released", mainwin_rev_release, NULL);
+    g_signal_connect (mainwin_rew, "button-press-event", (GCallback)
+     seek_press, GINT_TO_POINTER (TRUE));
+    g_signal_connect (mainwin_rew, "button-release-event", (GCallback)
+     seek_release, GINT_TO_POINTER (TRUE));
 
     mainwin_fwd = ui_skinned_button_new();
     ui_skinned_push_button_setup(mainwin_fwd, SKINNED_WINDOW(mainwin)->normal,
                                  108, 88, 22, 18, 92, 0, 92, 18, SKIN_CBUTTONS);
-    g_signal_connect(mainwin_fwd, "pressed", mainwin_fwd_pushed, NULL);
-    g_signal_connect(mainwin_fwd, "released", mainwin_fwd_release, NULL);
+    g_signal_connect (mainwin_fwd, "button-press-event", (GCallback)
+     seek_press, GINT_TO_POINTER (FALSE));
+    g_signal_connect (mainwin_fwd, "button-release-event", (GCallback)
+     seek_release, GINT_TO_POINTER (FALSE));
 
     mainwin_play = ui_skinned_button_new();
     ui_skinned_push_button_setup(mainwin_play, SKINNED_WINDOW(mainwin)->normal,
@@ -2221,8 +2203,11 @@ mainwin_create_window(void)
 
 void mainwin_unhook (void)
 {
-    if (mainwin_timeout_id)
-        g_source_remove (mainwin_timeout_id);
+    if (seek_source != 0)
+    {
+        g_source_remove (seek_source);
+        seek_source = 0;
+    }
 
     aud_hook_dissociate ("show main menu", (HookFunction) show_main_menu);
     ui_main_evlistener_dissociate ();
@@ -2314,7 +2299,7 @@ void mainwin_update_song_info (void)
             ui_skinned_horizontal_slider_set_position(mainwin_sposition, 13);
         }
         /* update the slider position ONLY if there is not a seek in progress */
-        else if (seek_state == MAINWIN_SEEK_NIL)
+        else if (seek_source == 0)
         {
             ui_skinned_horizontal_slider_set_position (mainwin_position,
              (gint64) time * 219 / length);
@@ -2327,44 +2312,6 @@ void mainwin_update_song_info (void)
         ui_skinned_horizontal_slider_set_position(mainwin_sposition, 1);
     }
 }
-
-static gboolean
-mainwin_idle_func(gpointer data)
-{
-    GDK_THREADS_ENTER();
-
-    /* tristate buttons seek */
-    if ( seek_state != MAINWIN_SEEK_NIL )
-    {
-        GTimeVal now_time;
-        GTimeVal delta_time;
-        gulong now_dur;
-        g_get_current_time(&now_time);
-
-        delta_time.tv_usec = now_time.tv_usec - cb_time.tv_usec;
-        delta_time.tv_sec = now_time.tv_sec - cb_time.tv_sec;
-
-        now_dur = labs((delta_time.tv_sec * 1000) + (glong) (delta_time.tv_usec / 1000));
-
-        if ( now_dur > TRISTATE_THRESHOLD )
-        {
-            gint np;
-            if (seek_state == MAINWIN_SEEK_REV)
-                np = seek_initial_pos - now_dur / 50;
-            else
-                np = seek_initial_pos + now_dur / 50;
-
-            np = CLAMP (np, 0, 219);
-
-            ui_skinned_horizontal_slider_set_position( mainwin_position , np );
-            mainwin_position_motion_cb( mainwin_position, np );
-        }
-    }
-
-    GDK_THREADS_LEAVE();
-    return TRUE;
-}
-
 
 /* toggleactionentries actions */
 
