@@ -2509,7 +2509,6 @@ msgstr ""
 
 #: src/crossfade/interface-2.0.c:578 src/crossfade/interface-2.0.c:873
 #: src/crossfade/interface-2.0.c:935
-#, c-format
 msgid ""
 "Set the start volume. XMMS-crossfade will fade from this volume to 100% "
 "during the time specified above.\n"
@@ -2554,7 +2553,6 @@ msgid "End volume (%):"
 msgstr "Конечная громкость (%):"
 
 #: src/crossfade/interface-2.0.c:735 src/crossfade/interface-2.0.c:997
-#, c-format
 msgid ""
 "Set the end volume. XMMS-crossfade will fade from 100% to this volume during "
 "the time specified above.\n"
