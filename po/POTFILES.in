@@ -3,7 +3,6 @@ src/aac/libmp4.c
 src/adplug/adplug-xmms.cc
 src/alarm/interface.c
 src/alsa-gapless/config.c
-src/alsa-ng/alsa-configure.c
 src/amidi-plug/amidi-plug.c
 src/amidi-plug/backend-alsa/b-alsa.c
 src/amidi-plug/backend-dummy/b-dummy.c
@@ -138,7 +137,6 @@ src/sun/configure.c
 src/timidity/interface.c
 src/timidity/plugin.c
 src/tonegen/tonegen.c
-src/tta/plugin.c
 src/vorbis/configure.c
 src/vorbis/vorbis.c
 src/vtx/about.c

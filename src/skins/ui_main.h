@@ -36,8 +36,6 @@
 #define MAINWIN_SHADED_HEIGHT    MAINWIN_TITLEBAR_HEIGHT
 #define MAINWIN_SCALE_FACTOR     (config.scaled ? config.scale_factor : 1)
 
-#define MAINWIN_UPDATE_INTERVAL  100
-
 #define MAINWIN_DEFAULT_POS_X    20
 #define MAINWIN_DEFAULT_POS_Y    20
 

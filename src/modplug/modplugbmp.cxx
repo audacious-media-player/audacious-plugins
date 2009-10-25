@@ -18,16 +18,6 @@ extern "C" {
 #include <audacious/output.h>
 }
 
-static char* format_and_free_ti( Tuple* ti, int* length )
-{
-        char* result = aud_tuple_formatter_make_title_string(ti, aud_get_gentitle_format());
-        if ( result )
-                *length = aud_tuple_get_int(ti, FIELD_LENGTH, NULL);
-        aud_tuple_free((void *) ti);
-
-        return result;
-}
-
 // ModplugXMMS member functions ===============================
 
 // operations ----------------------------------------
@@ -64,17 +54,17 @@ ModplugXMMS::Settings::Settings()
 	mBassRange      = 30;
 	mSurroundDepth  = 20;
 	mSurroundDelay  = 20;
-	
+
 	mPreamp         = false;
 	mPreampLevel    = 0.0f;
-	
+
 	mLoopCount      = 0;   //don't loop
 }
 
 void ModplugXMMS::Init(void)
 {
 	mcs_handle_t *db;
-	
+
 	db = aud_cfg_db_open();
 
 	aud_cfg_db_get_bool(db, MODPLUG_CFGID,"Surround", &mModProps.mSurround);
@@ -131,7 +121,7 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 
 	aud_vfs_fseek(file, 1080, SEEK_SET);
 	aud_vfs_fread(magic, 1, 4, file);
-	
+
 	// Check for Fast Tracker multichannel modules (xCHN, xxCH)
 	if (magic[1] == 'C' && magic[2] == 'H' && magic[3] == 'N') {
 		if (magic[0] == '6' || magic[0] == '8')
@@ -142,7 +132,7 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 		if ((nch % 2 == 0) && nch >= 10)
 			return true;
 	}
-	
+
 	// Check for Amiga MOD module formats
 	if(mModProps.mGrabAmigaMOD) {
 	if (!memcmp(magic, MOD_MAGIC_PROTRACKER4, 4))
@@ -228,7 +218,7 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 		return true;
 	if (lExt == ".dmf")
 		return true;
-	
+
 	if (lExt == ".zip")
 		return ContainsMod(aFilename);
 	if (lExt == ".gz")
@@ -262,7 +252,7 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 				usleep(10000);
 			break;
 		}
-		
+
 		if(mModProps.mPreamp)
 		{
 			//apply preamp
@@ -273,10 +263,10 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 					short old = ((short*)mBuffer)[i];
 					((short*)mBuffer)[i] *= (short int)mPreampFactor;
 					// detect overflow and clip!
-					if ((old & 0x8000) != 
+					if ((old & 0x8000) !=
 					 (((short*)mBuffer)[i] & 0x8000))
 					  ((short*)mBuffer)[i] = old | 0x7FFF;
-						
+
 				}
 			}
 			else
@@ -285,25 +275,16 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 					uchar old = ((uchar*)mBuffer)[i];
 					((uchar*)mBuffer)[i] *= (short int)mPreampFactor;
 					// detect overflow and clip!
-					if ((old & 0x80) != 
+					if ((old & 0x80) !=
 					 (((uchar*)mBuffer)[i] & 0x80))
 					  ((uchar*)mBuffer)[i] = old | 0x7F;
 				}
 			}
 		}
-		
+
 		if(mStopped)
 			break;
-	
-		//wait for buffer space to free up.
-		while(((mOutPlug->buffer_free()
-		    < (int)mBufSize))
-		   && (!mStopped))
-			usleep(10000);
-			
-		if(mStopped)
-			break;
-		
+
 		playback->pass_audio
 		(
 			playback,
@@ -336,11 +317,9 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 
 void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 {
-	int32 aLength=0;
-	char *aModName=NULL;
 	mStopped = true;
 	mPaused = false;
-	
+
 	//open and mmap the file
 	mArchive = OpenArchive(aFilename);
 	if(mArchive->Size() == 0)
@@ -348,10 +327,10 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 		delete mArchive;
 		return;
 	}
-	
+
 	if (mBuffer)
 		delete [] mBuffer;
-	
+
 	//find buftime to get approx. 512 samples/block
 	mBufTime = 512000 / mModProps.mFrequency + 1;
 
@@ -381,7 +360,7 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 		mModProps.mNoiseReduction,
 		false
 	);
-	
+
 	// [Reverb level 0(quiet)-100(loud)], [delay in ms, usually 40-200ms]
 	if(mModProps.mReverb)
 	{
@@ -412,7 +391,7 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 	CSoundFile::SetResamplingMode(mModProps.mResamplingMode);
 	mSoundFile->SetRepeatCount(mModProps.mLoopCount);
 	mPreampFactor = exp(mModProps.mPreampLevel);
-	
+
 	mPaused = false;
 	mStopped = false;
 
@@ -423,15 +402,16 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 	);
 	mPlayed = 0;
 
-        Tuple* ti = GetSongTuple( aFilename );
-        if ( ti )
-                aModName = format_and_free_ti( ti, &aLength );
+    Tuple* ti = GetSongTuple( aFilename );
+    if ( ti ) {
+        ipb->set_tuple(ipb,ti);
+    }
 
 	ipb->set_params
 	(
 		ipb,
-		aModName,
-		aLength,
+		NULL,
+		0,
 		mSoundFile->GetNumChannels() * 1000,
 		mModProps.mFrequency,
 		mModProps.mChannels
@@ -464,9 +444,6 @@ void ModplugXMMS::Stop(InputPlayback *ipb)
 
 	mStopped = true;
 	mPaused = false;
-	
-	g_thread_join(ipb->thread);
-	ipb->thread = NULL;
 }
 
 void ModplugXMMS::Pause(bool aPaused)
@@ -475,7 +452,7 @@ void ModplugXMMS::Pause(bool aPaused)
 		mPaused = true;
 	else
 		mPaused = false;
-	
+
 	mOutPlug->pause(aPaused);
 }
 
@@ -484,7 +461,7 @@ void ModplugXMMS::Seek(float32 aTime)
 	uint32  lMax;
 	uint32  lMaxtime;
 	float32 lPostime;
-	
+
 	if(aTime > (lMaxtime = mSoundFile->GetSongTime()))
 		aTime = lMaxtime;
 	lMax = mSoundFile->GetMaxPosition();
@@ -508,7 +485,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	CSoundFile* lSoundFile;
 	Archive* lArchive;
 	const gchar *tmps;
-	
+
 	//open and mmap the file
         lArchive = OpenArchive(aFilename);
         if(lArchive->Size() == 0)
@@ -520,7 +497,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	Tuple *ti = aud_tuple_new_from_filename(aFilename.c_str());
 	lSoundFile = new CSoundFile;
 	lSoundFile->Create((uchar*)lArchive->Map(), lArchive->Size());
-	
+
 	switch(lSoundFile->GetType())
         {
 	case MOD_TYPE_MOD:	tmps = "ProTracker"; break;
@@ -549,14 +526,14 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	aud_tuple_associate_string(ti, FIELD_CODEC, NULL, tmps);
 	aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
 	aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
-	
+
 	gchar *tmps2 = MODPLUG_CONVERT(lSoundFile->GetTitle());
 	// Chop any leading spaces off. They are annoying in the playlist.
 	gchar *tmps3 = tmps2; // Make another pointer so tmps2 can still be free()d
 	while ( *tmps3 == ' ' ) tmps3++ ;
 	aud_tuple_associate_string(ti, FIELD_TITLE, NULL, tmps3);
 	g_free(tmps2);
-	
+
 	//unload the file
 	lSoundFile->Destroy();
 	delete lSoundFile;
