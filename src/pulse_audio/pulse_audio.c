@@ -502,8 +502,6 @@ fail:
 
 static void pulse_close(void)
 {
-    drain();
-
     connected = 0;
 
     if (mainloop)
