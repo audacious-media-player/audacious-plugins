@@ -52,7 +52,7 @@
 #include "psx.h"
 	
 #define DEBUG_HLE_BIOS	(0)		// debug PS1 HLE BIOS
-#define DEBUG_SPU	(0)		// debug PS1 SPU read/write
+#define DEBUG_SPU	(1)		// debug PS1 SPU read/write
 #define DEBUG_SPU2	(0)		// debug PS2 SPU read/write
 #define DEBUG_HLE_IOP	(0)		// debug PS2 IOP OS calls
 #define DEBUG_UNK_RW	(0)		// debug unknown reads/writes
@@ -196,9 +196,10 @@ typedef struct
 	uint32 mode;
 	uint32 target;
 	uint32 sysclock;
+	uint32 interrupt;
 } Counter;
 
-static Counter root_cnts[3];	// 3 of the bastards
+static Counter root_cnts[4];	// 4 of the bastards
 
 #define CLOCK_DIV	(8)	// 33 MHz / this = what we run the R3000 at to keep the CPU usage not insane
 
@@ -1092,7 +1093,7 @@ void psx_bios_exception(uint32 pc)
 			}
 			else if (irq_data & 0x70)	// root counters
 			{
-				for (i = 0; i < 3; i++)
+				for (i = 0; i < 4; i++)
 				{
 					if (irq_data & (1 << (i+4)))
 					{
@@ -1330,6 +1331,11 @@ void psx_hw_init(void)
 	root_cnts[0].sysclock = 0;
 	root_cnts[1].sysclock = 0;
 	root_cnts[2].sysclock = 0;
+
+	root_cnts[3].mode = (RC_RESET | RC_IQ1 | RC_IQ2);
+	root_cnts[3].sysclock = 0;
+	root_cnts[3].target = 1;
+	root_cnts[3].interrupt = 1;
 }
 
 void psx_bios_hle(uint32 pc)
@@ -1935,7 +1941,7 @@ void psx_hw_runcounters(void)
 	}
 
 // PS1 root counters
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < 4; i++)
 	{
 		if ((!(root_cnts[i].mode & RC_EN)) && (root_cnts[i].mode != 0))
 		{
