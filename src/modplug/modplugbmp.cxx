@@ -295,15 +295,6 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 		if(mStopped)
 			break;
 	
-		//wait for buffer space to free up.
-		while(((mOutPlug->buffer_free()
-		    < (int)mBufSize))
-		   && (!mStopped))
-			usleep(10000);
-			
-		if(mStopped)
-			break;
-		
 		playback->pass_audio
 		(
 			playback,
@@ -423,15 +414,16 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 	);
 	mPlayed = 0;
 
-        Tuple* ti = GetSongTuple( aFilename );
-        if ( ti )
-                aModName = format_and_free_ti( ti, &aLength );
+    Tuple* ti = GetSongTuple( aFilename );
+    if ( ti ) {
+        ipb->set_tuple(ipb,ti);
+    }
 
 	ipb->set_params
 	(
 		ipb,
-		aModName,
-		aLength,
+		NULL,
+		0,
 		mSoundFile->GetNumChannels() * 1000,
 		mModProps.mFrequency,
 		mModProps.mChannels
@@ -464,9 +456,6 @@ void ModplugXMMS::Stop(InputPlayback *ipb)
 
 	mStopped = true;
 	mPaused = false;
-	
-	g_thread_join(ipb->thread);
-	ipb->thread = NULL;
 }
 
 void ModplugXMMS::Pause(bool aPaused)
