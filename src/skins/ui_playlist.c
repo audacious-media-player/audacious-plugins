@@ -155,20 +155,37 @@ static void playlistwin_update_info (void)
     g_free(sel_text);
 }
 
-static void playlistwin_update_sinfo (void)
+static void update_rollup_text (void)
 {
-    gchar * info = audacious_drct_get_playing () ? aud_playback_get_title () :
-     NULL;
+    gint playlist = aud_playlist_get_active ();
+    gint entry = aud_playlist_get_position (playlist);
+    gchar scratch[512];
 
-    ui_skinned_textbox_set_text (playlistwin_sinfo, (info == NULL) ? "" : info);
-    g_free(info);
+    scratch[0] = 0;
+
+    if (entry > -1)
+    {
+        gint length = aud_playlist_entry_get_length (playlist, entry);
+
+        if (aud_cfg->show_numbers_in_pl)
+            snprintf (scratch, sizeof scratch, "%d. ", 1 + entry);
+
+        snprintf (scratch + strlen (scratch), sizeof scratch - strlen (scratch),
+         "%s", aud_playlist_entry_get_title (playlist, entry));
+
+        if (length > 0)
+            snprintf (scratch + strlen (scratch), sizeof scratch - strlen
+             (scratch), " (%d:%02d)", length / 60000, length / 1000 % 60);
+    }
+
+    ui_skinned_textbox_set_text (playlistwin_sinfo, scratch);
 }
 
 static void real_update (void)
 {
     ui_skinned_playlist_update (playlistwin_list);
     playlistwin_update_info ();
-    playlistwin_update_sinfo ();
+    update_rollup_text ();
 }
 
 void playlistwin_update (void)
