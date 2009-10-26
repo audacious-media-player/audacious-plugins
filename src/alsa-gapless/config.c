@@ -57,13 +57,13 @@ static gboolean list_has_member (GtkListStore * list, const gchar * text)
     return (iter != NULL);
 }
 
-static void get_defined_pcms (gboolean capture, void (* found) (const gchar *
- name, const gchar * description))
+static void get_defined_devices (const gchar * type, gboolean capture, void
+ (* found) (const gchar * name, const gchar * description))
 {
     void * * hints = NULL;
     gint count;
 
-    CHECK (snd_device_name_hint, -1, "pcm", & hints);
+    CHECK (snd_device_name_hint, -1, type, & hints);
 
     for (count = 0; hints[count] != NULL; count ++)
     {
@@ -201,7 +201,7 @@ static void pcm_card_found (gint card, const gchar * description)
 static void pcm_list_fill (void)
 {
     pcm_found ("default", _("Default PCM device"));
-    get_defined_pcms (FALSE, pcm_found);
+    get_defined_devices ("pcm", FALSE, pcm_found);
     get_cards (pcm_card_found);
 }
 
@@ -227,6 +227,7 @@ static void mixer_card_found (gint card, const gchar * description)
 static void mixer_list_fill (void)
 {
     mixer_found ("default", _("Default mixer device"));
+    get_defined_devices ("ctl", FALSE, mixer_found);
     get_cards (mixer_card_found);
 }
 
