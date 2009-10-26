@@ -471,35 +471,6 @@ fail:
     pa_threaded_mainloop_unlock(mainloop);
 }
 
-static void drain(void) {
-    pa_operation *o = NULL;
-    int success = 0;
-
-    CHECK_CONNECTED();
-
-    pa_threaded_mainloop_lock(mainloop);
-    CHECK_DEAD_GOTO(fail, 0);
-
-    if (!(o = pa_stream_drain(stream, stream_success_cb, &success))) {
-        AUDDBG("pa_stream_drain() failed: %s", pa_strerror(pa_context_errno(context)));
-        goto fail;
-    }
-
-    while (pa_operation_get_state(o) != PA_OPERATION_DONE) {
-        CHECK_DEAD_GOTO(fail, 1);
-        pa_threaded_mainloop_wait(mainloop);
-    }
-
-    if (!success)
-        AUDDBG("pa_stream_drain() failed: %s", pa_strerror(pa_context_errno(context)));
-
-fail:
-    if (o)
-        pa_operation_unref(o);
-
-    pa_threaded_mainloop_unlock(mainloop);
-}
-
 static void pulse_close(void)
 {
     connected = 0;
@@ -698,7 +669,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
         goto unlock_and_fail;
     }
     pa_operation_unref(o);
-    
+
     do_trigger = 0;
     written = 0;
     time_offset_msec = 0;
