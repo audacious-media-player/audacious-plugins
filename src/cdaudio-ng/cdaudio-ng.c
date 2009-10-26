@@ -35,15 +35,17 @@
 #include <cddb/cddb.h>
 
 #include <glib.h>
+#include <glib/gi18n.h>
 
 #include <audacious/plugin.h>
-#include <audacious/i18n.h>
 #include <audacious/output.h>
 #include <audacious/ui_plugin_menu.h>
 
 #include "cdaudio-ng.h"
 #include "configure.h"
 
+#define MAX_RETRIES 10
+#define MAX_SKIPS 10
 
 #define DEBUG FALSE
 
@@ -55,6 +57,27 @@
 
 #define warn(...) fprintf(stderr, "cdaudio-ng: " __VA_ARGS__)
 
+typedef struct
+{
+    gchar performer[DEF_STRING_LEN];
+    gchar name[DEF_STRING_LEN];
+    gchar genre[DEF_STRING_LEN];
+    gint startlsn;
+    gint endlsn;
+}
+trackinfo_t;
+
+typedef struct
+{
+    gint startlsn;
+    gint endlsn;
+    gint currlsn;
+    gint seektime; /* milliseconds */
+    InputPlayback * pplayback;
+    GThread * thread;
+}
+dae_params_t;
+
 static GMutex *mutex;
 static GCond *control_cond;
 
@@ -64,7 +87,7 @@ static gint firsttrackno = -1;
 static gint lasttrackno = -1;
 static CdIo_t *pcdio = NULL;
 static trackinfo_t *trackinfo = NULL;
-static volatile gboolean is_paused = FALSE;
+static volatile gboolean pause_flag = FALSE;
 static gint playing_track = -1;
 static dae_params_t *pdae_params = NULL;
 
@@ -252,7 +275,7 @@ static void cdaudio_init ()
     cdng_cfg.cddb_path = g_strdup ("");
     cdng_cfg.cddb_port = CDDA_DEFAULT_CDDB_PORT;
     cdng_cfg.cddb_http = FALSE;
-    cdng_cfg.limitspeed = CDDA_DEFAULT_LIMIT_SPEED;
+    cdng_cfg.disc_speed = DEFAULT_DISC_SPEED;
     cdng_cfg.use_proxy = FALSE;
     cdng_cfg.proxy_host = g_strdup ("");
     cdng_cfg.proxy_port = CDDA_DEFAULT_PROXY_PORT;
@@ -273,7 +296,9 @@ static void cdaudio_init ()
     aud_cfg_db_get_string (db, "CDDA", "cddbpath", &cdng_cfg.cddb_path);
     aud_cfg_db_get_int (db, "CDDA", "cddbport", &cdng_cfg.cddb_port);
     aud_cfg_db_get_bool (db, "CDDA", "cddbhttp", &cdng_cfg.cddb_http);
-    aud_cfg_db_get_int (db, "CDDA", "limitspeed", &cdng_cfg.limitspeed);
+    aud_cfg_db_get_int (db, "CDDA", "disc_speed", & cdng_cfg.disc_speed);
+    cdng_cfg.disc_speed = CLAMP (cdng_cfg.disc_speed, MIN_DISC_SPEED,
+     MAX_DISC_SPEED);
     aud_cfg_db_get_bool (db, "audacious", "use_proxy", &cdng_cfg.use_proxy);
     aud_cfg_db_get_string (db, "audacious", "proxy_host", &cdng_cfg.proxy_host);
     aud_cfg_db_get_int (db, "audacious", "proxy_port", &cdng_cfg.proxy_port);
@@ -283,13 +308,6 @@ static void cdaudio_init ()
                            &cdng_cfg.proxy_password);
 
     aud_cfg_db_close (db);
-
-    debug ("use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, "
-           "cddbserver = \"%s\", cddbpath = \"%s\", cddbport = %d, cddbhttp = %d, "
-           "device = \"%s\"\n",
-           cdng_cfg.use_dae, cdng_cfg.limitspeed, cdng_cfg.use_cdtext,
-           cdng_cfg.use_cddb, cdng_cfg.cddb_server, cdng_cfg.cddb_path,
-           cdng_cfg.cddb_port, cdng_cfg.cddb_http, cdng_cfg.device);
 
     if (!cdio_init ())
     {
@@ -358,13 +376,6 @@ static void cdaudio_about ()
 static void cdaudio_configure ()
 {
     configure_show_gui ();
-
-    debug ("use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, "
-           "cddbserver = \"%s\", cddbpath = \"%s\", cddbport = %d, cddbhttp = %d, "
-           "device = \"%s\"\n",
-           cdng_cfg.use_dae, cdng_cfg.limitspeed, cdng_cfg.use_cdtext,
-           cdng_cfg.use_cddb, cdng_cfg.cddb_server, cdng_cfg.cddb_path,
-           cdng_cfg.cddb_port, cdng_cfg.cddb_http, cdng_cfg.device);
 }
 
 /* thread safe (mutex may be locked) */
@@ -429,7 +440,7 @@ static void cdaudio_play_file (InputPlayback * pinputplayback)
     pinputplayback->set_params (pinputplayback, NULL, 0, 1411200, 44100, 2);
     pinputplayback->playing = TRUE;
     playing_track = trackno;
-    is_paused = FALSE;
+    pause_flag = FALSE;
 
     if (cdng_cfg.use_dae)
     {
@@ -502,7 +513,7 @@ static void cdaudio_pause (InputPlayback * pinputplayback, gshort paused)
 {
     g_mutex_lock (mutex);
 
-    is_paused = paused;
+    pause_flag = paused;
 
     if (cdng_cfg.use_dae)
     {
@@ -678,7 +689,7 @@ static void cdaudio_cleanup (void)
 
     mcs_handle_t *db = aud_cfg_db_open ();
     aud_cfg_db_set_bool (db, "CDDA", "use_dae", cdng_cfg.use_dae);
-    aud_cfg_db_set_int (db, "CDDA", "limitspeed", cdng_cfg.limitspeed);
+    aud_cfg_db_set_int (db, "CDDA", "disc_speed", cdng_cfg.disc_speed);
     aud_cfg_db_set_bool (db, "CDDA", "use_cdtext", cdng_cfg.use_cdtext);
     aud_cfg_db_set_bool (db, "CDDA", "use_cddb", cdng_cfg.use_cddb);
     aud_cfg_db_set_string (db, "CDDA", "cddbserver", cdng_cfg.cddb_server);
@@ -782,14 +793,12 @@ static void do_seek (void)
 static void dae_play_loop (dae_params_t * pdae_params)
 {
     InputPlayback * playback = pdae_params->pplayback;
-    guchar *buffer = g_new (guchar, CDDA_DAE_FRAMES * CDIO_CD_FRAMESIZE_RAW);
     gboolean paused = FALSE;
-
-    cdio_lseek (pcdio, pdae_params->startlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
-
-    gint read_error_counter = 0;
-
-    //pdae_params->endlsn += 75 * 3;
+    gint sectors = CLAMP (aud_cfg->output_buffer_size / 2, 50, 250) *
+     cdng_cfg.disc_speed * 75 / 1000;
+    void * buffer = g_malloc (2352 * sectors);
+    gint retry_count = 0, skip_count = 0;
+    gint count;
 
     while (playback->playing)
     {
@@ -799,10 +808,10 @@ static void dae_play_loop (dae_params_t * pdae_params)
             g_cond_signal (control_cond);
         }
 
-        if (is_paused != paused)
+        if (pause_flag != paused)
         {
-            playback->output->pause (is_paused);
-            paused = is_paused;
+            playback->output->pause (pause_flag);
+            paused = pause_flag;
             g_cond_signal (control_cond);
         }
 
@@ -812,55 +821,52 @@ static void dae_play_loop (dae_params_t * pdae_params)
             continue;
         }
 
-        /* compute the actual number of sectors to read */
-        gint lsncount =
-            CDDA_DAE_FRAMES <=
-            (pdae_params->endlsn - pdae_params->currlsn +
-             1) ? CDDA_DAE_FRAMES : (pdae_params->endlsn -
-                                     pdae_params->currlsn + 1);
+        sectors = MIN (sectors, pdae_params->endlsn + 1 - pdae_params->currlsn);
 
-        /* check to see if we have reached the end of the song */
-        if (lsncount <= 0)
+        if (sectors < 1)
             break;
 
-        if (cdio_read_audio_sectors
-            (pcdio, buffer, pdae_params->currlsn,
-             lsncount) != DRIVER_OP_SUCCESS)
+        if (cdio_read_audio_sectors (pcdio, buffer, pdae_params->currlsn,
+         sectors) == DRIVER_OP_SUCCESS)
         {
-            cdaudio_error ("Cannot read sector.");
-            read_error_counter++;
-            if (read_error_counter >= 2)
-            {
-                read_error_counter = 0;
-                cdaudio_error ("This CD can no longer be played, stopping.");
-                break;
-            }
+            retry_count = 0;
+            skip_count = 0;
+        }
+        else if (sectors > 16)
+        {
+            /* warn ("Read failed; reducing read size.\n"); */
+            sectors /= 2;
+            continue;
+        }
+        else if (retry_count < MAX_RETRIES)
+        {
+            warn ("Read failed; retrying.\n");
+            retry_count ++;
+            continue;
+        }
+        else if (skip_count < MAX_SKIPS)
+        {
+            warn ("Read failed; skipping.\n");
+            pdae_params->currlsn = MIN (pdae_params->currlsn + 75,
+             pdae_params->endlsn + 1);
+            skip_count ++;
+            continue;
         }
         else
-            read_error_counter = 0;
+        {
+            cdaudio_error ("Too many read errors; giving up.");
+            break;
+        }
 
         g_mutex_unlock (mutex);
 
-        gint remainingbytes = lsncount * CDIO_CD_FRAMESIZE_RAW;
-        guchar *bytebuff = buffer;
-
-        while (remainingbytes > 0)
-        {
-            /* compute the actual number of bytes to play */
-            gint bytecount =
-                CDIO_CD_FRAMESIZE_RAW <=
-                remainingbytes ? CDIO_CD_FRAMESIZE_RAW : remainingbytes;
-
-            playback->pass_audio (playback, FMT_S16_LE, 2,
-                                  bytecount, bytebuff, &playback->playing);
-
-            remainingbytes -= bytecount;
-            bytebuff += bytecount;
-        }
+        for (count = 0; count < sectors; count ++)
+            playback->pass_audio (playback, FMT_S16_LE, 2, 2352, buffer + 2352 *
+             count, NULL);
 
         g_mutex_lock (mutex);
 
-        pdae_params->currlsn += lsncount;
+        pdae_params->currlsn += sectors;
     }
 
     if (playback->playing)
@@ -916,14 +922,8 @@ static void scan_cd (void)
             cdio_free_device_list (ppcd_drives);
     }
 
-    /* limit read speed */
-    if (cdng_cfg.limitspeed > 0 && cdng_cfg.use_dae)
-    {
-        debug ("setting drive speed limit to %dx\n", cdng_cfg.limitspeed);
-        if (cdio_set_speed (pcdio, cdng_cfg.limitspeed) != DRIVER_OP_SUCCESS)
-            cdaudio_error ("Failed to set drive speed to %dx.",
-                           cdng_cfg.limitspeed);
-    }
+    if (cdio_set_speed (pcdio, cdng_cfg.disc_speed) != DRIVER_OP_SUCCESS)
+        warn ("Cannot set drive speed.\n");
 
     /* general track initialization */
     cdrom_drive_t *pcdrom_drive = cdio_cddap_identify_cdio (pcdio, 1, NULL);    // todo : check return / NULL

@@ -1,10 +1,12 @@
+#include <glib.h>
+#include <glib/gi18n.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <gtk/gtk.h>
-#include <audacious/i18n.h>
 #include "config.h"
 
+#include "cdaudio-ng.h"
 #include "configure.h"
 
 extern cdng_cfg_t cdng_cfg;
@@ -19,7 +21,6 @@ static GtkWidget *configwindow = NULL,
     *daetable = NULL,
     *titleinfotable = NULL,
     *misctable = NULL,
-    *limitcheckbutton = NULL,
     *usecdtextcheckbutton = NULL,
     *usecddbcheckbutton = NULL,
     *cddbserverlabel = NULL,
@@ -30,7 +31,7 @@ static GtkWidget *configwindow = NULL,
     *cddbportentry = NULL,
     *cddbhttpcheckbutton = NULL,
     *usedevicecheckbutton = NULL,
-    *buttonbox = NULL, *limitspinbutton = NULL, *deviceentry = NULL;
+    *buttonbox = NULL, * disc_speed_button = NULL, *deviceentry = NULL;
 
 
 static void configure_values_to_gui (void)
@@ -39,13 +40,8 @@ static void configure_values_to_gui (void)
 
     /*gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usedaecheckbutton), cdng_cfg.use_dae); */
 
-    /*gtk_widget_set_sensitive(limitcheckbutton, cdng_cfg.use_dae); */
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (limitcheckbutton),
-                                  cdng_cfg.limitspeed > 0);
-
-    /*gtk_widget_set_sensitive(limitspinbutton, cdng_cfg.use_dae && cdng_cfg.limitspeed > 0); */
-    gtk_spin_button_set_value (GTK_SPIN_BUTTON (limitspinbutton),
-                               cdng_cfg.limitspeed);
+    gtk_spin_button_set_value ((GtkSpinButton *) disc_speed_button,
+     cdng_cfg.disc_speed);
 
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (usecdtextcheckbutton),
                                   cdng_cfg.use_cdtext);
@@ -76,11 +72,8 @@ static void configure_gui_to_values (void)
 {
     /*usedae = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton)); */
 
-    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (limitcheckbutton)))
-        cdng_cfg.limitspeed =
-            gtk_spin_button_get_value (GTK_SPIN_BUTTON (limitspinbutton));
-    else
-        cdng_cfg.limitspeed = 0;
+    cdng_cfg.disc_speed = gtk_spin_button_get_value ((GtkSpinButton *)
+     disc_speed_button);
 
     cdng_cfg.use_cdtext =
         gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (usecdtextcheckbutton));
@@ -128,12 +121,8 @@ static void checkbutton_toggled (GtkWidget * widget, gpointer data)
     (void) widget;
     (void) data;
 
-    /*gtk_widget_set_sensitive(limitcheckbutton, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton))); */
-
-    gtk_widget_set_sensitive (limitspinbutton,
-                              gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
-                                                            (limitcheckbutton))
-                              && GTK_WIDGET_IS_SENSITIVE (limitcheckbutton));
+    /* gtk_widget_set_sensitive (disc_speed_button, gtk_toggle_button_get_active
+     ((GtkToggleButton *) usedaecheckbutton)); */
 
     gtk_widget_set_sensitive (cddbserverentry,
                               gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
@@ -198,16 +187,12 @@ void configure_create_gui ()
        gtk_table_attach_defaults(GTK_TABLE(daetable), usedaecheckbutton, 0, 2, 0, 1);
      */
 
-    limitcheckbutton =
-        gtk_check_button_new_with_label (_("Limit read speed to: "));
-    g_signal_connect (G_OBJECT (limitcheckbutton), "toggled",
-                      G_CALLBACK (checkbutton_toggled), NULL);
-    gtk_table_attach_defaults (GTK_TABLE (daetable), limitcheckbutton, 0, 1, 0,
-                               1);
-
-    limitspinbutton = gtk_spin_button_new_with_range (1.0, 24.0, 1.0);
-    gtk_table_attach_defaults (GTK_TABLE (daetable), limitspinbutton, 1, 2, 0,
-                               1);
+    gtk_table_attach_defaults ((GtkTable *) daetable, gtk_label_new (_("Disc "
+     "speed:")), 0, 1, 0, 1);
+    disc_speed_button = gtk_spin_button_new_with_range (MIN_DISC_SPEED,
+     MAX_DISC_SPEED, 1);
+    gtk_table_attach_defaults ((GtkTable *) daetable, disc_speed_button, 1, 2,
+     0, 1);
 
     usecdtextcheckbutton =
         gtk_check_button_new_with_label (_("Use cd-text if available"));
@@ -280,34 +265,7 @@ void configure_create_gui ()
                       G_CALLBACK (button_clicked), NULL);
     gtk_container_add (GTK_CONTAINER (buttonbox), cancelbutton);
 
-
-    /*gtk_widget_show(usedaecheckbutton); */
-    gtk_widget_show (limitcheckbutton);
-    gtk_widget_show (limitspinbutton);
-    gtk_widget_show (usecdtextcheckbutton);
-    gtk_widget_show (usecddbcheckbutton);
-    gtk_widget_show (cddbserverentry);
-    gtk_widget_show (cddbpathentry);
-    gtk_widget_show (cddbhttpcheckbutton);
-    gtk_widget_show (cddbportentry);
-    gtk_widget_show (cddbserverlabel);
-    gtk_widget_show (cddbpathlabel);
-    gtk_widget_show (cddbportlabel);
-    gtk_widget_show (usedevicecheckbutton);
-    gtk_widget_show (deviceentry);
-
-    gtk_widget_show (daetable);
-    gtk_widget_show (daeframe);
-    gtk_widget_show (titleinfotable);
-    gtk_widget_show (titleinfoframe);
-    gtk_widget_show (misctable);
-    gtk_widget_show (miscframe);
-
-    gtk_widget_show (buttonbox);
-    gtk_widget_show (okbutton);
-    gtk_widget_show (cancelbutton);
-
-    gtk_widget_show (maintable);
+    gtk_widget_show_all (maintable);
 }
 
 
