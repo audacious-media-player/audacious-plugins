@@ -142,6 +142,7 @@ void mainwin_clear_song_info(void);
 void mainwin_set_stopaftersong(gboolean stop);
 void mainwin_set_noplaylistadvance(gboolean no_advance);
 
+void mainwin_set_sticky (gboolean sticky);
 void mainwin_set_always_on_top(gboolean always);
 void mainwin_set_shape (void);
 void mainwin_set_volume_diff(gint diff);

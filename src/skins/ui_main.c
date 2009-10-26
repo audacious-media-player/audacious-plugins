@@ -142,6 +142,12 @@ mainwin_set_title_scroll(gboolean scroll)
     ui_skinned_textbox_set_scroll(mainwin_info, config.autoscroll);
 }
 
+void mainwin_set_sticky (gboolean sticky)
+{
+    gtk_toggle_action_set_active ((GtkToggleAction *)
+     gtk_action_group_get_action (toggleaction_group_others,
+     "view put on all workspaces"), sticky);
+}
 
 void
 mainwin_set_always_on_top(gboolean always)
@@ -2157,10 +2163,23 @@ static void show_widgets (void)
     ui_skinned_window_set_shade (mainwin, config.player_shaded);
 }
 
+static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
+ void * unused)
+{
+    if (event->changed_mask & GDK_WINDOW_STATE_STICKY)
+        mainwin_set_sticky (event->new_window_state & GDK_WINDOW_STATE_STICKY);
+
+    if (event->changed_mask & GDK_WINDOW_STATE_ABOVE)
+        mainwin_set_always_on_top (event->new_window_state &
+         GDK_WINDOW_STATE_ABOVE);
+
+    return TRUE;
+}
+
 static gboolean delete_cb (GtkWidget * widget, GdkEvent * event, void * unused)
 {
     audacious_drct_quit ();
-    return 1;
+    return TRUE;
 }
 
 static void
@@ -2197,8 +2216,10 @@ mainwin_create_window(void)
 
     ui_main_evlistener_init();
 
-    g_signal_connect ((GObject *) mainwin, "delete-event", (GCallback) delete_cb,
-     0);
+    g_signal_connect ((GObject *) mainwin, "window-state-event", (GCallback)
+     state_cb, NULL);
+    g_signal_connect ((GObject *) mainwin, "delete-event", (GCallback)
+     delete_cb, NULL);
 }
 
 void mainwin_unhook (void)
