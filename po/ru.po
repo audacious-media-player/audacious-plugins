@@ -6,14 +6,14 @@
 # Улучшения перевода приветствуются :)
 #
 # Alexander Orlov <alxorlov@pochta.ru>, 2007.
-# serg0 <serg0@ulx.ru>, 2009.
+# Sergey V. Mironov <serg0@ulx.ru>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
 "POT-Creation-Date: 2009-10-13 09:27-0400\n"
-"PO-Revision-Date: 2009-10-25 19:50+0300\n"
-"Last-Translator: serg0 <serg0@ulx.ru>\n"
+"PO-Revision-Date: 2009-10-28 13:18+0300\n"
+"Last-Translator: Sergey V. Mironov <serg0@ulx.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1546,7 +1546,7 @@ msgid ""
 msgstr ""
 "Показать OSD, если в процессе воспроизведения меняется название, но имя "
 "файла остаётся прежним. Полезно для отображения названий при воспроизведении "
-"интернет-потоков."
+"из сети."
 
 #: src/aosd/aosd_trigger.c:85
 msgid "Volume Change"
@@ -1598,7 +1598,7 @@ msgstr "Показать OSD:"
 
 #: src/aosd/aosd_ui.c:239
 msgid "all monitors"
-msgstr "на всех мониторы"
+msgstr "на всех мониторах"
 
 #: src/aosd/aosd_ui.c:242
 #, c-format
@@ -1950,7 +1950,7 @@ msgstr "Устройство переведено в режим подключе
 
 #: src/bluetooth/bluetooth.c:105
 msgid "Bluetooth headset support plugin"
-msgstr "Модуль поддержки гарнитуры Bluetooth"
+msgstr "О модуле поддержки гарнитуры Bluetooth"
 
 #: src/bluetooth/bluetooth.c:106
 msgid ""
@@ -2153,7 +2153,7 @@ msgstr "Преобразование частоты"
 
 #: src/console/configure.c:213
 msgid "Enable audio resampling"
-msgstr "Включить преобразование звука"
+msgstr "Включить преобразование"
 
 #: src/console/configure.c:228
 msgid "Resampling rate:"
@@ -2509,6 +2509,7 @@ msgstr ""
 
 #: src/crossfade/interface-2.0.c:578 src/crossfade/interface-2.0.c:873
 #: src/crossfade/interface-2.0.c:935
+#, c-format
 msgid ""
 "Set the start volume. XMMS-crossfade will fade from this volume to 100% "
 "during the time specified above.\n"
@@ -2553,6 +2554,7 @@ msgid "End volume (%):"
 msgstr "Конечная громкость (%):"
 
 #: src/crossfade/interface-2.0.c:735 src/crossfade/interface-2.0.c:997
+#, c-format
 msgid ""
 "Set the end volume. XMMS-crossfade will fade from 100% to this volume during "
 "the time specified above.\n"
@@ -3405,9 +3407,8 @@ msgstr ""
 "о событиях устройств, присутствующих в системе.\n"
 "Однако, если автоматическое определение в вашей системе не работает\n"
 "или же устройства размещены не там, где обычно (сейчас просматривается\n"
-"только каталог /dev/input/), то вы можете добавить устройство вручную, "
-"указав\n"
-"название и файл устройства."
+"только каталог /dev/input/), то вы можете добавить устройство вручную,\n"
+"указав название и файл устройства."
 
 #: src/evdev-plug/ed_ui.c:361
 msgid "Device name:"
@@ -4900,7 +4901,7 @@ msgstr "Время до повторного соединения (секунд)
 
 #: src/lirc/interface.c:75
 msgid "Reconnect"
-msgstr "Повторно подключиться"
+msgstr "Повторное подключение"
 
 #: src/lirc/interface.c:79
 msgid "Connection"
@@ -6127,7 +6128,7 @@ msgstr "No"
 #: src/sid/xs_about.c:84
 #, c-format
 msgid "About %s"
-msgstr "О программе %s"
+msgstr "О модуле %s"
 
 #: src/sid/xs_config.c:319
 msgid " Error"
@@ -6852,8 +6853,8 @@ msgstr ""
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
-"Команда, запускаемая при изменении названия "
-"(например, название интернет потока)."
+"Команда, запускаемая при изменении названия дорожки "
+"(например, при воспроизведении из сети)."
 
 #: src/song_change/song_change.c:411
 msgid ""
@@ -6870,15 +6871,14 @@ msgid ""
 "%t: Playlist position (%02d)\n"
 "%p: Currently playing (1 or 0)"
 msgstr ""
-"Допускается использовать следующий формат строк,\n"
-"будут заменены после вызова команды\n"
-"(не все из них можно использовать для команд, "
+"Допускается использовать следующий формат строк, которые будут заменены\n"
+"после вызова команды (не все из них можно использовать для команд,\n"
 "выполняемых при достижении конца списка воспроизведения).\n"
 "\n"
 "%F: Частота (в герцах)\n"
 "%c: Число каналов\n"
-"%f: имя файла (абсолютный путь)\n"
-"%l: длина (в миллисекундах)\n"
+"%f: Имя файла (абсолютный путь)\n"
+"%l: Длина (в миллисекундах)\n"
 "%n или %s: Название дорожки\n"
 "%r: Битрейт (в битах в секунду)\n"
 "%t: Положение списка воспроизведения (%02d)\n"
@@ -6919,7 +6919,7 @@ msgstr ""
 "\n"
 "Автор Giacomo Lozito < james@develia.org >\n"
 "\n"
-"Этот модуль показывает значок программы\n"
+"Этот модуль отображает значок программы\n"
 "в системном лотке.\n"
 
 #: src/statusicon/si_ui.c:536
@@ -6928,7 +6928,7 @@ msgstr "Параметры модуля Статус"
 
 #: src/statusicon/si_ui.c:547
 msgid "Right-Click Menu"
-msgstr "Щелчок правой кнопкой мыши"
+msgstr "Действие при щелчке правой кнопкой мыши"
 
 #: src/statusicon/si_ui.c:552
 msgid "Audacious standard menu"
@@ -7091,7 +7091,7 @@ msgstr "Файл настроек TiMidity"
 #: src/timidity/plugin.c:112
 #, c-format
 msgid "TiMidity Plugin %s"
-msgstr "Модуль TiMidity %s"
+msgstr "О модуле TiMidity %s"
 
 #: src/timidity/plugin.c:113
 msgid ""
