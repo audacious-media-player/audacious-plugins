@@ -797,7 +797,7 @@ play_loop (void *data)
 
   // Set XMMS main window information
   dbg_printf ("xmms, ");
-  playback->set_params (playback, plr.songtitle, plr.songlength, freq * sampsize * 8,
+  playback->set_params (playback, NULL, 0, freq * sampsize * 8,
                       freq, stereo ? 2 : 1);
 
   // Rewind player to right subsong
