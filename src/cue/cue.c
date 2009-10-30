@@ -86,7 +86,6 @@ playlist_load_cue(const gchar * filename, gint pos)
     if (buffer == NULL)
         return;
 
-    g_print("Got CUE [%s]\n", buffer);
     cd = cue_parse_string(buffer);
 
     if (cd == NULL)
@@ -110,8 +109,6 @@ playlist_load_cue(const gchar * filename, gint pos)
         length = (track_get_length(t) * 10);
         uri = aud_construct_uri(fn, filename);
         tu = tuple_new();
-
-        g_print("Adding track %d [%ld] - [%ld]\n", iter + 1, begin, begin + length);
 
         for (iter2 = 0; iter2 < G_N_ELEMENTS(pti_map); iter2++)
         {
