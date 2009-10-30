@@ -882,8 +882,6 @@ mainwin_drag_data_received(GtkWidget * widget,
                            guint time,
                            gpointer user_data)
 {
-    gint playlist;
-
     g_return_if_fail(selection_data != NULL);
     g_return_if_fail(selection_data->data != NULL);
 
@@ -912,11 +910,7 @@ mainwin_drag_data_received(GtkWidget * widget,
         }
     }
 
-    playlist = aud_playlist_get_active ();
-    aud_playlist_entry_delete (playlist, 0, aud_playlist_entry_count (playlist));
-    insert_drag_list (playlist, 0, (const gchar *) selection_data->data);
-    aud_playlist_set_playing (playlist);
-    audacious_drct_initiate();
+    open_drag_list ((const gchar *) selection_data->data);
 }
 
 static void

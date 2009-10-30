@@ -68,6 +68,7 @@ GdkPixbuf *audacious_create_colorized_pixbuf(GdkPixbuf *src, gint red,
                                              gint green, gint blue);
 
 void insert_drag_list(gint playlist, gint position, const gchar *list);
+void open_drag_list (const gchar * list);
 void resize_window(GtkWidget *window, gint width, gint height);
 
 G_END_DECLS

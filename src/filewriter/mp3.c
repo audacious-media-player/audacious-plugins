@@ -719,6 +719,7 @@ static void mp3_configure(void)
 
     if (!configure_win) {
         configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_type_hint(GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
 
         gtk_signal_connect(GTK_OBJECT(configure_win), "destroy",
                            GTK_SIGNAL_FUNC(gtk_widget_destroyed),

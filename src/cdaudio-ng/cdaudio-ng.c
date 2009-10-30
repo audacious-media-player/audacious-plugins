@@ -233,28 +233,21 @@ static gboolean monitor (gpointer unused)
 }
 
 /* main thread only */
-static void play_cd (GtkMenuItem * item, gpointer user_data)
+static void play_cd (GtkMenuItem * item, void * unused)
 {
-    gint playlist = aud_playlist_get_active ();
-
-    if (!check_disk_safe ())
+    if (! check_disk_safe ())
         return;
 
-    aud_playlist_entry_delete (playlist, 0,
-                               aud_playlist_entry_count (playlist));
-    aud_playlist_entry_insert (playlist, 0, g_strdup ("cdda://"), NULL);
-    aud_playlist_set_playing (playlist);
-    audacious_drct_play ();
+    audacious_drct_pl_open ("cdda://");
 }
 
 /* main thread only */
-static void add_cd (GtkMenuItem * item, gpointer user_data)
+static void add_cd (GtkMenuItem * item, void * unused)
 {
-    if (!check_disk_safe ())
+    if (! check_disk_safe ())
         return;
 
-    aud_playlist_entry_insert (aud_playlist_get_active (), -1, g_strdup
-                               ("cdda://"), NULL);
+    audacious_drct_pl_add_url_string ("cdda://");
 }
 
 /* main thread only */
