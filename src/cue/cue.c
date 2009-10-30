@@ -36,6 +36,38 @@
 
 #include <libcue/libcue.h>
 
+typedef struct {
+    gint tuple_type;
+    gint pti;
+} TuplePTIMap;
+
+TuplePTIMap pti_map[] = {
+    { FIELD_ARTIST, PTI_PERFORMER },
+    { FIELD_TITLE, PTI_TITLE },
+};
+
+static void
+tuple_attach_cdtext(Tuple *tuple, Track *track, gint tuple_type, gint pti)
+{
+    Cdtext *cdtext;
+    const gchar *text;
+
+    g_return_if_fail(tuple != NULL);
+    g_return_if_fail(track != NULL);
+
+    cdtext = track_get_cdtext(track);
+    if (cdtext == NULL)
+        return;
+
+    text = cdtext_get(pti, cdtext);
+    if (text == NULL)
+        return;
+
+    tuple_associate_string(tuple, tuple_type, NULL, text);
+
+    g_print("Attached [%s] to tuple [%p]\n", text, tuple);
+}
+
 static void
 playlist_load_cue(const gchar * filename, gint pos)
 {
@@ -66,16 +98,26 @@ playlist_load_cue(const gchar * filename, gint pos)
         gchar *fn, *uri;
         Track *t;
         glong begin, length;
-
-        g_print("Adding track %d\n", iter);
+        Tuple *tu;
+        gint iter2;
 
 	t = cd_get_track(cd, 1 + iter);
         fn = track_get_filename(t);
-        begin = track_get_start(t);
-        length = track_get_length(t);
+        begin = (track_get_start(t) * 10);
+        length = (track_get_length(t) * 10);
         uri = aud_construct_uri(fn, filename);
+        tu = tuple_new();
 
-        aud_playlist_entry_insert(playlist, pos + iter, uri, NULL);
+        g_print("Adding track %d [%ld] - [%ld]\n", iter + 1, begin, begin + length);
+
+        for (iter2 = 0; iter2 < G_N_ELEMENTS(pti_map); iter2++)
+        {
+            tuple_attach_cdtext(tu, t, pti_map[iter2].tuple_type, pti_map[iter2].pti);
+        }
+
+        tuple_associate_int(tu, FIELD_LENGTH, NULL, length);
+
+        aud_playlist_entry_insert(playlist, pos + iter, uri, tu);
         aud_playlist_entry_set_segmentation(playlist, pos + iter, begin, begin + length);
     }
 
