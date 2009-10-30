@@ -64,8 +64,6 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, gint tuple_type, gint pti)
         return;
 
     tuple_associate_string(tuple, tuple_type, NULL, text);
-
-    g_print("Attached [%s] to tuple [%p]\n", text, tuple);
 }
 
 static void
@@ -76,6 +74,8 @@ playlist_load_cue(const gchar * filename, gint pos)
     Cd *cd;
     gint iter, plen;
     gint playlist;
+    struct index *uris = NULL;
+    struct index *tuples = NULL;
 
     uri = g_filename_to_uri(filename, NULL, NULL);
 
@@ -91,6 +91,9 @@ playlist_load_cue(const gchar * filename, gint pos)
 
     if (cd == NULL)
         return;
+
+    uris = index_new();
+    tuples = index_new();
 
     playlist = aud_playlist_get_active();
     for (iter = 0, plen = cd_get_ntrack(cd); iter < plen; iter++)
@@ -116,10 +119,14 @@ playlist_load_cue(const gchar * filename, gint pos)
         }
 
         tuple_associate_int(tu, FIELD_LENGTH, NULL, length);
+        tuple_associate_int(tu, FIELD_SEGMENT_START, NULL, begin);
+        tuple_associate_int(tu, FIELD_SEGMENT_END, NULL, begin + length);
 
-        aud_playlist_entry_insert(playlist, pos + iter, uri, tu);
-        aud_playlist_entry_set_segmentation(playlist, pos + iter, begin, begin + length);
+        index_append(uris, uri);
+        index_append(tuples, tu);
     }
+
+    aud_playlist_entry_insert_batch(playlist, pos, uris, tuples);
 
     g_free(buffer);
 }
