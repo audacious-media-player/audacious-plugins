@@ -1403,6 +1403,21 @@ if test "x$have_xspf" = "xyes"; then
 	CONTAINER_PLUGINS="$CONTAINER_PLUGINS xspf"
 fi
 
+dnl *** CUE
+
+AC_ARG_ENABLE(cue,
+[  --disable-cue           disable cue support. (default=enabled)],
+[have_cue=$enableval],
+[have_cue=yes])
+
+if test "x$have_cue" = "xcue"; then
+    have_cue=yes
+    PKG_CHECK_MODULES(CUE, [libcue], [CONTAINER_PLUGINS="$CONTAINER_PLUGINS cue" ], [have_cue="no"])
+else
+    have_cue=no
+    AC_MSG_RESULT([*** cue plugin disabled by request ***])
+fi
+
 dnl *** projectM (GL Milkdrop port)
 
 AC_ARG_ENABLE(projectm,
@@ -1727,6 +1742,7 @@ echo "  ---------"
 echo "  Winamp PLS playlist format (pls):       yes"
 echo "  M3U playlist format (m3u):              yes"
 echo "  XML Sharable Playlist Format (xspf):    $have_xspf"
+echo "  CUE playlist format (cue):              $have_cue"
 echo
 
 if test "x$ap_disable_timidity" = "xyes" && test "x$enable_timidity" = "xno"; then
