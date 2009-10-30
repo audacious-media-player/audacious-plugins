@@ -813,6 +813,28 @@ void insert_drag_list(gint playlist, gint position, const gchar *list)
     aud_playlist_entry_insert_batch(playlist, position, add, NULL);
 }
 
+void open_drag_list (const gchar * list)
+{
+    GList * glist = NULL;
+    const gchar * newline;
+
+    while ((newline = strstr (list, "\r\n")) != NULL)
+    {
+        glist = g_list_prepend (glist, g_strndup (list, newline - list));
+        list = newline + 2;
+    }
+
+    glist = g_list_reverse (glist);
+
+    audacious_drct_pl_open_list (glist);
+
+    while (glist != NULL)
+    {
+        g_free (glist->data);
+        glist = g_list_delete_link (glist, glist);
+    }
+}
+
 void resize_window(GtkWidget *window, gint width, gint height)
 {
     /* As of GTK+ 2.16, gtk_window_resize is broken on fixed size windows and
