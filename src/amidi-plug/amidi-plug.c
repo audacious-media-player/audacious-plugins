@@ -121,11 +121,6 @@ static void amidiplug_stop( InputPlayback * playback )
   amidiplug_playing_status = AMIDIPLUG_STOP;
   g_cond_signal( amidiplug_pause_cond );
   g_mutex_unlock( amidiplug_playing_mutex );
-  if ( amidiplug_play_thread )
-  {
-    g_thread_join( amidiplug_play_thread );
-    amidiplug_play_thread = NULL;
-  }
   if (( backend.autonomous_audio == FALSE ) && ( amidiplug_audio_thread ))
   {
     g_thread_join( amidiplug_audio_thread );
@@ -290,6 +285,7 @@ static Tuple * amidiplug_get_song_tuple( const gchar *filename_uri )
   /* song title, get it from the filename */
   Tuple *tuple = aud_tuple_new_from_filename(filename_uri);
   gchar *title, *filename = g_filename_from_uri(filename_uri, NULL, NULL);
+  midifile_t mf;
   
   if (filename != NULL)
       title = g_path_get_basename(filename_uri);
@@ -300,20 +296,10 @@ static Tuple * amidiplug_get_song_tuple( const gchar *filename_uri )
   g_free(title);
   g_free(filename);
 
-  /* sure, it's possible to calculate the length of a MIDI file anytime,
-     but the file must be entirely parsed to calculate it; this could
-     lead to a bit of performance loss, so let the user decide here */
-  if ( amidiplug_cfg_ap.ap_opts_length_precalc )
-  {
-    /* let's calculate the midi length, using this nice helper function that
-       will return 0 if a problem occurs and the length can't be calculated */
-    midifile_t mf;
+  if ( i_midi_parse_from_filename( filename_uri , &mf ) )
+    aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, mf.length / 1000);
 
-    if ( i_midi_parse_from_filename( filename_uri , &mf ) )
-      aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, mf.length / 1000);
-
-    i_midi_free( &mf );
-  }
+  i_midi_free( &mf );
 
   return tuple;
 }
@@ -325,6 +311,7 @@ static void amidiplug_play( InputPlayback * playback )
   gchar * filename = NULL;
   gint port_count = 0;
   gint au_samplerate = -1, au_bitdepth = -1, au_channels = -1;
+  Tuple *tu;
 
   if ( backend.gmodule == NULL )
   {
@@ -424,8 +411,10 @@ static void amidiplug_play( InputPlayback * playback )
       /* our length is in microseconds, but the player wants milliseconds */
       filename = g_filename_from_uri( filename_uri , NULL , NULL );
       if ( !filename ) filename = g_strdup( filename_uri );
-      playback->set_params( playback , G_PATH_GET_BASENAME(filename) ,
-                             (gint)(midifile.length / 1000) ,
+      tu = amidiplug_get_song_tuple(filename_uri);
+
+      playback->set_tuple( playback , tu );
+      playback->set_params( playback , NULL , 0 ,
                              au_bitdepth * au_samplerate * au_channels / 8 ,
                              au_samplerate , au_channels );
       g_free( filename );
