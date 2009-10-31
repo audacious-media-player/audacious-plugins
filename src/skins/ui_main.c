@@ -521,7 +521,10 @@ mainwin_set_song_info(gint bitrate,
                       gint frequency,
                       gint n_channels)
 {
-    char * bitrate_text, * text;
+    gchar *bitrate_text, *text;
+    gint pos, playlist;
+    const gchar *quality;
+    const Tuple *tuple;
 
     GDK_THREADS_ENTER();
     if (bitrate != -1) {
@@ -553,8 +556,17 @@ mainwin_set_song_info(gint bitrate,
 
     if (bitrate == -1)
         bitrate_text = g_strdup ("VBR");
-    else
-        bitrate_text = g_strdup_printf ("%d kbps", bitrate);
+    else {
+        playlist = aud_playlist_get_playing();
+        pos = aud_playlist_get_position(playlist);
+        tuple = aud_playlist_entry_get_tuple(playlist, pos);
+        quality = tuple_get_string((Tuple *) tuple, FIELD_QUALITY, NULL);
+
+        if (quality == NULL || g_ascii_strcasecmp("sequenced", quality))
+            bitrate_text = g_strdup_printf ("%d kbps", bitrate);
+        else
+            bitrate_text = g_strdup_printf ("%d channels", bitrate);
+    }
 
     text = g_strdup_printf ("%s, %d kHz, %s", bitrate_text, frequency / 1000,
      (n_channels > 1) ? _("stereo") : _("mono"));
