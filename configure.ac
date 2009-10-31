@@ -1410,7 +1410,7 @@ AC_ARG_ENABLE(cue,
 [have_cue=$enableval],
 [have_cue=yes])
 
-if test "x$have_cue" = "xcue"; then
+if test "x$have_cue" = "xyes"; then
     have_cue=yes
     PKG_CHECK_MODULES(CUE, [libcue], [CONTAINER_PLUGINS="$CONTAINER_PLUGINS cue" ], [have_cue="no"])
 else
