@@ -200,7 +200,7 @@ static void amidiplug_seek( InputPlayback * playback, gint time )
 }
 
 
-static gint amidiplug_get_time( InputPlayback *playback )
+static gint amidiplug_get_time( InputPlayback * playback )
 {
   if ( backend.autonomous_audio == FALSE )
   {
@@ -357,7 +357,7 @@ static void amidiplug_play( InputPlayback * playback )
     amidiplug_playing_status = AMIDIPLUG_ERR;
     return;
   }
-  midifile.file_name = filename_uri;
+  midifile.file_name = g_strdup(filename_uri);
 
   switch( i_midi_file_read_id( &midifile ) )
   {
