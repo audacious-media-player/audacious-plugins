@@ -429,6 +429,7 @@ static void amidiplug_play( InputPlayback * playback )
       amidiplug_playing_status = AMIDIPLUG_PLAY;
       g_mutex_unlock( amidiplug_playing_mutex );
       amidiplug_play_thread = g_thread_self();
+      playback->playing = TRUE;
       playback->set_pb_ready(playback);
       amidiplug_play_loop(playback);
       break;
@@ -721,6 +722,7 @@ gpointer amidiplug_audio_loop( gpointer arg )
   gboolean going = 1;
   gpointer buffer = NULL;
   gint buffer_size = 0;
+  DEBUGMSG("AUDIO loop has started\n");
   while ( going )
   {
     if ( backend.seq_output( &buffer , &buffer_size ) )
@@ -731,10 +733,16 @@ gpointer amidiplug_audio_loop( gpointer arg )
     g_mutex_lock( amidiplug_playing_mutex );
     if (( amidiplug_playing_status != AMIDIPLUG_PLAY ) &&
         ( amidiplug_playing_status != AMIDIPLUG_SEEK ))
+    {
+      DEBUGMSG("AUDIO loop will stop\n");
       going = FALSE;
+    }
     g_mutex_unlock( amidiplug_playing_mutex );
   }
   if ( buffer != NULL )
     g_free( buffer );
+
+  DEBUGMSG("AUDIO loop has stopped\n");
+
   return NULL;
 }
