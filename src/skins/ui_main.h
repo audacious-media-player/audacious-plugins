@@ -169,7 +169,6 @@ void mainwin_drag_data_received(GtkWidget * widget,
                                 guint time,
                                 gpointer user_data);
 
-void run_no_output_device_dialog(gpointer hook_data, gpointer user_data);
 void mainwin_setup_menus(void);
 gboolean change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event);
 

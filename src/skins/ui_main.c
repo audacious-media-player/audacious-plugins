@@ -1684,28 +1684,6 @@ mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
 }
 
 void
-run_no_output_device_dialog(gpointer hook_data, gpointer user_data)
-{
-    const gchar *markup =
-        N_("<b><big>Couldn't open audio.</big></b>\n\n"
-           "Please check that:\n"
-           "1. You have the correct output plugin selected.\n"
-           "2. No other programs is blocking the soundcard.\n"
-           "3. Your soundcard is configured properly.\n");
-
-    GDK_THREADS_ENTER();
-    GtkWidget *dialog =
-        gtk_message_dialog_new_with_markup(GTK_WINDOW(mainwin),
-                                           GTK_DIALOG_DESTROY_WITH_PARENT,
-                                           GTK_MESSAGE_ERROR,
-                                           GTK_BUTTONS_OK,
-                                           _(markup));
-    gtk_dialog_run(GTK_DIALOG(dialog));
-    gtk_widget_destroy(dialog);
-    GDK_THREADS_LEAVE();
-}
-
-void
 ui_main_set_initial_volume(void)
 {
     gint vl, vr, b, v;
