@@ -9,5 +9,5 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${OUTPUT_PLUGIN_DIR}
 
-CFLAGS += ${PLUGIN_CFLAGS} ${GLIB_CFLAGS} ${GTK_CFLAGS} ${ALSA_CFLAGS}
+CFLAGS += -I../.. ${PLUGIN_CFLAGS} ${GLIB_CFLAGS} ${GTK_CFLAGS} ${ALSA_CFLAGS}
 LIBS += ${GLIB_LIBS} ${GTK_LIBS} ${ALSA_LIBS}
