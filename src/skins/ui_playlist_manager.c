@@ -18,10 +18,10 @@
  */
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
 
 #include "ui_playlist_manager.h"

@@ -25,15 +25,12 @@
 
 /*#define AUD_DEBUG*/
 
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
+#include "config.h"
 
 #include "util.h"
 
 #include <dirent.h>
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,6 +41,7 @@
 #  include <fts.h>
 #endif
 
+#include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
 
 #include "plugin.h"
@@ -55,7 +53,9 @@ typedef struct
     gboolean found;
 } FindFileContext;
 
+#ifndef HAVE_MKDTEMP
 static void make_directory(const gchar *path, mode_t mode);
+#endif
 
 gchar * find_file_case (const gchar * folder, const gchar * basename)
 {
@@ -776,6 +776,7 @@ GtkWidget *make_filebrowser(const gchar *title, gboolean save)
     return dialog;
 }
 
+#ifndef HAVE_MKDTEMP
 static void make_directory(const gchar *path, mode_t mode)
 {
     if (g_mkdir_with_parents(path, mode) == 0)
@@ -784,6 +785,7 @@ static void make_directory(const gchar *path, mode_t mode)
     g_printerr(_("Could not create directory (%s): %s\n"), path,
                g_strerror(errno));
 }
+#endif
 
 void insert_drag_list(gint playlist, gint position, const gchar *list)
 {

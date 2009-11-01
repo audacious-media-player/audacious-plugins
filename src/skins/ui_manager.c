@@ -39,6 +39,8 @@
 #include "sync-menu.h"
 #endif
 #include "plugin.h"
+
+#include <audacious/i18n.h>
 #include <audacious/ui_plugin_menu.h>
 #include <libaudgui/libaudgui.h>
 

@@ -21,12 +21,13 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses>.
  */
 
+#include <audacious/i18n.h>
+
 #include "ui_skin.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
 #include "skins_cfg.h"
 #include "ui_skinned_equalizer_slider.h"
-#include <glib/gi18n.h>
 
 #define UI_TYPE_SKINNED_EQUALIZER_SLIDER           (ui_skinned_equalizer_slider_get_type())
 #define UI_SKINNED_EQUALIZER_SLIDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), UI_TYPE_SKINNED_EQUALIZER_SLIDER, UiSkinnedEqualizerSliderPrivate))

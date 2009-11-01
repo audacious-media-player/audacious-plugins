@@ -21,7 +21,6 @@
 #define AUDACIOUS_UI_MANAGER_H
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
