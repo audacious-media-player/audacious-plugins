@@ -303,7 +303,7 @@ decode_loop(gpointer arg)
     if (! info->playback->output->open_audio (FMT_FLOAT, info->freq,
      info->channels))
     {
-        error ("open_audio failed: %s.\n", info->playback->output->description);
+        info->playback->error = TRUE;
         goto CLEAN_UP;
     }
 
