@@ -28,7 +28,6 @@
 #include "ui_playlist.h"
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
@@ -57,6 +56,7 @@
 #include "ui_skinned_playlist_slider.h"
 #include "ui_skinned_playlist.h"
 
+#include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include "images/audacious_playlist.xpm"
 
@@ -198,28 +198,26 @@ static void
 playlistwin_set_geometry_hints(gboolean shaded)
 {
     GdkGeometry geometry;
-    GdkWindowHints mask;
 
     geometry.min_width = PLAYLISTWIN_MIN_WIDTH;
-    geometry.max_width = G_MAXUINT16;
-
     geometry.width_inc = PLAYLISTWIN_WIDTH_SNAP;
-    geometry.height_inc = PLAYLISTWIN_HEIGHT_SNAP;
+    geometry.max_width = 65535;
 
-    if (shaded) {
+    if (shaded)
+    {
         geometry.min_height = PLAYLISTWIN_SHADED_HEIGHT;
+        geometry.height_inc = 0;
         geometry.max_height = PLAYLISTWIN_SHADED_HEIGHT;
-        geometry.base_height = PLAYLISTWIN_SHADED_HEIGHT;
     }
-    else {
+    else
+    {
         geometry.min_height = PLAYLISTWIN_MIN_HEIGHT;
-        geometry.max_height = G_MAXUINT16;
+        geometry.height_inc = PLAYLISTWIN_HEIGHT_SNAP;
+        geometry.max_height = 65535;
     }
 
-    mask = GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE | GDK_HINT_RESIZE_INC;
-
-    gtk_window_set_geometry_hints(GTK_WINDOW(playlistwin),
-                                  playlistwin, &geometry, mask);
+    gtk_window_set_geometry_hints ((GtkWindow *) playlistwin, NULL, & geometry,
+     GDK_HINT_MIN_SIZE | GDK_HINT_RESIZE_INC | GDK_HINT_MAX_SIZE);
 }
 
 void
