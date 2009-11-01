@@ -278,7 +278,7 @@ static gboolean ui_skinned_playlist_slider_button_press(GtkWidget *widget, GdkEv
             if (y < priv->prev_y)
                 n *= -1;
 
-            ui_skinned_playlist_scroll_to (priv->list, n);
+            ui_skinned_playlist_scroll_to (priv->list, first + n);
         }
 
         ui_skinned_playlist_slider_update (widget);
