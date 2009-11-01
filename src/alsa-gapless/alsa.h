@@ -20,15 +20,15 @@
 #ifndef AUDACIOUS_ALSA_GAPLESS_H
 #define AUDACIOUS_ALSA_GAPLESS_H
 
-#include "config.h"
-
 #include <stdio.h>
 #include <glib.h>
 #include <alsa/asoundlib.h>
 #include <audacious/plugin.h>
 
+#define ERROR(...) fprintf (stderr, "alsa-gapless: " __VA_ARGS__)
+
 #if 0
-#define DEBUG(...) fprintf (stderr, "alsa-gapless: " __VA_ARGS__)
+#define DEBUG(...) ERROR (__VA_ARGS__)
 #else
 #define DEBUG(...)
 #endif
@@ -37,7 +37,7 @@
 do { \
     gint error = function (__VA_ARGS__); \
     if (error < 0) { \
-        alsa_error ("%s failed: %s.\n", #function, snd_strerror (error)); \
+        ERROR ("%s failed: %s.\n", #function, snd_strerror (error)); \
         goto FAILED; \
     } \
 } while (0)
@@ -68,6 +68,5 @@ void alsa_configure (void);
 
 /* plugin.c */
 void alsa_about (void);
-void alsa_error (const gchar * format, ...);
 
 #endif
