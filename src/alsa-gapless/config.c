@@ -63,7 +63,9 @@ static void get_defined_devices (const gchar * type, gboolean capture, void
     void * * hints = NULL;
     gint count;
 
-    CHECK (snd_device_name_hint, -1, type, & hints);
+    /* This function is more or less broken in current ALSA, so ignore errors. */
+    /* CHECK (snd_device_name_hint, -1, type, & hints); */
+    snd_device_name_hint (-1, type, & hints);
 
     for (count = 0; hints[count] != NULL; count ++)
     {
