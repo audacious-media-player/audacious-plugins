@@ -43,7 +43,10 @@ do { \
 } while (0)
 
 /* alsa.c */
+extern GMutex * alsa_mutex;
+
 OutputPluginInitStatus alsa_init (void);
+void alsa_soft_init (void);
 void alsa_cleanup (void);
 gint alsa_open_audio (AFormat aud_format, gint rate, gint channels);
 void alsa_close_audio (void);

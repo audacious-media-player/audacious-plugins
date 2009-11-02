@@ -63,10 +63,7 @@ static void get_defined_devices (const gchar * type, gboolean capture, void
     void * * hints = NULL;
     gint count;
 
-    /* This function is more or less broken in current ALSA, so ignore errors. */
-    /* CHECK (snd_device_name_hint, -1, type, & hints); */
-    if (snd_device_name_hint (-1, type, & hints))
-        goto FAILED;
+    CHECK (snd_device_name_hint, -1, type, & hints);
 
     for (count = 0; hints[count] != NULL; count ++)
     {
@@ -521,6 +518,10 @@ static void connect_callbacks (void)
 
 void alsa_configure (void)
 {
+    g_mutex_lock (alsa_mutex);
+    alsa_soft_init ();
+    g_mutex_unlock (alsa_mutex);
+
     if (window != NULL)
     {
         gtk_window_present ((GtkWindow *) window);
