@@ -280,8 +280,6 @@ static void guess_mixer_element (void)
         if (list_has_member (mixer_element_list, alsa_config_mixer_element))
             return;
 
-        alsa_error ("There is no mixer element named \"%s\".\n",
-         alsa_config_mixer_element);
         g_free (alsa_config_mixer_element);
         alsa_config_mixer_element = NULL;
     }
@@ -314,7 +312,6 @@ void alsa_config_load (void)
     else if (strcmp (alsa_config_pcm, "default") && ! list_has_member (pcm_list,
      alsa_config_pcm))
     {
-        alsa_error ("There is no PCM device named \"%s\".\n", alsa_config_pcm);
         g_free (alsa_config_pcm);
         alsa_config_pcm = g_strdup ("default");
     }
@@ -328,8 +325,6 @@ void alsa_config_load (void)
     else if (strcmp (alsa_config_mixer, "default") && ! list_has_member
      (mixer_list, alsa_config_mixer))
     {
-        alsa_error ("There is no mixer device named \"%s\".\n",
-         alsa_config_mixer);
         g_free (alsa_config_mixer);
         alsa_config_mixer = g_strdup ("default");
     }
