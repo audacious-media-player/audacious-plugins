@@ -568,7 +568,7 @@ void alsa_open_mixer (void)
 
     if (alsa_mixer_element == NULL)
     {
-        ERROR ("snd_mixer_find_selem failed.\n");
+        alsa_error ("snd_mixer_find_selem failed.\n");
         goto FAILED;
     }
 
