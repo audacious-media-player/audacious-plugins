@@ -661,6 +661,9 @@ static gchar *ffaudio_fmts[] = {
     /* monkey's audio */
     "ape",
 
+    /* VQF */
+    "vqf",
+
     /* end of table */
     NULL
 };
