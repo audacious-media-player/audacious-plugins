@@ -187,8 +187,9 @@ void xs_play_file(InputPlayback *pb)
 {
     xs_tuneinfo_t *tmpTune;
     gboolean audioOpen = FALSE;
-    gint audioGot, tmpLength, subTune = -1;
-    gchar *tmpFilename, *audioBuffer = NULL, *oversampleBuffer = NULL;
+    gint audioBufSize, bufChunkSize, bufRemaining, tmpLength, subTune = -1;
+    gchar *tmpFilename, *bufPointer,
+        *audioBuffer = NULL, *oversampleBuffer = NULL;
     Tuple *tmpTuple;
 
     assert(pb);
@@ -237,7 +238,12 @@ void xs_play_file(InputPlayback *pb)
 
 
     /* Allocate audio buffer */
-    audioBuffer = (gchar *) g_malloc(XS_AUDIOBUF_SIZE);
+    audioBufSize = (xs_status.audioFrequency * xs_status.audioChannels * xs_status.audioBitsPerSample) / (8 * 4);
+    if (audioBufSize < 512) audioBufSize = 512;
+    bufChunkSize = (xs_status.audioFrequency * xs_status.audioChannels * xs_status.audioBitsPerSample) / (8 * 50);
+    if (bufChunkSize < 512) bufChunkSize = 512;
+
+    audioBuffer = (gchar *) g_malloc(audioBufSize);
     if (audioBuffer == NULL) {
         xs_error("Couldn't allocate memory for audio data buffer!\n");
         XS_MUTEX_UNLOCK(xs_status);
@@ -245,7 +251,7 @@ void xs_play_file(InputPlayback *pb)
     }
 
     if (xs_status.oversampleEnable) {
-        oversampleBuffer = (gchar *) g_malloc(XS_AUDIOBUF_SIZE * xs_status.oversampleFactor);
+        oversampleBuffer = (gchar *) g_malloc(audioBufSize * xs_status.oversampleFactor);
         if (oversampleBuffer == NULL) {
             xs_error("Couldn't allocate memory for audio oversampling buffer!\n");
             XS_MUTEX_UNLOCK(xs_status);
@@ -300,42 +306,41 @@ void xs_play_file(InputPlayback *pb)
     XSDEBUG("playing\n");
     while (pb->playing) {
         /* Render audio data */
-        XS_MUTEX_LOCK(xs_status);
         if (xs_status.oversampleEnable) {
             /* Perform oversampled rendering */
-            audioGot = xs_status.sidPlayer->plrFillBuffer(
+            bufRemaining = xs_status.sidPlayer->plrFillBuffer(
                 &xs_status,
                 oversampleBuffer,
-                (XS_AUDIOBUF_SIZE * xs_status.oversampleFactor));
+                (audioBufSize * xs_status.oversampleFactor));
 
-            audioGot /= xs_status.oversampleFactor;
+            bufRemaining /= xs_status.oversampleFactor;
 
             /* Execute rate-conversion with filtering */
             if (xs_filter_rateconv(audioBuffer, oversampleBuffer,
-                xs_status.audioFormat, xs_status.oversampleFactor, audioGot) < 0) {
+                xs_status.audioFormat, xs_status.oversampleFactor, bufRemaining) < 0) {
                 xs_error("Oversampling rate-conversion pass failed.\n");
                 pb->error = TRUE;
-                XS_MUTEX_UNLOCK(xs_status);
                 goto xs_err_exit;
             }
         } else {
-            audioGot = xs_status.sidPlayer->plrFillBuffer(
-                &xs_status, audioBuffer, XS_AUDIOBUF_SIZE);
+            bufRemaining = xs_status.sidPlayer->plrFillBuffer(
+                &xs_status, audioBuffer, audioBufSize);
         }
 
         /* I <3 visualice/haujobb */
-        pb->pass_audio(pb, xs_status.audioFormat,
-            xs_status.audioChannels,
-            audioGot, audioBuffer, NULL);
+        bufPointer = audioBuffer;
+        while (bufRemaining > 0 && pb->playing) {
+            gint blockSize = MIN(bufChunkSize, bufRemaining);
+            
+            pb->pass_audio(pb, xs_status.audioFormat,
+                xs_status.audioChannels,
+                blockSize, bufPointer, NULL);
 
-        XS_MUTEX_UNLOCK(xs_status);
-
-        /* Wait a little */
-        while (pb->playing && pb->output->buffer_free() < audioGot)
-            g_usleep(500);
+            bufPointer += blockSize;
+            bufRemaining -= blockSize;
+        }
 
         /* Check if we have played enough */
-        XS_MUTEX_LOCK(xs_status);
         if (xs_cfg.playMaxTimeEnable) {
             if (xs_cfg.playMaxTimeUnknown) {
                 if (tmpLength < 0 &&
@@ -351,7 +356,6 @@ void xs_play_file(InputPlayback *pb)
             if (pb->output->output_time() >= tmpLength * 1000)
                 pb->playing = FALSE;
         }
-        XS_MUTEX_UNLOCK(xs_status);
     }
 
 xs_err_exit:
