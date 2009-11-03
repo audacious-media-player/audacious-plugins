@@ -561,6 +561,9 @@ Tuple * xs_get_song_tuple(const gchar *filename)
         return NULL;
     }
 
+    if (xs_status.sidPlayer == NULL)
+        return tuple;
+
     /* Get tune information from emulation engine */
     XS_MUTEX_LOCK(xs_status);
     tmpInfo = xs_status.sidPlayer->plrGetSIDInfo(tmpFilename);
