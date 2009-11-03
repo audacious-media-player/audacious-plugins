@@ -595,9 +595,7 @@ Tuple * xs_probe_for_tuple(const gchar *filename, xs_file_t *fd)
     xs_tuneinfo_t *info;
     gint tune = -1;
 
-    assert(xs_status.sidPlayer != NULL);
-
-    if (filename == NULL)
+    if (xs_status.sidPlayer == NULL || filename == NULL)
         return NULL;
 
     XS_MUTEX_LOCK(xs_status);
