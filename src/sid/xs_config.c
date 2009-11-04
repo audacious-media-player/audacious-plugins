@@ -267,7 +267,7 @@ void xs_init_configuration(void)
     xs_cfg.playMinTime = 15;
 
     xs_cfg.songlenDBEnable = FALSE;
-    xs_pstrcpy(&xs_cfg.songlenDBPath, "~/C64Music/Songlengths.txt");
+    xs_pstrcpy(&xs_cfg.songlenDBPath, "~/C64Music/DOCUMENTS/Songlengths.txt");
 
     xs_cfg.stilDBEnable = FALSE;
     xs_pstrcpy(&xs_cfg.stilDBPath, "~/C64Music/DOCUMENTS/STIL.txt");
