@@ -311,9 +311,6 @@ AC_DEFUN([XS_BUILDERS_CHECK],
     AC_LANG_ASSERT([C++])
     AC_REQUIRE([XS_PATH_LIBSIDPLAY2])
 
-    dnl Be pessimistic.
-    builders_available="no"
-
     dnl Sidbuilder headers are included with "builders" prefix.
     builders_includedir="$xs_sidplay2_includes"
     builders_libdir="$xs_sidplay2_builders"

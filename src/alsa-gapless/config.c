@@ -280,8 +280,6 @@ static void guess_mixer_element (void)
         if (list_has_member (mixer_element_list, alsa_config_mixer_element))
             return;
 
-        ERROR ("There is no mixer element named \"%s\".\n",
-         alsa_config_mixer_element);
         g_free (alsa_config_mixer_element);
         alsa_config_mixer_element = NULL;
     }
@@ -314,7 +312,6 @@ void alsa_config_load (void)
     else if (strcmp (alsa_config_pcm, "default") && ! list_has_member (pcm_list,
      alsa_config_pcm))
     {
-        ERROR ("There is no PCM device named \"%s\".\n", alsa_config_pcm);
         g_free (alsa_config_pcm);
         alsa_config_pcm = g_strdup ("default");
     }
@@ -328,7 +325,6 @@ void alsa_config_load (void)
     else if (strcmp (alsa_config_mixer, "default") && ! list_has_member
      (mixer_list, alsa_config_mixer))
     {
-        ERROR ("There is no mixer device named \"%s\".\n", alsa_config_mixer);
         g_free (alsa_config_mixer);
         alsa_config_mixer = g_strdup ("default");
     }
@@ -517,6 +513,10 @@ static void connect_callbacks (void)
 
 void alsa_configure (void)
 {
+    g_mutex_lock (alsa_mutex);
+    alsa_soft_init ();
+    g_mutex_unlock (alsa_mutex);
+
     if (window != NULL)
     {
         gtk_window_present ((GtkWindow *) window);

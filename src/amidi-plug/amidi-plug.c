@@ -157,7 +157,7 @@ static void amidiplug_pause( InputPlayback * playback, gshort paused )
     g_mutex_lock( amidiplug_playing_mutex );
     if ( amidiplug_playing_status == AMIDIPLUG_SEEK )
     {
-      DEBUGMSG( "handle SEEK ON PAUSE situation\n" , midifile.playing_tick );
+      DEBUGMSG( "handle SEEK ON PAUSE situation\n" );
       /* uh oh, we have a pending seek; this can happen when a seek
          is requested while playback is paused; wait for that seek to
          be completed before pausing the song again */
@@ -216,7 +216,7 @@ static gint amidiplug_get_time( InputPlayback * playback )
     else if ( amidiplug_playing_status == AMIDIPLUG_STOP )
     {
       g_mutex_unlock( amidiplug_playing_mutex );
-      DEBUGMSG( "GETTIME on stopped song, returning -1\n" , time );
+      DEBUGMSG( "GETTIME on stopped song, returning -1\n" );
       return -1;
     }
     else /* AMIDIPLUG_ERR */
@@ -244,13 +244,13 @@ static gint amidiplug_get_time( InputPlayback * playback )
     else if ( amidiplug_playing_status == AMIDIPLUG_STOP )
     {
       g_mutex_unlock( amidiplug_playing_mutex );
-      DEBUGMSG( "GETTIME on stopped song, returning -1\n" , time );
+      DEBUGMSG( "GETTIME on stopped song, returning -1\n" );
       return -1;
     }
     else /* AMIDIPLUG_ERR */
     {
       g_mutex_unlock( amidiplug_playing_mutex );
-      DEBUGMSG( "GETTIME on halted song (an error occurred?), returning -1 and stopping the player\n" , time );
+      DEBUGMSG( "GETTIME on halted song (an error occurred?), returning -1 and stopping the player\n" );
       audacious_drct_stop();
       return -1;
     }

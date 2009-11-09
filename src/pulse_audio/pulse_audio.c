@@ -546,17 +546,15 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
         case FMT_S16_NE:
             ss.format = PA_SAMPLE_S16NE;
             break;
-#if 0 /* pulseaudio only handles 16 and 32bit formats*/
         case FMT_S24_LE:
-            ss.format = PA_SAMPLE_S24LE;
+            ss.format = PA_SAMPLE_S24_32LE;
             break;
         case FMT_S24_BE:
-            ss.format = PA_SAMPLE_S24BE;
+            ss.format = PA_SAMPLE_S24_32BE;
             break;
         case FMT_S24_NE:
-            ss.format = PA_SAMPLE_S24NE;
+            ss.format = PA_SAMPLE_S24_32NE;
             break;
-#endif
         case FMT_S32_LE:
             ss.format = PA_SAMPLE_S32LE;
             break;

@@ -65,13 +65,6 @@ extern "C" {
  */
 #define XS_AUDIO_FREQ           (44100)
 
-/* Size of audio buffer. If you are experiencing lots of audio
- * "underruns" or clicks/gaps in output, try increasing this value.
- * Do notice, however, that it also affects the update frequency of
- * XMMS's visualization plugins... 
- */
-#define XS_AUDIOBUF_SIZE        (1024)
-
 /* Size of data buffer used for SID-tune MD5 hash calculation.
  * If this is too small, the computed hash will be incorrect.
  * Largest SID files I've seen are ~70kB. */

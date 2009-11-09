@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([audacious-plugins], [2.2-beta1], [bugs+audacious-plugins@atheme.org])
+AC_INIT([audacious-plugins], [2.2-beta2], [bugs+audacious-plugins@atheme.org])
 AC_PREREQ([2.59])
 
 AC_CANONICAL_HOST
@@ -1029,13 +1029,11 @@ if test "x$enable_amidiplug" = "xcheck"; then
     AM_PATH_AMIDIPLUG_HWSYNTH([ap_have_hwsynth=yes], [ap_have_hwsynth=no])
     if test "x$ap_have_hwsynth" = "xyes"; then
       enable_amidiplug=yes
-      ap_disable_timidity=yes
     else
       PKG_CHECK_MODULES(FLUIDSYNTH, [fluidsynth >= 1.0.6],
         [fluidsynth_available=yes],[fluidsynth_available=no])
       if test "x$fluidsynth_available" = "xyes"; then
         enable_amidiplug=yes
-        ap_disable_timidity=yes
       else
         enable_amidiplug=no
         AC_MSG_WARN([*** Neither an ALSA-supported hardware synth or FluidSynth software synth (>= 1.0.6) have been found (even if ALSA was detected), so amidi-plug won't be compiled unless you explicitly request it with --enable-amidiplug ***])
@@ -1046,7 +1044,6 @@ if test "x$enable_amidiplug" = "xcheck"; then
       [fluidsynth_available=yes],[fluidsynth_available=no])
     if test "x$fluidsynth_available" = "xyes"; then
       enable_amidiplug=yes
-      ap_disable_timidity=yes
     else
       enable_amidiplug=no
       AC_MSG_WARN([*** Neither ALSA or FluidSynth software synth (>= 1.0.6) have been found, so amidi-plug won't be compiled unless you explicitly request it with --enable-amidiplug ***])
@@ -1095,25 +1092,6 @@ if test "x$enable_amidiplug" = "xyes"; then
     enable_amidiplug_dummy=yes
   fi
   AC_SUBST(AMIDIPLUG_BACKENDS)
-fi
-
-
-dnl *** TiMidity input plugin (note: should appear somewhere after the amidi-plug check)
-
-AC_ARG_ENABLE(timidity,
-[  --disable-timidity      disable timidity plugin. (default=enabled)],
-[enable_timidity=$enableval],
-[
-  if test "x$ap_disable_timidity" = "xyes"; then
-    enable_timidity=no
-  else
-    enable_timidity=yes
-  fi
-]
-)
-
-if test "x$enable_timidity" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS timidity"
 fi
 
 dnl FreeBSD newpcm driver detection
@@ -1675,7 +1653,6 @@ echo "  MIDI modular plugin (amidi-plug):       $enable_amidiplug"
 echo "    -> ALSA backend:                      $enable_amidiplug_alsa"
 echo "    -> FluidSynth backend:                $enable_amidiplug_fluidsynth"
 echo "    -> dummy backend:                     $enable_amidiplug_dummy"
-echo "  MIDI to WAVE converter (timidity):      $enable_timidity"
 echo "  CD Digital Audio (cdaudio_ng):          $enable_cdaudio_ng"
 echo "  sndfile extensions:                     $enable_sndfile"
 echo "  Tone Generator:                         yes"
@@ -1744,11 +1721,3 @@ echo "  M3U playlist format (m3u):              yes"
 echo "  XML Sharable Playlist Format (xspf):    $have_xspf"
 echo "  CUE playlist format (cue):              $have_cue"
 echo
-
-if test "x$ap_disable_timidity" = "xyes" && test "x$enable_timidity" = "xno"; then
-    echo "Note: an ALSA-supported hardware midi synth or a FluidSynth software synth"
-    echo "was detected in configuration; in order to use it, the amidi-plug input"
-    echo "plugin will be compiled in place of timidity. If you wish to compile timidity"
-    echo "anyway, simply use --enable-timidity in configuration."
-    echo ""
-fi
