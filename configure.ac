@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([audacious-plugins], [2.0.1], [bugs+audacious-plugins@atheme.org])
+AC_INIT([audacious-plugins], [2.2-beta1], [bugs+audacious-plugins@atheme.org])
 AC_PREREQ([2.59])
 
 AC_CANONICAL_HOST
@@ -123,37 +123,49 @@ AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
 
 dnl These plugins are always built.
 
-INPUT_PLUGINS="tonegen console sexypsf psf2 xsf cue alac metronom vtx"
+INPUT_PLUGINS="tonegen console psf xsf metronom vtx"
 OUTPUT_PLUGINS="crossfade null"
 EFFECT_PLUGINS="audiocompress crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
-GENERAL_PLUGINS="song_change alarm skins vfstrace"
+GENERAL_PLUGINS="song_change alarm skins vfstrace gtkui"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
-TRANSPORT_PLUGINS="gio"
 
 dnl Check for Audacious
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 1.9.0],
-    [ADD_PC_REQUIRES([audacious >= 1.9.0])],
-    [AC_MSG_ERROR([Cannot find Audacious 1.9.0 or later, have you installed audacious yet?])]
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 2.1],
+    [ADD_PC_REQUIRES([audacious >= 2.1])],
+    [AC_MSG_ERROR([Cannot find Audacious 2.1 or later, have you installed audacious yet?])]
 )
+
+CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS"
+CPPFLAGS="$CPPFLAGS $AUDACIOUS_CPPFLAGS"
+LDFLAGS="$LDFLAGS $AUDACIOUS_LIBS"
 
 dnl Check for GTK/GLib/GThread/Pango/DBus
 
-PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.16.0 gthread-2.0],
-    [ADD_PC_REQUIRES([glib-2.0 >= 2.16.0])],
-    [AC_MSG_ERROR([Cannot find Glib2 >= 2.16.0])]
+PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.12.0 gthread-2.0],
+    [ADD_PC_REQUIRES([glib-2.0 >= 2.12.0])],
+    [AC_MSG_ERROR([Cannot find Glib2 >= 2.12.0])]
 )
 
-PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.10.0],
-    [ADD_PC_REQUIRES([gtk+-2.0 >= 2.10.0])],
-    [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.10.0])]
+PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.8.0],
+    [ADD_PC_REQUIRES([gtk+-2.0 >= 2.8.0])],
+    [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.8.0])]
 )
 
-PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0],
-    [ADD_PC_REQUIRES([gio-2.0 >= 2.0])],
-    [AC_MSG_ERROR([Cannot find GIO >= 2.0])]
-)
+TRANSPORT_PLUGINS="unix-io"
+
+AC_ARG_ENABLE(gio, [  --disable-gio           disable GIO support (default=enabled if GIO present)],
+ enable_gio=$enableval, enable_gio=yes)
+
+if test "x$enable_gio" = "xyes"; then
+    PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0], [ADD_PC_REQUIRES([gio-2.0 >=
+     2.0])], [enable_gio=no])
+fi
+
+if test "x$enable_gio" = "xyes"; then
+    TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS gio"
+fi
 
 PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
     [ADD_PC_REQUIRES([pango >= 1.8.0])],
@@ -161,7 +173,7 @@ PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
 )
 
 AC_ARG_ENABLE(dbus,
-	[  --enable-dbus		  enable DBus support (default=yes)],
+	[  --disable-dbus          disable DBus support (default=enabled)],
 			enable_dbus=$enableval, enable_dbus=yes)
 if test "x$enable_dbus" = "xyes"; then
 	PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60],
@@ -238,25 +250,6 @@ else
     have_esd=no
 fi
 
-dnl Check for PulseAudio
-
-AC_ARG_ENABLE( pulse,
-    [  --disable-pulse         disable PulseAudio output plugin (default=enabled)],
-    [enable_pulse=$enableval],
-    [enable_pulse="yes"]
-)
-
-if test "x$enable_pulse" = "xyes"; then
-    PKG_CHECK_MODULES(PULSE, [libpulse >= 0.9.9],
-         [have_pulse=yes
-          OUTPUT_PLUGINS="$OUTPUT_PLUGINS pulse_audio"],
-         [have_pulse=no]
-    )
-else
-    AC_MSG_RESULT([*** pulseaudio output plugin disabled per user request ***])
-    have_pulse=no
-fi
-
 dnl *** CoreAudio
 
 AC_ARG_ENABLE(coreaudio,
@@ -331,7 +324,7 @@ if test "x$enable_altivec" = "xyes"; then
        SIMD_CFLAGS=-maltivec
        AC_SUBST(SIMD_CFLAGS)],
       [DCT64=dct64.c]
-  )    
+  )
 fi
 AC_SUBST(DCT64)
 
@@ -351,6 +344,7 @@ if test "x$enable_sse2" = "xyes"; then
   int main()
   {
     _mm_setzero_pd();
+    asm volatile("xorpd %xmm0,%xmm0\n\t");
     return 0;
   }
   ],
@@ -372,7 +366,7 @@ AC_ARG_ENABLE(mp3,
 )
 
 if test "x$enable_mp3" = "xyes"; then
-    AM_PATH_LIBMAD([enable_mp3=yes], 
+    AM_PATH_LIBMAD([enable_mp3=yes],
         [AC_MSG_WARN([*** Cannot find libmad, mp3 plugin will not be built ***])
          enable_mp3=no]
     )
@@ -597,29 +591,6 @@ if test "x$have_aosd" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS aosd"
 fi
 
-dnl *** Rootwindow vis plugin (imlib2 based)
-
-AC_ARG_ENABLE(rootvis,
-    [  --disable-rootvis       disable X11 RootWindow vis plugin (default=enabled)],
-    [enable_rootvis=$enableval],
-    [enable_rootvis="yes"]
-)
-
-if test "x$enable_rootvis" = "xyes"; then
-    have_rootvis="yes"
-    PKG_CHECK_MODULES(IMLIB2, [imlib2 >= 1.1.0],,
-        [have_rootvis="no"
-        AC_MSG_RESULT([*** imlib2 >= 1.1.0 is required for Audacious RootVis plugin ***])]
-    )
-else
-    AC_MSG_RESULT([*** RootVis plugin disabled per user request ***])
-    have_rootvis="no"
-fi
-
-if test "x$have_rootvis" = "xyes"; then
-    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS rootvis"
-fi
-
 dnl *** AdPlug requirement (libbinio)
 
 AC_ARG_ENABLE(adplug,
@@ -650,7 +621,7 @@ AC_ARG_ENABLE(vorbis,
 )
 
 if test "x$enable_vorbis" = "xyes"; then
-    PKG_CHECK_MODULES(OGG_VORBIS, [ogg >= 1.0 vorbis >= 1.2 vorbisfile >= 1.2],
+    PKG_CHECK_MODULES(OGG_VORBIS, [ogg >= 1.0 vorbis >= 1.1 vorbisfile >= 1.1],
         [have_oggvorbis=yes],
         [AC_MSG_WARN([*** Cannot find libogg/libvorbis, Ogg Vorbis support will not be built ***])
          have_oggvorbis=no]
@@ -673,7 +644,7 @@ AC_ARG_ENABLE(flacng,
 )
 
 if test "x$enable_flacng" = "xyes"; then
-    AM_PATH_LIBFLAC([have_flacng=yes], 
+    AM_PATH_LIBFLAC([have_flacng=yes],
         [AC_MSG_WARN([*** Cannot find libFLAC, FLACng will not be built ***])
          have_flacng=no]
     )
@@ -717,8 +688,26 @@ AC_ARG_ENABLE(aac,
     [enable_aac=yes]
 )
 
-if test "x$enable_aac" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS aac"
+if test x$enable_aac = xyes; then
+	FAAD_LIBS="-lfaad"
+	FAAD_CFLAGS=
+
+	AC_CHECK_HEADER(faad.h,,enable_aac=no)
+	if test x$enable_aac = xyes; then
+		AC_CHECK_DECL(FAAD2_VERSION,,enable_aac=no,[#include <neaacdec.h>])
+	fi
+	if test x$enable_aac = xyes; then
+		AC_CHECK_DECL(NeAACDecInit2,,enable_aac=no,[#include <neaacdec.h>])
+	fi
+	if test x$enable_aac = xyes; then
+		AC_CHECK_LIB(faad,NeAACDecInit2,,enable_aac=no)
+	fi
+fi
+
+if test x$enable_aac = xyes; then
+    AC_SUBST(FAAD_CFLAGS)
+    AC_SUBST(FAAD_LIBS)
+    INPUT_PLUGINS="$INPUT_PLUGINS aac"
 fi
 
 dnl *** sndfile
@@ -759,52 +748,22 @@ else
     have_modplug="no"
 fi
 
-dnl *** Musepack
+dnl *** FFaudio
 
-AC_ARG_ENABLE(musepack,
-    [  --disable-musepack      disable musepack input plugin (default=enabled)],
-    [enable_musepack=$enableval],
-    [enable_musepack="yes"]
+have_ffaudio="no"
+AC_ARG_ENABLE(ffaudio,
+    [  --disable-ffaudio       disable ffaudio plugin (default=enabled)],
+    [enable_ffaudio=$enableval],
+    [enable_ffaudio="yes"]
 )
 
-if test "x$enable_musepack" = "xyes"; then
-    PKG_CHECK_MODULES(TAGLIB, [taglib >= 1.4], [ 
-       AC_CHECK_HEADERS(mpcdec/config_types.h,, [
-           enable_musepack=no
-       ])
-    ], [enable_musepack=no])
-else
-    AC_MSG_RESULT([*** Musepack plugin disabled per user request ***])
-    enable_musepack=no
+if test "x$enable_ffaudio" = "xyes"; then
+    PKG_CHECK_MODULES(FFMPEG, [libavformat >= 52.31.0  libavcodec >= 52.20.0  libavutil >= 49.15.0],
+                      [have_ffaudio="yes"], [have_ffaudio="no"])
 fi
 
-if test "x$enable_musepack" = "xyes"; then
-        INPUT_PLUGINS="$INPUT_PLUGINS musepack"
-        AC_SUBST(TAGLIB_CFLAGS)
-fi
-
-dnl *** WMA
-
-AC_ARG_ENABLE(wma,
-    [  --disable-wma           disable wma plugin. (default=enabled)],
-    [enable_wma=$enableval],
-    [enable_wma=yes]
-)
-
-if test "x$enable_wma" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS wma"
-fi
-
-dnl *** Monkey's Audio
-
-AC_ARG_ENABLE(ape,
-    [  --disable-ape           disable Monkey's Audio plugin. (default=enabled)],
-    [enable_ape=$enableval],
-    [enable_ape=yes]
-)
-
-if test "x$enable_ape" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS demac"
+if test "x$have_ffaudio" = "xyes"; then
+    INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"
 fi
 
 dnl *** jack output plugin
@@ -994,7 +953,7 @@ else
 fi
 
 if test "x$have_alsa" = "xyes"; then
-	OUTPUT_PLUGINS="$OUTPUT_PLUGINS alsa"
+	OUTPUT_PLUGINS="$OUTPUT_PLUGINS alsa-gapless"
 fi
 
 
@@ -1197,7 +1156,7 @@ if test "$enable_cdaudio_ng" = "yes"; then
    AC_SUBST(CDIO_LIBS)
    AC_SUBST(CDIO_CFLAGS)],
    [AC_MSG_WARN([*** Cannot find libcdio_cdda 0.70 or newer, cdaudio-ng will not be built ***])
-   enable_cdaudio_ng=no] 
+   enable_cdaudio_ng=no]
 )
 fi
 
@@ -1279,35 +1238,43 @@ case "$host" in
     ;;
 esac
 
-dnl *** Scrobbler ***
+dnl *** libcurl ***
 
-scrobbler="yes"
-have_lastfm="no"
+have_curl=yes
 
-dnl libcurl check
-
-my_cv_curl_vers=NONE
-dnl check is the plain-text version of the required version
-check="7.9.7"
-dnl check_hex must be UPPERCASE if any hex letters are present
-check_hex="070907"
-
-PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7], [], [scrobbler="no"])
+PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7], [], [have_curl="no"])
 AC_SUBST(CURL_CFLAGS)
 AC_SUBST(CURL_LIBS)
 
-if test "x$scrobbler" = "xyes"; then
+dnl *** scrobbler ***
+
+AC_ARG_ENABLE(scrobbler,
+ [  --disable-scrobbler     disable scrobbler support (default=enabled if libcurl present)],
+ [have_scrobbler=$enableval], [have_scrobbler=$have_curl])
+
+if test "x$have_scrobbler" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
-	TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS lastfm"
-	have_lastfm="yes"
 fi
 
-dnl *** End of Scrobbler checks ***
+dnl *** lastfm ***
+
+AC_ARG_ENABLE(lastfm,
+ [  --disable-lastfm        disable lastfm support (default=enabled if scrobbler enabled)],
+ [have_lastfm=$enableval], [have_lastfm=yes])
+
+if test "x$have_scrobbler" != "xyes"; then
+	AC_MSG_RESULT([*** lastfm plugin disabled because scrobbler plugin is disabled ***])
+	have_lastfm=no
+fi
+
+if test "x$have_lastfm" = "yes"; then
+	TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS lastfm"
+fi
 
 dnl *** neon http plugin ***
 
 AC_ARG_ENABLE(neon,
-[  --enable-neon           enable neon support (experimental).  (default=disabled)],
+[  --disable-neon          disable neon HTTP support (default=enabled)],
 [have_neon=$enableval],
 [have_neon=yes])
 
@@ -1361,7 +1328,7 @@ fi
 AC_SUBST(MTP_LIBS)
 AC_SUBST(MTP_CFLAGS)
 
-dnl *** Bluetooth audio suport 
+dnl *** Bluetooth audio suport
 
 AC_ARG_ENABLE(bluetooth,
 [  --disable-bluetooth           disable bluetooth audio support. (default=enabled)],
@@ -1455,7 +1422,8 @@ AC_ARG_ENABLE(projectm-1.0,
 
 if test "$have_projectm1" = "yes"; then
 	PKG_CHECK_MODULES(LIBPROJECTM1, [libprojectM >= 1.1], [have_projectm1="yes"], [have_projectm1="no"])
-	if test x$libprjM = xno; then
+	PKG_CHECK_MODULES(GTKGLEXT, [gtkglext-1.0], [have_projectm1="yes"], [have_projectm1="no"])
+	if test "xhave_projectm1" = "xno"; then
 	        AC_MSG_WARN([*** libprojectM not found.
 	                        libprojectM is needed to build this package.
 	                        You can download libprojectM at http://projectm.sf.net/])
@@ -1472,18 +1440,6 @@ AC_SUBST(GTKGLEXT_CFLAGS)
 
 if test "x$have_projectm1" = "xyes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS projectm-1.0"
-fi
-
-dnl *** TTA
-
-AC_ARG_ENABLE(tta,
-    [  --disable-tta           disable TrueAudio plugin (default=enabled) ],
-    [enable_tta=$enableval],
-    [enable_tta=yes]
-)
-
-if test "x$enable_tta" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS tta"
 fi
 
 dnl *** FileWriter
@@ -1505,7 +1461,7 @@ AC_ARG_ENABLE(filewriter_mp3,
 )
 
 if test "x$enable_filewriter_mp3" = "xyes"; then
-   AC_CHECK_LIB(mp3lame -lm, lame_init, [have_lame=yes], [have_lame=no])
+   AC_CHECK_LIB(mp3lame -lm, lame_get_id3v2_tag, [have_lame=yes], [have_lame=no])
    if test "x$have_lame" = "xyes"; then
       AC_DEFINE(FILEWRITER_MP3, 1, [Define if MP3 output part should be built])
 	  FILEWRITER_LIBS="$FILEWRITER_LIBS -lmp3lame"
@@ -1666,7 +1622,6 @@ echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  Enlightenment Sound Daemon (esd):       $have_esd"
 echo "  Jack Audio Connection Kit (jack):       $have_jack"
 echo "  BSD/SUN audio output (sun):             $have_sun"
-echo "  PulseAudio sound server (pulse_audio):  $have_pulse"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
 echo "  FileWriter:                             $enable_filewriter"
 echo "    -> FileWriter MP3 output part:        $have_lame"
@@ -1679,8 +1634,7 @@ echo "  Input Plugins"
 echo "  -------------"
 echo "  MPEG 1/2/3 (madplug):                   $enable_mp3"
 echo "  MPEG 4 Audio (AAC):                     $enable_aac"
-echo "  Windows Media Audio (wma):              $enable_wma"
-echo "  Monkey's Audio (ape):                   $enable_ape"
+echo "  FFaudio (ffaudio):                      $have_ffaudio"
 echo "  Module decoder (modplug):               $have_modplug"
 echo "  MIDI modular plugin (amidi-plug):       $enable_amidiplug"
 echo "    -> ALSA backend:                      $enable_amidiplug_alsa"
@@ -1697,14 +1651,11 @@ echo "    -> libSIDPlay1 support:               $xs_have_sidplay1"
 echo "    -> libSIDPlay2 support:               $xs_have_sidplay2"
 echo "    -> distortion patched libSIDPlay2:    $xs_have_distortion"
 echo "  Game music (spc, nsf & gbs):            yes"
-echo "  PlayStation audio (sexypsf):            yes"
-echo "  PlayStation2 audio (psf2):              yes"
+echo "  PlayStation (psf/psf2) audio (psf):     yes"
 echo "  Nintendo DS audio (xsf):                yes [experimental]"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      yes"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
-echo "  Musepack support (musepack):            $enable_musepack"
-echo "  TrueAudio (tta):                        $enable_tta"
 echo "  Metronom:                               yes"
 echo
 echo "  General"
@@ -1718,7 +1669,7 @@ echo "  Control via event device (evdev-plug):  $have_evdevplug"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  LIRC:                                   $have_lirc"
-echo "  AudioScrobbler Client:                  $scrobbler"
+echo "  AudioScrobbler Client:                  $have_scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
 echo "  Bluetooth audio support:                $have_bluetooth"
 echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
@@ -1743,11 +1694,10 @@ echo "  Spectrum Analyzer:                      yes"
 echo "  Paranormal Visualization Library:       $have_paranormal"
 echo "  projectM 0.x (GL milkdrop):             $have_projectm"
 echo "  projectM 1.x (GL milkdrop):             $have_projectm1"
-echo "  RootVis plugin:                         $have_rootvis"
 echo
 echo "  Transport"
 echo "  ---------"
-echo "  gio transport:                          yes"
+echo "  gio transport:                          $enable_gio"
 echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
 echo "  lastfm transport:                       $have_lastfm"

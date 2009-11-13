@@ -89,7 +89,6 @@ GType ui_vis_get_type(void);
 void ui_vis_set_vis(GtkWidget *widget, gint num);
 void ui_vis_clear_data(GtkWidget *widget);
 void ui_vis_timeout_func(GtkWidget *widget, guchar * data);
-void ui_vis_set_visible(GtkWidget *widget, gboolean window_is_visible);
 
 #ifdef __cplusplus
 }

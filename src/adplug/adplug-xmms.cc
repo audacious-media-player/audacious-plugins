@@ -82,12 +82,11 @@ static struct
   char *songtitle;
   float time_ms;
   bool playing;
-  GThread *play_thread;
   GtkLabel *infobox;
   GtkDialog *infodlg;
 } plr =
 {
-0, 0, 0, 0, -1, "", NULL, 0.0f, false, 0, NULL, NULL};
+0, 0, 0, 0, -1, "", NULL, 0.0f, false, NULL, NULL};
 
 static InputPlayback *playback;
 
@@ -161,7 +160,7 @@ MessageBox (const char *title, const char *text, const char *button)
 
 /***** Dialog boxes *****/
 
-static void
+extern "C" void
 adplug_about (void)
 {
   if (!about_win)
@@ -242,7 +241,7 @@ config_fl_row_unselect (GtkCList * fl, gint row, gint col,
   pl->remove ((CPlayerDesc *) gtk_clist_get_row_data (fl, row));
 }
 
-static void
+extern "C" void
 adplug_config (void)
 {
   GtkDialog *config_dlg = GTK_DIALOG (gtk_dialog_new ());
@@ -476,10 +475,10 @@ factory (VFSFile * fd, Copl * newopl)
   return CAdPlug::factory (fd, newopl, conf.players);
 }
 
-static void adplug_stop (InputPlayback * data);
-static void adplug_play (InputPlayback * data);
-
-
+extern "C" {
+void adplug_stop(InputPlayback * data);
+void adplug_play(InputPlayback * data);
+}
 
 static void
 subsong_slider (GtkAdjustment * adj)
@@ -501,8 +500,8 @@ close_infobox (GtkDialog * infodlg)
   }
 }
 
-static void
-adplug_info_box (char *filename)
+extern "C" void
+adplug_info_box (const gchar *filename)
 {
   CSilentopl tmpopl;
   VFSFile *fd = aud_vfs_buffered_file_new_from_uri (filename);
@@ -674,8 +673,8 @@ adplug_info_box (char *filename)
 
 /***** Main player (!! threaded !!) *****/
 
-static Tuple*
-adplug_get_tuple (char *filename)
+extern "C" Tuple*
+adplug_get_tuple (const gchar *filename)
 {
   CSilentopl tmpopl;
   VFSFile *fd = aud_vfs_buffered_file_new_from_uri (filename);
@@ -892,8 +891,8 @@ play_loop (void *data)
 
 /***** Informational *****/
 
-static int
-adplug_is_our_fd (gchar * filename, VFSFile * fd)
+extern "C" int
+adplug_is_our_fd (const gchar * filename, VFSFile * fd)
 {
   CSilentopl tmpopl;
 
@@ -912,7 +911,7 @@ adplug_is_our_fd (gchar * filename, VFSFile * fd)
   return FALSE;
 }
 
-static int
+extern "C" int
 adplug_get_time (InputPlayback * data)
 {
   if (audio_error)
@@ -928,20 +927,9 @@ adplug_get_time (InputPlayback * data)
   return playback->output->output_time ();
 }
 
-static void
-adplug_song_info (char *filename, char **title, int *length)
-{
-  *length = -1;
-  *title = NULL;
-
-  Tuple* ti = adplug_get_tuple( filename );
-  if ( ti )
-    *title = format_and_free_ti( ti, length );
-}
-
 /***** Player control *****/
 
-static void
+extern "C" void
 adplug_play (InputPlayback * data)
 {
   char *filename = data->filename;
@@ -974,32 +962,34 @@ adplug_play (InputPlayback * data)
 
   // start player func
   dbg_printf ("play");
-  plr.play_thread =  g_thread_self();
+  playback->playing = TRUE;
   playback->set_pb_ready(playback);
   play_loop(playback);
+  playback->playing = FALSE;
   dbg_printf (".\n");
 }
 
-static void
+extern "C" void
 adplug_stop (InputPlayback * playback)
 {
   dbg_printf ("adplug_stop(): join, ");
   plr.playing = false;
-  g_thread_join (plr.play_thread);  // stop player thread
+  g_thread_join (playback->thread);  // stop player thread
+  playback->thread = NULL;  // and keep the core from meddling
   dbg_printf ("close");
   playback->output->close_audio ();
   dbg_printf (".\n");
 }
 
-static void
-adplug_pause (InputPlayback * playback, short paused)
+extern "C" void
+adplug_pause (InputPlayback * playback, gshort paused)
 {
   dbg_printf ("adplug_pause(%d)\n", paused);
   playback->output->pause (paused);
 }
 
-static void
-adplug_seek (InputPlayback * data, int time)
+extern "C" void
+adplug_seek (InputPlayback * data, gint time)
 {
   dbg_printf ("adplug_seek(%d)\n", time);
   plr.seek = time * 1000;       // time is in seconds, but we count in ms
@@ -1009,7 +999,7 @@ adplug_seek (InputPlayback * data, int time)
 
 #define CFG_VERSION "AdPlug"
 
-static void
+extern "C" void
 adplug_init (void)
 {
   dbg_printf ("adplug_init(): open, ");
@@ -1061,7 +1051,7 @@ adplug_init (void)
   dbg_printf (".\n");
 }
 
-static void
+extern "C" void
 adplug_quit (void)
 {
   dbg_printf ("adplug_quit(): open, ");
@@ -1098,46 +1088,3 @@ adplug_quit (void)
   aud_cfg_db_close (db);
   dbg_printf (".\n");
 }
-
-/***** Plugin (exported) *****/
-
-const gchar *fmts[] =
-    { "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
-      "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
-      "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
-      "sng", "wlf", "xad", "xsm",
-      NULL };
-
-InputPlugin adplug_ip = {
-  NULL,                         // handle (filled by XMMS)
-  NULL,                         // filename (filled by XMMS)
-  (gchar *)ADPLUG_NAME,                  // plugin description
-  adplug_init,                  // plugin functions...
-  adplug_quit,
-  adplug_about,
-  adplug_config,
-  FALSE,
-  NULL,
-  NULL,
-  adplug_play,
-  adplug_stop,
-  adplug_pause,
-  adplug_seek,
-  adplug_get_time,
-  NULL,                         // get_volume (handled by output plugin)
-  NULL,                         // set_volume (...)
-  NULL,                         // OBSOLETE - DO NOT USE!
-  NULL,                         // add_vis_pcm (filled by XMMS)
-  NULL,                         // set_info (filled by XMMS)
-  NULL,                         // set_info_text (filled by XMMS)
-  adplug_song_info,
-  adplug_info_box,
-  adplug_get_tuple,
-  adplug_is_our_fd,
-  (gchar **)fmts,
-};
-
-InputPlugin *adplug_iplist[] = { &adplug_ip, NULL };
-
-DECLARE_PLUGIN(adplug, NULL, NULL, adplug_iplist, NULL, NULL, NULL, NULL,NULL);
-

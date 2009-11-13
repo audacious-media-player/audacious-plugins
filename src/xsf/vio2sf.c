@@ -590,7 +590,7 @@ static void SNDIFUnMuteAudio(void)
 static void SNDIFSetVolume(int volume)
 {
 }
-static int SNDIFGetAudioSpace(void)
+static u32 SNDIFGetAudioSpace(void)
 {
 	return sndifwork.bufferbytes >> 2; // bytes to samples
 }
@@ -622,8 +622,10 @@ SoundInterface_struct *SNDCoreList[] = {
 	NULL
 };
 
+#ifdef GDB_STUB
 static struct armcpu_ctrl_iface *arm9_ctrl_iface = 0;
 static struct armcpu_ctrl_iface *arm7_ctrl_iface = 0;
+#endif
 
 int xsf_start(void *pfile, unsigned bytes)
 {

@@ -106,7 +106,7 @@ void i_fileinfo_text_fill( midifile_t * mf , GtkTextBuffer * text_tb, GtkTextBuf
 }
 
 
-void i_fileinfo_gui( gchar * filename_uri )
+void i_fileinfo_gui( const gchar * filename_uri )
 {
   static GtkWidget *fileinfowin = NULL;
   GtkWidget *fileinfowin_vbox, *fileinfowin_columns_hbox;

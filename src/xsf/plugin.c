@@ -53,7 +53,7 @@ int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 }
 
 static gint seek = 0;
-Tuple *xsf_tuple(gchar *filename)
+Tuple *xsf_tuple(const gchar *filename)
 {
 	Tuple *t;
 	corlett_t *c;
@@ -139,7 +139,7 @@ void xsf_play(InputPlayback *data)
 		while (data->playing && !seek && !data->eof)
 		{
 			xsf_gen(samples, seglen);
-			xsf_update(samples, seglen * 4, data);
+			xsf_update((guint8 *)samples, seglen * 4, data);
 
 			if (data->output->output_time() > length)
 				data->eof = TRUE;
@@ -221,7 +221,7 @@ void xsf_play(InputPlayback *data)
 	data->playing = FALSE;
 }
 
-void xsf_update(unsigned char *buffer, long count, InputPlayback *playback)
+void xsf_update(guint8 *buffer, long count, InputPlayback *playback)
 {
 	const int mask = ~((((16 / 8) * 2)) - 1);
 
@@ -260,7 +260,7 @@ void xsf_pause(InputPlayback *playback, short p)
 	playback->output->pause(p);
 }
 
-int xsf_is_our_fd(gchar *filename, VFSFile *file)
+gint xsf_is_our_fd(const gchar *filename, VFSFile *file)
 {
 	gchar magic[4];
 	aud_vfs_fread(magic, 1, 4, file);
@@ -276,9 +276,9 @@ void xsf_Seek(InputPlayback *playback, int time)
 	seek = time * 1000;
 }
 
-gchar *xsf_fmts[] = { "2sf", "mini2sf", NULL };
+static gchar *xsf_fmts[] = { "2sf", "mini2sf", NULL };
 
-InputPlugin xsf_ip =
+static InputPlugin xsf_ip =
 {
 	.description = "2SF Audio Plugin",
 	.play_file = xsf_play,
@@ -290,7 +290,7 @@ InputPlugin xsf_ip =
 	.vfs_extensions = xsf_fmts,
 };
 
-InputPlugin *xsf_iplist[] = { &xsf_ip, NULL };
+static InputPlugin *xsf_iplist[] = { &xsf_ip, NULL };
 
 DECLARE_PLUGIN(psf2, NULL, NULL, xsf_iplist, NULL, NULL, NULL, NULL, NULL);
 

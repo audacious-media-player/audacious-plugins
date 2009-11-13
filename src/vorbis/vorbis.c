@@ -4,6 +4,7 @@
  * Copyright (C) 2007 William Pitcock <nenolod@sacredspiral.co.uk>
  * Copyright (C) 2008 Cristi Măgherușan <majeru@gentoo.ro>
  * Copyright (C) 2008 Eugene Zagidullin <e.asphyx@gmail.com>
+ * Copyright (C) 2009 Audacious Developers
  *
  * ReplayGain processing Copyright (C) 2002 Gian-Carlo Pascutto <gcp@sjeng.org>
  *
@@ -24,55 +25,24 @@
  *
  */
 
-/*
- * 2002-01-11 ReplayGain processing added by Gian-Carlo Pascutto <gcp@sjeng.org>
- */
-
-/*
- * Note that this uses vorbisfile, which is not (currently)
- * thread-safe.
- */
-
 #include "config.h"
 /*#define AUD_DEBUG
 #define DEBUG*/
 
-#define REMOVE_NONEXISTANT_TAG(x)   if (x != NULL && !*x) { x = NULL; }
-
 #include <glib.h>
-#include <gtk/gtk.h>
 
 #include <stdlib.h>
 #include <math.h>
-#include <string.h>
-
-#include <fcntl.h>
 
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
 #include <audacious/plugin.h>
-#include <audacious/output.h>
 #include <audacious/i18n.h>
 
 #include "vorbis.h"
 
-extern vorbis_config_t vorbis_cfg;
-
-static Tuple *get_song_tuple(gchar *filename);
-static int vorbis_check_fd(char *filename, VFSFile *stream);
-static void vorbis_play(InputPlayback *data);
-static void vorbis_stop(InputPlayback *data);
-static void vorbis_pause(InputPlayback *data, short p);
-static void vorbis_seek(InputPlayback *data, int time);
-static gchar *vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * fn);
-static void vorbis_aboutbox(void);
-static void vorbis_init(void);
-static void vorbis_cleanup(void);
-static long vorbis_interleave_buffer(float **pcm, int samples, int ch,
-                                     float *pcmout);
-static gboolean vorbis_update_replaygain(ReplayGainInfo *rg_info);
 
 static size_t ovcb_read(void *ptr, size_t size, size_t nmemb,
                         void *datasource);
@@ -94,43 +64,18 @@ ov_callbacks vorbis_callbacks_stream = {
     NULL
 };
 
-gchar *vorbis_fmts[] = { "ogg", "ogm", "oga", NULL };
-
-InputPlugin vorbis_ip = {
-    .description = "Ogg Vorbis Audio Plugin",  /* description */
-    .init = vorbis_init,                /* init */
-    .about = vorbis_aboutbox,            /* aboutbox */
-    .configure = vorbis_configure,           /* configure */
-    .play_file = vorbis_play,
-    .stop = vorbis_stop,
-    .pause = vorbis_pause,
-    .seek = vorbis_seek,
-    .cleanup = vorbis_cleanup,
-    .get_song_tuple = get_song_tuple,
-    .is_our_file_from_vfs = vorbis_check_fd,
-    .vfs_extensions = vorbis_fmts,
-    .update_song_tuple = vorbis_update_song_tuple,
-};
-
-InputPlugin *vorbis_iplist[] = { &vorbis_ip, NULL };
-
-DECLARE_PLUGIN(vorbis, NULL, NULL, vorbis_iplist, NULL, NULL, NULL, NULL, NULL);
-
-static OggVorbis_File vf;
-
-static GThread *thread;
-static volatile int seekneeded;
-static volatile char pause_flag;
-static int samplerate, channels;
-GMutex *vf_mutex;
+static volatile gint seek_value = -1;
+static GMutex * seek_mutex = NULL;
+static GCond * seek_cond = NULL;
+static gboolean pause_flag;
 
 gchar **vorbis_tag_encoding_list = NULL;
-static GtkWidget *about_window;
 
-static int
-vorbis_check_fd(char *filename, VFSFile *stream)
+
+static gint
+vorbis_check_fd(const gchar *filename, VFSFile *stream)
 {
-    OggVorbis_File vfile;       /* avoid thread interaction */
+    OggVorbis_File vfile;
     gint result;
     VFSVorbisFile *fd;
 
@@ -144,9 +89,7 @@ vorbis_check_fd(char *filename, VFSFile *stream)
      * we're fully ready to decode.
      */
 
-    /* libvorbisfile isn't thread safe... */
     memset(&vfile, 0, sizeof(vfile));
-    g_mutex_lock(vf_mutex);
 
     result = ov_test_callbacks(fd, &vfile, NULL, 0, aud_vfs_is_streaming(stream) ? vorbis_callbacks_stream : vorbis_callbacks);
 
@@ -155,21 +98,18 @@ vorbis_check_fd(char *filename, VFSFile *stream)
 #ifdef DEBUG
         g_message("** vorbis.c: Media read error: %s", filename);
 #endif
-        g_mutex_unlock(vf_mutex);
         return FALSE;
         break;
     case OV_ENOTVORBIS:
 #ifdef DEBUG
         g_message("** vorbis.c: Not Vorbis data: %s", filename);
 #endif
-        g_mutex_unlock(vf_mutex);
         return FALSE;
         break;
     case OV_EVERSION:
 #ifdef DEBUG
         g_message("** vorbis.c: Version mismatch: %s", filename);
 #endif
-        g_mutex_unlock(vf_mutex);
         return FALSE;
         break;
     case OV_EBADHEADER:
@@ -177,7 +117,6 @@ vorbis_check_fd(char *filename, VFSFile *stream)
         g_message("** vorbis.c: Invalid Vorbis bistream header: %s",
                   filename);
 #endif
-        g_mutex_unlock(vf_mutex);
         return FALSE;
         break;
     case OV_EFAULT:
@@ -185,7 +124,6 @@ vorbis_check_fd(char *filename, VFSFile *stream)
         g_message("** vorbis.c: Internal logic fault while reading %s",
                   filename);
 #endif
-        g_mutex_unlock(vf_mutex);
         return FALSE;
         break;
     case 0:
@@ -196,342 +134,139 @@ vorbis_check_fd(char *filename, VFSFile *stream)
 
     ov_clear(&vfile);           /* once the ov_open succeeds, the stream belongs to
                                    vorbisfile.a.  ov_clear will fclose it */
-    g_mutex_unlock(vf_mutex);
     return TRUE;
 }
 
 static void
-vorbis_jump_to_time(InputPlayback *playback, long time)
+set_tuple_str(Tuple *tuple, const gint nfield, const gchar *field,
+    vorbis_comment *comment, gchar *key)
 {
-    g_mutex_lock(vf_mutex);
-
-    /*
-     * We need to guard against seeking to the end, or things
-     * don't work right.  Instead, just seek to one second prior
-     * to this
-     */
-    if (time == ov_time_total(&vf, -1))
-        time--;
-
-    playback->output->flush(time * 1000);
-    ov_time_seek(&vf, time);
-
-    g_mutex_unlock(vf_mutex);
-}
-
-static void
-do_seek(InputPlayback *playback)
-{
-    if (seekneeded != -1) {
-        vorbis_jump_to_time(playback, seekneeded);
-        seekneeded = -1;
-        playback->eof = FALSE;
+    gchar *str = vorbis_comment_query(comment, key, 0);
+    if (str != NULL) {
+        gchar *tmp = aud_str_to_utf8(str);
+        aud_tuple_associate_string(tuple, nfield, field, tmp);
+        g_free(tmp);
     }
 }
 
-static void do_pause (InputPlayback * playback) {
-   playback->output->pause (1);
-   while (pause_flag) {
-      if (seekneeded != -1)
-         do_seek (playback);
-      g_usleep(50000);
-   }
-   playback->output->pause (0);
-}
-
-#define PCM_FRAMES 1024
-#define PCM_BUFSIZE PCM_FRAMES*2
-
-static gpointer
-vorbis_play_loop(gpointer arg)
+static Tuple *
+get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
 {
-    InputPlayback *playback = arg;
-    char *filename = playback->filename;
-    gchar *title = NULL;
-    double time;
-    long timercount = 0;
-    vorbis_info *vi;
-    gint br;
-    VFSVorbisFile *fd = NULL;
+    VFSVorbisFile *vfd = (VFSVorbisFile *) vorbisfile->datasource;
+    Tuple *tuple;
+    gint length;
+    vorbis_comment *comment = NULL;
 
-    int last_section = -1;
+    tuple = aud_tuple_new_from_filename(filename);
 
-    VFSFile *stream = NULL;
-    void *datasource = NULL;
+    length = aud_vfs_is_streaming(vfd->fd) ? -1 : ov_time_total(vorbisfile, -1) * 1000;
 
-    /*gboolean use_rg;
-    /float rg_scale = 1.0;*/
+    /* associate with tuple */
+    aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
+    /* maybe, it would be better to display nominal bitrate (like in main win), not average? --eugene */
+    aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, ov_bitrate(vorbisfile, -1) / 1000);
 
-    ReplayGainInfo rg_info;
+    if ((comment = ov_comment(vorbisfile, -1)) != NULL) {
+        gchar *tmps;
+        set_tuple_str(tuple, FIELD_TITLE, NULL, comment, "title");
+        set_tuple_str(tuple, FIELD_ARTIST, NULL, comment, "artist");
+        set_tuple_str(tuple, FIELD_ALBUM, NULL, comment, "album");
+        set_tuple_str(tuple, FIELD_DATE, NULL, comment, "date");
+        set_tuple_str(tuple, FIELD_GENRE, NULL, comment, "genre");
+        set_tuple_str(tuple, FIELD_COMMENT, NULL, comment, "comment");
 
-    memset(&vf, 0, sizeof(vf));
-
-    if ((stream = aud_vfs_fopen(filename, "r")) == NULL) {
-        playback->eof = TRUE;
-        goto play_cleanup;
+        if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != NULL)
+            aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(tmps));
     }
 
-    fd = g_new0(VFSVorbisFile, 1);
-    fd->fd = stream;
-    datasource = (void *) fd;
+    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
 
-    /*char pcmout[4096];*/
-    float pcmout[PCM_BUFSIZE*sizeof(float)];
-    int bytes;
-    float **pcm;
-
-    /*
-     * The open function performs full stream detection and
-     * machine initialization.  None of the rest of ov_xx() works
-     * without it
-     *
-     * A vorbis physical bitstream may consist of many logical
-     * sections (information for each of which may be fetched from
-     * the vf structure).  This value is filled in by ov_read to
-     * alert us what section we're currently decoding in case we
-     * need to change playback settings at a section boundary
-     */
-
-
-    g_mutex_lock(vf_mutex);
-    if (ov_open_callbacks(datasource, &vf, NULL, 0, aud_vfs_is_streaming(fd->fd) ? vorbis_callbacks_stream : vorbis_callbacks) < 0) {
-        vorbis_callbacks.close_func(datasource);
-        g_mutex_unlock(vf_mutex);
-        playback->eof = TRUE;
-        goto play_cleanup;
+    if (comment != NULL && comment->vendor != NULL)
+    {
+        gchar *codec = g_strdup_printf("Ogg Vorbis [%s]", comment->vendor);
+        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, codec);
+        g_free(codec);
     }
-    vi = ov_info(&vf, -1);
-
-    if (aud_vfs_is_streaming(fd->fd))
-        time = -1;
     else
-        time = ov_time_total(&vf, -1) * 1000;
+        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "Ogg Vorbis");
 
-    if (vi->channels > 2) {
-        playback->eof = TRUE;
-        g_mutex_unlock(vf_mutex);
-        goto play_cleanup;
+    aud_tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "application/ogg");
+
+    return tuple;
+}
+
+static gfloat atof_no_locale (const gchar * string)
+{
+    gfloat result = 0;
+    gboolean negative = FALSE;
+
+    if (* string == '+')
+        string ++;
+    else if (* string == '-')
+    {
+        negative = TRUE;
+        string ++;
     }
 
-    title = vorbis_generate_title(&vf, filename);
-    vorbis_update_replaygain(&rg_info);
-    playback->set_replaygain_info(playback, &rg_info);
+    while (* string >= '0' && * string <= '9')
+        result = 10 * result + (* string ++ - '0');
 
-    vi = ov_info(&vf, -1);
+    if (* string == '.')
+    {
+        gfloat place = 0.1;
 
-    samplerate = vi->rate;
-    channels = vi->channels;
-    br = vi->bitrate_nominal;
+        string ++;
 
-    g_mutex_unlock(vf_mutex);
-
-    playback->set_params(playback, title, time, br, samplerate, channels);
-    if (!playback->output->open_audio(FMT_FLOAT, vi->rate, vi->channels)) {
-        playback->error = TRUE;
-        goto play_cleanup;
+        while (* string >= '0' && * string <= '9')
+        {
+            result += (* string ++ - '0') * place;
+            place *= 0.1;
+        }
     }
 
-    /*
-     * Note that chaining changes things here; A vorbis file may
-     * be a mix of different channels, bitrates and sample rates.
-     * You can fetch the information for any section of the file
-     * using the ov_ interface.
-     */
-
-    while (playback->playing) {
-
-        if (playback->eof) {
-            g_usleep(20000);
-            continue;
-        }
-
-        if (seekneeded != -1)
-            do_seek(playback);
-        if (pause_flag)
-            do_pause (playback);
-
-
-        int current_section = last_section;
-
-        g_mutex_lock(vf_mutex);
-
-        bytes = ov_read_float(&vf, &pcm, PCM_FRAMES, &current_section);
-
-        if (bytes > 0)
-            bytes = vorbis_interleave_buffer(pcm, bytes, channels, pcmout);
-
-        /*
-         * We got some sort of error. Bail.
-         */
-        if (bytes <= 0 && bytes != OV_HOLE) {
-           /*
-            * EOF
-            */
-            AUDDBG("EOF\n");
-            playback->playing = 0;
-            playback->eof = TRUE;
-            current_section = last_section;
-        }
-
-        if (current_section <= last_section) {
-            /*
-             * The info struct is different in each section.  vf
-             * holds them all for the given bitstream.  This
-             * requests the current one
-             */
-            vorbis_info *vi = ov_info(&vf, -1);
-
-            if (vi->channels > 2) {
-                playback->eof = TRUE;
-                g_mutex_unlock(vf_mutex);
-                goto stop_processing;
-            }
-
-
-            if (vi->rate != samplerate || vi->channels != channels) {
-                samplerate = vi->rate;
-                channels = vi->channels;
-                while(playback->output->buffer_playing()) g_usleep(50000);
-                playback->output->close_audio();
-                if (!playback->output->
-                        open_audio(FMT_FLOAT, vi->rate, vi->channels)) {
-                    playback->error = TRUE;
-                    playback->eof = TRUE;
-                    g_mutex_unlock(vf_mutex);
-                    goto stop_processing;
-                }
-                playback->output->flush(ov_time_tell(&vf) * 1000);
-                vorbis_update_replaygain(&rg_info);
-                playback->set_replaygain_info(playback, &rg_info); /* audio reopened */
-            }
-        }
-
-        g_mutex_unlock(vf_mutex);
-
-        playback->pass_audio(playback, FMT_FLOAT, channels, bytes, pcmout, &playback->playing);
-
-        stop_processing:
-
-        if (current_section <= last_section) {
-            /*
-            * set total play time, bitrate, rate, and channels of
-            * current section
-            */
-            if (title)
-                g_free(title);
-
-            g_mutex_lock(vf_mutex);
-            title = vorbis_generate_title(&vf, filename);
-
-            if (time != -1)
-                time = ov_time_total(&vf, -1) * 1000;
-
-            g_mutex_unlock(vf_mutex);
-
-            playback->set_params(playback, title, time, br, samplerate, channels);
-
-            timercount = playback->output->output_time();
-
-            last_section = current_section;
-
-        }
-    } /* main loop */
-
-    if (!playback->error) {
-        /*this loop makes it not skip the last ~4 seconds, but the playback
-         * timer isn't updated in this period, so it still needs a bit of work
-         *
-         * majeru
-         */
-        if(playback->eof) /* do it only on EOF --asphyx */
-            while(playback->output->buffer_playing()) {
-                AUDDBG("waiting for empty output buffer\n");
-                g_usleep(50000);
-            }
-
-        playback->output->close_audio();
-    }
-
-
-    play_cleanup:
-    g_free(title);
-
-    /*
-     * ov_clear closes the stream if its open.  Safe to call on an
-     * uninitialized structure as long as we've zeroed it
-     */
-    g_mutex_lock(vf_mutex);
-    ov_clear(&vf);
-    g_mutex_unlock(vf_mutex);
-    playback->playing = 0;
-    return NULL;
+    return negative ? -result : result;
 }
-
-static void
-vorbis_play(InputPlayback *playback)
-{
-    playback->playing = 1;
-    playback->eof = 0;
-    playback->error = FALSE;
-    seekneeded = -1;
-    pause_flag = 0;
-
-    thread = g_thread_self();
-    playback->set_pb_ready(playback);
-    vorbis_play_loop(playback);
-}
-
-static void
-vorbis_stop(InputPlayback *playback)
-{
-    if (playback->playing) {
-        playback->playing = 0;
-        AUDDBG("waiting for playback thread finished\n");
-        g_thread_join(thread);
-        AUDDBG("playback finished\n");
-    }
-}
-
-static void
-vorbis_pause(InputPlayback *playback, short p)
-{
-    pause_flag = p;
-}
-
-static void
-vorbis_seek(InputPlayback *data, int time)
-{
-    seekneeded = time;
-
-    while (seekneeded != -1)
-        g_usleep(20000);
-}
-
-/* Make sure you've locked vf_mutex */
 
 static gboolean
-vorbis_update_replaygain(ReplayGainInfo *rg_info)
+vorbis_update_replaygain(OggVorbis_File *vf, ReplayGainInfo *rg_info)
 {
     vorbis_comment *comment;
-    char *rg_gain = NULL, *rg_peak = NULL;
+    gchar *rg_gain, *rg_peak;
 
-    if (rg_info == NULL || (comment = ov_comment(&vf, -1)) == NULL)
+    if (vf == NULL || rg_info == NULL || (comment = ov_comment(vf, -1)) == NULL)
+    {
+#ifdef DEBUG
+        printf ("No replay gain info.\n");
+#endif
         return FALSE;
+    }
 
     rg_gain = vorbis_comment_query(comment, "replaygain_album_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_audiophile", 0);    /* Old */
-    rg_info->album_gain = rg_gain != NULL ? atof(rg_gain) : 0.0;
+    rg_info->album_gain = (rg_gain != NULL) ? atof_no_locale (rg_gain) : 0.0;
+#ifdef DEBUG
+    printf ("Album gain: %s (%f)\n", rg_gain, rg_info->album_gain);
+#endif
 
     rg_gain = vorbis_comment_query(comment, "replaygain_track_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_radio", 0);    /* Old */
-    rg_info->track_gain = rg_gain != NULL ? atof(rg_gain) : 0.0;
+    rg_info->track_gain = (rg_gain != NULL) ? atof_no_locale (rg_gain) : 0.0;
+#ifdef DEBUG
+    printf ("Track gain: %s (%f)\n", rg_gain, rg_info->track_gain);
+#endif
 
     rg_peak = vorbis_comment_query(comment, "replaygain_album_peak", 0);
-    rg_info->album_peak = rg_peak != NULL ? atof(rg_peak) : 0.0;
+    rg_info->album_peak = rg_peak != NULL ? atof_no_locale (rg_peak) : 0.0;
+#ifdef DEBUG
+    printf ("Album peak: %s (%f)\n", rg_peak, rg_info->album_peak);
+#endif
 
     rg_peak = vorbis_comment_query(comment, "replaygain_track_peak", 0);
     if (!rg_peak) rg_peak = vorbis_comment_query(comment, "rg_peak", 0);  /* Old */
-    rg_info->track_peak = rg_peak != NULL ? atof(rg_peak) : 0.0;
+    rg_info->track_peak = rg_peak != NULL ? atof_no_locale (rg_peak) : 0.0;
+#ifdef DEBUG
+    printf ("Track peak: %s (%f)\n", rg_peak, rg_info->track_peak);
+#endif
 
     return TRUE;
 }
@@ -547,76 +282,267 @@ vorbis_interleave_buffer(float **pcm, int samples, int ch, float *pcmout)
     return ch * samples * sizeof(float);
 }
 
-static void _aud_tuple_associate_string(Tuple *tuple, const gint nfield, const gchar *field, const gchar *string)
+
+#define PCM_FRAMES 1024
+#define PCM_BUFSIZE (PCM_FRAMES * 2)
+
+static void
+vorbis_play(InputPlayback *playback)
 {
-    if (string) {
-        gchar *str = aud_str_to_utf8(string);
-        aud_tuple_associate_string(tuple, nfield, field, str);
-        g_free(str);
-    }
-}
+    gboolean streaming;
+    vorbis_info *vi;
+    OggVorbis_File vf;
+    VFSVorbisFile *fd = NULL;
+    VFSFile *stream = NULL;
+    gint last_section = -1;
+    ReplayGainInfo rg_info;
+    gfloat pcmout[PCM_BUFSIZE*sizeof(float)], **pcm;
+    gint bytes, channels, samplerate, br;
+    gboolean paused = FALSE;
+    gchar * title = NULL;
 
-/*
- * Ok, nhjm449! Are you *happy* now?!  -nenolod
- */
-static Tuple *
-get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename)
-{
-    VFSVorbisFile *vfd = (VFSVorbisFile *) vorbisfile->datasource;
-    Tuple *tuple = NULL;
-    gint length;
-    vorbis_comment *comment = NULL;
+    playback->error = FALSE;
+    seek_value = -1;
+    pause_flag = FALSE;
+    memset(&vf, 0, sizeof(vf));
 
-    tuple = aud_tuple_new_from_filename(filename);
-
-    if (aud_vfs_is_streaming(vfd->fd))
-        length = -1;
-    else
-        length = ov_time_total(vorbisfile, -1) * 1000;
-
-    /* associate with tuple */
-    aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
-    /* maybe, it would be better to display nominal bitrate (like in main win), not average? --eugene */
-    aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, ov_bitrate(vorbisfile, -1)/1000);
-
-    if ((comment = ov_comment(vorbisfile, -1))) {
-        gchar *tmps;
-        _aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, vorbis_comment_query(comment, "title", 0));
-        _aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, vorbis_comment_query(comment, "artist", 0));
-        _aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, vorbis_comment_query(comment, "album", 0));
-        _aud_tuple_associate_string(tuple, FIELD_DATE, NULL, vorbis_comment_query(comment, "date", 0));
-        _aud_tuple_associate_string(tuple, FIELD_GENRE, NULL, vorbis_comment_query(comment, "genre", 0));
-        _aud_tuple_associate_string(tuple, FIELD_COMMENT, NULL, vorbis_comment_query(comment, "comment", 0));
-
-        if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != NULL)
-            aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(tmps));
+    if ((stream = aud_vfs_fopen(playback->filename, "r")) == NULL) {
+        playback->eof = TRUE;
+        goto play_cleanup;
     }
 
-    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
+    fd = g_new0(VFSVorbisFile, 1);
+    fd->fd = stream;
 
-    if (comment && comment->vendor)
+    streaming = aud_vfs_is_streaming(fd->fd);
+    if (ov_open_callbacks(fd, &vf, NULL, 0, streaming ? vorbis_callbacks_stream : vorbis_callbacks) < 0) {
+        vorbis_callbacks.close_func(fd);
+        playback->eof = TRUE;
+        goto play_cleanup;
+    }
+
+    vi = ov_info(&vf, -1);
+
+    if (vi->channels > 2)
     {
-        gchar *codec = g_strdup_printf("Ogg Vorbis [%s]", comment->vendor);
-        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, codec);
-        g_free(codec);
+        playback->eof = TRUE;
+        goto play_cleanup;
+    }
+
+    br = vi->bitrate_nominal;
+    channels = vi->channels;
+    samplerate = vi->rate;
+
+    vorbis_update_replaygain(&vf, &rg_info);
+    playback->set_replaygain_info(playback, &rg_info);
+    playback->set_params (playback, NULL, 0, br, samplerate, channels);
+
+    if (!playback->output->open_audio(FMT_FLOAT, samplerate, channels)) {
+        playback->error = TRUE;
+        goto play_cleanup;
+    }
+
+    g_mutex_lock (seek_mutex);
+
+    playback->playing = TRUE;
+    playback->eof = FALSE;
+    playback->set_pb_ready(playback);
+
+    g_mutex_unlock (seek_mutex);
+
+    /*
+     * Note that chaining changes things here; A vorbis file may
+     * be a mix of different channels, bitrates and sample rates.
+     * You can fetch the information for any section of the file
+     * using the ov_ interface.
+     */
+
+    while (1)
+    {
+        gint current_section = last_section;
+
+        g_mutex_lock (seek_mutex);
+
+        if (! playback->playing)
+        {
+            g_mutex_unlock (seek_mutex);
+            break;
+        }
+
+        if (seek_value >= 0)
+        {
+            ov_time_seek (& vf, (double) seek_value / 1000);
+            playback->output->flush (seek_value);
+            seek_value = -1;
+            g_cond_signal (seek_cond);
+        }
+
+        if (pause_flag != paused)
+        {
+            playback->output->pause (pause_flag);
+            paused = pause_flag;
+            g_cond_signal (seek_cond);
+        }
+
+        if (paused)
+        {
+            g_cond_wait (seek_cond, seek_mutex);
+            g_mutex_unlock (seek_mutex);
+            continue;
+        }
+
+        g_mutex_unlock (seek_mutex);
+
+        bytes = ov_read_float(&vf, &pcm, PCM_FRAMES, &current_section);
+        if (bytes == OV_HOLE)
+            continue;
+
+        if (bytes <= 0)
+        {
+            while (playback->output->buffer_playing ())
+                g_usleep (10000);
+
+            playback->eof = 1;
+            break;
+        }
+
+        bytes = vorbis_interleave_buffer (pcm, bytes, channels, pcmout);
+
+        { /* try to detect when metadata has changed */
+            vorbis_comment * comment = ov_comment (& vf, -1);
+            const gchar * new_title = (comment == NULL) ? NULL :
+             vorbis_comment_query (comment, "title", 0);
+
+            if (new_title != NULL && (title == NULL || strcmp (title, new_title)))
+            {
+                g_free (title);
+                title = g_strdup (new_title);
+
+                playback->set_tuple (playback, get_aud_tuple_for_vorbisfile
+                 (& vf, playback->filename));
+            }
+        }
+
+        if (current_section <= last_section) {
+            /*
+             * The info struct is different in each section.  vf
+             * holds them all for the given bitstream.  This
+             * requests the current one
+             */
+            vi = ov_info(&vf, -1);
+
+            if (vi->channels > 2) {
+                playback->eof = TRUE;
+                goto stop_processing;
+            }
+
+            if (vi->rate != samplerate || vi->channels != channels) {
+                samplerate = vi->rate;
+                channels = vi->channels;
+                while (playback->output->buffer_playing())
+                    g_usleep(1000);
+
+                playback->output->close_audio();
+
+                if (!playback->output->open_audio(FMT_FLOAT, vi->rate, vi->channels)) {
+                    playback->error = TRUE;
+                    playback->eof = TRUE;
+                    goto stop_processing;
+                }
+
+                playback->output->flush(ov_time_tell(&vf) * 1000);
+                vorbis_update_replaygain(&vf, &rg_info);
+                playback->set_replaygain_info(playback, &rg_info); /* audio reopened */
+            }
+        }
+
+        playback->pass_audio(playback, FMT_FLOAT, channels, bytes, pcmout, &playback->playing);
+
+stop_processing:
+
+        if (current_section <= last_section) {
+            /*
+             * set total play time, bitrate, rate, and channels of
+             * current section
+             */
+            playback->set_params (playback, NULL, 0, br, samplerate, channels);
+
+            last_section = current_section;
+
+        }
+    } /* main loop */
+
+    playback->output->close_audio ();
+
+play_cleanup:
+
+    ov_clear(&vf);
+    g_free (title);
+
+    g_mutex_lock (seek_mutex);
+    playback->playing = FALSE;
+    g_cond_signal (seek_cond); /* wake up any waiting request */
+    g_mutex_unlock (seek_mutex);
+}
+
+static void vorbis_stop (InputPlayback * playback)
+{
+    g_mutex_lock (seek_mutex);
+
+    if (playback->playing)
+    {
+        playback->playing = FALSE;
+        g_cond_signal (seek_cond);
+        g_mutex_unlock (seek_mutex);
+        g_thread_join (playback->thread);
+        playback->thread = NULL;
     }
     else
-        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "Ogg Vorbis");
+        g_mutex_unlock (seek_mutex);
+}
 
-    aud_tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "application/ogg");
+static void vorbis_pause (InputPlayback * playback, gshort p)
+{
+    g_mutex_lock (seek_mutex);
 
-    return tuple;
+    if (playback->playing)
+    {
+        pause_flag = p;
+        g_cond_signal (seek_cond);
+        g_cond_wait (seek_cond, seek_mutex);
+    }
+
+    g_mutex_unlock (seek_mutex);
+}
+
+static void vorbis_mseek (InputPlayback * playback, gulong time)
+{
+    g_mutex_lock (seek_mutex);
+
+    if (playback->playing)
+    {
+        seek_value = time;
+        g_cond_signal (seek_cond);
+        g_cond_wait (seek_cond, seek_mutex);
+    }
+
+    g_mutex_unlock (seek_mutex);
+}
+
+static void vorbis_seek (InputPlayback * playback, gint time)
+{
+    vorbis_mseek (playback, 1000 * time);
 }
 
 static Tuple *
-get_song_tuple(gchar *filename)
+get_song_tuple(const gchar *filename)
 {
     VFSFile *stream = NULL;
     OggVorbis_File vfile;          /* avoid thread interaction */
     Tuple *tuple = NULL;
     VFSVorbisFile *fd = NULL;
 
-    if ((stream = aud_vfs_fopen(filename, "r")) == NULL)
+    if ((stream = aud_vfs_fopen(filename, "rb")) == NULL)
         return NULL;
 
     fd = g_new0(VFSVorbisFile, 1);
@@ -627,7 +553,8 @@ get_song_tuple(gchar *filename)
      * machine initialization.  If it returns zero, the stream
      * *is* Vorbis and we're fully ready to decode.
      */
-    if (ov_open_callbacks(fd, &vfile, NULL, 0, aud_vfs_is_streaming(stream) ? vorbis_callbacks_stream : vorbis_callbacks) < 0) {
+    if (ov_open_callbacks(fd, &vfile, NULL, 0, aud_vfs_is_streaming(stream) ? vorbis_callbacks_stream : vorbis_callbacks) < 0)
+    {
         aud_vfs_fclose(stream);
         return NULL;
     }
@@ -643,69 +570,41 @@ get_song_tuple(gchar *filename)
     return tuple;
 }
 
-static gchar *
-vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
-{
-    /* Caller should hold vf_mutex */
-    gchar *displaytitle = NULL;
-    Tuple *input;
-    gchar *tmp;
-
-    input = get_aud_tuple_for_vorbisfile(vorbisfile, filename);
-
-    displaytitle = aud_tuple_formatter_make_title_string(input, vorbis_cfg.tag_override ?
-                                                  vorbis_cfg.tag_format : aud_get_gentitle_format());
-
-    if ((tmp = aud_vfs_get_metadata(((VFSVorbisFile *) vorbisfile->datasource)->fd, "stream-name")) != NULL)
-    {
-        gchar *old = displaytitle;
-
-        aud_tuple_associate_string(input, -1, "stream", tmp);
-        aud_tuple_associate_string(input, FIELD_TITLE, NULL, old);
-
-        displaytitle = aud_tuple_formatter_process_string(input, "${?title:${title}}${?stream: (${stream})}");
-
-	g_free(old);
-	g_free(tmp);
-    }
-
-    aud_tuple_free(input);
-
-    return displaytitle;
-}
-
 static void
 vorbis_aboutbox(void)
 {
-    if (about_window)
+    static GtkWidget *about_window = NULL;
+    if (about_window != NULL)
         gtk_window_present(GTK_WINDOW(about_window));
     else
     {
-      about_window = audacious_info_dialog(_("About Ogg Vorbis Audio Plugin"),
-                                       /*
-                                        * I18N: UTF-8 Translation: "Haavard Kvaalen" ->
-                                        * "H\303\245vard Kv\303\245len"
-                                        */
-                                       _
-                                       ("Ogg Vorbis Plugin by the Xiph.org Foundation\n\n"
-                                        "Original code by\n"
-                                        "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-                                        "Contributions from\n"
-                                        "Chris Montgomery <monty@xiph.org>\n"
-                                        "Peter Alm <peter@xmms.org>\n"
-                                        "Michael Smith <msmith@labyrinth.edu.au>\n"
-                                        "Jack Moffitt <jack@icecast.org>\n"
-                                        "Jorn Baayen <jorn@nl.linux.org>\n"
-                                        "Haavard Kvaalen <havardk@xmms.org>\n"
-                                        "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-                                        "Eugene Zagidullin <e.asphyx@gmail.com>\n\n"
-                                        "Visit the Xiph.org Foundation at http://www.xiph.org/\n"),
-                                       _("Ok"), FALSE, NULL, NULL);
-      g_signal_connect(G_OBJECT(about_window), "destroy",
-                       G_CALLBACK(gtk_widget_destroyed), &about_window);
+        about_window = audacious_info_dialog(
+        _("About Ogg Vorbis Audio Plugin"),
+        /*
+         * I18N: UTF-8 Translation: "Haavard Kvaalen" ->
+         * "H\303\245vard Kv\303\245len"
+         */
+        _
+        ("Ogg Vorbis Plugin by the Xiph.org Foundation\n\n"
+         "Original code by\n"
+         "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+         "Contributions from\n"
+         "Chris Montgomery <monty@xiph.org>\n"
+         "Peter Alm <peter@xmms.org>\n"
+         "Michael Smith <msmith@labyrinth.edu.au>\n"
+         "Jack Moffitt <jack@icecast.org>\n"
+         "Jorn Baayen <jorn@nl.linux.org>\n"
+         "Haavard Kvaalen <havardk@xmms.org>\n"
+         "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+         "Eugene Zagidullin <e.asphyx@gmail.com>\n\n"
+         "Visit the Xiph.org Foundation at http://www.xiph.org/\n"),
+        _("Ok"), FALSE, NULL, NULL);
+        g_signal_connect(G_OBJECT(about_window), "destroy",
+            G_CALLBACK(gtk_widget_destroyed), &about_window);
     }
 }
 
+static InputPlugin vorbis_ip;
 
 static void
 vorbis_init(void)
@@ -745,7 +644,7 @@ vorbis_init(void)
     aud_cfg_db_get_string(db, NULL, "proxy_port", &tmp);
 
     if (tmp != NULL)
-	vorbis_cfg.proxy_port = atoi(tmp);
+        vorbis_cfg.proxy_port = atoi(tmp);
 
     aud_cfg_db_get_bool(db, NULL, "proxy_use_auth", &vorbis_cfg.proxy_use_auth);
     aud_cfg_db_get_string(db, NULL, "proxy_user", &vorbis_cfg.proxy_user);
@@ -753,7 +652,8 @@ vorbis_init(void)
 
     aud_cfg_db_close(db);
 
-    vf_mutex = g_mutex_new();
+    seek_mutex = g_mutex_new();
+    seek_cond = g_cond_new();
 
     aud_mime_set_plugin("application/ogg", &vorbis_ip);
 }
@@ -762,37 +662,38 @@ static void
 vorbis_cleanup(void)
 {
     if (vorbis_cfg.save_http_path) {
-        free(vorbis_cfg.save_http_path);
+        g_free(vorbis_cfg.save_http_path);
         vorbis_cfg.save_http_path = NULL;
     }
 
     if (vorbis_cfg.proxy_host) {
-        free(vorbis_cfg.proxy_host);
+        g_free(vorbis_cfg.proxy_host);
         vorbis_cfg.proxy_host = NULL;
     }
 
     if (vorbis_cfg.proxy_user) {
-        free(vorbis_cfg.proxy_user);
+        g_free(vorbis_cfg.proxy_user);
         vorbis_cfg.proxy_user = NULL;
     }
 
     if (vorbis_cfg.proxy_pass) {
-        free(vorbis_cfg.proxy_pass);
+        g_free(vorbis_cfg.proxy_pass);
         vorbis_cfg.proxy_pass = NULL;
     }
 
     if (vorbis_cfg.tag_format) {
-        free(vorbis_cfg.tag_format);
+        g_free(vorbis_cfg.tag_format);
         vorbis_cfg.tag_format = NULL;
     }
 
     if (vorbis_cfg.title_encoding) {
-        free(vorbis_cfg.title_encoding);
+        g_free(vorbis_cfg.title_encoding);
         vorbis_cfg.title_encoding = NULL;
     }
 
     g_strfreev(vorbis_tag_encoding_list);
-    g_mutex_free(vf_mutex);
+    g_mutex_free(seek_mutex);
+    g_cond_free(seek_cond);
 }
 
 static size_t
@@ -816,15 +717,7 @@ ovcb_close(void *datasource)
 {
     VFSVorbisFile *handle = (VFSVorbisFile *) datasource;
 
-    gint ret = 0;
-
-    if (handle->probe == FALSE)
-    {
-        ret = aud_vfs_fclose(handle->fd);
-/*        g_free(handle);  it causes double free. i'm not really sure that commenting out at here is correct. --yaz*/
-    }
-
-    return ret;
+    return handle->probe ? 0 : aud_vfs_fclose(handle->fd);
 }
 
 static long
@@ -834,3 +727,29 @@ ovcb_tell(void *datasource)
 
     return aud_vfs_ftell(handle->fd);
 }
+
+extern PluginPreferences preferences;
+
+static gchar *vorbis_fmts[] = { "ogg", "ogm", "oga", NULL };
+
+static InputPlugin vorbis_ip = {
+    .description = "Ogg Vorbis Audio Plugin",
+    .init = vorbis_init,
+    .about = vorbis_aboutbox,
+    .settings = &preferences,
+    .play_file = vorbis_play,
+    .stop = vorbis_stop,
+    .pause = vorbis_pause,
+    .seek = vorbis_seek,
+    .mseek = vorbis_mseek,
+    .cleanup = vorbis_cleanup,
+    .get_song_tuple = get_song_tuple,
+    .is_our_file_from_vfs = vorbis_check_fd,
+    .vfs_extensions = vorbis_fmts,
+    .update_song_tuple = vorbis_update_song_tuple,
+};
+
+static InputPlugin *vorbis_iplist[] = { &vorbis_ip, NULL };
+
+DECLARE_PLUGIN(vorbis, NULL, NULL, vorbis_iplist, NULL, NULL, NULL, NULL, NULL);
+

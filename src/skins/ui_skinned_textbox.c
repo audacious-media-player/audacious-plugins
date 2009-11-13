@@ -51,7 +51,7 @@ struct _UiSkinnedTextboxPrivate {
     gboolean         scroll_back;
     gint             nominal_y, nominal_height;
     gint             scroll_timeout;
-    gint             font_ascent, font_descent;
+    gint crop;
     PangoFontDescription *font;
     gchar            *fontname;
     gchar            *pixbuf_text;
@@ -311,15 +311,13 @@ static void ui_skinned_textbox_size_allocate(GtkWidget *widget, GtkAllocation *a
             priv->pixbuf_text = NULL;
             priv->offset = 0;
             gtk_widget_set_size_request(widget, textbox->width, textbox->height);
-            gtk_widget_queue_draw(GTK_WIDGET(textbox));
+
+            if (GTK_WIDGET_DRAWABLE (widget))
+                ui_skinned_textbox_expose (widget, 0);
     }
 }
 
 static gboolean ui_skinned_textbox_expose(GtkWidget *widget, GdkEventExpose *event) {
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (UI_SKINNED_IS_TEXTBOX (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
-
     UiSkinnedTextbox *textbox = UI_SKINNED_TEXTBOX (widget);
     UiSkinnedTextboxPrivate *priv = UI_SKINNED_TEXTBOX_GET_PRIVATE(textbox);
     g_return_val_if_fail (textbox->width > 0 && textbox->height > 0, FALSE);
@@ -440,7 +438,8 @@ static gboolean ui_skinned_textbox_motion_notify(GtkWidget *widget, GdkEventMoti
             while (priv->offset > (priv->pixbuf_width - textbox->width))
                 priv->offset = (priv->pixbuf_width - textbox->width);
 
-            gtk_widget_queue_draw(widget);
+            if (GTK_WIDGET_DRAWABLE (widget))
+                ui_skinned_textbox_expose (widget, 0);
         }
     }
 
@@ -456,7 +455,8 @@ static void ui_skinned_textbox_toggle_scaled(UiSkinnedTextbox *textbox) {
     gtk_widget_set_size_request(widget, textbox->width*(priv->scaled ? config.scale_factor : 1 ),
     textbox->height*(priv->scaled ? config.scale_factor : 1 ));
 
-    gtk_widget_queue_draw(GTK_WIDGET(textbox));
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_textbox_expose (widget, 0);
 }
 
 static gboolean ui_skinned_textbox_should_scroll(UiSkinnedTextbox *textbox) {
@@ -489,7 +489,6 @@ void ui_skinned_textbox_set_xfont(GtkWidget *widget, gboolean use_xfont, const g
 
     g_return_if_fail(textbox != NULL);
     gtk_widget_queue_resize (widget);
-    gtk_widget_queue_draw (widget);
 
     if (priv->font) {
         pango_font_description_free(priv->font);
@@ -514,20 +513,16 @@ void ui_skinned_textbox_set_xfont(GtkWidget *widget, gboolean use_xfont, const g
     text_get_extents(fontname,
                      "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz ",
                      NULL, NULL, &ascent, &descent);
-    priv->font_ascent = ascent;
-    priv->font_descent = descent;
-
 
     if (priv->font == NULL)
         return;
 
-    textbox->height = priv->font_ascent; /* The real height of the text is
-     ascent - descent (descent is negative), but we cut off descent pixels from
-     the top to make it fit better. See textbox_generate_xfont_pixmap. */
+    textbox->height = ascent - descent;
+    priv->crop = textbox->height / 5;
+    textbox->height -= priv->crop;
 }
 
 void ui_skinned_textbox_set_text(GtkWidget *widget, const gchar *text) {
-    g_return_if_fail(text != NULL);
     UiSkinnedTextbox *textbox = UI_SKINNED_TEXTBOX (widget);
     UiSkinnedTextboxPrivate *priv = UI_SKINNED_TEXTBOX_GET_PRIVATE(textbox);
 
@@ -538,7 +533,9 @@ void ui_skinned_textbox_set_text(GtkWidget *widget, const gchar *text) {
 
     textbox->text = aud_str_to_utf8(text);
     priv->scroll_back = FALSE;
-    gtk_widget_queue_draw(GTK_WIDGET(textbox));
+
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_textbox_expose (widget, 0);
 }
 
 static void textbox_generate_xfont_pixmap(UiSkinnedTextbox *textbox, const gchar *pixmaptext) {
@@ -586,8 +583,7 @@ static void textbox_generate_xfont_pixmap(UiSkinnedTextbox *textbox, const gchar
     layout = gtk_widget_create_pango_layout(mainwin, pixmaptext);
     pango_layout_set_font_description(layout, priv->font);
 
-    gdk_draw_layout (pixmap, gc, 0, priv->font_descent, layout); /* See
-     explanation in ui_skinned_textbox_set_xfont. */
+    gdk_draw_layout (pixmap, gc, 0, - priv->crop, layout);
     g_object_unref(layout);
 
     g_object_unref(maskgc);
@@ -632,7 +628,9 @@ static gboolean textbox_scroll(gpointer data) {
                 priv->scroll_back = FALSE;
                 priv->offset += 1;
             }
-            gtk_widget_queue_draw(GTK_WIDGET(textbox));
+
+            if (GTK_WIDGET_DRAWABLE (data))
+                ui_skinned_textbox_expose (data, 0);
         }
     }
     return TRUE;
@@ -769,7 +767,9 @@ void ui_skinned_textbox_set_scroll(GtkWidget *widget, gboolean scroll) {
         }
 
         priv->offset = 0;
-        gtk_widget_queue_draw(GTK_WIDGET(textbox));
+
+        if (GTK_WIDGET_DRAWABLE (widget))
+            ui_skinned_textbox_expose (widget, 0);
     }
 }
 

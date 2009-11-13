@@ -49,11 +49,8 @@ struct mad_info_t
     InputPlayback *playback;
 
     /* seek time */
-    gulong seek;      /**< seek time in milliseconds */
-
-    /* state */
-    guint current_frame;/**< current mp3 frame */
-    mad_timer_t pos;    /**< current play position */
+    gint seek;      /**< seek time in milliseconds */
+    char pause;
 
     /* song info */
     guint vbr;      /**< bool: is vbr? */
@@ -63,15 +60,11 @@ struct mad_info_t
     guint mode;     /**< mpeg stereo mode */
     guint channels;
     gint frames;    /**< total mp3 frames or -1 */
-    gint fmt;       /**< sample format */
     gint size;      /**< file size in bytes or -1 */
-    gchar *title;   /**< title for xmms */
-    mad_timer_t duration;   /**< total play time */
     struct id3_tag *tag;
     struct id3_file *id3file;
     struct xing xing;
     Tuple *tuple;          /* audacious tuple data */
-    gchar *prev_title;           /* used to optimize set_info calls */
 
     /* replay parameters */
     double replaygain_album_scale;
@@ -88,43 +81,38 @@ struct mad_info_t
     gchar *mp3gain_minmax_str;
 
     /* data access */
-    gchar *url;
     gchar *filename;
     VFSFile *infile;
     gint offset;
 
-    /* flags */
-    gboolean remote;
-    gboolean fileinfo_request;
-
+    /* used in decoding */
+    int length;
+    char resync;
+    unsigned char * buffer;
+    int buffer_size;
+    struct mad_stream * stream;
 };
 
 typedef struct audmad_config_t
 {
     gboolean fast_play_time_calc;
     gboolean use_xing;
-    gboolean dither;
     gboolean sjis;
-    gboolean title_override;
-    gchar *id3_format;
-    gboolean show_avg_vbr_bitrate;
-    gboolean force_reopen_audio;
 } audmad_config_t;
 
 // global variables
 extern InputPlugin *mad_plugin;
 extern audmad_config_t *audmad_config;
 
-// gcond
-extern GMutex *mad_mutex;
+extern GMutex * mad_mutex, * control_mutex;
 extern GMutex *pb_mutex;
-extern GCond *mad_cond;
+extern GCond * mad_cond, * control_cond;
 
 // prototypes
 void audmad_config_compute(struct audmad_config_t *config);
 void input_process_remote_metadata(struct mad_info_t *info);
 gpointer decode_loop(gpointer arg);
-void audmad_error(gchar * fmt, ...);
+void audmad_error(gchar * format, ...);
 void audmad_configure(void);
 
 #endif                          /* !AUD_MAD_H */

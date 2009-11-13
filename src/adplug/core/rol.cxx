@@ -668,7 +668,7 @@ int CrolPlayer::load_rol_instrument( binistream *f, SBnkHeader const &header, st
     else
     {
         // set up default instrument data here
-        memset( &usedIns.instrument, 0, kSizeofDataRecord );
+        memset( &usedIns.instrument, 0, sizeof(usedIns.instrument) );
     }
     ins_list.push_back( usedIns );
 

@@ -4,7 +4,7 @@
    libSIDPlay v2 support
 
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2009 Tecnic Software productions (TNSP)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -115,7 +115,7 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
     gint tmpFreq, i;
     xs_sidplay2_t *myEngine;
     sid_filter_t tmpFilter;
-    xs_sid2_filter_t *f;
+    xs_sid_filter_t *f;
     assert(myStatus);
 
     /* Allocate internal structures */
@@ -239,6 +239,9 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
         break;
     }
     
+#ifdef HAVE_SIDPLAY2_DISTORTION
+    XSDEBUG("filter setting NOT supported for distortion patched libSIDPlay2.\n");
+#else
     /* Convert filter */
     f = &(xs_cfg.sid2Filter);
     XSDEBUG("using filter '%s', %d points\n", f->name, f->npoints);
@@ -253,6 +256,7 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
         tmpFilter.cutoff[i][0] = f->points[i].x;
         tmpFilter.cutoff[i][1] = f->points[i].y;
     }
+#endif
 
     /* Initialize builder object */
     XSDEBUG("init builder #%i, maxsids=%i\n", xs_cfg.sid2Builder, (myEngine->currEng->info()).maxsids);
@@ -289,11 +293,10 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
                 xs_error("reSID->sampling(%d) failed.\n", tmpFreq);
                 return FALSE;
             }
-#endif
-            
             if (tmpFilter.points > 0)
                 rs->filter((sid_filter_t *) &tmpFilter);
             else
+#endif
                 rs->filter((sid_filter_t *) NULL);
             
             if (!*rs) {
@@ -359,7 +362,6 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
 
 
     /* Configure rest of the emulation */
-    
     if (xs_cfg.forceSpeed) { 
         myEngine->currConfig.clockForced = true;
         myEngine->currConfig.clockSpeed = myEngine->currConfig.clockDefault;
@@ -368,6 +370,8 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
         myEngine->currConfig.clockSpeed = SID2_CLOCK_CORRECT;
     }
     
+
+#ifndef HAVE_SIDPLAY2_DISTORTION
     if ((xs_cfg.sid2OptLevel >= 0) && (xs_cfg.sid2OptLevel <= SID2_MAX_OPTIMISATION))
         myEngine->currConfig.optimisation = xs_cfg.sid2OptLevel;
     else {
@@ -377,6 +381,7 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
         xs_cfg.sid2OptLevel =
         myEngine->currConfig.optimisation = SID2_DEFAULT_OPTIMISATION;
     }
+#endif
 
     if (xs_cfg.mos8580)
         myEngine->currConfig.sidDefault = SID2_MOS8580;

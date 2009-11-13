@@ -103,30 +103,54 @@ equalizer_preset_free(EqualizerPreset * preset)
     g_free(preset);
 }
 
+void equalizerwin_set_shape (void)
+{
+    if (config.show_wm_decorations)
+        gtk_widget_shape_combine_mask (equalizerwin, 0, 0, 0);
+    else
+        gtk_widget_shape_combine_mask (equalizerwin, skin_get_mask
+         (aud_active_skin, config.equalizer_shaded ? SKIN_MASK_EQ_SHADE :
+         SKIN_MASK_EQ), 0, 0);
+}
+
 void
 equalizerwin_set_scaled(gboolean ds)
 {
     gint height;
+    GList * list;
+    SkinnedWindow * skinned;
+    GtkFixed * fixed;
+    GtkFixedChild * child;
 
     if (config.equalizer_shaded)
         height = 14;
     else
         height = 116;
 
-    if (config.scaled) {
-        dock_window_resize(GTK_WINDOW(equalizerwin), 275 * config.scale_factor,
-            height * config.scale_factor);
-    } else {
-        dock_window_resize(GTK_WINDOW(equalizerwin), 275, height);
+    if (config.scaled)
+        resize_window(equalizerwin, 275 * config.scale_factor, height *
+         config.scale_factor);
+    else
+        resize_window(equalizerwin, 275, height);
+
+    skinned = (SkinnedWindow *) equalizerwin;
+    fixed = (GtkFixed *) skinned->normal;
+
+    for (list = fixed->children; list; list = list->next)
+    {
+        child = (GtkFixedChild *) list->data;
+        g_signal_emit_by_name ((GObject *) child->widget, "toggle-scaled");
     }
 
-    GList *iter;
-    for (iter = GTK_FIXED (SKINNED_WINDOW(equalizerwin)->normal)->children; iter; iter = g_list_next (iter)) {
-        GtkFixedChild *child_data = (GtkFixedChild *) iter->data;
-        GtkWidget *child = child_data->widget;
-        g_signal_emit_by_name(child, "toggle-scaled");
+    fixed = (GtkFixed *) skinned->shaded;
+
+    for (list = fixed->children; list; list = list->next)
+    {
+        child = (GtkFixedChild *) list->data;
+        g_signal_emit_by_name ((GObject *) child->widget, "toggle-scaled");
     }
-    gtk_widget_shape_combine_mask(equalizerwin, skin_get_mask(aud_active_skin, SKIN_MASK_EQ + config.equalizer_shaded), 0, 0);
+
+    equalizerwin_set_shape ();
 }
 
 void
@@ -143,7 +167,7 @@ equalizerwin_set_shade_menu_cb(gboolean shaded)
                    116 * EQUALIZER_SCALE_FACTOR);
     }
 
-    gtk_widget_shape_combine_mask(equalizerwin, skin_get_mask(aud_active_skin, SKIN_MASK_EQ + config.equalizer_shaded), 0, 0);
+    equalizerwin_set_shape ();
 }
 
 static void
@@ -169,8 +193,8 @@ equalizerwin_eq_changed(void)
     for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
         aud_cfg->equalizer_bands[i] = equalizerwin_get_band(i);
 
+    ui_skinned_equalizer_graph_update (equalizerwin_graph);
     aud_hook_call("equalizer changed", NULL);
-    gtk_widget_queue_draw(equalizerwin_graph);
 }
 
 static void
@@ -199,7 +223,8 @@ equalizerwin_presets_pushed(void)
     gint x, y;
 
     gdk_window_get_pointer(NULL, &x, &y, &modmask);
-    ui_manager_popup_menu_show(GTK_MENU(equalizerwin_presets_menu), x, y, 1, GDK_CURRENT_TIME);
+    ui_popup_menu_show(UI_MENU_EQUALIZER_PRESET, x, y, FALSE, FALSE, 1,
+     GDK_CURRENT_TIME);
 }
 
 static void
@@ -219,48 +244,12 @@ equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
             dock_move_release(GTK_WINDOW(equalizerwin));
         return TRUE;
     }
-    if (event->button == 3) {
-        /*
-         * Pop up the main menu a few pixels down to avoid
-         * anything to be selected initially.
-         */
-       ui_manager_popup_menu_show(GTK_MENU(mainwin_general_menu), event->x_root,
-                                event->y_root + 2, 3, event->time);
-       return TRUE;
-    }
 
-    return FALSE;
-}
-
-static gboolean
-equalizerwin_keypress(GtkWidget * widget,
-                      GdkEventKey * event,
-                      gpointer data)
-{
-    if (event->keyval == GDK_Tab && event->state & GDK_CONTROL_MASK) {
-        if (config.playlist_visible)
-            gtk_window_present(GTK_WINDOW(playlistwin));
-        else if (config.player_visible)
-            gtk_window_present(GTK_WINDOW(mainwin));
+    if (event->button == 3)
+    {
+        ui_popup_menu_show(UI_MENU_MAIN, event->x_root, event->y_root, FALSE,
+         FALSE, 3, event->time);
         return TRUE;
-    }
-    if (!config.equalizer_shaded) {
-        gtk_widget_event(mainwin, (GdkEvent *) event);
-        return TRUE;
-    }
-
-    switch (event->keyval) {
-    case GDK_Left:
-    case GDK_KP_Left:
-        mainwin_set_balance_diff(-4);
-        break;
-    case GDK_Right:
-    case GDK_KP_Right:
-        mainwin_set_balance_diff(4);
-        break;
-    default:
-        gtk_widget_event(mainwin, (GdkEvent *) event);
-        break;
     }
 
     return FALSE;
@@ -272,11 +261,13 @@ equalizerwin_close_cb(void)
     equalizerwin_show(FALSE);
 }
 
-static gboolean
-equalizerwin_delete(GtkWidget * widget,
-                    gpointer data)
+static gboolean equalizerwin_delete(GtkWidget *widget, void *data)
 {
-    equalizerwin_show(FALSE);
+    if (config.show_wm_decorations)
+        equalizerwin_show(FALSE);
+    else
+        audacious_drct_quit();
+
     return TRUE;
 }
 
@@ -444,7 +435,7 @@ equalizerwin_create_window(void)
     width = 275;
     height = config.equalizer_shaded ? 14 : 116;
 
-    equalizerwin = ui_skinned_window_new("equalizer");
+    equalizerwin = ui_skinned_window_new("equalizer", &config.equalizer_x, &config.equalizer_y);
     gtk_window_set_title(GTK_WINDOW(equalizerwin), _("Audacious Equalizer"));
     gtk_window_set_role(GTK_WINDOW(equalizerwin), "equalizer");
     gtk_window_set_resizable(GTK_WINDOW(equalizerwin), FALSE);
@@ -467,16 +458,12 @@ equalizerwin_create_window(void)
 
     gtk_widget_set_app_paintable(equalizerwin, TRUE);
 
-    if (config.equalizer_x != -1 && config.save_window_position)
-        gtk_window_move(GTK_WINDOW(equalizerwin),
-                        config.equalizer_x, config.equalizer_y);
-
     g_signal_connect(equalizerwin, "delete_event",
                      G_CALLBACK(equalizerwin_delete), NULL);
     g_signal_connect(equalizerwin, "button_press_event",
                      G_CALLBACK(equalizerwin_press), NULL);
-    g_signal_connect(equalizerwin, "key_press_event",
-                     G_CALLBACK(equalizerwin_keypress), NULL);
+    g_signal_connect ((GObject *) equalizerwin, "key-press-event", (GCallback)
+     mainwin_keypress, 0);
 }
 
 void
@@ -490,11 +477,13 @@ equalizerwin_create(void)
     gtk_window_add_accel_group( GTK_WINDOW(equalizerwin) , ui_manager_get_accel_group() );
 
     equalizerwin_create_widgets();
+
+    gtk_widget_show_all (((SkinnedWindow *) equalizerwin)->normal);
+    gtk_widget_show_all (((SkinnedWindow *) equalizerwin)->shaded);
 }
 
 static void equalizerwin_real_show (void)
 {
-    gtk_window_move(GTK_WINDOW(equalizerwin), config.equalizer_x, config.equalizer_y);
     if (config.scaled && config.eq_scaled_linked)
         gtk_widget_set_size_request(equalizerwin, 275 * config.scale_factor,
                                     ((config.equalizer_shaded ? 14 : 116) * config.scale_factor));
@@ -502,7 +491,6 @@ static void equalizerwin_real_show (void)
         gtk_widget_set_size_request(equalizerwin, 275,
                                     (config.equalizer_shaded ? 14 : 116));
     ui_skinned_button_set_inside(mainwin_eq, TRUE);
-    gtk_widget_show_all(equalizerwin);
 
     gtk_window_present(GTK_WINDOW(equalizerwin));
 }
@@ -511,7 +499,6 @@ static void equalizerwin_real_hide (void)
 {
     gtk_widget_hide(equalizerwin);
     ui_skinned_button_set_inside(mainwin_eq, FALSE);
-    gtk_widget_queue_draw(mainwin_eq);
 }
 
 void
@@ -525,8 +512,11 @@ equalizerwin_show(gboolean show)
         gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
     else
     {
-        config.equalizer_visible = show;
-        aud_cfg->equalizer_visible = show;
+        if (show != config.equalizer_visible) {
+            config.equalizer_visible = show;
+            config.equalizer_visible_prev = !show;
+            aud_cfg->equalizer_visible = show;
+        }
 
         if (show)
            equalizerwin_real_show ();
@@ -1208,7 +1198,6 @@ void
 action_equ_save_auto_preset(void)
 {
     gchar *name;
-    Playlist *playlist = aud_playlist_get_active();
 
     if (equalizerwin_save_auto_window)
         gtk_window_present(GTK_WINDOW(equalizerwin_save_auto_window));
@@ -1222,8 +1211,10 @@ action_equ_save_auto_preset(void)
                                         G_CALLBACK(equalizerwin_save_auto_ok),
                                         G_CALLBACK(equalizerwin_save_auto_select));
 
-    name = aud_playlist_get_filename(playlist, aud_playlist_get_position(playlist));
-    if (name) {
+    name = audacious_drct_pl_get_file (audacious_drct_pl_get_pos ());
+
+    if (name != NULL)
+    {
         gtk_entry_set_text(GTK_ENTRY(equalizerwin_save_auto_entry),
                            g_basename(name));
         g_free(name);
@@ -1243,7 +1234,6 @@ action_equ_save_preset_file(void)
     GtkWidget *dialog;
     gchar *file_uri;
     gchar *songname;
-    Playlist *playlist = aud_playlist_get_active();
     gint i;
 
     dialog = make_filebrowser(Q_("Save equalizer preset"), TRUE);
@@ -1260,8 +1250,10 @@ action_equ_save_preset_file(void)
         g_free(file_uri);
     }
 
-    songname = aud_playlist_get_filename(playlist, aud_playlist_get_position(playlist));
-    if (songname) {
+    songname = audacious_drct_pl_get_file (audacious_drct_pl_get_pos ());
+
+    if (songname != NULL)
+    {
         gchar *eqname = g_strdup_printf("%s.%s", songname,
                                         aud_cfg->eqpreset_extension);
         g_free(songname);

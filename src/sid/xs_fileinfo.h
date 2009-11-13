@@ -10,7 +10,7 @@ extern "C" {
 #ifndef AUDACIOUS_PLUGIN
 void    xs_fileinfo_update(void);
 #endif
-void    xs_fileinfo(gchar *);
+void    xs_fileinfo(const gchar *);
 
 #ifdef __cplusplus
 }

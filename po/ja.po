@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
-"POT-Creation-Date: 2008-06-21 08:27+0300\n"
+"POT-Creation-Date: 2009-10-23 20:29-0400\n"
 "PO-Revision-Date: 2008-07-08 13:10+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -21,13 +21,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/aac/libmp4.c:283
-msgid "Using libfaad2-"
-msgstr "libfaad2-"
-
-#: src/aac/libmp4.c:284
+#: src/aac/libmp4.c:259
+#, fuzzy, c-format
 msgid ""
-" for decoding.\n"
+"Using libfaad2-%s for decoding.\n"
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Audacious team"
 msgstr ""
@@ -35,38 +32,37 @@ msgstr ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Audacious team"
 
-#: src/aac/libmp4.c:288
-msgid "About MP4 AAC player plugin"
+#: src/aac/libmp4.c:264
+#, fuzzy
+msgid "About MP4 AAC decoder plugin"
 msgstr "MP4 AAC プレイヤプラグインについて"
 
-#: src/aac/libmp4.c:290 src/adplug/adplug-xmms.cc:180
-#: src/adplug/adplug-xmms.cc:263 src/adplug/adplug-xmms.cc:524
-#: src/alac/plugin.c:74 src/arts/arts.c:25 src/arts/configure.c:90
+#: src/aac/libmp4.c:265 src/adplug/adplug-xmms.cc:179
+#: src/adplug/adplug-xmms.cc:262 src/adplug/adplug-xmms.cc:523
 #: src/audiocompress/audacious-glue.c:110
-#: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:242
-#: src/console/Audacious_Driver.cxx:447 src/crystalizer/crystalizer.c:113
-#: src/demac/plugin.c:364 src/echo_plugin/gui.c:24 src/echo_plugin/gui.c:135
-#: src/esd/about.c:48 src/filewriter/filewriter.c:183 src/jack/configure.c:140
-#: src/jack/jack.c:454 src/madplug/plugin.c:679 src/madplug/plugin.c:703
-#: src/metronom/metronom.c:87 src/modplug/gui/main.cxx:52
-#: src/musepack/libmpc.cxx:228 src/null/null.c:64 src/null/null.c:107
-#: src/OSS4/OSS4.c:55 src/OSS/OSS.c:52 src/paranormal-ng/plugin.c:282
+#: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:273
+#: src/console/plugin.c:37 src/crossfade/configure.c:1175
+#: src/crystalizer/crystalizer.c:113 src/echo_plugin/gui.c:24
+#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:694
+#: src/filewriter/filewriter.c:187 src/icecast/icecast.c:241
+#: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:237
+#: src/madplug/plugin.c:580 src/metronom/metronom.c:92
+#: src/modplug/gui/main.cxx:52 src/null/null.c:65 src/null/null.c:108
+#: src/OSS4/OSS4.c:58 src/OSS/OSS.c:54 src/paranormal-ng/plugin.c:282
 #: src/paranormal/plugin.c:290 src/scrobbler/gtkstuff.c:22
-#: src/sndfile/plugin.c:571 src/statusicon/si_ui.c:626
+#: src/sndfile/plugin.c:502 src/statusicon/si_ui.c:468
 #: src/stereo_plugin/stereo.c:52 src/stereo_plugin/stereo.c:115
-#: src/sun/about.c:37 src/sun/configure.c:557 src/timidity/interface.c:222
-#: src/timidity/xmms-timidity.c:117 src/tonegen/tonegen.c:61
-#: src/tta/libtta.c:150 src/tta/libtta.c:264 src/tta/libtta.c:399
-#: src/vorbis/vorbis.c:696 src/vtx/about.c:26 src/vtx/info.c:38
-#: src/wavpack/ui.cxx:54 src/wavpack/ui.cxx:554
+#: src/sun/about.c:37 src/sun/configure.c:557 src/timidity/interface.c:223
+#: src/timidity/plugin.c:114 src/tonegen/tonegen.c:56 src/vorbis/vorbis.c:601
+#: src/vtx/about.c:26 src/vtx/info.c:38 src/wavpack/wavpack.c:408
 msgid "Ok"
 msgstr "OK"
 
-#: src/adplug/adplug-xmms.cc:169
+#: src/adplug/adplug-xmms.cc:168
 msgid "About "
 msgstr "プラグインについて"
 
-#: src/adplug/adplug-xmms.cc:173
+#: src/adplug/adplug-xmms.cc:172
 msgid ""
 "\n"
 "Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
@@ -88,65 +84,63 @@ msgstr ""
 "リを用いている.\n"
 "リンクしている AdPlug ライブラリのヴァージョン: "
 
-#: src/adplug/adplug-xmms.cc:254
+#: src/adplug/adplug-xmms.cc:253
 msgid "AdPlug :: Configuration"
 msgstr "AdPlug :: 設定"
 
-#: src/adplug/adplug-xmms.cc:273 src/alarm/interface.c:1398
-#: src/alsa/configure.c:389 src/arts/configure.c:91
-#: src/audiocompress/audacious-glue.c:565 src/cdaudio-ng/configure.c:246
-#: src/crystalizer/crystalizer.c:122 src/echo_plugin/gui.c:143
-#: src/jack/configure.c:147 src/modplug/gui/interface.cxx:714
-#: src/modplug/gui/modplug.glade:1668 src/musepack/libmpc.cxx:233
-#: src/musepack/libmpc.cxx:553 src/null/null.c:108
-#: src/stereo_plugin/stereo.c:124 src/sun/configure.c:565
-#: src/timidity/interface.c:230 src/wavpack/ui.cxx:278 src/wavpack/ui.cxx:561
+#: src/adplug/adplug-xmms.cc:272 src/alarm/interface.c:1398
+#: src/audiocompress/audacious-glue.c:565 src/cdaudio-ng/configure.c:278
+#: src/crossfade/interface-2.0.c:1508 src/crystalizer/crystalizer.c:122
+#: src/echo_plugin/gui.c:143 src/jack/configure.c:151
+#: src/modplug/gui/interface.cxx:715 src/modplug/gui/modplug.glade:1668
+#: src/null/null.c:109 src/stereo_plugin/stereo.c:124 src/sun/configure.c:565
+#: src/timidity/interface.c:231 src/wavpack/ui.c:204
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: src/adplug/adplug-xmms.cc:289 src/console/Audacious_Config.cxx:144
-#: src/madplug/configure.c:289 src/modplug/gui/interface.cxx:628
-#: src/modplug/gui/interface.cxx:887 src/modplug/gui/modplug.glade:1404
+#: src/adplug/adplug-xmms.cc:288 src/console/configure.c:152
+#: src/madplug/configure.c:79 src/modplug/gui/interface.cxx:629
+#: src/modplug/gui/interface.cxx:888 src/modplug/gui/modplug.glade:1404
 #: src/modplug/gui/modplug.glade:1804
 msgid "General"
 msgstr "一般"
 
-#: src/adplug/adplug-xmms.cc:301
+#: src/adplug/adplug-xmms.cc:300
 msgid "Sound quality"
 msgstr "音質"
 
-#: src/adplug/adplug-xmms.cc:306 src/modplug/gui/interface.cxx:187
+#: src/adplug/adplug-xmms.cc:305 src/modplug/gui/interface.cxx:188
 #: src/modplug/gui/modplug.glade:113
 msgid "Resolution"
 msgstr "解像度"
 
-#: src/adplug/adplug-xmms.cc:308
+#: src/adplug/adplug-xmms.cc:307
 msgid "8bit"
 msgstr " 8ビット"
 
-#: src/adplug/adplug-xmms.cc:313
+#: src/adplug/adplug-xmms.cc:312
 msgid "16bit"
 msgstr "16ビット"
 
-#: src/adplug/adplug-xmms.cc:321 src/modplug/gui/interface.cxx:218
-#: src/modplug/gui/modplug.glade:199 src/timidity/interface.c:148
+#: src/adplug/adplug-xmms.cc:320 src/modplug/gui/interface.cxx:219
+#: src/modplug/gui/modplug.glade:199 src/timidity/interface.c:149
 msgid "Channels"
 msgstr "チャンネル数"
 
-#: src/adplug/adplug-xmms.cc:323 src/filewriter/mp3.c:900
-#: src/sid/xmms-sid.glade:157 src/sid/xs_interface.c:300
-#: src/timidity/interface.c:165
+#: src/adplug/adplug-xmms.cc:322 src/filewriter/mp3.c:951
+#: src/sid/xmms-sid.glade:157 src/sid/xs_interface.c:301
+#: src/timidity/interface.c:166
 msgid "Mono"
 msgstr "モノラル"
 
-#: src/adplug/adplug-xmms.cc:328 src/filewriter/mp3.c:895
-#: src/modplug/gui/interface.cxx:204 src/modplug/gui/modplug.glade:159
-#: src/sid/xmms-sid.glade:176 src/sid/xs_interface.c:307
-#: src/timidity/interface.c:173
+#: src/adplug/adplug-xmms.cc:327 src/filewriter/mp3.c:946
+#: src/modplug/gui/interface.cxx:205 src/modplug/gui/modplug.glade:159
+#: src/sid/xmms-sid.glade:176 src/sid/xs_interface.c:308
+#: src/timidity/interface.c:174
 msgid "Stereo"
 msgstr "ステレオ"
 
-#: src/adplug/adplug-xmms.cc:332
+#: src/adplug/adplug-xmms.cc:331
 msgid ""
 "Setting stereo is not recommended, unless you need to. This won't add any "
 "stereo effects to the sound - OPL2 is just mono - but eats up more CPU power!"
@@ -154,20 +148,21 @@ msgstr ""
 "必要でないならば, ステレオ設定は推奨しません. OPL2 は単にモノラルなので, サウ"
 "ンドにステレオエフェクトはかかりませんが, より CPU パワーを消費します!"
 
-#: src/adplug/adplug-xmms.cc:340
+#: src/adplug/adplug-xmms.cc:339
 msgid "Frequency"
 msgstr "周波数"
 
-#: src/adplug/adplug-xmms.cc:376 src/adplug/adplug-xmms.cc:580
-#: src/console/Audacious_Config.cxx:146 src/skins/ui_manager.c:175
+#: src/adplug/adplug-xmms.cc:375 src/adplug/adplug-xmms.cc:579
+#: src/console/configure.c:154 src/gtkui/ui_manager.c:57
+#: src/skins/ui_manager.c:166
 msgid "Playback"
 msgstr "演奏"
 
-#: src/adplug/adplug-xmms.cc:380
+#: src/adplug/adplug-xmms.cc:379
 msgid "Detect songend"
 msgstr "曲の終わりを検出する"
 
-#: src/adplug/adplug-xmms.cc:384
+#: src/adplug/adplug-xmms.cc:383
 msgid ""
 "If enabled, XMMS will detect a song's ending, stop it and advance in the "
 "playlist. If disabled, XMMS won't take notice of a song's ending and loop it "
@@ -176,23 +171,23 @@ msgstr ""
 "有効ならば, XMMS は曲の終わりを検出し, 曲を停止してプレイリストを進みます. 無"
 "効ならば, XMMS は曲の終わりを通知せずに, 曲全体を何度も繰り返します. "
 
-#: src/adplug/adplug-xmms.cc:395
+#: src/adplug/adplug-xmms.cc:394
 msgid "Formats"
 msgstr "フォーマット"
 
-#: src/adplug/adplug-xmms.cc:402
+#: src/adplug/adplug-xmms.cc:401
 msgid "Format selection"
 msgstr "フォーマット選択"
 
-#: src/adplug/adplug-xmms.cc:405
+#: src/adplug/adplug-xmms.cc:404
 msgid "Format"
 msgstr "フォーマット"
 
-#: src/adplug/adplug-xmms.cc:405
+#: src/adplug/adplug-xmms.cc:404
 msgid "Extension"
 msgstr "拡張子"
 
-#: src/adplug/adplug-xmms.cc:445
+#: src/adplug/adplug-xmms.cc:444
 msgid ""
 "Selected file types will be recognized and played back by this plugin. "
 "Deselected types will be ignored to make room for other plugins to play "
@@ -202,94 +197,82 @@ msgstr ""
 "されていないタイプは, このプラグインからは無視され, 他のプラグインによって再"
 "生されます. "
 
-#: src/adplug/adplug-xmms.cc:531
+#: src/adplug/adplug-xmms.cc:530
 msgid "AdPlug :: File Info"
 msgstr "AdPlug :: ファイル情報"
 
-#: src/adplug/adplug-xmms.cc:553 src/amidi-plug/i_configure-fluidsynth.c:448
+#: src/adplug/adplug-xmms.cc:552 src/amidi-plug/i_configure-fluidsynth.c:448
 msgid "Filename"
 msgstr "ファイル名"
 
-#: src/adplug/adplug-xmms.cc:557 src/skins/ui_playlist.c:470
+#: src/adplug/adplug-xmms.cc:556 src/skins/ui_playlist.c:365
 msgid "Title: "
 msgstr "タイトル: "
 
-#: src/adplug/adplug-xmms.cc:558
+#: src/adplug/adplug-xmms.cc:557
 msgid "Author: "
 msgstr "作者: "
 
-#: src/adplug/adplug-xmms.cc:559
+#: src/adplug/adplug-xmms.cc:558
 msgid "File Type: "
 msgstr "ファイルタイプ: "
 
-#: src/adplug/adplug-xmms.cc:560
+#: src/adplug/adplug-xmms.cc:559
 msgid "Subsongs: "
 msgstr "サブソング: "
 
-#: src/adplug/adplug-xmms.cc:561
+#: src/adplug/adplug-xmms.cc:560
 msgid "Instruments: "
 msgstr "楽器: "
 
-#: src/adplug/adplug-xmms.cc:566
+#: src/adplug/adplug-xmms.cc:565
 msgid "Orders: "
 msgstr "順序: "
 
-#: src/adplug/adplug-xmms.cc:567
+#: src/adplug/adplug-xmms.cc:566
 msgid "Patterns: "
 msgstr "パターン: "
 
-#: src/adplug/adplug-xmms.cc:571
+#: src/adplug/adplug-xmms.cc:570
 msgid "Song"
 msgstr "曲"
 
-#: src/adplug/adplug-xmms.cc:597
+#: src/adplug/adplug-xmms.cc:596
 msgid "Instrument name"
 msgstr "楽器名"
 
-#: src/adplug/adplug-xmms.cc:639
+#: src/adplug/adplug-xmms.cc:638
 msgid "Song message"
 msgstr "曲メッセージ"
 
-#: src/adplug/adplug-xmms.cc:661
+#: src/adplug/adplug-xmms.cc:660
 msgid "Subsong selection"
 msgstr "サブソング選択"
 
-#: src/adplug/adplug-xmms.cc:725
+#: src/adplug/adplug-xmms.cc:724
 msgid "Order: "
 msgstr "順序: "
 
-#: src/adplug/adplug-xmms.cc:726
+#: src/adplug/adplug-xmms.cc:725
 msgid "Pattern: "
 msgstr "パターン: "
 
-#: src/adplug/adplug-xmms.cc:728
+#: src/adplug/adplug-xmms.cc:727
 msgid "Row: "
 msgstr "列: "
 
-#: src/adplug/adplug-xmms.cc:729
+#: src/adplug/adplug-xmms.cc:728
 msgid "Speed: "
 msgstr "早さ: "
 
-#: src/adplug/adplug-xmms.cc:730
+#: src/adplug/adplug-xmms.cc:729
 msgid "Timer: "
 msgstr "タイマー: "
 
-#: src/adplug/adplug-xmms.cc:731 src/console/Audacious_Config.cxx:224
-#: src/sid/xmms-sid.glade:332 src/sid/xs_interface.c:353
+#: src/adplug/adplug-xmms.cc:730 src/console/configure.c:232
+#: src/sid/xmms-sid.glade:332 src/sid/xs_interface.c:354
 msgid "Hz"
 msgstr "Hz"
-
-#: src/alac/plugin.c:71
-msgid "About Apple Lossless Audio Plugin"
-msgstr "Apple Lossless オーディオプラグインについて"
-
-#: src/alac/plugin.c:72
-msgid ""
-"Copyright (c) 2006 Audacious team\n"
-"Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"
-msgstr ""
-"Copyright (c) 2006 Audacious team\n"
-"(c) 2005-2006 David Hammerton <crazney -at- crazney.net> によるポート"
 
 #: src/alarm/interface.c:34
 msgid "About XMMS Alarm"
@@ -319,10 +302,11 @@ msgstr ""
 "\n"
 "http://www.snika.uklinux.net/xmms-alarm/"
 
-#: src/alarm/interface.c:71 src/lirc/about.c:115
-#: src/modplug/gui/interface.cxx:971 src/modplug/gui/modplug.glade:2030
-#: src/sid/xmms-sid.glade:3837 src/sid/xs_about.c:214
-#: src/sid/xs_interface.c:1824
+#: src/alarm/interface.c:71 src/bluetooth/scan_gui.c:149
+#: src/cdaudio-ng/cdaudio-ng.c:350 src/crossfade/interface-2.0.c:1945
+#: src/lirc/about.c:115 src/modplug/gui/interface.cxx:972
+#: src/modplug/gui/modplug.glade:2030 src/sid/xmms-sid.glade:3837
+#: src/sid/xs_about.c:214 src/sid/xs_interface.c:1825
 msgid "Close"
 msgstr "閉じる"
 
@@ -334,12 +318,13 @@ msgstr "アラーム"
 msgid "This is your wakeup call."
 msgstr "目覚ましです."
 
-#: src/alarm/interface.c:124 src/alarm/interface.c:1389 src/alsa/about.c:45
-#: src/alsa/configure.c:383 src/cdaudio-ng/cdaudio-ng.c:247
-#: src/flacng/plugin.c:705 src/gnomeshortcuts/gnomeshortcuts.c:310
-#: src/hotkey/gui.c:670 src/modplug/gui/interface.cxx:702
-#: src/modplug/gui/modplug.glade:1642 src/pulse_audio/pulse_audio.c:736
-#: src/scrobbler/gtkstuff.c:42 src/skins/plugin.c:130
+#: src/alarm/interface.c:124 src/alarm/interface.c:1389
+#: src/bluetooth/bluetooth.c:114 src/crossfade/interface-2.0.c:1503
+#: src/flacng/plugin.c:633 src/gnomeshortcuts/gnomeshortcuts.c:310
+#: src/hotkey/gui.c:670 src/modplug/gui/interface.cxx:703
+#: src/modplug/gui/modplug.glade:1642 src/scrobbler/gtkstuff.c:42
+#: src/sid/xs_config.c:319 src/skins/plugin.c:182
+#: src/streambrowser/streambrowser.c:328
 msgid "OK"
 msgstr "OK"
 
@@ -416,8 +401,8 @@ msgstr "アラームを鳴らす曜日の選択"
 #: src/alarm/interface.c:612 src/alarm/interface.c:660
 #: src/alarm/interface.c:708 src/alarm/interface.c:756
 #: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/OSS4/configure.c:136 src/OSS/configure.c:168
-#: src/skins/ui_manager.c:447 src/skins/ui_manager.c:468
+#: src/alarm/interface.c:900 src/OSS/configure.c:169
+#: src/skins/ui_manager.c:438 src/skins/ui_manager.c:459
 msgid "Default"
 msgstr "デフォルト"
 
@@ -463,13 +448,13 @@ msgstr "フェーディング"
 
 #: src/alarm/interface.c:1087 src/sid/xmms-sid.glade:2007
 #: src/sid/xmms-sid.glade:2178 src/sid/xmms-sid.glade:2746
-#: src/sid/xs_interface.c:920 src/sid/xs_interface.c:974
-#: src/sid/xs_interface.c:1154
+#: src/sid/xs_interface.c:921 src/sid/xs_interface.c:975
+#: src/sid/xs_interface.c:1155
 msgid "seconds"
 msgstr "秒"
 
 #: src/alarm/interface.c:1095 src/alarm/interface.c:1211
-#: src/modplug/gui/interface.cxx:549 src/modplug/gui/modplug.glade:1133
+#: src/modplug/gui/interface.cxx:550 src/modplug/gui/modplug.glade:1133
 msgid "Volume"
 msgstr "音量"
 
@@ -631,7 +616,8 @@ msgstr ""
 "    これを利用するにはボックス内にリマインダを書き\n"
 "    トグルボタンを有効にします.\n"
 
-#: src/alarm/interface.c:1366 src/skins/ui_manager.c:386
+#: src/alarm/interface.c:1366 src/crossfade/interface-2.0.c:1918
+#: src/gtkui/ui_manager.c:267 src/skins/ui_manager.c:377
 msgid "Help"
 msgstr "ヘルプ"
 
@@ -643,97 +629,35 @@ msgstr "今日のリマインダは.."
 msgid "Thankyou"
 msgstr "ありがとう"
 
-#: src/alsa/about.c:29
-msgid "About ALSA Driver"
-msgstr "ALSA ドライバについて"
-
-#: src/alsa/about.c:30
-msgid ""
-"Audacious ALSA Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA.\n"
-"Author: Matthieu Sozeau (mattam@altern.org)"
-msgstr ""
-"Audacious ALSA ドライバ\n"
-"\n"
-"このプログラムはフリーソフトウェアです;\n"
-"フリーソフトウェア財団が提供する GNU 一般公有使用許諾契約書\n"
-"の第二版, あるいはそれ以降の版が定める条項の下で\n"
-"本プログラムを再頒布または変更することができます.\n"
-"\n"
-"本プログラムは有用とは思いますが,\n"
-"頒布にあたっては, 市場性及び特定目的, 適合性についての\n"
-"暗黙の保証を含めて, いかなる保証も行ないません.\n"
-"詳細については GNU 一般公有使用許諾契約書をご覧下さい.\n"
-"\n"
-"あなたは, 本プログラムと一緒に GNU 一般公有使用許諾契約書の\n"
-"写しを受け取っているはずです. そうでない場合は, Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA. へ手紙を書いて下さい.\n"
-"作者: Matthieu Sozeau (mattam@altern.org)"
-
-#: src/alsa/configure.c:146
-msgid "Unknown soundcard"
-msgstr "不明なサウンドカード"
-
-#: src/alsa/configure.c:201
-#, c-format
-msgid "Default PCM device (%s)"
+#: src/alsa-gapless/config.c:203
+#, fuzzy
+msgid "Default PCM device"
 msgstr "デフォルト PCM デバイス (%s)"
 
-#: src/alsa/configure.c:260
-msgid "ALSA Driver configuration"
-msgstr "ALSA ドライバ設定"
+#: src/alsa-gapless/config.c:229
+#, fuzzy
+msgid "Default mixer device"
+msgstr "デフォルト PCM デバイス (%s)"
 
-#: src/alsa/configure.c:274 src/OSS4/configure.c:184 src/OSS/configure.c:216
-#: src/sun/configure.c:181
-msgid "Audio device:"
-msgstr "オーディオデバイス:"
+#: src/alsa-gapless/config.c:433
+#, fuzzy
+msgid "ALSA Gapless Output Plugin Preferences"
+msgstr "ステータスアイコンプラグイン - 設定"
 
-#: src/alsa/configure.c:288
-msgid "Mixer:"
-msgstr "ミキサ:"
+#: src/alsa-gapless/config.c:440
+#, fuzzy
+msgid "PCM device:"
+msgstr "ミキサデバイス:"
 
-#: src/alsa/configure.c:300
-msgid "Mixer card:"
-msgstr "ミキサカード:"
-
-#: src/alsa/configure.c:313 src/OSS/configure.c:259 src/sun/configure.c:218
+#: src/alsa-gapless/config.c:442 src/OSS/configure.c:260
+#: src/sun/configure.c:218
 msgid "Mixer device:"
 msgstr "ミキサデバイス:"
 
-#: src/alsa/configure.c:328
-msgid "Device settings"
-msgstr "デバイス設定:"
-
-#: src/alsa/configure.c:334
-msgid "Soundcard:"
-msgstr "サウンドカード:"
-
-#: src/alsa/configure.c:347
-msgid "Buffer time (ms):"
-msgstr "バッファ時間 (ミリ秒):"
-
-#: src/alsa/configure.c:361
-msgid "Period time (ms):"
-msgstr "休止時間 (ミリ秒):"
-
-#: src/alsa/configure.c:376 src/amidi-plug/i_configure-ap.c:287
-msgid "Advanced settings"
-msgstr "高度な設定"
+#: src/alsa-gapless/config.c:444
+#, fuzzy
+msgid "Mixer element:"
+msgstr "ミキサデバイス:"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -907,6 +831,10 @@ msgstr "トランスポーズ: "
 msgid "Drum shift: "
 msgstr "ドラムシフト: "
 
+#: src/amidi-plug/i_configure-ap.c:287
+msgid "Advanced settings"
+msgstr "高度な設定"
+
 #: src/amidi-plug/i_configure-ap.c:291
 msgid "pre-calculate length of MIDI files in playlist"
 msgstr "プレイリストの MIDI ファイルの長さを前もって計算する"
@@ -1024,19 +952,19 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:75
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug - select file"
 msgstr "AMIDI-Plug - ファイル選択"
 
-#: src/amidi-plug/i_configure.c:122
+#: src/amidi-plug/i_configure.c:123
 msgid "AMIDI-Plug - configuration"
 msgstr "AMIDI-Plug - 設定"
 
-#: src/amidi-plug/i_configure.c:241
+#: src/amidi-plug/i_configure.c:242
 msgid "AMIDI-Plug message"
 msgstr "AMIDI-Plug メッセージ"
 
-#: src/amidi-plug/i_configure.c:242
+#: src/amidi-plug/i_configure.c:243
 msgid "Please stop the player before changing AMIDI-Plug settings."
 msgstr "AMIDI-Plug 設定を変更する前にプレイヤを停止してください."
 
@@ -1432,8 +1360,8 @@ msgstr ""
 "<span size=\"smaller\">TiMidity\n"
 "バックエンド</span>"
 
-#: src/amidi-plug/i_fileinfo.c:169 src/sid/xmms-sid.glade:3659
-#: src/sid/xs_interface.c:1768
+#: src/amidi-plug/i_fileinfo.c:169 src/bluetooth/gui.c:271
+#: src/sid/xmms-sid.glade:3659 src/sid/xs_interface.c:1769
 msgid "Name:"
 msgstr "名前:"
 
@@ -1555,23 +1483,24 @@ msgstr "角丸矩形"
 msgid "Concave Rectangle"
 msgstr "凹矩形"
 
-#: src/aosd/aosd_style.c:87
+#: src/aosd/aosd_style.c:87 src/crossfade/configure.c:356
+#: src/crossfade/interface-2.0.c:594 src/crossfade/interface-2.0.c:1047
 msgid "None"
 msgstr "なし"
 
-#: src/aosd/aosd_trigger.c:74
+#: src/aosd/aosd_trigger.c:73
 msgid "Playback Start"
 msgstr "演奏開始"
 
-#: src/aosd/aosd_trigger.c:75
+#: src/aosd/aosd_trigger.c:74
 msgid "Triggers OSD when a playlist entry is played."
 msgstr "プレイリストのエントリが演奏されたら OSD が動作します."
 
-#: src/aosd/aosd_trigger.c:79
+#: src/aosd/aosd_trigger.c:78
 msgid "Title Change"
 msgstr "タイトル変更"
 
-#: src/aosd/aosd_trigger.c:80
+#: src/aosd/aosd_trigger.c:79
 msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
@@ -1581,27 +1510,27 @@ msgstr ""
 "す. これはインターネットストリームのタイトル変更を表示するのにとても役立ちま"
 "す."
 
-#: src/aosd/aosd_trigger.c:86
+#: src/aosd/aosd_trigger.c:85
 msgid "Volume Change"
 msgstr "音量変更"
 
-#: src/aosd/aosd_trigger.c:87
+#: src/aosd/aosd_trigger.c:86
 msgid "Triggers OSD when volume is changed."
 msgstr "音量が変更されたら OSD が動作します."
 
-#: src/aosd/aosd_trigger.c:91
+#: src/aosd/aosd_trigger.c:90
 msgid "Pause On"
 msgstr "演奏停止"
 
-#: src/aosd/aosd_trigger.c:92
+#: src/aosd/aosd_trigger.c:91
 msgid "Triggers OSD when playback is paused."
 msgstr "演奏が停止されたら OSD が動作します."
 
-#: src/aosd/aosd_trigger.c:96
+#: src/aosd/aosd_trigger.c:95
 msgid "Pause Off"
 msgstr "演奏再開"
 
-#: src/aosd/aosd_trigger.c:97
+#: src/aosd/aosd_trigger.c:96
 msgid "Triggers OSD when playback is unpaused."
 msgstr "演奏が再開されたら OSD が動作します."
 
@@ -1702,8 +1631,8 @@ msgstr "スキンファイル:"
 
 #: src/aosd/aosd_ui.c:644 src/sid/xmms-sid.glade:2373
 #: src/sid/xmms-sid.glade:2968 src/sid/xmms-sid.glade:3136
-#: src/sid/xs_interface.c:1043 src/sid/xs_interface.c:1235
-#: src/sid/xs_interface.c:1291
+#: src/sid/xs_interface.c:1044 src/sid/xs_interface.c:1236
+#: src/sid/xs_interface.c:1292
 msgid "Browse"
 msgstr "参照"
 
@@ -1786,9 +1715,9 @@ msgstr "装飾"
 msgid "Trigger"
 msgstr "トリガー"
 
-#: src/aosd/aosd_ui.c:1076 src/cdaudio-ng/configure.c:175
-#: src/modplug/gui/interface.cxx:688 src/modplug/gui/modplug.glade:1603
-#: src/sid/xmms-sid.glade:3220 src/sid/xs_interface.c:1301
+#: src/aosd/aosd_ui.c:1076 src/cdaudio-ng/configure.c:189
+#: src/modplug/gui/interface.cxx:689 src/modplug/gui/modplug.glade:1603
+#: src/sid/xmms-sid.glade:3220 src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr "その他"
 
@@ -1825,37 +1754,6 @@ msgstr ""
 "Evan Martin によって書かれた.\n"
 "http://neugierig.org/software/ghosd/\n"
 "\n"
-
-#: src/arts/arts.c:21
-msgid "About aRts Output"
-msgstr "aRts 出力プラグインについて"
-
-#: src/arts/arts.c:22
-msgid ""
-"aRts output plugin by Håvard Kvålen <havardk@xmms.org>\n"
-"Audacious port by Giacomo Lozito from develia.org"
-msgstr ""
-"Håvard Kvålen <havardk@xmms.org> による aRts 出力プラグイン\n"
-"develia.org の Giacomo Lozito による Audacious ポート"
-
-#: src/arts/configure.c:50
-msgid "aRts Driver configuration"
-msgstr "aRts ドライバ設定"
-
-#: src/arts/configure.c:61 src/esd/configure.c:171 src/OSS4/configure.c:230
-#: src/OSS/configure.c:303 src/sun/configure.c:257
-msgid "Buffering:"
-msgstr "バッファリング:"
-
-#: src/arts/configure.c:73 src/esd/configure.c:184 src/OSS4/configure.c:243
-#: src/OSS/configure.c:316 src/sun/configure.c:270
-msgid "Buffer size (ms):"
-msgstr "バッファのサイズ (ミリ秒):"
-
-#: src/arts/configure.c:83 src/esd/configure.c:209 src/OSS4/configure.c:268
-#: src/OSS/configure.c:341 src/sun/configure.c:302
-msgid "Buffering"
-msgstr "バッファリング"
 
 #: src/audiocompress/audacious-glue.c:103
 msgid "AudioCompress "
@@ -1957,49 +1855,164 @@ msgstr "デフォルト値を読み込む"
 msgid "Audio values"
 msgstr "オーディオ設定"
 
-#: src/audiocompress/audacious-glue.c:570 src/crystalizer/crystalizer.c:129
-#: src/echo_plugin/gui.c:150 src/modplug/gui/interface.cxx:708
-#: src/modplug/gui/modplug.glade:1655 src/stereo_plugin/stereo.c:131
+#: src/audiocompress/audacious-glue.c:570 src/crossfade/interface-2.0.c:1513
+#: src/crystalizer/crystalizer.c:129 src/echo_plugin/gui.c:150
+#: src/modplug/gui/interface.cxx:709 src/modplug/gui/modplug.glade:1655
+#: src/stereo_plugin/stereo.c:131
 msgid "Apply"
 msgstr "適用"
 
-#: src/blur_scope/blur_scope.c:52
-msgid "/Toggle Decorations"
-msgstr "/装飾の切り替え"
+#: src/bluetooth/agent.c:356 src/bluetooth/agent.c:397
+#, c-format
+msgid "Pairing request for '%s'"
+msgstr ""
 
-#: src/blur_scope/blur_scope.c:54
-msgid "/-"
-msgstr "/-"
+#: src/bluetooth/agent.c:544
+#, c-format
+msgid "Authorization request for %s"
+msgstr ""
 
-#: src/blur_scope/blur_scope.c:55
-msgid "/Close"
-msgstr "/閉じる"
+#: src/bluetooth/agent.c:728
+#, c-format
+msgid "Created bonding with %s"
+msgstr ""
 
-#: src/blur_scope/blur_scope.c:179
-msgid "Blur scope"
-msgstr "ブラースコープ"
+#: src/bluetooth/agent.c:756
+#, c-format
+msgid "Removed bonding with %s"
+msgstr ""
+
+#: src/bluetooth/agent.c:808
+msgid "Device has been switched off"
+msgstr ""
+
+#: src/bluetooth/agent.c:811
+msgid "Device has been made non-discoverable"
+msgstr ""
+
+#: src/bluetooth/agent.c:813
+msgid "Device has been made connectable"
+msgstr ""
+
+#: src/bluetooth/agent.c:815
+msgid "Device has been made discoverable"
+msgstr ""
+
+#: src/bluetooth/agent.c:817
+msgid "Device has been made limited discoverable"
+msgstr ""
+
+#: src/bluetooth/agent.c:819
+msgid "Device has been switched into pairing mode"
+msgstr ""
+
+#: src/bluetooth/bluetooth.c:105
+msgid "Bluetooth headset support plugin"
+msgstr ""
+
+#: src/bluetooth/bluetooth.c:106
+msgid ""
+"Bluetooth headset support\n"
+"Copyright (c) 2008 Paula Stanciu paula.stanciu@gmail.com\n"
+"This was a GSoC 2008 Project - Many thanks to my mentor Tony Vroon and the "
+"Audacious team\n"
+" \n"
+"In order to use the AVRCP you need the uinput module loaded into the kernel\n"
+"The headset keys will be recognized as normal mutimedia keys and \n"
+"can be configured using the Audacious Global Hotkey plugin or ohter tools \n"
+"provided by your window manager\n"
+msgstr ""
+
+#: src/bluetooth/gui.c:148
+msgid "Producer"
+msgstr ""
+
+#: src/bluetooth/gui.c:221
+#, fuzzy
+msgid "Available Headsets"
+msgstr "有効なバックエンド"
+
+#: src/bluetooth/gui.c:224
+#, fuzzy
+msgid "Current Headset"
+msgstr "現在の値"
+
+#: src/bluetooth/gui.c:227
+#, fuzzy
+msgid "_Refresh"
+msgstr "リフレッシュレート"
+
+#: src/bluetooth/gui.c:231
+#, fuzzy
+msgid "_Connect"
+msgstr "接続"
+
+#: src/bluetooth/gui.c:237
+#, fuzzy
+msgid "_Close"
+msgstr "閉じる"
+
+#: src/bluetooth/gui.c:274
+#, fuzzy
+msgid "Class"
+msgstr "閉じる"
+
+#: src/bluetooth/gui.c:278
+#, fuzzy
+msgid "Address:"
+msgstr "デバイスアドレス"
+
+#: src/bluetooth/scan_gui.c:69
+msgid "Bonding finish!"
+msgstr ""
+
+#: src/bluetooth/scan_gui.c:76
+msgid "No devices found!"
+msgstr ""
+
+#: src/bluetooth/scan_gui.c:119
+msgid "Scanning..."
+msgstr ""
+
+#: src/bluetooth/scan_gui.c:122
+msgid "Pairing..."
+msgstr ""
+
+#: src/bluetooth/scan_gui.c:138
+#, fuzzy
+msgid "Rescan"
+msgstr "CD を再スキャン"
+
+#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:59
+#: src/gtkui/ui_manager.c:60 src/hotkey/gui.c:69 src/skins/ui_manager.c:168
+#: src/skins/ui_manager.c:169
+msgid "Play"
+msgstr "演奏"
 
 #: src/blur_scope/config.c:71
 msgid "Blur Scope: Color selection"
 msgstr "ブラースコープ: 色の選択"
 
-#: src/blur_scope/config.c:81 src/jack/configure.c:107
+#: src/blur_scope/config.c:81 src/jack/configure.c:109
 msgid "Options:"
 msgstr "オプション:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:204
-msgid "Rescan CD"
-msgstr "CD を再スキャン"
+#: src/cdaudio-ng/cdaudio-ng.c:304
+#, fuzzy
+msgid "Play CD"
+msgstr "演奏"
 
-#: src/cdaudio-ng/cdaudio-ng.c:217
+#: src/cdaudio-ng/cdaudio-ng.c:314
 msgid "Add CD"
 msgstr "CD を追加"
 
-#: src/cdaudio-ng/cdaudio-ng.c:242
-msgid "About CD Audio Plugin NG"
-msgstr "CD オーディオプラグイン NG について"
+#: src/cdaudio-ng/cdaudio-ng.c:342
+#, fuzzy
+msgid "About Audio CD Plugin"
+msgstr "FLAC オーディオプラグインについて"
 
-#: src/cdaudio-ng/cdaudio-ng.c:243
+#: src/cdaudio-ng/cdaudio-ng.c:344
+#, fuzzy
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -2009,7 +2022,9 @@ msgid ""
 "\n"
 "Also thank you Tony Vroon for mentoring & guiding me.\n"
 "\n"
-"This was a Google Summer of Code 2007 project."
+"This was a Google Summer of Code 2007 project.\n"
+"\n"
+"Copyright 2009 John Lindgren"
 msgstr ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -2021,112 +2036,99 @@ msgstr ""
 "\n"
 "これは Google Summer of Code 2007 のプロジェクトでした."
 
-#: src/cdaudio-ng/cdaudio-ng.c:815
-msgid ""
-"<b><big>No playable CD found.</big></b>\n"
-"\n"
-"No CD inserted, or inserted CD is not an audio CD.\n"
-msgstr ""
-"<b><big>演奏できる CD が見つかりませんでした.</big></b>\n"
-"\n"
-"CD が挿入されていないか, 挿入された CD はオーディオ CD ではありません.\n"
-
-#: src/cdaudio-ng/configure.c:155
+#: src/cdaudio-ng/configure.c:166
 msgid "CD Audio Plugin Configuration"
 msgstr "CD オーディオプラグインの設定"
 
-#: src/cdaudio-ng/configure.c:165
+#: src/cdaudio-ng/configure.c:178
 msgid "Digital audio extraction"
 msgstr "ディジタルオーディオ抽出"
 
-#: src/cdaudio-ng/configure.c:170
+#: src/cdaudio-ng/configure.c:183
 msgid "Title information"
 msgstr "タイトル情報"
 
-#: src/cdaudio-ng/configure.c:187
+#: src/cdaudio-ng/configure.c:202
 msgid "Limit read speed to: "
 msgstr "読み込み速度の制限値: "
 
-#: src/cdaudio-ng/configure.c:194
+#: src/cdaudio-ng/configure.c:213
 msgid "Use cd-text if available"
 msgstr "有効ならば cd-text を使う"
 
-#: src/cdaudio-ng/configure.c:198
+#: src/cdaudio-ng/configure.c:220
 msgid "Use CDDB if available"
 msgstr "有効ならば CDDB を使う"
 
-#: src/cdaudio-ng/configure.c:202
+#: src/cdaudio-ng/configure.c:226
 msgid "Server: "
 msgstr "サーバ: "
 
-#: src/cdaudio-ng/configure.c:205
+#: src/cdaudio-ng/configure.c:230
 msgid "Path: "
 msgstr "パス: "
 
-#: src/cdaudio-ng/configure.c:208
+#: src/cdaudio-ng/configure.c:234
 msgid "Port: "
 msgstr "ポート番号: "
 
-#: src/cdaudio-ng/configure.c:217
+#: src/cdaudio-ng/configure.c:247
 msgid "Use HTTP instead of CDDBP"
 msgstr "CDDBP の代わりに HTTP を使う"
 
-#: src/cdaudio-ng/configure.c:225
+#: src/cdaudio-ng/configure.c:259
 msgid "Override default device: "
 msgstr "デフォルトデバイスを上書きする: "
 
-#: src/cdaudio-ng/configure.c:232
-msgid "Print debug information"
-msgstr "デバグ情報を出力する"
-
-#: src/console/Audacious_Config.cxx:124
-msgid "Console Music Decoder"
+#: src/console/configure.c:135
+#, fuzzy
+msgid "Game Console Music Decoder"
 msgstr "コンソールミュージックデコーダ"
 
-#: src/console/Audacious_Config.cxx:161
+#: src/console/configure.c:169
 msgid "Bass:"
 msgstr "ベース:"
 
-#: src/console/Audacious_Config.cxx:165 src/console/Audacious_Config.cxx:176
-#: src/console/Audacious_Config.cxx:197
+#: src/console/configure.c:173 src/console/configure.c:184
+#: src/console/configure.c:205
 msgid "secs"
 msgstr "秒"
 
-#: src/console/Audacious_Config.cxx:172
+#: src/console/configure.c:180
 msgid "Treble:"
 msgstr "トリバル:"
 
-#: src/console/Audacious_Config.cxx:193
+#: src/console/configure.c:201
 msgid "Default song length:"
 msgstr "デフォルトの曲の長さ:"
 
-#: src/console/Audacious_Config.cxx:199 src/modplug/gui/interface.cxx:268
+#: src/console/configure.c:207 src/modplug/gui/interface.cxx:269
 #: src/modplug/gui/modplug.glade:338 src/sid/xmms-sid.glade:1243
-#: src/sid/xs_interface.c:665
+#: src/sid/xs_interface.c:666
 msgid "Resampling"
 msgstr "リサンプリング"
 
-#: src/console/Audacious_Config.cxx:205
+#: src/console/configure.c:213
 msgid "Enable audio resampling"
 msgstr "オーディオリサンプリングを有効にする"
 
-#: src/console/Audacious_Config.cxx:220
+#: src/console/configure.c:228
 msgid "Resampling rate:"
 msgstr "リサンプリングレート:"
 
-#: src/console/Audacious_Config.cxx:235
+#: src/console/configure.c:243
 msgid "SPC"
 msgstr "SPC"
 
-#: src/console/Audacious_Config.cxx:236
+#: src/console/configure.c:244
 msgid "Ignore length from SPC tags"
 msgstr "SPC タグからの長さを無視する"
 
-#: src/console/Audacious_Config.cxx:237
+#: src/console/configure.c:245
 msgid "Increase reverb"
 msgstr "リバーブを増やす"
 
-#: src/console/Audacious_Config.cxx:262
+#: src/console/configure.c:270
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
@@ -2134,16 +2136,18 @@ msgstr ""
 "秒数で表現されるデフォルトの曲の長さは, 長さ情報を提供しない曲 (例えばループ"
 "するトラック) に用いられます."
 
-#: src/console/Audacious_Driver.cxx:442
-msgid "About the Console Music Decoder"
+#: src/console/plugin.c:32
+#, fuzzy
+msgid "About the Game Console Music Decoder"
 msgstr "コンソールミュージックデコーダについて"
 
-#: src/console/Audacious_Driver.cxx:443
+#: src/console/plugin.c:33
+#, fuzzy
 msgid ""
 "Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
 "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
-"        Shay Green <gblargg@gmail.com>"
+"Audacious implementation by: William Pitcock <nenolod@dereferenced.org>, \n"
+"        Shay Green <gblargg@gmail.com>\n"
 msgstr ""
 "Game_Music_Emu 0.5.2 をベースにしたコンソールミュージックデコーダエンジンで"
 "す.\n"
@@ -2152,6 +2156,719 @@ msgstr ""
 "Audacious の実装は William Pitcock <nenolod@nenolod.net> と\n"
 "Shay Green <hotpop.com@blargg> によります."
 
+#: src/crossfade/configure.c:315
+msgid "Start of playback"
+msgstr ""
+
+#: src/crossfade/configure.c:316
+msgid "Automatic songchange"
+msgstr ""
+
+#: src/crossfade/configure.c:322
+#, fuzzy
+msgid "Manual songchange"
+msgstr "あらゆる変更を取り消す"
+
+#: src/crossfade/configure.c:323
+msgid "Manual stop"
+msgstr ""
+
+#: src/crossfade/configure.c:324
+#, fuzzy
+msgid "End of playlist"
+msgstr "ウィンドウ->プレイリスト"
+
+#: src/crossfade/configure.c:325
+msgid "Seeking"
+msgstr ""
+
+#: src/crossfade/configure.c:326 src/crossfade/configure.c:351
+#: src/crossfade/interface-2.0.c:522 src/crossfade/interface-2.0.c:633
+#: src/crossfade/interface-2.0.c:637 src/gtkui/ui_manager.c:62
+#: src/gtkui/ui_manager.c:63 src/skins/ui_manager.c:171
+#: src/skins/ui_manager.c:172
+msgid "Pause"
+msgstr "一時停止"
+
+#: src/crossfade/configure.c:348
+msgid "Reopen output device"
+msgstr ""
+
+#: src/crossfade/configure.c:349
+msgid "Flush output device"
+msgstr ""
+
+#: src/crossfade/configure.c:350
+msgid "None (gapless/off)"
+msgstr ""
+
+#: src/crossfade/configure.c:352
+msgid "Simple crossfade"
+msgstr ""
+
+#: src/crossfade/configure.c:353
+#, fuzzy
+msgid "Advanced crossfade"
+msgstr "高度な設定"
+
+#: src/crossfade/configure.c:354
+#, fuzzy
+msgid "Fadein"
+msgstr "フェードイン:"
+
+#: src/crossfade/configure.c:355
+#, fuzzy
+msgid "Fadeout"
+msgstr "フェードアウト:"
+
+#: src/crossfade/configure.c:357
+#, fuzzy
+msgid "Fadeout/Fadein"
+msgstr "フェードアウト:"
+
+#: src/crossfade/configure.c:1152
+#, fuzzy
+msgid "About Crossfade Plugin"
+msgstr "Scrobbler プラグインについて"
+
+#: src/crossfade/configure.c:1153
+#, fuzzy
+msgid ""
+"Audacious Crossfade Plugin\n"
+"\n"
+"Copyright © 2009 William Pitcock <nenolod@atheme.org>\n"
+"\n"
+"...based in part on XMMS-Crossfade:\n"
+"Copyright © 2000-2009 Peter Eisenlohr <peter@eisenlohr.org>\n"
+"\n"
+"based on the original OSS Output Plugin  Copyright (C) 1998-2000\n"
+"Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+"USA."
+msgstr ""
+"ファイルライタ・プラグイン\n"
+"\n"
+"このプログラムはフリーソフトウェアです;\n"
+"フリーソフトウェア財団が提供する GNU 一般公有使用許諾契約書\n"
+"の第二版か, 希望によってはそれ以降の版のどれかが定める条項の下で\n"
+"本プログラムを再頒布または変更することができます.\n"
+"\n"
+"本プログラムは有であることを願って頒布されていますが,\n"
+"まったくの無保証です; 市場性及び特定目的, 適合性についての\n"
+"暗黙の保証を含めて, いかなる保証も行ないません.\n"
+"詳細については GNU 一般公有使用許諾契約書をご覧下さい.\n"
+"\n"
+"あなたは, 本プログラムと一緒に GNU 一般公有使用許諾契約書の\n"
+"写しを受け取っているはずです. そうでない場合は, the Free Software\n"
+"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+"USA. まで請求して下さい."
+
+#: src/crossfade/interface-2.0.c:292
+#, fuzzy
+msgid "Crossfade Configuration"
+msgstr "ModPlug 設定"
+
+#: src/crossfade/interface-2.0.c:340 src/filewriter/filewriter.c:464
+#: src/icecast/icecast.c:645 src/ladspa/ladspa.c:1121
+msgid "Configure"
+msgstr "設定"
+
+#: src/crossfade/interface-2.0.c:345
+#, fuzzy
+msgid "About"
+msgstr "プラグインについて"
+
+#: src/crossfade/interface-2.0.c:350
+#, fuzzy
+msgid "Output plugin"
+msgstr "出力プラグインエラー\n"
+
+#: src/crossfade/interface-2.0.c:363
+#, fuzzy
+msgid "Throttle Output"
+msgstr "aRts 出力プラグインについて"
+
+#: src/crossfade/interface-2.0.c:371
+#, fuzzy
+msgid "Max block size (bytes):"
+msgstr "サイズ (バイト)"
+
+#: src/crossfade/interface-2.0.c:382
+#, fuzzy
+msgid "Force close/reopen on songchange"
+msgstr "オーディオタイプが変更されたとき強制的にオーディオを再オープンする"
+
+#: src/crossfade/interface-2.0.c:386
+msgid "Plugin compatibility options"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:390
+msgid ""
+"When modifying the Output Options or the Mixing buffer size, you need to "
+"stop/restart playback for the settings to take effect."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:395
+msgid "Output"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:409
+#, fuzzy
+msgid "Mixing buffer size (ms):"
+msgstr "バッファのサイズ (ミリ秒):"
+
+#: src/crossfade/interface-2.0.c:418
+msgid ""
+"Specify the size of the mixing buffer. Mixing buffer space is required for "
+"pauses, fade-outs, offsetting (i.e. interleaving the end and beginning of "
+"two songs) and killing trailing gaps. Fade-ins and killing leading gaps are "
+"done on-the-fly and do not depend on mixing buffer space.\n"
+"Default: n/a - calculated automatically"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:421
+#, fuzzy
+msgid "auto"
+msgstr "自動"
+
+#: src/crossfade/interface-2.0.c:424
+msgid ""
+"Automatically calculate an optimal buffer size.\n"
+"Default: On"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:430
+msgid "Set parameters for:"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:438
+msgid ""
+"Select the type of songchange you want to configure:\n"
+"* Start of playback: When starting playback by pressing PLAY\n"
+"* Automatic songchange: When reaching the end of a song and the playlist "
+"advances to the next song\n"
+"* Manual songchange: When manually selecting another song, for example by "
+"pressing NEXT/PREV\n"
+"* Manual stop: When pressing the STOP button\n"
+"* End of playlist: After the last song in the playlist has been played\n"
+"* Seeking: When seeking within the current song"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:452
+msgid "Crossfade/Transition type:"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:460
+msgid ""
+"Select the transition to be used for the songchange type selected above:\n"
+"* Fade-in: Fade-in at 'Start of playback'\n"
+"* Reopen output device: Force a close/open on the output plugin. This will "
+"most certainly re-introduce gaps and clicks, but might be usefull with some "
+"plugins.\n"
+"* Flush output device: Keeps the output plugin opened, but flushes its "
+"buffers. This will give you almost instant reaction when pressing NEXT/"
+"PREV.\n"
+"* None (gapless/off): Gapless mode. Keeps the device opened, but does not do "
+"any fading.\n"
+"* Simple crossfade: Does a simple crossfade between the previous and the "
+"next song.\n"
+"* Advanced crossfade: Allows you to configure the crossfade in more detail.\n"
+"* Fade-out: Fade-out at 'Manual stop' or 'End of playlist'."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:481
+#, fuzzy
+msgid "Reopen"
+msgstr "削除"
+
+#: src/crossfade/interface-2.0.c:501 src/crossfade/interface-2.0.c:543
+#: src/crossfade/interface-2.0.c:620 src/crossfade/interface-2.0.c:663
+#: src/crossfade/interface-2.0.c:706 src/crossfade/interface-2.0.c:831
+#: src/crossfade/interface-2.0.c:906 src/crossfade/interface-2.0.c:968
+#: src/crossfade/interface-2.0.c:1021
+#, fuzzy
+msgid "Length (ms):"
+msgstr "長さ (ミリ秒):"
+
+#: src/crossfade/interface-2.0.c:513 src/crossfade/interface-2.0.c:630
+msgid ""
+"Specify the length of the silence to be inserted between the tracks.\n"
+"Default: 2000"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:516 src/crossfade/interface-2.0.c:566
+#: src/crossfade/interface-2.0.c:744 src/crossfade/interface-2.0.c:1194
+#: src/crossfade/interface-2.0.c:1262 src/modplug/gui/interface.cxx:349
+#: src/modplug/gui/interface.cxx:411 src/modplug/gui/interface.cxx:477
+#: src/modplug/gui/interface.cxx:539 src/modplug/gui/modplug.glade:560
+#: src/modplug/gui/modplug.glade:739 src/modplug/gui/modplug.glade:930
+#: src/modplug/gui/modplug.glade:1109
+msgid "Enable"
+msgstr "有効"
+
+#: src/crossfade/interface-2.0.c:553 src/crossfade/interface-2.0.c:841
+#: src/crossfade/interface-2.0.c:916
+#, fuzzy
+msgid "Start volume (%):"
+msgstr "音量: (%)"
+
+#: src/crossfade/interface-2.0.c:563 src/crossfade/interface-2.0.c:851
+msgid "Set the duration for the fadein of the next song."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:578 src/crossfade/interface-2.0.c:873
+#: src/crossfade/interface-2.0.c:935
+#, c-format
+msgid ""
+"Set the start volume. XMMS-crossfade will fade from this volume to 100% "
+"during the time specified above.\n"
+"Default: 0"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:581 src/crossfade/interface-2.0.c:876
+#: src/crossfade/interface-2.0.c:938 src/crossfade/interface-2.0.c:942
+#, fuzzy
+msgid "Fade in"
+msgstr "フェードイン:"
+
+#: src/crossfade/interface-2.0.c:585
+msgid "Flush"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:673
+msgid ""
+"Specify the length of the crosssfade.\n"
+"Default: depends on songchange type"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:676
+msgid "Crossfade"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:680
+#, fuzzy
+msgid "Simple XF"
+msgstr "サンプリングレート"
+
+#: src/crossfade/interface-2.0.c:716
+msgid "Set the duration for the fadeout of the previous song."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:725 src/crossfade/interface-2.0.c:987
+#, fuzzy
+msgid "End volume (%):"
+msgstr "音量: (%)"
+
+#: src/crossfade/interface-2.0.c:735 src/crossfade/interface-2.0.c:997
+#, c-format
+msgid ""
+"Set the end volume. XMMS-crossfade will fade from 100% to this volume during "
+"the time specified above.\n"
+"Default: 0"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:748 src/crossfade/interface-2.0.c:1000
+#: src/crossfade/interface-2.0.c:1038
+#, fuzzy
+msgid "Fade out"
+msgstr "フェードアウト:"
+
+#: src/crossfade/interface-2.0.c:769
+#, fuzzy
+msgid "Custom (ms):"
+msgstr "カスタム "
+
+#: src/crossfade/interface-2.0.c:772
+msgid "Set a custom offset."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:780
+msgid ""
+"Set how much the end of the previous and the beginning of the next song "
+"should overlap.\n"
+"* Negative values indicate that the next song should start before the "
+"previous has reached the end.\n"
+"* A value of 0 means that the songs are concatenated seamlessly.\n"
+"* Positive values will yield insert silence inbetween.."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:783
+msgid "None (0 ms)"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:788
+msgid ""
+"Don't overlap the two songs. The next song will start immediatelly after the "
+"previous has ended."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:792
+msgid "Lock to fadeout length"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:797
+msgid "Overlap by the fadeout duration specified above."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:801
+msgid "Lock to fadein length"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:806
+msgid "Overlap by the fadein duration specified below.."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:810
+#, fuzzy
+msgid "Offset"
+msgstr "オフ"
+
+#: src/crossfade/interface-2.0.c:854
+#, fuzzy
+msgid " Enable"
+msgstr "有効"
+
+#: src/crossfade/interface-2.0.c:860
+msgid "Lock to Fade-out"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:865
+msgid "Use the same settings as fade-out."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:880
+#, fuzzy
+msgid "Advanced XF"
+msgstr "高度な設定"
+
+#: src/crossfade/interface-2.0.c:926
+msgid "Set the duration for the fadein when starting playback."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:978
+msgid "Set the duration for the fadeout of the last song."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1031
+msgid ""
+"Set how much additional silence should be played after the end of the last "
+"song. This way, you can avoid the clicks some soundcards produce when being "
+"shut down during playback.\n"
+"Default: 500"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1034
+#, fuzzy
+msgid "Additional silence"
+msgstr "追加コマンド"
+
+#: src/crossfade/interface-2.0.c:1073
+msgid ""
+"Set the duration for the fadeout when pausing.\n"
+"Default: 100"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1082
+msgid ""
+"Set how much additional silence should be played after pausing. This way, "
+"you can avoid the clicks some soundcards produce when entering pause.\n"
+"Default: 100"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1091
+msgid ""
+"Set the duration for the fadein when unpausing.\n"
+"Default: 100"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1100
+#, fuzzy
+msgid "Fade out (ms):"
+msgstr "フェードアウト:"
+
+#: src/crossfade/interface-2.0.c:1110
+msgid "Silence (ms):"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1120
+#, fuzzy
+msgid "Fade in (ms):"
+msgstr "フェードイン:"
+
+#: src/crossfade/interface-2.0.c:1124 src/crossfade/interface-2.0.c:1128
+msgid "Fade out / Fade in"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1133
+msgid "Crossfader"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1160
+msgid ""
+"Set the maximum length for gaps at the beginning of a stream.\n"
+"Default: 500"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1169
+msgid ""
+"Set the maximum volume for gaps at the beginning of a stream. All samples "
+"below this value are considered as silent.\n"
+"Default: 512"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1178 src/crossfade/interface-2.0.c:1221
+#, fuzzy
+msgid "Max. length (ms):"
+msgstr "長さ (ミリ秒):"
+
+#: src/crossfade/interface-2.0.c:1189 src/crossfade/interface-2.0.c:1232
+msgid "Max. level (16bit sample):"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1200
+msgid "Leading gap killer"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1243
+msgid ""
+"Set the maximum length for gaps at the end of a stream.\n"
+"Default: 500"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1252
+msgid ""
+"Set the maximum volume for gaps at the end of a stream. All samples below "
+"this value are considered as silent.\n"
+"Default: 512"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1255
+msgid "Lock to Leading"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1260
+msgid "Use the same settings as above."
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1268
+msgid "Trailing gap killer"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1281
+msgid "Skip to next zero crossing"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1284
+msgid ""
+"If enabled, XMMS-crossfade will take additional care to avoid clicks with "
+"pre-faded (gapless) tracks. XMMS-crossfade will cut off the end of the "
+"previous song (the beginning of the next song) only at a zero-crossing of "
+"the sample values.\n"
+"Default: On"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1286 src/crossfade/interface-2.0.c:1440
+#, fuzzy
+msgid "Advanced"
+msgstr "高度な設定"
+
+#: src/crossfade/interface-2.0.c:1290
+msgid "Gap Killer"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1309
+msgid "Write debug output to <stderr>"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1312
+msgid ""
+"Monitors what is going on in XMMS-crossfade. If you think you found a bug in "
+"XMMS-crossfade, please enable this option and send me the output.\n"
+"Note that you should disable debug output if you start XMMS from within "
+"Netscape. Netscape will spam you with dialogs containing the debug output "
+"captured from <stderr>.\n"
+"Default: Off"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1314
+#, fuzzy
+msgid "Debug options"
+msgstr "装飾"
+
+#: src/crossfade/interface-2.0.c:1327
+msgid "Enable volume control"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1330
+msgid ""
+"Enables/disables XMMS volume and balance controls.\n"
+"Default: On"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1332
+msgid "Reverse balance"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1335
+msgid ""
+"Reverses left and right with the balance control.\n"
+"Default: Off"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1337
+msgid "Software Mixer"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1340
+msgid ""
+"Enable software mixer. Usefull for output plugins without mixer support.\n"
+"Default: Off"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1342
+#, fuzzy
+msgid "Volume control options"
+msgstr "音量コントロールデバイス:"
+
+#: src/crossfade/interface-2.0.c:1359
+msgid "Songchange timeout (ms):"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1368
+msgid ""
+"The songchange timeout is the maximum time XMMS-crossfade waits for the next "
+"song. If this timeout is exceeded, the output plugin/device is closed.\n"
+"Default: 100"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1375
+msgid "Mixing buffer preload (ms):"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1384
+msgid ""
+"Tells XMMS-crossfade how much data it should buffer before it starts writing "
+"to the output plugin/device. Usually, this value can be set to 0, because "
+"the output plugin does preloading on its own.\n"
+"Default: 0"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1391
+msgid "Don't  crossfade"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1396
+msgid "successive tracks"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1399
+msgid ""
+"This option enables the automatic detection of pre-faded or gapless tracks, "
+"like the tracks on some compilations or on most live albums. If such tracks "
+"are detected, crossfading will be disabled and only the gapkiller (if "
+"enabled) will be used for the songchange.\n"
+"Default: On"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1401
+#, fuzzy
+msgid "same file"
+msgstr "ファイル"
+
+#: src/crossfade/interface-2.0.c:1404
+msgid ""
+"This option disables crossfading between the same file. This can happen if "
+"you have only one file in the playlist and 'repeat' turned on.\n"
+"Default: Off"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1406
+msgid "Enable HTTP buffer underrun workaround"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1409 src/crossfade/interface-2.0.c:1429
+msgid ""
+"Enable this when you have problems playing internet HTTP audio streams. "
+"Unfortunatelly, it also breaks crossfading.\n"
+"Default: Off"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1415
+#, fuzzy
+msgid "Limit OP buffer usage (ms):"
+msgstr "バッファのサイズ (ミリ秒):"
+
+#: src/crossfade/interface-2.0.c:1418
+msgid ""
+"With this option enabled, XMMS-crossfade will limit the amount of data being "
+"buffered by the output plugin. This way, you can decrease the latency "
+"between pressing STOP/NEXT/PREV and the new song actually being played. \n"
+"Default: Off"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1424
+msgid ""
+"Beware that setting this value too low also increases the chance of buffer "
+"underruns.\n"
+"Default: 250"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1427
+msgid "Use Quantaudio timing comments"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1431
+msgid "Keep output opened"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1434
+msgid ""
+"Keep the output device opened all the time, even if XMMS is stopped. This "
+"way, you can avoid clicks caused by the soundcard when the device is opened "
+"or closed\n"
+"Default: Off"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1436
+#, fuzzy
+msgid "Advanced options"
+msgstr "高度な設定"
+
+#: src/crossfade/interface-2.0.c:1457 src/sid/xmms-sid.glade:1774
+#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:430
+msgid "Delete"
+msgstr "削除"
+
+#: src/crossfade/interface-2.0.c:1461
+msgid "New"
+msgstr ""
+
+#: src/crossfade/interface-2.0.c:1482 src/skins/ui_manager.c:427
+msgid "Load"
+msgstr "読み込み"
+
+#: src/crossfade/interface-2.0.c:1487 src/sid/xmms-sid.glade:1732
+#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:429 src/wavpack/ui.c:194
+msgid "Save"
+msgstr "保存"
+
+#: src/crossfade/interface-2.0.c:1492 src/skins/ui_equalizer.c:963
+msgid "Presets"
+msgstr "プリセット"
+
 #: src/crystalizer/crystalizer.c:90
 msgid "Configure Crystalizer"
 msgstr "Crystalizer の設定"
@@ -2159,24 +2876,6 @@ msgstr "Crystalizer の設定"
 #: src/crystalizer/crystalizer.c:92 src/stereo_plugin/stereo.c:94
 msgid "Effect intensity:"
 msgstr "エフェクトの強さ:"
-
-#: src/demac/plugin.c:359
-msgid "About Monkey's Audio Plugin"
-msgstr "Monkey's オーディオプラグインについて"
-
-#: src/demac/plugin.c:360
-msgid ""
-"Copyright (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
-"Based on ffape decoder, Copyright (C) 2007 Benjamin Zores\n"
-"ffape itself based on libdemac by Dave Chapman\n"
-"\n"
-"ffape is a part of FFmpeg project, http://ffmpeg.mplayerhq.hu/"
-msgstr ""
-"Copyright (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
-"ffape デコーダ (Copyright (C) 2007 Benjamin Zores) を元とする.\n"
-"ffape 自体は Dave Chapman による libdemac を元とする.\n"
-"\n"
-"ffape は FFmpeg プロジェクト(http://ffmpeg.mplayerhq.hu/) の一部である."
 
 #: src/echo_plugin/gui.c:9
 msgid ""
@@ -2278,10 +2977,25 @@ msgstr "ポート番号:"
 msgid "Server"
 msgstr "サーバ"
 
-#: src/esd/configure.c:198 src/OSS4/configure.c:257 src/OSS/configure.c:330
+#: src/esd/configure.c:171 src/OSS4/configure.c:253 src/OSS/configure.c:304
+#: src/sun/configure.c:257
+msgid "Buffering:"
+msgstr "バッファリング:"
+
+#: src/esd/configure.c:184 src/OSS4/configure.c:266 src/OSS/configure.c:317
+#: src/sun/configure.c:270
+msgid "Buffer size (ms):"
+msgstr "バッファのサイズ (ミリ秒):"
+
+#: src/esd/configure.c:198 src/OSS4/configure.c:280 src/OSS/configure.c:331
 #: src/sun/configure.c:288
 msgid "Pre-buffer (percent):"
 msgstr "事前にバッファリングする割合 (％):"
+
+#: src/esd/configure.c:209 src/OSS4/configure.c:291 src/OSS/configure.c:342
+#: src/sun/configure.c:302
+msgid "Buffering"
+msgstr "バッファリング"
 
 #: src/evdev-plug/ed.c:59
 msgid "Playback->Play"
@@ -2473,6 +3187,21 @@ msgstr ""
 "event-device-plugin: 設定: デバイス \"%s\" の予期せぬ値です, スキップしま"
 "す.\n"
 
+#: src/evdev-plug/ed_ui.c:212
+#, fuzzy
+msgid "Detected"
+msgstr "曲の終わりを検出する"
+
+#: src/evdev-plug/ed_ui.c:217
+#, fuzzy
+msgid "Custom"
+msgstr "カスタム "
+
+#: src/evdev-plug/ed_ui.c:223
+#, fuzzy
+msgid "Not Detected"
+msgstr "選択範囲のソート"
+
 #: src/evdev-plug/ed_ui.c:275 src/evdev-plug/ed_ui.c:411
 #: src/evdev-plug/ed_ui.c:874
 msgid "Information"
@@ -2486,7 +3215,7 @@ msgstr ""
 "デバイスが検出されていないため, バインディングウィンドウが開けません.\n"
 "デバイスが正しく接続されていることを確認してください."
 
-#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:703
+#: src/evdev-plug/ed_ui.c:319
 msgid "Error"
 msgstr "エラー"
 
@@ -2524,6 +3253,11 @@ msgstr "デバイス名:"
 #: src/evdev-plug/ed_ui.c:365
 msgid "Device file:"
 msgstr "デバイスファイル:"
+
+#: src/evdev-plug/ed_ui.c:404
+#, fuzzy
+msgid "(custom)"
+msgstr "カスタム "
 
 #: src/evdev-plug/ed_ui.c:412
 msgid ""
@@ -2626,11 +3360,33 @@ msgstr ""
 "Giacomo Lozito によって書かれた.\n"
 "\n"
 
-#: src/filewriter/filewriter.c:168
+#: src/ffaudio/ffaudio-core.c:677
+#, c-format
+msgid ""
+"Multi-format audio decoding plugin for Audacious based on\n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+"Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
+"\n"
+"FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
+"\n"
+"Supported formats: %s\n"
+"\n"
+"Audacious plugin by:\n"
+"            William Pitcock <nenolod@nenolod.net>,\n"
+"            Matti Hämäläinen <ccr@tnsp.org>\n"
+msgstr ""
+
+#: src/ffaudio/ffaudio-core.c:693
+#, fuzzy
+msgid "About FFaudio Plugin"
+msgstr "FLAC オーディオプラグインについて"
+
+#: src/filewriter/filewriter.c:172
 msgid "About FileWriter-Plugin"
 msgstr "ファイルライタ・プラグインについて"
 
-#: src/filewriter/filewriter.c:169
+#: src/filewriter/filewriter.c:173
+#, fuzzy
 msgid ""
 "FileWriter-Plugin\n"
 "\n"
@@ -2646,71 +3402,67 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"ファイルライタ・プラグイン\n"
+"Audacious ESounD プラグイン\n"
 "\n"
 "このプログラムはフリーソフトウェアです;\n"
 "フリーソフトウェア財団が提供する GNU 一般公有使用許諾契約書\n"
-"の第二版か, 希望によってはそれ以降の版のどれかが定める条項の下で\n"
+"の第二版, あるいはそれ以降の版が定める条項の下で\n"
 "本プログラムを再頒布または変更することができます.\n"
 "\n"
-"本プログラムは有であることを願って頒布されていますが,\n"
-"まったくの無保証です; 市場性及び特定目的, 適合性についての\n"
+"本プログラムは有用とは思いますが,\n"
+"頒布にあたっては, 市場性及び特定目的, 適合性についての\n"
 "暗黙の保証を含めて, いかなる保証も行ないません.\n"
 "詳細については GNU 一般公有使用許諾契約書をご覧下さい.\n"
 "\n"
 "あなたは, 本プログラムと一緒に GNU 一般公有使用許諾契約書の\n"
 "写しを受け取っているはずです. そうでない場合は, the Free Software\n"
-"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
-"USA. まで請求して下さい."
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA.へ手紙を書いて下さい."
 
-#: src/filewriter/filewriter.c:481
+#: src/filewriter/filewriter.c:434
 msgid "File Writer Configuration"
 msgstr "ファイルライタの設定"
 
-#: src/filewriter/filewriter.c:493
+#: src/filewriter/filewriter.c:446
 msgid "Output file format:"
 msgstr "出力ファイルフォーマット:"
 
-#: src/filewriter/filewriter.c:511 src/ladspa/ladspa.c:959
-msgid "Configure"
-msgstr "設定"
-
-#: src/filewriter/filewriter.c:526
+#: src/filewriter/filewriter.c:479
 msgid "Save into original directory"
 msgstr "元のディレクトリに保存する"
 
-#: src/filewriter/filewriter.c:531
+#: src/filewriter/filewriter.c:484
 msgid "Save into custom directory"
 msgstr "指定のディレクトリに保存する"
 
-#: src/filewriter/filewriter.c:543
+#: src/filewriter/filewriter.c:496
 msgid "Output file folder:"
 msgstr "ファイル出力先ディレクトリ:"
 
-#: src/filewriter/filewriter.c:547
+#: src/filewriter/filewriter.c:500
 msgid "Pick a folder"
 msgstr "ディレクトリの選択"
 
-#: src/filewriter/filewriter.c:567
+#: src/filewriter/filewriter.c:520
 msgid "Get filename from:"
 msgstr "ファイル名の取得元:"
 
-#: src/filewriter/filewriter.c:570
+#: src/filewriter/filewriter.c:523
 msgid "original file tags"
 msgstr "元のファイルのタグ"
 
-#: src/filewriter/filewriter.c:576
+#: src/filewriter/filewriter.c:529
 msgid "original filename"
 msgstr "元のファイル名"
 
-#: src/filewriter/filewriter.c:586
+#: src/filewriter/filewriter.c:539
 msgid "Don't strip file name extension"
 msgstr "ファイル名から拡張子を取り除かない"
 
-#: src/filewriter/filewriter.c:590
+#: src/filewriter/filewriter.c:543
 msgid ""
 "If enabled, the extension from the original filename will not be stripped "
 "before adding the new file extension to the end."
@@ -2718,19 +3470,19 @@ msgstr ""
 "これを有効にすると, 新しいファイル拡張子を末尾につけるより先に, 元のファイル"
 "名の拡張子は取り除かれません."
 
-#: src/filewriter/filewriter.c:604
+#: src/filewriter/filewriter.c:557
 msgid "Prepend track number to filename"
 msgstr "ファイル名の先頭にトラック番号を付加する"
 
-#: src/filewriter/mp3.c:676
+#: src/filewriter/mp3.c:727
 msgid "MP3 Configuration"
 msgstr "MP3 設定"
 
-#: src/filewriter/mp3.c:703
+#: src/filewriter/mp3.c:754
 msgid "Algorithm Quality:"
 msgstr "アルゴリズム品質:"
 
-#: src/filewriter/mp3.c:725
+#: src/filewriter/mp3.c:776
 msgid ""
 "best/slowest:0;\n"
 "worst/fastest:9;\n"
@@ -2742,96 +3494,92 @@ msgstr ""
 "推奨:2;\n"
 "デフォルト:5;"
 
-#: src/filewriter/mp3.c:733
+#: src/filewriter/mp3.c:784
 msgid "Output Samplerate:"
 msgstr "出力サンプリングレート:"
 
-#: src/filewriter/mp3.c:744 src/filewriter/mp3.c:885
+#: src/filewriter/mp3.c:795 src/filewriter/mp3.c:936
 msgid "Auto"
 msgstr "自動"
 
-#: src/filewriter/mp3.c:766
+#: src/filewriter/mp3.c:817
 msgid "(Hz)"
 msgstr "(Hz)"
 
-#: src/filewriter/mp3.c:778
+#: src/filewriter/mp3.c:829
 msgid "Bitrate / Compression ratio:"
 msgstr "ビットレート / 圧縮率:"
 
-#: src/filewriter/mp3.c:804
+#: src/filewriter/mp3.c:855
 msgid "Bitrate (kbps):"
 msgstr "ビットレート (kbps):"
 
-#: src/filewriter/mp3.c:845
+#: src/filewriter/mp3.c:896
 msgid "Compression ratio:"
 msgstr "圧縮率:"
 
-#: src/filewriter/mp3.c:875
+#: src/filewriter/mp3.c:926
 msgid "Audio Mode:"
 msgstr "オーディオ モード:"
 
-#: src/filewriter/mp3.c:890
+#: src/filewriter/mp3.c:941
 msgid "Joint-Stereo"
 msgstr "ジョイントステレオ"
 
-#: src/filewriter/mp3.c:931
-msgid "auto-M/S mode"
-msgstr "自動 M/S モード"
-
-#: src/filewriter/mp3.c:943
+#: src/filewriter/mp3.c:984
 msgid "Misc:"
 msgstr "その他:"
 
-#: src/filewriter/mp3.c:954
+#: src/filewriter/mp3.c:995
 msgid "Enforce strict ISO complience"
 msgstr "厳格な ISO 遵守を強制する"
 
-#: src/filewriter/mp3.c:965
+#: src/filewriter/mp3.c:1006
 msgid "Error protection"
 msgstr "エラー保護"
 
-#: src/filewriter/mp3.c:977
+#: src/filewriter/mp3.c:1018
 msgid "Adds 16 bit checksum to every frame"
 msgstr "すべてのフレームに 16 ビットチェックサムを付加する"
 
-#: src/filewriter/mp3.c:982 src/filewriter/vorbis.c:274
-#: src/modplug/gui/interface.cxx:319 src/modplug/gui/modplug.glade:507
+#: src/filewriter/mp3.c:1023 src/filewriter/vorbis.c:285
+#: src/modplug/gui/interface.cxx:320 src/modplug/gui/modplug.glade:507
 msgid "Quality"
 msgstr "音質"
 
-#: src/filewriter/mp3.c:994
+#: src/filewriter/mp3.c:1035
 msgid "Enable VBR/ABR"
 msgstr "VBR/ABR を有効にする"
 
-#: src/filewriter/mp3.c:1006
+#: src/filewriter/mp3.c:1047
 msgid "Type:"
 msgstr "タイプ:"
 
-#: src/filewriter/mp3.c:1017
+#: src/filewriter/mp3.c:1058
 msgid "Variable bitrate"
 msgstr "可変ビットレート"
 
-#: src/filewriter/mp3.c:1029
+#: src/filewriter/mp3.c:1070
 msgid "Average bitrate"
 msgstr "平均ビットレート"
 
-#: src/filewriter/mp3.c:1043
+#: src/filewriter/mp3.c:1084
 msgid "VBR Options:"
 msgstr "VBR オプション:"
 
-#: src/filewriter/mp3.c:1059
+#: src/filewriter/mp3.c:1100
 msgid "Minimum bitrate (kbps):"
 msgstr "最小ビットレート (kbps):"
 
-#: src/filewriter/mp3.c:1095
+#: src/filewriter/mp3.c:1136
 msgid "Maximum bitrate (kbps):"
 msgstr "最大ビットレート (kbps):"
 
-#: src/filewriter/mp3.c:1127
+#: src/filewriter/mp3.c:1168
 msgid "Strictly enforce minimum bitrate"
 msgstr "最小ビットレートを厳格に強制する"
 
-#: src/filewriter/mp3.c:1129
+#: src/filewriter/mp3.c:1170
 msgid ""
 "For use with players that do not support low bitrate mp3 (Apex AD600-A DVD/"
 "mp3 player)"
@@ -2839,19 +3587,19 @@ msgstr ""
 "低いビットレートの mp3 をサポートしないプレイヤ (Apex AD600-A DVD/mp3 player)"
 "のために使います"
 
-#: src/filewriter/mp3.c:1142
+#: src/filewriter/mp3.c:1183
 msgid "ABR Options:"
 msgstr "ABR オプション:"
 
-#: src/filewriter/mp3.c:1152
+#: src/filewriter/mp3.c:1193
 msgid "Average bitrate (kbps):"
 msgstr "平均ビットレート (kbps):"
 
-#: src/filewriter/mp3.c:1189
+#: src/filewriter/mp3.c:1230
 msgid "VBR quality level:"
 msgstr "VBR 品質レベル:"
 
-#: src/filewriter/mp3.c:1204
+#: src/filewriter/mp3.c:1245
 msgid ""
 "highest:0;\n"
 "lowest:9;\n"
@@ -2861,59 +3609,59 @@ msgstr ""
 "最低:9;\n"
 "デフォルト:4;"
 
-#: src/filewriter/mp3.c:1212
+#: src/filewriter/mp3.c:1253
 msgid "Don't write Xing VBR header"
 msgstr "Xing VBR ヘッダを書き込まない"
 
-#: src/filewriter/mp3.c:1227
+#: src/filewriter/mp3.c:1267
 msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
-#: src/filewriter/mp3.c:1239
+#: src/filewriter/mp3.c:1279
 msgid "Frame params:"
 msgstr "フレーム パラメータ:"
 
-#: src/filewriter/mp3.c:1251
+#: src/filewriter/mp3.c:1291
 msgid "Mark as copyright"
 msgstr "著作権物としてマーク"
 
-#: src/filewriter/mp3.c:1262
+#: src/filewriter/mp3.c:1302
 msgid "Mark as original"
 msgstr "オリジナルとしてマーク"
 
-#: src/filewriter/mp3.c:1274
+#: src/filewriter/mp3.c:1314
 msgid "ID3 params:"
 msgstr "ID3 パラメータ:"
 
-#: src/filewriter/mp3.c:1285
+#: src/filewriter/mp3.c:1325
 msgid "Force addition of version 2 tag"
 msgstr "ヴァージョン 2 タグの付加を強制する"
 
-#: src/filewriter/mp3.c:1295
+#: src/filewriter/mp3.c:1335
 msgid "Only add v1 tag"
 msgstr "v1 タグのみ付加する"
 
-#: src/filewriter/mp3.c:1302
+#: src/filewriter/mp3.c:1342
 msgid "Only add v2 tag"
 msgstr "v2 タグのみ付加する"
 
-#: src/filewriter/mp3.c:1323
+#: src/filewriter/mp3.c:1363
 msgid "Tags"
 msgstr "タグ"
 
-#: src/filewriter/vorbis.c:267
+#: src/filewriter/vorbis.c:278
 msgid "Vorbis Encoder Configuration"
 msgstr "Vorbis エンコーダ設定"
 
-#: src/filewriter/vorbis.c:287
+#: src/filewriter/vorbis.c:298
 msgid "Quality level (0 - 10):"
 msgstr "品質レベル (0 - 10):"
 
-#: src/flacng/plugin.c:697
+#: src/flacng/plugin.c:625
 msgid "FLAC Audio Plugin "
 msgstr "FLAC オーディオ プラグイン"
 
-#: src/flacng/plugin.c:698
+#: src/flacng/plugin.c:626
 msgid ""
 "\n"
 "\n"
@@ -2929,7 +3677,7 @@ msgstr ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 
-#: src/flacng/plugin.c:703
+#: src/flacng/plugin.c:631
 msgid "About FLAC Audio Plugin"
 msgstr "FLAC オーディオプラグインについて"
 
@@ -2951,21 +3699,533 @@ msgstr ""
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 
+#: src/gntui/fileselector.c:85 src/gntui/gntui.c:273
+msgid "Open Files"
+msgstr ""
+
+#: src/gntui/fileselector.c:85 src/gntui/gntui.c:272
+#, fuzzy
+msgid "Add Files"
+msgstr "ファイルの追加..."
+
+#: src/gntui/gntui.c:271
+#, fuzzy
+msgid "Audacious2"
+msgstr "Audacious"
+
+#: src/gntui/gntui.c:312
+msgid "gnt interface"
+msgstr ""
+
+#: src/gtkui/actions.c:177 src/skins/ui_main.c:775
+msgid "Can't jump to time when no track is being played.\n"
+msgstr "再生されるトラックがない時間へは移動できません.\n"
+
+#: src/gtkui/actions.c:192 src/gtkui/ui_manager.c:306
+#: src/gtkui/ui_manager.c:307 src/skins/ui_main.c:790
+#: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
+msgid "Jump to Time"
+msgstr "指定した時間へ移動"
+
+#: src/gtkui/actions.c:209 src/skins/ui_main.c:811
+msgid "minutes:seconds"
+msgstr "分:秒"
+
+#: src/gtkui/actions.c:219 src/skins/ui_main.c:821
+msgid "Track length:"
+msgstr "トラックの合計時間:"
+
+#: src/gtkui/actions.c:532 src/skins/ui_playlist.c:765
+msgid "Save as Static Playlist"
+msgstr "スタティックプレイリストとして保存"
+
+#: src/gtkui/actions.c:538 src/skins/ui_playlist.c:772
+msgid "Use Relative Path"
+msgstr "相対パスを使う"
+
+#: src/gtkui/actions.c:563 src/skins/ui_playlist.c:606
+#, c-format
+msgid "Error writing playlist \"%s\": %s"
+msgstr "プレイリスト \"%s\" を書き込む際にエラー: %s"
+
+#: src/gtkui/actions.c:578 src/skins/ui_playlist.c:628
+#, c-format
+msgid "%s already exist. Continue?"
+msgstr "%s は既に存在しています. 続行しますか？"
+
+#: src/gtkui/actions.c:589 src/skins/ui_playlist.c:643
+#, c-format
+msgid ""
+"<b><big>Unable to save playlist.</big></b>\n"
+"\n"
+"Unknown file type for '%s'.\n"
+msgstr ""
+"<b><big>プレイリストを保存できません!</big></b>\n"
+"\n"
+"%s のファイルの種類が不明です.\n"
+
+#: src/gtkui/actions.c:630 src/skins/ui_playlist.c:808
+msgid "Save Playlist"
+msgstr "プレイリストの保存"
+
+#: src/gtkui/actions.c:704 src/skins/ui_playlist.c:795
+msgid "Load Playlist"
+msgstr "プレイリストの読み込み"
+
+#: src/gtkui/ui_gtk.c:51
+msgid "GTK Foobar-like Interface"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:40 src/gtkui/ui_manager.c:41
+#: src/skins/ui_manager.c:54 src/skins/ui_manager.c:55
+msgid "Stop after Current Song"
+msgstr "現在の曲の後に停止する"
+
+#: src/gtkui/ui_manager.c:43 src/gtkui/ui_manager.c:44
+#: src/skins/ui_manager.c:60 src/skins/ui_manager.c:61
+msgid "Repeat"
+msgstr "リピート"
+
+#: src/gtkui/ui_manager.c:46 src/gtkui/ui_manager.c:47
+#: src/skins/ui_manager.c:63 src/skins/ui_manager.c:64
+msgid "Shuffle"
+msgstr "シャッフル"
+
+#: src/gtkui/ui_manager.c:49 src/gtkui/ui_manager.c:50
+#: src/skins/ui_manager.c:66 src/skins/ui_manager.c:67
+msgid "No Playlist Advance"
+msgstr "次の曲に進まない"
+
+#: src/gtkui/ui_manager.c:65 src/gtkui/ui_manager.c:66 src/hotkey/gui.c:71
+#: src/skins/ui_manager.c:174 src/skins/ui_manager.c:175
+msgid "Stop"
+msgstr "停止"
+
+#: src/gtkui/ui_manager.c:68 src/gtkui/ui_manager.c:69
+#: src/skins/ui_manager.c:177 src/skins/ui_manager.c:178
+msgid "Previous"
+msgstr "前の曲"
+
+#: src/gtkui/ui_manager.c:71 src/gtkui/ui_manager.c:72
+#: src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
+msgid "Next"
+msgstr "次の曲"
+
+#: src/gtkui/ui_manager.c:77 src/skins/ui_manager.c:186
+msgid "Visualization"
+msgstr "視覚化"
+
+#: src/gtkui/ui_manager.c:78 src/skins/ui_manager.c:187
+msgid "Visualization Mode"
+msgstr "視覚化モード"
+
+#: src/gtkui/ui_manager.c:79 src/skins/ui_manager.c:188
+msgid "Analyzer Mode"
+msgstr "アナライザモード"
+
+#: src/gtkui/ui_manager.c:80 src/skins/ui_manager.c:189
+msgid "Scope Mode"
+msgstr "スコープモード"
+
+#: src/gtkui/ui_manager.c:81 src/skins/ui_manager.c:190
+msgid "Voiceprint Mode"
+msgstr "声紋モード"
+
+#: src/gtkui/ui_manager.c:82 src/skins/ui_manager.c:191
+msgid "WindowShade VU Mode"
+msgstr "WindowShade VU モード"
+
+#: src/gtkui/ui_manager.c:83 src/skins/ui_manager.c:192
+msgid "Analyzer Falloff"
+msgstr "アナライザ フォールオフ"
+
+#: src/gtkui/ui_manager.c:84 src/skins/ui_manager.c:193
+msgid "Peaks Falloff"
+msgstr "ピーク フォールオフ"
+
+#: src/gtkui/ui_manager.c:89 src/gtkui/ui_playlist_manager.c:310
+#: src/skins/ui_manager.c:198 src/skins/ui_playlist_manager.c:343
+msgid "Playlist"
+msgstr "プレイリスト"
+
+#: src/gtkui/ui_manager.c:91 src/gtkui/ui_manager.c:92
+#: src/skins/ui_manager.c:200 src/skins/ui_manager.c:201
+msgid "New Playlist"
+msgstr "新しいプレイリスト"
+
+#: src/gtkui/ui_manager.c:94 src/gtkui/ui_manager.c:95
+#: src/skins/ui_manager.c:203 src/skins/ui_manager.c:204
+msgid "Select Next Playlist"
+msgstr "次のプレイリストを選択"
+
+#: src/gtkui/ui_manager.c:97 src/gtkui/ui_manager.c:98
+#: src/skins/ui_manager.c:206 src/skins/ui_manager.c:207
+msgid "Select Previous Playlist"
+msgstr "前のプレイリストを選択"
+
+#: src/gtkui/ui_manager.c:100 src/gtkui/ui_manager.c:101
+#: src/skins/ui_manager.c:209 src/skins/ui_manager.c:210
+msgid "Delete Playlist"
+msgstr "プレイリストの削除"
+
+#: src/gtkui/ui_manager.c:103 src/skins/ui_manager.c:212
+msgid "Load List"
+msgstr "プレイリストの読み込み"
+
+#: src/gtkui/ui_manager.c:104 src/skins/ui_manager.c:213
+msgid "Loads a playlist file into the selected playlist."
+msgstr "選択したプレイリストにプレイリストファイルを読み込みます."
+
+#: src/gtkui/ui_manager.c:106 src/skins/ui_manager.c:215
+msgid "Save List"
+msgstr "プレイリストの保存"
+
+#: src/gtkui/ui_manager.c:107 src/skins/ui_manager.c:216
+msgid "Saves the selected playlist."
+msgstr "選択したプレイリストを保存します."
+
+#: src/gtkui/ui_manager.c:109
+msgid "Save Default List"
+msgstr "デフォルトのプレイリストの保存"
+
+#: src/gtkui/ui_manager.c:110
+msgid "Saves the selected playlist to the default location."
+msgstr "選択したプレイリストをデフォルト位置に保存します."
+
+#: src/gtkui/ui_manager.c:113 src/skins/ui_manager.c:223
+msgid "Refresh List"
+msgstr "プレイリストの更新"
+
+#: src/gtkui/ui_manager.c:114 src/skins/ui_manager.c:224
+msgid "Refreshes metadata associated with a playlist entry."
+msgstr "プレイリストのエントリに関連付けられたメタデータを更新します."
+
+#: src/gtkui/ui_manager.c:117 src/skins/ui_manager.c:227
+msgid "List Manager"
+msgstr "プレイリストマネージャ"
+
+#: src/gtkui/ui_manager.c:118 src/skins/ui_manager.c:228
+msgid "Opens the playlist manager."
+msgstr "プレイリストマネージャを開きます."
+
+#: src/gtkui/ui_manager.c:124 src/skins/ui_manager.c:234
+msgid "View"
+msgstr "表示"
+
+#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:238
+msgid "Add Internet Address..."
+msgstr "インターネットアドレスの追加..."
+
+#: src/gtkui/ui_manager.c:129 src/skins/ui_manager.c:239
+msgid "Adds a remote track to the playlist."
+msgstr "リモートトラックをプレイリストに追加します."
+
+#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:242
+msgid "Add Files..."
+msgstr "ファイルの追加..."
+
+#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:243
+msgid "Adds files to the playlist."
+msgstr "ファイルをプレイリストに追加します."
+
+#: src/gtkui/ui_manager.c:138 src/skins/ui_manager.c:248
+msgid "Search and Select"
+msgstr "検索と選択"
+
+#: src/gtkui/ui_manager.c:139 src/skins/ui_manager.c:249
+msgid ""
+"Searches the playlist and selects playlist entries based on specific "
+"criteria."
+msgstr "プレイリストを検索し, 特定の判定基準に基いて選択します."
+
+#: src/gtkui/ui_manager.c:142 src/skins/ui_manager.c:252
+msgid "Invert Selection"
+msgstr "選択範囲の反転"
+
+#: src/gtkui/ui_manager.c:143 src/skins/ui_manager.c:253
+msgid "Inverts the selected and unselected entries."
+msgstr "エントリの選択と未選択を反転します."
+
+#: src/gtkui/ui_manager.c:146 src/skins/ui_manager.c:256
+msgid "Select All"
+msgstr "全て選択"
+
+#: src/gtkui/ui_manager.c:147 src/skins/ui_manager.c:257
+msgid "Selects all of the playlist entries."
+msgstr "プレイリストの全てのエントリを選択します."
+
+#: src/gtkui/ui_manager.c:150 src/skins/ui_manager.c:260
+msgid "Select None"
+msgstr "未選択にする"
+
+#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:261
+msgid "Deselects all of the playlist entries."
+msgstr "プレイリストの全てのエントリを未選択にします."
+
+#: src/gtkui/ui_manager.c:156 src/skins/ui_manager.c:266
+msgid "Remove All"
+msgstr "全て削除"
+
+#: src/gtkui/ui_manager.c:157 src/skins/ui_manager.c:267
+msgid "Removes all entries from the playlist."
+msgstr "全てのエントリをプレイリストから削除します."
+
+#: src/gtkui/ui_manager.c:160 src/skins/ui_manager.c:270
+msgid "Clear Queue"
+msgstr "キューのクリア"
+
+#: src/gtkui/ui_manager.c:161 src/skins/ui_manager.c:271
+msgid "Clears the queue associated with this playlist."
+msgstr "プレイリストに関連付けられたキューをクリアします."
+
+#: src/gtkui/ui_manager.c:164 src/skins/ui_manager.c:274
+msgid "Remove Unavailable Files"
+msgstr "利用不可ファイルの削除"
+
+#: src/gtkui/ui_manager.c:165 src/skins/ui_manager.c:275
+msgid "Removes unavailable files from the playlist."
+msgstr "利用不可ファイルをプレイリストから削除します."
+
+#: src/gtkui/ui_manager.c:168 src/skins/ui_manager.c:278
+msgid "Remove Duplicates"
+msgstr "重複エントリの削除"
+
+#: src/gtkui/ui_manager.c:170 src/gtkui/ui_manager.c:202
+#: src/gtkui/ui_manager.c:232 src/skins/ui_manager.c:280
+#: src/skins/ui_manager.c:312 src/skins/ui_manager.c:342
+msgid "By Title"
+msgstr "タイトル"
+
+#: src/gtkui/ui_manager.c:171 src/skins/ui_manager.c:281
+msgid "Removes duplicate entries from the playlist by title."
+msgstr "重複するタイトルのエントリをプレイリストから削除します."
+
+#: src/gtkui/ui_manager.c:174 src/gtkui/ui_manager.c:214
+#: src/gtkui/ui_manager.c:244 src/skins/ui_manager.c:284
+#: src/skins/ui_manager.c:324 src/skins/ui_manager.c:354
+msgid "By Filename"
+msgstr "ファイル名"
+
+#: src/gtkui/ui_manager.c:175 src/skins/ui_manager.c:285
+msgid "Removes duplicate entries from the playlist by filename."
+msgstr "重複するファイル名のエントリをプレイリストから削除します."
+
+#: src/gtkui/ui_manager.c:178 src/gtkui/ui_manager.c:218
+#: src/gtkui/ui_manager.c:248 src/skins/ui_manager.c:288
+#: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
+msgid "By Path + Filename"
+msgstr "パス名とファイル名"
+
+#: src/gtkui/ui_manager.c:179 src/skins/ui_manager.c:289
+msgid "Removes duplicate entries from the playlist by their full path."
+msgstr "重複するパス名とファイル名のエントリをプレイリストから削除します."
+
+#: src/gtkui/ui_manager.c:182 src/skins/ui_manager.c:292
+msgid "Remove Unselected"
+msgstr "選択していないエントリの削除"
+
+#: src/gtkui/ui_manager.c:183 src/skins/ui_manager.c:293
+msgid "Remove unselected entries from the playlist."
+msgstr "選択していないエントリをプレイリストから削除します."
+
+#: src/gtkui/ui_manager.c:186 src/skins/ui_manager.c:296
+msgid "Remove Selected"
+msgstr "選択したエントリの削除"
+
+#: src/gtkui/ui_manager.c:187 src/skins/ui_manager.c:297
+msgid "Remove selected entries from the playlist."
+msgstr "選択したエントリをプレイリストから削除します."
+
+#: src/gtkui/ui_manager.c:192 src/skins/ui_manager.c:302
+msgid "Randomize List"
+msgstr "プレイリストをランダムにする"
+
+#: src/gtkui/ui_manager.c:193 src/skins/ui_manager.c:303
+msgid "Randomizes the playlist."
+msgstr "プレイリストの順序をランダムにします."
+
+#: src/gtkui/ui_manager.c:196 src/skins/ui_manager.c:306
+msgid "Reverse List"
+msgstr "プレイリストを逆順にする"
+
+#: src/gtkui/ui_manager.c:197 src/skins/ui_manager.c:307
+msgid "Reverses the playlist."
+msgstr "プレイリストの順序を逆順にします."
+
+#: src/gtkui/ui_manager.c:200 src/skins/ui_manager.c:310
+msgid "Sort List"
+msgstr "プレイリストのソート"
+
+#: src/gtkui/ui_manager.c:203 src/gtkui/ui_manager.c:233
+#: src/skins/ui_manager.c:313 src/skins/ui_manager.c:343
+msgid "Sorts the list by title."
+msgstr "タイトル順でプレイリストをソートします."
+
+#: src/gtkui/ui_manager.c:206 src/gtkui/ui_manager.c:236
+#: src/skins/ui_manager.c:316 src/skins/ui_manager.c:346
+#, fuzzy
+msgid "By Album"
+msgstr "アルバム名:"
+
+#: src/gtkui/ui_manager.c:207 src/gtkui/ui_manager.c:237
+#: src/skins/ui_manager.c:317 src/skins/ui_manager.c:347
+#, fuzzy
+msgid "Sorts the list by album."
+msgstr "タイトル順でプレイリストをソートします."
+
+#: src/gtkui/ui_manager.c:210 src/gtkui/ui_manager.c:240
+#: src/skins/ui_manager.c:320 src/skins/ui_manager.c:350
+msgid "By Artist"
+msgstr "アーティスト"
+
+#: src/gtkui/ui_manager.c:211 src/gtkui/ui_manager.c:241
+#: src/skins/ui_manager.c:321 src/skins/ui_manager.c:351
+msgid "Sorts the list by artist."
+msgstr "アーティスト順でプレイリストをソートします."
+
+#: src/gtkui/ui_manager.c:215 src/gtkui/ui_manager.c:245
+#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
+msgid "Sorts the list by filename."
+msgstr "ファイル名順でプレイリストをソートします."
+
+#: src/gtkui/ui_manager.c:219 src/gtkui/ui_manager.c:249
+#: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
+msgid "Sorts the list by full pathname."
+msgstr "ファイルのパス名でプレイリストをソートします."
+
+#: src/gtkui/ui_manager.c:222 src/gtkui/ui_manager.c:252
+#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
+msgid "By Date"
+msgstr "日付"
+
+#: src/gtkui/ui_manager.c:223 src/gtkui/ui_manager.c:253
+#: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
+msgid "Sorts the list by modification time."
+msgstr "変更時間でプレイリストをソートします."
+
+#: src/gtkui/ui_manager.c:226 src/gtkui/ui_manager.c:256
+#: src/skins/ui_manager.c:336 src/skins/ui_manager.c:366
+msgid "By Track Number"
+msgstr "トラック番号"
+
+#: src/gtkui/ui_manager.c:227 src/gtkui/ui_manager.c:257
+#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
+msgid "Sorts the list by track number."
+msgstr "トラック番号順でプレイリストをソートします."
+
+#: src/gtkui/ui_manager.c:230 src/skins/ui_manager.c:340
+msgid "Sort Selected"
+msgstr "選択範囲のソート"
+
+#: src/gtkui/ui_manager.c:266 src/skins/ui_manager.c:376
+msgid "File"
+msgstr "ファイル"
+
+#: src/gtkui/ui_manager.c:269
+#, fuzzy
+msgid "Components"
+msgstr "コメント:"
+
+#: src/gtkui/ui_manager.c:271 src/gtkui/ui_manager.c:274
+#: src/skins/ui_manager.c:381 src/skins/ui_manager.c:384
+msgid "View Track Details"
+msgstr "トラックの詳細"
+
+#: src/gtkui/ui_manager.c:272 src/gtkui/ui_manager.c:275
+#: src/skins/ui_manager.c:382 src/skins/ui_manager.c:385
+msgid "View track details"
+msgstr "トラックの詳細"
+
+#: src/gtkui/ui_manager.c:277 src/gtkui/ui_manager.c:278
+#: src/skins/ui_manager.c:387 src/skins/ui_manager.c:388
+msgid "About Audacious"
+msgstr "Audacious について"
+
+#: src/gtkui/ui_manager.c:280 src/skins/ui_manager.c:390
+msgid "Play File"
+msgstr "ファイルを演奏"
+
+#: src/gtkui/ui_manager.c:281 src/skins/ui_manager.c:391
+msgid "Load and play a file"
+msgstr "ファイルを読み込んで演奏"
+
+#: src/gtkui/ui_manager.c:283 src/skins/ui_manager.c:393
+msgid "Play Location"
+msgstr "場所を演奏"
+
+#: src/gtkui/ui_manager.c:284 src/skins/ui_manager.c:394
+msgid "Play media from the selected location"
+msgstr "選択した場所からメディアを演奏"
+
+#: src/gtkui/ui_manager.c:286 src/skins/ui_manager.c:396
+msgid "Plugin services"
+msgstr "プラグインサービス"
+
+#: src/gtkui/ui_manager.c:288 src/skins/ui_manager.c:398
+msgid "Preferences"
+msgstr "設定"
+
+#: src/gtkui/ui_manager.c:289 src/skins/ui_manager.c:399
+msgid "Open preferences window"
+msgstr "設定ウィンドウを開く"
+
+#: src/gtkui/ui_manager.c:291 src/skins/ui_manager.c:401
+msgid "_Quit"
+msgstr "終了(_Q)"
+
+#: src/gtkui/ui_manager.c:292 src/skins/ui_manager.c:402
+msgid "Quit Audacious"
+msgstr "Audacious を終了する"
+
+#: src/gtkui/ui_manager.c:294 src/gtkui/ui_manager.c:295
+#: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
+msgid "Set A-B"
+msgstr "A-B をセット"
+
+#: src/gtkui/ui_manager.c:297 src/gtkui/ui_manager.c:298
+#: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
+msgid "Clear A-B"
+msgstr "A-B をクリア"
+
+#: src/gtkui/ui_manager.c:300 src/gtkui/ui_manager.c:301
+#: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
+msgid "Jump to Playlist Start"
+msgstr "最初の曲へ移動"
+
+#: src/gtkui/ui_manager.c:303 src/gtkui/ui_manager.c:304 src/hotkey/gui.c:78
+#: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
+msgid "Jump to File"
+msgstr "指定したファイルへ移動"
+
+#: src/gtkui/ui_manager.c:309 src/skins/ui_manager.c:419
+msgid "Queue Toggle"
+msgstr "キューを切り替える"
+
+#: src/gtkui/ui_manager.c:310 src/skins/ui_manager.c:420
+msgid "Enables/disables the entry in the playlist's queue."
+msgstr "プレイリストのキューに入っているエントリの有効/無効を切り替えます."
+
+#: src/gtkui/ui_playlist_manager.c:277 src/skins/ui_playlist_manager.c:304
+#, fuzzy
+msgid "Playlist Manager"
+msgstr "プレイリストマネージャ"
+
+#: src/gtkui/ui_playlist_manager.c:315 src/skins/ui_playlist_manager.c:352
+msgid "Entries"
+msgstr ""
+
+#: src/gtkui/ui_playlist_manager.c:326 src/skins/ui_playlist_manager.c:367
+#, fuzzy
+msgid "_Rename"
+msgstr "ファイル名"
+
 #: src/hotkey/gui.c:68
 msgid "Previous Track"
 msgstr "前のトラック"
 
-#: src/hotkey/gui.c:69 src/skins/ui_manager.c:177 src/skins/ui_manager.c:178
-msgid "Play"
-msgstr "演奏"
-
 #: src/hotkey/gui.c:70
 msgid "Pause/Resume"
 msgstr "一時停止/再開"
-
-#: src/hotkey/gui.c:71 src/skins/ui_manager.c:183 src/skins/ui_manager.c:184
-msgid "Stop"
-msgstr "停止"
 
 #: src/hotkey/gui.c:72
 msgid "Next Track"
@@ -2990,10 +4250,6 @@ msgstr "音量を上げる"
 #: src/hotkey/gui.c:77
 msgid "Volume Down"
 msgstr "音量を下げる"
-
-#: src/hotkey/gui.c:78 src/skins/ui_manager.c:422 src/skins/ui_manager.c:423
-msgid "Jump to File"
-msgstr "指定したファイルへ移動"
 
 #: src/hotkey/gui.c:79
 msgid "Toggle Player Windows"
@@ -3078,6 +4334,245 @@ msgstr ""
 "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
 "\n"
 
+#: src/icecast/icecast.c:226
+#, fuzzy
+msgid "About Icecast-Plugin"
+msgstr "エコー プラグインについて"
+
+#: src/icecast/icecast.c:227
+#, fuzzy
+msgid ""
+"Icecast-Plugin\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Audacious ESounD プラグイン\n"
+"\n"
+"このプログラムはフリーソフトウェアです;\n"
+"フリーソフトウェア財団が提供する GNU 一般公有使用許諾契約書\n"
+"の第二版, あるいはそれ以降の版が定める条項の下で\n"
+"本プログラムを再頒布または変更することができます.\n"
+"\n"
+"本プログラムは有用とは思いますが,\n"
+"頒布にあたっては, 市場性及び特定目的, 適合性についての\n"
+"暗黙の保証を含めて, いかなる保証も行ないません.\n"
+"詳細については GNU 一般公有使用許諾契約書をご覧下さい.\n"
+"\n"
+"あなたは, 本プログラムと一緒に GNU 一般公有使用許諾契約書の\n"
+"写しを受け取っているはずです. そうでない場合は, the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA.へ手紙を書いて下さい."
+
+#: src/icecast/icecast.c:293
+#, c-format
+msgid "Error setting hostname: %s\n"
+msgstr ""
+
+#: src/icecast/icecast.c:299
+#, c-format
+msgid "Error setting protocol: %s\n"
+msgstr ""
+
+#: src/icecast/icecast.c:305
+#, fuzzy, c-format
+msgid "Error setting port: %s\n"
+msgstr "プレイリスト \"%s\" を書き込む際にエラー: %s"
+
+#: src/icecast/icecast.c:311
+#, fuzzy, c-format
+msgid "Error setting password: %s\n"
+msgstr "プレイリスト \"%s\" を書き込む際にエラー: %s"
+
+#: src/icecast/icecast.c:317
+#, c-format
+msgid "Error setting mount: %s\n"
+msgstr ""
+
+#: src/icecast/icecast.c:323
+#, fuzzy, c-format
+msgid "Error setting stream %s: %s\n"
+msgstr "プレイリスト \"%s\" を書き込む際にエラー: %s"
+
+#: src/icecast/icecast.c:323
+msgid "public"
+msgstr ""
+
+#: src/icecast/icecast.c:323
+msgid "private"
+msgstr ""
+
+#: src/icecast/icecast.c:329
+#, c-format
+msgid "Error setting stream name: %s\n"
+msgstr ""
+
+#: src/icecast/icecast.c:335
+#, c-format
+msgid "Error setting stream genre: %s\n"
+msgstr ""
+
+#: src/icecast/icecast.c:341
+#, fuzzy, c-format
+msgid "Error setting stream URL: %s\n"
+msgstr "プレイリスト \"%s\" を書き込む際にエラー: %s"
+
+#: src/icecast/icecast.c:347
+#, c-format
+msgid "Error setting stream description: %s\n"
+msgstr ""
+
+#: src/icecast/icecast.c:353 src/icecast/icecast.c:359
+#, c-format
+msgid "Error setting user: %s\n"
+msgstr ""
+
+#: src/icecast/icecast.c:365
+#, fuzzy, c-format
+msgid "Error connecting to server: %s\n"
+msgstr "LIRC サーバに再接続"
+
+#: src/icecast/icecast.c:519 src/icecast/icecast.c:715
+#: src/scrobbler/configure.c:152 src/scrobbler/configure.c:229
+#, fuzzy
+msgid "Change password"
+msgstr "演奏曲の変更"
+
+#: src/icecast/icecast.c:620
+#, fuzzy
+msgid "Icecast Configuration"
+msgstr "MP3 設定"
+
+#: src/icecast/icecast.c:631
+#, fuzzy
+msgid "Output stream format:"
+msgstr "出力ファイルフォーマット:"
+
+#: src/icecast/icecast.c:655
+#, fuzzy
+msgid "Server address:"
+msgstr "デバイスアドレス"
+
+#: src/icecast/icecast.c:661
+msgid "Server hostname or IP address"
+msgstr ""
+
+#: src/icecast/icecast.c:666
+msgid "Server port number"
+msgstr ""
+
+#: src/icecast/icecast.c:679
+#, fuzzy
+msgid "Mount point:"
+msgstr "フォント %i:"
+
+#: src/icecast/icecast.c:685
+msgid "Mount point for the stream"
+msgstr ""
+
+#: src/icecast/icecast.c:694
+#, fuzzy
+msgid "User name:"
+msgstr "ユーザ名:"
+
+#: src/icecast/icecast.c:700
+msgid ""
+"Icecast source user name for the stream; depends on your server settings.\n"
+"The default value is \"source\""
+msgstr ""
+
+#: src/icecast/icecast.c:704 src/scrobbler/configure.c:203
+#: src/scrobbler/configure.c:265
+msgid "Password:"
+msgstr "パスワード:"
+
+#: src/icecast/icecast.c:709
+msgid "Icecast source user password"
+msgstr ""
+
+#: src/icecast/icecast.c:730
+#, fuzzy
+msgid "Connection timeout (seconds):"
+msgstr "接続モード"
+
+#: src/icecast/icecast.c:734
+msgid ""
+"Amount of time before plugin closes connection to server when no audio data "
+"available"
+msgstr ""
+
+#: src/icecast/icecast.c:747
+#, fuzzy
+msgid "Buffer size (bytes):"
+msgstr "バッファのサイズ (ミリ秒):"
+
+#: src/icecast/icecast.c:751
+msgid ""
+"Internal buffer size\n"
+"Try to increase this if you are experiencing audio skipping on client side"
+msgstr ""
+
+#: src/icecast/icecast.c:762
+msgid "Flush buffer if "
+msgstr ""
+
+#: src/icecast/icecast.c:766
+msgid "Determines when to flush internal buffer to prevent its overflow"
+msgstr ""
+
+#: src/icecast/icecast.c:774
+msgid "percents are filled"
+msgstr ""
+
+#: src/icecast/icecast.c:782
+msgid "Stream is public"
+msgstr ""
+
+#: src/icecast/icecast.c:783
+msgid ""
+"Setting this asks the server to list the stream in any directories it knows "
+"about"
+msgstr ""
+
+#: src/icecast/icecast.c:792
+msgid "Stream name:"
+msgstr ""
+
+#: src/icecast/icecast.c:804
+msgid "Stream URL:"
+msgstr ""
+
+#: src/icecast/icecast.c:810
+msgid "The URL of a site about this stream"
+msgstr ""
+
+#: src/icecast/icecast.c:817
+msgid "Stream genre:"
+msgstr ""
+
+#: src/icecast/icecast.c:823
+msgid ""
+"The genre (or genres) of the stream. This is usually a keyword list, eg "
+"\"pop rock rap\""
+msgstr ""
+
+#: src/icecast/icecast.c:830
+#, fuzzy
+msgid "Stream description:"
+msgstr "ストリームヴァージョン %d"
+
 #: src/jack/configure.c:69
 msgid "Connect to all available jack ports"
 msgstr "有効なすべての jack ポートに接続する"
@@ -3090,54 +4585,23 @@ msgstr "出力ポートにのみ接続する"
 msgid "Connect to no ports"
 msgstr "ポートに接続しない"
 
-#: src/jack/configure.c:98
+#: src/jack/configure.c:101
 msgid "jack Plugin configuration"
 msgstr "jack プラグイン設定"
 
-#: src/jack/configure.c:116
+#: src/jack/configure.c:119
 msgid "Connection mode:"
 msgstr "接続モード"
 
-#: src/jack/configure.c:128
+#: src/jack/configure.c:131
 msgid "Enable debug printing"
 msgstr "デバグ出力を有効にする"
 
-#: src/jack/jack.c:82
-msgid "Sample rate mismatch"
-msgstr "サンプリングレートの不一致"
-
-#: src/jack/jack.c:85
-msgid ""
-"Xmms is asking for a sample rate that differs from\n"
-" that of the jack server.  Xmms 1.2.8 or later\n"
-"contains resampling routines that xmms-jack will\n"
-"dynamically load and use to perform resampling.\n"
-"Or you can restart the jack server\n"
-"with a sample rate that matches the one that\n"
-"xmms desires.  -r is the option for the jack\n"
-"alsa driver so -r 44100 or -r 48000 should do\n"
-"\n"
-"Chris Morgan <cmorgan@alum.wpi.edu>\n"
-msgstr ""
-"Xmms が求めているサンプリングレートが  jack サーバの\n"
-"それと異なっています. Xmms 1.2.8 以降は xmms-jack が\n"
-"動的に読み込みリサンプリングを行うといったリサンプリング\n"
-"ルーチンを含んでいます.\n"
-"あるいは jack サーバを xmms の求めるサンプリングレートで\n"
-"再起動することもできます.  -r が jack alsa ドライバの\n"
-"オプションで, -r 44100 や -r 48000 のように使います.\n"
-"\n"
-"Chris Morgan <cmorgan@alum.wpi.edu>\n"
-
-#: src/jack/jack.c:98 src/wma/wma.c:145
-msgid " Close "
-msgstr " 閉じる "
-
-#: src/jack/jack.c:450
+#: src/jack/jack.c:420
 msgid "About JACK Output Plugin 0.17"
 msgstr "JACK 出力プラグイン 0.17 について"
 
-#: src/jack/jack.c:451
+#: src/jack/jack.c:421
 msgid ""
 "XMMS jack Driver 0.17\n"
 "\n"
@@ -3155,39 +4619,39 @@ msgstr ""
 "develia.org の Giacomo Lozito による\n"
 "Audacious ポート"
 
-#: src/ladspa/ladspa.c:721
+#: src/ladspa/ladspa.c:888
 msgid "This LADSPA plugin has no user controls"
 msgstr "LADSPA プラグインにユーザコントロールはありません"
 
-#: src/ladspa/ladspa.c:766 src/ladspa/ladspa.c:852
+#: src/ladspa/ladspa.c:929 src/ladspa/ladspa.c:1016
 msgid "Name"
 msgstr "名前"
 
-#: src/ladspa/ladspa.c:852
+#: src/ladspa/ladspa.c:1016
 msgid "UID"
 msgstr "UID"
 
-#: src/ladspa/ladspa.c:927
+#: src/ladspa/ladspa.c:1092
 msgid "Installed plugins"
 msgstr "インストール済プラグイン"
 
-#: src/ladspa/ladspa.c:936
+#: src/ladspa/ladspa.c:1100
 msgid "Running plugins"
 msgstr "動作中のプラグイン"
 
-#: src/ladspa/ladspa.c:951
+#: src/ladspa/ladspa.c:1115
 msgid "Add"
 msgstr "追加"
 
-#: src/ladspa/ladspa.c:955
+#: src/ladspa/ladspa.c:1118
 msgid "Remove"
 msgstr "削除"
 
-#: src/ladspa/ladspa.c:968
+#: src/ladspa/ladspa.c:1129
 msgid "LADSPA Plugin Catalog"
 msgstr "LADSPA プラグイン カタログ"
 
-#: src/lastfm/lastfm.c:94
+#: src/lastfm/lastfm.c:93
 msgid ""
 "<b><big>Couldn't initialize the last.fm radio plugin.</big></b>\n"
 "\n"
@@ -3287,56 +4751,27 @@ msgstr "%s: LIRC から切断されました\n"
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr "%s: %d 秒ごとに再接続を試みます...\n"
 
-#: src/madplug/configure.c:208
-msgid "MPEG Audio Plugin Configuration"
-msgstr "MPEG オーディオ プラグインの設定"
-
-#: src/madplug/configure.c:225
-msgid "Audio Settings"
-msgstr "オーディオ設定"
-
-#: src/madplug/configure.c:233
-msgid "Force reopen audio when audio type changed"
-msgstr "オーディオタイプが変更されたとき強制的にオーディオを再オープンする"
-
-#: src/madplug/configure.c:242
-msgid "Metadata Settings"
-msgstr "メタデータ設定"
-
-#: src/madplug/configure.c:251
+#: src/madplug/configure.c:33
 msgid "Enable fast play-length calculation"
 msgstr "高速演奏長計算を有効にする"
 
-#: src/madplug/configure.c:258
+#: src/madplug/configure.c:34
 msgid "Parse XING headers"
 msgstr "XING ヘッダをパースする"
 
-#: src/madplug/configure.c:265
+#: src/madplug/configure.c:35
 msgid "Use SJIS to write ID3 tags (not recommended)"
 msgstr "ID3 タグの書き込みに SJIS を使う (非推奨)"
 
-#: src/madplug/configure.c:272
-msgid "Miscellaneous Settings"
-msgstr "雑多な設定"
+#: src/madplug/configure.c:39
+msgid "Metadata Settings"
+msgstr "メタデータ設定"
 
-#: src/madplug/configure.c:281
-msgid "Display average bitrate for VBR"
-msgstr "VBR の平均ビットレートを表示する"
+#: src/madplug/configure.c:88
+msgid "MPEG Audio Plugin Configuration"
+msgstr "MPEG オーディオ プラグインの設定"
 
-#: src/madplug/configure.c:295 src/vorbis/configure.c:100
-msgid "Override generic titles"
-msgstr "オリジナルのタイトルを上書きする"
-
-#: src/madplug/configure.c:307
-msgid "ID3 format:"
-msgstr "ID3 の書式:"
-
-#: src/madplug/configure.c:319 src/sid/xmms-sid.glade:2610
-#: src/sid/xs_interface.c:1102
-msgid "Title"
-msgstr "タイトル"
-
-#: src/madplug/plugin.c:661
+#: src/madplug/plugin.c:562
 #, c-format
 msgid ""
 "Audacious MPEG Audio Plugin\n"
@@ -3367,15 +4802,15 @@ msgstr ""
 "リプレイゲインサポート:\n"
 "    Samuel Krempp"
 
-#: src/madplug/plugin.c:677
+#: src/madplug/plugin.c:578
 msgid "About MPEG Audio Plugin"
 msgstr "MPEG オーディオプラグインについて"
 
-#: src/metronom/metronom.c:86
+#: src/metronom/metronom.c:87
 msgid "About Metronom"
 msgstr "Metronom について"
 
-#: src/metronom/metronom.c:87
+#: src/metronom/metronom.c:88
 msgid ""
 "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
@@ -3389,109 +4824,102 @@ msgstr ""
 "例: tact://77 - 毎分 77 拍を演奏\n"
 "    tact://60*3/4 - 60 bpm を 3/4 拍子で演奏"
 
-#: src/metronom/metronom.c:197 src/metronom/metronom.c:261
+#: src/metronom/metronom.c:147
 #, c-format
 msgid "Tact generator: %d bpm"
 msgstr "タクトジェネレータ: %d bpm"
 
-#: src/metronom/metronom.c:199 src/metronom/metronom.c:263
+#: src/metronom/metronom.c:149
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "タクトジェネレータ: %d bpm %d/%d"
 
-#: src/modplug/gui/interface.cxx:136 src/modplug/gui/modplug.glade:9
+#: src/modplug/gui/interface.cxx:137 src/modplug/gui/modplug.glade:9
 msgid "ModPlug Configuration"
 msgstr "ModPlug 設定"
 
-#: src/modplug/gui/interface.cxx:173 src/modplug/gui/modplug.glade:73
-#: src/timidity/interface.c:140
+#: src/modplug/gui/interface.cxx:174 src/modplug/gui/modplug.glade:73
+#: src/timidity/interface.c:141
 msgid "16 bit"
 msgstr "16ビット"
 
-#: src/modplug/gui/interface.cxx:180 src/modplug/gui/modplug.glade:92
-#: src/timidity/interface.c:132
+#: src/modplug/gui/interface.cxx:181 src/modplug/gui/modplug.glade:92
+#: src/timidity/interface.c:133
 msgid "8 bit"
 msgstr " 8ビット"
 
-#: src/modplug/gui/interface.cxx:211 src/modplug/gui/modplug.glade:178
+#: src/modplug/gui/interface.cxx:212 src/modplug/gui/modplug.glade:178
 msgid "Mono (downmix)"
 msgstr "モノラル (ダウンミックス)"
 
-#: src/modplug/gui/interface.cxx:240 src/modplug/gui/modplug.glade:258
+#: src/modplug/gui/interface.cxx:241 src/modplug/gui/modplug.glade:258
 msgid "Nearest (fastest)"
 msgstr "最短 (最速)"
 
-#: src/modplug/gui/interface.cxx:247 src/modplug/gui/modplug.glade:277
+#: src/modplug/gui/interface.cxx:248 src/modplug/gui/modplug.glade:277
 msgid "Linear (fast)"
 msgstr "線形 (高速)"
 
-#: src/modplug/gui/interface.cxx:254 src/modplug/gui/modplug.glade:297
+#: src/modplug/gui/interface.cxx:255 src/modplug/gui/modplug.glade:297
 msgid "Spline (good quality)"
 msgstr "スプライン (良品質)"
 
-#: src/modplug/gui/interface.cxx:261 src/modplug/gui/modplug.glade:317
+#: src/modplug/gui/interface.cxx:262 src/modplug/gui/modplug.glade:317
 msgid "8-tap Fir (extremely high quality)"
 msgstr "8 タップ Fir (非常に高品質)"
 
-#: src/modplug/gui/interface.cxx:285 src/modplug/gui/modplug.glade:384
+#: src/modplug/gui/interface.cxx:286 src/modplug/gui/modplug.glade:384
 msgid "48 kHz"
 msgstr "48 kHz"
 
-#: src/modplug/gui/interface.cxx:292 src/modplug/gui/modplug.glade:403
+#: src/modplug/gui/interface.cxx:293 src/modplug/gui/modplug.glade:403
 msgid "44 kHz"
 msgstr "44 kHz"
 
-#: src/modplug/gui/interface.cxx:299 src/modplug/gui/modplug.glade:423
+#: src/modplug/gui/interface.cxx:300 src/modplug/gui/modplug.glade:423
 msgid "22 kHz"
 msgstr "22 kHz"
 
-#: src/modplug/gui/interface.cxx:306 src/modplug/gui/modplug.glade:443
+#: src/modplug/gui/interface.cxx:307 src/modplug/gui/modplug.glade:443
 msgid "11 kHz"
 msgstr "11 kHz"
 
-#: src/modplug/gui/interface.cxx:314 src/modplug/gui/modplug.glade:464
-#: src/timidity/interface.c:74
+#: src/modplug/gui/interface.cxx:315 src/modplug/gui/modplug.glade:464
+#: src/timidity/interface.c:75
 msgid "Sampling Rate"
 msgstr "サンプリングレート"
 
-#: src/modplug/gui/interface.cxx:348 src/modplug/gui/interface.cxx:410
-#: src/modplug/gui/interface.cxx:476 src/modplug/gui/interface.cxx:538
-#: src/modplug/gui/modplug.glade:560 src/modplug/gui/modplug.glade:739
-#: src/modplug/gui/modplug.glade:930 src/modplug/gui/modplug.glade:1109
-msgid "Enable"
-msgstr "有効"
-
-#: src/modplug/gui/interface.cxx:377 src/modplug/gui/interface.cxx:505
+#: src/modplug/gui/interface.cxx:378 src/modplug/gui/interface.cxx:506
 #: src/modplug/gui/modplug.glade:627 src/modplug/gui/modplug.glade:997
 msgid "Depth"
 msgstr "深さ"
 
-#: src/modplug/gui/interface.cxx:385 src/modplug/gui/interface.cxx:513
+#: src/modplug/gui/interface.cxx:386 src/modplug/gui/interface.cxx:514
 #: src/modplug/gui/modplug.glade:655 src/modplug/gui/modplug.glade:1025
 msgid "Delay"
 msgstr "遅延"
 
-#: src/modplug/gui/interface.cxx:393 src/modplug/gui/modplug.glade:692
+#: src/modplug/gui/interface.cxx:394 src/modplug/gui/modplug.glade:692
 msgid "Reverb"
 msgstr "リバーブ"
 
-#: src/modplug/gui/interface.cxx:439 src/modplug/gui/modplug.glade:806
+#: src/modplug/gui/interface.cxx:440 src/modplug/gui/modplug.glade:806
 msgid "Amount"
 msgstr "量"
 
-#: src/modplug/gui/interface.cxx:447 src/modplug/gui/modplug.glade:834
+#: src/modplug/gui/interface.cxx:448 src/modplug/gui/modplug.glade:834
 msgid "Range"
 msgstr "範囲"
 
-#: src/modplug/gui/interface.cxx:455 src/modplug/gui/modplug.glade:871
+#: src/modplug/gui/interface.cxx:456 src/modplug/gui/modplug.glade:871
 msgid "Bass Boost"
 msgstr "ベース増加"
 
-#: src/modplug/gui/interface.cxx:521 src/modplug/gui/modplug.glade:1062
+#: src/modplug/gui/interface.cxx:522 src/modplug/gui/modplug.glade:1062
 msgid "Surround"
 msgstr "サラウンド"
 
-#: src/modplug/gui/interface.cxx:560 src/modplug/gui/modplug.glade:1183
+#: src/modplug/gui/interface.cxx:561 src/modplug/gui/modplug.glade:1183
 msgid ""
 "Note:  Setting the preamp\n"
 "too high may cause clipping\n"
@@ -3501,55 +4929,55 @@ msgstr ""
 "クリッピング(うるさいカチカチ音や\n"
 "ブツブツ音)の原因になります!"
 
-#: src/modplug/gui/interface.cxx:566 src/modplug/gui/modplug.glade:1212
+#: src/modplug/gui/interface.cxx:567 src/modplug/gui/modplug.glade:1212
 msgid "Preamp"
 msgstr "プリアンプ"
 
-#: src/modplug/gui/interface.cxx:571 src/modplug/gui/modplug.glade:1255
+#: src/modplug/gui/interface.cxx:572 src/modplug/gui/modplug.glade:1255
 msgid "Effects"
 msgstr "エフェクト"
 
-#: src/modplug/gui/interface.cxx:600 src/modplug/gui/modplug.glade:1307
+#: src/modplug/gui/interface.cxx:601 src/modplug/gui/modplug.glade:1307
 msgid "Use Filename as Song Title"
 msgstr "ファイル名を曲名として使う"
 
-#: src/modplug/gui/interface.cxx:605 src/modplug/gui/modplug.glade:1326
+#: src/modplug/gui/interface.cxx:606 src/modplug/gui/modplug.glade:1326
 msgid "Fast Playlist Info"
 msgstr "高速なプレイリスト情報"
 
-#: src/modplug/gui/interface.cxx:616 src/modplug/gui/modplug.glade:1358
+#: src/modplug/gui/interface.cxx:617 src/modplug/gui/modplug.glade:1358
 msgid "Noise Reduction"
 msgstr "ノイズリダクション"
 
-#: src/modplug/gui/interface.cxx:622 src/modplug/gui/modplug.glade:1377
+#: src/modplug/gui/interface.cxx:623 src/modplug/gui/modplug.glade:1377
 msgid "Play Amiga MOD"
 msgstr "Amiga MOD を演奏する"
 
-#: src/modplug/gui/interface.cxx:645 src/modplug/gui/modplug.glade:1450
+#: src/modplug/gui/interface.cxx:646 src/modplug/gui/modplug.glade:1450
 msgid "Don't loop"
 msgstr "ループしない"
 
-#: src/modplug/gui/interface.cxx:657 src/modplug/gui/modplug.glade:1475
+#: src/modplug/gui/interface.cxx:658 src/modplug/gui/modplug.glade:1475
 msgid "Loop"
 msgstr "ループ回数"
 
-#: src/modplug/gui/interface.cxx:670 src/modplug/gui/modplug.glade:1513
+#: src/modplug/gui/interface.cxx:671 src/modplug/gui/modplug.glade:1513
 msgid "time(s)"
 msgstr "回"
 
-#: src/modplug/gui/interface.cxx:676 src/modplug/gui/modplug.glade:1546
+#: src/modplug/gui/interface.cxx:677 src/modplug/gui/modplug.glade:1546
 msgid "Loop forever"
 msgstr "永遠にループ"
 
-#: src/modplug/gui/interface.cxx:683 src/modplug/gui/modplug.glade:1567
+#: src/modplug/gui/interface.cxx:684 src/modplug/gui/modplug.glade:1567
 msgid "Looping"
 msgstr "ループ"
 
-#: src/modplug/gui/interface.cxx:858 src/modplug/gui/modplug.glade:1688
+#: src/modplug/gui/interface.cxx:859 src/modplug/gui/modplug.glade:1688
 msgid "MOD Info"
 msgstr "MOD 情報"
 
-#: src/modplug/gui/interface.cxx:877 src/modplug/gui/modplug.glade:1730
+#: src/modplug/gui/interface.cxx:878 src/modplug/gui/modplug.glade:1730
 msgid ""
 "Filename:\n"
 "Title:\n"
@@ -3573,7 +5001,7 @@ msgstr ""
 "パターン:\n"
 "チャンネル:"
 
-#: src/modplug/gui/interface.cxx:882 src/modplug/gui/modplug.glade:1764
+#: src/modplug/gui/interface.cxx:883 src/modplug/gui/modplug.glade:1764
 msgid ""
 "---\n"
 "---\n"
@@ -3597,15 +5025,15 @@ msgstr ""
 "---\n"
 "---"
 
-#: src/modplug/gui/interface.cxx:912 src/modplug/gui/modplug.glade:1869
+#: src/modplug/gui/interface.cxx:913 src/modplug/gui/modplug.glade:1869
 msgid "Samples"
 msgstr "サンプリングレート"
 
-#: src/modplug/gui/interface.cxx:937 src/modplug/gui/modplug.glade:1934
+#: src/modplug/gui/interface.cxx:938 src/modplug/gui/modplug.glade:1934
 msgid "Instruments"
 msgstr "楽器"
 
-#: src/modplug/gui/interface.cxx:958 src/modplug/gui/modplug.glade:1991
+#: src/modplug/gui/interface.cxx:959 src/modplug/gui/modplug.glade:1991
 msgid "Message"
 msgstr "メッセージ"
 
@@ -3643,207 +5071,23 @@ msgstr "pixmap ファイルが見つかりませんでした: %s"
 msgid "Upload selected track(s)"
 msgstr "選択されたトラックをアップロード"
 
-#: src/mtp_up/mtp.c:294
+#: src/mtp_up/mtp.c:290
 msgid "Upload in progress..."
 msgstr "アップロード進行中..."
 
-#: src/mtp_up/mtp.c:303
+#: src/mtp_up/mtp.c:299
 msgid "MTP device handler"
 msgstr "MTP デバイスハンドラ"
 
-#: src/mtp_up/mtp.c:307
+#: src/mtp_up/mtp.c:303
 msgid "Disconnect the device"
 msgstr "デバイスを切断"
 
-#: src/musepack/libmpc.cxx:142
-msgid "Musepack Decoder Plugin 1.2"
-msgstr "Musepack デコーダプラグイン 1.2"
-
-#: src/musepack/libmpc.cxx:143
-msgid ""
-"Plugin code by\n"
-"Benoit Amiaux\n"
-"Martin Spuler\n"
-"Kuniklo\n"
-"\n"
-"Get latest version at http://musepack.net\n"
-msgstr ""
-"プラグインコードは\n"
-"Benoit Amiaux\n"
-"Martin Spuler\n"
-"Kuniklo による\n"
-"\n"
-"http://musepack.net にて最新版が取得できます\n"
-
-#: src/musepack/libmpc.cxx:144
-msgid "Nevermind"
-msgstr "気にしない"
-
-#: src/musepack/libmpc.cxx:162
-msgid "Musepack Decoder Configuration"
-msgstr "Musepack デコーダ設定"
-
-#: src/musepack/libmpc.cxx:172
-msgid "General Settings"
-msgstr "一般的な設定"
-
-#: src/musepack/libmpc.cxx:179 src/wavpack/ui.cxx:490
-msgid "Enable Dynamic Bitrate Display"
-msgstr "動的ビットレート表示を有効にする"
-
-#: src/musepack/libmpc.cxx:183 src/wavpack/ui.cxx:496
-msgid "Plugin"
-msgstr "プラグイン"
-
-#: src/musepack/libmpc.cxx:186
-msgid "ReplayGain Settings"
-msgstr "リプレイゲインの設定"
-
-#: src/musepack/libmpc.cxx:193 src/wavpack/ui.cxx:508
-msgid "Enable Clipping Prevention"
-msgstr "クリッピング回避機能を有効にする"
-
-#: src/musepack/libmpc.cxx:198 src/wavpack/ui.cxx:513
-msgid "Enable ReplayGain"
-msgstr "リプレイゲインを有効にする"
-
-#: src/musepack/libmpc.cxx:203
-msgid "ReplayGain Type"
-msgstr "リプレイゲインの種類"
-
-#: src/musepack/libmpc.cxx:211
-msgid "Use Track Gain"
-msgstr "トラックゲインを使用する"
-
-#: src/musepack/libmpc.cxx:215
-msgid "Use Album Gain"
-msgstr "アルバムゲインを使用する"
-
-#: src/musepack/libmpc.cxx:220 src/wavpack/ui.cxx:545
-msgid "ReplayGain"
-msgstr "リプレイゲイン"
-
-#: src/musepack/libmpc.cxx:487 src/sid/xmms-sid.glade:3338
-#: src/sid/xs_interface.c:1648 src/tta/libtta.c:301 src/wavpack/ui.cxx:150
-msgid "Filename:"
-msgstr "ファイル名:"
-
-#: src/musepack/libmpc.cxx:502
-msgid "Musepack Tag"
-msgstr "Musepack タグ"
-
-#: src/musepack/libmpc.cxx:510 src/tta/libtta.c:320 src/wavpack/ui.cxx:170
-msgid "Title:"
-msgstr "タイトル:"
-
-#: src/musepack/libmpc.cxx:514 src/tta/libtta.c:330 src/wavpack/ui.cxx:182
-msgid "Artist:"
-msgstr "アーティスト:"
-
-#: src/musepack/libmpc.cxx:518 src/tta/libtta.c:341 src/wavpack/ui.cxx:194
-msgid "Album:"
-msgstr "アルバム名:"
-
-#: src/musepack/libmpc.cxx:522 src/tta/libtta.c:352 src/wavpack/ui.cxx:206
-msgid "Comment:"
-msgstr "コメント:"
-
-#: src/musepack/libmpc.cxx:526 src/tta/libtta.c:363 src/wavpack/ui.cxx:219
-msgid "Year:"
-msgstr "年:"
-
-#: src/musepack/libmpc.cxx:531
-msgid "Track:"
-msgstr "トラック:"
-
-#: src/musepack/libmpc.cxx:536 src/tta/libtta.c:387 src/wavpack/ui.cxx:246
-msgid "Genre:"
-msgstr "ジャンル:"
-
-#: src/musepack/libmpc.cxx:547 src/sid/xmms-sid.glade:1732
-#: src/sid/xs_interface.c:832 src/skins/ui_manager.c:438
-#: src/wavpack/ui.cxx:265
-msgid "Save"
-msgstr "保存"
-
-#: src/musepack/libmpc.cxx:550 src/wavpack/ui.cxx:271
-msgid "Remove Tag"
-msgstr "タグの削除"
-
-#: src/musepack/libmpc.cxx:558
-msgid "Musepack Info"
-msgstr "Musepack 情報"
-
-#: src/musepack/libmpc.cxx:591
-#, c-format
-msgid "Streamversion %d"
-msgstr "ストリームヴァージョン %d"
-
-#: src/musepack/libmpc.cxx:592
-#, c-format
-msgid "Encoder: %s"
-msgstr "エンコーダ: %s"
-
-#: src/musepack/libmpc.cxx:593
-#, c-format
-msgid "Profile: %s"
-msgstr "プロファイル: %s"
-
-#: src/musepack/libmpc.cxx:594
-#, c-format
-msgid "Average bitrate: %6.1f kbps"
-msgstr "平均ビットレート: %6.1f kbps"
-
-#: src/musepack/libmpc.cxx:595
-#, c-format
-msgid "Samplerate: %d Hz"
-msgstr "サンプリングレート: %d Hz"
-
-#: src/musepack/libmpc.cxx:596
-#, c-format
-msgid "Channels: %d"
-msgstr "チャンネル数: %d"
-
-#: src/musepack/libmpc.cxx:597
-#, c-format
-msgid "Length: %d:\\%.2d"
-msgstr "長さ: %d:\\%.2d"
-
-#: src/musepack/libmpc.cxx:598
-#, c-format
-msgid "File size: %d Bytes"
-msgstr "ファイルサイズ: %d Bytes"
-
-#: src/musepack/libmpc.cxx:599
-#, c-format
-msgid "Track Peak: %5u"
-msgstr "トラックピーク: %5u"
-
-#: src/musepack/libmpc.cxx:600
-#, c-format
-msgid "Track Gain: %-+2.2f dB"
-msgstr "トラックゲイン: %-+2.2f dB"
-
-#: src/musepack/libmpc.cxx:601
-#, c-format
-msgid "Album Peak: %5u"
-msgstr "アルバムピーク: %5u"
-
-#: src/musepack/libmpc.cxx:602
-#, c-format
-msgid "Album Gain: %-+5.2f dB"
-msgstr "アルバムゲイン: %-+5.2f dB"
-
-#: src/musepack/libmpc.cxx:630 src/tta/libtta.c:410 src/wavpack/ui.cxx:407
-#, c-format
-msgid "File Info - %s"
-msgstr "ファイル情報 - %s"
-
-#: src/null/null.c:58
+#: src/null/null.c:59
 msgid "Null output plugin "
 msgstr "ヌル出力プラグイン "
 
-#: src/null/null.c:59
+#: src/null/null.c:60
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
 "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
@@ -3851,44 +5095,43 @@ msgstr ""
 " Håvard Kvål <havardk@xmms.org> の XMMS プラグインをベースとした\n"
 " Christian Birchinger <joker@netswarm.net> によるポート"
 
-#: src/null/null.c:62
+#: src/null/null.c:63
 msgid "About Null Output"
 msgstr "ヌル出力プラグインについて"
 
-#: src/null/null.c:91
+#: src/null/null.c:92
 msgid "Null output preferences"
 msgstr "ヌル出力設定"
 
-#: src/null/null.c:100
+#: src/null/null.c:101
 msgid "Run in real time"
 msgstr "実時間で実行する"
 
-#: src/OSS4/configure.c:118 src/OSS/configure.c:150
-#, c-format
-msgid "Default (%s)"
-msgstr "デフォルト (%s)"
-
-#: src/OSS4/configure.c:168 src/OSS/configure.c:200
+#: src/OSS4/configure.c:191 src/OSS/configure.c:201
 msgid "OSS Driver configuration"
 msgstr "OSS ドライバの設定"
 
-#: src/OSS4/configure.c:206 src/OSS/configure.c:238 src/OSS/configure.c:279
+#: src/OSS4/configure.c:207 src/OSS/configure.c:217 src/sun/configure.c:181
+msgid "Audio device:"
+msgstr "オーディオデバイス:"
+
+#: src/OSS4/configure.c:229 src/OSS/configure.c:239 src/OSS/configure.c:280
 msgid "Use alternate device:"
 msgstr "代替デバイスを使用する:"
 
-#: src/OSS4/configure.c:228 src/OSS/configure.c:301 src/sun/configure.c:246
+#: src/OSS4/configure.c:251 src/OSS/configure.c:302 src/sun/configure.c:246
 msgid "Devices"
 msgstr "デバイス"
 
-#: src/OSS4/configure.c:270 src/OSS/configure.c:342
+#: src/OSS4/configure.c:293 src/OSS/configure.c:343
 msgid "Mixer Settings:"
 msgstr "ミキサの設定:"
 
-#: src/OSS4/configure.c:276
+#: src/OSS4/configure.c:299
 msgid "Save VMIX volume between sessions"
 msgstr "セッション間の VMIX 音量を保存"
 
-#: src/OSS4/configure.c:282 src/OSS/configure.c:354 src/sun/configure.c:392
+#: src/OSS4/configure.c:305 src/OSS/configure.c:355 src/sun/configure.c:392
 msgid "Mixer"
 msgstr "ミキサ"
 
@@ -3897,6 +5140,7 @@ msgid "About OSSv4 Driver"
 msgstr "OSSv4 ドライバについて"
 
 #: src/OSS4/OSS4.c:39
+#, fuzzy
 msgid ""
 "Audacious OSSv4 Driver\n"
 "\n"
@@ -3916,7 +5160,12 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
+"USA.\n"
+"\n"
+"Note: For any issues regarding this plugin (including patches and \n"
+"suggestions) please contact the maintainer, and NO other \n"
+"Audacious developers\n"
+"\n"
 msgstr ""
 "Audacious OSSv4 ドライバ\n"
 "\n"
@@ -3938,15 +5187,20 @@ msgstr ""
 "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
 "USA. まで請求して下さい."
 
-#: src/OSS/configure.c:348
+#: src/OSS/configure.c:151
+#, c-format
+msgid "Default (%s)"
+msgstr "デフォルト (%s)"
+
+#: src/OSS/configure.c:349
 msgid "Volume controls Master not PCM"
 msgstr "音量の調整は PCM ではなくマスタを使用する"
 
-#: src/OSS/OSS.c:37
+#: src/OSS/OSS.c:39
 msgid "About OSS Driver"
 msgstr "OSS ドライバについて"
 
-#: src/OSS/OSS.c:38
+#: src/OSS/OSS.c:40
 msgid ""
 "Audacious OSS Driver\n"
 "\n"
@@ -3982,69 +5236,31 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA. へ手紙を書いて下さい."
 
-#: src/projectm-1.0/main.c:70
-msgid "_Random"
-msgstr "ランダム(R_)"
-
-#: src/pulse_audio/pulse_audio.c:720
-msgid "About Audacious PulseAudio Output Plugin"
-msgstr "Audacious PulseAudio 出力プラグインについて"
-
-#: src/pulse_audio/pulse_audio.c:721
-msgid ""
-"Audacious PulseAudio Output Plugin\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Audacious PulseAudio 出力プラグイン\n"
-"\n"
-"このプログラムはフリーソフトウェアです;\n"
-"フリーソフトウェア財団が提供する GNU 一般公有使用許諾契約書\n"
-"の第二版か, 希望によってはそれ以降の版のどれかが定める条項の下で\n"
-"本プログラムを再頒布または変更することができます.\n"
-"\n"
-"本プログラムは有であることを願って頒布されていますが,\n"
-"まったくの無保証です; 市場性及び特定目的, 適合性についての\n"
-"暗黙の保証を含めて, いかなる保証も行ないません.\n"
-"詳細については GNU 一般公有使用許諾契約書をご覧下さい.\n"
-"\n"
-"あなたは, 本プログラムと一緒に GNU 一般公有使用許諾契約書の\n"
-"写しを受け取っているはずです. そうでない場合は, the Free Software\n"
-"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
-"USA. まで請求して下さい."
-
-#: src/scrobbler/configure.c:134
+#: src/scrobbler/configure.c:175
 msgid "<b>Services</b>"
 msgstr "<b>サービス</b>"
 
-#: src/scrobbler/configure.c:156 src/scrobbler/configure.c:195
+#: src/scrobbler/configure.c:197 src/scrobbler/configure.c:259
 msgid "Username:"
 msgstr "ユーザ名:"
 
-#: src/scrobbler/configure.c:162 src/scrobbler/configure.c:201
-msgid "Password:"
-msgstr "パスワード:"
+#: src/scrobbler/configure.c:211
+#, fuzzy
+msgid "Scrobbler URL:"
+msgstr "Scrobbler エラー"
 
-#: src/scrobbler/configure.c:179
+#: src/scrobbler/configure.c:243
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:218
+#: src/scrobbler/configure.c:291
 msgid "<b>Gerpok</b>"
 msgstr "<b>Gerpok</b>"
+
+#: src/scrobbler/configure.c:350
+#, fuzzy
+msgid "Scrobbler"
+msgstr "Scrobbler エラー"
 
 #: src/scrobbler/gtkstuff.c:18
 msgid ""
@@ -4081,55 +5297,55 @@ msgstr ""
 msgid "Scrobbler Error"
 msgstr "Scrobbler エラー"
 
-#: src/sid/xmms-sid.glade:8 src/sid/xs_interface.c:233
+#: src/sid/xmms-sid.glade:8 src/sid/xs_interface.c:234
 msgid "Audacious-SID configuration"
 msgstr "Audacious-SID 設定"
 
-#: src/sid/xmms-sid.glade:71 src/sid/xs_interface.c:269
+#: src/sid/xmms-sid.glade:71 src/sid/xs_interface.c:270
 msgid "8-bit"
 msgstr " 8ビット"
 
-#: src/sid/xmms-sid.glade:90 src/sid/xs_interface.c:276
+#: src/sid/xmms-sid.glade:90 src/sid/xs_interface.c:277
 msgid "16-bit"
 msgstr "16ビット"
 
-#: src/sid/xmms-sid.glade:111 src/sid/xs_interface.c:283
+#: src/sid/xmms-sid.glade:111 src/sid/xs_interface.c:284
 msgid "Resolution:"
 msgstr "解像度:"
 
-#: src/sid/xmms-sid.glade:196 src/sid/xs_interface.c:314
+#: src/sid/xmms-sid.glade:196 src/sid/xs_interface.c:315
 msgid "Autopanning"
 msgstr "オートパニング"
 
-#: src/sid/xmms-sid.glade:217 src/sid/xs_interface.c:321
+#: src/sid/xmms-sid.glade:217 src/sid/xs_interface.c:322
 msgid "Channels:"
 msgstr "チャンネル数:"
 
-#: src/sid/xmms-sid.glade:384 src/sid/xs_interface.c:365
+#: src/sid/xmms-sid.glade:384 src/sid/xs_interface.c:366
 msgid "Samplerate:"
 msgstr "サンプリングレート:"
 
-#: src/sid/xmms-sid.glade:430 src/sid/xs_interface.c:382
+#: src/sid/xmms-sid.glade:430 src/sid/xs_interface.c:383
 msgid "Use oversampling"
 msgstr "オーバーサンプリングを使う"
 
-#: src/sid/xmms-sid.glade:456 src/sid/xs_interface.c:393
+#: src/sid/xmms-sid.glade:456 src/sid/xs_interface.c:394
 msgid "Factor:"
 msgstr "ファクター:"
 
-#: src/sid/xmms-sid.glade:500 src/sid/xs_interface.c:405
+#: src/sid/xmms-sid.glade:500 src/sid/xs_interface.c:406
 msgid "Large factors require more CPU-power"
 msgstr "大きなファクターはより CPU パワーを必要とします"
 
-#: src/sid/xmms-sid.glade:534 src/sid/xs_interface.c:411
+#: src/sid/xmms-sid.glade:534 src/sid/xs_interface.c:412
 msgid "Oversampling:"
 msgstr "オーバーサンプリング:"
 
-#: src/sid/xmms-sid.glade:570 src/sid/xs_interface.c:416
+#: src/sid/xmms-sid.glade:570 src/sid/xs_interface.c:417
 msgid "Audio"
 msgstr "オーディオ"
 
-#: src/sid/xmms-sid.glade:620 src/sid/xs_interface.c:448
+#: src/sid/xmms-sid.glade:620 src/sid/xs_interface.c:449
 msgid ""
 "If enabled, this option \"forces\" the emulation engine to use the selected "
 "clock speed/frequency. Otherwise the speed is determined from played file "
@@ -4139,11 +5355,11 @@ msgstr ""
 "うことを\"強制\"します. そうでなければ, 速度は演奏するファイル自体から決定さ"
 "れます."
 
-#: src/sid/xmms-sid.glade:622 src/sid/xs_interface.c:444
+#: src/sid/xmms-sid.glade:622 src/sid/xs_interface.c:445
 msgid "Force speed"
 msgstr "速度を強制する"
 
-#: src/sid/xmms-sid.glade:640 src/sid/xs_interface.c:454
+#: src/sid/xmms-sid.glade:640 src/sid/xs_interface.c:455
 msgid ""
 "PAL is the european TV standard, which uses 50Hz vertical refresh frequency. "
 "Most of SID-tunes have been made for PAL computers."
@@ -4151,11 +5367,11 @@ msgstr ""
 "PAL は 50Hz のリフレッシュレートを用いるヨーロッパの TV 規格です. ほとんどの "
 "SID-tunes は PAL コンピュータ向けに作られています."
 
-#: src/sid/xmms-sid.glade:642 src/sid/xs_interface.c:450
+#: src/sid/xmms-sid.glade:642 src/sid/xs_interface.c:451
 msgid "PAL (50 Hz)"
 msgstr "PAL (50 Hz)"
 
-#: src/sid/xmms-sid.glade:660 src/sid/xs_interface.c:462
+#: src/sid/xmms-sid.glade:660 src/sid/xs_interface.c:463
 msgid ""
 "NTSC is the TV standard with 60Hz vertical refresh rate (and other features "
 "that differ from PAL). It is mainly used in United States, Japan and certain "
@@ -4164,15 +5380,15 @@ msgstr ""
 "NTSC は 60Hz のリフレッシュレートを用い, PAL とは他にも異なる特徴を持つ TV 規"
 "格です. 主にアメリカ, 日本や他の国々で用いられています."
 
-#: src/sid/xmms-sid.glade:662 src/sid/xs_interface.c:458
+#: src/sid/xmms-sid.glade:662 src/sid/xs_interface.c:459
 msgid "NTSC (60 Hz)"
 msgstr "NTSC (60 Hz)"
 
-#: src/sid/xmms-sid.glade:683 src/sid/xs_interface.c:466
+#: src/sid/xmms-sid.glade:683 src/sid/xs_interface.c:467
 msgid "Clock speed:"
 msgstr "クロック速度:"
 
-#: src/sid/xmms-sid.glade:728 src/sid/xs_interface.c:487
+#: src/sid/xmms-sid.glade:728 src/sid/xs_interface.c:488
 msgid ""
 "If enabled, this option \"forces\" the emulation engine to use the selected "
 "SID-chip model. Otherwise the preferred SID model is determined from the "
@@ -4182,11 +5398,11 @@ msgstr ""
 "\"強制\"します. 無効ならば, ファイルが PSIDv2NG タイプなら, 望ましい SID モデ"
 "ルが決定されますが, 利用できなければこの設定が用いられます."
 
-#: src/sid/xmms-sid.glade:730 src/sid/xs_interface.c:483
+#: src/sid/xmms-sid.glade:730 src/sid/xs_interface.c:484
 msgid "Force model"
 msgstr "モデルを強制する"
 
-#: src/sid/xmms-sid.glade:748 src/sid/xs_interface.c:493
+#: src/sid/xmms-sid.glade:748 src/sid/xs_interface.c:494
 msgid ""
 "MOS/CSG 6581 is the earlier major version of SID chip. It differs from 8580 "
 "in few ways, having much fuller filter (which, due to design error, is never "
@@ -4198,19 +5414,19 @@ msgstr ""
 "の SID チップは同じではありません), デジタルサンプルの再生を有効にする \"音量"
 "調整バグ\" があります."
 
-#: src/sid/xmms-sid.glade:750 src/sid/xs_interface.c:489
+#: src/sid/xmms-sid.glade:750 src/sid/xs_interface.c:490
 msgid "MOS 6581"
 msgstr "MOS 6581"
 
-#: src/sid/xmms-sid.glade:769 src/sid/xs_interface.c:497
+#: src/sid/xmms-sid.glade:769 src/sid/xs_interface.c:498
 msgid "MOS 8580"
 msgstr "MOS 8580"
 
-#: src/sid/xmms-sid.glade:790 src/sid/xs_interface.c:504
+#: src/sid/xmms-sid.glade:790 src/sid/xs_interface.c:505
 msgid "SID model:"
 msgstr "SID モデル:"
 
-#: src/sid/xmms-sid.glade:842 src/sid/xs_interface.c:525
+#: src/sid/xmms-sid.glade:842 src/sid/xs_interface.c:526
 msgid ""
 "Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most "
 "cases, though."
@@ -4218,11 +5434,11 @@ msgstr ""
 "高速ですがそれほど正確ではない libSIDPlay 1.x を用います. ですがほとんどの場"
 "合問題ありません."
 
-#: src/sid/xmms-sid.glade:844 src/sid/xs_interface.c:521
+#: src/sid/xmms-sid.glade:844 src/sid/xs_interface.c:522
 msgid "SIDPlay 1 (frame-based)"
 msgstr "SIDPlay 1 (フレームベース)"
 
-#: src/sid/xmms-sid.glade:863 src/sid/xs_interface.c:533
+#: src/sid/xmms-sid.glade:863 src/sid/xs_interface.c:534
 msgid ""
 "Use libSIDPlay 2.x emulation, which requires powerful CPU due to more exact "
 "emulation."
@@ -4230,39 +5446,39 @@ msgstr ""
 "より正確なエミュレーションのために強力な CPU を必要とする libSIDPlay 2.x を用"
 "います."
 
-#: src/sid/xmms-sid.glade:865 src/sid/xs_interface.c:529
+#: src/sid/xmms-sid.glade:865 src/sid/xs_interface.c:530
 msgid "SIDPlay 2 (cycle-based)"
 msgstr "SIDPlay 2 (サイクルベース)"
 
-#: src/sid/xmms-sid.glade:887 src/sid/xs_interface.c:537
+#: src/sid/xmms-sid.glade:887 src/sid/xs_interface.c:538
 msgid "Emulation library selection:"
 msgstr "エミュレーションライブラリの選択"
 
-#: src/sid/xmms-sid.glade:933 src/sid/xs_interface.c:554
+#: src/sid/xmms-sid.glade:933 src/sid/xs_interface.c:555
 msgid "Real C64 (SIDPlay 2 only)"
 msgstr "Real C64 (SIDPlay 2 専用)"
 
-#: src/sid/xmms-sid.glade:952 src/sid/xs_interface.c:561
+#: src/sid/xmms-sid.glade:952 src/sid/xs_interface.c:562
 msgid "Bank switching"
 msgstr "バンクスイッチング"
 
-#: src/sid/xmms-sid.glade:972 src/sid/xs_interface.c:568
+#: src/sid/xmms-sid.glade:972 src/sid/xs_interface.c:569
 msgid "Transparent ROM"
 msgstr "透過 ROM"
 
-#: src/sid/xmms-sid.glade:992 src/sid/xs_interface.c:575
+#: src/sid/xmms-sid.glade:992 src/sid/xs_interface.c:576
 msgid "PlaySID environment"
 msgstr "PlaySID 環境"
 
-#: src/sid/xmms-sid.glade:1013 src/sid/xs_interface.c:582
+#: src/sid/xmms-sid.glade:1013 src/sid/xs_interface.c:583
 msgid "Memory mode:"
 msgstr "メモリモード:"
 
-#: src/sid/xmms-sid.glade:1049 src/sid/xs_interface.c:587
+#: src/sid/xmms-sid.glade:1049 src/sid/xs_interface.c:588
 msgid "Emu#1"
 msgstr "Emu#1"
 
-#: src/sid/xmms-sid.glade:1093 src/sid/xs_interface.c:614
+#: src/sid/xmms-sid.glade:1093 src/sid/xs_interface.c:615
 msgid ""
 "This setting can be used to enable libSIDPlay2's \"optimization mode\", "
 "which in downgrades the emulation from cycle-exact to something similar to "
@@ -4272,11 +5488,11 @@ msgstr ""
 "クル正確からフレーム正確に似た何かに格下げします. この結果, CPU 使用率は下が"
 "りますが, 正確さは悪くなります."
 
-#: src/sid/xmms-sid.glade:1095 src/sid/xs_interface.c:610
+#: src/sid/xmms-sid.glade:1095 src/sid/xs_interface.c:611
 msgid "Optimization mode (faster, inaccurate)"
 msgstr "最適化モード (高速, 不正確)"
 
-#: src/sid/xmms-sid.glade:1113 src/sid/xs_interface.c:620
+#: src/sid/xmms-sid.glade:1113 src/sid/xs_interface.c:621
 msgid ""
 "reSID is the software SID-chip simulator based on SID reverse-engineering, "
 "created by Dag Lem. It is probably the closest thing to real SID available "
@@ -4286,11 +5502,11 @@ msgstr ""
 "トウェア SID チップシミュレータです. ソフトウェアのみでのエミュレーションで"
 "は, 本物の利用可能な SID におそらく最も近いものです."
 
-#: src/sid/xmms-sid.glade:1115 src/sid/xs_interface.c:616
+#: src/sid/xmms-sid.glade:1115 src/sid/xs_interface.c:617
 msgid "reSID-emulation"
 msgstr "reSID エミュレーション"
 
-#: src/sid/xmms-sid.glade:1133 src/sid/xs_interface.c:628
+#: src/sid/xmms-sid.glade:1133 src/sid/xs_interface.c:629
 msgid ""
 "HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a "
 "real SID-chip. Software can be used to control the HardSID and combined with "
@@ -4304,49 +5520,49 @@ msgstr ""
 "似点を \"ほぼ 100%\" 達成するために用いられます. より多くの情報は http://www."
 "hardsid.com/ を参照してください."
 
-#: src/sid/xmms-sid.glade:1135 src/sid/xs_interface.c:624
+#: src/sid/xmms-sid.glade:1135 src/sid/xs_interface.c:625
 msgid "HardSID"
 msgstr "HardSID"
 
-#: src/sid/xmms-sid.glade:1156 src/sid/xs_interface.c:632
+#: src/sid/xmms-sid.glade:1156 src/sid/xs_interface.c:633
 msgid "SIDPlay 2 options:"
 msgstr "SIDPlay 2 オプション:"
 
-#: src/sid/xmms-sid.glade:1201 src/sid/xs_interface.c:653
+#: src/sid/xmms-sid.glade:1201 src/sid/xs_interface.c:654
 msgid ""
 "Fastest and also worst sounding sampling method, simply picks nearest "
 "neighbouring sample."
 msgstr ""
 "単純に最近傍のサンプルを用いるだけの, 最速ですが最悪のサンプリング方法です."
 
-#: src/sid/xmms-sid.glade:1203 src/sid/xs_interface.c:649
+#: src/sid/xmms-sid.glade:1203 src/sid/xs_interface.c:650
 msgid "Fast (nearest neighbour)"
 msgstr "高速 (最近傍)"
 
-#: src/sid/xmms-sid.glade:1221 src/sid/xs_interface.c:661
+#: src/sid/xmms-sid.glade:1221 src/sid/xs_interface.c:662
 msgid ""
 "Uses linear interpolation between samples, yielding higher audio quality "
 "with less sampling noise."
 msgstr ""
 "高い音質を低いサンプリングノイズで生成する, サンプル間の線形補間を用います."
 
-#: src/sid/xmms-sid.glade:1223 src/sid/xs_interface.c:657
+#: src/sid/xmms-sid.glade:1223 src/sid/xs_interface.c:658
 msgid "Linear interpolation"
 msgstr "線形補間"
 
-#: src/sid/xmms-sid.glade:1263 src/sid/xs_interface.c:672
+#: src/sid/xmms-sid.glade:1263 src/sid/xs_interface.c:673
 msgid "Resampling (FIR)"
 msgstr "リサンプリング (FIR)"
 
-#: src/sid/xmms-sid.glade:1284 src/sid/xs_interface.c:679
+#: src/sid/xmms-sid.glade:1284 src/sid/xs_interface.c:680
 msgid "reSID sampling options:"
 msgstr "reSID サンプリングオプション:"
 
-#: src/sid/xmms-sid.glade:1320 src/sid/xs_interface.c:684
+#: src/sid/xmms-sid.glade:1320 src/sid/xs_interface.c:685
 msgid "Emu#2"
 msgstr "Emu#2"
 
-#: src/sid/xmms-sid.glade:1350 src/sid/xs_interface.c:700
+#: src/sid/xmms-sid.glade:1350 src/sid/xs_interface.c:701
 msgid ""
 "This option enables emulation of SID filter. The filter is an essential part "
 "of SID's sound capacity, but accurate emulation of it may require quite much "
@@ -4358,61 +5574,56 @@ msgstr ""
 "ます. しかし, フィルタエミュレーションが無効だと, フィルタを使っている音色は"
 "まったく本物のようには聞こえません."
 
-#: src/sid/xmms-sid.glade:1352 src/sid/xs_interface.c:696
+#: src/sid/xmms-sid.glade:1352 src/sid/xs_interface.c:697
 msgid "Emulate filters"
 msgstr "フィルタをエミュレートする"
 
-#: src/sid/xmms-sid.glade:1409 src/sid/xs_interface.c:725
+#: src/sid/xmms-sid.glade:1409 src/sid/xs_interface.c:726
 msgid "FS"
 msgstr "FS"
 
-#: src/sid/xmms-sid.glade:1460 src/sid/xs_interface.c:742
+#: src/sid/xmms-sid.glade:1460 src/sid/xs_interface.c:743
 msgid "FM"
 msgstr "FM"
 
-#: src/sid/xmms-sid.glade:1511 src/sid/xs_interface.c:759
+#: src/sid/xmms-sid.glade:1511 src/sid/xs_interface.c:760
 msgid "FT"
 msgstr "FT"
 
-#: src/sid/xmms-sid.glade:1549 src/sid/xs_interface.c:770
+#: src/sid/xmms-sid.glade:1549 src/sid/xs_interface.c:771
 msgid "Reset values"
 msgstr "値をリセット"
 
-#: src/sid/xmms-sid.glade:1578 src/sid/xs_interface.c:775
+#: src/sid/xmms-sid.glade:1578 src/sid/xs_interface.c:776
 msgid "SIDPlay1"
 msgstr "SIDPlay1"
 
-#: src/sid/xmms-sid.glade:1690 src/sid/xs_interface.c:816
+#: src/sid/xmms-sid.glade:1690 src/sid/xs_interface.c:817
 msgid "Export"
 msgstr "エクスポート"
 
-#: src/sid/xmms-sid.glade:1711 src/sid/xs_interface.c:824
+#: src/sid/xmms-sid.glade:1711 src/sid/xs_interface.c:825
 msgid "Use"
 msgstr "使用"
 
-#: src/sid/xmms-sid.glade:1753 src/sid/xs_interface.c:840
-#: src/skins/ui_manager.c:437
+#: src/sid/xmms-sid.glade:1753 src/sid/xs_interface.c:841
+#: src/skins/ui_manager.c:428
 msgid "Import"
 msgstr "インポート"
 
-#: src/sid/xmms-sid.glade:1774 src/sid/xs_interface.c:848
-#: src/skins/ui_manager.c:439
-msgid "Delete"
-msgstr "削除"
-
-#: src/sid/xmms-sid.glade:1819 src/sid/xs_interface.c:862
+#: src/sid/xmms-sid.glade:1819 src/sid/xs_interface.c:863
 msgid "Filter curve:"
 msgstr "フィルタ曲線:"
 
-#: src/sid/xmms-sid.glade:1855 src/sid/xs_interface.c:867
+#: src/sid/xmms-sid.glade:1855 src/sid/xs_interface.c:868
 msgid "SIDPlay2"
 msgstr "SIDPlay2"
 
-#: src/sid/xmms-sid.glade:1891 src/sid/xs_interface.c:873
+#: src/sid/xmms-sid.glade:1891 src/sid/xs_interface.c:874
 msgid "Filters"
 msgstr "フィルタ"
 
-#: src/sid/xmms-sid.glade:1935 src/sid/xs_interface.c:900
+#: src/sid/xmms-sid.glade:1935 src/sid/xs_interface.c:901
 msgid ""
 "If enabled, the tune is played at least for the specified time, adding "
 "silence to the end if necessary."
@@ -4420,21 +5631,21 @@ msgstr ""
 "有効ならば, 必要に応じて末尾に無音部分を追加し, 音色は少なくとも指定された時"
 "間で演奏されます."
 
-#: src/sid/xmms-sid.glade:1937 src/sid/xs_interface.c:896
+#: src/sid/xmms-sid.glade:1937 src/sid/xs_interface.c:897
 msgid "Play at least for specified time"
 msgstr "少なくとも指定された時間で演奏"
 
 #: src/sid/xmms-sid.glade:1962 src/sid/xmms-sid.glade:2133
-#: src/sid/xmms-sid.glade:2702 src/sid/xs_interface.c:907
-#: src/sid/xs_interface.c:961 src/sid/xs_interface.c:1141
+#: src/sid/xmms-sid.glade:2702 src/sid/xs_interface.c:908
+#: src/sid/xs_interface.c:962 src/sid/xs_interface.c:1142
 msgid "Playtime:"
 msgstr "演奏時間:"
 
-#: src/sid/xmms-sid.glade:2041 src/sid/xs_interface.c:927
+#: src/sid/xmms-sid.glade:2041 src/sid/xs_interface.c:928
 msgid "Minimum playtime:"
 msgstr "最小演奏時間:"
 
-#: src/sid/xmms-sid.glade:2086 src/sid/xs_interface.c:948
+#: src/sid/xmms-sid.glade:2086 src/sid/xs_interface.c:949
 msgid ""
 "If enabled, tune is played until specified duration is reached (aka maximum "
 "playtime)."
@@ -4442,26 +5653,26 @@ msgstr ""
 "有効ならば, 音色は指定された持続時間 (最大演奏時間) に到達するまで演奏されま"
 "す."
 
-#: src/sid/xmms-sid.glade:2088 src/sid/xs_interface.c:944
+#: src/sid/xmms-sid.glade:2088 src/sid/xs_interface.c:945
 msgid "Play for specified time maximum"
 msgstr "指定された時間いっぱいまで演奏"
 
-#: src/sid/xmms-sid.glade:2107 src/sid/xs_interface.c:954
+#: src/sid/xmms-sid.glade:2107 src/sid/xs_interface.c:955
 msgid ""
 "If enabled, the maximum playtime is applied only if song/tune length is not "
 "known."
 msgstr ""
 "有効ならば, 曲や音色の長さが不明な場合のみ, 最大演奏時間が用いられます."
 
-#: src/sid/xmms-sid.glade:2109 src/sid/xs_interface.c:950
+#: src/sid/xmms-sid.glade:2109 src/sid/xs_interface.c:951
 msgid "Only when song length is unknown"
 msgstr "曲の長さが不明な場合のみ"
 
-#: src/sid/xmms-sid.glade:2212 src/sid/xs_interface.c:981
+#: src/sid/xmms-sid.glade:2212 src/sid/xs_interface.c:982
 msgid "Maximum playtime:"
 msgstr "最大演奏時間:"
 
-#: src/sid/xmms-sid.glade:2257 src/sid/xs_interface.c:1002
+#: src/sid/xmms-sid.glade:2257 src/sid/xs_interface.c:1003
 msgid ""
 "This option enables using of XSIDPLAY compatible song length database. "
 "(Refer to Audacious-SID documentation for more information)"
@@ -4469,31 +5680,31 @@ msgstr ""
 "XSIDPLAY 互換の曲の長さデータベースを使用します. (より多くの情報は Audacious-"
 "SID の文書を参照してください)"
 
-#: src/sid/xmms-sid.glade:2259 src/sid/xs_interface.c:998
+#: src/sid/xmms-sid.glade:2259 src/sid/xs_interface.c:999
 msgid "Use XSIDPLAY-compatible database"
 msgstr "XSIDPLAY 互換データベースを使う"
 
-#: src/sid/xmms-sid.glade:2284 src/sid/xs_interface.c:1009
+#: src/sid/xmms-sid.glade:2284 src/sid/xs_interface.c:1010
 msgid "DB-file:"
 msgstr "DB ファイル:"
 
-#: src/sid/xmms-sid.glade:2309 src/sid/xs_interface.c:1019
+#: src/sid/xmms-sid.glade:2309 src/sid/xs_interface.c:1020
 msgid "Database path and filename"
 msgstr "データベースパスとファイル名"
 
-#: src/sid/xmms-sid.glade:2329 src/sid/xs_interface.c:1026
+#: src/sid/xmms-sid.glade:2329 src/sid/xs_interface.c:1027
 msgid "Browse for song length-database file"
 msgstr "曲の長さデータベースファイルを参照"
 
-#: src/sid/xmms-sid.glade:2418 src/sid/xs_interface.c:1048
+#: src/sid/xmms-sid.glade:2418 src/sid/xs_interface.c:1049
 msgid "Song length database:"
 msgstr "曲の長さデータベース:"
 
-#: src/sid/xmms-sid.glade:2454 src/sid/xs_interface.c:1053
+#: src/sid/xmms-sid.glade:2454 src/sid/xs_interface.c:1054
 msgid "Songlength"
 msgstr "曲の長さ"
 
-#: src/sid/xmms-sid.glade:2492 src/sid/xs_interface.c:1075
+#: src/sid/xmms-sid.glade:2492 src/sid/xs_interface.c:1076
 msgid ""
 "By enabling this option you can specify a custom Tuplez formatting string "
 "for SID-files. The SID-plugin specific Tuplez tags are described shortly "
@@ -4502,15 +5713,15 @@ msgstr ""
 "このオプションを有効にすると，SID ファイルのカスタムタプルフォーマット文字列"
 "を指定できます．SID プラグインで指定するタプルタグはすぐ下に記述します．"
 
-#: src/sid/xmms-sid.glade:2494 src/sid/xs_interface.c:1071
+#: src/sid/xmms-sid.glade:2494 src/sid/xs_interface.c:1072
 msgid "Override generic Tuplez format string"
 msgstr "オリジナルのタプルフォーマット文字列を上書きする"
 
-#: src/sid/xmms-sid.glade:2519 src/sid/xs_interface.c:1086
+#: src/sid/xmms-sid.glade:2519 src/sid/xs_interface.c:1087
 msgid "Tuplez format string for SID-files"
 msgstr "SID ファイルのタプルフォーマット文字列"
 
-#: src/sid/xmms-sid.glade:2539 src/sid/xs_interface.c:1089
+#: src/sid/xmms-sid.glade:2539 src/sid/xs_interface.c:1090
 msgid ""
 "<u>SID-specific Tuplez fields:</u>\n"
 "\n"
@@ -4532,11 +5743,15 @@ msgstr ""
 "\n"
 "<b>subsong-num, subsong-id</b>"
 
-#: src/sid/xmms-sid.glade:2581 src/sid/xs_interface.c:1097
+#: src/sid/xmms-sid.glade:2581 src/sid/xs_interface.c:1098
 msgid "Song title format:"
 msgstr "曲のタイトルの書式:"
 
-#: src/sid/xmms-sid.glade:2654 src/sid/xs_interface.c:1128
+#: src/sid/xmms-sid.glade:2610 src/sid/xs_interface.c:1103
+msgid "Title"
+msgstr "タイトル"
+
+#: src/sid/xmms-sid.glade:2654 src/sid/xs_interface.c:1129
 msgid ""
 "If enabled, sub-tunes of each file will be added to playlist. If disabled, "
 "only the default sub-tune will be added."
@@ -4544,23 +5759,23 @@ msgstr ""
 "有効にすると，各ファイルのサブチューンがプレイリストに追加されます．無効にす"
 "ると，デフォルトのサブチューンのみが追加されます．"
 
-#: src/sid/xmms-sid.glade:2656 src/sid/xs_interface.c:1124
+#: src/sid/xmms-sid.glade:2656 src/sid/xs_interface.c:1125
 msgid "Add sub-tunes to playlist"
 msgstr "サブチューンをプレイリストに追加"
 
-#: src/sid/xmms-sid.glade:2675 src/sid/xs_interface.c:1134
+#: src/sid/xmms-sid.glade:2675 src/sid/xs_interface.c:1135
 msgid "Only add sub-tunes that have a duration of at least specified time."
 msgstr "少なくとも指定された時間の持続時間を持ったサブチューンのみ追加します．"
 
-#: src/sid/xmms-sid.glade:2677 src/sid/xs_interface.c:1130
+#: src/sid/xmms-sid.glade:2677 src/sid/xs_interface.c:1131
 msgid "Only tunes with specified minimum duration"
 msgstr "指定された最小の長さのチューンのみ"
 
-#: src/sid/xmms-sid.glade:2780 src/sid/xs_interface.c:1161
+#: src/sid/xmms-sid.glade:2780 src/sid/xs_interface.c:1162
 msgid "Sub-tune handling:"
 msgstr "サブチューンの取り扱い:"
 
-#: src/sid/xmms-sid.glade:2825 src/sid/xs_interface.c:1182
+#: src/sid/xmms-sid.glade:2825 src/sid/xs_interface.c:1183
 msgid ""
 "If this option is enabled (and the database & HVSC settings below are "
 "correctly set), Audacious-SID will use and display additional information "
@@ -4570,15 +5785,15 @@ msgstr ""
 "Audacious-SID は HVSC SID が演奏された場合 STIL データベースから追加情報の使"
 "用・表示を行います."
 
-#: src/sid/xmms-sid.glade:2827 src/sid/xs_interface.c:1178
+#: src/sid/xmms-sid.glade:2827 src/sid/xs_interface.c:1179
 msgid "Use STIL database"
 msgstr "STIL データベースを使う"
 
-#: src/sid/xmms-sid.glade:2852 src/sid/xs_interface.c:1189
+#: src/sid/xmms-sid.glade:2852 src/sid/xs_interface.c:1190
 msgid "STIL file:"
 msgstr "STIL ファイル:"
 
-#: src/sid/xmms-sid.glade:2889 src/sid/xs_interface.c:1205
+#: src/sid/xmms-sid.glade:2889 src/sid/xs_interface.c:1206
 msgid ""
 "Path and filename of STIL database file (STIL.txt), usually found from "
 "HVSC's DOCUMENTS-subdirectory."
@@ -4586,15 +5801,15 @@ msgstr ""
 "STIL データベースファイル (STIL.txt) のパスとファイル名を指定します.通常, "
 "HVSC のドキュメントのサブディレクトリです."
 
-#: src/sid/xmms-sid.glade:2924 src/sid/xs_interface.c:1218
+#: src/sid/xmms-sid.glade:2924 src/sid/xs_interface.c:1219
 msgid "Browse for STIL-database file"
 msgstr "STIL データベースファイルを参照"
 
-#: src/sid/xmms-sid.glade:3020 src/sid/xs_interface.c:1245
+#: src/sid/xmms-sid.glade:3020 src/sid/xs_interface.c:1246
 msgid "HVSC path:"
 msgstr "HVSC パス:"
 
-#: src/sid/xmms-sid.glade:3057 src/sid/xs_interface.c:1261
+#: src/sid/xmms-sid.glade:3057 src/sid/xs_interface.c:1262
 msgid ""
 "Path to base-directory of your High Voltage SID Collection (HVSC), for "
 "example /media/C64Music/"
@@ -4602,91 +5817,101 @@ msgstr ""
 "High Voltage SID コレクション (HVSC) のベースディレクトリのパスを指定します. "
 "例: /media/C64Music/"
 
-#: src/sid/xmms-sid.glade:3092 src/sid/xs_interface.c:1274
+#: src/sid/xmms-sid.glade:3092 src/sid/xs_interface.c:1275
 msgid "Browse for HVSC path"
 msgstr "HVSC パスを参照"
 
-#: src/sid/xmms-sid.glade:3184 src/sid/xs_interface.c:1296
+#: src/sid/xmms-sid.glade:3184 src/sid/xs_interface.c:1297
 msgid "SID Tune Information List (STIL) database:"
 msgstr "SID Tune 情報リスト (STIL) データベース:"
 
-#: src/sid/xmms-sid.glade:3257 src/sid/xs_interface.c:1320
-msgid "Accept and update changes"
-msgstr "変更を承認して更新する"
-
-#: src/sid/xmms-sid.glade:3271 src/sid/xs_interface.c:1327
+#: src/sid/xmms-sid.glade:3257 src/sid/xs_interface.c:1321
 msgid "Cancel any changes"
 msgstr "あらゆる変更を取り消す"
 
-#: src/sid/xmms-sid.glade:3296 src/sid/xs_interface.c:1627
+#: src/sid/xmms-sid.glade:3271 src/sid/xs_interface.c:1328
+msgid "Accept and update changes"
+msgstr "変更を承認して更新する"
+
+#: src/sid/xmms-sid.glade:3296 src/sid/xs_interface.c:1628
 msgid "Audacious-SID Fileinfo"
 msgstr "Audacious-SID ファイル情報"
 
-#: src/sid/xmms-sid.glade:3366 src/sid/xs_interface.c:1656
+#: src/sid/xmms-sid.glade:3338 src/sid/xs_interface.c:1649
+#: src/wavpack/ui.c:117
+msgid "Filename:"
+msgstr "ファイル名:"
+
+#: src/sid/xmms-sid.glade:3366 src/sid/xs_interface.c:1657
 msgid "Songname:"
 msgstr "曲名:"
 
-#: src/sid/xmms-sid.glade:3394 src/sid/xs_interface.c:1664
+#: src/sid/xmms-sid.glade:3394 src/sid/xs_interface.c:1665
 msgid "Composer:"
 msgstr "作曲者:"
 
-#: src/sid/xmms-sid.glade:3422 src/sid/xs_interface.c:1672
+#: src/sid/xmms-sid.glade:3422 src/sid/xs_interface.c:1673
 msgid "Copyright:"
 msgstr "著作権:"
 
-#: src/sid/xmms-sid.glade:3536 src/sid/xs_interface.c:1716
+#: src/sid/xmms-sid.glade:3536 src/sid/xs_interface.c:1717
 msgid "Song Information:"
 msgstr "曲情報:"
 
-#: src/sid/xmms-sid.glade:3610 src/sid/xs_interface.c:1751
+#: src/sid/xmms-sid.glade:3610 src/sid/xs_interface.c:1752
 msgid "Author:"
 msgstr "作者:"
 
-#: src/sid/xmms-sid.glade:3708 src/sid/xs_interface.c:1785
+#: src/sid/xmms-sid.glade:3708 src/sid/xs_interface.c:1786
 msgid "Duration:"
 msgstr "持続時間:"
 
-#: src/sid/xmms-sid.glade:3802 src/sid/xs_interface.c:1819
+#: src/sid/xmms-sid.glade:3802 src/sid/xs_interface.c:1820
 msgid "Sub-tune Information:"
 msgstr "サブチューン情報:"
 
-#: src/sid/xmms-sid.glade:3856 src/sid/xs_interface.c:1880
+#: src/sid/xmms-sid.glade:3856 src/sid/xs_interface.c:1881
 msgid "Select HVSC song length database"
 msgstr "HVSC 曲の長さデータベースを選択"
 
-#: src/sid/xmms-sid.glade:3898 src/sid/xs_interface.c:1921
+#: src/sid/xmms-sid.glade:3898 src/sid/xs_interface.c:1922
 msgid "Select STIL-database"
 msgstr "STIL データベースを選択"
 
-#: src/sid/xmms-sid.glade:3940 src/sid/xs_interface.c:1962
+#: src/sid/xmms-sid.glade:3940 src/sid/xs_interface.c:1963
 msgid "Select HVSC location prefix"
 msgstr "HVSC 位置のプレフィックスを選択"
 
-#: src/sid/xmms-sid.glade:3982 src/sid/xs_interface.c:2003
+#: src/sid/xmms-sid.glade:3982 src/sid/xs_interface.c:2004
 msgid "Select SIDPlay2 filters file for importing"
 msgstr "インポートする SIDPlay2 フィルタファイルを選択"
 
-#: src/sid/xmms-sid.glade:4024 src/sid/xs_interface.c:2044
+#: src/sid/xmms-sid.glade:4024 src/sid/xs_interface.c:2045
 msgid "Select SIDPlay2 filters file for exporting"
 msgstr "エクスポートする SIDPlay2 フィルタファイルを選択"
 
 #: src/sid/xmms-sid.glade:4065 src/sid/xmms-sid.glade:4147
-#: src/sid/xs_interface.c:2092 src/sid/xs_interface.c:2105
+#: src/sid/xs_interface.c:2093 src/sid/xs_interface.c:2106
 msgid "Confirm selected action"
 msgstr "選択されたアクションの確認"
 
-#: src/sid/xmms-sid.glade:4103 src/sid/xs_interface.c:2122
+#: src/sid/xmms-sid.glade:4103 src/sid/xs_interface.c:2123
 msgid "Yes"
 msgstr "はい"
 
-#: src/sid/xmms-sid.glade:4115 src/sid/xs_interface.c:2128
+#: src/sid/xmms-sid.glade:4115 src/sid/xs_interface.c:2129
 msgid "No"
 msgstr "いいえ"
 
-#: src/sid/xs_about.c:84 src/wma/wma.c:118
+#: src/sid/xs_about.c:84
 #, c-format
 msgid "About %s"
 msgstr "%s について"
+
+#: src/sid/xs_config.c:319
+#, fuzzy
+msgid " Error"
+msgstr "エラー"
 
 #: src/sid/xs_fileinfo.c:232
 msgid "General info"
@@ -4697,11 +5922,11 @@ msgstr "一般情報"
 msgid "Tune #%i: "
 msgstr "チューン #%i:"
 
-#: src/skins/plugin.c:128
+#: src/skins/plugin.c:180
 msgid "About Skinned GUI"
 msgstr "スキン GUI について"
 
-#: src/skins/plugin.c:129
+#: src/skins/plugin.c:181
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -4709,31 +5934,35 @@ msgstr ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 
-#: src/skins/skins_cfg.c:329
-msgid "<b>_Fonts</b>"
-msgstr "<b>フォント(_F)</b>"
+#: src/skins/plugin.c:199
+msgid "Skinned Interface"
+msgstr ""
 
-#: src/skins/skins_cfg.c:330
+#: src/skins/skins_cfg.c:328
 msgid "_Player:"
 msgstr "プレイヤ(_P):"
 
-#: src/skins/skins_cfg.c:330
+#: src/skins/skins_cfg.c:328
 msgid "Select main player window font:"
 msgstr "メインウィンドウで使用するフォントの選択"
 
-#: src/skins/skins_cfg.c:331
+#: src/skins/skins_cfg.c:329
 msgid "_Playlist:"
 msgstr "プレイリスト(_P):"
 
-#: src/skins/skins_cfg.c:331
+#: src/skins/skins_cfg.c:329
 msgid "Select playlist font:"
 msgstr "プレイリストで使用するフォントの選択"
 
-#: src/skins/skins_cfg.c:332
+#: src/skins/skins_cfg.c:333
+msgid "<b>_Fonts</b>"
+msgstr "<b>フォント(_F)</b>"
+
+#: src/skins/skins_cfg.c:335
 msgid "Use Bitmap fonts if available"
 msgstr "可能ならばビットマップフォントを使用"
 
-#: src/skins/skins_cfg.c:332
+#: src/skins/skins_cfg.c:335
 msgid ""
 "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
 "strings."
@@ -4741,31 +5970,27 @@ msgstr ""
 "可能ならばビットマップフォントを使用します. ビットマップフォントは Unicode 文"
 "字列をサポートしていません."
 
-#: src/skins/skins_cfg.c:333
+#: src/skins/skins_cfg.c:336
 msgid "<b>_Miscellaneous</b>"
 msgstr "<b>その他(_M)</b>"
 
-#: src/skins/skins_cfg.c:334
-msgid "Show track numbers in playlist"
-msgstr "プレイリストにトラック番号を表示する"
-
-#: src/skins/skins_cfg.c:336
+#: src/skins/skins_cfg.c:337
 msgid "Show separators in playlist"
 msgstr "プレイリストの区切り線を表示する"
 
-#: src/skins/skins_cfg.c:338
+#: src/skins/skins_cfg.c:339
 msgid "Show window manager decoration"
 msgstr "ウィンドウマネージャ装飾を表示する"
 
-#: src/skins/skins_cfg.c:339
+#: src/skins/skins_cfg.c:340
 msgid "This enables the window manager to show decorations for windows."
 msgstr "ウィンドウマネージャによるウィンドウ装飾を有効にします."
 
-#: src/skins/skins_cfg.c:340
+#: src/skins/skins_cfg.c:341
 msgid "Use two-way text scroller"
 msgstr "双方向テキストスクロールを使う"
 
-#: src/skins/skins_cfg.c:341
+#: src/skins/skins_cfg.c:342
 msgid ""
 "If selected, the file information text in the main window will scroll back "
 "and forth. If not selected, the text will only scroll in one direction."
@@ -4773,15 +5998,20 @@ msgstr ""
 "これを使うと，メインウィンドウのファイル情報テキストが前後にスクロールしま"
 "す．そうでなければ，テキストは一方向のみにスクロールします．"
 
-#: src/skins/skins_cfg.c:342
+#: src/skins/skins_cfg.c:343
 msgid "Disable inline gtk theme"
 msgstr "インライン GTK テーマを無効にする"
 
-#: src/skins/skins_cfg.c:343
+#: src/skins/skins_cfg.c:345
+#, fuzzy
+msgid "Random skin on play"
+msgstr "プレイリストの順序をランダムにします."
+
+#: src/skins/skins_cfg.c:346
 msgid "Allow loading incomplete skins"
 msgstr "不完全なスキンの読み込みを許可する"
 
-#: src/skins/skins_cfg.c:344
+#: src/skins/skins_cfg.c:347
 msgid ""
 "If selected, audacious won't refuse loading broken skins. Use only if your "
 "favourite skin doesn't work"
@@ -4789,100 +6019,70 @@ msgstr ""
 "これを使うと，audacious は壊れたスキンの読み込みを拒絶しません．お気に入りの"
 "スキンが動かないときだけ使用してください．"
 
-#: src/skins/skins_cfg.c:410
+#: src/skins/skins_cfg.c:413
 msgid "Color Adjustment"
 msgstr "色補正"
 
-#: src/skins/skins_cfg.c:417
+#: src/skins/skins_cfg.c:419
 msgid ""
 "Audacious allows you to alter the color balance of the skinned UI. The "
 "sliders below will allow you to do this."
 msgstr "以下のスライダを用いてスキン UI の色合いの変更ができます."
 
-#: src/skins/skins_cfg.c:427
+#: src/skins/skins_cfg.c:429
 msgid "Blue"
 msgstr "青"
 
-#: src/skins/skins_cfg.c:434
+#: src/skins/skins_cfg.c:436
 msgid "Green"
 msgstr "緑"
 
-#: src/skins/skins_cfg.c:441
+#: src/skins/skins_cfg.c:443
 msgid "Red"
 msgstr "赤"
 
-#: src/skins/skins_cfg.c:571
-msgid "Audacious Skinned GUI Configuration"
-msgstr "Audacious スキン GUI 設定"
-
-#: src/skins/skins_cfg.c:596
+#: src/skins/skins_cfg.c:584
 msgid "<b>_Skin</b>"
 msgstr "<b>スキン(_S)</b>"
 
-#: src/skins/ui_equalizer.c:494
+#: src/skins/ui_equalizer.c:439
 msgid "Audacious Equalizer"
 msgstr "Audacious イコライザ"
 
-#: src/skins/ui_equalizer.c:794
-#, c-format
-msgid "Error importing Winamp EQF file '%s'"
-msgstr "Winamp EQF ファイル '%s' のインポートエラー"
-
-#: src/skins/ui_equalizer.c:1172
-msgid "Presets"
-msgstr "プリセット"
-
-#: src/skins/ui_main.c:392
+#: src/skins/ui_main.c:336
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/skins/ui_main.c:394 src/skins/ui_main.c:2397
+#: src/skins/ui_main.c:338 src/skins/ui_main.c:2172
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/skins/ui_main.c:641
+#: src/skins/ui_main.c:536
 msgid "VBR"
 msgstr "VBR"
 
-#: src/skins/ui_main.c:659 src/skins/ui_main.c:663
+#: src/skins/ui_main.c:554
 msgid "stereo"
 msgstr "ステレオ"
 
-#: src/skins/ui_main.c:659 src/skins/ui_main.c:663
+#: src/skins/ui_main.c:554
 msgid "mono"
 msgstr "モノラル"
 
-#: src/skins/ui_main.c:957
-msgid "Can't jump to time when no track is being played.\n"
-msgstr "再生されるトラックがない時間へは移動できません.\n"
-
-#: src/skins/ui_main.c:972 src/skins/ui_manager.c:425
-#: src/skins/ui_manager.c:426
-msgid "Jump to Time"
-msgstr "指定した時間へ移動"
-
-#: src/skins/ui_main.c:993
-msgid "minutes:seconds"
-msgstr "分:秒"
-
-#: src/skins/ui_main.c:1003
-msgid "Track length:"
-msgstr "トラックの合計時間:"
-
-#: src/skins/ui_main.c:1149
+#: src/skins/ui_main.c:944
 msgid "Audacious - visibility warning"
 msgstr "Audacious - 可視警告"
 
-#: src/skins/ui_main.c:1152
+#: src/skins/ui_main.c:947
 msgid "Show main player window"
 msgstr "メインウィンドウを表示する"
 
-#: src/skins/ui_main.c:1153
+#: src/skins/ui_main.c:948
 msgid "Ignore"
 msgstr "無視"
 
-#: src/skins/ui_main.c:1159
+#: src/skins/ui_main.c:954
 msgid ""
 "Audacious has been started with all of its windows hidden.\n"
 "You may want to show the player window again to control Audacious; "
@@ -4894,15 +6094,15 @@ msgstr ""
 "audtool を用いるか statusicon のようなプラグインを有効にすることで遠隔操作し"
 "てください．"
 
-#: src/skins/ui_main.c:1165
+#: src/skins/ui_main.c:960
 msgid "Always ignore, show/hide is controlled remotely"
 msgstr "常に無視し，表示する/隠す は遠隔操作する"
 
-#: src/skins/ui_main.c:1210
+#: src/skins/ui_main.c:1005
 msgid "Audacious - broken GTK engine usage warning"
 msgstr "Audacious - 壊れた GTK エンジンの使用警告"
 
-#: src/skins/ui_main.c:1218
+#: src/skins/ui_main.c:1013
 #, c-format
 msgid ""
 "<big><b>Broken GTK engine in use</b></big>\n"
@@ -4925,67 +6125,63 @@ msgstr ""
 "これらの特徴を用いるには, 他の GTK テーマエンジンを使うことを考慮してくださ"
 "い."
 
-#: src/skins/ui_main.c:1229
+#: src/skins/ui_main.c:1024
 msgid "Do not display this warning again"
 msgstr "次回からこの警告を表示しない"
 
-#: src/skins/ui_main.c:1253
-msgid "Enter location to play:"
-msgstr "演奏する位置の入力:"
-
-#: src/skins/ui_main.c:1497
+#: src/skins/ui_main.c:1246
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
 msgstr "移動先: %d:%-2.2d/%d:%-2.2d (%d%%)"
 
-#: src/skins/ui_main.c:1527
+#: src/skins/ui_main.c:1276
 #, c-format
 msgid "Volume: %d%%"
 msgstr "音量: %d%%"
 
-#: src/skins/ui_main.c:1555
+#: src/skins/ui_main.c:1304
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "バランス: %d%% 左"
 
-#: src/skins/ui_main.c:1559
+#: src/skins/ui_main.c:1308
 msgid "Balance: center"
 msgstr "バランス: 中央"
 
-#: src/skins/ui_main.c:1563
+#: src/skins/ui_main.c:1312
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "バランス: %d%% 右"
 
-#: src/skins/ui_main.c:1881
+#: src/skins/ui_main.c:1614
 msgid "Options Menu"
 msgstr "オプションメニュー"
 
-#: src/skins/ui_main.c:1885
+#: src/skins/ui_main.c:1618
 msgid "Disable 'Always On Top'"
 msgstr "「常に最前面に配置」無効"
 
-#: src/skins/ui_main.c:1887
+#: src/skins/ui_main.c:1620
 msgid "Enable 'Always On Top'"
 msgstr "「常に最前面に配置」有効"
 
-#: src/skins/ui_main.c:1890
+#: src/skins/ui_main.c:1623
 msgid "File Info Box"
 msgstr "ファイル情報ボックス"
 
-#: src/skins/ui_main.c:1894
+#: src/skins/ui_main.c:1627
 msgid "Disable 'GUI Scaling'"
 msgstr "「GUI スケーリング」無効"
 
-#: src/skins/ui_main.c:1896
+#: src/skins/ui_main.c:1629
 msgid "Enable 'GUI Scaling'"
 msgstr "「GUI スケーリング」有効"
 
-#: src/skins/ui_main.c:1899
+#: src/skins/ui_main.c:1632
 msgid "Visualization Menu"
 msgstr "視覚化メニュー"
 
-#: src/skins/ui_main.c:1946
+#: src/skins/ui_main.c:1677
 msgid ""
 "<b><big>Couldn't open audio.</big></b>\n"
 "\n"
@@ -5001,651 +6197,253 @@ msgstr ""
 "2. お使いのサウンドカードをブロックしているアプリが他に存在しないか.\n"
 "3. お使いのサウンドカードが正しく設定されているか.\n"
 
-#: src/skins/ui_manager.c:53 src/skins/ui_manager.c:54
+#: src/skins/ui_manager.c:51 src/skins/ui_manager.c:52
 msgid "Autoscroll Songname"
 msgstr "曲名の自動スクロール"
 
-#: src/skins/ui_manager.c:56 src/skins/ui_manager.c:57
-msgid "Stop after Current Song"
-msgstr "現在の曲の後に停止する"
-
-#: src/skins/ui_manager.c:59 src/skins/ui_manager.c:60
+#: src/skins/ui_manager.c:57 src/skins/ui_manager.c:58
 msgid "Peaks"
 msgstr "ピーク"
 
-#: src/skins/ui_manager.c:62 src/skins/ui_manager.c:63
-msgid "Repeat"
-msgstr "リピート"
-
-#: src/skins/ui_manager.c:65 src/skins/ui_manager.c:66
-msgid "Shuffle"
-msgstr "シャッフル"
-
-#: src/skins/ui_manager.c:68 src/skins/ui_manager.c:69
-msgid "No Playlist Advance"
-msgstr "次の曲に進まない"
-
-#: src/skins/ui_manager.c:71 src/skins/ui_manager.c:72
+#: src/skins/ui_manager.c:69 src/skins/ui_manager.c:70
 msgid "Show Player"
 msgstr "プレイヤを表示する"
 
-#: src/skins/ui_manager.c:74 src/skins/ui_manager.c:75
+#: src/skins/ui_manager.c:72 src/skins/ui_manager.c:73
 msgid "Show Playlist Editor"
 msgstr "プレイリストエディタを表示する"
 
-#: src/skins/ui_manager.c:77 src/skins/ui_manager.c:78
+#: src/skins/ui_manager.c:75 src/skins/ui_manager.c:76
 msgid "Show Equalizer"
 msgstr "イコライザを表示する"
 
-#: src/skins/ui_manager.c:80 src/skins/ui_manager.c:81
+#: src/skins/ui_manager.c:78 src/skins/ui_manager.c:79
 msgid "Always on Top"
 msgstr "常に最前面に配置する"
 
-#: src/skins/ui_manager.c:83 src/skins/ui_manager.c:84
+#: src/skins/ui_manager.c:81 src/skins/ui_manager.c:82
 msgid "Put on All Workspaces"
 msgstr "全ワークスペースに配置する"
 
-#: src/skins/ui_manager.c:86 src/skins/ui_manager.c:87
+#: src/skins/ui_manager.c:84 src/skins/ui_manager.c:85
 msgid "Roll up Player"
 msgstr "プレイヤを巻き上げる"
 
-#: src/skins/ui_manager.c:89 src/skins/ui_manager.c:90
+#: src/skins/ui_manager.c:87 src/skins/ui_manager.c:88
 msgid "Roll up Playlist Editor"
 msgstr "プレイリストエディタを巻き上げる"
 
-#: src/skins/ui_manager.c:92 src/skins/ui_manager.c:93
+#: src/skins/ui_manager.c:90 src/skins/ui_manager.c:91
 msgid "Roll up Equalizer"
 msgstr "イコライザを巻き上げる"
 
-#: src/skins/ui_manager.c:95 src/sndstretch/sndstretch_xmms.c:375
+#: src/skins/ui_manager.c:93 src/sndstretch/sndstretch_xmms.c:375
 msgid "Scale"
 msgstr "スケール"
 
-#: src/skins/ui_manager.c:96
+#: src/skins/ui_manager.c:94
 msgid "DoubleSize"
 msgstr "ダブルサイズ"
 
-#: src/skins/ui_manager.c:98 src/skins/ui_manager.c:99
+#: src/skins/ui_manager.c:96 src/skins/ui_manager.c:97
 msgid "Easy Move"
 msgstr "簡単移動"
 
-#: src/skins/ui_manager.c:107
+#: src/skins/ui_manager.c:105
 msgid "Analyzer"
 msgstr "アナライザ"
 
-#: src/skins/ui_manager.c:108
+#: src/skins/ui_manager.c:106
 msgid "Scope"
 msgstr "スコープ"
 
-#: src/skins/ui_manager.c:109
+#: src/skins/ui_manager.c:107
 msgid "Voiceprint"
 msgstr "声紋"
 
-#: src/skins/ui_manager.c:110
+#: src/skins/ui_manager.c:108
 msgid "Off"
 msgstr "オフ"
 
-#: src/skins/ui_manager.c:114 src/skins/ui_manager.c:131
-#: src/skins/ui_manager.c:137
+#: src/skins/ui_manager.c:112 src/skins/ui_manager.c:129
+#: src/skins/ui_manager.c:135
 msgid "Normal"
 msgstr "標準"
 
-#: src/skins/ui_manager.c:115 src/skins/ui_manager.c:132
+#: src/skins/ui_manager.c:113 src/skins/ui_manager.c:130
 msgid "Fire"
 msgstr "ファイア"
 
-#: src/skins/ui_manager.c:116
+#: src/skins/ui_manager.c:114
 msgid "Vertical Lines"
 msgstr "垂直ライン"
 
-#: src/skins/ui_manager.c:120
+#: src/skins/ui_manager.c:118
 msgid "Lines"
 msgstr "ライン"
 
-#: src/skins/ui_manager.c:121
+#: src/skins/ui_manager.c:119
 msgid "Bars"
 msgstr "バー"
 
-#: src/skins/ui_manager.c:125
+#: src/skins/ui_manager.c:123
 msgid "Dot Scope"
 msgstr "ドット"
 
-#: src/skins/ui_manager.c:126
+#: src/skins/ui_manager.c:124
 msgid "Line Scope"
 msgstr "ライン"
 
-#: src/skins/ui_manager.c:127
+#: src/skins/ui_manager.c:125
 msgid "Solid Scope"
 msgstr "ソリッド"
 
-#: src/skins/ui_manager.c:133
+#: src/skins/ui_manager.c:131
 msgid "Ice"
 msgstr "アイス"
 
-#: src/skins/ui_manager.c:138
+#: src/skins/ui_manager.c:136
 msgid "Smooth"
 msgstr "スムーズ"
 
-#: src/skins/ui_manager.c:142
-msgid "Full (~50 fps)"
-msgstr "1:1 (〜50 fps)"
-
-#: src/skins/ui_manager.c:143
-msgid "Half (~25 fps)"
-msgstr "1:2 (〜25 fps)"
-
-#: src/skins/ui_manager.c:144
-msgid "Quarter (~13 fps)"
-msgstr "1:4 (〜13 fps)"
-
-#: src/skins/ui_manager.c:145
-msgid "Eighth (~6 fps)"
-msgstr "1:8 (〜6 fps)"
-
-#: src/skins/ui_manager.c:149 src/skins/ui_manager.c:157
+#: src/skins/ui_manager.c:140 src/skins/ui_manager.c:148
 msgid "Slowest"
 msgstr "最も遅い"
 
-#: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
+#: src/skins/ui_manager.c:141 src/skins/ui_manager.c:149
 msgid "Slow"
 msgstr "遅い"
 
-#: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
+#: src/skins/ui_manager.c:142 src/skins/ui_manager.c:150
 msgid "Medium"
 msgstr "中"
 
-#: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
+#: src/skins/ui_manager.c:143 src/skins/ui_manager.c:151
 msgid "Fast"
 msgstr "早い"
 
-#: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
+#: src/skins/ui_manager.c:144 src/skins/ui_manager.c:152
 msgid "Fastest"
 msgstr "最も早い"
 
-#: src/skins/ui_manager.c:165
+#: src/skins/ui_manager.c:156
 msgid "Time Elapsed"
 msgstr "経過時間を表示する"
 
-#: src/skins/ui_manager.c:166
+#: src/skins/ui_manager.c:157
 msgid "Time Remaining"
 msgstr "残り時間を表示する"
 
-#: src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
-msgid "Pause"
-msgstr "一時停止"
-
-#: src/skins/ui_manager.c:186 src/skins/ui_manager.c:187
-msgid "Previous"
-msgstr "前の曲"
-
-#: src/skins/ui_manager.c:189 src/skins/ui_manager.c:190
-msgid "Next"
-msgstr "次の曲"
-
-#: src/skins/ui_manager.c:195
-msgid "Visualization"
-msgstr "視覚化"
-
-#: src/skins/ui_manager.c:196
-msgid "Visualization Mode"
-msgstr "視覚化モード"
-
-#: src/skins/ui_manager.c:197
-msgid "Analyzer Mode"
-msgstr "アナライザモード"
-
-#: src/skins/ui_manager.c:198
-msgid "Scope Mode"
-msgstr "スコープモード"
-
-#: src/skins/ui_manager.c:199
-msgid "Voiceprint Mode"
-msgstr "声紋モード"
-
-#: src/skins/ui_manager.c:200
-msgid "WindowShade VU Mode"
-msgstr "WindowShade VU モード"
-
-#: src/skins/ui_manager.c:201
-msgid "Refresh Rate"
-msgstr "リフレッシュレート"
-
-#: src/skins/ui_manager.c:202
-msgid "Analyzer Falloff"
-msgstr "アナライザ フォールオフ"
-
-#: src/skins/ui_manager.c:203
-msgid "Peaks Falloff"
-msgstr "ピーク フォールオフ"
-
-#: src/skins/ui_manager.c:208
-msgid "Playlist"
-msgstr "プレイリスト"
-
-#: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-msgid "New Playlist"
-msgstr "新しいプレイリスト"
-
-#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
-msgid "Select Next Playlist"
-msgstr "次のプレイリストを選択"
-
-#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
-msgid "Select Previous Playlist"
-msgstr "前のプレイリストを選択"
-
-#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
-msgid "Delete Playlist"
-msgstr "プレイリストの削除"
-
-#: src/skins/ui_manager.c:222
-msgid "Load List"
-msgstr "プレイリストの読み込み"
-
-#: src/skins/ui_manager.c:223
-msgid "Loads a playlist file into the selected playlist."
-msgstr "選択したプレイリストにプレイリストファイルを読み込みます."
-
-#: src/skins/ui_manager.c:225
-msgid "Save List"
+#: src/skins/ui_manager.c:218
+#, fuzzy
+msgid "Save All Playlists"
 msgstr "プレイリストの保存"
 
-#: src/skins/ui_manager.c:226
-msgid "Saves the selected playlist."
-msgstr "選択したプレイリストを保存します."
-
-#: src/skins/ui_manager.c:228
-msgid "Save Default List"
-msgstr "デフォルトのプレイリストの保存"
-
-#: src/skins/ui_manager.c:229
-msgid "Saves the selected playlist to the default location."
-msgstr "選択したプレイリストをデフォルト位置に保存します."
-
-#: src/skins/ui_manager.c:232
-msgid "Refresh List"
-msgstr "プレイリストの更新"
-
-#: src/skins/ui_manager.c:233
-msgid "Refreshes metadata associated with a playlist entry."
-msgstr "プレイリストのエントリに関連付けられたメタデータを更新します."
-
-#: src/skins/ui_manager.c:236
-msgid "List Manager"
-msgstr "プレイリストマネージャ"
-
-#: src/skins/ui_manager.c:237
-msgid "Opens the playlist manager."
-msgstr "プレイリストマネージャを開きます."
-
-#: src/skins/ui_manager.c:243
-msgid "View"
-msgstr "表示"
-
-#: src/skins/ui_manager.c:247
-msgid "Add Internet Address..."
-msgstr "インターネットアドレスの追加..."
-
-#: src/skins/ui_manager.c:248
-msgid "Adds a remote track to the playlist."
-msgstr "リモートトラックをプレイリストに追加します."
-
-#: src/skins/ui_manager.c:251
-msgid "Add Files..."
-msgstr "ファイルの追加..."
-
-#: src/skins/ui_manager.c:252
-msgid "Adds files to the playlist."
-msgstr "ファイルをプレイリストに追加します."
-
-#: src/skins/ui_manager.c:257
-msgid "Search and Select"
-msgstr "検索と選択"
-
-#: src/skins/ui_manager.c:258
+#: src/skins/ui_manager.c:219
 msgid ""
-"Searches the playlist and selects playlist entries based on specific "
-"criteria."
-msgstr "プレイリストを検索し, 特定の判定基準に基いて選択します."
+"Saves all the playlists that are open. Note that this is done automatically "
+"when Audacious quits."
+msgstr ""
 
-#: src/skins/ui_manager.c:261
-msgid "Invert Selection"
-msgstr "選択範囲の反転"
-
-#: src/skins/ui_manager.c:262
-msgid "Inverts the selected and unselected entries."
-msgstr "エントリの選択と未選択を反転します."
-
-#: src/skins/ui_manager.c:265
-msgid "Select All"
-msgstr "全て選択"
-
-#: src/skins/ui_manager.c:266
-msgid "Selects all of the playlist entries."
-msgstr "プレイリストの全てのエントリを選択します."
-
-#: src/skins/ui_manager.c:269
-msgid "Select None"
-msgstr "未選択にする"
-
-#: src/skins/ui_manager.c:270
-msgid "Deselects all of the playlist entries."
-msgstr "プレイリストの全てのエントリを未選択にします."
-
-#: src/skins/ui_manager.c:275
-msgid "Remove All"
-msgstr "全て削除"
-
-#: src/skins/ui_manager.c:276
-msgid "Removes all entries from the playlist."
-msgstr "全てのエントリをプレイリストから削除します."
-
-#: src/skins/ui_manager.c:279
-msgid "Clear Queue"
-msgstr "キューのクリア"
-
-#: src/skins/ui_manager.c:280
-msgid "Clears the queue associated with this playlist."
-msgstr "プレイリストに関連付けられたキューをクリアします."
-
-#: src/skins/ui_manager.c:283
-msgid "Remove Unavailable Files"
-msgstr "利用不可ファイルの削除"
-
-#: src/skins/ui_manager.c:284
-msgid "Removes unavailable files from the playlist."
-msgstr "利用不可ファイルをプレイリストから削除します."
-
-#: src/skins/ui_manager.c:287
-msgid "Remove Duplicates"
-msgstr "重複エントリの削除"
-
-#: src/skins/ui_manager.c:289 src/skins/ui_manager.c:321
-#: src/skins/ui_manager.c:351
-msgid "By Title"
-msgstr "タイトル"
-
-#: src/skins/ui_manager.c:290
-msgid "Removes duplicate entries from the playlist by title."
-msgstr "重複するタイトルのエントリをプレイリストから削除します."
-
-#: src/skins/ui_manager.c:293 src/skins/ui_manager.c:329
-#: src/skins/ui_manager.c:359
-msgid "By Filename"
-msgstr "ファイル名"
-
-#: src/skins/ui_manager.c:294
-msgid "Removes duplicate entries from the playlist by filename."
-msgstr "重複するファイル名のエントリをプレイリストから削除します."
-
-#: src/skins/ui_manager.c:297 src/skins/ui_manager.c:333
-#: src/skins/ui_manager.c:363
-msgid "By Path + Filename"
-msgstr "パス名とファイル名"
-
-#: src/skins/ui_manager.c:298
-msgid "Removes duplicate entries from the playlist by their full path."
-msgstr "重複するパス名とファイル名のエントリをプレイリストから削除します."
-
-#: src/skins/ui_manager.c:301
-msgid "Remove Unselected"
-msgstr "選択していないエントリの削除"
-
-#: src/skins/ui_manager.c:302
-msgid "Remove unselected entries from the playlist."
-msgstr "選択していないエントリをプレイリストから削除します."
-
-#: src/skins/ui_manager.c:305
-msgid "Remove Selected"
-msgstr "選択したエントリの削除"
-
-#: src/skins/ui_manager.c:306
-msgid "Remove selected entries from the playlist."
-msgstr "選択したエントリをプレイリストから削除します."
-
-#: src/skins/ui_manager.c:311
-msgid "Randomize List"
-msgstr "プレイリストをランダムにする"
-
-#: src/skins/ui_manager.c:312
-msgid "Randomizes the playlist."
-msgstr "プレイリストの順序をランダムにします."
-
-#: src/skins/ui_manager.c:315
-msgid "Reverse List"
-msgstr "プレイリストを逆順にする"
-
-#: src/skins/ui_manager.c:316
-msgid "Reverses the playlist."
-msgstr "プレイリストの順序を逆順にします."
-
-#: src/skins/ui_manager.c:319
-msgid "Sort List"
-msgstr "プレイリストのソート"
-
-#: src/skins/ui_manager.c:322 src/skins/ui_manager.c:352
-msgid "Sorts the list by title."
-msgstr "タイトル順でプレイリストをソートします."
-
-#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
-msgid "By Artist"
-msgstr "アーティスト"
-
-#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
-msgid "Sorts the list by artist."
-msgstr "アーティスト順でプレイリストをソートします."
-
-#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
-msgid "Sorts the list by filename."
-msgstr "ファイル名順でプレイリストをソートします."
-
-#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
-msgid "Sorts the list by full pathname."
-msgstr "ファイルのパス名でプレイリストをソートします."
-
-#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
-msgid "By Date"
-msgstr "日付"
-
-#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
-msgid "Sorts the list by modification time."
-msgstr "変更時間でプレイリストをソートします."
-
-#: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
-msgid "By Track Number"
-msgstr "トラック番号"
-
-#: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
-msgid "Sorts the list by track number."
-msgstr "トラック番号順でプレイリストをソートします."
-
-#: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
-msgid "By Playlist Entry"
-msgstr "プレイリストのエントリ"
-
-#: src/skins/ui_manager.c:346 src/skins/ui_manager.c:376
-msgid "Sorts the list by playlist entry."
-msgstr "プレイリストのエントリ順でソートします."
-
-#: src/skins/ui_manager.c:349
-msgid "Sort Selected"
-msgstr "選択範囲のソート"
-
-#: src/skins/ui_manager.c:385
-msgid "File"
-msgstr "ファイル"
-
-#: src/skins/ui_manager.c:388
+#: src/skins/ui_manager.c:379
 msgid "Plugin Services"
 msgstr "プラグインサービス"
 
-#: src/skins/ui_manager.c:390 src/skins/ui_manager.c:393
-msgid "View Track Details"
-msgstr "トラックの詳細"
-
-#: src/skins/ui_manager.c:391 src/skins/ui_manager.c:394
-msgid "View track details"
-msgstr "トラックの詳細"
-
-#: src/skins/ui_manager.c:396 src/skins/ui_manager.c:397
-msgid "About Audacious"
-msgstr "Audacious について"
-
-#: src/skins/ui_manager.c:399
-msgid "Play File"
-msgstr "ファイルを演奏"
-
-#: src/skins/ui_manager.c:400
-msgid "Load and play a file"
-msgstr "ファイルを読み込んで演奏"
-
-#: src/skins/ui_manager.c:402
-msgid "Play Location"
-msgstr "場所を演奏"
-
-#: src/skins/ui_manager.c:403
-msgid "Play media from the selected location"
-msgstr "選択した場所からメディアを演奏"
-
-#: src/skins/ui_manager.c:405
-msgid "Plugin services"
-msgstr "プラグインサービス"
-
-#: src/skins/ui_manager.c:407
-msgid "Preferences"
-msgstr "設定"
-
-#: src/skins/ui_manager.c:408
-msgid "Open preferences window"
-msgstr "設定ウィンドウを開く"
-
-#: src/skins/ui_manager.c:410
-msgid "_Quit"
-msgstr "終了(_Q)"
-
-#: src/skins/ui_manager.c:411
-msgid "Quit Audacious"
-msgstr "Audacious を終了する"
-
-#: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
-msgid "Set A-B"
-msgstr "A-B をセット"
-
-#: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
-msgid "Clear A-B"
-msgstr "A-B をクリア"
-
-#: src/skins/ui_manager.c:419 src/skins/ui_manager.c:420
-msgid "Jump to Playlist Start"
-msgstr "最初の曲へ移動"
-
-#: src/skins/ui_manager.c:428
-msgid "Queue Toggle"
-msgstr "キューを切り替える"
-
-#: src/skins/ui_manager.c:429
-msgid "Enables/disables the entry in the playlist's queue."
-msgstr "プレイリストのキューに入っているエントリの有効/無効を切り替えます."
-
-#: src/skins/ui_manager.c:436
-msgid "Load"
-msgstr "読み込み"
-
-#: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
-#: src/skins/ui_manager.c:477
+#: src/skins/ui_manager.c:432 src/skins/ui_manager.c:453
+#: src/skins/ui_manager.c:468
 msgid "Preset"
 msgstr "プリセット"
 
-#: src/skins/ui_manager.c:442
+#: src/skins/ui_manager.c:433
 msgid "Load preset"
 msgstr "プリセットの読み込み"
 
-#: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
-#: src/skins/ui_manager.c:480
+#: src/skins/ui_manager.c:435 src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:471
 msgid "Auto-load preset"
 msgstr "自動読み込みのプリセット"
 
-#: src/skins/ui_manager.c:445
+#: src/skins/ui_manager.c:436
 msgid "Load auto-load preset"
 msgstr "自動読み込みのプリセット"
 
-#: src/skins/ui_manager.c:448
+#: src/skins/ui_manager.c:439
 msgid "Load default preset into equalizer"
 msgstr "イコライザにデフォルトプリセットを読み込む"
 
-#: src/skins/ui_manager.c:450
+#: src/skins/ui_manager.c:441
 msgid "Zero"
 msgstr "ゼロ"
 
-#: src/skins/ui_manager.c:451
+#: src/skins/ui_manager.c:442
 msgid "Set equalizer preset levels to zero"
 msgstr "イコライザプリセットレベルをゼロにセット"
 
-#: src/skins/ui_manager.c:453
+#: src/skins/ui_manager.c:444
 msgid "From file"
 msgstr "ファイル"
 
-#: src/skins/ui_manager.c:454
+#: src/skins/ui_manager.c:445
 msgid "Load preset from file"
 msgstr "ファイルからプリセットを読み込み"
 
-#: src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:447
 msgid "From WinAMP EQF file"
 msgstr "WinAMP EQF ファイル"
 
-#: src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:448
 msgid "Load preset from WinAMP EQF file"
 msgstr "WinAMP EQF ファイルからプリセットを読み込み"
 
-#: src/skins/ui_manager.c:459
+#: src/skins/ui_manager.c:450
 msgid "WinAMP Presets"
 msgstr "WinAMP プリセット"
 
-#: src/skins/ui_manager.c:460
+#: src/skins/ui_manager.c:451
 msgid "Import WinAMP presets"
 msgstr "WinAMP プリセット"
 
-#: src/skins/ui_manager.c:463
+#: src/skins/ui_manager.c:454
 msgid "Save preset"
 msgstr "プリセットの保存"
 
-#: src/skins/ui_manager.c:466
+#: src/skins/ui_manager.c:457
 msgid "Save auto-load preset"
 msgstr "自動読み込みのプリセットの保存"
 
-#: src/skins/ui_manager.c:469
+#: src/skins/ui_manager.c:460
 msgid "Save default preset"
 msgstr "デフォルトプリセットの保存"
 
-#: src/skins/ui_manager.c:471
+#: src/skins/ui_manager.c:462
 msgid "To file"
 msgstr "ファイル"
 
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:463
 msgid "Save preset to file"
 msgstr "プリセットをファイルへ保存"
 
-#: src/skins/ui_manager.c:474
+#: src/skins/ui_manager.c:465
 msgid "To WinAMP EQF file"
 msgstr "WinAMP EQF ファイル"
 
-#: src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:466
 msgid "Save preset to WinAMP EQF file"
 msgstr "プリセットを WinAMP EQF ファイルへ保存"
 
-#: src/skins/ui_manager.c:478
+#: src/skins/ui_manager.c:469
 msgid "Delete preset"
 msgstr "プリセットの削除"
 
-#: src/skins/ui_manager.c:481
+#: src/skins/ui_manager.c:472
 msgid "Delete auto-load preset"
 msgstr "自動読み込みのプリセットの削除"
 
-#: src/skins/ui_playlist.c:454
+#: src/skins/ui_playlist.c:349
 msgid "Search entries in active playlist"
 msgstr "有効になっているプレイリストのエントリを検索"
 
-#: src/skins/ui_playlist.c:462
+#: src/skins/ui_playlist.c:357
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -5656,112 +6454,75 @@ msgstr ""
 "正規表現が使え, 大文字と小文字を区別しません. 正規表現がどのように動作するか"
 "わからない場合は, 単純に検索しようとしているものの文字を入力します."
 
-#: src/skins/ui_playlist.c:477
+#: src/skins/ui_playlist.c:372
 msgid "Album: "
 msgstr "アルバム名: "
 
-#: src/skins/ui_playlist.c:484
+#: src/skins/ui_playlist.c:379
 msgid "Artist: "
 msgstr "アーティスト: "
 
-#: src/skins/ui_playlist.c:491
+#: src/skins/ui_playlist.c:386
 msgid "Filename: "
 msgstr "ファイル名: "
 
-#: src/skins/ui_playlist.c:499
+#: src/skins/ui_playlist.c:394
 msgid "Clear previous selection before searching"
 msgstr "検索前に以前の選択をクリア"
 
-#: src/skins/ui_playlist.c:502
+#: src/skins/ui_playlist.c:397
 msgid "Automatically toggle queue for matching entries"
 msgstr "マッチしたエントリのキューを自動的にトグル"
 
-#: src/skins/ui_playlist.c:505
+#: src/skins/ui_playlist.c:400
 msgid "Create a new playlist with matching entries"
 msgstr "マッチしたエントリで新しいプレイリストを作成"
 
-#: src/skins/ui_playlist.c:724
-#, c-format
-msgid "Error writing playlist \"%s\": %s"
-msgstr "プレイリスト \"%s\" を書き込む際にエラー: %s"
-
-#: src/skins/ui_playlist.c:746
-#, c-format
-msgid "%s already exist. Continue?"
-msgstr "%s は既に存在しています. 続行しますか？"
-
-#: src/skins/ui_playlist.c:761
-#, c-format
-msgid ""
-"<b><big>Unable to save playlist.</big></b>\n"
-"\n"
-"Unknown file type for '%s'.\n"
-msgstr ""
-"<b><big>プレイリストを保存できません!</big></b>\n"
-"\n"
-"%s のファイルの種類が不明です.\n"
-
-#: src/skins/ui_playlist.c:887
-msgid "Save as Static Playlist"
-msgstr "スタティックプレイリストとして保存"
-
-#: src/skins/ui_playlist.c:894
-msgid "Use Relative Path"
-msgstr "相対パスを使う"
-
-#: src/skins/ui_playlist.c:916
-msgid "Load Playlist"
-msgstr "プレイリストの読み込み"
-
-#: src/skins/ui_playlist.c:929
-msgid "Save Playlist"
-msgstr "プレイリストの保存"
-
-#: src/skins/ui_playlist.c:1497
+#: src/skins/ui_playlist.c:1160
 msgid "Audacious Playlist Editor"
 msgstr "Audacious プレイリストエディタ"
 
-#: src/skins/ui_skinned_equalizer_slider.c:377
+#: src/skins/ui_skinned_equalizer_slider.c:431
 msgid "PREAMP"
 msgstr "プリアンプ"
 
-#: src/skins/ui_skinned_equalizer_slider.c:377
+#: src/skins/ui_skinned_equalizer_slider.c:431
 msgid "60HZ"
 msgstr "60HZ"
 
-#: src/skins/ui_skinned_equalizer_slider.c:377
+#: src/skins/ui_skinned_equalizer_slider.c:431
 msgid "170HZ"
 msgstr "170HZ"
 
-#: src/skins/ui_skinned_equalizer_slider.c:378
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "310HZ"
 msgstr "310HZ"
 
-#: src/skins/ui_skinned_equalizer_slider.c:378
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "600HZ"
 msgstr "600HZ"
 
-#: src/skins/ui_skinned_equalizer_slider.c:378
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "1KHZ"
 msgstr "1KHZ"
 
-#: src/skins/ui_skinned_equalizer_slider.c:379
+#: src/skins/ui_skinned_equalizer_slider.c:433
 msgid "3KHZ"
 msgstr "3KHZ"
 
-#: src/skins/ui_skinned_equalizer_slider.c:379
+#: src/skins/ui_skinned_equalizer_slider.c:433
 msgid "6KHZ"
 msgstr "6KHZ"
 
-#: src/skins/ui_skinned_equalizer_slider.c:379
+#: src/skins/ui_skinned_equalizer_slider.c:433
 msgid "12KHZ"
 msgstr "12KHZ"
 
-#: src/skins/ui_skinned_equalizer_slider.c:380
+#: src/skins/ui_skinned_equalizer_slider.c:434
 msgid "14KHZ"
 msgstr "14KHZ"
 
-#: src/skins/ui_skinned_equalizer_slider.c:380
+#: src/skins/ui_skinned_equalizer_slider.c:434
 msgid "16KHZ"
 msgstr "16KHZ"
 
@@ -5773,16 +6534,16 @@ msgstr "Archived Winamp 2.x スキン"
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Unarchived Winamp 2.x スキン"
 
-#: src/skins/util.c:1132
+#: src/skins/util.c:784
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "ディレクトリ (%s) を作成できませんでした: %s\n"
 
-#: src/sndfile/plugin.c:554
+#: src/sndfile/plugin.c:485
 msgid "About sndfile plugin"
 msgstr "sndfile プラグインについて"
 
-#: src/sndfile/plugin.c:555
+#: src/sndfile/plugin.c:486
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -5848,49 +6609,45 @@ msgstr "ピッチ"
 msgid "SndStretch - Configuration"
 msgstr "SndStretch - 設定"
 
-#: src/song_change/song_change.c:310
-msgid "Commands"
-msgstr "コマンド"
-
-#: src/song_change/song_change.c:317
+#: src/song_change/song_change.c:395
 msgid "Command to run when Audacious starts a new song."
 msgstr "Audacious が新しい曲を開始したときに実行するコマンド"
 
-#: src/song_change/song_change.c:326 src/song_change/song_change.c:348
-#: src/song_change/song_change.c:369 src/song_change/song_change.c:390
+#: src/song_change/song_change.c:396 src/song_change/song_change.c:400
+#: src/song_change/song_change.c:404 src/song_change/song_change.c:408
 msgid "Command:"
 msgstr "コマンド:"
 
-#: src/song_change/song_change.c:340
+#: src/song_change/song_change.c:399
 msgid "Command to run toward the end of a song."
 msgstr "曲の終わりで実行するコマンド."
 
-#: src/song_change/song_change.c:360
+#: src/song_change/song_change.c:403
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Audacious がプレイリストの最後に到達したときに実行するコマンド."
 
-#: src/song_change/song_change.c:381
+#: src/song_change/song_change.c:407
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "例えばネットワークストリームのタイトルなど, 曲のタイトルが変わったときに実行"
 "するコマンド."
 
-#: src/song_change/song_change.c:402
-#, c-format
+#: src/song_change/song_change.c:411
+#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
 "(not all are useful for the end-of-playlist command).\n"
 "\n"
-"%%F: Frequency (in hertz)\n"
-"%%c: Number of channels\n"
-"%%f: filename (full path)\n"
-"%%l: length (in milliseconds)\n"
-"%%n or %%s: Song name\n"
-"%%r: Rate (in bits per second)\n"
-"%%t: Playlist position (%%02d)\n"
-"%%p: Currently playing (1 or 0)"
+"%F: Frequency (in hertz)\n"
+"%c: Number of channels\n"
+"%f: filename (full path)\n"
+"%l: length (in milliseconds)\n"
+"%n or %s: Song name\n"
+"%r: Rate (in bits per second)\n"
+"%t: Playlist position (%02d)\n"
+"%p: Currently playing (1 or 0)"
 msgstr ""
 "コマンドを呼び出す前に置換される以下のフォーマット文字列を利用できます(プレイ"
 "リストの最後のコマンドにはすべてが有効ではありせん).\n"
@@ -5904,7 +6661,7 @@ msgstr ""
 "%%t: プレイリストの位置 (%%02d)\n"
 "%%p: 現在演奏中か (1 or 0)"
 
-#: src/song_change/song_change.c:427
+#: src/song_change/song_change.c:435
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -5912,23 +6669,24 @@ msgstr ""
 "<span size='small'>シェルに渡されるパラメータはクォートでくくられるべきです."
 "さもないとセキュリティ上の危険があります.</span>"
 
+#: src/song_change/song_change.c:446
+msgid "Commands"
+msgstr "コマンド"
+
+#: src/song_change/song_change.c:482
+#, fuzzy
+msgid "Song Change"
+msgstr "曲メッセージ"
+
 #: src/spectrum/spectrum.c:89
 msgid "Spectrum Analyzer"
 msgstr "スペクトラムアナライザ"
 
-#: src/statusicon/gtktrayicon-x11.c:133
-msgid "Orientation"
-msgstr "向き"
-
-#: src/statusicon/gtktrayicon-x11.c:134
-msgid "The orientation of the tray"
-msgstr "トレイの向き"
-
-#: src/statusicon/si_ui.c:620
+#: src/statusicon/si_ui.c:462
 msgid "About Status Icon Plugin"
 msgstr "ステータスアイコン プラグインについて"
 
-#: src/statusicon/si_ui.c:622
+#: src/statusicon/si_ui.c:464
 msgid ""
 "\n"
 "written by Giacomo Lozito < james@develia.org >\n"
@@ -5942,35 +6700,35 @@ msgstr ""
 "このプラグインは, ウィンドウマネージャの\n"
 "システムトレイエリアに置かれるステータスアイコンを提供します.\n"
 
-#: src/statusicon/si_ui.c:694
+#: src/statusicon/si_ui.c:536
 msgid "Status Icon Plugin - Preferences"
 msgstr "ステータスアイコンプラグイン - 設定"
 
-#: src/statusicon/si_ui.c:705
+#: src/statusicon/si_ui.c:547
 msgid "Right-Click Menu"
 msgstr "右クリックメニュー"
 
-#: src/statusicon/si_ui.c:710
+#: src/statusicon/si_ui.c:552
 msgid "Audacious standard menu"
 msgstr "Audacious 標準メニュー"
 
-#: src/statusicon/si_ui.c:715
+#: src/statusicon/si_ui.c:557
 msgid "Small playback menu #1"
 msgstr "小型再生メニュー #1"
 
-#: src/statusicon/si_ui.c:720
+#: src/statusicon/si_ui.c:562
 msgid "Small playback menu #2"
 msgstr "小型再生メニュー #2"
 
-#: src/statusicon/si_ui.c:743
+#: src/statusicon/si_ui.c:585
 msgid "Mouse Scroll Action"
 msgstr "マウススクロールの動作"
 
-#: src/statusicon/si_ui.c:748
+#: src/statusicon/si_ui.c:590
 msgid "Change volume"
 msgstr "音量の変更"
 
-#: src/statusicon/si_ui.c:753
+#: src/statusicon/si_ui.c:595
 msgid "Change playing song"
 msgstr "演奏曲の変更"
 
@@ -5991,6 +6749,72 @@ msgstr "エクストラステレオプラグインについて"
 #: src/stereo_plugin/stereo.c:92
 msgid "Configure Extra Stereo"
 msgstr "エクストラステレオの設定"
+
+#: src/streambrowser/gui/streambrowser_win.c:62
+#, fuzzy
+msgid "Search:"
+msgstr "年:"
+
+#: src/streambrowser/gui/streambrowser_win.c:81
+#: src/streambrowser/gui/streambrowser_win.c:370
+msgid "Add Bookmark"
+msgstr ""
+
+#: src/streambrowser/gui/streambrowser_win.c:95
+#, fuzzy
+msgid "Stream browser"
+msgstr "参照"
+
+#: src/streambrowser/gui/streambrowser_win.c:319
+#, fuzzy
+msgid "Stream name"
+msgstr "楽器名"
+
+#: src/streambrowser/gui/streambrowser_win.c:326
+#, fuzzy
+msgid "Now playing"
+msgstr "新しいプレイリスト"
+
+#: src/streambrowser/gui/streambrowser_win.c:367
+#, fuzzy
+msgid "Remove Bookmark"
+msgstr "タグの削除"
+
+#: src/streambrowser/streambrowser.c:322
+#, fuzzy
+msgid "About Stream Browser"
+msgstr "OSS ドライバについて"
+
+#: src/streambrowser/streambrowser.c:323
+#, fuzzy
+msgid ""
+"Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
+"Team.\n"
+"\n"
+"This is a simple stream browser that includes the most popular streaming "
+"directories.\n"
+"Many thanks to the Streamtuner developers <http://www.nongnu.org/"
+"streamtuner>,\n"
+"\tand of course to the whole Audacious community.\n"
+"\n"
+"Also thank you Tony Vroon for mentoring & guiding me, again.\n"
+"\n"
+"This was a Google Summer of Code 2008 project."
+msgstr ""
+"Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
+"Team.\n"
+"\n"
+"libcdio 開発者 <http://www.gnu.org/software/libcdio/> と\n"
+"\tlibcddb 開発者 <http://libcddb.sourceforge.net/> に多大なる感謝.\n"
+"\n"
+"Tony Vroon による助言と指針に感謝.\n"
+"\n"
+"これは Google Summer of Code 2007 のプロジェクトでした."
+
+#: src/streambrowser/streambrowser.c:350 src/streambrowser/streambrowser.c:356
+#, fuzzy
+msgid "Streambrowser"
+msgstr "参照"
 
 #: src/sun/about.c:33
 msgid "About the Sun Driver"
@@ -6024,31 +6848,36 @@ msgstr "ミキサを排他的に使う"
 msgid "Sun driver configuration"
 msgstr "Sun ドライバの設定"
 
-#: src/timidity/interface.c:54
+#: src/timidity/interface.c:55
 msgid "TiMidity Configuration"
 msgstr "TiMidity の設定"
 
-#: src/timidity/interface.c:91
+#: src/timidity/interface.c:92
 msgid "11000 Hz"
 msgstr "11000 Hz"
 
-#: src/timidity/interface.c:99
+#: src/timidity/interface.c:100
 msgid "22000 Hz"
 msgstr "22000 Hz"
 
-#: src/timidity/interface.c:107
+#: src/timidity/interface.c:108
 msgid "44100 Hz"
 msgstr "44100 Hz"
 
-#: src/timidity/interface.c:115
+#: src/timidity/interface.c:116
 msgid "Sample Width"
 msgstr "サンプリング幅"
 
-#: src/timidity/interface.c:181
+#: src/timidity/interface.c:182
 msgid "TiMidity Configuration File"
 msgstr "TiMidity 設定ファイル"
 
-#: src/timidity/xmms-timidity.c:115
+#: src/timidity/plugin.c:112
+#, c-format
+msgid "TiMidity Plugin %s"
+msgstr "TiMidity プラグイン %s"
+
+#: src/timidity/plugin.c:113
 msgid ""
 "TiMidity Plugin\n"
 "http://libtimidity.sourceforge.net\n"
@@ -6058,20 +6887,15 @@ msgstr ""
 "http://libtimidity.sourceforge.net\n"
 "Konstantin Korikov による"
 
-#: src/timidity/xmms-timidity.c:116
-#, c-format
-msgid "TiMidity Plugin %s"
-msgstr "TiMidity プラグイン %s"
-
-#: src/timidity/xmms-timidity.c:333
+#: src/timidity/plugin.c:343
 msgid "Couldn't load MIDI file"
 msgstr "MIDI ファイルを読み込めません"
 
-#: src/tonegen/tonegen.c:55
+#: src/tonegen/tonegen.c:50
 msgid "About Tone Generator"
 msgstr "トーンジェネレータについて"
 
-#: src/tonegen/tonegen.c:57
+#: src/tonegen/tonegen.c:52
 msgid ""
 "Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
 "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
@@ -6085,88 +6909,37 @@ msgstr ""
 "URLに tone://frequency1;frequency2;frequency3;... と追加して使用します\n"
 "例 tone://2000;2005 は 2000Hz トーンと 2005Hz トーンを演奏します"
 
-#: src/tonegen/tonegen.c:166
+#: src/tonegen/tonegen.c:106
 #, c-format
 msgid "%s %.1f Hz"
 msgstr "%s %.1f Hz"
 
-#: src/tonegen/tonegen.c:166
+#: src/tonegen/tonegen.c:106
 msgid "Tone Generator: "
 msgstr "トーンジェネレータ: "
 
-#: src/tta/libtta.c:127
-msgid "Can't open file\n"
-msgstr "ファイルを開けません\n"
+#: src/vorbis/configure.c:29
+msgid "Override generic titles"
+msgstr "オリジナルのタイトルを上書きする"
 
-#: src/tta/libtta.c:130
-msgid "Not supported file format\n"
-msgstr "サポートしていないファイルフォーマットです\n"
-
-#: src/tta/libtta.c:133
-msgid "File is corrupted\n"
-msgstr "ファイルが壊れています\n"
-
-#: src/tta/libtta.c:136
-msgid "Can't read from file\n"
-msgstr "ファイルから読み込めません\n"
-
-#: src/tta/libtta.c:139
-msgid "Insufficient memory available\n"
-msgstr "利用可能メモリが不十分です\n"
-
-#: src/tta/libtta.c:142
-msgid "Output plugin error\n"
-msgstr "出力プラグインエラー\n"
-
-#: src/tta/libtta.c:145
-msgid "Unknown error\n"
-msgstr "不明なエラー\n"
-
-#: src/tta/libtta.c:149
-msgid "TTA Decoder Error"
-msgstr "TTA デコーダエラー"
-
-#: src/tta/libtta.c:258
-msgid "TTA input plugin "
-msgstr "TTA 入力プラグイン"
-
-#: src/tta/libtta.c:259
-msgid ""
-" for BMP\n"
-"Copyright (c) 2004 True Audio Software\n"
-msgstr ""
-" for BMP\n"
-"Copyright (c) 2004 True Audio Software\n"
-
-#: src/tta/libtta.c:262
-msgid "About True Audio Plugin"
-msgstr "True Audio プラグインについて"
-
-#: src/tta/libtta.c:313
-msgid "ID3 Tag:"
-msgstr " ID3 タグ:"
-
-#: src/tta/libtta.c:375 src/wavpack/ui.cxx:232
-msgid "Track number:"
-msgstr "トラック番号:"
-
-#: src/vorbis/configure.c:82
-msgid "Ogg Vorbis Audio Plugin Configuration"
-msgstr "Ogg Vorbis オーディオプラグインの設定"
-
-#: src/vorbis/configure.c:92
-msgid "Ogg Vorbis Tags:"
-msgstr "Ogg Vorbis タグ:"
-
-#: src/vorbis/configure.c:113
+#: src/vorbis/configure.c:30
 msgid "Title format:"
 msgstr "タイトルの書式:"
 
-#: src/vorbis/vorbis.c:677
+#: src/vorbis/configure.c:34
+#, fuzzy
+msgid "Ogg Vorbis Tags"
+msgstr "Ogg Vorbis タグ:"
+
+#: src/vorbis/configure.c:66
+msgid "Ogg Vorbis Audio Plugin Configuration"
+msgstr "Ogg Vorbis オーディオプラグインの設定"
+
+#: src/vorbis/vorbis.c:582
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Ogg Vorbis オーディオ プラグインについて"
 
-#: src/vorbis/vorbis.c:683
+#: src/vorbis/vorbis.c:588
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -6224,12 +6997,153 @@ msgstr ""
 "\n"
 "Audacious 実装は Pavel Vymetalek <pvymetalek@seznam.cz> による"
 
-#: src/wavpack/ui.cxx:50
+#: src/wavpack/ui.c:129
+msgid "Ape2 Tag"
+msgstr "Ape2 タグ"
+
+#: src/wavpack/ui.c:136
+msgid "Title:"
+msgstr "タイトル:"
+
+#: src/wavpack/ui.c:143
+msgid "Artist:"
+msgstr "アーティスト:"
+
+#: src/wavpack/ui.c:150
+msgid "Album:"
+msgstr "アルバム名:"
+
+#: src/wavpack/ui.c:157
+msgid "Comment:"
+msgstr "コメント:"
+
+#: src/wavpack/ui.c:164
+msgid "Year:"
+msgstr "年:"
+
+#: src/wavpack/ui.c:172
+msgid "Track number:"
+msgstr "トラック番号:"
+
+#: src/wavpack/ui.c:181
+msgid "Genre:"
+msgstr "ジャンル:"
+
+#: src/wavpack/ui.c:199
+msgid "Remove Tag"
+msgstr "タグの削除"
+
+#: src/wavpack/ui.c:210
+msgid "Wavpack Info:"
+msgstr "Wavpack 情報:"
+
+#: src/wavpack/ui.c:296
+#, c-format
+msgid "version %d"
+msgstr "バージョン %d"
+
+#: src/wavpack/ui.c:297
+#, c-format
+msgid "average bitrate: %6.1f kbps"
+msgstr "平均ビットレート: %6.1f kbps"
+
+#: src/wavpack/ui.c:298
+#, c-format
+msgid "samplerate: %d Hz"
+msgstr "サンプリングレート: %d Hz"
+
+#: src/wavpack/ui.c:299
+#, c-format
+msgid "bits per sample: %d"
+msgstr "ビット/サンプリング: %d"
+
+#: src/wavpack/ui.c:300
+#, c-format
+msgid "channels: %d"
+msgstr "チャンネル数: %d"
+
+#: src/wavpack/ui.c:301
+#, c-format
+msgid "length: %d:%.2d"
+msgstr "長さ: %d:%.2d"
+
+#: src/wavpack/ui.c:302
+#, c-format
+msgid "file size: %d Bytes"
+msgstr "ファイルサイズ: %d Bytes"
+
+#: src/wavpack/ui.c:309
+msgid "Title Peak: ?"
+msgstr "タイトルピーク: ?"
+
+#: src/wavpack/ui.c:310
+msgid "Album Peak: ?"
+msgstr "アルバムピーク: ?"
+
+#: src/wavpack/ui.c:311
+msgid "Title Gain: ?"
+msgstr "タイトルゲイン: ?"
+
+#: src/wavpack/ui.c:312
+msgid "Album Gain: ?"
+msgstr "アルバムゲイン: ?"
+
+#: src/wavpack/ui.c:324
+#, c-format
+msgid "File Info - %s"
+msgstr "ファイル情報 - %s"
+
+#: src/wavpack/ui.c:362
+msgid "Enable Dynamic Bitrate Display"
+msgstr "動的ビットレート表示を有効にする"
+
+#: src/wavpack/ui.c:366
+#, fuzzy
+msgid "General Plugin Settings"
+msgstr "一般的なプラグイン設定:"
+
+#: src/wavpack/ui.c:375
+msgid "use Track Gain/Peak"
+msgstr "トラックのゲイン/ピークを使用する"
+
+#: src/wavpack/ui.c:376
+msgid "use Album Gain/Peak"
+msgstr "アルバムのゲイン/ピークを使用する"
+
+#: src/wavpack/ui.c:380
+msgid "Enable Clipping Prevention"
+msgstr "クリッピング回避機能を有効にする"
+
+#: src/wavpack/ui.c:381
+msgid "Enable ReplayGain"
+msgstr "リプレイゲインを有効にする"
+
+#: src/wavpack/ui.c:382
+msgid "ReplayGain Type"
+msgstr "リプレイゲインの種類"
+
+#: src/wavpack/ui.c:389
+msgid "ReplayGain Settings"
+msgstr "リプレイゲインの設定"
+
+#: src/wavpack/ui.c:396
+msgid "Plugin"
+msgstr "プラグイン"
+
+#: src/wavpack/ui.c:397
+msgid "ReplayGain"
+msgstr "リプレイゲイン"
+
+#: src/wavpack/ui.c:421
+msgid "Wavpack Configuration"
+msgstr "Wavpack 設定"
+
+#: src/wavpack/wavpack.c:404
 #, c-format
 msgid "Wavpack Decoder Plugin %s"
 msgstr "Wavpack デコーダプラグイン %s"
 
-#: src/wavpack/ui.cxx:51
+#: src/wavpack/wavpack.c:405
 msgid ""
 "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
 "\n"
@@ -6241,101 +7155,419 @@ msgstr ""
 "プラグインコードの一部は Miles Egan による\n"
 "Wavpack のサイト http://www.wavpack.com/ をご覧ください\n"
 
-#: src/wavpack/ui.cxx:163
-msgid "Ape2 Tag"
-msgstr "Ape2 タグ"
+#~ msgid "Unknown soundcard"
+#~ msgstr "不明なサウンドカード"
 
-#: src/wavpack/ui.cxx:286
-msgid "Wavpack Info:"
-msgstr "Wavpack 情報:"
+#~ msgid "Default PCM device (%s)"
+#~ msgstr "デフォルト PCM デバイス (%s)"
 
-#: src/wavpack/ui.cxx:379
-#, c-format
-msgid "version %d"
-msgstr "バージョン %d"
+#, fuzzy
+#~ msgid "ALSA Output Plugin Preferences"
+#~ msgstr "ステータスアイコンプラグイン - 設定"
 
-#: src/wavpack/ui.cxx:380
-#, c-format
-msgid "average bitrate: %6.1f kbps"
-msgstr "平均ビットレート: %6.1f kbps"
+#, fuzzy
+#~ msgid "Device:"
+#~ msgstr "デバイス"
 
-#: src/wavpack/ui.cxx:381
-#, c-format
-msgid "samplerate: %d Hz"
-msgstr "サンプリングレート: %d Hz"
+#~ msgid "Mixer:"
+#~ msgstr "ミキサ:"
 
-#: src/wavpack/ui.cxx:382
-#, c-format
-msgid "bits per sample: %d"
-msgstr "ビット/サンプリング: %d"
+#~ msgid "Can't open file\n"
+#~ msgstr "ファイルを開けません\n"
 
-#: src/wavpack/ui.cxx:383
-#, c-format
-msgid "channels: %d"
-msgstr "チャンネル数: %d"
+#~ msgid "Not supported file format\n"
+#~ msgstr "サポートしていないファイルフォーマットです\n"
 
-#: src/wavpack/ui.cxx:384
-#, c-format
-msgid "length: %d:%.2d"
-msgstr "長さ: %d:%.2d"
+#~ msgid "File is corrupted\n"
+#~ msgstr "ファイルが壊れています\n"
 
-#: src/wavpack/ui.cxx:385
-#, c-format
-msgid "file size: %d Bytes"
-msgstr "ファイルサイズ: %d Bytes"
+#~ msgid "Can't read from file\n"
+#~ msgstr "ファイルから読み込めません\n"
 
-#: src/wavpack/ui.cxx:392
-msgid "Title Peak: ?"
-msgstr "タイトルピーク: ?"
+#~ msgid "Insufficient memory available\n"
+#~ msgstr "利用可能メモリが不十分です\n"
 
-#: src/wavpack/ui.cxx:393
-msgid "Album Peak: ?"
-msgstr "アルバムピーク: ?"
+#~ msgid "Output plugin error\n"
+#~ msgstr "出力プラグインエラー\n"
 
-#: src/wavpack/ui.cxx:394
-msgid "Title Gain: ?"
-msgstr "タイトルゲイン: ?"
+#~ msgid "Unknown error\n"
+#~ msgstr "不明なエラー\n"
 
-#: src/wavpack/ui.cxx:395
-msgid "Album Gain: ?"
-msgstr "アルバムゲイン: ?"
+#~ msgid "TTA Decoder Error"
+#~ msgstr "TTA デコーダエラー"
 
-#: src/wavpack/ui.cxx:469
-msgid "Wavpack Configuration"
-msgstr "Wavpack 設定"
+#~ msgid "TTA input plugin "
+#~ msgstr "TTA 入力プラグイン"
 
-#: src/wavpack/ui.cxx:482
-msgid "General Plugin Settings:"
-msgstr "一般的なプラグイン設定:"
+#~ msgid ""
+#~ " for BMP\n"
+#~ "Copyright (c) 2004 True Audio Software\n"
+#~ msgstr ""
+#~ " for BMP\n"
+#~ "Copyright (c) 2004 True Audio Software\n"
 
-#: src/wavpack/ui.cxx:500
-msgid "ReplayGain Settings:"
-msgstr "リプレイゲインの設定:"
+#~ msgid "About True Audio Plugin"
+#~ msgstr "True Audio プラグインについて"
 
-#: src/wavpack/ui.cxx:518
-msgid "ReplayGain Type:"
-msgstr "リプレイゲインの種類:"
+#, fuzzy
+#~ msgid "Override default devices"
+#~ msgstr "デフォルトデバイスを上書きする: "
 
-#: src/wavpack/ui.cxx:529
-msgid "use Track Gain/Peak"
-msgstr "トラックのゲイン/ピークを使用する"
+#, fuzzy
+#~ msgid "Card:"
+#~ msgstr "コマンド:"
 
-#: src/wavpack/ui.cxx:537
-msgid "use Album Gain/Peak"
-msgstr "アルバムのゲイン/ピークを使用する"
+#~ msgid "Mixer card:"
+#~ msgstr "ミキサカード:"
 
-#: src/wma/wma.c:120
-msgid ""
-"Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
-"the BEEP-WMA plugin which is Copyright (C) 2004,2005 Mokrushin I.V. aka "
-"McMCC (mcmcc@mail.ru)\n"
-"and the BMP-WMA plugin which is Copyright (C) 2004 Roman Bogorodskiy "
-"<bogorodskiy@inbox.ru>.\n"
-"This plugin based on source code "
-msgstr ""
-"BEEP-WMA プラグイン (Copyright (C) 2004,2005 Mokrushin I.V. aka McMCC "
-"(mcmcc@mail.ru)) と \n"
-"BMP-WMA プラグイン (Copyright (C) 2004 Roman Bogorodskiy <bogorodskiy@inbox."
-"ru>) の\n"
-"Tony Vroon <chainsaw@gentoo.org> による Audacious への適用.\n"
-"このプラグインは以下のソースコードを元とする: "
+#~ msgid "Orientation"
+#~ msgstr "向き"
+
+#~ msgid "The orientation of the tray"
+#~ msgstr "トレイの向き"
+
+#~ msgid "/Toggle Decorations"
+#~ msgstr "/装飾の切り替え"
+
+#~ msgid "/-"
+#~ msgstr "/-"
+
+#~ msgid "/Close"
+#~ msgstr "/閉じる"
+
+#~ msgid "Blur scope"
+#~ msgstr "ブラースコープ"
+
+#~ msgid "ReplayGain Settings:"
+#~ msgstr "リプレイゲインの設定:"
+
+#~ msgid "ReplayGain Type:"
+#~ msgstr "リプレイゲインの種類:"
+
+#~ msgid "About Apple Lossless Audio Plugin"
+#~ msgstr "Apple Lossless オーディオプラグインについて"
+
+#~ msgid ""
+#~ "Copyright (c) 2006 Audacious team\n"
+#~ "Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"
+#~ msgstr ""
+#~ "Copyright (c) 2006 Audacious team\n"
+#~ "(c) 2005-2006 David Hammerton <crazney -at- crazney.net> によるポート"
+
+#~ msgid "About Monkey's Audio Plugin"
+#~ msgstr "Monkey's オーディオプラグインについて"
+
+#~ msgid ""
+#~ "Copyright (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
+#~ "Based on ffape decoder, Copyright (C) 2007 Benjamin Zores\n"
+#~ "ffape itself based on libdemac by Dave Chapman\n"
+#~ "\n"
+#~ "ffape is a part of FFmpeg project, http://ffmpeg.mplayerhq.hu/"
+#~ msgstr ""
+#~ "Copyright (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
+#~ "ffape デコーダ (Copyright (C) 2007 Benjamin Zores) を元とする.\n"
+#~ "ffape 自体は Dave Chapman による libdemac を元とする.\n"
+#~ "\n"
+#~ "ffape は FFmpeg プロジェクト(http://ffmpeg.mplayerhq.hu/) の一部である."
+
+#~ msgid "ID3 format:"
+#~ msgstr "ID3 の書式:"
+
+#~ msgid "About Audacious PulseAudio Output Plugin"
+#~ msgstr "Audacious PulseAudio 出力プラグインについて"
+
+#~ msgid ""
+#~ "Audacious PulseAudio Output Plugin\n"
+#~ "\n"
+#~ " This program is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as published by\n"
+#~ "the Free Software Foundation; either version 2 of the License, or\n"
+#~ "(at your option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License\n"
+#~ "along with this program; if not, write to the Free Software\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
+#~ "USA."
+#~ msgstr ""
+#~ "Audacious PulseAudio 出力プラグイン\n"
+#~ "\n"
+#~ "このプログラムはフリーソフトウェアです;\n"
+#~ "フリーソフトウェア財団が提供する GNU 一般公有使用許諾契約書\n"
+#~ "の第二版か, 希望によってはそれ以降の版のどれかが定める条項の下で\n"
+#~ "本プログラムを再頒布または変更することができます.\n"
+#~ "\n"
+#~ "本プログラムは有であることを願って頒布されていますが,\n"
+#~ "まったくの無保証です; 市場性及び特定目的, 適合性についての\n"
+#~ "暗黙の保証を含めて, いかなる保証も行ないません.\n"
+#~ "詳細については GNU 一般公有使用許諾契約書をご覧下さい.\n"
+#~ "\n"
+#~ "あなたは, 本プログラムと一緒に GNU 一般公有使用許諾契約書の\n"
+#~ "写しを受け取っているはずです. そうでない場合は, the Free Software\n"
+#~ "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+#~ "USA. まで請求して下さい."
+
+#~ msgid "ALSA Driver configuration"
+#~ msgstr "ALSA ドライバ設定"
+
+#~ msgid "Device settings"
+#~ msgstr "デバイス設定:"
+
+#~ msgid "About CD Audio Plugin NG"
+#~ msgstr "CD オーディオプラグイン NG について"
+
+#~ msgid "By Playlist Entry"
+#~ msgstr "プレイリストのエントリ"
+
+#~ msgid "Sorts the list by playlist entry."
+#~ msgstr "プレイリストのエントリ順でソートします."
+
+#~ msgid "Musepack Decoder Plugin 1.2"
+#~ msgstr "Musepack デコーダプラグイン 1.2"
+
+#~ msgid ""
+#~ "Plugin code by\n"
+#~ "Benoit Amiaux\n"
+#~ "Martin Spuler\n"
+#~ "Kuniklo\n"
+#~ "\n"
+#~ "Get latest version at http://musepack.net\n"
+#~ msgstr ""
+#~ "プラグインコードは\n"
+#~ "Benoit Amiaux\n"
+#~ "Martin Spuler\n"
+#~ "Kuniklo による\n"
+#~ "\n"
+#~ "http://musepack.net にて最新版が取得できます\n"
+
+#~ msgid "Nevermind"
+#~ msgstr "気にしない"
+
+#~ msgid "Musepack Decoder Configuration"
+#~ msgstr "Musepack デコーダ設定"
+
+#~ msgid "General Settings"
+#~ msgstr "一般的な設定"
+
+#~ msgid "Use Track Gain"
+#~ msgstr "トラックゲインを使用する"
+
+#~ msgid "Use Album Gain"
+#~ msgstr "アルバムゲインを使用する"
+
+#~ msgid "Musepack Tag"
+#~ msgstr "Musepack タグ"
+
+#~ msgid "Track:"
+#~ msgstr "トラック:"
+
+#~ msgid "Musepack Info"
+#~ msgstr "Musepack 情報"
+
+#~ msgid "Streamversion %d"
+#~ msgstr "ストリームヴァージョン %d"
+
+#~ msgid "Encoder: %s"
+#~ msgstr "エンコーダ: %s"
+
+#~ msgid "Profile: %s"
+#~ msgstr "プロファイル: %s"
+
+#~ msgid "Average bitrate: %6.1f kbps"
+#~ msgstr "平均ビットレート: %6.1f kbps"
+
+#~ msgid "Samplerate: %d Hz"
+#~ msgstr "サンプリングレート: %d Hz"
+
+#~ msgid "Channels: %d"
+#~ msgstr "チャンネル数: %d"
+
+#~ msgid "Length: %d:\\%.2d"
+#~ msgstr "長さ: %d:\\%.2d"
+
+#~ msgid "File size: %d Bytes"
+#~ msgstr "ファイルサイズ: %d Bytes"
+
+#~ msgid "Track Peak: %5u"
+#~ msgstr "トラックピーク: %5u"
+
+#~ msgid "Track Gain: %-+2.2f dB"
+#~ msgstr "トラックゲイン: %-+2.2f dB"
+
+#~ msgid "Album Peak: %5u"
+#~ msgstr "アルバムピーク: %5u"
+
+#~ msgid "Album Gain: %-+5.2f dB"
+#~ msgstr "アルバムゲイン: %-+5.2f dB"
+
+#~ msgid "ID3 Tag:"
+#~ msgstr " ID3 タグ:"
+
+#~ msgid ""
+#~ "Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
+#~ "the BEEP-WMA plugin which is Copyright (C) 2004,2005 Mokrushin I.V. aka "
+#~ "McMCC (mcmcc@mail.ru)\n"
+#~ "and the BMP-WMA plugin which is Copyright (C) 2004 Roman Bogorodskiy "
+#~ "<bogorodskiy@inbox.ru>.\n"
+#~ "This plugin based on source code "
+#~ msgstr ""
+#~ "BEEP-WMA プラグイン (Copyright (C) 2004,2005 Mokrushin I.V. aka McMCC "
+#~ "(mcmcc@mail.ru)) と \n"
+#~ "BMP-WMA プラグイン (Copyright (C) 2004 Roman Bogorodskiy "
+#~ "<bogorodskiy@inbox.ru>) の\n"
+#~ "Tony Vroon <chainsaw@gentoo.org> による Audacious への適用.\n"
+#~ "このプラグインは以下のソースコードを元とする: "
+
+#~ msgid " Close "
+#~ msgstr " 閉じる "
+
+#~ msgid "Refresh Rate"
+#~ msgstr "リフレッシュレート"
+
+#~ msgid "Sample rate mismatch"
+#~ msgstr "サンプリングレートの不一致"
+
+#~ msgid ""
+#~ "Xmms is asking for a sample rate that differs from\n"
+#~ " that of the jack server.  Xmms 1.2.8 or later\n"
+#~ "contains resampling routines that xmms-jack will\n"
+#~ "dynamically load and use to perform resampling.\n"
+#~ "Or you can restart the jack server\n"
+#~ "with a sample rate that matches the one that\n"
+#~ "xmms desires.  -r is the option for the jack\n"
+#~ "alsa driver so -r 44100 or -r 48000 should do\n"
+#~ "\n"
+#~ "Chris Morgan <cmorgan@alum.wpi.edu>\n"
+#~ msgstr ""
+#~ "Xmms が求めているサンプリングレートが  jack サーバの\n"
+#~ "それと異なっています. Xmms 1.2.8 以降は xmms-jack が\n"
+#~ "動的に読み込みリサンプリングを行うといったリサンプリング\n"
+#~ "ルーチンを含んでいます.\n"
+#~ "あるいは jack サーバを xmms の求めるサンプリングレートで\n"
+#~ "再起動することもできます.  -r が jack alsa ドライバの\n"
+#~ "オプションで, -r 44100 や -r 48000 のように使います.\n"
+#~ "\n"
+#~ "Chris Morgan <cmorgan@alum.wpi.edu>\n"
+
+#~ msgid "Full (~50 fps)"
+#~ msgstr "1:1 (〜50 fps)"
+
+#~ msgid "Half (~25 fps)"
+#~ msgstr "1:2 (〜25 fps)"
+
+#~ msgid "Quarter (~13 fps)"
+#~ msgstr "1:4 (〜13 fps)"
+
+#~ msgid "Eighth (~6 fps)"
+#~ msgstr "1:8 (〜6 fps)"
+
+#~ msgid "Audio Settings"
+#~ msgstr "オーディオ設定"
+
+#~ msgid "Force reopen audio when audio type changed"
+#~ msgstr "オーディオタイプが変更されたとき強制的にオーディオを再オープンする"
+
+#~ msgid "Miscellaneous Settings"
+#~ msgstr "雑多な設定"
+
+#~ msgid "Display average bitrate for VBR"
+#~ msgstr "VBR の平均ビットレートを表示する"
+
+#~ msgid "Using libfaad2-"
+#~ msgstr "libfaad2-"
+
+#~ msgid "About ALSA Driver"
+#~ msgstr "ALSA ドライバについて"
+
+#~ msgid ""
+#~ "Audacious ALSA Driver\n"
+#~ "\n"
+#~ " This program is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as published by\n"
+#~ "the Free Software Foundation; either version 2 of the License, or\n"
+#~ "(at your option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License\n"
+#~ "along with this program; if not, write to the Free Software\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
+#~ "USA.\n"
+#~ "Author: Matthieu Sozeau (mattam@altern.org)"
+#~ msgstr ""
+#~ "Audacious ALSA ドライバ\n"
+#~ "\n"
+#~ "このプログラムはフリーソフトウェアです;\n"
+#~ "フリーソフトウェア財団が提供する GNU 一般公有使用許諾契約書\n"
+#~ "の第二版, あるいはそれ以降の版が定める条項の下で\n"
+#~ "本プログラムを再頒布または変更することができます.\n"
+#~ "\n"
+#~ "本プログラムは有用とは思いますが,\n"
+#~ "頒布にあたっては, 市場性及び特定目的, 適合性についての\n"
+#~ "暗黙の保証を含めて, いかなる保証も行ないません.\n"
+#~ "詳細については GNU 一般公有使用許諾契約書をご覧下さい.\n"
+#~ "\n"
+#~ "あなたは, 本プログラムと一緒に GNU 一般公有使用許諾契約書の\n"
+#~ "写しを受け取っているはずです. そうでない場合は, Free Software\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
+#~ "USA. へ手紙を書いて下さい.\n"
+#~ "作者: Matthieu Sozeau (mattam@altern.org)"
+
+#~ msgid "Soundcard:"
+#~ msgstr "サウンドカード:"
+
+#~ msgid "Buffer time (ms):"
+#~ msgstr "バッファ時間 (ミリ秒):"
+
+#~ msgid "Period time (ms):"
+#~ msgstr "休止時間 (ミリ秒):"
+
+#~ msgid ""
+#~ "aRts output plugin by Håvard Kvålen <havardk@xmms.org>\n"
+#~ "Audacious port by Giacomo Lozito from develia.org"
+#~ msgstr ""
+#~ "Håvard Kvålen <havardk@xmms.org> による aRts 出力プラグイン\n"
+#~ "develia.org の Giacomo Lozito による Audacious ポート"
+
+#~ msgid "aRts Driver configuration"
+#~ msgstr "aRts ドライバ設定"
+
+#~ msgid ""
+#~ "<b><big>No playable CD found.</big></b>\n"
+#~ "\n"
+#~ "No CD inserted, or inserted CD is not an audio CD.\n"
+#~ msgstr ""
+#~ "<b><big>演奏できる CD が見つかりませんでした.</big></b>\n"
+#~ "\n"
+#~ "CD が挿入されていないか, 挿入された CD はオーディオ CD ではありません.\n"
+
+#~ msgid "Print debug information"
+#~ msgstr "デバグ情報を出力する"
+
+#~ msgid "auto-M/S mode"
+#~ msgstr "自動 M/S モード"
+
+#~ msgid "_Random"
+#~ msgstr "ランダム(R_)"
+
+#~ msgid "Show track numbers in playlist"
+#~ msgstr "プレイリストにトラック番号を表示する"
+
+#~ msgid "Audacious Skinned GUI Configuration"
+#~ msgstr "Audacious スキン GUI 設定"
+
+#~ msgid "Error importing Winamp EQF file '%s'"
+#~ msgstr "Winamp EQF ファイル '%s' のインポートエラー"
+
+#~ msgid "Enter location to play:"
+#~ msgstr "演奏する位置の入力:"

@@ -12,7 +12,7 @@
 #include "config.h"
 #include <glib.h>
 #include <audacious/plugin.h>
-#include <audacious/audutil.h>
+#include <libaudcore/md5.h>
 
 #define SCROBBLER_HS_URL "http://post.gerpok.com"
 #define SCROBBLER_CLI_ID "aud"

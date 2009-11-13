@@ -1,0 +1,44 @@
+ffaudio todo
+------------
+
+- Tagging: reading should probably be done through ffmpeg (unless there is a reason not to), writing through libaudtag.
+
+- Removing crappy plugins which use the same codebase and merging it into ffaudio.
+
+Potential good candidates are:
+
+  * Windows Media Audio (wma)
+  * Monkey's Audio Codec (mac)
+
+Candidates with problems:
+
+  * Apple Lossless Audio Codec (alac): typically uses same container as
+    AAC (aka MP4), and hogs all files with that. This is a problem from
+    probing side of things.
+
+  * True Audio (tta): TTA files use ID3 tags, but libav* does not read
+    those for TTA files. Works otherwise.
+
+  * Shorten (shn): file durations are wrong.
+
+  * WAVE (wav): file durations are wrong.
+
+  * Musepack (mpc): SV7 files seem to work okay, however SV8 files
+    cause severe artifacts when seeked and under some circumstances
+    apparently cause the decoder to corrupt stack -> crash.
+
+Other notes:
+
+  * AAC: FFmpeg currently only supports AAC-LC, though there have been
+    discussions on ffmpeg-devel about adding SBR (Spectral Band Replication,
+    needed for HE-AAC v1) and PS (Parametric Stereo, needed for HE-AAC v2
+    together with SBR).
+
+    For now, FAAD-based decoder provides better compatibility, like
+    "AAC+" which actually is HE-AAC v2.
+
+  * Movie formats: Playing audio from AVI, MOV, etc. files is possible,
+    maybe we should enable this?
+
+  * RealAudio formats: FFmpeg supports some Real codecs, but the demuxer
+    seems to get duration etc. wrong lots of the time.

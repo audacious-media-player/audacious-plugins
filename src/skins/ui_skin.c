@@ -163,10 +163,10 @@ skin_unlock(Skin * skin)
 }
 
 gboolean
-aud_active_skin_reload(void) 
+aud_active_skin_reload(void)
 {
     AUDDBG("\n");
-    return aud_active_skin_load(aud_active_skin->path); 
+    return aud_active_skin_load(aud_active_skin->path);
 }
 
 gboolean
@@ -180,11 +180,10 @@ aud_active_skin_load(const gchar * path)
         return FALSE;
     }
 
+    mainwin_refresh_hints ();
     ui_skinned_window_draw_all(mainwin);
     ui_skinned_window_draw_all(equalizerwin);
     ui_skinned_window_draw_all(playlistwin);
-
-    playlistwin_update_list(aud_playlist_get_active());
 
     SkinPixmap *pixmap;
     pixmap = &aud_active_skin->pixmaps[SKIN_POSBAR];
@@ -194,14 +193,13 @@ aud_active_skin_load(const gchar * path)
     return TRUE;
 }
 
-void
-skin_pixmap_free(SkinPixmap * p)
+static void skin_pixmap_free (SkinPixmap * pixmap)
 {
-    g_return_if_fail(p != NULL);
-    g_return_if_fail(p->pixbuf != NULL);
-
-    g_object_unref(p->pixbuf);
-    p->pixbuf = NULL;
+    if (pixmap->pixbuf != NULL)
+    {
+        g_object_unref (pixmap->pixbuf);
+        pixmap->pixbuf = NULL;
+    }
 }
 
 Skin *
@@ -294,29 +292,18 @@ skin_set_default_vis_color(Skin * skin)
            sizeof(skin_default_viscolor));
 }
 
-/*
- * I have rewritten this to take an array of possible targets,
- * once we find a matching target we now return, instead of loop
- * recursively. This allows for us to support many possible format
- * targets for our skinning engine than just the original winamp 
- * formats.
- *
- *    -- nenolod, 16 January 2006
- */
-gchar *
-skin_pixmap_locate(const gchar * dirname, gchar ** basenames)
+gchar * skin_pixmap_locate (const gchar * dirname, gchar * * basenames)
 {
-    gchar *filename;
+    gchar * filename = NULL;
     gint i;
 
-    for (i = 0; basenames[i]; i++)
-    if (!(filename = find_path_recursively(dirname, basenames[i]))) 
-        g_free(filename);
-    else
-        return filename;
+    for (i = 0; basenames[i] != NULL; i ++)
+    {
+        if ((filename = find_file_case_path (dirname, basenames[i])) != NULL)
+            break;
+    }
 
-    /* can't find any targets -- sorry */
-    return NULL;
+    return filename;
 }
 
 /**
@@ -404,8 +391,20 @@ skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const gchar * path_p)
 
     pm = &skin->pixmaps[id];
     GdkPixbuf *pix = gdk_pixbuf_new_from_file(filename, NULL);
-    pm->pixbuf = audacious_create_colorized_pixbuf(pix, config.colorize_r, config.colorize_g, config.colorize_b);
-    g_object_unref(pix);
+
+    if (pix == NULL)
+        return FALSE;
+
+    if (config.colorize_r == 255 && config.colorize_g == 255 &&
+     config.colorize_b == 255)
+        pm->pixbuf = pix;
+    else
+    {
+        pm->pixbuf = audacious_create_colorized_pixbuf(pix, config.colorize_r,
+         config.colorize_g, config.colorize_b);
+        g_object_unref(pix);
+    }
+
     pm->width = gdk_pixbuf_get_width(pm->pixbuf);
     pm->height = gdk_pixbuf_get_height(pm->pixbuf);
     pm->current_width = pm->width;
@@ -645,7 +644,7 @@ skin_parse_hints(Skin * skin, gchar *path_p)
     if (path_p == NULL)
         return;
 
-    filename = find_file_recursively(path_p, "skin.hints");
+    filename = find_file_case_uri (path_p, "skin.hints");
 
     if (filename == NULL)
         return;
@@ -1262,8 +1261,8 @@ skin_create_transparent_mask(const gchar * path,
     guint i, j;
     gint k;
 
-    if (path)
-        filename = find_file_recursively(path, file);
+    if (path != NULL)
+        filename = find_file_case_uri (path, file);
 
     /* filename will be null if path wasn't set */
     if (!filename)
@@ -1339,8 +1338,7 @@ skin_load_viscolor(Skin * skin, const gchar * path, const gchar * basename)
 
     skin_set_default_vis_color(skin);
 
-    filename = find_file_recursively(path, basename);
-    if (!filename)
+    if ((filename = find_file_case_uri (path, basename)) == NULL)
         return;
 
     if (!(file = aud_vfs_fopen(filename, "r"))) {
@@ -1399,7 +1397,7 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
     guint i;
     gchar *filename;
     INIFile *inifile;
-    
+
     if(!skin) return FALSE;
     if(!path) return FALSE;
 
@@ -1418,8 +1416,8 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
         skin->pixmaps[SKIN_NUMBERS].width < 108 )
         skin_numbers_generate_dash(skin);
 
-    filename = find_file_recursively(path, "pledit.txt");
-    inifile = aud_open_ini_file(filename);
+    filename = find_file_case_uri (path, "pledit.txt");
+    inifile = (filename != NULL) ? aud_open_ini_file (filename) : NULL;
 
     skin->colors[SKIN_PLEDIT_NORMAL] =
         skin_load_color(inifile, "Text", "Normal", "#2499ff");
@@ -1560,19 +1558,22 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     }
 
 #ifndef _WIN32
-    if (!config.disable_inline_gtk && !archive) {
-        gtkrcpath = find_path_recursively(skin->path, "gtkrc");
-        if (gtkrcpath != NULL)
-            skin_set_gtk_theme(settings, skin);
-        g_free(gtkrcpath);
+    if (! config.disable_inline_gtk && ! archive)
+    {
+        gtkrcpath = g_strdup_printf ("%s/gtk-2.0/gtkrc", skin->path);
+
+        if (g_file_test (gtkrcpath, G_FILE_TEST_IS_REGULAR))
+            skin_set_gtk_theme (settings, skin);
+
+        g_free (gtkrcpath);
     }
 #endif
 
     if(archive) del_directory(skin_path);
     g_free(skin_path);
 
-    gtk_widget_shape_combine_mask(mainwin, skin_get_mask(aud_active_skin, SKIN_MASK_MAIN + config.player_shaded), 0, 0);
-    gtk_widget_shape_combine_mask(equalizerwin, skin_get_mask(aud_active_skin, SKIN_MASK_EQ + config.equalizer_shaded), 0, 0);
+    mainwin_set_shape ();
+    equalizerwin_set_shape ();
 
     return TRUE;
 }
@@ -1647,7 +1648,7 @@ skin_load(Skin * skin, const gchar * path)
 }
 
 gboolean
-skin_reload_forced(void) 
+skin_reload_forced(void)
 {
    gboolean error;
    AUDDBG("\n");
@@ -1805,7 +1806,7 @@ skin_get_eq_spline_colors(Skin * skin, guint32 colors[19])
     for (i = 0; i < 19; i++)
     {
         p = pixels + rowstride * (i + 294) + 115 * n_channels;
-        colors[i] = (p[0] << 16) | (p[1] << 8) | p[2]; 
+        colors[i] = (p[0] << 16) | (p[1] << 8) | p[2];
         /* should we really treat the Alpha channel? */
         /*if (n_channels == 4)
             colors[i] = (colors[i] << 8) | p[3];*/
@@ -1819,13 +1820,13 @@ skin_draw_playlistwin_frame_top(Skin * skin, GdkPixbuf * pix,
 {
     /* The title bar skin consists of 2 sets of 4 images, 1 set
      * for focused state and the other for unfocused. The 4 images
-     * are: 
+     * are:
      *
      * a. right corner (25,20)
      * b. left corner  (25,20)
      * c. tiler        (25,20)
      * d. title        (100,20)
-     * 
+     *
      * min allowed width = 100+25+25 = 150
      */
 
@@ -1884,7 +1885,7 @@ skin_draw_playlistwin_frame_bottom(Skin * skin, GdkPixbuf * pix,
      * b. visualization window (75,38)
      * c. right corner with play buttons (150,38)
      * d. frame tile (25,38)
-     * 
+     *
      * (min allowed width = 125+150+25=300
      */
 
@@ -1918,7 +1919,7 @@ skin_draw_playlistwin_frame_sides(Skin * skin, GdkPixbuf * pix,
                                   gint width, gint height, gboolean focus)
 {
     /* The side frames consist of 2 tile images. 1 for the left, 1 for
-     * the right. 
+     * the right.
      * a. left  (12,29)
      * b. right (19,29)
      */
@@ -1983,7 +1984,7 @@ skin_draw_mainwin_titlebar(Skin * skin, GdkPixbuf * pix,
      * shaded and the other for unshaded mode, giving a total of 4.
      * The images are exactly 275x14 pixels, aligned and arranged
      * vertically on each other in the pixmap in the following order:
-     * 
+     *
      * a) unshaded, focused      offset (27, 0)
      * b) unshaded, unfocused    offset (27, 15)
      * c) shaded, focused        offset (27, 29)

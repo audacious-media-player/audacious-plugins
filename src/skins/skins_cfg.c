@@ -38,9 +38,6 @@
 #include <libintl.h>
 
 skins_cfg_t config;
-
-
-static GtkWidget *cfg_win = NULL;
 GtkWidget *skin_view;
 GtkWidget *skin_refresh_button;
 static GtkWidget *colorize_settings = NULL;
@@ -62,8 +59,11 @@ skins_cfg_t skins_default_config = {
     .skin = NULL,
     .filesel_path = NULL,
     .playlist_visible = FALSE,
+    .playlist_visible_prev = FALSE,
     .equalizer_visible = FALSE,
+    .equalizer_visible_prev = FALSE,
     .player_visible = TRUE,
+    .player_visible_prev = FALSE,
     .player_shaded = FALSE,
     .equalizer_shaded = FALSE,
     .playlist_shaded = FALSE,
@@ -81,7 +81,6 @@ skins_cfg_t skins_default_config = {
     .scope_mode = SCOPE_DOT,
     .voiceprint_mode = VOICEPRINT_NORMAL,
     .vu_mode = VU_SMOOTH,
-    .vis_refresh = REFRESH_FULL,
     .analyzer_falloff = FALLOFF_FAST,
     .peaks_falloff = FALLOFF_SLOW,
     .player_x = MAINWIN_DEFAULT_POS_X,
@@ -93,8 +92,6 @@ skins_cfg_t skins_default_config = {
     .playlist_width = PLAYLISTWIN_DEFAULT_WIDTH,
     .playlist_height = PLAYLISTWIN_DEFAULT_HEIGHT,
     .playlist_position = 0,
-    .mouse_change = 8,                 /* mouse wheel scroll step */
-    .scroll_pl_by = 3,
     .colorize_r = 255, .colorize_g = 255, .colorize_b = 255,
     .snap_distance = 10,
     .snap_windows = TRUE,
@@ -103,7 +100,6 @@ skins_cfg_t skins_default_config = {
     .twoway_scroll = TRUE,             /* use back and forth scroll */
     .mainwin_use_bitmapfont = TRUE,
     .eq_scaled_linked = TRUE,
-    .show_numbers_in_pl = TRUE,
     .show_separator_in_pl = TRUE,
     .playlist_font = NULL,
     .mainwin_font = NULL,
@@ -129,6 +125,9 @@ static skins_cfg_boolent skins_boolents[] = {
     {"player_shaded", &config.player_shaded, TRUE},
     {"equalizer_shaded", &config.equalizer_shaded, TRUE},
     {"playlist_shaded", &config.playlist_shaded, TRUE},
+    {"equalizer_visible_prev", &config.equalizer_visible_prev, TRUE},
+    {"playlist_visible_prev", &config.playlist_visible_prev, TRUE},
+    {"player_visible_prev", &config.player_visible_prev, TRUE},
     {"dim_titlebar", &config.dim_titlebar, TRUE},
     {"show_wm_decorations", &config.show_wm_decorations, TRUE},
     {"easy_move", &config.easy_move, TRUE},
@@ -142,7 +141,6 @@ static skins_cfg_boolent skins_boolents[] = {
     {"warn_about_broken_gtk_engines", &config.warn_about_broken_gtk_engines, TRUE},
     {"mainwin_use_bitmapfont", &config.mainwin_use_bitmapfont, TRUE},
     {"eq_scaled_linked", &config.eq_scaled_linked, TRUE},
-    {"show_numbers_in_pl", &config.show_numbers_in_pl, TRUE},
     {"show_separator_in_pl", &config.show_separator_in_pl, TRUE},
     {"random_skin_on_play", &config.random_skin_on_play, TRUE},
 };
@@ -165,7 +163,6 @@ static skins_cfg_nument skins_numents[] = {
     {"scope_mode", &config.scope_mode, TRUE},
     {"vu_mode", &config.vu_mode, TRUE},
     {"voiceprint_mode", &config.voiceprint_mode, TRUE},
-    {"vis_refresh_rate", &config.vis_refresh, TRUE},
     {"analyzer_falloff", &config.analyzer_falloff, TRUE},
     {"peaks_falloff", &config.peaks_falloff, TRUE},
     {"playlist_x", &config.playlist_x, TRUE},
@@ -175,8 +172,6 @@ static skins_cfg_nument skins_numents[] = {
     {"playlist_position", &config.playlist_position, TRUE},
     {"equalizer_x", &config.equalizer_x, TRUE},
     {"equalizer_y", &config.equalizer_y, TRUE},
-    {"mouse_wheel_change", &config.mouse_change, TRUE},
-    {"scroll_pl_by", &config.scroll_pl_by, TRUE},
     {"colorize_r", &config.colorize_r, TRUE},
     {"colorize_g", &config.colorize_g, TRUE},
     {"colorize_b", &config.colorize_b, TRUE},
@@ -198,6 +193,8 @@ static skins_cfg_strent skins_strents[] = {
 };
 
 static gint ncfgsent = G_N_ELEMENTS(skins_strents);
+
+static void reload_skin (void);
 
 void skins_cfg_free() {
     gint i;
@@ -258,6 +255,16 @@ void skins_cfg_save() {
 
     int i;
 
+    if (config.save_window_position == FALSE)
+    {
+        config.player_x = MAINWIN_DEFAULT_POS_X;
+        config.player_y = MAINWIN_DEFAULT_POS_Y;
+        config.equalizer_x = EQUALIZER_DEFAULT_POS_X;
+        config.equalizer_y = EQUALIZER_DEFAULT_POS_Y;
+        config.playlist_x = PLAYLISTWIN_DEFAULT_POS_X;
+        config.playlist_y = PLAYLISTWIN_DEFAULT_POS_Y;
+    }
+
     for (i = 0; i < ncfgsent; ++i) {
         if (skins_strents[i].se_wrt)
             aud_cfg_db_set_string(cfgfile, "skins",
@@ -280,13 +287,6 @@ void skins_cfg_save() {
     aud_cfg_db_close(cfgfile);
 }
 
-
-static void
-playlist_show_pl_separator_numbers_cb()
-{
-    playlistwin_update_list(aud_playlist_get_active());
-}
-
 static void
 mainwin_font_set_cb()
 {
@@ -297,9 +297,9 @@ static void
 playlist_font_set_cb()
 {
     AUDDBG("Attempt to set font \"%s\"\n", config.playlist_font);
-    ui_skinned_playlist_set_font(config.playlist_font);
+    ui_skinned_playlist_set_font (playlistwin_list, config.playlist_font);
     playlistwin_set_sinfo_font(config.playlist_font);  /* propagate font setting to playlistwin_sinfo */
-    playlistwin_update_list(aud_playlist_get_active());
+    playlistwin_update ();
 }
 
 static void
@@ -309,7 +309,7 @@ bitmap_fonts_cb()
     playlistwin_set_sinfo_font(config.playlist_font);
 
     if (config.playlist_shaded) {
-        playlistwin_update_list(aud_playlist_get_active());
+        playlistwin_update ();
         ui_skinned_window_draw_all(playlistwin);
     }
 }
@@ -320,23 +320,28 @@ show_wm_decorations_cb()
     dock_window_set_decorated (mainwin);
     dock_window_set_decorated (playlistwin);
     dock_window_set_decorated (equalizerwin);
+    mainwin_set_shape ();
+    equalizerwin_set_shape ();
 }
+
+static PreferencesWidget font_table_elements[] = {
+    {WIDGET_FONT_BTN, N_("_Player:"), &config.mainwin_font, G_CALLBACK(mainwin_font_set_cb), NULL, FALSE, {.font_btn = {N_("Select main player window font:")}}},
+    {WIDGET_FONT_BTN, N_("_Playlist:"), &config.playlist_font, G_CALLBACK(playlist_font_set_cb), NULL, FALSE, {.font_btn = {N_("Select playlist font:")}}},
+};
 
 static PreferencesWidget appearance_misc_widgets[] = {
     {WIDGET_LABEL, N_("<b>_Fonts</b>"), NULL, NULL, NULL, FALSE},
-    {WIDGET_FONT_BTN, N_("_Player:"), &config.mainwin_font, G_CALLBACK(mainwin_font_set_cb), N_("Select main player window font:"), FALSE},
-    {WIDGET_FONT_BTN, N_("_Playlist:"), &config.playlist_font, G_CALLBACK(playlist_font_set_cb), N_("Select playlist font:"), FALSE},
+    {WIDGET_TABLE, NULL, NULL, NULL, NULL, TRUE, {.table = {font_table_elements, G_N_ELEMENTS(font_table_elements)}}},
     {WIDGET_CHK_BTN, N_("Use Bitmap fonts if available"), &config.mainwin_use_bitmapfont, G_CALLBACK(bitmap_fonts_cb), N_("Use bitmap fonts if they are available. Bitmap fonts do not support Unicode strings."), FALSE},
     {WIDGET_LABEL, N_("<b>_Miscellaneous</b>"), NULL, NULL, NULL, FALSE},
-    {WIDGET_CHK_BTN, N_("Show track numbers in playlist"), &config.show_numbers_in_pl,
-        G_CALLBACK(playlist_show_pl_separator_numbers_cb), NULL, FALSE},
     {WIDGET_CHK_BTN, N_("Show separators in playlist"), &config.show_separator_in_pl,
-        G_CALLBACK(playlist_show_pl_separator_numbers_cb), NULL, FALSE},
+     (GCallback) playlistwin_update, 0, 0},
     {WIDGET_CHK_BTN, N_("Show window manager decoration"), &config.show_wm_decorations, G_CALLBACK(show_wm_decorations_cb),
         N_("This enables the window manager to show decorations for windows."), FALSE},
     {WIDGET_CHK_BTN, N_("Use two-way text scroller"), &config.twoway_scroll, NULL,
         N_("If selected, the file information text in the main window will scroll back and forth. If not selected, the text will only scroll in one direction."), FALSE},
-    {WIDGET_CHK_BTN, N_("Disable inline gtk theme"), &config.disable_inline_gtk, NULL, NULL, FALSE},
+    {WIDGET_CHK_BTN, N_("Disable inline gtk theme"), &config.disable_inline_gtk,
+     reload_skin, NULL, FALSE},
     {WIDGET_CHK_BTN, N_("Random skin on play"), &config.random_skin_on_play, NULL, NULL, FALSE},
     {WIDGET_CHK_BTN, N_("Allow loading incomplete skins"), &config.allow_broken_skins, NULL,
         N_("If selected, audacious won't refuse loading broken skins. Use only if your favourite skin doesn't work"), FALSE},
@@ -407,7 +412,6 @@ create_colorize_settings(void)
     gtk_container_set_border_width(GTK_CONTAINER(colorize_settings), 12);
     gtk_window_set_title(GTK_WINDOW(colorize_settings), _("Color Adjustment"));
     gtk_window_set_type_hint(GTK_WINDOW(colorize_settings), GDK_WINDOW_TYPE_HINT_DIALOG);
-    gtk_window_set_transient_for(GTK_WINDOW(colorize_settings), GTK_WINDOW(cfg_win));
 
     vbox = gtk_vbox_new(FALSE, 12);
     gtk_container_add(GTK_CONTAINER(colorize_settings), vbox);
@@ -639,8 +643,6 @@ GtkWidget* skins_configure(void) {
     g_signal_connect_after(G_OBJECT(skin_view), "realize",
                            G_CALLBACK(on_skin_view_realize),
                            NULL);
-
-    gtk_window_present(GTK_WINDOW(cfg_win));
 
     return appearance_page_vbox;
 }

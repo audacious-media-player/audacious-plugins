@@ -35,12 +35,12 @@ callback_info* init_callback_info(gchar* name) {
         _LEAVE NULL;
     }
 
-    if (NULL == (info = malloc(sizeof(callback_info)))) {
+    if (NULL == (info = g_malloc0(sizeof(callback_info)))) {
         _ERROR("Could not allocate memory for callback structure!");
         _LEAVE NULL;
     }
 
-    if (NULL == (info->output_buffer = malloc(BUFFER_SIZE_BYTE))) {
+    if (NULL == (info->output_buffer = g_malloc(BUFFER_SIZE_BYTE))) {
         _ERROR("Could not allocate memory for output buffer!");
         _LEAVE NULL;
     }
@@ -52,19 +52,6 @@ callback_info* init_callback_info(gchar* name) {
      * Same for info->comment.x
      */
     info->name = name;
-    info->input_stream = NULL;
-    info->comment.artist = NULL;
-    info->comment.album = NULL;
-    info->comment.title = NULL;
-    info->comment.tracknumber = NULL;
-    info->comment.genre = NULL;
-    info->comment.date = NULL;
-    info->comment.comment = NULL;
-    info->replaygain.ref_loud = NULL;
-    info->replaygain.track_gain = NULL;
-    info->replaygain.track_peak = NULL;
-    info->replaygain.album_gain = NULL;
-    info->replaygain.album_peak = NULL;
     reset_info(info, FALSE);
 
     info->mutex = g_mutex_new();
@@ -79,8 +66,8 @@ callback_info* init_callback_info(gchar* name) {
 void clean_callback_info(callback_info* info)
 {
     g_mutex_free(info->mutex);
-    free(info->output_buffer);
-    free(info);
+    g_free(info->output_buffer);
+    g_free(info);
 }
 
 /* --- */
@@ -94,15 +81,10 @@ void reset_info(callback_info* info, gboolean close_fd) {
     if (close_fd && (NULL != info->input_stream)) {
         _DEBUG("Closing fd");
         aud_vfs_fclose(info->input_stream);
+        info->input_stream = NULL;
     }
-    info->input_stream = NULL;
 
     // memset(info->output_buffer, 0, BUFFER_SIZE * sizeof(int16_t));
-    info->stream.samplerate = 0;
-    info->stream.bits_per_sample = 0;
-    info->stream.channels = 0;
-    info->stream.samples = 0;
-    info->stream.has_seektable = FALSE;
     info->buffer_free = BUFFER_SIZE_SAMP;
     info->buffer_used = 0;
     info->write_pointer = info->output_buffer;
@@ -112,76 +94,24 @@ void reset_info(callback_info* info, gboolean close_fd) {
     /*
      * Clear the stream and frame information
      */
-    info->stream.bits_per_sample = 0;
-    info->stream.samplerate = 0;
-    info->stream.channels = 0;
-    info->stream.samples = 0;
+    memset(&(info->stream), 0, sizeof(info->stream));
+    memset(&(info->frame), 0, sizeof(info->frame));
 
-    if (NULL != info->comment.artist) {
-        free(info->comment.artist);
-        info->comment.artist = NULL;
-    }
+    g_free(info->comment.artist);
+    g_free(info->comment.album);
+    g_free(info->comment.title);
+    g_free(info->comment.tracknumber);
+    g_free(info->comment.genre);
+    g_free(info->comment.comment);
+    g_free(info->comment.date);
+    memset(&(info->comment), 0, sizeof(info->comment));
 
-    if (NULL != info->comment.album) {
-        free(info->comment.album);
-        info->comment.album = NULL;
-    }
-
-    if (NULL != info->comment.title) {
-        free(info->comment.title);
-        info->comment.title = NULL;
-    }
-
-    if (NULL != info->comment.tracknumber) {
-        free(info->comment.tracknumber);
-        info->comment.tracknumber = NULL;
-    }
-
-    if (NULL != info->comment.genre) {
-        free(info->comment.genre);
-        info->comment.genre = NULL;
-    }
-
-    if (NULL != info->comment.comment) {
-        free(info->comment.comment);
-        info->comment.comment = NULL;
-    }
-
-    if (NULL != info->replaygain.ref_loud) {
-        free(info->replaygain.ref_loud);
-        info->replaygain.ref_loud = NULL;
-    }
-
-    if (NULL != info->replaygain.track_gain) {
-        free(info->replaygain.track_gain);
-        info->replaygain.track_gain = NULL;
-    }
-
-    if (NULL != info->replaygain.track_peak) {
-        free(info->replaygain.track_peak);
-        info->replaygain.track_peak = NULL;
-    }
-
-    if (NULL != info->replaygain.album_gain) {
-        free(info->replaygain.album_gain);
-        info->replaygain.album_gain = NULL;
-    }
-
-    if (NULL != info->replaygain.album_peak) {
-        free(info->replaygain.album_peak);
-        info->replaygain.album_peak = NULL;
-    }
-
-    info->replaygain.has_rg = FALSE;
-
-    if (NULL != info->comment.date) {
-        free(info->comment.date);
-        info->comment.date = NULL;
-    }
-
-    info->frame.bits_per_sample = 0;
-    info->frame.samplerate = 0;
-    info->frame.channels = 0;
+    g_free(info->replaygain.ref_loud);
+    g_free(info->replaygain.track_gain);
+    g_free(info->replaygain.track_peak);
+    g_free(info->replaygain.album_gain);
+    g_free(info->replaygain.album_peak);
+    memset(&(info->replaygain), 0, sizeof(info->replaygain));
 
     info->metadata_changed = FALSE;
 
@@ -246,15 +176,15 @@ gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info*
 
 /* --- */
 
-Tuple* get_tuple(const gchar* filename, callback_info* info) {
-
+Tuple* get_tuple(VFSFile* fd, callback_info* info)
+{
     Tuple *out;
 
     _ENTER;
 
     _DEBUG("Using callback_info %s", info->name);
 
-    out = aud_tuple_new_from_filename(filename);
+    out = aud_tuple_new_from_filename(fd->uri);
 
     aud_tuple_associate_string(out, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
     aud_tuple_associate_string(out, FIELD_QUALITY, NULL, "lossless");
@@ -285,28 +215,6 @@ Tuple* get_tuple(const gchar* filename, callback_info* info) {
     _DEBUG("Tuple created: [%p]", out);
 
     _LEAVE out;
-}
-
-/* --- */
-
-gchar* get_title(const gchar* filename, callback_info* info) {
-
-    Tuple *input;
-    gchar *title;
-
-    _ENTER;
-
-    _DEBUG("Using callback_info %s", info->name);
-
-    input = get_tuple(filename, info);
-
-    title = aud_tuple_formatter_make_title_string(input, aud_get_gentitle_format());
-
-    aud_tuple_free(input);
-
-    _DEBUG("Title created: <%s>", title);
-
-    _LEAVE title;
 }
 
 /* --- */
@@ -396,9 +304,7 @@ void add_comment(callback_info* info, gchar* key, gchar* value) {
     }
 
     if (NULL != destination) {
-        if (NULL != *destination) {
-            g_free(*destination);
-        }
+        g_free(*destination);
 
         if (NULL == (*destination = g_strdup(value))) {
             _ERROR("Could not allocate memory for comment!");
@@ -418,7 +324,7 @@ void add_comment(callback_info* info, gchar* key, gchar* value) {
 ReplayGainInfo get_replay_gain(callback_info *info) {
 
     ReplayGainInfo rg;
-    
+
     if (info->replaygain.has_rg) {
 	rg.track_gain = (info->replaygain.track_gain
 			 ? atof(info->replaygain.track_gain)

@@ -35,12 +35,12 @@
    TimerMode enum; move that enum elsewhere so we can get rid of this include */
 #include "ui_main.h"
 
-#include "icons-stock.h"
 #if 0
 #include "sync-menu.h"
 #endif
 #include "plugin.h"
 #include <audacious/ui_plugin_menu.h>
+#include <libaudgui/libaudgui.h>
 
 static GtkUIManager *ui_manager = NULL;
 
@@ -136,13 +136,6 @@ static GtkRadioActionEntry radioaction_entries_wshmode[] = {
 	{ "wshmode smooth", NULL , N_("Smooth"), NULL, N_("Smooth"), VU_SMOOTH }
 };
 
-static GtkRadioActionEntry radioaction_entries_refrate[] = {
-	{ "refrate full", NULL , N_("Full (~50 fps)"), NULL, N_("Full (~50 fps)"), REFRESH_FULL },
-	{ "refrate half", NULL , N_("Half (~25 fps)"), NULL, N_("Half (~25 fps)"), REFRESH_HALF },
-	{ "refrate quarter", NULL , N_("Quarter (~13 fps)"), NULL, N_("Quarter (~13 fps)"), REFRESH_QUARTER },
-	{ "refrate eighth", NULL , N_("Eighth (~6 fps)"), NULL, N_("Eighth (~6 fps)"), REFRESH_EIGTH }
-};
-
 static GtkRadioActionEntry radioaction_entries_anafoff[] = {
 	{ "anafoff slowest", NULL , N_("Slowest"), NULL, N_("Slowest"), FALLOFF_SLOWEST },
 	{ "anafoff slow", NULL , N_("Slow"), NULL, N_("Slow"), FALLOFF_SLOW },
@@ -196,7 +189,6 @@ static GtkActionEntry action_entries_visualization[] = {
 	{ "scomode", NULL, N_("Scope Mode") },
 	{ "vprmode", NULL, N_("Voiceprint Mode") },
 	{ "wshmode", NULL, N_("WindowShade VU Mode") },
-	{ "refrate", NULL, N_("Refresh Rate") },
 	{ "anafoff", NULL, N_("Analyzer Falloff") },
 	{ "peafoff", NULL, N_("Peaks Falloff") }
 };
@@ -223,9 +215,10 @@ static GtkActionEntry action_entries_playlist[] = {
         { "playlist save", GTK_STOCK_SAVE, N_("Save List"), "<Shift>S",
           N_("Saves the selected playlist."), G_CALLBACK(action_playlist_save_list) },
 
-        { "playlist save default", GTK_STOCK_SAVE, N_("Save Default List"), "<Alt>S",
-          N_("Saves the selected playlist to the default location."),
-          G_CALLBACK(action_playlist_save_default_list) },
+        { "playlist save all", GTK_STOCK_SAVE, N_("Save All Playlists"),
+         "<Alt>S", N_("Saves all the playlists that are open. Note that this "
+         "is done automatically when Audacious quits."),
+         action_playlist_save_all_playlists},
 
         { "playlist refresh", GTK_STOCK_REFRESH, N_("Refresh List"), "F5",
           N_("Refreshes metadata associated with a playlist entry."),
@@ -320,6 +313,10 @@ static GtkActionEntry action_entries_playlist_sort[] = {
 	  N_("Sorts the list by title."),
 	  G_CALLBACK(action_playlist_sort_by_title) },
 
+        { "playlist sort by album", NULL, N_("By Album"), NULL,
+          N_("Sorts the list by album."),
+          G_CALLBACK(action_playlist_sort_by_album) },
+
 	{ "playlist sort by artist", NULL , N_("By Artist"), NULL,
 	  N_("Sorts the list by artist."),
 	  G_CALLBACK(action_playlist_sort_by_artist) },
@@ -340,15 +337,15 @@ static GtkActionEntry action_entries_playlist_sort[] = {
 	  N_("Sorts the list by track number."),
 	  G_CALLBACK(action_playlist_sort_by_track_number) },
 
-	{ "playlist sort by playlist entry", NULL , N_("By Playlist Entry"), NULL,
-	  N_("Sorts the list by playlist entry."),
-	  G_CALLBACK(action_playlist_sort_by_playlist_entry) },
-
 	{ "playlist sort selected menu", GTK_STOCK_GO_DOWN , N_("Sort Selected") },
 
 	{ "playlist sort selected by title", NULL , N_("By Title"), NULL,
 	  N_("Sorts the list by title."),
 	  G_CALLBACK(action_playlist_sort_selected_by_title) },
+
+        { "playlist sort selected by album", NULL, N_("By Album"), NULL,
+          N_("Sorts the list by album."),
+          G_CALLBACK(action_playlist_sort_selected_by_album) },
 
 	{ "playlist sort selected by artist", NULL, N_("By Artist"), NULL,
 	  N_("Sorts the list by artist."),
@@ -369,10 +366,6 @@ static GtkActionEntry action_entries_playlist_sort[] = {
 	{ "playlist sort selected by track number", NULL , N_("By Track Number"), NULL,
 	  N_("Sorts the list by track number."),
 	  G_CALLBACK(action_playlist_sort_selected_by_track_number) },
-
-	{ "playlist sort selected by playlist entry", NULL, N_("By Playlist Entry"), NULL,
-	  N_("Sorts the list by playlist entry."),
-	  G_CALLBACK(action_playlist_sort_selected_by_playlist_entry) },
 };
 
 static GtkActionEntry action_entries_others[] = {
@@ -527,11 +520,6 @@ ui_manager_init ( void )
     radioaction_group_wshmode , radioaction_entries_wshmode ,
     G_N_ELEMENTS(radioaction_entries_wshmode) , 0 , G_CALLBACK(action_wshmode) , NULL );
 
-  radioaction_group_refrate = ui_manager_new_action_group("radioaction_refrate");
-  gtk_action_group_add_radio_actions(
-    radioaction_group_refrate , radioaction_entries_refrate ,
-    G_N_ELEMENTS(radioaction_entries_refrate) , 0 , G_CALLBACK(action_refrate) , NULL );
-
   radioaction_group_anafoff = ui_manager_new_action_group("radioaction_anafoff");
   gtk_action_group_add_radio_actions(
     radioaction_group_anafoff , radioaction_entries_anafoff ,
@@ -611,7 +599,6 @@ ui_manager_init ( void )
   gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_scomode , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_vprmode , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_wshmode , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_refrate , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anafoff , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_peafoff , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_vismode , 0 );
@@ -634,7 +621,6 @@ ui_manager_init ( void )
 static GtkWidget *carbon_menubar;
 #endif
 
-
 void
 ui_manager_create_menus ( void )
 {
@@ -649,18 +635,6 @@ ui_manager_create_menus ( void )
     g_error_free( gerr );
     return;
   }
-
-  /* create GtkMenu widgets using path from xml definitions */
-  mainwin_songname_menu = ui_manager_get_popup_menu( ui_manager , "/mainwin-menus/songname-menu" );
-  mainwin_visualization_menu = ui_manager_get_popup_menu( ui_manager , "/mainwin-menus/main-menu/visualization" );
-  mainwin_playback_menu = ui_manager_get_popup_menu( ui_manager , "/mainwin-menus/main-menu/playback" );
-  mainwin_playlist_menu = ui_manager_get_popup_menu( ui_manager , "/mainwin-menus/main-menu/playlist" );
-  mainwin_view_menu = ui_manager_get_popup_menu( ui_manager , "/mainwin-menus/main-menu/view" );
-  mainwin_general_menu = ui_manager_get_popup_menu( ui_manager , "/mainwin-menus/main-menu" );
-
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/mainwin-menus/main-menu/plugins-menu")), aud_get_plugin_menu
-   (AUDACIOUS_MENU_MAIN));
 
 #ifdef GDK_WINDOWING_QUARTZ
   gtk_ui_manager_add_ui_from_file( ui_manager , DATA_DIR "/ui/carbon-menubar.ui" , &gerr );
@@ -685,33 +659,6 @@ ui_manager_create_menus ( void )
     return;
   }
 
-  playlistwin_popup_menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/playlist-rightclick-menu");
-
-  playlistwin_pladd_menu  = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/add-menu");
-  playlistwin_pldel_menu  = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/del-menu");
-  playlistwin_plsel_menu  = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/select-menu");
-  playlistwin_plsort_menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/misc-menu");
-  playlistwin_pllist_menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/playlist-menu");
-
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/playlist-menus/playlist-menu/plugins-menu")),
-   aud_get_plugin_menu (AUDACIOUS_MENU_PLAYLIST));
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/playlist-menus/playlist-rightclick-menu/plugins-menu")),
-   aud_get_plugin_menu (AUDACIOUS_MENU_PLAYLIST_RCLICK));
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/playlist-menus/add-menu/plugins-menu")), aud_get_plugin_menu
-   (AUDACIOUS_MENU_PLAYLIST_ADD));
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/playlist-menus/del-menu/plugins-menu")), aud_get_plugin_menu
-   (AUDACIOUS_MENU_PLAYLIST_REMOVE));
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/playlist-menus/select-menu/plugins-menu")),
-   aud_get_plugin_menu (AUDACIOUS_MENU_PLAYLIST_SELECT));
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (gtk_ui_manager_get_widget
-   (ui_manager, "/playlist-menus/misc-menu/plugins-menu")), aud_get_plugin_menu
-   (AUDACIOUS_MENU_PLAYLIST_MISC));
-
   gtk_ui_manager_add_ui_from_file( ui_manager , DATA_DIR "/ui/equalizer.ui" , &gerr );
 
   if ( gerr != NULL )
@@ -720,11 +667,59 @@ ui_manager_create_menus ( void )
     g_error_free( gerr );
     return;
   }
-
-  equalizerwin_presets_menu = ui_manager_get_popup_menu(ui_manager, "/equalizer-menus/preset-menu");
-  return;
 }
 
+static GtkWidget * create_menu (gint id)
+{
+    const struct
+    {
+        const gchar * name;
+        const gchar * plug_name;
+        gint plug_id;
+    }
+    templates[UI_MENUS] =
+    {
+        {"/mainwin-menus/main-menu", "/mainwin-menus/main-menu/plugins-menu",
+         AUDACIOUS_MENU_MAIN},
+        {"/mainwin-menus/main-menu/playback", NULL, 0},
+        {"/mainwin-menus/main-menu/playlist", NULL, 0},
+        {"/mainwin-menus/songname-menu", NULL, 0},
+        {"/mainwin-menus/main-menu/view", NULL, 0},
+        {"/mainwin-menus/main-menu/visualization", NULL, 0},
+        {"/playlist-menus/add-menu", "/playlist-menus/add-menu/plugins-menu",
+         AUDACIOUS_MENU_PLAYLIST_ADD},
+        {"/playlist-menus/del-menu", "/playlist-menus/del-menu/plugins-menu",
+         AUDACIOUS_MENU_PLAYLIST_REMOVE},
+        {"/playlist-menus/select-menu", "/playlist-menus/select-menu/"
+         "plugins-menu", AUDACIOUS_MENU_PLAYLIST_SELECT},
+        {"/playlist-menus/misc-menu", "/playlist-menus/misc-menu/plugins-menu",
+         AUDACIOUS_MENU_PLAYLIST_MISC},
+        {"/playlist-menus/playlist-menu", "/playlist-menus/playlist-menu/"
+         "plugins-menu", AUDACIOUS_MENU_PLAYLIST},
+        {"/playlist-menus/playlist-rightclick-menu", "/playlist-menus/"
+         "playlist-rightclick-menu/plugins-menu", AUDACIOUS_MENU_PLAYLIST_RCLICK},
+        {"/equalizer-menus/preset-menu", NULL, 0},
+    };
+
+    static GtkWidget * menus[UI_MENUS] = {NULL, NULL, NULL, NULL, NULL, NULL,
+     NULL, NULL, NULL, NULL, NULL, NULL};
+
+    if (menus[id] == NULL)
+    {
+        menus[id] = ui_manager_get_popup_menu(ui_manager, templates[id].name);
+
+        if (templates[id].plug_name != NULL)
+        {
+            GtkWidget * item = gtk_ui_manager_get_widget (ui_manager,
+             templates[id].plug_name);
+            GtkWidget * sub = aud_get_plugin_menu (templates[id].plug_id);
+
+            gtk_menu_item_set_submenu (GTK_MENU_ITEM(item), sub);
+        }
+    }
+
+    return menus[id];
+}
 
 GtkAccelGroup *
 ui_manager_get_accel_group ( void )
@@ -744,61 +739,50 @@ ui_manager_get_popup_menu ( GtkUIManager * self , const gchar * path )
     return NULL;
 }
 
-
-static void
-menu_popup_pos_func (GtkMenu * menu , gint * x , gint * y , gboolean * push_in , gint * point )
+static void menu_positioner(GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
+ void *data)
 {
-  GtkRequisition requisition;
-  gint screen_width;
-  gint screen_height;
+    GtkRequisition request;
 
-  gtk_widget_size_request(GTK_WIDGET(menu), &requisition);
+    gtk_widget_size_request(GTK_WIDGET(menu), &request);
 
-  screen_width = gdk_screen_width();
-  screen_height = gdk_screen_height();
-
-  *x = CLAMP(point[0] - 2, 0, MAX(0, screen_width - requisition.width));
-  *y = CLAMP(point[1] - 2, 0, MAX(0, screen_height - requisition.height));
-
-  *push_in = FALSE;
+    *x = ((gint *)data)[0] - ((gint *)data)[2] * request.width;
+    *y = ((gint *)data)[1] - ((gint *)data)[3] * request.height;
+    *push_in = TRUE;
 }
 
-
-void
-ui_manager_popup_menu_show ( GtkMenu * menu , gint x , gint y , guint button , guint time )
+void ui_popup_menu_show(gint id, gint x, gint y, gboolean leftward, gboolean
+ upward, gint button, gint time)
 {
-  gint pos[2];
-  pos[0] = x;
-  pos[1] = y;
+    gint position[4] = {x, y, leftward, upward};
 
-  gtk_menu_popup( menu , NULL , NULL ,
-    (GtkMenuPositionFunc) menu_popup_pos_func , pos , button , time );
+    gtk_menu_popup (GTK_MENU(create_menu (id)), NULL, NULL, menu_positioner,
+     position, button, time);
 }
 
 void
 ui_manager_destroy( void )
 {
-    g_object_unref((GObject*)toggleaction_group_others);
-    g_object_unref((GObject*)radioaction_group_anamode);
-    g_object_unref((GObject*)radioaction_group_anatype);
-    g_object_unref((GObject*)radioaction_group_scomode);
-    g_object_unref((GObject*)radioaction_group_vprmode);
-    g_object_unref((GObject*)radioaction_group_wshmode);
-    g_object_unref((GObject*)radioaction_group_refrate);
-    g_object_unref((GObject*)radioaction_group_anafoff);
-    g_object_unref((GObject*)radioaction_group_peafoff);
-    g_object_unref((GObject*)radioaction_group_vismode);
-    g_object_unref((GObject*)radioaction_group_viewtime);
-    g_object_unref((GObject*)action_group_playback);
-    g_object_unref((GObject*)action_group_playlist);
-    g_object_unref((GObject*)action_group_visualization);
-    g_object_unref((GObject*)action_group_view);
-    g_object_unref((GObject*)action_group_others);
-    g_object_unref((GObject*)action_group_playlist_add);
-    g_object_unref((GObject*)action_group_playlist_select);
-    g_object_unref((GObject*)action_group_playlist_delete);
-    g_object_unref((GObject*)action_group_playlist_sort);
-    g_object_unref((GObject*)action_group_equalizer);
-    g_object_unref((GObject*)ui_manager);
+    g_object_unref(G_OBJECT(toggleaction_group_others));
+    g_object_unref(G_OBJECT(radioaction_group_anamode));
+    g_object_unref(G_OBJECT(radioaction_group_anatype));
+    g_object_unref(G_OBJECT(radioaction_group_scomode));
+    g_object_unref(G_OBJECT(radioaction_group_vprmode));
+    g_object_unref(G_OBJECT(radioaction_group_wshmode));
+    g_object_unref(G_OBJECT(radioaction_group_anafoff));
+    g_object_unref(G_OBJECT(radioaction_group_peafoff));
+    g_object_unref(G_OBJECT(radioaction_group_vismode));
+    g_object_unref(G_OBJECT(radioaction_group_viewtime));
+    g_object_unref(G_OBJECT(action_group_playback));
+    g_object_unref(G_OBJECT(action_group_playlist));
+    g_object_unref(G_OBJECT(action_group_visualization));
+    g_object_unref(G_OBJECT(action_group_view));
+    g_object_unref(G_OBJECT(action_group_others));
+    g_object_unref(G_OBJECT(action_group_playlist_add));
+    g_object_unref(G_OBJECT(action_group_playlist_select));
+    g_object_unref(G_OBJECT(action_group_playlist_delete));
+    g_object_unref(G_OBJECT(action_group_playlist_sort));
+    g_object_unref(G_OBJECT(action_group_equalizer));
+    g_object_unref(G_OBJECT(ui_manager));
 }
 

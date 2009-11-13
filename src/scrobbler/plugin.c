@@ -42,7 +42,6 @@ static void cleanup(void);
 static void *xs_thread(void *);
 static void *hs_thread(void *);
 static int sc_going, ge_going;
-static GtkWidget *cfgdlg;
 static gboolean submit;
 
 static GMutex *m_scrobbler;
@@ -53,12 +52,15 @@ static GMutex *hs_mutex, *xs_mutex;
 static GCond *hs_cond, *xs_cond;
 guint track_timeout;
 
+extern PluginPreferences preferences;
+
 static GeneralPlugin scrobbler_gp =
 {
 	.description = "Scrobbler Plugin",
 	.init = init,
 	.about = about_show,
-	.cleanup = cleanup
+	.cleanup = cleanup,
+	.settings = &preferences,
 };
 
 static gboolean ishttp(const char *a)
@@ -67,19 +69,18 @@ static gboolean ishttp(const char *a)
 	return aud_str_has_prefix_nocase(a, "http://") || aud_str_has_prefix_nocase(a, "https://");
 }
 
-static void aud_hook_playback_begin(gpointer aud_hook_data, gpointer user_data)
+static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 {
-	PlaylistEntry *entry = (PlaylistEntry *) aud_hook_data;
+	gint playlist = aud_playlist_get_active();
+	gint pos = aud_playlist_get_position(playlist);
 
-	g_return_if_fail(entry != NULL);
-
-	if (entry->length < 30)
+	if (aud_playlist_entry_get_length(playlist, pos) < (glong)30)
 	{
 		pdebug(" *** not submitting due to entry->length < 30", DEBUG);
 		return;
 	}
 
-	if (ishttp(entry->filename))
+	if (ishttp(aud_playlist_entry_get_filename(playlist, pos)))
 	{
 		pdebug(" *** not submitting due to HTTP source", DEBUG);
 		return;
@@ -216,15 +217,11 @@ void stop(void) {
 static void init(void)
 {
     start();
-    cfgdlg = create_cfgdlg();
-    aud_prefswin_page_new(cfgdlg, "Scrobbler", DATA_DIR "/images/audioscrobbler.png");
 }
 
 static void cleanup(void)
 {
     stop();
-    configure_cleanup();
-    aud_prefswin_page_destroy(cfgdlg);
 }
 
 static void *xs_thread(void *data __attribute__((unused)))
@@ -250,18 +247,24 @@ static void *xs_thread(void *data __attribute__((unused)))
 
 		if (submit)
 		{
-			Playlist *playlist;
+			gint playlist, pos;
 
 			pdebug("Submitting song.", DEBUG);
 
 			playlist = aud_playlist_get_active();
-			tuple = aud_playlist_get_tuple(playlist, aud_playlist_get_position(playlist));
+			pos = aud_playlist_get_position(playlist);
+			tuple = (Tuple*) aud_playlist_entry_get_tuple(playlist, pos);
 
 			if (tuple == NULL)
 				continue;
 
+			mowgli_object_ref(tuple);
+
 			if (ishttp(aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL)))
+			{
+				mowgli_object_unref(tuple);
 				continue;
+			}
 
 			if (aud_tuple_get_string(tuple, FIELD_ARTIST, NULL) != NULL &&
 				aud_tuple_get_string(tuple, FIELD_TITLE, NULL) != NULL)
@@ -282,6 +285,7 @@ static void *xs_thread(void *data __attribute__((unused)))
 				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);
 
 			submit = FALSE;
+			mowgli_object_unref(tuple);
 		}
 
 		g_get_current_time(&sleeptime);
@@ -361,7 +365,7 @@ void setup_proxy(CURL *curl)
         aud_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host);
         aud_cfg_db_get_string(db, NULL, "proxy_port", &proxy_port);
         curl_easy_setopt(curl, CURLOPT_PROXY, proxy_host);
-        curl_easy_setopt(curl, CURLOPT_PROXYPORT, proxy_port);
+        curl_easy_setopt(curl, CURLOPT_PROXYPORT, atol(proxy_port));
         aud_cfg_db_get_bool(db, NULL, "proxy_use_auth", &proxy_use_auth);
         if (proxy_use_auth != FALSE)
         {

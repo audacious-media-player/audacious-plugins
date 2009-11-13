@@ -30,27 +30,28 @@
 #define CDDA_DEFAULT_PROXY_PORT		8080
 
 
-typedef struct {
+typedef struct
+{
 
-	gchar				performer[DEF_STRING_LEN];
-	gchar				name[DEF_STRING_LEN];
-	gchar				genre[DEF_STRING_LEN];
-	lsn_t				startlsn;
-	lsn_t				endlsn;
+    gchar performer[DEF_STRING_LEN];
+    gchar name[DEF_STRING_LEN];
+    gchar genre[DEF_STRING_LEN];
+    lsn_t startlsn;
+    lsn_t endlsn;
 
 } trackinfo_t;
 
-typedef struct {
+typedef struct
+{
 
-	lsn_t				startlsn;
-	lsn_t				endlsn;
-	lsn_t				currlsn;
-	lsn_t				seektime;	/* in miliseconds */
-	InputPlayback                   *pplayback;
-	GThread				*thread;
+    lsn_t startlsn;
+    lsn_t endlsn;
+    lsn_t currlsn;
+    lsn_t seektime;             /* in miliseconds */
+    InputPlayback *pplayback;
+    GThread *thread;
 
 } dae_params_t;
 
 
-#endif	// CDAUDIO_NG_H
-
+#endif // CDAUDIO_NG_H

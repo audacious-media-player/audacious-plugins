@@ -21,13 +21,16 @@
 
 #include "plugin.h"
 #include "skins_cfg.h"
+#include "ui_main.h"
 #include "ui_skin.h"
 #include "ui_manager.h"
-#include "icons-stock.h"
 #include "ui_main_evlisteners.h"
 #include "ui_playlist_evlisteners.h"
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
 #include <libintl.h>
+
+#include "ui_playlist_manager.h"
 
 gchar *skins_paths[SKINS_PATH_COUNT] = {};
 
@@ -41,7 +44,13 @@ Interface skins_interface =
 
 SIMPLE_INTERFACE_PLUGIN("skinned", &skins_interface);
 gboolean plugin_is_active = FALSE;
-static GtkWidget *cfgdlg;
+
+static gint update_source;
+
+static void toggle_visibility(void);
+static void toggle_shuffle(void);
+static void toggle_repeat(void);
+static void show_error_message(const gchar * markup);
 
 static void skins_free_paths(void) {
     int i;
@@ -72,7 +81,14 @@ static void skins_init_paths() {
     g_free(xdg_cache_home);
 }
 
-gboolean skins_init(void) {
+static gboolean update_cb (void * unused)
+{
+    mainwin_update_song_info ();
+    return TRUE;
+}
+
+gboolean skins_init (InterfaceCbs * cbs)
+{
     plugin_is_active = TRUE;
     g_log_set_handler(NULL, G_LOG_LEVEL_WARNING, g_log_default_handler, NULL);
 
@@ -81,22 +97,24 @@ gboolean skins_init(void) {
 
     ui_main_check_theme_engine();
 
-    register_aud_stock_icons();
+    audgui_set_default_icon();
+    audgui_register_stock_icons();
+
     ui_manager_init();
     ui_manager_create_menus();
 
     init_skins(config.skin);
     mainwin_setup_menus();
 
-    gint h_vol[2];
-    aud_input_get_volume(&h_vol[0], &h_vol[1]);
-    aud_hook_call("volume set", h_vol);
+    if (audacious_drct_get_playing ())
+    {
+        ui_main_evlistener_playback_begin (NULL, NULL);
 
-    skins_interface.ops->create_prefs_window();
-    cfgdlg = skins_configure();
-    aud_prefswin_page_new(cfgdlg, N_("Skinned Interface"), DATA_DIR "/images/appearance.png");
-
-    aud_hook_call("create prefswin", NULL);
+        if (audacious_drct_get_paused ())
+            ui_main_evlistener_playback_pause (NULL, NULL);
+    }
+    else
+        mainwin_update_song_info ();
 
     if (config.player_visible)
        mainwin_show (1);
@@ -104,33 +122,45 @@ gboolean skins_init(void) {
     if (config.playlist_visible)
        playlistwin_show (1);
 
-    if (audacious_drct_get_playing ())
-        ui_main_evlistener_playback_begin (0, 0);
-    if (audacious_drct_get_paused ())
-        ui_main_evlistener_playback_pause (0, 0);
+    /* Register interface callbacks */
+    cbs->show_prefs_window = show_preferences_window;
+    cbs->run_filebrowser = audgui_run_filebrowser;
+    cbs->hide_filebrowser = audgui_hide_filebrowser;
+    cbs->toggle_visibility = toggle_visibility;
+    cbs->show_error = show_error_message;
+    cbs->show_jump_to_track = audgui_jump_to_track;
+    cbs->hide_jump_to_track = audgui_jump_to_track_hide;
+    cbs->show_about_window = audgui_show_about_window;
+    cbs->hide_about_window = audgui_hide_about_window;
+    cbs->toggle_shuffle = toggle_shuffle;
+    cbs->toggle_repeat = toggle_repeat;
 
-    g_message("Entering Gtk+ main loop!");
-    gtk_main();
+    update_source = g_timeout_add (250, update_cb, NULL);
 
+    gtk_main ();
     return TRUE;
 }
 
-gboolean skins_cleanup(void) {
-    if (plugin_is_active == TRUE) {
-        gtk_widget_hide(mainwin);
-        gtk_widget_hide(equalizerwin);
-        gtk_widget_hide(playlistwin);
+gboolean skins_cleanup (void)
+{
+    if (plugin_is_active)
+    {
+        mainwin_unhook ();
+        playlistwin_unhook ();
+        g_source_remove (update_source);
+
+        gtk_widget_destroy (mainwin);
+        gtk_widget_destroy (equalizerwin);
+        gtk_widget_destroy (playlistwin);
         skins_cfg_save();
+
+        if (playman_win)
+            gtk_widget_destroy (playman_win);
+
         cleanup_skins();
         skins_free_paths();
-        ui_main_evlistener_dissociate();
-        ui_playlist_evlistener_dissociate();
         skins_cfg_free();
         ui_manager_destroy();
-        mainwin = NULL;
-        equalizerwin = NULL;
-        playlistwin = NULL;
-        mainwin_info = NULL;
         plugin_is_active = FALSE;
     }
 
@@ -153,3 +183,85 @@ void skins_about(void) {
 
     g_signal_connect(G_OBJECT(about_window), "destroy",	G_CALLBACK(gtk_widget_destroyed), &about_window);
 }
+
+void show_preferences_window(gboolean show) {
+    static GtkWidget **prefswin = NULL;
+
+    if (show) {
+        if ((prefswin != NULL) && (*prefswin != NULL)) {
+            gtk_window_present(GTK_WINDOW(*prefswin));
+            return;
+        }
+        GtkWidget *cfgdlg;
+
+        prefswin = skins_interface.ops->create_prefs_window();
+        cfgdlg = skins_configure();
+        skins_interface.ops->prefswin_page_new(cfgdlg, N_("Skinned Interface"), DATA_DIR "/images/appearance.png");
+
+        gtk_widget_show_all(*prefswin);
+    } else {
+        if ((prefswin != NULL) && (*prefswin != NULL)) {
+            skins_interface.ops->destroy_prefs_window();
+        }
+    }
+}
+
+static void toggle_visibility(void)
+{
+    /* use the window visibility status to toggle show/hide
+       (if at least one is visible, hide) */
+    if ((config.player_visible == TRUE ) ||
+        (config.equalizer_visible == TRUE) ||
+        (config.playlist_visible == TRUE))
+    {
+        /* remember the visibility status of the player windows */
+        config.player_visible_prev = config.player_visible;
+        config.equalizer_visible_prev = config.equalizer_visible;
+        config.playlist_visible_prev = config.playlist_visible;
+        /* now hide all of them */
+        if (config.player_visible_prev == TRUE)
+            mainwin_show(FALSE);
+        if (config.equalizer_visible_prev == TRUE)
+            equalizerwin_show(FALSE);
+        if (config.playlist_visible_prev == TRUE)
+            playlistwin_show(FALSE);
+    }
+    else
+    {
+        /* show the windows that were visible before */
+        if (config.player_visible_prev == TRUE)
+            mainwin_show(TRUE);
+        if (config.equalizer_visible_prev == TRUE)
+            equalizerwin_show(TRUE);
+        if (config.playlist_visible_prev == TRUE)
+            playlistwin_show(TRUE);
+    }
+}
+
+static void toggle_shuffle(void)
+{
+    mainwin_shuffle_pushed(aud_cfg->shuffle);
+}
+
+static void toggle_repeat(void)
+{
+    mainwin_repeat_pushed(aud_cfg->repeat);
+}
+
+static void show_error_message(const gchar * markup)
+{
+    GtkWidget *dialog =
+        gtk_message_dialog_new_with_markup(GTK_WINDOW(mainwin),
+                                           GTK_DIALOG_DESTROY_WITH_PARENT,
+                                           GTK_MESSAGE_ERROR,
+                                           GTK_BUTTONS_OK,
+                                           _(markup));
+
+    gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
+    gtk_widget_show(GTK_WIDGET(dialog));
+
+    g_signal_connect_swapped(dialog, "response",
+                             G_CALLBACK(gtk_widget_destroy),
+                             dialog);
+}
+

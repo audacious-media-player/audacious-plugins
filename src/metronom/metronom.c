@@ -19,266 +19,254 @@
 
 #include "config.h"
 #include <audacious/plugin.h>
-#include <audacious/output.h>
 #include <audacious/i18n.h>
 #include <glib.h>
-#include <string.h>
 
-#define MIN_BPM 1
-#define MAX_BPM 512
+#define MIN_BPM         1
+#define MAX_BPM         512
+#define TACT_ID_MAX     12
+#define TACT_FORM_MAX   8
+
+#define AUDIO_FREQ      (44100)
+#define BUF_SAMPLES     512
+#define BUF_BYTES       (BUF_SAMPLES * 2)
+#define MAX_AMPL        (GINT16_TO_LE((1 << 15) - 1))
+
+
+typedef struct
+{
+    gint bpm;
+    gint num;
+    gint den;
+    gint id;
+} metronom_t;
+
+gint tact_id[TACT_ID_MAX][2] = {
+    {1, 1},
+    {2, 2},
+    {3, 2},
+    {4, 2},
+    {2, 4},
+    {3, 4},
+    {4, 4},
+    {6, 4},
+    {2, 8},
+    {3, 8},
+    {4, 8},
+    {6, 8}
+};
+
+gdouble tact_form[TACT_ID_MAX][TACT_FORM_MAX] = {
+    {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    {1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    {1.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0},
+    {1.0, 0.5, 0.6, 0.5, 0.0, 0.0, 0.0, 0.0},
+    {1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    {1.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0},
+    {1.0, 0.5, 0.6, 0.5, 0.0, 0.0, 0.0, 0.0},
+    {1.0, 0.5, 0.5, 0.6, 0.5, 0.5, 0.0, 0.0},
+    {1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    {1.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0},
+    {1.0, 0.5, 0.6, 0.5, 0.0, 0.0, 0.0, 0.0},
+    {1.0, 0.5, 0.5, 0.6, 0.5, 0.5, 0.0, 0.0}
+};
 
 static InputPlugin metronom_ip;
 
-static gboolean going;
-static gboolean audio_error;
-static GThread *play_thread;
-
-struct metronom_struct {
-	gint bpm;
-	gint num;
-	gint den;
-	gint id;
-};
-typedef struct metronom_struct metronom_t;
-
-#define tact_id_max 12
-gint tact_id[tact_id_max][2]=
-	{
-		{1,1},
-		{2,2},
-		{3,2},
-		{4,2},
-		{2,4},
-		{3,4},
-		{4,4},
-		{6,4},
-		{2,8},
-		{3,8},
-		{4,8},
-		{6,8}
-	};
-#define tact_form_max 8
-gdouble tact_form[tact_id_max][tact_form_max]=
-	{
-		{1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
-		{1.0,0.5,0.0,0.0,0.0,0.0,0.0,0.0},
-		{1.0,0.5,0.5,0.0,0.0,0.0,0.0,0.0},
-		{1.0,0.5,0.6,0.5,0.0,0.0,0.0,0.0},
-		{1.0,0.5,0.0,0.0,0.0,0.0,0.0,0.0},
-		{1.0,0.5,0.5,0.0,0.0,0.0,0.0,0.0},
-		{1.0,0.5,0.6,0.5,0.0,0.0,0.0,0.0},
-		{1.0,0.5,0.5,0.6,0.5,0.5,0.0,0.0},
-		{1.0,0.5,0.0,0.0,0.0,0.0,0.0,0.0},
-		{1.0,0.5,0.5,0.0,0.0,0.0,0.0,0.0},
-		{1.0,0.5,0.6,0.5,0.0,0.0,0.0,0.0},
-		{1.0,0.5,0.5,0.6,0.5,0.5,0.0,0.0}
-	};
-
 static void metronom_init(void)
 {
-	aud_uri_set_plugin("tact://", &metronom_ip);
+    aud_uri_set_plugin("tact://", &metronom_ip);
 }
 
 static void metronom_about(void)
 {
-	static GtkWidget *box;
-	box = audacious_info_dialog(
-		_("About Metronom"),
-		_("A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\nTo use it, add a URL: tact://beats*num/den\ne.g. tact://77 to play 77 beats per minute\nor   tact://60*3/4 to play 60 bpm in 3/4 tacts"), _("Ok"),
-		FALSE, NULL, NULL);
-	gtk_signal_connect(GTK_OBJECT(box), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &box);
+    static GtkWidget *aboutbox = NULL;
+    if (aboutbox == NULL)
+    {
+        aboutbox = audacious_info_dialog(
+            _("About Metronom"),
+            _("A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\n"
+            "To use it, add a URL: tact://beats*num/den\n"
+            "e.g. tact://77 to play 77 beats per minute\n"
+            "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"),
+            _("Ok"), FALSE, NULL, NULL);
+
+        gtk_signal_connect(GTK_OBJECT(aboutbox), "destroy",
+            GTK_SIGNAL_FUNC(gtk_widget_destroyed), &aboutbox);
+    }
 }
 
-static int metronom_is_our_file(char *filename)
+static gint metronom_is_our_file(const gchar * filename)
 {
-	if (!strncmp(filename, "tact://", 7))
-		return TRUE;
-	return FALSE;
+    if (!strncmp(filename, "tact://", 7))
+        return TRUE;
+    return FALSE;
 }
 
-#define BUF_SAMPLES 512
-#define BUF_BYTES BUF_SAMPLES * 2
-#define MAX_AMPL (GINT16_TO_LE((1<<15) - 1))
-
-static void play_loop(void *arg)
+static gboolean metronom_get_cp(const gchar *filename, metronom_t *pmetronom, gchar **str)
 {
-	gint16 data[BUF_SAMPLES];
-	InputPlayback *playback = arg;
-	metronom_t *pmetronom=(metronom_t *)playback->data;
-	gint i;
+    gsize count;
 
-	gint16 t = 0,tact;
-	gint16 datagoal = 0;
-	gint16 datamiddle = 0;
-	gint16 datacurrent = datamiddle;
-	gint16 datalast = datamiddle;
-	gint16 data_form[tact_form_max];
-	gint num;
+    count = sscanf(filename, "tact://%d*%d/%d",
+        &pmetronom->bpm, &pmetronom->num, &pmetronom->den);
 
-	tact = 60*44100/pmetronom->bpm;
-	/* prepare weighted amplitudes */
-	for(num=0;num<pmetronom->num;num++){
-		data_form[num]=MAX_AMPL*tact_form[pmetronom->id][num];
-	}
+    if (count != 1 && count != 3)
+        return FALSE;
 
-	num=0;
-	while (going)
-	{
-		for (i = 0; i < BUF_SAMPLES; i++){
-			if(t==tact){
-				t=0;
-				datagoal = data_form[num];
-				}
-			else if(t==10) {
-				datagoal = -data_form[num];
-			}
-			else if(t==25) {
-				datagoal = data_form[num];
-				/* circle through weighted amplitudes */
-				num++;
-				if(num==pmetronom->num)num=0;
-			}
-			/* makes curve a little bit smoother  */
-			data[i]=(datalast+datacurrent+datagoal)/3;
-			datalast=datacurrent;
-			datacurrent=data[i];
-			if(t > 35)
-			datagoal=(datamiddle+7*datagoal)/8;
-			t++;
-		}
-		if (going)
-			playback->pass_audio(playback, FMT_S16_LE, 1, BUF_BYTES, data, &going);
-	}
-	/* Make sure the output plugin stops prebuffering */
-	playback->output->buffer_free();
-	playback->output->buffer_free();
+    if (pmetronom->bpm < MIN_BPM || pmetronom->bpm > MAX_BPM)
+        return FALSE;
+
+    if (count == 1)
+    {
+        pmetronom->num = 1;
+        pmetronom->den = 1;
+        pmetronom->id = 0;
+    }
+    else
+    {
+        gboolean flag;
+        gint id;
+
+        if (pmetronom->num == 0 || pmetronom->den == 0)
+            return FALSE;
+
+        flag = FALSE;
+        for (id = 0; id < TACT_ID_MAX && !flag; id++)
+        {
+            if (pmetronom->num == tact_id[id][0] && pmetronom->den == tact_id[id][1])
+                flag = TRUE;
+        }
+
+        if (!flag)
+            return FALSE;
+        else
+            pmetronom->id = id;
+    }
+
+    if (pmetronom->num == 1 && pmetronom->den == 1)
+        *str = g_strdup_printf(_("Tact generator: %d bpm"), pmetronom->bpm);
+    else
+        *str = g_strdup_printf(_("Tact generator: %d bpm %d/%d"), pmetronom->bpm, pmetronom->num, pmetronom->den);
+
+    return TRUE;
 }
 
-static void metronom_play(InputPlayback *playback)
+static void metronom_play(InputPlayback * playback)
 {
-        char *filename = playback->filename;
-	gchar *name;
-	size_t count;
-	metronom_t *pmetronom;
-	gint flag,id;
+    gchar *name = NULL;
+    metronom_t pmetronom;
+    gint16 data[BUF_SAMPLES];
+    gint t = 0, tact, num;
+    gint datagoal = 0;
+    gint datamiddle = 0;
+    gint datacurrent = datamiddle;
+    gint datalast = datamiddle;
+    gint data_form[TACT_FORM_MAX];
 
-	pmetronom=(metronom_t *)g_malloc(sizeof(metronom_t));
-	if(!pmetronom)return;
+    if (playback->output->open_audio(FMT_S16_LE, AUDIO_FREQ, 1) == 0)
+    {
+        playback->error = TRUE;
+        goto error_exit;
+    }
 
-	count=sscanf(filename, "tact://%d*%d/%d", &pmetronom->bpm,&pmetronom->num,&pmetronom->den);
-	if (count != 1 && count !=3)return;
-	if(!(pmetronom->bpm >= MIN_BPM && pmetronom->bpm <= MAX_BPM))return;
-	pmetronom->id=0;
-	if(count==1){
-		pmetronom->num=1;
-		pmetronom->den=1;
-	} else {
-		if(pmetronom->num==0 || pmetronom->den==0)return;
-		flag=FALSE;
-		for(id=0;(id<tact_id_max && (!flag));id++){
-			if(pmetronom->num==tact_id[id][0] && pmetronom->den==tact_id[id][1]){
-				flag=TRUE;
-				pmetronom->id=id;
-			}
-		}
-		if(!flag)return;
-	}
+    if (!metronom_get_cp(playback->filename, &pmetronom, &name))
+    {
+        g_message("Invalid metronom tact parameters in URI %s", playback->filename);
+        goto error_exit;
+    }
+    
+    playback->set_params(playback, name, -1, sizeof(data[0]) * 8 * AUDIO_FREQ, AUDIO_FREQ, 1);
+    g_free(name);
 
-	going = TRUE;
-	audio_error = FALSE;
-	if (playback->output->open_audio(FMT_S16_LE, 44100, 1) == 0)
-	{
-		audio_error = TRUE;
-		going = FALSE;
-		return;
-	}
-	if(pmetronom->num==1 && pmetronom->den==1){
-		name = g_strdup_printf(_("Tact generator: %d bpm"), pmetronom->bpm);
-	} else {
-		name = g_strdup_printf(_("Tact generator: %d bpm %d/%d"), pmetronom->bpm,pmetronom->num,pmetronom->den);
-	}
-	playback->set_params(playback, name, -1, 16 * 44100, 44100, 1);
-	g_free(name);
-	playback->data = pmetronom;
-	play_thread = g_thread_self();
-	playback->set_pb_ready(playback);
-	play_loop(playback);
+    tact = 60 * AUDIO_FREQ / pmetronom.bpm;
+
+    /* prepare weighted amplitudes */
+    for (num = 0; num < pmetronom.num; num++)
+    {
+        data_form[num] = MAX_AMPL * tact_form[pmetronom.id][num];
+    }
+
+    playback->playing = TRUE;
+    playback->set_pb_ready(playback);
+
+    num = 0;
+    while (playback->playing)
+    {
+        gint i;
+
+        for (i = 0; i < BUF_SAMPLES; i++)
+        {
+            if (t == tact)
+            {
+                t = 0;
+                datagoal = data_form[num];
+            }
+            else if (t == 10)
+            {
+                datagoal = -data_form[num];
+            }
+            else if (t == 25)
+            {
+                datagoal = data_form[num];
+                /* circle through weighted amplitudes */
+                num++;
+                if (num >= pmetronom.num)
+                    num = 0;
+            }
+            /* makes curve a little bit smoother  */
+            data[i] = (datalast + datacurrent + datagoal) / 3;
+            datalast = datacurrent;
+            datacurrent = data[i];
+            if (t > 35)
+                datagoal = (datamiddle + 7 * datagoal) / 8;
+            t++;
+        }
+        if (playback->playing)
+            playback->pass_audio(playback, FMT_S16_LE, 1, BUF_BYTES, data, &playback->playing);
+    }
+
+error_exit:
+
+    playback->playing = 0;
+    playback->eof = TRUE;
+    playback->output->close_audio();
 }
 
-static void metronom_stop(InputPlayback *playback)
+static void metronom_stop(InputPlayback * playback)
 {
-	if (going)
-	{
-		going = FALSE;
-		g_thread_join(play_thread);
-		playback->output->close_audio();
-	}
+    playback->playing = FALSE;
 }
 
-static void metronom_pause(InputPlayback *playback, short paused)
+static void metronom_pause(InputPlayback * playback, short paused)
 {
-	playback->output->pause(paused);
+    playback->output->pause(paused);
 }
 
-static int metronom_get_time(InputPlayback *playback)
+static Tuple *metronom_get_song_tuple(const gchar * filename)
 {
-	if (audio_error)
-		return -2;
-	if (!going && !playback->output->buffer_playing())
-		return -1;
-	return playback->output->output_time();
+    Tuple *tuple = aud_tuple_new_from_filename(filename);
+    metronom_t metronom;
+    gchar *tmp = NULL;
+
+    if (metronom_get_cp(filename, &metronom, &tmp))
+        aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, tmp);
+
+    g_free(tmp);
+
+    return tuple;
 }
 
-static void metronom_song_info(char *filename, char **title, int *length)
-{
-	metronom_t metronom;
-	metronom_t *pmetronom=&metronom;
-	size_t count;
-	gint flag,id;
-	*length = -1;
-	*title = NULL;
-
-	count=sscanf(filename, "tact://%d*%d/%d", &pmetronom->bpm,&pmetronom->num,&pmetronom->den);
-	if (count != 1 && count !=3)return;
-	if(!(pmetronom->bpm >= MIN_BPM && pmetronom->bpm <= MAX_BPM))return;
-
-	if (count == 1)	{
-		pmetronom->num=1;
-		pmetronom->den=1;
-		pmetronom->id=0;
-	} else {
-		if(pmetronom->num==0 || pmetronom->den==0)return;
-		flag=FALSE;
-		for(id=0;(id<tact_id_max && (!flag));id++){
-			if(pmetronom->num==tact_id[id][0] && pmetronom->den==tact_id[id][1])flag=TRUE;
-		}
-		if(!flag)return;
-		else pmetronom->id=id;
-	}
-
-	if(pmetronom->num==1 && pmetronom->den==1){
-		*title = g_strdup_printf(_("Tact generator: %d bpm"), pmetronom->bpm);
-	} else {
-		*title = g_strdup_printf(_("Tact generator: %d bpm %d/%d"), pmetronom->bpm,pmetronom->num,pmetronom->den);
-	}
-}
-
-
-
-static InputPlugin metronom_ip =
-{
-	.description = "Tact Generator",
-	.init = metronom_init,
-	.about = metronom_about,
-	.is_our_file = metronom_is_our_file,
-	.play_file = metronom_play,
-	.stop = metronom_stop,
-	.pause = metronom_pause,
-	.get_time = metronom_get_time,
-	.get_song_info = metronom_song_info,
+static InputPlugin metronom_ip = {
+    .description = "Tact Generator",
+    .init = metronom_init,
+    .about = metronom_about,
+    .is_our_file = metronom_is_our_file,
+    .play_file = metronom_play,
+    .stop = metronom_stop,
+    .pause = metronom_pause,
+    .get_song_tuple = metronom_get_song_tuple,
 };
 
-InputPlugin *metronom_iplist[] = { &metronom_ip, NULL };
+static InputPlugin *metronom_iplist[] = { &metronom_ip, NULL };
 
 DECLARE_PLUGIN(metronom, NULL, NULL, metronom_iplist, NULL, NULL, NULL, NULL, NULL);

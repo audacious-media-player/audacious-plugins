@@ -2,6 +2,7 @@
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
  * Copyright (c) 2008 William Pitcock
+ * Copyright 2009 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -40,7 +41,10 @@
  *  number.
  */
 
+#include <gdk/gdkkeysyms.h>
+
 #include "ui_skinned_playlist.h"
+#include "ui_skinned_playlist_slider.h"
 
 #include "debug.h"
 #include "ui_playlist.h"
@@ -50,26 +54,18 @@
 #include "skins_cfg.h"
 #include <audacious/plugin.h>
 
-static PangoFontDescription *playlist_list_font = NULL;
-static gint ascent, descent, width_delta_digit_one;
-static gboolean has_slant;
-static guint padding;
-
-/* FIXME: the following globals should not be needed. */
-static gint width_approx_letters;
-static gint width_colon, width_colon_third;
-static gint width_approx_digits, width_approx_digits_half;
-
 #define UI_SKINNED_PLAYLIST_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_playlist_get_type(), UiSkinnedPlaylistPrivate))
 typedef struct _UiSkinnedPlaylistPrivate UiSkinnedPlaylistPrivate;
 
+enum {DRAG_SELECT = 1, DRAG_MOVE};
+
 struct _UiSkinnedPlaylistPrivate {
-    SkinPixmapId     skin_index;
-    gint             width, height;
-    gint             resize_width, resize_height;
-    gint             drag_pos;
-    gboolean         dragging, auto_drag_down, auto_drag_up;
-    gint             auto_drag_up_tag, auto_drag_down_tag;
+    GtkWidget * slider;
+    PangoFontDescription * font;
+    gint width, height, resize_width, resize_height, ascent, descent,
+     letter_width, digit_width, row_height, offset, rows, first, focused,
+     scroll, scroll_source, hover;
+    gboolean slanted, drag;
 };
 
 static void ui_skinned_playlist_class_init         (UiSkinnedPlaylistClass *klass);
@@ -136,12 +132,14 @@ static void ui_skinned_playlist_class_init(UiSkinnedPlaylistClass *klass) {
 
 static void ui_skinned_playlist_init(UiSkinnedPlaylist *playlist) {
     UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(playlist);
-    playlist->pressed = FALSE;
     priv->resize_width = 0;
     priv->resize_height = 0;
-    playlist->prev_selected = -1;
-    playlist->prev_min = -1;
-    playlist->prev_max = -1;
+    priv->rows = 0;
+    priv->first = 0;
+    priv->focused = -1;
+    priv->drag = FALSE;
+    priv->scroll = 0;
+    priv->hover = -1;
 
     g_object_set_data(G_OBJECT(playlist), "timer_id", GINT_TO_POINTER(0));
     g_object_set_data(G_OBJECT(playlist), "timer_active", GINT_TO_POINTER(0));
@@ -152,30 +150,56 @@ static void ui_skinned_playlist_init(UiSkinnedPlaylist *playlist) {
     g_object_set_data(G_OBJECT(playlist), "popup_position", GINT_TO_POINTER(-1));
 }
 
-GtkWidget* ui_skinned_playlist_new(GtkWidget *fixed, gint x, gint y, gint w, gint h) {
-
+GtkWidget * ui_skinned_playlist_new (GtkWidget * fixed, gint x, gint y, gint
+ width, gint height, const gchar * font)
+{
     UiSkinnedPlaylist *hs = g_object_new (ui_skinned_playlist_get_type (), NULL);
     UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(hs);
 
-    hs->x = x;
-    hs->y = y;
-    priv->width = w;
-    priv->height = h;
-    priv->skin_index = SKIN_PLEDIT;
+    priv->width = width;
+    priv->height = height;
+    priv->slider = NULL;
 
-    gtk_fixed_put(GTK_FIXED(fixed), GTK_WIDGET(hs), hs->x, hs->y);
+    ui_skinned_playlist_set_font ((GtkWidget *) hs, font);
+
+    gtk_fixed_put ((GtkFixed *) fixed, (GtkWidget *) hs, x, y);
     gtk_widget_set_double_buffered(GTK_WIDGET(hs), TRUE);
 
     return GTK_WIDGET(hs);
 }
 
-static void ui_skinned_playlist_destroy(GtkObject *object) {
-    UiSkinnedPlaylist *playlist;
+void ui_skinned_playlist_set_slider (GtkWidget * list, GtkWidget * slider)
+{
+    UI_SKINNED_PLAYLIST_GET_PRIVATE ((UiSkinnedPlaylist *) list)->slider =
+     slider;
+}
 
+static void cancel_all (GtkWidget * widget, UiSkinnedPlaylistPrivate * private)
+{
+    private->drag = FALSE;
+
+    if (private->scroll)
+    {
+        private->scroll = 0;
+        g_source_remove (private->scroll_source);
+    }
+
+    if (private->hover != -1)
+    {
+        private->hover = -1;
+        gtk_widget_queue_draw (widget);
+    }
+
+    ui_skinned_playlist_popup_hide (widget);
+    ui_skinned_playlist_popup_timer_stop (widget);
+}
+
+static void ui_skinned_playlist_destroy(GtkObject *object) {
     g_return_if_fail (object != NULL);
     g_return_if_fail (UI_SKINNED_IS_PLAYLIST (object));
 
-    playlist = UI_SKINNED_PLAYLIST (object);
+    cancel_all ((GtkWidget *) object, UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) object));
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
@@ -218,6 +242,33 @@ static void ui_skinned_playlist_size_request(GtkWidget *widget, GtkRequisition *
     requisition->height = priv->height;
 }
 
+static void calc_layout (UiSkinnedPlaylistPrivate * private)
+{
+    private->row_height = private->ascent - private->descent;
+    private->rows = private->height / private->row_height;
+
+    if (private->rows && active_title != NULL)
+    {
+        private->offset = private->row_height;
+        private->rows --;
+    }
+    else
+        private->offset = 0;
+
+    if (private->first + private->rows > active_length)
+        private->first = active_length - private->rows;
+    if (private->first < 0)
+        private->first = 0;
+}
+
+static void scroll_to (UiSkinnedPlaylistPrivate * private, int position)
+{
+    if (position < private->first || position >= private->first + private->rows)
+        private->first = position - private->rows / 2;
+
+    calc_layout (private);
+}
+
 static void ui_skinned_playlist_size_allocate(GtkWidget *widget, GtkAllocation *allocation) {
     UiSkinnedPlaylist *playlist = UI_SKINNED_PLAYLIST (widget);
     UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(playlist);
@@ -226,112 +277,18 @@ static void ui_skinned_playlist_size_allocate(GtkWidget *widget, GtkAllocation *
     if (GTK_WIDGET_REALIZED (widget))
         gdk_window_move_resize(widget->window, widget->allocation.x, widget->allocation.y, allocation->width, allocation->height);
 
-    playlist->x = widget->allocation.x;
-    playlist->y = widget->allocation.y;
-
     if (priv->height != widget->allocation.height || priv->width != widget->allocation.width) {
         priv->width = priv->width + priv->resize_width;
         priv->height = priv->height + priv->resize_height;
         priv->resize_width = 0;
         priv->resize_height = 0;
-        gtk_widget_queue_draw(widget);
-    }
-}
-
-static gboolean ui_skinned_playlist_auto_drag_down_func(gpointer data) {
-    UiSkinnedPlaylist *pl = UI_SKINNED_PLAYLIST(data);
-    UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(data);
-
-    if (priv->auto_drag_down) {
-        ui_skinned_playlist_move_down(pl);
-        pl->first++;
-        playlistwin_update_list(aud_playlist_get_active());
-        return TRUE;
-    }
-    return FALSE;
-}
-
-static gboolean ui_skinned_playlist_auto_drag_up_func(gpointer data) {
-    UiSkinnedPlaylist *pl = UI_SKINNED_PLAYLIST(data);
-    UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(data);
-
-    if (priv->auto_drag_up) {
-        ui_skinned_playlist_move_up(pl);
-        pl->first--;
-        playlistwin_update_list(aud_playlist_get_active());
-        return TRUE;
-
-    }
-    return FALSE;
-}
-
-void ui_skinned_playlist_move_up(UiSkinnedPlaylist * pl) {
-    GList *list;
-    Playlist *playlist = aud_playlist_get_active();
-
-    if (!playlist)
-        return;
-
-    PLAYLIST_LOCK(playlist);
-    if ((list = playlist->entries) == NULL) {
-        PLAYLIST_UNLOCK(playlist);
-        return;
-    }
-    if (PLAYLIST_ENTRY(list->data)->selected) {
-        /* We are at the top */
-        PLAYLIST_UNLOCK(playlist);
-        return;
-    }
-    while (list) {
-        if (PLAYLIST_ENTRY(list->data)->selected)
-            glist_moveup(list);
-        list = g_list_next(list);
-    }
-    PLAYLIST_INCR_SERIAL(playlist);
-    PLAYLIST_UNLOCK(playlist);
-    if (pl->prev_selected != -1)
-        pl->prev_selected--;
-    if (pl->prev_min != -1)
-        pl->prev_min--;
-    if (pl->prev_max != -1)
-        pl->prev_max--;
-}
-
-void ui_skinned_playlist_move_down(UiSkinnedPlaylist * pl) {
-    GList *list;
-    Playlist *playlist = aud_playlist_get_active();
-
-    if (!playlist)
-        return;
-
-    PLAYLIST_LOCK(playlist);
-
-    if (!(list = g_list_last(playlist->entries))) {
-        PLAYLIST_UNLOCK(playlist);
-        return;
     }
 
-    if (PLAYLIST_ENTRY(list->data)->selected) {
-        /* We are at the bottom */
-        PLAYLIST_UNLOCK(playlist);
-        return;
-    }
+    calc_layout (priv);
+    gtk_widget_queue_draw (widget);
 
-    while (list) {
-        if (PLAYLIST_ENTRY(list->data)->selected)
-            glist_movedown(list);
-        list = g_list_previous(list);
-    }
-
-    PLAYLIST_INCR_SERIAL(playlist);
-    PLAYLIST_UNLOCK(playlist);
-
-    if (pl->prev_selected != -1)
-        pl->prev_selected++;
-    if (pl->prev_min != -1)
-        pl->prev_min++;
-    if (pl->prev_max != -1)
-        pl->prev_max++;
+    if (priv->slider != NULL)
+        ui_skinned_playlist_slider_update (priv->slider);
 }
 
 static void
@@ -342,39 +299,38 @@ playlist_list_draw_string(cairo_t *cr, UiSkinnedPlaylist *pl,
                           const gchar * text,
                           guint ppos)
 {
-    guint plist_length_int;
-    Playlist *playlist = aud_playlist_get_active();
+    UiSkinnedPlaylistPrivate * private;
+    gint plist_length_int, padding;
     PangoLayout *layout;
 
-    REQUIRE_LOCK(playlist->mutex);
+    private = UI_SKINNED_PLAYLIST_GET_PRIVATE (pl);
 
     cairo_new_path(cr);
 
-    if (config.show_numbers_in_pl) {
+    if (aud_cfg->show_numbers_in_pl)
+    {
         gchar *pos_string = g_strdup_printf(config.show_separator_in_pl == TRUE ? "%d" : "%d.", ppos);
         plist_length_int =
-            gint_count_digits(aud_playlist_get_length(playlist)) + !config.show_separator_in_pl + 1; /* cf.show_separator_in_pl will be 0 if false */
+         gint_count_digits (active_length) + ! config.show_separator_in_pl + 1;
 
-        padding = plist_length_int;
-        padding = ((padding + 1) * width_approx_digits);
+        padding = private->digit_width * (plist_length_int + 1);
 
         layout = gtk_widget_create_pango_layout(playlistwin, pos_string);
-        pango_layout_set_font_description(layout, playlist_list_font);
+        pango_layout_set_font_description (layout, private->font);
         pango_layout_set_width(layout, plist_length_int * 100);
 
         pango_layout_set_alignment(layout, PANGO_ALIGN_LEFT);
 
-        cairo_move_to(cr, (width_approx_digits *
+        cairo_move_to (cr, (private->digit_width *
                          (-1 + plist_length_int - strlen(pos_string))) +
-                        (width_approx_digits / 4), (line - 1) * pl->fheight +
-                        ascent + abs(descent));
+         private->digit_width / 4, private->offset + private->row_height * line);
         pango_cairo_show_layout(cr, layout);
 
         g_free(pos_string);
         g_object_unref(layout);
 
         if (!config.show_separator_in_pl)
-            padding -= (width_approx_digits * 1.5);
+            padding -= private->digit_width * 1.5;
     } else {
         padding = 3;
     }
@@ -383,14 +339,13 @@ playlist_list_draw_string(cairo_t *cr, UiSkinnedPlaylist *pl,
 
     layout = gtk_widget_create_pango_layout(playlistwin, text);
 
-    pango_layout_set_font_description(layout, playlist_list_font);
+    pango_layout_set_font_description (layout, private->font);
     pango_layout_set_width(layout, width * PANGO_SCALE);
     pango_layout_set_single_paragraph_mode(layout, TRUE);
     pango_layout_set_ellipsize(layout, PANGO_ELLIPSIZE_END);
 
-    cairo_move_to(cr, padding + (width_approx_letters / 4),
-                    (line - 1) * pl->fheight +
-                    ascent + abs(descent));
+    cairo_move_to (cr, padding + private->letter_width / 4, private->offset +
+     private->row_height * line);
     pango_cairo_show_layout(cr, layout);
 
     g_object_unref(layout);
@@ -399,16 +354,11 @@ playlist_list_draw_string(cairo_t *cr, UiSkinnedPlaylist *pl,
 static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *event) {
     UiSkinnedPlaylist *pl = UI_SKINNED_PLAYLIST (widget);
     UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(pl);
-    g_return_val_if_fail (priv->width > 0 && priv->height > 0, FALSE);
-
-    Playlist *playlist = aud_playlist_get_active();
-    PlaylistEntry *entry;
-    GList *list;
+    gint active_entry = aud_playlist_get_position (active_playlist);
     PangoLayout *layout;
-    gchar *title;
     gint width, height;
-    gint i, max_first;
-    guint padding, padding_dwidth, padding_plength;
+    gint i;
+    guint padding, padding_dwidth;
     guint max_time_len = 0;
     gfloat queue_tailpadding = 0;
     gint tpadding;
@@ -416,7 +366,6 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
     gint x, y;
     guint tail_width;
     guint tail_len;
-    gboolean in_selection = FALSE;
 
     gchar tail[100];
     gchar queuepos[255];
@@ -428,9 +377,6 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
     gint plw_w, plw_h;
 
     cairo_t *cr;
-    gint yc;
-    gint pos;
-    gdouble rounding_offset;
 
     g_return_val_if_fail (widget != NULL, FALSE);
     g_return_val_if_fail (UI_SKINNED_IS_PLAYLIST (widget), FALSE);
@@ -449,120 +395,48 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
     cairo_rectangle(cr, 0, 0, width, height);
     cairo_paint(cr);
 
-    if (!playlist_list_font) {
-        g_critical("Couldn't open playlist font");
-        return FALSE;
+    if (priv->offset)
+    {
+        layout = gtk_widget_create_pango_layout (widget, active_title);
+        pango_layout_set_font_description (layout, priv->font);
+        pango_layout_set_width (layout, PANGO_SCALE * width);
+        pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);
+        pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_MIDDLE);
+        cairo_move_to (cr, 0, 0);
+        gdk_cairo_set_source_color (cr, skin_get_color (aud_active_skin,
+         SKIN_PLEDIT_NORMAL));
+        pango_cairo_show_layout (cr, layout);
+        g_object_unref(layout);
     }
 
-    pl->fheight = (ascent + abs(descent));
-    pl->num_visible = height / pl->fheight;
+    for (i = priv->first; i < priv->first + priv->rows && i < active_length; i ++)
+    {
+        gint i_length = aud_playlist_entry_get_length (active_playlist, i);
 
-    rounding_offset = pl->fheight / 3;
-
-    max_first = aud_playlist_get_length(playlist) - pl->num_visible;
-    max_first = MAX(max_first, 0);
-
-    pl->first = CLAMP(pl->first, 0, max_first);
-
-    PLAYLIST_LOCK(playlist);
-    list = playlist->entries;
-    list = g_list_nth(list, pl->first);
-
-    /* It sucks having to run the iteration twice but this is the only
-       way you can reliably get the maximum width so we can get our
-       playlist nice and aligned... -- plasmaroo */
-
-    for (i = pl->first;
-         list && i < pl->first + pl->num_visible;
-         list = g_list_next(list), i++) {
-        entry = list->data;
-
-        if (entry->length != -1)
-        {
-            g_snprintf(length, sizeof(length), "%d:%-2.2d",
-                       entry->length / 60000, (entry->length / 1000) % 60);
-            tpadding_dwidth = MAX(tpadding_dwidth, strlen(length));
-        }
-    }
-
-    /* Reset */
-    list = playlist->entries;
-    list = g_list_nth(list, pl->first);
-
-    for (i = pl->first;
-         list && i < pl->first + pl->num_visible;
-         list = g_list_next(list), i++) {
-        entry = list->data;
-
-        if (entry->selected && !in_selection) {
-            yc = ((i - pl->first) * pl->fheight);
-
-            cairo_new_path(cr);
-
-            cairo_move_to(cr, 0, yc + (rounding_offset * 2));
-            cairo_curve_to(cr, 0, yc + rounding_offset, 0, yc + 0.5, 0 + rounding_offset, yc + 0.5);
-
-            cairo_line_to(cr, 0 + width - (rounding_offset * 2), yc + 0.5);
-            cairo_curve_to(cr, 0 + width - rounding_offset, yc + 0.5,
-                        0 + width, yc + 0.5, 0 + width, yc + rounding_offset);
-
-            in_selection = TRUE;
-        }
-
-        if ((!entry->selected ||
-            (i == pl->first + pl->num_visible - 1) || !g_list_next(list))
-            && in_selection) {
-
-            if (!entry->selected)
-                yc = (((i - 1) - pl->first) * pl->fheight);
-            else /* last visible item */
-                yc = ((i - pl->first) * pl->fheight);
-
-            cairo_line_to(cr, 0 + width, yc + pl->fheight - (rounding_offset * 2));
-            cairo_curve_to (cr, 0 + width, yc + pl->fheight - rounding_offset,
-                        0 + width, yc + pl->fheight - 0.5,
-                        0 + width-rounding_offset, yc + pl->fheight - 0.5);
-
-            cairo_line_to (cr, 0 + (rounding_offset * 2), yc + pl->fheight - 0.5);
-            cairo_curve_to (cr, 0 + rounding_offset, yc + pl->fheight - 0.5,
-                        0, yc + pl->fheight - 0.5,
-                        0, yc + pl->fheight - rounding_offset);
-
-            cairo_close_path (cr);
-
-            gdk_cairo_set_source_color(cr, skin_get_color(aud_active_skin, SKIN_PLEDIT_SELECTEDBG));
-
-            cairo_fill(cr);
-
-            in_selection = FALSE;
-        }
-    }
-
-    list = playlist->entries;
-    list = g_list_nth(list, pl->first);
-
-    /* now draw the text */
-    for (i = pl->first;
-         list && i < pl->first + pl->num_visible;
-         list = g_list_next(list), i++) {
-        entry = list->data;
-
-        /* FIXME: entry->title should NEVER be NULL, and there should
-           NEVER be a need to do a UTF-8 conversion. Playlist title
-           strings should be kept properly. */
-
-        if (!entry->title) {
-            gchar *realfn = g_filename_from_uri(entry->filename, NULL, NULL);
-            gchar *basename = g_path_get_basename(realfn ? realfn : entry->filename);
-            title = aud_filename_to_utf8(basename);
-            g_free(basename); g_free(realfn);
-        }
+        if (i_length > 0)
+            g_snprintf (length, sizeof (length), "%d:%02d", i_length / 60000,
+             i_length / 1000 % 60);
         else
-            title = aud_str_to_utf8(entry->title);
+            length[0] = 0;
 
-        title = aud_convert_title_text(title);
+        tpadding_dwidth = MAX (tpadding_dwidth, strlen (length));
 
-        pos = aud_playlist_get_queue_position(playlist, entry);
+        if (aud_playlist_entry_get_selected (active_playlist, i))
+        {
+            gdk_cairo_set_source_color (cr, skin_get_color (aud_active_skin,
+             SKIN_PLEDIT_SELECTEDBG));
+            cairo_new_path (cr);
+            cairo_rectangle (cr, 0, priv->offset + priv->row_height * (i -
+             priv->first), width, priv->row_height);
+            cairo_fill (cr);
+        }
+    }
+
+    for (i = priv->first; i < priv->first + priv->rows && i < active_length; i ++)
+    {
+        const gchar * title = aud_playlist_entry_get_title (active_playlist, i);
+        gint i_length = aud_playlist_entry_get_length (active_playlist, i);
+        gint pos = aud_playlist_queue_find_entry (active_playlist, i);
 
         tail[0] = 0;
         queuepos[0] = 0;
@@ -571,11 +445,11 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
         if (pos != -1)
             g_snprintf(queuepos, sizeof(queuepos), "%d", pos + 1);
 
-        if (entry->length != -1)
-        {
-            g_snprintf(length, sizeof(length), "%d:%-2.2d",
-                       entry->length / 60000, (entry->length / 1000) % 60);
-        }
+        if (i_length > 0)
+            g_snprintf (length, sizeof (length), "%d:%02d", i_length / 60000,
+             i_length / 1000 % 60);
+        else
+            length[0] = 0;
 
         strncat(tail, length, sizeof(tail) - 1);
         tail_len = strlen(tail);
@@ -583,25 +457,27 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
         max_time_len = MAX(max_time_len, tail_len);
 
         if (pos != -1 && tpadding_dwidth <= 0)
-            tail_width = width - (width_approx_digits * (strlen(queuepos) + 2.25));
+            tail_width = width - priv->digit_width * (strlen (queuepos) + 2.25);
         else if (pos != -1)
-            tail_width = width - (width_approx_digits * (tpadding_dwidth + strlen(queuepos) + 4));
+            tail_width = width - priv->digit_width * (tpadding_dwidth + strlen
+             (queuepos) + 4);
         else if (tpadding_dwidth > 0)
-            tail_width = width - (width_approx_digits * (tpadding_dwidth + 2.5));
+            tail_width = width - priv->digit_width * (tpadding_dwidth + 2.5);
         else
             tail_width = width;
 
-        if (i == aud_playlist_get_position_nolock(playlist))
+        if (i == active_entry)
             gdk_cairo_set_source_color(cr, skin_get_color(aud_active_skin, SKIN_PLEDIT_CURRENT));
         else
             gdk_cairo_set_source_color(cr, skin_get_color(aud_active_skin, SKIN_PLEDIT_NORMAL));
 
-        playlist_list_draw_string(cr, pl, playlist_list_font,
-                                  i - pl->first, tail_width, title,
+        playlist_list_draw_string (cr, pl, priv->font,
+                                  i - priv->first, tail_width, title,
                                   i + 1);
 
-        x = width - width_approx_digits * 2;
-        y = ((i - pl->first) - 1) * pl->fheight + ascent;
+        x = width - priv->digit_width * 2;
+        y = priv->offset + (i - priv->first - 1) * priv->row_height +
+         priv->ascent;
 
         frags = NULL;
         frag0 = NULL;
@@ -611,21 +487,21 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
             frag0 = g_strconcat(frags[0], ":", NULL);
 
             layout = gtk_widget_create_pango_layout(playlistwin, frags[1]);
-            pango_layout_set_font_description(layout, playlist_list_font);
+            pango_layout_set_font_description (layout, priv->font);
             pango_layout_set_width(layout, tail_len * 100);
             pango_layout_set_alignment(layout, PANGO_ALIGN_LEFT);
 
             cairo_new_path(cr);
-            cairo_move_to(cr, x - (0.5 * width_approx_digits), y + abs(descent));
+            cairo_move_to (cr, x - priv->digit_width * 0.5, y - priv->descent);
             pango_cairo_show_layout(cr, layout);
             g_object_unref(layout);
 
             layout = gtk_widget_create_pango_layout(playlistwin, frag0);
-            pango_layout_set_font_description(layout, playlist_list_font);
+            pango_layout_set_font_description (layout, priv->font);
             pango_layout_set_width(layout, tail_len * 100);
             pango_layout_set_alignment(layout, PANGO_ALIGN_RIGHT);
 
-            cairo_move_to(cr, x - (0.75 * width_approx_digits), y + abs(descent));
+            cairo_move_to (cr, x - priv->digit_width * 0.75, y - priv->descent);
             pango_cairo_show_layout(cr, layout);
             g_object_unref(layout);
 
@@ -643,135 +519,70 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
                             x -
                             (((queue_tailpadding +
                                strlen(queuepos)) *
-                              width_approx_digits) +
-                             (width_approx_digits / 4)),
-                            y + abs(descent),
+             priv->digit_width) + priv->digit_width / 4), y - priv->descent,
                             (strlen(queuepos)) *
-                            width_approx_digits +
-                            (width_approx_digits / 2),
-                            pl->fheight - 2);
+             priv->digit_width + priv->digit_width / 2, priv->row_height - 2);
 
             layout =
                 gtk_widget_create_pango_layout(playlistwin, queuepos);
-            pango_layout_set_font_description(layout, playlist_list_font);
+            pango_layout_set_font_description (layout, priv->font);
             pango_layout_set_alignment(layout, PANGO_ALIGN_CENTER);
 
             cairo_move_to(cr,
                             x -
                             ((queue_tailpadding +
-                              strlen(queuepos)) * width_approx_digits) +
-                            (width_approx_digits / 4),
-                            y + abs(descent));
+             strlen (queuepos)) * priv->digit_width) + priv->digit_width / 4, y
+             - priv->descent);
             pango_cairo_show_layout(cr, layout);
 
             g_object_unref(layout);
         }
 
         cairo_stroke(cr);
-
-        g_free(title);
     }
 
+    if (priv->focused >= priv->first && priv->focused <= priv->first +
+     priv->rows - 1)
+    {
+        cairo_set_line_width (cr, 1);
+        gdk_cairo_set_source_color (cr, skin_get_color (aud_active_skin,
+         SKIN_PLEDIT_NORMAL));
+        cairo_new_path (cr);
+        cairo_rectangle (cr, 0.5, priv->offset + priv->row_height *
+         (priv->focused - priv->first) + 0.5, width - 1, priv->row_height - 1);
+        cairo_stroke (cr);
+    }
 
-    /*
-     * Drop target hovering over the playlist, so draw some hint where the
-     * drop will occur.
-     *
-     * This is (currently? unfixably?) broken when dragging files from Qt/KDE apps,
-     * probably due to DnD signaling problems (actually i have no clue).
-     *
-     */
+    if (priv->hover >= priv->first && priv->hover <= priv->first + priv->rows)
+    {
+        cairo_set_line_width (cr, 2);
+        gdk_cairo_set_source_color (cr, skin_get_color (aud_active_skin,
+         SKIN_PLEDIT_NORMAL));
 
-    if (pl->drag_motion) {
-        guint pos, plength, lpadding;
-
-        if (config.show_numbers_in_pl) {
-            lpadding = gint_count_digits(aud_playlist_get_length(playlist)) + 1;
-            lpadding = ((lpadding + 1) * width_approx_digits);
-        }
-        else {
-            lpadding = 3;
-        };
-
-        /* We already hold the mutex and have the playlist locked, so call
-           the non-locking function. */
-        plength = aud_playlist_get_length(playlist);
-
-        x = pl->drag_motion_x;
-        y = pl->drag_motion_y;
-
-        if ((x > pl->x) && !(x > priv->width)) {
-
-            if ((y > pl->y)
-                && !(y > (priv->height + pl->y))) {
-
-                pos = (y / pl->fheight) +
-                    pl->first;
-
-                if (pos > (plength)) {
-                    pos = plength;
-                }
-
-                gdk_cairo_set_source_color(cr, skin_get_color(aud_active_skin, SKIN_PLEDIT_CURRENT));
-
-                cairo_new_path(cr);
-
-                cairo_move_to(cr, 0, ((pos - pl->first) * pl->fheight));
-                cairo_rel_line_to(cr, priv->width - 1, 0);
-
-                cairo_set_line_width(cr, 1);
-                cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
-                cairo_stroke(cr);
-            }
-
-        }
-
-        /* When dropping on the borders of the playlist, outside the text area,
-         * files get appended at the end of the list. Show that too.
-         */
-
-        if ((y < pl->y) || (y > priv->height + pl->y)) {
-            if ((y >= 0) || (y <= (priv->height + pl->y))) {
-                pos = plength;
-
-                gdk_cairo_set_source_color(cr, skin_get_color(aud_active_skin, SKIN_PLEDIT_CURRENT));
-
-                cairo_new_path(cr);
-
-                cairo_move_to(cr, 0, ((pos - pl->first) * pl->fheight));
-                cairo_rel_line_to(cr, priv->width - 1, 0);
-
-                cairo_set_line_width(cr, 1);
-                cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
-                cairo_stroke(cr);
-            }
-        }
+        cairo_new_path (cr);
+        cairo_move_to (cr, 0, priv->offset + priv->row_height * (priv->hover -
+         priv->first));
+        cairo_rel_line_to (cr, width, 0);
+        cairo_stroke (cr);
     }
 
     gdk_cairo_set_source_color(cr, skin_get_color(aud_active_skin, SKIN_PLEDIT_NORMAL));
     cairo_set_line_width(cr, 1);
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
 
-    if (config.show_numbers_in_pl)
+    if (aud_cfg->show_numbers_in_pl)
     {
-        padding_plength = aud_playlist_get_length(playlist);
-
-        if (padding_plength == 0) {
+        if (active_length == 0)
             padding_dwidth = 0;
-        }
-        else {
-            padding_dwidth = gint_count_digits(aud_playlist_get_length(playlist));
-        }
+        else
+            padding_dwidth = gint_count_digits (active_length);
 
-        padding =
-            (padding_dwidth *
-             width_approx_digits) + width_approx_digits;
-
+        padding = (padding_dwidth + 1) * priv->digit_width;
 
         /* For italic or oblique fonts we add another half of the
          * approximate width */
-        if (has_slant)
-            padding += width_approx_digits_half;
+        if (priv->slanted)
+            padding += priv->digit_width / 2;
 
         if (config.show_separator_in_pl) {
             cairo_new_path(cr);
@@ -785,10 +596,10 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
 
     if (tpadding_dwidth != 0)
     {
-        tpadding = (tpadding_dwidth * width_approx_digits) + (width_approx_digits * 1.5);
+        tpadding = priv->digit_width * (tpadding_dwidth + 1.5);
 
-        if (has_slant)
-            tpadding += width_approx_digits_half;
+        if (priv->slanted)
+            tpadding += priv->digit_width / 2;
 
         if (config.show_separator_in_pl) {
             cairo_new_path(cr);
@@ -800,234 +611,588 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
         }
     }
 
-    PLAYLIST_UNLOCK(playlist);
-
     cairo_destroy(cr);
 
     return FALSE;
 }
 
-gint ui_skinned_playlist_get_position(GtkWidget *widget, gint x, gint y) {
-    gint iy, length;
-    gint ret;
-    Playlist *playlist = aud_playlist_get_active();
-    UiSkinnedPlaylist *pl = UI_SKINNED_PLAYLIST (widget);
+static gint calc_position (UiSkinnedPlaylistPrivate * private, gint y)
+{
+    gint position;
 
-    if (!pl->fheight)
+    if (y < private->offset)
         return -1;
 
-    if ((length = aud_playlist_get_length(playlist)) == 0)
-        return -1;
-    iy = y;
+    position = private->first + (y - private->offset) / private->row_height;
 
-    ret = (iy / pl->fheight) + pl->first;
+    if (position >= private->first + private->rows || position >= active_length)
+        return active_length;
 
-    if (ret > length - 1)
-        ret = -1;
-
-    return ret;
+    return position;
 }
 
-static gboolean ui_skinned_playlist_button_press(GtkWidget *widget, GdkEventButton *event) {
-    UiSkinnedPlaylist *pl = UI_SKINNED_PLAYLIST (widget);
-    UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(widget);
+static gint adjust_position (UiSkinnedPlaylistPrivate * private, gboolean
+ relative, gint position)
+{
+    if (active_length == 0)
+        return -1;
 
-    gint nr;
-    Playlist *playlist = aud_playlist_get_active();
+    if (relative)
+    {
+        if (private->focused == -1)
+            return 0;
 
-    nr = ui_skinned_playlist_get_position(widget, event->x, event->y);
+        position += private->focused;
+    }
 
-    if (event->button == 3) {
-        if (nr != -1 && ! g_list_find (aud_playlist_get_selected (playlist),
-         GINT_TO_POINTER (nr)))
+    if (position < 0)
+        return 0;
+    if (position >= active_length)
+        return active_length - 1;
+
+    return position;
+}
+
+static void select_single (UiSkinnedPlaylistPrivate * private, gboolean
+ relative, gint position)
+{
+    position = adjust_position (private, relative, position);
+
+    if (position == -1)
+        return;
+
+    if (private->focused != -1)
+        aud_playlist_entry_set_selected (active_playlist, private->focused,
+         FALSE);
+
+    if (aud_playlist_selected_count (active_playlist) > 0)
+        aud_playlist_select_all (active_playlist, FALSE);
+
+    aud_playlist_entry_set_selected (active_playlist, position, TRUE);
+
+    private->focused = position;
+    scroll_to (private, position);
+}
+
+static void select_extend (UiSkinnedPlaylistPrivate * private, gboolean
+ relative, gint position)
+{
+    gint count, sign;
+
+    position = adjust_position (private, relative, position);
+
+    if (position == -1 || position == private->focused)
+        return;
+
+    count = adjust_position (private, TRUE, 0);
+    sign = (position > count) ? 1 : -1;
+
+    for (; count != position; count += sign)
+        aud_playlist_entry_set_selected (active_playlist, count,
+         ! aud_playlist_entry_get_selected (active_playlist, count + sign));
+
+    aud_playlist_entry_set_selected (active_playlist, position, TRUE);
+
+    private->focused = position;
+    scroll_to (private, position);
+}
+
+static void select_slide (UiSkinnedPlaylistPrivate * private, gboolean relative,
+ gint position)
+{
+    position = adjust_position (private, relative, position);
+
+    if (position == -1)
+        return;
+
+    private->focused = position;
+    scroll_to (private, position);
+}
+
+static void select_toggle (UiSkinnedPlaylistPrivate * private, gboolean
+ relative, gint position)
+{
+    position = adjust_position (private, relative, position);
+
+    if (position == -1)
+        return;
+
+    aud_playlist_entry_set_selected (active_playlist, position,
+     ! aud_playlist_entry_get_selected (active_playlist, position));
+
+    private->focused = position;
+    scroll_to (private, position);
+}
+
+static void select_move (UiSkinnedPlaylistPrivate * private, gboolean relative,
+ gint position)
+{
+    position = adjust_position (private, relative, position);
+
+    if (private->focused == -1 || position == -1 || position == private->focused)
+        return;
+
+    private->focused += aud_playlist_shift (active_playlist, private->focused,
+     position - private->focused);
+
+    scroll_to (private, private->focused);
+}
+
+static void delete_selected (UiSkinnedPlaylistPrivate * private)
+{
+    gint shift = 0, count;
+
+    for (count = 0; count < private->focused; count ++)
+    {
+        if (aud_playlist_entry_get_selected (active_playlist, count))
+            shift --;
+    }
+
+    aud_playlist_delete_selected (active_playlist);
+    active_length = aud_playlist_entry_count (active_playlist);
+    calc_layout (private);
+
+    select_single (private, TRUE, shift);
+}
+
+void ui_skinned_playlist_update (GtkWidget * widget)
+{
+    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) widget);
+
+    calc_layout (private);
+
+    if (private->focused != -1)
+        private->focused = adjust_position (private, TRUE, 0);
+
+    gtk_widget_queue_draw (widget);
+
+    if (private->slider != NULL)
+        ui_skinned_playlist_slider_update (private->slider);
+}
+
+void ui_skinned_playlist_follow (GtkWidget * widget)
+{
+    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) widget);
+
+    cancel_all (widget, private);
+    select_single (private, FALSE, aud_playlist_get_position (active_playlist));
+
+    playlistwin_update ();
+}
+
+gboolean ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event)
+{
+    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) widget);
+
+    cancel_all (widget, private);
+
+    switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
+    {
+      case 0:
+        switch (event->keyval)
         {
-            aud_playlist_select_all (playlist, 0);
-            aud_playlist_select_range (playlist, nr, nr, 1);
+          case GDK_Up:
+            select_single (private, TRUE, -1);
+            break;
+          case GDK_Down:
+            select_single (private, TRUE, 1);
+            break;
+          case GDK_Page_Up:
+            select_single (private, TRUE, - private->rows);
+            break;
+          case GDK_Page_Down:
+            select_single (private, TRUE, private->rows);
+            break;
+          case GDK_Home:
+            select_single (private, FALSE, 0);
+            break;
+          case GDK_End:
+            select_single (private, FALSE, active_length - 1);
+            break;
+          case GDK_Return:
+            select_single (private, TRUE, 0);
+            aud_playlist_set_playing (active_playlist);
+            aud_playlist_set_position (active_playlist, private->focused);
+            audacious_drct_play ();
+            break;
+          case GDK_Escape:
+            select_single (private, FALSE, aud_playlist_get_position
+             (active_playlist));
+            break;
+          case GDK_Delete:
+            delete_selected (private);
+            break;
+          default:
+            return FALSE;
         }
-
-        ui_manager_popup_menu_show(GTK_MENU(playlistwin_popup_menu),
-                                   event->x_root, event->y_root + 5,
-                                   event->button, event->time);
-    } else if (event->button == 1) {
-        if (nr == -1)
-            return 1;
-
-        if (!(event->state & GDK_CONTROL_MASK))
-            aud_playlist_select_all(playlist, FALSE);
-
-        if ((event->state & GDK_MOD1_MASK))
-            aud_playlist_queue_position(playlist, nr);
-
-        if (event->state & GDK_SHIFT_MASK && pl->prev_selected != -1) {
-            aud_playlist_select_range(playlist, pl->prev_selected, nr, TRUE);
-            pl->prev_min = pl->prev_selected;
-            pl->prev_max = nr;
-            priv->drag_pos = nr - pl->first;
+        break;
+      case GDK_SHIFT_MASK:
+        switch (event->keyval)
+        {
+          case GDK_Up:
+            select_extend (private, TRUE, -1);
+            break;
+          case GDK_Down:
+            select_extend (private, TRUE, 1);
+            break;
+          case GDK_Page_Up:
+            select_extend (private, TRUE, -private->rows);
+            break;
+          case GDK_Page_Down:
+            select_extend (private, TRUE, private->rows);
+            break;
+          case GDK_Home:
+            select_extend (private, FALSE, 0);
+            break;
+          case GDK_End:
+            select_extend (private, FALSE, active_length - 1);
+            break;
+          default:
+            return FALSE;
         }
-        else {
-            if (aud_playlist_select_invert(playlist, nr)) {
-                if (event->state & GDK_CONTROL_MASK) {
-                    if (pl->prev_min == -1) {
-                        pl->prev_min = pl->prev_selected;
-                        pl->prev_max = pl->prev_selected;
-                    }
-                    if (nr < pl->prev_min)
-                        pl->prev_min = nr;
-                    else if (nr > pl->prev_max)
-                        pl->prev_max = nr;
-                }
-                else
-                    pl->prev_min = -1;
-                pl->prev_selected = nr;
-                priv->drag_pos = nr - pl->first;
-            }
+        break;
+      case GDK_CONTROL_MASK:
+        switch (event->keyval)
+        {
+          case GDK_space:
+            select_toggle (private, TRUE, 0);
+            break;
+          case GDK_Up:
+            select_slide (private, TRUE, -1);
+            break;
+          case GDK_Down:
+            select_slide (private, TRUE, 1);
+            break;
+          case GDK_Page_Up:
+            select_slide (private, TRUE, -private->rows);
+            break;
+          case GDK_Page_Down:
+            select_slide (private, TRUE, private->rows);
+            break;
+          case GDK_Home:
+            select_slide (private, FALSE, 0);
+            break;
+          case GDK_End:
+            select_slide (private, FALSE, active_length - 1);
+            break;
+          default:
+            return FALSE;
         }
-        if (event->type == GDK_2BUTTON_PRESS) {
-            /*
-             * Ungrab the pointer to prevent us from
-             * hanging on to it during the sometimes slow
-             * audacious_drct_initiate().
-             */
-            gdk_pointer_ungrab(GDK_CURRENT_TIME);
-            aud_playlist_set_position(playlist, nr);
-            if (!audacious_drct_get_playing())
-                audacious_drct_initiate();
+        break;
+      case GDK_MOD1_MASK:
+        switch (event->keyval)
+        {
+          case GDK_Up:
+            select_move (private, TRUE, -1);
+            break;
+          case GDK_Down:
+            select_move (private, TRUE, 1);
+            break;
+          case GDK_Page_Up:
+            select_move (private, TRUE, -private->rows);
+            break;
+          case GDK_Page_Down:
+            select_move (private, TRUE, private->rows);
+            break;
+          case GDK_Home:
+            select_move (private, FALSE, 0);
+            break;
+          case GDK_End:
+            select_move (private, FALSE, active_length - 1);
+            break;
+          default:
+            return FALSE;
         }
-
-        priv->dragging = TRUE;
-    }
-    playlistwin_update_list(playlist);
-    ui_skinned_playlist_popup_hide(widget);
-    ui_skinned_playlist_popup_timer_stop(widget);
-
-    return TRUE;
-}
-
-static gboolean ui_skinned_playlist_button_release(GtkWidget *widget, GdkEventButton *event) {
-    UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(widget);
-
-    priv->dragging = FALSE;
-    priv->auto_drag_down = FALSE;
-    priv->auto_drag_up = FALSE;
-    gtk_widget_queue_draw(widget);
-
-    ui_skinned_playlist_popup_hide(widget);
-    ui_skinned_playlist_popup_timer_stop(widget);
-    return TRUE;
-}
-
-static gboolean ui_skinned_playlist_motion_notify(GtkWidget *widget, GdkEventMotion *event) {
-    UiSkinnedPlaylist *pl = UI_SKINNED_PLAYLIST(widget);
-    UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(widget);
-
-    gint nr, y, off, i;
-    if (priv->dragging) {
-        y = event->y;
-        nr = (y / pl->fheight);
-        if (nr < 0) {
-            nr = 0;
-            if (!priv->auto_drag_up) {
-                priv->auto_drag_up = TRUE;
-                priv->auto_drag_up_tag =
-                    g_timeout_add(100, ui_skinned_playlist_auto_drag_up_func, pl);
-            }
-        }
-        else if (priv->auto_drag_up)
-            priv->auto_drag_up = FALSE;
-
-        if (nr >= pl->num_visible) {
-            nr = pl->num_visible - 1;
-            if (!priv->auto_drag_down) {
-                priv->auto_drag_down = TRUE;
-                priv->auto_drag_down_tag =
-                    g_timeout_add(100, ui_skinned_playlist_auto_drag_down_func, pl);
-            }
-        }
-        else if (priv->auto_drag_down)
-            priv->auto_drag_down = FALSE;
-
-        off = nr - priv->drag_pos;
-        if (off) {
-            for (i = 0; i < abs(off); i++) {
-                if (off < 0)
-                    ui_skinned_playlist_move_up(pl);
-                else
-                    ui_skinned_playlist_move_down(pl);
-
-            }
-            playlistwin_update_list(aud_playlist_get_active());
-        }
-        priv->drag_pos = nr;
-    } else if (aud_cfg->show_filepopup_for_tuple) {
-        gint pos = ui_skinned_playlist_get_position(widget, event->x, event->y);
-        if (pos == -1) {
-           ui_skinned_playlist_popup_hide (widget);
-           ui_skinned_playlist_popup_timer_stop (widget);
-        } else if (GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "popup_active") == 0) ||
-         pos != GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "popup_position"))) {
-           ui_skinned_playlist_popup_hide (widget);
-           ui_skinned_playlist_popup_timer_stop (widget);
-           g_object_set_data (G_OBJECT(widget), "popup_position", GINT_TO_POINTER(pos));
-           ui_skinned_playlist_popup_timer_start (widget);
-        }
+        break;
+      default:
+        return FALSE;
     }
 
+    playlistwin_update ();
     return TRUE;
 }
 
-static gboolean ui_skinned_playlist_leave_notify(GtkWidget *widget, GdkEventCrossing *event) {
-    ui_skinned_playlist_popup_hide(widget);
-    ui_skinned_playlist_popup_timer_stop(widget);
+void ui_skinned_playlist_row_info (GtkWidget * widget, gint * rows, gint *
+ first, gint * focused)
+{
+    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) widget);
 
-    return FALSE;
+    * rows = private->rows;
+    * first = private->first;
+    * focused = private->focused;
 }
 
-void ui_skinned_playlist_set_font(const gchar * font) {
-    /* Welcome to bad hack central 2k3 */
+void ui_skinned_playlist_scroll_to (GtkWidget * widget, gint row)
+{
+    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) widget);
+
+    cancel_all (widget, private);
+    private->first = row;
+    calc_layout (private);
+
+    gtk_widget_queue_draw (widget);
+
+    if (private->slider != NULL)
+        ui_skinned_playlist_slider_update (private->slider);
+}
+
+void ui_skinned_playlist_hover (GtkWidget * widget, gint x, gint y)
+{
+    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) widget);
+    gint new;
+
+    if (y < private->offset)
+        new = private->first;
+    else if (y > private->offset + private->row_height * private->rows)
+        new = private->first + private->rows;
+    else
+        new = private->first + (y - private->offset + private->row_height / 2) /
+         private->row_height;
+
+    if (new > active_length)
+        new = active_length;
+
+    if (new != private->hover)
+    {
+        private->hover = new;
+        gtk_widget_queue_draw (widget);
+    }
+}
+
+gint ui_skinned_playlist_hover_end (GtkWidget * widget)
+{
+    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) widget);
+    gint temp = private->hover;
+
+    private->hover = -1;
+
+    gtk_widget_queue_draw (widget);
+    return temp;
+}
+
+static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
+ GdkEventButton * event)
+{
+    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) widget);
+    gint position = calc_position (private, event->y);
+    gint state = event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK |
+     GDK_MOD1_MASK);
+
+    cancel_all (widget, private);
+
+    switch (event->type)
+    {
+      case GDK_BUTTON_PRESS:
+        switch (event->button)
+        {
+          case 1:
+            if (position == -1 || position == active_length)
+                return TRUE;
+
+            switch (state)
+            {
+              case 0:
+                if (aud_playlist_entry_get_selected (active_playlist, position))
+                    select_slide (private, FALSE, position);
+                else
+                    select_single (private, FALSE, position);
+
+                private->drag = DRAG_MOVE;
+                break;
+              case GDK_SHIFT_MASK:
+                select_extend (private, FALSE, position);
+                private->drag = DRAG_SELECT;
+                break;
+              case GDK_CONTROL_MASK:
+                select_toggle (private, FALSE, position);
+                private->drag = DRAG_SELECT;
+                break;
+              default:
+                return TRUE;
+            }
+
+            break;
+          case 3:
+            if (state)
+                return TRUE;
+
+            if (position != -1 && position != active_length)
+            {
+                if (aud_playlist_entry_get_selected (active_playlist, position))
+                    select_slide (private, FALSE, position);
+                else
+                    select_single (private, FALSE, position);
+            }
+
+            ui_popup_menu_show ((position == -1) ? UI_MENU_PLAYLIST :
+             UI_MENU_PLAYLIST_CONTEXT, event->x_root, event->y_root, FALSE,
+             FALSE, 3, event->time);
+            break;
+          default:
+            return FALSE;
+        }
+
+        break;
+      case GDK_2BUTTON_PRESS:
+        if (event->button != 1 || state || position == -1 || position ==
+         active_length)
+            return TRUE;
+
+        aud_playlist_set_playing (active_playlist);
+        aud_playlist_set_position (active_playlist, position);
+        audacious_drct_play ();
+        break;
+      default:
+        return TRUE;
+    }
+
+    playlistwin_update ();
+    return TRUE;
+}
+
+static gboolean ui_skinned_playlist_button_release (GtkWidget * widget,
+ GdkEventButton * event)
+{
+    cancel_all (widget, UI_SKINNED_PLAYLIST_GET_PRIVATE ((UiSkinnedPlaylist *)
+     widget));
+    return TRUE;
+}
+
+static gboolean scroll_cb (void * data)
+{
+    UiSkinnedPlaylistPrivate * private = data;
+    gint position = adjust_position (private, TRUE, private->scroll);
+
+    if (position == -1)
+        return TRUE;
+
+    switch (private->drag)
+    {
+      case DRAG_SELECT:
+        select_extend (private, FALSE, position);
+        break;
+      case DRAG_MOVE:
+        select_move (private, FALSE, position);
+        break;
+    }
+
+    playlistwin_update ();
+    return TRUE;
+}
+
+static gboolean ui_skinned_playlist_motion_notify (GtkWidget * widget,
+ GdkEventMotion * event)
+{
+    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) widget);
+    gint position = calc_position (private, event->y);
+    gint new_scroll;
+
+    if (private->drag)
+    {
+        if (position == -1 || position == active_length)
+        {
+            new_scroll = (position == -1 ? -1 : 1);
+
+            if (private->scroll != new_scroll)
+            {
+                if (private->scroll)
+                    g_source_remove (private->scroll_source);
+
+                private->scroll = new_scroll;
+                private->scroll_source = g_timeout_add (100, scroll_cb, private);
+            }
+        }
+        else
+        {
+            if (private->scroll)
+            {
+                private->scroll = 0;
+                g_source_remove (private->scroll_source);
+            }
+
+            switch (private->drag)
+            {
+              case DRAG_SELECT:
+                select_extend (private, FALSE, position);
+                break;
+              case DRAG_MOVE:
+                select_move (private, FALSE, position);
+                break;
+            }
+
+            playlistwin_update ();
+        }
+    }
+    else
+    {
+        if (position == -1 || position == active_length)
+            cancel_all (widget, private);
+        else if (aud_cfg->show_filepopup_for_tuple && (! GPOINTER_TO_INT
+         (g_object_get_data ((GObject *) widget, "popup_active")) || position
+         != GPOINTER_TO_INT (g_object_get_data ((GObject *) widget,
+         "popup_position"))))
+        {
+            cancel_all (widget, private);
+            g_object_set_data ((GObject *) widget, "popup_position",
+             GINT_TO_POINTER (position));
+            ui_skinned_playlist_popup_timer_start (widget);
+        }
+    }
+
+    return TRUE;
+}
+
+static gboolean ui_skinned_playlist_leave_notify (GtkWidget * widget,
+ GdkEventCrossing * event)
+{
+    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) widget);
+
+    if (! private->drag)
+        cancel_all (widget, private);
+
+    return TRUE;
+}
+
+void ui_skinned_playlist_set_font (GtkWidget * list, const gchar * font)
+{
+    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) list);
     gchar *font_lower;
-    gint width_temp;
-    gint width_temp_0;
 
-    playlist_list_font = pango_font_description_from_string(font);
+    private->font = pango_font_description_from_string (font);
 
     text_get_extents(font,
                      "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz ",
-                     &width_approx_letters, NULL, &ascent, &descent);
+     & private->letter_width, 0, & private->ascent, & private->descent);
+    private->letter_width /= 53;
 
-    width_approx_letters = (width_approx_letters / 53);
-
-    /* Experimental: We don't weigh the 1 into total because it's width is almost always
-     * very different from the rest
-     */
-    text_get_extents(font, "023456789", &width_approx_digits, NULL, NULL,
-                     NULL);
-    width_approx_digits = (width_approx_digits / 9);
-
-    /* Precache some often used calculations */
-    width_approx_digits_half = width_approx_digits / 2;
-
-    /* FIXME: We assume that any other number is broader than the "1" */
-    text_get_extents(font, "1", &width_temp, NULL, NULL, NULL);
-    text_get_extents(font, "2", &width_temp_0, NULL, NULL, NULL);
-
-    if (abs(width_temp_0 - width_temp) < 2) {
-        width_delta_digit_one = 0;
-    }
-    else {
-        width_delta_digit_one = ((width_temp_0 - width_temp) / 2) + 2;
-    }
-
-    text_get_extents(font, ":", &width_colon, NULL, NULL, NULL);
-    width_colon_third = width_colon / 4;
+    text_get_extents (font, "0123456789", & private->digit_width, 0, 0, 0);
+    private->digit_width /= 10;
 
     font_lower = g_utf8_strdown(font, strlen(font));
     /* This doesn't take any i18n into account, but i think there is none with TTF fonts
      * FIXME: This can probably be retrieved trough Pango too
      */
-    has_slant = g_strstr_len(font_lower, strlen(font_lower), "oblique")
-        || g_strstr_len(font_lower, strlen(font_lower), "italic");
+    private->slanted = strstr (font_lower, "oblique") != NULL || strstr
+     (font_lower, "italic") != NULL;
 
     g_free(font_lower);
+
+    calc_layout (private);
+    gtk_widget_queue_draw (list);
+
+    if (private->slider != NULL)
+        ui_skinned_playlist_slider_update (private->slider);
 }
 
 void ui_skinned_playlist_resize_relative(GtkWidget *widget, gint w, gint h) {
@@ -1042,18 +1207,21 @@ static gboolean ui_skinned_playlist_popup_show(gpointer data) {
     gint pos = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "popup_position"));
 
     if (GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "timer_active")) == 1 && pos != -1) {
-        Tuple *tuple;
-        Playlist *pl_active = aud_playlist_get_active();
+        const Tuple * tuple;
+        gint pl_active = aud_playlist_get_active ();
         GtkWidget *popup = g_object_get_data(G_OBJECT(widget), "popup");
 
-        tuple = aud_playlist_get_tuple(pl_active, pos);
-        if ((tuple == NULL) || (aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) < 1)) {
-           gchar *title = aud_playlist_get_songtitle(pl_active, pos);
-           audacious_fileinfopopup_show_from_title(popup, title);
-           g_free(title);
-        } else {
-           audacious_fileinfopopup_show_from_tuple(popup , tuple);
+        tuple = aud_playlist_entry_get_tuple (pl_active, pos);
+
+        if (tuple == NULL)
+        {
+            const gchar * title = aud_playlist_entry_get_title (pl_active, pos);
+
+            audacious_fileinfopopup_show_from_title (popup, (gchar *) title);
         }
+        else
+            audacious_fileinfopopup_show_from_tuple (popup, (Tuple *) tuple);
+
         g_object_set_data(G_OBJECT(widget), "popup_active" , GINT_TO_POINTER(1));
     }
 

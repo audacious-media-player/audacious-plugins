@@ -277,6 +277,6 @@ gint i_midi_setget_tempo( midifile_t * );
 void i_midi_setget_length( midifile_t * );
 void i_midi_get_bpm( midifile_t * , gint * , gint * );
 /* helper function */
-gint i_midi_parse_from_filename( gchar * , midifile_t * );
+gint i_midi_parse_from_filename( const gchar * , midifile_t * );
 
 #endif /* !_I_MIDI_H */

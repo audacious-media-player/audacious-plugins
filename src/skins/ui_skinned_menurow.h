@@ -70,6 +70,7 @@ struct _UiSkinnedMenurowClass {
 
 GtkWidget* ui_skinned_menurow_new (GtkWidget *fixed, gint x, gint y, gint nx, gint ny, gint sx, gint sy, SkinPixmapId si);
 GType ui_skinned_menurow_get_type(void);
+void ui_skinned_menurow_update (GtkWidget * row);
 
 #ifdef __cplusplus
 }

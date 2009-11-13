@@ -623,7 +623,7 @@ static INLINE void decode_adpcmone_P4(SChannel *ch, int m)
 	if(i++ & 1)
 	{
 		s32 x1, d1;
-		x1 = ((*(p++) >> 3) & 0x1F | 1);
+		x1 = ((*(p++) >> 3) & 0x1F) | 1;
 		d1 = ((x1 & 0xF) * g_adpcm_mult[ci0] & ~7);
 		ci0 = clipping((ci0 + g_adpcm_index[x1 & 0xE]), 0, 88);
 #if 1 || defined(SIGNED_IS_NOT_2S_COMPLEMENT)
@@ -641,8 +641,8 @@ static INLINE void decode_adpcmone_P4(SChannel *ch, int m)
 		s32 x0, d0;
 		s32 x1, d1;
 		int ci1;
-		x0 = ((*p << 1) & 0x1F | 1);
-		x1 = ((*p >> 3) & 0x1F | 1);
+		x0 = ((*p << 1) & 0x1F) | 1;
+		x1 = ((*p >> 3) & 0x1F) | 1;
 		ci1 = clipping((ci0 + g_adpcm_index[x0 & 0xE]), 0, 88);
 		d0 = ((x0 & 0xF) * g_adpcm_mult[ci0] & ~7);
 		ci0 = clipping((ci1 + g_adpcm_index[x1 & 0xE]), 0, 88);
@@ -661,7 +661,7 @@ static INLINE void decode_adpcmone_P4(SChannel *ch, int m)
 	if(m & 1)
 	{
 		s32 x0, d0;
-		x0 = ((*p << 1) & 0x1F | 1);
+		x0 = ((*p << 1) & 0x1F) | 1;
 		d0 = ((x0 & 0xF) * g_adpcm_mult[ci0] & ~7);
 		ci0 = clipping((ci0 + g_adpcm_index[x0 & 0xE]), 0, 88);
 #if 1 || defined(SIGNED_IS_NOT_2S_COMPLEMENT)

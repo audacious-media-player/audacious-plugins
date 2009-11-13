@@ -12,7 +12,7 @@
 #include <glib.h>
 
 #include <audacious/plugin.h>
-#include <audacious/audutil.h>
+#include <libaudcore/md5.h>
 
 #define SCROBBLER_CLI_ID "aud"
 #define SCROBBLER_HS_WAIT 1800
@@ -490,13 +490,13 @@ static int sc_handshake(void)
 
     curl = curl_easy_init();
     setup_proxy(curl);
+    curl_easy_setopt(curl, CURLOPT_HTTPGET, 1);
     curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
     curl_easy_setopt(curl, CURLOPT_URL, buf);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, 
             sc_store_res);
     memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
     curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, sc_curl_errbuf);
-    curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
     curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, SC_CURL_TIMEOUT);
     status = curl_easy_perform(curl);

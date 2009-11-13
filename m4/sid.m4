@@ -24,9 +24,13 @@ if test "x$xs_have_sidplay2" = "xyes"; then
 	if test -d "$xs_sidplay2_includes"; then
 		CPPFLAGS="$CPPFLAGS -I${xs_sidplay2_includes}"
 	fi
-	AC_EGREP_HEADER([SIDIID], [sidplay/sidplay2.h],
+	AC_EGREP_HEADER([::Iid], [sidplay/sidplay2.h],
 		[xs_have_sidplay2_api="yes"],
-		[xs_have_sidplay2_api="(old style API)"]
+		[
+		AC_EGREP_HEADER([SIDIID],
+			[xs_have_sidplay2_api="yes"],
+			[xs_have_sidplay2_api="(old style API)"])
+		]
 	)
 	if test "x$xs_have_sidplay2_api" = "xyes"; then
 	AC_LINK_IFELSE([

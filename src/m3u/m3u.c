@@ -65,7 +65,7 @@ parse_extm3u_info(const gchar * info, gchar ** title, gint * length)
         temp = g_strstrip(g_strdup(str + 1));
         if (strlen(temp) > 0)
         	*title = g_locale_to_utf8(temp, -1, NULL, NULL, NULL);
-        
+
         g_free(temp);
         temp = NULL;
     }
@@ -74,21 +74,23 @@ parse_extm3u_info(const gchar * info, gchar ** title, gint * length)
 static void
 playlist_load_m3u(const gchar * filename, gint pos)
 {
+    struct index * add;
     VFSFile *file;
     gchar *line;
     gchar *ext_info = NULL, *ext_title = NULL;
     gsize line_len = 1024;
     gint ext_len = -1;
     gboolean is_extm3u = FALSE;
-    Playlist *playlist = aud_playlist_get_active();
     gchar *uri = NULL;
-    
+
     uri = g_filename_to_uri(filename, NULL, NULL);
 
     if ((file = aud_vfs_fopen(uri ? uri : filename, "rb")) == NULL)
         return;
 
     g_free(uri); uri = NULL;
+
+    add = index_new ();
 
     line = g_malloc(line_len);
     while (aud_vfs_fgets(line, line_len, file)) {
@@ -121,7 +123,7 @@ playlist_load_m3u(const gchar * filename, gint pos)
         }
 
         if (is_extm3u) {
-            if (aud_cfg->use_pl_metadata && ext_info)
+            if (ext_info)
                 parse_extm3u_info(ext_info, &ext_title, &ext_len);
             g_free(ext_info);
             ext_info = NULL;
@@ -130,15 +132,8 @@ playlist_load_m3u(const gchar * filename, gint pos)
         uri = aud_construct_uri(line, filename);
         AUDDBG("uri=%s\n", uri);
 
-        /* add file only if valid uri has been constructed */
-        if (uri) {
-            aud_playlist_load_ins_file(playlist, uri, filename, pos, ext_title, ext_len);
-
-            if (pos >= 0)
-                pos++;
-        }
-
-        g_free(uri);
+        if (uri != NULL)
+            index_append (add, uri);
 
         aud_str_replace_in(&ext_title, NULL);
         ext_len = -1;
@@ -146,57 +141,51 @@ playlist_load_m3u(const gchar * filename, gint pos)
 
     aud_vfs_fclose(file);
     g_free(line);
+
+    aud_playlist_entry_insert_batch (aud_playlist_get_active (), pos, add, NULL);
 }
 
 static void
 playlist_save_m3u(const gchar *filename, gint pos)
 {
-    GList *node;
+    gint playlist = aud_playlist_get_active ();
+    gint entries = aud_playlist_entry_count (playlist);
     gchar *outstr = NULL;
     VFSFile *file;
-    Playlist *playlist = aud_playlist_get_active();
     gchar *fn = NULL;
+    gint count;
 
     g_return_if_fail(filename != NULL);
-    g_return_if_fail(playlist != NULL);
 
     fn = g_filename_to_uri(filename, NULL, NULL);
     file = aud_vfs_fopen(fn ? fn : filename, "wb");
     g_free(fn);
     g_return_if_fail(file != NULL);
 
-    if (aud_cfg->use_pl_metadata)
-        aud_vfs_fprintf(file, "#EXTM3U\n");
+    for (count = pos; count < entries; count ++)
+    {
+        const gchar * filename = aud_playlist_entry_get_filename (playlist,
+         count);
+        const gchar * title = aud_playlist_entry_get_title (playlist, count);
+        gint seconds = aud_playlist_entry_get_length (playlist, count) / 1000;
 
-    PLAYLIST_LOCK(playlist);
+        if (title != NULL)
+        {
+            outstr = g_locale_from_utf8 (title, -1, NULL, NULL, NULL);
 
-    for (node = playlist->entries; node; node = g_list_next(node)) {
-        PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
-
-        if (entry->title && aud_cfg->use_pl_metadata) {
-            gint seconds;
-
-            if (entry->length > 0)
-                seconds = (entry->length) / 1000;
-            else
-                seconds = -1;
-
-            outstr = g_locale_from_utf8(entry->title, -1, NULL, NULL, NULL);
             if(outstr) {
                 aud_vfs_fprintf(file, "#EXTINF:%d,%s\n", seconds, outstr);
                 g_free(outstr);
                 outstr = NULL;
-            } else {
-                aud_vfs_fprintf(file, "#EXTINF:%d,%s\n", seconds, entry->title);
             }
+            else
+                aud_vfs_fprintf (file, "#EXTINF:%d,%s\n", seconds, title);
         }
 
-        fn = g_filename_from_uri(entry->filename, NULL, NULL);
-        aud_vfs_fprintf(file, "%s\n", fn ? fn : entry->filename);
+        fn = g_filename_from_uri (filename, NULL, NULL);
+        aud_vfs_fprintf (file, "%s\n", fn != NULL ? fn : filename);
         g_free(fn);
     }
-
-    PLAYLIST_UNLOCK(playlist);
 
     aud_vfs_fclose(file);
 }

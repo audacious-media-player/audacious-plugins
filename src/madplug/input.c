@@ -1,6 +1,6 @@
 /*
  * mad plugin for audacious
- * Copyright (C) 2005-2007 William Pitcock, Yoshiki Yazawa
+ * Copyright (C) 2005-2009 William Pitcock, Yoshiki Yazawa, John Lindgren
  *
  * Portions derived from xmms-mad:
  * Copyright (C) 2001-2002 Sam Clegg - See COPYING
@@ -75,16 +75,15 @@ input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
 
     memset(info, 0, sizeof(struct mad_info_t)); // all fields are cleared to 0 --yaz
 
-    info->fmt = FMT_FIXED32;
     info->channels = -1;
     info->mpeg_layer = -1;
     info->size = -1;
     info->freq = -1;
     info->seek = -1;
-    info->duration = mad_timer_zero;
-    info->pos = mad_timer_zero;
-    info->url = g_strdup(url);
     info->filename = g_strdup(url);
+    info->length = 0;
+    info->tuple = NULL;
+    info->playback = NULL;
 
     // from input_read_replaygain()
     info->replaygain_track_peak = 0.0;
@@ -108,14 +107,6 @@ input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
 
     // obtain file size
     info->size = aud_vfs_fsize(info->infile);
-    info->remote = info->size == 0 ? TRUE : FALSE; //proxy connection may result in non-zero size.
-    if(aud_vfs_is_remote((gchar *)url))
-        info->remote = TRUE;
-
-    info->fileinfo_request = FALSE;
-
-    AUDDBG("i: info->size = %lu\n", (long unsigned int)info->size);
-    AUDDBG("e: input_init\n");
 
     return TRUE;
 }
@@ -238,7 +229,7 @@ mad_parse_genre(const id3_ucs4_t *string)
                  */
                 genre = (id3_ucs4_t *)id3_genre_name((const id3_ucs4_t *)tmp);
                 AUDDBG("genre length = %d\n", mad_ucs4len(genre));
-                
+
                 tmp_len = mad_ucs4len(genre);
                 memcpy(ret + ret_len, genre, BYTES(tmp_len));
                 ret_len += tmp_len;
@@ -316,7 +307,7 @@ input_id3_get_string(struct id3_tag * tag, const gchar *frame_name)
         break;
     }
     g_free((void *)string);
-        
+
     AUDDBG("i: string = %s\n", rtn);
 
     return rtn;
@@ -333,35 +324,16 @@ input_set_and_free_tag(struct id3_tag *tag, Tuple *tuple, const gchar *frame, co
     g_free(scratch);
 }
 
-static void
-input_alloc_tag(struct mad_info_t *info)
-{
-    Tuple *tuple;
-
-    if (info->tuple == NULL) {
-        tuple = aud_tuple_new();
-        info->tuple = tuple;
-        aud_tuple_associate_int(info->tuple, FIELD_LENGTH, NULL, -1);
-    }
-}
-
 /**
- * read the ID3 tag 
+ * read the ID3 tag
  */
 static void
 input_read_tag(struct mad_info_t *info)
 {
     gchar *string;
-    Tuple *tuple;
     glong curpos = 0;
 
-    AUDDBG("f: input_read_tag\n");
-
-    if (info->tuple != NULL)
-        aud_tuple_free(info->tuple);
-    
-    tuple = aud_tuple_new_from_filename(info->filename);
-    info->tuple = tuple;
+    g_return_if_fail (info->tuple != NULL);
 
     if(info->infile) {
         curpos = aud_vfs_ftell(info->infile);
@@ -382,15 +354,15 @@ input_read_tag(struct mad_info_t *info)
         return;
     }
 
-    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_ARTIST, FIELD_ARTIST);
-    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_TITLE, FIELD_TITLE);
-    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_ALBUM, FIELD_ALBUM);
-    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_GENRE, FIELD_GENRE);
-    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_COMMENT, FIELD_COMMENT);
+    input_set_and_free_tag(info->tag, info->tuple, ID3_FRAME_ARTIST, FIELD_ARTIST);
+    input_set_and_free_tag(info->tag, info->tuple, ID3_FRAME_TITLE, FIELD_TITLE);
+    input_set_and_free_tag(info->tag, info->tuple, ID3_FRAME_ALBUM, FIELD_ALBUM);
+    input_set_and_free_tag(info->tag, info->tuple, ID3_FRAME_GENRE, FIELD_GENRE);
+    input_set_and_free_tag(info->tag, info->tuple, ID3_FRAME_COMMENT, FIELD_COMMENT);
 
     string = input_id3_get_string(info->tag, ID3_FRAME_TRACK);
     if (string) {
-        aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(string));
+        aud_tuple_associate_int(info->tuple, FIELD_TRACK_NUMBER, NULL, atoi(string));
         g_free(string);
     }
 
@@ -400,94 +372,64 @@ input_read_tag(struct mad_info_t *info)
         string = input_id3_get_string(info->tag, "TYER");
 
     if (string) {
-        aud_tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(string));
+        aud_tuple_associate_int(info->tuple, FIELD_YEAR, NULL, atoi(string));
         g_free(string);
     }
 
     // length
     string = input_id3_get_string(info->tag, "TLEN");
     if (string && atoi(string)) {
-        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, atoi(string));
+        aud_tuple_associate_int(info->tuple, FIELD_LENGTH, NULL, atoi(string));
         AUDDBG("input_read_tag: TLEN = %d\n", atoi(string));
         g_free(string);
-    } else
-        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
-    
-    aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
-    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
-
-    info->title = aud_tuple_formatter_make_title_string(tuple, audmad_config->title_override == TRUE ?
-        audmad_config->id3_format : aud_get_gentitle_format());
-
-    // for connection via proxy, we have to stop transfer once. I can't explain the reason.
-    if (info->infile != NULL) {
-        aud_vfs_fseek(info->infile, -1, SEEK_SET); // an impossible request
-        aud_vfs_fseek(info->infile, curpos, SEEK_SET);
     }
-    
+
+    aud_tuple_associate_string(info->tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
+    aud_tuple_associate_string(info->tuple, FIELD_QUALITY, NULL, "lossy");
+
+    if (info->infile != NULL)
+        aud_vfs_fseek(info->infile, curpos, SEEK_SET);
+
     AUDDBG("e: input_read_tag\n");
 }
 
-void
-input_process_remote_metadata(struct mad_info_t *info)
+static gchar * get_stream_metadata (VFSFile * file, const gchar * name)
 {
-    gboolean metadata = FALSE;
+    gchar * raw = aud_vfs_get_metadata (file, name);
+    gchar * converted = (raw != NULL) ? aud_str_to_utf8 (raw) : NULL;
 
-    if(info->remote && mad_timer_count(info->duration, MAD_UNITS_SECONDS) <= 0){
-        gchar *tmp;
+    g_free (raw);
+    return converted;
+}
 
-#ifdef DEBUG_INTENSIVELY
-        AUDDBG("process_remote_meta\n");
-#endif
-        g_free(info->title);
-        info->title = NULL;
-        aud_tuple_disassociate(info->tuple, FIELD_TITLE, NULL);
-        aud_tuple_disassociate(info->tuple, FIELD_ALBUM, NULL);
+static gboolean update_stream_metadata (VFSFile * file, const gchar * name,
+ Tuple * tuple, gint item)
+{
+    const gchar * old = aud_tuple_get_string (tuple, item, NULL);
+    gchar * new = get_stream_metadata (file, name);
+    gboolean changed = (new != NULL && (old == NULL || strcmp (old, new)));
 
-        tmp = aud_vfs_get_metadata(info->infile, "track-name");
-        if(tmp){
-            metadata = TRUE;
-            gchar *scratch = aud_str_to_utf8(tmp);
-            aud_tuple_associate_string(info->tuple, FIELD_TITLE, NULL, scratch);
-            g_free(scratch);
-            g_free(tmp);
-        }
+    if (changed)
+        aud_tuple_associate_string (tuple, item, NULL, new);
 
-        tmp = aud_vfs_get_metadata(info->infile, "stream-name");
-        if(tmp){
-            metadata = TRUE;
-            gchar *scratch = aud_str_to_utf8(tmp);
-            aud_tuple_associate_string(info->tuple, FIELD_ALBUM, NULL, scratch);
-            aud_tuple_associate_string(info->tuple, -1, "stream", scratch);
-            g_free(scratch);
-            g_free(tmp);
-        }
+    g_free (new);
+    return changed;
+}
 
-        if (metadata)
-            tmp = aud_tuple_formatter_process_string(info->tuple, "${?title:${title}}${?stream: (${stream})}");
-        else {
-            gchar *realfn = g_filename_from_uri(info->filename, NULL, NULL);
-            gchar *tmp2 = g_path_get_basename(realfn ? realfn : info->filename); // info->filename is uri. --yaz
-            tmp = aud_str_to_utf8(tmp2);
-            g_free(tmp2);
-            g_free(realfn);
-//            tmp = g_strdup(g_basename(info->filename)); //XXX maybe ok. --yaz
-        }
+void input_process_remote_metadata (struct mad_info_t * info)
+{
+    gboolean changed = FALSE;
 
-        /* call set_info only if tmp is different from prev_tmp */
-        if ( ( ( info->prev_title != NULL ) && ( strcmp(info->prev_title,tmp) ) ) ||
-             ( info->prev_title == NULL ) )
-        {
-            info->playback->set_params(info->playback, tmp,
-                                 -1, // indicate the stream is unseekable
-                                 info->bitrate, info->freq, info->channels);
-            if (info->prev_title)
-                g_free(info->prev_title);
-            info->prev_title = g_strdup(tmp);
-        }
+    changed = changed || update_stream_metadata (info->infile, "track-name",
+     info->tuple, FIELD_TITLE);
+    changed = changed || update_stream_metadata (info->infile, "stream-name",
+     info->tuple, FIELD_ALBUM);
 
-        g_free(tmp);
-    }
+    if (! changed)
+        return;
+
+    mowgli_object_ref (info->tuple);
+    info->playback->set_tuple (info->playback, info->tuple);
 }
 
 
@@ -495,40 +437,26 @@ input_process_remote_metadata(struct mad_info_t *info)
  * Retrieve meta-information about URL.
  * For local files this means ID3 tag etc.
  */
-gboolean
-input_get_info(struct mad_info_t *info, gboolean fast_scan)
+gboolean input_get_info (struct mad_info_t * info)
 {
-#ifdef AUD_DEBUG
-    gchar *tmp = g_filename_to_utf8(info->filename, -1, NULL, NULL, NULL);    
-    AUDDBG("f: input_get_info: %s, fast_scan = %s\n", tmp, fast_scan ? "TRUE" : "FALSE");
-    g_free(tmp);
-#endif                          /* DEBUG */
+    g_return_val_if_fail (info->tuple == NULL, FALSE);
 
-    input_alloc_tag(info);
-    input_read_tag(info);
+    info->tuple = tuple_new ();
+    tuple_set_filename (info->tuple, info->filename);
 
-    if(!info->remote) { // reduce startup delay
-        audmad_read_replaygain(info);
-    }
+    input_read_tag (info);
+    audmad_read_replaygain (info);
 
-    /* scan mp3 file, decoding headers */
-    if (scan_file(info, fast_scan) == FALSE) {
-        AUDDBG("input_get_info: scan_file failed\n");
+    if (! scan_file (info, aud_vfs_is_remote (info->filename) ? TRUE :
+     audmad_config->fast_play_time_calc))
         return FALSE;
-    }
+
+    if (info->length > 0)
+        tuple_associate_int (info->tuple, FIELD_LENGTH, NULL, info->length);
 
     /* reset the input file to the start */
     aud_vfs_fseek(info->infile, 0, SEEK_SET);
     info->offset = 0;
-
-    /* use the filename for the title as a last resort */
-    if (!info->title) {
-        char *pos = strrchr(info->filename, DIR_SEPARATOR); //XXX info->filename is uri. --yaz
-        if (pos)
-            info->title = g_strdup(pos + 1);
-        else
-            info->title = g_strdup(info->filename); //XXX info->filename is uri. --yaz
-    }
 
     AUDDBG("e: input_get_info\n");
     return TRUE;
@@ -569,13 +497,8 @@ input_get_data(struct mad_info_t *info, guchar * buffer,
 /**
  * Free up all mad_info_t related resourses.
  */
-gboolean
-input_term(struct mad_info_t * info)
+gboolean input_term (struct mad_info_t * info)
 {
-    AUDDBG("f: input_term\n");
-
-    g_free(info->title);
-    g_free(info->url);
     g_free(info->filename);
     if (info->infile)
         aud_vfs_fclose(info->infile);
@@ -593,8 +516,6 @@ input_term(struct mad_info_t * info)
         aud_tuple_free(info->tuple);
         info->tuple = NULL;
     }
-
-    g_free(info->prev_title);
 
     /* set everything to zero in case it gets used again. */
     memset(info, 0, sizeof(struct mad_info_t));

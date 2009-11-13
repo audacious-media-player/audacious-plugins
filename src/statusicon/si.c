@@ -25,7 +25,6 @@
 #include "si_common.h"
 #include <audacious/auddrct.h>
 
-
 GeneralPlugin *statusicon_gplist[] = { &si_gp, NULL };
 SIMPLE_GENERAL_PLUGIN(statusicon, statusicon_gplist);
 
@@ -84,34 +83,7 @@ si_about ( void )
 void
 si_audacious_toggle_visibility ( void )
 {
-  /* use the window visibility status to toggle show/hide
-     (if at least one is visible, hide) */
-  if (( audacious_drct_main_win_is_visible() == TRUE ) ||
-      ( audacious_drct_eq_win_is_visible() == TRUE ) ||
-      ( audacious_drct_pl_win_is_visible() == TRUE ))
-  {
-    /* remember the visibility status of the player windows */
-    si_cfg.mw_visib_prevstatus = audacious_drct_main_win_is_visible();
-    si_cfg.ew_visib_prevstatus = audacious_drct_eq_win_is_visible();
-    si_cfg.pw_visib_prevstatus = audacious_drct_pl_win_is_visible();
-    /* now hide all of them */
-    if ( si_cfg.mw_visib_prevstatus == TRUE )
-      audacious_drct_main_win_toggle( FALSE );
-    if ( si_cfg.ew_visib_prevstatus == TRUE )
-      audacious_drct_eq_win_toggle( FALSE );
-    if ( si_cfg.pw_visib_prevstatus == TRUE )
-      audacious_drct_pl_win_toggle( FALSE );
-  }
-  else
-  {
-    /* show the windows that were visible before */
-    if ( si_cfg.mw_visib_prevstatus == TRUE )
-      audacious_drct_main_win_toggle( TRUE );
-    if ( si_cfg.ew_visib_prevstatus == TRUE )
-      audacious_drct_eq_win_toggle( TRUE );
-    if ( si_cfg.pw_visib_prevstatus == TRUE )
-      audacious_drct_pl_win_toggle( TRUE );
-  }
+  aud_interface_toggle_visibility();
 }
 
 void

@@ -28,7 +28,7 @@
 #include <math.h>
 #include <string.h>
 
-#include <glib.h> 
+#include <glib.h>
 #include <glib/gprintf.h>
 
 #include <audacious/plugin.h>
@@ -49,7 +49,7 @@ update_id3_frame(struct id3_tag *tag, const char *frame_name, const char *data, 
 
     /* printf ("updating id3: %s: %s\n", frame_name, data);
 
-    
+
      An empty string removes the frame altogether.
     */
     if (strlen(data) == 0) {
@@ -114,29 +114,32 @@ update_id3_frame(struct id3_tag *tag, const char *frame_name, const char *data, 
 }
 
 static void
-update_id3_frame_from_tuple(struct id3_tag *id3tag, const char *field, Tuple *tuple, int fieldn, int sjis)
-{   
-    int val;
-    char *text, *text2;
+update_id3_frame_from_tuple(struct id3_tag *id3tag, const gchar *field, Tuple *tuple, gint fieldn, gint sjis)
+{
+    gint val;
     const char *encoding = sjis ? "SJIS" : "UTF-8";
 
     if(aud_tuple_get_value_type(tuple, fieldn, NULL) == TUPLE_INT) {
         val = aud_tuple_get_int(tuple, fieldn, NULL);
         if(val > 0) {
-            text2 = g_strdup_printf("%d", val);
-            AUDDBG("madplug: updating field:\"%s\"=\"%s\", enc %s\n", field, text2, encoding);
-            update_id3_frame(id3tag, field, text2, 0);
-            g_free(text2);
+            char *text = g_strdup_printf("%d", val);
+            AUDDBG("madplug: updating field:\"%s\"=\"%s\", enc %s\n", field, text, encoding);
+            update_id3_frame(id3tag, field, text, 0);
+            g_free(text);
         } else {
             update_id3_frame(id3tag, field, "", 0); /* will be detached */
         }
 
     } else if(aud_tuple_get_value_type(tuple, fieldn, NULL) == TUPLE_STRING) {
-        text = (char*)aud_tuple_get_string(tuple, fieldn, NULL);
-        text2 = g_convert(text, strlen(text), encoding, "UTF-8", NULL, NULL, NULL);
-        AUDDBG("madplug: updating field:\"%s\"=\"%s\", enc %s\n", field, text2, encoding);
-        update_id3_frame(id3tag, field, text2, sjis);
-        g_free(text2);
+        const gchar *text = aud_tuple_get_string(tuple, fieldn, NULL);
+        if (text != NULL) {
+            gchar *text2 = g_convert(text, -1, encoding, "UTF-8", NULL, NULL, NULL);
+            if (text2 != NULL) {
+                AUDDBG("madplug: updating field:\"%s\"=\"%s\", enc %s\n", field, text2, encoding);
+                update_id3_frame(id3tag, field, text2, sjis);
+                g_free(text2);
+            }
+        }
     }
 }
 
@@ -149,7 +152,7 @@ audmad_update_song_tuple(Tuple *tuple, VFSFile *fd)
     struct mad_info_t songinfo;
 
     if ((id3file = id3_file_vfsopen(fd, ID3_FILE_MODE_READWRITE)) == NULL) return FALSE;
-    
+
     id3tag = id3_file_tag(id3file);
     if (!id3tag) {
         AUDDBG("no id3tag\n. append new tag.\n");
@@ -159,7 +162,7 @@ audmad_update_song_tuple(Tuple *tuple, VFSFile *fd)
     }
 
     id3_tag_options(id3tag, ID3_TAG_OPTION_ID3V1, ~0);    /* enables id3v1. TODO: make id3v1 optional */
-    
+
     update_id3_frame_from_tuple(id3tag, ID3_FRAME_TITLE, tuple, FIELD_TITLE, audmad_config->sjis);
     update_id3_frame_from_tuple(id3tag, ID3_FRAME_ARTIST, tuple, FIELD_ARTIST, audmad_config->sjis);
     update_id3_frame_from_tuple(id3tag, ID3_FRAME_ALBUM, tuple, FIELD_ALBUM, audmad_config->sjis);
@@ -168,11 +171,10 @@ audmad_update_song_tuple(Tuple *tuple, VFSFile *fd)
     update_id3_frame_from_tuple(id3tag, ID3_FRAME_TRACK, tuple, FIELD_TRACK_NUMBER, audmad_config->sjis);
     update_id3_frame_from_tuple(id3tag, ID3_FRAME_GENRE, tuple, FIELD_GENRE, audmad_config->sjis);
 
-    if(!id3_tag_findframe(id3tag, "TLEN", 0) && input_init(&songinfo, fd->uri, fd) && !songinfo.remote) {
+    if(!id3_tag_findframe(id3tag, "TLEN", 0) && input_init(&songinfo, fd->uri, fd)) {
         AUDDBG("update TLEN frame\n");
-        songinfo.fileinfo_request = FALSE; /* we don't need to read tuple again */
-        input_get_info(&songinfo, FALSE);
-        text = g_strdup_printf("%ld", mad_timer_count(songinfo.duration, MAD_UNITS_MILLISECONDS));
+        input_get_info (& songinfo);
+        text = g_strdup_printf ("%d", songinfo.length);
         AUDDBG("TLEN: \"%s\"\n", text);
         update_id3_frame(id3tag, "TLEN", text, 0);
         g_free(text);

@@ -51,6 +51,7 @@ typedef struct {
     gchar *filesel_path;
     gboolean player_visible, equalizer_visible, playlist_visible;
     gboolean player_shaded, equalizer_shaded, playlist_shaded;
+    gboolean player_visible_prev, equalizer_visible_prev, playlist_visible_prev;
     gboolean dim_titlebar;
     gboolean show_wm_decorations;
     gboolean easy_move;
@@ -63,17 +64,15 @@ typedef struct {
     gint analyzer_mode, analyzer_type;
     gint scope_mode;
     gint voiceprint_mode;
-    gint vu_mode, vis_refresh;
+    gint vu_mode;
     gint analyzer_falloff, peaks_falloff;
     gint playlist_position;
-    gint mouse_change;
     gint colorize_r; gint colorize_g; gint colorize_b;
-    gint scroll_pl_by;
     gboolean warn_about_win_visibility;
     gboolean warn_about_broken_gtk_engines;
     gboolean mainwin_use_bitmapfont;
     gboolean eq_scaled_linked;
-    gboolean show_numbers_in_pl, show_separator_in_pl;
+    gboolean show_separator_in_pl;
     gchar *playlist_font, *mainwin_font;
     gboolean random_skin_on_play;
 } skins_cfg_t;

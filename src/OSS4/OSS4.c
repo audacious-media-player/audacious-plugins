@@ -36,23 +36,26 @@ static void oss_about(void)
         return;
 
     dialog = audacious_info_dialog(_("About OSSv4 Driver"),
-                               _("Audacious OSSv4 Driver\n\n"
-                                 "Based on the OSSv3 Output plugin,\n" 
-                                 "Ported to OSSv4's VMIX by Cristi Magherusan <majeru@gentoo.ro>\n\n"
-                                 "This program is free software; you can redistribute it and/or modify\n"
-                                 "it under the terms of the GNU General Public License as published by\n"
-                                 "the Free Software Foundation; either version 2 of the License, or\n"
-                                 "(at your option) any later version.\n"
-                                 "\n"
-                                 "This program is distributed in the hope that it will be useful,\n"
-                                 "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-                                 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-                                 "GNU General Public License for more details.\n"
-                                 "\n"
-                                 "You should have received a copy of the GNU General Public License\n"
-                                 "along with this program; if not, write to the Free Software\n"
-                                 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-                                 "USA."), _("Ok"), FALSE, NULL, NULL);
+		    _("Audacious OSSv4 Driver\n\n"
+			    "Based on the OSSv3 Output plugin,\n" 
+			    "Ported to OSSv4's VMIX by Cristi Magherusan <majeru@gentoo.ro>\n\n"
+			    "This program is free software; you can redistribute it and/or modify\n"
+			    "it under the terms of the GNU General Public License as published by\n"
+			    "the Free Software Foundation; either version 2 of the License, or\n"
+			    "(at your option) any later version.\n"
+			    "\n"
+			    "This program is distributed in the hope that it will be useful,\n"
+			    "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+			    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+			    "GNU General Public License for more details.\n"
+			    "\n"
+			    "You should have received a copy of the GNU General Public License\n"
+			    "along with this program; if not, write to the Free Software\n"
+			    "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+			    "USA.\n\n"
+			    "Note: For any issues regarding this plugin (including patches and \n"
+			    "suggestions) please contact the maintainer, and NO other \n"
+			    "Audacious developers\n\n"), _("Ok"), FALSE, NULL, NULL);
     g_signal_connect(G_OBJECT(dialog), "destroy",
                      G_CALLBACK(gtk_widget_destroyed), &dialog);
 }

@@ -53,28 +53,25 @@
 gboolean playlistwin_is_shaded(void);
 gint playlistwin_get_width(void);
 gint playlistwin_get_height(void);
-void playlistwin_update_list(Playlist *playlist);
-gboolean playlistwin_item_visible(gint index);
-gint playlistwin_get_toprow(void);
+void playlistwin_update (void);
 void playlistwin_set_toprow(gint top);
 void playlistwin_set_shade_menu_cb(gboolean shaded);
 void playlistwin_set_shade(gboolean shaded);
 void playlistwin_shade_toggle(void);
 void playlistwin_create(void);
+void playlistwin_unhook (void);
 void playlistwin_hide_timer(void);
 void playlistwin_set_time(gint time, gint length, TimerMode mode);
 void playlistwin_show (char show);
-void playlistwin_scroll(gint num);
-void playlistwin_scroll_up_pushed(void);
-void playlistwin_scroll_down_pushed(void);
 void playlistwin_select_playlist_to_load(const gchar * default_filename);
 void playlistwin_set_sinfo_font(gchar *font);
 void playlistwin_set_sinfo_scroll(gboolean scroll);
 gint playlistwin_list_get_visible_count(void);
 gint playlistwin_list_get_first(void);
 
-extern GtkWidget *playlistwin;
-
-extern gboolean playlistwin_focus;
+extern gint active_playlist;
+extern gchar * active_title;
+extern glong active_length;
+extern GtkWidget * playlistwin, * playlistwin_list;
 
 #endif /* AUDACIOUS_UI_PLAYLIST_H */

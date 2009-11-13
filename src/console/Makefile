@@ -1,8 +1,6 @@
 PLUGIN = console${PLUGIN_SUFFIX}
 
-SRCS = Audacious_Config.cxx    \
-       Audacious_Driver.cxx    \
-       Ay_Apu.cxx              \
+SRCS = Ay_Apu.cxx              \
        Ay_Cpu.cxx              \
        Ay_Emu.cxx              \
        Blip_Buffer.cxx         \
@@ -49,7 +47,10 @@ SRCS = Audacious_Config.cxx    \
        Vgm_Emu_Impl.cxx        \
        Ym2413_Emu.cxx          \
        Ym2612_Emu.cxx          \
-       Zlib_Inflater.cxx
+       Zlib_Inflater.cxx       \
+       Audacious_Driver.cxx    \
+       configure.c             \
+       plugin.c
 
 include ../../buildsys.mk
 include ../../extra.mk
@@ -60,5 +61,5 @@ LD = ${CXX}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CXXFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS}  ${ARCH_DEFINES} -I../..
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${ARCH_DEFINES} -I../..
 LIBS += ${GTK_LIBS} ${GLIB_LIBS}  -lz ${MOWGLI_LIBS}

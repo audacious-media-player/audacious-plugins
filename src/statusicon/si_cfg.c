@@ -38,15 +38,6 @@ si_cfg_load ( void )
        "scroll_action" , &(si_cfg.scroll_action) ) )
     si_cfg.scroll_action = SI_CFG_SCROLL_ACTION_VOLUME;
     
-  if ( !aud_cfg_db_get_bool( cfgfile , "statusicon" ,
-       "mw_visib_prevstatus" , &(si_cfg.mw_visib_prevstatus) ) )
-    si_cfg.mw_visib_prevstatus = FALSE;
-  if ( !aud_cfg_db_get_bool( cfgfile , "statusicon" ,
-       "pw_visib_prevstatus" , &(si_cfg.pw_visib_prevstatus) ) )
-    si_cfg.pw_visib_prevstatus = FALSE;
-  if ( !aud_cfg_db_get_bool( cfgfile , "statusicon" ,
-       "ew_visib_prevstatus" , &(si_cfg.ew_visib_prevstatus) ) )
-    si_cfg.ew_visib_prevstatus = FALSE;
   if ( !aud_cfg_db_get_int( cfgfile , "audacious" ,
        "mouse_wheel_change" , &(si_cfg.volume_delta) ) )
     si_cfg.volume_delta = 5;
@@ -67,13 +58,6 @@ si_cfg_save ( void )
   aud_cfg_db_set_int( cfgfile , "statusicon" ,
     "scroll_action" , si_cfg.scroll_action );
   
-  aud_cfg_db_set_bool( cfgfile , "statusicon" ,
-    "mw_visib_prevstatus" , si_cfg.mw_visib_prevstatus );
-  aud_cfg_db_set_bool( cfgfile , "statusicon" ,
-    "pw_visib_prevstatus" , si_cfg.pw_visib_prevstatus );
-  aud_cfg_db_set_bool( cfgfile , "statusicon" ,
-    "ew_visib_prevstatus" , si_cfg.ew_visib_prevstatus );
-
   aud_cfg_db_close( cfgfile );
   return;
 }

@@ -50,13 +50,15 @@ SRCS = adplug-xmms.cc		\
        core/msc.cxx		\
        core/rix.cxx		\
        core/adl.cxx		\
-       core/jbm.cxx
+       core/jbm.cxx		\
+       plugin.c
 
 include ../../buildsys.mk
 include ../../extra.mk
 
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
+LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
 CXXFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS}  ${BINIO_CFLAGS} -I../.. -I./core -Dstricmp=strcasecmp

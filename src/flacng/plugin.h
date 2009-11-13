@@ -1,17 +1,14 @@
 #ifndef _PLUGIN_H
 #define _PLUGIN_H
 
-void flac_init(void);
-void flac_cleanup(void);
-void flac_aboutbox(void);
-gboolean flac_is_our_file(gchar* filename);
-gboolean flac_is_our_fd(gchar* filename, VFSFile* fd);
-void flac_play_file (InputPlayback* input);
-void flac_stop(InputPlayback* input);
-void flac_pause(InputPlayback* input, gshort p);
-void flac_mseek(InputPlayback* input, gulong millisecond);
-void flac_seek(InputPlayback* input, gint time);
-void flac_get_song_info(gchar* filename, gchar** title, gint* length);
-Tuple *flac_get_song_tuple(gchar* filename);
+static void flac_init(void);
+static void flac_cleanup(void);
+static void flac_aboutbox(void);
+static gboolean flac_is_our_fd(const gchar* filename, VFSFile* fd);
+static void flac_play_file (InputPlayback* input);
+static void flac_stop(InputPlayback* input);
+static void flac_pause(InputPlayback* input, gshort p);
+static void flac_seek(InputPlayback* input, gint time);
+static Tuple *flac_get_song_tuple(const gchar* filename);
 
 #endif

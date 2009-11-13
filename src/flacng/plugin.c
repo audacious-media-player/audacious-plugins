@@ -16,7 +16,6 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-/* #define FLACNG_DEBUG */
 
 #include "flacng.h"
 #include <audacious/output.h>
@@ -34,13 +33,10 @@ InputPlugin flac_ip = {
     .init = flac_init,
     .cleanup = flac_cleanup,
     .about = flac_aboutbox,
-    .is_our_file = flac_is_our_file,
     .play_file = flac_play_file,
     .stop = flac_stop,
     .pause = flac_pause,
-    .mseek = flac_mseek,
     .seek = flac_seek,
-    .get_song_info = flac_get_song_info,
     .get_song_tuple = flac_get_song_tuple,	// get a tuple
     .is_our_file_from_vfs = flac_is_our_fd,	// version of is_our_file which is handed an FD
     .vfs_extensions = flac_fmts			// vector of fileextensions allowed by the plugin
@@ -55,13 +51,15 @@ FLAC__StreamDecoder* main_decoder;
 callback_info* test_info;
 callback_info* main_info;
 gboolean plugin_initialized = FALSE;
-glong seek_to = -1;
-static volatile char pause_flag = 0;
-static GThread* thread = NULL;
+static GMutex *seek_mutex;
+static GCond *seek_cond;
+static gboolean pause_flag;
+static gint seek_value;
 
 /* === */
 
-void flac_init(void) {
+static void flac_init(void)
+{
 
     FLAC__StreamDecoderInitStatus ret;
 
@@ -148,6 +146,9 @@ void flac_init(void) {
         _LEAVE;
      }
 
+    seek_mutex = g_mutex_new();
+    seek_cond = g_cond_new();
+
      _DEBUG("plugin initialized OK!");
      plugin_initialized = TRUE;
     _LEAVE;
@@ -155,9 +156,12 @@ void flac_init(void) {
 
 /* --- */
 
-void flac_cleanup(void)
+static void flac_cleanup(void)
 {
     _ENTER;
+
+    g_mutex_free(seek_mutex);
+    g_cond_free(seek_cond);
 
     FLAC__stream_decoder_delete(main_decoder);
     clean_callback_info(main_info);
@@ -172,7 +176,7 @@ void flac_cleanup(void)
 
 /* --- */
 
-gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
+gboolean flac_is_our_fd(const gchar* filename, VFSFile* fd) {
 
     _ENTER;
 
@@ -242,31 +246,6 @@ gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
 
 /* --- */
 
-gboolean flac_is_our_file(gchar* filename) {
-
-    VFSFile* fd;
-    gboolean ret;
-
-    _ENTER;
-
-    _DEBUG("Testing file: %s", filename);
-    /*
-     * Open the file
-     */
-    if (NULL == (fd = aud_vfs_fopen(filename, "rb"))) {
-        _ERROR("Could not open file for reading! (%s)", filename);
-        _LEAVE FALSE;
-    }
-
-    ret = flac_is_our_fd(filename, fd);
-
-    aud_vfs_fclose(fd);
-
-    _LEAVE ret;
-}
-
-/* --- */
-
 void squeeze_audio(gint32* src, void* dst, guint count, guint res) {
 
     gint i;
@@ -303,24 +282,8 @@ void squeeze_audio(gint32* src, void* dst, guint count, guint res) {
 
 /* --- */
 
-static void do_seek (InputPlayback * playback) {
-   playback->output->flush (seek_to);
-   FLAC__stream_decoder_seek_absolute (main_decoder, (long long) seek_to * main_info->stream.samplerate / 1000);
-   seek_to = -1;
-}
-
-static void do_pause (InputPlayback * playback) {
-   playback->output->pause (1);
-   while (pause_flag) {
-      if (seek_to != -1)
-         do_seek (playback);
-      g_usleep(50000);
-   }
-   playback->output->pause (0);
-}
-
-static gpointer flac_play_loop(gpointer arg) {
-
+static gpointer flac_play_loop(gpointer arg)
+{
     /*
      * The main play loop.
      * Decode a frame, push the decoded data to the output plugin
@@ -334,12 +297,14 @@ static gpointer flac_play_loop(gpointer arg) {
     guint sample_count;
     void* play_buffer;
     InputPlayback* playback = (InputPlayback *) arg;
+    gboolean paused = FALSE;
 
     _ENTER;
 
-    if (NULL == (play_buffer = malloc(BUFFER_SIZE_BYTE))) {
+    if (NULL == (play_buffer = g_malloc(BUFFER_SIZE_BYTE))) {
         _ERROR("Could not allocate conversion buffer");
         playback->playing = FALSE;
+        reset_info(main_info, TRUE);
         _LEAVE NULL;
     }
 
@@ -353,6 +318,8 @@ static gpointer flac_play_loop(gpointer arg) {
     if (!playback->output->open_audio(SAMPLE_FMT(main_info->stream.bits_per_sample),
                                       main_info->stream.samplerate,
                                       main_info->stream.channels)) {
+        g_free(play_buffer);
+        reset_info(main_info, TRUE);
         playback->playing = FALSE;
         _ERROR("Could not open output plugin!");
         _LEAVE NULL;
@@ -408,6 +375,32 @@ static gpointer flac_play_loop(gpointer arg) {
                 main_info->stream.channels, main_info->frame.channels);
             break;
         }
+        
+        g_mutex_lock(seek_mutex);
+
+        if (seek_value >= 0)
+        {
+            playback->output->flush(1000 * seek_value);
+            FLAC__stream_decoder_seek_absolute(main_decoder, (long long) seek_value * main_info->stream.samplerate);
+            seek_value = -1;
+            g_cond_signal(seek_cond);
+        }
+
+        if (pause_flag != paused)
+        {
+            playback->output->pause(pause_flag);
+            paused = pause_flag;
+            g_cond_signal(seek_cond);
+        }
+
+        if (paused)
+        {
+            g_cond_wait(seek_cond, seek_mutex);
+            g_mutex_unlock(seek_mutex);
+            continue;
+        }
+
+        g_mutex_unlock(seek_mutex);
 
         /*
          * If the frame decoded was an audio frame we now
@@ -451,10 +444,6 @@ static gpointer flac_play_loop(gpointer arg) {
         main_info->buffer_free = BUFFER_SIZE_SAMP;
         main_info->buffer_used = 0;
 
-        if (seek_to != -1)
-	    do_seek (playback);
-        if (pause_flag)
-            do_pause (playback);
 
         /*
          * Have we reached the end of the stream?
@@ -466,15 +455,12 @@ static gpointer flac_play_loop(gpointer arg) {
              */
 
             _DEBUG("End of stream reached, draining output buffer");
-
-            while((-1 == seek_to) && playback->output->buffer_playing() && playback->playing == TRUE) {
-                g_usleep(40000);
+			
+            while (playback->output->buffer_playing() && playback->playing == TRUE) {
+                g_usleep(40000);       
             }
-
-            if (-1 == seek_to) {
-                _DEBUG("Output buffer empty.");
-                playback->playing = FALSE;
-            }
+            
+            playback->playing = FALSE;
         }
     }
 
@@ -486,7 +472,8 @@ static gpointer flac_play_loop(gpointer arg) {
     playback->output->close_audio();
     _DEBUG("Audio device closed");
 
-    free(play_buffer);
+    g_free(play_buffer);
+    reset_info(main_info, TRUE);
 
     if (FALSE == FLAC__stream_decoder_flush(main_decoder)) {
         _ERROR("Could not flush decoder state!");
@@ -497,10 +484,10 @@ static gpointer flac_play_loop(gpointer arg) {
 
 /* --- */
 
-void flac_play_file (InputPlayback* input) {
-
-    VFSFile* fd;
-    gint l;
+void flac_play_file(InputPlayback *playback)
+{
+    VFSFile *fd;
+    Tuple *tuple;
 
     _ENTER;
 
@@ -512,147 +499,91 @@ void flac_play_file (InputPlayback* input) {
     /*
      * Open the file
      */
-    if (NULL == (fd = aud_vfs_fopen(input->filename, "rb"))) {
-        _ERROR("Could not open file for reading! (%s)", input->filename);
+    if (NULL == (fd = aud_vfs_fopen(playback->filename, "rb"))) {
+        _ERROR("Could not open file for reading! (%s)", playback->filename);
         _LEAVE;
     }
 
     if (FALSE == read_metadata(fd, main_decoder, main_info)) {
+        reset_info(main_info, TRUE);
         _ERROR("Could not prepare file for playing!");
         _LEAVE;
     }
+    else
+        tuple = get_tuple(fd, main_info);
 
-    /*
-     * Calculate the length
-     */
-    if (0 == main_info->stream.samplerate) {
-        _ERROR("Invalid sample rate for stream!");
-        l = -1;
-    } else {
-        l = (main_info->stream.samples / main_info->stream.samplerate) * 1000;
-    }
 
-    input->playing = TRUE;
+    seek_value = -1;
+    pause_flag = FALSE;
+    playback->playing = TRUE;
 
-    input->set_params(input, get_title(input->filename, main_info), l, -1, main_info->stream.samplerate, main_info->stream.channels);
+    playback->set_tuple(playback, tuple);
+    playback->set_params(playback, NULL, 0, -1, main_info->stream.samplerate, main_info->stream.channels);
+    playback->set_pb_ready(playback);
 
-    thread = g_thread_self();
-    input->set_pb_ready(input);
-    flac_play_loop(input);
+    flac_play_loop(playback);
 
     _LEAVE;
 }
 
 /* --- */
 
-void flac_stop(InputPlayback* input) {
+static void flac_stop(InputPlayback *playback)
+{
+    g_mutex_lock(seek_mutex);
 
-    _ENTER;
-
-    input->playing = FALSE;
-
-    if (NULL != thread) {
-        /*
-         * Wait for the decoder thread to finish
-         */
-        _DEBUG("Waiting for decoder thread to die...");
-        g_thread_join(thread);
-        thread = NULL;
-        _DEBUG("Decoder thread has finished");
+    if (playback->playing)
+    {
+        playback->playing = FALSE;
+        g_cond_signal(seek_cond);
+        g_mutex_unlock(seek_mutex);
+        g_thread_join(playback->thread);
+        playback->thread = NULL;
+        
+        reset_info(main_info, TRUE);
     }
-
-    reset_info(main_info, TRUE);
-
-    _LEAVE;
+    else
+        g_mutex_unlock (seek_mutex);
 }
 
 /* --- */
 
-void flac_pause(InputPlayback* input, gshort p) {
-   pause_flag = p;
+static void flac_pause(InputPlayback *playback, gshort p)
+{
+    g_mutex_lock(seek_mutex);
+
+    if (playback->playing)
+    {
+        pause_flag = p;
+        g_cond_signal(seek_cond);
+        g_cond_wait(seek_cond, seek_mutex);
+    }
+
+    g_mutex_unlock(seek_mutex);
 }
 
 /* --- */
 
-void flac_mseek(InputPlayback* input, gulong millisecond) {
+static void flac_seek(InputPlayback *playback, gint time)
+{
+    g_mutex_lock(seek_mutex);
 
-    _ENTER;
-
-    if (!input->playing) {
-        _DEBUG("Can not seek while not playing");
-        _LEAVE;
+    if (playback->playing)
+    {
+        seek_value = time;
+        g_cond_signal(seek_cond);
+        g_cond_wait(seek_cond, seek_mutex);
     }
 
-    _DEBUG("Requesting seek to %d", millisecond);
-    seek_to = millisecond;
-
-    while (-1 != seek_to) {
-        g_usleep(10000);
-    }
-
-    _LEAVE;
-}
-
-void flac_seek(InputPlayback* input, gint time) {
-    gulong millisecond = time * 1000;
-    flac_mseek(input, millisecond);
+    g_mutex_unlock(seek_mutex);
 }
 
 /* --- */
 
-void flac_get_song_info(gchar* filename, gchar** title, gint* length) {
-
-    gint l;
-    VFSFile* fd;
-
-    _ENTER;
-
-    _DEBUG("Testing file: %s", filename);
-    /*
-     * Open the file
-     */
-    if (NULL == (fd = aud_vfs_fopen(filename, "rb"))) {
-        _ERROR("Could not open file for reading! (%s)", filename);
-        _LEAVE;
-    }
-
-    INFO_LOCK(test_info);
-
-    if (FALSE == read_metadata(fd, test_decoder, test_info)) {
-        _ERROR("Could not read file info!");
-        *length = -1;
-        *title = g_strdup("");
-        reset_info(test_info, TRUE);
-        INFO_UNLOCK(test_info);
-        _LEAVE;
-    }
-
-    /*
-     * Calculate the stream length (milliseconds)
-     */
-    if (0 == test_info->stream.samplerate) {
-        _ERROR("Invalid sample rate for stream!");
-        l = -1;
-    } else {
-        l = (test_info->stream.samples / test_info->stream.samplerate) * 1000;
-        _DEBUG("Stream length: %d seconds", l/1000);
-    }
-
-    *length = l;
-    *title = get_title(filename, test_info);
-
-    reset_info(test_info, TRUE);
-    INFO_UNLOCK(test_info);
-
-    _LEAVE;
-}
-
-/* --- */
-
-Tuple *flac_get_song_tuple(gchar* filename) {
-
+static Tuple *flac_get_song_tuple(const gchar* filename)
+{
     VFSFile *fd;
-    Tuple *tuple;
+    Tuple * tuple = NULL;
 
     _ENTER;
 
@@ -660,6 +591,7 @@ Tuple *flac_get_song_tuple(gchar* filename) {
     /*
      * Open the file
      */
+
     if (NULL == (fd = aud_vfs_fopen(filename, "rb"))) {
         _ERROR("Could not open file for reading! (%s)", filename);
         _LEAVE NULL;
@@ -667,14 +599,10 @@ Tuple *flac_get_song_tuple(gchar* filename) {
 
     INFO_LOCK(test_info);
 
-    if (FALSE == read_metadata(fd, test_decoder, test_info)) {
-        _ERROR("Could not read metadata tuple for file <%s>", filename);
-        reset_info(test_info, TRUE);
-        INFO_UNLOCK(test_info);
-        _LEAVE NULL;
-    }
-
-    tuple = get_tuple(filename, test_info);
+    if (read_metadata(fd, test_decoder, test_info))
+        tuple = get_tuple(fd, test_info);
+    else
+        _ERROR ("Could not read metadata tuple for file <%s>", filename);
 
     reset_info(test_info, TRUE);
     INFO_UNLOCK(test_info);
@@ -684,8 +612,8 @@ Tuple *flac_get_song_tuple(gchar* filename) {
 
 /* --- */
 
-void flac_aboutbox(void) {
-
+static void flac_aboutbox(void)
+{
     static GtkWidget* about_window;
     gchar *about_text;
 

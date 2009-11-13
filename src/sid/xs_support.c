@@ -50,8 +50,12 @@ gint xs_fload_buffer(const gchar *filename, guint8 **buf, size_t *bufSize)
     if ((f = xs_fopen(filename, "rb")) == NULL)
         return -1;
 
-    xs_fseek(f, 0, SEEK_END);
+#ifdef __AUDACIOUS_NEWVFS__
+    seekPos = aud_vfs_fsize(f);
+#else
+    xs_fseek(f, 0L, SEEK_END);
     seekPos = xs_ftell(f);
+#endif
     
     if (seekPos > 0) {
         size_t readSize = seekPos;

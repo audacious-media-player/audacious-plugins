@@ -1,7 +1,7 @@
 // snes_spc 0.9.0. http://www.slack.net/~ant/
 
 // TODO: we can remove this as soon as the reverb problem is fixed. -- mf0102
-#include "Audacious_Config.h"
+#include "configure.h"
 
 #include "Spc_Dsp.h"
 

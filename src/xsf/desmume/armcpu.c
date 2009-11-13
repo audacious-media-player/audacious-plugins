@@ -351,10 +351,11 @@ u32 armcpu_switchMode(armcpu_t *armcpu, u8 mode)
 	return oldmode;
 }
 
-static u32
-armcpu_prefetch(armcpu_t *armcpu)
+u32 armcpu_prefetch(armcpu_t *armcpu)
 {
+#ifdef GDB_STUB
 	u32 temp_instruction;
+#endif
 
 	if(armcpu->CPSR.bits.T == 0)
 	{

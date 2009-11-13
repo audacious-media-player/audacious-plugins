@@ -31,6 +31,7 @@
 #include "ui_skinned_window.h"
 
 #include "platform/smartinclude.h"
+#include "util.h"
 
 static GList *dock_window_list = NULL;
 
@@ -222,24 +223,8 @@ static void move_skinned_window (SkinnedWindow * window, int x, int y)
 {
     gtk_window_move (GTK_WINDOW (window), x, y);
 
-    window->x = x;
-    window->y = y;
-
-    switch (window->type)
-    {
-    case WINDOW_MAIN:
-        config.player_x = x;
-        config.player_y = y;
-        break;
-    case WINDOW_EQ:
-        config.equalizer_x = x;
-        config.equalizer_y = y;
-        break;
-    case WINDOW_PLAYLIST:
-        config.playlist_x = x;
-        config.playlist_y = y;
-        break;
-    }
+    *(window->x) = x;
+    *(window->y) = y;
 }
 
 static void
@@ -253,17 +238,6 @@ docked_list_move(GList * list, gint x, gint y)
         move_skinned_window (SKINNED_WINDOW (dw->w), x + dw->offset_x,
          y + dw->offset_y);
     }
-}
-
-void dock_window_resize (GtkWindow * widget, int width, int height) {
-  GdkGeometry hints;
-   hints.min_width = width;
-   hints.min_height = height;
-   hints.max_width = width;
-   hints.max_height = height;
-   gtk_window_resize (widget, width, height);
-   gtk_window_set_geometry_hints (widget, 0, & hints,
-    GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
 }
 
 static void move_attached (GtkWindow * window, GList * * others, int offset) {
@@ -285,12 +259,15 @@ static void move_attached (GtkWindow * window, GList * * others, int offset) {
    move_skinned_window (SKINNED_WINDOW (window), x, y + offset);
 }
 
-void dock_shade (GList * window_list, GtkWindow * window, int new_height) {
-  int x, y, width, height, x2, y2;
-  GList * move, * others, * scan, * next;
+void dock_shade(GList *window_list, GtkWindow *window, gint new_height)
+{
+    gint x, y, width, height, x2, y2;
+    GList *move, *others, *scan, *next;
+
+    gtk_window_get_size(window, &width, &height);
+
    if (! config.show_wm_decorations) {
       gtk_window_get_position (window, & x, & y);
-      gtk_window_get_size (window, & width, & height);
       others = g_list_copy (window_list);
       others = g_list_remove (others, window);
       move = 0;
@@ -306,7 +283,8 @@ void dock_shade (GList * window_list, GtkWindow * window, int new_height) {
          move_attached (move->data, & others, new_height - height);
       g_list_free (others);
    }
-   dock_window_resize (window, width, new_height);
+
+    resize_window((GtkWidget *) window, width, new_height);
 }
 
 void

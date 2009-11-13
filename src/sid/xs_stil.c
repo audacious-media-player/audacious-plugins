@@ -4,7 +4,7 @@
    STIL-database handling functions
    
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2009 Tecnic Software productions (TNSP)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
  */
 static gboolean xs_stildb_node_realloc(stil_node_t *node, gint nsubTunes)
 {
-    if (!node) return FALSE;
+    if (node == NULL) return FALSE;
 
     /* Re-allocate subTune structure if needed */
     if (nsubTunes > node->nsubTunes) {
@@ -62,10 +62,9 @@ static gboolean xs_stildb_node_realloc(stil_node_t *node, gint nsubTunes)
 
     /* Allocate memory for subTune */
     if (!node->subTunes[nsubTunes]) {
-        node->subTunes[nsubTunes] = (stil_subnode_t *)
-            g_malloc0(sizeof(stil_subnode_t));
+        node->subTunes[nsubTunes] = g_new0(stil_subnode_t, 1);
         
-        if (!node->subTunes[nsubTunes]) {
+        if (node->subTunes[nsubTunes] == NULL) {
             xs_error("SubTune structure malloc failed!\n");
             return FALSE;
         }
@@ -80,7 +79,7 @@ static void xs_stildb_node_free(stil_node_t *node)
     gint i;
     stil_subnode_t *subnode;
 
-    if (!node) return;
+    if (node == NULL) return;
 
     /* Free subtune information */
     for (i = 0; i <= node->nsubTunes; i++) {
@@ -103,14 +102,15 @@ static stil_node_t *xs_stildb_node_new(gchar *filename)
 {
     stil_node_t *result;
 
+//fprintf(stderr, "LL: %s\n", filename);
+
     /* Allocate memory for new node */
-    result = (stil_node_t *) g_malloc0(sizeof(stil_node_t));
-    if (!result)
+    if ((result = g_new0(stil_node_t, 1)) == NULL)
         return NULL;
 
     /* Allocate filename and initial space for one subtune */
     result->filename = g_strdup(filename);
-    if (!result->filename || !xs_stildb_node_realloc(result, 1)) {
+    if (result->filename == NULL || !xs_stildb_node_realloc(result, 1)) {
         xs_stildb_node_free(result);
         return NULL;
     }
@@ -125,7 +125,7 @@ static void xs_stildb_node_insert(xs_stildb_t *db, stil_node_t *node)
 {
     assert(db != NULL);
 
-    if (db->nodes) {
+    if (db->nodes != NULL) {
         /* The first node's pPrev points to last node */
         LPREV = db->nodes->prev;    /* New node's prev = Previous last node */
         db->nodes->prev->next = node;    /* Previous last node's next = New node */
@@ -141,49 +141,49 @@ static void xs_stildb_node_insert(xs_stildb_t *db, stil_node_t *node)
 
 /* Read database (additively) to given db-structure
  */
-#define XS_STILDB_MULTI                            \
-    if (isMulti) {                            \
-        isMulti = FALSE;                    \
-        xs_pstrcat(&(tmnode->subTunes[subEntry]->info), "\n");\
+#define XS_STILDB_MULTI                                         \
+    if (multi) {                                                \
+        multi = FALSE;                                          \
+        xs_pstrcat(&(node->subTunes[subEntry]->info), "\n");    \
     }
 
-static void XS_STILDB_ERR(gint lineNum, gchar *inLine, const char *fmt, ...)
+static void XS_STILDB_ERR(gint linenum, gchar *line, const gchar *fmt, ...)
 {
     va_list ap;
-
+    
     va_start(ap, fmt);
-    xs_error(fmt, ap);
+    xs_verror(fmt, ap);
     va_end(ap);
     
-    fprintf(stderr, "#%d: '%s'\n", lineNum, inLine);
+    xs_error("#%d: '%s'\n", linenum, line);
 }
 
-gint xs_stildb_read(xs_stildb_t *db, gchar *dbFilename)
+gint xs_stildb_read(xs_stildb_t *db, gchar *filename)
 {
     FILE *inFile;
     gchar inLine[XS_BUF_SIZE + 16];    /* Since we add some chars here and there */
-    size_t lineNum;
-    stil_node_t *tmnode;
-    gboolean isError, isMulti;
-    gint subEntry;
+    stil_node_t *node;
+    gboolean error, multi;
+    gint lineNum, subEntry;
     gchar *tmpLine = inLine;
     assert(db != NULL);
 
     /* Try to open the file */
-    if ((inFile = fopen(dbFilename, "ra")) == NULL) {
-        xs_error("Could not open STILDB '%s'\n", dbFilename);
+    if ((inFile = fopen(filename, "ra")) == NULL) {
+        xs_error("Could not open STILDB '%s'\n", filename);
         return -1;
     }
 
     /* Read and parse the data */
     lineNum = 0;
-    isError = FALSE;
-    isMulti = FALSE;
-    tmnode = NULL;
+    error = FALSE;
+    multi = FALSE;
+    node = NULL;
     subEntry = 0;
 
-    while (!isError && fgets(inLine, XS_BUF_SIZE, inFile) != NULL) {
-        size_t linePos = 0, eolPos = 0;
+    while (!error && fgets(inLine, XS_BUF_SIZE, inFile) != NULL) {
+        gsize linePos = 0, eolPos = 0;
+        inLine[XS_BUF_SIZE] = 0;
         xs_findeol(inLine, &eolPos);
         inLine[eolPos] = 0;
         lineNum++;
@@ -193,42 +193,42 @@ gint xs_stildb_read(xs_stildb_t *db, gchar *dbFilename)
         switch (tmpLine[0]) {
         case '/':
             /* Check if we are already parsing entry */
-            isMulti = FALSE;
-            if (tmnode) {
+            multi = FALSE;
+            if (node != NULL) {
                 XS_STILDB_ERR(lineNum, tmpLine,
                     "New entry found before end of current ('%s')!\n",
-                    tmnode->filename);
-                xs_stildb_node_free(tmnode);
+                    node->filename);
+                xs_stildb_node_free(node);
+                node = NULL;
             }
 
             /* A new node */
             subEntry = 0;
-            tmnode = xs_stildb_node_new(tmpLine);
-            if (!tmnode) {
-                /* Allocation failed */
+            if ((node = xs_stildb_node_new(tmpLine)) == NULL) {
                 XS_STILDB_ERR(lineNum, tmpLine,
                     "Could not allocate new STILdb-node!\n");
-                isError = TRUE;
+                error = TRUE;
             }
             break;
 
         case '(':
             /* A new sub-entry */
-            isMulti = FALSE;
+            multi = FALSE;
             linePos++;
             if (tmpLine[linePos] == '#') {
                 linePos++;
                 if (isdigit(tmpLine[linePos])) {
-                    size_t savePos = linePos;
+                    gsize savePos = linePos;
                     xs_findnum(tmpLine, &linePos);
                     tmpLine[linePos] = 0;
                     subEntry = atol(&tmpLine[savePos]);
 
                     /* Sanity check */
                     if (subEntry < 1) {
+                        gchar *tmp = node != NULL ? node->filename : NULL;
                         XS_STILDB_ERR(lineNum, tmpLine,
-                            "Number of subEntry (%i) for '%s' is invalid\n",
-                            subEntry, tmnode ? tmnode->filename : "");
+                            "Number of subEntry (%d) for '%s' is invalid\n",
+                            subEntry, tmp);
                         subEntry = 0;
                     }
                 } else {
@@ -249,11 +249,10 @@ gint xs_stildb_read(xs_stildb_t *db, gchar *dbFilename)
         case '\n':
         case '\r':
             /* End of entry/field */
-            isMulti = FALSE;
-            if (tmnode) {
-                /* Insert to database */
-                xs_stildb_node_insert(db, tmnode);
-                tmnode = NULL;
+            multi = FALSE;
+            if (node != NULL) {
+                xs_stildb_node_insert(db, node);
+                node = NULL;
             }
             break;
 
@@ -261,49 +260,49 @@ gint xs_stildb_read(xs_stildb_t *db, gchar *dbFilename)
             /* Check if we are parsing an entry */
             xs_findnext(tmpLine, &linePos);
             
-            if (!tmnode) {
+            if (node == NULL) {
                 XS_STILDB_ERR(lineNum, tmpLine,
                     "Entry data encountered outside of entry or syntax error!\n");
                 break;
             }
 
-            if (!xs_stildb_node_realloc(tmnode, subEntry)) {
+            if (!xs_stildb_node_realloc(node, subEntry)) {
                 XS_STILDB_ERR(lineNum, tmpLine,
                     "Could not (re)allocate memory for subEntries!\n");
-                isError = TRUE;
+                error = TRUE;
                 break;
             }
             
             /* Some other type */
             if (strncmp(tmpLine, "   NAME:", 8) == 0) {
                 XS_STILDB_MULTI;
-                g_free(tmnode->subTunes[subEntry]->name);
-                tmnode->subTunes[subEntry]->name = g_strdup(&tmpLine[9]);
+                g_free(node->subTunes[subEntry]->name);
+                node->subTunes[subEntry]->name = g_strdup(&tmpLine[9]);
             } else if (strncmp(tmpLine, "  TITLE:", 8) == 0) {
                 XS_STILDB_MULTI;
-                isMulti = TRUE;
-                if (!tmnode->subTunes[subEntry]->title)
-                    tmnode->subTunes[subEntry]->title = g_strdup(&tmpLine[9]);
-                xs_pstrcat(&(tmnode->subTunes[subEntry]->info), &tmpLine[2]);
+                multi = TRUE;
+                if (!node->subTunes[subEntry]->title)
+                    node->subTunes[subEntry]->title = g_strdup(&tmpLine[9]);
+                xs_pstrcat(&(node->subTunes[subEntry]->info), &tmpLine[2]);
             } else if (strncmp(tmpLine, " AUTHOR:", 8) == 0) {
                 XS_STILDB_MULTI;
-                g_free(tmnode->subTunes[subEntry]->author);
-                tmnode->subTunes[subEntry]->author = g_strdup(&tmpLine[9]);
+                g_free(node->subTunes[subEntry]->author);
+                node->subTunes[subEntry]->author = g_strdup(&tmpLine[9]);
             } else if (strncmp(tmpLine, " ARTIST:", 8) == 0) {
                 XS_STILDB_MULTI;
-                isMulti = TRUE;
-                xs_pstrcat(&(tmnode->subTunes[subEntry]->info), &tmpLine[1]);
+                multi = TRUE;
+                xs_pstrcat(&(node->subTunes[subEntry]->info), &tmpLine[1]);
             } else if (strncmp(tmpLine, "COMMENT:", 8) == 0) {
                 XS_STILDB_MULTI;
-                isMulti = TRUE;
-                xs_pstrcat(&(tmnode->subTunes[subEntry]->info), tmpLine);
+                multi = TRUE;
+                xs_pstrcat(&(node->subTunes[subEntry]->info), tmpLine);
             } else {
-                if (isMulti) {
-                    xs_pstrcat(&(tmnode->subTunes[subEntry]->info), " ");
-                    xs_pstrcat(&(tmnode->subTunes[subEntry]->info), &tmpLine[linePos]);
+                if (multi) {
+                    xs_pstrcat(&(node->subTunes[subEntry]->info), " ");
+                    xs_pstrcat(&(node->subTunes[subEntry]->info), &tmpLine[linePos]);
                 } else {
                     XS_STILDB_ERR(lineNum, tmpLine,
-                    "Entry continuation found when isMulti == FALSE.\n");
+                    "Entry continuation found when multi == FALSE.\n");
                 }
             }
             break;
@@ -314,8 +313,8 @@ gint xs_stildb_read(xs_stildb_t *db, gchar *dbFilename)
     } /* while */
 
     /* Check if there is one remaining node */
-    if (tmnode)
-        xs_stildb_node_insert(db, tmnode);
+    if (node != NULL)
+        xs_stildb_node_insert(db, node);
 
     /* Close the file */
     fclose(inFile);

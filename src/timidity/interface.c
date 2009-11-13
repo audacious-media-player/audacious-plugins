@@ -50,6 +50,7 @@ create_xmmstimid_conf_wnd (void)
   GtkWidget *button2;
 
   xmmstimid_conf_wnd = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_type_hint(GTK_WINDOW(xmmstimid_conf_wnd), GDK_WINDOW_TYPE_HINT_DIALOG);
   g_object_set_data (G_OBJECT (xmmstimid_conf_wnd), "xmmstimid_conf_wnd", xmmstimid_conf_wnd);
   gtk_window_set_title (GTK_WINDOW (xmmstimid_conf_wnd), _("TiMidity Configuration"));
   gtk_window_set_position (GTK_WINDOW (xmmstimid_conf_wnd), GTK_WIN_POS_MOUSE);

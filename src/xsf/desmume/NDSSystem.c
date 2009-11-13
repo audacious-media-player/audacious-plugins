@@ -712,7 +712,7 @@ void NDS_exec_hframe(int cpu_clockdown_level_arm9, int cpu_clockdown_level_arm7)
 			T1WriteWord(MMU.ARM7_REG, 6, nds.VCount);
 
 			vmatch = T1ReadWord(ARM9Mem.ARM9_REG, 4);
-			if((nds.VCount==(vmatch>>8)|((vmatch<<1)&(1<<8))))
+			if(nds.VCount== ((vmatch >> 8) | ((vmatch << 1) & 256)))
 			{
 				T1WriteWord(ARM9Mem.ARM9_REG, 4, T1ReadWord(ARM9Mem.ARM9_REG, 4) | 4);
 				if(T1ReadWord(ARM9Mem.ARM9_REG, 4) & 32)
@@ -722,7 +722,7 @@ void NDS_exec_hframe(int cpu_clockdown_level_arm9, int cpu_clockdown_level_arm7)
 				T1WriteWord(ARM9Mem.ARM9_REG, 4, T1ReadWord(ARM9Mem.ARM9_REG, 4) & 0xFFFB);
 
 			vmatch = T1ReadWord(MMU.ARM7_REG, 4);
-			if((nds.VCount==(vmatch>>8)|((vmatch<<1)&(1<<8))))
+			if(nds.VCount== ((vmatch >> 8) | ((vmatch <<1 ) & 256)))
 			{
 				T1WriteWord(MMU.ARM7_REG, 4, T1ReadWord(MMU.ARM7_REG, 4) | 4);
 				if(T1ReadWord(MMU.ARM7_REG, 4) & 32)

@@ -32,7 +32,6 @@
 
 static const gfloat vis_afalloff_speeds[] = { 0.34, 0.5, 1.0, 1.3, 1.6 };
 static const gfloat vis_pfalloff_speeds[] = { 1.2, 1.3, 1.4, 1.5, 1.6 };
-static const gint vis_redraw_delays[] = { 1, 2, 4, 8 };
 static const guint8 vis_scope_colors[] =
     { 21, 21, 20, 20, 19, 19, 18, 19, 19, 20, 20, 21, 21 };
 static guchar voiceprint_data[76*16];
@@ -97,7 +96,7 @@ static void ui_vis_class_init(UiVisClass *klass) {
 
     klass->doubled = ui_vis_toggle_scaled;
 
-    vis_signals[DOUBLED] = 
+    vis_signals[DOUBLED] =
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiVisClass, doubled), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
@@ -248,10 +247,6 @@ static void ui_vis_size_allocate(GtkWidget *widget, GtkAllocation *allocation) {
 }
 
 static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (UI_IS_VIS (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
-
     UiVis *vis = UI_VIS (widget);
 
     gint x, y, n, h = 0, h2;
@@ -358,7 +353,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 		*(ptr + (guint)(76 * config.scale_factor)) = 18 - h;
 		*(ptr + (guint)(76 * config.scale_factor)+1) = 18 - h;
 	      }
-	      
+
 	      break;
 	    }
 	  }
@@ -371,7 +366,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	  else if (config.analyzer_type == ANALYZER_LINES)
 	    h = vis->peak[x];
 	  if (h && (config.analyzer_type == ANALYZER_LINES || (x % 4) != 3)){
-	    
+
 	    if (!vis->scaled) {
 	      rgb_data[(16 - h) * 76 + x] = 23;
 	    }
@@ -395,7 +390,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	    voiceprint_data[y * 76] = vis->data[y];
       }
       if(audacious_drct_get_playing()){ /*Only draw the data if we're playing*/
-	if(config.voiceprint_mode == VOICEPRINT_NORMAL){ 
+	if(config.voiceprint_mode == VOICEPRINT_NORMAL){
 	  /* Create color gradient from the skin's background- and foreground color*/
 	  fgc = skin_get_color(aud_active_skin, SKIN_TEXTFG);
 	  bgc = skin_get_color(aud_active_skin, SKIN_TEXTBG);
@@ -424,7 +419,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	for (y = 0; y < 16; y ++){
 	  for (x = 0; x < 76; x++){
 	    guint8 d = voiceprint_data[x + y*76];
-	    
+
 	    if(config.voiceprint_mode == VOICEPRINT_NORMAL){
 	      voice_c[0] = vis_voice_color[d][0];
 	      voice_c[1] = vis_voice_color[d][1];
@@ -440,10 +435,10 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 		 voice_c[2] = d < 64 ? d << 2 : (d < 128 ? (128 - d) << 2 : 0);
 	      */
 	    }
-	    else if(config.voiceprint_mode == VOICEPRINT_ICE){	    
+	    else if(config.voiceprint_mode == VOICEPRINT_ICE){
 	      voice_c[0] = d;
 	      voice_c[1] = d < 128 ? d * 2 : 255;
-	      voice_c[2] = d < 64 ? d * 4 : 255; 
+	      voice_c[2] = d < 64 ? d * 4 : 255;
 	    }
 	    if(!vis->scaled){
 	      for(n=0;n<3;n++)
@@ -587,7 +582,8 @@ static void ui_vis_toggle_scaled(UiVis *vis) {
 
     gtk_widget_set_size_request(widget, vis->width*(vis->scaled ? config.scale_factor : 1), vis->height*(vis->scaled ? config.scale_factor : 1));
 
-    gtk_widget_queue_draw(GTK_WIDGET(vis));
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_vis_expose (widget, 0);
 }
 
 void ui_vis_draw_pixel(GtkWidget *widget, guchar* texture, gint x, gint y, guint8 colour) {
@@ -602,34 +598,6 @@ void ui_vis_draw_pixel(GtkWidget *widget, guchar* texture, gint x, gint y, guint
     }
 }
 
-void ui_vis_set_visible(GtkWidget *widget, gboolean window_is_visible)
-{
-    UiVis *vis;
-    gboolean widget_is_visible;
-
-    g_return_if_fail(UI_IS_VIS(widget));
-
-    vis = UI_VIS (widget);
-    widget_is_visible = GTK_WIDGET_VISIBLE(widget);
-
-    vis->visible_window = window_is_visible;
-
-    if (GTK_WIDGET_REALIZED (widget))
-    {
-        if ( widget_is_visible )
-            gtk_widget_hide(widget);
-
-        gtk_widget_unrealize(widget);
-        gtk_widget_realize(widget);
-
-        if ( widget_is_visible )
-            gtk_widget_show(widget);
-    }
-
-    if (widget_is_visible)
-        gtk_widget_queue_resize(widget);
-}
-
 void ui_vis_clear_data(GtkWidget *widget) {
     g_return_if_fail(UI_IS_VIS(widget));
 
@@ -641,32 +609,23 @@ void ui_vis_clear_data(GtkWidget *widget) {
         vis->data[i] = (config.vis_type == VIS_SCOPE) ? 6 : 0;
         vis->peak[i] = 0;
     }
+
+    vis->refresh_delay = 0;
+
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_vis_expose (widget, 0);
 }
 
 void ui_vis_timeout_func(GtkWidget *widget, guchar * data) {
     g_return_if_fail(UI_IS_VIS(widget));
 
     UiVis *vis = UI_VIS (widget);
-    static GTimer *timer = NULL;
-    gulong micros = 9999999;
-    gboolean falloff = FALSE;
     gint i;
 
-    if (!timer) {
-        timer = g_timer_new();
-        g_timer_start(timer);
-    }
-    else {
-      g_timer_elapsed(timer, &micros);
-      if (micros > 14000)
-	g_timer_reset(timer);
-    }
     if (config.vis_type == VIS_ANALYZER) {
-        if (micros > 14000)
-            falloff = TRUE;
-        if (data || falloff) {
             for (i = 0; i < 75; i++) {
-                if (data && data[i] > vis->data[i]) {
+                if (data[i] > vis->data[i])
+                {
                     vis->data[i] = data[i];
                     if (vis->data[i] > vis->peak[i]) {
                         vis->peak[i] = vis->data[i];
@@ -683,7 +642,8 @@ void ui_vis_timeout_func(GtkWidget *widget, guchar * data) {
                             vis->peak[i] = 0.0;
                     }
                 }
-                else if (falloff) {
+                else
+                {
                     if (vis->data[i] > 0.0) {
                         vis->data[i] -=
                             vis_afalloff_speeds[config.analyzer_falloff];
@@ -701,24 +661,18 @@ void ui_vis_timeout_func(GtkWidget *widget, guchar * data) {
                     }
                 }
             }
-        }
     }
-    else if (config.vis_type == VIS_VOICEPRINT && data){
-      for(i = 0; i < 16; i++)
-	{
-	  vis->data[i] = data[15 - i];
-	}
+    else if (config.vis_type == VIS_VOICEPRINT)
+    {
+        for (i = 0; i < 16; i ++)
+            vis->data[i] = data[15 - i];
     }
-    else if (data) {
+    else
+    {
         for (i = 0; i < 75; i++)
             vis->data[i] = data[i];
     }
 
-    if (micros > 14000) {
-        if (!vis->refresh_delay) {
-            gtk_widget_queue_draw(widget);
-            vis->refresh_delay = vis_redraw_delays[config.vis_refresh];
-        }
-        vis->refresh_delay--;
-    }
+    if (GTK_WIDGET_DRAWABLE(widget))
+        gtk_widget_queue_draw(widget);
 }

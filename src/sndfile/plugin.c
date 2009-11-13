@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005 Audacious development team.
+ *  Copyright (C) 2005,2009 Audacious development team.
  *
  *  Based on the xmms_sndfile input plugin:
  *  Copyright (C) 2000, 2002 Erik de Castro Lopo
@@ -26,34 +26,29 @@
  *   - pausing works now
  *   - fixed some potential race conditions when dealing with NFS.
  *   - TITLE_LEN removed
+ *
+ * Re-cleaned up 09-Aug-2009 (ccr):
+ *   - removed threading madness.
+ *   - improved locking.
+ *   - misc. cleanups.
  */
 
 #include "config.h"
 
 #include <glib.h>
-#include <string.h>
 #include <math.h>
-
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
-#include <audacious/output.h>
-#include "plugin.h"
-
 #include <sndfile.h>
 
-static SNDFILE *sndfile = NULL;
-static SF_INFO sfinfo;
-
-static gint song_length;
-static gint bit_rate = 0;
-static glong seek_time = -1;
-static volatile char pause_flag;
-
-static GThread *decode_thread;
-static GMutex *decode_mutex;
-static GCond *decode_cond;
+#define BUFFER_SIZE 8192
+static GMutex *seek_mutex;
+static GCond *seek_cond;
+static glong seek_value = -1;
 
 
+/* Virtual file access wrappers for libsndfile
+ */
 static sf_count_t
 sf_get_filelen (void *user_data)
 {
@@ -95,7 +90,7 @@ static SF_VIRTUAL_IO sf_virtual_io =
 
 
 static SNDFILE *
-open_sndfile_from_uri(gchar *filename, VFSFile **vfsfile, SF_INFO *tmp_sfinfo)
+open_sndfile_from_uri(const gchar *filename, VFSFile **vfsfile, SF_INFO *sfinfo)
 {
     SNDFILE *snd_file = NULL;
     *vfsfile = aud_vfs_fopen(filename, "rb");
@@ -103,7 +98,7 @@ open_sndfile_from_uri(gchar *filename, VFSFile **vfsfile, SF_INFO *tmp_sfinfo)
     if (*vfsfile == NULL)
         return NULL;
 
-    snd_file = sf_open_virtual (&sf_virtual_io, SFM_READ, tmp_sfinfo, *vfsfile);
+    snd_file = sf_open_virtual (&sf_virtual_io, SFM_READ, sfinfo, *vfsfile);
     if (snd_file == NULL)
         aud_vfs_fclose(*vfsfile);
 
@@ -113,57 +108,58 @@ open_sndfile_from_uri(gchar *filename, VFSFile **vfsfile, SF_INFO *tmp_sfinfo)
 static void
 close_sndfile(SNDFILE *snd_file, VFSFile *vfsfile)
 {
-    sf_close(snd_file);
-    aud_vfs_fclose(vfsfile);
+    if (snd_file != NULL)
+        sf_close(snd_file);
+    if (vfsfile != NULL)
+        aud_vfs_fclose(vfsfile);
 }
 
 
+/* Plugin initialization
+ */
 static void
 plugin_init (void)
 {
-    seek_time = -1;
-    pause_flag = 0;
-
-    decode_mutex = g_mutex_new();
-    decode_cond = g_cond_new();
+    seek_value = -1;
+    seek_mutex = g_mutex_new();
+    seek_cond = g_cond_new();
 }
 
 static void
 plugin_cleanup (void)
 {
-    g_cond_free(decode_cond);
-    g_mutex_free(decode_mutex);
+    g_cond_free(seek_cond);
+    g_mutex_free(seek_mutex);
 }
 
 static void
-fill_song_tuple (gchar *filename, Tuple *ti)
+fill_song_tuple (const gchar *filename, Tuple *ti)
 {
     VFSFile *vfsfile = NULL;
-    SNDFILE *tmp_sndfile;
-    SF_INFO tmp_sfinfo;
+    SNDFILE *sndfile;
+    SF_INFO sfinfo;
     gboolean lossy = FALSE;
     gchar *codec, *format, *subformat;
 
-    tmp_sndfile = open_sndfile_from_uri(filename, &vfsfile, &tmp_sfinfo);
-    if ( sf_get_string(tmp_sndfile, SF_STR_TITLE) == NULL)
-        aud_tuple_associate_string(ti, FIELD_TITLE, NULL, g_path_get_basename(filename));
-    else
-        aud_tuple_associate_string(ti, FIELD_TITLE, NULL, sf_get_string(tmp_sndfile, SF_STR_TITLE));
+    sndfile = open_sndfile_from_uri(filename, &vfsfile, &sfinfo);
+    if (sf_get_string(sndfile, SF_STR_TITLE) != NULL)
+        aud_tuple_associate_string(ti, FIELD_TITLE, NULL, sf_get_string(sndfile, SF_STR_TITLE));
 
-    aud_tuple_associate_string(ti, FIELD_ARTIST, NULL, sf_get_string(tmp_sndfile, SF_STR_ARTIST));
-    aud_tuple_associate_string(ti, FIELD_COMMENT, NULL, sf_get_string(tmp_sndfile, SF_STR_COMMENT));
-    aud_tuple_associate_string(ti, FIELD_DATE, NULL, sf_get_string(tmp_sndfile, SF_STR_DATE));
-    aud_tuple_associate_string(ti, -1, "software", sf_get_string(tmp_sndfile, SF_STR_SOFTWARE));
+    aud_tuple_associate_string(ti, FIELD_ARTIST, NULL, sf_get_string(sndfile, SF_STR_ARTIST));
+    aud_tuple_associate_string(ti, FIELD_COMMENT, NULL, sf_get_string(sndfile, SF_STR_COMMENT));
+    aud_tuple_associate_string(ti, FIELD_DATE, NULL, sf_get_string(sndfile, SF_STR_DATE));
+    aud_tuple_associate_string(ti, -1, "software", sf_get_string(sndfile, SF_STR_SOFTWARE));
 
-    if (!tmp_sndfile)
-        return;
+    if (sndfile != NULL)
+        close_sndfile (sndfile, vfsfile);
 
-    close_sndfile (tmp_sndfile, vfsfile);
+    if (sfinfo.samplerate > 0)
+    {
+        aud_tuple_associate_int(ti, FIELD_LENGTH, NULL,
+        (gint) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
+    }
 
-    if (tmp_sfinfo.samplerate > 0)
-        aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, (gint) ceil (1000.0 * tmp_sfinfo.frames / tmp_sfinfo.samplerate));
-
-    switch (tmp_sfinfo.format & SF_FORMAT_TYPEMASK)
+    switch (sfinfo.format & SF_FORMAT_TYPEMASK)
     {
         case SF_FORMAT_WAV:
         case SF_FORMAT_WAVEX:
@@ -229,8 +225,8 @@ fill_song_tuple (gchar *filename, Tuple *ti)
         default:
             format = "Unknown sndfile";
     }
-    
-    switch (tmp_sfinfo.format & SF_FORMAT_SUBMASK)
+
+    switch (sfinfo.format & SF_FORMAT_SUBMASK)
     {
         case SF_FORMAT_PCM_S8:
             subformat = "signed 8 bit";
@@ -319,33 +315,15 @@ fill_song_tuple (gchar *filename, Tuple *ti)
         codec = g_strdup_printf("%s (%s)", format, subformat);
     else
         codec = g_strdup_printf("%s", format);
+
     aud_tuple_associate_string(ti, FIELD_CODEC, NULL, codec);
     g_free(codec);
-    
+
     aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, lossy ? "lossy" : "lossless");
 }
 
-static gchar *
-get_title(gchar *filename)
-{
-    Tuple *tuple;
-    gchar *title;
-
-    tuple = aud_tuple_new_from_filename(filename);
-    fill_song_tuple(filename, tuple);
-    title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
-    if (*title == '\0')
-    {
-        g_free(title);
-        title = g_strdup(aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
-    }
-
-    aud_tuple_free(tuple);
-    return title;
-}
-
 static gint
-is_our_file (gchar *filename)
+is_our_file (const gchar *filename)
 {
     VFSFile *vfsfile = NULL;
     SNDFILE *tmp_sndfile;
@@ -364,165 +342,102 @@ is_our_file (gchar *filename)
     return TRUE;
 }
 
-static void do_seek (InputPlayback * playback) {
-   playback->output->flush (seek_time);
-   sf_seek (sndfile, (long long) seek_time * sfinfo.samplerate / 1000, SEEK_SET);
-   seek_time = -1;
-}
-
-static void do_pause (InputPlayback * playback) {
-   playback->output->pause (1);
-   while (pause_flag) {
-      if (seek_time != -1)
-         do_seek (playback);
-      g_usleep(50000);
-   }
-   playback->output->pause (0);
-}
-
-static gpointer
-play_loop (gpointer arg)
-{
-    gshort buffer[BUFFER_SIZE];
-    gint samples;
-    InputPlayback *playback = arg;
-
-    for (;;)
-    {
-        GTimeVal sleeptime;
-
-        /* sf_read_short will return 0 for all reads at EOF. */
-        samples = sf_read_short (sndfile, buffer, BUFFER_SIZE);
-
-        if (samples > 0 && playback->playing == TRUE) {
-            while ((playback->output->buffer_free () < samples) &&
-                   playback->playing == TRUE) {
-                g_get_current_time(&sleeptime);
-                g_time_val_add(&sleeptime, 500000);
-                g_mutex_lock(decode_mutex);
-                g_cond_timed_wait(decode_cond, decode_mutex, &sleeptime);
-                g_mutex_unlock(decode_mutex);
-
-                if (playback->playing == FALSE)
-                    break;
-            }
-
-            playback->pass_audio(playback, FMT_S16_NE, sfinfo.channels, 
-                                 samples * sizeof(buffer[0]), buffer, &playback->playing);
-        }
-        else {
-            while(playback->output->buffer_playing()) {
-                g_get_current_time(&sleeptime);
-                g_time_val_add(&sleeptime, 500000);
-                g_mutex_lock(decode_mutex);
-                g_cond_timed_wait(decode_cond, decode_mutex, &sleeptime);
-                g_mutex_unlock(decode_mutex);
-
-                if(playback->playing == FALSE)
-                    break;
-            }
-
-            playback->eof = TRUE;
-            playback->playing = FALSE;
-
-            g_mutex_unlock(decode_mutex);
-            break;
-        }
-
-        if (seek_time != -1)
-           do_seek (playback);
-        if (pause_flag)
-           do_pause (playback);
-
-        if (playback->playing == FALSE)
-            break;
-    }
-
-    sf_close (sndfile);
-    sndfile = NULL;
-    seek_time = -1;
-
-    playback->output->close_audio();
-
-    return NULL;
-}
-
 static void
 play_start (InputPlayback *playback)
 {
+    SNDFILE *sndfile = NULL;
+    SF_INFO sfinfo;
     VFSFile *vfsfile = NULL;
-    gint pcmbitwidth;
-    gchar *song_title;
-
-    if (sndfile) /* already opened */
-        return;
-
-    pcmbitwidth = 32;
-    song_title = get_title(playback->filename);
+    gshort buffer[BUFFER_SIZE], *buffer_p;
+    gint samples;
 
     sndfile = open_sndfile_from_uri(playback->filename, &vfsfile, &sfinfo);
-
-    if (!sndfile)
+    if (sndfile == NULL)
         return;
 
-    bit_rate = sfinfo.samplerate * pcmbitwidth;
-
-    if (sfinfo.samplerate > 0)
-        song_length = (gint) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate);
-    else
-        song_length = 0;
-
-    if (! playback->output->open_audio (FMT_S16_NE, sfinfo.samplerate, sfinfo.channels))
+    if (!playback->output->open_audio(FMT_S16_NE, sfinfo.samplerate, sfinfo.channels))
     {
         close_sndfile (sndfile, vfsfile);
-        sndfile = NULL;
+        playback->error = TRUE;
         return;
     }
 
-    playback->set_params(playback, song_title, song_length, bit_rate, sfinfo.samplerate, sfinfo.channels);
-    g_free (song_title);
+    playback->set_params (playback, NULL, 0, 32 * sfinfo.samplerate,
+     sfinfo.samplerate, sfinfo.channels);
 
     playback->playing = TRUE;
-
-    decode_thread = g_thread_self();
     playback->set_pb_ready(playback);
-    play_loop(playback);
+
+    while (playback->playing)
+    {
+        /* sf_read_short will return 0 for all reads at EOF. */
+        samples = sf_read_short (sndfile, buffer, BUFFER_SIZE);
+
+        if (samples > 0 && playback->playing) {
+            buffer_p = &buffer[0];
+
+            /* Output audio in small blocks */
+            while (samples > 0 && playback->playing)
+            {
+                gint writeoff = samples >= 512 ? 512 : samples;
+
+                playback->pass_audio(playback, FMT_S16_NE, sfinfo.channels,
+                    writeoff * sizeof(buffer[0]), buffer_p, NULL);
+
+                buffer_p += writeoff;
+                samples -= writeoff;
+
+                /* Check for seek request and bail out if we have one */
+                g_mutex_lock(seek_mutex);
+                if (seek_value != -1) {
+                    g_mutex_unlock(seek_mutex);
+                    break;
+                }
+                g_mutex_unlock(seek_mutex);
+            }
+        }
+        else
+        {
+            playback->eof = TRUE;
+            playback->playing = FALSE;
+        }
+
+        /* Perform seek, if requested */
+        g_mutex_lock(seek_mutex);
+        if (seek_value >= 0)
+        {
+            playback->output->flush(seek_value);
+            sf_seek(sndfile, (sf_count_t) seek_value * sfinfo.samplerate / 1000, SEEK_SET);
+            seek_value = -1;
+            g_cond_signal(seek_cond);
+        }
+        g_mutex_unlock(seek_mutex);
+    }
+
+    playback->playing = FALSE;
+    sf_close(sndfile);
+    playback->output->close_audio();
 }
 
 static void
 play_pause (InputPlayback *playback, gshort p)
 {
-   pause_flag = p;
+    playback->output->pause(p);
 }
 
 static void
 play_stop (InputPlayback *playback)
 {
-    if (decode_thread == NULL)
-        return;
-
-    g_mutex_lock(decode_mutex);
     playback->playing = FALSE;
-    g_mutex_unlock(decode_mutex);
-    g_cond_signal(decode_cond);
-
-    g_thread_join (decode_thread);
-
-    sndfile = NULL;
-    decode_thread = NULL;
-    seek_time = -1;
 }
 
 static void
-file_mseek (InputPlayback *playback, gulong millisecond)
+file_mseek (InputPlayback *playback, gulong ms)
 {
-    if (!sfinfo.seekable)
-        return;
-
-    seek_time = (glong)millisecond;
-
-    while (seek_time != -1)
-        g_usleep (80000);
+    g_mutex_lock(seek_mutex);
+    seek_value = ms;
+    g_cond_wait(seek_cond, seek_mutex);
+    g_mutex_unlock(seek_mutex);
 }
 
 static void
@@ -533,7 +448,7 @@ file_seek (InputPlayback *playback, gint time)
 }
 
 static Tuple*
-get_song_tuple (gchar *filename)
+get_song_tuple (const gchar *filename)
 {
     Tuple *ti = aud_tuple_new_from_filename(filename);
     fill_song_tuple(filename, ti);
@@ -541,7 +456,7 @@ get_song_tuple (gchar *filename)
 }
 
 static gint
-is_our_file_from_vfs(gchar *filename, VFSFile *fin)
+is_our_file_from_vfs(const gchar *filename, VFSFile *fin)
 {
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
@@ -559,13 +474,14 @@ is_our_file_from_vfs(gchar *filename, VFSFile *fin)
     return TRUE;
 }
 
-static GtkWidget *sndfile_about_box = NULL;
 
-static void plugin_about(void)
+static void
+plugin_about(void)
 {
-    if (!sndfile_about_box)
+    static GtkWidget *aboutbox = NULL;
+    if (aboutbox == NULL)
     {
-        sndfile_about_box = audacious_info_dialog(
+        aboutbox = audacious_info_dialog(
         _("About sndfile plugin"),
         _("Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
         "from the xmms_sndfile plugin which is:\n"
@@ -584,15 +500,15 @@ static void plugin_about(void)
         "51 Franklin Street, Fifth Floor, \n"
         "Boston, MA  02110-1301  USA"),
         _("Ok"), FALSE, NULL, NULL);
-        g_signal_connect(G_OBJECT(sndfile_about_box), "destroy",
-                         (GCallback)gtk_widget_destroyed, &sndfile_about_box);
+        g_signal_connect(G_OBJECT(aboutbox), "destroy",
+            (GCallback)gtk_widget_destroyed, &aboutbox);
     }
 }
 
 
-static gchar *fmts[] = { "aiff", "au", "raw", "wav", NULL };
+static gchar *sndfile_fmts[] = { "aiff", "au", "raw", "wav", NULL };
 
-InputPlugin sndfile_ip = {
+static InputPlugin sndfile_ip = {
     .description = "sndfile plugin",
     .init = plugin_init,
     .about = plugin_about,
@@ -604,10 +520,10 @@ InputPlugin sndfile_ip = {
     .cleanup = plugin_cleanup,
     .get_song_tuple = get_song_tuple,
     .is_our_file_from_vfs = is_our_file_from_vfs,
-    .vfs_extensions = fmts,
+    .vfs_extensions = sndfile_fmts,
     .mseek = file_mseek,
 };
 
-InputPlugin *sndfile_iplist[] = { &sndfile_ip, NULL };
+static InputPlugin *sndfile_iplist[] = { &sndfile_ip, NULL };
 
 SIMPLE_INPUT_PLUGIN(sndfile, sndfile_iplist)

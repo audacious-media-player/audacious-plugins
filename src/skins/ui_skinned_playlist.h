@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2009 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -47,27 +48,26 @@ typedef struct _UiSkinnedPlaylistClass   UiSkinnedPlaylistClass;
 
 struct _UiSkinnedPlaylist {
     GtkWidget   widget;
-    gboolean    pressed;
-    gint        x, y;
-    gint        first;
-    gint        num_visible;
-    gint        prev_selected, prev_min, prev_max;
-    gboolean    drag_motion;
-    gint        drag_motion_x, drag_motion_y;
-    gint        fheight;
 };
 
 struct _UiSkinnedPlaylistClass {
     GtkWidgetClass    parent_class;
 };
 
-GtkWidget* ui_skinned_playlist_new(GtkWidget *fixed, gint x, gint y, gint w, gint h);
+GtkWidget * ui_skinned_playlist_new (GtkWidget * fixed, gint x, gint y, gint
+ width, gint height, const gchar * font);
+void ui_skinned_playlist_set_slider (GtkWidget * list, GtkWidget * slider);
 GType ui_skinned_playlist_get_type(void);
 void ui_skinned_playlist_resize_relative(GtkWidget *widget, gint w, gint h);
-void ui_skinned_playlist_set_font(const gchar * font);
-void ui_skinned_playlist_move_up(UiSkinnedPlaylist *pl);
-void ui_skinned_playlist_move_down(UiSkinnedPlaylist *pl);
-gint ui_skinned_playlist_get_position(GtkWidget *widget, gint x, gint y);
+void ui_skinned_playlist_set_font (GtkWidget * list, const gchar * font);
+void ui_skinned_playlist_update (GtkWidget * widget);
+void ui_skinned_playlist_follow (GtkWidget * widget);
+gboolean ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event);
+void ui_skinned_playlist_row_info (GtkWidget * widget, gint * rows, gint *
+ first, gint * focused);
+void ui_skinned_playlist_scroll_to (GtkWidget * widget, gint row);
+void ui_skinned_playlist_hover (GtkWidget * widget, gint x, gint y);
+int ui_skinned_playlist_hover_end (GtkWidget * widget);
 
 #ifdef __cplusplus
 }

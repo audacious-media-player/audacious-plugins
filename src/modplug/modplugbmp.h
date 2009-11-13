@@ -86,7 +86,7 @@ public:
 	void CloseConfigureBox();
 
 	void PlayFile(const string& aFilename, InputPlayback *data);// Play the file.
-	void Stop();                       // Stop playing.
+	void Stop(InputPlayback *data);         // Stop playing.
 	void Pause(bool aPaused);              // Pause or unpause.
 
 	void Seek(float32 aTime);                // Seek to the specified time.
@@ -121,14 +121,11 @@ private:
 
 	uint32      mPlayed;
 
-	GThread*    mDecodeThread;
-
 	char        mModName[100];
 	
 	float mPreampFactor;
 
 	void PlayLoop(InputPlayback *);
-	static void* PlayThread(void* arg);
 	const char* Bool2OnOff(bool aValue);
 };
 

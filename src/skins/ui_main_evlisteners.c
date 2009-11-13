@@ -32,49 +32,23 @@
 #include "ui_skinned_window.h"
 #include "skins_cfg.h"
 
-static gint song_info_timeout_source = 0;
-
-typedef struct {
-    gint bitrate;
-    gint samplerate;
-    gint channels;
-} PlaylistEventInfoChange;
-
 static void
 ui_main_evlistener_title_change(gpointer hook_data, gpointer user_data)
 {
-    gchar *text = (gchar *) hook_data;
+    gchar * title = aud_playback_get_title ();
 
-    ui_skinned_textbox_set_text(mainwin_info, text);
-    playlistwin_update_list(aud_playlist_get_active());
+    /* may be called asynchronously */
+    if (! audacious_drct_get_playing ())
+        return;
+
+    mainwin_set_song_title (title);
+    g_free (title);
 }
 
 static void
 ui_main_evlistener_hide_seekbar(gpointer hook_data, gpointer user_data)
 {
     mainwin_disable_seekbar();
-}
-
-static void
-ui_main_evlistener_volume_change(gpointer hook_data, gpointer user_data)
-{
-    gint *h_vol = (gint *) hook_data;
-    gint vl, vr, b, v;
-
-    vl = CLAMP(h_vol[0], 0, 100);
-    vr = CLAMP(h_vol[1], 0, 100);
-    v = MAX(vl, vr);
-    if (vl > vr)
-        b = (gint) rint(((gdouble) vr / vl) * 100) - 100;
-    else if (vl < vr)
-        b = 100 - (gint) rint(((gdouble) vl / vr) * 100);
-    else
-        b = 0;
-
-    mainwin_set_volume_slider(v);
-    equalizerwin_set_volume_slider(v);
-    mainwin_set_balance_slider(b);
-    equalizerwin_set_balance_slider(b);
 }
 
 void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
@@ -84,32 +58,29 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
     mainwin_disable_seekbar();
     mainwin_update_song_info();
 
-    if (config.player_shaded) {
-        gtk_widget_show(mainwin_stime_min);
-        gtk_widget_show(mainwin_stime_sec);
-        gtk_widget_show(mainwin_sposition);
-    } else {
-        gtk_widget_show(mainwin_minus_num);
-        gtk_widget_show(mainwin_10min_num);
-        gtk_widget_show(mainwin_min_num);
-        gtk_widget_show(mainwin_10sec_num);
-        gtk_widget_show(mainwin_sec_num);
-        gtk_widget_show(mainwin_position);
+    gtk_widget_show (mainwin_stime_min);
+    gtk_widget_show (mainwin_stime_sec);
+    gtk_widget_show (mainwin_minus_num);
+    gtk_widget_show (mainwin_10min_num);
+    gtk_widget_show (mainwin_min_num);
+    gtk_widget_show (mainwin_10sec_num);
+    gtk_widget_show (mainwin_sec_num);
+
+    if (audacious_drct_get_length () > 0)
+    {
+        gtk_widget_show (mainwin_position);
+        gtk_widget_show (mainwin_sposition);
     }
 
-    song_info_timeout_source =
-        g_timeout_add (250, (GSourceFunc) mainwin_update_song_info, NULL);
-
     ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
+    ui_main_evlistener_title_change (NULL, NULL);
 }
 
 static void
 ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
 {
-    if (song_info_timeout_source)
-        g_source_remove(song_info_timeout_source);
-
-    ui_skinned_playstatus_set_buffering(mainwin_playstatus, FALSE);
+    mainwin_clear_song_info ();
+    mainwin_set_stopaftersong (FALSE);
 }
 
 void ui_main_evlistener_playback_pause (void * hook_data, void * user_data)
@@ -130,21 +101,22 @@ ui_main_evlistener_playback_play_file(gpointer hook_data, gpointer user_data)
         skin_set_random_skin();
 }
 
-static void
-ui_main_evlistener_playlist_end_reached(gpointer hook_data, gpointer user_data)
+static void seek_cb (void * unused, void * another)
 {
-    mainwin_clear_song_info();
-
-    if (aud_cfg->stopaftersong)
-        mainwin_set_stopaftersong(FALSE);
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
 }
 
-static void
-ui_main_evlistener_playlist_info_change(gpointer hook_data, gpointer user_data)
+static void info_change (void * hook_data, void * user_data)
 {
-    PlaylistEventInfoChange *msg = (PlaylistEventInfoChange *) hook_data;
+    gint bitrate, samplerate, channels;
 
-    mainwin_set_song_info(msg->bitrate, msg->samplerate, msg->channels);
+    /* may be called asynchronously */
+    if (! audacious_drct_get_playing ())
+        return;
+
+    audacious_drct_get_info (& bitrate, & samplerate, & channels);
+    mainwin_set_song_info (bitrate, samplerate, channels);
 }
 
 static void
@@ -157,8 +129,8 @@ ui_main_evlistener_mainwin_set_always_on_top(gpointer hook_data, gpointer user_d
 static void
 ui_main_evlistener_mainwin_show(gpointer hook_data, gpointer user_data)
 {
-    gboolean *show = (gboolean*)hook_data;
-    mainwin_show(*show);
+    gboolean show = GPOINTER_TO_INT(hook_data);
+    mainwin_show(show);
 }
 
 static void
@@ -171,14 +143,6 @@ ui_main_evlistener_equalizerwin_show(gpointer hook_data, gpointer user_data)
 static void
 ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
 {
-    if (hook_data == NULL) {
-        if (config.player_shaded && config.player_visible)
-            ui_svis_timeout_func(mainwin_svis, NULL);
-        else
-            ui_vis_timeout_func(mainwin_vis, NULL);
-        return;
-    }
-
     VisNode *vis = (VisNode*) hook_data;
 
     guint8 intern_vis_data[512];
@@ -188,7 +152,7 @@ ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
     gboolean mono_pcm_calced = FALSE, stereo_pcm_calced = FALSE;
     gint i;
 
-    if (config.vis_type == VIS_OFF)
+    if (! vis || config.vis_type == VIS_OFF)
         return;
 
     if (config.vis_type == VIS_ANALYZER) {
@@ -254,7 +218,7 @@ ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
             }
     }
     else if(config.vis_type == VIS_VOICEPRINT){
-        if (config.player_shaded && config.player_visible) {
+        if (config.player_shaded) {
             /* VU */
             gint vu, val;
 
@@ -325,26 +289,10 @@ ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
         }
     }
 
-    if (config.player_shaded && config.player_visible)
+    if (config.player_shaded)
         ui_svis_timeout_func(mainwin_svis, intern_vis_data);
     else
         ui_vis_timeout_func(mainwin_vis, intern_vis_data);
-}
-
-static void
-ui_main_evlistener_config_save(gpointer hook_data, gpointer user_data)
-{
-    ConfigDb *db = (ConfigDb *) hook_data;
-
-    if (SKINNED_WINDOW(mainwin)->x != -1 &&
-        SKINNED_WINDOW(mainwin)->y != -1 )
-    {
-        aud_cfg_db_set_int(db, "skins", "player_x", SKINNED_WINDOW(mainwin)->x);
-        aud_cfg_db_set_int(db, "skins", "player_y", SKINNED_WINDOW(mainwin)->y);
-    }
-
-    aud_cfg_db_set_bool(db, "skins", "mainwin_use_bitmapfont",
-                    config.mainwin_use_bitmapfont);
 }
 
 void
@@ -352,19 +300,16 @@ ui_main_evlistener_init(void)
 {
     aud_hook_associate("title change", ui_main_evlistener_title_change, NULL);
     aud_hook_associate("hide seekbar", ui_main_evlistener_hide_seekbar, NULL);
-    aud_hook_associate("volume set", ui_main_evlistener_volume_change, NULL);
     aud_hook_associate("playback begin", ui_main_evlistener_playback_begin, NULL);
     aud_hook_associate("playback stop", ui_main_evlistener_playback_stop, NULL);
     aud_hook_associate("playback pause", ui_main_evlistener_playback_pause, NULL);
     aud_hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
     aud_hook_associate("playback play file", ui_main_evlistener_playback_play_file, NULL);
-    aud_hook_associate("playlist end reached", ui_main_evlistener_playlist_end_reached, NULL);
-    aud_hook_associate("playlist info change", ui_main_evlistener_playlist_info_change, NULL);
+    aud_hook_associate ("playback seek", seek_cb, 0);
+    aud_hook_associate ("info change", info_change, NULL);
     aud_hook_associate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top, NULL);
     aud_hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
     aud_hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
-    aud_hook_associate("visualization timeout", ui_main_evlistener_visualization_timeout, NULL);
-    aud_hook_associate("config save", ui_main_evlistener_config_save, NULL);
 
     aud_hook_associate("playback audio error", (void *) mainwin_stop_pushed, NULL);
     aud_hook_associate("playback audio error", (void *) run_no_output_device_dialog, NULL);
@@ -377,22 +322,47 @@ ui_main_evlistener_dissociate(void)
 {
     aud_hook_dissociate("title change", ui_main_evlistener_title_change);
     aud_hook_dissociate("hide seekbar", ui_main_evlistener_hide_seekbar);
-    aud_hook_dissociate("volume set", ui_main_evlistener_volume_change);
     aud_hook_dissociate("playback begin", ui_main_evlistener_playback_begin);
     aud_hook_dissociate("playback stop", ui_main_evlistener_playback_stop);
     aud_hook_dissociate("playback pause", ui_main_evlistener_playback_pause);
     aud_hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
     aud_hook_dissociate("playback play file", ui_main_evlistener_playback_play_file);
-    aud_hook_dissociate("playlist end reached", ui_main_evlistener_playlist_end_reached);
-    aud_hook_dissociate("playlist info change", ui_main_evlistener_playlist_info_change);
+    aud_hook_dissociate ("playback seek", seek_cb);
+    aud_hook_dissociate ("info change", info_change);
     aud_hook_dissociate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top);
     aud_hook_dissociate("mainwin show", ui_main_evlistener_mainwin_show);
     aud_hook_dissociate("equalizerwin show", ui_main_evlistener_equalizerwin_show);
-    aud_hook_dissociate("visualization timeout", ui_main_evlistener_visualization_timeout);
-    aud_hook_dissociate("config save", ui_main_evlistener_config_save);
 
     aud_hook_dissociate("playback audio error", (void *) mainwin_stop_pushed);
     aud_hook_dissociate("playback audio error", (void *) run_no_output_device_dialog);
 
     aud_hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
+}
+
+void start_stop_visual (void)
+{
+    static char started = 0;
+
+    if (config.player_visible && config.vis_type != VIS_OFF)
+    {
+        if (! started)
+        {
+            ui_vis_clear_data (mainwin_vis);
+            ui_svis_clear_data (mainwin_svis);
+            aud_hook_associate ("visualization timeout",
+             ui_main_evlistener_visualization_timeout, 0);
+            started = 1;
+        }
+    }
+    else
+    {
+        if (started)
+        {
+            aud_hook_dissociate ("visualization timeout",
+             ui_main_evlistener_visualization_timeout);
+            ui_vis_clear_data (mainwin_vis);
+            ui_svis_clear_data (mainwin_svis);
+            started = 0;
+        }
+    }
 }

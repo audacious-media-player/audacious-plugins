@@ -19,6 +19,8 @@
 
 #include <stdint.h>
 
+//#define NEON_DEBUG
+
 #include "neon.h"
 
 #include <audacious/plugin.h>
@@ -584,17 +586,22 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
         ret = ne_begin_request(handle->request);
     }
 
-    switch (ret) {
+    switch (ret)
+    {
         case NE_OK:
-            if ((status->code > 199) && (status->code < 300)) {
+            if (status->code > 199 && status->code < 300)
+            {
                 /* URL opened OK */
                 _DEBUG("<%p> URL opened OK", handle);
                 handle->content_start = startbyte;
                 handle->pos = startbyte;
                 handle_headers(handle);
                 _LEAVE 0;
-                break;
             }
+            else
+                goto ERROR;
+
+            break;
 
         case NE_REDIRECT:
             /* We hit a redirect. Handle it. */
@@ -613,9 +620,10 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
             break;
 
         default:
+        ERROR:
             /* Something went wrong. */
             _ERROR("<%p> Could not open URL: %d (%d)", handle, ret, status->code);
-            if (1 == ret) {
+            if (0 != ret) {
                 _ERROR("<%p> neon error string: %s", handle, ne_get_error(handle->session));
             }
             ne_request_destroy(handle->request);
@@ -636,7 +644,7 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
     gchar* proxy_port_s = NULL;
     gchar* endptr;
     guint proxy_port = 0;
-    gboolean use_proxy, use_proxy_auth;
+    gboolean use_proxy, proxy_use_auth;
 
     _ENTER;
 
@@ -645,8 +653,8 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
         use_proxy = FALSE;
     }
 
-    if (FALSE == aud_cfg_db_get_bool(db, NULL, "use_proxy_auth", &use_proxy_auth)) {
-        use_proxy_auth = FALSE;
+    if (FALSE == aud_cfg_db_get_bool(db, NULL, "proxy_use_auth", &proxy_use_auth)) {
+        proxy_use_auth = FALSE;
     }
 
     if (use_proxy) {
@@ -701,11 +709,14 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
             _DEBUG("<%p> Using proxy: %s:%d", handle, proxy_host, proxy_port);
             ne_session_proxy(handle->session, proxy_host, proxy_port);
 
-            if (use_proxy_auth) {
+            if (proxy_use_auth) {
                 _DEBUG("<%p> Using proxy authentication", handle);
                 ne_add_proxy_auth(handle->session, NE_AUTH_BASIC, neon_proxy_auth_cb, (void *)handle);
             }
         }
+
+        if (! strcmp("https", handle->purl->scheme))
+            ne_ssl_trust_default_ca(handle->session);
 
         _DEBUG("<%p> Creating request", handle);
         ret = open_request(handle, startbyte);
@@ -997,7 +1008,8 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
     }
 
     if (NULL == h->reader) {
-        if (NEON_READER_EOF != h->reader_status.status) {
+        if ((NEON_READER_EOF != h->reader_status.status) ||
+            ((NEON_READER_EOF == h->reader_status.status) && (h->content_length != -1))) {
             /*
              * There is no reader thread yet. Read the first bytes from
              * the network ourselves, and then fire up the reader thread
@@ -1280,8 +1292,8 @@ gint neon_aud_vfs_truncate_impl(VFSFile* file, glong size) {
 gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
 
     struct neon_handle* h = (struct neon_handle*)file->handle;
-    long newpos;
-    long content_length;
+    glong newpos;
+    glong content_length;
 
     _ENTER;
 
@@ -1316,11 +1328,11 @@ gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
     _DEBUG("<%p> Position to seek to: %ld, current: %ld", h, newpos, h->pos);
     if (0 > newpos) {
         _ERROR("<%p> Can not seek before start of stream", h);
-	_LEAVE -1;
+        _LEAVE -1;
     }
 
     if (newpos >= content_length) {
-        _ERROR("<%p> Can not seek beyond end of stream", h);
+        _ERROR("<%p> Can not seek beyond end of stream (%ld >= %ld)", h, newpos, content_length);
         _LEAVE -1;
     }
 

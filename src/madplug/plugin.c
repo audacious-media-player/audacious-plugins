@@ -1,6 +1,7 @@
 /*
  * mad plugin for audacious
- * Copyright (C) 2005-2007 William Pitcock, Yoshiki Yazawa, Eugene Zagidullin
+ * Copyright (C) 2005-2009 William Pitcock, Yoshiki Yazawa, Eugene Zagidullin,
+ *  John Lindgren
  *
  * Portions derived from xmms-mad:
  * Copyright (C) 2001-2002 Sam Clegg - See COPYING
@@ -37,19 +38,14 @@
  * Global variables
  */
 audmad_config_t *audmad_config;   /**< global configuration */
-GMutex *mad_mutex;
+GMutex * mad_mutex, * control_mutex;
 GMutex *pb_mutex;
-GCond *mad_cond;
+GCond * mad_cond, * control_cond;
 
 /*
  * static variables
  */
-static GThread *decode_thread; /**< the single decoder thread */
 static struct mad_info_t info;   /**< info for current track */
-
-#ifndef NOGUI
-static GtkWidget *error_dialog = 0;
-#endif
 
 static gint mp3_bitrate_table[5][16] = {
   { 0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448, -1 }, /* MPEG1 L1 */
@@ -102,22 +98,12 @@ audmad_init()
 
     audmad_config = g_malloc0(sizeof(audmad_config_t));
 
-    audmad_config->dither = TRUE;
-    audmad_config->force_reopen_audio = TRUE;
     audmad_config->fast_play_time_calc = TRUE;
     audmad_config->use_xing = TRUE;
     audmad_config->sjis = FALSE;
-    audmad_config->show_avg_vbr_bitrate = TRUE;
-    audmad_config->title_override = FALSE;
-
 
     db = aud_cfg_db_open();
     if (db) {
-        //audio
-        aud_cfg_db_get_bool(db, "MAD", "dither", &audmad_config->dither);
-        aud_cfg_db_get_bool(db, "MAD", "force_reopen_audio",
-                            &audmad_config->force_reopen_audio);
-
         //metadata
         aud_cfg_db_get_bool(db, "MAD", "fast_play_time_calc",
                             &audmad_config->fast_play_time_calc);
@@ -125,25 +111,14 @@ audmad_init()
                             &audmad_config->use_xing);
         aud_cfg_db_get_bool(db, "MAD", "sjis", &audmad_config->sjis);
 
-        //misc
-        aud_cfg_db_get_bool(db, "MAD", "show_avg_vbr_bitrate",
-                            &audmad_config->show_avg_vbr_bitrate);
-
-        //text
-        aud_cfg_db_get_bool(db, "MAD", "title_override",
-                            &audmad_config->title_override);
-        aud_cfg_db_get_string(db, "MAD", "id3_format",
-                              &audmad_config->id3_format);
-
         aud_cfg_db_close(db);
     }
 
     mad_mutex = g_mutex_new();
     pb_mutex = g_mutex_new();
     mad_cond = g_cond_new();
-
-    if (!audmad_config->id3_format)
-        audmad_config->id3_format = g_strdup("(none)");
+    control_mutex = g_mutex_new ();
+    control_cond = g_cond_new ();
 
     aud_mime_set_plugin("audio/mpeg", mad_plugin);
 }
@@ -151,12 +126,13 @@ audmad_init()
 static void
 audmad_cleanup()
 {
-    g_free(audmad_config->id3_format);
     g_free(audmad_config);
-    
+
     g_cond_free(mad_cond);
     g_mutex_free(mad_mutex);
     g_mutex_free(pb_mutex);
+    g_mutex_free (control_mutex);
+    g_cond_free (control_cond);
 }
 
 /* Validate a MPEG Audio header and extract some information from it.
@@ -178,7 +154,7 @@ mp3_head_validate(guint32 head, mp3_frame_t *frame)
         frame->lsf = ((head >> 19) & 1) ? 0 : 1;
     else
         frame->lsf = 1;
-    
+
     /* check if layer bits (17-18) are good */
     frame->layer = (head >> 17) & 3;
     if (frame->layer == 0)
@@ -187,7 +163,7 @@ mp3_head_validate(guint32 head, mp3_frame_t *frame)
 
     /* check CRC bit. if set, a 16-bit CRC follows header (not counted in frameSize!) */
     frame->hasCRC = (head >> 16) & 1;
-    
+
     /* check if bitrate index bits (12-15) are acceptable */
     bitIndex = (head >> 12) & 0xf;
 
@@ -221,7 +197,7 @@ mp3_head_validate(guint32 head, mp3_frame_t *frame)
         default:
             return -6;
     }
-    
+
     if (frame->bitRate < 0)
         return -7;
 
@@ -248,22 +224,22 @@ mp3_head_validate(guint32 head, mp3_frame_t *frame)
     frame->sampleRate = mp3_samplerate_table[frame->version][sampleIndex];
     if (frame->sampleRate < 0)
         return -10;
-    
+
     switch (frame->layer) {
         case 1:
             frame->size = ((12 * 1000 * frame->bitRate) / frame->sampleRate + padding) * 4;
             break;
-        
+
         case 2:
             frame->size = (144 * 1000 * frame->bitRate) / frame->sampleRate + padding;
             break;
-        
+
         case 3:
         default:
             frame->size = (144 * 1000 * frame->bitRate) / (frame->sampleRate << frame->lsf) + padding;
             break;
     }
-    
+
     return 0;
 }
 
@@ -291,26 +267,23 @@ static gchar *mp3_ver_table[4] = { "2.5", "INVALID", "2", "1" };
 
 // audacious vfs fast version
 static gint
-audmad_is_our_fd(gchar *filename, VFSFile *fin)
+audmad_is_our_fd(const gchar *filename, VFSFile *fin)
 {
     gchar *ext = extname(filename);
     const gint max_resync_bytes = 32, max_resync_tries = 8;
     guint32 head = 0;
-    guchar chkbuf[1024];
+    guchar chkbuf[8192];
     gint state,
-         next = -1,
          tries = 0,
          chksize = 0,
          chkpos = 0,
          chkcount = 0,
          res, resync_max = -1,
          skip = 0;
-    glong streampos = 0;
     mp3_frame_t frame, prev;
 
     enum {
         STATE_HEADERS,
-        STATE_REBUFFER,
         STATE_VALIDATE,
         STATE_GOTO_NEXT,
         STATE_GET_NEXT,
@@ -318,8 +291,6 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
         STATE_RESYNC_DO,
         STATE_FATAL
     };
-
-    info.remote = aud_vfs_is_remote(filename);
 
     /* I've seen some flac files beginning with id3 frames..
        so let's exclude known non-mp3 filename extensions */
@@ -335,9 +306,14 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
         return 0;
     }
 
-    state = STATE_REBUFFER;
-    next = STATE_HEADERS;
-    
+    if ((chksize = aud_vfs_fread (chkbuf, 1, sizeof chkbuf, fin)) == 0)
+    {
+        g_message ("Rejecting %s; cannot read from file.", filename);
+        return FALSE;
+    }
+
+    state = STATE_HEADERS;
+
     /* Check stream data for frame header(s). We employ a simple
      * state-machine approach here to find number of sequential
      * valid MPEG frame headers (with similar attributes).
@@ -352,14 +328,14 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                 state = STATE_FATAL;
             } else {
                 state = STATE_GET_NEXT;
-                
+
                 if (memcmp(&chkbuf[chkpos], "ID3", 3) == 0) {
                     /* Skip ID3 header */
                     guint tagsize = (chkbuf[chkpos+6] & 0x7f); tagsize <<= 7;
                     tagsize |= (chkbuf[chkpos+7] & 0x7f); tagsize <<= 7;
                     tagsize |= (chkbuf[chkpos+8] & 0x7f); tagsize <<= 7;
                     tagsize |= (chkbuf[chkpos+9] & 0x7f);
-        
+
                     LULZ("ID3 size = %d\n", tagsize);
                     state = STATE_GOTO_NEXT;
                     skip = tagsize + 10;
@@ -372,19 +348,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                     return 1;
             }
             break;
-        
-        case STATE_REBUFFER:
-            streampos = aud_vfs_ftell(fin);
-            if ((chksize = aud_vfs_fread(chkbuf, 1, sizeof(chkbuf), fin)) == 0) {
-                state = STATE_FATAL;
-                LULZ("fatal error rebuffering @ %08lx!\n", streampos);
-            } else {
-                chkpos = 0;
-                state = next;
-                LULZ("rebuffered = %d bytes @ %08lx\n", chksize, streampos);
-            }
-            break;
-        
+
         case STATE_VALIDATE:
             LULZ("validate %08x .. ", head);
             /* Check for valid header */
@@ -401,13 +365,9 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                         /* Not similar frame... */
                         LOL(" .. but does not match (%d)!\n", chkcount);
                         state = STATE_RESYNC;
-                    } else if (chkcount >= info.remote ? 2 : 3) {
-                        /* Okay, accept this stream */
-                        LOL(" .. accepted as mp3!!!\n");
-                        return 1;
-                    } else {
-                        LOL(" .. match %d\n", chkcount);
                     }
+                    else if (chkcount >= 3)
+                        return TRUE;
                 } else {
                     /* First valid frame of sequence */
                     memcpy(&prev, &frame, sizeof(mp3_frame_t));
@@ -425,7 +385,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                 }
             }
             break;
-        
+
         case STATE_GOTO_NEXT:
             LULZ("goto next (cpos=%x, csiz=%d :: skip=%d :: fpos=%lx) ? ", chkpos, chksize, skip, aud_vfs_ftell(fin));
             /* Check if we have the next possible header in buffer? */
@@ -435,26 +395,18 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                 chkpos += skip;
                 state = STATE_GET_NEXT;
             } else {
-                /* No, re-fill buffer and try again .. */
-                glong tmppos = skip - (chksize - chkpos);
-#ifdef MADPROBE_DEBUG
-                gint tmpres = aud_vfs_fseek(fin, tmppos, SEEK_CUR);
-#else
-		aud_vfs_fseek(fin, tmppos, SEEK_CUR);
-#endif
-                LOL("[skipping: %ld -> %d]\n", tmppos, tmpres);
-                next = STATE_GET_NEXT;
-                state = STATE_REBUFFER;
+                g_message ("Rejecting %s: out of data.", filename);
+                return FALSE;
             }
             break;
-        
+
         case STATE_GET_NEXT:
             /* Get a header */
             LULZ("get next @ chkpos=%08x, realpos=%08lx\n", chkpos, streampos+chkpos);
             head = mp3_head_convert(&chkbuf[chkpos]);
             state = STATE_VALIDATE;
             break;
-        
+
         case STATE_RESYNC:
             LULZ("resyncing try #%d ..\n", tries);
             /* Re-synchronize aka try to find a valid header */
@@ -464,13 +416,13 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
             state = STATE_RESYNC_DO;
             tries++;
             break;
-        
+
         case STATE_RESYNC_DO:
-            /* Scan for valid frame header */            
+            /* Scan for valid frame header */
             for (; chkpos < chksize; chkpos++) {
                 head <<= 8;
                 head |= chkbuf[chkpos];
-                
+
                 if (mp3_head_validate(head, &frame) >= 0) {
                     /* Found, exit resync */
                     chkpos -= 3;
@@ -478,7 +430,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                     state = STATE_VALIDATE;
                     break;
                 }
-                
+
                 /* Check for maximum bytes to search */
                 if (resync_max > 0) {
                     resync_max--;
@@ -487,11 +439,6 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                         break;
                     }
                 }
-            }
-            if (state == STATE_RESYNC_DO) {
-                /* Not found, refill buffer */
-                next = state;
-                state = STATE_REBUFFER;
             }
             break;
         }
@@ -502,36 +449,21 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
     return 0;
 }
 
-static void
-audmad_stop(InputPlayback *playback)
+static void audmad_stop (InputPlayback * playback)
 {
-    AUDDBG("f: audmad_stop\n");
-    g_mutex_lock(mad_mutex);
-    info.playback = playback;
-    g_mutex_unlock(mad_mutex);
+    g_mutex_lock (control_mutex);
+    info.playback->playing = FALSE;
+    g_cond_signal (control_cond);
+    g_mutex_unlock (control_mutex);
+    g_thread_join (playback->thread);
+    playback->thread = NULL;
 
-    if (decode_thread) {
-
-        g_mutex_lock(mad_mutex);
-        info.playback->playing = 0;
-        g_mutex_unlock(mad_mutex);
-        g_cond_signal(mad_cond);
-
-        AUDDBG("waiting for thread\n");
-        g_thread_join(decode_thread);
-        AUDDBG("thread done\n");
-
-        input_term(&info);
-        decode_thread = NULL;
-
-    }
-    AUDDBG("e: audmad_stop\n");
+    input_term (& info);
 }
 
 static void
 audmad_play_file(InputPlayback *playback)
 {
-    gboolean rtn;
     gchar *url = playback->filename;
     ReplayGainInfo rg_info;
 
@@ -548,17 +480,17 @@ audmad_play_file(InputPlayback *playback)
         return;
     }
 
-    // remote access must use fast scan.
-    rtn = input_get_info(&info, aud_vfs_is_remote(url) ? TRUE : audmad_config->fast_play_time_calc);
-
-    if (rtn == FALSE) {
-        g_message("error reading input info");
-        /*
-         * return;
-         * commenting this return seems to be a hacky fix for the damn lastfm plugin playback
-         * that used to work only for nenolod because of his fsck-ing lastfm subscription :p
-        */
+    if (! input_get_info (& info))
+    {
+        g_warning ("Unable to get info for %s.", playback->filename);
+        input_term (& info);
+        return;
     }
+
+    mowgli_object_ref (info.tuple);
+    playback->set_tuple (playback, info.tuple);
+    playback->set_params (playback, NULL, 0, info.bitrate, info.freq,
+     info.channels);
 
     rg_info.track_gain = info.replaygain_track_scale;
     rg_info.track_peak = info.replaygain_track_peak;
@@ -571,91 +503,50 @@ audmad_play_file(InputPlayback *playback)
     AUDDBG("* album peak:          %f\n",     rg_info.album_peak);
     playback->set_replaygain_info(playback, &rg_info);
 
+    info.seek = -1;
+    info.pause = FALSE;
+
     g_mutex_lock(pb_mutex);
     info.playback = playback;
-    info.playback->playing = 1;
+    info.playback->playing = TRUE;
     g_mutex_unlock(pb_mutex);
 
-    decode_thread = g_thread_self();
     playback->set_pb_ready(playback);
     decode_loop(&info);
+    input_term (& info);
 }
 
-static void
-audmad_pause(InputPlayback *playback, short paused)
+static void audmad_pause (InputPlayback * playback, short paused)
 {
-    g_mutex_lock(pb_mutex);
-    info.playback = playback;
-    g_mutex_unlock(pb_mutex);
-    playback->output->pause(paused);
-}
+    g_mutex_lock (control_mutex);
 
-static void
-audmad_mseek(InputPlayback *playback, gulong millisecond)
-{
-    g_mutex_lock(pb_mutex);
-    info.playback = playback;
-    info.seek = millisecond;
-    g_mutex_unlock(pb_mutex);
-    playback->output->flush (millisecond);
-}
-
-static void
-audmad_seek(InputPlayback *playback, gint time)
-{
-    audmad_mseek(playback, time * 1000);
-}
-
-/**
- * Scan the given file or URL.
- * Fills in the title string and the track length in milliseconds.
- */
-static void
-audmad_get_song_info(char *url, char **title, int *length)
-{
-    struct mad_info_t myinfo;
-#ifdef AUD_DEBUG
-    gchar *tmp = g_filename_to_utf8(url, -1, NULL, NULL, NULL);
-    AUDDBG("f: audmad_get_song_info: %s\n", tmp);
-    g_free(tmp);
-#endif                          /* DEBUG */
-
-    if (input_init(&myinfo, url, NULL) == FALSE) {
-        AUDDBG("error initialising input\n");
-        return;
+    if (playback->playing)
+    {
+        info.pause = paused;
+        g_cond_signal (control_cond);
+        g_cond_wait (control_cond, control_mutex);
     }
 
-    if (input_get_info(&myinfo, info.remote ? TRUE : audmad_config->fast_play_time_calc) == TRUE) {
-        if(aud_tuple_get_string(myinfo.tuple, -1, "track-name"))
-            *title = g_strdup(aud_tuple_get_string(myinfo.tuple, -1, "track-name"));
-        else
-            *title = g_strdup(url);
-
-        *length = aud_tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL);
-        if(*length == -1)
-            *length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
-    }
-    else {
-        *title = g_strdup(url);
-        *length = -1;
-    }
-    input_term(&myinfo);
-    AUDDBG("e: audmad_get_song_info\n");
+    g_mutex_unlock (control_mutex);
 }
 
-static gboolean
-audmad_fill_info(struct mad_info_t *info, VFSFile *fd)
+static void audmad_mseek (InputPlayback * playback, gulong millisecond)
 {
-    if (fd == NULL || info == NULL) return FALSE;
-    AUDDBG("f: audmad_fill_info(): %s\n", fd->uri);
+    g_mutex_lock (control_mutex);
 
-    if (input_init(info, fd->uri, fd) == FALSE) {
-        AUDDBG("audmad_fill_info(): error initialising input\n");
-        return FALSE;
+    if (playback->playing)
+    {
+        info.seek = millisecond;
+        g_cond_signal (control_cond);
+        g_cond_wait (control_cond, control_mutex);
     }
-    
-    info->fileinfo_request = FALSE; /* we don't need to read tuple again */
-    return input_get_info(info, aud_vfs_is_remote(fd->uri) ? TRUE : audmad_config->fast_play_time_calc);
+
+    g_mutex_unlock (control_mutex);
+}
+
+static void audmad_seek (InputPlayback * playback, gint time)
+{
+    audmad_mseek (playback, time * 1000);
 }
 
 static void
@@ -695,226 +586,76 @@ audmad_about()
 }
 
 /**
- * Display a GTK box containing the given error message.
- * Taken from mpg123 plugin.
+ * Direct interface to show given error message.
  */
 void
-audmad_error(char *error, ...)
+audmad_error(gchar *format, ...)
 {
-#ifndef NOGUI
-    if (!error_dialog) {
-        va_list args;
-        char string[256];
-        va_start(args, error);
-        vsnprintf(string, 256, error, args);
-        va_end(args);
-        GDK_THREADS_ENTER();
-        error_dialog =
-            audacious_info_dialog(_("Error"), string, _("Ok"), FALSE, 0, 0);
-        gtk_signal_connect(GTK_OBJECT(error_dialog), "destroy",
-                           GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-                           &error_dialog);
-        GDK_THREADS_LEAVE();
-    }
-#endif                          /* !NOGUI */
+    va_list args;
+    gchar *msg = NULL;
+
+    va_start (args, format);
+    msg = g_markup_vprintf_escaped (format, args);
+    va_end (args);
+
+    aud_event_queue_with_data_free("interface show error", msg);
 }
 
-extern void audmad_configure();
-
-static void
-__set_and_free(Tuple *tuple, gint nfield, gchar *name, gchar *value)
+static Tuple * audmad_probe_for_tuple (const gchar * filename, VFSFile * handle)
 {
-    aud_tuple_associate_string(tuple, nfield, name, value);
-    g_free(value);
-}
+    struct mad_info_t info;
+    Tuple * tuple;
 
-// tuple stuff
-static Tuple *
-__audmad_get_song_tuple(char *filename, VFSFile *fd)
-{
-    Tuple *tuple = NULL;
-    gchar *string = NULL;
+    aud_vfs_fseek (handle, 0, SEEK_SET);
 
-    struct id3_file *id3file = NULL;
-    struct id3_tag *tag = NULL;
+    if (! input_init (& info, filename, handle))
+        return NULL;
 
-    struct mad_info_t myinfo;
-
-    gboolean local_fd = FALSE;
-    int length;
-
-#ifdef AUD_DEBUG
-    string = aud_str_to_utf8(filename);
-    AUDDBG("f: mad: audmad_get_song_tuple: %s\n", string);
-    g_free(string);
-    string = NULL;
-#endif
-
-    /* isn't is obfuscated? --eugene */
-
-    if(info.remote && mad_timer_count(info.duration, MAD_UNITS_SECONDS) <= 0){
-        if((fd && aud_vfs_is_streaming(fd)) || (info.playback && info.playback->playing)) {
-            gchar *tmp = NULL;
-            tuple = aud_tuple_new_from_filename(filename);
-
-#ifdef AUD_DEBUG
-            if(info.playback)
-                AUDDBG("info.playback->playing = %d\n",info.playback->playing);
-#endif
-            tmp = aud_vfs_get_metadata(info.infile ? info.infile : fd, "track-name");
-            if(tmp){
-                gchar *scratch;
-
-                scratch = aud_str_to_utf8(tmp);
-                aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, scratch);
-                g_free(tmp);
-                g_free(scratch);
-
-                tmp = NULL;
-            }
-            tmp = aud_vfs_get_metadata(info.infile ? info.infile : fd, "stream-name");
-            if(tmp){
-                gchar *scratch;
-
-                scratch = aud_str_to_utf8(tmp);
-                aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, scratch);
-                g_free(tmp);
-                g_free(scratch);
-
-                tmp = NULL;
-            }
-
-            AUDDBG("audmad_get_song_tuple: track_name = %s\n", aud_tuple_get_string(tuple, -1, "track-name"));
-            AUDDBG("audmad_get_song_tuple: stream_name = %s\n", aud_tuple_get_string(tuple, -1, "stream-name"));
-            aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
-            aud_tuple_associate_int(tuple, FIELD_MTIME, NULL, 0); // this indicates streaming
-            AUDDBG("get_song_tuple: remote: tuple\n");
-            return tuple;
-        }
-        AUDDBG("get_song_tuple: remote: NULL\n");
-    } /* info.remote  */
-
-    // if !fd, pre-open the file with aud_vfs_fopen() and reuse fd.
-    if(!fd) {
-        fd = aud_vfs_fopen(filename, "rb");
-        if(!fd)
-            return NULL;
-        local_fd = TRUE;
-    }
-
-    if (!audmad_fill_info(&myinfo, fd)) {
-        AUDDBG("get_song_tuple: error obtaining info\n");
-        if (local_fd) aud_vfs_fclose(fd);
+    if (! input_get_info (& info))
+    {
+        input_term (& info);
         return NULL;
     }
 
-    tuple = aud_tuple_new();
-    aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
-
-    id3file = id3_file_vfsopen(fd, ID3_FILE_MODE_READONLY);
-
-    if (id3file) {
-
-        tag = id3_file_tag(id3file);
-        if (tag) {
-            __set_and_free(tuple, FIELD_ARTIST, NULL, input_id3_get_string(tag, ID3_FRAME_ARTIST));
-            __set_and_free(tuple, FIELD_ALBUM, NULL, input_id3_get_string(tag, ID3_FRAME_ALBUM));
-            __set_and_free(tuple, FIELD_TITLE, NULL, input_id3_get_string(tag, ID3_FRAME_TITLE));
-
-            // year
-            string = NULL;
-            string = input_id3_get_string(tag, ID3_FRAME_YEAR); //TDRC
-            if (!string)
-                string = input_id3_get_string(tag, "TYER");
-
-            if (string) {
-                aud_tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(string));
-                g_free(string);
-                string = NULL;
-            }
-
-            __set_and_free(tuple, FIELD_FILE_NAME, NULL, aud_uri_to_display_basename(filename));
-            __set_and_free(tuple, FIELD_FILE_PATH, NULL, aud_uri_to_display_dirname(filename));
-            aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(filename));
-
-            // length
-            length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
-            aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
-
-            // track number
-            string = input_id3_get_string(tag, ID3_FRAME_TRACK);
-            if (string) {
-                aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(string));
-                g_free(string);
-                string = NULL;
-            }
-            // genre
-            __set_and_free(tuple, FIELD_GENRE, NULL, input_id3_get_string(tag, ID3_FRAME_GENRE));
-            __set_and_free(tuple, FIELD_COMMENT, NULL, input_id3_get_string(tag, ID3_FRAME_COMMENT));
-            AUDDBG("genre = %s\n", aud_tuple_get_string(tuple, FIELD_GENRE, NULL));
-        }
-        id3_file_close(id3file);
-    } // id3file
-    else { // no id3tag
-        __set_and_free(tuple, FIELD_FILE_NAME, NULL, aud_uri_to_display_basename(filename));
-        __set_and_free(tuple, FIELD_FILE_PATH, NULL, aud_uri_to_display_dirname(filename));
-        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(filename));
-        // length
-        length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
-        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
-    }
-
-    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
-    aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, myinfo.bitrate / 1000);
-
-    string = g_strdup_printf("MPEG-1 Audio Layer %d", myinfo.mpeg_layer);
-    aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, string);
-    g_free(string);
-
-    aud_tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "audio/mpeg");
-    
-    input_term(&myinfo);
-
-    if(local_fd)
-        aud_vfs_fclose(fd);
-
-    AUDDBG("e: mad: audmad_get_song_tuple\n");
+    tuple = info.tuple;
+    mowgli_object_ref (tuple);
+    input_term (& info);
     return tuple;
 }
 
-static Tuple *
-audmad_get_song_tuple(char *filename)
+static Tuple * audmad_get_song_tuple (const gchar * filename)
 {
-    return __audmad_get_song_tuple(filename, NULL);
-}
+    VFSFile * handle;
+    Tuple * tuple;
 
-static Tuple *
-audmad_probe_for_tuple(char *filename, VFSFile *fd)
-{
-    if (!audmad_is_our_fd(filename, fd))
+    if ((handle = aud_vfs_fopen (filename, "r")) == NULL)
+    {
+        g_warning ("Cannot open %s.\n", filename);
         return NULL;
+    }
 
-    aud_vfs_rewind(fd);
-
-    return __audmad_get_song_tuple(filename, fd);
+    tuple = audmad_probe_for_tuple (filename, handle);
+    aud_vfs_fclose (handle);
+    return tuple;
 }
 
-static gchar *fmts[] = { "mp3", "mp2", "mpg", "bmu", NULL };
+static const gchar *fmts[] = { "mp3", "mp2", "mpg", "bmu", NULL };
+
+extern PluginPreferences preferences;
 
 InputPlugin mad_ip = {
     .description = "MPEG Audio Plugin",
     .init = audmad_init,
     .about = audmad_about,
-    .configure = audmad_configure,
+    .settings = &preferences,
     .play_file = audmad_play_file,
     .stop = audmad_stop,
     .pause = audmad_pause,
     .seek = audmad_seek,
     .cleanup = audmad_cleanup,
-    .get_song_info = audmad_get_song_info,
     .get_song_tuple = audmad_get_song_tuple,
     .is_our_file_from_vfs = audmad_is_our_fd,
-    .vfs_extensions = fmts,
+    .vfs_extensions = (gchar**)fmts,
     .mseek = audmad_mseek,
     .probe_for_tuple = audmad_probe_for_tuple,
     .update_song_tuple = audmad_update_song_tuple,

@@ -36,8 +36,6 @@
 #define MAINWIN_SHADED_HEIGHT    MAINWIN_TITLEBAR_HEIGHT
 #define MAINWIN_SCALE_FACTOR     (config.scaled ? config.scale_factor : 1)
 
-#define MAINWIN_UPDATE_INTERVAL  100
-
 #define MAINWIN_DEFAULT_POS_X    20
 #define MAINWIN_DEFAULT_POS_Y    20
 
@@ -114,6 +112,7 @@ extern GtkWidget *mainwin_10sec_num, *mainwin_sec_num;
 extern GtkWidget *mainwin_position, *mainwin_sposition;
 
 void mainwin_create(void);
+void mainwin_unhook (void);
 void ui_main_set_initial_volume(void);
 
 void mainwin_lock_info_text(const gchar * text);
@@ -137,13 +136,14 @@ void mainwin_set_balance_slider(gint percent);
 void mainwin_vis_set_type(VisType mode);
 
 void mainwin_refresh_hints(void);
-void mainwin_set_info_text(void);
+void mainwin_set_song_title (const gchar * title);
 void mainwin_set_song_info(gint rate, gint freq, gint nch);
 void mainwin_clear_song_info(void);
 void mainwin_set_stopaftersong(gboolean stop);
 void mainwin_set_noplaylistadvance(gboolean no_advance);
 
 void mainwin_set_always_on_top(gboolean always);
+void mainwin_set_shape (void);
 void mainwin_set_volume_diff(gint diff);
 void mainwin_set_balance_diff(gint diff);
 
@@ -158,7 +158,7 @@ void mainwin_general_menu_callback(gpointer cb_data,
                                    guint action,
                                    GtkWidget * widget);
 
-gboolean mainwin_update_song_info(void);
+void mainwin_update_song_info (void);
 void mainwin_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
                                 gint x,

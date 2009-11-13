@@ -80,7 +80,8 @@ extern "C"
   typedef enum
   {
     MID_SONG_TEXT = 0,
-    MID_SONG_COPYRIGHT = 1
+    MID_SONG_COPYRIGHT = 1,
+    MID_SONG_TRACK_NAME = 2
   } MidSongMetaId;
 
 

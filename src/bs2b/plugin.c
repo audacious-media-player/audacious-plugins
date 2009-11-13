@@ -1,6 +1,7 @@
 /*
  * Audacious bs2b effect plugin
  * Copyright (C) 2009, Sebastian Pipping <sebastian@pipping.org>
+ * Copyright (C) 2009, Tony Vroon <chainsaw@gentoo.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +19,6 @@
 
 #include <audacious/plugin.h>
 #include <bs2b.h>
-#include <bs2bversion.h>
 #define AB_EFFECT_LEVEL BS2B_DEFAULT_CLEVEL
 
 static t_bs2bdp bs2b = NULL;
@@ -163,7 +163,7 @@ static void init();
 
 
 static EffectPlugin audaciousBs2b = {
-	.description = "Bauer stereophonic-to-binaural " BS2B_VERSION_STR,
+	.description = "Bauer stereophonic-to-binaural 0.9.2",
 	.init = init,
 	.cleanup = cleanup,
 	.mod_samples = mod_samples

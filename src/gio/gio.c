@@ -139,7 +139,7 @@ gio_aud_vfs_fread_impl(gpointer ptr,
     }
 
     ret = (g_input_stream_read(G_INPUT_STREAM(handle->istream), (ptr + count), (realsize - count), NULL, NULL) + count);
-    return (ret / size);
+    return (size > 0) ? ret / size : 0;
 }
 
 size_t
@@ -157,7 +157,7 @@ gio_aud_vfs_fwrite_impl(gconstpointer ptr,
     handle = (VFSGIOHandle *) file->handle;
 
     ret = g_output_stream_write(G_OUTPUT_STREAM(handle->ostream), ptr, size * nmemb, NULL, NULL);
-    return (ret / size);
+    return (size > 0) ? ret / size : 0;
 }
 
 gint
@@ -258,12 +258,15 @@ gio_aud_vfs_ftell_impl(VFSFile * file)
     return (glong) (g_seekable_tell(handle->seekable) - g_slist_length(handle->stream_stack));
 }
 
-gboolean
-gio_aud_vfs_feof_impl(VFSFile * file)
+gboolean gio_aud_vfs_feof_impl (VFSFile * file)
 {
-    g_return_val_if_fail(file != NULL, TRUE);
+    guchar test;
 
-    return (file->base->vfs_ftell_impl(file) == file->base->vfs_fsize_impl(file));
+    if (gio_aud_vfs_fread_impl (& test, 1, 1, file) < 1)
+        return TRUE;
+
+    gio_aud_vfs_ungetc_impl (test, file);
+    return FALSE;
 }
 
 gint
@@ -305,22 +308,6 @@ gio_aud_vfs_fsize_impl(VFSFile * file)
     return size;
 }
 
-VFSConstructor file_const = {
-    .uri_id = "file://",
-    .vfs_fopen_impl = gio_aud_vfs_fopen_impl,
-    .vfs_fclose_impl = gio_aud_vfs_fclose_impl,
-    .vfs_fread_impl = gio_aud_vfs_fread_impl,
-    .vfs_fwrite_impl = gio_aud_vfs_fwrite_impl,
-    .vfs_getc_impl = gio_aud_vfs_getc_impl,
-    .vfs_ungetc_impl = gio_aud_vfs_ungetc_impl,
-    .vfs_fseek_impl = gio_aud_vfs_fseek_impl,
-    .vfs_rewind_impl = gio_aud_vfs_rewind_impl,
-    .vfs_ftell_impl = gio_aud_vfs_ftell_impl,
-    .vfs_feof_impl = gio_aud_vfs_feof_impl,
-    .vfs_truncate_impl = gio_aud_vfs_truncate_impl,
-    .vfs_fsize_impl = gio_aud_vfs_fsize_impl
-};
-
 static void init(void)
 {
     gint i;
@@ -329,14 +316,10 @@ static void init(void)
     gvfs = g_vfs_get_default();
     schemes = g_vfs_get_supported_uri_schemes(gvfs);
 
-    aud_vfs_register_transport(&file_const);
-
     for (i = 0; schemes[i] != NULL; i++) {
          VFSConstructor *c;
-         if (!g_ascii_strcasecmp(schemes[i], "http") || !g_ascii_strcasecmp(schemes[i], "file"))
+         if (!g_ascii_strcasecmp(schemes[i], "http") || !g_ascii_strcasecmp(schemes[i], "file") || !g_ascii_strcasecmp(schemes[i], "cdda"))
              continue;
-
-         g_print("GVfs supports %s - registering it\n", schemes[i]);
 
          c = g_slice_new0(VFSConstructor);
          c->uri_id = g_strdup_printf("%s://", schemes[i]);

@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2008  Audacious development team
+ *  Copyright (C) 2005-2009  Audacious development team
  *
  *  Based on BMP:
  *  Copyright (C) 2003-2004  BMP development team
@@ -26,77 +26,49 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#ifdef _AUDACIOUS_CORE
-# ifdef HAVE_CONFIG_H
-#  include "config.h"
-# endif
-#endif
-
 #include <glib.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
-
 #include "audacious/plugin.h"
-#include "libSAD/libSAD.h"
-
-#define SWAP(a, b)      { a^=b; b^=a; a^=b; }
-
-typedef gboolean(*DirForeachFunc) (const gchar * path,
-                                   const gchar * basename,
+typedef gboolean(*DirForeachFunc) (const gchar *path, const gchar *basename,
                                    gpointer user_data);
 
+gchar * find_file_case (const gchar * folder, const gchar * basename);
+gchar * find_file_case_path (const gchar * folder, const gchar * basename);
+gchar * find_file_case_uri (const gchar * folder, const gchar * basename);
 
-gchar *find_file_recursively(const gchar * dirname, const gchar * file);
-gchar *find_path_recursively(const gchar * dirname, const gchar * file);
-void del_directory(const gchar * dirname);
-gboolean dir_foreach(const gchar * path, DirForeachFunc function,
-                     gpointer user_data, GError ** error);
+void del_directory(const gchar *dirname);
+gboolean dir_foreach(const gchar *path, DirForeachFunc function,
+                     gpointer user_data, GError **error);
 
 
 INIFile *open_ini_file(const gchar *filename);
 void close_ini_file(INIFile *key_file);
 gchar *read_ini_string(INIFile *key_file, const gchar *section,
-					   const gchar *key);
+                       const gchar *key);
 GArray *read_ini_array(INIFile *key_file, const gchar *section,
                        const gchar *key);
 
-GArray *string_to_garray(const gchar * str);
+GArray *string_to_garray(const gchar *str);
 
-void glist_movedown(GList * list);
-void glist_moveup(GList * list);
+gboolean text_get_extents(const gchar *fontname, const gchar *text, gint *width,
+                          gint *height, gint *ascent, gint *descent);
 
-void util_set_cursor(GtkWidget * window);
-gboolean text_get_extents(const gchar * fontname, const gchar * text,
-                          gint * width, gint * height, gint * ascent,
-                          gint * descent);
-
-gboolean file_is_archive(const gchar * filename);
-gchar *archive_decompress(const gchar * path);
-gchar *archive_basename(const gchar * path);
+gboolean file_is_archive(const gchar *filename);
+gchar *archive_decompress(const gchar *path);
+gchar *archive_basename(const gchar *path);
 
 guint gint_count_digits(gint n);
 
 
 GtkWidget *make_filebrowser(const gchar *title, gboolean save);
 
-GtkWidget *util_info_dialog(const gchar * title, const gchar * text,
-    const gchar * button_text, gboolean modal, GCallback button_action,
-    gpointer action_data); 
+GdkPixbuf *audacious_create_colorized_pixbuf(GdkPixbuf *src, gint red,
+                                             gint green, gint blue);
 
-GdkPixbuf *audacious_create_colorized_pixbuf(GdkPixbuf *src, gint red, gint green, gint blue);
-
-gchar *util_get_localdir(void);
-
-gchar *construct_uri(gchar *string, const gchar *playlist_name);
-
-SAD_sample_format sadfmt_from_afmt(AFormat fmt);
-
-/* minimizes number of realloc's */
-gpointer smart_realloc(gpointer ptr, gsize *size);
-
-void make_directory(const gchar * path, mode_t mode);
+void insert_drag_list(gint playlist, gint position, const gchar *list);
+void resize_window(GtkWidget *window, gint width, gint height);
 
 G_END_DECLS
-
 #endif

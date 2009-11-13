@@ -43,7 +43,6 @@ static char def_instr_name[256] = "";
 #define MAXWORDS 10
 
 /* Quick-and-dirty fgets() replacement. */
-
 static char *__fgets(char *s, int size, VFSFile *fp)
 {
     int num_read = 0;
@@ -72,13 +71,13 @@ static char *__fgets(char *s, int size, VFSFile *fp)
     return (num_read != 0) ? s : NULL;
 }
 
-static int read_config_file(char *name)
+static gint read_config_file(gchar *name)
 {
   VFSFile *fp;
-  char tmp[1024], *w[MAXWORDS], *cp;
+  gchar tmp[1024], *w[MAXWORDS], *cp;
   MidToneBank *bank=0;
-  int i, j, k, line=0, words;
-  static int rcf_count=0;
+  gint i, j, k, line=0, words;
+  static gint rcf_count=0;
 
   if (rcf_count>50)
   {
@@ -86,8 +85,8 @@ static int read_config_file(char *name)
     return (-1);
   }
 
-  if (!(fp=open_file(name)))
-   return -1;
+  if ((fp = open_file(name)) == NULL)
+    return -32;
 
   while (__fgets(tmp, sizeof(tmp), fp))
   {
@@ -101,7 +100,7 @@ static int read_config_file(char *name)
     else if (*w[0] == '#')
         continue;
 
-    while (w[words] && *w[words] != '#' && (words < MAXWORDS))
+    while (words < MAXWORDS && w[words] && *w[words] != '#')
       w[++words]=strtok(0," \t\240");
 
         /*
@@ -424,9 +423,6 @@ int mid_init(char *config_file)
 #endif
 
   mid_init_no_config();
-
-  if (config_file == NULL || *config_file == '\0')
-      config_file = CONFIG_FILE;
 
   return read_config_file(config_file);
 }

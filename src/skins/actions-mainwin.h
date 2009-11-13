@@ -49,7 +49,6 @@ void action_anafoff(GtkAction*,GtkRadioAction*);
 void action_anamode(GtkAction*,GtkRadioAction*);
 void action_anatype(GtkAction*,GtkRadioAction*);
 void action_peafoff(GtkAction*,GtkRadioAction*);
-void action_refrate(GtkAction*,GtkRadioAction*);
 void action_scomode(GtkAction*,GtkRadioAction*);
 void action_vismode(GtkAction*,GtkRadioAction*);
 void action_vprmode(GtkAction*,GtkRadioAction*);

@@ -239,8 +239,7 @@ extern BOOL execute;
 
 static u32 FASTCALL  OP_UND(armcpu_t *cpu)
 {
-	u32 i = cpu->instruction;
-	LOG("Undefined instruction: %08X\n", i);
+	LOG("Undefined instruction: %08X\n", cpu->instruction);
 	execute = FALSE;
 	return 1;
 }
@@ -6595,7 +6594,7 @@ static u32 FASTCALL  OP_LDMDB(armcpu_t *cpu)
 
 static u32 FASTCALL  OP_LDMIA_W(armcpu_t *cpu)
 {
-     u32 i = cpu->instruction, c = 0, count;
+     u32 i = cpu->instruction, c = 0;
      u32 start = cpu->R[REG_POS(i,16)];
 	 u32 bitList = (~((2 << REG_POS(i,16))-1)) & 0xFFFF;
      
@@ -6640,7 +6639,7 @@ static u32 FASTCALL  OP_LDMIA_W(armcpu_t *cpu)
 
 static u32 FASTCALL  OP_LDMIB_W(armcpu_t *cpu)
 {
-     u32 i = cpu->instruction, c = 0, count;
+     u32 i = cpu->instruction, c = 0;
      u32 start = cpu->R[REG_POS(i,16)];
 	 u32 bitList = (~((2 << REG_POS(i,16))-1)) & 0xFFFF;
      
@@ -6687,7 +6686,7 @@ static u32 FASTCALL  OP_LDMIB_W(armcpu_t *cpu)
 
 static u32 FASTCALL  OP_LDMDA_W(armcpu_t *cpu)
 {
-	u32 i = cpu->instruction, c = 0, count;
+	u32 i = cpu->instruction, c = 0;
 	u32 start = cpu->R[REG_POS(i,16)];
 	u32 bitList = (~((2 << REG_POS(i,16))-1)) & 0xFFFF;
 
@@ -6732,7 +6731,7 @@ static u32 FASTCALL  OP_LDMDA_W(armcpu_t *cpu)
 
 static u32 FASTCALL  OP_LDMDB_W(armcpu_t *cpu)
 {
-	u32 i = cpu->instruction, c = 0, count;
+	u32 i = cpu->instruction, c = 0;
 	u32 start = cpu->R[REG_POS(i,16)];
 	u32 bitList = (~((2 << REG_POS(i,16))-1)) & 0xFFFF;
 	u32 * registres = cpu->R;

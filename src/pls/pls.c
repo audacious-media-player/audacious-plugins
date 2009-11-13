@@ -38,11 +38,11 @@
 static void
 playlist_load_pls(const gchar * filename, gint pos)
 {
-    guint i, count, added_count = 0;
-    gchar line_key[16], title_key[16];
-    gchar *line, *title;
-    Playlist *playlist = aud_playlist_get_active();
+    gint i, count;
+    gchar line_key[16];
+    gchar * line;
     gchar *uri = NULL;
+    struct index * add;
 
     g_return_if_fail(filename != NULL);
 
@@ -63,6 +63,8 @@ playlist_load_pls(const gchar * filename, gint pos)
     count = atoi(line);
     g_free(line);
 
+    add = index_new ();
+
     for (i = 1; i <= count; i++) {
         g_snprintf(line_key, sizeof(line_key), "File%d", i);
         if ((line = aud_read_ini_string(inifile, "playlist", line_key)))
@@ -70,67 +72,47 @@ playlist_load_pls(const gchar * filename, gint pos)
             gchar *uri = aud_construct_uri(line, filename);
             g_free(line);
 
-            /* add file only if valid uri has been constructed */
-            if (uri) {
-                if (aud_cfg->use_pl_metadata)
-                {
-                    g_snprintf(title_key, sizeof(title_key), "Title%d", i);
-
-                    if ((title = aud_read_ini_string(inifile, "playlist", title_key)))
-                        aud_playlist_load_ins_file(playlist, uri, filename, pos, title, -1);
-                    else
-                        aud_playlist_load_ins_file(playlist, uri, filename, pos, NULL, -1);
-                }
-                else
-                    aud_playlist_load_ins_file(playlist, uri, filename, pos, NULL, -1);
-
-                added_count++;
-
-                if (pos >= 0)
-                    pos++;
-            }
-            g_free(uri);
+            if (uri != NULL)
+                index_append (add, uri);
         }
     }
 
     aud_close_ini_file(inifile);
+
+    aud_playlist_entry_insert_batch (aud_playlist_get_active (), pos, add, NULL);
 }
 
 static void
 playlist_save_pls(const gchar *filename, gint pos)
 {
+    gint playlist = aud_playlist_get_active ();
+    gint entries = aud_playlist_entry_count (playlist);
     gchar *uri = g_filename_to_uri(filename, NULL, NULL);
-    GList *node;
     VFSFile *file = aud_vfs_fopen(uri, "wb");
-    Playlist *playlist = aud_playlist_get_active();
+    gint count;
 
     AUDDBG("filename=%s\n", filename);
     AUDDBG("uri=%s\n", uri);
 
     g_return_if_fail(file != NULL);
-    g_return_if_fail(playlist != NULL);
 
     aud_vfs_fprintf(file, "[playlist]\n");
-    aud_vfs_fprintf(file, "NumberOfEntries=%d\n", aud_playlist_get_length(playlist));
+    aud_vfs_fprintf(file, "NumberOfEntries=%d\n", entries - pos);
 
-    PLAYLIST_LOCK(playlist);
-
-    for (node = playlist->entries; node; node = g_list_next(node)) {
-        PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
+    for (count = pos; count < entries; count ++)
+    {
+        const gchar * filename = aud_playlist_entry_get_filename (playlist,
+         count);
         gchar *fn;
 
-        if (aud_vfs_is_remote(entry->filename))
-            fn = g_strdup(entry->filename);
+        if (aud_vfs_is_remote (filename))
+            fn = g_strdup (filename);
         else
-            fn = g_filename_from_uri(entry->filename, NULL, NULL);
+            fn = g_filename_from_uri (filename, NULL, NULL);
 
-        aud_vfs_fprintf(file, "File%d=%s\n", g_list_position(playlist->entries, node) + 1,
-                    fn);
-
+        aud_vfs_fprintf (file, "File%d=%s\n", 1 + pos + count, fn);
         g_free(fn);
     }
-
-    PLAYLIST_UNLOCK(playlist);
 
     aud_vfs_fclose(file);
 }

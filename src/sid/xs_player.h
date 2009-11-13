@@ -22,7 +22,7 @@ typedef struct {
     xs_tuneinfo_t*    (*plrGetSIDInfo)(const gchar *);
     gboolean    (*plrUpdateSIDInfo)(struct xs_status_t *);
     void        (*plrFlush)(struct xs_status_t *);
-} xs_player_t;
+} xs_engine_t;
 
 
 typedef struct xs_status_t {
@@ -36,7 +36,7 @@ typedef struct xs_status_t {
                                     emulation backend supports oversampling.
                                     */
     void        *sidEngine;         /* SID-emulation internal engine data */
-    xs_player_t *sidPlayer;         /* Selected player engine */
+    xs_engine_t *sidPlayer;         /* Selected player engine */
     gboolean    isError,
                 isPlaying,
                 isInitialized;
@@ -54,6 +54,7 @@ extern InputPlugin    xs_plugin_ip;
 extern xs_status_t    xs_status;
 XS_MUTEX_H(xs_status);
 
+gboolean xs_init_emu_engine(int *configured, xs_status_t *status);
 
 #ifdef __cplusplus
 }

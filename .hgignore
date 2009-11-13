@@ -14,6 +14,7 @@ syntax: regexp
 ^po/Makefile\.in
 ^po/POTFILES
 ^po/stamp-po
+^src/bluetooth/marshal.*
 syntax: glob
 .deps
 *.a

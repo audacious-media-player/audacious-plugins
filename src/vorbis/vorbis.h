@@ -12,12 +12,7 @@ typedef struct {
 
 extern ov_callbacks vorbis_callbacks;
 
-void vorbis_configure(void);
-
 gboolean vorbis_update_song_tuple (Tuple *tuple, VFSFile *fd);
-
-char *convert_to_utf8(const char *string);
-char *convert_from_utf8(const char *string);
 
 typedef struct {
     gint http_buffer_size;
@@ -35,6 +30,6 @@ typedef struct {
     gchar *title_encoding;
 } vorbis_config_t;
 
-#define         ENCODING_SEPARATOR      " ,:;|/"
+extern vorbis_config_t vorbis_cfg;
 
 #endif                          /* __VORBIS_H__ */

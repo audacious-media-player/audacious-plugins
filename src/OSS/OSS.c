@@ -27,14 +27,16 @@
 
 OSSConfig oss_cfg;
 
-static GtkWidget *about_dialog = NULL;
 
 static void oss_about(void)
 {
+    static GtkWidget *about_dialog = NULL;
+    
     if (about_dialog != NULL)
         return;
 
-    about_dialog = audacious_info_dialog(_("About OSS Driver"),
+    about_dialog = audacious_info_dialog(
+    _("About OSS Driver"),
     _("Audacious OSS Driver\n\n "
     "This program is free software; you can redistribute it and/or modify\n"
     "it under the terms of the GNU General Public License as published by\n"
@@ -50,6 +52,7 @@ static void oss_about(void)
     "along with this program; if not, write to the Free Software\n"
     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
     "USA."), _("Ok"), FALSE, NULL, NULL);
+    
     g_signal_connect(G_OBJECT(about_dialog), "destroy",
                      G_CALLBACK(gtk_widget_destroyed), &about_dialog);
 }

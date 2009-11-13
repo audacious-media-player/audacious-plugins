@@ -64,8 +64,8 @@ vtx_init(void)
         aud_cfg_db_close(db);
 }
 
-int
-vtx_is_our_fd (char *filename, VFSFile *fp)
+gint
+vtx_is_our_fd (const gchar *filename, VFSFile *fp)
 {
   char buf[2];
     
@@ -73,8 +73,8 @@ vtx_is_our_fd (char *filename, VFSFile *fp)
   return (!strncasecmp (buf, "ay", 2) || !strncasecmp (buf, "ym", 2));
 }
 
-int
-vtx_is_our_file (char *filename)
+gint
+vtx_is_our_file (const gchar *filename)
 {
   gboolean ret;
   VFSFile *fp;
@@ -110,7 +110,7 @@ vtx_get_song_tuple_from_vtx(const gchar *filename, ayemu_vtx_t *in)
 }
 
 Tuple *
-vtx_get_song_tuple(gchar *filename)
+vtx_get_song_tuple(const gchar *filename)
 {
   ayemu_vtx_t tmp;
 
@@ -259,7 +259,7 @@ vtx_stop (InputPlayback *playback)
 
 /* seek to specified number of seconds */
 void
-vtx_seek (InputPlayback *playback, int time)
+vtx_seek (InputPlayback *playback, gint time)
 {
   if (time * 50 < vtx.hdr.regdata_size / 14)
     {
@@ -274,42 +274,21 @@ vtx_seek (InputPlayback *playback, int time)
 
 /* Pause or unpause */
 void
-vtx_pause (InputPlayback *playback, short p)
+vtx_pause (InputPlayback *playback, gshort p)
 {
   playback->output->pause (p);
-}
-
-/* Function to grab the title string */
-void
-vtx_get_song_info (char *filename, char **title, int *length)
-{
-  ayemu_vtx_t tmp;
-  
-  (*length) = -1;
-  (*title) = NULL;
-
-  if (ayemu_vtx_open (&tmp, filename)) {
-    Tuple *ti = vtx_get_song_tuple_from_vtx(filename, &tmp);
-
-    *title = aud_tuple_formatter_process_string(ti, aud_get_gentitle_format());
-    *length = aud_tuple_get_int(ti, FIELD_LENGTH, NULL);
-
-    ayemu_vtx_free (&tmp);
-    aud_tuple_free(ti);
-  }
 }
 
 InputPlugin vtx_ip = {
 	.description = "VTX Audio Plugin",	/* Plugin description */
 	.init = vtx_init,		/* Initialization */
 	.about = vtx_about,		/* Show aboutbox */
-	.configure = vtx_config,		/* Show/edit configuration */
+	.configure = NULL,
 	.is_our_file = vtx_is_our_file,	/* Check file, return 1 if the plugin can handle this file */
 	.play_file = vtx_play_file,		/* Play given file */
 	.stop = vtx_stop,		/* Stop playing */
 	.pause = vtx_pause,		/* Pause playing */
 	.seek = vtx_seek,		/* Seek time */
-	.get_song_info = vtx_get_song_info,	/* Get song title and length */
 	.file_info_box = vtx_file_info,		/* Show file-information dialog */
 	.get_song_tuple = vtx_get_song_tuple,	/* Tuple */
 	.is_our_file_from_vfs = vtx_is_our_fd,		/* VFS */

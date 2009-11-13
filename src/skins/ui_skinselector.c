@@ -105,7 +105,7 @@ skin_get_preview(const gchar * path)
     {
         sprintf(buf, "main.%s", ext_targets[i]);
 
-        if ((preview_path = find_path_recursively(dec_path, buf)) != NULL)
+        if ((preview_path = find_file_case_path (dec_path, buf)) != NULL)
             break;
     }
 
@@ -372,7 +372,7 @@ skin_view_realize(GtkTreeView * treeview)
     GtkTreeSelection *selection;
 
     gtk_widget_show_all(GTK_WIDGET(treeview));
-    
+
     gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(treeview), TRUE);
     gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), FALSE);
 

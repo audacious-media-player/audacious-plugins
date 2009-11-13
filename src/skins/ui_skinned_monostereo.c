@@ -84,7 +84,7 @@ static void ui_skinned_monostereo_class_init(UiSkinnedMonoStereoClass *klass) {
 
     klass->scaled = ui_skinned_monostereo_toggle_scaled;
 
-    monostereo_signals[DOUBLED] = 
+    monostereo_signals[DOUBLED] =
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedMonoStereoClass, scaled), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
@@ -124,7 +124,7 @@ static void ui_skinned_monostereo_destroy(GtkObject *object) {
 
 static void ui_skinned_monostereo_realize(GtkWidget *widget) {
     if (GTK_WIDGET_CLASS (parent_class)->realize)
-        (* GTK_WIDGET_CLASS (parent_class)->realize) (widget); 
+        (* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
 }
 
 static void ui_skinned_monostereo_size_request(GtkWidget *widget, GtkRequisition *requisition) {
@@ -146,10 +146,6 @@ static void ui_skinned_monostereo_size_allocate(GtkWidget *widget, GtkAllocation
 }
 
 static gboolean ui_skinned_monostereo_expose(GtkWidget *widget, GdkEventExpose *event) {
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (UI_SKINNED_IS_MONOSTEREO (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
-
     UiSkinnedMonoStereo *monostereo = UI_SKINNED_MONOSTEREO (widget);
     g_return_val_if_fail (monostereo->width > 0 && monostereo->height > 0, FALSE);
 
@@ -174,7 +170,7 @@ static gboolean ui_skinned_monostereo_expose(GtkWidget *widget, GdkEventExpose *
 
     ui_skinned_widget_draw_with_coordinates(widget, obj, monostereo->width, monostereo->height,
                                             widget->allocation.x,
-                                            widget->allocation.y, 
+                                            widget->allocation.y,
                                             monostereo->scaled);
 
     g_object_unref(obj);
@@ -188,7 +184,8 @@ static void ui_skinned_monostereo_toggle_scaled(UiSkinnedMonoStereo *monostereo)
     monostereo->scaled = !monostereo->scaled;
     gtk_widget_set_size_request(widget, monostereo->width*(monostereo->scaled ? config.scale_factor : 1), monostereo->height*(monostereo->scaled ? config.scale_factor : 1));
 
-    gtk_widget_queue_draw(GTK_WIDGET(monostereo));
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_monostereo_expose (widget, 0);
 }
 
 void ui_skinned_monostereo_set_num_channels(GtkWidget *widget, gint nch) {
@@ -196,5 +193,7 @@ void ui_skinned_monostereo_set_num_channels(GtkWidget *widget, gint nch) {
     UiSkinnedMonoStereo *monostereo = UI_SKINNED_MONOSTEREO (widget);
 
     monostereo->num_channels = nch;
-    gtk_widget_queue_draw(widget);
+
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_monostereo_expose (widget, 0);
 }

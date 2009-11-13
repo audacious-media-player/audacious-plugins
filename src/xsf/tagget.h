@@ -1,9 +1,9 @@
-static int getdwordle(unsigned char *pData)
+static int getdwordle(const unsigned char *pData)
 {
 	return pData[0] | ((pData[1]) << 8) | ((pData[2]) << 16) | ((pData[3]) << 24);
 }
 
-static int xsf_tagsearchraw(const char *pData, int dwSize)
+static int xsf_tagsearchraw(const unsigned char *pData, int dwSize)
 {
 	int dwPos;
 	int dwReservedAreaSize;
@@ -20,7 +20,7 @@ static int xsf_tagsearchraw(const char *pData, int dwSize)
 	if (dwPos >= dwSize) return 0;
 	return dwPos;
 }
-static int xsf_tagsearch(int *pdwRet, const char *pData, int dwSize)
+static int xsf_tagsearch(int *pdwRet, const unsigned char *pData, int dwSize)
 {
 	int dwPos = xsf_tagsearchraw(pData, dwSize);
 	if (dwSize < dwPos + 5) return 0;
@@ -35,7 +35,7 @@ enum xsf_tagenum_callback_returnvalue
 	xsf_tagenum_callback_returnvaluebreak = 1
 };
 typedef int (*pfnxsf_tagenum_callback_t)(void *pWork, const char *pNameTop, const char *pNameEnd, const char *pValueTop, const char *pValueEnd);
-static int xsf_tagenumraw(pfnxsf_tagenum_callback_t pCallBack, void *pWork, const char *pData, int dwSize)
+static int xsf_tagenumraw(pfnxsf_tagenum_callback_t pCallBack, void *pWork, const unsigned char *pData, int dwSize)
 {
 	int dwPos = 0;
 	while (dwPos < dwSize)
@@ -74,7 +74,7 @@ static int xsf_tagenumraw(pfnxsf_tagenum_callback_t pCallBack, void *pWork, cons
 	return 1;
 }
 
-static int xsf_tagenum(pfnxsf_tagenum_callback_t pCallBack, void *pWork, const char *pData, int dwSize)
+static int xsf_tagenum(pfnxsf_tagenum_callback_t pCallBack, void *pWork, const unsigned char *pData, int dwSize)
 {
 	int dwPos = 0;
 	if (!xsf_tagsearch(&dwPos, pData, dwSize))
@@ -104,17 +104,7 @@ static int xsf_tagenum_callback_tagget(void *pWork, const char *pNameTop, const 
 	return xsf_tagenum_callback_returnvaluecontinue;
 }
 
-static char *xsf_taggetraw(const char *tag, const char *pData, int dwSize)
-{
-	xsf_tagget_work_t work;
-	work.ret = 0;
-	work.tag = tag;
-	work.taglen = (int)strlen(tag);
-	xsf_tagenumraw(xsf_tagenum_callback_tagget, &work, pData, dwSize);
-	return work.ret;
-}
-
-static char *xsf_tagget(const char *tag, const char *pData, int dwSize)
+static char *xsf_tagget(const char *tag, const unsigned char *pData, int dwSize)
 {
 	xsf_tagget_work_t work;
 	work.ret = 0;
@@ -124,23 +114,7 @@ static char *xsf_tagget(const char *tag, const char *pData, int dwSize)
 	return work.ret;
 }
 
-static int xsf_tagget_exist(const char *tag, const char *pData, int dwSize)
-{
-	int exists;
-	char *value = xsf_tagget(tag, pData, dwSize);
-	if (value)
-	{
-		exists = 1;
-		free(value);
-	}
-	else
-	{
-		exists = 0;
-	}
-	return exists;
-}
-
-static int xsf_tagget_int(const char *tag, const char *pData, int dwSize, int value_default)
+static int xsf_tagget_int(const char *tag, const unsigned char *pData, int dwSize, int value_default)
 {
 	int ret = value_default;
 	char *value = xsf_tagget(tag, pData, dwSize);
@@ -152,54 +126,3 @@ static int xsf_tagget_int(const char *tag, const char *pData, int dwSize, int va
 	return ret;
 }
 
-static double xsf_tagget_float(const char *tag, const char *pData, int dwSize, double value_default)
-{
-	double ret = value_default;
-	char *value = xsf_tagget(tag, pData, dwSize);
-	if (value)
-	{
-		if (*value) ret = atof(value);
-		free(value);
-	}
-	return ret;
-}
-
-static int tag2ms(const char *p)
-{
-	int f = 0;
-	int b = 0;
-	int r = 0;
-	for (;*p; p++)
-	{
-		if (*p >= '0' && *p <= '9')
-		{
-			if (f < 1000)
-			{
-				r = r * 10 + *p - '0';
-				if (f) f *= 10;
-				continue;
-			}
-			break;
-		}
-		if (*p == '.')
-		{
-			f = 1;
-			continue;
-		}
-		if (*p == ':')
-		{
-			b = (b + r) * 60;
-			r = 0;
-			continue;
-		}
-		break;
-	}
-	if (f < 10)
-		r *= 1000;
-	else if (f == 10)
-		r *= 100;
-	else if (f == 100)
-		r *= 10;
-	r += b * 1000;
-	return r;
-}

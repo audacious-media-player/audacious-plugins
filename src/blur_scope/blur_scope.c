@@ -27,38 +27,19 @@
 #include <string.h>
 #include <audacious/plugin.h>
 #include "blur_scope.h"
-#include "bscope_logo.xpm"
 
-static GtkWidget *window = NULL, *area;
-static GdkPixmap *bg_pixmap = NULL;
+static GtkWidget *area = NULL;
 static gboolean config_read = FALSE;
 
 static void bscope_init(void);
 static void bscope_cleanup(void);
 static void bscope_playback_stop(void);
 static void bscope_render_pcm(gint16 data[2][512]);
+static GtkWidget *bscope_get_widget(void);
 
 BlurScopeConfig bscope_cfg;
 
-GtkItemFactory *blurscope_popup;
-
 enum { SCOPE_TOGGLE, SCOPE_CLOSE };
-
-void blurscope_callback(gpointer data, guint action, GtkWidget * widget);
-gboolean blurscope_popup_menu(GtkWidget * widget,
-                              GdkEventButton * event, gpointer user_data);
-
-GtkItemFactoryEntry blurscope_menu_entries[] = {
-    {N_("/Toggle Decorations"), NULL, blurscope_callback, SCOPE_TOGGLE,
-     "<Item>", 0},
-    {N_("/-"), NULL, NULL, 0, "<Separator>", 0},
-    {N_("/Close"), NULL, blurscope_callback, SCOPE_CLOSE, "<StockItem>",
-     GTK_STOCK_CLOSE},
-};
-
-static const int blurscope_menu_entries_num =
-    sizeof(blurscope_menu_entries) / sizeof(blurscope_menu_entries[0]);
-
 
 VisPlugin bscope_vp = {
     .description = "Blur Scope",                       /* description */
@@ -69,26 +50,59 @@ VisPlugin bscope_vp = {
     .configure = bscope_configure,           /* configure */
     .playback_stop = bscope_playback_stop,       /* playback_stop */
     .render_pcm = bscope_render_pcm,          /* render_pcm */
+    .get_widget = bscope_get_widget,
 };
 
 VisPlugin *bscope_vplist[] = { &bscope_vp, NULL };
 
 DECLARE_PLUGIN(bscope, NULL, NULL, NULL, NULL, NULL, NULL, bscope_vplist,NULL);
 
-#define WIDTH 256
-#define HEIGHT 128
+#define D_WIDTH 256
+#define D_HEIGHT 128
 #define min(x,y) ((x)<(y)?(x):(y))
-#define BPL	((WIDTH + 2))
+gint width = D_WIDTH;
+gint height = D_HEIGHT;
+gint bpl = (D_WIDTH + 2);
 
-static guchar rgb_buf[(WIDTH + 2) * (HEIGHT + 2)];
+static GStaticMutex rgb_buf_mutex = G_STATIC_MUTEX_INIT;
+static guchar *rgb_buf = NULL;
 static GdkRgbCmap *cmap = NULL;
 
 inline static void
 draw_pixel_8(guchar * buffer, gint x, gint y, guchar c)
 {
-    buffer[((y + 1) * BPL) + (x + 1)] = c;
+    if (buffer == NULL)
+        return;
+
+    buffer[((y + 1) * bpl) + (x + 1)] = c;
 }
 
+inline static void
+bscope_resize_video(gint w, gint h)
+{
+    g_static_mutex_lock(&rgb_buf_mutex);
+
+    width = w;
+    height = h;
+    bpl = (width + 2);
+
+    if (rgb_buf != NULL) {
+        g_free(rgb_buf);
+        rgb_buf = NULL;
+    }
+
+    rgb_buf = g_malloc0((w + 2) * (h + 2));
+
+    g_static_mutex_unlock(&rgb_buf_mutex);
+}
+
+gboolean
+bscope_reconfigure(GtkWidget *widget, GdkEventConfigure *event, gpointer unused)
+{
+    bscope_resize_video(event->width, event->height);
+
+    return FALSE;
+}
 
 void
 bscope_read_config(void)
@@ -110,15 +124,15 @@ bscope_read_config(void)
 
 
 void
-bscope_blur_8(guchar * ptr, gint w, gint h, gint bpl)
+bscope_blur_8(guchar * ptr, gint w, gint h, gint bpl_)
 {
     register guint i, sum;
     register guchar *iptr;
 
-    iptr = ptr + bpl + 1;
-    i = bpl * h;
+    iptr = ptr + bpl_ + 1;
+    i = bpl_ * h;
     while (i--) {
-        sum = (iptr[-bpl] + iptr[-1] + iptr[1] + iptr[bpl]) >> 2;
+        sum = (iptr[-bpl_] + iptr[-1] + iptr[1] + iptr[bpl_]) >> 2;
         if (sum > 2)
             sum -= 2;
         *(iptr++) = sum;
@@ -131,7 +145,7 @@ void
 generate_cmap(void)
 {
     guint32 colors[256], i, red, blue, green;
-    if (window) {
+    if (area) {
         red = (guint32) (bscope_cfg.color / 0x10000);
         green = (guint32) ((bscope_cfg.color % 0x10000) / 0x100);
         blue = (guint32) (bscope_cfg.color % 0x100);
@@ -158,65 +172,32 @@ bscope_destroy_cb(GtkWidget * w, gpointer data)
 static void
 bscope_init(void)
 {
-    if (window)
+    if (area)
         return;
     bscope_read_config();
 
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_type_hint(GTK_WINDOW(window), GDK_WINDOW_TYPE_HINT_DIALOG);
-
-    blurscope_popup = gtk_item_factory_new(GTK_TYPE_MENU, "<Main>", NULL);
-
-    gtk_item_factory_create_items(GTK_ITEM_FACTORY(blurscope_popup),
-                                  blurscope_menu_entries_num,
-                                  blurscope_menu_entries, NULL);
-
-    gtk_widget_set_events(window,
-                          GDK_FOCUS_CHANGE_MASK | GDK_BUTTON_MOTION_MASK |
-                          GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-                          GDK_SCROLL_MASK | GDK_VISIBILITY_NOTIFY_MASK);
-
-    gtk_window_set_title(GTK_WINDOW(window), _("Blur scope"));
-    gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
-    gtk_widget_realize(window);
-    bg_pixmap =
-        gdk_pixmap_create_from_xpm_d(window->window, NULL, NULL, bscope_logo);
-//      gdk_window_set_back_pixmap(window->window,bg_pixmap,0);
-
-    g_signal_connect(G_OBJECT(window), "destroy",
-                     G_CALLBACK(bscope_destroy_cb), NULL);
-    g_signal_connect(G_OBJECT(window), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed), &window);
-    g_signal_connect(G_OBJECT(window), "button-press-event",
-                     G_CALLBACK(blurscope_popup_menu), NULL);
-
-    gtk_widget_set_size_request(window, WIDTH, HEIGHT);
     area = gtk_drawing_area_new();
-    gtk_container_add(GTK_CONTAINER(window), area);
+
+    gtk_widget_set_size_request(area, D_WIDTH, D_HEIGHT);
     gtk_widget_realize(area);
-    gdk_window_set_back_pixmap(area->window, bg_pixmap, 0);
     generate_cmap();
-    memset(rgb_buf, 0, (WIDTH + 2) * (HEIGHT + 2));
-
-
+    bscope_resize_video(D_WIDTH, D_HEIGHT);
+    g_signal_connect(G_OBJECT(area), "configure-event", G_CALLBACK(bscope_reconfigure), NULL);
+    g_signal_connect(G_OBJECT(area), "destroy",
+                     G_CALLBACK(bscope_destroy_cb), NULL);
 
     gtk_widget_show(area);
-    gtk_widget_show(window);
-    gdk_window_clear(window->window);
-    gdk_window_clear(area->window);
+}
 
-
+static GtkWidget *
+bscope_get_widget(void)
+{
+    return area;
 }
 
 static void
 bscope_cleanup(void)
 {
-    if (window)
-        gtk_widget_destroy(window);
-    if (bg_pixmap) {
-        g_object_unref(bg_pixmap);
-        bg_pixmap = NULL;
-    }
     if (cmap) {
         gdk_rgb_cmap_free(cmap);
         cmap = NULL;
@@ -251,58 +232,27 @@ bscope_render_pcm(gint16 data[2][512])
 {
     gint i, y, prev_y;
 
-    if (!window)
-        return;
-    bscope_blur_8(rgb_buf, WIDTH, HEIGHT, BPL);
-    prev_y = y = (HEIGHT / 2) + (data[0][0] >> 9);
-    for (i = 0; i < WIDTH; i++) {
-        y = (HEIGHT / 2) + (data[0][i >> 1] >> 9);
+    g_static_mutex_lock(&rgb_buf_mutex);
+
+    bscope_blur_8(rgb_buf, width, height, bpl);
+    prev_y = y = (height / 2) + (data[0][0] >> 9);
+    for (i = 0; i < width; i++) {
+        y = (height / 2) + (data[0][i >> 1] >> 9);
         if (y < 0)
             y = 0;
-        if (y >= HEIGHT)
-            y = HEIGHT - 1;
+        if (y >= height)
+            y = height - 1;
         draw_vert_line(rgb_buf, i, prev_y, y);
         prev_y = y;
     }
 
     GDK_THREADS_ENTER();
     gdk_draw_indexed_image(area->window, area->style->white_gc, 0, 0,
-                           WIDTH, HEIGHT, GDK_RGB_DITHER_NONE,
-                           rgb_buf + BPL + 1, (WIDTH + 2), cmap);
+                           width, height, GDK_RGB_DITHER_NONE,
+                           rgb_buf + bpl + 1, (width + 2), cmap);
     GDK_THREADS_LEAVE();
-    return;
-}
 
-gboolean
-blurscope_popup_menu(GtkWidget * widget,
-                     GdkEventButton * event, gpointer user_data)
-{
+    g_static_mutex_unlock(&rgb_buf_mutex);
 
-    if (event->button == 3) {
-        gtk_item_factory_popup(blurscope_popup,
-                               event->x_root,
-                               event->y_root, event->button, event->time);
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
-void
-blurscope_callback(gpointer data, guint action, GtkWidget * widget)
-{
-
-    switch (action) {
-    case SCOPE_TOGGLE:
-        gtk_window_set_decorated(GTK_WINDOW(window),
-                                 !gtk_window_get_decorated(GTK_WINDOW
-                                                           (window)));
-        break;
-    case SCOPE_CLOSE:
-        gtk_widget_destroy(window);
-        break;
-    default:
-        break;
-    }
     return;
 }
