@@ -59,8 +59,8 @@ typedef struct
     gboolean stereo;
     gboolean restored;
     const LADSPA_Descriptor *descriptor;
-    LADSPA_Handle *handle;      /* left or mono */
-    LADSPA_Handle *handle2;     /* right stereo */
+    LADSPA_Handle *handle;	/* left or mono */
+    LADSPA_Handle *handle2;	/* right stereo */
     GtkWidget *window;
     guint timeout;
     GtkAdjustment *adjustments[MAX_KNOBS];
@@ -134,66 +134,54 @@ static void start(void)
 {
     if (state.initialised == FALSE)
     {
-        restore();
+	restore();
     }
     else if (state.srate > 0)
     {
-        reboot_plugins();
+	reboot_plugins();
     }
     state.running = TRUE;
 }
 
 static void restore(void)
 {
-    GSList *list;
+#if 0
     mcs_handle_t *db;
     gint k, plugins = 0;
-
-    if (plugin_list == NULL)
-        find_all_plugins();
 
     db = aud_cfg_db_open();
 
     aud_cfg_db_get_int(db, "ladspa", "plugins", &plugins);
-
-    /* XXX: this sucks. we need some way to iterate over these sections. --nenolod */
-    for (list = plugin_list; list != NULL; list = g_slist_next(list))
+    for (k = 0; k < plugins; ++k)
     {
-        ladspa_plugin *plugin = (ladspa_plugin *) list->data;
-        gchar *bn;
+	gint id;
+	int port, ports = 0;
+	plugin_instance *instance;
+	gchar *bn, *section;
 
-        bn = g_path_get_basename(plugin->filename);
+	bn = g_path_get_basename(instance->filename);
+	section = g_strdup_printf("ladspa_plugin:%s:%d", bn, k);
+	g_free(bn);
 
-        for (k = 0; k < plugins; ++k)
-        {
-            gint id;
-            int port, ports = 0;
-            gchar *section;
-            plugin_instance *instance;
+	aud_cfg_db_get_int(db, section, "id", &id);
+	aud_cfg_db_get_int(db, section, "ports", &ports);
 
-            section = g_strdup_printf("ladspa_plugin:%s:%d", bn, k);
+	instance = add_plugin(get_plugin_by_id(id));
+	if (!instance)
+	    continue;		/* couldn't load this plugin */
 
-            aud_cfg_db_get_int(db, section, "id", &id);
-            aud_cfg_db_get_int(db, section, "ports", &ports);
-
-            instance = add_plugin(get_plugin_by_id(bn, id));
-            if (!instance)
-                continue;       /* couldn't load this plugin */
-
-            for (port = 0; port < ports && port < MAX_KNOBS; ++port)
-            {
-                gchar *key = g_strdup_printf("port%d", port);
-                aud_cfg_db_get_float(db, section, key, &(instance->knobs[port]));
-            }
-
-            instance->restored = TRUE;
-            g_free(section);
-        }
-
-        g_free(bn);
+	for (port = 0; port < ports && port < MAX_KNOBS; ++port)
+	{
+	    gchar *key = g_strdup_printf("port%d", port);
+	    aud_cfg_db_get_float(db, section, key, &(instance->knobs[port]));
+	}
+	instance->restored = TRUE;
+	g_free(section);
     }
 
     aud_cfg_db_close(db);
+#endif
+
     state.initialised = TRUE;
 }
 
@@ -203,21 +191,23 @@ static ladspa_plugin *get_plugin_by_id(const gchar * basename, long id)
     ladspa_plugin *plugin;
 
     if (plugin_list == NULL)
-        find_all_plugins();
+    {
+	find_all_plugins();
+    }
 
     for (list = plugin_list; list != NULL; list = g_slist_next(list))
     {
-        gchar *bn;
-        plugin = (ladspa_plugin *) list->data;
+	gchar *bn;
+	plugin = (ladspa_plugin *) list->data;
 
-        bn = g_path_get_basename(plugin->filename);
-        if (plugin->unique_id == id && !g_ascii_strcasecmp(basename, bn))
-        {
-            g_free(bn);
-            return plugin;
-        }
+	bn = g_path_get_basename(plugin->filename);
+	if (plugin->unique_id == id && !g_ascii_strcasecmp(basename, bn))
+	{
+	    g_free(bn);
+	    return plugin;
+	}
 
-        g_free(bn);
+	g_free(bn);
     }
 
     return NULL;
@@ -227,25 +217,25 @@ static void find_all_plugins(void)
 {
     char *ladspa_path, *directory;
 
-    plugin_list = NULL;         /* empty list */
+    plugin_list = NULL;		/* empty list */
     ladspa_path = getenv("LADSPA_PATH");
     if (ladspa_path == NULL)
     {
-        /* Fallback, look in obvious places */
-        find_plugins("/usr/lib/ladspa");
-        find_plugins("/usr/local/lib/ladspa");
+	/* Fallback, look in obvious places */
+	find_plugins("/usr/lib/ladspa");
+	find_plugins("/usr/local/lib/ladspa");
     }
     else
     {
-        ladspa_path = g_strdup(ladspa_path);
+	ladspa_path = g_strdup(ladspa_path);
 
-        directory = strtok(ladspa_path, ":");
-        while (directory != NULL)
-        {
-            find_plugins(directory);
-            directory = strtok(NULL, ":");
-        }
-        g_free(ladspa_path);
+	directory = strtok(ladspa_path, ":");
+	while (directory != NULL)
+	{
+	    find_plugins(directory);
+	    directory = strtok(NULL, ":");
+	}
+	g_free(ladspa_path);
     }
 }
 
@@ -260,14 +250,14 @@ static plugin_instance *load(char *filename, long int num)
     instance->library = dlopen(filename, RTLD_NOW);
     if (instance->library == NULL)
     {
-        g_free(instance);
-        return NULL;
+	g_free(instance);
+	return NULL;
     }
     descriptor_fn = dlsym(instance->library, "ladspa_descriptor");
     if (descriptor_fn == NULL)
     {
-        g_free(instance);
-        return NULL;
+	g_free(instance);
+	return NULL;
     }
     instance->descriptor = descriptor_fn(num);
 
@@ -278,20 +268,20 @@ static void unload(plugin_instance * instance)
 {
     if (instance->window)
     {
-        gtk_widget_destroy(instance->window);
-        instance->window = NULL;
+	gtk_widget_destroy(instance->window);
+	instance->window = NULL;
     }
 
     if (instance->timeout)
     {
-        gtk_timeout_remove(instance->timeout);
+	gtk_timeout_remove(instance->timeout);
     }
 
     ladspa_shutdown(instance);
 
     if (instance->library)
     {
-        dlclose(instance->library);
+	dlclose(instance->library);
     }
 }
 
@@ -303,38 +293,38 @@ static void stop(void)
 
     if (state.running == FALSE)
     {
-        return;
+	return;
     }
     state.running = FALSE;
     db = aud_cfg_db_open();
     G_LOCK(running_plugins);
     for (list = running_plugins; list != NULL; list = g_slist_next(list))
     {
-        plugin_instance *instance = (plugin_instance *) list->data;
-        gchar *bn;
-        gchar *section;
-        int port, ports = 0;
+	plugin_instance *instance = (plugin_instance *) list->data;
+	gchar *bn;
+	gchar *section;
+	int port, ports = 0;
 
-        bn = g_path_get_basename(instance->filename);
-        section = g_strdup_printf("ladspa_plugin:%s:%ld", bn, instance->descriptor->UniqueID);
-        g_free(bn);
+	bn = g_path_get_basename(instance->filename);
+	section = g_strdup_printf("ladspa_plugin:%s:%ld", bn, instance->descriptor->UniqueID);
+	g_free(bn);
 
-        aud_cfg_db_set_int(db, section, "id", instance->descriptor->UniqueID);
-        aud_cfg_db_set_string(db, section, "file", instance->filename);
-        aud_cfg_db_set_string(db, section, "label", (gchar *) instance->descriptor->Label);
+	aud_cfg_db_set_int(db, section, "id", instance->descriptor->UniqueID);
+	aud_cfg_db_set_string(db, section, "file", instance->filename);
+	aud_cfg_db_set_string(db, section, "label", (gchar *) instance->descriptor->Label);
 
-        ports = instance->descriptor->PortCount;
-        if (ports > MAX_KNOBS)
-            ports = MAX_KNOBS;
-        for (port = 0; port < ports; ++port)
-        {
-            gchar *key = g_strdup_printf("port%d", port);
-            aud_cfg_db_set_float(db, section, key, instance->knobs[port]);
-            g_free(key);
-        }
-        aud_cfg_db_set_int(db, section, "ports", ports);
-        g_free(section);
-        ladspa_shutdown(instance);
+	ports = instance->descriptor->PortCount;
+	if (ports > MAX_KNOBS)
+	    ports = MAX_KNOBS;
+	for (port = 0; port < ports; ++port)
+	{
+	    gchar *key = g_strdup_printf("port%d", port);
+	    aud_cfg_db_set_float(db, section, key, instance->knobs[port]);
+	    g_free(key);
+	}
+	aud_cfg_db_set_int(db, section, "ports", ports);
+	g_free(section);
+	ladspa_shutdown(instance);
     }
     G_UNLOCK(running_plugins);
 
@@ -348,21 +338,21 @@ static void ladspa_shutdown(plugin_instance * instance)
 
     if (instance->handle)
     {
-        if (descriptor->deactivate)
-        {
-            descriptor->deactivate(instance->handle);
-        }
-        descriptor->cleanup(instance->handle);
-        instance->handle = NULL;
+	if (descriptor->deactivate)
+	{
+	    descriptor->deactivate(instance->handle);
+	}
+	descriptor->cleanup(instance->handle);
+	instance->handle = NULL;
     }
     if (instance->handle2)
     {
-        if (descriptor->deactivate)
-        {
-            descriptor->deactivate(instance->handle2);
-        }
-        descriptor->cleanup(instance->handle2);
-        instance->handle2 = NULL;
+	if (descriptor->deactivate)
+	{
+	    descriptor->deactivate(instance->handle2);
+	}
+	descriptor->cleanup(instance->handle2);
+	instance->handle2 = NULL;
     }
 }
 
@@ -374,19 +364,19 @@ static void boot_plugin(plugin_instance * instance)
     instance->handle = descriptor->instantiate(descriptor, state.srate);
     if (state.nch > 1 && !instance->stereo)
     {
-        /* Create an additional instance */
-        instance->handle2 = descriptor->instantiate(descriptor, state.srate);
+	/* Create an additional instance */
+	instance->handle2 = descriptor->instantiate(descriptor, state.srate);
     }
 
     port_assign(instance);
 
     if (descriptor->activate)
     {
-        descriptor->activate(instance->handle);
-        if (instance->handle2)
-        {
-            descriptor->activate(instance->handle2);
-        }
+	descriptor->activate(instance->handle);
+	if (instance->handle2)
+	{
+	    descriptor->activate(instance->handle2);
+	}
     }
 }
 
@@ -397,7 +387,7 @@ static void reboot_plugins(void)
     G_LOCK(running_plugins);
     for (list = running_plugins; list != NULL; list = g_slist_next(list))
     {
-        boot_plugin((plugin_instance *) list->data);
+	boot_plugin((plugin_instance *) list->data);
     }
     G_UNLOCK(running_plugins);
 }
@@ -411,90 +401,90 @@ static int apply_effect(gpointer * d, gint length, AFormat afmt, gint srate, gin
 
     if (running_plugins == NULL || state.running == FALSE)
     {
-        return length;
+	return length;
     }
 
     if (state.afmt != afmt || state.srate != srate || state.nch != nch)
     {
-        state.afmt = afmt;
-        state.srate = srate;
-        state.nch = nch;
+	state.afmt = afmt;
+	state.srate = srate;
+	state.nch = nch;
 
-        if (nch < 1 || nch > 2)
-            state.ignore = 1;
-        else if (afmt == FMT_S16_NE)
-            state.ignore = 0;
+	if (nch < 1 || nch > 2)
+	    state.ignore = 1;
+	else if (afmt == FMT_S16_NE)
+	    state.ignore = 0;
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
-        else if (afmt == FMT_S16_LE)
-            state.ignore = 0;
+	else if (afmt == FMT_S16_LE)
+	    state.ignore = 0;
 #elif G_BYTE_ORDER == G_BIG_ENDIAN
-        else if (afmt == FMT_S16_BE)
-            state.ignore = 0;
+	else if (afmt == FMT_S16_BE)
+	    state.ignore = 0;
 #endif
-        else
-            state.ignore = 1;
+	else
+	    state.ignore = 1;
 
-        reboot_plugins();
+	reboot_plugins();
     }
 
     if (state.ignore || length > MAX_SAMPLES * 2)
     {
-        return length;
+	return length;
     }
 
     if (state.nch == 1)
     {
-        for (k = 0; k < length / 2; ++k)
-        {
-            left[k] = ((LADSPA_Data) raw16[k]) * (1.0f / 32768.0f);
-        }
-        G_LOCK(running_plugins);
-        for (list = running_plugins; list != NULL; list = g_slist_next(list))
-        {
-            instance = (plugin_instance *) list->data;
-            if (instance->handle)
-            {
-                instance->descriptor->run(instance->handle, length / 2);
-            }
-        }
-        G_UNLOCK(running_plugins);
-        for (k = 0; k < length / 2; ++k)
-        {
-            raw16[k] = CLAMP((int)(left[k] * 32768.0f), -32768, 32767);
-        }
+	for (k = 0; k < length / 2; ++k)
+	{
+	    left[k] = ((LADSPA_Data) raw16[k]) * (1.0f / 32768.0f);
+	}
+	G_LOCK(running_plugins);
+	for (list = running_plugins; list != NULL; list = g_slist_next(list))
+	{
+	    instance = (plugin_instance *) list->data;
+	    if (instance->handle)
+	    {
+		instance->descriptor->run(instance->handle, length / 2);
+	    }
+	}
+	G_UNLOCK(running_plugins);
+	for (k = 0; k < length / 2; ++k)
+	{
+	    raw16[k] = CLAMP((int)(left[k] * 32768.0f), -32768, 32767);
+	}
     }
     else
     {
-        for (k = 0; k < length / 2; k += 2)
-        {
-            left[k / 2] = ((LADSPA_Data) raw16[k]) * (1.0f / 32768.0f);
-        }
-        for (k = 1; k < length / 2; k += 2)
-        {
-            right[k / 2] = ((LADSPA_Data) raw16[k]) * (1.0f / 32768.0f);
-        }
-        G_LOCK(running_plugins);
-        for (list = running_plugins; list != NULL; list = g_slist_next(list))
-        {
-            instance = (plugin_instance *) list->data;
-            if (instance->handle)
-            {
-                instance->descriptor->run(instance->handle, length / 4);
-            }
-            if (instance->handle2)
-            {
-                instance->descriptor->run(instance->handle2, length / 4);
-            }
-        }
-        G_UNLOCK(running_plugins);
-        for (k = 0; k < length / 2; k += 2)
-        {
-            raw16[k] = CLAMP((int)(left[k / 2] * 32768.0f), -32768, 32767);
-        }
-        for (k = 1; k < length / 2; k += 2)
-        {
-            raw16[k] = CLAMP((int)(right[k / 2] * 32768.0f), -32768, 32767);
-        }
+	for (k = 0; k < length / 2; k += 2)
+	{
+	    left[k / 2] = ((LADSPA_Data) raw16[k]) * (1.0f / 32768.0f);
+	}
+	for (k = 1; k < length / 2; k += 2)
+	{
+	    right[k / 2] = ((LADSPA_Data) raw16[k]) * (1.0f / 32768.0f);
+	}
+	G_LOCK(running_plugins);
+	for (list = running_plugins; list != NULL; list = g_slist_next(list))
+	{
+	    instance = (plugin_instance *) list->data;
+	    if (instance->handle)
+	    {
+		instance->descriptor->run(instance->handle, length / 4);
+	    }
+	    if (instance->handle2)
+	    {
+		instance->descriptor->run(instance->handle2, length / 4);
+	    }
+	}
+	G_UNLOCK(running_plugins);
+	for (k = 0; k < length / 2; k += 2)
+	{
+	    raw16[k] = CLAMP((int)(left[k / 2] * 32768.0f), -32768, 32767);
+	}
+	for (k = 1; k < length / 2; k += 2)
+	{
+	    raw16[k] = CLAMP((int)(right[k / 2] * 32768.0f), -32768, 32767);
+	}
     }
 
     return length;
@@ -509,68 +499,68 @@ static void port_assign(plugin_instance * instance)
     for (port = 0; port < plugin->PortCount; ++port)
     {
 
-        if (LADSPA_IS_PORT_CONTROL(plugin->PortDescriptors[port]))
-        {
-            if (port < MAX_KNOBS)
-            {
-                plugin->connect_port(instance->handle, port, &(instance->knobs[port]));
-                if (instance->handle2)
-                    plugin->connect_port(instance->handle2, port, &(instance->knobs[port]));
-            }
-            else
-            {
-                plugin->connect_port(instance->handle, port, trash);
-                if (instance->handle2)
-                    plugin->connect_port(instance->handle2, port, trash);
-            }
+	if (LADSPA_IS_PORT_CONTROL(plugin->PortDescriptors[port]))
+	{
+	    if (port < MAX_KNOBS)
+	    {
+		plugin->connect_port(instance->handle, port, &(instance->knobs[port]));
+		if (instance->handle2)
+		    plugin->connect_port(instance->handle2, port, &(instance->knobs[port]));
+	    }
+	    else
+	    {
+		plugin->connect_port(instance->handle, port, trash);
+		if (instance->handle2)
+		    plugin->connect_port(instance->handle2, port, trash);
+	    }
 
-        }
-        else if (LADSPA_IS_PORT_AUDIO(plugin->PortDescriptors[port]))
-        {
+	}
+	else if (LADSPA_IS_PORT_AUDIO(plugin->PortDescriptors[port]))
+	{
 
-            if (LADSPA_IS_PORT_INPUT(plugin->PortDescriptors[port]))
-            {
-                if (inputs == 0)
-                {
-                    plugin->connect_port(instance->handle, port, left);
-                    if (instance->handle2)
-                        plugin->connect_port(instance->handle2, port, right);
-                }
-                else if (inputs == 1 && instance->stereo)
-                {
-                    plugin->connect_port(instance->handle, port, right);
-                }
-                else
-                {
-                    plugin->connect_port(instance->handle, port, trash);
-                    if (instance->handle2)
-                        plugin->connect_port(instance->handle2, port, trash);
-                }
-                inputs++;
+	    if (LADSPA_IS_PORT_INPUT(plugin->PortDescriptors[port]))
+	    {
+		if (inputs == 0)
+		{
+		    plugin->connect_port(instance->handle, port, left);
+		    if (instance->handle2)
+			plugin->connect_port(instance->handle2, port, right);
+		}
+		else if (inputs == 1 && instance->stereo)
+		{
+		    plugin->connect_port(instance->handle, port, right);
+		}
+		else
+		{
+		    plugin->connect_port(instance->handle, port, trash);
+		    if (instance->handle2)
+			plugin->connect_port(instance->handle2, port, trash);
+		}
+		inputs++;
 
-            }
-            else if (LADSPA_IS_PORT_OUTPUT(plugin->PortDescriptors[port]))
-            {
-                if (outputs == 0)
-                {
-                    plugin->connect_port(instance->handle, port, left);
-                    if (instance->handle2)
-                        plugin->connect_port(instance->handle2, port, right);
-                }
-                else if (outputs == 1 && instance->stereo)
-                {
-                    plugin->connect_port(instance->handle, port, right);
-                }
-                else
-                {
-                    plugin->connect_port(instance->handle, port, trash);
-                    if (instance->handle2)
-                        plugin->connect_port(instance->handle2, port, trash);
-                }
-                outputs++;
+	    }
+	    else if (LADSPA_IS_PORT_OUTPUT(plugin->PortDescriptors[port]))
+	    {
+		if (outputs == 0)
+		{
+		    plugin->connect_port(instance->handle, port, left);
+		    if (instance->handle2)
+			plugin->connect_port(instance->handle2, port, right);
+		}
+		else if (outputs == 1 && instance->stereo)
+		{
+		    plugin->connect_port(instance->handle, port, right);
+		}
+		else
+		{
+		    plugin->connect_port(instance->handle, port, trash);
+		    if (instance->handle2)
+			plugin->connect_port(instance->handle2, port, trash);
+		}
+		outputs++;
 
-            }
-        }
+	    }
+	}
     }
 
 }
@@ -589,59 +579,59 @@ static void find_plugins(char *path_entry)
 
     dir = opendir(path_entry);
     if (dir == NULL)
-        return;
+	return;
 
     while ((dirent = readdir(dir)))
     {
-        snprintf(lib_name, PATH_MAX, "%s/%s", path_entry, dirent->d_name);
-        library = dlopen(lib_name, RTLD_LAZY);
-        if (library == NULL)
-        {
-            continue;
-        }
-        descriptor_fn = dlsym(library, "ladspa_descriptor");
-        if (descriptor_fn == NULL)
-        {
-            dlclose(library);
-            continue;
-        }
+	snprintf(lib_name, PATH_MAX, "%s/%s", path_entry, dirent->d_name);
+	library = dlopen(lib_name, RTLD_LAZY);
+	if (library == NULL)
+	{
+	    continue;
+	}
+	descriptor_fn = dlsym(library, "ladspa_descriptor");
+	if (descriptor_fn == NULL)
+	{
+	    dlclose(library);
+	    continue;
+	}
 
-        for (k = 0;; ++k)
-        {
-            descriptor = descriptor_fn(k);
-            if (descriptor == NULL)
-            {
-                break;
-            }
-            plugin = g_new(ladspa_plugin, 1);
-            plugin->name = g_strdup(descriptor->Name);
-            plugin->filename = g_strdup(lib_name);
-            plugin->id = k;
-            plugin->unique_id = descriptor->UniqueID;
-            for (input = output = port = 0; port < descriptor->PortCount; ++port)
-            {
-                if (LADSPA_IS_PORT_AUDIO(descriptor->PortDescriptors[port]))
-                {
-                    if (LADSPA_IS_PORT_INPUT(descriptor->PortDescriptors[port]))
-                        input++;
-                    if (LADSPA_IS_PORT_OUTPUT(descriptor->PortDescriptors[port]))
-                        output++;
-                }
-                else if (LADSPA_IS_PORT_CONTROL(descriptor->PortDescriptors[port]))
-                {
-                }
-            }
-            if (input >= 2 && output >= 2)
-            {
-                plugin->stereo = TRUE;
-            }
-            else
-            {
-                plugin->stereo = FALSE;
-            }
-            plugin_list = g_slist_prepend(plugin_list, plugin);
-        }
-        dlclose(library);
+	for (k = 0;; ++k)
+	{
+	    descriptor = descriptor_fn(k);
+	    if (descriptor == NULL)
+	    {
+		break;
+	    }
+	    plugin = g_new(ladspa_plugin, 1);
+	    plugin->name = g_strdup(descriptor->Name);
+	    plugin->filename = g_strdup(lib_name);
+	    plugin->id = k;
+	    plugin->unique_id = descriptor->UniqueID;
+	    for (input = output = port = 0; port < descriptor->PortCount; ++port)
+	    {
+		if (LADSPA_IS_PORT_AUDIO(descriptor->PortDescriptors[port]))
+		{
+		    if (LADSPA_IS_PORT_INPUT(descriptor->PortDescriptors[port]))
+			input++;
+		    if (LADSPA_IS_PORT_OUTPUT(descriptor->PortDescriptors[port]))
+			output++;
+		}
+		else if (LADSPA_IS_PORT_CONTROL(descriptor->PortDescriptors[port]))
+		{
+		}
+	    }
+	    if (input >= 2 && output >= 2)
+	    {
+		plugin->stereo = TRUE;
+	    }
+	    else
+	    {
+		plugin->stereo = FALSE;
+	    }
+	    plugin_list = g_slist_prepend(plugin_list, plugin);
+	}
+	dlclose(library);
     }
 
     closedir(dir);
@@ -663,15 +653,15 @@ static void toggled(GtkToggleButton * togglebutton, gpointer * user_data)
 
     if (gtk_toggle_button_get_active(togglebutton))
     {
-        G_LOCK(running_plugins);
-        *data = (LADSPA_Data) 1.0f;
-        G_UNLOCK(running_plugins);
+	G_LOCK(running_plugins);
+	*data = (LADSPA_Data) 1.0f;
+	G_UNLOCK(running_plugins);
     }
     else
     {
-        G_LOCK(running_plugins);
-        *data = (LADSPA_Data) - 1.0f;
-        G_UNLOCK(running_plugins);
+	G_LOCK(running_plugins);
+	*data = (LADSPA_Data) - 1.0f;
+	G_UNLOCK(running_plugins);
     }
 }
 
@@ -683,11 +673,11 @@ static int update_instance(gpointer data)
     G_LOCK(running_plugins);
     for (k = 0; k < MAX_KNOBS && k < instance->descriptor->PortCount; ++k)
     {
-        if (LADSPA_IS_PORT_OUTPUT(instance->descriptor->PortDescriptors[k]) && LADSPA_IS_PORT_CONTROL(instance->descriptor->PortDescriptors[k]))
-        {
-            instance->adjustments[k]->value = instance->knobs[k];
-            gtk_adjustment_value_changed(instance->adjustments[k]);
-        }
+	if (LADSPA_IS_PORT_OUTPUT(instance->descriptor->PortDescriptors[k]) && LADSPA_IS_PORT_CONTROL(instance->descriptor->PortDescriptors[k]))
+	{
+	    instance->adjustments[k]->value = instance->knobs[k];
+	    gtk_adjustment_value_changed(instance->adjustments[k]);
+	}
     }
     G_UNLOCK(running_plugins);
     return TRUE;
@@ -706,9 +696,9 @@ static void draw_plugin(plugin_instance * instance)
 
     if (instance->window != NULL)
     {
-        /* Just show window */
-        gtk_widget_show(instance->window);
-        return;
+	/* Just show window */
+	gtk_widget_show(instance->window);
+	return;
     }
 
     instance->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -718,175 +708,175 @@ static void draw_plugin(plugin_instance * instance)
 
     for (k = 0; k < MAX_KNOBS && k < plugin->PortCount; ++k)
     {
-        if (!LADSPA_IS_PORT_CONTROL(plugin->PortDescriptors[k]))
-            continue;
-        no_ui = FALSE;
-        hbox = gtk_hbox_new(FALSE, 3);
-        widget = gtk_label_new(plugin->PortNames[k]);
-        gtk_container_add(GTK_CONTAINER(hbox), widget);
+	if (!LADSPA_IS_PORT_CONTROL(plugin->PortDescriptors[k]))
+	    continue;
+	no_ui = FALSE;
+	hbox = gtk_hbox_new(FALSE, 3);
+	widget = gtk_label_new(plugin->PortNames[k]);
+	gtk_container_add(GTK_CONTAINER(hbox), widget);
 
-        if (LADSPA_IS_HINT_TOGGLED(hints[k].HintDescriptor))
-        {
-            widget = gtk_toggle_button_new_with_label("Press");
-            g_signal_connect(G_OBJECT(widget), "toggled", G_CALLBACK(toggled), &(instance->knobs[k]));
-            gtk_container_add(GTK_CONTAINER(hbox), widget);
-            gtk_container_add(GTK_CONTAINER(vbox), hbox);
-            continue;
-        }
+	if (LADSPA_IS_HINT_TOGGLED(hints[k].HintDescriptor))
+	{
+	    widget = gtk_toggle_button_new_with_label("Press");
+	    g_signal_connect(G_OBJECT(widget), "toggled", G_CALLBACK(toggled), &(instance->knobs[k]));
+	    gtk_container_add(GTK_CONTAINER(hbox), widget);
+	    gtk_container_add(GTK_CONTAINER(vbox), hbox);
+	    continue;
+	}
 
-        if (LADSPA_IS_HINT_SAMPLE_RATE(hints[k].HintDescriptor))
-        {
-            fact = state.srate ? state.srate : 44100.0f;
-        }
-        else
-        {
-            fact = 1.0f;
-        }
+	if (LADSPA_IS_HINT_SAMPLE_RATE(hints[k].HintDescriptor))
+	{
+	    fact = state.srate ? state.srate : 44100.0f;
+	}
+	else
+	{
+	    fact = 1.0f;
+	}
 
-        if (LADSPA_IS_HINT_BOUNDED_BELOW(hints[k].HintDescriptor))
-        {
-            min = hints[k].LowerBound * fact;
-        }
-        else
-        {
-            min = -10000.0f;
-        }
+	if (LADSPA_IS_HINT_BOUNDED_BELOW(hints[k].HintDescriptor))
+	{
+	    min = hints[k].LowerBound * fact;
+	}
+	else
+	{
+	    min = -10000.0f;
+	}
 
-        if (LADSPA_IS_HINT_BOUNDED_ABOVE(hints[k].HintDescriptor))
-        {
-            max = hints[k].UpperBound * fact;
-        }
-        else
-        {
-            max = 10000.0f;
-        }
+	if (LADSPA_IS_HINT_BOUNDED_ABOVE(hints[k].HintDescriptor))
+	{
+	    max = hints[k].UpperBound * fact;
+	}
+	else
+	{
+	    max = 10000.0f;
+	}
 
-        /* infinity */
-        if (10000.0f <= max - min)
-        {
-            dp = 1;
-            step = 5.0f;
+	/* infinity */
+	if (10000.0f <= max - min)
+	{
+	    dp = 1;
+	    step = 5.0f;
 
-            /* 100.0 ... lots */
-        }
-        else if (100.0f < max - min)
-        {
-            dp = 0;
-            step = 5.0f;
+	    /* 100.0 ... lots */
+	}
+	else if (100.0f < max - min)
+	{
+	    dp = 0;
+	    step = 5.0f;
 
-            /* 10.0 ... 100.0 */
-        }
-        else if (10.0f < max - min)
-        {
-            dp = 1;
-            step = 0.5f;
+	    /* 10.0 ... 100.0 */
+	}
+	else if (10.0f < max - min)
+	{
+	    dp = 1;
+	    step = 0.5f;
 
-            /* 1.0 ... 10.0 */
-        }
-        else if (1.0f < max - min)
-        {
-            dp = 2;
-            step = 0.05f;
+	    /* 1.0 ... 10.0 */
+	}
+	else if (1.0f < max - min)
+	{
+	    dp = 2;
+	    step = 0.05f;
 
-            /* 0.0 ... 1.0 */
-        }
-        else
-        {
-            dp = 3;
-            step = 0.005f;
-        }
+	    /* 0.0 ... 1.0 */
+	}
+	else
+	{
+	    dp = 3;
+	    step = 0.005f;
+	}
 
-        if (LADSPA_IS_HINT_INTEGER(hints[k].HintDescriptor))
-        {
-            dp = 0;
-            if (step < 1.0f)
-                step = 1.0f;
-        }
+	if (LADSPA_IS_HINT_INTEGER(hints[k].HintDescriptor))
+	{
+	    dp = 0;
+	    if (step < 1.0f)
+		step = 1.0f;
+	}
 
-        if (LADSPA_IS_HINT_DEFAULT_MINIMUM(hints[k].HintDescriptor))
-        {
-            start = min;
-        }
-        else if (LADSPA_IS_HINT_DEFAULT_LOW(hints[k].HintDescriptor))
-        {
-            start = min * 0.75f + max * 0.25f;
-        }
-        else if (LADSPA_IS_HINT_DEFAULT_MIDDLE(hints[k].HintDescriptor))
-        {
-            start = min * 0.5f + max * 0.5f;
-        }
-        else if (LADSPA_IS_HINT_DEFAULT_HIGH(hints[k].HintDescriptor))
-        {
-            start = min * 0.25f + max * 0.75f;
-        }
-        else if (LADSPA_IS_HINT_DEFAULT_MAXIMUM(hints[k].HintDescriptor))
-        {
-            start = max;
-        }
-        else if (LADSPA_IS_HINT_DEFAULT_0(hints[k].HintDescriptor))
-        {
-            start = 0.0f;
-        }
-        else if (LADSPA_IS_HINT_DEFAULT_1(hints[k].HintDescriptor))
-        {
-            start = 1.0f;
-        }
-        else if (LADSPA_IS_HINT_DEFAULT_100(hints[k].HintDescriptor))
-        {
-            start = 100.0f;
-        }
-        else if (LADSPA_IS_HINT_DEFAULT_440(hints[k].HintDescriptor))
-        {
-            start = 440.0f;
-        }
-        else if (LADSPA_IS_HINT_INTEGER(hints[k].HintDescriptor))
-        {
-            start = min;
-        }
-        else if (max >= 0.0f && min <= 0.0f)
-        {
-            start = 0.0f;
-        }
-        else
-        {
-            start = min * 0.5f + max * 0.5f;
-        }
+	if (LADSPA_IS_HINT_DEFAULT_MINIMUM(hints[k].HintDescriptor))
+	{
+	    start = min;
+	}
+	else if (LADSPA_IS_HINT_DEFAULT_LOW(hints[k].HintDescriptor))
+	{
+	    start = min * 0.75f + max * 0.25f;
+	}
+	else if (LADSPA_IS_HINT_DEFAULT_MIDDLE(hints[k].HintDescriptor))
+	{
+	    start = min * 0.5f + max * 0.5f;
+	}
+	else if (LADSPA_IS_HINT_DEFAULT_HIGH(hints[k].HintDescriptor))
+	{
+	    start = min * 0.25f + max * 0.75f;
+	}
+	else if (LADSPA_IS_HINT_DEFAULT_MAXIMUM(hints[k].HintDescriptor))
+	{
+	    start = max;
+	}
+	else if (LADSPA_IS_HINT_DEFAULT_0(hints[k].HintDescriptor))
+	{
+	    start = 0.0f;
+	}
+	else if (LADSPA_IS_HINT_DEFAULT_1(hints[k].HintDescriptor))
+	{
+	    start = 1.0f;
+	}
+	else if (LADSPA_IS_HINT_DEFAULT_100(hints[k].HintDescriptor))
+	{
+	    start = 100.0f;
+	}
+	else if (LADSPA_IS_HINT_DEFAULT_440(hints[k].HintDescriptor))
+	{
+	    start = 440.0f;
+	}
+	else if (LADSPA_IS_HINT_INTEGER(hints[k].HintDescriptor))
+	{
+	    start = min;
+	}
+	else if (max >= 0.0f && min <= 0.0f)
+	{
+	    start = 0.0f;
+	}
+	else
+	{
+	    start = min * 0.5f + max * 0.5f;
+	}
 
-        if (instance->restored)
-        {
-            start = instance->knobs[k];
-        }
-        else
-        {
-            instance->knobs[k] = start;
-        }
-        adjustment = gtk_adjustment_new(start, min, max, step, step * 10.0, 0.0);
-        instance->adjustments[k] = GTK_ADJUSTMENT(adjustment);
-        widget = gtk_spin_button_new(GTK_ADJUSTMENT(adjustment), step, dp);
-        if (LADSPA_IS_PORT_OUTPUT(plugin->PortDescriptors[k]))
-        {
-            gtk_widget_set_sensitive(widget, FALSE);
-        }
-        else
-        {
-            g_signal_connect(adjustment, "value-changed", G_CALLBACK(value_changed), &(instance->knobs[k]));
-        }
-        gtk_container_add(GTK_CONTAINER(hbox), widget);
-        widget = gtk_hscale_new(GTK_ADJUSTMENT(adjustment));
-        gtk_scale_set_digits(GTK_SCALE(widget), dp);
-        if (LADSPA_IS_PORT_OUTPUT(plugin->PortDescriptors[k]))
-        {
-            gtk_widget_set_sensitive(widget, FALSE);
-        }
-        gtk_container_add(GTK_CONTAINER(hbox), widget);
+	if (instance->restored)
+	{
+	    start = instance->knobs[k];
+	}
+	else
+	{
+	    instance->knobs[k] = start;
+	}
+	adjustment = gtk_adjustment_new(start, min, max, step, step * 10.0, 0.0);
+	instance->adjustments[k] = GTK_ADJUSTMENT(adjustment);
+	widget = gtk_spin_button_new(GTK_ADJUSTMENT(adjustment), step, dp);
+	if (LADSPA_IS_PORT_OUTPUT(plugin->PortDescriptors[k]))
+	{
+	    gtk_widget_set_sensitive(widget, FALSE);
+	}
+	else
+	{
+	    g_signal_connect(adjustment, "value-changed", G_CALLBACK(value_changed), &(instance->knobs[k]));
+	}
+	gtk_container_add(GTK_CONTAINER(hbox), widget);
+	widget = gtk_hscale_new(GTK_ADJUSTMENT(adjustment));
+	gtk_scale_set_digits(GTK_SCALE(widget), dp);
+	if (LADSPA_IS_PORT_OUTPUT(plugin->PortDescriptors[k]))
+	{
+	    gtk_widget_set_sensitive(widget, FALSE);
+	}
+	gtk_container_add(GTK_CONTAINER(hbox), widget);
 
-        gtk_container_add(GTK_CONTAINER(vbox), hbox);
+	gtk_container_add(GTK_CONTAINER(vbox), hbox);
     }
 
     if (no_ui)
     {
-        widget = gtk_label_new(_("This LADSPA plugin has no user controls"));
-        gtk_container_add(GTK_CONTAINER(vbox), widget);
+	widget = gtk_label_new(_("This LADSPA plugin has no user controls"));
+	gtk_container_add(GTK_CONTAINER(vbox), widget);
     }
 
     instance->timeout = gtk_timeout_add(100, update_instance, instance);
@@ -939,14 +929,14 @@ static void make_run_clist(void)
     G_LOCK(running_plugins);
     for (list = running_plugins; list != NULL; list = g_slist_next(list))
     {
-        gint row;
-        gchar *line[1];
-        plugin_instance *instance = (plugin_instance *) list->data;
+	gint row;
+	gchar *line[1];
+	plugin_instance *instance = (plugin_instance *) list->data;
 
-        line[0] = (char *)instance->descriptor->Name;
-        row = gtk_clist_append(GTK_CLIST(run_clist), line);
-        gtk_clist_set_row_data(GTK_CLIST(run_clist), row, (gpointer) instance);
-        gtk_clist_select_row(GTK_CLIST(run_clist), row, 0);
+	line[0] = (char *)instance->descriptor->Name;
+	row = gtk_clist_append(GTK_CLIST(run_clist), line);
+	gtk_clist_set_row_data(GTK_CLIST(run_clist), row, (gpointer) instance);
+	gtk_clist_select_row(GTK_CLIST(run_clist), row, 0);
     }
     G_UNLOCK(running_plugins);
 }
@@ -959,29 +949,29 @@ static plugin_instance *add_plugin(ladspa_plugin * plugin)
 
     if (plugin == NULL)
     {
-        return NULL;
+	return NULL;
     }
 
     instance = load(plugin->filename, plugin->id);
     if (instance == NULL)
     {
-        return NULL;
+	return NULL;
     }
 
     instance->stereo = plugin->stereo;
     if (state.srate && state.running)
     {
-        /* Jump right in */
-        boot_plugin(instance);
+	/* Jump right in */
+	boot_plugin(instance);
     }
 
     if (run_clist)
     {
-        line[0] = (char *)instance->descriptor->Name;
-        row = gtk_clist_append(GTK_CLIST(run_clist), line);
-        gtk_clist_set_row_data(GTK_CLIST(run_clist), row, (gpointer) instance);
-        gtk_clist_select_row(GTK_CLIST(run_clist), row, 0);
-        draw_plugin(instance);
+	line[0] = (char *)instance->descriptor->Name;
+	row = gtk_clist_append(GTK_CLIST(run_clist), line);
+	gtk_clist_set_row_data(GTK_CLIST(run_clist), row, (gpointer) instance);
+	gtk_clist_select_row(GTK_CLIST(run_clist), row, 0);
+	draw_plugin(instance);
     }
     G_LOCK(running_plugins);
     running_plugins = g_slist_append(running_plugins, instance);
@@ -1002,8 +992,8 @@ static void select_plugin(GtkCList * clist, gint row, gint column, GdkEventButto
     gtk_clist_unselect_all(GTK_CLIST(run_clist));
     if (event->type == GDK_2BUTTON_PRESS)
     {
-        /* Double click */
-        add_plugin(selected_plugin);
+	/* Double click */
+	add_plugin(selected_plugin);
     }
 }
 
@@ -1026,12 +1016,12 @@ static GtkWidget *make_plugin_clist(void)
 
     for (list = plugin_list; list != NULL; list = g_slist_next(list))
     {
-        plugin = (ladspa_plugin *) list->data;
-        snprintf(number, sizeof(number), "%ld", plugin->unique_id);
-        line[0] = number;
-        line[1] = plugin->name;
-        row = gtk_clist_append(GTK_CLIST(clist), line);
-        gtk_clist_set_row_data(GTK_CLIST(clist), row, (gpointer) plugin);
+	plugin = (ladspa_plugin *) list->data;
+	snprintf(number, sizeof(number), "%ld", plugin->unique_id);
+	line[0] = number;
+	line[1] = plugin->name;
+	row = gtk_clist_append(GTK_CLIST(clist), line);
+	gtk_clist_set_row_data(GTK_CLIST(clist), row, (gpointer) plugin);
     }
     gtk_clist_sort(GTK_CLIST(clist));
 
@@ -1054,7 +1044,7 @@ static void remove_plugin_clicked(GtkButton * button, gpointer user_data)
 
     if (instance == NULL)
     {
-        return;
+	return;
     }
     row = gtk_clist_find_row_from_data(GTK_CLIST(run_clist), (gpointer) instance);
     gtk_clist_remove(GTK_CLIST(run_clist), row);
@@ -1070,7 +1060,7 @@ static void configure_plugin_clicked(GtkButton * button, gpointer user_data)
 {
     if (selected_instance)
     {
-        draw_plugin(selected_instance);
+	draw_plugin(selected_instance);
     }
 }
 
@@ -1080,9 +1070,9 @@ static void configure(void)
 
     if (config_window)
     {
-        /* just show the window */
-        gtk_widget_show(config_window);
-        return;
+	/* just show the window */
+	gtk_widget_show(config_window);
+	return;
     }
 
     config_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -1102,7 +1092,7 @@ static void configure(void)
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(widget), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
     if (run_clist == NULL)
     {
-        make_run_clist();
+	make_run_clist();
     }
     gtk_container_add(GTK_CONTAINER(widget), run_clist);
     gtk_container_add(GTK_CONTAINER(frame), widget);
