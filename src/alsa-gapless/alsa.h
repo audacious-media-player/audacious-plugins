@@ -20,10 +20,14 @@
 #ifndef AUDACIOUS_ALSA_GAPLESS_H
 #define AUDACIOUS_ALSA_GAPLESS_H
 
+#include "../../config.h"
+
 #include <stdio.h>
 #include <glib.h>
 #include <alsa/asoundlib.h>
+
 #include <audacious/plugin.h>
+#include <audacious/i18n.h>
 
 #define ERROR(...) fprintf (stderr, "alsa-gapless: " __VA_ARGS__)
 

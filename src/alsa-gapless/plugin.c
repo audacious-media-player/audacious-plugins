@@ -48,7 +48,7 @@ SIMPLE_OUTPUT_PLUGIN (alsa-gapless, list);
 
 void alsa_about (void)
 {
-    const char markup[] = "<b>ALSA Gapless Output Plugin for Audacious</b>\n"
+    const char markup[] = N_("<b>ALSA Gapless Output Plugin for Audacious</b>\n"
      "Copyright 2009 John Lindgren\n\n"
      "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
      "code served as a reference when the ALSA manual was not enough.\n\n"
@@ -62,14 +62,14 @@ void alsa_about (void)
      "documentation provided with the distribution.\n\n"
      "This software is provided \"as is\" and without any warranty, express or "
      "implied. In no event shall the authors be liable for any damages arising "
-     "from the use of this software.";
+     "from the use of this software.");
 
     static GtkWidget * window = NULL;
 
     if (window == NULL)
     {
         window = gtk_message_dialog_new_with_markup (NULL, 0, GTK_MESSAGE_INFO,
-         GTK_BUTTONS_OK, markup);
+         GTK_BUTTONS_OK, _(markup));
         g_signal_connect ((GObject *) window, "response", (GCallback)
          gtk_widget_destroy, NULL);
         g_signal_connect ((GObject *) window, "destroy", (GCallback)

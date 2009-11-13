@@ -19,7 +19,6 @@
 
 #include "alsa.h"
 
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 gchar * alsa_config_pcm, * alsa_config_mixer, * alsa_config_mixer_element;

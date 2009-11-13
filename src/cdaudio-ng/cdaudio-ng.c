@@ -35,9 +35,9 @@
 #include <cddb/cddb.h>
 
 #include <glib.h>
-#include <glib/gi18n.h>
 
 #include <audacious/plugin.h>
+#include <audacious/i18n.h>
 #include <audacious/output.h>
 #include <audacious/ui_plugin_menu.h>
 

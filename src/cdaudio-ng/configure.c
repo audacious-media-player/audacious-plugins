@@ -1,9 +1,9 @@
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <gtk/gtk.h>
+#include <audacious/i18n.h>
 #include "config.h"
 
 #include "cdaudio-ng.h"
