@@ -12,10 +12,11 @@ if test "x$xs_have_sidplay2" = "xyes"; then
 	AC_LANG_PUSH([C++])
 	
 	XS_BUILDERS_CHECK
+        xs_builders_available="no"
 	XS_BUILDERS_FIND([reSID], [resid-builder], [resid.h], [ReSIDBuilder])
 	XS_BUILDERS_FIND([HardSID], [hardsid-builder], [hardsid.h], [HardSID])
 	if test "x$xs_builders_available" = "xno"; then
-		AC_MSG_ERROR([No builder modules were found in the sidbuilders directory!]);
+		AC_MSG_ERROR([No builder modules were found in the sidbuilders directory! Your installation of libSIDPlay2 is broken. Fix it or re-run configure with '--without-sidplay2'.]);
 	fi
 	
 	dnl *** Check for new COMI API
@@ -27,7 +28,7 @@ if test "x$xs_have_sidplay2" = "xyes"; then
 	AC_EGREP_HEADER([::Iid], [sidplay/sidplay2.h],
 		[xs_have_sidplay2_api="yes"],
 		[
-		AC_EGREP_HEADER([SIDIID],
+		AC_EGREP_HEADER([SIDIID], [sidplay/sidplay2.h],
 			[xs_have_sidplay2_api="yes"],
 			[xs_have_sidplay2_api="(old style API)"])
 		]

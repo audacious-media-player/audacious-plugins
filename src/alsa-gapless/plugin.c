@@ -48,7 +48,7 @@ SIMPLE_OUTPUT_PLUGIN (alsa-gapless, list);
 
 void alsa_about (void)
 {
-    const char markup[] = "<b>ALSA Gapless Output Plugin for Audacious</b>\n"
+    const gchar markup[] = "<b>ALSA Gapless Output Plugin for Audacious</b>\n"
      "Copyright 2009 John Lindgren\n\n"
      "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
      "code served as a reference when the ALSA manual was not enough.\n\n"

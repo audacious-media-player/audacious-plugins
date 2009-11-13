@@ -2,6 +2,7 @@ PLUGIN = rocklight${PLUGIN_SUFFIX}
 
 SRCS = rocklight.c	\
        sysled.c		\
+       b43led.c		\
        thinklight.c
 
 include ../../buildsys.mk

@@ -25,15 +25,12 @@
 
 /*#define AUD_DEBUG*/
 
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
+#include "config.h"
 
 #include "util.h"
 
 #include <dirent.h>
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,6 +41,7 @@
 #  include <fts.h>
 #endif
 
+#include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
 
 #include "plugin.h"
@@ -55,7 +53,9 @@ typedef struct
     gboolean found;
 } FindFileContext;
 
+#ifndef HAVE_MKDTEMP
 static void make_directory(const gchar *path, mode_t mode);
+#endif
 
 gchar * find_file_case (const gchar * folder, const gchar * basename)
 {
@@ -776,6 +776,7 @@ GtkWidget *make_filebrowser(const gchar *title, gboolean save)
     return dialog;
 }
 
+#ifndef HAVE_MKDTEMP
 static void make_directory(const gchar *path, mode_t mode)
 {
     if (g_mkdir_with_parents(path, mode) == 0)
@@ -784,6 +785,7 @@ static void make_directory(const gchar *path, mode_t mode)
     g_printerr(_("Could not create directory (%s): %s\n"), path,
                g_strerror(errno));
 }
+#endif
 
 void insert_drag_list(gint playlist, gint position, const gchar *list)
 {
@@ -811,6 +813,28 @@ void insert_drag_list(gint playlist, gint position, const gchar *list)
     }
 
     aud_playlist_entry_insert_batch(playlist, position, add, NULL);
+}
+
+void open_drag_list (const gchar * list)
+{
+    GList * glist = NULL;
+    const gchar * newline;
+
+    while ((newline = strstr (list, "\r\n")) != NULL)
+    {
+        glist = g_list_prepend (glist, g_strndup (list, newline - list));
+        list = newline + 2;
+    }
+
+    glist = g_list_reverse (glist);
+
+    audacious_drct_pl_open_list (glist);
+
+    while (glist != NULL)
+    {
+        g_free (glist->data);
+        glist = g_list_delete_link (glist, glist);
+    }
 }
 
 void resize_window(GtkWidget *window, gint width, gint height)

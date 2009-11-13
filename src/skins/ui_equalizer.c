@@ -25,14 +25,11 @@
 
 /*#define AUD_DEBUG*/
 
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
+#include "config.h"
 
 #include "ui_equalizer.h"
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <math.h>
@@ -45,6 +42,8 @@
 #include "util.h"
 #include "ui_main.h"
 #include "ui_playlist.h"
+
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <audacious/equalizer_preset.h>
 

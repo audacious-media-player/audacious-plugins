@@ -20,10 +20,14 @@
 #ifndef AUDACIOUS_ALSA_GAPLESS_H
 #define AUDACIOUS_ALSA_GAPLESS_H
 
+#include "../../config.h"
+
 #include <stdio.h>
 #include <glib.h>
 #include <alsa/asoundlib.h>
+
 #include <audacious/plugin.h>
+#include <audacious/i18n.h>
 
 #define ERROR(...) fprintf (stderr, "alsa-gapless: " __VA_ARGS__)
 
@@ -43,7 +47,10 @@ do { \
 } while (0)
 
 /* alsa.c */
+extern GMutex * alsa_mutex;
+
 OutputPluginInitStatus alsa_init (void);
+void alsa_soft_init (void);
 void alsa_cleanup (void);
 gint alsa_open_audio (AFormat aud_format, gint rate, gint channels);
 void alsa_close_audio (void);

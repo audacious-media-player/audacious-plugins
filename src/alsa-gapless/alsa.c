@@ -21,9 +21,10 @@
 
 #define LEAST_BUFFER 100 /* milliseconds */
 
-static GMutex * alsa_mutex;
+GMutex * alsa_mutex;
 static snd_pcm_t * alsa_handle;
 static GCond * pump_cond;
+static gboolean initted;
 
 static snd_pcm_format_t alsa_format;
 static gint alsa_channels, alsa_rate;
@@ -117,7 +118,6 @@ static void * pump (void * unused)
     return NULL;
 }
 
-/* alsa_mutex must be locked */
 static void start_playback (void)
 {
     DEBUG ("Starting playback.\n");
@@ -132,7 +132,6 @@ FAILED:
     g_cond_signal (pump_cond);
 }
 
-/* alsa_mutex must be locked */
 static gboolean real_open (snd_pcm_format_t format, gint rate, gint channels)
 {
     snd_pcm_hw_params_t * params;
@@ -198,7 +197,6 @@ FAILED:
     return FALSE;
 }
 
-/* alsa_mutex must be locked */
 static void real_close (void)
 {
     DEBUG ("Closing audio.\n");
@@ -221,7 +219,6 @@ static void real_close (void)
     alsa_handle = NULL;
 }
 
-/* alsa_mutex must be locked */
 static gint real_output_time (void)
 {
     snd_pcm_status_t * status;
@@ -238,7 +235,6 @@ FAILED:
     return time;
 }
 
-/* alsa_mutex must be locked */
 static gboolean real_buffer_playing (void)
 {
     snd_pcm_state_t state;
@@ -252,33 +248,43 @@ static gboolean real_buffer_playing (void)
 
 OutputPluginInitStatus alsa_init (void)
 {
-    DEBUG ("Initialize.\n");
-    alsa_config_load ();
-
     alsa_mutex = g_mutex_new ();
     alsa_handle = NULL;
     pump_cond = g_cond_new ();
-
-    alsa_open_mixer ();
+    initted = FALSE;
 
     return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
+void alsa_soft_init (void)
+{
+    if (! initted)
+    {
+        DEBUG ("Initialize.\n");
+        alsa_config_load ();
+        alsa_open_mixer ();
+        initted = TRUE;
+    }
+}
+
 void alsa_cleanup (void)
 {
-    DEBUG ("Cleanup.\n");
-    alsa_config_save ();
-
     g_mutex_lock (alsa_mutex);
 
-    if (alsa_handle != NULL)
-        real_close ();
+    if (initted)
+    {
+        DEBUG ("Cleanup.\n");
+
+        if (alsa_handle != NULL)
+            real_close ();
+
+        alsa_close_mixer ();
+        alsa_config_save ();
+    }
 
     g_mutex_unlock (alsa_mutex);
     g_mutex_free (alsa_mutex);
     g_cond_free (pump_cond);
-
-    alsa_close_mixer ();
 }
 
 static snd_pcm_format_t convert_aud_format (AFormat aud_format)
@@ -330,6 +336,7 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
     gint result;
 
     g_mutex_lock (alsa_mutex);
+    alsa_soft_init ();
 
     if (alsa_handle != NULL)
     {
@@ -353,8 +360,10 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
         }
     }
 
-    result = (alsa_handle != NULL || real_open (format, rate, channels)) ? 1 :
-     -1;
+    if (alsa_handle != NULL)
+        result = 1;
+    else
+        result = real_open (format, rate, channels) ? 1 : -1;
 
     g_mutex_unlock (alsa_mutex);
     return result;
@@ -462,6 +471,7 @@ gint alsa_output_time (void)
     gint time;
 
     g_mutex_lock (alsa_mutex);
+    alsa_soft_init ();
 
     if (alsa_handle == NULL)
         time = 0;
@@ -593,6 +603,9 @@ void alsa_get_volume (gint * left, gint * right)
 {
     glong left_l = 0, right_l = 0;
 
+    g_mutex_lock (alsa_mutex);
+    alsa_soft_init ();
+
     if (alsa_mixer == NULL)
         goto FAILED;
 
@@ -613,12 +626,17 @@ void alsa_get_volume (gint * left, gint * right)
     }
 
 FAILED:
+    g_mutex_unlock (alsa_mutex);
+
     * left = left_l;
     * right = right_l;
 }
 
 void alsa_set_volume (gint left, gint right)
 {
+    g_mutex_lock (alsa_mutex);
+    alsa_soft_init ();
+
     if (alsa_mixer == NULL)
         goto FAILED;
 
@@ -636,5 +654,5 @@ void alsa_set_volume (gint left, gint right)
     CHECK (snd_mixer_handle_events, alsa_mixer);
 
 FAILED:
-    return;
+    g_mutex_unlock (alsa_mutex);
 }

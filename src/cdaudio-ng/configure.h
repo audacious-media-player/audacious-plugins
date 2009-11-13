@@ -13,7 +13,7 @@ typedef struct cdng_cfg_t
     gchar *cddb_path;
     gint cddb_port;
     gboolean cddb_http;
-    gint limitspeed;
+    gint disc_speed;
     gboolean use_proxy;
     gchar *proxy_host;
     gint proxy_port;

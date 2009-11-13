@@ -28,7 +28,6 @@
 #endif
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <glib/gprintf.h>
 #include <gtk/gtk.h>
 #include <gtk/gtkmessagedialog.h>
@@ -36,6 +35,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+
+#include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 
 /* GDK including */
@@ -142,6 +143,12 @@ mainwin_set_title_scroll(gboolean scroll)
     ui_skinned_textbox_set_scroll(mainwin_info, config.autoscroll);
 }
 
+void mainwin_set_sticky (gboolean sticky)
+{
+    gtk_toggle_action_set_active ((GtkToggleAction *)
+     gtk_action_group_get_action (toggleaction_group_others,
+     "view put on all workspaces"), sticky);
+}
 
 void
 mainwin_set_always_on_top(gboolean always)
@@ -515,7 +522,10 @@ mainwin_set_song_info(gint bitrate,
                       gint frequency,
                       gint n_channels)
 {
-    char * bitrate_text, * text;
+    gchar *bitrate_text, *text;
+    gint pos, playlist;
+    const gchar *quality;
+    const Tuple *tuple;
 
     GDK_THREADS_ENTER();
     if (bitrate != -1) {
@@ -547,8 +557,17 @@ mainwin_set_song_info(gint bitrate,
 
     if (bitrate == -1)
         bitrate_text = g_strdup ("VBR");
-    else
-        bitrate_text = g_strdup_printf ("%d kbps", bitrate);
+    else {
+        playlist = aud_playlist_get_playing();
+        pos = aud_playlist_get_position(playlist);
+        tuple = aud_playlist_entry_get_tuple(playlist, pos);
+        quality = tuple_get_string((Tuple *) tuple, FIELD_QUALITY, NULL);
+
+        if (quality == NULL || g_ascii_strcasecmp("sequenced", quality))
+            bitrate_text = g_strdup_printf ("%d kbps", bitrate);
+        else
+            bitrate_text = g_strdup_printf ("%d channels", bitrate);
+    }
 
     text = g_strdup_printf ("%s, %d kHz, %s", bitrate_text, frequency / 1000,
      (n_channels > 1) ? _("stereo") : _("mono"));
@@ -876,8 +895,6 @@ mainwin_drag_data_received(GtkWidget * widget,
                            guint time,
                            gpointer user_data)
 {
-    gint playlist;
-
     g_return_if_fail(selection_data != NULL);
     g_return_if_fail(selection_data->data != NULL);
 
@@ -906,11 +923,7 @@ mainwin_drag_data_received(GtkWidget * widget,
         }
     }
 
-    playlist = aud_playlist_get_active ();
-    aud_playlist_entry_delete (playlist, 0, aud_playlist_entry_count (playlist));
-    insert_drag_list (playlist, 0, (const gchar *) selection_data->data);
-    aud_playlist_set_playing (playlist);
-    audacious_drct_initiate();
+    open_drag_list ((const gchar *) selection_data->data);
 }
 
 static void
@@ -1671,28 +1684,6 @@ mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
 }
 
 void
-run_no_output_device_dialog(gpointer hook_data, gpointer user_data)
-{
-    const gchar *markup =
-        N_("<b><big>Couldn't open audio.</big></b>\n\n"
-           "Please check that:\n"
-           "1. You have the correct output plugin selected.\n"
-           "2. No other programs is blocking the soundcard.\n"
-           "3. Your soundcard is configured properly.\n");
-
-    GDK_THREADS_ENTER();
-    GtkWidget *dialog =
-        gtk_message_dialog_new_with_markup(GTK_WINDOW(mainwin),
-                                           GTK_DIALOG_DESTROY_WITH_PARENT,
-                                           GTK_MESSAGE_ERROR,
-                                           GTK_BUTTONS_OK,
-                                           _(markup));
-    gtk_dialog_run(GTK_DIALOG(dialog));
-    gtk_widget_destroy(dialog);
-    GDK_THREADS_LEAVE();
-}
-
-void
 ui_main_set_initial_volume(void)
 {
     gint vl, vr, b, v;
@@ -2157,10 +2148,23 @@ static void show_widgets (void)
     ui_skinned_window_set_shade (mainwin, config.player_shaded);
 }
 
+static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
+ void * unused)
+{
+    if (event->changed_mask & GDK_WINDOW_STATE_STICKY)
+        mainwin_set_sticky (event->new_window_state & GDK_WINDOW_STATE_STICKY);
+
+    if (event->changed_mask & GDK_WINDOW_STATE_ABOVE)
+        mainwin_set_always_on_top (event->new_window_state &
+         GDK_WINDOW_STATE_ABOVE);
+
+    return TRUE;
+}
+
 static gboolean delete_cb (GtkWidget * widget, GdkEvent * event, void * unused)
 {
     audacious_drct_quit ();
-    return 1;
+    return TRUE;
 }
 
 static void
@@ -2197,8 +2201,10 @@ mainwin_create_window(void)
 
     ui_main_evlistener_init();
 
-    g_signal_connect ((GObject *) mainwin, "delete-event", (GCallback) delete_cb,
-     0);
+    g_signal_connect ((GObject *) mainwin, "window-state-event", (GCallback)
+     state_cb, NULL);
+    g_signal_connect ((GObject *) mainwin, "delete-event", (GCallback)
+     delete_cb, NULL);
 }
 
 void mainwin_unhook (void)

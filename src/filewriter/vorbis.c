@@ -273,6 +273,7 @@ static void vorbis_configure(void)
     if (configure_win == NULL)
     {
         configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_type_hint(GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
         g_signal_connect(G_OBJECT(configure_win), "destroy", G_CALLBACK(gtk_widget_destroyed), NULL);
 
         gtk_window_set_title(GTK_WINDOW(configure_win), _("Vorbis Encoder Configuration"));

@@ -467,26 +467,17 @@ static void ui_playback_end(gpointer hook_data, gpointer user_data)
 
 static GtkWidget *gtk_toolbar_button_add(GtkWidget * toolbar, void (*callback) (), const gchar * stock_id)
 {
+    GtkWidget *icon;
     GtkWidget *button = gtk_button_new();
-    gtk_button_set_label(GTK_BUTTON(button), stock_id);
-    gtk_button_set_use_stock(GTK_BUTTON(button), TRUE);
+
     gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
+    
+    icon = gtk_image_new_from_stock(stock_id, GTK_ICON_SIZE_BUTTON);
+    gtk_container_add(GTK_CONTAINER(button), icon);
 
-    /* remove label */
-    GtkBox *box = GTK_BOX(gtk_bin_get_child(GTK_BIN(gtk_bin_get_child(GTK_BIN(button)))));
-    GList *iter;
-    for (iter = box->children; iter; iter = g_list_next(iter))
-    {
-        GtkBoxChild *child = (GtkBoxChild *) iter->data;
-        if (GTK_IS_LABEL(child->widget))
-        {
-            gtk_label_set_text(GTK_LABEL(child->widget), NULL);
-            break;
-        }
-    }
-
-    gtk_box_pack_start(GTK_BOX(toolbar), button, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(toolbar), button, FALSE, FALSE, 0);
     g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(callback), NULL);
+
     return button;
 }
 

@@ -747,7 +747,7 @@ play_loop (void *data)
   CEmuopl opl (conf.freq, conf.bit16, conf.stereo);
   long toadd = 0, i, towrite;
   char *sndbuf, *sndbufpos;
-  int songlength;
+  int songlength = 0;
   bool playing = true,          // Song self-end indicator.
     bit16 = conf.bit16,          // Duplicate config, so it doesn't affect us if
     stereo = conf.stereo;        // the user changes it while we're playing.
@@ -797,7 +797,7 @@ play_loop (void *data)
 
   // Set XMMS main window information
   dbg_printf ("xmms, ");
-  playback->set_params (playback, plr.songtitle, plr.songlength, freq * sampsize * 8,
+  playback->set_params (playback, NULL, 0, freq * sampsize * 8,
                       freq, stereo ? 2 : 1);
 
   // Rewind player to right subsong

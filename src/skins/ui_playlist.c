@@ -28,7 +28,6 @@
 #include "ui_playlist.h"
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
@@ -57,6 +56,7 @@
 #include "ui_skinned_playlist_slider.h"
 #include "ui_skinned_playlist.h"
 
+#include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include "images/audacious_playlist.xpm"
 
@@ -155,20 +155,37 @@ static void playlistwin_update_info (void)
     g_free(sel_text);
 }
 
-static void playlistwin_update_sinfo (void)
+static void update_rollup_text (void)
 {
-    gchar * info = audacious_drct_get_playing () ? aud_playback_get_title () :
-     NULL;
+    gint playlist = aud_playlist_get_active ();
+    gint entry = aud_playlist_get_position (playlist);
+    gchar scratch[512];
 
-    ui_skinned_textbox_set_text (playlistwin_sinfo, (info == NULL) ? "" : info);
-    g_free(info);
+    scratch[0] = 0;
+
+    if (entry > -1)
+    {
+        gint length = aud_playlist_entry_get_length (playlist, entry);
+
+        if (aud_cfg->show_numbers_in_pl)
+            snprintf (scratch, sizeof scratch, "%d. ", 1 + entry);
+
+        snprintf (scratch + strlen (scratch), sizeof scratch - strlen (scratch),
+         "%s", aud_playlist_entry_get_title (playlist, entry));
+
+        if (length > 0)
+            snprintf (scratch + strlen (scratch), sizeof scratch - strlen
+             (scratch), " (%d:%02d)", length / 60000, length / 1000 % 60);
+    }
+
+    ui_skinned_textbox_set_text (playlistwin_sinfo, scratch);
 }
 
 static void real_update (void)
 {
     ui_skinned_playlist_update (playlistwin_list);
     playlistwin_update_info ();
-    playlistwin_update_sinfo ();
+    update_rollup_text ();
 }
 
 void playlistwin_update (void)
@@ -181,28 +198,26 @@ static void
 playlistwin_set_geometry_hints(gboolean shaded)
 {
     GdkGeometry geometry;
-    GdkWindowHints mask;
 
     geometry.min_width = PLAYLISTWIN_MIN_WIDTH;
-    geometry.max_width = G_MAXUINT16;
-
     geometry.width_inc = PLAYLISTWIN_WIDTH_SNAP;
-    geometry.height_inc = PLAYLISTWIN_HEIGHT_SNAP;
+    geometry.max_width = 65535;
 
-    if (shaded) {
+    if (shaded)
+    {
         geometry.min_height = PLAYLISTWIN_SHADED_HEIGHT;
+        geometry.height_inc = 0;
         geometry.max_height = PLAYLISTWIN_SHADED_HEIGHT;
-        geometry.base_height = PLAYLISTWIN_SHADED_HEIGHT;
     }
-    else {
+    else
+    {
         geometry.min_height = PLAYLISTWIN_MIN_HEIGHT;
-        geometry.max_height = G_MAXUINT16;
+        geometry.height_inc = PLAYLISTWIN_HEIGHT_SNAP;
+        geometry.max_height = 65535;
     }
 
-    mask = GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE | GDK_HINT_RESIZE_INC;
-
-    gtk_window_set_geometry_hints(GTK_WINDOW(playlistwin),
-                                  playlistwin, &geometry, mask);
+    gtk_window_set_geometry_hints ((GtkWindow *) playlistwin, NULL, & geometry,
+     GDK_HINT_MIN_SIZE | GDK_HINT_RESIZE_INC | GDK_HINT_MAX_SIZE);
 }
 
 void

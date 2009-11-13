@@ -28,6 +28,7 @@ enum type {
 	NONE = 0,
 	THINKLIGHT,
 	SYSLED,
+	B43LED,
 };
 
 static int fd, last, state;
@@ -53,6 +54,12 @@ static void rocklight_init(void) {
 		type = SYSLED;
 		return;
 	}
+
+	fd = open("/sys/class/leds/b43-phy0::tx/brightness", O_RDWR);
+	if (fd >= 0) {
+		type = B43LED;
+		return;
+	}
 }
 
 static void rocklight_cleanup(void) {
@@ -68,6 +75,10 @@ static void rocklight_playback_start(void) {
 
 		case SYSLED:
 			last = state = sysled_get(fd);
+			break;
+
+		case B43LED:
+			last = state = b43led_get(fd);
 			break;
 
 		default:
@@ -88,6 +99,10 @@ static void rocklight_playback_stop(void) {
 			sysled_set(fd, state);
 			break;
 
+		case B43LED:
+			b43led_set(fd, state);
+			break;
+
 		default:
 			break;
 	}
@@ -106,6 +121,10 @@ static void rocklight_render_freq(gint16 data[2][256]) {
 
 		case SYSLED:
 			sysled_set(fd, new);
+			break;
+
+		case B43LED:
+			b43led_set(fd, new);
 			break;
 
 		default:

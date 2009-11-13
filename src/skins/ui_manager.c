@@ -39,6 +39,8 @@
 #include "sync-menu.h"
 #endif
 #include "plugin.h"
+
+#include <audacious/i18n.h>
 #include <audacious/ui_plugin_menu.h>
 #include <libaudgui/libaudgui.h>
 
@@ -209,10 +211,10 @@ static GtkActionEntry action_entries_playlist[] = {
 	{ "playlist delete", GTK_STOCK_DELETE , N_("Delete Playlist"), "<Shift>D",
 	  N_("Delete Playlist"), G_CALLBACK(action_playlist_delete) },
 
-        { "playlist load", GTK_STOCK_OPEN, N_("Load List"), "O",
+        {"playlist load", GTK_STOCK_OPEN, N_("Import Playlist"), "O",
           N_("Loads a playlist file into the selected playlist."), G_CALLBACK(action_playlist_load_list) },
 
-        { "playlist save", GTK_STOCK_SAVE, N_("Save List"), "<Shift>S",
+        {"playlist save", GTK_STOCK_SAVE, N_("Export Playlist"), "<Shift>S",
           N_("Saves the selected playlist."), G_CALLBACK(action_playlist_save_list) },
 
         { "playlist save all", GTK_STOCK_SAVE, N_("Save All Playlists"),

@@ -27,13 +27,14 @@
 #include "ui_skinselector.h"
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include "platform/smartinclude.h"
 
 #include <stdlib.h>
 #include <string.h>
+
+#include <audacious/i18n.h>
 
 #include "plugin.h"
 #include "ui_skin.h"

@@ -311,9 +311,6 @@ ui_main_evlistener_init(void)
     aud_hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
     aud_hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
 
-    aud_hook_associate("playback audio error", (void *) mainwin_stop_pushed, NULL);
-    aud_hook_associate("playback audio error", (void *) run_no_output_device_dialog, NULL);
-
     aud_hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
 }
 
@@ -332,9 +329,6 @@ ui_main_evlistener_dissociate(void)
     aud_hook_dissociate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top);
     aud_hook_dissociate("mainwin show", ui_main_evlistener_mainwin_show);
     aud_hook_dissociate("equalizerwin show", ui_main_evlistener_equalizerwin_show);
-
-    aud_hook_dissociate("playback audio error", (void *) mainwin_stop_pushed);
-    aud_hook_dissociate("playback audio error", (void *) run_no_output_device_dialog);
 
     aud_hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
 }

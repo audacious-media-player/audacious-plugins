@@ -19,7 +19,6 @@
 
 #include "alsa.h"
 
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 gchar * alsa_config_pcm, * alsa_config_mixer, * alsa_config_mixer_element;
@@ -57,13 +56,13 @@ static gboolean list_has_member (GtkListStore * list, const gchar * text)
     return (iter != NULL);
 }
 
-static void get_defined_pcms (gboolean capture, void (* found) (const gchar *
- name, const gchar * description))
+static void get_defined_devices (const gchar * type, gboolean capture, void
+ (* found) (const gchar * name, const gchar * description))
 {
     void * * hints = NULL;
     gint count;
 
-    CHECK (snd_device_name_hint, -1, "pcm", & hints);
+    CHECK (snd_device_name_hint, -1, type, & hints);
 
     for (count = 0; hints[count] != NULL; count ++)
     {
@@ -201,7 +200,7 @@ static void pcm_card_found (gint card, const gchar * description)
 static void pcm_list_fill (void)
 {
     pcm_found ("default", _("Default PCM device"));
-    get_defined_pcms (FALSE, pcm_found);
+    get_defined_devices ("pcm", FALSE, pcm_found);
     get_cards (pcm_card_found);
 }
 
@@ -227,6 +226,7 @@ static void mixer_card_found (gint card, const gchar * description)
 static void mixer_list_fill (void)
 {
     mixer_found ("default", _("Default mixer device"));
+    get_defined_devices ("ctl", FALSE, mixer_found);
     get_cards (mixer_card_found);
 }
 
@@ -279,8 +279,6 @@ static void guess_mixer_element (void)
         if (list_has_member (mixer_element_list, alsa_config_mixer_element))
             return;
 
-        ERROR ("There is no mixer element named \"%s\".\n",
-         alsa_config_mixer_element);
         g_free (alsa_config_mixer_element);
         alsa_config_mixer_element = NULL;
     }
@@ -313,7 +311,6 @@ void alsa_config_load (void)
     else if (strcmp (alsa_config_pcm, "default") && ! list_has_member (pcm_list,
      alsa_config_pcm))
     {
-        ERROR ("There is no PCM device named \"%s\".\n", alsa_config_pcm);
         g_free (alsa_config_pcm);
         alsa_config_pcm = g_strdup ("default");
     }
@@ -327,7 +324,6 @@ void alsa_config_load (void)
     else if (strcmp (alsa_config_mixer, "default") && ! list_has_member
      (mixer_list, alsa_config_mixer))
     {
-        ERROR ("There is no mixer device named \"%s\".\n", alsa_config_mixer);
         g_free (alsa_config_mixer);
         alsa_config_mixer = g_strdup ("default");
     }
@@ -516,6 +512,10 @@ static void connect_callbacks (void)
 
 void alsa_configure (void)
 {
+    g_mutex_lock (alsa_mutex);
+    alsa_soft_init ();
+    g_mutex_unlock (alsa_mutex);
+
     if (window != NULL)
     {
         gtk_window_present ((GtkWindow *) window);

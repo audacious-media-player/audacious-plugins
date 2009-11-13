@@ -142,6 +142,7 @@ void mainwin_clear_song_info(void);
 void mainwin_set_stopaftersong(gboolean stop);
 void mainwin_set_noplaylistadvance(gboolean no_advance);
 
+void mainwin_set_sticky (gboolean sticky);
 void mainwin_set_always_on_top(gboolean always);
 void mainwin_set_shape (void);
 void mainwin_set_volume_diff(gint diff);
@@ -168,7 +169,6 @@ void mainwin_drag_data_received(GtkWidget * widget,
                                 guint time,
                                 gpointer user_data);
 
-void run_no_output_device_dialog(gpointer hook_data, gpointer user_data);
 void mainwin_setup_menus(void);
 gboolean change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event);
 
