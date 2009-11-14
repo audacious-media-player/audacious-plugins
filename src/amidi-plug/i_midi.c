@@ -601,7 +601,8 @@ gint i_midi_setget_tempo( midifile_t * mf )
    COMMENT: this will also reset current position in each track! */
 void i_midi_setget_length( midifile_t * mf )
 {
-  gint length_microsec = 0, last_tick = 0, i = 0;
+  gint64 length_microsec = 0;
+  gint last_tick = 0, i = 0;
   /* get the first microsec_per_tick ratio */
   gint microsec_per_tick = (gint)(mf->current_tempo / mf->ppq);
 

@@ -252,7 +252,7 @@ typedef struct
 
   gint playing_tick;
   gint avg_microsec_per_tick;
-  gint length;
+  gint64 length;
 
   gint skip_offset;
 }
