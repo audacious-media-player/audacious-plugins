@@ -37,12 +37,8 @@
 #include "i_fileinfo.h"
 #include "i_utils.h"
 
-
-static GThread * amidiplug_audio_thread = NULL;
 static GMutex * amidiplug_gettime_mutex = NULL;
 static GMutex * amidiplug_playing_mutex = NULL;
-static GCond * amidiplug_pause_cond = NULL;
-static GCond * amidiplug_seekonpause_cond = NULL;
 
 gint amidiplug_playing_status = AMIDIPLUG_STOP;
 
@@ -63,7 +59,6 @@ amidiplug_cfg_ap_t amidiplug_cfg_ap =
 gchar *amidiplug_vfs_extensions[] = { "mid" , "midi" , "rmi" , "rmid" , NULL };
 
 gpointer amidiplug_play_loop( gpointer );
-gpointer amidiplug_audio_loop( gpointer );
 void amidiplug_skipto( gint );
 static void amidiplug_init( void );
 static void amidiplug_cleanup( void );
@@ -73,7 +68,7 @@ static gint amidiplug_is_our_file_from_vfs( const gchar * , VFSFile * );
 static void amidiplug_play( InputPlayback * );
 static void amidiplug_stop( InputPlayback * );
 static void amidiplug_pause( InputPlayback *, gshort );
-static void amidiplug_seek( InputPlayback *, gint );
+static void amidiplug_mseek (InputPlayback * playback, gulong time);
 static gint amidiplug_get_time( InputPlayback * );
 static gint amidiplug_get_volume( gint * , gint * );
 static gint amidiplug_set_volume( gint , gint );
@@ -89,7 +84,7 @@ InputPlugin amidiplug_ip =
   .play_file = amidiplug_play,			/* play_file */
   .stop = amidiplug_stop,			/* stop */
   .pause = amidiplug_pause,			/* pause */
-  .seek = amidiplug_seek,			/* seek */
+  .mseek = amidiplug_mseek,			/* seek */
   .get_time = amidiplug_get_time,			/* get_time */
   .get_volume = amidiplug_get_volume,			/* get_volume */
   .set_volume = amidiplug_set_volume,			/* set_volume */
