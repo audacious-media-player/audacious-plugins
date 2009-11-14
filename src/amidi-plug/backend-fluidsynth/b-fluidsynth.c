@@ -397,6 +397,8 @@ void i_soundfont_load( void )
       i++;
     }
     g_strfreev( sffiles );
+
+    fluid_synth_system_reset (sc.synth);
   }
   else
   {
