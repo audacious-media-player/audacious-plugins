@@ -38,7 +38,6 @@
 #include "i_utils.h"
 
 
-static GThread * amidiplug_play_thread = NULL;
 static GThread * amidiplug_audio_thread = NULL;
 static GMutex * amidiplug_gettime_mutex = NULL;
 static GMutex * amidiplug_playing_mutex = NULL;

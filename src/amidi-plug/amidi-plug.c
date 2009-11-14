@@ -121,6 +121,10 @@ static void amidiplug_stop( InputPlayback * playback )
   amidiplug_playing_status = AMIDIPLUG_STOP;
   g_cond_signal( amidiplug_pause_cond );
   g_mutex_unlock( amidiplug_playing_mutex );
+
+  g_thread_join (playback->thread);
+  playback->thread = NULL;
+
   if (( backend.autonomous_audio == FALSE ) && ( amidiplug_audio_thread ))
   {
     g_thread_join( amidiplug_audio_thread );
@@ -428,7 +432,6 @@ static void amidiplug_play( InputPlayback * playback )
       g_mutex_lock( amidiplug_playing_mutex );
       amidiplug_playing_status = AMIDIPLUG_PLAY;
       g_mutex_unlock( amidiplug_playing_mutex );
-      amidiplug_play_thread = g_thread_self();
       playback->playing = TRUE;
       playback->set_pb_ready(playback);
       amidiplug_play_loop(playback);
