@@ -31,6 +31,11 @@
  *   - removed threading madness.
  *   - improved locking.
  *   - misc. cleanups.
+ *
+ * Play loop rewritten 14-Nov-2009 (jlindgren):
+ *   - decode in floating point
+ *   - drain audio buffer before closing
+ *   - handle seeking/stopping while paused
  */
 
 #include "config.h"
@@ -41,10 +46,10 @@
 #include <audacious/i18n.h>
 #include <sndfile.h>
 
-#define BUFFER_SIZE 8192
-static GMutex *seek_mutex;
-static GCond *seek_cond;
-static glong seek_value = -1;
+static GMutex * control_mutex;
+static GCond * control_cond;
+static gboolean pause_flag;
+static glong seek_value;
 
 
 /* Virtual file access wrappers for libsndfile
@@ -117,19 +122,16 @@ close_sndfile(SNDFILE *snd_file, VFSFile *vfsfile)
 
 /* Plugin initialization
  */
-static void
-plugin_init (void)
+static void plugin_init (void)
 {
-    seek_value = -1;
-    seek_mutex = g_mutex_new();
-    seek_cond = g_cond_new();
+    control_mutex = g_mutex_new ();
+    control_cond = g_cond_new ();
 }
 
-static void
-plugin_cleanup (void)
+static void plugin_cleanup (void)
 {
-    g_cond_free(seek_cond);
-    g_mutex_free(seek_mutex);
+    g_cond_free (control_cond);
+    g_mutex_free (control_mutex);
 }
 
 static void
@@ -348,103 +350,148 @@ play_start (InputPlayback *playback)
     SNDFILE *sndfile = NULL;
     SF_INFO sfinfo;
     VFSFile *vfsfile = NULL;
-    gshort buffer[BUFFER_SIZE], *buffer_p;
-    gint samples;
+    gfloat * buffer;
+    gint size, samples;
+    gboolean paused = FALSE, stopped = FALSE;
 
     sndfile = open_sndfile_from_uri(playback->filename, &vfsfile, &sfinfo);
     if (sndfile == NULL)
         return;
 
-    if (!playback->output->open_audio(FMT_S16_NE, sfinfo.samplerate, sfinfo.channels))
+    if (! playback->output->open_audio (FMT_FLOAT, sfinfo.samplerate,
+     sfinfo.channels))
     {
         close_sndfile (sndfile, vfsfile);
         playback->error = TRUE;
         return;
     }
 
-    playback->set_params (playback, NULL, 0, 32 * sfinfo.samplerate,
-     sfinfo.samplerate, sfinfo.channels);
+    playback->set_params (playback, NULL, 0, 8 * sizeof (gfloat) *
+     sfinfo.channels * sfinfo.samplerate, sfinfo.samplerate, sfinfo.channels);
 
     playback->playing = TRUE;
+    pause_flag = FALSE;
+    seek_value = -1;
     playback->set_pb_ready(playback);
 
-    while (playback->playing)
+    size = sfinfo.channels * (sfinfo.samplerate / 50);
+    buffer = g_malloc (sizeof (gfloat) * size);
+
+    while (1)
     {
-        /* sf_read_short will return 0 for all reads at EOF. */
-        samples = sf_read_short (sndfile, buffer, BUFFER_SIZE);
+        g_mutex_lock (control_mutex);
 
-        if (samples > 0 && playback->playing) {
-            buffer_p = &buffer[0];
-
-            /* Output audio in small blocks */
-            while (samples > 0 && playback->playing)
-            {
-                gint writeoff = samples >= 512 ? 512 : samples;
-
-                playback->pass_audio(playback, FMT_S16_NE, sfinfo.channels,
-                    writeoff * sizeof(buffer[0]), buffer_p, NULL);
-
-                buffer_p += writeoff;
-                samples -= writeoff;
-
-                /* Check for seek request and bail out if we have one */
-                g_mutex_lock(seek_mutex);
-                if (seek_value != -1) {
-                    g_mutex_unlock(seek_mutex);
-                    break;
-                }
-                g_mutex_unlock(seek_mutex);
-            }
-        }
-        else
+        if (! playback->playing)
         {
-            playback->eof = TRUE;
-            playback->playing = FALSE;
+            stopped = TRUE;
+            g_mutex_unlock (control_mutex);
+            break;
         }
 
-        /* Perform seek, if requested */
-        g_mutex_lock(seek_mutex);
-        if (seek_value >= 0)
+        if (seek_value != -1)
         {
-            playback->output->flush(seek_value);
-            sf_seek(sndfile, (sf_count_t) seek_value * sfinfo.samplerate / 1000, SEEK_SET);
+            sf_seek (sndfile, (gint64) seek_value * sfinfo.samplerate / 1000,
+             SEEK_SET);
+            playback->output->flush (seek_value);
             seek_value = -1;
-            g_cond_signal(seek_cond);
+            g_cond_signal (control_cond);
         }
-        g_mutex_unlock(seek_mutex);
+
+        if (pause_flag)
+        {
+            if (! paused)
+            {
+                playback->output->pause (TRUE);
+                paused = TRUE;
+                g_cond_signal (control_cond);
+            }
+
+            g_cond_wait (control_cond, control_mutex);
+            g_mutex_unlock (control_mutex);
+            continue;
+        }
+
+        if (paused)
+        {
+            playback->output->pause (FALSE);
+            paused = FALSE;
+            g_cond_signal (control_cond);
+        }
+
+        g_mutex_unlock (control_mutex);
+
+        samples = sf_read_float (sndfile, buffer, size);
+
+        if (! samples)
+            break;
+
+        playback->pass_audio (playback, FMT_FLOAT, sfinfo.channels,
+         sizeof (gfloat) * samples, buffer, NULL);
+    }
+
+    sf_close (sndfile);
+    g_free (buffer);
+
+    if (! stopped)
+    {
+        while (playback->output->buffer_playing ())
+            g_usleep (20000);
+    }
+
+    playback->output->close_audio();
+
+    g_mutex_lock (control_mutex);
+    playback->playing = FALSE;
+    g_cond_signal (control_cond);
+    g_mutex_unlock (control_mutex);
+}
+
+static void play_pause (InputPlayback * playback, gshort pause)
+{
+    g_mutex_lock (control_mutex);
+
+    if (! playback->playing)
+    {
+        g_mutex_unlock (control_mutex);
+        return;
+    }
+
+    pause_flag = pause;
+    g_cond_signal (control_cond);
+    g_cond_wait (control_cond, control_mutex);
+    g_mutex_unlock (control_mutex);
+}
+
+static void play_stop (InputPlayback * playback)
+{
+    g_mutex_lock (control_mutex);
+
+    if (! playback->playing)
+    {
+        g_mutex_unlock (control_mutex);
+        return;
     }
 
     playback->playing = FALSE;
-    sf_close(sndfile);
-    playback->output->close_audio();
+    g_cond_signal (control_cond);
+    g_cond_wait (control_cond, control_mutex);
+    g_mutex_unlock (control_mutex);
 }
 
-static void
-play_pause (InputPlayback *playback, gshort p)
+static void file_mseek (InputPlayback * playback, gulong time)
 {
-    playback->output->pause(p);
-}
+    g_mutex_lock (control_mutex);
 
-static void
-play_stop (InputPlayback *playback)
-{
-    playback->playing = FALSE;
-}
+    if (! playback->playing)
+    {
+        g_mutex_unlock (control_mutex);
+        return;
+    }
 
-static void
-file_mseek (InputPlayback *playback, gulong ms)
-{
-    g_mutex_lock(seek_mutex);
-    seek_value = ms;
-    g_cond_wait(seek_cond, seek_mutex);
-    g_mutex_unlock(seek_mutex);
-}
-
-static void
-file_seek (InputPlayback *playback, gint time)
-{
-    gulong millisecond = time * 1000;
-    file_mseek(playback, millisecond);
+    seek_value = time;
+    g_cond_signal (control_cond);
+    g_cond_wait (control_cond, control_mutex);
+    g_mutex_unlock (control_mutex);
 }
 
 static Tuple*
@@ -516,7 +563,6 @@ static InputPlugin sndfile_ip = {
     .play_file = play_start,
     .stop = play_stop,
     .pause = play_pause,
-    .seek = file_seek,
     .cleanup = plugin_cleanup,
     .get_song_tuple = get_song_tuple,
     .is_our_file_from_vfs = is_our_file_from_vfs,
