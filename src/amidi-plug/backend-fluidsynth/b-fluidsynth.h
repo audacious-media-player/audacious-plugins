@@ -41,10 +41,8 @@ typedef struct
   guint tick_offset;
 
   GTimer * timer_seq;
-  GTimer * timer_sample;
 
   guint sample_rate;
-  gdouble last_sample_time;
 }
 sequencer_client_t;
 

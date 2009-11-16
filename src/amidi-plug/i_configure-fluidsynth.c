@@ -42,37 +42,6 @@ void i_configure_ev_toggle_default( GtkToggleButton *togglebutton , gpointer hbo
 }
 
 
-void i_configure_ev_buffertuner_valuechanged( GtkRange *buffertuner_range )
-{
-  gint bufsize_val, bufmarginsize_val;
-  gint i = (gint)gtk_range_get_value( GTK_RANGE(buffertuner_range) );
-  GtkWidget *bufsize_spin = g_object_get_data( G_OBJECT(buffertuner_range) , "bufsize_spin" );
-  GtkWidget *bufmarginsize_spin = g_object_get_data( G_OBJECT(buffertuner_range) , "bufmarginsize_spin" );
-
-  if ( i < 33 )
-  {
-    bufsize_val = 256 + (i * 16); /* linear growth of 16i - bufsize_val <= 768 */
-    if ( i > 16 )
-      bufmarginsize_val = 15 + ((i - 15) / 2); /* linear growth of i/2 */
-    else
-      bufmarginsize_val = 15; /* do not go below 10 even when bufsize < 512 */
-  }
-  else if ( i < 42 )
-  {
-    bufsize_val = 768 + ((i - 33) * 32); /* linear growth of 32i - bufsize_val <= 1024 */
-    bufmarginsize_val = 15 + ( (i - 16) / 2 ); /* linear growth of i/2 */
-  }
-  else
-  {
-    bufsize_val = 1024 + ( 32 << (i - 42) ); /* exponential growth - bufsize_val > 1024 */
-    bufmarginsize_val = 15 + ( (i - 16) / 2 ); /* linear growth of i/2 */
-  }
-
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(bufsize_spin) , bufsize_val );
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(bufmarginsize_spin) , bufmarginsize_val );
-}
-
-
 void i_configure_ev_sflist_add( gpointer sfont_lv )
 {
   GtkWidget *parent_window = gtk_widget_get_toplevel( sfont_lv );
@@ -283,69 +252,6 @@ void i_configure_ev_sysamplerate_commit( gpointer samplerate_custom_radiobt )
 }
 
 
-void i_configure_ev_bufsize_commit( gpointer bufsize_spinbt )
-{
-  amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-  fsyncfg->fsyn_buffer_size = (gint)(gtk_spin_button_get_value(GTK_SPIN_BUTTON(bufsize_spinbt)));
-}
-
-
-void i_configure_ev_bufmarginsize_commit( gpointer marginsize_spinbt )
-{
-  amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-  fsyncfg->fsyn_buffer_margin = (gint)(gtk_spin_button_get_value(GTK_SPIN_BUTTON(marginsize_spinbt)));
-}
-
-
-void i_configure_ev_bufmargininc_commit( gpointer margininc_spinbt )
-{
-  amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-  fsyncfg->fsyn_buffer_increment = (gint)(gtk_spin_button_get_value(GTK_SPIN_BUTTON(margininc_spinbt)));
-}
-
-
-void i_configure_buffertuner_setvalue( GtkWidget * buftuner_hscale , gint bufsize )
-{
-  gint scale_value = 0;
-  if ( bufsize <= 768 )
-  {
-    scale_value = ( bufsize - 256 ) / 16;
-  }
-  else if ( bufsize <= 1024 )
-  {
-    scale_value = ( bufsize + 288 ) / 32;
-  }
-  else
-  {
-    gint tcount = 0, tval = bufsize - 1024;
-    tval = tval >> 1;
-    while ( tval > 0 )
-    {
-      tval = tval >> 1;
-      tcount++;
-    }
-    scale_value = 37 + tcount;
-  }
-  if ( scale_value < 0 )
-    scale_value = 0;
-  else if ( scale_value > 53 )
-    scale_value = 53;
-  gtk_range_set_value( GTK_RANGE(buftuner_hscale) , scale_value );
-}
-
-
-void i_configure_ev_buffertuner_default( gpointer buffertuner_hscale )
-{
-  GtkWidget *bufsize_spin = g_object_get_data( G_OBJECT(buffertuner_hscale) , "bufsize_spin" );
-  GtkWidget *bufmarginsize_spin = g_object_get_data( G_OBJECT(buffertuner_hscale) , "bufmarginsize_spin" );
-  GtkWidget *bufmargininc_spin = g_object_get_data( G_OBJECT(buffertuner_hscale) , "bufmargininc_spin" );
-  i_configure_buffertuner_setvalue( GTK_WIDGET(buffertuner_hscale) , 512 );
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(bufsize_spin) , 512 );
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(bufmarginsize_spin) , 15 );
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(bufmargininc_spin) , 18 );
-}
-
-
 void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
                                gpointer backend_list_p ,
                                gpointer commit_button )
@@ -399,12 +305,6 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     GtkWidget *synth_reverb_value_option[2], *synth_reverb_defcheckbt;
     GtkWidget *synth_chorus_frame, *synth_chorus_hbox, *synth_chorus_value_hbox;
     GtkWidget *synth_chorus_value_option[2], *synth_chorus_defcheckbt;
-    GtkWidget *buffer_frame, *buffer_table , *buffer_vsep[4];
-    GtkWidget *buffer_tuner_label, *buffer_tuner_hscale;
-    GtkWidget *buffer_tuner_defbt, *buffer_tuner_defbt_label;
-    GtkWidget *buffer_bufsize_label, *buffer_bufsize_spin;
-    GtkWidget *buffer_marginsize_label, *buffer_marginsize_spin;
-    GtkWidget *buffer_margininc_label, *buffer_margininc_spin;
     GtkTooltips *tips;
 
     amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
@@ -701,86 +601,6 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
 
     gtk_box_pack_start( GTK_BOX(content_vbox) , synth_frame , TRUE , TRUE , 0 );
 
-    /* buffer settings */
-    buffer_frame = gtk_frame_new( _("Buffer settings") );
-    buffer_table = gtk_table_new( 2 , 9 , FALSE );
-    gtk_table_set_col_spacings( GTK_TABLE(buffer_table) , 2 );
-    gtk_container_set_border_width( GTK_CONTAINER(buffer_table), 4 );
-    gtk_container_add( GTK_CONTAINER(buffer_frame) , buffer_table );
-    /* buffer settings - slider */
-    buffer_tuner_defbt = gtk_button_new();
-    buffer_tuner_defbt_label = gtk_label_new( "" );
-    gtk_label_set_markup( GTK_LABEL(buffer_tuner_defbt_label) ,
-                          _("<span size=\"smaller\">def</span>") );
-    gtk_container_add( GTK_CONTAINER(buffer_tuner_defbt) , buffer_tuner_defbt_label );
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_tuner_defbt , 0 , 1 , 0 , 2 ,
-                      0 , GTK_FILL , 2 , 0 );
-    buffer_vsep[0] = gtk_vseparator_new();
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_vsep[0] , 1 , 2 , 0 , 2 ,
-                      0 , GTK_FILL , 0 , 0 );
-    buffer_tuner_label = gtk_label_new( "" );
-    gtk_label_set_markup( GTK_LABEL(buffer_tuner_label) ,
-                          _("<span size=\"smaller\">handy buffer tuner</span>") );
-    buffer_tuner_hscale = gtk_hscale_new_with_range( 0 , 53 , 1 );
-    gtk_scale_set_draw_value( GTK_SCALE(buffer_tuner_hscale) , FALSE );
-    i_configure_buffertuner_setvalue( buffer_tuner_hscale , fsyncfg->fsyn_buffer_size );
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_tuner_label , 2 , 3 , 0 , 1 ,
-                      GTK_EXPAND | GTK_FILL , GTK_EXPAND | GTK_FILL , 0 , 0 );
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_tuner_hscale , 2 , 3 , 1 , 2 ,
-                      GTK_EXPAND | GTK_FILL , GTK_EXPAND | GTK_FILL , 0 , 0 );
-    buffer_vsep[1] = gtk_vseparator_new();
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_vsep[1] , 3 , 4 , 0 , 2 ,
-                      0 , GTK_FILL , 0 , 0 );
-    /* buffer settings - size */
-    buffer_bufsize_label = gtk_label_new( "" );
-    gtk_label_set_markup( GTK_LABEL(buffer_bufsize_label) ,
-                          _("<span size=\"smaller\">size</span>") );
-    buffer_bufsize_spin = gtk_spin_button_new_with_range( 100 , 99999 , 20 );
-    gtk_spin_button_set_value( GTK_SPIN_BUTTON(buffer_bufsize_spin) ,
-                               (gdouble)fsyncfg->fsyn_buffer_size );
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_bufsize_label , 4 , 5 , 0 , 1 ,
-                      GTK_FILL , 0 , 1 , 1 );
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_bufsize_spin , 4 , 5 , 1 , 2 ,
-                      0 , 0 , 1 , 1 );
-    buffer_vsep[2] = gtk_vseparator_new();
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_vsep[2] , 5 , 6 , 0 , 2 ,
-                      0 , GTK_FILL , 0 , 0 );
-    /* buffer settings - margin */
-    buffer_marginsize_label = gtk_label_new( "" );
-    gtk_label_set_markup( GTK_LABEL(buffer_marginsize_label) ,
-                          _("<span size=\"smaller\">margin</span>") );
-    buffer_marginsize_spin = gtk_spin_button_new_with_range( 0 , 100 , 1 );
-    gtk_spin_button_set_value( GTK_SPIN_BUTTON(buffer_marginsize_spin) ,
-                               (gdouble)fsyncfg->fsyn_buffer_margin );
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_marginsize_label , 6 , 7 , 0 , 1 ,
-                      GTK_FILL , 0 , 1 , 1 );
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_marginsize_spin , 6 , 7 , 1 , 2 ,
-                      0 , 0 , 1 , 1 );
-    buffer_vsep[3] = gtk_vseparator_new();
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_vsep[3] , 7 , 8 , 0 , 2 ,
-                      0 , GTK_FILL , 0 , 0 );
-    /* buffer settings - increment */
-    buffer_margininc_label = gtk_label_new( "" );
-    gtk_label_set_markup( GTK_LABEL(buffer_margininc_label) ,
-                          _("<span size=\"smaller\">increment</span>") );
-    buffer_margininc_spin = gtk_spin_button_new_with_range( 6 , 1000 , 1 );
-    gtk_spin_button_set_value( GTK_SPIN_BUTTON(buffer_margininc_spin) ,
-                               (gdouble)fsyncfg->fsyn_buffer_increment );
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_margininc_label , 8 , 9 , 0 , 1 ,
-                      GTK_FILL , 0 , 1 , 1 );
-    gtk_table_attach( GTK_TABLE(buffer_table) , buffer_margininc_spin , 8 , 9 , 1 , 2 ,
-                      0 , 0 , 1 , 1 );
-
-    g_object_set_data( G_OBJECT(buffer_tuner_hscale) , "bufsize_spin" , buffer_bufsize_spin );
-    g_object_set_data( G_OBJECT(buffer_tuner_hscale) , "bufmarginsize_spin" , buffer_marginsize_spin );
-    g_object_set_data( G_OBJECT(buffer_tuner_hscale) , "bufmargininc_spin" , buffer_margininc_spin );
-    g_signal_connect_swapped( G_OBJECT(buffer_tuner_defbt) , "clicked" ,
-                              G_CALLBACK(i_configure_ev_buffertuner_default) , buffer_tuner_hscale );
-    g_signal_connect( G_OBJECT(buffer_tuner_hscale) , "value-changed" ,
-                      G_CALLBACK(i_configure_ev_buffertuner_valuechanged) , NULL );
-
-    gtk_box_pack_start( GTK_BOX(content_vbox) , buffer_frame , FALSE , FALSE , 0 );
-
     /* commit events  */
     g_signal_connect_swapped( G_OBJECT(commit_button) , "ap-commit" ,
                               G_CALLBACK(i_configure_ev_sflist_commit) , soundfont_file_lv );
@@ -796,12 +616,6 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
                               G_CALLBACK(i_configure_ev_sychorus_commit) , synth_chorus_value_option[0] );
     g_signal_connect_swapped( G_OBJECT(commit_button) , "ap-commit" ,
                               G_CALLBACK(i_configure_ev_sysamplerate_commit) , synth_samplerate_option[3] );
-    g_signal_connect_swapped( G_OBJECT(commit_button) , "ap-commit" ,
-                              G_CALLBACK(i_configure_ev_bufsize_commit) , buffer_bufsize_spin );
-    g_signal_connect_swapped( G_OBJECT(commit_button) , "ap-commit" ,
-                              G_CALLBACK(i_configure_ev_bufmarginsize_commit) , buffer_marginsize_spin );
-    g_signal_connect_swapped( G_OBJECT(commit_button) , "ap-commit" ,
-                              G_CALLBACK(i_configure_ev_bufmargininc_commit) , buffer_margininc_spin );
 
     gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , soundfont_file_lv ,
                           _("* Select SoundFont files *\n"
@@ -866,69 +680,19 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_samplerate_option[0] ,
                           _("* Synthesizer samplerate *\n"
                           "The sample rate of the audio generated by the synthesizer. You can also specify "
-                          "a custom value in the interval 22050Hz-96000Hz.\n"
-                          "NOTE: the default buffer parameters are tuned for 44100Hz; changing the sample "
-                          "rate may require buffer params tuning to obtain good sound quality.") , "" );
+                          "a custom value in the interval 22050Hz-96000Hz.") , "" );
     gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_samplerate_option[1] ,
                           _("* Synthesizer samplerate *\n"
                           "The sample rate of the audio generated by the synthesizer. You can also specify "
-                          "a custom value in the interval 22050Hz-96000Hz.\n"
-                          "NOTE: the default buffer parameters are tuned for 44100Hz; changing the sample "
-                          "rate may require buffer params tuning to obtain good sound quality.") , "" );
+                          "a custom value in the interval 22050Hz-96000Hz.") , "" );
     gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_samplerate_option[2] ,
                           _("* Synthesizer samplerate *\n"
                           "The sample rate of the audio generated by the synthesizer. You can also specify "
-                          "a custom value in the interval 22050Hz-96000Hz.\n"
-                          "NOTE: the default buffer parameters are tuned for 44100Hz; changing the sample "
-                          "rate may require buffer params tuning to obtain good sound quality.") , "" );
+                          "a custom value in the interval 22050Hz-96000Hz.") , "" );
     gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_samplerate_option[3] ,
                           _("* Synthesizer samplerate *\n"
                           "The sample rate of the audio generated by the synthesizer. You can also specify "
-                          "a custom value in the interval 22050Hz-96000Hz.\n"
-                          "NOTE: the default buffer parameters are tuned for 44100Hz; changing the sample "
-                          "rate may require buffer params tuning to obtain good sound quality.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , buffer_tuner_defbt ,
-                          _("* FluidSynth backend buffer *\n"
-                          "This button resets the backend buffer parameters to default values.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , buffer_tuner_hscale ,
-                          _("* FluidSynth backend buffer *\n"
-                          "If you notice skips or slowness during song playback and your system is not "
-                          "performing any cpu-intensive task (except FluidSynth itself), you may want "
-                          "to adjust the buffer parameters. Try to move the \"handy buffer tuner\" "
-                          "some steps to the right until playback is fluid again.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , buffer_bufsize_spin ,
-                          _("* FluidSynth backend buffer *\n"
-                          "It is a good idea to make buffer adjustments with the \"handy buffer tuner\" "
-                          "before resorting to manual editing of buffer parameters.\n"
-                          "However, if you want to fine-tune something and want to know what you're doing, "
-                          "you can understand how these parameters work by reading the backend code "
-                          "(b-fluidsynth.c). In short words, every amount of time "
-                          "(proportional to buffer_SIZE and sample rate), right before gathering samples, "
-                          "the buffer is resized as follows:\n"
-                          "buffer_SIZE + buffer_MARGIN + extramargin\nwhere extramargin is a value "
-                          "computed as number_of_seconds_of_playback / margin_INCREMENT .") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , buffer_marginsize_spin ,
-                          _("* FluidSynth backend buffer *\n"
-                          "It is a good idea to make buffer adjustments with the \"handy buffer tuner\" "
-                          "before resorting to manual editing of buffer parameters.\n"
-                          "However, if you want to fine-tune something and want to know what you're doing, "
-                          "you can understand how these parameters work by reading the backend code "
-                          "(b-fluidsynth.c). In short words, every amount of time "
-                          "(proportional to buffer_SIZE and sample rate), right before gathering samples, "
-                          "the buffer is resized as follows:\n"
-                          "buffer_SIZE + buffer_MARGIN + extramargin\nwhere extramargin is a value "
-                          "computed as number_of_seconds_of_playback / margin_INCREMENT .") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , buffer_margininc_spin ,
-                          _("* FluidSynth backend buffer *\n"
-                          "It is a good idea to make buffer adjustments with the \"handy buffer tuner\" "
-                          "before resorting to manual editing of buffer parameters.\n"
-                          "However, if you want to fine-tune something and want to know what you're doing, "
-                          "you can understand how these parameters work by reading the backend code "
-                          "(b-fluidsynth.c). In short words, every amount of time "
-                          "(proportional to buffer_SIZE and sample rate), right before gathering samples, "
-                          "the buffer is resized as follows:\n"
-                          "buffer_SIZE + buffer_MARGIN + extramargin\nwhere extramargin is a value "
-                          "computed as number_of_seconds_of_playback / margin_INCREMENT .") , "" );
+                          "a custom value in the interval 22050Hz-96000Hz.") , "" );
   }
   else
   {
@@ -991,9 +755,6 @@ void i_configure_cfg_fsyn_read( pcfg_t * cfgfile )
     fsyncfg->fsyn_synth_poliphony = -1;
     fsyncfg->fsyn_synth_reverb = -1;
     fsyncfg->fsyn_synth_chorus = -1;
-    fsyncfg->fsyn_buffer_size = 512;
-    fsyncfg->fsyn_buffer_margin = 10;
-    fsyncfg->fsyn_buffer_increment = 18;
   }
   else
   {
@@ -1004,9 +765,6 @@ void i_configure_cfg_fsyn_read( pcfg_t * cfgfile )
     i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_poliphony" , &fsyncfg->fsyn_synth_poliphony , -1 );
     i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_reverb" , &fsyncfg->fsyn_synth_reverb , -1 );
     i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_chorus" , &fsyncfg->fsyn_synth_chorus , -1 );
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_buffer_size" , &fsyncfg->fsyn_buffer_size , 512 );
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_buffer_margin" , &fsyncfg->fsyn_buffer_margin , 15 );
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_buffer_increment" , &fsyncfg->fsyn_buffer_increment , 18 );
   }
 }
 
@@ -1022,7 +780,4 @@ void i_configure_cfg_fsyn_save( pcfg_t * cfgfile )
   i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_synth_poliphony" , fsyncfg->fsyn_synth_poliphony );
   i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_synth_reverb" , fsyncfg->fsyn_synth_reverb );
   i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_synth_chorus" , fsyncfg->fsyn_synth_chorus );
-  i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_buffer_size" , fsyncfg->fsyn_buffer_size );
-  i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_buffer_margin" , fsyncfg->fsyn_buffer_margin );
-  i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_buffer_increment" , fsyncfg->fsyn_buffer_increment );
 }

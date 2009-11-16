@@ -127,11 +127,9 @@ gint sequencer_stop( void )
 /* activate sequencer client */
 gint sequencer_on( void )
 {
-  sc.last_sample_time = 0;
   sc.tick_offset = 0;
 
   sc.timer_seq = g_timer_new(); /* create the sequencer timer */
-  sc.timer_sample = g_timer_new(); /* create the sampler timer */
 
   return 1; /* success */
 }
@@ -145,11 +143,7 @@ gint sequencer_off( void )
     g_timer_destroy( sc.timer_seq ); /* destroy the sequencer timer */
     sc.timer_seq = NULL;
   }
-  if ( sc.timer_sample != NULL )
-  {
-    g_timer_destroy( sc.timer_sample ); /* destroy the sampler timer */
-    sc.timer_sample = NULL;
-  }
+
   return 1; /* success */
 }
 
@@ -166,9 +160,8 @@ gint sequencer_queue_tempo( gint tempo , gint ppq )
 
 gint sequencer_queue_start( void )
 {
-  sc.last_sample_time = 0;
   g_timer_start( sc.timer_seq ); /* reset the sequencer timer */
-  g_timer_start( sc.timer_sample ); /* reset the sampler timer */
+
   return 1;
 }
 
@@ -176,7 +169,7 @@ gint sequencer_queue_start( void )
 gint sequencer_queue_stop( void )
 {
   g_timer_stop( sc.timer_seq );
-  g_timer_stop( sc.timer_sample );
+
   return 1;
 }
 
@@ -297,29 +290,15 @@ gint sequencer_event_allnoteoff( gint unused )
 }
 
 
-gint sequencer_output( gpointer * buffer , gint * len )
+gint sequencer_output (void * * buffer, gint * length)
 {
-  gdouble current_time = g_timer_elapsed( sc.timer_sample , NULL );
-  if (( current_time > 0.000500 ) &&
-      ( (current_time - sc.last_sample_time) * 1000000 >=
-        ((gdouble)amidiplug_cfg_fsyn.fsyn_buffer_size * 1000000 / sc.sample_rate) ))
-  {
-    sc.last_sample_time = g_timer_elapsed( sc.timer_sample , NULL ) - 0.000500;
-    /* number of samples to get = buffer size + incremental margin */
-    /* g_print( "buf increment: %i\n" , amidiplug_cfg_fsyn.fsyn_buffer_margin +
-             ((gint)sc.last_sample_time / amidiplug_cfg_fsyn.fsyn_buffer_increment) ); */
-    *len = (amidiplug_cfg_fsyn.fsyn_buffer_size + amidiplug_cfg_fsyn.fsyn_buffer_margin +
-           ((gint)sc.last_sample_time / amidiplug_cfg_fsyn.fsyn_buffer_increment) );
-    *buffer = g_realloc( *buffer , *len * 4 );
-    fluid_synth_write_s16( sc.synth , *len , *buffer , 0 , 2 , *buffer , 1 , 2 );
-    *len = *len * 4; /* return the real buffer size in bytes */
+    gint frames = sc.sample_rate / 50;
+
+    * buffer = g_realloc (* buffer, 4 * frames);
+    * length = 4 * frames;
+    fluid_synth_write_s16 (sc.synth, frames, * buffer, 0, 2, * buffer, 1, 2);
+
     return 1;
-  }
-  else
-  {
-    G_USLEEP( 500 );
-    return 0;
-  }
 }
 
 
@@ -432,9 +411,6 @@ void i_cfg_read( i_cfg_get_file_cb callback )
     amidiplug_cfg_fsyn.fsyn_synth_poliphony = -1;
     amidiplug_cfg_fsyn.fsyn_synth_reverb = -1;
     amidiplug_cfg_fsyn.fsyn_synth_chorus = -1;
-    amidiplug_cfg_fsyn.fsyn_buffer_size = 512;
-    amidiplug_cfg_fsyn.fsyn_buffer_margin = 10;
-    amidiplug_cfg_fsyn.fsyn_buffer_increment = 18;
   }
   else
   {
@@ -466,21 +442,6 @@ void i_cfg_read( i_cfg_get_file_cb callback )
 
     i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_chorus" ,
                          &amidiplug_cfg_fsyn.fsyn_synth_chorus , -1 );
-
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_buffer_size" ,
-                         &amidiplug_cfg_fsyn.fsyn_buffer_size , 512 );
-    if ( !i_bounds_check( amidiplug_cfg_fsyn.fsyn_buffer_size , 100 , 99999 ) )
-      amidiplug_cfg_fsyn.fsyn_buffer_size = 512;
-
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_buffer_margin" ,
-                         &amidiplug_cfg_fsyn.fsyn_buffer_margin , 15 );
-    if ( !i_bounds_check( amidiplug_cfg_fsyn.fsyn_buffer_margin , 0 , 100 ) )
-      amidiplug_cfg_fsyn.fsyn_buffer_margin = 15;
-
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_buffer_increment" ,
-                         &amidiplug_cfg_fsyn.fsyn_buffer_increment , 18 );
-    if ( !i_bounds_check( amidiplug_cfg_fsyn.fsyn_buffer_increment , 6 , 1000 ) )
-      amidiplug_cfg_fsyn.fsyn_buffer_increment = 18;
 
     i_pcfg_free( cfgfile );
   }

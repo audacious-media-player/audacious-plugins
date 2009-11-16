@@ -31,9 +31,6 @@ typedef struct
   gint		fsyn_synth_poliphony;
   gint		fsyn_synth_reverb;
   gint		fsyn_synth_chorus;
-  gint		fsyn_buffer_size;
-  gint		fsyn_buffer_margin;
-  gint		fsyn_buffer_increment;
 }
 amidiplug_cfg_fsyn_t;
 
