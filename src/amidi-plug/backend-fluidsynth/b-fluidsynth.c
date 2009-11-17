@@ -159,11 +159,13 @@ gint sequencer_queue_tempo( gint tempo , gint ppq )
 }
 
 
-gint sequencer_queue_start( void )
+gint sequencer_queue_start (void)
 {
-  timer = 0;
+    g_mutex_lock (timer_mutex);
+    timer = 0;
+    g_mutex_unlock (timer_mutex);
 
-  return 1;
+    return 1;
 }
 
 
@@ -265,7 +267,10 @@ gint sequencer_event_tempo( midievent_t * event )
   /* sc.cur_tick_per_sec = (gdouble)( sc.ppq * 1000000 ) / (gdouble)event->data.tempo; */
   sc.cur_microsec_per_tick = (gdouble)event->data.tempo / (gdouble)sc.ppq;
   sc.tick_offset = event->tick_real;
+
+  g_mutex_lock (timer_mutex);
   timer = 0;
+  g_mutex_unlock (timer_mutex);
 
   return 1;
 }
