@@ -145,14 +145,6 @@ static void amidiplug_stop( InputPlayback * playback )
   if ( backend.gmodule != NULL )
     backend.seq_stop();
 
-  /* close audio if current backend works with output plugin */
-  if (( backend.gmodule != NULL ) && ( backend.autonomous_audio == FALSE ))
-  {
-    DEBUGMSG( "STOP activated, closing audio output plugin\n" );
-    playback->output->buffer_free();
-    playback->output->buffer_free();
-    playback->output->close_audio();
-  }
   /* free midi data (if it has not been freed yet) */
   i_midi_free( &midifile );
 }
@@ -405,6 +397,9 @@ static void amidiplug_play( InputPlayback * playback )
     }
   }
 
+  if (! backend.autonomous_audio)
+      playback->output->close_audio ();
+
   if ( midifile.file_pointer )
   {
     /* done with file */
@@ -531,7 +526,7 @@ gpointer amidiplug_play_loop( gpointer arg )
 {
   InputPlayback *playback = arg;
   gint j = 0;
-  gboolean rewind = TRUE, paused = FALSE;
+  gboolean rewind = TRUE, paused = FALSE, stopped = FALSE;
 
   if ( rewind )
   {
@@ -560,6 +555,7 @@ gpointer amidiplug_play_loop( gpointer arg )
     if (amidiplug_playing_status == AMIDIPLUG_STOP)
     {
         g_mutex_unlock (amidiplug_playing_mutex);
+        stopped = TRUE;
         break;
     }
 
@@ -694,10 +690,19 @@ gpointer amidiplug_play_loop( gpointer arg )
     }
   }
 
-  backend.seq_output_shut( midifile.max_tick , midifile.skip_offset );
+  backend.seq_output_shut (stopped ? midifile.playing_tick : midifile.max_tick,
+   midifile.skip_offset);
 
   if (! backend.autonomous_audio)
+  {
       audio_stop ();
+
+      if (! stopped)
+      {
+          while (playback->output->buffer_playing ())
+              g_usleep (20000);
+      }
+  }
 
   return NULL;
 }
