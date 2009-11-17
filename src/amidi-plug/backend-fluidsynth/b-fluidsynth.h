@@ -40,8 +40,6 @@ typedef struct
   gdouble cur_microsec_per_tick;
   guint tick_offset;
 
-  GTimer * timer_seq;
-
   guint sample_rate;
 }
 sequencer_client_t;

@@ -29,6 +29,9 @@ static sequencer_client_t sc;
 /* options */
 static amidiplug_cfg_fsyn_t amidiplug_cfg_fsyn;
 
+static GMutex * timer_mutex;
+static GCond * timer_cond;
+static gint64 timer; /* microseconds */
 
 gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint * ppos )
 {
@@ -51,6 +54,9 @@ gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint 
 
 gint backend_init( i_cfg_get_file_cb callback )
 {
+  timer_mutex = g_mutex_new ();
+  timer_cond = g_cond_new ();
+
   /* read configuration options */
   i_cfg_read( callback );
 
@@ -97,6 +103,9 @@ gint backend_cleanup( void )
 
   i_cfg_free(); /* free configuration options */
 
+  g_mutex_free (timer_mutex);
+  g_cond_free (timer_cond);
+
   return 1;
 }
 
@@ -129,8 +138,6 @@ gint sequencer_on( void )
 {
   sc.tick_offset = 0;
 
-  sc.timer_seq = g_timer_new(); /* create the sequencer timer */
-
   return 1; /* success */
 }
 
@@ -138,12 +145,6 @@ gint sequencer_on( void )
 /* shutdown sequencer client */
 gint sequencer_off( void )
 {
-  if ( sc.timer_seq != NULL )
-  {
-    g_timer_destroy( sc.timer_seq ); /* destroy the sequencer timer */
-    sc.timer_seq = NULL;
-  }
-
   return 1; /* success */
 }
 
@@ -160,7 +161,7 @@ gint sequencer_queue_tempo( gint tempo , gint ppq )
 
 gint sequencer_queue_start( void )
 {
-  g_timer_start( sc.timer_seq ); /* reset the sequencer timer */
+  timer = 0;
 
   return 1;
 }
@@ -168,8 +169,6 @@ gint sequencer_queue_start( void )
 
 gint sequencer_queue_stop( void )
 {
-  g_timer_stop( sc.timer_seq );
-
   return 1;
 }
 
@@ -265,8 +264,9 @@ gint sequencer_event_tempo( midievent_t * event )
   i_sleep( event->tick_real );
   /* sc.cur_tick_per_sec = (gdouble)( sc.ppq * 1000000 ) / (gdouble)event->data.tempo; */
   sc.cur_microsec_per_tick = (gdouble)event->data.tempo / (gdouble)sc.ppq;
-  g_timer_start( sc.timer_seq ); /* reset the sequencer timer */
   sc.tick_offset = event->tick_real;
+  timer = 0;
+
   return 1;
 }
 
@@ -292,11 +292,16 @@ gint sequencer_event_allnoteoff( gint unused )
 
 gint sequencer_output (void * * buffer, gint * length)
 {
-    gint frames = sc.sample_rate / 50;
+    gint frames = sc.sample_rate / 100;
 
     * buffer = g_realloc (* buffer, 4 * frames);
     * length = 4 * frames;
     fluid_synth_write_s16 (sc.synth, frames, * buffer, 0, 2, * buffer, 1, 2);
+
+    g_mutex_lock (timer_mutex);
+    timer += 10000;
+    g_cond_signal (timer_cond);
+    g_mutex_unlock (timer_mutex);
 
     return 1;
 }
@@ -304,6 +309,7 @@ gint sequencer_output (void * * buffer, gint * length)
 
 gint sequencer_output_shut( guint max_tick , gint skip_offset )
 {
+  i_sleep (max_tick - skip_offset);
   fluid_synth_system_reset( sc.synth ); /* all notes off and channels reset */
   return 1;
 }
@@ -345,11 +351,13 @@ gboolean audio_check_autonomous( void )
 void i_sleep( guint tick )
 {
   gdouble elapsed_tick_usecs = (gdouble)(tick - sc.tick_offset) * sc.cur_microsec_per_tick;
-  gdouble elapsed_seq_usecs = g_timer_elapsed( sc.timer_seq , NULL ) * 1000000;
-  if ( elapsed_seq_usecs < elapsed_tick_usecs )
-  {
-    G_USLEEP( elapsed_tick_usecs - elapsed_seq_usecs );
-  }
+
+  g_mutex_lock (timer_mutex);
+
+  while (timer < elapsed_tick_usecs)
+      g_cond_wait (timer_cond, timer_mutex);
+
+  g_mutex_unlock (timer_mutex);
 }
 
 
