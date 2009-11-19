@@ -67,6 +67,7 @@ FAILED:
 static void * pump (void * unused)
 {
     snd_pcm_status_t * status;
+    gint timeout = 0;
 
     g_mutex_lock (alsa_mutex);
     g_cond_signal (pump_cond);
@@ -94,6 +95,24 @@ static void * pump (void * unused)
         CHECK (snd_pcm_status, alsa_handle, status);
         writable = snd_pcm_frames_to_bytes (alsa_handle,
          snd_pcm_status_get_avail (status));
+
+        /* Workaround for PulseAudio ... ugh. */
+
+        if (writable == 0)
+        {
+            if (timeout < 1000)
+                timeout += LEAST_BUFFER / 2;
+            else
+            {
+                ERROR ("ALSA seems to have locked up; resetting.\n");
+                CHECK (snd_pcm_prepare, alsa_handle);
+            }
+
+            continue;
+        }
+
+        timeout = 0;
+
         writable = MIN (writable, alsa_buffer_data_length);
 
         if (writable > alsa_buffer_length - alsa_buffer_data_start)
