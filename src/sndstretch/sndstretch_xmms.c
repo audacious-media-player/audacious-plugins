@@ -290,6 +290,7 @@ void sndstretch_config(void)
 		return;
 
 	sndstretch_config_dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+ 	gtk_window_set_type_hint(GTK_WINDOW(sndstretch_config_dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 	gtk_widget_show(sndstretch_config_dialog);
 
 	logopix = gdk_pixmap_create_from_xpm_d(sndstretch_config_dialog->window, &logomask,
