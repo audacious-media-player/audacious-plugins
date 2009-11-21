@@ -219,6 +219,10 @@ static void pulse_set_volume(int l, int r) {
         CHECK_DEAD_GOTO(fail, 1);
     }
 
+    /* sanitize output volumes. */
+    l = CLAMP(l, 0, 100);
+    r = CLAMP(r, 0, 100);
+
     if (!volume_valid || volume.channels !=  1) {
         volume.values[0] = ((pa_volume_t) l * PA_VOLUME_NORM)/100;
         volume.values[1] = ((pa_volume_t) r * PA_VOLUME_NORM)/100;
