@@ -59,24 +59,36 @@ static void make_directory(const gchar *path, mode_t mode);
 
 gchar * find_file_case (const gchar * folder, const gchar * basename)
 {
-    gchar * found = NULL;
-    DIR * handle;
-    struct dirent * entry;
+    static mowgli_dictionary_t * cache = NULL;
+    GList * list;
 
-    if ((handle = opendir (folder)) == NULL)
-        return NULL;
+    if (cache == NULL)
+        cache = mowgli_dictionary_create (strcmp);
 
-    while ((entry = readdir (handle)) != NULL)
+    list = mowgli_dictionary_retrieve (cache, folder);
+
+    if (list == NULL)
     {
-        if (! strcasecmp (entry->d_name, basename))
-        {
-            found = g_strdup (entry->d_name);
-            break;
-        }
+        DIR * handle;
+        struct dirent * entry;
+
+        if ((handle = opendir (folder)) == NULL)
+            return NULL;
+
+        while ((entry = readdir (handle)) != NULL)
+            list = g_list_prepend (list, g_strdup (entry->d_name));
+
+        mowgli_dictionary_add (cache, folder, list);
+        closedir (handle);
     }
 
-    closedir (handle);
-    return found;
+    for (; list != NULL; list = list->next)
+    {
+        if (! strcasecmp (list->data, basename))
+            return g_strdup (list->data);
+    }
+
+    return NULL;
 }
 
 gchar * find_file_case_path (const gchar * folder, const gchar * basename)
@@ -101,6 +113,41 @@ gchar * find_file_case_uri (const gchar * folder, const gchar * basename)
     uri = g_filename_to_uri (found, NULL, NULL);
     g_free (found);
     return uri;
+}
+
+gchar * load_text_file (const gchar * filename)
+{
+    VFSFile * file;
+    gint size;
+    gchar * buffer;
+
+    file = aud_vfs_fopen (filename, "r");
+
+    if (file == NULL)
+        return NULL;
+
+    size = aud_vfs_fsize (file);
+    size = MAX (0, size);
+    buffer = g_malloc (size + 1);
+
+    size = aud_vfs_fread (buffer, 1, size, file);
+    size = MAX (0, size);
+    buffer[size] = 0;
+
+    aud_vfs_fclose (file);
+
+    return buffer;
+}
+
+gchar * text_parse_line (gchar * text)
+{
+    gchar * newline = strchr (text, '\n');
+
+    if (newline == NULL)
+        return NULL;
+
+    * newline = 0;
+    return newline + 1;
 }
 
 typedef enum

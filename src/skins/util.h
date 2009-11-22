@@ -38,6 +38,9 @@ gchar * find_file_case (const gchar * folder, const gchar * basename);
 gchar * find_file_case_path (const gchar * folder, const gchar * basename);
 gchar * find_file_case_uri (const gchar * folder, const gchar * basename);
 
+gchar * load_text_file (const gchar * filename);
+gchar * text_parse_line (gchar * text);
+
 void del_directory(const gchar *dirname);
 gboolean dir_foreach(const gchar *path, DirForeachFunc function,
                      gpointer user_data, GError **error);

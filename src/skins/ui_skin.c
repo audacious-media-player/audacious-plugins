@@ -1324,44 +1324,41 @@ skin_create_transparent_mask(const gchar * path,
     return mask;
 }
 
-void
-skin_load_viscolor(Skin * skin, const gchar * path, const gchar * basename)
+static void skin_load_viscolor (Skin * skin, const gchar * path, const gchar *
+ basename)
 {
-    VFSFile *file;
-    gint i, c;
-    gchar line[256], *filename;
-    GArray *a;
+    gchar * filename, * buffer, * string, * next;
+    gint line;
 
-    g_return_if_fail(skin != NULL);
-    g_return_if_fail(path != NULL);
-    g_return_if_fail(basename != NULL);
+    skin_set_default_vis_color (skin);
 
-    skin_set_default_vis_color(skin);
-
-    if ((filename = find_file_case_uri (path, basename)) == NULL)
+    filename = find_file_case_uri (path, basename);
+    if (filename == NULL)
         return;
 
-    if (!(file = aud_vfs_fopen(filename, "r"))) {
-        g_free(filename);
-        return;
-    }
+    buffer = load_text_file (filename);
+    string = buffer;
 
-    g_free(filename);
+    for (line = 0; string != NULL && line < 24; line ++)
+    {
+        GArray * array;
+        gint column;
 
-    for (i = 0; i < 24; i++) {
-        if (aud_vfs_fgets(line, 255, file)) {
-            a = string_to_garray(line);
-            if (a->len > 2) {
-                for (c = 0; c < 3; c++)
-                    skin->vis_color[i][c] = g_array_index(a, gint, c);
-            }
-            g_array_free(a, TRUE);
+        next = text_parse_line (string);
+        array = string_to_garray (string);
+
+        if (array->len >= 3)
+        {
+            for (column = 0; column < 3; column ++)
+                skin->vis_color[line][column] = g_array_index (array, gint,
+                 column);
         }
-        else
-            break;
+
+        g_array_free (array, TRUE);
+        string = next;
     }
 
-    aud_vfs_fclose(file);
+    g_free (buffer);
 }
 
 static void
