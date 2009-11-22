@@ -25,6 +25,9 @@ InputPlugin *amidiplug_iplist[] = { &amidiplug_ip, NULL };
 
 DECLARE_PLUGIN(amidi-plug, NULL, NULL, amidiplug_iplist, NULL, NULL, NULL, NULL, NULL);
 
+static GMutex * init_mutex;
+static gboolean initted;
+
 static GCond * control_cond;
 static gint seek_time;
 
@@ -34,9 +37,56 @@ static GCond * audio_control_cond;
 static gboolean audio_stop_flag, audio_pause_flag;
 static gint audio_seek_time;
 
+static void amidiplug_init (void)
+{
+    init_mutex = g_mutex_new ();
+    initted = FALSE;
+}
+
+static void soft_init (void)
+{
+    g_mutex_lock (init_mutex);
+
+    if (! initted)
+    {
+        amidiplug_gettime_mutex = g_mutex_new ();
+        amidiplug_playing_mutex = g_mutex_new ();
+        control_cond = g_cond_new ();
+
+        audio_control_mutex = g_mutex_new ();
+        audio_control_cond = g_cond_new ();
+
+        i_configure_cfg_ap_read ();
+        i_backend_load (amidiplug_cfg_ap.ap_seq_backend);
+
+        initted = TRUE;
+    }
+
+    g_mutex_unlock (init_mutex);
+}
+
+static void amidiplug_cleanup (void)
+{
+    if (initted)
+    {
+        i_backend_unload ();
+
+        g_mutex_free (amidiplug_gettime_mutex);
+        g_mutex_free (amidiplug_playing_mutex);
+        g_cond_free (control_cond);
+
+        g_mutex_free (audio_control_mutex);
+        g_cond_free (audio_control_cond);
+    }
+
+    g_mutex_free (init_mutex);
+}
+
 static gint amidiplug_is_our_file_from_vfs( const gchar *filename_uri , VFSFile *fp )
 {
   gchar magic_bytes[4];
+
+  soft_init ();
 
   if ( fp == NULL )
     return FALSE;
@@ -70,45 +120,10 @@ static gint amidiplug_is_our_file_from_vfs( const gchar *filename_uri , VFSFile 
   return FALSE;
 }
 
-static void amidiplug_init( void )
+static void amidiplug_configure (void)
 {
-  g_log_set_handler(NULL , G_LOG_LEVEL_WARNING , g_log_default_handler , NULL);
-
-  amidiplug_gettime_mutex = g_mutex_new();
-  amidiplug_playing_mutex = g_mutex_new();
-  control_cond = g_cond_new ();
-
-  audio_control_mutex = g_mutex_new ();
-  audio_control_cond = g_cond_new ();
-
-  DEBUGMSG( "init, read configuration\n" );
-  /* read configuration for amidi-plug */
-  i_configure_cfg_ap_read();
-  amidiplug_playing_status = AMIDIPLUG_STOP;
-  backend.gmodule = NULL;
-  /* load the backend selected by user */
-  i_backend_load( amidiplug_cfg_ap.ap_seq_backend );
-}
-
-
-static void amidiplug_cleanup( void )
-{
-  i_backend_unload(); /* unload currently loaded backend */
-
-  g_mutex_free(amidiplug_gettime_mutex);
-  g_mutex_free(amidiplug_playing_mutex);
-  g_cond_free (control_cond);
-
-  g_mutex_free (audio_control_mutex);
-  g_cond_free (audio_control_cond);
-}
-
-
-static void amidiplug_configure( void )
-{
-  /* display the nice config dialog */
-  DEBUGMSG( "opening config system\n" );
-  i_configure_gui();
+    soft_init ();
+    i_configure_gui ();
 }
 
 
@@ -118,9 +133,10 @@ static void amidiplug_aboutbox( void )
 }
 
 
-static void amidiplug_file_info_box( const gchar * filename_uri )
+static void amidiplug_file_info_box (const gchar * filename)
 {
-  i_fileinfo_gui( filename_uri );
+    soft_init ();
+    i_fileinfo_gui (filename);
 }
 
 
@@ -240,6 +256,8 @@ static Tuple * amidiplug_get_song_tuple( const gchar *filename_uri )
   gchar *title, *filename = g_filename_from_uri(filename_uri, NULL, NULL);
   midifile_t mf;
 
+  soft_init ();
+
   if (filename != NULL)
       title = g_path_get_basename(filename_uri);
   else
@@ -265,6 +283,8 @@ static void amidiplug_play( InputPlayback * playback )
   gint port_count = 0;
   gint au_samplerate = -1, au_bitdepth = -1, au_channels = -1;
   Tuple *tu;
+
+  soft_init ();
 
   if ( backend.gmodule == NULL )
   {
