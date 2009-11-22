@@ -134,6 +134,8 @@ static size_t unix_fread (gpointer ptr, size_t size, size_t nitems, VFSFile *
         total += readed;
     }
 
+    debug (" = %d\n", total);
+
     return (size > 0) ? total / size : 0;
 }
 
@@ -158,6 +160,8 @@ static size_t unix_fwrite (gconstpointer ptr, size_t size, size_t nitems,
 
         total += written;
     }
+
+    debug (" = %d\n", total);
 
     return (size > 0) ? total / size : 0;
 }
