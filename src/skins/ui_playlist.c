@@ -1232,8 +1232,9 @@ static void get_title (void)
     g_free (active_title);
 
     if (playlists > 1)
-        active_title = g_strdup_printf ("%s (%d of %d)", aud_playlist_get_title
-         (active_playlist), 1 + active_playlist, playlists);
+        active_title = g_strdup_printf (_("%s (%d of %d)"),
+         aud_playlist_get_title (active_playlist), 1 + active_playlist,
+         playlists);
     else
         active_title = NULL;
 }
