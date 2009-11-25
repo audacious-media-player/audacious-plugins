@@ -236,7 +236,7 @@ static OutputPluginInitStatus jack_init(void)
 
 
 /* Return the amount of data that can be written to the device */
-static gint jack_free(void)
+static gint audacious_jack_free(void)
 {
   unsigned long return_val = JACK_GetBytesFreeSpace(driver);
   unsigned long tmp;
@@ -448,7 +448,7 @@ OutputPlugin jack_op =
     .close_audio = jack_close,
     .flush = jack_flush,
     .pause = jack_pause,
-    .buffer_free = jack_free,
+    .buffer_free = audacious_jack_free,
     .buffer_playing = jack_playing,
     .output_time = jack_get_output_time,
     .written_time = jack_get_written_time,
