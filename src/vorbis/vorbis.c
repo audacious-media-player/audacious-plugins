@@ -333,14 +333,15 @@ vorbis_play(InputPlayback *playback)
     channels = vi->channels;
     samplerate = vi->rate;
 
-    vorbis_update_replaygain(&vf, &rg_info);
-    playback->set_replaygain_info(playback, &rg_info);
     playback->set_params (playback, NULL, 0, br, samplerate, channels);
 
     if (!playback->output->open_audio(FMT_FLOAT, samplerate, channels)) {
         playback->error = TRUE;
         goto play_cleanup;
     }
+
+    vorbis_update_replaygain(&vf, &rg_info);
+    playback->set_replaygain_info(playback, &rg_info);
 
     g_mutex_lock (seek_mutex);
 
