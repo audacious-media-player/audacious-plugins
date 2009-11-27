@@ -11,8 +11,4 @@ stuff to do still
 
 - player.[ch] can go easily
 - finish refactoring config GUI
-- see if we really need format.c or not. the plugin should always be getting S16_NE through
-  libSAD.
-- use of libSAD to do the xfade would be cool (we could support 24bit this way although the fade
-  would be dithered)
 
