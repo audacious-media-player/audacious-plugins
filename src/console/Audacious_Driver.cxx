@@ -7,6 +7,7 @@
  */
 
 #include "config.h"
+#include <math.h>
 extern "C" {
 #include <audacious/plugin.h>
 }
