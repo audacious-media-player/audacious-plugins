@@ -33,6 +33,7 @@
 
 #include "debug.h"
 #include "rb.h"
+#include "cert_verification.h"
 
 #define NEON_BUFSIZE        (128u*1024u)
 #define NEON_NETBLKSIZE     (4096u)
@@ -715,8 +716,10 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
             }
         }
 
-        if (! strcmp("https", handle->purl->scheme))
+        if (! strcmp("https", handle->purl->scheme)) {
             ne_ssl_trust_default_ca(handle->session);
+            ne_ssl_set_verify(handle->session, neon_aud_vfs_verify_environment_ssl_certs, handle->session);
+        }
 
         _DEBUG("<%p> Creating request", handle);
         ret = open_request(handle, startbyte);
