@@ -19,16 +19,7 @@
 
 #include "ffaudio-stdinc.h"
 
-int av_strstart(const char *str, const char *pfx, const char **ptr)
-{
-    while (*pfx && *pfx == *str) {
-        pfx++;
-        str++;
-    }
-    if (!*pfx && ptr)
-        *ptr = str;
-    return !*pfx;
-}
+#include <libavutil/avstring.h>
 
 static int audvfs_open(URLContext *h, const char *filename, int flags)
 {
@@ -41,7 +32,7 @@ static int audvfs_open(URLContext *h, const char *filename, int flags)
     } else {
 	file = aud_vfs_fopen(filename, "rb");
     }
-    
+
     if (file == NULL)
         return -ENOENT;
     h->priv_data = file;
@@ -72,10 +63,10 @@ static int64_t audvfs_seek(URLContext *h, int64_t pos, int whence)
 
     if (whence == AVSEEK_SIZE)
         return siz;
-    
+
     if (whence == SEEK_SET && pos > siz)
         return AVERROR(EPIPE);
-    
+
     if (aud_vfs_fseek(file, pos, whence) == 0)
     {
         if (whence == SEEK_SET)
@@ -84,7 +75,7 @@ static int64_t audvfs_seek(URLContext *h, int64_t pos, int whence)
             res = aud_vfs_ftell(file);
     } else
         res = AVERROR(EPIPE);
-        
+
     return res;
 }
 
