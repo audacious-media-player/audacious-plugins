@@ -719,6 +719,10 @@ InputPlugin ffaudio_ip = {
 #ifdef FFAUDIO_USE_AUDTAG
     .update_song_tuple = ffaudio_update_song_tuple,
 #endif
+
+    /* FFMPEG probing takes forever on network files, so try everything else
+     * first. -jlindgren */
+    .priority = 10,
 };
 
 static InputPlugin *ffaudio_iplist[] = { &ffaudio_ip, NULL };
