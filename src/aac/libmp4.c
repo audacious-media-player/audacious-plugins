@@ -277,29 +277,72 @@ static void mp4_cleanup(void)
     g_cond_free (seek_cond);
 }
 
+static Tuple * aac_get_tuple (const gchar * filename, VFSFile * handle)
+{
+    Tuple * tuple;
+    gchar * temp;
+
+    temp = aud_vfs_get_metadata (handle, "track-name");
+    if (temp == NULL)
+    {
+        fprintf (stderr, "aac: No metadata for %s.\n", filename);
+        return NULL;
+    }
+
+    tuple = tuple_new_from_filename (filename);
+    tuple_associate_string (tuple, FIELD_CODEC, NULL, "MPEG-2 AAC");
+    tuple_associate_string (tuple, FIELD_TITLE, NULL, temp);
+
+    temp = aud_vfs_get_metadata (handle, "stream-name");
+    if (temp != NULL)
+    {
+        tuple_associate_string (tuple, FIELD_ALBUM, NULL, temp);
+        g_free (temp);
+    }
+
+    temp = aud_vfs_get_metadata (handle, "content-bitrate");
+    if (temp != NULL)
+    {
+        tuple_associate_int (tuple, FIELD_BITRATE, NULL, atoi (temp) / 1000);
+        g_free (temp);
+    }
+
+    return tuple;
+}
+
+static gboolean aac_title_changed (const gchar * filename, VFSFile * handle,
+ Tuple * tuple)
+{
+    const gchar * old = tuple_get_string (tuple, FIELD_TITLE, NULL);
+    gchar * new = aud_vfs_get_metadata (handle, "track-name");
+    gboolean changed = FALSE;
+
+    changed = (new != NULL && (old == NULL || strcmp (old, new)));
+    if (changed)
+        tuple_associate_string (tuple, FIELD_TITLE, NULL, new);
+
+    g_free (new);
+    return changed;
+}
+
 static Tuple *mp4_get_song_tuple_base(const gchar *filename, VFSFile *mp4fh)
 {
-    mp4ff_callback_t *mp4cb = g_malloc0(sizeof(mp4ff_callback_t));
+    mp4ff_callback_t * mp4cb;
     mp4ff_t *mp4file;
-    Tuple *ti = aud_tuple_new_from_filename(filename);
+    Tuple * ti;
 
     /* check if this file is an ADTS stream, if so return a blank tuple */
     if (parse_aac_stream(mp4fh))
     {
-        g_free(mp4cb);
-
-        aud_tuple_associate_string(ti, FIELD_TITLE, NULL, aud_vfs_get_metadata(mp4fh, "track-name"));
-        aud_tuple_associate_string(ti, FIELD_ALBUM, NULL, aud_vfs_get_metadata(mp4fh, "stream-name"));
-
-        aud_tuple_associate_string(ti, FIELD_CODEC, NULL, "Advanced Audio Coding (AAC)");
-        aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
-
-        aud_vfs_fclose(mp4fh);
+        ti = aac_get_tuple (filename, mp4fh);
+        aud_vfs_fclose (mp4fh);
         return ti;
     }
 
+    ti = tuple_new_from_filename (filename);
     aud_vfs_rewind(mp4fh);
 
+    mp4cb = g_malloc0 (sizeof (mp4ff_callback_t));
     mp4cb->read = mp4_read_callback;
     mp4cb->seek = mp4_seek_callback;
     mp4cb->user_data = mp4fh;
@@ -596,12 +639,21 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     guchar      channels = 0;
     gulong      buffervalid = 0;
     gulong	ret = 0;
-    gchar       *ttemp = NULL, *stemp = NULL;
-    gchar       *xmmstitle = NULL;
-    gint        bitrate;
     gboolean    remote = aud_str_has_prefix_nocase(filename, "http:") ||
 			 aud_str_has_prefix_nocase(filename, "https:");
     gboolean paused = FALSE;
+    Tuple * tuple;
+    gint bitrate = 0;
+
+    tuple = aac_get_tuple (filename, file);
+    if (tuple != NULL)
+    {
+        mowgli_object_ref (tuple);
+        playback->set_tuple (playback, tuple);
+
+        bitrate = tuple_get_int (tuple, FIELD_BITRATE, NULL);
+        bitrate = 1000 * MAX (0, bitrate);
+    }
 
     aud_vfs_rewind(file);
     if((decoder = NeAACDecOpen()) == NULL){
@@ -630,25 +682,6 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         buffervalid = aud_vfs_fread(streambuffer, 1, BUFFER_SIZE, file);
     }
 
-    ttemp = aud_vfs_get_metadata(file, "stream-name");
-
-    if (ttemp != NULL)
-    {
-        xmmstitle = g_strdup(ttemp);
-        g_free(ttemp);
-    }
-    else
-        xmmstitle = NULL;
-
-    ttemp = aud_vfs_get_metadata(file, "content-bitrate");
-    if (ttemp != NULL && *ttemp != '0')
-    {
-        bitrate = atoi(ttemp);
-        g_free(ttemp);
-    }
-    else
-        bitrate = -1;
-
     bufferconsumed = aac_probe(streambuffer, buffervalid);
     if(bufferconsumed) {
       buffervalid -= bufferconsumed;
@@ -670,7 +703,6 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         NeAACDecClose(decoder);
         aud_vfs_fclose(file);
         playback->output->close_audio();
-        g_free(xmmstitle);
 
         playback->playing = FALSE;
         return;
@@ -722,33 +754,11 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
             if (ret == 0 && remote == TRUE)
                 break;
 
-            ttemp = aud_vfs_get_metadata(file, "stream-name");
-
-            if (ttemp != NULL)
-                stemp = aud_vfs_get_metadata(file, "track-name");
-
-            if (stemp != NULL)
+            if (tuple != NULL && aac_title_changed (filename, file, tuple))
             {
-                static gchar *ostmp = NULL;
-
-                if (ostmp == NULL || g_ascii_strcasecmp(stemp, ostmp))
-                {
-                    if (xmmstitle != NULL)
-                        g_free(xmmstitle);
-
-                    xmmstitle = g_strdup_printf("%s (%s)", stemp, ttemp);
-
-                    if (ostmp != NULL)
-                        g_free(ostmp);
-
-                    ostmp = stemp;
-
-                    playback->set_params(playback, NULL, 0, bitrate, samplerate, channels);
-                }
+                mowgli_object_ref (tuple);
+                playback->set_tuple (playback, tuple);
             }
-
-            g_free(ttemp);
-            ttemp = NULL;
         }
 
         sample_buffer = NeAACDecDecode(decoder, &finfo, streambuffer, buffervalid);
@@ -786,8 +796,10 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     playback->output->buffer_free();
     playback->output->close_audio();
     NeAACDecClose(decoder);
-    g_free(xmmstitle);
     aud_vfs_fclose(file);
+
+    if (tuple != NULL)
+        mowgli_object_unref (tuple);
 
     playback->playing = FALSE;
 }
