@@ -105,8 +105,8 @@ playlist_load_cue(const gchar * filename, gint pos)
 
 	t = cd_get_track(cd, 1 + iter);
         fn = track_get_filename(t);
-        begin = (track_get_start(t) * 10);
-        length = (track_get_length(t) * 10);
+        begin = (track_get_start(t) / 75) * 1000;
+        length = (track_get_length(t) / 75) * 1000;
         uri = aud_construct_uri(fn, filename);
         tu = tuple_new();
 
