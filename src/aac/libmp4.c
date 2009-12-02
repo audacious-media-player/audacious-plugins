@@ -525,8 +525,14 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     }
     numSamples = mp4ff_num_samples(mp4file, mp4track);
     msDuration = ((float)numSamples * (float)(framesize - 1.0)/(float)samplerate) * 1000;
-    playback->output->open_audio(FMT_S16_NE, samplerate, channels);
-    playback->output->flush(0);
+
+    if (playback->output->open_audio (FMT_S16_NE, samplerate, channels))
+    {
+        NeAACDecClose (decoder);
+        playback->playing = FALSE;
+        playback->error = TRUE;
+        return FALSE;
+    }
 
     playback->set_params(playback, NULL, 0,
             mp4ff_get_avg_bitrate( mp4file, mp4track ),
@@ -699,12 +705,10 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     g_print("samplerate: %lu, channels: %d\n", samplerate, channels);
 #endif
     if(playback->output->open_audio(FMT_S16_NE,samplerate,channels) == FALSE){
-        g_print("AAC: Output Error\n");
         NeAACDecClose(decoder);
         aud_vfs_fclose(file);
-        playback->output->close_audio();
-
         playback->playing = FALSE;
+        playback->error = TRUE;
         return;
     }
 
@@ -838,7 +842,7 @@ static void *mp4_decode( void *args )
         g_free(mp4cb);
         my_decode_aac( playback, filename, mp4fh );
     }
-    else
+    else /* I think there's a file descriptor leak here? -jlindgren */
         my_decode_mp4( playback, filename, mp4file );
 
     return NULL;
