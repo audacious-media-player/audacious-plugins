@@ -402,7 +402,7 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
 
         case STATE_GET_NEXT:
             /* Get a header */
-            LULZ("get next @ chkpos=%08x, realpos=%08lx\n", chkpos, streampos+chkpos);
+            LULZ("get next @ chkpos=%08x\n", chkpos);
             head = mp3_head_convert(&chkbuf[chkpos]);
             state = STATE_VALIDATE;
             break;
@@ -426,7 +426,7 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
                 if (mp3_head_validate(head, &frame) >= 0) {
                     /* Found, exit resync */
                     chkpos -= 3;
-                    LULZ("resync found @ %x (%lx)\n", chkpos, streampos + chkpos);
+                    LULZ("resync found @ %x\n", chkpos);
                     state = STATE_VALIDATE;
                     break;
                 }
@@ -440,6 +440,10 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
                     }
                 }
             }
+
+            if (state == STATE_RESYNC_DO) /* reached end of data */
+                state = STATE_FATAL;
+
             break;
         }
     } while (state != STATE_FATAL && tries < max_resync_tries);
