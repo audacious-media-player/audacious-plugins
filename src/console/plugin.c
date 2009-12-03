@@ -55,7 +55,6 @@ static InputPlugin console_ip =
     .cleanup = console_cleanup,
     .about = console_aboutbox,
     .configure = console_cfg_ui,
-    .enabled = FALSE,
     .play_file = console_play_file,
     .stop = console_stop,
     .pause = console_pause,
