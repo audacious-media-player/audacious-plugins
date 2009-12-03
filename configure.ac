@@ -1138,6 +1138,7 @@ fi
 if test "$enable_cdaudio_ng" = "yes"; then
    PKG_CHECK_MODULES(CDDB, [libcddb >= 1.2.1],
    [INPUT_PLUGINS="$INPUT_PLUGINS cdaudio-ng"
+   GENERAL_PLUGINS="$GENERAL_PLUGINS cd-menu-items"
    CDDB_LIBS=`pkg-config --libs libcddb`
    CDDB_CFLAGS=`pkg-config --cflags libcddb`
    AC_SUBST(CDDB_LIBS)

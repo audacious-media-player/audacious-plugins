@@ -39,7 +39,6 @@
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <audacious/output.h>
-#include <audacious/ui_plugin_menu.h>
 
 #include "cdaudio-ng.h"
 #include "configure.h"
@@ -92,14 +91,7 @@ static gint playing_track = -1;
 static dae_params_t *pdae_params = NULL;
 
 /* read / set these variables in main thread only */
-#define N_MENUS 3
-static const int menus[N_MENUS] = { AUDACIOUS_MENU_MAIN,
-    AUDACIOUS_MENU_PLAYLIST_ADD, AUDACIOUS_MENU_PLAYLIST_RCLICK
-};
-
-static GtkWidget *menu_items[2 * N_MENUS];
 static int monitor_source;
-
 
 static void cdaudio_init (void);
 static void cdaudio_about (void);
@@ -157,30 +149,6 @@ static void cdaudio_error (const gchar * message_format, ...)
     aud_event_queue_with_data_free ("interface show error", msg);
 }
 
-/* mutex must be locked */
-static void check_disk (void)
-{
-    if (trackinfo == NULL)
-        refresh_trackinfo ();
-
-    if (trackinfo == NULL)
-        cdaudio_error ("No audio CD found.");
-}
-
-/* thread safe */
-static gboolean check_disk_safe (void)
-{
-    gboolean disk;
-
-    g_mutex_lock (mutex);
-
-    check_disk ();
-    disk = (trackinfo != NULL);
-
-    g_mutex_unlock (mutex);
-    return disk;
-}
-
 /* main thread only */
 static void purge_playlist (gint playlist)
 {
@@ -233,29 +201,9 @@ static gboolean monitor (gpointer unused)
 }
 
 /* main thread only */
-static void play_cd (GtkMenuItem * item, void * unused)
-{
-    if (! check_disk_safe ())
-        return;
-
-    audacious_drct_pl_open ("cdda://");
-}
-
-/* main thread only */
-static void add_cd (GtkMenuItem * item, void * unused)
-{
-    if (! check_disk_safe ())
-        return;
-
-    audacious_drct_pl_add_url_string ("cdda://");
-}
-
-/* main thread only */
 static void cdaudio_init ()
 {
     mcs_handle_t *db;
-    gint count;
-    GtkWidget *item;
 
     mutex = g_mutex_new ();
     control_cond = g_cond_new ();
@@ -309,29 +257,6 @@ static void cdaudio_init ()
     }
 
     libcddb_init ();
-
-    for (count = 0; count < N_MENUS; count++)
-    {
-        item = gtk_image_menu_item_new_with_label (_("Play CD"));
-        gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
-                                       gtk_image_new_from_stock
-                                       (GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
-        gtk_widget_show (item);
-        menu_items[2 * count] = item;
-        audacious_menu_plugin_item_add (menus[count], item);
-        g_signal_connect (G_OBJECT (item), "activate",
-                          G_CALLBACK (play_cd), NULL);
-
-        item = gtk_image_menu_item_new_with_label (_("Add CD"));
-        gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
-                                       gtk_image_new_from_stock
-                                       (GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
-        gtk_widget_show (item);
-        menu_items[2 * count + 1] = item;
-        audacious_menu_plugin_item_add (menus[count], item);
-        g_signal_connect (G_OBJECT (item), "activate",
-                          G_CALLBACK (add_cd), NULL);
-    }
 
     aud_uri_set_plugin ("cdda://", &inputplugin);
 
@@ -652,16 +577,7 @@ static gint cdaudio_set_volume (gint l, gint r)
 /* main thread only */
 static void cdaudio_cleanup (void)
 {
-    int count;
-
     g_mutex_lock (mutex);
-
-    for (count = 0; count < N_MENUS; count++)
-    {
-        audacious_menu_plugin_item_remove (menus[count], menu_items[2 * count]);
-        audacious_menu_plugin_item_remove (menus[count],
-                                           menu_items[2 * count + 1]);
-    }
 
     g_source_remove (monitor_source);
 
