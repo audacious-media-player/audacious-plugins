@@ -25,7 +25,6 @@ InputPlugin gModPlug =
     .init = Init,
     .about = ShowAboutBox,
     .configure = ShowConfigureBox,
-    .enabled = FALSE,
     .play_file = PlayFile,
     .stop = Stop,
     .pause = Pause,
