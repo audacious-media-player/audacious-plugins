@@ -26,7 +26,6 @@ InputPlugin adplug_ip = {
   .cleanup = adplug_quit,
   .about = adplug_about,
   .configure = adplug_config,
-  .enabled = FALSE,
   .play_file = adplug_play,
   .stop = adplug_stop,
   .pause = adplug_pause,
