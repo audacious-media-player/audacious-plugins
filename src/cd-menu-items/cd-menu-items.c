@@ -28,11 +28,14 @@
 #include <audacious/plugin.h>
 #include <audacious/ui_plugin_menu.h>
 
+#define N_ITEMS 2
 #define N_MENUS 3
 
-static const int menus[N_MENUS] = {AUDACIOUS_MENU_MAIN,
+static const gchar * titles[N_ITEMS] = {N_("Play CD"), N_("Add CD")};
+static const gint menus[N_MENUS] = {AUDACIOUS_MENU_MAIN,
  AUDACIOUS_MENU_PLAYLIST_ADD, AUDACIOUS_MENU_PLAYLIST_RCLICK};
-static GtkWidget * menu_items[2 * N_MENUS];
+
+static GtkWidget * items[N_ITEMS * N_MENUS];
 
 static void cd_play (void)
 {
@@ -44,30 +47,27 @@ static void cd_add (void)
     audacious_drct_pl_add_url_string ("cdda://");
 }
 
+static void (* funcs[N_ITEMS]) (void) = {cd_play, cd_add};
+
 static void cd_init (void)
 {
-    gint count;
-    GtkWidget * item, * menu;
+    gint mcount, icount;
+    GtkWidget * menu, * item;
 
-    for (count = 0; count < N_MENUS; count ++)
+    for (mcount = 0; mcount < N_MENUS; mcount ++)
     {
-        menu = aud_get_plugin_menu (menus[count]);
+        menu = aud_get_plugin_menu (menus[mcount]);
 
-        item = gtk_image_menu_item_new_with_label (_("Play CD"));
-        gtk_image_menu_item_set_image ((GtkImageMenuItem *) item,
-         gtk_image_new_from_stock (GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
-        gtk_widget_show (item);
-        menu_items[2 * count] = item;
-        gtk_menu_shell_append ((GtkMenuShell *) menu, item);
-        g_signal_connect (item, "activate", (GCallback) cd_play, NULL);
-
-        item = gtk_image_menu_item_new_with_label (_("Add CD"));
-        gtk_image_menu_item_set_image ((GtkImageMenuItem *) item,
-         gtk_image_new_from_stock (GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
-        gtk_widget_show (item);
-        menu_items[2 * count + 1] = item;
-        gtk_menu_shell_append ((GtkMenuShell *) menu, item);
-        g_signal_connect (item, "activate", (GCallback) cd_add, NULL);
+        for (icount = 0; icount < N_ITEMS; icount ++)
+        {
+            item = gtk_image_menu_item_new_with_label (_(titles[icount]));
+            gtk_image_menu_item_set_image ((GtkImageMenuItem *) item,
+             gtk_image_new_from_stock (GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
+            gtk_widget_show (item);
+            items[N_ITEMS * mcount + icount] = item;
+            gtk_menu_shell_append ((GtkMenuShell *) menu, item);
+            g_signal_connect (item, "activate", (GCallback) funcs[icount], NULL);
+        }
     }
 }
 
@@ -75,17 +75,8 @@ void cd_cleanup (void)
 {
     gint count;
 
-    for (count = 0; count < N_MENUS * 2; count ++)
-        gtk_widget_destroy (menu_items[count]);
+    for (count = 0; count < N_ITEMS * N_MENUS; count ++)
+        gtk_widget_destroy (items[count]);
 }
 
-static GeneralPlugin plugin =
-{
-	.description = "CD Menu Items Plugin",
-	.init = cd_init,
-	.cleanup = cd_cleanup,
-};
-
-static GeneralPlugin * plugin_list[] = {& plugin, NULL};
-
-SIMPLE_GENERAL_PLUGIN (cd-menu-items, plugin_list);
+DECLARE_PLUGIN (cd-menu-items, cd_init, cd_cleanup);
