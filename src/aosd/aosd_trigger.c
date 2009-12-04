@@ -237,7 +237,7 @@ aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
 static void
 aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
 {
-  if ( aud_ip_state->playing )
+  if (audacious_drct_get_playing ())
   {
     aosd_pb_titlechange_prevs_t *prevs = prevs_gp;
     gint playlist = aud_playlist_get_playing();
@@ -324,10 +324,10 @@ aosd_trigger_func_vol_change_cb ( gpointer h_vol_gp , gpointer unused )
 {
   gint *h_vol = h_vol_gp;
   static aosd_vol_change_bucket_t bucket = { { 0 , 0 } , 0 };
-  
+
   bucket.h_vol[0] = h_vol[0];
   bucket.h_vol[1] = h_vol[1];
-  
+
   /* in order to avoid repeated display of osd for each volume variation, use a
      timer to prevent it from appearing more than once when multiple volume
      changes are performed in a short time interval (500 msec) */
