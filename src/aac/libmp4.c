@@ -526,7 +526,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     numSamples = mp4ff_num_samples(mp4file, mp4track);
     msDuration = ((float)numSamples * (float)(framesize - 1.0)/(float)samplerate) * 1000;
 
-    if (playback->output->open_audio (FMT_S16_NE, samplerate, channels))
+    if (! playback->output->open_audio (FMT_S16_NE, samplerate, channels))
     {
         NeAACDecClose (decoder);
         playback->playing = FALSE;
