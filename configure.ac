@@ -1311,6 +1311,8 @@ AC_ARG_ENABLE(bluetooth,
 [have_bluetooth=$enableval],
 [have_bluetooth=yes])
 
+dnl This has been broken by the output plugin on-demand work
+have_bluetooth=no
 if test "x$have_bluetooth" = "xyes" -a "x$have_alsa" = "xyes"; then
     have_bluetooth=yes
     PKG_CHECK_MODULES(BLUEZ, [bluez >= 2.22],
