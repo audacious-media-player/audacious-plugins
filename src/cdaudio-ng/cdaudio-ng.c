@@ -337,6 +337,7 @@ static void cdaudio_play_file (InputPlayback * pinputplayback)
         if (trackinfo == NULL)
         {
             cdaudio_error ("No audio CD found.");
+            pinputplayback->error = TRUE;
             goto UNLOCK;
         }
     }
@@ -346,12 +347,14 @@ static void cdaudio_play_file (InputPlayback * pinputplayback)
     if (trackno == -1)
     {
         cdaudio_error ("Invalid URI %s.", pinputplayback->filename);
+        pinputplayback->error = TRUE;
         goto UNLOCK;
     }
 
     if (trackno < firsttrackno || trackno > lasttrackno)
     {
         cdaudio_error ("Track %d not found.", trackno);
+        pinputplayback->error = TRUE;
         goto UNLOCK;
     }
 
@@ -365,6 +368,7 @@ static void cdaudio_play_file (InputPlayback * pinputplayback)
         if (pinputplayback->output->open_audio (FMT_S16_LE, 44100, 2) == 0)
         {
             cdaudio_error ("Failed to open audio output.");
+            pinputplayback->error = TRUE;
             goto UNLOCK;
         }
 
