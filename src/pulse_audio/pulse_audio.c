@@ -738,7 +738,8 @@ static void pulse_about(void) {
 
 static OutputPlugin pulse_op = {
         .description = "PulseAudio Output Plugin",
-        .probe_priority = 8,
+        .probe_priority = 0, /* Was 8; if you want to put it back then first
+          make the stupid plugin fail when Pulse isn't installed. -jlindgren */
         .init = pulse_init,
         .about = pulse_about,
         .get_volume = pulse_get_volume,
