@@ -522,6 +522,21 @@ static OutputPluginInitStatus pulse_init(void) {
         return OUTPUT_PLUGIN_INIT_FAIL;
     }
 
+    pa_threaded_mainloop_lock(mainloop);
+
+    if (!(context = pa_context_new(pa_threaded_mainloop_get_api(mainloop), "Audacious"))) {
+        pa_threaded_mainloop_unlock(mainloop);
+        pulse_close();
+        return OUTPUT_PLUGIN_INIT_FAIL;
+    }
+
+    if (pa_context_connect(context, NULL, 0, NULL) < 0) {
+        pa_threaded_mainloop_unlock(mainloop);
+        pulse_close();
+        return OUTPUT_PLUGIN_INIT_FAIL;
+    }
+
+    pa_threaded_mainloop_unlock(mainloop);
     pulse_close();
     return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
@@ -738,8 +753,7 @@ static void pulse_about(void) {
 
 static OutputPlugin pulse_op = {
         .description = "PulseAudio Output Plugin",
-        .probe_priority = 0, /* Was 8; if you want to put it back then first
-          make the stupid plugin fail when Pulse isn't installed. -jlindgren */
+        .probe_priority = 8,
         .init = pulse_init,
         .about = pulse_about,
         .get_volume = pulse_get_volume,
