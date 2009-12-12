@@ -27,6 +27,7 @@
 #include "ui_skin.h"
 #include "ui_skinned_monostereo.h"
 #include "skins_cfg.h"
+#include "util.h"
 
 enum {
     DOUBLED,
@@ -184,7 +185,7 @@ static void ui_skinned_monostereo_toggle_scaled(UiSkinnedMonoStereo *monostereo)
     monostereo->scaled = !monostereo->scaled;
     gtk_widget_set_size_request(widget, monostereo->width*(monostereo->scaled ? config.scale_factor : 1), monostereo->height*(monostereo->scaled ? config.scale_factor : 1));
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_monostereo_expose (widget, 0);
 }
 
@@ -194,6 +195,6 @@ void ui_skinned_monostereo_set_num_channels(GtkWidget *widget, gint nch) {
 
     monostereo->num_channels = nch;
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_monostereo_expose (widget, 0);
 }

@@ -27,6 +27,7 @@
 #include "ui_skin.h"
 #include "ui_skinned_playstatus.h"
 #include "skins_cfg.h"
+#include "util.h"
 
 #define UI_TYPE_SKINNED_PLAYSTATUS           (ui_skinned_playstatus_get_type())
 
@@ -190,7 +191,7 @@ static void ui_skinned_playstatus_toggle_scaled(UiSkinnedPlaystatus *playstatus)
     playstatus->scaled = !playstatus->scaled;
     gtk_widget_set_size_request(widget, playstatus->width*(playstatus->scaled ? config.scale_factor : 1), playstatus->height*(playstatus->scaled ? config.scale_factor : 1));
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_playstatus_expose (widget, 0);
 }
 
@@ -200,7 +201,7 @@ void ui_skinned_playstatus_set_status(GtkWidget *widget, PStatus status) {
 
     playstatus->status = status;
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_playstatus_expose (widget, 0);
 }
 
@@ -210,7 +211,7 @@ void ui_skinned_playstatus_set_buffering(GtkWidget *widget, gboolean status) {
 
     playstatus->buffering = status;
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_playstatus_expose (widget, 0);
 }
 

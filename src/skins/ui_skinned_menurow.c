@@ -27,6 +27,7 @@
 #include <audacious/plugin.h>
 #include "plugin.h"
 #include "ui_skinned_menurow.h"
+#include "util.h"
 
 enum {
     DOUBLED,
@@ -287,7 +288,7 @@ static gboolean ui_skinned_menurow_expose(GtkWidget *widget, GdkEventExpose *eve
 
 void ui_skinned_menurow_update (GtkWidget * row)
 {
-    if (GTK_WIDGET_DRAWABLE (row))
+    if (widget_really_drawable (row))
         ui_skinned_menurow_expose (row, 0);
 }
 

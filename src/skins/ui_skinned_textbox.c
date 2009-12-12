@@ -312,7 +312,7 @@ static void ui_skinned_textbox_size_allocate(GtkWidget *widget, GtkAllocation *a
             priv->offset = 0;
             gtk_widget_set_size_request(widget, textbox->width, textbox->height);
 
-            if (GTK_WIDGET_DRAWABLE (widget))
+            if (widget_really_drawable (widget))
                 ui_skinned_textbox_expose (widget, 0);
     }
 }
@@ -438,7 +438,7 @@ static gboolean ui_skinned_textbox_motion_notify(GtkWidget *widget, GdkEventMoti
             while (priv->offset > (priv->pixbuf_width - textbox->width))
                 priv->offset = (priv->pixbuf_width - textbox->width);
 
-            if (GTK_WIDGET_DRAWABLE (widget))
+            if (widget_really_drawable (widget))
                 ui_skinned_textbox_expose (widget, 0);
         }
     }
@@ -455,7 +455,7 @@ static void ui_skinned_textbox_toggle_scaled(UiSkinnedTextbox *textbox) {
     gtk_widget_set_size_request(widget, textbox->width*(priv->scaled ? config.scale_factor : 1 ),
     textbox->height*(priv->scaled ? config.scale_factor : 1 ));
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_textbox_expose (widget, 0);
 }
 
@@ -534,7 +534,7 @@ void ui_skinned_textbox_set_text(GtkWidget *widget, const gchar *text) {
     textbox->text = aud_str_to_utf8(text);
     priv->scroll_back = FALSE;
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_textbox_expose (widget, 0);
 }
 
@@ -629,7 +629,7 @@ static gboolean textbox_scroll(gpointer data) {
                 priv->offset += 1;
             }
 
-            if (GTK_WIDGET_DRAWABLE (data))
+            if (widget_really_drawable (data))
                 ui_skinned_textbox_expose (data, 0);
         }
     }
@@ -768,7 +768,7 @@ void ui_skinned_textbox_set_scroll(GtkWidget *widget, gboolean scroll) {
 
         priv->offset = 0;
 
-        if (GTK_WIDGET_DRAWABLE (widget))
+        if (widget_really_drawable (widget))
             ui_skinned_textbox_expose (widget, 0);
     }
 }

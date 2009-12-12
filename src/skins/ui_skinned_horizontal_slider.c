@@ -26,6 +26,8 @@
 
 #include "ui_skinned_horizontal_slider.h"
 #include "skins_cfg.h"
+#include "util.h"
+
 #include <math.h>
 
 #define UI_SKINNED_HORIZONTAL_SLIDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_horizontal_slider_get_type(), UiSkinnedHorizontalSliderPrivate))
@@ -338,14 +340,14 @@ static gboolean ui_skinned_horizontal_slider_button_press(GtkWidget *widget, Gdk
 
             g_signal_emit_by_name(widget, "motion", priv->position);
 
-            if (GTK_WIDGET_DRAWABLE (widget))
+            if (widget_really_drawable (widget))
                 ui_skinned_horizontal_slider_expose (widget, 0);
         } else if (event->button == 3) {
             if (hs->pressed) {
                 hs->pressed = FALSE;
                 g_signal_emit_by_name(widget, "release", priv->position);
 
-                if (GTK_WIDGET_DRAWABLE (widget))
+                if (widget_really_drawable (widget))
                     ui_skinned_horizontal_slider_expose (widget, 0);
             }
             event->x = event->x + hs->x;
@@ -364,7 +366,7 @@ static gboolean ui_skinned_horizontal_slider_button_release(GtkWidget *widget, G
         hs->pressed = FALSE;
         g_signal_emit_by_name(widget, "release", priv->position);
 
-        if (GTK_WIDGET_DRAWABLE (widget))
+        if (widget_really_drawable (widget))
             ui_skinned_horizontal_slider_expose (widget, 0);
     }
     return TRUE;
@@ -394,7 +396,7 @@ static gboolean ui_skinned_horizontal_slider_motion_notify(GtkWidget *widget, Gd
 
         g_signal_emit_by_name(widget, "motion", priv->position);
 
-        if (GTK_WIDGET_DRAWABLE (widget))
+        if (widget_really_drawable (widget))
             ui_skinned_horizontal_slider_expose (widget, 0);
     }
 
@@ -411,7 +413,7 @@ static void ui_skinned_horizontal_slider_toggle_scaled(UiSkinnedHorizontalSlider
         priv->width*(priv->scaled ? config.scale_factor : 1),
         priv->height*(priv->scaled ? config.scale_factor : 1));
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_horizontal_slider_expose (widget, 0);
 }
 
@@ -428,7 +430,7 @@ void ui_skinned_horizontal_slider_set_position(GtkWidget *widget, gint pos) {
     if (priv->frame_cb)
         priv->frame = priv->frame_cb(priv->position);
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_horizontal_slider_expose (widget, 0);
 }
 

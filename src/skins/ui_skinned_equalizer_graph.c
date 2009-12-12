@@ -24,6 +24,8 @@
 #include "ui_skin.h"
 #include "ui_skinned_equalizer_graph.h"
 #include "skins_cfg.h"
+#include "util.h"
+
 #include <audacious/plugin.h>
 
 #define UI_TYPE_SKINNED_EQUALIZER_GRAPH           (ui_skinned_equalizer_graph_get_type())
@@ -277,12 +279,12 @@ static void ui_skinned_equalizer_graph_toggle_scaled(UiSkinnedEqualizerGraph *eq
     gtk_widget_set_size_request(widget, equalizer_graph->width*(equalizer_graph->scaled ? config.scale_factor : 1),
                                         equalizer_graph->height*(equalizer_graph->scaled ? config.scale_factor : 1));
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_equalizer_graph_expose (widget, NULL);
 }
 
 void ui_skinned_equalizer_graph_update (GtkWidget * graph)
 {
-    if (GTK_WIDGET_DRAWABLE (graph))
+    if (widget_really_drawable (graph))
         ui_skinned_equalizer_graph_expose (graph, NULL);
 }

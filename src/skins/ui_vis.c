@@ -582,7 +582,7 @@ static void ui_vis_toggle_scaled(UiVis *vis) {
 
     gtk_widget_set_size_request(widget, vis->width*(vis->scaled ? config.scale_factor : 1), vis->height*(vis->scaled ? config.scale_factor : 1));
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_vis_expose (widget, 0);
 }
 
@@ -612,7 +612,7 @@ void ui_vis_clear_data(GtkWidget *widget) {
 
     vis->refresh_delay = 0;
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_vis_expose (widget, 0);
 }
 
@@ -673,6 +673,6 @@ void ui_vis_timeout_func(GtkWidget *widget, guchar * data) {
             vis->data[i] = data[i];
     }
 
-    if (GTK_WIDGET_DRAWABLE(widget))
+    if (widget_really_drawable(widget))
         gtk_widget_queue_draw(widget);
 }

@@ -902,3 +902,9 @@ void resize_window(GtkWidget *window, gint width, gint height)
 
     gtk_window_resize((GtkWindow *)window, width, height);
 }
+
+gboolean widget_really_drawable (GtkWidget * widget)
+{
+    return GTK_WIDGET_DRAWABLE (widget) && widget->allocation.x >= 0 &&
+     widget->allocation.y >= 0;
+}

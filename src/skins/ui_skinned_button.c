@@ -20,6 +20,8 @@
 
 #include "ui_skinned_button.h"
 #include "skins_cfg.h"
+#include "util.h"
+
 #include <math.h>
 
 #define UI_SKINNED_BUTTON_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_button_get_type(), UiSkinnedButtonPrivate))
@@ -399,7 +401,7 @@ static void ui_skinned_button_set_pressed (UiSkinnedButton *button, gboolean pre
 
     button->pressed = pressed;
 
-    if (GTK_WIDGET_DRAWABLE ((GtkWidget *) button))
+    if (widget_really_drawable ((GtkWidget *) button))
         ui_skinned_button_expose ((GtkWidget *) button, 0);
 }
 
@@ -473,7 +475,7 @@ static void ui_skinned_button_toggle_scaled(UiSkinnedButton *button) {
 
     gtk_widget_set_size_request(widget, priv->w*(priv->scaled ? config.scale_factor : 1), priv->h*(priv->scaled ? config.scale_factor : 1));
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_button_expose (widget, 0);
 }
 
@@ -499,6 +501,6 @@ void ui_skinned_button_set_inside(GtkWidget *widget, gboolean inside) {
 
     button->inside = inside;
 
-    if (GTK_WIDGET_DRAWABLE ((GtkWidget *) button))
+    if (widget_really_drawable ((GtkWidget *) button))
         ui_skinned_button_expose ((GtkWidget *) button, 0);
 }

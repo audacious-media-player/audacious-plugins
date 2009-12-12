@@ -28,6 +28,7 @@
 #include "ui_skinned_playlist.h"
 #include "ui_skinned_playlist_slider.h"
 #include "ui_playlist.h"
+#include "util.h"
 
 #define UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_playlist_slider_get_type(), UiSkinnedPlaylistSliderPrivate))
 typedef struct _UiSkinnedPlaylistSliderPrivate UiSkinnedPlaylistSliderPrivate;
@@ -239,7 +240,7 @@ static gboolean ui_skinned_playlist_slider_expose(GtkWidget *widget, GdkEventExp
 
 void ui_skinned_playlist_slider_update (GtkWidget * widget)
 {
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_playlist_slider_expose (widget, 0);
 }
 

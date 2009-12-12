@@ -30,6 +30,7 @@
 #include "ui_main.h"
 #include "skins_cfg.h"
 #include "ui_skinned_equalizer_slider.h"
+#include "util.h"
 
 #define UI_TYPE_SKINNED_EQUALIZER_SLIDER           (ui_skinned_equalizer_slider_get_type())
 #define UI_SKINNED_EQUALIZER_SLIDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), UI_TYPE_SKINNED_EQUALIZER_SLIDER, UiSkinnedEqualizerSliderPrivate))
@@ -308,7 +309,7 @@ static gboolean ui_skinned_equalizer_slider_button_press(GtkWidget *widget, GdkE
 
             ui_skinned_equalizer_slider_set_mainwin_text(es);
 
-            if (GTK_WIDGET_DRAWABLE (widget))
+            if (widget_really_drawable (widget))
                 ui_skinned_equalizer_slider_expose (widget, 0);
         }
     }
@@ -323,7 +324,7 @@ static gboolean ui_skinned_equalizer_slider_button_release(GtkWidget *widget, Gd
         priv->pressed = FALSE;
         mainwin_release_info_text();
 
-        if (GTK_WIDGET_DRAWABLE (widget))
+        if (widget_really_drawable (widget))
             ui_skinned_equalizer_slider_expose (widget, 0);
     }
     return TRUE;
@@ -353,7 +354,7 @@ static gboolean ui_skinned_equalizer_slider_motion_notify(GtkWidget *widget, Gdk
         ui_skinned_equalizer_slider_set_mainwin_text(es);
         equalizerwin_eq_changed();
 
-        if (GTK_WIDGET_DRAWABLE (widget))
+        if (widget_really_drawable (widget))
             ui_skinned_equalizer_slider_expose (widget, 0);
     }
 
@@ -381,7 +382,7 @@ static gboolean ui_skinned_equalizer_slider_scroll(GtkWidget *widget, GdkEventSc
     priv->value = ((gfloat) (25 - priv->position) * EQUALIZER_MAX_GAIN / 25.0 );
     equalizerwin_eq_changed();
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_equalizer_slider_expose (widget, 0);
 
     return TRUE;
@@ -396,7 +397,7 @@ static void ui_skinned_equalizer_slider_toggle_scaled(UiSkinnedEqualizerSlider *
     gtk_widget_set_size_request(widget, priv->width*(priv->scaled ? config.scale_factor : 1),
     priv->height*(priv->scaled ? config.scale_factor : 1));
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_equalizer_slider_expose (widget, 0);
 }
 
@@ -419,7 +420,7 @@ void ui_skinned_equalizer_slider_set_position(GtkWidget *widget, gfloat pos) {
     if (priv->position >= 24 && priv->position <= 26)
         priv->position = 25;
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_skinned_equalizer_slider_expose (widget, 0);
 }
 

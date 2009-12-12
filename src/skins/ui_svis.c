@@ -448,7 +448,7 @@ static void ui_svis_toggle_scaled(UiSVis *svis) {
 
     gtk_widget_set_size_request(widget, svis->width* config.scale_factor, svis->height * config.scale_factor);
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_svis_expose (widget, 0);
 }
 
@@ -464,7 +464,7 @@ void ui_svis_clear_data(GtkWidget *widget) {
 
     svis->refresh_delay = 0;
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_svis_expose (widget, 0);
 }
 
@@ -483,6 +483,6 @@ void ui_svis_timeout_func(GtkWidget *widget, guchar * data) {
             svis->data[i] = data[i];
     }
 
-    if (GTK_WIDGET_DRAWABLE (widget))
+    if (widget_really_drawable (widget))
         ui_svis_expose (widget, 0);
 }
