@@ -2254,6 +2254,9 @@ void mainwin_update_song_info (void)
     gint t;
     gchar stime_prefix;
 
+    show_hide_widget (mainwin_position, length > 0);
+    show_hide_widget (mainwin_sposition, length > 0);
+
     if (ab_position_a != -1 && ab_position_b != -1 && time > ab_position_b)
         audacious_drct_seek (ab_position_a);
 
