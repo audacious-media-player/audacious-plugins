@@ -75,7 +75,6 @@ ffaudio_check_codec(AVCodec *codec)
 #ifndef FFAUDIO_NO_BLACKLIST
         case CODEC_ID_MP1:
         case CODEC_ID_MP2:
-        case CODEC_ID_MP3:
         case CODEC_ID_FLAC:
         case CODEC_ID_VORBIS:
         case CODEC_ID_AAC:
