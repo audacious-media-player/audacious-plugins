@@ -164,40 +164,56 @@ int aac_parse_frame(guchar *buf, int *srate, int *num)
         return fl;
 }
 
-static gboolean parse_aac_stream(VFSFile *stream)
+#define PROBE_DEBUG(...)
+
+static gboolean parse_aac_stream (VFSFile * stream)
 {
-        int cnt = 0, c, len, srate, num;
-        off_t init, probed;
-	static guchar buf[8];
+    guchar data[8192];
+    gint offset, length, srate, num, found;
 
-        init = probed = aud_vfs_ftell(stream);
-        while(probed-init <= 32768 && cnt < 8)
-        {
-                c = 0;
-                while(probed-init <= 32768 && c != 0xFF)
-                {
-                        c = aud_vfs_getc(stream);
-                        if(c < 0)
-                                return FALSE;
-	                probed = aud_vfs_ftell(stream);
-                }
-                buf[0] = 0xFF;
-                if(aud_vfs_fread(&(buf[1]), 1, 7, stream) < 7)
-                        return FALSE;
+    if (aud_vfs_fread (data, 1, sizeof data, stream) != sizeof data)
+    {
+        PROBE_DEBUG ("Read failed.\n");
+        return FALSE;
+    }
 
-                len = aac_parse_frame(buf, &srate, &num);
-                if(len > 0)
-                {
-                        cnt++;
-                        aud_vfs_fseek(stream, len - 8, SEEK_CUR);
-                }
-                probed = aud_vfs_ftell(stream);
-        }
+    for (offset = 0; offset <= sizeof data - 8; offset ++)
+    {
+        if (data[offset] != 255)
+            continue;
 
-        if(cnt < 8)
-                return FALSE;
+        length = aac_parse_frame (data + offset, & srate, & num);
 
-        return TRUE;
+        if (length < 8)
+            continue;
+
+        offset += length;
+        goto FOUND;
+    }
+
+    PROBE_DEBUG ("No ADTS header.\n");
+    return FALSE;
+
+FOUND:
+    for (found = 1; found < 3; found ++)
+    {
+        if (offset > sizeof data - 8)
+            goto FAIL;
+
+        length = aac_parse_frame (data + offset, & srate, & num);
+
+        if (length < 8)
+            goto FAIL;
+
+        offset += length;
+    }
+
+    PROBE_DEBUG ("Accepted.\n");
+    return TRUE;
+
+FAIL:
+    PROBE_DEBUG ("Only %d ADTS headers.\n", found);
+    return FALSE;
 }
 
 static int aac_probe(unsigned char *buffer, int len)
