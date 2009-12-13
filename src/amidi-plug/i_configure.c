@@ -38,7 +38,6 @@ amidiplug_cfg_backend_t * amidiplug_cfg_backend;
 
 void i_configure_ev_bcancel( gpointer );
 void i_configure_ev_bapply( GtkWidget * , gpointer );
-void i_configure_ev_bokcheck( GtkWidget * , gpointer );
 void i_configure_ev_bok( GtkWidget * , gpointer );
 void i_configure_cfg_backend_alloc( void );
 void i_configure_cfg_backend_free( void );
@@ -91,6 +90,13 @@ void i_configure_ev_browse_for_entry( GtkWidget * target_entry )
   }
 }
 
+static void commit_cb (GtkWidget * button, void * unused)
+{
+    if (audacious_drct_get_playing ())
+        audacious_drct_stop ();
+
+    g_signal_emit_by_name (button, "ap-commit");
+}
 
 void i_configure_gui( void )
 {
@@ -131,8 +137,9 @@ void i_configure_gui( void )
                   G_SIGNAL_ACTION , 0 , NULL , NULL ,
                   g_cclosure_marshal_VOID__VOID , G_TYPE_NONE , 0 );
   }
-  g_signal_connect( G_OBJECT(button_ok) , "clicked" ,
-                    G_CALLBACK(i_configure_ev_bokcheck) , configwin );
+
+  g_signal_connect (button_ok, "clicked", (GCallback) commit_cb, NULL);
+
   cw_hints.min_width = 480; cw_hints.min_height = -1;
   gtk_window_set_geometry_hints( GTK_WINDOW(configwin) , GTK_WIDGET(configwin) ,
                                  &cw_hints , GDK_HINT_MIN_SIZE );
@@ -222,37 +229,8 @@ void i_configure_ev_bapply( GtkWidget * button_apply , gpointer configwin )
 {
   GtkWidget *button_ok = g_object_get_data( G_OBJECT(button_apply) , "bok" );
   g_object_set_data( G_OBJECT(button_ok) , "bapply_pressed" , GUINT_TO_POINTER(1) );
-  i_configure_ev_bokcheck( button_ok , configwin );
+  commit_cb (button_ok, NULL);
 }
-
-
-void i_configure_ev_bokcheck( GtkWidget * button_ok , gpointer configwin )
-{
-  if ( audacious_drct_get_playing() || audacious_drct_get_paused() )
-  {
-    /* we can't change settings while a song is being played */
-    static GtkWidget * configwin_warnmsg = NULL;
-    g_object_set_data( G_OBJECT(button_ok) , "bapply_pressed" , GUINT_TO_POINTER(0) );
-    if ( configwin_warnmsg != NULL )
-    {
-      gtk_window_present(GTK_WINDOW(configwin_warnmsg));
-    }
-    else
-    {
-      configwin_warnmsg = (GtkWidget*)i_message_gui( _("AMIDI-Plug message") ,
-                                        _("Please stop the player before changing AMIDI-Plug settings.") ,
-                                        AMIDIPLUG_MESSAGE_WARN , configwin , FALSE );
-      g_signal_connect( G_OBJECT(configwin_warnmsg) , "destroy" ,
-                        G_CALLBACK(gtk_widget_destroyed) , &configwin_warnmsg );
-      gtk_widget_show_all( configwin_warnmsg );
-    }
-  }
-  else
-  {
-    g_signal_emit_by_name( G_OBJECT(button_ok) , "ap-commit" ); /* call commit actions */
-  }
-}
-
 
 void i_configure_ev_bok( GtkWidget * button_ok , gpointer configwin )
 {
