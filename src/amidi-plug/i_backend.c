@@ -105,7 +105,8 @@ gint i_backend_load( gchar * module_name )
 {
   gchar * module_pathfilename = g_strjoin( "" , AMIDIPLUGBACKENDDIR , "/ap-" , module_name , ".so" , NULL );
   DEBUGMSG( "loading backend '%s'\n" , module_pathfilename );
-  backend.gmodule = g_module_open( module_pathfilename , 0 );
+  backend.gmodule = g_module_open (module_pathfilename, G_MODULE_BIND_LAZY |
+   G_MODULE_BIND_LOCAL);
 
   if ( backend.gmodule != NULL )
   {
