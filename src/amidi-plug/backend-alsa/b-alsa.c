@@ -402,16 +402,12 @@ gint audio_volume_get( gint * left_volume , gint * right_volume )
       if ( snd_mixer_selem_has_playback_channel( mixer_elem , SND_MIXER_SCHN_FRONT_LEFT ) )
       {
         snd_mixer_selem_get_playback_volume( mixer_elem , SND_MIXER_SCHN_FRONT_LEFT , &lc );
-        /* convert the range to 0-100 (for the case that pv_range is not 0-100 already) */
-        *left_volume = (gint)(((lc - pv_min) * 100) / pv_range);
-        DEBUGMSG( "GET VOLUME requested, get left channel (%i)\n" , *left_volume );
+        * left_volume = ((lc - pv_min) * 100 + pv_range / 2) / pv_range;
       }
       if ( snd_mixer_selem_has_playback_channel( mixer_elem , SND_MIXER_SCHN_FRONT_RIGHT ) )
       {
         snd_mixer_selem_get_playback_volume( mixer_elem , SND_MIXER_SCHN_FRONT_RIGHT , &rc );
-        /* convert the range to 0-100 (for the case that pv_range is not 0-100 already) */
-        *right_volume = (gint)(((rc - pv_min) * 100) / pv_range);
-        DEBUGMSG( "GET VOLUME requested, get right channel (%i)\n" , *right_volume );
+        * right_volume = ((rc - pv_min) * 100 + pv_range / 2) / pv_range;
       }
     }
   }
@@ -448,17 +444,12 @@ gint audio_volume_set( gint left_volume , gint right_volume )
     if ( pv_range > 0 )
     {
       if ( snd_mixer_selem_has_playback_channel( mixer_elem , SND_MIXER_SCHN_FRONT_LEFT ) )
-      {
-        DEBUGMSG( "SET VOLUME requested, setting left channel to %i%%\n" , left_volume );
         snd_mixer_selem_set_playback_volume( mixer_elem , SND_MIXER_SCHN_FRONT_LEFT ,
-                                             (gint)((gdouble)(0.01 * (gdouble)(left_volume * pv_range)) + pv_min) );
-      }
+         pv_min + (left_volume * pv_range + 50) / 100);
+
       if ( snd_mixer_selem_has_playback_channel( mixer_elem , SND_MIXER_SCHN_FRONT_RIGHT ) )
-      {
-        DEBUGMSG( "SET VOLUME requested, setting right channel to %i%%\n" , right_volume );
         snd_mixer_selem_set_playback_volume( mixer_elem , SND_MIXER_SCHN_FRONT_RIGHT ,
-                                             (gint)((gdouble)(0.01 * (gdouble)(right_volume * pv_range)) + pv_min) );
-      }
+         pv_min + (right_volume * pv_range + 50) / 100);
     }
   }
 
