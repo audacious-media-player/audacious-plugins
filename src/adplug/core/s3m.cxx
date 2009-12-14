@@ -624,8 +624,8 @@ Cs3mPlayer::setfreq (unsigned char chan)
   opl->write (0xa0 + chan, channel[chan].freq & 255);
   if (channel[chan].key)
     opl->write (0xb0 + chan,
-                ((channel[chan].freq & 768) >> 8) +
-                (channel[chan].oct << 2) | 32);
+                (((channel[chan].freq & 768) >> 8) +
+                (channel[chan].oct << 2)) | 32);
   else
     opl->write (0xb0 + chan,
                 ((channel[chan].freq & 768) >> 8) + (channel[chan].oct << 2));
