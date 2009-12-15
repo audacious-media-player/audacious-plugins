@@ -30,13 +30,11 @@ static void        mp4_init(void);
 static void        mp4_about(void);
 static void        mp4_play(InputPlayback *);
 static void        mp4_cleanup(void);
-static Tuple*      mp4_get_song_tuple(const char *);
 static gint        mp4_is_our_fd(const char *, VFSFile *);
 
 static gchar *fmts[] = { "m4a", "mp4", "aac", NULL };
 
 static void *   mp4_decode(void *);
-static gchar *  mp4_get_song_title(char *filename);
 
 static GMutex * seek_mutex;
 static GCond * seek_cond;
@@ -306,7 +304,7 @@ static Tuple * aac_get_tuple (const gchar * filename, VFSFile * handle)
     }
 
     tuple = tuple_new_from_filename (filename);
-    tuple_associate_string (tuple, FIELD_CODEC, NULL, "MPEG-2 AAC");
+    tuple_associate_string (tuple, FIELD_CODEC, NULL, "MPEG-2/4 AAC");
     tuple_associate_string (tuple, FIELD_TITLE, NULL, temp);
 
     temp = aud_vfs_get_metadata (handle, "stream-name");
@@ -341,151 +339,105 @@ static gboolean aac_title_changed (const gchar * filename, VFSFile * handle,
     return changed;
 }
 
-static Tuple *mp4_get_song_tuple_base(const gchar *filename, VFSFile *mp4fh)
+static void read_and_set_string (mp4ff_t * mp4, gint (* func) (const mp4ff_t *
+ mp4, gchar * * string), Tuple * tuple, gint field)
 {
-    mp4ff_callback_t * mp4cb;
-    mp4ff_t *mp4file;
-    Tuple * ti;
+    gchar * string = NULL;
 
-    /* check if this file is an ADTS stream, if so return a blank tuple */
-    if (parse_aac_stream(mp4fh))
-    {
-        ti = aac_get_tuple (filename, mp4fh);
-        aud_vfs_fclose (mp4fh);
-        return ti;
-    }
+    func (mp4, & string);
 
-    ti = tuple_new_from_filename (filename);
-    aud_vfs_rewind(mp4fh);
+    if (string != NULL)
+        tuple_associate_string (tuple, field, NULL, string);
 
-    mp4cb = g_malloc0 (sizeof (mp4ff_callback_t));
-    mp4cb->read = mp4_read_callback;
-    mp4cb->seek = mp4_seek_callback;
-    mp4cb->user_data = mp4fh;
-
-    if ((mp4file = mp4ff_open_read(mp4cb)) == NULL) {
-        g_free(mp4cb);
-        aud_vfs_fclose(mp4fh);
-    } else {
-        gint mp4track= getAACTrack(mp4file);
-        gint numSamples = mp4ff_num_samples(mp4file, mp4track);
-        guint framesize = 1024;
-        gulong samplerate = 0;
-        guchar channels = 0;
-        gint msDuration;
-        mp4AudioSpecificConfig mp4ASC;
-        gchar *tmpval;
-        guchar *buffer = NULL;
-        guint bufferSize = 0;
-        NeAACDecHandle decoder;
-
-        if (mp4track == -1) {
-            // clean up
-            g_free(mp4cb);
-            aud_vfs_fclose(mp4fh);
-            return NULL;
-        }
-
-        decoder = NeAACDecOpen();
-        mp4ff_get_decoder_config(mp4file, mp4track, &buffer, &bufferSize);
-
-        if (!buffer) {
-            NeAACDecClose(decoder);
-            // clean up
-            g_free(mp4cb);
-            aud_vfs_fclose(mp4fh);
-            return FALSE;
-        }
-        if (NeAACDecInit2(decoder, buffer, bufferSize, &samplerate, &channels) < 0) {
-            NeAACDecClose(decoder);
-
-            // clean up
-            g_free(mp4cb);
-            aud_vfs_fclose(mp4fh);
-            return FALSE;
-        }
-
-        /* Add some hacks for SBR profile */
-        if (AudioSpecificConfig(buffer, bufferSize, &mp4ASC) >= 0) {
-            if (mp4ASC.frameLengthFlag == 1) framesize = 960;
-            if (mp4ASC.sbr_present_flag == 1) framesize *= 2;
-        }
-
-        g_free(buffer);
-        NeAACDecClose(decoder);
-
-        msDuration = ((float)numSamples * (float)(framesize - 1.0)/(float)samplerate) * 1000;
-        aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, msDuration);
-
-        mp4ff_meta_get_title(mp4file, &tmpval);
-        if (tmpval)
-        {
-            aud_tuple_associate_string(ti, FIELD_TITLE, NULL, tmpval);
-            free(tmpval);
-        }
-
-        mp4ff_meta_get_album(mp4file, &tmpval);
-        if (tmpval)
-        {
-            aud_tuple_associate_string(ti, FIELD_ALBUM, NULL, tmpval);
-            free(tmpval);
-        }
-
-        mp4ff_meta_get_artist(mp4file, &tmpval);
-        if (tmpval)
-        {
-            aud_tuple_associate_string(ti, FIELD_ARTIST, NULL, tmpval);
-            free(tmpval);
-        }
-
-        mp4ff_meta_get_genre(mp4file, &tmpval);
-        if (tmpval)
-        {
-            aud_tuple_associate_string(ti, FIELD_GENRE, NULL, tmpval);
-            free(tmpval);
-        }
-
-        mp4ff_meta_get_date(mp4file, &tmpval);
-        if (tmpval)
-        {
-            aud_tuple_associate_int(ti, FIELD_YEAR, NULL, atoi(tmpval));
-            free(tmpval);
-        }
-
-        aud_tuple_associate_string(ti, FIELD_CODEC, NULL, "Advanced Audio Coding (AAC)");
-        aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
-
-        free (mp4cb);
-        aud_vfs_fclose(mp4fh);
-    }
-
-    return ti;
+    free (string);
 }
 
-static Tuple *mp4_get_song_tuple(const gchar *filename)
+static Tuple * generate_tuple (const gchar * filename, mp4ff_t * mp4, gint track)
 {
-    Tuple *tuple;
-    VFSFile *mp4fh;
-    gboolean remote = aud_str_has_prefix_nocase(filename, "http:") ||
-	              aud_str_has_prefix_nocase(filename, "https:");
+    Tuple * tuple = tuple_new_from_filename (filename);
+    gint64 length;
+    gint scale, rate, channels, bitrate;
+    gchar * year = NULL, * cd_track = NULL;
+    gchar scratch [32];
 
-    mp4fh = remote ? aud_vfs_buffered_file_new_from_uri(filename) : aud_vfs_fopen(filename, "rb");
+    tuple_associate_string (tuple, FIELD_CODEC, NULL, "MPEG-2/4 AAC");
 
-    tuple = mp4_get_song_tuple_base(filename, mp4fh);
+    length = mp4ff_get_track_duration (mp4, track);
+    scale = mp4ff_time_scale (mp4, track);
+
+    if (length > 0 && scale > 0)
+        tuple_associate_int (tuple, FIELD_LENGTH, NULL, length * 1000 / scale);
+
+    rate = mp4ff_get_sample_rate (mp4, track);
+    channels = mp4ff_get_channel_count (mp4, track);
+
+    if (rate > 0 && channels > 0)
+    {
+        snprintf (scratch, sizeof scratch, "%d kHz, %s", rate / 1000, channels
+         == 1 ? "mono" : channels == 2 ? "stereo" : "surround");
+        tuple_associate_string (tuple, FIELD_QUALITY, NULL, scratch);
+    }
+
+    bitrate = mp4ff_get_avg_bitrate (mp4, track);
+
+    if (bitrate > 0)
+        tuple_associate_int (tuple, FIELD_BITRATE, NULL, bitrate / 1000);
+
+    read_and_set_string (mp4, mp4ff_meta_get_title, tuple, FIELD_TITLE);
+    read_and_set_string (mp4, mp4ff_meta_get_album, tuple, FIELD_ALBUM);
+    read_and_set_string (mp4, mp4ff_meta_get_artist, tuple, FIELD_ARTIST);
+    read_and_set_string (mp4, mp4ff_meta_get_comment, tuple, FIELD_COMMENT);
+    read_and_set_string (mp4, mp4ff_meta_get_genre, tuple, FIELD_GENRE);
+
+    mp4ff_meta_get_date (mp4, & year);
+
+    if (year != NULL)
+        tuple_associate_int (tuple, FIELD_YEAR, NULL, atoi (year));
+
+    free (year);
+
+    mp4ff_meta_get_track (mp4, & cd_track);
+
+    if (cd_track != NULL)
+        tuple_associate_int (tuple, FIELD_TRACK, NULL, atoi (cd_track));
+
+    free (cd_track);
 
     return tuple;
 }
 
-static gchar *mp4_get_song_title(char *filename)
+static Tuple * mp4_get_tuple (const gchar * filename, VFSFile * handle)
 {
-    gchar *title;
-    Tuple *tuple = mp4_get_song_tuple(filename);
+    mp4ff_callback_t mp4cb;
+    mp4ff_t * mp4;
+    gint track;
+    Tuple * tuple;
 
-    title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
+    if (parse_aac_stream (handle))
+        return aac_get_tuple (filename, handle);
 
-    aud_tuple_free(tuple);
+    aud_vfs_fseek (handle, 0, SEEK_SET);
 
-    return title;
+    mp4cb.read = mp4_read_callback;
+    mp4cb.seek = mp4_seek_callback;
+    mp4cb.user_data = handle;
+
+    mp4 = mp4ff_open_read (& mp4cb);
+
+    if (mp4 == NULL)
+        return NULL;
+
+    track = getAACTrack (mp4);
+
+    if (track < 0)
+    {
+        mp4ff_close (mp4);
+        return NULL;
+    }
+
+    tuple = generate_tuple (filename, mp4, track);
+    mp4ff_close (mp4);
+    return tuple;
 }
 
 static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4file )
@@ -509,10 +461,6 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         g_print("Unsupported Audio track type\n");
         return TRUE;
     }
-
-    gchar *xmmstitle = xmmstitle = mp4_get_song_title(filename);
-    if (xmmstitle == NULL)
-        xmmstitle = g_strdup(filename);
 
     decoder = NeAACDecOpen();
     mp4ff_get_decoder_config(mp4file, mp4track, &buffer, &bufferSize);
@@ -550,6 +498,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         return FALSE;
     }
 
+    playback->set_tuple (playback, generate_tuple (filename, mp4file, mp4track));
     playback->set_params(playback, NULL, 0,
             mp4ff_get_avg_bitrate( mp4file, mp4track ),
             samplerate,channels);
@@ -874,8 +823,8 @@ InputPlugin mp4_ip =
     .pause = mp4_pause,
     .seek = mp4_seek,
     .cleanup = mp4_cleanup,
-    .get_song_tuple = mp4_get_song_tuple,
     .is_our_file_from_vfs = mp4_is_our_fd,
+    .probe_for_tuple = mp4_get_tuple,
     .vfs_extensions = fmts,
 };
 
