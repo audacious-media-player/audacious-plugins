@@ -399,7 +399,7 @@ static Tuple * generate_tuple (const gchar * filename, mp4ff_t * mp4, gint track
     mp4ff_meta_get_track (mp4, & cd_track);
 
     if (cd_track != NULL)
-        tuple_associate_int (tuple, FIELD_TRACK, NULL, atoi (cd_track));
+        tuple_associate_int (tuple, FIELD_TRACK_NUMBER, NULL, atoi (cd_track));
 
     free (cd_track);
 
