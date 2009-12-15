@@ -259,7 +259,7 @@ static Tuple * amidiplug_get_song_tuple( const gchar *filename_uri )
   soft_init ();
 
   if (filename != NULL)
-      title = g_path_get_basename(filename_uri);
+      title = g_path_get_basename(filename);
   else
       title = g_strdup(filename_uri);
 
