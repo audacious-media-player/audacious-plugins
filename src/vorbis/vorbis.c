@@ -307,7 +307,7 @@ vorbis_play(InputPlayback *playback)
     memset(&vf, 0, sizeof(vf));
 
     if ((stream = aud_vfs_fopen(playback->filename, "r")) == NULL) {
-        playback->eof = TRUE;
+        playback->error = TRUE;
         goto play_cleanup;
     }
 
@@ -317,7 +317,7 @@ vorbis_play(InputPlayback *playback)
     streaming = aud_vfs_is_streaming(fd->fd);
     if (ov_open_callbacks(fd, &vf, NULL, 0, streaming ? vorbis_callbacks_stream : vorbis_callbacks) < 0) {
         vorbis_callbacks.close_func(fd);
-        playback->eof = TRUE;
+        playback->error = TRUE;
         goto play_cleanup;
     }
 
