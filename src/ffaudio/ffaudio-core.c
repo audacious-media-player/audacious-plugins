@@ -67,25 +67,6 @@ ffaudio_cleanup(void)
     g_cond_free(ctrl_cond);
 }
 
-static gint
-ffaudio_check_codec(AVCodec *codec)
-{
-    /* Blacklist certain codecs here (see TODO for more information) */
-    switch (codec->id) {
-#ifndef FFAUDIO_NO_BLACKLIST
-        case CODEC_ID_MP1:
-        case CODEC_ID_MP2:
-        case CODEC_ID_FLAC:
-        case CODEC_ID_VORBIS:
-        case CODEC_ID_AAC:
-            _DEBUG("refusing blacklisted codec");
-            return 0;
-#endif
-        default:
-            return 1;
-    }
-}
-
 static gboolean
 ffaudio_codec_is_seekable(AVCodec *codec)
 {
@@ -158,7 +139,7 @@ ffaudio_probe(const gchar *filename, VFSFile *file)
     _DEBUG("probe success for %s", codec->name);
     av_close_input_file(ic);
 
-    return ffaudio_check_codec(codec);
+    return 1;
 }
 
 typedef struct {
@@ -345,9 +326,6 @@ ffaudio_play_file(InputPlayback *playback)
         goto error_exit;
 
     _DEBUG("got codec %s for stream index %d, opening", codec->name, stream_id);
-
-    if (!ffaudio_check_codec(codec))
-        goto error_exit;
 
     if (avcodec_open(c, codec) < 0)
         goto error_exit;
