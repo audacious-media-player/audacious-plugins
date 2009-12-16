@@ -1596,7 +1596,6 @@ AC_SUBST(GCC42_CFLAGS)
 AC_CONFIG_FILES([
 	buildsys.mk
 	extra.mk
-	po/Makefile.in
 ])
 
 BUILDSYS_TOUCH_DEPS
