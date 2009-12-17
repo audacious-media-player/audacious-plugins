@@ -473,13 +473,6 @@ void ModplugXMMS::Seek(float32 aTime)
 	mPlayed = uint32(aTime * 1000);
 }
 
-float32 ModplugXMMS::GetTime(void)
-{
-	if ((mStopped) || (!mOutPlug))
-		return -1;
-	return (float32)mOutPlug->output_time() / 1000;
-}
-
 Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 {
 	CSoundFile* lSoundFile;
@@ -545,7 +538,7 @@ void ModplugXMMS::SetInputPlugin(InputPlugin& aInPlugin)
 {
 	mInPlug = &aInPlugin;
 }
-void ModplugXMMS::SetOutputPlugin(OutputPlugin& aOutPlugin)
+void ModplugXMMS::SetOutputPlugin(OutputAPI& aOutPlugin)
 {
 	mOutPlug = &aOutPlugin;
 }

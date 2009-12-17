@@ -1,5 +1,5 @@
 /*
- * ALSA Gapless Output Plugin for Audacious
+ * ALSA Output Plugin for Audacious
  * Copyright 2009 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,8 +33,8 @@ static void * alsa_buffer;
 static gint alsa_buffer_length, alsa_buffer_data_start, alsa_buffer_data_length;
 
 static gint64 alsa_time; /* microseconds */
-static gboolean alsa_leave_open, alsa_paused;
-static gint alsa_close_source, alsa_paused_time;
+static gboolean alsa_paused;
+static gint alsa_paused_time;
 
 static gboolean pump_quit;
 static GThread * pump_thread;
@@ -151,93 +151,6 @@ FAILED:
     g_cond_signal (pump_cond);
 }
 
-static gboolean real_open (snd_pcm_format_t format, gint rate, gint channels)
-{
-    snd_pcm_hw_params_t * params;
-    guint useconds;
-    snd_pcm_uframes_t frames, period;
-    gint hard_buffer, soft_buffer;
-
-    DEBUG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
-     alsa_config_pcm, snd_pcm_format_name (format), channels, rate);
-    CHECK (snd_pcm_open, & alsa_handle, alsa_config_pcm,
-     SND_PCM_STREAM_PLAYBACK, 0);
-
-    snd_pcm_hw_params_alloca (& params);
-    CHECK (snd_pcm_hw_params_any, alsa_handle, params);
-    CHECK (snd_pcm_hw_params_set_access, alsa_handle, params,
-     SND_PCM_ACCESS_RW_INTERLEAVED);
-    CHECK (snd_pcm_hw_params_set_format, alsa_handle, params, format);
-    CHECK (snd_pcm_hw_params_set_channels, alsa_handle, params, channels);
-    CHECK (snd_pcm_hw_params_set_rate, alsa_handle, params, rate, 0);
-    useconds = 1000 * (LEAST_BUFFER * 7 / 8);
-    CHECK (snd_pcm_hw_params_set_buffer_time_min, alsa_handle, params,
-     & useconds, 0);
-    useconds = 1000 * MAX (LEAST_BUFFER * 9 / 8, aud_cfg->output_buffer_size / 2);
-    CHECK (snd_pcm_hw_params_set_buffer_time_max, alsa_handle, params,
-     & useconds, 0);
-    CHECK (snd_pcm_hw_params, alsa_handle, params);
-
-    alsa_format = format;
-    alsa_channels = channels;
-    alsa_rate = rate;
-
-    CHECK (snd_pcm_get_params, alsa_handle, & frames, & period);
-    hard_buffer = (gint64) frames * 1000 / rate;
-    soft_buffer = MAX (LEAST_BUFFER, aud_cfg->output_buffer_size - hard_buffer);
-    DEBUG ("Hardware buffer %d ms, software buffer %d ms.\n", hard_buffer,
-     soft_buffer);
-
-    alsa_buffer_length = snd_pcm_frames_to_bytes (alsa_handle, (gint64)
-     soft_buffer * rate / 1000);
-    alsa_buffer = g_malloc (alsa_buffer_length);
-    alsa_buffer_data_start = 0;
-    alsa_buffer_data_length = 0;
-
-    alsa_time = 0;
-    alsa_leave_open = FALSE;
-    alsa_paused = TRUE; /* for buffering */
-    alsa_close_source = 0;
-    alsa_paused_time = 0;
-
-    pump_quit = FALSE;
-    pump_thread = g_thread_create (pump, NULL, TRUE, NULL);
-    g_cond_wait (pump_cond, alsa_mutex);
-
-    return TRUE;
-
-FAILED:
-    if (alsa_handle != NULL)
-    {
-        snd_pcm_close (alsa_handle);
-        alsa_handle = NULL;
-    }
-
-    return FALSE;
-}
-
-static void real_close (void)
-{
-    DEBUG ("Closing audio.\n");
-
-    if (alsa_close_source)
-        g_source_remove (alsa_close_source);
-
-    if (pump_thread != NULL)
-    {
-        pump_quit = TRUE;
-        g_cond_signal (pump_cond);
-        g_mutex_unlock (alsa_mutex);
-        g_thread_join (pump_thread);
-        g_mutex_lock (alsa_mutex);
-    }
-
-    g_free (alsa_buffer);
-
-    snd_pcm_close (alsa_handle);
-    alsa_handle = NULL;
-}
-
 static gint real_output_time (void)
 {
     snd_pcm_status_t * status;
@@ -248,21 +161,9 @@ static gint real_output_time (void)
     time = (alsa_time - (gint64) (snd_pcm_bytes_to_frames (alsa_handle,
      alsa_buffer_data_length) + snd_pcm_status_get_delay (status)) * 1000000 /
      alsa_rate) / 1000;
-    time = MAX (0, time); /* still finishing previous song? */
 
 FAILED:
     return time;
-}
-
-static gboolean real_buffer_playing (void)
-{
-    snd_pcm_state_t state;
-
-    if (alsa_buffer_data_length > 0)
-        return TRUE;
-
-    state = snd_pcm_state (alsa_handle);
-    return (state == SND_PCM_STATE_RUNNING || state == SND_PCM_STATE_DRAINING);
 }
 
 OutputPluginInitStatus alsa_init (void)
@@ -288,20 +189,13 @@ void alsa_soft_init (void)
 
 void alsa_cleanup (void)
 {
-    g_mutex_lock (alsa_mutex);
-
     if (initted)
     {
         DEBUG ("Cleanup.\n");
-
-        if (alsa_handle != NULL)
-            real_close ();
-
         alsa_close_mixer ();
         alsa_config_save ();
     }
 
-    g_mutex_unlock (alsa_mutex);
     g_mutex_free (alsa_mutex);
     g_cond_free (pump_cond);
 }
@@ -352,77 +246,89 @@ static snd_pcm_format_t convert_aud_format (AFormat aud_format)
 gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
 {
     snd_pcm_format_t format = convert_aud_format (aud_format);
-    gint result;
+    snd_pcm_hw_params_t * params;
+    guint useconds;
+    snd_pcm_uframes_t frames, period;
+    gint hard_buffer, soft_buffer;
 
     g_mutex_lock (alsa_mutex);
     alsa_soft_init ();
 
-    if (alsa_handle != NULL)
-    {
-        g_source_remove (alsa_close_source);
-        alsa_close_source = 0;
+    DEBUG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
+     alsa_config_pcm, snd_pcm_format_name (format), channels, rate);
+    CHECK (snd_pcm_open, & alsa_handle, alsa_config_pcm,
+     SND_PCM_STREAM_PLAYBACK, 0);
 
-        if (format == alsa_format && channels == alsa_channels && rate ==
-         alsa_rate)
-        {
-            DEBUG ("Audio already open and in requested format.\n");
-            alsa_leave_open = FALSE;
-        }
-        else
-        {
-            DEBUG ("Audio already open but not in requested format.\n");
+    snd_pcm_hw_params_alloca (& params);
+    CHECK (snd_pcm_hw_params_any, alsa_handle, params);
+    CHECK (snd_pcm_hw_params_set_access, alsa_handle, params,
+     SND_PCM_ACCESS_RW_INTERLEAVED);
+    CHECK (snd_pcm_hw_params_set_format, alsa_handle, params, format);
+    CHECK (snd_pcm_hw_params_set_channels, alsa_handle, params, channels);
+    CHECK (snd_pcm_hw_params_set_rate, alsa_handle, params, rate, 0);
+    useconds = 1000 * (LEAST_BUFFER * 7 / 8);
+    CHECK (snd_pcm_hw_params_set_buffer_time_min, alsa_handle, params,
+     & useconds, 0);
+    useconds = 1000 * MAX (LEAST_BUFFER * 9 / 8, aud_cfg->output_buffer_size / 2);
+    CHECK (snd_pcm_hw_params_set_buffer_time_max, alsa_handle, params,
+     & useconds, 0);
+    CHECK (snd_pcm_hw_params, alsa_handle, params);
 
-            while (real_buffer_playing ())
-                g_cond_wait (pump_cond, alsa_mutex);
+    alsa_format = format;
+    alsa_channels = channels;
+    alsa_rate = rate;
 
-            real_close ();
-        }
-    }
+    CHECK (snd_pcm_get_params, alsa_handle, & frames, & period);
+    hard_buffer = (gint64) frames * 1000 / rate;
+    soft_buffer = MAX (LEAST_BUFFER, aud_cfg->output_buffer_size - hard_buffer);
+    DEBUG ("Hardware buffer %d ms, software buffer %d ms.\n", hard_buffer,
+     soft_buffer);
 
-    if (alsa_handle != NULL)
-        result = 1;
-    else
-        result = real_open (format, rate, channels) ? 1 : -1;
+    alsa_buffer_length = snd_pcm_frames_to_bytes (alsa_handle, (gint64)
+     soft_buffer * rate / 1000);
+    alsa_buffer = g_malloc (alsa_buffer_length);
+    alsa_buffer_data_start = 0;
+    alsa_buffer_data_length = 0;
+
+    alsa_time = 0;
+    alsa_paused = TRUE; /* for buffering */
+    alsa_paused_time = 0;
+
+    pump_quit = FALSE;
+    pump_thread = g_thread_create (pump, NULL, TRUE, NULL);
+    g_cond_wait (pump_cond, alsa_mutex);
 
     g_mutex_unlock (alsa_mutex);
-    return result;
-}
+    return 1;
 
-static gboolean close_cb (void * unused)
-{
-    gboolean playing;
-
-    g_mutex_lock (alsa_mutex);
-
-    playing = real_buffer_playing ();
-
-    if (! playing)
+FAILED:
+    if (alsa_handle != NULL)
     {
-        DEBUG ("Buffer empty; closing audio.\n");
-        real_close ();
+        snd_pcm_close (alsa_handle);
+        alsa_handle = NULL;
     }
 
     g_mutex_unlock (alsa_mutex);
-    return playing;
+    return 0;
 }
 
 void alsa_close_audio (void)
 {
-    DEBUG ("Close requested.\n");
+    DEBUG ("Closing audio.\n");
     g_mutex_lock (alsa_mutex);
 
-    if (alsa_leave_open)
+    if (pump_thread != NULL)
     {
-        alsa_time = 0;
-
-        if (alsa_paused) /* buffering never completed */
-            start_playback ();
-
-        alsa_close_source = g_timeout_add (300, close_cb, NULL);
+        pump_quit = TRUE;
+        g_cond_signal (pump_cond);
+        g_mutex_unlock (alsa_mutex);
+        g_thread_join (pump_thread);
+        g_mutex_lock (alsa_mutex);
     }
-    else
-        real_close ();
 
+    g_free (alsa_buffer);
+    snd_pcm_close (alsa_handle);
+    alsa_handle = NULL;
     g_mutex_unlock (alsa_mutex);
 }
 
@@ -466,6 +372,14 @@ void alsa_write_audio (void * data, gint length)
     g_mutex_unlock (alsa_mutex);
 }
 
+void alsa_set_written_time (gint time)
+{
+    DEBUG ("Setting time counter to %d.\n", time);
+    g_mutex_lock (alsa_mutex);
+    alsa_time = 1000 * (gint64) time;
+    g_mutex_unlock (alsa_mutex);
+}
+
 gint alsa_written_time (void)
 {
     gint time;
@@ -473,28 +387,16 @@ gint alsa_written_time (void)
     g_mutex_lock (alsa_mutex);
     time = alsa_time / 1000;
     g_mutex_unlock (alsa_mutex);
-
     return time;
 }
 
-/*
- * Note:
- *
- * "output_time" has to return sanely (zero) even when audio is not open, since
- * it is difficult for Audacious core to know if a decoder plugin has opened
- * audio at any given time.
- */
-
 gint alsa_output_time (void)
 {
-    gint time;
+    gint time = 0;
 
     g_mutex_lock (alsa_mutex);
-    alsa_soft_init ();
 
-    if (alsa_handle == NULL)
-        time = 0;
-    else if (alsa_paused)
+    if (alsa_paused)
         time = alsa_paused_time;
     else
         time = real_output_time ();
@@ -503,41 +405,24 @@ gint alsa_output_time (void)
     return time;
 }
 
-/*
- * Hack #1.
- *
- * Normally, Audacious core polls "buffer_free" as it passes audio from the
- * decoder plugin to the output plugin. However, we already poll as we pass data
- * from our buffer to the ALSA buffer, and our "write_audio" wants to poll our
- * own buffer in sync with that to reduce CPU wakeups. To keep Audacious core
- * from polling "buffer_free", we pretend that we always have free buffer space.
- */
-
-gint alsa_buffer_free (void)
-{
-    return 1048576; /* no decoder should ever pass 1 MB at once */
-}
-
-/*
- * Hack #2.
- *
- * "buffer_playing" is used by decoder plugins at the end of a song to wait
- * until the audio buffer has emptied before closing audio. We pretend that the
- * buffer has emptied when there is in fact still data in it so that the decoder
- * will exit and Audacious will start playing the next song. Since
- * "buffer_playing" will normally NOT be called during a user-initiated stop, we
- * also use it as our clue to let the buffer keep playing.
- */
-
 gint alsa_buffer_playing (void)
 {
-    DEBUG ("Song ending; not closing audio.\n");
+    gboolean playing;
+
     g_mutex_lock (alsa_mutex);
 
-    alsa_leave_open = TRUE;
+    if (alsa_buffer_data_length > 0)
+        playing = TRUE;
+    else
+    {
+        snd_pcm_state_t state = snd_pcm_state (alsa_handle);
+
+        playing = (state == SND_PCM_STATE_RUNNING || state ==
+         SND_PCM_STATE_DRAINING);
+    }
 
     g_mutex_unlock (alsa_mutex);
-    return 0;
+    return playing ? 1 : 0;
 }
 
 void alsa_flush (gint time)

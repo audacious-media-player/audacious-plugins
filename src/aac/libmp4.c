@@ -561,7 +561,6 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         if((rc == 0) || (buffer== NULL) || (bufferSize == 0) || (bufferSize > BUFFER_SIZE)){
             g_print("MP4: read error\n");
             sampleBuffer = NULL;
-            playback->output->buffer_free();
             playback->output->close_audio();
 
             NeAACDecClose(decoder);
@@ -762,7 +761,6 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         playback->pass_audio (playback, FMT_S16_LE, channels, 2 *
          samplesdecoded, sample_buffer, NULL);
     }
-    playback->output->buffer_free();
     playback->output->close_audio();
     NeAACDecClose(decoder);
     aud_vfs_fclose(file);

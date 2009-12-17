@@ -109,7 +109,7 @@ Tuple *psf2_tuple(const gchar *filename)
 		return NULL;
 
 	if (corlett_decode(buf, sz, NULL, NULL, &c) != AO_SUCCESS)
-		return NULL;	
+		return NULL;
 
 	t = aud_tuple_new_from_filename(filename);
 
@@ -208,16 +208,13 @@ void psf2_play(InputPlayback *data)
 
 		f->stop();
 
-		data->output->buffer_free();
-		data->output->buffer_free();
-
 		while (data->eof && data->output->buffer_playing())
 			g_usleep(10000);
 
 		data->output->close_audio();
 
 		break;
-	}	
+	}
 
 	g_free(buffer);
 	g_free(path);
@@ -228,8 +225,6 @@ void psf2_play(InputPlayback *data)
 
 void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 {
-	const int mask = ~((((16 / 8) * 2)) - 1);
-
 	if (buffer == NULL)
 	{
 		playback->playing = FALSE;
@@ -238,21 +233,7 @@ void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 		return;
 	}
 
-	while (count > 0)
-	{
-		int t = playback->output->buffer_free() & mask;
-		if (t > count)
-			playback->pass_audio(playback, FMT_S16_NE, 2, count, buffer, NULL);
-		else
-		{
-			if (t)
-				playback->pass_audio(playback, FMT_S16_NE, 2, t, buffer, NULL);
-
-			g_usleep((count-t)*1000*5/441/2);
-		}
-		count -= t;
-		buffer += t;
-	}
+	playback->output->write_audio (buffer, count);
 
 	if (seek)
 	{

@@ -49,17 +49,6 @@ void Seek(InputPlayback *data, int aTime)
     gModplugXMMS.Seek(float32(aTime));
 }
 
-int GetTime(InputPlayback *data)
-{
-    float32 lTime;
-    
-    lTime = gModplugXMMS.GetTime();
-    if(lTime == -1)
-        return -1;
-    else
-        return (int)(lTime * 1000);
-}
-
 Tuple* GetSongTuple(const gchar* aFilename)
 {
     return gModplugXMMS.GetSongTuple(aFilename);

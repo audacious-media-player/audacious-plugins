@@ -502,7 +502,7 @@ static gint cdaudio_get_time (InputPlayback * playback)
         goto UNLOCK;
 
     if (cdng_cfg.use_dae)
-        time = playback->output->output_time ();
+        time = -1;
     else
     {
         cdio_subchannel_t subchannel;

@@ -193,17 +193,6 @@ static void tone_pause(InputPlayback * playback, gshort paused)
     playback->output->pause(paused);
 }
 
-static gint tone_get_time(InputPlayback * playback)
-{
-    if (playback->error)
-        return -2;
-
-    if (!playback->playing && !playback->output->buffer_playing())
-        return -1;
-
-    return playback->output->output_time();
-}
-
 static Tuple *tone_get_song_tuple(const gchar * filename)
 {
     Tuple *tuple = aud_tuple_new_from_filename(filename);
@@ -229,7 +218,6 @@ static InputPlugin tone_ip = {
     .play_file = tone_play,
     .stop = tone_stop,
     .pause = tone_pause,
-    .get_time = tone_get_time,
     .get_song_tuple = tone_get_song_tuple
 };
 

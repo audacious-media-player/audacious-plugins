@@ -44,7 +44,7 @@ int chans = 2;
  *
  * and in produce_audio() function call.
  */
-const int bits = 16;		
+const int bits = 16;
 
 ayemu_ay_t ay;
 ayemu_vtx_t vtx;
@@ -68,7 +68,7 @@ gint
 vtx_is_our_fd (const gchar *filename, VFSFile *fp)
 {
   char buf[2];
-    
+
   aud_vfs_fread (buf, 2, 1, fp);
   return (!strncasecmp (buf, "ay", 2) || !strncasecmp (buf, "ym", 2));
 }
@@ -79,7 +79,7 @@ vtx_is_our_file (const gchar *filename)
   gboolean ret;
   VFSFile *fp;
 
-  fp = aud_vfs_fopen(filename, "rb");    
+  fp = aud_vfs_fopen(filename, "rb");
   ret = vtx_is_our_fd(filename, fp);
   aud_vfs_fclose(fp);
 
@@ -166,23 +166,17 @@ play_loop (gpointer args)
 	      }
 	  }
 
-      while (playback->output->buffer_free () < SNDBUFSIZE && playback->playing
-	     && seek_to == -1)
-	g_usleep(10000);
-
       if (playback->playing && seek_to == -1)
         playback->pass_audio(playback, FMT_S16_NE,
   			  chans , SNDBUFSIZE, sndbuf, &playback->playing);
-    
+
       if (playback->eof)
 	{
-	  playback->output->buffer_free ();
-	  playback->output->buffer_free ();
 	  while (playback->output->buffer_playing())
 	    g_usleep(10000);
 	  playback->playing = 0;
 	}
-    
+
       /* jump to time in seek_to (in seconds) */
       if (seek_to != -1)
 	{

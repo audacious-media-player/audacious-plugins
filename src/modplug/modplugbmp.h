@@ -20,9 +20,9 @@ extern "C" {
 #define MOD_MAGIC_PROTRACKER4X	(unsigned char [4]) { 0x4D, 0x21, 0x4B, 0x21 }  // "M!K!" - Protracker 4 channel
 #define MOD_MAGIC_NOISETRACKER	(unsigned char [4]) { 0x4D, 0x26, 0x4B, 0x21 }  // "M&K!" - Noisetracker 1.3 by Kaktus & Mahoney
 #define MOD_MAGIC_STARTRACKER4	(unsigned char [4]) { 0x46, 0x4C, 0x54, 0x34 }  // "FLT4" - Startracker 4 channel (Startrekker/AudioSculpture)
-#define MOD_MAGIC_STARTRACKER8	(unsigned char [4]) { 0x46, 0x4C, 0x54, 0x38 }  // "FLT8" - Startracker 8 channel (Startrekker/AudioSculpture) 
+#define MOD_MAGIC_STARTRACKER8	(unsigned char [4]) { 0x46, 0x4C, 0x54, 0x38 }  // "FLT8" - Startracker 8 channel (Startrekker/AudioSculpture)
 #define MOD_MAGIC_STARTRACKER4X	(unsigned char [4]) { 0x45, 0x58, 0x30, 0x34 }  // "EX04" - Startracker 4 channel (Startrekker/AudioSculpture)
-#define MOD_MAGIC_STARTRACKER8X	(unsigned char [4]) { 0x45, 0x58, 0x30, 0x38 }  // "EX08" - Startracker 8 channel (Startrekker/AudioSculpture) 
+#define MOD_MAGIC_STARTRACKER8X	(unsigned char [4]) { 0x45, 0x58, 0x30, 0x38 }  // "EX08" - Startracker 8 channel (Startrekker/AudioSculpture)
 #define MOD_MAGIC_FASTTRACKER4	(unsigned char [4]) { 0x34, 0x43, 0x48, 0x4E }  // "4CHN" - Fasttracker 4 channel
 #define MOD_MAGIC_OKTALYZER8	(unsigned char [4]) { 0x43, 0x44, 0x38, 0x31 }  // "CD81" - Atari oktalyzer 8 channel
 #define MOD_MAGIC_OKTALYZER8X	(unsigned char [4]) { 0x4F, 0x4B, 0x54, 0x41 }  // "OKTA" - Atari oktalyzer 8 channel
@@ -59,12 +59,12 @@ public:
 		gboolean   mUseFilename;
 		gboolean   mGrabAmigaMOD;
 		gboolean   mPreamp;
-	
+
 		gint       mChannels;
 		gint       mBits;
 		gint       mFrequency;
 		gint       mResamplingMode;
-	
+
 		gint       mReverbDepth;
 		gint       mReverbDelay;
 		gint       mBassAmount;
@@ -73,13 +73,13 @@ public:
 		gint       mSurroundDelay;
 		gfloat     mPreampLevel;
 		gint       mLoopCount;
-		
+
 		Settings();
 	};
 
 	ModplugXMMS();
 	~ModplugXMMS();
-	
+
 	void Init();                      // Called when the plugin is loaded
 	bool CanPlayFileFromVFS(const string& aFilename, VFSFile *file);	// Return true if the plugin can handle the file
 
@@ -90,19 +90,18 @@ public:
 	void Pause(bool aPaused);              // Pause or unpause.
 
 	void Seek(float32 aTime);                // Seek to the specified time.
-	float32 GetTime();                   // Get the current play time.
 
 	Tuple* GetSongTuple(const string& aFilename);
 
 	void SetInputPlugin(InputPlugin& aInPlugin);
-	void SetOutputPlugin(OutputPlugin& aOutPlugin);
+	void SetOutputPlugin(OutputAPI& aOutPlugin);
 
 	const Settings& GetModProps();
 	void SetModProps(const Settings& aModProps);
 
 private:
 	InputPlugin*  mInPlug;
-	OutputPlugin* mOutPlug;
+	OutputAPI* mOutPlug;
 
 	uchar*  mBuffer;
 	uint32  mBufSize;
@@ -122,7 +121,7 @@ private:
 	uint32      mPlayed;
 
 	char        mModName[100];
-	
+
 	float mPreampFactor;
 
 	void PlayLoop(InputPlayback *);

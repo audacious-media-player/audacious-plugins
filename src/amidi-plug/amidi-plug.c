@@ -189,7 +189,7 @@ static gint amidiplug_get_time( InputPlayback * playback )
     gint pt;
 
     if (! backend.autonomous_audio)
-        return playback->output->output_time ();
+        return -1;
 
     g_mutex_lock (amidiplug_playing_mutex);
 

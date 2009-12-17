@@ -358,7 +358,7 @@ decode_loop(gpointer arg)
         if (info->freq != frame.header.samplerate || info->channels !=
          MAD_NCHANNELS (& frame.header))
         {
-            current = info->playback->output->output_time ();
+            current = info->playback->output->written_time ();
             info->playback->output->close_audio ();
 
             info->freq = frame.header.samplerate;
@@ -367,8 +367,7 @@ decode_loop(gpointer arg)
             if (! info->playback->output->open_audio (FMT_FLOAT, info->freq,
              info->channels))
             {
-                error ("open_audio failed: %s.\n",
-                 info->playback->output->description);
+                info->playback->error = TRUE;
                 goto CLEAN_UP;
             }
 

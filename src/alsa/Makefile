@@ -1,4 +1,4 @@
-PLUGIN = alsa-gapless${PLUGIN_SUFFIX}
+PLUGIN = alsa${PLUGIN_SUFFIX}
 
 SRCS = alsa.c \
        config.c \

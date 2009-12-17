@@ -1,5 +1,5 @@
 /*
- * ALSA Gapless Output Plugin for Audacious
+ * ALSA Output Plugin for Audacious
  * Copyright 2009 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
@@ -304,7 +304,7 @@ void alsa_config_load (void)
     mixer_element_list = gtk_list_store_new (1, G_TYPE_STRING);
 
     pcm_list_fill ();
-    aud_cfg_db_get_string (database, "alsa-gapless", "pcm", & alsa_config_pcm);
+    aud_cfg_db_get_string (database, "alsa", "pcm", & alsa_config_pcm);
 
     if (alsa_config_pcm == NULL)
         alsa_config_pcm = g_strdup ("default");
@@ -316,7 +316,7 @@ void alsa_config_load (void)
     }
 
     mixer_list_fill ();
-    aud_cfg_db_get_string (database, "alsa-gapless", "mixer",
+    aud_cfg_db_get_string (database, "alsa", "mixer",
      & alsa_config_mixer);
 
     if (alsa_config_mixer == NULL)
@@ -329,7 +329,7 @@ void alsa_config_load (void)
     }
 
     mixer_element_list_fill ();
-    aud_cfg_db_get_string (database, "alsa-gapless", "mixer-element",
+    aud_cfg_db_get_string (database, "alsa", "mixer-element",
      & alsa_config_mixer_element);
     guess_mixer_element ();
 
@@ -344,9 +344,9 @@ void alsa_config_save (void)
     g_object_unref (mixer_list);
     g_object_unref (mixer_element_list);
 
-    aud_cfg_db_set_string (database, "alsa-gapless", "pcm", alsa_config_pcm);
-    aud_cfg_db_set_string (database, "alsa-gapless", "mixer", alsa_config_mixer);
-    aud_cfg_db_set_string (database, "alsa-gapless", "mixer-element",
+    aud_cfg_db_set_string (database, "alsa", "pcm", alsa_config_pcm);
+    aud_cfg_db_set_string (database, "alsa", "mixer", alsa_config_mixer);
+    aud_cfg_db_set_string (database, "alsa", "mixer-element",
      alsa_config_mixer_element);
 
     g_free (alsa_config_pcm);
@@ -426,7 +426,7 @@ static void create_window (void)
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_type_hint ((GtkWindow *) window, GDK_WINDOW_TYPE_HINT_DIALOG);
     gtk_window_set_resizable ((GtkWindow *) window, FALSE);
-    gtk_window_set_title ((GtkWindow *) window, _("ALSA Gapless Output Plugin "
+    gtk_window_set_title ((GtkWindow *) window, _("ALSA Output Plugin "
      "Preferences"));
     gtk_container_set_border_width ((GtkContainer *) window, 6);
 

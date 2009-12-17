@@ -1,5 +1,5 @@
 /*
- * ALSA Gapless Output Plugin for Audacious
+ * ALSA Output Plugin for Audacious
  * Copyright 2009 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,16 +23,16 @@
 
 static OutputPlugin plugin =
 {
-    .description = "ALSA Gapless Output Plugin",
+    .description = "ALSA Output Plugin",
     .probe_priority = 2,
     .init = alsa_init,
     .cleanup = alsa_cleanup,
     .open_audio = alsa_open_audio,
     .close_audio = alsa_close_audio,
     .write_audio = alsa_write_audio,
+    .set_written_time = alsa_set_written_time,
     .written_time = alsa_written_time,
     .output_time = alsa_output_time,
-    .buffer_free = alsa_buffer_free,
     .buffer_playing = alsa_buffer_playing,
     .flush = alsa_flush,
     .pause = alsa_pause,
@@ -44,11 +44,11 @@ static OutputPlugin plugin =
 
 static OutputPlugin * list[] = {& plugin, NULL};
 
-SIMPLE_OUTPUT_PLUGIN (alsa-gapless, list);
+SIMPLE_OUTPUT_PLUGIN (alsa, list);
 
 void alsa_about (void)
 {
-    const gchar markup[] = "<b>ALSA Gapless Output Plugin for Audacious</b>\n"
+    const gchar markup[] = "<b>ALSA Output Plugin for Audacious</b>\n"
      "Copyright 2009 John Lindgren\n\n"
      "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
      "code served as a reference when the ALSA manual was not enough.\n\n"

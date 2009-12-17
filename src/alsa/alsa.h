@@ -1,5 +1,5 @@
 /*
- * ALSA Gapless Output Plugin for Audacious
+ * ALSA Output Plugin for Audacious
  * Copyright 2009 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,8 +17,8 @@
  * the use of this software.
  */
 
-#ifndef AUDACIOUS_ALSA_GAPLESS_H
-#define AUDACIOUS_ALSA_GAPLESS_H
+#ifndef AUDACIOUS_ALSA_H
+#define AUDACIOUS_ALSA_H
 
 #include "../../config.h"
 
@@ -29,7 +29,7 @@
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
-#define ERROR(...) fprintf (stderr, "alsa-gapless: " __VA_ARGS__)
+#define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
 
 #if 0
 #define DEBUG(...) ERROR (__VA_ARGS__)
@@ -55,9 +55,9 @@ void alsa_cleanup (void);
 gint alsa_open_audio (AFormat aud_format, gint rate, gint channels);
 void alsa_close_audio (void);
 void alsa_write_audio (void * data, gint length);
+void alsa_set_written_time (gint time);
 gint alsa_written_time (void);
 gint alsa_output_time (void);
-gint alsa_buffer_free (void);
 gint alsa_buffer_playing (void);
 void alsa_flush (gint time);
 void alsa_pause (gshort pause);
