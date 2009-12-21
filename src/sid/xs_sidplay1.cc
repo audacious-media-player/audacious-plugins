@@ -80,58 +80,58 @@ gboolean xs_sidplay1_probe(xs_file_t *f)
 
 /* Initialize SIDPlay1
  */
-gboolean xs_sidplay1_init(xs_status_t * myStatus)
+gboolean xs_sidplay1_init(xs_status_t * status)
 {
     gint tmpFreq;
-    xs_sidplay1_t *myEngine;
-    assert(myStatus);
+    xs_sidplay1_t *engine;
+    assert(status != NULL);
 
     /* Allocate internal structures */
-    myEngine = (xs_sidplay1_t *) g_malloc0(sizeof(xs_sidplay1_t));
-    if (!myEngine) return FALSE;
+    engine = (xs_sidplay1_t *) g_malloc0(sizeof(xs_sidplay1_t));
+    if (!engine) return FALSE;
 
     /* Initialize engine */
-    myEngine->currEng = new emuEngine();
-    if (!myEngine->currEng) {
+    engine->currEng = new emuEngine();
+    if (!engine->currEng) {
         xs_error("[SIDPlay1] Could not initialize emulation engine.\n");
-        g_free(myEngine);
+        g_free(engine);
         return FALSE;
     }
 
     /* Verify endianess */
-    if (!myEngine->currEng->verifyEndianess()) {
+    if (!engine->currEng->verifyEndianess()) {
         xs_error("[SIDPlay1] Endianess verification failed.\n");
-        delete myEngine->currEng;
-        g_free(myEngine);
+        delete engine->currEng;
+        g_free(engine);
         return FALSE;
     }
 
-    myStatus->sidEngine = myEngine;
+    status->sidEngine = engine;
 
     /* Get current configuration */
-    myEngine->currEng->getConfig(myEngine->currConfig);
+    engine->currEng->getConfig(engine->currConfig);
 
     /* Configure channel parameters */
-    switch (myStatus->audioChannels) {
+    switch (status->audioChannels) {
 
     case XS_CHN_AUTOPAN:
-        myEngine->currConfig.channels = SIDEMU_STEREO;
-        myEngine->currConfig.autoPanning = SIDEMU_CENTEREDAUTOPANNING;
-        myEngine->currConfig.volumeControl = SIDEMU_FULLPANNING;
+        engine->currConfig.channels = SIDEMU_STEREO;
+        engine->currConfig.autoPanning = SIDEMU_CENTEREDAUTOPANNING;
+        engine->currConfig.volumeControl = SIDEMU_FULLPANNING;
         break;
 
     case XS_CHN_STEREO:
-        myEngine->currConfig.channels = SIDEMU_STEREO;
-        myEngine->currConfig.autoPanning = SIDEMU_NONE;
-        myEngine->currConfig.volumeControl = SIDEMU_NONE;
+        engine->currConfig.channels = SIDEMU_STEREO;
+        engine->currConfig.autoPanning = SIDEMU_NONE;
+        engine->currConfig.volumeControl = SIDEMU_NONE;
         break;
 
     case XS_CHN_MONO:
     default:
-        myEngine->currConfig.channels = SIDEMU_MONO;
-        myEngine->currConfig.autoPanning = SIDEMU_NONE;
-        myEngine->currConfig.volumeControl = SIDEMU_NONE;
-        myStatus->audioChannels = XS_CHN_MONO;
+        engine->currConfig.channels = SIDEMU_MONO;
+        engine->currConfig.autoPanning = SIDEMU_NONE;
+        engine->currConfig.volumeControl = SIDEMU_NONE;
+        status->audioChannels = XS_CHN_MONO;
         break;
     }
 
@@ -139,70 +139,70 @@ gboolean xs_sidplay1_init(xs_status_t * myStatus)
     /* Memory mode settings */
     switch (xs_cfg.memoryMode) {
     case XS_MPU_TRANSPARENT_ROM:
-        myEngine->currConfig.memoryMode = MPU_TRANSPARENT_ROM;
+        engine->currConfig.memoryMode = MPU_TRANSPARENT_ROM;
         break;
 
     case XS_MPU_PLAYSID_ENVIRONMENT:
-        myEngine->currConfig.memoryMode = MPU_PLAYSID_ENVIRONMENT;
+        engine->currConfig.memoryMode = MPU_PLAYSID_ENVIRONMENT;
         break;
 
     case XS_MPU_BANK_SWITCHING:
     default:
-        myEngine->currConfig.memoryMode = MPU_BANK_SWITCHING;
+        engine->currConfig.memoryMode = MPU_BANK_SWITCHING;
         xs_cfg.memoryMode = XS_MPU_BANK_SWITCHING;
         break;
     }
 
 
     /* Audio parameters sanity checking and setup */
-    myEngine->currConfig.bitsPerSample = myStatus->audioBitsPerSample;
-    tmpFreq = myStatus->audioFrequency;
+    engine->currConfig.bitsPerSample = status->audioBitsPerSample;
+    tmpFreq = status->audioFrequency;
 
-    if (myStatus->oversampleEnable) {
-        if ((tmpFreq * myStatus->oversampleFactor) > SIDPLAY1_MAX_FREQ) {
-            myStatus->oversampleEnable = FALSE;
+    if (status->oversampleEnable) {
+        if ((tmpFreq * status->oversampleFactor) > SIDPLAY1_MAX_FREQ) {
+            status->oversampleEnable = FALSE;
         } else {
-            tmpFreq = (tmpFreq * myStatus->oversampleFactor);
+            tmpFreq = (tmpFreq * status->oversampleFactor);
         }
     } else {
         if (tmpFreq > SIDPLAY1_MAX_FREQ)
             tmpFreq = SIDPLAY1_MAX_FREQ;
     }
 
-    myEngine->currConfig.frequency = tmpFreq;
+    engine->currConfig.frequency = tmpFreq;
 
-    switch (myStatus->audioBitsPerSample) {
+    switch (status->audioBitsPerSample) {
     case XS_RES_8BIT:
-        switch (myStatus->audioFormat) {
+        switch (status->audioFormat) {
         case FMT_S8:
-            myStatus->audioFormat = FMT_S8;
-            myEngine->currConfig.sampleFormat = SIDEMU_SIGNED_PCM;
+            status->audioFormat = FMT_S8;
+            engine->currConfig.sampleFormat = SIDEMU_SIGNED_PCM;
             break;
 
         case FMT_U8:
         default:
-            myStatus->audioFormat = FMT_U8;
-            myEngine->currConfig.sampleFormat = SIDEMU_UNSIGNED_PCM;
+            status->audioFormat = FMT_U8;
+            engine->currConfig.sampleFormat = SIDEMU_UNSIGNED_PCM;
             break;
         }
         break;
 
     case XS_RES_16BIT:
     default:
-        switch (myStatus->audioFormat) {
+        switch (status->audioFormat) {
         case FMT_U16_NE:
         case FMT_U16_LE:
         case FMT_U16_BE:
-            myStatus->audioFormat = FMT_U16_NE;
-            myEngine->currConfig.sampleFormat = SIDEMU_UNSIGNED_PCM;
+            status->audioFormat = FMT_U16_NE;
+            engine->currConfig.sampleFormat = SIDEMU_UNSIGNED_PCM;
             break;
 
         case FMT_S16_NE:
         case FMT_S16_LE:
         case FMT_S16_BE:
         default:
-            myStatus->audioFormat = FMT_S16_NE;
-            myEngine->currConfig.sampleFormat = SIDEMU_SIGNED_PCM;
+            status->audioFormat = FMT_S16_NE;
+            engine->currConfig.sampleFormat = SIDEMU_SIGNED_PCM;
             break;
         }
         break;
@@ -211,37 +211,37 @@ gboolean xs_sidplay1_init(xs_status_t * myStatus)
     /* Clockspeed settings */
     switch (xs_cfg.clockSpeed) {
     case XS_CLOCK_NTSC:
-        myEngine->currConfig.clockSpeed = SIDTUNE_CLOCK_NTSC;
+        engine->currConfig.clockSpeed = SIDTUNE_CLOCK_NTSC;
         break;
 
     case XS_CLOCK_PAL:
     default:
-        myEngine->currConfig.clockSpeed = SIDTUNE_CLOCK_PAL;
+        engine->currConfig.clockSpeed = SIDTUNE_CLOCK_PAL;
         xs_cfg.clockSpeed = XS_CLOCK_PAL;
         break;
     }
 
-    myEngine->currConfig.forceSongSpeed = xs_cfg.forceSpeed;
+    engine->currConfig.forceSongSpeed = xs_cfg.forceSpeed;
     
     
     /* Configure rest of the emulation */
     /* if (xs_cfg.forceModel) */
-    myEngine->currConfig.mos8580 = xs_cfg.mos8580;
-    myEngine->currConfig.emulateFilter = xs_cfg.emulateFilters;
-    myEngine->currConfig.filterFs = xs_cfg.sid1Filter.fs;
-    myEngine->currConfig.filterFm = xs_cfg.sid1Filter.fm;
-    myEngine->currConfig.filterFt = xs_cfg.sid1Filter.ft;
+    engine->currConfig.mos8580 = xs_cfg.mos8580;
+    engine->currConfig.emulateFilter = xs_cfg.emulateFilters;
+    engine->currConfig.filterFs = xs_cfg.sid1Filter.fs;
+    engine->currConfig.filterFm = xs_cfg.sid1Filter.fm;
+    engine->currConfig.filterFt = xs_cfg.sid1Filter.ft;
 
 
     /* Now set the emulator configuration */
-    if (!myEngine->currEng->setConfig(myEngine->currConfig)) {
+    if (!engine->currEng->setConfig(engine->currConfig)) {
         xs_error("[SIDPlay1] Emulator engine configuration failed!\n");
         return FALSE;
     }
     
     /* Create sidtune object */
-    myEngine->currTune = new sidTune(0);
-    if (!myEngine->currTune) {
+    engine->currTune = new sidTune(0);
+    if (!engine->currTune) {
         xs_error("[SIDPlay1] Could not initialize SIDTune object.\n");
         return FALSE;
     }
@@ -252,68 +252,68 @@ gboolean xs_sidplay1_init(xs_status_t * myStatus)
 
 /* Close SIDPlay1 engine
  */
-void xs_sidplay1_close(xs_status_t * myStatus)
+void xs_sidplay1_close(xs_status_t * status)
 {
-    xs_sidplay1_t *myEngine;
-    assert(myStatus);
+    xs_sidplay1_t *engine;
+    assert(status != NULL);
 
-    myEngine = (xs_sidplay1_t *) myStatus->sidEngine;
+    engine = (xs_sidplay1_t *) status->sidEngine;
 
     /* Free internals */
-    if (myEngine->currEng) {
-        delete myEngine->currEng;
-        myEngine->currEng = NULL;
+    if (engine->currEng) {
+        delete engine->currEng;
+        engine->currEng = NULL;
     }
 
-    if (myEngine->currTune) {
-        delete myEngine->currTune;
-        myEngine->currTune = NULL;
+    if (engine->currTune) {
+        delete engine->currTune;
+        engine->currTune = NULL;
     }
 
-    xs_sidplay1_delete(myStatus);
+    xs_sidplay1_delete(status);
     
-    g_free(myEngine);
-    myStatus->sidEngine = NULL;
+    g_free(engine);
+    status->sidEngine = NULL;
 }
 
 
 /* Initialize current song and sub-tune
  */
-gboolean xs_sidplay1_initsong(xs_status_t * myStatus)
+gboolean xs_sidplay1_initsong(xs_status_t * status)
 {
-    xs_sidplay1_t *myEngine;
-    assert(myStatus);
+    xs_sidplay1_t *engine;
+    assert(status != NULL);
 
-    myEngine = (xs_sidplay1_t *) myStatus->sidEngine;
-    if (!myEngine) return FALSE;
+    engine = (xs_sidplay1_t *) status->sidEngine;
+    if (!engine) return FALSE;
 
-    if (!myEngine->currTune) {
+    if (!engine->currTune) {
         xs_error("[SIDPlay1] SID-tune struct pointer was NULL. This should not happen, report to XMMS-SID author.\n");
         return FALSE;
     }
 
-    if (!myEngine->currTune->getStatus()) {
+    if (!engine->currTune->getStatus()) {
         xs_error("[SIDPlay1] SID-tune status check failed. This should not happen, report to XMMS-SID author.\n");
         return FALSE;
     }
 
-    myStatus->isInitialized = TRUE;
+    status->isInitialized = TRUE;
 
-    return sidEmuInitializeSong(*myEngine->currEng, *myEngine->currTune, myStatus->currSong);
+    return sidEmuInitializeSong(*engine->currEng, *engine->currTune, status->currSong);
 }
 
 
 /* Emulate and render audio data to given buffer
  */
-guint xs_sidplay1_fillbuffer(xs_status_t * myStatus, gchar * audioBuffer, guint audioBufSize)
+guint xs_sidplay1_fillbuffer(xs_status_t * status, gchar * audioBuffer, guint audioBufSize)
 {
-    xs_sidplay1_t *myEngine;
-    assert(myStatus);
+    xs_sidplay1_t *engine;
+    assert(status != NULL);
 
-    myEngine = (xs_sidplay1_t *) myStatus->sidEngine;
-    if (!myEngine) return 0;
+    engine = (xs_sidplay1_t *) status->sidEngine;
+    if (!engine) return 0;
 
-    sidEmuFillBuffer(*myEngine->currEng, *myEngine->currTune, audioBuffer, audioBufSize);
+    sidEmuFillBuffer(*engine->currEng, *engine->currTune, audioBuffer, audioBufSize);
 
     return audioBufSize;
 }
@@ -321,22 +321,22 @@ guint xs_sidplay1_fillbuffer(xs_status_t * myStatus, gchar * audioBuffer, guint 
 
 /* Load a given SID-tune file
  */
-gboolean xs_sidplay1_load(xs_status_t * myStatus, gchar * filename)
+gboolean xs_sidplay1_load(xs_status_t * status, gchar * filename)
 {
-    xs_sidplay1_t *myEngine;
-    assert(myStatus);
-    myStatus->isInitialized = FALSE;
+    xs_sidplay1_t *engine;
+    assert(status != NULL);
+    status->isInitialized = FALSE;
 
-    myEngine = (xs_sidplay1_t *) myStatus->sidEngine;
-    if (!myEngine) return FALSE;
+    engine = (xs_sidplay1_t *) status->sidEngine;
+    if (!engine) return FALSE;
 
     /* Try to get the tune */
     if (!filename) return FALSE;
     
-    if (xs_fload_buffer(filename, &(myEngine->buf), &(myEngine->bufSize)) != 0)
+    if (xs_fload_buffer(filename, &(engine->buf), &(engine->bufSize)) != 0)
         return FALSE;
     
-    if (!myEngine->currTune->load(myEngine->buf, myEngine->bufSize))
+    if (!engine->currTune->load(engine->buf, engine->bufSize))
         return FALSE;
 
     return TRUE;
@@ -345,17 +345,17 @@ gboolean xs_sidplay1_load(xs_status_t * myStatus, gchar * filename)
 
 /* Delete INTERNAL information
  */
-void xs_sidplay1_delete(xs_status_t * myStatus)
+void xs_sidplay1_delete(xs_status_t * status)
 {
-    xs_sidplay1_t *myEngine;
-    assert(myStatus);
+    xs_sidplay1_t *engine;
+    assert(status != NULL);
 
-    myEngine = (xs_sidplay1_t *) myStatus->sidEngine;
-    if (!myEngine) return;
+    engine = (xs_sidplay1_t *) status->sidEngine;
+    if (engine == NULL) return;
     
-    g_free(myEngine->buf);
-    myEngine->buf = NULL;
-    myEngine->bufSize = 0;
+    g_free(engine->buf);
+    engine->buf = NULL;
+    engine->bufSize = 0;
 }
 
 
