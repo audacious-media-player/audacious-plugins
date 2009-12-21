@@ -344,16 +344,16 @@ void xs_play_file(InputPlayback *pb)
         if (xs_cfg.playMaxTimeEnable) {
             if (xs_cfg.playMaxTimeUnknown) {
                 if (tmpLength < 0 &&
-                    pb->output->output_time() >= xs_cfg.playMaxTime * 1000)
+                    pb->output->written_time() >= xs_cfg.playMaxTime * 1000)
                     pb->playing = FALSE;
             } else {
-                if (pb->output->output_time() >= xs_cfg.playMaxTime * 1000)
+                if (pb->output->written_time() >= xs_cfg.playMaxTime * 1000)
                     pb->playing = FALSE;
             }
         }
 
         if (tmpLength >= 0) {
-            if (pb->output->output_time() >= tmpLength * 1000)
+            if (pb->output->written_time() >= tmpLength * 1000)
                 pb->playing = FALSE;
         }
     }
@@ -470,7 +470,7 @@ gint xs_get_time(InputPlayback *pb)
     XS_MUTEX_UNLOCK(xs_status);
 
     /* Return output time reported by audio output plugin */
-    return pb->output->output_time();
+    return pb->output->written_time();
 }
 
 
