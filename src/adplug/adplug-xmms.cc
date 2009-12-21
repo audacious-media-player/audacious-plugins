@@ -855,21 +855,6 @@ play_loop (void *data)
       update_infobox ();
   }
 
-  // playback finished - deinit
-  dbg_printf ("play_loop(\"%s\"): ", filename);
-  if (!playing)
-  {                             // wait for output plugin to finish if song has self-ended
-    dbg_printf ("wait, ");
-    while (playback->output->buffer_playing ())
-      g_usleep (10000);
-  }
-  else
-  {                             // or else, flush its output buffers
-    dbg_printf ("flush, ");
-    playback->output->buffer_free ();
-    playback->output->buffer_free ();
-  }
-
   // free everything and exit
   dbg_printf ("free");
   delete plr.p;
@@ -909,22 +894,6 @@ adplug_is_our_fd (const gchar * filename, VFSFile * fd)
 
   dbg_printf ("FALSE\n");
   return FALSE;
-}
-
-extern "C" int
-adplug_get_time (InputPlayback * data)
-{
-  if (audio_error)
-  {
-    dbg_printf ("adplug_get_time(): returned -2\n");
-    return -2;
-  }
-  if (!plr.playing)
-  {
-    dbg_printf ("adplug_get_time(): returned -1\n");
-    return -1;
-  }
-  return playback->output->output_time ();
 }
 
 /***** Player control *****/
