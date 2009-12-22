@@ -7,7 +7,6 @@ void PlayFile(InputPlayback *data);
 void Stop(InputPlayback *data);
 void Pause(InputPlayback *data, gshort aPaused);
 void Seek(InputPlayback *data, gint aTime);
-gint GetTime(InputPlayback *data);
 void ShowFileInfoBox(const gchar* aFilename);
 Tuple* GetSongTuple(const gchar* aFilename);
 gint CanPlayFileFromVFS(const gchar* aFilename, VFSFile *VFSFile);
@@ -29,7 +28,6 @@ InputPlugin gModPlug =
     .stop = Stop,
     .pause = Pause,
     .seek = Seek,
-    .get_time = GetTime,
     .file_info_box = ShowFileInfoBox,
     .get_song_tuple = GetSongTuple,
     .is_our_file_from_vfs = CanPlayFileFromVFS,
