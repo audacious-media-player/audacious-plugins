@@ -23,7 +23,7 @@
 
 GMutex * alsa_mutex;
 static snd_pcm_t * alsa_handle;
-static GCond * pump_cond;
+static GCond * alsa_cond;
 static gboolean initted;
 
 static snd_pcm_format_t alsa_format;
@@ -70,27 +70,24 @@ static void * pump (void * unused)
     gint timeout = 0;
 
     g_mutex_lock (alsa_mutex);
-    g_cond_signal (pump_cond);
+    g_cond_signal (alsa_cond);
 
     snd_pcm_status_alloca (& status);
 
-    while (1)
+    while (! pump_quit)
     {
         GTimeVal wake;
         gint writable;
 
-        if (! alsa_paused)
+        if (alsa_paused)
         {
-            g_get_current_time (& wake);
-            g_time_val_add (& wake, 1000 * LEAST_BUFFER / 2);
-            g_cond_timed_wait (pump_cond, alsa_mutex, & wake);
+            g_cond_wait (alsa_cond, alsa_mutex);
+            continue;
         }
 
-        if (alsa_paused)
-            g_cond_wait (pump_cond, alsa_mutex);
-
-        if (pump_quit)
-            break;
+        g_get_current_time (& wake);
+        g_time_val_add (& wake, 1000 * LEAST_BUFFER / 2);
+        g_cond_timed_wait (alsa_cond, alsa_mutex, & wake);
 
         CHECK (snd_pcm_status, alsa_handle, status);
         writable = snd_pcm_frames_to_bytes (alsa_handle,
@@ -130,7 +127,7 @@ static void * pump (void * unused)
          alsa_buffer_length;
 
     FAILED:
-        g_cond_signal (pump_cond);
+        g_cond_signal (alsa_cond);
     }
 
     g_mutex_unlock (alsa_mutex);
@@ -148,7 +145,7 @@ static void start_playback (void)
 
 FAILED:
     alsa_paused = FALSE;
-    g_cond_signal (pump_cond);
+    g_cond_signal (alsa_cond);
 }
 
 static gint real_output_time (void)
@@ -170,7 +167,7 @@ OutputPluginInitStatus alsa_init (void)
 {
     alsa_mutex = g_mutex_new ();
     alsa_handle = NULL;
-    pump_cond = g_cond_new ();
+    alsa_cond = g_cond_new ();
     initted = FALSE;
 
     return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
@@ -197,7 +194,7 @@ void alsa_cleanup (void)
     }
 
     g_mutex_free (alsa_mutex);
-    g_cond_free (pump_cond);
+    g_cond_free (alsa_cond);
 }
 
 static snd_pcm_format_t convert_aud_format (AFormat aud_format)
@@ -296,7 +293,7 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
 
     pump_quit = FALSE;
     pump_thread = g_thread_create (pump, NULL, TRUE, NULL);
-    g_cond_wait (pump_cond, alsa_mutex);
+    g_cond_wait (alsa_cond, alsa_mutex);
 
     g_mutex_unlock (alsa_mutex);
     return 1;
@@ -320,7 +317,7 @@ void alsa_close_audio (void)
     if (pump_thread != NULL)
     {
         pump_quit = TRUE;
-        g_cond_signal (pump_cond);
+        g_cond_signal (alsa_cond);
         g_mutex_unlock (alsa_mutex);
         g_thread_join (pump_thread);
         g_mutex_lock (alsa_mutex);
@@ -366,7 +363,7 @@ void alsa_write_audio (void * data, gint length)
         if (alsa_paused) /* buffering completed */
             start_playback ();
 
-        g_cond_wait (pump_cond, alsa_mutex);
+        g_cond_wait (alsa_cond, alsa_mutex);
     }
 
     g_mutex_unlock (alsa_mutex);
@@ -440,24 +437,25 @@ void alsa_flush (gint time)
     CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
+    g_cond_signal (alsa_cond);
     g_mutex_unlock (alsa_mutex);
 }
 
 void alsa_pause (gshort pause)
 {
     DEBUG ("%sause.\n", pause ? "P" : "Unp");
-
-    if (! pause) /* unpause handled by next write_audio */
-        return;
-
     g_mutex_lock (alsa_mutex);
 
-    alsa_paused = TRUE;
-    alsa_paused_time = real_output_time ();
+    if (pause)
+    {
+        alsa_paused = TRUE;
+        alsa_paused_time = real_output_time ();
 
-    CHECK (snd_pcm_pause, alsa_handle, pause);
+        CHECK (snd_pcm_pause, alsa_handle, pause);
+    }
 
 FAILED:
+    g_cond_signal (alsa_cond);
     g_mutex_unlock (alsa_mutex);
 }
 
