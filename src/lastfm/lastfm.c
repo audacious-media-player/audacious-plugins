@@ -109,7 +109,7 @@ gchar *lastfm_get_login_uri()   /* reads the audioscrobbler login data from the 
     {
         aud_cfg_db_get_string(cfg, "audioscrobbler", "username", &username);
         aud_cfg_db_get_string(cfg, "audioscrobbler", "password", &password);
-        g_free(cfg);
+        aud_cfg_db_close(cfg);
     }
     if (username != NULL && password != NULL)
     {

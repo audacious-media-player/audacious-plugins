@@ -354,6 +354,7 @@ static void alarm_read_config()
        alarm_conf.day[daynum].min = DEFAULT_ALARM_MIN;
    }
 
+   aud_cfg_db_close(conf);
    DEBUG("END alarm_read_config\n");
 }
 

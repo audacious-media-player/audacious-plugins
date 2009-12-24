@@ -509,6 +509,7 @@ static int neon_proxy_auth_cb(void *userdata, const char *realm, int attempt, ch
     aud_cfg_db_get_string(db, NULL, "proxy_user", &value);
     if (!value) {
         _DEBUG("<%p> proxy_auth requested but no proxy_user", userdata);
+        aud_cfg_db_close(db);
         _LEAVE -1;
     }
     g_strlcpy(username, value, NE_ABUFSIZ);
@@ -517,11 +518,13 @@ static int neon_proxy_auth_cb(void *userdata, const char *realm, int attempt, ch
     aud_cfg_db_get_string(db, NULL, "proxy_pass", &value);
     if (!value) {
         _DEBUG("<%p> proxy_auth requested but no proxy_pass", userdata);
+        aud_cfg_db_close(db);
         _LEAVE -1;
     }
     g_strlcpy(password, value, NE_ABUFSIZ);
     value = NULL;
 
+    aud_cfg_db_close(db);
     _LEAVE attempt;
 }
 
