@@ -321,14 +321,17 @@ static void alarm_read_config()
    if(!aud_cfg_db_get_int(conf, "alarm", "fading", &fading))
      fading = DEFAULT_FADING;
 
+   g_free(cmdstr);
    if(!aud_cfg_db_get_string(conf, "alarm", "cmdstr", &cmdstr))
      cmdstr = g_strdup("");
    if(!aud_cfg_db_get_bool(conf, "alarm", "cmd_on", &cmd_on))
      cmd_on = FALSE;
 
+   g_free(playlist);
    if(!aud_cfg_db_get_string(conf, "alarm", "playlist", &playlist))
      playlist = g_strdup("");
 
+   g_free(alarm_conf.reminder_msg);
    if(!aud_cfg_db_get_string(conf, "alarm", "reminder_msg", &alarm_conf.reminder_msg))
      alarm_conf.reminder_msg = g_strdup("");
    if(!aud_cfg_db_get_bool(conf, "alarm", "reminder_on", &alarm_conf.reminder_on))
@@ -971,6 +974,7 @@ static void alarm_init()
 {
    DEBUG("alarm_init\n");
 
+   alarm_conf.reminder_msg = NULL;
    alarm_read_config();
 
    /* start the main thread running */
@@ -990,6 +994,13 @@ static void alarm_cleanup()
    if(stop_tid)
      pthread_cancel(stop_tid);
    stop_tid = 0;
+
+   g_free(alarm_conf.reminder_msg);
+   alarm_conf.reminder_msg = NULL;
+   g_free(playlist);
+   playlist = NULL;
+   g_free(cmdstr);
+   cmdstr = NULL;
 }
 
 static GeneralPlugin alarm_plugin =
