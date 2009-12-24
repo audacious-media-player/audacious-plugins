@@ -85,6 +85,8 @@ static gint wav_open(void)
     header.data_length = GUINT32_TO_LE(0);
     aud_vfs_fwrite(&header, sizeof (struct wavhead), 1, output_file);
 
+    written = 0;
+
     return 1;
 }
 
