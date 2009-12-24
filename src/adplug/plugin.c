@@ -7,7 +7,7 @@ void adplug_config(void);
 void adplug_stop(InputPlayback * data);
 void adplug_play(InputPlayback * data);
 void adplug_pause(InputPlayback * playback, gshort paused);
-void adplug_seek(InputPlayback * data, gint time);
+void adplug_mseek (InputPlayback * playback, gulong time);
 void adplug_info_box(const gchar *filename);
 Tuple* adplug_get_tuple(const gchar *filename);
 int adplug_is_our_fd(const gchar * filename, VFSFile * fd);
@@ -28,7 +28,7 @@ InputPlugin adplug_ip = {
   .play_file = adplug_play,
   .stop = adplug_stop,
   .pause = adplug_pause,
-  .seek = adplug_seek,
+  .mseek = adplug_mseek,
   .file_info_box = adplug_info_box,
   .get_song_tuple = adplug_get_tuple,
   .is_our_file_from_vfs = adplug_is_our_fd,

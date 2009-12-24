@@ -60,6 +60,9 @@ extern "C"
 extern "C" InputPlugin adplug_ip;
 static gboolean audio_error = FALSE;
 GtkWidget *about_win = NULL;
+static GMutex * control_mutex;
+static GCond * control_cond;
+static gboolean pause_flag;
 
 // Configuration (and defaults)
 static struct
@@ -81,12 +84,11 @@ static struct
   char filename[PATH_MAX];
   char *songtitle;
   float time_ms;
-  bool playing;
   GtkLabel *infobox;
   GtkDialog *infodlg;
 } plr =
 {
-0, 0, 0, 0, -1, "", NULL, 0.0f, false, NULL, NULL};
+0, 0, 0, 0, -1, "", NULL, 0.0f, NULL, NULL};
 
 static InputPlayback *playback;
 
@@ -752,6 +754,7 @@ play_loop (void *data)
     bit16 = conf.bit16,          // Duplicate config, so it doesn't affect us if
     stereo = conf.stereo;        // the user changes it while we're playing.
   unsigned long freq = conf.freq;
+  gboolean paused = FALSE;
 
   // we use VfsBufferedFile class here because adplug does a lot of
   // probing. a short delay before probing begins is better than
@@ -759,10 +762,7 @@ play_loop (void *data)
   VFSFile *fd = aud_vfs_buffered_file_new_from_uri (playback->filename);
 
   if (!fd)
-  {
-    plr.playing = false;
     return (NULL);
-  }
 
   // Try to load module
   dbg_printf ("factory, ");
@@ -770,7 +770,6 @@ play_loop (void *data)
   {
     dbg_printf ("error!\n");
     // MessageBox("AdPlug :: Error", "File could not be opened!", "Ok");
-    plr.playing = false;
     return (NULL);
   }
 
@@ -803,11 +802,27 @@ play_loop (void *data)
   // Rewind player to right subsong
   dbg_printf ("rewind, ");
   plr.p->rewind (plr.subsong);
+  plr.time_ms = 0;
+
+  g_mutex_lock (control_mutex);
+  plr.seek = -1;
+  pause_flag = FALSE;
+  playback->playing = TRUE;
+  playback->set_pb_ready (playback);
+  g_mutex_unlock (control_mutex);
 
   // main playback loop
   dbg_printf ("loop.\n");
-  while ((playing || conf.endless) && plr.playing)
+  while ((playing || conf.endless))
   {
+    g_mutex_lock (control_mutex);
+
+    if (! playback->playing)
+    {
+        g_mutex_unlock (control_mutex);
+        break;
+    }
+
     // seek requested ?
     if (plr.seek != -1)
     {
@@ -825,7 +840,24 @@ play_loop (void *data)
       // Reset output plugin and some values
       playback->output->flush ((int) plr.time_ms);
       plr.seek = -1;
+      g_cond_signal (control_cond);
     }
+
+    if (pause_flag != paused)
+    {
+        playback->output->pause (pause_flag);
+        paused = pause_flag;
+        g_cond_signal (control_cond);
+    }
+
+    if (paused)
+    {
+        g_cond_wait (control_cond, control_mutex);
+        g_mutex_unlock (control_mutex);
+        continue;
+    }
+
+    g_mutex_unlock (control_mutex);
 
     // fill sound buffer
     towrite = SNDBUFSIZE;
@@ -845,15 +877,21 @@ play_loop (void *data)
       toadd -= (long) (plr.p->getrefresh () * i);
     }
 
-    // write sound buffer
-    playback->pass_audio(playback,
-                   bit16 ? FORMAT_16 : FORMAT_8,
-                   stereo ? 2 : 1, SNDBUFSIZE * sampsize, sndbuf, NULL);
+    playback->output->write_audio (sndbuf, SNDBUFSIZE * sampsize);
 
     // update infobox, if necessary
-    if (plr.infobox && plr.playing)
+    if (plr.infobox)
       update_infobox ();
   }
+
+  g_mutex_lock (control_mutex);
+
+  while (playback->playing && playback->output->buffer_playing ())
+      g_usleep (10000);
+
+  playback->playing = FALSE;
+  g_cond_signal (control_cond); /* wake up any waiting request */
+  g_mutex_unlock (control_mutex);
 
   // free everything and exit
   dbg_printf ("free");
@@ -865,7 +903,6 @@ play_loop (void *data)
     plr.songtitle = NULL;
   }
   free (sndbuf);
-  plr.playing = false;          // important! XMMS won't get a self-ended song without it.
   dbg_printf (".\n");
   aud_vfs_fclose (fd);
   return (NULL);
@@ -921,47 +958,52 @@ adplug_play (InputPlayback * data)
     return;
   }
 
-  // Initialize global player data (this is here to prevent a race condition
-  // between adplug_get_time() returning the playback state and adplug_loop()
-  // initializing the playback state)
-  dbg_printf ("init, ");
-  plr.playing = true;
-  plr.time_ms = 0.0f;
-  plr.seek = -1;
-
-  // start player func
-  dbg_printf ("play");
-  playback->playing = TRUE;
-  playback->set_pb_ready(playback);
-  play_loop(playback);
-  playback->playing = FALSE;
-  dbg_printf (".\n");
-}
-
-extern "C" void
-adplug_stop (InputPlayback * playback)
-{
-  dbg_printf ("adplug_stop(): join, ");
-  plr.playing = false;
-  g_thread_join (playback->thread);  // stop player thread
-  playback->thread = NULL;  // and keep the core from meddling
-  dbg_printf ("close");
+  play_loop (playback);
   playback->output->close_audio ();
-  dbg_printf (".\n");
 }
 
-extern "C" void
-adplug_pause (InputPlayback * playback, gshort paused)
+extern "C" void adplug_stop (InputPlayback * playback)
 {
-  dbg_printf ("adplug_pause(%d)\n", paused);
-  playback->output->pause (paused);
+    g_mutex_lock (control_mutex);
+
+    if (playback->playing)
+    {
+        playback->playing = FALSE;
+        g_cond_signal (control_cond);
+        g_mutex_unlock (control_mutex);
+        g_thread_join (playback->thread);
+        playback->thread = NULL;
+    }
+    else
+        g_mutex_unlock (control_mutex);
 }
 
-extern "C" void
-adplug_seek (InputPlayback * data, gint time)
+extern "C" void adplug_pause (InputPlayback * playback, gshort paused)
 {
-  dbg_printf ("adplug_seek(%d)\n", time);
-  plr.seek = time * 1000;       // time is in seconds, but we count in ms
+    g_mutex_lock (control_mutex);
+
+    if (playback->playing)
+    {
+        pause_flag = paused;
+        g_cond_signal (control_cond);
+        g_cond_wait (control_cond, control_mutex);
+    }
+
+    g_mutex_unlock (control_mutex);
+}
+
+extern "C" void adplug_mseek (InputPlayback * data, gulong time)
+{
+    g_mutex_lock (control_mutex);
+
+    if (playback->playing)
+    {
+        plr.seek = time;
+        g_cond_signal (control_cond);
+        g_cond_wait (control_cond, control_mutex);
+    }
+
+    g_mutex_unlock (control_mutex);
 }
 
 /***** Configuration file handling *****/
@@ -1018,6 +1060,9 @@ adplug_init (void)
   }
   CAdPlug::set_database (plr.db);
   dbg_printf (".\n");
+  
+  control_mutex = g_mutex_new ();
+  control_cond = g_cond_new ();
 }
 
 extern "C" void
@@ -1056,4 +1101,7 @@ adplug_quit (void)
   dbg_printf ("close");
   aud_cfg_db_close (db);
   dbg_printf (".\n");
+  
+  g_mutex_free (control_mutex);
+  g_cond_free (control_cond);
 }
