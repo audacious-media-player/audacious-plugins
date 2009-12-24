@@ -87,27 +87,26 @@ public:
 
 	void PlayFile(const string& aFilename, InputPlayback *data);// Play the file.
 	void Stop(InputPlayback *data);         // Stop playing.
-	void Pause(bool aPaused);              // Pause or unpause.
-
-	void Seek(float32 aTime);                // Seek to the specified time.
+	void mseek (InputPlayback * playback, gulong time);
+	void pause (InputPlayback * playback, gshort paused);
 
 	Tuple* GetSongTuple(const string& aFilename);
 
 	void SetInputPlugin(InputPlugin& aInPlugin);
-	void SetOutputPlugin(OutputAPI& aOutPlugin);
 
 	const Settings& GetModProps();
 	void SetModProps(const Settings& aModProps);
 
 private:
 	InputPlugin*  mInPlug;
-	OutputAPI* mOutPlug;
 
 	uchar*  mBuffer;
 	uint32  mBufSize;
 
+    GMutex * control_mutex;
+    GCond * control_cond;
+    gint seek_time;
 	bool          mPaused;
-	volatile bool mStopped;
 
 	Settings mModProps;
 
@@ -117,8 +116,6 @@ private:
 
 	CSoundFile* mSoundFile;
 	Archive*    mArchive;
-
-	uint32      mPlayed;
 
 	char        mModName[100];
 

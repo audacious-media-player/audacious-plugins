@@ -30,7 +30,6 @@ gint CanPlayFileFromVFS(const char* aFilename, VFSFile *VFSFile)
 void PlayFile(InputPlayback *data)
 {
     char* aFilename = data->filename;
-    gModplugXMMS.SetOutputPlugin(*data->output);
     gModplugXMMS.PlayFile(aFilename, data);
 }
 
@@ -39,14 +38,14 @@ void Stop(InputPlayback *data)
     gModplugXMMS.Stop(data);
 }
 
-void Pause(InputPlayback *data, short aPaused)
+void Pause (InputPlayback * playback, gshort paused)
 {
-    gModplugXMMS.Pause((bool)aPaused);
+    gModplugXMMS.pause (playback, paused);
 }
 
-void Seek(InputPlayback *data, int aTime)
+void mseek (InputPlayback * playback, gulong time)
 {
-    gModplugXMMS.Seek(float32(aTime));
+    gModplugXMMS.mseek (playback, time);
 }
 
 Tuple* GetSongTuple(const gchar* aFilename)

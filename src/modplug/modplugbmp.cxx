@@ -24,11 +24,14 @@ extern "C" {
 ModplugXMMS::ModplugXMMS()
 {
 	mSoundFile = new CSoundFile;
-	mOutPlug = NULL;
+    control_mutex = g_mutex_new ();
+    control_cond = g_cond_new ();
 }
 ModplugXMMS::~ModplugXMMS()
 {
 	delete mSoundFile;
+    g_mutex_free (control_mutex);
+    g_cond_free (control_cond);
 }
 
 ModplugXMMS::Settings::Settings()
@@ -236,22 +239,54 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 void ModplugXMMS::PlayLoop(InputPlayback *playback)
 {
 	uint32 lLength;
-	//the user might change the number of channels while playing.
-	// we don't want this to take effect until we are done!
-	uint8 lChannels = mModProps.mChannels;
+    gboolean paused = FALSE;
 
-	while(!mStopped)
-	{
-		if(!(lLength = mSoundFile->Read(
-				mBuffer,
-				mBufSize)))
-		{
-			//no more to play.  Wait for output to finish and then stop.
-			while((mOutPlug->buffer_playing())
-			   && (!mStopped))
-				usleep(10000);
-			break;
-		}
+    g_mutex_lock (control_mutex);
+    seek_time = -1;
+    mPaused = FALSE;
+    playback->playing = TRUE;
+    playback->set_pb_ready (playback);
+    g_mutex_unlock (control_mutex);
+
+    while (1)
+    {
+        g_mutex_lock (control_mutex);
+
+        if (! playback->playing)
+        {
+            g_mutex_unlock (control_mutex);
+            break;
+        }
+
+        if (seek_time != -1)
+        {
+            mSoundFile->SetCurrentPos (seek_time * (gint64)
+             mSoundFile->GetMaxPosition () / (mSoundFile->GetSongTime () * 1000));
+            playback->output->flush (seek_time);
+            seek_time = -1;
+            g_cond_signal (control_cond);
+        }
+
+        if (mPaused != paused)
+        {
+            playback->output->pause (mPaused);
+            paused = mPaused;
+            g_cond_signal (control_cond);
+        }
+
+        if (paused)
+        {
+            g_cond_wait (control_cond, control_mutex);
+            g_mutex_unlock (control_mutex);
+            continue;
+        }
+
+        g_mutex_unlock (control_mutex);
+
+        lLength = mSoundFile->Read (mBuffer, mBufSize);
+
+        if (! lLength)
+            break;
 
 		if(mModProps.mPreamp)
 		{
@@ -282,24 +317,17 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 			}
 		}
 
-		if(mStopped)
-			break;
-
-		playback->pass_audio
-		(
-			playback,
-			mFormat,
-			lChannels,
-			mBufSize,
-			mBuffer,
-			NULL
-		);
-
-		mPlayed += mBufTime;
+        playback->output->write_audio (mBuffer, mBufSize);
 	}
 
-//	mOutPlug->flush(0);
-	mOutPlug->close_audio();
+    g_mutex_lock (control_mutex);
+
+    while (playback->playing && playback->output->buffer_playing ())
+        g_usleep (10000);
+
+    playback->playing = FALSE;
+    g_cond_signal (control_cond); /* wake up any waiting request */
+    g_mutex_unlock (control_mutex);
 
 	//Unload the file
 	mSoundFile->Destroy();
@@ -310,16 +338,10 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 		delete [] mBuffer;
 		mBuffer = NULL;
 	}
-
-	mPaused = false;
-	mStopped = true;
 }
 
 void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 {
-	mStopped = true;
-	mPaused = false;
-
 	//open and mmap the file
 	mArchive = OpenArchive(aFilename);
 	if(mArchive->Size() == 0)
@@ -392,15 +414,11 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 	mSoundFile->SetRepeatCount(mModProps.mLoopCount);
 	mPreampFactor = exp(mModProps.mPreampLevel);
 
-	mPaused = false;
-	mStopped = false;
-
 	mSoundFile->Create
 	(
 		(uchar*)mArchive->Map(),
 		mArchive->Size()
 	);
-	mPlayed = 0;
 
     Tuple* ti = GetSongTuple( aFilename );
     if ( ti ) {
@@ -417,60 +435,64 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 		mModProps.mChannels
 	);
 
-	mStopped = mPaused = false;
-
 	if(mModProps.mBits == 16)
 		mFormat = FMT_S16_NE;
 	else
 		mFormat = FMT_U8;
 
-	mOutPlug->open_audio
-	(
-		mFormat,
-		mModProps.mFrequency,
-		mModProps.mChannels
-	);
+    if (! ipb->output->open_audio (mFormat, mModProps.mFrequency,
+     mModProps.mChannels))
+    {
+        ipb->error = TRUE;
+        return;
+    }
 
-	ipb->playing = TRUE;
-	ipb->set_pb_ready(ipb);
 	this->PlayLoop(ipb);
-	ipb->playing = FALSE;
+	ipb->output->close_audio ();
 }
 
-void ModplugXMMS::Stop(InputPlayback *ipb)
+void ModplugXMMS::Stop (InputPlayback * playback)
 {
-	if(mStopped)
-		return;
+    g_mutex_lock (control_mutex);
 
-	mStopped = true;
-	mPaused = false;
+    if (playback->playing)
+    {
+        playback->playing = FALSE;
+        g_cond_signal (control_cond);
+        g_mutex_unlock (control_mutex);
+        g_thread_join (playback->thread);
+        playback->thread = NULL;
+    }
+    else
+        g_mutex_unlock (control_mutex);
 }
 
-void ModplugXMMS::Pause(bool aPaused)
+void ModplugXMMS::pause (InputPlayback * playback, gshort paused)
 {
-	if(aPaused)
-		mPaused = true;
-	else
-		mPaused = false;
+    g_mutex_lock (control_mutex);
 
-	mOutPlug->pause(aPaused);
+    if (playback->playing)
+    {
+        mPaused = paused;
+        g_cond_signal (control_cond);
+        g_cond_wait (control_cond, control_mutex);
+    }
+
+    g_mutex_unlock (control_mutex);
 }
 
-void ModplugXMMS::Seek(float32 aTime)
+void ModplugXMMS::mseek (InputPlayback * playback, gulong time)
 {
-	uint32  lMax;
-	uint32  lMaxtime;
-	float32 lPostime;
+    g_mutex_lock (control_mutex);
 
-	if(aTime > (lMaxtime = mSoundFile->GetSongTime()))
-		aTime = lMaxtime;
-	lMax = mSoundFile->GetMaxPosition();
-	lPostime = float(lMax) / lMaxtime;
+    if (playback->playing)
+    {
+        seek_time = time;
+        g_cond_signal (control_cond);
+        g_cond_wait (control_cond, control_mutex);
+    }
 
-	mSoundFile->SetCurrentPos(int(aTime * lPostime));
-
-	mOutPlug->flush(int(aTime * 1000));
-	mPlayed = uint32(aTime * 1000);
+    g_mutex_unlock (control_mutex);
 }
 
 Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
@@ -537,10 +559,6 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 void ModplugXMMS::SetInputPlugin(InputPlugin& aInPlugin)
 {
 	mInPlug = &aInPlugin;
-}
-void ModplugXMMS::SetOutputPlugin(OutputAPI& aOutPlugin)
-{
-	mOutPlug = &aOutPlugin;
 }
 
 const ModplugXMMS::Settings& ModplugXMMS::GetModProps()
