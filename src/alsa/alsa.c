@@ -74,20 +74,26 @@ static void * pump (void * unused)
 
     snd_pcm_status_alloca (& status);
 
-    while (! pump_quit)
+    while (1)
     {
         GTimeVal wake;
         gint writable;
+
+        if (! pump_quit && ! alsa_paused)
+        {
+            g_get_current_time (& wake);
+            g_time_val_add (& wake, 1000 * LEAST_BUFFER / 2);
+            g_cond_timed_wait (alsa_cond, alsa_mutex, & wake);
+        }
+
+        if (pump_quit)
+            break;
 
         if (alsa_paused)
         {
             g_cond_wait (alsa_cond, alsa_mutex);
             continue;
         }
-
-        g_get_current_time (& wake);
-        g_time_val_add (& wake, 1000 * LEAST_BUFFER / 2);
-        g_cond_timed_wait (alsa_cond, alsa_mutex, & wake);
 
         CHECK (snd_pcm_status, alsa_handle, status);
         writable = snd_pcm_frames_to_bytes (alsa_handle,
