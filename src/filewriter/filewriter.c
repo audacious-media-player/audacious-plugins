@@ -152,8 +152,8 @@ static OutputPluginInitStatus file_init(void)
     aud_cfg_db_get_bool(db, FILEWRITER_CFGID, "prependnumber", &prependnumber);
     aud_cfg_db_close(db);
 
-    if (!file_path)
-        file_path = g_strdup(g_get_home_dir());
+    if (file_path == NULL)
+        file_path = g_strdup_printf ("file://%s", g_get_home_dir ());
 
     set_plugin();
     if (plugin->init)
@@ -187,6 +187,31 @@ void file_about(void)
                                "USA."), _("Ok"), FALSE, NULL, NULL);
     gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
                        GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dialog);
+}
+
+static VFSFile * safe_create (const gchar * filename)
+{
+    if (! aud_vfs_file_test (filename, G_FILE_TEST_EXISTS))
+        return aud_vfs_fopen (filename, "w");
+
+    const gchar * extension = strchr (filename, '.');
+    gint length = strlen (filename);
+    gchar scratch[length + 2];
+    gint count;
+
+    for (count = 1; count < 100; count ++)
+    {
+        if (extension == NULL)
+            sprintf (scratch, "%s-%d", filename, count);
+        else
+            sprintf (scratch, "%.*s-%d%s", extension - filename, filename,
+             count, extension);
+
+        if (! aud_vfs_file_test (scratch, G_FILE_TEST_EXISTS))
+            return aud_vfs_fopen (scratch, "w");
+    }
+
+    return NULL;
 }
 
 static gint file_open(AFormat fmt, gint rate, gint nch)
@@ -247,12 +272,12 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     else
         directory = file_path;
 
-    temp = g_strdup_printf("file://%s/%s.%s",
-                           directory, filename, fileext_str[fileext]);
+    temp = g_strdup_printf ("%s%s%s.%s", directory, strcmp (directory + 7, "/")
+     ? "/" : "", filename, fileext_str[fileext]);
     g_free(filename);
     filename = temp;
 
-    output_file = aud_vfs_fopen(filename, "w");
+    output_file = safe_create (filename);
     g_free(filename);
 
     if (output_file == NULL)
@@ -331,7 +356,8 @@ static void configure_ok_cb(gpointer data)
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
 
     g_free(file_path);
-    file_path = g_strdup(gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(path_dirbrowser)));
+    file_path = g_strdup_printf ("file://%s",
+     gtk_file_chooser_get_current_folder ((GtkFileChooser *) path_dirbrowser));
 
     use_suffix =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_suffix_toggle));
@@ -501,7 +527,7 @@ static void file_configure(void)
             gtk_file_chooser_button_new (_("Pick a folder"),
                                          GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
         gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(path_dirbrowser),
-                                            file_path);
+         file_path + 7);
         gtk_box_pack_start(GTK_BOX(path_hbox), path_dirbrowser, TRUE, TRUE, 0);
 
         if (save_original)
