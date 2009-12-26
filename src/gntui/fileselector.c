@@ -38,17 +38,7 @@ file_add_cb(GntWidget *widget, GntFileSel **selector)
     if (uri == NULL)
         return;
 
-    if (aud_vfs_file_test(uri, G_FILE_TEST_IS_DIR))
-    {
-        aud_playlist_add_folder(uri);
-        g_free(uri);
-    }
-    else if (aud_filename_is_playlist(uri))
-    {
-        aud_playlist_insert_playlist(playlist, -1, uri);
-    }
-    else
-        aud_playlist_entry_insert(playlist, -1, uri, NULL);
+    audacious_drct_pl_add_url_string (uri);
 
     gnt_widget_destroy(GNT_WIDGET(*selector));
     *selector = NULL;

@@ -850,7 +850,7 @@ void insert_drag_list(gint playlist, gint position, const gchar *list)
 
         if (vfs_file_test (filename, G_FILE_TEST_IS_DIR))
         {
-            aud_playlist_add_folder (filename);
+            aud_playlist_insert_folder (playlist, position, filename);
             g_free (filename);
         }
         else
