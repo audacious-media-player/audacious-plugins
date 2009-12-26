@@ -196,7 +196,7 @@ static VFSFile * safe_create (const gchar * filename)
 
     const gchar * extension = strchr (filename, '.');
     gint length = strlen (filename);
-    gchar scratch[length + 2];
+    gchar scratch[length + 3];
     gint count;
 
     for (count = 1; count < 100; count ++)
