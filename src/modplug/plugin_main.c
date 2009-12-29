@@ -13,9 +13,7 @@ gint CanPlayFileFromVFS(const gchar* aFilename, VFSFile *VFSFile);
 
 static const gchar *fmts[] =
     { "amf", "ams", "dbm", "dbf", "dsm", "far", "mdl", "stm", "ult", "mt2",
-      "mdz", "mdr", "mdgz", "mdbz", "mod", "s3z", "s3r", "s3gz", "s3m", "xmz", "xmr", "xmgz",
-      "itz", "itr", "itgz", "dmf", "umx", "it", "669", "xm", "mtm", "psm", "ft2",
-      "zip", "gz", "bz2", "rar", "rb",
+      "mod", "s3m", "dmf", "umx", "it", "669", "xm", "mtm", "psm", "ft2",
       NULL };
 
 InputPlugin gModPlug =

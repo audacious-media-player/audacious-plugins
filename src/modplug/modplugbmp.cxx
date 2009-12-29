@@ -180,6 +180,8 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 		return true;
 	if (lExt == ".dbf")
 		return true;
+	if (lExt == ".dmf")
+		return true;
 	if (lExt == ".dsm")
 		return true;
 	if (lExt == ".far")
@@ -192,46 +194,6 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 		return true;
 	if (lExt == ".mt2")
 		return true;
-
-	if (lExt == ".mdz")
-		return true;
-	if (lExt == ".mdr")
-		return true;
-	if (lExt == ".mdgz")
-		return true;
-	if (lExt == ".mdbz")
-		return true;
-	if (lExt == ".s3z")
-		return true;
-	if (lExt == ".s3r")
-		return true;
-	if (lExt == ".s3gz")
-		return true;
-	if (lExt == ".xmz")
-		return true;
-	if (lExt == ".xmr")
-		return true;
-	if (lExt == ".xmgz")
-		return true;
-	if (lExt == ".itz")
-		return true;
-	if (lExt == ".itr")
-		return true;
-	if (lExt == ".itgz")
-		return true;
-	if (lExt == ".dmf")
-		return true;
-
-	if (lExt == ".zip")
-		return ContainsMod(aFilename);
-	if (lExt == ".gz")
-		return ContainsMod(aFilename);
-	if (lExt == ".bz2")
-		return ContainsMod(aFilename);
-	if (lExt == ".rar")
-		return ContainsMod(aFilename);
-	if (lExt == ".rb")
-		return ContainsMod(aFilename);
 
 	return false;
 }

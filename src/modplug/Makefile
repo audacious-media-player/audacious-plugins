@@ -36,10 +36,6 @@ SRCS = plugin.cxx		\
        archive/archive.cxx	\
        archive/open.cxx		\
        archive/arch_raw.cxx	\
-       archive/arch_gzip.cxx	\
-       archive/arch_zip.cxx	\
-       archive/arch_rar.cxx	\
-       archive/arch_bz2.cxx	\
        gui/main.cxx		\
        gui/support.cxx		\
        gui/interface.cxx	\
