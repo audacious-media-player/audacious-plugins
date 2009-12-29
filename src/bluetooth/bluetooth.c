@@ -29,6 +29,7 @@
 GList * current_device = NULL;
 gint config = 0;
 gint devices_no = 0;
+gboolean pcmdev_modified = FALSE;
 GStaticMutex mutex = G_STATIC_MUTEX_INIT;
 static gchar *current_address=NULL;
 static GThread *connect_th;
@@ -58,44 +59,53 @@ DECLARE_PLUGIN(bluetooth_gp, NULL, NULL, NULL, NULL, NULL, bluetooth_gplist, NUL
 
 void bluetooth_init ( void )
 {
+    bonded_dev = NULL;
+    discover_finish = 0;
+    pcmdev_modified = FALSE;
     audio_devices = NULL;
     bus = NULL;
     obj = NULL;
-    gchar* bonded_addr="zz";
+    gchar* bonded_addr = NULL;
     discover_devices();
     mcs_handle_t *cfgfile ;
     cfgfile = aud_cfg_db_open();
     if(!aud_cfg_db_get_string(cfgfile, "BLUETOOTH_PLUGIN", "bonded",
-				  &bonded_addr))
+                              &bonded_addr)) {
+        aud_cfg_db_close(cfgfile);
         return;
+    }
     if(bonded_addr!=NULL && g_strcmp0(bonded_addr,"no")!=0)
         {
              remove_bonding(bonded_addr);
         }
+    free(bonded_addr);
     aud_cfg_db_close(cfgfile);
 
 }
 
 void bluetooth_cleanup ( void )
 {
-    printf("bluetooth: exit\n");
     if (config ==1 )
     {
         close_window();
         config =0;
     }
-    remove_bonding(bonded_dev);
+    if (bonded_dev) {
+        printf("bluetooth: exit\n");
+        remove_bonding(bonded_dev);
+    }
     if(discover_finish == 2) {
         dbus_g_connection_flush (bus);
         dbus_g_connection_unref(bus);
         disconnect_dbus_signals();
 
     }
+    if (pcmdev_modified) {
     /* switching back to default pcm device at cleanup */
     mcs_handle_t *cfgfile = aud_cfg_db_open();
-    aud_cfg_db_set_string(cfgfile,"ALSA","pcm_device", "default");
+    aud_cfg_db_set_string(cfgfile,"alsa","pcm", "default");
     aud_cfg_db_close(cfgfile);
-
+    }
 }
 
 void bt_about( void )
@@ -243,8 +253,9 @@ void play_call()
     g_free(device_line);
     g_free(file_name);
     g_free(temp_file_name);
+    pcmdev_modified = TRUE;
     mcs_handle_t *cfgfile = aud_cfg_db_open();
-    aud_cfg_db_set_string(cfgfile,"ALSA","pcm_device", "audacious_bt");
+    aud_cfg_db_set_string(cfgfile,"alsa","pcm", "audacious_bt");
     aud_cfg_db_close(cfgfile);
 
     printf("play callback\n");
@@ -360,12 +371,13 @@ void discover_devices(void)
 {
     GError *error = NULL;
     //  g_type_init();
-    g_log_set_always_fatal (G_LOG_LEVEL_WARNING);
+    /*    g_log_set_always_fatal (G_LOG_LEVEL_WARNING); */ /* too invasive */
     bus = dbus_g_bus_get(DBUS_BUS_SYSTEM, &error);
     if (error != NULL)
     {
         g_printerr("Connecting to system bus failed: %s\n", error->message);
         g_error_free(error);
+        return;
     }
     obj = dbus_g_proxy_new_for_name(bus, "org.bluez", "/org/bluez/hci0", "org.bluez.Adapter");
     printf("bluetooth plugin - start discovery \n");
