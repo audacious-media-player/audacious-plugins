@@ -143,6 +143,9 @@ set_tuple_str(Tuple *tuple, const gint nfield, const gchar *field,
 {
     gchar *str = vorbis_comment_query(comment, key, 0);
     if (str != NULL) {
+        if (nfield == FIELD_TITLE)
+            printf ("Title = %s\n", str);
+
         gchar *tmp = aud_str_to_utf8(str);
         aud_tuple_associate_string(tuple, nfield, field, tmp);
         g_free(tmp);
