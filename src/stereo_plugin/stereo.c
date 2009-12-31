@@ -164,7 +164,7 @@ static void stereo_process (gfloat * * data, gint * samples)
     gfloat * f, * end;
     gfloat center;
 
-    if (stereo_channels != 2)
+    if (stereo_channels != 2 || samples == 0)
         return;
 
     end = (* data) + (* samples);
@@ -183,6 +183,7 @@ static void stereo_flush ()
 
 static void stereo_finish (gfloat * * data, gint * samples)
 {
+    stereo_process (data, samples);
 }
 
 static gint stereo_decoder_to_output_time (gint time)

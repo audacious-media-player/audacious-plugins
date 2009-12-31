@@ -472,6 +472,9 @@ static void sndstretch_process (gfloat * * data, gint * samples)
     gint16 * converted, * stretched;
     gfloat * reconverted;
 
+    if (samples == 0)
+        return;
+
     converted = g_malloc (2 * (* samples));
     audio_to_int (* data, converted, FMT_S16_NE, * samples);
 
@@ -496,6 +499,7 @@ static void sndstretch_flush ()
 
 static void sndstretch_finish (gfloat * * data, gint * samples)
 {
+    sndstretch_process (data, samples);
 }
 
 static gint sndstretch_decoder_to_output_time (gint time)
