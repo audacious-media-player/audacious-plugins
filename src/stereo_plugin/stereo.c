@@ -1,3 +1,7 @@
+/* Extra Stereo Plugin for Audacious
+ * Written by Johan Levin, 1999
+ * Ported to new effect API by John Lindgren, 2009 */
+
 #include "config.h"
 #include <gtk/gtk.h>
 #include <audacious/i18n.h>
@@ -7,10 +11,13 @@
 static void init(void);
 static void about(void);
 static void configure(void);
-static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint nch);
-static void query_format(AFormat * fmt, gint * rate, gint * nch);
 
-
+static void stereo_start (gint * channels, gint * rate);
+static void stereo_process (gfloat * * data, gint * samples);
+static void stereo_flush ();
+static void stereo_finish (gfloat * * data, gint * samples);
+static gint stereo_decoder_to_output_time (gint time);
+static gint stereo_output_to_decoder_time (gint time);
 
 EffectPlugin stereo_ep =
 {
@@ -18,8 +25,12 @@ EffectPlugin stereo_ep =
 	.init = init,
 	.about = about,
 	.configure = configure,
-	.mod_samples = mod_samples,
-	.query_format = query_format
+    .start = stereo_start,
+    .process = stereo_process,
+    .flush = stereo_flush,
+    .finish = stereo_finish,
+    .decoder_to_output_time = stereo_decoder_to_output_time,
+    .output_to_decoder_time = stereo_output_to_decoder_time,
 };
 
 static const char *about_text = N_("Extra Stereo Plugin\n\n"
@@ -44,7 +55,7 @@ static void init(void)
 static void about(void)
 {
 	static GtkWidget *about_dialog = NULL;
-	
+
 	if (about_dialog != NULL)
 		return;
 
@@ -61,7 +72,7 @@ static void conf_ok_cb(GtkButton * button, gpointer data)
 	mcs_handle_t *db;
 
 	value = *(gdouble *) data;
-	
+
 	db = aud_cfg_db_open();
 	aud_cfg_db_set_double(db, "extra_stereo", "intensity", value);
 	aud_cfg_db_close(db);
@@ -141,50 +152,45 @@ static void configure(void)
 	gtk_widget_show(conf_dialog);
 }
 
-static void query_format(AFormat * fmt, gint * rate, gint * nch)
-{
-	if (!(*fmt == FMT_S16_NE ||
-	      (*fmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
-	      (*fmt == FMT_S16_BE && G_BYTE_ORDER == G_BIG_ENDIAN)))
-		*fmt = FMT_S16_NE;
+static gint stereo_channels;
 
-	if (*nch != 2)
-		*nch = 2;
+static void stereo_start (gint * channels, gint * rate)
+{
+    stereo_channels = * channels;
 }
 
-static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint nch)
+static void stereo_process (gfloat * * data, gint * samples)
 {
-	gint i;
-	gdouble avg, ldiff, rdiff, tmp, mul;
-	gint16  *data = (gint16 *)*d;
+    gfloat * f, * end;
+    gfloat center;
 
-	if (!(afmt == FMT_S16_NE ||
-	      (afmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
-	      (afmt == FMT_S16_BE && G_BYTE_ORDER == G_BIG_ENDIAN)) ||
-	    nch != 2)
-		return length;
+    if (stereo_channels != 2)
+        return;
 
-	mul = value;
-	
-	for (i = 0; i < length / 2; i += 2)
-	{
-		avg = (data[i] + data[i + 1]) / 2;
-		ldiff = data[i] - avg;
-		rdiff = data[i + 1] - avg;
+    end = (* data) + (* samples);
 
-		tmp = avg + ldiff * mul;
-		if (tmp < -32768)
-			tmp = -32768;
-		if (tmp > 32767)
-			tmp = 32767;
-		data[i] = tmp;
+    for (f = * data; f < end; f += 2)
+    {
+        center = (f[0] + f[1]) / 2;
+        f[0] = center + (f[0] - center) * value;
+        f[1] = center + (f[1] - center) * value;
+    }
+}
 
-		tmp = avg + rdiff * mul;
-		if (tmp < -32768)
-			tmp = -32768;
-		if (tmp > 32767)
-			tmp = 32767;
-		data[i + 1] = tmp;
-	}
-	return length;
+static void stereo_flush ()
+{
+}
+
+static void stereo_finish (gfloat * * data, gint * samples)
+{
+}
+
+static gint stereo_decoder_to_output_time (gint time)
+{
+    return time;
+}
+
+static gint stereo_output_to_decoder_time (gint time)
+{
+    return time;
 }
