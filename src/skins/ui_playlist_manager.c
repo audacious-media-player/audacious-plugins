@@ -133,7 +133,7 @@ playlist_manager_cb_del ( gpointer listview )
         if ( gtk_tree_model_iter_n_children( store , NULL ) < 2 )
         {
             /* let playlist_manager_update() handle the deletion of the last playlist */
-            aud_playlist_delete (playlist);
+            confirm_playlist_delete (playlist);
         }
         else
         {
@@ -141,7 +141,7 @@ playlist_manager_cb_del ( gpointer listview )
             /* this ensures that playlist_manager_update() will
                not perform update, since we're already doing it here */
             DISABLE_MANAGER_UPDATE();
-            aud_playlist_delete (playlist);
+            confirm_playlist_delete (playlist);
             ENABLE_MANAGER_UPDATE();
         }
 

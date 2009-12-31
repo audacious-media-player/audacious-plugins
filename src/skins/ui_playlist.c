@@ -1521,7 +1521,7 @@ void action_playlist_next (void)
 
 void action_playlist_delete (void)
 {
-    aud_playlist_delete (active_playlist);
+    confirm_playlist_delete (active_playlist);
 }
 
 void action_playlist_save_list (void)
@@ -1603,4 +1603,26 @@ playlistwin_select_search_kp_cb(GtkWidget *entry, GdkEventKey *event,
         default:
             return FALSE;
     }
+}
+
+static void confirm_delete_cb (GtkDialog * dialog, gint response, void * data)
+{
+    if (response == GTK_RESPONSE_YES && GPOINTER_TO_INT (data) <
+     aud_playlist_count ())
+        aud_playlist_delete (GPOINTER_TO_INT (data));
+
+    gtk_widget_destroy ((GtkWidget *) dialog);
+}
+
+void confirm_playlist_delete (gint playlist)
+{
+    GtkWidget * dialog = gtk_message_dialog_new ((GtkWindow *) mainwin,
+     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT |
+     GTK_DIALOG_NO_SEPARATOR, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, _("Are "
+      "you sure you want to close %s?  If you do, any changes made since the "
+      "playlist was exported will be lost."), aud_playlist_get_title (playlist));
+
+    gtk_widget_show (dialog);
+    g_signal_connect (dialog, "response", (GCallback) confirm_delete_cb,
+     GINT_TO_POINTER (playlist));
 }

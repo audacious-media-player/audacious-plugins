@@ -69,6 +69,8 @@ void playlistwin_set_sinfo_scroll(gboolean scroll);
 gint playlistwin_list_get_visible_count(void);
 gint playlistwin_list_get_first(void);
 
+void confirm_playlist_delete (gint playlist);
+
 extern gint active_playlist;
 extern gchar * active_title;
 extern glong active_length;
