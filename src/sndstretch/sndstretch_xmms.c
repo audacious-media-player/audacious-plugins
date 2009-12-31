@@ -5,6 +5,8 @@
 //    Copyright (C) 2001  Florian Berger
 //    Email: florian.berger@jk.uni-linz.ac.at
 //
+//    Ported to new Audacious effect API by John Lindgren, 2009
+//
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License Version 2 as
 //    published by the Free Software Foundation;
@@ -33,28 +35,40 @@
 #include <stdio.h>
 #include <string.h>
 
-#define SNDSTRETCH_VERSION_STRING "0.7"
+#include <libaudcore/audio.h>
 
-#define SS sndstretch_var
+#define SNDSTRETCH_VERSION_STRING "0.7"
 
 void sndstretch_init           (void);
 void sndstretch_about          (void);
 void sndstretch_config         (void);
-int sndstretch_mod_samples (gpointer *ptr, gint length, AFormat fmt, gint srate, gint nch);
+
+static void sndstretch_start (gint * channels, gint * rate);
+static void sndstretch_process (gfloat * * data, gint * samples);
+static void sndstretch_flush ();
+static void sndstretch_finish (gfloat * * data, gint * samples);
+static gint sndstretch_decoder_to_output_time (gint time);
+static gint sndstretch_output_to_decoder_time (gint time);
 
 EffectPlugin sndstretch_ep = {
 	.description = "SndStretch",
 	.init = sndstretch_init,
 	.about = sndstretch_about,
 	.configure = sndstretch_config,
-	.mod_samples = sndstretch_mod_samples,
+    .start = sndstretch_start,
+    .process = sndstretch_process,
+    .flush = sndstretch_flush,
+    .finish = sndstretch_finish,
+    .decoder_to_output_time = sndstretch_decoder_to_output_time,
+    .output_to_decoder_time = sndstretch_output_to_decoder_time,
 };
 
 EffectPlugin *sndstretch_eplist[] = { &sndstretch_ep, NULL };
 
 DECLARE_PLUGIN(sndstretch, NULL, NULL, NULL, NULL, sndstretch_eplist, NULL, NULL, NULL);
 
-static struct {
+struct sndstretch_settings
+{
 	int handle;    // file handle
 	int fragsize;
 	int chnr;
@@ -75,8 +89,9 @@ static struct {
 	GtkObject * pitch_adj;
 	GtkObject * speed_adj;
 	GtkObject * scale_adj;
-} sndstretch_var;
+};
 
+static struct sndstretch_settings SS;
 
 static const char sndstretch_title_text[] = "SndStretch xmms - " SNDSTRETCH_VERSION_STRING;
 
@@ -432,24 +447,63 @@ void sndstretch_init(void)
 	aud_cfg_db_close(db);
 }
 
-int sndstretch_mod_samples (gpointer *ptr, gint length, AFormat fmt, gint srate, gint nch)
+static gboolean initted = FALSE;
+static PitchSpeedJob job;
+static gint current_channels, current_rate;
+static struct sndstretch_settings current_settings;
+
+static void sndstretch_start (gint * channels, gint * rate)
 {
-	static short int * buff_o;
-	static int prod_size;
-	static PitchSpeedJob job;
-	static int init_job=1;
+    if (! initted)
+    {
+        InitPitchSpeedJob (& job);
+        initted = TRUE;
+    }
 
-	buff_o = realloc(buff_o, 65536);
+    current_channels = * channels;
+    current_rate = * rate;
+    memcpy (& current_settings, & SS, sizeof (struct sndstretch_settings));
+}
 
-	if (init_job) {
-		InitPitchSpeedJob(&job);
-		init_job = 0;
-	}
-	snd_pitch_speed_job(*ptr, nch, length/2, 0, SS.pitch, SS.speed,
-						(SS.short_overlap) ? 882 : 1764,
-						buff_o, &prod_size, &job, SS.volume_corr);
+/* FIXME: Find a stretch algorithm that uses floating point. */
+static void sndstretch_process (gfloat * * data, gint * samples)
+{
+    gint new_samples = (* samples) / current_settings.speed + 100;
+    gint16 * converted, * stretched;
+    gfloat * reconverted;
 
-	*ptr = (gpointer) buff_o;
+    converted = g_malloc (2 * (* samples));
+    audio_to_int (* data, converted, FMT_S16_NE, * samples);
 
-	return prod_size*2;
+    stretched = g_malloc (2 * new_samples);
+    snd_pitch_speed_job (converted, current_channels, * samples, FALSE,
+     current_settings.pitch, current_settings.speed,
+     current_settings.short_overlap ? 882 : 1764, stretched, & new_samples,
+     & job, current_settings.volume_corr);
+    g_free (converted);
+
+    reconverted = g_malloc (sizeof (gfloat) * new_samples);
+    audio_from_int (stretched, FMT_S16_NE, reconverted, new_samples);
+    g_free (stretched);
+
+    * data = reconverted;
+    * samples = new_samples;
+}
+
+static void sndstretch_flush ()
+{
+}
+
+static void sndstretch_finish (gfloat * * data, gint * samples)
+{
+}
+
+static gint sndstretch_decoder_to_output_time (gint time)
+{
+    return time / current_settings.speed;
+}
+
+static gint sndstretch_output_to_decoder_time (gint time)
+{
+    return time * current_settings.speed;
 }
