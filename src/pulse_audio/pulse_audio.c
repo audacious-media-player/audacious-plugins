@@ -335,16 +335,6 @@ fail:
     return r;
 }
 
-static void pulse_set_written_time (gint time)
-{
-    pa_threaded_mainloop_lock (mainloop);
-
-    written = time * (gint64) pa_bytes_per_second
-     (pa_stream_get_sample_spec (stream)) / 1000;
-
-    pa_threaded_mainloop_unlock (mainloop);
-}
-
 static int pulse_get_output_time(void) {
     int r = 0;
     pa_usec_t t;
@@ -777,7 +767,6 @@ static OutputPlugin pulse_op = {
         .buffer_playing = pulse_playing,
         .output_time = pulse_get_output_time,
         .written_time = pulse_get_written_time,
-        .set_written_time = pulse_set_written_time,
 };
 
 OutputPlugin *pulse_oplist[] = { &pulse_op, NULL };
