@@ -466,11 +466,12 @@ static void sndstretch_start (gint * channels, gint * rate)
 }
 
 /* FIXME: Find a stretch algorithm that uses floating point. */
+/* FIXME: The output buffer should be freed on plugin cleanup. */
 static void sndstretch_process (gfloat * * data, gint * samples)
 {
     gint new_samples = (* samples) / current_settings.speed + 100;
     gint16 * converted, * stretched;
-    gfloat * reconverted;
+    static gfloat * reconverted = NULL;
 
     if (samples == 0)
         return;
@@ -485,7 +486,7 @@ static void sndstretch_process (gfloat * * data, gint * samples)
      & job, current_settings.volume_corr);
     g_free (converted);
 
-    reconverted = g_malloc (sizeof (gfloat) * new_samples);
+    reconverted = g_realloc (reconverted, sizeof (gfloat) * new_samples);
     audio_from_int (stretched, FMT_S16_NE, reconverted, new_samples);
     g_free (stretched);
 
