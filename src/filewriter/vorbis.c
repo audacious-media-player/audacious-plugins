@@ -25,6 +25,7 @@
 
 #include <vorbis/vorbisenc.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 static void vorbis_init(write_output_callback write_output_func);
 static void vorbis_configure(void);
@@ -155,9 +156,9 @@ static gint vorbis_open(void)
 
 static void vorbis_write(gpointer data, gint length)
 {
-    int i;
+    int i, channel;
     int result;
-    short int *tmpdata;
+    int16_t *tmpdata;
 
     /* ask vorbisenc for a buffer to fill with pcm data */
     encbuffer = vorbis_analysis_buffer(&vd, length);
@@ -167,21 +168,11 @@ static void vorbis_write(gpointer data, gint length)
      * deinterleave the audio signal, 32768.0 is the highest peak level allowed
      * in a 16-bit PCM signal.
      */
-    if (input.channels == 1)
+    for (i = 0; i < (length / 2); i++)
     {
-        for (i = 0; i < (length / 2); i++)
-        {
-            encbuffer[0][i] = tmpdata[i] / 32768.0;
-            encbuffer[1][i] = tmpdata[i] / 32768.0;
-        }
-    }
-    else
-    {
-        for (i = 0; i < (length / 4); i++)
-        {
-            encbuffer[0][i] = tmpdata[2 * i] / 32768.0;
-            encbuffer[1][i] = tmpdata[2 * i + 1] / 32768.0;
-        }
+        for (channel = 0; channel < input.channels; channel ++)
+            encbuffer[channel][i] = tmpdata[input.channels * i + channel] /
+             32768.0;
     }
 
     vorbis_analysis_wrote(&vd, i);
