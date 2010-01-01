@@ -161,14 +161,14 @@ static void vorbis_write(gpointer data, gint length)
     int16_t *tmpdata;
 
     /* ask vorbisenc for a buffer to fill with pcm data */
-    encbuffer = vorbis_analysis_buffer(&vd, length);
+    encbuffer = vorbis_analysis_buffer(&vd, length / 2 / input.channels);
     tmpdata = data;
 
     /*
      * deinterleave the audio signal, 32768.0 is the highest peak level allowed
      * in a 16-bit PCM signal.
      */
-    for (i = 0; i < (length / 2); i++)
+    for (i = 0; i < length / 2 / input.channels; i ++)
     {
         for (channel = 0; channel < input.channels; channel ++)
             encbuffer[channel][i] = tmpdata[input.channels * i + channel] /
