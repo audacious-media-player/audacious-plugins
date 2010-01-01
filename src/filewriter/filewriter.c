@@ -294,6 +294,9 @@ static void file_write(void *ptr, gint length)
 {
     int len;
 
+    if (length == 0)
+        return;
+
     len = convert_process(ptr, length);
 
     plugin->write(convert_output, len);
