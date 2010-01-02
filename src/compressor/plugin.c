@@ -137,8 +137,8 @@ static void compressor_configure (void)
 
 EffectPlugin compressor_plugin =
 {
-	.description = "Dynamic Range Compressor",
-	.init = compressor_init,
+    .description = "Dynamic Range Compressor",
+    .init = compressor_init,
     .cleanup = compressor_cleanup,
     .about = compressor_about,
     .configure = compressor_configure,
