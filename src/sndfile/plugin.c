@@ -134,16 +134,22 @@ static void plugin_cleanup (void)
     g_mutex_free (control_mutex);
 }
 
-static void
-fill_song_tuple (const gchar *filename, Tuple *ti)
+static Tuple * get_song_tuple (const gchar * filename)
 {
     VFSFile *vfsfile = NULL;
     SNDFILE *sndfile;
     SF_INFO sfinfo;
     gboolean lossy = FALSE;
     gchar *codec, *format, *subformat;
+    Tuple * ti;
 
     sndfile = open_sndfile_from_uri(filename, &vfsfile, &sfinfo);
+
+    if (sndfile == NULL)
+        return NULL;
+
+    ti = tuple_new_from_filename (filename);
+
     if (sf_get_string(sndfile, SF_STR_TITLE) != NULL)
         aud_tuple_associate_string(ti, FIELD_TITLE, NULL, sf_get_string(sndfile, SF_STR_TITLE));
 
@@ -152,8 +158,7 @@ fill_song_tuple (const gchar *filename, Tuple *ti)
     aud_tuple_associate_string(ti, FIELD_DATE, NULL, sf_get_string(sndfile, SF_STR_DATE));
     aud_tuple_associate_string(ti, -1, "software", sf_get_string(sndfile, SF_STR_SOFTWARE));
 
-    if (sndfile != NULL)
-        close_sndfile (sndfile, vfsfile);
+    close_sndfile (sndfile, vfsfile);
 
     if (sfinfo.samplerate > 0)
     {
@@ -322,6 +327,8 @@ fill_song_tuple (const gchar *filename, Tuple *ti)
     g_free(codec);
 
     aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, lossy ? "lossy" : "lossless");
+
+    return ti;
 }
 
 static gint
@@ -492,14 +499,6 @@ static void file_mseek (InputPlayback * playback, gulong time)
     g_cond_signal (control_cond);
     g_cond_wait (control_cond, control_mutex);
     g_mutex_unlock (control_mutex);
-}
-
-static Tuple*
-get_song_tuple (const gchar *filename)
-{
-    Tuple *ti = aud_tuple_new_from_filename(filename);
-    fill_song_tuple(filename, ti);
-    return ti;
 }
 
 static gint
