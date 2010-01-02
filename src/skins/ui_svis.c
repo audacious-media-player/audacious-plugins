@@ -42,12 +42,6 @@
 static guint8 svis_scope_colors[] = { 20, 19, 18, 19, 20 };
 static guint8 svis_vu_normal_colors[] = { 17, 17, 17, 12, 12, 12, 2, 2 };
 
-#define DRAW_DS_PIXEL(ptr,value) \
-	*(ptr) = (value); \
-	*((ptr) + 1) = (value); \
-	*((ptr) + 76) = (value); \
-	*((ptr) + 77) = (value);
-
 #define SVIS_HEIGHT 5
 #define SVIS_WIDTH 38
 
@@ -288,6 +282,19 @@ static void ui_svis_size_allocate (GtkWidget * widget,
     svis->y = widget->allocation.y / (svis->scaled ? config.scale_factor : 1);
 }
 
+#define OFFSET_NORMAL(p, x, y) ((p) + SVIS_WIDTH * (y) + (x))
+#define OFFSET_SCALED(p, x, y) ((p) + 4 * SVIS_WIDTH * (y) + 2 * (x))
+
+static inline void DRAW_SCALED (guchar * p, guchar value)
+{
+    p[0] = value;
+    p[1] = value;
+    p[2 * SVIS_WIDTH] = value;
+    p[2 * SVIS_WIDTH + 1] = value;
+}
+
+#define DRAW_DS_PIXEL DRAW_SCALED
+
 static gboolean ui_svis_expose (GtkWidget * widget, GdkEventExpose * event)
 {
     UiSVis *svis = UI_SVIS (widget);
@@ -320,17 +327,16 @@ static gboolean ui_svis_expose (GtkWidget * widget, GdkEventExpose * event)
         {
             for (y = 0; y < SVIS_HEIGHT; y++)
             {
+                ptr = OFFSET_NORMAL (rgb_data, 0, SVIS_HEIGHT - 1 - y);
+
                 if (config.analyzer_type == ANALYZER_BARS)
                 {
-                    for (x = 0; x < SVIS_WIDTH; x++)
+                    for (x = 0; x < (SVIS_WIDTH + 1) / 3; x ++)
                     {
                         if (svis->data[x] > y << 1)
                         {
-                            rgb_data[x * 3 + (SVIS_HEIGHT - y) * SVIS_WIDTH] =
-                                23;
-                            rgb_data[x * 3 + 1 +
-                                     (SVIS_HEIGHT - y) * SVIS_WIDTH] = 23;
-
+                            ptr[3 * x] = 23;
+                            ptr[3 * x + 1] = 23;
                         }
                     }
                 }
@@ -339,9 +345,7 @@ static gboolean ui_svis_expose (GtkWidget * widget, GdkEventExpose * event)
                     for (x = 0; x < SVIS_WIDTH; x++)
                     {
                         if (svis->data[x] > y << 1)
-                        {
-                            rgb_data[x + (SVIS_HEIGHT - y) * SVIS_WIDTH] = 23;
-                        }
+                            ptr[x] = 23;
                     }
                 }
             }
@@ -403,17 +407,16 @@ static gboolean ui_svis_expose (GtkWidget * widget, GdkEventExpose * event)
         {
             for (y = 0; y < SVIS_HEIGHT; y++)
             {
+                ptr = OFFSET_SCALED (rgb_data, 0, SVIS_HEIGHT - 1 - y);
+
                 if (config.analyzer_type == ANALYZER_BARS)
                 {
-                    for (x = 0; x < SVIS_WIDTH; x++)
+                    for (x = 0; x < (SVIS_WIDTH + 1) / 3; x ++)
                     {
                         if (svis->data[x] > y << 1)
                         {
-                            ptr =
-                                rgb_data + x * 6 + (SVIS_HEIGHT * 2 -
-                                                    y * 2) * SVIS_WIDTH * 2;
-                            DRAW_DS_PIXEL (ptr, 23);
-                            DRAW_DS_PIXEL (ptr + 2, 23);
+                            DRAW_SCALED (OFFSET_SCALED (ptr, x * 3, 0), 23);
+                            DRAW_SCALED (OFFSET_SCALED (ptr, x * 3 + 1, 0), 23);
                         }
                     }
                 }
@@ -422,12 +425,7 @@ static gboolean ui_svis_expose (GtkWidget * widget, GdkEventExpose * event)
                     for (x = 0; x < SVIS_WIDTH; x++)
                     {
                         if (svis->data[x] > y << 1)
-                        {
-                            ptr =
-                                rgb_data + x * 2 + (SVIS_HEIGHT * 2 -
-                                                    y * 2) * SVIS_WIDTH * 2;
-                            DRAW_DS_PIXEL (ptr, 23);
-                        }
+                            DRAW_SCALED (OFFSET_SCALED (ptr, x, 0), 23);
                     }
                 }
             }
