@@ -235,8 +235,13 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
 
             AUDDBG("base #2 = %s\n", base);
 
-            if (!base)
-                base = g_path_get_dirname(filename);
+            if (base == NULL)
+            {
+                const gchar * slash = strrchr (filename, '/');
+
+                if (slash != NULL)
+                    base = g_strndup (filename, slash - filename);
+            }
 
             AUDDBG("base #3 = %s\n", base);
 
