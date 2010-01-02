@@ -51,29 +51,34 @@ static guint8 svis_vu_normal_colors[] = { 17, 17, 17, 12, 12, 12, 2, 2 };
 #define SVIS_HEIGHT 5
 #define SVIS_WIDTH 38
 
-enum {
+enum
+{
     DOUBLED,
     LAST_SIGNAL
 };
 
-static void ui_svis_class_init         (UiSVisClass *klass);
-static void ui_svis_init               (UiSVis *svis);
-static void ui_svis_destroy            (GtkObject *object);
-static void ui_svis_realize            (GtkWidget *widget);
-static void ui_svis_unrealize          (GtkWidget *widget);
-static void ui_svis_map                (GtkWidget *widget);
-static void ui_svis_unmap              (GtkWidget *widget);
-static void ui_svis_size_request       (GtkWidget *widget, GtkRequisition *requisition);
-static void ui_svis_size_allocate      (GtkWidget *widget, GtkAllocation *allocation);
-static gboolean ui_svis_expose         (GtkWidget *widget, GdkEventExpose *event);
-static void ui_svis_toggle_scaled      (UiSVis *svis);
+static void ui_svis_class_init (UiSVisClass * klass);
+static void ui_svis_init (UiSVis * svis);
+static void ui_svis_destroy (GtkObject * object);
+static void ui_svis_realize (GtkWidget * widget);
+static void ui_svis_unrealize (GtkWidget * widget);
+static void ui_svis_map (GtkWidget * widget);
+static void ui_svis_unmap (GtkWidget * widget);
+static void ui_svis_size_request (GtkWidget * widget,
+                                  GtkRequisition * requisition);
+static void ui_svis_size_allocate (GtkWidget * widget,
+                                   GtkAllocation * allocation);
+static gboolean ui_svis_expose (GtkWidget * widget, GdkEventExpose * event);
+static void ui_svis_toggle_scaled (UiSVis * svis);
 
 static GtkWidgetClass *parent_class = NULL;
 static guint vis_signals[LAST_SIGNAL] = { 0 };
 
-GType ui_svis_get_type() {
+GType ui_svis_get_type ()
+{
     static GType vis_type = 0;
-    if (!vis_type) {
+    if (!vis_type)
+    {
         static const GTypeInfo vis_info = {
             sizeof (UiSVisClass),
             NULL,
@@ -85,19 +90,21 @@ GType ui_svis_get_type() {
             0,
             (GInstanceInitFunc) ui_svis_init,
         };
-        vis_type = g_type_register_static (GTK_TYPE_WIDGET, "UiSVis", &vis_info, 0);
+        vis_type =
+            g_type_register_static (GTK_TYPE_WIDGET, "UiSVis", &vis_info, 0);
     }
 
     return vis_type;
 }
 
-static void ui_svis_class_init(UiSVisClass *klass) {
+static void ui_svis_class_init (UiSVisClass * klass)
+{
     GtkObjectClass *object_class;
     GtkWidgetClass *widget_class;
 
-    object_class = (GtkObjectClass*) klass;
-    widget_class = (GtkWidgetClass*) klass;
-    parent_class = g_type_class_peek_parent(klass);
+    object_class = (GtkObjectClass *) klass;
+    widget_class = (GtkWidgetClass *) klass;
+    parent_class = g_type_class_peek_parent (klass);
 
     object_class->destroy = ui_svis_destroy;
 
@@ -112,16 +119,19 @@ static void ui_svis_class_init(UiSVisClass *klass) {
     klass->scaled = ui_svis_toggle_scaled;
 
     vis_signals[DOUBLED] =
-        g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+        g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class),
+                      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSVisClass, scaled), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 }
 
-static void ui_svis_init(UiSVis *svis) {
+static void ui_svis_init (UiSVis * svis)
+{
 
 }
 
-GtkWidget* ui_svis_new(GtkWidget *fixed, gint x, gint y) {
+GtkWidget *ui_svis_new (GtkWidget * fixed, gint x, gint y)
+{
     UiSVis *svis = g_object_new (ui_svis_get_type (), NULL);
 
     svis->x = x;
@@ -136,12 +146,14 @@ GtkWidget* ui_svis_new(GtkWidget *fixed, gint x, gint y) {
     svis->visible_window = TRUE;
     svis->event_window = NULL;
 
-    gtk_fixed_put(GTK_FIXED(svis->fixed), GTK_WIDGET(svis), svis->x, svis->y);
+    gtk_fixed_put (GTK_FIXED (svis->fixed), GTK_WIDGET (svis), svis->x,
+                   svis->y);
 
-    return GTK_WIDGET(svis);
+    return GTK_WIDGET (svis);
 }
 
-static void ui_svis_destroy(GtkObject *object) {
+static void ui_svis_destroy (GtkObject * object)
+{
     UiSVis *svis;
 
     g_return_if_fail (object != NULL);
@@ -150,118 +162,134 @@ static void ui_svis_destroy(GtkObject *object) {
     svis = UI_SVIS (object);
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
-        (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+        (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
 
-static void ui_svis_realize(GtkWidget *widget) {
+static void ui_svis_realize (GtkWidget * widget)
+{
     UiSVis *svis;
     GdkWindowAttr attributes;
     gint attributes_mask;
 
     g_return_if_fail (widget != NULL);
-    g_return_if_fail (UI_IS_SVIS(widget));
+    g_return_if_fail (UI_IS_SVIS (widget));
 
-    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
-    svis = UI_SVIS(widget);
+    GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+    svis = UI_SVIS (widget);
 
     attributes.x = widget->allocation.x;
     attributes.y = widget->allocation.y;
     attributes.width = widget->allocation.width;
     attributes.height = widget->allocation.height;
     attributes.window_type = GDK_WINDOW_CHILD;
-    attributes.event_mask = gtk_widget_get_events(widget);
-    attributes.event_mask |= GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK;
+    attributes.event_mask = gtk_widget_get_events (widget);
+    attributes.event_mask |=
+        GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK;
 
     if (svis->visible_window)
     {
-      attributes.visual = gtk_widget_get_visual(widget);
-      attributes.colormap = gtk_widget_get_colormap(widget);
-      attributes.wclass = GDK_INPUT_OUTPUT;
-      attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-      widget->window = gdk_window_new(widget->parent->window, &attributes, attributes_mask);
-      GTK_WIDGET_UNSET_FLAGS(widget, GTK_NO_WINDOW);
-      gdk_window_set_user_data(widget->window, widget);
+        attributes.visual = gtk_widget_get_visual (widget);
+        attributes.colormap = gtk_widget_get_colormap (widget);
+        attributes.wclass = GDK_INPUT_OUTPUT;
+        attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+        widget->window =
+            gdk_window_new (widget->parent->window, &attributes,
+                            attributes_mask);
+        GTK_WIDGET_UNSET_FLAGS (widget, GTK_NO_WINDOW);
+        gdk_window_set_user_data (widget->window, widget);
     }
     else
     {
-      widget->window = gtk_widget_get_parent_window (widget);
-      g_object_ref (widget->window);
+        widget->window = gtk_widget_get_parent_window (widget);
+        g_object_ref (widget->window);
 
-      attributes.wclass = GDK_INPUT_ONLY;
-      attributes_mask = GDK_WA_X | GDK_WA_Y;
-      svis->event_window = gdk_window_new (widget->window, &attributes, attributes_mask);
-      GTK_WIDGET_SET_FLAGS (widget, GTK_NO_WINDOW);
-      gdk_window_set_user_data(svis->event_window, widget);
+        attributes.wclass = GDK_INPUT_ONLY;
+        attributes_mask = GDK_WA_X | GDK_WA_Y;
+        svis->event_window =
+            gdk_window_new (widget->window, &attributes, attributes_mask);
+        GTK_WIDGET_SET_FLAGS (widget, GTK_NO_WINDOW);
+        gdk_window_set_user_data (svis->event_window, widget);
     }
 
-    widget->style = gtk_style_attach(widget->style, widget->window);
+    widget->style = gtk_style_attach (widget->style, widget->window);
 }
 
-static void ui_svis_unrealize(GtkWidget *widget) {
+static void ui_svis_unrealize (GtkWidget * widget)
+{
     UiSVis *svis;
-    svis = UI_SVIS(widget);
+    svis = UI_SVIS (widget);
 
-    if ( svis->event_window != NULL )
+    if (svis->event_window != NULL)
     {
-      gdk_window_set_user_data( svis->event_window , NULL );
-      gdk_window_destroy( svis->event_window );
-      svis->event_window = NULL;
+        gdk_window_set_user_data (svis->event_window, NULL);
+        gdk_window_destroy (svis->event_window);
+        svis->event_window = NULL;
     }
 
     if (GTK_WIDGET_CLASS (parent_class)->unrealize)
-        (* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
+        (*GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
 }
 
-static void ui_svis_map(GtkWidget *widget)
+static void ui_svis_map (GtkWidget * widget)
 {
     UiSVis *svis;
-    svis = UI_SVIS(widget);
+    svis = UI_SVIS (widget);
 
     if (svis->event_window != NULL)
-      gdk_window_show (svis->event_window);
+        gdk_window_show (svis->event_window);
 
     if (GTK_WIDGET_CLASS (parent_class)->map)
-      (* GTK_WIDGET_CLASS (parent_class)->map) (widget);
+        (*GTK_WIDGET_CLASS (parent_class)->map) (widget);
 }
 
-static void ui_svis_unmap (GtkWidget *widget)
+static void ui_svis_unmap (GtkWidget * widget)
 {
     UiSVis *svis;
-    svis = UI_SVIS(widget);
+    svis = UI_SVIS (widget);
 
     if (svis->event_window != NULL)
-      gdk_window_hide (svis->event_window);
+        gdk_window_hide (svis->event_window);
 
     if (GTK_WIDGET_CLASS (parent_class)->unmap)
-      (* GTK_WIDGET_CLASS (parent_class)->unmap) (widget);
+        (*GTK_WIDGET_CLASS (parent_class)->unmap) (widget);
 }
 
-static void ui_svis_size_request(GtkWidget *widget, GtkRequisition *requisition) {
-    UiSVis *svis = UI_SVIS(widget);
+static void ui_svis_size_request (GtkWidget * widget,
+                                  GtkRequisition * requisition)
+{
+    UiSVis *svis = UI_SVIS (widget);
 
     requisition->width = svis->width * (svis->scaled ? config.scale_factor : 1);
-    requisition->height = svis->height*(svis->scaled ? config.scale_factor : 1);
+    requisition->height =
+        svis->height * (svis->scaled ? config.scale_factor : 1);
 }
 
-static void ui_svis_size_allocate(GtkWidget *widget, GtkAllocation *allocation) {
+static void ui_svis_size_allocate (GtkWidget * widget,
+                                   GtkAllocation * allocation)
+{
     UiSVis *svis = UI_SVIS (widget);
 
     widget->allocation = *allocation;
-    widget->allocation.x *= (svis->scaled ? config.scale_factor : 1 );
+    widget->allocation.x *= (svis->scaled ? config.scale_factor : 1);
     widget->allocation.y *= (svis->scaled ? config.scale_factor : 1);
     if (GTK_WIDGET_REALIZED (widget))
     {
         if (svis->event_window != NULL)
-            gdk_window_move_resize(svis->event_window, widget->allocation.x, widget->allocation.y, allocation->width, allocation->height);
+            gdk_window_move_resize (svis->event_window, widget->allocation.x,
+                                    widget->allocation.y, allocation->width,
+                                    allocation->height);
         else
-            gdk_window_move_resize(widget->window, widget->allocation.x, widget->allocation.y, allocation->width, allocation->height);
+            gdk_window_move_resize (widget->window, widget->allocation.x,
+                                    widget->allocation.y, allocation->width,
+                                    allocation->height);
     }
 
-    svis->x = widget->allocation.x/(svis->scaled ? config.scale_factor : 1);
-    svis->y = widget->allocation.y/(svis->scaled ? config.scale_factor : 1);
+    svis->x = widget->allocation.x / (svis->scaled ? config.scale_factor : 1);
+    svis->y = widget->allocation.y / (svis->scaled ? config.scale_factor : 1);
 }
 
-static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
+static gboolean ui_svis_expose (GtkWidget * widget, GdkEventExpose * event)
+{
     UiSVis *svis = UI_SVIS (widget);
 
     gint x, y, h;
@@ -270,74 +298,93 @@ static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
     guint32 colors[24];
     GdkRgbCmap *cmap;
 
-    if (!GTK_WIDGET_VISIBLE(widget))
+    if (!GTK_WIDGET_VISIBLE (widget))
         return FALSE;
 
     if (!svis->visible_window)
         return FALSE;
 
-    skin_get_viscolor(aud_active_skin, svis_color);
-    for (y = 0; y < 24; y++) {
+    skin_get_viscolor (aud_active_skin, svis_color);
+    for (y = 0; y < 24; y++)
+    {
         colors[y] =
             svis_color[y][0] << 16 | svis_color[y][1] << 8 | svis_color[y][2];
     }
-    cmap = gdk_rgb_cmap_new(colors, 24);
+    cmap = gdk_rgb_cmap_new (colors, 24);
 
-    if (!config.scaled) {
-      memset(rgb_data, 0, SVIS_WIDTH * SVIS_HEIGHT);
-      if (config.vis_type == VIS_ANALYZER  && !audacious_drct_get_paused() && audacious_drct_get_playing()){
-	for(y=0; y < SVIS_HEIGHT; y++){
-	  if (config.analyzer_type == ANALYZER_BARS){
-	    for(x=0;x< SVIS_WIDTH; x++){
-	      if(svis->data[x] > y << 1)
-		{
-		  rgb_data[x*3+ (SVIS_HEIGHT - y) * SVIS_WIDTH] = 23;
-		  rgb_data[x*3+1 + (SVIS_HEIGHT - y) * SVIS_WIDTH] = 23;
+    if (!config.scaled)
+    {
+        memset (rgb_data, 0, SVIS_WIDTH * SVIS_HEIGHT);
+        if (config.vis_type == VIS_ANALYZER && !audacious_drct_get_paused ()
+            && audacious_drct_get_playing ())
+        {
+            for (y = 0; y < SVIS_HEIGHT; y++)
+            {
+                if (config.analyzer_type == ANALYZER_BARS)
+                {
+                    for (x = 0; x < SVIS_WIDTH; x++)
+                    {
+                        if (svis->data[x] > y << 1)
+                        {
+                            rgb_data[x * 3 + (SVIS_HEIGHT - y) * SVIS_WIDTH] =
+                                23;
+                            rgb_data[x * 3 + 1 +
+                                     (SVIS_HEIGHT - y) * SVIS_WIDTH] = 23;
 
-		}
-	    }
-	  }
-	  else{
-	    for(x=0;x< SVIS_WIDTH; x++){
-	      if(svis->data[x] > y << 1)
-		{
-		  rgb_data[x + (SVIS_HEIGHT - y) * SVIS_WIDTH] = 23;
-		}
-	    }
-	  }
-	}
-      }
-	else if (config.vis_type == VIS_VOICEPRINT){
-	  switch (config.vu_mode) {
-	  case VU_NORMAL:
-	    for (y = 0; y < 2; y++) {
-	      ptr = rgb_data + ((y * 3) * 38);
-	      h = (svis->data[y] * 7) / 37;
-	      for (x = 0; x < h; x++, ptr += 5) {
-		c = svis_vu_normal_colors[x];
-		*(ptr) = c;
-		*(ptr + 1) = c;
-		*(ptr + 2) = c;
-		*(ptr + 38) = c;
-		*(ptr + 39) = c;
-		*(ptr + 40) = c;
-	      }
-	    }
-	    break;
-	  case VU_SMOOTH:
-	    for (y = 0; y < 2; y++) {
-	      ptr = rgb_data + ((y * 3) * SVIS_WIDTH);
-	      for (x = 0; x < svis->data[y]; x++, ptr++) {
-		c = 17 - ((x * 15) / 37);
-		*(ptr) = c;
-		*(ptr + 38) = c;
-	      }
-	    }
-	    break;
-	  }
-	}
-        else if (config.vis_type == VIS_SCOPE) {
-            for (x = 0; x < 38; x++) {
+                        }
+                    }
+                }
+                else
+                {
+                    for (x = 0; x < SVIS_WIDTH; x++)
+                    {
+                        if (svis->data[x] > y << 1)
+                        {
+                            rgb_data[x + (SVIS_HEIGHT - y) * SVIS_WIDTH] = 23;
+                        }
+                    }
+                }
+            }
+        }
+        else if (config.vis_type == VIS_VOICEPRINT)
+        {
+            switch (config.vu_mode)
+            {
+            case VU_NORMAL:
+                for (y = 0; y < 2; y++)
+                {
+                    ptr = rgb_data + ((y * 3) * 38);
+                    h = (svis->data[y] * 7) / 37;
+                    for (x = 0; x < h; x++, ptr += 5)
+                    {
+                        c = svis_vu_normal_colors[x];
+                        *(ptr) = c;
+                        *(ptr + 1) = c;
+                        *(ptr + 2) = c;
+                        *(ptr + 38) = c;
+                        *(ptr + 39) = c;
+                        *(ptr + 40) = c;
+                    }
+                }
+                break;
+            case VU_SMOOTH:
+                for (y = 0; y < 2; y++)
+                {
+                    ptr = rgb_data + ((y * 3) * SVIS_WIDTH);
+                    for (x = 0; x < svis->data[y]; x++, ptr++)
+                    {
+                        c = 17 - ((x * 15) / 37);
+                        *(ptr) = c;
+                        *(ptr + 38) = c;
+                    }
+                }
+                break;
+            }
+        }
+        else if (config.vis_type == VIS_SCOPE)
+        {
+            for (x = 0; x < 38; x++)
+            {
                 h = svis->data[x << 1] / 3;
                 ptr = rgb_data + ((4 - h) * 38) + x;
                 *ptr = svis_scope_colors[h];
@@ -345,63 +392,85 @@ static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
         }
 
     }
-    else {            /*svis scaling, this needs some work, since a lot of stuff is hardcoded --majeru*/
+    else
+    {                           /*svis scaling, this needs some work, since a lot of stuff is hardcoded --majeru */
 
-      memset(rgb_data, 0, SVIS_WIDTH * config.scale_factor * SVIS_HEIGHT * config.scale_factor);
-      if (config.vis_type == VIS_ANALYZER && !audacious_drct_get_paused() && audacious_drct_get_playing()){
-	  for(y=0; y < SVIS_HEIGHT; y++){
-            if (config.analyzer_type == ANALYZER_BARS){
-              for(x=0;x< SVIS_WIDTH; x++){
-                if(svis->data[x] > y << 1)
+        memset (rgb_data, 0,
+                SVIS_WIDTH * config.scale_factor * SVIS_HEIGHT *
+                config.scale_factor);
+        if (config.vis_type == VIS_ANALYZER && !audacious_drct_get_paused ()
+            && audacious_drct_get_playing ())
+        {
+            for (y = 0; y < SVIS_HEIGHT; y++)
+            {
+                if (config.analyzer_type == ANALYZER_BARS)
                 {
-                  ptr = rgb_data + x * 6 + (SVIS_HEIGHT * 2 - y * 2) * SVIS_WIDTH *2;
-                  DRAW_DS_PIXEL(ptr, 23);
-                  DRAW_DS_PIXEL(ptr + 2, 23);
+                    for (x = 0; x < SVIS_WIDTH; x++)
+                    {
+                        if (svis->data[x] > y << 1)
+                        {
+                            ptr =
+                                rgb_data + x * 6 + (SVIS_HEIGHT * 2 -
+                                                    y * 2) * SVIS_WIDTH * 2;
+                            DRAW_DS_PIXEL (ptr, 23);
+                            DRAW_DS_PIXEL (ptr + 2, 23);
+                        }
+                    }
                 }
-              }
-            }
-            else{
-              for(x=0;x< SVIS_WIDTH; x++){
-                if(svis->data[x] > y << 1)
+                else
                 {
-                  ptr = rgb_data + x * 2 + (SVIS_HEIGHT * 2 - y * 2) * SVIS_WIDTH * 2;
-                  DRAW_DS_PIXEL(ptr, 23);
+                    for (x = 0; x < SVIS_WIDTH; x++)
+                    {
+                        if (svis->data[x] > y << 1)
+                        {
+                            ptr =
+                                rgb_data + x * 2 + (SVIS_HEIGHT * 2 -
+                                                    y * 2) * SVIS_WIDTH * 2;
+                            DRAW_DS_PIXEL (ptr, 23);
+                        }
+                    }
                 }
-              }
             }
-	  }
         }
-	else if (config.vis_type == VIS_VOICEPRINT){
-	  switch (config.vu_mode) {
-	  case VU_NORMAL:
-	    for (y = 0; y < 2; y++) {
-	      ptr = rgb_data + ((y * 3) * 152);
-	      h = (svis->data[y] * 8) / 37;
-	      for (x = 0; x < h; x++, ptr += 10) {
-		c = svis_vu_normal_colors[x];
-		DRAW_DS_PIXEL(ptr, c);
-		DRAW_DS_PIXEL(ptr + 2, c);
-		DRAW_DS_PIXEL(ptr + 4, c);
-		DRAW_DS_PIXEL(ptr + 152, c);
-		DRAW_DS_PIXEL(ptr + 154, c);
-		DRAW_DS_PIXEL(ptr + 156, c);
-	      }
-	    }
-	    break;
-	  case VU_SMOOTH:
-	    for (y = 0; y < 2; y++) {
-	      ptr = rgb_data + ((y * 3) * 152);
-	      for (x = 0; x < svis->data[y]; x++, ptr += 2) {
-		c = 17 - ((x * 15) / 37);
-		DRAW_DS_PIXEL(ptr, c);
-		DRAW_DS_PIXEL(ptr + 152, c);
-	      }
-	    }
-	    break;
-	  }
-	}
-        else if (config.vis_type == VIS_SCOPE) {
-            for (x = 0; x < 38; x++) {
+        else if (config.vis_type == VIS_VOICEPRINT)
+        {
+            switch (config.vu_mode)
+            {
+            case VU_NORMAL:
+                for (y = 0; y < 2; y++)
+                {
+                    ptr = rgb_data + ((y * 3) * 152);
+                    h = (svis->data[y] * 8) / 37;
+                    for (x = 0; x < h; x++, ptr += 10)
+                    {
+                        c = svis_vu_normal_colors[x];
+                        DRAW_DS_PIXEL (ptr, c);
+                        DRAW_DS_PIXEL (ptr + 2, c);
+                        DRAW_DS_PIXEL (ptr + 4, c);
+                        DRAW_DS_PIXEL (ptr + 152, c);
+                        DRAW_DS_PIXEL (ptr + 154, c);
+                        DRAW_DS_PIXEL (ptr + 156, c);
+                    }
+                }
+                break;
+            case VU_SMOOTH:
+                for (y = 0; y < 2; y++)
+                {
+                    ptr = rgb_data + ((y * 3) * 152);
+                    for (x = 0; x < svis->data[y]; x++, ptr += 2)
+                    {
+                        c = 17 - ((x * 15) / 37);
+                        DRAW_DS_PIXEL (ptr, c);
+                        DRAW_DS_PIXEL (ptr + 152, c);
+                    }
+                }
+                break;
+            }
+        }
+        else if (config.vis_type == VIS_SCOPE)
+        {
+            for (x = 0; x < 38; x++)
+            {
                 h = svis->data[x << 1] / 3;
                 ptr = rgb_data + ((4 - h) * 152) + (x << 1);
                 *ptr = svis_scope_colors[h];
@@ -416,49 +485,59 @@ static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
 
     GdkPixmap *obj = NULL;
     GdkGC *gc;
-    obj = gdk_pixmap_new(NULL, svis->width* ( svis->scaled ? config.scale_factor : 1),
-        svis->height*(svis->scaled ? config.scale_factor : 1), gdk_rgb_get_visual()->depth);
-    gc = gdk_gc_new(obj);
+    obj =
+        gdk_pixmap_new (NULL,
+                        svis->width * (svis->scaled ? config.scale_factor : 1),
+                        svis->height * (svis->scaled ? config.scale_factor : 1),
+                        gdk_rgb_get_visual ()->depth);
+    gc = gdk_gc_new (obj);
 
-    if (!svis->scaled) {
-        gdk_draw_indexed_image(obj, gc, 0, 0, svis->width, svis->height,
-                               GDK_RGB_DITHER_NORMAL, (guchar *) rgb_data,
-                               38, cmap);
-    } else {
-        gdk_draw_indexed_image(obj, gc,
-                               0 << 1, 0 << 1,
-                               svis->width << 1, svis->height << 1,
-                               GDK_RGB_DITHER_NONE, (guchar *) rgb_data,
-                               76, cmap);
+    if (!svis->scaled)
+    {
+        gdk_draw_indexed_image (obj, gc, 0, 0, svis->width, svis->height,
+                                GDK_RGB_DITHER_NORMAL, (guchar *) rgb_data,
+                                38, cmap);
+    }
+    else
+    {
+        gdk_draw_indexed_image (obj, gc,
+                                0 << 1, 0 << 1,
+                                svis->width << 1, svis->height << 1,
+                                GDK_RGB_DITHER_NONE, (guchar *) rgb_data,
+                                76, cmap);
     }
 
-    gdk_rgb_cmap_free(cmap);
+    gdk_rgb_cmap_free (cmap);
     gdk_draw_drawable (widget->window, gc, obj, 0, 0, 0, 0,
-                       svis->width*(svis->scaled ? config.scale_factor : 1),
-                       svis->height*(svis->scaled ? config.scale_factor : 1));
-    g_object_unref(obj);
-    g_object_unref(gc);
+                       svis->width * (svis->scaled ? config.scale_factor : 1),
+                       svis->height * (svis->scaled ? config.scale_factor : 1));
+    g_object_unref (obj);
+    g_object_unref (gc);
 
     return FALSE;
 }
 
-static void ui_svis_toggle_scaled(UiSVis *svis) {
+static void ui_svis_toggle_scaled (UiSVis * svis)
+{
     GtkWidget *widget = GTK_WIDGET (svis);
     svis->scaled = !svis->scaled;
 
-    gtk_widget_set_size_request(widget, svis->width* config.scale_factor, svis->height * config.scale_factor);
+    gtk_widget_set_size_request (widget, svis->width * config.scale_factor,
+                                 svis->height * config.scale_factor);
 
     if (widget_really_drawable (widget))
         ui_svis_expose (widget, 0);
 }
 
-void ui_svis_clear_data(GtkWidget *widget) {
-    g_return_if_fail(UI_IS_SVIS(widget));
+void ui_svis_clear_data (GtkWidget * widget)
+{
+    g_return_if_fail (UI_IS_SVIS (widget));
 
     gint i;
     UiSVis *svis = UI_SVIS (widget);
 
-    for (i = 0; i < 75; i++) {
+    for (i = 0; i < 75; i++)
+    {
         svis->data[i] = (config.vis_type == VIS_SCOPE) ? 6 : 0;
     }
 
@@ -468,17 +547,20 @@ void ui_svis_clear_data(GtkWidget *widget) {
         ui_svis_expose (widget, 0);
 }
 
-void ui_svis_timeout_func(GtkWidget *widget, guchar * data) {
-    g_return_if_fail(UI_IS_SVIS(widget));
+void ui_svis_timeout_func (GtkWidget * widget, guchar * data)
+{
+    g_return_if_fail (UI_IS_SVIS (widget));
 
     UiSVis *svis = UI_SVIS (widget);
     gint i;
 
-    if (config.vis_type == VIS_VOICEPRINT) {
+    if (config.vis_type == VIS_VOICEPRINT)
+    {
         for (i = 0; i < 2; i++)
             svis->data[i] = data[i];
     }
-    else {
+    else
+    {
         for (i = 0; i < 75; i++)
             svis->data[i] = data[i];
     }
