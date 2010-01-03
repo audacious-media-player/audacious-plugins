@@ -724,11 +724,11 @@ playlist_file_selection_load(const gchar * title,
     dialog = make_filebrowser(title, FALSE);
     gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), aud_cfg->playlist_path);
     if (default_filename)
-        gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), default_filename);
+        gtk_file_chooser_set_uri (GTK_FILE_CHOOSER(dialog), default_filename);
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER); /* centering */
 
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
-        filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+        filename = gtk_file_chooser_get_uri (GTK_FILE_CHOOSER(dialog));
     else
         filename = NULL;
 
@@ -771,7 +771,7 @@ playlist_file_selection_save(const gchar * title,
 
     dialog = make_filebrowser(title, TRUE);
     gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), aud_cfg->playlist_path);
-    gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), default_filename);
+    gtk_file_chooser_set_uri (GTK_FILE_CHOOSER(dialog), default_filename);
 
 #if 0
     hbox = gtk_hbox_new(FALSE, 5);
@@ -795,7 +795,7 @@ playlist_file_selection_save(const gchar * title,
 #endif
 
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
-        filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+        filename = gtk_file_chooser_get_uri (GTK_FILE_CHOOSER(dialog));
     else
         filename = NULL;
 
