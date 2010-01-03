@@ -106,10 +106,26 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
             if (!xmlStrcmp(nptr->name, (xmlChar *)"location")) {
                 /* Location is a special case */
                 gchar *str = (gchar *)xmlNodeGetContent(nptr);
-                if (!strstr(str, "://") && base)
-                    location = g_strdup_printf("%s/%s", base, str);
-                else
-                    location = g_strdup(str);
+
+                if (strstr (str, "://") != NULL)
+                    location = g_strdup (str);
+                else if (str[0] == '/' && base != NULL)
+                {
+                    const gchar * colon = strstr (base, "://");
+
+                    if (colon != NULL)
+                        location = g_strdup_printf ("%.*s%s", colon + 3 - base,
+                         base, str);
+                }
+                else if (base != NULL)
+                {
+                    const gchar * slash = strrchr (base, '/');
+
+                    if (slash != NULL)
+                        location = g_strdup_printf ("%.*s%s", slash + 1 - base,
+                         base, str);
+                }
+
                 xmlFree(str);
             } else {
                 /* Rest of the nodes are handled here */
@@ -202,10 +218,6 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
     xmlNode *nptr, *nptr2;
     struct index * filenames, * tuples;
 
-    g_return_if_fail(filename != NULL);
-
-    AUDDBG("filename='%s', pos=%d\n", filename, pos);
-
     doc = xmlRecoverFile(filename);
     if (doc == NULL)
         return;
@@ -217,33 +229,9 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
     for (nptr = doc->children; nptr != NULL; nptr = nptr->next) {
         if (nptr->type == XML_ELEMENT_NODE &&
             !xmlStrcmp(nptr->name, (xmlChar *)"playlist")) {
-            gchar *tmp, *base;
+            gchar * base;
 
             base = (gchar *)xmlNodeGetBase(doc, nptr);
-
-            AUDDBG("base #1 = %s\n", base);
-
-            // if filename is specified as a base, ignore it.
-            tmp = xmlURIUnescapeString(base, -1, NULL);
-            if (tmp) {
-                if (!strcmp(tmp, filename)) {
-                    xmlFree(base);
-                    base = NULL;
-                }
-                g_free(tmp);
-            }
-
-            AUDDBG("base #2 = %s\n", base);
-
-            if (base == NULL)
-            {
-                const gchar * slash = strrchr (filename, '/');
-
-                if (slash != NULL)
-                    base = g_strndup (filename, slash - filename);
-            }
-
-            AUDDBG("base #3 = %s\n", base);
 
             for (nptr2 = nptr->children; nptr2 != NULL; nptr2 = nptr2->next) {
 #if 0
