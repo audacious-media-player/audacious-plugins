@@ -48,7 +48,7 @@ public:
     SidTune *currTune;
     guint8 *buf;
     size_t bufSize;
-    
+
     xs_sidplay2_t(void);
     virtual ~xs_sidplay2_t(void) { ; }
 };
@@ -72,7 +72,7 @@ xs_sidplay2_t::xs_sidplay2_t(void)
     buf = NULL;
     bufSize = 0;
     currTune = NULL;
-    currBuilder = NULL;    
+    currBuilder = NULL;
 }
 
 
@@ -95,12 +95,12 @@ extern "C" {
 gboolean xs_sidplay2_probe(xs_file_t *f)
 {
     gchar tmpBuf[5];
-    
+
     if (f == NULL) return FALSE;
-    
+
     if (xs_fread(tmpBuf, sizeof(gchar), 4, f) != 4)
         return FALSE;
-    
+
     if (!strncmp(tmpBuf, "PSID", 4) || !strncmp(tmpBuf, "RSID", 4))
         return TRUE;
     else
@@ -210,10 +210,19 @@ gboolean xs_sidplay2_init(xs_status_t * status)
             engine->currConfig.sampleFormat = SID2_BIG_SIGNED;
             break;
 
+        default:
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+            status->audioFormat = FMT_S16_LE;
+            engine->currConfig.sampleFormat = SID2_LITTLE_SIGNED;
+#else
+            status->audioFormat = FMT_S16_BE;
+            engine->currConfig.sampleFormat = SID2_BIG_SIGNED;
+#endif
+            break;
         }
         break;
     }
-    
+
 #ifdef HAVE_SIDPLAY2_DISTORTION
     XSDEBUG("filter setting NOT supported for distortion patched libSIDPlay2.\n");
 #else
@@ -225,7 +234,7 @@ gboolean xs_sidplay2_init(xs_status_t * status)
             f->npoints, XS_SIDPLAY2_NFPOINTS);
         f->npoints = XS_SIDPLAY2_NFPOINTS;
     }
-    
+
     tmpFilter.points = f->npoints;
     for (i = 0; i < f->npoints; i++) {
         tmpFilter.cutoff[i][0] = f->points[i].x;
@@ -273,7 +282,7 @@ gboolean xs_sidplay2_init(xs_status_t * status)
             else
 #endif
                 rs->filter((sid_filter_t *) NULL);
-            
+
             if (!*rs) {
                 xs_error("reSID->filter(NULL) failed.\n");
                 return FALSE;
@@ -337,14 +346,14 @@ gboolean xs_sidplay2_init(xs_status_t * status)
 
 
     /* Configure rest of the emulation */
-    if (xs_cfg.forceSpeed) { 
+    if (xs_cfg.forceSpeed) {
         engine->currConfig.clockForced = true;
         engine->currConfig.clockSpeed = engine->currConfig.clockDefault;
     } else {
         engine->currConfig.clockForced = false;
         engine->currConfig.clockSpeed = SID2_CLOCK_CORRECT;
     }
-    
+
 
 #ifndef HAVE_SIDPLAY2_DISTORTION
     if (xs_cfg.sid2OptLevel >= 0 && xs_cfg.sid2OptLevel <= SID2_MAX_OPTIMISATION) {
@@ -352,7 +361,7 @@ gboolean xs_sidplay2_init(xs_status_t * status)
     } else {
         xs_error("Invalid sid2OptLevel=%d, falling back to %d.\n",
             xs_cfg.sid2OptLevel, SID2_DEFAULT_OPTIMISATION);
-        
+
         xs_cfg.sid2OptLevel =
         engine->currConfig.optimisation = SID2_DEFAULT_OPTIMISATION;
     }
@@ -368,7 +377,7 @@ gboolean xs_sidplay2_init(xs_status_t * status)
     else
         engine->currConfig.sidModel = SID2_MODEL_CORRECT;
 
-    
+
     /* XXX: Should this be configurable? libSIDPlay1 does not support it, though */
     engine->currConfig.sidSamples = TRUE;
 
@@ -445,7 +454,7 @@ gboolean xs_sidplay2_initsong(xs_status_t * status)
         xs_error("[SIDPlay2] currEng->load() failed\n");
         return FALSE;
     }
-    
+
     status->isInitialized = TRUE;
 
     return TRUE;
@@ -482,7 +491,7 @@ gboolean xs_sidplay2_load(xs_status_t * status, gchar * pcFilename)
 
     if (xs_fload_buffer(pcFilename, &(engine->buf), &(engine->bufSize)) != 0)
         return FALSE;
-    
+
     if (!engine->currTune->read(engine->buf, engine->bufSize))
         return FALSE;
 
@@ -499,7 +508,7 @@ void xs_sidplay2_delete(xs_status_t * status)
 
     engine = (xs_sidplay2_t *) status->sidEngine;
     if (engine == NULL) return;
-    
+
     g_free(engine->buf);
     engine->buf = NULL;
     engine->bufSize = 0;
