@@ -46,6 +46,7 @@
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <audacious/equalizer_preset.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "images/audacious_eq.xpm"
 
@@ -232,6 +233,16 @@ equalizerwin_auto_pushed(void)
     aud_cfg->equalizer_autoload = UI_SKINNED_BUTTON(equalizerwin_auto)->inside;
 }
 
+static GtkWidget * get_eq_effects_menu (void)
+{
+    static GtkWidget * menu = NULL;
+
+    if (menu == NULL)
+        menu = audgui_create_effects_menu ();
+
+    return menu;
+}
+
 gboolean
 equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
                    gpointer callback_data)
@@ -246,8 +257,8 @@ equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
 
     if (event->button == 3)
     {
-        ui_popup_menu_show(UI_MENU_MAIN, event->x_root, event->y_root, FALSE,
-         FALSE, 3, event->time);
+        gtk_menu_popup (get_eq_effects_menu (), NULL, NULL, NULL, NULL, 3,
+         event->time);
         return TRUE;
     }
 
