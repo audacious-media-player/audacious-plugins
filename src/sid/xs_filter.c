@@ -66,13 +66,11 @@ gint xs_filter_rateconv(void *destBuf, void *srcBuf, const AFormat audioFormat,
 
     case FMT_U16_BE:
     case FMT_U16_LE:
-    case FMT_U16_NE:
         XS_FILTER1(u, 16, u, ^0x8000)
             break;
 
     case FMT_S16_BE:
     case FMT_S16_LE:
-    case FMT_S16_NE:
         XS_FILTER1(s, 16,,)
             break;
 

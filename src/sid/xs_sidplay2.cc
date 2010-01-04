@@ -202,37 +202,12 @@ gboolean xs_sidplay2_init(xs_status_t * status)
             engine->currConfig.sampleFormat = SID2_BIG_UNSIGNED;
             break;
 
-        case FMT_U16_NE:
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-            engine->currConfig.sampleFormat = SID2_BIG_UNSIGNED;
-#else
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-            engine->currConfig.sampleFormat = SID2_LITTLE_UNSIGNED;
-#else
-#error Unsupported endianess!
-#endif
-#endif
-            break;
-
         case FMT_S16_LE:
             engine->currConfig.sampleFormat = SID2_LITTLE_SIGNED;
             break;
 
         case FMT_S16_BE:
             engine->currConfig.sampleFormat = SID2_BIG_SIGNED;
-            break;
-
-        default:
-            status->audioFormat = FMT_S16_NE;
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-            engine->currConfig.sampleFormat = SID2_BIG_SIGNED;
-#else
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-            engine->currConfig.sampleFormat = SID2_LITTLE_SIGNED;
-#else
-#error Unsupported endianess!
-#endif
-#endif
             break;
 
         }

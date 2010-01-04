@@ -190,14 +190,12 @@ gboolean xs_sidplay1_init(xs_status_t * status)
     case XS_RES_16BIT:
     default:
         switch (status->audioFormat) {
-        case FMT_U16_NE:
         case FMT_U16_LE:
         case FMT_U16_BE:
             status->audioFormat = FMT_U16_NE;
             engine->currConfig.sampleFormat = SIDEMU_UNSIGNED_PCM;
             break;
 
-        case FMT_S16_NE:
         case FMT_S16_LE:
         case FMT_S16_BE:
         default:
