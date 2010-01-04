@@ -31,7 +31,6 @@ typedef struct
 {
   gpointer alsa; /* advanced linux sound architecture */
   gpointer fsyn; /* fluidsynth */
-  gpointer dumm; /* dummy */
 }
 amidiplug_cfg_backend_t;
 

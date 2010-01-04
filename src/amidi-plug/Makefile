@@ -8,7 +8,6 @@ SRCS = amidi-plug.c		\
        i_configure-ap.c		\
        i_configure-alsa.c	\
        i_configure-fluidsynth.c	\
-       i_configure-dummy.c	\
        i_utils.c		\
        i_fileinfo.c
 

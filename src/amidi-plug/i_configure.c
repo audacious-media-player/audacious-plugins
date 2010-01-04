@@ -26,7 +26,6 @@
 #include "i_configure-ap.h"
 #include "i_configure-alsa.h"
 #include "i_configure-fluidsynth.h"
-#include "i_configure-dummy.h"
 #include "i_utils.h"
 #include <audacious/plugin.h>
 #include <audacious/auddrct.h>
@@ -109,7 +108,6 @@ void i_configure_gui( void )
 
   GtkWidget *ap_page_alignment, *ap_pagelabel_alignment; /* amidi-plug */
   GtkWidget *alsa_page_alignment, *alsa_pagelabel_alignment; /* alsa */
-  GtkWidget *dumm_page_alignment, *dumm_pagelabel_alignment; /* dummy */
   GtkWidget *fsyn_page_alignment, *fsyn_pagelabel_alignment; /* fluidsynth */
 
   GSList *backend_list = NULL, *backend_list_h = NULL;
@@ -181,15 +179,6 @@ void i_configure_gui( void )
   i_configure_gui_tablabel_fsyn( fsyn_pagelabel_alignment , backend_list , button_ok );
   gtk_notebook_append_page( GTK_NOTEBOOK(configwin_notebook) ,
                             fsyn_page_alignment , fsyn_pagelabel_alignment );
-
-  /* DUMMY BACKEND CONFIGURATION TAB */
-  dumm_pagelabel_alignment = gtk_alignment_new( 0.5 , 0.5 , 1 , 1 );
-  dumm_page_alignment = gtk_alignment_new( 0.5 , 0.5 , 1 , 1 );
-  gtk_alignment_set_padding( GTK_ALIGNMENT(dumm_page_alignment) , 3 , 3 , 8 , 3 );
-  i_configure_gui_tab_dumm( dumm_page_alignment , backend_list , button_ok );
-  i_configure_gui_tablabel_dumm( dumm_pagelabel_alignment , backend_list , button_ok );
-  gtk_notebook_append_page( GTK_NOTEBOOK(configwin_notebook) ,
-                            dumm_page_alignment , dumm_pagelabel_alignment );
 
   i_backend_list_free( backend_list_h ); /* done, free the list of available backends */
 
@@ -274,7 +263,6 @@ void i_configure_cfg_backend_alloc( void )
 
   i_configure_cfg_alsa_alloc(); /* alloc alsa backend configuration */
   i_configure_cfg_fsyn_alloc(); /* alloc fluidsynth backend configuration */
-  i_configure_cfg_dumm_alloc(); /* alloc dummy backend configuration */
 }
 
 
@@ -282,7 +270,6 @@ void i_configure_cfg_backend_free( void )
 {
   i_configure_cfg_alsa_free(); /* free alsa backend configuration */
   i_configure_cfg_fsyn_free(); /* free fluidsynth backend configuration */
-  i_configure_cfg_dumm_free(); /* free dummy backend configuration */
 
   g_free( amidiplug_cfg_backend );
 }
@@ -297,7 +284,6 @@ void i_configure_cfg_backend_read( void )
 
   i_configure_cfg_alsa_read( cfgfile ); /* get alsa backend configuration */
   i_configure_cfg_fsyn_read( cfgfile ); /* get fluidsynth backend configuration */
-  i_configure_cfg_dumm_read( cfgfile ); /* get dummy backend configuration */
 
   if ( cfgfile != NULL )
     i_pcfg_free(cfgfile);
@@ -318,7 +304,6 @@ void i_configure_cfg_backend_save( void )
 
   i_configure_cfg_alsa_save( cfgfile ); /* save alsa backend configuration */
   i_configure_cfg_fsyn_save( cfgfile ); /* save fluidsynth backend configuration */
-  i_configure_cfg_dumm_save( cfgfile ); /* save dummy backend configuration */
 
   i_pcfg_write_to_file( cfgfile , config_pathfilename );
   i_pcfg_free( cfgfile );
