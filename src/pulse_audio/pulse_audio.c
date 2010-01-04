@@ -562,9 +562,6 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
         case FMT_S16_BE:
             ss.format = PA_SAMPLE_S16BE;
             break;
-        case FMT_S16_NE:
-            ss.format = PA_SAMPLE_S16NE;
-            break;
 
 #ifdef PA_SAMPLE_S24_32LE
         case FMT_S24_LE:
@@ -573,9 +570,6 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
         case FMT_S24_BE:
             ss.format = PA_SAMPLE_S24_32BE;
             break;
-        case FMT_S24_NE:
-            ss.format = PA_SAMPLE_S24_32NE;
-            break;
 #endif
 
         case FMT_S32_LE:
@@ -583,9 +577,6 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
             break;
         case FMT_S32_BE:
             ss.format = PA_SAMPLE_S32BE;
-            break;
-        case FMT_S32_NE:
-            ss.format = PA_SAMPLE_S32NE;
             break;
 	case FMT_FLOAT:
             ss.format = PA_SAMPLE_FLOAT32NE;
