@@ -32,25 +32,17 @@ static void mp3_init(write_output_callback write_output_func);
 static void mp3_configure(void);
 static gint mp3_open(void);
 static void mp3_write(void *ptr, gint length);
-static void mp3_flush(void);
 static void mp3_close(void);
-static gint mp3_free(void);
-static gint mp3_playing(void);
-static gint mp3_get_written_time(void);
 static gint (*write_output)(void *ptr, gint length);
 
 FileWriter mp3_plugin =
 {
-    mp3_init,
-    mp3_configure,
-    mp3_open,
-    mp3_write,
-    mp3_flush,
-    mp3_close,
-    mp3_free,
-    mp3_playing,
-    mp3_get_written_time,
-    FMT_S16_NE
+    .init = mp3_init,
+    .configure = mp3_configure,
+    .open = mp3_open,
+    .write = mp3_write,
+    .close = mp3_close,
+    .format_required = FMT_S16_NE,
 };
 
 static GtkWidget *configure_win = NULL;
@@ -91,7 +83,6 @@ static GtkWidget *tags_id3_frame, *tags_id3_vbox, *tags_id3_hbox,
 
 static GtkWidget *enc_quality_vbox, *hbox1, *hbox2;
 
-static guint64 olen = 0;
 static unsigned long numsamples = 0;
 static int inside;
 
@@ -135,9 +126,11 @@ typedef struct {
 static lameid3_t lameid3;
 
 static lame_global_flags *gfp;
-static int encout;
 static unsigned char encbuffer[LAME_MAXMP3BUFFER];
 static int id3v2_size;
+
+static guchar * write_buffer;
+static gint write_buffer_size;
 
 static void free_lameid3(lameid3_t *p)
 {
@@ -204,8 +197,6 @@ static void mp3_init(write_output_callback write_output_func)
 static gint mp3_open(void)
 {
     int imp3;
-
-    olen = 0;
 
     gfp = lame_init();
     if (gfp == NULL)
@@ -313,38 +304,47 @@ static gint mp3_open(void)
         id3v2_size = 0;
     }
 
+    write_buffer = NULL;
+    write_buffer_size = 0;
+
     return 1;
 }
 
 static void mp3_write(void *ptr, gint length)
 {
-    if (input.channels == 1) {
-        encout =
-            lame_encode_buffer(gfp, ptr, ptr, length / 2, encbuffer,
-                               LAME_MAXMP3BUFFER);
-        numsamples += length / 2;
-    }
-    else {
-        encout =
-            lame_encode_buffer_interleaved(gfp, ptr, length / 4, encbuffer,
-                                           LAME_MAXMP3BUFFER);
-        numsamples += length / 4;
+    gint encoded;
+
+    if (write_buffer_size == 0)
+    {
+        write_buffer_size = 8192;
+        write_buffer = g_realloc (write_buffer, write_buffer_size);
     }
 
-    write_output(encbuffer, encout);
-    olen += length;
-}
+RETRY:
+    if (input.channels == 1)
+        encoded = lame_encode_buffer (gfp, ptr, ptr, length / 2, write_buffer,
+         write_buffer_size);
+    else
+        encoded = lame_encode_buffer_interleaved (gfp, ptr, length / 4,
+         write_buffer, write_buffer_size);
 
-static void mp3_flush(void)
-{
-    encout = lame_encode_flush_nogap(gfp, encbuffer, LAME_MAXMP3BUFFER);
-    write_output(encbuffer, encout);
+    if (encoded == -1)
+    {
+        write_buffer_size *= 2;
+        write_buffer = g_realloc (write_buffer, write_buffer_size);
+        goto RETRY;
+    }
+
+    if (encoded > 0)
+        write_output (write_buffer, encoded);
+
+    numsamples += length / (2 * input.channels);
 }
 
 static void mp3_close(void)
 {
     if (output_file) {
-        int imp3;
+        int imp3, encout;
 
         /* write remaining mp3 data */
         encout = lame_encode_flush_nogap(gfp, encbuffer, LAME_MAXMP3BUFFER);
@@ -381,33 +381,13 @@ static void mp3_close(void)
         }
     }
 
+    g_free (write_buffer);
+
     lame_close(gfp);
     AUDDBG("lame_close() done\n");
 
     free_lameid3(&lameid3);
     numsamples = 0;
-    olen = 0;
-}
-
-static gint mp3_free(void)
-{
-    return LAME_MAXMP3BUFFER - encout;
-}
-
-static gint mp3_playing(void)
-{
-    return 0;
-}
-
-static gint mp3_get_written_time(void)
-{
-    gint time;
-    if (input.frequency && input.channels) {
-        time = (gint) ((olen * 1000) / (input.frequency * 2 * input.channels));
-        return time + offset;
-    }
-
-    return 0;
 }
 
 /*****************/

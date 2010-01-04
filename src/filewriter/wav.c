@@ -24,24 +24,16 @@
 
 static gint wav_open(void);
 static void wav_write(void *ptr, gint length);
-static void wav_flush(void);
 static void wav_close(void);
-static gint wav_free(void);
-static gint wav_playing(void);
-static gint wav_get_written_time(void);
 
 FileWriter wav_plugin =
 {
-    NULL,
-    NULL,
-    wav_open,
-    wav_write,
-    wav_flush,
-    wav_close,
-    wav_free,
-    wav_playing,
-    wav_get_written_time,
-    FMT_S16_LE
+    .init = NULL,
+    .configure = NULL,
+    .open = wav_open,
+    .write = wav_write,
+    .close = wav_close,
+    .format_required = FMT_S16_LE,
 };
 
 
@@ -95,11 +87,6 @@ static void wav_write(void *ptr, gint length)
     written += aud_vfs_fwrite(ptr, 1, length, output_file);
 }
 
-static void wav_flush(void)
-{
-    //nothing to do here yet. --AOS
-}
-
 static void wav_close(void)
 {
     if (output_file)
@@ -110,21 +97,4 @@ static void wav_close(void)
         aud_vfs_fseek(output_file, 0, SEEK_SET);
         aud_vfs_fwrite(&header, sizeof (struct wavhead), 1, output_file);
     }
-}
-
-static gint wav_free(void)
-{
-    return 1000000;
-}
-
-static gint wav_playing(void)
-{
-    return 0;
-}
-
-static gint wav_get_written_time(void)
-{
-    if (header.byte_p_sec != 0)
-        return (gint) ((written * 1000) / header.byte_p_sec + offset);
-    return 0;
 }

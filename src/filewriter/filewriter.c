@@ -79,8 +79,9 @@ static gboolean prependnumber = FALSE;
 static gchar *file_path = NULL;
 
 VFSFile *output_file = NULL;
-guint64 offset = 0;
 Tuple *tuple = NULL;
+
+static gint64 samples_written;
 
 static OutputPluginInitStatus file_init(void);
 static void file_about(void);
@@ -90,10 +91,8 @@ static gint file_write_output(void *ptr, gint length);
 static void file_close(void);
 static void file_flush(gint time);
 static void file_pause(short p);
-static gint file_free(void);
 static gint file_playing(void);
-static gint file_get_written_time(void);
-static gint file_get_output_time(void);
+static gint file_get_time (void);
 static void file_configure(void);
 
 OutputPlugin file_op =
@@ -108,10 +107,9 @@ OutputPlugin file_op =
     .close_audio = file_close,
     .flush = file_flush,
     .pause = file_pause,
-    .buffer_free = file_free,
     .buffer_playing = file_playing,
-    .output_time = file_get_output_time,
-    .written_time = file_get_written_time
+    .output_time = file_get_time,
+    .written_time = file_get_time,
 };
 
 OutputPlugin *file_oplist[] = { &file_op, NULL };
@@ -194,7 +192,7 @@ static VFSFile * safe_create (const gchar * filename)
     if (! aud_vfs_file_test (filename, G_FILE_TEST_EXISTS))
         return aud_vfs_fopen (filename, "w");
 
-    const gchar * extension = strchr (filename, '.');
+    const gchar * extension = strrchr (filename, '.');
     gint length = strlen (filename);
     gchar scratch[length + 3];
     gint count;
@@ -287,19 +285,18 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
 
     rv = (plugin->open)();
 
+    samples_written = 0;
+
     return rv;
 }
 
 static void file_write(void *ptr, gint length)
 {
-    int len;
-
-    if (length == 0)
-        return;
-
-    len = convert_process(ptr, length);
+    int len = convert_process (ptr, length);
 
     plugin->write(convert_output, len);
+
+    samples_written += length / FMT_SIZEOF (input.format);
 }
 
 static gint file_write_output(void *ptr, gint length)
@@ -319,37 +316,24 @@ static void file_close(void)
 
 static void file_flush(gint time)
 {
-    if (time < 0)
-        return;
-
     file_close();
     file_open(input.format, input.frequency, input.channels);
 
-    offset = time;
+    samples_written = time * (gint64) input.channels * input.frequency / 1000;
 }
 
 static void file_pause(short p)
 {
 }
 
-static gint file_free(void)
-{
-    return plugin->free();
-}
-
 static gint file_playing(void)
 {
-    return plugin->playing();
+    return 0;
 }
 
-static gint file_get_written_time(void)
+static gint file_get_time (void)
 {
-    return plugin->get_written_time();
-}
-
-static gint file_get_output_time(void)
-{
-    return file_get_written_time();
+    return samples_written * 1000 / (input.channels * input.frequency);
 }
 
 static void configure_ok_cb(gpointer data)

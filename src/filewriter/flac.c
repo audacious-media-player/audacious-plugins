@@ -28,28 +28,19 @@
 
 static gint flac_open(void);
 static void flac_write(gpointer data, gint length);
-static void flac_flush(void);
 static void flac_close(void);
-static gint flac_free(void);
-static gint flac_playing(void);
-static gint flac_get_written_time(void);
 
 FileWriter flac_plugin =
 {
-    NULL,
-    NULL,
-    flac_open,
-    flac_write,
-    flac_flush,
-    flac_close,
-    flac_free,
-    flac_playing,
-    flac_get_written_time,
-    FMT_S16_NE
+    .init = NULL,
+    .configure = NULL,
+    .open = flac_open,
+    .write = flac_write,
+    .close = flac_close,
+    .format_required = FMT_S16_NE,
 };
 
 static FLAC__StreamEncoder *flac_encoder;
-static guint64 olen = 0;
 
 static FLAC__StreamEncoderWriteStatus flac_write_cb(const FLAC__StreamEncoder *encoder,
     const FLAC__byte buffer[], size_t bytes, unsigned samples, unsigned current_frame, gpointer data)
@@ -93,8 +84,6 @@ static FLAC__StreamEncoderTellStatus flac_tell_cb(const FLAC__StreamEncoder *enc
 
 static gint flac_open(void)
 {
-    olen = 0;
-
     flac_encoder = FLAC__stream_encoder_new();
 
     FLAC__stream_encoder_set_channels(flac_encoder, input.channels);
@@ -152,7 +141,6 @@ static void flac_write(gpointer data, gint length)
     }
 
     FLAC__stream_encoder_process(flac_encoder, (const FLAC__int32 **)encbuffer, length / (input.channels * 2));
-    olen += length;
 
     g_free(encbuffer[0]);
     g_free(encbuffer[1]);
@@ -168,39 +156,15 @@ static void flac_write(gpointer data, gint length)
     }
 
     FLAC__stream_encoder_process_interleaved(flac_encoder, encbuffer, length);
-    olen += length;
 
     g_free(encbuffer);
 #endif
-}
-
-static void flac_flush(void)
-{
-    //should we do something here? --AOS
 }
 
 static void flac_close(void)
 {
     FLAC__stream_encoder_finish(flac_encoder);
     FLAC__stream_encoder_delete(flac_encoder);
-}
-
-static gint flac_free(void)
-{
-    return 1000000;
-}
-
-static gint flac_playing(void)
-{
-    return 0;
-}
-
-static gint flac_get_written_time(void)
-{
-    if (input.frequency && input.channels)
-        return (gint) ((olen * 1000) / (input.frequency * 2 * input.channels) + offset);
-
-    return 0;
 }
 
 #endif

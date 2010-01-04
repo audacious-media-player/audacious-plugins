@@ -31,25 +31,17 @@ static void vorbis_init(write_output_callback write_output_func);
 static void vorbis_configure(void);
 static gint vorbis_open(void);
 static void vorbis_write(gpointer data, gint length);
-static void vorbis_flush(void);
 static void vorbis_close(void);
-static gint vorbis_free(void);
-static gint vorbis_playing(void);
-static gint vorbis_get_written_time(void);
 static gint (*write_output)(void *ptr, gint length);
 
 FileWriter vorbis_plugin =
 {
-    vorbis_init,
-    vorbis_configure,
-    vorbis_open,
-    vorbis_write,
-    vorbis_flush,
-    vorbis_close,
-    vorbis_free,
-    vorbis_playing,
-    vorbis_get_written_time,
-    FMT_S16_NE
+    .init = vorbis_init,
+    .configure = vorbis_configure,
+    .open = vorbis_open,
+    .write = vorbis_write,
+    .close = vorbis_close,
+    .format_required = FMT_FLOAT,
 };
 
 static float v_base_quality = 0.5;
@@ -62,9 +54,6 @@ static vorbis_dsp_state vd;
 static vorbis_block vb;
 static vorbis_info vi;
 static vorbis_comment vc;
-
-static float **encbuffer;
-static guint64 olen = 0;
 
 static void vorbis_init(write_output_callback write_output_func)
 {
@@ -80,14 +69,11 @@ static void vorbis_init(write_output_callback write_output_func)
 
 static gint vorbis_open(void)
 {
-    gint result;
     ogg_packet header;
     ogg_packet header_comm;
     ogg_packet header_code;
 
     vorbis_init(NULL);
-
-    olen = 0;
 
     vorbis_info_init(&vi);
     vorbis_comment_init(&vc);
@@ -124,7 +110,8 @@ static gint vorbis_open(void)
         }
     }
 
-    if ((result = vorbis_encode_init_vbr(&vi, (long)input.channels, (long)input.frequency, v_base_quality)) != 0)
+    if (vorbis_encode_init_vbr (& vi, input.channels, input.frequency,
+     v_base_quality))
     {
         vorbis_info_clear(&vi);
         return 0;
@@ -142,11 +129,8 @@ static gint vorbis_open(void)
     ogg_stream_packetin(&os, &header_comm);
     ogg_stream_packetin(&os, &header_code);
 
-    while((result = ogg_stream_flush(&os, &og)))
+    while (ogg_stream_flush (& os, & og))
     {
-        if (result == 0)
-            break;
-
         write_output(og.header, og.header_len);
         write_output(og.body, og.body_len);
     }
@@ -154,28 +138,23 @@ static gint vorbis_open(void)
     return 1;
 }
 
-static void vorbis_write(gpointer data, gint length)
+static void vorbis_write_real (void * data, gint length)
 {
-    int i, channel;
-    int result;
-    int16_t *tmpdata;
+    int samples = length / sizeof (float);
+    int channel, result;
+    float * end = (float *) data + samples;
+    float * * buffer = vorbis_analysis_buffer (& vd, samples / input.channels);
+    float * from, * to;
 
-    /* ask vorbisenc for a buffer to fill with pcm data */
-    encbuffer = vorbis_analysis_buffer(&vd, length / 2 / input.channels);
-    tmpdata = data;
-
-    /*
-     * deinterleave the audio signal, 32768.0 is the highest peak level allowed
-     * in a 16-bit PCM signal.
-     */
-    for (i = 0; i < length / 2 / input.channels; i ++)
+    for (channel = 0; channel < input.channels; channel ++)
     {
-        for (channel = 0; channel < input.channels; channel ++)
-            encbuffer[channel][i] = tmpdata[input.channels * i + channel] /
-             32768.0;
+        to = buffer[channel];
+
+        for (from = (float *) data + channel; from < end; from += input.channels)
+            * to ++ = * from;
     }
 
-    vorbis_analysis_wrote(&vd, i);
+    vorbis_analysis_wrote (& vd, samples / input.channels);
 
     while(vorbis_analysis_blockout(&vd, &vb) == 1)
     {
@@ -196,40 +175,29 @@ static void vorbis_write(gpointer data, gint length)
             }
         }
     }
-
-    olen += length;
 }
 
-static void vorbis_flush(void)
+static void vorbis_write (void * data, gint length)
 {
-    //nothing to do here yet. --AOS
+    if (length > 0) /* don't signal end of file yet */
+        vorbis_write_real (data, length);
 }
 
 static void vorbis_close(void)
 {
+    vorbis_write_real (NULL, 0); /* signal end of file */
+
+    while (ogg_stream_flush (& os, & og))
+    {
+        write_output (og.header, og.header_len);
+        write_output (og.body, og.body_len);
+    }
+
     ogg_stream_clear(&os);
 
     vorbis_block_clear(&vb);
     vorbis_dsp_clear(&vd);
     vorbis_info_clear(&vi);
-}
-
-static gint vorbis_free(void)
-{
-    return 1000000;
-}
-
-static gint vorbis_playing(void)
-{
-    return 0;
-}
-
-static gint vorbis_get_written_time(void)
-{
-    if (input.frequency && input.channels)
-        return (gint) ((olen * 1000) / (input.frequency * 2 * input.channels) + offset);
-
-    return 0;
 }
 
 /* configuration stuff */
