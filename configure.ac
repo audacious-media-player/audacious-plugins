@@ -125,7 +125,7 @@ dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen console psf xsf metronom vtx"
 OUTPUT_PLUGINS="crossfade null"
-EFFECT_PLUGINS="audiocompress compressor crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
+EFFECT_PLUGINS="compressor crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm skins vfstrace gtkui"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
@@ -974,13 +974,6 @@ AC_ARG_ENABLE(amidiplug-flsyn,
     [enable_amidiplug_fluidsynth=auto]
 )
 
-AC_ARG_ENABLE(amidiplug-dummy,
-    [  --disable-amidiplug-dummy   disable amidi-plug dummy backend (default=enabled) ],
-    [enable_amidiplug_dummy=$enableval],
-    [enable_amidiplug_dummy=auto]
-)
-
-
 if test "x$enable_amidiplug" = "xno"; then
   AC_MSG_RESULT([*** amidi-plug disabled per user request ***])
   enable_amidiplug=no
@@ -988,8 +981,6 @@ else
   if test "x$enable_amidiplug_alsa" != "xauto"; then
     enable_amidiplug=yes
   elif test "x$enable_amidiplug_fluidsynth" != "xauto"; then
-    enable_amidiplug=yes
-  elif test "x$enable_amidiplug_dummy" != "xauto"; then
     enable_amidiplug=yes
   fi
 fi
@@ -1064,10 +1055,6 @@ if test "x$enable_amidiplug" = "xyes"; then
         enable_amidiplug_fluidsynth=no
       fi
     fi
-  fi
-  if test "x$enable_amidiplug_dummy" = "xauto" -o "x$enable_amidiplug_dummy" = "xyes"; then
-    AMIDIPLUG_BACKENDS="$AMIDIPLUG_BACKENDS backend-dummy"
-    enable_amidiplug_dummy=yes
   fi
   AC_SUBST(AMIDIPLUG_BACKENDS)
 fi
@@ -1632,7 +1619,6 @@ echo "  Module decoder (modplug):               $have_modplug"
 echo "  MIDI modular plugin (amidi-plug):       $enable_amidiplug"
 echo "    -> ALSA backend:                      $enable_amidiplug_alsa"
 echo "    -> FluidSynth backend:                $enable_amidiplug_fluidsynth"
-echo "    -> dummy backend:                     $enable_amidiplug_dummy"
 echo "  CD Digital Audio (cdaudio_ng):          $enable_cdaudio_ng"
 echo "  sndfile extensions:                     $enable_sndfile"
 echo "  Tone Generator:                         yes"
@@ -1669,7 +1655,7 @@ echo "  Streambrowser:                          $enable_streambrowser"
 echo
 echo "  Effect"
 echo "  ------"
-echo "  AudioCompressor (AGC):                  yes"
+echo "  Dynamic Range Compressor:               yes"
 echo "  LADSPA effects host (ladspa):           yes"
 echo "  Voice Removal:                          yes"
 echo "  Extra Stereo:                           yes"
