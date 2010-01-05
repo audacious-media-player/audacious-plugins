@@ -4,7 +4,7 @@
    Main source file
 
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2009 Tecnic Software productions (TNSP)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -81,13 +81,7 @@ void xs_reinit(void)
     XSDEBUG("xs_reinit() thread = %p\n", g_thread_self());
 
     /* Stop playing, if we are */
-    XS_MUTEX_LOCK(xs_status);
-    if (xs_status.isPlaying) {
-        XS_MUTEX_UNLOCK(xs_status);
-        xs_stop(NULL);
-    } else {
-        XS_MUTEX_UNLOCK(xs_status);
-    }
+    xs_stop(NULL);
 
     XS_MUTEX_LOCK(xs_status);
     XS_MUTEX_LOCK(xs_cfg);
@@ -224,7 +218,6 @@ void xs_play_file(InputPlayback *pb)
 
     /* Set general status information */
     pb->playing = TRUE;
-    xs_status.isPlaying = TRUE;
     pb->error = FALSE;
     pb->eof = FALSE;
     tmpTune = xs_status.tuneInfo;
@@ -378,7 +371,6 @@ xs_err_exit:
      */
     XS_MUTEX_LOCK(xs_status);
     pb->playing = FALSE;
-    xs_status.isPlaying = FALSE;
     pb->eof = TRUE;
 
     /* Free tune information */
@@ -411,7 +403,6 @@ void xs_stop(InputPlayback *pb)
     if (pb != NULL && pb->playing) {
         XSDEBUG("stopping...\n");
         pb->playing = FALSE;
-        xs_status.isPlaying = FALSE;
         XS_MUTEX_UNLOCK(xs_status);
     } else {
         XS_MUTEX_UNLOCK(xs_status);
@@ -426,7 +417,9 @@ void xs_stop(InputPlayback *pb)
  */
 void xs_pause(InputPlayback *pb, short pauseState)
 {
-    pb->output->pause(pauseState);
+    XS_MUTEX_LOCK(xs_status);
+    
+    XS_MUTEX_UNLOCK(xs_status);
 }
 
 
@@ -436,41 +429,6 @@ void xs_pause(InputPlayback *pb, short pauseState)
 void xs_seek(InputPlayback *pb, gint time)
 {
     (void) pb; (void) time;
-}
-
-
-/*
- * Return the playing "position/time"
- * Determine current position/time in song. Used by XMMS to update
- * the song clock and position slider and MOST importantly to determine
- * END OF SONG! Return value of -2 means error, XMMS opens an audio
- * error dialog. -1 means end of song (if one was playing currently).
- */
-gint xs_get_time(InputPlayback *pb)
-{
-    /* If errorflag is set, return -2 to signal it to XMMS's idle callback */
-    XS_MUTEX_LOCK(xs_status);
-    if (pb->error) {
-        XS_MUTEX_UNLOCK(xs_status);
-        return -2;
-    }
-
-    /* If there is no tune, return -1 */
-    if (!xs_status.tuneInfo) {
-        XS_MUTEX_UNLOCK(xs_status);
-        return -1;
-    }
-
-    /* If tune has ended, return -1 */
-    if (!pb->playing) {
-        XS_MUTEX_UNLOCK(xs_status);
-        return -1;
-    }
-
-    XS_MUTEX_UNLOCK(xs_status);
-
-    /* Return output time reported by audio output plugin */
-    return pb->output->written_time();
 }
 
 
