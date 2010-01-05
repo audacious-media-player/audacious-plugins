@@ -127,14 +127,14 @@ static void xs_stildb_node_insert(xs_stildb_t *db, stil_node_t *node)
 
     if (db->nodes != NULL) {
         /* The first node's pPrev points to last node */
-        LPREV = db->nodes->prev;    /* New node's prev = Previous last node */
+        node->prev = db->nodes->prev;    /* New node's prev = Previous last node */
         db->nodes->prev->next = node;    /* Previous last node's next = New node */
         db->nodes->prev = node;    /* New last node = New node */
-        LNEXT = NULL;    /* But next is NULL! */
+        node->next = NULL;    /* But next is NULL! */
     } else {
         db->nodes = node;    /* First node ... */
-        LPREV = node;    /* ... it's also last */
-        LNEXT = NULL;    /* But next is NULL! */
+        node->prev = node;    /* ... it's also last */
+        node->next = NULL;    /* But next is NULL! */
     }
 }
 
@@ -160,16 +160,16 @@ static void XS_STILDB_ERR(gint linenum, gchar *line, const gchar *fmt, ...)
 
 gint xs_stildb_read(xs_stildb_t *db, gchar *filename)
 {
-    FILE *inFile;
-    gchar inLine[XS_BUF_SIZE + 16];    /* Since we add some chars here and there */
+    FILE *f;
+    gchar line[XS_BUF_SIZE + 16];    /* Since we add some chars here and there */
     stil_node_t *node;
     gboolean error, multi;
     gint lineNum, subEntry;
-    gchar *tmpLine = inLine;
+    gchar *tmpLine = line;
     assert(db != NULL);
 
     /* Try to open the file */
-    if ((inFile = fopen(filename, "ra")) == NULL) {
+    if ((f = fopen(filename, "ra")) == NULL) {
         xs_error("Could not open STILDB '%s'\n", filename);
         return -1;
     }
@@ -181,14 +181,14 @@ gint xs_stildb_read(xs_stildb_t *db, gchar *filename)
     node = NULL;
     subEntry = 0;
 
-    while (!error && fgets(inLine, XS_BUF_SIZE, inFile) != NULL) {
+    while (!error && fgets(line, XS_BUF_SIZE, f) != NULL) {
         gsize linePos = 0, eolPos = 0;
-        inLine[XS_BUF_SIZE] = 0;
-        xs_findeol(inLine, &eolPos);
-        inLine[eolPos] = 0;
+        line[XS_BUF_SIZE] = 0;
+        xs_findeol(line, &eolPos);
+        line[eolPos] = 0;
         lineNum++;
         
-        tmpLine = XS_CS_STIL(inLine);
+        tmpLine = g_convert(line, -1, "UTF-8", XS_STIL_CHARSET, NULL, NULL, NULL);
 
         switch (tmpLine[0]) {
         case '/':
@@ -307,9 +307,7 @@ gint xs_stildb_read(xs_stildb_t *db, gchar *filename)
             }
             break;
         }
-        
-        XS_CS_FREE(tmpLine);
-
+        g_free(tmpLine);
     } /* while */
 
     /* Check if there is one remaining node */
@@ -317,7 +315,7 @@ gint xs_stildb_read(xs_stildb_t *db, gchar *filename)
         xs_stildb_node_insert(db, node);
 
     /* Close the file */
-    fclose(inFile);
+    fclose(f);
 
     return 0;
 }

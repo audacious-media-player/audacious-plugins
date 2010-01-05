@@ -219,7 +219,7 @@ xs_tuneinfo_t *xs_tuneinfo_new(const gchar * filename,
         return NULL;
     }
 
-    result->sidFilename = XS_CS_FILENAME(filename);
+    result->sidFilename = g_strdup(filename);
     if (!result->sidFilename) {
         xs_error("Could not allocate sidFilename ('%s')\n",
             filename);
@@ -239,9 +239,9 @@ xs_tuneinfo_t *xs_tuneinfo_new(const gchar * filename,
     }
 
     /* The following allocations don't matter if they fail */
-    result->sidName = XS_CS_SID(sidName);
-    result->sidComposer = XS_CS_SID(sidComposer);
-    result->sidCopyright = XS_CS_SID(sidCopyright);
+    result->sidName = g_convert(sidName, -1, "UTF-8", XS_SID_CHARSET, NULL, NULL, NULL);
+    result->sidComposer = g_convert(sidComposer, -1, "UTF-8", XS_SID_CHARSET, NULL, NULL, NULL);
+    result->sidCopyright = g_convert(sidCopyright, -1, "UTF-8", XS_SID_CHARSET, NULL, NULL, NULL);
 
     result->nsubTunes = nsubTunes;
     result->startTune = startTune;
@@ -250,7 +250,7 @@ xs_tuneinfo_t *xs_tuneinfo_new(const gchar * filename,
     result->initAddr = initAddr;
     result->playAddr = playAddr;
     result->dataFileLen = dataFileLen;
-    result->sidFormat = XS_CS_SID(sidFormat);
+    result->sidFormat = g_convert(sidFormat, -1, "UTF-8", XS_SID_CHARSET, NULL, NULL, NULL);
     
     result->sidModel = sidModel;
 

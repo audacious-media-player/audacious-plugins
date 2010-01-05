@@ -4,7 +4,7 @@
    Main header file
 
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2009 Tecnic Software productions (TNSP)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -109,19 +109,10 @@ extern "C" {
 #  define XS_MUTEX_UNLOCK(M)    g_static_mutex_unlock(&XS_MPP(M))
 #endif
 
-/* Character set conversion helper macros
+/* Character sets used in STIL database and PlaySID file metadata
  */
-#define XS_CS_FILENAME(M)       g_filename_to_utf8(M, -1, NULL, NULL, NULL)
-#define XS_CS_SID(M)            g_convert(M, -1, "UTF-8", "ISO-8859-1", NULL, NULL, NULL)
-#define XS_CS_STIL(M)           g_convert(M, -1, "UTF-8", "ISO-8859-1", NULL, NULL, NULL)
-#define XS_CS_FREE(M)           g_free(M)
-
-/* Shorthands for linked lists
- */
-#define LPREV    (node->prev)
-#define LTHIS    (node)
-#define LNEXT    (node->next)
-
+#define XS_STIL_CHARSET	        "ISO-8859-1"
+#define XS_SID_CHARSET          "ISO-8859-1"
 
 /* Plugin-wide typedefs
  */

@@ -48,14 +48,14 @@ static void xs_sldb_node_insert(xs_sldb_t *db, sldb_node_t *node)
 
     if (db->nodes) {
         /* The first node's prev points to last node */
-        LPREV = db->nodes->prev;    /* New node's prev = Previous last node */
+        node->prev = db->nodes->prev;    /* New node's prev = Previous last node */
         db->nodes->prev->next = node;    /* Previous last node's next = New node */
         db->nodes->prev = node;    /* New last node = New node */
-        LNEXT = NULL;    /* But next is NULL! */
+        node->next = NULL;    /* But next is NULL! */
     } else {
         db->nodes = node;    /* First node ... */
-        LPREV = node;    /* ... it's also last */
-        LNEXT = NULL;    /* But next is NULL! */
+        node->prev = node;    /* ... it's also last */
+        node->next = NULL;    /* But next is NULL! */
     }
 }
 

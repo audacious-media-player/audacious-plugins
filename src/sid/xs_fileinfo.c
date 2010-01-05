@@ -39,62 +39,6 @@ XS_MUTEX(xs_fileinfowin);
 #define LUW(x)    lookup_widget(xs_fileinfowin, x)
 
 
-#ifndef AUDACIOUS_PLUGIN
-void xs_fileinfo_update(void)
-{
-    XS_MUTEX_LOCK(xs_status);
-    XS_MUTEX_LOCK(xs_fileinfowin);
-
-    /* Check if control window exists, we are currently playing and have a tune */
-    if (xs_fileinfowin) {
-        gboolean isEnabled;
-        GtkAdjustment *tmpAdj;
-
-        if (xs_status.tuneInfo && xs_status.isPlaying && (xs_status.tuneInfo->nsubTunes > 1)) {
-            tmpAdj = gtk_range_get_adjustment(GTK_RANGE(LUW("fileinfo_subctrl_adj")));
-
-            tmpAdj->value = xs_status.currSong;
-            tmpAdj->lower = 1;
-            tmpAdj->upper = xs_status.tuneInfo->nsubTunes;
-            XS_MUTEX_UNLOCK(xs_status);
-            XS_MUTEX_UNLOCK(xs_fileinfowin);
-            gtk_adjustment_value_changed(tmpAdj);
-            XS_MUTEX_LOCK(xs_status);
-            XS_MUTEX_LOCK(xs_fileinfowin);
-            isEnabled = TRUE;
-        } else
-            isEnabled = FALSE;
-
-        /* Enable or disable subtune-control in fileinfo window */
-        gtk_widget_set_sensitive(LUW("fileinfo_subctrl_prev"), isEnabled);
-        gtk_widget_set_sensitive(LUW("fileinfo_subctrl_adj"), isEnabled);
-        gtk_widget_set_sensitive(LUW("fileinfo_subctrl_next"), isEnabled);
-    }
-
-    XS_MUTEX_UNLOCK(xs_status);
-    XS_MUTEX_UNLOCK(xs_fileinfowin);
-}
-
-
-static void xs_fileinfo_setsong(void)
-{
-    gint n;
-
-    XS_MUTEX_LOCK(xs_status);
-    XS_MUTEX_LOCK(xs_fileinfowin);
-
-    if (xs_status.tuneInfo && xs_status.isPlaying) {
-        n = (gint) gtk_range_get_adjustment(GTK_RANGE(LUW("fileinfo_subctrl_adj")))->value;
-        if ((n >= 1) && (n <= xs_status.tuneInfo->nsubTunes))
-            xs_status.currSong = n;
-    }
-
-    XS_MUTEX_UNLOCK(xs_fileinfowin);
-    XS_MUTEX_UNLOCK(xs_status);
-}
-#endif /* AUDACIOUS_PLUGIN */
-
-
 void xs_fileinfo_ok(void)
 {
     XS_MUTEX_LOCK(xs_fileinfowin);
@@ -129,11 +73,6 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 
     /* Freeze text-widget and delete the old text */
     tmpText = LUW("fileinfo_sub_info");
-#ifndef AUDACIOUS_PLUGIN
-    gtk_text_freeze(GTK_TEXT(tmpText));
-    gtk_text_set_point(GTK_TEXT(tmpText), 0);
-    gtk_text_forward_delete(GTK_TEXT(tmpText), gtk_text_get_length(GTK_TEXT(tmpText)));
-#endif
 
     /* Get subtune information */
     tmpNode = (stil_subnode_t *) data;
@@ -154,16 +93,8 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
     gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_sub_name")), subName ? subName : "");
     gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_sub_author")), subAuthor ? subAuthor : "");
 
-#ifdef AUDACIOUS_PLUGIN
     gtk_text_buffer_set_text(GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(tmpText))),
         subInfo ? subInfo : "", -1);
-#else
-    gtk_text_insert(GTK_TEXT(tmpText), NULL, NULL, NULL,
-        subInfo ? subInfo : "", -1);
-
-    /* Un-freeze the widget */
-    gtk_text_thaw(GTK_TEXT(tmpText));
-#endif
 }
 
 
@@ -178,11 +109,7 @@ void xs_fileinfo(const gchar * filename)
     /* Current implementation leaves old fileinfo window untouched if
      * no information can be found for the new file. Hmm...
      */
-#ifdef AUDACIOUS_PLUGIN
     tmpFilename = aud_filename_split_subtune(filename, &n);
-#else
-    tmpFilename = filename;
-#endif    
 
     /* Get new tune information */
     XS_MUTEX_LOCK(xs_fileinfowin);
@@ -195,21 +122,13 @@ void xs_fileinfo(const gchar * filename)
     XS_MUTEX_UNLOCK(xs_status);
 
     xs_fileinfostil = xs_stil_get(tmpFilename);
-
-#ifdef AUDACIOUS_PLUGIN
     g_free(tmpFilename);
-#endif
 
     /* Check if there already is an open fileinfo window */
     if (xs_fileinfowin)
         XS_WINDOW_PRESENT(xs_fileinfowin);
-    else {
+    else
         xs_fileinfowin = create_xs_fileinfowin();
-#ifndef AUDACIOUS_PLUGIN
-        XS_SIGNAL_CONNECT(gtk_range_get_adjustment(GTK_RANGE(LUW("fileinfo_subctrl_adj"))),
-            "value_changed", xs_fileinfo_setsong, NULL);
-#endif
-    }
 
     /* Delete current items */
     tmpOptionMenu = LUW("fileinfo_sub_tune");
@@ -220,9 +139,7 @@ void xs_fileinfo(const gchar * filename)
 
 
     /* Set the generic song information */
-    tmpFilename = XS_CS_FILENAME(filename);
-    gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_filename")), tmpFilename);
-    g_free(tmpFilename);
+    gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_filename")), filename);
     gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_songname")), tmpInfo->sidName);
     gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_composer")), tmpInfo->sidComposer);
     gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_copyright")), tmpInfo->sidCopyright);
@@ -232,10 +149,8 @@ void xs_fileinfo(const gchar * filename)
     tmpMenuItem = gtk_menu_item_new_with_label(_("General info"));
     gtk_widget_show(tmpMenuItem);
     gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
-    if (xs_fileinfostil)
-        tmpNode = xs_fileinfostil->subTunes[0];
-    else
-        tmpNode = NULL;
+
+    tmpNode = (xs_fileinfostil != NULL) ? xs_fileinfostil->subTunes[0] : NULL;
     XS_SIGNAL_CONNECT(tmpMenuItem, "activate", xs_fileinfo_subtune, tmpNode);
 
     /* Other menu items */
@@ -286,8 +201,4 @@ void xs_fileinfo(const gchar * filename)
     gtk_widget_show(xs_fileinfowin);
 
     XS_MUTEX_UNLOCK(xs_fileinfowin);
-
-#ifndef AUDACIOUS_PLUGIN
-    xs_fileinfo_update();
-#endif
 }
