@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2008 William Pitcock <nenolod@nenolod.net>
+ * Copyright (c) 2010 John Lindgren <john.lindgren@tds.net>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -25,20 +26,30 @@
 
 static void init(void);
 static void configure(void);
-static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint nch);
-static void query_format(AFormat * fmt, gint * rate, gint * nch);
+static void cryst_start (gint * channels, gint * rate);
+static void cryst_process (gfloat * * data, gint * samples);
+static void cryst_flush ();
+static void cryst_finish (gfloat * * data, gint * samples);
+static gint cryst_decoder_to_output_time (gint time);
+static gint cryst_output_to_decoder_time (gint time);
 
 EffectPlugin crystalizer_ep =
 {
 	.description = "Crystalizer", /* Description */
 	.init = init,
 	.configure = configure,
-	.mod_samples = mod_samples,
-	.query_format = query_format
+    .start = cryst_start,
+    .process = cryst_process,
+    .flush = cryst_flush,
+    .finish = cryst_finish,
+    .decoder_to_output_time = cryst_decoder_to_output_time,
+    .output_to_decoder_time = cryst_output_to_decoder_time,
 };
 
 static GtkWidget *conf_dialog = NULL;
 static gdouble value;
+static gint cryst_channels;
+static gfloat * cryst_prev;
 
 EffectPlugin *crystalizer_eplist[] = { &crystalizer_ep, NULL };
 
@@ -53,13 +64,13 @@ static void init(void)
 	aud_cfg_db_close(db);
 }
 
-/* conf dialog stuff stolen from stereo plugin --nenolod */ 
+/* conf dialog stuff stolen from stereo plugin --nenolod */
 static void conf_ok_cb(GtkButton * button, gpointer data)
 {
 	mcs_handle_t *db;
 
 	value = *(gdouble *) data;
-	
+
 	db = aud_cfg_db_open();
 	aud_cfg_db_set_double(db, "crystalizer", "intensity", value);
 	aud_cfg_db_close(db);
@@ -139,48 +150,47 @@ static void configure(void)
 	gtk_widget_show(conf_dialog);
 }
 
-static void query_format(AFormat * fmt, gint * rate, gint * nch)
+static void cryst_start (gint * channels, gint * rate)
 {
-	if (!(*fmt == FMT_S16_NE ||
-	      (*fmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
-	      (*fmt == FMT_S16_BE && G_BYTE_ORDER == G_BIG_ENDIAN)))
-		*fmt = FMT_S16_NE;
+    cryst_channels = * channels;
+    cryst_prev = g_realloc (cryst_prev, sizeof (gfloat) * cryst_channels);
+    memset (cryst_prev, 0, sizeof (gfloat) * cryst_channels);
 }
 
-static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint nch)
+static void cryst_process (gfloat * * data, gint * samples)
 {
-	gint i;
-	gdouble tmp;
-	static gdouble prev[2], diff[2];
+    gfloat * f = * data;
+    gfloat * end = f + (* samples);
+    gint channel;
 
-	gint16  *data = (gint16 *)*d;
+    while (f < end)
+    {
+        for (channel = 0; channel < cryst_channels; channel ++)
+        {
+            gfloat current = * f;
 
-	if (!(afmt == FMT_S16_NE ||
-	      (afmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
-	      (afmt == FMT_S16_BE && G_BYTE_ORDER == G_BIG_ENDIAN)))
-		return length;
-	
-	for (i = 0; i < length / 2; i += 2)
-	{
-		diff[0] = data[i] - prev[0];
-		diff[1] = data[i + 1] - prev[1];
-		prev[0] = data[i];
-		prev[1] = data[i + 1];
+            * f ++ = current + (current - cryst_prev[channel]) * value;
+            cryst_prev[channel] = current;
+        }
+    }
+}
 
-		tmp = data[i] + (diff[0] * value);
-		if (tmp < -32768)
-			tmp = -32768;
-		if (tmp > 32767)
-			tmp = 32767;
-		data[i] = tmp;
+static void cryst_flush ()
+{
+    memset (cryst_prev, 0, sizeof (gfloat) * cryst_channels);
+}
 
-		tmp = data[i + 1] + (diff[1] * value);
-		if (tmp < -32768)
-			tmp = -32768;
-		if (tmp > 32767)
-			tmp = 32767;
-		data[i + 1] = tmp;
-	}
+static void cryst_finish (gfloat * * data, gint * samples)
+{
+    cryst_process (data, samples);
+}
 
-	return length;
+static gint cryst_decoder_to_output_time (gint time)
+{
+    return time;
+}
+
+static gint cryst_output_to_decoder_time (gint time)
+{
+    return time;
 }
