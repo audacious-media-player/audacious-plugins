@@ -272,7 +272,7 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
     input.channels = nch;
 
     playlist = aud_playlist_get_active();
-    if (!playlist)
+    if (playlist < 0)
         return 0;
 
     pos = aud_playlist_get_position(playlist);
