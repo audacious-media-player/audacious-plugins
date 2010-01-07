@@ -678,6 +678,7 @@ adplug_info_box (const gchar *filename)
 extern "C" Tuple*
 adplug_get_tuple (const gchar *filename)
 {
+  Tuple * ti = NULL;
   CSilentopl tmpopl;
   VFSFile *fd = aud_vfs_buffered_file_new_from_uri (filename);
 
@@ -688,7 +689,8 @@ adplug_get_tuple (const gchar *filename)
 
   if (p)
   {
-    Tuple *ti = aud_tuple_new_from_filename(filename);
+    ti = aud_tuple_new_from_filename (filename);
+
     if (! p->getauthor().empty())
       aud_tuple_associate_string(ti, FIELD_ARTIST, NULL, p->getauthor().c_str());
     if (! p->gettitle().empty())
@@ -701,10 +703,10 @@ adplug_get_tuple (const gchar *filename)
     aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
     aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, p->songlength (plr.subsong));
     delete p;
-    return ti;
   }
 
-  return NULL;
+  aud_vfs_fclose (fd);
+  return ti;
 }
 
 static char* format_and_free_ti( Tuple* ti, int* length )
@@ -1060,7 +1062,7 @@ adplug_init (void)
   }
   CAdPlug::set_database (plr.db);
   dbg_printf (".\n");
-  
+
   control_mutex = g_mutex_new ();
   control_cond = g_cond_new ();
 }
@@ -1101,7 +1103,7 @@ adplug_quit (void)
   dbg_printf ("close");
   aud_cfg_db_close (db);
   dbg_printf (".\n");
-  
+
   g_mutex_free (control_mutex);
   g_cond_free (control_cond);
 }
