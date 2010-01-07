@@ -31,7 +31,7 @@
 
 #define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
 
-#if 1
+#if 0
 #define DEBUG(...) ERROR (__VA_ARGS__)
 #else
 #define DEBUG(...)
