@@ -335,6 +335,23 @@ mainwin_release_info_text(void)
     }
 }
 
+static gint status_message_source = 0;
+
+static gboolean clear_status_message (void * unused)
+{
+    mainwin_release_info_text ();
+    status_message_source = 0;
+    return FALSE;
+}
+
+static void show_status_message (const gchar * message)
+{
+    if (status_message_source)
+        g_source_remove (status_message_source);
+
+    mainwin_lock_info_text (message);
+    status_message_source = g_timeout_add (1000, clear_status_message, NULL);
+}
 
 static gchar *
 make_mainwin_title(const gchar * title)
@@ -1050,20 +1067,6 @@ ui_main_check_theme_engine(void)
     g_free(theme);
 }
 
-static void
-check_set( GtkActionGroup * action_group ,
-           const gchar * action_name ,
-           gboolean is_on )
-{
-    /* check_set noew uses gtkaction */
-    GtkAction *action = gtk_action_group_get_action( action_group , action_name );
-    if (action != NULL)
-        gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , is_on );
-
-    if (action != NULL && action_name != NULL)
-        aud_event_queue(action_name, GINT_TO_POINTER(is_on));
-}
-
 void
 mainwin_eject_pushed(void)
 {
@@ -1445,13 +1448,6 @@ void mainwin_show (gboolean show)
         else
            mainwin_real_hide ();
    }
-}
-
-void
-mainwin_set_stopaftersong(gboolean stop)
-{
-    aud_cfg->stopaftersong = stop;
-    check_set(toggleaction_group_others, "stop after current song", aud_cfg->stopaftersong);
 }
 
 void
@@ -2362,6 +2358,11 @@ void
 action_stop_after_current_song( GtkToggleAction * action )
 {
     aud_cfg->stopaftersong = gtk_toggle_action_get_active( action );
+
+    if (aud_cfg->stopaftersong)
+        show_status_message (_("Stopping after song."));
+    else
+        show_status_message (_("Not stopping after song."));
 }
 
 void

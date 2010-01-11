@@ -75,5 +75,8 @@ void open_drag_list (const gchar * list);
 void resize_window(GtkWidget *window, gint width, gint height);
 gboolean widget_really_drawable (GtkWidget * widget);
 
+void check_set (GtkActionGroup * action_group, const gchar * action_name,
+ gboolean is_on);
+
 G_END_DECLS
 #endif

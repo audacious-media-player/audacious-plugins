@@ -918,3 +918,14 @@ gboolean widget_really_drawable (GtkWidget * widget)
     return GTK_WIDGET_DRAWABLE (widget) && widget->allocation.x >= 0 &&
      widget->allocation.y >= 0;
 }
+
+void check_set (GtkActionGroup * action_group, const gchar * action_name,
+ gboolean is_on)
+{
+    GtkAction * action = gtk_action_group_get_action (action_group, action_name);
+
+    g_return_if_fail (action != NULL);
+
+    gtk_toggle_action_set_active ((GtkToggleAction *) action, is_on);
+    aud_hook_call (action_name, GINT_TO_POINTER (is_on));
+}

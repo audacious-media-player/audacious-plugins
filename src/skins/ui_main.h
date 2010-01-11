@@ -139,7 +139,6 @@ void mainwin_refresh_hints(void);
 void mainwin_set_song_title (const gchar * title);
 void mainwin_set_song_info(gint rate, gint freq, gint nch);
 void mainwin_clear_song_info(void);
-void mainwin_set_stopaftersong(gboolean stop);
 void mainwin_set_noplaylistadvance(gboolean no_advance);
 
 void mainwin_set_sticky (gboolean sticky);
