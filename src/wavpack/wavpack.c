@@ -329,7 +329,10 @@ wv_get_quality(WavpackContext *ctx)
     
     return g_strdup_printf("%s%s%s", quality,
         (mode & MODE_WVC) ? " (wvc corrected)" : "",
-        (mode & MODE_DNS) ? " (dynamic noise shaped)" : "");
+#ifdef MODE_DNS /* WavPack 4.50 or later */
+        (mode & MODE_DNS) ? " (dynamic noise shaped)" :
+#endif
+        "");
 }
 
 static Tuple *
