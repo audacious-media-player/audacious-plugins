@@ -7,11 +7,11 @@ dnl *** (C) Copyright 2003-2008 Tecnic Software productions (TNSP)
 
 AC_DEFUN([XS_FIND_FILE],
 [
-    $3=""
-    for i in $2; do
-        for j in $1; do
+    $1=""
+    for i in $3; do
+        for j in $2; do
             if test -r "$i/$j"; then
-                $3="$i"
+                $1="$i"
                 break 2
             fi
         done
