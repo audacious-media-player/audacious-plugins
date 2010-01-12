@@ -788,7 +788,7 @@ mainwin_jump_to_time_cb(GtkWidget * widget,
     else
         return;
 
-    audacious_drct_seek (time);
+    audacious_drct_seek (time*1000);
     gtk_widget_destroy (mainwin_jtt);
 }
 
