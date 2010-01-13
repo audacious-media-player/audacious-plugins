@@ -30,10 +30,6 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
-#ifndef MAX
-# define MAX(a,b) ((a) > (b) ? (a) : (b))
-#endif
-
 static void si_ui_statusicon_popup_timer_start ( GtkStatusIcon * );
 static void si_ui_statusicon_popup_timer_stop ( GtkStatusIcon * );
 static void si_ui_statusicon_smallmenu_show ( gint x, gint y, guint button, guint32 time , gpointer );
