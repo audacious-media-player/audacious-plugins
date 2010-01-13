@@ -378,6 +378,25 @@
 			  <property name="spacing">0</property>
 
 			  <child>
+			    <widget class="GtkRadioButton" id="samp96">
+			      <property name="visible">True</property>
+			      <property name="can_focus">True</property>
+			      <property name="label" translatable="yes">96 kHz</property>
+			      <property name="use_underline">True</property>
+			      <property name="relief">GTK_RELIEF_NORMAL</property>
+			      <property name="focus_on_click">True</property>
+			      <property name="active">False</property>
+			      <property name="inconsistent">False</property>
+			      <property name="draw_indicator">True</property>
+			    </widget>
+			    <packing>
+			      <property name="padding">0</property>
+			      <property name="expand">False</property>
+			      <property name="fill">False</property>
+			    </packing>
+			  </child>
+
+			  <child>
 			    <widget class="GtkRadioButton" id="samp48">
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
@@ -388,6 +407,7 @@
 			      <property name="active">False</property>
 			      <property name="inconsistent">False</property>
 			      <property name="draw_indicator">True</property>
+			      <property name="group">samp96</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -407,7 +427,7 @@
 			      <property name="active">False</property>
 			      <property name="inconsistent">False</property>
 			      <property name="draw_indicator">True</property>
-			      <property name="group">samp48</property>
+			      <property name="group">samp96</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -423,31 +443,11 @@
 			      <property name="label" translatable="yes">22 kHz</property>
 			      <property name="use_underline">True</property>
 			      <property name="relief">GTK_RELIEF_NORMAL</property>
-			      <property name="focus_on_click">True</property>
-			      <property name="active">False</property>
-			      <property name="inconsistent">False</property>
-			      <property name="draw_indicator">True</property>
-			      <property name="group">samp48</property>
-			    </widget>
-			    <packing>
-			      <property name="padding">0</property>
-			      <property name="expand">False</property>
-			      <property name="fill">False</property>
-			    </packing>
-			  </child>
-
-			  <child>
-			    <widget class="GtkRadioButton" id="samp11">
-			      <property name="visible">True</property>
-			      <property name="can_focus">True</property>
-			      <property name="label" translatable="yes">11 kHz</property>
-			      <property name="use_underline">True</property>
-			      <property name="relief">GTK_RELIEF_NORMAL</property>
 			      <property name="focus_on_click">False</property>
 			      <property name="active">False</property>
 			      <property name="inconsistent">False</property>
 			      <property name="draw_indicator">True</property>
-			      <property name="group">samp48</property>
+			      <property name="group">samp96</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>

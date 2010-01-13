@@ -67,14 +67,14 @@ void ShowConfigureWindow(const ModplugXMMS::Settings& aProps)
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "bit16"), TRUE);
 	
-	if(aProps.mFrequency == 11025)
-		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "samp11"), TRUE);
-	else if (aProps.mFrequency == 22050)
+	if(aProps.mFrequency == 22050)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "samp22"), TRUE);
-	else if (aProps.mFrequency == 48000)
-		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "samp48"), TRUE);
-	else
+	else if (aProps.mFrequency == 44100)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "samp44"), TRUE);
+	else if (aProps.mFrequency == 96000)
+		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "samp96"), TRUE);
+	else
+		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "samp48"), TRUE);
 	
 	if(aProps.mChannels == 1)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "mono"), TRUE);

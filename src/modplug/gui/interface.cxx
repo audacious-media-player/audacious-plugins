@@ -57,11 +57,11 @@ create_Config (void)
   GtkWidget *label4;
   GtkWidget *frame3;
   GtkWidget *vbox6;
+  GtkWidget *samp96;
+  GSList *samp96_group = NULL;
   GtkWidget *samp48;
-  GSList *samp48_group = NULL;
   GtkWidget *samp44;
   GtkWidget *samp22;
-  GtkWidget *samp11;
   GtkWidget *label5;
   GtkWidget *label2;
   GtkWidget *vbox7;
@@ -283,34 +283,34 @@ create_Config (void)
   gtk_container_add (GTK_CONTAINER (frame3), vbox6);
   gtk_container_set_border_width (GTK_CONTAINER (vbox6), 2);
 
+  samp96 = gtk_radio_button_new_with_mnemonic (NULL, _("96 kHz"));
+  gtk_widget_set_name (samp96, "samp96");
+  gtk_widget_show (samp96);
+  gtk_box_pack_start (GTK_BOX (vbox6), samp96, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (samp96), samp96_group);
+  samp96_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (samp96));
+
   samp48 = gtk_radio_button_new_with_mnemonic (NULL, _("48 kHz"));
   gtk_widget_set_name (samp48, "samp48");
   gtk_widget_show (samp48);
   gtk_box_pack_start (GTK_BOX (vbox6), samp48, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (samp48), samp48_group);
-  samp48_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (samp48));
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (samp48), samp96_group);
+  samp96_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (samp48));
 
   samp44 = gtk_radio_button_new_with_mnemonic (NULL, _("44 kHz"));
   gtk_widget_set_name (samp44, "samp44");
   gtk_widget_show (samp44);
   gtk_box_pack_start (GTK_BOX (vbox6), samp44, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (samp44), samp48_group);
-  samp48_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (samp44));
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (samp44), samp96_group);
+  samp96_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (samp44));
 
   samp22 = gtk_radio_button_new_with_mnemonic (NULL, _("22 kHz"));
   gtk_widget_set_name (samp22, "samp22");
   gtk_widget_show (samp22);
   gtk_box_pack_start (GTK_BOX (vbox6), samp22, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (samp22), samp48_group);
-  samp48_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (samp22));
-
-  samp11 = gtk_radio_button_new_with_mnemonic (NULL, _("11 kHz"));
-  gtk_widget_set_name (samp11, "samp11");
-  gtk_widget_show (samp11);
-  gtk_box_pack_start (GTK_BOX (vbox6), samp11, FALSE, FALSE, 0);
-  gtk_button_set_focus_on_click (GTK_BUTTON (samp11), FALSE);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (samp11), samp48_group);
-  samp48_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (samp11));
+  gtk_button_set_focus_on_click (GTK_BUTTON (samp22), FALSE);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (samp22), samp96_group);
+  samp96_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (samp22));
 
   label5 = gtk_label_new (_("Sampling Rate"));
   gtk_widget_set_name (label5, "label5");
@@ -757,10 +757,10 @@ create_Config (void)
   GLADE_HOOKUP_OBJECT (Config, label4, "label4");
   GLADE_HOOKUP_OBJECT (Config, frame3, "frame3");
   GLADE_HOOKUP_OBJECT (Config, vbox6, "vbox6");
+  GLADE_HOOKUP_OBJECT (Config, samp96, "samp96");
   GLADE_HOOKUP_OBJECT (Config, samp48, "samp48");
   GLADE_HOOKUP_OBJECT (Config, samp44, "samp44");
   GLADE_HOOKUP_OBJECT (Config, samp22, "samp22");
-  GLADE_HOOKUP_OBJECT (Config, samp11, "samp11");
   GLADE_HOOKUP_OBJECT (Config, label5, "label5");
   GLADE_HOOKUP_OBJECT (Config, label2, "label2");
   GLADE_HOOKUP_OBJECT (Config, vbox7, "vbox7");
