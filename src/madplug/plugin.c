@@ -469,7 +469,6 @@ static void
 audmad_play_file(InputPlayback *playback)
 {
     gchar *url = playback->filename;
-    ReplayGainInfo rg_info;
 
 #ifdef AUD_DEBUG
     {
@@ -495,17 +494,6 @@ audmad_play_file(InputPlayback *playback)
     playback->set_tuple (playback, info.tuple);
     playback->set_params (playback, NULL, 0, info.bitrate, info.freq,
      info.channels);
-
-    rg_info.track_gain = info.replaygain_track_scale;
-    rg_info.track_peak = info.replaygain_track_peak;
-    rg_info.album_gain = info.replaygain_album_scale;
-    rg_info.album_peak = info.replaygain_album_peak;
-    AUDDBG("Replay Gain info:\n");
-    AUDDBG("* track gain:          %+f dB\n", rg_info.track_gain);
-    AUDDBG("* track peak:          %f\n",     rg_info.track_peak);
-    AUDDBG("* album gain:          %+f dB\n", rg_info.album_gain);
-    AUDDBG("* album peak:          %f\n",     rg_info.album_peak);
-    playback->set_replaygain_info(playback, &rg_info);
 
     info.seek = -1;
     info.pause = FALSE;
