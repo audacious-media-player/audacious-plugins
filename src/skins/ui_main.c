@@ -299,8 +299,13 @@ mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
 
 static void show_main_menu (GdkEventButton * event, void * unused)
 {
-    ui_popup_menu_show(UI_MENU_MAIN, event->x_root, event->y_root, FALSE, FALSE,
-     event->button, event->time);
+    GdkScreen * screen = gdk_event_get_screen ((GdkEvent *) event);
+    gint width = gdk_screen_get_width (screen);
+    gint height = gdk_screen_get_height (screen);
+
+    ui_popup_menu_show (UI_MENU_MAIN, event->x_root, event->y_root,
+     event->x_root > width / 2, event->y_root > height / 2, event->button,
+     event->time);
 }
 
 static gchar *mainwin_tb_old_text = NULL;
