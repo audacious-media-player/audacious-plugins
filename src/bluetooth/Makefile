@@ -12,7 +12,6 @@ marshal.c:
 	glib-genmarshal --prefix=marshal --body marshal.list > $@
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
-CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${BEEP_DEFINES} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${DBUS_GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../.. ${BLUEZ_CFLAGS}
-LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${BLUEZ_LIBS}
+CPPFLAGS += ${BEEP_DEFINES} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${DBUS_GLIB_CFLAGS} -I../.. ${BLUEZ_CFLAGS}
+LIBS += ${GTK_LIBS} ${BLUEZ_LIBS}
 

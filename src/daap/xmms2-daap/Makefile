@@ -8,7 +8,7 @@ SRCS = cc_handlers.c	\
        daap_mdns_dnssd.c \
        daap_mdns_avahi.c \
        daap_mdns_dummy.c
-#       daap_xform.c 
+#       daap_xform.c
 
 include ../../../buildsys.mk
 include ../../../extra.mk
@@ -16,11 +16,9 @@ include ../../../extra.mk
 #For the moment i'm hardcoding it but it will be configurable
 #MDNS_IMPL=DAAP_MDNS_DNSSD
 MDNS_IMPL=DAAP_MDNS_AVAHI
-#MDNS_IMPL=DAAP_MDNS_DUMMY 
+#MDNS_IMPL=DAAP_MDNS_DUMMY
 
 WARN = -Wall -std=c99
 DEFINES = -D${MDNS_IMPL} -D_POSIX_SOURCE
 
-CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} ${PICFLAGS} ${WARN} ${DEFINES}
-LIBS += ${GLIB_LIBS} 
+CPPFLAGS += ${PICFLAGS} ${WARN} ${DEFINES}

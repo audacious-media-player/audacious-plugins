@@ -10,6 +10,5 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${OUTPUT_PLUGIN_DIR}
 
-CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} -I/usr/lib/oss/include -I../.. ${GTK_CFLAGS} ${GLIB_CFLAGS} 
-LIBS += ${OSS_LIBS} ${GTK_LIBS} ${GLIB_LIBS} 
+CPPFLAGS += -I/usr/lib/oss/include -I../.. ${GTK_CFLAGS}
+LIBS += ${OSS_LIBS} ${GTK_LIBS}

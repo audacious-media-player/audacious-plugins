@@ -14,6 +14,5 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${OUTPUT_PLUGIN_DIR}
 
-CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS}  ${GTK_CFLAGS} ${GLIB_CFLAGS}  ${ALSA_CFLAGS} -I../..
-LIBS += ${GTK_LIBS} ${GLIB_LIBS}  ${ALSA_LIBS}
+CPPFLAGS +=  ${GTK_CFLAGS}  ${ALSA_CFLAGS} -I../..
+LIBS += ${GTK_LIBS}  ${ALSA_LIBS} -lpthread

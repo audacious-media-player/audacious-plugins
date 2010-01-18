@@ -48,7 +48,5 @@ include ../../extra.mk
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 LD = ${CXX}
-CFLAGS += ${PLUGIN_CFLAGS}
-CXXFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS}  ${GTK_CFLAGS} ${GLIB_CFLAGS}  -I.. -I../.. -I../../intl
-LIBS += ${MOWGLI_LIBS}  ${GTK_LIBS} ${GLIB_LIBS}  -lstdc++
+CPPFLAGS +=  ${GTK_CFLAGS}  -I.. -I../..
+LIBS +=  ${GTK_LIBS}  -lstdc++

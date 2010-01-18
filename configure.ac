@@ -27,6 +27,9 @@ if test "x$prefix" != "xNONE" ; then
    CPPFLAGS="$CPPFLAGS -I${includedir}"
 fi
 
+dnl Better not wait till runtime to find out about undefined symbols.
+LDFLAGS="$LDFLAGS -z defs"
+
 dnl OMK bootstrap
 AC_SUBST([PACKAGE], [AC_PACKAGE_TARNAME])
 AC_SUBST([VERSION], [AC_PACKAGE_VERSION])
@@ -137,16 +140,26 @@ PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 2.1],
     [AC_MSG_ERROR([Cannot find Audacious 2.1 or later, have you installed audacious yet?])]
 )
 
-CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS"
-CPPFLAGS="$CPPFLAGS $AUDACIOUS_CPPFLAGS"
-LDFLAGS="$LDFLAGS $AUDACIOUS_LIBS"
+dnl Check for GLib.
 
-dnl Check for GTK/GLib/GThread/Pango/DBus
-
-PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.12.0 gthread-2.0],
+PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.12.0],
     [ADD_PC_REQUIRES([glib-2.0 >= 2.12.0])],
     [AC_MSG_ERROR([Cannot find Glib2 >= 2.12.0])]
 )
+
+dnl Check for libmowgli.
+
+PKG_CHECK_MODULES(MOWGLI, [libmowgli >= 0.4.0],
+    [ADD_PC_REQUIRES([libmowgli >= 0.4.0])],
+    [AC_MSG_ERROR([Cannot find libmowgli >= 0.4.0, try http://www.atheme.org/projects/mowgli.shtml])]
+)
+
+dnl All plugins are linked to these (and only these) libs.
+
+CFLAGS="$CFLAGS $GLIB_CFLAGS $MOWGLI_CFLAGS"
+LIBS="$LIBS $GLIB_LIBS $MOWGLI_LIBS -laudcore"
+
+dnl Check for GTK/Pango/DBus
 
 PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.8.0],
     [ADD_PC_REQUIRES([gtk+-2.0 >= 2.8.0])],
@@ -182,14 +195,6 @@ if test "x$enable_dbus" = "xyes"; then
 	    [AC_MSG_ERROR([Cannot find dbus-glib >= 0.60])]
 	])
 fi
-
-
-dnl Check for libmowgli.
-
-PKG_CHECK_MODULES(MOWGLI, [libmowgli >= 0.4.0],
-    [ADD_PC_REQUIRES([libmowgli >= 0.4.0])],
-    [AC_MSG_ERROR([Cannot find libmowgli >= 0.4.0, try http://www.atheme.org/projects/mowgli.shtml])]
-)
 
 dnl IPv6 support
 dnl ========================
@@ -697,7 +702,7 @@ if test x$enable_aac = xyes; then
 		AC_CHECK_DECL(NeAACDecInit2,,enable_aac=no,[#include <neaacdec.h>])
 	fi
 	if test x$enable_aac = xyes; then
-		AC_CHECK_LIB(faad,NeAACDecInit2,,enable_aac=no)
+		AC_CHECK_LIB(faad,NeAACDecInit2,enable_aac=yes,enable_aac=no)
 	fi
 fi
 
