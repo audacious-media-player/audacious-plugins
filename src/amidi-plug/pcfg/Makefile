@@ -5,4 +5,5 @@ SRCS = i_pcfg.c
 include ../../../buildsys.mk
 include ../../../extra.mk
 
-CPPFLAGS += -I../../..
+CFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} -I../../..

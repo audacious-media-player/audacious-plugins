@@ -7,5 +7,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
-CPPFLAGS += ${GTK_CFLAGS} ${DBUS_CFLAGS} -I../.. -I..
-LIBS += ${DBUS_LIBS} ${GTK_LIBS}
+CFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${MOWGLI_CFLAGS} ${GLIB_CFLAGS} ${DBUS_CFLAGS} -I../.. -I..
+LIBS += ${GLIB_LIBS} ${DBUS_LIBS} ${GTK_LIBS}

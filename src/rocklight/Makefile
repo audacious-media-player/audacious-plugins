@@ -10,5 +10,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${VISUALIZATION_PLUGIN_DIR}
 
-CPPFLAGS += ${GTK_CFLAGS}  -I../..
-LIBS += ${GTK_LIBS}
+CFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS}  -I../..
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} 

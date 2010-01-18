@@ -59,5 +59,7 @@ include ../../extra.mk
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 LD = ${CXX}
-CPPFLAGS += ${GTK_CFLAGS}  ${BINIO_CFLAGS} -I../.. -I./core -Dstricmp=strcasecmp
-LIBS += ${BINIO_LIBS} ${GTK_LIBS}
+CFLAGS += ${PLUGIN_CFLAGS}
+CXXFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS}  ${BINIO_CFLAGS} -I../.. -I./core -Dstricmp=strcasecmp
+LIBS += ${BINIO_LIBS} ${GTK_LIBS} ${GLIB_LIBS}  ${MOWGLI_LIBS}
