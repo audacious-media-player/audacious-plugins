@@ -24,13 +24,15 @@
 #include <audacious/plugin.h>
 #include <audacious/input.h>
 
+#include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
+#include "ui_manager.h"
 #include "ui_playlist.h"
 #include "ui_skinned_playstatus.h"
 #include "ui_skinned_textbox.h"
 #include "ui_skinned_window.h"
-#include "skins_cfg.h"
+#include "util.h"
 
 static void
 ui_main_evlistener_title_change(gpointer hook_data, gpointer user_data)
@@ -78,7 +80,9 @@ static void
 ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
 {
     mainwin_clear_song_info ();
-    mainwin_set_stopaftersong (FALSE);
+
+    aud_cfg->stopaftersong = FALSE;
+    check_set (toggleaction_group_others, "stop after current song", FALSE);
 }
 
 void ui_main_evlistener_playback_pause (void * hook_data, void * user_data)

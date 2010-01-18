@@ -333,7 +333,7 @@ static void ui_show_error(const gchar * markup)
                                            GTK_DIALOG_DESTROY_WITH_PARENT,
                                            GTK_MESSAGE_ERROR,
                                            GTK_BUTTONS_OK,
-                                           _(markup));
+                                           "%s",_(markup));
 
     gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
     gtk_widget_show(GTK_WIDGET(dialog));

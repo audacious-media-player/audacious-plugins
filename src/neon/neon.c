@@ -613,6 +613,7 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
             handle->redircount += 1;
             rediruri = (ne_uri*)ne_redirect_location(handle->session);
             ne_request_destroy(handle->request);
+            handle->request = NULL;
 
             if (NULL == rediruri) {
                 _ERROR("<%p> Could not parse redirect response", handle);
@@ -631,6 +632,7 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
                 _ERROR("<%p> neon error string: %s", handle, ne_get_error(handle->session));
             }
             ne_request_destroy(handle->request);
+            handle->request = NULL;
             _LEAVE -1;
             break;
     }
@@ -1360,7 +1362,9 @@ gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
         kill_reader(h);
     }
 
-    ne_request_destroy(h->request);
+    if (NULL != h->request) {
+        ne_request_destroy(h->request);
+    }
     ne_session_destroy(h->session);
     reset_rb(&h->rb);
 

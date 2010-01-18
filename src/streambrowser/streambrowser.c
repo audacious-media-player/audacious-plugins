@@ -294,7 +294,10 @@ gboolean mystrcasestr(const char *haystack, const char *needle)
 	free(upper_h);
 	free(upper_n);
 	
-	return (gboolean) p;
+	if (p != NULL)
+	    return TRUE;
+    else
+        return FALSE;
 }
 
 

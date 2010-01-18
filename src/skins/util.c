@@ -837,16 +837,19 @@ static void make_directory(const gchar *path, mode_t mode)
 void insert_drag_list(gint playlist, gint position, const gchar *list)
 {
     struct index *add = index_new();
+    const gchar * end, * next;
+    gchar * filename;
 
-    while (1)
+    while (list[0])
     {
-        const gchar *newline = strstr(list, "\r\n");
-        gchar * filename;
+        if ((end = strstr (list, "\r\n")) != NULL)
+            next = end + 2;
+        else if ((end = strchr (list, '\n')) != NULL)
+            next = end + 1;
+        else
+            next = end = strchr (list, 0);
 
-        if (newline == NULL)
-            break;
-
-        filename = g_strndup (list, newline - list);
+        filename = g_strndup (list, end - list);
 
         if (vfs_file_test (filename, G_FILE_TEST_IS_DIR))
         {
@@ -856,7 +859,7 @@ void insert_drag_list(gint playlist, gint position, const gchar *list)
         else
             index_append (add, filename);
 
-        list = newline + 2;
+        list = next;
     }
 
     aud_playlist_entry_insert_batch(playlist, position, add, NULL);
@@ -865,12 +868,19 @@ void insert_drag_list(gint playlist, gint position, const gchar *list)
 void open_drag_list (const gchar * list)
 {
     GList * glist = NULL;
-    const gchar * newline;
+    const gchar * end, * next;
 
-    while ((newline = strstr (list, "\r\n")) != NULL)
+    while (list[0])
     {
-        glist = g_list_prepend (glist, g_strndup (list, newline - list));
-        list = newline + 2;
+        if ((end = strstr (list, "\r\n")) != NULL)
+            next = end + 2;
+        else if ((end = strchr (list, '\n')) != NULL)
+            next = end + 1;
+        else
+            next = end = strchr (list, 0);
+
+        glist = g_list_prepend (glist, g_strndup (list, end - list));
+        list = next;
     }
 
     glist = g_list_reverse (glist);
@@ -907,4 +917,15 @@ gboolean widget_really_drawable (GtkWidget * widget)
 {
     return GTK_WIDGET_DRAWABLE (widget) && widget->allocation.x >= 0 &&
      widget->allocation.y >= 0;
+}
+
+void check_set (GtkActionGroup * action_group, const gchar * action_name,
+ gboolean is_on)
+{
+    GtkAction * action = gtk_action_group_get_action (action_group, action_name);
+
+    g_return_if_fail (action != NULL);
+
+    gtk_toggle_action_set_active ((GtkToggleAction *) action, is_on);
+    aud_hook_call (action_name, GINT_TO_POINTER (is_on));
 }

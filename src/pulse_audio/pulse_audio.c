@@ -40,9 +40,8 @@ static pa_cvolume volume;
 static int volume_valid = 0;
 
 static int do_trigger = 0;
-static uint64_t written = 0;
-static int time_offset_msec = 0;
-static int just_flushed = 0;
+static int64_t written;
+static int bytes_per_second;
 
 static int connected = 0;
 
@@ -327,7 +326,7 @@ static int pulse_get_written_time(void) {
     pa_threaded_mainloop_lock(mainloop);
     CHECK_DEAD_GOTO(fail, 1);
 
-    r = (int) (((double) written*1000) / pa_bytes_per_second(pa_stream_get_sample_spec(stream)));
+    r = written * (int64_t) 1000 / bytes_per_second;
 
 fail:
     pa_threaded_mainloop_unlock(mainloop);
@@ -335,41 +334,41 @@ fail:
     return r;
 }
 
-static int pulse_get_output_time(void) {
-    int r = 0;
-    pa_usec_t t;
+static void pulse_set_written_time (int time)
+{
+    pa_threaded_mainloop_lock (mainloop);
+
+    written = time * (int64_t) bytes_per_second / 1000;
+    pa_stream_set_name (stream, get_song_name (), stream_success_cb, NULL);
+
+    pa_threaded_mainloop_unlock (mainloop);
+}
+
+static int pulse_get_output_time (void)
+{
+    int time = 0;
+    const pa_timing_info * timing;
+    struct timeval now;
 
     CHECK_CONNECTED(0);
 
     pa_threaded_mainloop_lock(mainloop);
 
-    for (;;) {
-        CHECK_DEAD_GOTO(fail, 1);
+    if ((timing = pa_stream_get_timing_info (stream)) == NULL)
+        goto fail;
 
-        if (pa_stream_get_time(stream, &t) >= 0)
-            break;
+    gettimeofday (& now, NULL);
 
-        if (pa_context_errno(context) != PA_ERR_NODATA) {
-            AUDDBG("pa_stream_get_time() failed: %s", pa_strerror(pa_context_errno(context)));
-            goto fail;
-        }
-
-        pa_threaded_mainloop_wait(mainloop);
-    }
-
-    r = (int) (t / 1000);
-
-    if (just_flushed) {
-        time_offset_msec -= r;
-        just_flushed = 0;
-    }
-
-    r += time_offset_msec;
+    time = (int) ((written - (timing->write_index - timing->read_index)) *
+     (int64_t) 1000 / bytes_per_second) - (int) (timing->transport_usec / 1000)
+     - (int) (timing->sink_usec / 1000) + (int) ((now.tv_sec -
+     timing->timestamp.tv_sec) * 1000) + (int) ((now.tv_usec -
+     timing->timestamp.tv_usec) / 1000);
 
 fail:
     pa_threaded_mainloop_unlock(mainloop);
 
-    return r;
+    return time;
 }
 
 static int pulse_playing(void) {
@@ -411,10 +410,7 @@ static void pulse_flush(int time) {
     pa_threaded_mainloop_lock(mainloop);
     CHECK_DEAD_GOTO(fail, 1);
 
-    /* gapless playback: new stream, reset the title. --nenolod */
-    if (time == 0) {
-        pa_stream_set_name(stream, get_song_name(), stream_success_cb, &success);
-    }
+    written = time * (int64_t) bytes_per_second / 1000;
 
     if (!(o = pa_stream_flush(stream, stream_success_cb, &success))) {
         AUDDBG("pa_stream_flush() failed: %s", pa_strerror(pa_context_errno(context)));
@@ -428,10 +424,6 @@ static void pulse_flush(int time) {
 
     if (!success)
         AUDDBG("pa_stream_flush() failed: %s", pa_strerror(pa_context_errno(context)));
-
-    written = (uint64_t) (((double) time * pa_bytes_per_second(pa_stream_get_sample_spec(stream))) / 1000);
-    just_flushed = 1;
-    time_offset_msec = time;
 
 fail:
     if (o)
@@ -684,8 +676,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
 
     do_trigger = 0;
     written = 0;
-    time_offset_msec = 0;
-    just_flushed = 0;
+    bytes_per_second = FMT_SIZEOF (fmt) * nch * rate;
     connected = 1;
     volume_time_event = NULL;
 
@@ -758,6 +749,7 @@ static OutputPlugin pulse_op = {
         .buffer_playing = pulse_playing,
         .output_time = pulse_get_output_time,
         .written_time = pulse_get_written_time,
+        .set_written_time = pulse_set_written_time,
 };
 
 OutputPlugin *pulse_oplist[] = { &pulse_op, NULL };

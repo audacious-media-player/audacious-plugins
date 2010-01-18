@@ -202,8 +202,8 @@ static VFSFile * safe_create (const gchar * filename)
         if (extension == NULL)
             sprintf (scratch, "%s-%d", filename, count);
         else
-            sprintf (scratch, "%.*s-%d%s", extension - filename, filename,
-             count, extension);
+            sprintf (scratch, "%.*s-%d%s", (gint) (extension - filename),
+             filename, count, extension);
 
         if (! aud_vfs_file_test (scratch, G_FILE_TEST_EXISTS))
             return aud_vfs_fopen (scratch, "w");

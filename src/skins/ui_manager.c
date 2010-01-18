@@ -750,9 +750,9 @@ static void menu_positioner(GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
 
     *x = ((gint *)data)[0] - ((gint *)data)[2] * request.width;
     *y = ((gint *)data)[1] - ((gint *)data)[3] * request.height;
-    *push_in = TRUE;
 }
 
+/* FIX ME: This may not handle multiple screens correctly with status icon. */
 void ui_popup_menu_show(gint id, gint x, gint y, gboolean leftward, gboolean
  upward, gint button, gint time)
 {

@@ -277,6 +277,7 @@ decode_loop(gpointer arg)
     int skip, current;
     unsigned int iteration = 0;
     gboolean paused = FALSE;
+    ReplayGainInfo gain;
 
     /* mad structs */
     struct mad_stream stream;
@@ -306,6 +307,12 @@ decode_loop(gpointer arg)
         info->playback->error = TRUE;
         goto CLEAN_UP;
     }
+
+    gain.track_gain = info->replaygain_track_scale;
+    gain.track_peak = info->replaygain_track_peak;
+    gain.album_gain = info->replaygain_album_scale;
+    gain.album_peak = info->replaygain_album_peak;
+    info->playback->output->set_replaygain_info (& gain);
 
     while (info->playback->playing)
     {
@@ -371,6 +378,7 @@ decode_loop(gpointer arg)
                 goto CLEAN_UP;
             }
 
+            info->playback->output->set_replaygain_info (& gain);
             info->playback->output->flush (current);
         }
 
@@ -416,7 +424,17 @@ decode_loop(gpointer arg)
 
             if (skip > 0)
             {
-                mad_stream_skip (& stream, skip);
+                if (skip > stream.bufend - stream.this_frame)
+                {
+                    if (aud_vfs_fseek (info->infile, skip - (stream.bufend -
+                     stream.this_frame), SEEK_CUR))
+                        error ("aud_vfs_fseek failed.\n");
+
+                    mad_stream_buffer (& stream, info->buffer, 0);
+                }
+                else
+                    mad_stream_skip (& stream, skip);
+
                 goto RETRY;
             }
         }

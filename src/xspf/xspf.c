@@ -114,16 +114,16 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
                     const gchar * colon = strstr (base, "://");
 
                     if (colon != NULL)
-                        location = g_strdup_printf ("%.*s%s", colon + 3 - base,
-                         base, str);
+                        location = g_strdup_printf ("%.*s%s", (gint) (colon + 3
+                         - base), base, str);
                 }
                 else if (base != NULL)
                 {
                     const gchar * slash = strrchr (base, '/');
 
                     if (slash != NULL)
-                        location = g_strdup_printf ("%.*s%s", slash + 1 - base,
-                         base, str);
+                        location = g_strdup_printf ("%.*s%s", (gint) (slash + 1
+                         - base), base, str);
                 }
 
                 xmlFree(str);

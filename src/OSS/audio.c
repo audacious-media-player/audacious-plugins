@@ -61,7 +61,7 @@ struct format_info {
 
 /*
  * The format of the data from the input plugin
- * This will never change during a song. 
+ * This will never change during a song.
  */
 struct format_info input;
 
@@ -115,25 +115,11 @@ oss_get_format(AFormat fmt)
     case FMT_U16_BE:
         format = AFMT_U16_BE;
         break;
-    case FMT_U16_NE:
-#if (G_BYTE_ORDER == G_BIG_ENDIAN)
-        format = AFMT_U16_BE;
-#else
-        format = AFMT_U16_LE;
-#endif
-        break;
     case FMT_S16_LE:
         format = AFMT_S16_LE;
         break;
     case FMT_S16_BE:
         format = AFMT_S16_BE;
-        break;
-    case FMT_S16_NE:
-#if (G_BYTE_ORDER == G_BIG_ENDIAN)
-        format = AFMT_S16_BE;
-#else
-        format = AFMT_S16_LE;
-#endif
         break;
     default:
         format = -1;

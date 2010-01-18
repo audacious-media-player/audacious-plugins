@@ -223,7 +223,7 @@ playlistwin_set_geometry_hints(gboolean shaded)
 void
 playlistwin_set_sinfo_font(gchar *font)
 {
-    gchar *tmp = NULL, *tmp2 = NULL;
+    gchar *tmp = NULL, *tmp2 = NULL, *tmp3 = NULL;
 
     g_return_if_fail(font);
     AUDDBG("Attempt to set font \"%s\"\n", font);
@@ -231,7 +231,10 @@ playlistwin_set_sinfo_font(gchar *font)
     tmp = g_strdup(font);
     g_return_if_fail(tmp);
 
-    *strrchr(tmp, ' ') = '\0';
+    tmp3 = strrchr(tmp, ' ');
+    if (tmp3 != NULL)
+        tmp3 = '\0';
+
     tmp2 = g_strdup_printf("%s 8", tmp);
     g_return_if_fail(tmp2);
 

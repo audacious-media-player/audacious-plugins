@@ -89,11 +89,11 @@ static gchar *stream_description = NULL;
 static gboolean ep_playing = FALSE;
 
 VFSFile *output_file = NULL;
-guint64 written = 0;
-guint64 offset = 0;
 Tuple *tuple = NULL;
 static shout_t *shout = NULL;
 static gboolean paused = FALSE;
+
+static gint64 samples_written;
 
 static OutputPluginInitStatus ice_init(void);
 static void ice_cleanup(void);
@@ -105,10 +105,8 @@ static void ice_close(void);
 static gboolean ice_real_close(gpointer data);
 static void ice_flush(gint time);
 static void ice_pause(short p);
-static gint ice_free(void);
 static gint ice_playing(void);
-static gint ice_get_written_time(void);
-static gint ice_get_output_time(void);
+static gint ice_get_time(void);
 static void ice_configure(void);
 static int ice_mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, gint nch);
 
@@ -125,10 +123,9 @@ OutputPlugin ice_op =
     .close_audio = ice_close,
     .flush = ice_flush,
     .pause = ice_pause,
-    .buffer_free = ice_free,
     .buffer_playing = ice_playing,
-    .output_time = ice_get_output_time,
-    .written_time = ice_get_written_time
+    .output_time = ice_get_time,
+    .written_time = ice_get_time
 };
 
 EffectPlugin ice_ep =
@@ -275,11 +272,13 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
     input.channels = nch;
 
     playlist = aud_playlist_get_active();
-    if (!playlist)
+    if (playlist < 0)
         return 0;
 
     pos = aud_playlist_get_position(playlist);
-    tuple = aud_playlist_entry_get_tuple(playlist, pos);
+    tuple = (Tuple*) aud_playlist_entry_get_tuple(playlist, pos);
+    if (tuple == NULL)
+        return 0;
 
     plugin = plugin_new;
 
@@ -383,16 +382,18 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 
     rv = (plugin->open)();
 
+    samples_written = 0;
+
     return rv;
 }
 
 static void ice_write(void *ptr, gint length)
 {
-    int len;
+    int len = convert_process(ptr, length);
 
-    len = convert_process(ptr, length);
+    plugin->write(convert_output, len);
 
-    plugin->write(convert_output, length);
+    samples_written += length / FMT_SIZEOF (input.format);
 }
 
 static int ice_mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, gint nch)
@@ -452,7 +453,6 @@ static gboolean ice_real_close(gpointer data)
 
     if (shout)
     {
-        written = 0;
         shout_close(shout);
     }
     shout = NULL;
@@ -471,13 +471,9 @@ static void ice_close(void)
 
 static void ice_flush(gint time)
 {
-    if (time < 0)
-        return;
-
-    plugin->flush();
     ice_open(input.format, input.frequency, input.channels);
 
-    offset = time;
+    samples_written = time * (gint64) input.channels * input.frequency / 1000;
 }
 
 static void ice_pause(short p)
@@ -485,24 +481,14 @@ static void ice_pause(short p)
     paused = p;
 }
 
-static gint ice_free(void)
-{
-    return paused ? 0 : plugin->free();
-}
-
 static gint ice_playing(void)
 {
     return 0 && !paused;
 }
 
-static gint ice_get_written_time(void)
+static gint ice_get_time(void)
 {
-    return plugin->get_written_time();
-}
-
-static gint ice_get_output_time(void)
-{
-    return ice_get_written_time();
+    return samples_written * 1000 / (input.channels * input.frequency);
 }
 
 void entry_focus_in(GtkWidget *widget, gpointer data)

@@ -299,8 +299,13 @@ mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
 
 static void show_main_menu (GdkEventButton * event, void * unused)
 {
-    ui_popup_menu_show(UI_MENU_MAIN, event->x_root, event->y_root, FALSE, FALSE,
-     event->button, event->time);
+    GdkScreen * screen = gdk_event_get_screen ((GdkEvent *) event);
+    gint width = gdk_screen_get_width (screen);
+    gint height = gdk_screen_get_height (screen);
+
+    ui_popup_menu_show (UI_MENU_MAIN, event->x_root, event->y_root,
+     event->x_root > width / 2, event->y_root > height / 2, event->button,
+     event->time);
 }
 
 static gchar *mainwin_tb_old_text = NULL;
@@ -335,6 +340,23 @@ mainwin_release_info_text(void)
     }
 }
 
+static gint status_message_source = 0;
+
+static gboolean clear_status_message (void * unused)
+{
+    mainwin_release_info_text ();
+    status_message_source = 0;
+    return FALSE;
+}
+
+static void show_status_message (const gchar * message)
+{
+    if (status_message_source)
+        g_source_remove (status_message_source);
+
+    mainwin_lock_info_text (message);
+    status_message_source = g_timeout_add (1000, clear_status_message, NULL);
+}
 
 static gchar *
 make_mainwin_title(const gchar * title)
@@ -771,7 +793,7 @@ mainwin_jump_to_time_cb(GtkWidget * widget,
     else
         return;
 
-    audacious_drct_seek (time);
+    audacious_drct_seek (time*1000);
     gtk_widget_destroy (mainwin_jtt);
 }
 
@@ -1048,20 +1070,6 @@ ui_main_check_theme_engine(void)
     config.disable_inline_gtk = TRUE;
 
     g_free(theme);
-}
-
-static void
-check_set( GtkActionGroup * action_group ,
-           const gchar * action_name ,
-           gboolean is_on )
-{
-    /* check_set noew uses gtkaction */
-    GtkAction *action = gtk_action_group_get_action( action_group , action_name );
-    if (action != NULL)
-        gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , is_on );
-
-    if (action != NULL && action_name != NULL)
-        aud_event_queue(action_name, GINT_TO_POINTER(is_on));
 }
 
 void
@@ -1445,13 +1453,6 @@ void mainwin_show (gboolean show)
         else
            mainwin_real_hide ();
    }
-}
-
-void
-mainwin_set_stopaftersong(gboolean stop)
-{
-    aud_cfg->stopaftersong = stop;
-    check_set(toggleaction_group_others, "stop after current song", aud_cfg->stopaftersong);
 }
 
 void
@@ -2362,6 +2363,11 @@ void
 action_stop_after_current_song( GtkToggleAction * action )
 {
     aud_cfg->stopaftersong = gtk_toggle_action_get_active( action );
+
+    if (aud_cfg->stopaftersong)
+        show_status_message (_("Stopping after song."));
+    else
+        show_status_message (_("Not stopping after song."));
 }
 
 void

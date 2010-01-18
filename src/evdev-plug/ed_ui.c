@@ -1533,7 +1533,7 @@ ed_ui_message_show ( gchar * title , gchar * message , gpointer parent_win_gp )
   message_win = gtk_message_dialog_new(
                   parent_win ,
                   ( parent_win != NULL ? GTK_DIALOG_DESTROY_WITH_PARENT : 0 ) ,
-                  GTK_MESSAGE_INFO , GTK_BUTTONS_CLOSE , message );
+                  GTK_MESSAGE_INFO , GTK_BUTTONS_CLOSE , "%s", message );
   gtk_window_set_title( GTK_WINDOW(message_win) , title );
 
   gtk_dialog_run( GTK_DIALOG(message_win) );

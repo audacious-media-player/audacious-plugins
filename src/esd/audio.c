@@ -150,11 +150,9 @@ esdout_setup_format(AFormat fmt, gint rate, gint nch)
         break;
     case FMT_U16_LE:
     case FMT_U16_BE:
-    case FMT_U16_NE:
         swap_sign = TRUE;
     case FMT_S16_LE:
     case FMT_S16_BE:
-    case FMT_S16_NE:
         esd_format = ESD_BITS16;
         break;
     default:
@@ -374,8 +372,7 @@ esdout_set_audio_params(void)
         esdout_mixer_init();
     ebps = frequency * channels;
     if (format == FMT_U16_BE || format == FMT_U16_LE ||
-        format == FMT_S16_BE || format == FMT_S16_LE ||
-        format == FMT_S16_NE || format == FMT_U16_NE)
+        format == FMT_S16_BE || format == FMT_S16_LE)
         ebps *= 2;
 }
 
