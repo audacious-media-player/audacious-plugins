@@ -1331,23 +1331,17 @@ else
     AC_MSG_RESULT([*** paranormal plugin disabled by request ***])
 fi
 
-AC_ARG_ENABLE(xspf,
-[  --disable-xspf          disable XSPF support. (default=enabled)],
-[have_xspf=$enableval], [have_xspf=yes])
-
-AM_PATH_XML2(2.0.0, , [
-	AC_MSG_WARN([*** libxml2 is not installed. Paranormal nor XSPF support will not be built. ***])
-	have_paranormal="no"
-	have_xspf="no"
-])
-
 if test "x$have_paranormal" = "xyes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS paranormal"
 fi
 
-if test "x$have_xspf" = "xyes"; then
-	CONTAINER_PLUGINS="$CONTAINER_PLUGINS xspf"
-fi
+AM_PATH_XML2(2.0.0, , [
+	AC_MSG_ERROR([*** libxml2 is not found! It is required for certain essential plugins. ***])
+])
+
+
+have_xspf="yes"
+CONTAINER_PLUGINS="$CONTAINER_PLUGINS xspf"
 
 dnl *** CUE
 
