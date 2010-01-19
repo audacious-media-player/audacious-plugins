@@ -96,7 +96,7 @@ ffaudio_probe(const gchar *filename, VFSFile *file)
 
     _DEBUG("probing for %s, filehandle %p", filename, file);
 
-    g_snprintf(uribuf, sizeof(uribuf), "audvfsptr:%p", file);
+    g_snprintf(uribuf, sizeof(uribuf), "audvfsptr:%p", (void *) file);
     if ((ret = av_open_input_file(&ic, uribuf, NULL, 0, NULL)) < 0) {
         _DEBUG("ic is NULL, ret %d/%s", ret, strerror(-ret));
         return 0;
@@ -289,7 +289,7 @@ ffaudio_play_file(InputPlayback *playback)
     AVCodecContext *c = NULL;
     AVFormatContext *ic = NULL;
     AVStream *s = NULL;
-    AVPacket pkt = {};
+    AVPacket pkt;
     guint8 *outbuf = NULL, *resbuf = NULL;
     gint i, stream_id, errcount;
     gint in_sample_size, out_sample_size, chunk_size;
@@ -704,4 +704,4 @@ InputPlugin ffaudio_ip = {
 
 static InputPlugin *ffaudio_iplist[] = { &ffaudio_ip, NULL };
 
-SIMPLE_INPUT_PLUGIN(ffaudio, ffaudio_iplist);
+SIMPLE_INPUT_PLUGIN (ffaudio, ffaudio_iplist)

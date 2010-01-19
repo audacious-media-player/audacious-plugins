@@ -147,8 +147,7 @@ static void free_lameid3(lameid3_t *p)
     p->genre = NULL;
     p->year = NULL;
     p->track_number = NULL;
-
-};
+}
 
 static void lame_debugf(const char *format, va_list ap)
 {

@@ -114,7 +114,7 @@ OutputPlugin file_op =
 
 OutputPlugin *file_oplist[] = { &file_op, NULL };
 
-SIMPLE_OUTPUT_PLUGIN(filewriter, file_oplist);
+SIMPLE_OUTPUT_PLUGIN (filewriter, file_oplist)
 
 FileWriter *plugins[FILEEXT_MAX] = {
     &wav_plugin,

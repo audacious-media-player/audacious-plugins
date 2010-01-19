@@ -120,7 +120,7 @@ static size_t unix_fread (gpointer ptr, size_t size, size_t nitems, VFSFile *
 
     while (total < goal)
     {
-        gint readed = read (handle, ptr + total, goal - total);
+        gint readed = read (handle, (gchar *) ptr + total, goal - total);
 
         if (readed == -1)
         {
@@ -150,7 +150,7 @@ static size_t unix_fwrite (gconstpointer ptr, size_t size, size_t nitems,
 
     while (total < goal)
     {
-        gint written = write (handle, ptr + total, goal - total);
+        gint written = write (handle, (gchar *) ptr + total, goal - total);
 
         if (written == -1)
         {
@@ -277,4 +277,4 @@ static void unix_init (void)
     aud_vfs_register_transport (& constructor);
 }
 
-DECLARE_PLUGIN (unix_io, unix_init, NULL);
+DECLARE_PLUGIN (unix_io, unix_init, NULL)

@@ -79,4 +79,4 @@ void cd_cleanup (void)
         gtk_widget_destroy (items[count]);
 }
 
-DECLARE_PLUGIN (cd-menu-items, cd_init, cd_cleanup);
+DECLARE_PLUGIN (cd-menu-items, cd_init, cd_cleanup)

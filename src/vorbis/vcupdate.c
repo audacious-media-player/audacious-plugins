@@ -56,7 +56,7 @@ dictionary_from_vorbis_comment(vorbis_comment * vc)
 
         AUDDBG("%s\n", vc->user_comments[i]);
         frags = g_strsplit(vc->user_comments[i], "=", 2);
-      
+
         /* FIXME: need more rigorous checks to guard against
            borqued comments */
 
@@ -76,9 +76,9 @@ dictionary_to_vorbis_comment(vorbis_comment * vc, mowgli_dictionary_t * dict)
 {
     mowgli_dictionary_iteration_state_t state;
     gchar *field;
-    
+
     vorbis_comment_clear(vc);
-  
+
     MOWGLI_DICTIONARY_FOREACH(field, &state, dict) {
         vorbis_comment_add_tag(vc, state.cur->key, field);
     }
@@ -87,9 +87,9 @@ dictionary_to_vorbis_comment(vorbis_comment * vc, mowgli_dictionary_t * dict)
 static void
 insert_str_tuple_field_to_dictionary(Tuple *tuple, int fieldn, mowgli_dictionary_t *dict, char *key)
 {
-    
+
     if(mowgli_dictionary_find(dict, key) != NULL) g_free(mowgli_dictionary_delete(dict, key));
-    
+
     gchar *tmp = (gchar*)aud_tuple_get_string(tuple, fieldn, NULL);
     if(tmp != NULL && strlen(tmp) != 0) mowgli_dictionary_add(dict, key, g_strdup(tmp));
 }
@@ -100,7 +100,7 @@ insert_int_tuple_field_to_dictionary(Tuple *tuple, int fieldn, mowgli_dictionary
     int val;
 
     if(mowgli_dictionary_find(dict, key) != NULL) g_free(mowgli_dictionary_delete(dict, key));
-    
+
     if(aud_tuple_get_value_type(tuple, fieldn, NULL) == TUPLE_INT && (val = aud_tuple_get_int(tuple, fieldn, NULL)) >= 0) {
         gchar *tmp = g_strdup_printf("%d", val);
         mowgli_dictionary_add(dict, key, tmp);
@@ -123,14 +123,14 @@ vorbis_update_song_tuple (Tuple *tuple, VFSFile *fd)
     gboolean ret;
 
     if(!tuple || !fd) return FALSE;
-    
+
     state = vcedit_new_state();
 
     if(vcedit_open(state, fd) < 0) {
         vcedit_clear(state);
         return FALSE;
     }
-    
+
     comment = vcedit_comments(state);
     dict = dictionary_from_vorbis_comment(comment);
 
@@ -139,13 +139,13 @@ vorbis_update_song_tuple (Tuple *tuple, VFSFile *fd)
     insert_str_tuple_field_to_dictionary(tuple, FIELD_ALBUM, dict, "album");
     insert_str_tuple_field_to_dictionary(tuple, FIELD_COMMENT, dict, "comment");
     insert_str_tuple_field_to_dictionary(tuple, FIELD_GENRE, dict, "genre");
-    
+
     insert_int_tuple_field_to_dictionary(tuple, FIELD_YEAR, dict, "date");
     insert_int_tuple_field_to_dictionary(tuple, FIELD_TRACK_NUMBER, dict, "tracknumber");
-    
+
     dictionary_to_vorbis_comment(comment, dict);
     mowgli_dictionary_destroy(dict, destroy_cb, NULL);
-    
+
     ret = write_and_pivot_files(state);
 
     vcedit_clear(state);
@@ -159,7 +159,7 @@ aud_vfs_stdio_urldecode_path(const gchar * encoded_path)
 {
     const gchar *cur, *ext;
     gchar *path, *tmp;
-    gint realchar;
+    guint realchar;
 
     if (!encoded_path)
         return NULL;
@@ -203,7 +203,7 @@ write_and_pivot_files(vcedit_state * state)
     gint retval;
     gchar *tmpfn, *unq_tmpfn, *unq_in;
     VFSFile *out;
-    
+
     tmpfn = g_strdup_printf("%s.XXXXXX", ((VFSFile*)state->in)->uri);
     mktemp(tmpfn);
 

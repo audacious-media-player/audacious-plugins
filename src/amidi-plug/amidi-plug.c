@@ -23,7 +23,7 @@
 
 InputPlugin *amidiplug_iplist[] = { &amidiplug_ip, NULL };
 
-DECLARE_PLUGIN(amidi-plug, NULL, NULL, amidiplug_iplist, NULL, NULL, NULL, NULL, NULL);
+SIMPLE_INPUT_PLUGIN (amidi-plug, amidiplug_iplist)
 
 static GMutex * init_mutex;
 static gboolean initted;

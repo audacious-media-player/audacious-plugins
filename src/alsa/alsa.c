@@ -122,11 +122,11 @@ static void * pump (void * unused)
         {
             gint part = alsa_buffer_length - alsa_buffer_data_start;
 
-            send_audio (alsa_buffer + alsa_buffer_data_start, part);
+            send_audio ((gchar *) alsa_buffer + alsa_buffer_data_start, part);
             send_audio (alsa_buffer, writable - part);
         }
         else
-            send_audio (alsa_buffer + alsa_buffer_data_start, writable);
+            send_audio ((gchar *) alsa_buffer + alsa_buffer_data_start, writable);
 
         alsa_buffer_data_length -= writable;
         alsa_buffer_data_start = (alsa_buffer_data_start + writable) %

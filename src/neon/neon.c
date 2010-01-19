@@ -616,7 +616,8 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
             handle->request = NULL;
 
             if (NULL == rediruri) {
-                _ERROR("<%p> Could not parse redirect response", handle);
+                _ERROR ("<%p> Could not parse redirect response", (void *)
+                 handle);
                 _LEAVE -1;
             }
             ne_uri_free(handle->purl);
@@ -627,10 +628,13 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
         default:
         ERROR:
             /* Something went wrong. */
-            _ERROR("<%p> Could not open URL: %d (%d)", handle, ret, status->code);
-            if (0 != ret) {
-                _ERROR("<%p> neon error string: %s", handle, ne_get_error(handle->session));
-            }
+            _ERROR ("<%p> Could not open URL: %d (%d)", (void *) handle, ret,
+             status->code);
+
+            if (ret)
+                _ERROR ("<%p> neon error string: %s", (void *) handle,
+                 ne_get_error (handle->session));
+
             ne_request_destroy(handle->request);
             handle->request = NULL;
             _LEAVE -1;
@@ -665,11 +669,13 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
 
     if (use_proxy) {
         if (FALSE == aud_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host)) {
-            _ERROR("<%p> Could not read proxy host, disabling proxy use", handle);
+            _ERROR ("<%p> Could not read proxy host, disabling proxy use",
+             (void *) handle);
             use_proxy = FALSE;
         }
         if (FALSE == aud_cfg_db_get_string(db, NULL, "proxy_port", &proxy_port_s)) {
-            _ERROR("<%p> Could not read proxy port, disabling proxy use", handle);
+            _ERROR ("<%p> Could not read proxy port, disabling proxy use",
+             (void *) handle);
             use_proxy = FALSE;
         }
         proxy_port = strtoul(proxy_port_s, &endptr, 10);
@@ -677,7 +683,8 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
             /*
              * Invalid data
              */
-            _ERROR("<%p> Invalid proxy port, disabling proxy use", handle);
+            _ERROR ("<%p> Invalid proxy port, disabling proxy use", (void *)
+             handle);
             use_proxy = FALSE;
         }
     }
@@ -687,7 +694,7 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
 
     _DEBUG("<%p> Parsing URL", handle);
     if (0 != ne_uri_parse(handle->url, handle->purl)) {
-        _ERROR("<%p> Could not parse URL '%s'", handle, handle->url);
+        _ERROR ("<%p> Could not parse URL '%s'", (void *) handle, handle->url);
         _LEAVE -1;
     }
 
@@ -744,7 +751,8 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
      * If we get here, our redirect count exceeded
      */
 
-    _ERROR("<%p> Redirect count exceeded for URL %s", handle, handle->url);
+    _ERROR ("<%p> Redirect count exceeded for URL %s", (void *) handle,
+     handle->url);
 
     _LEAVE 1;
 }
@@ -772,14 +780,14 @@ static gint fill_buffer(struct neon_handle* h) {
             _DEBUG("<%p> End of file encountered", h);
             _LEAVE 1;
         } else {
-            _ERROR("<%p> Error while reading from the network", h);
+            _ERROR ("<%p> Error while reading from the network", (void *) h);
             _LEAVE -1;
         }
     }
     _DEBUG("<%p> Read %d bytes from the network", h, bsize);
 
     if (0 != write_rb(&(h->rb), buffer, bsize)) {
-        _ERROR("<%p> Error putting data into buffer", h);
+        _ERROR ("<%p> Error putting data into buffer", (void *) h);
         _LEAVE -1;
     }
 
@@ -803,7 +811,7 @@ static int fill_buffer_limit(struct neon_handle* h, unsigned int maxfree) {
     while (bfree > maxfree) {
         ret = fill_buffer(h);
         if (-1 == ret) {
-            _ERROR("<%p> Error while filling buffer", h);
+            _ERROR ("<%p> Error while filling buffer", (void *) h);
             _LEAVE ret;
         } else if (1 == ret) {
             /*
@@ -849,7 +857,8 @@ static gpointer reader_thread(void* data) {
                  * Set the error flag and terminate the
                  * reader thread.
                  */
-                _ERROR("<%p> Error while reading from the network. Terminating reader thread", h);
+                _ERROR ("<%p> Error while reading from the network. "
+                 "Terminating reader thread", (void *) h);
                 h->reader_status.status = NEON_READER_ERROR;
                 g_mutex_unlock(h->reader_status.mutex);
                 _LEAVE NULL;
@@ -912,14 +921,14 @@ VFSFile* neon_aud_vfs_fopen_impl(const gchar* path, const gchar* mode) {
     _DEBUG("Allocated new handle: %p", handle);
 
     if (NULL == (handle->url = strdup(path))) {
-        _ERROR("<%p> Could not copy URL string", handle);
+        _ERROR ("<%p> Could not copy URL string", (void *) handle);
         handle_free(handle);
         g_free(file);
         _LEAVE NULL;
     }
 
     if (0 != open_handle(handle, 0)) {
-        _ERROR("<%p> Could not open URL", handle);
+        _ERROR ("<%p> Could not open URL", (void *) handle);
         handle_free(handle);
         g_free(file);
         _LEAVE NULL;
@@ -974,7 +983,7 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
     _ENTER;
 
     if (NULL == h->request) {
-        _ERROR("<%p> No request to read from, seek gone wrong?", h);
+        _ERROR ("<%p> No request to read from, seek gone wrong?", (void *) h);
         _LEAVE 0;
     }
 
@@ -995,7 +1004,7 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
         g_mutex_lock(h->reader_status.mutex);
         if (NEON_READER_RUN == h->reader_status.status) {
             g_mutex_unlock(h->reader_status.mutex);
-            _ERROR("<%p> Buffer underrun, trying rebuffering", h);
+            _ERROR ("<%p> Buffer underrun, trying rebuffering", (void *) h);
             kill_reader(h);
 
             /*
@@ -1007,7 +1016,8 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
                 /*
                  * Reader thread did not terminate gracefully.
                  */
-                _ERROR("<%p> Reader thread did not terminate gracefully: %d", h, h->reader_status.status);
+                _ERROR ("<%p> Reader thread did not terminate gracefully: %d",
+                 (void *) h, h->reader_status.status);
                 _LEAVE 0;
             }
         } else {
@@ -1027,7 +1037,7 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
             ret = fill_buffer_limit(h, NEON_BUFSIZE/2);
 
             if (-1 == ret) {
-                _ERROR("<%p> Error while reading from the network", h);
+                _ERROR ("<%p> Error while reading from the network", (void *) h);
                 _LEAVE 0;
             } else if (1 == ret) {
                 _DEBUG("<%p> EOF during initial read", h);
@@ -1045,7 +1055,7 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
                 if (NULL == (h->reader = g_thread_create(reader_thread, h, TRUE, NULL))) {
                     h->reader_status.reading = FALSE;
                     g_mutex_unlock(h->reader_status.mutex);
-                    _ERROR("<%p> Error creating reader thread!", h);
+                    _ERROR ("<%p> Error creating reader thread!", (void *) h);
                     _LEAVE 0;
                 }
                 h->reader_status.status = NEON_READER_RUN;
@@ -1106,7 +1116,8 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
                  * likely on our own request.
                  * We should not get here.
                  */
-                _ERROR("<%p> Reader thread terminated and fread() called. How did we get here?", h);
+                _ERROR ("<%p> Reader thread terminated and fread() called. How "
+                 "did we get here?", (void *) h);
                 g_mutex_unlock(h->reader_status.mutex);
                 kill_reader(h);
                 _LEAVE 0;
@@ -1121,7 +1132,7 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
         /*
          * The buffer is still empty, we can deliver no data!
          */
-        _ERROR("<%p> Buffer still underrun, fatal.", h);
+        _ERROR ("<%p> Buffer still underrun, fatal.", (void *) h);
         _LEAVE 0;
     }
 
@@ -1146,7 +1157,8 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
                  * so we'll deliver the metadata as normal data to the reader and
                  * hope for the best.
                  */
-                _ERROR("<%p> Buffer underrun when reading metadata. Expect audio degradation", h);
+                _ERROR ("<%p> Buffer underrun when reading metadata. Expect "
+                 "audio degradation", (void *) h);
                 h->icy_metaleft = h->icy_metaint + (icy_metalen*16);
             } else {
                 /*
@@ -1203,7 +1215,7 @@ gsize neon_aud_vfs_fwrite_impl(gconstpointer ptr, gsize size, gsize nmemb, VFSFi
 
     _ENTER;
 
-    _ERROR("<%p> NOT IMPLEMENTED", file->handle);
+    _ERROR ("<%p> NOT IMPLEMENTED", (void *) file->handle);
 
     _LEAVE 0;
 }
@@ -1217,7 +1229,7 @@ gint neon_aud_vfs_getc_impl(VFSFile* file) {
     _ENTER;
 
     if (1 != neon_aud_vfs_fread_impl(&c, 1, 1, file)) {
-        _ERROR("<%p> Could not getc()!", file->handle);
+        _ERROR ("<%p> Could not getc()!", (void *) file->handle);
         _LEAVE -1;
     }
 
@@ -1232,7 +1244,7 @@ gint neon_aud_vfs_ungetc_impl(gint c, VFSFile* stream) {
 
     _ENTER;
 
-    _ERROR("<%p> NOT IMPLEMENTED", stream->handle);
+    _ERROR ("<%p> NOT IMPLEMENTED", (void *) stream->handle);
 
     _LEAVE 0;
 }
@@ -1288,7 +1300,7 @@ gint neon_aud_vfs_truncate_impl(VFSFile* file, glong size) {
 
     _ENTER;
 
-    _ERROR("<%p> NOT IMPLEMENTED", file->handle);
+    _ERROR ("<%p> NOT IMPLEMENTED", (void *) file->handle);
 
     _LEAVE 0;
 }
@@ -1329,18 +1341,19 @@ gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
             newpos = content_length + offset;
             break;
         default:
-            _ERROR("<%p> Invalid whence specified", h);
+            _ERROR ("<%p> Invalid whence specified", (void *) h);
             _LEAVE -1;
     }
 
     _DEBUG("<%p> Position to seek to: %ld, current: %ld", h, newpos, h->pos);
     if (0 > newpos) {
-        _ERROR("<%p> Can not seek before start of stream", h);
+        _ERROR ("<%p> Can not seek before start of stream", (void *) h);
         _LEAVE -1;
     }
 
     if (newpos >= content_length) {
-        _ERROR("<%p> Can not seek beyond end of stream (%ld >= %ld)", h, newpos, content_length);
+        _ERROR ("<%p> Can not seek beyond end of stream (%ld >= %ld)", (void *)
+         h, newpos, content_length);
         _LEAVE -1;
     }
 
@@ -1375,7 +1388,7 @@ gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
          * to NULL, so that fread() will error out on the next
          * read request
          */
-        _ERROR("<%p> Error while creating new request!", h);
+        _ERROR ("<%p> Error while creating new request!", (void *) h);
         h->request = NULL;
         _LEAVE -1;
     }

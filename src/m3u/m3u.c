@@ -207,4 +207,4 @@ static void cleanup(void)
 	aud_playlist_container_unregister(&plc_m3u);
 }
 
-DECLARE_PLUGIN(m3u, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN (m3u, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL)

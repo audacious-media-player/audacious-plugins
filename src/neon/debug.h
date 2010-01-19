@@ -22,15 +22,13 @@
 
 #define _ENTER _DEBUG("enter")
 #define _LEAVE _DEBUG("leave"); return
-#define _MESSAGE(tag, string, ...) do { fprintf(stderr, "%s: neon: %s:%d (%s): " string "\n", \
-    tag, __FILE__, __LINE__, __func__, ##__VA_ARGS__); } while(0)
 
-#define _ERROR(...) _MESSAGE("ERROR", __VA_ARGS__)
+#define _ERROR(...) printf ("neon: " __VA_ARGS__)
 
 #ifdef NEON_DEBUG
-#define _DEBUG(...) _MESSAGE("DEBUG",  __VA_ARGS__)
+#define _DEBUG _ERROR
 #else
-#define _DEBUG(...) {}
+#define _DEBUG(...)
 #endif
 
 #endif

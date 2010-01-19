@@ -44,7 +44,7 @@ InputPlugin flac_ip = {
 
 InputPlugin *flac_iplist[] = { &flac_ip, NULL };
 
-DECLARE_PLUGIN(flacng, NULL, NULL, flac_iplist, NULL, NULL, NULL, NULL, NULL);
+SIMPLE_INPUT_PLUGIN (flacng, flac_iplist)
 
 FLAC__StreamDecoder* test_decoder;
 FLAC__StreamDecoder* main_decoder;
@@ -375,7 +375,7 @@ static gpointer flac_play_loop(gpointer arg)
                 main_info->stream.channels, main_info->frame.channels);
             break;
         }
-        
+
         g_mutex_lock(seek_mutex);
 
         if (seek_value >= 0)
@@ -455,11 +455,11 @@ static gpointer flac_play_loop(gpointer arg)
              */
 
             _DEBUG("End of stream reached, draining output buffer");
-			
+
             while (playback->output->buffer_playing() && playback->playing == TRUE) {
-                g_usleep(40000);       
+                g_usleep(40000);
             }
-            
+
             playback->playing = FALSE;
         }
     }
@@ -539,7 +539,7 @@ static void flac_stop(InputPlayback *playback)
         g_mutex_unlock(seek_mutex);
         g_thread_join(playback->thread);
         playback->thread = NULL;
-        
+
         reset_info(main_info, TRUE);
     }
     else
