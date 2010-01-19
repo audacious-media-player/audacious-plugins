@@ -189,9 +189,8 @@ gboolean der_read_content(struct DerData* data, struct DerData* content) {
         &lengthStart,
         &content->type
         );
-    if (!typeOk) {
+    if (!typeOk)
         return FALSE;
-    }
 
     content->bufferEnd = data->bufferEnd;
     return der_read_content_length(
@@ -221,9 +220,8 @@ gboolean der_read_next(
         &lengthStart,
         &nextContent->type
         );
-    if (!typeOk) {
+    if (!typeOk)
         return FALSE;
-    }
 
     unsigned char* nextContentStart = NULL;
     return der_read_content_length(
@@ -292,7 +290,7 @@ gboolean cert_get_hash(const ne_ssl_certificate* cert, guint32* out_hash) {
     aud_md5_finish(&md5state, md5pword);
 
     guint32 hash = 0;
-    int i = 0;
+    gint i = 0;
     // Hash is reverse of four first bytes of MD5 checksum of DER encoded
     // subject ASN.1 field.
     for (i = HASH_BYTES - 1; i >= 0; i--) {
@@ -317,9 +315,8 @@ gboolean is_signer_of_cert(
     ) {
     const ne_ssl_certificate* certSigner = cert;
     while (certSigner != NULL) {
-        if (ne_ssl_cert_cmp(signer, certSigner) == 0) {
+        if (ne_ssl_cert_cmp(signer, certSigner) == 0)
             return TRUE;
-        }
         certSigner = ne_ssl_cert_signedby(certSigner);
     }
     return FALSE;
@@ -338,9 +335,8 @@ gboolean file_is_signer_of_cert(
     if (signer != NULL) {
         gboolean signOk = is_signer_of_cert(signer, cert);
         ne_ssl_cert_free(signer);
-        if (signOk) {
+        if (signOk)
             return TRUE;
-        }
     }
     return FALSE;
 }
@@ -364,13 +360,12 @@ gboolean validate_directory_certs(
         // Construct certificate name.
         gchar certFilename[sizeof("xxxxxxxx.nnnnnnnnnn") + 1] = {0};
         g_snprintf(certFilename, sizeof(certFilename), "%08x.%d", certHash, certId);
-        char* certPath = g_build_filename(directory, certFilename, NULL);
+        gchar* certPath = g_build_filename(directory, certFilename, NULL);
 
         gboolean signOk = file_is_signer_of_cert(certPath, serverCert);
         g_free(certPath);
-        if (signOk) {
+        if (signOk)
             return TRUE;
-        }
 
         certId++;
     }
@@ -388,7 +383,7 @@ int neon_aud_vfs_verify_environment_ssl_certs(
     const ne_ssl_certificate* serverCert
     ) {
     // First check the certificate file, if we have one.
-    const char* sslCertFile = g_getenv("SSL_CERT_FILE");
+    const gchar* sslCertFile = g_getenv("SSL_CERT_FILE");
     if (sslCertFile != NULL) {
         if (file_is_signer_of_cert(sslCertFile, serverCert)) {
             return failures & ~NE_SSL_UNTRUSTED;
@@ -396,20 +391,18 @@ int neon_aud_vfs_verify_environment_ssl_certs(
     }
 
     // check if we have list of directories where certificates can be.
-    const char* sslCertDirPaths = g_getenv("SSL_CERT_DIR");
-    if (sslCertDirPaths == NULL) {
+    const gchar* sslCertDirPaths = g_getenv("SSL_CERT_DIR");
+    if (sslCertDirPaths == NULL)
         return failures;
-    }
 
     guint32 certHash = 0;
     g_return_val_if_fail(cert_get_hash(serverCert, &certHash), failures);
 
-    char* sslCertDirPathsStart = g_strdup(sslCertDirPaths);
-    char* sslCertDirPathsEnd =
-        sslCertDirPathsStart + strlen(sslCertDirPathsStart);
-    char* sslCertDir = sslCertDirPathsStart;
-    char* dirnameStart = sslCertDir;
-    char* dirnameEnd = dirnameStart;
+    gchar* sslCertDirPathsStart = g_strdup(sslCertDirPaths);
+    gchar* sslCertDirPathsEnd = sslCertDirPathsStart + strlen(sslCertDirPathsStart);
+    gchar* sslCertDir = sslCertDirPathsStart;
+    gchar* dirnameStart = sslCertDir;
+    gchar* dirnameEnd = dirnameStart;
 
     // Start going through all directories in SSL_CERT_DIR
     for (; dirnameEnd <= sslCertDirPathsEnd; dirnameEnd++) {
@@ -417,7 +410,7 @@ int neon_aud_vfs_verify_environment_ssl_certs(
             || dirnameEnd == sslCertDirPathsEnd) {
             *dirnameEnd = '\0';
             // Skip empty directories
-            if (strlen(dirnameStart) == 0) {
+            if (dirnameStart[0] == 0) {
                 // Start next directory name after the inserted zero.
                 dirnameStart = dirnameEnd + 1;
                 continue;
