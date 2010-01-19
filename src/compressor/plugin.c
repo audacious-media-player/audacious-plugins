@@ -152,4 +152,4 @@ EffectPlugin compressor_plugin =
 
 EffectPlugin * compressor_list[] = {& compressor_plugin, NULL};
 
-SIMPLE_EFFECT_PLUGIN (compressor, compressor_list);
+SIMPLE_EFFECT_PLUGIN (compressor, compressor_list)

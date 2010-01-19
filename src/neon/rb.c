@@ -106,7 +106,7 @@ void reset_rb(struct ringbuf* rb) {
     _LEAVE;
 }
 
-/* 
+/*
  * Initialize a ringbuffer structure (including
  * memory allocation.
  *
@@ -148,7 +148,7 @@ int init_rb(struct ringbuf* rb, unsigned int size) {
     _LEAVE 0;
 }
 
-/* 
+/*
  * Initialize a ringbuffer structure (including
  * memory allocation.
  * The mutex to be used is passed in the function call.
@@ -205,7 +205,7 @@ int write_rb(struct ringbuf* rb, void* buf, unsigned int size) {
          * one piece. We need to split the copy into two parts.
          */
         memcpy(rb->wp, buf, endfree);
-        memcpy(rb->buf, buf+endfree, size-endfree);
+        memcpy(rb->buf, (char *) buf + endfree, size - endfree);
         rb->wp = rb->buf + (size-endfree);
     } else if (endfree > size) {
         /*
@@ -292,7 +292,7 @@ int read_rb_locked(struct ringbuf* rb, void* buf, unsigned int size) {
              * There is enough data in the buffer, but it is fragmented.
              */
             memcpy(buf, rb->rp, endused);
-            memcpy(buf+endused, rb->buf, size-endused);
+            memcpy((char *) buf + endused, rb->buf, size - endused);
             rb->rp = rb->buf + (size-endused);
         }
     }

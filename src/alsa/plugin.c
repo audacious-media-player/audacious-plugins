@@ -44,7 +44,7 @@ static OutputPlugin plugin =
 
 static OutputPlugin * list[] = {& plugin, NULL};
 
-SIMPLE_OUTPUT_PLUGIN (alsa, list);
+SIMPLE_OUTPUT_PLUGIN (alsa, list)
 
 void alsa_about (void)
 {

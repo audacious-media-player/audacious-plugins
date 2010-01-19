@@ -134,4 +134,4 @@ static void cleanup(void)
     aud_playlist_container_unregister(&plc_pls);
 }
 
-DECLARE_PLUGIN(pls, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN (pls, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL)

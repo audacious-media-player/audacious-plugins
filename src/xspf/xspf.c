@@ -500,4 +500,5 @@ static void xspf_cleanup(void)
 }
 
 
-DECLARE_PLUGIN(xspf, xspf_init, xspf_cleanup, NULL, NULL, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN (xspf, xspf_init, xspf_cleanup, NULL, NULL, NULL, NULL, NULL,
+ NULL)

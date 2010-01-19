@@ -230,4 +230,4 @@ static void cleanup(void)
 #endif
 }
 
-DECLARE_PLUGIN(mms, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN (mms, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL)

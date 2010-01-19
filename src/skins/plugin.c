@@ -32,7 +32,7 @@
 
 #include "ui_playlist_manager.h"
 
-gchar *skins_paths[SKINS_PATH_COUNT] = {};
+gchar * skins_paths[SKINS_PATH_COUNT];
 
 Interface skins_interface =
 {
@@ -42,7 +42,7 @@ Interface skins_interface =
     .fini = skins_cleanup
 };
 
-SIMPLE_INTERFACE_PLUGIN("skinned", &skins_interface);
+SIMPLE_INTERFACE_PLUGIN ("skinned", & skins_interface)
 gboolean plugin_is_active = FALSE;
 
 static gint update_source;

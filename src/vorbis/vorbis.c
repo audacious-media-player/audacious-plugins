@@ -752,5 +752,4 @@ static InputPlugin vorbis_ip = {
 
 static InputPlugin *vorbis_iplist[] = { &vorbis_ip, NULL };
 
-DECLARE_PLUGIN(vorbis, NULL, NULL, vorbis_iplist, NULL, NULL, NULL, NULL, NULL);
-
+SIMPLE_INPUT_PLUGIN (vorbis, vorbis_iplist)

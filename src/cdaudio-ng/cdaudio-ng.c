@@ -133,8 +133,7 @@ static InputPlugin inputplugin = {
 
 InputPlugin *cdaudio_iplist[] = { &inputplugin, NULL };
 
-DECLARE_PLUGIN (cdaudio, NULL, NULL, cdaudio_iplist, NULL, NULL, NULL, NULL,
-                NULL);
+SIMPLE_INPUT_PLUGIN (cdaudio, cdaudio_iplist)
 
 
 static void cdaudio_error (const gchar * message_format, ...)
@@ -774,8 +773,8 @@ static void dae_play_loop (dae_params_t * pdae_params)
         g_mutex_unlock (mutex);
 
         for (count = 0; count < sectors; count ++)
-            playback->pass_audio (playback, FMT_S16_LE, 2, 2352, buffer + 2352 *
-             count, NULL);
+            playback->pass_audio (playback, FMT_S16_LE, 2, 2352, (gchar *)
+             buffer + 2352 * count, NULL);
 
         g_mutex_lock (mutex);
 

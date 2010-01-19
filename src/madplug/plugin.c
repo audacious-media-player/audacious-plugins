@@ -655,6 +655,6 @@ InputPlugin mad_ip = {
 
 InputPlugin *madplug_iplist[] = { &mad_ip, NULL };
 
-SIMPLE_INPUT_PLUGIN(madplug, madplug_iplist);
+SIMPLE_INPUT_PLUGIN (madplug, madplug_iplist)
 
 InputPlugin *mad_plugin = &mad_ip;
