@@ -257,8 +257,8 @@ equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
 
     if (event->button == 3)
     {
-        gtk_menu_popup (get_eq_effects_menu (), NULL, NULL, NULL, NULL, 3,
-         event->time);
+        gtk_menu_popup ((GtkMenu *) get_eq_effects_menu (), NULL, NULL, NULL,
+         NULL, 3, event->time);
         return TRUE;
     }
 
