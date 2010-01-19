@@ -38,7 +38,6 @@ InputPlugin xs_plugin_ip = {
     .stop = xs_stop,                    /* Stop playing */
     .pause = xs_pause,                  /* Pause playing */
     .seek = xs_seek,                    /* Seek time */
-    .get_time = xs_get_time,            /* Get playing time */
 
     .file_info_box = xs_fileinfo,       /* Show file-information dialog */
 
