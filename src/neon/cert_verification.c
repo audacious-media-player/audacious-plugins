@@ -17,7 +17,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <stdbool.h>
 #include <malloc.h>
 #include <string.h>
 
@@ -91,27 +90,27 @@ struct DerData {
  * Returns the tag number of DER data.
  */
 static
-bool der_read_tag_number(
+gboolean der_read_tag_number(
     unsigned char* in_buffer,
     const unsigned char* in_bufferEnd,
     unsigned char** out_lengthStart,
     enum AsnType* out_type
     ) {
     if (in_bufferEnd - in_buffer < 2) {
-        return false;
+        return FALSE;
     }
     unsigned char typeOctet = in_buffer[0];
     enum AsnType typeCode = (enum AsnType)(typeOctet & ASNTYPE_CODE_MASK);
     int typeCodeLength = 1;
     if (typeCode == ASNTYPE_VARLEN_IDENTIFIER) {
         // Variable length types are not supported.
-        return false;
+        return FALSE;
     }
     *out_type = (enum AsnType)typeCode;
 
     *out_lengthStart = in_buffer + typeCodeLength;
 
-    return true;
+    return TRUE;
 }
 
 
@@ -120,7 +119,7 @@ bool der_read_tag_number(
  * is not present.
  */
 static
-bool der_read_content_length(
+gboolean der_read_content_length(
     unsigned char* in_buffer,
     const unsigned char* in_bufferEnd,
     unsigned char** out_start,
@@ -128,17 +127,17 @@ bool der_read_content_length(
     unsigned char** out_nextStart
     ) {
     if (in_bufferEnd - in_buffer < 1) {
-        return false;
+        return FALSE;
     }
     unsigned char lengthDescription = in_buffer[0];
     if (lengthDescription <= LENGTH_SHORTFORM_MAX) {
         *out_start = in_buffer + 1;
         *out_end = *out_start + lengthDescription;
         if (in_bufferEnd < *out_end) {
-            return false;
+            return FALSE;
         }
         *out_nextStart = *out_end;
-        return true;
+        return TRUE;
     } else if (lengthDescription == LENGTH_INDEFINITE_VALUE) {
         *out_start = in_buffer + 1;
         unsigned char* currentPos = in_buffer + 1;
@@ -146,20 +145,20 @@ bool der_read_content_length(
             if (*currentPos == '\0' && *(currentPos + 1) == '\0') {
                 *out_end = currentPos;
                 *out_nextStart = *out_end + 1;
-                return true;
+                return TRUE;
             }
         }
-        return false;
+        return FALSE;
     }
 
     size_t lengthOctets = lengthDescription & LENGTH_LONGFORM_MASK;
     if (lengthOctets > sizeof(size_t)) {
         // We can't handle longer objects than size_t can represent.
-        return false;
+        return FALSE;
     }
 
     if (in_bufferEnd < in_buffer + 1 + lengthOctets) {
-        return false;
+        return FALSE;
     }
 
     size_t contentLength = 0;
@@ -172,26 +171,26 @@ bool der_read_content_length(
     *out_start = in_buffer + 1 + lengthOctets;
     *out_end = *out_start + contentLength;
     if (in_bufferEnd < *out_end) {
-        return false;
+        return FALSE;
     }
     *out_nextStart = *out_end;
-    return true;
+    return TRUE;
 }
 
 /**
  * Returns pointers that point to the content of DER data value.
  */
 static
-bool der_read_content(struct DerData* data, struct DerData* content) {
+gboolean der_read_content(struct DerData* data, struct DerData* content) {
     unsigned char* lengthStart = NULL;
-    bool typeOk = der_read_tag_number(
+    gboolean typeOk = der_read_tag_number(
         data->start,
         data->bufferEnd,
         &lengthStart,
         &content->type
         );
     if (!typeOk) {
-        return false;
+        return FALSE;
     }
 
     content->bufferEnd = data->bufferEnd;
@@ -209,21 +208,21 @@ bool der_read_content(struct DerData* data, struct DerData* content) {
  * Returns pointers that point to next DER data value.
  */
 static
-bool der_read_next(
+gboolean der_read_next(
     struct DerData* currentContent,
     struct DerData* nextContent
     ) {
     nextContent->start = currentContent->nextStart;
 
     unsigned char* lengthStart = NULL;
-    bool typeOk = der_read_tag_number(
+    gboolean typeOk = der_read_tag_number(
         currentContent->start,
         currentContent->bufferEnd,
         &lengthStart,
         &nextContent->type
         );
     if (!typeOk) {
-        return false;
+        return FALSE;
     }
 
     unsigned char* nextContentStart = NULL;
@@ -243,10 +242,10 @@ bool der_read_next(
  * Certificate hash is just 4 first octets of MD5 sum of certificate subject id
  * DER format.
  *
- * @return true if given certificate could be parsed by this, false otherwise.
+ * @return TRUE if given certificate could be parsed by this, FALSE otherwise.
  */
 static
-bool cert_get_hash(const ne_ssl_certificate* cert, guint32* out_hash) {
+gboolean cert_get_hash(const ne_ssl_certificate* cert, guint32* out_hash) {
     char* certPem = ne_ssl_cert_export(cert);
     g_return_val_if_fail(certPem != NULL, 1);
     gsize derLength = 0;
@@ -263,26 +262,26 @@ bool cert_get_hash(const ne_ssl_certificate* cert, guint32* out_hash) {
     // Walk through certificate content until we reach subject field.
 
     // certificate
-    g_return_val_if_fail(der_read_content(&data, &content), false);
-    g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, false);
+    g_return_val_if_fail(der_read_content(&data, &content), FALSE);
+    g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, FALSE);
     // tbsCertificate
-    g_return_val_if_fail(der_read_content(&content, &content), false);
-    g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, false);
+    g_return_val_if_fail(der_read_content(&content, &content), FALSE);
+    g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, FALSE);
     // version + serialNumber
-    g_return_val_if_fail(der_read_content(&content, &content), false);
-    g_return_val_if_fail(ASNTYPE_INTEGER == content.type, false);
+    g_return_val_if_fail(der_read_content(&content, &content), FALSE);
+    g_return_val_if_fail(ASNTYPE_INTEGER == content.type, FALSE);
     // signature
-    g_return_val_if_fail(der_read_next(&content, &content), false);
-    g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, false);
+    g_return_val_if_fail(der_read_next(&content, &content), FALSE);
+    g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, FALSE);
     // issuer
-    g_return_val_if_fail(der_read_next(&content, &content), false);
-    g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, false);
+    g_return_val_if_fail(der_read_next(&content, &content), FALSE);
+    g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, FALSE);
     // validity
-    g_return_val_if_fail(der_read_next(&content, &content), false);
-    g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, false);
+    g_return_val_if_fail(der_read_next(&content, &content), FALSE);
+    g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, FALSE);
     // subject
-    g_return_val_if_fail(der_read_next(&content, &content), false);
-    g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, false);
+    g_return_val_if_fail(der_read_next(&content, &content), FALSE);
+    g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, FALSE);
 
     // Calculate MD5 sum of subject.
     aud_md5state_t md5state;
@@ -301,7 +300,7 @@ bool cert_get_hash(const ne_ssl_certificate* cert, guint32* out_hash) {
         hash |= md5pword[i];
     }
     *out_hash = hash;
-    return true;
+    return TRUE;
 }
 
 
@@ -312,18 +311,18 @@ bool cert_get_hash(const ne_ssl_certificate* cert, guint32* out_hash) {
  * of them is same as given signer.
  */
 static
-bool is_signer_of_cert(
+gboolean is_signer_of_cert(
     const ne_ssl_certificate* signer,
     const ne_ssl_certificate* cert
     ) {
     const ne_ssl_certificate* certSigner = cert;
     while (certSigner != NULL) {
         if (ne_ssl_cert_cmp(signer, certSigner) == 0) {
-            return true;
+            return TRUE;
         }
         certSigner = ne_ssl_cert_signedby(certSigner);
     }
-    return false;
+    return FALSE;
 }
 
 
@@ -331,19 +330,19 @@ bool is_signer_of_cert(
  * Checks if given file includes certificate that has signed given certificate.
  */
 static
-bool file_is_signer_of_cert(
+gboolean file_is_signer_of_cert(
     const char* filename,
     const ne_ssl_certificate* cert
     ) {
     ne_ssl_certificate* signer = ne_ssl_cert_read(filename);
     if (signer != NULL) {
-        bool signOk = is_signer_of_cert(signer, cert);
+        gboolean signOk = is_signer_of_cert(signer, cert);
         ne_ssl_cert_free(signer);
         if (signOk) {
-            return true;
+            return TRUE;
         }
     }
-    return false;
+    return FALSE;
 }
 
 
@@ -352,7 +351,7 @@ bool file_is_signer_of_cert(
  * Checks if directory includes a file that can be signer of given certificate.
  */
 static
-bool validate_directory_certs(
+gboolean validate_directory_certs(
     const char* directory,
     const ne_ssl_certificate* serverCert,
     guint32 certHash
@@ -367,15 +366,15 @@ bool validate_directory_certs(
         g_snprintf(certFilename, sizeof(certFilename), "%08x.%d", certHash, certId);
         char* certPath = g_build_filename(directory, certFilename, NULL);
 
-        bool signOk = file_is_signer_of_cert(certPath, serverCert);
+        gboolean signOk = file_is_signer_of_cert(certPath, serverCert);
         g_free(certPath);
         if (signOk) {
-            return true;
+            return TRUE;
         }
 
         certId++;
     }
-    return false;
+    return FALSE;
 }
 
 
