@@ -363,9 +363,8 @@ bool validate_directory_certs(
     guint32 certId = 0;
     while (certId < MAX_CERT_CHECKS) {
         // Construct certificate name.
-        char certFilename[sizeof("xxxxxxxx.nnnnnnnnnn") + 1] = {0};
-        snprintf(certFilename, sizeof("xxxxxxxx.nnnnnnnnnn"),
-                 "%08x.%d", certHash, certId);
+        gchar certFilename[sizeof("xxxxxxxx.nnnnnnnnnn") + 1] = {0};
+        g_snprintf(certFilename, sizeof(certFilename), "%08x.%d", certHash, certId);
         char* certPath = g_build_filename(directory, certFilename, NULL);
 
         bool signOk = file_is_signer_of_cert(certPath, serverCert);
