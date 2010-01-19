@@ -33,7 +33,7 @@ static void * alsa_buffer;
 static gint alsa_buffer_length, alsa_buffer_data_start, alsa_buffer_data_length;
 
 static gint64 alsa_time; /* microseconds */
-static gboolean alsa_paused;
+static gboolean alsa_paused, alsa_filled;
 static gint alsa_paused_time;
 
 static gboolean pump_quit;
@@ -76,14 +76,21 @@ static void * pump (void * unused)
 
     while (1)
     {
-        GTimeVal wake;
-        gint writable;
+        GTimeVal start, wake;
+        gint waited = 0, writable;
 
         if (! pump_quit && ! alsa_paused)
         {
-            g_get_current_time (& wake);
-            g_time_val_add (& wake, 1000 * LEAST_BUFFER / 2);
+            g_get_current_time (& start);
+            memcpy (& wake, & start, sizeof (GTimeVal));
+            g_time_val_add (& wake, 1000 * LEAST_BUFFER / 4);
             g_cond_timed_wait (alsa_cond, alsa_mutex, & wake);
+            g_get_current_time (& wake);
+            waited = (wake.tv_sec - start.tv_sec) * 1000 + (wake.tv_usec -
+             start.tv_usec) / 1000;
+
+            if (waited > LEAST_BUFFER / 2)
+                ERROR ("Halted for %d ms; expect underruns.\n", waited);
         }
 
         if (pump_quit)
@@ -96,15 +103,12 @@ static void * pump (void * unused)
         }
 
         CHECK (snd_pcm_status, alsa_handle, status);
-        writable = snd_pcm_frames_to_bytes (alsa_handle,
-         snd_pcm_status_get_avail (status));
-
-        /* Workaround for PulseAudio ... ugh. */
+        writable = snd_pcm_status_get_avail (status);
 
         if (writable == 0)
         {
             if (timeout < 1000)
-                timeout += LEAST_BUFFER / 2;
+                timeout += waited;
             else
             {
                 ERROR ("ALSA seems to have locked up; resetting.\n");
@@ -116,7 +120,20 @@ static void * pump (void * unused)
 
         timeout = 0;
 
-        writable = MIN (writable, alsa_buffer_data_length);
+        if (alsa_filled && writable * 1000 / alsa_rate > LEAST_BUFFER && waited
+         <= LEAST_BUFFER / 2)
+            ERROR ("%d ms of data consumed in %d ms; expect underruns.\n",
+             writable * 1000 / alsa_rate, waited);
+
+        writable = snd_pcm_frames_to_bytes (alsa_handle, writable);
+
+        if (writable > alsa_buffer_data_length)
+        {
+            alsa_filled = FALSE;
+            writable = alsa_buffer_data_length;
+        }
+        else
+            alsa_filled = TRUE;
 
         if (writable > alsa_buffer_length - alsa_buffer_data_start)
         {
@@ -263,10 +280,11 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
     CHECK (snd_pcm_hw_params_set_format, alsa_handle, params, format);
     CHECK (snd_pcm_hw_params_set_channels, alsa_handle, params, channels);
     CHECK (snd_pcm_hw_params_set_rate, alsa_handle, params, rate, 0);
-    useconds = 1000 * (LEAST_BUFFER * 7 / 8);
+    useconds = 1000 * (LEAST_BUFFER);
     CHECK (snd_pcm_hw_params_set_buffer_time_min, alsa_handle, params,
      & useconds, 0);
-    useconds = 1000 * MAX (LEAST_BUFFER * 9 / 8, aud_cfg->output_buffer_size / 2);
+    useconds = 1000 * MAX (LEAST_BUFFER * 11 / 10, aud_cfg->output_buffer_size /
+     2);
     CHECK (snd_pcm_hw_params_set_buffer_time_max, alsa_handle, params,
      & useconds, 0);
     CHECK (snd_pcm_hw_params, alsa_handle, params);
@@ -289,6 +307,7 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
 
     alsa_time = 0;
     alsa_paused = TRUE; /* for buffering */
+    alsa_filled = FALSE;
     alsa_paused_time = 0;
 
     pump_quit = FALSE;
@@ -432,6 +451,7 @@ void alsa_flush (gint time)
     alsa_buffer_data_length = 0;
 
     alsa_paused = TRUE; /* for buffering */
+    alsa_filled = FALSE;
     alsa_paused_time = time;
 
     CHECK (snd_pcm_drop, alsa_handle);
