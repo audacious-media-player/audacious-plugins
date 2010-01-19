@@ -288,7 +288,7 @@ bool cert_get_hash(const ne_ssl_certificate* cert, guint32* out_hash) {
     aud_md5state_t md5state;
     aud_md5_init(&md5state);
     aud_md5_append(&md5state, content.start, content.nextStart - content.start);
-    free(certDer);
+    g_free(certDer);
     unsigned char md5pword[16];
     aud_md5_finish(&md5state, md5pword);
 
