@@ -641,6 +641,9 @@ static gchar *ffaudio_fmts[] = {
     /* VQF */
     "vqf",
 
+    /* Apple Lossless */
+    "m4a",
+
     /* end of table */
     NULL
 };

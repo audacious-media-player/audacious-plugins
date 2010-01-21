@@ -132,9 +132,9 @@ CONTAINER_PLUGINS="m3u pls"
 
 dnl Check for Audacious
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 2.1],
-    [ADD_PC_REQUIRES([audacious >= 2.1])],
-    [AC_MSG_ERROR([Cannot find Audacious 2.1 or later, have you installed audacious yet?])]
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 2.3],
+    [ADD_PC_REQUIRES([audacious >= 2.3])],
+    [AC_MSG_ERROR([Cannot find Audacious 2.3 or later, have you installed audacious yet?])]
 )
 
 CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS"

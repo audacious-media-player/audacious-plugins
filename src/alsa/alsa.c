@@ -1,6 +1,6 @@
 /*
  * ALSA Output Plugin for Audacious
- * Copyright 2009 John Lindgren
+ * Copyright 2009-2010 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -90,7 +90,7 @@ static void * pump (void * unused)
              start.tv_usec) / 1000;
 
             if (waited > LEAST_BUFFER / 2)
-                ERROR ("Halted for %d ms; expect underruns.\n", waited);
+                DEBUG ("Halted for %d ms; expect underruns.\n", waited);
         }
 
         if (pump_quit)
@@ -120,9 +120,9 @@ static void * pump (void * unused)
 
         timeout = 0;
 
-        if (alsa_filled && writable * 1000 / alsa_rate > LEAST_BUFFER && waited
-         <= LEAST_BUFFER / 2)
-            ERROR ("%d ms of data consumed in %d ms; expect underruns.\n",
+        if (alsa_filled && writable * 1000 / alsa_rate > LEAST_BUFFER * 9 / 10
+         && waited <= LEAST_BUFFER / 2)
+            DEBUG ("%d ms of data consumed in %d ms; expect underruns.\n",
              writable * 1000 / alsa_rate, waited);
 
         writable = snd_pcm_frames_to_bytes (alsa_handle, writable);
@@ -563,14 +563,34 @@ void alsa_set_volume (gint left, gint right)
         goto FAILED;
 
     if (snd_mixer_selem_is_playback_mono (alsa_mixer_element))
+    {
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_MONO, MAX (left, right));
+
+        if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
+            CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
+             SND_MIXER_SCHN_MONO, MAX (left, right) != 0);
+    }
     else
     {
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_FRONT_LEFT, left);
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_FRONT_RIGHT, right);
+
+        if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
+        {
+            if (snd_mixer_selem_has_playback_switch_joined (alsa_mixer_element))
+                CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
+                 SND_MIXER_SCHN_FRONT_LEFT, MAX (left, right) != 0);
+            else
+            {
+                CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
+                 SND_MIXER_SCHN_FRONT_LEFT, left != 0);
+                CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
+                 SND_MIXER_SCHN_FRONT_RIGHT, right != 0);
+            }
+        }
     }
 
     CHECK (snd_mixer_handle_events, alsa_mixer);

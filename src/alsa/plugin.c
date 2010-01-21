@@ -49,7 +49,7 @@ SIMPLE_OUTPUT_PLUGIN (alsa, list)
 void alsa_about (void)
 {
     const gchar markup[] = "<b>ALSA Output Plugin for Audacious</b>\n"
-     "Copyright 2009 John Lindgren\n\n"
+     "Copyright 2009-2010 John Lindgren\n\n"
      "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
      "code served as a reference when the ALSA manual was not enough.\n\n"
      "Redistribution and use in source and binary forms, with or without "
