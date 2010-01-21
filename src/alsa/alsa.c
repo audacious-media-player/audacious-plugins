@@ -1,6 +1,6 @@
 /*
  * ALSA Output Plugin for Audacious
- * Copyright 2009 John Lindgren
+ * Copyright 2009-2010 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -563,14 +563,34 @@ void alsa_set_volume (gint left, gint right)
         goto FAILED;
 
     if (snd_mixer_selem_is_playback_mono (alsa_mixer_element))
+    {
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_MONO, MAX (left, right));
+
+        if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
+            CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
+             SND_MIXER_SCHN_MONO, MAX (left, right) != 0);
+    }
     else
     {
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_FRONT_LEFT, left);
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_FRONT_RIGHT, right);
+
+        if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
+        {
+            if (snd_mixer_selem_has_playback_switch_joined (alsa_mixer_element))
+                CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
+                 SND_MIXER_SCHN_FRONT_LEFT, MAX (left, right) != 0);
+            else
+            {
+                CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
+                 SND_MIXER_SCHN_FRONT_LEFT, left != 0);
+                CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
+                 SND_MIXER_SCHN_FRONT_RIGHT, right != 0);
+            }
+        }
     }
 
     CHECK (snd_mixer_handle_events, alsa_mixer);
