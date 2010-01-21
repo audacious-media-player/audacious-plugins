@@ -90,7 +90,7 @@ static void * pump (void * unused)
              start.tv_usec) / 1000;
 
             if (waited > LEAST_BUFFER / 2)
-                ERROR ("Halted for %d ms; expect underruns.\n", waited);
+                DEBUG ("Halted for %d ms; expect underruns.\n", waited);
         }
 
         if (pump_quit)
@@ -122,7 +122,7 @@ static void * pump (void * unused)
 
         if (alsa_filled && writable * 1000 / alsa_rate > LEAST_BUFFER * 9 / 10
          && waited <= LEAST_BUFFER / 2)
-            ERROR ("%d ms of data consumed in %d ms; expect underruns.\n",
+            DEBUG ("%d ms of data consumed in %d ms; expect underruns.\n",
              writable * 1000 / alsa_rate, waited);
 
         writable = snd_pcm_frames_to_bytes (alsa_handle, writable);
