@@ -31,9 +31,10 @@ static gint alsa_channels, alsa_rate;
 
 static void * alsa_buffer;
 static gint alsa_buffer_length, alsa_buffer_data_start, alsa_buffer_data_length;
+static gboolean read_locked;
 
 static gint64 alsa_time; /* microseconds */
-static gboolean alsa_paused, alsa_filled;
+static gboolean alsa_paused;
 static gint alsa_paused_time;
 
 static gboolean pump_quit;
@@ -42,114 +43,63 @@ static GThread * pump_thread;
 static snd_mixer_t * alsa_mixer;
 static snd_mixer_elem_t * alsa_mixer_element;
 
-static void send_audio (void * data, gint length)
+static gint send_audio (void * data, gint length)
 {
-    while (length > 0)
-    {
-        gint result = snd_pcm_writei (alsa_handle, data, snd_pcm_bytes_to_frames
-         (alsa_handle, length));
+    gint result = snd_pcm_writei (alsa_handle, data, snd_pcm_bytes_to_frames
+     (alsa_handle, length));
 
-        if (result < 0)
-        {
-            CHECK (snd_pcm_recover, alsa_handle, result, 0);
-            continue;
-        }
+    if (result >= 0)
+        return snd_pcm_frames_to_bytes (alsa_handle, result);
 
-        result = snd_pcm_frames_to_bytes (alsa_handle, result);
-        data = (gint8 *) data + result;
-        length -= result;
-    }
+    CHECK (snd_pcm_recover, alsa_handle, result, 0);
 
 FAILED:
-    return;
+    return 0;
 }
 
 static void * pump (void * unused)
 {
     snd_pcm_status_t * status;
-    gint timeout = 0;
+    gint length;
 
     g_mutex_lock (alsa_mutex);
+    read_locked = FALSE;
     g_cond_signal (alsa_cond);
 
     snd_pcm_status_alloca (& status);
 
-    while (1)
+    while (! pump_quit)
     {
-        GTimeVal start, wake;
-        gint waited = 0, writable;
-
-        if (! pump_quit && ! alsa_paused)
-        {
-            g_get_current_time (& start);
-            memcpy (& wake, & start, sizeof (GTimeVal));
-            g_time_val_add (& wake, 1000 * LEAST_BUFFER / 4);
-            g_cond_timed_wait (alsa_cond, alsa_mutex, & wake);
-            g_get_current_time (& wake);
-            waited = (wake.tv_sec - start.tv_sec) * 1000 + (wake.tv_usec -
-             start.tv_usec) / 1000;
-
-            if (waited > LEAST_BUFFER / 2)
-                DEBUG ("Halted for %d ms; expect underruns.\n", waited);
-        }
-
-        if (pump_quit)
-            break;
-
         if (alsa_paused)
         {
             g_cond_wait (alsa_cond, alsa_mutex);
             continue;
         }
 
-        CHECK (snd_pcm_status, alsa_handle, status);
-        writable = snd_pcm_status_get_avail (status);
+        length = snd_pcm_frames_to_bytes (alsa_handle, LEAST_BUFFER / 2 *
+         alsa_rate / 1000);
+        length = MIN (length, alsa_buffer_data_length);
+        length = MIN (length, alsa_buffer_length - alsa_buffer_data_start);
 
-        if (writable == 0)
+        if (length == 0)
         {
-            if (timeout < 1000)
-                timeout += waited;
-            else
-            {
-                ERROR ("ALSA seems to have locked up; resetting.\n");
-                CHECK (snd_pcm_prepare, alsa_handle);
-            }
-
+            g_cond_wait (alsa_cond, alsa_mutex);
             continue;
         }
 
-        timeout = 0;
+        read_locked = TRUE;
+        g_mutex_unlock (alsa_mutex);
 
-        if (alsa_filled && writable * 1000 / alsa_rate > LEAST_BUFFER * 9 / 10
-         && waited <= LEAST_BUFFER / 2)
-            DEBUG ("%d ms of data consumed in %d ms; expect underruns.\n",
-             writable * 1000 / alsa_rate, waited);
+        length = send_audio ((gchar *) alsa_buffer + alsa_buffer_data_start,
+         length);
 
-        writable = snd_pcm_frames_to_bytes (alsa_handle, writable);
+        g_mutex_lock (alsa_mutex);
 
-        if (writable > alsa_buffer_data_length)
-        {
-            alsa_filled = FALSE;
-            writable = alsa_buffer_data_length;
-        }
-        else
-            alsa_filled = TRUE;
-
-        if (writable > alsa_buffer_length - alsa_buffer_data_start)
-        {
-            gint part = alsa_buffer_length - alsa_buffer_data_start;
-
-            send_audio ((gchar *) alsa_buffer + alsa_buffer_data_start, part);
-            send_audio (alsa_buffer, writable - part);
-        }
-        else
-            send_audio ((gchar *) alsa_buffer + alsa_buffer_data_start, writable);
-
-        alsa_buffer_data_length -= writable;
-        alsa_buffer_data_start = (alsa_buffer_data_start + writable) %
+        alsa_buffer_data_start = (alsa_buffer_data_start + length) %
          alsa_buffer_length;
+        alsa_buffer_data_length -= length;
 
-    FAILED:
+        read_locked = FALSE;
         g_cond_signal (alsa_cond);
     }
 
@@ -280,7 +230,7 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
     CHECK (snd_pcm_hw_params_set_format, alsa_handle, params, format);
     CHECK (snd_pcm_hw_params_set_channels, alsa_handle, params, channels);
     CHECK (snd_pcm_hw_params_set_rate, alsa_handle, params, rate, 0);
-    useconds = 1000 * (LEAST_BUFFER);
+    useconds = 1000 * LEAST_BUFFER;
     CHECK (snd_pcm_hw_params_set_buffer_time_min, alsa_handle, params,
      & useconds, 0);
     useconds = 1000 * MAX (LEAST_BUFFER * 11 / 10, aud_cfg->output_buffer_size /
@@ -307,7 +257,6 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
 
     alsa_time = 0;
     alsa_paused = TRUE; /* for buffering */
-    alsa_filled = FALSE;
     alsa_paused_time = 0;
 
     pump_quit = FALSE;
@@ -382,6 +331,7 @@ void alsa_write_audio (void * data, gint length)
         if (alsa_paused) /* buffering completed */
             start_playback ();
 
+        g_cond_signal (alsa_cond);
         g_cond_wait (alsa_cond, alsa_mutex);
     }
 
@@ -447,16 +397,18 @@ void alsa_flush (gint time)
     g_mutex_lock (alsa_mutex);
 
     alsa_time = (gint64) time * 1000;
-    alsa_buffer_data_start = 0;
-    alsa_buffer_data_length = 0;
-
     alsa_paused = TRUE; /* for buffering */
-    alsa_filled = FALSE;
     alsa_paused_time = time;
 
     CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
+    while (read_locked)
+        g_cond_wait (alsa_cond, alsa_mutex);
+
+    alsa_buffer_data_start = 0;
+    alsa_buffer_data_length = 0;
+
     g_cond_signal (alsa_cond);
     g_mutex_unlock (alsa_mutex);
 }
