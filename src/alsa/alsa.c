@@ -282,14 +282,14 @@ void alsa_close_audio (void)
     DEBUG ("Closing audio.\n");
     g_mutex_lock (alsa_mutex);
 
-    if (pump_thread != NULL)
-    {
-        pump_quit = TRUE;
-        g_cond_signal (alsa_cond);
-        g_mutex_unlock (alsa_mutex);
-        g_thread_join (pump_thread);
-        g_mutex_lock (alsa_mutex);
-    }
+    CHECK (snd_pcm_drop, alsa_handle);
+
+FAILED:
+    pump_quit = TRUE;
+    g_cond_signal (alsa_cond);
+    g_mutex_unlock (alsa_mutex);
+    g_thread_join (pump_thread);
+    g_mutex_lock (alsa_mutex);
 
     g_free (alsa_buffer);
     snd_pcm_close (alsa_handle);
