@@ -382,14 +382,16 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
       }
     }
     else if (config.vis_type == VIS_VOICEPRINT) {
-      if(!audacious_drct_get_paused() && audacious_drct_get_playing()){/*Don't scroll when it's paused or stopped*/
-	for (y = 0; y < 16; y ++)
-	  for (x = 75; x > 0; x--)
-	    voiceprint_data[x + y * 76] = voiceprint_data[x-1+y*76];
-	  for(y=0;y<16;y++)
-	    voiceprint_data[y * 76] = vis->data[y];
-      }
-      if(audacious_drct_get_playing()){ /*Only draw the data if we're playing*/
+      if(audacious_drct_get_playing())
+      {
+          if(!audacious_drct_get_paused())
+          {
+  	      for (y = 0; y < 16; y ++)
+	          for (x = 75; x > 0; x--)
+	              voiceprint_data[x + y * 76] = voiceprint_data[x-1+y*76];
+	              for(y=0;y<16;y++)
+	                  voiceprint_data[y * 76] = vis->data[y];
+          }  
 	if(config.voiceprint_mode == VOICEPRINT_NORMAL){
 	  /* Create color gradient from the skin's background- and foreground color*/
 	  fgc = skin_get_color(aud_active_skin, SKIN_TEXTFG);
