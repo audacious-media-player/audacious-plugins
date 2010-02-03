@@ -109,7 +109,7 @@ static void * pump (void * unused)
 
 static void start_playback (void)
 {
-    DEBUG ("Starting playback.\n");
+    AUDDBG ("Starting playback.\n");
 
     if (snd_pcm_state (alsa_handle) == SND_PCM_STATE_PAUSED)
         CHECK (snd_pcm_pause, alsa_handle, 0);
@@ -150,7 +150,7 @@ void alsa_soft_init (void)
 {
     if (! initted)
     {
-        DEBUG ("Initialize.\n");
+        AUDDBG ("Initialize.\n");
         alsa_config_load ();
         alsa_open_mixer ();
         initted = TRUE;
@@ -161,7 +161,7 @@ void alsa_cleanup (void)
 {
     if (initted)
     {
-        DEBUG ("Cleanup.\n");
+        AUDDBG ("Cleanup.\n");
         alsa_close_mixer ();
         alsa_config_save ();
     }
@@ -218,7 +218,7 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
     g_mutex_lock (alsa_mutex);
     alsa_soft_init ();
 
-    DEBUG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
+    AUDDBG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
      alsa_config_pcm, snd_pcm_format_name (format), channels, rate);
     CHECK (snd_pcm_open, & alsa_handle, alsa_config_pcm,
      SND_PCM_STREAM_PLAYBACK, 0);
@@ -246,7 +246,7 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
     CHECK (snd_pcm_get_params, alsa_handle, & frames, & period);
     hard_buffer = (gint64) frames * 1000 / rate;
     soft_buffer = MAX (LEAST_BUFFER, aud_cfg->output_buffer_size - hard_buffer);
-    DEBUG ("Hardware buffer %d ms, software buffer %d ms.\n", hard_buffer,
+    AUDDBG ("Hardware buffer %d ms, software buffer %d ms.\n", hard_buffer,
      soft_buffer);
 
     alsa_buffer_length = snd_pcm_frames_to_bytes (alsa_handle, (gint64)
@@ -279,7 +279,7 @@ FAILED:
 
 void alsa_close_audio (void)
 {
-    DEBUG ("Closing audio.\n");
+    AUDDBG ("Closing audio.\n");
     g_mutex_lock (alsa_mutex);
 
     if (! alsa_config_drop_workaround)
@@ -341,7 +341,7 @@ void alsa_write_audio (void * data, gint length)
 
 void alsa_set_written_time (gint time)
 {
-    DEBUG ("Setting time counter to %d.\n", time);
+    AUDDBG ("Setting time counter to %d.\n", time);
     g_mutex_lock (alsa_mutex);
     alsa_time = 1000 * (gint64) time;
     g_mutex_unlock (alsa_mutex);
@@ -394,7 +394,7 @@ gint alsa_buffer_playing (void)
 
 void alsa_flush (gint time)
 {
-    DEBUG ("Seek requested; discarding buffer.\n");
+    AUDDBG ("Seek requested; discarding buffer.\n");
     g_mutex_lock (alsa_mutex);
 
     alsa_time = (gint64) time * 1000;
@@ -417,7 +417,7 @@ FAILED:
 
 void alsa_pause (gshort pause)
 {
-    DEBUG ("%sause.\n", pause ? "P" : "Unp");
+    AUDDBG ("%sause.\n", pause ? "P" : "Unp");
     g_mutex_lock (alsa_mutex);
 
     if (pause)
@@ -442,7 +442,7 @@ void alsa_open_mixer (void)
     if (alsa_config_mixer_element == NULL)
         goto FAILED;
 
-    DEBUG ("Opening mixer card %s.\n", alsa_config_mixer);
+    AUDDBG ("Opening mixer card %s.\n", alsa_config_mixer);
     CHECK (snd_mixer_open, & alsa_mixer, 0);
     CHECK (snd_mixer_attach, alsa_mixer, alsa_config_mixer);
     CHECK (snd_mixer_selem_register, alsa_mixer, NULL, NULL);
