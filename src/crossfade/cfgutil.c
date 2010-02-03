@@ -97,7 +97,7 @@ update_plugin_config(gchar **config_string, gchar *name, plugin_config_t *pc, gb
 
     if (!config_string || !*config_string || !name || !pc)
     {
-        DEBUG(("[crossfade] update_plugin_config: missing arg!\n"));
+        AUDDBG("[crossfade] update_plugin_config: missing arg!\n");
         return;
     }
 
@@ -174,7 +174,7 @@ scan_presets(gchar *filename)
 
     if (lstat(filename, &stats))
     {
-        DEBUG(("[crossfade] scan_presets: \"%s\":\n", filename));
+        AUDDBG("[crossfade] scan_presets: \"%s\":\n", filename);
         PERROR("[crossfade] scan_presets: lstat");
         return;
     }
@@ -183,7 +183,7 @@ scan_presets(gchar *filename)
 
     if (!(data = g_malloc(stats.st_size + 1)))
     {
-        DEBUG(("[crossfade] scan_presets: g_malloc(%ld) failed!\n", stats.st_size));
+        AUDDBG("[crossfade] scan_presets: g_malloc(%ld) failed!\n", stats.st_size);
         return;
     }
 
@@ -196,7 +196,7 @@ scan_presets(gchar *filename)
 
     if (fread(data, stats.st_size, 1, fh) != 1)
     {
-        DEBUG(("[crossfade] scan_presets: fread() failed!\n"));
+        AUDDBG("[crossfade] scan_presets: fread() failed!\n");
         g_free(data);
         fclose(fh);
         return;
@@ -209,7 +209,7 @@ scan_presets(gchar *filename)
 
     if (!lines)
     {
-        DEBUG(("[crossfade] scan_presets: g_strsplit() failed!\n"));
+        AUDDBG("[crossfade] scan_presets: g_strsplit() failed!\n");
         return;
     }
 
@@ -374,10 +374,10 @@ xfade_load_config()
         read_fade_config(cfgfile, section, "fc_pause",  &config->fc[FADE_CONFIG_PAUSE]);
 
         xmms_cfg_free(cfgfile);
-        DEBUG(("[crossfade] load_config: configuration loaded\n"));
+        AUDDBG("[crossfade] load_config: configuration loaded\n");
     }
     else
-        DEBUG(("[crossfade] load_config: error loading config, using defaults\n"));
+        AUDDBG("[crossfade] load_config: error loading config, using defaults\n");
 
 #ifdef PRESET_SUPPORT
     filename = g_strconcat(g_get_home_dir(), "/.audacious/crossfade-presets", NULL);
@@ -464,10 +464,10 @@ xfade_save_config()
         
         xmms_cfg_write_default_file(cfgfile);
         xmms_cfg_free(cfgfile);
-        DEBUG(("[crossfade] save_config: configuration saved\n"));
+        AUDDBG("[crossfade] save_config: configuration saved\n");
     }
     else
-        DEBUG(("[crossfade] save_config: error saving configuration!\n"));
+        AUDDBG("[crossfade] save_config: error saving configuration!\n");
 }
 
 #define SAFE_FREE(x) if(x) { g_free(x); x = NULL; }

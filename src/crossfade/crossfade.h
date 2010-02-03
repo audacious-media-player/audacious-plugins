@@ -36,8 +36,6 @@
 #include <audacious/configdb.h>
 #include <audacious/util.h>
 
-#include "debug.h"
-
 #define SYNC_OUTPUT_TIMEOUT 2000
 
 #define FADE_CONFIG_XFADE   0
@@ -293,7 +291,6 @@
   250                           /* sync_size_ms */          \
 }
 
-#define DEBUG(x)  { if (config->enable_debug) debug x; }
 #define PERROR(x) { if (config->enable_debug) perror(x); }
 
 #define WRAP(x,n) (((x)<0)?((n)-(x))%(n):((x)%(n)))
