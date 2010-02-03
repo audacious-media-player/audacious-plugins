@@ -46,14 +46,6 @@
 #define MAX_RETRIES 10
 #define MAX_SKIPS 10
 
-#define DEBUG FALSE
-
-#if DEBUG
-#define debug(...) printf (__VA_ARGS__)
-#else
-#define debug(...)
-#endif
-
 #define warn(...) fprintf(stderr, "cdaudio-ng: " __VA_ARGS__)
 
 typedef struct
@@ -824,7 +816,7 @@ static void scan_cd (void)
                 cdaudio_error ("Failed to open CD.");
                 goto ERROR;
             }
-            debug ("found cd drive \"%s\" with audio capable media\n",
+            AUDDBG ("found cd drive \"%s\" with audio capable media\n",
                    *ppcd_drives);
         }
         else
@@ -846,7 +838,7 @@ static void scan_cd (void)
         cdaudio_error ("Failed to retrieve first/last track number.");
         goto ERROR;
     }
-    debug ("first track is %d and last track is %d\n", firsttrackno,
+    AUDDBG ("first track is %d and last track is %d\n", firsttrackno,
            lasttrackno);
 
     trackinfo = (trackinfo_t *) g_new (trackinfo_t, (lasttrackno + 1));
@@ -876,11 +868,11 @@ static void scan_cd (void)
     /* get trackinfo[0] cdtext information (the disc) */
     if (cdng_cfg.use_cdtext)
     {
-        debug ("getting cd-text information for disc\n");
+        AUDDBG ("getting cd-text information for disc\n");
         cdtext_t *pcdtext = cdio_get_cdtext (pcdrom_drive->p_cdio, 0);
         if (pcdtext == NULL || pcdtext->field[CDTEXT_TITLE] == NULL)
         {
-            debug ("no cd-text available for disc\n");
+            AUDDBG ("no cd-text available for disc\n");
         }
         else
         {
@@ -901,11 +893,11 @@ static void scan_cd (void)
         cdtext_t *pcdtext = NULL;
         if (cdng_cfg.use_cdtext)
         {
-            debug ("getting cd-text information for track %d\n", trackno);
+            AUDDBG ("getting cd-text information for track %d\n", trackno);
             pcdtext = cdio_get_cdtext (pcdrom_drive->p_cdio, trackno);
             if (pcdtext == NULL || pcdtext->field[CDTEXT_PERFORMER] == NULL)
             {
-                debug ("no cd-text available for track %d\n", trackno);
+                AUDDBG ("no cd-text available for track %d\n", trackno);
                 pcdtext = NULL;
             }
         }
@@ -944,7 +936,7 @@ static void scan_cd (void)
                 cdaudio_error ("Failed to create the cddb connection.");
             else
             {
-                debug ("getting CDDB info\n");
+                AUDDBG ("getting CDDB info\n");
 
                 cddb_cache_enable (pcddb_conn);
                 // cddb_cache_set_dir(pcddb_conn, "~/.cddbslave");
@@ -994,7 +986,7 @@ static void scan_cd (void)
 
 #if DEBUG
                 guint discid = cddb_disc_get_discid (pcddb_disc);
-                debug ("CDDB disc id = %x\n", discid);
+                AUDDBG ("CDDB disc id = %x\n", discid);
 #endif
 
                 gint matches;
@@ -1014,14 +1006,14 @@ static void scan_cd (void)
                 {
                     if (matches == 0)
                     {
-                        debug ("no cddb info available for this disc\n");
+                        AUDDBG ("no cddb info available for this disc\n");
 
                         cddb_disc_destroy (pcddb_disc);
                         pcddb_disc = NULL;
                     }
                     else
                     {
-                        debug ("CDDB disc category = \"%s\"\n",
+                        AUDDBG ("CDDB disc category = \"%s\"\n",
                                cddb_disc_get_category_str (pcddb_disc));
 
                         cddb_read (pcddb_conn, pcddb_disc);
