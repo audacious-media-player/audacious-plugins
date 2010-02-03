@@ -385,7 +385,7 @@ audmad_read_replaygain(struct mad_info_t *file_info)
 
     if (readId3v2RVA2(file_info) || readId3v2TXXX(file_info)) {
         AUDDBG("found ReplayGain info in id3v2 tag\n");
-#ifdef AUD_DEBUG
+#ifdef DEBUG
 	gchar *tmp = g_filename_to_utf8(file_info->filename, -1, NULL, NULL, NULL);
 
         AUDDBG("RG album scale= %g, RG track scale = %g, in %s\n",
@@ -438,7 +438,7 @@ audmad_read_replaygain(struct mad_info_t *file_info)
         else 
             AUDDBG("replaygain: not found\n");
     }
-#ifdef AUD_DEBUG
+#ifdef DEBUG
     if (res == 0) {             // got APE tags, show the result
         gchar *tmp = g_filename_to_utf8(file_info->filename, -1, NULL, NULL, NULL);        
         AUDDBG("RG album scale= %g, RG track scale = %g, in %s\n",

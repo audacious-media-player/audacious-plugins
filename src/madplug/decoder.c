@@ -19,8 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-/* #define AUD_DEBUG 1 */
-
 #include <math.h>
 #include <assert.h>
 
@@ -161,7 +159,7 @@ scan_file(struct mad_info_t * info, gboolean fast)
                         /* we have enough info to calculate bitrate and duration */
                         if(info->xing.bytes && info->xing.frames) {
                             xing_bitrate = 8 * (double)info->xing.bytes * 38 / (double)info->xing.frames; //38fps in MPEG1.
-#ifdef AUD_DEBUG
+#ifdef DEBUG
                             {
                                 gint tmp = (gint)(info->xing.bytes * 8 / xing_bitrate);
                                 AUDDBG("xing: bitrate = %4.1f kbps\n", xing_bitrate / 1000);
@@ -171,7 +169,7 @@ scan_file(struct mad_info_t * info, gboolean fast)
                         }
                         continue;
                     }
-#ifdef AUD_DEBUG
+#ifdef DEBUG
                     else {
                         AUDDBG("no usable xing header\n");
                         continue;

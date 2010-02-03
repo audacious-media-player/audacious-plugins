@@ -86,7 +86,7 @@ wv_file_info_box(const gchar * fn)
         return;
     }
 
-#ifdef AUD_DEBUG
+#ifdef DEBUG
     gint sample_rate = WavpackGetSampleRate(ctx);
     gint num_channels = WavpackGetNumChannels(ctx);
 #endif

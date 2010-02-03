@@ -20,8 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-/* #define AUD_DEBUG 1 */
-
 #include "config.h"
 #include "plugin.h"
 #include "input.h"
@@ -470,7 +468,7 @@ audmad_play_file(InputPlayback *playback)
 {
     gchar *url = playback->filename;
 
-#ifdef AUD_DEBUG
+#ifdef DEBUG
     {
         gchar *tmp = g_filename_to_utf8(url, -1, NULL, NULL, NULL);
         AUDDBG("playing %s\n", tmp);
