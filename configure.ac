@@ -46,6 +46,17 @@ if test "x$GCC" = "xyes"; then
 	CXXFLAGS="$CXXFLAGS -pipe -Wall"
 fi
 
+dnl Debug support
+
+AC_ARG_WITH(debug, [  --with-debug            Enables additional debugging output], DEBUG=1)
+AC_SUBST(DEBUG)
+AUD_ARG_ENABLE([debug], [no],
+[additional debugging output],
+[
+    AC_DEFINE([DEBUG], 1, [Define if debugging output is required])
+])
+AUD_CONDITIONAL([DEBUG], [enable_debug])
+
 dnl Locate a program and check that its version is acceptable.
 dnl AC_PROG_CHECK_VER(var, namelist, version-switch,
 dnl 		      [version-extract-regexp], version-glob [, do-if-fail])
@@ -1586,6 +1597,7 @@ echo
 echo "Configuration:"
 echo
 echo "  Install path:                           ${audacious_plugin_root}"
+echo "  Additional debugging output:            $enable_debug"
 echo
 echo "  Output Plugins"
 echo "  --------------"
