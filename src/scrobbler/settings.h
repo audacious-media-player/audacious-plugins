@@ -3,7 +3,6 @@
 #ifndef __SCROBBLER_CONFIG_H__
 #define __SCROBBLER_CONFIG_H__
 
-#define DEBUG 0
 #define META_DEBUG 0
 #define SUB_DEBUG 0
 #define CLIENT "Audacious"
