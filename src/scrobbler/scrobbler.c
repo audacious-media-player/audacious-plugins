@@ -120,7 +120,7 @@ static void q_item_free(item_t *item)
 
 static item_t *q_additem(item_t *newitem)
 {
-    pdebug(fmt_vastr("Adding %s - %s to the queue", newitem->artist, newitem->title), DEBUG);
+    AUDDBG("Adding %s - %s to the queue", newitem->artist, newitem->title);
 
     q_nitems++;
     newitem->next = NULL;
@@ -177,7 +177,7 @@ static item_t *set_np(Tuple *tuple, int len)
     q_item_free(np_item);
     np_item = create_item(tuple, len);
 
-    pdebug(fmt_vastr("Tracking now-playing track: %s - %s", np_item->artist, np_item->title), DEBUG);
+    AUDDBG("Tracking now-playing track: %s - %s", np_item->artist, np_item->title);
 
     return np_item;
 }
@@ -224,7 +224,7 @@ static int q_get(void)
     q_nitems--;
     q_queue = q_queue->next;
 
-    pdebug(fmt_vastr("Removing %s - %s from queue", item->artist, item->title), DEBUG);
+    AUDDBG("Removing %s - %s from queue", item->artist, item->title);
 
     q_item_free(item);
 
@@ -326,7 +326,7 @@ static int sc_parse_hs_res(void)
     char *interval;
 
     if (!sc_srv_res_size) {
-        pdebug("No reply from server", DEBUG);
+        AUDDBG("No reply from server");
         return -1;
     }
     *(sc_srv_res + sc_srv_res_size) = 0;
@@ -350,7 +350,7 @@ static int sc_parse_hs_res(void)
         /* Throwing a major error, just in case */
         /* sc_throw_error(fmt_vastr("%s", sc_srv_res));
            sc_hs_errors++; */
-        pdebug(fmt_vastr("error: %s", sc_srv_res), DEBUG);
+        AUDDBG("error: %s", sc_srv_res);
 
         return -1;
     }
@@ -359,7 +359,7 @@ static int sc_parse_hs_res(void)
         interval = strstr(sc_srv_res, "INTERVAL");
         if(!interval)
         {
-            pdebug("missing INTERVAL", DEBUG);
+            AUDDBG("missing INTERVAL");
         }
         else
         {
@@ -377,7 +377,7 @@ static int sc_parse_hs_res(void)
         /* Throwing major error. Need to alert client to update. */
         sc_throw_error(fmt_vastr("Please update Audacious.\n"
             "Update available at: http://audacious-media-player.org"));
-        pdebug(fmt_vastr("update client: %s", sc_srv_res + 7), DEBUG);
+        AUDDBG("update client: %s", sc_srv_res + 7);
 
         /*
          * Russ isn't clear on whether we can submit with a not-updated
@@ -391,7 +391,7 @@ static int sc_parse_hs_res(void)
 
         interval = strstr(sc_srv_res, "INTERVAL");
         if (!interval) {
-            pdebug("missing INTERVAL", DEBUG);
+            AUDDBG("missing INTERVAL");
             /*
              * This is probably a bad thing, but Russ seems to
              * think its OK to assume that an UPTODATE response
@@ -418,12 +418,12 @@ static int sc_parse_hs_res(void)
         /* Throwing major error. */
         sc_throw_error("Incorrect username/password.\n"
                 "Please fix in configuration.");
-        pdebug("incorrect username/password", DEBUG);
+        AUDDBG("incorrect username/password");
 
         interval = strstr(sc_srv_res, "INTERVAL");
         if(!interval)
         {
-            pdebug("missing INTERVAL", DEBUG);
+            AUDDBG("missing INTERVAL");
         }
         else
         {
@@ -434,7 +434,7 @@ static int sc_parse_hs_res(void)
         return -1;
     }
 
-    pdebug(fmt_vastr("unknown server-reply '%s'", sc_srv_res), DEBUG);
+    AUDDBG("unknown server-reply '%s'", sc_srv_res);
     return -1;
 }
 
@@ -505,7 +505,7 @@ static int sc_handshake(void)
     sc_hs_timeout = time(NULL) + SCROBBLER_HS_WAIT;
 
     if (status) {
-        pdebug(sc_curl_errbuf, DEBUG);
+        AUDDBG(sc_curl_errbuf);
         sc_hs_errors++;
         sc_free_res();
         return -1;
@@ -522,15 +522,15 @@ static int sc_handshake(void)
         unsigned char md5pword[16];
         
         aud_md5_init(&md5state);
-        /*pdebug(fmt_vastr("Pass Hash: %s", sc_password), DEBUG);*/
+        /*AUDDBG("Pass Hash: %s", sc_password));*/
         aud_md5_append(&md5state, (unsigned const char *)sc_password,
                 strlen(sc_password));
-        /*pdebug(fmt_vastr("Challenge Hash: %s", sc_challenge_hash), DEBUG);*/
+        /*AUDDBG("Challenge Hash: %s", sc_challenge_hash));*/
         aud_md5_append(&md5state, (unsigned const char *)sc_challenge_hash,
                 strlen(sc_challenge_hash));
         aud_md5_finish(&md5state, md5pword);
         hexify((char*)md5pword, sizeof(md5pword));
-        /*pdebug(fmt_vastr("Response Hash: %s", sc_response_hash), DEBUG);*/
+        /*AUDDBG("Response Hash: %s", sc_response_hash));*/
     }
 
     sc_hs_errors = 0;
@@ -538,8 +538,8 @@ static int sc_handshake(void)
 
     sc_free_res();
 
-    pdebug(fmt_vastr("submiturl: %s - interval: %d", 
-                sc_submit_url, sc_submit_interval), DEBUG);
+    AUDDBG("submiturl: %s - interval: %d", 
+                sc_submit_url, sc_submit_interval);
 
     return 0;
 }
@@ -549,7 +549,7 @@ static int sc_parse_sb_res(void)
     char *ch, *ch2;
 
     if (!sc_srv_res_size) {
-        pdebug("No response from server", DEBUG);
+        AUDDBG("No response from server");
         return -1;
     }
     *(sc_srv_res + sc_srv_res_size) = 0;
@@ -557,11 +557,11 @@ static int sc_parse_sb_res(void)
     if (!strncmp(sc_srv_res, "OK", 2)) {
         if ((ch = strstr(sc_srv_res, "INTERVAL"))) {
             sc_submit_interval = strtol(ch + 8, NULL, 10);
-            pdebug(fmt_vastr("got new interval: %d",
-                        sc_submit_interval), DEBUG);
+            AUDDBG("got new interval: %d",
+                        sc_submit_interval);
         }
 
-        pdebug(fmt_vastr("submission ok: %s", sc_srv_res), DEBUG);
+        AUDDBG("submission ok: %s", sc_srv_res);
 
         return 0;
     }
@@ -569,11 +569,11 @@ static int sc_parse_sb_res(void)
     if (!strncmp(sc_srv_res, "BADAUTH", 7)) {
         if ((ch = strstr(sc_srv_res, "INTERVAL"))) {
             sc_submit_interval = strtol(ch + 8, NULL, 10);
-            pdebug(fmt_vastr("got new interval: %d",
-                        sc_submit_interval), DEBUG);
+            AUDDBG("got new interval: %d",
+                        sc_submit_interval);
         }
 
-        pdebug("incorrect username/password", DEBUG);
+        AUDDBG("incorrect username/password");
 
         sc_giveup = 0;
 
@@ -595,8 +595,8 @@ static int sc_parse_sb_res(void)
 
         if(sc_bad_users > 2)
         {
-            pdebug("3 BADAUTH returns on submission. Halting "
-                "submissions until login fixed.", DEBUG)
+            AUDDBG("3 BADAUTH returns on submission. Halting "
+                "submissions until login fixed.");
             sc_throw_error("Incorrect username/password.\n"
                 "Please fix in configuration.");
         }
@@ -605,7 +605,7 @@ static int sc_parse_sb_res(void)
     }
 
     if(!strncmp(sc_srv_res, "BADSESSION", 10)) {
-        pdebug("Invalid session, re-handshaking", DEBUG);
+        AUDDBG("Invalid session, re-handshaking");
 
         sc_free_res();
         sc_handshake();
@@ -616,14 +616,14 @@ static int sc_parse_sb_res(void)
     if (!strncmp(sc_srv_res, "FAILED", 6))  {
         if ((ch = strstr(sc_srv_res, "INTERVAL"))) {
             sc_submit_interval = strtol(ch + 8, NULL, 10);
-            pdebug(fmt_vastr("got new interval: %d",
-                        sc_submit_interval), DEBUG);
+            AUDDBG("got new interval: %d",
+                        sc_submit_interval);
         }
 
         /* This could be important. (Such as FAILED - Get new plugin) */
         /*sc_throw_error(fmt_vastr("%s", sc_srv_res));*/
 
-        pdebug(sc_srv_res, DEBUG);
+        AUDDBG(sc_srv_res);
 
         return -1;
     }
@@ -635,15 +635,15 @@ static int sc_parse_sb_res(void)
             ch += strlen("<TITLE>");
             *ch2 = '\0';
 
-            pdebug(fmt_vastr("HTTP Error (%d): '%s'",
-                     atoi(ch), ch + 4), DEBUG);
+            AUDDBG("HTTP Error (%d): '%s'",
+                     atoi(ch), ch + 4);
 //          *ch2 = '<'; // needed? --yaz
         }
 
         return -1;
     }
 
-    pdebug(fmt_vastr("unknown server-reply %s", sc_srv_res), DEBUG);
+    AUDDBG("unknown server-reply %s", sc_srv_res);
 
     return -1;
 }
@@ -694,12 +694,12 @@ static int sc_generateentry(GString *submission)
                 g_free(tmp);
                 g_string_append(submission,sc_itemtag('r',i,""));
 
-        pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d b[%d]=%s",
+        AUDDBG("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d b[%d]=%s",
                 i, I_ARTIST(item),
                 i, I_TITLE(item),
                 i, I_LEN(item),
                 i, I_TIME(item),
-                i, I_ALBUM(item)), DEBUG);
+                i, I_ALBUM(item));
         i++;
     }
 
@@ -749,7 +749,7 @@ static int sc_submit_np(Tuple *tuple)
     g_free(entry);
 
     if (status) {
-        pdebug(sc_curl_errbuf, DEBUG);
+        AUDDBG(sc_curl_errbuf);
         sc_sb_errors++;
         sc_free_res();
         return -1;
@@ -758,8 +758,8 @@ static int sc_submit_np(Tuple *tuple)
     if (sc_parse_sb_res()) {
         sc_sb_errors++;
         sc_free_res();
-        pdebug(fmt_vastr("Retrying in %d secs, %d elements in queue",
-                    sc_submit_interval, q_len()), DEBUG);
+        AUDDBG("Retrying in %d secs, %d elements in queue",
+                    sc_submit_interval, q_len());
         return -1;
     }
     sc_free_res();
@@ -783,7 +783,7 @@ static int sc_submitentry(gchar *entry)
     curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
     /*cfa(&post, &last, "debug", "failed");*/
 
-    /*pdebug(fmt_vastr("Response Hash: %s", sc_response_hash), DEBUG);*/
+    /*AUDDBG("Response Hash: %s", sc_response_hash));*/
         submission = g_string_new("s=");
         g_string_append(submission, (gchar *)sc_session_id);
     g_string_append(submission, entry);
@@ -801,7 +801,7 @@ static int sc_submitentry(gchar *entry)
         g_string_free(submission, TRUE);
 
     if (status) {
-        pdebug(sc_curl_errbuf, DEBUG);
+        AUDDBG(sc_curl_errbuf);
         sc_sb_errors++;
         sc_free_res();
         return -1;
@@ -810,8 +810,8 @@ static int sc_submitentry(gchar *entry)
     if (sc_parse_sb_res()) {
         sc_sb_errors++;
         sc_free_res();
-        pdebug(fmt_vastr("Retrying in %d secs, %d elements in queue",
-                    sc_submit_interval, q_len()), DEBUG);
+        AUDDBG("Retrying in %d secs, %d elements in queue",
+                    sc_submit_interval, q_len());
         return -1;
     }
     sc_free_res();
@@ -837,14 +837,14 @@ static void sc_handlequeue(GMutex *mutex)
 
         if (nsubmit > 0)
         {
-            pdebug(fmt_vastr("Number submitting: %d", nsubmit), DEBUG);
-            pdebug(fmt_vastr("Submission: %s", submitentry->str), DEBUG);
+            AUDDBG("Number submitting: %d", nsubmit);
+            AUDDBG("Submission: %s", submitentry->str);
 
             if(!sc_submitentry(submitentry->str))
             {
                 g_mutex_lock(mutex);
 
-                pdebug(fmt_vastr("Clearing out %d item(s) from the queue", nsubmit), DEBUG);
+                AUDDBG("Clearing out %d item(s) from the queue", nsubmit);
                 for (i=0; i<nsubmit; i++)
                 {
                     q_get();
@@ -879,9 +879,8 @@ static void sc_handlequeue(GMutex *mutex)
                 
                 sc_submit_timeout = time(NULL) + wait;
 
-                pdebug(fmt_vastr("Error while submitting. "
-                    "Retrying after %d seconds.", wait),
-                    DEBUG);
+                AUDDBG("Error while submitting. "
+                    "Retrying after %d seconds.", wait);
             }
         }
 
@@ -903,7 +902,7 @@ static void read_cache(void)
 
     if (!(fd = fopen(buf, "r")))
         return;
-    pdebug(fmt_vastr("Opening %s", buf), DEBUG);
+    AUDDBG("Opening %s", buf);
     fclose(fd);
 
     gchar* cache;
@@ -947,12 +946,12 @@ static void read_cache(void)
 
                 aud_tuple_free(tuple);
 
-                pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d b[%d]=%s",
+                AUDDBG("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d b[%d]=%s",
                                  i, I_ARTIST(item),
                                  i, I_TITLE(item),
                                  i, I_LEN(item),
                                  i, I_TIME(item),
-                                 i, I_ALBUM(item)), DEBUG);
+                                 i, I_ALBUM(item));
             }
 
             free(artist);
@@ -964,7 +963,7 @@ static void read_cache(void)
     }
     g_strfreev(values);
     g_free(cache);
-    pdebug("Done loading cache.", DEBUG);
+    AUDDBG("Done loading cache.");
 }
 
 static void dump_queue(void)
@@ -974,11 +973,11 @@ static void dump_queue(void)
     char *home, buf[PATH_MAX];
     gchar* config_datadir;
 
-    /*pdebug("Entering dump_queue();", DEBUG);*/
+    /*AUDDBG("Entering dump_queue();");*/
 
     if (!(home = getenv("HOME")))
     {
-        pdebug("No HOME directory found. Cannot dump queue.", DEBUG);
+        AUDDBG("No HOME directory found. Cannot dump queue.");
         return;
     }
 
@@ -988,11 +987,11 @@ static void dump_queue(void)
 
     if (!(fd = fopen(buf, "w")))
     {
-        pdebug(fmt_vastr("Failure opening %s", buf), DEBUG);
+        AUDDBG("Failure opening %s", buf);
         return;
     }
 
-    pdebug(fmt_vastr("Opening %s", buf), DEBUG);
+    AUDDBG("Opening %s", buf);
 
     q_peekall(1);
 
@@ -1035,7 +1034,7 @@ void sc_cleaner(void)
         free(sc_major_error);
     dump_queue();
     q_free();
-    pdebug("scrobbler shutting down", DEBUG);
+    AUDDBG("scrobbler shutting down");
 }
 
 static void sc_checkhandshake(void)
@@ -1062,8 +1061,8 @@ static void sc_checkhandshake(void)
                     (60 << (sc_hs_errors-5)) :
                     7200 );
             sc_hs_timeout = time(NULL) + wait;
-            pdebug(fmt_vastr("Error while handshaking. Retrying "
-                "after %d seconds.", wait), DEBUG);
+            AUDDBG("Error while handshaking. Retrying "
+                "after %d seconds.", wait);
         }
     }
 }
@@ -1088,7 +1087,7 @@ void sc_init(char *uname, char *pwd, char *url)
     else
         sc_hs_url = strdup(LASTFM_HS_URL);
     read_cache();
-    pdebug("scrobbler starting up", DEBUG);
+    AUDDBG("scrobbler starting up");
 }
 
 void sc_addentry(GMutex *mutex, Tuple *tuple, int len)

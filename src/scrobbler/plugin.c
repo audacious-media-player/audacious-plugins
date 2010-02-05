@@ -76,13 +76,13 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 
 	if (aud_playlist_entry_get_length(playlist, pos) < (glong)30)
 	{
-		pdebug(" *** not submitting due to entry->length < 30", DEBUG);
+		AUDDBG(" *** not submitting due to entry->length < 30");
 		return;
 	}
 
 	if (ishttp(aud_playlist_entry_get_filename(playlist, pos)))
 	{
-		pdebug(" *** not submitting due to HTTP source", DEBUG);
+		AUDDBG(" *** not submitting due to HTTP source");
 		return;
 	}
 
@@ -123,7 +123,7 @@ void start(void) {
 
 	if ((!username || !password) || (!*username || !*password))
 	{
-		pdebug("username/password not found - not starting last.fm support",
+		AUDDBG("username/password not found - not starting last.fm support",
 			DEBUG);
 		sc_going = 0;
 	}
@@ -138,7 +138,7 @@ void start(void) {
 	
 	if ((!ge_username || !ge_password) || (!*ge_username || !*ge_password))
 	{
-		pdebug("username/password not found - not starting Gerpok support",
+		AUDDBG("username/password not found - not starting Gerpok support",
 			DEBUG);
 		ge_going = 0;
 	}
@@ -158,7 +158,7 @@ void start(void) {
 
 	if ((pt_scrobbler = g_thread_create(xs_thread, NULL, TRUE, moo)) == NULL)
 	{
-		pdebug(fmt_vastr("Error creating scrobbler thread: %s", moo), DEBUG);
+		AUDDBG("Error creating scrobbler thread: %s", moo);
 		sc_going = 0;
 		ge_going = 0;
 		return;
@@ -166,7 +166,7 @@ void start(void) {
 
 	if ((pt_handshake = g_thread_create(hs_thread, NULL, TRUE, moo)) == NULL)
 	{
-		pdebug(fmt_vastr("Error creating handshake thread: %s", moo), DEBUG);
+		AUDDBG("Error creating handshake thread: %s", moo);
 		sc_going = 0;
 		ge_going = 0;
 		return;
@@ -175,15 +175,15 @@ void start(void) {
 	aud_hook_associate("playback begin", aud_hook_playback_begin, NULL);
 	aud_hook_associate("playback end", aud_hook_playback_end, NULL);
 
-	pdebug("plugin started", DEBUG);
+	AUDDBG("plugin started");
 }
 
 void stop(void) {
 	if (!sc_going && !ge_going)
 		return;
-	pdebug("about to lock mutex", DEBUG);
+	AUDDBG("about to lock mutex");
 	g_mutex_lock(m_scrobbler);
-	pdebug("locked mutex", DEBUG);
+	AUDDBG("locked mutex");
 	if (sc_going)
 		sc_cleaner();
 	if (ge_going)
@@ -191,17 +191,17 @@ void stop(void) {
 	sc_going = 0;
 	ge_going = 0;
 	g_mutex_unlock(m_scrobbler);
-	pdebug("joining threads", DEBUG);
+	AUDDBG("joining threads");
 
 	/* wake up waiting threads */
-	pdebug("send signal to xs and hs", DEBUG);
+	AUDDBG("send signal to xs and hs");
 	g_cond_signal(xs_cond);
 	g_cond_signal(hs_cond);
 
-	pdebug("wait xs", DEBUG);
+	AUDDBG("wait xs");
 	g_thread_join(pt_scrobbler);
 
-	pdebug("wait hs", DEBUG);
+	AUDDBG("wait hs");
 	g_thread_join(pt_handshake);
 
 	g_cond_free(hs_cond);
@@ -249,7 +249,7 @@ static void *xs_thread(void *data __attribute__((unused)))
 		{
 			gint playlist, pos;
 
-			pdebug("Submitting song.", DEBUG);
+			AUDDBG("Submitting song.");
 
 			playlist = aud_playlist_get_active();
 			pos = aud_playlist_get_position(playlist);
@@ -269,10 +269,10 @@ static void *xs_thread(void *data __attribute__((unused)))
 			if (aud_tuple_get_string(tuple, FIELD_ARTIST, NULL) != NULL &&
 				aud_tuple_get_string(tuple, FIELD_TITLE, NULL) != NULL)
 			{
-				pdebug(fmt_vastr(
+				AUDDBG(
 					"submitting artist: %s, title: %s",
 					aud_tuple_get_string(tuple, FIELD_ARTIST, NULL),
-					aud_tuple_get_string(tuple, FIELD_TITLE, NULL)), DEBUG);
+					aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
 
 				if (sc_going)
 					sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
@@ -282,7 +282,7 @@ static void *xs_thread(void *data __attribute__((unused)))
                                     track_timeout = g_timeout_add_seconds(1, sc_timeout, NULL);
 			}
 			else
-				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);
+				AUDDBG("tuple does not contain an artist or a title, not submitting.");
 
 			submit = FALSE;
 			mowgli_object_unref(tuple);
@@ -299,7 +299,7 @@ static void *xs_thread(void *data __attribute__((unused)))
 		run = (sc_going != 0 || ge_going != 0);
 		g_mutex_unlock(m_scrobbler);
 	}
-	pdebug("scrobbler thread: exiting", DEBUG);
+	AUDDBG("scrobbler thread: exiting");
 	g_thread_exit(NULL);
 
 	return NULL;
@@ -314,7 +314,7 @@ static void *hs_thread(void *data __attribute__((unused)))
 	{
 		if(sc_going && sc_idle(m_scrobbler))
 		{
-			pdebug("Giving up due to fatal error", DEBUG);
+			AUDDBG("Giving up due to fatal error");
 			g_mutex_lock(m_scrobbler);
 			sc_going = 0;
 			g_mutex_unlock(m_scrobbler);
@@ -322,7 +322,7 @@ static void *hs_thread(void *data __attribute__((unused)))
 
 		if(ge_going && gerpok_sc_idle(m_scrobbler))
 		{
-			pdebug("Giving up due to fatal error", DEBUG);
+			AUDDBG("Giving up due to fatal error");
 			g_mutex_lock(m_scrobbler);
 			ge_going = 0;
 			g_mutex_unlock(m_scrobbler);
@@ -341,7 +341,7 @@ static void *hs_thread(void *data __attribute__((unused)))
 			g_mutex_unlock(hs_mutex);
 		}
 	}
-	pdebug("handshake thread: exiting", DEBUG);
+	AUDDBG("handshake thread: exiting");
 	g_thread_exit(NULL);
 
 	return NULL;

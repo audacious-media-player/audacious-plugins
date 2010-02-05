@@ -281,7 +281,7 @@ static int gerpok_sc_parse_hs_res(void)
 	char *interval;
 
 	if (!gerpok_sc_srv_res_size) {
-		pdebug("No reply from server", DEBUG);
+		AUDDBG("No reply from server");
 		return -1;
 	}
 	*(gerpok_sc_srv_res + gerpok_sc_srv_res_size) = 0;
@@ -289,7 +289,7 @@ static int gerpok_sc_parse_hs_res(void)
 	if (!strncmp(gerpok_sc_srv_res, "FAILED ", 7)) {
 		interval = strstr(gerpok_sc_srv_res, "INTERVAL");
 		if(!interval) {
-			pdebug("missing INTERVAL", DEBUG);
+			AUDDBG("missing INTERVAL");
 		}
 		else
 		{
@@ -300,7 +300,7 @@ static int gerpok_sc_parse_hs_res(void)
 		/* Throwing a major error, just in case */
 		/* gerpok_sc_throw_error(fmt_vastr("%s", gerpok_sc_srv_res));
 		   gerpok_sc_hs_errors++; */
-		pdebug(fmt_vastr("error: %s", gerpok_sc_srv_res), DEBUG);
+		AUDDBG("error: %s", gerpok_sc_srv_res);
 
 		return -1;
 	}
@@ -309,7 +309,7 @@ static int gerpok_sc_parse_hs_res(void)
 		interval = strstr(gerpok_sc_srv_res, "INTERVAL");
 		if(!interval)
 		{
-			pdebug("missing INTERVAL", DEBUG);
+			AUDDBG("missing INTERVAL");
 		}
 		else
 		{
@@ -327,7 +327,7 @@ static int gerpok_sc_parse_hs_res(void)
 		/* Throwing major error. Need to alert client to update. */
 		gerpok_sc_throw_error(fmt_vastr("Please update Audacious.\n"
 			"Update available at: http://audacious-media-player.org"));
-		pdebug(fmt_vastr("update client: %s", gerpok_sc_srv_res + 7), DEBUG);
+		AUDDBG("update client: %s", gerpok_sc_srv_res + 7);
 
 		/*
 		 * Russ isn't clear on whether we can submit with a not-updated
@@ -341,7 +341,7 @@ static int gerpok_sc_parse_hs_res(void)
 
 		interval = strstr(gerpok_sc_srv_res, "INTERVAL");
 		if (!interval) {
-			pdebug("missing INTERVAL", DEBUG);
+			AUDDBG("missing INTERVAL");
 			/*
 			 * This is probably a bad thing, but Russ seems to
 			 * think its OK to assume that an UPTODATE response
@@ -368,12 +368,12 @@ static int gerpok_sc_parse_hs_res(void)
 		/* Throwing major error. */
 		gerpok_sc_throw_error("Incorrect username/password.\n"
 				"Please fix in configuration.");
-		pdebug("incorrect username/password", DEBUG);
+		AUDDBG("incorrect username/password");
 
 		interval = strstr(gerpok_sc_srv_res, "INTERVAL");
 		if(!interval)
 		{
-			pdebug("missing INTERVAL", DEBUG);
+			AUDDBG("missing INTERVAL");
 		}
 		else
 		{
@@ -384,7 +384,7 @@ static int gerpok_sc_parse_hs_res(void)
 		return -1;
 	}
 
-	pdebug(fmt_vastr("unknown server-reply '%s'", gerpok_sc_srv_res), DEBUG);
+	AUDDBG("unknown server-reply '%s'", gerpok_sc_srv_res);
 	return -1;
 }
 
@@ -432,7 +432,7 @@ static int gerpok_sc_handshake(void)
 	gerpok_sc_hs_timeout = time(NULL) + SCROBBLER_HS_WAIT;
 
 	if (status) {
-		pdebug(gerpok_sc_curl_errbuf, DEBUG);
+		AUDDBG(gerpok_sc_curl_errbuf);
 		gerpok_sc_hs_errors++;
 		gerpok_sc_free_res();
 		return -1;
@@ -449,15 +449,15 @@ static int gerpok_sc_handshake(void)
 		unsigned char md5pword[16];
 		
 		aud_md5_init(&md5state);
-		/*pdebug(fmt_vastr("Pass Hash: %s", gerpok_sc_password), DEBUG);*/
+		/*AUDDBG("Pass Hash: %s", gerpok_sc_password);*/
 		aud_md5_append(&md5state, (unsigned const char *)gerpok_sc_password,
 				strlen(gerpok_sc_password));
-		/*pdebug(fmt_vastr("Challenge Hash: %s", gerpok_sc_challenge_hash), DEBUG);*/
+		/*AUDDBG("Challenge Hash: %s", gerpok_sc_challenge_hash);*/
 		aud_md5_append(&md5state, (unsigned const char *)gerpok_sc_challenge_hash,
 				strlen(gerpok_sc_challenge_hash));
 		aud_md5_finish(&md5state, md5pword);
 		hexify((char*)md5pword, sizeof(md5pword));
-		/*pdebug(fmt_vastr("Response Hash: %s", gerpok_sc_response_hash), DEBUG);*/
+		/*AUDDBG("Response Hash: %s", gerpok_sc_response_hash));*/
 	}
 
 	gerpok_sc_hs_errors = 0;
@@ -465,8 +465,8 @@ static int gerpok_sc_handshake(void)
 
 	gerpok_sc_free_res();
 
-	pdebug(fmt_vastr("submiturl: %s - interval: %d", 
-				gerpok_sc_submit_url, gerpok_sc_submit_interval), DEBUG);
+	AUDDBG("submiturl: %s - interval: %d", 
+				gerpok_sc_submit_url, gerpok_sc_submit_interval);
 
 	return 0;
 }
@@ -476,7 +476,7 @@ static int gerpok_sc_parse_sb_res(void)
 	char *ch, *ch2;
 
 	if (!gerpok_sc_srv_res_size) {
-		pdebug("No response from server", DEBUG);
+		AUDDBG("No response from server");
 		return -1;
 	}
 	*(gerpok_sc_srv_res + gerpok_sc_srv_res_size) = 0;
@@ -484,11 +484,11 @@ static int gerpok_sc_parse_sb_res(void)
 	if (!strncmp(gerpok_sc_srv_res, "OK", 2)) {
 		if ((ch = strstr(gerpok_sc_srv_res, "INTERVAL"))) {
 			gerpok_sc_submit_interval = strtol(ch + 8, NULL, 10);
-			pdebug(fmt_vastr("got new interval: %d",
-						gerpok_sc_submit_interval), DEBUG);
+			AUDDBG("got new interval: %d",
+						gerpok_sc_submit_interval);
 		}
 
-		pdebug(fmt_vastr("submission ok: %s", gerpok_sc_srv_res), DEBUG);
+		AUDDBG("submission ok: %s", gerpok_sc_srv_res);
 
 		return 0;
 	}
@@ -496,11 +496,11 @@ static int gerpok_sc_parse_sb_res(void)
 	if (!strncmp(gerpok_sc_srv_res, "BADAUTH", 7)) {
 		if ((ch = strstr(gerpok_sc_srv_res, "INTERVAL"))) {
 			gerpok_sc_submit_interval = strtol(ch + 8, NULL, 10);
-			pdebug(fmt_vastr("got new interval: %d",
-						gerpok_sc_submit_interval), DEBUG);
+			AUDDBG("got new interval: %d",
+						gerpok_sc_submit_interval);
 		}
 
-		pdebug("incorrect username/password", DEBUG);
+		AUDDBG("incorrect username/password");
 
 		gerpok_sc_giveup = 0;
 
@@ -522,8 +522,8 @@ static int gerpok_sc_parse_sb_res(void)
 
 		if(gerpok_sc_bad_users > 2)
 		{
-			pdebug("3 BADAUTH returns on submission. Halting "
-				"submissions until login fixed.", DEBUG)
+			AUDDBG("3 BADAUTH returns on submission. Halting "
+				"submissions until login fixed.");
 			gerpok_sc_throw_error("Incorrect username/password.\n"
 				"Please fix in configuration.");
 		}
@@ -534,14 +534,14 @@ static int gerpok_sc_parse_sb_res(void)
 	if (!strncmp(gerpok_sc_srv_res, "FAILED", 6))  {
 		if ((ch = strstr(gerpok_sc_srv_res, "INTERVAL"))) {
 			gerpok_sc_submit_interval = strtol(ch + 8, NULL, 10);
-			pdebug(fmt_vastr("got new interval: %d",
-						gerpok_sc_submit_interval), DEBUG);
+			AUDDBG("got new interval: %d",
+						gerpok_sc_submit_interval);
 		}
 
 		/* This could be important. (Such as FAILED - Get new plugin) */
 		/*gerpok_sc_throw_error(fmt_vastr("%s", gerpok_sc_srv_res));*/
 
-		pdebug(gerpok_sc_srv_res, DEBUG);
+		AUDDBG(gerpok_sc_srv_res);
 
 		return -1;
 	}
@@ -553,15 +553,15 @@ static int gerpok_sc_parse_sb_res(void)
 			ch += strlen("<TITLE>");
 			*ch2 = '\0';
 
-			pdebug(fmt_vastr("HTTP Error (%d): '%s'",
-					 atoi(ch), ch + 4), DEBUG);
+			AUDDBG("HTTP Error (%d): '%s'",
+					 atoi(ch), ch + 4);
 //			*ch2 = '<'; // needed? --yaz
 		}
 
 		return -1;
 	}
 
-	pdebug(fmt_vastr("unknown server-reply %s", gerpok_sc_srv_res), DEBUG);
+	AUDDBG("unknown server-reply %s", gerpok_sc_srv_res);
 
 	return -1;
 }
@@ -599,13 +599,13 @@ static int gerpok_sc_generateentry(GString *submission)
                 g_string_append(submission,gerpok_sc_itemtag('m',i,I_MB(item)));
                 g_string_append(submission,gerpok_sc_itemtag('b',i,I_ALBUM(item)));
 
-		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",
+		AUDDBG("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",
 				i, I_ARTIST(item),
 				i, I_TITLE(item),
 				i, I_LEN(item),
 				i, I_TIME(item),
 				i, I_MB(item),
-				i, I_ALBUM(item)), DEBUG);
+				i, I_ALBUM(item));
 #ifdef ALLOW_MULTIPLE
 		i++;
 	}
@@ -631,11 +631,11 @@ static int gerpok_sc_submitentry(gchar *entry)
 	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
 	/*cfa(&post, &last, "debug", "failed");*/
 
-	/*pdebug(fmt_vastr("Username: %s", gerpok_sc_username), DEBUG);*/
+	/*AUDDBG("Username: %s", gerpok_sc_username));*/
         submission = g_string_new("u=");
         g_string_append(submission,(gchar *)gerpok_sc_username);
 
-	/*pdebug(fmt_vastr("Response Hash: %s", gerpok_sc_response_hash), DEBUG);*/
+	/*AUDDBG("Response Hash: %s", gerpok_sc_response_hash));*/
         g_string_append(submission,"&s=");
         g_string_append(submission,(gchar *)gerpok_sc_response_hash);
 
@@ -659,7 +659,7 @@ static int gerpok_sc_submitentry(gchar *entry)
         g_string_free(submission,TRUE);
 
 	if (status) {
-		pdebug(gerpok_sc_curl_errbuf, DEBUG);
+		AUDDBG(gerpok_sc_curl_errbuf);
 		gerpok_sc_sb_errors++;
 		gerpok_sc_free_res();
 		return -1;
@@ -668,8 +668,8 @@ static int gerpok_sc_submitentry(gchar *entry)
 	if (gerpok_sc_parse_sb_res()) {
 		gerpok_sc_sb_errors++;
 		gerpok_sc_free_res();
-		pdebug(fmt_vastr("Retrying in %d secs, %d elements in queue",
-					gerpok_sc_submit_interval, q_len()), DEBUG);
+		AUDDBG("Retrying in %d secs, %d elements in queue",
+					gerpok_sc_submit_interval, q_len());
 		return -1;
 	}
 	gerpok_sc_free_res();
@@ -694,8 +694,8 @@ static void gerpok_sc_handlequeue(GMutex *mutex)
 
 		if (nsubmit > 0)
 		{
-			pdebug(fmt_vastr("Number submitting: %d", nsubmit), DEBUG);
-			pdebug(fmt_vastr("Submission: %s", submitentry->str), DEBUG);
+			AUDDBG("Number submitting: %d", nsubmit);
+			AUDDBG("Submission: %s", submitentry->str);
 
 			if(!gerpok_sc_submitentry(submitentry->str))
 			{
@@ -730,9 +730,8 @@ static void gerpok_sc_handlequeue(GMutex *mutex)
 				
 				gerpok_sc_submit_timeout = time(NULL) + wait;
 
-				pdebug(fmt_vastr("Error while submitting. "
-					"Retrying after %d seconds.", wait),
-					DEBUG);
+				AUDDBG("Error while submitting. "
+					"Retrying after %d seconds.", wait);
 			}
 		}
 
@@ -756,7 +755,7 @@ static void read_cache(void)
 
 	if (!(fd = fopen(buf, "r")))
 		return;
-	pdebug(fmt_vastr("Opening %s", buf), DEBUG);
+	AUDDBG("Opening %s", buf);
 	while(!feof(fd))
 	{
 		cachesize += CACHE_SIZE;
@@ -770,7 +769,7 @@ static void read_cache(void)
 	{
 		char *artist, *title, *len, *time, *album, *mb;
 
-		pdebug("Pushed:", DEBUG);
+		AUDDBG("Pushed:");
 		ptr2 = strchr(ptr1, ' ');
 		artist = calloc(1, ptr2 - ptr1 + 1);
 		strncpy(artist, ptr1, ptr2 - ptr1);
@@ -802,13 +801,13 @@ static void read_cache(void)
 		ptr1 = ptr2 + 1;
 
 		item = q_put2(artist, title, len, time, album, mb);
-		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",
+		AUDDBG("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",
 				i, I_ARTIST(item),
 				i, I_TITLE(item),
 				i, I_LEN(item),
 				i, I_TIME(item),
 				i, I_MB(item),
-				i, I_ALBUM(item)), DEBUG);
+				i, I_ALBUM(item));
 		free(artist);
 		free(title);
 		free(len);
@@ -818,7 +817,7 @@ static void read_cache(void)
 
 		i++;
 	}
-	pdebug("Done loading cache.", DEBUG);
+	AUDDBG("Done loading cache.");
 	free(cache);
 }
 
@@ -829,11 +828,11 @@ static void dump_queue(void)
 	char *home, buf[PATH_MAX];
 	gchar* config_datadir;
 
-	/*pdebug("Entering dump_queue();", DEBUG);*/
+	/*AUDDBG("Entering dump_queue();");*/
 
 	if (!(home = getenv("HOME")))
 	{
-		pdebug("No HOME directory found. Cannot dump queue.", DEBUG);
+		AUDDBG("No HOME directory found. Cannot dump queue.");
 		return;
 	}
 
@@ -843,11 +842,11 @@ static void dump_queue(void)
 
 	if (!(fd = fopen(buf, "w")))
 	{
-		pdebug(fmt_vastr("Failure opening %s", buf), DEBUG);
+		AUDDBG("Failure opening %s", buf);
 		return;
 	}
 
-	pdebug(fmt_vastr("Opening %s", buf), DEBUG);
+	AUDDBG("Opening %s", buf);
 
 	q_peekall(1);
 
@@ -882,7 +881,7 @@ void gerpok_sc_cleaner(void)
 		free(gerpok_sc_major_error);
 	dump_queue();
 	q_free();
-	pdebug("scrobbler shutting down", DEBUG);
+	AUDDBG("scrobbler shutting down");
 }
 
 static void gerpok_sc_checkhandshake(void)
@@ -909,8 +908,8 @@ static void gerpok_sc_checkhandshake(void)
 					(60 << (gerpok_sc_hs_errors-5)) :
 					7200 );
 			gerpok_sc_hs_timeout = time(NULL) + wait;
-			pdebug(fmt_vastr("Error while handshaking. Retrying "
-				"after %d seconds.", wait), DEBUG);
+			AUDDBG("Error while handshaking. Retrying "
+				"after %d seconds.", wait);
 		}
 	}
 }
@@ -931,7 +930,7 @@ void gerpok_sc_init(char *uname, char *pwd)
 	gerpok_sc_username = strdup(uname);
 	gerpok_sc_password = strdup(pwd);
 	read_cache();
-	pdebug("scrobbler starting up", DEBUG);
+	AUDDBG("scrobbler starting up");
 }
 
 void gerpok_sc_addentry(GMutex *mutex, Tuple *tuple, int len)
