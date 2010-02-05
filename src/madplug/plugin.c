@@ -278,7 +278,7 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
          chkcount = 0,
          res, resync_max = -1,
          skip = 0;
-    mp3_frame_t frame, prev;
+    mp3_frame_t frame, prev = {0, 0, 0, 0, 0, 0, 0}; /* shut up warning */
 
     enum {
         STATE_HEADERS,
