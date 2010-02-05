@@ -355,12 +355,6 @@ static int pulse_get_output_time (void)
 
     pa_threaded_mainloop_lock(mainloop);
 
-    if (pa_stream_is_corked(stream))
-    {
-        pa_threaded_mainloop_unlock(mainloop);
-        return cached_time;
-    }
-
     if ((timing = pa_stream_get_timing_info (stream)) == NULL)
         goto fail;
 
@@ -371,7 +365,17 @@ static int pulse_get_output_time (void)
      - (int) (timing->sink_usec / 1000) + (int) ((now.tv_sec -
      timing->timestamp.tv_sec) * 1000) + (int) ((now.tv_usec -
      timing->timestamp.tv_usec) / 1000);
-    cached_time = time;
+
+    if (pa_stream_is_corked(stream))
+    {
+	int delta = time - cached_time;
+	if (delta > 0 && delta < 2000)
+             time = cached_time;
+        else
+             cached_time = time;
+    } else {
+        cached_time = time;
+    }
 
 fail:
     pa_threaded_mainloop_unlock(mainloop);
