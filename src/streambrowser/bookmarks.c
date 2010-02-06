@@ -28,120 +28,148 @@
 static bookmark_t **bookmarks;
 static int *bookmarks_count;
 
-gboolean bookmarks_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo)
+gboolean bookmarks_streaminfo_fetch (category_t * category,
+                                     streaminfo_t * streaminfo)
 {
-	// todo: implement and make use of this
-	
-	return FALSE;
+    // todo: implement and make use of this
+
+    return FALSE;
 }
 
-gboolean bookmarks_category_fetch(streamdir_t *streamdir, category_t *category)
+gboolean bookmarks_category_fetch (streamdir_t * streamdir,
+                                   category_t * category)
 {
-	debug("bookmarks: filling category '%s'\n", category->name);
-	
-	/* free/remove any existing streaminfos in this category */
-	while (streaminfo_get_count(category) > 0)
-		streaminfo_remove(category, streaminfo_get_by_index(category, 0));
+    debug ("bookmarks: filling category '%s'\n", category->name);
 
-	int i;
-	/* find bookmarks that match this category */
-	for (i = 0; i < *bookmarks_count; i++)
-		if (strcmp((*bookmarks)[i].streamdir_name, category->name) == 0) {
-			debug("bookmarks: adding stream info for '%s/%d'\n", streamdir->name, category->name);
+    /* free/remove any existing streaminfos in this category */
+    while (streaminfo_get_count (category) > 0)
+        streaminfo_remove (category, streaminfo_get_by_index (category, 0));
 
-			streaminfo_t *streaminfo = streaminfo_new((*bookmarks)[i].name, (*bookmarks)[i].playlist_url, (*bookmarks)[i].url, "");
-			streaminfo_add(category, streaminfo);
-			
-			debug("bookmarks: stream info added\n");
-		}
+    int i;
+    /* find bookmarks that match this category */
+    for (i = 0; i < *bookmarks_count; i++)
+        if (strcmp ((*bookmarks)[i].streamdir_name, category->name) == 0)
+        {
+            debug ("bookmarks: adding stream info for '%s/%d'\n",
+                   streamdir->name, category->name);
 
-	return TRUE;
+            streaminfo_t *streaminfo = streaminfo_new ((*bookmarks)[i].name,
+                                                       (*bookmarks)[i].
+                                                       playlist_url,
+                                                       (*bookmarks)[i].url, "");
+            streaminfo_add (category, streaminfo);
+
+            debug ("bookmarks: stream info added\n");
+        }
+
+    return TRUE;
 }
 
-streamdir_t* bookmarks_streamdir_fetch(bookmark_t **p_bookmarks, int *p_bookmarks_count)
+streamdir_t *bookmarks_streamdir_fetch (bookmark_t ** p_bookmarks,
+                                        int *p_bookmarks_count)
 {
-	bookmarks = p_bookmarks;
-	bookmarks_count = p_bookmarks_count;
-	
-	streamdir_t *streamdir = streamdir_new(BOOKMARKS_NAME);
-	
-	debug("bookmarks: creating streaming directory for bookmarks\n");
+    bookmarks = p_bookmarks;
+    bookmarks_count = p_bookmarks_count;
 
-	category_t *category = category_new("Shoutcast");
-	category_add(streamdir, category);
+    streamdir_t *streamdir = streamdir_new (BOOKMARKS_NAME);
 
-	category = category_new("Xiph");
-	category_add(streamdir, category);
+    debug ("bookmarks: creating streaming directory for bookmarks\n");
 
-	debug("bookmarks: streaming directory successfuly created\n");
+    category_t *category = category_new ("Shoutcast");
+    category_add (streamdir, category);
 
-	return streamdir;
+    category = category_new ("Xiph");
+    category_add (streamdir, category);
+
+    debug ("bookmarks: streaming directory successfuly created\n");
+
+    return streamdir;
 }
 
-void bookmark_add(bookmark_t *bookmark)
+void bookmark_add (bookmark_t * bookmark)
 {
-	debug("bookmarks: adding bookmark with streamdir = '%s', name = '%s', playlist_url = '%s', url = '%s'\n", 
-		bookmark->streamdir_name, bookmark->name, bookmark->playlist_url, bookmark->url);
-		
-	int i;
-	for (i = 0; i < *bookmarks_count; i++)
-		if (strcmp((*bookmarks)[i].name, bookmark->name) == 0) {
-			debug("bookmarks: bookmark with name = '%s' already exists, skipping\n", bookmark->name);
-			return;
-		}
+    debug
+        ("bookmarks: adding bookmark with streamdir = '%s', name = '%s', playlist_url = '%s', url = '%s'\n",
+         bookmark->streamdir_name, bookmark->name, bookmark->playlist_url,
+         bookmark->url);
 
-	*bookmarks = realloc(*bookmarks, sizeof(bookmark_t) * ((*bookmarks_count) + 1));
-	
-	strncpy((*bookmarks)[*bookmarks_count].streamdir_name, bookmark->streamdir_name, DEF_STRING_LEN);
-	strncpy((*bookmarks)[*bookmarks_count].name, bookmark->name, DEF_STRING_LEN);
-	strncpy((*bookmarks)[*bookmarks_count].playlist_url, bookmark->playlist_url, DEF_STRING_LEN);
-	strncpy((*bookmarks)[*bookmarks_count].url, bookmark->url, DEF_STRING_LEN);
-	
-	(*bookmarks_count)++;
-	
-	debug("bookmarks: bookmark added, there are now %d bookmarks\n", *bookmarks_count);
-	
-	/* issue a configuration save for immediately saving the new added bookmark */
-	config_save();
+    int i;
+    for (i = 0; i < *bookmarks_count; i++)
+        if (strcmp ((*bookmarks)[i].name, bookmark->name) == 0)
+        {
+            debug
+                ("bookmarks: bookmark with name = '%s' already exists, skipping\n",
+                 bookmark->name);
+            return;
+        }
+
+    *bookmarks =
+        realloc (*bookmarks, sizeof (bookmark_t) * ((*bookmarks_count) + 1));
+
+    strncpy ((*bookmarks)[*bookmarks_count].streamdir_name,
+             bookmark->streamdir_name, DEF_STRING_LEN);
+    strncpy ((*bookmarks)[*bookmarks_count].name, bookmark->name,
+             DEF_STRING_LEN);
+    strncpy ((*bookmarks)[*bookmarks_count].playlist_url,
+             bookmark->playlist_url, DEF_STRING_LEN);
+    strncpy ((*bookmarks)[*bookmarks_count].url, bookmark->url, DEF_STRING_LEN);
+
+    (*bookmarks_count)++;
+
+    debug ("bookmarks: bookmark added, there are now %d bookmarks\n",
+           *bookmarks_count);
+
+    /* issue a configuration save for immediately saving the new added bookmark */
+    config_save ();
 }
 
-void bookmark_remove(gchar *name)
+void bookmark_remove (gchar * name)
 {
-	debug("bookmarks: searching for bookmark with name = '%s'\n", name);
+    debug ("bookmarks: searching for bookmark with name = '%s'\n", name);
 
-	int pos = -1, i;
-	
-	for (i = 0; i < *bookmarks_count; i++)
-		if (strcmp((*bookmarks)[i].name, name) == 0) {
-			pos = i;
-			break;
-		}
-		
-	if (pos != -1) {
-		debug("bookmarks: removing bookmark with streamdir = '%s', name = '%s', playlist_url = '%s', url = '%s'\n", 
-			(*bookmarks)[i].streamdir_name, (*bookmarks)[i].name, (*bookmarks)[i].playlist_url, (*bookmarks)[i].url);
+    int pos = -1, i;
 
-		for (i = pos; i < (*bookmarks_count) - 1; i++) {
-			/* bookmarks[i] = bookmarks[i + 1] */
+    for (i = 0; i < *bookmarks_count; i++)
+        if (strcmp ((*bookmarks)[i].name, name) == 0)
+        {
+            pos = i;
+            break;
+        }
 
-			strncpy((*bookmarks)[i].streamdir_name, (*bookmarks)[i + 1].streamdir_name, DEF_STRING_LEN);
-			strncpy((*bookmarks)[i].name, (*bookmarks)[i + 1].name, DEF_STRING_LEN);
-			strncpy((*bookmarks)[i].playlist_url, (*bookmarks)[i + 1].playlist_url, DEF_STRING_LEN);
-			strncpy((*bookmarks)[i].url, (*bookmarks)[i + 1].url, DEF_STRING_LEN);
-		}
-		
-		(*bookmarks_count)--;
-		if (*bookmarks_count > 0)
-			*bookmarks = realloc(*bookmarks, sizeof(bookmark_t) * (*bookmarks_count));
-		else
-			*bookmarks = NULL;
-			
-		debug("bookmarks: bookmark removed, there are now %d bookmarks\n", *bookmarks_count);
-	}
-	else
-		failure("bookmarks: cannot find a bookmark with name = '%s'\n", name);
+    if (pos != -1)
+    {
+        debug
+            ("bookmarks: removing bookmark with streamdir = '%s', name = '%s', playlist_url = '%s', url = '%s'\n",
+             (*bookmarks)[i].streamdir_name, (*bookmarks)[i].name,
+             (*bookmarks)[i].playlist_url, (*bookmarks)[i].url);
 
-	/* issue a configuration save for immediately saving the remaining bookmarks */
-	config_save();
+        for (i = pos; i < (*bookmarks_count) - 1; i++)
+        {
+            /* bookmarks[i] = bookmarks[i + 1] */
+
+            strncpy ((*bookmarks)[i].streamdir_name,
+                     (*bookmarks)[i + 1].streamdir_name, DEF_STRING_LEN);
+            strncpy ((*bookmarks)[i].name, (*bookmarks)[i + 1].name,
+                     DEF_STRING_LEN);
+            strncpy ((*bookmarks)[i].playlist_url,
+                     (*bookmarks)[i + 1].playlist_url, DEF_STRING_LEN);
+            strncpy ((*bookmarks)[i].url, (*bookmarks)[i + 1].url,
+                     DEF_STRING_LEN);
+        }
+
+        (*bookmarks_count)--;
+        if (*bookmarks_count > 0)
+            *bookmarks =
+                realloc (*bookmarks, sizeof (bookmark_t) * (*bookmarks_count));
+        else
+            *bookmarks = NULL;
+
+        debug ("bookmarks: bookmark removed, there are now %d bookmarks\n",
+               *bookmarks_count);
+    }
+    else
+        failure ("bookmarks: cannot find a bookmark with name = '%s'\n", name);
+
+    /* issue a configuration save for immediately saving the remaining bookmarks */
+    config_save ();
 }
-

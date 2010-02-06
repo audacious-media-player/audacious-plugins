@@ -27,24 +27,26 @@
 #define BOOKMARKS_ICON				DATA_DIR G_DIR_SEPARATOR_S "images" G_DIR_SEPARATOR_S "bookmarks.png"
 
 
-typedef struct {
-	
-	gchar			streamdir_name[DEF_STRING_LEN];
-	
-	gchar			name[DEF_STRING_LEN];
-	gchar			playlist_url[DEF_STRING_LEN];
-	gchar			url[DEF_STRING_LEN];
-	
-} bookmark_t;
+typedef struct
+{
+    gchar streamdir_name[DEF_STRING_LEN];
+
+    gchar name[DEF_STRING_LEN];
+    gchar playlist_url[DEF_STRING_LEN];
+    gchar url[DEF_STRING_LEN];
+}
+bookmark_t;
 
 
-gboolean							bookmarks_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo);
-gboolean							bookmarks_category_fetch(streamdir_t *streamdir, category_t *category);
-streamdir_t*						bookmarks_streamdir_fetch(bookmark_t **p_bookmarks, int *p_bookmarks_count);
+gboolean bookmarks_streaminfo_fetch (category_t * category,
+                                     streaminfo_t * streaminfo);
+gboolean bookmarks_category_fetch (streamdir_t * streamdir,
+                                   category_t * category);
+streamdir_t *bookmarks_streamdir_fetch (bookmark_t ** p_bookmarks,
+                                        int *p_bookmarks_count);
 
-void								bookmark_add(bookmark_t *bookmark);
-void								bookmark_remove(gchar *name);
+void bookmark_add (bookmark_t * bookmark);
+void bookmark_remove (gchar * name);
 
 
-#endif	// BOOKMARKS_H
-
+#endif // BOOKMARKS_H

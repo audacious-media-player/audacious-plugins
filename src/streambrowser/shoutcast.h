@@ -30,10 +30,11 @@
 #define SHOUTCAST_STREAMINFO_URL	"http://classic.shoutcast.com/sbin/shoutcast-playlist.pls?rn=%s&file=filename.pls"
 
 
-gboolean							shoutcast_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo);
-gboolean							shoutcast_category_fetch(streamdir_t *streamdir, category_t *category);
-streamdir_t*						shoutcast_streamdir_fetch();
+gboolean shoutcast_streaminfo_fetch (category_t * category,
+                                     streaminfo_t * streaminfo);
+gboolean shoutcast_category_fetch (streamdir_t * streamdir,
+                                   category_t * category);
+streamdir_t *shoutcast_streamdir_fetch ();
 
 
-#endif	// SHOUTCAST_H
-
+#endif // SHOUTCAST_H

@@ -29,10 +29,10 @@
 #define XIPH_TEMP_FILENAME		"file:///tmp/xiph_yp.xml"
 
 
-gboolean							xiph_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo);
-gboolean							xiph_category_fetch(streamdir_t *streamdir, category_t *category);
-streamdir_t*						xiph_streamdir_fetch();
+gboolean xiph_streaminfo_fetch (category_t * category,
+                                streaminfo_t * streaminfo);
+gboolean xiph_category_fetch (streamdir_t * streamdir, category_t * category);
+streamdir_t *xiph_streamdir_fetch ();
 
 
-#endif	// SHOUTCAST_H
-
+#endif // SHOUTCAST_H
