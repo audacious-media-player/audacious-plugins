@@ -190,6 +190,10 @@ streamdir_t *xiph_streamdir_fetch (void)
 
 static void refresh_streamdir (void)
 {
+    gchar * unix_name = g_build_filename (audacious_get_localdir (),
+     XIPH_TEMP_FILENAME, NULL);
+    gchar * uri_name = g_filename_to_uri (unix_name, NULL, NULL);
+
     /* free any previously fetched streamdir data */
     if (xiph_entries != NULL)
     {
@@ -200,21 +204,23 @@ static void refresh_streamdir (void)
 
     debug ("xiph: fetching streaming directory file '%s'\n",
            XIPH_STREAMDIR_URL);
-    if (!fetch_remote_to_local_file (XIPH_STREAMDIR_URL, XIPH_TEMP_FILENAME))
-    {
-        failure
-            ("xiph: stream directory file '%s' could not be downloaded to '%s'\n",
-             XIPH_STREAMDIR_URL, XIPH_TEMP_FILENAME);
-        return;
-    }
-    debug ("xiph: stream directory file '%s' successfuly downloaded to '%s'\n",
-           XIPH_STREAMDIR_URL, XIPH_TEMP_FILENAME);
 
-    xmlDoc *doc = xmlReadFile (XIPH_TEMP_FILENAME, NULL, 0);
+    if (! fetch_remote_to_local_file (XIPH_STREAMDIR_URL, uri_name))
+    {
+        failure ("xiph: stream directory file '%s' could not be downloaded to "
+         "'%s'\n", XIPH_STREAMDIR_URL, uri_name);
+        goto DONE;
+    }
+
+    debug ("xiph: stream directory file '%s' successfuly downloaded to '%s'\n",
+     XIPH_STREAMDIR_URL, uri_name);
+
+    xmlDoc * doc = xmlReadFile (uri_name, NULL, 0);
+    
     if (doc == NULL)
     {
         failure ("xiph: failed to read stream directory file\n");
-        return;
+        goto DONE;
     }
 
     xmlNode *root_node = xmlDocGetRootElement (doc);
@@ -267,6 +273,10 @@ static void refresh_streamdir (void)
     xmlFreeDoc (doc);
 
     debug ("xiph: streaming directory successfuly loaded\n");
+
+DONE:
+    g_free (unix_name);
+    g_free (uri_name);
 }
 
 static gboolean genre_match (gchar * string1, gchar * string2)

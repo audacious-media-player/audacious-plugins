@@ -26,7 +26,7 @@
 #define XIPH_NAME				"Xiph"
 #define XIPH_ICON				DATA_DIR G_DIR_SEPARATOR_S "images" G_DIR_SEPARATOR_S "xiph.png"
 #define XIPH_STREAMDIR_URL		"http://dir.xiph.org/yp.xml"
-#define XIPH_TEMP_FILENAME		"file:///tmp/xiph_yp.xml"
+#define XIPH_TEMP_FILENAME		"streambrowser-xiph-temp.xml"
 
 
 gboolean xiph_streaminfo_fetch (category_t * category,

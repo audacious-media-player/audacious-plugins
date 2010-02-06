@@ -23,7 +23,7 @@
 #define DEF_STRING_LEN				1024
 #define DEF_BUFFER_SIZE				512
 #define MAX_UPDATE_THREADS			4
-#define PLAYLIST_TEMP_FILE			"file:///tmp/playlist.pls"
+#define PLAYLIST_TEMP_FILE			"streambrowser-playlist-temp.pls"
 #define STREAMBROWSER_ICON_SMALL	DATA_DIR G_DIR_SEPARATOR_S "images" G_DIR_SEPARATOR_S "streambrowser-16x16.png"
 #define STREAMBROWSER_ICON			DATA_DIR G_DIR_SEPARATOR_S "images" G_DIR_SEPARATOR_S "streambrowser-64x64.png"
 

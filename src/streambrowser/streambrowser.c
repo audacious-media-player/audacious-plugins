@@ -735,24 +735,27 @@ static void streaminfo_add_to_playlist (streaminfo_t * streaminfo)
 {
     gint playlist = aud_playlist_get_active ();
     gint entrycount = aud_playlist_entry_count (playlist);
+    gchar * unix_name = g_build_filename (audacious_get_localdir (),
+     PLAYLIST_TEMP_FILE, NULL);
+    gchar * uri_name = g_filename_to_uri (unix_name, NULL, NULL);
 
     if (strlen (streaminfo->playlist_url) > 0)
     {
         debug ("fetching stream playlist for station '%s' from '%s'\n",
                streaminfo->name, streaminfo->playlist_url);
-        if (!fetch_remote_to_local_file
-            (streaminfo->playlist_url, PLAYLIST_TEMP_FILE))
+
+        if (! fetch_remote_to_local_file (streaminfo->playlist_url, uri_name))
         {
-            failure
-                ("shoutcast: stream playlist '%s' could not be downloaded to '%s'\n",
-                 streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
-            return;
+            failure ("shoutcast: stream playlist '%s' could not be downloaded "
+             "to '%s'\n", streaminfo->playlist_url, uri_name);
+            goto DONE;
         }
+
         debug ("stream playlist '%s' successfuly downloaded to '%s'\n",
-               streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
+         streaminfo->playlist_url, uri_name);
 
         aud_playlist_insert_playlist (aud_playlist_get_active (), entrycount,
-                                      PLAYLIST_TEMP_FILE);
+         uri_name);
         debug ("stream playlist '%s' added\n", streaminfo->playlist_url);
     }
 
@@ -762,6 +765,10 @@ static void streaminfo_add_to_playlist (streaminfo_t * streaminfo)
                                       streaminfo->url);
         debug ("stream '%s' added\n", streaminfo->url);
     }
+
+DONE:
+    g_free (unix_name);
+    g_free (uri_name);
 }
 
 static void on_plugin_services_menu_item_click ()
