@@ -447,7 +447,6 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
     } while (state != STATE_FATAL && tries < max_resync_tries);
     /* Give up after given number of failed resync attempts or fatal error */
 
-    g_message("Rejecting %s (not an MP3 file?)", filename);
     return 0;
 }
 
