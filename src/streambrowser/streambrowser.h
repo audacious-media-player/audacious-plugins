@@ -34,7 +34,6 @@
 #include <audacious/i18n.h>
 
 
-void debug (const char *fmt, ...);
 void failure (const char *fmt, ...);
 gboolean fetch_remote_to_local_file (gchar * remote_url, gchar * local_url);
 

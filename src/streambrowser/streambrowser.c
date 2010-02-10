@@ -33,7 +33,6 @@
 
 typedef struct
 {
-    gboolean debug;
     bookmark_t *bookmarks;
     int bookmarks_count;
 }
@@ -87,19 +86,6 @@ GeneralPlugin *sb_gplist[] =
 };
 
 SIMPLE_GENERAL_PLUGIN (streambrowser, sb_gplist);
-
-
-void debug (const char *fmt, ...)
-{
-    if (streambrowser_cfg.debug)
-    {
-        va_list ap;
-        fprintf (stderr, "* streambrowser: ");
-        va_start (ap, fmt);
-        vfprintf (stderr, fmt, ap);
-        va_end (ap);
-    }
-}
 
 void failure (const char *fmt, ...)
 {
@@ -158,7 +144,6 @@ gboolean fetch_remote_to_local_file (gchar * remote_url, gchar * local_url)
 
 void config_load ()
 {
-    streambrowser_cfg.debug = FALSE;
     streambrowser_cfg.bookmarks = NULL;
     streambrowser_cfg.bookmarks_count = 0;
 
@@ -169,12 +154,8 @@ void config_load ()
         return;
     }
 
-    aud_cfg_db_get_bool (db, "streambrowser", "debug",
-                         &streambrowser_cfg.debug);
     aud_cfg_db_get_int (db, "streambrowser", "bookmarks_count",
                         &streambrowser_cfg.bookmarks_count);
-
-    debug ("debug = %d\n", streambrowser_cfg.debug);
 
     if (streambrowser_cfg.bookmarks_count == 0)
         streambrowser_cfg.bookmarks = NULL;
@@ -226,7 +207,7 @@ void config_load ()
         else
             streambrowser_cfg.bookmarks[i].url[0] = '\0';
 
-        debug
+        AUDDBG
             ("loaded a bookmark with streamdir_name = '%s', name = '%s', playlist_url = '%s', url = '%s'\n",
              streambrowser_cfg.bookmarks[i].streamdir_name,
              streambrowser_cfg.bookmarks[i].name,
@@ -234,11 +215,11 @@ void config_load ()
              streambrowser_cfg.bookmarks[i].url);
     }
 
-    debug ("loaded %d bookmarks\n", streambrowser_cfg.bookmarks_count);
+    AUDDBG("loaded %d bookmarks\n", streambrowser_cfg.bookmarks_count);
 
     aud_cfg_db_close (db);
 
-    debug ("configuration loaded\n");
+    AUDDBG("configuration loaded\n");
 }
 
 void config_save ()
@@ -250,8 +231,6 @@ void config_save ()
         return;
     }
 
-    aud_cfg_db_set_bool (db, "streambrowser", "debug", streambrowser_cfg.debug);
-
     int old_bookmarks_count = 0, i;
     gchar item[DEF_STRING_LEN];
     aud_cfg_db_get_int (db, "streambrowser", "bookmarks_count",
@@ -261,7 +240,7 @@ void config_save ()
 
     for (i = 0; i < streambrowser_cfg.bookmarks_count; i++)
     {
-        debug
+        AUDDBG
             ("saving bookmark with streamdir_name = '%s', name = '%s', playlist_url = '%s', url = '%s'\n",
              streambrowser_cfg.bookmarks[i].streamdir_name,
              streambrowser_cfg.bookmarks[i].name,
@@ -302,7 +281,7 @@ void config_save ()
 
     aud_cfg_db_close (db);
 
-    debug ("configuration saved\n");
+    AUDDBG("configuration saved\n");
 }
 
 gboolean mystrcasestr (const char *haystack, const char *needle)
@@ -333,18 +312,14 @@ gboolean mystrcasestr (const char *haystack, const char *needle)
 
 static void sb_init ()
 {
-    /* workaround to print sb_init() */
-    streambrowser_cfg.debug = TRUE;
-    debug ("sb_init()\n");
-    streambrowser_cfg.debug = FALSE;
-
+    AUDDBG("sb_init()\n");
     config_load ();
     gui_init ();
 }
 
 static void sb_about ()
 {
-    debug ("sb_about()\n");
+    AUDDBG("sb_about()\n");
 
     static GtkWidget *about_window = NULL;
 
@@ -372,12 +347,12 @@ static void sb_about ()
 
 static void sb_configure ()
 {
-    debug ("sb_configure()\n");
+    AUDDBG("sb_configure()\n");
 }
 
 static void sb_cleanup ()
 {
-    debug ("sb_cleanup()\n");
+    AUDDBG("sb_cleanup()\n");
 
     gui_done ();
     config_save ();
@@ -414,7 +389,7 @@ static void gui_init ()
     update_thread_mutex = g_mutex_new ();
     update_thread_data_queue = g_queue_new ();
 
-    debug ("gui initialized\n");
+    AUDDBG("gui initialized\n");
 }
 
 static void gui_done ()
@@ -436,14 +411,14 @@ static void gui_done ()
         g_queue_free (update_thread_data_queue);
     update_thread_data_queue = NULL;
 
-    debug ("gui destroyed\n");
+    AUDDBG("gui destroyed\n");
 }
 
 static void streamdir_update (streamdir_t * streamdir, category_t * category,
                               streaminfo_t * streaminfo,
                               gboolean add_to_playlist)
 {
-    debug
+    AUDDBG
         ("requested streamdir update (streamdir = '%s', category = '%s', streaminfo = '%s', add_to_playlist = %d)\n",
          streamdir == NULL ? "" : streamdir->name,
          category == NULL ? "" : category->name,
@@ -451,7 +426,7 @@ static void streamdir_update (streamdir_t * streamdir, category_t * category,
 
     if (g_queue_get_length (update_thread_data_queue) >= MAX_UPDATE_THREADS)
     {
-        debug
+        AUDDBG
             ("another %d streamdir updates are pending, this request will be dropped\n",
              g_queue_get_length (update_thread_data_queue));
     }
@@ -484,7 +459,7 @@ static void streamdir_update (streamdir_t * streamdir, category_t * category,
             /* if no other similar request exists, we enqueue it */
             if (!exists)
             {
-                debug
+                AUDDBG
                     ("another %d streamdir updates are pending, this request will be queued\n",
                      g_queue_get_length (update_thread_data_queue));
 
@@ -500,14 +475,14 @@ static void streamdir_update (streamdir_t * streamdir, category_t * category,
             }
             else
             {
-                debug
+                AUDDBG
                     ("this request is already present in the queue, dropping\n");
             }
         }
         /* no thread is currently running, we start one */
         else
         {
-            debug
+            AUDDBG
                 ("no other streamdir updates are pending, starting to process this request immediately\n");
 
             update_thread_data_t *data =
@@ -530,7 +505,7 @@ static void streamdir_update (streamdir_t * streamdir, category_t * category,
 
 static gpointer update_thread_core (gpointer user_data)
 {
-    debug ("entering update thread core\n");
+    AUDDBG("entering update thread core\n");
 
     /* try to get the last item in the queue, but don't remove it */
     g_mutex_lock (update_thread_mutex);
@@ -726,7 +701,7 @@ static gpointer update_thread_core (gpointer user_data)
         g_mutex_unlock (update_thread_mutex);
     }
 
-    debug ("leaving update thread core\n");
+    AUDDBG("leaving update thread core\n");
 
     return NULL;
 }
@@ -741,7 +716,7 @@ static void streaminfo_add_to_playlist (streaminfo_t * streaminfo)
 
     if (strlen (streaminfo->playlist_url) > 0)
     {
-        debug ("fetching stream playlist for station '%s' from '%s'\n",
+        AUDDBG("fetching stream playlist for station '%s' from '%s'\n",
                streaminfo->name, streaminfo->playlist_url);
 
         if (! fetch_remote_to_local_file (streaminfo->playlist_url, uri_name))
@@ -751,19 +726,19 @@ static void streaminfo_add_to_playlist (streaminfo_t * streaminfo)
             goto DONE;
         }
 
-        debug ("stream playlist '%s' successfuly downloaded to '%s'\n",
+        AUDDBG("stream playlist '%s' successfuly downloaded to '%s'\n",
          streaminfo->playlist_url, uri_name);
 
         aud_playlist_insert_playlist (aud_playlist_get_active (), entrycount,
          uri_name);
-        debug ("stream playlist '%s' added\n", streaminfo->playlist_url);
+        AUDDBG("stream playlist '%s' added\n", streaminfo->playlist_url);
     }
 
     if (strlen (streaminfo->url) > 0)
     {
         aud_playlist_insert_playlist (aud_playlist_get_active (), entrycount,
                                       streaminfo->url);
-        debug ("stream '%s' added\n", streaminfo->url);
+        AUDDBG("stream '%s' added\n", streaminfo->url);
     }
 
 DONE:
@@ -773,7 +748,7 @@ DONE:
 
 static void on_plugin_services_menu_item_click ()
 {
-    debug ("on_plugin_services_menu_item_click()\n");
+    AUDDBG("on_plugin_services_menu_item_click()\n");
 
     streambrowser_win_show ();
     streamdir_update (NULL, NULL, NULL, FALSE);

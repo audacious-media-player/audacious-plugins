@@ -44,7 +44,7 @@ gboolean shoutcast_streaminfo_fetch (category_t * category,
     char temp_pathname[DEF_STRING_LEN];
     sprintf (temp_pathname, "file://%s", temp_filename);
 
-    debug ("shoutcast: fetching category file '%s'\n", url);
+    AUDDBG("shoutcast: fetching category file '%s'\n", url);
     if (!fetch_remote_to_local_file (url, temp_pathname))
     {
         failure
@@ -53,7 +53,7 @@ gboolean shoutcast_streaminfo_fetch (category_t * category,
         free (temp_filename);
         return FALSE;
     }
-    debug ("shoutcast: category file '%s' successfuly downloaded to '%s'\n",
+    AUDDBG("shoutcast: category file '%s' successfuly downloaded to '%s'\n",
            url, temp_pathname);
 
     xmlDoc *doc = xmlReadFile (temp_pathname, NULL, 0);
@@ -90,7 +90,7 @@ gboolean shoutcast_streaminfo_fetch (category_t * category,
                 (streaminfo_playlist_url, streaminfo->playlist_url,
                  DEF_STRING_LEN) == 0)
             {
-                debug
+                AUDDBG
                     ("shoutcast: updating stream info for '%s' with id %s from '%s'\n",
                      streaminfo_name, streaminfo_id, url);
 
@@ -102,7 +102,7 @@ gboolean shoutcast_streaminfo_fetch (category_t * category,
                 xmlFree (streaminfo_id);
                 xmlFree (streaminfo_current_track);
 
-                debug ("shoutcast: stream info added\n");
+                AUDDBG("shoutcast: stream info added\n");
 
                 break;
             }
@@ -138,7 +138,7 @@ gboolean shoutcast_category_fetch (streamdir_t * streamdir,
     char temp_pathname[DEF_STRING_LEN];
     sprintf (temp_pathname, "file://%s", temp_filename);
 
-    debug ("shoutcast: fetching category file '%s'\n", url);
+    AUDDBG("shoutcast: fetching category file '%s'\n", url);
     if (!fetch_remote_to_local_file (url, temp_pathname))
     {
         failure
@@ -147,7 +147,7 @@ gboolean shoutcast_category_fetch (streamdir_t * streamdir,
         free (temp_filename);
         return FALSE;
     }
-    debug ("shoutcast: category file '%s' successfuly downloaded to '%s'\n",
+    AUDDBG("shoutcast: category file '%s' successfuly downloaded to '%s'\n",
            url, temp_pathname);
 
     xmlDoc *doc = xmlReadFile (temp_pathname, NULL, 0);
@@ -184,7 +184,7 @@ gboolean shoutcast_category_fetch (streamdir_t * streamdir,
             g_snprintf (streaminfo_playlist_url, DEF_STRING_LEN,
                         SHOUTCAST_STREAMINFO_URL, streaminfo_id);
 
-            debug ("shoutcast: adding stream info for '%s/%d' from '%s'\n",
+            AUDDBG("shoutcast: adding stream info for '%s/%d' from '%s'\n",
                    streaminfo_name, streaminfo_id, url);
 
             streaminfo_t *streaminfo =
@@ -196,7 +196,7 @@ gboolean shoutcast_category_fetch (streamdir_t * streamdir,
             xmlFree (streaminfo_id);
             xmlFree (streaminfo_current_track);
 
-            debug ("shoutcast: stream info added\n");
+            AUDDBG("shoutcast: stream info added\n");
         }
     }
 
@@ -228,7 +228,7 @@ streamdir_t *shoutcast_streamdir_fetch ()
     char temp_pathname[DEF_STRING_LEN];
     sprintf (temp_pathname, "file://%s", temp_filename);
 
-    debug ("shoutcast: fetching streaming directory file '%s'\n",
+    AUDDBG("shoutcast: fetching streaming directory file '%s'\n",
            SHOUTCAST_STREAMDIR_URL);
     if (!fetch_remote_to_local_file (SHOUTCAST_STREAMDIR_URL, temp_pathname))
     {
@@ -238,7 +238,7 @@ streamdir_t *shoutcast_streamdir_fetch ()
         free (temp_filename);
         return NULL;
     }
-    debug
+    AUDDBG
         ("shoutcast: stream directory file '%s' successfuly downloaded to '%s'\n",
          SHOUTCAST_STREAMDIR_URL, temp_pathname);
 
@@ -262,14 +262,14 @@ streamdir_t *shoutcast_streamdir_fetch ()
             gchar *category_name =
                 (gchar *) xmlGetProp (node, (xmlChar *) "name");
 
-            debug ("shoutcast: fetching category '%s'\n", category_name);
+            AUDDBG("shoutcast: fetching category '%s'\n", category_name);
 
             category_t *category = category_new (category_name);
             category_add (streamdir, category);
 
             xmlFree (category_name);
 
-            debug ("shoutcast: category added\n", category_name);
+            AUDDBG("shoutcast: category added\n", category_name);
         }
     }
 
@@ -282,7 +282,7 @@ streamdir_t *shoutcast_streamdir_fetch ()
     }
     free (temp_filename);
 
-    debug ("shoutcast: streaming directory successfuly loaded\n");
+    AUDDBG("shoutcast: streaming directory successfuly loaded\n");
 
     return streamdir;
 }

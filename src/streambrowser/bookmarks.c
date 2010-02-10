@@ -39,7 +39,7 @@ gboolean bookmarks_streaminfo_fetch (category_t * category,
 gboolean bookmarks_category_fetch (streamdir_t * streamdir,
                                    category_t * category)
 {
-    debug ("bookmarks: filling category '%s'\n", category->name);
+    AUDDBG("bookmarks: filling category '%s'\n", category->name);
 
     /* free/remove any existing streaminfos in this category */
     while (streaminfo_get_count (category) > 0)
@@ -50,7 +50,7 @@ gboolean bookmarks_category_fetch (streamdir_t * streamdir,
     for (i = 0; i < *bookmarks_count; i++)
         if (strcmp ((*bookmarks)[i].streamdir_name, category->name) == 0)
         {
-            debug ("bookmarks: adding stream info for '%s/%d'\n",
+            AUDDBG("bookmarks: adding stream info for '%s/%d'\n",
                    streamdir->name, category->name);
 
             streaminfo_t *streaminfo = streaminfo_new ((*bookmarks)[i].name,
@@ -59,7 +59,7 @@ gboolean bookmarks_category_fetch (streamdir_t * streamdir,
                                                        (*bookmarks)[i].url, "");
             streaminfo_add (category, streaminfo);
 
-            debug ("bookmarks: stream info added\n");
+            AUDDBG("bookmarks: stream info added\n");
         }
 
     return TRUE;
@@ -73,7 +73,7 @@ streamdir_t *bookmarks_streamdir_fetch (bookmark_t ** p_bookmarks,
 
     streamdir_t *streamdir = streamdir_new (BOOKMARKS_NAME);
 
-    debug ("bookmarks: creating streaming directory for bookmarks\n");
+    AUDDBG("bookmarks: creating streaming directory for bookmarks\n");
 
     category_t *category = category_new ("Shoutcast");
     category_add (streamdir, category);
@@ -81,14 +81,14 @@ streamdir_t *bookmarks_streamdir_fetch (bookmark_t ** p_bookmarks,
     category = category_new ("Xiph");
     category_add (streamdir, category);
 
-    debug ("bookmarks: streaming directory successfuly created\n");
+    AUDDBG("bookmarks: streaming directory successfuly created\n");
 
     return streamdir;
 }
 
 void bookmark_add (bookmark_t * bookmark)
 {
-    debug
+    AUDDBG
         ("bookmarks: adding bookmark with streamdir = '%s', name = '%s', playlist_url = '%s', url = '%s'\n",
          bookmark->streamdir_name, bookmark->name, bookmark->playlist_url,
          bookmark->url);
@@ -97,7 +97,7 @@ void bookmark_add (bookmark_t * bookmark)
     for (i = 0; i < *bookmarks_count; i++)
         if (strcmp ((*bookmarks)[i].name, bookmark->name) == 0)
         {
-            debug
+            AUDDBG
                 ("bookmarks: bookmark with name = '%s' already exists, skipping\n",
                  bookmark->name);
             return;
@@ -116,7 +116,7 @@ void bookmark_add (bookmark_t * bookmark)
 
     (*bookmarks_count)++;
 
-    debug ("bookmarks: bookmark added, there are now %d bookmarks\n",
+    AUDDBG("bookmarks: bookmark added, there are now %d bookmarks\n",
            *bookmarks_count);
 
     /* issue a configuration save for immediately saving the new added bookmark */
@@ -125,7 +125,7 @@ void bookmark_add (bookmark_t * bookmark)
 
 void bookmark_remove (gchar * name)
 {
-    debug ("bookmarks: searching for bookmark with name = '%s'\n", name);
+    AUDDBG("bookmarks: searching for bookmark with name = '%s'\n", name);
 
     int pos = -1, i;
 
@@ -138,7 +138,7 @@ void bookmark_remove (gchar * name)
 
     if (pos != -1)
     {
-        debug
+        AUDDBG
             ("bookmarks: removing bookmark with streamdir = '%s', name = '%s', playlist_url = '%s', url = '%s'\n",
              (*bookmarks)[i].streamdir_name, (*bookmarks)[i].name,
              (*bookmarks)[i].playlist_url, (*bookmarks)[i].url);
@@ -164,7 +164,7 @@ void bookmark_remove (gchar * name)
         else
             *bookmarks = NULL;
 
-        debug ("bookmarks: bookmark removed, there are now %d bookmarks\n",
+        AUDDBG("bookmarks: bookmark removed, there are now %d bookmarks\n",
                *bookmarks_count);
     }
     else

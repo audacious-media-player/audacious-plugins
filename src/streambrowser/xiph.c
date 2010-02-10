@@ -202,7 +202,7 @@ static void refresh_streamdir (void)
     }
     xiph_entry_count = 0;
 
-    debug ("xiph: fetching streaming directory file '%s'\n",
+    AUDDBG("xiph: fetching streaming directory file '%s'\n",
            XIPH_STREAMDIR_URL);
 
     if (! fetch_remote_to_local_file (XIPH_STREAMDIR_URL, uri_name))
@@ -212,7 +212,7 @@ static void refresh_streamdir (void)
         goto DONE;
     }
 
-    debug ("xiph: stream directory file '%s' successfuly downloaded to '%s'\n",
+    AUDDBG("xiph: stream directory file '%s' successfuly downloaded to '%s'\n",
      XIPH_STREAMDIR_URL, uri_name);
 
     xmlDoc * doc = xmlReadFile (uri_name, NULL, 0);
@@ -272,7 +272,7 @@ static void refresh_streamdir (void)
 
     xmlFreeDoc (doc);
 
-    debug ("xiph: streaming directory successfuly loaded\n");
+    AUDDBG("xiph: streaming directory successfuly loaded\n");
 
 DONE:
     g_free (unix_name);
