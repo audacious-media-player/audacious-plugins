@@ -19,7 +19,9 @@
 
 #include <stdint.h>
 
-//#define NEON_DEBUG
+#ifdef DEBUG
+#define NEON_DEBUG
+#endif
 
 #include "neon.h"
 
