@@ -289,7 +289,7 @@ ffaudio_play_file(InputPlayback *playback)
     AVCodecContext *c = NULL;
     AVFormatContext *ic = NULL;
     AVStream *s = NULL;
-    AVPacket pkt;
+    AVPacket pkt = {.data = NULL};
     guint8 *outbuf = NULL, *resbuf = NULL;
     gint i, stream_id, errcount;
     gint in_sample_size, out_sample_size, chunk_size;
