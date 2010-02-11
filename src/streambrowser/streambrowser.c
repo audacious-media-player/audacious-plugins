@@ -709,7 +709,6 @@ static gpointer update_thread_core (gpointer user_data)
 static void streaminfo_add_to_playlist (streaminfo_t * streaminfo)
 {
     gint playlist = aud_playlist_get_active ();
-    gint entrycount = aud_playlist_entry_count (playlist);
     gchar * unix_name = g_build_filename (audacious_get_localdir (),
      PLAYLIST_TEMP_FILE, NULL);
     gchar * uri_name = g_filename_to_uri (unix_name, NULL, NULL);
@@ -729,15 +728,14 @@ static void streaminfo_add_to_playlist (streaminfo_t * streaminfo)
         AUDDBG("stream playlist '%s' successfuly downloaded to '%s'\n",
          streaminfo->playlist_url, uri_name);
 
-        aud_playlist_insert_playlist (aud_playlist_get_active (), entrycount,
-         uri_name);
+        aud_playlist_insert_playlist (playlist, -1, uri_name);
         AUDDBG("stream playlist '%s' added\n", streaminfo->playlist_url);
     }
 
     if (strlen (streaminfo->url) > 0)
     {
-        aud_playlist_insert_playlist (aud_playlist_get_active (), entrycount,
-                                      streaminfo->url);
+        aud_playlist_entry_insert (playlist, -1, g_strdup (streaminfo->url),
+         NULL);
         AUDDBG("stream '%s' added\n", streaminfo->url);
     }
 
