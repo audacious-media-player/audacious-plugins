@@ -1456,7 +1456,10 @@ buffer_thread_f(void *arg)
 
         /* get free space in device output buffer
          * NOTE: disk_writer always returns <big int> here */
-        op_free = the_op->buffer_free() & -4;
+        if (the_op->buffer_free != NULL)
+            op_free = the_op->buffer_free() & -4;
+        else
+            op_free = G_MAXINT;
 
         /* continue waiting if there is no room in the device buffer */
         if (op_free == 0)
