@@ -575,6 +575,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xftf_fadein_table), xftffi_volume_spin, 1, 2, 2, 3,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
+  /* xgettext:no-c-format */
   gtk_tooltips_set_tip (tooltips, xftffi_volume_spin, _("Set the start volume. XMMS-crossfade will fade from this volume to 100% during the time specified above.\nDefault: 0"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftffi_volume_spin), TRUE);
 
@@ -732,6 +733,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xf_fadeout_table), fadeout_volume_spin, 1, 2, 2, 3,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
+  /* xgettext:no-c-format */
   gtk_tooltips_set_tip (tooltips, fadeout_volume_spin, _("Set the end volume. XMMS-crossfade will fade from 100% to this volume during the time specified above.\nDefault: 0"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fadeout_volume_spin), TRUE);
 
@@ -870,6 +872,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xf_fadein_table), fadein_volume_spin, 1, 2, 2, 3,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
+  /* xgettext:no-c-format */
   gtk_tooltips_set_tip (tooltips, fadein_volume_spin, _("Set the start volume. XMMS-crossfade will fade from this volume to 100% during the time specified above.\nDefault: 0"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fadein_volume_spin), TRUE);
 
@@ -932,6 +935,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xftfi_fadein_table), xftfi_volume_spin, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
+  /* xgettext:no-c-format */
   gtk_tooltips_set_tip (tooltips, xftfi_volume_spin, _("Set the start volume. XMMS-crossfade will fade from this volume to 100% during the time specified above.\nDefault: 0"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftfi_volume_spin), TRUE);
 
@@ -994,6 +998,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xftfo_fadeout_table), xftfo_volume_spin, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
+  /* xgettext:no-c-format */
   gtk_tooltips_set_tip (tooltips, xftfo_volume_spin, _("Set the end volume. XMMS-crossfade will fade from 100% to this volume during the time specified above.\nDefault: 0"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftfo_volume_spin), TRUE);
 
