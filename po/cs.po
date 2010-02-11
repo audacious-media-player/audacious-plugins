@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the audacious-plugins
 # package.
 # Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004.
-# Petr Pisar <petr.pisar@atlas.cz>, 2007, 2008, 2009.
+# Petr Pisar <petr.pisar@atlas.cz>, 2007, 2008, 2009, 2010.
 #
 # clicks (sound) → praskání, praskot 
 # crossfade → přechod
@@ -19,10 +19,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious-plugins c99666155b5a\n"
+"Project-Id-Version: audacious-plugins d5145702168e\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
-"POT-Creation-Date: 2010-01-20 13:53+0100\n"
-"PO-Revision-Date: 2010-01-20 14:04+0100\n"
+"POT-Creation-Date: 2010-02-10 21:48+0100\n"
+"PO-Revision-Date: 2010-02-10 21:51+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -49,10 +49,10 @@ msgstr "O modulu dekodéru MP4 AAC"
 #: ../src/cdaudio-ng/configure.c:258 ../src/console/plugin.c:37
 #: ../src/crossfade/configure.c:1175 ../src/crystalizer/crystalizer.c:124
 #: ../src/echo_plugin/gui.c:24 ../src/echo_plugin/gui.c:135
-#: ../src/esd/about.c:48 ../src/ffaudio/ffaudio-core.c:674
+#: ../src/esd/about.c:48 ../src/ffaudio/ffaudio-core.c:677
 #: ../src/filewriter/filewriter.c:185 ../src/icecast/icecast.c:238
 #: ../src/jack/configure.c:144 ../src/jack/jack.c:424
-#: ../src/kanashi/plugin.c:237 ../src/madplug/plugin.c:572
+#: ../src/kanashi/plugin.c:237 ../src/madplug/plugin.c:569
 #: ../src/metronom/metronom.c:92 ../src/modplug/gui/main.cxx:52
 #: ../src/null/null.c:65 ../src/null/null.c:108 ../src/OSS/OSS.c:54
 #: ../src/OSS4/OSS4.c:58 ../src/paranormal-ng/plugin.c:282
@@ -95,7 +95,7 @@ msgid "AdPlug :: Configuration"
 msgstr "AdPlug :: Nastavení"
 
 #: ../src/adplug/adplug-xmms.cc:274 ../src/alarm/interface.c:1398
-#: ../src/cdaudio-ng/configure.c:263 ../src/crossfade/interface-2.0.c:1508
+#: ../src/cdaudio-ng/configure.c:263 ../src/crossfade/interface-2.0.c:1511
 #: ../src/crystalizer/crystalizer.c:133 ../src/echo_plugin/gui.c:143
 #: ../src/jack/configure.c:151 ../src/modplug/gui/interface.cxx:715
 #: ../src/modplug/gui/modplug.glade.h:21 ../src/null/null.c:109
@@ -313,7 +313,7 @@ msgstr ""
 "http://www.snika.uklinux.net/xmms-alarm/"
 
 #: ../src/alarm/interface.c:71 ../src/bluetooth/scan_gui.c:149
-#: ../src/cdaudio-ng/cdaudio-ng.c:285 ../src/crossfade/interface-2.0.c:1945
+#: ../src/cdaudio-ng/cdaudio-ng.c:277 ../src/crossfade/interface-2.0.c:1948
 #: ../src/lirc/about.c:115 ../src/modplug/gui/interface.cxx:972
 #: ../src/modplug/gui/modplug.glade.h:23 ../src/sid/xmms-sid.glade.h:28
 #: ../src/sid/xs_about.c:214 ../src/sid/xs_interface.c:1825
@@ -329,12 +329,12 @@ msgid "This is your wakeup call."
 msgstr "Toto je váš budící signál."
 
 #: ../src/alarm/interface.c:124 ../src/alarm/interface.c:1389
-#: ../src/bluetooth/bluetooth.c:124 ../src/crossfade/interface-2.0.c:1503
+#: ../src/bluetooth/bluetooth.c:124 ../src/crossfade/interface-2.0.c:1506
 #: ../src/flacng/plugin.c:633 ../src/gnomeshortcuts/gnomeshortcuts.c:310
 #: ../src/hotkey/gui.c:670 ../src/modplug/gui/interface.cxx:703
-#: ../src/modplug/gui/modplug.glade.h:56 ../src/pulse_audio/pulse_audio.c:724
+#: ../src/modplug/gui/modplug.glade.h:56 ../src/pulse_audio/pulse_audio.c:736
 #: ../src/scrobbler/gtkstuff.c:42 ../src/sid/xs_config.c:319
-#: ../src/skins/plugin.c:182 ../src/streambrowser/streambrowser.c:331
+#: ../src/skins/plugin.c:182 ../src/streambrowser/streambrowser.c:366
 msgid "OK"
 msgstr "Budiž"
 
@@ -624,7 +624,7 @@ msgstr ""
 "    Text vzkazu vepište do vstupního pole a zapněte tlačítko,\n"
 "    přejete-li si zobrazovat vzkaz.\n"
 
-#: ../src/alarm/interface.c:1366 ../src/crossfade/interface-2.0.c:1918
+#: ../src/alarm/interface.c:1366 ../src/crossfade/interface-2.0.c:1921
 #: ../src/gtkui/ui_manager.c:267 ../src/skins/ui_manager.c:379
 msgid "Help"
 msgstr "Nápověda"
@@ -637,30 +637,34 @@ msgstr "Váš vzkaz pro dnešek je…"
 msgid "Thankyou"
 msgstr "Děkuji"
 
-#: ../src/alsa/config.c:202
+#: ../src/alsa/config.c:203
 msgid "Default PCM device"
 msgstr "Implicitní PCM zařízení"
 
-#: ../src/alsa/config.c:228
+#: ../src/alsa/config.c:229
 msgid "Default mixer device"
 msgstr "Implicitní směšovací zařízení"
 
-#: ../src/alsa/config.c:429
+#: ../src/alsa/config.c:435
 msgid "ALSA Output Plugin Preferences"
 msgstr "Nastavení výstupního modulu ALSY"
 
-#: ../src/alsa/config.c:436
+#: ../src/alsa/config.c:442
 msgid "PCM device:"
 msgstr "Zařízení PCM:"
 
-#: ../src/alsa/config.c:438 ../src/OSS/configure.c:260
+#: ../src/alsa/config.c:444 ../src/OSS/configure.c:260
 #: ../src/sun/configure.c:218
 msgid "Mixer device:"
 msgstr "Zařízení směšovače:"
 
-#: ../src/alsa/config.c:440
+#: ../src/alsa/config.c:446
 msgid "Mixer element:"
 msgstr "Prvek směšovače:"
+
+#: ../src/alsa/config.c:449
+msgid "Work around snd_pcm_drop hangup"
+msgstr "Obejít zaseknutí snd_pcm_drop"
 
 #: ../src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -1332,7 +1336,7 @@ msgstr "Konkávní obdélník"
 # http://bugzilla.atheme.org/show_bug.cgi?id=48
 # Not problem anymore TODO: Check it
 #: ../src/aosd/aosd_style.c:87 ../src/crossfade/configure.c:356
-#: ../src/crossfade/interface-2.0.c:594 ../src/crossfade/interface-2.0.c:1047
+#: ../src/crossfade/interface-2.0.c:595 ../src/crossfade/interface-2.0.c:1050
 msgid "None"
 msgstr "Žádný"
 
@@ -1531,50 +1535,50 @@ msgstr "Kompozitní rozšíření není nahráno"
 msgid "Composite extension not available"
 msgstr "Kompozitní rozšíření není dostupné"
 
-#: ../src/aosd/aosd_ui.c:934
+#: ../src/aosd/aosd_ui.c:931
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr "<span font_desc='%s'>OSD Audacious</span>"
 
-#: ../src/aosd/aosd_ui.c:1015
+#: ../src/aosd/aosd_ui.c:1012
 msgid "Audacious OSD - configuration"
 msgstr "OSD pro Audacious – nastavení"
 
-#: ../src/aosd/aosd_ui.c:1036
+#: ../src/aosd/aosd_ui.c:1033
 msgid "Test"
 msgstr "Vyzkoušet"
 
-#: ../src/aosd/aosd_ui.c:1051
+#: ../src/aosd/aosd_ui.c:1048
 msgid "Position"
 msgstr "Umístění"
 
-#: ../src/aosd/aosd_ui.c:1056
+#: ../src/aosd/aosd_ui.c:1053
 msgid "Animation"
 msgstr "Animace"
 
-#: ../src/aosd/aosd_ui.c:1061
+#: ../src/aosd/aosd_ui.c:1058
 msgid "Text"
 msgstr "Text"
 
-#: ../src/aosd/aosd_ui.c:1066
+#: ../src/aosd/aosd_ui.c:1063
 msgid "Decoration"
 msgstr "Výzdoba"
 
-#: ../src/aosd/aosd_ui.c:1071
+#: ../src/aosd/aosd_ui.c:1068
 msgid "Trigger"
 msgstr "Spouštěč"
 
-#: ../src/aosd/aosd_ui.c:1076 ../src/cdaudio-ng/configure.c:178
+#: ../src/aosd/aosd_ui.c:1073 ../src/cdaudio-ng/configure.c:178
 #: ../src/modplug/gui/interface.cxx:689 ../src/modplug/gui/modplug.glade.h:48
 #: ../src/sid/xmms-sid.glade.h:73 ../src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr "Různé"
 
-#: ../src/aosd/aosd_ui.c:1113
+#: ../src/aosd/aosd_ui.c:1110
 msgid "Audacious OSD - about"
 msgstr "OSD pro Audacious – o modulu"
 
-#: ../src/aosd/aosd_ui.c:1143
+#: ../src/aosd/aosd_ui.c:1140
 msgid ""
 "\n"
 "Audacious OSD "
@@ -1582,7 +1586,7 @@ msgstr ""
 "\n"
 "OSD pro Audacious "
 
-#: ../src/aosd/aosd_ui.c:1144
+#: ../src/aosd/aosd_ui.c:1141
 msgid ""
 "\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
@@ -1743,11 +1747,11 @@ msgstr "Blur scope: výběr barvy"
 msgid "Options:"
 msgstr "Volby:"
 
-#: ../src/cdaudio-ng/cdaudio-ng.c:277
+#: ../src/cdaudio-ng/cdaudio-ng.c:269
 msgid "About Audio CD Plugin"
 msgstr "O zásuvném modulu zvukových CD"
 
-#: ../src/cdaudio-ng/cdaudio-ng.c:279
+#: ../src/cdaudio-ng/cdaudio-ng.c:271
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -1937,8 +1941,8 @@ msgid "Seeking"
 msgstr "Posun"
 
 #: ../src/crossfade/configure.c:326 ../src/crossfade/configure.c:351
-#: ../src/crossfade/interface-2.0.c:522 ../src/crossfade/interface-2.0.c:633
-#: ../src/crossfade/interface-2.0.c:637 ../src/gtkui/ui_manager.c:62
+#: ../src/crossfade/interface-2.0.c:522 ../src/crossfade/interface-2.0.c:634
+#: ../src/crossfade/interface-2.0.c:638 ../src/gtkui/ui_manager.c:62
 #: ../src/gtkui/ui_manager.c:63 ../src/skins/ui_manager.c:173
 #: ../src/skins/ui_manager.c:174
 msgid "Pause"
@@ -2035,7 +2039,7 @@ msgid "Crossfade Configuration"
 msgstr "Nastavení přechodů"
 
 #: ../src/crossfade/interface-2.0.c:340 ../src/filewriter/filewriter.c:478
-#: ../src/icecast/icecast.c:632 ../src/ladspa/ladspa.c:1045
+#: ../src/icecast/icecast.c:632 ../src/ladspa/ladspa.c:1047
 msgid "Configure"
 msgstr "Nastavit"
 
@@ -2171,14 +2175,14 @@ msgid "Reopen"
 msgstr "Znovu otevřít"
 
 #: ../src/crossfade/interface-2.0.c:501 ../src/crossfade/interface-2.0.c:543
-#: ../src/crossfade/interface-2.0.c:620 ../src/crossfade/interface-2.0.c:663
-#: ../src/crossfade/interface-2.0.c:706 ../src/crossfade/interface-2.0.c:831
-#: ../src/crossfade/interface-2.0.c:906 ../src/crossfade/interface-2.0.c:968
-#: ../src/crossfade/interface-2.0.c:1021
+#: ../src/crossfade/interface-2.0.c:621 ../src/crossfade/interface-2.0.c:664
+#: ../src/crossfade/interface-2.0.c:707 ../src/crossfade/interface-2.0.c:832
+#: ../src/crossfade/interface-2.0.c:908 ../src/crossfade/interface-2.0.c:971
+#: ../src/crossfade/interface-2.0.c:1024
 msgid "Length (ms):"
 msgstr "Délka (ms):"
 
-#: ../src/crossfade/interface-2.0.c:513 ../src/crossfade/interface-2.0.c:630
+#: ../src/crossfade/interface-2.0.c:513 ../src/crossfade/interface-2.0.c:631
 msgid ""
 "Specify the length of the silence to be inserted between the tracks.\n"
 "Default: 2000"
@@ -2187,24 +2191,25 @@ msgstr ""
 "Standardně: 2000"
 
 #: ../src/crossfade/interface-2.0.c:516 ../src/crossfade/interface-2.0.c:566
-#: ../src/crossfade/interface-2.0.c:744 ../src/crossfade/interface-2.0.c:1194
-#: ../src/crossfade/interface-2.0.c:1262 ../src/modplug/gui/interface.cxx:349
+#: ../src/crossfade/interface-2.0.c:745 ../src/crossfade/interface-2.0.c:1197
+#: ../src/crossfade/interface-2.0.c:1265 ../src/modplug/gui/interface.cxx:349
 #: ../src/modplug/gui/interface.cxx:411 ../src/modplug/gui/interface.cxx:477
 #: ../src/modplug/gui/interface.cxx:539 ../src/modplug/gui/modplug.glade.h:28
 msgid "Enable"
 msgstr "Povolit"
 
-#: ../src/crossfade/interface-2.0.c:553 ../src/crossfade/interface-2.0.c:841
-#: ../src/crossfade/interface-2.0.c:916
+#: ../src/crossfade/interface-2.0.c:553 ../src/crossfade/interface-2.0.c:842
+#: ../src/crossfade/interface-2.0.c:918
 msgid "Start volume (%):"
 msgstr "Počáteční hlasitost (%):"
 
-#: ../src/crossfade/interface-2.0.c:563 ../src/crossfade/interface-2.0.c:851
+#: ../src/crossfade/interface-2.0.c:563 ../src/crossfade/interface-2.0.c:852
 msgid "Set the duration for the fadein of the next song."
 msgstr "Nastaví délku trvání zesílení další skladby."
 
-#: ../src/crossfade/interface-2.0.c:578 ../src/crossfade/interface-2.0.c:873
-#: ../src/crossfade/interface-2.0.c:935
+#: ../src/crossfade/interface-2.0.c:579 ../src/crossfade/interface-2.0.c:875
+#: ../src/crossfade/interface-2.0.c:938
+#, no-c-format
 msgid ""
 "Set the start volume. XMMS-crossfade will fade from this volume to 100% "
 "during the time specified above.\n"
@@ -2214,16 +2219,16 @@ msgstr ""
 "hlasitosti do 100 % během doby určené výše.\n"
 "Standardně: 0"
 
-#: ../src/crossfade/interface-2.0.c:581 ../src/crossfade/interface-2.0.c:876
-#: ../src/crossfade/interface-2.0.c:938 ../src/crossfade/interface-2.0.c:942
+#: ../src/crossfade/interface-2.0.c:582 ../src/crossfade/interface-2.0.c:878
+#: ../src/crossfade/interface-2.0.c:941 ../src/crossfade/interface-2.0.c:945
 msgid "Fade in"
 msgstr "Zesílení"
 
-#: ../src/crossfade/interface-2.0.c:585
+#: ../src/crossfade/interface-2.0.c:586
 msgid "Flush"
 msgstr "Vyprázdnit"
 
-#: ../src/crossfade/interface-2.0.c:673
+#: ../src/crossfade/interface-2.0.c:674
 msgid ""
 "Specify the length of the crosssfade.\n"
 "Default: depends on songchange type"
@@ -2231,23 +2236,23 @@ msgstr ""
 "Určuje délku přechodu.\n"
 "Standardně: závisí na způsobu změny skladby"
 
-#: ../src/crossfade/interface-2.0.c:676
+#: ../src/crossfade/interface-2.0.c:677
 msgid "Crossfade"
 msgstr "Přechod"
 
-#: ../src/crossfade/interface-2.0.c:680
+#: ../src/crossfade/interface-2.0.c:681
 msgid "Simple XF"
 msgstr "Jednoduchý přechod"
 
-#: ../src/crossfade/interface-2.0.c:716
+#: ../src/crossfade/interface-2.0.c:717
 msgid "Set the duration for the fadeout of the previous song."
 msgstr "Nastaví délku trvání zeslabení předchozí skladby."
 
-#: ../src/crossfade/interface-2.0.c:725 ../src/crossfade/interface-2.0.c:987
+#: ../src/crossfade/interface-2.0.c:726 ../src/crossfade/interface-2.0.c:990
 msgid "End volume (%):"
 msgstr "Koncová hlasitost (%):"
 
-#: ../src/crossfade/interface-2.0.c:735 ../src/crossfade/interface-2.0.c:997
+#: ../src/crossfade/interface-2.0.c:736 ../src/crossfade/interface-2.0.c:1000
 msgid ""
 "Set the end volume. XMMS-crossfade will fade from 100% to this volume during "
 "the time specified above.\n"
@@ -2257,20 +2262,20 @@ msgstr ""
 "hlasitost během výše určené doby.\n"
 "Standardně: 0"
 
-#: ../src/crossfade/interface-2.0.c:748 ../src/crossfade/interface-2.0.c:1000
-#: ../src/crossfade/interface-2.0.c:1038
+#: ../src/crossfade/interface-2.0.c:749 ../src/crossfade/interface-2.0.c:1003
+#: ../src/crossfade/interface-2.0.c:1041
 msgid "Fade out"
 msgstr "Zeslabení"
 
-#: ../src/crossfade/interface-2.0.c:769
+#: ../src/crossfade/interface-2.0.c:770
 msgid "Custom (ms):"
 msgstr "Vlastní (ms):"
 
-#: ../src/crossfade/interface-2.0.c:772
+#: ../src/crossfade/interface-2.0.c:773
 msgid "Set a custom offset."
 msgstr "Nastaví vlastní pozici."
 
-#: ../src/crossfade/interface-2.0.c:780
+#: ../src/crossfade/interface-2.0.c:781
 msgid ""
 "Set how much the end of the previous and the beginning of the next song "
 "should overlap.\n"
@@ -2287,11 +2292,11 @@ msgstr ""
 "* Kladné hodnoty způsobí vložení pomlky mezi skladby."
 
 # Offset → Pozice
-#: ../src/crossfade/interface-2.0.c:783
+#: ../src/crossfade/interface-2.0.c:784
 msgid "None (0 ms)"
 msgstr "Žádná (0 ms)"
 
-#: ../src/crossfade/interface-2.0.c:788
+#: ../src/crossfade/interface-2.0.c:789
 msgid ""
 "Don't overlap the two songs. The next song will start immediatelly after the "
 "previous has ended."
@@ -2299,51 +2304,51 @@ msgstr ""
 "Skladby se nebudou překrývat. Další skladba začne okamžitě, jakmile "
 "předchozí skončí."
 
-#: ../src/crossfade/interface-2.0.c:792
+#: ../src/crossfade/interface-2.0.c:793
 msgid "Lock to fadeout length"
 msgstr "Zarovnat na délku zeslabení"
 
-#: ../src/crossfade/interface-2.0.c:797
+#: ../src/crossfade/interface-2.0.c:798
 msgid "Overlap by the fadeout duration specified above."
 msgstr "Překryv bude roven délce trvání zeslabení určené výše."
 
-#: ../src/crossfade/interface-2.0.c:801
+#: ../src/crossfade/interface-2.0.c:802
 msgid "Lock to fadein length"
 msgstr "Zarovnat na délku zesílení"
 
-#: ../src/crossfade/interface-2.0.c:806
+#: ../src/crossfade/interface-2.0.c:807
 msgid "Overlap by the fadein duration specified below.."
 msgstr "Překryv bude roven délce trvání zesílení určené níže."
 
-#: ../src/crossfade/interface-2.0.c:810
+#: ../src/crossfade/interface-2.0.c:811
 msgid "Offset"
 msgstr "Pozice"
 
-#: ../src/crossfade/interface-2.0.c:854
+#: ../src/crossfade/interface-2.0.c:855
 msgid " Enable"
 msgstr "Povolit"
 
-#: ../src/crossfade/interface-2.0.c:860
+#: ../src/crossfade/interface-2.0.c:861
 msgid "Lock to Fade-out"
 msgstr "Zarovnat na zeslabení"
 
-#: ../src/crossfade/interface-2.0.c:865
+#: ../src/crossfade/interface-2.0.c:866
 msgid "Use the same settings as fade-out."
 msgstr "Použít stejné nastavení jako u zeslabení."
 
-#: ../src/crossfade/interface-2.0.c:880
+#: ../src/crossfade/interface-2.0.c:882
 msgid "Advanced XF"
 msgstr "Pokročilý přechod"
 
-#: ../src/crossfade/interface-2.0.c:926
+#: ../src/crossfade/interface-2.0.c:928
 msgid "Set the duration for the fadein when starting playback."
 msgstr "Nastaví délku trvání zesílení, když začne přehrávání."
 
-#: ../src/crossfade/interface-2.0.c:978
+#: ../src/crossfade/interface-2.0.c:981
 msgid "Set the duration for the fadeout of the last song."
 msgstr "Nastaví délku trvání zeslabení poslední skladby."
 
-#: ../src/crossfade/interface-2.0.c:1031
+#: ../src/crossfade/interface-2.0.c:1034
 msgid ""
 "Set how much additional silence should be played after the end of the last "
 "song. This way, you can avoid the clicks some soundcards produce when being "
@@ -2355,11 +2360,11 @@ msgstr ""
 "vypnuty během přehrávání.\n"
 "Standardně: 500"
 
-#: ../src/crossfade/interface-2.0.c:1034
+#: ../src/crossfade/interface-2.0.c:1037
 msgid "Additional silence"
 msgstr "Dodatečná pomlka"
 
-#: ../src/crossfade/interface-2.0.c:1073
+#: ../src/crossfade/interface-2.0.c:1076
 msgid ""
 "Set the duration for the fadeout when pausing.\n"
 "Default: 100"
@@ -2367,7 +2372,7 @@ msgstr ""
 "Nastaví délku trvání zeslabení při pozastavení.\n"
 "Standardně: 100"
 
-#: ../src/crossfade/interface-2.0.c:1082
+#: ../src/crossfade/interface-2.0.c:1085
 msgid ""
 "Set how much additional silence should be played after pausing. This way, "
 "you can avoid the clicks some soundcards produce when entering pause.\n"
@@ -2378,7 +2383,7 @@ msgstr ""
 "pozastaveny.\n"
 "Standardně: 100"
 
-#: ../src/crossfade/interface-2.0.c:1091
+#: ../src/crossfade/interface-2.0.c:1094
 msgid ""
 "Set the duration for the fadein when unpausing.\n"
 "Default: 100"
@@ -2386,27 +2391,27 @@ msgstr ""
 "Nastaví délku trvání zesílení při obnovení pozastaveného přehrávání.\n"
 "Standardně: 100"
 
-#: ../src/crossfade/interface-2.0.c:1100
+#: ../src/crossfade/interface-2.0.c:1103
 msgid "Fade out (ms):"
 msgstr "Zeslabení (ms):"
 
-#: ../src/crossfade/interface-2.0.c:1110
+#: ../src/crossfade/interface-2.0.c:1113
 msgid "Silence (ms):"
 msgstr "Ticho (ms):"
 
-#: ../src/crossfade/interface-2.0.c:1120
+#: ../src/crossfade/interface-2.0.c:1123
 msgid "Fade in (ms):"
 msgstr "Zesílení (ms):"
 
-#: ../src/crossfade/interface-2.0.c:1124 ../src/crossfade/interface-2.0.c:1128
+#: ../src/crossfade/interface-2.0.c:1127 ../src/crossfade/interface-2.0.c:1131
 msgid "Fade out / Fade in"
 msgstr "Zeslabení/Zesílení"
 
-#: ../src/crossfade/interface-2.0.c:1133
+#: ../src/crossfade/interface-2.0.c:1136
 msgid "Crossfader"
 msgstr "Filtr přechodu"
 
-#: ../src/crossfade/interface-2.0.c:1160
+#: ../src/crossfade/interface-2.0.c:1163
 msgid ""
 "Set the maximum length for gaps at the beginning of a stream.\n"
 "Default: 500"
@@ -2414,7 +2419,7 @@ msgstr ""
 "Zadejte maximální délku pauzy na začátku skladby.\n"
 "Standardně: 500"
 
-#: ../src/crossfade/interface-2.0.c:1169
+#: ../src/crossfade/interface-2.0.c:1172
 msgid ""
 "Set the maximum volume for gaps at the beginning of a stream. All samples "
 "below this value are considered as silent.\n"
@@ -2424,19 +2429,19 @@ msgstr ""
 "vzorky pod touto hodnotou budou považovány za ticho.\n"
 "Standardně: 512"
 
-#: ../src/crossfade/interface-2.0.c:1178 ../src/crossfade/interface-2.0.c:1221
+#: ../src/crossfade/interface-2.0.c:1181 ../src/crossfade/interface-2.0.c:1224
 msgid "Max. length (ms):"
 msgstr "Maximální délka (ms):"
 
-#: ../src/crossfade/interface-2.0.c:1189 ../src/crossfade/interface-2.0.c:1232
+#: ../src/crossfade/interface-2.0.c:1192 ../src/crossfade/interface-2.0.c:1235
 msgid "Max. level (16bit sample):"
 msgstr "Maximální úroveň (16b vzorek):"
 
-#: ../src/crossfade/interface-2.0.c:1200
+#: ../src/crossfade/interface-2.0.c:1203
 msgid "Leading gap killer"
 msgstr "Zabiják úvodních pomlk"
 
-#: ../src/crossfade/interface-2.0.c:1243
+#: ../src/crossfade/interface-2.0.c:1246
 msgid ""
 "Set the maximum length for gaps at the end of a stream.\n"
 "Default: 500"
@@ -2444,7 +2449,7 @@ msgstr ""
 "Zadejte maximální délku pauzy na konci skladby.\n"
 "Standardně: 500"
 
-#: ../src/crossfade/interface-2.0.c:1252
+#: ../src/crossfade/interface-2.0.c:1255
 msgid ""
 "Set the maximum volume for gaps at the end of a stream. All samples below "
 "this value are considered as silent.\n"
@@ -2454,23 +2459,23 @@ msgstr ""
 "pod touto hodnotou budou považovány za ticho.\n"
 "Standardně: 512"
 
-#: ../src/crossfade/interface-2.0.c:1255
+#: ../src/crossfade/interface-2.0.c:1258
 msgid "Lock to Leading"
 msgstr "Zarovnat na úvod"
 
-#: ../src/crossfade/interface-2.0.c:1260
+#: ../src/crossfade/interface-2.0.c:1263
 msgid "Use the same settings as above."
 msgstr "Použít stejné nastavení jako výše."
 
-#: ../src/crossfade/interface-2.0.c:1268
+#: ../src/crossfade/interface-2.0.c:1271
 msgid "Trailing gap killer"
 msgstr "Zabiják závěrečných pomlk"
 
-#: ../src/crossfade/interface-2.0.c:1281
+#: ../src/crossfade/interface-2.0.c:1284
 msgid "Skip to next zero crossing"
 msgstr "Přeskočit na další nulový přechod"
 
-#: ../src/crossfade/interface-2.0.c:1284
+#: ../src/crossfade/interface-2.0.c:1287
 msgid ""
 "If enabled, XMMS-crossfade will take additional care to avoid clicks with "
 "pre-faded (gapless) tracks. XMMS-crossfade will cut off the end of the "
@@ -2483,19 +2488,19 @@ msgstr ""
 "skladby (začátek další skladby) pouze při nulovém přechodu hodnot vzorků.\n"
 "Standardně: zapnuto"
 
-#: ../src/crossfade/interface-2.0.c:1286 ../src/crossfade/interface-2.0.c:1440
+#: ../src/crossfade/interface-2.0.c:1289 ../src/crossfade/interface-2.0.c:1443
 msgid "Advanced"
 msgstr "Pokročilé"
 
-#: ../src/crossfade/interface-2.0.c:1290
+#: ../src/crossfade/interface-2.0.c:1293
 msgid "Gap Killer"
 msgstr "Zabiják pomlk"
 
-#: ../src/crossfade/interface-2.0.c:1309
+#: ../src/crossfade/interface-2.0.c:1312
 msgid "Write debug output to <stderr>"
 msgstr "Vypisovat chyby na <stderr>"
 
-#: ../src/crossfade/interface-2.0.c:1312
+#: ../src/crossfade/interface-2.0.c:1315
 msgid ""
 "Monitors what is going on in XMMS-crossfade. If you think you found a bug in "
 "XMMS-crossfade, please enable this option and send me the output.\n"
@@ -2511,15 +2516,15 @@ msgstr ""
 "na <stderr> (standardním chybovém výstupu).\n"
 "Standardně: vypnuto"
 
-#: ../src/crossfade/interface-2.0.c:1314
+#: ../src/crossfade/interface-2.0.c:1317
 msgid "Debug options"
 msgstr "Ladicí volby"
 
-#: ../src/crossfade/interface-2.0.c:1327
+#: ../src/crossfade/interface-2.0.c:1330
 msgid "Enable volume control"
 msgstr "Povolit ovládání hlasitosti:"
 
-#: ../src/crossfade/interface-2.0.c:1330
+#: ../src/crossfade/interface-2.0.c:1333
 msgid ""
 "Enables/disables XMMS volume and balance controls.\n"
 "Default: On"
@@ -2527,11 +2532,11 @@ msgstr ""
 "Zapne/vypne ovládání hlasitosti a vyvážení v XMMS.\n"
 "Standardně: zapnuto"
 
-#: ../src/crossfade/interface-2.0.c:1332
+#: ../src/crossfade/interface-2.0.c:1335
 msgid "Reverse balance"
 msgstr "Obrátit vyvážení"
 
-#: ../src/crossfade/interface-2.0.c:1335
+#: ../src/crossfade/interface-2.0.c:1338
 msgid ""
 "Reverses left and right with the balance control.\n"
 "Default: Off"
@@ -2539,11 +2544,11 @@ msgstr ""
 "Prohodí levou a pravou stranu v ovládání vyvážení.\n"
 "Standardně: vypnuto"
 
-#: ../src/crossfade/interface-2.0.c:1337
+#: ../src/crossfade/interface-2.0.c:1340
 msgid "Software Mixer"
 msgstr "Softwarový směšovač"
 
-#: ../src/crossfade/interface-2.0.c:1340
+#: ../src/crossfade/interface-2.0.c:1343
 msgid ""
 "Enable software mixer. Usefull for output plugins without mixer support.\n"
 "Default: Off"
@@ -2552,15 +2557,15 @@ msgstr ""
 "mixování zvuku.\n"
 "Standardně: vypnuto"
 
-#: ../src/crossfade/interface-2.0.c:1342
+#: ../src/crossfade/interface-2.0.c:1345
 msgid "Volume control options"
 msgstr "Volby řídící hlasitosti"
 
-#: ../src/crossfade/interface-2.0.c:1359
+#: ../src/crossfade/interface-2.0.c:1362
 msgid "Songchange timeout (ms):"
 msgstr "Časový limit na změnu skladby (ms):"
 
-#: ../src/crossfade/interface-2.0.c:1368
+#: ../src/crossfade/interface-2.0.c:1371
 msgid ""
 "The songchange timeout is the maximum time XMMS-crossfade waits for the next "
 "song. If this timeout is exceeded, the output plugin/device is closed.\n"
@@ -2571,11 +2576,11 @@ msgstr ""
 "zařízení uzavřeno.\n"
 "Standardně: 100"
 
-#: ../src/crossfade/interface-2.0.c:1375
+#: ../src/crossfade/interface-2.0.c:1378
 msgid "Mixing buffer preload (ms):"
 msgstr "Předplnění směšovacího bufferu (ms):"
 
-#: ../src/crossfade/interface-2.0.c:1384
+#: ../src/crossfade/interface-2.0.c:1387
 msgid ""
 "Tells XMMS-crossfade how much data it should buffer before it starts writing "
 "to the output plugin/device. Usually, this value can be set to 0, because "
@@ -2587,16 +2592,16 @@ msgstr ""
 "protože výstupní modul si dělá předplnění po svém.\n"
 "Standardně: 0"
 
-#: ../src/crossfade/interface-2.0.c:1391
+#: ../src/crossfade/interface-2.0.c:1394
 msgid "Don't  crossfade"
 msgstr "Nedělat přechody u "
 
 # Navazuje na "Don't  crossfade"
-#: ../src/crossfade/interface-2.0.c:1396
+#: ../src/crossfade/interface-2.0.c:1399
 msgid "successive tracks"
 msgstr "následujících stop"
 
-#: ../src/crossfade/interface-2.0.c:1399
+#: ../src/crossfade/interface-2.0.c:1402
 msgid ""
 "This option enables the automatic detection of pre-faded or gapless tracks, "
 "like the tracks on some compilations or on most live albums. If such tracks "
@@ -2611,11 +2616,11 @@ msgstr ""
 "Standardně: zapnuto"
 
 # Navazuje na "Don't  crossfade"
-#: ../src/crossfade/interface-2.0.c:1401
+#: ../src/crossfade/interface-2.0.c:1404
 msgid "same file"
 msgstr "téhož souboru"
 
-#: ../src/crossfade/interface-2.0.c:1404
+#: ../src/crossfade/interface-2.0.c:1407
 msgid ""
 "This option disables crossfading between the same file. This can happen if "
 "you have only one file in the playlist and 'repeat' turned on.\n"
@@ -2625,11 +2630,11 @@ msgstr ""
 "li v seznamu skladeb pouze jeden soubor a je-li zapnuto „opakování“.\n"
 "Standardně: vypnuto"
 
-#: ../src/crossfade/interface-2.0.c:1406
+#: ../src/crossfade/interface-2.0.c:1409
 msgid "Enable HTTP buffer underrun workaround"
 msgstr "Zapnout obcházení podtečení HTTP bufferu"
 
-#: ../src/crossfade/interface-2.0.c:1409 ../src/crossfade/interface-2.0.c:1429
+#: ../src/crossfade/interface-2.0.c:1412 ../src/crossfade/interface-2.0.c:1432
 msgid ""
 "Enable this when you have problems playing internet HTTP audio streams. "
 "Unfortunatelly, it also breaks crossfading.\n"
@@ -2639,11 +2644,11 @@ msgstr ""
 "zvukových proudů. Naneštěstí tato funkce rozbíjí přechody.\n"
 "Standardně: vypnuto"
 
-#: ../src/crossfade/interface-2.0.c:1415
+#: ../src/crossfade/interface-2.0.c:1418
 msgid "Limit OP buffer usage (ms):"
 msgstr "Omezit buffer výstupního modulu (ms):"
 
-#: ../src/crossfade/interface-2.0.c:1418
+#: ../src/crossfade/interface-2.0.c:1421
 msgid ""
 "With this option enabled, XMMS-crossfade will limit the amount of data being "
 "buffered by the output plugin. This way, you can decrease the latency "
@@ -2655,7 +2660,7 @@ msgstr ""
 "PŘEDCHOZÍ a skutečným přehráváním nové skladby.\n"
 "Standardně: vypnuto"
 
-#: ../src/crossfade/interface-2.0.c:1424
+#: ../src/crossfade/interface-2.0.c:1427
 msgid ""
 "Beware that setting this value too low also increases the chance of buffer "
 "underruns.\n"
@@ -2665,15 +2670,15 @@ msgstr ""
 "vyrovnávací paměti.\n"
 "Standardně: 250"
 
-#: ../src/crossfade/interface-2.0.c:1427
+#: ../src/crossfade/interface-2.0.c:1430
 msgid "Use Quantaudio timing comments"
 msgstr "Použít časové komentáře Quantaudio"
 
-#: ../src/crossfade/interface-2.0.c:1431
+#: ../src/crossfade/interface-2.0.c:1434
 msgid "Keep output opened"
 msgstr "Ponechat výstup otevřený"
 
-#: ../src/crossfade/interface-2.0.c:1434
+#: ../src/crossfade/interface-2.0.c:1437
 msgid ""
 "Keep the output device opened all the time, even if XMMS is stopped. This "
 "way, you can avoid clicks caused by the soundcard when the device is opened "
@@ -2685,34 +2690,34 @@ msgstr ""
 "spuštění/zastavení.\n"
 "Standardně: vypnuto"
 
-#: ../src/crossfade/interface-2.0.c:1436
+#: ../src/crossfade/interface-2.0.c:1439
 msgid "Advanced options"
 msgstr "Pokročilé nastavení"
 
-#: ../src/crossfade/interface-2.0.c:1457 ../src/sid/xmms-sid.glade.h:34
+#: ../src/crossfade/interface-2.0.c:1460 ../src/sid/xmms-sid.glade.h:34
 #: ../src/sid/xs_interface.c:849 ../src/skins/ui_manager.c:432
 msgid "Delete"
 msgstr "Smazat"
 
-#: ../src/crossfade/interface-2.0.c:1461
+#: ../src/crossfade/interface-2.0.c:1464
 msgid "New"
 msgstr "Nový"
 
-#: ../src/crossfade/interface-2.0.c:1482 ../src/skins/ui_manager.c:429
+#: ../src/crossfade/interface-2.0.c:1485 ../src/skins/ui_manager.c:429
 msgid "Load"
 msgstr "Načíst"
 
-#: ../src/crossfade/interface-2.0.c:1487 ../src/sid/xmms-sid.glade.h:107
+#: ../src/crossfade/interface-2.0.c:1490 ../src/sid/xmms-sid.glade.h:107
 #: ../src/sid/xs_interface.c:833 ../src/skins/ui_manager.c:431
 #: ../src/wavpack/ui.c:194
 msgid "Save"
 msgstr "Uložit"
 
-#: ../src/crossfade/interface-2.0.c:1492 ../src/skins/ui_equalizer.c:973
+#: ../src/crossfade/interface-2.0.c:1495 ../src/skins/ui_equalizer.c:973
 msgid "Presets"
 msgstr "Předvolby"
 
-#: ../src/crossfade/interface-2.0.c:1513 ../src/crystalizer/crystalizer.c:140
+#: ../src/crossfade/interface-2.0.c:1516 ../src/crystalizer/crystalizer.c:140
 #: ../src/echo_plugin/gui.c:150 ../src/modplug/gui/interface.cxx:709
 #: ../src/modplug/gui/modplug.glade.h:19 ../src/stereo_plugin/stereo.c:142
 msgid "Apply"
@@ -3211,7 +3216,7 @@ msgstr ""
 "\n"
 "napsal Giacomo Lozito\n"
 
-#: ../src/ffaudio/ffaudio-core.c:657
+#: ../src/ffaudio/ffaudio-core.c:660
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -3238,7 +3243,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: ../src/ffaudio/ffaudio-core.c:673
+#: ../src/ffaudio/ffaudio-core.c:676
 msgid "About FFaudio Plugin"
 msgstr "O modulu FFaudio"
 
@@ -4498,35 +4503,35 @@ msgstr ""
 "Pro Audacious převedl\n"
 "Giacomo Lozito z develia.org"
 
-#: ../src/ladspa/ladspa.c:812
+#: ../src/ladspa/ladspa.c:813
 msgid "This LADSPA plugin has no user controls"
 msgstr "Tento LADSPA modul nemá žádné možnosti nastavení uživatelem"
 
-#: ../src/ladspa/ladspa.c:853 ../src/ladspa/ladspa.c:940
+#: ../src/ladspa/ladspa.c:854 ../src/ladspa/ladspa.c:941
 msgid "Name"
 msgstr "Jméno"
 
-#: ../src/ladspa/ladspa.c:940
+#: ../src/ladspa/ladspa.c:941
 msgid "UID"
 msgstr "UID"
 
-#: ../src/ladspa/ladspa.c:1016
+#: ../src/ladspa/ladspa.c:1018
 msgid "Installed plugins"
 msgstr "Nainstalované moduly"
 
-#: ../src/ladspa/ladspa.c:1024
+#: ../src/ladspa/ladspa.c:1026
 msgid "Running plugins"
 msgstr "Bežící moduly"
 
-#: ../src/ladspa/ladspa.c:1039
+#: ../src/ladspa/ladspa.c:1041
 msgid "Add"
 msgstr "Přidat"
 
-#: ../src/ladspa/ladspa.c:1042
+#: ../src/ladspa/ladspa.c:1044
 msgid "Remove"
 msgstr "Odebrat"
 
-#: ../src/ladspa/ladspa.c:1053
+#: ../src/ladspa/ladspa.c:1055
 msgid "LADSPA Plugin Catalog"
 msgstr "Katalog LADSPA modulů"
 
@@ -4652,7 +4657,7 @@ msgstr "Nastavení metadat"
 msgid "MPEG Audio Plugin Configuration"
 msgstr "Nastavení modulu MPEG Audio"
 
-#: ../src/madplug/plugin.c:554
+#: ../src/madplug/plugin.c:551
 #, c-format
 msgid ""
 "Audacious MPEG Audio Plugin\n"
@@ -4683,7 +4688,7 @@ msgstr ""
 "Podpora zesílení přehrávání od:\n"
 "    Samuel Krempp"
 
-#: ../src/madplug/plugin.c:570
+#: ../src/madplug/plugin.c:567
 msgid "About MPEG Audio Plugin"
 msgstr "O modul pro MPEG zvuk"
 
@@ -5116,11 +5121,11 @@ msgstr ""
 "prosíme, kontaktujte jeho správce a NE ostatní vývojáře Audacious.\n"
 "\n"
 
-#: ../src/pulse_audio/pulse_audio.c:708
+#: ../src/pulse_audio/pulse_audio.c:720
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "O výstupním modulu PulseAudio pro Audacious"
 
-#: ../src/pulse_audio/pulse_audio.c:709
+#: ../src/pulse_audio/pulse_audio.c:721
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -5975,7 +5980,7 @@ msgstr "Ekvalizér"
 msgid "%s - Audacious"
 msgstr "%s – Audacious"
 
-#: ../src/skins/ui_main.c:367 ../src/skins/ui_main.c:2177
+#: ../src/skins/ui_main.c:367 ../src/skins/ui_main.c:2181
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -6105,11 +6110,11 @@ msgstr "Povolit „škálovat GUI“"
 msgid "Visualization Menu"
 msgstr "Nabídka znázornění"
 
-#: ../src/skins/ui_main.c:2368
+#: ../src/skins/ui_main.c:2374
 msgid "Stopping after song."
 msgstr "Zastavuje po skladbě."
 
-#: ../src/skins/ui_main.c:2370
+#: ../src/skins/ui_main.c:2376
 msgid "Not stopping after song."
 msgstr "Po skladbě nezastavuje."
 
@@ -6719,11 +6724,11 @@ msgstr "Právě hraje"
 msgid "Remove Bookmark"
 msgstr "Odstranit záložku"
 
-#: ../src/streambrowser/streambrowser.c:325
+#: ../src/streambrowser/streambrowser.c:358
 msgid "About Stream Browser"
 msgstr "O prohlížeči proudů"
 
-#: ../src/streambrowser/streambrowser.c:326
+#: ../src/streambrowser/streambrowser.c:360
 msgid ""
 "Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -6750,9 +6755,8 @@ msgstr ""
 "\n"
 "Toto byl projekt z Google Summer of Code 2008."
 
-#. the plugin services menu
-#: ../src/streambrowser/streambrowser.c:353
-#: ../src/streambrowser/streambrowser.c:359
+#: ../src/streambrowser/streambrowser.c:390
+#: ../src/streambrowser/streambrowser.c:400
 msgid "Streambrowser"
 msgstr "Prohlížeč proudů"
 
