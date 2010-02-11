@@ -281,6 +281,13 @@ find_output()
             xfade_load_plugin_config(config->op_config_string, config->op_name, &the_op_config);
     }
 
+    if (op != NULL && op->init () != OUTPUT_PLUGIN_INIT_FOUND_DEVICES)
+    {
+        fprintf (stderr, "crossfade: %s failed to initialize.\n",
+         op->description);
+        op = NULL;
+    }
+
     return op;
 }
 
@@ -323,6 +330,7 @@ open_output()
     if (!the_op->open_audio(in_format.fmt, in_format.rate, in_format.nch))
     {
         AUDDBG("[crossfade] open_output: open_audio() failed!\n");
+        the_op->cleanup ();
         the_op = NULL;
         return -1;
     }
@@ -352,6 +360,7 @@ open_output()
     {
         AUDDBG("[crossfade] open_output: error allocating buffer!\n");
         the_op->close_audio();
+        the_op->cleanup ();
         the_op = NULL;
         return -1;
     }
@@ -369,6 +378,7 @@ open_output()
         PERROR("[crossfade] open_output: thread_create()");
         g_free(buffer->data);
         the_op->close_audio();
+        the_op->cleanup ();
         the_op = NULL;
         return -1;
     }

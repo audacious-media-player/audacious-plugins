@@ -31,6 +31,8 @@
 
 #define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
 
+#define AUDDBG ERROR
+
 #define CHECK(function, ...) \
 do { \
     gint error = function (__VA_ARGS__); \
