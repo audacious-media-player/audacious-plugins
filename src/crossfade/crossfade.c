@@ -405,7 +405,7 @@ xfade_init()
     /* realize config -- will also setup the pre-mixing effect plugin */
     xfade_realize_config();
 
-    return OUTPUT_PLUGIN_INIT_NO_DEVICES;
+    return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
 void
