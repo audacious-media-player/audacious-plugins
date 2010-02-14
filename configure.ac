@@ -48,7 +48,6 @@ fi
 
 dnl Debug support
 
-AC_ARG_WITH(debug, [  --with-debug            Enables additional debugging output], DEBUG=1)
 AC_SUBST(DEBUG)
 AUD_ARG_ENABLE([debug], [no],
 [additional debugging output],
