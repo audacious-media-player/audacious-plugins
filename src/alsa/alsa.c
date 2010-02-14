@@ -220,30 +220,30 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
 
     AUDDBG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
      alsa_config_pcm, snd_pcm_format_name (format), channels, rate);
-    CHECK (snd_pcm_open, & alsa_handle, alsa_config_pcm,
+    CHECK_NOISY (snd_pcm_open, & alsa_handle, alsa_config_pcm,
      SND_PCM_STREAM_PLAYBACK, 0);
 
     snd_pcm_hw_params_alloca (& params);
-    CHECK (snd_pcm_hw_params_any, alsa_handle, params);
-    CHECK (snd_pcm_hw_params_set_access, alsa_handle, params,
+    CHECK_NOISY (snd_pcm_hw_params_any, alsa_handle, params);
+    CHECK_NOISY (snd_pcm_hw_params_set_access, alsa_handle, params,
      SND_PCM_ACCESS_RW_INTERLEAVED);
-    CHECK (snd_pcm_hw_params_set_format, alsa_handle, params, format);
-    CHECK (snd_pcm_hw_params_set_channels, alsa_handle, params, channels);
-    CHECK (snd_pcm_hw_params_set_rate, alsa_handle, params, rate, 0);
+    CHECK_NOISY (snd_pcm_hw_params_set_format, alsa_handle, params, format);
+    CHECK_NOISY (snd_pcm_hw_params_set_channels, alsa_handle, params, channels);
+    CHECK_NOISY (snd_pcm_hw_params_set_rate, alsa_handle, params, rate, 0);
     useconds = 1000 * LEAST_BUFFER;
-    CHECK (snd_pcm_hw_params_set_buffer_time_min, alsa_handle, params,
+    CHECK_NOISY (snd_pcm_hw_params_set_buffer_time_min, alsa_handle, params,
      & useconds, 0);
     useconds = 1000 * MAX (LEAST_BUFFER * 11 / 10, aud_cfg->output_buffer_size /
      2);
-    CHECK (snd_pcm_hw_params_set_buffer_time_max, alsa_handle, params,
+    CHECK_NOISY (snd_pcm_hw_params_set_buffer_time_max, alsa_handle, params,
      & useconds, 0);
-    CHECK (snd_pcm_hw_params, alsa_handle, params);
+    CHECK_NOISY (snd_pcm_hw_params, alsa_handle, params);
 
     alsa_format = format;
     alsa_channels = channels;
     alsa_rate = rate;
 
-    CHECK (snd_pcm_get_params, alsa_handle, & frames, & period);
+    CHECK_NOISY (snd_pcm_get_params, alsa_handle, & frames, & period);
     hard_buffer = (gint64) frames * 1000 / rate;
     soft_buffer = MAX (LEAST_BUFFER, aud_cfg->output_buffer_size - hard_buffer);
     AUDDBG ("Hardware buffer %d ms, software buffer %d ms.\n", hard_buffer,
@@ -443,10 +443,10 @@ void alsa_open_mixer (void)
         goto FAILED;
 
     AUDDBG ("Opening mixer card %s.\n", alsa_config_mixer);
-    CHECK (snd_mixer_open, & alsa_mixer, 0);
-    CHECK (snd_mixer_attach, alsa_mixer, alsa_config_mixer);
-    CHECK (snd_mixer_selem_register, alsa_mixer, NULL, NULL);
-    CHECK (snd_mixer_load, alsa_mixer);
+    CHECK_NOISY (snd_mixer_open, & alsa_mixer, 0);
+    CHECK_NOISY (snd_mixer_attach, alsa_mixer, alsa_config_mixer);
+    CHECK_NOISY (snd_mixer_selem_register, alsa_mixer, NULL, NULL);
+    CHECK_NOISY (snd_mixer_load, alsa_mixer);
 
     snd_mixer_selem_id_alloca (& selem_id);
     snd_mixer_selem_id_set_name (selem_id, alsa_config_mixer_element);
@@ -454,7 +454,7 @@ void alsa_open_mixer (void)
 
     if (alsa_mixer_element == NULL)
     {
-        ERROR ("snd_mixer_find_selem failed.\n");
+        ERROR_NOISY ("snd_mixer_find_selem failed.\n");
         goto FAILED;
     }
 

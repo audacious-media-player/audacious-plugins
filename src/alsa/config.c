@@ -293,7 +293,7 @@ static void guess_mixer_element (void)
         }
     }
 
-    ERROR ("No suitable mixer element found.\n");
+    ERROR_NOISY ("No suitable mixer element found.\n");
 }
 
 void alsa_config_load (void)
