@@ -77,8 +77,8 @@ Tuple *xsf_tuple(const gchar *filename)
 	aud_tuple_associate_string(t, FIELD_TITLE, NULL, c->inf_title);
 	aud_tuple_associate_string(t, FIELD_COPYRIGHT, NULL, c->inf_copy);
 	aud_tuple_associate_string(t, FIELD_QUALITY, NULL, "sequenced");
-	aud_tuple_associate_string(t, FIELD_CODEC, NULL, "Nintendo DS Audio");
-	aud_tuple_associate_string(t, -1, "console", "Nintendo DS");
+	aud_tuple_associate_string(t, FIELD_CODEC, NULL, "GBA/Nintendo DS Audio");
+	aud_tuple_associate_string(t, -1, "console", "GBA/Nintendo DS");
 
 	free(c);
 	g_free(buf);
@@ -249,6 +249,9 @@ gint xsf_is_our_fd(const gchar *filename, VFSFile *file)
 	if (!memcmp(magic, "PSF$", 4))
 		return 1;
 
+	if (!memcmp(magic, "PSF\"", 4))
+		return 1;
+
 	return 0;
 }
 
@@ -257,11 +260,11 @@ void xsf_Seek(InputPlayback *playback, int time)
 	seek = time * 1000;
 }
 
-static gchar *xsf_fmts[] = { "2sf", "mini2sf", NULL };
+static gchar *xsf_fmts[] = { "2sf", "mini2sf", "gsf", "minigsf", NULL };
 
 static InputPlugin xsf_ip =
 {
-	.description = "2SF Audio Plugin",
+	.description = "GSF/2SF Audio Plugin",
 	.play_file = xsf_play,
 	.stop = xsf_Stop,
 	.pause = xsf_pause,
