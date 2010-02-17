@@ -18,6 +18,7 @@ SRCS = adplug-xmms.cc		\
        core/adtrack.cxx		\
        core/amd.cxx		\
        core/bam.cxx		\
+       core/cmf.cxx		\
        core/d00.cxx		\
        core/dfm.cxx		\
        core/dmo.cxx		\
