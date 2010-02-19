@@ -439,6 +439,10 @@ else
 fi
 
 if test "x$have_lirc" = "xyes"; then
+	AC_CHECK_HEADER(lirc/lirc_client.h,[],[have_lirc=no])
+fi
+
+if test "x$have_lirc" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS lirc"
 fi
 
