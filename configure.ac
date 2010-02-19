@@ -1215,38 +1215,6 @@ case "$host" in
     ;;
 esac
 
-dnl *** scrobbler ***
-
-AC_ARG_ENABLE(scrobbler,
- [  --enable-scrobbler      enable Scrobbler plugin (default=disabled)],
- [have_scrobbler=$enableval], [have_scrobbler="no"])
-
-if test "x$have_scrobbler" = "xyes"; then
-    PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7],
-     [have_scrobbler="$have_scrobbler"], [have_scrobbler="no"])
-    AC_SUBST(CURL_CFLAGS)
-    AC_SUBST(CURL_LIBS)
-fi
-
-if test "x$have_scrobbler" = "xyes"; then
-	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
-fi
-
-dnl *** lastfm ***
-
-AC_ARG_ENABLE(lastfm,
- [  --disable-lastfm        disable lastfm support (default=enabled if scrobbler enabled)],
- [have_lastfm=$enableval], [have_lastfm=yes])
-
-if test "x$have_scrobbler" != "xyes"; then
-	AC_MSG_RESULT([*** lastfm plugin disabled because scrobbler plugin is disabled ***])
-	have_lastfm=no
-fi
-
-if test "x$have_lastfm" = "yes"; then
-	TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS lastfm"
-fi
-
 dnl *** neon http plugin ***
 
 AC_ARG_ENABLE(neon,
@@ -1655,7 +1623,6 @@ echo "  Control via event device (evdev-plug):  $have_evdevplug"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  LIRC:                                   $have_lirc"
-echo "  AudioScrobbler Client:                  $have_scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
 echo "  Bluetooth audio support:                $have_bluetooth"
 echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
@@ -1686,7 +1653,6 @@ echo "  ---------"
 echo "  gio transport:                          $enable_gio"
 echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
-echo "  lastfm transport:                       $have_lastfm"
 echo
 echo "  Container"
 echo "  ---------"
@@ -1696,11 +1662,3 @@ echo "  XML Sharable Playlist Format (xspf):    $have_xspf"
 echo "  CUE playlist format (cue):              $have_cue"
 echo
 
-if test "x$have_scrobbler" = "xyes"; then
-    echo "*** WARNING ***"
-    echo "You have enabled the Scrobbler plugin, which is known to cause memory"
-    echo "corruption.  If Audacious crashes, do not report a bug unless you can"
-    echo "reproduce it without Scrobbler installed.  If you want to fix the"
-    echo "plugin, leave a comment on http://jira.atheme.org/browse/AUDPLUG-179."
-    echo
-fi
