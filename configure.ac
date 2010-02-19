@@ -707,7 +707,7 @@ if test x$enable_aac = xyes; then
 		AC_CHECK_DECL(NeAACDecInit2,,enable_aac=no,[#include <neaacdec.h>])
 	fi
 	if test x$enable_aac = xyes; then
-		AC_CHECK_LIB(faad,NeAACDecInit2,,enable_aac=no)
+		AC_CHECK_LIB(faad,NeAACDecInit2,enable_aac=yes,enable_aac=no)
 	fi
 fi
 
