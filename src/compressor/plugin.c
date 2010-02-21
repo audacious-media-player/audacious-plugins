@@ -91,17 +91,20 @@ static void compressor_configure (void)
 
     if (window == NULL)
     {
-        GtkWidget * vbox, * hbox, * slider;
+        GtkWidget * vbox, * hbox, * slider, * button;
 
-        window = gtk_dialog_new_with_buttons (_("Dynamic Range Compressor "
-         "Preferences"), NULL, 0, GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
+        window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_type_hint ((GtkWindow *) window,
+         GDK_WINDOW_TYPE_HINT_DIALOG);
         gtk_window_set_resizable ((GtkWindow *) window, FALSE);
-        g_signal_connect (window, "response", (GCallback) gtk_widget_destroy,
-         NULL);
+        gtk_window_set_title ((GtkWindow *) window, _("Dynamic Range "
+         "Compressor Preferences"));
+        gtk_container_set_border_width ((GtkContainer *) window, 6);
         g_signal_connect (window, "destroy", (GCallback) gtk_widget_destroyed,
          & window);
 
-        vbox = gtk_dialog_get_content_area ((GtkDialog *) window);
+        vbox = gtk_vbox_new (FALSE, 6);
+        gtk_container_add ((GtkContainer *) window, vbox);
 
         hbox = gtk_hbox_new (FALSE, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
@@ -128,6 +131,16 @@ static void compressor_configure (void)
         gtk_box_pack_start ((GtkBox *) hbox, slider, FALSE, FALSE, 0);
         g_signal_connect (slider, "value-changed", (GCallback) value_changed,
          & compressor_strength);
+
+        hbox = gtk_hbox_new (FALSE, 6);
+        gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
+
+        button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
+        gtk_box_pack_end ((GtkBox *) hbox, button, FALSE, FALSE, 0);
+        gtk_widget_set_can_default (button, TRUE);
+        gtk_widget_grab_default (button);
+        g_signal_connect_swapped (button, "clicked", (GCallback)
+         gtk_widget_destroy, window);
 
         gtk_widget_show_all (vbox);
     }
