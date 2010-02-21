@@ -82,12 +82,17 @@ void alsa_about (void)
 
 static gboolean show_error (void * message)
 {
-    GtkWidget * window;
+    static GtkWidget * window = NULL;
+
+    if (window != NULL)
+        return FALSE;
 
     window = gtk_message_dialog_new_with_markup (NULL, 0, GTK_MESSAGE_ERROR,
      GTK_BUTTONS_OK, "<b>%s</b>\n%s", _("ALSA error"), (const gchar *) message);
     g_signal_connect ((GObject *) window, "response", (GCallback)
      gtk_widget_destroy, NULL);
+    g_signal_connect ((GObject *) window, "destroy", (GCallback)
+     gtk_widget_destroyed, & window);
 
     gtk_window_present ((GtkWindow *) window);
     g_free (message);
