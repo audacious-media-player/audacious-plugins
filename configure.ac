@@ -1488,6 +1488,23 @@ if test "x$have_bs2b" = "xyes"; then
 	EFFECT_PLUGINS="$EFFECT_PLUGINS bs2b"
 fi
 
+
+dnl *** Resample effect plugin
+
+AC_ARG_ENABLE(resample,
+ [  --disable-resample      disable resample effect plugin (default=enabled)],
+ [enable_resample=$enableval], [enable_resample=yes]
+)
+
+if test "x$enable_resample" = "xyes"; then
+    AC_CHECK_LIB([samplerate], [src_process], [enable_resample=yes],
+     [enable_resample=no])
+fi
+
+if test "x$enable_resample" = "xyes"; then
+	EFFECT_PLUGINS="$EFFECT_PLUGINS resample"
+fi
+
 dnl *** End of all plugin checks ***
 
 AC_SUBST(ARCH_DEFINES)
@@ -1639,6 +1656,7 @@ echo "  SndStretch:                             yes"
 echo "  Crystalizer:                            yes"
 echo "  Icecast effect plugin (icecast):        $have_shout"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
+echo "  Sample Rate Converter (resample):       $enable_resample"
 echo
 echo "  Visualization"
 echo "  -------------"
