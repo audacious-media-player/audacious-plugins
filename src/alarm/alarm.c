@@ -135,7 +135,7 @@ static GtkWidget *lookup_widget(GtkWidget *w, const gchar *name)
 
 static void dialog_destroyed(GtkWidget *dialog, gpointer data)
 {
-   DEBUG("dialog destroyed\n");
+   AUDDBG("dialog destroyed\n");
    *(GtkObject**)data = NULL;
 }
 
@@ -174,7 +174,7 @@ void alarm_save(GtkButton *w, gpointer data)
    int daynum = 0;  // used to identify day number
    mcs_handle_t *conf;
 
-   DEBUG("alarm_save\n");
+   AUDDBG("alarm_save\n");
 
    conf = aud_cfg_db_open();
 
@@ -238,13 +238,13 @@ void alarm_save(GtkButton *w, gpointer data)
    if((stop_on == TRUE) &&
       ((((stop_h * 60) + stop_m) * 60) < (fading + 65)))
    {
-	   DEBUG("Displaying bug warning, stop %dh %dm, fade %d\n",
+	   AUDDBG("Displaying bug warning, stop %dh %dm, fade %d\n",
 	         stop_h, stop_m, fading);
 	   alarm_warning();
    }
    else if((stop_on == TRUE) && (fading < 10))
    {
-     DEBUG("Displaying bug warning, stop %dh %dm, fade %d\n",
+     AUDDBG("Displaying bug warning, stop %dh %dm, fade %d\n",
            stop_h, stop_m, fading);
      alarm_warning();
    }
@@ -293,7 +293,7 @@ static void alarm_read_config()
    int daynum = 0;   // used for day number
    mcs_handle_t *conf;
 
-   DEBUG("alarm_read_config\n");
+   AUDDBG("alarm_read_config\n");
 
    conf = aud_cfg_db_open();
 
@@ -358,7 +358,7 @@ static void alarm_read_config()
    }
 
    aud_cfg_db_close(conf);
-   DEBUG("END alarm_read_config\n");
+   AUDDBG("END alarm_read_config\n");
 }
 
 /*
@@ -368,7 +368,7 @@ static void alarm_about()
 {
    static GtkWidget *about_dialog = NULL;
 
-   DEBUG("alarm_about\n");
+   AUDDBG("alarm_about\n");
 
    if(dialog_visible(about_dialog))
      return;
@@ -392,9 +392,9 @@ static void alarm_playlist_browse(GtkButton *button, gpointer data)
    gchar *dirname, *path;
 
    dirname = g_dirname(playlist);
-   DEBUG("dirname = %s\n", dirname);
+   AUDDBG("dirname = %s\n", dirname);
    path = g_strdup_printf("%s/", dirname);
-   DEBUG("path = %s\n", path);
+   AUDDBG("path = %s\n", path);
    g_free(dirname);
 
    fs = create_playlist_fileselection();
@@ -413,7 +413,7 @@ void alarm_store_playlistname(GtkButton *button, gpointer data)
    GtkFileSelection *fs = GTK_FILE_SELECTION(data);
    gchar *plist;
 
-   DEBUG("alarm_store_playlistname\n");
+   AUDDBG("alarm_store_playlistname\n");
 
    plist = g_strdup(gtk_file_selection_get_filename(fs));
 
@@ -429,7 +429,7 @@ static void alarm_configure(void)
    int daynum = 0;  // used to loop days
    GtkWidget *w;
 
-   DEBUG("alarm_configure\n");
+   AUDDBG("alarm_configure\n");
 
    /*
     * dont want to show more than one config window
@@ -568,7 +568,7 @@ static void alarm_configure(void)
 
    gtk_widget_show_all(config_dialog);
 
-   DEBUG("END alarm_configure\n");
+   AUDDBG("END alarm_configure\n");
 }
 
 /* functions for greying out the time for days */
@@ -647,7 +647,7 @@ void alarm_current_volume(GtkButton *button, gpointer data)
    gint vol;
    GtkAdjustment *adj;
 
-   DEBUG("on_current_button_clicked\n");
+   AUDDBG("on_current_button_clicked\n");
 
    audacious_drct_get_volume_main(&vol);
 
@@ -661,7 +661,7 @@ void alarm_current_volume(GtkButton *button, gpointer data)
  */
 static void threadsleep(float x)
 {
-   DEBUG("threadsleep: waiting %f seconds\n", x);
+   AUDDBG("threadsleep: waiting %f seconds\n", x);
 
    g_usleep((int) ((float) x * (float) 1000000.0));
 
@@ -732,7 +732,7 @@ static void *alarm_fade(void *arg)
    /* and */
    pthread_mutex_unlock(&fader_lock);
 
-   DEBUG("volume = %f%%\n", (gdouble)vols->end);
+   AUDDBG("volume = %f%%\n", (gdouble)vols->end);
    return(0);
 }
 
@@ -742,7 +742,7 @@ static void *alarm_stop_thread( void *args )
    fader fade_vols;
    pthread_t f_tid;
 
-   DEBUG("alarm_stop_thread\n");
+   AUDDBG("alarm_stop_thread\n");
 
 
    /* sleep for however long we are meant to be sleeping for until
@@ -750,7 +750,7 @@ static void *alarm_stop_thread( void *args )
     */
    threadsleep(((stop_h * 60) + stop_m) * 60);
 
-   DEBUG("alarm_stop triggered\n");
+   AUDDBG("alarm_stop triggered\n");
 
    if (dialog_visible(alarm_dialog))
      gtk_widget_destroy(alarm_dialog);
@@ -773,13 +773,13 @@ static void *alarm_stop_thread( void *args )
     */
    audacious_drct_set_volume_main(currvol);
 
-   DEBUG("alarm_stop done\n");
+   AUDDBG("alarm_stop done\n");
    return(NULL);
 }
 
 void alarm_stop_cancel(GtkButton *w, gpointer data)
 {
-   DEBUG("alarm_stop_cancel\n");
+   AUDDBG("alarm_stop_cancel\n");
    pthread_cancel(stop_tid);
 }
 
@@ -797,23 +797,23 @@ static void *alarm_start_thread(void *args)
    while(start_tid != 0)
    {
      /* sit around and wait for the faders to not be doing anything */
-     DEBUG("Waiting for fader to be unlocked..");
+     AUDDBG("Waiting for fader to be unlocked..");
      pthread_mutex_lock(&fader_lock);
-     DEBUG("Ok\n");
+     AUDDBG("Ok\n");
      pthread_mutex_unlock(&fader_lock);
 
-     DEBUG("Getting time\n");
+     AUDDBG("Getting time\n");
      timenow = time(NULL);
      currtime = localtime(&timenow);
      today = currtime->tm_wday;
-     DEBUG("Today is %d\n", today);
+     AUDDBG("Today is %d\n", today);
 
      /* see if its time to do something */
-     DEBUG("Checking Day\n");
+     AUDDBG("Checking Day\n");
 
      /* Had to put something here so I put the hour string.
      ** Its only debug stuff anyway */
-     DEBUG(day_h[today]);
+     AUDDBG("%s",day_h[today]);
 
      if(alarm_conf.day[today].flags & ALARM_OFF)
      {
@@ -835,10 +835,10 @@ static void *alarm_start_thread(void *args)
        }
      }
 
-     DEBUG("Alarm time is %d:%d (def: %d:%d)\n", alarm_h, alarm_m,
+     AUDDBG("Alarm time is %d:%d (def: %d:%d)\n", alarm_h, alarm_m,
         alarm_conf.default_hour, alarm_conf.default_min);
 
-     DEBUG("Checking time (%d:%d)\n", currtime->tm_hour, currtime->tm_min);
+     AUDDBG("Checking time (%d:%d)\n", currtime->tm_hour, currtime->tm_min);
      if((currtime->tm_hour != alarm_h) || (currtime->tm_min != alarm_m))
      {
        threadsleep(8.5);
@@ -847,17 +847,17 @@ static void *alarm_start_thread(void *args)
 
      if(cmd_on == TRUE)
      {
-       DEBUG("Executing %s, cmd_on is true\n", cmdstr);
+       AUDDBG("Executing %s, cmd_on is true\n", cmdstr);
        if(system(cmdstr) == -1)
        {
-        DEBUG("Executing %s failed\n",cmdstr);
+        AUDDBG("Executing %s failed\n",cmdstr);
        }
      }
 
-     DEBUG("strcmp playlist, playlist is [%s]\n", playlist);
+     AUDDBG("strcmp playlist, playlist is [%s]\n", playlist);
      if(strcmp(playlist, ""))
      {
-       DEBUG("playlist is not blank, aparently\n");
+       AUDDBG("playlist is not blank, aparently\n");
        GList list;
 
        list.prev = list.next = NULL;
@@ -871,7 +871,7 @@ static void *alarm_start_thread(void *args)
      {
        fader fade_vols;
        
-       DEBUG("Fading is true\n");
+       AUDDBG("Fading is true\n");
        audacious_drct_set_volume_main(quietvol);
 
        /* start playing */
@@ -900,7 +900,7 @@ static void *alarm_start_thread(void *args)
      if(alarm_conf.reminder_on == TRUE)
      {
        GtkWidget *reminder_dialog;
-       DEBUG("Showing reminder '%s'\n", alarm_conf.reminder_msg);
+       AUDDBG("Showing reminder '%s'\n", alarm_conf.reminder_msg);
 
        GDK_THREADS_ENTER();
        reminder_dialog = (GtkWidget*) create_reminder_dialog(alarm_conf.reminder_msg);
@@ -925,33 +925,33 @@ static void *alarm_start_thread(void *args)
           */
           GDK_THREADS_ENTER();
           {
-            DEBUG("stop_on is true\n");
+            AUDDBG("stop_on is true\n");
             alarm_dialog = create_alarm_dialog();
-            DEBUG("created alarm dialog, %p\n", alarm_dialog);
+            AUDDBG("created alarm dialog, %p\n", alarm_dialog);
 
             gtk_signal_connect(GTK_OBJECT(alarm_dialog), "destroy",
             GTK_SIGNAL_FUNC(dialog_destroyed), &alarm_dialog);
-            DEBUG("attached destroy signal to alarm dialog, %p\n", alarm_dialog);
+            AUDDBG("attached destroy signal to alarm dialog, %p\n", alarm_dialog);
             gtk_widget_show_all(alarm_dialog);
-            DEBUG("dialog now showing\n");
+            AUDDBG("dialog now showing\n");
 
-            DEBUG("now starting stop thread\n");
+            AUDDBG("now starting stop thread\n");
             stop_tid = alarm_thread_create(alarm_stop_thread, NULL, 0);
-            DEBUG("Created wakeup dialog and started stop thread(%d)\n", (int)stop_tid);
+            AUDDBG("Created wakeup dialog and started stop thread(%d)\n", (int)stop_tid);
 
 	        }
 	        GDK_THREADS_LEAVE();
 
           /* now wait for the stop thread */
-          DEBUG("Waiting for stop to stop.... (%d)", (int)stop_tid);
+          AUDDBG("Waiting for stop to stop.... (%d)", (int)stop_tid);
           pthread_join(stop_tid, NULL);
           /* loop until we are out of the starting minute */
           while(time(NULL) < (play_start + 61))
           {
-            DEBUG("Waiting until out of starting minute\n");
+            AUDDBG("Waiting until out of starting minute\n");
             threadsleep(5.0);
           }
-          DEBUG("OK\n");
+          AUDDBG("OK\n");
       }
       /* loop until we are out of the starting minute */
       while(time(NULL) < (play_start + 61))
@@ -961,7 +961,7 @@ static void *alarm_start_thread(void *args)
       threadsleep(fading);
    }
 
-   DEBUG("Main thread has gone...\n");
+   AUDDBG("Main thread has gone...\n");
    return NULL;
 }
 
@@ -972,7 +972,7 @@ static void *alarm_start_thread(void *args)
  */
 static void alarm_init()
 {
-   DEBUG("alarm_init\n");
+   AUDDBG("alarm_init\n");
 
    alarm_conf.reminder_msg = NULL;
    alarm_read_config();
@@ -986,7 +986,7 @@ static void alarm_init()
  */
 static void alarm_cleanup()
 {
-   DEBUG("alarm_cleanup\n");
+   AUDDBG("alarm_cleanup\n");
 
    if (start_tid)
      pthread_cancel(start_tid);

@@ -4,7 +4,6 @@ SRCS = callbacks.c			\
        cfgutil.c			\
        configure.c			\
        crossfade.c			\
-       debug.c				\
        interface-2.0.c			\
        player.c				\
        support-2.0.c

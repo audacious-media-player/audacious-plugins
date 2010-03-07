@@ -16,37 +16,45 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * dro.h - DOSBox Raw OPL Player by Sjoerd van der Berg <harekiet@zophar.net>
+ * dro2.h - DOSBox Raw OPL v2.0 player by Adam Nielsen <malvineous@shikadi.net>
  */
 
+#include <stdint.h> // for uintxx_t
 #include "player.h"
 
-class CdroPlayer: public CPlayer
+class Cdro2Player: public CPlayer
 {
- public:
-  static CPlayer *factory(Copl *newopl);
+	protected:
+		uint8_t iCmdDelayS, iCmdDelayL;
+		int iConvTableLen;
+		uint8_t *piConvTable;
 
-  CdroPlayer(Copl *newopl);
-  ~CdroPlayer()
-    {
-      if(data)
-	delete [] data;
-    }
+		uint8_t *data;
+		int iLength;
+		int iPos;
+		int iDelay;
 
-  bool load(VFSFile *fd, const CFileProvider &fp);
-  bool update();
-  void rewind(int subsong);
-  float getrefresh();
 
-  std::string gettype()
-    {
-      return std::string("DOSBox Raw OPL v0.1");
-    }
+	public:
+		static CPlayer *factory(Copl *newopl);
 
- protected:
-  unsigned char *data;
-  unsigned long pos,length;
-  unsigned long msdone,mstotal;
-  unsigned short delay;
-  unsigned char index, opl3_mode;
+		Cdro2Player(Copl *newopl);
+		~Cdro2Player();
+
+		bool load(VFSFile *fd, const CFileProvider &fp);
+		bool update();
+		void rewind(int subsong);
+		float getrefresh();
+
+		std::string gettype()
+		{
+			return std::string("DOSBox Raw OPL v2.0");
+		}
+
+	protected:
+		//unsigned char *data;
+		//unsigned long pos,length;
+		//unsigned long msdone,mstotal;
+		//unsigned short delay;
+		//unsigned char index, opl3_mode;
 };

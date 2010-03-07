@@ -20,8 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-/* #define AUD_DEBUG 1 */
-
 #include "config.h"
 #include "plugin.h"
 #include "input.h"
@@ -280,7 +278,7 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
          chkcount = 0,
          res, resync_max = -1,
          skip = 0;
-    mp3_frame_t frame, prev;
+    mp3_frame_t frame, prev = {0, 0, 0, 0, 0, 0, 0}; /* shut up warning */
 
     enum {
         STATE_HEADERS,
@@ -449,7 +447,6 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
     } while (state != STATE_FATAL && tries < max_resync_tries);
     /* Give up after given number of failed resync attempts or fatal error */
 
-    g_message("Rejecting %s (not an MP3 file?)", filename);
     return 0;
 }
 
@@ -470,7 +467,7 @@ audmad_play_file(InputPlayback *playback)
 {
     gchar *url = playback->filename;
 
-#ifdef AUD_DEBUG
+#ifdef DEBUG
     {
         gchar *tmp = g_filename_to_utf8(url, -1, NULL, NULL, NULL);
         AUDDBG("playing %s\n", tmp);

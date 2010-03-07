@@ -28,14 +28,6 @@
 #define DEFAULT_QUIET_VOL       25
 #define DEFAULT_FLAGS           ALARM_DEFAULT
 
-/* debug ? */
-#ifdef ENABLE_DEBUG
-# define DEBUG( args... ) fprintf( stderr, args )
-#else
-# define DEBUG( args... )
-#endif
-
-
 typedef struct AlarmDay {
   GtkCheckButton *cb;
   GtkCheckButton *cb_def;

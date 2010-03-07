@@ -19,7 +19,9 @@
 
 #include <stdint.h>
 
-//#define NEON_DEBUG
+#ifdef DEBUG
+#define NEON_DEBUG
+#endif
 
 #include "neon.h"
 
@@ -781,6 +783,8 @@ static gint fill_buffer(struct neon_handle* h) {
             _LEAVE 1;
         } else {
             _ERROR ("<%p> Error while reading from the network", (void *) h);
+            ne_request_destroy(h->request);
+            h->request = NULL;
             _LEAVE -1;
         }
     }

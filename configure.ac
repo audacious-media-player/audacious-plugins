@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([audacious-plugins], [2.3-alpha1], [bugs+audacious-plugins@atheme.org])
+AC_INIT([audacious-plugins], [2.3-beta1], [bugs+audacious-plugins@atheme.org])
 AC_PREREQ([2.59])
 
 AC_CANONICAL_HOST
@@ -45,6 +45,16 @@ if test "x$GCC" = "xyes"; then
 	CFLAGS="$CFLAGS -pipe -Wall"
 	CXXFLAGS="$CXXFLAGS -pipe -Wall"
 fi
+
+dnl Debug support
+
+AC_SUBST(DEBUG)
+AUD_ARG_ENABLE([debug], [no],
+[additional debugging output],
+[
+    AC_DEFINE([DEBUG], 1, [Define if debugging output is required])
+])
+AUD_CONDITIONAL([DEBUG], [enable_debug])
 
 dnl Locate a program and check that its version is acceptable.
 dnl AC_PROG_CHECK_VER(var, namelist, version-switch,
@@ -429,6 +439,10 @@ else
 fi
 
 if test "x$have_lirc" = "xyes"; then
+	AC_CHECK_HEADER(lirc/lirc_client.h,[],[have_lirc=no])
+fi
+
+if test "x$have_lirc" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS lirc"
 fi
 
@@ -697,7 +711,7 @@ if test x$enable_aac = xyes; then
 		AC_CHECK_DECL(NeAACDecInit2,,enable_aac=no,[#include <neaacdec.h>])
 	fi
 	if test x$enable_aac = xyes; then
-		AC_CHECK_LIB(faad,NeAACDecInit2,,enable_aac=no)
+		AC_CHECK_LIB(faad,NeAACDecInit2,enable_aac=yes,enable_aac=no)
 	fi
 fi
 
@@ -1201,39 +1215,6 @@ case "$host" in
     ;;
 esac
 
-dnl *** libcurl ***
-
-have_curl=yes
-
-PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7], [], [have_curl="no"])
-AC_SUBST(CURL_CFLAGS)
-AC_SUBST(CURL_LIBS)
-
-dnl *** scrobbler ***
-
-AC_ARG_ENABLE(scrobbler,
- [  --disable-scrobbler     disable scrobbler support (default=enabled if libcurl present)],
- [have_scrobbler=$enableval], [have_scrobbler=$have_curl])
-
-if test "x$have_scrobbler" = "xyes"; then
-	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
-fi
-
-dnl *** lastfm ***
-
-AC_ARG_ENABLE(lastfm,
- [  --disable-lastfm        disable lastfm support (default=enabled if scrobbler enabled)],
- [have_lastfm=$enableval], [have_lastfm=yes])
-
-if test "x$have_scrobbler" != "xyes"; then
-	AC_MSG_RESULT([*** lastfm plugin disabled because scrobbler plugin is disabled ***])
-	have_lastfm=no
-fi
-
-if test "x$have_lastfm" = "yes"; then
-	TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS lastfm"
-fi
-
 dnl *** neon http plugin ***
 
 AC_ARG_ENABLE(neon,
@@ -1291,7 +1272,7 @@ fi
 AC_SUBST(MTP_LIBS)
 AC_SUBST(MTP_CFLAGS)
 
-dnl *** Bluetooth audio suport
+dnl *** Bluetooth audio support
 
 AC_ARG_ENABLE(bluetooth,
 [  --disable-bluetooth           disable bluetooth audio support. (default=enabled)],
@@ -1308,7 +1289,7 @@ if test "x$have_bluetooth" = "xyes" -a "x$have_alsa" = "xyes"; then
     BLUEZ_CFLAGS=`pkg-config --cflags bluez`
 else
     have_bluetooth=no
-    AC_MSG_RESULT([*** bluetooth audio suport plugin disabled by request ***])
+    AC_MSG_RESULT([*** bluetooth audio support plugin disabled by request ***])
 fi
 AC_SUBST(BLUEZ_LIBS)
 AC_SUBST(BLUEZ_CFLAGS)
@@ -1507,6 +1488,23 @@ if test "x$have_bs2b" = "xyes"; then
 	EFFECT_PLUGINS="$EFFECT_PLUGINS bs2b"
 fi
 
+
+dnl *** Resample effect plugin
+
+AC_ARG_ENABLE(resample,
+ [  --disable-resample      disable resample effect plugin (default=enabled)],
+ [enable_resample=$enableval], [enable_resample=yes]
+)
+
+if test "x$enable_resample" = "xyes"; then
+    AC_CHECK_LIB([samplerate], [src_process], [enable_resample=yes],
+     [enable_resample=no])
+fi
+
+if test "x$enable_resample" = "xyes"; then
+	EFFECT_PLUGINS="$EFFECT_PLUGINS resample"
+fi
+
 dnl *** End of all plugin checks ***
 
 AC_SUBST(ARCH_DEFINES)
@@ -1586,6 +1584,7 @@ echo
 echo "Configuration:"
 echo
 echo "  Install path:                           ${audacious_plugin_root}"
+echo "  Additional debugging output:            $enable_debug"
 echo
 echo "  Output Plugins"
 echo "  --------------"
@@ -1641,7 +1640,6 @@ echo "  Control via event device (evdev-plug):  $have_evdevplug"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  LIRC:                                   $have_lirc"
-echo "  AudioScrobbler Client:                  $have_scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
 echo "  Bluetooth audio support:                $have_bluetooth"
 echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
@@ -1658,6 +1656,7 @@ echo "  SndStretch:                             yes"
 echo "  Crystalizer:                            yes"
 echo "  Icecast effect plugin (icecast):        $have_shout"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
+echo "  Sample Rate Converter (resample):       $enable_resample"
 echo
 echo "  Visualization"
 echo "  -------------"
@@ -1672,7 +1671,6 @@ echo "  ---------"
 echo "  gio transport:                          $enable_gio"
 echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
-echo "  lastfm transport:                       $have_lastfm"
 echo
 echo "  Container"
 echo "  ---------"
@@ -1681,3 +1679,4 @@ echo "  M3U playlist format (m3u):              yes"
 echo "  XML Sharable Playlist Format (xspf):    $have_xspf"
 echo "  CUE playlist format (cue):              $have_cue"
 echo
+

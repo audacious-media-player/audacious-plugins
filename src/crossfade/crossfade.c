@@ -222,7 +222,7 @@ get_crossfade_oplugin_info()
 static gboolean
 open_output_f(gpointer data)
 {
-    DEBUG(("[crossfade] open_output_f: pid=%d\n", getpid()));
+    AUDDBG("[crossfade] open_output_f: pid=%d\n", getpid());
     open_output();
     return FALSE;       /* FALSE = 'do not call me again' */
 }
@@ -233,7 +233,7 @@ xfade_realize_config()      /* also called by xfade_init() */
     /* 0.3.0: keep device opened */
     if (config->output_keep_opened && !output_opened)
     {
-        DEBUG(("[crossfade] realize_config: keeping output opened...\n"));
+        AUDDBG("[crossfade] realize_config: keeping output opened...\n");
 
         /* 0.3.1: HACK: this will make sure that we start playing silence after startup */
         gettimeofday(&last_close, NULL);
@@ -241,7 +241,7 @@ xfade_realize_config()      /* also called by xfade_init() */
         /* 0.3.1: HACK: Somehow, if we open output here at XMMS startup, there
            will be leftover filedescriptors later when closing output again.
            Opening output in a timeout function seems to work around this... */
-        DEBUG(("[crossfade] realize_config: adding timeout (pid=%d)\n", (int) getpid()));
+        AUDDBG("[crossfade] realize_config: adding timeout (pid=%d)\n", (int) getpid());
         g_timeout_add(0, open_output_f, NULL);
     }
 }
@@ -269,16 +269,23 @@ find_output()
 
         if (op == xfade_op)
         {
-            DEBUG(("[crossfade] find_output: can't use myself as output plugin!\n"));
+            AUDDBG("[crossfade] find_output: can't use myself as output plugin!\n");
             op = NULL;
         }
         else if (!op)
         {
-            DEBUG(("[crossfade] find_output: could not find output plugin \"%s\"\n",
-                   config->op_name ? config->op_name : "#NULL#"));
+            AUDDBG("[crossfade] find_output: could not find output plugin \"%s\"\n",
+                   config->op_name ? config->op_name : "#NULL#");
         }
         else        /* ok, we have a plugin. last, get its compatibility options */
             xfade_load_plugin_config(config->op_config_string, config->op_name, &the_op_config);
+    }
+
+    if (op != NULL && op->init () != OUTPUT_PLUGIN_INIT_FOUND_DEVICES)
+    {
+        fprintf (stderr, "crossfade: %s failed to initialize.\n",
+         op->description);
+        op = NULL;
     }
 
     return op;
@@ -289,7 +296,7 @@ open_output()
 {   
     /* sanity check */
     if (output_opened)
-        DEBUG(("[crossfade] open_output: WARNING: output_opened=TRUE!\n"));
+        AUDDBG("[crossfade] open_output: WARNING: output_opened=TRUE!\n");
 
     /* reset output_* */
     output_opened = FALSE;
@@ -301,28 +308,29 @@ open_output()
     /* get output plugin (this will also init the_op_config) */
     if (!(the_op = find_output()))
     {
-        DEBUG(("[crossfade] open_output: could not find any output!\n"));
+        AUDDBG("[crossfade] open_output: could not find any output!\n");
         return -1;
     }
 
     /* print output plugin info */
-    DEBUG(("[crossfade] open_output: using \"%s\" for output", the_op->description ? the_op->description : "#NULL#"));
+    AUDDBG("[crossfade] open_output: using \"%s\" for output", the_op->description ? the_op->description : "#NULL#");
 
     if (realtime)
-        DEBUG((" (RT)"));
+        AUDDBG(" (RT)");
 
     if (the_op_config.throttle_enable)
-        DEBUG((realtime ? " (throttled (disabled with RT))" : " (throttled)"));
+        AUDDBG(realtime ? " (throttled (disabled with RT))" : " (throttled)");
 
     if (the_op_config.max_write_enable)
-        DEBUG((" (max_write=%d)", the_op_config.max_write_len));
+        AUDDBG(" (max_write=%d)", the_op_config.max_write_len);
 
-    DEBUG(("\n"));
+    AUDDBG("\n");
 
     /* open plugin */
     if (!the_op->open_audio(in_format.fmt, in_format.rate, in_format.nch))
     {
-        DEBUG(("[crossfade] open_output: open_audio() failed!\n"));
+        AUDDBG("[crossfade] open_output: open_audio() failed!\n");
+        the_op->cleanup ();
         the_op = NULL;
         return -1;
     }
@@ -339,19 +347,20 @@ open_output()
                     buffer->sync_size +     /* additional sync */
                     buffer->preload_size);  /* preload */
 
-    DEBUG(("[crossfade] open_output: buffer: size=%d (%d+%d+%d=%d ms) (%d Hz)\n",
+    AUDDBG("[crossfade] open_output: buffer: size=%d (%d+%d+%d=%d ms) (%d Hz)\n",
            buffer->size,
            B2MS(buffer->mix_size),
            B2MS(buffer->preload_size),
            B2MS(buffer->sync_size),
            B2MS(buffer->size),
-           in_format.rate));
+           in_format.rate);
 
     /* allocate buffer */
     if (!(buffer->data = g_malloc0(buffer->size)))
     {
-        DEBUG(("[crossfade] open_output: error allocating buffer!\n"));
+        AUDDBG("[crossfade] open_output: error allocating buffer!\n");
         the_op->close_audio();
+        the_op->cleanup ();
         the_op = NULL;
         return -1;
     }
@@ -369,6 +378,7 @@ open_output()
         PERROR("[crossfade] open_output: thread_create()");
         g_free(buffer->data);
         the_op->close_audio();
+        the_op->cleanup ();
         the_op = NULL;
         return -1;
     }
@@ -400,12 +410,12 @@ xfade_init()
     /* find current output plugin early so that volume control works
      * even if playback has not started yet. */
     if (!(the_op = find_output()))
-        DEBUG(("[crossfade] init: could not find any output!\n"));
+        AUDDBG("[crossfade] init: could not find any output!\n");
 
     /* realize config -- will also setup the pre-mixing effect plugin */
     xfade_realize_config();
 
-    return OUTPUT_PLUGIN_INIT_NO_DEVICES;
+    return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
 void
@@ -431,13 +441,13 @@ xfade_get_volume(int *l, int *r)
         }
     }
 
-    /* DEBUG(("[crossfade] xfade_get_volume: l=%d r=%d\n", *l, *r)); */
+    /* AUDDBG("[crossfade] xfade_get_volume: l=%d r=%d\n", *l, *r); */
 }
 
 void
 xfade_set_volume(int l, int r)
 {
-    /* DEBUG(("[crossfade] xfade_set_volume: l=%d r=%d\n", l, r)); */
+    /* AUDDBG("[crossfade] xfade_set_volume: l=%d r=%d\n", l, r); */
 
     if (!config->enable_mixer)
         return;
@@ -533,7 +543,7 @@ xfade_apply_fade_config(fade_config_t *fc)
     out_skip = MS2B(xfade_cfg_out_skip(fc)) & -4;
     if (out_skip > avail)
     {
-        DEBUG(("[crossfade] apply_fade_config: WARNING: clipping out_skip (%d -> %d)!\n", B2MS(out_skip), B2MS(avail)));
+        AUDDBG("[crossfade] apply_fade_config: WARNING: clipping out_skip (%d -> %d)!\n", B2MS(out_skip), B2MS(avail));
         out_skip = avail;
         out_skip_clipped = TRUE;
     }
@@ -548,7 +558,7 @@ xfade_apply_fade_config(fade_config_t *fc)
     out_len = MS2B(xfade_cfg_fadeout_len(fc)) & -4;
     if (out_len > avail)
     {
-        DEBUG(("[crossfade] apply_fade_config: WARNING: clipping out_len (%d -> %d)!\n", B2MS(out_len), B2MS(avail)));
+        AUDDBG("[crossfade] apply_fade_config: WARNING: clipping out_len (%d -> %d)!\n", B2MS(out_len), B2MS(avail));
         out_len = avail;
         out_len_clipped = TRUE;
     }
@@ -569,7 +579,7 @@ xfade_apply_fade_config(fade_config_t *fc)
     offset = MS2B(xfade_cfg_offset(fc)) & -4;
     if (offset < -avail)
     {
-        DEBUG(("[crossfade] apply_fade_config: WARNING: clipping offset (%d -> %d)!\n", B2MS(offset), -B2MS(avail)));
+        AUDDBG("[crossfade] apply_fade_config: WARNING: clipping offset (%d -> %d)!\n", B2MS(offset), -B2MS(avail));
         offset = -avail;
         offset_clipped = TRUE;
     }
@@ -587,7 +597,7 @@ xfade_apply_fade_config(fade_config_t *fc)
         gint cutoff = avail - MAX(out_len, -offset);    /* MAX() -> glib.h */
         if (cutoff > 0)
         {
-            DEBUG(("[crossfade] apply_fade_config: %d ms flushed\n", B2MS(cutoff)));
+            AUDDBG("[crossfade] apply_fade_config: %d ms flushed\n", B2MS(cutoff));
             buffer->used -= cutoff;
             avail -= cutoff;
         }
@@ -657,8 +667,8 @@ xfade_apply_fade_config(fade_config_t *fc)
     if (offset > 0)
     {
         if ((buffer->silence > 0) || (buffer->silence_len > 0))
-            DEBUG(("[crossfade] apply_config: WARNING: silence in progress (%d/%d ms)\n",
-                   B2MS(buffer->silence), B2MS(buffer->silence_len)));
+            AUDDBG("[crossfade] apply_config: WARNING: silence in progress (%d/%d ms)\n",
+                   B2MS(buffer->silence), B2MS(buffer->silence_len));
 
         buffer->silence = buffer->used;
         buffer->silence_len = offset;
@@ -666,9 +676,9 @@ xfade_apply_fade_config(fade_config_t *fc)
 
     /* done */
     if (in_skip || out_skip)
-        DEBUG(("[crossfade] apply_fade_config: out_skip=%d in_skip=%d\n", B2MS(out_skip), B2MS(in_skip)));
-    DEBUG(("[crossfade] apply_fade_config: avail=%d out=%d in=%d offset=%d preload=%d\n",
-           B2MS(avail), B2MS(out_len), B2MS(in_len), B2MS(offset), B2MS(preload)));
+        AUDDBG("[crossfade] apply_fade_config: out_skip=%d in_skip=%d\n", B2MS(out_skip), B2MS(in_skip));
+    AUDDBG("[crossfade] apply_fade_config: avail=%d out=%d in=%d offset=%d preload=%d\n",
+           B2MS(avail), B2MS(out_len), B2MS(in_len), B2MS(offset), B2MS(preload));
 }
 
 static gint
@@ -721,7 +731,7 @@ album_match(gchar *old, gchar *new)
 
     if (!same_dir)
     {
-        DEBUG(("[crossfade] album_match: no match (different dirs)\n"));
+        AUDDBG("[crossfade] album_match: no match (different dirs)\n");
         return 0;
     }
 
@@ -730,18 +740,18 @@ album_match(gchar *old, gchar *new)
 
     if (new_track <= 0)
     {
-        DEBUG(("[crossfade] album_match: can't parse track number:\n"));
-        DEBUG(("[crossfade] album_match: ... \"%s\"\n", g_basename(new)));
+        AUDDBG("[crossfade] album_match: can't parse track number:\n");
+        AUDDBG("[crossfade] album_match: ... \"%s\"\n", g_basename(new));
         return 0;
     }
 
     if ((old_track < 0) || (old_track + 1 != new_track))
     {
-        DEBUG(("[crossfade] album_match: no match (same dir, but non-successive (%d, %d))\n", old_track, new_track));
+        AUDDBG("[crossfade] album_match: no match (same dir, but non-successive (%d, %d))\n", old_track, new_track);
         return 0;
     }
 
-    DEBUG(("[crossfade] album_match: match detected (same dir, successive tracks (%d, %d))\n", old_track, new_track));
+    AUDDBG("[crossfade] album_match: match detected (same dir, successive tracks (%d, %d))\n", old_track, new_track);
 
     return old_track;
 }
@@ -755,13 +765,13 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
     struct timeval tv;
     glong dt;
     
-    DEBUG(("[crossfade]\n"));
+    AUDDBG("[crossfade]\n");
     
     in_format.fmt = FMT_S16_NE;
     
     if ((in_format.rate != rate && in_format.rate > 0) || (in_format.nch != nch && in_format.nch > 0))
     {
-        DEBUG(("[crossfade] open_audio: format changed, reopen device forced\n"));
+        AUDDBG("[crossfade] open_audio: format changed, reopen device forced\n");
         force_reopen = 1;
     }
 
@@ -770,11 +780,11 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
     in_format.is_8bit = (in_format.fmt == FMT_U8 || in_format.fmt == FMT_S8);
     in_format.bps = calc_bitrate(in_format.fmt, in_format.rate, in_format.nch);
 
-    DEBUG(("[crossfade] open_audio: pid=%d\n", (int) getpid()));
+    AUDDBG("[crossfade] open_audio: pid=%d\n", (int) getpid());
 
     /* sanity... don't do anything about it */
     if (opened)
-        DEBUG(("[crossfade] open_audio: WARNING: already opened!\n"));
+        AUDDBG("[crossfade] open_audio: WARNING: already opened!\n");
 
     /* get filename */
     pos     = xfplaylist_get_position ();
@@ -784,8 +794,8 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
     if (!file)
         file = g_strdup(title);
         
-    DEBUG(("[crossfade] open_audio: bname=\"%s\"\n", g_basename(file)));
-    DEBUG(("[crossfade] open_audio: title=\"%s\"\n", title));
+    AUDDBG("[crossfade] open_audio: bname=\"%s\"\n", g_basename(file));
+    AUDDBG("[crossfade] open_audio: title=\"%s\"\n", title);
 
     /* is this an automatic crossfade? */
     if (last_filename && (fade_config == &config->fc[FADE_CONFIG_XFADE]))
@@ -793,7 +803,7 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
         /* check if next song is the same as the current one */
         if (config->no_xfade_if_same_file && !strcmp(last_filename, file))
         {
-            DEBUG(("[crossfade] open_audio: same file, disabling crossfade\n"));
+            AUDDBG("[crossfade] open_audio: same file, disabling crossfade\n");
             fade_config = &config->fc[FADE_CONFIG_ALBUM];
         }
 
@@ -804,29 +814,29 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
             
             if (xfade_cfg_gap_trail_enable(config))
             {
-                DEBUG(("[crossfade] album_match: "
-                       "trailing gap: length=%d/%d ms\n", B2MS(buffer->gap_killed), B2MS(buffer->gap_len)));
+                AUDDBG("[crossfade] album_match: "
+                       "trailing gap: length=%d/%d ms\n", B2MS(buffer->gap_killed), B2MS(buffer->gap_len));
 
                 if (buffer->gap_killed < buffer->gap_len)
                 {
-                    DEBUG(("[crossfade] album_match: "
-                           "trailing gap: -> no silence, probably pre-faded\n"));
+                    AUDDBG("[crossfade] album_match: "
+                           "trailing gap: -> no silence, probably pre-faded\n");
                     use_fc_album = TRUE;
                 }
                 else
                 {
-                    DEBUG(("[crossfade] album_match: " "trailing gap: -> silence, sticking to XFADE\n"));
+                    AUDDBG("[crossfade] album_match: " "trailing gap: -> silence, sticking to XFADE\n");
                 }
             }
             else
             {
-                DEBUG(("[crossfade] album_match: " "trailing gap killer disabled\n"));
+                AUDDBG("[crossfade] album_match: " "trailing gap killer disabled\n");
                 use_fc_album = TRUE;
             }
 
             if (use_fc_album)
             {
-                DEBUG(("[crossfade] album_match: " "-> using FADE_CONFIG_ALBUM\n"));
+                AUDDBG("[crossfade] album_match: " "-> using FADE_CONFIG_ALBUM\n");
                 fade_config = &config->fc[FADE_CONFIG_ALBUM];
             }
         }
@@ -837,7 +847,7 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
     /* check for streaming */
     if (aud_vfs_is_remote(file))
     {
-        DEBUG(("[crossfade] open_audio: HTTP underrun workaround enabled.\n"));
+        AUDDBG("[crossfade] open_audio: HTTP underrun workaround enabled.\n");
         is_http = TRUE;
     }
     else
@@ -861,14 +871,14 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
     else
         dt = 0;
 
-    DEBUG(("[crossfade] open_audio: fmt=%d rate=%d nch=%d bps=%d dt=%ld ms\n", in_format.fmt, in_format.rate, in_format.nch, in_format.bps, dt));
+    AUDDBG("[crossfade] open_audio: fmt=%d rate=%d nch=%d bps=%d dt=%ld ms\n", in_format.fmt, in_format.rate, in_format.nch, in_format.bps, dt);
 
     /* (re)open the device if necessary */
     if (!output_opened)
     {
         if (open_output())
         {
-            DEBUG(("[crossfade] open_audio: error opening/configuring output!\n"));
+            AUDDBG("[crossfade] open_audio: error opening/configuring output!\n");
             MUTEX_UNLOCK(&buffer_mutex);
             return 0;
         }
@@ -902,7 +912,7 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
     switch (fade_config ? fade_config->type : -1)
     {
         case FADE_TYPE_FLUSH:
-            DEBUG(("[crossfade] open_audio: FLUSH:\n"));
+            AUDDBG("[crossfade] open_audio: FLUSH:\n");
 
             /* flush output plugin */
             the_op->flush(0);
@@ -923,15 +933,15 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
             break;
 
         case FADE_TYPE_REOPEN:
-            DEBUG(("[crossfade] open_audio: REOPEN:\n"));
+            AUDDBG("[crossfade] open_audio: REOPEN:\n");
 
             /* flush buffer if applicable */
             if (fade_config->flush)
                 buffer_reset(buffer, config);
 
             if (buffer->reopen >= 0)
-                DEBUG(("[crossfade] open_audio: REOPEN: WARNING: reopen in progress (%d ms)\n",
-                       B2MS(buffer->reopen)));
+                AUDDBG("[crossfade] open_audio: REOPEN: WARNING: reopen in progress (%d ms)\n",
+                       B2MS(buffer->reopen));
 
             /* start reopen countdown (will be executed in buffer_thread_f) */
             buffer->reopen = buffer->used;  /* may be 0 */
@@ -944,7 +954,7 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
         case FADE_TYPE_ADVANCED_XF:
         case FADE_TYPE_FADEIN:
         case FADE_TYPE_FADEOUT:
-            DEBUG(("[crossfade] open_audio: XFADE:\n"));
+            AUDDBG("[crossfade] open_audio: XFADE:\n");
 
             /* apply fade config (do fadeout, init mix/fade/gap, add silence) */
             xfade_apply_fade_config(fade_config);
@@ -954,8 +964,8 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
             if ((the_op_config.force_reopen || force_reopen) && !(fade_config->config == FADE_CONFIG_START))
             {
                 if (buffer->reopen >= 0)
-                    DEBUG(("[crossfade] open_audio: XFADE: WARNING: reopen in progress (%d ms)\n",
-                           B2MS(buffer->reopen)));
+                    AUDDBG("[crossfade] open_audio: XFADE: WARNING: reopen in progress (%d ms)\n",
+                           B2MS(buffer->reopen));
                 buffer->reopen = buffer->used;
                 buffer->reopen_sync = TRUE;
             }
@@ -979,7 +989,7 @@ xfade_write_audio(void *ptr, int length)
     gint ofs = 0;
 
 #ifdef DEBUG_HARDCORE
-    DEBUG(("[crossfade] write_audio: ptr=0x%08lx, length=%d\n", (long) ptr, length));
+    AUDDBG("[crossfade] write_audio: ptr=0x%08lx, length=%d\n", (long) ptr, length);
 #endif
 
     /* sanity */
@@ -990,7 +1000,7 @@ xfade_write_audio(void *ptr, int length)
      * fix clicks while using with samplerate converter - Michal
     if (length & 3)
     {
-        DEBUG(("[crossfade] write_audio: truncating %d bytes!\n", length & 3));
+        AUDDBG("[crossfade] write_audio: truncating %d bytes!\n", length & 3);
         length &= -4;
     }*/
 
@@ -1005,7 +1015,7 @@ xfade_write_audio(void *ptr, int length)
     {
         if (open_output())
         {
-            DEBUG(("[crossfade] write_audio: reopening failed!\n"));
+            AUDDBG("[crossfade] write_audio: reopening failed!\n");
             MUTEX_UNLOCK(&buffer_mutex);
             return;
         }
@@ -1018,7 +1028,7 @@ xfade_write_audio(void *ptr, int length)
     free = buffer->size - buffer->used;
     if (length > free)
     {
-        DEBUG(("[crossfade] write_audio: %d bytes truncated!\n", length - free));
+        AUDDBG("[crossfade] write_audio: %d bytes truncated!\n", length - free);
         length = free;
     }
 
@@ -1057,8 +1067,8 @@ xfade_write_audio(void *ptr, int length)
             buffer->gap_killed = buffer->gap_len - buffer->gap;
             buffer->gap = 0;
 
-            DEBUG(("[crossfade] write_audio: leading gap size: %d/%d ms\n",
-                   B2MS(buffer->gap_killed), B2MS(buffer->gap_len)));
+            AUDDBG("[crossfade] write_audio: leading gap size: %d/%d ms\n",
+                   B2MS(buffer->gap_killed), B2MS(buffer->gap_len));
 
             /* fix streampos */
             streampos -= (gint64) buffer->gap_killed;
@@ -1123,7 +1133,7 @@ xfade_write_audio(void *ptr, int length)
 
         if (index < length)
         {
-            DEBUG(("[crossfade] write_audio: %d samples to next crossing\n", buffer->gap_skipped));
+            AUDDBG("[crossfade] write_audio: %d samples to next crossing\n", buffer->gap_skipped);
             buffer->gap = GAP_SKIPPING_DONE;
         }
     }
@@ -1197,7 +1207,7 @@ xfade_write_audio(void *ptr, int length)
     /* unlock buffer */
     MUTEX_UNLOCK(&buffer_mutex);
 #ifdef DEBUG_HARDCORE
-    DEBUG(("[crossfade] write_audio: done.\n"));
+    AUDDBG("[crossfade] write_audio: done.\n");
 #endif
 }
 
@@ -1213,11 +1223,11 @@ sync_output()
 
     if (!the_op->buffer_playing || !the_op->buffer_playing())
     {
-        DEBUG(("[crossfade] sync_output: nothing to do\n"));
+        AUDDBG("[crossfade] sync_output: nothing to do\n");
         return;
     }
 
-    DEBUG(("[crossfade] sync_output: waiting for plugin...\n"));
+    AUDDBG("[crossfade] sync_output: waiting for plugin...\n");
 
     dt = 0;
     opt_last = 0;
@@ -1259,13 +1269,13 @@ sync_output()
     /* print some debug info */
     /* *INDENT-OFF* */
     if (stopped)
-        DEBUG(("[crossfade] sync_output: ... stopped\n"))
+        AUDDBG("[crossfade] sync_output: ... stopped\n");
     else if (was_closed && opened)
-        DEBUG(("[crossfade] sync_output: ... reopened\n"))
+        AUDDBG("[crossfade] sync_output: ... reopened\n");
     else if (dt >= SYNC_OUTPUT_TIMEOUT)
-        DEBUG(("[crossfade] sync_output: ... TIMEOUT! (%ld ms)\n", total))
+        AUDDBG("[crossfade] sync_output: ... TIMEOUT! (%ld ms)\n", total);
     else
-        DEBUG(("[crossfade] sync_output: ... done (%ld ms)\n", total));
+        AUDDBG("[crossfade] sync_output: ... done (%ld ms)\n", total);
     /* *INDENT-ON* */
 }
 
@@ -1282,7 +1292,7 @@ buffer_thread_f(void *arg)
     struct timeval tv;
     struct timeval mark;
 
-    DEBUG(("[crossfade] buffer_thread_f: thread started (pid=%d)\n", (int) getpid()));
+    AUDDBG("[crossfade] buffer_thread_f: thread started (pid=%d)\n", (int) getpid());
 
     /* lock buffer */
     MUTEX_LOCK(&buffer_mutex);
@@ -1291,7 +1301,7 @@ buffer_thread_f(void *arg)
     {
         /* yield */
 #ifdef DEBUG_HARDCORE
-        DEBUG(("[crossfade] buffer_thread_f: yielding...\n"));
+        AUDDBG("[crossfade] buffer_thread_f: yielding...\n");
 #endif
         MUTEX_UNLOCK(&buffer_mutex);
         xfade_usleep(10000);
@@ -1321,9 +1331,9 @@ buffer_thread_f(void *arg)
                 input_playing = current;
                 
                 if (current)
-                    DEBUG(("[crossfade] buffer_thread_f: input restarted after %ld ms\n", timeout))
+                    AUDDBG("[crossfade] buffer_thread_f: input restarted after %ld ms\n", timeout);
                 else
-                    DEBUG(("[crossfade] buffer_thread_f: input stopped after + %ld ms\n", timeout));
+                    AUDDBG("[crossfade] buffer_thread_f: input stopped after + %ld ms\n", timeout);
             }
 
             /* 0.3.0: HACK: output_keep_opened: play silence during prebuffering */
@@ -1336,13 +1346,13 @@ buffer_thread_f(void *arg)
             if (!input_playing && config->fc[FADE_CONFIG_STOP].type == FADE_TYPE_NONE)
             {
                 stopping = TRUE;
-                DEBUG(("[crossfade] buffer_thread_f: input stopped after %ld ms\n", timeout));
+                AUDDBG("[crossfade] buffer_thread_f: input stopped after %ld ms\n", timeout);
             }
             else if (((timeout < 0) || (timeout >= config->songchange_timeout)) && !input_playing)
             {
                 if (playing)
-                    DEBUG(("[crossfade] buffer_thread_f: timeout:"
-                           " input did not restart after %ld ms\n", timeout));
+                    AUDDBG("[crossfade] buffer_thread_f: timeout:"
+                           " input did not restart after %ld ms\n", timeout);
                 stopping = TRUE;
             }
         }
@@ -1361,7 +1371,7 @@ buffer_thread_f(void *arg)
         {
             if (playing)
             {
-                DEBUG(("[crossfade] buffer_thread_f: timeout: manual stop\n"));
+                AUDDBG("[crossfade] buffer_thread_f: timeout: manual stop\n");
 
                 /* if CONFIG_STOP is of TYPE_NONE, immediatelly close the device... */
                 if ((config->fc[FADE_CONFIG_STOP].type == FADE_TYPE_NONE) && !config->output_keep_opened)
@@ -1370,7 +1380,7 @@ buffer_thread_f(void *arg)
                 /* special handling for pause */
                 if (paused)
                 {
-                    DEBUG(("[crossfade] buffer_thread_f: timeout: paused, closing now...\n"));
+                    AUDDBG("[crossfade] buffer_thread_f: timeout: paused, closing now...\n");
                     paused = FALSE;
                     if (config->output_keep_opened)
                         the_op->pause(0);
@@ -1379,7 +1389,7 @@ buffer_thread_f(void *arg)
                 }
                 else if (buffer->pause >= 0)
                 {
-                    DEBUG(("[crossfade] buffer_thread_f: timeout: cancelling pause countdown\n"));
+                    AUDDBG("[crossfade] buffer_thread_f: timeout: cancelling pause countdown\n");
                     buffer->pause = -1;
                 }
 
@@ -1395,14 +1405,14 @@ buffer_thread_f(void *arg)
             {
                 if (!eop)
                 {
-                    DEBUG(("[crossfade] buffer_thread_f: timeout: end of playback\n"));
+                    AUDDBG("[crossfade] buffer_thread_f: timeout: end of playback\n");
 
                     /* 0.3.3: undo trailing gap killer at end of playlist */
                     if (buffer->gap_killed)
                     {
                         buffer->used += buffer->gap_killed;
-                        DEBUG(("[crossfade] buffer_thread_f: timeout:"
-                               " undoing trailing gap (%d ms)\n", B2MS(buffer->gap_killed)));
+                        AUDDBG("[crossfade] buffer_thread_f: timeout:"
+                               " undoing trailing gap (%d ms)\n", B2MS(buffer->gap_killed));
                     }
 
                     /* do the fadeout if applicable */
@@ -1426,13 +1436,13 @@ buffer_thread_f(void *arg)
                         sync_output();
                         if (opened)
                         {
-                            DEBUG(("[crossfade] buffer_thread_f: timeout, eop: device has been reopened\n"));
-                            DEBUG(("[crossfade] buffer_thread_f: timeout, eop: -> continuing playback\n"));
+                            AUDDBG("[crossfade] buffer_thread_f: timeout, eop: device has been reopened\n");
+                            AUDDBG("[crossfade] buffer_thread_f: timeout, eop: -> continuing playback\n");
                             eop = FALSE;
                         }
                         else
                         {
-                            DEBUG(("[crossfade] buffer_thread_f: timeout, eop: closing output...\n"));
+                            AUDDBG("[crossfade] buffer_thread_f: timeout, eop: closing output...\n");
                             break;
                         }
                     }
@@ -1446,7 +1456,10 @@ buffer_thread_f(void *arg)
 
         /* get free space in device output buffer
          * NOTE: disk_writer always returns <big int> here */
-        op_free = the_op->buffer_free() & -4;
+        if (the_op->buffer_free != NULL)
+            op_free = the_op->buffer_free() & -4;
+        else
+            op_free = G_MAXINT;
 
         /* continue waiting if there is no room in the device buffer */
         if (op_free == 0)
@@ -1608,7 +1621,7 @@ buffer_thread_f(void *arg)
         {
             buffer->silence -= length;
             if (buffer->silence < 0)
-                DEBUG(("[crossfade] buffer_thread_f: WARNING: silence overrun: %d\n", buffer->silence));
+                AUDDBG("[crossfade] buffer_thread_f: WARNING: silence overrun: %d\n", buffer->silence);
         }
         else if (buffer->silence_len > 0)
         {
@@ -1616,8 +1629,8 @@ buffer_thread_f(void *arg)
             if (buffer->silence_len <= 0)
             {
                 if (buffer->silence_len < 0)
-                    DEBUG(("[crossfade] buffer_thread_f: WARNING: silence_len overrun: %d\n",
-                           buffer->silence_len));
+                    AUDDBG("[crossfade] buffer_thread_f: WARNING: silence_len overrun: %d\n",
+                           buffer->silence_len);
             }
         }
 
@@ -1627,9 +1640,9 @@ buffer_thread_f(void *arg)
             if (buffer->reopen <= 0)
             {
                 if (buffer->reopen < 0)
-                    DEBUG(("[crossfade] buffer_thread_f: WARNING: reopen overrun: %d\n", buffer->reopen));
+                    AUDDBG("[crossfade] buffer_thread_f: WARNING: reopen overrun: %d\n", buffer->reopen);
 
-                DEBUG(("[crossfade] buffer_thread_f: closing/reopening device\n"));
+                AUDDBG("[crossfade] buffer_thread_f: closing/reopening device\n");
                 if (buffer->reopen_sync)
                     sync_output();
 
@@ -1638,7 +1651,7 @@ buffer_thread_f(void *arg)
                     
                 if (!the_op->open_audio(in_format.fmt, in_format.rate, in_format.nch))
                 {
-                    DEBUG(("[crossfade] buffer_thread_f: reopening output plugin failed!\n"));
+                    AUDDBG("[crossfade] buffer_thread_f: reopening output plugin failed!\n");
                     g_free(buffer->data);
                     output_opened = FALSE;
                     MUTEX_UNLOCK(&buffer_mutex);
@@ -1670,9 +1683,9 @@ buffer_thread_f(void *arg)
             if (buffer->pause <= 0)
             {
                 if (buffer->pause < 0)
-                    DEBUG(("[crossfade] buffer_thread_f: WARNING: pause overrun: %d\n", buffer->pause));
+                    AUDDBG("[crossfade] buffer_thread_f: WARNING: pause overrun: %d\n", buffer->pause);
 
-                DEBUG(("[crossfade] buffer_thread_f: pausing output\n"));
+                AUDDBG("[crossfade] buffer_thread_f: pausing output\n");
 
                 paused = TRUE;
                 sync_output();
@@ -1680,7 +1693,7 @@ buffer_thread_f(void *arg)
                 if (paused)
                     the_op->pause(1);
                 else
-                    DEBUG(("[crossfade] buffer_thread_f: unpause during sync\n")) buffer->pause = -1;
+                    AUDDBG("[crossfade] buffer_thread_f: unpause during sync\n"); buffer->pause = -1;
             }
         }
     }
@@ -1690,18 +1703,18 @@ buffer_thread_f(void *arg)
     /* cleanup: close output */
     if (output_opened)
     {
-        DEBUG(("[crossfade] buffer_thread_f: closing output...\n"));
+        AUDDBG("[crossfade] buffer_thread_f: closing output...\n");
 
         if (the_op->close_audio)
             the_op->close_audio();
 
-        DEBUG(("[crossfade] buffer_thread_f: closing output... done\n"));
+        AUDDBG("[crossfade] buffer_thread_f: closing output... done\n");
         
         g_free(buffer->data);
         output_opened = FALSE;
     }
     else
-        DEBUG(("[crossfade] buffer_thread_f: output already closed!\n"));
+        AUDDBG("[crossfade] buffer_thread_f: output already closed!\n");
 
     /* ----------------------------------------------------------------------- */
 
@@ -1709,7 +1722,7 @@ buffer_thread_f(void *arg)
     MUTEX_UNLOCK(&buffer_mutex);
 
     /* done */
-    DEBUG(("[crossfade] buffer_thread_f: thread finished\n"));
+    AUDDBG("[crossfade] buffer_thread_f: thread finished\n");
     THREAD_EXIT(0);
     return NULL;
 }
@@ -1717,9 +1730,9 @@ buffer_thread_f(void *arg)
 void
 xfade_close_audio()
 {
-    DEBUG(("[crossfade] close:\n"));
-    DEBUG(("[crossfade] close: playing=%d filename=%s\n",
-           xfplayer_input_playing(), xfplaylist_get_filename(xfplaylist_get_position())));
+    AUDDBG("[crossfade] close:\n");
+    AUDDBG("[crossfade] close: playing=%d filename=%s\n",
+           xfplayer_input_playing(), xfplaylist_get_filename(xfplaylist_get_position()));
 
     /* lock buffer */
     MUTEX_LOCK(&buffer_mutex);
@@ -1727,7 +1740,7 @@ xfade_close_audio()
     /* sanity... the vorbis plugin likes to call close_audio() twice */
     if (!opened)
     {
-        DEBUG(("[crossfade] close: WARNING: not opened!\n"));
+        AUDDBG("[crossfade] close: WARNING: not opened!\n");
         MUTEX_UNLOCK(&buffer_mutex);
         return;
     }
@@ -1761,14 +1774,14 @@ xfade_close_audio()
                 stopped = TRUE;
         }
 
-            DEBUG(("[crossfade] close: stop\n"));
+            AUDDBG("[crossfade] close: stop\n");
 
         fade_config = &config->fc[FADE_CONFIG_MANUAL];
     }
     else
     {
         /* gint x = *((gint *)0); */  /* force SEGFAULT for debugging */
-        DEBUG(("[crossfade] close: songchange/eop\n"));
+        AUDDBG("[crossfade] close: songchange/eop\n");
 
         /* kill trailing gap (does not use buffer->gap_*) */
         if (output_opened && xfade_cfg_gap_trail_enable(config))
@@ -1777,7 +1790,7 @@ xfade_close_audio()
             gint gap_level = xfade_cfg_gap_trail_level(config);
             gint length    = MIN(gap_len, buffer->used);
 
-            /* DEBUG(("[crossfade] close: len=%d level=%d length=%d\n", gap_len, gap_level, length)); */
+            /* AUDDBG("[crossfade] close: len=%d level=%d length=%d\n", gap_len, gap_level, length); */
 
             buffer->gap_killed = 0;
             while (length > 0)
@@ -1804,7 +1817,7 @@ xfade_close_audio()
                 length -= blen;
             }
 
-            DEBUG(("[crossfade] close: trailing gap size: %d/%d ms\n", B2MS(buffer->gap_killed), B2MS(gap_len)));
+            AUDDBG("[crossfade] close: trailing gap size: %d/%d ms\n", B2MS(buffer->gap_killed), B2MS(gap_len));
         }
 
         /* skip to previous zero crossing */
@@ -1837,7 +1850,7 @@ xfade_close_audio()
                         break;
                 }
             }
-            DEBUG(("[crossfade] close: skipped %d bytes to previous zero crossing\n", buffer->gap_skipped));
+            AUDDBG("[crossfade] close: skipped %d bytes to previous zero crossing\n", buffer->gap_skipped);
 
             /* update gap_killed (for undoing gap_killer in case of EOP) */
             buffer->gap_killed += buffer->gap_skipped;
@@ -1863,7 +1876,7 @@ xfade_flush(gint time)
     gint pos;
     gchar *file;
 
-    DEBUG(("[crossfade] flush: time=%d\n", time));
+    AUDDBG("[crossfade] flush: time=%d\n", time);
 
     /* get filename */
     pos  = xfplaylist_get_position();
@@ -1875,13 +1888,13 @@ xfade_flush(gint time)
     /* HACK: special handling for audacious, which just calls flush(0) on a songchange */
     if (file && last_filename && strcmp(file, last_filename) != 0)
     {
-        DEBUG(("[crossfade] flush: filename changed, forcing close/reopen...\n"));
+        AUDDBG("[crossfade] flush: filename changed, forcing close/reopen...\n");
         xfade_close_audio();
         /* 0.3.14: xfade_close_audio sets fade_config to FADE_CONFIG_MANUAL,
          *         but this is an automatic songchange */
         fade_config = &config->fc[FADE_CONFIG_XFADE];
         xfade_open_audio(in_format.fmt, in_format.rate, in_format.nch);
-        DEBUG(("[crossfade] flush: filename changed, forcing close/reopen... done\n"));
+        AUDDBG("[crossfade] flush: filename changed, forcing close/reopen... done\n");
         return;
     }
 
@@ -1931,7 +1944,7 @@ xfade_flush(gint time)
     MUTEX_UNLOCK(&buffer_mutex);
 
 #ifdef DEBUG_HARDCORE
-    DEBUG(("[crossfade] flush: time=%d: done.\n", time));
+    AUDDBG("[crossfade] flush: time=%d: done.\n", time);
 #endif
 }
 
@@ -1959,8 +1972,8 @@ xfade_pause(short p)
                 in_len = out_len;
             }
 
-            DEBUG(("[crossfade] pause: paused=1 out=%d in=%d silence=%d\n",
-                   B2MS(out_len), B2MS(in_len), B2MS(silence_len)));
+            AUDDBG("[crossfade] pause: paused=1 out=%d in=%d silence=%d\n",
+                   B2MS(out_len), B2MS(in_len), B2MS(silence_len));
 
             /* fade out (modifies buffer directly) */
             fade = 0;
@@ -2016,7 +2029,7 @@ xfade_pause(short p)
         {
             the_op->pause(1);
             paused = TRUE;
-            DEBUG(("[crossfade] pause: paused=1\n"));
+            AUDDBG("[crossfade] pause: paused=1\n");
         }
     }
     else
@@ -2024,7 +2037,7 @@ xfade_pause(short p)
         the_op->pause(0);
         buffer->pause = -1;
         paused = FALSE;
-        DEBUG(("[crossfade] pause: paused=0\n"));
+        AUDDBG("[crossfade] pause: paused=0\n");
     }
 
     /* unlock buffer */
@@ -2037,13 +2050,13 @@ xfade_buffer_free()
     gint size, free;
 
 #ifdef DEBUG_HARDCORE
-    DEBUG(("[crossfade] buffer_free:\n"));
+    AUDDBG("[crossfade] buffer_free:\n");
 #endif
 
     /* sanity check */
     if (!output_opened)
     {
-        DEBUG(("[crossfade] buffer_free: WARNING: output closed!\n"));
+        AUDDBG("[crossfade] buffer_free: WARNING: output closed!\n");
         return buffer->sync_size;
     }
 
@@ -2089,7 +2102,7 @@ xfade_buffer_free()
         free /= 2;
 
 #ifdef DEBUG_HARDCORE
-    DEBUG(("[crossfade] buffer_free: %d\n", free));
+    AUDDBG("[crossfade] buffer_free: %d\n", free);
 #endif
     return free;
 }
@@ -2157,7 +2170,7 @@ xfade_buffer_playing()
     }
 
 #ifdef DEBUG_HARDCORE
-    DEBUG(("[crossfade] buffer_playing: %d\n", playing));
+    AUDDBG("[crossfade] buffer_playing: %d\n", playing);
 #endif
     return playing;
 }
@@ -2176,7 +2189,7 @@ xfade_output_time()
     gint time;
 
 #ifdef DEBUG_HARDCORE
-    DEBUG(("[crossfade] output_time:\n"));
+    AUDDBG("[crossfade] output_time:\n");
 #endif
 
     /* sanity check (note: this one _does_ happen all the time) */
@@ -2194,7 +2207,7 @@ xfade_output_time()
     MUTEX_UNLOCK(&buffer_mutex);
 
 #ifdef DEBUG_HARDCORE
-    DEBUG(("[crossfade] output_time: time=%d\n", time));
+    AUDDBG("[crossfade] output_time: time=%d\n", time);
 #endif
     return time;
 }
@@ -2202,7 +2215,7 @@ xfade_output_time()
 void
 xfade_cleanup()
 {
-    DEBUG(("[crossfade] cleanup:\n"));
+    AUDDBG("[crossfade] cleanup:\n");
 
     /* lock buffer */
     MUTEX_LOCK(&buffer_mutex);
@@ -2210,7 +2223,7 @@ xfade_cleanup()
     /* check if buffer thread is still running */
     if (output_opened)
     {
-        DEBUG(("[crossfade] cleanup: closing output\n"));
+        AUDDBG("[crossfade] cleanup: closing output\n");
         
         stopped = TRUE;
         
@@ -2224,7 +2237,7 @@ xfade_cleanup()
     /* unlock buffer */
     MUTEX_UNLOCK(&buffer_mutex);
         
-    DEBUG(("[crossfade] cleanup: done\n"));
+    AUDDBG("[crossfade] cleanup: done\n");
 }
 
 static gint

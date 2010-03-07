@@ -228,7 +228,7 @@ mad_parse_genre(const id3_ucs4_t *string)
                  * so we must free it after we're done, not before.
                  */
                 genre = (id3_ucs4_t *)id3_genre_name((const id3_ucs4_t *)tmp);
-                AUDDBG("genre length = %d\n", mad_ucs4len(genre));
+                AUDDBG("genre length = %zd\n", mad_ucs4len(genre));
 
                 tmp_len = mad_ucs4len(genre);
                 memcpy(ret + ret_len, genre, BYTES(tmp_len));
@@ -239,8 +239,8 @@ mad_parse_genre(const id3_ucs4_t *string)
             else { // plain text
                 tmp_len = end - ptr;
                 AUDDBG("plain!\n");
-                AUDDBG("ret_len = %d\n", ret_len);
-                AUDDBG("end - ptr = %d\n", BYTES(tmp_len));
+                AUDDBG("ret_len = %zd\n", ret_len);
+                AUDDBG("end - ptr = %lu\n", BYTES(tmp_len));
 
                 memcpy(ret + ret_len, ptr, BYTES(tmp_len));
                 ret_len = ret_len + tmp_len;

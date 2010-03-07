@@ -927,9 +927,6 @@ aosd_cb_configure_test ( gpointer cfg_win )
   GList *cb_list = g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
   aosd_callback_list_run( cb_list , cfg );
   cfg->set = TRUE;
-#ifdef DEBUG
-  aosd_cfg_debug( cfg );
-#endif
   markup_message = g_markup_printf_escaped(
     _("<span font_desc='%s'>Audacious OSD</span>") , cfg->osd->text.fonts_name[0] );
   aosd_osd_shutdown(); /* stop any displayed osd */

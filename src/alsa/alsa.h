@@ -30,18 +30,22 @@
 #include <audacious/i18n.h>
 
 #define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
-
-#if 0
-#define DEBUG(...) ERROR (__VA_ARGS__)
-#else
-#define DEBUG(...)
-#endif
+#define ERROR_NOISY alsa_error
 
 #define CHECK(function, ...) \
 do { \
     gint error = function (__VA_ARGS__); \
     if (error < 0) { \
         ERROR ("%s failed: %s.\n", #function, snd_strerror (error)); \
+        goto FAILED; \
+    } \
+} while (0)
+
+#define CHECK_NOISY(function, ...) \
+do { \
+    gint error = function (__VA_ARGS__); \
+    if (error < 0) { \
+        ERROR_NOISY ("%s failed: %s.\n", #function, snd_strerror (error)); \
         goto FAILED; \
     } \
 } while (0)
@@ -76,5 +80,6 @@ void alsa_configure (void);
 
 /* plugin.c */
 void alsa_about (void);
+void alsa_error (const gchar * format, ...);
 
 #endif

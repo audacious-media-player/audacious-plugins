@@ -21,8 +21,10 @@
 
 #include <gtk/gtk.h>
 
-gchar * alsa_config_pcm, * alsa_config_mixer, * alsa_config_mixer_element;
-gboolean alsa_config_drop_workaround;
+gchar * alsa_config_pcm = NULL, * alsa_config_mixer = NULL,
+ * alsa_config_mixer_element = NULL;
+gboolean alsa_config_drop_workaround = TRUE;
+
 static GtkListStore * pcm_list, * mixer_list, * mixer_element_list;
 static GtkWidget * window, * pcm_combo, * mixer_combo, * mixer_element_combo,
  * ok_button, * drop_workaround_check;
@@ -293,7 +295,7 @@ static void guess_mixer_element (void)
         }
     }
 
-    ERROR ("No suitable mixer element found.\n");
+    ERROR_NOISY ("No suitable mixer element found.\n");
 }
 
 void alsa_config_load (void)

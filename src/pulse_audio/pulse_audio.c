@@ -44,6 +44,7 @@ static int64_t written;
 static int bytes_per_second;
 
 static int connected = 0;
+static int cached_time = 0;
 
 static pa_time_event *volume_time_event = NULL;
 
@@ -364,6 +365,17 @@ static int pulse_get_output_time (void)
      - (int) (timing->sink_usec / 1000) + (int) ((now.tv_sec -
      timing->timestamp.tv_sec) * 1000) + (int) ((now.tv_usec -
      timing->timestamp.tv_usec) / 1000);
+
+    if (pa_stream_is_corked(stream))
+    {
+	int delta = time - cached_time;
+	if (delta > 0 && delta < 2000)
+             time = cached_time;
+        else
+             cached_time = time;
+    } else {
+        cached_time = time;
+    }
 
 fail:
     pa_threaded_mainloop_unlock(mainloop);

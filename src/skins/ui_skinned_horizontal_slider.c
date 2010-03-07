@@ -325,9 +325,8 @@ static gboolean ui_skinned_horizontal_slider_button_press(GtkWidget *widget, Gdk
 
     if (event->type == GDK_BUTTON_PRESS) {
         if (event->button == 1) {
-            gint x;
+            gint x = event->x - priv->knob_width * (priv->scaled ? config.scale_factor : 1) / 2;
 
-            x = event->x - (priv->knob_width / (priv->scaled ? 1 : config.scale_factor));
             hs->pressed = TRUE;
 
             priv->position = x/(priv->scaled ? config.scale_factor : 1);
@@ -380,9 +379,8 @@ static gboolean ui_skinned_horizontal_slider_motion_notify(GtkWidget *widget, Gd
     UiSkinnedHorizontalSliderPrivate *priv = UI_SKINNED_HORIZONTAL_SLIDER_GET_PRIVATE(widget);
 
     if (hs->pressed) {
-        gint x;
+        gint x = event->x - priv->knob_width * (priv->scaled ? config.scale_factor : 1) / 2;
 
-        x = event->x - (priv->knob_width / (priv->scaled ? 1 : config.scale_factor));
         priv->position = x/(priv->scaled ? config.scale_factor : 1);
 
         if (priv->position < priv->min)

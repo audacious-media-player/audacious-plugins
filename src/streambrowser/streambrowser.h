@@ -23,7 +23,7 @@
 #define DEF_STRING_LEN				1024
 #define DEF_BUFFER_SIZE				512
 #define MAX_UPDATE_THREADS			4
-#define PLAYLIST_TEMP_FILE			"file:///tmp/playlist.pls"
+#define PLAYLIST_TEMP_FILE			"streambrowser-playlist-temp.pls"
 #define STREAMBROWSER_ICON_SMALL	DATA_DIR G_DIR_SEPARATOR_S "images" G_DIR_SEPARATOR_S "streambrowser-16x16.png"
 #define STREAMBROWSER_ICON			DATA_DIR G_DIR_SEPARATOR_S "images" G_DIR_SEPARATOR_S "streambrowser-64x64.png"
 
@@ -34,16 +34,14 @@
 #include <audacious/i18n.h>
 
 
-void				debug(const char *fmt, ...);
-void				failure(const char *fmt, ...);
-gboolean			fetch_remote_to_local_file(gchar *remote_url, gchar *local_url);
+void failure (const char *fmt, ...);
+gboolean fetch_remote_to_local_file (gchar * remote_url, gchar * local_url);
 
-void				config_load();
-void				config_save();
+void config_load ();
+void config_save ();
 
-	/* returns true if the substring has been found, false otherwise */
-gboolean			mystrcasestr(const char *haystack, const char *needle);
+        /* returns true if the substring has been found, false otherwise */
+gboolean mystrcasestr (const char *haystack, const char *needle);
 
 
-#endif	// STREAMBROWSER_H
-
+#endif // STREAMBROWSER_H

@@ -604,37 +604,43 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
         g_print("vis not in tabs : %d\n", config.vis_position);
 
-        if (config.vis_position == VIS_ON_LEFT)
+        switch (config.vis_position)
         {
-            pane = gtk_hpaned_new();
-            gtk_paned_add2(GTK_PANED(pane), playlist_notebook);
+            case VIS_ON_LEFT:
+                pane = gtk_hpaned_new();
+                gtk_paned_add2(GTK_PANED(pane), playlist_notebook);
 
-            vispane_root = gtk_vpaned_new();
-            gtk_paned_add1(GTK_PANED(pane), vispane_root);
-        }
-        else if (config.vis_position == VIS_ON_RIGHT)
-        {
-            pane = gtk_hpaned_new();
-            gtk_paned_add1(GTK_PANED(pane), playlist_notebook);
+                vispane_root = gtk_vpaned_new();
+                gtk_paned_add1(GTK_PANED(pane), vispane_root);
+                break;
 
-            vispane_root = gtk_vpaned_new();
-            gtk_paned_add2(GTK_PANED(pane), vispane_root);
-        }
-        else if (config.vis_position == VIS_ON_TOP)
-        {
-            pane = gtk_vpaned_new();
-            gtk_paned_add2(GTK_PANED(pane), playlist_notebook);
+            case VIS_ON_RIGHT:
+                pane = gtk_hpaned_new();
+                gtk_paned_add1(GTK_PANED(pane), playlist_notebook);
 
-            vispane_root = gtk_hpaned_new();
-            gtk_paned_add1(GTK_PANED(pane), vispane_root);
-        }
-        else if (config.vis_position == VIS_ON_BOTTOM)
-        {
-            pane = gtk_vpaned_new();
-            gtk_paned_add1(GTK_PANED(pane), playlist_notebook);
+                vispane_root = gtk_vpaned_new();
+                gtk_paned_add2(GTK_PANED(pane), vispane_root);
+                break;
 
-            vispane_root = gtk_hpaned_new();
-            gtk_paned_add2(GTK_PANED(pane), vispane_root);
+            case VIS_ON_TOP:
+                pane = gtk_vpaned_new();
+                gtk_paned_add2(GTK_PANED(pane), playlist_notebook);
+
+                vispane_root = gtk_hpaned_new();
+                gtk_paned_add1(GTK_PANED(pane), vispane_root);
+                break;
+
+            case VIS_ON_BOTTOM:
+                pane = gtk_vpaned_new();
+                gtk_paned_add1(GTK_PANED(pane), playlist_notebook);
+
+                vispane_root = gtk_hpaned_new();
+                gtk_paned_add2(GTK_PANED(pane), vispane_root);
+                break;
+
+            default:
+                /* invalid vis_position, just display playlist_notebook */
+                pane = playlist_notebook;
         }
 
         if (pane != NULL)

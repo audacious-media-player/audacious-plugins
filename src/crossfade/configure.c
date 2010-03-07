@@ -201,7 +201,7 @@ scan_plugins(GtkWidget *option_menu, gchar *selected)
 
     if (sel_index == -1)
     {
-        DEBUG(("[crossfade] scan_plugins: plugin not found (\"%s\")\n", selected));
+        AUDDBG("[crossfade] scan_plugins: plugin not found (\"%s\")\n", selected);
         return def_index;  /* use default (first entry) */
     }
     return sel_index;
@@ -1037,7 +1037,7 @@ xfade_configure()
         /* create */
         if (!(config_win = create_config_win()))
         {
-            DEBUG(("[crossfade] plugin_configure: error creating window!\n"));
+            AUDDBG(("[crossfade] plugin_configure: error creating window!\n"));
             return;
         }
 
@@ -1084,7 +1084,7 @@ xfade_configure()
 
         if ((xfg->xf_index < 0) || (xfg->xf_index >= MAX_FADE_CONFIGS))
         {
-            DEBUG(("[crossfade] plugin_configure: crossfade index out of range (%d)!\n", xfg->xf_index));
+            AUDDBG("[crossfade] plugin_configure: crossfade index out of range (%d)!\n", xfg->xf_index);
             xfg->xf_index = CLAMP(xfg->xf_index, 0, MAX_FADE_CONFIGS);
         }
 

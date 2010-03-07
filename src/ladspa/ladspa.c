@@ -636,6 +636,7 @@ static void draw_plugin(plugin_instance * instance)
     }
 
     instance->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_type_hint(GTK_WINDOW(instance->window), GDK_WINDOW_TYPE_HINT_DIALOG);
     gtk_window_set_title(GTK_WINDOW(instance->window), plugin->Name);
 
     vbox = gtk_vbox_new(FALSE, 3);
@@ -1010,6 +1011,7 @@ static void configure(void)
     }
 
     config_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_type_hint(GTK_WINDOW(config_window), GDK_WINDOW_TYPE_HINT_DIALOG);
     vbox = gtk_vbox_new(FALSE, 0);
     hbox = gtk_hbox_new(TRUE, 0);
 

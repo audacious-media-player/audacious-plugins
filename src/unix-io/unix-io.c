@@ -32,12 +32,6 @@
 
 #define error(...) fprintf (stderr, "unix-io: " __VA_ARGS__)
 
-#if 0
-#define debug(...) error (__VA_ARGS__)
-#else
-#define debug(...)
-#endif
-
 static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
 {
     VFSFile * file = NULL;
@@ -46,7 +40,7 @@ static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
     gchar * filename;
     gint handle;
 
-    debug ("fopen %s, mode = %s\n", uri, mode);
+    AUDDBG("fopen %s, mode = %s\n", uri, mode);
 
     update = (strchr (mode, '+') != NULL);
 
@@ -97,7 +91,7 @@ static gint unix_fclose (VFSFile * file)
     gint handle = GPOINTER_TO_INT (file->handle);
     gint result = 0;
 
-    debug ("fclose\n");
+    AUDDBG("fclose\n");
 
     if (fsync (handle) == -1)
     {
@@ -116,7 +110,7 @@ static size_t unix_fread (gpointer ptr, size_t size, size_t nitems, VFSFile *
     gint goal = size * nitems;
     gint total = 0;
 
-    debug ("fread %d x %d\n", size, nitems);
+    AUDDBG("fread %d x %d\n", size, nitems);
 
     while (total < goal)
     {
@@ -134,7 +128,7 @@ static size_t unix_fread (gpointer ptr, size_t size, size_t nitems, VFSFile *
         total += readed;
     }
 
-    debug (" = %d\n", total);
+    AUDDBG(" = %d\n", total);
 
     return (size > 0) ? total / size : 0;
 }
@@ -146,7 +140,7 @@ static size_t unix_fwrite (gconstpointer ptr, size_t size, size_t nitems,
     gint goal = size * nitems;
     gint total = 0;
 
-    debug ("fwrite %d x %d\n", size, nitems);
+    AUDDBG("fwrite %d x %d\n", size, nitems);
 
     while (total < goal)
     {
@@ -161,7 +155,7 @@ static size_t unix_fwrite (gconstpointer ptr, size_t size, size_t nitems,
         total += written;
     }
 
-    debug (" = %d\n", total);
+    AUDDBG(" = %d\n", total);
 
     return (size > 0) ? total / size : 0;
 }
@@ -170,7 +164,7 @@ static gint unix_fseek (VFSFile * file, glong offset, gint whence)
 {
     gint handle = GPOINTER_TO_INT (file->handle);
 
-    debug ("fseek %ld, whence = %d\n", offset, whence);
+    AUDDBG("fseek %ld, whence = %d\n", offset, whence);
 
     if (lseek (handle, offset, whence) == -1)
     {

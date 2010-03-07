@@ -418,7 +418,7 @@ void xs_stop(InputPlayback *pb)
 void xs_pause(InputPlayback *pb, short pauseState)
 {
     XS_MUTEX_LOCK(xs_status);
-    
+    pb->output->pause(pauseState);
     XS_MUTEX_UNLOCK(xs_status);
 }
 
