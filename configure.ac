@@ -133,7 +133,7 @@ AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
 
 dnl These plugins are always built.
 
-INPUT_PLUGINS="tonegen console psf xsf metronom vtx"
+INPUT_PLUGINS="tonegen console psf usf xsf metronom vtx"
 OUTPUT_PLUGINS="crossfade null"
 EFFECT_PLUGINS="compressor crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm skins vfstrace gtkui"
@@ -1623,6 +1623,7 @@ echo "    -> libSIDPlay2 support:               $xs_have_sidplay2"
 echo "    -> distortion patched libSIDPlay2:    $xs_have_distortion"
 echo "  Game music (spc, nsf & gbs):            yes"
 echo "  PlayStation (psf/psf2) audio (psf):     yes"
+echo "  Nintendo 64 audio (usf):                yes [experimental]"
 echo "  Nintendo DS audio (xsf):                yes [experimental]"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      $have_ffaudio"
