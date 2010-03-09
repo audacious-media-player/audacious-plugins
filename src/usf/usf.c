@@ -505,7 +505,7 @@ Tuple * usf_get_song_tuple(const gchar * fn)
 }
 
 InputPlugin usf_ip = {
-  .description = (gchar *)"LazyUSF Decoder",
+  .description = "USF Plugin",
   .init = usf_init,
   .play_file = usf_play,
   .stop = usf_stop,

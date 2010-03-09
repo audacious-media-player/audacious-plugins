@@ -3,9 +3,9 @@ PLUGIN = usf${PLUGIN_SUFFIX}
 SRCS = audio.c \
        audio_hle_main.c \
        audio_ucode1.c \
-       audio_ucode2.cpp \
-       audio_ucode3.cpp \
-       audio_ucode3mp3.cpp \
+       audio_ucode2.cxx \
+       audio_ucode3.cxx \
+       audio_ucode3mp3.cxx \
        cpu.c \
        dma.c \
        exception.c \
@@ -37,6 +37,8 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
+LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS} -O0
+CXXFLAGS += ${PLUGIN_CFLAGS} -O0
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS}  -I../.. -Ispu/ -I.
 LIBS += ${GTK_LIBS} ${GLIB_LIBS}  ${MOWGLI_LIBS} -lz
