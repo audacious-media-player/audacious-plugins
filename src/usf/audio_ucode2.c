@@ -1,9 +1,8 @@
-extern "C" {
-	#include <stdio.h>
-	#include "usf.h"
-	#include "audio_hle.h"
-	#include "memory.h"
-}
+#include <stdbool.h>
+#include <stdio.h>
+#include "usf.h"
+#include "audio_hle.h"
+#include "memory.h"
 
 
 
@@ -13,7 +12,7 @@ extern u8 BufferSpace[0x10000];
 static void SPNOOP () {
 	char buff[0x100];
 }
-extern "C" {
+
 extern u16 AudioInBuffer;		// 0x0000(T8)
 extern u16 AudioOutBuffer;		// 0x0002(T8)
 extern u16 AudioCount;			// 0x0004(T8)
@@ -21,7 +20,6 @@ extern u32 loopval;			// 0x0010(T8)
 extern u32 SEGMENTS[0x10];
 extern u16 adpcmtable[0x88];
 extern u16 ResampleLUT [0x200];
-}
 
 bool isMKABI = false;
 bool isZeldaABI = false;
@@ -33,8 +31,9 @@ bool isZeldaABI = false;
 static void LOADADPCM2 () { // Loads an ADPCM table - Works 100% Now 03-13-01
 	u32 v0;
 	v0 = (inst2 & 0xffffff);// + SEGMENTS[(inst2>>24)&0xf];
+	u32 x;
 
-	for (u32 x = 0; x < ((inst1&0xffff)>>0x4); x++) {
+	for (x = 0; x < ((inst1&0xffff)>>0x4); x++) {
 		u16 *table = (u16*)PageRAM2(v0+(x*16));
 
 
@@ -372,8 +371,9 @@ static void MIXER2 () { // Needs accuracy verification...
 	u32 count   = ((inst1 >> 12) & 0xFF0);
 	s32 gain    = (s16)(inst1 & 0xFFFF)*2;
 	s32 temp;
+	unsigned int x;
 
-	for (unsigned int x=0; x < count; x+=2) { // I think I can do this a lot easier
+	for (x=0; x < count; x+=2) { // I think I can do this a lot easier
 
 		temp = (*(s16 *)(BufferSpace+dmemin+x) * gain) >> 16;
 		temp += *(s16 *)(BufferSpace+dmemout+x);
@@ -404,6 +404,7 @@ static void RESAMPLE2 () {
 	u32 dstPtr=(AudioOutBuffer/2);
 	s32 temp;
 	s32 accum;
+	int x, i;
 
 	if (addy > (1024*1024*8))
 		addy = (inst2 & 0xffffff);
@@ -411,15 +412,15 @@ static void RESAMPLE2 () {
 	srcPtr -= 4;
 
 	if ((Flags & 0x1) == 0) {
-		for (int x=0; x < 4; x++)
+		for (x=0; x < 4; x++)
 			src[(srcPtr+x)^1] = *(u16*)(PageRAM2(addy+(x^1)));
 		Accum = *(u16 *)(PageRAM2(addy+10));
 	} else {
-		for (int x=0; x < 4; x++)
+		for (x=0; x < 4; x++)
 			src[(srcPtr+x)^1] = 0;//*(u16 *)(rsp.RDRAM+((addy+x)^2));
 	}
 
-	for(int i=0;i < ((AudioCount+0xf)&0xFFF0)/2;i++)	{
+	for(i=0;i < ((AudioCount+0xf)&0xFFF0)/2;i++)	{
 		location = (((Accum * 0x40) >> 0x10) * 8);
 		//location = (Accum >> 0xa) << 0x3;
 		lut = (s16 *)(((u8 *)ResampleLUT) + location);
@@ -445,7 +446,7 @@ static void RESAMPLE2 () {
 		srcPtr += (Accum>>16);
 		Accum&=0xffff;
 	}
-	for (int x=0; x < 4; x++)
+	for (x=0; x < 4; x++)
 		*(u16*)(PageRAM2(addy+(x^1))) = src[(srcPtr+x)^1];
 
 	*(u16 *)(PageRAM2(addy+10)) = Accum;
@@ -677,6 +678,7 @@ static void INTERLEAVE2 () { // Needs accuracy verification...
 	u16 *inSrcL;
 	u16 Left, Right;
 	u32 count;
+	u32 x;
 	count   = ((inst1 >> 12) & 0xFF0);
 	if (count == 0) {
 		outbuff = (u16 *)(AudioOutBuffer+BufferSpace);
@@ -691,7 +693,7 @@ static void INTERLEAVE2 () { // Needs accuracy verification...
 	inSrcR = (u16 *)(BufferSpace+inR);
 	inSrcL = (u16 *)(BufferSpace+inL);
 
-	for (u32 x = 0; x < (count/4); x++) {
+	for (x = 0; x < (count/4); x++) {
 		Left=*(inSrcL++);
 		Right=*(inSrcR++);
 
@@ -706,12 +708,13 @@ static void ADDMIXER () {
 	short Count   = (inst1 >> 12)	 & 0x00ff0;
 	u16 InBuffer  = (inst2 >> 16);
 	u16 OutBuffer = inst2 & 0xffff;
+	int cntr;
 
 	s16 *inp, *outp;
 	s32 temp;
 	inp  = (s16 *)(BufferSpace + InBuffer);
 	outp = (s16 *)(BufferSpace + OutBuffer);
-	for (int cntr = 0; cntr < Count; cntr+=2) {
+	for (cntr = 0; cntr < Count; cntr+=2) {
 		temp = *outp + *inp;
 		if (temp > 32767)  temp = 32767; if (temp < -32768) temp = -32768;
 		outp++;	inp++;
@@ -886,15 +889,6 @@ static void SEGMENT2 () {
 
 static void UNKNOWN () {
 }
-/*
-void (*ABI2[0x20])() = {
-    SPNOOP, ADPCM2, CLEARBUFF2, SPNOOP, SPNOOP, RESAMPLE2, SPNOOP, SEGMENT2,
-    SETBUFF2, SPNOOP, DMEMMOVE2, LOADADPCM2, MIXER2, INTERLEAVE2, HILOGAIN, SETLOOP2,
-    SPNOOP, INTERL2, ENVSETUP1, ENVMIXER2, LOADBUFF2, SAVEBUFF2, ENVSETUP2, SPNOOP,
-    SPNOOP, SPNOOP, SPNOOP, SPNOOP, SPNOOP, SPNOOP, SPNOOP, SPNOOP
-};*/
-
-extern "C" {
 
 void (*ABI2[0x20])() = {
     SPNOOP , ADPCM2, CLEARBUFF2, UNKNOWN, ADDMIXER, RESAMPLE2, UNKNOWN, SEGMENT2,
@@ -903,14 +897,6 @@ void (*ABI2[0x20])() = {
     HILOGAIN , SPNOOP, DUPLICATE2 , UNKNOWN    , SPNOOP  , SPNOOP    , SPNOOP  , SPNOOP
 };
 
-}
-/*
-void (*ABI2[0x20])() = {
-    SPNOOP , ADPCM2, CLEARBUFF2, SPNOOP, SPNOOP, RESAMPLE2  , SPNOOP  , SEGMENT2,
-    SETBUFF2 , DUPLICATE2, DMEMMOVE2, LOADADPCM2, MIXER2, INTERLEAVE2, SPNOOP, SETLOOP2,
-    SPNOOP, INTERL2 , ENVSETUP1, ENVMIXER2, LOADBUFF2, SAVEBUFF2, ENVSETUP2, SPNOOP,
-    SPNOOP , SPNOOP, SPNOOP , SPNOOP    , SPNOOP  , SPNOOP    , SPNOOP  , SPNOOP
-};*/
 /* NOTES:
 
   FILTER/SEGMENT - Still needs to be finished up... add FILTER?

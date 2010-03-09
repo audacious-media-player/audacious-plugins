@@ -1,10 +1,8 @@
-
-extern "C" {
-	#include <stdio.h>
-	#include "usf.h"
-	#include "audio_hle.h"
-	#include "memory.h"
-}
+#include <stdio.h>
+#include <stdbool.h>
+#include "usf.h"
+#include "audio_hle.h"
+#include "memory.h"
 
 
 static void SPNOOP () {
@@ -12,8 +10,6 @@ static void SPNOOP () {
 	//sprintf (buff, "Unknown/Unimplemented Audio Command %i in ABI 3", (int)(inst1 >> 24));
 	//printf( "Audio HLE Error: %s\n", buff );
 }
-
-extern "C" {
 
 extern u16 ResampleLUT [0x200];
 
@@ -35,7 +31,7 @@ extern short hleMixerWorkArea[256];
 extern u16 adpcmtable[0x88];
 
 extern u8 BufferSpace[0x10000];
-  }
+
 /*
 static void SETVOL3 () { // Swapped Rate_Left and Vol
 	u8 Flags = (u8)(inst1 >> 0x10);
@@ -279,11 +275,11 @@ static void SAVEBUFF3 () {
 }
 
 static void LOADADPCM3 () { // Loads an ADPCM table - Works 100% Now 03-13-01
-	u32 v0;
+	u32 v0, x;
 	v0 = (inst2 & 0xffffff);
 
 	u16 *table = (u16 *)(RDRAM+v0);
-	for (u32 x = 0; x < ((inst1&0xffff)>>0x4); x++) {
+	for (x = 0; x < ((inst1&0xffff)>>0x4); x++) {
 		adpcmtable[0x1+(x<<3)] = table[0];
 		adpcmtable[0x0+(x<<3)] = table[1];
 
@@ -577,18 +573,18 @@ static void RESAMPLE3 () {
 	}
 
 	if ((Flags & 0x1) == 0) {
-		for (int x=0; x < 4; x++) //memcpy (src+srcPtr, rsp.RDRAM+addy, 0x8);
+		for (x=0; x < 4; x++) //memcpy (src+srcPtr, rsp.RDRAM+addy, 0x8);
 			src[(srcPtr+x)^1] = ((u16 *)RDRAM)[((addy/2)+x)^1];
 		Accum = *(u16 *)(RDRAM+addy+10);
 	} else {
-		for (int x=0; x < 4; x++)
+		for (x=0; x < 4; x++)
 			src[(srcPtr+x)^1] = 0;//*(u16 *)(rsp.RDRAM+((addy+x)^2));
 	}
 
 	//if ((Flags & 0x2))
 	//	__asm int 3;
 
-	for(int i=0;i < 0x170/2;i++)	{
+	for(i=0;i < 0x170/2;i++)	{
 		location = (((Accum * 0x40) >> 0x10) * 8);
 		//location = (Accum >> 0xa) << 0x3;
 		lut = (s16 *)(((u8 *)ResampleLUT) + location);
@@ -614,7 +610,7 @@ static void RESAMPLE3 () {
 		srcPtr += (Accum>>16);
 		Accum&=0xffff;
 	}
-	for (int x=0; x < 4; x++)
+	for (x=0; x < 4; x++)
 		((u16 *)RDRAM)[((addy/2)+x)^1] = src[(srcPtr+x)^1];
 	*(u16 *)(RDRAM+addy+10) = Accum;
 }
@@ -650,22 +646,17 @@ static void MP3ADDY () {
 	setaddr = (inst2 & 0xffffff);
 }
 
-extern "C" {
-	void rsp_run();
-	void mp3setup (unsigned int inst1, unsigned int inst2, unsigned int t8);
-}
+void rsp_run();
+void mp3setup (unsigned int inst1, unsigned int inst2, unsigned int t8);
 
 extern u32 base, dmembase;
-extern "C" {
-	extern char *pDMEM;
-}
+extern char *pDMEM;
+
 void MP3 ();
 
 static void DISABLE () {
 }
 
-
-extern "C" {
 
 void (*ABI3[0x20])() = {
     DISABLE , ADPCM3 , CLEARBUFF3,	ENVMIXER3  , LOADBUFF3, RESAMPLE3  , SAVEBUFF3, MP3,
@@ -673,5 +664,3 @@ void (*ABI3[0x20])() = {
     SPNOOP , SPNOOP, SPNOOP   , SPNOOP    , SPNOOP  , SPNOOP    , SPNOOP  , SPNOOP,
     SPNOOP , SPNOOP, SPNOOP   , SPNOOP    , SPNOOP  , SPNOOP    , SPNOOP  , SPNOOP
 };
-
-}
