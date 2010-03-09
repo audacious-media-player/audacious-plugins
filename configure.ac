@@ -1272,7 +1272,7 @@ fi
 AC_SUBST(MTP_LIBS)
 AC_SUBST(MTP_CFLAGS)
 
-dnl *** Bluetooth audio suport
+dnl *** Bluetooth audio support
 
 AC_ARG_ENABLE(bluetooth,
 [  --disable-bluetooth           disable bluetooth audio support. (default=enabled)],
@@ -1289,7 +1289,7 @@ if test "x$have_bluetooth" = "xyes" -a "x$have_alsa" = "xyes"; then
     BLUEZ_CFLAGS=`pkg-config --cflags bluez`
 else
     have_bluetooth=no
-    AC_MSG_RESULT([*** bluetooth audio suport plugin disabled by request ***])
+    AC_MSG_RESULT([*** bluetooth audio support plugin disabled by request ***])
 fi
 AC_SUBST(BLUEZ_LIBS)
 AC_SUBST(BLUEZ_CFLAGS)

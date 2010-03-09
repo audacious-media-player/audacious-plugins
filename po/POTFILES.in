@@ -2,15 +2,14 @@
 src/aac/libmp4.c
 src/adplug/adplug-xmms.cc
 src/alarm/interface.c
-src/alsa-gapless/config.c
+src/alsa/config.c
+src/alsa/plugin.c
 src/amidi-plug/amidi-plug.c
 src/amidi-plug/backend-alsa/b-alsa.c
-src/amidi-plug/backend-dummy/b-dummy.c
 src/amidi-plug/backend-fluidsynth/b-fluidsynth.c
 src/amidi-plug/i_configure-alsa.c
 src/amidi-plug/i_configure-ap.c
 src/amidi-plug/i_configure.c
-src/amidi-plug/i_configure-dummy.c
 src/amidi-plug/i_configure-fluidsynth.c
 src/amidi-plug/i_configure-timidity.c
 src/amidi-plug/i_fileinfo.c
@@ -18,7 +17,6 @@ src/amidi-plug/i_utils.c
 src/aosd/aosd_style.c
 src/aosd/aosd_trigger.c
 src/aosd/aosd_ui.c
-src/audiocompress/audacious-glue.c
 src/bluetooth/agent.c
 src/bluetooth/bluetooth.c
 src/bluetooth/gui.c
@@ -26,6 +24,8 @@ src/bluetooth/scan_gui.c
 src/blur_scope/config.c
 src/cdaudio-ng/cdaudio-ng.c
 src/cdaudio-ng/configure.c
+src/cd-menu-items/cd-menu-items.c
+src/compressor/plugin.c
 src/console/abstract_file.cxx
 src/console/Ay_Apu.cxx
 src/console/Ay_Emu.cxx
@@ -84,7 +84,6 @@ src/jack/configure.c
 src/jack/jack.c
 src/kanashi/plugin.c
 src/ladspa/ladspa.c
-src/lastfm/lastfm.c
 src/lirc/about.c
 src/lirc/interface.c
 src/lirc/lirc.c
@@ -103,11 +102,8 @@ src/OSS/configure.c
 src/OSS/OSS.c
 src/paranormal-ng/plugin.c
 src/paranormal/plugin.c
-src/scrobbler/configure.c
-src/scrobbler/gerpok.c
-src/scrobbler/gtkstuff.c
-src/scrobbler/plugin.c
-src/scrobbler/scrobbler.c
+src/pulse_audio/pulse_audio.c
+src/resample/plugin.c
 src/sid/xmms-sid.glade
 src/sid/xs_about.c
 src/sid/xs_config.c
@@ -134,8 +130,6 @@ src/streambrowser/gui/streambrowser_win.c
 src/streambrowser/streambrowser.c
 src/sun/about.c
 src/sun/configure.c
-src/timidity/interface.c
-src/timidity/plugin.c
 src/tonegen/tonegen.c
 src/vorbis/configure.c
 src/vorbis/vorbis.c
