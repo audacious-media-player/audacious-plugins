@@ -505,7 +505,7 @@ msgstr "Suchen..."
 #: src/alarm/interface.c:1295
 #: src/alarm/interface.c:1460
 msgid "Reminder"
-msgstr "Erinnerung"
+msgstr "Erinnern"
 
 #: src/alarm/interface.c:1312
 msgid "Use reminder"
@@ -1044,7 +1044,7 @@ msgstr "Länge (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "Num of Tracks:"
-msgstr "Anzahl von Tracks:"
+msgstr "Anzahl von Titeln:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -1912,7 +1912,7 @@ msgstr ""
 #: src/modplug/gui/interface.cxx:477
 #: src/modplug/gui/interface.cxx:539
 msgid "Enable"
-msgstr "Aktivieren"
+msgstr "Aktiv"
 
 #: src/crossfade/interface-2.0.c:553
 #: src/crossfade/interface-2.0.c:843
@@ -2832,7 +2832,7 @@ msgstr "Wenn aktiviert, wird die Erweiterung des ursprünglichen Dateinamens nic
 
 #: src/filewriter/filewriter.c:571
 msgid "Prepend track number to filename"
-msgstr "Track-Nummer vor Dateinamen anhängen"
+msgstr "Titelnummer vor Dateinamen anhängen"
 
 #: src/filewriter/mp3.c:707
 msgid "MP3 Configuration"
@@ -3097,7 +3097,7 @@ msgstr "Minuten:Sekunden"
 #: src/gtkui/actions.c:219
 #: src/skins/ui_main.c:862
 msgid "Track length:"
-msgstr ""
+msgstr "Titellänge:"
 
 #: src/gtkui/actions.c:532
 #: src/skins/ui_playlist.c:783
@@ -3107,19 +3107,19 @@ msgstr "Als statische Wiedergabeliste speichern"
 #: src/gtkui/actions.c:538
 #: src/skins/ui_playlist.c:790
 msgid "Use Relative Path"
-msgstr ""
+msgstr "Relativen Pfad verwenden"
 
 #: src/gtkui/actions.c:563
 #: src/skins/ui_playlist.c:624
 #, c-format
 msgid "Error writing playlist \"%s\": %s"
-msgstr ""
+msgstr "Fehler beim Schreiben der Liste \"%s\": %s"
 
 #: src/gtkui/actions.c:578
 #: src/skins/ui_playlist.c:646
 #, c-format
 msgid "%s already exist. Continue?"
-msgstr ""
+msgstr "%s existiert schon. Trotzdem fortfahren?"
 
 #: src/gtkui/actions.c:589
 #: src/skins/ui_playlist.c:661
@@ -3149,28 +3149,28 @@ msgstr ""
 #: src/skins/ui_manager.c:56
 #: src/skins/ui_manager.c:57
 msgid "Stop after Current Song"
-msgstr ""
+msgstr "Nach aktuellem Titel stoppen"
 
 #: src/gtkui/ui_manager.c:43
 #: src/gtkui/ui_manager.c:44
 #: src/skins/ui_manager.c:62
 #: src/skins/ui_manager.c:63
 msgid "Repeat"
-msgstr ""
+msgstr "Wiederholen"
 
 #: src/gtkui/ui_manager.c:46
 #: src/gtkui/ui_manager.c:47
 #: src/skins/ui_manager.c:65
 #: src/skins/ui_manager.c:66
 msgid "Shuffle"
-msgstr ""
+msgstr "Zufällige Wiedergabe"
 
 #: src/gtkui/ui_manager.c:49
 #: src/gtkui/ui_manager.c:50
 #: src/skins/ui_manager.c:68
 #: src/skins/ui_manager.c:69
 msgid "No Playlist Advance"
-msgstr ""
+msgstr "Wiedergabeliste nicht weiterspielen"
 
 #: src/gtkui/ui_manager.c:65
 #: src/gtkui/ui_manager.c:66
@@ -3298,7 +3298,7 @@ msgstr ""
 #: src/gtkui/ui_manager.c:113
 #: src/skins/ui_manager.c:225
 msgid "Refresh List"
-msgstr ""
+msgstr "Liste aktualisieren"
 
 #: src/gtkui/ui_manager.c:114
 #: src/skins/ui_manager.c:226
@@ -3308,7 +3308,7 @@ msgstr ""
 #: src/gtkui/ui_manager.c:117
 #: src/skins/ui_manager.c:229
 msgid "List Manager"
-msgstr ""
+msgstr "Listenmanager"
 
 #: src/gtkui/ui_manager.c:118
 #: src/skins/ui_manager.c:230
@@ -3318,12 +3318,12 @@ msgstr ""
 #: src/gtkui/ui_manager.c:124
 #: src/skins/ui_manager.c:236
 msgid "View"
-msgstr ""
+msgstr "Ansicht"
 
 #: src/gtkui/ui_manager.c:128
 #: src/skins/ui_manager.c:240
 msgid "Add Internet Address..."
-msgstr ""
+msgstr "Internetadresse hinzufügen..."
 
 #: src/gtkui/ui_manager.c:129
 #: src/skins/ui_manager.c:241
@@ -3333,17 +3333,17 @@ msgstr ""
 #: src/gtkui/ui_manager.c:132
 #: src/skins/ui_manager.c:244
 msgid "Add Files..."
-msgstr ""
+msgstr "Dateien hinzufügen..."
 
 #: src/gtkui/ui_manager.c:133
 #: src/skins/ui_manager.c:245
 msgid "Adds files to the playlist."
-msgstr ""
+msgstr "Fügt Dateien in Wiedergabeliste ein."
 
 #: src/gtkui/ui_manager.c:138
 #: src/skins/ui_manager.c:250
 msgid "Search and Select"
-msgstr ""
+msgstr "Suchen und Auswählen"
 
 #: src/gtkui/ui_manager.c:139
 #: src/skins/ui_manager.c:251
@@ -3388,12 +3388,12 @@ msgstr "Alle entfernen"
 #: src/gtkui/ui_manager.c:157
 #: src/skins/ui_manager.c:269
 msgid "Removes all entries from the playlist."
-msgstr ""
+msgstr "Entfernt alle Warteschlangeneinträge"
 
 #: src/gtkui/ui_manager.c:160
 #: src/skins/ui_manager.c:272
 msgid "Clear Queue"
-msgstr ""
+msgstr "Warteschlange löschen"
 
 #: src/gtkui/ui_manager.c:161
 #: src/skins/ui_manager.c:273
@@ -3403,17 +3403,17 @@ msgstr ""
 #: src/gtkui/ui_manager.c:164
 #: src/skins/ui_manager.c:276
 msgid "Remove Unavailable Files"
-msgstr ""
+msgstr "Nicht verfügbare Dateien entfernen"
 
 #: src/gtkui/ui_manager.c:165
 #: src/skins/ui_manager.c:277
 msgid "Removes unavailable files from the playlist."
-msgstr ""
+msgstr "Enfernt alle nicht verfügbaren Dateien aus der Liste"
 
 #: src/gtkui/ui_manager.c:168
 #: src/skins/ui_manager.c:280
 msgid "Remove Duplicates"
-msgstr ""
+msgstr "Duplikate entfernen"
 
 #: src/gtkui/ui_manager.c:170
 #: src/gtkui/ui_manager.c:202
@@ -3427,7 +3427,7 @@ msgstr "Nach Titel"
 #: src/gtkui/ui_manager.c:171
 #: src/skins/ui_manager.c:283
 msgid "Removes duplicate entries from the playlist by title."
-msgstr ""
+msgstr "Duplikate nach Titel entfernen"
 
 #: src/gtkui/ui_manager.c:174
 #: src/gtkui/ui_manager.c:214
@@ -3441,7 +3441,7 @@ msgstr "Nach Dateinamen"
 #: src/gtkui/ui_manager.c:175
 #: src/skins/ui_manager.c:287
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr ""
+msgstr "Duplikate nach Dateinamen entfernen"
 
 #: src/gtkui/ui_manager.c:178
 #: src/gtkui/ui_manager.c:218
@@ -3455,42 +3455,42 @@ msgstr "Nach Pfad + Dateinamen"
 #: src/gtkui/ui_manager.c:179
 #: src/skins/ui_manager.c:291
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr ""
+msgstr "Duplikate nach vollem Pfad entfernen"
 
 #: src/gtkui/ui_manager.c:182
 #: src/skins/ui_manager.c:294
 msgid "Remove Unselected"
-msgstr ""
+msgstr "Nicht ausgewählte entfernen"
 
 #: src/gtkui/ui_manager.c:183
 #: src/skins/ui_manager.c:295
 msgid "Remove unselected entries from the playlist."
-msgstr ""
+msgstr "Entferne nicht ausgewählte Titel."
 
 #: src/gtkui/ui_manager.c:186
 #: src/skins/ui_manager.c:298
 msgid "Remove Selected"
-msgstr ""
+msgstr "Auswahl entfernen"
 
 #: src/gtkui/ui_manager.c:187
 #: src/skins/ui_manager.c:299
 msgid "Remove selected entries from the playlist."
-msgstr ""
+msgstr "Ausgewählte Wiedergabelisteneinträge entfernen"
 
 #: src/gtkui/ui_manager.c:192
 #: src/skins/ui_manager.c:304
 msgid "Randomize List"
-msgstr ""
+msgstr "Liste zufällig anordnen"
 
 #: src/gtkui/ui_manager.c:193
 #: src/skins/ui_manager.c:305
 msgid "Randomizes the playlist."
-msgstr ""
+msgstr "Ordnet Liste zufällig an."
 
 #: src/gtkui/ui_manager.c:196
 #: src/skins/ui_manager.c:308
 msgid "Reverse List"
-msgstr ""
+msgstr "List umkehren"
 
 #: src/gtkui/ui_manager.c:197
 #: src/skins/ui_manager.c:309
@@ -3563,26 +3563,26 @@ msgstr "Nach Datum"
 #: src/skins/ui_manager.c:335
 #: src/skins/ui_manager.c:365
 msgid "Sorts the list by modification time."
-msgstr ""
+msgstr "Sortiert die Liste nach Modifizierungszeitpunkt"
 
 #: src/gtkui/ui_manager.c:226
 #: src/gtkui/ui_manager.c:256
 #: src/skins/ui_manager.c:338
 #: src/skins/ui_manager.c:368
 msgid "By Track Number"
-msgstr "Nach Titelnummer:"
+msgstr "Nach Titelnummer"
 
 #: src/gtkui/ui_manager.c:227
 #: src/gtkui/ui_manager.c:257
 #: src/skins/ui_manager.c:339
 #: src/skins/ui_manager.c:369
 msgid "Sorts the list by track number."
-msgstr ""
+msgstr "Sortiert die Liste nach Titelnummer"
 
 #: src/gtkui/ui_manager.c:230
 #: src/skins/ui_manager.c:342
 msgid "Sort Selected"
-msgstr ""
+msgstr "Ausgewählte Sortieren"
 
 #: src/gtkui/ui_manager.c:266
 #: src/skins/ui_manager.c:378
@@ -3598,14 +3598,14 @@ msgstr "Komponenten:"
 #: src/skins/ui_manager.c:383
 #: src/skins/ui_manager.c:386
 msgid "View Track Details"
-msgstr ""
+msgstr "Zeige Titeldetails"
 
 #: src/gtkui/ui_manager.c:272
 #: src/gtkui/ui_manager.c:275
 #: src/skins/ui_manager.c:384
 #: src/skins/ui_manager.c:387
 msgid "View track details"
-msgstr ""
+msgstr "Zeige Titeldetails"
 
 #: src/gtkui/ui_manager.c:277
 #: src/gtkui/ui_manager.c:278
@@ -3627,7 +3627,7 @@ msgstr "Datei laden und abspielen"
 #: src/gtkui/ui_manager.c:283
 #: src/skins/ui_manager.c:395
 msgid "Play Location"
-msgstr ""
+msgstr "Internetadresse spielen"
 
 #: src/gtkui/ui_manager.c:284
 #: src/skins/ui_manager.c:396
@@ -3637,7 +3637,7 @@ msgstr ""
 #: src/gtkui/ui_manager.c:286
 #: src/skins/ui_manager.c:398
 msgid "Plugin services"
-msgstr ""
+msgstr "Plugin-Dienste"
 
 #: src/gtkui/ui_manager.c:288
 #: src/skins/ui_manager.c:400
@@ -3647,7 +3647,7 @@ msgstr "Einstellungen"
 #: src/gtkui/ui_manager.c:289
 #: src/skins/ui_manager.c:401
 msgid "Open preferences window"
-msgstr ""
+msgstr "Einstellungen anzeigen"
 
 #: src/gtkui/ui_manager.c:291
 #: src/skins/ui_manager.c:403
@@ -3678,7 +3678,7 @@ msgstr "A-B leeren"
 #: src/skins/ui_manager.c:412
 #: src/skins/ui_manager.c:413
 msgid "Jump to Playlist Start"
-msgstr ""
+msgstr "Zum Anfang der Liste springen"
 
 #: src/gtkui/ui_manager.c:303
 #: src/gtkui/ui_manager.c:304
@@ -3691,7 +3691,7 @@ msgstr "Zu Datei springen"
 #: src/gtkui/ui_manager.c:309
 #: src/skins/ui_manager.c:421
 msgid "Queue Toggle"
-msgstr ""
+msgstr "In/Aus Warteschlange"
 
 #: src/gtkui/ui_manager.c:310
 #: src/skins/ui_manager.c:422
@@ -4376,7 +4376,7 @@ msgstr "Dateinamen als Liedtitel verwenden"
 
 #: src/modplug/gui/interface.cxx:606
 msgid "Fast Playlist Info"
-msgstr "Schnelle Wiedergabenliste-Information"
+msgstr "Schnelle Wiedergabeliste-Information"
 
 #: src/modplug/gui/interface.cxx:617
 msgid "Noise Reduction"
@@ -5215,11 +5215,11 @@ msgstr "<b>Schrieftarten</b>"
 
 #: src/skins/skins_cfg.c:335
 msgid "Use Bitmap fonts if available"
-msgstr ""
+msgstr "Bitmap-Schriften verwenden, falls verfügbar"
 
 #: src/skins/skins_cfg.c:335
 msgid "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode strings."
-msgstr ""
+msgstr "Bitmap-Schriften verwenden, falls verfügbar (keine Unicode-Strings Unterstützung)"
 
 #: src/skins/skins_cfg.c:336
 msgid "<b>_Miscellaneous</b>"
@@ -5227,11 +5227,11 @@ msgstr "<b>Verschiedenes</b>"
 
 #: src/skins/skins_cfg.c:337
 msgid "Show separators in playlist"
-msgstr ""
+msgstr "Trenner in Wiedergabeliste anzeigen"
 
 #: src/skins/skins_cfg.c:339
 msgid "Show window manager decoration"
-msgstr ""
+msgstr "Fenstermanager-Dekorationen zeigen"
 
 #: src/skins/skins_cfg.c:340
 msgid "This enables the window manager to show decorations for windows."
@@ -5239,7 +5239,7 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:341
 msgid "Use two-way text scroller"
-msgstr ""
+msgstr "Text in hin und her scrollen"
 
 #: src/skins/skins_cfg.c:342
 msgid "If selected, the file information text in the main window will scroll back and forth. If not selected, the text will only scroll in one direction."
@@ -5247,15 +5247,15 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:343
 msgid "Disable inline gtk theme"
-msgstr ""
+msgstr "Schalte inline GTK-Theme aus"
 
 #: src/skins/skins_cfg.c:345
 msgid "Random skin on play"
-msgstr ""
+msgstr "Zufällige Skin  beim Abspielen"
 
 #: src/skins/skins_cfg.c:346
 msgid "Allow loading incomplete skins"
-msgstr ""
+msgstr "Erlaube laden von inkompletten Skins"
 
 #: src/skins/skins_cfg.c:347
 msgid "If selected, audacious won't refuse loading broken skins. Use only if your favourite skin doesn't work"
@@ -5263,7 +5263,7 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:413
 msgid "Color Adjustment"
-msgstr ""
+msgstr "Farbkorrektur"
 
 #: src/skins/skins_cfg.c:419
 msgid "Audacious allows you to alter the color balance of the skinned UI. The sliders below will allow you to do this."
@@ -5271,15 +5271,15 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:429
 msgid "Blue"
-msgstr ""
+msgstr "Blau"
 
 #: src/skins/skins_cfg.c:436
 msgid "Green"
-msgstr ""
+msgstr "Rot"
 
 #: src/skins/skins_cfg.c:443
 msgid "Red"
-msgstr ""
+msgstr "Grün"
 
 #: src/skins/skins_cfg.c:584
 msgid "<b>_Skin</b>"
@@ -5416,7 +5416,7 @@ msgstr ""
 #: src/skins/ui_manager.c:53
 #: src/skins/ui_manager.c:54
 msgid "Autoscroll Songname"
-msgstr ""
+msgstr "Autoscrollen des Titelnamens"
 
 #: src/skins/ui_manager.c:59
 #: src/skins/ui_manager.c:60
@@ -5426,12 +5426,12 @@ msgstr ""
 #: src/skins/ui_manager.c:71
 #: src/skins/ui_manager.c:72
 msgid "Show Player"
-msgstr ""
+msgstr "Player anzeigen"
 
 #: src/skins/ui_manager.c:74
 #: src/skins/ui_manager.c:75
 msgid "Show Playlist Editor"
-msgstr ""
+msgstr "Wiedergabelisten-Editor anzeigen"
 
 #: src/skins/ui_manager.c:77
 #: src/skins/ui_manager.c:78
@@ -5441,27 +5441,27 @@ msgstr "Equalizer anzeigen"
 #: src/skins/ui_manager.c:80
 #: src/skins/ui_manager.c:81
 msgid "Always on Top"
-msgstr ""
+msgstr "Immer im Vordergrund"
 
 #: src/skins/ui_manager.c:83
 #: src/skins/ui_manager.c:84
 msgid "Put on All Workspaces"
-msgstr ""
+msgstr "Auf alle Arbeitsflächen"
 
 #: src/skins/ui_manager.c:86
 #: src/skins/ui_manager.c:87
 msgid "Roll up Player"
-msgstr ""
+msgstr "Player aufrollen"
 
 #: src/skins/ui_manager.c:89
 #: src/skins/ui_manager.c:90
 msgid "Roll up Playlist Editor"
-msgstr ""
+msgstr "Wiedergabelisten-Editor aufrollen"
 
 #: src/skins/ui_manager.c:92
 #: src/skins/ui_manager.c:93
 msgid "Roll up Equalizer"
-msgstr ""
+msgstr "Equalizer aufrollen"
 
 #: src/skins/ui_manager.c:95
 #: src/sndstretch/sndstretch_xmms.c:391
@@ -5470,12 +5470,12 @@ msgstr "Skalierung"
 
 #: src/skins/ui_manager.c:96
 msgid "DoubleSize"
-msgstr ""
+msgstr "Doppelte Größe"
 
 #: src/skins/ui_manager.c:98
 #: src/skins/ui_manager.c:99
 msgid "Easy Move"
-msgstr ""
+msgstr "Leichtes Bewegen"
 
 #: src/skins/ui_manager.c:107
 msgid "Analyzer"
@@ -5491,7 +5491,7 @@ msgstr ""
 
 #: src/skins/ui_manager.c:110
 msgid "Off"
-msgstr ""
+msgstr "Aus"
 
 #: src/skins/ui_manager.c:114
 #: src/skins/ui_manager.c:131
@@ -5506,7 +5506,7 @@ msgstr ""
 
 #: src/skins/ui_manager.c:116
 msgid "Vertical Lines"
-msgstr ""
+msgstr "Vertikale Linien"
 
 #: src/skins/ui_manager.c:120
 msgid "Lines"
@@ -5559,23 +5559,23 @@ msgstr "Schnell"
 #: src/skins/ui_manager.c:146
 #: src/skins/ui_manager.c:154
 msgid "Fastest"
-msgstr ""
+msgstr "Am schnellsten"
 
 #: src/skins/ui_manager.c:158
 msgid "Time Elapsed"
-msgstr ""
+msgstr "Verstrichene Zeit"
 
 #: src/skins/ui_manager.c:159
 msgid "Time Remaining"
-msgstr ""
+msgstr "Verbleibende Zeit"
 
 #: src/skins/ui_manager.c:214
 msgid "Import Playlist"
-msgstr "Wiedergabenliste importieren"
+msgstr "Wiedergabeliste importieren"
 
 #: src/skins/ui_manager.c:217
 msgid "Export Playlist"
-msgstr "Wiedergabenliste exportieren"
+msgstr "Wiedergabeliste exportieren"
 
 #: src/skins/ui_manager.c:220
 msgid "Save All Playlists"
@@ -5587,7 +5587,7 @@ msgstr ""
 
 #: src/skins/ui_manager.c:381
 msgid "Plugin Services"
-msgstr ""
+msgstr "Plugin-Dienste"
 
 #: src/skins/ui_manager.c:434
 #: src/skins/ui_manager.c:455
@@ -5597,13 +5597,13 @@ msgstr "Voreinstellung"
 
 #: src/skins/ui_manager.c:435
 msgid "Load preset"
-msgstr ""
+msgstr "Voreinstellungen laden"
 
 #: src/skins/ui_manager.c:437
 #: src/skins/ui_manager.c:458
 #: src/skins/ui_manager.c:473
 msgid "Auto-load preset"
-msgstr ""
+msgstr "Voreinstellungen automatisch laden"
 
 #: src/skins/ui_manager.c:438
 msgid "Load auto-load preset"
@@ -5703,7 +5703,7 @@ msgstr "Dateiname:"
 
 #: src/skins/ui_playlist.c:412
 msgid "Clear previous selection before searching"
-msgstr ""
+msgstr "Vorherige Auswahl vorm Suchen löschen"
 
 #: src/skins/ui_playlist.c:415
 msgid "Automatically toggle queue for matching entries"
@@ -5715,7 +5715,7 @@ msgstr ""
 
 #: src/skins/ui_playlist.c:1178
 msgid "Audacious Playlist Editor"
-msgstr "Audacious Wiedergabenlisten-Editor"
+msgstr "Audacious Wiedergabelisten-Editor"
 
 #: src/skins/ui_playlist.c:1238
 #, c-format
@@ -6277,7 +6277,7 @@ msgstr "Allgemeine Plugin-Einstellungen:"
 
 #: src/wavpack/ui.c:375
 msgid "use Track Gain/Peak"
-msgstr "Benutze Track Gain/Peak"
+msgstr "Benutze Titel Gain/Peak"
 
 #: src/wavpack/ui.c:376
 msgid "use Album Gain/Peak"
