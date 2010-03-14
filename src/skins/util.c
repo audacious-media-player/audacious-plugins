@@ -30,6 +30,7 @@
 #include "util.h"
 
 #include <dirent.h>
+#include <gdk/gdkkeysyms.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <stdlib.h>
@@ -919,6 +920,23 @@ gboolean widget_really_drawable (GtkWidget * widget)
      widget->allocation.y >= 0;
 }
 
+static gboolean escape_cb (GtkWidget * widget, GdkEventKey * event, void * data)
+{
+    if (event->keyval == GDK_Escape)
+    {
+        gtk_widget_destroy (widget);
+        return TRUE;
+    }
+    
+    return FALSE;
+}
+
+void widget_destroy_on_escape (GtkWidget * widget)
+{
+    g_signal_connect ((GObject *) widget, "key-press-event", (GCallback)
+     escape_cb, NULL);
+}
+
 void check_set (GtkActionGroup * action_group, const gchar * action_name,
  gboolean is_on)
 {
@@ -928,4 +946,9 @@ void check_set (GtkActionGroup * action_group, const gchar * action_name,
 
     gtk_toggle_action_set_active ((GtkToggleAction *) action, is_on);
     aud_hook_call (action_name, GINT_TO_POINTER (is_on));
+}
+
+void check_button_toggled (GtkToggleButton * button, void * data)
+{
+    * (gboolean *) data = gtk_toggle_button_get_active (button);
 }

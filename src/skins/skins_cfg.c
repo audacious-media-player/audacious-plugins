@@ -104,6 +104,7 @@ skins_cfg_t skins_default_config = {
     .playlist_font = NULL,
     .mainwin_font = NULL,
     .random_skin_on_play = FALSE,
+    .no_confirm_playlist_delete = FALSE,
 };
 
 typedef struct skins_cfg_boolent_t {
@@ -143,6 +144,7 @@ static skins_cfg_boolent skins_boolents[] = {
     {"eq_scaled_linked", &config.eq_scaled_linked, TRUE},
     {"show_separator_in_pl", &config.show_separator_in_pl, TRUE},
     {"random_skin_on_play", &config.random_skin_on_play, TRUE},
+    {"no_confirm_playlist_delete", & config.no_confirm_playlist_delete, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(skins_boolents);
