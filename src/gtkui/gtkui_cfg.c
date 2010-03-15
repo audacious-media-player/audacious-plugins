@@ -57,7 +57,7 @@ static gtkui_cfg_nument gtkui_numents[] = {
     {"player_y", &config.player_y, TRUE},
     {"player_width", &config.player_width, TRUE},
     {"player_height", &config.player_height, TRUE},
-    {"vis_position", &config.vis_position, TRUE},
+    {"vis_position", (gint *)&config.vis_position, TRUE},
 };
 
 static gint ncfgient = G_N_ELEMENTS(gtkui_numents);
