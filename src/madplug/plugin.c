@@ -256,10 +256,8 @@ mp3_head_convert(const guchar * hbuf)
 
 #ifdef MADPROBE_DEBUG
 static gchar *mp3_ver_table[4] = { "2.5", "INVALID", "2", "1" };
-#define LULZ(...) do { fprintf(stderr, "madprobe: "); fprintf(stderr, __VA_ARGS__); } while (0)
 #define LOL(...) do { fprintf(stderr, __VA_ARGS__); } while (0)
 #else
-#define LULZ(...) do { } while(0)
 #define LOL(...) do { } while(0)
 #endif
 
@@ -319,10 +317,10 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
     do {
         switch (state) {
         case STATE_HEADERS:
-            LULZ("check headers (size=%d, pos=%d)\n",  chksize, chkpos);
+            AUDDBG("check headers (size=%d, pos=%d)\n",  chksize, chkpos);
             /* Check read size */
             if (chksize - chkpos < 16) {
-                LULZ("headers check failed, not enough data!\n");
+                AUDDBG("headers check failed, not enough data!\n");
                 state = STATE_FATAL;
             } else {
                 state = STATE_GET_NEXT;
@@ -334,7 +332,7 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
                     tagsize |= (chkbuf[chkpos+8] & 0x7f); tagsize <<= 7;
                     tagsize |= (chkbuf[chkpos+9] & 0x7f);
 
-                    LULZ("ID3 size = %d\n", tagsize);
+                    AUDDBG("ID3 size = %d\n", tagsize);
                     state = STATE_GOTO_NEXT;
                     skip = tagsize + 10;
                 } else
@@ -348,7 +346,7 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
             break;
 
         case STATE_VALIDATE:
-            LULZ("validate %08x .. ", head);
+            AUDDBG("validate %08x .. ", head);
             /* Check for valid header */
             if ((res = mp3_head_validate(head, &frame)) >= 0) {
                 LOL("[is MPEG%s/layer %d, %dHz, %dkbps]",
@@ -385,7 +383,7 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
             break;
 
         case STATE_GOTO_NEXT:
-            LULZ("goto next (cpos=%x, csiz=%d :: skip=%d :: fpos=%lx) ? ", chkpos, chksize, skip, aud_vfs_ftell(fin));
+            AUDDBG("goto next (cpos=%x, csiz=%d :: skip=%d :: fpos=%lx) ? ", chkpos, chksize, skip, aud_vfs_ftell(fin));
             /* Check if we have the next possible header in buffer? */
             gint tmppos = chkpos + skip + 16;
             if (tmppos < chksize) {
@@ -400,13 +398,13 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
 
         case STATE_GET_NEXT:
             /* Get a header */
-            LULZ("get next @ chkpos=%08x\n", chkpos);
+            AUDDBG("get next @ chkpos=%08x\n", chkpos);
             head = mp3_head_convert(&chkbuf[chkpos]);
             state = STATE_VALIDATE;
             break;
 
         case STATE_RESYNC:
-            LULZ("resyncing try #%d ..\n", tries);
+            AUDDBG("resyncing try #%d ..\n", tries);
             /* Re-synchronize aka try to find a valid header */
             head = 0;
             chkcount = 0;
@@ -424,7 +422,7 @@ audmad_is_our_fd(const gchar *filename, VFSFile *fin)
                 if (mp3_head_validate(head, &frame) >= 0) {
                     /* Found, exit resync */
                     chkpos -= 3;
-                    LULZ("resync found @ %x\n", chkpos);
+                    AUDDBG("resync found @ %x\n", chkpos);
                     state = STATE_VALIDATE;
                     break;
                 }
