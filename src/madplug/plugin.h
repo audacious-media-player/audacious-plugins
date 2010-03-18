@@ -26,6 +26,8 @@
 /* #define DEBUG_INTENSIVELY 1 */
 /* #define DEBUG_DITHER 1 */
 
+#define MPEG_SYNC_MARKER (char [2]) { 0xFF, 0xFC }
+
 #undef G_LOG_DOMAIN
 #define G_LOG_DOMAIN "MADPlug"
 
