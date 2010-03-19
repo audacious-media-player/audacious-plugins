@@ -857,6 +857,13 @@ void insert_drag_list(gint playlist, gint position, const gchar *list)
             aud_playlist_insert_folder (playlist, position, filename);
             g_free (filename);
         }
+        else if (aud_filename_is_playlist (filename))
+        {
+            gint entries = aud_playlist_entry_count (playlist);
+
+            aud_playlist_insert_playlist (playlist, position, filename);
+            position += aud_playlist_entry_count (playlist) - entries;
+        }
         else
             index_append (add, filename);
 
@@ -927,7 +934,7 @@ static gboolean escape_cb (GtkWidget * widget, GdkEventKey * event, void * data)
         gtk_widget_destroy (widget);
         return TRUE;
     }
-    
+
     return FALSE;
 }
 
