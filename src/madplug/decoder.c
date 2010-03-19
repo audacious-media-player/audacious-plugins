@@ -435,17 +435,20 @@ decode_loop(gpointer arg)
 
                 goto RETRY;
             }
-            else
+            else if (!info->resync)
             {
                 unsigned char const *ptr = stream.this_frame;
-                for (skip = 0; skip < 4096; skip++)
+                int framelength = 144 * info->bitrate / info->freq;
+                ptr += 4;
+                for (skip = 0; skip < framelength; skip++)
                 {
-                    ptr += 1;
                     if (memcmp(ptr,MPEG_SYNC_MARKER,2) == 0)
                         break;
+                    ptr += 1;
                 }
                 error("Skipping %i bytes over broken frame\n", skip);
                 mad_stream_skip (& stream, skip);
+                info->resync = 1;
                 goto RETRY;
             }
         }
