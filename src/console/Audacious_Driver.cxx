@@ -276,11 +276,9 @@ extern "C" void console_play_file(InputPlayback *playback)
         Tuple *ti = get_track_ti(playback->filename, &info, fh.m_track);
         if (ti != NULL)
         {
-            gchar *title = aud_tuple_formatter_make_title_string(ti, aud_get_gentitle_format());
             length = aud_tuple_get_int(ti, FIELD_LENGTH, NULL);
             tuple_free(ti);
-            playback->set_params(playback, title, length, fh.m_emu->voice_count() * 1000, sample_rate, 2);
-            g_free(title);
+            playback->set_params(playback, NULL, NULL, fh.m_emu->voice_count() * 1000, sample_rate, 2);
         }
     }
     
