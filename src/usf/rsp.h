@@ -2,6 +2,7 @@
 #define _RSP_H_
 
 #include <stdint.h>
+#include <string.h>
 #include "types.h"
 
 #define CPU_Message(...)
