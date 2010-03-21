@@ -292,7 +292,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
       else{
 	memset(rgb_data, 0, (guint)(76 * config.scale_factor) * 32);
 	for (y = 1; y < 16; y += 2) {
-	  ptr = rgb_data + (y * (guint)(76 * 4 * config.scale_factor));
+	  ptr = rgb_data + (y * (guint)(76 * 2 * config.scale_factor));
 	  for (x = 0; x < 76; x += 2, ptr += 4) {
 	    *ptr = 1;
 	    *(ptr + 1) = 1;
@@ -328,10 +328,10 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	    }
 	  }
 	  else{
-	    ptr = rgb_data + ((16 - h) * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * config.scale_factor);
+	    ptr = rgb_data + ((16 - h) * (guint)(76 * 2 * config.scale_factor)) + (guint)(x * config.scale_factor);
 	    switch (config.analyzer_mode) {
 	    case ANALYZER_NORMAL:
-	      for (y = 0; y < h; y++, ptr += (guint)(76 * 4 * config.scale_factor)) {
+	      for (y = 0; y < h; y++, ptr += (guint)(76 * 2 * config.scale_factor)) {
 		*ptr = 18 - h + y;
 		*(ptr + 1) = 18 - h + y;
 		*(ptr + (guint)(76 * config.scale_factor)) = 18 - h + y;
@@ -339,7 +339,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	      }
 	      break;
 	    case ANALYZER_FIRE:
-	      for (y = 0; y < h; y++, ptr += (guint)(76 * 4 * config.scale_factor)) {
+	      for (y = 0; y < h; y++, ptr += (guint)(76 * 2 * config.scale_factor)) {
 		*ptr = y + 2;
 		*(ptr + 1) = y + 2;
 		*(ptr + (guint)(76 * config.scale_factor)) = y + 2;
@@ -347,7 +347,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	      }
 	      break;
 	    case ANALYZER_VLINES:
-	      for (y = 0; y < h; y++, ptr += (guint)(76 * 4 * config.scale_factor)) {
+	      for (y = 0; y < h; y++, ptr += (guint)(76 * 2 * config.scale_factor)) {
 		*ptr = 18 - h;
 		*(ptr + 1) = 18 - h;
 		*(ptr + (guint)(76 * config.scale_factor)) = 18 - h;
@@ -371,7 +371,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	      rgb_data[(16 - h) * 76 + x] = 23;
 	    }
 	    else{
-	      ptr = rgb_data + (16 - h) * (guint)(76 * 4 * config.scale_factor) + (guint)(x * config.scale_factor);
+	      ptr = rgb_data + (16 - h) * (guint)(76 * 2 * config.scale_factor) + (guint)(x * config.scale_factor);
 	      *ptr = 23;
 	      *(ptr + 1) = 23;
 	      *(ptr + (guint)(76 * config.scale_factor)) = 23;
@@ -447,7 +447,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 		rgb_data[x * 3 + y * 76*3+n] = voice_c[n];
 	    }
 	    else{
-	      ptr = rgb_data + (guint)(x * 3 * config.scale_factor) + (guint) (y * 76 * 3 * config.scale_factor);
+	      ptr = rgb_data + (guint)(x * 3 * config.scale_factor) + (guint) (y * 76 * 3 * 2 * config.scale_factor);
 	      for(n=0;n<3;n++)
 		{
 		  *(ptr + n) = voice_c[n];
@@ -467,13 +467,13 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	  h = vis->data[x];
 	  if (!vis->scaled) {
 	  ptr = rgb_data + ((14 - h) * 76) + x;
-	    *ptr = vis_scope_colors[h + 1];
+	    *ptr = vis_scope_colors[h];
 	  }else{
-	    ptr = rgb_data + ((14 - h) * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * config.scale_factor);
-	    *ptr = vis_scope_colors[h + 1];
-	    *(ptr + 1) = vis_scope_colors[h + 1];
-	    *(ptr + (guint)(76 * config.scale_factor)) = vis_scope_colors[h + 1];
-	    *(ptr + (guint)(76 * config.scale_factor)+1) = vis_scope_colors[h + 1];
+	    ptr = rgb_data + ((14 - h) * (guint)(76 * 2 * config.scale_factor)) + (guint)(x * config.scale_factor);
+	    *ptr = vis_scope_colors[h];
+	    *(ptr + 1) = vis_scope_colors[h];
+	    *(ptr + (guint)(76 * config.scale_factor)) = vis_scope_colors[h];
+	    *(ptr + (guint)(76 * config.scale_factor)+1) = vis_scope_colors[h];
 	  }
 	  break;
 	case SCOPE_LINE:
@@ -491,8 +491,8 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	      *ptr = vis_scope_colors[y - 2];
 	    }
 	    else{
-	      ptr = rgb_data + (h * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * config.scale_factor);
-	      for (y = h; y <= h2; y++, ptr += (guint)(76 * 4 * config.scale_factor)) {
+	      ptr = rgb_data + (h * (guint)(76 * 2 * config.scale_factor)) + (guint)(x * config.scale_factor);
+	      for (y = h; y <= h2; y++, ptr += (guint)(76 * 2 * config.scale_factor)) {
 		*ptr = vis_scope_colors[y - 2];
 		*(ptr + 1) = vis_scope_colors[y - 2];
 		*(ptr + (guint)(76 * config.scale_factor)) = vis_scope_colors[y - 2];
@@ -504,13 +504,13 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	    h = 14 - vis->data[x];
 	    if (!vis->scaled) {
 	      ptr = rgb_data + (h * 76) + x;
-	      *ptr = vis_scope_colors[h + 1];
+	      *ptr = vis_scope_colors[h];
 	    }else{
-	      ptr = rgb_data + (h * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * config.scale_factor);
-	      *ptr = vis_scope_colors[h + 1];
-	      *(ptr + 1) = vis_scope_colors[h + 1];
-	      *(ptr + (guint)(76 * config.scale_factor)) = vis_scope_colors[h + 1];
-	      *(ptr + (guint)(76 * config.scale_factor)+1) = vis_scope_colors[h + 1];
+	      ptr = rgb_data + (h * (guint)(76 * 2 * config.scale_factor)) + (guint)(x * config.scale_factor);
+	      *ptr = vis_scope_colors[h];
+	      *(ptr + 1) = vis_scope_colors[h];
+	      *(ptr + (guint)(76 * config.scale_factor)) = vis_scope_colors[h];
+	      *(ptr + (guint)(76 * config.scale_factor)+1) = vis_scope_colors[h];
 	    }
 	  }
 	  break;
@@ -528,8 +528,8 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	    for (y = h; y <= h2; y++, ptr += 76)
 	      *ptr = c;
 	  }else{
-	    ptr = rgb_data + (h * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * config.scale_factor);
-	    for (y = h; y <= h2; y++, ptr += (guint)(76 * 4 * config.scale_factor)) {
+	    ptr = rgb_data + (h * (guint)(76 * 2 * config.scale_factor)) + (guint)(x * config.scale_factor);
+	    for (y = h; y <= h2; y++, ptr += (guint)(76 * 2 * config.scale_factor)) {
 	      *ptr = c;
 	      *(ptr + 1) = c;
 	      *(ptr + (guint)(76 * config.scale_factor)) = c;

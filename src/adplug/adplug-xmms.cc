@@ -1056,8 +1056,10 @@ adplug_init (void)
     {
       std::string userdb;
       userdb = "file://" + std::string(g_get_home_dir()) + "/" ADPLUG_CONFDIR "/" + ADPLUGDB_FILE;
+      if (aud_vfs_file_test(userdb.c_str(),G_FILE_TEST_EXISTS)) {
       plr.db->load (userdb);    // load user's database
       dbg_printf (" (userdb=\"%s\")", userdb.c_str());
+      }
     }
   }
   CAdPlug::set_database (plr.db);
