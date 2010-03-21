@@ -62,6 +62,8 @@ void CompilerRSPBlock ( void );
 void CompilerToggleBuffer (void);
 int32_t RSP_DoSections(void);
 
+void ClearAllx86Code (void);
+
 typedef struct {
 	uint32_t StartPC, CurrPC;		/* block start */
 

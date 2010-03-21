@@ -34,8 +34,6 @@ uint32_t RSP_Running = 0;
 int32_t RSP_Cpu = 0;
 
 
-void RSPSetJumpTable (void);
-
 void RSPReInitMemory()
 {
 	

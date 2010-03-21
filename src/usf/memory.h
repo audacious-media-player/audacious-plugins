@@ -79,5 +79,6 @@ void Compile_SH_Register         ( int32_t x86Reg, uint32_t Addr );
 void Compile_SW_Const            ( uint32_t Value, uint32_t Addr );
 void Compile_SW_Register         ( int32_t x86Reg, uint32_t Addr );
 void ResetRecompCode             ( void );
+void InitExceptionHandler        ();
 
 uint8_t * PageROM(uint32_t addr);

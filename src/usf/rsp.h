@@ -323,6 +323,7 @@ void RSP_Opcode_STV     ( void );
 void RSP_Opcode_SWV     ( void );
 /************************** Other functions **************************/
 void rsp_UnknownOpcode  ( void );
+void RSPSetJumpTable    ( void );
 
 extern void (*RSP_Opcode[64])();
 extern void (*RSP_RegImm[32])();
