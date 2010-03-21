@@ -647,10 +647,6 @@ static void SAVEBUFF () { // memcpy causes static... endianess issue :(
 	memcpy((unsigned char*)RDRAM+v0, BufferSpace+(AudioOutBuffer&0xFFFC), (AudioCount+3)&0xFFFC);
 }
 
-static void SEGMENT () { // Should work
-	SEGMENTS[(inst2>>24)&0xf] = (inst2 & 0xffffff);
-}
-
 static void SETBUFF () { // Should work ;-)
 	if ((inst1 >> 0x10) & 0x8) { // A_AUX - Auxillary Sound Buffer Settings
 		AudioAuxA		= (u16)(inst1);

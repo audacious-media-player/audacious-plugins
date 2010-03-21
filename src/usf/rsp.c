@@ -161,7 +161,7 @@ if(RSP_Cpu) {
 
     *PrgCount -= 4;
 
-    return cycles;
+    return;
 
   } else {
   	RunRecompilerCPU(cycles);

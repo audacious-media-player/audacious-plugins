@@ -1984,7 +1984,6 @@ void Compile_R4300i_SWL (BLOCK_SECTION * Section) {
 
 void Compile_R4300i_SW (BLOCK_SECTION * Section) {
 	uint32_t TempReg1, TempReg2;
-	uint8_t * JumpPos = 0, * JumpPos2 = 0;
 
 	{
 		if (IsConst(Opcode.base)) {

@@ -74,7 +74,7 @@ int LoadUSF(const gchar * fn)
 {
 	VFSFile * fil = NULL;
 	uint32_t reservedsize = 0, codesize = 0, crc = 0, tagstart = 0, reservestart = 0;
-	uint32_t i, filesize = 0, tagsize = 0, temp = 0;
+	uint32_t filesize = 0, tagsize = 0, temp = 0;
 	uint8_t buffer[16], * buffer2 = NULL, * tagbuffer = NULL;
 
 	is_fading = 0;
@@ -380,7 +380,7 @@ Tuple * usf_get_song_tuple(const gchar * fn)
 	Tuple *	tuple = NULL;
 
 	VFSFile * fil = NULL;
-	uint32_t reservedsize = 0, codesize = 0, crc = 0, tagstart = 0, reservestart = 0, filesize = 0, tagsize = 0, temp = 0;
+	uint32_t reservedsize = 0, codesize = 0, crc = 0, tagstart = 0, reservestart = 0, filesize = 0, tagsize = 0;
 	uint8_t buffer[16], * buffer2 = NULL, * tagbuffer = NULL;
 
 	fil = aud_vfs_fopen(fn, "rb");

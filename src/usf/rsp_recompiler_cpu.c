@@ -745,7 +745,6 @@ void CompilerLinkBlocks(void) {
 
 void CompilerRSPBlock ( void ) {
 	uint32_t Count, Padding, X86BaseAddress = (uint32_t)RSPRecompPos;
-	uint8_t * code = RSPRecompCode;
 
 	RSPNextInstruction = NORMAL;
 	RSPCompilePC = *PrgCount;

@@ -2993,7 +2993,6 @@ void RSPCompile_Vector_VSUB ( void ) {
 	int32_t bWriteToDest = WriteToVectorDest(RSPOpC.sa, RSPCompilePC);
 	int32_t bOptimize = ((RSPOpC.rs & 0x0f) >= 8) ? 1 : 0;
 	int32_t bWriteToAccum = WriteToAccum(Low16BitAccum, RSPCompilePC);
-	int32_t bZeroReg = ((RSPOpC.rs & 0xF) < 2 && (RSPOpC.rt == RSPOpC.rd)) ? 1 : 0;
 
 	#ifndef RSPCompileVsub
 	RSPCheat_r4300iOpcode(RSP_Vector_VSUB); return;

@@ -2201,7 +2201,7 @@ uint32_t InheritParentInfo (BLOCK_SECTION * Section) {
 	BLOCK_PARENT * SectionParents;
 	BLOCK_SECTION * Parent;
 	JUMP_INFO * JumpInfo;
-	char Label[100];
+	//char Label[100];
 	uint32_t NeedSync;
 
 	DisplaySectionInformation(Section,Section->SectionID,GetNewTestValue());
@@ -2567,9 +2567,8 @@ uint32_t lastgood = 0;
 
 
 void StartRecompilerCPU (void ) {
-	uintptr_t Addr, tt;
+	uintptr_t Addr;
 	void (*Block)(void) = 0;
-	int last_time = 0;
 
 	InitExceptionHandler();
 

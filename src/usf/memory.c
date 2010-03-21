@@ -1743,7 +1743,6 @@ int r4300i_CPU_MemoryFilter64_2( uintptr_t MemAddress, ucontext_t * context) {
 	} else if ((*ip & 0x40) && (*(ip + 1) == 0x8B )) {
 		uint8_t dest_reg = (*(ip+2) % 0x40) / 8;
 		uint32_t word = 0;
-		uint64_t *dest = 0;
 
 		//41 8B BF 30 D0 00 01
 
@@ -1753,7 +1752,6 @@ int r4300i_CPU_MemoryFilter64_2( uintptr_t MemAddress, ucontext_t * context) {
 		r4300i_LW_NonMemory(MemAddress, &word);
 		context->uc_mcontext.gregs[CONV_REG64(dest_reg)] = word;
 
-		//*dest = 0;
 		//if(*(ip+2) & 0x4)
 		if((*(ip+2) & 0x7)==4)
 			context->uc_mcontext.gregs[REG_RIP]+=4;
