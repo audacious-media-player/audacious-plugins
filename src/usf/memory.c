@@ -59,6 +59,10 @@ uint8_t * PageROM(uint32_t addr) {
 	return (ROMPages[addr/0x10000])?ROMPages[addr/0x10000]+(addr%0x10000):&EmptySpace;
 }
 
+/* MAP_32BIT is needed to make this work on amd64. --nenolod. */
+#ifndef MAP_32BIT
+# define MAP_32BIT	(0)
+#endif
 
 #define PAGE_SIZE	4096
 void *malloc_exec(uint32_t bytes)
