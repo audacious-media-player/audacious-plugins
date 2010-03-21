@@ -517,8 +517,8 @@ int fpuRestoreControl() {
 }
 
 void fpuSetupDouble(void) {
-	int temp = 0;
 /*
+	int temp = 0;
 	_asm {
 		fnstcw word ptr [temp]
 		or [temp], 0x300

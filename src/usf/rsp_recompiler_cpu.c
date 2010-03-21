@@ -872,7 +872,6 @@ void CompilerRSPBlock ( void ) {
 
 void RunRecompilerCPU ( uint32_t Cycles ) {
 	uint8_t * Block = 0;
-	uint8_t ** pos = &RSPRecompPos, **code = &RSPRecompCode;
 
 	RSP_Running = 1;
 	RSPSetJumpTable();
@@ -952,5 +951,5 @@ void RunRecompilerCPU ( uint32_t Cycles ) {
 //	if (IsMmxEnabled == 1) {
 //		_Emms();
 //	}
-	return Cycles;
+	return;
 }

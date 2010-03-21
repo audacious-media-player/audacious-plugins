@@ -42,7 +42,7 @@ void CompileReadTLBMiss (BLOCK_SECTION * Section, int32_t AddressReg, int32_t Lo
 
 /************************** Branch functions  ************************/
 void Compile_R4300i_Branch (BLOCK_SECTION * Section, void (*CompareFunc)(BLOCK_SECTION * Section), int32_t BranchType, uint32_t Link) {
-	static int32_t EffectDelaySlot, DoneJumpDelay, DoneContinueDelay;
+	static int32_t EffectDelaySlot;
 	static REG_INFO RegBeforeDelay;
 	int32_t count;
 

@@ -811,8 +811,6 @@ void RSP_Vector_VMADM (void) {
 	int32_t count, el, del;
 	REGISTER32 temp, temp2;
 
-	int32_t last = -1;
-
 	for (count = 0; count < 8; count ++ ) {
 		el = Indx[RSPOpC.rs].B[count];
 		del = EleSpec[RSPOpC.rs].B[el];

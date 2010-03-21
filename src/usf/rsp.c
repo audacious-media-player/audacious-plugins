@@ -39,7 +39,7 @@ void RSPReInitMemory()
 	
 	if(RSPRecompCode == NULL) {
 		printf("enough memory for RSP RSPRecompCode!");
-		return 0;
+		return;
 	}
 
 	RSPRecompCodeSecondary = RSPRecompCode + RSP_RECOMPMEM_SIZE;
@@ -47,7 +47,7 @@ void RSPReInitMemory()
 
 	if( RSPJumpTables == NULL ) {
 		DisplayError("Not enough memory for Jump Table!");
-		return 0;
+		return;
 	}
 
 	memset((uint8_t*)RSPJumpTables, 0, 0x2000 * MaxMaps);
@@ -96,7 +96,7 @@ if(RSP_Cpu) {
 	RSP_Running = 1;
 
     while(RSP_Running) {
-    	int32_t last = -1, count = 0, el, del;
+    	// int32_t last = -1, count = 0, el, del;
         RSP_LW_IMEM(*PrgCount, &RSPOpC.Hex);
 
         /*if(*PrgCount == 0x100) {

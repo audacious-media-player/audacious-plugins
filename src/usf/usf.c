@@ -297,7 +297,6 @@ void usf_mseek(InputPlayback * context, gulong millisecond)
 
 void usf_play(InputPlayback * context)
 {
-	uint32_t i = 0;
 	if(!context->filename)
 		return;
 
@@ -324,7 +323,7 @@ void usf_play(InputPlayback * context)
 
     if(!LoadUSF(context->filename)) {
 		Release_Memory();
-    	return 0;
+    	return;
     }
 	
 	context->set_pb_ready(context);

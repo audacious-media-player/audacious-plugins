@@ -372,7 +372,6 @@ void CompileExit (uint32_t TargetPC, REG_INFO * ExitRegSet, int reason, int Comp
 	uint8_t * Jump, * Jump2;
 
 	if (!CompileNow) {
-		char String[100];
 		if (BlockInfo.ExitCount == 0) {
 			BlockInfo.ExitInfo = malloc(sizeof(void *));
 		} else {
@@ -650,7 +649,6 @@ void  DetermineLoop(BLOCK_SECTION * Section, uint32_t Test, uint32_t Test2, uint
 }
 
 uint32_t DisplaySectionInformation (BLOCK_SECTION * Section, uint32_t ID, uint32_t Test) {
-	int NoOfParents;
 	return 1;
 }
 
@@ -1661,7 +1659,7 @@ void GenerateSectionLinkage (BLOCK_SECTION * Section) {
 		if (!JumpInfo[count]->FallThrough) { continue; }
 
 		if (TargetSection[count]->CompiledLocation != NULL) {
-			char Label[100];
+			//char Label[100];
 			JumpInfo[count]->FallThrough = 0;
 			if (JumpInfo[count]->LinkLocation != NULL) {
 				SetJump32(JumpInfo[count]->LinkLocation,RecompPos);
@@ -1768,7 +1766,7 @@ void GenerateSectionLinkage (BLOCK_SECTION * Section) {
 		if (TargetSection[count]->CompiledLocation == NULL) {
 			GenerateX86Code(TargetSection[count],GetNewTestValue());
 		} else {
-			char Label[100];
+			//char Label[100];
 
 			SetJump32(JumpInfo[count]->LinkLocation,RecompPos);
 			JumpInfo[count]->LinkLocation = NULL;
@@ -2316,7 +2314,7 @@ uint32_t InheritParentInfo (BLOCK_SECTION * Section) {
 	//Fix up initial state
 	UnMap_AllFPRs(Section);
 	for (count = 0;count < NoOfParents;count++) {
-		int count2, count3, MemoryStackPos;
+		int count2, count3;
 		REG_INFO * RegSet;
 
 		if (count == FirstParent) { continue; }
@@ -2588,8 +2586,6 @@ void StartRecompilerCPU (void ) {
 				lastgood = PROGRAM_COUNTER;
 			Addr = PROGRAM_COUNTER;
 				if (!TranslateVaddr(&Addr)) {
-					int oldpc = PROGRAM_COUNTER;
-
 					DoTLBMiss(NextInstruction == DELAY_SLOT,PROGRAM_COUNTER);
 					NextInstruction = NORMAL;
 					Addr = PROGRAM_COUNTER;
@@ -2601,8 +2597,6 @@ void StartRecompilerCPU (void ) {
 					Block = *(DelaySlotTable + (Addr >> 12));
 
 				if (Block == NULL) {
-					uint32_t OldProtect;
-
 					Block = CompileDelaySlot();
 
 					*(DelaySlotTable + (Addr >> 12)) = Block;
@@ -2633,8 +2627,6 @@ void StartRecompilerCPU (void ) {
 
 
 			if (Block == NULL) {
-				uint32_t OldProtect;
-
 				Block = Compiler4300iBlock();
 
 				*(JumpTable + (Addr >> 2)) = Block;

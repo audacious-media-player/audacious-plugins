@@ -983,8 +983,8 @@ void WriteBackRegisters (BLOCK_SECTION * Section) {
 	uint32_t bEdiZero = 0;
 	uint32_t bEsiSign = 0;
 	/*** coming soon ***/
-	uint32_t bEaxGprLo = 0;
-	uint32_t bEbxGprHi = 0;
+	//uint32_t bEaxGprLo = 0;
+	//uint32_t bEbxGprHi = 0;
 
 	for (count = 1; count < 64; count ++) { x86Protected(count) = 0; }
 	for (count = 1; count < 64; count ++) { UnMap_X86reg (Section, count); }

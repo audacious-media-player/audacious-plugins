@@ -147,7 +147,7 @@ void RSPx86_SetBranch8b(void * JumpByte, void * Destination) {
 }
 
 void RSPx86_SetBranch32b(void * JumpByte, void * Destination) {
-	intptr_t disp = (uintptr_t)Destination - (uintptr_t)JumpByte;
+	//intptr_t disp = (uintptr_t)Destination - (uintptr_t)JumpByte;
 
 	//if(disp < 0) disp = 0 - disp;
 	//if(disp >= 0x7f000000) {
@@ -993,7 +993,6 @@ void RSPCompile_Special_JR (void) {
 		RSPNextInstruction = DO_DELAY_SLOT;
 	} else if ( RSPNextInstruction == DELAY_SLOT_DONE ) {
 		//RSPBreakPoint();
-		uint8_t * Jmp = 0;
 		RSPMoveVariableToX86reg(PrgCount, x86_EAX);
 #ifdef USEX64
 		RSPShiftLeftDoubleImmed(x86_EAX,x86_EAX,1);

@@ -315,7 +315,7 @@ static void ADPCM3 () { // Verified to be 100% Accurate...
 	short count = 0;
 	unsigned char icode, code, Flags;
 	int vscale, a[8];
-	unsigned short index, j, inPtr, x;
+	unsigned short index, j, inPtr;
 	short *book1,*book2,*out;
 	unsigned int Address;
 
@@ -555,7 +555,7 @@ static void RESAMPLE3 () {
 	short *dst;
 	s16 *src;
 	unsigned char Flags;
-	u32 dstPtr, srcPtr, x, y, addy, Pitch, location, Accum, i;
+	u32 dstPtr, srcPtr, x, addy, Pitch, location, Accum, i;
 	Flags=(u8)((inst2>>0x1e));
 	Pitch=((inst2>>0xe)&0xffff)<<1;
 	addy = (inst1 & 0xffffff);
