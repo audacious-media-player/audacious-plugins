@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include <math.h>
 #include "types.h"
 
 #define CPU_Message(...)
