@@ -121,6 +121,7 @@ void Compile_R4300i_SPECIAL_DSRA   ( BLOCK_SECTION * Section );
 void Compile_R4300i_SPECIAL_DSLL32 ( BLOCK_SECTION * Section );
 void Compile_R4300i_SPECIAL_DSRL32 ( BLOCK_SECTION * Section );
 void Compile_R4300i_SPECIAL_DSRA32 ( BLOCK_SECTION * Section );
+void Compile_R4300i_SPECIAL_BREAK  ( BLOCK_SECTION * Section );
 
 /************************** COP0 functions **************************/
 void Compile_R4300i_COP0_MF        ( BLOCK_SECTION * Section );

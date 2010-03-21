@@ -4,6 +4,7 @@
 #include "cpu.h"
 #include "memory.h"
 #include "audio.h"
+#include "psftag.h"
 
 #include <stdio.h>
 #include <stdlib.h>
