@@ -88,7 +88,6 @@ int32_t RSPAllocateMemory (void) {
 	return 1;
 }
 
-void RSP_LW_IMEM ( uint32_t Addr, uint32_t * Value );
 FILE *qfil = 0;
 
 void real_run_rsp(uint32_t cycles)

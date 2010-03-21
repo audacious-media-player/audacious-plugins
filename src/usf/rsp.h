@@ -340,6 +340,7 @@ void RSP_SP_DMA_WRITE(void);
 void RSP_LB_DMEM ( uint32_t Addr, uint8_t * Value );
 void RSP_LH_DMEM ( uint32_t Addr, uint16_t * Value );
 void RSP_LW_DMEM ( uint32_t Addr, uint32_t * Value );
+void RSP_LW_IMEM ( uint32_t Addr, uint32_t * Value );
 void RSP_SB_DMEM ( uint32_t Addr, uint8_t Value );
 void RSP_SH_DMEM ( uint32_t Addr, uint16_t Value );
 void RSP_SW_DMEM ( uint32_t Addr, uint32_t Value );
