@@ -41,7 +41,6 @@ u32 inst1, inst2;
 int audio_ucode ( OSTask_t *task )
 {
 
-	unsigned int *p_alist = ( u32* )( task->data_ptr + N64MEM );
 	unsigned int i;
 
 	goldeneye = 0;

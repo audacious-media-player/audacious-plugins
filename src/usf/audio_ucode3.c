@@ -82,7 +82,7 @@ static void ENVMIXER3 () {
 	s32 AuxR;
 	s32 AuxL;
 
-	int i1,o1,a1,a2,a3,x,y;
+	int i1,o1,a1,a2,a3,y;
 	//WORD AuxIncRate=1;
 	short zero[8];
 	memset(zero,0,16);
