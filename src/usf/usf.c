@@ -26,6 +26,7 @@ extern int SampleRate;
 extern InputPlugin usf_ip;
 InputPlayback * pcontext = 0;
 
+void usf_mseek(InputPlayback * context, gulong millisecond);
 int8_t filename[512];
 uint32_t cpu_running = 0, use_interpreter = 0, use_audiohle = 0, is_paused = 0, cpu_stopped = 1, fake_seek_stopping = 0;
 uint32_t is_fading = 0, fade_type = 1, fade_time = 5000, is_seeking = 0, seek_backwards = 0, track_time = 180000;
@@ -267,7 +268,7 @@ void usf_destroy()
 
 void usf_seek(InputPlayback * context, gint time)
 {
-	usf_mseek(time * 1000);
+	usf_mseek(context, time * 1000);
 }
 
 
