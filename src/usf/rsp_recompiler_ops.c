@@ -35,7 +35,7 @@
 #include "registers.h"
 #include "usf.h"
 #include "types.h"
-
+#include "main.h"
 
 MIPSUWORD Recp, RecpResult, SQroot, SQrootResult;
 uint32_t ESP_RegSave = 0, EBP_RegSave = 0;

@@ -6,6 +6,7 @@
 #include "audio.h"
 #include "rsp.h"
 #include "types.h"
+#include "main.h"
 
 #include "rsp_recompiler_cpu.h"
 
