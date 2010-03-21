@@ -333,9 +333,22 @@ extern void (*RSP_Vector[64])();
 extern void (*RSP_Lc2[32])();
 extern void (*RSP_Sc2[32])();
 
-
 void RSP_SP_DMA_READ (void);
 void RSP_SP_DMA_WRITE(void);
+
+/******************* Function prototypes are hard ********************/
+void RSP_LB_DMEM ( uint32_t Addr, uint8_t * Value );
+void RSP_LH_DMEM ( uint32_t Addr, uint16_t * Value );
+void RSP_LW_DMEM ( uint32_t Addr, uint32_t * Value );
+void RSP_SB_DMEM ( uint32_t Addr, uint8_t Value );
+void RSP_SH_DMEM ( uint32_t Addr, uint16_t Value );
+void RSP_SW_DMEM ( uint32_t Addr, uint32_t Value );
+void RSP_LBV_DMEM ( uint32_t Addr, int32_t vect, int32_t element );
+void RSP_LSV_DMEM ( uint32_t Addr, int32_t vect, int32_t element );
+void RSP_LLV_DMEM ( uint32_t Addr, int32_t vect, int32_t element );
+void RSP_SFV_DMEM ( uint32_t Addr, int32_t vect, int32_t element );
+void RSP_STV_DMEM ( uint32_t Addr, int32_t vect, int32_t element );
+void RSP_SWV_DMEM ( uint32_t Addr, int32_t vect, int32_t element );
 
 extern REGISTER32 *RSP_GPR, RSP_Flags[4];
 extern REGISTER *RSP_ACCUM;
