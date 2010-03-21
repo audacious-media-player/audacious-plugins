@@ -18,6 +18,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include <inttypes.h>
 
 #include "types.h"
 
@@ -116,7 +117,7 @@ int LoadUSF(const gchar * fn)
 		aud_vfs_fread(buffer, 5, 1, fil);
 
 		if(buffer[0] != '[' && buffer[1] != 'T' && buffer[2] != 'A' && buffer[3] != 'G' && buffer[4] != ']') {
-			printf("Errornous data in tag area! %ld\n", tagsize);
+			printf("Erroneous data in tag area! %" PRIu32 "\n", tagsize);
 			aud_vfs_fclose(fil);
 			return 0;
 		}
@@ -367,7 +368,7 @@ void usf_pause(InputPlayback *context, gshort paused)
 	is_paused = paused;//is_paused?0:1;
 }
 
-const gchar *usf_exts [] =
+static const gchar *usf_exts [] =
 {
   "usf",
   "miniusf",
@@ -417,7 +418,7 @@ Tuple * usf_get_song_tuple(const gchar * fn)
 		aud_vfs_fread(buffer, 5, 1, fil);
 
 		if(buffer[0] != '[' && buffer[1] != 'T' && buffer[2] != 'A' && buffer[3] != 'G' && buffer[4] != ']') {
-			printf("Errornous data in tag area! %ld\n", tagsize);
+			printf("Erroneous data in tag area! %" PRIu32 "\n", tagsize);
 			aud_vfs_fclose(fil);
 			return NULL;
 		}
@@ -513,7 +514,7 @@ InputPlugin usf_ip = {
   .pause = usf_pause,
   .seek = usf_seek,
   .mseek = usf_mseek,
-  .vfs_extensions = usf_exts,
+  .vfs_extensions = (gchar **)usf_exts,
   .get_song_tuple = usf_get_song_tuple,
 };
 
