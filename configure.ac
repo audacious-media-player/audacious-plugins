@@ -133,12 +133,13 @@ AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
 
 dnl These plugins are always built.
 
-INPUT_PLUGINS="tonegen console psf usf xsf metronom vtx"
+INPUT_PLUGINS="tonegen console psf xsf metronom vtx"
 OUTPUT_PLUGINS="crossfade null"
 EFFECT_PLUGINS="compressor crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm skins vfstrace gtkui"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
+TRANSPORT_PLUGINS="unix-io"
 
 dnl Check for Audacious
 
@@ -162,8 +163,6 @@ PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.8.0],
     [ADD_PC_REQUIRES([gtk+-2.0 >= 2.8.0])],
     [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.8.0])]
 )
-
-TRANSPORT_PLUGINS="unix-io"
 
 AC_ARG_ENABLE(gio, [  --disable-gio           disable GIO support (default=enabled if GIO present)],
  enable_gio=$enableval, enable_gio=yes)
@@ -385,6 +384,36 @@ if test "x$enable_sse2" = "xyes"; then
 fi
 AC_SUBST(SIMD_CFLAGS)
 CFLAGS="$ac_save_CFLAGS"
+
+dnl *** USF
+
+AC_ARG_ENABLE(usf,
+    [  --enable-usf            enable the USF input plugin (default=disabled)],
+    [enable_usf=$enableval],
+    [enable_usf=no]
+)
+
+if test "x$enable_usf" = "xyes"; then
+    AC_MSG_CHECKING([if your platform is supported for the USF plugin])
+    case "$target" in
+	x86_64-*-linux-gnu)
+		AC_MSG_RESULT([yes, AMD64 Linux])
+		enable_usf=yes
+		;;
+	i*86-*-linux-gnu)
+		AC_MSG_RESULT([yes, X86 Linux])
+		enable_usf=yes
+		;;
+	*)
+		AC_MSG_RESULT([no])
+		enable_usf=no
+		;;
+    esac
+
+    if test "x$enable_usf" = "xyes"; then
+        INPUT_PLUGINS="$INPUT_PLUGINS usf"
+    fi
+fi
 
 dnl *** MP3
 
@@ -1623,7 +1652,7 @@ echo "    -> libSIDPlay2 support:               $xs_have_sidplay2"
 echo "    -> distortion patched libSIDPlay2:    $xs_have_distortion"
 echo "  Game music (spc, nsf & gbs):            yes"
 echo "  PlayStation (psf/psf2) audio (psf):     yes"
-echo "  Nintendo 64 audio (usf):                yes [experimental]"
+echo "  Nintendo 64 audio (usf):                $enable_usf"
 echo "  Nintendo DS audio (xsf):                yes [experimental]"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      $have_ffaudio"
