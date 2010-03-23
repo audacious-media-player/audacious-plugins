@@ -23,6 +23,11 @@
 #include "streambrowser.h"
 #include "streamdir.h"
 
+static GList *all_streamdirs = NULL;
+
+gboolean streamdir_is_valid(streamdir_t *streamdir) {
+    return (NULL != g_list_find(all_streamdirs,streamdir));
+}
 
 streamdir_t *streamdir_new (gchar * name)
 {
@@ -30,6 +35,7 @@ streamdir_t *streamdir_new (gchar * name)
     strncpy (streamdir->name, name, DEF_STRING_LEN);
     streamdir->category_list = NULL;
 
+    all_streamdirs = g_list_append(all_streamdirs,streamdir);
     return streamdir;
 }
 
@@ -47,8 +53,8 @@ void streamdir_delete (streamdir_t * streamdir)
 
     g_list_free (streamdir->category_list);
     g_free (streamdir);
+    all_streamdirs = g_list_remove(all_streamdirs,streamdir);
 }
-
 
 category_t *category_new (gchar * name)
 {

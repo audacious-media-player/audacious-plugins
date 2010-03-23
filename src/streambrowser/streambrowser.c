@@ -519,6 +519,19 @@ static gpointer update_thread_core (gpointer user_data)
     /* repetitively process the queue elements, until queue is empty */
     while (data != NULL && g_queue_get_length (update_thread_data_queue) > 0)
     {
+        if (data->streamdir && !streamdir_is_valid(data->streamdir)) {
+            g_free(data);
+            g_mutex_lock(update_thread_mutex);
+            /* remove the just processed data from the queue */
+            g_queue_pop_head(update_thread_data_queue);
+            /* try to get the last item in the queue */
+            if (g_queue_get_length(update_thread_data_queue) > 0)
+                data = g_queue_peek_head(update_thread_data_queue);
+            else
+                data = NULL;
+            g_mutex_unlock(update_thread_mutex);
+            continue;
+        }
         /* update a streaminfo */
         if (data->streaminfo != NULL)
         {
