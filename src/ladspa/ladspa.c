@@ -158,7 +158,7 @@ static void restore(void)
 	plugin_instance *instance;
 	gchar *bn, *section, *file;
 
-	section = g_strdup_printf("ladspa_plugin%ld", k);
+	section = g_strdup_printf("ladspa_plugin%d", k);
 
 	aud_cfg_db_get_int(db, section, "id", &id);
 	aud_cfg_db_get_int(db, section, "ports", &ports);
@@ -308,7 +308,7 @@ static void stop(void)
 	int port, ports = 0;
 
 	bn = g_path_get_basename(instance->filename);
-	section = g_strdup_printf("ladspa_plugin%ld", plugins);
+	section = g_strdup_printf("ladspa_plugin%d", plugins);
 	g_free(bn);
 
 	aud_cfg_db_set_int(db, section, "id", instance->descriptor->UniqueID);
