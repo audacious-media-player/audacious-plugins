@@ -34,15 +34,15 @@
 #include "ui_skinned_window.h"
 #include "util.h"
 
-static void
-ui_main_evlistener_title_change(gpointer hook_data, gpointer user_data)
+static void ui_main_evlistener_title_change (void * data, void * user_data)
 {
-    gchar * title = aud_playback_get_title ();
+    gchar * title;
 
     /* may be called asynchronously */
     if (! audacious_drct_get_playing ())
         return;
 
+    title = aud_playback_get_title ();
     mainwin_set_song_title (title);
     g_free (title);
 }
