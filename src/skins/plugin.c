@@ -21,6 +21,7 @@
 
 #include "plugin.h"
 #include "skins_cfg.h"
+#include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_skin.h"
 #include "ui_manager.h"
@@ -135,6 +136,7 @@ gboolean skins_init (InterfaceCbs * cbs)
     cbs->toggle_shuffle = toggle_shuffle;
     cbs->toggle_repeat = toggle_repeat;
 
+    eq_init_hooks ();
     update_source = g_timeout_add (250, update_cb, NULL);
 
     gtk_main ();
@@ -147,6 +149,7 @@ gboolean skins_cleanup (void)
     {
         mainwin_unhook ();
         playlistwin_unhook ();
+        eq_end_hooks ();
         g_source_remove (update_source);
 
         gtk_widget_destroy (mainwin);

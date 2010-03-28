@@ -681,14 +681,16 @@ equalizerwin_read_winamp_eqf(VFSFile * file)
     equalizerwin_eq_changed();
 }
 
-static void
-equalizerwin_read_aud_preset(const gchar * file)
+static gboolean equalizerwin_read_aud_preset (const gchar * file)
 {
-    EqualizerPreset *preset = aud_equalizer_read_aud_preset(file);
-    if (preset) {
-        equalizerwin_apply_preset(preset);
-        equalizer_preset_free(preset);
-    }
+    EqualizerPreset * preset = aud_equalizer_read_aud_preset (file);
+
+    if (preset == NULL)
+        return FALSE;
+
+    equalizerwin_apply_preset (preset);
+    equalizer_preset_free (preset);
+    return TRUE;
 }
 
 static void
@@ -1020,45 +1022,6 @@ equalizerwin_create_list_window(GList *preset_list,
 }
 
 void
-equalizerwin_load_auto_preset(const gchar * filename)
-{
-    gchar *presetfilename, *directory;
-
-    g_return_if_fail(filename != NULL);
-
-    if (!aud_cfg->equalizer_autoload)
-        return;
-
-    presetfilename = g_strconcat(filename, ".", aud_cfg->eqpreset_extension, NULL);
-
-    /* First try to find a per file preset file */
-    if (strlen(aud_cfg->eqpreset_extension) > 0) {
-        equalizerwin_read_aud_preset(presetfilename);
-        g_free(presetfilename);
-        return;
-    }
-
-    g_free(presetfilename);
-
-    directory = g_path_get_dirname(filename);
-    presetfilename = g_build_filename(directory, aud_cfg->eqpreset_default_file,
-                                      NULL);
-    g_free(directory);
-
-    /* Try to find a per directory preset file */
-    if (strlen(aud_cfg->eqpreset_default_file) > 0) {
-        equalizerwin_read_aud_preset(presetfilename);
-    }
-    else if (!equalizerwin_load_preset
-             (equalizer_auto_presets, g_basename(filename))) {
-        /* Fall back to the oldstyle auto presets */
-        equalizerwin_load_preset(equalizer_presets, "Default");
-    }
-
-    g_free(presetfilename);
-}
-
-void
 equalizerwin_set_preamp(gfloat preamp)
 {
     ui_skinned_equalizer_slider_set_position(equalizerwin_preamp, preamp);
@@ -1331,4 +1294,71 @@ equalizerwin_activate(gboolean active)
     aud_cfg->equalizer_active = active;
     ui_skinned_button_set_inside(equalizerwin_on, active);
     equalizerwin_eq_changed();
+}
+
+static void load_auto_preset (const gchar * filename)
+{
+    gchar * base;
+
+    if (aud_cfg->eqpreset_extension != NULL)
+    {
+        gchar * eq_file = g_strconcat (filename, ".",
+         aud_cfg->eqpreset_extension, NULL);
+        gboolean success = equalizerwin_read_aud_preset (eq_file);
+
+        g_free (eq_file);
+
+        if (success)
+            return;
+    }
+
+    if (aud_cfg->eqpreset_default_file != NULL)
+    {
+        gchar * folder = g_path_get_dirname (filename);
+        gchar * eq_file = g_build_filename (folder,
+         aud_cfg->eqpreset_default_file, NULL);
+        gboolean success = equalizerwin_read_aud_preset (eq_file);
+
+        g_free (folder);
+        g_free (eq_file);
+
+        if (success)
+            return;
+    }
+
+    base = g_path_get_basename (filename);
+
+    if (! equalizerwin_load_preset (equalizer_auto_presets, base))
+    {
+        if (! equalizerwin_load_preset (equalizer_presets, "Default"))
+            action_equ_zero_preset ();
+    }
+
+    g_free (base);
+}
+
+static void position_cb (void * data, void * user_data)
+{
+    gint playlist = GPOINTER_TO_INT (data);
+    gint position = aud_playlist_get_position (playlist);
+
+    if (! aud_cfg->equalizer_autoload || playlist != aud_playlist_get_playing ()
+     || position == -1)
+        return;
+
+    load_auto_preset (aud_playlist_entry_get_filename (playlist, position));
+}
+
+void eq_init_hooks (void)
+{
+    /* Load preset for the first song. FIXME: Doing this at interface load is
+     really too late as the song may already be started. Really, this stuff
+     shouldn't be in the interface plugin at all but in core. -jlindgren */
+    position_cb (GINT_TO_POINTER (aud_playlist_get_playing ()), NULL);
+    aud_hook_associate ("playlist position", position_cb, NULL);
+}
+
+void eq_end_hooks (void)
+{
+    aud_hook_dissociate ("playlist position", position_cb);
 }
