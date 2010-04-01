@@ -399,13 +399,17 @@ gint audio_volume_get( gint * left_volume , gint * right_volume )
     pv_range = pv_max - pv_min;
     if ( pv_range > 0 )
     {
-      if ( snd_mixer_selem_has_playback_channel( mixer_elem , SND_MIXER_SCHN_FRONT_LEFT ) )
+      if (snd_mixer_selem_is_playback_mono (mixer_elem))
+      {
+        snd_mixer_selem_get_playback_volume (mixer_elem, SND_MIXER_SCHN_MONO,
+         & lc);
+        * left_volume = * right_volume = ((lc - pv_min) * 100 + pv_range / 2) /
+         pv_range;
+      }
+      else
       {
         snd_mixer_selem_get_playback_volume( mixer_elem , SND_MIXER_SCHN_FRONT_LEFT , &lc );
         * left_volume = ((lc - pv_min) * 100 + pv_range / 2) / pv_range;
-      }
-      if ( snd_mixer_selem_has_playback_channel( mixer_elem , SND_MIXER_SCHN_FRONT_RIGHT ) )
-      {
         snd_mixer_selem_get_playback_volume( mixer_elem , SND_MIXER_SCHN_FRONT_RIGHT , &rc );
         * right_volume = ((rc - pv_min) * 100 + pv_range / 2) / pv_range;
       }
