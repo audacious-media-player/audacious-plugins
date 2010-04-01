@@ -340,6 +340,13 @@ mainwin_release_info_text(void)
     }
 }
 
+static gboolean status_message_enabled;
+
+void mainwin_enable_status_message (gboolean enable)
+{
+    status_message_enabled = enable;
+}
+
 static gint status_message_source = 0;
 
 static gboolean clear_status_message (void * unused)
@@ -351,6 +358,9 @@ static gboolean clear_status_message (void * unused)
 
 static void show_status_message (const gchar * message)
 {
+    if (! status_message_enabled)
+        return;
+
     if (status_message_source)
         g_source_remove (status_message_source);
 
@@ -2237,6 +2247,7 @@ mainwin_create(void)
     show_widgets ();
 
     aud_hook_associate ("show main menu", (HookFunction) show_main_menu, 0);
+    status_message_enabled = TRUE;
 }
 
 static void mainwin_update_volume (void)

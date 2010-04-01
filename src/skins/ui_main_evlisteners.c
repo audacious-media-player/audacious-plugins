@@ -81,8 +81,9 @@ ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
 {
     mainwin_clear_song_info ();
 
-    aud_cfg->stopaftersong = FALSE;
+    mainwin_enable_status_message (FALSE);
     check_set (toggleaction_group_others, "stop after current song", FALSE);
+    mainwin_enable_status_message (TRUE);
 }
 
 void ui_main_evlistener_playback_pause (void * hook_data, void * user_data)
