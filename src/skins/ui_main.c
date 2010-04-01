@@ -549,66 +549,52 @@ mainwin_refresh_hints(void)
          MAINWIN_HEIGHT * MAINWIN_SCALE_FACTOR);
 }
 
-void
-mainwin_set_song_info(gint bitrate,
-                      gint frequency,
-                      gint n_channels)
+void mainwin_set_song_info (gint bitrate, gint samplerate, gint channels)
 {
-    gchar *bitrate_text, *text;
-    gint pos, playlist;
-    const gchar *quality;
-    const Tuple *tuple;
+    gchar scratch[32];
+    gint length;
 
-    GDK_THREADS_ENTER();
-    if (bitrate != -1) {
-        bitrate /= 1000;
+    if (bitrate > 0)
+    {
+        if (bitrate < 1000000)
+            snprintf (scratch, sizeof scratch, "%3d", bitrate / 1000);
+        else
+            snprintf (scratch, sizeof scratch, "%2dH", bitrate / 100000);
 
-        if (bitrate < 1000) {
-            /* Show bitrate in 1000s */
-            text = g_strdup_printf("%3d", bitrate);
-        }
-        else {
-            /* Show bitrate in 100,000s */
-            text = g_strdup_printf("%2dH", bitrate / 100);
-        }
-        ui_skinned_textbox_set_text(mainwin_rate_text, text);
-        g_free(text);
+        ui_skinned_textbox_set_text (mainwin_rate_text, scratch);
     }
     else
-        ui_skinned_textbox_set_text(mainwin_rate_text, _("VBR"));
+        ui_skinned_textbox_set_text (mainwin_rate_text, "");
 
-    /* Show sampling frequency in kHz */
-    text = g_strdup_printf("%2d", frequency / 1000);
-    ui_skinned_textbox_set_text(mainwin_freq_text, text);
-    g_free(text);
+    if (samplerate > 0)
+    {
+        snprintf (scratch, sizeof scratch, "%2d", samplerate / 1000);
+        ui_skinned_textbox_set_text (mainwin_freq_text, scratch);
+    }
+    else
+        ui_skinned_textbox_set_text (mainwin_freq_text, "");
 
-    ui_skinned_monostereo_set_num_channels(mainwin_monostereo, n_channels);
+    ui_skinned_monostereo_set_num_channels (mainwin_monostereo, channels);
 
-    if (!audacious_drct_get_paused() && mainwin_playstatus != NULL)
-        ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
+    if (bitrate > 0)
+        snprintf (scratch, sizeof scratch, "%d %s", bitrate / 1000, _("kbps"));
 
-    if (bitrate == -1)
-        bitrate_text = g_strdup ("VBR");
-    else {
-        playlist = aud_playlist_get_playing();
-        pos = aud_playlist_get_position(playlist);
-        tuple = aud_playlist_entry_get_tuple(playlist, pos);
-        quality = tuple_get_string((Tuple *) tuple, FIELD_QUALITY, NULL);
-
-        if (quality == NULL || g_ascii_strcasecmp("sequenced", quality))
-            bitrate_text = g_strdup_printf ("%d kbps", bitrate);
-        else
-            bitrate_text = g_strdup_printf ("%d channels", bitrate);
+    if (samplerate > 0)
+    {
+        length = strlen (scratch);
+        snprintf (scratch + length, sizeof scratch - length, "%s%d %s", length ?
+         ", " : "", samplerate / 1000, _("kHz"));
     }
 
-    text = g_strdup_printf ("%s, %d kHz, %s", bitrate_text, frequency / 1000,
-     (n_channels > 1) ? _("stereo") : _("mono"));
+    if (channels > 0)
+    {
+        length = strlen (scratch);
+        snprintf (scratch + length, sizeof scratch - length, "%s%s", length ?
+         ", " : "", channels > 2 ? _("surround") : channels > 1 ? _("stereo") :
+         _("mono"));
+    }
 
-    ui_skinned_textbox_set_text (mainwin_othertext, text);
-    g_free (bitrate_text);
-    g_free (text);
-
-    GDK_THREADS_LEAVE();
+    ui_skinned_textbox_set_text (mainwin_othertext, scratch);
 }
 
 void
