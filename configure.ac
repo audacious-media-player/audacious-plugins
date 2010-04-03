@@ -1038,19 +1038,7 @@ fi
 
 if test "x$enable_amidiplug" = "xcheck"; then
   if test "x$alsalib_midi" = "xyes"; then
-    AM_PATH_AMIDIPLUG_HWSYNTH([ap_have_hwsynth=yes], [ap_have_hwsynth=no])
-    if test "x$ap_have_hwsynth" = "xyes"; then
-      enable_amidiplug=yes
-    else
-      PKG_CHECK_MODULES(FLUIDSYNTH, [fluidsynth >= 1.0.6],
-        [fluidsynth_available=yes],[fluidsynth_available=no])
-      if test "x$fluidsynth_available" = "xyes"; then
-        enable_amidiplug=yes
-      else
-        enable_amidiplug=no
-        AC_MSG_WARN([*** Neither an ALSA-supported hardware synth or FluidSynth software synth (>= 1.0.6) have been found (even if ALSA was detected), so amidi-plug won't be compiled unless you explicitly request it with --enable-amidiplug ***])
-      fi
-    fi
+    enable_amidiplug=yes
   else
     PKG_CHECK_MODULES(FLUIDSYNTH, [fluidsynth >= 1.0.6],
       [fluidsynth_available=yes],[fluidsynth_available=no])
