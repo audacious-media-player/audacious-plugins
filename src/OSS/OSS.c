@@ -31,7 +31,7 @@ OSSConfig oss_cfg;
 static void oss_about(void)
 {
     static GtkWidget *about_dialog = NULL;
-    
+
     if (about_dialog != NULL)
         return;
 
@@ -52,7 +52,7 @@ static void oss_about(void)
     "along with this program; if not, write to the Free Software\n"
     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
     "USA."), _("Ok"), FALSE, NULL, NULL);
-    
+
     g_signal_connect(G_OBJECT(about_dialog), "destroy",
                      G_CALLBACK(gtk_widget_destroyed), &about_dialog);
 }
@@ -65,8 +65,7 @@ static OutputPluginInitStatus oss_init(void)
 
     oss_cfg.audio_device = 0;
     oss_cfg.mixer_device = 0;
-    oss_cfg.buffer_size = 3000;
-    oss_cfg.prebuffer = 25;
+    oss_cfg.prebuffer = 50;
     oss_cfg.use_alt_audio_device = FALSE;
     oss_cfg.alt_audio_device = NULL;
     oss_cfg.use_master = 0;
@@ -74,7 +73,6 @@ static OutputPluginInitStatus oss_init(void)
     if ((db = aud_cfg_db_open())) {
         aud_cfg_db_get_int(db, "OSS", "audio_device", &oss_cfg.audio_device);
         aud_cfg_db_get_int(db, "OSS", "mixer_device", &oss_cfg.mixer_device);
-        aud_cfg_db_get_int(db, "OSS", "buffer_size", &oss_cfg.buffer_size);
         aud_cfg_db_get_int(db, "OSS", "prebuffer", &oss_cfg.prebuffer);
         aud_cfg_db_get_bool(db, "OSS", "use_master", &oss_cfg.use_master);
         aud_cfg_db_get_bool(db, "OSS", "use_alt_audio_device",
@@ -87,7 +85,7 @@ static OutputPluginInitStatus oss_init(void)
                               &oss_cfg.alt_mixer_device);
         aud_cfg_db_close(db);
     }
-    
+
     return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
