@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/browse/AUD\n"
 "POT-Creation-Date: 2009-10-23 20:29-0400\n"
-"PO-Revision-Date: 2010-03-27 21:29+0100\n"
+"PO-Revision-Date: 2010-04-03 15:09+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
 "MIME-Version: 1.0\n"
@@ -2320,7 +2320,7 @@ msgstr "Neu"
 #: src/crossfade/interface-2.0.c:1487
 #: src/skins/ui_manager.c:429
 msgid "Load"
-msgstr "Lade"
+msgstr "Laden"
 
 #: src/crossfade/interface-2.0.c:1492
 #: src/sid/xs_interface.c:833
@@ -3213,7 +3213,7 @@ msgstr "Analyzer-Modus"
 #: src/gtkui/ui_manager.c:80
 #: src/skins/ui_manager.c:191
 msgid "Scope Mode"
-msgstr "Scope-Modus"			
+msgstr "Scope-Modus"
 
 #: src/gtkui/ui_manager.c:81
 #: src/skins/ui_manager.c:192
