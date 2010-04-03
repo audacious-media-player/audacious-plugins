@@ -336,6 +336,27 @@ void alsa_write_audio (void * data, gint length)
     g_mutex_unlock (alsa_mutex);
 }
 
+void alsa_drain (void)
+{
+    AUDDBG ("Drain.\n");
+    g_mutex_lock (alsa_mutex);
+
+    while (alsa_buffer_data_length > 0)
+    {
+        if (alsa_paused) /* buffering completed */
+            start_playback ();
+
+        g_cond_wait (alsa_cond, alsa_mutex);
+    }
+
+    g_mutex_unlock (alsa_mutex);
+
+    CHECK (snd_pcm_drain, alsa_handle);
+
+FAILED:
+    return;
+}
+
 void alsa_set_written_time (gint time)
 {
     AUDDBG ("Setting time counter to %d.\n", time);
@@ -367,26 +388,6 @@ gint alsa_output_time (void)
 
     g_mutex_unlock (alsa_mutex);
     return time;
-}
-
-gint alsa_buffer_playing (void)
-{
-    gboolean playing;
-
-    g_mutex_lock (alsa_mutex);
-
-    if (alsa_buffer_data_length > 0)
-        playing = TRUE;
-    else
-    {
-        snd_pcm_state_t state = snd_pcm_state (alsa_handle);
-
-        playing = (state == SND_PCM_STATE_RUNNING || state ==
-         SND_PCM_STATE_DRAINING);
-    }
-
-    g_mutex_unlock (alsa_mutex);
-    return playing ? 1 : 0;
 }
 
 void alsa_flush (gint time)
