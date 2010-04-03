@@ -317,7 +317,9 @@ static void amidiplug_play( InputPlayback * playback )
   port_count = backend.seq_get_port_count();
   if ( port_count < 1 )
   {
-    g_warning( "No ports selected\n" );
+    aud_event_queue ("interface show error", _("You have not selected any "
+     "sequencer ports for MIDI playback.  You can do so in the MIDI plugin "
+     "preferences."));
     amidiplug_playing_status = AMIDIPLUG_ERR;
     return;
   }
