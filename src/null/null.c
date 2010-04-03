@@ -45,7 +45,7 @@ static OutputPluginInitStatus null_init(void)
 	db = aud_cfg_db_open();
 	aud_cfg_db_get_bool(db, "null", "real_time", &real_time);
 	aud_cfg_db_close(db);
-	return OUTPUT_PLUGIN_INIT_NO_DEVICES;
+	return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
 static void null_about(void)
