@@ -578,6 +578,8 @@ void mainwin_set_song_info (gint bitrate, gint samplerate, gint channels)
 
     if (bitrate > 0)
         snprintf (scratch, sizeof scratch, "%d %s", bitrate / 1000, _("kbps"));
+    else
+        scratch[0] = 0;
 
     if (samplerate > 0)
     {
