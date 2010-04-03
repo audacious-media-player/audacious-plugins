@@ -73,13 +73,21 @@ oss_get_volume(int *l, int *r)
             return;
         }
 
+        /* User configuration currently supports only PCM and Master channels. */
         if ((devs & SOUND_MASK_PCM) && (oss_cfg.use_master == 0))
             cmd = SOUND_MIXER_READ_PCM;
         else if ((devs & SOUND_MASK_VOLUME) && (oss_cfg.use_master == 1))
             cmd = SOUND_MIXER_READ_VOLUME;
+        /* If we can't respect user preference, try to make something work. */
+        else if (devs & SOUND_MASK_PCM)
+            cmd = SOUND_MIXER_READ_PCM;
+        else if (devs & SOUND_MASK_VOLUME)
+            cmd = SOUND_MIXER_READ_VOLUME;
+        else if (devs & SOUND_MASK_SPEAKER)
+            cmd = SOUND_MIXER_READ_SPEAKER;
         else
         {
-            fprintf (stderr, "OSS: Unusable DEVMASK.\n");
+            fprintf (stderr, "OSS: No suitable mixer channel found.\n");
             return;
         }
 
@@ -102,15 +110,25 @@ oss_set_volume(int l, int r)
     long cmd;
 
     if (!open_mixer_device()) {
+        /* User configuration currently supports only PCM and Master channels. */
         ioctl(fd, SOUND_MIXER_READ_DEVMASK, &devs);
         if ((devs & SOUND_MASK_PCM) && (oss_cfg.use_master == 0))
             cmd = SOUND_MIXER_WRITE_PCM;
         else if ((devs & SOUND_MASK_VOLUME) && (oss_cfg.use_master == 1))
             cmd = SOUND_MIXER_WRITE_VOLUME;
-        else {
-            close(fd);
+        /* If we can't respect user preference, try to make something work. */
+        else if (devs & SOUND_MASK_PCM)
+            cmd = SOUND_MIXER_WRITE_PCM;
+        else if (devs & SOUND_MASK_VOLUME)
+            cmd = SOUND_MIXER_WRITE_VOLUME;
+        else if (devs & SOUND_MASK_SPEAKER)
+            cmd = SOUND_MIXER_WRITE_SPEAKER;
+        else
+        {
+            fprintf (stderr, "OSS: No suitable mixer channel found.\n");
             return;
         }
+
         v = (r << 8) | l;
         ioctl(fd, cmd, &v);
     }
