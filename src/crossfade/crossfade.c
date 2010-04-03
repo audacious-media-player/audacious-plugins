@@ -1,4 +1,4 @@
-/* 
+/*
  *  XMMS Crossfade Plugin
  *  Copyright (C) 2000-2007  Peter Eisenlohr <peter@eisenlohr.org>
  *
@@ -9,7 +9,7 @@
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -153,7 +153,7 @@ static gchar zero_4k[4096];
 
 /*
  *  Available fade configs:
- * 
+ *
  *  fc_start:       First song, only in_len and in_level are used
  *  fc_xfade:       Automatic crossfade at end of song
  *  fc_album:       Like xfade but for consecutive songs of the same album
@@ -163,13 +163,13 @@ static gchar zero_4k[4096];
  *
  *  NOTE: As of version 0.2 of xmms-crossfade,
  *        only xfade and manual are implemented.
- *        
+ *
  *        With version 0.2.3, fc_album has been added.
  *
  *        With 0.2.4, all configs are implemented:
  *
  *  Available parameters:
- * 
+ *
  *              | start | xfade | manual | album | stop |  eop
  *  ------------+-------+-------+--------+-------+------+------
  *  in_len      |   yes |   yes |    yes |    no |   no |   no
@@ -293,7 +293,7 @@ find_output()
 
 static gint
 open_output()
-{   
+{
     /* sanity check */
     if (output_opened)
         AUDDBG("[crossfade] open_output: WARNING: output_opened=TRUE!\n");
@@ -308,7 +308,7 @@ open_output()
     /* get output plugin (this will also init the_op_config) */
     if (!(the_op = find_output()))
     {
-        AUDDBG("[crossfade] open_output: could not find any output!\n");
+        fprintf (stderr, "[crossfade] open_output: could not find any output!\n");
         return -1;
     }
 
@@ -329,7 +329,7 @@ open_output()
     /* open plugin */
     if (!the_op->open_audio(in_format.fmt, in_format.rate, in_format.nch))
     {
-        AUDDBG("[crossfade] open_output: open_audio() failed!\n");
+        fprintf (stderr, "[crossfade] open_output: open_audio() failed!\n");
         the_op->cleanup ();
         the_op = NULL;
         return -1;
@@ -358,7 +358,7 @@ open_output()
     /* allocate buffer */
     if (!(buffer->data = g_malloc0(buffer->size)))
     {
-        AUDDBG("[crossfade] open_output: error allocating buffer!\n");
+        fprintf (stderr, "[crossfade] open_output: error allocating buffer!\n");
         the_op->close_audio();
         the_op->cleanup ();
         the_op = NULL;
@@ -398,7 +398,7 @@ xfade_init()
     xfade_load_config();
 
     /* set default strings if there is no existing config */
-    if (!config->op_config_string)     config->op_config_string     = g_strdup(DEFAULT_OP_CONFIG_STRING); 
+    if (!config->op_config_string)     config->op_config_string     = g_strdup(DEFAULT_OP_CONFIG_STRING);
     if (!config->op_name)              config->op_name              = g_strdup(DEFAULT_OP_NAME);
 
     /* check for realtime priority, it needs some special attention */
@@ -509,7 +509,7 @@ xfade_apply_fade_config(fade_config_t *fc)
     /*
      * Example 1: offset < 0 --> mix streams together
      * Example 2: offset > 0 --> insert pause between streams
-     * 
+     *
      *     |----- out_len -----|    *     |out_len|
      *     |                   |    *     |       |
      * ~~~~~-_        /T~~~~~~~T~~  * ~~~~~\      |               /T~~
@@ -688,11 +688,11 @@ extract_track(const gchar *name)
     /* skip non-digits at beginning */
     while (*name && !isdigit(*name))
         name++;
-        
+
     return atoi(name);
 #else
     /* Remove all but numbers.
-     * Will not work if a filename has number in the title, like "track-03-U2.mp3" 
+     * Will not work if a filename has number in the title, like "track-03-U2.mp3"
      * Ideally, should look into id3 track entry and fallback to filename
      * */
     gchar temp[8];
@@ -703,10 +703,10 @@ extract_track(const gchar *name)
     {
         if (strcmp(name, "mp3") == 0)
             break;
-            
+
         if (isdigit(*name))
             temp[t++] = *name;
-            
+
         name++;
     }
     return atoi(temp);
@@ -764,11 +764,11 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
 
     struct timeval tv;
     glong dt;
-    
+
     AUDDBG("[crossfade]\n");
-    
+
     in_format.fmt = FMT_S16_NE;
-    
+
     if ((in_format.rate != rate && in_format.rate > 0) || (in_format.nch != nch && in_format.nch > 0))
     {
         AUDDBG("[crossfade] open_audio: format changed, reopen device forced\n");
@@ -793,7 +793,7 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
 
     if (!file)
         file = g_strdup(title);
-        
+
     AUDDBG("[crossfade] open_audio: bname=\"%s\"\n", g_basename(file));
     AUDDBG("[crossfade] open_audio: title=\"%s\"\n", title);
 
@@ -811,7 +811,7 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
         else if (config->album_detection && album_match(last_filename, file))
         {
             gboolean use_fc_album = FALSE;
-            
+
             if (xfade_cfg_gap_trail_enable(config))
             {
                 AUDDBG("[crossfade] album_match: "
@@ -1221,7 +1221,13 @@ sync_output()
     struct timeval tv, tv_start, tv_last_change;
     gboolean was_closed = !opened;
 
-    if (!the_op->buffer_playing || !the_op->buffer_playing())
+    /* Don't crash with a newer plugin that provides drain() instead of
+     * buffer_playing().  Please update crossfade to deal with such plugins
+     * properly! -jlindgren */
+    if (the_op->buffer_playing == NULL)
+        return;
+
+    if (! the_op->buffer_playing ())
     {
         AUDDBG("[crossfade] sync_output: nothing to do\n");
         return;
@@ -1329,7 +1335,7 @@ buffer_thread_f(void *arg)
             if (current != input_playing)
             {
                 input_playing = current;
-                
+
                 if (current)
                     AUDDBG("[crossfade] buffer_thread_f: input restarted after %ld ms\n", timeout);
                 else
@@ -1459,6 +1465,9 @@ buffer_thread_f(void *arg)
         if (the_op->buffer_free != NULL)
             op_free = the_op->buffer_free() & -4;
         else
+            /* Don't crash with a newer plugin that does not provide
+             * buffer_free().  Please update crossfade to deal with such plugins
+             * properly! -jlindgren */
             op_free = G_MAXINT;
 
         /* continue waiting if there is no room in the device buffer */
@@ -1539,7 +1548,7 @@ buffer_thread_f(void *arg)
         }
 
         /* --- write data ------------------------------------------------- */
-            
+
         else if (!paused && (buffer->preload <= 0)  && (buffer->used >= 4))
         {
             /* write as much data as a) is available and b) the device can take */
@@ -1648,7 +1657,7 @@ buffer_thread_f(void *arg)
 
                 if (the_op->close_audio)
                     the_op->close_audio();
-                    
+
                 if (!the_op->open_audio(in_format.fmt, in_format.rate, in_format.nch))
                 {
                     AUDDBG("[crossfade] buffer_thread_f: reopening output plugin failed!\n");
@@ -1709,7 +1718,7 @@ buffer_thread_f(void *arg)
             the_op->close_audio();
 
         AUDDBG("[crossfade] buffer_thread_f: closing output... done\n");
-        
+
         g_free(buffer->data);
         output_opened = FALSE;
     }
@@ -1748,7 +1757,7 @@ xfade_close_audio()
     /* HACK: to distinguish between STOP and EOP, check Audacious'
        input_playing() variable. It seems to be TRUE at this point
        only when the end of the playlist is reached.
-       
+
        Normally, 'playing' is constantly being updated in the
        xfade_buffer_playing() callback, but Audacious does not seem
        to use it. Therefore, we can set 'playing' to FALSE here,
@@ -1881,7 +1890,7 @@ xfade_flush(gint time)
     /* get filename */
     pos  = xfplaylist_get_position();
     file = xfplaylist_get_filename(pos);
-    
+
     if (!file)
         file = g_strdup(xfplaylist_get_songtitle(pos));
 
@@ -2124,6 +2133,12 @@ xfade_buffer_playing()
     fade_config_t *fc;
     gint out_len, in_len, offset, length;
 
+    /* Don't crash with a newer plugin that provides drain() instead of
+     * buffer_playing().  Please update crossfade to deal with such plugins
+     * properly! -jlindgren */
+    if (the_op->buffer_playing == NULL)
+        return FALSE;
+
     fc = &config->fc[FADE_CONFIG_XFADE];
 
     if (paused)
@@ -2219,24 +2234,24 @@ xfade_cleanup()
 
     /* lock buffer */
     MUTEX_LOCK(&buffer_mutex);
-    
+
     /* check if buffer thread is still running */
     if (output_opened)
     {
         AUDDBG("[crossfade] cleanup: closing output\n");
-        
+
         stopped = TRUE;
-        
+
         /* wait for buffer thread to clean up and terminate */
         MUTEX_UNLOCK(&buffer_mutex);
         if (THREAD_JOIN(buffer_thread))
             PERROR("[crossfade] close: thread_join()");
         MUTEX_LOCK(&buffer_mutex);
     }
-    
+
     /* unlock buffer */
     MUTEX_UNLOCK(&buffer_mutex);
-        
+
     AUDDBG("[crossfade] cleanup: done\n");
 }
 
