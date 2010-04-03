@@ -48,6 +48,7 @@ open_mixer_device()
         name = g_strdup(DEV_MIXER);
 
     if ((fd = open(name, O_RDWR)) == -1) {
+        fprintf (stderr, "OSS: Cannot open %s (%s).\n", name, strerror (errno));
         g_free(name);
         return 1;
     }
@@ -62,20 +63,33 @@ oss_get_volume(int *l, int *r)
     int v, devs;
     long cmd;
 
-    /*
-     * We dont show any errors if this fails, as this is called
-     * rather often
-     */
+    * l = * r = 0;
+
     if (!open_mixer_device()) {
-        ioctl(fd, SOUND_MIXER_READ_DEVMASK, &devs);
+        if (ioctl (fd, SOUND_MIXER_READ_DEVMASK, & devs) < 0)
+        {
+            fprintf (stderr, "OSS: SOUND_MIXER_READ_DEVMASK failed (%s).\n",
+             strerror (errno));
+            return;
+        }
+
         if ((devs & SOUND_MASK_PCM) && (oss_cfg.use_master == 0))
             cmd = SOUND_MIXER_READ_PCM;
         else if ((devs & SOUND_MASK_VOLUME) && (oss_cfg.use_master == 1))
             cmd = SOUND_MIXER_READ_VOLUME;
         else
+        {
+            fprintf (stderr, "OSS: Unusable DEVMASK.\n");
             return;
+        }
 
-        ioctl(fd, cmd, &v);
+        if (ioctl (fd, cmd, & v) < 0)
+        {
+            fprintf (stderr, "OSS: SOUND_MIXER_READ_* failed (%s).\n", strerror
+             (errno));
+            return;
+        }
+
         *r = (v & 0xFF00) >> 8;
         *l = (v & 0x00FF);
     }
