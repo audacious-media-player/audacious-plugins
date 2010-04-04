@@ -1767,6 +1767,8 @@ mainwin_setup_menus(void)
     check_set(toggleaction_group_others, "view easy move", config.easy_move);
     check_set(toggleaction_group_others, "view scaled", config.scaled);
 
+    mainwin_enable_status_message (FALSE);
+
     /* Songname menu */
 
     check_set(toggleaction_group_others, "autoscroll songname", config.autoscroll);
@@ -1777,6 +1779,8 @@ mainwin_setup_menus(void)
     check_set(toggleaction_group_others, "playback repeat", aud_cfg->repeat);
     check_set(toggleaction_group_others, "playback shuffle", aud_cfg->shuffle);
     check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
+
+    mainwin_enable_status_message (TRUE);
 
     /* Visualization menu */
 
@@ -2347,6 +2351,11 @@ void
 action_playback_noplaylistadvance( GtkToggleAction * action )
 {
     aud_cfg->no_playlist_advance = gtk_toggle_action_get_active( action );
+
+    if (aud_cfg->no_playlist_advance)
+        show_status_message (_("Single mode."));
+    else
+        show_status_message (_("Playlist mode."));
 }
 
 void
