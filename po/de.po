@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/browse/AUD\n"
 "POT-Creation-Date: 2009-10-23 20:29-0400\n"
-"PO-Revision-Date: 2010-04-03 15:09+0100\n"
+"PO-Revision-Date: 2010-04-04 20:51+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
 "MIME-Version: 1.0\n"
@@ -174,7 +174,7 @@ msgstr "Liedende ermitteln"
 
 #: src/adplug/adplug-xmms.cc:385
 msgid "If enabled, XMMS will detect a song's ending, stop it and advance in the playlist. If disabled, XMMS won't take notice of a song's ending and loop it all over again and again."
-msgstr ""
+msgstr "Falls aktiviert, wird XMMS das Ende eines Titels erkennen, ihn stoppen und in der Wiedergabeliste fortfahren. Falls deaktiviert, erkennt XMMS dies nicht und spielt einfach weiter."
 
 #: src/adplug/adplug-xmms.cc:396
 msgid "Formats"
@@ -220,7 +220,7 @@ msgstr "Dateityp: "
 
 #: src/adplug/adplug-xmms.cc:561
 msgid "Subsongs: "
-msgstr ""
+msgstr "Untertitel"
 
 #: src/adplug/adplug-xmms.cc:562
 msgid "Instruments: "
@@ -248,7 +248,7 @@ msgstr "Titel-Meldung"
 
 #: src/adplug/adplug-xmms.cc:662
 msgid "Subsong selection"
-msgstr ""
+msgstr "Untertitel-Auswahl"
 
 #: src/adplug/adplug-xmms.cc:728
 msgid "Order: "
@@ -322,7 +322,7 @@ msgstr "Alarm"
 
 #: src/alarm/interface.c:109
 msgid "This is your wakeup call."
-msgstr ""
+msgstr "Dies ist dein Aufwach-Signal."
 
 #: src/alarm/interface.c:124
 #: src/alarm/interface.c:1389
@@ -939,7 +939,7 @@ msgstr "96000 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:562
 msgid "custom "
-msgstr ""
+msgstr "individuell"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:571
 msgid "Hz "
@@ -1002,7 +1002,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:701
 msgid "FluidSynth Backend not loaded or not available"
-msgstr ""
+msgstr "FluidSynth-Backend nicht geladen oder nicht verfügbar"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:720
 msgid ""
@@ -1040,7 +1040,7 @@ msgstr "Format:"
 
 #: src/amidi-plug/i_fileinfo.c:208
 msgid "Length (msec):"
-msgstr "Länge (ms):"
+msgstr "Länge (Ms):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "Num of Tracks:"
@@ -1048,7 +1048,7 @@ msgstr "Anzahl von Titeln:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
-msgstr ""
+msgstr "variabel"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "BPM:"
@@ -1200,7 +1200,7 @@ msgstr "OSD anzeigen auf:"
 
 #: src/aosd/aosd_ui.c:239
 msgid "all monitors"
-msgstr "Allen Bildschirmen"
+msgstr "allen Bildschirmen"
 
 #: src/aosd/aosd_ui.c:242
 #, c-format
@@ -1242,7 +1242,7 @@ msgstr "Internationalisierung"
 
 #: src/aosd/aosd_ui.c:457
 msgid "Disable UTF-8 conversion of text (in aosd)"
-msgstr "UTF-8-Konversion von Text deaktivieren (in aosd)"
+msgstr "UTF-8-Konversion von Text deaktivieren (in Aosd)"
 
 #: src/aosd/aosd_ui.c:475
 msgid "Select Skin File"
@@ -1286,19 +1286,19 @@ msgstr "Ereignis"
 
 #: src/aosd/aosd_ui.c:801
 msgid "Composite manager detected"
-msgstr "Composite manager erkannt"
+msgstr "Composite-Manager erkannt"
 
 #: src/aosd/aosd_ui.c:808
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
 msgstr ""
-"Composite manager nicht erkannt;\n"
+"Composite-Manager nicht erkannt;\n"
 "sofern ein solcher nicht doch aktiv ist, bitte einen solchen aktivieren, sonst wird der OSD nicht funktionieren"
 
 #: src/aosd/aosd_ui.c:816
 msgid "Composite manager not required for fake transparency"
-msgstr "Composite manager nicht benötigt für vorgetäuschte Transparenz"
+msgstr "Composite-Manager nicht benötigt für vorgetäuschte Transparenz"
 
 #: src/aosd/aosd_ui.c:854
 msgid "Transparency"
@@ -1457,19 +1457,19 @@ msgstr ""
 
 #: src/bluetooth/gui.c:148
 msgid "Producer"
-msgstr ""
+msgstr "Hersteller"
 
 #: src/bluetooth/gui.c:221
 msgid "Available Headsets"
-msgstr ""
+msgstr "Verfügbare Headsets"
 
 #: src/bluetooth/gui.c:224
 msgid "Current Headset"
-msgstr ""
+msgstr "Derzeitiges Headset"
 
 #: src/bluetooth/gui.c:227
 msgid "_Refresh"
-msgstr ""
+msgstr "Aktualisieren"
 
 #: src/bluetooth/gui.c:231
 msgid "_Connect"
@@ -1489,7 +1489,7 @@ msgstr "Adresse:"
 
 #: src/bluetooth/scan_gui.c:69
 msgid "Bonding finish!"
-msgstr ""
+msgstr "Einbinden abschließen!"
 
 #: src/bluetooth/scan_gui.c:76
 msgid "No devices found!"
@@ -1731,7 +1731,7 @@ msgstr "Ausgabegerät leeren"
 
 #: src/crossfade/configure.c:350
 msgid "None (gapless/off)"
-msgstr ""
+msgstr "Nichts (Gapless/aus)"
 
 #: src/crossfade/configure.c:352
 msgid "Simple crossfade"
@@ -1830,7 +1830,7 @@ msgstr "Ausgabe"
 
 #: src/crossfade/interface-2.0.c:409
 msgid "Mixing buffer size (ms):"
-msgstr "Puffergrösse (ms):"
+msgstr "Puffergröße (ms):"
 
 #: src/crossfade/interface-2.0.c:418
 msgid ""
@@ -2418,11 +2418,11 @@ msgstr "Host:"
 
 #: src/esd/configure.c:125
 msgid "Use remote host"
-msgstr ""
+msgstr "Nutze Remote-Host"
 
 #: src/esd/configure.c:132
 msgid "Volume controls OSS mixer"
-msgstr ""
+msgstr "Lautstärke steuert OSS-Mixer"
 
 #: src/esd/configure.c:153
 msgid "Port:"
@@ -2451,7 +2451,7 @@ msgstr "Puffergrösse (ms):"
 #: src/OSS/configure.c:331
 #: src/sun/configure.c:288
 msgid "Pre-buffer (percent):"
-msgstr ""
+msgstr "Vorpuffer (Prozent)"
 
 #: src/esd/configure.c:209
 #: src/OSS4/configure.c:291
@@ -2599,15 +2599,15 @@ msgstr ""
 
 #: src/evdev-plug/ed_ui.c:212
 msgid "Detected"
-msgstr ""
+msgstr "Erkannt"
 
 #: src/evdev-plug/ed_ui.c:217
 msgid "Custom"
-msgstr ""
+msgstr "Individuell"
 
 #: src/evdev-plug/ed_ui.c:223
 msgid "Not Detected"
-msgstr ""
+msgstr "Nicht erkannt"
 
 #: src/evdev-plug/ed_ui.c:275
 #: src/evdev-plug/ed_ui.c:411
@@ -2677,7 +2677,7 @@ msgstr "EvDev-Plug - Konfiguration"
 
 #: src/evdev-plug/ed_ui.c:651
 msgid "Active"
-msgstr ""
+msgstr "Aktiv"
 
 #: src/evdev-plug/ed_ui.c:655
 #: src/sun/configure.c:486
@@ -3277,7 +3277,7 @@ msgstr "Lade Liste"
 #: src/gtkui/ui_manager.c:104
 #: src/skins/ui_manager.c:215
 msgid "Loads a playlist file into the selected playlist."
-msgstr ""
+msgstr "Lade Wiedergabeliste in ausgewählte Wiedergabeliste"
 
 #: src/gtkui/ui_manager.c:106
 msgid "Save List"
@@ -3349,7 +3349,7 @@ msgstr "Suchen und Auswählen"
 #: src/gtkui/ui_manager.c:139
 #: src/skins/ui_manager.c:251
 msgid "Searches the playlist and selects playlist entries based on specific criteria."
-msgstr ""
+msgstr "Wiedergabeliste auf bestimmte Suchkriterien durchsuchen lassen"
 
 #: src/gtkui/ui_manager.c:142
 #: src/skins/ui_manager.c:254
@@ -3399,7 +3399,7 @@ msgstr "Warteschlange löschen"
 #: src/gtkui/ui_manager.c:161
 #: src/skins/ui_manager.c:273
 msgid "Clears the queue associated with this playlist."
-msgstr ""
+msgstr "Zugehörige Warteschlange der Wiedergabeliste entfernen."
 
 #: src/gtkui/ui_manager.c:164
 #: src/skins/ui_manager.c:276
@@ -3543,14 +3543,14 @@ msgstr "Sortiere nach Künstler."
 #: src/skins/ui_manager.c:327
 #: src/skins/ui_manager.c:357
 msgid "Sorts the list by filename."
-msgstr ""
+msgstr "Sortiere nach Dateiname."
 
 #: src/gtkui/ui_manager.c:219
 #: src/gtkui/ui_manager.c:249
 #: src/skins/ui_manager.c:331
 #: src/skins/ui_manager.c:361
 msgid "Sorts the list by full pathname."
-msgstr ""
+msgstr "Sortiere Liste nach Pfadnamen."
 
 #: src/gtkui/ui_manager.c:222
 #: src/gtkui/ui_manager.c:252
@@ -3633,7 +3633,7 @@ msgstr "Internetadresse spielen"
 #: src/gtkui/ui_manager.c:284
 #: src/skins/ui_manager.c:396
 msgid "Play media from the selected location"
-msgstr ""
+msgstr "Medien aus bestimmter Adresse abspielen"
 
 #: src/gtkui/ui_manager.c:286
 #: src/skins/ui_manager.c:398
@@ -3697,7 +3697,7 @@ msgstr "In/Aus Warteschlange"
 #: src/gtkui/ui_manager.c:310
 #: src/skins/ui_manager.c:422
 msgid "Enables/disables the entry in the playlist's queue."
-msgstr ""
+msgstr "Eintrag in der Wiedergabenwarteschleife aktivieren/deaktivieren."
 
 #: src/gtkui/ui_playlist_manager.c:277
 #: src/skins/ui_playlist_manager.c:306
@@ -3752,7 +3752,7 @@ msgstr "Player zeigen/verstecken"
 
 #: src/hotkey/gui.c:80
 msgid "Show On-Screen-Display"
-msgstr ""
+msgstr "On-Screen-Display zeigen"
 
 #: src/hotkey/gui.c:90
 msgid "(none)"
@@ -3764,10 +3764,13 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"Es ist nicht empfohlen die primären Maustasten hierfür zu benutzen.\n"
+"\n"
+"Trotzdem fortfahren?"
 
 #: src/hotkey/gui.c:229
 msgid "Binding mouse buttons"
-msgstr ""
+msgstr "Maustastenkombinationen"
 
 #: src/hotkey/gui.c:379
 msgid "Global Hotkey Plugin Configuration"
@@ -3791,7 +3794,7 @@ msgstr "<b>Aktion: </b>"
 
 #: src/hotkey/gui.c:427
 msgid "<b>Key Binding:</b>"
-msgstr ""
+msgstr "<b>Taste festlegen:</b>"
 
 #: src/hotkey/gui.c:659
 msgid "About Global Hotkey Plugin"
@@ -3872,7 +3875,7 @@ msgstr "Fehler beim Setzen des Passworts: %s\n"
 #: src/icecast/icecast.c:316
 #, c-format
 msgid "Error setting mount: %s\n"
-msgstr ""
+msgstr "Fehler beim Setzen des Mounts: %s\n"
 
 #: src/icecast/icecast.c:322
 #, c-format
@@ -3895,28 +3898,28 @@ msgstr "Fehler beim Setzen des Streamnamens: %s\n"
 #: src/icecast/icecast.c:334
 #, c-format
 msgid "Error setting stream genre: %s\n"
-msgstr ""
+msgstr "Fehler beim Setzen des Streamgenres: %s\n"
 
 #: src/icecast/icecast.c:340
 #, c-format
 msgid "Error setting stream URL: %s\n"
-msgstr ""
+msgstr "Fehler beim Setzen des Stream-URL's: %s\n"
 
 #: src/icecast/icecast.c:346
 #, c-format
 msgid "Error setting stream description: %s\n"
-msgstr ""
+msgstr "Fehler beim Setzen der Streambeschreibung: %s\n"
 
 #: src/icecast/icecast.c:352
 #: src/icecast/icecast.c:358
 #, c-format
 msgid "Error setting user: %s\n"
-msgstr ""
+msgstr "Fehler beim Setzen des Nutzers: %s\n"
 
 #: src/icecast/icecast.c:364
 #, c-format
 msgid "Error connecting to server: %s\n"
-msgstr ""
+msgstr "Fehler bei der Serververbindung: %s\n"
 
 #: src/icecast/icecast.c:505
 #: src/icecast/icecast.c:702
@@ -3929,7 +3932,7 @@ msgstr "Icecast Konfiguraion"
 
 #: src/icecast/icecast.c:618
 msgid "Output stream format:"
-msgstr ""
+msgstr "Ausgabe-Stream-Format"
 
 #: src/icecast/icecast.c:642
 msgid "Server address:"
@@ -3945,11 +3948,11 @@ msgstr "Server Portnummer"
 
 #: src/icecast/icecast.c:666
 msgid "Mount point:"
-msgstr ""
+msgstr "Einhängepunkt:"
 
 #: src/icecast/icecast.c:672
 msgid "Mount point for the stream"
-msgstr ""
+msgstr "Einhängepunkt für die Streams"
 
 #: src/icecast/icecast.c:681
 msgid "User name:"
@@ -3960,6 +3963,8 @@ msgid ""
 "Icecast source user name for the stream; depends on your server settings.\n"
 "The default value is \"source\""
 msgstr ""
+"Icecast source Benutzername für den Stream; abhängig von Servereinstellung.\n"
+"Der Standardwert ist \"source\""
 
 #: src/icecast/icecast.c:691
 msgid "Password:"
@@ -3967,65 +3972,67 @@ msgstr "Passwort:"
 
 #: src/icecast/icecast.c:696
 msgid "Icecast source user password"
-msgstr ""
+msgstr "Icecast source Benutzerpasswort"
 
 #: src/icecast/icecast.c:717
 msgid "Connection timeout (seconds):"
-msgstr ""
+msgstr "Zeitüberschreitung (Sekunden):"
 
 #: src/icecast/icecast.c:721
 msgid "Amount of time before plugin closes connection to server when no audio data available"
-msgstr ""
+msgstr "Länge der Zeit bevor das Plugin die Verbindung trennt, wenn keine Audiodateien verfügbar sind"
 
 #: src/icecast/icecast.c:734
 msgid "Buffer size (bytes):"
-msgstr "Puffergrösse (ms):"
+msgstr "Puffergröße (Ms):"
 
 #: src/icecast/icecast.c:738
 msgid ""
 "Internal buffer size\n"
 "Try to increase this if you are experiencing audio skipping on client side"
 msgstr ""
+"Interne Buffergröße\n"
+"Erhöhen falls man Audio-Springen auf Client-Seite wahrnimmt."
 
 #: src/icecast/icecast.c:749
 msgid "Flush buffer if "
-msgstr ""
+msgstr "Puffer leeren wenn "
 
 #: src/icecast/icecast.c:753
 msgid "Determines when to flush internal buffer to prevent its overflow"
-msgstr ""
+msgstr "Entscheiden wann interner Puffer geleert wird um Overflow zu vermeiden"
 
 #: src/icecast/icecast.c:761
 msgid "percents are filled"
-msgstr ""
+msgstr "Prozent belegt"
 
 #: src/icecast/icecast.c:769
 msgid "Stream is public"
-msgstr ""
+msgstr "Stream ist öffentlich"
 
 #: src/icecast/icecast.c:770
 msgid "Setting this asks the server to list the stream in any directories it knows about"
-msgstr ""
+msgstr "Server fragen ob Stream in jedem bekannten Verzeichnis gelistet wird"
 
 #: src/icecast/icecast.c:779
 msgid "Stream name:"
-msgstr ""
+msgstr "Stream-Name:"
 
 #: src/icecast/icecast.c:791
 msgid "Stream URL:"
-msgstr ""
+msgstr "Stream-URL:"
 
 #: src/icecast/icecast.c:797
 msgid "The URL of a site about this stream"
-msgstr ""
+msgstr "URL einer Seite dieses Streams"
 
 #: src/icecast/icecast.c:804
 msgid "Stream genre:"
-msgstr ""
+msgstr "Stream-Genre:"
 
 #: src/icecast/icecast.c:810
 msgid "The genre (or genres) of the stream. This is usually a keyword list, eg \"pop rock rap\""
-msgstr ""
+msgstr "Genre des Streams. Normalerweise eine Stichwortliste, Bsp. \"Pop Rock Rap\""
 
 #: src/icecast/icecast.c:817
 msgid "Stream description:"
@@ -4033,15 +4040,15 @@ msgstr "Streambeschreibung:"
 
 #: src/jack/configure.c:69
 msgid "Connect to all available jack ports"
-msgstr ""
+msgstr "Zu allen verfügbaren Jack-Ports verbinden"
 
 #: src/jack/configure.c:76
 msgid "Connect only the output ports"
-msgstr ""
+msgstr "Nur zu Ausgabe-Ports verbinden"
 
 #: src/jack/configure.c:83
 msgid "Connect to no ports"
-msgstr ""
+msgstr "Zu keinem Port verbinden"
 
 #: src/jack/configure.c:101
 msgid "jack Plugin configuration"
@@ -4049,15 +4056,15 @@ msgstr "jack-Plugin-Konfiguration"
 
 #: src/jack/configure.c:119
 msgid "Connection mode:"
-msgstr ""
+msgstr "Verbindungs-Modus"
 
 #: src/jack/configure.c:131
 msgid "Enable debug printing"
-msgstr ""
+msgstr "Debug-Ausgabe aktivieren"
 
 #: src/jack/jack.c:420
 msgid "About JACK Output Plugin 0.17"
-msgstr ""
+msgstr "Über JACK Output Plugin 0.17"
 
 #: src/jack/jack.c:421
 msgid ""
@@ -4142,15 +4149,15 @@ msgstr "LIRC-Plugin-Einstellungen"
 
 #: src/lirc/interface.c:61
 msgid "Reconnect to LIRC server"
-msgstr ""
+msgstr "Zu LIRC Server wiederverbinden"
 
 #: src/lirc/interface.c:68
 msgid "Timeout before reconnecting (seconds): "
-msgstr ""
+msgstr "Zeitüberschreitung vor Wiederverbindung (Sekunden): "
 
 #: src/lirc/interface.c:75
 msgid "Reconnect"
-msgstr ""
+msgstr "Wiederverbinden"
 
 #: src/lirc/interface.c:79
 msgid "Connection"
@@ -4168,26 +4175,29 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
+"%s: Konnte LIRC Konfigurationsdatei nicht lesen\n"
+"%s: Bitte in der Dokumentation von LIRC lesen\n"
+"%s: wie man eine funktionierende erstellt\n"
 
 #: src/lirc/lirc.c:118
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr ""
+msgstr "%s: versuche wiederzuverbinden...\n"
 
 #: src/lirc/lirc.c:339
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr ""
+msgstr "%s: Ungültiger Befehl \"%s\"\n"
 
 #: src/lirc/lirc.c:349
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr ""
+msgstr "%s: von LIRC Verbindung trennen\n"
 
 #: src/lirc/lirc.c:353
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr ""
+msgstr "%s: versuche jede %d Sekunden wiederzuverbinden...\n"
 
 #: src/madplug/configure.c:33
 msgid "Enable fast play-length calculation"
@@ -4495,19 +4505,19 @@ msgstr "Konnte Pixmap-Datei nicht finden: %s"
 
 #: src/mtp_up/mtp.c:33
 msgid "Upload selected track(s)"
-msgstr ""
+msgstr "Ausgewählte Titel uploaden"
 
 #: src/mtp_up/mtp.c:290
 msgid "Upload in progress..."
-msgstr ""
+msgstr "Upload läuft..."
 
 #: src/mtp_up/mtp.c:299
 msgid "MTP device handler"
-msgstr ""
+msgstr "MTP Geräte-Steuerung"
 
 #: src/mtp_up/mtp.c:303
 msgid "Disconnect the device"
-msgstr ""
+msgstr "Gerät trennen"
 
 #: src/null/null.c:59
 msgid "Null output plugin "
@@ -4563,7 +4573,7 @@ msgstr "Mixer-Einstellungen:"
 
 #: src/OSS4/configure.c:299
 msgid "Save VMIX volume between sessions"
-msgstr ""
+msgstr "VMIX Lautstärke speichern"
 
 #: src/OSS4/configure.c:305
 #: src/OSS/configure.c:355
@@ -4610,7 +4620,7 @@ msgstr "Standard (%s)"
 
 #: src/OSS/configure.c:349
 msgid "Volume controls Master not PCM"
-msgstr ""
+msgstr "Master anstatt PCM regeln"
 
 #: src/OSS/OSS.c:39
 msgid "About OSS Driver"
@@ -4662,7 +4672,7 @@ msgstr ""
 
 #: src/resample/plugin.c:141
 msgid "Sample Rate Converter Preferences"
-msgstr ""
+msgstr "Sample-Rate Konverter Einstellungen"
 
 #: src/resample/plugin.c:153
 msgid "Rate mappings:"
@@ -4674,7 +4684,7 @@ msgstr "Alle Anderen"
 
 #: src/resample/plugin.c:188
 msgid "Method:"
-msgstr ""
+msgstr "Methode:"
 
 #: src/sid/xs_about.c:84
 #, c-format
@@ -4687,7 +4697,7 @@ msgstr " Fehler"
 
 #: src/sid/xs_fileinfo.c:149
 msgid "General info"
-msgstr ""
+msgstr "Allgemeine Info"
 
 #: src/sid/xs_fileinfo.c:162
 #, c-format
@@ -4756,7 +4766,7 @@ msgstr "PAL (50 Hz)"
 
 #: src/sid/xs_interface.c:455
 msgid "PAL is the european TV standard, which uses 50Hz vertical refresh frequency. Most of SID-tunes have been made for PAL computers."
-msgstr ""
+msgstr "PAL ist der europäische TV-Standard, welcher 50 Hz als Bildwiederholfrequenz benutzt. Die meisten der SID-Tuner sind für den PAL-Standard gebaut."
 
 #: src/sid/xs_interface.c:459
 msgid "NTSC (60 Hz)"
@@ -4764,11 +4774,11 @@ msgstr "NTSC (60 Hz)"
 
 #: src/sid/xs_interface.c:463
 msgid "NTSC is the TV standard with 60Hz vertical refresh rate (and other features that differ from PAL). It is mainly used in United States, Japan and certain other countries."
-msgstr ""
+msgstr "NTSC ist ein TV-Standard mit 60 Hz Bildwiederholfrequenz (und anderen Abweichungen zu PAL). Er wird vor allem in den USA, Japan und einigen anderen Ländern benutzt."
 
 #: src/sid/xs_interface.c:467
 msgid "Clock speed:"
-msgstr ""
+msgstr "Taktfrequenz:"
 
 #: src/sid/xs_interface.c:484
 msgid "Force model"
@@ -4800,7 +4810,7 @@ msgstr ""
 
 #: src/sid/xs_interface.c:526
 msgid "Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most cases, though."
-msgstr ""
+msgstr "LibSIDPlay 1.x Emulation benutzen, schneller aber ungenauer. Dennoch in vielen Fällen gut."
 
 #: src/sid/xs_interface.c:530
 msgid "SIDPlay 2 (cycle-based)"
@@ -4808,7 +4818,7 @@ msgstr "SIDPlay 2 (zyklus-basiert)"
 
 #: src/sid/xs_interface.c:534
 msgid "Use libSIDPlay 2.x emulation, which requires powerful CPU due to more exact emulation."
-msgstr ""
+msgstr "libSIDPlay 2.x Emulation benutzen, welche mehr CPU-Leistung für mehr Genauigkeit benötigt."
 
 #: src/sid/xs_interface.c:538
 msgid "Emulation library selection:"
@@ -4868,7 +4878,7 @@ msgstr "SIDPlay 2-Optionen:"
 
 #: src/sid/xs_interface.c:650
 msgid "Fast (nearest neighbour)"
-msgstr ""
+msgstr "Schnell (am nähesten)"
 
 #: src/sid/xs_interface.c:654
 msgid "Fastest and also worst sounding sampling method, simply picks nearest neighbouring sample."
@@ -4928,7 +4938,7 @@ msgstr "Exportieren"
 
 #: src/sid/xs_interface.c:825
 msgid "Use"
-msgstr ""
+msgstr "Nutzen"
 
 #: src/sid/xs_interface.c:841
 #: src/skins/ui_manager.c:430
@@ -4967,19 +4977,19 @@ msgstr "Minimale Spielzeit:"
 
 #: src/sid/xs_interface.c:945
 msgid "Play for specified time maximum"
-msgstr ""
+msgstr "Für bestimmte Maximalzeit spielen"
 
 #: src/sid/xs_interface.c:949
 msgid "If enabled, tune is played until specified duration is reached (aka maximum playtime)."
-msgstr ""
+msgstr "Falls aktiviert, wird der Titel gespielt bis ein bestimmter Wert erreicht wird (z.B. Maximale Spielzeit)."
 
 #: src/sid/xs_interface.c:951
 msgid "Only when song length is unknown"
-msgstr ""
+msgstr "Nur wenn Titellänge unbekannt"
 
 #: src/sid/xs_interface.c:955
 msgid "If enabled, the maximum playtime is applied only if song/tune length is not known."
-msgstr ""
+msgstr "Falls aktiviert, wird die Maximale Spielzeit nur benutzt, wenn Titellänge unbekannt ist."
 
 #: src/sid/xs_interface.c:982
 msgid "Maximum playtime:"
@@ -4991,7 +5001,7 @@ msgstr "XSIDPLAY-kompatible Datenbank benützen"
 
 #: src/sid/xs_interface.c:1003
 msgid "This option enables using of XSIDPLAY compatible song length database. (Refer to Audacious-SID documentation for more information)"
-msgstr ""
+msgstr "Diese Option aktiviert die Nutzung der XSIDPLAY Datenbank (siehe Audacious-SID-Dokumentation für weitere Informationen)."
 
 #: src/sid/xs_interface.c:1010
 msgid "DB-file:"
@@ -5003,27 +5013,27 @@ msgstr "Datenbankpfad und -dateiname"
 
 #: src/sid/xs_interface.c:1027
 msgid "Browse for song length-database file"
-msgstr ""
+msgstr "nach Titellänge-Datei in Datenbank suchen"
 
 #: src/sid/xs_interface.c:1049
 msgid "Song length database:"
-msgstr ""
+msgstr "Titellänge Datenbank:"
 
 #: src/sid/xs_interface.c:1054
 msgid "Songlength"
-msgstr ""
+msgstr "Titellänge"
 
 #: src/sid/xs_interface.c:1072
 msgid "Override generic Tuplez format string"
-msgstr ""
+msgstr "Allgemeinen Tuplez-Format-String überschreiben"
 
 #: src/sid/xs_interface.c:1076
 msgid "By enabling this option you can specify a custom Tuplez formatting string for SID-files. The SID-plugin specific Tuplez tags are described shortly below."
-msgstr ""
+msgstr "Mit dem Aktivieren dieser Einstellung kann man einen bestimmten Tuplez-Formatierungs-String für SID-Dateien festlegen. Spezifische Tags sind unten kurz erklärt."
 
 #: src/sid/xs_interface.c:1087
 msgid "Tuplez format string for SID-files"
-msgstr ""
+msgstr "Tuplez-Formatierungs-String für SID-Dateien"
 
 #: src/sid/xs_interface.c:1090
 msgid ""
@@ -5048,23 +5058,23 @@ msgstr "Titel"
 
 #: src/sid/xs_interface.c:1125
 msgid "Add sub-tunes to playlist"
-msgstr ""
+msgstr "Sub-Tune zu Wiedergabeliste hinzufügen"
 
 #: src/sid/xs_interface.c:1129
 msgid "If enabled, sub-tunes of each file will be added to playlist. If disabled, only the default sub-tune will be added."
-msgstr ""
+msgstr "Falls aktiviert, werden Sub-Tunes jeder Datei zur Wiedergabeliste hinzugefügt. Falls deaktiiviert, werden nur die Standard-Sub-Tunes hinzugefügt."
 
 #: src/sid/xs_interface.c:1131
 msgid "Only tunes with specified minimum duration"
-msgstr ""
+msgstr "Nur mit spezifizierter Minimumdauer abstimmen"
 
 #: src/sid/xs_interface.c:1135
 msgid "Only add sub-tunes that have a duration of at least specified time."
-msgstr ""
+msgstr "Nur Sub-Tunes hinzufügen, die mindestens eine bestimmte Mindestdauer haben."
 
 #: src/sid/xs_interface.c:1162
 msgid "Sub-tune handling:"
-msgstr ""
+msgstr "Sub-Tune Umgang:"
 
 #: src/sid/xs_interface.c:1179
 msgid "Use STIL database"
@@ -5072,7 +5082,7 @@ msgstr "STIL-Datenbank verwenden"
 
 #: src/sid/xs_interface.c:1183
 msgid "If this option is enabled (and the database & HVSC settings below are correctly set), Audacious-SID will use and display additional information from STIL database when HVSC SIDs are played."
-msgstr ""
+msgstr "Falls Option aktiviert (und die Datenback & die HVSC Einstellungen unten richtig gesetzt sind), wird Audacious-SID zusätzliche Informationen aus der STIL-Datenbank bei passenden Titeln nutzen und anzeigen."
 
 #: src/sid/xs_interface.c:1190
 msgid "STIL file:"
@@ -5108,7 +5118,7 @@ msgstr "Alle Änderungen verwerfen"
 
 #: src/sid/xs_interface.c:1328
 msgid "Accept and update changes"
-msgstr ""
+msgstr "Änderungen akzeptieren und aktualisieren"
 
 #: src/sid/xs_interface.c:1628
 msgid "Audacious-SID Fileinfo"
@@ -5145,7 +5155,7 @@ msgstr "Länge:"
 
 #: src/sid/xs_interface.c:1820
 msgid "Sub-tune Information:"
-msgstr ""
+msgstr "Sub-Tune Information:"
 
 #: src/sid/xs_interface.c:1881
 msgid "Select HVSC song length database"
@@ -5157,15 +5167,15 @@ msgstr "STIL-Datenbank auswählen"
 
 #: src/sid/xs_interface.c:1963
 msgid "Select HVSC location prefix"
-msgstr ""
+msgstr "HVSC Ort-Präfix auswählen"
 
 #: src/sid/xs_interface.c:2004
 msgid "Select SIDPlay2 filters file for importing"
-msgstr ""
+msgstr "SIDPlay2-Filterdatei für Importieren auswählen"
 
 #: src/sid/xs_interface.c:2045
 msgid "Select SIDPlay2 filters file for exporting"
-msgstr ""
+msgstr "SIDPlay2-Filterdatei für Exportieren auswählen"
 
 #: src/sid/xs_interface.c:2093
 #: src/sid/xs_interface.c:2106
@@ -5182,7 +5192,7 @@ msgstr "Nein"
 
 #: src/skins/plugin.c:180
 msgid "About Skinned GUI"
-msgstr ""
+msgstr "Über Skinned GUI"
 
 #: src/skins/plugin.c:181
 msgid ""
@@ -5314,7 +5324,7 @@ msgstr "Mono"
 
 #: src/skins/ui_main.c:979
 msgid "Audacious - visibility warning"
-msgstr ""
+msgstr "Audacious - Visibility-Warnung"
 
 #: src/skins/ui_main.c:982
 msgid "Show main player window"
@@ -5329,10 +5339,12 @@ msgid ""
 "Audacious has been started with all of its windows hidden.\n"
 "You may want to show the player window again to control Audacious; otherwise, you'll have to control it remotely via audtool or enabled plugins (such as the statusicon plugin)."
 msgstr ""
+"Audacious wurde mit allen Fenstern versteckt gestartet.\n"
+"Das Hauptfenster zum Steuern von Audacious sollte aktiviert sein, ansonsten muss Audacious via audtool oder aktivierten Plugins ferngesteuert werden."
 
 #: src/skins/ui_main.c:995
 msgid "Always ignore, show/hide is controlled remotely"
-msgstr ""
+msgstr "Immer ignorieren, anzeigen/verstecken wird ferngesteuert"
 
 #: src/skins/ui_main.c:1040
 msgid "Audacious - broken GTK engine usage warning"
@@ -5357,7 +5369,7 @@ msgstr "Diese Warnung nicht mehr anzeigen"
 #: src/skins/ui_main.c:1267
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
-msgstr ""
+msgstr "Suche nach: %d:%-2.2d/%d:%-2.2d (%d%%)"
 
 #: src/skins/ui_main.c:1297
 #, c-format
@@ -5708,7 +5720,7 @@ msgstr "Vorherige Auswahl vorm Suchen löschen"
 
 #: src/skins/ui_playlist.c:415
 msgid "Automatically toggle queue for matching entries"
-msgstr ""
+msgstr "Automatisch zwischen passenden Einträgen wechseln"
 
 #: src/skins/ui_playlist.c:418
 msgid "Create a new playlist with matching entries"
@@ -5908,7 +5920,7 @@ msgstr ""
 
 #: src/song_change/song_change.c:435
 msgid "<span size='small'>Parameters passed to the shell should be encapsulated in quotes. Doing otherwise is a security risk.</span>"
-msgstr ""
+msgstr "<span size='small'>Parameter sollten zwischen Anführungszeichen stehen, ohne besteht ein Sicherheitsrisiko.</span>"
 
 #: src/song_change/song_change.c:446
 msgid "Commands"
