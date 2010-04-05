@@ -30,9 +30,9 @@ typedef struct tagFILEHEADER669
 typedef struct tagSAMPLE669
 {
 	BYTE filename[13];
-	BYTE length[4];	// when will somebody think about DWORD align ???
-	BYTE loopstart[4];
-	BYTE loopend[4];
+	DWORD length;	// when will somebody think about DWORD align ???
+	DWORD loopstart;
+	DWORD loopend;
 } SAMPLE669;
 
 
@@ -67,9 +67,9 @@ BOOL CSoundFile::Read669(const BYTE *lpStream, DWORD dwMemLength)
 	m_nSamples = pfh->samples;
 	for (UINT nins=1; nins<=m_nSamples; nins++, psmp++)
 	{
-		DWORD len = bswapLE32(*((DWORD *)(&psmp->length)));
-		DWORD loopstart = bswapLE32(*((DWORD *)(&psmp->loopstart)));
-		DWORD loopend = bswapLE32(*((DWORD *)(&psmp->loopend)));
+		DWORD len = bswapLE32(psmp->length);
+		DWORD loopstart = bswapLE32(psmp->loopstart);
+		DWORD loopend = bswapLE32(psmp->loopend);
 		if (len > MAX_SAMPLE_LENGTH) len = MAX_SAMPLE_LENGTH;
 		if ((loopend > len) && (!loopstart)) loopend = 0;
 		if (loopend > len) loopend = len;
