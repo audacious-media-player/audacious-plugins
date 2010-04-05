@@ -383,34 +383,33 @@ fail:
     return time;
 }
 
-static int pulse_playing(void) {
-    int r = 0;
-    const pa_timing_info *i;
+static void pulse_drain(void) {
+    pa_operation *o = NULL;
+    int success = 0;
 
-    CHECK_CONNECTED(0);
+    CHECK_CONNECTED();
 
     pa_threaded_mainloop_lock(mainloop);
+    CHECK_DEAD_GOTO(fail, 0);
 
-    for (;;) {
+    if (!(o = pa_stream_drain(stream, stream_success_cb, &success))) {
+        AUDDBG("pa_stream_drain() failed: %s", pa_strerror(pa_context_errno(context)));
+        goto fail;
+    }
+
+    while (pa_operation_get_state(o) != PA_OPERATION_DONE) {
         CHECK_DEAD_GOTO(fail, 1);
-
-        if ((i = pa_stream_get_timing_info(stream)))
-            break;
-
-        if (pa_context_errno(context) != PA_ERR_NODATA) {
-            AUDDBG("pa_stream_get_timing_info() failed: %s", pa_strerror(pa_context_errno(context)));
-            goto fail;
-        }
-
         pa_threaded_mainloop_wait(mainloop);
     }
 
-    r = i->playing;
+    if (!success)
+        AUDDBG("pa_stream_drain() failed: %s", pa_strerror(pa_context_errno(context)));
 
 fail:
-    pa_threaded_mainloop_unlock(mainloop);
+    if (o)
+        pa_operation_unref(o);
 
-    return r;
+    pa_threaded_mainloop_unlock(mainloop);
 }
 
 static void pulse_flush(int time) {
@@ -758,7 +757,7 @@ static OutputPlugin pulse_op = {
         .flush = pulse_flush,
         .pause = pulse_pause,
         .buffer_free = pulse_free,
-        .buffer_playing = pulse_playing,
+        .drain = pulse_drain,
         .output_time = pulse_get_output_time,
         .written_time = pulse_get_written_time,
         .set_written_time = pulse_set_written_time,
