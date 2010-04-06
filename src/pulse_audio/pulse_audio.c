@@ -32,6 +32,8 @@
 
 #include <pulse/pulseaudio.h>
 
+#define ERROR(...) do {fprintf (stderr, "pulseaudio: " __VA_ARGS__); putchar ('\n');} while (0)
+
 static pa_context *context = NULL;
 static pa_stream *stream = NULL;
 static pa_threaded_mainloop *mainloop = NULL;
@@ -505,45 +507,6 @@ static void pulse_close(void)
     volume_time_event = NULL;
 }
 
-static OutputPluginInitStatus pulse_init(void) {
-    pa_sample_spec ss;
-
-    g_assert(!mainloop);
-    g_assert(!context);
-    g_assert(!stream);
-    g_assert(!connected);
-
-    ss.format = PA_SAMPLE_S16NE;
-    ss.rate = 44100;
-    ss.channels = 2;
-
-    if (!pa_sample_spec_valid(&ss))
-        return OUTPUT_PLUGIN_INIT_FAIL;
-
-    if (!(mainloop = pa_threaded_mainloop_new())) {
-        pulse_close();
-        return OUTPUT_PLUGIN_INIT_FAIL;
-    }
-
-    pa_threaded_mainloop_lock(mainloop);
-
-    if (!(context = pa_context_new(pa_threaded_mainloop_get_api(mainloop), "Audacious"))) {
-        pa_threaded_mainloop_unlock(mainloop);
-        pulse_close();
-        return OUTPUT_PLUGIN_INIT_FAIL;
-    }
-
-    if (pa_context_connect(context, NULL, 0, NULL) < 0) {
-        pa_threaded_mainloop_unlock(mainloop);
-        pulse_close();
-        return OUTPUT_PLUGIN_INIT_FAIL;
-    }
-
-    pa_threaded_mainloop_unlock(mainloop);
-    pulse_close();
-    return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
-}
-
 static int pulse_open(AFormat fmt, int rate, int nch) {
     pa_sample_spec ss;
     pa_operation *o = NULL;
@@ -594,14 +557,14 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
         return FALSE;
 
     if (!(mainloop = pa_threaded_mainloop_new())) {
-        AUDDBG("Failed to allocate main loop");
+        ERROR ("Failed to allocate main loop");
         goto fail;
     }
 
     pa_threaded_mainloop_lock(mainloop);
 
     if (!(context = pa_context_new(pa_threaded_mainloop_get_api(mainloop), "Audacious"))) {
-        AUDDBG("Failed to allocate context");
+        ERROR ("Failed to allocate context");
         goto unlock_and_fail;
     }
 
@@ -609,12 +572,12 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     pa_context_set_subscribe_callback(context, subscribe_cb, NULL);
 
     if (pa_context_connect(context, NULL, 0, NULL) < 0) {
-        AUDDBG("Failed to connect to server: %s", pa_strerror(pa_context_errno(context)));
+        ERROR ("Failed to connect to server: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
     if (pa_threaded_mainloop_start(mainloop) < 0) {
-        AUDDBG("Failed to start main loop");
+        ERROR ("Failed to start main loop");
         goto unlock_and_fail;
     }
 
@@ -622,12 +585,12 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     pa_threaded_mainloop_wait(mainloop);
 
     if (pa_context_get_state(context) != PA_CONTEXT_READY) {
-        AUDDBG("Failed to connect to server: %s", pa_strerror(pa_context_errno(context)));
+        ERROR ("Failed to connect to server: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
     if (!(stream = pa_stream_new(context, get_song_name(), &ss, NULL))) {
-        AUDDBG("Failed to create stream: %s", pa_strerror(pa_context_errno(context)));
+        ERROR ("Failed to create stream: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
@@ -637,7 +600,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
 
     /* Connect stream with sink and default volume */
     if (pa_stream_connect_playback(stream, NULL, NULL, PA_STREAM_INTERPOLATE_TIMING|PA_STREAM_AUTO_TIMING_UPDATE, NULL, NULL) < 0) {
-        AUDDBG("Failed to connect stream: %s", pa_strerror(pa_context_errno(context)));
+        ERROR ("Failed to connect stream: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
@@ -645,13 +608,13 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     pa_threaded_mainloop_wait(mainloop);
 
     if (pa_stream_get_state(stream) != PA_STREAM_READY) {
-        AUDDBG("Failed to connect stream: %s", pa_strerror(pa_context_errno(context)));
+        ERROR ("Failed to connect stream: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
     /* Now subscribe to events */
     if (!(o = pa_context_subscribe(context, PA_SUBSCRIPTION_MASK_SINK_INPUT, context_success_cb, &success))) {
-        AUDDBG("pa_context_subscribe() failed: %s", pa_strerror(pa_context_errno(context)));
+        ERROR ("pa_context_subscribe() failed: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
@@ -662,7 +625,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     }
 
     if (!success) {
-        AUDDBG("pa_context_subscribe() failed: %s", pa_strerror(pa_context_errno(context)));
+        ERROR ("pa_context_subscribe() failed: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
@@ -670,7 +633,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
 
     /* Now request the initial stream info */
     if (!(o = pa_context_get_sink_input_info(context, pa_stream_get_index(stream), info_cb, NULL))) {
-        AUDDBG("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(context)));
+        ERROR ("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
@@ -680,7 +643,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     }
 
     if (!volume_valid) {
-        AUDDBG("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(context)));
+        ERROR ("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
     pa_operation_unref(o);
@@ -707,6 +670,15 @@ fail:
     pulse_close();
 
     return FALSE;
+}
+
+static OutputPluginInitStatus pulse_init (void)
+{
+    if (! pulse_open (FMT_S16_NE, 44100, 2))
+        return OUTPUT_PLUGIN_INIT_FAIL;
+
+    pulse_close ();
+    return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
 static void pulse_about(void) {
