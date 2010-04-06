@@ -1,11 +1,8 @@
 /*
- * This program is  free software; you can redistribute it  and modify it
- * under the terms of the GNU  General Public License as published by the
- * Free Software Foundation; either version 2  of the license or (at your
- * option) any later version.
+ * This source code is public domain.
  *
  * Authors: Olivier Lapicque <olivierl@jps.net>
- */
+*/
 
 ///////////////////////////////////////////////////
 //
@@ -60,7 +57,7 @@ VOID AMF_Unpack(MODCOMMAND *pPat, const BYTE *pTrack, UINT nRows, UINT nChannels
 {
 	UINT lastinstr = 0;
 	UINT nTrkSize = bswapLE16(*(USHORT *)pTrack);
-	nTrkSize += (UINT)pTrack[2] <<16;
+	nTrkSize += (UINT)pTrack[2] << 16;
 	pTrack += 3;
 	while (nTrkSize--)
 	{
@@ -110,7 +107,7 @@ VOID AMF_Unpack(MODCOMMAND *pPat, const BYTE *pTrack, UINT nRows, UINT nChannels
 						else param = (param&0x0F)<<4;
 						break;
 			// 0x04: Porta Up/Down
-			case 0x04:	if (param & 0x80) { command = CMD_PORTAMENTOUP; param = -(signed char)param; }
+			case 0x04:	if (param & 0x80) { command = CMD_PORTAMENTOUP; param = (-(signed char)param)&0x7F; }
 						else { command = CMD_PORTAMENTODOWN; } break;
 			// 0x06: Tone Portamento
 			case 0x06:	command = CMD_TONEPORTAMENTO; break;
@@ -166,10 +163,10 @@ VOID AMF_Unpack(MODCOMMAND *pPat, const BYTE *pTrack, UINT nRows, UINT nChannels
 
 
 
-BOOL CSoundFile::ReadAMF(LPCBYTE lpStream, DWORD dwMemLength)
+BOOL CSoundFile::ReadAMF(LPCBYTE lpStream, const DWORD dwMemLength)
 //-----------------------------------------------------------
 {
-	AMFFILEHEADER *pfh = (AMFFILEHEADER *)lpStream;
+	const AMFFILEHEADER *pfh = (AMFFILEHEADER *)lpStream;
 	DWORD dwMemPos;
 	
 	if ((!lpStream) || (dwMemLength < 2048)) return FALSE;
@@ -199,6 +196,7 @@ BOOL CSoundFile::ReadAMF(LPCBYTE lpStream, DWORD dwMemLength)
 		{
 			MODINSTRUMENT *psmp = &Ins[iSmp+1];
 			memcpy(m_szNames[iSmp+1], lpStream+dwMemPos, 22);
+			m_szNames[iSmp+1][21] = '\0';
 			psmp->nFineTune = MOD2XMFineTune(lpStream[dwMemPos+22]);
 			psmp->nVolume = lpStream[dwMemPos+23];
 			psmp->nGlobalVol = 64;
@@ -223,7 +221,6 @@ BOOL CSoundFile::ReadAMF(LPCBYTE lpStream, DWORD dwMemLength)
 			if (!p) break;
 			Patterns[iPat] = p;
 			PatternSize[iPat] = 64;
-			PatternAllocSize[iPat] = 64;
 			const UCHAR *pin = lpStream + dwMemPos;
 			for (UINT i=0; i<8*64; i++)
 			{
@@ -255,7 +252,8 @@ BOOL CSoundFile::ReadAMF(LPCBYTE lpStream, DWORD dwMemLength)
 			MODINSTRUMENT *psmp = &Ins[iData+1];
 			if (psmp->nLength)
 			{
-				dwMemPos += ReadSample(psmp, RS_PCM8S, (LPCSTR)(lpStream+dwMemPos), dwMemLength);
+				if (dwMemPos > dwMemLength) return FALSE;
+				dwMemPos += ReadSample(psmp, RS_PCM8S, (LPCSTR)(lpStream+dwMemPos), dwMemLength-dwMemPos);
 			}
 		}
 		return TRUE;
@@ -272,6 +270,7 @@ BOOL CSoundFile::ReadAMF(LPCBYTE lpStream, DWORD dwMemLength)
 	 || (pfh->numchannels < 4) || (pfh->numchannels > 32))
 		return FALSE;
 	memcpy(m_szNames[0], pfh->title, 32);
+	m_szNames[0][31] = '\0';
 	dwMemPos = sizeof(AMFFILEHEADER);
 	m_nType = MOD_TYPE_AMF;
 	m_nChannels = pfh->numchannels;
@@ -315,11 +314,9 @@ BOOL CSoundFile::ReadAMF(LPCBYTE lpStream, DWORD dwMemLength)
 		{
 			Order[iOrd] = iOrd;
 			PatternSize[iOrd] = 64;
-			PatternAllocSize[iOrd] = 64;
 			if (pfh->version >= 14)
 			{
 				PatternSize[iOrd] = bswapLE16(*(USHORT *)(lpStream+dwMemPos));
-				PatternAllocSize[iOrd] = bswapLE16(*(USHORT *)(lpStream+dwMemPos));
 				dwMemPos += 2;
 			}
 			ptracks[iOrd] = (USHORT *)(lpStream+dwMemPos);
@@ -336,7 +333,9 @@ BOOL CSoundFile::ReadAMF(LPCBYTE lpStream, DWORD dwMemLength)
 
 		dwMemPos += sizeof(AMFSAMPLE);
 		memcpy(m_szNames[iIns+1], psh->samplename, 32);
+		m_szNames[iIns+1][31] = '\0';
 		memcpy(pins->name, psh->filename, 13);
+		pins->name[12] = '\0';
 		pins->nLength = bswapLE32(psh->length);
 		pins->nC4Speed = bswapLE16(psh->c2spd);
 		pins->nGlobalVol = 64;
@@ -356,7 +355,8 @@ BOOL CSoundFile::ReadAMF(LPCBYTE lpStream, DWORD dwMemLength)
 		if ((psh->type) && (bswapLE32(psh->offset) < dwMemLength-1))
 		{
 			sampleseekpos[iIns] = bswapLE32(psh->offset);
-			if (bswapLE32(psh->offset) > maxsampleseekpos) maxsampleseekpos = bswapLE32(psh->offset);
+			if (bswapLE32(psh->offset) > maxsampleseekpos) 
+				maxsampleseekpos = bswapLE32(psh->offset);
 			if ((pins->nLoopEnd > pins->nLoopStart + 2)
 			 && (pins->nLoopEnd <= pins->nLength)) pins->uFlags |= CHN_LOOP;
 		}
@@ -376,7 +376,6 @@ BOOL CSoundFile::ReadAMF(LPCBYTE lpStream, DWORD dwMemLength)
 	{
 		UINT nTrkSize = bswapLE16(*(USHORT *)(lpStream+dwMemPos));
 		nTrkSize += (UINT)lpStream[dwMemPos+2] << 16;
-
 		if (dwMemPos + nTrkSize * 3 + 3 <= dwMemLength)
 		{
 			pTrackData[iTrack] = (BYTE *)(lpStream + dwMemPos);
@@ -406,7 +405,7 @@ BOOL CSoundFile::ReadAMF(LPCBYTE lpStream, DWORD dwMemLength)
 			}
 		}
 	}
-	delete pTrackData;
+	delete[] pTrackData;
 	// Read Sample Data
 	for (UINT iSeek=1; iSeek<=maxsampleseekpos; iSeek++)
 	{
@@ -420,5 +419,4 @@ BOOL CSoundFile::ReadAMF(LPCBYTE lpStream, DWORD dwMemLength)
 	}
 	return TRUE;
 }
-
 
