@@ -457,7 +457,7 @@ create_config_win (void)
   xf_type_optionmenu = gtk_option_menu_new ();
   gtk_widget_show (xf_type_optionmenu);
   gtk_box_pack_start (GTK_BOX (xf_type_hbox), xf_type_optionmenu, TRUE, TRUE, 0);
-  gtk_tooltips_set_tip (tooltips, xf_type_optionmenu, _("Select the transition to be used for the songchange type selected above:\n* Fade-in: Fade-in at 'Start of playback'\n* Reopen output device: Force a close/open on the output plugin. This will most certainly re-introduce gaps and clicks, but might be usefull with some plugins.\n* Flush output device: Keeps the output plugin opened, but flushes its buffers. This will give you almost instant reaction when pressing NEXT/PREV.\n* None (gapless/off): Gapless mode. Keeps the device opened, but does not do any fading.\n* Simple crossfade: Does a simple crossfade between the previous and the next song.\n* Advanced crossfade: Allows you to configure the crossfade in more detail.\n* Fade-out: Fade-out at 'Manual stop' or 'End of playlist'."), NULL);
+  gtk_tooltips_set_tip (tooltips, xf_type_optionmenu, _("Select the transition to be used for the songchange type selected above:\n* Fade-in: Fade-in at 'Start of playback'\n* Reopen output device: Force a close/open on the output plugin. This will most certainly re-introduce gaps and clicks, but might be useful with some plugins.\n* Flush output device: Keeps the output plugin opened, but flushes its buffers. This will give you almost instant reaction when pressing NEXT/PREV.\n* None (gapless/off): Gapless mode. Keeps the device opened, but does not do any fading.\n* Simple crossfade: Does a simple crossfade between the previous and the next song.\n* Advanced crossfade: Allows you to configure the crossfade in more detail.\n* Fade-out: Fade-out at 'Manual stop' or 'End of playlist'."), NULL);
 
   xf_type_optionmenu_menu = gtk_menu_new ();
 
@@ -1342,7 +1342,7 @@ create_config_win (void)
   mixopt_software_check = gtk_check_button_new_with_mnemonic (_("Software Mixer"));
   gtk_widget_show (mixopt_software_check);
   gtk_box_pack_start (GTK_BOX (misc_mixopt_vbox), mixopt_software_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, mixopt_software_check, _("Enable software mixer. Usefull for output plugins without mixer support.\nDefault: Off"), NULL);
+  gtk_tooltips_set_tip (tooltips, mixopt_software_check, _("Enable software mixer. Useful for output plugins without mixer support.\nDefault: Off"), NULL);
 
   label27 = gtk_label_new (_("Volume control options"));
   gtk_widget_show (label27);
@@ -1411,7 +1411,7 @@ create_config_win (void)
   moth_httpworkaround_check = gtk_check_button_new_with_mnemonic (_("Enable HTTP buffer underrun workaround"));
   gtk_widget_show (moth_httpworkaround_check);
   gtk_box_pack_start (GTK_BOX (misc_other_vbox), moth_httpworkaround_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, moth_httpworkaround_check, _("Enable this when you have problems playing internet HTTP audio streams. Unfortunatelly, it also breaks crossfading.\nDefault: Off"), NULL);
+  gtk_tooltips_set_tip (tooltips, moth_httpworkaround_check, _("Enable this when you have problems playing internet HTTP audio streams. Unfortunately, it also breaks crossfading.\nDefault: Off"), NULL);
 
   moth_opmaxused_hbox = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (moth_opmaxused_hbox);
@@ -1431,7 +1431,7 @@ create_config_win (void)
 
   moth_quantaudio_check = gtk_check_button_new_with_mnemonic (_("Use Quantaudio timing comments"));
   gtk_box_pack_start (GTK_BOX (misc_other_vbox), moth_quantaudio_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, moth_quantaudio_check, _("Enable this when you have problems playing internet HTTP audio streams. Unfortunatelly, it also breaks crossfading.\nDefault: Off"), NULL);
+  gtk_tooltips_set_tip (tooltips, moth_quantaudio_check, _("Enable this when you have problems playing internet HTTP audio streams. Unfortunately, it also breaks crossfading.\nDefault: Off"), NULL);
 
   moth_outputkeepopened_check = gtk_check_button_new_with_mnemonic (_("Keep output opened"));
   gtk_widget_show (moth_outputkeepopened_check);

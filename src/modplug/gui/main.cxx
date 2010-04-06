@@ -10,8 +10,8 @@
 #include "../sndfile.h"
 #include "../archive/open.h"
 
-// Order of #include is important - UINT is redefined to unsigned long instead of unsigned int 
-// somewhere in the following headers, which leads to unresolved symbol - 
+// Order of #include is important - UINT is redefined to unsigned long instead of unsigned int
+// somewhere in the following headers, which leads to unresolved symbol -
 // linking is okay, error pops up when starting Audacious.
 
 #include <gtk/gtk.h>
@@ -46,9 +46,9 @@ void ShowAboutWindow()
 	{
 		gchar * about_text = g_strjoin("",
 			_("Modplug Input Plugin for Audacious ver"), VERSION,
-			_("\nModplug sound engine written by Olivier Lapicque.\nXMMS interface for Modplug by Kenton Varda.\n(c)2000 Olivier Lapicque and Kenton Varda.\nUpdates and Maintainance by Konstanty Bialkowski.\nPorted to BMP by Theofilos Intzoglou."),
+			_("\nModplug sound engine written by Olivier Lapicque.\nXMMS interface for Modplug by Kenton Varda.\n(c)2000 Olivier Lapicque and Kenton Varda.\nUpdates and maintenance by Konstanty Bialkowski.\nPorted to BMP by Theofilos Intzoglou."),
 			NULL);
-		
+
 		AboutWin = audacious_info_dialog(_("About Modplug"), about_text, _("Ok"), FALSE, NULL, NULL);
 		g_signal_connect(G_OBJECT(AboutWin), "destroy",
 			         G_CALLBACK(gtk_widget_destroyed), &AboutWin);
@@ -61,12 +61,12 @@ void ShowConfigureWindow(const ModplugXMMS::Settings& aProps)
 {
 	if(!ConfigWin)
 		ConfigWin = create_Config();
-	
+
 	if(aProps.mBits == 8)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "bit8"), TRUE);
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "bit16"), TRUE);
-	
+
 	if(aProps.mFrequency == 22050)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "samp22"), TRUE);
 	else if (aProps.mFrequency == 44100)
@@ -75,12 +75,12 @@ void ShowConfigureWindow(const ModplugXMMS::Settings& aProps)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "samp96"), TRUE);
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "samp48"), TRUE);
-	
+
 	if(aProps.mChannels == 1)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "mono"), TRUE);
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "stereo"), TRUE);
-	
+
 	if(aProps.mResamplingMode == 0)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "resampNearest"), TRUE);
 	else if(aProps.mResamplingMode == 1)
@@ -89,47 +89,47 @@ void ShowConfigureWindow(const ModplugXMMS::Settings& aProps)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "resampSpline"), TRUE);
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "resampPolyphase"), TRUE);
-	
+
 	if(aProps.mNoiseReduction)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxNR"), TRUE);
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxNR"), FALSE);
-	
+
 	if(aProps.mGrabAmigaMOD)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxAmigaMOD"), TRUE);
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxAmigaMOD"), FALSE);
-	
+
 	if(aProps.mFastinfo)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxFastInfo"), TRUE);
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxFastInfo"), FALSE);
-	
+
 	if(aProps.mUseFilename)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxUseFilename"), TRUE);
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxUseFilename"), FALSE);
-	
+
 	if(aProps.mReverb)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxReverb"), TRUE);
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxReverb"), FALSE);
-	
+
 	if(aProps.mMegabass)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxBassBoost"), TRUE);
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxBassBoost"), FALSE);
-	
+
 	if(aProps.mSurround)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxSurround"), TRUE);
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxSurround"), FALSE);
-	
+
 	if(aProps.mPreamp)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxPreamp"), TRUE);
 	else
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxPreamp"), FALSE);
-	
+
 	gtk_adjustment_set_value(gtk_range_get_adjustment((GtkRange*)lookup_widget(ConfigWin, "fxReverbDepth")),   aProps.mReverbDepth);
 	gtk_adjustment_set_value(gtk_range_get_adjustment((GtkRange*)lookup_widget(ConfigWin, "fxReverbDelay")),   aProps.mReverbDelay);
 	gtk_adjustment_set_value(gtk_range_get_adjustment((GtkRange*)lookup_widget(ConfigWin, "fxBassAmount")),    aProps.mBassAmount);
@@ -137,7 +137,7 @@ void ShowConfigureWindow(const ModplugXMMS::Settings& aProps)
 	gtk_adjustment_set_value(gtk_range_get_adjustment((GtkRange*)lookup_widget(ConfigWin, "fxSurroundDepth")), aProps.mSurroundDepth);
 	gtk_adjustment_set_value(gtk_range_get_adjustment((GtkRange*)lookup_widget(ConfigWin, "fxSurroundDelay")), aProps.mSurroundDelay);
 	gtk_adjustment_set_value(gtk_range_get_adjustment((GtkRange*)lookup_widget(ConfigWin, "fxPreampLevel")), aProps.mPreampLevel);
-	
+
 	if(aProps.mLoopCount < 0)
 		gtk_toggle_button_set_active((GtkToggleButton*)lookup_widget(ConfigWin, "fxLoopForever"), TRUE);
 	else if(aProps.mLoopCount == 0)
@@ -148,7 +148,7 @@ void ShowConfigureWindow(const ModplugXMMS::Settings& aProps)
 		gtk_adjustment_set_value(gtk_spin_button_get_adjustment(
 			(GtkSpinButton*)lookup_widget(ConfigWin, "fxLoopCount")), aProps.mLoopCount);
 	}
-	
+
 	gtk_widget_show(ConfigWin);
 }
 
@@ -305,7 +305,7 @@ void ShowInfoWindow(const string& aFilename)
 
 	char message[MAX_MESSAGE_LENGTH];
 	static int length = 0;
-	
+
 	//textbox = (GtkLabel*)lookup_widget(InfoWin, "info_message");
 	//gtk_text_backward_delete(textbox, length);
 	length = lSoundFile->GetSongComments(message, MAX_MESSAGE_LENGTH, 80);
@@ -314,7 +314,7 @@ void ShowInfoWindow(const string& aFilename)
 		gtk_label_set_text((GtkLabel*)lookup_widget(InfoWin, "info_message"), tmps);
 		g_free(tmps);
 	}
-	
+
 	//unload the file
 	lSoundFile->Destroy();
 	delete lSoundFile;
