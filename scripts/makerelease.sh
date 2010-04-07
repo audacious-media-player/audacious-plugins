@@ -45,8 +45,10 @@ echo
 echo "Building root: $RELEASENAME/"
 hg archive $RELEASENAME
 cd $RELEASENAME
+rm -rf .hg_archival.txt .hgignore .hgtags
+rm -rf scripts
 sh autogen.sh
-rm -rf autogen.sh autom4te.cache .hg_archival.txt .hgignore .hgtags
+rm -rf autogen.sh autom4te.cache
 
 # Run application specific instructions here.
 if [ -x "$WRKDIR/application.sh" ]; then
