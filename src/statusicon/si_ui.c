@@ -93,6 +93,14 @@ si_ui_statusicon_cb_btpress ( GtkStatusIcon * icon , GdkEventButton * event , gp
 
     case 3:
     {
+      if (GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "popup_active" )) == 1)
+      {
+        popup_step = 1;
+        
+        si_ui_statusicon_popup_hide( icon );
+        si_ui_statusicon_popup_timer_start( icon );
+      }
+      
       if (event->state & GDK_SHIFT_MASK)
         audacious_drct_pl_prev();
       else{
@@ -169,6 +177,21 @@ si_ui_statusicon_popup_show ( gpointer icon )
                 gint pl_active = aud_playlist_get_active();
                 gint pos = aud_playlist_get_position(pl_active);
                 GtkWidget *popup = g_object_get_data( G_OBJECT(icon) , "popup" );
+                
+                GdkDisplay *display = gdk_display_get_default();
+                GdkScreen *screen = gdk_display_get_default_screen(display);
+                GdkRectangle area;
+                gint x, y;
+                gtk_status_icon_get_geometry(icon, &screen, &area, NULL);
+                gdk_display_get_pointer(display, &screen, &x, &y, NULL);
+
+                if (x < area.x || x > area.x + area.width || y < area.y || y > area.y + area.width)
+                {                    
+                    si_ui_statusicon_popup_timer_stop(icon);
+                    si_ui_statusicon_popup_hide(icon);
+                    
+                    return TRUE;    
+                }
 
                 tuple = (Tuple*) aud_playlist_entry_get_tuple( pl_active , pos );
                 if ( ( tuple == NULL ) || ( aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) < 1 ) )  {
