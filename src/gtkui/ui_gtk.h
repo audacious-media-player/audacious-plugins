@@ -20,6 +20,8 @@
 #ifndef UI_NEW_H
 #define UI_NEW_H
 
+static GtkWidget *window;       /* the main window */
+
 extern Interface gtkui_interface;
 void show_preferences_window(gboolean show);
 

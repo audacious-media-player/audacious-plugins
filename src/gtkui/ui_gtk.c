@@ -29,7 +29,6 @@
 #include "ui_playlist_model.h"
 #include "ui_manager.h"
 
-static GtkWidget *window;       /* the main window */
 static GtkWidget *label_time;
 static GtkWidget *slider;
 static GtkWidget *playlist_notebook;
@@ -686,8 +685,8 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     cbs->hide_jump_to_track = audgui_jump_to_track_hide;
     cbs->show_about_window = audgui_show_about_window;
     cbs->hide_about_window = audgui_hide_about_window;
-    cbs->run_gtk_plugin = ui_run_gtk_plugin;
-    cbs->stop_gtk_plugin = ui_stop_gtk_plugin;
+    cbs->run_gtk_plugin = (void *) ui_run_gtk_plugin;
+    cbs->stop_gtk_plugin = (void *) ui_stop_gtk_plugin;
 
     gtk_main();
 

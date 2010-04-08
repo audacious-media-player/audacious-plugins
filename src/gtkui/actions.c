@@ -50,7 +50,6 @@
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 #include "ui_gtk.h"
-#include "../skins/ui_playlist_manager.h"
 #include "util.h"
 
 static GtkWidget *mainwin_jtt = NULL;
@@ -717,7 +716,7 @@ void action_playlist_refresh_list(void)
 
 void action_open_list_manager(void)
 {
-    playlist_manager_ui_show();
+    audgui_playlist_manager_ui_show(window);
 }
 
 void action_playlist_search_and_select(void)
