@@ -23,14 +23,15 @@
 #include "config.h"
 #include "plugin.h"
 #include "input.h"
+#include "tuple.h"
 
 #include <math.h>
-
 #include <gtk/gtk.h>
 #include <stdarg.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include "tuple.h"
+
+#include <audacious/audtag.h>
 
 /*
  * Global variables
@@ -604,7 +605,7 @@ static Tuple * audmad_probe_for_tuple (const gchar * filename, VFSFile * handle)
         return NULL;
     }
 
-    tuple = info.tuple;
+    tuple = tag_tuple_read(info.tuple, handle);
     mowgli_object_ref (tuple);
     input_term (& info);
     return tuple;
