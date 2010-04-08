@@ -677,17 +677,9 @@ mainwin_mouse_button_press(GtkWidget * widget,
                            GdkEventButton * event,
                            gpointer callback_data)
 {
-    if (config.scaled) {
-        /*
-         * A hack to make scaling transparent to callbacks.
-         * We should make a copy of this data instead of
-         * tampering with the data we get from gtk+
-         */
-        event->x /= config.scale_factor;
-        event->y /= config.scale_factor;
-    }
-
-    if (event->button == 1 && event->type == GDK_2BUTTON_PRESS && event->y < 14) {
+    if (event->button == 1 && event->type == GDK_2BUTTON_PRESS && event->y /
+     config.scale_factor < 14)
+    {
         mainwin_set_shade(!config.player_shaded);
         if (dock_is_moving(GTK_WINDOW(mainwin)))
             dock_move_release(GTK_WINDOW(mainwin));
