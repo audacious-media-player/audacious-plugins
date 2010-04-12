@@ -611,22 +611,6 @@ static Tuple * audmad_probe_for_tuple (const gchar * filename, VFSFile * handle)
     return tuple;
 }
 
-static Tuple * audmad_get_song_tuple (const gchar * filename)
-{
-    VFSFile * handle;
-    Tuple * tuple;
-
-    if ((handle = aud_vfs_fopen (filename, "r")) == NULL)
-    {
-        g_warning ("Cannot open %s.\n", filename);
-        return NULL;
-    }
-
-    tuple = audmad_probe_for_tuple (filename, handle);
-    aud_vfs_fclose (handle);
-    return tuple;
-}
-
 static const gchar *fmts[] = { "mp3", "mp2", "mpg", "bmu", NULL };
 
 extern PluginPreferences preferences;
@@ -641,7 +625,6 @@ InputPlugin mad_ip = {
     .pause = audmad_pause,
     .seek = audmad_seek,
     .cleanup = audmad_cleanup,
-    .get_song_tuple = audmad_get_song_tuple,
     .is_our_file_from_vfs = audmad_is_our_fd,
     .vfs_extensions = (gchar**)fmts,
     .mseek = audmad_mseek,
