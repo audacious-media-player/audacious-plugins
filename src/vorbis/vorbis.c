@@ -171,12 +171,14 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
         set_tuple_str(tuple, FIELD_TITLE, NULL, comment, "title");
         set_tuple_str(tuple, FIELD_ARTIST, NULL, comment, "artist");
         set_tuple_str(tuple, FIELD_ALBUM, NULL, comment, "album");
-        set_tuple_str(tuple, FIELD_DATE, NULL, comment, "date");
         set_tuple_str(tuple, FIELD_GENRE, NULL, comment, "genre");
         set_tuple_str(tuple, FIELD_COMMENT, NULL, comment, "comment");
 
         if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != NULL)
             aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(tmps));
+
+        if ((tmps = vorbis_comment_query (comment, "date", 0)) != NULL)
+            aud_tuple_associate_int (tuple, FIELD_YEAR, NULL, atoi (tmps));
     }
 
     aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
