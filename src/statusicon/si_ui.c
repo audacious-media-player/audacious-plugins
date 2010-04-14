@@ -60,8 +60,9 @@ si_ui_statusicon_create ( void )
     GtkIconTheme *theme;
 
     theme = gtk_icon_theme_get_default();
-    if (gtk_icon_theme_has_icon(theme, "audacious"))
-    {
+    if (gtk_icon_theme_has_icon(theme, "audacious-panel")) {
+        icon = gtk_status_icon_new_from_icon_name("audacious-panel");
+    } else if (gtk_icon_theme_has_icon(theme, "audacious")) {
         icon = gtk_status_icon_new_from_icon_name("audacious");
     } else {
         icon = gtk_status_icon_new_from_file(DATA_DIR "/images/audacious_player.xpm");
