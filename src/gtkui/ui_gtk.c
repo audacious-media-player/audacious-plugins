@@ -382,6 +382,8 @@ static gboolean ui_update_song_info(gpointer hook_data, gpointer user_data)
 
 static void ui_clear_song_info()
 {
+    if (!GTK_IS_WINDOW(window)) return;
+
     gtk_window_set_title(GTK_WINDOW(window), "Audacious");
     gtk_widget_hide(label_time);
     gtk_range_set_value(GTK_RANGE(slider), 0);
