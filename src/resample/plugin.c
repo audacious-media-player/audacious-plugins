@@ -46,6 +46,7 @@ void resample_config_load (void)
     }
     
     aud_cfg_db_get_int (database, "resample", "method", & method);
+    aud_cfg_db_get_int (database, "resample", "fallback_rate", & fallback_rate);
 
     aud_cfg_db_close (database);
 }
@@ -63,6 +64,7 @@ void resample_config_save (void)
     }
     
     aud_cfg_db_set_int (database, "resample", "method", method);
+    aud_cfg_db_set_int (database, "resample", "fallback_rate", fallback_rate);
 
     aud_cfg_db_close (database);
 }
