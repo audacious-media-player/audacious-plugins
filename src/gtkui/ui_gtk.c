@@ -350,7 +350,7 @@ static void ui_update_time_info(gint time)
     time /= 1000;
     length /= 1000;
 
-    g_snprintf(text, sizeof(text) / sizeof(gchar), "<tt><b>%d:%.2d/%d:%.2d</b></tt>", time / 60, time % 60, length / 60, length % 60);
+    g_snprintf(text, sizeof(text) / sizeof(gchar), "<tt><b>%.2d:%.2d/%.2d:%.2d</b></tt>", time / 60, time % 60, length / 60, length % 60);
     gtk_label_set_markup(GTK_LABEL(label_time), text);
 }
 
@@ -385,7 +385,7 @@ static void ui_clear_song_info()
     if (!GTK_IS_WINDOW(window)) return;
 
     gtk_window_set_title(GTK_WINDOW(window), "Audacious");
-    gtk_widget_hide(label_time);
+    gtk_label_set_markup(GTK_LABEL(label_time), "<tt><b>00:00/00:00</b></tt>");
     gtk_range_set_value(GTK_RANGE(slider), 0);
 }
 
