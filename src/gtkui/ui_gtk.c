@@ -595,6 +595,8 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     gtk_box_pack_start(GTK_BOX(vbox), plbox, TRUE, TRUE, 0);
 
     playlist_notebook = gtk_notebook_new();
+    gtk_notebook_set_scrollable(GTK_NOTEBOOK(playlist_notebook), TRUE);
+    gtk_notebook_popup_enable(GTK_NOTEBOOK(playlist_notebook));
     gtk_notebook_set_show_border(GTK_NOTEBOOK(playlist_notebook), FALSE);
 
     if (config.vis_position != VIS_IN_TABS)
