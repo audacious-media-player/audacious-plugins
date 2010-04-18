@@ -237,7 +237,6 @@ static void button_pause_pressed()
 static void button_stop_pressed()
 {
     audacious_drct_stop();
-    return;
 }
 
 static void button_previous_pressed()
@@ -534,7 +533,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), MAINWIN_DEFAULT_WIDTH, MAINWIN_DEFAULT_HEIGHT);
-    gtk_window_set_title(GTK_WINDOW(window), "Audacious");
 
     if (config.save_window_position && config.player_width && config.player_height)
         gtk_window_resize(GTK_WINDOW(window), config.player_width, config.player_height);
@@ -670,10 +668,13 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     if (config.player_visible)
         ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
 
-    ui_clear_song_info();
-
     if (audacious_drct_get_playing())
-        ui_playback_begin(0, 0);
+    {
+        ui_set_song_info(NULL, NULL);
+        ui_playback_begin(NULL, NULL);
+    }
+    else
+        ui_clear_song_info();
 
     /* Register interface callbacks */
     cbs->show_prefs_window = show_preferences_window;
