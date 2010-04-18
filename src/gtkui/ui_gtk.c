@@ -603,7 +603,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     {
         GtkWidget *pane = NULL;
 
-        g_print("vis not in tabs : %d\n", config.vis_position);
+        AUDDBG("vis not in tabs : %d\n", config.vis_position);
 
         switch (config.vis_position)
         {
@@ -648,7 +648,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
             gtk_box_pack_end(GTK_BOX(plbox), pane, TRUE, TRUE, 0);
     }
     else {
-        g_print("vis in tabs\n");
+        AUDDBG("vis in tabs\n");
         gtk_box_pack_end(GTK_BOX(plbox), playlist_notebook, TRUE, TRUE, 0);
     }
 
