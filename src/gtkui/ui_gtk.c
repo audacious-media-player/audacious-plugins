@@ -668,13 +668,13 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     if (config.player_visible)
         ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
 
+    ui_clear_song_info();
+
     if (audacious_drct_get_playing())
     {
         ui_set_song_info(NULL, NULL);
         ui_playback_begin(NULL, NULL);
     }
-    else
-        ui_clear_song_info();
 
     /* Register interface callbacks */
     cbs->show_prefs_window = show_preferences_window;
