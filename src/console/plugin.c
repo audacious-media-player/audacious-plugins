@@ -13,7 +13,6 @@
 #include <audacious/plugin.h>
 #include "configure.h"
 
-Tuple * console_get_song_tuple(const gchar *path);
 Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd);
 void console_play_file(InputPlayback *playback);
 void console_seek(InputPlayback *data, gint time);
@@ -59,7 +58,6 @@ static InputPlugin console_ip =
     .stop = console_stop,
     .pause = console_pause,
     .seek = console_seek,
-    .get_song_tuple = console_get_song_tuple,
     .vfs_extensions = gme_fmts,
     .probe_for_tuple = console_probe_for_tuple,
     .have_subtune = TRUE
