@@ -370,24 +370,6 @@ wv_get_tuple_from_file(const gchar * filename, VFSFile * fd, gchar *error)
 }
 
 static Tuple *
-wv_get_song_tuple(const gchar * filename)
-{
-    VFSFile *fd = NULL;
-    gchar error[1024];
-    Tuple *tuple;
-    
-    fd = aud_vfs_fopen(filename, "rb");
-    if (fd == NULL)
-        return NULL;
-
-    tuple = wv_get_tuple_from_file(filename, fd, (gchar *) &error);
-
-    vfs_fclose(fd);
-
-    return tuple;
-}
-
-static Tuple *
 wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
 {
     gchar error[1024];
@@ -447,7 +429,6 @@ static InputPlugin wvpack = {
     .pause = wv_pause,
     .seek = wv_seek,
     .file_info_box = wv_file_info_box,
-    .get_song_tuple = wv_get_song_tuple,
     .vfs_extensions = wv_fmts,
     .probe_for_tuple = wv_probe_for_tuple,
 };
