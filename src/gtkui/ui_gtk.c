@@ -260,7 +260,7 @@ static void ui_set_song_info(void *unused, void *another)
     if (!g_signal_handler_is_connected(slider, slider_change_handler_id))
         return;
 
-    if (length == -1)
+    if (length <= 0)
         return;
 
     /* block "value-changed" signal handler to prevent skipping track
@@ -268,8 +268,6 @@ static void ui_set_song_info(void *unused, void *another)
     g_signal_handler_block(slider, slider_change_handler_id);
     gtk_range_set_range(GTK_RANGE(slider), 0.0, (gdouble) length);
     g_signal_handler_unblock(slider, slider_change_handler_id);
-
-    gtk_widget_show(label_time);
 
     gtk_window_set_title(GTK_WINDOW(window), title_s);
     g_free(title_s);
@@ -666,8 +664,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     g_signal_connect(slider, "button-release-event", G_CALLBACK(ui_slider_button_release_cb), NULL);
 
     volume_change_handler_id = g_signal_connect(volume, "value-changed", G_CALLBACK(ui_volume_value_changed_cb), NULL);
-
-    ui_set_song_info(NULL, NULL);
 
     gtk_widget_show_all(vbox);
 
