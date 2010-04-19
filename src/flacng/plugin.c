@@ -238,7 +238,7 @@ gboolean flac_is_our_fd(const gchar* filename, VFSFile* fd) {
 
     _DEBUG("Accepting file %s", filename);
 
-    reset_info(test_info, FALSE);
+    reset_info(test_info);
     INFO_UNLOCK(test_info);
 
     _LEAVE TRUE;
@@ -304,7 +304,7 @@ static gpointer flac_play_loop(gpointer arg)
     if (NULL == (play_buffer = g_malloc(BUFFER_SIZE_BYTE))) {
         _ERROR("Could not allocate conversion buffer");
         playback->playing = FALSE;
-        reset_info(main_info, TRUE);
+        reset_info(main_info);
         _LEAVE NULL;
     }
 
@@ -319,7 +319,7 @@ static gpointer flac_play_loop(gpointer arg)
                                       main_info->stream.samplerate,
                                       main_info->stream.channels)) {
         g_free(play_buffer);
-        reset_info(main_info, TRUE);
+        reset_info(main_info);
         playback->playing = FALSE;
         _ERROR("Could not open output plugin!");
         _LEAVE NULL;
@@ -473,7 +473,7 @@ static gpointer flac_play_loop(gpointer arg)
     _DEBUG("Audio device closed");
 
     g_free(play_buffer);
-    reset_info(main_info, TRUE);
+    reset_info(main_info);
 
     if (FALSE == FLAC__stream_decoder_flush(main_decoder)) {
         _ERROR("Could not flush decoder state!");
@@ -504,7 +504,7 @@ void flac_play_file(InputPlayback *playback)
     }
 
     if (FALSE == read_metadata(fd, main_decoder, main_info)) {
-        reset_info(main_info, TRUE);
+        reset_info(main_info);
         _ERROR("Could not prepare file for playing!");
         _LEAVE;
     }
@@ -535,7 +535,7 @@ static void flac_stop(InputPlayback *playback)
         g_thread_join(playback->thread);
         playback->thread = NULL;
 
-        reset_info(main_info, TRUE);
+        reset_info(main_info);
     }
     else
         g_mutex_unlock (seek_mutex);
@@ -590,7 +590,7 @@ static Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
     else
         _ERROR ("Could not read metadata tuple for file <%s>", filename);
 
-    reset_info(test_info, TRUE);
+    reset_info(test_info);
     INFO_UNLOCK(test_info);
 
     _LEAVE tuple;

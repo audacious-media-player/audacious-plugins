@@ -45,14 +45,8 @@ callback_info* init_callback_info(gchar* name) {
         _LEAVE NULL;
     }
 
-    /*
-     * We need to set this manually to NULL because
-     * reset_info will try to close the file pointed to
-     * by input_stream if it is non-NULL.
-     * Same for info->comment.x
-     */
     info->name = name;
-    reset_info(info, FALSE);
+    reset_info(info);
 
     info->mutex = g_mutex_new();
 
@@ -72,17 +66,11 @@ void clean_callback_info(callback_info* info)
 
 /* --- */
 
-void reset_info(callback_info* info, gboolean close_fd) {
+void reset_info(callback_info* info) {
 
     _ENTER;
 
     _DEBUG("Using callback_info %s", info->name);
-
-    if (close_fd && (NULL != info->input_stream)) {
-        _DEBUG("Closing fd");
-        aud_vfs_fclose(info->input_stream);
-        info->input_stream = NULL;
-    }
 
     // memset(info->output_buffer, 0, BUFFER_SIZE * sizeof(int16_t));
     info->buffer_free = BUFFER_SIZE_SAMP;
@@ -128,9 +116,7 @@ gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info*
 
     _DEBUG("Using callback_info %s", info->name);
 
-    reset_info(info, FALSE);
-
-    info->input_stream = fd;
+    reset_info(info);
 
     /*
      * Reset the decoder
@@ -160,7 +146,7 @@ gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info*
         _DEBUG("Could not read the metadata: %s(%d)!",
                 FLAC__StreamDecoderStateString[ret], ret);
         /* Do not close the filehandle, it was passed to us */
-        reset_info(info, FALSE);
+        reset_info(info);
         _LEAVE FALSE;
     }
 
