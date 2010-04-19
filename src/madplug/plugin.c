@@ -605,8 +605,9 @@ static Tuple * audmad_probe_for_tuple (const gchar * filename, VFSFile * handle)
         return NULL;
     }
 
-    tuple = tag_tuple_read(info.tuple, handle);
-    mowgli_object_ref (tuple);
+    mowgli_object_ref ((tuple = info.tuple));
+    tag_tuple_read (tuple, handle);
+
     input_term (& info);
     return tuple;
 }
