@@ -9,6 +9,6 @@ static void flac_play_file (InputPlayback* input);
 static void flac_stop(InputPlayback* input);
 static void flac_pause(InputPlayback* input, gshort p);
 static void flac_seek(InputPlayback* input, gint time);
-static Tuple *flac_get_song_tuple(const gchar* filename);
+static Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd);
 
 #endif

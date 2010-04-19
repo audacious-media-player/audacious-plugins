@@ -176,7 +176,7 @@ gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info*
 
 /* --- */
 
-Tuple* get_tuple(VFSFile* fd, callback_info* info)
+Tuple* get_tuple_from_file(const gchar *filename, VFSFile *fd, callback_info *info)
 {
     Tuple *out;
 
@@ -184,7 +184,7 @@ Tuple* get_tuple(VFSFile* fd, callback_info* info)
 
     _DEBUG("Using callback_info %s", info->name);
 
-    out = aud_tuple_new_from_filename(fd->uri);
+    out = aud_tuple_new_from_filename(filename);
 
     aud_tuple_associate_string(out, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
     aud_tuple_associate_string(out, FIELD_QUALITY, NULL, "lossless");
