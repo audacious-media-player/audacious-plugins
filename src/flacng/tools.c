@@ -78,9 +78,7 @@ void reset_info(callback_info* info, gboolean close_fd) {
 
     _DEBUG("Using callback_info %s", info->name);
 
-    if (close_fd && (NULL != info->input_stream)) {
-        _DEBUG("Closing fd");
-        aud_vfs_fclose(info->input_stream);
+    if (close_fd) {
         info->input_stream = NULL;
     }
 
