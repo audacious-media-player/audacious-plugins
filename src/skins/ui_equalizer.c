@@ -1351,10 +1351,14 @@ static void position_cb (void * data, void * user_data)
 
 void eq_init_hooks (void)
 {
+    gint playlist = aud_playlist_get_playing ();
+
     /* Load preset for the first song. FIXME: Doing this at interface load is
      really too late as the song may already be started. Really, this stuff
      shouldn't be in the interface plugin at all but in core. -jlindgren */
-    position_cb (GINT_TO_POINTER (aud_playlist_get_playing ()), NULL);
+    if (playlist != -1)
+        position_cb (GINT_TO_POINTER (playlist), NULL);
+
     aud_hook_associate ("playlist position", position_cb, NULL);
 }
 
