@@ -752,7 +752,8 @@ static void delete_selected (UiSkinnedPlaylistPrivate * private)
     active_length = aud_playlist_entry_count (active_playlist);
     calc_layout (private);
 
-    select_single (private, TRUE, shift);
+    private->focused = adjust_position (private, TRUE, shift);
+    select_single (private, TRUE, 0);
 }
 
 void ui_skinned_playlist_update (GtkWidget * widget)
