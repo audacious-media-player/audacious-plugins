@@ -319,7 +319,6 @@ input_set_and_free_tag(struct id3_tag *tag, Tuple *tuple, const gchar *frame, co
     gchar *scratch = input_id3_get_string(tag, frame);
 
     aud_tuple_associate_string(tuple, nfield, NULL, scratch);
-    aud_tuple_associate_string(tuple, -1, frame, scratch);
 
     g_free(scratch);
 }
