@@ -443,6 +443,7 @@ gboolean input_get_info (struct mad_info_t * info)
     info->tuple = tuple_new ();
     tuple_set_filename (info->tuple, info->filename);
 
+    input_read_tag (info);
     audmad_read_replaygain (info);
 
     if (! scan_file (info, aud_vfs_is_remote (info->filename) ? TRUE :
