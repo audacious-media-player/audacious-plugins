@@ -487,7 +487,6 @@ audmad_play_file(InputPlayback *playback)
     }
 
     mowgli_object_ref (info.tuple);
-    playback->set_tuple (playback, info.tuple);
     playback->set_params (playback, NULL, 0, info.bitrate, info.freq,
      info.channels);
 
