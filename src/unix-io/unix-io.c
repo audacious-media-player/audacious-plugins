@@ -214,7 +214,7 @@ static gboolean unix_feof (VFSFile * file)
     return FALSE;
 }
 
-static gboolean unix_truncate (VFSFile * file, glong length)
+static gint unix_truncate (VFSFile * file, glong length)
 {
     gint handle = GPOINTER_TO_INT (file->handle);
     gint result = ftruncate (handle, length);
@@ -222,10 +222,10 @@ static gboolean unix_truncate (VFSFile * file, glong length)
     if (result == -1)
     {
         error ("ftruncate failed: %s.\n", strerror (errno));
-        return FALSE;
+        return -1;
     }
 
-    return TRUE;
+    return 0;
 }
 
 static off_t unix_fsize (VFSFile * file)
