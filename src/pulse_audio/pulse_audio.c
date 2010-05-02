@@ -29,7 +29,8 @@
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
-
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 #include <pulse/pulseaudio.h>
 
 #define ERROR(...) do {fprintf (stderr, "pulseaudio: " __VA_ARGS__); putchar ('\n');} while (0)
@@ -683,11 +684,7 @@ static OutputPluginInitStatus pulse_init (void)
 
 static void pulse_about(void) {
     static GtkWidget *dialog;
-
-    if (dialog != NULL)
-        return;
-
-    dialog = audacious_info_dialog(
+    audgui_simple_message(& dialog, GTK_MESSAGE_INFO,
             _("About Audacious PulseAudio Output Plugin"),
             _("Audacious PulseAudio Output Plugin\n\n "
             "This program is free software; you can redistribute it and/or modify\n"
@@ -703,17 +700,7 @@ static void pulse_about(void) {
             "You should have received a copy of the GNU General Public License\n"
             "along with this program; if not, write to the Free Software\n"
             "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-            "USA."),
-            _("OK"),
-            FALSE,
-            NULL,
-            NULL);
-
-    gtk_signal_connect(
-            GTK_OBJECT(dialog),
-            "destroy",
-            GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-            &dialog);
+            "USA."));
 }
 
 static OutputPlugin pulse_op = {
