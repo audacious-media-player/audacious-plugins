@@ -34,6 +34,8 @@ extern "C"
 {
 #include <audacious/plugin.h>
 #include <audacious/output.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 }
 
 
@@ -138,28 +140,6 @@ print_left (const gchar * text)
   return GTK_WIDGET (label);
 }
 
-#if 0
-static void
-MessageBox (const char *title, const char *text, const char *button)
-{
-  char *tmptitle = (char *) malloc (strlen (title) + 1),
-    *tmptxt = (char *) malloc (strlen (text) + 1),
-    *tmpbutton = (char *) malloc (strlen (button) + 1);
-
-  strcpy (tmptitle, title);
-  strcpy (tmptxt, text);
-  strcpy (tmpbutton, button);
-
-  GtkWidget *msgbox = audacious_info_dialog (tmptitle, tmptxt, tmpbutton, FALSE,
-                                         G_CALLBACK (gtk_widget_destroyed),
-                                         &msgbox);
-
-  free (tmptitle);
-  free (tmptxt);
-  free (tmpbutton);
-}
-#endif
-
 /***** Dialog boxes *****/
 
 extern "C" void
@@ -177,14 +157,10 @@ adplug_about (void)
                                     "\n\nThis plugin uses the AdPlug library, which is copyright (C) Simon Peter, et al.\n"
                                     "Linked AdPlug library version: "),
                                    version_text, NULL);
-    about_win =
-      audacious_info_dialog (about_title, about_text, _("Ok"), FALSE, NULL, NULL);
-    g_signal_connect (G_OBJECT (about_win), "destroy",
-                      G_CALLBACK (gtk_widget_destroyed), &about_win);
+    audgui_simple_message (& about_win, GTK_MESSAGE_INFO, about_title, about_text);
     g_free (about_text);
     g_free (about_title);
   }
-  gtk_widget_show (about_win);
 }
 
 static void
