@@ -4,6 +4,8 @@
 #include "common.h"
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <string.h>
@@ -382,18 +384,11 @@ wv_about_box()
 {
     static GtkWidget *about_window = NULL;
 
-    if (about_window == NULL)
-    {
-        about_window =
-            audacious_info_dialog(g_strdup_printf
-            (_("Wavpack Decoder Plugin %s"), VERSION),
-            (_("Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n\n"
-            "Some of the plugin code was by Miles Egan\n"
-            "Visit the Wavpack site at http://www.wavpack.com/\n")),
-            (_("Ok")), FALSE, NULL, NULL);
-        g_signal_connect(G_OBJECT(about_window), "destroy",
-            G_CALLBACK(gtk_widget_destroyed), &about_window);
-    }
+    audgui_simple_message(&about_window, GTK_MESSAGE_INFO,
+    g_strdup_printf(_("Wavpack Decoder Plugin %s"), VERSION),
+    _("Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n\n"
+    "Some of the plugin code was by Miles Egan\n"
+    "Visit the Wavpack site at http://www.wavpack.com/\n"));
 }
 
 WavPackConfig wv_cfg;
