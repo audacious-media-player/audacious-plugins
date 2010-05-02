@@ -32,6 +32,8 @@
 #include <sys/stat.h>
 
 #include <audacious/audtag.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 /*
  * Global variables
@@ -563,14 +565,10 @@ audmad_about()
     MAD_VERSION_MAJOR, MAD_VERSION_MINOR, MAD_VERSION_PATCH,
     MAD_VERSION_EXTRA);
 
-    aboutbox = audacious_info_dialog(_("About MPEG Audio Plugin"),
-                                 scratch,
-                                 _("Ok"), FALSE, NULL, NULL);
+    audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
+     _("About MPEG Audio Plugin"), scratch);
 
     g_free(scratch);
-
-    g_signal_connect(G_OBJECT(aboutbox), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed), &aboutbox);
 }
 
 /**

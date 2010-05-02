@@ -21,13 +21,6 @@
  *  USA.
  */
 
-#include "crossfade.h"
-#include "configure.h"
-#include "cfgutil.h"
-
-#include "interface-2.0.h"
-#include "support-2.0.h"
-
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -38,6 +31,16 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
+
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
+#include "crossfade.h"
+#include "configure.h"
+#include "cfgutil.h"
+
+#include "interface-2.0.h"
+#include "support-2.0.h"
 
 #define HIDE(name)                  \
 { if ((set_wgt = lookup_widget(config_win, name)))  \
@@ -1140,40 +1143,32 @@ xfade_configure()
         gdk_window_raise(config_win->window);
 }
 
-void
-xfade_about()
+void xfade_about (void)
 {
-    static GtkWidget *dialog;
+    static GtkWidget * dialog;
 
-    if (dialog != NULL)
-        return;
-
-    dialog = audacious_info_dialog(
-        _("About Crossfade Plugin"),
-        _("Audacious Crossfade Plugin\n\n"
-          "Copyright © 2009 William Pitcock <nenolod@atheme.org>\n"
-          "\n"
-          "...based in part on XMMS-Crossfade:\n"
-          "Copyright © 2000-2009 Peter Eisenlohr <peter@eisenlohr.org>\n"
-          "\n"
-          "based on the original OSS Output Plugin  Copyright (C) 1998-2000\n"
-          "Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies\n"
-          "\n"
-          "This program is free software; you can redistribute it and/or modify\n"
-          "it under the terms of the GNU General Public License as published by\n"
-          "the Free Software Foundation; either version 2 of the License, or\n"
-          "(at your option) any later version.\n"
-          "\n"
-          "This program is distributed in the hope that it will be useful,\n"
-          "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-          "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-          "GNU General Public License for more details.\n"
-          "\n"
-          "You should have received a copy of the GNU General Public License\n"
-          "along with this program; if not, write to the Free Software\n"
-          "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n" "USA."),
-        _("Ok"), FALSE, NULL, NULL);
-
-    g_signal_connect(G_OBJECT(dialog), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed), &dialog);
+    audgui_simple_message (& dialog, GTK_MESSAGE_INFO,
+     _("About Crossfade Plugin"),
+     _("Audacious Crossfade Plugin\n\n"
+     "Copyright © 2009 William Pitcock <nenolod@atheme.org>\n"
+     "\n"
+     "...based in part on XMMS-Crossfade:\n"
+     "Copyright © 2000-2009 Peter Eisenlohr <peter@eisenlohr.org>\n"
+     "\n"
+     "based on the original OSS Output Plugin  Copyright (C) 1998-2000\n"
+     "Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies\n"
+     "\n"
+     "This program is free software; you can redistribute it and/or modify\n"
+     "it under the terms of the GNU General Public License as published by\n"
+     "the Free Software Foundation; either version 2 of the License, or\n"
+     "(at your option) any later version.\n"
+     "\n"
+     "This program is distributed in the hope that it will be useful,\n"
+     "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+     "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+     "GNU General Public License for more details.\n"
+     "\n"
+     "You should have received a copy of the GNU General Public License\n"
+     "along with this program; if not, write to the Free Software\n"
+     "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n" "USA."));
 }

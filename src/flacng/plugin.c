@@ -20,6 +20,9 @@
 #include "flacng.h"
 #include <audacious/output.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 #include "tools.h"
 #include "plugin.h"
 #include "seekable_stream_callbacks.h"
@@ -614,11 +617,8 @@ static void flac_aboutbox(void)
                                "\n"
                                "http://www.skytale.net/projects/bmp-flac2/"), NULL);
 
-    about_window = audacious_info_dialog(_("About FLAC Audio Plugin"),
-                                     about_text,
-                                     _("OK"), FALSE, NULL, NULL);
+    audgui_simple_message (& about_window, GTK_MESSAGE_INFO,
+     _("About FLAC Audio Plugin"), about_text);
 
-    g_signal_connect(G_OBJECT(about_window), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed), &about_window);
     g_free(about_text);
 }

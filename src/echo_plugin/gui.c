@@ -3,6 +3,9 @@
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 #include "echo.h"
 
 static const char *echo_about_text =
@@ -13,19 +16,12 @@ N_("Echo Plugin\n"
 static GtkWidget *conf_dialog = NULL, *surround_btn;
 static GtkObject *echo_delay_adj, *echo_feedback_adj, *echo_volume_adj;
 
-void echo_about(void)
+void echo_about (void)
 {
-	static GtkWidget *echo_about_dialog = NULL;
+	static GtkWidget * echo_about_dialog = NULL;
 
-	if (echo_about_dialog != NULL)
-		return;
-
-	echo_about_dialog = audacious_info_dialog(_("About Echo Plugin"),
-					      _(echo_about_text), _("Ok"),
-					      FALSE, NULL, NULL);
-	gtk_signal_connect(GTK_OBJECT(echo_about_dialog), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-			   &echo_about_dialog);
+	audgui_simple_message (& echo_about_dialog, GTK_MESSAGE_INFO,
+	 _("About Echo Plugin"), _(echo_about_text));
 }
 
 static void apply_changes(void)
@@ -121,10 +117,10 @@ void echo_configure(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(surround_btn),
 				     echo_surround_enable);
 	gtk_widget_show(surround_btn);
-	
+
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(conf_dialog)->vbox), surround_btn,
 			   TRUE, TRUE, 5);
-	
+
 	bbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
 	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);

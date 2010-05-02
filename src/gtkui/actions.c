@@ -49,6 +49,8 @@
 
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 #include "ui_gtk.h"
 #include "util.h"
 
@@ -132,7 +134,7 @@ void action_ab_clear(void)
 
 void action_current_track_info(void)
 {
-    aud_fileinfo_show_current();
+    audgui_infowin_show_current();
 }
 
 void action_jump_to_file(void)
@@ -302,7 +304,7 @@ void action_playlist_track_info(void)
     gint playlist = aud_playlist_get_active();
 
     if (aud_playlist_selected_count(playlist) == 0)
-        aud_fileinfo_show_current();
+        audgui_infowin_show_current ();
     else
     {
         gint entries = aud_playlist_entry_count(playlist);
@@ -314,7 +316,7 @@ void action_playlist_track_info(void)
                 break;
         }
 
-        aud_fileinfo_show(playlist, count);
+        audgui_infowin_show (playlist, count);
     }
 }
 

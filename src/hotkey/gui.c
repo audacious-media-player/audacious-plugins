@@ -41,6 +41,8 @@
 
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "plugin.h"
 #include "gui.h"
@@ -650,25 +652,19 @@ void ok_callback (GtkWidget *widget, gpointer data)
 	gtk_widget_destroy (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
 }
 
-
-
 void show_about (void)
 {
-	static GtkWidget *dialog;
+    static GtkWidget * dialog = NULL;
 
-	dialog = audacious_info_dialog (_("About Global Hotkey Plugin"),
-				_("Global Hotkey Plugin\n"
-				"Control the player with global key combinations or multimedia keys.\n\n"
-				"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
-				"Contributers include:\n"
-				"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-				"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
-                         	"			Bryn Davies <curious@ihug.com.au>\n"
-                        	"			Jonathan A. Davis <davis@jdhouse.org>\n"
-                         	"			Jeremy Tan <nsx@nsx.homeip.net>\n\n"
-                         	),
-                         	_("OK"), TRUE, NULL, NULL);
-
-	gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dialog);
+    audgui_simple_message (& dialog, GTK_MESSAGE_INFO,
+     _("About Global Hotkey Plugin"),
+     _("Global Hotkey Plugin\n"
+     "Control the player with global key combinations or multimedia keys.\n\n"
+     "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
+     "Contributers include:\n"
+     "Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+     "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
+     "			Bryn Davies <curious@ihug.com.au>\n"
+     "			Jonathan A. Davis <davis@jdhouse.org>\n"
+     "			Jeremy Tan <nsx@nsx.homeip.net>\n\n"));
 }

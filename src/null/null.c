@@ -24,6 +24,8 @@
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 static GTimer *timer;
 static gulong offset_time, written;
@@ -60,12 +62,9 @@ static void null_about(void)
 			           _(" by Christian Birchinger <joker@netswarm.net>\n"
 			             "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"), NULL);
 
-	about = audacious_info_dialog(_("About Null Output"),
-				  about_text,
-				  _("Ok"), FALSE, NULL, NULL);
+	audgui_simple_message (& about, GTK_MESSAGE_INFO, _("About Null Output"),
+     about_text);
 
-	g_signal_connect(G_OBJECT(about), "destroy",
-			 G_CALLBACK(gtk_widget_destroyed), &about);
 	g_free(about_text);
 }
 

@@ -26,6 +26,8 @@
 #include "config.h"
 #include "ffaudio-stdinc.h"
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 /***********************************************************************************
  * Plugin glue.                                                                    *
@@ -672,15 +674,11 @@ ffaudio_about(void)
         LIBAVCODEC_VERSION_MAJOR, LIBAVCODEC_VERSION_MINOR, LIBAVCODEC_VERSION_MICRO,
         formats);
 
-        aboutbox = audacious_info_dialog(
-            _("About FFaudio Plugin"),
-            description, _("Ok"), FALSE, NULL, NULL);
+        audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
+         _("About FFaudio Plugin"), description);
 
         g_free(formats);
         g_free(description);
-
-        g_signal_connect(G_OBJECT(aboutbox), "destroy",
-            G_CALLBACK(gtk_widget_destroyed), &aboutbox);
     }
 }
 

@@ -23,38 +23,34 @@
 
 #include <glib.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 #include <stdlib.h>
 
 OSSConfig oss_cfg;
 
-
-static void oss_about(void)
+static void oss_about (void)
 {
-    static GtkWidget *about_dialog = NULL;
+    static GtkWidget * about_dialog = NULL;
 
-    if (about_dialog != NULL)
-        return;
-
-    about_dialog = audacious_info_dialog(
-    _("About OSS Driver"),
-    _("Audacious OSS Driver\n\n "
-    "This program is free software; you can redistribute it and/or modify\n"
-    "it under the terms of the GNU General Public License as published by\n"
-    "the Free Software Foundation; either version 2 of the License, or\n"
-    "(at your option) any later version.\n"
-    "\n"
-    "This program is distributed in the hope that it will be useful,\n"
-    "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-    "GNU General Public License for more details.\n"
-    "\n"
-    "You should have received a copy of the GNU General Public License\n"
-    "along with this program; if not, write to the Free Software\n"
-    "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-    "USA."), _("Ok"), FALSE, NULL, NULL);
-
-    g_signal_connect(G_OBJECT(about_dialog), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed), &about_dialog);
+    audgui_simple_message (& about_dialog, GTK_MESSAGE_INFO,
+     _("About OSS Driver"),
+     _("Audacious OSS Driver\n\n "
+     "This program is free software; you can redistribute it and/or modify\n"
+     "it under the terms of the GNU General Public License as published by\n"
+     "the Free Software Foundation; either version 2 of the License, or\n"
+     "(at your option) any later version.\n"
+     "\n"
+     "This program is distributed in the hope that it will be useful,\n"
+     "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+     "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+     "GNU General Public License for more details.\n"
+     "\n"
+     "You should have received a copy of the GNU General Public License\n"
+     "along with this program; if not, write to the Free Software\n"
+     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+     "USA."));
 }
 
 static OutputPluginInitStatus oss_init(void)

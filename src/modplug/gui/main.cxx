@@ -16,8 +16,6 @@
 
 #include <gtk/gtk.h>
 #include <libintl.h>
-extern "C" {
-}
 
 #include "interface.h"
 #include "support.h"
@@ -33,6 +31,11 @@ extern "C" {
 #include <sys/mman.h>
 #include <fstream>
 
+extern "C"
+{
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+}
 
 #define MAX_MESSAGE_LENGTH 4000
 
@@ -49,12 +52,11 @@ void ShowAboutWindow()
 			_("\nModplug sound engine written by Olivier Lapicque.\nXMMS interface for Modplug by Kenton Varda.\n(c)2000 Olivier Lapicque and Kenton Varda.\nUpdates and maintenance by Konstanty Bialkowski.\nPorted to BMP by Theofilos Intzoglou."),
 			NULL);
 
-		AboutWin = audacious_info_dialog(_("About Modplug"), about_text, _("Ok"), FALSE, NULL, NULL);
-		g_signal_connect(G_OBJECT(AboutWin), "destroy",
-			         G_CALLBACK(gtk_widget_destroyed), &AboutWin);
+		audgui_simple_message (& AboutWin, GTK_MESSAGE_INFO, _("About Modplug"),
+		 about_text);
+
 		g_free(about_text);
 	}
-	gtk_widget_show(AboutWin);
 }
 
 void ShowConfigureWindow(const ModplugXMMS::Settings& aProps)

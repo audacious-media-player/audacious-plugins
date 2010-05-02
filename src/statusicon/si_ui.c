@@ -22,9 +22,11 @@
 #include "si_audacious.h"
 #include "si_cfg.h"
 #include "si_common.h"
-#include <audacious/ui_fileinfopopup.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 #include <glib.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
@@ -97,11 +99,11 @@ si_ui_statusicon_cb_btpress ( GtkStatusIcon * icon , GdkEventButton * event , gp
       if (GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "popup_active" )) == 1)
       {
         popup_step = 1;
-        
+
         si_ui_statusicon_popup_hide( icon );
         si_ui_statusicon_popup_timer_start( icon );
       }
-      
+
       if (event->state & GDK_SHIFT_MASK)
         audacious_drct_pl_prev();
       else{
@@ -174,11 +176,9 @@ si_ui_statusicon_popup_show ( gpointer icon )
         switch (popup_step) {
         case 0:
             {
-                Tuple *tuple;
                 gint pl_active = aud_playlist_get_active();
                 gint pos = aud_playlist_get_position(pl_active);
-                GtkWidget *popup = g_object_get_data( G_OBJECT(icon) , "popup" );
-                
+
                 GdkDisplay *display = gdk_display_get_default();
                 GdkScreen *screen = gdk_display_get_default_screen(display);
                 GdkRectangle area;
@@ -187,21 +187,14 @@ si_ui_statusicon_popup_show ( gpointer icon )
                 gdk_display_get_pointer(display, &screen, &x, &y, NULL);
 
                 if (x < area.x || x > area.x + area.width || y < area.y || y > area.y + area.width)
-                {                    
+                {
                     si_ui_statusicon_popup_timer_stop(icon);
                     si_ui_statusicon_popup_hide(icon);
-                    
-                    return TRUE;    
+
+                    return TRUE;
                 }
 
-                tuple = (Tuple*) aud_playlist_entry_get_tuple( pl_active , pos );
-                if ( ( tuple == NULL ) || ( aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) < 1 ) )  {
-                    gchar *title = (gchar*) aud_playlist_entry_get_title( pl_active , pos );
-                    audacious_fileinfopopup_show_from_title( popup , title );
-                }
-                else {
-                    audacious_fileinfopopup_show_from_tuple( popup , tuple );
-                }
+                audgui_infopopup_show (pl_active, pos);
                 g_object_set_data( G_OBJECT(icon) , "popup_active" , GINT_TO_POINTER(1) );
                 break;
             }
@@ -237,9 +230,8 @@ si_ui_statusicon_popup_hide ( gpointer icon )
 {
   if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(icon) , "popup_active" )) == 1 )
   {
-    GtkWidget *popup = g_object_get_data( G_OBJECT(icon) , "popup" );
     g_object_set_data( G_OBJECT(icon) , "popup_active" , GINT_TO_POINTER(0) );
-    audacious_fileinfopopup_hide( popup , NULL );
+    audgui_infopopup_hide ();
   }
 }
 
@@ -446,7 +438,6 @@ si_ui_statusicon_enable ( gboolean enable )
 
   if (( enable == TRUE ) && ( si_applet == NULL ))
   {
-    GtkWidget *si_popup;
     GtkWidget *si_smenu;
 
     si_applet = si_ui_statusicon_create();
@@ -456,13 +447,10 @@ si_ui_statusicon_enable ( gboolean enable )
       return;
     }
 
-    si_popup = audacious_fileinfopopup_create();
-
     g_object_set_data( G_OBJECT(si_applet) , "timer_id" , GINT_TO_POINTER(0) );
     g_object_set_data( G_OBJECT(si_applet) , "timer_active" , GINT_TO_POINTER(0) );
 
     g_object_set_data( G_OBJECT(si_applet) , "popup_active" , GINT_TO_POINTER(0) );
-    g_object_set_data( G_OBJECT(si_applet) , "popup" , si_popup );
 
     g_signal_connect( G_OBJECT(si_applet) , "button-release-event" ,
                       G_CALLBACK(si_ui_statusicon_cb_btpress) , NULL );
@@ -527,13 +515,10 @@ si_ui_about_show ( void )
                    "This plugin provides a status icon, placed in\n"
                    "the system tray area of the window manager.\n") , NULL );
 
-  about_dlg = audacious_info_dialog( about_title , about_text , _("Ok") , FALSE , NULL , NULL );
-  g_signal_connect( G_OBJECT(about_dlg) , "destroy" ,
-                    G_CALLBACK(gtk_widget_destroyed), &about_dlg );
+  audgui_simple_message (& about_dlg, GTK_MESSAGE_INFO, about_title, about_text);
+
   g_free( about_text );
   g_free( about_title );
-
-  gtk_widget_show_all( about_dlg );
   return;
 }
 

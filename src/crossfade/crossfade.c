@@ -31,7 +31,6 @@
 
 #include "configure.h"
 
-#include "interface-2.0.h"
 #include "support-2.0.h"
 
 #include <stdio.h>

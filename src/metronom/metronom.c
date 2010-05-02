@@ -20,6 +20,8 @@
 #include "config.h"
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 #include <glib.h>
 
 #define MIN_BPM         1
@@ -78,22 +80,15 @@ static void metronom_init(void)
     aud_uri_set_plugin("tact://", &metronom_ip);
 }
 
-static void metronom_about(void)
+static void metronom_about (void)
 {
-    static GtkWidget *aboutbox = NULL;
-    if (aboutbox == NULL)
-    {
-        aboutbox = audacious_info_dialog(
-            _("About Metronom"),
-            _("A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\n"
-            "To use it, add a URL: tact://beats*num/den\n"
-            "e.g. tact://77 to play 77 beats per minute\n"
-            "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"),
-            _("Ok"), FALSE, NULL, NULL);
+    static GtkWidget * aboutbox = NULL;
 
-        gtk_signal_connect(GTK_OBJECT(aboutbox), "destroy",
-            GTK_SIGNAL_FUNC(gtk_widget_destroyed), &aboutbox);
-    }
+    audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO, _("About Metronom"),
+     _("A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\n"
+     "To use it, add a URL: tact://beats*num/den\n"
+     "e.g. tact://77 to play 77 beats per minute\n"
+     "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"));
 }
 
 static gint metronom_is_our_file(const gchar * filename)
@@ -174,7 +169,7 @@ static void metronom_play(InputPlayback * playback)
         g_message("Invalid metronom tact parameters in URI %s", playback->filename);
         goto error_exit;
     }
-    
+
     playback->set_params(playback, name, -1, sizeof(data[0]) * 8 * AUDIO_FREQ, AUDIO_FREQ, 1);
     g_free(name);
 

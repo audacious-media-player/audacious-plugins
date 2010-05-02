@@ -10,6 +10,8 @@
 #include <audacious/plugin.h>
 #include <audacious/output.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #define MP4_VERSION VERSION
 #define SBR_DEC
@@ -274,12 +276,8 @@ static void mp4_about(void)
             "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
             "Copyright (c) 2005-2006 Audacious team"), FAAD2_VERSION);
 
-        aboutbox = audacious_info_dialog(
-            _("About MP4 AAC decoder plugin"),
-            about_text, _("Ok"), FALSE, NULL, NULL);
-
-        g_signal_connect(G_OBJECT(aboutbox), "destroy",
-            G_CALLBACK(gtk_widget_destroyed), &aboutbox);
+        audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
+         _("About MP4 AAC decoder plugin"), about_text);
 
         g_free(about_text);
     }

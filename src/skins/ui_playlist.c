@@ -57,6 +57,8 @@
 
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 #include "images/audacious_playlist.xpm"
 
 gint active_playlist;
@@ -604,7 +606,7 @@ playlistwin_fileinfo(void)
     gint rows, first, focused;
 
     ui_skinned_playlist_row_info (playlistwin_list, & rows, & first, & focused);
-    aud_fileinfo_show (active_playlist, focused);
+    audgui_infowin_show (active_playlist, focused);
 }
 
 static void

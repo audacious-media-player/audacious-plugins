@@ -22,6 +22,8 @@
 #include <glib.h>
 #include <audacious/plugin.h>
 #include <audacious/ui_plugin_menu.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "streambrowser.h"
 #include "streamdir.h"
@@ -317,32 +319,18 @@ static void sb_init ()
     gui_init ();
 }
 
-static void sb_about ()
+static void sb_about (void)
 {
-    AUDDBG("sb_about()\n");
+    static GtkWidget * about_window = NULL;
 
-    static GtkWidget *about_window = NULL;
-
-    if (about_window != NULL)
-    {
-        gtk_window_present (GTK_WINDOW (about_window));
-    }
-    else
-    {
-        about_window =
-            audacious_info_dialog (_("About Stream Browser"),
-                                   _
-                                   ("Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
-                                    "This is a simple stream browser that includes the most popular streaming directories.\n"
-                                    "Many thanks to the Streamtuner developers <http://www.nongnu.org/streamtuner>,\n"
-                                    "\tand of course to the whole Audacious community.\n\n"
-                                    "Also thank you Tony Vroon for mentoring & guiding me, again.\n\n"
-                                    "This was a Google Summer of Code 2008 project."),
-                                   _("OK"), FALSE, NULL, NULL);
-
-        g_signal_connect (G_OBJECT (about_window), "destroy",
-                          G_CALLBACK (gtk_widget_destroyed), &about_window);
-    }
+    audgui_simple_message (& about_window, GTK_MESSAGE_INFO,
+     _("About Stream Browser"),
+     _("Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
+     "This is a simple stream browser that includes the most popular streaming directories.\n"
+     "Many thanks to the Streamtuner developers <http://www.nongnu.org/streamtuner>,\n"
+     "\tand of course to the whole Audacious community.\n\n"
+     "Also thank you Tony Vroon for mentoring & guiding me, again.\n\n"
+     "This was a Google Summer of Code 2008 project."));
 }
 
 static void sb_configure ()

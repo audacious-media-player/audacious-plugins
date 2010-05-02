@@ -40,6 +40,8 @@
 
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "vorbis.h"
 
@@ -573,38 +575,29 @@ get_song_tuple(const gchar *filename)
     return tuple;
 }
 
-static void
-vorbis_aboutbox(void)
+static void vorbis_aboutbox (void)
 {
-    static GtkWidget *about_window = NULL;
-    if (about_window != NULL)
-        gtk_window_present(GTK_WINDOW(about_window));
-    else
-    {
-        about_window = audacious_info_dialog(
-        _("About Ogg Vorbis Audio Plugin"),
-        /*
-         * I18N: UTF-8 Translation: "Haavard Kvaalen" ->
-         * "H\303\245vard Kv\303\245len"
-         */
-        _
-        ("Ogg Vorbis Plugin by the Xiph.org Foundation\n\n"
-         "Original code by\n"
-         "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-         "Contributions from\n"
-         "Chris Montgomery <monty@xiph.org>\n"
-         "Peter Alm <peter@xmms.org>\n"
-         "Michael Smith <msmith@labyrinth.edu.au>\n"
-         "Jack Moffitt <jack@icecast.org>\n"
-         "Jorn Baayen <jorn@nl.linux.org>\n"
-         "Haavard Kvaalen <havardk@xmms.org>\n"
-         "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-         "Eugene Zagidullin <e.asphyx@gmail.com>\n\n"
-         "Visit the Xiph.org Foundation at http://www.xiph.org/\n"),
-        _("Ok"), FALSE, NULL, NULL);
-        g_signal_connect(G_OBJECT(about_window), "destroy",
-            G_CALLBACK(gtk_widget_destroyed), &about_window);
-    }
+    static GtkWidget * about_window = NULL;
+
+    audgui_simple_message (& about_window, GTK_MESSAGE_INFO,
+     _("About Ogg Vorbis Audio Plugin"),
+     /*
+      * I18N: UTF-8 Translation: "Haavard Kvaalen" ->
+      * "H\303\245vard Kv\303\245len"
+      */
+     _("Ogg Vorbis Plugin by the Xiph.org Foundation\n\n"
+     "Original code by\n"
+     "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+     "Contributions from\n"
+     "Chris Montgomery <monty@xiph.org>\n"
+     "Peter Alm <peter@xmms.org>\n"
+     "Michael Smith <msmith@labyrinth.edu.au>\n"
+     "Jack Moffitt <jack@icecast.org>\n"
+     "Jorn Baayen <jorn@nl.linux.org>\n"
+     "Haavard Kvaalen <havardk@xmms.org>\n"
+     "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+     "Eugene Zagidullin <e.asphyx@gmail.com>\n\n"
+     "Visit the Xiph.org Foundation at http://www.xiph.org/\n"));
 }
 
 static InputPlugin vorbis_ip;

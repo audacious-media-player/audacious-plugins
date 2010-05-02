@@ -1514,7 +1514,7 @@ mainwin_general_menu_callback(gpointer data,
             action_play_location();
             break;
         case MAINWIN_GENERAL_FILEINFO:
-            aud_fileinfo_show_current ();
+            audgui_infowin_show_current ();
             break;
         case MAINWIN_GENERAL_FOCUSPLWIN:
             gtk_window_present(GTK_WINDOW(playlistwin));
@@ -1655,7 +1655,7 @@ mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
                                          UI_SKINNED_MENUROW(mainwin_menurow)->always_selected );
             break;
         case MENUROW_FILEINFOBOX:
-            aud_fileinfo_show_current ();
+            audgui_infowin_show_current ();
             break;
         case MENUROW_SCALE:
             gtk_toggle_action_set_active(
@@ -1902,7 +1902,7 @@ mainwin_setup_menus(void)
 
 static void mainwin_info_double_clicked_cb (void)
 {
-    aud_fileinfo_show_current ();
+    audgui_infowin_show_current ();
 }
 
 static void mainwin_info_right_clicked_cb(GtkWidget *widget, GdkEventButton
@@ -2561,7 +2561,7 @@ action_ab_clear( void )
 void
 action_current_track_info( void )
 {
-    aud_fileinfo_show_current ();
+    audgui_infowin_show_current ();
 }
 
 void

@@ -20,6 +20,9 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 #include "filewriter.h"
 #include "plugins.h"
 #include "convert.h"
@@ -160,31 +163,27 @@ static OutputPluginInitStatus file_init(void)
     return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
-void file_about(void)
+void file_about (void)
 {
-    static GtkWidget *dialog;
+    static GtkWidget * dialog;
 
-    if (dialog != NULL)
-        return;
-
-    dialog = audacious_info_dialog(_("About FileWriter-Plugin"),
-                               _("FileWriter-Plugin\n\n"
-                               "This program is free software; you can redistribute it and/or modify\n"
-                               "it under the terms of the GNU General Public License as published by\n"
-                               "the Free Software Foundation; either version 2 of the License, or\n"
-                               "(at your option) any later version.\n"
-                               "\n"
-                               "This program is distributed in the hope that it will be useful,\n"
-                               "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-                               "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-                               "GNU General Public License for more details.\n"
-                               "\n"
-                               "You should have received a copy of the GNU General Public License\n"
-                               "along with this program; if not, write to the Free Software\n"
-                               "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-                               "USA."), _("Ok"), FALSE, NULL, NULL);
-    gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
-                       GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dialog);
+    audgui_simple_message (& dialog, GTK_MESSAGE_INFO,
+     _("About FileWriter-Plugin"),
+     _("FileWriter-Plugin\n\n"
+     "This program is free software; you can redistribute it and/or modify\n"
+     "it under the terms of the GNU General Public License as published by\n"
+     "the Free Software Foundation; either version 2 of the License, or\n"
+     "(at your option) any later version.\n"
+     "\n"
+     "This program is distributed in the hope that it will be useful,\n"
+     "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+     "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+     "GNU General Public License for more details.\n"
+     "\n"
+     "You should have received a copy of the GNU General Public License\n"
+     "along with this program; if not, write to the Free Software\n"
+     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+     "USA."));
 }
 
 static VFSFile * safe_create (const gchar * filename)
