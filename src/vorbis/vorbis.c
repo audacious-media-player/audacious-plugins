@@ -743,6 +743,9 @@ static InputPlugin vorbis_ip = {
     .is_our_file_from_vfs = vorbis_check_fd,
     .vfs_extensions = vorbis_fmts,
     .update_song_tuple = vorbis_update_song_tuple,
+
+    /* Vorbis probing is a bit slow; check for MP3 and AAC first. -jlindgren */
+    .priority = 2,
 };
 
 static InputPlugin *vorbis_iplist[] = { &vorbis_ip, NULL };
