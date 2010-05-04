@@ -21,7 +21,7 @@
  * We use this for sanity checks, among other things, as mp4ff needs
  * a labotomy sometimes.
  */
-#define BUFFER_SIZE (FAAD_MIN_STREAMSIZE*64)
+#define BUFFER_SIZE (FAAD_MIN_STREAMSIZE * 16)
 
 /*
  * AAC_MAGIC is the pattern that marks the beginning of an MP4 container.
@@ -779,7 +779,7 @@ static void *mp4_decode( void *args )
     InputPlayback *playback = args;
     char *filename = playback->filename;
 
-    mp4fh = aud_vfs_buffered_file_new_from_uri(filename);
+    mp4fh = aud_vfs_fopen (filename, "r");
 
     if (mp4fh == NULL)
         return NULL;
