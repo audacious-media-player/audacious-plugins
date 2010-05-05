@@ -21,6 +21,7 @@ LOCALES = ca.po \
 	  sk.po \
 	  tr.po
 
+include ../extra.mk
 include ../buildsys.mk
 
 POTTEMPLATE=$(PACKAGE).pot
