@@ -242,6 +242,22 @@ static int aac_probe(unsigned char *buffer, int len)
   return pos;
 }
 
+static gboolean is_mp4_aac_file (VFSFile * handle)
+{
+    mp4ff_callback_t mp4_data = {.read = mp4_read_callback, .seek =
+     mp4_seek_callback, .user_data = handle};
+    mp4ff_t * mp4_handle = mp4ff_open_read (& mp4_data);
+    gboolean success;
+
+    if (mp4_handle == NULL)
+        return FALSE;
+
+    success = (getAACTrack (mp4_handle) != -1);
+
+    mp4ff_close (mp4_handle);
+    return success;
+}
+
 static gint mp4_is_our_fd(const gchar *filename, VFSFile* file)
 {
   gchar* extension;
@@ -252,17 +268,9 @@ static gint mp4_is_our_fd(const gchar *filename, VFSFile* file)
   aud_vfs_rewind(file);
   if (parse_aac_stream(file) == TRUE)
     return 1;
-  if (!memcmp(&magic[4], "ftyp", 4))
-    return 1;
-  if (!memcmp(magic, "ID3", 3)) {       // ID3 tag bolted to the front, obfuscated magic bytes
-    if (extension &&(
-      !strcasecmp(extension, ".mp4") || // official extension
-      !strcasecmp(extension, ".m4a") || // Apple mp4 extension
-      !strcasecmp(extension, ".aac")    // old MPEG2/4-AAC extension
-    ))
-      return 1;
-  }
-  return 0;
+
+  aud_vfs_fseek (file, 0, SEEK_SET);
+  return is_mp4_aac_file (file);
 }
 
 static void mp4_about(void)
