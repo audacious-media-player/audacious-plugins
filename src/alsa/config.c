@@ -1,6 +1,6 @@
 /*
  * ALSA Output Plugin for Audacious
- * Copyright 2009 John Lindgren
+ * Copyright 2009-2010 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -20,6 +20,9 @@
 #include "alsa.h"
 
 #include <gtk/gtk.h>
+
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 gchar * alsa_config_pcm = NULL, * alsa_config_mixer = NULL,
  * alsa_config_mixer_element = NULL;
@@ -529,6 +532,8 @@ static void connect_callbacks (void)
      gtk_widget_destroy, window);
     g_signal_connect ((GObject *) window, "destroy", (GCallback)
      gtk_widget_destroyed, & window);
+
+    audgui_destroy_on_escape (window);
 }
 
 void alsa_configure (void)

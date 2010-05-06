@@ -23,6 +23,8 @@
 
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "compressor.h"
 
@@ -50,8 +52,10 @@ void compressor_config_save (void)
 
 static void compressor_about (void)
 {
-    const char markup[] = "<b>Dynamic Range Compression Plugin for "
-     "Audacious</b>\n"
+    static GtkWidget * window = NULL;
+
+    audgui_simple_message (& window, GTK_MESSAGE_INFO, _("About Dynamic Range "
+     "Compression Plugin"), "Dynamic Range Compression Plugin for Audacious\n"
      "Copyright 2010 John Lindgren\n\n"
      "Redistribution and use in source and binary forms, with or without "
      "modification, are permitted provided that the following conditions are "
@@ -63,21 +67,7 @@ static void compressor_about (void)
      "documentation provided with the distribution.\n\n"
      "This software is provided \"as is\" and without any warranty, express or "
      "implied. In no event shall the authors be liable for any damages arising "
-     "from the use of this software.";
-
-    static GtkWidget * window = NULL;
-
-    if (window == NULL)
-    {
-        window = gtk_message_dialog_new_with_markup (NULL, 0, GTK_MESSAGE_INFO,
-         GTK_BUTTONS_OK, markup);
-        g_signal_connect ((GObject *) window, "response", (GCallback)
-         gtk_widget_destroy, NULL);
-        g_signal_connect ((GObject *) window, "destroy", (GCallback)
-         gtk_widget_destroyed, & window);
-    }
-
-    gtk_window_present ((GtkWindow *) window);
+     "from the use of this software.");
 }
 
 static void value_changed (GtkRange * range, void * data)
@@ -143,6 +133,8 @@ static void compressor_configure (void)
         gtk_widget_grab_default (button);
         g_signal_connect_swapped (button, "clicked", (GCallback)
          gtk_widget_destroy, window);
+
+        audgui_destroy_on_escape (window);
 
         gtk_widget_show_all (vbox);
     }
