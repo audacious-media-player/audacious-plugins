@@ -44,7 +44,7 @@ void resample_config_load (void)
         aud_cfg_db_get_int (database, "resample", scratch,
          & converted_rates[count]);
     }
-    
+
     aud_cfg_db_get_int (database, "resample", "method", & method);
     aud_cfg_db_get_int (database, "resample", "fallback_rate", & fallback_rate);
 
@@ -62,7 +62,7 @@ void resample_config_save (void)
         snprintf (scratch, sizeof scratch, "%d", common_rates[count]);
         aud_cfg_db_set_int (database, "resample", scratch, converted_rates[count]);
     }
-    
+
     aud_cfg_db_set_int (database, "resample", "method", method);
     aud_cfg_db_set_int (database, "resample", "fallback_rate", fallback_rate);
 
@@ -116,13 +116,13 @@ static GtkWidget * make_method_list (void)
     const char * name;
 
     GtkWidget * list = gtk_combo_box_new_text ();
-    
+
     for (count = 0; (name = src_get_name (count)) != NULL; count ++)
         gtk_combo_box_append_text ((GtkComboBox *) list, name);
-    
+
     gtk_combo_box_set_active ((GtkComboBox *) list, method);
     g_signal_connect (list, "changed", (GCallback) list_changed, & method);
-    
+
     return list;
 }
 
@@ -171,7 +171,7 @@ static void resample_configure (void)
             g_signal_connect (button, "value-changed", (GCallback)
              value_changed, & converted_rates[count]);
         }
-             
+
         hbox = gtk_hbox_new (FALSE, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
@@ -183,7 +183,7 @@ static void resample_configure (void)
         gtk_spin_button_set_value ((GtkSpinButton *) button, fallback_rate);
         g_signal_connect (button, "value-changed", (GCallback)
          value_changed, & fallback_rate);
-             
+
         hbox = gtk_hbox_new (FALSE, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
@@ -221,6 +221,8 @@ EffectPlugin resample_plugin =
     .finish = resample_finish,
     .decoder_to_output_time = resample_decoder_to_output_time,
     .output_to_decoder_time = resample_output_to_decoder_time,
+
+    .order = 2, /* must be before crossfade */
 };
 
 EffectPlugin * resample_list[] = {& resample_plugin, NULL};
