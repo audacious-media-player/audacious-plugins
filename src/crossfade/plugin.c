@@ -136,7 +136,7 @@ void crossfade_show_rate_message (void)
 
     audgui_simple_message (& window, GTK_MESSAGE_ERROR, _("Crossfade Error"),
      _("Crossfading failed because the songs had different sample rates.\n\n"
-     "You can use the Sample Rate Converter effect to resample the sonds to "
+     "You can use the Sample Rate Converter effect to resample the songs to "
      "the same rate."));
 }
 
