@@ -646,6 +646,9 @@ static gchar *ffaudio_fmts[] = {
     /* Apple Lossless */
     "m4a",
 
+    /* WAV (there are some WAV formats sndfile can't handle) */
+    "wav",
+
     /* end of table */
     NULL
 };
