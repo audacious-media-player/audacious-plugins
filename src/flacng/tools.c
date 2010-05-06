@@ -118,6 +118,16 @@ void reset_info(callback_info* info, gboolean close_fd) {
 
 /* --- */
 
+static gint get_bitrate (VFSFile * handle, callback_info * info)
+{
+    gsize size = aud_vfs_fsize (handle);
+
+    if (size == -1)
+        return 0;
+
+    return 8 * size * (gint64) info->stream.samplerate / info->stream.samples;
+}
+
 gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info* info) {
 
     FLAC__StreamDecoderState ret;
@@ -169,6 +179,8 @@ gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info*
     info->read_max = -1;
     info->testing = FALSE;
 
+    info->bitrate = get_bitrate (fd, info);
+
     _LEAVE TRUE;
 }
 
@@ -209,6 +221,10 @@ Tuple* get_tuple_from_file(const gchar *filename, VFSFile *fd, callback_info *in
         aud_tuple_associate_int(out, FIELD_LENGTH, NULL, (info->stream.samples / info->stream.samplerate) * 1000);
         _DEBUG("Stream length: %d seconds", aud_tuple_get_int(out, FIELD_LENGTH, NULL));
     }
+
+    if (info->bitrate > 0)
+        aud_tuple_associate_int (out, FIELD_BITRATE, NULL, (info->bitrate + 500)
+         / 1000);
 
     _DEBUG("Tuple created: [%p]", out);
 

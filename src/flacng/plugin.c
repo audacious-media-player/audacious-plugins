@@ -516,7 +516,8 @@ void flac_play_file(InputPlayback *playback)
     pause_flag = FALSE;
     playback->playing = TRUE;
 
-    playback->set_params(playback, NULL, 0, -1, main_info->stream.samplerate, main_info->stream.channels);
+    playback->set_params (playback, NULL, 0, main_info->bitrate,
+     main_info->stream.samplerate, main_info->stream.channels);
     playback->set_pb_ready(playback);
 
     flac_play_loop(playback);
