@@ -200,7 +200,8 @@ static void return_data (float * * data, int * length)
     int full = current_channels * current_rate * crossfade_length;
     int copy = buffer_filled - full;
 
-    if (state != STATE_RUNNING || copy <= 0)
+    /* only return if we have at least 1/2 second -- this reduces memmove's */
+    if (state != STATE_RUNNING || copy < current_channels * (current_rate / 2))
     {
         * data = NULL;
         * length = 0;
