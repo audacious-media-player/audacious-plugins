@@ -1,6 +1,6 @@
 PLUGIN = madplug${PLUGIN_SUFFIX}
 
-SRCS = mad_decode.c
+SRCS = mad_decode.c mad_plugin.c
 
 include ../../buildsys.mk
 include ../../extra.mk

@@ -18,14 +18,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <audacious/plugin.h>
-#include <mad.h>
+#include "stand.h"
 
 typedef struct {
 	VFSFile *fd;
+	gboolean opened;
 } MADDecodeContext;
 
-#define BUFFER_SIZE		(1024)
+#define BUFFER_SIZE		(16 * 1024)
 
 static enum mad_flow
 madplug_input(InputPlayback *ip, struct mad_stream *stream)
@@ -34,9 +34,12 @@ madplug_input(InputPlayback *ip, struct mad_stream *stream)
 	guchar buffer[BUFFER_SIZE];
 	gsize len;
 
+	memset(buffer, '\0', BUFFER_SIZE);
+
 	if (!(len = aud_vfs_fread(buffer, 1, BUFFER_SIZE, ctx->fd)))
 		return MAD_FLOW_STOP;
 
+	g_print("read %d bytes\n", len);
 	mad_stream_buffer(stream, buffer, len);
 
 	return MAD_FLOW_CONTINUE;
@@ -45,10 +48,18 @@ madplug_input(InputPlayback *ip, struct mad_stream *stream)
 static enum mad_flow
 madplug_header(InputPlayback *ip, const struct mad_header *header)
 {
-	if (!ip->output->open_audio(FMT_FLOAT, header->samplerate, MAD_NCHANNELS(header)))
-		return MAD_FLOW_STOP;
+	MADDecodeContext *ctx = (MADDecodeContext *) ip->data;
 
-	ip->set_params(ip, NULL, 0, header->samplerate, MAD_NCHANNELS(header), header->bitrate);
+	if (!ctx->opened) {
+		if (!ip->output->open_audio(FMT_FLOAT, header->samplerate, MAD_NCHANNELS(header)))
+			return MAD_FLOW_STOP;
+
+		ctx->opened = TRUE;
+		g_print("opened, rate=%d, channels=%d\n", header->samplerate, MAD_NCHANNELS(header));
+	}
+
+	ip->set_params(ip, NULL, 0, header->samplerate, header->bitrate, MAD_NCHANNELS(header));
+	ip->set_pb_ready(ip);
 
 	return MAD_FLOW_CONTINUE;
 }
@@ -73,6 +84,7 @@ madplug_output(InputPlayback *ip, const struct mad_header *header, struct mad_pc
 		}
 	}
 
+	g_print("passing data for %d channels\n", channels);
 	ip->pass_audio(ip, FMT_FLOAT, channels, sizeof(gfloat) * channels * pcm->length, data, NULL);
 	g_free(data);
 
@@ -82,20 +94,27 @@ madplug_output(InputPlayback *ip, const struct mad_header *header, struct mad_pc
 static enum mad_flow
 madplug_error(InputPlayback *ip, struct mad_stream *stream, struct mad_frame *frame)
 {
+	g_print("error: %s\n", mad_stream_errorstr(stream));
+
 	return MAD_FLOW_CONTINUE;
 }
 
 void
 madplug_decode(InputPlayback *ip, VFSFile *fd)
 {
-	MADDecodeContext ctx;
+	MADDecodeContext ctx = {};
 	struct mad_decoder decoder;
 
 	ctx.fd = aud_vfs_dup(fd);
 
-	mad_decoder_init(&decoder, &ctx, (void *) madplug_input, (void *) madplug_header, NULL, (void *) madplug_output, (void *) madplug_error, NULL);	
+	/* explanation: ctx is on the stack, so it'll be valid memory as long as the decoder is running. */
+	ip->data = &ctx;
+
+	mad_decoder_init(&decoder, ip, (void *) madplug_input, (void *) madplug_header, NULL, (void *) madplug_output, (void *) madplug_error, NULL);	
 	mad_decoder_run(&decoder, MAD_DECODER_MODE_SYNC);
 	mad_decoder_finish(&decoder);
+
+	ip->output->close_audio();
 
 	aud_vfs_fclose(ctx.fd);
 }
