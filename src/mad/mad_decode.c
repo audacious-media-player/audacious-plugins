@@ -23,6 +23,8 @@
 typedef struct {
 	VFSFile *fd;
 	gboolean opened;
+	gint channels;
+	gint srate;
 } MADDecodeContext;
 
 #define BUFFER_SIZE		(16 * 1024)
@@ -48,17 +50,21 @@ madplug_input(InputPlayback *ip, struct mad_stream *stream)
 static enum mad_flow
 madplug_header(InputPlayback *ip, const struct mad_header *header)
 {
+	gint channels = MAD_NCHANNELS(header);
 	MADDecodeContext *ctx = (MADDecodeContext *) ip->data;
 
-	if (!ctx->opened) {
-		if (!ip->output->open_audio(FMT_FLOAT, header->samplerate, MAD_NCHANNELS(header)))
+	if ((ctx->srate != header->samplerate) || (ctx->channels != channels)) {
+		if (ctx->opened)
+			ip->output->close_audio();
+
+		if (!ip->output->open_audio(FMT_FLOAT, header->samplerate, channels))
 			return MAD_FLOW_STOP;
 
 		ctx->opened = TRUE;
-		g_print("opened, rate=%d, channels=%d\n", header->samplerate, MAD_NCHANNELS(header));
+		g_print("opened, rate=%d, channels=%d\n", header->samplerate, channels);
 	}
 
-	ip->set_params(ip, NULL, 0, header->samplerate, header->bitrate, MAD_NCHANNELS(header));
+	ip->set_params(ip, NULL, 0, header->bitrate, header->samplerate, channels);
 	ip->set_pb_ready(ip);
 
 	return MAD_FLOW_CONTINUE;
@@ -84,7 +90,7 @@ madplug_output(InputPlayback *ip, const struct mad_header *header, struct mad_pc
 		}
 	}
 
-	g_print("passing data for %d channels\n", channels);
+//	g_print("passing data for %d channels\n", channels);
 	ip->pass_audio(ip, FMT_FLOAT, channels, sizeof(gfloat) * channels * pcm->length, data, NULL);
 	g_free(data);
 
@@ -94,7 +100,7 @@ madplug_output(InputPlayback *ip, const struct mad_header *header, struct mad_pc
 static enum mad_flow
 madplug_error(InputPlayback *ip, struct mad_stream *stream, struct mad_frame *frame)
 {
-	g_print("error: %s\n", mad_stream_errorstr(stream));
+//	g_print("error: %s\n", mad_stream_errorstr(stream));
 
 	return MAD_FLOW_CONTINUE;
 }
@@ -106,6 +112,8 @@ madplug_decode(InputPlayback *ip, VFSFile *fd)
 	struct mad_decoder decoder;
 
 	ctx.fd = aud_vfs_dup(fd);
+
+	aud_vfs_fseek(fd, 0, SEEK_SET);
 
 	/* explanation: ctx is on the stack, so it'll be valid memory as long as the decoder is running. */
 	ip->data = &ctx;
