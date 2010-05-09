@@ -19,6 +19,13 @@
  */
 
 #define DEBUG
+
+#ifdef DEBUG_MPG123_IO
+# define MPG123_IODBG(...)	AUDDBG(__VA_ARGS__)
+#else
+# define MPG123_IODBG(...)	do { } while (0)
+#endif
+
 #include <audacious/plugin.h>
 #include <audacious/audtag.h>
 #include <mpg123.h>
@@ -321,17 +328,17 @@ mpg123_playback_worker(InputPlayback *data)
 		{
 			if (ret == MPG123_NEED_MORE)
 			{
-				AUDDBG("mpg123 requested more data\n");
+				MPG123_IODBG("mpg123 requested more data\n");
 
 				len = aud_vfs_fread(buf, 1, 16384, ctx.fd);
 				if (len <= 0)
 				{
 					if (len == 0)
 					{
-						AUDDBG("stream EOF (well, read failed)\n");
+						MPG123_IODBG("stream EOF (well, read failed)\n");
 						mpg123_decode(ctx.decoder, buf, 0, outbuf, 16384, &outbuf_size);
 
-						AUDDBG("passing %ld bytes of audio\n", outbuf_size);
+						MPG123_IODBG("passing %ld bytes of audio\n", outbuf_size);
 						data->pass_audio(data, FMT_S16_NE, ctx.channels, outbuf_size, outbuf, NULL);
 						goto decode_cleanup;
 					}
@@ -339,7 +346,7 @@ mpg123_playback_worker(InputPlayback *data)
 						goto decode_cleanup;
 				}
 
-				AUDDBG("got %ld bytes for mpg123\n", len);
+				MPG123_IODBG("got %ld bytes for mpg123\n", len);
 			}
 
 			ret = mpg123_decode(ctx.decoder, buf, len, outbuf, 2048, &outbuf_size);
