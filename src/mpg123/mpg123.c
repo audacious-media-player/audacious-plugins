@@ -426,6 +426,7 @@ static InputPlugin mpg123_ip = {
 	.play_file = mpg123_playback_worker,
 	.stop = mpg123_stop_playback_worker,
 	.seek = mpg123_seek_time,
+	.update_song_tuple = tag_tuple_write_to_file,
 };
 
 static InputPlugin *mpg123_iplist[] = { &mpg123_ip, NULL };
