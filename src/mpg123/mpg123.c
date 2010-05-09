@@ -161,9 +161,11 @@ mpg123_probe_for_tuple(const gchar *filename, VFSFile *fd)
 	aud_vfs_fseek(fd, 0, SEEK_SET);
 	tag_tuple_read(tu, fd);	
 
-	AUDDBG("returning tuple %p for file %p\n", tu, fd);
-	aud_tuple_associate_int(tu, FIELD_LENGTH, NULL, len * 1000);
+	/* if length is 0, we might have a TLEN tag due to VBR, keep that. */
+	if (len != 0)
+		aud_tuple_associate_int(tu, FIELD_LENGTH, NULL, len * 1000);
 
+	AUDDBG("returning tuple %p for file %p\n", tu, fd);
 	return tu;	
 }
 
