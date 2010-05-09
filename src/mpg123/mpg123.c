@@ -26,8 +26,8 @@
 static GMutex *ctrl_mutex = NULL;
 
 /** utility functions **/
-static gboolean
-mpg123_probe(VFSFile *fd)
+static gint
+mpg123_get_length(VFSFile *fd)
 {
 	mpg123_handle *decoder;
 	mpg123_pars *params;
@@ -38,15 +38,16 @@ mpg123_probe(VFSFile *fd)
 	gint i;
 	glong rate;
 	gint channels, encoding;
+	gint samples;
 
-	g_return_val_if_fail(fd != NULL, FALSE);
+	g_return_val_if_fail(fd != NULL, -2);
 
 	AUDDBG("starting probe\n");
 
 	mpg123_rates(&rates, &num_rates);
 
 	params = mpg123_new_pars(&ret);
-	g_return_val_if_fail(params != NULL, FALSE);
+	g_return_val_if_fail(params != NULL, -2);
 
 	mpg123_par(params, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
 	mpg123_par(params, MPG123_ADD_FLAGS, MPG123_GAPLESS, 0);
@@ -57,7 +58,7 @@ mpg123_probe(VFSFile *fd)
 	{
 		AUDDBG("mpg123 error: %s", mpg123_plain_strerror(ret));
 		mpg123_delete_pars(params);
-		return FALSE;
+		return -2;
 	}
 
 	if ((ret = mpg123_open_feed(decoder)) != MPG123_OK)
@@ -65,7 +66,7 @@ mpg123_probe(VFSFile *fd)
 		AUDDBG("mpg123 error: %s", mpg123_plain_strerror(ret));
 		mpg123_delete(decoder);
 		mpg123_delete_pars(params);
-		return FALSE;
+		return -2;
 	}
 
 	mpg123_format_none(decoder);
@@ -87,17 +88,30 @@ mpg123_probe(VFSFile *fd)
 	{
 		mpg123_delete(decoder);
 		mpg123_delete_pars(params);
-		return FALSE;
+		return -2;
 	}
 
 	mpg123_getformat(decoder, &rate, &channels, &encoding);
 
-	AUDDBG("mpg123_probe: stream identified as MPEG; %ldHz %d channels, encoding %d\n",
+	AUDDBG("stream identified as MPEG; %ldHz %d channels, encoding %d\n",
 		rate, channels, encoding);
+
+	if (aud_vfs_is_streaming(fd))
+	{
+		mpg123_delete(decoder);
+		mpg123_delete_pars(params);
+		return -1;
+	}
+
+	mpg123_scan(decoder);
+	samples = mpg123_length(decoder);
 
 	mpg123_delete(decoder);
 	mpg123_delete_pars(params);
-	return TRUE;
+
+	AUDDBG("song has %ld samples; length %ld seconds\n", samples, (samples / rate));
+
+	return (samples / rate);
 }
 
 /** plugin glue **/
@@ -125,21 +139,21 @@ static gboolean
 mpg123_probe_for_fd(const gchar *filename, VFSFile *fd)
 {
 	aud_vfs_fseek(fd, 0, SEEK_SET);
-	return mpg123_probe(fd);
+	return (mpg123_get_length(fd) >= -1);
 }
 
 static Tuple *
 mpg123_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
 	Tuple *tu;
-	gboolean ours;
+	gint len;
 
 	AUDDBG("starting probe of %p\n", fd);
 
 	aud_vfs_fseek(fd, 0, SEEK_SET);
-	ours = mpg123_probe(fd);
+	len = mpg123_get_length(fd);
 
-	if (ours == FALSE)
+	if (len == -2)
 		return NULL;
 
 	tu = aud_tuple_new_from_filename(filename);
@@ -148,6 +162,7 @@ mpg123_probe_for_tuple(const gchar *filename, VFSFile *fd)
 	tag_tuple_read(tu, fd);	
 
 	AUDDBG("returning tuple %p for file %p\n", tu, fd);
+	aud_tuple_associate_int(tu, FIELD_LENGTH, NULL, len * 1000);
 
 	return tu;	
 }
