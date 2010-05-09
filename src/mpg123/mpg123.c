@@ -159,6 +159,7 @@ typedef struct {
 	glong rate;
 	gint channels;
 	gint encoding;	
+	gint64 seek;
 } MPG123PlaybackContext;
 
 static void
@@ -169,9 +170,12 @@ mpg123_playback_worker(InputPlayback *data)
 	gint i;
 	const glong *rates;
 	gsize num_rates;
+	gint bitrate = 0;
+	struct mpg123_frameinfo fi = {};
 
 	AUDDBG("playback worker started for %s\n", data->filename);
 
+	ctx.seek = -1;
 	data->data = &ctx;
 
 	AUDDBG("decoder setup\n");
@@ -231,9 +235,6 @@ mpg123_playback_worker(InputPlayback *data)
 	if (!data->output->open_audio(FMT_S16_NE, ctx.rate, ctx.channels))
 		goto cleanup;
 
-	AUDDBG("reseeking stream to beginning if we can\n");
-	aud_vfs_fseek(ctx.fd, 0, SEEK_SET);
-
 	AUDDBG("starting decode\n");
 	data->playing = TRUE;
 	data->set_pb_ready(data);
@@ -242,8 +243,15 @@ mpg123_playback_worker(InputPlayback *data)
 	{
 		guchar buf[16384];
 		gsize len = 0;
-		guchar outbuf[16384];
+		guchar outbuf[2048];
 		gsize outbuf_size;
+
+		mpg123_info(ctx.decoder, &fi);
+		if (fi.bitrate != bitrate)
+		{
+			data->set_params(data, NULL, 0, (fi.bitrate * 1000), ctx.rate, ctx.channels);
+			bitrate = fi.bitrate;
+		}
 
 		do
 		{
@@ -266,21 +274,43 @@ mpg123_playback_worker(InputPlayback *data)
 					else
 						goto decode_cleanup;
 				}
+
+				AUDDBG("got %ld bytes for mpg123\n", len);
 			}
 
-			AUDDBG("decoding %ld bytes of new audio data (may be some left in the buffer)\n", len);
-			ret = mpg123_decode(ctx.decoder, buf, len, outbuf, 16384, &outbuf_size);
-
-			AUDDBG("passing %ld bytes of audio\n", outbuf_size);
+			ret = mpg123_decode(ctx.decoder, buf, len, outbuf, 2048, &outbuf_size);
 			data->pass_audio(data, FMT_S16_NE, ctx.channels, outbuf_size, outbuf, NULL);
 		} while (ret == MPG123_NEED_MORE);
 
 		g_mutex_lock(ctrl_mutex);
+
 		if (data->playing == FALSE)
 		{
 			g_mutex_unlock(ctrl_mutex);
 			break;
 		}
+
+		if (ctx.seek != -1)
+		{
+			off_t byteoff, sampleoff;
+
+			sampleoff = mpg123_feedseek(ctx.decoder, (ctx.seek * ctx.rate), SEEK_SET, &byteoff);
+			if (sampleoff < 0)
+			{
+				AUDDBG("mpg123 error: %s", mpg123_strerror(ctx.decoder));
+				ctx.seek = -1;
+
+				g_mutex_unlock(ctrl_mutex);
+				continue;
+			}
+
+			AUDDBG("seeking to %ld (byte %ld)\n", ctx.seek, byteoff);
+			data->output->flush(ctx.seek * 1000);
+			aud_vfs_fseek(ctx.fd, byteoff, SEEK_SET);
+
+			ctx.seek = -1;
+		}
+
 		g_mutex_unlock(ctrl_mutex);
 	}
 
@@ -308,6 +338,19 @@ static void mpg123_stop_playback_worker(InputPlayback *data)
 	AUDDBG("playback worker died\n");
 }
 
+static void mpg123_seek_time(InputPlayback *data, gint time)
+{
+	g_mutex_lock(ctrl_mutex);
+
+	if (data->playing)
+	{
+		MPG123PlaybackContext *ctx = data->data;
+		ctx->seek = time;
+	}
+
+	g_mutex_unlock(ctrl_mutex);
+}
+
 /** plugin description header **/
 static const gchar *mpg123_fmts[] = { "mp3", "mp2", "mp1", "bmu", NULL };
 
@@ -320,6 +363,7 @@ static InputPlugin mpg123_ip = {
 	.probe_for_tuple = mpg123_probe_for_tuple,
 	.play_file = mpg123_playback_worker,
 	.stop = mpg123_stop_playback_worker,
+	.seek = mpg123_seek_time,
 };
 
 static InputPlugin *mpg123_iplist[] = { &mpg123_ip, NULL };
