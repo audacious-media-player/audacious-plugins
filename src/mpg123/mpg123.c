@@ -109,7 +109,7 @@ mpg123_get_length(VFSFile *fd)
 	mpg123_delete(decoder);
 	mpg123_delete_pars(params);
 
-	AUDDBG("song has %ld samples; length %ld seconds\n", samples, (samples / rate));
+	AUDDBG("song has %d samples; length %ld seconds\n", samples, (samples / rate));
 
 	return (samples / rate);
 }
@@ -175,7 +175,33 @@ typedef struct {
 	gint channels;
 	gint encoding;	
 	gint64 seek;
+	gboolean stream;
+	Tuple *tu;
 } MPG123PlaybackContext;
+
+static gchar *
+get_stream_metadata(VFSFile *file, const gchar *name)
+{
+	gchar *raw = aud_vfs_get_metadata(file, name);
+	gchar *converted = (raw != NULL && raw[0]) ? aud_str_to_utf8(raw) : NULL;
+
+	g_free(raw);
+	return converted;
+}
+
+static gboolean
+update_stream_metadata(VFSFile *file, const gchar *name, Tuple *tuple, gint item)
+{
+	const gchar *old = aud_tuple_get_string(tuple, item, NULL);
+	gchar *new = get_stream_metadata(file, name);
+	gboolean changed = (new != NULL && (old == NULL || strcmp(old, new)));
+
+	if (changed)
+		aud_tuple_associate_string(tuple, item, NULL, new);
+
+	g_free(new);
+	return changed;
+}
 
 static void
 mpg123_playback_worker(InputPlayback *data)
@@ -225,6 +251,9 @@ mpg123_playback_worker(InputPlayback *data)
 	ctx.fd = aud_vfs_fopen(data->filename, "r");
 	AUDDBG("opened stream transport @%p\n", ctx.fd);
 
+	if (aud_vfs_is_streaming(ctx.fd))
+		ctx.stream = TRUE;
+
 	AUDDBG("decoder format identification\n");
 	do
 	{
@@ -266,6 +295,24 @@ mpg123_playback_worker(InputPlayback *data)
 		{
 			data->set_params(data, NULL, 0, (fi.bitrate * 1000), ctx.rate, ctx.channels);
 			bitrate = fi.bitrate;
+		}
+
+		/* deal with shoutcast titles nonsense */
+		if (ctx.stream)
+		{
+			gboolean changed = FALSE;
+
+			if (!ctx.tu)
+				ctx.tu = aud_tuple_new_from_filename(data->filename);
+
+			changed = changed || update_stream_metadata(ctx.fd, "track-name", ctx.tu, FIELD_TITLE);
+			changed = changed || update_stream_metadata(ctx.fd, "stream-name", ctx.tu, FIELD_ALBUM);
+
+			if (changed)
+			{
+				mowgli_object_ref(ctx.tu);
+				data->set_tuple(data, ctx.tu);
+			}
 		}
 
 		do
