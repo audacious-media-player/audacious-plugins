@@ -386,7 +386,8 @@ cleanup:
 	aud_vfs_fclose(ctx.fd);
 }
 
-static void mpg123_stop_playback_worker(InputPlayback *data)
+static void
+mpg123_stop_playback_worker(InputPlayback *data)
 {
 	AUDDBG("signalling playback worker to die\n");	
 	g_mutex_lock(ctrl_mutex);
@@ -400,7 +401,14 @@ static void mpg123_stop_playback_worker(InputPlayback *data)
 	AUDDBG("playback worker died\n");
 }
 
-static void mpg123_seek_time(InputPlayback *data, gint time)
+static void
+mpg123_pause_playback_worker(InputPlayback *data, gshort p)
+{
+	data->output->pause(p);
+}
+
+static void
+mpg123_seek_time(InputPlayback *data, gint time)
 {
 	g_mutex_lock(ctrl_mutex);
 
@@ -426,6 +434,7 @@ static InputPlugin mpg123_ip = {
 	.play_file = mpg123_playback_worker,
 	.stop = mpg123_stop_playback_worker,
 	.seek = mpg123_seek_time,
+	.pause = mpg123_pause_playback_worker,
 	.update_song_tuple = tag_tuple_write_to_file,
 };
 
