@@ -340,6 +340,7 @@ mpg123_playback_worker(InputPlayback *data)
 
 						MPG123_IODBG("passing %ld bytes of audio\n", outbuf_size);
 						data->pass_audio(data, FMT_S16_NE, ctx.channels, outbuf_size, outbuf, NULL);
+						data->eof = TRUE;
 						goto decode_cleanup;
 					}
 					else
@@ -386,6 +387,10 @@ mpg123_playback_worker(InputPlayback *data)
 	}
 
 decode_cleanup:
+	AUDDBG("eof reached\n");
+	while (data->playing && data->output->buffer_playing())
+		g_usleep(10000);
+
 	AUDDBG("decode complete\n");
 	data->output->close_audio();
 
@@ -393,6 +398,8 @@ cleanup:
 	mpg123_delete(ctx.decoder);
 	mpg123_delete_pars(ctx.params);
 	aud_vfs_fclose(ctx.fd);
+
+	data->playing = FALSE;
 }
 
 static void
