@@ -424,7 +424,7 @@ AC_ARG_ENABLE(mp3,
 )
 
 if test "x$enable_mp3" = "xyes"; then
-    AM_PATH_LIBMAD([enable_mp3=yes],
+    PKG_CHECK_MODULES(LIBMPG123, [libmpg123], [enable_mp3=yes],
         [AC_MSG_WARN([*** Cannot find libmad, mp3 plugin will not be built ***])
          enable_mp3=no]
     )
@@ -434,7 +434,7 @@ else
 fi
 
 if test "x$enable_mp3" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS madplug"
+	INPUT_PLUGINS="$INPUT_PLUGINS mpg123"
 fi
 
 AC_SUBST(MAD_CFLAGS)
@@ -1622,7 +1622,7 @@ echo "  Null Audio output (null):               yes"
 echo
 echo "  Input Plugins"
 echo "  -------------"
-echo "  MPEG 1/2/3 (madplug):                   $enable_mp3"
+echo "  MPEG 1/2/3 (mpg123):                    $enable_mp3"
 echo "  MPEG 4 Audio (AAC):                     $enable_aac"
 echo "  FFaudio (ffaudio):                      $have_ffaudio"
 echo "  Module decoder (modplug):               $have_modplug"
