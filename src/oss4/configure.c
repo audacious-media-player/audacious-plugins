@@ -235,7 +235,7 @@ void oss_configure(void)
 
 void oss_config_load(void)
 {
-    mcs_handle_t* db = aud_cfg_db_open();
+    mcs_handle_t *db = aud_cfg_db_open();
 
     aud_cfg_db_get_string(db, "oss4", "device", &oss_cfg->device);
     aud_cfg_db_get_bool(db, "oss4", "use_alt_device", &oss_cfg->use_alt_device);

@@ -175,6 +175,7 @@ gint oss_open_audio(AFormat aud_format, gint rate, gint channels)
 
     FAILED:        
         close(oss_data->fd);
+        oss_data->fd = -1;
         return 0;
 }
 
