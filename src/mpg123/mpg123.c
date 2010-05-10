@@ -241,6 +241,7 @@ mpg123_playback_worker(InputPlayback *data)
 	ctx.params = mpg123_new_pars(&ret);
 	mpg123_par(ctx.params, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
 	mpg123_par(ctx.params, MPG123_ADD_FLAGS, MPG123_GAPLESS, 0);
+	mpg123_par(ctx.params, MPG123_ADD_FLAGS, MPG123_SEEKBUFFER, 0);
 	mpg123_par(ctx.params, MPG123_RVA, MPG123_RVA_OFF, 0);
 
 	ctx.decoder = mpg123_parnew(ctx.params, NULL, &ret);
@@ -267,8 +268,14 @@ mpg123_playback_worker(InputPlayback *data)
 	ctx.fd = aud_vfs_fopen(data->filename, "r");
 	AUDDBG("opened stream transport @%p\n", ctx.fd);
 
+	AUDDBG("checking if stream @%p is seekable\n", ctx.fd);
 	if (aud_vfs_is_streaming(ctx.fd))
+	{
+		AUDDBG(" ... it's not.\n");
 		ctx.stream = TRUE;
+	}
+	else
+		AUDDBG(" ... it is.\n");
 
 	AUDDBG("decoder format identification\n");
 	do
