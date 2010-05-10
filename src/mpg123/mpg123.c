@@ -28,6 +28,12 @@
 
 #include <audacious/plugin.h>
 #include <audacious/audtag.h>
+
+/*
+ * disable compile-time sanity checks.  we're just using the decoder part,
+ * so it doesn't matter.  --nenolod
+ */
+#define MPG123_NO_CONFIGURE
 #include <mpg123.h>
 
 static GMutex *ctrl_mutex = NULL;
