@@ -424,8 +424,8 @@ AC_ARG_ENABLE(mp3,
 )
 
 if test "x$enable_mp3" = "xyes"; then
-    PKG_CHECK_MODULES(LIBMPG123, [libmpg123], [enable_mp3=yes],
-        [AC_MSG_WARN([*** Cannot find libmad, mp3 plugin will not be built ***])
+    PKG_CHECK_MODULES(MPG123, [libmpg123], [enable_mp3=yes],
+        [AC_MSG_WARN([*** Cannot find libmpg123, mp3 plugin will not be built ***])
          enable_mp3=no]
     )
 else
@@ -437,8 +437,8 @@ if test "x$enable_mp3" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS mpg123"
 fi
 
-AC_SUBST(MAD_CFLAGS)
-AC_SUBST(MAD_LIBS)
+AC_SUBST(MPG123_CFLAGS)
+AC_SUBST(MPG123_LIBS)
 
 dnl *** Rocklight
 
