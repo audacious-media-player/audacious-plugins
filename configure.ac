@@ -972,7 +972,7 @@ else
 fi
 
 if test "x$have_oss4" = "xyes"; then
-	OUTPUT_PLUGINS="$OUTPUT_PLUGINS OSS4"
+	OUTPUT_PLUGINS="$OUTPUT_PLUGINS oss4"
 fi
 
 AC_SUBST(OSS_LIBS)
