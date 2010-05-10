@@ -64,6 +64,7 @@ static GtkTreeModel *get_device_list(void)
     GtkTreeIter iter;
     oss_sysinfo sysinfo;
     gint mixerfd, i, a = 1;
+    gchar *mess;
     
     list = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
     
@@ -72,6 +73,12 @@ static GtkTreeModel *get_device_list(void)
         
     if (ioctl(mixerfd, SNDCTL_SYSINFO, &sysinfo) == -1)
         goto FAILED;
+
+    if (sysinfo.numaudios < 1)
+    {
+        errno = ENXIO;
+        goto FAILED;
+    }
         
     gtk_list_store_append(list, &iter);
     gtk_list_store_set(list, &iter, 0, _("1. Default device"), 1, DEFAULT_DSP, -1);
@@ -98,7 +105,10 @@ static GtkTreeModel *get_device_list(void)
     return GTK_TREE_MODEL(list);
     
     FAILED:
-        oss_describe_error(TRUE, FALSE);
+        mess = oss_describe_error();
+        oss_show_error(mess);
+        ERROR(mess);
+        g_free(mess);
         close(mixerfd);
         return NULL;
 }
@@ -124,9 +134,7 @@ static void select_combo_item(GtkComboBox *combo, gchar *text)
 }
 
 static void window_destroy(void)
-{
-    window = NULL;
-    
+{  
     g_free(tmp_cfg);
 }
 
@@ -154,6 +162,13 @@ static void window_create(void)
     gtk_box_pack_start(GTK_BOX(dev_list_box), dev_label, FALSE, FALSE, 5);
 
     dev_list_model = get_device_list();
+    
+    if (!GTK_IS_TREE_MODEL(dev_list_model))
+    {
+        gtk_widget_destroy(window);
+        return;
+    }
+    
     dev_list_combo = gtk_combo_box_new_with_model(dev_list_model);
     
     cell = gtk_cell_renderer_text_new();
@@ -222,7 +237,7 @@ static void window_create(void)
 
 void oss_configure(void)
 {
-    if (window != NULL)
+    if (GTK_IS_WINDOW(window))
     {
         gtk_window_present(GTK_WINDOW(window));
         return;

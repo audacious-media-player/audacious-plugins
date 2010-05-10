@@ -31,6 +31,8 @@ static gboolean oss_paused;
 static gint oss_paused_time;
 static audio_buf_info oss_buffer_info;
 static gint oss_delay; /* miliseconds */
+static gboolean oss_ioctl_vol = FALSE;
+
 
 OutputPluginInitStatus oss_init(void)
 {
@@ -50,9 +52,7 @@ OutputPluginInitStatus oss_init(void)
     if (oss_hardware_present())
         return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
     else
-    {
         return OUTPUT_PLUGIN_INIT_NO_DEVICES;
-    }
 }
 
 void oss_cleanup(void)
@@ -69,6 +69,7 @@ static gboolean set_format(gint format, gint rate, gint channels)
 {
     gint param;
     gint enabled = 0;
+    gchar *mess = NULL;
     
     AUDDBG("Audio format: %s, sample rate: %dHz, number of channels: %d.\n", oss_format_to_text(format), rate, channels);
     
@@ -116,7 +117,9 @@ static gboolean set_format(gint format, gint rate, gint channels)
     return TRUE;
     
     FAILED:
-        oss_describe_error(TRUE, FALSE);
+        mess = oss_describe_error();
+        ERROR(mess);
+        g_free(mess);
         return FALSE;
 }
 
@@ -127,6 +130,7 @@ gint oss_open_audio(AFormat aud_format, gint rate, gint channels)
     gint format;
     gint vol_left, vol_right;
     gchar *device = DEFAULT_DSP;
+    gchar *mess = NULL;
 
     if (oss_cfg->use_alt_device && oss_cfg->alt_device != NULL)
         device = oss_cfg->alt_device;
@@ -137,7 +141,9 @@ gint oss_open_audio(AFormat aud_format, gint rate, gint channels)
 
     if (oss_data->fd == -1)
     {
-        oss_describe_error(TRUE, FALSE);
+        mess = oss_describe_error();
+        ERROR(mess);
+        g_free(mess);
         goto FAILED;
     }
 
@@ -160,6 +166,7 @@ gint oss_open_audio(AFormat aud_format, gint rate, gint channels)
     oss_paused = FALSE;
     oss_paused_time = 0;
     oss_delay = oss_bytes_to_frames(oss_buffer_info.fragstotal * oss_buffer_info.fragsize) * 1000 / oss_data->rate;
+    oss_ioctl_vol = TRUE;
 
     AUDDBG("Internal OSS buffer size: %dms.\n", oss_delay);
     
@@ -297,7 +304,7 @@ void oss_get_volume(gint *left, gint *right)
 {
     gint vol;
     
-    if (oss_data->fd == -1)
+    if (oss_data->fd == -1 || !oss_ioctl_vol)
     {
         if (oss_cfg->save_volume)
         {
@@ -308,7 +315,14 @@ void oss_get_volume(gint *left, gint *right)
     }
 
     if (ioctl(oss_data->fd, SNDCTL_DSP_GETPLAYVOL, &vol) == -1)
-        oss_describe_error(FALSE, FALSE);
+    {
+        if (errno == EINVAL)
+            oss_ioctl_vol = FALSE;
+
+        gchar *mess = oss_describe_error();
+        AUDDBG("%s", mess);
+        g_free(mess);
+    }
     else
     {
         *right = (vol & 0xFF00) >> 8;
@@ -326,9 +340,16 @@ void oss_set_volume(gint left, gint right)
     if (oss_cfg->save_volume)
         oss_cfg->volume = vol;
     
-    if (oss_data->fd == -1)
+    if (oss_data->fd == -1 || !oss_ioctl_vol)
         return;
 
     if (ioctl(oss_data->fd, SNDCTL_DSP_SETPLAYVOL, &vol) == -1)
-        oss_describe_error(FALSE, FALSE);
+    {
+        if (errno == EINVAL)
+            oss_ioctl_vol = FALSE;
+
+        gchar *mess = oss_describe_error();
+        AUDDBG("%s", mess);
+        g_free(mess);
+    }
 }

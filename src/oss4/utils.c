@@ -138,7 +138,7 @@ gint oss_calc_bitrate(void)
     return (oss_data->rate * oss_data->channels * oss_data->bits_per_sample) >> 3;
 }
 
-void oss_describe_error(gboolean fatal, gboolean open_dialog)
+gchar *oss_describe_error(void)
 {
     const struct
     {
@@ -163,45 +163,40 @@ void oss_describe_error(gboolean fatal, gboolean open_dialog)
     for (count = 0; count < G_N_ELEMENTS(table); count++)
     {
         if (table[count].error == errno)
-        {        
-            if (open_dialog)
-                oss_show_error(table[count].text);
-        
-            if (fatal)
-               ERROR(table[count].text);
-            else
-               AUDDBG("%s", table[count].text);
-            return;
-        }
+            return g_strdup(table[count].text);
     }
     
-    AUDDBG("Unknown OSS error (%d)\n", errno);
+    return g_strdup_printf("Unknown OSS error (%d)\n", errno);
 }
 
 gboolean oss_hardware_present(void)
 {    
     gint mixerfd;
     oss_sysinfo sysinfo;
+    gchar *mess = NULL;
 
     if ((mixerfd = open(DEFAULT_MIXER, O_RDWR, 0)) == -1)
         goto FAILED;
 
     if (ioctl(mixerfd, SNDCTL_SYSINFO, &sysinfo) == -1)
         goto FAILED;
-        
-    close(mixerfd);
 
     if (sysinfo.numaudios > 0)
+    {
+        close(mixerfd);
         return TRUE;
+    }
     else
     {
         errno = ENXIO;
-        oss_describe_error(TRUE, TRUE);
-        return FALSE;
+        goto FAILED;
     }
     
     FAILED:
-        oss_describe_error(TRUE, TRUE);
+        mess = oss_describe_error();
+        oss_show_error(mess);
+        ERROR(mess);
+        g_free(mess);
         close(mixerfd);
         return FALSE;
 }

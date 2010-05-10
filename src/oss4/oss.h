@@ -94,7 +94,7 @@ gint oss_format_to_bits(gint format);
 gint oss_frames_to_bytes(gint frames);
 gint oss_bytes_to_frames(gint bytes);
 gint oss_calc_bitrate(void);
-void oss_describe_error(gboolean fatal, gboolean open_dialog);
+gchar *oss_describe_error(void);
 gboolean oss_hardware_present(void);
 void oss_show_error(const gchar *message);
 
