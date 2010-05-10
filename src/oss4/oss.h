@@ -33,6 +33,8 @@
 #include <soundcard.h>
 #endif
 
+#define DEBUG
+
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
