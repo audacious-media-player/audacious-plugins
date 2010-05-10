@@ -44,6 +44,11 @@ static void alt_dev_toggled_cb(GtkToggleButton *widget, gpointer data)
     gtk_widget_set_sensitive(GTK_WIDGET(data), tmp_cfg->use_alt_device);
 }
 
+static void cookedmode_toggled_cb(GtkToggleButton *widget, gpointer data)
+{
+    tmp_cfg->cookedmode = gtk_toggle_button_get_active(widget);
+}
+
 static void vol_toggled_cb(GtkToggleButton *widget, gpointer data)
 {
     tmp_cfg->save_volume = gtk_toggle_button_get_active(widget);
@@ -137,7 +142,7 @@ static void window_destroy(void)
 static void window_create(void)
 {
     GtkWidget *vbox, *dev_list_box, *dev_label, *dev_list_combo, *alt_dev_box, *alt_dev_check,
-        *alt_dev_text, *vol_box, *vol_check, *button_box, *button_ok, *button_cancel;
+        *alt_dev_text, *option_box, *vol_check, *cookedmode_check, *button_box, *button_ok, *button_cancel;
     GtkTreeModel *dev_list_model;
     GtkCellRenderer *cell;
 
@@ -190,12 +195,16 @@ static void window_create(void)
     gtk_widget_set_sensitive(alt_dev_text, tmp_cfg->use_alt_device);
     gtk_box_pack_start(GTK_BOX(alt_dev_box), alt_dev_text, TRUE, TRUE, 5);
     
-    vol_box = gtk_hbox_new(FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(vbox), vol_box, FALSE, FALSE, 0);
+    option_box = gtk_vbox_new(FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), option_box, FALSE, FALSE, 0);
     
     vol_check = gtk_check_button_new_with_label(_("Save volume between sessions"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(vol_check), tmp_cfg->save_volume);
-    gtk_box_pack_start(GTK_BOX(vol_box), vol_check, FALSE, FALSE, 5);
+    gtk_box_pack_start(GTK_BOX(option_box), vol_check, FALSE, FALSE, 5);
+    
+    cookedmode_check = gtk_check_button_new_with_label(_("Enable format conversions made by the OSS software."));
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cookedmode_check), tmp_cfg->cookedmode);
+    gtk_box_pack_start(GTK_BOX(option_box), cookedmode_check, FALSE, FALSE, 5);
     
     button_box = gtk_hbutton_box_new();
     gtk_button_box_set_layout(GTK_BUTTON_BOX(button_box), GTK_BUTTONBOX_END);
@@ -221,6 +230,9 @@ static void window_create(void)
                      
     g_signal_connect(G_OBJECT(vol_check), "toggled",
                      G_CALLBACK(vol_toggled_cb), NULL);
+                     
+    g_signal_connect(G_OBJECT(cookedmode_check), "toggled",
+                     G_CALLBACK(cookedmode_toggled_cb), NULL);
                      
     g_signal_connect_swapped(G_OBJECT(button_cancel), "clicked",
                              G_CALLBACK(gtk_widget_destroy), window);
@@ -253,6 +265,7 @@ void oss_config_load(void)
     aud_cfg_db_get_string(db, "oss4", "alt_device", &oss_cfg->alt_device);
     aud_cfg_db_get_bool(db, "oss4", "save_volume", &oss_cfg->save_volume);
     aud_cfg_db_get_int(db, "oss4", "volume", &oss_cfg->volume);
+    aud_cfg_db_get_bool(db, "oss4", "cookedmode", &oss_cfg->cookedmode);
     aud_cfg_db_close(db);
 }
 
@@ -265,5 +278,6 @@ void oss_config_save(void)
     aud_cfg_db_set_string(db, "oss4", "alt_device", oss_cfg->alt_device);
     aud_cfg_db_set_bool(db, "oss4", "save_volume", oss_cfg->save_volume);
     aud_cfg_db_set_int(db, "oss4", "volume", oss_cfg->volume);
+    aud_cfg_db_set_bool(db, "oss4", "cookedmode", oss_cfg->cookedmode);
     aud_cfg_db_close(db);
 }

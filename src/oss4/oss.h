@@ -79,6 +79,7 @@ typedef struct
     gchar *alt_device;
     gint volume;
     gboolean save_volume;
+    gboolean cookedmode;
 } oss_cfg_t;
 
 extern oss_data_t *oss_data;

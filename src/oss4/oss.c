@@ -47,6 +47,7 @@ OutputPluginInitStatus oss_init(void)
     oss_cfg->alt_device = DEFAULT_DSP;
     oss_cfg->save_volume = TRUE;
     oss_cfg->volume = 0x3232;
+    oss_cfg->cookedmode = TRUE;
     
     oss_config_load();
     
@@ -69,12 +70,11 @@ void oss_cleanup(void)
 static gboolean set_format(gint format, gint rate, gint channels)
 {
     gint param;
-    gint enabled = 0;
     
     AUDDBG("Audio format: %s, sample rate: %dHz, number of channels: %d.\n", oss_format_to_text(format), rate, channels);
     
-    /* Disable format conversions made by the OSS software */
-    ioctl(oss_data->fd, SNDCTL_DSP_COOKEDMODE, &enabled);
+    /* Enable/disable format conversions made by the OSS software */
+    ioctl(oss_data->fd, SNDCTL_DSP_COOKEDMODE, &oss_cfg->cookedmode);
     
     param = format;
 
