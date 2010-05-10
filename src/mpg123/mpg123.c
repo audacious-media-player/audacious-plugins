@@ -58,6 +58,7 @@ mpg123_get_length(VFSFile *fd)
 
 	mpg123_par(params, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
 	mpg123_par(params, MPG123_ADD_FLAGS, MPG123_GAPLESS, 0);
+	mpg123_par(params, MPG123_ADD_FLAGS, MPG123_SEEKBUFFER, 0);
 	mpg123_par(params, MPG123_RVA, MPG123_RVA_OFF, 0);
 
 	decoder = mpg123_parnew(params, NULL, &ret);
