@@ -1,4 +1,4 @@
-PLUGIN = mpg123${PLUGIN_SUFFIX}
+PLUGIN = madplug${PLUGIN_SUFFIX}
 
 SRCS = mpg123.c
 
