@@ -170,7 +170,7 @@ void oss_describe_error(gboolean fatal, gboolean open_dialog)
             if (fatal)
                ERROR(table[count].text);
             else
-               AUDDBG(table[count].text);
+               AUDDBG("%s", table[count].text);
             return;
         }
     }
