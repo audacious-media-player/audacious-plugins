@@ -17,14 +17,14 @@
  * the use of this software.
  */
 
+#define DEBUG
+#include <audacious/plugin.h>
 #include <glib.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "crossfade.h"
-
-#define DEBUG(...) printf ("crossfade: " __VA_ARGS__)
 
 enum
 {
@@ -47,7 +47,7 @@ static int output_size = 0;
 
 static void reset (void)
 {
-    DEBUG ("Reset.\n");
+    AUDDBG ("Reset.\n");
     state = STATE_OFF;
     current_channels = 0;
     current_rate = 0;
@@ -63,13 +63,13 @@ static void reset (void)
 
 void crossfade_init (void)
 {
-    DEBUG ("Init.\n");
+    AUDDBG ("Init.\n");
     crossfade_config_load ();
 }
 
 void crossfade_cleanup (void)
 {
-    DEBUG ("Cleanup.\n");
+    AUDDBG ("Cleanup.\n");
     crossfade_config_save ();
     reset ();
 }
@@ -84,7 +84,7 @@ static int message_cb (void * data)
 
 void crossfade_start (int * channels, int * rate)
 {
-    DEBUG ("Start (state was %d).\n", state);
+    AUDDBG ("Start (state was %d).\n", state);
 
     if (state != STATE_BETWEEN)
         reset ();
@@ -174,7 +174,7 @@ static void add_data (float * data, int length)
         if (prebuffer_filled < buffer_filled)
             return;
 
-        DEBUG ("Prebuffer complete.\n");
+        AUDDBG ("Prebuffer complete.\n");
         state = STATE_RUNNING;
     }
 
@@ -224,7 +224,7 @@ void crossfade_process (float * * data, int * samples)
 
 void crossfade_flush (void)
 {
-    DEBUG ("Flush.\n");
+    AUDDBG ("Flush.\n");
 
     if (state == STATE_PREBUFFER || state == STATE_RUNNING)
     {
@@ -237,7 +237,7 @@ void crossfade_finish (float * * data, int * samples)
 {
     if (state == STATE_BETWEEN) /* second call, end of last song */
     {
-        DEBUG ("End of last song.\n");
+        AUDDBG ("End of last song.\n");
         enlarge_output (buffer_filled);
         memcpy (output, buffer, sizeof (float) * buffer_filled);
         * data = output;
@@ -252,7 +252,7 @@ void crossfade_finish (float * * data, int * samples)
 
     if (state == STATE_PREBUFFER || state == STATE_RUNNING)
     {
-        DEBUG ("Fade out.\n");
+        AUDDBG ("Fade out.\n");
         do_ramp (buffer, buffer_filled, 1.0, 0.0);
         state = STATE_BETWEEN;
     }
