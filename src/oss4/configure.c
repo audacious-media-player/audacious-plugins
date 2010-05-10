@@ -64,7 +64,6 @@ static GtkTreeModel *get_device_list(void)
     GtkTreeIter iter;
     oss_sysinfo sysinfo;
     gint mixerfd, i, a = 1;
-    gchar *mess;
     
     list = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
     
@@ -105,10 +104,7 @@ static GtkTreeModel *get_device_list(void)
     return GTK_TREE_MODEL(list);
     
     FAILED:
-        mess = oss_describe_error();
-        oss_show_error(mess);
-        ERROR(mess);
-        g_free(mess);
+        SHOW_ERROR_MSG;
         close(mixerfd);
         return NULL;
 }

@@ -26,6 +26,7 @@
 
 oss_data_t *oss_data;
 oss_cfg_t *oss_cfg;
+gchar *oss_message = NULL;
 static gint64 oss_time; /* microseconds */
 static gboolean oss_paused;
 static gint oss_paused_time;
@@ -69,7 +70,6 @@ static gboolean set_format(gint format, gint rate, gint channels)
 {
     gint param;
     gint enabled = 0;
-    gchar *mess = NULL;
     
     AUDDBG("Audio format: %s, sample rate: %dHz, number of channels: %d.\n", oss_format_to_text(format), rate, channels);
     
@@ -117,9 +117,7 @@ static gboolean set_format(gint format, gint rate, gint channels)
     return TRUE;
     
     FAILED:
-        mess = oss_describe_error();
-        ERROR(mess);
-        g_free(mess);
+        ERROR_MSG;
         return FALSE;
 }
 
@@ -130,7 +128,6 @@ gint oss_open_audio(AFormat aud_format, gint rate, gint channels)
     gint format;
     gint vol_left, vol_right;
     gchar *device = DEFAULT_DSP;
-    gchar *mess = NULL;
 
     if (oss_cfg->use_alt_device && oss_cfg->alt_device != NULL)
         device = oss_cfg->alt_device;
@@ -141,9 +138,7 @@ gint oss_open_audio(AFormat aud_format, gint rate, gint channels)
 
     if (oss_data->fd == -1)
     {
-        mess = oss_describe_error();
-        ERROR(mess);
-        g_free(mess);
+        ERROR_MSG;
         goto FAILED;
     }
 
@@ -319,9 +314,7 @@ void oss_get_volume(gint *left, gint *right)
         if (errno == EINVAL)
             oss_ioctl_vol = FALSE;
 
-        gchar *mess = oss_describe_error();
-        AUDDBG("%s", mess);
-        g_free(mess);
+        DEBUG_MSG;
     }
     else
     {
@@ -348,8 +341,6 @@ void oss_set_volume(gint left, gint right)
         if (errno == EINVAL)
             oss_ioctl_vol = FALSE;
 
-        gchar *mess = oss_describe_error();
-        AUDDBG("%s", mess);
-        g_free(mess);
+        DEBUG_MSG;
     }
 }

@@ -173,7 +173,6 @@ gboolean oss_hardware_present(void)
 {    
     gint mixerfd;
     oss_sysinfo sysinfo;
-    gchar *mess = NULL;
 
     if ((mixerfd = open(DEFAULT_MIXER, O_RDWR, 0)) == -1)
         goto FAILED;
@@ -193,10 +192,7 @@ gboolean oss_hardware_present(void)
     }
     
     FAILED:
-        mess = oss_describe_error();
-        oss_show_error(mess);
-        ERROR(mess);
-        g_free(mess);
+        SHOW_ERROR_MSG;
         close(mixerfd);
         return FALSE;
 }

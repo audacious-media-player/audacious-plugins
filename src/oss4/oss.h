@@ -38,7 +38,27 @@
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
-#define ERROR(...) fprintf(stderr, "OSS4: %s", __VA_ARGS__)
+#define ERROR(...) fprintf(stderr, "OSS4: " __VA_ARGS__)
+
+#ifdef DEBUG
+    #define DEBUG_MSG \
+        oss_message = oss_describe_error(); \
+        AUDDBG("%s", oss_message); \
+        g_free(oss_message);
+#else
+    #define DEBUG_MSG
+#endif
+
+#define ERROR_MSG \
+    oss_message = oss_describe_error(); \
+    ERROR("%s", oss_message); \
+    g_free(oss_message);
+    
+#define SHOW_ERROR_MSG \
+    oss_message = oss_describe_error(); \
+    oss_show_error(oss_message); \
+    ERROR("%s", oss_message); \
+    g_free(oss_message);
 
 #define DEFAULT_MIXER "/dev/mixer"
 #define DEFAULT_DSP "/dev/dsp"
@@ -63,6 +83,7 @@ typedef struct
 
 extern oss_data_t *oss_data;
 extern oss_cfg_t *oss_cfg;
+extern gchar *oss_message;
 
 /* oss.c */
 OutputPluginInitStatus oss_init(void);
