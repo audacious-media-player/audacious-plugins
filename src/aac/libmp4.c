@@ -166,10 +166,35 @@ int aac_parse_frame(guchar *buf, int *srate, int *num)
 
 #define PROBE_DEBUG(...)
 
+/* Searches <length> bytes of data for an ADTS header.  Returns the offset of
+ * the first header or -1 if none is found.  Sets <size> to the length of the
+ * frame. */
+static gint find_aac_header (guchar * data, gint length, gint * size)
+{
+    gint offset, a, b;
+
+    for (offset = 0; offset <= length - 8; offset ++)
+    {
+        if (data[offset] != 255)
+            continue;
+
+        * size = aac_parse_frame (data + offset, & a, & b);
+
+        if (* size < 8)
+            continue;
+
+        return offset;
+    }
+
+    return -1;
+}
+
 static gboolean parse_aac_stream (VFSFile * stream)
 {
     guchar data[8192];
-    gint offset, length, srate, num, found;
+    gint offset, found, inner, size;
+
+    size = 0; /* avoid bogus uninitialized variable warning */
 
     if (aud_vfs_fread (data, 1, sizeof data, stream) != sizeof data)
     {
@@ -177,43 +202,23 @@ static gboolean parse_aac_stream (VFSFile * stream)
         return FALSE;
     }
 
-    for (offset = 0; offset <= sizeof data - 8; offset ++)
+    offset = 0;
+
+    for (found = 0; found < 3; found ++)
     {
-        if (data[offset] != 255)
-            continue;
+        inner = find_aac_header (data + offset, sizeof data - offset, & size);
 
-        length = aac_parse_frame (data + offset, & srate, & num);
+        if (! (inner == 0 || (found == 0 && inner > 0)))
+        {
+            PROBE_DEBUG ("Only %d ADTS headers.\n", found);
+            return FALSE;
+        }
 
-        if (length < 8)
-            continue;
-
-        offset += length;
-        goto FOUND;
-    }
-
-    PROBE_DEBUG ("No ADTS header.\n");
-    return FALSE;
-
-FOUND:
-    for (found = 1; found < 3; found ++)
-    {
-        if (offset > sizeof data - 8)
-            goto FAIL;
-
-        length = aac_parse_frame (data + offset, & srate, & num);
-
-        if (length < 8)
-            goto FAIL;
-
-        offset += length;
+        offset += inner + size;
     }
 
     PROBE_DEBUG ("Accepted.\n");
     return TRUE;
-
-FAIL:
-    PROBE_DEBUG ("Only %d ADTS headers.\n", found);
-    return FALSE;
 }
 
 static int aac_probe(unsigned char *buffer, int len)
@@ -297,21 +302,139 @@ static void mp4_cleanup(void)
     g_cond_free (seek_cond);
 }
 
-static Tuple * aac_get_tuple (const gchar * filename, VFSFile * handle)
+/* Gets info (some approximated) from an AAC/ADTS file.  <length> is
+ * milliseconds, <bitrate> is kilobits per second.  Any parameters that cannot
+ * be read are set to -1. */
+static void calc_aac_info (VFSFile * handle, gint * length, gint * bitrate,
+ gint * samplerate, gint * channels)
 {
-    Tuple * tuple;
-    gchar * temp;
+    NeAACDecHandle decoder;
+    NeAACDecFrameInfo frame;
+    gboolean initted = FALSE;
+    gint size = aud_vfs_fsize (handle);
+    guchar buffer[BUFFER_SIZE];
+    gint offset = 0, filled = 0;
+    gint found, bytes_used = 0, time_used = 0;
 
-    temp = aud_vfs_get_metadata (handle, "track-name");
-    if (temp == NULL)
+    decoder = NULL; /* avoid bogus uninitialized variable warning */
+
+    * length = -1;
+    * bitrate = -1;
+    * samplerate = -1;
+    * channels = -1;
+
+    /* look for a representative bitrate in the middle of the file */
+    if (size > 0)
+        aud_vfs_fseek (handle, size / 2, SEEK_SET);
+
+    for (found = 0; found < 32; found ++)
     {
-        fprintf (stderr, "aac: No metadata for %s.\n", filename);
-        return NULL;
+        if (filled < BUFFER_SIZE / 2)
+        {
+            memmove (buffer, buffer + offset, filled);
+            offset = 0;
+
+            if (aud_vfs_fread (buffer + filled, 1, BUFFER_SIZE - filled, handle)
+             != BUFFER_SIZE - filled)
+            {
+                PROBE_DEBUG ("Read failed.\n");
+                goto DONE;
+            }
+
+            filled = BUFFER_SIZE;
+        }
+
+        if (! initted)
+        {
+            gint inner, a;
+            gulong r;
+            guchar ch;
+
+            inner = find_aac_header (buffer + offset, filled, & a);
+
+            if (inner < 0)
+            {
+                PROBE_DEBUG ("No ADTS header.\n");
+                goto DONE;
+            }
+
+            offset += inner;
+            filled -= inner;
+
+            decoder = NeAACDecOpen ();
+            inner = NeAACDecInit (decoder, buffer + offset, filled, & r, & ch);
+
+            if (inner < 0)
+            {
+                PROBE_DEBUG ("Decoder init failed.\n");
+                NeAACDecClose (decoder);
+                goto DONE;
+            }
+
+            offset += inner;
+            filled -= inner;
+            bytes_used += inner;
+
+            * samplerate = r;
+            * channels = ch;
+            initted = TRUE;
+        }
+
+        if (NeAACDecDecode (decoder, & frame, buffer + offset, filled) == NULL)
+        {
+            PROBE_DEBUG ("Decode failed.\n");
+            goto DONE;
+        }
+
+        if (frame.samplerate != * samplerate || frame.channels != * channels)
+        {
+            PROBE_DEBUG ("Parameter mismatch.\n");
+            goto DONE;
+        }
+
+        offset += frame.bytesconsumed;
+        filled -= frame.bytesconsumed;
+        bytes_used += frame.bytesconsumed;
+        time_used += frame.samples / frame.channels * (gint64) 1000 /
+         frame.samplerate;
     }
 
-    tuple = tuple_new_from_filename (filename);
+    /* bits per millisecond = kilobits per second */
+    * bitrate = bytes_used * 8 / time_used;
+
+    if (size > 0)
+        * length = size * (gint64) time_used / bytes_used;
+
+DONE:
+    if (initted)
+        NeAACDecClose (decoder);
+}
+
+static Tuple * aac_get_tuple (const gchar * filename, VFSFile * handle)
+{
+    Tuple * tuple = tuple_new_from_filename (filename);
+    gchar * temp;
+    gint length, bitrate, samplerate, channels;
+
     tuple_associate_string (tuple, FIELD_CODEC, NULL, "MPEG-2/4 AAC");
-    tuple_associate_string (tuple, FIELD_TITLE, NULL, temp);
+
+    if (! aud_vfs_is_remote (filename))
+    {
+        calc_aac_info (handle, & length, & bitrate, & samplerate, & channels);
+
+        if (length > 0)
+            tuple_associate_int (tuple, FIELD_LENGTH, NULL, length);
+
+        if (bitrate > 0)
+            tuple_associate_int (tuple, FIELD_BITRATE, NULL, bitrate);
+    }
+
+    temp = aud_vfs_get_metadata (handle, "track-name");
+    if (temp != NULL)
+    {
+        tuple_associate_string (tuple, FIELD_TITLE, NULL, temp);
+        g_free (temp);
+    }
 
     temp = aud_vfs_get_metadata (handle, "stream-name");
     if (temp != NULL)
