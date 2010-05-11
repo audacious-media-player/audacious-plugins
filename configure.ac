@@ -134,8 +134,8 @@ AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
 dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen console psf xsf metronom vtx"
-OUTPUT_PLUGINS="crossfade null"
-EFFECT_PLUGINS="compressor crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
+OUTPUT_PLUGINS="null"
+EFFECT_PLUGINS="compressor crossfade crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm skins vfstrace gtkui"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
