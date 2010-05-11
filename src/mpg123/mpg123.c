@@ -37,8 +37,6 @@
 #include <mpg123.h>
 
 static GMutex *ctrl_mutex = NULL;
-static GCond *ctrl_cond = NULL;
-static gboolean pause_flag;
 
 /** utility functions **/
 static gint
@@ -146,7 +144,6 @@ aud_mpg123_init(void)
 
 	AUDDBG("initializing control mutex\n");
 	ctrl_mutex = g_mutex_new();
-	ctrl_cond = g_cond_new();
 }
 
 static void
@@ -157,7 +154,6 @@ aud_mpg123_deinit(void)
 
 	AUDDBG("deinitializing control mutex\n");
 	g_mutex_free(ctrl_mutex);
-	g_cond_free(ctrl_cond);
 }
 
 static gboolean
@@ -238,7 +234,6 @@ mpg123_playback_worker(InputPlayback *data)
 	const glong *rates;
 	gsize num_rates;
 	gint bitrate = 0;
-	gboolean paused = FALSE;
 	struct mpg123_frameinfo fi = {};
 
 	AUDDBG("playback worker started for %s\n", data->filename);
@@ -313,14 +308,9 @@ mpg123_playback_worker(InputPlayback *data)
 	if (!data->output->open_audio(FMT_S16_NE, ctx.rate, ctx.channels))
 		goto cleanup;
 
-	g_mutex_lock(ctrl_mutex);
-
 	AUDDBG("starting decode\n");
 	data->playing = TRUE;
 	data->set_pb_ready(data);
-	pause_flag = FALSE;
-
-	g_mutex_unlock(ctrl_mutex);
 
 	while (data->playing == TRUE)
 	{
@@ -409,23 +399,8 @@ mpg123_playback_worker(InputPlayback *data)
 			AUDDBG("seeking to %ld (byte %ld)\n", ctx.seek, byteoff);
 			data->output->flush(ctx.seek * 1000);
 			aud_vfs_fseek(ctx.fd, byteoff, SEEK_SET);
-			ctx.seek = -1;
-			
-			g_cond_signal(ctrl_cond);
-		}
-		
-		if (pause_flag != paused)
-		{
-			data->output->pause(pause_flag);
-			paused = pause_flag;
-			g_cond_signal(ctrl_cond);
-		}
 
-		if (paused)
-		{
-			g_cond_wait(ctrl_cond, ctrl_mutex);
-			g_mutex_unlock(ctrl_mutex);
-			continue;
+			ctx.seek = -1;
 		}
 
 		g_mutex_unlock(ctrl_mutex);
@@ -453,7 +428,6 @@ mpg123_stop_playback_worker(InputPlayback *data)
 	AUDDBG("signalling playback worker to die\n");	
 	g_mutex_lock(ctrl_mutex);
 	data->playing = FALSE;
-	g_cond_signal(ctrl_cond);
 	g_mutex_unlock(ctrl_mutex);
 
 	AUDDBG("waiting for playback worker to die\n");
@@ -466,16 +440,7 @@ mpg123_stop_playback_worker(InputPlayback *data)
 static void
 mpg123_pause_playback_worker(InputPlayback *data, gshort p)
 {
-	g_mutex_lock(ctrl_mutex);
-
-	if (data->playing)
-	{
-		pause_flag = p;
-		g_cond_signal(ctrl_cond);
-		g_cond_wait(ctrl_cond, ctrl_mutex);
-	}
-
-	g_mutex_unlock(ctrl_mutex);
+	data->output->pause(p);
 }
 
 static void
@@ -487,8 +452,6 @@ mpg123_seek_time(InputPlayback *data, gint time)
 	{
 		MPG123PlaybackContext *ctx = data->data;
 		ctx->seek = time;
-		g_cond_signal(ctrl_cond);
-		g_cond_wait(ctrl_cond, ctrl_mutex);
 	}
 
 	g_mutex_unlock(ctrl_mutex);
