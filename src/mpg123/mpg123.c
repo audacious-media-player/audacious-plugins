@@ -184,13 +184,13 @@ mpg123_probe_for_tuple(const gchar *filename, VFSFile *fd)
 	tu = aud_tuple_new_from_filename(filename);
 
 	aud_vfs_fseek(fd, 0, SEEK_SET);
-	tag_tuple_read(tu, fd);	
+	tag_tuple_read(tu, fd);
 
 	if (tuple_get_int(tu, FIELD_LENGTH, NULL) == 0)
 		aud_tuple_associate_int(tu, FIELD_LENGTH, NULL, len * 1000);
 
 	AUDDBG("returning tuple %p for file %p\n", tu, fd);
-	return tu;	
+	return tu;
 }
 
 typedef struct {
@@ -199,7 +199,7 @@ typedef struct {
 	mpg123_pars *params;
 	glong rate;
 	gint channels;
-	gint encoding;	
+	gint encoding;
 	gint64 seek;
 	gboolean stream;
 	Tuple *tu;
@@ -237,7 +237,8 @@ mpg123_playback_worker(InputPlayback *data)
 	gint i;
 	const glong *rates;
 	gsize num_rates;
-	gint bitrate = 0;
+	gint bitrate = 0, bitrate_sum = 0, bitrate_count = 0;
+	gint bitrate_updated = -1000; /* >= a second away from any position */
 	gboolean paused = FALSE;
 	struct mpg123_frameinfo fi = {};
 
@@ -330,10 +331,18 @@ mpg123_playback_worker(InputPlayback *data)
 		gsize outbuf_size;
 
 		mpg123_info(ctx.decoder, &fi);
-		if (fi.bitrate != bitrate)
+		bitrate_sum += fi.bitrate;
+		bitrate_count ++;
+
+		if (bitrate_sum / bitrate_count != bitrate && abs
+		 (data->output->written_time () - bitrate_updated) >= 1000)
 		{
-			data->set_params(data, NULL, 0, (fi.bitrate * 1000), ctx.rate, ctx.channels);
-			bitrate = fi.bitrate;
+			data->set_params(data, NULL, 0, bitrate_sum / bitrate_count * 1000,
+			 ctx.rate, ctx.channels);
+			bitrate = bitrate_sum / bitrate_count;
+			bitrate_sum = 0;
+			bitrate_count = 0;
+			bitrate_updated = data->output->written_time ();
 		}
 
 		/* deal with shoutcast titles nonsense */
@@ -410,10 +419,10 @@ mpg123_playback_worker(InputPlayback *data)
 			data->output->flush(ctx.seek * 1000);
 			aud_vfs_fseek(ctx.fd, byteoff, SEEK_SET);
 			ctx.seek = -1;
-			
+
 			g_cond_signal(ctrl_cond);
 		}
-		
+
 		if (pause_flag != paused)
 		{
 			data->output->pause(pause_flag);
@@ -450,7 +459,7 @@ cleanup:
 static void
 mpg123_stop_playback_worker(InputPlayback *data)
 {
-	AUDDBG("signalling playback worker to die\n");	
+	AUDDBG("signalling playback worker to die\n");
 	g_mutex_lock(ctrl_mutex);
 	data->playing = FALSE;
 	g_cond_signal(ctrl_cond);
