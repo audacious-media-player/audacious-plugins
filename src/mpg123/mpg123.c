@@ -40,12 +40,6 @@ static GMutex *ctrl_mutex = NULL;
 static GCond *ctrl_cond = NULL;
 static gboolean pause_flag;
 
-/** noop functions (or, "this looks important!  lets rip it out.") **/
-void store_id3_text(void *sb, char *source, size_t source_size, const int noquiet, const int notranslate)
-{
-
-}
-
 /** utility functions **/
 static gint
 mpg123_get_length(VFSFile *fd)
