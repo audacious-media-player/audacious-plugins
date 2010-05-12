@@ -17,6 +17,7 @@
 #include "configure.h"
 
 Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd);
+Tuple * console_get_file_tuple(const gchar *filename);
 void console_play_file(InputPlayback *playback);
 void console_seek(InputPlayback *data, gint time);
 void console_stop(InputPlayback *playback);
@@ -55,6 +56,7 @@ static InputPlugin console_ip =
     .pause = console_pause,
     .seek = console_seek,
     .vfs_extensions = gme_fmts,
+    .get_song_tuple = console_get_file_tuple,
     .probe_for_tuple = console_probe_for_tuple,
     .have_subtune = TRUE
 };

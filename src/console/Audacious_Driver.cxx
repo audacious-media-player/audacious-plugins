@@ -151,6 +151,9 @@ gint ConsoleFileHandler::load(gint sample_rate)
 static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const gint track)
 {
     Tuple *ti = aud_tuple_new_from_filename(path);
+
+    g_print("file: %s\n", path);
+
     if (ti != NULL)
     {
         gint length;
@@ -199,7 +202,24 @@ extern "C" Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd)
     {
         track_info_t info;
         if (!log_err(fh.m_emu->track_info(&info, fh.m_track < 0 ? 0 : fh.m_track)))
-            return get_track_ti(filename, &info, fh.m_track);
+            return get_track_ti(fh.m_path, &info, fh.m_track);
+    }
+
+    return NULL;
+}
+
+extern "C" Tuple * console_get_file_tuple(const gchar *filename)
+{
+    ConsoleFileHandler fh(filename);
+    
+    if (!fh.m_type)
+        return NULL;
+
+    if (!fh.load(gme_info_only))
+    {
+        track_info_t info;
+        if (!log_err(fh.m_emu->track_info(&info, fh.m_track < 0 ? 0 : fh.m_track)))
+            return get_track_ti(fh.m_path, &info, fh.m_track);
     }
 
     return NULL;
@@ -209,7 +229,7 @@ extern "C" void console_play_file(InputPlayback *playback)
 {
     gint length, end_delay, sample_rate;
     track_info_t info;
-    
+
     // identify file
     ConsoleFileHandler fh(playback->filename);
     if (!fh.m_type)
@@ -257,7 +277,7 @@ extern "C" void console_play_file(InputPlayback *playback)
         if (fh.m_type == gme_spc_type && audcfg.ignore_spc_length)
             info.length = -1;
         
-        Tuple *ti = get_track_ti(playback->filename, &info, fh.m_track);
+        Tuple *ti = get_track_ti(fh.m_path, &info, fh.m_track);
         if (ti != NULL)
         {
             length = aud_tuple_get_int(ti, FIELD_LENGTH, NULL);
