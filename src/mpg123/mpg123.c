@@ -379,7 +379,7 @@ mpg123_playback_worker(InputPlayback *data)
 					if (len == 0)
 					{
 						MPG123_IODBG("stream EOF (well, read failed)\n");
-						mpg123_decode(ctx.decoder, buf, 0, outbuf, 16384, &outbuf_size);
+						mpg123_decode(ctx.decoder, NULL, 0, outbuf, 2048, &outbuf_size);
 
 						MPG123_IODBG("passing %ld bytes of audio\n", outbuf_size);
 						data->pass_audio(data, FMT_S16_NE, ctx.channels, outbuf_size, outbuf, NULL);
