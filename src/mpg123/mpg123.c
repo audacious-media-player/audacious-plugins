@@ -57,7 +57,7 @@ mpg123_get_length(VFSFile *fd)
 
 	g_return_val_if_fail(fd != NULL, -2);
 
-	AUDDBG("starting probe\n");
+	AUDDBG("starting probe of %s\n", fd->uri);
 
 	mpg123_rates(&rates, &num_rates);
 
