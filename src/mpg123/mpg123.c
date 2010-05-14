@@ -18,7 +18,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#define DEBUG
+#undef DEBUG
 
 #ifdef DEBUG_MPG123_IO
 # define MPG123_IODBG(...)	AUDDBG(__VA_ARGS__)
