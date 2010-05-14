@@ -722,6 +722,12 @@ gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
 
     switch (event->keyval)
     {
+        case GDK_minus:
+            mainwin_set_volume_diff (-5);
+            break;
+        case GDK_plus:
+            mainwin_set_volume_diff (5);
+            break;
         case GDK_Left:
         case GDK_KP_Left:
         case GDK_KP_7:
