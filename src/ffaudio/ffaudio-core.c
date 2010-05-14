@@ -274,16 +274,6 @@ ffaudio_get_song_tuple(const gchar *filename)
     return tuple;
 }
 
-#ifdef FFAUDIO_USE_AUDTAG
-gboolean
-ffaudio_update_song_tuple(Tuple *tuple, VFSFile *fd)
-{
-    tag_tuple_write_to_file(tuple, fd);
-
-    return TRUE;
-}
-#endif
-
 static void
 ffaudio_play_file(InputPlayback *playback)
 {
@@ -698,7 +688,7 @@ InputPlugin ffaudio_ip = {
     .description = "FFaudio Plugin",
     .vfs_extensions = ffaudio_fmts,
 #ifdef FFAUDIO_USE_AUDTAG
-    .update_song_tuple = ffaudio_update_song_tuple,
+    .update_song_tuple = tag_tuple_write_to_file,
 #endif
 
     /* FFMPEG probing takes forever on network files, so try everything else
