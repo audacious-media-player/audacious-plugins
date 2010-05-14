@@ -42,23 +42,29 @@
 
 #ifdef DEBUG
     #define DEBUG_MSG \
+    do { \
         oss_message = oss_describe_error(); \
         AUDDBG("%s", oss_message); \
-        g_free(oss_message);
+        g_free(oss_message); \
+    } while (0)
 #else
-    #define DEBUG_MSG
+    #define DEBUG_MSG do { } while (0)
 #endif
 
 #define ERROR_MSG \
+do { \
     oss_message = oss_describe_error(); \
     ERROR("%s", oss_message); \
-    g_free(oss_message);
+    g_free(oss_message); \
+} while (0)
     
 #define SHOW_ERROR_MSG \
+do { \
     oss_message = oss_describe_error(); \
     oss_show_error(oss_message); \
     ERROR("%s", oss_message); \
-    g_free(oss_message);
+    g_free(oss_message); \
+} while (0)
 
 #define DEFAULT_MIXER "/dev/mixer"
 #define DEFAULT_DSP "/dev/dsp"

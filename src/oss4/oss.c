@@ -74,7 +74,8 @@ static gboolean set_format(gint format, gint rate, gint channels)
     AUDDBG("Audio format: %s, sample rate: %dHz, number of channels: %d.\n", oss_format_to_text(format), rate, channels);
     
     /* Enable/disable format conversions made by the OSS software */
-    ioctl(oss_data->fd, SNDCTL_DSP_COOKEDMODE, &oss_cfg->cookedmode);
+    if (ioctl(oss_data->fd, SNDCTL_DSP_COOKEDMODE, &oss_cfg->cookedmode) == -1)
+        DEBUG_MSG;
     
     param = format;
 
@@ -150,7 +151,8 @@ gint oss_open_audio(AFormat aud_format, gint rate, gint channels)
     /*gint policy = 8;
     ioctl(oss_data->fd, SNDCTL_DSP_POLICY, &policy);*/
 
-    ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
+    if (ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info) == -1)
+        DEBUG_MSG;
 
     AUDDBG("Buffer information, fragstotal: %d, fragsize: %d, bytes: %d.\n",
         oss_buffer_info.fragstotal,
@@ -185,7 +187,8 @@ void oss_close_audio(void)
 {
     AUDDBG ("Closing audio.\n");
  
-    ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL);
+    if (ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL) == -1)
+        DEBUG_MSG;
 
     if (oss_data->fd != -1)
         close(oss_data->fd);
@@ -206,7 +209,11 @@ void oss_write_audio(void *data, gint length)
         
         if (written < 0)
         {
-            ioctl(oss_data->fd, SNDCTL_DSP_SYNC, NULL);
+            ERROR_MSG;
+
+            if (ioctl(oss_data->fd, SNDCTL_DSP_SYNC, NULL) == -1)
+                DEBUG_MSG;
+
             break;
         }
         
@@ -271,8 +278,11 @@ void oss_flush(gint time)
 {
     AUDDBG("Flush.\n");
 
-    ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL);
-    ioctl(oss_data->fd, SNDCTL_DSP_SKIP, NULL);
+    if(ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL) == -1)
+        DEBUG_MSG;
+        
+    if (ioctl(oss_data->fd, SNDCTL_DSP_SKIP, NULL) == -1)
+        DEBUG_MSG;
 
     oss_time = (gint64) time * 1000;
     oss_paused_time = time;
@@ -286,12 +296,16 @@ void oss_pause(gshort pause)
     {
         oss_paused = TRUE;
         oss_paused_time = real_output_time();
-        ioctl(oss_data->fd, SNDCTL_DSP_SILENCE, NULL);
+        
+        if (ioctl(oss_data->fd, SNDCTL_DSP_SILENCE, NULL) == -1)
+            DEBUG_MSG;
     }
     else
     {  
         oss_paused = FALSE;
-        ioctl(oss_data->fd, SNDCTL_DSP_SKIP, NULL);
+        
+        if (ioctl(oss_data->fd, SNDCTL_DSP_SKIP, NULL) == -1)
+            DEBUG_MSG;
     }
 }
 

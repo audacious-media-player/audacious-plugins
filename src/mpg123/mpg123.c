@@ -122,7 +122,7 @@ mpg123_get_length(VFSFile *fd)
 	mpg123_scan(decoder);
 	samples = mpg123_length(decoder);
 
-	if (samples == 0)
+	if (samples <= 0)
 	{
 		off_t filesize = vfs_fsize(fd);
 		mpg123_set_filesize(decoder, filesize);
