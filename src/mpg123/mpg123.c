@@ -232,7 +232,7 @@ update_stream_metadata(VFSFile *file, const gchar *name, Tuple *tuple, gint item
 static void
 mpg123_playback_worker(InputPlayback *data)
 {
-	MPG123PlaybackContext ctx = {};
+	MPG123PlaybackContext ctx;
 	gint ret;
 	gint i;
 	const glong *rates;
@@ -240,7 +240,10 @@ mpg123_playback_worker(InputPlayback *data)
 	gint bitrate = 0, bitrate_sum = 0, bitrate_count = 0;
 	gint bitrate_updated = -1000; /* >= a second away from any position */
 	gboolean paused = FALSE;
-	struct mpg123_frameinfo fi = {};
+	struct mpg123_frameinfo fi;
+
+	memset(&ctx, 0, sizeof(MPG123PlaybackContext));
+	memset(&fi, 0, sizeof(struct mpg123_frameinfo));
 
 	AUDDBG("playback worker started for %s\n", data->filename);
 
@@ -325,8 +328,6 @@ mpg123_playback_worker(InputPlayback *data)
 
 	while (data->playing == TRUE)
 	{
-		guchar buf[16384];
-		gsize len = 0;
 		guchar outbuf[2048];
 		gsize outbuf_size;
 
@@ -365,6 +366,9 @@ mpg123_playback_worker(InputPlayback *data)
 
 		do
 		{
+			guchar buf[16384];
+			gsize len = 0;
+
 			if (ret == MPG123_NEED_MORE)
 			{
 				MPG123_IODBG("mpg123 requested more data\n");
