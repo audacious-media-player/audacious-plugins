@@ -39,8 +39,6 @@ typedef struct {
     gint equalizer_x, equalizer_y;
     gint playlist_x, playlist_y;
     gint playlist_width, playlist_height;
-    gint snap_distance;
-    gboolean snap_windows, save_window_position;
     gboolean scaled, autoscroll;
     gboolean always_on_top, sticky;
     gfloat scale_factor;

@@ -93,9 +93,6 @@ skins_cfg_t skins_default_config = {
     .playlist_height = PLAYLISTWIN_DEFAULT_HEIGHT,
     .playlist_position = 0,
     .colorize_r = 255, .colorize_g = 255, .colorize_b = 255,
-    .snap_distance = 10,
-    .snap_windows = TRUE,
-    .save_window_position = TRUE,
     .analyzer_peaks = TRUE,
     .twoway_scroll = TRUE,             /* use back and forth scroll */
     .mainwin_use_bitmapfont = TRUE,
@@ -133,8 +130,6 @@ static skins_cfg_boolent skins_boolents[] = {
     {"easy_move", &config.easy_move, TRUE},
     {"allow_broken_skins", &config.allow_broken_skins, TRUE},
     {"disable_inline_gtk", &config.disable_inline_gtk, TRUE},
-    {"snap_windows", &config.snap_windows, TRUE},
-    {"save_window_positions", &config.save_window_position, TRUE},
     {"analyzer_peaks", &config.analyzer_peaks, TRUE},
     {"twoway_scroll", &config.twoway_scroll, TRUE},
     {"warn_about_win_visibility", &config.warn_about_win_visibility, TRUE},
@@ -175,7 +170,6 @@ static skins_cfg_nument skins_numents[] = {
     {"colorize_r", &config.colorize_r, TRUE},
     {"colorize_g", &config.colorize_g, TRUE},
     {"colorize_b", &config.colorize_b, TRUE},
-    {"snap_distance", &config.snap_distance, TRUE},
 };
 
 static gint ncfgient = G_N_ELEMENTS(skins_numents);
@@ -254,16 +248,6 @@ void skins_cfg_save() {
     }
 
     int i;
-
-    if (config.save_window_position == FALSE)
-    {
-        config.player_x = MAINWIN_DEFAULT_POS_X;
-        config.player_y = MAINWIN_DEFAULT_POS_Y;
-        config.equalizer_x = EQUALIZER_DEFAULT_POS_X;
-        config.equalizer_y = EQUALIZER_DEFAULT_POS_Y;
-        config.playlist_x = PLAYLISTWIN_DEFAULT_POS_X;
-        config.playlist_y = PLAYLISTWIN_DEFAULT_POS_Y;
-    }
 
     for (i = 0; i < ncfgsent; ++i) {
         if (skins_strents[i].se_wrt)
