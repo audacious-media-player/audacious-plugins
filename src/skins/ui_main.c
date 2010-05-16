@@ -2250,84 +2250,88 @@ static void mainwin_update_volume (void)
     mainwin_set_balance_slider (balance);
 }
 
+static void mainwin_update_time_display (gint time, gint length)
+{
+    gchar scratch[7];
+
+    if (config.timer_mode == TIMER_REMAINING && length > 0)
+    {
+        if (length - time < 6000000)  /* "-MM:SS" */
+            snprintf (scratch, sizeof scratch, "%3d:%02d", (time - length) /
+             60000, (length - time) / 1000 % 60);
+        else                          /* "-HH:MM" */
+            snprintf (scratch, sizeof scratch, "%3d:%02d", (time - length) /
+             3600000, (length - time) / 60000 % 60);
+    }
+    else
+    {
+        if (time < 60000000)  /* MMM:SS */
+            snprintf (scratch, sizeof scratch, "%3d:%02d", time / 60000, time /
+             1000 % 60);
+        else                  /* HHH:MM */
+            snprintf (scratch, sizeof scratch, "%3d:%02d", time / 3600000, time
+             / 60000 % 60);
+    }
+
+    scratch[3] = 0;
+
+    ui_skinned_number_set (mainwin_minus_num, scratch[0]);
+    ui_skinned_number_set (mainwin_10min_num, scratch[1]);
+    ui_skinned_number_set (mainwin_min_num, scratch[2]);
+    ui_skinned_number_set (mainwin_10sec_num, scratch[4]);
+    ui_skinned_number_set (mainwin_sec_num, scratch[5]);
+
+    if (! ((UiSkinnedHorizontalSlider *) mainwin_sposition)->pressed)
+    {
+        ui_skinned_textbox_set_text (mainwin_stime_min, scratch);
+        ui_skinned_textbox_set_text (mainwin_stime_sec, scratch + 4);
+    }
+}
+
+static void mainwin_update_time_slider (gint time, gint length)
+{
+    show_hide_widget (mainwin_position, length > 0);
+    show_hide_widget (mainwin_sposition, length > 0);
+
+    if (length > 0 && seek_source == 0)
+    {
+        if (time < length)
+        {
+            ui_skinned_horizontal_slider_set_position (mainwin_position, time *
+             (gint64) 219 / length);
+            ui_skinned_horizontal_slider_set_position (mainwin_sposition, 1 +
+             time * (gint64) 12 / length);
+        }
+        else
+        {
+            ui_skinned_horizontal_slider_set_position (mainwin_position, 219);
+            ui_skinned_horizontal_slider_set_position (mainwin_sposition, 13);
+        }
+    }
+}
+
 void mainwin_update_song_info (void)
 {
+    gint time, length;
+
     mainwin_update_volume ();
 
     if (! audacious_drct_get_playing ())
         return;
 
-    gint time = audacious_drct_get_time();
-    gint length = audacious_drct_get_length();
-    gint t;
-    gchar stime_prefix;
+    time = audacious_drct_get_time ();
+    length = audacious_drct_get_length ();
 
-    show_hide_widget (mainwin_position, length > 0);
-    show_hide_widget (mainwin_sposition, length > 0);
-
-    if (ab_position_a != -1 && ab_position_b != -1 && time > ab_position_b)
+    /* Ugh, this does NOT belong here. -jlindgren */
+    if (ab_position_a > -1 && ab_position_b > -1 && time >= ab_position_b)
+    {
         audacious_drct_seek (ab_position_a);
-
-    playlistwin_set_time(time, length, config.timer_mode);
-
-    if (config.timer_mode == TIMER_REMAINING) {
-        if (length != -1) {
-            ui_skinned_number_set_number(mainwin_minus_num, 11);
-            t = length - time;
-            stime_prefix = '-';
-        }
-        else {
-            ui_skinned_number_set_number(mainwin_minus_num, 10);
-            t = time;
-            stime_prefix = ' ';
-        }
-    }
-    else {
-        ui_skinned_number_set_number(mainwin_minus_num, 10);
-        t = time;
-        stime_prefix = ' ';
-    }
-    t /= 1000;
-
-    /* Show the time in the format HH:MM when we have more than 100
-     * minutes. */
-    if (t >= 100 * 60)
-        t /= 60;
-    ui_skinned_number_set_number(mainwin_10min_num, t / 600);
-    ui_skinned_number_set_number(mainwin_min_num, (t / 60) % 10);
-    ui_skinned_number_set_number(mainwin_10sec_num, (t / 10) % 6);
-    ui_skinned_number_set_number(mainwin_sec_num, t % 10);
-
-    if (!UI_SKINNED_HORIZONTAL_SLIDER(mainwin_sposition)->pressed) {
-        gchar *time_str;
-
-        time_str = g_strdup_printf("%c%2.2d", stime_prefix, t / 60);
-        ui_skinned_textbox_set_text(mainwin_stime_min, time_str);
-        g_free(time_str);
-
-        time_str = g_strdup_printf("%2.2d", t % 60);
-        ui_skinned_textbox_set_text(mainwin_stime_sec, time_str);
-        g_free(time_str);
+        return;
     }
 
-    if (length > 0) {
-        if (time > length) {
-            ui_skinned_horizontal_slider_set_position(mainwin_position, 219);
-            ui_skinned_horizontal_slider_set_position(mainwin_sposition, 13);
-        }
-        /* update the slider position ONLY if there is not a seek in progress */
-        else if (seek_source == 0)
-        {
-            ui_skinned_horizontal_slider_set_position (mainwin_position,
-             (gint64) time * 219 / length);
-            ui_skinned_horizontal_slider_set_position(mainwin_sposition,
-                                                      ((time * 12) / length) + 1);
-        }
-    }
-    else {
-        ui_skinned_horizontal_slider_set_position(mainwin_position, 0);
-        ui_skinned_horizontal_slider_set_position(mainwin_sposition, 1);
-    }
+    mainwin_update_time_display (time, length);
+    mainwin_update_time_slider (time, length);
+    playlistwin_set_time (time, length, config.timer_mode);
 }
 
 /* toggleactionentries actions */
