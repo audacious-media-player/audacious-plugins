@@ -296,28 +296,6 @@ else
 	have_coreaudio=no
 fi
 
-dnl *** Icecast
-
-AC_ARG_ENABLE( icecast,
-    [  --disable-icecast       disable Icecast output plugin (default=enabled)],
-    [enable_icecast=$enableval],
-    [enable_icecast="yes"]
-)
-
-if test "x$enable_icecast" = "xyes"; then
-    PKG_CHECK_MODULES(SHOUT, [shout >= 2.0],
-         [have_shout=yes
-	  enable_filewriter=yes],
-         [have_shout=no]
-    )
-else
-    AC_MSG_RESULT([*** icecast output plugin disabled per user request ***])
-    have_shout=no
-fi
-
-AC_SUBST(SHOUT_CFLAGS)
-AC_SUBST(SHOUT_LIBS)
-
 dnl *** Dock Album Art (MacOS)
 
 AC_ARG_ENABLE(dockalbumart,
@@ -1482,10 +1460,6 @@ fi
 AC_SUBST(FILEWRITER_CFLAGS)
 AC_SUBST(FILEWRITER_LIBS)
 
-if test "x$have_shout" = "xyes"; then
-   OUTPUT_PLUGINS="$OUTPUT_PLUGINS icecast"
-fi
-
 dnl *** BS2B effect plugin
 
 AC_ARG_ENABLE(bs2b,
@@ -1617,7 +1591,6 @@ echo "  FileWriter:                             $enable_filewriter"
 echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
 echo "    -> FileWriter FLAC output part:       $have_writer_flac"
-echo "  Icecast audio output (icecast):         $have_shout"
 echo "  Null Audio output (null):               yes"
 echo
 echo "  Input Plugins"
@@ -1672,7 +1645,6 @@ echo "  Extra Stereo:                           yes"
 echo "  Echo/Surround:                          yes"
 echo "  SndStretch:                             yes"
 echo "  Crystalizer:                            yes"
-echo "  Icecast effect plugin (icecast):        $have_shout"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
 echo "  Sample Rate Converter (resample):       $enable_resample"
 echo
