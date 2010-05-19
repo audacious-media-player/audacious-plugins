@@ -55,6 +55,17 @@ Interface gtkui_interface = {
 SIMPLE_INTERFACE_PLUGIN("gtkui", &gtkui_interface);
 
 static struct index *pages;
+static gint last_switched_page_num = -1;
+
+GtkNotebook *get_playlist_notebook(void)
+{
+    return (GtkNotebook*) playlist_notebook;
+}
+
+gint get_switched_page_num()
+{
+    return last_switched_page_num;
+}
 
 static void ui_playlist_create_tab(gint playlist)
 {
@@ -155,6 +166,7 @@ static void ui_playlist_change_tab(GtkNotebook * notebook, GtkNotebookPage * not
         GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
         UiPlaylistModel *model = UI_PLAYLIST_MODEL(tree_model);
 
+        last_switched_page_num = page_num;
         aud_playlist_set_active(model->playlist);
     }
 }
@@ -168,6 +180,8 @@ static void ui_populate_playlist_notebook(void)
 
     for (count = 0; count < playlists; count++)
         ui_playlist_create_tab(count);
+    
+    aud_playlist_set_active(0);
 }
 
 static gboolean window_configured_cb(gpointer data)

@@ -6,6 +6,9 @@ SRCS = gtkui_cfg.c \
        ui_playlist_widget.c \
        ui_playlist_model.c \
        util.c \
+       dnd.c \
+       multidrag.c \
+       playlist_util.c \
        actions.c
 
 include ../../buildsys.mk

@@ -19,6 +19,7 @@
 
 #include <audacious/plugin.h>
 #include "ui_playlist_model.h"
+#include "playlist_util.h"
 
 static GObjectClass *parent_class = NULL;
 
@@ -432,6 +433,19 @@ ui_playlist_model_update_position(UiPlaylistModel *model, gint position)
     }
 }
 
+static void ui_playlist_model_playlist_rearraged(UiPlaylistModel *model)
+{
+    gint start, end, i;
+    
+    playlist_get_changed_range(&start, &end);
+    
+    if (start == -1 || end == -1)
+        return;
+    
+    for (i = start; i != end; i++)
+        ui_playlist_model_row_changed(model, i);
+}
+
 static void
 ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
 {
@@ -453,7 +467,12 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
         gint changed_rows;
         changed_rows = aud_playlist_entry_count(model->playlist) - model->num_rows;
 
-        if (changed_rows > 0)
+        /* playlist entries re-arranged */
+        if (changed_rows == 0)
+        {
+            ui_playlist_model_playlist_rearraged(model);
+        }
+        else if (changed_rows > 0)
         {
             /* entries added */
             while (changed_rows != 0)

@@ -25,4 +25,7 @@ static GtkWidget *window;       /* the main window */
 extern Interface gtkui_interface;
 void show_preferences_window(gboolean show);
 
+GtkNotebook *get_playlist_notebook(void);
+gint get_switched_page_num();
+
 #endif
