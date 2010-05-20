@@ -74,7 +74,7 @@ static void _ui_playlist_widget_drag_begin(GtkWidget *widget, GdkDragContext * c
     gint rx, ry;
 
     g_signal_stop_emission_by_name(widget, "drag-begin");
-    sel = gtk_tree_view_get_selection((GtkTreeView*)widget);
+    sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(widget));
     handler_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "selection_changed_handler_id"));
     g_signal_handler_block(G_OBJECT(sel), handler_id);
 
@@ -83,7 +83,7 @@ static void _ui_playlist_widget_drag_begin(GtkWidget *widget, GdkDragContext * c
     gdk_window_get_root_coords(gtk_widget_get_window(widget), 0, 0, &rx, &ry);
     x -= rx;
     y -= ry;
-    t->old_index = _ui_playlist_widget_get_drop_index( (GtkTreeView*)widget, NULL, x, y, NULL); 
+    t->old_index = _ui_playlist_widget_get_drop_index(GTK_TREE_VIEW(widget), NULL, x, y, NULL); 
 
     g_object_set_data_full(G_OBJECT(widget), "ui_playlist_drag_context", t, (GDestroyNotify) ui_playlist_drag_tracker_free);
 }
