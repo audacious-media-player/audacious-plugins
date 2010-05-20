@@ -85,6 +85,13 @@ static const xspf_entry_t xspf_entries[] = {
     { FIELD_SUBSONG_NUM,  "subsong-num",  TUPLE_INT,      TRUE,   CMP_DEF },
     { FIELD_MIMETYPE,     "mime-type",    TUPLE_STRING,   TRUE,   CMP_DEF },
     { FIELD_BITRATE,      "bitrate",      TUPLE_INT,      TRUE,   CMP_DEF },
+
+    { FIELD_GAIN_ALBUM_GAIN, "gain-album-gain", TUPLE_INT, TRUE,  CMP_DEF },
+    { FIELD_GAIN_ALBUM_PEAK, "gain-album-peak", TUPLE_INT, TRUE,  CMP_DEF },
+    { FIELD_GAIN_TRACK_GAIN, "gain-track-gain", TUPLE_INT, TRUE,  CMP_DEF },
+    { FIELD_GAIN_TRACK_PEAK, "gain-track-peak", TUPLE_INT, TRUE,  CMP_DEF },
+    { FIELD_GAIN_GAIN_UNIT, "gain-gain-unit", TUPLE_INT,  TRUE,   CMP_DEF },
+    { FIELD_GAIN_PEAK_UNIT, "gain-peak-unit", TUPLE_INT,  TRUE,   CMP_DEF },
 };
 
 static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entries[0]));
