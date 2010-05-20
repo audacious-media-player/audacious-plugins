@@ -16,7 +16,7 @@
  *  The Audacious team does not consider modular code linking to
  *  Audacious or using our public API to be a derived work.
  */
-
+#define DEBUG
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
@@ -28,6 +28,7 @@
 #include "ui_playlist_widget.h"
 #include "ui_playlist_model.h"
 #include "ui_manager.h"
+#include "ui_infoarea.h"
 
 static GtkWidget *label_time;
 static GtkWidget *slider;
@@ -535,6 +536,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     GtkWidget *button_open, *button_add, *button_play, *button_pause, *button_stop, *button_previous, *button_next;
     GtkWidget *menu;
     GtkAccelGroup *accel;
+    UIInfoArea *infoarea;
 
     gint lvol = 0, rvol = 0;    /* Left and Right for the volume control */
 
@@ -665,7 +667,14 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
         gtk_box_pack_end(GTK_BOX(plbox), playlist_notebook, TRUE, TRUE, 0);
     }
 
+    AUDDBG("infoarea setup\n");
+    infoarea = ui_infoarea_new();
+    gtk_box_pack_end(GTK_BOX(vbox), infoarea->parent, FALSE, FALSE, 0);
+
+    AUDDBG("hooks associate\n");
     ui_hooks_associate();
+
+    AUDDBG("playlist associate\n");
     ui_populate_playlist_notebook();
 
     g_signal_connect(playlist_notebook, "switch-page", G_CALLBACK(ui_playlist_change_tab), NULL);
@@ -691,6 +700,8 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
         ui_playback_begin(NULL, NULL);
     }
 
+    AUDDBG("callback setup\n");
+
     /* Register interface callbacks */
     cbs->show_prefs_window = show_preferences_window;
     cbs->run_filebrowser = audgui_run_filebrowser;
@@ -704,6 +715,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     cbs->run_gtk_plugin = (void *) ui_run_gtk_plugin;
     cbs->stop_gtk_plugin = (void *) ui_stop_gtk_plugin;
 
+    AUDDBG("launch\n");
     gtk_main();
 
     return TRUE;
