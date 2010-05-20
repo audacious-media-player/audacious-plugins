@@ -2286,6 +2286,8 @@ static void mainwin_update_time_display (gint time, gint length)
         ui_skinned_textbox_set_text (mainwin_stime_min, scratch);
         ui_skinned_textbox_set_text (mainwin_stime_sec, scratch + 4);
     }
+
+    playlistwin_set_time (scratch, scratch + 4);
 }
 
 static void mainwin_update_time_slider (gint time, gint length)
@@ -2331,7 +2333,6 @@ void mainwin_update_song_info (void)
 
     mainwin_update_time_display (time, length);
     mainwin_update_time_slider (time, length);
-    playlistwin_set_time (time, length, config.timer_mode);
 }
 
 /* toggleactionentries actions */

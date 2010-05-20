@@ -957,32 +957,10 @@ playlistwin_hide_timer(void)
     ui_skinned_textbox_set_text(playlistwin_time_sec, "  ");
 }
 
-void
-playlistwin_set_time(gint time, gint length, TimerMode mode)
+void playlistwin_set_time (const gchar * minutes, const gchar * seconds)
 {
-    gchar *text, sign;
-
-    if (mode == TIMER_REMAINING && length != -1) {
-        time = length - time;
-        sign = '-';
-    }
-    else
-        sign = ' ';
-
-    time /= 1000;
-
-    if (time < 0)
-        time = 0;
-    if (time > 99 * 60)
-        time /= 60;
-
-    text = g_strdup_printf("%c%-2.2d", sign, time / 60);
-    ui_skinned_textbox_set_text(playlistwin_time_min, text);
-    g_free(text);
-
-    text = g_strdup_printf("%-2.2d", time % 60);
-    ui_skinned_textbox_set_text(playlistwin_time_sec, text);
-    g_free(text);
+    ui_skinned_textbox_set_text (playlistwin_time_min, minutes);
+    ui_skinned_textbox_set_text (playlistwin_time_sec, seconds);
 }
 
 static void drag_motion (GtkWidget * widget, GdkDragContext * context, gint x,

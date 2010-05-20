@@ -61,7 +61,7 @@ void playlistwin_shade_toggle(void);
 void playlistwin_create(void);
 void playlistwin_unhook (void);
 void playlistwin_hide_timer(void);
-void playlistwin_set_time(gint time, gint length, TimerMode mode);
+void playlistwin_set_time (const gchar * minutes, const gchar * seconds);
 void playlistwin_show (char show);
 void playlistwin_select_playlist_to_load(const gchar * default_filename);
 void playlistwin_set_sinfo_font(gchar *font);
