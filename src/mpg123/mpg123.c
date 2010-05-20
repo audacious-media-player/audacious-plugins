@@ -317,6 +317,8 @@ mpg123_playback_worker(InputPlayback *data)
 	if (!data->output->open_audio(FMT_S16_NE, ctx.rate, ctx.channels))
 		goto cleanup;
 
+	data->set_gain_from_playlist (data);
+
 	g_mutex_lock(ctrl_mutex);
 
 	AUDDBG("starting decode\n");
@@ -394,7 +396,7 @@ mpg123_playback_worker(InputPlayback *data)
 			}
 
 			ret = mpg123_decode(ctx.decoder, buf, len, outbuf, 2048, &outbuf_size);
-			data->pass_audio(data, FMT_S16_NE, ctx.channels, outbuf_size, outbuf, NULL);
+			data->output->write_audio (outbuf, outbuf_size);
 		} while (ret == MPG123_NEED_MORE);
 
 		g_mutex_lock(ctrl_mutex);
