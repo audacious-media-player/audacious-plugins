@@ -54,6 +54,9 @@ ui_infoarea_draw_text(UIInfoArea *area, gint x, gint y, gfloat alpha, const gcha
     cairo_t *cr;
     PangoLayout *pl;
     PangoFontDescription *desc;
+    gchar *str;
+
+    str = g_markup_escape_text(text, -1);
 
     cr = gdk_cairo_create(area->parent->window);
     cairo_move_to(cr, x, y);
@@ -62,7 +65,7 @@ ui_infoarea_draw_text(UIInfoArea *area, gint x, gint y, gfloat alpha, const gcha
 
     desc = pango_font_description_from_string(font);
     pl = gtk_widget_create_pango_layout(area->parent, NULL);
-    pango_layout_set_markup(pl, text, -1);
+    pango_layout_set_markup(pl, str, -1);
     pango_layout_set_font_description(pl, desc);
     pango_font_description_free(desc);
 
@@ -72,6 +75,7 @@ ui_infoarea_draw_text(UIInfoArea *area, gint x, gint y, gfloat alpha, const gcha
 
     cairo_destroy(cr);
     g_object_unref(pl);
+    g_free(str);
 }
 
 /****************************************************************************/
