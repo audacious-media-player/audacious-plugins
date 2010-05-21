@@ -34,6 +34,7 @@
 
 #define DEFAULT_ARTWORK DATA_DIR "/images/audio.png"
 
+extern gint ui_slider_position;
 static const gfloat alpha_step = 0.10;
 
 const Tuple *
@@ -83,6 +84,16 @@ ui_infoarea_draw_text(UIInfoArea *area, gint x, gint y, gfloat alpha, const gcha
     str = g_markup_escape_text(text, -1);
 
     cr = gdk_cairo_create(area->parent->window);
+
+    if (x == -1)
+    {
+        GtkAllocation alloc;
+
+        //FIXME
+        gtk_widget_get_allocation(GTK_WIDGET(area->parent), &alloc);        
+        x = (alloc.width / 2);
+    }
+    
     cairo_move_to(cr, x, y);
     cairo_set_operator(cr, CAIRO_OPERATOR_ATOP);
     cairo_set_source_rgba(cr, 1.0, 1.0, 1.0, alpha);
@@ -192,6 +203,30 @@ ui_infoarea_draw_title(UIInfoArea *area)
 }
 
 void
+ui_infoarea_draw_timer(UIInfoArea *area)
+{
+    GtkAllocation alloc;
+    gchar text[20];
+    gint time, length;
+    
+    if (ui_slider_position == -1)
+        time = audacious_drct_get_time();
+    else
+        time = ui_slider_position;
+    
+    length = audacious_drct_get_length();
+
+    time /= 1000;
+    length /= 1000;    
+
+    g_snprintf(text, sizeof(text) / sizeof(gchar), "%d:%.2d/%d:%.2d", time / 60, time % 60, length / 60, length % 60);
+
+    gtk_widget_get_allocation(GTK_WIDGET(area->parent), &alloc);
+
+    ui_infoarea_draw_text(area, -1,  50, area->alpha.timer, "Sans 14", text);
+}
+
+void
 ui_infoarea_draw_background(UIInfoArea *area)
 {
     GtkWidget *evbox;
@@ -218,6 +253,7 @@ ui_infoarea_expose_event(UIInfoArea *area, GdkEventExpose *event, gpointer unuse
     ui_infoarea_draw_album_art(area);
     ui_infoarea_draw_title(area);
     ui_infoarea_draw_visualizer(area);
+    ui_infoarea_draw_timer(area);
 
     return TRUE;
 }
@@ -248,6 +284,12 @@ ui_infoarea_do_fade_in(UIInfoArea *area)
     if (area->alpha.artwork < 0.7)
     {
         area->alpha.artwork += alpha_step;
+        ret = TRUE;
+    }
+    
+    if (area->alpha.timer < 1.0)
+    {
+        area->alpha.timer += alpha_step;
         ret = TRUE;
     }
 
@@ -288,6 +330,12 @@ ui_infoarea_do_fade_out(UIInfoArea *area)
     if (area->alpha.artwork > 0.0)
     {
         area->alpha.artwork -= alpha_step;
+        ret = TRUE;
+    }
+    
+    if (area->alpha.timer > 0.0)
+    {
+        area->alpha.timer -= alpha_step;
         ret = TRUE;
     }
 
