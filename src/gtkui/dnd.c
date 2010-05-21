@@ -34,9 +34,9 @@ aud_drag_dest_set(GtkWidget *widget)
 }
 
 
-void 
+void
 aud_drop_src_set(GtkWidget *widget)
 {
-    gtk_drag_source_set(widget, GDK_BUTTON1_MASK, aud_drag_types, 
+    gtk_drag_source_set(widget, GDK_BUTTON1_MASK, aud_drag_types,
 	    1, GDK_ACTION_MOVE);
 }

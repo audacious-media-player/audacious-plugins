@@ -1,5 +1,5 @@
 #ifndef __PLAYLISTUTIL_H__
-#define __PLAYLISTUTIL_H__ 
+#define __PLAYLISTUTIL_H__
 
 void insert_drag_list(gint playlist, gint position, const gchar *list);
 gint get_active_selected_pos(void);

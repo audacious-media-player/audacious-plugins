@@ -69,7 +69,7 @@ static void block_selection(GtkWidget *w, gboolean block, gint x, gint y)
     static const gboolean which[] = {FALSE, TRUE};
     GtkTreeSelection *s = gtk_tree_view_get_selection(GTK_TREE_VIEW(w));
     gtk_tree_selection_set_select_function(s, multidrag_selection_block, (gboolean *)&which[!!block], NULL);
- 
+
     /* Remember the pointer location */
     gint *where = g_object_get_data(G_OBJECT(w), "multidrag-where");
 
@@ -96,16 +96,16 @@ static gboolean multidrag_button_press_event(GtkWidget *w, GdkEventButton *event
     /* We are only interested in unmodified clicks (not SHIFT etc) */
     /*if(event->state & GDK_MODIFIER_MASK)
         return FALSE;*/
- 
+
     /* We are only interested if a well-defined path is clicked */
     GtkTreePath *path = NULL;
-    
+
     if (!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(w), event->x, event->y, &path, NULL, NULL, NULL))
         return FALSE;
-    
+
     /* We are only interested if a selected row is clicked */
     GtkTreeSelection *s = gtk_tree_view_get_selection(GTK_TREE_VIEW(w));
-    
+
     if(gtk_tree_selection_path_is_selected(s, path))
     {
         /* We block subsequent selection changes and remember where the click was */
@@ -129,17 +129,17 @@ static gboolean multidrag_button_release_event(GtkWidget *w, GdkEventButton *eve
     {
         /* Remember where the down-click was */
         const gint x = where[0], y = where[1];
-    
+
         /* Re-allow selections */
         block_selection(w, TRUE, -1, -1);
-    
+
         if(x == event->x && y == event->y)
         {
             /* If the up-click is at the same location as the down-click,
              * it's not a drag. */
             GtkTreePath *path = NULL;
             GtkTreeViewColumn *col;
-      
+
             if (gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(w), event->x, event->y, &path, &col, NULL, NULL))
                 gtk_tree_view_set_cursor(GTK_TREE_VIEW(w), path, col, FALSE);
 
