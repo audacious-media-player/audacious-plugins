@@ -28,7 +28,7 @@ gtkui_cfg_t gtkui_default_config = {
     .player_height = MAINWIN_DEFAULT_HEIGHT,
     .save_window_position = TRUE,
     .player_visible = TRUE,
-    .vis_position = VIS_IN_TABS,
+    .vis_position = VIS_ON_TOP,
 };
 
 typedef struct gtkui_cfg_boolent_t
