@@ -23,6 +23,8 @@
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 
+#include <math.h>
+
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
 #include "ui_playlist_widget.h"
@@ -44,6 +46,27 @@ ui_infoarea_get_current_tuple(void)
     entry = aud_playlist_get_position(playlist);
 
     return aud_playlist_entry_get_tuple(playlist, entry);
+}
+
+/****************************************************************************/
+
+static void
+ui_infoarea_visualization_timeout(gpointer hook_data, UIInfoArea *area)
+{
+    VisNode *vis = (VisNode*) hook_data;
+    gint16 mono_freq[2][256];
+
+    const int xscale[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 15, 20, 27, 36, 47, 62, 82, 107, 141, 184, 255 };
+
+    aud_calc_mono_freq(mono_freq, vis->data, vis->nch);
+    memset(area->visdata, 0, 20);
+
+    for (auto gint i = 0; i < 19; i++) {
+        gint y = mono_freq[0][xscale[i]] / 128;
+        area->visdata[i] = CLAMP(y, 0, 64);
+    }
+
+    gtk_widget_queue_draw(GTK_WIDGET(area->parent));
 }
 
 /****************************************************************************/
@@ -79,6 +102,53 @@ ui_infoarea_draw_text(UIInfoArea *area, gint x, gint y, gfloat alpha, const gcha
 }
 
 /****************************************************************************/
+
+static struct {
+    guint8 red;
+    guint8 green;
+    guint8 blue;
+} colors[] = {
+    { 0xff, 0xb1, 0x6f },
+    { 0xff, 0xc8, 0x7f },
+    { 0xff, 0xcf, 0x7e },
+    { 0xf6, 0xe6, 0x99 },
+    { 0xf1, 0xfc, 0xd4 },
+    { 0xbd, 0xd8, 0xab },
+    { 0xcd, 0xe6, 0xd0 },
+    { 0xce, 0xe0, 0xea },
+    { 0xd5, 0xdd, 0xea },
+    { 0xee, 0xc1, 0xc8 },
+    { 0xee, 0xaa, 0xb7 },
+    { 0xec, 0xce, 0xb6 },
+};
+
+#define SPECT_BANDS	(16)
+
+void
+ui_infoarea_draw_visualizer(UIInfoArea *area)
+{
+    GtkAllocation alloc;
+    cairo_t *cr;
+
+    gtk_widget_get_allocation(GTK_WIDGET(area->parent), &alloc);
+    cr = gdk_cairo_create(area->parent->window);
+
+    for (auto gint i = 0; i < SPECT_BANDS; i++)
+    {
+        gint x, y, w, h;
+
+        x = alloc.width - (12 * SPECT_BANDS + 12) + (i * 12);
+        y = 11 + (64 - (area->visdata[i]));
+        w = 10;
+        h = area->visdata[i];
+
+        cairo_set_source_rgba(cr, 0.7, 0.7, 0.7, 1.0);
+        cairo_rectangle(cr, x, y, w, h);
+        cairo_fill(cr);
+    }
+
+    cairo_destroy(cr);
+}
 
 void
 ui_infoarea_draw_album_art(UIInfoArea *area)
@@ -139,6 +209,7 @@ ui_infoarea_expose_event(UIInfoArea *area, GdkEventExpose *event, gpointer unuse
     ui_infoarea_draw_background(area);
     ui_infoarea_draw_album_art(area);
     ui_infoarea_draw_title(area);
+    ui_infoarea_draw_visualizer(area);
 
     return TRUE;
 }
@@ -221,6 +292,7 @@ ui_infoarea_new(void)
                              G_CALLBACK(ui_infoarea_expose_event), area);
 
     aud_hook_associate("title change", (HookFunction) ui_infoarea_set_title, area);
+    aud_hook_associate("visualization timeout", (HookFunction) ui_infoarea_visualization_timeout, area);
 
     return area;
 }
