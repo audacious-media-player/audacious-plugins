@@ -28,6 +28,9 @@
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
+#ifdef FFAUDIO_USE_AUDTAG
+#include <audacious/audtag.h>
+#endif
 
 /***********************************************************************************
  * Plugin glue.                                                                    *
@@ -265,14 +268,25 @@ ffaudio_get_song_tuple(const gchar *filename)
     ffaudio_get_tuple_data(tuple, ic, c, codec);
     av_close_input_file (ic);
 
-#ifdef FFAUDIO_USE_AUDTAG
-    VFSFile * fd = vfs_fopen(filename, "rb");
-    tuple = tag_tuple_read(tuple, fd);
-    vfs_fclose(fd);
-#endif
-
     return tuple;
 }
+
+#ifdef FFAUDIO_USE_AUDTAG
+static Tuple *
+ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
+{
+    Tuple *t;
+
+    t = ffaudio_get_song_tuple(filename);
+    if (t == NULL)
+        return NULL;
+
+    aud_vfs_fseek(fd, 0, SEEK_SET);
+    tag_tuple_read(t, fd);
+
+    return t;
+}
+#endif
 
 static void
 ffaudio_play_file(InputPlayback *playback)
@@ -289,7 +303,9 @@ ffaudio_play_file(InputPlayback *playback)
     gboolean codec_opened = FALSE, do_resampling = FALSE;
     AFormat out_fmt;
     gchar *uribuf;
+#ifndef FFAUDIO_USE_AUDTAG
     Tuple *tuple;
+#endif
     gboolean paused = FALSE, seekable;
 
     uribuf = g_alloca(strlen(playback->filename) + 8);
@@ -370,14 +386,11 @@ ffaudio_play_file(InputPlayback *playback)
     resbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
 
     _DEBUG("setting parameters");
+#ifndef FFAUDIO_USE_AUDTAG
     tuple = aud_tuple_new_from_filename(playback->filename);
     ffaudio_get_tuple_data(tuple, ic, c, codec);
-#ifdef FFAUDIO_USE_AUDTAG
-    VFSFile * fd = vfs_fopen(playback->filename, "rb");
-    tuple = tag_tuple_read(tuple, fd);
-    vfs_fclose(fd);
-#endif
     playback->set_tuple(playback, tuple);
+#endif
     playback->set_params(playback, NULL, 0, c->bit_rate, c->sample_rate, c->channels);
 
     g_mutex_lock(ctrl_mutex);
@@ -679,11 +692,16 @@ InputPlugin ffaudio_ip = {
     .init = ffaudio_init,
     .cleanup = ffaudio_cleanup,
     .is_our_file_from_vfs = ffaudio_probe,
+#ifdef FFAUDIO_USE_AUDTAG
+    .probe_for_tuple = ffaudio_probe_for_tuple,
+#endif
     .play_file = ffaudio_play_file,
     .stop = ffaudio_stop,
     .pause = ffaudio_pause,
     .seek = ffaudio_seek,
+#ifndef FFAUDIO_USE_AUDTAG
     .get_song_tuple = ffaudio_get_song_tuple,
+#endif
     .about = ffaudio_about,
     .description = "FFaudio Plugin",
     .vfs_extensions = ffaudio_fmts,
