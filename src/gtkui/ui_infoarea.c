@@ -325,8 +325,10 @@ ui_infoarea_set_title(gpointer unused, UIInfoArea *area)
     if (!area->fadein_timeout)
         area->fadein_timeout = g_timeout_add(10, (GSourceFunc) ui_infoarea_do_fade_in, area);
 
-    if (area->fadeout_timeout)
+    if (area->fadeout_timeout) {
         g_source_remove(area->fadeout_timeout);
+        area->fadeout_timeout = 0;
+    }
 
     gtk_widget_queue_draw(GTK_WIDGET(area->parent));
 }
