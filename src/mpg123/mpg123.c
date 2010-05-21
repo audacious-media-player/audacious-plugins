@@ -41,6 +41,26 @@ static GCond *ctrl_cond = NULL;
 static gboolean pause_flag;
 
 /** utility functions **/
+static gboolean mpg123_prefill (mpg123_handle * decoder, VFSFile * handle,
+ gint * _result)
+{
+	guchar buffer[16384];
+	gsize length;
+	gint result;
+
+	do
+	{
+		if ((length = aud_vfs_fread (buffer, 1, 16384, handle)) <= 0)
+			return FALSE;
+
+		result = mpg123_decode (decoder, buffer, length, NULL, 0, NULL);
+	}
+	while (result == MPG123_NEED_MORE);
+
+	* _result = result;
+	return TRUE;
+}
+
 static gint
 mpg123_get_length(VFSFile *fd)
 {
@@ -48,7 +68,6 @@ mpg123_get_length(VFSFile *fd)
 	mpg123_pars *params;
 	const glong *rates;
 	gsize num_rates;
-	gsize len;
 	gint ret;
 	gint i;
 	glong rate;
@@ -89,18 +108,7 @@ mpg123_get_length(VFSFile *fd)
 	for (i = 0; i < num_rates; i++)
 		mpg123_format(decoder, rates[i], (MPG123_MONO | MPG123_STEREO), MPG123_ENC_SIGNED_16);
 
-	do
-	{
-		guchar buf[16384];
-
-		len = aud_vfs_fread(buf, 1, 16384, fd);
-		if (len <= 0)
-			break;
-
-		ret = mpg123_decode(decoder, buf, len, NULL, 0, NULL);
-	} while (ret == MPG123_NEED_MORE);
-
-	if (ret != MPG123_NEW_FORMAT)
+	if (! mpg123_prefill (decoder, fd, & ret) || ret != MPG123_NEW_FORMAT)
 	{
 		mpg123_delete(decoder);
 		mpg123_delete_pars(params);
@@ -134,7 +142,7 @@ mpg123_get_length(VFSFile *fd)
 
 	AUDDBG("song has %d samples; length %ld seconds\n", samples, (samples / rate));
 
-	return (samples / rate);
+	return samples * (gint64) 1000 / rate;
 }
 
 /** plugin glue **/
@@ -167,11 +175,39 @@ mpg123_probe_for_fd(const gchar *filename, VFSFile *fd)
 	return (mpg123_get_length(fd) >= -1);
 }
 
+static gboolean mpg123_get_info (VFSFile * handle, struct mpg123_frameinfo *
+ info)
+{
+	mpg123_handle * decoder = mpg123_new (NULL, NULL);
+	gint result;
+
+	g_return_val_if_fail (decoder != NULL, FALSE);
+
+	if (mpg123_open_feed (decoder) < 0)
+		goto ERROR_FREE;
+
+	if (! mpg123_prefill (decoder, handle, & result) || result !=
+	 MPG123_NEW_FORMAT)
+		goto ERROR_FREE;
+
+	if (mpg123_info (decoder, info) < 0)
+		goto ERROR_FREE;
+
+	mpg123_delete (decoder);
+	return TRUE;
+
+ERROR_FREE:
+	mpg123_delete (decoder);
+	return FALSE;
+}
+
 static Tuple *
 mpg123_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
+	struct mpg123_frameinfo info;
 	Tuple *tu;
 	gint len;
+	gsize size;
 
 	AUDDBG("starting probe of %p\n", fd);
 
@@ -183,11 +219,28 @@ mpg123_probe_for_tuple(const gchar *filename, VFSFile *fd)
 
 	tu = aud_tuple_new_from_filename(filename);
 
+	aud_vfs_fseek (fd, 0, SEEK_SET);
+
+	if (mpg123_get_info (fd, & info))
+	{
+		static const gchar * versions[] = {"1", "2", "2.5"};
+		gchar format[32];
+
+		snprintf (format, sizeof format, "MPEG-%s layer %d",
+		 versions[info.version], info.layer);
+		tuple_associate_string (tu, FIELD_CODEC, NULL, format);
+	}
+
 	aud_vfs_fseek(fd, 0, SEEK_SET);
 	tag_tuple_read(tu, fd);
 
 	if (tuple_get_int(tu, FIELD_LENGTH, NULL) == 0)
-		aud_tuple_associate_int(tu, FIELD_LENGTH, NULL, len * 1000);
+		tuple_associate_int (tu, FIELD_LENGTH, NULL, len);
+
+	size = aud_vfs_fsize (fd);
+
+	if (size > 0 && len > 0)
+		tuple_associate_int (tu, FIELD_BITRATE, NULL, 8 * size / len);
 
 	AUDDBG("returning tuple %p for file %p\n", tu, fd);
 	return tu;
@@ -293,19 +346,8 @@ mpg123_playback_worker(InputPlayback *data)
 		AUDDBG(" ... it is.\n");
 
 	AUDDBG("decoder format identification\n");
-	do
-	{
-		guchar buf[16384];
-		gsize len;
-
-		len = aud_vfs_fread(buf, 1, 16384, ctx.fd);
-		if (len <= 0)
-			goto cleanup;
-
-		ret = mpg123_decode(ctx.decoder, buf, len, NULL, 0, NULL);
-	} while (ret == MPG123_NEED_MORE);
-
-	if (ret != MPG123_NEW_FORMAT)
+	if (! mpg123_prefill (ctx.decoder, ctx.fd, & ret) || ret !=
+	 MPG123_NEW_FORMAT)
 		goto cleanup;
 
 	mpg123_getformat(ctx.decoder, &ctx.rate, &ctx.channels, &ctx.encoding);
