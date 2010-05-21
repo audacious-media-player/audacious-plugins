@@ -1,7 +1,6 @@
 PLUGIN = wavpack${PLUGIN_SUFFIX}
 
-SRCS = ui.c \
-       wavpack.c
+SRCS = wavpack.c
 
 include ../../buildsys.mk
 include ../../extra.mk
