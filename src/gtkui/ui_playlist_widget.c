@@ -368,6 +368,7 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
     g_signal_connect(treeview, "drag-motion", G_CALLBACK(_ui_playlist_widget_drag_motion), NULL);
     g_signal_connect(treeview, "drag-data-received", G_CALLBACK(_ui_playlist_widget_drag_data_received), NULL);
     g_signal_connect(treeview, "drag-end", G_CALLBACK(_ui_playlist_widget_drag_end), NULL);
+    g_signal_connect_swapped(model, "row-changed", G_CALLBACK(gtk_widget_queue_draw), treeview);
     
     make_treeview_multidrag(treeview);
 
