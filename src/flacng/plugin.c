@@ -315,8 +315,6 @@ static gpointer flac_play_loop(gpointer arg)
     stream_info.channels = main_info->stream.channels;
     main_info->metadata_changed = FALSE;
 
-    ReplayGainInfo rg_info = get_replay_gain(main_info);
-    playback->set_replaygain_info(playback, &rg_info);
 
     if (!playback->output->open_audio(SAMPLE_FMT(main_info->stream.bits_per_sample),
                                       main_info->stream.samplerate,
@@ -327,6 +325,9 @@ static gpointer flac_play_loop(gpointer arg)
         _ERROR("Could not open output plugin!");
         _LEAVE NULL;
     }
+    
+    playback->set_gain_from_playlist(playback);
+
 
     while (TRUE == playback->playing) {
 
@@ -427,12 +428,7 @@ static gpointer flac_play_loop(gpointer arg)
 
             _DEBUG("Copying %d samples to output plugin", sample_count);
 
-            playback->pass_audio(playback,
-                                 SAMPLE_FMT(main_info->stream.bits_per_sample),
-                                 main_info->stream.channels,
-                                 sample_count * SAMPLE_SIZE(main_info->stream.bits_per_sample),
-                                 play_buffer,
-                                 NULL);
+            playback->output->write_audio(play_buffer, sample_count * SAMPLE_SIZE(main_info->stream.bits_per_sample));
 
             read_pointer += sample_count;
             elements_left -= sample_count;
