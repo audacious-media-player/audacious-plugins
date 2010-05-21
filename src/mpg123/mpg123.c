@@ -384,7 +384,7 @@ mpg123_playback_worker(InputPlayback *data)
 						mpg123_decode(ctx.decoder, NULL, 0, outbuf, 2048, &outbuf_size);
 
 						MPG123_IODBG("passing %ld bytes of audio\n", outbuf_size);
-						data->pass_audio(data, FMT_S16_NE, ctx.channels, outbuf_size, outbuf, NULL);
+						data->output->write_audio (outbuf, outbuf_size);
 						data->eof = TRUE;
 						goto decode_cleanup;
 					}

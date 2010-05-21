@@ -345,7 +345,7 @@ vorbis_play(InputPlayback *playback)
     }
 
     vorbis_update_replaygain(&vf, &rg_info);
-    playback->set_replaygain_info(playback, &rg_info);
+    playback->output->set_replaygain_info (& rg_info);
 
     g_mutex_lock (seek_mutex);
 
@@ -457,11 +457,11 @@ vorbis_play(InputPlayback *playback)
 
                 playback->output->flush(ov_time_tell(&vf) * 1000);
                 vorbis_update_replaygain(&vf, &rg_info);
-                playback->set_replaygain_info(playback, &rg_info); /* audio reopened */
+                playback->output->set_replaygain_info (& rg_info); /* audio reopened */
             }
         }
 
-        playback->pass_audio(playback, FMT_FLOAT, channels, bytes, pcmout, &playback->playing);
+        playback->output->write_audio (pcmout, bytes);
 
 stop_processing:
 
