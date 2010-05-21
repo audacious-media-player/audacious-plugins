@@ -33,6 +33,7 @@
 #include "ui_infoarea.h"
 
 #define DEFAULT_ARTWORK DATA_DIR "/images/audio.png"
+#define STREAM_ARTWORK DATA_DIR "/images/streambrowser-64x64.png"
 
 static const gfloat alpha_step = 0.10;
 
@@ -161,12 +162,16 @@ ui_infoarea_draw_album_art(UIInfoArea *area)
     if (area->tu == NULL)
         return;
 
-    pb = gdk_pixbuf_new_from_file(DEFAULT_ARTWORK, &err);
+    if (tuple_get_int(area->tu, FIELD_LENGTH, NULL) <= 0)
+        pb = gdk_pixbuf_new_from_file(STREAM_ARTWORK, &err);
+    else
+        pb = gdk_pixbuf_new_from_file(DEFAULT_ARTWORK, &err);
+
     if (pb == NULL)
         return;
 
     cr = gdk_cairo_create(area->parent->window);
-    gdk_cairo_set_source_pixbuf(cr, pb, 12.0, 12.0);
+    gdk_cairo_set_source_pixbuf(cr, pb, 10.0, 10.0);
     cairo_paint_with_alpha(cr, area->alpha.artwork);
 
     cairo_destroy(cr);
