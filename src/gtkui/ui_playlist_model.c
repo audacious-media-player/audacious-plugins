@@ -17,6 +17,7 @@
  *  Audacious or using our public API to be a derived work.
  */
 
+#define DEBUG
 #include <audacious/plugin.h>
 #include "ui_playlist_model.h"
 #include "playlist_util.h"
@@ -438,7 +439,7 @@ static void ui_playlist_model_playlist_rearraged(UiPlaylistModel *model)
     gint start, end, i;
     
     playlist_get_changed_range(&start, &end);
-    
+
     if (start == -1 || end == -1)
         return;
     
@@ -467,6 +468,8 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
         gint changed_rows;
         changed_rows = aud_playlist_entry_count(model->playlist) - model->num_rows;
 
+        AUDDBG("playlist structure update\n");
+
         /* playlist entries re-arranged */
         if (changed_rows == 0)
         {
@@ -491,7 +494,18 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
             }
         }
 
+        /*
+         * If the playlist only has 1 row now, and the structure is literally
+         * unchanged, make sure we display the new metadata.  --nenolod
+         */
         model->num_rows = aud_playlist_entry_count(model->playlist);
+        if (model->num_rows == 1)
+            ui_playlist_model_row_changed(model, model->num_rows);
+    }
+    else
+    {
+        AUDDBG("playlist metadata update\n");
+        ui_playlist_model_playlist_rearraged(model);
     }
 }
 
