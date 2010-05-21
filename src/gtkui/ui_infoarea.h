@@ -29,7 +29,6 @@ typedef struct {
         gfloat artist;
         gfloat album;
         gfloat artwork;
-        gfloat timer;
     } alpha;
 
     gint fadein_timeout;

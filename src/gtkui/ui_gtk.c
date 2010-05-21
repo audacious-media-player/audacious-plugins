@@ -30,6 +30,7 @@
 #include "ui_manager.h"
 #include "ui_infoarea.h"
 
+static GtkWidget *label_time;
 static GtkWidget *slider;
 static GtkWidget *playlist_notebook;
 static GtkWidget *volume;
@@ -37,7 +38,8 @@ static GtkWidget *vispane_root = NULL;
 
 static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
-gint ui_slider_position = -1;
+static gint slider_position;
+static guint update_song_timeout_source = 0;
 
 static gulong volume_change_handler_id;
 
@@ -353,6 +355,18 @@ static void ui_show_error(const gchar * markup)
                              dialog);
 }
 
+static void ui_update_time_info(gint time)
+{
+    gchar text[128];
+    gint length = audacious_drct_get_length();
+
+    time /= 1000;
+    length /= 1000;
+
+    g_snprintf(text, sizeof(text) / sizeof(gchar), "<tt><b>%.2d:%.2d/%.2d:%.2d</b></tt>", time / 60, time % 60, length / 60, length % 60);
+    gtk_label_set_markup(GTK_LABEL(label_time), text);
+}
+
 static gboolean ui_update_song_info(gpointer hook_data, gpointer user_data)
 {
     if (!audacious_drct_get_playing())
@@ -374,6 +388,8 @@ static gboolean ui_update_song_info(gpointer hook_data, gpointer user_data)
     gtk_range_set_value(GTK_RANGE(slider), (gdouble) time);
     g_signal_handler_unblock(slider, slider_change_handler_id);
 
+    ui_update_time_info(time);
+
     return TRUE;
 }
 
@@ -382,6 +398,7 @@ static void ui_clear_song_info()
     if (!GTK_IS_WINDOW(window)) return;
 
     gtk_window_set_title(GTK_WINDOW(window), "Audacious");
+    gtk_label_set_markup(GTK_LABEL(label_time), "<tt><b>00:00/00:00</b></tt>");
     gtk_range_set_value(GTK_RANGE(slider), 0);
 }
 
@@ -396,21 +413,20 @@ static gboolean ui_slider_value_changed_cb(GtkRange * range, gpointer user_data)
     audacious_drct_seek(seek_ != 0 ? seek_ : 1);
 
     slider_is_moving = FALSE;
-    ui_slider_position = -1;
 
     return TRUE;
 }
 
 static gboolean ui_slider_change_value_cb(GtkRange * range, GtkScrollType scroll)
 {
-    ui_slider_position = gtk_range_get_value(range);
+    ui_update_time_info(gtk_range_get_value(range));
     return FALSE;
 }
 
 static gboolean ui_slider_button_press_cb(GtkWidget * widget, GdkEventButton * event, gpointer user_data)
 {
     slider_is_moving = TRUE;
-    ui_slider_position = gtk_range_get_value(GTK_RANGE(widget));
+    slider_position = gtk_range_get_value(GTK_RANGE(widget));
 
     /* HACK: clicking with the left mouse button moves the slider
        to the location of the click. */
@@ -426,7 +442,7 @@ static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton *
     if (event->button == 1)
         event->button = 2;
 
-    if (ui_slider_position == (gint) gtk_range_get_value(GTK_RANGE(widget)))
+    if (slider_position == (gint) gtk_range_get_value(GTK_RANGE(widget)))
         slider_is_moving = FALSE;
 
     return FALSE;
@@ -442,10 +458,19 @@ static gboolean ui_volume_value_changed_cb(GtkButton * button, gdouble volume, g
 static void ui_playback_begin(gpointer hook_data, gpointer user_data)
 {
     ui_update_song_info(NULL, NULL);
+
+    /* update song info 4 times a second */
+    update_song_timeout_source = g_timeout_add(250, (GSourceFunc) ui_update_song_info, NULL);
 }
 
 static void ui_playback_stop(gpointer hook_data, gpointer user_data)
 {
+    if (update_song_timeout_source)
+    {
+        g_source_remove(update_song_timeout_source);
+        update_song_timeout_source = 0;
+    }
+
     ui_clear_song_info();
 }
 
@@ -468,6 +493,13 @@ static GtkWidget *gtk_toolbar_button_add(GtkWidget * toolbar, void (*callback) (
     g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(callback), NULL);
 
     return button;
+}
+
+static GtkWidget *gtk_markup_label_new(const gchar * str)
+{
+    GtkWidget *label = gtk_label_new(str);
+    g_object_set(G_OBJECT(label), "use-markup", TRUE, NULL);
+    return label;
 }
 
 static void ui_hooks_associate(void)
@@ -562,6 +594,9 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     /* TODO: make this configureable */
     gtk_range_set_update_policy(GTK_RANGE(slider), GTK_UPDATE_DISCONTINUOUS);
     gtk_box_pack_start(GTK_BOX(shbox), slider, TRUE, TRUE, 0);
+
+    label_time = gtk_markup_label_new(NULL);
+    gtk_box_pack_start(GTK_BOX(shbox), label_time, FALSE, FALSE, 5);
 
     volume = gtk_volume_button_new();
     gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
@@ -688,6 +723,12 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
 static gboolean _ui_finalize(void)
 {
+    if (update_song_timeout_source)
+    {
+        g_source_remove(update_song_timeout_source);
+        update_song_timeout_source = 0;
+    }
+
     gtkui_cfg_save();
     gtkui_cfg_free();
     ui_hooks_disassociate();
