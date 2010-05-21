@@ -56,12 +56,13 @@ ui_infoarea_visualization_timeout(gpointer hook_data, UIInfoArea *area)
     VisNode *vis = (VisNode*) hook_data;
     gint16 mono_freq[2][256];
 
-    const int xscale[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 15, 20, 27, 36, 47, 62, 82, 107, 141, 184, 255 };
+    const int xscale[] = { 0, 2, 3, 5, 6, 11, 
+                           20, 41, 62, 82, 143, 255 };
 
     aud_calc_mono_freq(mono_freq, vis->data, vis->nch);
     memset(area->visdata, 0, 20);
 
-    for (auto gint i = 0; i < 19; i++) {
+    for (auto gint i = 0; i < 12; i++) {
         gint y = mono_freq[0][xscale[i]] / 128;
         area->visdata[i] = CLAMP(y, 0, 64);
     }
@@ -122,7 +123,7 @@ static struct {
     { 0xec, 0xce, 0xb6 },
 };
 
-#define SPECT_BANDS	(16)
+#define SPECT_BANDS	(12)
 
 void
 ui_infoarea_draw_visualizer(UIInfoArea *area)
@@ -142,7 +143,7 @@ ui_infoarea_draw_visualizer(UIInfoArea *area)
         w = 10;
         h = area->visdata[i];
 
-        cairo_set_source_rgba(cr, 0.7, 0.7, 0.7, 1.0);
+        cairo_set_source_rgba(cr, colors[i].red / 255., colors[i].green / 255., colors[i].blue / 255., 1.0);
         cairo_rectangle(cr, x, y, w, h);
         cairo_fill(cr);
     }
