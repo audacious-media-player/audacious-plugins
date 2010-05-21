@@ -143,7 +143,7 @@ ui_infoarea_draw_visualizer(UIInfoArea *area)
         w = 10;
         h = area->visdata[i];
 
-        cairo_set_source_rgba(cr, colors[i].red / 255., colors[i].green / 255., colors[i].blue / 255., 1.0);
+        cairo_set_source_rgba(cr, colors[i].red / 255., colors[i].green / 255., colors[i].blue / 255., area->alpha.title);
         cairo_rectangle(cr, x, y, w, h);
         cairo_fill(cr);
     }
@@ -176,12 +176,19 @@ ui_infoarea_draw_album_art(UIInfoArea *area)
 void
 ui_infoarea_draw_title(UIInfoArea *area)
 {
+    const gchar *str;
+
     if (area->tu == NULL)
         return;
 
-    ui_infoarea_draw_text(area, 86,  8, area->alpha.title, "Sans 20", tuple_get_string(area->tu, FIELD_TITLE, NULL));
-    ui_infoarea_draw_text(area, 86, 42, area->alpha.artist, "Sans 9", tuple_get_string(area->tu, FIELD_ARTIST, NULL));
-    ui_infoarea_draw_text(area, 86, 58, area->alpha.album, "Sans 9", tuple_get_string(area->tu, FIELD_ALBUM, NULL));
+    if ((str = tuple_get_string(area->tu, FIELD_TITLE, NULL)) != NULL)
+        ui_infoarea_draw_text(area, 86,  8, area->alpha.title, "Sans 20", str);
+
+    if ((str = tuple_get_string(area->tu, FIELD_ARTIST, NULL)) != NULL)
+        ui_infoarea_draw_text(area, 86, 42, area->alpha.artist, "Sans 9", str);
+
+    if ((str = tuple_get_string(area->tu, FIELD_ALBUM, NULL)) != NULL)
+        ui_infoarea_draw_text(area, 86, 58, area->alpha.album, "Sans 9", str);
 }
 
 void
@@ -255,6 +262,51 @@ ui_infoarea_do_fade_in(UIInfoArea *area)
     return ret;
 }
 
+static gboolean
+ui_infoarea_do_fade_out(UIInfoArea *area)
+{
+    gboolean ret = FALSE;
+
+    if (area->alpha.title > 0.0)
+    {
+        area->alpha.title -= alpha_step;
+        ret = TRUE;
+    }
+
+    if (area->alpha.artist > 0.0)
+    {
+        area->alpha.artist -= alpha_step;
+        ret = TRUE;
+    }
+
+    if (area->alpha.album > 0.0)
+    {
+        area->alpha.album -= alpha_step;
+        ret = TRUE;
+    }
+
+    if (area->alpha.artwork > 0.0)
+    {
+        area->alpha.artwork -= alpha_step;
+        ret = TRUE;
+    }
+
+    gtk_widget_queue_draw(GTK_WIDGET(area->parent));
+
+    if (ret == FALSE) {
+        area->fadeout_timeout = 0;
+
+        if (area->tu != NULL) {
+            mowgli_object_unref(area->tu);
+            area->tu = NULL;
+        }
+
+        AUDDBG("fadeout complete\n");
+    }
+
+    return ret;
+}
+
 void
 ui_infoarea_set_title(gpointer unused, UIInfoArea *area)
 {
@@ -272,6 +324,20 @@ ui_infoarea_set_title(gpointer unused, UIInfoArea *area)
 
     if (!area->fadein_timeout)
         area->fadein_timeout = g_timeout_add(10, (GSourceFunc) ui_infoarea_do_fade_in, area);
+
+    if (area->fadeout_timeout)
+        g_source_remove(area->fadeout_timeout);
+
+    gtk_widget_queue_draw(GTK_WIDGET(area->parent));
+}
+
+void
+ui_infoarea_playback_stop(gpointer unused, UIInfoArea *area)
+{
+    g_return_if_fail(area != NULL);
+
+    if (!area->fadeout_timeout)
+        area->fadeout_timeout = g_timeout_add(10, (GSourceFunc) ui_infoarea_do_fade_out, area);
 
     gtk_widget_queue_draw(GTK_WIDGET(area->parent));
 }
@@ -293,6 +359,7 @@ ui_infoarea_new(void)
                              G_CALLBACK(ui_infoarea_expose_event), area);
 
     aud_hook_associate("title change", (HookFunction) ui_infoarea_set_title, area);
+    aud_hook_associate("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
     aud_hook_associate("visualization timeout", (HookFunction) ui_infoarea_visualization_timeout, area);
 
     return area;

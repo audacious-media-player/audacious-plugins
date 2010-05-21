@@ -32,6 +32,7 @@ typedef struct {
     } alpha;
 
     gint fadein_timeout;
+    gint fadeout_timeout;
     guint8 visdata[20];
 } UIInfoArea;
 
