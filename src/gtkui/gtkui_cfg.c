@@ -29,6 +29,7 @@ gtkui_cfg_t gtkui_default_config = {
     .save_window_position = TRUE,
     .player_visible = TRUE,
     .vis_position = VIS_ON_TOP,
+    .multi_column_view = FALSE,
 };
 
 typedef struct gtkui_cfg_boolent_t
@@ -41,6 +42,7 @@ typedef struct gtkui_cfg_boolent_t
 static gtkui_cfg_boolent gtkui_boolents[] = {
     {"save_window_position", &config.save_window_position, TRUE},
     {"player_visible", &config.player_visible, TRUE},
+    {"multi_column_view", &config.multi_column_view, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(gtkui_boolents);

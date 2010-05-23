@@ -113,12 +113,29 @@ ui_playlist_tree_model_init(GtkTreeModelIface *iface)
 static void
 ui_playlist_model_init(UiPlaylistModel *model)
 {
-    model->n_columns = PLAYLIST_N_COLUMNS;
+    if (multi_column_view)
+    {
+        model->n_columns = PLAYLIST_N_MULTI_COLUMNS;
 
-    model->column_types[PLAYLIST_COLUMN_NUM] = G_TYPE_UINT;
-    model->column_types[PLAYLIST_COLUMN_TEXT] = G_TYPE_STRING;
-    model->column_types[PLAYLIST_COLUMN_TIME] = G_TYPE_STRING;
-    model->column_types[PLAYLIST_COLUMN_WEIGHT] = PANGO_TYPE_WEIGHT;
+        model->column_types = g_new0(GType, PLAYLIST_N_MULTI_COLUMNS);
+        model->column_types[PLAYLIST_MULTI_COLUMN_NUM] = G_TYPE_UINT;
+        model->column_types[PLAYLIST_MULTI_COLUMN_ARTIST] = G_TYPE_STRING;
+        model->column_types[PLAYLIST_MULTI_COLUMN_ALBUM] = G_TYPE_STRING;
+        model->column_types[PLAYLIST_MULTI_COLUMN_TITLE] = G_TYPE_STRING;
+        model->column_types[PLAYLIST_MULTI_COLUMN_TRACK_NUM] = G_TYPE_UINT;
+        model->column_types[PLAYLIST_MULTI_COLUMN_TIME] = G_TYPE_STRING;
+        model->column_types[PLAYLIST_MULTI_COLUMN_WEIGHT] = PANGO_TYPE_WEIGHT;
+    }
+    else
+    {
+        model->n_columns = PLAYLIST_N_COLUMNS;
+
+        model->column_types = g_new0(GType, PLAYLIST_N_COLUMNS);
+        model->column_types[PLAYLIST_COLUMN_NUM] = G_TYPE_UINT;
+        model->column_types[PLAYLIST_COLUMN_TEXT] = G_TYPE_STRING;
+        model->column_types[PLAYLIST_COLUMN_TIME] = G_TYPE_STRING;
+        model->column_types[PLAYLIST_COLUMN_WEIGHT] = PANGO_TYPE_WEIGHT;
+    }
 
     model->num_rows = 0;
 
@@ -131,6 +148,8 @@ ui_playlist_model_finalize(GObject *object)
     UiPlaylistModel *model = UI_PLAYLIST_MODEL(object);
 
     ui_playlist_model_dissociate_hooks(model);
+
+    g_free(model->column_types);
 
     (* parent_class->finalize) (object);
 }
@@ -207,6 +226,14 @@ ui_playlist_model_get_path(GtkTreeModel *tree_model, GtkTreeIter *iter)
     return path;
 }
 
+static void ui_playlist_model_get_value_time(UiPlaylistModel *model, GValue *value, gint position)
+{
+    gint length = aud_playlist_entry_get_length(model->playlist, position) / 1000;
+    gchar * len = g_strdup_printf("%02i:%02i", length / 60, length % 60);
+    g_value_set_string(value, len);
+    g_free(len);
+}
+
 static void
 ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint column, GValue *value)
 {
@@ -226,30 +253,75 @@ ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
     if (n >= model->num_rows)
         g_return_if_reached();
 
-    switch (column)
+    if (multi_column_view)
     {
-      case PLAYLIST_COLUMN_NUM:
-        g_value_set_uint(value, n+1);
-        break;
-      case PLAYLIST_COLUMN_TEXT:
-        g_value_set_string(value, aud_playlist_entry_get_title(model->playlist, n));
-        break;
-      case PLAYLIST_COLUMN_TIME:
-      {
-        gint length = aud_playlist_entry_get_length(model->playlist, n) / 1000;
-        gchar * len = g_strdup_printf("%02i:%02i", length / 60, length % 60);
-        g_value_set_string(value, len);
-        g_free(len);
-        break;
-      }
-      case PLAYLIST_COLUMN_WEIGHT:
-        if (n == model->position)
-            g_value_set_enum(value, PANGO_WEIGHT_BOLD);
-        else
-            g_value_set_enum(value, PANGO_WEIGHT_NORMAL);
-        break;
-      default:
-        break;
+        Tuple *tu = (Tuple*) aud_playlist_entry_get_tuple(model->playlist, n);
+
+        switch (column)
+        {
+            case PLAYLIST_MULTI_COLUMN_NUM:
+                g_value_set_uint(value, n+1);
+                break;
+            case PLAYLIST_MULTI_COLUMN_ARTIST:
+                g_value_set_string(value, tuple_get_string(tu, FIELD_ARTIST, NULL));
+                break;
+
+            case PLAYLIST_MULTI_COLUMN_ALBUM:
+                g_value_set_string(value, tuple_get_string(tu, FIELD_ALBUM, NULL));
+                break;
+
+            case PLAYLIST_MULTI_COLUMN_TRACK_NUM:
+                g_value_set_uint(value, tuple_get_int(tu, FIELD_TRACK_NUMBER, NULL));
+                break;
+
+            case PLAYLIST_MULTI_COLUMN_TITLE:
+            {
+                const gchar *title = tuple_get_string(tu, FIELD_TITLE, NULL);
+                if (title == NULL)
+                    g_value_set_string(value, aud_playlist_entry_get_title(model->playlist, n));
+                else
+                    g_value_set_string(value, title);
+                break;
+            }
+
+            case PLAYLIST_MULTI_COLUMN_TIME:
+                ui_playlist_model_get_value_time(model, value, n);
+                break;
+
+            case PLAYLIST_MULTI_COLUMN_WEIGHT:
+                if (n == model->position)
+                    g_value_set_enum(value, PANGO_WEIGHT_BOLD);
+                else
+                    g_value_set_enum(value, PANGO_WEIGHT_NORMAL);
+                break;
+            default:
+                break;
+        }
+    }
+    else
+    {
+        switch (column)
+        {
+            case PLAYLIST_COLUMN_NUM:
+                g_value_set_uint(value, n+1);
+                break;
+
+            case PLAYLIST_COLUMN_TEXT:
+                g_value_set_string(value, aud_playlist_entry_get_title(model->playlist, n));
+                break;
+
+            case PLAYLIST_COLUMN_TIME:
+                ui_playlist_model_get_value_time(model, value, n);
+                break;
+            case PLAYLIST_COLUMN_WEIGHT:
+                if (n == model->position)
+                    g_value_set_enum(value, PANGO_WEIGHT_BOLD);
+                else
+                    g_value_set_enum(value, PANGO_WEIGHT_NORMAL);
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -437,12 +509,12 @@ ui_playlist_model_update_position(UiPlaylistModel *model, gint position)
 static void ui_playlist_model_playlist_rearraged(UiPlaylistModel *model)
 {
     gint start, end, i;
-    
+
     playlist_get_changed_range(&start, &end);
 
     if (start == -1 || end == -1)
         return;
-    
+
     for (i = start; i != end; i++)
         ui_playlist_model_row_changed(model, i);
 }

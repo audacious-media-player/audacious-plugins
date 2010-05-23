@@ -83,7 +83,7 @@ static void _ui_playlist_widget_drag_begin(GtkWidget *widget, GdkDragContext * c
     gdk_window_get_root_coords(gtk_widget_get_window(widget), 0, 0, &rx, &ry);
     x -= rx;
     y -= ry;
-    t->old_index = _ui_playlist_widget_get_drop_index(GTK_TREE_VIEW(widget), NULL, x, y, NULL); 
+    t->old_index = _ui_playlist_widget_get_drop_index(GTK_TREE_VIEW(widget), NULL, x, y, NULL);
 
     g_object_set_data_full(G_OBJECT(widget), "ui_playlist_drag_context", t, (GDestroyNotify) ui_playlist_drag_tracker_free);
 }
@@ -99,11 +99,11 @@ static gint _ui_playlist_widget_get_drop_index(GtkTreeView * widget, GdkDragCont
     {
         if (dp)
             *dp = drop_pos;
-        
+
         ins_pos = *gtk_tree_path_get_indices(path);
-        
+
         if (drop_pos == GTK_TREE_VIEW_DROP_INTO_OR_AFTER || drop_pos == GTK_TREE_VIEW_DROP_AFTER)
-            ins_pos += 1; 
+            ins_pos += 1;
     }
     else
     {
@@ -171,7 +171,7 @@ static void _ui_playlist_widget_drag_motion(GtkTreeView * widget, GdkDragContext
 static void _ui_playlist_widget_drag_data_received(GtkTreeView * widget, GdkDragContext * context, gint x, gint y, GtkSelectionData *data, guint info, guint time, gpointer user_data)
 {
     gint playlist = ui_playlist_widget_get_playlist(widget);
-    
+
     /* Maybe dragged some files from another application. */
     if (gtk_drag_get_source_widget(context) == NULL)
     {
@@ -181,7 +181,7 @@ static void _ui_playlist_widget_drag_data_received(GtkTreeView * widget, GdkDrag
         gint ins_pos;
 
         gint ret = gtk_tree_view_get_dest_row_at_pos(widget, x, y, &drop_path, &drop_pos);
-        
+
         /* If we can't get the path position, maybe means the position is out of the row area. */
         if (!ret)
             ins_pos = aud_playlist_entry_count(playlist);
@@ -210,21 +210,21 @@ static void _ui_playlist_widget_drag_end(GtkTreeView * widget, GdkDragContext * 
 
     t = g_object_get_data(G_OBJECT(widget), "ui_playlist_drag_context");
     g_return_if_fail(t != NULL);
- 
+
     sel = gtk_tree_view_get_selection(widget);
 
     handler_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "selection_changed_handler_id"));
     g_signal_handler_unblock(G_OBJECT(sel), handler_id);
-    
+
 
     if (t->old_index != t->new_index)
     {
         start = get_first_selected_pos(widget);
         end = get_last_selected_pos(widget);
 
-        gint selected_length = ABS(start - end) + 1; 
+        gint selected_length = ABS(start - end) + 1;
 
-        playlist_shift_selected( playlist, t->old_index, t->new_index, selected_length);  
+        playlist_shift_selected( playlist, t->old_index, t->new_index, selected_length);
         treeview_select_pos(widget, t->new_index);
     }
 
@@ -333,28 +333,87 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
     gtk_tree_view_set_reorderable(GTK_TREE_VIEW(treeview), TRUE);
     gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(treeview), TRUE);
     gtk_drag_dest_set_track_motion(treeview, TRUE);
+    gtk_tree_view_set_search_column(GTK_TREE_VIEW(treeview), 1);
 
-    column = gtk_tree_view_column_new();
-    gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), FALSE);
-    gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-    gtk_tree_view_column_set_spacing(column, 4);
+    if (multi_column_view)
+    {
+        gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), TRUE);
 
-    renderer = gtk_cell_renderer_text_new();
-    gtk_tree_view_column_pack_start(column, renderer, FALSE);
-    gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_NUM, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
-    g_object_set(G_OBJECT(renderer), "ypad", 0, NULL);
+        renderer = gtk_cell_renderer_text_new();
+        column = gtk_tree_view_column_new_with_attributes(NULL, renderer, "text", PLAYLIST_MULTI_COLUMN_NUM, "weight", PLAYLIST_MULTI_COLUMN_WEIGHT, NULL);
+        gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+        gtk_tree_view_column_set_spacing(column, 4);
+        gtk_tree_view_column_set_min_width(column, 40);
+        g_object_set(G_OBJECT(renderer), "ypad", 0, NULL);
+        gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 
-    renderer = gtk_cell_renderer_text_new();
-    gtk_tree_view_column_pack_start(column, renderer, TRUE);
-    gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_TEXT, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
-    g_object_set(G_OBJECT(renderer), "ypad", 0, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+        renderer = gtk_cell_renderer_text_new();
+        column = gtk_tree_view_column_new_with_attributes("Artist", renderer, "text", PLAYLIST_MULTI_COLUMN_ARTIST, "weight", PLAYLIST_MULTI_COLUMN_WEIGHT, NULL);
+        gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+        gtk_tree_view_column_set_resizable(column, TRUE);
+        gtk_tree_view_column_set_spacing(column, 4);
+        gtk_tree_view_column_set_min_width(column, 150);
+        g_object_set(G_OBJECT(renderer), "ypad", 0, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+        gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 
-    renderer = gtk_cell_renderer_text_new();
-    gtk_tree_view_column_pack_start(column, renderer, FALSE);
-    gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_TIME, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
-    g_object_set(G_OBJECT(renderer), "ypad", 0, "xalign", 1.0, NULL);
+        renderer = gtk_cell_renderer_text_new();
+        column = gtk_tree_view_column_new_with_attributes("Album", renderer, "text", PLAYLIST_MULTI_COLUMN_ALBUM, "weight", PLAYLIST_MULTI_COLUMN_WEIGHT, NULL);
+        gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+        gtk_tree_view_column_set_resizable(column, TRUE);
+        gtk_tree_view_column_set_spacing(column, 4);
+        gtk_tree_view_column_set_min_width(column, 200);
+        g_object_set(G_OBJECT(renderer), "ypad", 0, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+        gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 
-    gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
+        renderer = gtk_cell_renderer_text_new();
+        column = gtk_tree_view_column_new_with_attributes("No", renderer, "text", PLAYLIST_MULTI_COLUMN_TRACK_NUM, "weight", PLAYLIST_MULTI_COLUMN_WEIGHT, NULL);
+        gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+        gtk_tree_view_column_set_spacing(column, 4);
+        gtk_tree_view_column_set_min_width(column, 40);
+        g_object_set(G_OBJECT(renderer), "ypad", 0, NULL);
+        gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
+
+        renderer = gtk_cell_renderer_text_new();
+        column = gtk_tree_view_column_new_with_attributes("Title", renderer, "text", PLAYLIST_MULTI_COLUMN_TITLE, "weight", PLAYLIST_MULTI_COLUMN_WEIGHT, NULL);
+        gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+        gtk_tree_view_column_set_resizable(column, TRUE);
+        gtk_tree_view_column_set_spacing(column, 4);
+        gtk_tree_view_column_set_min_width(column, 300);
+        g_object_set(G_OBJECT(renderer), "ypad", 0, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+        gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
+
+        renderer = gtk_cell_renderer_text_new();
+        column = gtk_tree_view_column_new_with_attributes("Time", renderer, "text", PLAYLIST_MULTI_COLUMN_TIME, "weight", PLAYLIST_MULTI_COLUMN_WEIGHT, NULL);
+        gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_FIXED);
+        gtk_tree_view_column_set_spacing(column, 4);
+        gtk_tree_view_column_set_fixed_width(column, 50);
+        g_object_set(G_OBJECT(renderer), "ypad", 0, NULL);
+        gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
+    }
+    else
+    {
+        column = gtk_tree_view_column_new();
+        gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), FALSE);
+        gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+        gtk_tree_view_column_set_spacing(column, 4);
+
+        renderer = gtk_cell_renderer_text_new();
+        gtk_tree_view_column_pack_start(column, renderer, FALSE);
+        gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_NUM, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 0, NULL);
+
+        renderer = gtk_cell_renderer_text_new();
+        gtk_tree_view_column_pack_start(column, renderer, TRUE);
+        gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_TEXT, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 0, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+
+        renderer = gtk_cell_renderer_text_new();
+        gtk_tree_view_column_pack_start(column, renderer, FALSE);
+        gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_TIME, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 0, "xalign", 1.0, NULL);
+
+        gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
+    }
 
     aud_drag_dest_set(treeview);
     aud_drop_src_set(treeview);
@@ -369,7 +428,7 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
     g_signal_connect(treeview, "drag-data-received", G_CALLBACK(_ui_playlist_widget_drag_data_received), NULL);
     g_signal_connect(treeview, "drag-end", G_CALLBACK(_ui_playlist_widget_drag_end), NULL);
     g_signal_connect_swapped(model, "row-changed", G_CALLBACK(gtk_widget_queue_draw), treeview);
-    
+
     make_treeview_multidrag(treeview);
 
     selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));

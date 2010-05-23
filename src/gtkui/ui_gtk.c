@@ -30,6 +30,8 @@
 #include "ui_manager.h"
 #include "ui_infoarea.h"
 
+gboolean multi_column_view;
+
 static GtkWidget *label_time;
 static GtkWidget *slider;
 static GtkWidget *playlist_notebook;
@@ -181,7 +183,7 @@ static void ui_populate_playlist_notebook(void)
 
     for (count = 0; count < playlists; count++)
         ui_playlist_create_tab(count);
-    
+
     aud_playlist_set_active(0);
 }
 
@@ -541,6 +543,8 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     gint lvol = 0, rvol = 0;    /* Left and Right for the volume control */
 
     gtkui_cfg_load();
+
+    multi_column_view = config.multi_column_view;
 
     audgui_set_default_icon();
     audgui_register_stock_icons();
