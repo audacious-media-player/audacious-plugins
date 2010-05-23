@@ -47,7 +47,6 @@ extern GtkWidget *kanashi_win;
 
 /* Draw thread stuff */
 /* FIXME: Do I need mutex for kanashi_done? */
-static GThread *draw_thread = NULL;
 static GMutex *sound_data_mutex;
 static GMutex *config_mutex;
 GCond *render_cond;
@@ -103,31 +102,7 @@ draw_thread_fn (gpointer data)
 {
   while (kanashi_done == FALSE)
     {
-      g_mutex_lock(sound_data_mutex);
-
-      if (new_freq_data)
-	{
-	  memcpy (kanashi_sound_data->freq_data, tmp_freq_data,
-		  sizeof (gint16) * 2 * 256);
-	  new_freq_data = FALSE;
-	}
-      if (new_pcm_data)
-	{
-	  memcpy (kanashi_sound_data->pcm_data, tmp_pcm_data,
-		  sizeof (gint16) * 2 * 512);
-	  new_freq_data = FALSE;
-	}
-
-      g_mutex_unlock(sound_data_mutex);
-
-      g_mutex_lock(config_mutex);
-
-      g_static_mutex_lock(&kanashi_mutex);
-      g_cond_wait(render_cond, g_static_mutex_get_mutex(&kanashi_mutex));
-      g_static_mutex_unlock(&kanashi_mutex);
-
       kanashi_render ();
-      g_mutex_unlock(config_mutex);
     }
 
   g_print("exit\n");
@@ -135,22 +110,6 @@ draw_thread_fn (gpointer data)
   kanashi_cleanup ();
 
   return NULL;
-}
-
-/* Is there a better way to do this? this = messy
-   It appears that calling disable_plugin () in some
-   thread other than the one that called kanashi_xmms_init ()
-   causes a seg fault :( */
-static int
-quit_timeout_fn (gpointer data)
-{
-  if (kanashi_done)
-    {
-      kanashi_vp.disable_plugin (&kanashi_vp);
-      return FALSE;
-    }
-
-  return TRUE;
 }
 
 static void
@@ -161,19 +120,6 @@ kanashi_xmms_init (void)
   sound_data_mutex = g_mutex_new();
   config_mutex = g_mutex_new();
   render_cond = g_cond_new();
-
-  if (sound_data_mutex == NULL)
-    kanashi_fatal_error ("Unable to create a new mutex");
-
-  kanashi_done = FALSE;
-
-  draw_thread = g_thread_create(draw_thread_fn, NULL, TRUE, NULL);
-  if (draw_thread == NULL)
-    kanashi_fatal_error ("Unable to create a new thread");
-
-  /* Add a gtk timeout to test for quits */
-  quit_timeout = gtk_timeout_add (1000, quit_timeout_fn, NULL);
-  timeout_set = TRUE;
 }
 
 static void
@@ -183,14 +129,6 @@ kanashi_xmms_cleanup (void)
     {
       gtk_timeout_remove (quit_timeout);
       timeout_set = FALSE;
-    }
-
-  if (draw_thread)
-    {
-      kanashi_done = TRUE;
-      g_cond_signal(render_cond);
-      g_thread_join(draw_thread);
-      draw_thread = NULL;
     }
 
   if (sound_data_mutex)
@@ -240,8 +178,6 @@ USA", _("Ok"), FALSE, NULL, NULL);
 static void
 kanashi_xmms_configure (void)
 {
-  /* We should already have a GDK_THREADS_ENTER
-     but we need to give it config_mutex */
   if (config_mutex)
     g_mutex_lock (config_mutex);
 
@@ -254,19 +190,13 @@ kanashi_xmms_configure (void)
 static void
 kanashi_xmms_render_pcm (gint16 data[2][512])
 {
-  g_mutex_lock (sound_data_mutex);
-  memcpy (tmp_pcm_data, data, sizeof (gint16) * 2 * 512);
-  new_pcm_data = TRUE;
-  g_mutex_unlock (sound_data_mutex);
+  memcpy (kanashi_sound_data->pcm_data, data, sizeof (gint16) * 2 * 512);
 }
 
 static void
 kanashi_xmms_render_freq (gint16 data[2][256])
 {
-  g_mutex_lock (sound_data_mutex);
-  memcpy (tmp_freq_data, data, sizeof (gint16) * 2 * 256);
-  new_freq_data = TRUE;
-  g_mutex_unlock (sound_data_mutex);
+  memcpy (kanashi_sound_data->freq_data, data, sizeof (gint16) * 2 * 256);
 }
 
 /* **************** kanashi.h stuff **************** */
@@ -283,10 +213,6 @@ kanashi_fatal_error (const char *fmt, ...)
   va_list ap;
   GtkWidget *dialog;
   GtkWidget *close, *label;
-
-  /* Don't wanna try to lock GDK if we already have it */
-  if (draw_thread && g_thread_self() == draw_thread)
-    GDK_THREADS_ENTER ();
 
   /* now report the error... */
   va_start (ap, fmt);
@@ -316,9 +242,6 @@ kanashi_fatal_error (const char *fmt, ...)
   gtk_widget_show (dialog);
   gtk_widget_grab_focus (dialog);
 
-  if (draw_thread && g_thread_self() == draw_thread)
-    GDK_THREADS_LEAVE ();
-
   kanashi_quit ();
 }
 
@@ -336,13 +259,6 @@ kanashi_error (const char *fmt, ...)
   errstr = g_strdup_vprintf (fmt, ap);
   va_end (ap);
   fprintf (stderr, "Kanashi-CRITICAL **: %s\n", errstr);
-
-  /* This is the easiest way of making sure we don't
-     get stuck trying to lock a mutex that this thread
-     already owns since this fn can be called from either
-     thread */
-  if (draw_thread && g_thread_self() == draw_thread)
-    GDK_THREADS_ENTER ();
 
   if (! err_dialog)
     {
@@ -378,9 +294,6 @@ kanashi_error (const char *fmt, ...)
 
   gtk_widget_show (err_dialog);
   gtk_widget_grab_focus (err_dialog);
-
-  if (draw_thread && g_thread_self() == draw_thread)
-    GDK_THREADS_LEAVE ();
 }
 
 
@@ -391,18 +304,4 @@ kanashi_error (const char *fmt, ...)
 void
 kanashi_quit (void)
 {
-  if (draw_thread && g_thread_self() == draw_thread)
-    {
-      /* We're in the draw thread so be careful */
-      longjmp (quit_jmp, 1);
-    }
-  else
-    {
-      /* We're not in the draw thread, so don't sweat it...
-	 addendum: looks like we have to bend over backwards (forwards?)
-	 for xmms here too */
-      kanashi_vp.disable_plugin (&kanashi_vp);
-      while (1)
-	gtk_main_iteration ();
-    }
 }

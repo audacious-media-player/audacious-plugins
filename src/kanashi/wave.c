@@ -36,6 +36,8 @@ kanashi_render_horizontal_waveform(gint channels, guchar value)
   int i;
   float step;
 
+  g_print("waveform render\n");
+
   x_pos = g_new0(int, 257);
   y_pos = g_new0(int, 257);
   x2_pos = g_new0(int, 257);

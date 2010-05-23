@@ -75,16 +75,12 @@ set_colormap (void)
 static gboolean
 blit_to_screen (gpointer unused)
 {
-  g_static_mutex_lock(&kanashi_mutex);
-
+  kanashi_render ();
   set_colormap();
 
   gdk_draw_indexed_image(kanashi_win->window, kanashi_win->style->white_gc, 0, 0,
                          kanashi_image_data->width, kanashi_image_data->height, GDK_RGB_DITHER_NONE, 
                          kanashi_image_data->surface[0], kanashi_image_data->width, cmap);
-
-  g_cond_signal(render_cond);
-  g_static_mutex_unlock(&kanashi_mutex);
 
   return TRUE;
 }
@@ -135,12 +131,8 @@ kanashi_render (void)
 
   kanashi_new_beat = kanashi_is_new_beat();
 
-  g_static_mutex_lock(&kanashi_mutex);
-
   if (!JS_CallFunctionName(cx, global, "render_scene", 0, NULL, &rval))
       printf("something broke\n");
-
-  g_static_mutex_unlock(&kanashi_mutex);
 }
 
 /* this MUST be called if a builtin's output is to surface[1]
@@ -269,7 +261,6 @@ kanashi_init(void)
     rt = JS_NewRuntime(8L * 1024L * 1024L);
     if (rt == NULL)
     {
-        GDK_THREADS_LEAVE();
         return FALSE;
     }
 
@@ -277,7 +268,6 @@ kanashi_init(void)
     cx = JS_NewContext(rt, 8192);
     if (cx == NULL)
     {
-        GDK_THREADS_LEAVE();
         return FALSE;
     }
 
@@ -289,25 +279,23 @@ kanashi_init(void)
     global = JS_NewObject(cx, &global_class, NULL, NULL);
     if (global == NULL)
     {
-        GDK_THREADS_LEAVE();
         return FALSE;
     }
 
     if (!JS_InitStandardClasses(cx, global))
     {
-        GDK_THREADS_LEAVE();
         return FALSE;
     }
 
     if (!JS_DefineFunctions(cx, global, js_global_functions))
     {
-        GDK_THREADS_LEAVE();
         return FALSE;
     }
 
     kanashi_load_preset(PRESET_PATH "/nenolod_-_kanashi_default.js");
 
-    render_timeout = g_timeout_add(16, blit_to_screen, NULL);
+    g_signal_connect(kanashi_win, "expose-event", G_CALLBACK(blit_to_screen), NULL);
+    render_timeout = g_timeout_add(16, (GSourceFunc) gtk_widget_queue_draw, kanashi_win);
 
     return TRUE;
 }
