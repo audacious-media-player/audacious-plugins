@@ -183,6 +183,9 @@ static gboolean mpg123_get_info (VFSFile * handle, struct mpg123_frameinfo *
 
 	g_return_val_if_fail (decoder != NULL, FALSE);
 
+	/* Turn off annoying messages. */
+	mpg123_param (decoder, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
+
 	if (mpg123_open_feed (decoder) < 0)
 		goto ERROR_FREE;
 
@@ -551,6 +554,11 @@ mpg123_seek_time(InputPlayback *data, gint time)
 	g_mutex_unlock(ctrl_mutex);
 }
 
+static gboolean mpg123_write_tag (Tuple * tuple, VFSFile * handle)
+{
+	return tag_tuple_write (tuple, handle, TAG_TYPE_APE);
+}
+
 /** plugin description header **/
 static const gchar *mpg123_fmts[] = { "mp3", "mp2", "mp1", "bmu", NULL };
 
@@ -565,7 +573,7 @@ static InputPlugin mpg123_ip = {
 	.stop = mpg123_stop_playback_worker,
 	.seek = mpg123_seek_time,
 	.pause = mpg123_pause_playback_worker,
-	.update_song_tuple = tag_tuple_write_to_file,
+	.update_song_tuple = mpg123_write_tag,
 };
 
 static InputPlugin *mpg123_iplist[] = { &mpg123_ip, NULL };
