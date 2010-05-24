@@ -183,6 +183,9 @@ static gboolean mpg123_get_info (VFSFile * handle, struct mpg123_frameinfo *
 
 	g_return_val_if_fail (decoder != NULL, FALSE);
 
+	/* Turn off annoying messages. */
+	mpg123_param (decoder, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
+
 	if (mpg123_open_feed (decoder) < 0)
 		goto ERROR_FREE;
 
