@@ -755,3 +755,9 @@ void action_playlist_select_all(void)
 {
     g_message("implement me");
 }
+
+void action_playlist_save_all_playlists(void)
+{
+    aud_save_all_playlists();
+}
+
