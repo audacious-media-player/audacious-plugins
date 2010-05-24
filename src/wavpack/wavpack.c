@@ -156,7 +156,7 @@ void wv_play(InputPlayback * playback)
     output = g_malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));
     if (input == NULL || output == NULL)
         goto error_exit;
-        
+
     playback->set_gain_from_playlist(playback);
 
     g_mutex_lock(ctrl_mutex);
@@ -315,7 +315,7 @@ wv_get_quality(WavpackContext *ctx)
         quality = "lossy (hybrid)";
     else
         quality = "lossy";
-    
+
     return g_strdup_printf("%s%s%s", quality,
         (mode & MODE_WVC) ? " (wvc corrected)" : "",
 #ifdef MODE_DNS /* WavPack 4.50 or later */
@@ -344,11 +344,11 @@ wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
 	aud_vfs_fseek(fd, 0, SEEK_SET);
 	tag_tuple_read(tu, fd);
 
-	aud_tuple_associate_int(tu, FIELD_LENGTH, NULL, 
+	aud_tuple_associate_int(tu, FIELD_LENGTH, NULL,
         ((guint64) WavpackGetNumSamples(ctx) * 1000) / (guint64) WavpackGetSampleRate(ctx));
     aud_tuple_associate_string(tu, FIELD_CODEC, NULL, "WavPack");
     aud_tuple_associate_string(tu, FIELD_QUALITY, NULL, wv_get_quality(ctx));
-    
+
     WavpackCloseFile(ctx);
 
 	AUDDBG("returning tuple %p for file %p\n", tu, fd);
@@ -381,6 +381,11 @@ wv_cleanup(void)
     g_cond_free(ctrl_cond);
 }
 
+static gboolean wv_write_tag (Tuple *tuple, VFSFile *handle)
+{
+    return tag_tuple_write(tuple, handle, TAG_TYPE_APE);
+}
+
 static gchar *wv_fmts[] = { "wv", NULL };
 
 extern PluginPreferences preferences;
@@ -396,7 +401,7 @@ static InputPlugin wvpack = {
     .seek = wv_seek,
     .vfs_extensions = wv_fmts,
     .probe_for_tuple = wv_probe_for_tuple,
-    /*.update_song_tuple = tag_tuple_write_to_file,*/
+    .update_song_tuple = wv_write_tag,
 };
 
 InputPlugin *wv_iplist[] = { &wvpack, NULL };
