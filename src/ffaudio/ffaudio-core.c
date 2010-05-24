@@ -21,7 +21,7 @@
 //#define FFAUDIO_DEBUG       /* Enable generic debug output */
 #undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
-//#define FFAUDIO_USE_AUDTAG  /* Use Audacious tagging library */
+#define FFAUDIO_USE_AUDTAG  /* Use Audacious tagging library */
 
 #include "config.h"
 #include "ffaudio-stdinc.h"
@@ -169,6 +169,7 @@ static const ffaudio_meta_t metaentries[] = {
 
 static const gint n_metaentries = sizeof(metaentries) / sizeof(metaentries[0]);
 
+#ifndef FFAUDIO_USE_AUDTAG
 static void
 ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
 {
@@ -205,6 +206,7 @@ ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
         }
     }
 }
+#endif
 
 static void
 ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVCodec *codec)
@@ -285,6 +287,20 @@ ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
     tag_tuple_read(t, fd);
 
     return t;
+}
+
+static gboolean ffaudio_write_tag(Tuple *tuple, VFSFile *file)
+{
+    gchar *file_uri = g_ascii_strdown(file->uri, -4);
+
+    if (g_str_has_suffix(file_uri, ".ape"))
+    {
+        g_free(file_uri);
+        return tag_tuple_write(tuple, file, TAG_TYPE_APE);
+    }
+    g_free(file_uri);
+
+    return tag_tuple_write(tuple, file, TAG_TYPE_NONE);
 }
 #endif
 
@@ -380,6 +396,8 @@ ffaudio_play_file(InputPlayback *playback)
         playback->error = TRUE;
         goto error_exit;
     }
+
+    playback->set_gain_from_playlist(playback);
 
     /* Allocate output buffer aligned to 16 byte boundary */
     outbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
@@ -526,9 +544,7 @@ ffaudio_play_file(InputPlayback *playback)
             {
                 gint writeoff = MIN (chunk_size, out_size);
 
-                playback->pass_audio(playback, out_fmt,
-                    c->channels, writeoff,
-                    (gint16 *)outbuf_p, NULL);
+                playback->output->write_audio((gint16 *)outbuf_p, writeoff);
 
                 outbuf_p += writeoff;
                 out_size -= writeoff;
@@ -706,7 +722,7 @@ InputPlugin ffaudio_ip = {
     .description = "FFaudio Plugin",
     .vfs_extensions = ffaudio_fmts,
 #ifdef FFAUDIO_USE_AUDTAG
-    .update_song_tuple = tag_tuple_write_to_file,
+    .update_song_tuple = ffaudio_write_tag,
 #endif
 
     /* FFMPEG probing takes forever on network files, so try everything else
