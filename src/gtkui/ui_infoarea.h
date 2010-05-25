@@ -34,6 +34,9 @@ typedef struct {
     gint fadein_timeout;
     gint fadeout_timeout;
     guint8 visdata[20];
+
+    InputPlayback *playback;
+    GdkPixbuf *pb;
 } UIInfoArea;
 
 extern UIInfoArea *ui_infoarea_new(void);
