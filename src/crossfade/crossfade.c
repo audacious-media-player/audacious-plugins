@@ -17,7 +17,6 @@
  * the use of this software.
  */
 
-#define DEBUG
 #include <audacious/plugin.h>
 #include <glib.h>
 #include <stdio.h>
