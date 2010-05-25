@@ -17,6 +17,8 @@
  *  Audacious or using our public API to be a derived work.
  */
 
+#include <audacious/plugin.h>
+
 #include "gtkui_cfg.h"
 
 gtkui_cfg_t config;
