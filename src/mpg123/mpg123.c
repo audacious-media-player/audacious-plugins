@@ -559,6 +559,15 @@ static gboolean mpg123_write_tag (Tuple * tuple, VFSFile * handle)
 	return tag_tuple_write (tuple, handle, TAG_TYPE_APE);
 }
 
+static gboolean mpg123_get_image (const gchar * filename, VFSFile * handle,
+ void * * data, gint * length)
+{
+	if (handle == NULL)
+		return FALSE;
+
+	return tag_image_read (handle, data, length);
+}
+
 /** plugin description header **/
 static const gchar *mpg123_fmts[] = { "mp3", "mp2", "mp1", "bmu", NULL };
 
@@ -574,6 +583,7 @@ static InputPlugin mpg123_ip = {
 	.seek = mpg123_seek_time,
 	.pause = mpg123_pause_playback_worker,
 	.update_song_tuple = mpg123_write_tag,
+	.get_song_image = mpg123_get_image,
 };
 
 static InputPlugin *mpg123_iplist[] = { &mpg123_ip, NULL };
