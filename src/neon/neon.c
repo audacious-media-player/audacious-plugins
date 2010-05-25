@@ -45,8 +45,10 @@
 
 VFSFile *neon_aud_vfs_fopen_impl(const gchar* path, const gchar* mode);
 gint neon_aud_vfs_fclose_impl(VFSFile* file);
-gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* file);
-gsize neon_aud_vfs_fwrite_impl(gconstpointer ptr, gsize size, gsize nmemb, VFSFile* file);
+gint64 neon_aud_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
+ file);
+gint64 neon_aud_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
+ VFSFile * file);
 gint neon_aud_vfs_getc_impl(VFSFile* file);
 gint neon_aud_vfs_ungetc_impl(gint c, VFSFile* file);
 void neon_aud_vfs_rewind_impl(VFSFile* file);
@@ -887,8 +889,8 @@ gint neon_aud_vfs_fclose_impl(VFSFile* file) {
  * -----
  */
 
-static gsize neon_fread_real (void * ptr_, gsize size, gsize nmemb, VFSFile *
- file)
+static gint64 neon_fread_real (void * ptr_, gint64 size, gint64 nmemb,
+ VFSFile * file)
 {
     struct neon_handle* h = (struct neon_handle*)file->handle;
     gint belem;
@@ -1097,8 +1099,8 @@ static gsize neon_fread_real (void * ptr_, gsize size, gsize nmemb, VFSFile *
 
 /* neon_fread_real will do only a partial read if the buffer underruns, so we
  * must call it repeatedly until we have read the full request. */
-gsize neon_aud_vfs_fread_impl (void * buffer, gsize size, gsize count, VFSFile *
- handle)
+gint64 neon_aud_vfs_fread_impl (void * buffer, gint64 size, gint64 count,
+ VFSFile * handle)
 {
     gsize total = 0, new;
 
@@ -1120,7 +1122,9 @@ gsize neon_aud_vfs_fread_impl (void * buffer, gsize size, gsize count, VFSFile *
  * -----
  */
 
-gsize neon_aud_vfs_fwrite_impl(gconstpointer ptr, gsize size, gsize nmemb, VFSFile* file) {
+gint64 neon_aud_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
+ VFSFile * file)
+{
     _ERROR ("<%p> NOT IMPLEMENTED", (void *) file->handle);
 
     return 0;

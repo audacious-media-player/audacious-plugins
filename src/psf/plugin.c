@@ -79,14 +79,14 @@ static gchar *path;
 int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 {
 	guchar *filebuf;
-	gsize size;
+	gint64 size;
 	char buf[PATH_MAX];
 	gchar path2[PATH_MAX];
 
 	g_strlcpy(path2, path, PATH_MAX);
 	snprintf(buf, PATH_MAX, "%s/%s", dirname(path2), filename);
 
-	aud_vfs_file_get_contents(buf, (gchar **) &filebuf, &size);
+	aud_vfs_file_get_contents (buf, & filebuf, & size);
 
 	*buffer = filebuf;
 	*length = (uint64)size;
@@ -101,9 +101,9 @@ Tuple *psf2_tuple(const gchar *filename)
 	Tuple *t;
 	corlett_t *c;
 	guchar *buf;
-	gsize sz;
+	gint64 sz;
 
-	aud_vfs_file_get_contents(filename, (gchar **) &buf, &sz);
+	aud_vfs_file_get_contents (filename, & buf, & sz);
 
 	if (!buf)
 		return NULL;
@@ -152,14 +152,14 @@ gchar *psf2_title(gchar *filename, gint *length)
 void psf2_play(InputPlayback *data)
 {
 	guchar *buffer;
-	gsize size;
+	gint64 size;
 	gint length;
 	gchar *title = psf2_title(data->filename, &length);
 	PSFEngine eng;
 	PSFEngineFunctors *f;
 
 	path = g_strdup(data->filename);
-	aud_vfs_file_get_contents(data->filename, (gchar **) &buffer, &size);
+	aud_vfs_file_get_contents (data->filename, & buffer, & size);
 
 	eng = psf_probe(buffer);
 	if (eng == ENG_NONE || eng == ENG_COUNT)

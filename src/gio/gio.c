@@ -109,11 +109,8 @@ gio_aud_vfs_fclose_impl(VFSFile * file)
     return ret;
 }
 
-size_t
-gio_aud_vfs_fread_impl(gpointer ptr,
-          size_t size,
-          size_t nmemb,
-          VFSFile * file)
+gint64 gio_aud_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
+ file)
 {
     VFSGIOHandle *handle;
     goffset count = 0;
@@ -142,11 +139,8 @@ gio_aud_vfs_fread_impl(gpointer ptr,
     return (size > 0) ? ret / size : 0;
 }
 
-size_t
-gio_aud_vfs_fwrite_impl(gconstpointer ptr,
-           size_t size,
-           size_t nmemb,
-           VFSFile * file)
+gint64 gio_aud_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
+ VFSFile * file)
 {
     VFSGIOHandle *handle;
     gsize ret;
@@ -269,8 +263,7 @@ gboolean gio_aud_vfs_feof_impl (VFSFile * file)
     return FALSE;
 }
 
-gint
-gio_aud_vfs_truncate_impl(VFSFile * file, glong size)
+gint gio_aud_vfs_ftruncate_impl (VFSFile * file, gint64 size)
 {
     VFSGIOHandle *handle;
 
@@ -278,7 +271,7 @@ gio_aud_vfs_truncate_impl(VFSFile * file, glong size)
 
     handle = (VFSGIOHandle *) file->handle;
 
-    return g_seekable_truncate(handle->seekable, size, NULL, NULL);
+    return g_seekable_truncate (handle->seekable, size, NULL, NULL) ? 0 : -1;
 }
 
 off_t
@@ -333,7 +326,7 @@ static void init(void)
          c->vfs_rewind_impl = gio_aud_vfs_rewind_impl;
          c->vfs_ftell_impl = gio_aud_vfs_ftell_impl;
          c->vfs_feof_impl = gio_aud_vfs_feof_impl;
-         c->vfs_truncate_impl = gio_aud_vfs_truncate_impl;
+         c->vfs_ftruncate_impl = gio_aud_vfs_ftruncate_impl;
          c->vfs_fsize_impl = gio_aud_vfs_fsize_impl;
          aud_vfs_register_transport(c);
     }
