@@ -251,6 +251,9 @@ static void
 mainwin_vis_set_type_menu_cb(VisType mode)
 {
     config.vis_type = mode;
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
+
     start_stop_visual ();
 }
 
@@ -287,6 +290,9 @@ mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
 
         if (config.vis_type > VIS_OFF)
             config.vis_type = VIS_ANALYZER;
+
+        ui_vis_clear_data (mainwin_vis);
+        ui_svis_clear_data (mainwin_svis);
 
         mainwin_vis_set_type(config.vis_type);
     }
