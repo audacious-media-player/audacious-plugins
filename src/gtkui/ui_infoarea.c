@@ -22,6 +22,7 @@
 
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include <math.h>
 
@@ -162,15 +163,21 @@ ui_infoarea_draw_album_art(UIInfoArea *area)
     if (area->tu == NULL)
         return;
 
-    if (tuple_get_int(area->tu, FIELD_LENGTH, NULL) <= 0)
-        pb = gdk_pixbuf_new_from_file(STREAM_ARTWORK, &err);
+    if (area->pb == NULL)
+    {
+        if (tuple_get_int(area->tu, FIELD_LENGTH, NULL) <= 0)
+            pb = gdk_pixbuf_new_from_file(STREAM_ARTWORK, &err);
+        else
+            pb = gdk_pixbuf_new_from_file(DEFAULT_ARTWORK, &err);
+    }
     else
-        pb = gdk_pixbuf_new_from_file(DEFAULT_ARTWORK, &err);
+        pb = g_object_ref(area->pb);
 
     if (pb == NULL)
         return;
 
     cr = gdk_cairo_create(area->parent->window);
+    audgui_pixbuf_scale_within(&pb, 64);
     gdk_cairo_set_source_pixbuf(cr, pb, 10.0, 10.0);
     cairo_paint_with_alpha(cr, area->alpha.artwork);
 
@@ -306,6 +313,11 @@ ui_infoarea_do_fade_out(UIInfoArea *area)
             area->tu = NULL;
         }
 
+        if (area->pb != NULL) {
+            g_object_unref(area->pb);
+            area->pb = NULL;
+        }
+
         AUDDBG("fadeout complete\n");
     }
 
@@ -338,6 +350,33 @@ ui_infoarea_set_title(gpointer unused, UIInfoArea *area)
     gtk_widget_queue_draw(GTK_WIDGET(area->parent));
 }
 
+
+void
+ui_infoarea_playback_start(InputPlayback *playback, UIInfoArea *area)
+{
+    g_return_if_fail(area != NULL);
+
+    area->playback = playback;
+
+    if (area->pb != NULL)
+    {
+        g_object_unref(area->pb);
+        area->pb = NULL;
+    }
+
+    if (area->playback && area->playback->filename != NULL)
+    {
+        gpointer data;
+        gint size;
+
+        if (aud_file_read_image(area->playback->filename, area->playback->plugin, &data, &size))
+        {
+            area->pb = audgui_pixbuf_from_data(data, size);
+            g_free (data);
+        }
+    }
+}
+
 void
 ui_infoarea_playback_stop(gpointer unused, UIInfoArea *area)
 {
@@ -366,6 +405,7 @@ ui_infoarea_new(void)
                              G_CALLBACK(ui_infoarea_expose_event), area);
 
     aud_hook_associate("title change", (HookFunction) ui_infoarea_set_title, area);
+    aud_hook_associate("playback begin", (HookFunction) ui_infoarea_playback_start, area);
     aud_hook_associate("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
     aud_hook_associate("visualization timeout", (HookFunction) ui_infoarea_visualization_timeout, area);
 
