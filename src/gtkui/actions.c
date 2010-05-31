@@ -75,7 +75,6 @@ void action_playback_repeat(GtkToggleAction * action)
 void action_playback_shuffle(GtkToggleAction * action)
 {
     aud_cfg->shuffle = gtk_toggle_action_get_active(action);
-    aud_playlist_set_shuffle(aud_cfg->shuffle);
 }
 
 void action_stop_after_current_song(GtkToggleAction * action)
@@ -459,7 +458,7 @@ void action_playlist_remove_selected(GtkAction *act)
         clap_sel_pos = TRUE;
 
     aud_playlist_delete_selected(active_playlist_num);
-    
+
     if (clap_sel_pos)
         treeview_select_pos(get_active_playlist_treeview(), sel_pos);
 }

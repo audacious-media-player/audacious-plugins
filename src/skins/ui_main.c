@@ -2372,7 +2372,6 @@ void
 action_playback_shuffle( GtkToggleAction * action )
 {
     aud_cfg->shuffle = gtk_toggle_action_get_active( action );
-    aud_playlist_set_shuffle(aud_cfg->shuffle);
     ui_skinned_button_set_inside(mainwin_shuffle, aud_cfg->shuffle);
 }
 
