@@ -19,8 +19,6 @@
 
 #include "alsa.h"
 
-#define LEAST_BUFFER 100 /* milliseconds */
-
 GMutex * alsa_mutex;
 static snd_pcm_t * alsa_handle;
 static GCond * alsa_cond;
@@ -62,10 +60,15 @@ static void * pump (void * unused)
             continue;
         }
 
-        length = snd_pcm_frames_to_bytes (alsa_handle, LEAST_BUFFER / 2 *
-         alsa_rate / 1000);
-        length = MIN (length, alsa_buffer_data_length);
-        length = MIN (length, alsa_buffer_length - alsa_buffer_data_start);
+        length = MIN (alsa_buffer_data_length, alsa_buffer_length -
+         alsa_buffer_data_start);
+
+        /* Currently, it seems that snd_pcm_delay doesn't account for data that
+         * is being passed by a blocking snd_pcm_writei call.  To minimize the
+         * error, we can pass the audio in smaller chunks. */
+        if (alsa_config_delay_workaround)
+            length = MIN (length, snd_pcm_frames_to_bytes (alsa_handle,
+             alsa_rate / 100));
 
         if (length == 0)
         {
@@ -227,11 +230,13 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
     CHECK_NOISY (snd_pcm_hw_params_set_format, alsa_handle, params, format);
     CHECK_NOISY (snd_pcm_hw_params_set_channels, alsa_handle, params, channels);
     CHECK_NOISY (snd_pcm_hw_params_set_rate, alsa_handle, params, rate, 0);
-    useconds = 1000 * LEAST_BUFFER;
-    CHECK_NOISY (snd_pcm_hw_params_set_buffer_time_min, alsa_handle, params,
-     & useconds, 0);
-    useconds = 1000 * MAX (LEAST_BUFFER * 11 / 10, aud_cfg->output_buffer_size /
-     2);
+    useconds = 1000 * aud_cfg->output_buffer_size / 2;
+
+    /* If we cannot use snd_pcm_drain, we lose any audio that is buffered at the
+     * end of each song.  We can minimize the damage by using a smaller buffer. */
+    if (alsa_config_drain_workaround)
+        useconds = MIN (useconds, 100000);
+
     CHECK_NOISY (snd_pcm_hw_params_set_buffer_time_max, alsa_handle, params,
      & useconds, 0);
     CHECK_NOISY (snd_pcm_hw_params, alsa_handle, params);
@@ -242,7 +247,8 @@ gint alsa_open_audio (AFormat aud_format, gint rate, gint channels)
 
     CHECK_NOISY (snd_pcm_get_params, alsa_handle, & frames, & period);
     hard_buffer = (gint64) frames * 1000 / rate;
-    soft_buffer = MAX (LEAST_BUFFER, aud_cfg->output_buffer_size - hard_buffer);
+    soft_buffer = MAX (aud_cfg->output_buffer_size / 2,
+     aud_cfg->output_buffer_size - hard_buffer);
     AUDDBG ("Hardware buffer %d ms, software buffer %d ms.\n", hard_buffer,
      soft_buffer);
 
@@ -351,7 +357,8 @@ void alsa_drain (void)
 
     g_mutex_unlock (alsa_mutex);
 
-    CHECK (snd_pcm_drain, alsa_handle);
+    if (! alsa_config_drain_workaround)
+        CHECK (snd_pcm_drain, alsa_handle);
 
 FAILED:
     return;

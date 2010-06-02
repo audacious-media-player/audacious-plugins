@@ -26,11 +26,13 @@
 
 gchar * alsa_config_pcm = NULL, * alsa_config_mixer = NULL,
  * alsa_config_mixer_element = NULL;
-gboolean alsa_config_drop_workaround = TRUE;
+gboolean alsa_config_drop_workaround = TRUE, alsa_config_drain_workaround =
+ TRUE, alsa_config_delay_workaround = TRUE;
 
 static GtkListStore * pcm_list, * mixer_list, * mixer_element_list;
 static GtkWidget * window, * pcm_combo, * mixer_combo, * mixer_element_combo,
- * ok_button, * drop_workaround_check;
+ * ok_button, * drop_workaround_check, * drain_workaround_check,
+ * delay_workaround_check;
 
 static GtkTreeIter * list_lookup_member (GtkListStore * list, const gchar *
  text)
@@ -341,6 +343,10 @@ void alsa_config_load (void)
 
     aud_cfg_db_get_bool (database, "alsa", "drop-workaround", &
      alsa_config_drop_workaround);
+    aud_cfg_db_get_bool (database, "alsa", "drain-workaround", &
+     alsa_config_drain_workaround);
+    aud_cfg_db_get_bool (database, "alsa", "delay-workaround", &
+     alsa_config_delay_workaround);
 
     aud_cfg_db_close (database);
 }
@@ -359,6 +365,10 @@ void alsa_config_save (void)
      alsa_config_mixer_element);
     aud_cfg_db_set_bool (database, "alsa", "drop-workaround",
      alsa_config_drop_workaround);
+    aud_cfg_db_set_bool (database, "alsa", "drain-workaround",
+     alsa_config_drain_workaround);
+    aud_cfg_db_set_bool (database, "alsa", "delay-workaround",
+     alsa_config_delay_workaround);
 
     g_free (alsa_config_pcm);
     g_free (alsa_config_mixer);
@@ -457,6 +467,18 @@ static void create_window (void)
      alsa_config_drop_workaround);
     gtk_box_pack_start ((GtkBox *) vbox, drop_workaround_check, FALSE, FALSE, 0);
 
+    drain_workaround_check = gtk_check_button_new_with_label (_("Work around "
+     "snd_pcm_drain hangup"));
+    gtk_toggle_button_set_active ((GtkToggleButton *) drain_workaround_check,
+     alsa_config_drain_workaround);
+    gtk_box_pack_start ((GtkBox *) vbox, drain_workaround_check, FALSE, FALSE, 0);
+
+    delay_workaround_check = gtk_check_button_new_with_label (_("Work around "
+     "snd_pcm_delay inaccuracy"));
+    gtk_toggle_button_set_active ((GtkToggleButton *) delay_workaround_check,
+     alsa_config_delay_workaround);
+    gtk_box_pack_start ((GtkBox *) vbox, delay_workaround_check, FALSE, FALSE, 0);
+
     hbox = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
@@ -528,6 +550,10 @@ static void connect_callbacks (void)
      mixer_element_changed, NULL);
     g_signal_connect ((GObject *) drop_workaround_check, "toggled", (GCallback)
      boolean_toggled, & alsa_config_drop_workaround);
+    g_signal_connect ((GObject *) drain_workaround_check, "toggled", (GCallback)
+     boolean_toggled, & alsa_config_drain_workaround);
+    g_signal_connect ((GObject *) delay_workaround_check, "toggled", (GCallback)
+     boolean_toggled, & alsa_config_delay_workaround);
     g_signal_connect_swapped ((GObject *) ok_button, "clicked", (GCallback)
      gtk_widget_destroy, window);
     g_signal_connect ((GObject *) window, "destroy", (GCallback)
