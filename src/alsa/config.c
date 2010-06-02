@@ -462,7 +462,7 @@ static void create_window (void)
      mixer_element_list, & mixer_element_combo, FALSE), FALSE, FALSE, 0);
 
     drop_workaround_check = gtk_check_button_new_with_label (_("Work around "
-     "snd_pcm_drop hangup"));
+     "snd_pcm_drop hangup (fixed in ALSA 1.0.23)"));
     gtk_toggle_button_set_active ((GtkToggleButton *) drop_workaround_check,
      alsa_config_drop_workaround);
     gtk_box_pack_start ((GtkBox *) vbox, drop_workaround_check, FALSE, FALSE, 0);
