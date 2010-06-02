@@ -24,62 +24,58 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-gchar * alsa_config_pcm = NULL, * alsa_config_mixer = NULL,
+char * alsa_config_pcm = NULL, * alsa_config_mixer = NULL,
  * alsa_config_mixer_element = NULL;
-gboolean alsa_config_drop_workaround = TRUE, alsa_config_drain_workaround =
- TRUE, alsa_config_delay_workaround = TRUE;
+int alsa_config_drop_workaround = 1, alsa_config_drain_workaround = 1,
+ alsa_config_delay_workaround = 1;
 
 static GtkListStore * pcm_list, * mixer_list, * mixer_element_list;
 static GtkWidget * window, * pcm_combo, * mixer_combo, * mixer_element_combo,
  * ok_button, * drop_workaround_check, * drain_workaround_check,
  * delay_workaround_check;
 
-static GtkTreeIter * list_lookup_member (GtkListStore * list, const gchar *
- text)
+static GtkTreeIter * list_lookup_member (GtkListStore * list, const char * text)
 {
-    GtkTreeIter iter;
+    static GtkTreeIter iter;
 
     if (! gtk_tree_model_get_iter_first ((GtkTreeModel *) list, & iter))
         return NULL;
 
     do
     {
-        const gchar * iter_text;
+        const char * iter_text;
 
         gtk_tree_model_get ((GtkTreeModel *) list, & iter, 0, & iter_text, -1);
 
         if (! strcmp (iter_text, text))
-            return g_memdup (& iter, sizeof (iter));
+            return & iter;
     }
     while (gtk_tree_model_iter_next ((GtkTreeModel *) list, & iter));
 
     return NULL;
 }
 
-static gboolean list_has_member (GtkListStore * list, const gchar * text)
+static int list_has_member (GtkListStore * list, const char * text)
 {
-    GtkTreeIter * iter = list_lookup_member (list, text);
-
-    g_free (iter);
-    return (iter != NULL);
+    return (list_lookup_member (list, text) != NULL);
 }
 
-static void get_defined_devices (const gchar * type, gboolean capture, void
- (* found) (const gchar * name, const gchar * description))
+static void get_defined_devices (const char * type, int capture, void (* found)
+ (const char * name, const char * description))
 {
     void * * hints = NULL;
-    gint count;
+    int count;
 
     CHECK (snd_device_name_hint, -1, type, & hints);
 
     for (count = 0; hints[count] != NULL; count ++)
     {
-        gchar * type = snd_device_name_get_hint (hints[count], "IOID");
+        char * type = snd_device_name_get_hint (hints[count], "IOID");
 
         if (type == NULL || ! strcmp (type, capture ? "Input" : "Output"))
         {
-            gchar * name = snd_device_name_get_hint (hints[count], "NAME");
-            gchar * description = snd_device_name_get_hint (hints[count], "DESC");
+            char * name = snd_device_name_get_hint (hints[count], "NAME");
+            char * description = snd_device_name_get_hint (hints[count], "DESC");
 
             found (name, description);
             free (name);
@@ -94,24 +90,23 @@ FAILED:
         snd_device_name_free_hint (hints);
 }
 
-static gchar * get_card_description (gint card)
+static char * get_card_description (int card)
 {
-    static gchar * description;
+    char * description = NULL;
 
     CHECK (snd_card_get_name, card, & description);
-    return g_strdup (description);
 
 FAILED:
-    return NULL;
+    return description;
 }
 
-static void get_cards (void (* found) (gint card, const gchar * description))
+static void get_cards (void (* found) (int card, const char * description))
 {
-    gint card = -1;
+    int card = -1;
 
     while (1)
     {
-        gchar * description;
+        char * description;
 
         CHECK (snd_card_next, & card);
 
@@ -121,7 +116,7 @@ static void get_cards (void (* found) (gint card, const gchar * description))
         if ((description = get_card_description (card)) != NULL)
         {
             found (card, description);
-            g_free (description);
+            free (description);
         }
     }
 
@@ -129,8 +124,8 @@ FAILED:
     return;
 }
 
-static gchar * get_device_description (snd_ctl_t * control, gint device,
- gboolean capture)
+static char * get_device_description (snd_ctl_t * control, int device, int
+ capture)
 {
     snd_pcm_info_t * info;
 
@@ -142,7 +137,7 @@ static gchar * get_device_description (snd_ctl_t * control, gint device,
     switch (snd_ctl_pcm_info (control, info))
     {
     case 0:
-        return g_strdup (snd_pcm_info_get_name (info));
+        return strdup (snd_pcm_info_get_name (info));
 
     case -ENOENT: /* capture but we want playback (or other way around) */
         return NULL;
@@ -154,92 +149,89 @@ FAILED:
     return NULL;
 }
 
-static void get_devices (gint card, gboolean capture, void (* found)
- (const gchar * name, const gchar * description))
+static void get_devices (int card, int capture, void (* found) (const char *
+ name, const char * description))
 {
-    gchar * card_name = g_strdup_printf ("hw:%d", card);
+    char card_name[16];
     snd_ctl_t * control = NULL;
-    gint device = -1;
+    int device = -1;
 
+    snprintf (card_name, sizeof card_name, "hw:%d", card);
     CHECK (snd_ctl_open, & control, card_name, 0);
 
     while (1)
     {
-        gchar * name, * description;
+        char name[16];
+        char * description;
 
         CHECK (snd_ctl_pcm_next_device, control, & device);
 
         if (device < 0)
             break;
 
-        name = g_strdup_printf ("hw:%d,%d", card, device);
+        snprintf (name, sizeof name, "hw:%d,%d", card, device);
         description = get_device_description (control, device, capture);
 
         if (description != NULL)
             found (name, description);
 
-        g_free (name);
-        g_free (description);
+        free (description);
     }
 
 FAILED:
     if (control != NULL)
         snd_ctl_close (control);
-
-    g_free (card_name);
 }
 
-static void pcm_found (const gchar * name, const gchar * description)
+static void pcm_found (const char * name, const char * description)
 {
     GtkTreeIter iter;
-    gchar * new = g_strdup_printf ("(%s)", description);
+    char new[512];
 
     gtk_list_store_append (pcm_list, & iter);
+    snprintf (new, sizeof new, "(%s)", description);
     gtk_list_store_set (pcm_list, & iter, 0, name, 1, new, -1);
-
-    g_free (new);
 }
 
-static void pcm_card_found (gint card, const gchar * description)
+static void pcm_card_found (int card, const char * description)
 {
-    get_devices (card, FALSE, pcm_found);
+    get_devices (card, 0, pcm_found);
 }
 
 static void pcm_list_fill (void)
 {
     pcm_found ("default", _("Default PCM device"));
-    get_defined_devices ("pcm", FALSE, pcm_found);
+    get_defined_devices ("pcm", 0, pcm_found);
     get_cards (pcm_card_found);
 }
 
-static void mixer_found (const gchar * name, const gchar * description)
+static void mixer_found (const char * name, const char * description)
 {
     GtkTreeIter iter;
-    gchar * new = g_strdup_printf ("(%s)", description);
+    char new[512];
 
     gtk_list_store_append (mixer_list, & iter);
+    snprintf (new, sizeof new, "(%s)", description);
     gtk_list_store_set (mixer_list, & iter, 0, name, 1, new, -1);
-
-    g_free (new);
 }
 
-static void mixer_card_found (gint card, const gchar * description)
+static void mixer_card_found (int card, const char * description)
 {
-    gchar * name = g_strdup_printf ("hw:%d", card);
+    char name[16];
 
+    snprintf (name, sizeof name, "hw:%d", card);
     mixer_found (name, description);
-    g_free (name);
 }
 
 static void mixer_list_fill (void)
 {
     mixer_found ("default", _("Default mixer device"));
-    get_defined_devices ("ctl", FALSE, mixer_found);
+    get_defined_devices ("ctl", 0, mixer_found);
     get_cards (mixer_card_found);
 }
 
-static void get_mixer_elements (const gchar * mixer, void (* found)
- (const gchar * name))
+static void get_mixer_elements (const char * mixer, void (* found)
+ (const char * name))
 {
     snd_mixer_t * mixer_handle = NULL;
     snd_mixer_elem_t * element;
@@ -264,7 +256,7 @@ FAILED:
         snd_mixer_close (mixer_handle);
 }
 
-static void mixer_element_found (const gchar * name)
+static void mixer_element_found (const char * name)
 {
     GtkTreeIter iter;
 
@@ -279,15 +271,15 @@ static void mixer_element_list_fill (void)
 
 static void guess_mixer_element (void)
 {
-    static const gchar * guesses[] = {"PCM", "Wave", "Master"};
-    gint count;
+    static const char * guesses[] = {"PCM", "Wave", "Master"};
+    int count;
 
     if (alsa_config_mixer_element != NULL)
     {
         if (list_has_member (mixer_element_list, alsa_config_mixer_element))
             return;
 
-        g_free (alsa_config_mixer_element);
+        free (alsa_config_mixer_element);
         alsa_config_mixer_element = NULL;
     }
 
@@ -295,7 +287,7 @@ static void guess_mixer_element (void)
     {
         if (list_has_member (mixer_element_list, guesses[count]))
         {
-            alsa_config_mixer_element = g_strdup (guesses[count]);
+            alsa_config_mixer_element = strdup (guesses[count]);
             return;
         }
     }
@@ -315,12 +307,12 @@ void alsa_config_load (void)
     aud_cfg_db_get_string (database, "alsa", "pcm", & alsa_config_pcm);
 
     if (alsa_config_pcm == NULL)
-        alsa_config_pcm = g_strdup ("default");
+        alsa_config_pcm = strdup ("default");
     else if (strcmp (alsa_config_pcm, "default") && ! list_has_member (pcm_list,
      alsa_config_pcm))
     {
-        g_free (alsa_config_pcm);
-        alsa_config_pcm = g_strdup ("default");
+        free (alsa_config_pcm);
+        alsa_config_pcm = strdup ("default");
     }
 
     mixer_list_fill ();
@@ -328,12 +320,12 @@ void alsa_config_load (void)
      & alsa_config_mixer);
 
     if (alsa_config_mixer == NULL)
-        alsa_config_mixer = g_strdup ("default");
+        alsa_config_mixer = strdup ("default");
     else if (strcmp (alsa_config_mixer, "default") && ! list_has_member
      (mixer_list, alsa_config_mixer))
     {
-        g_free (alsa_config_mixer);
-        alsa_config_mixer = g_strdup ("default");
+        free (alsa_config_mixer);
+        alsa_config_mixer = strdup ("default");
     }
 
     mixer_element_list_fill ();
@@ -370,36 +362,36 @@ void alsa_config_save (void)
     aud_cfg_db_set_bool (database, "alsa", "delay-workaround",
      alsa_config_delay_workaround);
 
-    g_free (alsa_config_pcm);
-    g_free (alsa_config_mixer);
-    g_free (alsa_config_mixer_element);
+    free (alsa_config_pcm);
+    free (alsa_config_mixer);
+    free (alsa_config_mixer_element);
 
     aud_cfg_db_close (database);
 }
 
-static GtkWidget * combo_new (const gchar * title, GtkListStore * list,
- GtkWidget * * combo, gboolean has_description)
+static GtkWidget * combo_new (const char * title, GtkListStore * list,
+ GtkWidget * * combo, int has_description)
 {
     GtkWidget * hbox, * label;
     GtkCellRenderer * cell;
 
-    hbox = gtk_hbox_new (FALSE, 6);
+    hbox = gtk_hbox_new (0, 6);
 
     label = gtk_label_new (title);
-    gtk_box_pack_start ((GtkBox *) hbox, label, FALSE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, label, 0, 0, 0);
 
     * combo = gtk_combo_box_new_with_model ((GtkTreeModel *) list);
-    gtk_box_pack_start ((GtkBox *) hbox, * combo, TRUE, TRUE, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, * combo, 1, 1, 0);
 
     cell = gtk_cell_renderer_text_new ();
-    gtk_cell_layout_pack_start ((GtkCellLayout *) * combo, cell, FALSE);
+    gtk_cell_layout_pack_start ((GtkCellLayout *) * combo, cell, 0);
     gtk_cell_layout_set_attributes ((GtkCellLayout *) * combo, cell, "text", 0,
      NULL);
 
     if (has_description)
     {
         cell = gtk_cell_renderer_text_new ();
-        gtk_cell_layout_pack_start ((GtkCellLayout *) * combo, cell, FALSE);
+        gtk_cell_layout_pack_start ((GtkCellLayout *) * combo, cell, 0);
         gtk_cell_layout_set_attributes ((GtkCellLayout *) * combo, cell, "text",
          1, NULL);
     }
@@ -408,7 +400,7 @@ static GtkWidget * combo_new (const gchar * title, GtkListStore * list,
 }
 
 static void combo_select_by_text (GtkWidget * combo, GtkListStore * list,
- const gchar * text)
+ const char * text)
 {
     GtkTreeIter * iter;
 
@@ -424,14 +416,12 @@ static void combo_select_by_text (GtkWidget * combo, GtkListStore * list,
         return;
 
     gtk_combo_box_set_active_iter ((GtkComboBox *) combo, iter);
-    g_free (iter);
 }
 
-static const gchar * combo_selected_text (GtkWidget * combo, GtkListStore *
- list)
+static const char * combo_selected_text (GtkWidget * combo, GtkListStore * list)
 {
     GtkTreeIter iter;
-    const gchar * text;
+    const char * text;
 
     if (! gtk_combo_box_get_active_iter ((GtkComboBox *) combo, & iter))
         return NULL;
@@ -446,68 +436,68 @@ static void create_window (void)
 
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_type_hint ((GtkWindow *) window, GDK_WINDOW_TYPE_HINT_DIALOG);
-    gtk_window_set_resizable ((GtkWindow *) window, FALSE);
+    gtk_window_set_resizable ((GtkWindow *) window, 0);
     gtk_window_set_title ((GtkWindow *) window, _("ALSA Output Plugin "
      "Preferences"));
     gtk_container_set_border_width ((GtkContainer *) window, 6);
 
-    vbox = gtk_vbox_new (FALSE, 6);
+    vbox = gtk_vbox_new (0, 6);
     gtk_container_add ((GtkContainer *) window, vbox);
 
     gtk_box_pack_start ((GtkBox *) vbox, combo_new (_("PCM device:"), pcm_list,
-     & pcm_combo, TRUE), FALSE, FALSE, 0);
+     & pcm_combo, 1), 0, 0, 0);
     gtk_box_pack_start ((GtkBox *) vbox, combo_new (_("Mixer device:"),
-     mixer_list, & mixer_combo, TRUE), FALSE, FALSE, 0);
+     mixer_list, & mixer_combo, 1), 0, 0, 0);
     gtk_box_pack_start ((GtkBox *) vbox, combo_new (_("Mixer element:"),
-     mixer_element_list, & mixer_element_combo, FALSE), FALSE, FALSE, 0);
+     mixer_element_list, & mixer_element_combo, 0), 0, 0, 0);
 
     drop_workaround_check = gtk_check_button_new_with_label (_("Work around "
      "snd_pcm_drop hangup (fixed in ALSA 1.0.23)"));
     gtk_toggle_button_set_active ((GtkToggleButton *) drop_workaround_check,
      alsa_config_drop_workaround);
-    gtk_box_pack_start ((GtkBox *) vbox, drop_workaround_check, FALSE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) vbox, drop_workaround_check, 0, 0, 0);
 
     drain_workaround_check = gtk_check_button_new_with_label (_("Work around "
      "snd_pcm_drain hangup"));
     gtk_toggle_button_set_active ((GtkToggleButton *) drain_workaround_check,
      alsa_config_drain_workaround);
-    gtk_box_pack_start ((GtkBox *) vbox, drain_workaround_check, FALSE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) vbox, drain_workaround_check, 0, 0, 0);
 
     delay_workaround_check = gtk_check_button_new_with_label (_("Work around "
      "snd_pcm_delay inaccuracy"));
     gtk_toggle_button_set_active ((GtkToggleButton *) delay_workaround_check,
      alsa_config_delay_workaround);
-    gtk_box_pack_start ((GtkBox *) vbox, delay_workaround_check, FALSE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) vbox, delay_workaround_check, 0, 0, 0);
 
-    hbox = gtk_hbox_new (FALSE, 6);
-    gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
+    hbox = gtk_hbox_new (0, 6);
+    gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
 
     ok_button = gtk_button_new_from_stock (GTK_STOCK_OK);
-    gtk_box_pack_end ((GtkBox *) hbox, ok_button, FALSE, FALSE, 0);
+    gtk_box_pack_end ((GtkBox *) hbox, ok_button, 0, 0, 0);
 
     gtk_widget_show_all (window);
 }
 
 static void pcm_changed (GtkComboBox * combo, void * unused)
 {
-    const gchar * new = combo_selected_text (pcm_combo, pcm_list);
+    const char * new = combo_selected_text (pcm_combo, pcm_list);
 
     if (new == NULL || ! strcmp (new, alsa_config_pcm))
         return;
 
-    g_free (alsa_config_pcm);
-    alsa_config_pcm = g_strdup (combo_selected_text (pcm_combo, pcm_list));
+    free (alsa_config_pcm);
+    alsa_config_pcm = strdup (combo_selected_text (pcm_combo, pcm_list));
 }
 
 static void mixer_changed (GtkComboBox * combo, void * unused)
 {
-    const gchar * new = combo_selected_text (mixer_combo, mixer_list);
+    const char * new = combo_selected_text (mixer_combo, mixer_list);
 
     if (new == NULL || ! strcmp (new, alsa_config_mixer))
         return;
 
-    g_free (alsa_config_mixer);
-    alsa_config_mixer = g_strdup (new);
+    free (alsa_config_mixer);
+    alsa_config_mixer = strdup (new);
 
     gtk_list_store_clear (mixer_element_list);
     mixer_element_list_fill ();
@@ -521,15 +511,15 @@ static void mixer_changed (GtkComboBox * combo, void * unused)
 
 static void mixer_element_changed (GtkComboBox * combo, void * unused)
 {
-    const gchar * new = combo_selected_text (mixer_element_combo,
+    const char * new = combo_selected_text (mixer_element_combo,
      mixer_element_list);
 
     if (new == NULL || (alsa_config_mixer_element != NULL && ! strcmp (new,
      alsa_config_mixer_element)))
         return;
 
-    g_free (alsa_config_mixer_element);
-    alsa_config_mixer_element = g_strdup (new);
+    free (alsa_config_mixer_element);
+    alsa_config_mixer_element = strdup (new);
 
     alsa_close_mixer ();
     alsa_open_mixer ();
@@ -537,7 +527,7 @@ static void mixer_element_changed (GtkComboBox * combo, void * unused)
 
 static void boolean_toggled (GtkToggleButton * button, void * data)
 {
-    * (gboolean *) data = gtk_toggle_button_get_active (button);
+    * (int *) data = gtk_toggle_button_get_active (button);
 }
 
 static void connect_callbacks (void)
@@ -564,9 +554,9 @@ static void connect_callbacks (void)
 
 void alsa_configure (void)
 {
-    g_mutex_lock (alsa_mutex);
+    pthread_mutex_lock (& alsa_mutex);
     alsa_soft_init ();
-    g_mutex_unlock (alsa_mutex);
+    pthread_mutex_unlock (& alsa_mutex);
 
     if (window != NULL)
     {
