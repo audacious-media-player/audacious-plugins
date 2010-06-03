@@ -77,6 +77,9 @@ struct _UiVis {
     GtkWidget        *fixed;
     gboolean         visible_window;
     GdkWindow        *event_window;
+    GdkPixmap * pixmap;
+    gint pixmap_width, pixmap_height;
+    GdkGC * gc;
 };
 
 struct _UiVisClass {

@@ -131,6 +131,11 @@ GtkWidget *ui_vis_new (GtkWidget * fixed, gint x, gint y, gint width)
     vis->visible_window = TRUE;
     vis->event_window = NULL;
 
+    vis->pixmap = NULL;
+    vis->pixmap_width = 0;
+    vis->pixmap_height = 0;
+    vis->gc = NULL;
+
     gtk_fixed_put (GTK_FIXED (vis->fixed), GTK_WIDGET (vis), vis->x, vis->y);
 
     return GTK_WIDGET (vis);
@@ -144,6 +149,11 @@ static void ui_vis_destroy (GtkObject * object)
     g_return_if_fail (UI_IS_VIS (object));
 
     vis = UI_VIS (object);
+
+    if (vis->pixmap != NULL)
+        g_object_unref (vis->pixmap), vis->pixmap = NULL;
+    if (vis->gc != NULL)
+        g_object_unref (vis->gc), vis->gc = NULL;
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
@@ -269,6 +279,24 @@ static void ui_vis_size_allocate (GtkWidget * widget,
 
     vis->x = widget->allocation.x / (vis->scaled ? config.scale_factor : 1);
     vis->y = widget->allocation.y / (vis->scaled ? config.scale_factor : 1);
+}
+
+static void ui_vis_resize_pixmap (UiVis * vis, gint width, gint height)
+{
+    if (vis->pixmap != NULL && vis->pixmap_width == width && vis->pixmap_height
+     == height && vis->gc != NULL)
+        return;
+
+    if (vis->pixmap != NULL)
+        g_object_unref (vis->pixmap), vis->pixmap = NULL;
+    if (vis->gc != NULL)
+        g_object_unref (vis->gc), vis->gc = NULL;
+
+    vis->pixmap = gdk_pixmap_new (NULL, width, height, gdk_rgb_get_visual
+     ()->depth);
+    vis->pixmap_width = width;
+    vis->pixmap_height = height;
+    vis->gc = gdk_gc_new (vis->pixmap);
 }
 
 static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
@@ -677,53 +705,33 @@ static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
         }
     }
 
-    GdkPixmap *obj = NULL;
-    GdkGC *gc;
-    obj =
-        gdk_pixmap_new (NULL,
-                        vis->width * (vis->scaled ? config.scale_factor : 1),
-                        vis->height * (vis->scaled ? config.scale_factor : 1),
-                        gdk_rgb_get_visual ()->depth);
-    gc = gdk_gc_new (obj);
+    ui_vis_resize_pixmap (vis, vis->width * (vis->scaled ? config.scale_factor :
+     1), vis->height * (vis->scaled ? config.scale_factor : 1));
 
     if (!vis->scaled)
     {
         if (config.vis_type == VIS_VOICEPRINT)
-        {
-            gdk_draw_rgb_image (obj, gc, 0, 0, vis->width, vis->height,
-                                GDK_RGB_DITHER_NORMAL, (guchar *) rgb_data,
-                                76 * 3);
-        }
+            gdk_draw_rgb_image (vis->pixmap, vis->gc, 0, 0, vis->width,
+             vis->height, GDK_RGB_DITHER_NORMAL, (guchar *) rgb_data, 76 * 3);
         else
-        {
-            gdk_draw_indexed_image (obj, gc, 0, 0, vis->width, vis->height,
-                                    GDK_RGB_DITHER_NORMAL, (guchar *) rgb_data,
-                                    76, cmap);
-        }
+            gdk_draw_indexed_image (vis->pixmap, vis->gc, 0, 0, vis->width,
+             vis->height, GDK_RGB_DITHER_NORMAL, (guchar *) rgb_data, 76, cmap);
     }
     else
     {
         if (config.vis_type == VIS_VOICEPRINT)
-        {
-            gdk_draw_rgb_image (obj, gc, 0 << 1, 0 << 1,
-                                vis->width << 1, vis->height << 1,
-                                GDK_RGB_DITHER_NONE, (guchar *) rgb_data,
-                                76 * 2 * 3);
-        }
+            gdk_draw_rgb_image (vis->pixmap, vis->gc, 0, 0, vis->width << 1,
+             vis->height << 1, GDK_RGB_DITHER_NONE, (guchar *) rgb_data, 76 * 2
+             * 3);
         else
-        {
-            gdk_draw_indexed_image (obj, gc, 0 << 1, 0 << 1,
-                                    vis->width << 1, vis->height << 1,
-                                    GDK_RGB_DITHER_NONE, (guchar *) rgb_data,
-                                    76 * 2, cmap);
-        }
+            gdk_draw_indexed_image (vis->pixmap, vis->gc, 0, 0, vis->width << 1,
+             vis->height << 1, GDK_RGB_DITHER_NONE, (guchar *) rgb_data, 76 * 2,
+             cmap);
     }
 
-    gdk_draw_drawable (widget->window, gc, obj, 0, 0, 0, 0,
+    gdk_draw_drawable (widget->window, vis->gc, vis->pixmap, 0, 0, 0, 0,
                        vis->width * (vis->scaled ? config.scale_factor : 1),
                        vis->height * (vis->scaled ? config.scale_factor : 1));
-    g_object_unref (obj);
-    g_object_unref (gc);
     gdk_rgb_cmap_free (cmap);
     return FALSE;
 }
@@ -845,5 +853,5 @@ void ui_vis_timeout_func (GtkWidget * widget, guchar * data)
     }
 
     if (widget_really_drawable (widget))
-        gtk_widget_queue_draw (widget);
+        ui_vis_expose (widget, NULL);
 }
