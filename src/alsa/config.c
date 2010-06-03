@@ -43,12 +43,17 @@ static GtkTreeIter * list_lookup_member (GtkListStore * list, const char * text)
 
     do
     {
-        const char * iter_text;
+        char * iter_text;
 
         gtk_tree_model_get ((GtkTreeModel *) list, & iter, 0, & iter_text, -1);
 
         if (! strcmp (iter_text, text))
+        {
+            free (iter_text);
             return & iter;
+        }
+        
+        free (iter_text);
     }
     while (gtk_tree_model_iter_next ((GtkTreeModel *) list, & iter));
 

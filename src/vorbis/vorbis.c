@@ -293,10 +293,9 @@ vorbis_interleave_buffer(float **pcm, int samples, int ch, float *pcmout)
 static void
 vorbis_play(InputPlayback *playback)
 {
-    gboolean streaming;
     vorbis_info *vi;
     OggVorbis_File vf;
-    VFSVorbisFile *fd = NULL;
+    VFSVorbisFile fd;
     VFSFile *stream = NULL;
     gint last_section = -1;
     ReplayGainInfo rg_info;
@@ -315,12 +314,12 @@ vorbis_play(InputPlayback *playback)
         goto play_cleanup;
     }
 
-    fd = g_new0(VFSVorbisFile, 1);
-    fd->fd = stream;
+    fd.fd = stream;
 
-    streaming = aud_vfs_is_streaming(fd->fd);
-    if (ov_open_callbacks(fd, &vf, NULL, 0, streaming ? vorbis_callbacks_stream : vorbis_callbacks) < 0) {
-        vorbis_callbacks.close_func(fd);
+    if (ov_open_callbacks (& fd, & vf, NULL, 0, aud_vfs_is_streaming (stream) ?
+     vorbis_callbacks_stream : vorbis_callbacks) < 0)
+    {
+        vorbis_callbacks.close_func (& fd);
         playback->error = TRUE;
         goto play_cleanup;
     }
@@ -545,20 +544,20 @@ get_song_tuple(const gchar *filename)
     VFSFile *stream = NULL;
     OggVorbis_File vfile;          /* avoid thread interaction */
     Tuple *tuple = NULL;
-    VFSVorbisFile *fd = NULL;
+    VFSVorbisFile fd;
 
     if ((stream = aud_vfs_fopen(filename, "rb")) == NULL)
         return NULL;
 
-    fd = g_new0(VFSVorbisFile, 1);
-    fd->fd = stream;
+    fd.fd = stream;
 
     /*
      * The open function performs full stream detection and
      * machine initialization.  If it returns zero, the stream
      * *is* Vorbis and we're fully ready to decode.
      */
-    if (ov_open_callbacks(fd, &vfile, NULL, 0, aud_vfs_is_streaming(stream) ? vorbis_callbacks_stream : vorbis_callbacks) < 0)
+    if (ov_open_callbacks (& fd, & vfile, NULL, 0, aud_vfs_is_streaming (stream)
+     ? vorbis_callbacks_stream : vorbis_callbacks) < 0)
     {
         aud_vfs_fclose(stream);
         return NULL;
