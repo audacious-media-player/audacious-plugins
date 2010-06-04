@@ -40,7 +40,7 @@
 #include <errno.h>
 #include <poll.h>
 #include <stdint.h>
-#include <sys/time.h>
+#include <time.h>
 #include <unistd.h>
 
 #include <alsa/asoundlib.h>
@@ -213,21 +213,10 @@ FAILED:
     pthread_cond_broadcast (& alsa_cond);
 }
 
-#define DEBUG_TIMING 0
-
-static int real_output_time (void)
+static int get_delay (void)
 {
-    int time = 0;
+    snd_pcm_sframes_t delay = 0;
     int result;
-    snd_pcm_sframes_t delay;
-
-#if DEBUG_TIMING
-    static int offset = 0;
-    struct timeval clock;
-    int new_offset;
-
-    gettimeofday (& clock, NULL);
-#endif
 
     if ((result = snd_pcm_delay (alsa_handle, & delay)) < 0)
     {
@@ -235,20 +224,14 @@ static int real_output_time (void)
         CHECK (snd_pcm_delay, alsa_handle, & delay);
     }
 
-    time = (alsa_time - (int64_t) (snd_pcm_bytes_to_frames (alsa_handle,
-     alsa_buffer_data_length) + delay) * 1000000 / alsa_rate) / 1000;
-
-#if DEBUG_TIMING
-    new_offset = time - clock.tv_usec / 1000;
-    printf ("%d. written %d, buffer %d, delay %d, output %d, drift %d\n", (int)
-     clock.tv_usec / 1000, (int) alsa_time / 1000, (int) snd_pcm_bytes_to_frames
-     (alsa_handle, alsa_buffer_data_length) * 1000 / alsa_rate, (int) delay *
-     1000 / alsa_rate, time, new_offset - offset);
-    offset = new_offset;
-#endif
-
 FAILED:
-    return time;
+    return delay;
+}
+
+static int get_output_time (void)
+{
+    return (alsa_time - (int64_t) (snd_pcm_bytes_to_frames (alsa_handle,
+     alsa_buffer_data_length) + get_delay ()) * 1000000 / alsa_rate) / 1000;
 }
 
 OutputPluginInitStatus alsa_init (void)
@@ -341,12 +324,6 @@ int alsa_open_audio (AFormat aud_format, int rate, int channels)
     CHECK_NOISY (snd_pcm_hw_params_set_channels, alsa_handle, params, channels);
     CHECK_NOISY (snd_pcm_hw_params_set_rate, alsa_handle, params, rate, 0);
     useconds = 1000 * aud_cfg->output_buffer_size / 2;
-
-    /* If we cannot use snd_pcm_drain, we lose any audio that is buffered at the
-     * end of each song.  We can minimize the damage by using a smaller buffer. */
-    if (alsa_config_drain_workaround)
-        useconds = MIN (useconds, 100000);
-
     direction = 0;
     CHECK_NOISY (snd_pcm_hw_params_set_buffer_time_max, alsa_handle, params,
      & useconds, & direction);
@@ -467,7 +444,17 @@ void alsa_drain (void)
 
     pump_stop ();
 
-    while (! alsa_config_drain_workaround)
+    if (alsa_config_drain_workaround)
+    {
+        int _delay = get_delay () * 1000 / alsa_rate;
+        struct timespec delay = {.tv_sec = _delay / 1000, .tv_nsec = _delay %
+         1000 * 1000000};
+        
+        pthread_mutex_unlock (& alsa_mutex);
+        nanosleep (& delay, NULL);
+        pthread_mutex_lock (& alsa_mutex);
+    }
+    else while (1)
     {
         CHECK_VAL (state, snd_pcm_state, alsa_handle);
 
@@ -513,7 +500,7 @@ int alsa_output_time (void)
     if (alsa_paused)
         time = alsa_paused_time;
     else
-        time = real_output_time ();
+        time = get_output_time ();
 
     pthread_mutex_unlock (& alsa_mutex);
     return time;
@@ -548,7 +535,7 @@ void alsa_pause (short pause)
     if (pause)
     {
         alsa_paused = 1;
-        alsa_paused_time = real_output_time ();
+        alsa_paused_time = get_output_time ();
 
         CHECK (snd_pcm_pause, alsa_handle, pause);
     }
