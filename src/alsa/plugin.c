@@ -17,13 +17,15 @@
  * the use of this software.
  */
 
-#include "alsa.h"
-
 #include <stdarg.h>
+
 #include <gtk/gtk.h>
 
+#include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
+
+#include "alsa.h"
 
 static OutputPlugin plugin =
 {

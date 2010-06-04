@@ -17,24 +17,54 @@
  * the use of this software.
  */
 
+/*
+ * Because ALSA is not thread-safe (despite claims to the contrary) we use non-
+ * blocking output in the pump thread with the mutex locked, then unlock the
+ * mutex and wait for more room in the buffer with poll() while other threads
+ * lock the mutex and read the output time.  We poll a pipe of our own as well
+ * as the ALSA file descriptors so that we can wake up the pump thread when
+ * needed.
+ *
+ * When paused, or when it comes to the end of the data given it, the pump will
+ * wait on alsa_cond for the signal to continue.  When it has more data waiting,
+ * however, it will be sitting in poll() waiting for ALSA's signal that more
+ * data can be written.
+ *
+ * * After adding more data to the buffer, and after resuming from pause,
+ *   signal on alsa_cond to wake the pump.  (There is no need to signal when
+ *   entering pause.)
+ * * After setting the pump_quit flag, signal on alsa_cond AND the poll_pipe
+ *   before joining the thread.
+ */
+
+#include <errno.h>
+#include <poll.h>
 #include <stdint.h>
+#include <sys/time.h>
+#include <unistd.h>
+
+#include <alsa/asoundlib.h>
+#include <glib.h>
 
 #include "alsa.h"
 
-pthread_mutex_t alsa_mutex = PTHREAD_MUTEX_INITIALIZER;
 static snd_pcm_t * alsa_handle;
+static int alsa_initted;
+pthread_mutex_t alsa_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t alsa_cond = PTHREAD_COND_INITIALIZER;
-static int initted;
 
 static snd_pcm_format_t alsa_format;
 static int alsa_channels, alsa_rate;
 
 static void * alsa_buffer;
-static int alsa_buffer_length, alsa_buffer_data_start, alsa_buffer_data_length,
- alsa_buffer_read_length;
+static int alsa_buffer_length, alsa_buffer_data_start, alsa_buffer_data_length;
 
 static int64_t alsa_time; /* microseconds */
 static int alsa_paused, alsa_paused_time;
+
+static int poll_pipe[2];
+static int poll_count; 
+static struct pollfd * poll_handles;
 
 static int pump_quit;
 static pthread_t pump_thread;
@@ -42,77 +72,131 @@ static pthread_t pump_thread;
 static snd_mixer_t * alsa_mixer;
 static snd_mixer_elem_t * alsa_mixer_element;
 
+static int poll_setup (void)
+{
+    if (pipe (poll_pipe))
+    {
+        ERROR ("Failed to create pipe: %s.\n", strerror (errno));
+        return 0;
+    }
+    
+    if (fcntl (poll_pipe[0], F_SETFL, O_NONBLOCK))
+    {
+        ERROR ("Failed to set O_NONBLOCK on pipe: %s.\n", strerror (errno));
+        close (poll_pipe[0]);
+        close (poll_pipe[1]);
+        return 0;
+    }
+
+    poll_count = 1 + snd_pcm_poll_descriptors_count (alsa_handle);
+    poll_handles = malloc (sizeof (struct pollfd) * poll_count);
+    poll_handles[0].fd = poll_pipe[0];
+    poll_handles[0].events = POLLIN;
+    poll_count = 1 + snd_pcm_poll_descriptors (alsa_handle, poll_handles + 1,
+     poll_count - 1);
+
+    return 1;
+}
+
+static void poll_sleep (void)
+{
+    char c;
+
+    poll (poll_handles, poll_count, -1);
+    
+    if (poll_handles[0].revents & POLLIN)
+    {
+        while (read (poll_pipe[0], & c, 1) == 1)
+            ;
+    }
+}
+
+static void poll_wake (void)
+{
+    const char c = 0;
+
+    write (poll_pipe[1], & c, 1);
+}
+
+static void poll_cleanup (void)
+{
+    close (poll_pipe[0]);
+    close (poll_pipe[1]);
+    free (poll_handles);
+}
+
 static void * pump (void * unused)
 {
-    snd_pcm_status_t * status;
     int length;
 
     pthread_mutex_lock (& alsa_mutex);
-    pthread_cond_broadcast (& alsa_cond);
-
-    snd_pcm_status_alloca (& status);
+    pthread_cond_broadcast (& alsa_cond); /* signal thread started */
 
     while (! pump_quit)
     {
-        if (alsa_paused)
+        if (alsa_paused || ! alsa_buffer_data_length)
         {
             pthread_cond_wait (& alsa_cond, & alsa_mutex);
             continue;
         }
 
-        length = snd_pcm_frames_to_bytes (alsa_handle, snd_pcm_bytes_to_frames
-         (alsa_handle, alsa_buffer_length / 4));
+        CHECK_VAL (length, snd_pcm_avail_update, alsa_handle);
+
+        if (! length)
+            goto WAIT;
+
+        length = snd_pcm_frames_to_bytes (alsa_handle, length);
         length = MIN (length, alsa_buffer_data_length);
         length = MIN (length, alsa_buffer_length - alsa_buffer_data_start);
+        length = snd_pcm_bytes_to_frames (alsa_handle, length);
 
-        /* Currently, snd_pcm_delay doesn't account for data that is being
-         * passed by a blocking snd_pcm_writei call.  To minimize the error, we
-         * can pass the audio in smaller chunks. */
-        if (alsa_config_delay_workaround)
-            length = MIN (length, snd_pcm_frames_to_bytes (alsa_handle,
-             alsa_rate / 100));
-
-        if (length == 0)
+        if ((length = snd_pcm_writei (alsa_handle, (char *) alsa_buffer +
+         alsa_buffer_data_start, length)) < 0)
         {
-            pthread_cond_wait (& alsa_cond, & alsa_mutex);
-            continue;
-        }
-
-        alsa_buffer_read_length = length;
-
-#ifdef SND_PCM_HAVE_LOCKED_WRITE
-        length = snd_pcm_writei_locked (alsa_handle, (char *) alsa_buffer +
-         alsa_buffer_data_start, snd_pcm_bytes_to_frames (alsa_handle,
-         length), & alsa_mutex);
-#else
-        pthread_mutex_unlock (& alsa_mutex);
-        length = snd_pcm_writei (alsa_handle, (char *) alsa_buffer +
-         alsa_buffer_data_start, snd_pcm_bytes_to_frames (alsa_handle,
-         length));
-        pthread_mutex_lock (& alsa_mutex);
-#endif
-
-        if (length < 0)
-        {
-            if (! pump_quit && ! alsa_paused) /* ignore errors caused by drop */
-                CHECK (snd_pcm_recover, alsa_handle, length, 0);
-
-        FAILED:
+            CHECK (snd_pcm_recover, alsa_handle, length, 0);
             length = 0;
         }
 
         length = snd_pcm_frames_to_bytes (alsa_handle, length);
-
-        alsa_buffer_data_start = (alsa_buffer_data_start + length) %
-         alsa_buffer_length;
+        alsa_buffer_data_start += length;
         alsa_buffer_data_length -= length;
-        alsa_buffer_read_length = 0;
 
-        pthread_cond_broadcast (& alsa_cond);
+        pthread_cond_broadcast (& alsa_cond); /* signal write complete */
+
+        if (alsa_buffer_data_start == alsa_buffer_length)
+        {
+            alsa_buffer_data_start = 0;
+            continue;
+        }
+
+    WAIT:
+        pthread_mutex_unlock (& alsa_mutex);
+        poll_sleep ();
+        pthread_mutex_lock (& alsa_mutex);
     }
 
+FAILED:
     pthread_mutex_unlock (& alsa_mutex);
     return NULL;
+}
+
+static void pump_start (void)
+{
+    AUDDBG ("Starting pump.\n");
+    pthread_create (& pump_thread, NULL, pump, NULL);
+    pthread_cond_wait (& alsa_cond, & alsa_mutex);
+}
+
+static void pump_stop (void)
+{
+    AUDDBG ("Stopping pump.\n");
+    pump_quit = 1;
+    pthread_cond_broadcast (& alsa_cond);
+    poll_wake ();
+    pthread_mutex_unlock (& alsa_mutex);
+    pthread_join (pump_thread, NULL);
+    pthread_mutex_lock (& alsa_mutex);
+    pump_quit = 0;
 }
 
 static void start_playback (void)
@@ -133,8 +217,9 @@ FAILED:
 
 static int real_output_time (void)
 {
-    snd_pcm_status_t * status;
     int time = 0;
+    int result;
+    snd_pcm_sframes_t delay;
 
 #if DEBUG_TIMING
     static int offset = 0;
@@ -144,20 +229,21 @@ static int real_output_time (void)
     gettimeofday (& clock, NULL);
 #endif
 
-    snd_pcm_status_alloca (& status);
-    CHECK (snd_pcm_status, alsa_handle, status);
+    if ((result = snd_pcm_delay (alsa_handle, & delay)) < 0)
+    {
+        CHECK (snd_pcm_recover, alsa_handle, result, 0);
+        CHECK (snd_pcm_delay, alsa_handle, & delay);
+    }
+
     time = (alsa_time - (int64_t) (snd_pcm_bytes_to_frames (alsa_handle,
-     alsa_buffer_data_length - alsa_buffer_read_length) +
-     snd_pcm_status_get_delay (status)) * 1000000 / alsa_rate) / 1000;
+     alsa_buffer_data_length) + delay) * 1000000 / alsa_rate) / 1000;
 
 #if DEBUG_TIMING
     new_offset = time - clock.tv_usec / 1000;
-    printf ("%d. written %d, buffer %d - %d, delay %d, output %d, drift %d\n",
-     (int) clock.tv_usec / 1000, (int) alsa_time / 1000, (int)
-     snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer_data_length) * 1000 /
-     alsa_rate, (int) snd_pcm_bytes_to_frames (alsa_handle,
-     alsa_buffer_read_length) * 1000 / alsa_rate, (int) snd_pcm_status_get_delay
-     (status) * 1000 / alsa_rate, time, new_offset - offset);
+    printf ("%d. written %d, buffer %d, delay %d, output %d, drift %d\n", (int)
+     clock.tv_usec / 1000, (int) alsa_time / 1000, (int) snd_pcm_bytes_to_frames
+     (alsa_handle, alsa_buffer_data_length) * 1000 / alsa_rate, (int) delay *
+     1000 / alsa_rate, time, new_offset - offset);
     offset = new_offset;
 #endif
 
@@ -168,25 +254,25 @@ FAILED:
 OutputPluginInitStatus alsa_init (void)
 {
     alsa_handle = NULL;
-    initted = 0;
+    alsa_initted = 0;
 
     return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
 void alsa_soft_init (void)
 {
-    if (! initted)
+    if (! alsa_initted)
     {
         AUDDBG ("Initialize.\n");
         alsa_config_load ();
         alsa_open_mixer ();
-        initted = 1;
+        alsa_initted = 1;
     }
 }
 
 void alsa_cleanup (void)
 {
-    if (initted)
+    if (alsa_initted)
     {
         AUDDBG ("Cleanup.\n");
         alsa_close_mixer ();
@@ -194,12 +280,11 @@ void alsa_cleanup (void)
     }
 }
 
-static snd_pcm_format_t convert_aud_format (AFormat aud_format)
+static int convert_aud_format (int aud_format)
 {
     const struct
     {
-        AFormat aud_format;
-        snd_pcm_format_t format;
+        int aud_format, format;
     }
     table[] =
     {
@@ -233,9 +318,10 @@ static snd_pcm_format_t convert_aud_format (AFormat aud_format)
 
 int alsa_open_audio (AFormat aud_format, int rate, int channels)
 {
-    snd_pcm_format_t format = convert_aud_format (aud_format);
+    int format = convert_aud_format (aud_format);
     snd_pcm_hw_params_t * params;
-    guint useconds;
+    unsigned int useconds;
+    int direction;
     snd_pcm_uframes_t frames, period;
     int hard_buffer, soft_buffer;
 
@@ -261,8 +347,9 @@ int alsa_open_audio (AFormat aud_format, int rate, int channels)
     if (alsa_config_drain_workaround)
         useconds = MIN (useconds, 100000);
 
+    direction = 0;
     CHECK_NOISY (snd_pcm_hw_params_set_buffer_time_max, alsa_handle, params,
-     & useconds, 0);
+     & useconds, & direction);
     CHECK_NOISY (snd_pcm_hw_params, alsa_handle, params);
 
     alsa_format = format;
@@ -281,15 +368,15 @@ int alsa_open_audio (AFormat aud_format, int rate, int channels)
     alsa_buffer = malloc (alsa_buffer_length);
     alsa_buffer_data_start = 0;
     alsa_buffer_data_length = 0;
-    alsa_buffer_read_length = 0;
 
     alsa_time = 0;
     alsa_paused = 1; /* for buffering */
     alsa_paused_time = 0;
 
-    pump_quit = 0;
-    pthread_create (& pump_thread, NULL, pump, NULL);
-    pthread_cond_wait (& alsa_cond, & alsa_mutex);
+    if (! poll_setup ())
+        goto FAILED;
+
+    pump_start ();
 
     pthread_mutex_unlock (& alsa_mutex);
     return 1;
@@ -309,20 +396,16 @@ void alsa_close_audio (void)
 {
     AUDDBG ("Closing audio.\n");
     pthread_mutex_lock (& alsa_mutex);
-    pump_quit = 1;
 
-    if (! alsa_config_drop_workaround)
-        CHECK (snd_pcm_drop, alsa_handle);
+    pump_stop ();
+    CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
-    pthread_cond_broadcast (& alsa_cond);
-    pthread_mutex_unlock (& alsa_mutex);
-    pthread_join (pump_thread, NULL);
-    pthread_mutex_lock (& alsa_mutex);
-
     free (alsa_buffer);
+    poll_cleanup ();
     snd_pcm_close (alsa_handle);
     alsa_handle = NULL;
+
     pthread_mutex_unlock (& alsa_mutex);
 }
 
@@ -341,26 +424,28 @@ void alsa_write_audio (void * data, int length)
         {
             int part = alsa_buffer_length - start;
 
-            memcpy ((gint8 *) alsa_buffer + start, data, part);
-            memcpy (alsa_buffer, (gint8 *) data + part, writable - part);
+            memcpy ((char *) alsa_buffer + start, data, part);
+            memcpy (alsa_buffer, (char *) data + part, writable - part);
         }
         else
-            memcpy ((gint8 *) alsa_buffer + start, data, writable);
+            memcpy ((char *) alsa_buffer + start, data, writable);
 
-        data = (gint8 *) data + writable;
+        data = (char *) data + writable;
         length -= writable;
 
         alsa_buffer_data_length += writable;
         alsa_time += (int64_t) snd_pcm_bytes_to_frames (alsa_handle, writable) *
          1000000 / alsa_rate;
 
+        if (! alsa_paused)
+            pthread_cond_broadcast (& alsa_cond);
+        
         if (! length)
             break;
 
-        if (alsa_paused) /* buffering completed */
+        if (alsa_paused)
             start_playback ();
 
-        pthread_cond_broadcast (& alsa_cond);
         pthread_cond_wait (& alsa_cond, & alsa_mutex);
     }
 
@@ -369,26 +454,35 @@ void alsa_write_audio (void * data, int length)
 
 void alsa_drain (void)
 {
+    int state; 
+
     AUDDBG ("Drain.\n");
     pthread_mutex_lock (& alsa_mutex);
 
-    while (alsa_buffer_data_length > 0)
-    {
-        /* start / wake up pump thread */
-        if (alsa_paused)
-            start_playback ();
-        else
-            pthread_cond_broadcast (& alsa_cond);
+    if (alsa_paused)
+        start_playback ();
 
+    while (alsa_buffer_data_length > 0)
         pthread_cond_wait (& alsa_cond, & alsa_mutex);
+
+    pump_stop ();
+
+    while (! alsa_config_drain_workaround)
+    {
+        CHECK_VAL (state, snd_pcm_state, alsa_handle);
+
+        if (state != SND_PCM_STATE_RUNNING && state != SND_PCM_STATE_DRAINING)
+            break;
+        
+        pthread_mutex_unlock (& alsa_mutex);
+        poll_sleep ();
+        pthread_mutex_lock (& alsa_mutex);
     }
 
-    pthread_mutex_unlock (& alsa_mutex);
-
-    if (! alsa_config_drain_workaround)
-        CHECK (snd_pcm_drain, alsa_handle);
+    pump_start ();
 
 FAILED:
+    pthread_mutex_unlock (& alsa_mutex);
     return;
 }
 
@@ -430,25 +524,23 @@ void alsa_flush (int time)
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& alsa_mutex);
 
+    pump_stop ();
+    CHECK (snd_pcm_drop, alsa_handle);
+
+FAILED:
+    alsa_buffer_data_start = 0;
+    alsa_buffer_data_length = 0;
+
     alsa_time = (int64_t) time * 1000;
     alsa_paused = 1; /* for buffering */
     alsa_paused_time = time;
 
-    if (! alsa_config_drop_workaround)
-        CHECK (snd_pcm_drop, alsa_handle);
+    pump_start ();
 
-FAILED:
-    while (alsa_buffer_read_length)
-        pthread_cond_wait (& alsa_cond, & alsa_mutex);
-
-    alsa_buffer_data_start = 0;
-    alsa_buffer_data_length = 0;
-
-    pthread_cond_broadcast (& alsa_cond);
     pthread_mutex_unlock (& alsa_mutex);
 }
 
-void alsa_pause (gshort pause)
+void alsa_pause (short pause)
 {
     AUDDBG ("%sause.\n", pause ? "P" : "Unp");
     pthread_mutex_lock (& alsa_mutex);
@@ -510,7 +602,7 @@ void alsa_close_mixer (void)
 
 void alsa_get_volume (int * left, int * right)
 {
-    glong left_l = 0, right_l = 0;
+    long left_l = 0, right_l = 0;
 
     pthread_mutex_lock (& alsa_mutex);
     alsa_soft_init ();

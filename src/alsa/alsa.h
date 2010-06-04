@@ -24,22 +24,25 @@
 
 #include <pthread.h>
 #include <stdio.h>
-#include <glib.h>
-#include <alsa/asoundlib.h>
 
 #include <audacious/plugin.h>
-#include <audacious/i18n.h>
 
 #define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
 #define ERROR_NOISY alsa_error
 
-#define CHECK(function, ...) \
+#define CHECK_VAL(value, function, ...) \
 do { \
-    int error = function (__VA_ARGS__); \
-    if (error < 0) { \
-        ERROR ("%s failed: %s.\n", #function, snd_strerror (error)); \
+    (value) = function (__VA_ARGS__); \
+    if ((value) < 0) { \
+        ERROR ("%s failed: %s.\n", #function, snd_strerror (value)); \
         goto FAILED; \
     } \
+} while (0)
+
+#define CHECK(function, ...) \
+do { \
+    int error; \
+    CHECK_VAL (error, function, __VA_ARGS__); \
 } while (0)
 
 #define CHECK_NOISY(function, ...) \
@@ -65,7 +68,7 @@ void alsa_set_written_time (int time);
 int alsa_written_time (void);
 int alsa_output_time (void);
 void alsa_flush (int time);
-void alsa_pause (gshort pause);
+void alsa_pause (short pause);
 void alsa_get_volume (int * left, int * right);
 void alsa_set_volume (int left, int right);
 void alsa_open_mixer (void);
