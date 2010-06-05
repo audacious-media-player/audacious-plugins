@@ -1,6 +1,6 @@
 /*
  * Audacious - a cross-platform multimedia player
- * Copyright (c) 2007  Audacious development team.
+ * Copyright (c) 2007-2010  Audacious development team.
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -32,8 +32,8 @@
 
 static const gfloat vis_afalloff_speeds[] = { 0.34, 0.5, 1.0, 1.3, 1.6 };
 static const gfloat vis_pfalloff_speeds[] = { 1.2, 1.3, 1.4, 1.5, 1.6 };
-static const guint8 vis_scope_colors[] =
-    { 21, 21, 20, 20, 19, 19, 18, 19, 19, 20, 20, 21, 21 };
+static const gint vis_scope_colors[16] = {22, 21, 21, 20, 20, 19, 19, 18, 18,
+ 19, 19, 20, 20, 21, 21, 22};
 static guchar voiceprint_data[76 * 16];
 
 enum
@@ -131,9 +131,6 @@ GtkWidget *ui_vis_new (GtkWidget * fixed, gint x, gint y, gint width)
     vis->visible_window = TRUE;
     vis->event_window = NULL;
 
-    vis->pixmap = NULL;
-    vis->pixmap_width = 0;
-    vis->pixmap_height = 0;
     vis->gc = NULL;
 
     gtk_fixed_put (GTK_FIXED (vis->fixed), GTK_WIDGET (vis), vis->x, vis->y);
@@ -150,8 +147,6 @@ static void ui_vis_destroy (GtkObject * object)
 
     vis = UI_VIS (object);
 
-    if (vis->pixmap != NULL)
-        g_object_unref (vis->pixmap), vis->pixmap = NULL;
     if (vis->gc != NULL)
         g_object_unref (vis->gc), vis->gc = NULL;
 
@@ -281,458 +276,257 @@ static void ui_vis_size_allocate (GtkWidget * widget,
     vis->y = widget->allocation.y / (vis->scaled ? config.scale_factor : 1);
 }
 
-static void ui_vis_resize_pixmap (UiVis * vis, gint width, gint height)
-{
-    if (vis->pixmap != NULL && vis->pixmap_width == width && vis->pixmap_height
-     == height && vis->gc != NULL)
-        return;
-
-    if (vis->pixmap != NULL)
-        g_object_unref (vis->pixmap), vis->pixmap = NULL;
-    if (vis->gc != NULL)
-        g_object_unref (vis->gc), vis->gc = NULL;
-
-    vis->pixmap = gdk_pixmap_new (NULL, width, height, gdk_rgb_get_visual
-     ()->depth);
-    vis->pixmap_width = width;
-    vis->pixmap_height = height;
-    vis->gc = gdk_gc_new (vis->pixmap);
-}
+#define RGB_SEEK(x,y) {set = rgb + 3 * 76 * (y) + 3 * (x);}
+#define RGB_SET(c) {guchar * p = (c); * set ++ = * p ++; * set ++ = * p ++; \
+ * set ++ = * p ++;}
+#define RGB_SET_Y(c) {RGB_SET (c) set += 3 * 75;}
+#define RGB_SET_INDEX(c) {RGB_SET (vis_color[c])}
+#define RGB_SET_INDEX_Y(c) {RGB_SET_Y (vis_color[c])}
 
 static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
 {
-    UiVis *vis = UI_VIS (widget);
-
-    gint x, y, n, h = 0, h2;
-    gfloat delta;
-    guchar skin_col[2][3];
+    UiVis * vis = (UiVis *) widget;
+    gint x, y, n, h, h2;
     guchar vis_color[24][3];
-    guchar vis_voice_color[256][3], voice_c[3];
-    guchar rgb_data[76 * 16 * 3 * 2 * 2], *ptr, c;
-    guint32 colors[24];
-    GdkColor *fgc, *bgc;
-    GdkRgbCmap *cmap;
-
-    if (!GTK_WIDGET_VISIBLE (widget))
-        return FALSE;
-
-    if (!vis->visible_window)
-        return FALSE;
+    guchar vis_voice_color[256][3];
+    guchar rgb[3 * 76 * 16];
+    guchar * get, * set, * end;
 
     skin_get_viscolor (aud_active_skin, vis_color);
-    for (y = 0; y < 24; y++)
-    {
-        colors[y] =
-            vis_color[y][0] << 16 | vis_color[y][1] << 8 | vis_color[y][2];
-    }
-    cmap = gdk_rgb_cmap_new (colors, 24);
 
-    if (!vis->scaled)
+    /* Pattern fill.  We fill only the first two rows, then copy them. */
+    if (config.vis_type != VIS_VOICEPRINT)
     {
-        if (config.vis_type ==
-            VIS_VOICEPRINT /*&& config.voiceprint_mode != VOICEPRINT_NORMAL */ )
+        set = rgb;
+        end = set + 3 * 76;
+
+        while (set < end)
+            RGB_SET_INDEX (0)
+
+        end = set + 3 * 76;
+        
+        while (set < end)
         {
-            memset (rgb_data, 0, 76 * 16 * 3);
+            RGB_SET_INDEX (1)
+            RGB_SET_INDEX (0)
         }
-        else
-        {
-            memset (rgb_data, 0, 76 * 16);
-            for (y = 1; y < 16; y += 2)
-            {
-                ptr = rgb_data + (y * 76);
-                for (x = 0; x < 76; x += 2, ptr += 2)
-                    *ptr = 1;
-            }
-        }
+
+        end = rgb + sizeof rgb;
+        
+        for (; set < end; set += 3 * 76 * 2)
+            memcpy (set, rgb, 3 * 76 * 2);
     }
-    else
+
+    switch (config.vis_type)
     {
-        if (config.vis_type ==
-            VIS_VOICEPRINT /*&& config.voiceprint_mode != VOICEPRINT_NORMAL */ )
+    case VIS_ANALYZER:
+        for (x = 0; x < 75; x ++)
         {
-            memset (rgb_data, 0, 3 * 4 * 16 * 76);
-        }
-        else
-        {
-            memset (rgb_data, 0, (guint) (76 * config.scale_factor) * 32);
-            for (y = 1; y < 16; y += 2)
-            {
-                ptr = rgb_data + (y * (guint) (76 * 2 * config.scale_factor));
-                for (x = 0; x < 76; x += 2, ptr += 4)
-                {
-                    *ptr = 1;
-                    *(ptr + 1) = 1;
-                    *(ptr + (guint) (76 * config.scale_factor)) = 1;
-                    *(ptr + (guint) (76 * config.scale_factor) + 1) = 1;
-                }
-            }
-        }
-    }
-    if (config.vis_type == VIS_ANALYZER)
-    {
-        for (x = 0; x < 75; x++)
-        {
-            if (config.analyzer_type == ANALYZER_BARS && (x % 4) == 0)
+            if (config.analyzer_type == ANALYZER_BARS && (x & 3) == 3)
+                continue;
+
+            if (config.analyzer_type == ANALYZER_BARS)
                 h = vis->data[x >> 2];
-            else if (config.analyzer_type == ANALYZER_LINES)
+            else
                 h = vis->data[x];
-            if (h && (config.analyzer_type == ANALYZER_LINES || (x % 4) != 3))
-            {
-                if (!vis->scaled)
-                {
-                    ptr = rgb_data + ((16 - h) * 76) + x;
-                    switch (config.analyzer_mode)
-                    {
-                    case ANALYZER_NORMAL:
-                        for (y = 0; y < h; y++, ptr += 76)
-                            *ptr = 18 - h + y;
-                        break;
-                    case ANALYZER_FIRE:
-                        for (y = 0; y < h; y++, ptr += 76)
-                            *ptr = y + 2;
-                        break;
-                    case ANALYZER_VLINES:
-                        for (y = 0; y < h; y++, ptr += 76)
-                            *ptr = 18 - h;
-                        break;
-                    }
-                }
-                else
-                {
-                    ptr =
-                        rgb_data +
-                        ((16 - h) * (guint) (76 * 2 * config.scale_factor)) +
-                        (guint) (x * config.scale_factor);
-                    switch (config.analyzer_mode)
-                    {
-                    case ANALYZER_NORMAL:
-                        for (y = 0; y < h;
-                             y++, ptr += (guint) (76 * 2 * config.scale_factor))
-                        {
-                            *ptr = 18 - h + y;
-                            *(ptr + 1) = 18 - h + y;
-                            *(ptr + (guint) (76 * config.scale_factor)) =
-                                18 - h + y;
-                            *(ptr + (guint) (76 * config.scale_factor) + 1) =
-                                18 - h + y;
-                        }
-                        break;
-                    case ANALYZER_FIRE:
-                        for (y = 0; y < h;
-                             y++, ptr += (guint) (76 * 2 * config.scale_factor))
-                        {
-                            *ptr = y + 2;
-                            *(ptr + 1) = y + 2;
-                            *(ptr + (guint) (76 * config.scale_factor)) = y + 2;
-                            *(ptr + (guint) (76 * config.scale_factor) + 1) =
-                                y + 2;
-                        }
-                        break;
-                    case ANALYZER_VLINES:
-                        for (y = 0; y < h;
-                             y++, ptr += (guint) (76 * 2 * config.scale_factor))
-                        {
-                            *ptr = 18 - h;
-                            *(ptr + 1) = 18 - h;
-                            *(ptr + (guint) (76 * config.scale_factor)) =
-                                18 - h;
-                            *(ptr + (guint) (76 * config.scale_factor) + 1) =
-                                18 - h;
-                        }
 
-                        break;
-                    }
-                }
-            }
-        }
-        if (config.analyzer_peaks)
-        {
-            for (x = 0; x < 75; x++)
+            h = CLAMP (h, 0, 16); /* sanity check */
+
+            RGB_SEEK (x, 16 - h)
+            
+            switch (config.analyzer_mode)
             {
-                if (config.analyzer_type == ANALYZER_BARS && (x % 4) == 0)
+            case ANALYZER_NORMAL:
+                for (y = 0; y < h; y ++)
+                    RGB_SET_INDEX_Y (18 - h + y);
+
+                break;
+            case ANALYZER_FIRE:
+                for (y = 0; y < h; y ++)
+                    RGB_SET_INDEX_Y (2 + y);
+
+                break;
+            /* case ANALYZER_VLINES: */
+            default:
+                for (y = 0; y < h; y ++)
+                    RGB_SET_INDEX_Y (18 - h);
+
+                break;
+            }
+
+            if (config.analyzer_peaks)
+            {
+                if (config.analyzer_type == ANALYZER_BARS)
                     h = vis->peak[x >> 2];
-                else if (config.analyzer_type == ANALYZER_LINES)
+                else
                     h = vis->peak[x];
-                if (h
-                    && (config.analyzer_type == ANALYZER_LINES || (x % 4) != 3))
-                {
 
-                    if (!vis->scaled)
-                    {
-                        rgb_data[(16 - h) * 76 + x] = 23;
-                    }
-                    else
-                    {
-                        ptr =
-                            rgb_data + (16 -
-                                        h) * (guint) (76 * 2 *
-                                                      config.scale_factor) +
-                            (guint) (x * config.scale_factor);
-                        *ptr = 23;
-                        *(ptr + 1) = 23;
-                        *(ptr + (guint) (76 * config.scale_factor)) = 23;
-                        *(ptr + (guint) (76 * config.scale_factor) + 1) = 23;
-                    }
-                }
+                h = CLAMP (h, 0, 16); /* sanity check */
+
+                RGB_SEEK (x, 16 - h);
+                RGB_SET_INDEX (23);
             }
         }
-    }
-    else if (config.vis_type == VIS_VOICEPRINT)
-    {
-        if (audacious_drct_get_playing ())
+        
+        break;
+    case VIS_VOICEPRINT:
+        /* Move the ribbon only if we are called directly, not on an actual
+         * expose. */
+        if (event == NULL)
         {
-            if (!audacious_drct_get_paused ())
-            {
-                for (y = 0; y < 16; y++)
-                    for (x = 75; x > 0; x--)
-                        voiceprint_data[x + y * 76] =
-                            voiceprint_data[x - 1 + y * 76];
-                for (y = 0; y < 16; y++)
-                    voiceprint_data[y * 76] = vis->data[y];
-            }
-            if (config.voiceprint_mode == VOICEPRINT_NORMAL)
-            {
-                /* Create color gradient from the skin's background- and foreground color */
-                fgc = skin_get_color (aud_active_skin, SKIN_TEXTFG);
-                bgc = skin_get_color (aud_active_skin, SKIN_TEXTBG);
-                skin_col[0][0] = fgc->red >> 8;
-                skin_col[0][1] = fgc->green >> 8;
-                skin_col[0][2] = fgc->blue >> 8;
-                skin_col[1][0] = bgc->red >> 8;
-                skin_col[1][1] = bgc->green >> 8;
-                skin_col[1][2] = bgc->blue >> 8;
-                for (n = 0; n < 3; n++)
-                {
-                    for (x = 0; x < 256; x++)
-                    {
-                        if (skin_col[0][n] > skin_col[1][n])
-                        {
-                            delta =
-                                (gfloat) (skin_col[0][n] -
-                                          skin_col[1][n]) / 256.0;
-                            vis_voice_color[x][n] =
-                                skin_col[1][n] + (gfloat) (delta * x);
-                        }
-                        else if (skin_col[0][n] == skin_col[1][n])
-                        {
-                            vis_voice_color[x][n] = skin_col[0][n];
-                        }
-                        else
-                        {
-                            delta =
-                                (gfloat) (skin_col[1][n] -
-                                          skin_col[0][n]) / 256.0;
-                            vis_voice_color[x][n] =
-                                skin_col[1][n] - (gfloat) (delta * x);
-                        }
-                    }
-                }
-            }
-            for (y = 0; y < 16; y++)
-            {
-                for (x = 0; x < 76; x++)
-                {
-                    guint8 d = voiceprint_data[x + y * 76];
-
-                    if (config.voiceprint_mode == VOICEPRINT_NORMAL)
-                    {
-                        voice_c[0] = vis_voice_color[d][0];
-                        voice_c[1] = vis_voice_color[d][1];
-                        voice_c[2] = vis_voice_color[d][2];
-                    }
-                    else if (config.voiceprint_mode == VOICEPRINT_FIRE)
-                    {
-                        voice_c[0] = d < 64 ? (d * 2) : 255;
-                        voice_c[1] =
-                            d < 64 ? 0 : (d < 128 ? (d - 64) * 2 : 255);
-                        voice_c[2] = d < 128 ? 0 : (d - 128) * 2;
-                        /* Test for black->blue->green->red. Isn't pretty, though...
-                           voice_c[0] = d > 192 ? (d - 192) << 2 : 0;
-                           voice_c[1] = d > 64 ? (d < 128 ? (d - 64) << 2 : (d < 192 ? (192 - d) << 2 : 0)) : 0;
-                           voice_c[2] = d < 64 ? d << 2 : (d < 128 ? (128 - d) << 2 : 0);
-                         */
-                    }
-                    else if (config.voiceprint_mode == VOICEPRINT_ICE)
-                    {
-                        voice_c[0] = d;
-                        voice_c[1] = d < 128 ? d * 2 : 255;
-                        voice_c[2] = d < 64 ? d * 4 : 255;
-                    }
-                    if (!vis->scaled)
-                    {
-                        for (n = 0; n < 3; n++)
-                            rgb_data[x * 3 + y * 76 * 3 + n] = voice_c[n];
-                    }
-                    else
-                    {
-                        ptr =
-                            rgb_data + (guint) (x * 3 * config.scale_factor) +
-                            (guint) (y * 76 * 3 * 2 * config.scale_factor);
-                        for (n = 0; n < 3; n++)
-                        {
-                            *(ptr + n) = voice_c[n];
-                            *(ptr + n + 3) = voice_c[n];
-                            *(ptr +
-                              (guint) (n + 76 * config.scale_factor * 3)) =
-                          voice_c[n];
-                            *(ptr +
-                              (guint) (n + 3 + 76 * config.scale_factor * 3)) =
-                          voice_c[n];
-                        }
-                    }
-                }
-            }
+            memmove (voiceprint_data, voiceprint_data + 1, sizeof voiceprint_data -
+             1);
+        
+            for (y = 0; y < 16; y ++)
+                voiceprint_data[76 * y + 75] = vis->data[y];
         }
-    }
-    if (config.vis_type == VIS_SCOPE)
-    {
-        for (x = 0; x < 75; x++)
+
+        if (config.voiceprint_mode == VOICEPRINT_NORMAL)
         {
-            switch (config.scope_mode)
+            GdkColor * fgc = skin_get_color (aud_active_skin, SKIN_TEXTFG);
+            GdkColor * bgc = skin_get_color (aud_active_skin, SKIN_TEXTBG);
+            gint fg[3] = {fgc->red >> 8, fgc->green >> 8, fgc->blue >> 8};
+            gint bg[3] = {bgc->red >> 8, bgc->green >> 8, bgc->blue >> 8};
+
+            for (x = 0; x < 256; x ++)
+            for (n = 0; n < 3; n ++)
+                vis_voice_color[x][n] = bg[n] + (fg[n] - bg[n]) * x / 256;
+        }
+
+        set = rgb;
+
+        for (y = 0; y < 16; y ++)
+        for (x = 0; x < 76; x ++)
+        {
+            guchar d = voiceprint_data[76 * y + x];
+            guchar c[3];
+
+            switch (config.voiceprint_mode)
             {
-            case SCOPE_DOT:
-                h = vis->data[x];
-                if (!vis->scaled)
-                {
-                    ptr = rgb_data + ((14 - h) * 76) + x;
-                    *ptr = vis_scope_colors[h];
-                }
-                else
-                {
-                    ptr =
-                        rgb_data +
-                        ((14 - h) * (guint) (76 * 2 * config.scale_factor)) +
-                        (guint) (x * config.scale_factor);
-                    *ptr = vis_scope_colors[h];
-                    *(ptr + 1) = vis_scope_colors[h];
-                    *(ptr + (guint) (76 * config.scale_factor)) =
-                        vis_scope_colors[h];
-                    *(ptr + (guint) (76 * config.scale_factor) + 1) =
-                        vis_scope_colors[h];
-                }
+            case VOICEPRINT_NORMAL:
+                c[0] = vis_voice_color[d][0];
+                c[1] = vis_voice_color[d][1];
+                c[2] = vis_voice_color[d][2];
                 break;
-            case SCOPE_LINE:
-                if (x != 74)
-                {
-                    h = 14 - vis->data[x];
-                    h2 = 14 - vis->data[x + 1];
-                    if (h > h2)
-                    {
-                        y = h;
-                        h = h2;
-                        h2 = y;
-                    }
-                    if (!vis->scaled)
-                    {
-                        ptr = rgb_data + (h * 76) + x;
-                        for (y = h; y <= h2; y++, ptr += 76)
-                            *ptr = vis_scope_colors[y - 2];
-                    }
-                    else
-                    {
-                        ptr =
-                            rgb_data +
-                            (h * (guint) (76 * 2 * config.scale_factor)) +
-                            (guint) (x * config.scale_factor);
-                        for (y = h; y <= h2;
-                             y++, ptr += (guint) (76 * 2 * config.scale_factor))
-                        {
-                            *ptr = vis_scope_colors[y - 2];
-                            *(ptr + 1) = vis_scope_colors[y - 2];
-                            *(ptr + (guint) (76 * config.scale_factor)) =
-                                vis_scope_colors[y - 2];
-                            *(ptr + (guint) (76 * config.scale_factor) + 1) =
-                                vis_scope_colors[y - 2];
-                        }
-                    }
-                }
-                else
-                {
-                    h = 14 - vis->data[x];
-                    if (!vis->scaled)
-                    {
-                        ptr = rgb_data + (h * 76) + x;
-                        *ptr = vis_scope_colors[h];
-                    }
-                    else
-                    {
-                        ptr =
-                            rgb_data +
-                            (h * (guint) (76 * 2 * config.scale_factor)) +
-                            (guint) (x * config.scale_factor);
-                        *ptr = vis_scope_colors[h];
-                        *(ptr + 1) = vis_scope_colors[h];
-                        *(ptr + (guint) (76 * config.scale_factor)) =
-                            vis_scope_colors[h];
-                        *(ptr + (guint) (76 * config.scale_factor) + 1) =
-                            vis_scope_colors[h];
-                    }
-                }
+            case VOICEPRINT_FIRE:
+                c[0] = (d < 64) ? d << 1 : 255;
+                c[1] = (d < 64) ? 0 : (d < 128) ? (d - 64) << 1 : 255;
+                c[2] = (d < 128) ? 0 : (d - 128) << 1;
                 break;
-            case SCOPE_SOLID:
-                h = 14 - vis->data[x];
-                h2 = 8;
-                c = vis_scope_colors[(gint) vis->data[x]];
-                if (h > h2)
+            /* case VOICEPRINT_ICE: */
+            default:
+                c[0] = d;
+                c[1] = (d < 128) ? d << 1 : 255;
+                c[2] = (d < 64) ? d << 2 : 255;
+                break;
+            }
+
+            RGB_SET (c)
+        }
+
+        break;
+    /* case VIS_SCOPE: */
+    default:
+        switch (config.scope_mode)
+        {
+        case SCOPE_DOT:
+            for (x = 0; x < 75; x ++)
+            {
+                h = 1 + vis->data[x];
+                h = CLAMP (h, 0, 15); /* sanity check */
+                RGB_SEEK (x, h)
+                RGB_SET_INDEX (vis_scope_colors[h])
+            }
+            
+            break;
+        case SCOPE_LINE:
+            for (x = 0; x < 74; x++)
+            {
+                h = 1 + vis->data[x];
+                h = CLAMP (h, 0, 15); /* sanity check */
+                h2 = 1 + vis->data[x + 1];
+                h2 = CLAMP (h2, 0, 15); /* sanity check */
+
+                if (h < h2)
+                    h2 --;
+                else if (h > h2)
                 {
                     y = h;
-                    h = h2;
+                    h = h2 + 1;
                     h2 = y;
                 }
-                if (!vis->scaled)
-                {
-                    ptr = rgb_data + (h * 76) + x;
-                    for (y = h; y <= h2; y++, ptr += 76)
-                        *ptr = c;
-                }
+
+                RGB_SEEK (x, h)
+
+                for (y = h; y <= h2; y ++)
+                    RGB_SET_INDEX_Y (vis_scope_colors[y])
+            }
+
+            h = 1 + vis->data[74];
+            h = CLAMP (h, 0, 15); /* sanity check */
+            RGB_SEEK (74, h)
+            RGB_SET_INDEX (vis_scope_colors[h])
+            break;
+        /* case SCOPE_SOLID: */
+        default:
+            for (x = 0; x < 75; x++)
+            {
+                h = 1 + vis->data[x];
+                h = CLAMP (h, 0, 15); /* sanity check */
+
+                if (h < 8)
+                    h2 = 7;
                 else
                 {
-                    ptr =
-                        rgb_data +
-                        (h * (guint) (76 * 2 * config.scale_factor)) +
-                        (guint) (x * config.scale_factor);
-                    for (y = h; y <= h2;
-                         y++, ptr += (guint) (76 * 2 * config.scale_factor))
-                    {
-                        *ptr = c;
-                        *(ptr + 1) = c;
-                        *(ptr + (guint) (76 * config.scale_factor)) = c;
-                        *(ptr + (guint) (76 * config.scale_factor) + 1) = c;
-                    }
+                    h2 = h;
+                    h = 8;
                 }
-                break;
+
+                RGB_SEEK (x, h)
+
+                for (y = h; y <= h2; y ++)
+                    RGB_SET_INDEX_Y (vis_scope_colors[y])
+            }
+            
+            break;
+        }
+
+        break;
+    }
+
+    if (vis->gc == NULL)
+        vis->gc = gdk_gc_new (widget->window);
+
+    if (vis->scaled)
+    {
+        guchar rgb2[3 * 76 * 2 * 16 * 2];
+
+        set = rgb2;
+
+        for (y = 0; y < 16 * 2; y ++)
+        {
+            get = rgb + 3 * 76 * (y >> 1);
+            end = get + 3 * 76;
+            
+            while (get < end)
+            {
+                * set ++ = * get ++;
+                * set ++ = * get ++;
+                * set ++ = * get;
+                get -= 2;
+                * set ++ = * get ++;
+                * set ++ = * get ++;
+                * set ++ = * get ++;
             }
         }
-    }
-
-    ui_vis_resize_pixmap (vis, vis->width * (vis->scaled ? config.scale_factor :
-     1), vis->height * (vis->scaled ? config.scale_factor : 1));
-
-    if (!vis->scaled)
-    {
-        if (config.vis_type == VIS_VOICEPRINT)
-            gdk_draw_rgb_image (vis->pixmap, vis->gc, 0, 0, vis->width,
-             vis->height, GDK_RGB_DITHER_NORMAL, (guchar *) rgb_data, 76 * 3);
-        else
-            gdk_draw_indexed_image (vis->pixmap, vis->gc, 0, 0, vis->width,
-             vis->height, GDK_RGB_DITHER_NORMAL, (guchar *) rgb_data, 76, cmap);
+        
+        gdk_draw_rgb_image (widget->window, vis->gc, 0, 0, 76 * 2, 16 * 2,
+         GDK_RGB_DITHER_NONE, rgb2, 3 * 76 * 2);
     }
     else
-    {
-        if (config.vis_type == VIS_VOICEPRINT)
-            gdk_draw_rgb_image (vis->pixmap, vis->gc, 0, 0, vis->width << 1,
-             vis->height << 1, GDK_RGB_DITHER_NONE, (guchar *) rgb_data, 76 * 2
-             * 3);
-        else
-            gdk_draw_indexed_image (vis->pixmap, vis->gc, 0, 0, vis->width << 1,
-             vis->height << 1, GDK_RGB_DITHER_NONE, (guchar *) rgb_data, 76 * 2,
-             cmap);
-    }
-
-    gdk_draw_drawable (widget->window, vis->gc, vis->pixmap, 0, 0, 0, 0,
-                       vis->width * (vis->scaled ? config.scale_factor : 1),
-                       vis->height * (vis->scaled ? config.scale_factor : 1));
-    gdk_rgb_cmap_free (cmap);
+        gdk_draw_rgb_image (widget->window, vis->gc, 0, 0, 76, 16,
+         GDK_RGB_DITHER_NONE, rgb, 3 * 76);
+    
     return FALSE;
 }
 
@@ -751,23 +545,6 @@ static void ui_vis_toggle_scaled (UiVis * vis)
         ui_vis_expose (widget, 0);
 }
 
-void ui_vis_draw_pixel (GtkWidget * widget, guchar * texture, gint x, gint y,
-                        guint8 colour)
-{
-    UiVis *vis = UI_VIS (widget);
-    if (vis->scaled)
-    {
-        texture[y * 76 + x] = colour;
-        texture[y * 76 + x + 1] = colour;
-        texture[y * 76 * 4 + x] = colour;
-        texture[y * 76 * 4 + x + 1] = colour;
-    }
-    else
-    {
-        texture[y * 76 + x] = colour;
-    }
-}
-
 void ui_vis_clear_data (GtkWidget * widget)
 {
     g_return_if_fail (UI_IS_VIS (widget));
@@ -781,8 +558,6 @@ void ui_vis_clear_data (GtkWidget * widget)
         vis->data[i] = (config.vis_type == VIS_SCOPE) ? 6 : 0;
         vis->peak[i] = 0;
     }
-
-    vis->refresh_delay = 0;
 
     if (widget_really_drawable (widget))
         ui_vis_expose (widget, 0);

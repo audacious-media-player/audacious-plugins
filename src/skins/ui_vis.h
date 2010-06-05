@@ -72,13 +72,10 @@ struct _UiVis {
 
     gint             x, y, width, height;
     gfloat           data[75], peak[75], peak_speed[75];
-    gint             refresh_delay;
     gboolean         scaled;
     GtkWidget        *fixed;
     gboolean         visible_window;
     GdkWindow        *event_window;
-    GdkPixmap * pixmap;
-    gint pixmap_width, pixmap_height;
     GdkGC * gc;
 };
 
