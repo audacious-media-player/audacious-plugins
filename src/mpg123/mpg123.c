@@ -334,7 +334,8 @@ mpg123_playback_worker(InputPlayback *data)
 	AUDDBG("decoder format configuration\n");
 	mpg123_format_none(ctx.decoder);
 	for (i = 0; i < num_rates; i++)
-		mpg123_format(ctx.decoder, rates[i], (MPG123_MONO | MPG123_STEREO), MPG123_ENC_SIGNED_16);
+		mpg123_format (ctx.decoder, rates[i], (MPG123_MONO | MPG123_STEREO),
+		 MPG123_ENC_FLOAT_32);
 
 	ctx.fd = aud_vfs_fopen(data->filename, "r");
 	AUDDBG("opened stream transport @%p\n", ctx.fd);
@@ -359,7 +360,7 @@ mpg123_playback_worker(InputPlayback *data)
 		ctx.rate, ctx.channels, ctx.encoding);
 
 	AUDDBG("opening audio\n");
-	if (!data->output->open_audio(FMT_S16_NE, ctx.rate, ctx.channels))
+	if (! data->output->open_audio (FMT_FLOAT, ctx.rate, ctx.channels))
 		goto cleanup;
 
 	data->set_gain_from_playlist (data);
@@ -375,7 +376,7 @@ mpg123_playback_worker(InputPlayback *data)
 
 	while (data->playing == TRUE)
 	{
-		guchar outbuf[2048];
+		gfloat outbuf[ctx.channels * (ctx.rate / 100)];
 		gsize outbuf_size;
 
 		mpg123_info(ctx.decoder, &fi);
@@ -426,7 +427,8 @@ mpg123_playback_worker(InputPlayback *data)
 					if (len == 0)
 					{
 						MPG123_IODBG("stream EOF (well, read failed)\n");
-						mpg123_decode(ctx.decoder, NULL, 0, outbuf, 2048, &outbuf_size);
+						mpg123_decode (ctx.decoder, NULL, 0, (guchar *) outbuf,
+						 sizeof outbuf, & outbuf_size);
 
 						MPG123_IODBG("passing %ld bytes of audio\n", outbuf_size);
 						data->output->write_audio (outbuf, outbuf_size);
@@ -440,7 +442,8 @@ mpg123_playback_worker(InputPlayback *data)
 				MPG123_IODBG("got %ld bytes for mpg123\n", len);
 			}
 
-			ret = mpg123_decode(ctx.decoder, buf, len, outbuf, 2048, &outbuf_size);
+			ret = mpg123_decode (ctx.decoder, buf, len, (guchar *) outbuf,
+			 sizeof outbuf, & outbuf_size);
 			data->output->write_audio (outbuf, outbuf_size);
 		} while (ret == MPG123_NEED_MORE);
 
