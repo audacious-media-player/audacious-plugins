@@ -283,38 +283,72 @@ static void ui_vis_size_allocate (GtkWidget * widget,
 #define RGB_SET_INDEX(c) {RGB_SET (vis_color[c])}
 #define RGB_SET_INDEX_Y(c) {RGB_SET_Y (vis_color[c])}
 
-static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
+static guchar vis_color[24][3];
+static guchar vis_voice_color[256][3];
+static guchar vis_voice_color_fire[256][3];
+static guchar vis_voice_color_ice[256][3];
+static guchar pattern_fill[3 * 76 * 2];
+
+void ui_vis_set_colors (void)
 {
-    UiVis * vis = (UiVis *) widget;
-    gint x, y, n, h, h2;
-    guchar vis_color[24][3];
-    guchar vis_voice_color[256][3];
-    guchar rgb[3 * 76 * 16];
-    guchar * get, * set, * end;
+    guchar * set, * end;
+    gint x, n;
 
     skin_get_viscolor (aud_active_skin, vis_color);
 
-    /* Pattern fill.  We fill only the first two rows, then copy them. */
+    {
+        GdkColor * fgc = skin_get_color (aud_active_skin, SKIN_TEXTFG);
+        GdkColor * bgc = skin_get_color (aud_active_skin, SKIN_TEXTBG);
+        gint fg[3] = {fgc->red >> 8, fgc->green >> 8, fgc->blue >> 8};
+        gint bg[3] = {bgc->red >> 8, bgc->green >> 8, bgc->blue >> 8};
+
+        for (x = 0; x < 256; x ++)
+        for (n = 0; n < 3; n ++)
+            vis_voice_color[x][n] = bg[n] + (fg[n] - bg[n]) * x / 256;
+    }
+
+    for (x = 0; x < 256; x ++)
+    {
+        vis_voice_color_fire[x][0] = (x < 64) ? x << 1 : 255;
+        vis_voice_color_fire[x][1] = (x < 64) ? 0 : (x < 128) ? (x - 64) << 1 :
+         255;
+        vis_voice_color_fire[x][2] = (x < 128) ? 0 : (x - 128) << 1;
+    }
+
+    for (x = 0; x < 256; x ++)
+    {
+        vis_voice_color_ice[x][0] = x;
+        vis_voice_color_ice[x][1] = (x < 128) ? x << 1 : 255;
+        vis_voice_color_ice[x][2] = (x < 64) ? x << 2 : 255;
+    }
+
+    set = pattern_fill;
+    end = set + 3 * 76;
+
+    while (set < end)
+        RGB_SET_INDEX (0)
+
+    end = set + 3 * 76;
+    
+    while (set < end)
+    {
+        RGB_SET_INDEX (1)
+        RGB_SET_INDEX (0)
+    }
+}
+
+static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
+{
+    UiVis * vis = (UiVis *) widget;
+    gint x, y, h, h2;
+    guchar rgb[3 * 76 * 16];
+    guchar * get, * set, * end;
+    guchar (* voice_color)[3];
+
     if (config.vis_type != VIS_VOICEPRINT)
     {
-        set = rgb;
-        end = set + 3 * 76;
-
-        while (set < end)
-            RGB_SET_INDEX (0)
-
-        end = set + 3 * 76;
-        
-        while (set < end)
-        {
-            RGB_SET_INDEX (1)
-            RGB_SET_INDEX (0)
-        }
-
-        end = rgb + sizeof rgb;
-        
-        for (; set < end; set += 3 * 76 * 2)
-            memcpy (set, rgb, 3 * 76 * 2);
+        for (set = rgb; set < rgb + sizeof rgb; set += sizeof pattern_fill)
+            memcpy (set, pattern_fill, sizeof pattern_fill);
     }
 
     switch (config.vis_type)
@@ -381,48 +415,26 @@ static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
                 voiceprint_data[76 * y + 75] = vis->data[y];
         }
 
-        if (config.voiceprint_mode == VOICEPRINT_NORMAL)
+        switch (config.voiceprint_mode)
         {
-            GdkColor * fgc = skin_get_color (aud_active_skin, SKIN_TEXTFG);
-            GdkColor * bgc = skin_get_color (aud_active_skin, SKIN_TEXTBG);
-            gint fg[3] = {fgc->red >> 8, fgc->green >> 8, fgc->blue >> 8};
-            gint bg[3] = {bgc->red >> 8, bgc->green >> 8, bgc->blue >> 8};
-
-            for (x = 0; x < 256; x ++)
-            for (n = 0; n < 3; n ++)
-                vis_voice_color[x][n] = bg[n] + (fg[n] - bg[n]) * x / 256;
+        case VOICEPRINT_NORMAL:
+            voice_color = vis_voice_color;
+            break;
+        case VOICEPRINT_FIRE:
+            voice_color = vis_voice_color_fire;
+            break;
+        /* case VOICEPRINT_ICE: */
+        default:
+            voice_color = vis_voice_color_ice;
+            break;
         }
 
+        get = voiceprint_data;
         set = rgb;
 
         for (y = 0; y < 16; y ++)
         for (x = 0; x < 76; x ++)
-        {
-            guchar d = voiceprint_data[76 * y + x];
-            guchar c[3];
-
-            switch (config.voiceprint_mode)
-            {
-            case VOICEPRINT_NORMAL:
-                c[0] = vis_voice_color[d][0];
-                c[1] = vis_voice_color[d][1];
-                c[2] = vis_voice_color[d][2];
-                break;
-            case VOICEPRINT_FIRE:
-                c[0] = (d < 64) ? d << 1 : 255;
-                c[1] = (d < 64) ? 0 : (d < 128) ? (d - 64) << 1 : 255;
-                c[2] = (d < 128) ? 0 : (d - 128) << 1;
-                break;
-            /* case VOICEPRINT_ICE: */
-            default:
-                c[0] = d;
-                c[1] = (d < 128) ? d << 1 : 255;
-                c[2] = (d < 64) ? d << 2 : 255;
-                break;
-            }
-
-            RGB_SET (c)
-        }
+            RGB_SET (voice_color[* get ++])
 
         break;
     /* case VIS_SCOPE: */
