@@ -437,8 +437,7 @@ static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
             RGB_SET (voice_color[* get ++])
 
         break;
-    /* case VIS_SCOPE: */
-    default:
+    case VIS_SCOPE:
         switch (config.scope_mode)
         {
         case SCOPE_DOT:
