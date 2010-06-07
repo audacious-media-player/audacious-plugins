@@ -48,6 +48,21 @@
 
 #include "alsa.h"
 
+#define CHECK_VAL_RECOVER(value, function, ...) \
+do { \
+    (value) = function (__VA_ARGS__); \
+    if ((value) < 0) { \
+        CHECK (snd_pcm_recover, alsa_handle, (value), 0); \
+        CHECK_VAL ((value), function, __VA_ARGS__); \
+    } \
+} while (0)
+
+#define CHECK_RECOVER(function, ...) \
+do { \
+    int error2; \
+    CHECK_VAL_RECOVER (error2, function, __VA_ARGS__); \
+} while (0)
+
 static snd_pcm_t * alsa_handle;
 static int alsa_initted;
 pthread_mutex_t alsa_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -127,7 +142,7 @@ static void poll_cleanup (void)
 
 static void * pump (void * unused)
 {
-    int length;
+    int length, written;
 
     pthread_mutex_lock (& alsa_mutex);
     pthread_cond_broadcast (& alsa_cond); /* signal thread started */
@@ -140,7 +155,7 @@ static void * pump (void * unused)
             continue;
         }
 
-        CHECK_VAL (length, snd_pcm_avail_update, alsa_handle);
+        CHECK_VAL_RECOVER (length, snd_pcm_avail_update, alsa_handle);
 
         if (! length)
             goto WAIT;
@@ -150,16 +165,11 @@ static void * pump (void * unused)
         length = MIN (length, alsa_buffer_length - alsa_buffer_data_start);
         length = snd_pcm_bytes_to_frames (alsa_handle, length);
 
-        if ((length = snd_pcm_writei (alsa_handle, (char *) alsa_buffer +
-         alsa_buffer_data_start, length)) < 0)
-        {
-            CHECK (snd_pcm_recover, alsa_handle, length, 0);
-            length = 0;
-        }
-
-        length = snd_pcm_frames_to_bytes (alsa_handle, length);
-        alsa_buffer_data_start += length;
-        alsa_buffer_data_length -= length;
+        CHECK_VAL_RECOVER (written, snd_pcm_writei, alsa_handle, (char *)
+         alsa_buffer + alsa_buffer_data_start, length);
+        written = snd_pcm_frames_to_bytes (alsa_handle, written);
+        alsa_buffer_data_start += written;
+        alsa_buffer_data_length -= written;
 
         pthread_cond_broadcast (& alsa_cond); /* signal write complete */
 
@@ -216,13 +226,8 @@ FAILED:
 static int get_delay (void)
 {
     snd_pcm_sframes_t delay = 0;
-    int result;
 
-    if ((result = snd_pcm_delay (alsa_handle, & delay)) < 0)
-    {
-        CHECK (snd_pcm_recover, alsa_handle, result, 0);
-        CHECK (snd_pcm_delay, alsa_handle, & delay);
-    }
+    CHECK_RECOVER (snd_pcm_delay, alsa_handle, & delay);
 
 FAILED:
     return delay;
