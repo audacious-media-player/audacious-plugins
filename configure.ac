@@ -413,6 +413,11 @@ fi
 
 if test "x$enable_mp3" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS mpg123"
+
+    PKG_CHECK_MODULES(MPG123, [libmpg123 >= 1.10],
+     [AC_DEFINE([HAVE_MPG123_1_10], 1, [Define if libmpg123 is >= 1.10])],
+     [AC_MSG_WARN([Your version of libmpg123 is OLD.])
+      AC_MSG_WARN([If you have problems, get a newer version.])])
 fi
 
 AC_SUBST(MPG123_CFLAGS)

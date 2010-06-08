@@ -36,6 +36,12 @@
 #define MPG123_NO_CONFIGURE
 #include <mpg123.h>
 
+#include "../../config.h"
+
+#ifndef HAVE_MPG123_1_10
+#warning Disabling features because of old libmpg123.
+#endif
+
 static GMutex *ctrl_mutex = NULL;
 static GCond *ctrl_cond = NULL;
 static gboolean pause_flag;
@@ -130,12 +136,14 @@ mpg123_get_length(VFSFile *fd)
 	mpg123_scan(decoder);
 	samples = mpg123_length(decoder);
 
+#ifdef HAVE_MPG123_1_10
 	if (samples <= 0)
 	{
 		off_t filesize = vfs_fsize(fd);
 		mpg123_set_filesize(decoder, filesize);
 		samples = mpg123_length(decoder);
 	}
+#endif
 
 	mpg123_delete(decoder);
 	mpg123_delete_pars(params);
@@ -334,8 +342,13 @@ mpg123_playback_worker(InputPlayback *data)
 	AUDDBG("decoder format configuration\n");
 	mpg123_format_none(ctx.decoder);
 	for (i = 0; i < num_rates; i++)
+#ifdef HAVE_MPG123_1_10
 		mpg123_format (ctx.decoder, rates[i], (MPG123_MONO | MPG123_STEREO),
 		 MPG123_ENC_FLOAT_32);
+#else
+		mpg123_format (ctx.decoder, rates[i], (MPG123_MONO | MPG123_STEREO),
+		 MPG123_ENC_SIGNED_16);
+#endif
 
 	ctx.fd = aud_vfs_fopen(data->filename, "r");
 	AUDDBG("opened stream transport @%p\n", ctx.fd);
@@ -360,7 +373,11 @@ mpg123_playback_worker(InputPlayback *data)
 		ctx.rate, ctx.channels, ctx.encoding);
 
 	AUDDBG("opening audio\n");
+#ifdef HAVE_MPG123_1_10
 	if (! data->output->open_audio (FMT_FLOAT, ctx.rate, ctx.channels))
+#else
+	if (! data->output->open_audio (FMT_S16_NE, ctx.rate, ctx.channels))
+#endif
 		goto cleanup;
 
 	data->set_gain_from_playlist (data);
@@ -376,7 +393,11 @@ mpg123_playback_worker(InputPlayback *data)
 
 	while (data->playing == TRUE)
 	{
+#ifdef HAVE_MPG123_1_10
 		gfloat outbuf[ctx.channels * (ctx.rate / 100)];
+#else
+		gint16 outbuf[ctx.channels * (ctx.rate / 100)];
+#endif
 		gsize outbuf_size;
 
 		mpg123_info(ctx.decoder, &fi);
