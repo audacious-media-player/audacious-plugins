@@ -54,6 +54,10 @@
 #include "ui_gtk.h"
 #include "util.h"
 #include "playlist_util.h"
+#include "gtkui_cfg.h"
+
+extern GtkWidget *window;
+extern GtkWidget *playlist_box;
 
 static GtkWidget *mainwin_jtt = NULL;
 
@@ -80,6 +84,24 @@ void action_playback_shuffle(GtkToggleAction * action)
 void action_stop_after_current_song(GtkToggleAction * action)
 {
     aud_cfg->stopaftersong = gtk_toggle_action_get_active(action);
+}
+
+void action_view_playlist(GtkToggleAction *action)
+{
+    if (!gtk_toggle_action_get_active(action))
+    {
+        gint width;
+
+        gtk_widget_hide(playlist_box);
+        gtk_window_get_size(GTK_WINDOW(window), &width, NULL);
+        gtk_window_resize(GTK_WINDOW(window), width, 1);
+        config.playlist_visible = FALSE;
+    }
+    else
+    {
+        gtk_widget_show(playlist_box);
+        config.playlist_visible = TRUE;
+    }
 }
 
 /* actionentries actions */
@@ -759,4 +781,3 @@ void action_playlist_save_all_playlists(void)
 {
     aud_save_all_playlists();
 }
-

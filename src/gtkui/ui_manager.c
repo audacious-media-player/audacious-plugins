@@ -48,6 +48,9 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
 
     {"playback no playlist advance", NULL, N_("No Playlist Advance"), "<Ctrl>N",
      N_("No Playlist Advance"), G_CALLBACK(action_playback_noplaylistadvance), FALSE},
+
+    {"view playlists", NULL, N_("Show playlists"), NULL,
+     N_("Show/hide playlists"), G_CALLBACK(action_view_playlist), FALSE},
 };
 
 /* normal actions */

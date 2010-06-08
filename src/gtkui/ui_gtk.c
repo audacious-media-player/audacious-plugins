@@ -37,6 +37,8 @@ static GtkWidget *slider;
 static GtkWidget *playlist_notebook;
 static GtkWidget *volume;
 static GtkWidget *vispane_root = NULL;
+GtkWidget *playlist_box;
+GtkWidget *window;       /* the main window */
 
 static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
@@ -534,7 +536,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     GtkWidget *tophbox;         /* box to contain toolbar and shbox */
     GtkWidget *buttonbox;       /* contains buttons like "open", "next" */
     GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
-    GtkWidget *plbox;           /* box for playlist and volume control */
     GtkWidget *button_open, *button_add, *button_play, *button_pause, *button_stop, *button_previous, *button_next;
     GtkWidget *menu;
     GtkAccelGroup *accel;
@@ -551,6 +552,8 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     ui_manager_init();
     ui_manager_create_menus();
+
+    check_set(toggleaction_group_others, "view playlists", config.playlist_visible);
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), MAINWIN_DEFAULT_WIDTH, MAINWIN_DEFAULT_HEIGHT);
@@ -610,8 +613,9 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), (lvol + rvol) / 2);
     gtk_box_pack_start(GTK_BOX(shbox), volume, FALSE, FALSE, 0);
 
-    plbox = gtk_hbox_new(FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(vbox), plbox, TRUE, TRUE, 0);
+    playlist_box = gtk_hbox_new(FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), playlist_box, TRUE, TRUE, 0);
+
 
     playlist_notebook = gtk_notebook_new();
     gtk_notebook_set_scrollable(GTK_NOTEBOOK(playlist_notebook), TRUE);
@@ -664,11 +668,11 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
         }
 
         if (pane != NULL)
-            gtk_box_pack_end(GTK_BOX(plbox), pane, TRUE, TRUE, 0);
+            gtk_box_pack_end(GTK_BOX(playlist_box), pane, TRUE, TRUE, 0);
     }
     else {
         AUDDBG("vis in tabs\n");
-        gtk_box_pack_end(GTK_BOX(plbox), playlist_notebook, TRUE, TRUE, 0);
+        gtk_box_pack_end(GTK_BOX(playlist_box), playlist_notebook, TRUE, TRUE, 0);
     }
 
     AUDDBG("infoarea setup\n");
@@ -692,6 +696,9 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     volume_change_handler_id = g_signal_connect(volume, "value-changed", G_CALLBACK(ui_volume_value_changed_cb), NULL);
 
     gtk_widget_show_all(vbox);
+
+    if (!config.playlist_visible)
+        gtk_widget_hide(playlist_box);
 
     if (config.player_visible)
         ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
