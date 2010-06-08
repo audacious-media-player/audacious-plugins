@@ -397,8 +397,11 @@ static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
 
                 h = CLAMP (h, 0, 16); /* sanity check */
 
-                RGB_SEEK (x, 16 - h);
-                RGB_SET_INDEX (23);
+                if (h)
+                {
+                    RGB_SEEK (x, 16 - h);
+                    RGB_SET_INDEX (23);
+                }
             }
         }
         
