@@ -600,6 +600,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     gtk_scale_set_draw_value(GTK_SCALE(slider), FALSE);
     /* TODO: make this configureable */
     gtk_range_set_update_policy(GTK_RANGE(slider), GTK_UPDATE_DISCONTINUOUS);
+    gtk_widget_set_size_request(slider, 120, -1);
     gtk_box_pack_start(GTK_BOX(shbox), slider, TRUE, TRUE, 0);
 
     label_time = gtk_markup_label_new(NULL);

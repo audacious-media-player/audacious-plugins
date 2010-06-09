@@ -90,15 +90,20 @@ void action_view_playlist(GtkToggleAction *action)
 {
     if (!gtk_toggle_action_get_active(action))
     {
-        gint width;
+        GtkAllocation allocation;
 
+        gtk_widget_get_allocation(playlist_box, &allocation);
+        config.playlist_width = allocation.width;
+        config.playlist_height = allocation.height;
         gtk_widget_hide(playlist_box);
-        gtk_window_get_size(GTK_WINDOW(window), &width, NULL);
-        gtk_window_resize(GTK_WINDOW(window), width, 1);
+        gtk_window_resize(GTK_WINDOW(window), 1, 1);
         config.playlist_visible = FALSE;
     }
     else
     {
+        if (config.playlist_width > 0 && config.playlist_height > 0)
+            gtk_widget_set_size_request(playlist_box, config.playlist_width, config.playlist_height);
+
         gtk_widget_show(playlist_box);
         config.playlist_visible = TRUE;
     }
