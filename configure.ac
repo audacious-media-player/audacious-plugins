@@ -1218,6 +1218,23 @@ case "$host" in
     ;;
 esac
 
+dnl *** scrobbler ***
+
+AC_ARG_ENABLE(scrobbler,
+ [  --enable-scrobbler      enable Scrobbler plugin (default=disabled)],
+ [have_scrobbler=$enableval], [have_scrobbler="no"])
+
+if test "x$have_scrobbler" = "xyes"; then
+    PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7],
+     [have_scrobbler="$have_scrobbler"], [have_scrobbler="no"])
+    AC_SUBST(CURL_CFLAGS)
+    AC_SUBST(CURL_LIBS)
+fi
+
+if test "x$have_scrobbler" = "xyes"; then
+	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
+fi
+
 dnl *** neon http plugin ***
 
 AC_ARG_ENABLE(neon,
@@ -1639,6 +1656,7 @@ echo "  Control via event device (evdev-plug):  $have_evdevplug"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  LIRC:                                   $have_lirc"
+echo "  AudioScrobbler Client:                  $have_scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
 echo "  Bluetooth audio support:                $have_bluetooth"
 echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
@@ -1677,4 +1695,3 @@ echo "  M3U playlist format (m3u):              yes"
 echo "  XML Sharable Playlist Format (xspf):    $have_xspf"
 echo "  CUE playlist format (cue):              $have_cue"
 echo
-

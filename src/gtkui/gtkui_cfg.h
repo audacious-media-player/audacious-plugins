@@ -40,6 +40,7 @@ typedef struct
 {
     gint player_x, player_y;
     gint player_width, player_height;
+    gint playlist_width, playlist_height;
     gboolean save_window_position;
     gboolean player_visible;
     gboolean playlist_visible;

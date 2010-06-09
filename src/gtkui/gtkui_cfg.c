@@ -33,6 +33,8 @@ gtkui_cfg_t gtkui_default_config = {
     .playlist_visible = TRUE,
     .vis_position = VIS_ON_TOP,
     .multi_column_view = FALSE,
+    .playlist_width = 0,
+    .playlist_height = 0,
 };
 
 typedef struct gtkui_cfg_boolent_t
@@ -64,6 +66,8 @@ static gtkui_cfg_nument gtkui_numents[] = {
     {"player_width", &config.player_width, TRUE},
     {"player_height", &config.player_height, TRUE},
     {"vis_position", (gint *)&config.vis_position, TRUE},
+    {"playlist_width", &config.playlist_width, TRUE},
+    {"playlist_height", &config.playlist_height, TRUE},
 };
 
 static gint ncfgient = G_N_ELEMENTS(gtkui_numents);
