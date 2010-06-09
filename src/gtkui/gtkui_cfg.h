@@ -42,6 +42,7 @@ typedef struct
     gint player_width, player_height;
     gboolean save_window_position;
     gboolean player_visible;
+    gboolean playlist_visible;
     VisPosition vis_position;
     gboolean multi_column_view;
 } gtkui_cfg_t;

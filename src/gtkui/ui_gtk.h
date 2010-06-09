@@ -20,7 +20,6 @@
 #ifndef UI_NEW_H
 #define UI_NEW_H
 
-static GtkWidget *window;       /* the main window */
 extern gboolean multi_columns_view;
 
 extern Interface gtkui_interface;

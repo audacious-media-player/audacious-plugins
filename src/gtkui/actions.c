@@ -54,6 +54,10 @@
 #include "ui_gtk.h"
 #include "util.h"
 #include "playlist_util.h"
+#include "gtkui_cfg.h"
+
+extern GtkWidget *window;
+extern GtkWidget *playlist_box;
 
 static GtkWidget *mainwin_jtt = NULL;
 
@@ -75,12 +79,29 @@ void action_playback_repeat(GtkToggleAction * action)
 void action_playback_shuffle(GtkToggleAction * action)
 {
     aud_cfg->shuffle = gtk_toggle_action_get_active(action);
-    aud_playlist_set_shuffle(aud_cfg->shuffle);
 }
 
 void action_stop_after_current_song(GtkToggleAction * action)
 {
     aud_cfg->stopaftersong = gtk_toggle_action_get_active(action);
+}
+
+void action_view_playlist(GtkToggleAction *action)
+{
+    if (!gtk_toggle_action_get_active(action))
+    {
+        gint width;
+
+        gtk_widget_hide(playlist_box);
+        gtk_window_get_size(GTK_WINDOW(window), &width, NULL);
+        gtk_window_resize(GTK_WINDOW(window), width, 1);
+        config.playlist_visible = FALSE;
+    }
+    else
+    {
+        gtk_widget_show(playlist_box);
+        config.playlist_visible = TRUE;
+    }
 }
 
 /* actionentries actions */
@@ -459,7 +480,7 @@ void action_playlist_remove_selected(GtkAction *act)
         clap_sel_pos = TRUE;
 
     aud_playlist_delete_selected(active_playlist_num);
-    
+
     if (clap_sel_pos)
         treeview_select_pos(get_active_playlist_treeview(), sel_pos);
 }
@@ -760,4 +781,3 @@ void action_playlist_save_all_playlists(void)
 {
     aud_save_all_playlists();
 }
-

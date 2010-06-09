@@ -33,7 +33,6 @@
 extern "C"
 {
 #include <audacious/plugin.h>
-#include <audacious/output.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 }

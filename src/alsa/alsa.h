@@ -22,28 +22,32 @@
 
 #include "../../config.h"
 
+#include <pthread.h>
 #include <stdio.h>
-#include <glib.h>
-#include <alsa/asoundlib.h>
 
 #include <audacious/plugin.h>
-#include <audacious/i18n.h>
 
 #define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
 #define ERROR_NOISY alsa_error
 
-#define CHECK(function, ...) \
+#define CHECK_VAL(value, function, ...) \
 do { \
-    gint error = function (__VA_ARGS__); \
-    if (error < 0) { \
-        ERROR ("%s failed: %s.\n", #function, snd_strerror (error)); \
+    (value) = function (__VA_ARGS__); \
+    if ((value) < 0) { \
+        ERROR ("%s failed: %s.\n", #function, snd_strerror (value)); \
         goto FAILED; \
     } \
 } while (0)
 
+#define CHECK(function, ...) \
+do { \
+    int error; \
+    CHECK_VAL (error, function, __VA_ARGS__); \
+} while (0)
+
 #define CHECK_NOISY(function, ...) \
 do { \
-    gint error = function (__VA_ARGS__); \
+    int error = function (__VA_ARGS__); \
     if (error < 0) { \
         ERROR_NOISY ("%s failed: %s.\n", #function, snd_strerror (error)); \
         goto FAILED; \
@@ -51,28 +55,29 @@ do { \
 } while (0)
 
 /* alsa.c */
-extern GMutex * alsa_mutex;
+extern pthread_mutex_t alsa_mutex;
 
 OutputPluginInitStatus alsa_init (void);
 void alsa_soft_init (void);
 void alsa_cleanup (void);
-gint alsa_open_audio (AFormat aud_format, gint rate, gint channels);
+int alsa_open_audio (AFormat aud_format, int rate, int channels);
 void alsa_close_audio (void);
-void alsa_write_audio (void * data, gint length);
+void alsa_write_audio (void * data, int length);
 void alsa_drain (void);
-void alsa_set_written_time (gint time);
-gint alsa_written_time (void);
-gint alsa_output_time (void);
-void alsa_flush (gint time);
-void alsa_pause (gshort pause);
-void alsa_get_volume (gint * left, gint * right);
-void alsa_set_volume (gint left, gint right);
+void alsa_set_written_time (int time);
+int alsa_written_time (void);
+int alsa_output_time (void);
+void alsa_flush (int time);
+void alsa_pause (short pause);
+void alsa_get_volume (int * left, int * right);
+void alsa_set_volume (int left, int right);
 void alsa_open_mixer (void);
 void alsa_close_mixer (void);
 
 /* config.c */
-extern gchar * alsa_config_pcm, * alsa_config_mixer, * alsa_config_mixer_element;
-extern gboolean alsa_config_drop_workaround;
+extern char * alsa_config_pcm, * alsa_config_mixer, * alsa_config_mixer_element;
+extern int alsa_config_drop_workaround, alsa_config_drain_workaround,
+ alsa_config_delay_workaround;
 
 void alsa_config_load (void);
 void alsa_config_save (void);
@@ -80,6 +85,6 @@ void alsa_configure (void);
 
 /* plugin.c */
 void alsa_about (void);
-void alsa_error (const gchar * format, ...);
+void alsa_error (const char * format, ...);
 
 #endif

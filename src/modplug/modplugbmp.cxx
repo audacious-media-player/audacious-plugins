@@ -14,9 +14,6 @@
 #include "sndfile.h"
 #include "stddefs.h"
 #include "archive/open.h"
-extern "C" {
-#include <audacious/output.h>
-}
 
 // ModplugXMMS member functions ===============================
 

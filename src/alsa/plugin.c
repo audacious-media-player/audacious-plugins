@@ -17,13 +17,15 @@
  * the use of this software.
  */
 
-#include "alsa.h"
-
 #include <stdarg.h>
+
 #include <gtk/gtk.h>
 
+#include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
+
+#include "alsa.h"
 
 static OutputPlugin plugin =
 {
@@ -72,20 +74,20 @@ void alsa_about (void)
      "from the use of this software.");
 }
 
-static gboolean show_error (void * message)
+static int show_error (void * message)
 {
     static GtkWidget * window = NULL;
 
     audgui_simple_message (& window, GTK_MESSAGE_ERROR, _("ALSA error"),
      message);
-    g_free (message);
-    return FALSE;
+    free (message);
+    return 0;
 }
 
 void alsa_error (const gchar * format, ...)
 {
     va_list args;
-    gchar * message;
+    char * message;
 
     va_start (args, format);
     message = g_strdup_vprintf (format, args);

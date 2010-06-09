@@ -72,11 +72,11 @@ struct _UiVis {
 
     gint             x, y, width, height;
     gfloat           data[75], peak[75], peak_speed[75];
-    gint             refresh_delay;
     gboolean         scaled;
     GtkWidget        *fixed;
     gboolean         visible_window;
     GdkWindow        *event_window;
+    GdkGC * gc;
 };
 
 struct _UiVisClass {
@@ -86,7 +86,7 @@ struct _UiVisClass {
 
 GtkWidget* ui_vis_new (GtkWidget *fixed, gint x, gint y, gint width);
 GType ui_vis_get_type(void);
-void ui_vis_set_vis(GtkWidget *widget, gint num);
+void ui_vis_set_colors (void);
 void ui_vis_clear_data(GtkWidget *widget);
 void ui_vis_timeout_func(GtkWidget *widget, guchar * data);
 

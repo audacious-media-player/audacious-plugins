@@ -229,10 +229,22 @@ Tuple* get_tuple_from_file(const gchar *filename, VFSFile *fd, callback_info *in
          
     if (info->replaygain.has_rg)
     {
-        aud_tuple_associate_int(out, FIELD_GAIN_ALBUM_GAIN, NULL, atof(info->replaygain.album_gain) * 100);
-        aud_tuple_associate_int(out, FIELD_GAIN_ALBUM_PEAK, NULL, atof(info->replaygain.album_peak) * 100);
-        aud_tuple_associate_int(out, FIELD_GAIN_TRACK_GAIN, NULL, atof(info->replaygain.track_gain) * 100);
-        aud_tuple_associate_int(out, FIELD_GAIN_TRACK_PEAK, NULL, atof(info->replaygain.track_peak) * 100);
+        if (info->replaygain.album_gain != NULL)
+            aud_tuple_associate_int (out, FIELD_GAIN_ALBUM_GAIN, NULL, atof
+             (info->replaygain.album_gain) * 100);
+        
+        if (info->replaygain.album_peak != NULL)
+            aud_tuple_associate_int (out, FIELD_GAIN_ALBUM_PEAK, NULL, atof
+             (info->replaygain.album_peak) * 100);
+        
+        if (info->replaygain.track_gain != NULL)
+            aud_tuple_associate_int (out, FIELD_GAIN_TRACK_GAIN, NULL, atof
+             (info->replaygain.track_gain) * 100);
+
+        if (info->replaygain.track_peak != NULL)
+            aud_tuple_associate_int (out, FIELD_GAIN_TRACK_PEAK, NULL, atof
+             (info->replaygain.track_peak) * 100);
+
         aud_tuple_associate_int(out, FIELD_GAIN_GAIN_UNIT, NULL, 100);
         aud_tuple_associate_int(out, FIELD_GAIN_PEAK_UNIT, NULL, 100);
     }

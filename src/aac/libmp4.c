@@ -8,7 +8,6 @@
 #include "tagging.h"
 
 #include <audacious/plugin.h>
-#include <audacious/output.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
