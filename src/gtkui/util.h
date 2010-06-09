@@ -29,5 +29,6 @@
 #include <gtk/gtk.h>
 
 GtkWidget * make_filebrowser (const gchar * title, gboolean save);
+void check_set(GtkActionGroup * action_group, const gchar * action_name, gboolean is_on);
 
 #endif /* AUDACIOUS_UTIL_H */
