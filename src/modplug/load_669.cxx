@@ -35,6 +35,15 @@ typedef struct tagSAMPLE669
 	BYTE loopend[4];
 } SAMPLE669;
 
+DWORD lengthArrayToDWORD(const BYTE length[4]) {
+	DWORD len = (length[3] << 24) +
+		(length[2] << 16) +
+		(length[1] << 8) +
+		(length[0]);
+
+	return(len);
+}
+
 
 BOOL CSoundFile::Read669(const BYTE *lpStream, DWORD dwMemLength)
 //---------------------------------------------------------------
@@ -51,9 +60,12 @@ BOOL CSoundFile::Read669(const BYTE *lpStream, DWORD dwMemLength)
 	 || (!pfh->patterns) || (pfh->patterns > 128)) return FALSE;
 	DWORD dontfuckwithme = 0x1F1 + pfh->samples * sizeof(SAMPLE669) + pfh->patterns * 0x600;
 	if (dontfuckwithme > dwMemLength) return FALSE;
-        for (int n = 0; n < 128; n++)
-                if (pfh->breaks[n] > 0x3f)
-                        return false;
+	for (UINT ichk=0; ichk<pfh->samples; ichk++)
+	{
+		DWORD len = lengthArrayToDWORD(psmp[ichk].length);
+		dontfuckwithme += len;
+	}
+	if (dontfuckwithme > dwMemLength) return FALSE;
 	// That should be enough checking: this must be a 669 module.
 	m_nType = MOD_TYPE_669;
 	m_dwSongFlags |= SONG_LINEARSLIDES;
@@ -62,14 +74,13 @@ BOOL CSoundFile::Read669(const BYTE *lpStream, DWORD dwMemLength)
 	m_nDefaultTempo = 125;
 	m_nDefaultSpeed = 6;
 	m_nChannels = 8;
-	memcpy(m_szNames[0], pfh->songmessage, 31);
-	m_szNames[0][31] = 0;
+	memcpy(m_szNames[0], pfh->songmessage, 16);
 	m_nSamples = pfh->samples;
 	for (UINT nins=1; nins<=m_nSamples; nins++, psmp++)
 	{
-		DWORD len = bswapLE32(*((DWORD *)(&psmp->length)));
-		DWORD loopstart = bswapLE32(*((DWORD *)(&psmp->loopstart)));
-		DWORD loopend = bswapLE32(*((DWORD *)(&psmp->loopend)));
+		DWORD len = lengthArrayToDWORD(psmp->length);
+		DWORD loopstart = lengthArrayToDWORD(psmp->loopstart);
+		DWORD loopend = lengthArrayToDWORD(psmp->loopend);
 		if (len > MAX_SAMPLE_LENGTH) len = MAX_SAMPLE_LENGTH;
 		if ((loopend > len) && (!loopstart)) loopend = 0;
 		if (loopend > len) loopend = len;
@@ -84,15 +95,9 @@ BOOL CSoundFile::Read669(const BYTE *lpStream, DWORD dwMemLength)
 		Ins[nins].nPan = 128;
 	}
 	// Song Message
-	m_lpszSongComments = new char[114];
-	memcpy(m_lpszSongComments, pfh->songmessage, 36);
-	m_lpszSongComments[36] = '\015';
-	m_lpszSongComments[37] = '\012';
-	memcpy(m_lpszSongComments + 38, pfh->songmessage + 36, 36);
-	m_lpszSongComments[74] = '\015';
-	m_lpszSongComments[75] = '\012';
-	memcpy(m_lpszSongComments + 76, pfh->songmessage + 72, 36);
-	m_lpszSongComments[112] = 0;
+	m_lpszSongComments = new char[109];
+	memcpy(m_lpszSongComments, pfh->songmessage, 108);
+	m_lpszSongComments[108] = 0;
 	// Reading Orders
 	memcpy(Order, pfh->orders, 128);
 	m_nRestartPos = pfh->restartpos;
@@ -110,7 +115,6 @@ BOOL CSoundFile::Read669(const BYTE *lpStream, DWORD dwMemLength)
 		Patterns[npat] = AllocatePattern(64, m_nChannels);
 		if (!Patterns[npat]) break;
 		PatternSize[npat] = 64;
-		PatternAllocSize[npat] = 64;
 		MODCOMMAND *m = Patterns[npat];
 		const BYTE *p = lpStream + dwMemPos;
 		for (UINT row=0; row<64; row++)

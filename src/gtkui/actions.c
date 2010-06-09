@@ -49,9 +49,11 @@
 
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 #include "ui_gtk.h"
-#include "../skins/ui_playlist_manager.h"
 #include "util.h"
+#include "playlist_util.h"
 
 static GtkWidget *mainwin_jtt = NULL;
 
@@ -133,7 +135,7 @@ void action_ab_clear(void)
 
 void action_current_track_info(void)
 {
-    aud_fileinfo_show_current();
+    audgui_infowin_show_current();
 }
 
 void action_jump_to_file(void)
@@ -152,6 +154,7 @@ static void mainwin_jump_to_time_cb(GtkWidget * widget, GtkWidget * entry)
     gint time;
 
     params = sscanf(gtk_entry_get_text(GTK_ENTRY(entry)), "%u:%u", &min, &sec);
+
     if (params == 2)
         time = (min * 60) + sec;
     else if (params == 1)
@@ -303,7 +306,7 @@ void action_playlist_track_info(void)
     gint playlist = aud_playlist_get_active();
 
     if (aud_playlist_selected_count(playlist) == 0)
-        aud_fileinfo_show_current();
+        audgui_infowin_show_current ();
     else
     {
         gint entries = aud_playlist_entry_count(playlist);
@@ -315,7 +318,7 @@ void action_playlist_track_info(void)
                 break;
         }
 
-        aud_fileinfo_show(playlist, count);
+        audgui_infowin_show (playlist, count);
     }
 }
 
@@ -443,9 +446,22 @@ void action_playlist_remove_all(void)
     aud_playlist_entry_delete(playlist, 0, aud_playlist_entry_count(playlist));
 }
 
-void action_playlist_remove_selected(void)
+void action_playlist_remove_selected(GtkAction *act)
 {
     aud_playlist_delete_selected(aud_playlist_get_active());
+    gint active_playlist_num = aud_playlist_get_active();
+    gint sel_pos;
+    gboolean clap_sel_pos = FALSE;
+
+    sel_pos = get_active_selected_pos();
+    gint max_pos = aud_playlist_entry_count(active_playlist_num) -  aud_playlist_selected_count(active_playlist_num) - 1;
+    if (sel_pos > max_pos)
+        clap_sel_pos = TRUE;
+
+    aud_playlist_delete_selected(active_playlist_num);
+    
+    if (clap_sel_pos)
+        treeview_select_pos(get_active_playlist_treeview(), sel_pos);
 }
 
 void action_playlist_remove_unselected(void)
@@ -476,7 +492,7 @@ void action_playlist_new(void)
     gint playlist = aud_playlist_count();
 
     aud_playlist_insert(playlist);
-    aud_playlist_set_active(playlist);
+    //aud_playlist_set_active(playlist);
 }
 
 void action_playlist_prev(void)
@@ -717,7 +733,7 @@ void action_playlist_refresh_list(void)
 
 void action_open_list_manager(void)
 {
-    playlist_manager_ui_show();
+    audgui_playlist_manager_ui_show(window);
 }
 
 void action_playlist_search_and_select(void)
@@ -739,3 +755,9 @@ void action_playlist_select_all(void)
 {
     g_message("implement me");
 }
+
+void action_playlist_save_all_playlists(void)
+{
+    aud_save_all_playlists();
+}
+

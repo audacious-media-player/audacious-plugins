@@ -21,12 +21,17 @@
 //#define FFAUDIO_DEBUG       /* Enable generic debug output */
 #undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
-//#define FFAUDIO_USE_AUDTAG  /* Use Audacious tagging library */
+#define FFAUDIO_USE_AUDTAG  /* Use Audacious tagging library */
 
 #include "config.h"
 #include "ffaudio-stdinc.h"
 #include <audacious/i18n.h>
-#include <libaudtag/audtag.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+#ifdef FFAUDIO_USE_AUDTAG
+#include <audacious/audtag.h>
+#endif
+
 /***********************************************************************************
  * Plugin glue.                                                                    *
  ***********************************************************************************/
@@ -164,6 +169,7 @@ static const ffaudio_meta_t metaentries[] = {
 
 static const gint n_metaentries = sizeof(metaentries) / sizeof(metaentries[0]);
 
+#ifndef FFAUDIO_USE_AUDTAG
 static void
 ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
 {
@@ -200,6 +206,7 @@ ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
         }
     }
 }
+#endif
 
 static void
 ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVCodec *codec)
@@ -263,22 +270,37 @@ ffaudio_get_song_tuple(const gchar *filename)
     ffaudio_get_tuple_data(tuple, ic, c, codec);
     av_close_input_file (ic);
 
-#ifdef FFAUDIO_USE_AUDTAG
-    VFSFile * fd = vfs_fopen(filename, "rb");
-    tuple = tag_tuple_read(tuple, fd);
-    vfs_fclose(fd);
-#endif
-
     return tuple;
 }
 
 #ifdef FFAUDIO_USE_AUDTAG
-gboolean
-ffaudio_update_song_tuple(Tuple *tuple, VFSFile *fd)
+static Tuple *
+ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
-    tag_tuple_write_to_file(tuple, fd);
+    Tuple *t;
 
-    return TRUE;
+    t = ffaudio_get_song_tuple(filename);
+    if (t == NULL)
+        return NULL;
+
+    aud_vfs_fseek(fd, 0, SEEK_SET);
+    tag_tuple_read(t, fd);
+
+    return t;
+}
+
+static gboolean ffaudio_write_tag(Tuple *tuple, VFSFile *file)
+{
+    gchar *file_uri = g_ascii_strdown(file->uri, -4);
+
+    if (g_str_has_suffix(file_uri, ".ape"))
+    {
+        g_free(file_uri);
+        return tag_tuple_write(tuple, file, TAG_TYPE_APE);
+    }
+    g_free(file_uri);
+
+    return tag_tuple_write(tuple, file, TAG_TYPE_NONE);
 }
 #endif
 
@@ -297,7 +319,9 @@ ffaudio_play_file(InputPlayback *playback)
     gboolean codec_opened = FALSE, do_resampling = FALSE;
     AFormat out_fmt;
     gchar *uribuf;
+#ifndef FFAUDIO_USE_AUDTAG
     Tuple *tuple;
+#endif
     gboolean paused = FALSE, seekable;
 
     uribuf = g_alloca(strlen(playback->filename) + 8);
@@ -373,19 +397,18 @@ ffaudio_play_file(InputPlayback *playback)
         goto error_exit;
     }
 
+    playback->set_gain_from_playlist(playback);
+
     /* Allocate output buffer aligned to 16 byte boundary */
     outbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
     resbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
 
     _DEBUG("setting parameters");
+#ifndef FFAUDIO_USE_AUDTAG
     tuple = aud_tuple_new_from_filename(playback->filename);
     ffaudio_get_tuple_data(tuple, ic, c, codec);
-#ifdef FFAUDIO_USE_AUDTAG
-    VFSFile * fd = vfs_fopen(playback->filename, "rb");
-    tuple = tag_tuple_read(tuple, fd);
-    vfs_fclose(fd);
-#endif
     playback->set_tuple(playback, tuple);
+#endif
     playback->set_params(playback, NULL, 0, c->bit_rate, c->sample_rate, c->channels);
 
     g_mutex_lock(ctrl_mutex);
@@ -521,9 +544,7 @@ ffaudio_play_file(InputPlayback *playback)
             {
                 gint writeoff = MIN (chunk_size, out_size);
 
-                playback->pass_audio(playback, out_fmt,
-                    c->channels, writeoff,
-                    (gint16 *)outbuf_p, NULL);
+                playback->output->write_audio((gint16 *)outbuf_p, writeoff);
 
                 outbuf_p += writeoff;
                 out_size -= writeoff;
@@ -644,6 +665,9 @@ static gchar *ffaudio_fmts[] = {
     /* Apple Lossless */
     "m4a",
 
+    /* WAV (there are some WAV formats sndfile can't handle) */
+    "wav",
+
     /* end of table */
     NULL
 };
@@ -672,15 +696,11 @@ ffaudio_about(void)
         LIBAVCODEC_VERSION_MAJOR, LIBAVCODEC_VERSION_MINOR, LIBAVCODEC_VERSION_MICRO,
         formats);
 
-        aboutbox = audacious_info_dialog(
-            _("About FFaudio Plugin"),
-            description, _("Ok"), FALSE, NULL, NULL);
+        audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
+         _("About FFaudio Plugin"), description);
 
         g_free(formats);
         g_free(description);
-
-        g_signal_connect(G_OBJECT(aboutbox), "destroy",
-            G_CALLBACK(gtk_widget_destroyed), &aboutbox);
     }
 }
 
@@ -688,16 +708,21 @@ InputPlugin ffaudio_ip = {
     .init = ffaudio_init,
     .cleanup = ffaudio_cleanup,
     .is_our_file_from_vfs = ffaudio_probe,
+#ifdef FFAUDIO_USE_AUDTAG
+    .probe_for_tuple = ffaudio_probe_for_tuple,
+#endif
     .play_file = ffaudio_play_file,
     .stop = ffaudio_stop,
     .pause = ffaudio_pause,
     .seek = ffaudio_seek,
+#ifndef FFAUDIO_USE_AUDTAG
     .get_song_tuple = ffaudio_get_song_tuple,
+#endif
     .about = ffaudio_about,
     .description = "FFaudio Plugin",
     .vfs_extensions = ffaudio_fmts,
 #ifdef FFAUDIO_USE_AUDTAG
-    .update_song_tuple = ffaudio_update_song_tuple,
+    .update_song_tuple = ffaudio_write_tag,
 #endif
 
     /* FFMPEG probing takes forever on network files, so try everything else

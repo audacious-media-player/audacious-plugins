@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([audacious-plugins], [2.3-alpha1], [bugs+audacious-plugins@atheme.org])
+AC_INIT([audacious-plugins], [2.3], [bugs+audacious-plugins@atheme.org])
 AC_PREREQ([2.59])
 
 AC_CANONICAL_HOST
@@ -134,11 +134,12 @@ AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
 dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen console psf xsf metronom vtx"
-OUTPUT_PLUGINS="crossfade null"
-EFFECT_PLUGINS="compressor crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
+OUTPUT_PLUGINS="null"
+EFFECT_PLUGINS="compressor crossfade crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm skins vfstrace gtkui"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
+TRANSPORT_PLUGINS="unix-io"
 
 dnl Check for Audacious
 
@@ -149,7 +150,7 @@ PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 2.3],
 
 CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS"
 CPPFLAGS="$CPPFLAGS $AUDACIOUS_CPPFLAGS"
-LDFLAGS="$LDFLAGS $AUDACIOUS_LIBS"
+LIBS="$LIBS $AUDACIOUS_LIBS"
 
 dnl Check for GTK/GLib/GThread/Pango/DBus
 
@@ -162,8 +163,6 @@ PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.8.0],
     [ADD_PC_REQUIRES([gtk+-2.0 >= 2.8.0])],
     [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.8.0])]
 )
-
-TRANSPORT_PLUGINS="unix-io"
 
 AC_ARG_ENABLE(gio, [  --disable-gio           disable GIO support (default=enabled if GIO present)],
  enable_gio=$enableval, enable_gio=yes)
@@ -297,28 +296,6 @@ else
 	have_coreaudio=no
 fi
 
-dnl *** Icecast
-
-AC_ARG_ENABLE( icecast,
-    [  --disable-icecast       disable Icecast output plugin (default=enabled)],
-    [enable_icecast=$enableval],
-    [enable_icecast="yes"]
-)
-
-if test "x$enable_icecast" = "xyes"; then
-    PKG_CHECK_MODULES(SHOUT, [shout >= 2.0],
-         [have_shout=yes
-	  enable_filewriter=yes],
-         [have_shout=no]
-    )
-else
-    AC_MSG_RESULT([*** icecast output plugin disabled per user request ***])
-    have_shout=no
-fi
-
-AC_SUBST(SHOUT_CFLAGS)
-AC_SUBST(SHOUT_LIBS)
-
 dnl *** Dock Album Art (MacOS)
 
 AC_ARG_ENABLE(dockalbumart,
@@ -386,6 +363,36 @@ fi
 AC_SUBST(SIMD_CFLAGS)
 CFLAGS="$ac_save_CFLAGS"
 
+dnl *** USF
+
+AC_ARG_ENABLE(usf,
+    [  --enable-usf            enable the USF input plugin (default=disabled)],
+    [enable_usf=$enableval],
+    [enable_usf=no]
+)
+
+if test "x$enable_usf" = "xyes"; then
+    AC_MSG_CHECKING([if your platform is supported for the USF plugin])
+    case "$target" in
+	x86_64-*-linux-gnu)
+		AC_MSG_RESULT([yes, AMD64 Linux])
+		enable_usf=yes
+		;;
+	i*86-*-linux-gnu)
+		AC_MSG_RESULT([yes, X86 Linux])
+		enable_usf=yes
+		;;
+	*)
+		AC_MSG_RESULT([no])
+		enable_usf=no
+		;;
+    esac
+
+    if test "x$enable_usf" = "xyes"; then
+        INPUT_PLUGINS="$INPUT_PLUGINS usf"
+    fi
+fi
+
 dnl *** MP3
 
 AC_ARG_ENABLE(mp3,
@@ -395,8 +402,8 @@ AC_ARG_ENABLE(mp3,
 )
 
 if test "x$enable_mp3" = "xyes"; then
-    AM_PATH_LIBMAD([enable_mp3=yes],
-        [AC_MSG_WARN([*** Cannot find libmad, mp3 plugin will not be built ***])
+    PKG_CHECK_MODULES(MPG123, [libmpg123], [enable_mp3=yes],
+        [AC_MSG_WARN([*** Cannot find libmpg123, mp3 plugin will not be built ***])
          enable_mp3=no]
     )
 else
@@ -405,11 +412,11 @@ else
 fi
 
 if test "x$enable_mp3" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS madplug"
+	INPUT_PLUGINS="$INPUT_PLUGINS mpg123"
 fi
 
-AC_SUBST(MAD_CFLAGS)
-AC_SUBST(MAD_LIBS)
+AC_SUBST(MPG123_CFLAGS)
+AC_SUBST(MPG123_LIBS)
 
 dnl *** Rocklight
 
@@ -943,7 +950,7 @@ else
 fi
 
 if test "x$have_oss4" = "xyes"; then
-	OUTPUT_PLUGINS="$OUTPUT_PLUGINS OSS4"
+	OUTPUT_PLUGINS="$OUTPUT_PLUGINS oss4"
 fi
 
 AC_SUBST(OSS_LIBS)
@@ -1009,19 +1016,7 @@ fi
 
 if test "x$enable_amidiplug" = "xcheck"; then
   if test "x$alsalib_midi" = "xyes"; then
-    AM_PATH_AMIDIPLUG_HWSYNTH([ap_have_hwsynth=yes], [ap_have_hwsynth=no])
-    if test "x$ap_have_hwsynth" = "xyes"; then
-      enable_amidiplug=yes
-    else
-      PKG_CHECK_MODULES(FLUIDSYNTH, [fluidsynth >= 1.0.6],
-        [fluidsynth_available=yes],[fluidsynth_available=no])
-      if test "x$fluidsynth_available" = "xyes"; then
-        enable_amidiplug=yes
-      else
-        enable_amidiplug=no
-        AC_MSG_WARN([*** Neither an ALSA-supported hardware synth or FluidSynth software synth (>= 1.0.6) have been found (even if ALSA was detected), so amidi-plug won't be compiled unless you explicitly request it with --enable-amidiplug ***])
-      fi
-    fi
+    enable_amidiplug=yes
   else
     PKG_CHECK_MODULES(FLUIDSYNTH, [fluidsynth >= 1.0.6],
       [fluidsynth_available=yes],[fluidsynth_available=no])
@@ -1232,21 +1227,6 @@ if test "x$have_scrobbler" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
 fi
 
-dnl *** lastfm ***
-
-AC_ARG_ENABLE(lastfm,
- [  --disable-lastfm        disable lastfm support (default=enabled if scrobbler enabled)],
- [have_lastfm=$enableval], [have_lastfm=yes])
-
-if test "x$have_scrobbler" != "xyes"; then
-	AC_MSG_RESULT([*** lastfm plugin disabled because scrobbler plugin is disabled ***])
-	have_lastfm=no
-fi
-
-if test "x$have_lastfm" = "yes"; then
-	TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS lastfm"
-fi
-
 dnl *** neon http plugin ***
 
 AC_ARG_ENABLE(neon,
@@ -1304,7 +1284,7 @@ fi
 AC_SUBST(MTP_LIBS)
 AC_SUBST(MTP_CFLAGS)
 
-dnl *** Bluetooth audio suport
+dnl *** Bluetooth audio support
 
 AC_ARG_ENABLE(bluetooth,
 [  --disable-bluetooth           disable bluetooth audio support. (default=enabled)],
@@ -1321,7 +1301,7 @@ if test "x$have_bluetooth" = "xyes" -a "x$have_alsa" = "xyes"; then
     BLUEZ_CFLAGS=`pkg-config --cflags bluez`
 else
     have_bluetooth=no
-    AC_MSG_RESULT([*** bluetooth audio suport plugin disabled by request ***])
+    AC_MSG_RESULT([*** bluetooth audio support plugin disabled by request ***])
 fi
 AC_SUBST(BLUEZ_LIBS)
 AC_SUBST(BLUEZ_CFLAGS)
@@ -1497,10 +1477,6 @@ fi
 AC_SUBST(FILEWRITER_CFLAGS)
 AC_SUBST(FILEWRITER_LIBS)
 
-if test "x$have_shout" = "xyes"; then
-   OUTPUT_PLUGINS="$OUTPUT_PLUGINS icecast"
-fi
-
 dnl *** BS2B effect plugin
 
 AC_ARG_ENABLE(bs2b,
@@ -1518,6 +1494,23 @@ fi
 
 if test "x$have_bs2b" = "xyes"; then
 	EFFECT_PLUGINS="$EFFECT_PLUGINS bs2b"
+fi
+
+
+dnl *** Resample effect plugin
+
+AC_ARG_ENABLE(resample,
+ [  --disable-resample      disable resample effect plugin (default=enabled)],
+ [enable_resample=$enableval], [enable_resample=yes]
+)
+
+if test "x$enable_resample" = "xyes"; then
+    AC_CHECK_LIB([samplerate], [src_process], [enable_resample=yes],
+     [enable_resample=no])
+fi
+
+if test "x$enable_resample" = "xyes"; then
+	EFFECT_PLUGINS="$EFFECT_PLUGINS resample"
 fi
 
 dnl *** End of all plugin checks ***
@@ -1615,13 +1608,12 @@ echo "  FileWriter:                             $enable_filewriter"
 echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
 echo "    -> FileWriter FLAC output part:       $have_writer_flac"
-echo "  Icecast audio output (icecast):         $have_shout"
 echo "  Null Audio output (null):               yes"
 echo
 echo "  Input Plugins"
 echo "  -------------"
-echo "  MPEG 1/2/3 (madplug):                   $enable_mp3"
-echo "  MPEG 4 Audio (AAC):                     $enable_aac"
+echo "  MPEG-1 Layer I/II/III (mpg123):         $enable_mp3"
+echo "  MPEG-2/4 AAC (aac):                     $enable_aac"
 echo "  FFaudio (ffaudio):                      $have_ffaudio"
 echo "  Module decoder (modplug):               $have_modplug"
 echo "  MIDI modular plugin (amidi-plug):       $enable_amidiplug"
@@ -1638,6 +1630,7 @@ echo "    -> libSIDPlay2 support:               $xs_have_sidplay2"
 echo "    -> distortion patched libSIDPlay2:    $xs_have_distortion"
 echo "  Game music (spc, nsf & gbs):            yes"
 echo "  PlayStation (psf/psf2) audio (psf):     yes"
+echo "  Nintendo 64 audio (usf):                $enable_usf"
 echo "  Nintendo DS audio (xsf):                yes [experimental]"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      $have_ffaudio"
@@ -1670,8 +1663,8 @@ echo "  Extra Stereo:                           yes"
 echo "  Echo/Surround:                          yes"
 echo "  SndStretch:                             yes"
 echo "  Crystalizer:                            yes"
-echo "  Icecast effect plugin (icecast):        $have_shout"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
+echo "  Sample Rate Converter (resample):       $enable_resample"
 echo
 echo "  Visualization"
 echo "  -------------"
@@ -1686,7 +1679,6 @@ echo "  ---------"
 echo "  gio transport:                          $enable_gio"
 echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
-echo "  lastfm transport:                       $have_lastfm"
 echo
 echo "  Container"
 echo "  ---------"

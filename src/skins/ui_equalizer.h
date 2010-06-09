@@ -42,13 +42,15 @@
 #define EQUALIZER_DEFAULT_DIR_PRESET "dir_default.preset"
 #define EQUALIZER_DEFAULT_PRESET_EXT "preset"
 
+void eq_init_hooks (void);
+void eq_end_hooks (void);
+
 void equalizerwin_set_shape (void);
 void equalizerwin_set_scaled(gboolean ds);
 void equalizerwin_set_shade_menu_cb(gboolean shaded);
 void draw_equalizer_window(gboolean force);
 void equalizerwin_create(void);
 void equalizerwin_show(gboolean show);
-void equalizerwin_load_auto_preset(const gchar * filename);
 void equalizerwin_set_volume_slider(gint percent);
 void equalizerwin_set_balance_slider(gint percent);
 void equalizerwin_eq_changed(void);

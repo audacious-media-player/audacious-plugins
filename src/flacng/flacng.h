@@ -96,6 +96,7 @@ typedef struct callback_info {
     glong read_max;
     gboolean testing;
     gchar* name;
+    gint bitrate;
 } callback_info;
 
 #endif

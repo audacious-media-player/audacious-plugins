@@ -43,20 +43,6 @@ static GThread * pump_thread;
 static snd_mixer_t * alsa_mixer;
 static snd_mixer_elem_t * alsa_mixer_element;
 
-static gint send_audio (void * data, gint length)
-{
-    gint result = snd_pcm_writei (alsa_handle, data, snd_pcm_bytes_to_frames
-     (alsa_handle, length));
-
-    if (result >= 0)
-        return snd_pcm_frames_to_bytes (alsa_handle, result);
-
-    CHECK (snd_pcm_recover, alsa_handle, result, 0);
-
-FAILED:
-    return 0;
-}
-
 static void * pump (void * unused)
 {
     snd_pcm_status_t * status;
@@ -90,10 +76,21 @@ static void * pump (void * unused)
         read_locked = TRUE;
         g_mutex_unlock (alsa_mutex);
 
-        length = send_audio ((gchar *) alsa_buffer + alsa_buffer_data_start,
-         length);
+        length = snd_pcm_writei (alsa_handle, (gchar *) alsa_buffer +
+         alsa_buffer_data_start, snd_pcm_bytes_to_frames (alsa_handle, length));
 
         g_mutex_lock (alsa_mutex);
+
+        if (length < 0)
+        {
+            if (! pump_quit && ! alsa_paused) /* ignore errors caused by drop */
+                CHECK (snd_pcm_recover, alsa_handle, length, 0);
+
+        FAILED:
+            length = 0;
+        }
+
+        length = snd_pcm_frames_to_bytes (alsa_handle, length);
 
         alsa_buffer_data_start = (alsa_buffer_data_start + length) %
          alsa_buffer_length;
@@ -281,12 +278,12 @@ void alsa_close_audio (void)
 {
     AUDDBG ("Closing audio.\n");
     g_mutex_lock (alsa_mutex);
+    pump_quit = TRUE;
 
     if (! alsa_config_drop_workaround)
         CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
-    pump_quit = TRUE;
     g_cond_signal (alsa_cond);
     g_mutex_unlock (alsa_mutex);
     g_thread_join (pump_thread);
@@ -339,6 +336,27 @@ void alsa_write_audio (void * data, gint length)
     g_mutex_unlock (alsa_mutex);
 }
 
+void alsa_drain (void)
+{
+    AUDDBG ("Drain.\n");
+    g_mutex_lock (alsa_mutex);
+
+    while (alsa_buffer_data_length > 0)
+    {
+        if (alsa_paused) /* buffering completed */
+            start_playback ();
+
+        g_cond_wait (alsa_cond, alsa_mutex);
+    }
+
+    g_mutex_unlock (alsa_mutex);
+
+    CHECK (snd_pcm_drain, alsa_handle);
+
+FAILED:
+    return;
+}
+
 void alsa_set_written_time (gint time)
 {
     AUDDBG ("Setting time counter to %d.\n", time);
@@ -370,26 +388,6 @@ gint alsa_output_time (void)
 
     g_mutex_unlock (alsa_mutex);
     return time;
-}
-
-gint alsa_buffer_playing (void)
-{
-    gboolean playing;
-
-    g_mutex_lock (alsa_mutex);
-
-    if (alsa_buffer_data_length > 0)
-        playing = TRUE;
-    else
-    {
-        snd_pcm_state_t state = snd_pcm_state (alsa_handle);
-
-        playing = (state == SND_PCM_STATE_RUNNING || state ==
-         SND_PCM_STATE_DRAINING);
-    }
-
-    g_mutex_unlock (alsa_mutex);
-    return playing ? 1 : 0;
 }
 
 void alsa_flush (gint time)

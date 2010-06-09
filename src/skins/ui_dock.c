@@ -33,6 +33,8 @@
 #include "platform/smartinclude.h"
 #include "util.h"
 
+#define SNAP_DISTANCE 10
+
 static GList *dock_window_list = NULL;
 
 struct _DockedWindow {
@@ -55,7 +57,7 @@ static void
 snap_edge(gint * x, gint * y, gint w, gint h, gint bx, gint by,
           gint bw, gint bh)
 {
-    gint sd = config.snap_distance;
+    gint sd = SNAP_DISTANCE;
 
     if ((*x + w > bx - sd) && (*x + w < bx + sd) &&
         (*y > by - h - sd) && (*y < by + bh + sd)) {
@@ -91,12 +93,8 @@ calc_snap_offset(GList * dlist, GList * wlist, gint x, gint y,
     GList *dnode, *wnode;
     DockedWindow temp, *dw;
 
-
     *off_x = 0;
     *off_y = 0;
-
-    if (!config.snap_windows)
-        return;
 
     /*
      * FIXME: Why not break out of the loop when we find someting
@@ -110,13 +108,13 @@ calc_snap_offset(GList * dlist, GList * wlist, gint x, gint y,
         ny = dw->offset_y + *off_y + y;
 
         /* Snap to screen edges */
-        if (abs(nx) < config.snap_distance)
+        if (abs(nx) < SNAP_DISTANCE)
             *off_x -= nx;
-        if (abs(ny) < config.snap_distance)
+        if (abs(ny) < SNAP_DISTANCE)
             *off_y -= ny;
-        if (abs(nx + nw - gdk_screen_width()) < config.snap_distance)
+        if (abs(nx + nw - gdk_screen_width()) < SNAP_DISTANCE)
             *off_x -= nx + nw - gdk_screen_width();
-        if (abs(ny + nh - gdk_screen_height()) < config.snap_distance)
+        if (abs(ny + nh - gdk_screen_height()) < SNAP_DISTANCE)
             *off_y -= ny + nh - gdk_screen_height();
 
         /* Snap to other windows */

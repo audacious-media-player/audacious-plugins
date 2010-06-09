@@ -423,7 +423,7 @@ oss_open(AFormat fmt, gint rate, gint nch)
 
     oss_setup_format(fmt, rate, nch);
 
-    buffer_size = (oss_cfg.buffer_size * input.bps) / 1000;
+    buffer_size = aud_cfg->output_buffer_size * input.bps / 1000;
 
     if (buffer_size < 8192)
         buffer_size = 8192;

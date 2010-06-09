@@ -1,0 +1,13 @@
+PLUGIN = madplug${PLUGIN_SUFFIX}
+
+SRCS = mpg123.c
+
+include ../../buildsys.mk
+include ../../extra.mk
+
+plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
+
+CFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${MOWGLI_CFLAGS} ${ARCH_DEFINES} ${SIMD_CFLAGS} ${MPG123_CFLAGS} -I../..
+LDFLAGS += ${AUDLDFLAGS}
+LIBS += ${MPG123_LIBS} ${GTK_LIBS} ${GLIB_LIBS} ${MOWGLI_LIBS}

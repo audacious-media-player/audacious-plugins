@@ -16,7 +16,6 @@
 #include <string.h>
 
 #include <audacious/plugin.h>
-#include <audacious/ui_preferences.h>
 #include <audacious/auddrct.h>
 #include "formatter.h"
 #include <audacious/i18n.h>
@@ -421,8 +420,8 @@ static PreferencesWidget elements[] = {
                       "%p: Currently playing (1 or 0)"), NULL, NULL, NULL, FALSE},
 };
 
-static GtkWidget *
-custom_warning(void)
+/* static GtkWidget * custom_warning (void) */
+static void * custom_warning (void)
 {
     GtkWidget *bbox_hbox;
     gchar * temp;

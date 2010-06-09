@@ -1,7 +1,9 @@
 #include "ayemu.h"
 #include "vtx.h"
-#include <audacious/output.h>
+
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 void vtx_file_info(const gchar *filename)
 {
@@ -32,12 +34,7 @@ void vtx_file_info(const gchar *filename)
 	      "Chip freq: %F\n"
 	      "Player Freq:%P\n"
 	      "Year: %y");
-      
-      box = audacious_info_dialog (head,
-			       body,
-			       _("Ok"), FALSE, NULL, NULL);
-      
-      
+
+      audgui_simple_message (& box, GTK_MESSAGE_INFO, head, body);
     }
-  g_signal_connect (G_OBJECT (box), "destroy", G_CALLBACK(gtk_widget_destroyed),  &box);
 }

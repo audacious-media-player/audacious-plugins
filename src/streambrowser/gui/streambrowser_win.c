@@ -44,7 +44,7 @@ static GtkWidget*		search_entry;
 static GtkWidget*		add_button;
 static GtkWidget*		bookmark_button;
 static GtkWidget*		streambrowser_window;
-static GList*			streamdir_gui_list;
+static GList*			streamdir_gui_list = NULL;
 static GtkCellRenderer*	cell_renderer_pixbuf;
 static GtkCellRenderer*	cell_renderer_text;
 

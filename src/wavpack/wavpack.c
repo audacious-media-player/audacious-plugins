@@ -1,9 +1,12 @@
 //#define AUD_DEBUG
 
 #include "config.h"
-#include "common.h"
+#include <wavpack/wavpack.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+#include <audacious/audtag.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <string.h>
@@ -23,6 +26,7 @@ static gboolean pause_flag;
 
 /* Audacious VFS wrappers for Wavpack stream reading
  */
+
 static gint32
 wv_read_bytes(void *id, void *data, gint32 bcount)
 {
@@ -85,19 +89,6 @@ WavpackStreamReader wv_readers = {
     wv_write_bytes
 };
 
-
-void wv_get_tags(WavPackTag * tag, WavpackContext * ctx)
-{
-    memset(tag, 0, sizeof(WavPackTag));
-    WavpackGetTagItem(ctx, "Album", tag->album, sizeof(tag->album));
-    WavpackGetTagItem(ctx, "Artist", tag->artist, sizeof(tag->artist));
-    WavpackGetTagItem(ctx, "Comment", tag->comment, sizeof(tag->comment));
-    WavpackGetTagItem(ctx, "Genre", tag->genre, sizeof(tag->genre));
-    WavpackGetTagItem(ctx, "Title", tag->title, sizeof(tag->title));
-    WavpackGetTagItem(ctx, "Track", tag->track, sizeof(tag->track));
-    WavpackGetTagItem(ctx, "Year", tag->year, sizeof(tag->year));
-}
-
 gboolean wv_attach(const gchar *filename, VFSFile **wv_input, VFSFile **wvc_input, WavpackContext **ctx, gchar *error, gint flags)
 {
     gchar *corrFilename;
@@ -154,8 +145,6 @@ void wv_play(InputPlayback * playback)
     num_samples = WavpackGetNumSamples(ctx);
     length = num_samples / sample_rate;
 
-//    fprintf(stderr, "reading WavPack file, %dHz, %d channels and %dbits, num_samples=%d\n", sample_rate, num_channels, bits_per_sample, num_samples);
-
     if (!playback->output->open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
     {
         g_warning("Error opening audio output.");
@@ -167,6 +156,8 @@ void wv_play(InputPlayback * playback)
     output = g_malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));
     if (input == NULL || output == NULL)
         goto error_exit;
+
+    playback->set_gain_from_playlist(playback);
 
     g_mutex_lock(ctrl_mutex);
 
@@ -248,9 +239,7 @@ void wv_play(InputPlayback * playback)
                     *wp4 = *rp;
             }
 
-            playback->pass_audio(playback, SAMPLE_FMT(bits_per_sample),
-                num_channels, ret * num_channels * SAMPLE_SIZE(bits_per_sample),
-                output, NULL);
+            playback->output->write_audio(output, ret * num_channels * SAMPLE_SIZE(bits_per_sample));
         }
     }
 
@@ -326,7 +315,7 @@ wv_get_quality(WavpackContext *ctx)
         quality = "lossy (hybrid)";
     else
         quality = "lossy";
-    
+
     return g_strdup_printf("%s%s%s", quality,
         (mode & MODE_WVC) ? " (wvc corrected)" : "",
 #ifdef MODE_DNS /* WavPack 4.50 or later */
@@ -336,63 +325,34 @@ wv_get_quality(WavpackContext *ctx)
 }
 
 static Tuple *
-wv_get_tuple_from_file(const gchar * filename, VFSFile * fd, gchar *error)
+wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
 {
     WavpackContext *ctx;
-    WavPackTag tag;
-    Tuple *res;
+    Tuple *tu;
+    gchar error[1024];
 
     ctx = WavpackOpenFileInputEx(&wv_readers, fd, NULL, error, OPEN_TAGS, 0);
+
     if (ctx == NULL)
         return NULL;
 
-    res = aud_tuple_new_from_filename(filename);
+	AUDDBG("starting probe of %p\n", fd);
 
-    wv_get_tags(&tag, ctx);
+	aud_vfs_fseek(fd, 0, SEEK_SET);
+	tu = aud_tuple_new_from_filename(filename);
 
-    aud_tuple_associate_string_rel(res, FIELD_TITLE, NULL, aud_str_to_utf8(tag.title));
-    aud_tuple_associate_string_rel(res, FIELD_ARTIST, NULL, aud_str_to_utf8(tag.artist));
-    aud_tuple_associate_string_rel(res, FIELD_ALBUM, NULL, aud_str_to_utf8(tag.album));
-    aud_tuple_associate_string_rel(res, FIELD_GENRE, NULL, aud_str_to_utf8(tag.genre));
-    aud_tuple_associate_string_rel(res, FIELD_COMMENT, NULL, aud_str_to_utf8(tag.comment));
-    aud_tuple_associate_string_rel(res, FIELD_DATE, NULL, aud_str_to_utf8(tag.year));
-    aud_tuple_associate_string_rel(res, FIELD_QUALITY, NULL, wv_get_quality(ctx));
-    aud_tuple_associate_string(res, FIELD_CODEC, NULL, "WavPack");
+	aud_vfs_fseek(fd, 0, SEEK_SET);
+	tag_tuple_read(tu, fd);
 
-    aud_tuple_associate_int(res, FIELD_TRACK_NUMBER, NULL, atoi(tag.track));
-    aud_tuple_associate_int(res, FIELD_YEAR, NULL, atoi(tag.year));
-    aud_tuple_associate_int(res, FIELD_LENGTH, NULL, 
+	aud_tuple_associate_int(tu, FIELD_LENGTH, NULL,
         ((guint64) WavpackGetNumSamples(ctx) * 1000) / (guint64) WavpackGetSampleRate(ctx));
+    aud_tuple_associate_string(tu, FIELD_CODEC, NULL, "WavPack");
+    aud_tuple_associate_string(tu, FIELD_QUALITY, NULL, wv_get_quality(ctx));
 
     WavpackCloseFile(ctx);
 
-    return res;
-}
-
-static Tuple *
-wv_get_song_tuple(const gchar * filename)
-{
-    VFSFile *fd = NULL;
-    gchar error[1024];
-    Tuple *tuple;
-    
-    fd = aud_vfs_fopen(filename, "rb");
-    if (fd == NULL)
-        return NULL;
-
-    tuple = wv_get_tuple_from_file(filename, fd, (gchar *) &error);
-
-    vfs_fclose(fd);
-
-    return tuple;
-}
-
-static Tuple *
-wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
-{
-    gchar error[1024];
-
-    return wv_get_tuple_from_file(filename, fd, (gchar *) &error);
+	AUDDBG("returning tuple %p for file %p\n", tu, fd);
+	return tu;
 }
 
 static void
@@ -400,27 +360,16 @@ wv_about_box()
 {
     static GtkWidget *about_window = NULL;
 
-    if (about_window == NULL)
-    {
-        about_window =
-            audacious_info_dialog(g_strdup_printf
-            (_("Wavpack Decoder Plugin %s"), VERSION),
-            (_("Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n\n"
-            "Some of the plugin code was by Miles Egan\n"
-            "Visit the Wavpack site at http://www.wavpack.com/\n")),
-            (_("Ok")), FALSE, NULL, NULL);
-        g_signal_connect(G_OBJECT(about_window), "destroy",
-            G_CALLBACK(gtk_widget_destroyed), &about_window);
-    }
+    audgui_simple_message(&about_window, GTK_MESSAGE_INFO,
+    g_strdup_printf(_("Wavpack Decoder Plugin %s"), VERSION),
+    _("Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n\n"
+    "Some of the plugin code was by Miles Egan\n"
+    "Visit the Wavpack site at http://www.wavpack.com/\n"));
 }
-
-WavPackConfig wv_cfg;
 
 static void
 wv_init(void)
 {
-    memset(&wv_cfg, 0, sizeof(wv_cfg));
-    wv_read_config();
     ctrl_mutex = g_mutex_new();
     ctrl_cond = g_cond_new();
 }
@@ -432,6 +381,11 @@ wv_cleanup(void)
     g_cond_free(ctrl_cond);
 }
 
+static gboolean wv_write_tag (Tuple *tuple, VFSFile *handle)
+{
+    return tag_tuple_write(tuple, handle, TAG_TYPE_APE);
+}
+
 static gchar *wv_fmts[] = { "wv", NULL };
 
 extern PluginPreferences preferences;
@@ -441,17 +395,15 @@ static InputPlugin wvpack = {
     .init = wv_init,
     .cleanup = wv_cleanup,
     .about = wv_about_box,
-    .settings = &preferences,
     .play_file = wv_play,
     .stop = wv_stop,
     .pause = wv_pause,
     .seek = wv_seek,
-    .file_info_box = wv_file_info_box,
-    .get_song_tuple = wv_get_song_tuple,
     .vfs_extensions = wv_fmts,
     .probe_for_tuple = wv_probe_for_tuple,
+    .update_song_tuple = wv_write_tag,
 };
 
 InputPlugin *wv_iplist[] = { &wvpack, NULL };
 
-DECLARE_PLUGIN(wavpack, NULL, NULL, wv_iplist, NULL, NULL, NULL, NULL,NULL);
+SIMPLE_INPUT_PLUGIN(wavpack, wv_iplist);

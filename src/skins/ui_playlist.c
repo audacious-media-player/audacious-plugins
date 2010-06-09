@@ -47,7 +47,6 @@
 #include "ui_main.h"
 #include "ui_manager.h"
 #include "ui_playlist_evlisteners.h"
-#include "ui_playlist_manager.h"
 #include "util.h"
 
 #include "ui_skinned_window.h"
@@ -58,6 +57,8 @@
 
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 #include "images/audacious_playlist.xpm"
 
 gint active_playlist;
@@ -605,7 +606,7 @@ playlistwin_fileinfo(void)
     gint rows, first, focused;
 
     ui_skinned_playlist_row_info (playlistwin_list, & rows, & first, & focused);
-    aud_fileinfo_show (active_playlist, focused);
+    audgui_infowin_show (active_playlist, focused);
 }
 
 static void
@@ -956,32 +957,10 @@ playlistwin_hide_timer(void)
     ui_skinned_textbox_set_text(playlistwin_time_sec, "  ");
 }
 
-void
-playlistwin_set_time(gint time, gint length, TimerMode mode)
+void playlistwin_set_time (const gchar * minutes, const gchar * seconds)
 {
-    gchar *text, sign;
-
-    if (mode == TIMER_REMAINING && length != -1) {
-        time = length - time;
-        sign = '-';
-    }
-    else
-        sign = ' ';
-
-    time /= 1000;
-
-    if (time < 0)
-        time = 0;
-    if (time > 99 * 60)
-        time /= 60;
-
-    text = g_strdup_printf("%c%-2.2d", sign, time / 60);
-    ui_skinned_textbox_set_text(playlistwin_time_min, text);
-    g_free(text);
-
-    text = g_strdup_printf("%-2.2d", time % 60);
-    ui_skinned_textbox_set_text(playlistwin_time_sec, text);
-    g_free(text);
+    ui_skinned_textbox_set_text (playlistwin_time_min, minutes);
+    ui_skinned_textbox_set_text (playlistwin_time_sec, seconds);
 }
 
 static void drag_motion (GtkWidget * widget, GdkDragContext * context, gint x,
@@ -1524,7 +1503,7 @@ void action_playlist_next (void)
 
 void action_playlist_delete (void)
 {
-    confirm_playlist_delete (active_playlist);
+    audgui_confirm_playlist_delete (active_playlist);
 }
 
 void action_playlist_save_list (void)
@@ -1553,7 +1532,7 @@ action_playlist_refresh_list(void)
 void
 action_open_list_manager(void)
 {
-    playlist_manager_ui_show();
+    audgui_playlist_manager_ui_show(mainwin);
 }
 
 void
@@ -1606,26 +1585,4 @@ playlistwin_select_search_kp_cb(GtkWidget *entry, GdkEventKey *event,
         default:
             return FALSE;
     }
-}
-
-static void confirm_delete_cb (GtkDialog * dialog, gint response, void * data)
-{
-    if (response == GTK_RESPONSE_YES && GPOINTER_TO_INT (data) <
-     aud_playlist_count ())
-        aud_playlist_delete (GPOINTER_TO_INT (data));
-
-    gtk_widget_destroy ((GtkWidget *) dialog);
-}
-
-void confirm_playlist_delete (gint playlist)
-{
-    GtkWidget * dialog = gtk_message_dialog_new ((GtkWindow *) mainwin,
-     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT |
-     GTK_DIALOG_NO_SEPARATOR, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, _("Are "
-      "you sure you want to close %s?  If you do, any changes made since the "
-      "playlist was exported will be lost."), aud_playlist_get_title (playlist));
-
-    gtk_widget_show (dialog);
-    g_signal_connect (dialog, "response", (GCallback) confirm_delete_cb,
-     GINT_TO_POINTER (playlist));
 }

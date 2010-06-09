@@ -38,6 +38,8 @@
 
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 #include <SDL.h>
 #include <SDL_thread.h>
 
@@ -268,8 +270,9 @@ pn_xmms_cleanup (void)
 static void
 pn_xmms_about (void)
 {
-  audacious_info_dialog("About Paranormal Visualization Studio", 
-
+  static GtkWidget * aboutbox = NULL;
+  audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
+  "About Paranormal Visualization Studio",
 "Paranormal Visualization Studio " VERSION "\n\n\
 Copyright (C) 2006, William Pitcock <nenolod -at- nenolod.net>\n\
 Portions Copyright (C) 2001, Jamie Gennis <jgennis -at- mindspring.com>\n\
@@ -287,7 +290,7 @@ GNU General Public License for more details.\n\
 You should have received a copy of the GNU General Public License\n\
 along with this program; if not, write to the Free Software\n\
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301\n\
-USA", _("Ok"), FALSE, NULL, NULL);
+USA");
 }
 
 static void

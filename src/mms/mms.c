@@ -91,11 +91,8 @@ mms_aud_vfs_fclose_impl(VFSFile * file)
     return ret;
 }
 
-size_t
-mms_aud_vfs_fread_impl(gpointer ptr,
-          size_t size,
-          size_t nmemb,
-          VFSFile * file)
+gint64 mms_aud_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
+ file)
 {
     MMSHandle *handle;
     gint ret;
@@ -116,13 +113,10 @@ mms_aud_vfs_fread_impl(gpointer ptr,
     return ret;
 }
 
-size_t
-mms_aud_vfs_fwrite_impl(gconstpointer ptr,
-           size_t size,
-           size_t nmemb,
-           VFSFile * file)
+gint64 mms_aud_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
+ VFSFile * file)
 {
-    return -1;
+    return 0;
 }
 
 gint

@@ -340,6 +340,13 @@ mainwin_release_info_text(void)
     }
 }
 
+static gboolean status_message_enabled;
+
+void mainwin_enable_status_message (gboolean enable)
+{
+    status_message_enabled = enable;
+}
+
 static gint status_message_source = 0;
 
 static gboolean clear_status_message (void * unused)
@@ -351,6 +358,9 @@ static gboolean clear_status_message (void * unused)
 
 static void show_status_message (const gchar * message)
 {
+    if (! status_message_enabled)
+        return;
+
     if (status_message_source)
         g_source_remove (status_message_source);
 
@@ -539,66 +549,54 @@ mainwin_refresh_hints(void)
          MAINWIN_HEIGHT * MAINWIN_SCALE_FACTOR);
 }
 
-void
-mainwin_set_song_info(gint bitrate,
-                      gint frequency,
-                      gint n_channels)
+void mainwin_set_song_info (gint bitrate, gint samplerate, gint channels)
 {
-    gchar *bitrate_text, *text;
-    gint pos, playlist;
-    const gchar *quality;
-    const Tuple *tuple;
+    gchar scratch[32];
+    gint length;
 
-    GDK_THREADS_ENTER();
-    if (bitrate != -1) {
-        bitrate /= 1000;
+    if (bitrate > 0)
+    {
+        if (bitrate < 1000000)
+            snprintf (scratch, sizeof scratch, "%3d", bitrate / 1000);
+        else
+            snprintf (scratch, sizeof scratch, "%2dH", bitrate / 100000);
 
-        if (bitrate < 1000) {
-            /* Show bitrate in 1000s */
-            text = g_strdup_printf("%3d", bitrate);
-        }
-        else {
-            /* Show bitrate in 100,000s */
-            text = g_strdup_printf("%2dH", bitrate / 100);
-        }
-        ui_skinned_textbox_set_text(mainwin_rate_text, text);
-        g_free(text);
+        ui_skinned_textbox_set_text (mainwin_rate_text, scratch);
     }
     else
-        ui_skinned_textbox_set_text(mainwin_rate_text, _("VBR"));
+        ui_skinned_textbox_set_text (mainwin_rate_text, "");
 
-    /* Show sampling frequency in kHz */
-    text = g_strdup_printf("%2d", frequency / 1000);
-    ui_skinned_textbox_set_text(mainwin_freq_text, text);
-    g_free(text);
+    if (samplerate > 0)
+    {
+        snprintf (scratch, sizeof scratch, "%2d", samplerate / 1000);
+        ui_skinned_textbox_set_text (mainwin_freq_text, scratch);
+    }
+    else
+        ui_skinned_textbox_set_text (mainwin_freq_text, "");
 
-    ui_skinned_monostereo_set_num_channels(mainwin_monostereo, n_channels);
+    ui_skinned_monostereo_set_num_channels (mainwin_monostereo, channels);
 
-    if (!audacious_drct_get_paused() && mainwin_playstatus != NULL)
-        ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
+    if (bitrate > 0)
+        snprintf (scratch, sizeof scratch, "%d %s", bitrate / 1000, _("kbps"));
+    else
+        scratch[0] = 0;
 
-    if (bitrate == -1)
-        bitrate_text = g_strdup ("VBR");
-    else {
-        playlist = aud_playlist_get_playing();
-        pos = aud_playlist_get_position(playlist);
-        tuple = aud_playlist_entry_get_tuple(playlist, pos);
-        quality = tuple_get_string((Tuple *) tuple, FIELD_QUALITY, NULL);
-
-        if (quality == NULL || g_ascii_strcasecmp("sequenced", quality))
-            bitrate_text = g_strdup_printf ("%d kbps", bitrate);
-        else
-            bitrate_text = g_strdup_printf ("%d channels", bitrate);
+    if (samplerate > 0)
+    {
+        length = strlen (scratch);
+        snprintf (scratch + length, sizeof scratch - length, "%s%d %s", length ?
+         ", " : "", samplerate / 1000, _("kHz"));
     }
 
-    text = g_strdup_printf ("%s, %d kHz, %s", bitrate_text, frequency / 1000,
-     (n_channels > 1) ? _("stereo") : _("mono"));
+    if (channels > 0)
+    {
+        length = strlen (scratch);
+        snprintf (scratch + length, sizeof scratch - length, "%s%s", length ?
+         ", " : "", channels > 2 ? _("surround") : channels > 1 ? _("stereo") :
+         _("mono"));
+    }
 
-    ui_skinned_textbox_set_text (mainwin_othertext, text);
-    g_free (bitrate_text);
-    g_free (text);
-
-    GDK_THREADS_LEAVE();
+    ui_skinned_textbox_set_text (mainwin_othertext, scratch);
 }
 
 void
@@ -679,17 +677,9 @@ mainwin_mouse_button_press(GtkWidget * widget,
                            GdkEventButton * event,
                            gpointer callback_data)
 {
-    if (config.scaled) {
-        /*
-         * A hack to make scaling transparent to callbacks.
-         * We should make a copy of this data instead of
-         * tampering with the data we get from gtk+
-         */
-        event->x /= config.scale_factor;
-        event->y /= config.scale_factor;
-    }
-
-    if (event->button == 1 && event->type == GDK_2BUTTON_PRESS && event->y < 14) {
+    if (event->button == 1 && event->type == GDK_2BUTTON_PRESS && event->y /
+     config.scale_factor < 14)
+    {
         mainwin_set_shade(!config.player_shaded);
         if (dock_is_moving(GTK_WINDOW(mainwin)))
             dock_move_release(GTK_WINDOW(mainwin));
@@ -732,6 +722,12 @@ gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
 
     switch (event->keyval)
     {
+        case GDK_minus:
+            mainwin_set_volume_diff (-5);
+            break;
+        case GDK_plus:
+            mainwin_set_volume_diff (5);
+            break;
         case GDK_Left:
         case GDK_KP_Left:
         case GDK_KP_7:
@@ -1524,7 +1520,7 @@ mainwin_general_menu_callback(gpointer data,
             action_play_location();
             break;
         case MAINWIN_GENERAL_FILEINFO:
-            aud_fileinfo_show_current ();
+            audgui_infowin_show_current ();
             break;
         case MAINWIN_GENERAL_FOCUSPLWIN:
             gtk_window_present(GTK_WINDOW(playlistwin));
@@ -1665,7 +1661,7 @@ mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
                                          UI_SKINNED_MENUROW(mainwin_menurow)->always_selected );
             break;
         case MENUROW_FILEINFOBOX:
-            aud_fileinfo_show_current ();
+            audgui_infowin_show_current ();
             break;
         case MENUROW_SCALE:
             gtk_toggle_action_set_active(
@@ -1769,6 +1765,8 @@ mainwin_setup_menus(void)
     check_set(toggleaction_group_others, "view easy move", config.easy_move);
     check_set(toggleaction_group_others, "view scaled", config.scaled);
 
+    mainwin_enable_status_message (FALSE);
+
     /* Songname menu */
 
     check_set(toggleaction_group_others, "autoscroll songname", config.autoscroll);
@@ -1779,6 +1777,8 @@ mainwin_setup_menus(void)
     check_set(toggleaction_group_others, "playback repeat", aud_cfg->repeat);
     check_set(toggleaction_group_others, "playback shuffle", aud_cfg->shuffle);
     check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
+
+    mainwin_enable_status_message (TRUE);
 
     /* Visualization menu */
 
@@ -1908,7 +1908,7 @@ mainwin_setup_menus(void)
 
 static void mainwin_info_double_clicked_cb (void)
 {
-    aud_fileinfo_show_current ();
+    audgui_infowin_show_current ();
 }
 
 static void mainwin_info_right_clicked_cb(GtkWidget *widget, GdkEventButton
@@ -2237,6 +2237,7 @@ mainwin_create(void)
     show_widgets ();
 
     aud_hook_associate ("show main menu", (HookFunction) show_main_menu, 0);
+    status_message_enabled = TRUE;
 }
 
 static void mainwin_update_volume (void)
@@ -2249,84 +2250,89 @@ static void mainwin_update_volume (void)
     mainwin_set_balance_slider (balance);
 }
 
+static void mainwin_update_time_display (gint time, gint length)
+{
+    gchar scratch[7];
+
+    if (config.timer_mode == TIMER_REMAINING && length > 0)
+    {
+        if (length - time < 6000000)  /* "-MM:SS" */
+            snprintf (scratch, sizeof scratch, "%3d:%02d", (time - length) /
+             60000, (length - time) / 1000 % 60);
+        else                          /* "-HH:MM" */
+            snprintf (scratch, sizeof scratch, "%3d:%02d", (time - length) /
+             3600000, (length - time) / 60000 % 60);
+    }
+    else
+    {
+        if (time < 60000000)  /* MMM:SS */
+            snprintf (scratch, sizeof scratch, "%3d:%02d", time / 60000, time /
+             1000 % 60);
+        else                  /* HHH:MM */
+            snprintf (scratch, sizeof scratch, "%3d:%02d", time / 3600000, time
+             / 60000 % 60);
+    }
+
+    scratch[3] = 0;
+
+    ui_skinned_number_set (mainwin_minus_num, scratch[0]);
+    ui_skinned_number_set (mainwin_10min_num, scratch[1]);
+    ui_skinned_number_set (mainwin_min_num, scratch[2]);
+    ui_skinned_number_set (mainwin_10sec_num, scratch[4]);
+    ui_skinned_number_set (mainwin_sec_num, scratch[5]);
+
+    if (! ((UiSkinnedHorizontalSlider *) mainwin_sposition)->pressed)
+    {
+        ui_skinned_textbox_set_text (mainwin_stime_min, scratch);
+        ui_skinned_textbox_set_text (mainwin_stime_sec, scratch + 4);
+    }
+
+    playlistwin_set_time (scratch, scratch + 4);
+}
+
+static void mainwin_update_time_slider (gint time, gint length)
+{
+    show_hide_widget (mainwin_position, length > 0);
+    show_hide_widget (mainwin_sposition, length > 0);
+
+    if (length > 0 && seek_source == 0)
+    {
+        if (time < length)
+        {
+            ui_skinned_horizontal_slider_set_position (mainwin_position, time *
+             (gint64) 219 / length);
+            ui_skinned_horizontal_slider_set_position (mainwin_sposition, 1 +
+             time * (gint64) 12 / length);
+        }
+        else
+        {
+            ui_skinned_horizontal_slider_set_position (mainwin_position, 219);
+            ui_skinned_horizontal_slider_set_position (mainwin_sposition, 13);
+        }
+    }
+}
+
 void mainwin_update_song_info (void)
 {
+    gint time, length;
+
     mainwin_update_volume ();
 
     if (! audacious_drct_get_playing ())
         return;
 
-    gint time = audacious_drct_get_time();
-    gint length = audacious_drct_get_length();
-    gint t;
-    gchar stime_prefix;
+    time = audacious_drct_get_time ();
+    length = audacious_drct_get_length ();
 
-    show_hide_widget (mainwin_position, length > 0);
-    show_hide_widget (mainwin_sposition, length > 0);
-
-    if (ab_position_a != -1 && ab_position_b != -1 && time > ab_position_b)
+    /* Ugh, this does NOT belong here. -jlindgren */
+    if (ab_position_a > -1 && ab_position_b > -1 && time >= ab_position_b)
+    {
         audacious_drct_seek (ab_position_a);
-
-    playlistwin_set_time(time, length, config.timer_mode);
-
-    if (config.timer_mode == TIMER_REMAINING) {
-        if (length != -1) {
-            ui_skinned_number_set_number(mainwin_minus_num, 11);
-            t = length - time;
-            stime_prefix = '-';
-        }
-        else {
-            ui_skinned_number_set_number(mainwin_minus_num, 10);
-            t = time;
-            stime_prefix = ' ';
-        }
-    }
-    else {
-        ui_skinned_number_set_number(mainwin_minus_num, 10);
-        t = time;
-        stime_prefix = ' ';
-    }
-    t /= 1000;
-
-    /* Show the time in the format HH:MM when we have more than 100
-     * minutes. */
-    if (t >= 100 * 60)
-        t /= 60;
-    ui_skinned_number_set_number(mainwin_10min_num, t / 600);
-    ui_skinned_number_set_number(mainwin_min_num, (t / 60) % 10);
-    ui_skinned_number_set_number(mainwin_10sec_num, (t / 10) % 6);
-    ui_skinned_number_set_number(mainwin_sec_num, t % 10);
-
-    if (!UI_SKINNED_HORIZONTAL_SLIDER(mainwin_sposition)->pressed) {
-        gchar *time_str;
-
-        time_str = g_strdup_printf("%c%2.2d", stime_prefix, t / 60);
-        ui_skinned_textbox_set_text(mainwin_stime_min, time_str);
-        g_free(time_str);
-
-        time_str = g_strdup_printf("%2.2d", t % 60);
-        ui_skinned_textbox_set_text(mainwin_stime_sec, time_str);
-        g_free(time_str);
+        return;
     }
 
-    if (length > 0) {
-        if (time > length) {
-            ui_skinned_horizontal_slider_set_position(mainwin_position, 219);
-            ui_skinned_horizontal_slider_set_position(mainwin_sposition, 13);
-        }
-        /* update the slider position ONLY if there is not a seek in progress */
-        else if (seek_source == 0)
-        {
-            ui_skinned_horizontal_slider_set_position (mainwin_position,
-             (gint64) time * 219 / length);
-            ui_skinned_horizontal_slider_set_position(mainwin_sposition,
-                                                      ((time * 12) / length) + 1);
-        }
-    }
-    else {
-        ui_skinned_horizontal_slider_set_position(mainwin_position, 0);
-        ui_skinned_horizontal_slider_set_position(mainwin_sposition, 1);
-    }
+    mainwin_update_time_display (time, length);
+    mainwin_update_time_slider (time, length);
 }
 
 /* toggleactionentries actions */
@@ -2348,6 +2354,11 @@ void
 action_playback_noplaylistadvance( GtkToggleAction * action )
 {
     aud_cfg->no_playlist_advance = gtk_toggle_action_get_active( action );
+
+    if (aud_cfg->no_playlist_advance)
+        show_status_message (_("Single mode."));
+    else
+        show_status_message (_("Playlist mode."));
 }
 
 void
@@ -2561,7 +2572,7 @@ action_ab_clear( void )
 void
 action_current_track_info( void )
 {
-    aud_fileinfo_show_current ();
+    audgui_infowin_show_current ();
 }
 
 void

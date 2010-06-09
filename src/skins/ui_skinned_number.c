@@ -255,14 +255,15 @@ static void ui_skinned_number_toggle_scaled(UiSkinnedNumber *number) {
         ui_skinned_number_expose (widget, 0);
 }
 
-void ui_skinned_number_set_number(GtkWidget *widget, gint num) {
-    g_return_if_fail(UI_SKINNED_IS_NUMBER(widget));
-    UiSkinnedNumber *number = UI_SKINNED_NUMBER (widget);
+void ui_skinned_number_set (GtkWidget * widget, gchar c)
+{
+    UiSkinnedNumber * number = (UiSkinnedNumber *) widget;
+    gint value = (c >= '0' && c <= '9') ? c - '0' : (c == '-') ? 11 : 10;
 
-    if (number->num == num)
-         return;
+    if (number->num == value)
+        return;
 
-    number->num = num;
+    number->num = value;
 
     if (widget_really_drawable (widget))
         ui_skinned_number_expose (widget, 0);

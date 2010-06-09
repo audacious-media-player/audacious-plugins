@@ -39,12 +39,12 @@ static gchar *path;
 int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 {
 	guchar *filebuf;
-	gsize size;
+	gint64 size;
 	char buf[PATH_MAX];
 
 	snprintf(buf, PATH_MAX, "%s/%s", dirname(path), filename);
 
-	aud_vfs_file_get_contents(buf, (gchar **) &filebuf, &size);
+	aud_vfs_file_get_contents (buf, & filebuf, & size);
 
 	*buffer = filebuf;
 	*length = (uint64)size;
@@ -58,9 +58,9 @@ Tuple *xsf_tuple(const gchar *filename)
 	Tuple *t;
 	corlett_t *c;
 	guchar *buf;
-	gsize sz;
+	gint64 sz;
 
-	aud_vfs_file_get_contents(filename, (gchar **) &buf, &sz);
+	aud_vfs_file_get_contents (filename, & buf, & sz);
 
 	if (!buf)
 		return NULL;
@@ -111,7 +111,7 @@ void xsf_update(unsigned char *buffer, long count, InputPlayback *playback);
 void xsf_play(InputPlayback *data)
 {
 	guchar *buffer;
-	gsize size;
+	gint64 size;
 	gint length;
 	gchar *title = xsf_title(data->filename, &length);
 	gint16 samples[44100*2];
@@ -119,7 +119,7 @@ void xsf_play(InputPlayback *data)
 	gfloat pos;
 
 	path = g_strdup(data->filename);
-	aud_vfs_file_get_contents(data->filename, (gchar **) &buffer, &size);
+	aud_vfs_file_get_contents (data->filename, & buffer, & size);
 
 	if (xsf_start(buffer, size) != AO_SUCCESS)
 	{

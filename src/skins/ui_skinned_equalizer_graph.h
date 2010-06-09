@@ -34,8 +34,6 @@
 extern "C" {
 #endif
 
-#define EQUALIZER_MAX_GAIN 12.0
-
 #define UI_SKINNED_EQUALIZER_GRAPH(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_equalizer_graph_get_type (), UiSkinnedEqualizerGraph)
 #define UI_SKINNED_EQUALIZER_GRAPH_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_equalizer_graph_get_type (), UiSkinnedEqualizerGraphClass)
 #define UI_SKINNED_IS_EQUALIZER_GRAPH(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_equalizer_graph_get_type ())

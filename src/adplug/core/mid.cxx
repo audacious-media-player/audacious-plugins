@@ -25,43 +25,12 @@
  *      .LAA - a raw save of a Lucas Arts Adlib music
  *             or
  *             a raw save of a LucasFilm Adlib music
- *      .CMF - Creative Music Format
  *      .SCI - the sierra "midi" format.
  *             Files must be in the form
  *             xxxNAME.sci
  *             So that the loader can load the right patch file:
  *             xxxPATCH.003  (patch.003 must be saved from the
  *                            sierra resource from each game.)
- *
- * 1/9/2006: audacious libadplug
- *      Status:  MID not as fine as originally thought. Removing general MIDI detector so timidity handles these files instead.
- *      
- * 6/2/2000:  v1.0 relased by phil hassey
- *      Status:  LAA is almost perfect
- *                      - some volumes are a bit off (intrument too quiet)
- *               MID is fine (who wants to listen to MIDI vid adlib anyway)
- *               CMF is okay (still needs the adlib rythm mode implemented
- *                            for real)
- * 6/6/2000:
- *      Status:  SCI:  there are two SCI formats, orginal and advanced.
- *                    original:  (Found in SCI/EGA Sierra Adventures)
- *                               played almost perfectly, I believe
- *                               there is one mistake in the instrument
- *                               loader that causes some sounds to
- *                               not be quite right.  Most sounds are fine.
- *                    advanced:  (Found in SCI/VGA Sierra Adventures)
- *                               These are multi-track files.  (Thus the
- *                               player had to be modified to work with
- *                               them.)  This works fine.
- *                               There are also multiple tunes in each file.
- *                               I think some of them are supposed to be
- *                               played at the same time, but I'm not sure
- *                               when.
- * 8/16/2000:
- *      Status:  LAA: now EGA and VGA lucas games work pretty well
- *
- * 10/15/2005: Changes by Simon Peter
- *	Added rhythm mode support for CMF format.
  *
  * Other acknowledgements:
  *  Allegro - for the midi instruments and the midi volume table
@@ -321,10 +290,6 @@ CmidPlayer::load (VFSFile * fd, const CFileProvider & fp)
   case 'A':
     if (s[1] == 'D' && s[2] == 'L')
       good = FILE_LUCAS;
-    break;
-  case 'C':
-    if (s[1] == 'T' && s[2] == 'M' && s[3] == 'F')
-      good = FILE_CMF;
     break;
   case 0x84:
     if (s[1] == 0x00 && load_sierra_ins (filename, fp))
@@ -935,7 +900,7 @@ CmidPlayer::getrefresh ()
 void
 CmidPlayer::rewind (int subsong)
 {
-  long i, j, n, m, l;
+  long i, j, l;
   long o_sierra_pos;
   unsigned char ins[16];
 
@@ -1004,55 +969,6 @@ CmidPlayer::rewind (int subsong)
     track[curtrack].tend = getnext (4);
     track[curtrack].spos = pos;
     midiprintf ("tracklen:%ld\n", track[curtrack].tend);
-    break;
-  case FILE_CMF:
-    getnext (3);                // ctmf
-    getnexti (2);               //version
-    n = getnexti (2);           // instrument offset
-    m = getnexti (2);           // music offset
-    deltas = getnexti (2);      //ticks/qtr note
-    msqtr = 1000000 / getnexti (2) * deltas;
-    //the stuff in the cmf is click ticks per second..
-
-    i = getnexti (2);
-    if (i)
-      title = (char *) data + i;
-    i = getnexti (2);
-    if (i)
-      author = (char *) data + i;
-    i = getnexti (2);
-    if (i)
-      remarks = (char *) data + i;
-
-    getnext (16);               // channel in use table ..
-    i = getnexti (2);           // num instr
-    if (i > 128)
-      i = 128;                  // to ward of bad numbers...
-    getnexti (2);               //basic tempo
-
-    midiprintf ("\nioff:%d\nmoff%d\ndeltas:%ld\nmsqtr:%ld\nnumi:%d\n",
-                n, m, deltas, msqtr, i);
-    pos = n;                    // jump to instruments
-    tins = i;
-    for (j = 0; j < i; j++)
-    {
-      midiprintf ("\n%d: ", j);
-      for (l = 0; l < 16; l++)
-      {
-        myinsbank[j][l] = (unsigned char) getnext (1);
-        midiprintf ("%2X ", myinsbank[j][l]);
-      }
-    }
-
-    for (i = 0; i < 16; i++)
-      ch[i].nshift = -13;
-
-    adlib_style = CMF_STYLE;
-
-    curtrack = 0;
-    track[curtrack].on = 1;
-    track[curtrack].tend = flen;    // music until the end of the file
-    track[curtrack].spos = m;   //jump to midi music
     break;
   case FILE_OLDLUCAS:
     msqtr = 250000;
@@ -1177,8 +1093,6 @@ std::string CmidPlayer::gettype ()
     return std::string ("LucasArts AdLib MIDI");
   case FILE_MIDI:
     return std::string ("General MIDI");
-  case FILE_CMF:
-    return std::string ("Creative Music Format (CMF MIDI)");
   case FILE_OLDLUCAS:
     return std::string ("Lucasfilm Adlib MIDI");
   case FILE_ADVSIERRA:

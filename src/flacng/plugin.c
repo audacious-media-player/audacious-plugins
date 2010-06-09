@@ -20,6 +20,9 @@
 #include "flacng.h"
 #include <audacious/output.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 #include "tools.h"
 #include "plugin.h"
 #include "seekable_stream_callbacks.h"
@@ -37,7 +40,7 @@ InputPlugin flac_ip = {
     .stop = flac_stop,
     .pause = flac_pause,
     .seek = flac_seek,
-    .get_song_tuple = flac_get_song_tuple,	// get a tuple
+    .probe_for_tuple = flac_probe_for_tuple,
     .is_our_file_from_vfs = flac_is_our_fd,	// version of is_our_file which is handed an FD
     .vfs_extensions = flac_fmts			// vector of fileextensions allowed by the plugin
 };
@@ -312,8 +315,6 @@ static gpointer flac_play_loop(gpointer arg)
     stream_info.channels = main_info->stream.channels;
     main_info->metadata_changed = FALSE;
 
-    ReplayGainInfo rg_info = get_replay_gain(main_info);
-    playback->set_replaygain_info(playback, &rg_info);
 
     if (!playback->output->open_audio(SAMPLE_FMT(main_info->stream.bits_per_sample),
                                       main_info->stream.samplerate,
@@ -324,6 +325,9 @@ static gpointer flac_play_loop(gpointer arg)
         _ERROR("Could not open output plugin!");
         _LEAVE NULL;
     }
+    
+    playback->set_gain_from_playlist(playback);
+
 
     while (TRUE == playback->playing) {
 
@@ -424,12 +428,7 @@ static gpointer flac_play_loop(gpointer arg)
 
             _DEBUG("Copying %d samples to output plugin", sample_count);
 
-            playback->pass_audio(playback,
-                                 SAMPLE_FMT(main_info->stream.bits_per_sample),
-                                 main_info->stream.channels,
-                                 sample_count * SAMPLE_SIZE(main_info->stream.bits_per_sample),
-                                 play_buffer,
-                                 NULL);
+            playback->output->write_audio(play_buffer, sample_count * SAMPLE_SIZE(main_info->stream.bits_per_sample));
 
             read_pointer += sample_count;
             elements_left -= sample_count;
@@ -487,7 +486,6 @@ static gpointer flac_play_loop(gpointer arg)
 void flac_play_file(InputPlayback *playback)
 {
     VFSFile *fd;
-    Tuple *tuple;
 
     _ENTER;
 
@@ -509,16 +507,13 @@ void flac_play_file(InputPlayback *playback)
         _ERROR("Could not prepare file for playing!");
         _LEAVE;
     }
-    else
-        tuple = get_tuple(fd, main_info);
-
 
     seek_value = -1;
     pause_flag = FALSE;
     playback->playing = TRUE;
 
-    playback->set_tuple(playback, tuple);
-    playback->set_params(playback, NULL, 0, -1, main_info->stream.samplerate, main_info->stream.channels);
+    playback->set_params (playback, NULL, 0, main_info->bitrate,
+     main_info->stream.samplerate, main_info->stream.channels);
     playback->set_pb_ready(playback);
 
     flac_play_loop(playback);
@@ -580,27 +575,18 @@ static void flac_seek(InputPlayback *playback, gint time)
 
 /* --- */
 
-static Tuple *flac_get_song_tuple(const gchar* filename)
+static Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
-    VFSFile *fd;
-    Tuple * tuple = NULL;
+    Tuple *tuple = NULL;
 
     _ENTER;
 
     _DEBUG("Testing file: %s", filename);
-    /*
-     * Open the file
-     */
-
-    if (NULL == (fd = aud_vfs_fopen(filename, "rb"))) {
-        _ERROR("Could not open file for reading! (%s)", filename);
-        _LEAVE NULL;
-    }
 
     INFO_LOCK(test_info);
 
     if (read_metadata(fd, test_decoder, test_info))
-        tuple = get_tuple(fd, test_info);
+        tuple = get_tuple_from_file(filename, fd, test_info);
     else
         _ERROR ("Could not read metadata tuple for file <%s>", filename);
 
@@ -628,11 +614,8 @@ static void flac_aboutbox(void)
                                "\n"
                                "http://www.skytale.net/projects/bmp-flac2/"), NULL);
 
-    about_window = audacious_info_dialog(_("About FLAC Audio Plugin"),
-                                     about_text,
-                                     _("OK"), FALSE, NULL, NULL);
+    audgui_simple_message (& about_window, GTK_MESSAGE_INFO,
+     _("About FLAC Audio Plugin"), about_text);
 
-    g_signal_connect(G_OBJECT(about_window), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed), &about_window);
     g_free(about_text);
 }

@@ -22,9 +22,11 @@
 #include "si_audacious.h"
 #include "si_cfg.h"
 #include "si_common.h"
-#include <audacious/ui_fileinfopopup.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 #include <glib.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
@@ -34,9 +36,13 @@ static void si_ui_statusicon_popup_timer_start ( GtkStatusIcon * );
 static void si_ui_statusicon_popup_timer_stop ( GtkStatusIcon * );
 static void si_ui_statusicon_smallmenu_show ( gint x, gint y, guint button, guint32 time , gpointer );
 static void si_ui_statusicon_smallmenu_recreate ( GtkStatusIcon * );
+static void si_ui_statusicon_popup_hide ( gpointer icon );
 
 extern si_cfg_t si_cfg;
 static gboolean recreate_smallmenu = FALSE;
+static gint last_x = -1;
+static gint last_y = -1;
+static gint popup_step = 0;
 
 
 /* this stuff required to make titlechange hook work properly */
@@ -56,8 +62,9 @@ si_ui_statusicon_create ( void )
     GtkIconTheme *theme;
 
     theme = gtk_icon_theme_get_default();
-    if (gtk_icon_theme_has_icon(theme, "audacious"))
-    {
+    if (gtk_icon_theme_has_icon(theme, "audacious-panel")) {
+        icon = gtk_status_icon_new_from_icon_name("audacious-panel");
+    } else if (gtk_icon_theme_has_icon(theme, "audacious")) {
         icon = gtk_status_icon_new_from_icon_name("audacious");
     } else {
         icon = gtk_status_icon_new_from_file(DATA_DIR "/images/audacious_player.xpm");
@@ -89,6 +96,14 @@ si_ui_statusicon_cb_btpress ( GtkStatusIcon * icon , GdkEventButton * event , gp
 
     case 3:
     {
+      if (GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "popup_active" )) == 1)
+      {
+        popup_step = 1;
+
+        si_ui_statusicon_popup_hide( icon );
+        si_ui_statusicon_popup_timer_start( icon );
+      }
+
       if (event->state & GDK_SHIFT_MASK)
         audacious_drct_pl_prev();
       else{
@@ -157,30 +172,56 @@ si_ui_statusicon_cb_btscroll ( GtkStatusIcon * icon , GdkEventScroll * event , g
 static gboolean
 si_ui_statusicon_popup_show ( gpointer icon )
 {
-  if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(icon) , "timer_active" )) == 1 )
-  {
-    Tuple *tuple;
-    gint pl_active = aud_playlist_get_active();
-    gint pos = aud_playlist_get_position(pl_active);
-    GtkWidget *popup = g_object_get_data( G_OBJECT(icon) , "popup" );
+    if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(icon) , "timer_active" )) == 1 ) {
+        switch (popup_step) {
+        case 0:
+            {
+                gint pl_active = aud_playlist_get_active();
+                gint pos = aud_playlist_get_position(pl_active);
 
-    tuple = (Tuple*) aud_playlist_entry_get_tuple( pl_active , pos );
-    if ( ( tuple == NULL ) || ( aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) < 1 ) )
-    {
-      gchar *title = (gchar*) aud_playlist_entry_get_title( pl_active , pos );
-      audacious_fileinfopopup_show_from_title( popup , title );
-      g_free( title );
+                GdkDisplay *display = gdk_display_get_default();
+                GdkScreen *screen = gdk_display_get_default_screen(display);
+                GdkRectangle area;
+                gint x, y;
+                gtk_status_icon_get_geometry(icon, &screen, &area, NULL);
+                gdk_display_get_pointer(display, &screen, &x, &y, NULL);
+
+                if (x < area.x || x > area.x + area.width || y < area.y || y > area.y + area.width)
+                {
+                    si_ui_statusicon_popup_timer_stop(icon);
+                    si_ui_statusicon_popup_hide(icon);
+
+                    return TRUE;
+                }
+
+                audgui_infopopup_show (pl_active, pos);
+                g_object_set_data( G_OBJECT(icon) , "popup_active" , GINT_TO_POINTER(1) );
+                break;
+            }
+        case 2:
+            {
+                last_x = -1;
+                last_y = -1;
+                GdkDisplay *display = gdk_display_get_default();
+                gtk_tooltip_trigger_tooltip_query(display);
+                break;
+            }
+        default:
+            {
+                if (popup_step >= 3) {
+                    popup_step = 1;
+                    if (last_x<0 || last_y<0) {
+                        si_ui_statusicon_popup_hide(icon);
+                        si_ui_statusicon_popup_timer_stop(icon);
+                        return FALSE;
+                    }
+                }
+                break;
+            }
+        }
     }
-    else
-    {
-      audacious_fileinfopopup_show_from_tuple( popup , tuple );
-    }
-
-    g_object_set_data( G_OBJECT(icon) , "popup_active" , GINT_TO_POINTER(1) );
-  }
-
-  si_ui_statusicon_popup_timer_stop( icon );
-  return FALSE;
+    popup_step += 1;
+    return TRUE;
 }
 
 
@@ -189,9 +230,8 @@ si_ui_statusicon_popup_hide ( gpointer icon )
 {
   if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(icon) , "popup_active" )) == 1 )
   {
-    GtkWidget *popup = g_object_get_data( G_OBJECT(icon) , "popup" );
     g_object_set_data( G_OBJECT(icon) , "popup_active" , GINT_TO_POINTER(0) );
-    audacious_fileinfopopup_hide( popup , NULL );
+    audgui_infopopup_hide ();
   }
 }
 
@@ -200,6 +240,7 @@ static void
 si_ui_statusicon_popup_timer_start ( GtkStatusIcon * icon )
 {
   gint timer_id = g_timeout_add( 500 , si_ui_statusicon_popup_show , icon );
+  popup_step = 0;
   g_object_set_data( G_OBJECT(icon) , "timer_id" , GINT_TO_POINTER(timer_id) );
   g_object_set_data( G_OBJECT(icon) , "timer_active" , GINT_TO_POINTER(1) );
   return;
@@ -215,6 +256,19 @@ si_ui_statusicon_popup_timer_stop ( GtkStatusIcon * icon )
   g_object_set_data( G_OBJECT(icon) , "timer_id" , GINT_TO_POINTER(0) );
   g_object_set_data( G_OBJECT(icon) , "timer_active" , GINT_TO_POINTER(0) );
   return;
+}
+
+
+static gboolean
+si_ui_statusicon_cb_tooltip(GtkStatusIcon *icon , gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip, gpointer user_data) {
+    if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(icon), "popup_active" )) == 0 ) {
+        if ( GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon),"timer_active")) == 0 ) {
+            si_ui_statusicon_popup_timer_start( icon );
+        }
+    }
+    last_x = x;
+    last_y = y;
+    return FALSE;
 }
 
 
@@ -234,8 +288,8 @@ static void
 si_ui_statusicon_cb_aud_hook_tchange ( gpointer plentry_gp , gpointer prevs_gp )
 {
   si_aud_hook_tchange_prevs_t *prevs = prevs_gp;
-  gint pl_entry = GPOINTER_TO_INT(plentry_gp);
   gint playlist = aud_playlist_get_active();
+  gint pl_entry = aud_playlist_get_position(playlist);
   gboolean upd_pop = FALSE;
 
   if (pl_entry >= 0)
@@ -263,6 +317,7 @@ si_ui_statusicon_cb_aud_hook_tchange ( gpointer plentry_gp , gpointer prevs_gp )
         /* if filename changes, reset title as well */
         g_free(prevs->title);
         prevs->title = g_strdup(pl_entry_title);
+        upd_pop = TRUE;
       }
     }
     else
@@ -383,7 +438,6 @@ si_ui_statusicon_enable ( gboolean enable )
 
   if (( enable == TRUE ) && ( si_applet == NULL ))
   {
-    GtkWidget *si_popup;
     GtkWidget *si_smenu;
 
     si_applet = si_ui_statusicon_create();
@@ -393,19 +447,19 @@ si_ui_statusicon_enable ( gboolean enable )
       return;
     }
 
-    si_popup = audacious_fileinfopopup_create();
-
     g_object_set_data( G_OBJECT(si_applet) , "timer_id" , GINT_TO_POINTER(0) );
     g_object_set_data( G_OBJECT(si_applet) , "timer_active" , GINT_TO_POINTER(0) );
 
     g_object_set_data( G_OBJECT(si_applet) , "popup_active" , GINT_TO_POINTER(0) );
-    g_object_set_data( G_OBJECT(si_applet) , "popup" , si_popup );
 
     g_signal_connect( G_OBJECT(si_applet) , "button-release-event" ,
                       G_CALLBACK(si_ui_statusicon_cb_btpress) , NULL );
     g_signal_connect( G_OBJECT(si_applet) , "scroll-event" ,
                       G_CALLBACK(si_ui_statusicon_cb_btscroll) , NULL );
+    g_signal_connect( G_OBJECT(si_applet) , "query-tooltip" ,
+                      G_CALLBACK(si_ui_statusicon_cb_tooltip) , NULL );
 
+    gtk_status_icon_set_has_tooltip( si_applet, TRUE );
     gtk_status_icon_set_visible(si_applet, TRUE);
 
     /* small menu that can be used in place of the audacious standard one */
@@ -417,7 +471,7 @@ si_ui_statusicon_enable ( gboolean enable )
     si_aud_hook_tchange_prevs->title = NULL;
     si_aud_hook_tchange_prevs->filename = NULL;
     si_aud_hook_tchange_prevs->applet = si_applet;
-    aud_hook_associate( "playlist set info" , si_ui_statusicon_cb_aud_hook_tchange , si_aud_hook_tchange_prevs );
+    aud_hook_associate( "title change" , si_ui_statusicon_cb_aud_hook_tchange , si_aud_hook_tchange_prevs );
 
     return;
   }
@@ -428,7 +482,7 @@ si_ui_statusicon_enable ( gboolean enable )
       GtkWidget *si_smenu = g_object_get_data( G_OBJECT(si_applet) , "smenu" );
       si_ui_statusicon_popup_timer_stop( si_applet ); /* just in case the timer is active */
       aud_hook_dissociate( "playback begin" , si_ui_statusicon_cb_aud_hook_pbstart );
-      aud_hook_dissociate( "playlist set info" , si_ui_statusicon_cb_aud_hook_tchange );
+      aud_hook_dissociate( "title change" , si_ui_statusicon_cb_aud_hook_tchange );
       if ( si_aud_hook_tchange_prevs->title != NULL ) g_free( si_aud_hook_tchange_prevs->title );
       if ( si_aud_hook_tchange_prevs->filename != NULL ) g_free( si_aud_hook_tchange_prevs->filename );
       g_free( si_aud_hook_tchange_prevs );
@@ -461,13 +515,10 @@ si_ui_about_show ( void )
                    "This plugin provides a status icon, placed in\n"
                    "the system tray area of the window manager.\n") , NULL );
 
-  about_dlg = audacious_info_dialog( about_title , about_text , _("Ok") , FALSE , NULL , NULL );
-  g_signal_connect( G_OBJECT(about_dlg) , "destroy" ,
-                    G_CALLBACK(gtk_widget_destroyed), &about_dlg );
+  audgui_simple_message (& about_dlg, GTK_MESSAGE_INFO, about_title, about_text);
+
   g_free( about_text );
   g_free( about_title );
-
-  gtk_widget_show_all( about_dlg );
   return;
 }
 

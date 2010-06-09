@@ -74,9 +74,11 @@ void insert_drag_list(gint playlist, gint position, const gchar *list);
 void open_drag_list (const gchar * list);
 void resize_window(GtkWidget *window, gint width, gint height);
 gboolean widget_really_drawable (GtkWidget * widget);
+void widget_destroy_on_escape (GtkWidget * widget);
 
 void check_set (GtkActionGroup * action_group, const gchar * action_name,
  gboolean is_on);
+void check_button_toggled (GtkToggleButton * button, void * data);
 
 G_END_DECLS
 #endif

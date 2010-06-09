@@ -26,15 +26,17 @@
 
 VFSFile *(*vfs_fopen_impl)(const gchar *path, const gchar *mode) = NULL;
 gint (*vfs_fclose_impl)(VFSFile * file) = NULL;
-gsize (*vfs_fread_impl)(gpointer ptr, gsize size, gsize nmemb, VFSFile *file) = NULL;
-gsize (*vfs_fwrite_impl)(gconstpointer ptr, gsize size, gsize nmemb, VFSFile *file) = NULL;
+gint64 (* vfs_fread_impl) (void * ptr, gint64 size, gint64 nmemb, VFSFile *
+ file) = NULL;
+gint64 (* vfs_fwrite_impl) (const void * ptr, gint64 size, gint64 nmemb,
+ VFSFile * file) = NULL;
 gint (*vfs_getc_impl)(VFSFile *stream) = NULL;
 gint (*vfs_ungetc_impl)(gint c, VFSFile *stream) = NULL;
 gint (*vfs_fseek_impl)(VFSFile *file, glong offset, gint whence) = NULL;
 void (*vfs_rewind_impl)(VFSFile *file) = NULL;
 glong (*vfs_ftell_impl)(VFSFile *file) = NULL;
 gboolean (*vfs_feof_impl)(VFSFile *file) = NULL;
-gboolean (*vfs_truncate_impl)(VFSFile *file, glong length) = NULL;
+gint (* vfs_ftruncate_impl) (VFSFile * file, gint64 length) = NULL;
 off_t (*vfs_fsize_impl)(VFSFile *file) = NULL;
 
 VFSFile *
@@ -59,8 +61,7 @@ vt_vfs_fclose_impl(VFSFile *file)
     return ret;
 }
 
-gsize
-vt_vfs_fread_impl(gpointer ptr, gsize size, gsize nmemb, VFSFile *file)
+gint64 vt_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile * file)
 {
     gsize ret;
 
@@ -71,8 +72,8 @@ vt_vfs_fread_impl(gpointer ptr, gsize size, gsize nmemb, VFSFile *file)
     return ret;
 }
 
-gsize
-vt_vfs_fwrite_impl(gconstpointer ptr, gsize size, gsize nmemb, VFSFile *file)
+gint64 vt_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
+ VFSFile * file)
 {
     gsize ret;
 
@@ -145,12 +146,11 @@ vt_vfs_feof_impl(VFSFile *file)
     return ret;
 }
 
-gboolean
-vt_vfs_truncate_impl(VFSFile *file, glong length)
+gint vt_vfs_ftruncate_impl (VFSFile * file, gint64 length)
 {
     gboolean ret;
 
-    ret = vfs_truncate_impl(file, length);
+    ret = vfs_ftruncate_impl (file, length);
     g_print("%p truncate    : length:%ld : ret:%d\n", file, length, ret);
 
     return ret;
@@ -180,7 +180,7 @@ patch_vfs(void)
     vfs_rewind_impl = aud_vfs_rewind;
     vfs_ftell_impl = aud_vfs_ftell;
     vfs_feof_impl = aud_vfs_feof;
-    vfs_truncate_impl = aud_vfs_truncate;
+    vfs_ftruncate_impl = aud_vfs_ftruncate;
     vfs_fsize_impl = aud_vfs_fsize;
 
     aud_vfs_fopen = vt_vfs_fopen_impl;
@@ -193,7 +193,7 @@ patch_vfs(void)
     aud_vfs_rewind = vt_vfs_rewind_impl;
     aud_vfs_ftell = vt_vfs_ftell_impl;
     aud_vfs_feof = vt_vfs_feof_impl;
-    aud_vfs_truncate = vt_vfs_truncate_impl;
+    aud_vfs_ftruncate = vt_vfs_ftruncate_impl;
     aud_vfs_fsize = vt_vfs_fsize_impl;
 }
 
@@ -210,7 +210,7 @@ unpatch_vfs(void)
     aud_vfs_rewind = vfs_rewind_impl;
     aud_vfs_ftell = vfs_ftell_impl;
     aud_vfs_feof = vfs_feof_impl;
-    aud_vfs_truncate = vfs_truncate_impl;
+    aud_vfs_ftruncate = vfs_ftruncate_impl;
     aud_vfs_fsize = vfs_fsize_impl;
 }
 

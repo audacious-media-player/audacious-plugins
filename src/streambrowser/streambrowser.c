@@ -22,6 +22,8 @@
 #include <glib.h>
 #include <audacious/plugin.h>
 #include <audacious/ui_plugin_menu.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "streambrowser.h"
 #include "streamdir.h"
@@ -317,32 +319,18 @@ static void sb_init ()
     gui_init ();
 }
 
-static void sb_about ()
+static void sb_about (void)
 {
-    AUDDBG("sb_about()\n");
+    static GtkWidget * about_window = NULL;
 
-    static GtkWidget *about_window = NULL;
-
-    if (about_window != NULL)
-    {
-        gtk_window_present (GTK_WINDOW (about_window));
-    }
-    else
-    {
-        about_window =
-            audacious_info_dialog (_("About Stream Browser"),
-                                   _
-                                   ("Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
-                                    "This is a simple stream browser that includes the most popular streaming directories.\n"
-                                    "Many thanks to the Streamtuner developers <http://www.nongnu.org/streamtuner>,\n"
-                                    "\tand of course to the whole Audacious community.\n\n"
-                                    "Also thank you Tony Vroon for mentoring & guiding me, again.\n\n"
-                                    "This was a Google Summer of Code 2008 project."),
-                                   _("OK"), FALSE, NULL, NULL);
-
-        g_signal_connect (G_OBJECT (about_window), "destroy",
-                          G_CALLBACK (gtk_widget_destroyed), &about_window);
-    }
+    audgui_simple_message (& about_window, GTK_MESSAGE_INFO,
+     _("About Stream Browser"),
+     _("Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
+     "This is a simple stream browser that includes the most popular streaming directories.\n"
+     "Many thanks to the Streamtuner developers <http://www.nongnu.org/streamtuner>,\n"
+     "\tand of course to the whole Audacious community.\n\n"
+     "Also thank you Tony Vroon for mentoring & guiding me, again.\n\n"
+     "This was a Google Summer of Code 2008 project."));
 }
 
 static void sb_configure ()
@@ -519,6 +507,19 @@ static gpointer update_thread_core (gpointer user_data)
     /* repetitively process the queue elements, until queue is empty */
     while (data != NULL && g_queue_get_length (update_thread_data_queue) > 0)
     {
+        if (data->streamdir && !streamdir_is_valid(data->streamdir)) {
+            g_free(data);
+            g_mutex_lock(update_thread_mutex);
+            /* remove the just processed data from the queue */
+            g_queue_pop_head(update_thread_data_queue);
+            /* try to get the last item in the queue */
+            if (g_queue_get_length(update_thread_data_queue) > 0)
+                data = g_queue_peek_head(update_thread_data_queue);
+            else
+                data = NULL;
+            g_mutex_unlock(update_thread_mutex);
+            continue;
+        }
         /* update a streaminfo */
         if (data->streaminfo != NULL)
         {

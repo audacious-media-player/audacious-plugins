@@ -30,7 +30,7 @@ if [ "x$2" = "x--automatic" ]; then
 	AUTOMATIC="yes"
 fi
 
-TIP=`hg tip --template "#rev#:#node|short#"`
+TIP=`hg tip --template "{rev}:{node|short}"`
 
 WRKDIR=`pwd`
 
@@ -45,6 +45,8 @@ echo
 echo "Building root: $RELEASENAME/"
 hg archive $RELEASENAME
 cd $RELEASENAME
+rm -rf .hg_archival.txt .hgignore .hgtags
+rm -rf scripts
 sh autogen.sh
 rm -rf autogen.sh autom4te.cache
 

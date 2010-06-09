@@ -24,7 +24,6 @@ SRCS = plugin.c \
        ui_main.c \
        ui_equalizer.c \
        ui_playlist.c \
-       ui_playlist_manager.c \
        ui_main_evlisteners.c \
        ui_playlist_evlisteners.c \
        ui_manager.c \

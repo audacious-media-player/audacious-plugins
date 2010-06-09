@@ -43,6 +43,7 @@ typedef struct
     gboolean save_window_position;
     gboolean player_visible;
     VisPosition vis_position;
+    gboolean multi_column_view;
 } gtkui_cfg_t;
 
 extern gtkui_cfg_t config;

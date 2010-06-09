@@ -35,7 +35,8 @@ static void bscope_init(void);
 static void bscope_cleanup(void);
 static void bscope_playback_stop(void);
 static void bscope_render_pcm(gint16 data[2][512]);
-static GtkWidget *bscope_get_widget(void);
+/* static GtkWidget * bscope_get_widget (void); */
+static void * bscope_get_widget (void);
 
 BlurScopeConfig bscope_cfg;
 
@@ -190,8 +191,8 @@ bscope_init(void)
                      G_CALLBACK(bscope_destroy_cb), NULL);
 }
 
-static GtkWidget *
-bscope_get_widget(void)
+/* static GtkWidget * bscope_get_widget (void) */
+static void * bscope_get_widget (void)
 {
     return area;
 }

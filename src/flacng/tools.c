@@ -78,9 +78,7 @@ void reset_info(callback_info* info, gboolean close_fd) {
 
     _DEBUG("Using callback_info %s", info->name);
 
-    if (close_fd && (NULL != info->input_stream)) {
-        _DEBUG("Closing fd");
-        aud_vfs_fclose(info->input_stream);
+    if (close_fd) {
         info->input_stream = NULL;
     }
 
@@ -119,6 +117,16 @@ void reset_info(callback_info* info, gboolean close_fd) {
 }
 
 /* --- */
+
+static gint get_bitrate (VFSFile * handle, callback_info * info)
+{
+    gsize size = aud_vfs_fsize (handle);
+
+    if (size == -1)
+        return 0;
+
+    return 8 * size * (gint64) info->stream.samplerate / info->stream.samples;
+}
 
 gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info* info) {
 
@@ -171,12 +179,14 @@ gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info*
     info->read_max = -1;
     info->testing = FALSE;
 
+    info->bitrate = get_bitrate (fd, info);
+
     _LEAVE TRUE;
 }
 
 /* --- */
 
-Tuple* get_tuple(VFSFile* fd, callback_info* info)
+Tuple* get_tuple_from_file(const gchar *filename, VFSFile *fd, callback_info *info)
 {
     Tuple *out;
 
@@ -184,7 +194,7 @@ Tuple* get_tuple(VFSFile* fd, callback_info* info)
 
     _DEBUG("Using callback_info %s", info->name);
 
-    out = aud_tuple_new_from_filename(fd->uri);
+    out = aud_tuple_new_from_filename(filename);
 
     aud_tuple_associate_string(out, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
     aud_tuple_associate_string(out, FIELD_QUALITY, NULL, "lossless");
@@ -210,6 +220,21 @@ Tuple* get_tuple(VFSFile* fd, callback_info* info)
     } else {
         aud_tuple_associate_int(out, FIELD_LENGTH, NULL, (info->stream.samples / info->stream.samplerate) * 1000);
         _DEBUG("Stream length: %d seconds", aud_tuple_get_int(out, FIELD_LENGTH, NULL));
+    }
+
+    if (info->bitrate > 0)
+        aud_tuple_associate_int (out, FIELD_BITRATE, NULL, (info->bitrate + 500)
+         / 1000);
+         
+         
+    if (info->replaygain.has_rg)
+    {
+        aud_tuple_associate_int(out, FIELD_GAIN_ALBUM_GAIN, NULL, atof(info->replaygain.album_gain) * 100);
+        aud_tuple_associate_int(out, FIELD_GAIN_ALBUM_PEAK, NULL, atof(info->replaygain.album_peak) * 100);
+        aud_tuple_associate_int(out, FIELD_GAIN_TRACK_GAIN, NULL, atof(info->replaygain.track_gain) * 100);
+        aud_tuple_associate_int(out, FIELD_GAIN_TRACK_PEAK, NULL, atof(info->replaygain.track_peak) * 100);
+        aud_tuple_associate_int(out, FIELD_GAIN_GAIN_UNIT, NULL, 100);
+        aud_tuple_associate_int(out, FIELD_GAIN_PEAK_UNIT, NULL, 100);
     }
 
     _DEBUG("Tuple created: [%p]", out);
@@ -317,33 +342,4 @@ void add_comment(callback_info* info, gchar* key, gchar* value) {
     }
 
     _LEAVE;
-}
-
-/* --- */
-
-ReplayGainInfo get_replay_gain(callback_info *info) {
-
-    ReplayGainInfo rg;
-
-    if (info->replaygain.has_rg) {
-	rg.track_gain = (info->replaygain.track_gain
-			 ? atof(info->replaygain.track_gain)
-			 : 0.0);
-	rg.track_peak = (info->replaygain.track_peak
-			 ? atof(info->replaygain.track_peak)
-			 : 0.0);
-	rg.album_gain = (info->replaygain.album_gain
-			 ? atof(info->replaygain.album_gain)
-			 : 0.0);
-	rg.album_peak = (info->replaygain.album_peak
-			 ? atof(info->replaygain.album_peak)
-			 : 0.0);
-    } else {
-	rg.track_gain = 0.0;
-	rg.track_peak = 0.0;
-	rg.album_gain = 0.0;
-	rg.album_peak = 0.0;
-    }
-
-    return rg;
 }

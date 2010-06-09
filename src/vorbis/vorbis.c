@@ -40,6 +40,8 @@
 
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "vorbis.h"
 
@@ -171,12 +173,14 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
         set_tuple_str(tuple, FIELD_TITLE, NULL, comment, "title");
         set_tuple_str(tuple, FIELD_ARTIST, NULL, comment, "artist");
         set_tuple_str(tuple, FIELD_ALBUM, NULL, comment, "album");
-        set_tuple_str(tuple, FIELD_DATE, NULL, comment, "date");
         set_tuple_str(tuple, FIELD_GENRE, NULL, comment, "genre");
         set_tuple_str(tuple, FIELD_COMMENT, NULL, comment, "comment");
 
         if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != NULL)
             aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(tmps));
+
+        if ((tmps = vorbis_comment_query (comment, "date", 0)) != NULL)
+            aud_tuple_associate_int (tuple, FIELD_YEAR, NULL, atoi (tmps));
     }
 
     aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
@@ -341,7 +345,7 @@ vorbis_play(InputPlayback *playback)
     }
 
     vorbis_update_replaygain(&vf, &rg_info);
-    playback->set_replaygain_info(playback, &rg_info);
+    playback->output->set_replaygain_info (& rg_info);
 
     g_mutex_lock (seek_mutex);
 
@@ -453,11 +457,11 @@ vorbis_play(InputPlayback *playback)
 
                 playback->output->flush(ov_time_tell(&vf) * 1000);
                 vorbis_update_replaygain(&vf, &rg_info);
-                playback->set_replaygain_info(playback, &rg_info); /* audio reopened */
+                playback->output->set_replaygain_info (& rg_info); /* audio reopened */
             }
         }
 
-        playback->pass_audio(playback, FMT_FLOAT, channels, bytes, pcmout, &playback->playing);
+        playback->output->write_audio (pcmout, bytes);
 
 stop_processing:
 
@@ -571,38 +575,29 @@ get_song_tuple(const gchar *filename)
     return tuple;
 }
 
-static void
-vorbis_aboutbox(void)
+static void vorbis_aboutbox (void)
 {
-    static GtkWidget *about_window = NULL;
-    if (about_window != NULL)
-        gtk_window_present(GTK_WINDOW(about_window));
-    else
-    {
-        about_window = audacious_info_dialog(
-        _("About Ogg Vorbis Audio Plugin"),
-        /*
-         * I18N: UTF-8 Translation: "Haavard Kvaalen" ->
-         * "H\303\245vard Kv\303\245len"
-         */
-        _
-        ("Ogg Vorbis Plugin by the Xiph.org Foundation\n\n"
-         "Original code by\n"
-         "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-         "Contributions from\n"
-         "Chris Montgomery <monty@xiph.org>\n"
-         "Peter Alm <peter@xmms.org>\n"
-         "Michael Smith <msmith@labyrinth.edu.au>\n"
-         "Jack Moffitt <jack@icecast.org>\n"
-         "Jorn Baayen <jorn@nl.linux.org>\n"
-         "Haavard Kvaalen <havardk@xmms.org>\n"
-         "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-         "Eugene Zagidullin <e.asphyx@gmail.com>\n\n"
-         "Visit the Xiph.org Foundation at http://www.xiph.org/\n"),
-        _("Ok"), FALSE, NULL, NULL);
-        g_signal_connect(G_OBJECT(about_window), "destroy",
-            G_CALLBACK(gtk_widget_destroyed), &about_window);
-    }
+    static GtkWidget * about_window = NULL;
+
+    audgui_simple_message (& about_window, GTK_MESSAGE_INFO,
+     _("About Ogg Vorbis Audio Plugin"),
+     /*
+      * I18N: UTF-8 Translation: "Haavard Kvaalen" ->
+      * "H\303\245vard Kv\303\245len"
+      */
+     _("Ogg Vorbis Plugin by the Xiph.org Foundation\n\n"
+     "Original code by\n"
+     "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+     "Contributions from\n"
+     "Chris Montgomery <monty@xiph.org>\n"
+     "Peter Alm <peter@xmms.org>\n"
+     "Michael Smith <msmith@labyrinth.edu.au>\n"
+     "Jack Moffitt <jack@icecast.org>\n"
+     "Jorn Baayen <jorn@nl.linux.org>\n"
+     "Haavard Kvaalen <havardk@xmms.org>\n"
+     "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+     "Eugene Zagidullin <e.asphyx@gmail.com>\n\n"
+     "Visit the Xiph.org Foundation at http://www.xiph.org/\n"));
 }
 
 static InputPlugin vorbis_ip;
@@ -748,6 +743,9 @@ static InputPlugin vorbis_ip = {
     .is_our_file_from_vfs = vorbis_check_fd,
     .vfs_extensions = vorbis_fmts,
     .update_song_tuple = vorbis_update_song_tuple,
+
+    /* Vorbis probing is a bit slow; check for MP3 and AAC first. -jlindgren */
+    .priority = 2,
 };
 
 static InputPlugin *vorbis_iplist[] = { &vorbis_ip, NULL };

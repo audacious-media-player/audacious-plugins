@@ -331,7 +331,7 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
                         _("* Transpose function *\n"
                         "This option allows you to play the midi file transposed in a different key, "
                         "by shifting of the desired number of semitones all its notes (excepting those "
-                        "on midi channel 10, reserved for percussions). Expecially useful if you wish "
+                        "on midi channel 10, reserved for percussions). Especially useful if you wish "
                         "to sing or play along with another instrument.") , "" );
   gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settplay_drumshift_spinbt ,
                         _("* Drumshift function *\n"

@@ -159,6 +159,8 @@ void mainwin_general_menu_callback(gpointer cb_data,
                                    GtkWidget * widget);
 
 void mainwin_update_song_info (void);
+void mainwin_enable_status_message (gboolean enable);
+
 void mainwin_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
                                 gint x,
@@ -181,11 +183,6 @@ void mainwin_show_visibility_warning(void);
 /* widget should be null if called manually. */
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
  void * unused);
-
-/* FIXME: placed here for now */
-void playback_get_sample_params(gint * bitrate,
-                                gint * frequency,
-                                gint * numchannels);
 
 void ui_main_check_theme_engine(void);
 

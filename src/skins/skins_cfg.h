@@ -39,8 +39,6 @@ typedef struct {
     gint equalizer_x, equalizer_y;
     gint playlist_x, playlist_y;
     gint playlist_width, playlist_height;
-    gint snap_distance;
-    gboolean snap_windows, save_window_position;
     gboolean scaled, autoscroll;
     gboolean always_on_top, sticky;
     gfloat scale_factor;
@@ -75,6 +73,7 @@ typedef struct {
     gboolean show_separator_in_pl;
     gchar *playlist_font, *mainwin_font;
     gboolean random_skin_on_play;
+    gboolean no_confirm_playlist_delete;
 } skins_cfg_t;
 
 extern skins_cfg_t config;

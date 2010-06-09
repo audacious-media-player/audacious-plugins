@@ -30,6 +30,7 @@
 #include "util.h"
 
 #include <dirent.h>
+#include <gdk/gdkkeysyms.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <stdlib.h>
@@ -444,9 +445,9 @@ INIFile *open_ini_file(const gchar *filename)
     GHashTable *section = NULL;
     GString *section_name, *key_name, *value;
     gpointer section_hash, key_hash;
-    gchar *buffer = NULL;
+    guchar * buffer = NULL;
     gsize off = 0;
-    gsize filesize = 0;
+    gint64 filesize = 0;
 
     unsigned char x[] = { 0xff, 0xfe, 0x00 };
 
@@ -462,7 +463,7 @@ INIFile *open_ini_file(const gchar *filename)
      */
     if (filesize > 2 && !memcmp(&buffer[0], &x, 2))
     {
-        gchar *outbuf = g_malloc(filesize);     /* it's safe to waste memory. */
+        guchar *outbuf = g_malloc (filesize); /* it's safe to waste memory. */
         guint counter;
 
         for (counter = 2; counter < filesize; counter += 2)
@@ -855,6 +856,13 @@ void insert_drag_list(gint playlist, gint position, const gchar *list)
         {
             aud_playlist_insert_folder (playlist, position, filename);
             g_free (filename);
+        }
+        else if (aud_filename_is_playlist (filename))
+        {
+            gint entries = aud_playlist_entry_count (playlist);
+
+            aud_playlist_insert_playlist (playlist, position, filename);
+            position += aud_playlist_entry_count (playlist) - entries;
         }
         else
             index_append (add, filename);

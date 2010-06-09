@@ -16,7 +16,7 @@
  *  The Audacious team does not consider modular code linking to
  *  Audacious or using our public API to be a derived work.
  */
-
+#define DEBUG
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
@@ -28,8 +28,10 @@
 #include "ui_playlist_widget.h"
 #include "ui_playlist_model.h"
 #include "ui_manager.h"
+#include "ui_infoarea.h"
 
-static GtkWidget *window;       /* the main window */
+gboolean multi_column_view;
+
 static GtkWidget *label_time;
 static GtkWidget *slider;
 static GtkWidget *playlist_notebook;
@@ -56,6 +58,17 @@ Interface gtkui_interface = {
 SIMPLE_INTERFACE_PLUGIN("gtkui", &gtkui_interface);
 
 static struct index *pages;
+static gint last_switched_page_num = -1;
+
+GtkNotebook *get_playlist_notebook(void)
+{
+    return (GtkNotebook*) playlist_notebook;
+}
+
+gint get_switched_page_num()
+{
+    return last_switched_page_num;
+}
 
 static void ui_playlist_create_tab(gint playlist)
 {
@@ -156,6 +169,7 @@ static void ui_playlist_change_tab(GtkNotebook * notebook, GtkNotebookPage * not
         GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
         UiPlaylistModel *model = UI_PLAYLIST_MODEL(tree_model);
 
+        last_switched_page_num = page_num;
         aud_playlist_set_active(model->playlist);
     }
 }
@@ -169,6 +183,8 @@ static void ui_populate_playlist_notebook(void)
 
     for (count = 0; count < playlists; count++)
         ui_playlist_create_tab(count);
+
+    aud_playlist_set_active(0);
 }
 
 static gboolean window_configured_cb(gpointer data)
@@ -192,7 +208,8 @@ static void window_destroy(GtkWidget * widget, gpointer data)
 
 void show_preferences_window(gboolean show)
 {
-    static GtkWidget **prefswin = NULL;
+    /* static GtkWidget * * prefswin = NULL; */
+    static void * * prefswin = NULL;
 
     if (show)
     {
@@ -238,7 +255,6 @@ static void button_pause_pressed()
 static void button_stop_pressed()
 {
     audacious_drct_stop();
-    return;
 }
 
 static void button_previous_pressed()
@@ -261,7 +277,7 @@ static void ui_set_song_info(void *unused, void *another)
     if (!g_signal_handler_is_connected(slider, slider_change_handler_id))
         return;
 
-    if (length == -1)
+    if (length <= 0)
         return;
 
     /* block "value-changed" signal handler to prevent skipping track
@@ -269,8 +285,6 @@ static void ui_set_song_info(void *unused, void *another)
     g_signal_handler_block(slider, slider_change_handler_id);
     gtk_range_set_range(GTK_RANGE(slider), 0.0, (gdouble) length);
     g_signal_handler_unblock(slider, slider_change_handler_id);
-
-    gtk_widget_show(label_time);
 
     gtk_window_set_title(GTK_WINDOW(window), title_s);
     g_free(title_s);
@@ -351,7 +365,7 @@ static void ui_update_time_info(gint time)
     time /= 1000;
     length /= 1000;
 
-    g_snprintf(text, sizeof(text) / sizeof(gchar), "<tt><b>%d:%.2d/%d:%.2d</b></tt>", time / 60, time % 60, length / 60, length % 60);
+    g_snprintf(text, sizeof(text) / sizeof(gchar), "<tt><b>%.2d:%.2d/%.2d:%.2d</b></tt>", time / 60, time % 60, length / 60, length % 60);
     gtk_label_set_markup(GTK_LABEL(label_time), text);
 }
 
@@ -383,8 +397,10 @@ static gboolean ui_update_song_info(gpointer hook_data, gpointer user_data)
 
 static void ui_clear_song_info()
 {
+    if (!GTK_IS_WINDOW(window)) return;
+
     gtk_window_set_title(GTK_WINDOW(window), "Audacious");
-    gtk_widget_hide(label_time);
+    gtk_label_set_markup(GTK_LABEL(label_time), "<tt><b>00:00/00:00</b></tt>");
     gtk_range_set_value(GTK_RANGE(slider), 0);
 }
 
@@ -471,7 +487,7 @@ static GtkWidget *gtk_toolbar_button_add(GtkWidget * toolbar, void (*callback) (
     GtkWidget *button = gtk_button_new();
 
     gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
-    
+
     icon = gtk_image_new_from_stock(stock_id, GTK_ICON_SIZE_BUTTON);
     gtk_container_add(GTK_CONTAINER(button), icon);
 
@@ -522,10 +538,13 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     GtkWidget *button_open, *button_add, *button_play, *button_pause, *button_stop, *button_previous, *button_next;
     GtkWidget *menu;
     GtkAccelGroup *accel;
+    UIInfoArea *infoarea;
 
     gint lvol = 0, rvol = 0;    /* Left and Right for the volume control */
 
     gtkui_cfg_load();
+
+    multi_column_view = config.multi_column_view;
 
     audgui_set_default_icon();
     audgui_register_stock_icons();
@@ -535,7 +554,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), MAINWIN_DEFAULT_WIDTH, MAINWIN_DEFAULT_HEIGHT);
-    gtk_window_set_title(GTK_WINDOW(window), "Audacious");
 
     if (config.save_window_position && config.player_width && config.player_height)
         gtk_window_resize(GTK_WINDOW(window), config.player_width, config.player_height);
@@ -596,56 +614,71 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     gtk_box_pack_start(GTK_BOX(vbox), plbox, TRUE, TRUE, 0);
 
     playlist_notebook = gtk_notebook_new();
+    gtk_notebook_set_scrollable(GTK_NOTEBOOK(playlist_notebook), TRUE);
+    gtk_notebook_popup_enable(GTK_NOTEBOOK(playlist_notebook));
     gtk_notebook_set_show_border(GTK_NOTEBOOK(playlist_notebook), FALSE);
 
     if (config.vis_position != VIS_IN_TABS)
     {
         GtkWidget *pane = NULL;
 
-        g_print("vis not in tabs : %d\n", config.vis_position);
+        AUDDBG("vis not in tabs : %d\n", config.vis_position);
 
-        if (config.vis_position == VIS_ON_LEFT)
+        switch (config.vis_position)
         {
-            pane = gtk_hpaned_new();
-            gtk_paned_add2(GTK_PANED(pane), playlist_notebook);
+            case VIS_ON_LEFT:
+                pane = gtk_hpaned_new();
+                gtk_paned_add2(GTK_PANED(pane), playlist_notebook);
 
-            vispane_root = gtk_vpaned_new();
-            gtk_paned_add1(GTK_PANED(pane), vispane_root);
-        }
-        else if (config.vis_position == VIS_ON_RIGHT)
-        {
-            pane = gtk_hpaned_new();
-            gtk_paned_add1(GTK_PANED(pane), playlist_notebook);
+                vispane_root = gtk_vpaned_new();
+                gtk_paned_add1(GTK_PANED(pane), vispane_root);
+                break;
 
-            vispane_root = gtk_vpaned_new();
-            gtk_paned_add2(GTK_PANED(pane), vispane_root);
-        }
-        else if (config.vis_position == VIS_ON_TOP)
-        {
-            pane = gtk_vpaned_new();
-            gtk_paned_add2(GTK_PANED(pane), playlist_notebook);
+            case VIS_ON_RIGHT:
+                pane = gtk_hpaned_new();
+                gtk_paned_add1(GTK_PANED(pane), playlist_notebook);
 
-            vispane_root = gtk_hpaned_new();
-            gtk_paned_add1(GTK_PANED(pane), vispane_root);
-        }
-        else if (config.vis_position == VIS_ON_BOTTOM)
-        {
-            pane = gtk_vpaned_new();
-            gtk_paned_add1(GTK_PANED(pane), playlist_notebook);
+                vispane_root = gtk_vpaned_new();
+                gtk_paned_add2(GTK_PANED(pane), vispane_root);
+                break;
 
-            vispane_root = gtk_hpaned_new();
-            gtk_paned_add2(GTK_PANED(pane), vispane_root);
+            case VIS_ON_TOP:
+                pane = gtk_vpaned_new();
+                gtk_paned_add2(GTK_PANED(pane), playlist_notebook);
+
+                vispane_root = gtk_hpaned_new();
+                gtk_paned_add1(GTK_PANED(pane), vispane_root);
+                break;
+
+            case VIS_ON_BOTTOM:
+                pane = gtk_vpaned_new();
+                gtk_paned_add1(GTK_PANED(pane), playlist_notebook);
+
+                vispane_root = gtk_hpaned_new();
+                gtk_paned_add2(GTK_PANED(pane), vispane_root);
+                break;
+
+            default:
+                /* invalid vis_position, just display playlist_notebook */
+                pane = playlist_notebook;
         }
 
         if (pane != NULL)
             gtk_box_pack_end(GTK_BOX(plbox), pane, TRUE, TRUE, 0);
     }
     else {
-        g_print("vis in tabs\n");
+        AUDDBG("vis in tabs\n");
         gtk_box_pack_end(GTK_BOX(plbox), playlist_notebook, TRUE, TRUE, 0);
     }
 
+    AUDDBG("infoarea setup\n");
+    infoarea = ui_infoarea_new();
+    gtk_box_pack_end(GTK_BOX(vbox), infoarea->parent, FALSE, FALSE, 0);
+
+    AUDDBG("hooks associate\n");
     ui_hooks_associate();
+
+    AUDDBG("playlist associate\n");
     ui_populate_playlist_notebook();
 
     g_signal_connect(playlist_notebook, "switch-page", G_CALLBACK(ui_playlist_change_tab), NULL);
@@ -658,8 +691,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     volume_change_handler_id = g_signal_connect(volume, "value-changed", G_CALLBACK(ui_volume_value_changed_cb), NULL);
 
-    ui_set_song_info(NULL, NULL);
-
     gtk_widget_show_all(vbox);
 
     if (config.player_visible)
@@ -668,7 +699,12 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     ui_clear_song_info();
 
     if (audacious_drct_get_playing())
-        ui_playback_begin(0, 0);
+    {
+        ui_set_song_info(NULL, NULL);
+        ui_playback_begin(NULL, NULL);
+    }
+
+    AUDDBG("callback setup\n");
 
     /* Register interface callbacks */
     cbs->show_prefs_window = show_preferences_window;
@@ -680,9 +716,10 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     cbs->hide_jump_to_track = audgui_jump_to_track_hide;
     cbs->show_about_window = audgui_show_about_window;
     cbs->hide_about_window = audgui_hide_about_window;
-    cbs->run_gtk_plugin = ui_run_gtk_plugin;
-    cbs->stop_gtk_plugin = ui_stop_gtk_plugin;
+    cbs->run_gtk_plugin = (void *) ui_run_gtk_plugin;
+    cbs->stop_gtk_plugin = (void *) ui_stop_gtk_plugin;
 
+    AUDDBG("launch\n");
     gtk_main();
 
     return TRUE;

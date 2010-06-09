@@ -11,10 +11,13 @@
 #include <glib.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 #include "configure.h"
 
-Tuple * console_get_song_tuple(const gchar *path);
 Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd);
+Tuple * console_get_file_tuple(const gchar *filename);
 void console_play_file(InputPlayback *playback);
 void console_seek(InputPlayback *data, gint time);
 void console_stop(InputPlayback *playback);
@@ -22,23 +25,16 @@ void console_pause(InputPlayback * playback, gshort p);
 void console_init(void);
 void console_cleanup(void);
 
-static void console_aboutbox(void)
+static void console_aboutbox (void)
 {
-    static GtkWidget *aboutbox = NULL;
+    static GtkWidget * aboutbox = NULL;
 
-    if (aboutbox == NULL)
-    {
-        aboutbox = audacious_info_dialog(
-        _("About the Game Console Music Decoder"),
-        _("Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
-        "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-        "Audacious implementation by: William Pitcock <nenolod@dereferenced.org>, \n"
-        "        Shay Green <gblargg@gmail.com>\n"),
-        _("Ok"),
-        FALSE, NULL, NULL);
-        g_signal_connect(G_OBJECT(aboutbox), "destroy",
-            G_CALLBACK(gtk_widget_destroyed), &aboutbox);
-    }
+    audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
+     _("About the Game Console Music Decoder"),
+     _("Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
+     "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+     "Audacious implementation by: William Pitcock <nenolod@dereferenced.org>, \n"
+     "        Shay Green <gblargg@gmail.com>\n"));
 }
 
 static gchar *gme_fmts[] = {
@@ -59,8 +55,8 @@ static InputPlugin console_ip =
     .stop = console_stop,
     .pause = console_pause,
     .seek = console_seek,
-    .get_song_tuple = console_get_song_tuple,
     .vfs_extensions = gme_fmts,
+    .get_song_tuple = console_get_file_tuple,
     .probe_for_tuple = console_probe_for_tuple,
     .have_subtune = TRUE
 };

@@ -76,6 +76,7 @@ static void restore(void);
 static plugin_instance *add_plugin(ladspa_plugin * plugin);
 static void find_all_plugins(void);
 static void find_plugins(char *path_entry);
+static ladspa_plugin *get_plugin_by_id(const gchar * basename, long id);
 static plugin_instance *load(char *filename, long int num);
 static void reboot_plugins(void);
 static void boot_plugin(plugin_instance * instance);
@@ -144,7 +145,74 @@ static void start(void)
 
 static void restore(void)
 {
+    mcs_handle_t *db;
+    gint k, plugins = 0;
+
+    db = aud_cfg_db_open();
+
+    aud_cfg_db_get_int(db, "ladspa", "plugins", &plugins);
+    for (k = 0; k < plugins; ++k)
+    {
+	gint id;
+	int port, ports = 0;
+	plugin_instance *instance;
+	gchar *bn, *section, *file;
+
+	section = g_strdup_printf("ladspa_plugin%d", k);
+
+	aud_cfg_db_get_int(db, section, "id", &id);
+	aud_cfg_db_get_int(db, section, "ports", &ports);
+	if (!aud_cfg_db_get_string(db, section, "file", &file)) {
+        g_free(section);
+        continue;
+    }
+	bn = g_path_get_basename(file);
+    g_free(file);
+	instance = add_plugin(get_plugin_by_id(bn,id));
+    g_free(bn);
+	if (!instance)
+	    continue;		/* couldn't load this plugin */
+
+	for (port = 0; port < ports && port < MAX_KNOBS; ++port)
+	{
+	    gchar *key = g_strdup_printf("port%d", port);
+	    aud_cfg_db_get_float(db, section, key, &(instance->knobs[port]));
+	}
+	instance->restored = TRUE;
+	g_free(section);
+    }
+
+    aud_cfg_db_close(db);
+
     state.initialised = TRUE;
+}
+
+static ladspa_plugin *get_plugin_by_id(const gchar * basename, long id)
+{
+    GSList *list;
+    ladspa_plugin *plugin;
+
+    if (plugin_list == NULL)
+    {
+	find_all_plugins();
+    }
+
+    for (list = plugin_list; list != NULL; list = g_slist_next(list))
+    {
+	gchar *bn;
+	plugin = (ladspa_plugin *) list->data;
+
+	bn = g_path_get_basename(plugin->filename);
+	if (plugin->unique_id == id && !g_ascii_strcasecmp(basename, bn))
+	{
+	    g_free(bn);
+	    return plugin;
+	}
+
+	g_free(bn);
+    }
+
+    return NULL;
 }
 
 static void find_all_plugins(void)
@@ -240,7 +308,7 @@ static void stop(void)
 	int port, ports = 0;
 
 	bn = g_path_get_basename(instance->filename);
-	section = g_strdup_printf("ladspa_plugin:%s:%ld", bn, instance->descriptor->UniqueID);
+	section = g_strdup_printf("ladspa_plugin%d", plugins);
 	g_free(bn);
 
 	aud_cfg_db_set_int(db, section, "id", instance->descriptor->UniqueID);
@@ -259,6 +327,7 @@ static void stop(void)
 	aud_cfg_db_set_int(db, section, "ports", ports);
 	g_free(section);
 	ladspa_shutdown(instance);
+    plugins++;
     }
     G_UNLOCK(running_plugins);
 

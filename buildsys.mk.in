@@ -352,14 +352,16 @@ install: ${LIB} ${STATIC_LIB} ${PLUGIN} ${PROG} install-extra
 		fi \
 	done
 
-	for i in ${MO_FILES}; do \
-		${INSTALL_STATUS}; \
-		if ${MKDIR_P} ${DESTDIR}${localedir}/$${i%.mo}/LC_MESSAGES && ${INSTALL} -m 644 $$i ${DESTDIR}${localedir}/$${i%.mo}/LC_MESSAGES/${localename}.mo; then \
-			${INSTALL_OK}; \
-		else \
-			${INSTALL_FAILED}; \
-		fi \
-	done
+	if test x"${USE_NLS}" = x"yes"; then \
+		for i in ${MO_FILES}; do \
+			${INSTALL_STATUS}; \
+			if ${MKDIR_P} ${DESTDIR}${localedir}/$${i%.mo}/LC_MESSAGES && ${INSTALL} -m 644 $$i ${DESTDIR}${localedir}/$${i%.mo}/LC_MESSAGES/${localename}.mo; then \
+				${INSTALL_OK}; \
+			else \
+				${INSTALL_FAILED}; \
+			fi \
+		done \
+	fi
 
 	for i in ${MAN}; do \
 		${INSTALL_STATUS}; \
@@ -487,7 +489,7 @@ distclean: clean
 		${DIR_LEAVE}; \
 	done
 
-	for i in ${DISTCLEAN} .deps *~; do \
+	for i in ${DISTCLEAN} *~; do \
 		if test -f $$i -o -d $$i; then \
 			if rm -fr $$i; then \
 				${DELETE_OK}; \
@@ -496,6 +498,9 @@ distclean: clean
 			fi \
 		fi \
 	done
+
+	# ./configure creates .deps files even in folders not listed in SUBDIRS.
+	rm -f `find . -name .deps ! -path ./.hg\*`
 
 DIR_ENTER = printf "\033[K\033[0;36mEntering directory \033[1;36m$$i\033[0;36m.\033[0m\n"; cd $$i || exit 1
 DIR_LEAVE = printf "\033[K\033[0;36mLeaving directory \033[1;36m$$i\033[0;36m.\033[0m\n"; cd .. || exit 1

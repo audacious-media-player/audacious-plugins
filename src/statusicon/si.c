@@ -39,7 +39,6 @@ extern si_cfg_t si_cfg;
 void
 si_init ( void )
 {
-  g_type_init();
   g_log_set_handler( NULL , G_LOG_LEVEL_WARNING , g_log_default_handler , NULL );
   plugin_active = TRUE;
   si_cfg_load();

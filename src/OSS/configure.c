@@ -30,7 +30,7 @@
 
 
 static GtkWidget *configure_win = NULL;
-static GtkWidget *mixer_usemaster_check, *buffer_size_spin, *buffer_pre_spin;
+static GtkWidget *mixer_usemaster_check, *buffer_pre_spin;
 static GtkWidget *adevice_use_alt_check, *audio_alt_device_entry;
 static GtkWidget *mdevice_use_alt_check, *mixer_alt_device_entry;
 static gint audio_device, mixer_device;
@@ -42,8 +42,6 @@ configure_win_ok_cb(GtkWidget * w, gpointer data)
 
     oss_cfg.audio_device = audio_device;
     oss_cfg.mixer_device = mixer_device;
-    oss_cfg.buffer_size =
-        gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(buffer_size_spin));
     oss_cfg.prebuffer =
         gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(buffer_pre_spin));
     oss_cfg.use_master =
@@ -77,7 +75,6 @@ configure_win_ok_cb(GtkWidget * w, gpointer data)
 
     aud_cfg_db_set_int(db, "OSS", "audio_device", oss_cfg.audio_device);
     aud_cfg_db_set_int(db, "OSS", "mixer_device", oss_cfg.mixer_device);
-    aud_cfg_db_set_int(db, "OSS", "buffer_size", oss_cfg.buffer_size);
     aud_cfg_db_set_int(db, "OSS", "prebuffer", oss_cfg.prebuffer);
     aud_cfg_db_set_bool(db, "OSS", "use_master", oss_cfg.use_master);
     aud_cfg_db_set_bool(db, "OSS", "use_alt_audio_device",
@@ -130,9 +127,9 @@ scan_devices(gchar * type, GtkWidget * option_menu, GtkSignalFunc sigfunc)
 
     menu = gtk_menu_new();
 
-    if ((file = fopen("/dev/sndstat",             "r")) ||    
-        (file = fopen("/proc/asound/sndstat",     "r")) ||    
-        (file = fopen("/proc/asound/oss/sndstat", "r")))  {   
+    if ((file = fopen("/dev/sndstat",             "r")) ||
+        (file = fopen("/proc/asound/sndstat",     "r")) ||
+        (file = fopen("/proc/asound/oss/sndstat", "r")))  {
         while (fgets(buffer, 255, file)) {
             if (found && buffer[0] == '\n')
                 break;
@@ -182,8 +179,7 @@ oss_configure(void)
     GtkWidget *dev_vbox, *adevice_frame, *adevice_box, *adevice;
     GtkWidget *mdevice_frame, *mdevice_box, *mdevice;
     GtkWidget *buffer_frame, *buffer_vbox, *buffer_table;
-    GtkWidget *buffer_size_box, *buffer_size_label;
-    GtkObject *buffer_size_adj, *buffer_pre_adj;
+    GtkObject *buffer_pre_adj;
     GtkWidget *buffer_pre_box, *buffer_pre_label;
     GtkWidget *audio_alt_box, *mixer_alt_box;
     GtkWidget *bbox, *ok, *cancel;
@@ -310,20 +306,6 @@ oss_configure(void)
     buffer_table = gtk_table_new(2, 1, TRUE);
     gtk_container_set_border_width(GTK_CONTAINER(buffer_table), 5);
     gtk_box_pack_start(GTK_BOX(buffer_vbox), buffer_table, FALSE, FALSE, 0);
-
-    buffer_size_box = gtk_hbox_new(FALSE, 5);
-    gtk_table_attach_defaults(GTK_TABLE(buffer_table), buffer_size_box, 0,
-                              1, 0, 1);
-    buffer_size_label = gtk_label_new(_("Buffer size (ms):"));
-    gtk_box_pack_start(GTK_BOX(buffer_size_box), buffer_size_label, FALSE,
-                       FALSE, 0);
-    buffer_size_adj =
-        gtk_adjustment_new(oss_cfg.buffer_size, 200, 10000, 100, 100, 100);
-    buffer_size_spin =
-        gtk_spin_button_new(GTK_ADJUSTMENT(buffer_size_adj), 8, 0);
-    gtk_widget_set_usize(buffer_size_spin, 60, -1);
-    gtk_box_pack_start(GTK_BOX(buffer_size_box), buffer_size_spin, FALSE,
-                       FALSE, 0);
 
     buffer_pre_box = gtk_hbox_new(FALSE, 5);
     gtk_table_attach_defaults(GTK_TABLE(buffer_table), buffer_pre_box, 1,

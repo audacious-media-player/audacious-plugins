@@ -48,6 +48,7 @@ typedef struct
 }
 streamdir_t;
 
+gboolean streamdir_is_valid(streamdir_t *streamdir);
 
 streamdir_t *streamdir_new (gchar * name);
 void streamdir_delete (streamdir_t * streamdir);

@@ -41,7 +41,6 @@ extern OutputPlugin op;
 typedef struct {
     gint audio_device;
     gint mixer_device;
-    gint buffer_size;
     gint prebuffer;
     gboolean use_master;
     gboolean use_alt_audio_device, use_alt_mixer_device;
