@@ -405,26 +405,8 @@ AC_ARG_ENABLE(mp3,
 )
 
 if test "x$enable_mp3" = "xyes"; then
-    PKG_CHECK_MODULES(MPG123, [libmpg123], [enable_mp3=yes],
-        [AC_MSG_WARN([*** Cannot find libmpg123, mp3 plugin will not be built ***])
-         enable_mp3=no]
-    )
-else
-    AC_MSG_RESULT([*** mp3 plugin disabled per user request ***])
-    enable_mp3=no
-fi
-
-if test "x$enable_mp3" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS mpg123"
-
-    PKG_CHECK_MODULES(MPG123, [libmpg123 >= 1.10],
-     [AC_DEFINE([HAVE_MPG123_1_10], 1, [Define if libmpg123 is >= 1.10])],
-     [AC_MSG_WARN([Your version of libmpg123 is OLD.])
-      AC_MSG_WARN([If you have problems, get a newer version.])])
 fi
-
-AC_SUBST(MPG123_CFLAGS)
-AC_SUBST(MPG123_LIBS)
 
 dnl *** Rocklight
 

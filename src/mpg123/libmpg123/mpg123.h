@@ -1,5 +1,5 @@
 /*
-	libmpg123: MPEG Audio Decoder library (version @PACKAGE_VERSION@)
+	libmpg123: MPEG Audio Decoder library (version 1.10.0)
 
 	copyright 1995-2009 by the mpg123 project - free software under the terms of the LGPL 2.1
 	see COPYING and AUTHORS files in distribution or http://mpg123.org
@@ -10,55 +10,8 @@
 
 /** \file mpg123.h The header file for the libmpg123 MPEG Audio decoder */
 
-/* These aren't actually in use... seems to work without using libtool. */
-#ifdef BUILD_MPG123_DLL
-/* The dll exports. */
-#define EXPORT __declspec(dllexport)
-#else
-#ifdef LINK_MPG123_DLL
-/* The exe imports. */
-#define EXPORT __declspec(dllimport)
-#else
 /* Nothing on normal/UNIX builds */
 #define EXPORT
-#endif
-#endif
-
-#ifndef MPG123_NO_CONFIGURE /* Enable use of this file without configure. */
-@INCLUDE_STDLIB_H@
-@INCLUDE_SYS_TYPE_H@
-
-#if @LARGEFILE_SWITCH@ /* If we need trickery for large file support. */
-
-/* Check for compiling programs agains this libmpg123. */
-#if (defined _FILE_OFFSET_BITS) && (_FILE_OFFSET_BITS+0 == @LARGEFILE_BITS@)
-/* ...all is fine, having enabled large file support and also the correct sort of which. */
-#else
-#error "Mismatch in large file setup! Enable/disable large file support appropriately to use libmpg123."
-#endif
-
-/* Redefine names of functions dealing with file and file offsets
-   ...everything handling off_t, for example, which can be 32 or 64 bits. */
-
-#define mpg123_open                 mpg123_open@LARGEFILE_SUFFIX@
-#define mpg123_open_fd           mpg123_open_fd@LARGEFILE_SUFFIX@
-#define mpg123_decode_frame mpg123_decode_frame@LARGEFILE_SUFFIX@
-#define mpg123_tell                 mpg123_tell@LARGEFILE_SUFFIX@
-#define mpg123_tellframe       mpg123_tellframe@LARGEFILE_SUFFIX@
-#define mpg123_tell_stream   mpg123_tell_stream@LARGEFILE_SUFFIX@
-#define mpg123_seek                 mpg123_seek@LARGEFILE_SUFFIX@
-#define mpg123_feedseek         mpg123_feedseek@LARGEFILE_SUFFIX@
-#define mpg123_seek_frame     mpg123_seek_frame@LARGEFILE_SUFFIX@
-#define mpg123_timeframe       mpg123_timeframe@LARGEFILE_SUFFIX@
-#define mpg123_index               mpg123_index@LARGEFILE_SUFFIX@
-#define mpg123_set_index       mpg123_set_index@LARGEFILE_SUFFIX@
-#define mpg123_position         mpg123_position@LARGEFILE_SUFFIX@
-#define mpg123_length             mpg123_length@LARGEFILE_SUFFIX@
-#define mpg123_set_filesize mpg123_set_filesize@LARGEFILE_SUFFIX@
-
-#endif /* LARGEFILE_SWITCH */
-
-#endif /* MPG123_NO_CONFIGURE */
 
 #ifdef __cplusplus
 extern "C" {

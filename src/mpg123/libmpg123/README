@@ -1,3 +1,21 @@
+This is a modified copy of libmpg123 for use in Audacious.  The newer 1.12 has
+been released at the time of this writing, but is unusable because of a tendency
+to crash (Debian bug #580095) and because of API changes related to the use of
+-D_FILE_OFFSET_BITS=64 (briefly, 32-bit 1.10 as packaged by Debian requires the
+flag, while 64-bit 1.12 as packaged by Gentoo is broken by it).
+
+   John Lindgren
+   June 9, 2010
+
+Change log:
+
+John Lindgren, June 9, 2010:
+ * Imported libmpg123 1.10.0.
+ * Removed some configuration stuff from mpg123.h.in and renamed it mpg123.h.
+ * Added local config.h.
+
+ ======
+
 * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 *   mpg123 - MPEG 1.0/2.0/2.5 audio player            *
 *   README for version 1.x.y, dated at 14.06.2009     *
