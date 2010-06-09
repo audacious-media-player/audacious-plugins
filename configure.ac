@@ -5,8 +5,6 @@ AC_PREREQ([2.59])
 
 AC_CANONICAL_HOST
 AC_CANONICAL_TARGET
-AC_SYS_LARGEFILE
-
 AC_CONFIG_HEADERS([config.h])
 
 dnl libbeep
@@ -46,6 +44,10 @@ if test "x$GCC" = "xyes"; then
 	CFLAGS="$CFLAGS -pipe -Wall"
 	CXXFLAGS="$CXXFLAGS -pipe -Wall"
 fi
+
+dnl Large file support
+dnl ==================
+CPPFLAGS="$CPPFLAGS -D_FILE_OFFSET_BITS=64"
 
 dnl Debug support
 
