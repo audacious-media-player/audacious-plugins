@@ -1693,12 +1693,3 @@ echo "  M3U playlist format (m3u):              yes"
 echo "  XML Sharable Playlist Format (xspf):    $have_xspf"
 echo "  CUE playlist format (cue):              $have_cue"
 echo
-
-if test "x$have_scrobbler" = "xyes"; then
-    echo "*** WARNING ***"
-    echo "You have enabled the Scrobbler plugin, which is known to cause memory"
-    echo "corruption.  If Audacious crashes, do not report a bug unless you can"
-    echo "reproduce it without Scrobbler installed.  If you want to fix the"
-    echo "plugin, leave a comment on http://jira.atheme.org/browse/AUDPLUG-179."
-    echo
-fi
