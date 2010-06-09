@@ -258,9 +258,9 @@ static void *xs_thread(void *data __attribute__((unused)))
 			if (tuple == NULL)
 				continue;
 
-			mowgli_object_ref(tuple);
+			tuple = tuple_copy(tuple);
 
-			if (ishttp(aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL)))
+			if (ishttp(aud_tuple_get_string(tuple, FIELD_FILE_PATH, NULL)))
 			{
 				mowgli_object_unref(tuple);
 				continue;
