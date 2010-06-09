@@ -478,9 +478,9 @@ mpg123_playback_worker(InputPlayback *data)
 			sampleoff = mpg123_feedseek(ctx.decoder, (ctx.seek * ctx.rate), SEEK_SET, &byteoff);
 			if (sampleoff < 0)
 			{
-				AUDDBG("mpg123 error: %s", mpg123_strerror(ctx.decoder));
+				fprintf (stderr, "mpg123 error: %s\n", mpg123_strerror (ctx.decoder));
 				ctx.seek = -1;
-
+				g_cond_signal (ctrl_cond);
 				g_mutex_unlock(ctrl_mutex);
 				continue;
 			}
