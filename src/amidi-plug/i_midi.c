@@ -659,8 +659,10 @@ void i_midi_setget_length( midifile_t * mf )
   /* IMPORTANT
      this couple of important values is set by i_midi_set_length */
   mf->length = length_microsec;
-  mf->avg_microsec_per_tick = (gint)(length_microsec / mf->max_tick);
-
+  if (mf->max_tick)
+      mf->avg_microsec_per_tick = (gint)(length_microsec / mf->max_tick);
+  else
+      mf->avg_microsec_per_tick = 1;  /* dummy - protect against div-by-zero */
   return;
 }
 
