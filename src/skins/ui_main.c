@@ -50,6 +50,7 @@
 #include <regex.h>
 #endif
 
+#include "actions-playlist.h"
 #include "ui_main.h"
 #include "ui_dock.h"
 #include "actions-mainwin.h"
@@ -756,22 +757,16 @@ gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
         case GDK_space:
             audacious_drct_pause();
             break;
-        case GDK_c:
-            if (event->state & GDK_CONTROL_MASK) {
-                gint playlist = aud_playlist_get_active ();
-                gint pos = aud_playlist_get_position(playlist);
-                const gchar * title = aud_playlist_entry_get_title (playlist,
-                 pos);
+        case GDK_Tab: /* GtkUIManager does not handle tab, apparently. */
+            if (event->state & GDK_SHIFT_MASK)
+                action_playlist_prev ();
+            else
+                action_playlist_next ();
 
-                if (title != NULL) {
-                    GtkClipboard *clip = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
-                    gtk_clipboard_set_text(clip, title, -1);
-                    gtk_clipboard_store(clip);
-                }
-
-                return TRUE;
-            }
-            return FALSE;
+            break;
+        case GDK_ISO_Left_Tab:
+            action_playlist_prev ();
+            break;
         default:
             return FALSE;
     }

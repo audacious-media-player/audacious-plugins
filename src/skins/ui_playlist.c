@@ -1471,6 +1471,38 @@ void action_playlist_remove_unselected (void)
     aud_playlist_select_all (active_playlist, TRUE);
 }
 
+void action_playlist_copy (void)
+{
+    GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
+    gchar * list = create_drag_list (active_playlist);
+
+    if (list == NULL)
+        return;
+
+    gtk_clipboard_set_text (clip, list, -1);
+    g_free (list);
+}
+
+void action_playlist_cut (void)
+{
+    action_playlist_copy ();
+    action_playlist_remove_selected ();
+}
+
+void action_playlist_paste (void)
+{
+    GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
+    gchar * list = gtk_clipboard_wait_for_text (clip);
+    gint rows, first, focused;
+
+    if (list == NULL)
+        return;
+
+    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first, & focused);
+    insert_drag_list (active_playlist, focused, list);
+    g_free (list);
+}
+
 void
 action_playlist_add_files(void)
 {

@@ -902,6 +902,51 @@ void open_drag_list (const gchar * list)
     }
 }
 
+gchar * create_drag_list (gint playlist)
+{
+    gint entries = aud_playlist_entry_count (playlist);
+    gint length = 0;
+    gint count, slength;
+    const gchar * filename;
+    gchar * buffer, * set;
+
+    for (count = 0; count < entries; count ++)
+    {
+        if (! aud_playlist_entry_get_selected (playlist, count))
+            continue;
+
+        filename = aud_playlist_entry_get_filename (playlist, count);
+        g_return_val_if_fail (filename != NULL, NULL);
+        length += strlen (filename) + 1;
+    }
+
+    if (! length)
+        return NULL;
+
+    buffer = g_malloc (length);
+    set = buffer;
+
+    for (count = 0; count < entries; count ++)
+    {
+        if (! aud_playlist_entry_get_selected (playlist, count))
+            continue;
+
+        filename = aud_playlist_entry_get_filename (playlist, count);
+        g_return_val_if_fail (filename != NULL, NULL);
+        slength = strlen (filename);
+        g_return_val_if_fail (slength + 1 <= length, NULL);
+        memcpy (set, filename, slength);
+        set += slength;
+        * set ++ = '\n';
+        length -= slength + 1;
+    }
+
+    /* replace the last newline with a null */
+    * -- set = 0;
+
+    return buffer;
+}
+
 void resize_window(GtkWidget *window, gint width, gint height)
 {
     /* As of GTK+ 2.16, gtk_window_resize is broken on fixed size windows and

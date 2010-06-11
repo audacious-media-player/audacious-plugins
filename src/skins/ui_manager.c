@@ -202,10 +202,10 @@ static GtkActionEntry action_entries_playlist[] = {
     { "playlist new", GTK_STOCK_NEW , N_("New Playlist"), "<Shift>N",
       N_("New Playlist"), G_CALLBACK(action_playlist_new) },
 
-    { "playlist select next", GTK_STOCK_MEDIA_NEXT, N_("Select Next Playlist"), "<Shift>P",
+    { "playlist select next", GTK_STOCK_MEDIA_NEXT, N_("Select Next Playlist"), "Tab",
       N_("Select Next Playlist"), G_CALLBACK(action_playlist_next) },
 
-    { "playlist select previous", GTK_STOCK_MEDIA_PREVIOUS, N_("Select Previous Playlist"), "<Shift><Ctrl>P",
+    { "playlist select previous", GTK_STOCK_MEDIA_PREVIOUS, N_("Select Previous Playlist"), "<Shift>Tab",
       N_("Select Previous Playlist"), G_CALLBACK(action_playlist_prev) },
 
     { "playlist delete", GTK_STOCK_DELETE , N_("Delete Playlist"), "<Shift>D",
@@ -421,6 +421,13 @@ static GtkActionEntry action_entries_others[] = {
     { "queue toggle", AUD_STOCK_QUEUETOGGLE , N_("Queue Toggle"), "Q",
       N_("Enables/disables the entry in the playlist's queue."),
       G_CALLBACK(action_queue_toggle) },
+
+    {"playlist copy", GTK_STOCK_COPY, N_("Copy"), "<Ctrl>C", NULL, (GCallback)
+     action_playlist_copy},
+    {"playlist cut", GTK_STOCK_CUT, N_("Cut"), "<Ctrl>X", NULL, (GCallback)
+     action_playlist_cut},
+    {"playlist paste", GTK_STOCK_PASTE, N_("Paste"), "<Ctrl>V", NULL,
+     (GCallback) action_playlist_paste},
 };
 
 
