@@ -66,6 +66,7 @@ gboolean ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event);
 void ui_skinned_playlist_row_info (GtkWidget * widget, gint * rows, gint *
  first, gint * focused);
 void ui_skinned_playlist_scroll_to (GtkWidget * widget, gint row);
+void ui_skinned_playlist_set_focused (GtkWidget * widget, gint row);
 void ui_skinned_playlist_hover (GtkWidget * widget, gint x, gint y);
 int ui_skinned_playlist_hover_end (GtkWidget * widget);
 

@@ -941,6 +941,18 @@ void ui_skinned_playlist_scroll_to (GtkWidget * widget, gint row)
         ui_skinned_playlist_slider_update (private->slider);
 }
 
+void ui_skinned_playlist_set_focused (GtkWidget * widget, gint row)
+{
+    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
+     ((UiSkinnedPlaylist *) widget);
+
+    cancel_all (widget, private);
+    private->focused = row;
+    scroll_to (private, row);
+
+    gtk_widget_queue_draw (widget);
+}
+
 void ui_skinned_playlist_hover (GtkWidget * widget, gint x, gint y)
 {
     UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
