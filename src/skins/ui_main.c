@@ -2257,10 +2257,13 @@ static void mainwin_update_time_display (gint time, gint length)
 
     if (config.timer_mode == TIMER_REMAINING && length > 0)
     {
-        if (length - time < 6000000)  /* "-MM:SS" */
+        if (length - time < 60000)         /* " -0:SS" */
+            snprintf (scratch, sizeof scratch, " -0:%02d", (length - time) /
+             1000);
+        else if (length - time < 6000000)  /* "-MM:SS" */
             snprintf (scratch, sizeof scratch, "%3d:%02d", (time - length) /
              60000, (length - time) / 1000 % 60);
-        else                          /* "-HH:MM" */
+        else                               /* "-HH:MM" */
             snprintf (scratch, sizeof scratch, "%3d:%02d", (time - length) /
              3600000, (length - time) / 60000 % 60);
     }
