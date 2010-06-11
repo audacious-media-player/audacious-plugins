@@ -42,8 +42,10 @@ GtkWidget *window;       /* the main window */
 
 static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
+static gboolean volume_slider_is_moving = FALSE;
 static gint slider_position;
 static guint update_song_timeout_source = 0;
+static guint update_volume_timeout_source = 0;
 
 static gulong volume_change_handler_id;
 
@@ -459,6 +461,41 @@ static gboolean ui_volume_value_changed_cb(GtkButton * button, gdouble volume, g
     return TRUE;
 }
 
+static void ui_volume_pressed_cb(GtkButton *button, gpointer user_data)
+{
+    volume_slider_is_moving = TRUE;
+}
+
+static void ui_volume_released_cb(GtkButton *button, gpointer user_data)
+{
+    volume_slider_is_moving = FALSE;
+}
+
+static gboolean ui_volume_slider_update(gpointer data)
+{
+    gint volume;
+    static gint last_volume = -1;
+
+    if (volume_slider_is_moving || data == NULL)
+        return TRUE;
+
+    audacious_drct_get_volume_main(&volume);
+
+    if (last_volume == volume)
+        return TRUE;
+
+    last_volume = volume;
+
+    if (volume == (gint) gtk_scale_button_get_value(GTK_SCALE_BUTTON(data)))
+        return TRUE;
+
+    g_signal_handler_block(data, volume_change_handler_id);
+    gtk_scale_button_set_value(GTK_SCALE_BUTTON(data), volume);
+    g_signal_handler_unblock(data, volume_change_handler_id);
+
+    return TRUE;
+}
+
 static void ui_playback_begin(gpointer hook_data, gpointer user_data)
 {
     ui_update_song_info(NULL, NULL);
@@ -695,6 +732,9 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     g_signal_connect(slider, "button-release-event", G_CALLBACK(ui_slider_button_release_cb), NULL);
 
     volume_change_handler_id = g_signal_connect(volume, "value-changed", G_CALLBACK(ui_volume_value_changed_cb), NULL);
+    g_signal_connect(volume, "pressed", G_CALLBACK(ui_volume_pressed_cb), NULL);
+    g_signal_connect(volume, "released", G_CALLBACK(ui_volume_released_cb), NULL);
+    update_volume_timeout_source = g_timeout_add(250, (GSourceFunc) ui_volume_slider_update, volume);
 
     gtk_widget_show_all(vbox);
 
@@ -739,6 +779,12 @@ static gboolean _ui_finalize(void)
     {
         g_source_remove(update_song_timeout_source);
         update_song_timeout_source = 0;
+    }
+
+    if (update_volume_timeout_source)
+    {
+        g_source_remove(update_volume_timeout_source);
+        update_volume_timeout_source = 0;
     }
 
     gtkui_cfg_save();
