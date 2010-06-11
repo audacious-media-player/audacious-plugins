@@ -748,15 +748,51 @@ ui_manager_get_popup_menu ( GtkUIManager * self , const gchar * path )
     return NULL;
 }
 
+static void get_monitor_geometry (GdkScreen * screen, gint x, gint y,
+ GdkRectangle * geom)
+{
+    gint monitors = gdk_screen_get_n_monitors (screen);
+    gint count;
+
+    for (count = 0; count < monitors; count ++)
+    {
+        gdk_screen_get_monitor_geometry (screen, count, geom);
+
+        if (x >= geom->x && x < geom->x + geom->width && y >= geom->y && y <
+         geom->y + geom->height)
+            return;
+    }
+
+    /* fall back to entire screen */
+    geom->x = 0;
+    geom->y = 0;
+    geom->width = gdk_screen_get_width (screen);
+    geom->height = gdk_screen_get_height (screen);
+}
+
 static void menu_positioner(GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
  void *data)
 {
+    gint orig_x = ((gint *) data)[0];
+    gint orig_y = ((gint *) data)[1];
+    gint leftward = ((gint *) data)[2];
+    gint upward = ((gint *) data)[3];
+    GdkRectangle geom;
     GtkRequisition request;
 
+    get_monitor_geometry (gtk_widget_get_screen ((GtkWidget *) menu), * x, * y,
+     & geom);
     gtk_widget_size_request(GTK_WIDGET(menu), &request);
 
-    *x = ((gint *)data)[0] - ((gint *)data)[2] * request.width;
-    *y = ((gint *)data)[1] - ((gint *)data)[3] * request.height;
+    if (leftward)
+        * x = MAX (orig_x - request.width, geom.x);
+    else
+        * x = MIN (orig_x, geom.x + geom.width - request.width);
+
+    if (upward)
+        * y = MAX (orig_y - request.height, geom.y);
+    else
+        * y = MIN (orig_y, geom.y + geom.height - request.height);
 }
 
 /* FIX ME: This may not handle multiple screens correctly with status icon. */
