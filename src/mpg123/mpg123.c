@@ -128,14 +128,12 @@ mpg123_get_length(VFSFile *fd)
 	mpg123_scan(decoder);
 	samples = mpg123_length(decoder);
 
-#ifdef HAVE_MPG123_1_10
 	if (samples <= 0)
 	{
 		off_t filesize = vfs_fsize(fd);
 		mpg123_set_filesize(decoder, filesize);
 		samples = mpg123_length(decoder);
 	}
-#endif
 
 	mpg123_delete(decoder);
 	mpg123_delete_pars(params);
