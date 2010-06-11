@@ -780,8 +780,8 @@ static void menu_positioner(GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
     GdkRectangle geom;
     GtkRequisition request;
 
-    get_monitor_geometry (gtk_widget_get_screen ((GtkWidget *) menu), * x, * y,
-     & geom);
+    get_monitor_geometry (gtk_widget_get_screen ((GtkWidget *) menu), orig_x,
+     orig_y, & geom);
     gtk_widget_size_request(GTK_WIDGET(menu), &request);
 
     if (leftward)
