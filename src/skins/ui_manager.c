@@ -50,53 +50,53 @@ static GtkUIManager *ui_manager = NULL;
 
 static GtkToggleActionEntry toggleaction_entries_others[] = {
 
-	{ "autoscroll songname", NULL , N_("Autoscroll Songname"), NULL,
-	  N_("Autoscroll Songname"), G_CALLBACK(action_autoscroll_songname) , FALSE },
+    { "autoscroll songname", NULL , N_("Autoscroll Songname"), NULL,
+      N_("Autoscroll Songname"), G_CALLBACK(action_autoscroll_songname) , FALSE },
 
-	{ "stop after current song", NULL , N_("Stop after Current Song"), "<Ctrl>M",
-	  N_("Stop after Current Song"), G_CALLBACK(action_stop_after_current_song) , FALSE },
+    { "stop after current song", NULL , N_("Stop after Current Song"), "<Ctrl>M",
+      N_("Stop after Current Song"), G_CALLBACK(action_stop_after_current_song) , FALSE },
 
-	{ "anamode peaks", NULL , N_("Peaks"), NULL,
-	  N_("Peaks"), G_CALLBACK(action_anamode_peaks) , FALSE },
+    { "anamode peaks", NULL , N_("Peaks"), NULL,
+      N_("Peaks"), G_CALLBACK(action_anamode_peaks) , FALSE },
 
-	{ "playback repeat", NULL , N_("Repeat"), "R",
-	  N_("Repeat"), G_CALLBACK(action_playback_repeat) , FALSE },
+    { "playback repeat", NULL , N_("Repeat"), "R",
+      N_("Repeat"), G_CALLBACK(action_playback_repeat) , FALSE },
 
-	{ "playback shuffle", NULL , N_("Shuffle"), "S",
-	  N_("Shuffle"), G_CALLBACK(action_playback_shuffle) , FALSE },
+    { "playback shuffle", NULL , N_("Shuffle"), "S",
+      N_("Shuffle"), G_CALLBACK(action_playback_shuffle) , FALSE },
 
-	{ "playback no playlist advance", NULL , N_("No Playlist Advance"), "<Ctrl>N",
-	  N_("No Playlist Advance"), G_CALLBACK(action_playback_noplaylistadvance) , FALSE },
+    { "playback no playlist advance", NULL , N_("No Playlist Advance"), "<Ctrl>N",
+      N_("No Playlist Advance"), G_CALLBACK(action_playback_noplaylistadvance) , FALSE },
 
-	{ "show player", NULL , N_("Show Player"), "<Alt>M",
-	  N_("Show Player"), G_CALLBACK(action_show_player) , FALSE },
+    { "show player", NULL , N_("Show Player"), "<Alt>M",
+      N_("Show Player"), G_CALLBACK(action_show_player) , FALSE },
 
-	{ "show playlist editor", NULL , N_("Show Playlist Editor"), "<Alt>E",
-	  N_("Show Playlist Editor"), G_CALLBACK(action_show_playlist_editor) , FALSE },
+    { "show playlist editor", NULL , N_("Show Playlist Editor"), "<Alt>E",
+      N_("Show Playlist Editor"), G_CALLBACK(action_show_playlist_editor) , FALSE },
 
-	{ "show equalizer", NULL , N_("Show Equalizer"), "<Alt>G",
-	  N_("Show Equalizer"), G_CALLBACK(action_show_equalizer) , FALSE },
+    { "show equalizer", NULL , N_("Show Equalizer"), "<Alt>G",
+      N_("Show Equalizer"), G_CALLBACK(action_show_equalizer) , FALSE },
 
-	{ "view always on top", NULL , N_("Always on Top"), "<Ctrl>O",
-	  N_("Always on Top"), G_CALLBACK(action_view_always_on_top) , FALSE },
+    { "view always on top", NULL , N_("Always on Top"), "<Ctrl>O",
+      N_("Always on Top"), G_CALLBACK(action_view_always_on_top) , FALSE },
 
-	{ "view put on all workspaces", NULL , N_("Put on All Workspaces"), "<Ctrl>S",
-	  N_("Put on All Workspaces"), G_CALLBACK(action_view_on_all_workspaces) , FALSE },
+    { "view put on all workspaces", NULL , N_("Put on All Workspaces"), "<Ctrl>S",
+      N_("Put on All Workspaces"), G_CALLBACK(action_view_on_all_workspaces) , FALSE },
 
-	{ "roll up player", NULL , N_("Roll up Player"), "<Ctrl>W",
-	  N_("Roll up Player"), G_CALLBACK(action_roll_up_player) , FALSE },
+    { "roll up player", NULL , N_("Roll up Player"), "<Ctrl>W",
+      N_("Roll up Player"), G_CALLBACK(action_roll_up_player) , FALSE },
 
-	{ "roll up playlist editor", NULL , N_("Roll up Playlist Editor"), "<Shift><Ctrl>W",
-	  N_("Roll up Playlist Editor"), G_CALLBACK(action_roll_up_playlist_editor) , FALSE },
+    { "roll up playlist editor", NULL , N_("Roll up Playlist Editor"), "<Shift><Ctrl>W",
+      N_("Roll up Playlist Editor"), G_CALLBACK(action_roll_up_playlist_editor) , FALSE },
 
-	{ "roll up equalizer", NULL , N_("Roll up Equalizer"), "<Ctrl><Alt>W",
-	  N_("Roll up Equalizer"), G_CALLBACK(action_roll_up_equalizer) , FALSE },
+    { "roll up equalizer", NULL , N_("Roll up Equalizer"), "<Ctrl><Alt>W",
+      N_("Roll up Equalizer"), G_CALLBACK(action_roll_up_equalizer) , FALSE },
 
-	{ "view scaled", NULL , N_("Scale"), "<Ctrl>D",
-	  N_("DoubleSize"), G_CALLBACK(action_view_scaled) , FALSE },
+    { "view scaled", NULL , N_("Scale"), "<Ctrl>D",
+      N_("DoubleSize"), G_CALLBACK(action_view_scaled) , FALSE },
 
-	{ "view easy move", NULL , N_("Easy Move"), "<Ctrl>E",
-	  N_("Easy Move"), G_CALLBACK(action_view_easymove) , FALSE }
+    { "view easy move", NULL , N_("Easy Move"), "<Ctrl>E",
+      N_("Easy Move"), G_CALLBACK(action_view_easymove) , FALSE }
 };
 
 
@@ -104,59 +104,59 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
 /* radio action entries */
 
 static GtkRadioActionEntry radioaction_entries_vismode[] = {
-	{ "vismode analyzer", NULL , N_("Analyzer"), NULL, N_("Analyzer"), VIS_ANALYZER },
-	{ "vismode scope", NULL , N_("Scope"), NULL, N_("Scope"), VIS_SCOPE },
-	{ "vismode voiceprint", NULL , N_("Voiceprint"), NULL, N_("Voiceprint"), VIS_VOICEPRINT },
-	{ "vismode off", NULL , N_("Off"), NULL, N_("Off"), VIS_OFF }
+    { "vismode analyzer", NULL , N_("Analyzer"), NULL, N_("Analyzer"), VIS_ANALYZER },
+    { "vismode scope", NULL , N_("Scope"), NULL, N_("Scope"), VIS_SCOPE },
+    { "vismode voiceprint", NULL , N_("Voiceprint"), NULL, N_("Voiceprint"), VIS_VOICEPRINT },
+    { "vismode off", NULL , N_("Off"), NULL, N_("Off"), VIS_OFF }
 };
 
 static GtkRadioActionEntry radioaction_entries_anamode[] = {
-	{ "anamode normal", NULL , N_("Normal"), NULL, N_("Normal"), ANALYZER_NORMAL },
-	{ "anamode fire", NULL , N_("Fire"), NULL, N_("Fire"), ANALYZER_FIRE },
-	{ "anamode vertical lines", NULL , N_("Vertical Lines"), NULL, N_("Vertical Lines"), ANALYZER_VLINES }
+    { "anamode normal", NULL , N_("Normal"), NULL, N_("Normal"), ANALYZER_NORMAL },
+    { "anamode fire", NULL , N_("Fire"), NULL, N_("Fire"), ANALYZER_FIRE },
+    { "anamode vertical lines", NULL , N_("Vertical Lines"), NULL, N_("Vertical Lines"), ANALYZER_VLINES }
 };
 
 static GtkRadioActionEntry radioaction_entries_anatype[] = {
-	{ "anatype lines", NULL , N_("Lines"), NULL, N_("Lines"), ANALYZER_LINES },
-	{ "anatype bars", NULL , N_("Bars"), NULL, N_("Bars"), ANALYZER_BARS }
+    { "anatype lines", NULL , N_("Lines"), NULL, N_("Lines"), ANALYZER_LINES },
+    { "anatype bars", NULL , N_("Bars"), NULL, N_("Bars"), ANALYZER_BARS }
 };
 
 static GtkRadioActionEntry radioaction_entries_scomode[] = {
-	{ "scomode dot", NULL , N_("Dot Scope"), NULL, N_("Dot Scope"), SCOPE_DOT },
-	{ "scomode line", NULL , N_("Line Scope"), NULL, N_("Line Scope"), SCOPE_LINE },
-	{ "scomode solid", NULL , N_("Solid Scope"), NULL, N_("Solid Scope"), SCOPE_SOLID }
+    { "scomode dot", NULL , N_("Dot Scope"), NULL, N_("Dot Scope"), SCOPE_DOT },
+    { "scomode line", NULL , N_("Line Scope"), NULL, N_("Line Scope"), SCOPE_LINE },
+    { "scomode solid", NULL , N_("Solid Scope"), NULL, N_("Solid Scope"), SCOPE_SOLID }
 };
 
 static GtkRadioActionEntry radioaction_entries_vprmode[] = {
-	{ "vprmode normal", NULL , N_("Normal"), NULL, N_("Normal"), VOICEPRINT_NORMAL },
-	{ "vprmode fire", NULL , N_("Fire"), NULL, N_("Fire"), VOICEPRINT_FIRE },
-	{ "vprmode ice", NULL , N_("Ice"), NULL, N_("Ice"), VOICEPRINT_ICE }
+    { "vprmode normal", NULL , N_("Normal"), NULL, N_("Normal"), VOICEPRINT_NORMAL },
+    { "vprmode fire", NULL , N_("Fire"), NULL, N_("Fire"), VOICEPRINT_FIRE },
+    { "vprmode ice", NULL , N_("Ice"), NULL, N_("Ice"), VOICEPRINT_ICE }
 };
 
 static GtkRadioActionEntry radioaction_entries_wshmode[] = {
-	{ "wshmode normal", NULL , N_("Normal"), NULL, N_("Normal"), VU_NORMAL },
-	{ "wshmode smooth", NULL , N_("Smooth"), NULL, N_("Smooth"), VU_SMOOTH }
+    { "wshmode normal", NULL , N_("Normal"), NULL, N_("Normal"), VU_NORMAL },
+    { "wshmode smooth", NULL , N_("Smooth"), NULL, N_("Smooth"), VU_SMOOTH }
 };
 
 static GtkRadioActionEntry radioaction_entries_anafoff[] = {
-	{ "anafoff slowest", NULL , N_("Slowest"), NULL, N_("Slowest"), FALLOFF_SLOWEST },
-	{ "anafoff slow", NULL , N_("Slow"), NULL, N_("Slow"), FALLOFF_SLOW },
-	{ "anafoff medium", NULL , N_("Medium"), NULL, N_("Medium"), FALLOFF_MEDIUM },
-	{ "anafoff fast", NULL , N_("Fast"), NULL, N_("Fast"), FALLOFF_FAST },
-	{ "anafoff fastest", NULL , N_("Fastest"), NULL, N_("Fastest"), FALLOFF_FASTEST }
+    { "anafoff slowest", NULL , N_("Slowest"), NULL, N_("Slowest"), FALLOFF_SLOWEST },
+    { "anafoff slow", NULL , N_("Slow"), NULL, N_("Slow"), FALLOFF_SLOW },
+    { "anafoff medium", NULL , N_("Medium"), NULL, N_("Medium"), FALLOFF_MEDIUM },
+    { "anafoff fast", NULL , N_("Fast"), NULL, N_("Fast"), FALLOFF_FAST },
+    { "anafoff fastest", NULL , N_("Fastest"), NULL, N_("Fastest"), FALLOFF_FASTEST }
 };
 
 static GtkRadioActionEntry radioaction_entries_peafoff[] = {
-	{ "peafoff slowest", NULL , N_("Slowest"), NULL, N_("Slowest"), FALLOFF_SLOWEST },
-	{ "peafoff slow", NULL , N_("Slow"), NULL, N_("Slow"), FALLOFF_SLOW },
-	{ "peafoff medium", NULL , N_("Medium"), NULL, N_("Medium"), FALLOFF_MEDIUM },
-	{ "peafoff fast", NULL , N_("Fast"), NULL, N_("Fast"), FALLOFF_FAST },
-	{ "peafoff fastest", NULL , N_("Fastest"), NULL, N_("Fastest"), FALLOFF_FASTEST }
+    { "peafoff slowest", NULL , N_("Slowest"), NULL, N_("Slowest"), FALLOFF_SLOWEST },
+    { "peafoff slow", NULL , N_("Slow"), NULL, N_("Slow"), FALLOFF_SLOW },
+    { "peafoff medium", NULL , N_("Medium"), NULL, N_("Medium"), FALLOFF_MEDIUM },
+    { "peafoff fast", NULL , N_("Fast"), NULL, N_("Fast"), FALLOFF_FAST },
+    { "peafoff fastest", NULL , N_("Fastest"), NULL, N_("Fastest"), FALLOFF_FASTEST }
 };
 
 static GtkRadioActionEntry radioaction_entries_viewtime[] = {
-	{ "view time elapsed", NULL , N_("Time Elapsed"), "<Ctrl>E", N_("Time Elapsed"), TIMER_ELAPSED },
-	{ "view time remaining", NULL , N_("Time Remaining"), "<Ctrl>R", N_("Time Remaining"), TIMER_REMAINING }
+    { "view time elapsed", NULL , N_("Time Elapsed"), "<Ctrl>E", N_("Time Elapsed"), TIMER_ELAPSED },
+    { "view time remaining", NULL , N_("Time Remaining"), "<Ctrl>R", N_("Time Remaining"), TIMER_REMAINING }
 };
 
 
@@ -165,51 +165,51 @@ static GtkRadioActionEntry radioaction_entries_viewtime[] = {
 
 static GtkActionEntry action_entries_playback[] = {
 
-	{ "playback", NULL, N_("Playback") },
+    { "playback", NULL, N_("Playback") },
 
-	{ "playback play", GTK_STOCK_MEDIA_PLAY , N_("Play"), "X",
-	  N_("Play"), G_CALLBACK(action_playback_play) },
+    { "playback play", GTK_STOCK_MEDIA_PLAY , N_("Play"), "X",
+      N_("Play"), G_CALLBACK(action_playback_play) },
 
-	{ "playback pause", GTK_STOCK_MEDIA_PAUSE , N_("Pause"), "C",
-	  N_("Pause"), G_CALLBACK(action_playback_pause) },
+    { "playback pause", GTK_STOCK_MEDIA_PAUSE , N_("Pause"), "C",
+      N_("Pause"), G_CALLBACK(action_playback_pause) },
 
-	{ "playback stop", GTK_STOCK_MEDIA_STOP , N_("Stop"), "V",
-	  N_("Stop"), G_CALLBACK(action_playback_stop) },
+    { "playback stop", GTK_STOCK_MEDIA_STOP , N_("Stop"), "V",
+      N_("Stop"), G_CALLBACK(action_playback_stop) },
 
-	{ "playback previous", GTK_STOCK_MEDIA_PREVIOUS , N_("Previous"), "Z",
-	  N_("Previous"), G_CALLBACK(action_playback_previous) },
+    { "playback previous", GTK_STOCK_MEDIA_PREVIOUS , N_("Previous"), "Z",
+      N_("Previous"), G_CALLBACK(action_playback_previous) },
 
-	{ "playback next", GTK_STOCK_MEDIA_NEXT , N_("Next"), "B",
-	  N_("Next"), G_CALLBACK(action_playback_next) }
+    { "playback next", GTK_STOCK_MEDIA_NEXT , N_("Next"), "B",
+      N_("Next"), G_CALLBACK(action_playback_next) }
 };
 
 
 static GtkActionEntry action_entries_visualization[] = {
-	{ "visualization", NULL, N_("Visualization") },
-	{ "vismode", NULL, N_("Visualization Mode") },
-	{ "anamode", NULL, N_("Analyzer Mode") },
-	{ "scomode", NULL, N_("Scope Mode") },
-	{ "vprmode", NULL, N_("Voiceprint Mode") },
-	{ "wshmode", NULL, N_("WindowShade VU Mode") },
-	{ "anafoff", NULL, N_("Analyzer Falloff") },
-	{ "peafoff", NULL, N_("Peaks Falloff") }
+    { "visualization", NULL, N_("Visualization") },
+    { "vismode", NULL, N_("Visualization Mode") },
+    { "anamode", NULL, N_("Analyzer Mode") },
+    { "scomode", NULL, N_("Scope Mode") },
+    { "vprmode", NULL, N_("Voiceprint Mode") },
+    { "wshmode", NULL, N_("WindowShade VU Mode") },
+    { "anafoff", NULL, N_("Analyzer Falloff") },
+    { "peafoff", NULL, N_("Peaks Falloff") }
 };
 
 static GtkActionEntry action_entries_playlist[] = {
 
-	{ "playlist", NULL, N_("Playlist") },
+    { "playlist", NULL, N_("Playlist") },
 
-	{ "playlist new", GTK_STOCK_NEW , N_("New Playlist"), "<Shift>N",
-	  N_("New Playlist"), G_CALLBACK(action_playlist_new) },
+    { "playlist new", GTK_STOCK_NEW , N_("New Playlist"), "<Shift>N",
+      N_("New Playlist"), G_CALLBACK(action_playlist_new) },
 
-	{ "playlist select next", GTK_STOCK_MEDIA_NEXT, N_("Select Next Playlist"), "<Shift>P",
-	  N_("Select Next Playlist"), G_CALLBACK(action_playlist_next) },
+    { "playlist select next", GTK_STOCK_MEDIA_NEXT, N_("Select Next Playlist"), "<Shift>P",
+      N_("Select Next Playlist"), G_CALLBACK(action_playlist_next) },
 
-	{ "playlist select previous", GTK_STOCK_MEDIA_PREVIOUS, N_("Select Previous Playlist"), "<Shift><Ctrl>P",
-	  N_("Select Previous Playlist"), G_CALLBACK(action_playlist_prev) },
+    { "playlist select previous", GTK_STOCK_MEDIA_PREVIOUS, N_("Select Previous Playlist"), "<Shift><Ctrl>P",
+      N_("Select Previous Playlist"), G_CALLBACK(action_playlist_prev) },
 
-	{ "playlist delete", GTK_STOCK_DELETE , N_("Delete Playlist"), "<Shift>D",
-	  N_("Delete Playlist"), G_CALLBACK(action_playlist_delete) },
+    { "playlist delete", GTK_STOCK_DELETE , N_("Delete Playlist"), "<Shift>D",
+      N_("Delete Playlist"), G_CALLBACK(action_playlist_delete) },
 
         {"playlist load", GTK_STOCK_OPEN, N_("Import Playlist"), "O",
           N_("Loads a playlist file into the selected playlist."), G_CALLBACK(action_playlist_load_list) },
@@ -233,7 +233,7 @@ static GtkActionEntry action_entries_playlist[] = {
 
 static GtkActionEntry action_entries_view[] = {
 
-	{ "view", NULL, N_("View") }
+    { "view", NULL, N_("View") }
 };
 
 static GtkActionEntry action_entries_playlist_add[] = {
@@ -265,162 +265,162 @@ static GtkActionEntry action_entries_playlist_select[] = {
 };
 
 static GtkActionEntry action_entries_playlist_delete[] = {
-	{ "playlist remove all", GTK_STOCK_CLEAR, N_("Remove All"), NULL,
-	  N_("Removes all entries from the playlist."),
-	  G_CALLBACK(action_playlist_remove_all) },
+    { "playlist remove all", GTK_STOCK_CLEAR, N_("Remove All"), NULL,
+      N_("Removes all entries from the playlist."),
+      G_CALLBACK(action_playlist_remove_all) },
 
-	{ "playlist clear queue", GTK_STOCK_CLEAR, N_("Clear Queue"), "<Shift>Q",
-	  N_("Clears the queue associated with this playlist."),
-	  G_CALLBACK(action_playlist_clear_queue) },
+    { "playlist clear queue", GTK_STOCK_CLEAR, N_("Clear Queue"), "<Shift>Q",
+      N_("Clears the queue associated with this playlist."),
+      G_CALLBACK(action_playlist_clear_queue) },
 
-	{ "playlist remove unavailable", GTK_STOCK_DIALOG_ERROR , N_("Remove Unavailable Files"), NULL,
-	  N_("Removes unavailable files from the playlist."),
-	  G_CALLBACK(action_playlist_remove_unavailable) },
+    { "playlist remove unavailable", GTK_STOCK_DIALOG_ERROR , N_("Remove Unavailable Files"), NULL,
+      N_("Removes unavailable files from the playlist."),
+      G_CALLBACK(action_playlist_remove_unavailable) },
 
-	{ "playlist remove dups menu", NULL , N_("Remove Duplicates") },
+    { "playlist remove dups menu", NULL , N_("Remove Duplicates") },
 
-	{ "playlist remove dups by title", NULL , N_("By Title"), NULL,
-	  N_("Removes duplicate entries from the playlist by title."),
-	  G_CALLBACK(action_playlist_remove_dupes_by_title) },
+    { "playlist remove dups by title", NULL , N_("By Title"), NULL,
+      N_("Removes duplicate entries from the playlist by title."),
+      G_CALLBACK(action_playlist_remove_dupes_by_title) },
 
-	{ "playlist remove dups by filename", NULL , N_("By Filename"), NULL,
-	  N_("Removes duplicate entries from the playlist by filename."),
-	  G_CALLBACK(action_playlist_remove_dupes_by_filename) },
+    { "playlist remove dups by filename", NULL , N_("By Filename"), NULL,
+      N_("Removes duplicate entries from the playlist by filename."),
+      G_CALLBACK(action_playlist_remove_dupes_by_filename) },
 
-	{ "playlist remove dups by full path", NULL , N_("By Path + Filename"), NULL,
-	  N_("Removes duplicate entries from the playlist by their full path."),
-	  G_CALLBACK(action_playlist_remove_dupes_by_full_path) },
+    { "playlist remove dups by full path", NULL , N_("By Path + Filename"), NULL,
+      N_("Removes duplicate entries from the playlist by their full path."),
+      G_CALLBACK(action_playlist_remove_dupes_by_full_path) },
 
-	{ "playlist remove unselected", GTK_STOCK_REMOVE, N_("Remove Unselected"), NULL,
-	  N_("Remove unselected entries from the playlist."),
-	  G_CALLBACK(action_playlist_remove_unselected) },
+    { "playlist remove unselected", GTK_STOCK_REMOVE, N_("Remove Unselected"), NULL,
+      N_("Remove unselected entries from the playlist."),
+      G_CALLBACK(action_playlist_remove_unselected) },
 
-	{ "playlist remove selected", GTK_STOCK_REMOVE, N_("Remove Selected"), "Delete",
-	  N_("Remove selected entries from the playlist."),
-	  G_CALLBACK(action_playlist_remove_selected) },
+    { "playlist remove selected", GTK_STOCK_REMOVE, N_("Remove Selected"), "Delete",
+      N_("Remove selected entries from the playlist."),
+      G_CALLBACK(action_playlist_remove_selected) },
 };
 
 static GtkActionEntry action_entries_playlist_sort[] = {
-	{ "playlist randomize list", AUD_STOCK_RANDOMIZEPL , N_("Randomize List"), "<Ctrl><Shift>R",
-	  N_("Randomizes the playlist."),
-	  G_CALLBACK(action_playlist_randomize_list) },
+    { "playlist randomize list", AUD_STOCK_RANDOMIZEPL , N_("Randomize List"), "<Ctrl><Shift>R",
+      N_("Randomizes the playlist."),
+      G_CALLBACK(action_playlist_randomize_list) },
 
-	{ "playlist reverse list", GTK_STOCK_GO_UP , N_("Reverse List"), NULL,
-	  N_("Reverses the playlist."),
-	  G_CALLBACK(action_playlist_reverse_list) },
+    { "playlist reverse list", GTK_STOCK_GO_UP , N_("Reverse List"), NULL,
+      N_("Reverses the playlist."),
+      G_CALLBACK(action_playlist_reverse_list) },
 
-	{ "playlist sort menu", GTK_STOCK_GO_DOWN , N_("Sort List") },
+    { "playlist sort menu", GTK_STOCK_GO_DOWN , N_("Sort List") },
 
-	{ "playlist sort by title", NULL , N_("By Title"), NULL,
-	  N_("Sorts the list by title."),
-	  G_CALLBACK(action_playlist_sort_by_title) },
+    { "playlist sort by title", NULL , N_("By Title"), NULL,
+      N_("Sorts the list by title."),
+      G_CALLBACK(action_playlist_sort_by_title) },
 
         { "playlist sort by album", NULL, N_("By Album"), NULL,
           N_("Sorts the list by album."),
           G_CALLBACK(action_playlist_sort_by_album) },
 
-	{ "playlist sort by artist", NULL , N_("By Artist"), NULL,
-	  N_("Sorts the list by artist."),
-	  G_CALLBACK(action_playlist_sort_by_artist) },
+    { "playlist sort by artist", NULL , N_("By Artist"), NULL,
+      N_("Sorts the list by artist."),
+      G_CALLBACK(action_playlist_sort_by_artist) },
 
-	{ "playlist sort by filename", NULL , N_("By Filename"), NULL,
-	  N_("Sorts the list by filename."),
-	  G_CALLBACK(action_playlist_sort_by_filename) },
+    { "playlist sort by filename", NULL , N_("By Filename"), NULL,
+      N_("Sorts the list by filename."),
+      G_CALLBACK(action_playlist_sort_by_filename) },
 
-	{ "playlist sort by full path", NULL , N_("By Path + Filename"), NULL,
-	  N_("Sorts the list by full pathname."),
-	  G_CALLBACK(action_playlist_sort_by_full_path) },
+    { "playlist sort by full path", NULL , N_("By Path + Filename"), NULL,
+      N_("Sorts the list by full pathname."),
+      G_CALLBACK(action_playlist_sort_by_full_path) },
 
-	{ "playlist sort by date", NULL , N_("By Date"), NULL,
-	  N_("Sorts the list by modification time."),
-	  G_CALLBACK(action_playlist_sort_by_date) },
+    { "playlist sort by date", NULL , N_("By Date"), NULL,
+      N_("Sorts the list by modification time."),
+      G_CALLBACK(action_playlist_sort_by_date) },
 
-	{ "playlist sort by track number", NULL , N_("By Track Number"), NULL,
-	  N_("Sorts the list by track number."),
-	  G_CALLBACK(action_playlist_sort_by_track_number) },
+    { "playlist sort by track number", NULL , N_("By Track Number"), NULL,
+      N_("Sorts the list by track number."),
+      G_CALLBACK(action_playlist_sort_by_track_number) },
 
-	{ "playlist sort selected menu", GTK_STOCK_GO_DOWN , N_("Sort Selected") },
+    { "playlist sort selected menu", GTK_STOCK_GO_DOWN , N_("Sort Selected") },
 
-	{ "playlist sort selected by title", NULL , N_("By Title"), NULL,
-	  N_("Sorts the list by title."),
-	  G_CALLBACK(action_playlist_sort_selected_by_title) },
+    { "playlist sort selected by title", NULL , N_("By Title"), NULL,
+      N_("Sorts the list by title."),
+      G_CALLBACK(action_playlist_sort_selected_by_title) },
 
         { "playlist sort selected by album", NULL, N_("By Album"), NULL,
           N_("Sorts the list by album."),
           G_CALLBACK(action_playlist_sort_selected_by_album) },
 
-	{ "playlist sort selected by artist", NULL, N_("By Artist"), NULL,
-	  N_("Sorts the list by artist."),
-	  G_CALLBACK(action_playlist_sort_selected_by_artist) },
+    { "playlist sort selected by artist", NULL, N_("By Artist"), NULL,
+      N_("Sorts the list by artist."),
+      G_CALLBACK(action_playlist_sort_selected_by_artist) },
 
-	{ "playlist sort selected by filename", NULL , N_("By Filename"), NULL,
-	  N_("Sorts the list by filename."),
-	  G_CALLBACK(action_playlist_sort_selected_by_filename) },
+    { "playlist sort selected by filename", NULL , N_("By Filename"), NULL,
+      N_("Sorts the list by filename."),
+      G_CALLBACK(action_playlist_sort_selected_by_filename) },
 
-	{ "playlist sort selected by full path", NULL , N_("By Path + Filename"), NULL,
-	  N_("Sorts the list by full pathname."),
-	  G_CALLBACK(action_playlist_sort_selected_by_full_path) },
+    { "playlist sort selected by full path", NULL , N_("By Path + Filename"), NULL,
+      N_("Sorts the list by full pathname."),
+      G_CALLBACK(action_playlist_sort_selected_by_full_path) },
 
-	{ "playlist sort selected by date", NULL , N_("By Date"), NULL,
-	  N_("Sorts the list by modification time."),
-	  G_CALLBACK(action_playlist_sort_selected_by_date) },
+    { "playlist sort selected by date", NULL , N_("By Date"), NULL,
+      N_("Sorts the list by modification time."),
+      G_CALLBACK(action_playlist_sort_selected_by_date) },
 
-	{ "playlist sort selected by track number", NULL , N_("By Track Number"), NULL,
-	  N_("Sorts the list by track number."),
-	  G_CALLBACK(action_playlist_sort_selected_by_track_number) },
+    { "playlist sort selected by track number", NULL , N_("By Track Number"), NULL,
+      N_("Sorts the list by track number."),
+      G_CALLBACK(action_playlist_sort_selected_by_track_number) },
 };
 
 static GtkActionEntry action_entries_others[] = {
 
-	{ "dummy", NULL, "dummy" },
+    { "dummy", NULL, "dummy" },
 
         /* XXX Carbon support */
         { "file", NULL, N_("File") },
         { "help", NULL, N_("Help") },
 
-	{ "plugins-menu", AUD_STOCK_PLUGIN, N_("Plugin Services") },
+    { "plugins-menu", AUD_STOCK_PLUGIN, N_("Plugin Services") },
 
-	{ "current track info", GTK_STOCK_INFO , N_("View Track Details"), "I",
-	  N_("View track details"), G_CALLBACK(action_current_track_info) },
+    { "current track info", GTK_STOCK_INFO , N_("View Track Details"), "I",
+      N_("View track details"), G_CALLBACK(action_current_track_info) },
 
-	{ "playlist track info", GTK_STOCK_INFO , N_("View Track Details"), "<Alt>I",
-	  N_("View track details"), G_CALLBACK(action_playlist_track_info) },
+    { "playlist track info", GTK_STOCK_INFO , N_("View Track Details"), "<Alt>I",
+      N_("View track details"), G_CALLBACK(action_playlist_track_info) },
 
-	{ "about audacious", GTK_STOCK_DIALOG_INFO , N_("About Audacious"), NULL,
-	  N_("About Audacious"), G_CALLBACK(action_about_audacious) },
+    { "about audacious", GTK_STOCK_DIALOG_INFO , N_("About Audacious"), NULL,
+      N_("About Audacious"), G_CALLBACK(action_about_audacious) },
 
-	{ "play file", GTK_STOCK_OPEN , N_("Play File"), "L",
-	  N_("Load and play a file"), G_CALLBACK(action_play_file) },
+    { "play file", GTK_STOCK_OPEN , N_("Play File"), "L",
+      N_("Load and play a file"), G_CALLBACK(action_play_file) },
 
-	{ "play location", GTK_STOCK_NETWORK , N_("Play Location"), "<Ctrl>L",
-	  N_("Play media from the selected location"), G_CALLBACK(action_play_location) },
+    { "play location", GTK_STOCK_NETWORK , N_("Play Location"), "<Ctrl>L",
+      N_("Play media from the selected location"), G_CALLBACK(action_play_location) },
 
     { "plugins", NULL , N_("Plugin services") },
 
-	{ "preferences", GTK_STOCK_PREFERENCES , N_("Preferences"), "<Ctrl>P",
-	  N_("Open preferences window"), G_CALLBACK(action_preferences) },
+    { "preferences", GTK_STOCK_PREFERENCES , N_("Preferences"), "<Ctrl>P",
+      N_("Open preferences window"), G_CALLBACK(action_preferences) },
 
-	{ "quit", GTK_STOCK_QUIT , N_("_Quit"), NULL,
-	  N_("Quit Audacious"), G_CALLBACK(action_quit) },
+    { "quit", GTK_STOCK_QUIT , N_("_Quit"), NULL,
+      N_("Quit Audacious"), G_CALLBACK(action_quit) },
 
-	{ "ab set", NULL , N_("Set A-B"), "A",
-	  N_("Set A-B"), G_CALLBACK(action_ab_set) },
+    { "ab set", NULL , N_("Set A-B"), "A",
+      N_("Set A-B"), G_CALLBACK(action_ab_set) },
 
-	{ "ab clear", NULL , N_("Clear A-B"), "<Shift>A",
-	  N_("Clear A-B"), G_CALLBACK(action_ab_clear) },
+    { "ab clear", NULL , N_("Clear A-B"), "<Shift>A",
+      N_("Clear A-B"), G_CALLBACK(action_ab_clear) },
 
-	{ "jump to playlist start", GTK_STOCK_GOTO_TOP , N_("Jump to Playlist Start"), "<Ctrl>Z",
-	  N_("Jump to Playlist Start"), G_CALLBACK(action_jump_to_playlist_start) },
+    { "jump to playlist start", GTK_STOCK_GOTO_TOP , N_("Jump to Playlist Start"), "<Ctrl>Z",
+      N_("Jump to Playlist Start"), G_CALLBACK(action_jump_to_playlist_start) },
 
-	{ "jump to file", GTK_STOCK_JUMP_TO , N_("Jump to File"), "J",
-	  N_("Jump to File"), G_CALLBACK(action_jump_to_file) },
+    { "jump to file", GTK_STOCK_JUMP_TO , N_("Jump to File"), "J",
+      N_("Jump to File"), G_CALLBACK(action_jump_to_file) },
 
-	{ "jump to time", GTK_STOCK_JUMP_TO , N_("Jump to Time"), "<Ctrl>J",
-	  N_("Jump to Time"), G_CALLBACK(action_jump_to_time) },
+    { "jump to time", GTK_STOCK_JUMP_TO , N_("Jump to Time"), "<Ctrl>J",
+      N_("Jump to Time"), G_CALLBACK(action_jump_to_time) },
 
-	{ "queue toggle", AUD_STOCK_QUEUETOGGLE , N_("Queue Toggle"), "Q",
-	  N_("Enables/disables the entry in the playlist's queue."),
-	  G_CALLBACK(action_queue_toggle) },
+    { "queue toggle", AUD_STOCK_QUEUETOGGLE , N_("Queue Toggle"), "Q",
+      N_("Enables/disables the entry in the playlist's queue."),
+      G_CALLBACK(action_queue_toggle) },
 };
 
 
