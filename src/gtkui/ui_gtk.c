@@ -338,6 +338,19 @@ static void ui_set_song_info(void *unused, void *another)
     g_free(title_s);
 
     ui_playlist_playing_add_label_markup(aud_playlist_get_playing(), FALSE);
+
+    GtkWidget *page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(playlist_notebook), aud_playlist_get_playing());
+    GtkTreeView *treeview = g_object_get_data(G_OBJECT(page), "treeview");
+
+    if (treeview == NULL)
+        return;
+
+    GtkTreePath *path = gtk_tree_path_new_from_indices(aud_playlist_get_position(aud_playlist_get_playing()), -1);
+
+    if (path != NULL && !gtk_widget_is_focus(GTK_WIDGET(treeview)))
+        gtk_tree_view_scroll_to_cell(treeview, path, NULL, TRUE, 0.5, 0.0);
+
+    gtk_tree_path_free(path);
 }
 
 static void ui_playlist_update(gpointer hook_data, gpointer user_data)
