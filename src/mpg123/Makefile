@@ -1,6 +1,7 @@
 PLUGIN = madplug${PLUGIN_SUFFIX}
 
 SRCS = mpg123.c \
+       id3skip.c \
        libmpg123/compat.c \
        libmpg123/dct64.c \
        libmpg123/equalizer.c \

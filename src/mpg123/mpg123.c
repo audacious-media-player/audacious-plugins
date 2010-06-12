@@ -31,6 +31,9 @@
 
 #include "libmpg123/mpg123.h"
 
+/* id3skip.c */
+gint id3_header_size (const guchar * data, gint size);
+
 static GMutex *ctrl_mutex = NULL;
 static GCond *ctrl_cond = NULL;
 static gboolean pause_flag;
@@ -166,11 +169,48 @@ aud_mpg123_deinit(void)
 	g_cond_free(ctrl_cond);
 }
 
-static gboolean
-mpg123_probe_for_fd(const gchar *filename, VFSFile *fd)
+static gboolean mpg123_probe_for_fd (const gchar * filename, VFSFile * handle)
 {
-	aud_vfs_fseek(fd, 0, SEEK_SET);
-	return (mpg123_get_length(fd) >= -1);
+	mpg123_handle * decoder = mpg123_new (NULL, NULL);
+	guchar buffer[8192];
+	gint result;
+
+	g_return_val_if_fail (decoder != NULL, FALSE);
+
+	/* Turn off annoying messages. */
+	mpg123_param (decoder, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
+
+	if (mpg123_open_feed (decoder) < 0)
+		goto ERROR_FREE;
+
+	if (aud_vfs_fread (buffer, 1, sizeof buffer, handle) != sizeof buffer)
+		goto ERROR_FREE;
+
+	if ((result = id3_header_size (buffer, sizeof buffer)) > 0)
+	{
+		AUDDBG ("Skip %d bytes of ID3 tag.\n", result);
+
+		if (aud_vfs_fseek (handle, result, SEEK_SET))
+			goto ERROR_FREE;
+
+		if (aud_vfs_fread (buffer, 1, sizeof buffer, handle) != sizeof buffer)
+			goto ERROR_FREE;
+	}
+
+	if ((result = mpg123_decode (decoder, buffer, sizeof buffer, NULL, 0, NULL))
+	 != MPG123_NEW_FORMAT)
+	{
+		AUDDBG ("Probe error: %s.\n", mpg123_plain_strerror (result));
+		goto ERROR_FREE;
+	}
+
+	AUDDBG ("Accepted as MP3: %s.\n", filename);
+	mpg123_delete (decoder);
+	return TRUE;
+
+ERROR_FREE:
+	mpg123_delete (decoder);
+	return FALSE;
 }
 
 static gboolean mpg123_get_info (VFSFile * handle, struct mpg123_frameinfo *
