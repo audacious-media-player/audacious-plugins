@@ -188,30 +188,11 @@ static void ui_playlist_reordered_tab(GtkNotebook *notebook, GtkWidget *child, g
 
     GtkTreeModel *tree_model;
     UiPlaylistModel *model;
-    gint i, n_pages;
-    GtkWidget *page;
 
     tree_model = gtk_tree_view_get_model(treeview);
     model = UI_PLAYLIST_MODEL(tree_model);
 
     aud_playlist_reorder(model->playlist, page_num, 1);
-
-    last_switched_page_num = model->playlist;
-
-    n_pages = gtk_notebook_get_n_pages(notebook);
-
-    for (i = 0; i < n_pages; i++)
-    {
-        page = gtk_notebook_get_nth_page(notebook, i);
-        treeview = g_object_get_data(G_OBJECT(page), "treeview");
-
-        if (treeview == NULL)
-            continue;
-
-        tree_model = gtk_tree_view_get_model(treeview);
-        model = UI_PLAYLIST_MODEL(tree_model);
-        model->playlist = i;
-    }
 }
 
 static void ui_populate_playlist_notebook(void)
@@ -307,17 +288,16 @@ static void button_next_pressed()
     audacious_drct_pl_next();
 }
 
-static void ui_playlist_playing_add_label_markup()
+static void ui_playlist_playing_add_label_markup(gint playlist, gboolean new_title)
 {
     static gint last_playlist = -1;
-    static GtkWidget *last_label = NULL;
-    gint playlist = aud_playlist_get_playing();
+    static GtkWidget *last_label;
 
-    if (last_playlist == playlist)
+    if (last_playlist == playlist && !new_title)
         return;
     else
     {
-        if (last_playlist > -1 && last_label != NULL)
+        if (last_playlist > -1 && last_label != NULL && !new_title)
             gtk_label_set_text(GTK_LABEL(last_label), aud_playlist_get_title(last_playlist));
 
         GtkWidget *page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(playlist_notebook), playlist);
@@ -357,7 +337,50 @@ static void ui_set_song_info(void *unused, void *another)
     gtk_window_set_title(GTK_WINDOW(window), title_s);
     g_free(title_s);
 
-    ui_playlist_playing_add_label_markup();
+    ui_playlist_playing_add_label_markup(aud_playlist_get_playing(), FALSE);
+}
+
+static void ui_playlist_update(gpointer hook_data, gpointer user_data)
+{
+    gint type = GPOINTER_TO_INT(hook_data);
+
+    if (type == PLAYLIST_UPDATE_STRUCTURE)
+    {
+        AUDDBG("playlist order update\n");
+
+        GtkTreeView *treeview;
+        GtkTreeModel *tree_model;
+        UiPlaylistModel *model;
+        GtkWidget *label;
+        gint i, n_pages;
+        GtkWidget *page;
+        GtkNotebook *notebook = GTK_NOTEBOOK(playlist_notebook);
+
+        n_pages = gtk_notebook_get_n_pages(notebook);
+
+        for (i = 0; i < n_pages; i++)
+        {
+            page = gtk_notebook_get_nth_page(notebook, i);
+            label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(playlist_notebook), page);
+
+            if (i == aud_playlist_get_playing())
+                ui_playlist_playing_add_label_markup(i, TRUE);
+            else
+                gtk_label_set_text(GTK_LABEL(label), aud_playlist_get_title(i));
+
+            treeview = g_object_get_data(G_OBJECT(page), "treeview");
+
+            if (treeview == NULL)
+                continue;
+
+            tree_model = gtk_tree_view_get_model(treeview);
+            model = UI_PLAYLIST_MODEL(tree_model);
+
+            model->playlist = i;
+        }
+
+        gtk_notebook_set_current_page(GTK_NOTEBOOK(playlist_notebook), aud_playlist_get_active());
+    }
 }
 
 static void ui_playlist_created(void *data, void *unused)
@@ -619,6 +642,7 @@ static void ui_hooks_associate(void)
     aud_hook_associate("playlist insert", ui_playlist_created, NULL);
     aud_hook_associate("playlist delete", ui_playlist_destroyed, NULL);
     aud_hook_associate("mainwin show", ui_mainwin_toggle_visibility, NULL);
+    aud_hook_associate("playlist update", ui_playlist_update, NULL);
 }
 
 static void ui_hooks_disassociate(void)
@@ -631,6 +655,7 @@ static void ui_hooks_disassociate(void)
     aud_hook_dissociate("playlist insert", ui_playlist_created);
     aud_hook_dissociate("playlist delete", ui_playlist_destroyed);
     aud_hook_dissociate("mainwin show", ui_mainwin_toggle_visibility);
+    aud_hook_dissociate("playlist update", ui_playlist_update);
 }
 
 static gboolean _ui_initialize(InterfaceCbs * cbs)
