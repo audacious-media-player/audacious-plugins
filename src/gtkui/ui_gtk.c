@@ -307,6 +307,34 @@ static void button_next_pressed()
     audacious_drct_pl_next();
 }
 
+static void ui_playlist_playing_add_label_markup()
+{
+    static gint last_playlist = -1;
+    static GtkWidget *last_label = NULL;
+    gint playlist = aud_playlist_get_playing();
+
+    if (last_playlist == playlist)
+        return;
+    else
+    {
+        if (last_playlist > -1 && last_label != NULL)
+            gtk_label_set_text(GTK_LABEL(last_label), aud_playlist_get_title(last_playlist));
+
+        GtkWidget *page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(playlist_notebook), playlist);
+        GtkWidget *label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(playlist_notebook), page);
+
+        if (!GTK_IS_WIDGET(label))
+            return;
+
+        gchar *markup = g_markup_printf_escaped("<b>*%s</b>", aud_playlist_get_title(playlist));
+        gtk_label_set_markup(GTK_LABEL(label), markup);
+        g_free(markup);
+
+        last_playlist = playlist;
+        last_label = label;
+    }
+}
+
 static void ui_set_song_info(void *unused, void *another)
 {
     gchar *title = aud_playback_get_title();
@@ -328,6 +356,8 @@ static void ui_set_song_info(void *unused, void *another)
 
     gtk_window_set_title(GTK_WINDOW(window), title_s);
     g_free(title_s);
+
+    ui_playlist_playing_add_label_markup();
 }
 
 static void ui_playlist_created(void *data, void *unused)
