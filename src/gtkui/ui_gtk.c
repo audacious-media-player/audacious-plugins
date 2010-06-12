@@ -291,7 +291,7 @@ static void button_next_pressed()
 static void ui_playlist_playing_add_label_markup(gint playlist, gboolean new_title)
 {
     static gint last_playlist = -1;
-    static GtkWidget *last_label;
+    static GtkWidget *last_label = NULL;
 
     if (last_playlist == playlist && !new_title)
         return;
@@ -306,7 +306,7 @@ static void ui_playlist_playing_add_label_markup(gint playlist, gboolean new_tit
         if (!GTK_IS_WIDGET(label))
             return;
 
-        gchar *markup = g_markup_printf_escaped("<b>*%s</b>", aud_playlist_get_title(playlist));
+        gchar *markup = g_markup_printf_escaped("<b>%s</b>", aud_playlist_get_title(playlist));
         gtk_label_set_markup(GTK_LABEL(label), markup);
         g_free(markup);
 
