@@ -93,6 +93,7 @@ static void ui_playlist_create_tab(gint playlist)
     label = gtk_label_new(aud_playlist_get_title(playlist));
     gtk_notebook_append_page(GTK_NOTEBOOK(playlist_notebook), scrollwin, label);
     gtk_notebook_set_show_tabs(GTK_NOTEBOOK(playlist_notebook), index_count(pages) > 1 ? TRUE : FALSE);
+    gtk_notebook_set_tab_reorderable(GTK_NOTEBOOK(playlist_notebook), scrollwin, TRUE);
 }
 
 static void ui_playlist_destroy_tab(gint playlist)
@@ -178,6 +179,41 @@ static void ui_playlist_change_tab(GtkNotebook * notebook, GtkNotebookPage * not
     }
 }
 
+static void ui_playlist_reordered_tab(GtkNotebook *notebook, GtkWidget *child, guint page_num, gpointer user_data)
+{
+    GtkTreeView *treeview = g_object_get_data(G_OBJECT(child), "treeview");
+
+    if (treeview == NULL)
+        return;
+
+    GtkTreeModel *tree_model;
+    UiPlaylistModel *model;
+    gint i, n_pages;
+    GtkWidget *page;
+
+    tree_model = gtk_tree_view_get_model(treeview);
+    model = UI_PLAYLIST_MODEL(tree_model);
+
+    aud_playlist_reorder(model->playlist, page_num, 1);
+
+    last_switched_page_num = model->playlist;
+
+    n_pages = gtk_notebook_get_n_pages(notebook);
+
+    for (i = 0; i < n_pages; i++)
+    {
+        page = gtk_notebook_get_nth_page(notebook, i);
+        treeview = g_object_get_data(G_OBJECT(page), "treeview");
+
+        if (treeview == NULL)
+            continue;
+
+        tree_model = gtk_tree_view_get_model(treeview);
+        model = UI_PLAYLIST_MODEL(tree_model);
+        model->playlist = i;
+    }
+}
+
 static void ui_populate_playlist_notebook(void)
 {
     gint playlists = aud_playlist_count();
@@ -188,7 +224,7 @@ static void ui_populate_playlist_notebook(void)
     for (count = 0; count < playlists; count++)
         ui_playlist_create_tab(count);
 
-    aud_playlist_set_active(0);
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(playlist_notebook), aud_playlist_get_active());
 }
 
 static gboolean window_configured_cb(gpointer data)
@@ -724,6 +760,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     ui_populate_playlist_notebook();
 
     g_signal_connect(playlist_notebook, "switch-page", G_CALLBACK(ui_playlist_change_tab), NULL);
+    g_signal_connect(playlist_notebook, "page-reordered", G_CALLBACK(ui_playlist_reordered_tab), NULL);
 
     slider_change_handler_id = g_signal_connect(slider, "value-changed", G_CALLBACK(ui_slider_value_changed_cb), NULL);
 
