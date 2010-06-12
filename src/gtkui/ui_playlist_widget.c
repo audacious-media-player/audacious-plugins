@@ -185,7 +185,7 @@ static void _ui_playlist_widget_drag_end(GtkTreeView * widget, GdkDragContext * 
         gint selected_length = ABS(start - end) + 1;
         playlist_shift_selected(playlist, t->old_index, t->new_index, selected_length);
 
-        treeview_select_pos(widget, t->new_index - selected_length + 1);
+        treeview_select_pos(widget, t->new_index);
     }
 
     /* replacing data with NULL will call connected destroy notify function */
