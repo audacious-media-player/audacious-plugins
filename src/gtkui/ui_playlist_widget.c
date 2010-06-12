@@ -271,7 +271,23 @@ static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventB
 {
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
     {
+        GtkTreePath *path;
+        GtkTreeSelection *sel;
+        gint tx, ty;
+
+        gtk_tree_view_widget_to_tree_coords(GTK_TREE_VIEW(widget), event->x, event->y, &tx, &ty);
+        gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(widget), tx, ty, &path, NULL, NULL, NULL);
+        sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(widget));
+
         ui_manager_popup_menu_show(GTK_MENU(playlistwin_popup_menu), event->x_root, event->y_root + 2, 3, event->time);
+
+        if (gtk_tree_selection_path_is_selected(sel, path))
+        {
+            gtk_tree_path_free(path);
+            return TRUE;
+        }
+
+        gtk_tree_path_free(path);
     }
 
     return FALSE;
