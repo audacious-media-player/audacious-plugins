@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2009  Audacious development team.
+ *  Copyright (C) 2005-2010  Audacious development team.
  *
  *  BMP - Cross-platform multimedia player
  *  Copyright (C) 2003-2004  BMP development team.
@@ -679,11 +679,8 @@ void action_playlist_save_list(void)
         if (dot == NULL || dot == basename)
         {
             gchar *oldname = filename;
-#ifdef HAVE_XSPF_PLAYLIST
             filename = g_strconcat(oldname, ".xspf", NULL);
-#else
-            filename = g_strconcat(oldname, ".m3u", NULL);
-#endif
+
             g_free(oldname);
         }
         g_free(basename);
@@ -785,4 +782,34 @@ void action_playlist_select_all(void)
 void action_playlist_save_all_playlists(void)
 {
     aud_save_all_playlists();
+}
+
+void action_playlist_copy(void)
+{
+    GtkClipboard *clip = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
+    gchar *list = create_drag_list(aud_playlist_get_active());
+
+    if (list == NULL)
+        return;
+
+    gtk_clipboard_set_text(clip, list, -1);
+    g_free(list);
+}
+
+void action_playlist_cut(void)
+{
+    action_playlist_copy();
+    action_playlist_remove_selected(NULL);
+}
+
+void action_playlist_paste(void)
+{
+    GtkClipboard *clip = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
+    gchar *list = gtk_clipboard_wait_for_text(clip);
+
+    if (list == NULL)
+        return;
+
+    insert_drag_list(aud_playlist_get_active(), get_active_selected_pos(), list);
+    g_free(list);
 }

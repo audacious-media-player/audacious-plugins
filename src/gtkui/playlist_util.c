@@ -1,3 +1,21 @@
+/*  Audacious - Cross-platform multimedia player
+ *  Copyright (C) 2005-2010  Audacious development team
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; under version 3 of the License.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses>.
+ *
+ *  The Audacious team does not consider modular code linking to
+ *  Audacious or using our public API to be a derived work.
+ */
 
 #include <glib.h>
 #include <gtk/gtk.h>
@@ -11,10 +29,10 @@ static void find_first_selected_forearch(GtkTreeModel *model, GtkTreePath *path,
 {
     gint *first_one = (gint*) userdata;
     gint ret = *gtk_tree_path_get_indices(path);
-    
-    if (*first_one == -1) 
+
+    if (*first_one == -1)
         *first_one = ret;
-    else if (*first_one > ret) 
+    else if (*first_one > ret)
         *first_one = ret;
 }
 
@@ -22,16 +40,16 @@ static void find_last_selected_forearch(GtkTreeModel *model, GtkTreePath *path, 
 {
     gint *last_one = (gint*) userdata;
     gint *ret = gtk_tree_path_get_indices(path);
-    
+
     if (!ret)
         return;
-    
+
     if (*last_one < *ret)
         *last_one = *ret;
 }
 
 /**
- * FIXME: nitpicker does not known if audacious will put a widget reference for 
+ * FIXME: nitpicker does not known if audacious will put a widget reference for
  *  the action handler?
  */
 GtkTreeView *get_active_playlist_treeview(void)
@@ -41,15 +59,15 @@ GtkTreeView *get_active_playlist_treeview(void)
 
     playlist_nb = get_playlist_notebook();
     playlist_page_num = get_switched_page_num();
-    
+
     if (!playlist_nb)
         return NULL;
-    
+
     if (playlist_page_num == -1)
         playlist_page_num = 0;
-    
+
     GtkWidget *page = gtk_notebook_get_nth_page(playlist_nb, playlist_page_num);
-    
+
     if (!page)
         return NULL;
 
@@ -62,11 +80,11 @@ gint get_first_selected_pos(GtkTreeView *tv)
     GtkTreeView *treeview = tv;
     GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
     gint selected_pos = -1;
-    
-    gtk_tree_selection_selected_foreach(sel, 
+
+    gtk_tree_selection_selected_foreach(sel,
         &find_first_selected_forearch, &selected_pos);
     return selected_pos;
-   
+
 }
 
 gint get_last_selected_pos(GtkTreeView *tv)
@@ -74,8 +92,8 @@ gint get_last_selected_pos(GtkTreeView *tv)
     GtkTreeView *treeview = tv;
     GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
     gint selected_pos = -1;
-    
-    gtk_tree_selection_selected_foreach(sel, 
+
+    gtk_tree_selection_selected_foreach(sel,
         &find_last_selected_forearch, &selected_pos);
 
     return selected_pos;
@@ -95,7 +113,6 @@ void playlist_get_changed_range(gint *start, gint *end)
 
 void playlist_shift_selected(gint playlist_num, gint old_pos, gint new_pos, gint selected_length)
 {
-    
     gint delta = new_pos - old_pos;
     need_update_range_start = MIN(old_pos, new_pos);
     need_update_range_end = MAX(new_pos, old_pos) + selected_length;
@@ -162,4 +179,49 @@ void insert_drag_list(gint playlist, gint position, const gchar *list)
     }
 
     aud_playlist_entry_insert_batch(playlist, position, add, NULL);
+}
+
+gchar *create_drag_list(gint playlist)
+{
+    gint entries = aud_playlist_entry_count(playlist);
+    gint length = 0;
+    gint count, slength;
+    const gchar *filename;
+    gchar *buffer, *set;
+
+    for (count = 0; count < entries; count++)
+    {
+        if (!aud_playlist_entry_get_selected(playlist, count))
+            continue;
+
+        filename = aud_playlist_entry_get_filename(playlist, count);
+        g_return_val_if_fail(filename != NULL, NULL);
+        length += strlen(filename) + 1;
+    }
+
+    if (!length)
+        return NULL;
+
+    buffer = g_malloc(length);
+    set = buffer;
+
+    for (count = 0; count < entries; count++)
+    {
+        if (!aud_playlist_entry_get_selected(playlist, count))
+            continue;
+
+        filename = aud_playlist_entry_get_filename(playlist, count);
+        g_return_val_if_fail(filename != NULL, NULL);
+        slength = strlen (filename);
+        g_return_val_if_fail(slength + 1 <= length, NULL);
+        memcpy(set, filename, slength);
+        set += slength;
+        *set++ = '\n';
+        length -= slength + 1;
+    }
+
+    /* replace the last newline with a null */
+    *--set = 0;
+
+    return buffer;
 }

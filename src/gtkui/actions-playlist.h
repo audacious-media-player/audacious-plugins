@@ -46,6 +46,10 @@ void action_playlist_remove_all(void);
 void action_playlist_remove_selected(void);
 void action_playlist_remove_unselected(void);
 
+void action_playlist_copy(void);
+void action_playlist_cut(void);
+void action_playlist_paste(void);
+
 /* void action_playlist_add_cd(void); - this is no longer needed, as the respective menu entry is added from within the cdaudio plugin */
 void action_playlist_add_url(void);
 void action_playlist_add_files(void);

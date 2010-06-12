@@ -313,6 +313,15 @@ static GtkActionEntry action_entries_others[] = {
     {"queue toggle", AUD_STOCK_QUEUETOGGLE, N_("Queue Toggle"), "Q",
      N_("Enables/disables the entry in the playlist's queue."),
      G_CALLBACK(action_queue_toggle)},
+
+    {"playlist copy", GTK_STOCK_COPY, N_("Copy"), "<Ctrl>C",
+     NULL, G_CALLBACK(action_playlist_copy)},
+
+    {"playlist cut", GTK_STOCK_CUT, N_("Cut"), "<Ctrl>X",
+     NULL, G_CALLBACK(action_playlist_cut)},
+
+    {"playlist paste", GTK_STOCK_PASTE, N_("Paste"), "<Ctrl>V",
+     NULL, G_CALLBACK(action_playlist_paste)},
 };
 
 
