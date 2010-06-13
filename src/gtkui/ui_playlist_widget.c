@@ -24,7 +24,6 @@
 
 #include "ui_manager.h"
 #include "ui_playlist_model.h"
-#include "dnd.h"
 #include "multidrag.h"
 #include "playlist_util.h"
 
@@ -301,6 +300,9 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
     GtkTreeViewColumn *column;
     GtkTreeSelection *selection;
     gulong selection_changed_handler_id;
+    const GtkTargetEntry target_entry[] = {
+        {"text/uri-list", 0, 0}
+    };
 
     model = ui_playlist_model_new(playlist);
     treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
@@ -391,8 +393,8 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
         gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
     }
 
-    aud_drag_dest_set(treeview);
-    aud_drop_src_set(treeview);
+    gtk_drag_dest_set(treeview, GTK_DEST_DEFAULT_ALL, target_entry, 1, GDK_ACTION_COPY | GDK_ACTION_MOVE);
+    gtk_drag_source_set(treeview, GDK_BUTTON1_MASK, target_entry, 1, GDK_ACTION_MOVE);
 
     g_signal_connect(treeview, "row-activated", G_CALLBACK(ui_playlist_widget_jump), NULL);
 
