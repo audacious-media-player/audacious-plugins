@@ -64,6 +64,8 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 		return;
 	}
 
+	sc_idle(m_scrobbler);
+
 	tuple = aud_playlist_entry_get_tuple(playlist, pos);
 	if (tuple == NULL)
 		return;
