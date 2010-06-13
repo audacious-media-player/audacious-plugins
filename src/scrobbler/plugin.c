@@ -70,6 +70,9 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 	if (tuple == NULL)
 		return;
 
+	if (submit_tuple != NULL)
+		mowgli_object_unref(submit_tuple);
+
 	submit_tuple = tuple_copy(tuple);
 	sc_addentry(m_scrobbler, submit_tuple, aud_tuple_get_int(submit_tuple, FIELD_LENGTH, NULL) / 1000);
 
