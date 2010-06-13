@@ -1,4 +1,4 @@
-/*  
+/*
  *  Copyright (C) 2010 William Pitcock <nenolod@atheme.org>.
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -58,7 +58,7 @@ ui_infoarea_visualization_timeout(gpointer hook_data, UIInfoArea *area)
     VisNode *vis = (VisNode*) hook_data;
     gint16 mono_freq[2][256];
 
-    const int xscale[] = { 0, 2, 3, 5, 6, 11, 
+    const int xscale[] = { 0, 2, 3, 5, 6, 11,
                            20, 41, 62, 82, 143, 255 };
 
     aud_calc_mono_freq(mono_freq, vis->data, vis->nch);
@@ -401,7 +401,7 @@ ui_infoarea_new(void)
 
     gtk_widget_set_size_request(GTK_WIDGET(evbox), -1, 84);
 
-    g_signal_connect_swapped(area->parent, "expose-event", 
+    g_signal_connect_swapped(area->parent, "expose-event",
                              G_CALLBACK(ui_infoarea_expose_event), area);
 
     aud_hook_associate("title change", (HookFunction) ui_infoarea_set_title, area);

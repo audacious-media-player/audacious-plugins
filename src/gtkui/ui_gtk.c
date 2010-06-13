@@ -815,6 +815,10 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     ui_manager_create_menus();
 
     check_set(toggleaction_group_others, "view playlists", config.playlist_visible);
+    check_set(toggleaction_group_others, "playback repeat", aud_cfg->repeat);
+    check_set(toggleaction_group_others, "playback shuffle", aud_cfg->shuffle);
+    check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
+    check_set(toggleaction_group_others, "stop after current song", aud_cfg->stopaftersong);
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), MAINWIN_DEFAULT_WIDTH, MAINWIN_DEFAULT_HEIGHT);
