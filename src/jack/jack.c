@@ -8,7 +8,8 @@
 
 #include <audacious/plugin.h>
 #include <dlfcn.h>
-#include <gtk/gtk.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 #include <audacious/i18n.h>
 #include <stdio.h>
 #include "config.h"
@@ -416,14 +417,15 @@ static void jack_about(void)
 
     if (aboutbox == NULL)
     {
-        aboutbox = audacious_info_dialog(
-            _("About JACK Output Plugin 0.17"),
+        gchar *description = g_strdup_printf(
             _("XMMS jack Driver 0.17\n\n"
               "xmms-jack.sf.net\nChris Morgan<cmorgan@alum.wpi.edu>\n\n"
-              "Audacious port by\nGiacomo Lozito from develia.org"),
-            _("Ok"), FALSE, NULL, NULL);
-        g_signal_connect(GTK_OBJECT(aboutbox), "destroy",
-                   (GCallback)gtk_widget_destroyed, &aboutbox);
+              "Audacious port by\nGiacomo Lozito from develia.org"));
+
+        audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
+         _("About JACK Output Plugin 0.17"), description);
+        
+        g_free(description);
     }
 }
 
