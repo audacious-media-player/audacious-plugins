@@ -177,16 +177,16 @@ void ui_playlist_notebook_create_tab(gint playlist)
     gtk_widget_show_all(scrollwin);
 
     ebox = gtk_event_box_new();
-	GTK_WIDGET_SET_FLAGS(ebox, GTK_NO_WINDOW);
+    GTK_WIDGET_SET_FLAGS(ebox, GTK_NO_WINDOW);
 
-	hbox = gtk_hbox_new(FALSE, 2);
+    hbox = gtk_hbox_new(FALSE, 2);
 
     label = gtk_label_new(aud_playlist_get_title(playlist));
-	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 
     entry = gtk_entry_new();
     gtk_box_pack_start(GTK_BOX(hbox), entry, FALSE, FALSE, 0);
-	gtk_container_add(GTK_CONTAINER(ebox), hbox);
+    gtk_container_add(GTK_CONTAINER(ebox), hbox);
     gtk_widget_show_all(ebox);
     gtk_widget_hide(entry);
 
