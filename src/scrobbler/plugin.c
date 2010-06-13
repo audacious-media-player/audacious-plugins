@@ -8,8 +8,10 @@
 #include <gtk/gtk.h>
 
 #include <audacious/plugin.h>
-#include <audacious/ui_preferences.h>
+#include <audacious/preferences.h>
 #include <audacious/hook.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include <unistd.h>
 #include <stdio.h>
@@ -23,18 +25,13 @@
 
 #include "plugin.h"
 #include "scrobbler.h"
-#include "gtkstuff.h"
-#include "config.h"
 #include "fmt.h"
-#include "configure.h"
 
 typedef struct submit_t
 {
 	int dosubmit, pos_c, len;
 } submit_t;
 
-static void init(void);
-static void cleanup(void);
 static int sc_going, ge_going;
 
 static GMutex *m_scrobbler;
@@ -42,17 +39,6 @@ static GMutex *m_scrobbler;
 guint track_timeout;
 
 Tuple *submit_tuple = NULL;
-
-extern PluginPreferences preferences;
-
-static GeneralPlugin scrobbler_gp =
-{
-	.description = "Scrobbler Plugin",
-	.init = init,
-	.about = about_show,
-	.cleanup = cleanup,
-	.settings = &preferences,
-};
 
 static gboolean ishttp(const char *a)
 {
@@ -210,6 +196,30 @@ void setup_proxy(CURL *curl)
     }
     aud_cfg_db_close(db);
 }
+
+static void about_show(void)
+{
+	static GtkWidget *aboutbox = NULL;
+	gchar *tmp;
+
+	tmp = g_strdup_printf(_("Audacious AudioScrobbler Plugin\n\n"
+				"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>\n"));
+	audgui_simple_message(&aboutbox, GTK_MESSAGE_INFO, _("About Scrobbler Plugin"),
+			tmp);
+
+	g_free(tmp);
+}
+
+extern PluginPreferences preferences;
+
+static GeneralPlugin scrobbler_gp =
+{
+	.description = "Scrobbler Plugin",
+	.init = init,
+	.about = about_show,
+	.cleanup = cleanup,
+	.settings = &preferences,
+};
 
 GeneralPlugin *scrobbler_gplist[] = { &scrobbler_gp, NULL };
 

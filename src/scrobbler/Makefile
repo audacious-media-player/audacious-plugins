@@ -2,7 +2,6 @@ PLUGIN = scrobbler${PLUGIN_SUFFIX}
 
 SRCS = fmt.c			\
        configure.c		\
-       gtkstuff.c		\
        scrobbler.c		\
        plugin.c
 
