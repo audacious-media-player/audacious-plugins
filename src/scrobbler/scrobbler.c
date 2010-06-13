@@ -467,6 +467,24 @@ static void hexify(char *pass, int len)
     return;
 }
 
+gpointer sc_curl_perform_thread(gpointer data)
+{
+    int status;
+    CURL *curl = (CURL *) data;
+
+    status = curl_easy_perform(curl);
+    curl_easy_cleanup(curl);
+    
+    g_thread_exit(NULL);
+}
+
+void sc_curl_perform(CURL *curl)
+{
+    GError **error = NULL;
+
+    g_thread_create(sc_curl_perform_thread, curl, FALSE, error);
+}
+
 static int sc_handshake(void)
 {
     int status;
@@ -711,7 +729,7 @@ static int sc_submit_np(Tuple *tuple)
     CURL *curl;
     /* struct HttpPost *post = NULL , *last = NULL; */
     int status;
-    gchar *entry;
+    static gchar entry[16384];
 
     curl = curl_easy_init();
     setup_proxy(curl);
@@ -726,7 +744,7 @@ static int sc_submit_np(Tuple *tuple)
         char *field_artist = fmt_escape(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
         char *field_title = fmt_escape(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
         char *field_album = aud_tuple_get_string(tuple, FIELD_ALBUM, NULL) ? fmt_escape(aud_tuple_get_string(tuple, FIELD_ALBUM, NULL)) : fmt_escape("");
-    entry = g_strdup_printf("s=%s&a=%s&t=%s&b=%s&l=%d&n=%d&m=", sc_session_id,
+    snprintf(entry, 16384, "s=%s&a=%s&t=%s&b=%s&l=%d&n=%d&m=", sc_session_id,
         field_artist,
         field_title,
         field_album,
@@ -742,11 +760,7 @@ static int sc_submit_np(Tuple *tuple)
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
     curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, SC_CURL_TIMEOUT);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, SCROBBLER_SB_WAIT);
-
-    status = curl_easy_perform(curl);
-    curl_easy_cleanup(curl);
-
-    g_free(entry);
+    sc_curl_perform(curl);
 
     if (status) {
         AUDDBG(sc_curl_errbuf);
@@ -771,7 +785,7 @@ static int sc_submitentry(gchar *entry)
     CURL *curl;
     /* struct HttpPost *post = NULL , *last = NULL; */
     int status;
-        GString *submission;
+    static gchar sub[16384];
 
     curl = curl_easy_init();
     setup_proxy(curl);
@@ -784,9 +798,7 @@ static int sc_submitentry(gchar *entry)
     /*cfa(&post, &last, "debug", "failed");*/
 
     /*AUDDBG("Response Hash: %s", sc_response_hash));*/
-        submission = g_string_new("s=");
-        g_string_append(submission, (gchar *)sc_session_id);
-    g_string_append(submission, entry);
+    snprintf(sub, 16384, "s=%s%s", sc_session_id, entry);
 
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *)submission->str);
     memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
@@ -794,11 +806,7 @@ static int sc_submitentry(gchar *entry)
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
     curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, SC_CURL_TIMEOUT);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, SCROBBLER_SB_WAIT);
-
-    status = curl_easy_perform(curl);
-
-    curl_easy_cleanup(curl);
-        g_string_free(submission, TRUE);
+    sc_curl_perform(curl);
 
     if (status) {
         AUDDBG(sc_curl_errbuf);
