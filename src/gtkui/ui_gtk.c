@@ -30,6 +30,7 @@
 #include "ui_playlist_model.h"
 #include "ui_manager.h"
 #include "ui_infoarea.h"
+#include "playlist_util.h"
 
 gboolean multi_column_view;
 
@@ -64,16 +65,10 @@ Interface gtkui_interface = {
 SIMPLE_INTERFACE_PLUGIN("gtkui", &gtkui_interface);
 
 static struct index *pages;
-static gint last_switched_page_num = -1;
 
-GtkNotebook *get_playlist_notebook(void)
+GtkNotebook *playlist_get_notebook(void)
 {
-    return (GtkNotebook*) playlist_notebook;
-}
-
-gint get_switched_page_num()
-{
-    return last_switched_page_num;
+    return GTK_NOTEBOOK(playlist_notebook);
 }
 
 static void ui_playlist_tab_title_edit(GtkWidget *ebox)
@@ -140,12 +135,6 @@ static GtkLabel *ui_playlist_tab_get_label(gint playlist)
     GtkWidget *page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(playlist_notebook), playlist);
     GtkWidget *ebox = gtk_notebook_get_tab_label(GTK_NOTEBOOK(playlist_notebook), page);
     return GTK_LABEL(g_object_get_data(G_OBJECT(ebox), "label"));
-}
-
-static GtkTreeView *ui_playlist_get_treeview(gint playlist)
-{
-    GtkWidget *page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(playlist_notebook), playlist);
-    return GTK_TREE_VIEW(g_object_get_data(G_OBJECT(page), "treeview"));
 }
 
 static void ui_playlist_create_tab(gint playlist)
@@ -268,7 +257,6 @@ static void ui_playlist_change_tab(GtkNotebook * notebook, GtkNotebookPage * not
         GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
         UiPlaylistModel *model = UI_PLAYLIST_MODEL(tree_model);
 
-        last_switched_page_num = page_num;
         aud_playlist_set_active(model->playlist);
 
         if (tab_title_editing != NULL)
@@ -433,7 +421,7 @@ static void ui_set_song_info(void *unused, void *another)
 
     ui_playlist_playing_add_label_markup(aud_playlist_get_playing(), FALSE);
 
-    GtkTreeView *treeview = ui_playlist_get_treeview(aud_playlist_get_playing());
+    GtkTreeView *treeview = playlist_get_playing_treeview();
 
     if (treeview == NULL)
         return;
@@ -475,7 +463,7 @@ static void ui_playlist_update(gpointer hook_data, gpointer user_data)
                     gtk_label_set_text(label, aud_playlist_get_title(i));
             }
 
-            treeview = ui_playlist_get_treeview(i);
+            treeview = playlist_get_treeview(i);
 
             if (treeview == NULL)
                 continue;

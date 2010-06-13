@@ -27,7 +27,9 @@ void treeview_select_pos(GtkTreeView* tv, gint pos);
 gint get_first_selected_pos(GtkTreeView *tv);
 gint get_last_selected_pos(GtkTreeView *tv);
 void playlist_shift_selected(gint playlist_num, gint old_pos, gint new_pos, gint selected_boundary_range);
-GtkTreeView *get_active_playlist_treeview(void);
+GtkTreeView *playlist_get_treeview(gint playlist);
+GtkTreeView *playlist_get_active_treeview(void);
+GtkTreeView *playlist_get_playing_treeview(void);
 void playlist_get_changed_range(gint *start, gint *end);
 gchar *create_drag_list(gint playlist);
 

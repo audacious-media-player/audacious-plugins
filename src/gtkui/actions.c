@@ -487,7 +487,7 @@ void action_playlist_remove_selected(GtkAction *act)
     aud_playlist_delete_selected(active_playlist_num);
 
     if (clap_sel_pos)
-        treeview_select_pos(get_active_playlist_treeview(), sel_pos);
+        treeview_select_pos(playlist_get_active_treeview(), sel_pos);
 }
 
 void action_playlist_remove_unselected(void)
@@ -771,12 +771,16 @@ void action_playlist_invert_selection(void)
 
 void action_playlist_select_none(void)
 {
-    g_message("implement me");
+    GtkTreeSelection *selection = gtk_tree_view_get_selection(playlist_get_active_treeview());
+
+    gtk_tree_selection_unselect_all(selection);
 }
 
 void action_playlist_select_all(void)
 {
-    g_message("implement me");
+    GtkTreeSelection *selection = gtk_tree_view_get_selection(playlist_get_active_treeview());
+
+    gtk_tree_selection_select_all(selection);
 }
 
 void action_playlist_save_all_playlists(void)

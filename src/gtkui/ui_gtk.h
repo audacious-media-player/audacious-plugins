@@ -25,7 +25,6 @@ extern gboolean multi_columns_view;
 extern Interface gtkui_interface;
 void show_preferences_window(gboolean show);
 
-GtkNotebook *get_playlist_notebook(void);
-gint get_switched_page_num();
+GtkNotebook *playlist_get_notebook(void);
 
 #endif

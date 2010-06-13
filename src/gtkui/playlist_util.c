@@ -48,31 +48,24 @@ static void find_last_selected_forearch(GtkTreeModel *model, GtkTreePath *path, 
         *last_one = *ret;
 }
 
-/**
- * FIXME: nitpicker does not known if audacious will put a widget reference for
- *  the action handler?
- */
-GtkTreeView *get_active_playlist_treeview(void)
+GtkTreeView *playlist_get_treeview(gint playlist)
 {
-    GtkNotebook *playlist_nb;
-    gint playlist_page_num;
-
-    playlist_nb = get_playlist_notebook();
-    playlist_page_num = get_switched_page_num();
-
-    if (!playlist_nb)
-        return NULL;
-
-    if (playlist_page_num == -1)
-        playlist_page_num = 0;
-
-    GtkWidget *page = gtk_notebook_get_nth_page(playlist_nb, playlist_page_num);
+    GtkWidget *page = gtk_notebook_get_nth_page(playlist_get_notebook(), playlist);
 
     if (!page)
         return NULL;
 
-    GtkTreeView *treeview = g_object_get_data(G_OBJECT(page), "treeview");
-    return treeview;
+    return GTK_TREE_VIEW(g_object_get_data(G_OBJECT(page), "treeview"));
+}
+
+GtkTreeView *playlist_get_active_treeview(void)
+{
+    return playlist_get_treeview(aud_playlist_get_active());
+}
+
+GtkTreeView *playlist_get_playing_treeview(void)
+{
+    return playlist_get_treeview(aud_playlist_get_playing());
 }
 
 gint get_first_selected_pos(GtkTreeView *tv)
@@ -125,7 +118,7 @@ void playlist_shift_selected(gint playlist_num, gint old_pos, gint new_pos, gint
 
 gint get_active_selected_pos(void)
 {
-    return get_first_selected_pos(get_active_playlist_treeview());
+    return get_first_selected_pos(playlist_get_active_treeview());
 }
 
 /**
