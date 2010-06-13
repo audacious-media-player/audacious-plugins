@@ -1,6 +1,7 @@
 /*  Audacious - Cross-platform multimedia player
  *  Copyright (C) 2008 Tomasz Moń <desowin@gmail.com>
  *  Copyright (C) 2009 William Pitcock <nenolod@atheme.org>
+ *  Copyright (C) 2010 Michał Lipski <tallica@o2.pl>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,7 +25,6 @@
 
 #include "ui_manager.h"
 #include "ui_playlist_model.h"
-#include "multidrag.h"
 #include "playlist_util.h"
 
 typedef struct
@@ -268,24 +268,54 @@ static gboolean ui_playlist_widget_keypress_cb(GtkWidget * widget, GdkEventKey *
 
 static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventButton * event)
 {
+    GtkTreePath *path = NULL;
+    GtkTreeSelection *sel = NULL;
+
+    gtk_widget_grab_focus(widget);
+
+    gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(widget), event->x, event->y, &path, NULL, NULL, NULL);
+    sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(widget));
+
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-    {
-        GtkTreePath *path;
-        GtkTreeSelection *sel;
-        gint tx, ty;
-
-        gtk_tree_view_widget_to_tree_coords(GTK_TREE_VIEW(widget), event->x, event->y, &tx, &ty);
-        gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(widget), tx, ty, &path, NULL, NULL, NULL);
-        sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(widget));
-
         ui_manager_popup_menu_show(GTK_MENU(playlistwin_popup_menu), event->x_root, event->y_root + 2, 3, event->time);
 
-        if (gtk_tree_selection_path_is_selected(sel, path))
-        {
-            gtk_tree_path_free(path);
-            return TRUE;
-        }
+    if (path == NULL)
+        return FALSE;
 
+    if (event->button == 1 &&
+       (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == 0 &&
+        event->type == GDK_2BUTTON_PRESS)
+    {
+        gtk_tree_view_row_activated(GTK_TREE_VIEW(widget), path, NULL);
+        gtk_tree_path_free(path);
+        return FALSE;
+    }
+
+    if (gtk_tree_selection_path_is_selected(sel, path))
+    {
+        gtk_tree_path_free(path);
+        return TRUE;
+    }
+
+    gtk_tree_path_free(path);
+    return FALSE;
+}
+
+static gboolean ui_playlist_widget_button_release_cb(GtkWidget * widget, GdkEventButton * event)
+{
+    GtkTreePath *path = NULL;
+    GtkTreeSelection *sel = NULL;
+
+    if (event->button == 1 && (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == 0)
+    {
+        gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(widget), event->x, event->y, &path, NULL, NULL, NULL);
+        sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(widget));
+
+        if (path == NULL)
+            return FALSE;
+
+        gtk_tree_selection_unselect_all(sel);
+        gtk_tree_selection_select_path(sel, path);
         gtk_tree_path_free(path);
     }
 
@@ -400,14 +430,13 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
 
     g_signal_connect(treeview, "key-press-event", G_CALLBACK(ui_playlist_widget_keypress_cb), NULL);
     g_signal_connect(treeview, "button-press-event", G_CALLBACK(ui_playlist_widget_button_press_cb), NULL);
+    g_signal_connect(treeview, "button-release-event", G_CALLBACK(ui_playlist_widget_button_release_cb), NULL);
 
     g_signal_connect(treeview, "drag-begin", G_CALLBACK(_ui_playlist_widget_drag_begin), NULL);
     g_signal_connect(treeview, "drag-motion", G_CALLBACK(_ui_playlist_widget_drag_motion), NULL);
     g_signal_connect(treeview, "drag-data-received", G_CALLBACK(_ui_playlist_widget_drag_data_received), NULL);
     g_signal_connect(treeview, "drag-end", G_CALLBACK(_ui_playlist_widget_drag_end), NULL);
     g_signal_connect_swapped(model, "row-changed", G_CALLBACK(gtk_widget_queue_draw), treeview);
-
-    make_treeview_multidrag(treeview);
 
     selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);

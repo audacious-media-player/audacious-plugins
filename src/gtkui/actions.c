@@ -773,6 +773,7 @@ void action_playlist_select_none(void)
 {
     GtkTreeSelection *selection = gtk_tree_view_get_selection(playlist_get_active_treeview());
 
+    gtk_widget_grab_focus(GTK_WIDGET(playlist_get_active_treeview()));
     gtk_tree_selection_unselect_all(selection);
 }
 
@@ -780,6 +781,7 @@ void action_playlist_select_all(void)
 {
     GtkTreeSelection *selection = gtk_tree_view_get_selection(playlist_get_active_treeview());
 
+    gtk_widget_grab_focus(GTK_WIDGET(playlist_get_active_treeview()));
     gtk_tree_selection_select_all(selection);
 }
 
