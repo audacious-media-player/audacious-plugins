@@ -23,7 +23,7 @@
 #include <string.h>
 #include <audacious/plugin.h>
 
-#include "ui_gtk.h"
+#include "ui_playlist_notebook.h"
 
 static void find_first_selected_forearch(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer userdata)
 {
@@ -48,9 +48,17 @@ static void find_last_selected_forearch(GtkTreeModel *model, GtkTreePath *path, 
         *last_one = *ret;
 }
 
+GtkTreeView *playlist_get_treeview_from_page(GtkWidget *page)
+{
+    if (!page)
+        return NULL;
+
+    return GTK_TREE_VIEW(g_object_get_data(G_OBJECT(page), "treeview"));
+}
+
 GtkTreeView *playlist_get_treeview(gint playlist)
 {
-    GtkWidget *page = gtk_notebook_get_nth_page(playlist_get_notebook(), playlist);
+    GtkWidget *page = gtk_notebook_get_nth_page(UI_PLAYLIST_NOTEBOOK, playlist);
 
     if (!page)
         return NULL;

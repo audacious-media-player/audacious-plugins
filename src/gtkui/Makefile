@@ -6,6 +6,7 @@ SRCS = gtkui_cfg.c \
        ui_manager.c \
        ui_playlist_widget.c \
        ui_playlist_model.c \
+       ui_playlist_notebook.c \
        util.c \
        dnd.c \
        multidrag.c \
