@@ -4,7 +4,6 @@ SRCS = fmt.c			\
        configure.c		\
        gtkstuff.c		\
        scrobbler.c		\
-       gerpok.c			\
        plugin.c
 
 DATA = images/audioscrobbler.png	\

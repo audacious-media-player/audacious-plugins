@@ -23,7 +23,6 @@
 
 #include "plugin.h"
 #include "scrobbler.h"
-#include "gerpok.h"
 #include "gtkstuff.h"
 #include "config.h"
 #include "fmt.h"
@@ -34,12 +33,11 @@
 
 typedef struct submit_t
 {
-	int dosubmit, pos_c, len, gerpok;
+	int dosubmit, pos_c, len;
 } submit_t;
 
 static void init(void);
 static void cleanup(void);
-static void *xs_thread(void *);
 static void *hs_thread(void *);
 static int sc_going, ge_going;
 static gboolean submit;
@@ -51,6 +49,8 @@ static GThread *pt_handshake;
 static GMutex *hs_mutex, *xs_mutex;
 static GCond *hs_cond, *xs_cond;
 guint track_timeout;
+
+Tuple *submit_tuple = NULL;
 
 extern PluginPreferences preferences;
 
@@ -73,6 +73,7 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 {
 	gint playlist = aud_playlist_get_active();
 	gint pos = aud_playlist_get_position(playlist);
+	Tuple *tuple;
 
 	if (aud_playlist_entry_get_length(playlist, pos) < (glong)30)
 	{
@@ -86,17 +87,31 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 		return;
 	}
 
-	/* wake up the scrobbler thread to submit or queue */
-	submit = TRUE;
-	g_cond_signal(xs_cond);
+	tuple = aud_playlist_entry_get_tuple(playlist, pos);
+	if (tuple == NULL)
+		return;
+
+
+	submit_tuple = mowgli_object_ref(tuple);
+	sc_addentry(m_scrobbler, submit_tuple, aud_tuple_get_int(submit_tuple, FIELD_LENGTH, NULL) / 1000);
+
+	if (!track_timeout)
+		track_timeout = g_timeout_add_seconds(1, sc_timeout, NULL);
 }
 
 static void aud_hook_playback_end(gpointer aud_hook_data, gpointer user_data)
 {
-    if (track_timeout) {
-        g_source_remove(track_timeout);
-        track_timeout = 0;
-    }
+	if (track_timeout)
+	{
+		g_source_remove(track_timeout);
+		track_timeout = 0;
+	}
+
+	if (submit_tuple != NULL)
+	{
+		mowgli_object_unref(submit_tuple);
+		submit_tuple = NULL;
+	}
 }
 
 void start(void) {
@@ -136,33 +151,9 @@ void start(void) {
 		g_free(sc_url);
 	}
 	
-	if ((!ge_username || !ge_password) || (!*ge_username || !*ge_password))
-	{
-		AUDDBG("username/password not found - not starting Gerpok support",
-			DEBUG);
-		ge_going = 0;
-	}
-	else
-	{
-		gerpok_sc_init(ge_username, ge_password);
-
-		g_free(ge_username);
-		g_free(ge_password);
-	}
-
 	m_scrobbler = g_mutex_new();
 	hs_mutex = g_mutex_new();
-	xs_mutex = g_mutex_new();
 	hs_cond = g_cond_new();
-	xs_cond = g_cond_new();
-
-	if ((pt_scrobbler = g_thread_create(xs_thread, NULL, TRUE, moo)) == NULL)
-	{
-		AUDDBG("Error creating scrobbler thread: %s", moo);
-		sc_going = 0;
-		ge_going = 0;
-		return;
-	}
 
 	if ((pt_handshake = g_thread_create(hs_thread, NULL, TRUE, moo)) == NULL)
 	{
@@ -181,33 +172,22 @@ void start(void) {
 void stop(void) {
 	if (!sc_going && !ge_going)
 		return;
-	AUDDBG("about to lock mutex");
 	g_mutex_lock(m_scrobbler);
-	AUDDBG("locked mutex");
 	if (sc_going)
 		sc_cleaner();
-	if (ge_going)
-		gerpok_sc_cleaner();
 	sc_going = 0;
 	ge_going = 0;
 	g_mutex_unlock(m_scrobbler);
-	AUDDBG("joining threads");
 
 	/* wake up waiting threads */
-	AUDDBG("send signal to xs and hs");
-	g_cond_signal(xs_cond);
+	AUDDBG("send signal to hs");
 	g_cond_signal(hs_cond);
-
-	AUDDBG("wait xs");
-	g_thread_join(pt_scrobbler);
 
 	AUDDBG("wait hs");
 	g_thread_join(pt_handshake);
 
 	g_cond_free(hs_cond);
-	g_cond_free(xs_cond);
 	g_mutex_free(hs_mutex);
-	g_mutex_free(xs_mutex);
 	g_mutex_free(m_scrobbler);
 
 	aud_hook_dissociate("playback begin", aud_hook_playback_begin);
@@ -224,87 +204,6 @@ static void cleanup(void)
     stop();
 }
 
-static void *xs_thread(void *data __attribute__((unused)))
-{
-	int run = 1;
-
-	while (run) {
-		Tuple *tuple;
-		GTimeVal sleeptime;
-
-		/* Error catching */
-		if(sc_catch_error())
-		{
-			errorbox_show(sc_fetch_error());
-			sc_clear_error();
-		}
-
-		if(gerpok_sc_catch_error())
-		{
-			errorbox_show(gerpok_sc_fetch_error());
-			gerpok_sc_clear_error();
-		}
-
-		if (submit)
-		{
-			gint playlist, pos;
-
-			AUDDBG("Submitting song.");
-
-			playlist = aud_playlist_get_active();
-			pos = aud_playlist_get_position(playlist);
-			tuple = (Tuple*) aud_playlist_entry_get_tuple(playlist, pos);
-
-			if (tuple == NULL)
-				continue;
-
-			tuple = tuple_copy(tuple);
-
-			if (ishttp(aud_tuple_get_string(tuple, FIELD_FILE_PATH, NULL)))
-			{
-				mowgli_object_unref(tuple);
-				continue;
-			}
-
-			if (aud_tuple_get_string(tuple, FIELD_ARTIST, NULL) != NULL &&
-				aud_tuple_get_string(tuple, FIELD_TITLE, NULL) != NULL)
-			{
-				AUDDBG(
-					"submitting artist: %s, title: %s",
-					aud_tuple_get_string(tuple, FIELD_ARTIST, NULL),
-					aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
-
-				if (sc_going)
-					sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
-				if (ge_going)
-					gerpok_sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
-                                if (!track_timeout)
-                                    track_timeout = g_timeout_add_seconds(1, sc_timeout, NULL);
-			}
-			else
-				AUDDBG("tuple does not contain an artist or a title, not submitting.");
-
-			submit = FALSE;
-			mowgli_object_unref(tuple);
-		}
-
-		g_get_current_time(&sleeptime);
-		sleeptime.tv_sec += XS_SLEEP;
-
-		g_mutex_lock(xs_mutex);
-		g_cond_timed_wait(xs_cond, xs_mutex, &sleeptime);
-		g_mutex_unlock(xs_mutex);
-
-		g_mutex_lock(m_scrobbler);
-		run = (sc_going != 0 || ge_going != 0);
-		g_mutex_unlock(m_scrobbler);
-	}
-	AUDDBG("scrobbler thread: exiting");
-	g_thread_exit(NULL);
-
-	return NULL;
-}
-
 static void *hs_thread(void *data __attribute__((unused)))
 {
 	int run = 1;
@@ -312,6 +211,13 @@ static void *hs_thread(void *data __attribute__((unused)))
 
 	while(run)
 	{
+		/* Error catching */
+		if(sc_catch_error())
+		{
+			errorbox_show(sc_fetch_error());
+			sc_clear_error();
+		}
+
 		if(sc_going && sc_idle(m_scrobbler))
 		{
 			AUDDBG("Giving up due to fatal error");
@@ -320,19 +226,12 @@ static void *hs_thread(void *data __attribute__((unused)))
 			g_mutex_unlock(m_scrobbler);
 		}
 
-		if(ge_going && gerpok_sc_idle(m_scrobbler))
-		{
-			AUDDBG("Giving up due to fatal error");
-			g_mutex_lock(m_scrobbler);
-			ge_going = 0;
-			g_mutex_unlock(m_scrobbler);
-		}
-
 		g_mutex_lock(m_scrobbler);
 		run = (sc_going != 0 || ge_going != 0);
 		g_mutex_unlock(m_scrobbler);
 
-		if(run) {
+		if (run)
+		{
 			g_get_current_time(&sleeptime);
 			sleeptime.tv_sec += HS_SLEEP;
 
