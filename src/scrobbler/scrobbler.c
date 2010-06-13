@@ -242,10 +242,6 @@ static void q_free(void)
     while (q_get());
 }
 
-static int q_len(void)
-{
-    return q_nitems;
-}
 
 /* isn't there better way for that? --desowin */
 gboolean sc_timeout(gpointer data) {
@@ -476,6 +472,7 @@ gpointer sc_curl_perform_thread(gpointer data)
     curl_easy_cleanup(curl);
     
     g_thread_exit(NULL);
+    return NULL;
 }
 
 void sc_curl_perform(CURL *curl)
@@ -728,7 +725,6 @@ static int sc_submit_np(Tuple *tuple)
 {
     CURL *curl;
     /* struct HttpPost *post = NULL , *last = NULL; */
-    int status;
     static gchar entry[16384];
 
     curl = curl_easy_init();
@@ -762,18 +758,11 @@ static int sc_submit_np(Tuple *tuple)
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, SCROBBLER_SB_WAIT);
     sc_curl_perform(curl);
 
-    if (status) {
-        AUDDBG(sc_curl_errbuf);
-        sc_sb_errors++;
-        sc_free_res();
-        return -1;
-    }
-
     if (sc_parse_sb_res()) {
         sc_sb_errors++;
         sc_free_res();
         AUDDBG("Retrying in %d secs, %d elements in queue",
-                    sc_submit_interval, q_len());
+                    sc_submit_interval, q_nitems);
         return -1;
     }
     sc_free_res();
@@ -784,7 +773,6 @@ static int sc_submitentry(gchar *entry)
 {
     CURL *curl;
     /* struct HttpPost *post = NULL , *last = NULL; */
-    int status;
     static gchar sub[16384];
 
     curl = curl_easy_init();
@@ -800,7 +788,7 @@ static int sc_submitentry(gchar *entry)
     /*AUDDBG("Response Hash: %s", sc_response_hash));*/
     snprintf(sub, 16384, "s=%s%s", sc_session_id, entry);
 
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *)submission->str);
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *) sub);
     memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
     curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, sc_curl_errbuf);
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
@@ -808,18 +796,11 @@ static int sc_submitentry(gchar *entry)
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, SCROBBLER_SB_WAIT);
     sc_curl_perform(curl);
 
-    if (status) {
-        AUDDBG(sc_curl_errbuf);
-        sc_sb_errors++;
-        sc_free_res();
-        return -1;
-    }
-
     if (sc_parse_sb_res()) {
         sc_sb_errors++;
         sc_free_res();
         AUDDBG("Retrying in %d secs, %d elements in queue",
-                    sc_submit_interval, q_len());
+                    sc_submit_interval, q_nitems);
         return -1;
     }
     sc_free_res();
