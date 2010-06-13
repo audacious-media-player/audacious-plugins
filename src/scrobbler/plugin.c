@@ -148,6 +148,7 @@ void start(void) {
 	aud_hook_associate("playback end", aud_hook_playback_end, NULL);
 
 	AUDDBG("plugin started");
+	sc_idle(m_scrobbler);
 }
 
 void stop(void) {
