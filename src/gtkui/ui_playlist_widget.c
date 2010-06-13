@@ -270,8 +270,12 @@ static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventB
 {
     GtkTreePath *path = NULL;
     GtkTreeSelection *sel = NULL;
+    gint state = event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK);
 
     gtk_widget_grab_focus(widget);
+
+    if (event->button == 1 && state)
+        return FALSE;
 
     gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(widget), event->x, event->y, &path, NULL, NULL, NULL);
     sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(widget));
@@ -282,9 +286,7 @@ static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventB
     if (path == NULL)
         return FALSE;
 
-    if (event->button == 1 &&
-       (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == 0 &&
-        event->type == GDK_2BUTTON_PRESS)
+    if (event->button == 1 && !state && event->type == GDK_2BUTTON_PRESS)
     {
         gtk_tree_view_row_activated(GTK_TREE_VIEW(widget), path, NULL);
         gtk_tree_path_free(path);
@@ -305,8 +307,9 @@ static gboolean ui_playlist_widget_button_release_cb(GtkWidget * widget, GdkEven
 {
     GtkTreePath *path = NULL;
     GtkTreeSelection *sel = NULL;
+    gint state = event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK);
 
-    if (event->button == 1 && (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == 0)
+    if (event->button == 1 && !state)
     {
         gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(widget), event->x, event->y, &path, NULL, NULL, NULL);
         sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(widget));
