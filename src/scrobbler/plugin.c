@@ -39,7 +39,7 @@ static int sc_going, ge_going;
 
 static GMutex *m_scrobbler;
 
-guint track_timeout;
+guint track_timeout = 0;
 
 Tuple *submit_tuple = NULL;
 
@@ -145,7 +145,7 @@ void start(void) {
 	m_scrobbler = g_mutex_new();
 
 	aud_hook_associate("playback begin", aud_hook_playback_begin, NULL);
-	aud_hook_associate("playback end", aud_hook_playback_end, NULL);
+	aud_hook_associate("playback stop", aud_hook_playback_end, NULL);
 
 	AUDDBG("plugin started");
 	sc_idle(m_scrobbler);
@@ -165,7 +165,7 @@ void stop(void) {
 	g_mutex_free(m_scrobbler);
 
 	aud_hook_dissociate("playback begin", aud_hook_playback_begin);
-	aud_hook_dissociate("playback end", aud_hook_playback_end);
+	aud_hook_dissociate("playback stop", aud_hook_playback_end);
 }
 
 static void init(void)
