@@ -28,9 +28,6 @@
 #include "fmt.h"
 #include "configure.h"
 
-#define XS_SLEEP 1
-#define HS_SLEEP 10
-
 typedef struct submit_t
 {
 	int dosubmit, pos_c, len;
@@ -38,16 +35,10 @@ typedef struct submit_t
 
 static void init(void);
 static void cleanup(void);
-static void *hs_thread(void *);
 static int sc_going, ge_going;
-static gboolean submit;
 
 static GMutex *m_scrobbler;
-static GThread *pt_scrobbler;
-static GThread *pt_handshake;
 
-static GMutex *hs_mutex, *xs_mutex;
-static GCond *hs_cond, *xs_cond;
 guint track_timeout;
 
 Tuple *submit_tuple = NULL;
@@ -73,7 +64,7 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 {
 	gint playlist = aud_playlist_get_active();
 	gint pos = aud_playlist_get_position(playlist);
-	Tuple *tuple;
+	const Tuple *tuple;
 
 	if (aud_playlist_entry_get_length(playlist, pos) < (glong)30)
 	{
@@ -91,8 +82,7 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 	if (tuple == NULL)
 		return;
 
-
-	submit_tuple = mowgli_object_ref(tuple);
+	submit_tuple = tuple_copy(tuple);
 	sc_addentry(m_scrobbler, submit_tuple, aud_tuple_get_int(submit_tuple, FIELD_LENGTH, NULL) / 1000);
 
 	if (!track_timeout)
@@ -101,6 +91,8 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 
 static void aud_hook_playback_end(gpointer aud_hook_data, gpointer user_data)
 {
+	sc_idle(m_scrobbler);
+
 	if (track_timeout)
 	{
 		g_source_remove(track_timeout);
@@ -120,7 +112,6 @@ void start(void) {
 	mcs_handle_t *cfgfile;
 	sc_going = 1;
 	ge_going = 1;
-	GError **moo = NULL;
 
 	if ((cfgfile = aud_cfg_db_open()) != NULL) {
 		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "username",
@@ -152,16 +143,6 @@ void start(void) {
 	}
 	
 	m_scrobbler = g_mutex_new();
-	hs_mutex = g_mutex_new();
-	hs_cond = g_cond_new();
-
-	if ((pt_handshake = g_thread_create(hs_thread, NULL, TRUE, moo)) == NULL)
-	{
-		AUDDBG("Error creating handshake thread: %s", moo);
-		sc_going = 0;
-		ge_going = 0;
-		return;
-	}
 
 	aud_hook_associate("playback begin", aud_hook_playback_begin, NULL);
 	aud_hook_associate("playback end", aud_hook_playback_end, NULL);
@@ -173,21 +154,13 @@ void stop(void) {
 	if (!sc_going && !ge_going)
 		return;
 	g_mutex_lock(m_scrobbler);
+
 	if (sc_going)
 		sc_cleaner();
 	sc_going = 0;
 	ge_going = 0;
 	g_mutex_unlock(m_scrobbler);
 
-	/* wake up waiting threads */
-	AUDDBG("send signal to hs");
-	g_cond_signal(hs_cond);
-
-	AUDDBG("wait hs");
-	g_thread_join(pt_handshake);
-
-	g_cond_free(hs_cond);
-	g_mutex_free(hs_mutex);
 	g_mutex_free(m_scrobbler);
 
 	aud_hook_dissociate("playback begin", aud_hook_playback_begin);
@@ -202,48 +175,6 @@ static void init(void)
 static void cleanup(void)
 {
     stop();
-}
-
-static void *hs_thread(void *data __attribute__((unused)))
-{
-	int run = 1;
-	GTimeVal sleeptime;
-
-	while(run)
-	{
-		/* Error catching */
-		if(sc_catch_error())
-		{
-			errorbox_show(sc_fetch_error());
-			sc_clear_error();
-		}
-
-		if(sc_going && sc_idle(m_scrobbler))
-		{
-			AUDDBG("Giving up due to fatal error");
-			g_mutex_lock(m_scrobbler);
-			sc_going = 0;
-			g_mutex_unlock(m_scrobbler);
-		}
-
-		g_mutex_lock(m_scrobbler);
-		run = (sc_going != 0 || ge_going != 0);
-		g_mutex_unlock(m_scrobbler);
-
-		if (run)
-		{
-			g_get_current_time(&sleeptime);
-			sleeptime.tv_sec += HS_SLEEP;
-
-			g_mutex_lock(hs_mutex);
-			g_cond_timed_wait(hs_cond, hs_mutex, &sleeptime);
-			g_mutex_unlock(hs_mutex);
-		}
-	}
-	AUDDBG("handshake thread: exiting");
-	g_thread_exit(NULL);
-
-	return NULL;
 }
 
 void setup_proxy(CURL *curl)
