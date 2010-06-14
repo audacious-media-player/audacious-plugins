@@ -338,7 +338,7 @@ extern "C" void console_play_file(InputPlayback *playback)
             }
         }
         
-        playback->pass_audio(playback, FMT_S16_NE, 2, sizeof(buf), buf, NULL);
+        playback->output->write_audio(buf, sizeof(buf));
     }
     
     // stop playing
