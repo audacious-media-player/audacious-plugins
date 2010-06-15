@@ -85,6 +85,8 @@ static const xspf_entry_t xspf_entries[] = {
     { FIELD_SUBSONG_NUM,  "subsong-num",  TUPLE_INT,      TRUE,   CMP_DEF },
     { FIELD_MIMETYPE,     "mime-type",    TUPLE_STRING,   TRUE,   CMP_DEF },
     { FIELD_BITRATE,      "bitrate",      TUPLE_INT,      TRUE,   CMP_DEF },
+    { FIELD_SEGMENT_START,"seg-start",    TUPLE_INT,      TRUE,   CMP_DEF },
+    { FIELD_SEGMENT_END,  "seg-end",      TUPLE_INT,      TRUE,   CMP_DEF },
 
     { FIELD_GAIN_ALBUM_GAIN, "gain-album-gain", TUPLE_INT, TRUE,  CMP_DEF },
     { FIELD_GAIN_ALBUM_PEAK, "gain-album-peak", TUPLE_INT, TRUE,  CMP_DEF },
