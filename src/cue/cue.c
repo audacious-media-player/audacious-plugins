@@ -118,6 +118,7 @@ playlist_load_cue(const gchar * filename, gint pos)
         tuple_associate_int(tu, FIELD_LENGTH, NULL, length);
         tuple_associate_int(tu, FIELD_SEGMENT_START, NULL, begin);
         tuple_associate_int(tu, FIELD_SEGMENT_END, NULL, begin + length);
+        tuple_associate_int(tu, FIELD_TRACK_NUMBER, NULL, cd_get_track(cd, iter+1));
 
         index_append(uris, uri);
         index_append(tuples, tu);
