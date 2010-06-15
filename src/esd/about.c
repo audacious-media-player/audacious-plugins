@@ -20,17 +20,15 @@
 #include <audacious/i18n.h>
 #include <gtk/gtk.h>
 
-
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 void
 esdout_about(void)
 {
-    static GtkWidget *dialog;
+    static GtkWidget *dialog = NULL;
 
-    if (dialog != NULL)
-        return;
-
-    dialog = audacious_info_dialog(_("About ESounD Plugin"),
+    audgui_simple_message(&dialog, GTK_MESSAGE_INFO, _("About ESounD Plugin"),
                                _("Audacious ESounD Plugin\n\n "
                                  "This program is free software; you can redistribute it and/or modify\n"
                                  "it under the terms of the GNU General Public License as published by\n"
@@ -45,7 +43,5 @@ esdout_about(void)
                                  "You should have received a copy of the GNU General Public License\n"
                                  "along with this program; if not, write to the Free Software\n"
                                  "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-                                 "USA."), _("Ok"), FALSE, NULL, NULL);
-    g_signal_connect(G_OBJECT(dialog), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed), &dialog);
+                                 "USA."));
 }

@@ -17,14 +17,14 @@
  */
 #include "coreaudio.h"
 
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+
 void osx_about(void)
 {
-	static GtkWidget *dialog;
+	static GtkWidget *dialog = NULL;
 
-	if (dialog != NULL)
-		return;
-	
-	dialog = audacious_info_dialog(
+	audgui_simple_message(&dialog, GTK_MESSAGE_INFO,
 							   "About CoreAudio Plugin",
 							   "Audacious CoreAudio Plugin\n\n "
 							   "This program is free software; you can redistribute it and/or modify\n"
@@ -40,8 +40,5 @@ void osx_about(void)
 							   "You should have received a copy of the GNU General Public License\n"
 							   "along with this program; if not, write to the Free Software\n"
 							   "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-							   "USA.","Ok", FALSE, NULL, NULL);
-	gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
-					   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-					   &dialog);
+							   "USA.");
 }

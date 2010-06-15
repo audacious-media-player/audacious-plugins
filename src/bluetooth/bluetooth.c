@@ -25,6 +25,8 @@
 #include "scan_gui.h"
 #include "agent.h"
 #include <audacious/plugin.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 #define DEBUG 1
 GList * current_device = NULL;
 gint config = 0;
@@ -110,9 +112,9 @@ void bluetooth_cleanup ( void )
 
 void bt_about( void )
 {
-  	static GtkWidget *dialog;
+  	static GtkWidget *dialog = NULL;
 
-	dialog = audacious_info_dialog (_("Bluetooth headset support plugin"),
+	audgui_simple_message(&dialog, GTK_MESSAGE_INFO, _("Bluetooth headset support plugin"),
 				_("Bluetooth headset support\n"
 				"Copyright (c) 2008 Paula Stanciu paula.stanciu@gmail.com\n"
 				"This was a GSoC 2008 Project - Many thanks to my mentor Tony Vroon and the Audacious team\n \n"
@@ -120,12 +122,7 @@ void bt_about( void )
                 "The headset keys will be recognized as normal mutimedia keys and \n"
                 "can be configured using the Audacious Global Hotkey plugin or ohter tools \n"
                 "provided by your window manager\n"
-                ),
-                         	_("OK"), TRUE, NULL, NULL);
-
-	gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dialog);
-
+                ));
 }
 
 void bt_cfg(void)

@@ -154,7 +154,9 @@ kanashi_xmms_cleanup (void)
 static void
 kanashi_xmms_about (void)
 {
-  audacious_info_dialog("About Kanashi", 
+  static GtkWidget *window = NULL;
+
+  audgui_simple_message(&window, GTK_MESSAGE_INFO, "About Kanashi", 
 
 "Kanashi " KANASHI_VERSION "\n\n\
 Copyright (C) 2009, William Pitcock <nenolod -at- dereferenced.org>\n\
@@ -172,7 +174,7 @@ GNU General Public License for more details.\n\
 You should have received a copy of the GNU General Public License\n\
 along with this program; if not, write to the Free Software\n\
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301\n\
-USA", _("Ok"), FALSE, NULL, NULL);
+USA");
 }
 
 static void

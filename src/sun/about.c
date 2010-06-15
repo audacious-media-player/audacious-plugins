@@ -24,20 +24,12 @@
 
 void sun_about(void)
 {
-	static GtkWidget *dialog;
+	static GtkWidget *dialog = NULL;
 
-	if (dialog != NULL)
-		return;
-
-	dialog = audacious_info_dialog(
+	audgui_simple_message(&dialog, GTK_MESSAGE_INFO,
 		_("About the Sun Driver"),
 		_("XMMS BSD Sun Driver\n\n"
 		  "Copyright (c) 2001 CubeSoft Communications, Inc.\n"
-		  "Maintainer: <vedge at csoft.org>.\n"),
-		_("Ok"), FALSE, NULL, NULL);
-
-	gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-			   &dialog);
+		  "Maintainer: <vedge at csoft.org>.\n"));
 }
 
