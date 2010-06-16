@@ -327,6 +327,7 @@ static void si_enable(gboolean enable)
         GtkWidget *si_smenu = g_object_get_data(G_OBJECT(si_applet), "smenu");
         si_popup_timer_stop(si_applet);   /* just in case the timer is active */
         si_smenu = NULL;
+        g_object_unref(si_applet);
         si_applet = NULL;
 
         aud_hook_dissociate("title change", si_popup_reshow);
