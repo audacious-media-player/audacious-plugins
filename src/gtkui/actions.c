@@ -166,6 +166,13 @@ void action_view_menu(GtkToggleAction *action)
     }
     else
     {
+        if (!config.menu_visible)
+        {
+            gtk_window_resize(GTK_WINDOW(window),
+                              config.player_width,
+                              config.player_height + allocation.height);
+        }
+
         gtk_widget_show(menu);
         config.menu_visible = TRUE;
     }
