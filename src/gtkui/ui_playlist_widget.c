@@ -83,7 +83,7 @@ static void _ui_playlist_widget_drag_begin(GtkWidget *widget, GdkDragContext * c
 
 static void _ui_playlist_widget_drag_motion(GtkTreeView * widget, GdkDragContext * context, gint x, gint y, guint time, gpointer user_data)
 {
-    GtkTreeViewDropPosition dp;
+    GtkTreeViewDropPosition dp = GTK_TREE_VIEW_DROP_AFTER;
     GdkRectangle win;
     GtkAdjustment *vadj;
     GdkRectangle rect;
@@ -134,8 +134,6 @@ static void _ui_playlist_widget_drag_motion(GtkTreeView * widget, GdkDragContext
         /* Check if the target position is below the source row */
         if (t->source_pos < dest_pos)
         {
-            dp = GTK_TREE_VIEW_DROP_AFTER;
-
             if (!next_row)
             {
                 gtk_tree_path_free(path);
@@ -157,10 +155,7 @@ static void _ui_playlist_widget_drag_motion(GtkTreeView * widget, GdkDragContext
         }
     }
     else
-    {
-        dp = GTK_TREE_VIEW_DROP_AFTER;
         path = gtk_tree_path_new_from_indices(end_pos, -1);
-    }
 
     if (path != NULL)
     {
