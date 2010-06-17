@@ -730,7 +730,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
         ui_playback_begin(NULL, NULL);
     }
 
-    AUDDBG("check menu settings");
+    AUDDBG("check menu settings\n");
     check_set(toggleaction_group_others, "view playlists", config.playlist_visible);
     check_set(toggleaction_group_others, "view infoarea", config.infoarea_visible);
     check_set(toggleaction_group_others, "playback repeat", aud_cfg->repeat);
