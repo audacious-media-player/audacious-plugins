@@ -35,6 +35,7 @@
 
 #define DEFAULT_ARTWORK DATA_DIR "/images/audio.png"
 #define STREAM_ARTWORK DATA_DIR "/images/streambrowser-64x64.png"
+#define ICON_SIZE 64
 
 typedef struct {
     GtkWidget *parent;
@@ -196,35 +197,36 @@ void
 ui_infoarea_draw_album_art(UIInfoArea *area)
 {
     GError *err = NULL;
-    GdkPixbuf *pb;
     cairo_t *cr;
 
     if (area->tu == NULL)
         return;
 
-    if (area->pb == NULL && audacious_drct_get_playing ())
-        area->pb = get_current_album_art ();
-
     if (area->pb == NULL)
     {
-        if (tuple_get_int(area->tu, FIELD_LENGTH, NULL) <= 0)
-            pb = gdk_pixbuf_new_from_file(STREAM_ARTWORK, &err);
-        else
-            pb = gdk_pixbuf_new_from_file(DEFAULT_ARTWORK, &err);
-    }
-    else
-        pb = g_object_ref(area->pb);
+        if (audacious_drct_get_playing ())
+            area->pb = get_current_album_art ();
 
-    if (pb == NULL)
+        if (area->pb == NULL)
+        {
+            if (tuple_get_int(area->tu, FIELD_LENGTH, NULL) <= 0)
+                area->pb = gdk_pixbuf_new_from_file(STREAM_ARTWORK, &err);
+            else
+                area->pb = gdk_pixbuf_new_from_file(DEFAULT_ARTWORK, &err);
+        }
+
+        if (area->pb != NULL)
+            audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
+    }
+
+    if (area->pb == NULL)
         return;
 
     cr = gdk_cairo_create(area->parent->window);
-    audgui_pixbuf_scale_within(&pb, 64);
-    gdk_cairo_set_source_pixbuf(cr, pb, 10.0, 10.0);
+    gdk_cairo_set_source_pixbuf(cr, area->pb, 10.0, 10.0);
     cairo_paint_with_alpha(cr, area->alpha.artwork);
 
     cairo_destroy(cr);
-    g_object_unref(pb);
 }
 
 void
@@ -434,6 +436,9 @@ static void destroy_cb (GtkObject * parent, UIInfoArea * area)
      ui_infoarea_playback_stop);
     aud_hook_dissociate ("visualization timeout", (HookFunction)
      ui_infoarea_visualization_timeout);
+
+    if (area->pb != NULL)
+        g_object_unref (area->pb);
 
     g_free (area);
 }
