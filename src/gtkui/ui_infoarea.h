@@ -20,25 +20,8 @@
 #ifndef __UI_INFOAREA_H
 #define __UI_INFOAREA_H
 
-typedef struct {
-    GtkWidget *parent;
-    Tuple *tu;
+#include <gtk/gtk.h>
 
-    struct {
-        gfloat title;
-        gfloat artist;
-        gfloat album;
-        gfloat artwork;
-    } alpha;
-
-    gint fadein_timeout;
-    gint fadeout_timeout;
-    guint8 visdata[20];
-
-    InputPlayback *playback;
-    GdkPixbuf *pb;
-} UIInfoArea;
-
-extern UIInfoArea *ui_infoarea_new(void);
+GtkWidget * ui_infoarea_new (void);
 
 #endif

@@ -36,6 +36,25 @@
 #define DEFAULT_ARTWORK DATA_DIR "/images/audio.png"
 #define STREAM_ARTWORK DATA_DIR "/images/streambrowser-64x64.png"
 
+typedef struct {
+    GtkWidget *parent;
+    Tuple *tu;
+
+    struct {
+        gfloat title;
+        gfloat artist;
+        gfloat album;
+        gfloat artwork;
+    } alpha;
+
+    gint fadein_timeout;
+    gint fadeout_timeout;
+    guint8 visdata[20];
+
+    InputPlayback *playback;
+    GdkPixbuf *pb;
+} UIInfoArea;
+
 static const gfloat alpha_step = 0.10;
 static const Tuple *last_tuple = NULL;
 
@@ -406,8 +425,20 @@ ui_infoarea_playback_stop(gpointer unused, UIInfoArea *area)
     gtk_widget_queue_draw(GTK_WIDGET(area->parent));
 }
 
-UIInfoArea *
-ui_infoarea_new(void)
+static void destroy_cb (GtkObject * parent, UIInfoArea * area)
+{
+    aud_hook_dissociate ("title change", (HookFunction) ui_infoarea_set_title);
+    aud_hook_dissociate ("playback begin", (HookFunction)
+     ui_infoarea_playback_start);
+    aud_hook_dissociate ("playback stop", (HookFunction)
+     ui_infoarea_playback_stop);
+    aud_hook_dissociate ("visualization timeout", (HookFunction)
+     ui_infoarea_visualization_timeout);
+
+    g_free (area);
+}
+
+GtkWidget * ui_infoarea_new (void)
 {
     UIInfoArea *area;
     GtkWidget *evbox;
@@ -427,5 +458,7 @@ ui_infoarea_new(void)
     aud_hook_associate("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
     aud_hook_associate("visualization timeout", (HookFunction) ui_infoarea_visualization_timeout, area);
 
-    return area;
+    g_signal_connect (area->parent, "destroy", (GCallback) destroy_cb, area);
+
+    return area->parent;
 }

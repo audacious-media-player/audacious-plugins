@@ -60,7 +60,7 @@
 extern GtkWidget *window;
 extern GtkWidget *menu;
 extern GtkWidget *playlist_box;
-extern UIInfoArea *infoarea;
+extern GtkWidget *infoarea;
 
 static GtkWidget *mainwin_jtt = NULL;
 
@@ -121,11 +121,11 @@ void action_view_playlist(GtkToggleAction *action)
 void action_view_infoarea(GtkToggleAction *action)
 {
     GtkAllocation allocation;
-    gtk_widget_get_allocation(infoarea->parent, &allocation);
+    gtk_widget_get_allocation(infoarea, &allocation);
 
     if (!gtk_toggle_action_get_active(action))
     {
-        gtk_widget_hide(infoarea->parent);
+        gtk_widget_hide(infoarea);
 
         if (!config.playlist_visible)
             gtk_window_resize(GTK_WINDOW(window), 1, 1);
@@ -145,7 +145,7 @@ void action_view_infoarea(GtkToggleAction *action)
                               config.player_height + allocation.height);
         }
 
-        gtk_widget_show(infoarea->parent);
+        gtk_widget_show(infoarea);
         config.infoarea_visible = TRUE;
     }
 }

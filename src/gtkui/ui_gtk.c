@@ -41,7 +41,7 @@ static GtkWidget *vispane_root = NULL;
 GtkWidget *playlist_box;
 GtkWidget *window;       /* the main window */
 GtkWidget *menu;
-UIInfoArea *infoarea;
+GtkWidget *infoarea;
 
 static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
@@ -690,7 +690,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     AUDDBG("infoarea setup\n");
     infoarea = ui_infoarea_new();
-    gtk_box_pack_end(GTK_BOX(vbox), infoarea->parent, FALSE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(vbox), infoarea, FALSE, FALSE, 0);
 
     AUDDBG("hooks associate\n");
     ui_hooks_associate();
@@ -720,7 +720,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
         gtk_widget_hide(playlist_box);
 
     if (!config.infoarea_visible)
-        gtk_widget_hide(infoarea->parent);
+        gtk_widget_hide(infoarea);
 
     if (config.player_visible)
         ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
