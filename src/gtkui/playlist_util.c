@@ -211,8 +211,6 @@ gint playlist_get_selected_length(gint playlist)
     GList *list = playlist_get_selected_list(playlist);
     gint selected_length;
 
-    g_return_val_if_fail(list != NULL, 0);
-
     selected_length = g_list_length(list);
 
     g_list_foreach(list, (GFunc) gtk_tree_path_free, NULL);
