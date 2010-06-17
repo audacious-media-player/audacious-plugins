@@ -363,7 +363,7 @@ void action_playback_play(void)
 {
     if (ab_position_a != -1)
         audacious_drct_seek(ab_position_a);
-    else if (audacious_drct_get_paused())
+    else if (audacious_drct_get_playing () && audacious_drct_get_paused ())
         audacious_drct_pause();
     else
         audacious_drct_play();
