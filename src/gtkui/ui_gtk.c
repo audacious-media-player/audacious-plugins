@@ -621,6 +621,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     gtk_box_pack_start(GTK_BOX(shbox), label_time, FALSE, FALSE, 5);
 
     volume = gtk_volume_button_new();
+    gtk_button_set_relief(GTK_BUTTON(volume), GTK_RELIEF_NONE);
     gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
     /* Set the default volume to the balance average.
        (I'll add balance control later) -Ryan */
