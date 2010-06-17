@@ -154,6 +154,25 @@ ui_infoarea_draw_visualizer(UIInfoArea *area)
     cairo_destroy(cr);
 }
 
+static GdkPixbuf * get_current_album_art (void)
+{
+    gint playlist = aud_playlist_get_playing ();
+    gint position = aud_playlist_get_position (playlist);
+    const gchar * filename = aud_playlist_entry_get_filename (playlist, position);
+    InputPlugin * decoder = aud_playlist_entry_get_decoder (playlist, position);
+    void * data;
+    gint size;
+    GdkPixbuf * pixbuf;
+
+    if (filename == NULL || decoder == NULL || ! aud_file_read_image (filename,
+     decoder, & data, & size))
+        return NULL;
+
+    pixbuf = audgui_pixbuf_from_data (data, size);
+    g_free (data);
+    return pixbuf;
+}
+
 void
 ui_infoarea_draw_album_art(UIInfoArea *area)
 {
@@ -163,6 +182,9 @@ ui_infoarea_draw_album_art(UIInfoArea *area)
 
     if (area->tu == NULL)
         return;
+
+    if (area->pb == NULL && audacious_drct_get_playing ())
+        area->pb = get_current_album_art ();
 
     if (area->pb == NULL)
     {
@@ -370,18 +392,6 @@ ui_infoarea_playback_start(InputPlayback *playback, UIInfoArea *area)
     {
         g_object_unref(area->pb);
         area->pb = NULL;
-    }
-
-    if (area->playback && area->playback->filename != NULL)
-    {
-        gpointer data;
-        gint size;
-
-        if (aud_file_read_image(area->playback->filename, area->playback->plugin, &data, &size))
-        {
-            area->pb = audgui_pixbuf_from_data(data, size);
-            g_free (data);
-        }
     }
 }
 
