@@ -37,6 +37,7 @@
 #define STREAM_ARTWORK DATA_DIR "/images/streambrowser-64x64.png"
 
 static const gfloat alpha_step = 0.10;
+static const Tuple *last_tuple = NULL;
 
 const Tuple *
 ui_infoarea_get_current_tuple(void)
@@ -333,6 +334,11 @@ ui_infoarea_set_title(gpointer unused, UIInfoArea *area)
 
     tuple = ui_infoarea_get_current_tuple();
 
+    if (tuple == last_tuple && last_tuple != NULL)
+        return;
+    else
+        last_tuple = tuple;
+
     if (area->tu != NULL)
         mowgli_object_unref(area->tu);
 
@@ -354,6 +360,8 @@ ui_infoarea_set_title(gpointer unused, UIInfoArea *area)
 void
 ui_infoarea_playback_start(InputPlayback *playback, UIInfoArea *area)
 {
+    last_tuple = NULL;
+
     g_return_if_fail(area != NULL);
 
     area->playback = playback;
