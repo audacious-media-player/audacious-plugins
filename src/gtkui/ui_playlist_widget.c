@@ -175,9 +175,9 @@ static void _ui_playlist_widget_drag_motion(GtkTreeView * widget, GdkDragContext
         {
             gtk_adjustment_set_value(vadj, MAX(0, vadj->value - rect.height));
         }
-        else if (win.height - ty <= rect.height * 2 && vadj->value < vadj->upper) //FIXME
+        else if (win.height - ty <= rect.height * 2 && vadj->value < vadj->upper - vadj->page_size)
         {
-            gtk_adjustment_set_value(vadj, MIN(vadj->upper, vadj->value + rect.height));
+            gtk_adjustment_set_value(vadj, MIN(vadj->upper - vadj->page_size, vadj->value + rect.height));
         }
     }
 }
@@ -451,7 +451,7 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
     gtk_tree_view_set_reorderable(GTK_TREE_VIEW(treeview), TRUE);
     gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(treeview), TRUE);
     gtk_drag_dest_set_track_motion(treeview, TRUE);
-    gtk_tree_view_set_search_column(GTK_TREE_VIEW(treeview), 1);
+    gtk_tree_view_set_fixed_height_mode(GTK_TREE_VIEW(treeview), TRUE);
 
     if (multi_column_view)
     {
