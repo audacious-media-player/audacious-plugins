@@ -498,9 +498,6 @@ static GtkWidget *gtk_markup_label_new(const gchar * str)
 void set_volume_diff(gint diff)
 {
     gint vol = gtk_scale_button_get_value(GTK_SCALE_BUTTON(volume));
-    printf("diff: %d\n", CLAMP(vol + diff, 0, 100));
-
-
     gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), CLAMP(vol + diff, 0, 100));
 }
 
