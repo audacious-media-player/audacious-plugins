@@ -59,6 +59,8 @@ typedef struct {
 static const gfloat alpha_step = 0.10;
 static const Tuple *last_tuple = NULL;
 
+static void ui_infoarea_draw_visualizer (UIInfoArea * area);
+
 const Tuple *
 ui_infoarea_get_current_tuple(void)
 {
@@ -90,7 +92,12 @@ ui_infoarea_visualization_timeout(gpointer hook_data, UIInfoArea *area)
         area->visdata[i] = CLAMP(y, 0, 64);
     }
 
-    gtk_widget_queue_draw(GTK_WIDGET(area->parent));
+#if GTK_CHECK_VERSION (2, 20, 0)
+    if (gtk_widget_is_drawable (area->parent))
+#else
+    if (GTK_WIDGET_DRAWABLE (area->parent))
+#endif
+        ui_infoarea_draw_visualizer (area);
 }
 
 /****************************************************************************/
@@ -148,14 +155,16 @@ static struct {
 
 #define SPECT_BANDS	(12)
 
-void
-ui_infoarea_draw_visualizer(UIInfoArea *area)
+static void ui_infoarea_draw_visualizer (UIInfoArea * area)
 {
     GtkAllocation alloc;
     cairo_t *cr;
 
     gtk_widget_get_allocation(GTK_WIDGET(area->parent), &alloc);
     cr = gdk_cairo_create(area->parent->window);
+    cairo_rectangle (cr, alloc.width - (12 * SPECT_BANDS + 12), 0,
+     12 * SPECT_BANDS + 12, alloc.height);
+    cairo_fill (cr);
 
     for (auto gint i = 0; i < SPECT_BANDS; i++)
     {
