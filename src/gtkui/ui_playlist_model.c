@@ -1,5 +1,6 @@
 /*  Audacious - Cross-platform multimedia player
  *  Copyright (C) 2009 Tomasz Moń <desowin@gmail.com>
+ *  Copyright (C) 2010 Michał Lipski <tallica@o2.pl>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -508,15 +509,25 @@ ui_playlist_model_update_position(UiPlaylistModel *model, gint position)
 
 static void ui_playlist_model_playlist_rearraged(UiPlaylistModel *model)
 {
-    gint start, end, i;
+    gtk_widget_queue_draw(GTK_WIDGET(playlist_get_treeview(model->playlist)));
+}
 
-    playlist_get_changed_range(&start, &end);
+static void
+ui_playlist_model_playlist_position(gpointer hook_data, gpointer user_data)
+{
+    UiPlaylistModel *model = UI_PLAYLIST_MODEL(user_data);
+    gint position;
+    GtkTreeView *treeview;
 
-    if (start == -1 || end == -1)
-        return;
+    position = aud_playlist_get_position(model->playlist);
 
-    for (i = start; i != end; i++)
-        ui_playlist_model_row_changed(model, i);
+    if (position != model->position)
+    {
+        ui_playlist_model_update_position(model, position);
+
+        treeview = playlist_get_treeview(model->playlist);
+        playlist_scroll_to_row(treeview, position, TRUE);
+    }
 }
 
 static void
@@ -524,16 +535,9 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
 {
     UiPlaylistModel *model = UI_PLAYLIST_MODEL(user_data);
     gint type = GPOINTER_TO_INT(hook_data);
-    gint position;
 
     if (model->playlist != aud_playlist_get_active())
         return;
-
-    position = aud_playlist_get_position(model->playlist);
-    if (position != model->position)
-    {
-        ui_playlist_model_update_position(model, position);
-    }
 
     if (type == PLAYLIST_UPDATE_STRUCTURE)
     {
@@ -542,12 +546,7 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
 
         AUDDBG("playlist structure update\n");
 
-        /* playlist entries re-arranged */
-        if (changed_rows == 0)
-        {
-            ui_playlist_model_playlist_rearraged(model);
-        }
-        else if (changed_rows > 0)
+        if (changed_rows > 0)
         {
             /* entries added */
             while (changed_rows != 0)
@@ -566,15 +565,16 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
             }
         }
 
-        /*
-         * If the playlist only has 1 row now, and the structure is literally
-         * unchanged, make sure we display the new metadata.  --nenolod
-         */
-        model->num_rows = aud_playlist_entry_count(model->playlist);
-        if (model->num_rows == 1)
-            ui_playlist_model_row_changed(model, model->num_rows);
+        /* Sync selection between the real playlist and the playlist widget */
+        if (aud_playlist_get_selected_length(model->playlist) != playlist_get_selected_length(model->playlist))
+        {
+            GtkTreeSelection *sel = playlist_get_selection(model->playlist);
+            g_signal_emit_by_name(G_OBJECT(sel), "changed");
+        }
+
+        ui_playlist_model_playlist_position(hook_data, user_data);
     }
-    else
+    else if (type == PLAYLIST_UPDATE_METADATA)
     {
         AUDDBG("playlist metadata update\n");
         ui_playlist_model_playlist_rearraged(model);
@@ -606,6 +606,7 @@ ui_playlist_model_associate_hooks(UiPlaylistModel *model)
 {
     aud_hook_associate("playlist update", ui_playlist_model_playlist_update, model);
     aud_hook_associate("playlist delete", ui_playlist_model_playlist_delete, model);
+    aud_hook_associate("playlist position", ui_playlist_model_playlist_position, model);
 }
 
 static void
@@ -613,5 +614,5 @@ ui_playlist_model_dissociate_hooks(UiPlaylistModel *model)
 {
     aud_hook_dissociate_full("playlist update", ui_playlist_model_playlist_update, model);
     aud_hook_dissociate_full("playlist delete", ui_playlist_model_playlist_delete, model);
+    aud_hook_dissociate_full("playlist position", ui_playlist_model_playlist_position, model);
 }
-

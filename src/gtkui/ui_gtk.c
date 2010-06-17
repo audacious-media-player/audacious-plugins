@@ -242,18 +242,6 @@ static void ui_set_song_info(void *unused, void *another)
     g_free(title_s);
 
     ui_playlist_notebook_add_tab_label_markup(aud_playlist_get_playing(), FALSE);
-
-    GtkTreeView *treeview = playlist_get_playing_treeview();
-
-    if (treeview == NULL)
-        return;
-
-    GtkTreePath *path = gtk_tree_path_new_from_indices(aud_playlist_get_position(aud_playlist_get_playing()), -1);
-
-    if (path != NULL && !gtk_widget_is_focus(GTK_WIDGET(treeview)))
-        gtk_tree_view_scroll_to_cell(treeview, path, NULL, TRUE, 0.5, 0.0);
-
-    gtk_tree_path_free(path);
 }
 
 static void ui_playlist_created(void *data, void *unused)

@@ -475,19 +475,6 @@ void action_playlist_remove_all(void)
 void action_playlist_remove_selected(GtkAction *act)
 {
     aud_playlist_delete_selected(aud_playlist_get_active());
-    gint active_playlist_num = aud_playlist_get_active();
-    gint sel_pos;
-    gboolean clap_sel_pos = FALSE;
-
-    sel_pos = get_active_selected_pos();
-    gint max_pos = aud_playlist_entry_count(active_playlist_num) -  aud_playlist_selected_count(active_playlist_num) - 1;
-    if (sel_pos > max_pos)
-        clap_sel_pos = TRUE;
-
-    aud_playlist_delete_selected(active_playlist_num);
-
-    if (clap_sel_pos)
-        treeview_select_pos(playlist_get_active_treeview(), sel_pos);
 }
 
 void action_playlist_remove_unselected(void)
@@ -518,7 +505,7 @@ void action_playlist_new(void)
     gint playlist = aud_playlist_count();
 
     aud_playlist_insert(playlist);
-    //aud_playlist_set_active(playlist);
+    aud_playlist_set_active(playlist);
 }
 
 void action_playlist_prev(void)
@@ -816,6 +803,8 @@ void action_playlist_paste(void)
     if (list == NULL)
         return;
 
-    insert_drag_list(aud_playlist_get_active(), get_active_selected_pos(), list);
+    gint playlist = aud_playlist_get_active();
+
+    insert_drag_list(playlist, playlist_get_first_selected_index(playlist), list);
     g_free(list);
 }

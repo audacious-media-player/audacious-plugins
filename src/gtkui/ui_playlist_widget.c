@@ -38,26 +38,6 @@ typedef struct
 
 static UiPlaylistDragTracker *t;
 
-static gint ui_playlist_widget_get_playlist(GtkTreeView *treeview)
-{
-    GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
-    UiPlaylistModel *model = UI_PLAYLIST_MODEL(tree_model);
-
-    return model->playlist;
-}
-
-static gint ui_playlist_widget_get_index_from_path(GtkTreePath * path)
-{
-    gint *pos;
-
-    g_return_val_if_fail(path != NULL, -1);
-
-    if (!(pos = gtk_tree_path_get_indices(path)))
-        return -1;
-
-    return pos[0];
-}
-
 static void _ui_playlist_widget_drag_begin(GtkWidget *widget, GdkDragContext * context, gpointer data)
 {
     t = g_slice_new0(UiPlaylistDragTracker);
@@ -70,14 +50,13 @@ static void _ui_playlist_widget_drag_begin(GtkWidget *widget, GdkDragContext * c
     handler_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "selection_changed_handler_id"));
     g_signal_handler_block(G_OBJECT(sel), handler_id);
 
-
     list = gtk_tree_selection_get_selected_rows(sel, NULL);
-    playlist = ui_playlist_widget_get_playlist(GTK_TREE_VIEW(widget));
+    playlist = playlist_get_playlist_from_treeview(GTK_TREE_VIEW(widget));
 
     t->targets = list;
     t->source_widget = widget;
     t->source_playlist = playlist;
-    t->source_pos = ui_playlist_widget_get_index_from_path(list->data);
+    t->source_pos = playlist_get_index_from_path(list->data);
     t->drop_path = NULL;
 }
 
@@ -108,7 +87,7 @@ static void _ui_playlist_widget_drag_motion(GtkTreeView * widget, GdkDragContext
 
     g_signal_stop_emission_by_name(widget, "drag-motion");
 
-    dest_playlist = ui_playlist_widget_get_playlist(widget);
+    dest_playlist = playlist_get_playlist_from_treeview(widget);
     end_pos = aud_playlist_entry_count(dest_playlist) - 1;
 
     gdk_window_get_geometry(gtk_tree_view_get_bin_window(widget), NULL, NULL, NULL, &win.height, NULL);
@@ -125,7 +104,7 @@ static void _ui_playlist_widget_drag_motion(GtkTreeView * widget, GdkDragContext
 
         next_row = (ty - rect.y >= rect.height / 2);
 
-        dest_pos = ui_playlist_widget_get_index_from_path(path);
+        dest_pos = playlist_get_index_from_path(path);
 
         /* Increase dest_pos if in the lower half of the row */
         if (next_row)
@@ -188,11 +167,11 @@ static void _ui_playlist_widget_drag_data_received(GtkTreeView * widget, GdkDrag
 
         if (t->drop_path != NULL)
         {
-            dest_pos = ui_playlist_widget_get_index_from_path(t->drop_path);
+            dest_pos = playlist_get_index_from_path(t->drop_path);
             gtk_tree_path_free(t->drop_path);
         }
         else
-            dest_pos = aud_playlist_entry_count(ui_playlist_widget_get_playlist(widget));
+            dest_pos = aud_playlist_entry_count(playlist_get_playlist_from_treeview(widget));
 
         insert_drag_list_into_active(dest_pos, (gchar *)data->data);
 
@@ -218,8 +197,8 @@ static void _ui_playlist_widget_drag_end(GtkTreeView * widget, GdkDragContext * 
     g_return_if_fail(t->source_widget != NULL);
 
     drop_treeview = playlist_get_active_treeview();
-    dest_pos = ui_playlist_widget_get_index_from_path(t->drop_path);
-    dest_playlist = ui_playlist_widget_get_playlist(drop_treeview);
+    dest_pos = playlist_get_index_from_path(t->drop_path);
+    dest_playlist = playlist_get_playlist_from_treeview(drop_treeview);
 
     if (t->source_playlist == dest_playlist && t->source_pos != dest_pos)
     {
@@ -235,7 +214,7 @@ static void _ui_playlist_widget_drag_end(GtkTreeView * widget, GdkDragContext * 
         {
             if (target->data != NULL)
             {
-                pos = ui_playlist_widget_get_index_from_path(target->data);
+                pos = playlist_get_index_from_path(target->data);
 
                 gchar *filename = g_strdup(aud_playlist_entry_get_filename(t->source_playlist, pos));
 
@@ -285,7 +264,7 @@ static void _ui_playlist_widget_selection_update(GtkTreeModel * model, GtkTreePa
 
 static void _ui_playlist_widget_selection_changed(GtkTreeSelection * selection, gpointer treeview)
 {
-    gint playlist = ui_playlist_widget_get_playlist(treeview);
+    gint playlist = playlist_get_playlist_from_treeview(treeview);
 
     aud_playlist_select_all(playlist, FALSE);
 
@@ -294,7 +273,7 @@ static void _ui_playlist_widget_selection_changed(GtkTreeSelection * selection, 
 
 static void ui_playlist_widget_change_song(GtkTreeView * treeview, guint pos)
 {
-    gint playlist = ui_playlist_widget_get_playlist(treeview);
+    gint playlist = playlist_get_playlist_from_treeview(treeview);
 
     aud_playlist_set_playing(playlist);
     aud_playlist_set_position(playlist, pos);
@@ -305,8 +284,7 @@ static void ui_playlist_widget_change_song(GtkTreeView * treeview, guint pos)
 
 static void ui_playlist_widget_jump(GtkTreeView * treeview, gpointer data)
 {
-    gint pos;
-    pos = get_first_selected_pos(treeview);
+    gint pos = playlist_get_first_selected_index_from_treeview(treeview);
 
     if (pos >= 0)
         ui_playlist_widget_change_song(treeview, pos);
@@ -329,7 +307,7 @@ static gboolean ui_playlist_widget_keypress_cb(GtkWidget * widget, GdkEventKey *
       case GDK_MOD1_MASK:
       {
         if ((event->keyval == GDK_Up) || (event->keyval == GDK_Down)) {
-            gint playlist = ui_playlist_widget_get_playlist(GTK_TREE_VIEW(widget));
+            gint playlist = playlist_get_playlist_from_treeview(GTK_TREE_VIEW(widget));
             /* Copy the event, so we can get the selection to move as well */
             GdkEvent * ev = gdk_event_copy((GdkEvent *) event);
             ((GdkEventKey *) ev)->state = 0;
@@ -497,7 +475,6 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
     g_signal_connect(treeview, "drag-motion", G_CALLBACK(_ui_playlist_widget_drag_motion), NULL);
     g_signal_connect(treeview, "drag-data-received", G_CALLBACK(_ui_playlist_widget_drag_data_received), NULL);
     g_signal_connect(treeview, "drag-end", G_CALLBACK(_ui_playlist_widget_drag_end), NULL);
-    g_signal_connect_swapped(model, "row-changed", G_CALLBACK(gtk_widget_queue_draw), treeview);
 
     selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);

@@ -1,5 +1,6 @@
 /*  Audacious - Cross-platform multimedia player
  *  Copyright (C) 2005-2010  Audacious development team
+ *  Copyright (C) 2010 Michał Lipski <tallica@o2.pl>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,30 +24,9 @@
 #include <string.h>
 #include <audacious/plugin.h>
 
+#include "playlist_util.h"
+#include "ui_playlist_model.h"
 #include "ui_playlist_notebook.h"
-
-static void find_first_selected_forearch(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer userdata)
-{
-    gint *first_one = (gint*) userdata;
-    gint ret = *gtk_tree_path_get_indices(path);
-
-    if (*first_one == -1)
-        *first_one = ret;
-    else if (*first_one > ret)
-        *first_one = ret;
-}
-
-static void find_last_selected_forearch(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer userdata)
-{
-    gint *last_one = (gint*) userdata;
-    gint *ret = gtk_tree_path_get_indices(path);
-
-    if (!ret)
-        return;
-
-    if (*last_one < *ret)
-        *last_one = *ret;
-}
 
 GtkTreeView *playlist_get_treeview_from_page(GtkWidget *page)
 {
@@ -76,29 +56,14 @@ GtkTreeView *playlist_get_playing_treeview(void)
     return playlist_get_treeview(aud_playlist_get_playing());
 }
 
-gint get_first_selected_pos(GtkTreeView *tv)
+gint playlist_get_playlist_from_treeview(GtkTreeView *treeview)
 {
-    GtkTreeView *treeview = tv;
-    GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
-    gint selected_pos = -1;
+    g_return_val_if_fail(treeview != NULL, -1);
 
-    gtk_tree_selection_selected_foreach(sel,
-        &find_first_selected_forearch, &selected_pos);
-    return selected_pos;
+    GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
+    UiPlaylistModel *model = UI_PLAYLIST_MODEL(tree_model);
 
-}
-
-gint get_last_selected_pos(GtkTreeView *tv)
-{
-    GtkTreeView *treeview = tv;
-    GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
-    gint selected_pos = -1;
-
-    gtk_tree_selection_selected_foreach(sel,
-        &find_last_selected_forearch, &selected_pos);
-
-    return selected_pos;
-
+    return model->playlist;
 }
 
 static gint need_update_range_start = -1;
@@ -115,18 +80,7 @@ void playlist_get_changed_range(gint *start, gint *end)
 void playlist_shift_selected(gint playlist_num, gint old_pos, gint new_pos, gint selected_length)
 {
     gint delta = new_pos - old_pos;
-    need_update_range_start = MIN(old_pos, new_pos);
-    need_update_range_end = MAX(new_pos, old_pos) + selected_length;
-
     aud_playlist_shift_selected(playlist_num, delta);
-}
-/**
- * To retrieve the first row number (based 0) within the selection if any.
- */
-
-gint get_active_selected_pos(void)
-{
-    return get_first_selected_pos(playlist_get_active_treeview());
 }
 
 /**
@@ -142,7 +96,6 @@ void treeview_select_pos(GtkTreeView *tv, gint pos)
     gtk_tree_selection_select_range(sel, path, path);
     gtk_tree_path_free(path);
 }
-
 
 void insert_drag_list(gint playlist, gint position, const gchar *list)
 {
@@ -225,4 +178,94 @@ gchar *create_drag_list(gint playlist)
     *--set = 0;
 
     return buffer;
+}
+
+void playlist_scroll_to_row(GtkTreeView *treeview, gint position, gboolean only_if_focused)
+{
+    GtkTreePath *path = gtk_tree_path_new_from_indices(position, -1);
+
+    g_return_if_fail(treeview != NULL);
+    g_return_if_fail(path != NULL);
+    g_return_if_fail(only_if_focused && !gtk_widget_is_focus(GTK_WIDGET(treeview)));
+
+    gtk_tree_view_scroll_to_cell(treeview, path, NULL, TRUE, 0.5, 0.0);
+    gtk_tree_path_free(path);
+}
+
+GList *playlist_get_selected_list(gint playlist)
+{
+    GtkTreeView *treeview = playlist_get_treeview(playlist);
+    GtkTreeModel *treemodel = gtk_tree_view_get_model(treeview);
+    GtkTreeSelection *sel;
+
+    g_return_val_if_fail(treeview != NULL, NULL);
+
+    sel = gtk_tree_view_get_selection(treeview);
+    g_return_val_if_fail(sel != NULL, NULL);
+
+    return gtk_tree_selection_get_selected_rows(sel, &treemodel);
+}
+
+gint playlist_get_selected_length(gint playlist)
+{
+    GList *list = playlist_get_selected_list(playlist);
+    gint selected_length;
+
+    g_return_val_if_fail(list != NULL, 0);
+
+    selected_length = g_list_length(list);
+
+    g_list_foreach(list, (GFunc) gtk_tree_path_free, NULL);
+    g_list_free(list);
+
+    return selected_length;
+}
+
+gint playlist_get_first_selected_index(gint playlist)
+{
+    GList *list;
+
+    gint selected;
+
+    g_return_val_if_fail(playlist >= 0, 0);
+
+    list = playlist_get_selected_list(playlist);
+    g_return_val_if_fail(list != NULL, 0);
+
+    selected = playlist_get_index_from_path(list->data);
+
+    g_list_foreach(list, (GFunc) gtk_tree_path_free, NULL);
+    g_list_free(list);
+
+    return selected;
+}
+
+gint playlist_get_first_selected_index_from_treeview(GtkTreeView *treeview)
+{
+    gint playlist = playlist_get_playlist_from_treeview(treeview);
+    return playlist_get_first_selected_index(playlist);
+}
+
+GtkTreeSelection *playlist_get_selection_from_treeview(GtkTreeView *treeview)
+{
+    g_return_val_if_fail(treeview != NULL, NULL);
+    return gtk_tree_view_get_selection(treeview);
+}
+
+GtkTreeSelection *playlist_get_selection(gint playlist)
+{
+    GtkTreeView *treeview = playlist_get_treeview(playlist);
+    return playlist_get_selection_from_treeview(treeview);
+}
+
+gint playlist_get_index_from_path(GtkTreePath * path)
+{
+    gint *pos;
+
+    g_return_val_if_fail(path != NULL, -1);
+
+    if (!(pos = gtk_tree_path_get_indices(path)))
+        return -1;
+
+    return pos[0];
 }
