@@ -58,6 +58,7 @@
 #include "ui_infoarea.h"
 
 extern GtkWidget *window;
+extern GtkWidget *menu;
 extern GtkWidget *playlist_box;
 extern UIInfoArea *infoarea;
 
@@ -146,6 +147,27 @@ void action_view_infoarea(GtkToggleAction *action)
 
         gtk_widget_show(infoarea->parent);
         config.infoarea_visible = TRUE;
+    }
+}
+
+void action_view_menu(GtkToggleAction *action)
+{
+    GtkAllocation allocation;
+    gtk_widget_get_allocation(menu, &allocation);
+
+    if (!gtk_toggle_action_get_active(action))
+    {
+        gtk_widget_hide(menu);
+        gtk_window_resize(GTK_WINDOW(window),
+                          config.player_width,
+                          config.player_height - allocation.height);
+
+        config.menu_visible = FALSE;
+    }
+    else
+    {
+        gtk_widget_show(menu);
+        config.menu_visible = TRUE;
     }
 }
 

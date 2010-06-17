@@ -40,6 +40,7 @@ static GtkWidget *volume;
 static GtkWidget *vispane_root = NULL;
 GtkWidget *playlist_box;
 GtkWidget *window;       /* the main window */
+GtkWidget *menu;
 UIInfoArea *infoarea;
 
 static gulong slider_change_handler_id;
@@ -553,7 +554,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     GtkWidget *buttonbox;       /* contains buttons like "open", "next" */
     GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
     GtkWidget *button_open, *button_add, *button_play, *button_pause, *button_stop, *button_previous, *button_next;
-    GtkWidget *menu;
     GtkAccelGroup *accel;
     GtkWidget *playlist_notebook;
 
@@ -713,6 +713,9 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     gtk_widget_show_all(vbox);
 
+    if (!config.menu_visible)
+        gtk_widget_hide(menu);
+
     if (!config.playlist_visible)
         gtk_widget_hide(playlist_box);
 
@@ -731,6 +734,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     }
 
     AUDDBG("check menu settings\n");
+    check_set(toggleaction_group_others, "view menu", config.menu_visible);
     check_set(toggleaction_group_others, "view playlists", config.playlist_visible);
     check_set(toggleaction_group_others, "view infoarea", config.infoarea_visible);
     check_set(toggleaction_group_others, "playback repeat", aud_cfg->repeat);

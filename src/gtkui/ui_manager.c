@@ -49,11 +49,14 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
     {"playback no playlist advance", NULL, N_("No Playlist Advance"), "<Ctrl>N",
      N_("No Playlist Advance"), G_CALLBACK(action_playback_noplaylistadvance), FALSE},
 
-    {"view playlists", NULL, N_("Show playlists"), NULL,
+    {"view playlists", NULL, N_("Show playlists"), "<Shift><Ctrl>P",
      N_("Show/hide playlists"), G_CALLBACK(action_view_playlist), FALSE},
 
-    {"view infoarea", NULL, N_("Show infoarea"), NULL,
+    {"view infoarea", NULL, N_("Show infoarea"), "<Shift><Ctrl>I",
      N_("Show/hide infoarea"), G_CALLBACK(action_view_infoarea), FALSE},
+
+    {"view menu", NULL, N_("Show main menu"), "<Shift><Ctrl>M",
+     N_("Show/hide main menu"), G_CALLBACK(action_view_menu), FALSE},
 };
 
 /* normal actions */
