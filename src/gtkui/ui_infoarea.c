@@ -440,7 +440,7 @@ static void destroy_cb (GtkObject * parent, UIInfoArea * area)
     if (area->pb != NULL)
         g_object_unref (area->pb);
 
-    g_free (area);
+    g_slice_free (UIInfoArea, area);
 }
 
 GtkWidget * ui_infoarea_new (void)
