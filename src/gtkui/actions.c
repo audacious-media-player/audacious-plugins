@@ -90,10 +90,10 @@ void action_stop_after_current_song(GtkToggleAction * action)
 
 void action_view_playlist(GtkToggleAction *action)
 {
+    GtkAllocation allocation;
+
     if (!gtk_toggle_action_get_active(action))
     {
-        GtkAllocation allocation;
-
         gtk_widget_get_allocation(playlist_box, &allocation);
         config.playlist_width = allocation.width;
         config.playlist_height = allocation.height;
@@ -103,8 +103,14 @@ void action_view_playlist(GtkToggleAction *action)
     }
     else
     {
-        if (config.playlist_width > 0 && config.playlist_height > 0)
-            gtk_widget_set_size_request(playlist_box, config.playlist_width, config.playlist_height);
+        if (config.playlist_width > 0 && config.playlist_height > 0 && !config.playlist_visible)
+        {
+            gtk_widget_get_allocation(window, &allocation);
+
+            gtk_window_resize(GTK_WINDOW(window),
+                              MAX(config.player_width, config.playlist_width),
+                              MAX(config.player_height, allocation.height + config.playlist_height));
+        }
 
         gtk_widget_show(playlist_box);
         config.playlist_visible = TRUE;
@@ -113,17 +119,31 @@ void action_view_playlist(GtkToggleAction *action)
 
 void action_view_infoarea(GtkToggleAction *action)
 {
+    GtkAllocation allocation;
+    gtk_widget_get_allocation(infoarea->parent, &allocation);
+
     if (!gtk_toggle_action_get_active(action))
     {
         gtk_widget_hide(infoarea->parent);
 
         if (!config.playlist_visible)
             gtk_window_resize(GTK_WINDOW(window), 1, 1);
+        else
+            gtk_window_resize(GTK_WINDOW(window),
+                              config.player_width,
+                              config.player_height - allocation.height);
 
         config.infoarea_visible = FALSE;
     }
     else
     {
+        if (!config.infoarea_visible)
+        {
+            gtk_window_resize(GTK_WINDOW(window),
+                              config.player_width,
+                              config.player_height + allocation.height);
+        }
+
         gtk_widget_show(infoarea->parent);
         config.infoarea_visible = TRUE;
     }
