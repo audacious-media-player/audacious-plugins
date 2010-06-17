@@ -46,6 +46,7 @@ typedef struct
     gboolean playlist_visible;
     VisPosition vis_position;
     gboolean multi_column_view;
+    gboolean infoarea_visible;
 } gtkui_cfg_t;
 
 extern gtkui_cfg_t config;

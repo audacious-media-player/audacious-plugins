@@ -55,9 +55,11 @@
 #include "util.h"
 #include "playlist_util.h"
 #include "gtkui_cfg.h"
+#include "ui_infoarea.h"
 
 extern GtkWidget *window;
 extern GtkWidget *playlist_box;
+extern UIInfoArea *infoarea;
 
 static GtkWidget *mainwin_jtt = NULL;
 
@@ -106,6 +108,24 @@ void action_view_playlist(GtkToggleAction *action)
 
         gtk_widget_show(playlist_box);
         config.playlist_visible = TRUE;
+    }
+}
+
+void action_view_infoarea(GtkToggleAction *action)
+{
+    if (!gtk_toggle_action_get_active(action))
+    {
+        gtk_widget_hide(infoarea->parent);
+
+        if (!config.playlist_visible)
+            gtk_window_resize(GTK_WINDOW(window), 1, 1);
+
+        config.infoarea_visible = FALSE;
+    }
+    else
+    {
+        gtk_widget_show(infoarea->parent);
+        config.infoarea_visible = TRUE;
     }
 }
 

@@ -40,6 +40,7 @@ static GtkWidget *volume;
 static GtkWidget *vispane_root = NULL;
 GtkWidget *playlist_box;
 GtkWidget *window;       /* the main window */
+UIInfoArea *infoarea;
 
 static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
@@ -554,7 +555,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     GtkWidget *button_open, *button_add, *button_play, *button_pause, *button_stop, *button_previous, *button_next;
     GtkWidget *menu;
     GtkAccelGroup *accel;
-    UIInfoArea *infoarea;
     GtkWidget *playlist_notebook;
 
     gint lvol = 0, rvol = 0;    /* Left and Right for the volume control */
@@ -568,12 +568,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     ui_manager_init();
     ui_manager_create_menus();
-
-    check_set(toggleaction_group_others, "view playlists", config.playlist_visible);
-    check_set(toggleaction_group_others, "playback repeat", aud_cfg->repeat);
-    check_set(toggleaction_group_others, "playback shuffle", aud_cfg->shuffle);
-    check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
-    check_set(toggleaction_group_others, "stop after current song", aud_cfg->stopaftersong);
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), MAINWIN_DEFAULT_WIDTH, MAINWIN_DEFAULT_HEIGHT);
@@ -722,6 +716,9 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     if (!config.playlist_visible)
         gtk_widget_hide(playlist_box);
 
+    if (!config.infoarea_visible)
+        gtk_widget_hide(infoarea->parent);
+
     if (config.player_visible)
         ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
 
@@ -732,6 +729,14 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
         ui_set_song_info(NULL, NULL);
         ui_playback_begin(NULL, NULL);
     }
+
+    AUDDBG("check menu settings");
+    check_set(toggleaction_group_others, "view playlists", config.playlist_visible);
+    check_set(toggleaction_group_others, "view infoarea", config.infoarea_visible);
+    check_set(toggleaction_group_others, "playback repeat", aud_cfg->repeat);
+    check_set(toggleaction_group_others, "playback shuffle", aud_cfg->shuffle);
+    check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
+    check_set(toggleaction_group_others, "stop after current song", aud_cfg->stopaftersong);
 
     AUDDBG("callback setup\n");
 

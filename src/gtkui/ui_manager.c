@@ -51,6 +51,9 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
 
     {"view playlists", NULL, N_("Show playlists"), NULL,
      N_("Show/hide playlists"), G_CALLBACK(action_view_playlist), FALSE},
+
+    {"view infoarea", NULL, N_("Show infoarea"), NULL,
+     N_("Show/hide infoarea"), G_CALLBACK(action_view_infoarea), FALSE},
 };
 
 /* normal actions */
