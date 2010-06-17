@@ -85,11 +85,10 @@ ui_infoarea_visualization_timeout(gpointer hook_data, UIInfoArea *area)
                            20, 41, 62, 82, 143, 255 };
 
     aud_calc_mono_freq(mono_freq, vis->data, vis->nch);
-    memset(area->visdata, 0, 20);
 
     for (auto gint i = 0; i < 12; i++) {
         gint y = mono_freq[0][xscale[i]] / 128;
-        area->visdata[i] = CLAMP(y, 0, 64);
+        area->visdata[i] = MAX (area->visdata[i] - 3, CLAMP (y, 0, 64));
     }
 
 #if GTK_CHECK_VERSION (2, 20, 0)
@@ -98,6 +97,11 @@ ui_infoarea_visualization_timeout(gpointer hook_data, UIInfoArea *area)
     if (GTK_WIDGET_DRAWABLE (area->parent))
 #endif
         ui_infoarea_draw_visualizer (area);
+}
+
+static void vis_clear_cb (void * hook_data, UIInfoArea * area)
+{
+    memset (area->visdata, 0, 20);
 }
 
 /****************************************************************************/
@@ -445,6 +449,7 @@ static void destroy_cb (GtkObject * parent, UIInfoArea * area)
      ui_infoarea_playback_stop);
     aud_hook_dissociate ("visualization timeout", (HookFunction)
      ui_infoarea_visualization_timeout);
+    aud_hook_dissociate ("visualization clear", (HookFunction) vis_clear_cb);
 
     if (area->pb != NULL)
         g_object_unref (area->pb);
@@ -471,6 +476,7 @@ GtkWidget * ui_infoarea_new (void)
     aud_hook_associate("playback begin", (HookFunction) ui_infoarea_playback_start, area);
     aud_hook_associate("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
     aud_hook_associate("visualization timeout", (HookFunction) ui_infoarea_visualization_timeout, area);
+    aud_hook_associate("visualization clear", (HookFunction) vis_clear_cb, area);
 
     g_signal_connect (area->parent, "destroy", (GCallback) destroy_cb, area);
 
