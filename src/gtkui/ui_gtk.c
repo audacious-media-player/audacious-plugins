@@ -24,13 +24,14 @@
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 
-#include "config.h"
+//#include "config.h" disable for now
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
 #include "ui_playlist_notebook.h"
 #include "ui_manager.h"
 #include "ui_infoarea.h"
 #include "playlist_util.h"
+#include "actions-mainwin.h"
 
 gboolean multi_column_view;
 
@@ -494,6 +495,12 @@ static GtkWidget *gtk_markup_label_new(const gchar * str)
     return label;
 }
 
+void set_volume_diff(gint diff)
+{
+    gint vol = gtk_scale_button_get_value(GTK_SCALE_BUTTON(volume));
+    gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), CLAMP(vol + diff, 0, 100));
+}
+
 static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
@@ -503,7 +510,43 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
             {
                 case GDK_F2:
                     ui_playlist_notebook_edit_tab_title(NULL);
-                    break;
+                    return TRUE;
+
+                case GDK_minus: //FIXME
+                    set_volume_diff(-5);
+                    return TRUE;
+
+                case GDK_plus: //FIXME
+                    set_volume_diff(5);
+                    return TRUE;
+
+                case GDK_Left:
+                case GDK_KP_Left:
+                case GDK_KP_7:
+                    audacious_drct_seek(audacious_drct_get_time() - 5000);
+                    return TRUE;
+
+                case GDK_Right:
+                case GDK_KP_Right:
+                case GDK_KP_9:
+                    audacious_drct_seek(audacious_drct_get_time() + 5000);
+                    return TRUE;
+
+                case GDK_KP_4:
+                    audacious_drct_pl_prev();
+                    return TRUE;
+
+                case GDK_KP_6:
+                    audacious_drct_pl_next();
+                    return TRUE;
+
+                case GDK_KP_Insert:
+                    action_jump_to_file();
+                    return TRUE;
+
+                case GDK_space:
+                    audacious_drct_pause();
+                    return TRUE;
             }
         break;
     }

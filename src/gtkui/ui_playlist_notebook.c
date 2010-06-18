@@ -164,6 +164,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
 {
     GtkWidget *scrollwin, *treeview;
     GtkWidget *label, *entry, *ebox, *hbox;
+    gint position = aud_playlist_get_position (playlist);
 
     scrollwin = gtk_scrolled_window_new(NULL, NULL);
     index_insert(pages, playlist, scrollwin);
@@ -196,6 +197,9 @@ void ui_playlist_notebook_create_tab(gint playlist)
     gtk_notebook_append_page(UI_PLAYLIST_NOTEBOOK, scrollwin, ebox);
     gtk_notebook_set_show_tabs(UI_PLAYLIST_NOTEBOOK, index_count(pages) > 1 ? TRUE : FALSE);
     gtk_notebook_set_tab_reorderable(UI_PLAYLIST_NOTEBOOK, scrollwin, TRUE);
+
+    if (position >= 0)
+        playlist_scroll_to_row ((GtkTreeView *) treeview, position, FALSE);
 
     g_signal_connect(ebox, "button-press-event", G_CALLBACK(tab_button_press_cb), NULL);
     g_signal_connect(ebox, "key-press-event", G_CALLBACK(tab_key_press_cb), NULL);
