@@ -14,6 +14,10 @@ SRCS = gtkui_cfg.c \
 include ../../buildsys.mk
 include ../../extra.mk
 
+# These override variables in buildsys.mk and so must come after it.
+PACKAGE = audacious
+DATA = ui/player.ui
+
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
 CFLAGS += -std=gnu99 ${PLUGIN_CFLAGS} ${BEEP_DEFINES}
