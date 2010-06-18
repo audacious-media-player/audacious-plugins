@@ -76,6 +76,9 @@
 			<menuitem action="playlist cut"/>
 			<menuitem action="playlist paste"/>
 			<separator/>
+			<menuitem action="playlist select none" />
+			<menuitem action="playlist select all" />
+			<separator/>
 			<menuitem action="playlist remove selected" />
 			<menuitem action="playlist remove unselected" />
 			<menuitem action="playlist remove all" />
