@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <audacious/plugin.h>
+#include <math.h>
 
 #include "playlist_util.h"
 #include "ui_playlist_model.h"
@@ -254,21 +255,12 @@ gint calculate_column_width(GtkWidget *widget, gint num)
     PangoFontDescription *font_desc;
     PangoContext *context;
     PangoFontMetrics *font_metrics;
-    gint len = 0;
-    gchar *buf = g_new0(gchar, 10);
-    gchar *p = buf;
+    gint digits = 1 + log10(num);
 
     font_desc = widget->style->font_desc;
     context = gtk_widget_get_pango_context(widget);
     font_metrics = pango_context_get_metrics(context, font_desc,
                                              pango_context_get_language(context));
 
-    sprintf(buf, "%d", num);
-
-    while(*(buf++))
-        len++;
-
-    g_free(p);
-
-    return (PANGO_PIXELS(pango_font_metrics_get_approximate_digit_width(font_metrics)) * len) + 20;
+    return (PANGO_PIXELS(pango_font_metrics_get_approximate_digit_width(font_metrics)) * digits) + 20;
 }
