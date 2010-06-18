@@ -289,5 +289,5 @@ gint calculate_column_width(GtkWidget *widget, gint num)
 
     g_free(p);
 
-    return (PANGO_PIXELS(pango_font_metrics_get_approximate_digit_width(font_metrics)) * len);
+    return (PANGO_PIXELS(pango_font_metrics_get_approximate_digit_width(font_metrics)) * len) + 20;
 }

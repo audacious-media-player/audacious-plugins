@@ -394,7 +394,7 @@ static void ui_playlist_widget_set_column(GtkWidget *treeview, gchar *title, gin
     gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_FIXED);
 
     if (column_id == PLAYLIST_MULTI_COLUMN_NUM)
-        gtk_tree_view_column_set_min_width(column, width + 20);
+        gtk_tree_view_column_set_min_width(column, width);
     else
         gtk_tree_view_column_set_fixed_width(column, width);
 

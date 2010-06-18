@@ -579,7 +579,7 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
             GtkTreeViewColumn *column = gtk_tree_view_get_column(treeview, 0);
             gint width = calculate_column_width(GTK_WIDGET(treeview), model->num_rows);
 
-            gtk_tree_view_column_set_min_width(column, width + 20);
+            gtk_tree_view_column_set_min_width(column, width);
         }
 
         ui_playlist_model_playlist_position(hook_data, user_data);

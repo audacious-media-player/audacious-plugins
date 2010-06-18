@@ -24,7 +24,7 @@
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 
-#include "config.h"
+//#include "config.h" disable for now
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
 #include "ui_playlist_notebook.h"
