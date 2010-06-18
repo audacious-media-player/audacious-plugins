@@ -26,6 +26,7 @@
 #include <audacious/plugin.h>
 #include <audacious/ui_plugin_menu.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 static GtkUIManager *ui_manager = NULL;
 
@@ -135,6 +136,8 @@ static GtkActionEntry action_entries_playlist[] = {
 static GtkActionEntry action_entries_output[] =
 {
     {"output", NULL, N_("Output")},
+
+    {"effects menu", NULL, N_("Effects")},
 
     {"equalizer show", NULL, N_("Equalizer"), "<Ctrl>E", NULL, (GCallback)
      audgui_show_equalizer_window},
@@ -284,6 +287,9 @@ void ui_manager_create_menus(void)
     }
 
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(gtk_ui_manager_get_widget(ui_manager, "/mainwin-menus/plugins-menu")), aud_get_plugin_menu(AUDACIOUS_MENU_MAIN));
+    gtk_menu_item_set_submenu ((GtkMenuItem *) gtk_ui_manager_get_widget
+     (ui_manager, "/mainwin-menus/output/effects menu"),
+     audgui_create_effects_menu ());
 
     playlistwin_popup_menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/playlist-rightclick-menu");
 
