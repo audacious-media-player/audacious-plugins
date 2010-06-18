@@ -568,9 +568,9 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
         }
 
         /* Sync selection between the real playlist and the playlist widget */
-        if (aud_playlist_get_selected_length(model->playlist) != playlist_get_selected_length(model->playlist))
+        if (aud_playlist_get_selected_length(model->playlist) != playlist_get_selected_length(treeview))
         {
-            GtkTreeSelection *sel = playlist_get_selection(model->playlist);
+            GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
             g_signal_emit_by_name(G_OBJECT(sel), "changed");
         }
 

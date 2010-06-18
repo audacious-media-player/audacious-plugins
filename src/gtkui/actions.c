@@ -874,6 +874,6 @@ void action_playlist_paste(void)
 
     gint playlist = aud_playlist_get_active();
 
-    insert_drag_list(playlist, playlist_get_first_selected_index(playlist), list);
+    insert_drag_list(playlist, playlist_get_first_selected_index(playlist_get_treeview(playlist)), list);
     g_free(list);
 }

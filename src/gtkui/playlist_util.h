@@ -30,12 +30,10 @@ GtkTreeView *playlist_get_playing_treeview(void);
 gint playlist_get_playlist_from_treeview(GtkTreeView *treeview);
 gchar *create_drag_list(gint playlist);
 void playlist_scroll_to_row(GtkTreeView *treeview, gint position, gboolean only_if_focused);
-GList *playlist_get_selected_list(gint playlist);
-gint playlist_get_selected_length(gint playlist);
-gint playlist_get_first_selected_index(gint playlist);
-gint playlist_get_first_selected_index_from_treeview(GtkTreeView *treeview);
-GtkTreeSelection *playlist_get_selection_from_treeview(GtkTreeView *treeview);
-GtkTreeSelection *playlist_get_selection(gint playlist);
+GList *playlist_get_selected_list(GtkTreeView *treeview);
+gint playlist_get_selected_length(GtkTreeView *treeview);
+gint playlist_get_first_selected_index(GtkTreeView *treeview);
+GtkTreePath *playlist_get_first_selected_path(GtkTreeView *treeview);
 gint playlist_get_index_from_path(GtkTreePath * path);
 gint calculate_column_width(GtkWidget *widget, gint num);
 

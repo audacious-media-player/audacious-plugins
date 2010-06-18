@@ -283,12 +283,15 @@ static void ui_playlist_widget_change_song(GtkTreeView * treeview, guint pos)
         audacious_drct_play();
 }
 
-static void ui_playlist_widget_jump(GtkTreeView * treeview, gpointer data)
+static void ui_playlist_widget_row_activated(GtkTreeView * treeview, GtkTreePath * path, GtkTreeViewColumn *column, gpointer user_data)
 {
-    gint pos = playlist_get_first_selected_index_from_treeview(treeview);
+    if (path)
+    {
+        gint pos = playlist_get_index_from_path(path);
 
-    if (pos >= 0)
-        ui_playlist_widget_change_song(treeview, pos);
+        if (pos >= 0)
+            ui_playlist_widget_change_song(treeview, pos);
+    }
 }
 
 static gboolean ui_playlist_widget_keypress_cb(GtkWidget * widget, GdkEventKey * event, gpointer data)
@@ -299,8 +302,11 @@ static gboolean ui_playlist_widget_keypress_cb(GtkWidget * widget, GdkEventKey *
         switch (event->keyval)
         {
           case GDK_KP_Enter:
-            ui_playlist_widget_jump(GTK_TREE_VIEW(widget), NULL);
+          {
+            GtkTreePath *path = playlist_get_first_selected_path(GTK_TREE_VIEW(widget));
+            gtk_tree_view_row_activated(GTK_TREE_VIEW(widget), path, NULL);
             return TRUE;
+          }
           default:
             return FALSE;
         }
@@ -402,9 +408,9 @@ static void ui_playlist_widget_set_column(GtkWidget *treeview, gchar *title, gin
         gtk_tree_view_column_set_resizable(column, TRUE);
 
     if (ellipsize)
-        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 2, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 1, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
     else
-        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 2, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 1, NULL);
 
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 }
@@ -450,17 +456,17 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
         renderer = gtk_cell_renderer_text_new();
         gtk_tree_view_column_pack_start(column, renderer, FALSE);
         gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_NUM, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
-        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 2, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 1, NULL);
 
         renderer = gtk_cell_renderer_text_new();
         gtk_tree_view_column_pack_start(column, renderer, TRUE);
         gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_TEXT, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
-        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 2, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 1, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
         renderer = gtk_cell_renderer_text_new();
         gtk_tree_view_column_pack_start(column, renderer, FALSE);
         gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_TIME, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
-        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 2, "xalign", 1.0, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 1, "xalign", 1.0, NULL);
 
         gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
     }
@@ -468,7 +474,7 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
     gtk_drag_dest_set(treeview, GTK_DEST_DEFAULT_ALL, target_entry, 1, GDK_ACTION_COPY | GDK_ACTION_MOVE);
     gtk_drag_source_set(treeview, GDK_BUTTON1_MASK, target_entry, 1, GDK_ACTION_MOVE);
 
-    g_signal_connect(treeview, "row-activated", G_CALLBACK(ui_playlist_widget_jump), NULL);
+    g_signal_connect(treeview, "row-activated", G_CALLBACK(ui_playlist_widget_row_activated), NULL);
 
     g_signal_connect(treeview, "key-press-event", G_CALLBACK(ui_playlist_widget_keypress_cb), NULL);
     g_signal_connect(treeview, "button-press-event", G_CALLBACK(ui_playlist_widget_button_press_cb), NULL);

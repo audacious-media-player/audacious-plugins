@@ -66,17 +66,6 @@ gint playlist_get_playlist_from_treeview(GtkTreeView *treeview)
     return model->playlist;
 }
 
-static gint need_update_range_start = -1;
-static gint need_update_range_end = -1;
-
-void playlist_get_changed_range(gint *start, gint *end)
-{
-    *end = need_update_range_end;
-    *start = need_update_range_start;
-
-    need_update_range_start = need_update_range_end = -1;
-}
-
 void playlist_shift_selected(gint playlist_num, gint old_pos, gint new_pos, gint selected_length)
 {
     gint delta = new_pos - old_pos;
@@ -192,13 +181,14 @@ void playlist_scroll_to_row(GtkTreeView *treeview, gint position, gboolean only_
     gtk_tree_path_free(path);
 }
 
-GList *playlist_get_selected_list(gint playlist)
+GList *playlist_get_selected_list(GtkTreeView *treeview)
 {
-    GtkTreeView *treeview = playlist_get_treeview(playlist);
-    GtkTreeModel *treemodel = gtk_tree_view_get_model(treeview);
+    GtkTreeModel *treemodel;
     GtkTreeSelection *sel;
 
     g_return_val_if_fail(treeview != NULL, NULL);
+
+    treemodel = gtk_tree_view_get_model(treeview);
 
     sel = gtk_tree_view_get_selection(treeview);
     g_return_val_if_fail(sel != NULL, NULL);
@@ -206,9 +196,9 @@ GList *playlist_get_selected_list(gint playlist)
     return gtk_tree_selection_get_selected_rows(sel, &treemodel);
 }
 
-gint playlist_get_selected_length(gint playlist)
+gint playlist_get_selected_length(GtkTreeView *treeview)
 {
-    GList *list = playlist_get_selected_list(playlist);
+    GList *list = playlist_get_selected_list(treeview);
     gint selected_length;
 
     selected_length = g_list_length(list);
@@ -219,41 +209,32 @@ gint playlist_get_selected_length(gint playlist)
     return selected_length;
 }
 
-gint playlist_get_first_selected_index(gint playlist)
+GtkTreePath *playlist_get_first_selected_path(GtkTreeView *treeview)
 {
     GList *list;
+    GtkTreePath *path;
 
-    gint selected;
+    list = playlist_get_selected_list(treeview);
+    g_return_val_if_fail(list != NULL, NULL);
 
-    g_return_val_if_fail(playlist >= 0, 0);
-
-    list = playlist_get_selected_list(playlist);
-    g_return_val_if_fail(list != NULL, 0);
-
-    selected = playlist_get_index_from_path(list->data);
+    path = gtk_tree_path_copy(list->data);
 
     g_list_foreach(list, (GFunc) gtk_tree_path_free, NULL);
     g_list_free(list);
 
+    return path;
+}
+
+gint playlist_get_first_selected_index(GtkTreeView *treeview)
+{
+    GtkTreePath *path = playlist_get_first_selected_path(treeview);
+
+    g_return_val_if_fail(path != NULL, -1);
+
+    gint selected = playlist_get_index_from_path(path);
+    gtk_tree_path_free(path);
+
     return selected;
-}
-
-gint playlist_get_first_selected_index_from_treeview(GtkTreeView *treeview)
-{
-    gint playlist = playlist_get_playlist_from_treeview(treeview);
-    return playlist_get_first_selected_index(playlist);
-}
-
-GtkTreeSelection *playlist_get_selection_from_treeview(GtkTreeView *treeview)
-{
-    g_return_val_if_fail(treeview != NULL, NULL);
-    return gtk_tree_view_get_selection(treeview);
-}
-
-GtkTreeSelection *playlist_get_selection(gint playlist)
-{
-    GtkTreeView *treeview = playlist_get_treeview(playlist);
-    return playlist_get_selection_from_treeview(treeview);
 }
 
 gint playlist_get_index_from_path(GtkTreePath * path)
