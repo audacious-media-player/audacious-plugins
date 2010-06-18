@@ -503,6 +503,14 @@ void set_volume_diff(gint diff)
 
 static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
+    if (ui_playlist_notebook_tab_title_editing != NULL &&
+        event->keyval != GDK_KP_Enter && event->keyval != GDK_Escape)
+    {
+        GtkWidget *entry = g_object_get_data(G_OBJECT(ui_playlist_notebook_tab_title_editing), "entry");
+        gtk_widget_event(entry, (GdkEvent*) event);
+        return TRUE;
+    }
+
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
         case 0:
@@ -545,20 +553,13 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                     return TRUE;
 
                 case GDK_space:
-                    audacious_drct_pause();
+                    if (audacious_drct_get_playing())
+                        audacious_drct_pause();
+                    else
+                        audacious_drct_play();
                     return TRUE;
             }
         break;
-    }
-
-    if (ui_playlist_notebook_tab_title_editing != NULL &&
-       (event->keyval == GDK_Delete ||
-       (event->keyval >= GDK_a && event->keyval <= GDK_z) ||
-       (event->keyval >= GDK_A && event->keyval <= GDK_Z)))
-    {
-        GtkWidget *entry = g_object_get_data(G_OBJECT(ui_playlist_notebook_tab_title_editing), "entry");
-        gtk_widget_event(entry, (GdkEvent*) event);
-        return TRUE;
     }
 
     return FALSE;

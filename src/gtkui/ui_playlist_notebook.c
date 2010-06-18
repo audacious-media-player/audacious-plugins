@@ -142,6 +142,9 @@ void ui_playlist_notebook_add_tab_label_markup(gint playlist, gboolean new_title
 
 void ui_playlist_notebook_edit_tab_title(GtkWidget *ebox)
 {
+    if (!gtk_notebook_get_show_tabs(UI_PLAYLIST_NOTEBOOK))
+        return;
+
     if (ebox == NULL)
     {
         GtkWidget *page = gtk_notebook_get_nth_page(UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active());
@@ -224,6 +227,8 @@ void ui_playlist_notebook_populate(void)
 
     for (count = 0; count < playlists; count++)
         ui_playlist_notebook_create_tab(count);
+
+    gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, aud_playlist_get_playing());
 }
 
 void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
