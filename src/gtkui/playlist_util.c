@@ -176,7 +176,9 @@ void playlist_scroll_to_row(GtkTreeView *treeview, gint position, gboolean only_
 
     g_return_if_fail(treeview != NULL);
     g_return_if_fail(path != NULL);
-    g_return_if_fail(only_if_focused && !gtk_widget_is_focus(GTK_WIDGET(treeview)));
+
+    if (only_if_focused && ! gtk_widget_is_focus ((GtkWidget *) treeview))
+        return;
 
     gtk_tree_view_scroll_to_cell(treeview, path, NULL, TRUE, 0.5, 0.0);
     gtk_tree_path_free(path);

@@ -526,7 +526,7 @@ ui_playlist_model_playlist_position(gpointer hook_data, gpointer user_data)
         ui_playlist_model_update_position(model, position);
 
         treeview = playlist_get_treeview(model->playlist);
-        playlist_scroll_to_row(treeview, position, TRUE);
+        playlist_scroll_to_row (treeview, position, FALSE);
     }
 }
 
