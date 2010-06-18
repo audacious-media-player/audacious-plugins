@@ -19,6 +19,7 @@
  *  Audacious or using our public API to be a derived work.
  */
 
+#include <stdio.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <audacious/plugin.h>
@@ -391,16 +392,19 @@ static void ui_playlist_widget_set_column(GtkWidget *treeview, gchar *title, gin
     renderer = gtk_cell_renderer_text_new();
     column = gtk_tree_view_column_new_with_attributes(title, renderer, "text", column_id, "weight", PLAYLIST_MULTI_COLUMN_WEIGHT, NULL);
     gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_FIXED);
-    gtk_tree_view_column_set_spacing(column, 4);
-    gtk_tree_view_column_set_fixed_width(column, width);
+
+    if (column_id == PLAYLIST_MULTI_COLUMN_NUM)
+        gtk_tree_view_column_set_min_width(column, width + 20);
+    else
+        gtk_tree_view_column_set_fixed_width(column, width);
 
     if (resizable)
         gtk_tree_view_column_set_resizable(column, TRUE);
 
     if (ellipsize)
-        g_object_set(G_OBJECT(renderer), "ypad", 0, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 2, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
     else
-        g_object_set(G_OBJECT(renderer), "ypad", 0, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 2, NULL);
 
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 }
@@ -424,13 +428,12 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
     gtk_tree_view_set_reorderable(GTK_TREE_VIEW(treeview), TRUE);
     gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(treeview), TRUE);
     gtk_drag_dest_set_track_motion(treeview, TRUE);
-    gtk_tree_view_set_fixed_height_mode(GTK_TREE_VIEW(treeview), TRUE);
 
     if (multi_column_view)
     {
         gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), TRUE);
 
-        ui_playlist_widget_set_column(treeview, NULL, PLAYLIST_MULTI_COLUMN_NUM, 40, FALSE, TRUE);
+        ui_playlist_widget_set_column(treeview, NULL, PLAYLIST_MULTI_COLUMN_NUM, calculate_column_width(treeview, model->num_rows), FALSE, FALSE);
         ui_playlist_widget_set_column(treeview, "Artist", PLAYLIST_MULTI_COLUMN_ARTIST, 150, TRUE, TRUE);
         ui_playlist_widget_set_column(treeview, "Album", PLAYLIST_MULTI_COLUMN_ALBUM, 200, TRUE, TRUE);
         ui_playlist_widget_set_column(treeview, "No", PLAYLIST_MULTI_COLUMN_TRACK_NUM, 40, FALSE, TRUE);
@@ -442,22 +445,22 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
         column = gtk_tree_view_column_new();
         gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), FALSE);
         gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_FIXED);
-        gtk_tree_view_column_set_spacing(column, 4);
+        gtk_tree_view_column_set_spacing(column, 8);
 
         renderer = gtk_cell_renderer_text_new();
         gtk_tree_view_column_pack_start(column, renderer, FALSE);
         gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_NUM, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
-        g_object_set(G_OBJECT(renderer), "ypad", 0, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 2, NULL);
 
         renderer = gtk_cell_renderer_text_new();
         gtk_tree_view_column_pack_start(column, renderer, TRUE);
         gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_TEXT, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
-        g_object_set(G_OBJECT(renderer), "ypad", 0, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 2, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
         renderer = gtk_cell_renderer_text_new();
         gtk_tree_view_column_pack_start(column, renderer, FALSE);
         gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_TIME, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
-        g_object_set(G_OBJECT(renderer), "ypad", 0, "xalign", 1.0, NULL);
+        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 2, "xalign", 1.0, NULL);
 
         gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
     }

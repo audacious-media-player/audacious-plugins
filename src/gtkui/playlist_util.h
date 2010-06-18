@@ -37,6 +37,7 @@ gint playlist_get_first_selected_index_from_treeview(GtkTreeView *treeview);
 GtkTreeSelection *playlist_get_selection_from_treeview(GtkTreeView *treeview);
 GtkTreeSelection *playlist_get_selection(gint playlist);
 gint playlist_get_index_from_path(GtkTreePath * path);
+gint calculate_column_width(GtkWidget *widget, gint num);
 
 static inline void insert_drag_list_into_active(gint position, const gchar *list)
 {
