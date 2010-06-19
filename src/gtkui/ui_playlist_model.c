@@ -567,6 +567,12 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
             }
         }
 
+        /* Is there any pending selection? */
+        if (playlist_is_pending_selection())
+        {
+            playlist_pending_selection_apply();
+        }
+
         /* Sync selection between the real playlist and the playlist widget */
         if (aud_playlist_get_selected_length(model->playlist) != playlist_get_selected_length(treeview))
         {
