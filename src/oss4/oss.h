@@ -20,7 +20,7 @@
 #ifndef AUDACIOUS_OSS4_H
 #define AUDACIOUS_OSS4_H
 
-#include "../../config.h"
+#include "config.h"
 
 #include <stdio.h>
 #include <glib.h>
@@ -32,8 +32,6 @@
 #else
 #include <soundcard.h>
 #endif
-
-#define DEBUG
 
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
@@ -57,7 +55,7 @@ do { \
     ERROR("%s", oss_message); \
     g_free(oss_message); \
 } while (0)
-    
+
 #define SHOW_ERROR_MSG \
 do { \
     oss_message = oss_describe_error(); \
