@@ -22,7 +22,9 @@
 #define __PLAYLISTUTIL_H__
 
 void insert_drag_list(gint playlist, gint position, const gchar *list);
-void playlist_shift_selected(gint playlist_num, gint old_pos, gint new_pos, gint selected_boundary_range);
+void playlist_set_selected(GtkTreeView *treeview, GtkTreePath *path);
+void playlist_set_selected_list(GtkTreeView *treeview, GList *list, gint distance);
+gint calc_distance(gint source_pos, gint dest_pos, gint selected_length);
 GtkTreeView *playlist_get_treeview_from_page(GtkWidget *page);
 GtkTreeView *playlist_get_treeview(gint playlist);
 GtkTreeView *playlist_get_active_treeview(void);
@@ -36,6 +38,10 @@ gint playlist_get_first_selected_index(GtkTreeView *treeview);
 GtkTreePath *playlist_get_first_selected_path(GtkTreeView *treeview);
 gint playlist_get_index_from_path(GtkTreePath * path);
 gint calculate_column_width(GtkWidget *widget, gint num);
+void playlist_pending_selection_set(GtkTreeView *treeview, GtkTreePath *start_path, GtkTreePath *end_path);
+void playlist_pending_selection_free(void);
+void playlist_pending_selection_apply(void);
+gboolean playlist_is_pending_selection(void);
 
 static inline void insert_drag_list_into_active(gint position, const gchar *list)
 {
