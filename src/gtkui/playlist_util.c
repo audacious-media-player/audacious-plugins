@@ -170,14 +170,14 @@ gchar *create_drag_list(gint playlist)
     return buffer;
 }
 
-void playlist_scroll_to_row(GtkTreeView *treeview, gint position, gboolean only_if_focused)
+void playlist_scroll_to_row(GtkTreeView *treeview, gint position, gboolean if_not_focused)
 {
     GtkTreePath *path = gtk_tree_path_new_from_indices(position, -1);
 
     g_return_if_fail(treeview != NULL);
     g_return_if_fail(path != NULL);
 
-    if (only_if_focused && ! gtk_widget_is_focus ((GtkWidget *) treeview))
+    if (if_not_focused && gtk_widget_is_focus ((GtkWidget *) treeview))
         return;
 
     gtk_tree_view_scroll_to_cell(treeview, path, NULL, TRUE, 0.5, 0.0);

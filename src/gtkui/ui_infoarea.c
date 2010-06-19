@@ -252,6 +252,13 @@ ui_infoarea_draw_title(UIInfoArea *area)
 
     if ((str = tuple_get_string(area->tu, FIELD_TITLE, NULL)) != NULL)
         ui_infoarea_draw_text(area, 86,  8, area->alpha.title, "Sans 20", str);
+    else
+    {
+        gint playlist = aud_playlist_get_playing();
+
+        ui_infoarea_draw_text(area, 86,  8, area->alpha.title, "Sans 20",
+            aud_playlist_entry_get_title(playlist, aud_playlist_get_position(playlist)));
+    }
 
     if ((str = tuple_get_string(area->tu, FIELD_ARTIST, NULL)) != NULL)
         ui_infoarea_draw_text(area, 86, 42, area->alpha.artist, "Sans 9", str);

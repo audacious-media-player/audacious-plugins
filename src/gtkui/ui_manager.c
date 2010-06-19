@@ -208,6 +208,14 @@ static GtkActionEntry action_entries_others[] = {
 
     {"playlist paste", GTK_STOCK_PASTE, N_("Paste"), "<Ctrl>V",
      NULL, G_CALLBACK(action_playlist_paste)},
+
+    {"playlist select all", NULL, N_("Select All"), "<Ctrl>A",
+     N_("Selects all of the playlist entries."),
+     G_CALLBACK(action_playlist_select_all)},
+
+    {"playlist select none", NULL, N_("Select None"), "<Shift><Ctrl>A",
+     N_("Deselects all of the playlist entries."),
+     G_CALLBACK(action_playlist_select_none)},
 };
 
 static GtkActionGroup * action_group_playback;
