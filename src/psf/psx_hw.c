@@ -51,8 +51,8 @@
 #include "cpuintrf.h"
 #include "psx.h"
 	
-#define DEBUG_HLE_BIOS	(0)		// debug PS1 HLE BIOS
-#define DEBUG_SPU	(1)		// debug PS1 SPU read/write
+#define DEBUG_HLE_BIOS	(1)		// debug PS1 HLE BIOS
+#define DEBUG_SPU	(0)		// debug PS1 SPU read/write
 #define DEBUG_SPU2	(0)		// debug PS2 SPU read/write
 #define DEBUG_HLE_IOP	(0)		// debug PS2 IOP OS calls
 #define DEBUG_UNK_RW	(0)		// debug unknown reads/writes
@@ -1672,7 +1672,7 @@ void psx_bios_hle(uint32 pc)
 
 						#if DEBUG_HLE_BIOS
 						printf("HLEBIOS: OpenEvent(%08x, %08x, %08x, %08x) = ev %d spec %d\n", a0, a1, a2, a3, ev, spec);
-						if (ev >= 64 && ev <= 67)
+						if (ev >= 64 && ev <= 68)
 						{
 							printf("HLEBIOS: event %d maps to root counter %d\n", ev, ev-64);
 						}
@@ -3227,15 +3227,6 @@ void psx_iop_call(uint32 pc, uint32 callnum)
 				#if DEBUG_HLE_IOP
 				mips_get_info(CPUINFO_INT_REGISTER + MIPS_R31, &mipsinfo);
 				printf("KTTY: %s [PC=%x]\n", out, mipsinfo.i);
-				#endif
-
-				#if 0
-				{
-					FILE *f;
-					f = fopen("psxram.bin", "wb");
-					fwrite(psx_ram, 2*1024*1024, 1, f);
-					fclose(f);
-				}
 				#endif
 				break;
 

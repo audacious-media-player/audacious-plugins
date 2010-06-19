@@ -14,11 +14,10 @@
  */
 
 #include <stdio.h>
+#include <stdarg.h>
 #include "ao.h"
 #include "cpuintrf.h"
 #include "psx.h"
-
-#define PSXCPU_STRICT (0)	// define to 1 if you want to be strict about bad vaddrs, etc
 
 #define EXC_INT ( 0 )
 #define EXC_ADEL ( 4 )
@@ -155,6 +154,15 @@ static UINT8 mips_win_layout[] = {
 	 0,23,80, 1 	/* command line window (bottom rows) */
 };
 
+static const char *delayn[] =
+{
+	"pc", "at", "v0", "v1", "a0", "a1", "a2", "a3",
+	"t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7",
+	"s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7",
+	"t8", "t9", "k0", "k1", "gp", "sp", "fp", "ra",
+	"pc"
+};
+
 #define REGPC ( 32 )
 
 typedef struct
@@ -213,7 +221,7 @@ static UINT32 mips_mtc0_writemask[]=
 	0x00000000
 };
 
-#if 0
+#if 1
 void GTELOG(const char *a,...)
 {
 	va_list va;
@@ -412,13 +420,29 @@ int mips_execute( int cycles )
 	
 		mipscpu.op = cpu_readop32( mipscpu.pc );
 
+#if 0
+		while (mipscpu.prevpc == mipscpu.pc)
+		{
+			psx_hw_runcounters();
+			mips_ICount--;
+
+			if (mips_ICount == 0) return cycles;
+		}
+#endif
+
 		// if we're not in a delay slot, update
 		// if we're in a delay slot and the delay instruction is not NOP, update
 		if (( mipscpu.delayr == 0 ) || ((mipscpu.delayr != 0) && (mipscpu.op != 0)))
 		{
 			mipscpu.prevpc = mipscpu.pc;
+		}	
+#if 0
+		if (1) //psxcpu_verbose)
+		{
+			printf("[%08x: %08x] [SP %08x RA %08x V0 %08x V1 %08x A0 %08x S0 %08x S1 %08x]\n", mipscpu.pc, mipscpu.op, mipscpu.r[29], mipscpu.r[31], mipscpu.r[2], mipscpu.r[3], mipscpu.r[4], mipscpu.r[ 16 ], mipscpu.r[ 17 ]);
+//			psxcpu_verbose--;
 		}
-
+#endif
 		switch( INS_OP( mipscpu.op ) )
 		{
 		case OP_SPECIAL:
@@ -1155,8 +1179,7 @@ int mips_execute( int cycles )
 			{
 				UINT32 n_adr;
 				n_adr = mipscpu.r[ INS_RS( mipscpu.op ) ] + MIPS_WORD_EXTEND( INS_IMMEDIATE( mipscpu.op ) );
-
-				#if PSXCPU_STRICT
+#if 0
 				if( ( n_adr & ( ( ( mipscpu.cp0r[ CP0_SR ] & SR_KUC ) << 30 ) | 3 ) ) != 0 )
 				{
 					printf("ADEL\n");
@@ -1164,7 +1187,7 @@ int mips_execute( int cycles )
 					mips_set_cp0r( CP0_BADVADDR, n_adr );
 				}
 				else
-				#endif
+#endif
 				{
 					mips_delayed_load( INS_RT( mipscpu.op ), program_read_dword_32le( n_adr ) );
 				}
@@ -1628,9 +1651,9 @@ int mips_execute( int cycles )
 			}
 			break;
 		default:
-//			printf( "%08x: unknown opcode %08x (prev %08x, RA %08x)\n", mipscpu.pc, mipscpu.op, mipscpu.prevpc,  mipscpu.r[31] );
-//			mips_stop();
-//			mips_exception( EXC_RI );
+			printf( "%08x: unknown opcode %08x (prev %08x, RA %08x)\n", mipscpu.pc, mipscpu.op, mipscpu.prevpc,  mipscpu.r[31] );
+			mips_stop();
+			mips_exception( EXC_RI );
   			break;
 		}
 		mips_ICount--;
