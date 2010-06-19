@@ -181,6 +181,8 @@ void playlist_scroll_to_row(GtkTreeView *treeview, gint position, gboolean if_no
         return;
 
     gtk_tree_view_scroll_to_cell(treeview, path, NULL, TRUE, 0.5, 0.0);
+    gtk_tree_view_set_cursor(treeview, path, NULL, FALSE);
+    gtk_widget_grab_focus(GTK_WIDGET(treeview));
     gtk_tree_path_free(path);
 }
 
