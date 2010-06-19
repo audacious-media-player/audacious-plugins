@@ -271,6 +271,7 @@ void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
         }
 
         gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active());
+        gtk_widget_grab_focus(GTK_WIDGET(playlist_get_active_treeview()));
     }
 }
 

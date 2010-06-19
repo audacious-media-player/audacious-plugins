@@ -560,13 +560,14 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                     return TRUE;
 
                 case GDK_Escape:
-                {
-                    gint playing = aud_playlist_get_playing();
-                    gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, playing);
-                    playlist_scroll_to_row(playlist_get_playing_treeview(),
-                        aud_playlist_get_position(playing), FALSE);
-                    return TRUE;
-                }
+                    if (ui_playlist_notebook_tab_title_editing == NULL)
+                    {
+                        gint playing = aud_playlist_get_playing();
+                        gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, playing);
+                        playlist_scroll_to_row(playlist_get_playing_treeview(),
+                            aud_playlist_get_position(playing), FALSE);
+                        return TRUE;
+                    }
             }
         break;
     }
