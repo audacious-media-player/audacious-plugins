@@ -456,14 +456,6 @@ init_resync:
 		/* check for id3v2; first three bytes (of 4) are "ID3" */
 		if((newhead & (unsigned long) 0xffffff00) == (unsigned long) 0x49443300)
 		{
-			int id3ret = 0;
-			id3ret = parse_new_id3(fr, newhead);
-			if     (id3ret < 0){ debug("need more?"); ret = id3ret; goto read_frame_bad; }
-#ifndef NO_ID3V2
-			else if(id3ret > 0){ debug("got ID3v2"); fr->metaflags  |= MPG123_NEW_ID3|MPG123_ID3; }
-			else debug("no useful ID3v2");
-#endif
-
 			fr->oldhead = 0;
 			goto read_again; /* Also in case of invalid ID3 tag (ret==0), try to get on track again. */
 		}
@@ -576,10 +568,6 @@ init_resync:
 		/* check for id3v2; first three bytes (of 4) are "ID3" */
 		if((newhead & (unsigned long) 0xffffff00) == (unsigned long) 0x49443300)
 		{
-			int id3length = 0;
-			id3length = parse_new_id3(fr, newhead);
-			if(id3length < 0){ debug("need more?"); ret = id3length; goto read_frame_bad; }
-
 			fr->metaflags  |= MPG123_NEW_ID3|MPG123_ID3;
 			goto read_again;
 		}
