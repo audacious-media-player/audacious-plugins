@@ -16,7 +16,7 @@
  *  The Audacious team does not consider modular code linking to
  *  Audacious or using our public API to be a derived work.
  */
-#define DEBUG
+
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
@@ -24,7 +24,7 @@
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 
-//#include "config.h" disable for now
+#include "config.h"
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
 #include "ui_playlist_notebook.h"

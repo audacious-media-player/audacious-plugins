@@ -18,7 +18,7 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#define DEBUG
+#include "config.h"
 #include <audacious/plugin.h>
 #include "ui_playlist_model.h"
 #include "playlist_util.h"
