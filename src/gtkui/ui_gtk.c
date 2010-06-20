@@ -227,20 +227,6 @@ static void ui_set_song_info(void *unused, void *another)
     gchar *title = aud_playback_get_title();
     gchar *title_s = g_strdup_printf("%s - Audacious", title);
 
-    gint length = audacious_drct_get_length();
-
-    if (!g_signal_handler_is_connected(slider, slider_change_handler_id))
-        return;
-
-    if (length <= 0)
-        return;
-
-    /* block "value-changed" signal handler to prevent skipping track
-       if the next track is shorter than the previous one --desowin */
-    g_signal_handler_block(slider, slider_change_handler_id);
-    gtk_range_set_range(GTK_RANGE(slider), 0.0, (gdouble) length);
-    g_signal_handler_unblock(slider, slider_change_handler_id);
-
     gtk_window_set_title(GTK_WINDOW(window), title_s);
     g_free(title_s);
 
@@ -357,7 +343,6 @@ static void ui_clear_song_info()
 
     gtk_window_set_title(GTK_WINDOW(window), "Audacious");
     gtk_label_set_markup(GTK_LABEL(label_time), "<tt><b>00:00/00:00</b></tt>");
-    gtk_range_set_value(GTK_RANGE(slider), 0);
 }
 
 static gboolean ui_slider_value_changed_cb(GtkRange * range, gpointer user_data)
@@ -448,12 +433,34 @@ static gboolean ui_volume_slider_update(gpointer data)
     return TRUE;
 }
 
+static void set_slider_length (gint length)
+{
+    if (g_signal_handler_is_connected (slider, slider_change_handler_id))
+        g_signal_handler_block (slider, slider_change_handler_id);
+
+    if (length > 0)
+    {
+        gtk_range_set_range ((GtkRange *) slider, 0, length);
+        gtk_widget_set_sensitive (slider, TRUE);
+    }
+    else
+    {
+        gtk_range_set_value(GTK_RANGE(slider), 0.0);
+        gtk_widget_set_sensitive (slider, FALSE);
+    }
+
+    if (g_signal_handler_is_connected (slider, slider_change_handler_id))
+        g_signal_handler_unblock (slider, slider_change_handler_id);
+}
+
 static void ui_playback_begin(gpointer hook_data, gpointer user_data)
 {
     ui_update_song_info(NULL, NULL);
 
     /* update song info 4 times a second */
     update_song_timeout_source = g_timeout_add(250, (GSourceFunc) ui_update_song_info, NULL);
+
+    set_slider_length (audacious_drct_get_length ());
 }
 
 static void ui_playback_stop(gpointer hook_data, gpointer user_data)
@@ -465,6 +472,7 @@ static void ui_playback_stop(gpointer hook_data, gpointer user_data)
     }
 
     ui_clear_song_info();
+    set_slider_length (0);
 }
 
 static void ui_playback_end(gpointer hook_data, gpointer user_data)
@@ -780,13 +788,13 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     if (config.player_visible)
         ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
 
-    ui_clear_song_info();
-
     if (audacious_drct_get_playing())
     {
         ui_set_song_info(NULL, NULL);
         ui_playback_begin(NULL, NULL);
     }
+    else
+        ui_playback_stop (NULL, NULL);
 
     AUDDBG("check menu settings\n");
     check_set(toggleaction_group_others, "view menu", config.menu_visible);

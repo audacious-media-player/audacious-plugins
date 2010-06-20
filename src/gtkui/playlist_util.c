@@ -29,6 +29,15 @@
 #include "ui_playlist_model.h"
 #include "ui_playlist_notebook.h"
 
+typedef struct
+{
+    GtkTreeSelection *sel;
+    GtkTreePath *start_path;
+    GtkTreePath *end_path;
+} UiPlaylistSelection;
+
+static UiPlaylistSelection *pending;
+
 GtkTreeView *playlist_get_treeview_from_page(GtkWidget *page)
 {
     if (!page)
@@ -67,24 +76,67 @@ gint playlist_get_playlist_from_treeview(GtkTreeView *treeview)
     return model->playlist;
 }
 
-void playlist_shift_selected(gint playlist_num, gint old_pos, gint new_pos, gint selected_length)
+static inline void _gtk_tree_selection_select_path(GtkTreePath *path, GtkTreeSelection *sel)
 {
-    gint delta = new_pos - old_pos;
-    aud_playlist_shift_selected(playlist_num, delta);
+    gtk_tree_selection_select_path(sel, path);
 }
 
-/**
- * FIXME:
- */
-void treeview_select_pos(GtkTreeView *tv, gint pos)
+void playlist_set_selected(GtkTreeView *treeview, GtkTreePath *path)
 {
-    GtkTreeSelection *sel = gtk_tree_view_get_selection(tv);
-    GtkTreePath *path;
+    GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
 
-    path = gtk_tree_path_new_from_indices(pos, -1);
     gtk_tree_selection_unselect_all(sel);
-    gtk_tree_selection_select_range(sel, path, path);
-    gtk_tree_path_free(path);
+    gtk_tree_selection_select_path(sel, path);
+    gtk_tree_view_set_cursor(treeview, path, NULL, FALSE);
+}
+
+void playlist_set_selected_list(GtkTreeView *treeview, GList *list, gint distance)
+{
+    GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
+    GtkTreePath *path;
+    gint pos;
+
+    gtk_tree_selection_unselect_all(sel);
+
+    if (distance == 0)
+    {
+        gtk_tree_view_set_cursor(treeview, g_list_first(list)->data, NULL, FALSE);
+        g_list_foreach(list, (GFunc) _gtk_tree_selection_select_path, sel);
+        return;
+    }
+
+    for (GList *target = g_list_first(list); target; target = target->next)
+    {
+        if (!target->data)
+            continue;
+
+        pos = playlist_get_index_from_path(target->data) + distance;
+        path = gtk_tree_path_new_from_indices(pos, -1);
+
+        if (path)
+        {
+            gtk_tree_selection_select_path(sel, path);
+
+            if (target->prev == NULL)
+                gtk_tree_view_set_cursor(treeview, path, NULL, FALSE);
+
+            gtk_tree_path_free(path);
+        }
+    }
+}
+
+gint calc_distance(gint source_pos, gint dest_pos, gint selected_length)
+{
+    gint distance;
+
+    if (source_pos <= dest_pos && source_pos + selected_length > dest_pos)
+        distance = 0;
+    else if (dest_pos > source_pos)
+        distance = dest_pos - source_pos - selected_length + 1;
+    else
+        distance = dest_pos - source_pos;
+
+    return distance;
 }
 
 void insert_drag_list(gint playlist, gint position, const gchar *list)
@@ -267,4 +319,50 @@ gint calculate_column_width(GtkWidget *widget, gint num)
                                              pango_context_get_language(context));
 
     return (PANGO_PIXELS(pango_font_metrics_get_approximate_digit_width(font_metrics)) * digits) + 20;
+}
+
+gboolean playlist_is_pending_selection(void)
+{
+    if (pending != NULL)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+void playlist_pending_selection_set(GtkTreeView *treeview, GtkTreePath *start_path, GtkTreePath *end_path)
+{
+    g_return_if_fail(treeview != NULL);
+    g_return_if_fail(start_path != NULL);
+    g_return_if_fail(end_path != NULL);
+
+    pending = g_slice_new0(UiPlaylistSelection);
+    pending->sel = gtk_tree_view_get_selection(treeview);
+    pending->start_path = start_path;
+    pending->end_path = end_path;
+}
+
+void playlist_pending_selection_free(void)
+{
+    gtk_tree_path_free(pending->start_path);
+    gtk_tree_path_free(pending->end_path);
+    g_slice_free(UiPlaylistSelection, pending);
+    pending = NULL;
+}
+
+void playlist_pending_selection_apply(void)
+{
+    g_return_if_fail(pending != NULL);
+    g_return_if_fail(pending->start_path != NULL);
+    g_return_if_fail(pending->end_path != NULL);
+
+    gtk_tree_selection_unselect_all(pending->sel);
+
+    gtk_tree_view_set_cursor(gtk_tree_selection_get_tree_view(pending->sel),
+                             pending->start_path, NULL, FALSE);
+
+    gtk_tree_selection_select_range(pending->sel,
+                                    pending->start_path,
+                                    pending->end_path);
+
+    playlist_pending_selection_free();
 }
