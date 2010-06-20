@@ -166,22 +166,28 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
 
     gtk_widget_get_allocation(GTK_WIDGET(area->parent), &alloc);
     cr = gdk_cairo_create(area->parent->window);
-    cairo_rectangle (cr, alloc.width - (12 * SPECT_BANDS + 12), 0,
-     12 * SPECT_BANDS + 12, alloc.height);
-    cairo_fill (cr);
 
     for (auto gint i = 0; i < SPECT_BANDS; i++)
     {
         gint x, y, w, h;
 
         x = alloc.width - (12 * SPECT_BANDS + 12) + (i * 12);
-        y = 11 + (64 - (area->visdata[i]));
         w = 10;
+
+        y = 11;
+        h = 64 - area->visdata[i];
+
+        cairo_set_source_rgba (cr, 0, 0, 0, area->alpha.title);
+        cairo_rectangle (cr, x, y, w, h);
+        cairo_fill (cr);
+
+        y = 11 + 64 - area->visdata[i];
         h = area->visdata[i];
 
-        cairo_set_source_rgba(cr, colors[i].red / 255., colors[i].green / 255., colors[i].blue / 255., area->alpha.title);
-        cairo_rectangle(cr, x, y, w, h);
-        cairo_fill(cr);
+        cairo_set_source_rgba (cr, colors[i].red / 255.0, colors[i].green /
+         255.0, colors[i].blue / 255.0, area->alpha.title);
+        cairo_rectangle (cr, x, y, w, h);
+        cairo_fill (cr);
     }
 
     cairo_destroy(cr);
