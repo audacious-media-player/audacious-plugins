@@ -153,12 +153,8 @@ static gboolean window_configured_cb(gpointer data)
 
 static gboolean window_delete()
 {
-    return FALSE;
-}
-
-static void window_destroy(GtkWidget * widget, gpointer data)
-{
-    gtk_main_quit();
+    audacious_drct_quit ();
+    return TRUE;
 }
 
 void show_preferences_window(gboolean show)
@@ -644,7 +640,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     g_signal_connect(G_OBJECT(window), "configure-event", G_CALLBACK(window_configured_cb), window);
     g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), NULL);
-    g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(window_destroy), NULL);
 
     vbox = gtk_vbox_new(FALSE, 0);
     gtk_container_add(GTK_CONTAINER(window), vbox);
@@ -843,5 +838,6 @@ static gboolean _ui_finalize(void)
     gtkui_cfg_save();
     gtkui_cfg_free();
     ui_hooks_disassociate();
+    gtk_widget_destroy (window);
     return TRUE;
 }
