@@ -10,6 +10,7 @@ SRCS = mpg123.c \
        libmpg123/frame.c \
        libmpg123/icy2utf8.c \
        libmpg123/icy.c \
+       libmpg123/id3.c \
        libmpg123/index.c \
        libmpg123/layer1.c \
        libmpg123/layer2.c \

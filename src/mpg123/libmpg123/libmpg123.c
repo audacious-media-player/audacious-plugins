@@ -1377,6 +1377,30 @@ int attribute_align_arg mpg123_meta_check(mpg123_handle *mh)
 	else return 0;
 }
 
+int attribute_align_arg mpg123_id3(mpg123_handle *mh, mpg123_id3v1 **v1, mpg123_id3v2 **v2)
+{
+	ALIGNCHECK(mh);
+	if(v1 != NULL) *v1 = NULL;
+	if(v2 != NULL) *v2 = NULL;
+	if(mh == NULL) return MPG123_ERR;
+
+	if(mh->metaflags & MPG123_ID3)
+	{
+		id3_link(mh);
+		if(v1 != NULL && mh->rdat.flags & READER_ID3TAG) *v1 = (mpg123_id3v1*) mh->id3buf;
+		if(v2 != NULL)
+#ifdef NO_ID3V2
+		*v2 = NULL;
+#else
+		*v2 = &mh->id3v2;
+#endif
+
+		mh->metaflags |= MPG123_ID3;
+		mh->metaflags &= ~MPG123_NEW_ID3;
+	}
+	return MPG123_OK;
+}
+
 int attribute_align_arg mpg123_icy(mpg123_handle *mh, char **icy_meta)
 {
 	ALIGNCHECK(mh);
@@ -1434,6 +1458,23 @@ int mpg123_store_utf8(mpg123_string *sb, enum mpg123_text_encoding enc, const un
 {
 	switch(enc)
 	{
+#ifndef NO_ID3V2
+		/* The encodings we get from ID3v2 tags. */
+		case mpg123_text_utf8:
+			id3_to_utf8(sb, mpg123_id3_utf8, source, source_size, 0);
+		break;
+		case mpg123_text_latin1:
+			id3_to_utf8(sb, mpg123_id3_latin1, source, source_size, 0);
+		break;
+		case mpg123_text_utf16bom:
+		case mpg123_text_utf16:
+			id3_to_utf8(sb, mpg123_id3_utf16bom, source, source_size, 0);
+		break;
+		/* Special because one cannot skip zero bytes here. */
+		case mpg123_text_utf16be:
+			id3_to_utf8(sb, mpg123_id3_utf16be, source, source_size, 0);
+		break;
+#endif
 #ifndef NO_ICY
 		/* ICY encoding... */
 		case mpg123_text_icy:

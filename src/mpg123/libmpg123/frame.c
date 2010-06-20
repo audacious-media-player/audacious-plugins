@@ -79,6 +79,7 @@ void frame_init_par(mpg123_handle *fr, mpg123_pars *mp)
 	/* unnecessary: fr->buffer.size = fr->buffer.fill = 0; */
 	mpg123_reset_eq(fr);
 	init_icy(&fr->icy);
+	init_id3(fr);
 	/* frame_outbuffer is missing... */
 	/* frame_buffers is missing... that one needs cpu opt setting! */
 	/* after these... frame_reset is needed before starting full decode */
@@ -448,6 +449,7 @@ static void frame_fixed_reset(mpg123_handle *fr)
 #ifdef OPT_DITHER
 	fr->ditherindex = 0;
 #endif
+	reset_id3(fr);
 	reset_icy(&fr->icy);
 	/* ICY stuff should go into icy.c, eh? */
 #ifndef NO_ICY
@@ -493,6 +495,7 @@ void frame_exit(mpg123_handle *fr)
 		fr->dithernoise = NULL;
 	}
 #endif
+	exit_id3(fr);
 	clear_icy(&fr->icy);
 }
 

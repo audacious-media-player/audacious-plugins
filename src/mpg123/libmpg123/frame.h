@@ -13,6 +13,7 @@
 #include "config.h"
 #include "mpg123.h"
 #include "optimize.h"
+#include "id3.h"
 #include "icy.h"
 #include "reader.h"
 #ifdef FRAME_INDEX
