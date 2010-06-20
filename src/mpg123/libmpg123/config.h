@@ -22,5 +22,6 @@
 #define NO_DOWNSAMPLE
 #define NO_NTOM
 #define NO_REAL
+#define NO_ID3V2
 
 #endif
