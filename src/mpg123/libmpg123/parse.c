@@ -13,7 +13,8 @@
 
 #include "getbits.h"
 
-#if (defined (WIN32) && !defined (__CYGWIN__))
+#if defined (WANT_WIN32_SOCKETS)
+#include <winsock2.h>
 #include <ws2tcpip.h>
 #endif
 
@@ -80,15 +81,9 @@ static const int tabsel_123[2][3][16] =
 	}
 };
 
-const long freqs[9] = { 44100, 48000, 32000, 22050, 24000, 16000 , 11025 , 12000 , 8000 };
+static const long freqs[9] = { 44100, 48000, 32000, 22050, 24000, 16000 , 11025 , 12000 , 8000 };
 
 static int decode_header(mpg123_handle *fr,unsigned long newhead);
-
-int read_frame_init(mpg123_handle* fr)
-{
-	if(frame_reset(fr) != 0) return -1;
-	return 0;
-}
 
 /* These two are to be replaced by one function that gives all the frame parameters (for outsiders).*/
 
@@ -105,7 +100,7 @@ long frame_freq(mpg123_handle *fr)
 #define free_format_header(head) ( ((head & 0xffe00000) == 0xffe00000) && ((head>>17)&3) && (((head>>12)&0xf) == 0x0) && (((head>>10)&0x3) != 0x3 ))
 
 /* compiler is smart enought to inline this one or should I really do it as macro...? */
-int head_check(unsigned long head)
+static int head_check(unsigned long head)
 {
 	if
 	(
@@ -146,7 +141,10 @@ static int check_lame_tag(mpg123_handle *fr)
 	int lame_offset = (fr->stereo == 2) ? (fr->lsf ? 17 : 32 ) : (fr->lsf ? 9 : 17);
 	/* At least skip the decoder delay. */
 #ifdef GAPLESS
-	if(fr->begin_s == 0) frame_gapless_init(fr, GAPLESS_DELAY, 0);
+	if(fr->p.flags & MPG123_GAPLESS)
+	{
+		if(fr->begin_s == 0) frame_gapless_init(fr, GAPLESS_DELAY, 0);
+	}
 #endif
 
 	if(fr->framesize >= 120+lame_offset) /* traditional Xing header is 120 bytes */
@@ -216,6 +214,7 @@ static int check_lame_tag(mpg123_handle *fr)
 					}
 					#endif
 					if(VERBOSE3) fprintf(stderr, "Note: Xing: %lu frames\n", (long unsigned)fr->track_frames);
+
 					lame_offset += 4;
 				}
 				if(xing_flags & 0x2) /* bytes */
@@ -405,6 +404,12 @@ int read_frame(mpg123_handle *fr)
 	/* stuff that needs resetting if complete frame reading fails */
 	int oldsize  = fr->framesize;
 	int oldphase = fr->halfphase;
+
+	/* The counter for the search-first-header loop.
+	   It is persistent outside the loop to prevent seemingly endless loops
+	   when repeatedly headers are found that do not have valid followup headers. */
+	int headcount = 0;
+
 	fr->fsizeold=fr->framesize;       /* for Layer3 */
 
 	/* Speed-down hack: Play it again, Sam (the frame, I mean). */
@@ -428,7 +433,11 @@ int read_frame(mpg123_handle *fr)
 	}
 
 read_again:
-	debug2("trying to get frame %li at 0x%lx", (long)fr->num+1, (unsigned long)fr->rd->tell(fr));
+	/* In case we are looping to find a valid frame, discard any buffered data before the current position.
+	   This is essential to prevent endless looping, always going back to the beginning when feeder buffer is exhausted. */
+	if(fr->rd->forget != NULL) fr->rd->forget(fr);
+
+	debug2("trying to get frame %"OFF_P" at %"OFF_P, (off_p)fr->num+1, (off_p)fr->rd->tell(fr));
 	if((ret = fr->rd->head_read(fr,&newhead)) <= 0){ debug("need more?"); goto read_frame_bad;}
 
 init_resync:
@@ -451,7 +460,6 @@ init_resync:
 #ifdef SKIP_JUNK
 	/* watch out for junk/tags on beginning of stream by invalid header */
 	if(!fr->firsthead && !head_check(newhead)) {
-		int i;
 
 		/* check for id3v2; first three bytes (of 4) are "ID3" */
 		if((newhead & (unsigned long) 0xffffff00) == (unsigned long) 0x49443300)
@@ -481,18 +489,23 @@ init_resync:
 		/* unhandled junk... just continue search for a header */
 		/* step in byte steps through next 64K */
 		debug("searching for header...");
-		for(i=0;i<65536;i++) {
+
+		ret = 0; /* We will check the value after the loop. */
+		for(; headcount<65536; headcount++)
+		{
 			if((ret=fr->rd->head_shift(fr,&newhead))<=0){ debug("need more?"); goto read_frame_bad; }
 			/* if(head_check(newhead)) */
-			if(head_check(newhead) && decode_header(fr, newhead))
+			if(head_check(newhead) && (ret=decode_header(fr, newhead)))
 				break;
 		}
-		if(i == 65536)
+		if(ret<0){ debug("need more?"); goto read_frame_bad; }
+
+		if(headcount == 65536)
 		{
-			if(NOQUIET) error("Giving up searching valid MPEG header after 64K of junk.");
+			if(NOQUIET) error("Giving up searching valid MPEG header after (over) 64K of junk.");
 			return 0;
 		}
-		else debug("hopefully found one...");
+		else debug1("hopefully found one at %"OFF_P, (off_p)fr->rd->tell(fr));
 		/* 
 		 * should we additionaly check, whether a new frame starts at
 		 * the next expected position? (some kind of read ahead)
@@ -502,13 +515,14 @@ init_resync:
 #endif
 
 	/* first attempt of read ahead check to find the real first header; cannot believe what junk is out there! */
-	/* for now, a spurious first free format header screws up here; need free format support for detecting false free format headers... */
-	if(!fr->firsthead && fr->rdat.flags & (READER_SEEKABLE|READER_BUFFERED) && head_check(newhead) && decode_header(fr, newhead))
+	if(!fr->firsthead && fr->rdat.flags & (READER_SEEKABLE|READER_BUFFERED) && head_check(newhead) && (ret=decode_header(fr, newhead)))
 	{
 		unsigned long nexthead = 0;
 		int hd = 0;
 		off_t start = fr->rd->tell(fr);
-		debug2("doing ahead check with BPF %d at %li", fr->framesize+4, (long)start);
+		if(ret<0){ debug("need more?"); goto read_frame_bad; }
+
+		debug2("doing ahead check with BPF %d at %"OFF_P, fr->framesize+4, (off_p)start);
 		/* step framesize bytes forward and read next possible header*/
 		if((ret=fr->rd->skip_bytes(fr, fr->framesize))<0)
 		{
@@ -523,7 +537,7 @@ init_resync:
 			else debug("need more?"); 
 			goto read_frame_bad;
 		}
-		debug1("After fetching next header, at %li", (long)fr->rd->tell(fr));
+		debug1("After fetching next header, at %"OFF_P, (off_p)fr->rd->tell(fr));
 		if(!hd)
 		{
 			if(NOQUIET) warning("cannot read next header, a one-frame stream? Duh...");
@@ -573,8 +587,8 @@ init_resync:
 		}
 		else if(NOQUIET && fr->silent_resync == 0)
 		{
-			fprintf(stderr,"Note: Illegal Audio-MPEG-Header 0x%08lx at offset 0x%lx.\n",
-				newhead, (long unsigned int)fr->rd->tell(fr)-4);
+			fprintf(stderr,"Note: Illegal Audio-MPEG-Header 0x%08lx at offset %"OFF_P".\n",
+				newhead, (off_p)fr->rd->tell(fr)-4);
 		}
 
 		if(NOQUIET && (newhead & 0xffffff00) == ('b'<<24)+('m'<<16)+('p'<<8)) fprintf(stderr,"Note: Could be a BMP album art.\n");
@@ -607,7 +621,7 @@ init_resync:
 
 					goto read_frame_bad;
 				}
-				if(VERBOSE3) debug3("resync try %li at 0x%lx, got newhead 0x%08lx", try, (unsigned long)fr->rd->tell(fr),  newhead);
+				if(VERBOSE3) debug3("resync try %li at %"OFF_P", got newhead 0x%08lx", try, (off_p)fr->rd->tell(fr),  newhead);
 
 				if(!fr->oldhead)
 				{
@@ -650,21 +664,29 @@ init_resync:
 		}
 	}
 
-	if (!fr->firsthead)
+	/* Man, that code looks awfully redundant...
+	   I need to untangle the spaghetti here in a future version. */
+	if(!fr->firsthead)
 	{
-		if(!decode_header(fr,newhead))
+		ret=decode_header(fr,newhead);
+		if(ret == 0)
 		{
 			if(NOQUIET) error("decode header failed before first valid one, going to read again");
 
 			goto read_again;
 		}
+		else if(ret < 0){ debug("need more?"); goto read_frame_bad; }
 	}
 	else
-	if(!decode_header(fr,newhead))
 	{
-		if(NOQUIET) error("decode header failed - goto resync");
-		/* return 0; */
-		goto init_resync;
+		ret=decode_header(fr,newhead);
+		if(ret == 0)
+		{
+			if(NOQUIET) error("decode header failed - goto resync");
+			/* return 0; */
+			goto init_resync;
+		}
+		else if(ret < 0){ debug("need more?"); goto read_frame_bad; }
 	}
 
 	/* if filepos is invalid, so is framepos */
@@ -718,8 +740,9 @@ init_resync:
 		fr->mean_framesize = ((fr->mean_frames-1)*fr->mean_framesize+compute_bpf(fr)) / fr->mean_frames ;
 	}
 	++fr->num; /* 0 for first frame! */
-	debug4("Frame %li %08lx %i, next filepos=0x%lx", 
-	(long)fr->num, newhead, fr->framesize, (long unsigned)fr->rd->tell(fr));
+	debug4("Frame %"OFF_P" %08lx %i, next filepos=%"OFF_P, 
+	(off_p)fr->num, newhead, fr->framesize, (off_p)fr->rd->tell(fr));
+
 	/* save for repetition */
 	if(fr->p.halfspeed && fr->lay == 3)
 	{
@@ -744,19 +767,27 @@ init_resync:
 
 	return 1;
 read_frame_bad:
+	/* Also if we searched for valid data in vain, we can forget skipped data.
+	   Otherwise, the feeder would hold every dead old byte in memory until the first valid frame! */
+	if(fr->rd->forget != NULL) fr->rd->forget(fr);
+
 	fr->silent_resync = 0;
 	if(fr->err == MPG123_OK) fr->err = MPG123_ERR_READER;
 	fr->framesize = oldsize;
 	fr->halfphase = oldphase;
+	/* That return code might be inherited from some feeder action, or reader error. */
 	return ret;
 }
 
 
 /*
  * read ahead and find the next MPEG header, to guess framesize
- * return value: guessed framesize
+ * return value: success code
+ *  1: found a valid frame size (stored in the handle).
+ * <0: error codes, possibly from feeder buffer (NEED_MORE)
+ *  0: cannot get the framesize for some reason and shall silentry try the next possible header (if this is no free format stream after all...)
  */
-static long guess_freeformat_framesize(mpg123_handle *fr)
+static int guess_freeformat_framesize(mpg123_handle *fr)
 {
 	long i;
 	int ret;
@@ -764,17 +795,18 @@ static long guess_freeformat_framesize(mpg123_handle *fr)
 	if(!(fr->rdat.flags & (READER_SEEKABLE|READER_BUFFERED)))
 	{
 		if(NOQUIET) error("Cannot look for freeformat frame size with non-seekable and non-buffered stream!");
-		return -1;
+
+		return 0;
 	}
-	/* FIXME: We need proper handling/passing of MPG123_NEED_MORE! */
 	if((ret=fr->rd->head_read(fr,&head))<=0)
-	return -1;
+	return ret;
 
 	/* We are already 4 bytes into it */
+/* fix that limit to be absolute for the first header search! */
 	for(i=4;i<65536;i++) {
 		if((ret=fr->rd->head_shift(fr,&head))<=0)
 		{
-			return -1;
+			return ret;
 		}
 		if(head_check(head))
 		{
@@ -799,18 +831,23 @@ static long guess_freeformat_framesize(mpg123_handle *fr)
 			if((lsf==fr->lsf) && (mpeg25==fr->mpeg25) && (sampling_frequency == fr->sampling_frequency))
 			{
 				fr->rd->back_bytes(fr,i+1);
-				return i-3;
+				fr->framesize = i-3;
+				return 1; /* Success! */
 			}
 		}
 	}
 	fr->rd->back_bytes(fr,i);
-	return -1;
+	return 0;
 }
 
 
 /*
  * decode a header and write the information
  * into the frame structure
+ * Return values are compatible with those of read_frame, namely:
+ *  1: success
+ *  0: no valid header
+ * <0: some error
  */
 static int decode_header(mpg123_handle *fr,unsigned long newhead)
 {
@@ -870,21 +907,26 @@ static int decode_header(mpg123_handle *fr,unsigned long newhead)
 	fr->oldhead = newhead;
 	
 	/* we can't use tabsel_123 for freeformat, so trying to guess framesize... */
-	/* FIXME: We need proper handling/passing of MPG123_NEED_MORE! */
 	if(fr->freeformat)
 	{
 		/* when we first encounter the frame with freeformat, guess framesize */
 		if(fr->freeformat_framesize < 0)
 		{
-			fr->framesize = guess_freeformat_framesize(fr);
-			if(fr->framesize > 0)
+			int ret;
+			ret = guess_freeformat_framesize(fr);
+			if(ret>0)
 			{
 				fr->freeformat_framesize = fr->framesize - fr->padding;
+				if(VERBOSE2)
+				fprintf(stderr, "Note: free format frame size %li\n", fr->freeformat_framesize);
 			}
 			else
 			{
-				error("encountered free format header, but failed to guess framesize");
-				return 0;
+				if(ret == MPG123_NEED_MORE)
+				debug("Need more data to guess free format frame size.");
+				else
+				error("Encountered free format header, but failed to guess frame size.");
+				return ret;
 			}
 		}
 		/* freeformat should be CBR, so the same framesize can be used at the 2nd reading or later */
