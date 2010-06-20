@@ -444,7 +444,10 @@ static void set_slider_length (gint length)
         gtk_widget_set_sensitive (slider, TRUE);
     }
     else
+    {
+        gtk_range_set_value(GTK_RANGE(slider), 0.0);
         gtk_widget_set_sensitive (slider, FALSE);
+    }
 
     if (g_signal_handler_is_connected (slider, slider_change_handler_id))
         g_signal_handler_unblock (slider, slider_change_handler_id);
