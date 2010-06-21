@@ -185,8 +185,8 @@ GtkTreePath *playlist_get_first_selected_path(GtkTreeView *treeview)
     GList *list;
     GtkTreePath *path;
 
-    list = playlist_get_selected_list(treeview);
-    g_return_val_if_fail(list != NULL, NULL);
+    if (! (list = playlist_get_selected_list (treeview)))
+        return NULL;
 
     path = gtk_tree_path_copy(list->data);
 
@@ -200,7 +200,8 @@ gint playlist_get_first_selected_index(GtkTreeView *treeview)
 {
     GtkTreePath *path = playlist_get_first_selected_path(treeview);
 
-    g_return_val_if_fail(path != NULL, -1);
+    if (! path)
+        return -1;
 
     gint selected = playlist_get_index_from_path(path);
     gtk_tree_path_free(path);
