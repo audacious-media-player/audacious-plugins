@@ -165,12 +165,6 @@ generate_cmap(void)
 }
 
 static void
-bscope_destroy_cb(GtkWidget * w, gpointer data)
-{
-    bscope_vp.disable_plugin(&bscope_vp);
-}
-
-static void
 bscope_init(void)
 {
     bscope_read_config();
@@ -187,8 +181,6 @@ bscope_init(void)
 
     generate_cmap();
     g_signal_connect(G_OBJECT(area), "configure-event", G_CALLBACK(bscope_reconfigure), NULL);
-    g_signal_connect(G_OBJECT(area), "destroy",
-                     G_CALLBACK(bscope_destroy_cb), NULL);
 }
 
 /* static GtkWidget * bscope_get_widget (void) */
