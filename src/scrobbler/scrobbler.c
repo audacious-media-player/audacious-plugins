@@ -329,6 +329,10 @@ static int sc_parse_hs_res(void)
         AUDDBG("No reply from server\n");
         return -1;
     }
+    if (sc_srv_res == NULL) {
+        AUDDBG("Reply is NULL, size=%d\n", sc_srv_res_size);
+        return -1;
+    }
     *(sc_srv_res + sc_srv_res_size) = 0;
 
     AUDDBG("reply is: %s\n", sc_srv_res);
@@ -582,6 +586,10 @@ static int sc_parse_sb_res(void)
 
     if (!sc_srv_res_size) {
         AUDDBG("No response from server\n");
+        return -1;
+    }
+    if (sc_srv_res == NULL) {
+        AUDDBG("Reply is NULL, size=%d\n", sc_srv_res_size);
         return -1;
     }
     *(sc_srv_res + sc_srv_res_size) = 0;
