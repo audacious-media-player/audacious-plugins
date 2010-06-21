@@ -942,7 +942,7 @@ mainwin_drag_data_received(GtkWidget * widget,
         }
     }
 
-    open_drag_list ((const gchar *) selection_data->data);
+    audgui_urilist_open ((const gchar *) selection_data->data);
 }
 
 static void

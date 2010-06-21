@@ -1009,7 +1009,8 @@ static void drag_drop (GtkWidget * widget, GdkDragContext * context, gint x,
 static void drag_data_received (GtkWidget * widget, GdkDragContext * context,
  gint x, gint y, GtkSelectionData * data, guint info, guint time, void * unused)
 {
-    insert_drag_list (active_playlist, drop_position, (const gchar *) data->data);
+    audgui_urilist_insert (active_playlist, drop_position, (const gchar *)
+     data->data);
     drop_position = -1;
 }
 
@@ -1491,7 +1492,7 @@ void action_playlist_remove_unselected (void)
 void action_playlist_copy (void)
 {
     GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-    gchar * list = create_drag_list (active_playlist);
+    gchar * list = audgui_urilist_create_from_selected (active_playlist);
 
     if (list == NULL)
         return;
@@ -1516,7 +1517,7 @@ void action_playlist_paste (void)
         return;
 
     ui_skinned_playlist_row_info (playlistwin_list, & rows, & first, & focused);
-    insert_drag_list (active_playlist, focused, list);
+    audgui_urilist_insert (active_playlist, focused, list);
     g_free (list);
 }
 
