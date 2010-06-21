@@ -335,6 +335,7 @@ mpg123_playback_worker(InputPlayback *data)
 	gint bitrate_updated = -1000; /* >= a second away from any position */
 	gboolean paused = FALSE;
 	struct mpg123_frameinfo fi;
+	gint error_count = 0;
 
 	memset(&ctx, 0, sizeof(MPG123PlaybackContext));
 	memset(&fi, 0, sizeof(struct mpg123_frameinfo));
@@ -488,8 +489,12 @@ mpg123_playback_worker(InputPlayback *data)
 		if (ret < 0)
 		{
 			fprintf (stderr, "mpg123 error: %s\n", mpg123_plain_strerror (ret));
-			goto decode_cleanup;
+			
+			if (++ error_count >= 10)
+				goto decode_cleanup;
 		}
+		else
+			error_count = 0;
 
 		g_mutex_lock(ctrl_mutex);
 
