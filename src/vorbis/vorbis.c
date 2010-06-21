@@ -538,30 +538,22 @@ static void vorbis_seek (InputPlayback * playback, gint time)
     vorbis_mseek (playback, 1000 * time);
 }
 
-static Tuple *
-get_song_tuple(const gchar *filename)
+static Tuple * get_song_tuple (const gchar * filename, VFSFile * handle)
 {
-    VFSFile *stream = NULL;
     OggVorbis_File vfile;          /* avoid thread interaction */
     Tuple *tuple = NULL;
     VFSVorbisFile fd;
 
-    if ((stream = aud_vfs_fopen(filename, "rb")) == NULL)
-        return NULL;
-
-    fd.fd = stream;
+    fd.fd = handle;
 
     /*
      * The open function performs full stream detection and
      * machine initialization.  If it returns zero, the stream
      * *is* Vorbis and we're fully ready to decode.
      */
-    if (ov_open_callbacks (& fd, & vfile, NULL, 0, aud_vfs_is_streaming (stream)
+    if (ov_open_callbacks (& fd, & vfile, NULL, 0, aud_vfs_is_streaming (handle)
      ? vorbis_callbacks_stream : vorbis_callbacks) < 0)
-    {
-        aud_vfs_fclose(stream);
         return NULL;
-    }
 
     tuple = get_aud_tuple_for_vorbisfile(&vfile, filename);
 
@@ -738,7 +730,7 @@ static InputPlugin vorbis_ip = {
     .seek = vorbis_seek,
     .mseek = vorbis_mseek,
     .cleanup = vorbis_cleanup,
-    .get_song_tuple = get_song_tuple,
+    .probe_for_tuple = get_song_tuple,
     .is_our_file_from_vfs = vorbis_check_fd,
     .vfs_extensions = vorbis_fmts,
     .update_song_tuple = vorbis_update_song_tuple,
