@@ -485,6 +485,12 @@ mpg123_playback_worker(InputPlayback *data)
 			data->output->write_audio (outbuf, outbuf_size);
 		} while (ret == MPG123_NEED_MORE);
 
+		if (ret < 0)
+		{
+			fprintf (stderr, "mpg123 error: %s\n", mpg123_plain_strerror (ret));
+			goto decode_cleanup;
+		}
+
 		g_mutex_lock(ctrl_mutex);
 
 		if (data->playing == FALSE)
