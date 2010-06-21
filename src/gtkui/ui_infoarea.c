@@ -39,7 +39,8 @@
 
 typedef struct {
     GtkWidget *parent;
-    Tuple *tu;
+
+    gchar * title, * artist, * album;
 
     struct {
         gfloat title;
@@ -57,21 +58,8 @@ typedef struct {
 } UIInfoArea;
 
 static const gfloat alpha_step = 0.10;
-static const Tuple *last_tuple = NULL;
 
 static void ui_infoarea_draw_visualizer (UIInfoArea * area);
-
-const Tuple *
-ui_infoarea_get_current_tuple(void)
-{
-    gint playlist;
-    gint entry;
-
-    playlist = aud_playlist_get_playing();
-    entry = aud_playlist_get_position(playlist);
-
-    return aud_playlist_entry_get_tuple(playlist, entry);
-}
 
 /****************************************************************************/
 
@@ -218,7 +206,7 @@ ui_infoarea_draw_album_art(UIInfoArea *area)
     GError *err = NULL;
     cairo_t *cr;
 
-    if (area->tu == NULL)
+    if (area->title == NULL)
         return;
 
     if (area->pb == NULL)
@@ -227,12 +215,7 @@ ui_infoarea_draw_album_art(UIInfoArea *area)
             area->pb = get_current_album_art ();
 
         if (area->pb == NULL)
-        {
-            if (tuple_get_int(area->tu, FIELD_LENGTH, NULL) <= 0)
-                area->pb = gdk_pixbuf_new_from_file(STREAM_ARTWORK, &err);
-            else
-                area->pb = gdk_pixbuf_new_from_file(DEFAULT_ARTWORK, &err);
-        }
+            area->pb = gdk_pixbuf_new_from_file (DEFAULT_ARTWORK, & err);
 
         if (area->pb != NULL)
             audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
@@ -251,26 +234,17 @@ ui_infoarea_draw_album_art(UIInfoArea *area)
 void
 ui_infoarea_draw_title(UIInfoArea *area)
 {
-    const gchar *str;
+    if (area->title != NULL)
+        ui_infoarea_draw_text (area, 86,  8, area->alpha.title, "Sans 20",
+         area->title);
 
-    if (area->tu == NULL)
-        return;
+    if (area->artist != NULL)
+        ui_infoarea_draw_text (area, 86, 42, area->alpha.artist, "Sans 9",
+         area->artist);
 
-    if ((str = tuple_get_string(area->tu, FIELD_TITLE, NULL)) != NULL)
-        ui_infoarea_draw_text(area, 86,  8, area->alpha.title, "Sans 20", str);
-    else
-    {
-        gint playlist = aud_playlist_get_playing();
-
-        ui_infoarea_draw_text(area, 86,  8, area->alpha.title, "Sans 20",
-            aud_playlist_entry_get_title(playlist, aud_playlist_get_position(playlist)));
-    }
-
-    if ((str = tuple_get_string(area->tu, FIELD_ARTIST, NULL)) != NULL)
-        ui_infoarea_draw_text(area, 86, 42, area->alpha.artist, "Sans 9", str);
-
-    if ((str = tuple_get_string(area->tu, FIELD_ALBUM, NULL)) != NULL)
-        ui_infoarea_draw_text(area, 86, 58, area->alpha.album, "Sans 9", str);
+    if (area->album != NULL)
+        ui_infoarea_draw_text (area, 86, 58, area->alpha.album, "Sans 9",
+         area->album);
 }
 
 void
@@ -378,16 +352,6 @@ ui_infoarea_do_fade_out(UIInfoArea *area)
     if (ret == FALSE) {
         area->fadeout_timeout = 0;
 
-        if (area->tu != NULL) {
-            mowgli_object_unref(area->tu);
-            area->tu = NULL;
-        }
-
-        if (area->pb != NULL) {
-            g_object_unref(area->pb);
-            area->pb = NULL;
-        }
-
         AUDDBG("fadeout complete\n");
     }
 
@@ -397,21 +361,29 @@ ui_infoarea_do_fade_out(UIInfoArea *area)
 void
 ui_infoarea_set_title(gpointer unused, UIInfoArea *area)
 {
-    const Tuple *tuple;
+    gint playlist = aud_playlist_get_playing ();
+    gint entry = aud_playlist_get_position (playlist);
+    const Tuple * tuple = aud_playlist_entry_get_tuple (playlist, entry);
+    const gchar * s;
 
-    g_return_if_fail(area != NULL);
+    g_free (area->title);
+    area->title = NULL;
+    g_free (area->artist);
+    area->artist = NULL;
+    g_free (area->album);
+    area->album = NULL;
 
-    tuple = ui_infoarea_get_current_tuple();
-
-    if (tuple == last_tuple && last_tuple != NULL)
-        return;
+    if (tuple && (s = tuple_get_string (tuple, FIELD_TITLE, NULL)))
+        area->title = g_strdup (s);
     else
-        last_tuple = tuple;
+        area->title = g_strdup (aud_playlist_entry_get_title (playlist, entry));
 
-    if (area->tu != NULL)
-        mowgli_object_unref(area->tu);
+    if (tuple && (s = tuple_get_string (tuple, FIELD_ARTIST, NULL)))
+        area->artist = g_strdup (s);
 
-    area->tu = tuple_copy(tuple);
+    if (tuple && (s = tuple_get_string (tuple, FIELD_ALBUM, NULL)))
+        area->album = g_strdup (s);
+
     area->alpha.artist = area->alpha.album = area->alpha.artwork = area->alpha.title = 0.0;
 
     if (!area->fadein_timeout)
@@ -429,8 +401,6 @@ ui_infoarea_set_title(gpointer unused, UIInfoArea *area)
 void
 ui_infoarea_playback_start(InputPlayback *playback, UIInfoArea *area)
 {
-    last_tuple = NULL;
-
     g_return_if_fail(area != NULL);
 
     area->playback = playback;
@@ -463,6 +433,10 @@ static void destroy_cb (GtkObject * parent, UIInfoArea * area)
     aud_hook_dissociate ("visualization timeout", (HookFunction)
      ui_infoarea_visualization_timeout);
     aud_hook_dissociate ("visualization clear", (HookFunction) vis_clear_cb);
+
+    g_free (area->title);
+    g_free (area->artist);
+    g_free (area->album);
 
     if (area->pb != NULL)
         g_object_unref (area->pb);
