@@ -91,6 +91,16 @@ char cpu_flags;
 #	define OUT_SYNTHS(synth_16, synth_8, synth_real, synth_32) { IF8(synth_8) IFREAL(synth_real) IF32(synth_32) }
 #endif
 
+/* The call of left and right plain synth, wrapped.
+   This may be replaced by a direct stereo optimized synth. */
+int synth_stereo_wrap(real *bandPtr_l, real *bandPtr_r, mpg123_handle *fr)
+{
+	int clip;
+	clip  = (fr->synth)(bandPtr_l, 0, fr, 0);
+	clip += (fr->synth)(bandPtr_r, 1, fr, 1);
+	return clip;
+}
+
 const struct synth_s synth_base =
 {
 	{ /* plain */
@@ -445,9 +455,11 @@ int frame_cpu_opt(mpg123_handle *fr, const char* cpu)
 	/* covers any i386+ cpu; they actually differ only in the synth_1to1 function, mostly... */
 #ifdef OPT_X86
 
+#ifdef OPT_MULTI
 #ifndef NO_LAYER3
 #if (defined OPT_3DNOW || defined OPT_3DNOWEXT)
-	fr->cpu_opts.dct36 = dct36;
+	fr->cpu_opts.the_dct36 = dct36;
+#endif
 #endif
 #endif
 
@@ -487,9 +499,11 @@ int frame_cpu_opt(mpg123_handle *fr, const char* cpu)
 		{
 			chosen = "3DNowExt";
 			fr->cpu_opts.type = dreidnowext;
+#ifdef OPT_MULTI
 #			ifndef NO_LAYER3
-			fr->cpu_opts.dct36 = dct36_3dnowext;
+			fr->cpu_opts.the_dct36 = dct36_3dnowext;
 #			endif
+#endif
 #			ifndef NO_16BIT
 			fr->synths.plain[r_1to1][f_16] = synth_1to1_3dnowext;
 #			endif
@@ -502,9 +516,11 @@ int frame_cpu_opt(mpg123_handle *fr, const char* cpu)
 		{
 			chosen = "3DNow";
 			fr->cpu_opts.type = dreidnow;
+#ifdef OPT_MULTI
 #			ifndef NO_LAYER3
-			fr->cpu_opts.dct36 = dct36_3dnow;
+			fr->cpu_opts.the_dct36 = dct36_3dnow;
 #			endif
+#endif
 #			ifndef NO_16BIT
 			fr->synths.plain[r_1to1][f_16] = synth_1to1_3dnow;
 #			endif
@@ -893,8 +909,8 @@ const char* attribute_align_arg mpg123_current_decoder(mpg123_handle *mh)
 	return decname[mh->cpu_opts.type];
 }
 
-const char attribute_align_arg **mpg123_decoders(){ return mpg123_decoder_list; }
-const char attribute_align_arg **mpg123_supported_decoders()
+const char attribute_align_arg **mpg123_decoders(void){ return mpg123_decoder_list; }
+const char attribute_align_arg **mpg123_supported_decoders(void)
 {
 #ifdef OPT_MULTI
 	return mpg123_supported_decoder_list;

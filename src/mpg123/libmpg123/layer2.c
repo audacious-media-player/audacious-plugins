@@ -1,7 +1,7 @@
 /*
 	layer2.c: the layer 2 decoder, root of mpg123
 
-	copyright 1994-2008 by the mpg123 project - free software under the terms of the LGPL 2.1
+	copyright 1994-2009 by the mpg123 project - free software under the terms of the LGPL 2.1
 	see COPYING and AUTHORS files in distribution or http://mpg123.org
 	initially written by Michael Hipp
 
@@ -331,7 +331,9 @@ int do_layer2(mpg123_handle *fr)
 	int clip=0;
 	int i,j;
 	int stereo = fr->stereo;
-	ALIGNED(16) real fraction[2][4][SBLIMIT]; /* pick_table clears unused subbands */
+	/* pick_table clears unused subbands */
+	/* replacement for real fraction[2][4][SBLIMIT], needs alignment. */
+	real (*fraction)[4][SBLIMIT] = fr->layer2.fraction;
 	unsigned int bit_alloc[64];
 	int scale[192];
 	int single = fr->single;

@@ -1,7 +1,7 @@
 /*
-	leyer3.c: the layer 3 decoder
+	layer3.c: the layer 3 decoder
 
-	copyright 1995-2008 by the mpg123 project - free software under the terms of the LGPL 2.1
+	copyright 1995-2009 by the mpg123 project - free software under the terms of the LGPL 2.1
 	see COPYING and AUTHORS files in distribution or http://mpg123.org
 	initially written by Michael Hipp
 
@@ -56,9 +56,9 @@ struct gr_info_s
 	unsigned block_type;
 	unsigned mixed_block_flag;
 	unsigned table_select[3];
-	unsigned subblock_gain[3];
-	unsigned maxband[3];
-	unsigned maxbandl;
+	/* Making those two signed int as workaround for open64/pathscale/sun compilers, and also for consistency, since they're worked on together with other signed variables. */
+	int maxband[3];
+	int maxbandl;
 	unsigned maxb;
 	unsigned region1start;
 	unsigned region2start;
@@ -1933,8 +1933,10 @@ int do_layer3(mpg123_handle *fr)
 
 	for(gr=0;gr<granules;gr++)
 	{
-		ALIGNED(16) real hybridIn[2][SBLIMIT][SSLIMIT];
-		ALIGNED(16) real hybridOut[2][SSLIMIT][SBLIMIT];
+		/*  hybridIn[2][SBLIMIT][SSLIMIT] */
+		real (*hybridIn)[SBLIMIT][SSLIMIT] = fr->layer3.hybrid_in;
+		/*  hybridOut[2][SSLIMIT][SBLIMIT] */
+		real (*hybridOut)[SSLIMIT][SBLIMIT] = fr->layer3.hybrid_out;
 
 		{
 			struct gr_info_s *gr_info = &(sideinfo.ch[0].gr[gr]);

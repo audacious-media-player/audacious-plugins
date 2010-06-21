@@ -198,7 +198,7 @@ void check_decoders(void);
 #	define defopt nodec
 
 #	if (defined OPT_3DNOW || defined OPT_3DNOWEXT)
-#		define opt_dct36(fr) ((fr)->cpu_opts.dct36)
+#		define opt_dct36(fr) ((fr)->cpu_opts.the_dct36)
 #	endif
 
 #endif /* OPT_MULTI else */

@@ -10,15 +10,6 @@
 #include "sample.h"
 #include "debug.h"
 
-/* Stereo-related synth, wrapping over _some_ plain synth. */
-int synth_stereo_wrap(real *bandPtr_l, real *bandPtr_r, mpg123_handle *fr)
-{
-	int clip;
-	clip  = (fr->synth)(bandPtr_l, 0, fr, 0);
-	clip += (fr->synth)(bandPtr_r, 1, fr, 1);
-	return clip;
-}
-
 /*
 	Part 1: All synth functions that produce signed short.
 	That is:

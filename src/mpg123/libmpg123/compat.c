@@ -18,6 +18,12 @@
 #include <fcntl.h>
 #endif
 
+#ifdef WANT_WIN32_UNICODE
+#include <wchar.h>
+#include <windows.h>
+#include <winnls.h>
+#endif
+
 #include "debug.h"
 
 /* A safe realloc also for very old systems where realloc(NULL, size) returns NULL. */
@@ -90,10 +96,6 @@ int compat_close(int infd)
 /* Windows Unicode stuff */
 
 #ifdef WANT_WIN32_UNICODE
-#include <wchar.h>
-#include <windows.h>
-#include <winnls.h>
-
 int win32_wide_utf8(const wchar_t * const wptr, const char **const mbptr, size_t * const buflen)
 {
 	size_t len;
@@ -146,4 +148,3 @@ int win32_utf8_wide(const char *const mbptr, const wchar_t ** const wptr, size_t
 	}
 }
 #endif
-

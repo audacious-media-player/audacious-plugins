@@ -65,9 +65,7 @@ struct mpg123_pars_struct
 	int rva; /* (which) rva to do: 0: nothing, 1: radio/mix/track 2: album/audiophile */
 	long halfspeed;
 	long doublespeed;
-#if (!defined (WIN32) || defined (__CYGWIN__))
 	long timeout;
-#endif
 #define NUM_CHANNELS 2
 	char audio_caps[NUM_CHANNELS][MPG123_RATES+1][MPG123_ENCODINGS];
 /*	long start_frame; */ /* frame offset to begin with */
@@ -152,7 +150,7 @@ struct mpg123_handle_struct
 
 #ifndef NO_LAYER3
 #if (defined OPT_3DNOW || defined OPT_3DNOWEXT)
-		void (*dct36)(real *,real *,real *,real *,real *);
+		void (*the_dct36)(real *,real *,real *,real *,real *);
 #endif
 #endif
 
@@ -281,6 +279,41 @@ struct mpg123_handle_struct
 #ifndef NO_ICY
 	struct icy_meta icy;
 #endif
+	/*
+		More variables needed for decoders, layerX.c.
+		This time it is not about static variables but about the need for alignment which cannot be guaranteed on the stack by certain compilers (Sun Studio).
+		We do not require the compiler to align stuff for our hand-written assembly. We only hope that it's able to align stuff for SSE and similar ops it generates itself.
+	*/
+	/*
+		Those layer-specific structs could actually share memory, as they are not in use simultaneously. One might allocate on decoder switch, too.
+		They all reside in one lump of memory (after each other), allocated to layerscratch.
+	*/
+	real *layerscratch;
+#ifndef NO_LAYER1
+	struct
+	{
+		real (*fraction)[SBLIMIT]; /* ALIGNED(16) real fraction[2][SBLIMIT]; */
+	} layer1;
+#endif
+#ifndef NO_LAYER2
+	struct
+	{
+		real (*fraction)[4][SBLIMIT]; /* ALIGNED(16) real fraction[2][4][SBLIMIT] */
+	} layer2;
+#endif
+#ifndef NO_LAYER3
+	/* These are significant chunks of memory already... */
+	struct
+	{
+		real (*hybrid_in)[SBLIMIT][SSLIMIT];  /* ALIGNED(16) real hybridIn[2][SBLIMIT][SSLIMIT]; */
+		real (*hybrid_out)[SSLIMIT][SBLIMIT]; /* ALIGNED(16) real hybridOut[2][SSLIMIT][SBLIMIT]; */
+	} layer3;
+#endif
+	/* A place for storing additional data for the large file wrapper.
+	   This is cruft! */
+	void *wrapperdata;
+	/* A callback used to properly destruct the wrapper data. */
+	void (*wrapperclean)(void*);
 };
 
 /* generic init, does not include dynamic buffers */

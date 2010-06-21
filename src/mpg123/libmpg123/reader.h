@@ -16,6 +16,7 @@ struct buffy
 {
 	unsigned char *data;
 	ssize_t size;
+	ssize_t realsize;
 	struct buffy *next;
 };
 
@@ -36,15 +37,21 @@ struct reader_data
 	off_t filelen; /* total file length or total buffer size */
 	off_t filepos; /* position in file or position in buffer chain */
 	int   filept;
+	/* Custom opaque I/O handle from the client. */
+	void *iohandle;
 	int   flags;
-#if (!defined (WIN32) || defined (__CYGWIN__))
 	long timeout_sec;
-#endif
 	ssize_t (*fdread) (mpg123_handle *, void *, size_t);
-	/* User can replace the read and lseek functions. The r_* are the stored replacement functions or NULL,
-	   The second two pointers are the actual workers (default map to POSIX read/lseek). */
+	/* User can replace the read and lseek functions. The r_* are the stored replacement functions or NULL. */
 	ssize_t (*r_read) (int fd, void *buf, size_t count);
 	off_t   (*r_lseek)(int fd, off_t offset, int whence);
+	/* These are custom I/O routines for opaque user handles.
+	   They get picked if there's some iohandle set. */
+	ssize_t (*r_read_handle) (void *handle, void *buf, size_t count);
+	off_t   (*r_lseek_handle)(void *handle, off_t offset, int whence);
+	/* An optional cleaner for the handle on closing the stream. */
+	void    (*cleanup_handle)(void *handle);
+	/* These two pointers are the actual workers (default map to POSIX read/lseek). */
 	ssize_t (*read) (int fd, void *buf, size_t count);
 	off_t   (*lseek)(int fd, off_t offset, int whence);
 	/* Buffered readers want that abstracted, set internally. */
@@ -71,6 +78,8 @@ struct reader
 
 /* Open a file by path or use an opened file descriptor. */
 int open_stream(mpg123_handle *, const char *path, int fd);
+/* Open an external handle. */
+int open_stream_handle(mpg123_handle *, void *iohandle);
 
 /* feed based operation has some specials */
 int open_feed(mpg123_handle *);
@@ -86,6 +95,7 @@ void open_bad(mpg123_handle *);
 #define READER_SEEKABLE  0x4
 #define READER_BUFFERED  0x8
 #define READER_NONBLOCK  0x20
+#define READER_HANDLEIO  0x40
 
 #define READER_STREAM 0
 #define READER_ICY_STREAM 1

@@ -30,15 +30,12 @@
 #define NTOM_MAX 8          /* maximum allowed factor for upsampling */
 #define NTOM_MAX_FREQ 96000 /* maximum frequency to upsample to / downsample from */
 #define NTOM_MUL (32768)
+void ntom_set_ntom(mpg123_handle *fr, off_t num);
 #endif
 
 /* Let's collect all possible synth functions here, for an overview.
    If they are actually defined and used depends on preprocessor machinery.
    See synth.c and optimize.h for that, also some special C and assembler files. */
-
-/* The call of left and right plain synth, wrapped.
-   This may be replaced by a direct stereo optimized synth. */
-int synth_stereo_wrap(real*, real*, mpg123_handle*);
 
 #ifndef NO_16BIT
 /* The signed-16bit-producing variants. */
@@ -114,7 +111,6 @@ int synth_4to1_8bit_mono2stereo(real*, mpg123_handle*);
 int synth_ntom_8bit            (real*, int, mpg123_handle*, int);
 int synth_ntom_8bit_mono       (real*, mpg123_handle*);
 int synth_ntom_8bit_mono2stereo(real*, mpg123_handle*);
-void ntom_set_ntom(mpg123_handle *fr, off_t num);
 #endif
 #endif
 

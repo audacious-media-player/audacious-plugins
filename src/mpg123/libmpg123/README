@@ -13,6 +13,9 @@ John Lindgren, June 9, 2010:
  * Imported libmpg123 1.10.0.
  * Removed some configuration stuff from mpg123.h.in and renamed it mpg123.h.
  * Added local config.h.
+ 
+John Lindgren, June 21, 2010:
+ * Updated to libmpg123 1.12.2.
 
  ======
 

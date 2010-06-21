@@ -1,5 +1,5 @@
 /*
-	libmpg123: MPEG Audio Decoder library (version 1.10.0)
+	libmpg123: MPEG Audio Decoder library (version 1.12.2)
 
 	copyright 1995-2009 by the mpg123 project - free software under the terms of the LGPL 2.1
 	see COPYING and AUTHORS files in distribution or http://mpg123.org
@@ -9,6 +9,10 @@
 #define MPG123_LIB_H
 
 /** \file mpg123.h The header file for the libmpg123 MPEG Audio decoder */
+
+/* A macro to check at compile time which set of API functions to expect.
+   This should be incremented at least each time a new symbol is added to the header. */
+#define MPG123_API_VERSION 25
 
 /* Nothing on normal/UNIX builds */
 #define EXPORT
@@ -94,6 +98,7 @@ enum mpg123_param_flags
 	,MPG123_FUZZY        = 0x200 /**< 001000000000 Enable fuzzy seeks (guessing byte offsets or using approximate seek points from Xing TOC) */
 	,MPG123_FORCE_FLOAT  = 0x400 /**< 010000000000 Force floating point output (32 or 64 bits depends on mpg123 internal precision). */
 	,MPG123_PLAIN_ID3TEXT = 0x800 /**< 100000000000 Do not translate ID3 text data to UTF-8. ID3 strings will contain the raw text data, with the first byte containing the ID3 encoding code. */
+	,MPG123_IGNORE_STREAMLENGTH = 0x1000 /**< 1000000000000 Ignore any stream length information contained in the stream, which can be contained in a 'TLEN' frame of an ID3v2 tag or a Xing tag */
 };
 
 /** choices for MPG123_RVA */
@@ -131,6 +136,7 @@ enum mpg123_feature_set
 	,MPG123_FEATURE_DECODE_DOWNSAMPLE    /**< downsample (sample omit)     */
 	,MPG123_FEATURE_DECODE_NTOM          /**< flexible rate decoding       */
 	,MPG123_FEATURE_PARSE_ICY            /**< ICY support                  */
+	,MPG123_FEATURE_TIMEOUT_READ         /**< Reader with timeout (network). */
 };
 
 /** Query libmpg123 feature, 1 for success, 0 for unimplemented functions. */
@@ -199,6 +205,8 @@ enum mpg123_errors
 	MPG123_MISSING_FEATURE  /**< This feature has not been built into libmpg123. */
 	,MPG123_BAD_VALUE /**< A bad value has been given, somewhere. */
 	,MPG123_LSEEK_FAILED /**< Low-level seek failed. */
+	,MPG123_BAD_CUSTOM_IO /**< Custom I/O not prepared. */
+	,MPG123_LFS_OVERFLOW /**< Offset value overflow during translation of large file API calls -- your client program cannot handle that large file. */
 };
 
 /** Return a string describing that error errcode means. */
@@ -225,10 +233,10 @@ EXPORT int mpg123_errcode(mpg123_handle *mh);
  */
 
 /** Return a NULL-terminated array of generally available decoder names (plain 8bit ASCII). */
-EXPORT const char **mpg123_decoders();
+EXPORT const char **mpg123_decoders(void);
 
 /** Return a NULL-terminated array of the decoders supported by the CPU (plain 8bit ASCII). */
-EXPORT const char **mpg123_supported_decoders();
+EXPORT const char **mpg123_supported_decoders(void);
 
 /** Set the chosen decoder to 'decoder_name' */
 EXPORT int mpg123_decoder(mpg123_handle *mh, const char* decoder_name);
@@ -355,6 +363,12 @@ EXPORT int mpg123_open(mpg123_handle *mh, const char *path);
  */
 EXPORT int mpg123_open_fd(mpg123_handle *mh, int fd);
 
+/** Use an opaque handle as bitstream input. This works only with the
+ *  replaced I/O from mpg123_replace_reader_handle()!
+ *  mpg123_close() will call the cleanup callback for your handle (if you gave one).
+ */
+EXPORT int mpg123_open_handle(mpg123_handle *mh, void *iohandle);
+
 /** Open a new bitstream and prepare for direct feeding
  *  This works together with mpg123_decode(); you are responsible for reading and feeding the input bitstream.
  */
@@ -391,8 +405,7 @@ EXPORT int mpg123_feed(mpg123_handle *mh, const unsigned char *in, size_t size);
  *  \param done address to store the number of actually decoded bytes to
  *  \return error/message code (watch out especially for MPG123_NEED_MORE)
  */
-EXPORT int mpg123_decode(mpg123_handle *mh, const unsigned char *inmemory, size_t inmemsize,
-                         unsigned char *outmemory, size_t outmemsize, size_t *done);
+EXPORT int mpg123_decode(mpg123_handle *mh, const unsigned char *inmemory, size_t inmemsize, unsigned char *outmemory, size_t outmemsize, size_t *done);
 
 /** Decode next MPEG frame to internal buffer
  *  or read a frame and return after setting a new format.
@@ -493,10 +506,7 @@ EXPORT int mpg123_set_index(mpg123_handle *mh, off_t *offsets, off_t step, size_
  *  served by libmpg123 but not yet played. You get the projected current frame 
  *  and seconds, as well as the remaining frames/seconds. This does _not_ care 
  *  about skipped samples due to gapless playback. */
-EXPORT int mpg123_position( mpg123_handle *mh, off_t frame_offset,
-                            off_t buffered_bytes,  off_t *current_frame,  
-                            off_t *frames_left, double *current_seconds,
-                            double *seconds_left);
+EXPORT int mpg123_position( mpg123_handle *mh, off_t frame_offset, off_t buffered_bytes, off_t *current_frame, off_t *frames_left, double *current_seconds, double *seconds_left);
 
 /*@}*/
 
@@ -593,7 +603,7 @@ struct mpg123_frameinfo
 	enum mpg123_mode mode;			/**< The audio mode (Mono, Stereo, Joint-stero, Dual Channel). */
 	int mode_ext;					/**< The mode extension bit flag. */
 	int framesize;					/**< The size of the frame (in bytes). */
-	enum mpg123_flags flags;		/**< MPEG Audio flag bits. */
+	enum mpg123_flags flags;		/**< MPEG Audio flag bits. Just now I realize that it should be declared as int, not enum. It's a bitwise combination of the enum values. */
 	int emphasis;					/**< The emphasis type. */
 	int bitrate;					/**< Bitrate of the frame (kbps). */
 	int abr_rate;					/**< The target average bitrate. */
@@ -604,7 +614,7 @@ struct mpg123_frameinfo
 EXPORT int mpg123_info(mpg123_handle *mh, struct mpg123_frameinfo *mi);
 
 /** Get the safe output buffer size for all cases (when you want to replace the internal buffer) */
-EXPORT size_t mpg123_safe_buffer(); 
+EXPORT size_t mpg123_safe_buffer(void); 
 
 /** Make a full parsing scan of each frame in the file. ID3 tags are found. An accurate length 
  *  value is stored. Seek index will be filled. A seek back to current position 
@@ -906,12 +916,23 @@ EXPORT size_t mpg123_outblock(mpg123_handle *mh);
 
 /** Replace low-level stream access functions; read and lseek as known in POSIX.
  *  You can use this to make any fancy file opening/closing yourself, 
- *  using open_fd to set the file descriptor for your read/lseek (doesn't need to be a "real" file descriptor...).
+ *  using mpg123_open_fd() to set the file descriptor for your read/lseek (doesn't need to be a "real" file descriptor...).
  *  Setting a function to NULL means that the default internal read is 
- *  used (active from next mpg123_open call on). */
-EXPORT int mpg123_replace_reader( mpg123_handle *mh,
-                                  ssize_t (*r_read) (int, void *, size_t),
-                                  off_t   (*r_lseek)(int, off_t, int) );
+ *  used (active from next mpg123_open call on).
+ *  Note: As it would be troublesome to mess with this while having a file open,
+ *  this implies mpg123_close(). */
+EXPORT int mpg123_replace_reader(mpg123_handle *mh, ssize_t (*r_read) (int, void *, size_t), off_t (*r_lseek)(int, off_t, int));
+
+/** Replace I/O functions with your own ones operating on some kind of handle instead of integer descriptors.
+ *  The handle is a void pointer, so you can pass any data you want...
+ *  mpg123_open_handle() is the call you make to use the I/O defined here.
+ *  There is no fallback to internal read/seek here.
+ *  Note: As it would be troublesome to mess with this while having a file open,
+ *  this mpg123_close() is implied here.
+ *  \param r_read The callback for reading (behaviour like posix read).
+ *  \param r_lseek The callback for seeking (like posix lseek).
+ *  \param cleanup A callback to clean up an I/O handle on mpg123_close, can be NULL for none (you take care of cleaning your handles). */
+EXPORT int mpg123_replace_reader_handle(mpg123_handle *mh, ssize_t (*r_read) (void *, void *, size_t), off_t (*r_lseek)(void *, off_t, int), void (*cleanup)(void*));
 
 /* @} */
 
