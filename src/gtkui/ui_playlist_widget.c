@@ -22,7 +22,9 @@
 #include <stdio.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+
 #include <audacious/plugin.h>
+#include <libaudgui/libaudgui.h>
 
 #include "ui_manager.h"
 #include "ui_playlist_model.h"
@@ -178,6 +180,7 @@ static void _ui_playlist_widget_drag_data_received(GtkTreeView * widget, GdkDrag
     /* Maybe dragged some files from another application. */
     if (gtk_drag_get_source_widget(context) == NULL)
     {
+        gint playlist = playlist_get_playlist_from_treeview (widget);
         gint dest_pos;
 
         g_return_if_fail(t != NULL);
@@ -188,9 +191,9 @@ static void _ui_playlist_widget_drag_data_received(GtkTreeView * widget, GdkDrag
             gtk_tree_path_free(t->dest_path);
         }
         else
-            dest_pos = aud_playlist_entry_count(playlist_get_playlist_from_treeview(widget));
+            dest_pos = aud_playlist_entry_count (playlist);
 
-        insert_drag_list_into_active(dest_pos, (gchar *)data->data);
+        audgui_urilist_insert (playlist, dest_pos, (const gchar *) data->data);
 
         g_slice_free(UiPlaylistDragTracker, t);
         t = NULL;

@@ -21,7 +21,6 @@
 #ifndef __PLAYLISTUTIL_H__
 #define __PLAYLISTUTIL_H__
 
-void insert_drag_list(gint playlist, gint position, const gchar *list);
 void playlist_set_selected(GtkTreeView *treeview, GtkTreePath *path);
 void playlist_set_selected_list(GtkTreeView *treeview, GList *list, gint distance);
 gint calc_distance(gint source_pos, gint dest_pos, gint selected_length);
@@ -30,7 +29,6 @@ GtkTreeView *playlist_get_treeview(gint playlist);
 GtkTreeView *playlist_get_active_treeview(void);
 GtkTreeView *playlist_get_playing_treeview(void);
 gint playlist_get_playlist_from_treeview(GtkTreeView *treeview);
-gchar *create_drag_list(gint playlist);
 void playlist_scroll_to_row(GtkTreeView *treeview, gint position);
 GList *playlist_get_selected_list(GtkTreeView *treeview);
 gint playlist_get_selected_length(GtkTreeView *treeview);
@@ -42,12 +40,6 @@ void playlist_pending_selection_set(GtkTreeView *treeview, GtkTreePath *start_pa
 void playlist_pending_selection_free(void);
 void playlist_pending_selection_apply(void);
 gboolean playlist_is_pending_selection(void);
-
-static inline void insert_drag_list_into_active(gint position, const gchar *list)
-{
-    gint active_playlist_nr = aud_playlist_get_active();
-    insert_drag_list(active_playlist_nr, position, list);
-}
 
 #endif
 

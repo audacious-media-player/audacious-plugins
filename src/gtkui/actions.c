@@ -849,7 +849,7 @@ void action_playlist_save_all_playlists(void)
 void action_playlist_copy(void)
 {
     GtkClipboard *clip = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
-    gchar *list = create_drag_list(aud_playlist_get_active());
+    gchar *list = audgui_urilist_create_from_selected (aud_playlist_get_active());
 
     if (list == NULL)
         return;
@@ -874,6 +874,7 @@ void action_playlist_paste(void)
 
     gint playlist = aud_playlist_get_active();
 
-    insert_drag_list(playlist, playlist_get_first_selected_index(playlist_get_treeview(playlist)), list);
+    audgui_urilist_insert (playlist, playlist_get_first_selected_index
+     (playlist_get_treeview(playlist)), list);
     g_free(list);
 }
