@@ -31,7 +31,7 @@ GtkTreeView *playlist_get_active_treeview(void);
 GtkTreeView *playlist_get_playing_treeview(void);
 gint playlist_get_playlist_from_treeview(GtkTreeView *treeview);
 gchar *create_drag_list(gint playlist);
-void playlist_scroll_to_row(GtkTreeView *treeview, gint position, gboolean only_if_focused);
+void playlist_scroll_to_row(GtkTreeView *treeview, gint position);
 GList *playlist_get_selected_list(GtkTreeView *treeview);
 gint playlist_get_selected_length(GtkTreeView *treeview);
 gint playlist_get_first_selected_index(GtkTreeView *treeview);
