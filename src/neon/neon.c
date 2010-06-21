@@ -702,11 +702,13 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
             return 0;
         } else if (-1 == ret) {
             ne_session_destroy(handle->session);
+            handle->session = NULL;
             return -1;
         }
 
         _DEBUG("<%p> Following redirect...", handle);
         ne_session_destroy(handle->session);
+        handle->session = NULL;
     }
 
     /*
@@ -878,7 +880,9 @@ gint neon_aud_vfs_fclose_impl(VFSFile* file) {
     }
 
     _DEBUG("<%p> Destroying session", h);
-    ne_session_destroy(h->session);
+    if (NULL != h->session) {
+        ne_session_destroy(h->session);
+    }
 
     handle_free(h);
 
@@ -1271,7 +1275,10 @@ gint neon_aud_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
     if (NULL != h->request) {
         ne_request_destroy(h->request);
     }
-    ne_session_destroy(h->session);
+    if (NULL != h->session) {
+        ne_session_destroy(h->session);
+        h->session = NULL;
+    }
     reset_rb(&h->rb);
 
     if (0 != open_handle(h, newpos)) {
