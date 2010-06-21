@@ -80,9 +80,13 @@ static void
 ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
 {
     mainwin_clear_song_info ();
+}
 
+static void stop_after_song_toggled (void * hook_data, void * user_data)
+{
     mainwin_enable_status_message (FALSE);
-    check_set (toggleaction_group_others, "stop after current song", FALSE);
+    check_set (toggleaction_group_others, "stop after current song",
+     aud_cfg->stopaftersong);
     mainwin_enable_status_message (TRUE);
 }
 
@@ -315,6 +319,7 @@ ui_main_evlistener_init(void)
     aud_hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
 
     aud_hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
+    aud_hook_associate ("toggle stop after song", stop_after_song_toggled, NULL);
 }
 
 void
@@ -334,6 +339,7 @@ ui_main_evlistener_dissociate(void)
     aud_hook_dissociate("equalizerwin show", ui_main_evlistener_equalizerwin_show);
 
     aud_hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
+    aud_hook_dissociate ("toggle stop after song", stop_after_song_toggled);
 }
 
 void start_stop_visual (void)

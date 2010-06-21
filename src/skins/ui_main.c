@@ -2379,15 +2379,20 @@ action_playback_shuffle( GtkToggleAction * action )
     ui_skinned_button_set_inside(mainwin_shuffle, aud_cfg->shuffle);
 }
 
-void
-action_stop_after_current_song( GtkToggleAction * action )
+void action_stop_after_current_song (GtkToggleAction * action)
 {
-    aud_cfg->stopaftersong = gtk_toggle_action_get_active( action );
+    gboolean active = gtk_toggle_action_get_active (action);
 
-    if (aud_cfg->stopaftersong)
-        show_status_message (_("Stopping after song."));
-    else
-        show_status_message (_("Not stopping after song."));
+    if (active != aud_cfg->stopaftersong)
+    {
+        if (active)
+            show_status_message (_("Stopping after song."));
+        else
+            show_status_message (_("Not stopping after song."));
+
+        aud_cfg->stopaftersong = active;
+        aud_hook_call ("toggle stop after song", NULL);
+    }
 }
 
 void
