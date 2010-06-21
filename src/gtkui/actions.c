@@ -589,7 +589,7 @@ void action_playlist_next(void)
 
 void action_playlist_delete(void)
 {
-    aud_playlist_delete(aud_playlist_get_active());
+    audgui_confirm_playlist_delete (aud_playlist_get_active ());
 }
 
 #if 0
