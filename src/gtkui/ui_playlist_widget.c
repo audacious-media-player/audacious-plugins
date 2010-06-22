@@ -259,6 +259,9 @@ static void _ui_playlist_widget_drag_end(GtkTreeView * widget, GdkDragContext * 
     selected_length = g_list_length(t->targets);
     gboolean same_playlist = (t->source_playlist == dest_playlist);
 
+    if (t->append)
+        dest_pos ++;
+
     if (same_playlist)
     {
         gint shift = dest_pos - t->source_pos;
@@ -278,9 +281,6 @@ static void _ui_playlist_widget_drag_end(GtkTreeView * widget, GdkDragContext * 
     {
         filenames = index_new();
         tuples = index_new();
-
-        if (t->append)
-            dest_pos++;
 
         for (GList *target = g_list_first(t->targets); target; target = target->next)
         {
