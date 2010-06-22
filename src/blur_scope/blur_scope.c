@@ -174,7 +174,6 @@ bscope_init(void)
         area = gtk_drawing_area_new();
 
         gtk_widget_set_size_request(area, D_WIDTH, D_HEIGHT);
-        gtk_widget_realize(area);
         bscope_resize_video(D_WIDTH, D_HEIGHT);
         gtk_widget_show(area);
     }
