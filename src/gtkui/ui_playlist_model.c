@@ -593,7 +593,8 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
             gtk_tree_view_column_set_min_width(column, width);
         }
 
-        ui_playlist_model_playlist_position(hook_data, user_data);
+        ui_playlist_model_update_position (model, aud_playlist_get_position
+         (model->playlist));
     }
     else if (type == PLAYLIST_UPDATE_METADATA)
     {
