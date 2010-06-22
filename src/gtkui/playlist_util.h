@@ -36,10 +36,13 @@ gint playlist_get_first_selected_index(GtkTreeView *treeview);
 GtkTreePath *playlist_get_first_selected_path(GtkTreeView *treeview);
 gint playlist_get_index_from_path(GtkTreePath * path);
 gint calculate_column_width(GtkWidget *widget, gint num);
+void playlist_select_range(GtkTreeView *treeview, GtkTreePath *start_path, GtkTreePath *end_path);
 void playlist_pending_selection_set(GtkTreeView *treeview, GtkTreePath *start_path, GtkTreePath *end_path);
 void playlist_pending_selection_free(void);
 void playlist_pending_selection_apply(void);
 gboolean playlist_is_pending_selection(void);
+void playlist_block_selection(GtkTreeView *treeview);
+void playlist_unblock_selection(GtkTreeView *treeview);
 
 #endif
 

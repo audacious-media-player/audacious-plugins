@@ -31,7 +31,7 @@
 
 typedef struct
 {
-    GtkTreeSelection *sel;
+    GtkTreeView *treeview;
     GtkTreePath *start_path;
     GtkTreePath *end_path;
 } UiPlaylistSelection;
@@ -132,7 +132,7 @@ gint calc_distance(gint source_pos, gint dest_pos, gint selected_length)
     if (source_pos <= dest_pos && source_pos + selected_length > dest_pos)
         distance = 0;
     else if (dest_pos > source_pos)
-        distance = dest_pos - source_pos - selected_length + 1;
+        distance = dest_pos - source_pos - selected_length;
     else
         distance = dest_pos - source_pos;
 
@@ -244,6 +244,15 @@ gboolean playlist_is_pending_selection(void)
         return FALSE;
 }
 
+void playlist_select_range(GtkTreeView *treeview, GtkTreePath *start_path, GtkTreePath *end_path)
+{
+    GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
+
+    gtk_tree_selection_unselect_all(sel);
+    gtk_tree_view_set_cursor(treeview, start_path, NULL, FALSE);
+    gtk_tree_selection_select_range(sel, start_path, end_path);
+}
+
 void playlist_pending_selection_set(GtkTreeView *treeview, GtkTreePath *start_path, GtkTreePath *end_path)
 {
     g_return_if_fail(treeview != NULL);
@@ -251,7 +260,7 @@ void playlist_pending_selection_set(GtkTreeView *treeview, GtkTreePath *start_pa
     g_return_if_fail(end_path != NULL);
 
     pending = g_slice_new0(UiPlaylistSelection);
-    pending->sel = gtk_tree_view_get_selection(treeview);
+    pending->treeview = treeview;
     pending->start_path = start_path;
     pending->end_path = end_path;
 }
@@ -270,14 +279,25 @@ void playlist_pending_selection_apply(void)
     g_return_if_fail(pending->start_path != NULL);
     g_return_if_fail(pending->end_path != NULL);
 
-    gtk_tree_selection_unselect_all(pending->sel);
-
-    gtk_tree_view_set_cursor(gtk_tree_selection_get_tree_view(pending->sel),
-                             pending->start_path, NULL, FALSE);
-
-    gtk_tree_selection_select_range(pending->sel,
-                                    pending->start_path,
-                                    pending->end_path);
+    playlist_select_range(pending->treeview, pending->start_path, pending->end_path);
 
     playlist_pending_selection_free();
+}
+
+void playlist_block_selection(GtkTreeView *treeview)
+{
+    g_return_if_fail(treeview != NULL);
+
+    GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
+    gulong handler_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(treeview), "selection_changed_handler_id"));
+    g_signal_handler_block(G_OBJECT(sel), handler_id);
+}
+
+void playlist_unblock_selection(GtkTreeView *treeview)
+{
+    g_return_if_fail(treeview != NULL);
+
+    GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
+    gulong handler_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(treeview), "selection_changed_handler_id"));
+    g_signal_handler_unblock(G_OBJECT(sel), handler_id);
 }

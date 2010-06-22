@@ -537,15 +537,13 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
     GtkTreeView *treeview = playlist_get_treeview(model->playlist);
     GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
     gint type = GPOINTER_TO_INT(hook_data);
-    gulong handler_id;
 
     if (model->playlist != aud_playlist_get_active())
         return;
 
     if (type == PLAYLIST_UPDATE_STRUCTURE)
     {
-        handler_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(treeview), "selection_changed_handler_id"));
-        g_signal_handler_block(G_OBJECT(sel), handler_id);
+        playlist_block_selection(treeview);
 
         gint changed_rows;
         changed_rows = aud_playlist_entry_count(model->playlist) - model->num_rows;
@@ -553,7 +551,11 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
 
         AUDDBG("playlist structure update\n");
 
-        if (changed_rows > 0)
+        if (changed_rows == 0)
+        {
+            ui_playlist_model_playlist_rearraged(model);
+        }
+        else if (changed_rows > 0)
         {
             /* entries added */
             while (changed_rows != 0)
@@ -572,20 +574,16 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
             }
         }
 
-        g_signal_handler_unblock(G_OBJECT(sel), handler_id);
-
         /* Is there any pending selection? */
         if (playlist_is_pending_selection())
         {
             playlist_pending_selection_apply();
         }
 
+        playlist_unblock_selection(treeview);
+
         /* Sync selection between the real playlist and the playlist widget */
-        if (aud_playlist_get_selected_length(model->playlist) != playlist_get_selected_length(treeview))
-        {
-            GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
-            g_signal_emit_by_name(G_OBJECT(sel), "changed");
-        }
+        g_signal_emit_by_name(G_OBJECT(sel), "changed");
 
         if (column_resize && multi_column_view)
         {
