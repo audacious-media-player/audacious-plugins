@@ -38,7 +38,7 @@ gboolean multi_column_view;
 static GtkWidget *label_time;
 static GtkWidget *slider;
 static GtkWidget *volume;
-static GtkWidget *vispane_root = NULL;
+static GtkWidget *visualizer = NULL;
 GtkWidget *playlist_box;
 GtkWidget *window;       /* the main window */
 GtkWidget *menu;
@@ -66,6 +66,99 @@ Interface gtkui_interface = {
 
 SIMPLE_INTERFACE_PLUGIN("gtkui", &gtkui_interface);
 
+static void save_window_size (void)
+{
+    gtk_window_get_position ((GtkWindow *) window, & config.player_x,
+     & config.player_y);
+
+    if (gtk_window_get_resizable ((GtkWindow *) window))
+        gtk_window_get_size ((GtkWindow *) window, & config.player_width,
+         & config.player_height);
+}
+
+static void shrink_window (void)
+{
+    GtkRequisition r;
+
+    gtk_widget_size_request (window, & r);
+    gtk_window_resize ((GtkWindow *) window, r.width, r.height);
+    gtk_window_set_resizable ((GtkWindow *) window, FALSE);
+}
+
+static void unshrink_window (void)
+{
+    gtk_window_resize ((GtkWindow *) window, config.player_width,
+     config.player_height);
+    gtk_window_set_resizable ((GtkWindow *) window, TRUE);
+}
+
+static void container_remove_reversed (GtkWidget * w, GtkWidget * c)
+{
+    gtk_container_remove ((GtkContainer *) c, w);
+}
+
+void setup_panes (void)
+{
+    static GtkWidget * panes = NULL;
+    GtkWidget * a, * b;
+
+    save_window_size ();
+
+    if (panes)
+    {
+        gtk_container_foreach ((GtkContainer *) panes, (GtkCallback)
+         container_remove_reversed, panes);
+        gtk_widget_destroy (panes);
+    }
+
+    gtk_container_foreach ((GtkContainer *) playlist_box, (GtkCallback)
+     container_remove_reversed, playlist_box);
+
+    if (config.vis_position == VIS_ON_LEFT || config.vis_position == VIS_ON_TOP)
+    {
+        a = (config.vis_position == VIS_IN_TABS) ? NULL : visualizer;
+        b = config.playlist_visible ? (GtkWidget *) UI_PLAYLIST_NOTEBOOK : NULL;
+    }
+    else
+    {
+        a = config.playlist_visible ? (GtkWidget *) UI_PLAYLIST_NOTEBOOK : NULL;
+        b = (config.vis_position == VIS_IN_TABS) ? NULL : visualizer;
+    }
+
+    if (! a)
+    {
+        a = b;
+        b = NULL;
+    }
+
+    if (! a)
+    {
+        shrink_window ();
+        return;
+    }
+
+    unshrink_window ();
+
+    if (! b)
+    {
+        gtk_box_pack_start ((GtkBox *) playlist_box, a, TRUE, TRUE, 0);
+        gtk_widget_show (a);
+        return;
+    }
+
+    panes = (config.vis_position == VIS_ON_LEFT || config.vis_position ==
+     VIS_ON_RIGHT) ? gtk_hpaned_new () : gtk_vpaned_new ();
+    gtk_box_pack_start ((GtkBox *) playlist_box, panes, TRUE, TRUE, 0);
+    g_signal_connect ((GObject *) panes, "destroy", (GCallback)
+     gtk_widget_destroyed, & panes);
+
+    gtk_paned_add1 ((GtkPaned *) panes, a);
+    gtk_paned_add2 ((GtkPaned *) panes, b);
+    gtk_widget_show (panes);
+    gtk_widget_show (a);
+    gtk_widget_show (b);
+}
+
 static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
 {
     GtkWidget *label;
@@ -73,82 +166,34 @@ static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
     g_return_if_fail(parent != NULL);
     g_return_if_fail(name != NULL);
 
-    switch (config.vis_position)
+    if (visualizer) /* only one at a time */
+        return;
+
+    visualizer = parent;
+    g_object_ref ((GObject *) visualizer);
+
+    if (config.vis_position == VIS_IN_TABS)
     {
-        case VIS_ON_TOP:
-        case VIS_ON_BOTTOM:
-        case VIS_ON_LEFT:
-        case VIS_ON_RIGHT:
-        {
-            /* FIXME: nested panes */
-            GtkWidget *w = gtk_paned_get_child1(GTK_PANED(vispane_root));
-
-            if (w == NULL)
-            {
-                gtk_paned_add1(GTK_PANED(vispane_root), parent);
-                break;
-            }
-
-            w = gtk_paned_get_child2(GTK_PANED(vispane_root));
-
-            if (w == NULL)
-            {
-                gtk_paned_add2(GTK_PANED(vispane_root), parent);
-                break;
-            }
-        }
-        break;
-
-        case VIS_IN_TABS:
-        default:
-        {
-            label = gtk_label_new(name);
-            gtk_notebook_append_page(UI_PLAYLIST_NOTEBOOK, parent, label);
-        }
+        label = gtk_label_new(name);
+        gtk_notebook_append_page(UI_PLAYLIST_NOTEBOOK, parent, label);
     }
+    else
+        setup_panes ();
 }
 
 static void ui_stop_gtk_plugin(GtkWidget *parent)
 {
-    switch (config.vis_position)
-    {
-        case VIS_ON_TOP:
-        case VIS_ON_BOTTOM:
-        case VIS_ON_LEFT:
-        case VIS_ON_RIGHT:
-        {
-            /* FIXME: nested panes */
-            GtkWidget *w = gtk_paned_get_child1(GTK_PANED(vispane_root));
+    if (parent != visualizer) /* only one at a time */
+        return;
 
-            if (w == parent)
-            {
-                gtk_container_remove(GTK_CONTAINER(vispane_root), w);
-                break;
-            }
+    g_object_unref ((GObject *) visualizer);
+    visualizer = NULL;
 
-            w = gtk_paned_get_child2(GTK_PANED(vispane_root));
-
-            if (w == parent)
-            {
-                gtk_container_remove(GTK_CONTAINER(vispane_root), w);
-                break;
-            }
-        }
-        break;
-
-        case VIS_IN_TABS:
-        default:
-            gtk_notebook_remove_page(UI_PLAYLIST_NOTEBOOK, gtk_notebook_page_num(UI_PLAYLIST_NOTEBOOK, parent));
-    }
-}
-
-static gboolean window_configured_cb(gpointer data)
-{
-    GtkWindow *window = GTK_WINDOW(data);
-    gtk_window_get_position(window, &config.player_x, &config.player_y);
-    gtk_window_get_size(window, &config.player_width, &config.player_height);
-
-    return FALSE;
+    if (config.vis_position == VIS_IN_TABS)
+        gtk_notebook_remove_page(UI_PLAYLIST_NOTEBOOK, gtk_notebook_page_num
+         (UI_PLAYLIST_NOTEBOOK, parent));
+    else
+        setup_panes ();
 }
 
 static gboolean window_delete()
@@ -613,7 +658,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
     GtkWidget *button_open, *button_add, *button_play, *button_pause, *button_stop, *button_previous, *button_next;
     GtkAccelGroup *accel;
-    GtkWidget *playlist_notebook;
 
     gint lvol = 0, rvol = 0;    /* Left and Right for the volume control */
 
@@ -638,7 +682,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     else
         gtk_window_move(GTK_WINDOW(window), MAINWIN_DEFAULT_POS_X, MAINWIN_DEFAULT_POS_Y);
 
-    g_signal_connect(G_OBJECT(window), "configure-event", G_CALLBACK(window_configured_cb), window);
     g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), NULL);
 
     vbox = gtk_vbox_new(FALSE, 0);
@@ -690,60 +733,14 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     gtk_box_pack_start(GTK_BOX(vbox), playlist_box, TRUE, TRUE, 0);
 
     /* Create playlist notebook */
-    playlist_notebook = ui_playlist_notebook_new();
+    ui_playlist_notebook_new ();
+    g_object_ref ((GObject *) UI_PLAYLIST_NOTEBOOK);
 
-    if (config.vis_position != VIS_IN_TABS)
-    {
-        GtkWidget *pane = NULL;
-
-        AUDDBG("vis not in tabs : %d\n", config.vis_position);
-
-        switch (config.vis_position)
-        {
-            case VIS_ON_LEFT:
-                pane = gtk_hpaned_new();
-                gtk_paned_add2(GTK_PANED(pane), playlist_notebook);
-
-                vispane_root = gtk_vpaned_new();
-                gtk_paned_add1(GTK_PANED(pane), vispane_root);
-                break;
-
-            case VIS_ON_RIGHT:
-                pane = gtk_hpaned_new();
-                gtk_paned_add1(GTK_PANED(pane), playlist_notebook);
-
-                vispane_root = gtk_vpaned_new();
-                gtk_paned_add2(GTK_PANED(pane), vispane_root);
-                break;
-
-            case VIS_ON_TOP:
-                pane = gtk_vpaned_new();
-                gtk_paned_add2(GTK_PANED(pane), playlist_notebook);
-
-                vispane_root = gtk_hpaned_new();
-                gtk_paned_add1(GTK_PANED(pane), vispane_root);
-                break;
-
-            case VIS_ON_BOTTOM:
-                pane = gtk_vpaned_new();
-                gtk_paned_add1(GTK_PANED(pane), playlist_notebook);
-
-                vispane_root = gtk_hpaned_new();
-                gtk_paned_add2(GTK_PANED(pane), vispane_root);
-                break;
-
-            default:
-                /* invalid vis_position, just display playlist_notebook */
-                pane = playlist_notebook;
-        }
-
-        if (pane != NULL)
-            gtk_box_pack_end(GTK_BOX(playlist_box), pane, TRUE, TRUE, 0);
-    }
-    else
+    if (config.vis_position == VIS_IN_TABS)
     {
         AUDDBG("vis in tabs\n");
-        gtk_box_pack_end(GTK_BOX(playlist_box), playlist_notebook, TRUE, TRUE, 0);
+        gtk_box_pack_end(GTK_BOX(playlist_box), (GtkWidget *)
+         UI_PLAYLIST_NOTEBOOK, TRUE, TRUE, 0);
     }
 
     AUDDBG("infoarea setup\n");
@@ -774,11 +771,10 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     if (!config.menu_visible)
         gtk_widget_hide(menu);
 
-    if (!config.playlist_visible)
-        gtk_widget_hide(playlist_box);
-
     if (!config.infoarea_visible)
         gtk_widget_hide(infoarea);
+
+    setup_panes ();
 
     if (config.player_visible)
         ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
@@ -835,9 +831,11 @@ static gboolean _ui_finalize(void)
         update_volume_timeout_source = 0;
     }
 
+    save_window_size ();
     gtkui_cfg_save();
     gtkui_cfg_free();
     ui_hooks_disassociate();
+    g_object_unref ((GObject *) UI_PLAYLIST_NOTEBOOK);
     gtk_widget_destroy (window);
     return TRUE;
 }

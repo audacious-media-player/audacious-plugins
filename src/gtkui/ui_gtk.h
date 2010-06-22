@@ -23,6 +23,8 @@
 extern gboolean multi_columns_view;
 
 extern Interface gtkui_interface;
+
+void setup_panes (void);
 void show_preferences_window(gboolean show);
 
 #endif

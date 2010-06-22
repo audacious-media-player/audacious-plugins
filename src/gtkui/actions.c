@@ -91,91 +91,32 @@ void action_stop_after_current_song(GtkToggleAction * action)
 
 void action_view_playlist(GtkToggleAction *action)
 {
-    GtkAllocation allocation;
-
-    if (!gtk_toggle_action_get_active(action))
-    {
-        gtk_widget_get_allocation(playlist_box, &allocation);
-        config.playlist_width = allocation.width;
-        config.playlist_height = allocation.height;
-        gtk_widget_hide(playlist_box);
-        gtk_window_resize(GTK_WINDOW(window), 1, 1);
-        config.playlist_visible = FALSE;
-    }
-    else
-    {
-        if (config.playlist_width > 0 && config.playlist_height > 0 && !config.playlist_visible)
-        {
-            gtk_widget_get_allocation(window, &allocation);
-
-            gtk_window_resize(GTK_WINDOW(window),
-                              MAX(config.player_width, config.playlist_width),
-                              MAX(config.player_height, allocation.height + config.playlist_height));
-        }
-
-        gtk_widget_show(playlist_box);
-        config.playlist_visible = TRUE;
-    }
+    config.playlist_visible = gtk_toggle_action_get_active (action);
+    setup_panes ();
 }
 
 void action_view_infoarea(GtkToggleAction *action)
 {
-    GtkAllocation allocation;
-    gtk_widget_get_allocation(infoarea, &allocation);
+    config.infoarea_visible = gtk_toggle_action_get_active (action);
 
-    if (!gtk_toggle_action_get_active(action))
-    {
-        gtk_widget_hide(infoarea);
-
-        if (!config.playlist_visible)
-            gtk_window_resize(GTK_WINDOW(window), 1, 1);
-        else
-            gtk_window_resize(GTK_WINDOW(window),
-                              config.player_width,
-                              config.player_height - allocation.height);
-
-        config.infoarea_visible = FALSE;
-    }
+    if (config.infoarea_visible)
+        gtk_widget_show (infoarea);
     else
-    {
-        if (!config.infoarea_visible)
-        {
-            gtk_window_resize(GTK_WINDOW(window),
-                              config.player_width,
-                              config.player_height + allocation.height);
-        }
+        gtk_widget_hide (infoarea);
 
-        gtk_widget_show(infoarea);
-        config.infoarea_visible = TRUE;
-    }
+    setup_panes ();
 }
 
 void action_view_menu(GtkToggleAction *action)
 {
-    GtkAllocation allocation;
-    gtk_widget_get_allocation(menu, &allocation);
+    config.menu_visible = gtk_toggle_action_get_active (action);
 
-    if (!gtk_toggle_action_get_active(action))
-    {
-        gtk_widget_hide(menu);
-        gtk_window_resize(GTK_WINDOW(window),
-                          config.player_width,
-                          config.player_height - allocation.height);
-
-        config.menu_visible = FALSE;
-    }
+    if (config.menu_visible)
+        gtk_widget_show (menu);
     else
-    {
-        if (!config.menu_visible)
-        {
-            gtk_window_resize(GTK_WINDOW(window),
-                              config.player_width,
-                              config.player_height + allocation.height);
-        }
+        gtk_widget_hide (menu);
 
-        gtk_widget_show(menu);
-        config.menu_visible = TRUE;
-    }
+    setup_panes ();
 }
 
 /* actionentries actions */
