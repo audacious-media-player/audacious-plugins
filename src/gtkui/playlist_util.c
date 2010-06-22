@@ -125,20 +125,6 @@ void playlist_set_selected_list(GtkTreeView *treeview, GList *list, gint distanc
     }
 }
 
-gint calc_distance(gint source_pos, gint dest_pos, gint selected_length)
-{
-    gint distance;
-
-    if (source_pos <= dest_pos && source_pos + selected_length > dest_pos)
-        distance = 0;
-    else if (dest_pos > source_pos)
-        distance = dest_pos - source_pos - selected_length;
-    else
-        distance = dest_pos - source_pos;
-
-    return distance;
-}
-
 void playlist_scroll_to_row(GtkTreeView *treeview, gint position)
 {
     GtkTreePath *path = gtk_tree_path_new_from_indices(position, -1);

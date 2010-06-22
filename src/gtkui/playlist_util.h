@@ -23,7 +23,6 @@
 
 void playlist_set_selected(GtkTreeView *treeview, GtkTreePath *path);
 void playlist_set_selected_list(GtkTreeView *treeview, GList *list, gint distance);
-gint calc_distance(gint source_pos, gint dest_pos, gint selected_length);
 GtkTreeView *playlist_get_treeview_from_page(GtkWidget *page);
 GtkTreeView *playlist_get_treeview(gint playlist);
 GtkTreeView *playlist_get_active_treeview(void);
