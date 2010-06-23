@@ -527,6 +527,7 @@ static GtkWidget *gtk_toolbar_button_add(GtkWidget * toolbar, void (*callback) (
     GtkWidget *button = gtk_button_new();
 
     gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
+    gtk_widget_set_can_focus(button, FALSE);
 
     icon = gtk_image_new_from_stock(stock_id, GTK_ICON_SIZE_BUTTON);
     gtk_container_add(GTK_CONTAINER(button), icon);
