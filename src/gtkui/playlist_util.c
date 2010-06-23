@@ -28,15 +28,7 @@
 #include "playlist_util.h"
 #include "ui_playlist_model.h"
 #include "ui_playlist_notebook.h"
-
-typedef struct
-{
-    GtkTreeView *treeview;
-    GtkTreePath *start_path;
-    GtkTreePath *end_path;
-} UiPlaylistSelection;
-
-static UiPlaylistSelection *pending;
+#include "ui_playlist_widget.h"
 
 GtkTreeView *playlist_get_treeview_from_page(GtkWidget *page)
 {
@@ -125,17 +117,13 @@ void playlist_set_selected_list(GtkTreeView *treeview, GList *list, gint distanc
     }
 }
 
-void playlist_scroll_to_row(GtkTreeView *treeview, gint position)
+void playlist_scroll_to_row (GtkTreeView * tree, gint row)
 {
-    GtkTreePath *path = gtk_tree_path_new_from_indices(position, -1);
+    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
 
-    g_return_if_fail(treeview != NULL);
-    g_return_if_fail(path != NULL);
-
-    gtk_tree_view_scroll_to_cell(treeview, path, NULL, FALSE, 0, 0);
-    gtk_tree_view_set_cursor(treeview, path, NULL, FALSE);
-    gtk_widget_grab_focus(GTK_WIDGET(treeview));
-    gtk_tree_path_free(path);
+    aud_playlist_select_all (model->playlist, FALSE);
+    aud_playlist_entry_set_selected (model->playlist, row, TRUE);
+    treeview_set_focus (tree, row);
 }
 
 GList *playlist_get_selected_list(GtkTreeView *treeview)
@@ -222,70 +210,14 @@ gint calculate_column_width(GtkWidget *widget, gint num)
     return (PANGO_PIXELS(pango_font_metrics_get_approximate_digit_width(font_metrics)) * digits) + 20;
 }
 
-gboolean playlist_is_pending_selection(void)
+void playlist_select_range (gint list, gint top, gint length)
 {
-    if (pending != NULL)
-        return TRUE;
-    else
-        return FALSE;
-}
+    gint count;
 
-void playlist_select_range(GtkTreeView *treeview, GtkTreePath *start_path, GtkTreePath *end_path)
-{
-    GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
+    aud_playlist_select_all (list, FALSE);
 
-    gtk_tree_selection_unselect_all(sel);
-    gtk_tree_view_set_cursor(treeview, start_path, NULL, FALSE);
-    gtk_tree_selection_select_range(sel, start_path, end_path);
-}
-
-void playlist_pending_selection_set(GtkTreeView *treeview, GtkTreePath *start_path, GtkTreePath *end_path)
-{
-    g_return_if_fail(treeview != NULL);
-    g_return_if_fail(start_path != NULL);
-    g_return_if_fail(end_path != NULL);
-
-    pending = g_slice_new0(UiPlaylistSelection);
-    pending->treeview = treeview;
-    pending->start_path = start_path;
-    pending->end_path = end_path;
-}
-
-void playlist_pending_selection_free(void)
-{
-    gtk_tree_path_free(pending->start_path);
-    gtk_tree_path_free(pending->end_path);
-    g_slice_free(UiPlaylistSelection, pending);
-    pending = NULL;
-}
-
-void playlist_pending_selection_apply(void)
-{
-    g_return_if_fail(pending != NULL);
-    g_return_if_fail(pending->start_path != NULL);
-    g_return_if_fail(pending->end_path != NULL);
-
-    playlist_select_range(pending->treeview, pending->start_path, pending->end_path);
-
-    playlist_pending_selection_free();
-}
-
-void playlist_block_selection(GtkTreeView *treeview)
-{
-    g_return_if_fail(treeview != NULL);
-
-    GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
-    gulong handler_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(treeview), "selection_changed_handler_id"));
-    g_signal_handler_block(G_OBJECT(sel), handler_id);
-}
-
-void playlist_unblock_selection(GtkTreeView *treeview)
-{
-    g_return_if_fail(treeview != NULL);
-
-    GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
-    gulong handler_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(treeview), "selection_changed_handler_id"));
-    g_signal_handler_unblock(G_OBJECT(sel), handler_id);
+    for (count = 0; count < length; count ++)
+        aud_playlist_entry_set_selected (list, top + count, TRUE);
 }
 
 gint playlist_count_selected_in_range (gint list, gint top, gint length)
@@ -302,52 +234,93 @@ gint playlist_count_selected_in_range (gint list, gint top, gint length)
     return selected;
 }
 
-void treeview_set_focus (GtkTreeView * tree, gint focus)
-{
-    GtkTreePath * path = gtk_tree_path_new_from_indices (focus, -1);
-    gtk_tree_view_set_cursor ((GtkTreeView *) tree, path, NULL, FALSE);
-    gtk_tree_path_free (path);
-}
-
 gint treeview_get_focus (GtkTreeView * tree)
 {
     GtkTreePath * path;
-    gint focus;
+    gint focus = -1;
 
     gtk_tree_view_get_cursor (tree, & path, NULL);
-    if (! path)
-        return -1;
+    if (path)
+    {
+        focus = gtk_tree_path_get_indices (path)[0];
+        gtk_tree_path_free (path);
+    }
 
-    focus = gtk_tree_path_get_indices (path)[0];
-    gtk_tree_path_free (path);
     return focus;
 }
 
-void treeview_clear_selection (GtkTreeView * tree)
+void treeview_set_focus (GtkTreeView * tree, gint focus)
 {
-    gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (tree));
+    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
+
+    if (aud_playlist_update_pending ())
+    {
+        model->focus_changed = TRUE;
+        model->focus = focus;
+    }
+    else
+    {
+        ui_playlist_widget_block_updates ((GtkWidget *) tree, TRUE);
+        treeview_set_focus_now (tree, focus);
+        ui_playlist_widget_block_updates ((GtkWidget *) tree, FALSE);
+    }
 }
 
-void treeview_set_selection_from_playlist (GtkTreeView * tree, gint list)
+void treeview_set_focus_now (GtkTreeView * tree, gint focus)
 {
-    GtkTreeModel * model = gtk_tree_view_get_model (tree);
+    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
+    GtkTreePath * path;
+
+    if (focus < 0)
+    {
+        if (! aud_playlist_entry_count (model->playlist))
+            return;
+        focus = 0;
+    }
+
+    path = gtk_tree_path_new_from_indices (focus, -1);
+    gtk_tree_view_set_cursor (tree, path, NULL, FALSE);
+    gtk_tree_view_scroll_to_cell (tree, path, NULL, FALSE, 0, 0);
+    gtk_tree_path_free (path);
+
+    /* set_cursor changes selection; undo it */
+    treeview_refresh_selection_now (tree);
+}
+
+void treeview_refresh_selection (GtkTreeView * tree)
+{
+    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
+
+    if (aud_playlist_update_pending ())
+        model->selection_changed = TRUE;
+    else
+    {
+        ui_playlist_widget_block_updates ((GtkWidget *) tree, TRUE);
+        treeview_refresh_selection_now (tree);
+        ui_playlist_widget_block_updates ((GtkWidget *) tree, FALSE);
+    }
+}
+
+void treeview_refresh_selection_now (GtkTreeView * tree)
+{
+    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
     GtkTreeSelection * sel = gtk_tree_view_get_selection (tree);
-    gint entries = aud_playlist_entry_count (list);
+    gint entries = aud_playlist_entry_count (model->playlist);
     GtkTreeIter iter;
     gint count;
 
     if (! entries)
         return;
 
-    gtk_tree_model_get_iter_first (model, & iter);
+    gtk_tree_model_get_iter_first ((GtkTreeModel *) model, & iter);
 
     for (count = 0; count < entries; count ++)
     {
-        if (aud_playlist_entry_get_selected (list, count))
+        if (aud_playlist_entry_get_selected (model->playlist, count))
             gtk_tree_selection_select_iter (sel, & iter);
         else
             gtk_tree_selection_unselect_iter (sel, & iter);
 
-        gtk_tree_model_iter_next (model, & iter);
+        gtk_tree_model_iter_next ((GtkTreeModel *) model, & iter);
     }
 }

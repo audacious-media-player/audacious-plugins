@@ -21,6 +21,7 @@
 #include "config.h"
 #include <audacious/plugin.h>
 #include "ui_playlist_model.h"
+#include "ui_playlist_widget.h"
 #include "playlist_util.h"
 
 static GObjectClass *parent_class = NULL;
@@ -435,6 +436,8 @@ ui_playlist_model_new(gint playlist)
     model->num_rows = aud_playlist_entry_count(playlist);
     model->position = aud_playlist_get_position (playlist);
     model->song_changed = FALSE;
+    model->focus_changed = FALSE;
+    model->selection_changed = FALSE;
 
     ui_playlist_model_associate_hooks(model);
 
@@ -520,16 +523,15 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
 {
     UiPlaylistModel *model = UI_PLAYLIST_MODEL(user_data);
     GtkTreeView *treeview = playlist_get_treeview(model->playlist);
-    GtkTreeSelection *sel = gtk_tree_view_get_selection(treeview);
     gint type = GPOINTER_TO_INT(hook_data);
 
     if (model->playlist != aud_playlist_get_active())
         return;
 
+    ui_playlist_widget_block_updates ((GtkWidget *) treeview, TRUE);
+
     if (type == PLAYLIST_UPDATE_STRUCTURE)
     {
-        playlist_block_selection(treeview);
-
         gint changed_rows;
         changed_rows = aud_playlist_entry_count(model->playlist) - model->num_rows;
         gboolean column_resize = (changed_rows != 0);
@@ -559,17 +561,6 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
             }
         }
 
-        /* Is there any pending selection? */
-        if (playlist_is_pending_selection())
-        {
-            playlist_pending_selection_apply();
-        }
-
-        playlist_unblock_selection(treeview);
-
-        /* Sync selection between the real playlist and the playlist widget */
-        g_signal_emit_by_name(G_OBJECT(sel), "changed");
-
         if (column_resize && multi_column_view)
         {
             GtkTreeViewColumn *column = gtk_tree_view_get_column(treeview, 0);
@@ -597,6 +588,16 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
         playlist_scroll_to_row (treeview, song);
         model->song_changed = FALSE;
     }
+
+    if (model->focus_changed)
+        treeview_set_focus_now (treeview, model->focus);
+    else if (model->selection_changed)
+        treeview_refresh_selection_now (treeview);
+
+    model->focus_changed = FALSE;
+    model->selection_changed = FALSE;
+
+    ui_playlist_widget_block_updates ((GtkWidget *) treeview, FALSE);
 }
 
 static void

@@ -24,5 +24,6 @@
 #include <audacious/plugin.h>
 
 GtkWidget *ui_playlist_widget_new(gint playlist);
+void ui_playlist_widget_block_updates (GtkWidget * widget, gboolean block);
 
 #endif

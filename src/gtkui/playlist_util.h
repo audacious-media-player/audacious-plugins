@@ -35,19 +35,17 @@ gint playlist_get_first_selected_index(GtkTreeView *treeview);
 GtkTreePath *playlist_get_first_selected_path(GtkTreeView *treeview);
 gint playlist_get_index_from_path(GtkTreePath * path);
 gint calculate_column_width(GtkWidget *widget, gint num);
-void playlist_select_range(GtkTreeView *treeview, GtkTreePath *start_path, GtkTreePath *end_path);
-void playlist_pending_selection_set(GtkTreeView *treeview, GtkTreePath *start_path, GtkTreePath *end_path);
-void playlist_pending_selection_free(void);
-void playlist_pending_selection_apply(void);
-gboolean playlist_is_pending_selection(void);
-void playlist_block_selection(GtkTreeView *treeview);
-void playlist_unblock_selection(GtkTreeView *treeview);
 
+void playlist_select_range (gint list, gint top, gint length);
 gint playlist_count_selected_in_range (gint list, gint top, gint length);
 
 gint treeview_get_focus (GtkTreeView * tree);
+
+/* these also refresh selection */
 void treeview_set_focus (GtkTreeView * tree, gint focus);
-void treeview_clear_selection (GtkTreeView * tree);
-void treeview_set_selection_from_playlist (GtkTreeView * tree, gint list);
+void treeview_set_focus_now (GtkTreeView * tree, gint focus);
+
+void treeview_refresh_selection (GtkTreeView * tree);
+void treeview_refresh_selection_now (GtkTreeView * tree);
 
 #endif
