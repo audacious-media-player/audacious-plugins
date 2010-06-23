@@ -194,7 +194,14 @@ static void _ui_playlist_widget_drag_data_received(GtkTreeView * widget, GdkDrag
         else
             dest_pos = aud_playlist_entry_count (playlist);
 
+        if (t->append)
+            dest_pos++;
+
         audgui_urilist_insert (playlist, dest_pos, (const gchar *) data->data);
+
+        GtkTreePath *end_path = gtk_tree_path_new_from_indices(MAX(0, dest_pos), -1);
+        GtkTreePath *start_path = gtk_tree_path_new_from_indices(MAX(0, dest_pos), -1);
+        playlist_pending_selection_set(widget, start_path, end_path);
 
         drag_tracker_cleanup();
     }
