@@ -32,6 +32,7 @@
 #include "ui_infoarea.h"
 #include "playlist_util.h"
 #include "actions-mainwin.h"
+#include "actions-playlist.h"
 
 gboolean multi_column_view;
 
@@ -568,46 +569,46 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
             {
                 case GDK_F2:
                     ui_playlist_notebook_edit_tab_title(NULL);
-                    return TRUE;
+                    break;
 
                 case GDK_minus: //FIXME
                     set_volume_diff(-5);
-                    return TRUE;
+                    break;
 
                 case GDK_plus: //FIXME
                     set_volume_diff(5);
-                    return TRUE;
+                    break;
 
                 case GDK_Left:
                 case GDK_KP_Left:
                 case GDK_KP_7:
                     audacious_drct_seek(audacious_drct_get_time() - 5000);
-                    return TRUE;
+                    break;
 
                 case GDK_Right:
                 case GDK_KP_Right:
                 case GDK_KP_9:
                     audacious_drct_seek(audacious_drct_get_time() + 5000);
-                    return TRUE;
+                    break;
 
                 case GDK_KP_4:
                     audacious_drct_pl_prev();
-                    return TRUE;
+                    break;
 
                 case GDK_KP_6:
                     audacious_drct_pl_next();
-                    return TRUE;
+                    break;
 
                 case GDK_KP_Insert:
                     action_jump_to_file();
-                    return TRUE;
+                    break;
 
                 case GDK_space:
                     if (audacious_drct_get_playing())
                         audacious_drct_pause();
                     else
                         audacious_drct_play();
-                    return TRUE;
+                    break;
 
                 case GDK_Escape:
                     if (ui_playlist_notebook_tab_title_editing == NULL)
@@ -616,13 +617,37 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                         gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, playing);
                         playlist_scroll_to_row(playlist_get_playing_treeview(),
                             aud_playlist_get_position(playing));
-                        return TRUE;
+                        break;
                     }
+
+                case GDK_Tab:
+                    action_playlist_next();
+                    break;
+
+                default:
+                    return FALSE;
             }
-        break;
+            break;
+
+        case GDK_SHIFT_MASK:
+        {
+            switch (event->keyval)
+            {
+                case GDK_ISO_Left_Tab:
+                case GDK_Tab:
+                    action_playlist_prev();
+                    break;
+
+                default:
+                    return FALSE;
+            }
+            break;
+        }
+        default:
+            return FALSE;
     }
 
-    return FALSE;
+    return TRUE;
 }
 
 static void ui_hooks_associate(void)
