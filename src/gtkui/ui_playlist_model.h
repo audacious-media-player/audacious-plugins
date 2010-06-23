@@ -63,6 +63,7 @@ struct _UiPlaylistModel
     guint num_rows;
     gint playlist;  /* associated playlist number */
     gint position;
+    gboolean song_changed;
 
     gint n_columns;
     GType *column_types;

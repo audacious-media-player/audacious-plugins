@@ -433,15 +433,8 @@ ui_playlist_model_new(gint playlist)
 
     model->playlist = playlist;
     model->num_rows = aud_playlist_entry_count(playlist);
-
-    if (playlist == aud_playlist_get_active())
-    {
-        model->position = aud_playlist_get_position(playlist);
-    }
-    else
-    {
-        model->position = -1;
-    }
+    model->position = aud_playlist_get_position (playlist);
+    model->song_changed = FALSE;
 
     ui_playlist_model_associate_hooks(model);
 
@@ -512,22 +505,14 @@ static void ui_playlist_model_playlist_rearraged(UiPlaylistModel *model)
     gtk_widget_queue_draw(GTK_WIDGET(playlist_get_treeview(model->playlist)));
 }
 
-static void
-ui_playlist_model_playlist_position(gpointer hook_data, gpointer user_data)
+static void ui_playlist_model_playlist_position (void * hook_data, void *
+ user_data)
 {
-    UiPlaylistModel *model = UI_PLAYLIST_MODEL(user_data);
-    gint position;
-    GtkTreeView *treeview;
+    gint playlist = GPOINTER_TO_INT (hook_data);
+    UiPlaylistModel * model = user_data;
 
-    position = aud_playlist_get_position(model->playlist);
-
-    if (position != model->position)
-    {
-        ui_playlist_model_update_position(model, position);
-
-        treeview = playlist_get_treeview(model->playlist);
-        playlist_scroll_to_row (treeview, position);
-    }
+    if (playlist == model->playlist)
+        model->song_changed = TRUE;
 }
 
 static void
@@ -600,6 +585,17 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
     {
         AUDDBG("playlist metadata update\n");
         ui_playlist_model_playlist_rearraged(model);
+    }
+
+    if (model->song_changed)
+    {
+        gint song = aud_playlist_get_position (model->playlist);
+
+        if (type != PLAYLIST_UPDATE_STRUCTURE) /* already did it? */
+            ui_playlist_model_update_position (model, song);
+
+        playlist_scroll_to_row (treeview, song);
+        model->song_changed = FALSE;
     }
 }
 
