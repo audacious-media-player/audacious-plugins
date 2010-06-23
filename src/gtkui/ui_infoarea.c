@@ -36,6 +36,8 @@
 #define DEFAULT_ARTWORK DATA_DIR "/images/audio.png"
 #define STREAM_ARTWORK DATA_DIR "/images/streambrowser-64x64.png"
 #define ICON_SIZE 64
+#define SPECT_BANDS 12
+#define VIS_OFFSET (12 * SPECT_BANDS + 12)
 
 typedef struct {
     GtkWidget *parent;
@@ -94,8 +96,8 @@ static void vis_clear_cb (void * hook_data, UIInfoArea * area)
 
 /****************************************************************************/
 
-static void
-ui_infoarea_draw_text(UIInfoArea *area, gint x, gint y, gfloat alpha, const gchar *font, const gchar *text)
+static void ui_infoarea_draw_text (UIInfoArea * area, gint x, gint y, gint
+ width, gfloat alpha, const gchar * font, const gchar * text)
 {
     cairo_t *cr;
     PangoLayout *pl;
@@ -114,6 +116,8 @@ ui_infoarea_draw_text(UIInfoArea *area, gint x, gint y, gfloat alpha, const gcha
     pango_layout_set_markup(pl, str, -1);
     pango_layout_set_font_description(pl, desc);
     pango_font_description_free(desc);
+    pango_layout_set_width (pl, width * PANGO_SCALE);
+    pango_layout_set_ellipsize (pl, PANGO_ELLIPSIZE_END);
 
     AUDDBG("Drawing %s to %d, %d at %p layout %p\n", text, x, y, cr, pl);
 
@@ -145,8 +149,6 @@ static struct {
     { 0xec, 0xce, 0xb6 },
 };
 
-#define SPECT_BANDS	(12)
-
 static void ui_infoarea_draw_visualizer (UIInfoArea * area)
 {
     GtkAllocation alloc;
@@ -159,7 +161,7 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
     {
         gint x, y, w, h;
 
-        x = alloc.width - (12 * SPECT_BANDS + 12) + (i * 12);
+        x = alloc.width - VIS_OFFSET + 12 * i;
         w = 10;
 
         y = 11;
@@ -234,16 +236,22 @@ ui_infoarea_draw_album_art(UIInfoArea *area)
 void
 ui_infoarea_draw_title(UIInfoArea *area)
 {
+    GtkAllocation alloc;
+    gint width;
+
+    gtk_widget_get_allocation (area->parent, & alloc);
+    width = alloc.width - (86 + VIS_OFFSET + 6);
+
     if (area->title != NULL)
-        ui_infoarea_draw_text (area, 86,  8, area->alpha.title, "Sans 20",
+        ui_infoarea_draw_text (area, 86, 8, width, area->alpha.title, "Sans 20",
          area->title);
 
     if (area->artist != NULL)
-        ui_infoarea_draw_text (area, 86, 42, area->alpha.artist, "Sans 9",
-         area->artist);
+        ui_infoarea_draw_text (area, 86, 42, width, area->alpha.artist,
+         "Sans 9", area->artist);
 
     if (area->album != NULL)
-        ui_infoarea_draw_text (area, 86, 58, area->alpha.album, "Sans 9",
+        ui_infoarea_draw_text (area, 86, 58, width, area->alpha.album, "Sans 9",
          area->album);
 }
 
