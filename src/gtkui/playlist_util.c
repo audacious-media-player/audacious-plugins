@@ -287,3 +287,67 @@ void playlist_unblock_selection(GtkTreeView *treeview)
     gulong handler_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(treeview), "selection_changed_handler_id"));
     g_signal_handler_unblock(G_OBJECT(sel), handler_id);
 }
+
+gint playlist_count_selected_in_range (gint list, gint top, gint length)
+{
+    gint selected = 0;
+    gint count;
+
+    for (count = 0; count < length; count ++)
+    {
+        if (aud_playlist_entry_get_selected (list, top + count))
+            selected ++;
+    }
+
+    return selected;
+}
+
+void treeview_set_focus (GtkTreeView * tree, gint focus)
+{
+    GtkTreePath * path = gtk_tree_path_new_from_indices (focus, -1);
+    gtk_tree_view_set_cursor ((GtkTreeView *) tree, path, NULL, FALSE);
+    gtk_tree_path_free (path);
+}
+
+gint treeview_get_focus (GtkTreeView * tree)
+{
+    GtkTreePath * path;
+    gint focus;
+
+    gtk_tree_view_get_cursor (tree, & path, NULL);
+    if (! path)
+        return -1;
+
+    focus = gtk_tree_path_get_indices (path)[0];
+    gtk_tree_path_free (path);
+    return focus;
+}
+
+void treeview_clear_selection (GtkTreeView * tree)
+{
+    gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (tree));
+}
+
+void treeview_set_selection_from_playlist (GtkTreeView * tree, gint list)
+{
+    GtkTreeModel * model = gtk_tree_view_get_model (tree);
+    GtkTreeSelection * sel = gtk_tree_view_get_selection (tree);
+    gint entries = aud_playlist_entry_count (list);
+    GtkTreeIter iter;
+    gint count;
+
+    if (! entries)
+        return;
+
+    gtk_tree_model_get_iter_first (model, & iter);
+
+    for (count = 0; count < entries; count ++)
+    {
+        if (aud_playlist_entry_get_selected (list, count))
+            gtk_tree_selection_select_iter (sel, & iter);
+        else
+            gtk_tree_selection_unselect_iter (sel, & iter);
+
+        gtk_tree_model_iter_next (model, & iter);
+    }
+}

@@ -43,5 +43,11 @@ gboolean playlist_is_pending_selection(void);
 void playlist_block_selection(GtkTreeView *treeview);
 void playlist_unblock_selection(GtkTreeView *treeview);
 
-#endif
+gint playlist_count_selected_in_range (gint list, gint top, gint length);
 
+gint treeview_get_focus (GtkTreeView * tree);
+void treeview_set_focus (GtkTreeView * tree, gint focus);
+void treeview_clear_selection (GtkTreeView * tree);
+void treeview_set_selection_from_playlist (GtkTreeView * tree, gint list);
+
+#endif

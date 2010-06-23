@@ -484,7 +484,17 @@ void action_playlist_remove_all(void)
 
 void action_playlist_remove_selected(GtkAction *act)
 {
-    aud_playlist_delete_selected(aud_playlist_get_active());
+    gint list = aud_playlist_get_active ();
+    GtkTreeView * tree = playlist_get_treeview (list);
+    gint focus = treeview_get_focus (tree);
+
+    focus -= playlist_count_selected_in_range (list, 0, focus);
+    aud_playlist_delete_selected (list);
+    treeview_clear_selection (tree);
+
+    if (focus == aud_playlist_entry_count (list))
+        focus --;
+    treeview_set_focus (tree, focus);
 }
 
 void action_playlist_remove_unselected(void)

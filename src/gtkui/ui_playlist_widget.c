@@ -42,53 +42,6 @@ typedef struct
 
 static UiPlaylistDragTracker *t;
 
-static gint count_selected_in_range (gint list, gint top, gint length)
-{
-    gint selected = 0;
-    gint count;
-
-    for (count = 0; count < length; count ++)
-    {
-        if (aud_playlist_entry_get_selected (list, top + count))
-            selected ++;
-    }
-
-    return selected;
-}
-
-/* Warning: This also sets the selection. */
-static void set_focused (GtkTreeView * tree, gint row)
-{
-    GtkTreePath * path = gtk_tree_path_new_from_indices (row, -1);
-    gtk_tree_view_set_cursor ((GtkTreeView *) tree, path, NULL, FALSE);
-    gtk_tree_path_free (path);
-}
-
-static void get_selection_from_playlist (GtkTreeView * tree, gint list)
-{
-    GtkTreeModel * model = gtk_tree_view_get_model (tree);
-    GtkTreeSelection * sel = gtk_tree_view_get_selection (tree);
-    gint entries = aud_playlist_entry_count (list);
-    GtkTreeIter iter;
-    gint count;
-
-    if (! entries)
-        return;
-
-    gtk_tree_selection_unselect_all (sel);
-    gtk_tree_model_get_iter_first (model, & iter);
-
-    for (count = 0; count < entries; count ++)
-    {
-        if (aud_playlist_entry_get_selected (list, count))
-            gtk_tree_selection_select_iter (sel, & iter);
-        else
-            gtk_tree_selection_unselect_iter (sel, & iter);
-
-        gtk_tree_model_iter_next (model, & iter);
-    }
-}
-
 static void _ui_playlist_widget_drag_begin(GtkWidget *widget, GdkDragContext * context, gpointer data)
 {
     t = g_slice_new0(UiPlaylistDragTracker);
@@ -275,16 +228,16 @@ static void _ui_playlist_widget_drag_end(GtkTreeView * widget, GdkDragContext * 
         /* Adjust the shift amount so that the selected entry closest to the
          * destination ends up at the destination. */
         if (dest_pos > t->source_pos)
-            dest_pos -= count_selected_in_range (dest_playlist, t->source_pos,
-             dest_pos - t->source_pos);
+            dest_pos -= playlist_count_selected_in_range (dest_playlist,
+             t->source_pos, dest_pos - t->source_pos);
         else
-            dest_pos += count_selected_in_range (dest_playlist, dest_pos,
-             t->source_pos - dest_pos);
+            dest_pos += playlist_count_selected_in_range (dest_playlist,
+             dest_pos, t->source_pos - dest_pos);
 
         aud_playlist_shift (dest_playlist, t->source_pos, dest_pos -
          t->source_pos);
-        set_focused ((GtkTreeView *) dest_treeview, dest_pos);
-        get_selection_from_playlist (dest_treeview, dest_playlist);
+        treeview_set_focus (dest_treeview, dest_pos);
+        treeview_set_selection_from_playlist (dest_treeview, dest_playlist);
     }
     else
     {
