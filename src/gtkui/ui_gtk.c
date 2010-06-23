@@ -716,6 +716,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     /* TODO: make this configureable */
     gtk_range_set_update_policy(GTK_RANGE(slider), GTK_UPDATE_DISCONTINUOUS);
     gtk_widget_set_size_request(slider, 120, -1);
+    gtk_widget_set_can_focus(slider, FALSE);
     gtk_box_pack_start(GTK_BOX(shbox), slider, TRUE, TRUE, 0);
 
     label_time = gtk_markup_label_new(NULL);
@@ -724,6 +725,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     volume = gtk_volume_button_new();
     gtk_button_set_relief(GTK_BUTTON(volume), GTK_RELIEF_NONE);
     gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
+    gtk_widget_set_can_focus(volume, FALSE);
     /* Set the default volume to the balance average.
        (I'll add balance control later) -Ryan */
     audacious_drct_get_volume(&lvol, &rvol);
