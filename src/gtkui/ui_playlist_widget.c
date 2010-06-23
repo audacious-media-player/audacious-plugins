@@ -41,6 +41,7 @@ typedef struct
 } UiPlaylistDragTracker;
 
 static UiPlaylistDragTracker *t;
+static gboolean dropped = FALSE;
 
 static void _ui_playlist_widget_drag_begin(GtkWidget *widget, GdkDragContext * context, gpointer data)
 {
@@ -177,8 +178,29 @@ static void drag_tracker_cleanup()
     t = NULL;
 }
 
+static gboolean drag_drop_cb (GtkWidget * widget, GdkDragContext * context,
+ gint x, gint y, guint time, void * unused)
+{
+    g_signal_stop_emission_by_name (widget, "drag-drop");
+
+    dropped = TRUE;
+    gtk_drag_get_data (widget, context, gdk_atom_intern ("text/uri-list",
+     FALSE), time);
+    return TRUE;
+}
+
 static void _ui_playlist_widget_drag_data_received(GtkTreeView * widget, GdkDragContext * context, gint x, gint y, GtkSelectionData *data, guint info, guint time, gpointer user_data)
 {
+    g_signal_stop_emission_by_name (widget, "drag-data-received");
+
+    if (! dropped)
+    {
+        gdk_drag_status (context, GDK_ACTION_COPY, time);
+        return;
+    }
+
+    dropped = FALSE;
+
     /* Maybe dragged some files from another application. */
     if (gtk_drag_get_source_widget(context) == NULL)
     {
@@ -545,6 +567,7 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
 
     g_signal_connect(treeview, "drag-begin", G_CALLBACK(_ui_playlist_widget_drag_begin), NULL);
     g_signal_connect(treeview, "drag-motion", G_CALLBACK(_ui_playlist_widget_drag_motion), NULL);
+    g_signal_connect(treeview, "drag-drop", (GCallback) drag_drop_cb, NULL);
     g_signal_connect(treeview, "drag-data-received", G_CALLBACK(_ui_playlist_widget_drag_data_received), NULL);
     g_signal_connect(treeview, "drag-end", G_CALLBACK(_ui_playlist_widget_drag_end), NULL);
 
