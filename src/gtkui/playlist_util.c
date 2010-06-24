@@ -20,10 +20,12 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <audacious/plugin.h>
-#include <math.h>
+#include <libaudgui/libaudgui.h>
 
 #include "playlist_util.h"
 #include "ui_playlist_model.h"
@@ -234,6 +236,31 @@ gint playlist_count_selected_in_range (gint list, gint top, gint length)
     return selected;
 }
 
+void playlist_selected_to_indexes (gint list, struct index * * namesp,
+ struct index * * tuplesp)
+{
+    gint entries = aud_playlist_entry_count (list);
+    gint count;
+    const Tuple * tuple;
+
+    * namesp = index_new ();
+    * tuplesp = index_new ();
+
+    for (count = 0; count < entries; count ++)
+    {
+        if (! aud_playlist_entry_get_selected (list, count))
+            continue;
+
+        index_append (* namesp, g_strdup (aud_playlist_entry_get_filename (list,
+         count)));
+
+        if ((tuple = aud_playlist_entry_get_tuple (list, count)))
+            mowgli_object_ref ((Tuple *) tuple);
+
+        index_append (* tuplesp, (Tuple *) tuple);
+    }
+}
+
 gint treeview_get_focus (GtkTreeView * tree)
 {
     GtkTreePath * path;
@@ -323,4 +350,48 @@ void treeview_refresh_selection_now (GtkTreeView * tree)
 
         gtk_tree_model_iter_next ((GtkTreeModel *) model, & iter);
     }
+}
+
+void treeview_add_indexes (GtkTreeView * tree, gint row, struct index * names,
+ struct index * tuples)
+{
+    gint playlist = ((UiPlaylistModel *) gtk_tree_view_get_model
+     (tree))->playlist;
+    gint entries = aud_playlist_entry_count (playlist);
+    gint new;
+
+    if (row < 0)
+        row = entries;
+
+    aud_playlist_entry_insert_batch (playlist, row, names, tuples);
+    new = aud_playlist_entry_count (playlist);
+    playlist_select_range (playlist, row, new - entries);
+    treeview_set_focus (tree, MIN (row, new - 1));
+}
+
+void treeview_add_urilist (GtkTreeView * tree, gint row, const gchar * list)
+{
+    gint playlist = ((UiPlaylistModel *) gtk_tree_view_get_model
+     (tree))->playlist;
+    gint entries = aud_playlist_entry_count (playlist);
+    gint new;
+
+    if (row < 0)
+        row = entries;
+
+    audgui_urilist_insert (playlist, row, list);
+    new = aud_playlist_entry_count (playlist);
+    playlist_select_range (playlist, row, new - entries);
+    treeview_set_focus (tree, MIN (row, new - 1));
+}
+
+void treeview_remove_selected (GtkTreeView * tree)
+{
+    gint list = ((UiPlaylistModel *) gtk_tree_view_get_model (tree))->playlist;
+    gint focus = treeview_get_focus (tree);
+
+    focus -= playlist_count_selected_in_range (list, 0, focus);
+    aud_playlist_delete_selected (list);
+    treeview_set_focus (tree, (focus < aud_playlist_entry_count (list)) ? focus
+     : focus - 1);
 }

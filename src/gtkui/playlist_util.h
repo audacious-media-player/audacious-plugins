@@ -38,6 +38,8 @@ gint calculate_column_width(GtkWidget *widget, gint num);
 
 void playlist_select_range (gint list, gint top, gint length);
 gint playlist_count_selected_in_range (gint list, gint top, gint length);
+void playlist_selected_to_indexes (gint list, struct index * * namesp,
+ struct index * * tuplesp);
 
 gint treeview_get_focus (GtkTreeView * tree);
 
@@ -47,5 +49,10 @@ void treeview_set_focus_now (GtkTreeView * tree, gint focus);
 
 void treeview_refresh_selection (GtkTreeView * tree);
 void treeview_refresh_selection_now (GtkTreeView * tree);
+
+void treeview_add_indexes (GtkTreeView * tree, gint row, struct index * names,
+ struct index * tuples);
+void treeview_add_urilist (GtkTreeView * tree, gint row, const gchar * list);
+void treeview_remove_selected (GtkTreeView * tree);
 
 #endif

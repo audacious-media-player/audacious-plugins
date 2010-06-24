@@ -482,16 +482,9 @@ void action_playlist_remove_all(void)
     aud_playlist_entry_delete(playlist, 0, aud_playlist_entry_count(playlist));
 }
 
-void action_playlist_remove_selected(GtkAction *act)
+void action_playlist_remove_selected (GtkAction * act)
 {
-    gint list = aud_playlist_get_active ();
-    GtkTreeView * tree = playlist_get_treeview (list);
-    gint focus = treeview_get_focus (tree);
-
-    focus -= playlist_count_selected_in_range (list, 0, focus);
-    aud_playlist_delete_selected (list);
-    treeview_set_focus (tree, (focus < aud_playlist_entry_count (list)) ? focus
-     : focus - 1);
+    treeview_remove_selected (playlist_get_treeview (aud_playlist_get_active ()));
 }
 
 void action_playlist_remove_unselected(void)
@@ -820,22 +813,11 @@ void action_playlist_paste(void)
 {
     GtkClipboard *clip = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
     gchar *list = gtk_clipboard_wait_for_text(clip);
-    gint playlist = aud_playlist_get_active ();
-    GtkTreeView * tree = playlist_get_treeview (playlist);
-    gint at = treeview_get_focus (tree);
-    gint entries;
+    GtkTreeView * tree = playlist_get_treeview (aud_playlist_get_active ());
 
     if (list == NULL)
         return;
 
-    entries = aud_playlist_entry_count (playlist);
-    if (at < 0)
-        at = entries;
-
-    audgui_urilist_insert (playlist, at, list);
-    playlist_select_range (playlist, at, aud_playlist_entry_count (playlist) -
-     entries);
-    treeview_refresh_selection (tree);
-
-    g_free(list);
+    treeview_add_urilist (tree, treeview_get_focus (tree), list);
+    g_free (list);
 }
