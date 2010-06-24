@@ -202,7 +202,11 @@ void ui_playlist_notebook_create_tab(gint playlist)
     gtk_notebook_set_tab_reorderable(UI_PLAYLIST_NOTEBOOK, scrollwin, TRUE);
 
     if (position >= 0)
-        playlist_scroll_to_row ((GtkTreeView *) treeview, position);
+    {
+        aud_playlist_select_all (playlist, FALSE);
+        aud_playlist_entry_set_selected (playlist, position, TRUE);
+        treeview_set_focus_now ((GtkTreeView *) treeview, position);
+    }
 
     g_signal_connect(ebox, "button-press-event", G_CALLBACK(tab_button_press_cb), NULL);
     g_signal_connect(ebox, "key-press-event", G_CALLBACK(tab_key_press_cb), NULL);
