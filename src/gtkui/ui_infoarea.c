@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2010 William Pitcock <nenolod@atheme.org>.
+ *  Copyright (C) 2010 John Lindgren <john.lindgren@tds.net>.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -43,20 +44,14 @@ typedef struct {
     GtkWidget *parent;
 
     gchar * title, * artist, * album;
+    gchar * last_title, * last_artist, * last_album;
+    gfloat alpha, last_alpha;
 
-    struct {
-        gfloat title;
-        gfloat artist;
-        gfloat album;
-        gfloat artwork;
-    } alpha;
-
-    gint fadein_timeout;
-    gint fadeout_timeout;
+    gboolean stopped;
+    gint fade_timeout;
     guint8 visdata[20];
 
-    InputPlayback *playback;
-    GdkPixbuf *pb;
+    GdkPixbuf * pb, * last_pb;
 } UIInfoArea;
 
 static const gfloat alpha_step = 0.10;
@@ -97,7 +92,8 @@ static void vis_clear_cb (void * hook_data, UIInfoArea * area)
 /****************************************************************************/
 
 static void ui_infoarea_draw_text (UIInfoArea * area, gint x, gint y, gint
- width, gfloat alpha, const gchar * font, const gchar * text)
+ width, gfloat r, gfloat g, gfloat b, gfloat a, const gchar * font,
+ const gchar * text)
 {
     cairo_t *cr;
     PangoLayout *pl;
@@ -109,7 +105,7 @@ static void ui_infoarea_draw_text (UIInfoArea * area, gint x, gint y, gint
     cr = gdk_cairo_create(area->parent->window);
     cairo_move_to(cr, x, y);
     cairo_set_operator(cr, CAIRO_OPERATOR_ATOP);
-    cairo_set_source_rgba(cr, 1.0, 1.0, 1.0, alpha);
+    cairo_set_source_rgba(cr, r, g, b, a);
 
     desc = pango_font_description_from_string(font);
     pl = gtk_widget_create_pango_layout(area->parent, NULL);
@@ -202,39 +198,39 @@ static GdkPixbuf * get_current_album_art (void)
     return pixbuf;
 }
 
-void
-ui_infoarea_draw_album_art(UIInfoArea *area)
+void ui_infoarea_draw_album_art (UIInfoArea * area)
 {
-    GError *err = NULL;
-    cairo_t *cr;
+    cairo_t * cr;
 
-    if (area->title == NULL)
-        return;
-
-    if (area->pb == NULL)
+    if (audacious_drct_get_playing () && ! area->pb)
     {
-        if (audacious_drct_get_playing ())
-            area->pb = get_current_album_art ();
+        area->pb = get_current_album_art ();
 
-        if (area->pb == NULL)
-            area->pb = gdk_pixbuf_new_from_file (DEFAULT_ARTWORK, & err);
+        if (! area->pb)
+            area->pb = gdk_pixbuf_new_from_file (DEFAULT_ARTWORK, NULL);
 
-        if (area->pb != NULL)
+        if (area->pb)
             audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
     }
 
-    if (area->pb == NULL)
-        return;
+    cr = gdk_cairo_create (area->parent->window);
 
-    cr = gdk_cairo_create(area->parent->window);
-    gdk_cairo_set_source_pixbuf(cr, area->pb, 10.0, 10.0);
-    cairo_paint_with_alpha(cr, area->alpha.artwork);
+    if (area->pb)
+    {
+        gdk_cairo_set_source_pixbuf (cr, area->pb, 10.0, 10.0);
+        cairo_paint_with_alpha (cr, area->alpha);
+    }
 
-    cairo_destroy(cr);
+    if (area->last_pb)
+    {
+        gdk_cairo_set_source_pixbuf (cr, area->last_pb, 10.0, 10.0);
+        cairo_paint_with_alpha (cr, area->last_alpha);
+    }
+
+    cairo_destroy (cr);
 }
 
-void
-ui_infoarea_draw_title(UIInfoArea *area)
+void ui_infoarea_draw_title (UIInfoArea * area)
 {
     GtkAllocation alloc;
     gint width;
@@ -242,17 +238,24 @@ ui_infoarea_draw_title(UIInfoArea *area)
     gtk_widget_get_allocation (area->parent, & alloc);
     width = alloc.width - (86 + VIS_OFFSET + 6);
 
-    if (area->title != NULL)
-        ui_infoarea_draw_text (area, 86, 8, width, area->alpha.title, "Sans 18",
-         area->title);
-
-    if (area->artist != NULL)
-        ui_infoarea_draw_text (area, 86, 42, width, area->alpha.artist,
+    if (area->title)
+        ui_infoarea_draw_text (area, 86, 8, width, 1, 1, 1, area->alpha,
+         "Sans 18", area->title);
+    if (area->last_title)
+        ui_infoarea_draw_text (area, 86, 8, width, 1, 1, 1, area->last_alpha,
+         "Sans 18", area->last_title);
+    if (area->artist)
+        ui_infoarea_draw_text (area, 86, 42, width, 1, 1, 1, area->alpha,
          "Sans 9", area->artist);
-
-    if (area->album != NULL)
-        ui_infoarea_draw_text (area, 86, 58, width, area->alpha.album, "Sans 9",
-         area->album);
+    if (area->last_artist)
+        ui_infoarea_draw_text (area, 86, 42, width, 1, 1, 1, area->last_alpha,
+         "Sans 9", area->last_artist);
+    if (area->album)
+        ui_infoarea_draw_text (area, 86, 58, width, 0.7, 0.7, 0.7, area->alpha,
+         "Sans 9", area->album);
+    if (area->last_album)
+        ui_infoarea_draw_text (area, 86, 58, width, 0.7, 0.7, 0.7,
+         area->last_alpha, "Sans 9", area->last_album);
 }
 
 void
@@ -286,88 +289,31 @@ ui_infoarea_expose_event(UIInfoArea *area, GdkEventExpose *event, gpointer unuse
     return TRUE;
 }
 
-static gboolean
-ui_infoarea_do_fade_in(UIInfoArea *area)
+static gboolean ui_infoarea_do_fade (UIInfoArea * area)
 {
     gboolean ret = FALSE;
 
-    if (area->alpha.title < 1.0)
+    if (audacious_drct_get_playing () && area->alpha < 1)
     {
-        area->alpha.title += alpha_step;
+        area->alpha += alpha_step;
         ret = TRUE;
     }
 
-    if (area->alpha.artist < 1.0)
+    if (area->last_alpha > 0)
     {
-        area->alpha.artist += alpha_step;
+        area->last_alpha -= alpha_step;
         ret = TRUE;
     }
 
-    if (area->alpha.album < 0.7)
-    {
-        area->alpha.album += alpha_step;
-        ret = TRUE;
-    }
+    gtk_widget_queue_draw ((GtkWidget *) area->parent);
 
-    if (area->alpha.artwork < 0.7)
-    {
-        area->alpha.artwork += alpha_step;
-        ret = TRUE;
-    }
-
-    gtk_widget_queue_draw(GTK_WIDGET(area->parent));
-
-    if (ret == FALSE)
-        area->fadein_timeout = 0;
-
-    if (ret == FALSE)
-        AUDDBG("fadein complete\n");
+    if (! ret)
+        area->fade_timeout = 0;
 
     return ret;
 }
 
-static gboolean
-ui_infoarea_do_fade_out(UIInfoArea *area)
-{
-    gboolean ret = FALSE;
-
-    if (area->alpha.title > 0.0)
-    {
-        area->alpha.title -= alpha_step;
-        ret = TRUE;
-    }
-
-    if (area->alpha.artist > 0.0)
-    {
-        area->alpha.artist -= alpha_step;
-        ret = TRUE;
-    }
-
-    if (area->alpha.album > 0.0)
-    {
-        area->alpha.album -= alpha_step;
-        ret = TRUE;
-    }
-
-    if (area->alpha.artwork > 0.0)
-    {
-        area->alpha.artwork -= alpha_step;
-        ret = TRUE;
-    }
-
-    gtk_widget_queue_draw(GTK_WIDGET(area->parent));
-
-    if (ret == FALSE) {
-        area->fadeout_timeout = 0;
-
-        AUDDBG("fadeout complete\n");
-    }
-
-    return ret;
-}
-
-void
-ui_infoarea_set_title(gpointer unused, UIInfoArea *area)
+void ui_infoarea_set_title (void * data, UIInfoArea * area)
 {
     gint playlist = aud_playlist_get_playing ();
     gint entry = aud_playlist_get_position (playlist);
@@ -392,43 +338,53 @@ ui_infoarea_set_title(gpointer unused, UIInfoArea *area)
     if (tuple && (s = tuple_get_string (tuple, FIELD_ALBUM, NULL)))
         area->album = g_strdup (s);
 
-    area->alpha.artist = area->alpha.album = area->alpha.artwork = area->alpha.title = 0.0;
-
-    if (!area->fadein_timeout)
-        area->fadein_timeout = g_timeout_add(10, (GSourceFunc) ui_infoarea_do_fade_in, area);
-
-    if (area->fadeout_timeout) {
-        g_source_remove(area->fadeout_timeout);
-        area->fadeout_timeout = 0;
-    }
-
-    gtk_widget_queue_draw(GTK_WIDGET(area->parent));
+    gtk_widget_queue_draw ((GtkWidget *) area->parent);
 }
 
-
-void
-ui_infoarea_playback_start(InputPlayback *playback, UIInfoArea *area)
+static void infoarea_next (UIInfoArea * area)
 {
-    g_return_if_fail(area != NULL);
+    if (area->last_pb)
+        g_object_unref (area->last_pb);
+    area->last_pb = area->pb;
+    area->pb = NULL;
 
-    area->playback = playback;
+    g_free (area->last_title);
+    area->last_title = area->title;
+    area->title = NULL;
 
-    if (area->pb != NULL)
-    {
-        g_object_unref(area->pb);
-        area->pb = NULL;
-    }
+    g_free (area->last_artist);
+    area->last_artist = area->artist;
+    area->artist = NULL;
+
+    g_free (area->last_album);
+    area->last_album = area->album;
+    area->album = NULL;
+
+    area->last_alpha = area->alpha;
+    area->alpha = 0;
+
+    gtk_widget_queue_draw ((GtkWidget *) area->parent);
 }
 
-void
-ui_infoarea_playback_stop(gpointer unused, UIInfoArea *area)
+static void ui_infoarea_playback_start (void * data, UIInfoArea * area)
 {
-    g_return_if_fail(area != NULL);
+    if (! area->stopped) /* moved to the next song without stopping? */
+        infoarea_next (area);
+    area->stopped = FALSE;
 
-    if (!area->fadeout_timeout)
-        area->fadeout_timeout = g_timeout_add(10, (GSourceFunc) ui_infoarea_do_fade_out, area);
+    if (! area->fade_timeout)
+        area->fade_timeout = g_timeout_add (30, (GSourceFunc)
+         ui_infoarea_do_fade, area);
+}
 
-    gtk_widget_queue_draw(GTK_WIDGET(area->parent));
+static void ui_infoarea_playback_stop (void * data, UIInfoArea * area)
+{
+    infoarea_next (area);
+    area->stopped = TRUE;
+
+    if (! area->fade_timeout)
+        area->fade_timeout = g_timeout_add (30, (GSourceFunc)
+         ui_infoarea_do_fade, area);
 }
 
 static void destroy_cb (GtkObject * parent, UIInfoArea * area)
@@ -445,9 +401,14 @@ static void destroy_cb (GtkObject * parent, UIInfoArea * area)
     g_free (area->title);
     g_free (area->artist);
     g_free (area->album);
+    g_free (area->last_title);
+    g_free (area->last_artist);
+    g_free (area->last_album);
 
-    if (area->pb != NULL)
+    if (area->pb)
         g_object_unref (area->pb);
+    if (area->last_pb)
+        g_object_unref (area->last_pb);
 
     g_slice_free (UIInfoArea, area);
 }
@@ -474,6 +435,9 @@ GtkWidget * ui_infoarea_new (void)
     aud_hook_associate("visualization clear", (HookFunction) vis_clear_cb, area);
 
     g_signal_connect (area->parent, "destroy", (GCallback) destroy_cb, area);
+
+    if (audacious_drct_get_playing ())
+        ui_infoarea_playback_start (NULL, area);
 
     return area->parent;
 }
