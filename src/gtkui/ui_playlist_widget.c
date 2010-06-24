@@ -421,7 +421,11 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
     {
         gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), TRUE);
 
-        ui_playlist_widget_set_column(treeview, NULL, PLAYLIST_MULTI_COLUMN_NUM, calculate_column_width(treeview, model->num_rows), FALSE, FALSE);
+        if (aud_cfg->show_numbers_in_pl)
+            ui_playlist_widget_set_column (treeview, NULL,
+             PLAYLIST_MULTI_COLUMN_NUM, calculate_column_width (treeview,
+             model->num_rows), FALSE, FALSE);
+
         ui_playlist_widget_set_column(treeview, "Artist", PLAYLIST_MULTI_COLUMN_ARTIST, 150, TRUE, TRUE);
         ui_playlist_widget_set_column(treeview, "Album", PLAYLIST_MULTI_COLUMN_ALBUM, 200, TRUE, TRUE);
         ui_playlist_widget_set_column(treeview, "No", PLAYLIST_MULTI_COLUMN_TRACK_NUM, 40, FALSE, TRUE);
@@ -435,10 +439,13 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
         gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_FIXED);
         gtk_tree_view_column_set_spacing(column, 8);
 
-        renderer = gtk_cell_renderer_text_new();
-        gtk_tree_view_column_pack_start(column, renderer, FALSE);
-        gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_NUM, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
-        g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 1, NULL);
+        if (aud_cfg->show_numbers_in_pl)
+        {
+            renderer = gtk_cell_renderer_text_new();
+            gtk_tree_view_column_pack_start(column, renderer, FALSE);
+            gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_NUM, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
+            g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 1, NULL);
+        }
 
         renderer = gtk_cell_renderer_text_new();
         gtk_tree_view_column_pack_start(column, renderer, TRUE);
