@@ -243,7 +243,7 @@ ui_infoarea_draw_title(UIInfoArea *area)
     width = alloc.width - (86 + VIS_OFFSET + 6);
 
     if (area->title != NULL)
-        ui_infoarea_draw_text (area, 86, 8, width, area->alpha.title, "Sans 20",
+        ui_infoarea_draw_text (area, 86, 8, width, area->alpha.title, "Sans 18",
          area->title);
 
     if (area->artist != NULL)
