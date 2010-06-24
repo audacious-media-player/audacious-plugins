@@ -647,7 +647,12 @@ flac_update_song_tuple(Tuple *tuple, VFSFile *fd)
     g_return_val_if_fail(iter != NULL, FALSE);
 
     ret = FLAC__metadata_simple_iterator_init(iter, filename, false, false);
-    g_return_val_if_fail(ret, FALSE);
+
+    if (!ret)
+    {
+        FLAC__metadata_simple_iterator_delete(iter);
+        return FALSE;
+    }
 
     while (FLAC__metadata_simple_iterator_get_block_type(iter) != FLAC__METADATA_TYPE_VORBIS_COMMENT)
     {
