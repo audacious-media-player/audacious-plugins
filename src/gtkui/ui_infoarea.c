@@ -167,15 +167,15 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
         y = 11;
         h = 64 - area->visdata[i];
 
-        cairo_set_source_rgba (cr, 0, 0, 0, area->alpha.title);
+        cairo_set_source_rgb (cr, 0, 0, 0);
         cairo_rectangle (cr, x, y, w, h);
         cairo_fill (cr);
 
         y = 11 + 64 - area->visdata[i];
         h = area->visdata[i];
 
-        cairo_set_source_rgba (cr, colors[i].red / 255.0, colors[i].green /
-         255.0, colors[i].blue / 255.0, area->alpha.title);
+        cairo_set_source_rgb (cr, colors[i].red / 255.0, colors[i].green /
+         255.0, colors[i].blue / 255.0);
         cairo_rectangle (cr, x, y, w, h);
         cairo_fill (cr);
     }
