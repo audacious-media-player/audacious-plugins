@@ -225,18 +225,18 @@ Tuple* get_tuple_from_file(const gchar *filename, VFSFile *fd, callback_info *in
     if (info->bitrate > 0)
         aud_tuple_associate_int (out, FIELD_BITRATE, NULL, (info->bitrate + 500)
          / 1000);
-         
-         
+
+
     if (info->replaygain.has_rg)
     {
         if (info->replaygain.album_gain != NULL)
             aud_tuple_associate_int (out, FIELD_GAIN_ALBUM_GAIN, NULL, atof
              (info->replaygain.album_gain) * 100);
-        
+
         if (info->replaygain.album_peak != NULL)
             aud_tuple_associate_int (out, FIELD_GAIN_ALBUM_PEAK, NULL, atof
              (info->replaygain.album_peak) * 100);
-        
+
         if (info->replaygain.track_gain != NULL)
             aud_tuple_associate_int (out, FIELD_GAIN_TRACK_GAIN, NULL, atof
              (info->replaygain.track_gain) * 100);
@@ -295,8 +295,8 @@ void add_comment(callback_info* info, gchar* key, gchar* value) {
         destination = &(info->comment.tracknumber);
     }
 
-    if (0 == strcasecmp(key, "DESCRIPTION")) {
-        _DEBUG("Found key DESCRIPTION");
+    if (0 == strcasecmp(key, "COMMENT")) {
+        _DEBUG("Found key COMMENT");
         destination = &(info->comment.comment);
     }
 

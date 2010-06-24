@@ -1,6 +1,7 @@
 /*
  *  A FLAC decoder plugin for the Audacious Media Player
  *  Copyright (C) 2005 Ralf Ertzinger
+ *  Copyright (C) 2010 Michał Lipski <tallica@o2.pl>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,30 +24,9 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "tools.h"
-#include "plugin.h"
 #include "seekable_stream_callbacks.h"
 #include "version.h"
 #include "debug.h"
-
-static gchar *flac_fmts[] = { "flac", "fla", NULL };
-
-InputPlugin flac_ip = {
-    .description = "FLACng Audio Plugin",
-    .init = flac_init,
-    .cleanup = flac_cleanup,
-    .about = flac_aboutbox,
-    .play_file = flac_play_file,
-    .stop = flac_stop,
-    .pause = flac_pause,
-    .seek = flac_seek,
-    .probe_for_tuple = flac_probe_for_tuple,
-    .is_our_file_from_vfs = flac_is_our_fd,	// version of is_our_file which is handed an FD
-    .vfs_extensions = flac_fmts			// vector of fileextensions allowed by the plugin
-};
-
-InputPlugin *flac_iplist[] = { &flac_ip, NULL };
-
-SIMPLE_INPUT_PLUGIN (flacng, flac_iplist)
 
 FLAC__StreamDecoder* test_decoder;
 FLAC__StreamDecoder* main_decoder;
@@ -324,7 +304,7 @@ static gpointer flac_play_loop(gpointer arg)
         _ERROR("Could not open output plugin!");
         _LEAVE NULL;
     }
-    
+
     playback->set_gain_from_playlist(playback);
 
 
@@ -618,3 +598,108 @@ static void flac_aboutbox(void)
 
     g_free(about_text);
 }
+
+static void insert_str_tuple_to_vc(FLAC__StreamMetadata *vc_block, Tuple *tuple, gint tuple_name, gchar *field_name)
+{
+    FLAC__StreamMetadata_VorbisComment_Entry entry;
+    gchar *str;
+    gchar *val = (gchar *) aud_tuple_get_string(tuple, tuple_name, NULL);
+
+    if (val == NULL)
+        return;
+
+    str  = g_strdup_printf("%s=%s", field_name, val);
+    entry.entry = (FLAC__byte *) str;
+    entry.length = strlen(str);
+    FLAC__metadata_object_vorbiscomment_replace_comment(vc_block, entry, false, true);
+    g_free(str);
+}
+
+static void insert_int_tuple_to_vc(FLAC__StreamMetadata *vc_block, Tuple *tuple, gint tuple_name, gchar *field_name)
+{
+    FLAC__StreamMetadata_VorbisComment_Entry entry;
+    gchar *str;
+    gint val = aud_tuple_get_int(tuple, tuple_name, NULL);
+
+    if (val <= 0)
+        return;
+
+    if (FIELD_TRACK_NUMBER == tuple_name)
+        str  = g_strdup_printf("%s=%.2d", field_name, val);
+    else
+        str  = g_strdup_printf("%s=%d", field_name, val);
+
+    entry.entry = (FLAC__byte *) str;
+    entry.length = strlen(str);
+    FLAC__metadata_object_vorbiscomment_replace_comment(vc_block, entry, false, true);
+    g_free(str);
+}
+
+gboolean
+flac_update_song_tuple(Tuple *tuple, VFSFile *fd)
+{
+    FLAC__Metadata_SimpleIterator *iter;
+    FLAC__StreamMetadata *vc_block;
+    gchar *filename = g_filename_from_uri(fd->uri, NULL, NULL);
+    FLAC__bool ret;
+
+    iter = FLAC__metadata_simple_iterator_new();
+    g_return_val_if_fail(iter != NULL, FALSE);
+
+    ret = FLAC__metadata_simple_iterator_init(iter, filename, false, false);
+    g_return_val_if_fail(ret, FALSE);
+
+    while (FLAC__metadata_simple_iterator_get_block_type(iter) != FLAC__METADATA_TYPE_VORBIS_COMMENT)
+    {
+        if (!FLAC__metadata_simple_iterator_next(iter))
+            break;
+    }
+
+    if (FLAC__metadata_simple_iterator_get_block_type(iter) == FLAC__METADATA_TYPE_VORBIS_COMMENT)
+        vc_block = FLAC__metadata_simple_iterator_get_block(iter);
+    else
+        vc_block = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
+
+    insert_str_tuple_to_vc(vc_block, tuple, FIELD_TITLE, "TITLE");
+    insert_str_tuple_to_vc(vc_block, tuple, FIELD_ARTIST, "ARTIST");
+    insert_str_tuple_to_vc(vc_block, tuple, FIELD_ALBUM, "ALBUM");
+    insert_str_tuple_to_vc(vc_block, tuple, FIELD_GENRE, "GENRE");
+    insert_str_tuple_to_vc(vc_block, tuple, FIELD_COMMENT, "COMMENT");
+
+    insert_int_tuple_to_vc(vc_block, tuple, FIELD_YEAR, "DATE");
+    insert_int_tuple_to_vc(vc_block, tuple, FIELD_TRACK_NUMBER, "TRACKNUMBER");
+
+    if (FLAC__metadata_simple_iterator_get_block_type(iter) == FLAC__METADATA_TYPE_VORBIS_COMMENT)
+        ret = FLAC__metadata_simple_iterator_set_block(iter, vc_block, true);
+    else
+        ret = FLAC__metadata_simple_iterator_insert_block_after(iter, vc_block, true);
+
+    FLAC__metadata_simple_iterator_delete(iter);
+    FLAC__metadata_object_delete(vc_block);
+
+    if (!ret)
+        return FALSE;
+    else
+        return TRUE;
+}
+
+static gchar *flac_fmts[] = { "flac", "fla", NULL };
+
+InputPlugin flac_ip = {
+    .description = "FLACng Audio Plugin",
+    .init = flac_init,
+    .cleanup = flac_cleanup,
+    .about = flac_aboutbox,
+    .play_file = flac_play_file,
+    .stop = flac_stop,
+    .pause = flac_pause,
+    .seek = flac_seek,
+    .probe_for_tuple = flac_probe_for_tuple,
+    .is_our_file_from_vfs = flac_is_our_fd,
+    .vfs_extensions = flac_fmts,
+    .update_song_tuple = flac_update_song_tuple
+};
+
+InputPlugin *flac_iplist[] = { &flac_ip, NULL };
+
+SIMPLE_INPUT_PLUGIN (flacng, flac_iplist)
