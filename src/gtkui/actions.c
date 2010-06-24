@@ -525,14 +525,18 @@ void action_playlist_new(void)
     aud_playlist_set_active(playlist);
 }
 
-void action_playlist_prev(void)
+void action_playlist_prev (void)
 {
-    aud_playlist_set_active(aud_playlist_get_active() - 1);
+    if (aud_playlist_get_active ())
+        aud_playlist_set_active (aud_playlist_get_active () - 1);
+    else
+        aud_playlist_set_active (aud_playlist_count () - 1);
 }
 
-void action_playlist_next(void)
+void action_playlist_next (void)
 {
-    aud_playlist_set_active(aud_playlist_get_active() + 1);
+    aud_playlist_set_active ((aud_playlist_get_active () + 1) %
+     aud_playlist_count ());
 }
 
 void action_playlist_delete(void)
