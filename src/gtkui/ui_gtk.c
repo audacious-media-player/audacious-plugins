@@ -650,6 +650,12 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
     return TRUE;
 }
 
+static void stop_after_song_toggled (void * data, void * user)
+{
+    check_set (toggleaction_group_others, "stop after current song",
+     aud_cfg->stopaftersong);
+}
+
 static void ui_hooks_associate(void)
 {
     aud_hook_associate("title change", ui_set_song_info, NULL);
@@ -661,6 +667,7 @@ static void ui_hooks_associate(void)
     aud_hook_associate("playlist delete", ui_playlist_destroyed, NULL);
     aud_hook_associate("mainwin show", ui_mainwin_toggle_visibility, NULL);
     aud_hook_associate("playlist update", ui_playlist_notebook_update, NULL);
+    aud_hook_associate("toggle stop after song", stop_after_song_toggled, NULL);
 }
 
 static void ui_hooks_disassociate(void)
@@ -674,6 +681,7 @@ static void ui_hooks_disassociate(void)
     aud_hook_dissociate("playlist delete", ui_playlist_destroyed);
     aud_hook_dissociate("mainwin show", ui_mainwin_toggle_visibility);
     aud_hook_dissociate("playlist update", ui_playlist_notebook_update);
+    aud_hook_dissociate("toggle stop after song", stop_after_song_toggled);
 }
 
 static gboolean _ui_initialize(InterfaceCbs * cbs)

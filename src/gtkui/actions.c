@@ -84,9 +84,15 @@ void action_playback_shuffle(GtkToggleAction * action)
     aud_cfg->shuffle = gtk_toggle_action_get_active(action);
 }
 
-void action_stop_after_current_song(GtkToggleAction * action)
+void action_stop_after_current_song (GtkToggleAction * action)
 {
-    aud_cfg->stopaftersong = gtk_toggle_action_get_active(action);
+    gboolean active = gtk_toggle_action_get_active (action);
+
+    if (active != aud_cfg->stopaftersong)
+    {
+        aud_cfg->stopaftersong = active;
+        aud_hook_call ("toggle stop after song", NULL);
+    }
 }
 
 void action_view_playlist(GtkToggleAction *action)
