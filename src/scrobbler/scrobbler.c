@@ -325,7 +325,7 @@ static int sc_parse_hs_res(void)
 {
     char *interval;
 
-    if (!c_srv_res_size) {
+    if (!sc_srv_res_size) {
         AUDDBG("No reply from server\n");
         return -1;
     }
