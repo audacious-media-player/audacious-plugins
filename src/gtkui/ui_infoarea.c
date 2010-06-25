@@ -145,24 +145,92 @@ static void ui_infoarea_draw_text (UIInfoArea * area, gint x, gint y, gint
 
 /****************************************************************************/
 
-static struct {
-    guint8 red;
-    guint8 green;
-    guint8 blue;
-} colors[] = {
-    { 0xff, 0xb1, 0x6f },
-    { 0xff, 0xc8, 0x7f },
-    { 0xff, 0xcf, 0x7e },
-    { 0xf6, 0xe6, 0x99 },
-    { 0xf1, 0xfc, 0xd4 },
-    { 0xbd, 0xd8, 0xab },
-    { 0xcd, 0xe6, 0xd0 },
-    { 0xce, 0xe0, 0xea },
-    { 0xd5, 0xdd, 0xea },
-    { 0xee, 0xc1, 0xc8 },
-    { 0xee, 0xaa, 0xb7 },
-    { 0xec, 0xce, 0xb6 },
-};
+static void rgb_to_hsv (gfloat r, gfloat g, gfloat b, gfloat * h, gfloat * s,
+ gfloat * v)
+{
+    gfloat max, min;
+
+    max = r;
+    if (g > max)
+        max = g;
+    if (b > max)
+        max = b;
+
+    min = r;
+    if (g < min)
+        min = g;
+    if (b < min)
+        min = b;
+
+    * v = max;
+
+    if (max == min)
+    {
+        * h = 0;
+        * s = 0;
+        return;
+    }
+
+    if (r == max)
+        * h = 1 + (g - b) / (max - min);
+    else if (g == max)
+        * h = 3 + (b - r) / (max - min);
+    else
+        * h = 5 + (r - g) / (max - min);
+
+    * s = (max - min) / max;
+}
+
+static void hsv_to_rgb (gfloat h, gfloat s, gfloat v, gfloat * r, gfloat * g,
+ gfloat * b)
+{
+    for (; h >= 2; h -= 2)
+    {
+        gfloat * p = r;
+        r = g;
+        g = b;
+        b = p;
+    }
+
+    if (h < 1)
+    {
+        * r = 1;
+        * g = 0;
+        * b = 1 - h;
+    }
+    else
+    {
+        * r = 1;
+        * g = h - 1;
+        * b = 0;
+    }
+
+    * r = v * (1 - s * (1 - * r));
+    * g = v * (1 - s * (1 - * g));
+    * b = v * (1 - s * (1 - * b));
+}
+
+static void get_color (GtkWidget * widget, gint i, gfloat * r, gfloat * g,
+ gfloat * b)
+{
+    GdkColor * c = widget->style->base + GTK_STATE_SELECTED;
+    gfloat h, s, v, n;
+
+    rgb_to_hsv (c->red / 65535.0, c->green / 65535.0, c->blue / 65535.0, & h,
+     & s, & v);
+
+    if (s < 0.1) /* monochrome theme? use blue instead */
+    {
+        h = 5;
+        s = 0.75;
+    }
+
+    n = sqrt (i / 11.0);
+    s = sqrt (s) * (1 - 0.75 * n);
+    v = 0.75 + 0.25 * n;
+
+    hsv_to_rgb (h, s, v, r, g, b);
+}
 
 static void ui_infoarea_draw_visualizer (UIInfoArea * area)
 {
@@ -174,24 +242,16 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
 
     for (auto gint i = 0; i < SPECT_BANDS; i++)
     {
-        gint x, y, w, h;
-
-        x = alloc.width - VIS_OFFSET + 10 + 12 * i;
-        w = 9;
-
-        y = 10;
-        h = 64 - area->visdata[i];
+        gint x = alloc.width - VIS_OFFSET + 10 + 12 * i;
+        gfloat r, g, b;
 
         cairo_set_source_rgb (cr, 0, 0, 0);
-        cairo_rectangle (cr, x, y, w, h);
+        cairo_rectangle (cr, x, 10, 9, 64 - area->visdata[i]);
         cairo_fill (cr);
 
-        y = 10 + 64 - area->visdata[i];
-        h = area->visdata[i];
-
-        cairo_set_source_rgb (cr, colors[i].red / 255.0, colors[i].green /
-         255.0, colors[i].blue / 255.0);
-        cairo_rectangle (cr, x, y, w, h);
+        get_color (area->parent, i, & r, & g, & b);
+        cairo_set_source_rgb (cr, r, g, b);
+        cairo_rectangle (cr, x, 74 - area->visdata[i], 9, area->visdata[i]);
         cairo_fill (cr);
     }
 
