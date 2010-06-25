@@ -162,67 +162,81 @@ ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
     if (! vis || config.vis_type == VIS_OFF)
         return;
 
-    if (config.vis_type == VIS_ANALYZER) {
-            /* Spectrum analyzer */
-            /* 76 values */
-            const gint long_xscale[] =
-                { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-                17, 18,
-                19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
-                34,
-                35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
-                50, 51,
-                52, 53, 54, 55, 56, 57, 58, 61, 66, 71, 76, 81, 87, 93,
-                100, 107,
-                114, 122, 131, 140, 150, 161, 172, 184, 255
-            };
-            /* 20 values */
-            const int short_xscale[] =
-                { 0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 15, 20, 27,
-                36, 47, 62, 82, 107, 141, 184, 255
-            };
-            const double y_scale = 3.60673760222;   /* 20.0 / log(256) */
-            const int *xscale;
-            gint j, y, max;
+    if (config.vis_type == VIS_ANALYZER)
+    {
+        /* logarithmic scale - 1 */
+        const gfloat xscale13[14] = {0.00, 0.53, 1.35, 2.60, 4.51, 7.45, 12.0,
+         18.8, 29.4, 45.6, 70.4, 108, 167, 256};
+        const gfloat xscale19[20] = {0.00, 0.34, 0.79, 1.40, 2.22, 3.31, 4.77,
+         6.72, 9.34, 12.9, 17.6, 23.8, 32.3, 43.6, 58.7, 78.9, 106, 142, 191,
+         256};
+        const gfloat xscale37[38] = {0.00, 0.16, 0.35, 0.57, 0.82, 1.12, 1.46,
+         1.86, 2.32, 2.86, 3.48, 4.21, 5.05, 6.03, 7.16, 8.48, 10.0, 11.8, 13.9,
+         16.3, 19.1, 22.3, 26.1, 30.5, 35.6, 41.5, 48.4, 56.4, 65.6, 76.4, 88.9,
+         104, 120, 140, 163, 189, 220, 256};
+        const gfloat xscale75[76] = {0.00, 0.08, 0.16, 0.25, 0.34, 0.45, 0.56,
+         0.68, 0.81, 0.95, 1.10, 1.26, 1.43, 1.62, 1.82, 2.03, 2.27, 2.52, 2.79,
+         3.08, 3.39, 3.73, 4.09, 4.48, 4.90, 5.36, 5.85, 6.37, 6.94, 7.55, 8.20,
+         8.91, 9.67, 10.5, 11.4, 12.3, 13.3, 14.4, 15.6, 16.9, 18.3, 19.8, 21.4,
+         23.1, 24.9, 26.9, 29.1, 31.4, 33.9, 36.5, 39.4, 42.5, 45.9, 49.5, 53.3,
+         57.5, 62.0, 66.9, 72.0, 77.7, 83.7, 90.2, 97.2, 105, 113, 122, 131,
+         141, 152, 164, 177, 190, 205, 221, 238, 256};
 
-            if (!mono_freq_calced)
-                aud_calc_mono_freq(mono_freq, vis->data, vis->nch);
+        const gfloat * xscale;
+        gint bands, i;
 
-            memset(intern_vis_data, 0, 75);
-
-            if (config.analyzer_type == ANALYZER_BARS) {
-                if (config.player_shaded) {
-                    max = 13;
-                }
-                else {
-                    max = 19;
-                }
-                xscale = short_xscale;
+        if (config.analyzer_type == ANALYZER_BARS)
+        {
+            if (config.player_shaded)
+            {
+                bands = 13;
+                xscale = xscale13;
             }
-            else {
-                if (config.player_shaded) {
-                    max = 37;
-                }
-                else {
-                    max = 75;
-                }
-                xscale = long_xscale;
+            else
+            {
+                bands = 19;
+                xscale = xscale19;
+            }
+        }
+        else
+        {
+            if (config.player_shaded)
+            {
+                bands = 37;
+                xscale = xscale37;
+            }
+            else
+            {
+                bands = 75;
+                xscale = xscale75;
+            }
+        }
+
+        aud_calc_mono_freq (mono_freq, vis->data, vis->nch);
+
+        for (i = 0; i < bands; i ++)
+        {
+            gint a = ceil (xscale[i]);
+            gint b = floor (xscale[i + 1]);
+            gint n = 0;
+
+            if (b < a)
+                n += mono_freq[0][b] * (xscale[i + 1] - xscale[i]);
+            else
+            {
+                if (a > 0)
+                    n += mono_freq[0][a - 1] * (a - xscale[i]);
+                for (; a < b; a ++)
+                    n += mono_freq[0][a];
+                if (b < 256)
+                    n += mono_freq[0][b] * (xscale[i + 1] - b);
             }
 
-            for (i = 0; i < max; i++) {
-                for (j = xscale[i], y = 0; j < xscale[i + 1]; j++) {
-                    if (mono_freq[0][j] > y)
-                        y = mono_freq[0][j];
-                }
-                y >>= 7;
-                if (y != 0) {
-                    intern_vis_data[i] = log(y) * y_scale;
-                    if (intern_vis_data[i] > 15)
-                        intern_vis_data[i] = 15;
-                }
-                else
-                    intern_vis_data[i] = 0;
-            }
+            /* 30 dB range, amplified 10 dB + extra for narrower bands */
+            /* 0.000235 == 1 / 13 / 32767 * 10^(40/20) */
+            n = 10 * log10 (n * bands * 0.000235);
+            intern_vis_data[i] = CLAMP (n, 0, 15);
+        }
     }
     else if(config.vis_type == VIS_VOICEPRINT){
         if (config.player_shaded) {

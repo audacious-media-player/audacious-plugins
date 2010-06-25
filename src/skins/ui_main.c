@@ -217,6 +217,8 @@ static void
 mainwin_vis_set_analyzer_type(AnalyzerType mode)
 {
     config.analyzer_type = mode;
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
 }
 
 void

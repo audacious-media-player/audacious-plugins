@@ -76,14 +76,21 @@ ui_infoarea_visualization_timeout(gpointer hook_data, UIInfoArea *area)
         gint b = floor (xscale[i + 1]);
         gint n = 0;
 
-        if (a > 0)
-            n += mono_freq[0][a - 1] * (a - xscale[i]);
-        for (; a < b; a ++)
-            n += mono_freq[0][a];
-        if (b < 256)
-            n += mono_freq[0][b] * (xscale[i + 1] - b);
+        if (b < a)
+            n += mono_freq[0][b] * (xscale[i + 1] - xscale[i]);
+        else
+        {
+            if (a > 0)
+                n += mono_freq[0][a - 1] * (a - xscale[i]);
+            for (; a < b; a ++)
+                n += mono_freq[0][a];
+            if (b < 256)
+                n += mono_freq[0][b] * (xscale[i + 1] - b);
+        }
 
-        n = 32 * log10 (n / 327.67); /* 40 dB range */
+        /* 40 dB range */
+        /* 0.00305 == 1 / 32767 * 10^(40/20) */
+        n = 32 * log10 (n * 0.00305);
         n = CLAMP (n, 0, 64);
         area->visdata[i] = MAX (area->visdata[i] - 3, n);
     }
