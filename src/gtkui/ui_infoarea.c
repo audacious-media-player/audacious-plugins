@@ -38,7 +38,7 @@
 #define STREAM_ARTWORK DATA_DIR "/images/streambrowser-64x64.png"
 #define ICON_SIZE 64
 #define SPECT_BANDS 12
-#define VIS_OFFSET (12 * SPECT_BANDS + 12)
+#define VIS_OFFSET (10 + 12 * SPECT_BANDS + 7)
 
 typedef struct {
     GtkWidget *parent;
@@ -49,7 +49,7 @@ typedef struct {
 
     gboolean stopped;
     gint fade_timeout;
-    guint8 visdata[20];
+    guint8 visdata[SPECT_BANDS];
 
     GdkPixbuf * pb, * last_pb;
 } UIInfoArea;
@@ -63,17 +63,29 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area);
 static void
 ui_infoarea_visualization_timeout(gpointer hook_data, UIInfoArea *area)
 {
+    const gfloat xscale[SPECT_BANDS + 1] = {0.00, 0.59, 1.52, 3.00, 5.36, 9.10,
+     15.0, 24.5, 39.4, 63.2, 101, 161, 256}; /* logarithmic scale - 1 */
     VisNode *vis = (VisNode*) hook_data;
     gint16 mono_freq[2][256];
 
-    const int xscale[] = { 0, 2, 3, 5, 6, 11,
-                           20, 41, 62, 82, 143, 255 };
-
     aud_calc_mono_freq(mono_freq, vis->data, vis->nch);
 
-    for (auto gint i = 0; i < 12; i++) {
-        gint y = mono_freq[0][xscale[i]] / 128;
-        area->visdata[i] = MAX (area->visdata[i] - 3, CLAMP (y, 0, 64));
+    for (gint i = 0; i < SPECT_BANDS; i ++)
+    {
+        gint a = ceil (xscale[i]);
+        gint b = floor (xscale[i + 1]);
+        gint n = 0;
+
+        if (a > 0)
+            n += mono_freq[0][a - 1] * (a - xscale[i]);
+        for (; a < b; a ++)
+            n += mono_freq[0][a];
+        if (b < 256)
+            n += mono_freq[0][b] * (xscale[i + 1] - b);
+
+        n = 32 * log10 (n / 327.67); /* 40 dB range */
+        n = CLAMP (n, 0, 64);
+        area->visdata[i] = MAX (area->visdata[i] - 3, n);
     }
 
 #if GTK_CHECK_VERSION (2, 20, 0)
@@ -157,17 +169,17 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
     {
         gint x, y, w, h;
 
-        x = alloc.width - VIS_OFFSET + 12 * i;
-        w = 10;
+        x = alloc.width - VIS_OFFSET + 10 + 12 * i;
+        w = 9;
 
-        y = 11;
+        y = 10;
         h = 64 - area->visdata[i];
 
         cairo_set_source_rgb (cr, 0, 0, 0);
         cairo_rectangle (cr, x, y, w, h);
         cairo_fill (cr);
 
-        y = 11 + 64 - area->visdata[i];
+        y = 10 + 64 - area->visdata[i];
         h = area->visdata[i];
 
         cairo_set_source_rgb (cr, colors[i].red / 255.0, colors[i].green /
