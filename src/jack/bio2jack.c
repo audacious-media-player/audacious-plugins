@@ -110,6 +110,10 @@ static struct timeval timer_now;
 #define MAX_OUTPUT_PORTS  10
 #define MAX_INPUT_PORTS   10
 
+#define SAMPLE_FMT_INTEGER 0 /* Regular integer samples */
+#define SAMPLE_FMT_PACKED_24B 1 /* 24 bit samples packed to 32 bit values */
+#define SAMPLE_FMT_FLOAT 2 /* 32 bit floating point samples */
+
 typedef struct jack_driver_s
 {
   bool allocated;                       /* whether or not this device has been allocated */
@@ -125,7 +129,8 @@ typedef struct jack_driver_s
   unsigned long num_input_channels;     /* number of input channels(1 is mono, 2 stereo etc..) */
   unsigned long num_output_channels;    /* number of output channels(1 is mono, 2 stereo etc..) */
 
-  unsigned long bits_per_channel;       /* number of bits per channel (only 8 & 16 are currently supported) */
+  unsigned long bits_per_channel;       /* number of bits per channel (8, 16, 24 or 32 supported) */
+  int sample_format;                    /* special sample format or SAMPLE_FMT_INTEGER for signed native-endian integers using all bits_per_channel bit  */
 
   unsigned long bytes_per_output_frame; /* (num_output_channels * bits_per_channel) / 8 */
   unsigned long bytes_per_input_frame;  /* (num_input_channels * bits_per_channel) / 8 */
@@ -369,7 +374,7 @@ DEBUGSTATE(enum status_enum state)
     return "unknown state";
 }
 
-
+#define SAMPLE_MAX_24BIT  8388608.0f
 #define SAMPLE_MAX_16BIT  32768.0f
 #define SAMPLE_MAX_8BIT   255.0f
 
@@ -417,6 +422,33 @@ demux(sample_t * dst, sample_t * src, unsigned long nsamples,
     dst++;
     src += src_skip;
   }
+}
+
+/* copy floating point samples */
+static inline void
+sample_move_float_float(sample_t * dst, float * src, unsigned long nsamples)
+{
+  unsigned long i;
+  for(i = 0; i < nsamples; i++)
+    dst[i] = (sample_t) (src[i]);
+}
+
+/* convert from 32 bit samples to floating point */
+static inline void
+sample_move_int32_float(sample_t * dst, int32_t * src, unsigned long nsamples)
+{
+  unsigned long i;
+  for(i = 0; i < nsamples; i++)
+    dst[i] = (sample_t) (src[i] >> 8) / SAMPLE_MAX_24BIT;
+}
+
+/* convert from 24 bit samples packed into 32 bits to floating point */
+static inline void
+sample_move_int24_float(sample_t * dst, int32_t * src, unsigned long nsamples)
+{
+  unsigned long i;
+  for(i = 0; i < nsamples; i++)
+    dst[i] = (sample_t) (src[i]) / SAMPLE_MAX_24BIT;
 }
 
 /* convert from 16 bit to floating point */
@@ -1428,13 +1460,13 @@ JACK_Reset(int deviceID)
  * if ERR_RATE_MISMATCH (*rate) will be updated with the jack servers rate
  */
 int
-JACK_Open(int *deviceID, unsigned int bits_per_channel, unsigned long *rate,
-          int channels)
+JACK_Open(int *deviceID, unsigned int bits_per_channel, int floating_point,
+	  unsigned long *rate, int channels)
 {
   /* we call through to JACK_OpenEx(), but default the input channels to 0 for better backwards
      compatibility with clients written before recording was available */
   return JACK_OpenEx(deviceID, bits_per_channel,
-                     rate,
+                     floating_point, rate,
                      0, channels,
                      NULL, 0, JackPortIsPhysical);
 }
@@ -1450,12 +1482,13 @@ JACK_Open(int *deviceID, unsigned int bits_per_channel, unsigned long *rate,
  */
 int
 JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
-            unsigned long *rate,
+	    int floating_point, unsigned long *rate,
             unsigned int input_channels, unsigned int output_channels,
             const char **jack_port_name,
             unsigned int jack_port_name_count, unsigned long jack_port_flags)
 {
   jack_driver_t *drv = 0;
+  int sample_format = SAMPLE_FMT_INTEGER;
   unsigned int i;
   int retval;
 
@@ -1469,10 +1502,27 @@ JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
   {
   case 8:
   case 16:
+  case 32:
+    break;
+  case 24:
+    bits_per_channel = 32;
+    sample_format = SAMPLE_FMT_PACKED_24B;
     break;
   default:
     ERR("invalid bits_per_channel\n");
     return ERR_OPENING_JACK;
+  }
+
+  if (floating_point)
+  {
+    if (bits_per_channel != 32) {
+      ERR("bits_per_channel must be 32 for floating point\n");
+      return ERR_OPENING_JACK;
+    }
+    else
+    {
+      sample_format = SAMPLE_FMT_FLOAT;
+    }
   }
 
   /* Lock the device_mutex and find one that's not allocated already.
@@ -1562,6 +1612,7 @@ JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
   /* drv->jack_sample_rate is set by JACK_OpenDevice() */
   drv->client_sample_rate = *rate;
   drv->bits_per_channel = bits_per_channel;
+  drv->sample_format = sample_format;
   drv->num_input_channels = input_channels;
   drv->num_output_channels = output_channels;
   drv->bytes_per_input_frame = (drv->bits_per_channel * drv->num_input_channels) / 8;
@@ -1799,6 +1850,17 @@ JACK_Write(int deviceID, unsigned char *data, unsigned long bytes)
   case 16:
     sample_move_short_float((sample_t *) drv->rw_buffer1, (short *) data,
                             frames * drv->num_output_channels);
+    break;
+  case 32:
+    if (drv->sample_format == SAMPLE_FMT_FLOAT)
+      sample_move_float_float((sample_t *) drv->rw_buffer1, (float *) data,
+                            frames * drv->num_output_channels);
+    else if (drv->sample_format == SAMPLE_FMT_PACKED_24B)
+      sample_move_int24_float((sample_t *) drv->rw_buffer1, (int32_t *) data,
+			      frames * drv->num_output_channels);
+    else
+      sample_move_int32_float((sample_t *) drv->rw_buffer1, (int32_t *) data,
+			      frames * drv->num_output_channels);
     break;
   }
 

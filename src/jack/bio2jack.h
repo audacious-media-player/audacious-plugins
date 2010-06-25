@@ -60,11 +60,12 @@ void JACK_DoSampleRateConversion(bool value); /* whether the next device that's 
                                                  sample rate conversion if necessary */
 void JACK_SetSampleRateConversionFunction(int converter); /* which SRC converter function should be used
                                                              for the next Open()d device */
-int  JACK_Open(int *deviceID, unsigned int bits_per_sample, unsigned long *rate, int channels); /* Note: defaults to 0 input channels
-												   if you need input (record) use OpenEx
-												   instead */
+int  JACK_Open(int *deviceID, unsigned int bits_per_channel, int floating_point,
+	       unsigned long *rate, int channels); /* Note: defaults to 0 input channels
+						      if you need input (record) use OpenEx
+						      instead */
 int  JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
-                 unsigned long *rate,
+		 int floating_point, unsigned long *rate,
                  unsigned int input_channels, unsigned int output_channels,
                  const char **jack_port_name, unsigned int jack_port_name_count,
                  unsigned long jack_port_flags);
