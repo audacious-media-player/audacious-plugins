@@ -322,14 +322,13 @@ static gboolean ui_skinned_horizontal_slider_button_press(GtkWidget *widget, Gdk
 
     UiSkinnedHorizontalSlider *hs = UI_SKINNED_HORIZONTAL_SLIDER (widget);
     UiSkinnedHorizontalSliderPrivate *priv = UI_SKINNED_HORIZONTAL_SLIDER_GET_PRIVATE(hs);
+    gint scale = priv->scaled ? config.scale_factor : 1;
 
     if (event->type == GDK_BUTTON_PRESS) {
         if (event->button == 1) {
-            gint x = event->x - priv->knob_width * (priv->scaled ? config.scale_factor : 1) / 2;
-
             hs->pressed = TRUE;
 
-            priv->position = x/(priv->scaled ? config.scale_factor : 1);
+            priv->position = event->x / scale - priv->knob_width / 2;
             if (priv->position < priv->min)
                 priv->position = priv->min;
             if (priv->position > priv->max)
@@ -349,8 +348,8 @@ static gboolean ui_skinned_horizontal_slider_button_press(GtkWidget *widget, Gdk
                 if (widget_really_drawable (widget))
                     ui_skinned_horizontal_slider_expose (widget, 0);
             }
-            event->x = event->x + hs->x;
-            event->y = event->y + hs->y;
+            event->x = event->x + hs->x * scale;
+            event->y = event->y + hs->y * scale;
             return FALSE;
         }
     }

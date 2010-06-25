@@ -406,16 +406,16 @@ static void ui_skinned_button_set_pressed (UiSkinnedButton *button, gboolean pre
 }
 
 static gboolean ui_skinned_button_button_press(GtkWidget *widget, GdkEventButton *event) {
-    UiSkinnedButton *button;
+    UiSkinnedButton * button = (UiSkinnedButton *) widget;
+    UiSkinnedButtonPrivate * priv = UI_SKINNED_BUTTON_GET_PRIVATE (button);
+    gint scale = priv->scaled ? config.scale_factor : 1;
 
     if (event->type == GDK_BUTTON_PRESS) {
-        button = UI_SKINNED_BUTTON(widget);
-
         if (event->button == 1)
             ui_skinned_button_pressed (button);
         else if (event->button == 3) {
-            event->x = event->x + button->x;
-            event->y = event->y + button->y;
+            event->x = event->x + button->x * scale;
+            event->y = event->y + button->y * scale;
             return FALSE;
         }
     }

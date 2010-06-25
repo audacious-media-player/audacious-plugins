@@ -672,11 +672,10 @@ mainwin_scrolled(GtkWidget *widget, GdkEventScroll *event,
 static gboolean
 mainwin_widget_contained(GdkEventButton *event, int x, int y, int w, int h)
 {
-    if ((event->x > x && event->y > y) &&
-        (event->x < x+w && event->y < y+h))
-        return TRUE;
+    gint ex = event->x / MAINWIN_SCALE_FACTOR;
+    gint ey = event->y / MAINWIN_SCALE_FACTOR;
 
-    return FALSE;
+    return (ex > x && ey > y && ex < x + w && ey < y + h);
 }
 
 static gboolean
@@ -685,7 +684,7 @@ mainwin_mouse_button_press(GtkWidget * widget,
                            gpointer callback_data)
 {
     if (event->button == 1 && event->type == GDK_2BUTTON_PRESS && event->y /
-     config.scale_factor < 14)
+     MAINWIN_SCALE_FACTOR < 14)
     {
         mainwin_set_shade(!config.player_shaded);
         if (dock_is_moving(GTK_WINDOW(mainwin)))
