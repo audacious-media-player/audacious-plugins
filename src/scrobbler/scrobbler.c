@@ -325,7 +325,7 @@ static int sc_parse_hs_res(void)
 {
     char *interval;
 
-    if (!sc_srv_res_size) {
+    if (!c_srv_res_size) {
         AUDDBG("No reply from server\n");
         return -1;
     }
@@ -473,11 +473,14 @@ static void hexify(char *pass, int len)
 }
 
 static int sc_parse_sb_res(void);
+static GStaticMutex submit_mutex = G_STATIC_MUTEX_INIT;
 
 gpointer sc_curl_perform_thread(gpointer data)
 {
     int status;
     CURL *curl = (CURL *) data;
+
+    g_static_mutex_lock(&submit_mutex);
 
     status = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
@@ -487,11 +490,16 @@ gpointer sc_curl_perform_thread(gpointer data)
         sc_free_res();
         AUDDBG("Retrying in %d secs, %d elements in queue\n",
                     sc_submit_interval, q_nitems);
+
+        g_static_mutex_unlock(&submit_mutex);
+
         g_thread_exit(NULL);
         return NULL;
     }
-    sc_free_res();
 
+    g_static_mutex_unlock(&submit_mutex);
+
+    sc_free_res();
     g_thread_exit(NULL);
     return NULL;
 }
