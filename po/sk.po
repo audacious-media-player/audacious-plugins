@@ -8,16 +8,112 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins-2.4-alpha2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-25 15:10+0200\n"
+"Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
+"POT-Creation-Date: 2010-06-27 15:47+0300\n"
 "PO-Revision-Date: 2010-06-25 16:31+0200\n"
 "Last-Translator: Andrej Herceg <herceg.andrej@zoznam.sk>\n"
 "Language-Team: Slovak <Slovak <sk-i18n@lists.linux.sk>>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: KBabel 1.11.4\n"
+
+#: src/OSS/OSS.c:38
+msgid "About OSS Driver"
+msgstr "O module OSS"
+
+#: src/OSS/OSS.c:39
+msgid ""
+"Audacious OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"OSS ovládač pre Audacious\n"
+"\n"
+"Tento program je slobodný softvér. Môžete ho šíriť a/alebo upravovať podľa "
+"ustanovení GNU GPL, vydávanej nadáciou Free Software Foundation; buď vo "
+"verzii 2 tejto licencie, alebo (podľa vášho uváženia) v ľubovoľnej novšej "
+"verzii.\n"
+"\n"
+"Tento program je rozširovaný v nádeji, že bude užitočný, ale BEZ AKEJKOĽVEK "
+"ZÁRUKY; neposkytujú sa ani odvodené záruky PREDAJNOSTI, alebo VHODNOSTI PRE "
+"URČITÝ ÚČEL. Ďalšie podrobnosti hľadajte v GNU GPL.\n"
+"\n"
+"Kópiu GNU GPL by ste mali dostať spolu s týmto programom. Ak sa tak nestalo, "
+"požiadajte o ňu Free Software Foundation, Inc., 51 Franklin Street, Fifth "
+"Floor, Boston, MA 02110-1301, USA."
+
+#: src/OSS/configure.c:148
+#, c-format
+msgid "Default (%s)"
+msgstr "Predvolené (%s)"
+
+#: src/OSS/configure.c:166 src/alarm/interface.c:612 src/alarm/interface.c:660
+#: src/alarm/interface.c:708 src/alarm/interface.c:756
+#: src/alarm/interface.c:804 src/alarm/interface.c:852
+#: src/alarm/interface.c:900 src/skins/ui_manager.c:447
+#: src/skins/ui_manager.c:468
+msgid "Default"
+msgstr "Štandardné"
+
+#: src/OSS/configure.c:197
+msgid "OSS Driver configuration"
+msgstr "Nastavenie ovládača OSS"
+
+#: src/OSS/configure.c:213 src/oss4/configure.c:162 src/sun/configure.c:181
+msgid "Audio device:"
+msgstr "Zvukové zariadenie:"
+
+#: src/OSS/configure.c:235 src/OSS/configure.c:276 src/oss4/configure.c:188
+msgid "Use alternate device:"
+msgstr "Použiť iné zariadenie:"
+
+#: src/OSS/configure.c:256 src/alsa/config.c:446 src/sun/configure.c:218
+msgid "Mixer device:"
+msgstr "Zariadenie mixéra:"
+
+#: src/OSS/configure.c:298 src/sun/configure.c:246
+msgid "Devices"
+msgstr "Zariadenia"
+
+#: src/OSS/configure.c:300 src/esd/configure.c:171 src/sun/configure.c:257
+msgid "Buffering:"
+msgstr "Vyrovnávanie:"
+
+#: src/OSS/configure.c:313 src/esd/configure.c:198 src/sun/configure.c:288
+msgid "Pre-buffer (percent):"
+msgstr "Dopredu načítať (v percentách):"
+
+#: src/OSS/configure.c:324 src/esd/configure.c:209 src/sun/configure.c:302
+msgid "Buffering"
+msgstr "Vyrovnávanie"
+
+#: src/OSS/configure.c:325
+msgid "Mixer Settings:"
+msgstr "Nastavenia mixéra:"
+
+#: src/OSS/configure.c:331
+msgid "Volume controls Master not PCM"
+msgstr "Hlasitosť je ovládaná kanálom Master a nie PCM"
+
+#: src/OSS/configure.c:337 src/sun/configure.c:392
+msgid "Mixer"
+msgstr "Mixér"
 
 #: src/aac/libmp4.c:287
 #, c-format
@@ -368,14 +464,6 @@ msgstr "Budiť v (štandardne):"
 msgid "Choose the days for the alarm to come on"
 msgstr "Zvoľte dni, kedy má budík budiť"
 
-#: src/alarm/interface.c:612 src/alarm/interface.c:660
-#: src/alarm/interface.c:708 src/alarm/interface.c:756
-#: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/OSS/configure.c:166
-#: src/skins/ui_manager.c:447 src/skins/ui_manager.c:468
-msgid "Default"
-msgstr "Štandardné"
-
 #: src/alarm/interface.c:938
 msgid "Day"
 msgstr "Deň"
@@ -612,10 +700,6 @@ msgstr "Predvoľby výstupného modulu ALSA"
 msgid "PCM device:"
 msgstr "PCM zariadenie:"
 
-#: src/alsa/config.c:446 src/OSS/configure.c:256 src/sun/configure.c:218
-msgid "Mixer device:"
-msgstr "Zariadenie mixéra:"
-
 #: src/alsa/config.c:448
 msgid "Mixer element:"
 msgstr "Prvok mixéra:"
@@ -758,7 +842,8 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-alsa.c:444
 msgid "ALSA Backend not loaded or not available"
-msgstr "Ovládač koncového zariadenia ALSA nie je načítaný, alebo nie je dostupný"
+msgstr ""
+"Ovládač koncového zariadenia ALSA nie je načítaný, alebo nie je dostupný"
 
 #: src/amidi-plug/i_configure-alsa.c:463
 msgid ""
@@ -916,14 +1001,6 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-
-#: src/amidi-plug/i_configure.c:74
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - vyberte súbor"
-
-#: src/amidi-plug/i_configure.c:127
-msgid "AMIDI-Plug - configuration"
-msgstr "AMIDI-Plug - nastavenie"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
@@ -1165,6 +1242,14 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">Koncové zariadenie\n"
 "TiMidity</span>"
+
+#: src/amidi-plug/i_configure.c:74
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - vyberte súbor"
+
+#: src/amidi-plug/i_configure.c:127
+msgid "AMIDI-Plug - configuration"
+msgstr "AMIDI-Plug - nastavenie"
 
 #: src/amidi-plug/i_fileinfo.c:169 src/bluetooth/gui.c:271
 #: src/sid/xs_interface.c:1769
@@ -1694,6 +1779,14 @@ msgstr "Blur Scope: Výber farby"
 msgid "Options:"
 msgstr "Možnosti:"
 
+#: src/cd-menu-items/cd-menu-items.c:34
+msgid "Play CD"
+msgstr "Prehrať CD"
+
+#: src/cd-menu-items/cd-menu-items.c:34
+msgid "Add CD"
+msgstr "Pridať CD"
+
 #: src/cdaudio-ng/cdaudio-ng.c:265
 msgid "About Audio CD Plugin"
 msgstr "O module zvukových CD"
@@ -1766,14 +1859,6 @@ msgstr "Namiesto CDDBP použiť HTTP"
 #: src/cdaudio-ng/configure.c:244
 msgid "Override default device: "
 msgstr "Nahradiť predvolené zariadenie: "
-
-#: src/cd-menu-items/cd-menu-items.c:34
-msgid "Play CD"
-msgstr "Prehrať CD"
-
-#: src/cd-menu-items/cd-menu-items.c:34
-msgid "Add CD"
-msgstr "Pridať CD"
 
 #: src/compressor/plugin.c:57
 msgid "About Dynamic Range Compression Plugin"
@@ -1878,7 +1963,8 @@ msgid "Crossfade Error"
 msgstr "Chyba prelínania"
 
 #: src/crossfade/plugin.c:130
-msgid "Crossfading failed because the songs had a different number of channels."
+msgid ""
+"Crossfading failed because the songs had a different number of channels."
 msgstr "Prelínanie zlyhalo, pretože skladby majú rôzny počet kanálov."
 
 #: src/crossfade/plugin.c:138
@@ -2004,21 +2090,9 @@ msgstr "Port:"
 msgid "Server"
 msgstr "Server"
 
-#: src/esd/configure.c:171 src/OSS/configure.c:300 src/sun/configure.c:257
-msgid "Buffering:"
-msgstr "Vyrovnávanie:"
-
 #: src/esd/configure.c:184 src/sun/configure.c:270
 msgid "Buffer size (ms):"
 msgstr "Veľkosť vyrovnávacej pamäte (ms):"
-
-#: src/esd/configure.c:198 src/OSS/configure.c:313 src/sun/configure.c:288
-msgid "Pre-buffer (percent):"
-msgstr "Dopredu načítať (v percentách):"
-
-#: src/esd/configure.c:209 src/OSS/configure.c:324 src/sun/configure.c:302
-msgid "Buffering"
-msgstr "Vyrovnávanie"
 
 #: src/evdev-plug/ed.c:59
 msgid "Playback->Play"
@@ -2745,21 +2819,21 @@ msgstr "Audacious2"
 msgid "gnt interface"
 msgstr "GNT rozhranie"
 
-#: src/gtkui/actions.c:222 src/skins/ui_main.c:812
+#: src/gtkui/actions.c:222 src/skins/ui_main.c:814
 msgid "Can't jump to time when no track is being played.\n"
 msgstr "Keď sa neprehráva žiadna skladba nie je možné prejsť na čas.\n"
 
 #: src/gtkui/actions.c:237 src/gtkui/ui_manager.c:196
-#: src/gtkui/ui_manager.c:197 src/skins/ui_main.c:827
+#: src/gtkui/ui_manager.c:197 src/skins/ui_main.c:829
 #: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
 msgid "Jump to Time"
 msgstr "Prejsť na čas"
 
-#: src/gtkui/actions.c:254 src/skins/ui_main.c:848
+#: src/gtkui/actions.c:254 src/skins/ui_main.c:850
 msgid "minutes:seconds"
 msgstr "minúty:sekundy"
 
-#: src/gtkui/actions.c:264 src/skins/ui_main.c:858
+#: src/gtkui/actions.c:264 src/skins/ui_main.c:860
 msgid "Track length:"
 msgstr "Dĺžka skladby:"
 
@@ -3689,77 +3763,6 @@ msgstr "Predvoľby slepého výstupu"
 msgid "Run in real time"
 msgstr "Bežať v reálnom čase"
 
-#: src/OSS/configure.c:148
-#, c-format
-msgid "Default (%s)"
-msgstr "Predvolené (%s)"
-
-#: src/OSS/configure.c:197
-msgid "OSS Driver configuration"
-msgstr "Nastavenie ovládača OSS"
-
-#: src/OSS/configure.c:213 src/oss4/configure.c:162 src/sun/configure.c:181
-msgid "Audio device:"
-msgstr "Zvukové zariadenie:"
-
-#: src/OSS/configure.c:235 src/OSS/configure.c:276 src/oss4/configure.c:188
-msgid "Use alternate device:"
-msgstr "Použiť iné zariadenie:"
-
-#: src/OSS/configure.c:298 src/sun/configure.c:246
-msgid "Devices"
-msgstr "Zariadenia"
-
-#: src/OSS/configure.c:325
-msgid "Mixer Settings:"
-msgstr "Nastavenia mixéra:"
-
-#: src/OSS/configure.c:331
-msgid "Volume controls Master not PCM"
-msgstr "Hlasitosť je ovládaná kanálom Master a nie PCM"
-
-#: src/OSS/configure.c:337 src/sun/configure.c:392
-msgid "Mixer"
-msgstr "Mixér"
-
-#: src/OSS/OSS.c:38
-msgid "About OSS Driver"
-msgstr "O module OSS"
-
-#: src/OSS/OSS.c:39
-msgid ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"OSS ovládač pre Audacious\n"
-"\n"
-"Tento program je slobodný softvér. Môžete ho šíriť a/alebo upravovať podľa "
-"ustanovení GNU GPL, vydávanej nadáciou Free Software Foundation; buď vo "
-"verzii 2 tejto licencie, alebo (podľa vášho uváženia) v ľubovoľnej novšej "
-"verzii.\n"
-"\n"
-"Tento program je rozširovaný v nádeji, že bude užitočný, ale BEZ AKEJKOĽVEK "
-"ZÁRUKY; neposkytujú sa ani odvodené záruky PREDAJNOSTI, alebo VHODNOSTI PRE "
-"URČITÝ ÚČEL. Ďalšie podrobnosti hľadajte v GNU GPL.\n"
-"\n"
-"Kópiu GNU GPL by ste mali dostať spolu s týmto programom. Ak sa tak nestalo, "
-"požiadajte o ňu Free Software Foundation, Inc., 51 Franklin Street, Fifth "
-"Floor, Boston, MA 02110-1301, USA."
-
 #: src/oss4/configure.c:88
 msgid "1. Default device"
 msgstr "1. Štandardné zariadenie"
@@ -3926,7 +3929,7 @@ msgstr "Proxy"
 msgid "Player Name:"
 msgstr "Názov prehrávača:"
 
-#: src/roaraudio/gui.c:261 src/skins/ui_main.c:384 src/skins/ui_main.c:2181
+#: src/roaraudio/gui.c:261 src/skins/ui_main.c:386 src/skins/ui_main.c:2183
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -4750,44 +4753,44 @@ msgstr "Ekvalizér Audacious"
 msgid "Presets"
 msgstr "Prednastavenia"
 
-#: src/skins/ui_main.c:382
+#: src/skins/ui_main.c:384
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/skins/ui_main.c:587
+#: src/skins/ui_main.c:589
 msgid "kbps"
 msgstr "kb/s"
 
-#: src/skins/ui_main.c:595
+#: src/skins/ui_main.c:597
 msgid "kHz"
 msgstr "Hz"
 
-#: src/skins/ui_main.c:602
+#: src/skins/ui_main.c:604
 msgid "surround"
 msgstr "Priestorový zvuk"
 
-#: src/skins/ui_main.c:602
+#: src/skins/ui_main.c:604
 msgid "stereo"
 msgstr "stereo"
 
-#: src/skins/ui_main.c:603
+#: src/skins/ui_main.c:605
 msgid "mono"
 msgstr "mono"
 
-#: src/skins/ui_main.c:975
+#: src/skins/ui_main.c:977
 msgid "Audacious - visibility warning"
 msgstr "Audacious - upozornenie o viditeľnosti"
 
-#: src/skins/ui_main.c:978
+#: src/skins/ui_main.c:980
 msgid "Show main player window"
 msgstr "Zobraziť hlavné okno prehrávača"
 
-#: src/skins/ui_main.c:979
+#: src/skins/ui_main.c:981
 msgid "Ignore"
 msgstr "Ignorovať"
 
-#: src/skins/ui_main.c:985
+#: src/skins/ui_main.c:987
 msgid ""
 "Audacious has been started with all of its windows hidden.\n"
 "You may want to show the player window again to control Audacious; "
@@ -4799,15 +4802,15 @@ msgstr ""
 "musieť ovládať vzdialene pomocou audtool alebo pomocou zapnutých modulov "
 "(napr. pomocou modulu stavová ikona)."
 
-#: src/skins/ui_main.c:991
+#: src/skins/ui_main.c:993
 msgid "Always ignore, show/hide is controlled remotely"
 msgstr "Vždy ignorovať. Ukázať/skryť je ovládané vzdialene"
 
-#: src/skins/ui_main.c:1036
+#: src/skins/ui_main.c:1038
 msgid "Audacious - broken GTK engine usage warning"
 msgstr "Audacious - GTK modul vzhľadu"
 
-#: src/skins/ui_main.c:1044
+#: src/skins/ui_main.c:1046
 #, c-format
 msgid ""
 "<big><b>Broken GTK engine in use</b></big>\n"
@@ -4831,75 +4834,75 @@ msgstr ""
 "Ak chcete tieto vlastnosti použiť, zvážte použitie iného modulu vzhľadu pre "
 "GTK."
 
-#: src/skins/ui_main.c:1055
+#: src/skins/ui_main.c:1057
 msgid "Do not display this warning again"
 msgstr "Toto upozornenie viac nezobrazovať"
 
-#: src/skins/ui_main.c:1263
+#: src/skins/ui_main.c:1265
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
 msgstr "Prejsť na: %d:%-2.2d/%d:%-2.2d (%d%%)"
 
-#: src/skins/ui_main.c:1293
+#: src/skins/ui_main.c:1295
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Hlasitosť: %d%%"
 
-#: src/skins/ui_main.c:1321
+#: src/skins/ui_main.c:1323
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Vyváženie: %d%% vľavo"
 
-#: src/skins/ui_main.c:1325
+#: src/skins/ui_main.c:1327
 msgid "Balance: center"
 msgstr "Vyváženie: stred"
 
-#: src/skins/ui_main.c:1329
+#: src/skins/ui_main.c:1331
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Vyváženie: %d%% vpravo"
 
-#: src/skins/ui_main.c:1624
+#: src/skins/ui_main.c:1626
 msgid "Options Menu"
 msgstr "Ponuka s možnosťami"
 
-#: src/skins/ui_main.c:1628
+#: src/skins/ui_main.c:1630
 msgid "Disable 'Always On Top'"
 msgstr "Vypnúť „Vždy navrchu“"
 
-#: src/skins/ui_main.c:1630
+#: src/skins/ui_main.c:1632
 msgid "Enable 'Always On Top'"
 msgstr "Zapnúť „Vždy navrchu“"
 
-#: src/skins/ui_main.c:1633
+#: src/skins/ui_main.c:1635
 msgid "File Info Box"
 msgstr "Informácie o súbore"
 
-#: src/skins/ui_main.c:1637
+#: src/skins/ui_main.c:1639
 msgid "Disable 'GUI Scaling'"
 msgstr "Vypnúť „Zväčšiť GUI“"
 
-#: src/skins/ui_main.c:1639
+#: src/skins/ui_main.c:1641
 msgid "Enable 'GUI Scaling'"
 msgstr "Zapnúť „Zväčšiť GUI“"
 
-#: src/skins/ui_main.c:1642
+#: src/skins/ui_main.c:1644
 msgid "Visualization Menu"
 msgstr "Ponuka s typom znázornenia"
 
-#: src/skins/ui_main.c:2362
+#: src/skins/ui_main.c:2364
 msgid "Single mode."
 msgstr "Režim jednej skladby."
 
-#: src/skins/ui_main.c:2364
+#: src/skins/ui_main.c:2366
 msgid "Playlist mode."
 msgstr "Režim zoznamu skladieb."
 
-#: src/skins/ui_main.c:2388
+#: src/skins/ui_main.c:2390
 msgid "Stopping after song."
 msgstr "Zastaviť po skončení skladby."
 
-#: src/skins/ui_main.c:2390
+#: src/skins/ui_main.c:2392
 msgid "Not stopping after song."
 msgstr "Nezastaviť po skončení skladby."
 
@@ -5143,7 +5146,8 @@ msgstr "Podľa cesty a názvu súboru"
 
 #: src/skins/ui_manager.c:291
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr "Zo zoznamu skladieb odstráni skladby s rovnakou cestou a názvom súboru."
+msgstr ""
+"Zo zoznamu skladieb odstráni skladby s rovnakou cestou a názvom súboru."
 
 #: src/skins/ui_manager.c:304
 msgid "Randomize List"
@@ -5499,10 +5503,12 @@ msgstr "Príkaz, ktorý sa vykoná na konci skladby."
 
 #: src/song_change/song_change.c:402
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr "Príkaz, ktorý sa vykoná, keď Audacious dosiahne koniec zoznamu skladieb."
+msgstr ""
+"Príkaz, ktorý sa vykoná, keď Audacious dosiahne koniec zoznamu skladieb."
 
 #: src/song_change/song_change.c:406
-msgid "Command to run when title changes for a song (i.e. network streams titles)."
+msgid ""
+"Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "Príkaz, ktorý sa vykoná pri zmene názvu skladby (t.j. pre názvy v sieťových "
 "prúdoch)."
@@ -5841,4 +5847,3 @@ msgstr ""
 "\n"
 "Niektoré časti kódu modulu napísal Miles Egan\n"
 "Navštívte stránku Wavpack na adrese http://www.wavpack.com/\n"
-

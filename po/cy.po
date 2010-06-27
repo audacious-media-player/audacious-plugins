@@ -4,18 +4,116 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
-"Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
-"POT-Creation-Date: 2009-10-23 20:29-0400\n"
+"Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
+"POT-Creation-Date: 2010-06-27 15:47+0300\n"
 "PO-Revision-Date: 2007-02-12 03:37-0600\n"
 "Last-Translator: William Pitcock <nenolod@sacredspiral.co.uk>\n"
 "Language-Team: Welsh <i18n+cy@sacredspiral.co.uk>\n"
+"Language: cy\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Welsh\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: src/aac/libmp4.c:259
+#: src/OSS/OSS.c:38
+msgid "About OSS Driver"
+msgstr "Ynghylch Gyrrwr OSS"
+
+#: src/OSS/OSS.c:39
+msgid ""
+"Audacious OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Gyrrwr OSS Audacious\n"
+"\n"
+" Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
+"ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
+"cyhoeddwyd gan y Free Software Foundation; un ai fersiwn 2 o'r\n"
+"drwydded neu yn ôl eich dewis) unrhyw fersiwn arall.\n"
+"\n"
+"Mae'r rhaglen yn cael ei ddosbarthu yn y gobaith y byddwch yn ei gael\n"
+"yn ddefnyddiol, on HEB UNRHYW WARANT; heb hyd yn oed awgrym\n"
+"o warant MASNACHOL neu ADDASRWYDD AR GYFER UNRHYW\n"
+"BWRPAS. Gw. y drwydded Gyhoeddus Gyffredin am ragor o wybodaeth.\n"
+"\n"
+"Dylech fod wedi derbyn copi o'r Drwydded gyda'r rhaglen; os nad cysylltwch\n"
+"â 'r Free Software Foundation, Inc.,  59 Temple Place - Suite 330, Boston,\n"
+" MA 02111-1307,\n"
+"USA."
+
+#: src/OSS/configure.c:148
+#, c-format
+msgid "Default (%s)"
+msgstr "Rhagosodedig (%s)"
+
+#: src/OSS/configure.c:166 src/alarm/interface.c:612 src/alarm/interface.c:660
+#: src/alarm/interface.c:708 src/alarm/interface.c:756
+#: src/alarm/interface.c:804 src/alarm/interface.c:852
+#: src/alarm/interface.c:900 src/skins/ui_manager.c:447
+#: src/skins/ui_manager.c:468
+msgid "Default"
+msgstr "Rhagosodedig"
+
+#: src/OSS/configure.c:197
+msgid "OSS Driver configuration"
+msgstr "Ffurfweddu'r Gyrrwr OSS"
+
+#: src/OSS/configure.c:213 src/oss4/configure.c:162 src/sun/configure.c:181
+msgid "Audio device:"
+msgstr "Dyfais sain:"
+
+#: src/OSS/configure.c:235 src/OSS/configure.c:276 src/oss4/configure.c:188
+msgid "Use alternate device:"
+msgstr "Defnyddiwr ddyfais arall:"
+
+#: src/OSS/configure.c:256 src/alsa/config.c:446 src/sun/configure.c:218
+msgid "Mixer device:"
+msgstr "Dyfais cymysgu"
+
+#: src/OSS/configure.c:298 src/sun/configure.c:246
+msgid "Devices"
+msgstr "Dyfeisiau"
+
+#: src/OSS/configure.c:300 src/esd/configure.c:171 src/sun/configure.c:257
+msgid "Buffering:"
+msgstr "Byffyru:"
+
+#: src/OSS/configure.c:313 src/esd/configure.c:198 src/sun/configure.c:288
+msgid "Pre-buffer (percent):"
+msgstr "Cyn fyffer (y cant):"
+
+#: src/OSS/configure.c:324 src/esd/configure.c:209 src/sun/configure.c:302
+msgid "Buffering"
+msgstr "Byffyru:"
+
+#: src/OSS/configure.c:325
+msgid "Mixer Settings:"
+msgstr "Gosodiadau Cymysgu"
+
+#: src/OSS/configure.c:331
+msgid "Volume controls Master not PCM"
+msgstr "Nid yw'r Prif reolwr sain yn PCM"
+
+#: src/OSS/configure.c:337 src/sun/configure.c:392
+msgid "Mixer"
+msgstr "Cymysgwr"
+
+#: src/aac/libmp4.c:287
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -23,37 +121,16 @@ msgid ""
 "Copyright (c) 2005-2006 Audacious team"
 msgstr ""
 
-#: src/aac/libmp4.c:264
+#: src/aac/libmp4.c:292
 #, fuzzy
 msgid "About MP4 AAC decoder plugin"
 msgstr "Ynghylch Ategyn Sain MPEG"
 
-#: src/aac/libmp4.c:265 src/adplug/adplug-xmms.cc:179
-#: src/adplug/adplug-xmms.cc:262 src/adplug/adplug-xmms.cc:523
-#: src/audiocompress/audacious-glue.c:110
-#: src/audiocompress/audacious-glue.c:560 src/cdaudio-ng/configure.c:273
-#: src/console/plugin.c:37 src/crossfade/configure.c:1175
-#: src/crystalizer/crystalizer.c:113 src/echo_plugin/gui.c:24
-#: src/echo_plugin/gui.c:135 src/esd/about.c:48 src/ffaudio/ffaudio-core.c:694
-#: src/filewriter/filewriter.c:187 src/icecast/icecast.c:241
-#: src/jack/configure.c:144 src/jack/jack.c:424 src/kanashi/plugin.c:237
-#: src/madplug/plugin.c:580 src/metronom/metronom.c:92
-#: src/modplug/gui/main.cxx:52 src/null/null.c:65 src/null/null.c:108
-#: src/OSS4/OSS4.c:58 src/OSS/OSS.c:54 src/paranormal-ng/plugin.c:282
-#: src/paranormal/plugin.c:290 src/scrobbler/gtkstuff.c:22
-#: src/sndfile/plugin.c:502 src/statusicon/si_ui.c:468
-#: src/stereo_plugin/stereo.c:52 src/stereo_plugin/stereo.c:115
-#: src/sun/about.c:37 src/sun/configure.c:557 src/timidity/interface.c:223
-#: src/timidity/plugin.c:114 src/tonegen/tonegen.c:56 src/vorbis/vorbis.c:601
-#: src/vtx/about.c:26 src/vtx/info.c:38 src/wavpack/wavpack.c:408
-msgid "Ok"
-msgstr "Iawn"
-
-#: src/adplug/adplug-xmms.cc:168
+#: src/adplug/adplug-xmms.cc:149
 msgid "About "
 msgstr "Ynghylch"
 
-#: src/adplug/adplug-xmms.cc:172
+#: src/adplug/adplug-xmms.cc:153
 msgid ""
 "\n"
 "Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
@@ -75,201 +152,200 @@ msgstr ""
 "Peter, et al.\n"
 "Fersiwn cynnwys AdPlug llyfrgell:"
 
-#: src/adplug/adplug-xmms.cc:253
+#: src/adplug/adplug-xmms.cc:230
 #, fuzzy
 msgid "AdPlug :: Configuration"
 msgstr "AMIDI-Plug - ffurfweddu"
 
-#: src/adplug/adplug-xmms.cc:272 src/alarm/interface.c:1398
-#: src/audiocompress/audacious-glue.c:565 src/cdaudio-ng/configure.c:278
-#: src/crossfade/interface-2.0.c:1508 src/crystalizer/crystalizer.c:122
-#: src/echo_plugin/gui.c:143 src/jack/configure.c:151
-#: src/modplug/gui/interface.cxx:715 src/modplug/gui/modplug.glade:1668
-#: src/null/null.c:109 src/stereo_plugin/stereo.c:124 src/sun/configure.c:565
-#: src/timidity/interface.c:231 src/wavpack/ui.c:204
+#: src/adplug/adplug-xmms.cc:239 src/adplug/adplug-xmms.cc:500
+#: src/cdaudio-ng/configure.c:258 src/crystalizer/crystalizer.c:124
+#: src/echo_plugin/gui.c:131 src/jack/configure.c:144 src/null/null.c:107
+#: src/stereo_plugin/stereo.c:120 src/sun/configure.c:557
+msgid "Ok"
+msgstr "Iawn"
+
+#: src/adplug/adplug-xmms.cc:249 src/alarm/interface.c:1398
+#: src/cdaudio-ng/configure.c:263 src/crystalizer/crystalizer.c:133
+#: src/echo_plugin/gui.c:139 src/jack/configure.c:151
+#: src/modplug/gui/interface.cxx:715 src/null/null.c:108
+#: src/roaraudio/gui.c:315 src/stereo_plugin/stereo.c:129
+#: src/sun/configure.c:565
 msgid "Cancel"
 msgstr "Dileu"
 
-#: src/adplug/adplug-xmms.cc:288 src/console/configure.c:152
-#: src/madplug/configure.c:79 src/modplug/gui/interface.cxx:629
-#: src/modplug/gui/interface.cxx:888 src/modplug/gui/modplug.glade:1404
-#: src/modplug/gui/modplug.glade:1804
+#: src/adplug/adplug-xmms.cc:265 src/console/configure.c:152
+#: src/modplug/gui/interface.cxx:629 src/modplug/gui/interface.cxx:888
 msgid "General"
 msgstr "Cyffredinol"
 
-#: src/adplug/adplug-xmms.cc:300
+#: src/adplug/adplug-xmms.cc:277
 #, fuzzy
 msgid "Sound quality"
 msgstr "Clip Sain"
 
-#: src/adplug/adplug-xmms.cc:305 src/modplug/gui/interface.cxx:188
-#: src/modplug/gui/modplug.glade:113
+#: src/adplug/adplug-xmms.cc:282 src/modplug/gui/interface.cxx:188
 #, fuzzy
 msgid "Resolution"
 msgstr "Cydraniad:"
 
-#: src/adplug/adplug-xmms.cc:307
+#: src/adplug/adplug-xmms.cc:284
 #, fuzzy
 msgid "8bit"
 msgstr "8 did"
 
-#: src/adplug/adplug-xmms.cc:312
+#: src/adplug/adplug-xmms.cc:289
 #, fuzzy
 msgid "16bit"
 msgstr "16 did"
 
-#: src/adplug/adplug-xmms.cc:320 src/modplug/gui/interface.cxx:219
-#: src/modplug/gui/modplug.glade:199 src/timidity/interface.c:149
+#: src/adplug/adplug-xmms.cc:297 src/modplug/gui/interface.cxx:219
 msgid "Channels"
 msgstr "Sianeli:"
 
-#: src/adplug/adplug-xmms.cc:322 src/filewriter/mp3.c:951
-#: src/sid/xmms-sid.glade:157 src/sid/xs_interface.c:301
-#: src/timidity/interface.c:166
+#: src/adplug/adplug-xmms.cc:299 src/filewriter/mp3.c:931
+#: src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Mono"
 
-#: src/adplug/adplug-xmms.cc:327 src/filewriter/mp3.c:946
-#: src/modplug/gui/interface.cxx:205 src/modplug/gui/modplug.glade:159
-#: src/sid/xmms-sid.glade:176 src/sid/xs_interface.c:308
-#: src/timidity/interface.c:174
+#: src/adplug/adplug-xmms.cc:304 src/filewriter/mp3.c:926
+#: src/modplug/gui/interface.cxx:205 src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/adplug/adplug-xmms.cc:331
+#: src/adplug/adplug-xmms.cc:308
 msgid ""
 "Setting stereo is not recommended, unless you need to. This won't add any "
 "stereo effects to the sound - OPL2 is just mono - but eats up more CPU power!"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:339
+#: src/adplug/adplug-xmms.cc:316
 msgid "Frequency"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:375 src/adplug/adplug-xmms.cc:579
-#: src/console/configure.c:154 src/gtkui/ui_manager.c:57
-#: src/skins/ui_manager.c:166
+#: src/adplug/adplug-xmms.cc:352 src/adplug/adplug-xmms.cc:556
+#: src/console/configure.c:154 src/gtkui/ui_manager.c:62
+#: src/skins/ui_manager.c:168
 msgid "Playback"
 msgstr "Chwarae"
 
-#: src/adplug/adplug-xmms.cc:379
+#: src/adplug/adplug-xmms.cc:356
 msgid "Detect songend"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:383
+#: src/adplug/adplug-xmms.cc:360
 msgid ""
 "If enabled, XMMS will detect a song's ending, stop it and advance in the "
 "playlist. If disabled, XMMS won't take notice of a song's ending and loop it "
 "all over again and again."
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:394
+#: src/adplug/adplug-xmms.cc:371
 #, fuzzy
 msgid "Formats"
 msgstr "Fformat:"
 
-#: src/adplug/adplug-xmms.cc:401
+#: src/adplug/adplug-xmms.cc:378
 msgid "Format selection"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:404
+#: src/adplug/adplug-xmms.cc:381
 #, fuzzy
 msgid "Format"
 msgstr "Fformat:"
 
-#: src/adplug/adplug-xmms.cc:404
+#: src/adplug/adplug-xmms.cc:381
 msgid "Extension"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:444
+#: src/adplug/adplug-xmms.cc:421
 msgid ""
 "Selected file types will be recognized and played back by this plugin. "
 "Deselected types will be ignored to make room for other plugins to play "
 "these files."
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:530
+#: src/adplug/adplug-xmms.cc:507
 msgid "AdPlug :: File Info"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:552 src/amidi-plug/i_configure-fluidsynth.c:448
+#: src/adplug/adplug-xmms.cc:529 src/amidi-plug/i_configure-fluidsynth.c:348
 msgid "Filename"
 msgstr "Enw ffeil"
 
-#: src/adplug/adplug-xmms.cc:556 src/skins/ui_playlist.c:365
+#: src/adplug/adplug-xmms.cc:533 src/skins/ui_playlist.c:384
 #, fuzzy
 msgid "Title: "
 msgstr "Teitl:"
 
-#: src/adplug/adplug-xmms.cc:557
+#: src/adplug/adplug-xmms.cc:534
 msgid "Author: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:558
+#: src/adplug/adplug-xmms.cc:535
 #, fuzzy
 msgid "File Type: "
 msgstr "Maint ffeil:"
 
-#: src/adplug/adplug-xmms.cc:559
+#: src/adplug/adplug-xmms.cc:536
 msgid "Subsongs: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:560
+#: src/adplug/adplug-xmms.cc:537
 #, fuzzy
 msgid "Instruments: "
 msgstr "Offerynnol"
 
-#: src/adplug/adplug-xmms.cc:565
+#: src/adplug/adplug-xmms.cc:542
 msgid "Orders: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:566
+#: src/adplug/adplug-xmms.cc:543
 msgid "Patterns: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:570
+#: src/adplug/adplug-xmms.cc:547
 #, fuzzy
 msgid "Song"
 msgstr "Swing"
 
-#: src/adplug/adplug-xmms.cc:596
+#: src/adplug/adplug-xmms.cc:573
 #, fuzzy
 msgid "Instrument name"
 msgstr "Offerynnol"
 
-#: src/adplug/adplug-xmms.cc:638
+#: src/adplug/adplug-xmms.cc:615
 #, fuzzy
 msgid "Song message"
 msgstr "Newid Cân %s"
 
-#: src/adplug/adplug-xmms.cc:660
+#: src/adplug/adplug-xmms.cc:637
 msgid "Subsong selection"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:724
+#: src/adplug/adplug-xmms.cc:703
 msgid "Order: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:725
+#: src/adplug/adplug-xmms.cc:704
 msgid "Pattern: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:727
+#: src/adplug/adplug-xmms.cc:706
 msgid "Row: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:728
+#: src/adplug/adplug-xmms.cc:707
 #, fuzzy
 msgid "Speed: "
 msgstr "Llais"
 
-#: src/adplug/adplug-xmms.cc:729
+#: src/adplug/adplug-xmms.cc:708
 #, fuzzy
 msgid "Timer: "
 msgstr "Teitl:"
 
-#: src/adplug/adplug-xmms.cc:730 src/console/configure.c:232
-#: src/sid/xmms-sid.glade:332 src/sid/xs_interface.c:354
+#: src/adplug/adplug-xmms.cc:709 src/console/configure.c:232
+#: src/sid/xs_interface.c:354
 msgid "Hz"
 msgstr "Hz"
 
@@ -293,11 +369,9 @@ msgid ""
 "http://www.snika.uklinux.net/xmms-alarm/"
 msgstr ""
 
-#: src/alarm/interface.c:71 src/bluetooth/scan_gui.c:149
-#: src/cdaudio-ng/cdaudio-ng.c:350 src/crossfade/interface-2.0.c:1945
-#: src/lirc/about.c:115 src/modplug/gui/interface.cxx:972
-#: src/modplug/gui/modplug.glade:2030 src/sid/xmms-sid.glade:3837
-#: src/sid/xs_about.c:214 src/sid/xs_interface.c:1825
+#: src/alarm/interface.c:71 src/bluetooth/scan_gui.c:149 src/lirc/about.c:115
+#: src/modplug/gui/interface.cxx:972 src/sid/xs_about.c:214
+#: src/sid/xs_interface.c:1825
 msgid "Close"
 msgstr "Cau"
 
@@ -310,12 +384,8 @@ msgid "This is your wakeup call."
 msgstr ""
 
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389
-#: src/bluetooth/bluetooth.c:114 src/crossfade/interface-2.0.c:1503
-#: src/flacng/plugin.c:633 src/gnomeshortcuts/gnomeshortcuts.c:310
-#: src/hotkey/gui.c:670 src/modplug/gui/interface.cxx:703
-#: src/modplug/gui/modplug.glade:1642 src/scrobbler/gtkstuff.c:42
-#: src/sid/xs_config.c:319 src/skins/plugin.c:182
-#: src/streambrowser/streambrowser.c:328
+#: src/modplug/gui/interface.cxx:703 src/roaraudio/gui.c:312
+#: src/sid/xs_config.c:319
 msgid "OK"
 msgstr "Iawn"
 
@@ -385,14 +455,6 @@ msgstr ""
 msgid "Choose the days for the alarm to come on"
 msgstr ""
 
-#: src/alarm/interface.c:612 src/alarm/interface.c:660
-#: src/alarm/interface.c:708 src/alarm/interface.c:756
-#: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/OSS/configure.c:169
-#: src/skins/ui_manager.c:438 src/skins/ui_manager.c:459
-msgid "Default"
-msgstr "Rhagosodedig"
-
 #: src/alarm/interface.c:938
 msgid "Day"
 msgstr ""
@@ -436,16 +498,14 @@ msgstr ""
 msgid "Fading"
 msgstr "cynnydd"
 
-#: src/alarm/interface.c:1087 src/sid/xmms-sid.glade:2007
-#: src/sid/xmms-sid.glade:2178 src/sid/xmms-sid.glade:2746
-#: src/sid/xs_interface.c:921 src/sid/xs_interface.c:975
-#: src/sid/xs_interface.c:1155
+#: src/alarm/interface.c:1087 src/sid/xs_interface.c:921
+#: src/sid/xs_interface.c:975 src/sid/xs_interface.c:1155
 #, fuzzy
 msgid "seconds"
 msgstr "eiliad"
 
 #: src/alarm/interface.c:1095 src/alarm/interface.c:1211
-#: src/modplug/gui/interface.cxx:550 src/modplug/gui/modplug.glade:1133
+#: src/modplug/gui/interface.cxx:550
 #, fuzzy
 msgid "Volume"
 msgstr "Sain:(%)"
@@ -498,7 +558,7 @@ msgstr ""
 msgid "Use reminder"
 msgstr "User Defined"
 
-#: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:376
+#: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:392
 #, fuzzy
 msgid "Options"
 msgstr "Dewisiadau:"
@@ -562,8 +622,8 @@ msgid ""
 "    toggle button if you want it to be shown.\n"
 msgstr ""
 
-#: src/alarm/interface.c:1366 src/crossfade/interface-2.0.c:1918
-#: src/gtkui/ui_manager.c:267 src/skins/ui_manager.c:377
+#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:157
+#: src/skins/ui_manager.c:379
 msgid "Help"
 msgstr ""
 
@@ -576,35 +636,50 @@ msgstr ""
 msgid "Thankyou"
 msgstr "Tango"
 
-#: src/alsa-gapless/config.c:203
+#: src/alsa/config.c:208
 #, fuzzy
 msgid "Default PCM device"
 msgstr "Dyfais PCM rhagosodedig (%s)"
 
-#: src/alsa-gapless/config.c:229
+#: src/alsa/config.c:233
 #, fuzzy
 msgid "Default mixer device"
 msgstr "Dyfais PCM rhagosodedig (%s)"
 
-#: src/alsa-gapless/config.c:433
+#: src/alsa/config.c:437
 #, fuzzy
-msgid "ALSA Gapless Output Plugin Preferences"
+msgid "ALSA Output Plugin Preferences"
 msgstr "Ynghylch Ategyn ESounD"
 
-#: src/alsa-gapless/config.c:440
+#: src/alsa/config.c:444
 #, fuzzy
 msgid "PCM device:"
 msgstr "Dyfais cymysgu"
 
-#: src/alsa-gapless/config.c:442 src/OSS/configure.c:260
-#: src/sun/configure.c:218
-msgid "Mixer device:"
-msgstr "Dyfais cymysgu"
-
-#: src/alsa-gapless/config.c:444
+#: src/alsa/config.c:448
 #, fuzzy
 msgid "Mixer element:"
 msgstr "Dyfais cymysgu"
+
+#: src/alsa/config.c:451
+msgid "Work around drain hangup"
+msgstr ""
+
+#: src/alsa/plugin.c:59
+#, fuzzy
+msgid "About ALSA Output Plugin"
+msgstr "Ynghylch Ategyn Allbwn JACK 0.17"
+
+#: src/alsa/plugin.c:81
+#, fuzzy
+msgid "ALSA error"
+msgstr "Terror"
+
+#: src/amidi-plug/amidi-plug.c:320
+msgid ""
+"You have not selected any sequencer ports for MIDI playback.  You can do so "
+"in the MIDI plugin preferences."
+msgstr ""
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -622,23 +697,11 @@ msgid ""
 "Backend written by Giacomo Lozito."
 msgstr ""
 
-#: src/amidi-plug/backend-dummy/b-dummy.c:35
-msgid "Dummy Backend "
-msgstr ""
-
-#: src/amidi-plug/backend-dummy/b-dummy.c:37
-msgid ""
-"This backend does not produce audio at all. It is mostly useful for analysis "
-"and testing purposes, as it can log all MIDI events to standard output, "
-"standard error or file.\n"
-"Backend written by Giacomo Lozito."
-msgstr ""
-
-#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:35
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:41
 msgid "FluidSynth Backend "
 msgstr ""
 
-#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:37
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:43
 msgid ""
 "This backend produces audio by sending MIDI events to FluidSynth, a real-"
 "time software synthesizer based on the SoundFont2 specification (www."
@@ -781,7 +844,7 @@ msgid ""
 "* Transpose function *\n"
 "This option allows you to play the midi file transposed in a different key, "
 "by shifting of the desired number of semitones all its notes (excepting "
-"those on midi channel 10, reserved for percussions). Expecially useful if "
+"those on midi channel 10, reserved for percussions). Especially useful if "
 "you wish to sing or play along with another instrument."
 msgstr ""
 
@@ -828,217 +891,102 @@ msgid ""
 "Plug</span>"
 msgstr ""
 
-#: src/amidi-plug/i_configure.c:76
-msgid "AMIDI-Plug - select file"
-msgstr ""
-
-#: src/amidi-plug/i_configure.c:123
-msgid "AMIDI-Plug - configuration"
-msgstr "AMIDI-Plug - ffurfweddu"
-
-#: src/amidi-plug/i_configure.c:242
-msgid "AMIDI-Plug message"
-msgstr ""
-
-#: src/amidi-plug/i_configure.c:243
-msgid "Please stop the player before changing AMIDI-Plug settings."
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:137
-msgid "DUMMY BACKEND CONFIGURATION"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:173
-msgid "MIDI logger settings"
-msgstr "Gosodiadau loglyfrau MIDI"
-
-#: src/amidi-plug/i_configure-dummy.c:181
-msgid "Do not log anything"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:185
-msgid "Log MIDI events to standard output"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:189
-msgid "Log MIDI events to standard error"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:193
-msgid "Log MIDI events to file"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:202
-msgid "Logfile settings"
-msgstr "Gosodiadau loglyfrau"
-
-#: src/amidi-plug/i_configure-dummy.c:209
-msgid "Use a single file to log everything (rewrite)"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:213
-msgid "Use a single file to log everything (append)"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:217
-msgid "Use a different logfile for each MIDI file"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:223
-msgid "» Log dir:"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:229
-#: src/amidi-plug/i_configure-dummy.c:241
-msgid "browse"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:235
-msgid "» Log file:"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:267
-msgid "Playback speed"
-msgstr "Chwarae cyflymedd"
-
-#: src/amidi-plug/i_configure-dummy.c:272
-msgid "Play at normal speed"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:275
-msgid "Play as fast as possible"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:329
-msgid "Dummy Backend not loaded or not available"
-msgstr ""
-
-#: src/amidi-plug/i_configure-dummy.c:348
-msgid ""
-"<span size=\"smaller\">Dummy\n"
-"backend</span>"
-msgstr ""
-
-#: src/amidi-plug/i_configure-fluidsynth.c:83
+#: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:362
+#: src/amidi-plug/i_configure-fluidsynth.c:268
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:416
+#: src/amidi-plug/i_configure-fluidsynth.c:316
 msgid "SoundFont settings"
 msgstr "Ffurfweddu SoundFont"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:452
+#: src/amidi-plug/i_configure-fluidsynth.c:352
 msgid "Size (bytes)"
 msgstr "Maint Ffeil (bytes)"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:501
+#: src/amidi-plug/i_configure-fluidsynth.c:401
 msgid "Load SF on player start"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:505
+#: src/amidi-plug/i_configure-fluidsynth.c:405
 msgid "Load SF on first midifile play"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:520
+#: src/amidi-plug/i_configure-fluidsynth.c:420
 #, fuzzy
 msgid "Synthesizer settings"
 msgstr "Gosodiadau Cymysgu"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:529
+#: src/amidi-plug/i_configure-fluidsynth.c:429
 msgid "gain"
 msgstr "cynnydd"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:535
-#: src/amidi-plug/i_configure-fluidsynth.c:563
-#: src/amidi-plug/i_configure-fluidsynth.c:591
-#: src/amidi-plug/i_configure-fluidsynth.c:622
+#: src/amidi-plug/i_configure-fluidsynth.c:435
+#: src/amidi-plug/i_configure-fluidsynth.c:463
+#: src/amidi-plug/i_configure-fluidsynth.c:491
+#: src/amidi-plug/i_configure-fluidsynth.c:522
 msgid "use default"
 msgstr "rhagosodedig"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:538
-#: src/amidi-plug/i_configure-fluidsynth.c:566
+#: src/amidi-plug/i_configure-fluidsynth.c:438
+#: src/amidi-plug/i_configure-fluidsynth.c:466
 msgid "value:"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:557
+#: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "poliphony"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:585
+#: src/amidi-plug/i_configure-fluidsynth.c:485
 msgid "reverb"
 msgstr "adlais"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:594
-#: src/amidi-plug/i_configure-fluidsynth.c:625
+#: src/amidi-plug/i_configure-fluidsynth.c:494
+#: src/amidi-plug/i_configure-fluidsynth.c:525
 msgid "yes"
 msgstr "iawn"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:596
-#: src/amidi-plug/i_configure-fluidsynth.c:627
+#: src/amidi-plug/i_configure-fluidsynth.c:496
+#: src/amidi-plug/i_configure-fluidsynth.c:527
 msgid "no"
 msgstr "dim"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:616
+#: src/amidi-plug/i_configure-fluidsynth.c:516
 msgid "chorus"
 msgstr "cytgan"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:647
+#: src/amidi-plug/i_configure-fluidsynth.c:547
 msgid "sample rate"
 msgstr "graddfa samplo"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:653
+#: src/amidi-plug/i_configure-fluidsynth.c:553
 #, fuzzy
 msgid "22050 Hz "
 msgstr "22000 Hz"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:656
+#: src/amidi-plug/i_configure-fluidsynth.c:556
 #, fuzzy
 msgid "44100 Hz "
 msgstr "44100 Hz"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:659
+#: src/amidi-plug/i_configure-fluidsynth.c:559
 #, fuzzy
 msgid "96000 Hz "
 msgstr "11000 Hz"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:662
+#: src/amidi-plug/i_configure-fluidsynth.c:562
 msgid "custom "
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:671
+#: src/amidi-plug/i_configure-fluidsynth.c:571
 #, fuzzy
 msgid "Hz "
 msgstr "Hz"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:705
-msgid "Buffer settings"
-msgstr "Gosodiadau byffyru"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:714
-msgid "<span size=\"smaller\">def</span>"
-msgstr ""
-
-#: src/amidi-plug/i_configure-fluidsynth.c:723
-msgid "<span size=\"smaller\">handy buffer tuner</span>"
-msgstr ""
-
-#: src/amidi-plug/i_configure-fluidsynth.c:737
-msgid "<span size=\"smaller\">size</span>"
-msgstr ""
-
-#: src/amidi-plug/i_configure-fluidsynth.c:751
-msgid "<span size=\"smaller\">margin</span>"
-msgstr ""
-
-#: src/amidi-plug/i_configure-fluidsynth.c:765
-msgid "<span size=\"smaller\">increment</span>"
-msgstr ""
-
-#: src/amidi-plug/i_configure-fluidsynth.c:807
+#: src/amidi-plug/i_configure-fluidsynth.c:621
 msgid ""
 "* Select SoundFont files *\n"
 "In order to play MIDI with FluidSynth, you need to specify at least one "
@@ -1046,7 +994,7 @@ msgid ""
 "the top (first) to the bottom (last)."
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:812
+#: src/amidi-plug/i_configure-fluidsynth.c:626
 msgid ""
 "* Load SoundFont on player start *\n"
 "Depending on your system speed, SoundFont loading in FluidSynth will require "
@@ -1056,7 +1004,7 @@ msgid ""
 "choice if you don't use your player to listen MIDI files only)."
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:820
+#: src/amidi-plug/i_configure-fluidsynth.c:634
 msgid ""
 "* Load SoundFont on first midifile play *\n"
 "Depending on your system speed, SoundFont loading in FluidSynth will require "
@@ -1066,7 +1014,7 @@ msgid ""
 "choice if you don't use your player to listen MIDI files only)."
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:828
+#: src/amidi-plug/i_configure-fluidsynth.c:642
 msgid ""
 "* Synthesizer gain *\n"
 "From FluidSynth docs: the gain is applied to the final or master output of "
@@ -1074,7 +1022,7 @@ msgid ""
 "of the output when random MIDI files are played."
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:833
+#: src/amidi-plug/i_configure-fluidsynth.c:647
 msgid ""
 "* Synthesizer polyphony *\n"
 "From FluidSynth docs: the polyphony defines how many voices can be played in "
@@ -1086,8 +1034,8 @@ msgid ""
 "zones that fall in the correspond to the velocity and key of the played note."
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:843
-#: src/amidi-plug/i_configure-fluidsynth.c:849
+#: src/amidi-plug/i_configure-fluidsynth.c:657
+#: src/amidi-plug/i_configure-fluidsynth.c:663
 msgid ""
 "* Synthesizer reverb *\n"
 "From FluidSynth docs: when set to \"yes\" the reverb effects module is "
@@ -1096,8 +1044,8 @@ msgid ""
 "in the SoundFont."
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:855
-#: src/amidi-plug/i_configure-fluidsynth.c:861
+#: src/amidi-plug/i_configure-fluidsynth.c:669
+#: src/amidi-plug/i_configure-fluidsynth.c:675
 msgid ""
 "* Synthesizer chorus *\n"
 "From FluidSynth docs: when set to \"yes\" the chorus effects module is "
@@ -1106,55 +1054,21 @@ msgid ""
 "in the SoundFont."
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:867
-#: src/amidi-plug/i_configure-fluidsynth.c:873
-#: src/amidi-plug/i_configure-fluidsynth.c:879
-#: src/amidi-plug/i_configure-fluidsynth.c:885
+#: src/amidi-plug/i_configure-fluidsynth.c:681
+#: src/amidi-plug/i_configure-fluidsynth.c:685
+#: src/amidi-plug/i_configure-fluidsynth.c:689
+#: src/amidi-plug/i_configure-fluidsynth.c:693
 msgid ""
 "* Synthesizer samplerate *\n"
 "The sample rate of the audio generated by the synthesizer. You can also "
-"specify a custom value in the interval 22050Hz-96000Hz.\n"
-"NOTE: the default buffer parameters are tuned for 44100Hz; changing the "
-"sample rate may require buffer params tuning to obtain good sound quality."
+"specify a custom value in the interval 22050Hz-96000Hz."
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:891
-msgid ""
-"* FluidSynth backend buffer *\n"
-"This button resets the backend buffer parameters to default values."
-msgstr ""
-
-#: src/amidi-plug/i_configure-fluidsynth.c:894
-msgid ""
-"* FluidSynth backend buffer *\n"
-"If you notice skips or slowness during song playback and your system is not "
-"performing any cpu-intensive task (except FluidSynth itself), you may want "
-"to adjust the buffer parameters. Try to move the \"handy buffer tuner\" some "
-"steps to the right until playback is fluid again."
-msgstr ""
-
-#: src/amidi-plug/i_configure-fluidsynth.c:900
-#: src/amidi-plug/i_configure-fluidsynth.c:911
-#: src/amidi-plug/i_configure-fluidsynth.c:922
-msgid ""
-"* FluidSynth backend buffer *\n"
-"It is a good idea to make buffer adjustments with the \"handy buffer tuner\" "
-"before resorting to manual editing of buffer parameters.\n"
-"However, if you want to fine-tune something and want to know what you're "
-"doing, you can understand how these parameters work by reading the backend "
-"code (b-fluidsynth.c). In short words, every amount of time (proportional to "
-"buffer_SIZE and sample rate), right before gathering samples, the buffer is "
-"resized as follows:\n"
-"buffer_SIZE + buffer_MARGIN + extramargin\n"
-"where extramargin is a value computed as number_of_seconds_of_playback / "
-"margin_INCREMENT ."
-msgstr ""
-
-#: src/amidi-plug/i_configure-fluidsynth.c:937
+#: src/amidi-plug/i_configure-fluidsynth.c:701
 msgid "FluidSynth Backend not loaded or not available"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:956
+#: src/amidi-plug/i_configure-fluidsynth.c:720
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
@@ -1174,8 +1088,16 @@ msgid ""
 "backend</span>"
 msgstr ""
 
+#: src/amidi-plug/i_configure.c:74
+msgid "AMIDI-Plug - select file"
+msgstr ""
+
+#: src/amidi-plug/i_configure.c:127
+msgid "AMIDI-Plug - configuration"
+msgstr "AMIDI-Plug - ffurfweddu"
+
 #: src/amidi-plug/i_fileinfo.c:169 src/bluetooth/gui.c:271
-#: src/sid/xmms-sid.glade:3659 src/sid/xs_interface.c:1769
+#: src/sid/xs_interface.c:1769
 msgid "Name:"
 msgstr "Enw:"
 
@@ -1276,8 +1198,7 @@ msgstr "Cyfongl Cwmpas"
 msgid "Concave Rectangle"
 msgstr "Cyfongl Cafniog"
 
-#: src/aosd/aosd_style.c:87 src/crossfade/configure.c:356
-#: src/crossfade/interface-2.0.c:594 src/crossfade/interface-2.0.c:1047
+#: src/aosd/aosd_style.c:87
 msgid "None"
 msgstr "Dim"
 
@@ -1421,10 +1342,8 @@ msgstr ""
 msgid "Skin file:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:644 src/sid/xmms-sid.glade:2373
-#: src/sid/xmms-sid.glade:2968 src/sid/xmms-sid.glade:3136
-#: src/sid/xs_interface.c:1044 src/sid/xs_interface.c:1236
-#: src/sid/xs_interface.c:1292
+#: src/aosd/aosd_ui.c:644 src/sid/xs_interface.c:1044
+#: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
 msgid "Browse"
 msgstr ""
 
@@ -1471,54 +1390,53 @@ msgstr ""
 msgid "Composite extension not available"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:934
+#: src/aosd/aosd_ui.c:931
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1015
+#: src/aosd/aosd_ui.c:1012
 msgid "Audacious OSD - configuration"
 msgstr "Audacious OSD - ffurfweddiad"
 
-#: src/aosd/aosd_ui.c:1036
+#: src/aosd/aosd_ui.c:1033
 msgid "Test"
 msgstr "Prawf"
 
-#: src/aosd/aosd_ui.c:1051
+#: src/aosd/aosd_ui.c:1048
 #, fuzzy
 msgid "Position"
 msgstr "Disgrifiad:"
 
-#: src/aosd/aosd_ui.c:1056
+#: src/aosd/aosd_ui.c:1053
 #, fuzzy
 msgid "Animation"
 msgstr "Corff:"
 
-#: src/aosd/aosd_ui.c:1061
+#: src/aosd/aosd_ui.c:1058
 msgid "Text"
 msgstr "Testun"
 
-#: src/aosd/aosd_ui.c:1066
+#: src/aosd/aosd_ui.c:1063
 msgid "Decoration"
 msgstr "Addurniad"
 
-#: src/aosd/aosd_ui.c:1071
+#: src/aosd/aosd_ui.c:1068
 #, fuzzy
 msgid "Trigger"
 msgstr "Trailer"
 
-#: src/aosd/aosd_ui.c:1076 src/cdaudio-ng/configure.c:189
-#: src/modplug/gui/interface.cxx:689 src/modplug/gui/modplug.glade:1603
-#: src/sid/xmms-sid.glade:3220 src/sid/xs_interface.c:1302
+#: src/aosd/aosd_ui.c:1073 src/cdaudio-ng/configure.c:178
+#: src/modplug/gui/interface.cxx:689 src/sid/xs_interface.c:1302
 #, fuzzy
 msgid "Misc"
 msgstr "Disgo"
 
-#: src/aosd/aosd_ui.c:1113
+#: src/aosd/aosd_ui.c:1110
 msgid "Audacious OSD - about"
 msgstr "Audacious OSD - ynghylch"
 
-#: src/aosd/aosd_ui.c:1143
+#: src/aosd/aosd_ui.c:1140
 msgid ""
 "\n"
 "Audacious OSD "
@@ -1526,7 +1444,7 @@ msgstr ""
 "\n"
 "Audacious OSD"
 
-#: src/aosd/aosd_ui.c:1144
+#: src/aosd/aosd_ui.c:1141
 #, fuzzy
 msgid ""
 "\n"
@@ -1548,111 +1466,6 @@ msgstr ""
 "ysgrifenedig am Evan Martin\n"
 "http://neugierig.org/software/ghosd/\n"
 "\n"
-
-#: src/audiocompress/audacious-glue.c:103
-msgid "AudioCompress "
-msgstr "AudioCompress "
-
-#: src/audiocompress/audacious-glue.c:104
-msgid ""
-"\n"
-"(c)2003 trikuare studios(http://trikuare.cx)\n"
-"Ported to Audacious by Tony Vroon (chainsaw@gentoo.org)\n"
-"\n"
-"Simple dynamic range compressor for transparently\n"
-"keeping the volume level more or less consistent"
-msgstr ""
-"\n"
-"(c)2003 trikuare studios(http://trikuare.cx)\n"
-"Cyfaddaseg am Audacious gan Tony Vroon (chainsaw@gentoo.org)\n"
-"\n"
-"Seml deinamig amrediad cywasgu am tryloyw\n"
-"cadw'r yr cyfrol lefel rhyw yr unrhyw"
-
-#: src/audiocompress/audacious-glue.c:109
-msgid "About AudioCompress"
-msgstr "Ynghylch AudioCompress"
-
-#: src/audiocompress/audacious-glue.c:328
-msgid ""
-"If checked, when the sound peaks the volume will be cut instantly; "
-"otherwise, it will ramp down just in time for the peak (but some minor "
-"clipping may still occur)."
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:332
-msgid "The maximum amount to amplify the audio by"
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:334
-msgid "Defines how smoothly the volume will ramp up"
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:336
-msgid ""
-"The target audio level for ramping up. Lowering the value gives a bit more "
-"dynamic range for peaks, but will make the overall sound quieter."
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:339
-msgid "How long of a window to maintain"
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:380
-#, fuzzy
-msgid "AudioCompress preferences"
-msgstr "AudioCompress "
-
-#: src/audiocompress/audacious-glue.c:397
-msgid " Quality Options "
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:402
-msgid " Aggressively prevent clipping"
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:414
-msgid " Target & gain"
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:425
-msgid "Target audio level:"
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:433
-#, fuzzy
-msgid "Maximum gain:"
-msgstr "Cynydd albwm:"
-
-#: src/audiocompress/audacious-glue.c:441
-msgid "Gain smooth:"
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:493
-msgid " History "
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:525
-msgid ""
-"How long of a history to maintain.  A higher number will make the volume "
-"changes less responsive."
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:536
-msgid "Load default values"
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:541
-#, fuzzy
-msgid "Audio values"
-msgstr "Dyfais sain:"
-
-#: src/audiocompress/audacious-glue.c:570 src/crossfade/interface-2.0.c:1513
-#: src/crystalizer/crystalizer.c:129 src/echo_plugin/gui.c:150
-#: src/modplug/gui/interface.cxx:709 src/modplug/gui/modplug.glade:1655
-#: src/stereo_plugin/stereo.c:131
-msgid "Apply"
-msgstr "Gosod"
 
 #: src/bluetooth/agent.c:356 src/bluetooth/agent.c:397
 #, c-format
@@ -1698,11 +1511,11 @@ msgstr ""
 msgid "Device has been switched into pairing mode"
 msgstr ""
 
-#: src/bluetooth/bluetooth.c:105
+#: src/bluetooth/bluetooth.c:117
 msgid "Bluetooth headset support plugin"
 msgstr ""
 
-#: src/bluetooth/bluetooth.c:106
+#: src/bluetooth/bluetooth.c:118
 msgid ""
 "Bluetooth headset support\n"
 "Copyright (c) 2008 Paula Stanciu paula.stanciu@gmail.com\n"
@@ -1772,9 +1585,9 @@ msgstr ""
 msgid "Rescan"
 msgstr "Cyfongl"
 
-#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:59
-#: src/gtkui/ui_manager.c:60 src/hotkey/gui.c:69 src/skins/ui_manager.c:168
-#: src/skins/ui_manager.c:169
+#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:64
+#: src/gtkui/ui_manager.c:65 src/hotkey/gui.c:71 src/skins/ui_manager.c:170
+#: src/skins/ui_manager.c:171
 #, fuzzy
 msgid "Play"
 msgstr "Modd chwarae:"
@@ -1787,21 +1600,21 @@ msgstr "Blur Scope: Color selection"
 msgid "Options:"
 msgstr "Dewisiadau:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:304
+#: src/cd-menu-items/cd-menu-items.c:34
 #, fuzzy
 msgid "Play CD"
 msgstr "Modd chwarae:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:314
+#: src/cd-menu-items/cd-menu-items.c:34
 msgid "Add CD"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:342
+#: src/cdaudio-ng/cdaudio-ng.c:265
 #, fuzzy
 msgid "About Audio CD Plugin"
 msgstr "Ategynnau Sain FLAC"
 
-#: src/cdaudio-ng/cdaudio-ng.c:344
+#: src/cdaudio-ng/cdaudio-ng.c:266
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -1816,56 +1629,77 @@ msgid ""
 "Copyright 2009 John Lindgren"
 msgstr ""
 
-#: src/cdaudio-ng/configure.c:166
+#: src/cdaudio-ng/configure.c:155
 #, fuzzy
 msgid "CD Audio Plugin Configuration"
 msgstr "Ffurfweddiad Chwaraeydd MPEG Sain"
 
-#: src/cdaudio-ng/configure.c:178
+#: src/cdaudio-ng/configure.c:167
 msgid "Digital audio extraction"
 msgstr "Tynnu awdio digidôl"
 
-#: src/cdaudio-ng/configure.c:183
+#: src/cdaudio-ng/configure.c:172
 #, fuzzy
 msgid "Title information"
 msgstr "Fformat y teitl:"
 
-#: src/cdaudio-ng/configure.c:202
-msgid "Limit read speed to: "
-msgstr ""
+#: src/cdaudio-ng/configure.c:190
+#, fuzzy
+msgid "Disc speed:"
+msgstr "Chwarae cyflymedd"
 
-#: src/cdaudio-ng/configure.c:213
+#: src/cdaudio-ng/configure.c:198
 #, fuzzy
 msgid "Use cd-text if available"
 msgstr "Stereo (os ar gael)"
 
-#: src/cdaudio-ng/configure.c:220
+#: src/cdaudio-ng/configure.c:205
 #, fuzzy
 msgid "Use CDDB if available"
 msgstr "Stereo (os ar gael)"
 
-#: src/cdaudio-ng/configure.c:226
+#: src/cdaudio-ng/configure.c:211
 #, fuzzy
 msgid "Server: "
 msgstr "Gwasanaethwr"
 
-#: src/cdaudio-ng/configure.c:230
+#: src/cdaudio-ng/configure.c:215
 #, fuzzy
 msgid "Path: "
 msgstr "Porth:"
 
-#: src/cdaudio-ng/configure.c:234
+#: src/cdaudio-ng/configure.c:219
 #, fuzzy
 msgid "Port: "
 msgstr "Porth:"
 
-#: src/cdaudio-ng/configure.c:247
+#: src/cdaudio-ng/configure.c:232
 msgid "Use HTTP instead of CDDBP"
 msgstr ""
 
-#: src/cdaudio-ng/configure.c:259
+#: src/cdaudio-ng/configure.c:244
 msgid "Override default device: "
 msgstr ""
+
+#: src/compressor/plugin.c:57
+#, fuzzy
+msgid "About Dynamic Range Compression Plugin"
+msgstr "Ynghylch Ategyn Extra Stereo"
+
+#: src/compressor/plugin.c:90
+#, fuzzy
+msgid "Dynamic Range Compressor Preferences"
+msgstr "AudioCompress "
+
+#: src/compressor/plugin.c:102
+#, fuzzy
+msgid "Target volume:"
+msgstr "Sain:(%)"
+
+#: src/compressor/plugin.c:115
+#, fuzzy
+msgid "Effect strength:"
+msgstr "Dwyster yr effaith:"
 
 #: src/console/configure.c:135
 #, fuzzy
@@ -1890,7 +1724,6 @@ msgid "Default song length:"
 msgstr "Hyd cân rhagosodedig:"
 
 #: src/console/configure.c:207 src/modplug/gui/interface.cxx:269
-#: src/modplug/gui/modplug.glade:338 src/sid/xmms-sid.glade:1243
 #: src/sid/xs_interface.c:666
 msgid "Resampling"
 msgstr "Samplo"
@@ -1925,12 +1758,12 @@ msgstr ""
 "Rhagosodedig hyd sain, mynegiau yn eiliad, ys gallougi am sain pa arlwyo na "
 "hyd gwybodaeth (dollenau trac)."
 
-#: src/console/plugin.c:32
+#: src/console/plugin.c:33
 #, fuzzy
 msgid "About the Game Console Music Decoder"
 msgstr "Ynghylch Ategyn Cerdd Console"
 
-#: src/console/plugin.c:33
+#: src/console/plugin.c:34
 #, fuzzy
 msgid ""
 "Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
@@ -1943,733 +1776,53 @@ msgstr ""
 "Audacious fersiwn at: William Pitcock <nenolod@nenolod.net>, \n"
 "        Shay Green <gblargg@gmail.com>"
 
-#: src/crossfade/configure.c:315
-msgid "Start of playback"
-msgstr ""
-
-#: src/crossfade/configure.c:316
-msgid "Automatic songchange"
-msgstr ""
-
-#: src/crossfade/configure.c:322
+#: src/crossfade/plugin.c:51
 #, fuzzy
-msgid "Manual songchange"
-msgstr "Sianel ddeuol"
-
-#: src/crossfade/configure.c:323
-msgid "Manual stop"
-msgstr ""
-
-#: src/crossfade/configure.c:324
-#, fuzzy
-msgid "End of playlist"
-msgstr "Modd chwarae:"
-
-#: src/crossfade/configure.c:325
-#, fuzzy
-msgid "Seeking"
-msgstr "Swing"
-
-#: src/crossfade/configure.c:326 src/crossfade/configure.c:351
-#: src/crossfade/interface-2.0.c:522 src/crossfade/interface-2.0.c:633
-#: src/crossfade/interface-2.0.c:637 src/gtkui/ui_manager.c:62
-#: src/gtkui/ui_manager.c:63 src/skins/ui_manager.c:171
-#: src/skins/ui_manager.c:172
-#, fuzzy
-msgid "Pause"
-msgstr "Chwarae"
-
-#: src/crossfade/configure.c:348
-msgid "Reopen output device"
-msgstr ""
-
-#: src/crossfade/configure.c:349
-msgid "Flush output device"
-msgstr ""
-
-#: src/crossfade/configure.c:350
-msgid "None (gapless/off)"
-msgstr ""
-
-#: src/crossfade/configure.c:352
-#, fuzzy
-msgid "Simple crossfade"
-msgstr "Graddfa samplo:"
-
-#: src/crossfade/configure.c:353
-#, fuzzy
-msgid "Advanced crossfade"
-msgstr "Gosodiadau uwch"
-
-#: src/crossfade/configure.c:354
-#, fuzzy
-msgid "Fadein"
-msgstr "cynnydd"
-
-#: src/crossfade/configure.c:355
-msgid "Fadeout"
-msgstr ""
-
-#: src/crossfade/configure.c:357
-msgid "Fadeout/Fadein"
-msgstr ""
-
-#: src/crossfade/configure.c:1152
-#, fuzzy
-msgid "About Crossfade Plugin"
+msgid "About Crossfade"
 msgstr "Ynghylch Ategyn Scrobbler"
 
-#: src/crossfade/configure.c:1153
+#: src/crossfade/plugin.c:84
 #, fuzzy
-msgid ""
-"Audacious Crossfade Plugin\n"
-"\n"
-"Copyright © 2009 William Pitcock <nenolod@atheme.org>\n"
-"\n"
-"...based in part on XMMS-Crossfade:\n"
-"Copyright © 2000-2009 Peter Eisenlohr <peter@eisenlohr.org>\n"
-"\n"
-"based on the original OSS Output Plugin  Copyright (C) 1998-2000\n"
-"Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies\n"
-"\n"
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
-"USA."
-msgstr ""
-"Ategyn ESounD XMMS\n"
-"\n"
-" Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
-"ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
-"cyhoeddwyd gan y Free Software Foundation; un ai fersiwn 2 o'r\n"
-"drwydded neu yn ôl eich dewis) unrhyw fersiwn arall.\n"
-"\n"
-"Mae'r rhaglen yn cael ei ddosbarthu yn y gobaith y byddwch yn ei gael\n"
-"yn ddefnyddiol, on HEB UNRHYW WARANT; heb hyd yn oed awgrym\n"
-"o warant MASNACHOL neu ADDASRWYDD AR GYFER UNRHYW\n"
-"BWRPAS. Gw. y drwydded Gyhoeddus Gyffredin am ragor o wybodaeth.\n"
-"\n"
-"Dylech fod wedi derbyn copi o'r Drwydded gyda'r rhaglen; os nad cysylltwch\n"
-"â 'r Free Software Foundation, Inc.,  59 Temple Place - Suite 330, Boston,\n"
-" MA 02111-1307,\n"
-"USA."
+msgid "Crossfade Preferences"
+msgstr "AudioCompress "
 
-#: src/crossfade/interface-2.0.c:292
+#: src/crossfade/plugin.c:95
+msgid "Overlap (in seconds):"
+msgstr ""
+
+#: src/crossfade/plugin.c:129 src/crossfade/plugin.c:137
 #, fuzzy
-msgid "Crossfade Configuration"
-msgstr "Ffurfweddiad TiMidity"
-
-#: src/crossfade/interface-2.0.c:340 src/filewriter/filewriter.c:464
-#: src/icecast/icecast.c:645 src/ladspa/ladspa.c:1121
-#, fuzzy
-msgid "Configure"
-msgstr "Ffurfweddu Echo"
-
-#: src/crossfade/interface-2.0.c:345
-#, fuzzy
-msgid "About"
-msgstr "Ynghylch"
-
-#: src/crossfade/interface-2.0.c:350
-#, fuzzy
-msgid "Output plugin"
-msgstr "Ategyn Allbwn OSS"
-
-#: src/crossfade/interface-2.0.c:363
-#, fuzzy
-msgid "Throttle Output"
-msgstr "Ynghylch Ategyn Allwyn Null"
-
-#: src/crossfade/interface-2.0.c:371
-#, fuzzy
-msgid "Max block size (bytes):"
-msgstr "Maint Ffeil (bytes)"
-
-#: src/crossfade/interface-2.0.c:382
-msgid "Force close/reopen on songchange"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:386
-msgid "Plugin compatibility options"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:390
-msgid ""
-"When modifying the Output Options or the Mixing buffer size, you need to "
-"stop/restart playback for the settings to take effect."
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:395
-msgid "Output"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:409
-#, fuzzy
-msgid "Mixing buffer size (ms):"
-msgstr "Maint y byffer (ms):"
-
-#: src/crossfade/interface-2.0.c:418
-msgid ""
-"Specify the size of the mixing buffer. Mixing buffer space is required for "
-"pauses, fade-outs, offsetting (i.e. interleaving the end and beginning of "
-"two songs) and killing trailing gaps. Fade-ins and killing leading gaps are "
-"done on-the-fly and do not depend on mixing buffer space.\n"
-"Default: n/a - calculated automatically"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:421
-#, fuzzy
-msgid "auto"
-msgstr "Ynghylch"
-
-#: src/crossfade/interface-2.0.c:424
-msgid ""
-"Automatically calculate an optimal buffer size.\n"
-"Default: On"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:430
-msgid "Set parameters for:"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:438
-msgid ""
-"Select the type of songchange you want to configure:\n"
-"* Start of playback: When starting playback by pressing PLAY\n"
-"* Automatic songchange: When reaching the end of a song and the playlist "
-"advances to the next song\n"
-"* Manual songchange: When manually selecting another song, for example by "
-"pressing NEXT/PREV\n"
-"* Manual stop: When pressing the STOP button\n"
-"* End of playlist: After the last song in the playlist has been played\n"
-"* Seeking: When seeking within the current song"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:452
-msgid "Crossfade/Transition type:"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:460
-msgid ""
-"Select the transition to be used for the songchange type selected above:\n"
-"* Fade-in: Fade-in at 'Start of playback'\n"
-"* Reopen output device: Force a close/open on the output plugin. This will "
-"most certainly re-introduce gaps and clicks, but might be usefull with some "
-"plugins.\n"
-"* Flush output device: Keeps the output plugin opened, but flushes its "
-"buffers. This will give you almost instant reaction when pressing NEXT/"
-"PREV.\n"
-"* None (gapless/off): Gapless mode. Keeps the device opened, but does not do "
-"any fading.\n"
-"* Simple crossfade: Does a simple crossfade between the previous and the "
-"next song.\n"
-"* Advanced crossfade: Allows you to configure the crossfade in more detail.\n"
-"* Fade-out: Fade-out at 'Manual stop' or 'End of playlist'."
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:481
-#, fuzzy
-msgid "Reopen"
-msgstr "Tynnu gyrrwr"
-
-#: src/crossfade/interface-2.0.c:501 src/crossfade/interface-2.0.c:543
-#: src/crossfade/interface-2.0.c:620 src/crossfade/interface-2.0.c:663
-#: src/crossfade/interface-2.0.c:706 src/crossfade/interface-2.0.c:831
-#: src/crossfade/interface-2.0.c:906 src/crossfade/interface-2.0.c:968
-#: src/crossfade/interface-2.0.c:1021
-#, fuzzy
-msgid "Length (ms):"
-msgstr "Hyd (msec):"
-
-#: src/crossfade/interface-2.0.c:513 src/crossfade/interface-2.0.c:630
-msgid ""
-"Specify the length of the silence to be inserted between the tracks.\n"
-"Default: 2000"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:516 src/crossfade/interface-2.0.c:566
-#: src/crossfade/interface-2.0.c:744 src/crossfade/interface-2.0.c:1194
-#: src/crossfade/interface-2.0.c:1262 src/modplug/gui/interface.cxx:349
-#: src/modplug/gui/interface.cxx:411 src/modplug/gui/interface.cxx:477
-#: src/modplug/gui/interface.cxx:539 src/modplug/gui/modplug.glade:560
-#: src/modplug/gui/modplug.glade:739 src/modplug/gui/modplug.glade:930
-#: src/modplug/gui/modplug.glade:1109
-#, fuzzy
-msgid "Enable"
-msgstr "Galluogi clicied"
-
-#: src/crossfade/interface-2.0.c:553 src/crossfade/interface-2.0.c:841
-#: src/crossfade/interface-2.0.c:916
-#, fuzzy
-msgid "Start volume (%):"
-msgstr "Sain:(%)"
-
-#: src/crossfade/interface-2.0.c:563 src/crossfade/interface-2.0.c:851
-msgid "Set the duration for the fadein of the next song."
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:578 src/crossfade/interface-2.0.c:873
-#: src/crossfade/interface-2.0.c:935
-#, c-format
-msgid ""
-"Set the start volume. XMMS-crossfade will fade from this volume to 100% "
-"during the time specified above.\n"
-"Default: 0"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:581 src/crossfade/interface-2.0.c:876
-#: src/crossfade/interface-2.0.c:938 src/crossfade/interface-2.0.c:942
-#, fuzzy
-msgid "Fade in"
-msgstr "cynnydd"
-
-#: src/crossfade/interface-2.0.c:585
-msgid "Flush"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:673
-msgid ""
-"Specify the length of the crosssfade.\n"
-"Default: depends on songchange type"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:676
-#, fuzzy
-msgid "Crossfade"
+msgid "Crossfade Error"
 msgstr "Crossover"
 
-#: src/crossfade/interface-2.0.c:680
-#, fuzzy
-msgid "Simple XF"
-msgstr "Salsa"
-
-#: src/crossfade/interface-2.0.c:716
-msgid "Set the duration for the fadeout of the previous song."
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:725 src/crossfade/interface-2.0.c:987
-#, fuzzy
-msgid "End volume (%):"
-msgstr "Sain:(%)"
-
-#: src/crossfade/interface-2.0.c:735 src/crossfade/interface-2.0.c:997
-#, c-format
+#: src/crossfade/plugin.c:130
 msgid ""
-"Set the end volume. XMMS-crossfade will fade from 100% to this volume during "
-"the time specified above.\n"
-"Default: 0"
+"Crossfading failed because the songs had a different number of channels."
 msgstr ""
 
-#: src/crossfade/interface-2.0.c:748 src/crossfade/interface-2.0.c:1000
-#: src/crossfade/interface-2.0.c:1038
-msgid "Fade out"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:769
-#, fuzzy
-msgid "Custom (ms):"
-msgstr "Amser byffer (ms):"
-
-#: src/crossfade/interface-2.0.c:772
-msgid "Set a custom offset."
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:780
+#: src/crossfade/plugin.c:138
 msgid ""
-"Set how much the end of the previous and the beginning of the next song "
-"should overlap.\n"
-"* Negative values indicate that the next song should start before the "
-"previous has reached the end.\n"
-"* A value of 0 means that the songs are concatenated seamlessly.\n"
-"* Positive values will yield insert silence inbetween.."
+"Crossfading failed because the songs had different sample rates.\n"
+"\n"
+"You can use the Sample Rate Converter effect to resample the songs to the "
+"same rate."
 msgstr ""
 
-#: src/crossfade/interface-2.0.c:783
-msgid "None (0 ms)"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:788
-msgid ""
-"Don't overlap the two songs. The next song will start immediatelly after the "
-"previous has ended."
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:792
-msgid "Lock to fadeout length"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:797
-msgid "Overlap by the fadeout duration specified above."
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:801
-msgid "Lock to fadein length"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:806
-msgid "Overlap by the fadein duration specified below.."
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:810
-msgid "Offset"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:854
-#, fuzzy
-msgid " Enable"
-msgstr "Galluogi clicied"
-
-#: src/crossfade/interface-2.0.c:860
-msgid "Lock to Fade-out"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:865
-msgid "Use the same settings as fade-out."
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:880
-#, fuzzy
-msgid "Advanced XF"
-msgstr "Gosodiadau uwch"
-
-#: src/crossfade/interface-2.0.c:926
-msgid "Set the duration for the fadein when starting playback."
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:978
-msgid "Set the duration for the fadeout of the last song."
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1031
-msgid ""
-"Set how much additional silence should be played after the end of the last "
-"song. This way, you can avoid the clicks some soundcards produce when being "
-"shut down during playback.\n"
-"Default: 500"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1034
-msgid "Additional silence"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1073
-msgid ""
-"Set the duration for the fadeout when pausing.\n"
-"Default: 100"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1082
-msgid ""
-"Set how much additional silence should be played after pausing. This way, "
-"you can avoid the clicks some soundcards produce when entering pause.\n"
-"Default: 100"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1091
-msgid ""
-"Set the duration for the fadein when unpausing.\n"
-"Default: 100"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1100
-msgid "Fade out (ms):"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1110
-msgid "Silence (ms):"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1120
-#, fuzzy
-msgid "Fade in (ms):"
-msgstr "Rhagosodedig (%s)"
-
-#: src/crossfade/interface-2.0.c:1124 src/crossfade/interface-2.0.c:1128
-msgid "Fade out / Fade in"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1133
-#, fuzzy
-msgid "Crossfader"
-msgstr "Crossover"
-
-#: src/crossfade/interface-2.0.c:1160
-msgid ""
-"Set the maximum length for gaps at the beginning of a stream.\n"
-"Default: 500"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1169
-msgid ""
-"Set the maximum volume for gaps at the beginning of a stream. All samples "
-"below this value are considered as silent.\n"
-"Default: 512"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1178 src/crossfade/interface-2.0.c:1221
-#, fuzzy
-msgid "Max. length (ms):"
-msgstr "Hyd (msec):"
-
-#: src/crossfade/interface-2.0.c:1189 src/crossfade/interface-2.0.c:1232
-msgid "Max. level (16bit sample):"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1200
-msgid "Leading gap killer"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1243
-msgid ""
-"Set the maximum length for gaps at the end of a stream.\n"
-"Default: 500"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1252
-msgid ""
-"Set the maximum volume for gaps at the end of a stream. All samples below "
-"this value are considered as silent.\n"
-"Default: 512"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1255
-msgid "Lock to Leading"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1260
-msgid "Use the same settings as above."
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1268
-msgid "Trailing gap killer"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1281
-msgid "Skip to next zero crossing"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1284
-msgid ""
-"If enabled, XMMS-crossfade will take additional care to avoid clicks with "
-"pre-faded (gapless) tracks. XMMS-crossfade will cut off the end of the "
-"previous song (the beginning of the next song) only at a zero-crossing of "
-"the sample values.\n"
-"Default: On"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1286 src/crossfade/interface-2.0.c:1440
-#, fuzzy
-msgid "Advanced"
-msgstr "Gosodiadau uwch"
-
-#: src/crossfade/interface-2.0.c:1290
-msgid "Gap Killer"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1309
-msgid "Write debug output to <stderr>"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1312
-msgid ""
-"Monitors what is going on in XMMS-crossfade. If you think you found a bug in "
-"XMMS-crossfade, please enable this option and send me the output.\n"
-"Note that you should disable debug output if you start XMMS from within "
-"Netscape. Netscape will spam you with dialogs containing the debug output "
-"captured from <stderr>.\n"
-"Default: Off"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1314
-#, fuzzy
-msgid "Debug options"
-msgstr "Addurniad"
-
-#: src/crossfade/interface-2.0.c:1327
-#, fuzzy
-msgid "Enable volume control"
-msgstr "Defnyddio rheolwr sain meddalwedd"
-
-#: src/crossfade/interface-2.0.c:1330
-msgid ""
-"Enables/disables XMMS volume and balance controls.\n"
-"Default: On"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1332
-msgid "Reverse balance"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1335
-msgid ""
-"Reverses left and right with the balance control.\n"
-"Default: Off"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1337
-msgid "Software Mixer"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1340
-msgid ""
-"Enable software mixer. Usefull for output plugins without mixer support.\n"
-"Default: Off"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1342
-#, fuzzy
-msgid "Volume control options"
-msgstr "Dyfais rheoli sain:"
-
-#: src/crossfade/interface-2.0.c:1359
-msgid "Songchange timeout (ms):"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1368
-msgid ""
-"The songchange timeout is the maximum time XMMS-crossfade waits for the next "
-"song. If this timeout is exceeded, the output plugin/device is closed.\n"
-"Default: 100"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1375
-msgid "Mixing buffer preload (ms):"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1384
-msgid ""
-"Tells XMMS-crossfade how much data it should buffer before it starts writing "
-"to the output plugin/device. Usually, this value can be set to 0, because "
-"the output plugin does preloading on its own.\n"
-"Default: 0"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1391
-msgid "Don't  crossfade"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1396
-msgid "successive tracks"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1399
-msgid ""
-"This option enables the automatic detection of pre-faded or gapless tracks, "
-"like the tracks on some compilations or on most live albums. If such tracks "
-"are detected, crossfading will be disabled and only the gapkiller (if "
-"enabled) will be used for the songchange.\n"
-"Default: On"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1401
-#, fuzzy
-msgid "same file"
-msgstr "Teitl:"
-
-#: src/crossfade/interface-2.0.c:1404
-msgid ""
-"This option disables crossfading between the same file. This can happen if "
-"you have only one file in the playlist and 'repeat' turned on.\n"
-"Default: Off"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1406
-msgid "Enable HTTP buffer underrun workaround"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1409 src/crossfade/interface-2.0.c:1429
-msgid ""
-"Enable this when you have problems playing internet HTTP audio streams. "
-"Unfortunatelly, it also breaks crossfading.\n"
-"Default: Off"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1415
-#, fuzzy
-msgid "Limit OP buffer usage (ms):"
-msgstr "Maint y byffer (ms):"
-
-#: src/crossfade/interface-2.0.c:1418
-msgid ""
-"With this option enabled, XMMS-crossfade will limit the amount of data being "
-"buffered by the output plugin. This way, you can decrease the latency "
-"between pressing STOP/NEXT/PREV and the new song actually being played. \n"
-"Default: Off"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1424
-msgid ""
-"Beware that setting this value too low also increases the chance of buffer "
-"underruns.\n"
-"Default: 250"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1427
-msgid "Use Quantaudio timing comments"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1431
-msgid "Keep output opened"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1434
-msgid ""
-"Keep the output device opened all the time, even if XMMS is stopped. This "
-"way, you can avoid clicks caused by the soundcard when the device is opened "
-"or closed\n"
-"Default: Off"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1436
-#, fuzzy
-msgid "Advanced options"
-msgstr "Gosodiadau uwch"
-
-#: src/crossfade/interface-2.0.c:1457 src/sid/xmms-sid.glade:1774
-#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:430
-#, fuzzy
-msgid "Delete"
-msgstr "Rhagosodedig"
-
-#: src/crossfade/interface-2.0.c:1461
-#, fuzzy
-msgid "New"
-msgstr "New Age"
-
-#: src/crossfade/interface-2.0.c:1482 src/skins/ui_manager.c:427
-msgid "Load"
-msgstr ""
-
-#: src/crossfade/interface-2.0.c:1487 src/sid/xmms-sid.glade:1732
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:429 src/wavpack/ui.c:194
-#, fuzzy
-msgid "Save"
-msgstr "Rave"
-
-#: src/crossfade/interface-2.0.c:1492 src/skins/ui_equalizer.c:963
-msgid "Presets"
-msgstr ""
-
-#: src/crystalizer/crystalizer.c:90
+#: src/crystalizer/crystalizer.c:101
 #, fuzzy
 msgid "Configure Crystalizer"
 msgstr "Ffurfweddu Extra Stereo"
 
-#: src/crystalizer/crystalizer.c:92 src/stereo_plugin/stereo.c:94
+#: src/crystalizer/crystalizer.c:103 src/stereo_plugin/stereo.c:99
 msgid "Effect intensity:"
 msgstr "Dwyster yr effaith:"
 
-#: src/echo_plugin/gui.c:9
+#: src/crystalizer/crystalizer.c:140 src/echo_plugin/gui.c:146
+#: src/modplug/gui/interface.cxx:709 src/stereo_plugin/stereo.c:136
+msgid "Apply"
+msgstr "Gosod"
+
+#: src/echo_plugin/gui.c:12
 msgid ""
 "Echo Plugin\n"
 "By Johan Levin 1999.\n"
@@ -2681,35 +1834,35 @@ msgstr ""
 "\n"
 "Surround echo gan Carl van Schaik 1999"
 
-#: src/echo_plugin/gui.c:23
+#: src/echo_plugin/gui.c:24
 msgid "About Echo Plugin"
 msgstr "Ynghylch Ategyn Echo"
 
-#: src/echo_plugin/gui.c:74
+#: src/echo_plugin/gui.c:70
 msgid "Configure Echo"
 msgstr "Ffurfweddu Echo"
 
-#: src/echo_plugin/gui.c:87
+#: src/echo_plugin/gui.c:83
 msgid "Delay: (ms)"
 msgstr "Oediad: (ms)"
 
-#: src/echo_plugin/gui.c:92
+#: src/echo_plugin/gui.c:88
 msgid "Feedback: (%)"
 msgstr "Adborth: (%)"
 
-#: src/echo_plugin/gui.c:97
+#: src/echo_plugin/gui.c:93
 msgid "Volume: (%)"
 msgstr "Sain:(%)"
 
-#: src/echo_plugin/gui.c:120
+#: src/echo_plugin/gui.c:116
 msgid "Surround echo"
 msgstr "Adlais o amgylch"
 
-#: src/esd/about.c:33
+#: src/esd/about.c:31
 msgid "About ESounD Plugin"
 msgstr "Ynghylch Ategyn ESounD"
 
-#: src/esd/about.c:34
+#: src/esd/about.c:32
 msgid ""
 "Audacious ESounD Plugin\n"
 "\n"
@@ -2761,7 +1914,7 @@ msgstr "Defnyddio gwesteiwr pell"
 msgid "Volume controls OSS mixer"
 msgstr "Rheolwr sain cymysgydd OSS"
 
-#: src/esd/configure.c:153
+#: src/esd/configure.c:153 src/roaraudio/gui.c:137
 msgid "Port:"
 msgstr "Porth:"
 
@@ -2769,25 +1922,9 @@ msgstr "Porth:"
 msgid "Server"
 msgstr "Gwasanaethwr"
 
-#: src/esd/configure.c:171 src/OSS4/configure.c:253 src/OSS/configure.c:304
-#: src/sun/configure.c:257
-msgid "Buffering:"
-msgstr "Byffyru:"
-
-#: src/esd/configure.c:184 src/OSS4/configure.c:266 src/OSS/configure.c:317
-#: src/sun/configure.c:270
+#: src/esd/configure.c:184 src/sun/configure.c:270
 msgid "Buffer size (ms):"
 msgstr "Maint y byffer (ms):"
-
-#: src/esd/configure.c:198 src/OSS4/configure.c:280 src/OSS/configure.c:331
-#: src/sun/configure.c:288
-msgid "Pre-buffer (percent):"
-msgstr "Cyn fyffer (y cant):"
-
-#: src/esd/configure.c:209 src/OSS4/configure.c:291 src/OSS/configure.c:342
-#: src/sun/configure.c:302
-msgid "Buffering"
-msgstr "Byffyru:"
 
 #: src/evdev-plug/ed.c:59
 #, fuzzy
@@ -3114,7 +2251,7 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:677
+#: src/ffaudio/ffaudio-core.c:684
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -3130,17 +2267,17 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:693
+#: src/ffaudio/ffaudio-core.c:700
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "Ategynnau Sain FLAC"
 
-#: src/filewriter/filewriter.c:172
+#: src/filewriter/filewriter.c:175
 #, fuzzy
 msgid "About FileWriter-Plugin"
 msgstr "Ynghylch Ategyn Echo"
 
-#: src/filewriter/filewriter.c:173
+#: src/filewriter/filewriter.c:176
 #, fuzzy
 msgid ""
 "FileWriter-Plugin\n"
@@ -3177,68 +2314,73 @@ msgstr ""
 " MA 02111-1307,\n"
 "USA."
 
-#: src/filewriter/filewriter.c:434
+#: src/filewriter/filewriter.c:461
 #, fuzzy
 msgid "File Writer Configuration"
 msgstr "Ffurfweddiad Disk Writer"
 
-#: src/filewriter/filewriter.c:446
+#: src/filewriter/filewriter.c:473
 #, fuzzy
 msgid "Output file format:"
 msgstr "Ffeil cyfeiriadur allbwn:"
 
-#: src/filewriter/filewriter.c:479
+#: src/filewriter/filewriter.c:491 src/ladspa/ladspa.c:1116
+#, fuzzy
+msgid "Configure"
+msgstr "Ffurfweddu Echo"
+
+#: src/filewriter/filewriter.c:506
 msgid "Save into original directory"
 msgstr ""
 
-#: src/filewriter/filewriter.c:484
+#: src/filewriter/filewriter.c:511
 msgid "Save into custom directory"
 msgstr ""
 
-#: src/filewriter/filewriter.c:496
+#: src/filewriter/filewriter.c:523
 msgid "Output file folder:"
 msgstr "Ffeil cyfeiriadur allbwn:"
 
-#: src/filewriter/filewriter.c:500
+#: src/filewriter/filewriter.c:527
 msgid "Pick a folder"
 msgstr "Dewis cyfeiriadur"
 
-#: src/filewriter/filewriter.c:520
+#: src/filewriter/filewriter.c:546
 msgid "Get filename from:"
 msgstr ""
 
-#: src/filewriter/filewriter.c:523
+#: src/filewriter/filewriter.c:549
 msgid "original file tags"
 msgstr ""
 
-#: src/filewriter/filewriter.c:529
+#: src/filewriter/filewriter.c:555
 msgid "original filename"
 msgstr ""
 
-#: src/filewriter/filewriter.c:539
+#: src/filewriter/filewriter.c:565
 msgid "Don't strip file name extension"
 msgstr "Cadw enw ffeil estyniad"
 
-#: src/filewriter/filewriter.c:543
+#: src/filewriter/filewriter.c:569
 msgid ""
 "If enabled, the extension from the original filename will not be stripped "
 "before adding the new file extension to the end."
 msgstr ""
 
-#: src/filewriter/filewriter.c:557
+#: src/filewriter/filewriter.c:583
 msgid "Prepend track number to filename"
 msgstr ""
 
-#: src/filewriter/mp3.c:727
+#: src/filewriter/mp3.c:707
 #, fuzzy
 msgid "MP3 Configuration"
 msgstr "Ffurfweddiad TiMidity"
 
-#: src/filewriter/mp3.c:754
+#: src/filewriter/mp3.c:734
 msgid "Algorithm Quality:"
 msgstr ""
 
-#: src/filewriter/mp3.c:776
+#: src/filewriter/mp3.c:756
 msgid ""
 "best/slowest:0;\n"
 "worst/fastest:9;\n"
@@ -3246,184 +2388,184 @@ msgid ""
 "default:5;"
 msgstr ""
 
-#: src/filewriter/mp3.c:784
+#: src/filewriter/mp3.c:764
 #, fuzzy
 msgid "Output Samplerate:"
 msgstr "Graddfa samplo:"
 
-#: src/filewriter/mp3.c:795 src/filewriter/mp3.c:936
+#: src/filewriter/mp3.c:775 src/filewriter/mp3.c:916
 #, fuzzy
 msgid "Auto"
 msgstr "Ynghylch"
 
-#: src/filewriter/mp3.c:817
+#: src/filewriter/mp3.c:797
 #, fuzzy
 msgid "(Hz)"
 msgstr "Hz"
 
-#: src/filewriter/mp3.c:829
+#: src/filewriter/mp3.c:809
 msgid "Bitrate / Compression ratio:"
 msgstr ""
 
-#: src/filewriter/mp3.c:855
+#: src/filewriter/mp3.c:835
 #, fuzzy
 msgid "Bitrate (kbps):"
 msgstr "Didradd:"
 
-#: src/filewriter/mp3.c:896
+#: src/filewriter/mp3.c:876
 msgid "Compression ratio:"
 msgstr ""
 
-#: src/filewriter/mp3.c:926
+#: src/filewriter/mp3.c:906
 #, fuzzy
 msgid "Audio Mode:"
 msgstr "Dyfais sain:"
 
-#: src/filewriter/mp3.c:941
+#: src/filewriter/mp3.c:921
 #, fuzzy
 msgid "Joint-Stereo"
 msgstr "Stereo ar y cyd"
 
-#: src/filewriter/mp3.c:984
+#: src/filewriter/mp3.c:964
 #, fuzzy
 msgid "Misc:"
 msgstr "Disgo"
 
-#: src/filewriter/mp3.c:995
+#: src/filewriter/mp3.c:975
 msgid "Enforce strict ISO complience"
 msgstr ""
 
-#: src/filewriter/mp3.c:1006
+#: src/filewriter/mp3.c:986
 #, fuzzy
 msgid "Error protection"
 msgstr "Amddiffyn Gwall:"
 
-#: src/filewriter/mp3.c:1018
+#: src/filewriter/mp3.c:998
 msgid "Adds 16 bit checksum to every frame"
 msgstr ""
 
-#: src/filewriter/mp3.c:1023 src/filewriter/vorbis.c:285
-#: src/modplug/gui/interface.cxx:320 src/modplug/gui/modplug.glade:507
+#: src/filewriter/mp3.c:1003 src/filewriter/vorbis.c:245
+#: src/modplug/gui/interface.cxx:320
 msgid "Quality"
 msgstr ""
 
-#: src/filewriter/mp3.c:1035
+#: src/filewriter/mp3.c:1015
 msgid "Enable VBR/ABR"
 msgstr ""
 
-#: src/filewriter/mp3.c:1047
+#: src/filewriter/mp3.c:1027 src/roaraudio/gui.c:191
 msgid "Type:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1058
+#: src/filewriter/mp3.c:1038
 msgid "Variable bitrate"
 msgstr ""
 
-#: src/filewriter/mp3.c:1070
+#: src/filewriter/mp3.c:1050
 msgid "Average bitrate"
 msgstr ""
 
-#: src/filewriter/mp3.c:1084
+#: src/filewriter/mp3.c:1064
 #, fuzzy
 msgid "VBR Options:"
 msgstr "Dewisiadau:"
 
-#: src/filewriter/mp3.c:1100
+#: src/filewriter/mp3.c:1080
 #, fuzzy
 msgid "Minimum bitrate (kbps):"
 msgstr "Didradd:"
 
-#: src/filewriter/mp3.c:1136
+#: src/filewriter/mp3.c:1116
 msgid "Maximum bitrate (kbps):"
 msgstr ""
 
-#: src/filewriter/mp3.c:1168
+#: src/filewriter/mp3.c:1148
 msgid "Strictly enforce minimum bitrate"
 msgstr ""
 
-#: src/filewriter/mp3.c:1170
+#: src/filewriter/mp3.c:1150
 msgid ""
 "For use with players that do not support low bitrate mp3 (Apex AD600-A DVD/"
 "mp3 player)"
 msgstr ""
 
-#: src/filewriter/mp3.c:1183
+#: src/filewriter/mp3.c:1163
 #, fuzzy
 msgid "ABR Options:"
 msgstr "Dewisiadau:"
 
-#: src/filewriter/mp3.c:1193
+#: src/filewriter/mp3.c:1173
 msgid "Average bitrate (kbps):"
 msgstr ""
 
-#: src/filewriter/mp3.c:1230
+#: src/filewriter/mp3.c:1210
 msgid "VBR quality level:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1245
+#: src/filewriter/mp3.c:1225
 msgid ""
 "highest:0;\n"
 "lowest:9;\n"
 "default:4;"
 msgstr ""
 
-#: src/filewriter/mp3.c:1253
+#: src/filewriter/mp3.c:1233
 msgid "Don't write Xing VBR header"
 msgstr ""
 
-#: src/filewriter/mp3.c:1267
+#: src/filewriter/mp3.c:1247
 msgid "VBR/ABR"
 msgstr ""
 
-#: src/filewriter/mp3.c:1279
+#: src/filewriter/mp3.c:1259
 msgid "Frame params:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1291
+#: src/filewriter/mp3.c:1271
 msgid "Mark as copyright"
 msgstr ""
 
-#: src/filewriter/mp3.c:1302
+#: src/filewriter/mp3.c:1282
 msgid "Mark as original"
 msgstr ""
 
-#: src/filewriter/mp3.c:1314
+#: src/filewriter/mp3.c:1294
 #, fuzzy
 msgid "ID3 params:"
 msgstr "Tagiau ID3:"
 
-#: src/filewriter/mp3.c:1325
+#: src/filewriter/mp3.c:1305
 msgid "Force addition of version 2 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1335
+#: src/filewriter/mp3.c:1315
 msgid "Only add v1 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1342
+#: src/filewriter/mp3.c:1322
 msgid "Only add v2 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1363
+#: src/filewriter/mp3.c:1343
 #, fuzzy
 msgid "Tags"
 msgstr "Tango"
 
-#: src/filewriter/vorbis.c:278
+#: src/filewriter/vorbis.c:238
 #, fuzzy
 msgid "Vorbis Encoder Configuration"
 msgstr "Ffurfweddiad Disk Writer"
 
-#: src/filewriter/vorbis.c:298
+#: src/filewriter/vorbis.c:258
 msgid "Quality level (0 - 10):"
 msgstr ""
 
-#: src/flacng/plugin.c:625
+#: src/flacng/plugin.c:590
 #, fuzzy
 msgid "FLAC Audio Plugin "
 msgstr "Ategynnau Sain FLAC"
 
-#: src/flacng/plugin.c:626
+#: src/flacng/plugin.c:591
 msgid ""
 "\n"
 "\n"
@@ -3433,17 +2575,17 @@ msgid ""
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
 
-#: src/flacng/plugin.c:631
+#: src/flacng/plugin.c:597
 #, fuzzy
 msgid "About FLAC Audio Plugin"
 msgstr "Ategynnau Sain FLAC"
 
-#: src/gnomeshortcuts/gnomeshortcuts.c:305
+#: src/gnomeshortcuts/gnomeshortcuts.c:307
 #, fuzzy
 msgid "About Gnome Shortcut Plugin"
 msgstr "Ynghylch Ategyn ESounD"
 
-#: src/gnomeshortcuts/gnomeshortcuts.c:306
+#: src/gnomeshortcuts/gnomeshortcuts.c:308
 msgid ""
 "Gnome Shortcut Plugin\n"
 "Let's you control the player with Gnome's shortcuts.\n"
@@ -3452,11 +2594,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/gntui/fileselector.c:85 src/gntui/gntui.c:273
+#: src/gntui/fileselector.c:75 src/gntui/gntui.c:273
 msgid "Open Files"
 msgstr ""
 
-#: src/gntui/fileselector.c:85 src/gntui/gntui.c:272
+#: src/gntui/fileselector.c:75 src/gntui/gntui.c:272
 #, fuzzy
 msgid "Add Files"
 msgstr "Ychwaneg gyrrwr"
@@ -3470,45 +2612,45 @@ msgstr "%s - Audacious"
 msgid "gnt interface"
 msgstr ""
 
-#: src/gtkui/actions.c:177 src/skins/ui_main.c:775
+#: src/gtkui/actions.c:222 src/skins/ui_main.c:814
 msgid "Can't jump to time when no track is being played.\n"
 msgstr ""
 
-#: src/gtkui/actions.c:192 src/gtkui/ui_manager.c:306
-#: src/gtkui/ui_manager.c:307 src/skins/ui_main.c:790
-#: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
+#: src/gtkui/actions.c:237 src/gtkui/ui_manager.c:196
+#: src/gtkui/ui_manager.c:197 src/skins/ui_main.c:829
+#: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
 msgid "Jump to Time"
 msgstr ""
 
-#: src/gtkui/actions.c:209 src/skins/ui_main.c:811
+#: src/gtkui/actions.c:254 src/skins/ui_main.c:850
 #, fuzzy
 msgid "minutes:seconds"
 msgstr "eiliad"
 
-#: src/gtkui/actions.c:219 src/skins/ui_main.c:821
+#: src/gtkui/actions.c:264 src/skins/ui_main.c:860
 #, fuzzy
 msgid "Track length:"
 msgstr "Cynnydd trac:"
 
-#: src/gtkui/actions.c:532 src/skins/ui_playlist.c:765
+#: src/gtkui/actions.c:581 src/skins/ui_playlist.c:801
 msgid "Save as Static Playlist"
 msgstr ""
 
-#: src/gtkui/actions.c:538 src/skins/ui_playlist.c:772
+#: src/gtkui/actions.c:587 src/skins/ui_playlist.c:808
 msgid "Use Relative Path"
 msgstr ""
 
-#: src/gtkui/actions.c:563 src/skins/ui_playlist.c:606
+#: src/gtkui/actions.c:612 src/skins/ui_playlist.c:642
 #, c-format
 msgid "Error writing playlist \"%s\": %s"
 msgstr ""
 
-#: src/gtkui/actions.c:578 src/skins/ui_playlist.c:628
+#: src/gtkui/actions.c:627 src/skins/ui_playlist.c:664
 #, c-format
 msgid "%s already exist. Continue?"
 msgstr ""
 
-#: src/gtkui/actions.c:589 src/skins/ui_playlist.c:643
+#: src/gtkui/actions.c:638 src/skins/ui_playlist.c:679
 #, c-format
 msgid ""
 "<b><big>Unable to save playlist.</big></b>\n"
@@ -3516,533 +2658,388 @@ msgid ""
 "Unknown file type for '%s'.\n"
 msgstr ""
 
-#: src/gtkui/actions.c:630 src/skins/ui_playlist.c:808
+#: src/gtkui/actions.c:679 src/skins/ui_playlist.c:844
 msgid "Save Playlist"
 msgstr ""
 
-#: src/gtkui/actions.c:704 src/skins/ui_playlist.c:795
+#: src/gtkui/actions.c:750 src/skins/ui_playlist.c:831
 msgid "Load Playlist"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:51
+#: src/gtkui/ui_gtk.c:63
 msgid "GTK Foobar-like Interface"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:40 src/gtkui/ui_manager.c:41
-#: src/skins/ui_manager.c:54 src/skins/ui_manager.c:55
+#: src/gtkui/ui_manager.c:36 src/gtkui/ui_manager.c:37
+#: src/skins/ui_manager.c:56 src/skins/ui_manager.c:57
 msgid "Stop after Current Song"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:43 src/gtkui/ui_manager.c:44
-#: src/skins/ui_manager.c:60 src/skins/ui_manager.c:61
+#: src/gtkui/ui_manager.c:39 src/gtkui/ui_manager.c:40
+#: src/skins/ui_manager.c:62 src/skins/ui_manager.c:63
 #, fuzzy
 msgid "Repeat"
 msgstr "Beat"
 
-#: src/gtkui/ui_manager.c:46 src/gtkui/ui_manager.c:47
-#: src/skins/ui_manager.c:63 src/skins/ui_manager.c:64
+#: src/gtkui/ui_manager.c:42 src/gtkui/ui_manager.c:43
+#: src/skins/ui_manager.c:65 src/skins/ui_manager.c:66
 msgid "Shuffle"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:49 src/gtkui/ui_manager.c:50
-#: src/skins/ui_manager.c:66 src/skins/ui_manager.c:67
+#: src/gtkui/ui_manager.c:45 src/gtkui/ui_manager.c:46
+#: src/skins/ui_manager.c:68 src/skins/ui_manager.c:69
 msgid "No Playlist Advance"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:65 src/gtkui/ui_manager.c:66 src/hotkey/gui.c:71
-#: src/skins/ui_manager.c:174 src/skins/ui_manager.c:175
+#: src/gtkui/ui_manager.c:48
+#, fuzzy
+msgid "Show playlists"
+msgstr "Modd chwarae:"
+
+#: src/gtkui/ui_manager.c:49
+msgid "Show/hide playlists"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:51
+msgid "Show infoarea"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:52
+msgid "Show/hide infoarea"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:54
+#, fuzzy
+msgid "Show main menu"
+msgstr "Dangos ffenestr rhwydwaith"
+
+#: src/gtkui/ui_manager.c:55
+msgid "Show/hide main menu"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:67 src/gtkui/ui_manager.c:68
+#: src/skins/ui_manager.c:173 src/skins/ui_manager.c:174
+#, fuzzy
+msgid "Pause"
+msgstr "Chwarae"
+
+#: src/gtkui/ui_manager.c:70 src/gtkui/ui_manager.c:71 src/hotkey/gui.c:73
+#: src/skins/ui_manager.c:176 src/skins/ui_manager.c:177
 #, fuzzy
 msgid "Stop"
 msgstr "Synthpop"
 
-#: src/gtkui/ui_manager.c:68 src/gtkui/ui_manager.c:69
-#: src/skins/ui_manager.c:177 src/skins/ui_manager.c:178
+#: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74
+#: src/skins/ui_manager.c:179 src/skins/ui_manager.c:180
 #, fuzzy
 msgid "Previous"
 msgstr "Primus"
 
-#: src/gtkui/ui_manager.c:71 src/gtkui/ui_manager.c:72
-#: src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
+#: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77
+#: src/skins/ui_manager.c:182 src/skins/ui_manager.c:183
 #, fuzzy
 msgid "Next"
 msgstr "Testun"
 
-#: src/gtkui/ui_manager.c:77 src/skins/ui_manager.c:186
-#, fuzzy
-msgid "Visualization"
-msgstr "Corff:"
-
-#: src/gtkui/ui_manager.c:78 src/skins/ui_manager.c:187
-msgid "Visualization Mode"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:79 src/skins/ui_manager.c:188
-msgid "Analyzer Mode"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:80 src/skins/ui_manager.c:189
-msgid "Scope Mode"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:81 src/skins/ui_manager.c:190
-msgid "Voiceprint Mode"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:82 src/skins/ui_manager.c:191
-msgid "WindowShade VU Mode"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:83 src/skins/ui_manager.c:192
-msgid "Analyzer Falloff"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:84 src/skins/ui_manager.c:193
-msgid "Peaks Falloff"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:89 src/gtkui/ui_playlist_manager.c:310
-#: src/skins/ui_manager.c:198 src/skins/ui_playlist_manager.c:343
+#: src/gtkui/ui_manager.c:82 src/skins/ui_manager.c:200
 #, fuzzy
 msgid "Playlist"
 msgstr "Modd chwarae:"
 
-#: src/gtkui/ui_manager.c:91 src/gtkui/ui_manager.c:92
-#: src/skins/ui_manager.c:200 src/skins/ui_manager.c:201
+#: src/gtkui/ui_manager.c:84 src/gtkui/ui_manager.c:85
+#: src/skins/ui_manager.c:202 src/skins/ui_manager.c:203
 msgid "New Playlist"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:94 src/gtkui/ui_manager.c:95
-#: src/skins/ui_manager.c:203 src/skins/ui_manager.c:204
+#: src/gtkui/ui_manager.c:87 src/gtkui/ui_manager.c:88
+#: src/skins/ui_manager.c:205 src/skins/ui_manager.c:206
 msgid "Select Next Playlist"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:97 src/gtkui/ui_manager.c:98
-#: src/skins/ui_manager.c:206 src/skins/ui_manager.c:207
+#: src/gtkui/ui_manager.c:90 src/gtkui/ui_manager.c:91
+#: src/skins/ui_manager.c:208 src/skins/ui_manager.c:209
 msgid "Select Previous Playlist"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:100 src/gtkui/ui_manager.c:101
-#: src/skins/ui_manager.c:209 src/skins/ui_manager.c:210
+#: src/gtkui/ui_manager.c:93 src/gtkui/ui_manager.c:94
+#: src/skins/ui_manager.c:211 src/skins/ui_manager.c:212
 msgid "Delete Playlist"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:103 src/skins/ui_manager.c:212
+#: src/gtkui/ui_manager.c:96
 msgid "Load List"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:104 src/skins/ui_manager.c:213
+#: src/gtkui/ui_manager.c:97 src/skins/ui_manager.c:215
 msgid "Loads a playlist file into the selected playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:106 src/skins/ui_manager.c:215
+#: src/gtkui/ui_manager.c:99
 #, fuzzy
 msgid "Save List"
 msgstr "Rave"
 
-#: src/gtkui/ui_manager.c:107 src/skins/ui_manager.c:216
+#: src/gtkui/ui_manager.c:100 src/skins/ui_manager.c:218
 msgid "Saves the selected playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:109
+#: src/gtkui/ui_manager.c:102 src/skins/ui_manager.c:220
 #, fuzzy
-msgid "Save Default List"
-msgstr "Rhagosodedig (%s)"
+msgid "Save All Playlists"
+msgstr "Modd chwarae:"
 
-#: src/gtkui/ui_manager.c:110
-msgid "Saves the selected playlist to the default location."
+#: src/gtkui/ui_manager.c:103 src/skins/ui_manager.c:221
+msgid ""
+"Saves all the playlists that are open. Note that this is done automatically "
+"when Audacious quits."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:113 src/skins/ui_manager.c:223
+#: src/gtkui/ui_manager.c:107 src/skins/ui_manager.c:225
 msgid "Refresh List"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:114 src/skins/ui_manager.c:224
+#: src/gtkui/ui_manager.c:108 src/skins/ui_manager.c:226
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:117 src/skins/ui_manager.c:227
+#: src/gtkui/ui_manager.c:111 src/skins/ui_manager.c:229
 msgid "List Manager"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:118 src/skins/ui_manager.c:228
+#: src/gtkui/ui_manager.c:112 src/skins/ui_manager.c:230
 msgid "Opens the playlist manager."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:124 src/skins/ui_manager.c:234
-msgid "View"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:238
+#: src/gtkui/ui_manager.c:115 src/skins/ui_manager.c:240
 msgid "Add Internet Address..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:129 src/skins/ui_manager.c:239
+#: src/gtkui/ui_manager.c:116 src/skins/ui_manager.c:241
 msgid "Adds a remote track to the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:242
+#: src/gtkui/ui_manager.c:119 src/skins/ui_manager.c:244
 msgid "Add Files..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:243
+#: src/gtkui/ui_manager.c:120 src/skins/ui_manager.c:245
 msgid "Adds files to the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:138 src/skins/ui_manager.c:248
-msgid "Search and Select"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:139 src/skins/ui_manager.c:249
-msgid ""
-"Searches the playlist and selects playlist entries based on specific "
-"criteria."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:142 src/skins/ui_manager.c:252
-msgid "Invert Selection"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:143 src/skins/ui_manager.c:253
-msgid "Inverts the selected and unselected entries."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:146 src/skins/ui_manager.c:256
-msgid "Select All"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:147 src/skins/ui_manager.c:257
-msgid "Selects all of the playlist entries."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:150 src/skins/ui_manager.c:260
-msgid "Select None"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:261
-msgid "Deselects all of the playlist entries."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:156 src/skins/ui_manager.c:266
+#: src/gtkui/ui_manager.c:123 src/skins/ui_manager.c:268
 #, fuzzy
 msgid "Remove All"
 msgstr "Tynnu gyrrwr"
 
-#: src/gtkui/ui_manager.c:157 src/skins/ui_manager.c:267
+#: src/gtkui/ui_manager.c:124 src/skins/ui_manager.c:269
 msgid "Removes all entries from the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:160 src/skins/ui_manager.c:270
-msgid "Clear Queue"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:161 src/skins/ui_manager.c:271
-msgid "Clears the queue associated with this playlist."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:164 src/skins/ui_manager.c:274
-msgid "Remove Unavailable Files"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:165 src/skins/ui_manager.c:275
-msgid "Removes unavailable files from the playlist."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:168 src/skins/ui_manager.c:278
-#, fuzzy
-msgid "Remove Duplicates"
-msgstr "Tynnu gyrrwr"
-
-#: src/gtkui/ui_manager.c:170 src/gtkui/ui_manager.c:202
-#: src/gtkui/ui_manager.c:232 src/skins/ui_manager.c:280
-#: src/skins/ui_manager.c:312 src/skins/ui_manager.c:342
-#, fuzzy
-msgid "By Title"
-msgstr "Teitl"
-
-#: src/gtkui/ui_manager.c:171 src/skins/ui_manager.c:281
-msgid "Removes duplicate entries from the playlist by title."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:174 src/gtkui/ui_manager.c:214
-#: src/gtkui/ui_manager.c:244 src/skins/ui_manager.c:284
-#: src/skins/ui_manager.c:324 src/skins/ui_manager.c:354
-#, fuzzy
-msgid "By Filename"
-msgstr "Enw ffeil"
-
-#: src/gtkui/ui_manager.c:175 src/skins/ui_manager.c:285
-msgid "Removes duplicate entries from the playlist by filename."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:178 src/gtkui/ui_manager.c:218
-#: src/gtkui/ui_manager.c:248 src/skins/ui_manager.c:288
-#: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
-#, fuzzy
-msgid "By Path + Filename"
-msgstr "Enw ffeil"
-
-#: src/gtkui/ui_manager.c:179 src/skins/ui_manager.c:289
-msgid "Removes duplicate entries from the playlist by their full path."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:182 src/skins/ui_manager.c:292
+#: src/gtkui/ui_manager.c:127 src/skins/ui_manager.c:294
 msgid "Remove Unselected"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:183 src/skins/ui_manager.c:293
+#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:295
 msgid "Remove unselected entries from the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:186 src/skins/ui_manager.c:296
+#: src/gtkui/ui_manager.c:131 src/skins/ui_manager.c:298
 msgid "Remove Selected"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:187 src/skins/ui_manager.c:297
+#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:299
 msgid "Remove selected entries from the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:192 src/skins/ui_manager.c:302
-msgid "Randomize List"
+#: src/gtkui/ui_manager.c:138
+msgid "Output"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:193 src/skins/ui_manager.c:303
-msgid "Randomizes the playlist."
+#: src/gtkui/ui_manager.c:140 src/modplug/gui/interface.cxx:572
+msgid "Effects"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:196 src/skins/ui_manager.c:306
-msgid "Reverse List"
+#: src/gtkui/ui_manager.c:142
+msgid "Equalizer"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:197 src/skins/ui_manager.c:307
-msgid "Reverses the playlist."
+#: src/gtkui/ui_manager.c:148 src/skins/ui_manager.c:236
+msgid "View"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:200 src/skins/ui_manager.c:310
-#, fuzzy
-msgid "Sort List"
-msgstr "Artist:"
-
-#: src/gtkui/ui_manager.c:203 src/gtkui/ui_manager.c:233
-#: src/skins/ui_manager.c:313 src/skins/ui_manager.c:343
-msgid "Sorts the list by title."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:206 src/gtkui/ui_manager.c:236
-#: src/skins/ui_manager.c:316 src/skins/ui_manager.c:346
-#, fuzzy
-msgid "By Album"
-msgstr "Albwm:"
-
-#: src/gtkui/ui_manager.c:207 src/gtkui/ui_manager.c:237
-#: src/skins/ui_manager.c:317 src/skins/ui_manager.c:347
-msgid "Sorts the list by album."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:210 src/gtkui/ui_manager.c:240
-#: src/skins/ui_manager.c:320 src/skins/ui_manager.c:350
-#, fuzzy
-msgid "By Artist"
-msgstr "Artist:"
-
-#: src/gtkui/ui_manager.c:211 src/gtkui/ui_manager.c:241
-#: src/skins/ui_manager.c:321 src/skins/ui_manager.c:351
-msgid "Sorts the list by artist."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:215 src/gtkui/ui_manager.c:245
-#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
-msgid "Sorts the list by filename."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:219 src/gtkui/ui_manager.c:249
-#: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
-msgid "Sorts the list by full pathname."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:222 src/gtkui/ui_manager.c:252
-#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
-#, fuzzy
-msgid "By Date"
-msgstr "Dyddiad!"
-
-#: src/gtkui/ui_manager.c:223 src/gtkui/ui_manager.c:253
-#: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
-msgid "Sorts the list by modification time."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:226 src/gtkui/ui_manager.c:256
-#: src/skins/ui_manager.c:336 src/skins/ui_manager.c:366
-#, fuzzy
-msgid "By Track Number"
-msgstr "Rhif y Trac:"
-
-#: src/gtkui/ui_manager.c:227 src/gtkui/ui_manager.c:257
-#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
-msgid "Sorts the list by track number."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:230 src/skins/ui_manager.c:340
-msgid "Sort Selected"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:266 src/skins/ui_manager.c:376
+#: src/gtkui/ui_manager.c:156 src/skins/ui_manager.c:378
 #, fuzzy
 msgid "File"
 msgstr "Enw ffeil"
 
-#: src/gtkui/ui_manager.c:269
+#: src/gtkui/ui_manager.c:159
 #, fuzzy
 msgid "Components"
 msgstr "Sylw:"
 
-#: src/gtkui/ui_manager.c:271 src/gtkui/ui_manager.c:274
-#: src/skins/ui_manager.c:381 src/skins/ui_manager.c:384
+#: src/gtkui/ui_manager.c:161 src/gtkui/ui_manager.c:164
+#: src/skins/ui_manager.c:383 src/skins/ui_manager.c:386
 #, fuzzy
 msgid "View Track Details"
 msgstr "defnyddiwch Cynnydd/Brig Trac"
 
-#: src/gtkui/ui_manager.c:272 src/gtkui/ui_manager.c:275
-#: src/skins/ui_manager.c:382 src/skins/ui_manager.c:385
+#: src/gtkui/ui_manager.c:162 src/gtkui/ui_manager.c:165
+#: src/skins/ui_manager.c:384 src/skins/ui_manager.c:387
 msgid "View track details"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:277 src/gtkui/ui_manager.c:278
-#: src/skins/ui_manager.c:387 src/skins/ui_manager.c:388
+#: src/gtkui/ui_manager.c:167 src/gtkui/ui_manager.c:168
+#: src/skins/ui_manager.c:389 src/skins/ui_manager.c:390
 #, fuzzy
 msgid "About Audacious"
 msgstr "Ynghylch Audacious Ategyn LIRC"
 
-#: src/gtkui/ui_manager.c:280 src/skins/ui_manager.c:390
+#: src/gtkui/ui_manager.c:170 src/skins/ui_manager.c:392
 #, fuzzy
 msgid "Play File"
 msgstr "Modd chwarae:"
 
-#: src/gtkui/ui_manager.c:281 src/skins/ui_manager.c:391
+#: src/gtkui/ui_manager.c:171 src/skins/ui_manager.c:393
 msgid "Load and play a file"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:283 src/skins/ui_manager.c:393
+#: src/gtkui/ui_manager.c:173 src/skins/ui_manager.c:395
 msgid "Play Location"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:284 src/skins/ui_manager.c:394
+#: src/gtkui/ui_manager.c:174 src/skins/ui_manager.c:396
 msgid "Play media from the selected location"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:286 src/skins/ui_manager.c:396
+#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:398
 msgid "Plugin services"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:288 src/skins/ui_manager.c:398
+#: src/gtkui/ui_manager.c:178 src/skins/ui_manager.c:400
 msgid "Preferences"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:289 src/skins/ui_manager.c:399
+#: src/gtkui/ui_manager.c:179 src/skins/ui_manager.c:401
 msgid "Open preferences window"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:291 src/skins/ui_manager.c:401
+#: src/gtkui/ui_manager.c:181 src/skins/ui_manager.c:403
 msgid "_Quit"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:292 src/skins/ui_manager.c:402
+#: src/gtkui/ui_manager.c:182 src/skins/ui_manager.c:404
 #, fuzzy
 msgid "Quit Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_manager.c:294 src/gtkui/ui_manager.c:295
-#: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
+#: src/gtkui/ui_manager.c:184 src/gtkui/ui_manager.c:185
+#: src/skins/ui_manager.c:406 src/skins/ui_manager.c:407
 msgid "Set A-B"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:297 src/gtkui/ui_manager.c:298
-#: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
+#: src/gtkui/ui_manager.c:187 src/gtkui/ui_manager.c:188
+#: src/skins/ui_manager.c:409 src/skins/ui_manager.c:410
 msgid "Clear A-B"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:300 src/gtkui/ui_manager.c:301
-#: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
+#: src/gtkui/ui_manager.c:190 src/gtkui/ui_manager.c:191
+#: src/skins/ui_manager.c:412 src/skins/ui_manager.c:413
 msgid "Jump to Playlist Start"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:303 src/gtkui/ui_manager.c:304 src/hotkey/gui.c:78
-#: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
+#: src/gtkui/ui_manager.c:193 src/gtkui/ui_manager.c:194 src/hotkey/gui.c:80
+#: src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
 msgid "Jump to File"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:309 src/skins/ui_manager.c:419
+#: src/gtkui/ui_manager.c:199 src/skins/ui_manager.c:421
 msgid "Queue Toggle"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:310 src/skins/ui_manager.c:420
+#: src/gtkui/ui_manager.c:200 src/skins/ui_manager.c:422
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr ""
 
-#: src/gtkui/ui_playlist_manager.c:277 src/skins/ui_playlist_manager.c:304
-#, fuzzy
-msgid "Playlist Manager"
-msgstr "Modd chwarae:"
-
-#: src/gtkui/ui_playlist_manager.c:315 src/skins/ui_playlist_manager.c:352
-msgid "Entries"
+#: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:425
+msgid "Copy"
 msgstr ""
 
-#: src/gtkui/ui_playlist_manager.c:326 src/skins/ui_playlist_manager.c:367
+#: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:427
 #, fuzzy
-msgid "_Rename"
-msgstr "Enw ffeil"
+msgid "Cut"
+msgstr "Cult"
 
-#: src/hotkey/gui.c:68
-msgid "Previous Track"
+#: src/gtkui/ui_manager.c:209 src/skins/ui_manager.c:429
+msgid "Paste"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:212 src/skins/ui_manager.c:258
+msgid "Select All"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:213 src/skins/ui_manager.c:259
+msgid "Selects all of the playlist entries."
+msgstr ""
+
+#: src/gtkui/ui_manager.c:216 src/skins/ui_manager.c:262
+msgid "Select None"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:217 src/skins/ui_manager.c:263
+msgid "Deselects all of the playlist entries."
 msgstr ""
 
 #: src/hotkey/gui.c:70
-msgid "Pause/Resume"
+msgid "Previous Track"
 msgstr ""
 
 #: src/hotkey/gui.c:72
+msgid "Pause/Resume"
+msgstr ""
+
+#: src/hotkey/gui.c:74
 #, fuzzy
 msgid "Next Track"
 msgstr "Cynnydd trac:"
 
-#: src/hotkey/gui.c:73
+#: src/hotkey/gui.c:75
 msgid "Forward 5 Seconds"
 msgstr ""
 
-#: src/hotkey/gui.c:74
+#: src/hotkey/gui.c:76
 msgid "Rewind 5 Seconds"
 msgstr ""
 
-#: src/hotkey/gui.c:75
+#: src/hotkey/gui.c:77
 #, fuzzy
 msgid "Mute"
 msgstr "Dyddiad!"
 
-#: src/hotkey/gui.c:76
+#: src/hotkey/gui.c:78
 #, fuzzy
 msgid "Volume Up"
 msgstr "Sain:(%)"
 
-#: src/hotkey/gui.c:77
+#: src/hotkey/gui.c:79
 #, fuzzy
 msgid "Volume Down"
 msgstr "Sain:(%)"
 
-#: src/hotkey/gui.c:79
+#: src/hotkey/gui.c:81
 #, fuzzy
 msgid "Toggle Player Windows"
 msgstr "/Toggle Decorations"
 
-#: src/hotkey/gui.c:80
+#: src/hotkey/gui.c:82
 msgid "Show On-Screen-Display"
 msgstr ""
 
-#: src/hotkey/gui.c:90
+#: src/hotkey/gui.c:92
 #, fuzzy
 msgid "(none)"
 msgstr "Dim"
 
-#: src/hotkey/gui.c:227
+#: src/hotkey/gui.c:229
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -4050,41 +3047,41 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: src/hotkey/gui.c:229
+#: src/hotkey/gui.c:231
 msgid "Binding mouse buttons"
 msgstr ""
 
-#: src/hotkey/gui.c:379
+#: src/hotkey/gui.c:381
 #, fuzzy
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Ffurfweddu Ategyn ESD"
 
-#: src/hotkey/gui.c:395
+#: src/hotkey/gui.c:397
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
 
-#: src/hotkey/gui.c:400
+#: src/hotkey/gui.c:402
 #, fuzzy
 msgid "Hotkeys:"
 msgstr "Gwesteiwr:"
 
-#: src/hotkey/gui.c:419
+#: src/hotkey/gui.c:421
 #, fuzzy
 msgid "<b>Action:</b>"
 msgstr "<b>Hatena</b>"
 
-#: src/hotkey/gui.c:427
+#: src/hotkey/gui.c:429
 msgid "<b>Key Binding:</b>"
 msgstr ""
 
-#: src/hotkey/gui.c:659
+#: src/hotkey/gui.c:660
 #, fuzzy
 msgid "About Global Hotkey Plugin"
 msgstr "Ynghylch Ategyn Scrobbler"
 
-#: src/hotkey/gui.c:660
+#: src/hotkey/gui.c:661
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -4099,243 +3096,6 @@ msgid ""
 "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
 "\n"
 msgstr ""
-
-#: src/icecast/icecast.c:226
-#, fuzzy
-msgid "About Icecast-Plugin"
-msgstr "Ynghylch Ategyn Echo"
-
-#: src/icecast/icecast.c:227
-#, fuzzy
-msgid ""
-"Icecast-Plugin\n"
-"\n"
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Ategyn ESounD XMMS\n"
-"\n"
-" Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
-"ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
-"cyhoeddwyd gan y Free Software Foundation; un ai fersiwn 2 o'r\n"
-"drwydded neu yn ôl eich dewis) unrhyw fersiwn arall.\n"
-"\n"
-"Mae'r rhaglen yn cael ei ddosbarthu yn y gobaith y byddwch yn ei gael\n"
-"yn ddefnyddiol, on HEB UNRHYW WARANT; heb hyd yn oed awgrym\n"
-"o warant MASNACHOL neu ADDASRWYDD AR GYFER UNRHYW\n"
-"BWRPAS. Gw. y drwydded Gyhoeddus Gyffredin am ragor o wybodaeth.\n"
-"\n"
-"Dylech fod wedi derbyn copi o'r Drwydded gyda'r rhaglen; os nad cysylltwch\n"
-"â 'r Free Software Foundation, Inc.,  59 Temple Place - Suite 330, Boston,\n"
-" MA 02111-1307,\n"
-"USA."
-
-#: src/icecast/icecast.c:293
-#, c-format
-msgid "Error setting hostname: %s\n"
-msgstr ""
-
-#: src/icecast/icecast.c:299
-#, c-format
-msgid "Error setting protocol: %s\n"
-msgstr ""
-
-#: src/icecast/icecast.c:305
-#, c-format
-msgid "Error setting port: %s\n"
-msgstr ""
-
-#: src/icecast/icecast.c:311
-#, c-format
-msgid "Error setting password: %s\n"
-msgstr ""
-
-#: src/icecast/icecast.c:317
-#, c-format
-msgid "Error setting mount: %s\n"
-msgstr ""
-
-#: src/icecast/icecast.c:323
-#, c-format
-msgid "Error setting stream %s: %s\n"
-msgstr ""
-
-#: src/icecast/icecast.c:323
-msgid "public"
-msgstr ""
-
-#: src/icecast/icecast.c:323
-msgid "private"
-msgstr ""
-
-#: src/icecast/icecast.c:329
-#, c-format
-msgid "Error setting stream name: %s\n"
-msgstr ""
-
-#: src/icecast/icecast.c:335
-#, c-format
-msgid "Error setting stream genre: %s\n"
-msgstr ""
-
-#: src/icecast/icecast.c:341
-#, c-format
-msgid "Error setting stream URL: %s\n"
-msgstr ""
-
-#: src/icecast/icecast.c:347
-#, c-format
-msgid "Error setting stream description: %s\n"
-msgstr ""
-
-#: src/icecast/icecast.c:353 src/icecast/icecast.c:359
-#, c-format
-msgid "Error setting user: %s\n"
-msgstr ""
-
-#: src/icecast/icecast.c:365
-#, c-format
-msgid "Error connecting to server: %s\n"
-msgstr ""
-
-#: src/icecast/icecast.c:519 src/icecast/icecast.c:715
-#: src/scrobbler/configure.c:152 src/scrobbler/configure.c:229
-msgid "Change password"
-msgstr ""
-
-#: src/icecast/icecast.c:620
-#, fuzzy
-msgid "Icecast Configuration"
-msgstr "Ffurfweddiad TiMidity"
-
-#: src/icecast/icecast.c:631
-#, fuzzy
-msgid "Output stream format:"
-msgstr "Ffeil cyfeiriadur allbwn:"
-
-#: src/icecast/icecast.c:655
-#, fuzzy
-msgid "Server address:"
-msgstr "Dyfeisiau"
-
-#: src/icecast/icecast.c:661
-msgid "Server hostname or IP address"
-msgstr ""
-
-#: src/icecast/icecast.c:666
-msgid "Server port number"
-msgstr ""
-
-#: src/icecast/icecast.c:679
-msgid "Mount point:"
-msgstr ""
-
-#: src/icecast/icecast.c:685
-msgid "Mount point for the stream"
-msgstr ""
-
-#: src/icecast/icecast.c:694
-#, fuzzy
-msgid "User name:"
-msgstr "Enw Defnyddiwr:"
-
-#: src/icecast/icecast.c:700
-msgid ""
-"Icecast source user name for the stream; depends on your server settings.\n"
-"The default value is \"source\""
-msgstr ""
-
-#: src/icecast/icecast.c:704 src/scrobbler/configure.c:203
-#: src/scrobbler/configure.c:265
-msgid "Password:"
-msgstr "Cyfrinair:"
-
-#: src/icecast/icecast.c:709
-msgid "Icecast source user password"
-msgstr ""
-
-#: src/icecast/icecast.c:730
-msgid "Connection timeout (seconds):"
-msgstr ""
-
-#: src/icecast/icecast.c:734
-msgid ""
-"Amount of time before plugin closes connection to server when no audio data "
-"available"
-msgstr ""
-
-#: src/icecast/icecast.c:747
-#, fuzzy
-msgid "Buffer size (bytes):"
-msgstr "Maint y byffer (ms):"
-
-#: src/icecast/icecast.c:751
-msgid ""
-"Internal buffer size\n"
-"Try to increase this if you are experiencing audio skipping on client side"
-msgstr ""
-
-#: src/icecast/icecast.c:762
-msgid "Flush buffer if "
-msgstr ""
-
-#: src/icecast/icecast.c:766
-msgid "Determines when to flush internal buffer to prevent its overflow"
-msgstr ""
-
-#: src/icecast/icecast.c:774
-msgid "percents are filled"
-msgstr ""
-
-#: src/icecast/icecast.c:782
-msgid "Stream is public"
-msgstr ""
-
-#: src/icecast/icecast.c:783
-msgid ""
-"Setting this asks the server to list the stream in any directories it knows "
-"about"
-msgstr ""
-
-#: src/icecast/icecast.c:792
-#, fuzzy
-msgid "Stream name:"
-msgstr "Enwau'r Traciau:"
-
-#: src/icecast/icecast.c:804
-msgid "Stream URL:"
-msgstr ""
-
-#: src/icecast/icecast.c:810
-msgid "The URL of a site about this stream"
-msgstr ""
-
-#: src/icecast/icecast.c:817
-msgid "Stream genre:"
-msgstr ""
-
-#: src/icecast/icecast.c:823
-msgid ""
-"The genre (or genres) of the stream. This is usually a keyword list, eg "
-"\"pop rock rap\""
-msgstr ""
-
-#: src/icecast/icecast.c:830
-#, fuzzy
-msgid "Stream description:"
-msgstr "Disgrifiad:"
 
 #: src/jack/configure.c:69
 msgid "Connect to all available jack ports"
@@ -4363,11 +3123,7 @@ msgstr ""
 msgid "Enable debug printing"
 msgstr "Galluogi ReplayGain"
 
-#: src/jack/jack.c:420
-msgid "About JACK Output Plugin 0.17"
-msgstr "Ynghylch Ategyn Allbwn JACK 0.17"
-
-#: src/jack/jack.c:421
+#: src/jack/jack.c:437
 msgid ""
 "XMMS jack Driver 0.17\n"
 "\n"
@@ -4385,45 +3141,42 @@ msgstr ""
 "Audacious ategyn gan\n"
 "Giacomo Lozito o develia.org"
 
-#: src/ladspa/ladspa.c:888
+#: src/jack/jack.c:442
+msgid "About JACK Output Plugin 0.17"
+msgstr "Ynghylch Ategyn Allbwn JACK 0.17"
+
+#: src/ladspa/ladspa.c:882
 msgid "This LADSPA plugin has no user controls"
 msgstr ""
 
-#: src/ladspa/ladspa.c:929 src/ladspa/ladspa.c:1016
+#: src/ladspa/ladspa.c:923 src/ladspa/ladspa.c:1010
 #, fuzzy
 msgid "Name"
 msgstr "Enw:"
 
-#: src/ladspa/ladspa.c:1016
+#: src/ladspa/ladspa.c:1010
 msgid "UID"
 msgstr ""
 
-#: src/ladspa/ladspa.c:1092
+#: src/ladspa/ladspa.c:1087
 msgid "Installed plugins"
 msgstr ""
 
-#: src/ladspa/ladspa.c:1100
+#: src/ladspa/ladspa.c:1095
 msgid "Running plugins"
 msgstr ""
 
-#: src/ladspa/ladspa.c:1115
+#: src/ladspa/ladspa.c:1110
 msgid "Add"
 msgstr ""
 
-#: src/ladspa/ladspa.c:1118
+#: src/ladspa/ladspa.c:1113
 #, fuzzy
 msgid "Remove"
 msgstr "Tynnu gyrrwr"
 
-#: src/ladspa/ladspa.c:1129
+#: src/ladspa/ladspa.c:1124
 msgid "LADSPA Plugin Catalog"
-msgstr ""
-
-#: src/lastfm/lastfm.c:93
-msgid ""
-"<b><big>Couldn't initialize the last.fm radio plugin.</big></b>\n"
-"\n"
-"Check if your Scrobbler's plugin login data is set up properly."
 msgstr ""
 
 #: src/lirc/about.c:63
@@ -4507,49 +3260,6 @@ msgstr "%s: datgysylltu am LIRC\n"
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr ""
 
-#: src/madplug/configure.c:33
-msgid "Enable fast play-length calculation"
-msgstr ""
-
-#: src/madplug/configure.c:34
-msgid "Parse XING headers"
-msgstr ""
-
-#: src/madplug/configure.c:35
-msgid "Use SJIS to write ID3 tags (not recommended)"
-msgstr ""
-
-#: src/madplug/configure.c:39
-#, fuzzy
-msgid "Metadata Settings"
-msgstr "Gosodiadau Cymysgu"
-
-#: src/madplug/configure.c:88
-msgid "MPEG Audio Plugin Configuration"
-msgstr "Ffurfweddiad Chwaraeydd MPEG Sain"
-
-#: src/madplug/plugin.c:562
-#, c-format
-msgid ""
-"Audacious MPEG Audio Plugin\n"
-"\n"
-"Compiled against libMAD version: %d.%d.%d%s\n"
-"\n"
-"Written by:\n"
-"    William Pitcock <nenolod@sacredspiral.co.uk>\n"
-"    Yoshiki Yazawa <yaz@cc.rim.or.jp>\n"
-"\n"
-"Portions derived from XMMS-MAD by:\n"
-"    Sam Clegg\n"
-"\n"
-"ReplayGain support by:\n"
-"    Samuel Krempp"
-msgstr ""
-
-#: src/madplug/plugin.c:578
-msgid "About MPEG Audio Plugin"
-msgstr "Ynghylch Ategyn Sain MPEG"
-
 #: src/metronom/metronom.c:87
 #, fuzzy
 msgid "About Metronom"
@@ -4564,170 +3274,167 @@ msgid ""
 "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
 
-#: src/metronom/metronom.c:147
+#: src/metronom/metronom.c:142
 #, fuzzy, c-format
 msgid "Tact generator: %d bpm"
 msgstr "Cynhyrchydd Tôn:"
 
-#: src/metronom/metronom.c:149
+#: src/metronom/metronom.c:144
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:137 src/modplug/gui/modplug.glade:9
+#: src/modplug/gui/interface.cxx:137
 #, fuzzy
 msgid "ModPlug Configuration"
 msgstr "Ffurfweddiad TiMidity"
 
-#: src/modplug/gui/interface.cxx:174 src/modplug/gui/modplug.glade:73
-#: src/timidity/interface.c:141
+#: src/modplug/gui/interface.cxx:174
 msgid "16 bit"
 msgstr "16 did"
 
-#: src/modplug/gui/interface.cxx:181 src/modplug/gui/modplug.glade:92
-#: src/timidity/interface.c:133
+#: src/modplug/gui/interface.cxx:181
 msgid "8 bit"
 msgstr "8 did"
 
-#: src/modplug/gui/interface.cxx:212 src/modplug/gui/modplug.glade:178
+#: src/modplug/gui/interface.cxx:212
 msgid "Mono (downmix)"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:241 src/modplug/gui/modplug.glade:258
+#: src/modplug/gui/interface.cxx:241
 msgid "Nearest (fastest)"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:248 src/modplug/gui/modplug.glade:277
+#: src/modplug/gui/interface.cxx:248
 msgid "Linear (fast)"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:255 src/modplug/gui/modplug.glade:297
+#: src/modplug/gui/interface.cxx:255
 msgid "Spline (good quality)"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:262 src/modplug/gui/modplug.glade:317
+#: src/modplug/gui/interface.cxx:262
 msgid "8-tap Fir (extremely high quality)"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:286 src/modplug/gui/modplug.glade:384
+#: src/modplug/gui/interface.cxx:286
+#, fuzzy
+msgid "96 kHz"
+msgstr "44100 Hz"
+
+#: src/modplug/gui/interface.cxx:293
 #, fuzzy
 msgid "48 kHz"
 msgstr "44100 Hz"
 
-#: src/modplug/gui/interface.cxx:293 src/modplug/gui/modplug.glade:403
+#: src/modplug/gui/interface.cxx:300
 #, fuzzy
 msgid "44 kHz"
 msgstr "44100 Hz"
 
-#: src/modplug/gui/interface.cxx:300 src/modplug/gui/modplug.glade:423
+#: src/modplug/gui/interface.cxx:307
 #, fuzzy
 msgid "22 kHz"
 msgstr "22000 Hz"
 
-#: src/modplug/gui/interface.cxx:307 src/modplug/gui/modplug.glade:443
-#, fuzzy
-msgid "11 kHz"
-msgstr "11000 Hz"
-
-#: src/modplug/gui/interface.cxx:315 src/modplug/gui/modplug.glade:464
-#: src/timidity/interface.c:75
+#: src/modplug/gui/interface.cxx:315
 msgid "Sampling Rate"
 msgstr "Graddfa Samplo"
 
+#: src/modplug/gui/interface.cxx:349 src/modplug/gui/interface.cxx:411
+#: src/modplug/gui/interface.cxx:477 src/modplug/gui/interface.cxx:539
+#, fuzzy
+msgid "Enable"
+msgstr "Galluogi clicied"
+
 #: src/modplug/gui/interface.cxx:378 src/modplug/gui/interface.cxx:506
-#: src/modplug/gui/modplug.glade:627 src/modplug/gui/modplug.glade:997
 #, fuzzy
 msgid "Depth"
 msgstr "Duet"
 
 #: src/modplug/gui/interface.cxx:386 src/modplug/gui/interface.cxx:514
-#: src/modplug/gui/modplug.glade:655 src/modplug/gui/modplug.glade:1025
 #, fuzzy
 msgid "Delay"
 msgstr "Oediad: (ms)"
 
-#: src/modplug/gui/interface.cxx:394 src/modplug/gui/modplug.glade:692
+#: src/modplug/gui/interface.cxx:394
 #, fuzzy
 msgid "Reverb"
 msgstr "adlais"
 
-#: src/modplug/gui/interface.cxx:440 src/modplug/gui/modplug.glade:806
+#: src/modplug/gui/interface.cxx:440
 #, fuzzy
 msgid "Amount"
 msgstr "Ynghylch"
 
-#: src/modplug/gui/interface.cxx:448 src/modplug/gui/modplug.glade:834
+#: src/modplug/gui/interface.cxx:448
 #, fuzzy
 msgid "Range"
 msgstr "Cyfongl"
 
-#: src/modplug/gui/interface.cxx:456 src/modplug/gui/modplug.glade:871
+#: src/modplug/gui/interface.cxx:456
 msgid "Bass Boost"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:522 src/modplug/gui/modplug.glade:1062
+#: src/modplug/gui/interface.cxx:522
 #, fuzzy
 msgid "Surround"
 msgstr "Adlais o amgylch"
 
-#: src/modplug/gui/interface.cxx:561 src/modplug/gui/modplug.glade:1183
+#: src/modplug/gui/interface.cxx:561
 msgid ""
 "Note:  Setting the preamp\n"
 "too high may cause clipping\n"
 "(annoying clicks and pops)!"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:567 src/modplug/gui/modplug.glade:1212
+#: src/modplug/gui/interface.cxx:567
 #, fuzzy
 msgid "Preamp"
 msgstr "Dream"
 
-#: src/modplug/gui/interface.cxx:572 src/modplug/gui/modplug.glade:1255
-msgid "Effects"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:601 src/modplug/gui/modplug.glade:1307
+#: src/modplug/gui/interface.cxx:601
 msgid "Use Filename as Song Title"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:606 src/modplug/gui/modplug.glade:1326
+#: src/modplug/gui/interface.cxx:606
 msgid "Fast Playlist Info"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:617 src/modplug/gui/modplug.glade:1358
+#: src/modplug/gui/interface.cxx:617
 msgid "Noise Reduction"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:623 src/modplug/gui/modplug.glade:1377
+#: src/modplug/gui/interface.cxx:623
 msgid "Play Amiga MOD"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:646 src/modplug/gui/modplug.glade:1450
+#: src/modplug/gui/interface.cxx:646
 msgid "Don't loop"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:658 src/modplug/gui/modplug.glade:1475
+#: src/modplug/gui/interface.cxx:658
 msgid "Loop"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:671 src/modplug/gui/modplug.glade:1513
+#: src/modplug/gui/interface.cxx:671
 msgid "time(s)"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:677 src/modplug/gui/modplug.glade:1546
+#: src/modplug/gui/interface.cxx:677
 msgid "Loop forever"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:684 src/modplug/gui/modplug.glade:1567
+#: src/modplug/gui/interface.cxx:684
 msgid "Looping"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:859 src/modplug/gui/modplug.glade:1688
+#: src/modplug/gui/interface.cxx:859
 #, fuzzy
 msgid "MOD Info"
 msgstr "Gwybodaeth am y CD"
 
-#: src/modplug/gui/interface.cxx:878 src/modplug/gui/modplug.glade:1730
+#: src/modplug/gui/interface.cxx:878
 msgid ""
 "Filename:\n"
 "Title:\n"
@@ -4741,7 +3448,7 @@ msgid ""
 "Channels:"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:883 src/modplug/gui/modplug.glade:1764
+#: src/modplug/gui/interface.cxx:883
 msgid ""
 "---\n"
 "---\n"
@@ -4755,35 +3462,35 @@ msgid ""
 "---"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:913 src/modplug/gui/modplug.glade:1869
+#: src/modplug/gui/interface.cxx:913
 #, fuzzy
 msgid "Samples"
 msgstr "Salsa"
 
-#: src/modplug/gui/interface.cxx:938 src/modplug/gui/modplug.glade:1934
+#: src/modplug/gui/interface.cxx:938
 #, fuzzy
 msgid "Instruments"
 msgstr "Offerynnol"
 
-#: src/modplug/gui/interface.cxx:959 src/modplug/gui/modplug.glade:1991
+#: src/modplug/gui/interface.cxx:959
 msgid "Message"
 msgstr ""
 
-#: src/modplug/gui/main.cxx:48
+#: src/modplug/gui/main.cxx:51
 msgid "Modplug Input Plugin for Audacious ver"
 msgstr ""
 
-#: src/modplug/gui/main.cxx:49
+#: src/modplug/gui/main.cxx:52
 msgid ""
 "\n"
 "Modplug sound engine written by Olivier Lapicque.\n"
 "XMMS interface for Modplug by Kenton Varda.\n"
 "(c)2000 Olivier Lapicque and Kenton Varda.\n"
-"Updates and Maintainance by Konstanty Bialkowski.\n"
+"Updates and maintenance by Konstanty Bialkowski.\n"
 "Ported to BMP by Theofilos Intzoglou."
 msgstr ""
 
-#: src/modplug/gui/main.cxx:52
+#: src/modplug/gui/main.cxx:55
 #, fuzzy
 msgid "About Modplug"
 msgstr "Ynghylch Ategyn Echo"
@@ -4810,11 +3517,11 @@ msgstr ""
 msgid "Disconnect the device"
 msgstr ""
 
-#: src/null/null.c:59
+#: src/null/null.c:61
 msgid "Null output plugin "
 msgstr "Null ategyn allbwn"
 
-#: src/null/null.c:60
+#: src/null/null.c:62
 #, fuzzy
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
@@ -4823,81 +3530,65 @@ msgstr ""
 " am Christian Birchinger <joker@netswarm.net>\n"
 " tarddu gan yr XMMS modiwl am Håvard Kvål <harvardk@xmms.org>"
 
-#: src/null/null.c:63
+#: src/null/null.c:65
 msgid "About Null Output"
 msgstr "Ynghylch Ategyn Allwyn Null"
 
-#: src/null/null.c:92
+#: src/null/null.c:91
 #, fuzzy
 msgid "Null output preferences"
 msgstr "Null ategyn allbwn"
 
-#: src/null/null.c:101
+#: src/null/null.c:100
 msgid "Run in real time"
 msgstr ""
 
-#: src/OSS4/configure.c:191 src/OSS/configure.c:201
-msgid "OSS Driver configuration"
-msgstr "Ffurfweddu'r Gyrrwr OSS"
+#: src/oss4/configure.c:88
+#, fuzzy
+msgid "1. Default device"
+msgstr "Dyfais PCM rhagosodedig (%s)"
 
-#: src/OSS4/configure.c:207 src/OSS/configure.c:217 src/sun/configure.c:181
-msgid "Audio device:"
-msgstr "Dyfais sain:"
+#: src/oss4/configure.c:150
+#, fuzzy
+msgid "OSS4 Output Plugin Preferences"
+msgstr "Ynghylch Ategyn ESounD"
 
-#: src/OSS4/configure.c:229 src/OSS/configure.c:239 src/OSS/configure.c:280
-msgid "Use alternate device:"
-msgstr "Defnyddiwr ddyfais arall:"
-
-#: src/OSS4/configure.c:251 src/OSS/configure.c:302 src/sun/configure.c:246
-msgid "Devices"
-msgstr "Dyfeisiau"
-
-#: src/OSS4/configure.c:293 src/OSS/configure.c:343
-msgid "Mixer Settings:"
-msgstr "Gosodiadau Cymysgu"
-
-#: src/OSS4/configure.c:299
-msgid "Save VMIX volume between sessions"
+#: src/oss4/configure.c:201
+msgid "Save volume between sessions"
 msgstr ""
 
-#: src/OSS4/configure.c:305 src/OSS/configure.c:355 src/sun/configure.c:392
-msgid "Mixer"
-msgstr "Cymysgwr"
+#: src/oss4/configure.c:205
+msgid "Enable format conversions made by the OSS software."
+msgstr ""
 
-#: src/OSS4/OSS4.c:38
+#: src/oss4/plugin.c:53
 #, fuzzy
-msgid "About OSSv4 Driver"
-msgstr "Ynghylch Gyrrwr OSS"
+msgid "About OSS4 Plugin"
+msgstr "Ynghylch Ategyn ESounD"
 
-#: src/OSS4/OSS4.c:39
+#: src/oss4/plugin.c:54
 #, fuzzy
 msgid ""
-"Audacious OSSv4 Driver\n"
+"OSS4 Output Plugin for Audacious\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
 "\n"
-"Based on the OSSv3 Output plugin,\n"
-"Ported to OSSv4's VMIX by Cristi Magherusan <majeru@gentoo.ro>\n"
+"I would like to thank people on #audacious, especially Tony Vroon and John "
+"Lindgren and of course the authors of the previous OSS plugin.\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
+"This program is free software: you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA.\n"
-"\n"
-"Note: For any issues regarding this plugin (including patches and \n"
-"suggestions) please contact the maintainer, and NO other \n"
-"Audacious developers\n"
-"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>.\n"
 msgstr ""
-"Gyrrwr OSS Audacious\n"
+"Ategyn ESounD XMMS\n"
 "\n"
 " Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
 "ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
@@ -4914,22 +3605,20 @@ msgstr ""
 " MA 02111-1307,\n"
 "USA."
 
-#: src/OSS/configure.c:151
-#, c-format
-msgid "Default (%s)"
-msgstr "Rhagosodedig (%s)"
+#: src/oss4/utils.c:204
+#, fuzzy
+msgid "OSS4 error"
+msgstr "Terror"
 
-#: src/OSS/configure.c:349
-msgid "Volume controls Master not PCM"
-msgstr "Nid yw'r Prif reolwr sain yn PCM"
+#: src/pulse_audio/pulse_audio.c:688
+#, fuzzy
+msgid "About Audacious PulseAudio Output Plugin"
+msgstr "Ategyn Allbwn CoreAudio"
 
-#: src/OSS/OSS.c:39
-msgid "About OSS Driver"
-msgstr "Ynghylch Gyrrwr OSS"
-
-#: src/OSS/OSS.c:40
+#: src/pulse_audio/pulse_audio.c:689
+#, fuzzy
 msgid ""
-"Audacious OSS Driver\n"
+"Audacious PulseAudio Output Plugin\n"
 "\n"
 " This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -4946,7 +3635,7 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Gyrrwr OSS Audacious\n"
+"Ategyn ESounD XMMS\n"
 "\n"
 " Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
 "ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
@@ -4963,33 +3652,129 @@ msgstr ""
 " MA 02111-1307,\n"
 "USA."
 
-#: src/scrobbler/configure.c:175
+#: src/resample/plugin.c:78
+#, fuzzy
+msgid "About Sample Rate Converter Plugin"
+msgstr "Ynghylch Ategyn ESounD"
+
+#: src/resample/plugin.c:134
+msgid "Sample Rate Converter Preferences"
+msgstr ""
+
+#: src/resample/plugin.c:146
+msgid "Rate mappings:"
+msgstr ""
+
+#: src/resample/plugin.c:169
+msgid "All others:"
+msgstr ""
+
+#: src/resample/plugin.c:181
+msgid "Method:"
+msgstr ""
+
+#: src/roaraudio/gui.c:35
+#, fuzzy
+msgid "About RoarAudio Plugin"
+msgstr "Ategynnau Sain FLAC"
+
+#: src/roaraudio/gui.c:36
+#, fuzzy
+msgid "RoarAudio Audacious Plugin..."
+msgstr "Ynghylch Audacious Ategyn LIRC"
+
+#: src/roaraudio/gui.c:95
+#, fuzzy
+msgid "RoarAudio Plugin - Configuration"
+msgstr "Ffurfweddiad Chwaraeydd MPEG Sain"
+
+#: src/roaraudio/gui.c:123
+#, fuzzy
+msgid "Server Type:"
+msgstr "Gwasanaethwr"
+
+#: src/roaraudio/gui.c:130
+msgid "Host or Path:"
+msgstr ""
+
+#: src/roaraudio/gui.c:168
+#, fuzzy
+msgid "<b>Host:</b>"
+msgstr "<b>Hatena</b>"
+
+#: src/roaraudio/gui.c:173
+msgid "Server & Network"
+msgstr ""
+
+#: src/roaraudio/gui.c:198
+#, fuzzy
+msgid "Proxy Address"
+msgstr "Dyfeisiau"
+
+#: src/roaraudio/gui.c:225
+#, fuzzy
+msgid "<b>Proxy</b>"
+msgstr "<b>Gerpok</b>"
+
+#: src/roaraudio/gui.c:232
+msgid "Proxy"
+msgstr ""
+
+#: src/roaraudio/gui.c:254
+#, fuzzy
+msgid "Player Name:"
+msgstr "Modd chwarae:"
+
+#: src/roaraudio/gui.c:261 src/skins/ui_main.c:386 src/skins/ui_main.c:2183
+#, fuzzy
+msgid "Audacious"
+msgstr "%s - Audacious"
+
+#: src/roaraudio/gui.c:263
+#, fuzzy
+msgid "<b>Player</b>"
+msgstr "<b>Hatena</b>"
+
+#: src/roaraudio/gui.c:296
+#, fuzzy
+msgid "<b>Current Song</b>"
+msgstr "<b>Hatena</b>"
+
+#: src/roaraudio/gui.c:303
+msgid "Meta Data"
+msgstr ""
+
+#: src/scrobbler/configure.c:151 src/scrobbler/configure.c:228
+msgid "Change password"
+msgstr ""
+
+#: src/scrobbler/configure.c:174
 msgid "<b>Services</b>"
 msgstr "<b>Gwasanaethau</b>"
 
-#: src/scrobbler/configure.c:197 src/scrobbler/configure.c:259
+#: src/scrobbler/configure.c:196
 msgid "Username:"
 msgstr "Enw Defnyddiwr:"
 
-#: src/scrobbler/configure.c:211
+#: src/scrobbler/configure.c:202
+msgid "Password:"
+msgstr "Cyfrinair:"
+
+#: src/scrobbler/configure.c:210
 #, fuzzy
 msgid "Scrobbler URL:"
 msgstr "Ategyn Scrobbler"
 
-#: src/scrobbler/configure.c:243
+#: src/scrobbler/configure.c:242
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:291
-msgid "<b>Gerpok</b>"
-msgstr "<b>Gerpok</b>"
-
-#: src/scrobbler/configure.c:350
+#: src/scrobbler/configure.c:292
 #, fuzzy
 msgid "Scrobbler"
 msgstr "Ategyn Scrobbler"
 
-#: src/scrobbler/gtkstuff.c:18
+#: src/scrobbler/plugin.c:210
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -4997,130 +3782,139 @@ msgid ""
 "com>\n"
 msgstr ""
 
-#: src/scrobbler/gtkstuff.c:20
+#: src/scrobbler/plugin.c:212
 msgid "About Scrobbler Plugin"
 msgstr "Ynghylch Ategyn Scrobbler"
 
-#: src/scrobbler/gtkstuff.c:33
+#: src/sid/xs_about.c:84
 #, c-format
-msgid ""
-"There has been an error that may require your attention.\n"
-"\n"
-"Contents of server error:\n"
-"\n"
-"%s\n"
+msgid "About %s"
+msgstr "Ynghylch %s"
+
+#: src/sid/xs_config.c:319
+#, fuzzy
+msgid " Error"
+msgstr "Gwall"
+
+#: src/sid/xs_fileinfo.c:149
+#, fuzzy
+msgid "General info"
+msgstr "Cyffredinol"
+
+#: src/sid/xs_fileinfo.c:162
+#, c-format
+msgid "Tune #%i: "
 msgstr ""
 
-#: src/scrobbler/gtkstuff.c:40
-#, fuzzy
-msgid "Scrobbler Error"
-msgstr "Ategyn Scrobbler"
-
-#: src/sid/xmms-sid.glade:8 src/sid/xs_interface.c:234
+#: src/sid/xs_interface.c:234
 #, fuzzy
 msgid "Audacious-SID configuration"
 msgstr "Audacious OSD - ffurfweddiad"
 
-#: src/sid/xmms-sid.glade:71 src/sid/xs_interface.c:270
+#: src/sid/xs_interface.c:270
 #, fuzzy
 msgid "8-bit"
 msgstr "8 did"
 
-#: src/sid/xmms-sid.glade:90 src/sid/xs_interface.c:277
+#: src/sid/xs_interface.c:277
 #, fuzzy
 msgid "16-bit"
 msgstr "16 did"
 
-#: src/sid/xmms-sid.glade:111 src/sid/xs_interface.c:284
+#: src/sid/xs_interface.c:284
 #, fuzzy
 msgid "Resolution:"
 msgstr "Cydraniad:"
 
-#: src/sid/xmms-sid.glade:196 src/sid/xs_interface.c:315
+#: src/sid/xs_interface.c:315
 msgid "Autopanning"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:217 src/sid/xs_interface.c:322
+#: src/sid/xs_interface.c:322
 msgid "Channels:"
 msgstr "Sianeli:"
 
-#: src/sid/xmms-sid.glade:384 src/sid/xs_interface.c:366
+#: src/sid/xs_interface.c:366
 #, fuzzy
 msgid "Samplerate:"
 msgstr "Graddfa samplo:"
 
-#: src/sid/xmms-sid.glade:430 src/sid/xs_interface.c:383
+#: src/sid/xs_interface.c:383
 #, fuzzy
 msgid "Use oversampling"
 msgstr "Samplo"
 
-#: src/sid/xmms-sid.glade:456 src/sid/xs_interface.c:394
+#: src/sid/xs_interface.c:394
 msgid "Factor:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:500 src/sid/xs_interface.c:406
+#: src/sid/xs_interface.c:406
 msgid "Large factors require more CPU-power"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:534 src/sid/xs_interface.c:412
+#: src/sid/xs_interface.c:412
 #, fuzzy
 msgid "Oversampling:"
 msgstr "Samplo"
 
-#: src/sid/xmms-sid.glade:570 src/sid/xs_interface.c:417
+#: src/sid/xs_interface.c:417
 msgid "Audio"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:620 src/sid/xs_interface.c:449
+#: src/sid/xs_interface.c:445
+msgid "Force speed"
+msgstr ""
+
+#: src/sid/xs_interface.c:449
 msgid ""
 "If enabled, this option \"forces\" the emulation engine to use the selected "
 "clock speed/frequency. Otherwise the speed is determined from played file "
 "itself."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:622 src/sid/xs_interface.c:445
-msgid "Force speed"
+#: src/sid/xs_interface.c:451
+msgid "PAL (50 Hz)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:640 src/sid/xs_interface.c:455
+#: src/sid/xs_interface.c:455
 msgid ""
 "PAL is the european TV standard, which uses 50Hz vertical refresh frequency. "
 "Most of SID-tunes have been made for PAL computers."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:642 src/sid/xs_interface.c:451
-msgid "PAL (50 Hz)"
+#: src/sid/xs_interface.c:459
+msgid "NTSC (60 Hz)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:660 src/sid/xs_interface.c:463
+#: src/sid/xs_interface.c:463
 msgid ""
 "NTSC is the TV standard with 60Hz vertical refresh rate (and other features "
 "that differ from PAL). It is mainly used in United States, Japan and certain "
 "other countries."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:662 src/sid/xs_interface.c:459
-msgid "NTSC (60 Hz)"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:683 src/sid/xs_interface.c:467
+#: src/sid/xs_interface.c:467
 #, fuzzy
 msgid "Clock speed:"
 msgstr "Chwarae cyflymedd"
 
-#: src/sid/xmms-sid.glade:728 src/sid/xs_interface.c:488
+#: src/sid/xs_interface.c:484
+#, fuzzy
+msgid "Force model"
+msgstr "Enwau'r Traciau:"
+
+#: src/sid/xs_interface.c:488
 msgid ""
 "If enabled, this option \"forces\" the emulation engine to use the selected "
 "SID-chip model. Otherwise the preferred SID model is determined from the "
 "file (if PSIDv2NG type) or if not available, this setting is used."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:730 src/sid/xs_interface.c:484
-#, fuzzy
-msgid "Force model"
-msgstr "Enwau'r Traciau:"
+#: src/sid/xs_interface.c:490
+msgid "MOS 6581"
+msgstr ""
 
-#: src/sid/xmms-sid.glade:748 src/sid/xs_interface.c:494
+#: src/sid/xs_interface.c:494
 msgid ""
 "MOS/CSG 6581 is the earlier major version of SID chip. It differs from 8580 "
 "in few ways, having much fuller filter (which, due to design error, is never "
@@ -5128,91 +3922,91 @@ msgid ""
 "which enables playing of digital samples."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:750 src/sid/xs_interface.c:490
-msgid "MOS 6581"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:769 src/sid/xs_interface.c:498
+#: src/sid/xs_interface.c:498
 msgid "MOS 8580"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:790 src/sid/xs_interface.c:505
+#: src/sid/xs_interface.c:505
 #, fuzzy
 msgid "SID model:"
 msgstr "Modd chwarae:"
 
-#: src/sid/xmms-sid.glade:842 src/sid/xs_interface.c:526
+#: src/sid/xs_interface.c:522
+msgid "SIDPlay 1 (frame-based)"
+msgstr ""
+
+#: src/sid/xs_interface.c:526
 msgid ""
 "Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most "
 "cases, though."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:844 src/sid/xs_interface.c:522
-msgid "SIDPlay 1 (frame-based)"
+#: src/sid/xs_interface.c:530
+msgid "SIDPlay 2 (cycle-based)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:863 src/sid/xs_interface.c:534
+#: src/sid/xs_interface.c:534
 msgid ""
 "Use libSIDPlay 2.x emulation, which requires powerful CPU due to more exact "
 "emulation."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:865 src/sid/xs_interface.c:530
-msgid "SIDPlay 2 (cycle-based)"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:887 src/sid/xs_interface.c:538
+#: src/sid/xs_interface.c:538
 msgid "Emulation library selection:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:933 src/sid/xs_interface.c:555
+#: src/sid/xs_interface.c:555
 msgid "Real C64 (SIDPlay 2 only)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:952 src/sid/xs_interface.c:562
+#: src/sid/xs_interface.c:562
 msgid "Bank switching"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:972 src/sid/xs_interface.c:569
+#: src/sid/xs_interface.c:569
 msgid "Transparent ROM"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:992 src/sid/xs_interface.c:576
+#: src/sid/xs_interface.c:576
 msgid "PlaySID environment"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1013 src/sid/xs_interface.c:583
+#: src/sid/xs_interface.c:583
 #, fuzzy
 msgid "Memory mode:"
 msgstr "Modd chwarae:"
 
-#: src/sid/xmms-sid.glade:1049 src/sid/xs_interface.c:588
+#: src/sid/xs_interface.c:588
 msgid "Emu#1"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1093 src/sid/xs_interface.c:615
+#: src/sid/xs_interface.c:611
+msgid "Optimization mode (faster, inaccurate)"
+msgstr ""
+
+#: src/sid/xs_interface.c:615
 msgid ""
 "This setting can be used to enable libSIDPlay2's \"optimization mode\", "
 "which in downgrades the emulation from cycle-exact to something similar to "
 "frame-exact. The result is lower CPU usage, but worse accuracy."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1095 src/sid/xs_interface.c:611
-msgid "Optimization mode (faster, inaccurate)"
+#: src/sid/xs_interface.c:617
+msgid "reSID-emulation"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1113 src/sid/xs_interface.c:621
+#: src/sid/xs_interface.c:621
 msgid ""
 "reSID is the software SID-chip simulator based on SID reverse-engineering, "
 "created by Dag Lem. It is probably the closest thing to real SID available "
 "as software-only emulation."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1115 src/sid/xs_interface.c:617
-msgid "reSID-emulation"
+#: src/sid/xs_interface.c:625
+msgid "HardSID"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1133 src/sid/xs_interface.c:629
+#: src/sid/xs_interface.c:629
 msgid ""
 "HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a "
 "real SID-chip. Software can be used to control the HardSID and combined with "
@@ -5221,49 +4015,49 @@ msgid ""
 "http://www.hardsid.com/"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1135 src/sid/xs_interface.c:625
-msgid "HardSID"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:1156 src/sid/xs_interface.c:633
+#: src/sid/xs_interface.c:633
 msgid "SIDPlay 2 options:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1201 src/sid/xs_interface.c:654
+#: src/sid/xs_interface.c:650
+msgid "Fast (nearest neighbour)"
+msgstr ""
+
+#: src/sid/xs_interface.c:654
 msgid ""
 "Fastest and also worst sounding sampling method, simply picks nearest "
 "neighbouring sample."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1203 src/sid/xs_interface.c:650
-msgid "Fast (nearest neighbour)"
+#: src/sid/xs_interface.c:658
+msgid "Linear interpolation"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1221 src/sid/xs_interface.c:662
+#: src/sid/xs_interface.c:662
 msgid ""
 "Uses linear interpolation between samples, yielding higher audio quality "
 "with less sampling noise."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1223 src/sid/xs_interface.c:658
-msgid "Linear interpolation"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:1263 src/sid/xs_interface.c:673
+#: src/sid/xs_interface.c:673
 #, fuzzy
 msgid "Resampling (FIR)"
 msgstr "Samplo"
 
-#: src/sid/xmms-sid.glade:1284 src/sid/xs_interface.c:680
+#: src/sid/xs_interface.c:680
 #, fuzzy
 msgid "reSID sampling options:"
 msgstr "Graddfa Samplo"
 
-#: src/sid/xmms-sid.glade:1320 src/sid/xs_interface.c:685
+#: src/sid/xs_interface.c:685
 msgid "Emu#2"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1350 src/sid/xs_interface.c:701
+#: src/sid/xs_interface.c:697
+msgid "Emulate filters"
+msgstr ""
+
+#: src/sid/xs_interface.c:701
 msgid ""
 "This option enables emulation of SID filter. The filter is an essential part "
 "of SID's sound capacity, but accurate emulation of it may require quite much "
@@ -5271,152 +4065,156 @@ msgid ""
 "authentic at all if they utilize the filter."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1352 src/sid/xs_interface.c:697
-msgid "Emulate filters"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:1409 src/sid/xs_interface.c:726
+#: src/sid/xs_interface.c:726
 msgid "FS"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1460 src/sid/xs_interface.c:743
+#: src/sid/xs_interface.c:743
 msgid "FM"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1511 src/sid/xs_interface.c:760
+#: src/sid/xs_interface.c:760
 msgid "FT"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1549 src/sid/xs_interface.c:771
+#: src/sid/xs_interface.c:771
 msgid "Reset values"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1578 src/sid/xs_interface.c:776
+#: src/sid/xs_interface.c:776
 msgid "SIDPlay1"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1690 src/sid/xs_interface.c:817
+#: src/sid/xs_interface.c:817
 #, fuzzy
 msgid "Export"
 msgstr "Porth"
 
-#: src/sid/xmms-sid.glade:1711 src/sid/xs_interface.c:825
+#: src/sid/xs_interface.c:825
 msgid "Use"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1753 src/sid/xs_interface.c:841
-#: src/skins/ui_manager.c:428
+#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:438
+#, fuzzy
+msgid "Save"
+msgstr "Rave"
+
+#: src/sid/xs_interface.c:841 src/skins/ui_manager.c:437
 #, fuzzy
 msgid "Import"
 msgstr "Porth"
 
-#: src/sid/xmms-sid.glade:1819 src/sid/xs_interface.c:863
+#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:439
+#, fuzzy
+msgid "Delete"
+msgstr "Rhagosodedig"
+
+#: src/sid/xs_interface.c:863
 #, fuzzy
 msgid "Filter curve:"
 msgstr "Maint ffeil:"
 
-#: src/sid/xmms-sid.glade:1855 src/sid/xs_interface.c:868
+#: src/sid/xs_interface.c:868
 msgid "SIDPlay2"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1891 src/sid/xs_interface.c:874
+#: src/sid/xs_interface.c:874
 msgid "Filters"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1935 src/sid/xs_interface.c:901
+#: src/sid/xs_interface.c:897
+msgid "Play at least for specified time"
+msgstr ""
+
+#: src/sid/xs_interface.c:901
 msgid ""
 "If enabled, the tune is played at least for the specified time, adding "
 "silence to the end if necessary."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1937 src/sid/xs_interface.c:897
-msgid "Play at least for specified time"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:1962 src/sid/xmms-sid.glade:2133
-#: src/sid/xmms-sid.glade:2702 src/sid/xs_interface.c:908
-#: src/sid/xs_interface.c:962 src/sid/xs_interface.c:1142
+#: src/sid/xs_interface.c:908 src/sid/xs_interface.c:962
+#: src/sid/xs_interface.c:1142
 #, fuzzy
 msgid "Playtime:"
 msgstr "Modd chwarae:"
 
-#: src/sid/xmms-sid.glade:2041 src/sid/xs_interface.c:928
+#: src/sid/xs_interface.c:928
 msgid "Minimum playtime:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2086 src/sid/xs_interface.c:949
+#: src/sid/xs_interface.c:945
+msgid "Play for specified time maximum"
+msgstr ""
+
+#: src/sid/xs_interface.c:949
 msgid ""
 "If enabled, tune is played until specified duration is reached (aka maximum "
 "playtime)."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2088 src/sid/xs_interface.c:945
-msgid "Play for specified time maximum"
+#: src/sid/xs_interface.c:951
+msgid "Only when song length is unknown"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2107 src/sid/xs_interface.c:955
+#: src/sid/xs_interface.c:955
 msgid ""
 "If enabled, the maximum playtime is applied only if song/tune length is not "
 "known."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2109 src/sid/xs_interface.c:951
-msgid "Only when song length is unknown"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:2212 src/sid/xs_interface.c:982
+#: src/sid/xs_interface.c:982
 msgid "Maximum playtime:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2257 src/sid/xs_interface.c:1003
+#: src/sid/xs_interface.c:999
+msgid "Use XSIDPLAY-compatible database"
+msgstr ""
+
+#: src/sid/xs_interface.c:1003
 msgid ""
 "This option enables using of XSIDPLAY compatible song length database. "
 "(Refer to Audacious-SID documentation for more information)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2259 src/sid/xs_interface.c:999
-msgid "Use XSIDPLAY-compatible database"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:2284 src/sid/xs_interface.c:1010
+#: src/sid/xs_interface.c:1010
 #, fuzzy
 msgid "DB-file:"
 msgstr "Dyfais:"
 
-#: src/sid/xmms-sid.glade:2309 src/sid/xs_interface.c:1020
+#: src/sid/xs_interface.c:1020
 msgid "Database path and filename"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2329 src/sid/xs_interface.c:1027
+#: src/sid/xs_interface.c:1027
 msgid "Browse for song length-database file"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2418 src/sid/xs_interface.c:1049
+#: src/sid/xs_interface.c:1049
 msgid "Song length database:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2454 src/sid/xs_interface.c:1054
+#: src/sid/xs_interface.c:1054
 #, fuzzy
 msgid "Songlength"
 msgstr "Hyd cân rhagosodedig:"
 
-#: src/sid/xmms-sid.glade:2492 src/sid/xs_interface.c:1076
+#: src/sid/xs_interface.c:1072
+#, fuzzy
+msgid "Override generic Tuplez format string"
+msgstr "Diystyru'r teitlau cyffredinol"
+
+#: src/sid/xs_interface.c:1076
 msgid ""
 "By enabling this option you can specify a custom Tuplez formatting string "
 "for SID-files. The SID-plugin specific Tuplez tags are described shortly "
 "below."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2494 src/sid/xs_interface.c:1072
-#, fuzzy
-msgid "Override generic Tuplez format string"
-msgstr "Diystyru'r teitlau cyffredinol"
-
-#: src/sid/xmms-sid.glade:2519 src/sid/xs_interface.c:1087
+#: src/sid/xs_interface.c:1087
 msgid "Tuplez format string for SID-files"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2539 src/sid/xs_interface.c:1090
+#: src/sid/xs_interface.c:1090
 msgid ""
 "<u>SID-specific Tuplez fields:</u>\n"
 "\n"
@@ -5429,351 +4227,338 @@ msgid ""
 "<b>subsong-num, subsong-id</b>"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2581 src/sid/xs_interface.c:1098
+#: src/sid/xs_interface.c:1098
 #, fuzzy
 msgid "Song title format:"
 msgstr "Fformat y teitl:"
 
-#: src/sid/xmms-sid.glade:2610 src/sid/xs_interface.c:1103
+#: src/sid/xs_interface.c:1103
 msgid "Title"
 msgstr "Teitl"
 
-#: src/sid/xmms-sid.glade:2654 src/sid/xs_interface.c:1129
+#: src/sid/xs_interface.c:1125
+msgid "Add sub-tunes to playlist"
+msgstr ""
+
+#: src/sid/xs_interface.c:1129
 msgid ""
 "If enabled, sub-tunes of each file will be added to playlist. If disabled, "
 "only the default sub-tune will be added."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2656 src/sid/xs_interface.c:1125
-msgid "Add sub-tunes to playlist"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:2675 src/sid/xs_interface.c:1135
-msgid "Only add sub-tunes that have a duration of at least specified time."
-msgstr ""
-
-#: src/sid/xmms-sid.glade:2677 src/sid/xs_interface.c:1131
+#: src/sid/xs_interface.c:1131
 msgid "Only tunes with specified minimum duration"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2780 src/sid/xs_interface.c:1162
+#: src/sid/xs_interface.c:1135
+msgid "Only add sub-tunes that have a duration of at least specified time."
+msgstr ""
+
+#: src/sid/xs_interface.c:1162
 #, fuzzy
 msgid "Sub-tune handling:"
 msgstr "Rheolwr sain"
 
-#: src/sid/xmms-sid.glade:2825 src/sid/xs_interface.c:1183
+#: src/sid/xs_interface.c:1179
+msgid "Use STIL database"
+msgstr ""
+
+#: src/sid/xs_interface.c:1183
 msgid ""
 "If this option is enabled (and the database & HVSC settings below are "
 "correctly set), Audacious-SID will use and display additional information "
 "from STIL database when HVSC SIDs are played."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2827 src/sid/xs_interface.c:1179
-msgid "Use STIL database"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:2852 src/sid/xs_interface.c:1190
+#: src/sid/xs_interface.c:1190
 #, fuzzy
 msgid "STIL file:"
 msgstr "Teitl:"
 
-#: src/sid/xmms-sid.glade:2889 src/sid/xs_interface.c:1206
+#: src/sid/xs_interface.c:1206
 msgid ""
 "Path and filename of STIL database file (STIL.txt), usually found from "
 "HVSC's DOCUMENTS-subdirectory."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2924 src/sid/xs_interface.c:1219
+#: src/sid/xs_interface.c:1219
 msgid "Browse for STIL-database file"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3020 src/sid/xs_interface.c:1246
+#: src/sid/xs_interface.c:1246
 msgid "HVSC path:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3057 src/sid/xs_interface.c:1262
+#: src/sid/xs_interface.c:1262
 msgid ""
 "Path to base-directory of your High Voltage SID Collection (HVSC), for "
 "example /media/C64Music/"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3092 src/sid/xs_interface.c:1275
+#: src/sid/xs_interface.c:1275
 msgid "Browse for HVSC path"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3184 src/sid/xs_interface.c:1297
+#: src/sid/xs_interface.c:1297
 msgid "SID Tune Information List (STIL) database:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3257 src/sid/xs_interface.c:1321
+#: src/sid/xs_interface.c:1321
 msgid "Cancel any changes"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3271 src/sid/xs_interface.c:1328
+#: src/sid/xs_interface.c:1328
 msgid "Accept and update changes"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3296 src/sid/xs_interface.c:1628
+#: src/sid/xs_interface.c:1628
 #, fuzzy
 msgid "Audacious-SID Fileinfo"
 msgstr ""
 "\n"
 "Audacious OSD"
 
-#: src/sid/xmms-sid.glade:3338 src/sid/xs_interface.c:1649
-#: src/wavpack/ui.c:117
+#: src/sid/xs_interface.c:1649
 #, fuzzy
 msgid "Filename:"
 msgstr "Enw Defnyddiwr:"
 
-#: src/sid/xmms-sid.glade:3366 src/sid/xs_interface.c:1657
+#: src/sid/xs_interface.c:1657
 msgid "Songname:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3394 src/sid/xs_interface.c:1665
+#: src/sid/xs_interface.c:1665
 msgid "Composer:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3422 src/sid/xs_interface.c:1673
+#: src/sid/xs_interface.c:1673
 msgid "Copyright:"
 msgstr "Hawlfraint:"
 
-#: src/sid/xmms-sid.glade:3536 src/sid/xs_interface.c:1717
+#: src/sid/xs_interface.c:1717
 #, fuzzy
 msgid "Song Information:"
 msgstr "Fformat ID3:"
 
-#: src/sid/xmms-sid.glade:3610 src/sid/xs_interface.c:1752
+#: src/sid/xs_interface.c:1752
 msgid "Author:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3708 src/sid/xs_interface.c:1786
+#: src/sid/xs_interface.c:1786
 #, fuzzy
 msgid "Duration:"
 msgstr "Addurniad"
 
-#: src/sid/xmms-sid.glade:3802 src/sid/xs_interface.c:1820
+#: src/sid/xs_interface.c:1820
 #, fuzzy
 msgid "Sub-tune Information:"
 msgstr "Fformat ID3:"
 
-#: src/sid/xmms-sid.glade:3856 src/sid/xs_interface.c:1881
+#: src/sid/xs_interface.c:1881
 msgid "Select HVSC song length database"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3898 src/sid/xs_interface.c:1922
+#: src/sid/xs_interface.c:1922
 msgid "Select STIL-database"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3940 src/sid/xs_interface.c:1963
+#: src/sid/xs_interface.c:1963
 msgid "Select HVSC location prefix"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3982 src/sid/xs_interface.c:2004
+#: src/sid/xs_interface.c:2004
 msgid "Select SIDPlay2 filters file for importing"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:4024 src/sid/xs_interface.c:2045
+#: src/sid/xs_interface.c:2045
 msgid "Select SIDPlay2 filters file for exporting"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:4065 src/sid/xmms-sid.glade:4147
 #: src/sid/xs_interface.c:2093 src/sid/xs_interface.c:2106
 msgid "Confirm selected action"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:4103 src/sid/xs_interface.c:2123
+#: src/sid/xs_interface.c:2123
 #, fuzzy
 msgid "Yes"
 msgstr "iawn"
 
-#: src/sid/xmms-sid.glade:4115 src/sid/xs_interface.c:2129
+#: src/sid/xs_interface.c:2129
 msgid "No"
 msgstr "Na"
 
-#: src/sid/xs_about.c:84
-#, c-format
-msgid "About %s"
-msgstr "Ynghylch %s"
-
-#: src/sid/xs_config.c:319
-#, fuzzy
-msgid " Error"
-msgstr "Gwall"
-
-#: src/sid/xs_fileinfo.c:232
-#, fuzzy
-msgid "General info"
-msgstr "Cyffredinol"
-
-#: src/sid/xs_fileinfo.c:247
-#, c-format
-msgid "Tune #%i: "
-msgstr ""
-
-#: src/skins/plugin.c:180
+#: src/skins/plugin.c:179
 msgid "About Skinned GUI"
 msgstr ""
 
-#: src/skins/plugin.c:181
+#: src/skins/plugin.c:180
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 msgstr ""
 
-#: src/skins/plugin.c:199
+#: src/skins/plugin.c:196
 msgid "Skinned Interface"
 msgstr ""
 
-#: src/skins/skins_cfg.c:328
+#: src/skins/skins_cfg.c:312
 #, fuzzy
 msgid "_Player:"
 msgstr "Modd chwarae:"
 
-#: src/skins/skins_cfg.c:328
+#: src/skins/skins_cfg.c:312
 msgid "Select main player window font:"
 msgstr ""
 
-#: src/skins/skins_cfg.c:329
+#: src/skins/skins_cfg.c:313
 #, fuzzy
 msgid "_Playlist:"
 msgstr "Modd chwarae:"
 
-#: src/skins/skins_cfg.c:329
+#: src/skins/skins_cfg.c:313
 msgid "Select playlist font:"
 msgstr ""
 
-#: src/skins/skins_cfg.c:333
+#: src/skins/skins_cfg.c:317
 #, fuzzy
 msgid "<b>_Fonts</b>"
 msgstr "<b>Hatena</b>"
 
-#: src/skins/skins_cfg.c:335
+#: src/skins/skins_cfg.c:319
 #, fuzzy
 msgid "Use Bitmap fonts if available"
 msgstr "Stereo (os ar gael)"
 
-#: src/skins/skins_cfg.c:335
+#: src/skins/skins_cfg.c:319
 msgid ""
 "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
 "strings."
 msgstr ""
 
-#: src/skins/skins_cfg.c:336
+#: src/skins/skins_cfg.c:320
 #, fuzzy
 msgid "<b>_Miscellaneous</b>"
 msgstr "<b>Gwasanaethau</b>"
 
-#: src/skins/skins_cfg.c:337
+#: src/skins/skins_cfg.c:321
 msgid "Show separators in playlist"
 msgstr ""
 
-#: src/skins/skins_cfg.c:339
+#: src/skins/skins_cfg.c:323
 msgid "Show window manager decoration"
 msgstr ""
 
-#: src/skins/skins_cfg.c:340
+#: src/skins/skins_cfg.c:324
 msgid "This enables the window manager to show decorations for windows."
 msgstr ""
 
-#: src/skins/skins_cfg.c:341
+#: src/skins/skins_cfg.c:325
 msgid "Use two-way text scroller"
 msgstr ""
 
-#: src/skins/skins_cfg.c:342
+#: src/skins/skins_cfg.c:326
 msgid ""
 "If selected, the file information text in the main window will scroll back "
 "and forth. If not selected, the text will only scroll in one direction."
 msgstr ""
 
-#: src/skins/skins_cfg.c:343
+#: src/skins/skins_cfg.c:327
 msgid "Disable inline gtk theme"
 msgstr ""
 
-#: src/skins/skins_cfg.c:345
+#: src/skins/skins_cfg.c:329
 msgid "Random skin on play"
 msgstr ""
 
-#: src/skins/skins_cfg.c:346
+#: src/skins/skins_cfg.c:330
 msgid "Allow loading incomplete skins"
 msgstr ""
 
-#: src/skins/skins_cfg.c:347
+#: src/skins/skins_cfg.c:331
 msgid ""
 "If selected, audacious won't refuse loading broken skins. Use only if your "
 "favourite skin doesn't work"
 msgstr ""
 
-#: src/skins/skins_cfg.c:413
+#: src/skins/skins_cfg.c:397
 msgid "Color Adjustment"
 msgstr ""
 
-#: src/skins/skins_cfg.c:419
+#: src/skins/skins_cfg.c:403
 msgid ""
 "Audacious allows you to alter the color balance of the skinned UI. The "
 "sliders below will allow you to do this."
 msgstr ""
 
-#: src/skins/skins_cfg.c:429
+#: src/skins/skins_cfg.c:413
 #, fuzzy
 msgid "Blue"
 msgstr "Y Felan"
 
-#: src/skins/skins_cfg.c:436
+#: src/skins/skins_cfg.c:420
 msgid "Green"
 msgstr ""
 
-#: src/skins/skins_cfg.c:443
+#: src/skins/skins_cfg.c:427
 msgid "Red"
 msgstr ""
 
-#: src/skins/skins_cfg.c:584
+#: src/skins/skins_cfg.c:568
 #, fuzzy
 msgid "<b>_Skin</b>"
 msgstr "<b>Hatena</b>"
 
-#: src/skins/ui_equalizer.c:439
+#: src/skins/ui_equalizer.c:449
 msgid "Audacious Equalizer"
 msgstr ""
 
-#: src/skins/ui_main.c:336
+#: src/skins/ui_equalizer.c:975
+msgid "Presets"
+msgstr ""
+
+#: src/skins/ui_main.c:384
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/skins/ui_main.c:338 src/skins/ui_main.c:2172
-#, fuzzy
-msgid "Audacious"
-msgstr "%s - Audacious"
-
-#: src/skins/ui_main.c:536
-msgid "VBR"
+#: src/skins/ui_main.c:589
+msgid "kbps"
 msgstr ""
 
-#: src/skins/ui_main.c:554
+#: src/skins/ui_main.c:597
+#, fuzzy
+msgid "kHz"
+msgstr "Hz"
+
+#: src/skins/ui_main.c:604
+#, fuzzy
+msgid "surround"
+msgstr "Adlais o amgylch"
+
+#: src/skins/ui_main.c:604
 #, fuzzy
 msgid "stereo"
 msgstr "Stereo"
 
-#: src/skins/ui_main.c:554
+#: src/skins/ui_main.c:605
 #, fuzzy
 msgid "mono"
 msgstr "Mono"
 
-#: src/skins/ui_main.c:944
+#: src/skins/ui_main.c:977
 msgid "Audacious - visibility warning"
 msgstr ""
 
-#: src/skins/ui_main.c:947
+#: src/skins/ui_main.c:980
 #, fuzzy
 msgid "Show main player window"
 msgstr "Dangos ffenestr rhwydwaith"
 
-#: src/skins/ui_main.c:948
+#: src/skins/ui_main.c:981
 msgid "Ignore"
 msgstr ""
 
-#: src/skins/ui_main.c:954
+#: src/skins/ui_main.c:987
 msgid ""
 "Audacious has been started with all of its windows hidden.\n"
 "You may want to show the player window again to control Audacious; "
@@ -5781,15 +4566,15 @@ msgid ""
 "(such as the statusicon plugin)."
 msgstr ""
 
-#: src/skins/ui_main.c:960
+#: src/skins/ui_main.c:993
 msgid "Always ignore, show/hide is controlled remotely"
 msgstr ""
 
-#: src/skins/ui_main.c:1005
+#: src/skins/ui_main.c:1038
 msgid "Audacious - broken GTK engine usage warning"
 msgstr ""
 
-#: src/skins/ui_main.c:1013
+#: src/skins/ui_main.c:1046
 #, c-format
 msgid ""
 "<big><b>Broken GTK engine in use</b></big>\n"
@@ -5803,339 +4588,524 @@ msgid ""
 "To use these features, please consider using a different GTK theme engine."
 msgstr ""
 
-#: src/skins/ui_main.c:1024
+#: src/skins/ui_main.c:1057
 msgid "Do not display this warning again"
 msgstr ""
 
-#: src/skins/ui_main.c:1246
+#: src/skins/ui_main.c:1265
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
 msgstr ""
 
-#: src/skins/ui_main.c:1276
+#: src/skins/ui_main.c:1295
 #, fuzzy, c-format
 msgid "Volume: %d%%"
 msgstr "Sain:(%)"
 
-#: src/skins/ui_main.c:1304
+#: src/skins/ui_main.c:1323
 #, c-format
 msgid "Balance: %d%% left"
 msgstr ""
 
-#: src/skins/ui_main.c:1308
+#: src/skins/ui_main.c:1327
 msgid "Balance: center"
 msgstr ""
 
-#: src/skins/ui_main.c:1312
+#: src/skins/ui_main.c:1331
 #, c-format
 msgid "Balance: %d%% right"
 msgstr ""
 
-#: src/skins/ui_main.c:1614
+#: src/skins/ui_main.c:1626
 #, fuzzy
 msgid "Options Menu"
 msgstr "Dewisiadau:"
 
-#: src/skins/ui_main.c:1618
+#: src/skins/ui_main.c:1630
 msgid "Disable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:1620
+#: src/skins/ui_main.c:1632
 msgid "Enable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:1623
+#: src/skins/ui_main.c:1635
 #, fuzzy
 msgid "File Info Box"
 msgstr "Gwybodaeth Ffeil - %s"
 
-#: src/skins/ui_main.c:1627
+#: src/skins/ui_main.c:1639
 #, fuzzy
 msgid "Disable 'GUI Scaling'"
 msgstr "Analluogi tagiau ID3V2"
 
-#: src/skins/ui_main.c:1629
+#: src/skins/ui_main.c:1641
 #, fuzzy
 msgid "Enable 'GUI Scaling'"
 msgstr "Gallougi sain dyblusampl"
 
-#: src/skins/ui_main.c:1632
+#: src/skins/ui_main.c:1644
 msgid "Visualization Menu"
 msgstr ""
 
-#: src/skins/ui_main.c:1677
-msgid ""
-"<b><big>Couldn't open audio.</big></b>\n"
-"\n"
-"Please check that:\n"
-"1. You have the correct output plugin selected.\n"
-"2. No other programs is blocking the soundcard.\n"
-"3. Your soundcard is configured properly.\n"
+#: src/skins/ui_main.c:2364
+msgid "Single mode."
 msgstr ""
 
-#: src/skins/ui_manager.c:51 src/skins/ui_manager.c:52
+#: src/skins/ui_main.c:2366
+#, fuzzy
+msgid "Playlist mode."
+msgstr "Modd chwarae:"
+
+#: src/skins/ui_main.c:2390
+msgid "Stopping after song."
+msgstr ""
+
+#: src/skins/ui_main.c:2392
+msgid "Not stopping after song."
+msgstr ""
+
+#: src/skins/ui_manager.c:53 src/skins/ui_manager.c:54
 msgid "Autoscroll Songname"
 msgstr ""
 
-#: src/skins/ui_manager.c:57 src/skins/ui_manager.c:58
+#: src/skins/ui_manager.c:59 src/skins/ui_manager.c:60
 #, fuzzy
 msgid "Peaks"
 msgstr "Pranks"
 
-#: src/skins/ui_manager.c:69 src/skins/ui_manager.c:70
+#: src/skins/ui_manager.c:71 src/skins/ui_manager.c:72
 msgid "Show Player"
 msgstr ""
 
-#: src/skins/ui_manager.c:72 src/skins/ui_manager.c:73
+#: src/skins/ui_manager.c:74 src/skins/ui_manager.c:75
 msgid "Show Playlist Editor"
 msgstr ""
 
-#: src/skins/ui_manager.c:75 src/skins/ui_manager.c:76
+#: src/skins/ui_manager.c:77 src/skins/ui_manager.c:78
 msgid "Show Equalizer"
 msgstr ""
 
-#: src/skins/ui_manager.c:78 src/skins/ui_manager.c:79
+#: src/skins/ui_manager.c:80 src/skins/ui_manager.c:81
 msgid "Always on Top"
 msgstr ""
 
-#: src/skins/ui_manager.c:81 src/skins/ui_manager.c:82
+#: src/skins/ui_manager.c:83 src/skins/ui_manager.c:84
 msgid "Put on All Workspaces"
 msgstr ""
 
-#: src/skins/ui_manager.c:84 src/skins/ui_manager.c:85
+#: src/skins/ui_manager.c:86 src/skins/ui_manager.c:87
 msgid "Roll up Player"
 msgstr ""
 
-#: src/skins/ui_manager.c:87 src/skins/ui_manager.c:88
+#: src/skins/ui_manager.c:89 src/skins/ui_manager.c:90
 msgid "Roll up Playlist Editor"
 msgstr ""
 
-#: src/skins/ui_manager.c:90 src/skins/ui_manager.c:91
+#: src/skins/ui_manager.c:92 src/skins/ui_manager.c:93
 msgid "Roll up Equalizer"
 msgstr ""
 
-#: src/skins/ui_manager.c:93 src/sndstretch/sndstretch_xmms.c:375
+#: src/skins/ui_manager.c:95 src/sndstretch/sndstretch_xmms.c:391
 #, fuzzy
 msgid "Scale"
 msgstr "Rave"
 
-#: src/skins/ui_manager.c:94
+#: src/skins/ui_manager.c:96
 msgid "DoubleSize"
 msgstr ""
 
-#: src/skins/ui_manager.c:96 src/skins/ui_manager.c:97
+#: src/skins/ui_manager.c:98 src/skins/ui_manager.c:99
 msgid "Easy Move"
 msgstr ""
 
-#: src/skins/ui_manager.c:105
+#: src/skins/ui_manager.c:107
 msgid "Analyzer"
 msgstr ""
 
-#: src/skins/ui_manager.c:106
+#: src/skins/ui_manager.c:108
 #, fuzzy
 msgid "Scope"
 msgstr "Synthpop"
 
-#: src/skins/ui_manager.c:107
+#: src/skins/ui_manager.c:109
 msgid "Voiceprint"
 msgstr ""
 
-#: src/skins/ui_manager.c:108
+#: src/skins/ui_manager.c:110
 msgid "Off"
 msgstr ""
 
-#: src/skins/ui_manager.c:112 src/skins/ui_manager.c:129
-#: src/skins/ui_manager.c:135
+#: src/skins/ui_manager.c:114 src/skins/ui_manager.c:131
+#: src/skins/ui_manager.c:137
 #, fuzzy
 msgid "Normal"
 msgstr "Fformat:"
 
-#: src/skins/ui_manager.c:113 src/skins/ui_manager.c:130
+#: src/skins/ui_manager.c:115 src/skins/ui_manager.c:132
 #, fuzzy
 msgid "Fire"
 msgstr "Satire"
 
-#: src/skins/ui_manager.c:114
+#: src/skins/ui_manager.c:116
 msgid "Vertical Lines"
 msgstr ""
 
-#: src/skins/ui_manager.c:118
+#: src/skins/ui_manager.c:120
 #, fuzzy
 msgid "Lines"
 msgstr "Lladin"
 
-#: src/skins/ui_manager.c:119
+#: src/skins/ui_manager.c:121
 #, fuzzy
 msgid "Bars"
 msgstr "Bas"
 
-#: src/skins/ui_manager.c:123
+#: src/skins/ui_manager.c:125
 msgid "Dot Scope"
 msgstr ""
 
-#: src/skins/ui_manager.c:124
+#: src/skins/ui_manager.c:126
 msgid "Line Scope"
 msgstr ""
 
-#: src/skins/ui_manager.c:125
+#: src/skins/ui_manager.c:127
 msgid "Solid Scope"
 msgstr ""
 
-#: src/skins/ui_manager.c:131
+#: src/skins/ui_manager.c:133
 msgid "Ice"
 msgstr ""
 
-#: src/skins/ui_manager.c:136
+#: src/skins/ui_manager.c:138
 msgid "Smooth"
 msgstr ""
 
-#: src/skins/ui_manager.c:140 src/skins/ui_manager.c:148
+#: src/skins/ui_manager.c:142 src/skins/ui_manager.c:150
 #, fuzzy
 msgid "Slowest"
 msgstr "Showtunes"
 
-#: src/skins/ui_manager.c:141 src/skins/ui_manager.c:149
+#: src/skins/ui_manager.c:143 src/skins/ui_manager.c:151
 #, fuzzy
 msgid "Slow"
 msgstr "Slow Jam"
 
-#: src/skins/ui_manager.c:142 src/skins/ui_manager.c:150
+#: src/skins/ui_manager.c:144 src/skins/ui_manager.c:152
 msgid "Medium"
 msgstr ""
 
-#: src/skins/ui_manager.c:143 src/skins/ui_manager.c:151
+#: src/skins/ui_manager.c:145 src/skins/ui_manager.c:153
 #, fuzzy
 msgid "Fast"
 msgstr "Fformat:"
 
-#: src/skins/ui_manager.c:144 src/skins/ui_manager.c:152
+#: src/skins/ui_manager.c:146 src/skins/ui_manager.c:154
 msgid "Fastest"
 msgstr ""
 
-#: src/skins/ui_manager.c:156
+#: src/skins/ui_manager.c:158
 msgid "Time Elapsed"
 msgstr ""
 
-#: src/skins/ui_manager.c:157
+#: src/skins/ui_manager.c:159
 msgid "Time Remaining"
 msgstr ""
 
-#: src/skins/ui_manager.c:218
+#: src/skins/ui_manager.c:188
 #, fuzzy
-msgid "Save All Playlists"
-msgstr "Modd chwarae:"
+msgid "Visualization"
+msgstr "Corff:"
 
-#: src/skins/ui_manager.c:219
-msgid ""
-"Saves all the playlists that are open. Note that this is done automatically "
-"when Audacious quits."
+#: src/skins/ui_manager.c:189
+msgid "Visualization Mode"
 msgstr ""
 
-#: src/skins/ui_manager.c:379
+#: src/skins/ui_manager.c:190
+msgid "Analyzer Mode"
+msgstr ""
+
+#: src/skins/ui_manager.c:191
+msgid "Scope Mode"
+msgstr ""
+
+#: src/skins/ui_manager.c:192
+msgid "Voiceprint Mode"
+msgstr ""
+
+#: src/skins/ui_manager.c:193
+msgid "WindowShade VU Mode"
+msgstr ""
+
+#: src/skins/ui_manager.c:194
+msgid "Analyzer Falloff"
+msgstr ""
+
+#: src/skins/ui_manager.c:195
+msgid "Peaks Falloff"
+msgstr ""
+
+#: src/skins/ui_manager.c:214
+#, fuzzy
+msgid "Import Playlist"
+msgstr "Modd chwarae:"
+
+#: src/skins/ui_manager.c:217
+#, fuzzy
+msgid "Export Playlist"
+msgstr "Modd chwarae:"
+
+#: src/skins/ui_manager.c:250
+msgid "Search and Select"
+msgstr ""
+
+#: src/skins/ui_manager.c:251
+msgid ""
+"Searches the playlist and selects playlist entries based on specific "
+"criteria."
+msgstr ""
+
+#: src/skins/ui_manager.c:254
+msgid "Invert Selection"
+msgstr ""
+
+#: src/skins/ui_manager.c:255
+msgid "Inverts the selected and unselected entries."
+msgstr ""
+
+#: src/skins/ui_manager.c:272
+msgid "Clear Queue"
+msgstr ""
+
+#: src/skins/ui_manager.c:273
+msgid "Clears the queue associated with this playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:276
+msgid "Remove Unavailable Files"
+msgstr ""
+
+#: src/skins/ui_manager.c:277
+msgid "Removes unavailable files from the playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:280
+#, fuzzy
+msgid "Remove Duplicates"
+msgstr "Tynnu gyrrwr"
+
+#: src/skins/ui_manager.c:282 src/skins/ui_manager.c:314
+#: src/skins/ui_manager.c:344
+#, fuzzy
+msgid "By Title"
+msgstr "Teitl"
+
+#: src/skins/ui_manager.c:283
+msgid "Removes duplicate entries from the playlist by title."
+msgstr ""
+
+#: src/skins/ui_manager.c:286 src/skins/ui_manager.c:326
+#: src/skins/ui_manager.c:356
+#, fuzzy
+msgid "By Filename"
+msgstr "Enw ffeil"
+
+#: src/skins/ui_manager.c:287
+msgid "Removes duplicate entries from the playlist by filename."
+msgstr ""
+
+#: src/skins/ui_manager.c:290 src/skins/ui_manager.c:330
+#: src/skins/ui_manager.c:360
+#, fuzzy
+msgid "By Path + Filename"
+msgstr "Enw ffeil"
+
+#: src/skins/ui_manager.c:291
+msgid "Removes duplicate entries from the playlist by their full path."
+msgstr ""
+
+#: src/skins/ui_manager.c:304
+msgid "Randomize List"
+msgstr ""
+
+#: src/skins/ui_manager.c:305
+msgid "Randomizes the playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:308
+msgid "Reverse List"
+msgstr ""
+
+#: src/skins/ui_manager.c:309
+msgid "Reverses the playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:312
+#, fuzzy
+msgid "Sort List"
+msgstr "Artist:"
+
+#: src/skins/ui_manager.c:315 src/skins/ui_manager.c:345
+msgid "Sorts the list by title."
+msgstr ""
+
+#: src/skins/ui_manager.c:318 src/skins/ui_manager.c:348
+#, fuzzy
+msgid "By Album"
+msgstr "Albwm:"
+
+#: src/skins/ui_manager.c:319 src/skins/ui_manager.c:349
+msgid "Sorts the list by album."
+msgstr ""
+
+#: src/skins/ui_manager.c:322 src/skins/ui_manager.c:352
+#, fuzzy
+msgid "By Artist"
+msgstr "Artist:"
+
+#: src/skins/ui_manager.c:323 src/skins/ui_manager.c:353
+msgid "Sorts the list by artist."
+msgstr ""
+
+#: src/skins/ui_manager.c:327 src/skins/ui_manager.c:357
+msgid "Sorts the list by filename."
+msgstr ""
+
+#: src/skins/ui_manager.c:331 src/skins/ui_manager.c:361
+msgid "Sorts the list by full pathname."
+msgstr ""
+
+#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
+#, fuzzy
+msgid "By Date"
+msgstr "Dyddiad!"
+
+#: src/skins/ui_manager.c:335 src/skins/ui_manager.c:365
+msgid "Sorts the list by modification time."
+msgstr ""
+
+#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
+#, fuzzy
+msgid "By Track Number"
+msgstr "Rhif y Trac:"
+
+#: src/skins/ui_manager.c:339 src/skins/ui_manager.c:369
+msgid "Sorts the list by track number."
+msgstr ""
+
+#: src/skins/ui_manager.c:342
+msgid "Sort Selected"
+msgstr ""
+
+#: src/skins/ui_manager.c:381
 msgid "Plugin Services"
 msgstr ""
 
-#: src/skins/ui_manager.c:432 src/skins/ui_manager.c:453
-#: src/skins/ui_manager.c:468
+#: src/skins/ui_manager.c:436
+msgid "Load"
+msgstr ""
+
+#: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
+#: src/skins/ui_manager.c:477
 #, fuzzy
 msgid "Preset"
 msgstr "Porth"
 
-#: src/skins/ui_manager.c:433
+#: src/skins/ui_manager.c:442
 msgid "Load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:435 src/skins/ui_manager.c:456
-#: src/skins/ui_manager.c:471
+#: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
+#: src/skins/ui_manager.c:480
 msgid "Auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:436
+#: src/skins/ui_manager.c:445
 msgid "Load auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:439
+#: src/skins/ui_manager.c:448
 msgid "Load default preset into equalizer"
 msgstr ""
 
-#: src/skins/ui_manager.c:441
+#: src/skins/ui_manager.c:450
 #, fuzzy
 msgid "Zero"
 msgstr "Retro"
 
-#: src/skins/ui_manager.c:442
+#: src/skins/ui_manager.c:451
 msgid "Set equalizer preset levels to zero"
 msgstr ""
 
-#: src/skins/ui_manager.c:444
+#: src/skins/ui_manager.c:453
 msgid "From file"
 msgstr ""
 
-#: src/skins/ui_manager.c:445
+#: src/skins/ui_manager.c:454
 msgid "Load preset from file"
 msgstr ""
 
-#: src/skins/ui_manager.c:447
+#: src/skins/ui_manager.c:456
 msgid "From WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:448
+#: src/skins/ui_manager.c:457
 msgid "Load preset from WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:450
+#: src/skins/ui_manager.c:459
 msgid "WinAMP Presets"
 msgstr ""
 
-#: src/skins/ui_manager.c:451
+#: src/skins/ui_manager.c:460
 msgid "Import WinAMP presets"
 msgstr ""
 
-#: src/skins/ui_manager.c:454
+#: src/skins/ui_manager.c:463
 msgid "Save preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:457
-msgid "Save auto-load preset"
-msgstr ""
-
-#: src/skins/ui_manager.c:460
-#, fuzzy
-msgid "Save default preset"
-msgstr "rhagosodedig"
-
-#: src/skins/ui_manager.c:462
-#, fuzzy
-msgid "To file"
-msgstr "Teitl:"
-
-#: src/skins/ui_manager.c:463
-#, fuzzy
-msgid "Save preset to file"
-msgstr "Cadw'r llif i ddisg"
-
-#: src/skins/ui_manager.c:465
-msgid "To WinAMP EQF file"
-msgstr ""
-
 #: src/skins/ui_manager.c:466
-msgid "Save preset to WinAMP EQF file"
+msgid "Save auto-load preset"
 msgstr ""
 
 #: src/skins/ui_manager.c:469
 #, fuzzy
+msgid "Save default preset"
+msgstr "rhagosodedig"
+
+#: src/skins/ui_manager.c:471
+#, fuzzy
+msgid "To file"
+msgstr "Teitl:"
+
+#: src/skins/ui_manager.c:472
+#, fuzzy
+msgid "Save preset to file"
+msgstr "Cadw'r llif i ddisg"
+
+#: src/skins/ui_manager.c:474
+msgid "To WinAMP EQF file"
+msgstr ""
+
+#: src/skins/ui_manager.c:475
+msgid "Save preset to WinAMP EQF file"
+msgstr ""
+
+#: src/skins/ui_manager.c:478
+#, fuzzy
 msgid "Delete preset"
 msgstr "Rhagosodedig"
 
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:481
 msgid "Delete auto-load preset"
 msgstr ""
 
-#: src/skins/ui_playlist.c:349
+#: src/skins/ui_playlist.c:368
 msgid "Search entries in active playlist"
 msgstr ""
 
-#: src/skins/ui_playlist.c:357
+#: src/skins/ui_playlist.c:376
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -6143,103 +5113,108 @@ msgid ""
 "for."
 msgstr ""
 
-#: src/skins/ui_playlist.c:372
+#: src/skins/ui_playlist.c:391
 #, fuzzy
 msgid "Album: "
 msgstr "Albwm:"
 
-#: src/skins/ui_playlist.c:379
+#: src/skins/ui_playlist.c:398
 #, fuzzy
 msgid "Artist: "
 msgstr "Artist:"
 
-#: src/skins/ui_playlist.c:386
+#: src/skins/ui_playlist.c:405
 #, fuzzy
 msgid "Filename: "
 msgstr "Enw Defnyddiwr:"
 
-#: src/skins/ui_playlist.c:394
+#: src/skins/ui_playlist.c:413
 msgid "Clear previous selection before searching"
 msgstr ""
 
-#: src/skins/ui_playlist.c:397
+#: src/skins/ui_playlist.c:416
 msgid "Automatically toggle queue for matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:400
+#: src/skins/ui_playlist.c:419
 msgid "Create a new playlist with matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:1160
+#: src/skins/ui_playlist.c:1175
 msgid "Audacious Playlist Editor"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:431
+#: src/skins/ui_playlist.c:1235
+#, c-format
+msgid "%s (%d of %d)"
+msgstr ""
+
+#: src/skins/ui_skinned_equalizer_slider.c:435
 msgid "PREAMP"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:431
+#: src/skins/ui_skinned_equalizer_slider.c:435
 msgid "60HZ"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:431
+#: src/skins/ui_skinned_equalizer_slider.c:435
 msgid "170HZ"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:432
+#: src/skins/ui_skinned_equalizer_slider.c:436
 msgid "310HZ"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:432
+#: src/skins/ui_skinned_equalizer_slider.c:436
 #, fuzzy
 msgid "600HZ"
 msgstr "11000 Hz"
 
-#: src/skins/ui_skinned_equalizer_slider.c:432
+#: src/skins/ui_skinned_equalizer_slider.c:436
 msgid "1KHZ"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:433
+#: src/skins/ui_skinned_equalizer_slider.c:437
 msgid "3KHZ"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:433
+#: src/skins/ui_skinned_equalizer_slider.c:437
 msgid "6KHZ"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:433
+#: src/skins/ui_skinned_equalizer_slider.c:437
 msgid "12KHZ"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:434
+#: src/skins/ui_skinned_equalizer_slider.c:438
 msgid "14KHZ"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:434
+#: src/skins/ui_skinned_equalizer_slider.c:438
 msgid "16KHZ"
 msgstr ""
 
-#: src/skins/ui_skinselector.c:178
+#: src/skins/ui_skinselector.c:179
 msgid "Archived Winamp 2.x skin"
 msgstr ""
 
-#: src/skins/ui_skinselector.c:183
+#: src/skins/ui_skinselector.c:184
 msgid "Unarchived Winamp 2.x skin"
 msgstr ""
 
-#: src/skins/util.c:784
+#: src/skins/util.c:833
 #, fuzzy, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr ""
 "Methu gwirio'r cyfeiradur %s\n"
 "Gwall: %s"
 
-#: src/sndfile/plugin.c:485
+#: src/sndfile/plugin.c:532
 #, fuzzy
 msgid "About sndfile plugin"
 msgstr "Ategyn Sain WAV (sndfile)"
 
-#: src/sndfile/plugin.c:486
+#: src/sndfile/plugin.c:533
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -6280,61 +5255,61 @@ msgstr ""
 " MA 02111-1307,\n"
 "USA."
 
-#: src/sndstretch/sndstretch_xmms.c:158
+#: src/sndstretch/sndstretch_xmms.c:173
 #, fuzzy
 msgid "About SndStretch"
 msgstr "Ynghylch Gyrrwr OSS"
 
-#: src/sndstretch/sndstretch_xmms.c:318
+#: src/sndstretch/sndstretch_xmms.c:334
 #, fuzzy
 msgid "Volume corr."
 msgstr "Rheolwr sain"
 
-#: src/sndstretch/sndstretch_xmms.c:319
+#: src/sndstretch/sndstretch_xmms.c:335
 msgid "Short Overlap"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:373
+#: src/sndstretch/sndstretch_xmms.c:389
 #, fuzzy
 msgid "Speed"
 msgstr "Llais"
 
-#: src/sndstretch/sndstretch_xmms.c:374
+#: src/sndstretch/sndstretch_xmms.c:390
 #, fuzzy
 msgid "Pitch"
 msgstr "Llwybr:"
 
-#: src/sndstretch/sndstretch_xmms.c:395
+#: src/sndstretch/sndstretch_xmms.c:411
 #, fuzzy
 msgid "SndStretch - Configuration"
 msgstr "Ffurfweddu'r Gyrrwr Sun"
 
-#: src/song_change/song_change.c:395
+#: src/song_change/song_change.c:394
 msgid "Command to run when Audacious starts a new song."
 msgstr "Gorchymyn cragen i'w redeg pan fo Audacious yn newid cân."
 
-#: src/song_change/song_change.c:396 src/song_change/song_change.c:400
-#: src/song_change/song_change.c:404 src/song_change/song_change.c:408
+#: src/song_change/song_change.c:395 src/song_change/song_change.c:399
+#: src/song_change/song_change.c:403 src/song_change/song_change.c:407
 msgid "Command:"
 msgstr "Gorchymyn:"
 
-#: src/song_change/song_change.c:399
+#: src/song_change/song_change.c:398
 msgid "Command to run toward the end of a song."
 msgstr ""
 "Gorchymyn cragen, i'w redeg pan fo Audacious wedi cyrraedd diwedd chwarae."
 
-#: src/song_change/song_change.c:403
+#: src/song_change/song_change.c:402
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr ""
 "Gorchymyn cragen.i'w redeg pan fo Audacious wedi cyrraedd diwedd rhestr "
 "chwarae."
 
-#: src/song_change/song_change.c:407
+#: src/song_change/song_change.c:406
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 
-#: src/song_change/song_change.c:411
+#: src/song_change/song_change.c:410
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -6350,7 +5325,7 @@ msgid ""
 "%p: Currently playing (1 or 0)"
 msgstr ""
 
-#: src/song_change/song_change.c:435
+#: src/song_change/song_change.c:434
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -6358,11 +5333,11 @@ msgstr ""
 "<span size='small'>Dylai enw ffeil a thagiau teitl cân fod o fewn dyfynodau "
 "dwb (\"). Gall peidio gwneud achosi risg diogelwch.</span>"
 
-#: src/song_change/song_change.c:446
+#: src/song_change/song_change.c:445
 msgid "Commands"
 msgstr "Gorchymyn:"
 
-#: src/song_change/song_change.c:482
+#: src/song_change/song_change.c:481
 #, fuzzy
 msgid "Song Change"
 msgstr "Newid Cân %s"
@@ -6371,54 +5346,56 @@ msgstr "Newid Cân %s"
 msgid "Spectrum Analyzer"
 msgstr ""
 
-#: src/statusicon/si_ui.c:462
+#: src/statusicon/statusicon.c:365
 #, fuzzy
 msgid "About Status Icon Plugin"
 msgstr "Ynghylch Ategyn ESounD"
 
-#: src/statusicon/si_ui.c:464
+#: src/statusicon/statusicon.c:366
 msgid ""
+"Status Icon Plugin\n"
 "\n"
-"written by Giacomo Lozito < james@develia.org >\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
 "\n"
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager.\n"
 msgstr ""
 
-#: src/statusicon/si_ui.c:536
+#: src/statusicon/statusicon.c:429
 #, fuzzy
 msgid "Status Icon Plugin - Preferences"
 msgstr "Ynghylch Ategyn ESounD"
 
-#: src/statusicon/si_ui.c:547
+#: src/statusicon/statusicon.c:439
 msgid "Right-Click Menu"
 msgstr ""
 
-#: src/statusicon/si_ui.c:552
+#: src/statusicon/statusicon.c:443
 msgid "Audacious standard menu"
 msgstr ""
 
-#: src/statusicon/si_ui.c:557
+#: src/statusicon/statusicon.c:445
 msgid "Small playback menu #1"
 msgstr ""
 
-#: src/statusicon/si_ui.c:562
+#: src/statusicon/statusicon.c:447
 msgid "Small playback menu #2"
 msgstr ""
 
-#: src/statusicon/si_ui.c:585
+#: src/statusicon/statusicon.c:468
 msgid "Mouse Scroll Action"
 msgstr ""
 
-#: src/statusicon/si_ui.c:590
+#: src/statusicon/statusicon.c:472
 msgid "Change volume"
 msgstr ""
 
-#: src/statusicon/si_ui.c:595
+#: src/statusicon/statusicon.c:474
 msgid "Change playing song"
 msgstr ""
 
-#: src/stereo_plugin/stereo.c:25
+#: src/stereo_plugin/stereo.c:37
 msgid ""
 "Extra Stereo Plugin\n"
 "\n"
@@ -6428,11 +5405,11 @@ msgstr ""
 "\n"
 "Gan Johan Levin 1999."
 
-#: src/stereo_plugin/stereo.c:51
+#: src/stereo_plugin/stereo.c:61
 msgid "About Extra Stereo Plugin"
 msgstr "Ynghylch Ategyn Extra Stereo"
 
-#: src/stereo_plugin/stereo.c:92
+#: src/stereo_plugin/stereo.c:97
 msgid "Configure Extra Stereo"
 msgstr "Ffurfweddu Extra Stereo"
 
@@ -6464,12 +5441,12 @@ msgstr ""
 msgid "Remove Bookmark"
 msgstr "Tynnu gyrrwr"
 
-#: src/streambrowser/streambrowser.c:322
+#: src/streambrowser/streambrowser.c:327
 #, fuzzy
 msgid "About Stream Browser"
 msgstr "Ynghylch Gyrrwr OSS"
 
-#: src/streambrowser/streambrowser.c:323
+#: src/streambrowser/streambrowser.c:328
 msgid ""
 "Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -6485,15 +5462,15 @@ msgid ""
 "This was a Google Summer of Code 2008 project."
 msgstr ""
 
-#: src/streambrowser/streambrowser.c:350 src/streambrowser/streambrowser.c:356
+#: src/streambrowser/streambrowser.c:353 src/streambrowser/streambrowser.c:363
 msgid "Streambrowser"
 msgstr ""
 
-#: src/sun/about.c:33
+#: src/sun/about.c:30
 msgid "About the Sun Driver"
 msgstr "Ynghylch Gyrrwr Sun"
 
-#: src/sun/about.c:34
+#: src/sun/about.c:31
 msgid ""
 "XMMS BSD Sun Driver\n"
 "\n"
@@ -6521,54 +5498,11 @@ msgstr " XMMS yn defnyddio'r cymysgydd yn unig"
 msgid "Sun driver configuration"
 msgstr "Ffurfweddu'r Gyrrwr Sun"
 
-#: src/timidity/interface.c:55
-msgid "TiMidity Configuration"
-msgstr "Ffurfweddiad TiMidity"
-
-#: src/timidity/interface.c:92
-msgid "11000 Hz"
-msgstr "11000 Hz"
-
-#: src/timidity/interface.c:100
-msgid "22000 Hz"
-msgstr "22000 Hz"
-
-#: src/timidity/interface.c:108
-msgid "44100 Hz"
-msgstr "44100 Hz"
-
-#: src/timidity/interface.c:116
-msgid "Sample Width"
-msgstr "Maint y Samplo"
-
-#: src/timidity/interface.c:182
-msgid "TiMidity Configuration File"
-msgstr "Ffeil Ffurfweddiad TiMidity"
-
-#: src/timidity/plugin.c:112
-#, c-format
-msgid "TiMidity Plugin %s"
-msgstr "Ategyn TiMidity %s"
-
-#: src/timidity/plugin.c:113
-msgid ""
-"TiMidity Plugin\n"
-"http://libtimidity.sourceforge.net\n"
-"by Konstantin Korikov"
-msgstr ""
-"TiMidity Plugin\n"
-"http://libtimidity.sourceforge.net\n"
-"gan Konstantin Korikov"
-
-#: src/timidity/plugin.c:343
-msgid "Couldn't load MIDI file"
-msgstr "Meth agor dyfais ffeil MIDI"
-
-#: src/tonegen/tonegen.c:50
+#: src/tonegen/tonegen.c:51
 msgid "About Tone Generator"
 msgstr "Ynghylch Cynhyrchydd Tôn"
 
-#: src/tonegen/tonegen.c:52
+#: src/tonegen/tonegen.c:53
 msgid ""
 "Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
 "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
@@ -6583,12 +5517,12 @@ msgstr ""
 "frequency3;...\n"
 "e.e. tôn://2000;2005 i chwarae tôn 2000Hz a thôn 2005Hz"
 
-#: src/tonegen/tonegen.c:106
+#: src/tonegen/tonegen.c:103
 #, c-format
 msgid "%s %.1f Hz"
 msgstr ""
 
-#: src/tonegen/tonegen.c:106
+#: src/tonegen/tonegen.c:103
 msgid "Tone Generator: "
 msgstr "Cynhyrchydd Tôn:"
 
@@ -6609,11 +5543,11 @@ msgstr "Tagiau Ogg Vorbis:"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ffurfweddiad Ogg Vorbis"
 
-#: src/vorbis/vorbis.c:582
+#: src/vorbis/vorbis.c:574
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Ynghylch Ategyn Ogg Vorbis"
 
-#: src/vorbis/vorbis.c:588
+#: src/vorbis/vorbis.c:579
 #, fuzzy
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
@@ -6647,11 +5581,11 @@ msgstr ""
 "\n"
 "Ewch i  Xiph.org Founfation yn http://www.xiph.org/\n"
 
-#: src/vtx/about.c:17
+#: src/vtx/about.c:14
 msgid "About Vortex Player"
 msgstr ""
 
-#: src/vtx/about.c:19
+#: src/vtx/about.c:15
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor."
@@ -6663,164 +5597,12 @@ msgid ""
 "Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
 
-#: src/wavpack/ui.c:129
-msgid "Ape2 Tag"
-msgstr ""
-
-#: src/wavpack/ui.c:136
-msgid "Title:"
-msgstr "Teitl:"
-
-#: src/wavpack/ui.c:143
-msgid "Artist:"
-msgstr "Artist:"
-
-#: src/wavpack/ui.c:150
-msgid "Album:"
-msgstr "Albwm:"
-
-#: src/wavpack/ui.c:157
-msgid "Comment:"
-msgstr "Sylw:"
-
-#: src/wavpack/ui.c:164
-msgid "Year:"
-msgstr "Blwyddyn:"
-
-#: src/wavpack/ui.c:172
-msgid "Track number:"
-msgstr "Rhif y Trac:"
-
-#: src/wavpack/ui.c:181
-msgid "Genre:"
-msgstr "Math:"
-
-#: src/wavpack/ui.c:199
-#, fuzzy
-msgid "Remove Tag"
-msgstr "Tynnu gyrrwr"
-
-#: src/wavpack/ui.c:210
-msgid "Wavpack Info:"
-msgstr ""
-
-#: src/wavpack/ui.c:296
-#, fuzzy, c-format
-msgid "version %d"
-msgstr "Fersiwn:"
-
-#: src/wavpack/ui.c:297
-#, c-format
-msgid "average bitrate: %6.1f kbps"
-msgstr ""
-
-#: src/wavpack/ui.c:298
-#, fuzzy, c-format
-msgid "samplerate: %d Hz"
-msgstr "Graddfa samplo:"
-
-#: src/wavpack/ui.c:299
-#, c-format
-msgid "bits per sample: %d"
-msgstr ""
-
-#: src/wavpack/ui.c:300
-#, fuzzy, c-format
-msgid "channels: %d"
-msgstr "Sianeli:"
-
-#: src/wavpack/ui.c:301
-#, fuzzy, c-format
-msgid "length: %d:%.2d"
-msgstr ""
-"\n"
-"Cyfanswm hyd: %d:%.2d\n"
-
-#: src/wavpack/ui.c:302
-#, fuzzy, c-format
-msgid "file size: %d Bytes"
-msgstr "Maint ffeil:"
-
-#: src/wavpack/ui.c:309
-#, fuzzy
-msgid "Title Peak: ?"
-msgstr "Teitl:"
-
-#: src/wavpack/ui.c:310
-#, fuzzy
-msgid "Album Peak: ?"
-msgstr "Brig albwm:"
-
-#: src/wavpack/ui.c:311
-#, fuzzy
-msgid "Title Gain: ?"
-msgstr "Newid Teitl"
-
-#: src/wavpack/ui.c:312
-#, fuzzy
-msgid "Album Gain: ?"
-msgstr "Cynydd albwm:"
-
-#: src/wavpack/ui.c:324
-#, c-format
-msgid "File Info - %s"
-msgstr "Gwybodaeth Ffeil - %s"
-
-#: src/wavpack/ui.c:362
-msgid "Enable Dynamic Bitrate Display"
-msgstr ""
-
-#: src/wavpack/ui.c:366
-#, fuzzy
-msgid "General Plugin Settings"
-msgstr "Gosodiadau'r ReplayGain:"
-
-#: src/wavpack/ui.c:375
-msgid "use Track Gain/Peak"
-msgstr "defnyddiwch Cynnydd/Brig Trac"
-
-#: src/wavpack/ui.c:376
-msgid "use Album Gain/Peak"
-msgstr "defnyddio Cynnydd/Brig Albwm"
-
-#: src/wavpack/ui.c:380
-msgid "Enable Clipping Prevention"
-msgstr "Galluogi Atal Clipio"
-
-#: src/wavpack/ui.c:381
-msgid "Enable ReplayGain"
-msgstr "Galluogi ReplayGain"
-
-#: src/wavpack/ui.c:382
-#, fuzzy
-msgid "ReplayGain Type"
-msgstr "Math ReplayGain:"
-
-#: src/wavpack/ui.c:389
-#, fuzzy
-msgid "ReplayGain Settings"
-msgstr "Gosodiadau'r ReplayGain:"
-
-#: src/wavpack/ui.c:396
-#, fuzzy
-msgid "Plugin"
-msgstr "Ategyn LIRC"
-
-#: src/wavpack/ui.c:397
-msgid "ReplayGain"
-msgstr "ReplayGain"
-
-#: src/wavpack/ui.c:421
-#, fuzzy
-msgid "Wavpack Configuration"
-msgstr "Ffurfweddiad TiMidity"
-
-#: src/wavpack/wavpack.c:404
+#: src/wavpack/wavpack.c:364
 #, fuzzy, c-format
 msgid "Wavpack Decoder Plugin %s"
 msgstr "Ategyn Echo %s"
 
-#: src/wavpack/wavpack.c:405
+#: src/wavpack/wavpack.c:365
 msgid ""
 "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
 "\n"
@@ -6828,15 +5610,513 @@ msgid ""
 "Visit the Wavpack site at http://www.wavpack.com/\n"
 msgstr ""
 
+#, fuzzy
+#~ msgid "ALSA Gapless Output Plugin Preferences"
+#~ msgstr "Ynghylch Ategyn ESounD"
+
+#~ msgid "MIDI logger settings"
+#~ msgstr "Gosodiadau loglyfrau MIDI"
+
+#~ msgid "Logfile settings"
+#~ msgstr "Gosodiadau loglyfrau"
+
+#~ msgid "Playback speed"
+#~ msgstr "Chwarae cyflymedd"
+
+#~ msgid "Buffer settings"
+#~ msgstr "Gosodiadau byffyru"
+
+#~ msgid "AudioCompress "
+#~ msgstr "AudioCompress "
+
+#~ msgid ""
+#~ "\n"
+#~ "(c)2003 trikuare studios(http://trikuare.cx)\n"
+#~ "Ported to Audacious by Tony Vroon (chainsaw@gentoo.org)\n"
+#~ "\n"
+#~ "Simple dynamic range compressor for transparently\n"
+#~ "keeping the volume level more or less consistent"
+#~ msgstr ""
+#~ "\n"
+#~ "(c)2003 trikuare studios(http://trikuare.cx)\n"
+#~ "Cyfaddaseg am Audacious gan Tony Vroon (chainsaw@gentoo.org)\n"
+#~ "\n"
+#~ "Seml deinamig amrediad cywasgu am tryloyw\n"
+#~ "cadw'r yr cyfrol lefel rhyw yr unrhyw"
+
+#~ msgid "About AudioCompress"
+#~ msgstr "Ynghylch AudioCompress"
+
+#, fuzzy
+#~ msgid "Maximum gain:"
+#~ msgstr "Cynydd albwm:"
+
+#, fuzzy
+#~ msgid "Audio values"
+#~ msgstr "Dyfais sain:"
+
+#, fuzzy
+#~ msgid "Manual songchange"
+#~ msgstr "Sianel ddeuol"
+
+#, fuzzy
+#~ msgid "Seeking"
+#~ msgstr "Swing"
+
+#, fuzzy
+#~ msgid "Simple crossfade"
+#~ msgstr "Graddfa samplo:"
+
+#, fuzzy
+#~ msgid "Advanced crossfade"
+#~ msgstr "Gosodiadau uwch"
+
+#, fuzzy
+#~ msgid "Fadein"
+#~ msgstr "cynnydd"
+
+#, fuzzy
+#~ msgid ""
+#~ "Audacious Crossfade Plugin\n"
+#~ "\n"
+#~ "Copyright © 2009 William Pitcock <nenolod@atheme.org>\n"
+#~ "\n"
+#~ "...based in part on XMMS-Crossfade:\n"
+#~ "Copyright © 2000-2009 Peter Eisenlohr <peter@eisenlohr.org>\n"
+#~ "\n"
+#~ "based on the original OSS Output Plugin  Copyright (C) 1998-2000\n"
+#~ "Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front "
+#~ "Technologies\n"
+#~ "\n"
+#~ "This program is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as published by\n"
+#~ "the Free Software Foundation; either version 2 of the License, or\n"
+#~ "(at your option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License\n"
+#~ "along with this program; if not, write to the Free Software\n"
+#~ "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+#~ "USA."
+#~ msgstr ""
+#~ "Ategyn ESounD XMMS\n"
+#~ "\n"
+#~ " Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
+#~ "ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
+#~ "cyhoeddwyd gan y Free Software Foundation; un ai fersiwn 2 o'r\n"
+#~ "drwydded neu yn ôl eich dewis) unrhyw fersiwn arall.\n"
+#~ "\n"
+#~ "Mae'r rhaglen yn cael ei ddosbarthu yn y gobaith y byddwch yn ei gael\n"
+#~ "yn ddefnyddiol, on HEB UNRHYW WARANT; heb hyd yn oed awgrym\n"
+#~ "o warant MASNACHOL neu ADDASRWYDD AR GYFER UNRHYW\n"
+#~ "BWRPAS. Gw. y drwydded Gyhoeddus Gyffredin am ragor o wybodaeth.\n"
+#~ "\n"
+#~ "Dylech fod wedi derbyn copi o'r Drwydded gyda'r rhaglen; os nad "
+#~ "cysylltwch\n"
+#~ "â 'r Free Software Foundation, Inc.,  59 Temple Place - Suite 330, "
+#~ "Boston,\n"
+#~ " MA 02111-1307,\n"
+#~ "USA."
+
+#, fuzzy
+#~ msgid "Crossfade Configuration"
+#~ msgstr "Ffurfweddiad TiMidity"
+
+#, fuzzy
+#~ msgid "About"
+#~ msgstr "Ynghylch"
+
+#, fuzzy
+#~ msgid "Output plugin"
+#~ msgstr "Ategyn Allbwn OSS"
+
+#, fuzzy
+#~ msgid "Throttle Output"
+#~ msgstr "Ynghylch Ategyn Allwyn Null"
+
+#, fuzzy
+#~ msgid "Max block size (bytes):"
+#~ msgstr "Maint Ffeil (bytes)"
+
+#, fuzzy
+#~ msgid "Mixing buffer size (ms):"
+#~ msgstr "Maint y byffer (ms):"
+
+#, fuzzy
+#~ msgid "auto"
+#~ msgstr "Ynghylch"
+
+#, fuzzy
+#~ msgid "Reopen"
+#~ msgstr "Tynnu gyrrwr"
+
+#, fuzzy
+#~ msgid "Length (ms):"
+#~ msgstr "Hyd (msec):"
+
+#, fuzzy
+#~ msgid "Fade in"
+#~ msgstr "cynnydd"
+
+#, fuzzy
+#~ msgid "Crossfade"
+#~ msgstr "Crossover"
+
+#, fuzzy
+#~ msgid "Simple XF"
+#~ msgstr "Salsa"
+
+#, fuzzy
+#~ msgid "End volume (%):"
+#~ msgstr "Sain:(%)"
+
+#, fuzzy
+#~ msgid "Custom (ms):"
+#~ msgstr "Amser byffer (ms):"
+
+#, fuzzy
+#~ msgid " Enable"
+#~ msgstr "Galluogi clicied"
+
+#, fuzzy
+#~ msgid "Advanced XF"
+#~ msgstr "Gosodiadau uwch"
+
+#, fuzzy
+#~ msgid "Fade in (ms):"
+#~ msgstr "Rhagosodedig (%s)"
+
+#, fuzzy
+#~ msgid "Max. length (ms):"
+#~ msgstr "Hyd (msec):"
+
+#, fuzzy
+#~ msgid "Advanced"
+#~ msgstr "Gosodiadau uwch"
+
+#, fuzzy
+#~ msgid "Debug options"
+#~ msgstr "Addurniad"
+
+#, fuzzy
+#~ msgid "Enable volume control"
+#~ msgstr "Defnyddio rheolwr sain meddalwedd"
+
+#, fuzzy
+#~ msgid "Volume control options"
+#~ msgstr "Dyfais rheoli sain:"
+
+#, fuzzy
+#~ msgid "same file"
+#~ msgstr "Teitl:"
+
+#, fuzzy
+#~ msgid "Limit OP buffer usage (ms):"
+#~ msgstr "Maint y byffer (ms):"
+
+#, fuzzy
+#~ msgid "Advanced options"
+#~ msgstr "Gosodiadau uwch"
+
+#, fuzzy
+#~ msgid "New"
+#~ msgstr "New Age"
+
+#, fuzzy
+#~ msgid "Save Default List"
+#~ msgstr "Rhagosodedig (%s)"
+
+#, fuzzy
+#~ msgid "Playlist Manager"
+#~ msgstr "Modd chwarae:"
+
+#, fuzzy
+#~ msgid "_Rename"
+#~ msgstr "Enw ffeil"
+
+#, fuzzy
+#~ msgid "About Icecast-Plugin"
+#~ msgstr "Ynghylch Ategyn Echo"
+
+#, fuzzy
+#~ msgid ""
+#~ "Icecast-Plugin\n"
+#~ "\n"
+#~ "This program is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as published by\n"
+#~ "the Free Software Foundation; either version 2 of the License, or\n"
+#~ "(at your option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License\n"
+#~ "along with this program; if not, write to the Free Software\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
+#~ "USA."
+#~ msgstr ""
+#~ "Ategyn ESounD XMMS\n"
+#~ "\n"
+#~ " Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
+#~ "ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
+#~ "cyhoeddwyd gan y Free Software Foundation; un ai fersiwn 2 o'r\n"
+#~ "drwydded neu yn ôl eich dewis) unrhyw fersiwn arall.\n"
+#~ "\n"
+#~ "Mae'r rhaglen yn cael ei ddosbarthu yn y gobaith y byddwch yn ei gael\n"
+#~ "yn ddefnyddiol, on HEB UNRHYW WARANT; heb hyd yn oed awgrym\n"
+#~ "o warant MASNACHOL neu ADDASRWYDD AR GYFER UNRHYW\n"
+#~ "BWRPAS. Gw. y drwydded Gyhoeddus Gyffredin am ragor o wybodaeth.\n"
+#~ "\n"
+#~ "Dylech fod wedi derbyn copi o'r Drwydded gyda'r rhaglen; os nad "
+#~ "cysylltwch\n"
+#~ "â 'r Free Software Foundation, Inc.,  59 Temple Place - Suite 330, "
+#~ "Boston,\n"
+#~ " MA 02111-1307,\n"
+#~ "USA."
+
+#, fuzzy
+#~ msgid "Icecast Configuration"
+#~ msgstr "Ffurfweddiad TiMidity"
+
+#, fuzzy
+#~ msgid "Output stream format:"
+#~ msgstr "Ffeil cyfeiriadur allbwn:"
+
+#, fuzzy
+#~ msgid "Server address:"
+#~ msgstr "Dyfeisiau"
+
+#, fuzzy
+#~ msgid "User name:"
+#~ msgstr "Enw Defnyddiwr:"
+
+#, fuzzy
+#~ msgid "Buffer size (bytes):"
+#~ msgstr "Maint y byffer (ms):"
+
+#, fuzzy
+#~ msgid "Stream name:"
+#~ msgstr "Enwau'r Traciau:"
+
+#, fuzzy
+#~ msgid "Stream description:"
+#~ msgstr "Disgrifiad:"
+
+#, fuzzy
+#~ msgid "Metadata Settings"
+#~ msgstr "Gosodiadau Cymysgu"
+
+#~ msgid "MPEG Audio Plugin Configuration"
+#~ msgstr "Ffurfweddiad Chwaraeydd MPEG Sain"
+
+#~ msgid "About MPEG Audio Plugin"
+#~ msgstr "Ynghylch Ategyn Sain MPEG"
+
+#, fuzzy
+#~ msgid "11 kHz"
+#~ msgstr "11000 Hz"
+
+#, fuzzy
+#~ msgid "About OSSv4 Driver"
+#~ msgstr "Ynghylch Gyrrwr OSS"
+
+#, fuzzy
+#~ msgid ""
+#~ "Audacious OSSv4 Driver\n"
+#~ "\n"
+#~ "Based on the OSSv3 Output plugin,\n"
+#~ "Ported to OSSv4's VMIX by Cristi Magherusan <majeru@gentoo.ro>\n"
+#~ "\n"
+#~ "This program is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as published by\n"
+#~ "the Free Software Foundation; either version 2 of the License, or\n"
+#~ "(at your option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License\n"
+#~ "along with this program; if not, write to the Free Software\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
+#~ "USA.\n"
+#~ "\n"
+#~ "Note: For any issues regarding this plugin (including patches and \n"
+#~ "suggestions) please contact the maintainer, and NO other \n"
+#~ "Audacious developers\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Gyrrwr OSS Audacious\n"
+#~ "\n"
+#~ " Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
+#~ "ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
+#~ "cyhoeddwyd gan y Free Software Foundation; un ai fersiwn 2 o'r\n"
+#~ "drwydded neu yn ôl eich dewis) unrhyw fersiwn arall.\n"
+#~ "\n"
+#~ "Mae'r rhaglen yn cael ei ddosbarthu yn y gobaith y byddwch yn ei gael\n"
+#~ "yn ddefnyddiol, on HEB UNRHYW WARANT; heb hyd yn oed awgrym\n"
+#~ "o warant MASNACHOL neu ADDASRWYDD AR GYFER UNRHYW\n"
+#~ "BWRPAS. Gw. y drwydded Gyhoeddus Gyffredin am ragor o wybodaeth.\n"
+#~ "\n"
+#~ "Dylech fod wedi derbyn copi o'r Drwydded gyda'r rhaglen; os nad "
+#~ "cysylltwch\n"
+#~ "â 'r Free Software Foundation, Inc.,  59 Temple Place - Suite 330, "
+#~ "Boston,\n"
+#~ " MA 02111-1307,\n"
+#~ "USA."
+
+#, fuzzy
+#~ msgid "Scrobbler Error"
+#~ msgstr "Ategyn Scrobbler"
+
+#~ msgid "TiMidity Configuration"
+#~ msgstr "Ffurfweddiad TiMidity"
+
+#~ msgid "11000 Hz"
+#~ msgstr "11000 Hz"
+
+#~ msgid "22000 Hz"
+#~ msgstr "22000 Hz"
+
+#~ msgid "44100 Hz"
+#~ msgstr "44100 Hz"
+
+#~ msgid "Sample Width"
+#~ msgstr "Maint y Samplo"
+
+#~ msgid "TiMidity Configuration File"
+#~ msgstr "Ffeil Ffurfweddiad TiMidity"
+
+#~ msgid "TiMidity Plugin %s"
+#~ msgstr "Ategyn TiMidity %s"
+
+#~ msgid ""
+#~ "TiMidity Plugin\n"
+#~ "http://libtimidity.sourceforge.net\n"
+#~ "by Konstantin Korikov"
+#~ msgstr ""
+#~ "TiMidity Plugin\n"
+#~ "http://libtimidity.sourceforge.net\n"
+#~ "gan Konstantin Korikov"
+
+#~ msgid "Couldn't load MIDI file"
+#~ msgstr "Meth agor dyfais ffeil MIDI"
+
+#~ msgid "Title:"
+#~ msgstr "Teitl:"
+
+#~ msgid "Artist:"
+#~ msgstr "Artist:"
+
+#~ msgid "Album:"
+#~ msgstr "Albwm:"
+
+#~ msgid "Comment:"
+#~ msgstr "Sylw:"
+
+#~ msgid "Year:"
+#~ msgstr "Blwyddyn:"
+
+#~ msgid "Track number:"
+#~ msgstr "Rhif y Trac:"
+
+#~ msgid "Genre:"
+#~ msgstr "Math:"
+
+#, fuzzy
+#~ msgid "Remove Tag"
+#~ msgstr "Tynnu gyrrwr"
+
+#, fuzzy
+#~ msgid "version %d"
+#~ msgstr "Fersiwn:"
+
+#, fuzzy
+#~ msgid "samplerate: %d Hz"
+#~ msgstr "Graddfa samplo:"
+
+#, fuzzy
+#~ msgid "channels: %d"
+#~ msgstr "Sianeli:"
+
+#, fuzzy
+#~ msgid "length: %d:%.2d"
+#~ msgstr ""
+#~ "\n"
+#~ "Cyfanswm hyd: %d:%.2d\n"
+
+#, fuzzy
+#~ msgid "file size: %d Bytes"
+#~ msgstr "Maint ffeil:"
+
+#, fuzzy
+#~ msgid "Title Peak: ?"
+#~ msgstr "Teitl:"
+
+#, fuzzy
+#~ msgid "Album Peak: ?"
+#~ msgstr "Brig albwm:"
+
+#, fuzzy
+#~ msgid "Title Gain: ?"
+#~ msgstr "Newid Teitl"
+
+#, fuzzy
+#~ msgid "Album Gain: ?"
+#~ msgstr "Cynydd albwm:"
+
+#~ msgid "File Info - %s"
+#~ msgstr "Gwybodaeth Ffeil - %s"
+
+#, fuzzy
+#~ msgid "General Plugin Settings"
+#~ msgstr "Gosodiadau'r ReplayGain:"
+
+#~ msgid "use Track Gain/Peak"
+#~ msgstr "defnyddiwch Cynnydd/Brig Trac"
+
+#~ msgid "use Album Gain/Peak"
+#~ msgstr "defnyddio Cynnydd/Brig Albwm"
+
+#~ msgid "Enable Clipping Prevention"
+#~ msgstr "Galluogi Atal Clipio"
+
+#~ msgid "Enable ReplayGain"
+#~ msgstr "Galluogi ReplayGain"
+
+#, fuzzy
+#~ msgid "ReplayGain Type"
+#~ msgstr "Math ReplayGain:"
+
+#, fuzzy
+#~ msgid "ReplayGain Settings"
+#~ msgstr "Gosodiadau'r ReplayGain:"
+
+#, fuzzy
+#~ msgid "Plugin"
+#~ msgstr "Ategyn LIRC"
+
+#~ msgid "ReplayGain"
+#~ msgstr "ReplayGain"
+
+#, fuzzy
+#~ msgid "Wavpack Configuration"
+#~ msgstr "Ffurfweddiad TiMidity"
+
 #~ msgid "Unknown soundcard"
 #~ msgstr "Cerdyn sain anhysbys"
 
 #~ msgid "Default PCM device (%s)"
 #~ msgstr "Dyfais PCM rhagosodedig (%s)"
-
-#, fuzzy
-#~ msgid "ALSA Output Plugin Preferences"
-#~ msgstr "Ynghylch Ategyn ESounD"
 
 #~ msgid "Device:"
 #~ msgstr "Dyfais:"
@@ -6903,49 +6183,6 @@ msgstr ""
 
 #~ msgid "ID3 format:"
 #~ msgstr "Fformat ID3:"
-
-#, fuzzy
-#~ msgid "About Audacious PulseAudio Output Plugin"
-#~ msgstr "Ategyn Allbwn CoreAudio"
-
-#, fuzzy
-#~ msgid ""
-#~ "Audacious PulseAudio Output Plugin\n"
-#~ "\n"
-#~ " This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
-#~ "USA."
-#~ msgstr ""
-#~ "Ategyn ESounD XMMS\n"
-#~ "\n"
-#~ " Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
-#~ "ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
-#~ "cyhoeddwyd gan y Free Software Foundation; un ai fersiwn 2 o'r\n"
-#~ "drwydded neu yn ôl eich dewis) unrhyw fersiwn arall.\n"
-#~ "\n"
-#~ "Mae'r rhaglen yn cael ei ddosbarthu yn y gobaith y byddwch yn ei gael\n"
-#~ "yn ddefnyddiol, on HEB UNRHYW WARANT; heb hyd yn oed awgrym\n"
-#~ "o warant MASNACHOL neu ADDASRWYDD AR GYFER UNRHYW\n"
-#~ "BWRPAS. Gw. y drwydded Gyhoeddus Gyffredin am ragor o wybodaeth.\n"
-#~ "\n"
-#~ "Dylech fod wedi derbyn copi o'r Drwydded gyda'r rhaglen; os nad "
-#~ "cysylltwch\n"
-#~ "â 'r Free Software Foundation, Inc.,  59 Temple Place - Suite 330, "
-#~ "Boston,\n"
-#~ " MA 02111-1307,\n"
-#~ "USA."
 
 #~ msgid "ALSA Driver configuration"
 #~ msgstr "Ffurfweddu'r Gyrrwr ALSA"
@@ -7052,8 +6289,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA.\n"
 #~ "Author: Matthieu Sozeau (mattam@altern.org)"
 #~ msgstr ""
@@ -7115,10 +6352,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "<b>Volume Control:</b>"
 #~ msgstr "Dyfais rheoli sain:"
-
-#, fuzzy
-#~ msgid "<b>Player:</b>"
-#~ msgstr "<b>Hatena</b>"
 
 #, fuzzy
 #~ msgid "Track mode"
@@ -7315,9 +6548,6 @@ msgstr ""
 #~ msgid "Comedy"
 #~ msgstr "Comedi"
 
-#~ msgid "Cult"
-#~ msgstr "Cult"
-
 #~ msgid "Gangsta Rap"
 #~ msgstr "Gangsta Rap"
 
@@ -7509,9 +6739,6 @@ msgstr ""
 
 #~ msgid "Hardcore"
 #~ msgstr "Hardcore"
-
-#~ msgid "Terror"
-#~ msgstr "Terror"
 
 #~ msgid "Indie"
 #~ msgstr "Indie"

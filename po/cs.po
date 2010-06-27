@@ -20,14 +20,110 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 9cc8503d1935\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-14 22:03+0200\n"
+"Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
+"POT-Creation-Date: 2010-06-27 15:47+0300\n"
 "PO-Revision-Date: 2010-06-14 22:39+0200\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/OSS/OSS.c:38
+msgid "About OSS Driver"
+msgstr "O modulu OSS"
+
+#: src/OSS/OSS.c:39
+msgid ""
+"Audacious OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Ovladač OSS programu Audacious\n"
+"\n"
+"Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
+"pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
+"Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
+"libovolné novější.\n"
+"\n"
+"Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
+"ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
+"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
+"\n"
+"S tímto programem byste měli obdržet kopii GNU GPL. Pokud se tak\n"
+"nestalo, obraťte se na Free Software Foundation, Inc.,\n"
+"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#: src/OSS/configure.c:148
+#, c-format
+msgid "Default (%s)"
+msgstr "Standardně (%s)"
+
+#: src/OSS/configure.c:166 src/alarm/interface.c:612 src/alarm/interface.c:660
+#: src/alarm/interface.c:708 src/alarm/interface.c:756
+#: src/alarm/interface.c:804 src/alarm/interface.c:852
+#: src/alarm/interface.c:900 src/skins/ui_manager.c:447
+#: src/skins/ui_manager.c:468
+msgid "Default"
+msgstr "Standardní"
+
+#: src/OSS/configure.c:197
+msgid "OSS Driver configuration"
+msgstr "Nastavení ovladače OSS"
+
+#: src/OSS/configure.c:213 src/oss4/configure.c:162 src/sun/configure.c:181
+msgid "Audio device:"
+msgstr "Zvukové zařízení:"
+
+#: src/OSS/configure.c:235 src/OSS/configure.c:276 src/oss4/configure.c:188
+msgid "Use alternate device:"
+msgstr "Použít jiné zařízení:"
+
+#: src/OSS/configure.c:256 src/alsa/config.c:446 src/sun/configure.c:218
+msgid "Mixer device:"
+msgstr "Zařízení směšovače:"
+
+#: src/OSS/configure.c:298 src/sun/configure.c:246
+msgid "Devices"
+msgstr "Zařízení"
+
+#: src/OSS/configure.c:300 src/esd/configure.c:171 src/sun/configure.c:257
+msgid "Buffering:"
+msgstr "Vyrovnávání:"
+
+#: src/OSS/configure.c:313 src/esd/configure.c:198 src/sun/configure.c:288
+msgid "Pre-buffer (percent):"
+msgstr "Načíst předem (v procentech):"
+
+#: src/OSS/configure.c:324 src/esd/configure.c:209 src/sun/configure.c:302
+msgid "Buffering"
+msgstr "Vyrovnávání"
+
+#: src/OSS/configure.c:325
+msgid "Mixer Settings:"
+msgstr "Nastavení mixéru:"
+
+#: src/OSS/configure.c:331
+msgid "Volume controls Master not PCM"
+msgstr "Hlasitost ovládána Master kanálem místo PCM"
+
+#: src/OSS/configure.c:337 src/sun/configure.c:392
+msgid "Mixer"
+msgstr "Mixér"
 
 #: src/aac/libmp4.c:287
 #, c-format
@@ -75,9 +171,8 @@ msgstr "AdPlug :: Nastavení"
 
 #: src/adplug/adplug-xmms.cc:239 src/adplug/adplug-xmms.cc:500
 #: src/cdaudio-ng/configure.c:258 src/crystalizer/crystalizer.c:124
-#: src/echo_plugin/gui.c:131 src/esd/about.c:48 src/jack/configure.c:144
-#: src/kanashi/plugin.c:175 src/null/null.c:107 src/paranormal-ng/plugin.c:282
-#: src/stereo_plugin/stereo.c:120 src/sun/about.c:37 src/sun/configure.c:557
+#: src/echo_plugin/gui.c:131 src/jack/configure.c:144 src/null/null.c:107
+#: src/stereo_plugin/stereo.c:120 src/sun/configure.c:557
 msgid "Ok"
 msgstr "OK"
 
@@ -139,7 +234,7 @@ msgid "Frequency"
 msgstr "Frekvence"
 
 #: src/adplug/adplug-xmms.cc:352 src/adplug/adplug-xmms.cc:556
-#: src/console/configure.c:154 src/gtkui/ui_manager.c:60
+#: src/console/configure.c:154 src/gtkui/ui_manager.c:62
 #: src/skins/ui_manager.c:168
 msgid "Playback"
 msgstr "Přehrát"
@@ -303,8 +398,8 @@ msgid "This is your wakeup call."
 msgstr "Toto je váš budící signál."
 
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389
-#: src/bluetooth/bluetooth.c:124 src/modplug/gui/interface.cxx:703
-#: src/roaraudio/gui.c:312 src/sid/xs_config.c:319
+#: src/modplug/gui/interface.cxx:703 src/roaraudio/gui.c:312
+#: src/sid/xs_config.c:319
 msgid "OK"
 msgstr "Budiž"
 
@@ -378,14 +473,6 @@ msgstr "Budit v (standardní):"
 #: src/alarm/interface.c:584
 msgid "Choose the days for the alarm to come on"
 msgstr "Vyberte dny, kdy má budík budit"
-
-#: src/alarm/interface.c:612 src/alarm/interface.c:660
-#: src/alarm/interface.c:708 src/alarm/interface.c:756
-#: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/OSS/configure.c:166
-#: src/skins/ui_manager.c:447 src/skins/ui_manager.c:468
-msgid "Default"
-msgstr "Standardní"
 
 #: src/alarm/interface.c:938
 msgid "Day"
@@ -593,7 +680,7 @@ msgstr ""
 "    Text vzkazu vepište do vstupního pole a zapněte tlačítko,\n"
 "    přejete-li si zobrazovat vzkaz.\n"
 
-#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:271
+#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:157
 #: src/skins/ui_manager.c:379
 msgid "Help"
 msgstr "Nápověda"
@@ -621,10 +708,6 @@ msgstr "Nastavení výstupního modulu ALSY"
 #: src/alsa/config.c:444
 msgid "PCM device:"
 msgstr "Zařízení PCM:"
-
-#: src/alsa/config.c:446 src/OSS/configure.c:256 src/sun/configure.c:218
-msgid "Mixer device:"
-msgstr "Zařízení směšovače:"
 
 #: src/alsa/config.c:448
 msgid "Mixer element:"
@@ -933,14 +1016,6 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:74
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug – vyberte soubor"
-
-#: src/amidi-plug/i_configure.c:127
-msgid "AMIDI-Plug - configuration"
-msgstr "AMIDI-Plug – nastavení"
-
 #: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug – vyberte soundfontový soubor"
@@ -1179,6 +1254,14 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">Backend\n"
 "TiMidity</span>"
+
+#: src/amidi-plug/i_configure.c:74
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug – vyberte soubor"
+
+#: src/amidi-plug/i_configure.c:127
+msgid "AMIDI-Plug - configuration"
+msgstr "AMIDI-Plug – nastavení"
 
 #: src/amidi-plug/i_fileinfo.c:169 src/bluetooth/gui.c:271
 #: src/sid/xs_interface.c:1769
@@ -1619,11 +1702,11 @@ msgstr "Zařízení bylo učiněno omezeně objevitelným"
 msgid "Device has been switched into pairing mode"
 msgstr "Zařízení bylo přepnuto do režimu párování"
 
-#: src/bluetooth/bluetooth.c:115
+#: src/bluetooth/bluetooth.c:117
 msgid "Bluetooth headset support plugin"
 msgstr "Modul podporující náhlavní sady s bluetooth"
 
-#: src/bluetooth/bluetooth.c:116
+#: src/bluetooth/bluetooth.c:118
 msgid ""
 "Bluetooth headset support\n"
 "Copyright (c) 2008 Paula Stanciu paula.stanciu@gmail.com\n"
@@ -1697,8 +1780,8 @@ msgstr "Páruje se…"
 msgid "Rescan"
 msgstr "Znovu vyhledat"
 
-#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:62
-#: src/gtkui/ui_manager.c:63 src/hotkey/gui.c:71 src/skins/ui_manager.c:170
+#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:64
+#: src/gtkui/ui_manager.c:65 src/hotkey/gui.c:71 src/skins/ui_manager.c:170
 #: src/skins/ui_manager.c:171
 msgid "Play"
 msgstr "Hrát"
@@ -1710,6 +1793,14 @@ msgstr "Blur scope: výběr barvy"
 #: src/blur_scope/config.c:81 src/jack/configure.c:109
 msgid "Options:"
 msgstr "Volby:"
+
+#: src/cd-menu-items/cd-menu-items.c:34
+msgid "Play CD"
+msgstr "Přehrát CD"
+
+#: src/cd-menu-items/cd-menu-items.c:34
+msgid "Add CD"
+msgstr "Přidat CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:265
 msgid "About Audio CD Plugin"
@@ -1782,14 +1873,6 @@ msgstr "Použít HTTP místo CDDBP"
 #: src/cdaudio-ng/configure.c:244
 msgid "Override default device: "
 msgstr "Přebít výchozí zařízení: "
-
-#: src/cd-menu-items/cd-menu-items.c:34
-msgid "Play CD"
-msgstr "Přehrát CD"
-
-#: src/cd-menu-items/cd-menu-items.c:34
-msgid "Add CD"
-msgstr "Přidat CD"
 
 #: src/compressor/plugin.c:57
 msgid "About Dynamic Range Compression Plugin"
@@ -1909,8 +1992,8 @@ msgstr ""
 "Uplatnění přechodu selhalo, protože skladby mají rozdílnou vzorkovací "
 "frekvenci.\n"
 "\n"
-"Skladby můžete převzorkovat na stejnou frekvenci pomocí efektu "
-"Převodníku vzorkovací frekvence."
+"Skladby můžete převzorkovat na stejnou frekvenci pomocí efektu Převodníku "
+"vzorkovací frekvence."
 
 #: src/crystalizer/crystalizer.c:101
 msgid "Configure Crystalizer"
@@ -1961,11 +2044,11 @@ msgstr "Hlasitost: (%)"
 msgid "Surround echo"
 msgstr "Prostorová ozvěna (surround echo)"
 
-#: src/esd/about.c:33
+#: src/esd/about.c:31
 msgid "About ESounD Plugin"
 msgstr "O modulu ESounD"
 
-#: src/esd/about.c:34
+#: src/esd/about.c:32
 msgid ""
 "Audacious ESounD Plugin\n"
 "\n"
@@ -2023,21 +2106,9 @@ msgstr "Port:"
 msgid "Server"
 msgstr "Server"
 
-#: src/esd/configure.c:171 src/OSS/configure.c:300 src/sun/configure.c:257
-msgid "Buffering:"
-msgstr "Vyrovnávání:"
-
 #: src/esd/configure.c:184 src/sun/configure.c:270
 msgid "Buffer size (ms):"
 msgstr "Velikost vyrovnávací paměti (ms):"
-
-#: src/esd/configure.c:198 src/OSS/configure.c:313 src/sun/configure.c:288
-msgid "Pre-buffer (percent):"
-msgstr "Načíst předem (v procentech):"
-
-#: src/esd/configure.c:209 src/OSS/configure.c:324 src/sun/configure.c:302
-msgid "Buffering"
-msgstr "Vyrovnávání"
 
 #: src/evdev-plug/ed.c:59
 msgid "Playback->Play"
@@ -2207,8 +2278,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get phys value for device \"%s"
 "\", skipping it.\n"
 msgstr ""
-"event-device-plugin: konfigurace: nelze získat hodnotu phys pro zařízení „%"
-"s“, přeskakuji.\n"
+"event-device-plugin: konfigurace: nelze získat hodnotu phys pro zařízení "
+"„%s“, přeskakuji.\n"
 
 #: src/evdev-plug/ed_internals.c:921
 #, c-format
@@ -2705,11 +2776,11 @@ msgstr "Nastavení vorbis kodéru"
 msgid "Quality level (0 - 10):"
 msgstr "Úroveň kvality (0–10):"
 
-#: src/flacng/plugin.c:610
+#: src/flacng/plugin.c:590
 msgid "FLAC Audio Plugin "
 msgstr "Zvukový modul FLAC"
 
-#: src/flacng/plugin.c:611
+#: src/flacng/plugin.c:591
 msgid ""
 "\n"
 "\n"
@@ -2725,7 +2796,7 @@ msgstr ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 
-#: src/flacng/plugin.c:617
+#: src/flacng/plugin.c:597
 msgid "About FLAC Audio Plugin"
 msgstr "O zvukovém modulu FLAC"
 
@@ -2763,43 +2834,43 @@ msgstr "Audacious2"
 msgid "gnt interface"
 msgstr "Rozhraní gnt"
 
-#: src/gtkui/actions.c:206 src/skins/ui_main.c:813
+#: src/gtkui/actions.c:222 src/skins/ui_main.c:814
 msgid "Can't jump to time when no track is being played.\n"
 msgstr "Když nehraje žádná skladba, nelze přejít na čas.\n"
 
-#: src/gtkui/actions.c:221 src/gtkui/ui_manager.c:310
-#: src/gtkui/ui_manager.c:311 src/skins/ui_main.c:828
+#: src/gtkui/actions.c:237 src/gtkui/ui_manager.c:196
+#: src/gtkui/ui_manager.c:197 src/skins/ui_main.c:829
 #: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
 msgid "Jump to Time"
 msgstr "Přejít na čas"
 
-#: src/gtkui/actions.c:238 src/skins/ui_main.c:849
+#: src/gtkui/actions.c:254 src/skins/ui_main.c:850
 msgid "minutes:seconds"
 msgstr "minuty:sekundy"
 
-#: src/gtkui/actions.c:248 src/skins/ui_main.c:859
+#: src/gtkui/actions.c:264 src/skins/ui_main.c:860
 msgid "Track length:"
 msgstr "Délka stopy:"
 
-#: src/gtkui/actions.c:574 src/skins/ui_playlist.c:801
+#: src/gtkui/actions.c:581 src/skins/ui_playlist.c:801
 msgid "Save as Static Playlist"
 msgstr "Uložit jako statický seznam skladeb"
 
-#: src/gtkui/actions.c:580 src/skins/ui_playlist.c:808
+#: src/gtkui/actions.c:587 src/skins/ui_playlist.c:808
 msgid "Use Relative Path"
 msgstr "Použít relativní cestu"
 
-#: src/gtkui/actions.c:605 src/skins/ui_playlist.c:642
+#: src/gtkui/actions.c:612 src/skins/ui_playlist.c:642
 #, c-format
 msgid "Error writing playlist \"%s\": %s"
 msgstr "Chyba při zapisování seznamu skladeb „%s“: %s"
 
-#: src/gtkui/actions.c:620 src/skins/ui_playlist.c:664
+#: src/gtkui/actions.c:627 src/skins/ui_playlist.c:664
 #, c-format
 msgid "%s already exist. Continue?"
 msgstr "%s už existuje. Pokračovat?"
 
-#: src/gtkui/actions.c:631 src/skins/ui_playlist.c:679
+#: src/gtkui/actions.c:638 src/skins/ui_playlist.c:679
 #, c-format
 msgid ""
 "<b><big>Unable to save playlist.</big></b>\n"
@@ -2810,143 +2881,129 @@ msgstr ""
 "\n"
 "Neznámý typ souboru %s.\n"
 
-#: src/gtkui/actions.c:672 src/skins/ui_playlist.c:844
+#: src/gtkui/actions.c:679 src/skins/ui_playlist.c:844
 msgid "Save Playlist"
 msgstr "Uložit seznam skladeb"
 
-#: src/gtkui/actions.c:743 src/skins/ui_playlist.c:831
+#: src/gtkui/actions.c:750 src/skins/ui_playlist.c:831
 msgid "Load Playlist"
 msgstr "Načíst seznam skladeb"
 
-#: src/gtkui/ui_gtk.c:59
+#: src/gtkui/ui_gtk.c:63
 msgid "GTK Foobar-like Interface"
 msgstr "Rozhraní GTK podobné Foobaru"
 
-#: src/gtkui/ui_manager.c:40 src/gtkui/ui_manager.c:41
+#: src/gtkui/ui_manager.c:36 src/gtkui/ui_manager.c:37
 #: src/skins/ui_manager.c:56 src/skins/ui_manager.c:57
 msgid "Stop after Current Song"
 msgstr "Zastavit po současné skladbě"
 
-#: src/gtkui/ui_manager.c:43 src/gtkui/ui_manager.c:44
+#: src/gtkui/ui_manager.c:39 src/gtkui/ui_manager.c:40
 #: src/skins/ui_manager.c:62 src/skins/ui_manager.c:63
 msgid "Repeat"
 msgstr "Opakovat"
 
-#: src/gtkui/ui_manager.c:46 src/gtkui/ui_manager.c:47
+#: src/gtkui/ui_manager.c:42 src/gtkui/ui_manager.c:43
 #: src/skins/ui_manager.c:65 src/skins/ui_manager.c:66
 msgid "Shuffle"
 msgstr "Náhodné přehrávání"
 
-#: src/gtkui/ui_manager.c:49 src/gtkui/ui_manager.c:50
+#: src/gtkui/ui_manager.c:45 src/gtkui/ui_manager.c:46
 #: src/skins/ui_manager.c:68 src/skins/ui_manager.c:69
 msgid "No Playlist Advance"
 msgstr "Žádné pokračování dle seznamu skladeb"
 
-#: src/gtkui/ui_manager.c:52
+#: src/gtkui/ui_manager.c:48
 msgid "Show playlists"
 msgstr "Zobrazit seznamy skladeb"
 
-#: src/gtkui/ui_manager.c:53
+#: src/gtkui/ui_manager.c:49
 msgid "Show/hide playlists"
 msgstr "Zobrazit/skrýt seznamy skladeb"
 
-#: src/gtkui/ui_manager.c:65 src/gtkui/ui_manager.c:66
+#: src/gtkui/ui_manager.c:51
+msgid "Show infoarea"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:52
+msgid "Show/hide infoarea"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:54
+#, fuzzy
+msgid "Show main menu"
+msgstr "Zobrazit hlavním okno přehrávače"
+
+#: src/gtkui/ui_manager.c:55
+#, fuzzy
+msgid "Show/hide main menu"
+msgstr "Zobrazit/skrýt seznamy skladeb"
+
+#: src/gtkui/ui_manager.c:67 src/gtkui/ui_manager.c:68
 #: src/skins/ui_manager.c:173 src/skins/ui_manager.c:174
 msgid "Pause"
 msgstr "Pozastavit"
 
-#: src/gtkui/ui_manager.c:68 src/gtkui/ui_manager.c:69 src/hotkey/gui.c:73
+#: src/gtkui/ui_manager.c:70 src/gtkui/ui_manager.c:71 src/hotkey/gui.c:73
 #: src/skins/ui_manager.c:176 src/skins/ui_manager.c:177
 msgid "Stop"
 msgstr "Zastavit"
 
-#: src/gtkui/ui_manager.c:71 src/gtkui/ui_manager.c:72
+#: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74
 #: src/skins/ui_manager.c:179 src/skins/ui_manager.c:180
 msgid "Previous"
 msgstr "Předchozí"
 
-#: src/gtkui/ui_manager.c:74 src/gtkui/ui_manager.c:75
+#: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77
 #: src/skins/ui_manager.c:182 src/skins/ui_manager.c:183
 msgid "Next"
 msgstr "Další"
 
-#: src/gtkui/ui_manager.c:80 src/skins/ui_manager.c:188
-msgid "Visualization"
-msgstr "Znázornění"
-
-#: src/gtkui/ui_manager.c:81 src/skins/ui_manager.c:189
-msgid "Visualization Mode"
-msgstr "Typ znázornění"
-
-#: src/gtkui/ui_manager.c:82 src/skins/ui_manager.c:190
-msgid "Analyzer Mode"
-msgstr "Režim analyzátoru"
-
-#: src/gtkui/ui_manager.c:83 src/skins/ui_manager.c:191
-msgid "Scope Mode"
-msgstr "Typ vlnovky"
-
-#: src/gtkui/ui_manager.c:84 src/skins/ui_manager.c:192
-msgid "Voiceprint Mode"
-msgstr "Typ otisku"
-
-#: src/gtkui/ui_manager.c:85 src/skins/ui_manager.c:193
-msgid "WindowShade VU Mode"
-msgstr "Typ WindowShade VU"
-
-#: src/gtkui/ui_manager.c:86 src/skins/ui_manager.c:194
-msgid "Analyzer Falloff"
-msgstr "Klesání sloupců"
-
-#: src/gtkui/ui_manager.c:87 src/skins/ui_manager.c:195
-msgid "Peaks Falloff"
-msgstr "Klesání vrcholků"
-
-#: src/gtkui/ui_manager.c:92 src/skins/ui_manager.c:200
+#: src/gtkui/ui_manager.c:82 src/skins/ui_manager.c:200
 msgid "Playlist"
 msgstr "Seznam skladeb"
 
-#: src/gtkui/ui_manager.c:94 src/gtkui/ui_manager.c:95
+#: src/gtkui/ui_manager.c:84 src/gtkui/ui_manager.c:85
 #: src/skins/ui_manager.c:202 src/skins/ui_manager.c:203
 msgid "New Playlist"
 msgstr "Nový seznam skladeb"
 
-#: src/gtkui/ui_manager.c:97 src/gtkui/ui_manager.c:98
+#: src/gtkui/ui_manager.c:87 src/gtkui/ui_manager.c:88
 #: src/skins/ui_manager.c:205 src/skins/ui_manager.c:206
 msgid "Select Next Playlist"
 msgstr "Vybrat následující seznam skladeb"
 
-#: src/gtkui/ui_manager.c:100 src/gtkui/ui_manager.c:101
+#: src/gtkui/ui_manager.c:90 src/gtkui/ui_manager.c:91
 #: src/skins/ui_manager.c:208 src/skins/ui_manager.c:209
 msgid "Select Previous Playlist"
 msgstr "Vybrat předchozí seznam skladeb"
 
-#: src/gtkui/ui_manager.c:103 src/gtkui/ui_manager.c:104
+#: src/gtkui/ui_manager.c:93 src/gtkui/ui_manager.c:94
 #: src/skins/ui_manager.c:211 src/skins/ui_manager.c:212
 msgid "Delete Playlist"
 msgstr "Smazat seznam skladeb"
 
-#: src/gtkui/ui_manager.c:106
+#: src/gtkui/ui_manager.c:96
 msgid "Load List"
 msgstr "Načíst seznam skladeb"
 
-#: src/gtkui/ui_manager.c:107 src/skins/ui_manager.c:215
+#: src/gtkui/ui_manager.c:97 src/skins/ui_manager.c:215
 msgid "Loads a playlist file into the selected playlist."
 msgstr "Načte soubor se seznamem skladeb do vybraného seznamu."
 
-#: src/gtkui/ui_manager.c:109
+#: src/gtkui/ui_manager.c:99
 msgid "Save List"
 msgstr "Uložit seznam"
 
-#: src/gtkui/ui_manager.c:110 src/skins/ui_manager.c:218
+#: src/gtkui/ui_manager.c:100 src/skins/ui_manager.c:218
 msgid "Saves the selected playlist."
 msgstr "Uloží vybraný seznam skladeb."
 
-#: src/gtkui/ui_manager.c:112 src/skins/ui_manager.c:220
+#: src/gtkui/ui_manager.c:102 src/skins/ui_manager.c:220
 msgid "Save All Playlists"
 msgstr "Uložit všechny seznamy skladeb"
 
-#: src/gtkui/ui_manager.c:113 src/skins/ui_manager.c:221
+#: src/gtkui/ui_manager.c:103 src/skins/ui_manager.c:221
 msgid ""
 "Saves all the playlists that are open. Note that this is done automatically "
 "when Audacious quits."
@@ -2954,328 +3011,193 @@ msgstr ""
 "Uloží všechny seznamy skladeb, které jsou otevřeny. Vezměte na vědomí, že "
 "toto bude rovněž provedeno při ukončení Audacious."
 
-#: src/gtkui/ui_manager.c:117 src/skins/ui_manager.c:225
+#: src/gtkui/ui_manager.c:107 src/skins/ui_manager.c:225
 msgid "Refresh List"
 msgstr "Obnovit seznam"
 
-#: src/gtkui/ui_manager.c:118 src/skins/ui_manager.c:226
+#: src/gtkui/ui_manager.c:108 src/skins/ui_manager.c:226
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr "Obnovuje metadata náležící skladbě ze seznamu."
 
-#: src/gtkui/ui_manager.c:121 src/skins/ui_manager.c:229
+#: src/gtkui/ui_manager.c:111 src/skins/ui_manager.c:229
 msgid "List Manager"
 msgstr "Správce seznamů"
 
-#: src/gtkui/ui_manager.c:122 src/skins/ui_manager.c:230
+#: src/gtkui/ui_manager.c:112 src/skins/ui_manager.c:230
 msgid "Opens the playlist manager."
 msgstr "Otevře správce seznamu skladeb."
 
-#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:236
-msgid "View"
-msgstr "Zobrazení"
-
-#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:240
+#: src/gtkui/ui_manager.c:115 src/skins/ui_manager.c:240
 msgid "Add Internet Address..."
 msgstr "Přidat internetovou adresu…"
 
-#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:241
+#: src/gtkui/ui_manager.c:116 src/skins/ui_manager.c:241
 msgid "Adds a remote track to the playlist."
 msgstr "Do seznamu přidá vzdálenou stopu."
 
-#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:244
+#: src/gtkui/ui_manager.c:119 src/skins/ui_manager.c:244
 msgid "Add Files..."
 msgstr "Přidat soubory…"
 
-#: src/gtkui/ui_manager.c:137 src/skins/ui_manager.c:245
+#: src/gtkui/ui_manager.c:120 src/skins/ui_manager.c:245
 msgid "Adds files to the playlist."
 msgstr "Přidá soubory do seznamu skladeb."
 
-#: src/gtkui/ui_manager.c:142 src/skins/ui_manager.c:250
-msgid "Search and Select"
-msgstr "Hledání a výběr"
-
-#: src/gtkui/ui_manager.c:143 src/skins/ui_manager.c:251
-msgid ""
-"Searches the playlist and selects playlist entries based on specific "
-"criteria."
-msgstr ""
-"Prohledá seznam skladeb a vybere skladby ze seznamu podle zadaných omezení."
-
-#: src/gtkui/ui_manager.c:146 src/skins/ui_manager.c:254
-msgid "Invert Selection"
-msgstr "Invertovat výběr"
-
-#: src/gtkui/ui_manager.c:147 src/skins/ui_manager.c:255
-msgid "Inverts the selected and unselected entries."
-msgstr "Zamění vybrané a nevybrané položky."
-
-#: src/gtkui/ui_manager.c:150 src/skins/ui_manager.c:258
-msgid "Select All"
-msgstr "Vybrat vše"
-
-#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:259
-msgid "Selects all of the playlist entries."
-msgstr "Vybere všechny skladby v seznamu."
-
-#: src/gtkui/ui_manager.c:154 src/skins/ui_manager.c:262
-msgid "Select None"
-msgstr "Nevybrat žádné"
-
-#: src/gtkui/ui_manager.c:155 src/skins/ui_manager.c:263
-msgid "Deselects all of the playlist entries."
-msgstr "Žádná skladba v seznamu nebude vybraná."
-
-#: src/gtkui/ui_manager.c:160 src/skins/ui_manager.c:268
+#: src/gtkui/ui_manager.c:123 src/skins/ui_manager.c:268
 msgid "Remove All"
 msgstr "Odebrat všechny"
 
-#: src/gtkui/ui_manager.c:161 src/skins/ui_manager.c:269
+#: src/gtkui/ui_manager.c:124 src/skins/ui_manager.c:269
 msgid "Removes all entries from the playlist."
 msgstr "Ze seznamu odstraní všechny skladby."
 
-#: src/gtkui/ui_manager.c:164 src/skins/ui_manager.c:272
-msgid "Clear Queue"
-msgstr "Vyprázdnit frontu"
-
-#: src/gtkui/ui_manager.c:165 src/skins/ui_manager.c:273
-msgid "Clears the queue associated with this playlist."
-msgstr "Vyprázdní frontu spojenou s tímto seznamem skladeb."
-
-#: src/gtkui/ui_manager.c:168 src/skins/ui_manager.c:276
-msgid "Remove Unavailable Files"
-msgstr "Odstranit nedostupné soubory"
-
-#: src/gtkui/ui_manager.c:169 src/skins/ui_manager.c:277
-msgid "Removes unavailable files from the playlist."
-msgstr "Ze seznamu skladeb odstraní nedostupné soubory."
-
-#: src/gtkui/ui_manager.c:172 src/skins/ui_manager.c:280
-msgid "Remove Duplicates"
-msgstr "Odebrat duplikáty"
-
-#: src/gtkui/ui_manager.c:174 src/gtkui/ui_manager.c:206
-#: src/gtkui/ui_manager.c:236 src/skins/ui_manager.c:282
-#: src/skins/ui_manager.c:314 src/skins/ui_manager.c:344
-msgid "By Title"
-msgstr "Podle názvu"
-
-#: src/gtkui/ui_manager.c:175 src/skins/ui_manager.c:283
-msgid "Removes duplicate entries from the playlist by title."
-msgstr "Ze seznamu odstraní skladby na základě jejich názvu."
-
-#: src/gtkui/ui_manager.c:178 src/gtkui/ui_manager.c:218
-#: src/gtkui/ui_manager.c:248 src/skins/ui_manager.c:286
-#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
-msgid "By Filename"
-msgstr "Podle jména souboru"
-
-#: src/gtkui/ui_manager.c:179 src/skins/ui_manager.c:287
-msgid "Removes duplicate entries from the playlist by filename."
-msgstr "Ze seznamu odstraní skladby na základě jména souboru."
-
-#: src/gtkui/ui_manager.c:182 src/gtkui/ui_manager.c:222
-#: src/gtkui/ui_manager.c:252 src/skins/ui_manager.c:290
-#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
-msgid "By Path + Filename"
-msgstr "Podle cesty a jména souboru"
-
-#: src/gtkui/ui_manager.c:183 src/skins/ui_manager.c:291
-msgid "Removes duplicate entries from the playlist by their full path."
-msgstr "Ze seznamu odstraní skladby na základě celé cesty."
-
-#: src/gtkui/ui_manager.c:186 src/skins/ui_manager.c:294
+#: src/gtkui/ui_manager.c:127 src/skins/ui_manager.c:294
 msgid "Remove Unselected"
 msgstr "Odebrat neoznačené"
 
-#: src/gtkui/ui_manager.c:187 src/skins/ui_manager.c:295
+#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:295
 msgid "Remove unselected entries from the playlist."
 msgstr "Odebrat neoznačené skladby se seznamu."
 
-#: src/gtkui/ui_manager.c:190 src/skins/ui_manager.c:298
+#: src/gtkui/ui_manager.c:131 src/skins/ui_manager.c:298
 msgid "Remove Selected"
 msgstr "Odebrat označené"
 
-#: src/gtkui/ui_manager.c:191 src/skins/ui_manager.c:299
+#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:299
 msgid "Remove selected entries from the playlist."
 msgstr "Odebrat označené skladby ze seznamu."
 
-#: src/gtkui/ui_manager.c:196 src/skins/ui_manager.c:304
-msgid "Randomize List"
-msgstr "Zamíchat pořadí"
+#: src/gtkui/ui_manager.c:138
+msgid "Output"
+msgstr "Výstup"
 
-#: src/gtkui/ui_manager.c:197 src/skins/ui_manager.c:305
-msgid "Randomizes the playlist."
-msgstr "Sklady v seznamu seřadí náhodně."
+#: src/gtkui/ui_manager.c:140 src/modplug/gui/interface.cxx:572
+msgid "Effects"
+msgstr "Efekty"
 
-#: src/gtkui/ui_manager.c:200 src/skins/ui_manager.c:308
-msgid "Reverse List"
-msgstr "Otočit seznam"
+#: src/gtkui/ui_manager.c:142
+#, fuzzy
+msgid "Equalizer"
+msgstr "BMP ekvalizér"
 
-#: src/gtkui/ui_manager.c:201 src/skins/ui_manager.c:309
-msgid "Reverses the playlist."
-msgstr "Obrátí pořadí skladeb v seznamu."
+#: src/gtkui/ui_manager.c:148 src/skins/ui_manager.c:236
+msgid "View"
+msgstr "Zobrazení"
 
-#: src/gtkui/ui_manager.c:204 src/skins/ui_manager.c:312
-msgid "Sort List"
-msgstr "Seřadit seznam"
-
-#: src/gtkui/ui_manager.c:207 src/gtkui/ui_manager.c:237
-#: src/skins/ui_manager.c:315 src/skins/ui_manager.c:345
-msgid "Sorts the list by title."
-msgstr "Seřadí seznam podle názvu."
-
-#: src/gtkui/ui_manager.c:210 src/gtkui/ui_manager.c:240
-#: src/skins/ui_manager.c:318 src/skins/ui_manager.c:348
-msgid "By Album"
-msgstr "Podle alba"
-
-#: src/gtkui/ui_manager.c:211 src/gtkui/ui_manager.c:241
-#: src/skins/ui_manager.c:319 src/skins/ui_manager.c:349
-msgid "Sorts the list by album."
-msgstr "Seřadí seznam podle alba."
-
-#: src/gtkui/ui_manager.c:214 src/gtkui/ui_manager.c:244
-#: src/skins/ui_manager.c:322 src/skins/ui_manager.c:352
-msgid "By Artist"
-msgstr "Podle umělce"
-
-#: src/gtkui/ui_manager.c:215 src/gtkui/ui_manager.c:245
-#: src/skins/ui_manager.c:323 src/skins/ui_manager.c:353
-msgid "Sorts the list by artist."
-msgstr "Skladby v seznam seřadí podle jména umělce."
-
-#: src/gtkui/ui_manager.c:219 src/gtkui/ui_manager.c:249
-#: src/skins/ui_manager.c:327 src/skins/ui_manager.c:357
-msgid "Sorts the list by filename."
-msgstr "Skladby v seznamu seřadí podle jména souboru"
-
-#: src/gtkui/ui_manager.c:223 src/gtkui/ui_manager.c:253
-#: src/skins/ui_manager.c:331 src/skins/ui_manager.c:361
-msgid "Sorts the list by full pathname."
-msgstr "Skladby v seznamu seřadí podle celé cesty."
-
-#: src/gtkui/ui_manager.c:226 src/gtkui/ui_manager.c:256
-#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
-msgid "By Date"
-msgstr "Podle data"
-
-#: src/gtkui/ui_manager.c:227 src/gtkui/ui_manager.c:257
-#: src/skins/ui_manager.c:335 src/skins/ui_manager.c:365
-msgid "Sorts the list by modification time."
-msgstr "Skladby v seznamu seřadí podle času poslední změny v obsahu souboru."
-
-#: src/gtkui/ui_manager.c:230 src/gtkui/ui_manager.c:260
-#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
-msgid "By Track Number"
-msgstr "Podle čísla stopy"
-
-#: src/gtkui/ui_manager.c:231 src/gtkui/ui_manager.c:261
-#: src/skins/ui_manager.c:339 src/skins/ui_manager.c:369
-msgid "Sorts the list by track number."
-msgstr "Skladby v seznamu seřadí podle čísla stopy."
-
-#: src/gtkui/ui_manager.c:234 src/skins/ui_manager.c:342
-msgid "Sort Selected"
-msgstr "Seřadit vybrané"
-
-#: src/gtkui/ui_manager.c:270 src/skins/ui_manager.c:378
+#: src/gtkui/ui_manager.c:156 src/skins/ui_manager.c:378
 msgid "File"
 msgstr "Soubor"
 
-#: src/gtkui/ui_manager.c:273
+#: src/gtkui/ui_manager.c:159
 msgid "Components"
 msgstr "Součásti"
 
-#: src/gtkui/ui_manager.c:275 src/gtkui/ui_manager.c:278
+#: src/gtkui/ui_manager.c:161 src/gtkui/ui_manager.c:164
 #: src/skins/ui_manager.c:383 src/skins/ui_manager.c:386
 msgid "View Track Details"
 msgstr "Zobrazit informace o skladbě"
 
-#: src/gtkui/ui_manager.c:276 src/gtkui/ui_manager.c:279
+#: src/gtkui/ui_manager.c:162 src/gtkui/ui_manager.c:165
 #: src/skins/ui_manager.c:384 src/skins/ui_manager.c:387
 msgid "View track details"
 msgstr "Zobrazit informace o skladbě"
 
-#: src/gtkui/ui_manager.c:281 src/gtkui/ui_manager.c:282
+#: src/gtkui/ui_manager.c:167 src/gtkui/ui_manager.c:168
 #: src/skins/ui_manager.c:389 src/skins/ui_manager.c:390
 msgid "About Audacious"
 msgstr "O Audacious"
 
-#: src/gtkui/ui_manager.c:284 src/skins/ui_manager.c:392
+#: src/gtkui/ui_manager.c:170 src/skins/ui_manager.c:392
 msgid "Play File"
 msgstr "Přehrát soubor"
 
-#: src/gtkui/ui_manager.c:285 src/skins/ui_manager.c:393
+#: src/gtkui/ui_manager.c:171 src/skins/ui_manager.c:393
 msgid "Load and play a file"
 msgstr "Načíst a přehrát soubor"
 
-#: src/gtkui/ui_manager.c:287 src/skins/ui_manager.c:395
+#: src/gtkui/ui_manager.c:173 src/skins/ui_manager.c:395
 msgid "Play Location"
 msgstr "Hrát z adresy"
 
-#: src/gtkui/ui_manager.c:288 src/skins/ui_manager.c:396
+#: src/gtkui/ui_manager.c:174 src/skins/ui_manager.c:396
 msgid "Play media from the selected location"
 msgstr "Hrát média z vybraného místa"
 
-#: src/gtkui/ui_manager.c:290 src/skins/ui_manager.c:398
+#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:398
 msgid "Plugin services"
 msgstr "Služby modulů"
 
-#: src/gtkui/ui_manager.c:292 src/skins/ui_manager.c:400
+#: src/gtkui/ui_manager.c:178 src/skins/ui_manager.c:400
 msgid "Preferences"
 msgstr "Nastavení"
 
-#: src/gtkui/ui_manager.c:293 src/skins/ui_manager.c:401
+#: src/gtkui/ui_manager.c:179 src/skins/ui_manager.c:401
 msgid "Open preferences window"
 msgstr "Otevřít okno s nastavením"
 
-#: src/gtkui/ui_manager.c:295 src/skins/ui_manager.c:403
+#: src/gtkui/ui_manager.c:181 src/skins/ui_manager.c:403
 msgid "_Quit"
 msgstr "_Konec"
 
-#: src/gtkui/ui_manager.c:296 src/skins/ui_manager.c:404
+#: src/gtkui/ui_manager.c:182 src/skins/ui_manager.c:404
 msgid "Quit Audacious"
 msgstr "O Audacious"
 
-#: src/gtkui/ui_manager.c:298 src/gtkui/ui_manager.c:299
+#: src/gtkui/ui_manager.c:184 src/gtkui/ui_manager.c:185
 #: src/skins/ui_manager.c:406 src/skins/ui_manager.c:407
 msgid "Set A-B"
 msgstr "Nastavit A-B"
 
-#: src/gtkui/ui_manager.c:301 src/gtkui/ui_manager.c:302
+#: src/gtkui/ui_manager.c:187 src/gtkui/ui_manager.c:188
 #: src/skins/ui_manager.c:409 src/skins/ui_manager.c:410
 msgid "Clear A-B"
 msgstr "Vyprázdnit A-B"
 
-#: src/gtkui/ui_manager.c:304 src/gtkui/ui_manager.c:305
+#: src/gtkui/ui_manager.c:190 src/gtkui/ui_manager.c:191
 #: src/skins/ui_manager.c:412 src/skins/ui_manager.c:413
 msgid "Jump to Playlist Start"
 msgstr "Přejít na začátek seznamu skladeb"
 
-#: src/gtkui/ui_manager.c:307 src/gtkui/ui_manager.c:308 src/hotkey/gui.c:80
+#: src/gtkui/ui_manager.c:193 src/gtkui/ui_manager.c:194 src/hotkey/gui.c:80
 #: src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
 msgid "Jump to File"
 msgstr "Přejít na soubor"
 
-#: src/gtkui/ui_manager.c:313 src/skins/ui_manager.c:421
+#: src/gtkui/ui_manager.c:199 src/skins/ui_manager.c:421
 msgid "Queue Toggle"
 msgstr "Přepnout frontu"
 
-#: src/gtkui/ui_manager.c:314 src/skins/ui_manager.c:422
+#: src/gtkui/ui_manager.c:200 src/skins/ui_manager.c:422
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Povolí/zakáže položku ve frontě seznamu skladeb."
 
-#: src/gtkui/ui_manager.c:317 src/skins/ui_manager.c:425
+#: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:425
 msgid "Copy"
 msgstr "Kopírovat"
 
-#: src/gtkui/ui_manager.c:320 src/skins/ui_manager.c:427
+#: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:427
 msgid "Cut"
 msgstr "Oříznout"
 
-#: src/gtkui/ui_manager.c:323 src/skins/ui_manager.c:429
+#: src/gtkui/ui_manager.c:209 src/skins/ui_manager.c:429
 msgid "Paste"
 msgstr "Vložit"
+
+#: src/gtkui/ui_manager.c:212 src/skins/ui_manager.c:258
+msgid "Select All"
+msgstr "Vybrat vše"
+
+#: src/gtkui/ui_manager.c:213 src/skins/ui_manager.c:259
+msgid "Selects all of the playlist entries."
+msgstr "Vybere všechny skladby v seznamu."
+
+#: src/gtkui/ui_manager.c:216 src/skins/ui_manager.c:262
+msgid "Select None"
+msgstr "Nevybrat žádné"
+
+#: src/gtkui/ui_manager.c:217 src/skins/ui_manager.c:263
+msgid "Deselects all of the playlist entries."
+msgstr "Žádná skladba v seznamu nebude vybraná."
 
 #: src/hotkey/gui.c:70
 msgid "Previous Track"
@@ -3417,7 +3339,7 @@ msgstr "Režim připojení:"
 msgid "Enable debug printing"
 msgstr "Povolit ladící výpisy"
 
-#: src/jack/jack.c:421
+#: src/jack/jack.c:437
 msgid ""
 "XMMS jack Driver 0.17\n"
 "\n"
@@ -3435,7 +3357,7 @@ msgstr ""
 "Pro Audacious převedl\n"
 "Giacomo Lozito z develia.org"
 
-#: src/jack/jack.c:426
+#: src/jack/jack.c:442
 msgid "About JACK Output Plugin 0.17"
 msgstr "O výstupním modulu JACK 0.17"
 
@@ -3688,10 +3610,6 @@ msgstr ""
 msgid "Preamp"
 msgstr "Předzesílení"
 
-#: src/modplug/gui/interface.cxx:572
-msgid "Effects"
-msgstr "Efekty"
-
 #: src/modplug/gui/interface.cxx:601
 msgid "Use Filename as Song Title"
 msgstr "Použít jméno souboru jako název skladby"
@@ -3862,77 +3780,6 @@ msgstr "Nastavení slepého výstupu"
 msgid "Run in real time"
 msgstr "Běžet v reálném čase"
 
-#: src/OSS/configure.c:148
-#, c-format
-msgid "Default (%s)"
-msgstr "Standardně (%s)"
-
-#: src/OSS/configure.c:197
-msgid "OSS Driver configuration"
-msgstr "Nastavení ovladače OSS"
-
-#: src/OSS/configure.c:213 src/oss4/configure.c:162 src/sun/configure.c:181
-msgid "Audio device:"
-msgstr "Zvukové zařízení:"
-
-#: src/OSS/configure.c:235 src/OSS/configure.c:276 src/oss4/configure.c:188
-msgid "Use alternate device:"
-msgstr "Použít jiné zařízení:"
-
-#: src/OSS/configure.c:298 src/sun/configure.c:246
-msgid "Devices"
-msgstr "Zařízení"
-
-#: src/OSS/configure.c:325
-msgid "Mixer Settings:"
-msgstr "Nastavení mixéru:"
-
-#: src/OSS/configure.c:331
-msgid "Volume controls Master not PCM"
-msgstr "Hlasitost ovládána Master kanálem místo PCM"
-
-#: src/OSS/configure.c:337 src/sun/configure.c:392
-msgid "Mixer"
-msgstr "Mixér"
-
-#: src/OSS/OSS.c:38
-msgid "About OSS Driver"
-msgstr "O modulu OSS"
-
-#: src/OSS/OSS.c:39
-msgid ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Ovladač OSS programu Audacious\n"
-"\n"
-"Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
-"pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
-"Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
-"libovolné novější.\n"
-"\n"
-"Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
-"ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
-"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
-"\n"
-"S tímto programem byste měli obdržet kopii GNU GPL. Pokud se tak\n"
-"nestalo, obraťte se na Free Software Foundation, Inc.,\n"
-"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
 #: src/oss4/configure.c:88
 msgid "1. Default device"
 msgstr "1. Implicitní zařízení"
@@ -4099,7 +3946,7 @@ msgstr "Proxy"
 msgid "Player Name:"
 msgstr "Název přehrávače:"
 
-#: src/roaraudio/gui.c:261 src/skins/ui_main.c:384 src/skins/ui_main.c:2182
+#: src/roaraudio/gui.c:261 src/skins/ui_main.c:386 src/skins/ui_main.c:2183
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -4922,44 +4769,44 @@ msgstr "Ekvalizér"
 msgid "Presets"
 msgstr "Předvolby"
 
-#: src/skins/ui_main.c:382
+#: src/skins/ui_main.c:384
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s – Audacious"
 
-#: src/skins/ui_main.c:587
+#: src/skins/ui_main.c:589
 msgid "kbps"
 msgstr "kb/s"
 
-#: src/skins/ui_main.c:595
+#: src/skins/ui_main.c:597
 msgid "kHz"
 msgstr "kHz"
 
-#: src/skins/ui_main.c:602
+#: src/skins/ui_main.c:604
 msgid "surround"
 msgstr "prostorový zvuk"
 
-#: src/skins/ui_main.c:602
+#: src/skins/ui_main.c:604
 msgid "stereo"
 msgstr "stereo"
 
-#: src/skins/ui_main.c:603
+#: src/skins/ui_main.c:605
 msgid "mono"
 msgstr "mono"
 
-#: src/skins/ui_main.c:976
+#: src/skins/ui_main.c:977
 msgid "Audacious - visibility warning"
 msgstr "Audacious – varování o viditelnosti"
 
-#: src/skins/ui_main.c:979
+#: src/skins/ui_main.c:980
 msgid "Show main player window"
 msgstr "Zobrazit hlavním okno přehrávače"
 
-#: src/skins/ui_main.c:980
+#: src/skins/ui_main.c:981
 msgid "Ignore"
 msgstr "Ignorovat"
 
-#: src/skins/ui_main.c:986
+#: src/skins/ui_main.c:987
 msgid ""
 "Audacious has been started with all of its windows hidden.\n"
 "You may want to show the player window again to control Audacious; "
@@ -4971,15 +4818,15 @@ msgstr ""
 "ovládat. V opačném případě si budete muset vystačit se vzdáleným ovládáním "
 "přes audtool nebo povolený zásuvný modul (např. modul statusicon)."
 
-#: src/skins/ui_main.c:992
+#: src/skins/ui_main.c:993
 msgid "Always ignore, show/hide is controlled remotely"
 msgstr "Vždy ignorovat, zobrazit/skrýt se ovládá vzdáleně"
 
-#: src/skins/ui_main.c:1037
+#: src/skins/ui_main.c:1038
 msgid "Audacious - broken GTK engine usage warning"
 msgstr "Audacious – varování o rozbitém jádru GTK"
 
-#: src/skins/ui_main.c:1045
+#: src/skins/ui_main.c:1046
 #, c-format
 msgid ""
 "<big><b>Broken GTK engine in use</b></big>\n"
@@ -5003,75 +4850,75 @@ msgstr ""
 "Abyste mohli využít těchto funkcí, zvažte použití jiného tématického jádra "
 "GTK."
 
-#: src/skins/ui_main.c:1056
+#: src/skins/ui_main.c:1057
 msgid "Do not display this warning again"
 msgstr "Toto varování již příště nezobrazovat"
 
-#: src/skins/ui_main.c:1264
+#: src/skins/ui_main.c:1265
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
 msgstr "Přejít na: %d:%-2.2d/%d:%-2.2d (%d %%)"
 
-#: src/skins/ui_main.c:1294
+#: src/skins/ui_main.c:1295
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Hlasitost: %d %%"
 
-#: src/skins/ui_main.c:1322
+#: src/skins/ui_main.c:1323
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Vyvážení: %d %% vlevo"
 
-#: src/skins/ui_main.c:1326
+#: src/skins/ui_main.c:1327
 msgid "Balance: center"
 msgstr "Vyvážení: střed"
 
-#: src/skins/ui_main.c:1330
+#: src/skins/ui_main.c:1331
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Vyvážení: %d %% vpravo"
 
-#: src/skins/ui_main.c:1625
+#: src/skins/ui_main.c:1626
 msgid "Options Menu"
 msgstr "Nabídka nastavení"
 
-#: src/skins/ui_main.c:1629
+#: src/skins/ui_main.c:1630
 msgid "Disable 'Always On Top'"
 msgstr "Vypnout „Vždy na vrchu“"
 
-#: src/skins/ui_main.c:1631
+#: src/skins/ui_main.c:1632
 msgid "Enable 'Always On Top'"
 msgstr "Zapnout „Vždy na vrchu“"
 
-#: src/skins/ui_main.c:1634
+#: src/skins/ui_main.c:1635
 msgid "File Info Box"
 msgstr "Informace o souboru"
 
-#: src/skins/ui_main.c:1638
+#: src/skins/ui_main.c:1639
 msgid "Disable 'GUI Scaling'"
 msgstr "Zakázat „Škálovat GUI“"
 
-#: src/skins/ui_main.c:1640
+#: src/skins/ui_main.c:1641
 msgid "Enable 'GUI Scaling'"
 msgstr "Povolit „škálovat GUI“"
 
-#: src/skins/ui_main.c:1643
+#: src/skins/ui_main.c:1644
 msgid "Visualization Menu"
 msgstr "Nabídka znázornění"
 
-#: src/skins/ui_main.c:2363
+#: src/skins/ui_main.c:2364
 msgid "Single mode."
 msgstr "Režim jedné skladby."
 
-#: src/skins/ui_main.c:2365
+#: src/skins/ui_main.c:2366
 msgid "Playlist mode."
 msgstr "Režim seznamu skladeb."
 
-#: src/skins/ui_main.c:2388
+#: src/skins/ui_main.c:2390
 msgid "Stopping after song."
 msgstr "Zastavuje po skladbě."
 
-#: src/skins/ui_main.c:2390
+#: src/skins/ui_main.c:2392
 msgid "Not stopping after song."
 msgstr "Po skladbě nezastavuje."
 
@@ -5212,6 +5059,38 @@ msgstr "Dosažený čas"
 msgid "Time Remaining"
 msgstr "Zbývající čas"
 
+#: src/skins/ui_manager.c:188
+msgid "Visualization"
+msgstr "Znázornění"
+
+#: src/skins/ui_manager.c:189
+msgid "Visualization Mode"
+msgstr "Typ znázornění"
+
+#: src/skins/ui_manager.c:190
+msgid "Analyzer Mode"
+msgstr "Režim analyzátoru"
+
+#: src/skins/ui_manager.c:191
+msgid "Scope Mode"
+msgstr "Typ vlnovky"
+
+#: src/skins/ui_manager.c:192
+msgid "Voiceprint Mode"
+msgstr "Typ otisku"
+
+#: src/skins/ui_manager.c:193
+msgid "WindowShade VU Mode"
+msgstr "Typ WindowShade VU"
+
+#: src/skins/ui_manager.c:194
+msgid "Analyzer Falloff"
+msgstr "Klesání sloupců"
+
+#: src/skins/ui_manager.c:195
+msgid "Peaks Falloff"
+msgstr "Klesání vrcholků"
+
 #: src/skins/ui_manager.c:214
 msgid "Import Playlist"
 msgstr "Importovat seznam skladeb"
@@ -5219,6 +5098,140 @@ msgstr "Importovat seznam skladeb"
 #: src/skins/ui_manager.c:217
 msgid "Export Playlist"
 msgstr "Exportovat seznam skladeb"
+
+#: src/skins/ui_manager.c:250
+msgid "Search and Select"
+msgstr "Hledání a výběr"
+
+#: src/skins/ui_manager.c:251
+msgid ""
+"Searches the playlist and selects playlist entries based on specific "
+"criteria."
+msgstr ""
+"Prohledá seznam skladeb a vybere skladby ze seznamu podle zadaných omezení."
+
+#: src/skins/ui_manager.c:254
+msgid "Invert Selection"
+msgstr "Invertovat výběr"
+
+#: src/skins/ui_manager.c:255
+msgid "Inverts the selected and unselected entries."
+msgstr "Zamění vybrané a nevybrané položky."
+
+#: src/skins/ui_manager.c:272
+msgid "Clear Queue"
+msgstr "Vyprázdnit frontu"
+
+#: src/skins/ui_manager.c:273
+msgid "Clears the queue associated with this playlist."
+msgstr "Vyprázdní frontu spojenou s tímto seznamem skladeb."
+
+#: src/skins/ui_manager.c:276
+msgid "Remove Unavailable Files"
+msgstr "Odstranit nedostupné soubory"
+
+#: src/skins/ui_manager.c:277
+msgid "Removes unavailable files from the playlist."
+msgstr "Ze seznamu skladeb odstraní nedostupné soubory."
+
+#: src/skins/ui_manager.c:280
+msgid "Remove Duplicates"
+msgstr "Odebrat duplikáty"
+
+#: src/skins/ui_manager.c:282 src/skins/ui_manager.c:314
+#: src/skins/ui_manager.c:344
+msgid "By Title"
+msgstr "Podle názvu"
+
+#: src/skins/ui_manager.c:283
+msgid "Removes duplicate entries from the playlist by title."
+msgstr "Ze seznamu odstraní skladby na základě jejich názvu."
+
+#: src/skins/ui_manager.c:286 src/skins/ui_manager.c:326
+#: src/skins/ui_manager.c:356
+msgid "By Filename"
+msgstr "Podle jména souboru"
+
+#: src/skins/ui_manager.c:287
+msgid "Removes duplicate entries from the playlist by filename."
+msgstr "Ze seznamu odstraní skladby na základě jména souboru."
+
+#: src/skins/ui_manager.c:290 src/skins/ui_manager.c:330
+#: src/skins/ui_manager.c:360
+msgid "By Path + Filename"
+msgstr "Podle cesty a jména souboru"
+
+#: src/skins/ui_manager.c:291
+msgid "Removes duplicate entries from the playlist by their full path."
+msgstr "Ze seznamu odstraní skladby na základě celé cesty."
+
+#: src/skins/ui_manager.c:304
+msgid "Randomize List"
+msgstr "Zamíchat pořadí"
+
+#: src/skins/ui_manager.c:305
+msgid "Randomizes the playlist."
+msgstr "Sklady v seznamu seřadí náhodně."
+
+#: src/skins/ui_manager.c:308
+msgid "Reverse List"
+msgstr "Otočit seznam"
+
+#: src/skins/ui_manager.c:309
+msgid "Reverses the playlist."
+msgstr "Obrátí pořadí skladeb v seznamu."
+
+#: src/skins/ui_manager.c:312
+msgid "Sort List"
+msgstr "Seřadit seznam"
+
+#: src/skins/ui_manager.c:315 src/skins/ui_manager.c:345
+msgid "Sorts the list by title."
+msgstr "Seřadí seznam podle názvu."
+
+#: src/skins/ui_manager.c:318 src/skins/ui_manager.c:348
+msgid "By Album"
+msgstr "Podle alba"
+
+#: src/skins/ui_manager.c:319 src/skins/ui_manager.c:349
+msgid "Sorts the list by album."
+msgstr "Seřadí seznam podle alba."
+
+#: src/skins/ui_manager.c:322 src/skins/ui_manager.c:352
+msgid "By Artist"
+msgstr "Podle umělce"
+
+#: src/skins/ui_manager.c:323 src/skins/ui_manager.c:353
+msgid "Sorts the list by artist."
+msgstr "Skladby v seznam seřadí podle jména umělce."
+
+#: src/skins/ui_manager.c:327 src/skins/ui_manager.c:357
+msgid "Sorts the list by filename."
+msgstr "Skladby v seznamu seřadí podle jména souboru"
+
+#: src/skins/ui_manager.c:331 src/skins/ui_manager.c:361
+msgid "Sorts the list by full pathname."
+msgstr "Skladby v seznamu seřadí podle celé cesty."
+
+#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
+msgid "By Date"
+msgstr "Podle data"
+
+#: src/skins/ui_manager.c:335 src/skins/ui_manager.c:365
+msgid "Sorts the list by modification time."
+msgstr "Skladby v seznamu seřadí podle času poslední změny v obsahu souboru."
+
+#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
+msgid "By Track Number"
+msgstr "Podle čísla stopy"
+
+#: src/skins/ui_manager.c:339 src/skins/ui_manager.c:369
+msgid "Sorts the list by track number."
+msgstr "Skladby v seznamu seřadí podle čísla stopy."
+
+#: src/skins/ui_manager.c:342
+msgid "Sort Selected"
+msgstr "Seřadit vybrané"
 
 #: src/skins/ui_manager.c:381
 msgid "Plugin Services"
@@ -5358,11 +5371,11 @@ msgstr "Shodující se položky automaticky zařadit/vyřadit z fronty"
 msgid "Create a new playlist with matching entries"
 msgstr "Ze shodujících se položek vytvořit nový seznam skladeb"
 
-#: src/skins/ui_playlist.c:1174
+#: src/skins/ui_playlist.c:1175
 msgid "Audacious Playlist Editor"
 msgstr "Zobrazit editor seznamu skladeb"
 
-#: src/skins/ui_playlist.c:1234
+#: src/skins/ui_playlist.c:1235
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d z %d)"
@@ -5566,11 +5579,11 @@ msgstr "Změna skladby"
 msgid "Spectrum Analyzer"
 msgstr "Analyzátor spektra"
 
-#: src/statusicon/statusicon.c:364
+#: src/statusicon/statusicon.c:365
 msgid "About Status Icon Plugin"
 msgstr "O modulu Stavová ikona"
 
-#: src/statusicon/statusicon.c:365
+#: src/statusicon/statusicon.c:366
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -5589,35 +5602,35 @@ msgstr ""
 "Tento modul poskytuje stavovou ikonu, která\n"
 "je umístěna v systémové oblasti desktopu.\n"
 
-#: src/statusicon/statusicon.c:428
+#: src/statusicon/statusicon.c:429
 msgid "Status Icon Plugin - Preferences"
 msgstr "Modul stavové ikony – Nastavení"
 
-#: src/statusicon/statusicon.c:438
+#: src/statusicon/statusicon.c:439
 msgid "Right-Click Menu"
 msgstr "Nabídka při stisku pravého tlačítka"
 
-#: src/statusicon/statusicon.c:442
+#: src/statusicon/statusicon.c:443
 msgid "Audacious standard menu"
 msgstr "Standardní nabídka Audacious"
 
-#: src/statusicon/statusicon.c:444
+#: src/statusicon/statusicon.c:445
 msgid "Small playback menu #1"
 msgstr "Drobná nabídka pro přehrávání č. 1"
 
-#: src/statusicon/statusicon.c:446
+#: src/statusicon/statusicon.c:447
 msgid "Small playback menu #2"
 msgstr "Drobná nabídka pro přehrávání č. 2"
 
-#: src/statusicon/statusicon.c:467
+#: src/statusicon/statusicon.c:468
 msgid "Mouse Scroll Action"
 msgstr "Reakce na rolování myší"
 
-#: src/statusicon/statusicon.c:471
+#: src/statusicon/statusicon.c:472
 msgid "Change volume"
 msgstr "Změnit hlasitost"
 
-#: src/statusicon/statusicon.c:473
+#: src/statusicon/statusicon.c:474
 msgid "Change playing song"
 msgstr "Změnit hranou skladbu"
 
@@ -5699,11 +5712,11 @@ msgstr ""
 msgid "Streambrowser"
 msgstr "Prohlížeč proudů"
 
-#: src/sun/about.c:33
+#: src/sun/about.c:30
 msgid "About the Sun Driver"
 msgstr "O ovladači pro Sun"
 
-#: src/sun/about.c:34
+#: src/sun/about.c:31
 msgid ""
 "XMMS BSD Sun Driver\n"
 "\n"
@@ -5774,11 +5787,11 @@ msgstr "Popisky Ogg Vorbis"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Nastavení modulu Ogg Vorbis Audio"
 
-#: src/vorbis/vorbis.c:582
+#: src/vorbis/vorbis.c:574
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "O modulu Ogg Vorbis Audio"
 
-#: src/vorbis/vorbis.c:587
+#: src/vorbis/vorbis.c:579
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5975,9 +5988,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Když změníte volby výstupu nebo velikost směšovacího bufferu, bude třeba "
 #~ "zastavit/restartovat přehrávání, aby se změny projevily."
-
-#~ msgid "Output"
-#~ msgstr "Výstup"
 
 #~ msgid "Mixing buffer size (ms):"
 #~ msgstr "Velikost vyrovnávací paměti směšovače (ms):"
@@ -6517,8 +6527,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Modul Icecast\n"
@@ -6745,8 +6755,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA.\n"
 #~ "\n"
 #~ "Note: For any issues regarding this plugin (including patches and \n"
@@ -7495,8 +7505,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA.\n"
 #~ "Author: Matthieu Sozeau (mattam@altern.org)"
 #~ msgstr ""
@@ -10286,9 +10296,6 @@ msgstr ""
 
 #~ msgid "Takeshi Aihana"
 #~ msgstr "Takeshi Aihana"
-
-#~ msgid "BMP Equalizer"
-#~ msgstr "BMP ekvalizér"
 
 #~ msgid "Beep Media Player"
 #~ msgstr "Beep Media Player"
