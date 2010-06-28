@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
 "POT-Creation-Date: 2010-06-27 15:47+0300\n"
-"PO-Revision-Date: 2010-04-04 20:51+0100\n"
+"PO-Revision-Date: 2010-06-27 21:22+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
 "Language: \n"
@@ -938,7 +938,7 @@ msgstr "Synthesizer-Einstellungen"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
 msgid "gain"
-msgstr ""
+msgstr "Verstärkung"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:435
 #: src/amidi-plug/i_configure-fluidsynth.c:463
@@ -958,7 +958,7 @@ msgstr "Polyphonie"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:485
 msgid "reverb"
-msgstr ""
+msgstr "Hall"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:494
 #: src/amidi-plug/i_configure-fluidsynth.c:525
@@ -972,7 +972,7 @@ msgstr "Nein"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:516
 msgid "chorus"
-msgstr ""
+msgstr "Refrain"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:547
 msgid "sample rate"
@@ -1792,7 +1792,7 @@ msgstr "Einstellungen"
 
 #: src/crossfade/plugin.c:95
 msgid "Overlap (in seconds):"
-msgstr ""
+msgstr "Überschneiden (in Sekunden):"
 
 #: src/crossfade/plugin.c:129 src/crossfade/plugin.c:137
 #, fuzzy
@@ -2105,7 +2105,7 @@ msgstr ""
 
 #: src/evdev-plug/ed_ui.c:341
 msgid "EvDev-Plug - Add custom device"
-msgstr ""
+msgstr "EvDev-Plug - Spezielles Gerät hinzufügen"
 
 #: src/evdev-plug/ed_ui.c:353
 msgid ""
@@ -2137,11 +2137,11 @@ msgstr ""
 
 #: src/evdev-plug/ed_ui.c:447
 msgid "Do you want to remove the existing configuration for selected device?\n"
-msgstr ""
+msgstr "Wollen Sie die existierende Konfiguration des ausgewählten Gerätes löschen?\n"
 
 #: src/evdev-plug/ed_ui.c:466
 msgid "Do you want to remove the selected custom device?\n"
-msgstr ""
+msgstr "Wollen Sie das ausgewählte Custom-Gerät entfernen?\n"
 
 #: src/evdev-plug/ed_ui.c:612
 msgid "EvDev-Plug - Configuration"
@@ -2297,7 +2297,7 @@ msgstr "ursprünglichen Datei-Tags"
 
 #: src/filewriter/filewriter.c:555
 msgid "original filename"
-msgstr "ürsprünglichen Dateinamen"
+msgstr "ursprünglichen Dateinamen"
 
 #: src/filewriter/filewriter.c:565
 msgid "Don't strip file name extension"
@@ -2554,11 +2554,11 @@ msgstr "Audacious2"
 
 #: src/gntui/gntui.c:312
 msgid "gnt interface"
-msgstr ""
+msgstr "GNT Interface"
 
 #: src/gtkui/actions.c:222 src/skins/ui_main.c:814
 msgid "Can't jump to time when no track is being played.\n"
-msgstr ""
+msgstr "Kann nicht zu Zeit springen, wenn kein Titel gespielt wird.\n"
 
 #: src/gtkui/actions.c:237 src/gtkui/ui_manager.c:196
 #: src/gtkui/ui_manager.c:197 src/skins/ui_main.c:829
@@ -2644,11 +2644,11 @@ msgstr "Wiedergabeliste speichern"
 
 #: src/gtkui/ui_manager.c:51
 msgid "Show infoarea"
-msgstr ""
+msgstr "Infobereich zeigen"
 
 #: src/gtkui/ui_manager.c:52
 msgid "Show/hide infoarea"
-msgstr ""
+msgstr "Infobereich zeigen/verstecken"
 
 #: src/gtkui/ui_manager.c:54
 #, fuzzy
@@ -2657,7 +2657,7 @@ msgstr "Hauptfenster zeigen"
 
 #: src/gtkui/ui_manager.c:55
 msgid "Show/hide main menu"
-msgstr ""
+msgstr "Hauptfenster zeigen/verstecken"
 
 #: src/gtkui/ui_manager.c:67 src/gtkui/ui_manager.c:68
 #: src/skins/ui_manager.c:173 src/skins/ui_manager.c:174
@@ -2672,7 +2672,7 @@ msgstr "Stop"
 #: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74
 #: src/skins/ui_manager.c:179 src/skins/ui_manager.c:180
 msgid "Previous"
-msgstr "Voriger"
+msgstr "Vorheriger"
 
 #: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77
 #: src/skins/ui_manager.c:182 src/skins/ui_manager.c:183
@@ -3243,7 +3243,7 @@ msgstr "Mono (downmix)"
 
 #: src/modplug/gui/interface.cxx:241
 msgid "Nearest (fastest)"
-msgstr "Am nähesten (schnellstes)"
+msgstr "Am nächsten (schnellstes)"
 
 #: src/modplug/gui/interface.cxx:248
 msgid "Linear (fast)"
@@ -3497,11 +3497,11 @@ msgstr "ALSA-Ausgabeplugin-Einstellungen"
 #: src/oss4/configure.c:201
 #, fuzzy
 msgid "Save volume between sessions"
-msgstr "VMIX Lautstärke speichern"
+msgstr "Lautstärke speichern"
 
 #: src/oss4/configure.c:205
 msgid "Enable format conversions made by the OSS software."
-msgstr ""
+msgstr "Formatkonvertierung aktivieren"
 
 #: src/oss4/plugin.c:53
 #, fuzzy
@@ -3622,7 +3622,7 @@ msgstr "Server: "
 
 #: src/roaraudio/gui.c:130
 msgid "Host or Path:"
-msgstr ""
+msgstr "Host oder Pfad:"
 
 #: src/roaraudio/gui.c:168
 #, fuzzy
@@ -3631,7 +3631,7 @@ msgstr "<b>Schriftarten</b>"
 
 #: src/roaraudio/gui.c:173
 msgid "Server & Network"
-msgstr ""
+msgstr "Server & Netzwerk"
 
 #: src/roaraudio/gui.c:198
 #, fuzzy
@@ -3668,7 +3668,7 @@ msgstr "<b>Aktion: </b>"
 
 #: src/roaraudio/gui.c:303
 msgid "Meta Data"
-msgstr ""
+msgstr "Meta-Daten"
 
 #: src/scrobbler/configure.c:151 src/scrobbler/configure.c:228
 msgid "Change password"
@@ -3945,7 +3945,7 @@ msgstr "SIDPlay 2-Optionen:"
 
 #: src/sid/xs_interface.c:650
 msgid "Fast (nearest neighbour)"
-msgstr "Schnell (am nähesten)"
+msgstr "Schnell (am nächsten)"
 
 #: src/sid/xs_interface.c:654
 msgid ""
