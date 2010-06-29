@@ -23,27 +23,12 @@
 #include <FLAC/all.h>
 #include "flacng.h"
 #include "flac_compat.h"
-#include "debug.h"
 
-#define INFO_LOCK(__info) \
-    do { \
-        _DEBUG("Trying to lock info %s", (__info)->name); \
-        g_mutex_lock((__info)->mutex); \
-        _DEBUG("Locked info %s", (__info)->name); \
-    } while(0)
-
-#define INFO_UNLOCK(__info) \
-    do { \
-        _DEBUG("Unlocking info %s", (__info)->name); \
-        g_mutex_unlock((__info)->mutex); \
-        _DEBUG("Unlocked info %s", (__info)->name); \
-    } while(0)
-
-callback_info* init_callback_info(gchar* name);
+callback_info* init_callback_info(void);
 void clean_callback_info(callback_info* info);
-void reset_info(callback_info* info, gboolean close_fd);
-Tuple *get_tuple_from_file(const gchar *filename, VFSFile *fd, callback_info *info);
+void reset_info(callback_info* info);
+Tuple *get_tuple_from_file(const gchar *filename, callback_info *info);
 void add_comment(callback_info* info, gchar* key, gchar* value);
-gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info* info);
+gboolean read_metadata(FLAC__StreamDecoder* decoder, callback_info* info);
 
 #endif

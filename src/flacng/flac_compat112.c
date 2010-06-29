@@ -19,7 +19,6 @@
 
 #include <FLAC/all.h>
 #include "flac_compat112.h"
-#include "debug.h"
 
 #if !defined(FLAC_API_VERSION_CURRENT)
 
@@ -35,10 +34,6 @@ FLAC__SeekableStreamDecoderState FLAC__stream_decoder_init_stream(
         FLAC__SeekableStreamDecoderErrorCallback    error_callback,
         void *      client_data) {
 
-        FLAC__SeekableStreamDecoderState ret;
-
-        _ENTER;
-
         FLAC__seekable_stream_decoder_set_read_callback(decoder, read_callback);
         FLAC__seekable_stream_decoder_set_seek_callback(decoder, seek_callback);
         FLAC__seekable_stream_decoder_set_tell_callback(decoder, tell_callback);
@@ -49,9 +44,7 @@ FLAC__SeekableStreamDecoderState FLAC__stream_decoder_init_stream(
         FLAC__seekable_stream_decoder_set_error_callback(decoder, error_callback);
         FLAC__seekable_stream_decoder_set_client_data(decoder, client_data);
 
-        ret = FLAC__seekable_stream_decoder_init(decoder);
-
-        _LEAVE ret;
+        return FLAC__seekable_stream_decoder_init(decoder);
 }
 
 #endif

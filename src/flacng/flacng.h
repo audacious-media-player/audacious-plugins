@@ -23,6 +23,11 @@
 #include <glib.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <FLAC/all.h>
+
+#define ERROR(...) do { \
+    printf("flacng: " __VA_ARGS__); \
+} while (0)
 
 #define OUTPUT_BLOCK_SIZE (1024u)
 #define MAX_SUPPORTED_CHANNELS (2u)
@@ -73,7 +78,6 @@ struct stream_comment {
  */
 struct stream_replaygain {
     gboolean has_rg;
-    gchar* ref_loud;
     gchar* track_gain;
     gchar* track_peak;
     gchar* album_gain;
@@ -83,19 +87,17 @@ struct stream_replaygain {
 
 typedef struct callback_info {
     GMutex* mutex;
+    FLAC__StreamMetadata *metadata;
     gint32* output_buffer;
     gint32* write_pointer;
     guint buffer_free;
     guint buffer_used;
-    VFSFile* input_stream;
+    VFSFile* fd;
     struct stream_info stream;
     struct stream_comment comment;
     struct stream_replaygain replaygain;
     gboolean metadata_changed;
     struct frame_info frame;
-    glong read_max;
-    gboolean testing;
-    gchar* name;
     gint bitrate;
 } callback_info;
 
