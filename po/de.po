@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
 "POT-Creation-Date: 2010-06-27 15:47+0300\n"
-"PO-Revision-Date: 2010-06-27 21:22+0100\n"
+"PO-Revision-Date: 2010-07-01 23:31+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
 "Language: \n"
@@ -675,14 +675,12 @@ msgid "Mixer element:"
 msgstr "Mixer-Element:"
 
 #: src/alsa/config.c:451
-#, fuzzy
 msgid "Work around drain hangup"
-msgstr "Workaround Snd_Pcm_Drop Hangup"
+msgstr "Workaround Drain-Hangup"
 
 #: src/alsa/plugin.c:59
-#, fuzzy
 msgid "About ALSA Output Plugin"
-msgstr "Über JACK Output Plugin 0.17"
+msgstr "Über ALSA Output Plugin"
 
 #: src/alsa/plugin.c:81
 msgid "ALSA error"
@@ -1612,7 +1610,7 @@ msgstr "Optionen:"
 
 #: src/cd-menu-items/cd-menu-items.c:34
 msgid "Play CD"
-msgstr "CD Wiedergeben"
+msgstr "CD wiedergeben"
 
 #: src/cd-menu-items/cd-menu-items.c:34
 msgid "Add CD"
@@ -1694,9 +1692,8 @@ msgid "Override default device: "
 msgstr "Anderes Device verwenden: "
 
 #: src/compressor/plugin.c:57
-#, fuzzy
 msgid "About Dynamic Range Compression Plugin"
-msgstr "Über das Extra Stereo Plugin"
+msgstr ""
 
 #: src/compressor/plugin.c:90
 msgid "Dynamic Range Compressor Preferences"
@@ -1708,7 +1705,7 @@ msgstr "Zielvolumen:"
 
 #: src/compressor/plugin.c:115
 msgid "Effect strength:"
-msgstr "Effektstärke"
+msgstr "Effektstärke:"
 
 #: src/console/configure.c:135
 msgid "Game Console Music Decoder"
@@ -1781,23 +1778,20 @@ msgstr ""
 "        Shay Green <gblargg@gmail.com>\n"
 
 #: src/crossfade/plugin.c:51
-#, fuzzy
 msgid "About Crossfade"
 msgstr "Über Crossfade Plugin"
 
 #: src/crossfade/plugin.c:84
-#, fuzzy
 msgid "Crossfade Preferences"
-msgstr "Einstellungen"
+msgstr "Crossfade Einstellungen"
 
 #: src/crossfade/plugin.c:95
 msgid "Overlap (in seconds):"
 msgstr "Überschneiden (in Sekunden):"
 
 #: src/crossfade/plugin.c:129 src/crossfade/plugin.c:137
-#, fuzzy
 msgid "Crossfade Error"
-msgstr "Crossfade Konfiguration"
+msgstr "Crossfade Fehler"
 
 #: src/crossfade/plugin.c:130
 msgid ""
@@ -1818,7 +1812,7 @@ msgstr "Crystalizer konfigurieren"
 
 #: src/crystalizer/crystalizer.c:103 src/stereo_plugin/stereo.c:99
 msgid "Effect intensity:"
-msgstr "Effektstärke"
+msgstr "Effektstärke:"
 
 #: src/crystalizer/crystalizer.c:140 src/echo_plugin/gui.c:146
 #: src/modplug/gui/interface.cxx:709 src/stereo_plugin/stereo.c:136
@@ -1847,7 +1841,7 @@ msgstr "Verzögerung: (ms)"
 
 #: src/echo_plugin/gui.c:88
 msgid "Feedback: (%)"
-msgstr "Rückkoppelung: (%)"
+msgstr "Rückkopplung: (%)"
 
 #: src/echo_plugin/gui.c:93
 msgid "Volume: (%)"
@@ -1907,7 +1901,7 @@ msgstr "Server"
 
 #: src/esd/configure.c:184 src/sun/configure.c:270
 msgid "Buffer size (ms):"
-msgstr "Puffergrösse (ms):"
+msgstr "Puffergröße (ms):"
 
 #: src/evdev-plug/ed.c:59
 msgid "Playback->Play"
@@ -2633,14 +2627,12 @@ msgid "No Playlist Advance"
 msgstr "Wiedergabeliste nicht weiterspielen"
 
 #: src/gtkui/ui_manager.c:48
-#, fuzzy
 msgid "Show playlists"
-msgstr "Wiedergabelisten-Editor anzeigen"
+msgstr "Wiedergabeliste anzeigen"
 
 #: src/gtkui/ui_manager.c:49
-#, fuzzy
 msgid "Show/hide playlists"
-msgstr "Wiedergabeliste speichern"
+msgstr "Wiedergabeliste anzeigen/verstecken"
 
 #: src/gtkui/ui_manager.c:51
 msgid "Show infoarea"
@@ -2651,7 +2643,6 @@ msgid "Show/hide infoarea"
 msgstr "Infobereich zeigen/verstecken"
 
 #: src/gtkui/ui_manager.c:54
-#, fuzzy
 msgid "Show main menu"
 msgstr "Hauptfenster zeigen"
 
@@ -2796,9 +2787,8 @@ msgid "Effects"
 msgstr "Effekte"
 
 #: src/gtkui/ui_manager.c:142
-#, fuzzy
 msgid "Equalizer"
-msgstr "Equalizer anzeigen"
+msgstr ""
 
 #: src/gtkui/ui_manager.c:148 src/skins/ui_manager.c:236
 msgid "View"
@@ -2810,7 +2800,7 @@ msgstr "Datei"
 
 #: src/gtkui/ui_manager.c:159
 msgid "Components"
-msgstr "Komponenten:"
+msgstr "Komponenten"
 
 #: src/gtkui/ui_manager.c:161 src/gtkui/ui_manager.c:164
 #: src/skins/ui_manager.c:383 src/skins/ui_manager.c:386
@@ -2893,17 +2883,15 @@ msgstr "Eintrag in der Wiedergabenwarteschleife aktivieren/deaktivieren."
 
 #: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:425
 msgid "Copy"
-msgstr ""
+msgstr "Kopieren"
 
 #: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:427
-#, fuzzy
 msgid "Cut"
-msgstr "Individuell"
+msgstr "Ausschneiden"
 
 #: src/gtkui/ui_manager.c:209 src/skins/ui_manager.c:429
-#, fuzzy
 msgid "Paste"
-msgstr "Am schnellsten"
+msgstr "Einfügen"
 
 #: src/gtkui/ui_manager.c:212 src/skins/ui_manager.c:258
 msgid "Select All"
@@ -2923,7 +2911,7 @@ msgstr "Alle ausgewählten Einträge abwählen."
 
 #: src/hotkey/gui.c:70
 msgid "Previous Track"
-msgstr "Voriger Titel"
+msgstr "Vorheriger Titel"
 
 #: src/hotkey/gui.c:72
 msgid "Pause/Resume"
@@ -3039,7 +3027,7 @@ msgstr ""
 
 #: src/jack/configure.c:69
 msgid "Connect to all available jack ports"
-msgstr "Zu allen verfügbaren Jack-Ports verbinden"
+msgstr "Zu allen verfügbaren jack-Ports verbinden"
 
 #: src/jack/configure.c:76
 msgid "Connect only the output ports"
@@ -3110,7 +3098,7 @@ msgstr "LADSPA-Plugin-Liste"
 
 #: src/lirc/about.c:63
 msgid "About LIRC Audacious Plugin"
-msgstr "Über das LIRC-Audacious-Plugin"
+msgstr "Über LIRC-Audacious-Plugin"
 
 #: src/lirc/about.c:90
 msgid "LIRC Plugin "
@@ -3485,17 +3473,14 @@ msgid "Run in real time"
 msgstr "In Echtzeit ablaufen lassen"
 
 #: src/oss4/configure.c:88
-#, fuzzy
 msgid "1. Default device"
-msgstr "Standard-PCM-Device (%s)"
+msgstr "1. Standardgerät"
 
 #: src/oss4/configure.c:150
-#, fuzzy
 msgid "OSS4 Output Plugin Preferences"
-msgstr "ALSA-Ausgabeplugin-Einstellungen"
+msgstr "OSS4-Ausgabeplugin-Einstellungen"
 
 #: src/oss4/configure.c:201
-#, fuzzy
 msgid "Save volume between sessions"
 msgstr "Lautstärke speichern"
 
@@ -3504,9 +3489,8 @@ msgid "Enable format conversions made by the OSS software."
 msgstr "Formatkonvertierung aktivieren"
 
 #: src/oss4/plugin.c:53
-#, fuzzy
 msgid "About OSS4 Plugin"
-msgstr "Über das ESounD-Plugin"
+msgstr "Über OSS4-Plugin"
 
 #: src/oss4/plugin.c:54
 #, fuzzy
@@ -3551,9 +3535,8 @@ msgstr ""
 "Boston, MA  02110-1301  USA"
 
 #: src/oss4/utils.c:204
-#, fuzzy
 msgid "OSS4 error"
-msgstr "ALSA Fehler"
+msgstr "OSS4 Fehler"
 
 #: src/pulse_audio/pulse_audio.c:688
 msgid "About Audacious PulseAudio Output Plugin"
@@ -3580,13 +3563,12 @@ msgid ""
 msgstr ""
 
 #: src/resample/plugin.c:78
-#, fuzzy
 msgid "About Sample Rate Converter Plugin"
-msgstr "Sample-Rate Konverter Einstellungen"
+msgstr "Über Sample-Rate-Konverter-Plugin"
 
 #: src/resample/plugin.c:134
 msgid "Sample Rate Converter Preferences"
-msgstr "Sample-Rate Konverter Einstellungen"
+msgstr "Sample-Rate-Konverter Einstellungen"
 
 #: src/resample/plugin.c:146
 msgid "Rate mappings:"
@@ -3601,47 +3583,40 @@ msgid "Method:"
 msgstr "Methode:"
 
 #: src/roaraudio/gui.c:35
-#, fuzzy
 msgid "About RoarAudio Plugin"
-msgstr "Über FFaudio Plugin"
+msgstr "Über RoarAudio Plugin"
 
 #: src/roaraudio/gui.c:36
-#, fuzzy
 msgid "RoarAudio Audacious Plugin..."
-msgstr "Über das LIRC-Audacious-Plugin"
+msgstr ""
 
 #: src/roaraudio/gui.c:95
-#, fuzzy
 msgid "RoarAudio Plugin - Configuration"
-msgstr "CD-Audio-Plugin-Konfiguration"
+msgstr "RoarAudio Plugin - Konfiguration"
 
 #: src/roaraudio/gui.c:123
-#, fuzzy
 msgid "Server Type:"
-msgstr "Server: "
+msgstr "Servervariante:"
 
 #: src/roaraudio/gui.c:130
 msgid "Host or Path:"
 msgstr "Host oder Pfad:"
 
 #: src/roaraudio/gui.c:168
-#, fuzzy
 msgid "<b>Host:</b>"
-msgstr "<b>Schriftarten</b>"
+msgstr "<b>Host:</b>"
 
 #: src/roaraudio/gui.c:173
 msgid "Server & Network"
 msgstr "Server & Netzwerk"
 
 #: src/roaraudio/gui.c:198
-#, fuzzy
 msgid "Proxy Address"
-msgstr "Adresse:"
+msgstr "Proxyadresse"
 
 #: src/roaraudio/gui.c:225
-#, fuzzy
 msgid "<b>Proxy</b>"
-msgstr "<b>Schriftarten</b>"
+msgstr "<b>Proxy</b>"
 
 #: src/roaraudio/gui.c:232
 msgid "Proxy"
@@ -3675,12 +3650,10 @@ msgid "Change password"
 msgstr "Passwort ändern"
 
 #: src/scrobbler/configure.c:174
-#, fuzzy
 msgid "<b>Services</b>"
-msgstr "<b>_Skin</b>"
+msgstr "<b>Dienste</b>"
 
 #: src/scrobbler/configure.c:196
-#, fuzzy
 msgid "Username:"
 msgstr "Benutzername:"
 
@@ -3710,9 +3683,8 @@ msgid ""
 msgstr ""
 
 #: src/scrobbler/plugin.c:212
-#, fuzzy
 msgid "About Scrobbler Plugin"
-msgstr "Über Echo-Plugin"
+msgstr "Über Scrobbler-Plugin"
 
 #: src/sid/xs_about.c:84
 #, c-format
@@ -4110,7 +4082,7 @@ msgstr "Datenbankpfad und -dateiname"
 
 #: src/sid/xs_interface.c:1027
 msgid "Browse for song length-database file"
-msgstr "nach Titellänge-Datei in Datenbank suchen"
+msgstr "Nach Titellänge-Datei in Datenbank suchen"
 
 #: src/sid/xs_interface.c:1049
 msgid "Song length database:"
@@ -4367,7 +4339,7 @@ msgstr "Trennstriche in Wiedergabeliste anzeigen"
 
 #: src/skins/skins_cfg.c:323
 msgid "Show window manager decoration"
-msgstr "Fenstermanager-Dekorationen zeigen"
+msgstr "Fenstermanager-Dekorationen anzeigen"
 
 #: src/skins/skins_cfg.c:324
 msgid "This enables the window manager to show decorations for windows."
@@ -4383,7 +4355,7 @@ msgid ""
 "and forth. If not selected, the text will only scroll in one direction."
 msgstr ""
 "Wenn ausgewählt, bewegt sich der Text der Dateiinformation abwechselnd von "
-"Links nach Rechts. Ansonsten bewegt er sich nur nach Links."
+"Links nach Rechts. Ansonsten bewegt er sich nur in eine Richtung."
 
 #: src/skins/skins_cfg.c:327
 msgid "Disable inline gtk theme"
@@ -4451,12 +4423,10 @@ msgid "kbps"
 msgstr ""
 
 #: src/skins/ui_main.c:597
-#, fuzzy
 msgid "kHz"
-msgstr "Hz"
+msgstr "kHz"
 
 #: src/skins/ui_main.c:604
-#, fuzzy
 msgid "surround"
 msgstr "Surround"
 
@@ -4596,7 +4566,7 @@ msgstr "Spitzen"
 
 #: src/skins/ui_manager.c:71 src/skins/ui_manager.c:72
 msgid "Show Player"
-msgstr "Player anzeigen"
+msgstr "Hauptfenster anzeigen"
 
 #: src/skins/ui_manager.c:74 src/skins/ui_manager.c:75
 msgid "Show Playlist Editor"
