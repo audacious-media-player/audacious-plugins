@@ -538,13 +538,14 @@ static void vorbis_seek (InputPlayback * playback, gint time)
     vorbis_mseek (playback, 1000 * time);
 }
 
-static Tuple * get_song_tuple (const gchar * filename, VFSFile * handle)
+static Tuple *get_song_tuple (const gchar * filename, VFSFile * handle)
 {
     OggVorbis_File vfile;          /* avoid thread interaction */
     Tuple *tuple = NULL;
     VFSVorbisFile fd;
 
     fd.fd = handle;
+    fd.probe = 1;
 
     /*
      * The open function performs full stream detection and
