@@ -79,11 +79,10 @@ vorbis_check_fd(const gchar *filename, VFSFile *stream)
 {
     OggVorbis_File vfile;
     gint result;
-    VFSVorbisFile *fd;
+    VFSVorbisFile fd;
 
-    fd = g_new0(VFSVorbisFile, 1);
-    fd->fd = stream;
-    fd->probe = TRUE;
+    fd.fd = stream;
+    fd.probe = TRUE;
 
     /*
      * The open function performs full stream detection and machine
@@ -93,7 +92,7 @@ vorbis_check_fd(const gchar *filename, VFSFile *stream)
 
     memset(&vfile, 0, sizeof(vfile));
 
-    result = ov_test_callbacks(fd, &vfile, NULL, 0, aud_vfs_is_streaming(stream) ? vorbis_callbacks_stream : vorbis_callbacks);
+    result = ov_test_callbacks(&fd, &vfile, NULL, 0, aud_vfs_is_streaming(stream) ? vorbis_callbacks_stream : vorbis_callbacks);
 
     switch (result) {
     case OV_EREAD:
