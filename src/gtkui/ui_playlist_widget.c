@@ -445,6 +445,12 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
         gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_TEXT, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
         g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 1, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
+        renderer = gtk_cell_renderer_text_new ();
+        gtk_tree_view_column_pack_start (column, renderer, FALSE);
+        gtk_tree_view_column_set_attributes (column, renderer, "text",
+         PLAYLIST_COLUMN_QUEUED, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);
+        g_object_set ((GObject *) renderer, "ypad", 1, "xpad", 1, NULL);
+
         renderer = gtk_cell_renderer_text_new();
         gtk_tree_view_column_pack_start(column, renderer, FALSE);
         gtk_tree_view_column_set_attributes(column, renderer, "text", PLAYLIST_COLUMN_TIME, "weight", PLAYLIST_COLUMN_WEIGHT, NULL);

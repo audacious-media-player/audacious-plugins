@@ -35,6 +35,7 @@ enum
 {
     PLAYLIST_COLUMN_NUM = 0,
     PLAYLIST_COLUMN_TEXT,
+    PLAYLIST_COLUMN_QUEUED,
     PLAYLIST_COLUMN_TIME,
     PLAYLIST_COLUMN_WEIGHT,  /* PANGO_WEIGHT_BOLD or PANGO_WEIGHT_NORMAL, denotes currently played song */
     PLAYLIST_N_COLUMNS,
@@ -63,6 +64,7 @@ struct _UiPlaylistModel
     guint num_rows;
     gint playlist;  /* associated playlist number */
     gint position;
+    GList * queue;
     gboolean song_changed, focus_changed, selection_changed;
     gint focus;
 

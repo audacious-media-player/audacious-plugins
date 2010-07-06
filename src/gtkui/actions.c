@@ -366,13 +366,17 @@ void action_playlist_track_info(void)
 
 void action_queue_toggle(void)
 {
-    gint playlist = aud_playlist_get_active();
-    gint queued = aud_playlist_queue_count(playlist);
+    gint playlist = aud_playlist_get_active ();
+    gint focus = treeview_get_focus (playlist_get_treeview (playlist));
+    gint at;
 
-    if (queued == 0)
-        aud_playlist_queue_insert_selected(playlist, 0);
+    if (focus < 0)
+        return;
+
+    if ((at = aud_playlist_queue_find_entry (playlist, focus)) < 0)
+        aud_playlist_queue_insert (playlist, -1, focus);
     else
-        aud_playlist_queue_delete(playlist, 0, queued);
+        aud_playlist_queue_delete (playlist, at, 1);
 }
 
 void action_playlist_sort_by_track_number(void)
