@@ -84,7 +84,7 @@ static gint mpg123_get_length (VFSFile * f)
 	glong rate;
 	gint64 samp;
 
-	g_return_val_if_fail (h != NULL, FALSE);
+	g_return_val_if_fail (h != NULL, 0);
 	mpg123_param (h, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
 	mpg123_replace_reader_handle (h, r_read, r_lseek, NULL);
 
