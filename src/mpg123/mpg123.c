@@ -489,7 +489,7 @@ mpg123_playback_worker(InputPlayback *data)
 		if (ret < 0)
 		{
 			fprintf (stderr, "mpg123 error: %s\n", mpg123_plain_strerror (ret));
-			
+
 			if (++ error_count >= 10)
 				goto decode_cleanup;
 		}
@@ -556,7 +556,10 @@ cleanup:
 	mpg123_delete_pars(ctx.params);
 	aud_vfs_fclose(ctx.fd);
 
+	g_mutex_lock (ctrl_mutex);
 	data->playing = FALSE;
+	g_cond_signal (ctrl_cond); /* wake up any waiting request */
+	g_mutex_unlock (ctrl_mutex);
 }
 
 static void
