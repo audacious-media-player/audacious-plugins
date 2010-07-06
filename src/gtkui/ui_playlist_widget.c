@@ -53,8 +53,7 @@ static void _ui_playlist_widget_drag_begin(GtkWidget *widget, GdkDragContext * c
 
     t->source = (GtkTreeView *) widget;
     t->source_playlist = playlist;
-    t->source_pos = GPOINTER_TO_INT (g_object_get_data ((GObject *) widget,
-     "recently clicked"));
+    t->source_pos = treeview_get_focus (t->source);
     t->dest_path = NULL;
     t->append = FALSE;
 }
@@ -303,8 +302,8 @@ static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventB
 
     /* Save the row clicked on for drag and drop. */
     if (path)
-        g_object_set_data ((GObject *) widget, "recently clicked",
-         GINT_TO_POINTER (gtk_tree_path_get_indices (path)[0]));
+        treeview_set_focus ((GtkTreeView *) widget, gtk_tree_path_get_indices
+         (path)[0]);
 
     if (event->button == 1 && !state)
     {
