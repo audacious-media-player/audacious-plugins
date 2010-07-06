@@ -125,6 +125,7 @@ ui_playlist_model_init(UiPlaylistModel *model)
         model->column_types[PLAYLIST_MULTI_COLUMN_ALBUM] = G_TYPE_STRING;
         model->column_types[PLAYLIST_MULTI_COLUMN_TITLE] = G_TYPE_STRING;
         model->column_types[PLAYLIST_MULTI_COLUMN_TRACK_NUM] = G_TYPE_UINT;
+        model->column_types[PLAYLIST_MULTI_COLUMN_QUEUED] = G_TYPE_STRING;
         model->column_types[PLAYLIST_MULTI_COLUMN_TIME] = G_TYPE_STRING;
         model->column_types[PLAYLIST_MULTI_COLUMN_WEIGHT] = PANGO_TYPE_WEIGHT;
     }
@@ -287,6 +288,13 @@ ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
                     g_value_set_string(value, title);
                 break;
             }
+
+            case PLAYLIST_MULTI_COLUMN_QUEUED:
+                if ((i = aud_playlist_queue_find_entry (model->playlist, n)) < 0)
+                    g_value_set_string (value, "");
+                else
+                    g_value_take_string (value, g_strdup_printf ("#%d", 1 + i));
+                break;
 
             case PLAYLIST_MULTI_COLUMN_TIME:
                 ui_playlist_model_get_value_time(model, value, n);

@@ -423,6 +423,7 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
         ui_playlist_widget_set_column(treeview, "Album", PLAYLIST_MULTI_COLUMN_ALBUM, 200, TRUE, TRUE);
         ui_playlist_widget_set_column(treeview, "No", PLAYLIST_MULTI_COLUMN_TRACK_NUM, 40, FALSE, TRUE);
         ui_playlist_widget_set_column(treeview, "Title", PLAYLIST_MULTI_COLUMN_TITLE, 250, TRUE, TRUE);
+        ui_playlist_widget_set_column(treeview, "Queue", PLAYLIST_MULTI_COLUMN_QUEUED, 50, FALSE, TRUE);
         ui_playlist_widget_set_column(treeview, "Time", PLAYLIST_MULTI_COLUMN_TIME, 50, FALSE, FALSE);
     }
     else
