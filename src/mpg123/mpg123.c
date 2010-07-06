@@ -31,6 +31,9 @@
 
 #include "libmpg123/mpg123.h"
 
+/* Define to read all frame headers when calculating file length */
+#define FULL_SCAN
+
 /* id3skip.c */
 gint id3_header_size (const guchar * data, gint size);
 
@@ -62,88 +65,47 @@ static gboolean mpg123_prefill (mpg123_handle * decoder, VFSFile * handle,
 	return TRUE;
 }
 
-static gint
-mpg123_get_length(VFSFile *fd)
+static ssize_t r_read (void * f, void * buf, size_t len)
 {
-	mpg123_handle *decoder;
-	mpg123_pars *params;
-	const glong *rates;
-	gsize num_rates;
-	gint ret;
-	gint i;
-	glong rate;
-	gint channels, encoding;
-	gint samples;
+	return aud_vfs_fread (buf, 1, len, f);
+}
 
-	g_return_val_if_fail(fd != NULL, -2);
-
-	AUDDBG("starting probe of %s\n", fd->uri);
-
-	mpg123_rates(&rates, &num_rates);
-
-	params = mpg123_new_pars(&ret);
-	g_return_val_if_fail(params != NULL, -2);
-
-	mpg123_par(params, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
-	mpg123_par(params, MPG123_ADD_FLAGS, MPG123_GAPLESS, 0);
-	mpg123_par(params, MPG123_ADD_FLAGS, MPG123_SEEKBUFFER, 0);
-	mpg123_par(params, MPG123_RVA, MPG123_RVA_OFF, 0);
-
-	decoder = mpg123_parnew(params, NULL, &ret);
-	if (decoder == NULL)
-	{
-		AUDDBG("mpg123 error: %s", mpg123_plain_strerror(ret));
-		mpg123_delete_pars(params);
-		return -2;
-	}
-
-	if ((ret = mpg123_open_feed(decoder)) != MPG123_OK)
-	{
-		AUDDBG("mpg123 error: %s", mpg123_plain_strerror(ret));
-		mpg123_delete(decoder);
-		mpg123_delete_pars(params);
-		return -2;
-	}
-
-	mpg123_format_none(decoder);
-	for (i = 0; i < num_rates; i++)
-		mpg123_format(decoder, rates[i], (MPG123_MONO | MPG123_STEREO), MPG123_ENC_SIGNED_16);
-
-	if (! mpg123_prefill (decoder, fd, & ret) || ret != MPG123_NEW_FORMAT)
-	{
-		mpg123_delete(decoder);
-		mpg123_delete_pars(params);
-		return -2;
-	}
-
-	mpg123_getformat(decoder, &rate, &channels, &encoding);
-
-	AUDDBG("stream identified as MPEG; %ldHz %d channels, encoding %d\n",
-		rate, channels, encoding);
-
-	if (aud_vfs_is_streaming(fd))
-	{
-		mpg123_delete(decoder);
-		mpg123_delete_pars(params);
+static off_t r_lseek (void * f, off_t to, int whence)
+{
+	if (aud_vfs_fseek (f, to, whence) < 0)
 		return -1;
-	}
+	return aud_vfs_ftell (f);
+}
 
-	mpg123_scan(decoder);
-	samples = mpg123_length(decoder);
+static gint mpg123_get_length (VFSFile * f)
+{
+	mpg123_handle * h = mpg123_new (NULL, NULL);
+	gint r, chan, enc;
+	glong rate;
+	gint64 samp;
 
-	if (samples <= 0)
-	{
-		off_t filesize = vfs_fsize(fd);
-		mpg123_set_filesize(decoder, filesize);
-		samples = mpg123_length(decoder);
-	}
+	g_return_val_if_fail (h != NULL, FALSE);
+	mpg123_param (h, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
+	mpg123_replace_reader_handle (h, r_read, r_lseek, NULL);
 
-	mpg123_delete(decoder);
-	mpg123_delete_pars(params);
+	if ((r = mpg123_open_handle (h, f)) < 0)
+		goto ERROR;
+#ifdef FULL_SCAN
+	if ((r = mpg123_scan (h)) < 0)
+		goto ERROR;
+#endif
+	if ((r = mpg123_getformat (h, & rate, & chan, & enc)) < 0)
+		goto ERROR;
+	if ((samp = mpg123_length (h)) < 0)
+		goto ERROR;
 
-	AUDDBG("song has %d samples; length %ld seconds\n", samples, (samples / rate));
+	mpg123_delete (h);
+	return samp * 1000 / rate;
 
-	return samples * (gint64) 1000 / rate;
+ERROR:
+	fprintf (stderr, "mpg123 error: %s\n", mpg123_plain_strerror (r));
+	mpg123_delete (h);
+	return 0;
 }
 
 /** plugin glue **/
