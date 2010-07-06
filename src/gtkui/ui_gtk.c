@@ -693,6 +693,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     GtkWidget *buttonbox;       /* contains buttons like "open", "next" */
     GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
     GtkWidget *button_open, *button_add, *button_play, *button_pause, *button_stop, *button_previous, *button_next;
+    GtkWidget *evbox;
     GtkAccelGroup *accel;
 
     gint lvol = 0, rvol = 0;    /* Left and Right for the volume control */
@@ -743,8 +744,13 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     gtk_box_pack_start(GTK_BOX(tophbox), buttonbox, FALSE, FALSE, 0);
 
+    /* The slider and time display are packed in an event box so that they can
+     * be redrawn separately as they are updated. */
+    evbox = gtk_event_box_new ();
+    gtk_box_pack_start ((GtkBox *) tophbox, evbox, TRUE, TRUE, 0);
+
     shbox = gtk_hbox_new(FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(tophbox), shbox, TRUE, TRUE, 0);
+    gtk_container_add ((GtkContainer *) evbox, shbox);
 
     slider = gtk_hscale_new(NULL);
     gtk_scale_set_draw_value(GTK_SCALE(slider), FALSE);
