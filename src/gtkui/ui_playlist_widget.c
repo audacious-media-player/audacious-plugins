@@ -296,7 +296,6 @@ static gint pos[2];
 static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventButton * event)
 {
     GtkTreePath *path = NULL;
-    GtkTreeSelection *sel = NULL;
     gint state = event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK);
 
     gtk_tree_view_get_path_at_pos ((GtkTreeView *) widget, event->x, event->y,
@@ -316,20 +315,19 @@ static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventB
     if (event->button == 1 && state)
         goto NOT_HANDLED;
 
-    sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(widget));
-
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
         ui_manager_popup_menu_show(GTK_MENU(playlistwin_popup_menu), event->x_root, event->y_root + 2, 3, event->time);
 
-    if (path == NULL)
-        goto NOT_HANDLED;
+    /* Hack: Keep GTK from messing with a multiple selection.  As this blocks
+     * double click, we handle that case also. */
+    if (path && gtk_tree_selection_path_is_selected
+     (gtk_tree_view_get_selection ((GtkTreeView *) widget), path))
+    {
+        if (event->type == GDK_2BUTTON_PRESS)
+            gtk_tree_view_row_activated ((GtkTreeView *) widget, path, NULL);
 
-    if (gtk_tree_selection_path_is_selected(sel, path) &&
-        playlist_get_selected_length(GTK_TREE_VIEW(widget)) > 1 &&
-        event->type == GDK_BUTTON_PRESS)
         goto HANDLED;
-
-    pos[0] = -1;
+    }
 
 NOT_HANDLED:
     if (path)
