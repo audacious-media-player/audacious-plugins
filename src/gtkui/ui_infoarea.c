@@ -451,6 +451,8 @@ static void ui_infoarea_playback_start (void * data, UIInfoArea * area)
         infoarea_next (area);
     area->stopped = FALSE;
 
+    ui_infoarea_set_title (NULL, area);
+
     if (! area->fade_timeout)
         area->fade_timeout = g_timeout_add (30, (GSourceFunc)
          ui_infoarea_do_fade, area);

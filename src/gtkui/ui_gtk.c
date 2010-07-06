@@ -42,8 +42,9 @@ static GtkWidget *volume;
 static GtkWidget *visualizer = NULL;
 GtkWidget *playlist_box;
 GtkWidget *window;       /* the main window */
+GtkWidget *vbox;         /* the main vertical box */
 GtkWidget *menu;
-GtkWidget *infoarea;
+GtkWidget *infoarea = NULL;
 
 static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
@@ -688,7 +689,6 @@ static void ui_hooks_disassociate(void)
 
 static gboolean _ui_initialize(InterfaceCbs * cbs)
 {
-    GtkWidget *vbox;            /* the main vertical box */
     GtkWidget *tophbox;         /* box to contain toolbar and shbox */
     GtkWidget *buttonbox;       /* contains buttons like "open", "next" */
     GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
@@ -781,9 +781,12 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
          UI_PLAYLIST_NOTEBOOK, TRUE, TRUE, 0);
     }
 
-    AUDDBG("infoarea setup\n");
-    infoarea = ui_infoarea_new();
-    gtk_box_pack_end(GTK_BOX(vbox), infoarea, FALSE, FALSE, 0);
+    if (config.infoarea_visible)
+    {
+        AUDDBG ("infoarea setup\n");
+        infoarea = ui_infoarea_new ();
+        gtk_box_pack_end ((GtkBox *) vbox, infoarea, FALSE, FALSE, 0);
+    }
 
     AUDDBG("hooks associate\n");
     ui_hooks_associate();
@@ -808,9 +811,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     if (!config.menu_visible)
         gtk_widget_hide(menu);
-
-    if (!config.infoarea_visible)
-        gtk_widget_hide(infoarea);
 
     setup_panes ();
 

@@ -57,11 +57,6 @@
 #include "gtkui_cfg.h"
 #include "ui_infoarea.h"
 
-extern GtkWidget *window;
-extern GtkWidget *menu;
-extern GtkWidget *playlist_box;
-extern GtkWidget *infoarea;
-
 static GtkWidget *mainwin_jtt = NULL;
 
 static int ab_position_a = -1;
@@ -105,10 +100,18 @@ void action_view_infoarea(GtkToggleAction *action)
 {
     config.infoarea_visible = gtk_toggle_action_get_active (action);
 
-    if (config.infoarea_visible)
+    if (config.infoarea_visible && ! infoarea)
+    {
+        infoarea = ui_infoarea_new ();
+        gtk_box_pack_end ((GtkBox *) vbox, infoarea, FALSE, FALSE, 0);
         gtk_widget_show (infoarea);
-    else
-        gtk_widget_hide (infoarea);
+    }
+
+    if (! config.infoarea_visible && infoarea)
+    {
+        gtk_widget_destroy (infoarea);
+        infoarea = NULL;
+    }
 
     setup_panes ();
 }
