@@ -32,7 +32,7 @@
 #include "libmpg123/mpg123.h"
 
 /* Define to read all frame headers when calculating file length */
-#define FULL_SCAN
+/* #define FULL_SCAN */
 
 /* id3skip.c */
 gint id3_header_size (const guchar * data, gint size);
