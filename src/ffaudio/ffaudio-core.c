@@ -668,6 +668,9 @@ static gchar *ffaudio_fmts[] = {
     /* WAV (there are some WAV formats sndfile can't handle) */
     "wav",
 
+    /* Handle OGG streams (FLAC/Vorbis etc.) */
+    "ogg",
+
     /* end of table */
     NULL
 };
