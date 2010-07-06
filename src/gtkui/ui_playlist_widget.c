@@ -324,13 +324,6 @@ static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventB
     if (path == NULL)
         goto NOT_HANDLED;
 
-    if (event->button == 1 && !state && event->type == GDK_2BUTTON_PRESS)
-    {
-        gtk_tree_view_row_activated(GTK_TREE_VIEW(widget), path, NULL);
-        pos[0] = -1;
-        goto HANDLED;
-    }
-
     if (gtk_tree_selection_path_is_selected(sel, path) &&
         playlist_get_selected_length(GTK_TREE_VIEW(widget)) > 1 &&
         event->type == GDK_BUTTON_PRESS)
