@@ -582,13 +582,15 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                 case GDK_Left:
                 case GDK_KP_Left:
                 case GDK_KP_7:
-                    audacious_drct_seek(audacious_drct_get_time() - 5000);
+                    if (audacious_drct_get_playing ())
+                        audacious_drct_seek (audacious_drct_get_time () - 5000);
                     break;
 
                 case GDK_Right:
                 case GDK_KP_Right:
                 case GDK_KP_9:
-                    audacious_drct_seek(audacious_drct_get_time() + 5000);
+                    if (audacious_drct_get_playing ())
+                        audacious_drct_seek (audacious_drct_get_time () + 5000);
                     break;
 
                 case GDK_KP_4:

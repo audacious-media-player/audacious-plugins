@@ -124,7 +124,8 @@ void playlist_scroll_to_row (GtkTreeView * tree, gint row)
     UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
 
     aud_playlist_select_all (model->playlist, FALSE);
-    aud_playlist_entry_set_selected (model->playlist, row, TRUE);
+    if (row >= 0)
+        aud_playlist_entry_set_selected (model->playlist, row, TRUE);
     treeview_set_focus (tree, row);
 }
 
