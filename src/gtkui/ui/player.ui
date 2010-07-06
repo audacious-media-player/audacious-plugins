@@ -38,9 +38,6 @@
 			<menuitem action="playlist new" />
 			<menuitem action="playlist delete" />
 			<separator />
-			<menuitem action="playlist select next" />
-			<menuitem action="playlist select previous" />
-			<separator />
 			<menuitem action="playlist load" />
 			<menuitem action="playlist save" />
 			<menuitem action="playlist save all" />
