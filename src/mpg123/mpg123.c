@@ -321,6 +321,7 @@ mpg123_playback_worker(InputPlayback *data)
 	{
 		AUDDBG("mpg123 error: %s", mpg123_plain_strerror(ret));
 		mpg123_delete_pars(ctx.params);
+		data->error = TRUE;
 		return;
 	}
 
@@ -329,6 +330,7 @@ mpg123_playback_worker(InputPlayback *data)
 		AUDDBG("mpg123 error: %s", mpg123_plain_strerror(ret));
 		mpg123_delete(ctx.decoder);
 		mpg123_delete_pars(ctx.params);
+		data->error = TRUE;
 		return;
 	}
 
@@ -353,7 +355,10 @@ mpg123_playback_worker(InputPlayback *data)
 	AUDDBG("decoder format identification\n");
 	if (! mpg123_prefill (ctx.decoder, ctx.fd, & ret) || ret !=
 	 MPG123_NEW_FORMAT)
+	{
+		data->error = TRUE;
 		goto cleanup;
+	}
 
 	mpg123_getformat(ctx.decoder, &ctx.rate, &ctx.channels, &ctx.encoding);
 
@@ -362,7 +367,10 @@ mpg123_playback_worker(InputPlayback *data)
 
 	AUDDBG("opening audio\n");
 	if (! data->output->open_audio (FMT_S16_NE, ctx.rate, ctx.channels))
+	{
+		data->error = TRUE;
 		goto cleanup;
+	}
 
 	data->set_gain_from_playlist (data);
 
@@ -453,7 +461,10 @@ mpg123_playback_worker(InputPlayback *data)
 			fprintf (stderr, "mpg123 error: %s\n", mpg123_plain_strerror (ret));
 
 			if (++ error_count >= 10)
+			{
+				data->error = TRUE;
 				goto decode_cleanup;
+			}
 		}
 		else
 			error_count = 0;
