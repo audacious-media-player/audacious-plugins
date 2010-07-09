@@ -45,6 +45,7 @@ void del_directory(const gchar *dirname);
 gboolean dir_foreach(const gchar *path, DirForeachFunc function,
                      gpointer user_data, GError **error);
 
+typedef GHashTable INIFile;
 
 INIFile *open_ini_file(const gchar *filename);
 void close_ini_file(INIFile *key_file);
