@@ -152,8 +152,6 @@ static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const g
 {
     Tuple *ti = aud_tuple_new_from_filename(path);
 
-    g_print("file: %s\n", path);
-
     if (ti != NULL)
     {
         gint length;
