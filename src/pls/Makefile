@@ -1,5 +1,5 @@
 PLUGIN = pls${PLUGIN_SUFFIX}
-SRCS = pls.c
+SRCS = pls.c util.c
 
 include ../../buildsys.mk
 include ../../extra.mk

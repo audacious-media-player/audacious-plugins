@@ -35,6 +35,8 @@
 
 #include <audacious/plugin.h>
 
+#include "util.h"
+
 static void
 playlist_load_pls(const gchar * filename, gint pos)
 {
@@ -51,12 +53,12 @@ playlist_load_pls(const gchar * filename, gint pos)
 
     uri = g_filename_to_uri(filename, NULL, NULL);
 
-    INIFile *inifile = aud_open_ini_file(uri ? uri : filename);
+    INIFile *inifile = open_ini_file(uri ? uri : filename);
     g_free(uri); uri = NULL;
 
-    if (!(line = aud_read_ini_string(inifile, "playlist", "NumberOfEntries")))
+    if (!(line = read_ini_string(inifile, "playlist", "NumberOfEntries")))
     {
-        aud_close_ini_file(inifile);
+        close_ini_file(inifile);
         return;
     }
 
@@ -67,7 +69,7 @@ playlist_load_pls(const gchar * filename, gint pos)
 
     for (i = 1; i <= count; i++) {
         g_snprintf(line_key, sizeof(line_key), "File%d", i);
-        if ((line = aud_read_ini_string(inifile, "playlist", line_key)))
+        if ((line = read_ini_string(inifile, "playlist", line_key)))
         {
             gchar *uri = aud_construct_uri(line, filename);
             g_free(line);
@@ -77,7 +79,7 @@ playlist_load_pls(const gchar * filename, gint pos)
         }
     }
 
-    aud_close_ini_file(inifile);
+    close_ini_file(inifile);
 
     aud_playlist_entry_insert_batch (aud_playlist_get_active (), pos, add, NULL);
 }
