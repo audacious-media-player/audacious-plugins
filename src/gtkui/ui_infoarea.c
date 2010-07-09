@@ -281,26 +281,26 @@ void ui_infoarea_draw_album_art (UIInfoArea * area)
 {
     cairo_t * cr;
 
-    if (audacious_drct_get_playing () && ! area->pb)
+    if (audacious_drct_get_playing () && area->pb == NULL)
     {
         area->pb = get_current_album_art ();
 
-        if (! area->pb)
+        if (area->pb == NULL)
             area->pb = gdk_pixbuf_new_from_file (DEFAULT_ARTWORK, NULL);
 
-        if (area->pb)
+        if (area->pb != NULL)
             audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
     }
 
     cr = gdk_cairo_create (area->parent->window);
 
-    if (area->pb)
+    if (area->pb != NULL)
     {
         gdk_cairo_set_source_pixbuf (cr, area->pb, 10.0, 10.0);
         cairo_paint_with_alpha (cr, area->alpha);
     }
 
-    if (area->last_pb)
+    if (area->last_pb != NULL)
     {
         gdk_cairo_set_source_pixbuf (cr, area->last_pb, 10.0, 10.0);
         cairo_paint_with_alpha (cr, area->last_alpha);
@@ -317,22 +317,22 @@ void ui_infoarea_draw_title (UIInfoArea * area)
     gtk_widget_get_allocation (area->parent, & alloc);
     width = alloc.width - (86 + VIS_OFFSET + 6);
 
-    if (area->title)
+    if (area->title != NULL)
         ui_infoarea_draw_text (area, 86, 8, width, 1, 1, 1, area->alpha,
          "Sans 18", area->title);
-    if (area->last_title)
+    if (area->last_title != NULL)
         ui_infoarea_draw_text (area, 86, 8, width, 1, 1, 1, area->last_alpha,
          "Sans 18", area->last_title);
-    if (area->artist)
+    if (area->artist != NULL)
         ui_infoarea_draw_text (area, 86, 42, width, 1, 1, 1, area->alpha,
          "Sans 9", area->artist);
-    if (area->last_artist)
+    if (area->last_artist != NULL)
         ui_infoarea_draw_text (area, 86, 42, width, 1, 1, 1, area->last_alpha,
          "Sans 9", area->last_artist);
-    if (area->album)
+    if (area->album != NULL)
         ui_infoarea_draw_text (area, 86, 58, width, 0.7, 0.7, 0.7, area->alpha,
          "Sans 9", area->album);
-    if (area->last_album)
+    if (area->last_album != NULL)
         ui_infoarea_draw_text (area, 86, 58, width, 0.7, 0.7, 0.7,
          area->last_alpha, "Sans 9", area->last_album);
 }
