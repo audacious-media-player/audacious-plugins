@@ -69,7 +69,6 @@ ov_callbacks vorbis_callbacks_stream = {
 static volatile gint seek_value = -1;
 static GMutex * seek_mutex = NULL;
 static GCond * seek_cond = NULL;
-static gboolean pause_flag;
 
 gchar **vorbis_tag_encoding_list = NULL;
 
@@ -300,12 +299,10 @@ vorbis_play(InputPlayback *playback)
     ReplayGainInfo rg_info;
     gfloat pcmout[PCM_BUFSIZE*sizeof(float)], **pcm;
     gint bytes, channels, samplerate, br;
-    gboolean paused = FALSE;
     gchar * title = NULL;
 
     playback->error = FALSE;
     seek_value = -1;
-    pause_flag = FALSE;
     memset(&vf, 0, sizeof(vf));
 
     if ((stream = aud_vfs_fopen(playback->filename, "r")) == NULL) {
@@ -378,20 +375,6 @@ vorbis_play(InputPlayback *playback)
             playback->output->flush (seek_value);
             seek_value = -1;
             g_cond_signal (seek_cond);
-        }
-
-        if (pause_flag != paused)
-        {
-            playback->output->pause (pause_flag);
-            paused = pause_flag;
-            g_cond_signal (seek_cond);
-        }
-
-        if (paused)
-        {
-            g_cond_wait (seek_cond, seek_mutex);
-            g_mutex_unlock (seek_mutex);
-            continue;
         }
 
         g_mutex_unlock (seek_mutex);
@@ -475,17 +458,17 @@ stop_processing:
         }
     } /* main loop */
 
+    g_mutex_lock (seek_mutex);
+    playback->playing = FALSE;
+    g_cond_signal (seek_cond); /* wake up any waiting request */
+    g_mutex_unlock (seek_mutex);
+
     playback->output->close_audio ();
 
 play_cleanup:
 
     ov_clear(&vf);
     g_free (title);
-
-    g_mutex_lock (seek_mutex);
-    playback->playing = FALSE;
-    g_cond_signal (seek_cond); /* wake up any waiting request */
-    g_mutex_unlock (seek_mutex);
 }
 
 static void vorbis_stop (InputPlayback * playback)
@@ -495,25 +478,19 @@ static void vorbis_stop (InputPlayback * playback)
     if (playback->playing)
     {
         playback->playing = FALSE;
+        playback->output->abort_write ();
         g_cond_signal (seek_cond);
-        g_mutex_unlock (seek_mutex);
-        g_thread_join (playback->thread);
-        playback->thread = NULL;
     }
-    else
-        g_mutex_unlock (seek_mutex);
+
+    g_mutex_unlock (seek_mutex);
 }
 
-static void vorbis_pause (InputPlayback * playback, gshort p)
+static void vorbis_pause (InputPlayback * playback, gshort pause)
 {
     g_mutex_lock (seek_mutex);
 
     if (playback->playing)
-    {
-        pause_flag = p;
-        g_cond_signal (seek_cond);
-        g_cond_wait (seek_cond, seek_mutex);
-    }
+        playback->output->pause (pause);
 
     g_mutex_unlock (seek_mutex);
 }
@@ -525,16 +502,12 @@ static void vorbis_mseek (InputPlayback * playback, gulong time)
     if (playback->playing)
     {
         seek_value = time;
+        playback->output->abort_write ();
         g_cond_signal (seek_cond);
         g_cond_wait (seek_cond, seek_mutex);
     }
 
     g_mutex_unlock (seek_mutex);
-}
-
-static void vorbis_seek (InputPlayback * playback, gint time)
-{
-    vorbis_mseek (playback, 1000 * time);
 }
 
 static Tuple *get_song_tuple (const gchar * filename, VFSFile * handle)
@@ -727,7 +700,6 @@ static InputPlugin vorbis_ip = {
     .play_file = vorbis_play,
     .stop = vorbis_stop,
     .pause = vorbis_pause,
-    .seek = vorbis_seek,
     .mseek = vorbis_mseek,
     .cleanup = vorbis_cleanup,
     .probe_for_tuple = get_song_tuple,

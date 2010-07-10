@@ -39,7 +39,6 @@ gint id3_header_size (const guchar * data, gint size);
 
 static GMutex *ctrl_mutex = NULL;
 static GCond *ctrl_cond = NULL;
-static gboolean pause_flag;
 
 /** utility functions **/
 static gboolean mpg123_prefill (mpg123_handle * decoder, VFSFile * handle,
@@ -295,7 +294,6 @@ mpg123_playback_worker(InputPlayback *data)
 	gsize num_rates;
 	gint bitrate = 0, bitrate_sum = 0, bitrate_count = 0;
 	gint bitrate_updated = -1000; /* >= a second away from any position */
-	gboolean paused = FALSE;
 	struct mpg123_frameinfo fi;
 	gint error_count = 0;
 
@@ -379,7 +377,6 @@ mpg123_playback_worker(InputPlayback *data)
 	AUDDBG("starting decode\n");
 	data->playing = TRUE;
 	data->set_pb_ready(data);
-	pause_flag = FALSE;
 
 	g_mutex_unlock(ctrl_mutex);
 
@@ -499,20 +496,6 @@ mpg123_playback_worker(InputPlayback *data)
 			g_cond_signal(ctrl_cond);
 		}
 
-		if (pause_flag != paused)
-		{
-			data->output->pause(pause_flag);
-			paused = pause_flag;
-			g_cond_signal(ctrl_cond);
-		}
-
-		if (paused)
-		{
-			g_cond_wait(ctrl_cond, ctrl_mutex);
-			g_mutex_unlock(ctrl_mutex);
-			continue;
-		}
-
 		g_mutex_unlock(ctrl_mutex);
 	}
 
@@ -522,64 +505,56 @@ decode_cleanup:
 		g_usleep(10000);
 
 	AUDDBG("decode complete\n");
+	g_mutex_lock (ctrl_mutex);
+	data->playing = FALSE;
+	g_cond_signal (ctrl_cond); /* wake up any waiting request */
+	g_mutex_unlock (ctrl_mutex);
+
 	data->output->close_audio();
 
 cleanup:
 	mpg123_delete(ctx.decoder);
 	mpg123_delete_pars(ctx.params);
 	aud_vfs_fclose(ctx.fd);
+}
 
+static void mpg123_stop_playback_worker (InputPlayback * data)
+{
 	g_mutex_lock (ctrl_mutex);
-	data->playing = FALSE;
-	g_cond_signal (ctrl_cond); /* wake up any waiting request */
+
+	if (data->playing)
+	{
+		data->output->abort_write ();
+		data->playing = FALSE;
+		g_cond_signal (ctrl_cond);
+	}
+
 	g_mutex_unlock (ctrl_mutex);
 }
 
-static void
-mpg123_stop_playback_worker(InputPlayback *data)
+static void mpg123_pause_playback_worker (InputPlayback * data, gshort pause)
 {
-	AUDDBG("signalling playback worker to die\n");
-	g_mutex_lock(ctrl_mutex);
-	data->playing = FALSE;
-	g_cond_signal(ctrl_cond);
-	g_mutex_unlock(ctrl_mutex);
+	g_mutex_lock (ctrl_mutex);
 
-	AUDDBG("waiting for playback worker to die\n");
-	g_thread_join(data->thread);
-	data->thread = NULL;
+	if (data->playing)
+        data->output->pause (pause);
 
-	AUDDBG("playback worker died\n");
+	g_mutex_unlock (ctrl_mutex);
 }
 
-static void
-mpg123_pause_playback_worker(InputPlayback *data, gshort p)
+static void mpg123_seek_time (InputPlayback * data, gint time)
 {
-	g_mutex_lock(ctrl_mutex);
+	g_mutex_lock (ctrl_mutex);
 
 	if (data->playing)
 	{
-		pause_flag = p;
-		g_cond_signal(ctrl_cond);
-		g_cond_wait(ctrl_cond, ctrl_mutex);
+		((MPG123PlaybackContext *) data->data)->seek = time;
+		data->output->abort_write ();
+		g_cond_signal (ctrl_cond);
+		g_cond_wait (ctrl_cond, ctrl_mutex);
 	}
 
-	g_mutex_unlock(ctrl_mutex);
-}
-
-static void
-mpg123_seek_time(InputPlayback *data, gint time)
-{
-	g_mutex_lock(ctrl_mutex);
-
-	if (data->playing)
-	{
-		MPG123PlaybackContext *ctx = data->data;
-		ctx->seek = time;
-		g_cond_signal(ctrl_cond);
-		g_cond_wait(ctrl_cond, ctrl_mutex);
-	}
-
-	g_mutex_unlock(ctrl_mutex);
+	g_mutex_unlock (ctrl_mutex);
 }
 
 static gboolean mpg123_write_tag (Tuple * tuple, VFSFile * handle)
