@@ -26,6 +26,7 @@
 # define MPG123_IODBG(...)	do { } while (0)
 #endif
 
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <audacious/audtag.h>
 
@@ -64,47 +65,14 @@ static gboolean mpg123_prefill (mpg123_handle * decoder, VFSFile * handle,
 	return TRUE;
 }
 
-static ssize_t r_read (void * f, void * buf, size_t len)
+static ssize_t replace_read (void * file, void * buffer, size_t length)
 {
-	return aud_vfs_fread (buf, 1, len, f);
+	return aud_vfs_fread (buffer, 1, length, file);
 }
 
-static off_t r_lseek (void * f, off_t to, int whence)
+static off_t replace_lseek (void * file, off_t to, int whence)
 {
-	if (aud_vfs_fseek (f, to, whence) < 0)
-		return -1;
-	return aud_vfs_ftell (f);
-}
-
-static gint mpg123_get_length (VFSFile * f)
-{
-	mpg123_handle * h = mpg123_new (NULL, NULL);
-	gint r, chan, enc;
-	glong rate;
-	gint64 samp;
-
-	g_return_val_if_fail (h != NULL, 0);
-	mpg123_param (h, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
-	mpg123_replace_reader_handle (h, r_read, r_lseek, NULL);
-
-	if ((r = mpg123_open_handle (h, f)) < 0)
-		goto ERROR;
-#ifdef FULL_SCAN
-	if ((r = mpg123_scan (h)) < 0)
-		goto ERROR;
-#endif
-	if ((r = mpg123_getformat (h, & rate, & chan, & enc)) < 0)
-		goto ERROR;
-	if ((r = samp = mpg123_length (h)) < 0)
-		goto ERROR;
-
-	mpg123_delete (h);
-	return samp * 1000 / rate;
-
-ERROR:
-	fprintf (stderr, "mpg123 error: %s\n", mpg123_plain_strerror (r));
-	mpg123_delete (h);
-	return 0;
+	return (! aud_vfs_fseek (file, to, whence)) ? aud_vfs_ftell (file) : -1;
 }
 
 /** plugin glue **/
@@ -174,73 +142,64 @@ ERROR_FREE:
 	return FALSE;
 }
 
-static gboolean mpg123_get_info (VFSFile * handle, struct mpg123_frameinfo *
- info)
+static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 {
+	static const gchar * versions[] = {"1", "2", "2.5"};
+
 	mpg123_handle * decoder = mpg123_new (NULL, NULL);
 	gint result;
-
-	g_return_val_if_fail (decoder != NULL, FALSE);
-
-	/* Turn off annoying messages. */
-	mpg123_param (decoder, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
-
-	if (mpg123_open_feed (decoder) < 0)
-		goto ERROR_FREE;
-
-	if (! mpg123_prefill (decoder, handle, & result) || result !=
-	 MPG123_NEW_FORMAT)
-		goto ERROR_FREE;
-
-	if (mpg123_info (decoder, info) < 0)
-		goto ERROR_FREE;
-
-	mpg123_delete (decoder);
-	return TRUE;
-
-ERROR_FREE:
-	mpg123_delete (decoder);
-	return FALSE;
-}
-
-static Tuple *
-mpg123_probe_for_tuple(const gchar *filename, VFSFile *fd)
-{
+	glong rate;
+	gint channels, encoding;
 	struct mpg123_frameinfo info;
-	Tuple *tu;
-	gsize size;
+	gchar scratch[32];
 
-	AUDDBG("starting probe of %p\n", fd);
-	tu = aud_tuple_new_from_filename(filename);
+	g_return_val_if_fail (decoder, NULL);
+	mpg123_param (decoder, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
+	mpg123_replace_reader_handle (decoder, replace_read, replace_lseek, NULL);
 
-	if (mpg123_get_info (fd, & info))
+	if ((result = mpg123_open_handle (decoder, file)) < 0)
+		goto ERROR;
+	if ((result = mpg123_getformat (decoder, & rate, & channels, & encoding)) <
+	 0)
+		goto ERROR;
+	if ((result = mpg123_info (decoder, & info)) < 0)
+		goto ERROR;
+
+	Tuple * tuple = tuple_new_from_filename (filename);
+	snprintf (scratch, sizeof scratch, "MPEG-%s layer %d",
+	 versions[info.version], info.layer);
+	tuple_associate_string (tuple, FIELD_CODEC, NULL, scratch);
+	snprintf (scratch, sizeof scratch, "%s, %d Hz", (channels == 2)
+	 ? _("Stereo") : (channels > 2) ? _("Surround") : _("Mono"), (gint) rate);
+	tuple_associate_string (tuple, FIELD_QUALITY, NULL, scratch);
+	tuple_associate_int (tuple, FIELD_BITRATE, NULL, info.bitrate);
+
+	if (! aud_vfs_is_streaming (file))
 	{
-		static const gchar * versions[] = {"1", "2", "2.5"};
-		gchar format[32];
+		gint64 size = aud_vfs_fsize (file);
+		gint64 samples = mpg123_length (decoder);
+		gint length = (samples > 0) ? samples * 1000 / rate : 0;
 
-		snprintf (format, sizeof format, "MPEG-%s layer %d",
-		 versions[info.version], info.layer);
-		tuple_associate_string (tu, FIELD_CODEC, NULL, format);
+		if (length > 0)
+			tuple_associate_int (tuple, FIELD_LENGTH, NULL, length);
+		if (size > 0 && length > 0)
+			tuple_associate_int (tuple, FIELD_BITRATE, NULL, 8 * size / length);
 	}
 
-	if (aud_vfs_is_streaming (fd))
-		goto DONE;
+	mpg123_delete (decoder);
 
-	aud_vfs_fseek(fd, 0, SEEK_SET);
-	tag_tuple_read(tu, fd);
+	if (! aud_vfs_is_streaming (file))
+	{
+		aud_vfs_fseek (file, 0, SEEK_SET);
+		tag_tuple_read (tuple, file);
+	}
 
-	if (tuple_get_int(tu, FIELD_LENGTH, NULL) == 0)
-		tuple_associate_int (tu, FIELD_LENGTH, NULL, mpg123_get_length (fd));
+	return tuple;
 
-	size = aud_vfs_fsize (fd);
-
-	gint len = tuple_get_int (tu, FIELD_LENGTH, NULL);
-	if (size > 0 && len > 0)
-		tuple_associate_int (tu, FIELD_BITRATE, NULL, 8 * size / len);
-
-DONE:
-	AUDDBG("returning tuple %p for file %p\n", tu, fd);
-	return tu;
+ERROR:
+	fprintf (stderr, "mpg123 error: %s\n", mpg123_plain_strerror (result));
+	mpg123_delete (decoder);
+	return NULL;
 }
 
 typedef struct {
