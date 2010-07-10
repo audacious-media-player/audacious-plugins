@@ -34,7 +34,6 @@ callback_info *main_info;
 gboolean plugin_initialized = FALSE;
 static GMutex *seek_mutex;
 static GCond *seek_cond;
-static gboolean pause_flag;
 static gint seek_value;
 
 static void flac_init(void)
@@ -187,7 +186,6 @@ void flac_play_file(InputPlayback *playback)
     struct stream_info stream_info;
     guint sample_count;
     gpointer play_buffer = NULL;
-    gboolean paused = FALSE;
 
     if (!plugin_initialized)
     {
@@ -225,7 +223,6 @@ void flac_play_file(InputPlayback *playback)
     }
 
     seek_value = -1;
-    pause_flag = FALSE;
     playback->playing = TRUE;
 
     if ((play_buffer = g_malloc0(BUFFER_SIZE_BYTE)) == NULL)
@@ -307,20 +304,6 @@ void flac_play_file(InputPlayback *playback)
             g_cond_signal(seek_cond);
         }
 
-        if (pause_flag != paused)
-        {
-            playback->output->pause(pause_flag);
-            paused = pause_flag;
-            g_cond_signal(seek_cond);
-        }
-
-        if (paused)
-        {
-            g_cond_wait(seek_cond, seek_mutex);
-            g_mutex_unlock(seek_mutex);
-            continue;
-        }
-
         g_mutex_unlock(seek_mutex);
 
         /*
@@ -363,14 +346,18 @@ void flac_play_file(InputPlayback *playback)
             AUDDBG("End of stream reached, draining output buffer\n");
 
             while (playback->output->buffer_playing() && playback->playing)
-                g_usleep(40000);
+                g_usleep(20000);
 
             goto CLEANUP;
         }
     }
 
 CLEANUP:
+    g_mutex_lock(seek_mutex);
     playback->playing = FALSE;
+    g_cond_signal(seek_cond); /* wake up any waiting request */
+    g_mutex_unlock(seek_mutex);
+
     AUDDBG("Closing audio device.\n");
     playback->output->close_audio();
     AUDDBG("Audio device closed.\n");
@@ -394,25 +381,19 @@ static void flac_stop(InputPlayback *playback)
     if (playback->playing)
     {
         playback->playing = FALSE;
+        playback->output->abort_write();
         g_cond_signal(seek_cond);
-        g_mutex_unlock(seek_mutex);
-        g_thread_join(playback->thread);
-        playback->thread = NULL;
     }
-    else
-        g_mutex_unlock (seek_mutex);
+
+    g_mutex_unlock (seek_mutex);
 }
 
-static void flac_pause(InputPlayback *playback, gshort p)
+static void flac_pause(InputPlayback *playback, gshort pause)
 {
     g_mutex_lock(seek_mutex);
 
     if (playback->playing)
-    {
-        pause_flag = p;
-        g_cond_signal(seek_cond);
-        g_cond_wait(seek_cond, seek_mutex);
-    }
+        playback->output->pause(pause);
 
     g_mutex_unlock(seek_mutex);
 }
@@ -424,6 +405,7 @@ static void flac_seek(InputPlayback *playback, gint time)
     if (playback->playing)
     {
         seek_value = time;
+        playback->output->abort_write();
         g_cond_signal(seek_cond);
         g_cond_wait(seek_cond, seek_mutex);
     }
