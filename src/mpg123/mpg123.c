@@ -95,7 +95,7 @@ static gint mpg123_get_length (VFSFile * f)
 #endif
 	if ((r = mpg123_getformat (h, & rate, & chan, & enc)) < 0)
 		goto ERROR;
-	if ((samp = mpg123_length (h)) < 0)
+	if ((r = samp = mpg123_length (h)) < 0)
 		goto ERROR;
 
 	mpg123_delete (h);
@@ -211,12 +211,7 @@ mpg123_probe_for_tuple(const gchar *filename, VFSFile *fd)
 	gsize size;
 
 	AUDDBG("starting probe of %p\n", fd);
-
-	aud_vfs_fseek(fd, 0, SEEK_SET);
-
 	tu = aud_tuple_new_from_filename(filename);
-
-	aud_vfs_fseek (fd, 0, SEEK_SET);
 
 	if (mpg123_get_info (fd, & info))
 	{
@@ -227,6 +222,9 @@ mpg123_probe_for_tuple(const gchar *filename, VFSFile *fd)
 		 versions[info.version], info.layer);
 		tuple_associate_string (tu, FIELD_CODEC, NULL, format);
 	}
+
+	if (aud_vfs_is_streaming (fd))
+		goto DONE;
 
 	aud_vfs_fseek(fd, 0, SEEK_SET);
 	tag_tuple_read(tu, fd);
@@ -240,6 +238,7 @@ mpg123_probe_for_tuple(const gchar *filename, VFSFile *fd)
 	if (size > 0 && len > 0)
 		tuple_associate_int (tu, FIELD_BITRATE, NULL, 8 * size / len);
 
+DONE:
 	AUDDBG("returning tuple %p for file %p\n", tu, fd);
 	return tu;
 }
@@ -561,7 +560,7 @@ static gboolean mpg123_write_tag (Tuple * tuple, VFSFile * handle)
 static gboolean mpg123_get_image (const gchar * filename, VFSFile * handle,
  void * * data, gint * length)
 {
-	if (handle == NULL)
+	if (handle == NULL || aud_vfs_is_streaming (handle))
 		return FALSE;
 
 	return tag_image_read (handle, data, length);
