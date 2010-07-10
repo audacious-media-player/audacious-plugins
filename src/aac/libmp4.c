@@ -718,8 +718,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
             bufferSize=0;
         }
 
-        playback->pass_audio (playback, FMT_S16_NE, channels, 2 *
-         frameInfo.samples, sampleBuffer, NULL);
+        playback->output->write_audio (sampleBuffer, 2 * frameInfo.samples);
     }
 
     playback->output->close_audio();
@@ -886,8 +885,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
             continue;
         }
 
-        playback->pass_audio (playback, FMT_S16_LE, channels, 2 *
-         samplesdecoded, sample_buffer, NULL);
+        playback->output->write_audio (sample_buffer, 2 * samplesdecoded);
     }
     playback->output->close_audio();
     NeAACDecClose(decoder);
