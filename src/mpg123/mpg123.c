@@ -208,16 +208,11 @@ mpg123_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
 	struct mpg123_frameinfo info;
 	Tuple *tu;
-	gint len;
 	gsize size;
 
 	AUDDBG("starting probe of %p\n", fd);
 
 	aud_vfs_fseek(fd, 0, SEEK_SET);
-	len = mpg123_get_length(fd);
-
-	if (len == -2)
-		return NULL;
 
 	tu = aud_tuple_new_from_filename(filename);
 
@@ -237,10 +232,11 @@ mpg123_probe_for_tuple(const gchar *filename, VFSFile *fd)
 	tag_tuple_read(tu, fd);
 
 	if (tuple_get_int(tu, FIELD_LENGTH, NULL) == 0)
-		tuple_associate_int (tu, FIELD_LENGTH, NULL, len);
+		tuple_associate_int (tu, FIELD_LENGTH, NULL, mpg123_get_length (fd));
 
 	size = aud_vfs_fsize (fd);
 
+	gint len = tuple_get_int (tu, FIELD_LENGTH, NULL);
 	if (size > 0 && len > 0)
 		tuple_associate_int (tu, FIELD_BITRATE, NULL, 8 * size / len);
 
