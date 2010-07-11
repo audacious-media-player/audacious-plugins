@@ -614,14 +614,11 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                     break;
 
                 case GDK_Escape:
-                    if (ui_playlist_notebook_tab_title_editing == NULL)
-                    {
-                        gint playing = aud_playlist_get_playing();
-                        gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, playing);
-                        playlist_scroll_to_row(playlist_get_playing_treeview(),
-                            aud_playlist_get_position(playing));
-                        break;
-                    }
+                    ; /* bleah, label must come before statement */
+                    gint list = aud_playlist_get_active ();
+                    playlist_scroll_to_row (playlist_get_treeview (list),
+                     aud_playlist_get_position (list));
+                    break;
 
                 case GDK_Tab:
                     action_playlist_next();
