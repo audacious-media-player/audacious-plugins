@@ -105,7 +105,7 @@ ui_infoarea_visualization_timeout(gpointer hook_data, UIInfoArea *area)
 
 static void vis_clear_cb (void * hook_data, UIInfoArea * area)
 {
-    memset (area->visdata, 0, 20);
+    memset (area->visdata, 0, sizeof area->visdata);
 }
 
 /****************************************************************************/
