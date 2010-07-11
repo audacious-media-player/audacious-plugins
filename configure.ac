@@ -594,6 +594,25 @@ if test "x$have_aosd" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS aosd"
 fi
 
+
+dnl notify: libnotify-based OSD
+dnl ===========================
+
+AC_ARG_ENABLE(notify,
+ [  --disable-notify        disable notify plugin (default=enabled)],
+ [enable_notify=$enableval], [enable_notify="yes"])
+
+if test "x$enable_notify" = "xyes"; then
+    PKG_CHECK_MODULES(NOTIFY, [libnotify], [have_notify="yes"], [have_notify="no"])
+else
+    have_notify="no"
+fi
+
+if test "x$have_notify" = "xyes"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS notify"
+fi
+
+
 dnl *** AdPlug requirement (libbinio)
 
 AC_ARG_ENABLE(adplug,
@@ -1629,6 +1648,7 @@ echo "  Song Change:                            yes"
 echo "  Status Icon:                            $have_statusicon"
 echo "  Audacious OSD:                          $have_aosd"
 echo "    -> X Composite support:               $have_aosd_xcomp"
+echo "  libnotify OSD:                          $have_notify"
 echo "  Control via event device (evdev-plug):  $have_evdevplug"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"

@@ -1,0 +1,14 @@
+PLUGIN = notify${PLUGIN_SUFFIX}
+
+SRCS = libnotify-aosd.c \
+       libnotify-aosd_event.c \
+       libnotify-aosd_osd.c
+
+include ../../buildsys.mk
+include ../../extra.mk
+
+plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
+
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${NOTIFY_CFLAGS} -DPACKAGE_VERSION=\"0.1.1\"
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${NOTIFY_LIBS}
