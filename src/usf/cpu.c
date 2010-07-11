@@ -35,10 +35,7 @@
 #include "registers.h"
 #include "rsp.h"
 
-#include <audacious/util.h>
-#include <audacious/configdb.h>
 #include <audacious/plugin.h>
-#include <audacious/i18n.h>
 
 #include <unistd.h>
 #include <pthread.h>

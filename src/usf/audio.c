@@ -10,9 +10,7 @@
 #include <sys/ioctl.h>
 #include <linux/soundcard.h>
 
-#include <audacious/util.h>
 #include <audacious/plugin.h>
-#include <audacious/i18n.h>
 
 #include <unistd.h>
 #include <pthread.h>
