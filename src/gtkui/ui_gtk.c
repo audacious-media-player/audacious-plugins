@@ -30,6 +30,7 @@
 #include "ui_playlist_notebook.h"
 #include "ui_manager.h"
 #include "ui_infoarea.h"
+#include "ui_statusbar.h"
 #include "playlist_util.h"
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
@@ -691,6 +692,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
     GtkWidget *button_open, *button_add, *button_play, *button_pause, *button_stop, *button_previous, *button_next;
     GtkWidget *evbox;
+    GtkWidget *statusbar;
     GtkAccelGroup *accel;
 
     gint lvol = 0, rvol = 0;    /* Left and Right for the volume control */
@@ -775,7 +777,10 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
 
     /* Create playlist notebook */
     ui_playlist_notebook_new ();
-    g_object_ref ((GObject *) UI_PLAYLIST_NOTEBOOK);
+    g_object_ref (G_OBJECT(UI_PLAYLIST_NOTEBOOK));
+
+    statusbar = ui_statusbar_new();
+    gtk_box_pack_end(GTK_BOX(vbox), statusbar, FALSE, FALSE, 0);
 
     if (config.vis_position == VIS_IN_TABS)
     {
@@ -788,7 +793,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     {
         AUDDBG ("infoarea setup\n");
         infoarea = ui_infoarea_new ();
-        gtk_box_pack_end ((GtkBox *) vbox, infoarea, FALSE, FALSE, 0);
+        gtk_box_pack_end (GTK_BOX(vbox), infoarea, FALSE, FALSE, 0);
     }
 
     AUDDBG("hooks associate\n");
