@@ -1,6 +1,6 @@
 /*  Audacious - Cross-platform multimedia player
  *  Copyright (C) 2008 Tomasz Moń <desowin@gmail.com>
- *  Copyright (C) 2009 William Pitcock <nenolod@atheme.org>
+ *  Copyright (C) 2009-2010 William Pitcock <nenolod@atheme.org>
  *  Copyright (C) 2010 Michał Lipski <tallica@o2.pl>
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -363,7 +363,7 @@ static gboolean ui_playlist_widget_button_release_cb(GtkWidget * widget, GdkEven
     return FALSE;
 }
 
-static void ui_playlist_widget_set_column(GtkWidget *treeview, gchar *title, gint column_id, gint width, gboolean ellipsize, gboolean resizable)
+static void ui_playlist_widget_set_column(GtkWidget *treeview, gchar *title, gint column_id, gint width, gboolean ellipsize, gboolean resizable, gboolean expand)
 {
     GtkCellRenderer *renderer;
     GtkTreeViewColumn *column;
@@ -379,6 +379,9 @@ static void ui_playlist_widget_set_column(GtkWidget *treeview, gchar *title, gin
 
     if (resizable)
         gtk_tree_view_column_set_resizable(column, TRUE);
+
+    if (expand)
+        gtk_tree_view_column_set_expand(column, TRUE);
 
     if (ellipsize)
         g_object_set(G_OBJECT(renderer), "ypad", 1, "xpad", 1, "ellipsize-set", TRUE, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
@@ -414,14 +417,14 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
         if (aud_cfg->show_numbers_in_pl)
             ui_playlist_widget_set_column (treeview, NULL,
              PLAYLIST_MULTI_COLUMN_NUM, calculate_column_width (treeview,
-             model->num_rows), FALSE, FALSE);
+             model->num_rows), FALSE, FALSE, FALSE);
 
-        ui_playlist_widget_set_column(treeview, "Artist", PLAYLIST_MULTI_COLUMN_ARTIST, 150, TRUE, TRUE);
-        ui_playlist_widget_set_column(treeview, "Album", PLAYLIST_MULTI_COLUMN_ALBUM, 200, TRUE, TRUE);
-        ui_playlist_widget_set_column(treeview, "No", PLAYLIST_MULTI_COLUMN_TRACK_NUM, 40, FALSE, TRUE);
-        ui_playlist_widget_set_column(treeview, "Title", PLAYLIST_MULTI_COLUMN_TITLE, 250, TRUE, TRUE);
-        ui_playlist_widget_set_column(treeview, "Queue", PLAYLIST_MULTI_COLUMN_QUEUED, 50, FALSE, TRUE);
-        ui_playlist_widget_set_column(treeview, "Time", PLAYLIST_MULTI_COLUMN_TIME, 50, FALSE, FALSE);
+        ui_playlist_widget_set_column(treeview, "Artist", PLAYLIST_MULTI_COLUMN_ARTIST, 150, TRUE, TRUE, FALSE);
+        ui_playlist_widget_set_column(treeview, "Album", PLAYLIST_MULTI_COLUMN_ALBUM, 200, TRUE, TRUE, FALSE);
+        ui_playlist_widget_set_column(treeview, "No", PLAYLIST_MULTI_COLUMN_TRACK_NUM, 40, FALSE, TRUE, FALSE);
+        ui_playlist_widget_set_column(treeview, "Title", PLAYLIST_MULTI_COLUMN_TITLE, 250, TRUE, TRUE, TRUE);
+        ui_playlist_widget_set_column(treeview, "Queue", PLAYLIST_MULTI_COLUMN_QUEUED, 50, FALSE, TRUE, FALSE);
+        ui_playlist_widget_set_column(treeview, "Time", PLAYLIST_MULTI_COLUMN_TIME, 50, FALSE, FALSE, FALSE);
     }
     else
     {
