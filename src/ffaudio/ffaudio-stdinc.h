@@ -27,7 +27,6 @@
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>
 
-URLProtocol audvfs_protocol;
 URLProtocol audvfsptr_protocol;
 
 #endif

@@ -21,24 +21,6 @@
 
 #include <libavutil/avstring.h>
 
-static int audvfs_open(URLContext *h, const char *filename, int flags)
-{
-    VFSFile *file;
-
-    av_strstart(filename, "audvfs:", &filename);
-
-    if (flags & URL_WRONLY) {
-	file = aud_vfs_fopen(filename, "wb");
-    } else {
-	file = aud_vfs_fopen(filename, "rb");
-    }
-
-    if (file == NULL)
-        return -ENOENT;
-    h->priv_data = file;
-    return 0;
-}
-
 static int audvfs_read(URLContext *h, unsigned char *buf, int size)
 {
     VFSFile *file;
@@ -85,15 +67,6 @@ static int audvfs_close(URLContext *h)
     file = h->priv_data;
     return aud_vfs_fclose(file);
 }
-
-URLProtocol audvfs_protocol = {
-    .name = "audvfs",
-    .url_open = audvfs_open,
-    .url_read = audvfs_read,
-    .url_write = audvfs_write,
-    .url_seek = audvfs_seek,
-    .url_close = audvfs_close,
-};
 
 static int audvfsptr_open(URLContext *h, const char *filename, int flags)
 {
