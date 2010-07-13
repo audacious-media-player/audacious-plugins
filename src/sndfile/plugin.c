@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005,2009 Audacious development team.
+ *  Copyright (C) 2005-2010 Audacious development team
  *
  *  Based on the xmms_sndfile input plugin:
  *  Copyright (C) 2000, 2002 Erik de Castro Lopo
@@ -354,40 +354,38 @@ is_our_file (const gchar *filename)
     return TRUE;
 }
 
-static void
-play_start (InputPlayback *playback)
+static gboolean play_start (InputPlayback * playback, const gchar * filename,
+ VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
-    SNDFILE *sndfile = NULL;
-    SF_INFO sfinfo;
-    VFSFile *vfsfile = NULL;
-    gfloat * buffer;
-    gint size, samples;
-    gboolean paused = FALSE, stopped = FALSE;
+    if (file == NULL)
+        return FALSE;
 
-    sndfile = open_sndfile_from_uri(playback->filename, &vfsfile, &sfinfo);
+    SF_INFO sfinfo;
+    SNDFILE * sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo,
+     file);
     if (sndfile == NULL)
-        return;
+        return FALSE;
 
     if (! playback->output->open_audio (FMT_FLOAT, sfinfo.samplerate,
      sfinfo.channels))
     {
-        close_sndfile (sndfile, vfsfile);
-        playback->error = TRUE;
-        return;
+        sf_close (sndfile);
+        return FALSE;
     }
 
     playback->set_params (playback, NULL, 0, 8 * sizeof (gfloat) *
      sfinfo.channels * sfinfo.samplerate, sfinfo.samplerate, sfinfo.channels);
 
     playback->playing = TRUE;
-    pause_flag = FALSE;
-    seek_value = -1;
+    pause_flag = pause;
+    seek_value = (start_time > 0) ? start_time : -1;
     playback->set_pb_ready(playback);
 
-    size = sfinfo.channels * (sfinfo.samplerate / 50);
-    buffer = g_malloc (sizeof (gfloat) * size);
+    gint size = sfinfo.channels * (sfinfo.samplerate / 50);
+    gfloat * buffer = g_malloc (sizeof (gfloat) * size);
+    gboolean paused = FALSE, stopped = FALSE;
 
-    while (1)
+    while (stop_time < 0 || playback->output->written_time () < stop_time)
     {
         g_mutex_lock (control_mutex);
 
@@ -430,13 +428,12 @@ play_start (InputPlayback *playback)
 
         g_mutex_unlock (control_mutex);
 
-        samples = sf_read_float (sndfile, buffer, size);
+        gint samples = sf_read_float (sndfile, buffer, size);
 
         if (! samples)
             break;
 
-        playback->pass_audio (playback, FMT_FLOAT, sfinfo.channels,
-         sizeof (gfloat) * samples, buffer, NULL);
+        playback->output->write_audio (buffer, sizeof (gfloat) * samples);
     }
 
     sf_close (sndfile);
@@ -452,8 +449,10 @@ play_start (InputPlayback *playback)
 
     g_mutex_lock (control_mutex);
     playback->playing = FALSE;
-    g_cond_signal (control_cond);
+    g_cond_signal (control_cond); /* wake up any waiting request */
     g_mutex_unlock (control_mutex);
+
+    return TRUE;
 }
 
 static void play_pause (InputPlayback * playback, gshort pause)
@@ -556,7 +555,7 @@ static InputPlugin sndfile_ip = {
     .init = plugin_init,
     .about = plugin_about,
     .is_our_file = is_our_file,
-    .play_file = play_start,
+    .play = play_start,
     .stop = play_stop,
     .pause = play_pause,
     .cleanup = plugin_cleanup,
