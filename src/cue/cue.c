@@ -1,6 +1,7 @@
 /*
  * Audacious: A cross-platform multimedia player
  * Copyright (c) 2009 William Pitcock <nenolod@dereferenced.org>
+ * Copyright (c) 2010 John Lindgren <john.lindgren@tds.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,67 +67,95 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, gint tuple_type, gint pti)
     tuple_associate_string(tuple, tuple_type, NULL, text);
 }
 
-static void
-playlist_load_cue(const gchar * filename, gint pos)
+static void playlist_load_cue (const gchar * cue_filename, gint at)
 {
-    gchar *uri = NULL, *buffer;
-    gsize len;
-    Cd *cd;
-    gint iter, plen;
-    gint playlist;
-    struct index *uris = NULL;
-    struct index *tuples = NULL;
-
-    uri = g_filename_to_uri(filename, NULL, NULL);
-
-    aud_vfs_file_get_contents(uri ? uri : filename, &buffer, &len);
-
-    g_free(uri); uri = NULL;
-
+    void * buffer;
+    gint64 size;
+    aud_vfs_file_get_contents (cue_filename, & buffer, & size);
     if (buffer == NULL)
         return;
 
-    cd = cue_parse_string(buffer);
+    buffer = g_realloc (buffer, size + 1);
+    ((gchar *) buffer)[size] = 0;
 
+    Cd * cd = cue_parse_string (buffer);
+    g_free (buffer);
     if (cd == NULL)
         return;
 
-    uris = index_new();
-    tuples = index_new();
+    gint tracks = cd_get_ntrack (cd);
+    if (tracks == 0)
+        return;
 
-    playlist = aud_playlist_get_active();
-    for (iter = 0, plen = cd_get_ntrack(cd); iter < plen; iter++)
+    struct index * filenames = index_new ();
+    struct index * tuples = index_new ();
+
+    Track * current = cd_get_track (cd, 1);
+    g_return_if_fail (current != NULL);
+    gchar * filename = aud_construct_uri (track_get_filename (current),
+     cue_filename);
+
+    Tuple * base_tuple = NULL;
+
+    for (gint track = 1; track <= tracks; track ++)
     {
-        gchar *fn, *uri;
-        Track *t;
-        glong begin, length;
-        Tuple *tu;
-        gint iter2;
+        g_return_if_fail (current != NULL);
+        g_return_if_fail (filename != NULL);
 
-	t = cd_get_track(cd, 1 + iter);
-        fn = track_get_filename(t);
-        begin = (track_get_start(t) / 75) * 1000;
-        length = (track_get_length(t) / 75) * 1000;
-        uri = aud_construct_uri(fn, filename);
-        tu = tuple_new();
-
-        for (iter2 = 0; iter2 < G_N_ELEMENTS(pti_map); iter2++)
+        if (base_tuple == NULL)
         {
-            tuple_attach_cdtext(tu, t, pti_map[iter2].tuple_type, pti_map[iter2].pti);
+            InputPlugin * decoder = aud_file_find_decoder (filename, TRUE);
+            if (decoder != NULL)
+                base_tuple = aud_file_read_tuple (filename, decoder);
         }
 
-        tuple_associate_int(tu, FIELD_LENGTH, NULL, length);
-        tuple_associate_int(tu, FIELD_SEGMENT_START, NULL, begin);
-        tuple_associate_int(tu, FIELD_SEGMENT_END, NULL, begin + length);
-        tuple_associate_int(tu, FIELD_TRACK_NUMBER, NULL, cd_get_track(cd, iter+1));
+        Track * next = (track + 1 <= tracks) ? cd_get_track (cd, track + 1) :
+         NULL;
+        gchar * next_filename = (next != NULL) ? aud_construct_uri
+         (track_get_filename (next), cue_filename) : NULL;
+        gboolean last_track = (next_filename == NULL || strcmp (next_filename,
+         filename));
 
-        index_append(uris, uri);
-        index_append(tuples, tu);
+        Tuple * tuple = (base_tuple != NULL) ? tuple_copy (base_tuple) :
+         tuple_new_from_filename (filename);
+        tuple_associate_int (tuple, FIELD_TRACK_NUMBER, NULL, track);
+
+        gint begin = (gint64) track_get_start (current) * 1000 / 75;
+        tuple_associate_int (tuple, FIELD_SEGMENT_START, NULL, begin);
+
+        if (last_track)
+        {
+            if (base_tuple != NULL && tuple_get_value_type (base_tuple,
+             FIELD_LENGTH, NULL) == TUPLE_INT)
+                tuple_associate_int (tuple, FIELD_LENGTH, NULL, tuple_get_int
+                 (base_tuple, FIELD_LENGTH, NULL) - begin);
+        }
+        else
+        {
+            gint length = (gint64) track_get_length (current) * 1000 / 75;
+            tuple_associate_int (tuple, FIELD_LENGTH, NULL, length);
+            tuple_associate_int (tuple, FIELD_SEGMENT_END, NULL, begin + length);
+        }
+
+        for (gint i = 0; i < G_N_ELEMENTS (pti_map); i ++)
+            tuple_attach_cdtext (tuple, current, pti_map[i].tuple_type,
+             pti_map[i].pti);
+
+        index_append (filenames, filename);
+        index_append (tuples, tuple);
+
+        current = next;
+        filename = next_filename;
+
+        if (last_track && base_tuple != NULL)
+        {
+            tuple_free (base_tuple);
+            base_tuple = NULL;
+        }
     }
 
-    aud_playlist_entry_insert_batch(playlist, pos, uris, tuples);
-
-    g_free(buffer);
+    aud_playlist_entry_insert_batch (aud_playlist_get_active (), at, filenames,
+     tuples);
 }
 
 static void
