@@ -16,7 +16,7 @@
 #include <string.h>
 
 #include <audacious/plugin.h>
-#include <audacious/auddrct.h>
+
 #include "formatter.h"
 #include <audacious/i18n.h>
 #include <audacious/hook.h>

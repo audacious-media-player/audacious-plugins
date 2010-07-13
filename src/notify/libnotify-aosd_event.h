@@ -19,7 +19,6 @@
 
 #include <glib.h>
 #include <audacious/hook.h>
-#include <audacious/auddrct.h>
 #include <audacious/plugin.h>
 
 // Prototypes

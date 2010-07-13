@@ -29,8 +29,6 @@
 #include <glib-object.h>
 
 #include <audacious/plugin.h>
-#include <audacious/auddrct.h>
-
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>

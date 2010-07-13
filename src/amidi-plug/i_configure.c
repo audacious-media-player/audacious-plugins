@@ -27,8 +27,7 @@
 #include "i_configure-alsa.h"
 #include "i_configure-fluidsynth.h"
 #include "i_utils.h"
-#include <audacious/plugin.h>
-#include <audacious/auddrct.h>
+
 #include <audacious/plugin.h>
 
 

@@ -29,7 +29,7 @@
 
 #include "i_common.h"
 #include <audacious/plugin.h>
-#include <audacious/auddrct.h>
+
 #include "i_vfslayer.h"
 #include "i_backend.h"
 #include "i_configure.h"

@@ -4,7 +4,7 @@
  *  Copyright (c) 2007 - 2008  Sascha Hlusiak <contact@saschahlusiak.de>
  *  Name: plugin.c
  *  Description: plugin.c
- * 
+ *
  *  Part of this code is from itouch-ctrl plugin.
  *  Authors of itouch-ctrl are listed below:
  *
@@ -40,8 +40,6 @@
 
 #include <gdk/gdkx.h>
 #include <audacious/plugin.h>
-#include <audacious/auddrct.h>
-
 #include <audacious/i18n.h>
 
 #include "plugin.h"
@@ -80,7 +78,7 @@ PluginConfig* get_config(void)
 }
 
 
-/* 
+/*
  * plugin activated
  */
 static void init (void)
@@ -98,10 +96,10 @@ gboolean handle_keyevent (EVENT event)
 	gint current_volume, old_volume;
 	static gint volume_static = 0;
 	gboolean play, mute;
-	
+
 	/* playing or not */
 	play = audacious_drct_is_playing ();
-	
+
 	/* get current volume */
 	audacious_drct_get_volume_main (&current_volume);
 	old_volume = current_volume;
@@ -128,7 +126,7 @@ gboolean handle_keyevent (EVENT event)
 		}
 		return TRUE;
 	}
-	
+
 	/* decreace volume */
 	if (event == EVENT_VOL_DOWN)
 	{
@@ -138,21 +136,21 @@ gboolean handle_keyevent (EVENT event)
 			old_volume = 0;
 			mute = FALSE;
 		}
-			
+
 		if ((current_volume -= plugin_cfg.vol_decrement) < 0)
 		{
 			current_volume = 0;
 		}
-			
+
 		if (current_volume != old_volume)
 		{
 			audacious_drct_set_main_volume (current_volume);
 		}
-			
+
 		old_volume = current_volume;
 		return TRUE;
 	}
-	
+
 	/* increase volume */
 	if (event == EVENT_VOL_UP)
 	{
@@ -162,21 +160,21 @@ gboolean handle_keyevent (EVENT event)
 			old_volume = 0;
 			mute = FALSE;
 		}
-			
+
 		if ((current_volume += plugin_cfg.vol_increment) > 100)
 		{
 			current_volume = 100;
 		}
-			
+
 		if (current_volume != old_volume)
 		{
 			audacious_drct_set_main_volume (current_volume);
 		}
-			
+
 		old_volume = current_volume;
 		return TRUE;
 	}
-	
+
 	/* play */
 	if (event == EVENT_PLAY)
 	{
@@ -192,21 +190,21 @@ gboolean handle_keyevent (EVENT event)
 
 		return TRUE;
 	}
-	
+
 	/* stop */
 	if (event == EVENT_STOP)
 	{
 		audacious_drct_stop ();
 		return TRUE;
 	}
-	
-	/* prev track */	
+
+	/* prev track */
 	if (event == EVENT_PREV_TRACK)
 	{
 		audacious_drct_playlist_prev ();
 		return TRUE;
 	}
-	
+
 	/* next track */
 	if (event == EVENT_NEXT_TRACK)
 	{
@@ -321,7 +319,7 @@ void load_config (void)
 	mcs_handle_t *cfdb;
 	HotkeyConfiguration *hotkey;
 	int i,max;
-	
+
 	/* default volume level */
 	plugin_cfg.vol_increment = 4;
 	plugin_cfg.vol_decrement = 4;

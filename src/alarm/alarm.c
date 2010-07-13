@@ -39,7 +39,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <audacious/plugin.h>
-#include <audacious/auddrct.h>
+
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <pthread.h>
@@ -181,11 +181,11 @@ void alarm_save(GtkButton *w, gpointer data)
    /*
     * update the live values and write them out
     */
-   alarm_h = alarm_conf.default_hour = 
+   alarm_h = alarm_conf.default_hour =
      gtk_spin_button_get_value_as_int(alarm_conf.alarm_h);
    aud_cfg_db_set_int(conf, "alarm", "alarm_h", alarm_h);
 
-   alarm_m = alarm_conf.default_min = 
+   alarm_m = alarm_conf.default_min =
      gtk_spin_button_get_value_as_int(alarm_conf.alarm_m);
    aud_cfg_db_set_int(conf, "alarm", "alarm_m", alarm_m);
 
@@ -206,13 +206,13 @@ void alarm_save(GtkButton *w, gpointer data)
        alarm_conf.day[daynum].flags = 0;
      else
        alarm_conf.day[daynum].flags = ALARM_OFF;
-   
+
      if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(alarm_conf.day[daynum].cb_def)))
        alarm_conf.day[daynum].flags |= ALARM_DEFAULT;
 
-     alarm_conf.day[daynum].hour = 
+     alarm_conf.day[daynum].hour =
        gtk_spin_button_get_value_as_int(alarm_conf.day[daynum].spin_hr);
-     alarm_conf.day[daynum].min = 
+     alarm_conf.day[daynum].min =
        gtk_spin_button_get_value_as_int(alarm_conf.day[daynum].spin_min);
 
      aud_cfg_db_set_int(conf, "alarm", day_flags[daynum], alarm_conf.day[daynum].flags);
@@ -277,8 +277,8 @@ void alarm_save(GtkButton *w, gpointer data)
    alarm_conf.reminder_msg = gtk_editable_get_chars(GTK_EDITABLE(alarm_conf.reminder),
        0, -1);
    aud_cfg_db_set_string(conf, "alarm", "reminder_msg", alarm_conf.reminder_msg);
-   
-   alarm_conf.reminder_on = 
+
+   alarm_conf.reminder_on =
      gtk_toggle_button_get_active(alarm_conf.reminder_cb);
    aud_cfg_db_set_bool(conf, "alarm", "reminder_on", alarm_conf.reminder_on);
 
@@ -493,7 +493,7 @@ static void alarm_configure(void)
      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(alarm_conf.day[daynum].cb_def),
          alarm_conf.day[daynum].flags & ALARM_DEFAULT);
 
-   
+
      /* Changed to show default time instead of set time when ALARM_DEFAULT set,
       * as suggested by Mark Brown
       */
@@ -677,7 +677,7 @@ static inline pthread_t alarm_thread_create(void *(*start_routine)(void *), void
 
    if(detach != 0)
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-    
+
    pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
    pthread_attr_setschedpolicy(&attr, SCHED_OTHER);
    pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
@@ -698,7 +698,7 @@ static void *alarm_fade(void *arg)
    pthread_mutex_lock(&fader_lock);
 
    /* slide volume */
-   /* the Kaspar Giger way of fading, check the current mixer volume and 
+   /* the Kaspar Giger way of fading, check the current mixer volume and
     * increment from there so that if you have some other app lowering the
     * volume at the same time xmms-alarm will not ignore it.  If you have some
     * other app increasing the volume, then it could get louder that you expect
@@ -714,7 +714,7 @@ static void *alarm_fade(void *arg)
      inc = -1;
    else
      inc = 1;
-   
+
    audacious_drct_set_volume_main((gint)vols->start);
    //for(i=0;i<(vols->end - vols->start);i++)
    for(i=0;i<adiff;i++)
@@ -870,7 +870,7 @@ static void *alarm_start_thread(void *args)
      if(fading)
      {
        fader fade_vols;
-       
+
        AUDDBG("Fading is true\n");
        audacious_drct_set_volume_main(quietvol);
 

@@ -19,7 +19,6 @@
 
 #include <glib.h>
 #include <audacious/hook.h>
-#include <audacious/auddrct.h>
 #include <audacious/plugin.h>
 #include "libnotify-aosd_common.h"
 
@@ -44,7 +43,7 @@ void event_playback_begin(gpointer p1, gpointer p2) {
 	DEBUG_PRINT("[%s] event_playback_begin: started!\n", __FILE__);
 
 	aud_title = audacious_drct_pl_get_title(audacious_drct_pl_get_pos());
-	
+
 	if(aud_title != NULL) {
 		title = aud_str_to_utf8(aud_title);
 		if(g_utf8_validate(title, -1, NULL)) {

@@ -25,7 +25,6 @@
 #include "ed_ui.h"
 #include "ed_common.h"
 #include <audacious/i18n.h>
-#include <audacious/auddrct.h>
 
 
 GeneralPlugin *evdevplug_gplist[] = { &ed_gp, NULL };
