@@ -179,8 +179,12 @@ static void squeeze_audio(gint32* src, void* dst, guint count, guint res)
     }
 }
 
-void flac_play_file(InputPlayback *playback)
+static gboolean flac_play (InputPlayback * playback, const gchar * filename,
+ VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
+    if (file == NULL)
+        return FALSE;
+
     gint32 *read_pointer;
     gint elements_left;
     struct stream_info stream_info;
@@ -190,14 +194,10 @@ void flac_play_file(InputPlayback *playback)
     if (!plugin_initialized)
     {
         ERROR("Plugin not initialized!\n");
-        return;
+        return FALSE;
     }
 
-    if ((main_info->fd = aud_vfs_fopen(playback->filename, "r")) == NULL)
-    {
-        ERROR("Could not open file for reading! (%s)\n", playback->filename);
-        return;
-    }
+    main_info->fd = file;
 
     if (read_metadata(main_decoder, main_info) == FALSE)
     {
@@ -222,7 +222,7 @@ void flac_play_file(InputPlayback *playback)
         goto CLEANUP;
     }
 
-    seek_value = -1;
+    seek_value = (start_time > 0) ? start_time : -1;
     playback->playing = TRUE;
 
     if ((play_buffer = g_malloc0(BUFFER_SIZE_BYTE)) == NULL)
@@ -230,6 +230,17 @@ void flac_play_file(InputPlayback *playback)
         ERROR("Could not allocate conversion buffer\n");
         goto CLEANUP;
     }
+
+    if (! playback->output->open_audio (SAMPLE_FMT
+     (main_info->stream.bits_per_sample), main_info->stream.samplerate,
+     main_info->stream.channels))
+    {
+        ERROR("Could not open output plugin!\n");
+        goto CLEANUP;
+    }
+
+    if (pause)
+        playback->output->pause (TRUE);
 
     playback->set_params(playback, NULL, 0, main_info->bitrate,
         main_info->stream.samplerate, main_info->stream.channels);
@@ -239,18 +250,13 @@ void flac_play_file(InputPlayback *playback)
     stream_info.channels = main_info->stream.channels;
     main_info->metadata_changed = FALSE;
 
-    if (!playback->output->open_audio(SAMPLE_FMT(main_info->stream.bits_per_sample),
-                                      main_info->stream.samplerate,
-                                      main_info->stream.channels))
-    {
-        ERROR("Could not open output plugin!\n");
-        goto CLEANUP;
-    }
-
     playback->set_gain_from_playlist(playback);
 
     while (playback->playing)
     {
+        if (stop_time >= 0 && playback->output->written_time () >= stop_time)
+            goto DRAIN;
+
         /* Try to decode a single frame of audio */
         if (FLAC__stream_decoder_process_single(main_decoder) == FALSE)
         {
@@ -298,8 +304,9 @@ void flac_play_file(InputPlayback *playback)
 
         if (seek_value >= 0)
         {
-            playback->output->flush(1000 * seek_value);
-            FLAC__stream_decoder_seek_absolute(main_decoder, (long long) seek_value * main_info->stream.samplerate);
+            playback->output->flush (seek_value);
+            FLAC__stream_decoder_seek_absolute (main_decoder, (gint64)
+             seek_value * main_info->stream.samplerate / 1000);
             seek_value = -1;
             g_cond_signal(seek_cond);
         }
@@ -322,6 +329,8 @@ void flac_play_file(InputPlayback *playback)
 
         while (playback->playing && elements_left != 0)
         {
+            if (stop_time >= 0 && playback->output->written_time () >= stop_time)
+                goto DRAIN;
 
             sample_count = MIN(OUTPUT_BLOCK_SIZE, elements_left);
 
@@ -345,6 +354,7 @@ void flac_play_file(InputPlayback *playback)
             /* Yes. Drain the output buffer and stop playing. */
             AUDDBG("End of stream reached, draining output buffer\n");
 
+DRAIN:
             while (playback->output->buffer_playing() && playback->playing)
                 g_usleep(20000);
 
@@ -365,13 +375,12 @@ CLEANUP:
     if (play_buffer)
         g_free(play_buffer);
 
-    aud_vfs_fclose(main_info->fd);
     reset_info(main_info);
 
     if (FLAC__stream_decoder_flush(main_decoder) == FALSE)
         ERROR("Could not flush decoder state!\n");
 
-    return;
+    return ! playback->error;
 }
 
 static void flac_stop(InputPlayback *playback)
@@ -398,7 +407,7 @@ static void flac_pause(InputPlayback *playback, gshort pause)
     g_mutex_unlock(seek_mutex);
 }
 
-static void flac_seek(InputPlayback *playback, gint time)
+static void flac_seek (InputPlayback * playback, gulong time)
 {
     g_mutex_lock(seek_mutex);
 
@@ -601,10 +610,10 @@ InputPlugin flac_ip = {
     .init = flac_init,
     .cleanup = flac_cleanup,
     .about = flac_aboutbox,
-    .play_file = flac_play_file,
+    .play = flac_play,
     .stop = flac_stop,
     .pause = flac_pause,
-    .seek = flac_seek,
+    .mseek = flac_seek,
     .probe_for_tuple = flac_probe_for_tuple,
     .is_our_file_from_vfs = flac_is_our_fd,
     .vfs_extensions = flac_fmts,
