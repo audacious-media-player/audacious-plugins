@@ -452,7 +452,7 @@ INIFile *open_ini_file(const gchar *filename)
     unsigned char x[] = { 0xff, 0xfe, 0x00 };
 
     g_return_val_if_fail(filename, NULL);
-    aud_vfs_file_get_contents(filename, &buffer, &filesize);
+    aud_vfs_file_get_contents(filename, (void * *) &buffer, &filesize);
     if (buffer == NULL)
         return NULL;
 

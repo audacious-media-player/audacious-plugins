@@ -38,7 +38,7 @@
 static gchar *path;
 int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 {
-	guchar *filebuf;
+	void *filebuf;
 	gint64 size;
 	char buf[PATH_MAX];
 
@@ -57,7 +57,7 @@ Tuple *xsf_tuple(const gchar *filename)
 {
 	Tuple *t;
 	corlett_t *c;
-	guchar *buf;
+	void *buf;
 	gint64 sz;
 
 	aud_vfs_file_get_contents (filename, & buf, & sz);
@@ -110,7 +110,7 @@ void xsf_update(unsigned char *buffer, long count, InputPlayback *playback);
 
 void xsf_play(InputPlayback *data)
 {
-	guchar *buffer;
+	void *buffer;
 	gint64 size;
 	gint length;
 	gchar *title = xsf_title(data->filename, &length);

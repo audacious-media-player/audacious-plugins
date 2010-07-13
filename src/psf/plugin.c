@@ -78,7 +78,7 @@ static gchar *path;
 
 int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 {
-	guchar *filebuf;
+	void *filebuf;
 	gint64 size;
 	char buf[PATH_MAX];
 	gchar path2[PATH_MAX];
@@ -100,7 +100,7 @@ Tuple *psf2_tuple(const gchar *filename)
 {
 	Tuple *t;
 	corlett_t *c;
-	guchar *buf;
+	void *buf;
 	gint64 sz;
 
 	aud_vfs_file_get_contents (filename, & buf, & sz);
@@ -151,7 +151,7 @@ gchar *psf2_title(gchar *filename, gint *length)
 
 void psf2_play(InputPlayback *data)
 {
-	guchar *buffer;
+	void *buffer;
 	gint64 size;
 	gint length;
 	gchar *title = psf2_title(data->filename, &length);
