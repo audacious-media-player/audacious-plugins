@@ -89,13 +89,10 @@ WavpackStreamReader wv_readers = {
     wv_write_bytes
 };
 
-gboolean wv_attach(const gchar *filename, VFSFile **wv_input, VFSFile **wvc_input, WavpackContext **ctx, gchar *error, gint flags)
+static gboolean wv_attach (const gchar * filename, VFSFile * wv_input,
+ VFSFile * * wvc_input, WavpackContext * * ctx, gchar * error, gint flags)
 {
     gchar *corrFilename;
-
-    *wv_input = aud_vfs_fopen(filename, "rb");
-    if (*wv_input == NULL)
-        return FALSE;
 
     if (flags & OPEN_WVC)
     {
@@ -104,7 +101,8 @@ gboolean wv_attach(const gchar *filename, VFSFile **wv_input, VFSFile **wvc_inpu
         g_free(corrFilename);
     }
 
-    *ctx = WavpackOpenFileInputEx(&wv_readers, *wv_input, *wvc_input, error, flags, 0);
+    * ctx = WavpackOpenFileInputEx (& wv_readers, wv_input, * wvc_input, error,
+     flags, 0);
 
     if (ctx == NULL)
         return FALSE;
@@ -112,17 +110,19 @@ gboolean wv_attach(const gchar *filename, VFSFile **wv_input, VFSFile **wvc_inpu
         return TRUE;
 }
 
-void wv_deattach(VFSFile *wv_input, VFSFile *wvc_input, WavpackContext *ctx)
+static void wv_deattach (VFSFile * wvc_input, WavpackContext * ctx)
 {
-    if (wv_input != NULL)
-        aud_vfs_fclose(wv_input);
     if (wvc_input != NULL)
         aud_vfs_fclose(wvc_input);
     WavpackCloseFile(ctx);
 }
 
-void wv_play(InputPlayback * playback)
+static gboolean wv_play (InputPlayback * playback, const gchar * filename,
+ VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
+    if (file == NULL)
+        return FALSE;
+
     gshort paused = 0;
     gint32 *input = NULL;
     void *output = NULL;
@@ -130,9 +130,10 @@ void wv_play(InputPlayback * playback)
     guint num_samples, length;
     gchar error[1024];  // fixme?! FIX ME halb apua hilfe scheisse --ccr
     WavpackContext *ctx = NULL;
-    VFSFile *wv_input = NULL, *wvc_input = NULL;
+    VFSFile *wvc_input = NULL;
 
-    if (!wv_attach(playback->filename, &wv_input, &wvc_input, &ctx, (gchar *)&error, OPEN_TAGS | OPEN_WVC))
+    if (! wv_attach (filename, file, & wvc_input, & ctx, error, OPEN_TAGS |
+     OPEN_WVC))
     {
         g_warning("Error opening Wavpack file '%s'.", playback->filename);
         playback->error = 2;
@@ -165,13 +166,17 @@ void wv_play(InputPlayback * playback)
         (gint) WavpackGetAverageBitrate(ctx, num_channels),
         sample_rate, num_channels);
 
+    pause_flag = pause;
+    seek_value = (start_time > 0) ? start_time : -1;
+
     playback->playing = TRUE;
     playback->eof = FALSE;
     playback->set_pb_ready(playback);
 
     g_mutex_unlock(ctrl_mutex);
 
-    while (playback->playing && !playback->eof)
+    while (playback->playing && ! playback->eof && (stop_time < 0 ||
+     playback->output->written_time () < stop_time))
     {
         gint ret;
         guint samples_left;
@@ -181,8 +186,8 @@ void wv_play(InputPlayback * playback)
 
         if (seek_value >= 0)
         {
-            playback->output->flush(seek_value * 1000);
-            WavpackSeekSample(ctx, (gint) (seek_value * sample_rate));
+            playback->output->flush (seek_value);
+            WavpackSeekSample (ctx, (gint64) seek_value * sample_rate / 1000);
             seek_value = -1;
             g_cond_signal(ctrl_cond);
         }
@@ -256,10 +261,11 @@ error_exit:
 
     g_free(input);
     g_free(output);
-    wv_deattach(wv_input, wvc_input, ctx);
+    wv_deattach (wvc_input, ctx);
 
     playback->playing = FALSE;
     playback->output->close_audio();
+    return ! playback->error;
 }
 
 static void
@@ -288,8 +294,7 @@ wv_pause(InputPlayback * playback, gshort p)
     g_mutex_unlock(ctrl_mutex);
 }
 
-static void
-wv_seek(InputPlayback * playback, gint time)
+static void wv_seek (InputPlayback * playback, gulong time)
 {
     g_mutex_lock(ctrl_mutex);
 
@@ -395,10 +400,10 @@ static InputPlugin wvpack = {
     .init = wv_init,
     .cleanup = wv_cleanup,
     .about = wv_about_box,
-    .play_file = wv_play,
+    .play = wv_play,
     .stop = wv_stop,
     .pause = wv_pause,
-    .seek = wv_seek,
+    .mseek = wv_seek,
     .vfs_extensions = wv_fmts,
     .probe_for_tuple = wv_probe_for_tuple,
     .update_song_tuple = wv_write_tag,
