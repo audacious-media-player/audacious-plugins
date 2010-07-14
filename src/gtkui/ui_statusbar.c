@@ -102,7 +102,7 @@ ui_statusbar_info_change(gpointer unused, GtkWidget *label)
         break;
     }
 
-    text = g_strdup_printf(_("%s: %d kbps, %d hz, %s"), codec, bitrate / 1000, samplerate, ch_text);
+    text = g_strdup_printf(_("%s: %d kbps, %d Hz, %s"), codec, bitrate / 1000, samplerate, ch_text);
     gtk_label_set_text(GTK_LABEL(label), text);
 
     g_free(text);
@@ -124,13 +124,13 @@ ui_statusbar_new(void)
     hbox = gtk_hbox_new(FALSE, 3);
 
     status = gtk_widget_new(GTK_TYPE_LABEL, "xalign", 0.0, NULL);
-    gtk_box_pack_start(GTK_BOX(hbox), status, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), status, TRUE, TRUE, 5);
 
     aud_hook_associate("info change", (HookFunction) ui_statusbar_info_change, status);
     aud_hook_associate("playback stop", (HookFunction) ui_statusbar_playback_stop, status);
 
     length = gtk_widget_new(GTK_TYPE_LABEL, "xalign", 1.0, NULL);
-    gtk_box_pack_start(GTK_BOX(hbox), length, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), length, FALSE, FALSE, 5);
     ui_statusbar_update_playlist_length(length);
 
     aud_hook_associate("playlist update", (HookFunction) ui_statusbar_selection_update_cb, length);

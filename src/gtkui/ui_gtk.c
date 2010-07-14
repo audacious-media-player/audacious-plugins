@@ -780,7 +780,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     g_object_ref (G_OBJECT(UI_PLAYLIST_NOTEBOOK));
 
     statusbar = ui_statusbar_new();
-    gtk_box_pack_end(GTK_BOX(vbox), statusbar, FALSE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(vbox), statusbar, FALSE, FALSE, 3);
 
     if (config.vis_position == VIS_IN_TABS)
     {
