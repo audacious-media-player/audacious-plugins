@@ -18,7 +18,7 @@
  ************************************************************************/
 
 #include <glib.h>
-#include <audacious/hook.h>
+#include <libaudcore/hook.h>
 #include <audacious/plugin.h>
 
 // Prototypes

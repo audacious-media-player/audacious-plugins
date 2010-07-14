@@ -24,7 +24,7 @@
 #include "aosd_osd.h"
 #include <glib.h>
 #include <audacious/i18n.h>
-#include <audacious/hook.h>
+#include <libaudcore/hook.h>
 #include <audacious/plugin.h>
 
 extern aosd_cfg_t * global_config;

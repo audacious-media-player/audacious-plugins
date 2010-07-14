@@ -9,7 +9,7 @@
 
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
-#include <audacious/hook.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
