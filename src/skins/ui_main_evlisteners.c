@@ -372,7 +372,7 @@ void start_stop_visual (void)
     {
         if (started)
         {
-            aud_vis_runner_remove_hook(ui_main_evlistener_visualization_timeout, NULL);
+            aud_vis_runner_remove_hook(ui_main_evlistener_visualization_timeout);
             started = 0;
         }
     }
