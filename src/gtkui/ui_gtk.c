@@ -619,6 +619,10 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                     gint list = aud_playlist_get_active ();
                     playlist_scroll_to_row (playlist_get_treeview (list),
                      aud_playlist_get_position (list));
+
+                    if (ui_playlist_notebook_tab_title_editing != NULL)
+                        return FALSE;
+
                     break;
 
                 case GDK_Tab:
