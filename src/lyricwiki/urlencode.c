@@ -114,7 +114,7 @@ char *
 lyricwiki_url_encode (const char *s)
 {
   if (s == NULL)
-    return g_malloc("");
+    return g_strdup("");
 
   return url_escape_1 (s, urlchr_unsafe, 0);
 }
