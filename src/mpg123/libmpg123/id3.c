@@ -25,7 +25,7 @@ static void convert_latin1  (mpg123_string *sb, const unsigned char* source, siz
 static void convert_utf16bom(mpg123_string *sb, const unsigned char* source, size_t len, const int noquiet);
 static void convert_utf8    (mpg123_string *sb, const unsigned char* source, size_t len, const int noquiet);
 
-static const text_converter text_converters[4] = 
+static const text_converter text_converters[4] =
 {
 	convert_latin1,
 	/* We always check for (multiple) BOM in 16bit unicode. Without BOM, UTF16 BE is the default.
@@ -536,7 +536,6 @@ int parse_new_id3(mpg123_handle *fr, unsigned long first4bytes)
 	unsigned char flags = 0;
 	int ret = 1;
 	int ret2;
-	unsigned char* tagdata = NULL;
 	unsigned char major = first4bytes & 0xff;
 	debug1("ID3v2: major tag version: %i", major);
 	if(major == 0xff) return 0; /* Invalid... */
@@ -693,7 +692,7 @@ int parse_new_id3(mpg123_handle *fr, unsigned long first4bytes)
 								if(NOQUIET) warning("ID3v2: skipping invalid/unsupported frame");
 								continue;
 							}
-							
+
 							for(i = 0; i < KNOWN_FRAMES; ++i)
 							if(!strncmp(frame_type[i], id, 4)){ tt = i; break; }
 
@@ -963,7 +962,7 @@ static void convert_utf16bom(mpg123_string *sb, const unsigned char* s, size_t l
 			*p++ = 0x80 | ((codepoint>>6) & 0x3f);
 			*p++ = 0x80 | (codepoint & 0x3f);
 		}
-		else if (codepoint < 0x200000) 
+		else if (codepoint < 0x200000)
 		{
 			*p++ = (unsigned char) (0xf0 | codepoint>>18);
 			*p++ = (unsigned char) (0x80 | ((codepoint>>12) & 0x3f));
