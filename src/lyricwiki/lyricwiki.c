@@ -176,6 +176,9 @@ get_lyrics_step_3(gchar *buf, gint64 len, Tuple *tu)
 {
 	gchar *lyrics;
 
+	if (buf == NULL)
+		return FALSE;
+
 	lyrics = scrape_lyrics_from_lyricwiki_edit_page(buf, len);
 	g_free(buf);
 
