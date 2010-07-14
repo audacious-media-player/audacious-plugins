@@ -236,6 +236,7 @@ build_widget(void)
 	gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(textview), FALSE);
 	gtk_text_view_set_left_margin(GTK_TEXT_VIEW(textview), 12);
 	gtk_text_view_set_right_margin(GTK_TEXT_VIEW(textview), 12);
+	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(textview), GTK_WRAP_WORD);
 	textbuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview));
 	
 	scrollview = gtk_scrolled_window_new(NULL, NULL);
@@ -277,6 +278,8 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 	GtkTextIter iter;
 	const gchar *artist, *title;
 	const gchar *real_lyrics;
+
+	clear_lyrics_window();
 
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
 
