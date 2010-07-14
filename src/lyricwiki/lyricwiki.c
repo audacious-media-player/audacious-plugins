@@ -38,6 +38,7 @@
 #include <mowgli.h>
 
 #include <audacious/plugin.h>
+#include <libaudcore/vfs_async.h>
 
 #include "urlencode.h"
 
@@ -168,12 +169,42 @@ scrape_uri_from_lyricwiki_search_result(const gchar *buf, gsize len)
 	return uri;
 }
 
-gchar *
-get_lyrics_uri_for_song(const Tuple *tu)
+void update_lyrics_window(const Tuple *tu, const gchar *lyrics);
+
+gboolean
+get_lyrics_step_3(gchar *buf, gint64 len, Tuple *tu)
 {
-	gchar *uri, *buf, *ret;
+	gchar *lyrics;
+
+	lyrics = scrape_lyrics_from_lyricwiki_edit_page(buf, len);
+	g_free(buf);
+
+	update_lyrics_window(tu, lyrics);
+	mowgli_object_unref(tu);
+
+	return TRUE;
+}
+
+gboolean
+get_lyrics_step_2(gchar *buf, gint64 len, Tuple *tu)
+{
+	gchar *uri;
+
+	uri = scrape_uri_from_lyricwiki_search_result(buf, len);
+
+	vfs_async_file_get_contents(uri, (VFSConsumer) get_lyrics_step_3, tu);
+
+	g_free(buf);
+
+	return TRUE;
+}
+
+void
+get_lyrics_step_1(const Tuple *tu)
+{
+	gchar *uri;
 	gchar *artist, *title;
-	gint64 len;
+	Tuple *tuple = tuple_copy(tu);
 
 	artist = lyricwiki_url_encode(tuple_get_string(tu, FIELD_ARTIST, NULL));
 	title = lyricwiki_url_encode(tuple_get_string(tu, FIELD_TITLE, NULL));
@@ -183,15 +214,9 @@ get_lyrics_uri_for_song(const Tuple *tu)
 	g_free(artist);
 	g_free(title);
 
-	vfs_file_get_contents(uri, (gpointer) &buf, &len);
+	vfs_async_file_get_contents(uri, (VFSConsumer) get_lyrics_step_2, tuple);
 
 	g_free(uri);
-
-	ret = scrape_uri_from_lyricwiki_search_result(buf, len);
-
-	g_free(buf);
-
-	return ret;
 }
 
 GtkWidget *window, *textview;
@@ -251,6 +276,7 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 {
 	GtkTextIter iter;
 	const gchar *artist, *title;
+	const gchar *real_lyrics;
 
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
 
@@ -266,7 +292,10 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 			artist, strlen(artist), "style_italic", NULL);
 
 	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n", 1);
-	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, lyrics, strlen(lyrics));
+
+	real_lyrics = lyrics != NULL ? lyrics : _("\nNo lyrics were found.");
+
+	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, real_lyrics, strlen(real_lyrics));
 }
 
 void
@@ -274,8 +303,6 @@ lyricwiki_playback_began(void)
 {
 	gint playlist, pos;
 	const Tuple *tu;
-	gchar *uri, *raw_lyrics, *lyrics;
-	gint64 len;
 
 	if (!audacious_drct_is_playing())
 		return;
@@ -286,24 +313,7 @@ lyricwiki_playback_began(void)
 	pos = aud_playlist_get_position(playlist);
 	tu = aud_playlist_entry_get_tuple(playlist, pos);
 
-	uri = get_lyrics_uri_for_song(tu);
-	if (uri == NULL)
-		goto error;
-
-	vfs_file_get_contents(uri, (void *) &raw_lyrics, &len);
-	if (raw_lyrics == NULL)
-		goto error;
-
-	lyrics = scrape_lyrics_from_lyricwiki_edit_page(raw_lyrics, len);
-	g_free(raw_lyrics);
-
-	if (lyrics == NULL)
-		goto error;
-
-	update_lyrics_window(tu, lyrics);
-	g_free(lyrics);
-error:
-	g_free(uri);
+	get_lyrics_step_1(tu);
 }
 
 static void
