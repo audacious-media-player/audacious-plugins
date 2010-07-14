@@ -364,8 +364,7 @@ void start_stop_visual (void)
     {
         if (! started)
         {
-            aud_hook_associate ("visualization timeout",
-             ui_main_evlistener_visualization_timeout, 0);
+            aud_vis_runner_add_hook(ui_main_evlistener_visualization_timeout, NULL);
             started = 1;
         }
     }
@@ -373,8 +372,7 @@ void start_stop_visual (void)
     {
         if (started)
         {
-            aud_hook_dissociate ("visualization timeout",
-             ui_main_evlistener_visualization_timeout);
+            aud_vis_runner_remove_hook(ui_main_evlistener_visualization_timeout, NULL);
             started = 0;
         }
     }

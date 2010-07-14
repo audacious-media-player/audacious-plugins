@@ -475,9 +475,8 @@ static void destroy_cb (GtkObject * parent, UIInfoArea * area)
      ui_infoarea_playback_start);
     aud_hook_dissociate ("playback stop", (HookFunction)
      ui_infoarea_playback_stop);
-    aud_hook_dissociate ("visualization timeout", (HookFunction)
-     ui_infoarea_visualization_timeout);
     aud_hook_dissociate ("visualization clear", (HookFunction) vis_clear_cb);
+    aud_vis_runner_remove_hook((HookFunction) ui_infoarea_visualization_timeout);
 
     g_free (area->title);
     g_free (area->artist);
@@ -512,8 +511,8 @@ GtkWidget * ui_infoarea_new (void)
     aud_hook_associate("title change", (HookFunction) ui_infoarea_set_title, area);
     aud_hook_associate("playback begin", (HookFunction) ui_infoarea_playback_start, area);
     aud_hook_associate("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
-    aud_hook_associate("visualization timeout", (HookFunction) ui_infoarea_visualization_timeout, area);
     aud_hook_associate("visualization clear", (HookFunction) vis_clear_cb, area);
+    aud_vis_runner_add_hook((HookFunction) ui_infoarea_visualization_timeout, area);
 
     g_signal_connect (area->parent, "destroy", (GCallback) destroy_cb, area);
 
