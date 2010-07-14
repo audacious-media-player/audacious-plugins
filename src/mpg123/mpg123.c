@@ -238,8 +238,8 @@ update_stream_metadata(VFSFile *file, const gchar *name, Tuple *tuple, gint item
 	return changed;
 }
 
-static void
-mpg123_playback_worker(InputPlayback *data)
+static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
+ filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
 	MPG123PlaybackContext ctx;
 	gint ret;
@@ -256,7 +256,7 @@ mpg123_playback_worker(InputPlayback *data)
 
 	AUDDBG("playback worker started for %s\n", data->filename);
 
-	ctx.seek = -1;
+	ctx.seek = (start_time > 0) ? start_time : -1;
 	data->data = &ctx;
 
 	AUDDBG("decoder setup\n");
@@ -274,7 +274,7 @@ mpg123_playback_worker(InputPlayback *data)
 		AUDDBG("mpg123 error: %s", mpg123_plain_strerror(ret));
 		mpg123_delete_pars(ctx.params);
 		data->error = TRUE;
-		return;
+		return FALSE;
 	}
 
 	if ((ret = mpg123_open_feed(ctx.decoder)) != MPG123_OK)
@@ -283,7 +283,7 @@ mpg123_playback_worker(InputPlayback *data)
 		mpg123_delete(ctx.decoder);
 		mpg123_delete_pars(ctx.params);
 		data->error = TRUE;
-		return;
+		return FALSE;
 	}
 
 	AUDDBG("decoder format configuration\n");
@@ -292,8 +292,7 @@ mpg123_playback_worker(InputPlayback *data)
 		mpg123_format (ctx.decoder, rates[i], (MPG123_MONO | MPG123_STEREO),
 		 MPG123_ENC_SIGNED_16);
 
-	ctx.fd = aud_vfs_fopen(data->filename, "r");
-	AUDDBG("opened stream transport @%p\n", ctx.fd);
+	ctx.fd = file;
 
 	AUDDBG("checking if stream @%p is seekable\n", ctx.fd);
 	if (aud_vfs_is_streaming(ctx.fd))
@@ -324,6 +323,9 @@ mpg123_playback_worker(InputPlayback *data)
 		goto cleanup;
 	}
 
+	if (pause)
+		data->output->pause (TRUE);
+
 	data->set_gain_from_playlist (data);
 
 	g_mutex_lock(ctrl_mutex);
@@ -334,7 +336,8 @@ mpg123_playback_worker(InputPlayback *data)
 
 	g_mutex_unlock(ctrl_mutex);
 
-	while (data->playing == TRUE)
+	while (data->playing && (stop_time < 0 || data->output->written_time () <
+	 stop_time))
 	{
 		gint16 outbuf[ctx.channels * (ctx.rate / 100)];
 		gsize outbuf_size;
@@ -432,7 +435,8 @@ mpg123_playback_worker(InputPlayback *data)
 		{
 			off_t byteoff, sampleoff;
 
-			sampleoff = mpg123_feedseek(ctx.decoder, (ctx.seek * ctx.rate), SEEK_SET, &byteoff);
+			sampleoff = mpg123_feedseek (ctx.decoder, (gint64) ctx.seek *
+			 ctx.rate / 1000, SEEK_SET, & byteoff);
 			if (sampleoff < 0)
 			{
 				fprintf (stderr, "mpg123 error: %s\n", mpg123_strerror (ctx.decoder));
@@ -443,7 +447,7 @@ mpg123_playback_worker(InputPlayback *data)
 			}
 
 			AUDDBG("seeking to %ld (byte %ld)\n", ctx.seek, byteoff);
-			data->output->flush(ctx.seek * 1000);
+			data->output->flush (ctx.seek);
 			aud_vfs_fseek(ctx.fd, byteoff, SEEK_SET);
 			ctx.seek = -1;
 
@@ -469,7 +473,7 @@ decode_cleanup:
 cleanup:
 	mpg123_delete(ctx.decoder);
 	mpg123_delete_pars(ctx.params);
-	aud_vfs_fclose(ctx.fd);
+	return ! data->error;
 }
 
 static void mpg123_stop_playback_worker (InputPlayback * data)
@@ -496,7 +500,7 @@ static void mpg123_pause_playback_worker (InputPlayback * data, gshort pause)
 	g_mutex_unlock (ctrl_mutex);
 }
 
-static void mpg123_seek_time (InputPlayback * data, gint time)
+static void mpg123_seek_time (InputPlayback * data, gulong time)
 {
 	g_mutex_lock (ctrl_mutex);
 
@@ -535,9 +539,9 @@ static InputPlugin mpg123_ip = {
 	.vfs_extensions = (gchar **) mpg123_fmts,
 	.is_our_file_from_vfs = mpg123_probe_for_fd,
 	.probe_for_tuple = mpg123_probe_for_tuple,
-	.play_file = mpg123_playback_worker,
+	.play = mpg123_playback_worker,
 	.stop = mpg123_stop_playback_worker,
-	.seek = mpg123_seek_time,
+	.mseek = mpg123_seek_time,
 	.pause = mpg123_pause_playback_worker,
 	.update_song_tuple = mpg123_write_tag,
 	.get_song_image = mpg123_get_image,
