@@ -29,6 +29,7 @@ extern GtkWidget *vbox;
 extern GtkWidget *menu;
 extern GtkWidget *playlist_box;
 extern GtkWidget *infoarea;
+extern GtkWidget *statusbar;
 
 void setup_panes (void);
 void show_preferences_window(gboolean show);

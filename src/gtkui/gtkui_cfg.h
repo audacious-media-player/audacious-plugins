@@ -48,6 +48,7 @@ typedef struct
     gboolean multi_column_view;
     gboolean infoarea_visible;
     gboolean menu_visible;
+    gboolean statusbar_visible;
 } gtkui_cfg_t;
 
 extern gtkui_cfg_t config;

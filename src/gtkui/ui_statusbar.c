@@ -115,6 +115,13 @@ ui_statusbar_playback_stop(gpointer unused, GtkWidget *label)
     gtk_label_set_text(GTK_LABEL(label), "");
 }
 
+static void ui_statusbar_destroy_cb(GtkWidget *widget, gpointer user_data)
+{
+    aud_hook_dissociate("info change", (HookFunction) ui_statusbar_info_change);
+    aud_hook_dissociate("playback stop", (HookFunction) ui_statusbar_playback_stop);
+    aud_hook_dissociate("playlist update", (HookFunction) ui_statusbar_selection_update_cb);
+}
+
 GtkWidget *
 ui_statusbar_new(void)
 {
@@ -135,7 +142,7 @@ ui_statusbar_new(void)
 
     aud_hook_associate("playlist update", (HookFunction) ui_statusbar_selection_update_cb, length);
 
-    gtk_widget_show(hbox);
+    g_signal_connect(G_OBJECT(hbox), "destroy", G_CALLBACK(ui_statusbar_destroy_cb), NULL);
 
     return hbox;
 }

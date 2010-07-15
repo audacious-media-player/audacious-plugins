@@ -37,6 +37,7 @@ gtkui_cfg_t gtkui_default_config = {
     .playlist_height = 0,
     .infoarea_visible = TRUE,
     .menu_visible = TRUE,
+    .statusbar_visible = TRUE,
 };
 
 typedef struct gtkui_cfg_boolent_t
@@ -53,6 +54,7 @@ static gtkui_cfg_boolent gtkui_boolents[] = {
     {"playlist_visible", &config.playlist_visible, TRUE},
     {"infoarea_visible", &config.infoarea_visible, TRUE},
     {"menu_visible", &config.menu_visible, TRUE},
+    {"statusbar_visible", &config.statusbar_visible, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(gtkui_boolents);

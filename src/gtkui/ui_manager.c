@@ -53,6 +53,9 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
 
     {"view menu", NULL, N_("Show main menu"), "<Shift><Ctrl>M",
      N_("Show/hide main menu"), G_CALLBACK(action_view_menu), FALSE},
+
+    {"view statusbar", NULL, N_("Show statusbar"), "<Shift><Ctrl>S",
+     N_("Show/hide statusbar"), G_CALLBACK(action_view_statusbar), FALSE},
 };
 
 /* normal actions */

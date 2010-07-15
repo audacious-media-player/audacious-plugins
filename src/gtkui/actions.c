@@ -56,6 +56,7 @@
 #include "playlist_util.h"
 #include "gtkui_cfg.h"
 #include "ui_infoarea.h"
+#include "ui_statusbar.h"
 
 static GtkWidget *mainwin_jtt = NULL;
 
@@ -104,6 +105,8 @@ void action_view_infoarea(GtkToggleAction *action)
     {
         infoarea = ui_infoarea_new ();
         gtk_box_pack_end ((GtkBox *) vbox, infoarea, FALSE, FALSE, 0);
+        gtk_box_reorder_child(GTK_BOX(vbox), infoarea, -1);
+
         gtk_widget_show (infoarea);
     }
 
@@ -126,6 +129,30 @@ void action_view_menu(GtkToggleAction *action)
         gtk_widget_hide (menu);
 
     setup_panes ();
+}
+
+void action_view_statusbar(GtkToggleAction *action)
+{
+    config.statusbar_visible = gtk_toggle_action_get_active(action);
+
+    if (config.statusbar_visible && !statusbar)
+    {
+        statusbar = ui_statusbar_new();
+        gtk_box_pack_end(GTK_BOX(vbox), statusbar, FALSE, FALSE, 3);
+
+        if (infoarea != NULL)
+            gtk_box_reorder_child(GTK_BOX(vbox), infoarea, -1);
+
+        gtk_widget_show_all(statusbar);
+    }
+
+    if (!config.statusbar_visible && statusbar)
+    {
+        gtk_widget_destroy(statusbar);
+        statusbar = NULL;
+    }
+
+    setup_panes();
 }
 
 /* actionentries actions */

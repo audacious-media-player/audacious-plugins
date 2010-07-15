@@ -46,6 +46,7 @@ GtkWidget *window;       /* the main window */
 GtkWidget *vbox;         /* the main vertical box */
 GtkWidget *menu;
 GtkWidget *infoarea = NULL;
+GtkWidget *statusbar = NULL;
 
 static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
@@ -696,7 +697,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
     GtkWidget *button_open, *button_add, *button_play, *button_pause, *button_stop, *button_previous, *button_next;
     GtkWidget *evbox;
-    GtkWidget *statusbar;
     GtkAccelGroup *accel;
 
     gint lvol = 0, rvol = 0;    /* Left and Right for the volume control */
@@ -783,8 +783,12 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     ui_playlist_notebook_new ();
     g_object_ref (G_OBJECT(UI_PLAYLIST_NOTEBOOK));
 
-    statusbar = ui_statusbar_new();
-    gtk_box_pack_end(GTK_BOX(vbox), statusbar, FALSE, FALSE, 3);
+    if (config.statusbar_visible)
+    {
+        AUDDBG("statusbar setup\n");
+        statusbar = ui_statusbar_new();
+        gtk_box_pack_end(GTK_BOX(vbox), statusbar, FALSE, FALSE, 3);
+    }
 
     if (config.vis_position == VIS_IN_TABS)
     {
@@ -841,6 +845,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     check_set(toggleaction_group_others, "view menu", config.menu_visible);
     check_set(toggleaction_group_others, "view playlists", config.playlist_visible);
     check_set(toggleaction_group_others, "view infoarea", config.infoarea_visible);
+    check_set(toggleaction_group_others, "view statusbar", config.statusbar_visible);
     check_set(toggleaction_group_others, "playback repeat", aud_cfg->repeat);
     check_set(toggleaction_group_others, "playback shuffle", aud_cfg->shuffle);
     check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
