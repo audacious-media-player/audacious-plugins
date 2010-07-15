@@ -32,7 +32,7 @@
 #include "ui_statusbar.h"
 
 static void
-ui_statusbar_update_playlist_length(GtkWidget *label)
+ui_statusbar_update_playlist_length(gpointer unused, GtkWidget *label)
 {
     gint playlist = aud_playlist_get_active();
     gint64 selection, total;
@@ -61,12 +61,6 @@ ui_statusbar_update_playlist_length(GtkWidget *label)
     g_free(text);
     g_free(tot_text);
     g_free(sel_text);
-}
-
-static void
-ui_statusbar_selection_update_cb(gpointer unused, GtkWidget *length)
-{
-    ui_statusbar_update_playlist_length(length);
 }
 
 static void
@@ -119,7 +113,8 @@ static void ui_statusbar_destroy_cb(GtkWidget *widget, gpointer user_data)
 {
     aud_hook_dissociate("info change", (HookFunction) ui_statusbar_info_change);
     aud_hook_dissociate("playback stop", (HookFunction) ui_statusbar_playback_stop);
-    aud_hook_dissociate("playlist update", (HookFunction) ui_statusbar_selection_update_cb);
+    aud_hook_dissociate("playlist update", (HookFunction) ui_statusbar_update_playlist_length);
+    aud_hook_dissociate("info change", (HookFunction) ui_statusbar_update_playlist_length);
 }
 
 GtkWidget *
@@ -138,11 +133,17 @@ ui_statusbar_new(void)
 
     length = gtk_widget_new(GTK_TYPE_LABEL, "xalign", 1.0, NULL);
     gtk_box_pack_start(GTK_BOX(hbox), length, FALSE, FALSE, 5);
-    ui_statusbar_update_playlist_length(length);
+    ui_statusbar_update_playlist_length(NULL, length);
 
-    aud_hook_associate("playlist update", (HookFunction) ui_statusbar_selection_update_cb, length);
+    aud_hook_associate("playlist update", (HookFunction) ui_statusbar_update_playlist_length, length);
+    aud_hook_associate("info change", (HookFunction) ui_statusbar_update_playlist_length, length);
 
     g_signal_connect(G_OBJECT(hbox), "destroy", G_CALLBACK(ui_statusbar_destroy_cb), NULL);
+
+    if (audacious_drct_get_playing())
+    {
+        ui_statusbar_info_change(NULL, status);
+    }
 
     return hbox;
 }
