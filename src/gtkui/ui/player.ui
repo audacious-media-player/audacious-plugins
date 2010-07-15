@@ -58,7 +58,7 @@
 			<menuitem action="view menu" />
 			<menuitem action="view playlists" />
 			<menuitem action="view infoarea" />
-            <menuitem action="view statusbar" />
+			<menuitem action="view statusbar" />
 		</menu>
 
 		<menu action="help">

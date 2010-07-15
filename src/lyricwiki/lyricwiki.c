@@ -266,7 +266,7 @@ build_widget(void)
 	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "size_x_large", "scale", PANGO_SCALE_X_LARGE, NULL);
 	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "style_italic", "style", PANGO_STYLE_ITALIC, NULL);
 
-    g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), NULL);
+	g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), NULL);
 
 	return window;
 }
@@ -289,6 +289,9 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 	const gchar *artist, *title;
 	const gchar *real_lyrics;
 	gchar *f_name, *f_ext = NULL;
+
+	if (textbuffer == NULL)
+		return;
 
 	clear_lyrics_window();
 
@@ -353,6 +356,8 @@ init(void)
 	aud_hook_associate("playback begin", (HookFunction) lyricwiki_playback_began, NULL);
 
 	build_widget();
+
+	lyricwiki_playback_began();
 }
 
 static void
@@ -362,6 +367,7 @@ cleanup(void)
 
 	gtk_widget_destroy(window);
 	window = NULL;
+	textbuffer = NULL;
 }
 
 GeneralPlugin lyricwiki =
@@ -376,6 +382,6 @@ SIMPLE_GENERAL_PLUGIN(lyricwiki, lyricwiki_gplist);
 
 static gboolean window_delete(void)
 {
-    aud_enable_general(&lyricwiki, FALSE);
-    return TRUE;
+	aud_enable_general(&lyricwiki, FALSE);
+	return TRUE;
 }
