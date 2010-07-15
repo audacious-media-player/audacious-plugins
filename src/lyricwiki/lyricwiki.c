@@ -336,8 +336,6 @@ lyricwiki_playback_began(void)
 	if (!audacious_drct_is_playing())
 		return;
 
-	clear_lyrics_window();
-
 	playlist = aud_playlist_get_active();
 	pos = aud_playlist_get_position(playlist);
 	tu = aud_playlist_entry_get_tuple(playlist, pos);
