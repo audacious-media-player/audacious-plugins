@@ -174,23 +174,21 @@ void update_lyrics_window(const Tuple *tu, const gchar *lyrics);
 gboolean
 get_lyrics_step_3(gchar *buf, gint64 len, Tuple *tu)
 {
-	gchar *lyrics;
+	gchar *lyrics = NULL;
 
-	if (buf == NULL)
-		return FALSE;
-
-	lyrics = scrape_lyrics_from_lyricwiki_edit_page(buf, len);
-	g_free(buf);
-
-	if (lyrics != NULL)
+	if (buf != NULL)
 	{
-		update_lyrics_window(tu, lyrics);
-		mowgli_object_unref(tu);
-
-		g_free(lyrics);
+		lyrics = scrape_lyrics_from_lyricwiki_edit_page(buf, len);
+		g_free(buf);
 	}
 
-	return TRUE;
+	update_lyrics_window(tu, lyrics);
+	mowgli_object_unref(tu);
+
+	if (lyrics != NULL)
+		g_free(lyrics);
+
+	return buf == NULL ? FALSE : TRUE;
 }
 
 gboolean
@@ -286,6 +284,7 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 	GtkTextIter iter;
 	const gchar *artist, *title;
 	const gchar *real_lyrics;
+	gchar *f_name, *f_ext = NULL;
 
 	clear_lyrics_window();
 
@@ -294,15 +293,34 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 	title = tuple_get_string(tu, FIELD_TITLE, NULL);
 	artist = tuple_get_string(tu, FIELD_ARTIST, NULL);
 
+	if (title == NULL)
+	{
+		f_name = (gchar *) tuple_get_string(tu, FIELD_FILE_NAME, NULL);
+		f_ext = (gchar *) tuple_get_string(tu, FIELD_FILE_EXT, NULL);
+
+		title = g_strdup(f_name);
+
+		f_name = g_strrstr(title, f_ext);
+		if (f_name != NULL && f_name != title)
+		{
+			f_name--;
+			f_name[0] = '\0';
+		}
+	}
 	gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer), &iter, 
 			title, strlen(title), "weight_bold", "size_x_large", NULL);
+	if (f_ext != NULL)
+		g_free((gpointer) title);
 
 	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n", 1);
 
-	gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer), &iter,
-			artist, strlen(artist), "style_italic", NULL);
+	if (artist != NULL)
+	{
+		gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer),
+				&iter, artist, strlen(artist), "style_italic", NULL);
 
-	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n", 1);
+		gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n", 1);
+	}
 
 	real_lyrics = lyrics != NULL ? lyrics : _("\nNo lyrics were found.");
 
