@@ -182,8 +182,13 @@ get_lyrics_step_3(gchar *buf, gint64 len, Tuple *tu)
 	lyrics = scrape_lyrics_from_lyricwiki_edit_page(buf, len);
 	g_free(buf);
 
-	update_lyrics_window(tu, lyrics);
-	mowgli_object_unref(tu);
+	if (lyrics != NULL)
+	{
+		update_lyrics_window(tu, lyrics);
+		mowgli_object_unref(tu);
+
+		g_free(lyrics);
+	}
 
 	return TRUE;
 }
