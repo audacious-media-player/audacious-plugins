@@ -59,7 +59,7 @@ scrape_lyrics_from_lyricwiki_edit_page(const gchar *buf, gsize len)
 	xmlDocPtr doc;
 	gchar *ret = NULL;
 
-	/* 
+	/*
 	 * temporarily set our error-handling functor to our suppression function,
 	 * but we have to set it back because other components of Audacious depend
 	 * on libxml and we don't want to step on their code paths.
@@ -130,7 +130,7 @@ scrape_uri_from_lyricwiki_search_result(const gchar *buf, gsize len)
 	xmlDocPtr doc;
 	gchar *uri = NULL;
 
-	/* 
+	/*
 	 * temporarily set our error-handling functor to our suppression function,
 	 * but we have to set it back because other components of Audacious depend
 	 * on libxml and we don't want to step on their code paths.
@@ -228,6 +228,8 @@ get_lyrics_step_1(const Tuple *tu)
 GtkWidget *window, *textview;
 GtkTextBuffer *textbuffer;
 
+static gboolean window_delete();
+
 GtkWidget *
 build_widget(void)
 {
@@ -244,7 +246,7 @@ build_widget(void)
 	gtk_text_view_set_right_margin(GTK_TEXT_VIEW(textview), 12);
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(textview), GTK_WRAP_WORD);
 	textbuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview));
-	
+
 	scrollview = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollview), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	vbox = gtk_vbox_new(FALSE, 10);
@@ -260,9 +262,11 @@ build_widget(void)
 	gtk_widget_show(vbox);
 	gtk_widget_show(window);
 
-	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "weight_bold", "weight", PANGO_WEIGHT_BOLD, NULL); 
+	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "weight_bold", "weight", PANGO_WEIGHT_BOLD, NULL);
 	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "size_x_large", "scale", PANGO_SCALE_X_LARGE, NULL);
 	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "style_italic", "style", PANGO_STYLE_ITALIC, NULL);
+
+    g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), NULL);
 
 	return window;
 }
@@ -307,7 +311,7 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 			f_name[0] = '\0';
 		}
 	}
-	gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer), &iter, 
+	gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer), &iter,
 			title, strlen(title), "weight_bold", "size_x_large", NULL);
 	if (f_ext != NULL)
 		g_free((gpointer) title);
@@ -369,3 +373,9 @@ GeneralPlugin lyricwiki =
 
 GeneralPlugin *lyricwiki_gplist[] = { &lyricwiki, NULL };
 SIMPLE_GENERAL_PLUGIN(lyricwiki, lyricwiki_gplist);
+
+static gboolean window_delete(void)
+{
+    aud_enable_general(&lyricwiki, FALSE);
+    return TRUE;
+}
