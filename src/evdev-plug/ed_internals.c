@@ -35,10 +35,11 @@
 #include <regex.h>
 /* for variadic */
 #include <stdarg.h>
-#include <audacious/plugin.h>
-#include <audacious/i18n.h>
 #include <glib.h>
 #include <glib/gstdio.h>
+
+#include <audacious/i18n.h>
+#include <audacious/misc.h>
 
 static gboolean ed_device_giofunc ( GIOChannel * , GIOCondition , gpointer );
 
@@ -885,7 +886,7 @@ ed_util_get_data_from_keyfile( GKeyFile * keyfile , gchar * device_name , ... )
         *device_file = g_key_file_get_string( keyfile , device_name , "filename" , &gerr );
         if ( gerr != NULL )
         {
-           g_clear_error( &gerr ); 
+           g_clear_error( &gerr );
            g_warning( _("event-device-plugin: configuration, unable to get filename value for device \"%s\""
                       ", skipping it.\n") , device_name );
            is_failed = TRUE;
@@ -917,7 +918,7 @@ ed_util_get_data_from_keyfile( GKeyFile * keyfile , gchar * device_name , ... )
         *is_custom = g_key_file_get_integer( keyfile , device_name , "is_custom" , &gerr );
         if ( gerr != NULL )
         {
-           g_clear_error( &gerr ); 
+           g_clear_error( &gerr );
            g_warning( _("event-device-plugin: configuration, unable to get is_custom value for device \"%s\""
                       ", skipping it.\n") , device_name );
            is_failed = TRUE;
@@ -931,7 +932,7 @@ ed_util_get_data_from_keyfile( GKeyFile * keyfile , gchar * device_name , ... )
         *is_active = g_key_file_get_boolean( keyfile , device_name , "is_active" , &gerr );
         if ( gerr != NULL )
         {
-           g_clear_error( &gerr ); 
+           g_clear_error( &gerr );
            g_warning( _("event-device-plugin: configuration, unable to get is_active value for device \"%s\""
                       ", skipping it.\n") , device_name );
            is_failed = TRUE;

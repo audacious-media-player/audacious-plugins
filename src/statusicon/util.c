@@ -21,6 +21,7 @@
 */
 
 #include <audacious/drct.h>
+#include <libaudcore/hook.h>
 
 #include "statusicon.h"
 

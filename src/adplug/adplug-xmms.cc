@@ -33,6 +33,7 @@
 extern "C" {
 #include <audacious/configdb.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/tuple_formatter.h>
 #include <libaudcore/vfs_buffered_file.h>

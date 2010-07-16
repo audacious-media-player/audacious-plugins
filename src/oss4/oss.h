@@ -94,7 +94,7 @@ extern gchar *oss_message;
 /* oss.c */
 OutputPluginInitStatus oss_init(void);
 void oss_cleanup(void);
-gint oss_open_audio(AFormat aud_format, gint rate, gint channels);
+gint oss_open_audio(gint aud_format, gint rate, gint channels);
 void oss_close_audio(void);
 void oss_write_audio(void *data, gint length);
 void oss_drain(void);
@@ -115,7 +115,7 @@ void oss_configure(void);
 void oss_about(void);
 
 /* utils.c */
-gint oss_convert_aud_format(AFormat aud_format);
+gint oss_convert_aud_format(gint aud_format);
 gchar *oss_format_to_text(gint format);
 gint oss_format_to_bits(gint format);
 gint oss_frames_to_bytes(gint frames);

@@ -7,7 +7,7 @@
 
 extern ov_callbacks vorbis_callbacks;
 
-gboolean vorbis_update_song_tuple (Tuple *tuple, VFSFile *fd);
+gboolean vorbis_update_song_tuple (const Tuple * tuple, VFSFile * fd);
 
 typedef struct {
     gint http_buffer_size;

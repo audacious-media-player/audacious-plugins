@@ -134,7 +134,7 @@ esd_16sw(void *data, gint length)
 }
 
 static void
-esdout_setup_format(AFormat fmt, gint rate, gint nch)
+esdout_setup_format(gint fmt, gint rate, gint nch)
 {
     gboolean swap_sign = FALSE;
     gboolean swap_16 = FALSE;
@@ -377,7 +377,7 @@ esdout_set_audio_params(void)
 }
 
 gint
-esdout_open(AFormat fmt, gint rate, gint nch)
+esdout_open(gint fmt, gint rate, gint nch)
 {
     esdout_setup_format(fmt, rate, nch);
 
@@ -427,7 +427,7 @@ esdout_open(AFormat fmt, gint rate, gint nch)
 }
 
 void
-esdout_tell(AFormat * fmt, gint * rate, gint * nch)
+esdout_tell(gint * fmt, gint * rate, gint * nch)
 {
 	(*fmt) = format;
 	(*rate) = frequency;

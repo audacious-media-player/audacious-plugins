@@ -21,10 +21,13 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/debug.h>
 #include <audacious/drct.h>
+#include <audacious/interface.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 
 #include "config.h"
@@ -272,7 +275,7 @@ static void button_next_pressed()
 
 static void ui_set_song_info(void *unused, void *another)
 {
-    gchar *title = aud_playback_get_title();
+    gchar *title = aud_drct_get_title();
     gchar *title_s = g_strdup_printf("%s - Audacious", title);
 
     gtk_window_set_title(GTK_WINDOW(window), title_s);

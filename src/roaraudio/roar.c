@@ -32,21 +32,21 @@ gint ctrlsocket_get_session_id(void) {
 }
 
 OutputPlugin roar_op = {
-    .description = "RoarAudio Output Plugin",         
+    .description = "RoarAudio Output Plugin",
     .init = roar_init,
     .cleanup = NULL,
     .about = roar_about,
-    .configure = roar_configure,  
+    .configure = roar_configure,
     .get_volume = roar_get_volume,
     .set_volume = roar_set_volume,
-    .open_audio = roar_open,  
+    .open_audio = roar_open,
     .write_audio = roar_write,
     .close_audio = roar_close,
     .flush = roar_flush,
     .pause = roar_pause,
     .buffer_free = roar_free,
     .buffer_playing = roar_playing,
-    .output_time = roar_get_output_time,  
+    .output_time = roar_get_output_time,
     .written_time = roar_get_written_time,
     .tell_audio = NULL
 };
@@ -105,7 +105,7 @@ void roar_write(void *ptr, int length) {
  }
 }
 
-int roar_open(AFormat fmt, int rate, int nch) {
+int roar_open(gint fmt, int rate, int nch) {
  int codec = ROAR_CODEC_DEFAULT;
  int bits;
 

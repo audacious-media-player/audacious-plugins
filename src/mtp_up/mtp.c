@@ -23,9 +23,9 @@
 #include <libmtp.h>
 
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
-#include <audacious/ui_plugin_menu.h>
 
 #include <gtk/gtk.h>
 #include "filetype.h"
@@ -180,7 +180,6 @@ gint upload_file(Tuple *from_tuple)
 {
     int ret;
     gchar *tmp, *from_path = NULL, *filename;
-    uint32_t parent_id = 0;
     LIBMTP_track_t *gentrack;
     gentrack = track_metadata(from_tuple);
     from_path = g_strdup_printf("%s/%s", tuple_get_string(from_tuple, FIELD_FILE_PATH, NULL), tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));

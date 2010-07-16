@@ -23,9 +23,10 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#include "util.h"
-#include <audacious/plugin.h>
 #include <gtk/gtk.h>
+#include <libaudcore/hook.h>
+
+#include "util.h"
 
 GtkWidget *make_filebrowser(const gchar * title, gboolean save)
 {

@@ -13,6 +13,7 @@
 
 #include <audacious/drct.h>
 #include <audacious/debug.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/md5.h>
 

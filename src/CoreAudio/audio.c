@@ -53,7 +53,7 @@ short conv_buf[OUTPUT_BUFSIZE];    /* buffer used to hold format converted input
 
 /*
  * The format of the data from the input plugin
- * This will never change during a song. 
+ * This will never change during a song.
  */
 struct format_info input;
 
@@ -90,7 +90,7 @@ static int osx_calc_bitrate(int osx_fmt, int rate, int channels)
 	return bitrate;
 }
 
-static gboolean osx_format_is_neutral(AFormat fmt)
+static gboolean osx_format_is_neutral(gint fmt)
 {
 	gboolean ret = FALSE;
 
@@ -109,7 +109,7 @@ static gboolean osx_format_is_neutral(AFormat fmt)
 	return ret;
 }
 
-static int osx_get_format(AFormat fmt)
+static int osx_get_format(gint fmt)
 {
 	int format = 0;
 
@@ -137,7 +137,7 @@ static int osx_get_format(AFormat fmt)
 	return format;
 }
 
-static int osx_get_conv_format(AFormat fmt)
+static int osx_get_conv_format(gint fmt)
 {
 	int format = 0;
 
@@ -248,7 +248,7 @@ OSStatus play_callback(AudioDeviceID inDevice, const AudioTimeStamp * inNow, con
 
 		memset(dest,0,(src_size_float - num_output_samples) * sizeof(float));
 	}
-	
+
 	// move unwritten data to beginning of buffer
 	{
 		dest = buffer;
@@ -283,7 +283,7 @@ OSStatus play_callback(AudioDeviceID inDevice, const AudioTimeStamp * inNow, con
 }
 
 
-static void osx_setup_format(AFormat fmt, int rate, int nch)
+static void osx_setup_format(gint fmt, int rate, int nch)
 {
 	//printf("osx_setup_format(): fmt %d, rate %d, nch %d\n",fmt,rate,nch);
 
@@ -328,7 +328,7 @@ gint osx_get_output_time(void)
 
 	retval = output_time_offset + ((output_total * sample_size * 1000) / output.bps);
 	retval = (int)((float)retval / user_pitch);
-	
+
 	//printf("osx_get_output_time(): time is %d\n",retval);
 
 	return retval;
@@ -380,7 +380,7 @@ gint osx_free(void)
 
 	// get number of free samples
 	bytes_free = buffer_size - buffer_index;
-	
+
 	// adjust for mono
 	if (input.channels == 1)
 	{
@@ -422,12 +422,12 @@ void osx_write(gpointer ptr, int length)
         if (osx_convert_func != NULL)
             osx_convert_func(&ptr, length);
 
-	// step through audio 
+	// step through audio
 	while (num_samples > 0)
 	{
 		// get # of samples to write to the buffer
 		count = MIN(num_samples, osx_free()/sample_size);
-		
+
 		src = ptr+offset;
 
 		if (dbconvert((char*)src,count * sample_size) == -1)
@@ -438,7 +438,7 @@ void osx_write(gpointer ptr, int length)
 		{
 			src = output_buf;
 			dest = (float*)(buffer + buffer_index);
-			
+
 			//printf("output_buf_length is %d\n",output_buf_length);
 
 			for (i = 0; i < output_buf_length; i++)
@@ -478,7 +478,7 @@ void osx_close(void)
 	playing_flag = 0;
 
 	// close audio device
-	AudioDeviceStop(device_id, play_callback); 
+	AudioDeviceStop(device_id, play_callback);
 	AudioDeviceRemoveIOProc(device_id, play_callback);
 
 	g_free(device_name);
@@ -522,7 +522,7 @@ void osx_set_audio_params(void)
 
 	//printf("osx_set_audio_params(): fmt %d, freq %d, nch %d\n",output.format.osx,output.frequency,output.channels);
 
-	// set audio format 
+	// set audio format
 
 	// set num channels
 
@@ -532,10 +532,10 @@ void osx_set_audio_params(void)
 		case 2:  stereo_multiplier = 1; break;
 		default: stereo_multiplier = 1; break;
 	}
-	
+
 	switch (input.format.xmms)
 	{
-		case FMT_U8:    
+		case FMT_U8:
 		case FMT_S8:
 			format_multiplier = 2;
 			sample_size = 1;
@@ -557,7 +557,7 @@ void osx_set_audio_params(void)
 }
 
 
-gint osx_open(AFormat fmt, gint rate, gint nch)
+gint osx_open(gint fmt, gint rate, gint nch)
 {
 	char s[32];
 	long m;

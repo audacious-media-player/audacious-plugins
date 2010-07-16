@@ -26,7 +26,7 @@
 #include "skins_cfg.h"
 #include "util.h"
 
-#include <audacious/plugin.h>
+#include <audacious/audconfig.h>
 
 #define UI_TYPE_SKINNED_EQUALIZER_GRAPH           (ui_skinned_equalizer_graph_get_type())
 

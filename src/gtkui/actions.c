@@ -47,10 +47,12 @@
 #include <regex.h>
 #endif
 
+#include <audacious/audconfig.h>
 #include <audacious/drct.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
-#include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -665,34 +667,8 @@ static gboolean show_playlist_overwrite_prompt(GtkWindow * parent, const gchar *
     return (result == GTK_RESPONSE_YES);
 }
 
-static void show_playlist_save_format_error(GtkWindow * parent, const gchar * filename)
-{
-    const gchar *markup = N_("<b><big>Unable to save playlist.</big></b>\n\n" "Unknown file type for '%s'.\n");
-
-    GtkWidget *dialog;
-
-    g_return_if_fail(GTK_IS_WINDOW(parent));
-    g_return_if_fail(filename != NULL);
-
-    dialog = gtk_message_dialog_new_with_markup(GTK_WINDOW(parent), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, _(markup), filename);
-
-    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);    /* centering */
-    gtk_dialog_run(GTK_DIALOG(dialog));
-    gtk_widget_destroy(dialog);
-}
-
 static void playlistwin_save_playlist(const gchar * filename)
 {
-    PlaylistContainer *plc;
-    gchar *ext = strrchr(filename, '.') + 1;
-
-    plc = aud_playlist_container_find(ext);
-    if (plc == NULL)
-    {
-        show_playlist_save_format_error(NULL, filename);
-        return;
-    }
-
     str_replace_in(&aud_cfg->playlist_path, g_path_get_dirname(filename));
 
     if (g_file_test(filename, G_FILE_TEST_IS_REGULAR))
@@ -826,7 +802,7 @@ void action_playlist_select_all(void)
 
 void action_playlist_save_all_playlists(void)
 {
-    aud_save_all_playlists();
+    aud_save_playlists();
 }
 
 void action_playlist_copy(void)

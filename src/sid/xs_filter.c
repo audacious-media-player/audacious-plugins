@@ -1,8 +1,8 @@
-/*  
+/*
    XMMS-SID - SIDPlay input plugin for X MultiMedia System (XMMS)
 
    Audio rate-conversion filter
-   
+
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
    (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
 
@@ -40,7 +40,7 @@
 static gint32 xs_filter_mbn = 0;
 
 
-gint xs_filter_rateconv(void *destBuf, void *srcBuf, const AFormat audioFormat,
+gint xs_filter_rateconv(void *destBuf, void *srcBuf, const gint audioFormat,
             const gint oversampleFactor, const gint bufSize)
 {
     static gint32 tmp;

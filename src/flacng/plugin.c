@@ -466,7 +466,8 @@ static void flac_aboutbox(void)
     g_free(about_text);
 }
 
-static void insert_str_tuple_to_vc(FLAC__StreamMetadata *vc_block, Tuple *tuple, gint tuple_name, gchar *field_name)
+static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
+ const Tuple * tuple, gint tuple_name, gchar * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     gchar *str;
@@ -482,7 +483,8 @@ static void insert_str_tuple_to_vc(FLAC__StreamMetadata *vc_block, Tuple *tuple,
     g_free(str);
 }
 
-static void insert_int_tuple_to_vc(FLAC__StreamMetadata *vc_block, Tuple *tuple, gint tuple_name, gchar *field_name)
+static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
+ const Tuple * tuple, gint tuple_name, gchar * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     gchar *str;
@@ -502,7 +504,7 @@ static void insert_int_tuple_to_vc(FLAC__StreamMetadata *vc_block, Tuple *tuple,
     g_free(str);
 }
 
-gboolean flac_update_song_tuple(Tuple *tuple, VFSFile *fd)
+gboolean flac_update_song_tuple (const Tuple * tuple, VFSFile * fd)
 {
     AUDDBG("Update song tuple.\n");
     FLAC__Metadata_SimpleIterator *iter;

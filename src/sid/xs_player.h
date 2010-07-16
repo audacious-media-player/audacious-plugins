@@ -30,7 +30,7 @@ typedef struct xs_status_t {
                 audioChannels,
                 audioBitsPerSample,
                 oversampleFactor;   /* Factor of oversampling */
-    AFormat     audioFormat;
+    gint     audioFormat;
     gboolean    oversampleEnable;   /* TRUE after sidEngine initialization,
                                     if xs_cfg.oversampleEnable == TRUE and
                                     emulation backend supports oversampling.

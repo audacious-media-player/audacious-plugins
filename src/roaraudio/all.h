@@ -62,7 +62,7 @@ void roar_write(void *ptr, int length);
 void roar_close(void);
 void roar_flush(int time);
 void roar_pause(short p);
-int roar_open(AFormat fmt, int rate, int nch);
+int roar_open(gint fmt, int rate, int nch);
 int roar_get_output_time(void);
 int roar_get_written_time(void);
 

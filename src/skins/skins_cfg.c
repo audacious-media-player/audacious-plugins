@@ -24,6 +24,8 @@
 #include <audacious/configdb.h>
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
+#include <audacious/preferences.h>
 #include <libaudcore/audstrings.h>
 
 #include "skins_cfg.h"

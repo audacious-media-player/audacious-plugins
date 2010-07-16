@@ -26,11 +26,6 @@
 #include "actions-playlist.h"
 #include "actions-equalizer.h"
 
-#if 0
-/* this header contains prototypes for plugin-available menu functions */
-#include "ui_plugin_menu.h"
-#endif
-
 /* TODO ui_main.h is only included because ui_manager.c needs the values of
    TimerMode enum; move that enum elsewhere so we can get rid of this include */
 #include "ui_main.h"
@@ -41,7 +36,7 @@
 #include "plugin.h"
 
 #include <audacious/i18n.h>
-#include <audacious/ui_plugin_menu.h>
+#include <audacious/misc.h>
 #include <libaudgui/libaudgui.h>
 
 static GtkUIManager *ui_manager = NULL;

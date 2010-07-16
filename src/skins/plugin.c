@@ -28,6 +28,7 @@
 #include "ui_main_evlisteners.h"
 #include "ui_playlist_evlisteners.h"
 
+#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>

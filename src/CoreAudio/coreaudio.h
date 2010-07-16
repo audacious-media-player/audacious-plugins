@@ -53,11 +53,11 @@
 extern OutputPlugin op;
 
 
-struct format_info 
+struct format_info
 {
-	union 
+	union
 	{
-		AFormat xmms;
+		gint xmms;
 		int osx;
 	} format;
 
@@ -95,7 +95,7 @@ void osx_write(void *ptr, int length);
 void osx_close(void);
 void osx_flush(int time);
 void osx_pause(short p);
-int osx_open(AFormat fmt, int rate, int nch);
+int osx_open(gint fmt, int rate, int nch);
 int osx_get_output_time(void);
 int osx_get_written_time(void);
 void osx_set_audio_params(void);

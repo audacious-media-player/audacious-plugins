@@ -38,8 +38,10 @@
 #include <mowgli.h>
 
 #include <audacious/drct.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <libaudcore/hook.h>
 #include <libaudcore/vfs_async.h>
 
 #include "urlencode.h"

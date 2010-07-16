@@ -70,7 +70,7 @@ typedef struct
 
 static void start(void);
 static void stop(void);
-static int apply_effect(gpointer * d, gint length, AFormat afmt, gint srate, gint nch);
+static int apply_effect(gpointer * d, gint length, gint afmt, gint srate, gint nch);
 static void configure(void);
 
 static void restore(void);
@@ -107,7 +107,7 @@ static plugin_instance *selected_instance;
 
 static struct
 {
-    AFormat afmt;
+    gint afmt;
     gint srate;
     gint nch;
     gboolean ignore;
@@ -396,7 +396,7 @@ static void reboot_plugins(void)
     G_UNLOCK(running_plugins);
 }
 
-static int apply_effect(gpointer * d, gint length, AFormat afmt, gint srate, gint nch)
+static int apply_effect(gpointer * d, gint length, gint afmt, gint srate, gint nch)
 {
     gint16 *raw16 = *d;
     GSList *list;

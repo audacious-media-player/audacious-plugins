@@ -517,7 +517,7 @@ static void mpg123_seek_time (InputPlayback * data, gulong time)
 	g_mutex_unlock (ctrl_mutex);
 }
 
-static gboolean mpg123_write_tag (Tuple * tuple, VFSFile * handle)
+static gboolean mpg123_write_tag (const Tuple * tuple, VFSFile * handle)
 {
 	return tag_tuple_write (tuple, handle, TAG_TYPE_APE);
 }

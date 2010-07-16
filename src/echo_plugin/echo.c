@@ -13,8 +13,8 @@
 
 static void init(void);
 static void cleanup(void);
-static int mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, gint nch);
-static void query_format(AFormat * fmt, gint * rate, gint * nch);
+static int mod_samples(gpointer * d, gint length, gint afmt, gint srate, gint nch);
+static void query_format(gint * fmt, gint * rate, gint * nch);
 
 #define MAX_SRATE 50000
 #define MAX_CHANNELS 2
@@ -64,7 +64,7 @@ static void cleanup(void)
 	buffer = NULL;
 }
 
-static void query_format(AFormat * fmt, gint * rate, gint * nch)
+static void query_format(gint * fmt, gint * rate, gint * nch)
 {
 	if (!(*fmt == FMT_S16_NE ||
 	      (*fmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
@@ -72,7 +72,7 @@ static void query_format(AFormat * fmt, gint * rate, gint * nch)
 		*fmt = FMT_S16_NE;
 }
 
-static int mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, gint nch)
+static int mod_samples(gpointer * d, gint length, gint afmt, gint srate, gint nch)
 {
 	gint i, in, out, buf, r_ofs, fb_div;
 	gint16 *data = (gint16 *) * d;

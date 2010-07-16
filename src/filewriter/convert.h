@@ -5,7 +5,7 @@
 
 gpointer convert_output;
 
-gboolean convert_init(AFormat input_fmt, AFormat output_fmt, gint channels);
+gboolean convert_init(gint input_fmt, gint output_fmt, gint channels);
 
 gint convert_process(gpointer ptr, gint length);
 

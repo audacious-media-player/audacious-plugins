@@ -21,9 +21,10 @@
 #include <glib.h>
 #include <math.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/drct.h>
-#include <audacious/plugin.h>
-#include <audacious/input.h>
+#include <audacious/misc.h>
+#include <libaudcore/hook.h>
 
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
@@ -43,7 +44,7 @@ static void ui_main_evlistener_title_change (void * data, void * user_data)
     if (! aud_drct_get_playing ())
         return;
 
-    title = aud_playback_get_title ();
+    title = aud_drct_get_title ();
     mainwin_set_song_title (title);
     g_free (title);
 }
@@ -148,11 +149,9 @@ ui_main_evlistener_equalizerwin_show(gpointer hook_data, gpointer user_data)
     equalizerwin_show(*show);
 }
 
-static void
-ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
+static void ui_main_evlistener_visualization_timeout (const VisNode * vis,
+ void * user)
 {
-    VisNode *vis = (VisNode*) hook_data;
-
     guint8 intern_vis_data[512];
     gint16 mono_freq[2][256];
     gboolean mono_freq_calced = FALSE;

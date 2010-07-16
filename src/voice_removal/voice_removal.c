@@ -26,9 +26,9 @@
 #include <audacious/plugin.h>
 
 
-static int apply_effect (gpointer *d, gint length, AFormat afmt,
+static int apply_effect (gpointer *d, gint length, gint afmt,
 			gint srate, gint nch);
-static void query_format (AFormat *fmt, gint *rate, gint *nch);
+static void query_format (gint *fmt, gint *rate, gint *nch);
 
 static EffectPlugin xmms_plugin = {
 	.description = "Voice Removal Plugin",
@@ -40,7 +40,7 @@ EffectPlugin *voice_eplist[] = { &xmms_plugin, NULL };
 
 DECLARE_PLUGIN(voice_removal, NULL, NULL, NULL, NULL, voice_eplist, NULL, NULL, NULL);
 
-static void query_format (AFormat *fmt, gint *rate, gint *nch)
+static void query_format (gint *fmt, gint *rate, gint *nch)
 {
 	if (!((*fmt == FMT_S16_NE) ||
 		(*fmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
@@ -51,7 +51,7 @@ static void query_format (AFormat *fmt, gint *rate, gint *nch)
 		*nch = 2;
 }
 
-static int apply_effect (gpointer *d, gint length, AFormat afmt,
+static int apply_effect (gpointer *d, gint length, gint afmt,
 			gint srate, gint nch) {
 	int x;
 	int left, right;

@@ -29,7 +29,7 @@
 
 #include <audacious/drct.h>
 #include <audacious/playlist.h>
-#include <audacious/plugin.h>
+#include <libaudcore/hook.h>
 
 #include "ui_statusbar.h"
 

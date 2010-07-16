@@ -59,10 +59,10 @@ void esdout_write(void *ptr, int length);
 void esdout_close(void);
 void esdout_flush(int time);
 void esdout_pause(short p);
-int esdout_open(AFormat fmt, int rate, int nch);
+int esdout_open(gint fmt, int rate, int nch);
 int esdout_get_output_time(void);
 int esdout_get_written_time(void);
 void esdout_set_audio_params(void);
-void esdout_tell(AFormat * fmt, gint * rate, gint * nch);
+void esdout_tell(gint * fmt, gint * rate, gint * nch);
 
 #endif

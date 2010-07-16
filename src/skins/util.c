@@ -45,6 +45,7 @@
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/hook.h>
 
 #include "plugin.h"
 

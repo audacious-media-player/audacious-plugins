@@ -23,9 +23,9 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/playlist.h>
-#include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 
 #include "ui_manager.h"

@@ -82,7 +82,7 @@
 struct sun_format {
 	char	name[16];
 	union {
-		AFormat	xmms;
+		gint	xmms;
 		gint	sun;
 	} format;
 	int	frequency;
@@ -136,7 +136,7 @@ void	 sun_about(void);
 void	 sun_configure(void);
 void	 sun_cleanup(void);
 
-gint	 sun_open(AFormat, int, int);
+gint	 sun_open(gint, int, int);
 void	 sun_write(void *, int);
 void	 sun_close(void);
 void	 sun_flush(int);

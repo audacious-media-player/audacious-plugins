@@ -47,6 +47,7 @@
 #include <alsa/asoundlib.h>
 #include <glib.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/debug.h>
 
 #include "alsa.h"
@@ -304,7 +305,7 @@ static int convert_aud_format (int aud_format)
     return SND_PCM_FORMAT_UNKNOWN;
 }
 
-int alsa_open_audio (AFormat aud_format, int rate, int channels)
+int alsa_open_audio (gint aud_format, int rate, int channels)
 {
     int format = convert_aud_format (aud_format);
     snd_pcm_hw_params_t * params;

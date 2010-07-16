@@ -53,9 +53,9 @@
 #include "util.h"
 #include "skins_cfg.h"
 
+#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/playlist.h>
-#include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 
 #define UI_SKINNED_PLAYLIST_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_playlist_get_type(), UiSkinnedPlaylistPrivate))

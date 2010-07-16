@@ -28,8 +28,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libaudcore/tuple_formatter.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <libaudcore/tuple_formatter.h>
 
 #include "ao.h"
 #include "corlett.h"

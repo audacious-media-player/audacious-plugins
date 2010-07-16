@@ -278,7 +278,7 @@ ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
     return t;
 }
 
-static gboolean ffaudio_write_tag(Tuple *tuple, VFSFile *file)
+static gboolean ffaudio_write_tag (const Tuple * tuple, VFSFile * file)
 {
     gchar *file_uri = g_ascii_strdown(file->uri, -4);
 
@@ -309,7 +309,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     gint in_sample_size, out_sample_size, chunk_size;
     ReSampleContext *resctx = NULL;
     gboolean codec_opened = FALSE, do_resampling = FALSE;
-    AFormat out_fmt;
+    gint out_fmt;
 #ifndef FFAUDIO_USE_AUDTAG
     Tuple *tuple;
 #endif

@@ -21,6 +21,7 @@
  */
 
 #include <audacious/configdb.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/tuple_formatter.h>
@@ -92,7 +93,7 @@ static gint64 samples_written;
 
 static OutputPluginInitStatus file_init(void);
 static void file_about(void);
-static gint file_open(AFormat fmt, gint rate, gint nch);
+static gint file_open(gint fmt, gint rate, gint nch);
 static void file_write(void *ptr, gint length);
 static gint file_write_output(void *ptr, gint length);
 static void file_close(void);
@@ -219,7 +220,7 @@ static VFSFile * safe_create (const gchar * filename)
     return NULL;
 }
 
-static gint file_open(AFormat fmt, gint rate, gint nch)
+static gint file_open(gint fmt, gint rate, gint nch)
 {
     gchar *filename = NULL, *temp = NULL;
     gchar * directory;

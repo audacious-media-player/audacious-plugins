@@ -30,6 +30,7 @@
 #include <pulse/pulseaudio.h>
 
 #include <audacious/debug.h>
+#include <audacious/drct.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
@@ -72,7 +73,7 @@ static const char* get_song_name(void) {
     static char t[256];
     char *str, *u;
 
-    if (!(str = aud_playback_get_title()))
+    if (!(str = aud_drct_get_title()))
         return "Playback Stream";
     snprintf(t, sizeof(t), "%s", u = pa_locale_to_utf8(str));
     pa_xfree(u);
@@ -510,7 +511,7 @@ static void pulse_close(void)
     volume_time_event = NULL;
 }
 
-static int pulse_open(AFormat fmt, int rate, int nch) {
+static int pulse_open(gint fmt, int rate, int nch) {
     pa_sample_spec ss;
     pa_operation *o = NULL;
     int success;

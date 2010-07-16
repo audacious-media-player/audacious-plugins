@@ -36,9 +36,11 @@
 
 #include <glib.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/configdb.h>
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/eventqueue.h>

@@ -388,7 +388,7 @@ wv_cleanup(void)
     g_cond_free(ctrl_cond);
 }
 
-static gboolean wv_write_tag (Tuple *tuple, VFSFile *handle)
+static gboolean wv_write_tag (const Tuple * tuple, VFSFile * handle)
 {
     return tag_tuple_write(tuple, handle, TAG_TYPE_APE);
 }

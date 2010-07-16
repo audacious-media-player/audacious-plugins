@@ -110,7 +110,7 @@ private:
 
 	Settings mModProps;
 
-	AFormat mFormat;
+	gint mFormat;
 
 	uint32  mBufTime;		//milliseconds
 

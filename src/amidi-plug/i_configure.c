@@ -19,6 +19,7 @@
 */
 
 #include <audacious/drct.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 #include "i_configure.h"

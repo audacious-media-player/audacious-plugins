@@ -24,6 +24,7 @@
 
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -73,7 +74,7 @@ static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpoi
           if (event->state & GDK_SHIFT_MASK)
               aud_drct_pl_next();
           else
-              aud_interface_toggle_visibility();
+              hook_call ("interface toggle visibility", NULL);
           break;
       }
 

@@ -36,9 +36,12 @@
 #include <string.h>
 #include <sys/types.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <audacious/playlist.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 
 /* GDK including */
@@ -51,9 +54,6 @@
 #else
 #include <regex.h>
 #endif
-
-#include <audacious/playlist.h>
-#include <audacious/plugin.h>
 
 #include "actions-playlist.h"
 #include "ui_main.h"

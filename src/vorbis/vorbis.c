@@ -39,8 +39,9 @@
 #include <vorbis/vorbisfile.h>
 
 #include <audacious/configdb.h>
-#include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
+#include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>

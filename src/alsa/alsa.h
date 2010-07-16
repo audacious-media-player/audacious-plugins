@@ -60,7 +60,7 @@ extern pthread_mutex_t alsa_mutex;
 OutputPluginInitStatus alsa_init (void);
 void alsa_soft_init (void);
 void alsa_cleanup (void);
-int alsa_open_audio (AFormat aud_format, int rate, int channels);
+int alsa_open_audio (gint aud_format, int rate, int channels);
 void alsa_close_audio (void);
 int alsa_buffer_free (void);
 void alsa_write_audio (void * data, int length);

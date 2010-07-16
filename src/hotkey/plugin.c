@@ -42,8 +42,9 @@
 
 #include <audacious/configdb.h>
 #include <audacious/drct.h>
-#include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <audacious/plugin.h>
+#include <libaudcore/hook.h>
 
 #include "plugin.h"
 #include "gui.h"

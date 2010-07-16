@@ -86,8 +86,8 @@ dictionary_to_vorbis_comment(vorbis_comment * vc, mowgli_dictionary_t * dict)
     }
 }
 
-static void
-insert_str_tuple_field_to_dictionary(Tuple *tuple, int fieldn, mowgli_dictionary_t *dict, char *key)
+static void insert_str_tuple_field_to_dictionary (const Tuple * tuple, int
+ fieldn, mowgli_dictionary_t * dict, char * key)
 {
 
     if(mowgli_dictionary_find(dict, key) != NULL) g_free(mowgli_dictionary_delete(dict, key));
@@ -96,8 +96,8 @@ insert_str_tuple_field_to_dictionary(Tuple *tuple, int fieldn, mowgli_dictionary
     if(tmp != NULL && strlen(tmp) != 0) mowgli_dictionary_add(dict, key, g_strdup(tmp));
 }
 
-static void
-insert_int_tuple_field_to_dictionary(Tuple *tuple, int fieldn, mowgli_dictionary_t *dict, char *key)
+static void insert_int_tuple_field_to_dictionary (const Tuple * tuple, int
+ fieldn, mowgli_dictionary_t * dict, char * key)
 {
     int val;
 
@@ -115,8 +115,7 @@ destroy_cb(mowgli_dictionary_elem_t *delem, void *privdata)
     g_free(delem->data);
 }
 
-gboolean
-vorbis_update_song_tuple (Tuple *tuple, VFSFile *fd)
+gboolean vorbis_update_song_tuple (const Tuple * tuple, VFSFile * fd)
 {
 
     vcedit_state *state;

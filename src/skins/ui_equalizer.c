@@ -43,11 +43,12 @@
 #include "ui_main.h"
 #include "ui_playlist.h"
 
+#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
-#include <audacious/plugin.h>
-#include <audacious/equalizer_preset.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "images/audacious_eq.xpm"
@@ -685,7 +686,7 @@ equalizerwin_read_winamp_eqf(VFSFile * file)
 
 static gboolean equalizerwin_read_aud_preset (const gchar * file)
 {
-    EqualizerPreset * preset = aud_equalizer_read_aud_preset (file);
+    EqualizerPreset * preset = aud_load_preset_file (file);
 
     if (preset == NULL)
         return FALSE;

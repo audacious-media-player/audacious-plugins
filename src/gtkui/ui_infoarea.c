@@ -23,8 +23,9 @@
 
 #include <audacious/debug.h>
 #include <audacious/drct.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
-#include <audacious/plugin.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -63,12 +64,11 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area);
 
 /****************************************************************************/
 
-static void
-ui_infoarea_visualization_timeout(gpointer hook_data, UIInfoArea *area)
+static void ui_infoarea_visualization_timeout (const VisNode * vis, UIInfoArea *
+ area)
 {
     const gfloat xscale[SPECT_BANDS + 1] = {0.00, 0.59, 1.52, 3.00, 5.36, 9.10,
      15.0, 24.5, 39.4, 63.2, 101, 161, 256}; /* logarithmic scale - 1 */
-    VisNode *vis = (VisNode*) hook_data;
     gint16 mono_freq[2][256];
 
     aud_calc_mono_freq(mono_freq, vis->data, vis->nch);
@@ -480,7 +480,7 @@ static void destroy_cb (GtkObject * parent, UIInfoArea * area)
     hook_dissociate ("playback stop", (HookFunction)
      ui_infoarea_playback_stop);
     hook_dissociate ("visualization clear", (HookFunction) vis_clear_cb);
-    aud_vis_runner_remove_hook((HookFunction) ui_infoarea_visualization_timeout);
+    aud_vis_runner_remove_hook ((VisHookFunc) ui_infoarea_visualization_timeout);
 
     g_free (area->title);
     g_free (area->artist);
@@ -516,7 +516,8 @@ GtkWidget * ui_infoarea_new (void)
     hook_associate("playback begin", (HookFunction) ui_infoarea_playback_start, area);
     hook_associate("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
     hook_associate("visualization clear", (HookFunction) vis_clear_cb, area);
-    aud_vis_runner_add_hook((HookFunction) ui_infoarea_visualization_timeout, area);
+    aud_vis_runner_add_hook ((VisHookFunc) ui_infoarea_visualization_timeout,
+     area);
 
     g_signal_connect (area->parent, "destroy", (GCallback) destroy_cb, area);
 

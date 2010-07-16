@@ -18,10 +18,11 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "ui_playlist_evlisteners.h"
-
 #include <glib.h>
+#include <libaudcore/hook.h>
+
 #include "ui_playlist.h"
+#include "ui_playlist_evlisteners.h"
 
 static void
 ui_playlist_evlistener_playlistwin_show(gpointer hook_data, gpointer user_data)

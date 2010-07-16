@@ -22,7 +22,7 @@
 
 #include <audacious/debug.h>
 #include <audacious/playlist.h>
-#include <audacious/plugin.h>
+#include <libaudcore/hook.h>
 
 #include "ui_playlist_model.h"
 #include "ui_playlist_widget.h"

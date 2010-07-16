@@ -14,7 +14,7 @@
 
 #include <audacious/configdb.h>
 #include <audacious/i18n.h>
-#include <audacious/plugin.h>
+#include <audacious/preferences.h>
 #include <libaudcore/md5.h>
 
 #include "plugin.h"

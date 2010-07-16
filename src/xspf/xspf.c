@@ -41,6 +41,7 @@
 #include <libxml/uri.h>
 
 #include <audacious/debug.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 

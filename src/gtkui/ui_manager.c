@@ -23,8 +23,7 @@
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
 
-#include <audacious/plugin.h>
-#include <audacious/ui_plugin_menu.h>
+#include <audacious/misc.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
