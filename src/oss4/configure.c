@@ -19,6 +19,7 @@
 
 #include "oss.h"
 #include <gtk/gtk.h>
+#include <audacious/configdb.h>
 
 static GtkWidget *window;
 static oss_cfg_t *tmp_cfg;
@@ -55,7 +56,7 @@ static void vol_toggled_cb(GtkToggleButton *widget, gpointer data)
 }
 
 static void button_ok_clicked_cb(GtkButton *button, gpointer data)
-{    
+{
     g_free(oss_cfg);
     oss_cfg = g_memdup(tmp_cfg, sizeof(oss_cfg_t));
     oss_cfg->alt_device = gtk_editable_get_chars(GTK_EDITABLE(GTK_WIDGET(data)), 0, -1);
@@ -69,12 +70,12 @@ static GtkTreeModel *get_device_list(void)
     GtkTreeIter iter;
     oss_sysinfo sysinfo;
     gint mixerfd, i, a = 1;
-    
+
     list = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
-    
+
     if ((mixerfd = open(DEFAULT_MIXER, O_RDWR)) == -1)
         goto FAILED;
-        
+
     if (ioctl(mixerfd, SNDCTL_SYSINFO, &sysinfo) == -1)
         goto FAILED;
 
@@ -83,15 +84,15 @@ static GtkTreeModel *get_device_list(void)
         errno = ENXIO;
         goto FAILED;
     }
-        
+
     gtk_list_store_append(list, &iter);
     gtk_list_store_set(list, &iter, 0, _("1. Default device"), 1, DEFAULT_DSP, -1);
-        
+
     for (i = 0; i < sysinfo.numaudios; i++)
     {
         oss_audioinfo ainfo;
         ainfo.dev = i;
-        
+
         if (ioctl(mixerfd, SNDCTL_AUDIOINFO, &ainfo) == -1)
             goto FAILED;
 
@@ -105,9 +106,9 @@ static GtkTreeModel *get_device_list(void)
     }
 
     close(mixerfd);
-    
+
     return GTK_TREE_MODEL(list);
-    
+
     FAILED:
         SHOW_ERROR_MSG;
         close(mixerfd);
@@ -135,7 +136,7 @@ static void select_combo_item(GtkComboBox *combo, gchar *text)
 }
 
 static void window_destroy(void)
-{  
+{
     g_free(tmp_cfg);
 }
 
@@ -163,83 +164,83 @@ static void window_create(void)
     gtk_box_pack_start(GTK_BOX(dev_list_box), dev_label, FALSE, FALSE, 5);
 
     dev_list_model = get_device_list();
-    
+
     if (!GTK_IS_TREE_MODEL(dev_list_model))
     {
         gtk_widget_destroy(window);
         return;
     }
-    
+
     dev_list_combo = gtk_combo_box_new_with_model(dev_list_model);
-    
+
     cell = gtk_cell_renderer_text_new();
     gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(dev_list_combo), cell, TRUE);
     gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(dev_list_combo), cell, "text", 0, NULL);
 
     g_object_unref(G_OBJECT(dev_list_model));
-    
+
     select_combo_item(GTK_COMBO_BOX(dev_list_combo), tmp_cfg->device);
-    
+
     gtk_box_pack_start(GTK_BOX(dev_list_box), dev_list_combo, TRUE, TRUE, 5);
-    
+
     alt_dev_box = gtk_hbox_new(FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), alt_dev_box, FALSE, FALSE, 0);
-    
+
     alt_dev_check = gtk_check_button_new_with_label(_("Use alternate device:"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(alt_dev_check), tmp_cfg->use_alt_device);
-    
+
     gtk_box_pack_start(GTK_BOX(alt_dev_box), alt_dev_check, FALSE, FALSE, 5);
-    
+
     alt_dev_text = gtk_entry_new();
     gtk_entry_set_text(GTK_ENTRY(alt_dev_text), tmp_cfg->alt_device);
     gtk_widget_set_sensitive(alt_dev_text, tmp_cfg->use_alt_device);
     gtk_box_pack_start(GTK_BOX(alt_dev_box), alt_dev_text, TRUE, TRUE, 5);
-    
+
     option_box = gtk_vbox_new(FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), option_box, FALSE, FALSE, 0);
-    
+
     vol_check = gtk_check_button_new_with_label(_("Save volume between sessions"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(vol_check), tmp_cfg->save_volume);
     gtk_box_pack_start(GTK_BOX(option_box), vol_check, FALSE, FALSE, 5);
-    
+
     cookedmode_check = gtk_check_button_new_with_label(_("Enable format conversions made by the OSS software."));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cookedmode_check), tmp_cfg->cookedmode);
     gtk_box_pack_start(GTK_BOX(option_box), cookedmode_check, FALSE, FALSE, 5);
-    
+
     button_box = gtk_hbutton_box_new();
     gtk_button_box_set_layout(GTK_BUTTON_BOX(button_box), GTK_BUTTONBOX_END);
     gtk_button_box_set_spacing(GTK_BUTTON_BOX(button_box), 5);
     gtk_box_pack_start(GTK_BOX(vbox), button_box, TRUE, TRUE, 5);
-    
+
     button_cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
     gtk_box_pack_start(GTK_BOX(button_box), button_cancel, FALSE, FALSE, 5);
-    
+
     button_ok = gtk_button_new_from_stock(GTK_STOCK_OK);
     gtk_box_pack_start(GTK_BOX(button_box), button_ok, FALSE, FALSE, 5);
-    
+
     gtk_widget_grab_default(button_ok);
-    
+
     g_signal_connect(G_OBJECT(dev_list_combo), "changed",
                      G_CALLBACK(dev_list_changed_cb), NULL);
-                     
+
     g_signal_connect(G_OBJECT(window), "destroy",
                      G_CALLBACK(window_destroy), NULL);
-    
+
     g_signal_connect(G_OBJECT(alt_dev_check), "toggled",
                      G_CALLBACK(alt_dev_toggled_cb), alt_dev_text);
-                     
+
     g_signal_connect(G_OBJECT(vol_check), "toggled",
                      G_CALLBACK(vol_toggled_cb), NULL);
-                     
+
     g_signal_connect(G_OBJECT(cookedmode_check), "toggled",
                      G_CALLBACK(cookedmode_toggled_cb), NULL);
-                     
+
     g_signal_connect_swapped(G_OBJECT(button_cancel), "clicked",
                              G_CALLBACK(gtk_widget_destroy), window);
-  
+
     g_signal_connect(G_OBJECT(button_ok), "clicked",
                      G_CALLBACK(button_ok_clicked_cb), alt_dev_text);
-                             
+
     gtk_widget_show_all(window);
 }
 

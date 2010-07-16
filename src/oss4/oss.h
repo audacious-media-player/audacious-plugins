@@ -35,6 +35,7 @@
 
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <audacious/debug.h>
 
 #define ERROR(...) fprintf(stderr, "OSS4: " __VA_ARGS__)
 
