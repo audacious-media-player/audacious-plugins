@@ -50,11 +50,9 @@ void action_playlist_copy(void);
 void action_playlist_cut(void);
 void action_playlist_paste(void);
 
-/* void action_playlist_add_cd(void); - this is no longer needed, as the respective menu entry is added from within the cdaudio plugin */
 void action_playlist_add_url(void);
 void action_playlist_add_files(void);
 
-void action_playlist_randomize_list(void);
 void action_playlist_reverse_list(void);
 
 void action_playlist_sort_by_title(void);
