@@ -23,6 +23,8 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
+#include <audacious/drct.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 
@@ -238,8 +240,8 @@ static void ui_playlist_widget_change_song(GtkTreeView * treeview, guint pos)
     aud_playlist_set_playing(playlist);
     aud_playlist_set_position(playlist, pos);
 
-    if (!audacious_drct_get_playing())
-        audacious_drct_play();
+    if (!aud_drct_get_playing())
+        aud_drct_play();
 }
 
 static void ui_playlist_widget_row_activated(GtkTreeView * treeview, GtkTreePath * path, GtkTreeViewColumn *column, gpointer user_data)
@@ -273,14 +275,16 @@ static gboolean ui_playlist_widget_keypress_cb(GtkWidget * widget, GdkEventKey *
       case GDK_MOD1_MASK:
       {
         if ((event->keyval == GDK_Up) || (event->keyval == GDK_Down)) {
-            gint playlist = playlist_get_playlist_from_treeview(GTK_TREE_VIEW(widget));
-            /* Copy the event, so we can get the selection to move as well */
-            GdkEvent * ev = gdk_event_copy((GdkEvent *) event);
-            ((GdkEventKey *) ev)->state = 0;
+            gint focus = treeview_get_focus ((GtkTreeView *) widget);
+            if (focus < 0)
+                return TRUE;
 
-            aud_playlist_shift_selected(playlist, (event->keyval == GDK_Up) ? -1 : 1);
-            gtk_propagate_event(widget, ev);
-            gdk_event_free(ev);
+            gint playlist = playlist_get_playlist_from_treeview ((GtkTreeView *)
+             widget);
+            aud_playlist_entry_set_selected (playlist, focus, TRUE);
+            focus += aud_playlist_shift (playlist, focus, (event->keyval ==
+             GDK_Up) ? -1 : 1);
+            treeview_set_focus ((GtkTreeView *) widget, focus);
             return TRUE;
         }
       }

@@ -33,7 +33,10 @@
 #include <sys/stat.h>
 #include <sys/errno.h>
 
+#include <audacious/debug.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 
 #include "util.h"
 
@@ -48,7 +51,7 @@ playlist_load_pls(const gchar * filename, gint pos)
 
     g_return_if_fail(filename != NULL);
 
-    if (!aud_str_has_suffix_nocase(filename, ".pls"))
+    if (!str_has_suffix_nocase(filename, ".pls"))
         return;
 
     uri = g_filename_to_uri(filename, NULL, NULL);
@@ -90,7 +93,7 @@ playlist_save_pls(const gchar *filename, gint pos)
     gint playlist = aud_playlist_get_active ();
     gint entries = aud_playlist_entry_count (playlist);
     gchar *uri = g_filename_to_uri(filename, NULL, NULL);
-    VFSFile *file = aud_vfs_fopen(uri, "wb");
+    VFSFile *file = vfs_fopen(uri, "wb");
     gint count;
 
     AUDDBG("filename=%s\n", filename);
@@ -98,8 +101,8 @@ playlist_save_pls(const gchar *filename, gint pos)
 
     g_return_if_fail(file != NULL);
 
-    aud_vfs_fprintf(file, "[playlist]\n");
-    aud_vfs_fprintf(file, "NumberOfEntries=%d\n", entries - pos);
+    vfs_fprintf(file, "[playlist]\n");
+    vfs_fprintf(file, "NumberOfEntries=%d\n", entries - pos);
 
     for (count = pos; count < entries; count ++)
     {
@@ -107,16 +110,16 @@ playlist_save_pls(const gchar *filename, gint pos)
          count);
         gchar *fn;
 
-        if (aud_vfs_is_remote (filename))
+        if (vfs_is_remote (filename))
             fn = g_strdup (filename);
         else
             fn = g_filename_from_uri (filename, NULL, NULL);
 
-        aud_vfs_fprintf (file, "File%d=%s\n", 1 + pos + count, fn);
+        vfs_fprintf (file, "File%d=%s\n", 1 + pos + count, fn);
         g_free(fn);
     }
 
-    aud_vfs_fclose(file);
+    vfs_fclose(file);
 }
 
 PlaylistContainer plc_pls = {

@@ -17,11 +17,11 @@
  * the use of this software.
  */
 
-#include <audacious/plugin.h>
 #include <glib.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+
+#include <audacious/debug.h>
+#include <audacious/plugin.h>
 
 #include "crossfade.h"
 

@@ -33,6 +33,8 @@
 #include <sys/stat.h>
 #include <sys/errno.h>
 
+#include <audacious/debug.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 
 #include <libcue/libcue.h>
@@ -71,7 +73,7 @@ static void playlist_load_cue (const gchar * cue_filename, gint at)
 {
     void * buffer;
     gint64 size;
-    aud_vfs_file_get_contents (cue_filename, & buffer, & size);
+    vfs_file_get_contents (cue_filename, & buffer, & size);
     if (buffer == NULL)
         return;
 

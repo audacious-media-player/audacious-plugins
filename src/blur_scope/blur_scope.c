@@ -22,10 +22,13 @@
 #include "config.h"
 
 #include <glib.h>
-#include <audacious/i18n.h>
 #include <gtk/gtk.h>
 #include <string.h>
+
+#include <audacious/configdb.h>
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
+
 #include "blur_scope.h"
 
 static GtkWidget *area = NULL;

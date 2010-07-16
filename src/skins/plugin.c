@@ -27,6 +27,8 @@
 #include "ui_manager.h"
 #include "ui_main_evlisteners.h"
 #include "ui_playlist_evlisteners.h"
+
+#include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -107,11 +109,11 @@ gboolean skins_init (InterfaceCbs * cbs)
     init_skins(config.skin);
     mainwin_setup_menus();
 
-    if (audacious_drct_get_playing ())
+    if (aud_drct_get_playing ())
     {
         ui_main_evlistener_playback_begin (NULL, NULL);
 
-        if (audacious_drct_get_paused ())
+        if (aud_drct_get_paused ())
             ui_main_evlistener_playback_pause (NULL, NULL);
     }
     else

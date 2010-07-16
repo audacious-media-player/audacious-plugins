@@ -83,45 +83,45 @@ int LoadUSF(const gchar * fn)
 	seek_backwards = 0;
 	seek_time = 0;
 
-	fil = aud_vfs_fopen(fn, "rb");
+	fil = vfs_fopen(fn, "rb");
 
 	if(!fil) {
 		printf("Could not open USF!\n");
 		return 0;
 	}
 
-	aud_vfs_fread(buffer,4 ,1 ,fil);
+	vfs_fread(buffer,4 ,1 ,fil);
 	if(buffer[0] != 'P' && buffer[1] != 'S' && buffer[2] != 'F' && buffer[3] != 0x21) {
 		printf("Invalid header in file!\n");
-		aud_vfs_fclose(fil);
+		vfs_fclose(fil);
 		return 0;
 	}
 
-    aud_vfs_fread(&reservedsize, 4, 1, fil);
-    aud_vfs_fread(&codesize, 4, 1, fil);
-    aud_vfs_fread(&crc, 4, 1, fil);
+    vfs_fread(&reservedsize, 4, 1, fil);
+    vfs_fread(&codesize, 4, 1, fil);
+    vfs_fread(&crc, 4, 1, fil);
 
-    aud_vfs_fseek(fil, 0, SEEK_END);
-    filesize = aud_vfs_ftell(fil);
+    vfs_fseek(fil, 0, SEEK_END);
+    filesize = vfs_ftell(fil);
 
     reservestart = 0x10;
     tagstart = reservestart + reservedsize;
     tagsize = filesize - tagstart;
 
 	if(tagsize) {
-		aud_vfs_fseek(fil, tagstart, SEEK_SET);
-		aud_vfs_fread(buffer, 5, 1, fil);
+		vfs_fseek(fil, tagstart, SEEK_SET);
+		vfs_fread(buffer, 5, 1, fil);
 
 		if(buffer[0] != '[' && buffer[1] != 'T' && buffer[2] != 'A' && buffer[3] != 'G' && buffer[4] != ']') {
 			printf("Erroneous data in tag area! %" PRIu32 "\n", tagsize);
-			aud_vfs_fclose(fil);
+			vfs_fclose(fil);
 			return 0;
 		}
 
 		buffer2 = malloc(50001);
 		tagbuffer = malloc(tagsize);
 
-    	aud_vfs_fread(tagbuffer, tagsize, 1, fil);
+    	vfs_fread(tagbuffer, tagsize, 1, fil);
 
 		psftag_raw_getvar(tagbuffer,"_lib",buffer2,50000);
 
@@ -191,15 +191,15 @@ int LoadUSF(const gchar * fn)
 
 	}
 
-	aud_vfs_fseek(fil, reservestart, SEEK_SET);
-	aud_vfs_fread(&temp, 4, 1, fil);
+	vfs_fseek(fil, reservestart, SEEK_SET);
+	vfs_fread(&temp, 4, 1, fil);
 		
 	if(temp == 0x34365253) { //there is a rom section
 		int len = 0, start = 0;
-		aud_vfs_fread(&len, 4, 1, fil);
+		vfs_fread(&len, 4, 1, fil);
 
 		while(len) {
-			aud_vfs_fread(&start, 4, 1, fil);
+			vfs_fread(&start, 4, 1, fil);
 
 			while(len) {
 				int page = start >> 16;
@@ -210,30 +210,30 @@ int LoadUSF(const gchar * fn)
                 	memset(ROMPages[page], 0, 0x10000);
                 }
 
-				aud_vfs_fread(ROMPages[page] + (start & 0xffff), readLen, 1, fil);
+				vfs_fread(ROMPages[page] + (start & 0xffff), readLen, 1, fil);
 
 				start += readLen;
 				len -= readLen;
 			}
 
-			aud_vfs_fread(&len, 4, 1, fil);
+			vfs_fread(&len, 4, 1, fil);
 		}
 
 	}
 
 	
 
-	aud_vfs_fread(&temp, 4, 1, fil);
+	vfs_fread(&temp, 4, 1, fil);
 	if(temp == 0x34365253) {
 		int len = 0, start = 0;
-		aud_vfs_fread(&len, 4, 1, fil);
+		vfs_fread(&len, 4, 1, fil);
 
 		while(len) {
-			aud_vfs_fread(&start, 4, 1, fil);
+			vfs_fread(&start, 4, 1, fil);
 
-			aud_vfs_fread(savestatespace + start, len, 1, fil);
+			vfs_fread(savestatespace + start, len, 1, fil);
 
-			aud_vfs_fread(&len, 4, 1, fil);
+			vfs_fread(&len, 4, 1, fil);
 		}
 	}
 
@@ -245,7 +245,7 @@ int LoadUSF(const gchar * fn)
 	} else if(*(uint32_t*)(savestatespace + 4) == 0x800000)
 		RdramSize = 0x800000;
 	
-	aud_vfs_fclose(fil);
+	vfs_fclose(fil);
 
 	return 1;
 }
@@ -380,49 +380,49 @@ Tuple * usf_get_song_tuple(const gchar * fn)
 	uint32_t reservedsize = 0, codesize = 0, crc = 0, tagstart = 0, reservestart = 0, filesize = 0, tagsize = 0;
 	uint8_t buffer[16], * buffer2 = NULL, * tagbuffer = NULL;
 
-	fil = aud_vfs_fopen(fn, "rb");
+	fil = vfs_fopen(fn, "rb");
 
 	if(!fil) {
 		printf("Could not open USF!\n");
 		return NULL;
 	}
 
-	aud_vfs_fread(buffer,4 ,1 ,fil);
+	vfs_fread(buffer,4 ,1 ,fil);
 
 	if(buffer[0] != 'P' && buffer[1] != 'S' && buffer[2] != 'F' && buffer[3] != 0x21) {
 		printf("Invalid header in file!\n");
-		aud_vfs_fclose(fil);
+		vfs_fclose(fil);
 		return NULL;
 	}
 
-    aud_vfs_fread(&reservedsize, 4, 1, fil);
-    aud_vfs_fread(&codesize, 4, 1, fil);
-    aud_vfs_fread(&crc, 4, 1, fil);
+    vfs_fread(&reservedsize, 4, 1, fil);
+    vfs_fread(&codesize, 4, 1, fil);
+    vfs_fread(&crc, 4, 1, fil);
 
-    aud_vfs_fseek(fil, 0, SEEK_END);
-    filesize = aud_vfs_ftell(fil);
+    vfs_fseek(fil, 0, SEEK_END);
+    filesize = vfs_ftell(fil);
 
     reservestart = 0x10;
     tagstart = reservestart + reservedsize;
     tagsize = filesize - tagstart;
 
-	tuple = aud_tuple_new_from_filename(fn);
+	tuple = tuple_new_from_filename(fn);
 
 	if(tagsize) {
 		int temp_fade = 0;
-		aud_vfs_fseek(fil, tagstart, SEEK_SET);
-		aud_vfs_fread(buffer, 5, 1, fil);
+		vfs_fseek(fil, tagstart, SEEK_SET);
+		vfs_fread(buffer, 5, 1, fil);
 
 		if(buffer[0] != '[' && buffer[1] != 'T' && buffer[2] != 'A' && buffer[3] != 'G' && buffer[4] != ']') {
 			printf("Erroneous data in tag area! %" PRIu32 "\n", tagsize);
-			aud_vfs_fclose(fil);
+			vfs_fclose(fil);
 			return NULL;
 		}
 
 		buffer2 = malloc(50001);
 		tagbuffer = malloc(tagsize);
 
-    	aud_vfs_fread(tagbuffer, tagsize, 1, fil);
+    	vfs_fread(tagbuffer, tagsize, 1, fil);
 
 		psftag_raw_getvar(tagbuffer, "fade", buffer2, 50000);
         if(strlen(buffer2))
@@ -430,13 +430,13 @@ Tuple * usf_get_song_tuple(const gchar * fn)
 
 		psftag_raw_getvar(tagbuffer, "length", buffer2, 50000);
         if(strlen(buffer2))
-        	aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, get_length_from_string(buffer2) + temp_fade);
+        	tuple_associate_int(tuple, FIELD_LENGTH, NULL, get_length_from_string(buffer2) + temp_fade);
 		else
-			aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, (180*1000));
+			tuple_associate_int(tuple, FIELD_LENGTH, NULL, (180*1000));
 
 		psftag_raw_getvar(tagbuffer, "title", buffer2, 50000);
         if(strlen(buffer2))
-			aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, buffer2);
+			tuple_associate_string(tuple, FIELD_TITLE, NULL, buffer2);
 		else
 		{
 			char title[512];
@@ -451,29 +451,29 @@ Tuple * usf_get_song_tuple(const gchar * fn)
 
 			strcpy(title, &fn[pathlength]);
 
-			aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, title);
+			tuple_associate_string(tuple, FIELD_TITLE, NULL, title);
 
 		}
 
 		psftag_raw_getvar(tagbuffer, "artist", buffer2, 50000);
         if(strlen(buffer2))
-			aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, buffer2);
+			tuple_associate_string(tuple, FIELD_ARTIST, NULL, buffer2);
 
 		psftag_raw_getvar(tagbuffer, "game", buffer2, 50000);
         if(strlen(buffer2)) {
-			aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, buffer2);
-			aud_tuple_associate_string(tuple, -1, "game", buffer2);
+			tuple_associate_string(tuple, FIELD_ALBUM, NULL, buffer2);
+			tuple_associate_string(tuple, -1, "game", buffer2);
 		}
 
 		psftag_raw_getvar(tagbuffer, "copyright", buffer2, 50000);
         if(strlen(buffer2))
-			aud_tuple_associate_string(tuple, FIELD_COPYRIGHT, NULL, buffer2);
+			tuple_associate_string(tuple, FIELD_COPYRIGHT, NULL, buffer2);
 
 		// This for unknown reasons turns the "Kbps" in the UI to "channels"
-		//aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "sequenced");
+		//tuple_associate_string(tuple, FIELD_QUALITY, NULL, "sequenced");
 
-		aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "Nintendo 64 Audio");
-		aud_tuple_associate_string(tuple, -1, "console", "Nintendo 64");
+		tuple_associate_string(tuple, FIELD_CODEC, NULL, "Nintendo 64 Audio");
+		tuple_associate_string(tuple, -1, "console", "Nintendo 64");
 		
 		free(tagbuffer);
 		free(buffer2);
@@ -493,11 +493,11 @@ Tuple * usf_get_song_tuple(const gchar * fn)
 		strcpy(title, &fn[pathlength]);
 
 
-		aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, (180 * 1000));
-		aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, title);
+		tuple_associate_int(tuple, FIELD_LENGTH, NULL, (180 * 1000));
+		tuple_associate_string(tuple, FIELD_TITLE, NULL, title);
 	}
 	
-	aud_vfs_fclose(fil);
+	vfs_fclose(fil);
 
 	return tuple;
 }

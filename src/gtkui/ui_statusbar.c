@@ -27,6 +27,8 @@
 #include <unistd.h>
 #include <errno.h>
 
+#include <audacious/drct.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 
 #include "ui_statusbar.h"
@@ -38,8 +40,8 @@ ui_statusbar_update_playlist_length(gpointer unused, GtkWidget *label)
     gint64 selection, total;
     gchar *sel_text, *tot_text, *text;
 
-    total = aud_playlist_get_total_length(playlist) / 1000;
-    selection = aud_playlist_get_selected_length(playlist) / 1000;
+    total = aud_playlist_get_total_length (playlist, TRUE) / 1000;
+    selection = aud_playlist_get_selected_length (playlist, TRUE) / 1000;
 
     if (selection >= 3600)
         sel_text = g_strdup_printf ("%" PRId64 ":%02" PRId64 ":%02" PRId64,
@@ -73,15 +75,15 @@ ui_statusbar_info_change(gpointer unused, GtkWidget *label)
     const gchar *codec;
 
     /* may be called asynchronously */
-    if (!audacious_drct_get_playing())
+    if (!aud_drct_get_playing())
         return;
 
     playlist = aud_playlist_get_active();
     entry = aud_playlist_get_position(playlist);
-    tuple = aud_playlist_entry_get_tuple(playlist, entry);
+    tuple = aud_playlist_entry_get_tuple (playlist, entry, FALSE);
     codec = tuple != NULL ? tuple_get_string(tuple, FIELD_CODEC, NULL) : "???";
 
-    audacious_drct_get_info(&bitrate, &samplerate, &channels);
+    aud_drct_get_info(&bitrate, &samplerate, &channels);
 
     switch (channels)
     {
@@ -111,10 +113,10 @@ ui_statusbar_playback_stop(gpointer unused, GtkWidget *label)
 
 static void ui_statusbar_destroy_cb(GtkWidget *widget, gpointer user_data)
 {
-    aud_hook_dissociate("info change", (HookFunction) ui_statusbar_info_change);
-    aud_hook_dissociate("playback stop", (HookFunction) ui_statusbar_playback_stop);
-    aud_hook_dissociate("playlist update", (HookFunction) ui_statusbar_update_playlist_length);
-    aud_hook_dissociate("info change", (HookFunction) ui_statusbar_update_playlist_length);
+    hook_dissociate("info change", (HookFunction) ui_statusbar_info_change);
+    hook_dissociate("playback stop", (HookFunction) ui_statusbar_playback_stop);
+    hook_dissociate("playlist update", (HookFunction) ui_statusbar_update_playlist_length);
+    hook_dissociate("info change", (HookFunction) ui_statusbar_update_playlist_length);
 }
 
 GtkWidget *
@@ -128,19 +130,19 @@ ui_statusbar_new(void)
     status = gtk_widget_new(GTK_TYPE_LABEL, "xalign", 0.0, NULL);
     gtk_box_pack_start(GTK_BOX(hbox), status, TRUE, TRUE, 5);
 
-    aud_hook_associate("info change", (HookFunction) ui_statusbar_info_change, status);
-    aud_hook_associate("playback stop", (HookFunction) ui_statusbar_playback_stop, status);
+    hook_associate("info change", (HookFunction) ui_statusbar_info_change, status);
+    hook_associate("playback stop", (HookFunction) ui_statusbar_playback_stop, status);
 
     length = gtk_widget_new(GTK_TYPE_LABEL, "xalign", 1.0, NULL);
     gtk_box_pack_start(GTK_BOX(hbox), length, FALSE, FALSE, 5);
     ui_statusbar_update_playlist_length(NULL, length);
 
-    aud_hook_associate("playlist update", (HookFunction) ui_statusbar_update_playlist_length, length);
-    aud_hook_associate("info change", (HookFunction) ui_statusbar_update_playlist_length, length);
+    hook_associate("playlist update", (HookFunction) ui_statusbar_update_playlist_length, length);
+    hook_associate("info change", (HookFunction) ui_statusbar_update_playlist_length, length);
 
     g_signal_connect(G_OBJECT(hbox), "destroy", G_CALLBACK(ui_statusbar_destroy_cb), NULL);
 
-    if (audacious_drct_get_playing())
+    if (aud_drct_get_playing())
     {
         ui_statusbar_info_change(NULL, status);
     }

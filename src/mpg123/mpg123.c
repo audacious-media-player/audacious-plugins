@@ -26,6 +26,8 @@
 # define MPG123_IODBG(...)	do { } while (0)
 #endif
 
+#include <libaudcore/audstrings.h>
+#include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <audacious/audtag.h>
@@ -51,7 +53,7 @@ static gboolean mpg123_prefill (mpg123_handle * decoder, VFSFile * handle,
 
 	do
 	{
-		if ((length = aud_vfs_fread (buffer, 1, 16384, handle)) <= 0)
+		if ((length = vfs_fread (buffer, 1, 16384, handle)) <= 0)
 			return FALSE;
 
 		result = mpg123_decode (decoder, buffer, length, NULL, 0, NULL);
@@ -67,12 +69,12 @@ static gboolean mpg123_prefill (mpg123_handle * decoder, VFSFile * handle,
 
 static ssize_t replace_read (void * file, void * buffer, size_t length)
 {
-	return aud_vfs_fread (buffer, 1, length, file);
+	return vfs_fread (buffer, 1, length, file);
 }
 
 static off_t replace_lseek (void * file, off_t to, int whence)
 {
-	return (! aud_vfs_fseek (file, to, whence)) ? aud_vfs_ftell (file) : -1;
+	return (! vfs_fseek (file, to, whence)) ? vfs_ftell (file) : -1;
 }
 
 /** plugin glue **/
@@ -112,17 +114,17 @@ static gboolean mpg123_probe_for_fd (const gchar * filename, VFSFile * handle)
 	if (mpg123_open_feed (decoder) < 0)
 		goto ERROR_FREE;
 
-	if (aud_vfs_fread (buffer, 1, sizeof buffer, handle) != sizeof buffer)
+	if (vfs_fread (buffer, 1, sizeof buffer, handle) != sizeof buffer)
 		goto ERROR_FREE;
 
 	if ((result = id3_header_size (buffer, sizeof buffer)) > 0)
 	{
 		AUDDBG ("Skip %d bytes of ID3 tag.\n", result);
 
-		if (aud_vfs_fseek (handle, result, SEEK_SET))
+		if (vfs_fseek (handle, result, SEEK_SET))
 			goto ERROR_FREE;
 
-		if (aud_vfs_fread (buffer, 1, sizeof buffer, handle) != sizeof buffer)
+		if (vfs_fread (buffer, 1, sizeof buffer, handle) != sizeof buffer)
 			goto ERROR_FREE;
 	}
 
@@ -174,9 +176,9 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 	tuple_associate_string (tuple, FIELD_QUALITY, NULL, scratch);
 	tuple_associate_int (tuple, FIELD_BITRATE, NULL, info.bitrate);
 
-	if (! aud_vfs_is_streaming (file))
+	if (! vfs_is_streaming (file))
 	{
-		gint64 size = aud_vfs_fsize (file);
+		gint64 size = vfs_fsize (file);
 		gint64 samples = mpg123_length (decoder);
 		gint length = (samples > 0) ? samples * 1000 / rate : 0;
 
@@ -188,9 +190,9 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 
 	mpg123_delete (decoder);
 
-	if (! aud_vfs_is_streaming (file))
+	if (! vfs_is_streaming (file))
 	{
-		aud_vfs_fseek (file, 0, SEEK_SET);
+		vfs_fseek (file, 0, SEEK_SET);
 		tag_tuple_read (tuple, file);
 	}
 
@@ -217,8 +219,8 @@ typedef struct {
 static gchar *
 get_stream_metadata(VFSFile *file, const gchar *name)
 {
-	gchar *raw = aud_vfs_get_metadata(file, name);
-	gchar *converted = (raw != NULL && raw[0]) ? aud_str_to_utf8(raw) : NULL;
+	gchar *raw = vfs_get_metadata(file, name);
+	gchar *converted = (raw != NULL && raw[0]) ? str_to_utf8(raw) : NULL;
 
 	g_free(raw);
 	return converted;
@@ -227,12 +229,12 @@ get_stream_metadata(VFSFile *file, const gchar *name)
 static gboolean
 update_stream_metadata(VFSFile *file, const gchar *name, Tuple *tuple, gint item)
 {
-	const gchar *old = aud_tuple_get_string(tuple, item, NULL);
+	const gchar *old = tuple_get_string(tuple, item, NULL);
 	gchar *new = get_stream_metadata(file, name);
 	gboolean changed = (new != NULL && (old == NULL || strcmp(old, new)));
 
 	if (changed)
-		aud_tuple_associate_string(tuple, item, NULL, new);
+		tuple_associate_string(tuple, item, NULL, new);
 
 	g_free(new);
 	return changed;
@@ -295,7 +297,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 	ctx.fd = file;
 
 	AUDDBG("checking if stream @%p is seekable\n", ctx.fd);
-	if (aud_vfs_is_streaming(ctx.fd))
+	if (vfs_is_streaming(ctx.fd))
 	{
 		AUDDBG(" ... it's not.\n");
 		ctx.stream = TRUE;
@@ -363,7 +365,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 			gboolean changed = FALSE;
 
 			if (!ctx.tu)
-				ctx.tu = aud_tuple_new_from_filename(data->filename);
+				ctx.tu = tuple_new_from_filename(data->filename);
 
 			changed = changed || update_stream_metadata(ctx.fd, "track-name", ctx.tu, FIELD_TITLE);
 			changed = changed || update_stream_metadata(ctx.fd, "stream-name", ctx.tu, FIELD_ALBUM);
@@ -384,7 +386,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 			{
 				MPG123_IODBG("mpg123 requested more data\n");
 
-				len = aud_vfs_fread(buf, 1, 16384, ctx.fd);
+				len = vfs_fread(buf, 1, 16384, ctx.fd);
 				if (len <= 0)
 				{
 					if (len == 0)
@@ -448,7 +450,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 
 			AUDDBG("seeking to %ld (byte %ld)\n", ctx.seek, byteoff);
 			data->output->flush (ctx.seek);
-			aud_vfs_fseek(ctx.fd, byteoff, SEEK_SET);
+			vfs_fseek(ctx.fd, byteoff, SEEK_SET);
 			ctx.seek = -1;
 
 			g_cond_signal(ctrl_cond);
@@ -523,7 +525,7 @@ static gboolean mpg123_write_tag (Tuple * tuple, VFSFile * handle)
 static gboolean mpg123_get_image (const gchar * filename, VFSFile * handle,
  void * * data, gint * length)
 {
-	if (handle == NULL || aud_vfs_is_streaming (handle))
+	if (handle == NULL || vfs_is_streaming (handle))
 		return FALSE;
 
 	return tag_image_read (handle, data, length);

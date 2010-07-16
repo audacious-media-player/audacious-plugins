@@ -27,11 +27,13 @@
 #include <limits.h>
 
 #include <gtk/gtk.h>
+#include <pulse/pulseaudio.h>
+
+#include <audacious/debug.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
-#include <pulse/pulseaudio.h>
 
 #define ERROR(...) do {fprintf (stderr, "pulseaudio: " __VA_ARGS__); putchar ('\n');} while (0)
 

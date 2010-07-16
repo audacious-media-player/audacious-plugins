@@ -15,12 +15,15 @@
 
 #include <string.h>
 
+#include <audacious/configdb.h>
+#include <audacious/drct.h>
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
+#include <audacious/preferences.h>
+#include <libaudcore/hook.h>
+#include <libaudcore/audstrings.h>
 
 #include "formatter.h"
-#include <audacious/i18n.h>
-#include <libaudcore/hook.h>
-#include <audacious/preferences.h>
 
 static PluginPreferences preferences;
 
@@ -104,10 +107,10 @@ do_command(char *cmd, const char *current_file, int pos)
 	if (cmd && strlen(cmd) > 0)
 	{
 		formatter = formatter_new();
-		str = audacious_drct_pl_get_title(pos);
+		str = aud_drct_pl_get_title(pos);
 		if (str)
 		{
-			temp = aud_escape_shell_chars(str);
+			temp = escape_shell_chars(str);
 			formatter_associate(formatter, 's', temp);
 			formatter_associate(formatter, 'n', temp);
 			g_free(str);
@@ -121,7 +124,7 @@ do_command(char *cmd, const char *current_file, int pos)
 
 		if (current_file)
 		{
-			temp = aud_escape_shell_chars(current_file);
+			temp = escape_shell_chars(current_file);
 			formatter_associate(formatter, 'f', temp);
 			g_free(temp);
 		}
@@ -129,7 +132,7 @@ do_command(char *cmd, const char *current_file, int pos)
 			formatter_associate(formatter, 'f', "");
 		g_snprintf(numbuf, sizeof(numbuf), "%02d", pos + 1);
 		formatter_associate(formatter, 't', numbuf);
-		length = audacious_drct_pl_get_time(pos);
+		length = aud_drct_pl_get_time(pos);
 		if (length != -1)
 		{
 			g_snprintf(numbuf, sizeof(numbuf), "%d", length);
@@ -137,14 +140,14 @@ do_command(char *cmd, const char *current_file, int pos)
 		}
 		else
 			formatter_associate(formatter, 'l', "0");
-		audacious_drct_get_info(&rate, &freq, &nch);
+		aud_drct_get_info(&rate, &freq, &nch);
 		g_snprintf(numbuf, sizeof(numbuf), "%d", rate);
 		formatter_associate(formatter, 'r', numbuf);
 		g_snprintf(numbuf, sizeof(numbuf), "%d", freq);
 		formatter_associate(formatter, 'F', numbuf);
 		g_snprintf(numbuf, sizeof(numbuf), "%d", nch);
 		formatter_associate(formatter, 'c', numbuf);
-		playing = audacious_drct_get_playing();
+		playing = aud_drct_get_playing();
 		g_snprintf(numbuf, sizeof(numbuf), "%d", playing);
 		formatter_associate(formatter, 'p', numbuf);
 		shstring = formatter_format(formatter, cmd);
@@ -177,10 +180,10 @@ static void read_config(void)
 
 static void cleanup(void)
 {
-	aud_hook_dissociate("playback begin", songchange_playback_begin);
-	aud_hook_dissociate("playback end", songchange_playback_end);
-	aud_hook_dissociate("playlist end reached", songchange_playlist_eof);
-//      aud_hook_dissociate( "playlist set info" , songchange_playback_ttc);
+	hook_dissociate("playback begin", songchange_playback_begin);
+	hook_dissociate("playback end", songchange_playback_end);
+	hook_dissociate("playlist end reached", songchange_playlist_eof);
+//      hook_dissociate( "playlist set info" , songchange_playback_ttc);
 
 	if ( ttc_prevs != NULL )
 	{
@@ -253,14 +256,14 @@ static void init(void)
 {
 	read_config();
 
-	aud_hook_associate("playback begin", songchange_playback_begin, NULL);
-	aud_hook_associate("playback end", songchange_playback_end, NULL);
-	aud_hook_associate("playlist end reached", songchange_playlist_eof, NULL);
+	hook_associate("playback begin", songchange_playback_begin, NULL);
+	hook_associate("playback end", songchange_playback_end, NULL);
+	hook_associate("playlist end reached", songchange_playlist_eof, NULL);
 
 	ttc_prevs = g_malloc0(sizeof(songchange_playback_ttc_prevs_t));
 	ttc_prevs->title = NULL;
 	ttc_prevs->filename = NULL;
-//	aud_hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
+//	hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
 }
 
 static void
@@ -269,8 +272,8 @@ songchange_playback_begin(gpointer unused, gpointer unused2)
 	int pos;
 	char *current_file;
 
-	pos = audacious_drct_pl_get_pos();
-	current_file = audacious_drct_pl_get_file(pos);
+	pos = aud_drct_pl_get_pos();
+	current_file = aud_drct_pl_get_file(pos);
 
 	do_command(cmd_line, current_file, pos);
 
@@ -283,8 +286,8 @@ songchange_playback_end(gpointer unused, gpointer unused2)
 	int pos;
 	char *current_file;
 
-	pos = audacious_drct_pl_get_pos();
-	current_file = audacious_drct_pl_get_file(pos);
+	pos = aud_drct_pl_get_pos();
+	current_file = aud_drct_pl_get_file(pos);
 
 	do_command(cmd_line_after, current_file, pos);
 
@@ -308,8 +311,8 @@ songchange_playback_ttc(gpointer plentry_gp, gpointer prevs_gp)
       {
         if ( ( pl_entry->title != NULL ) && ( strcmp(pl_entry->title,prevs->title) ) )
         {
-          int pos = audacious_drct_pl_get_pos();
-          char *current_file = audacious_drct_pl_get_file(pos);
+          int pos = aud_drct_pl_get_pos();
+          char *current_file = aud_drct_pl_get_file(pos);
           do_command(cmd_line_ttc, current_file, pos);
           g_free(current_file);
           g_free(prevs->title);
@@ -345,8 +348,8 @@ songchange_playlist_eof(gpointer unused, gpointer unused2)
 	gint pos;
 	gchar *current_file;
 
-	pos = audacious_drct_pl_get_pos();
-	current_file = audacious_drct_pl_get_file(pos);
+	pos = aud_drct_pl_get_pos();
+	current_file = aud_drct_pl_get_file(pos);
 
 	do_command(cmd_line_end, current_file, pos);
 

@@ -41,7 +41,7 @@ typedef struct {
 } MMSHandle;
 
 VFSFile *
-mms_aud_vfs_fopen_impl(const gchar * path,
+mms_vfs_fopen_impl(const gchar * path,
           const gchar * mode)
 {
     VFSFile *file;
@@ -72,7 +72,7 @@ mms_aud_vfs_fopen_impl(const gchar * path,
 }
 
 gint
-mms_aud_vfs_fclose_impl(VFSFile * file)
+mms_vfs_fclose_impl(VFSFile * file)
 {
     gint ret = 0;
 
@@ -91,7 +91,7 @@ mms_aud_vfs_fclose_impl(VFSFile * file)
     return ret;
 }
 
-gint64 mms_aud_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
+gint64 mms_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
  file)
 {
     MMSHandle *handle;
@@ -113,14 +113,14 @@ gint64 mms_aud_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
     return ret;
 }
 
-gint64 mms_aud_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
+gint64 mms_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
  VFSFile * file)
 {
     return 0;
 }
 
 gint
-mms_aud_vfs_getc_impl(VFSFile *stream)
+mms_vfs_getc_impl(VFSFile *stream)
 {
     MMSHandle *handle = (MMSHandle *) stream->handle;
     guchar c;
@@ -141,7 +141,7 @@ mms_aud_vfs_getc_impl(VFSFile *stream)
 }
 
 gint
-mms_aud_vfs_ungetc_impl(gint c, VFSFile *stream)
+mms_vfs_ungetc_impl(gint c, VFSFile *stream)
 {
     MMSHandle *handle = (MMSHandle *) stream->handle;
 
@@ -154,7 +154,7 @@ mms_aud_vfs_ungetc_impl(gint c, VFSFile *stream)
 }
 
 gint
-mms_aud_vfs_fseek_impl(VFSFile * file,
+mms_vfs_fseek_impl(VFSFile * file,
           glong offset,
           gint whence)
 {
@@ -162,13 +162,13 @@ mms_aud_vfs_fseek_impl(VFSFile * file,
 }
 
 void
-mms_aud_vfs_rewind_impl(VFSFile * file)
+mms_vfs_rewind_impl(VFSFile * file)
 {
     return;
 }
 
 glong
-mms_aud_vfs_ftell_impl(VFSFile * file)
+mms_vfs_ftell_impl(VFSFile * file)
 {
     MMSHandle *handle = (MMSHandle *) file->handle;
 
@@ -176,7 +176,7 @@ mms_aud_vfs_ftell_impl(VFSFile * file)
 }
 
 gboolean
-mms_aud_vfs_feof_impl(VFSFile * file)
+mms_vfs_feof_impl(VFSFile * file)
 {
     MMSHandle *handle = (MMSHandle *) file->handle;
 
@@ -185,42 +185,42 @@ mms_aud_vfs_feof_impl(VFSFile * file)
 }
 
 gint
-mms_aud_vfs_truncate_impl(VFSFile * file, glong size)
+mms_vfs_truncate_impl(VFSFile * file, glong size)
 {
     return -1;
 }
 
 off_t
-mms_aud_vfs_fsize_impl(VFSFile * file)
+mms_vfs_fsize_impl(VFSFile * file)
 {
     return -1;
 }
 
 VFSConstructor mms_const = {
 	"mms://",
-	mms_aud_vfs_fopen_impl,
-	mms_aud_vfs_fclose_impl,
-	mms_aud_vfs_fread_impl,
-	mms_aud_vfs_fwrite_impl,
-	mms_aud_vfs_getc_impl,
-	mms_aud_vfs_ungetc_impl,
-	mms_aud_vfs_fseek_impl,
-	mms_aud_vfs_rewind_impl,
-	mms_aud_vfs_ftell_impl,
-	mms_aud_vfs_feof_impl,
-	mms_aud_vfs_truncate_impl,
-	mms_aud_vfs_fsize_impl
+	mms_vfs_fopen_impl,
+	mms_vfs_fclose_impl,
+	mms_vfs_fread_impl,
+	mms_vfs_fwrite_impl,
+	mms_vfs_getc_impl,
+	mms_vfs_ungetc_impl,
+	mms_vfs_fseek_impl,
+	mms_vfs_rewind_impl,
+	mms_vfs_ftell_impl,
+	mms_vfs_feof_impl,
+	mms_vfs_truncate_impl,
+	mms_vfs_fsize_impl
 };
 
 static void init(void)
 {
-	aud_vfs_register_transport(&mms_const);
+	vfs_register_transport(&mms_const);
 }
 
 static void cleanup(void)
 {
 #if 0
-	aud_vfs_unregister_transport(&mms_const);
+	vfs_unregister_transport(&mms_const);
 #endif
 }
 

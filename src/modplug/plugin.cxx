@@ -8,6 +8,7 @@
 
 #include "gui/main.h"
 extern "C" {
+#include <audacious/debug.h>
 #include <audacious/plugin.h>
 
 

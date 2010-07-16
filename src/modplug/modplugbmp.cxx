@@ -9,6 +9,10 @@
 #include <unistd.h>
 #include <math.h>
 
+extern "C" {
+#include <audacious/configdb.h>
+}
+
 #include "modplugbmp.h"
 #include "stdafx.h"
 #include "sndfile.h"
@@ -100,7 +104,7 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 	const int magicSize = 32;
 	char magic[magicSize];
 
-	aud_vfs_fread(magic, 1, magicSize, file);
+	vfs_fread(magic, 1, magicSize, file);
 	if (!memcmp(magic, UMX_MAGIC, 4))
 		return true;
 	if (!memcmp(magic, "Extended Module:", 16))
@@ -114,13 +118,13 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 	if (!memcmp(magic, PSM_MAGIC, 4))
 		return true;
 
-	aud_vfs_fseek(file, 44, SEEK_SET);
-	aud_vfs_fread(magic, 1, 4, file);
+	vfs_fseek(file, 44, SEEK_SET);
+	vfs_fread(magic, 1, 4, file);
 	if (!memcmp(magic, S3M_MAGIC, 4))
 		return true;
 
-	aud_vfs_fseek(file, 1080, SEEK_SET);
-	aud_vfs_fread(magic, 1, 4, file);
+	vfs_fseek(file, 1080, SEEK_SET);
+	vfs_fread(magic, 1, 4, file);
 
 	// Check for Fast Tracker multichannel modules (xCHN, xxCH)
 	if (magic[1] == 'C' && magic[2] == 'H' && magic[3] == 'N') {
@@ -468,7 +472,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
                 return NULL;
         }
 
-	Tuple *ti = aud_tuple_new_from_filename(aFilename.c_str());
+	Tuple *ti = tuple_new_from_filename(aFilename.c_str());
 	lSoundFile = new CSoundFile;
 	lSoundFile->Create((uchar*)lArchive->Map(), lArchive->Size());
 
@@ -497,15 +501,15 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	case MOD_TYPE_PSM:	tmps = "Protracker Studio Module"; break;
 	default:		tmps = "ModPlug unknown"; break;
 	}
-	aud_tuple_associate_string(ti, FIELD_CODEC, NULL, tmps);
-	aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
-	aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
+	tuple_associate_string(ti, FIELD_CODEC, NULL, tmps);
+	tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
+	tuple_associate_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
 
 	gchar *tmps2 = MODPLUG_CONVERT(lSoundFile->GetTitle());
 	// Chop any leading spaces off. They are annoying in the playlist.
 	gchar *tmps3 = tmps2; // Make another pointer so tmps2 can still be free()d
 	while ( *tmps3 == ' ' ) tmps3++ ;
-	aud_tuple_associate_string(ti, FIELD_TITLE, NULL, tmps3);
+	tuple_associate_string(ti, FIELD_TITLE, NULL, tmps3);
 	g_free(tmps2);
 
 	//unload the file

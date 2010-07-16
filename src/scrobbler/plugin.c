@@ -7,8 +7,12 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
+#include <audacious/configdb.h>
+#include <audacious/debug.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
+#include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -43,7 +47,7 @@ Tuple *submit_tuple = NULL;
 static gboolean ishttp(const char *a)
 {
 	g_return_val_if_fail(a != NULL, FALSE);
-	return aud_str_has_prefix_nocase(a, "http://") || aud_str_has_prefix_nocase(a, "https://");
+	return str_has_prefix_nocase(a, "http://") || str_has_prefix_nocase(a, "https://");
 }
 
 static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
@@ -52,7 +56,7 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 	gint pos = aud_playlist_get_position(playlist);
 	const Tuple *tuple;
 
-	if (aud_playlist_entry_get_length(playlist, pos) < (glong)30)
+	if (aud_playlist_entry_get_length (playlist, pos, FALSE) < 30)
 	{
 		AUDDBG(" *** not submitting due to entry->length < 30");
 		return;
@@ -66,7 +70,7 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 
 	sc_idle(m_scrobbler);
 
-	tuple = aud_playlist_entry_get_tuple(playlist, pos);
+	tuple = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
 	if (tuple == NULL)
 		return;
 
@@ -74,7 +78,7 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 		mowgli_object_unref(submit_tuple);
 
 	submit_tuple = tuple_copy(tuple);
-	sc_addentry(m_scrobbler, submit_tuple, aud_tuple_get_int(submit_tuple, FIELD_LENGTH, NULL) / 1000);
+	sc_addentry(m_scrobbler, submit_tuple, tuple_get_int(submit_tuple, FIELD_LENGTH, NULL) / 1000);
 
 	if (!track_timeout)
 		track_timeout = g_timeout_add_seconds(1, sc_timeout, NULL);
@@ -110,7 +114,7 @@ void start(void) {
 		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "password",
 				&password);
 		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "sc_url",
-				&sc_url);		
+				&sc_url);
 		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "ge_username",
 				&ge_username);
 		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "ge_password",
@@ -132,11 +136,11 @@ void start(void) {
 		g_free(password);
 		g_free(sc_url);
 	}
-	
+
 	m_scrobbler = g_mutex_new();
 
-	aud_hook_associate("playback begin", aud_hook_playback_begin, NULL);
-	aud_hook_associate("playback stop", aud_hook_playback_end, NULL);
+	hook_associate("playback begin", aud_hook_playback_begin, NULL);
+	hook_associate("playback stop", aud_hook_playback_end, NULL);
 
 	AUDDBG("plugin started");
 	sc_idle(m_scrobbler);
@@ -155,8 +159,8 @@ void stop(void) {
 
 	g_mutex_free(m_scrobbler);
 
-	aud_hook_dissociate("playback begin", aud_hook_playback_begin);
-	aud_hook_dissociate("playback stop", aud_hook_playback_end);
+	hook_dissociate("playback begin", aud_hook_playback_begin);
+	hook_dissociate("playback stop", aud_hook_playback_end);
 }
 
 static void init(void)

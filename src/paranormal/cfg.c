@@ -24,9 +24,10 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <audacious/plugin.h>
-
 #include <math.h>
+
+#include <audacious/configdb.h>
+#include <audacious/plugin.h>
 
 #include "paranormal.h"
 #include "actuators.h"
@@ -222,7 +223,7 @@ row_select_cb (GtkCTree *ctree, GtkCTreeNode *node,
 	    gtk_tooltips_set_tip (actuator_tooltips, GTK_WIDGET(w),
 				  a->desc->option_descs[j].doc, NULL);
 	  }
-	  break;	  
+	  break;
 	case OPT_TYPE_COLOR_INDEX:
 	  adj = gtk_adjustment_new (a->options[j].val.ival,
 				    0, 255,
@@ -286,7 +287,7 @@ add_actuator_cb (GtkButton *button, gpointer data)
 {
   char *actuator_name;
   struct pn_actuator *a;
-  
+
   gtk_label_get (GTK_LABEL (GTK_BIN (actuator_add_opmenu)->child),
                 &actuator_name);
 
@@ -495,7 +496,7 @@ pn_configure (void)
   GtkWidget *notebook, *label, *scrollwindow, *menu, *menuitem;
   GtkWidget *paned, *vbox, *table, *bbox, *button;
   int i;
-  
+
 
   if (! cfg_dialog)
     {
@@ -539,7 +540,7 @@ pn_configure (void)
 					     actuator_tree);
       table = gtk_table_new (3, 2, TRUE);
       gtk_widget_show (table);
-      gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 3);      
+      gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 3);
       actuator_add_opmenu = gtk_option_menu_new ();
       gtk_widget_show (actuator_add_opmenu);
       menu = gtk_menu_new ();

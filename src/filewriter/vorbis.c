@@ -27,6 +27,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include <audacious/configdb.h>
+
 static void vorbis_init(write_output_callback write_output_func);
 static void vorbis_configure(void);
 static gint vorbis_open(void);
@@ -57,7 +59,7 @@ static vorbis_comment vc;
 
 static void vorbis_init(write_output_callback write_output_func)
 {
-    ConfigDb *db = aud_cfg_db_open();
+    mcs_handle_t *db = aud_cfg_db_open();
 
     aud_cfg_db_get_float(db, "filewriter_vorbis", "base_quality", &v_base_quality);
 
@@ -84,26 +86,26 @@ static gint vorbis_open(void)
         gchar tmpstr[32];
         gint scrint;
 
-        if ((scratch = aud_tuple_get_string(tuple, FIELD_TITLE, NULL)))
+        if ((scratch = tuple_get_string(tuple, FIELD_TITLE, NULL)))
             vorbis_comment_add_tag(&vc, "title", (gchar *) scratch);
-        if ((scratch = aud_tuple_get_string(tuple, FIELD_ARTIST, NULL)))
+        if ((scratch = tuple_get_string(tuple, FIELD_ARTIST, NULL)))
             vorbis_comment_add_tag(&vc, "artist", (gchar *) scratch);
-        if ((scratch = aud_tuple_get_string(tuple, FIELD_ALBUM, NULL)))
+        if ((scratch = tuple_get_string(tuple, FIELD_ALBUM, NULL)))
             vorbis_comment_add_tag(&vc, "album", (gchar *) scratch);
-        if ((scratch = aud_tuple_get_string(tuple, FIELD_GENRE, NULL)))
+        if ((scratch = tuple_get_string(tuple, FIELD_GENRE, NULL)))
             vorbis_comment_add_tag(&vc, "genre", (gchar *) scratch);
-        if ((scratch = aud_tuple_get_string(tuple, FIELD_DATE, NULL)))
+        if ((scratch = tuple_get_string(tuple, FIELD_DATE, NULL)))
             vorbis_comment_add_tag(&vc, "date", (gchar *) scratch);
-        if ((scratch = aud_tuple_get_string(tuple, FIELD_COMMENT, NULL)))
+        if ((scratch = tuple_get_string(tuple, FIELD_COMMENT, NULL)))
             vorbis_comment_add_tag(&vc, "comment", (gchar *) scratch);
 
-        if ((scrint = aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL)))
+        if ((scrint = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL)))
         {
             g_snprintf(tmpstr, sizeof(tmpstr), "%d", scrint);
             vorbis_comment_add_tag(&vc, "tracknumber", tmpstr);
         }
 
-        if ((scrint = aud_tuple_get_int(tuple, FIELD_YEAR, NULL)))
+        if ((scrint = tuple_get_int(tuple, FIELD_YEAR, NULL)))
         {
             g_snprintf(tmpstr, sizeof(tmpstr), "%d", scrint);
             vorbis_comment_add_tag(&vc, "year", tmpstr);
@@ -215,7 +217,7 @@ static void quality_change(GtkAdjustment *adjustment, gpointer user_data)
 
 static void configure_ok_cb(gpointer data)
 {
-    ConfigDb *db = aud_cfg_db_open();
+    mcs_handle_t *db = aud_cfg_db_open();
 
     aud_cfg_db_set_float(db, "filewrite_vorbis", "base_quality", v_base_quality);
 

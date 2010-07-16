@@ -469,7 +469,7 @@ void CrolPlayer::load_tempo_events( binistream *f )
 bool CrolPlayer::load_voice_data( binistream *f, std::string const &bnk_filename, const CFileProvider &fp )
 {
     SBnkHeader bnk_header;
-    VFSFile *fd = aud_vfs_fopen(bnk_filename.c_str(), "rb");
+    VFSFile *fd = vfs_fopen(bnk_filename.c_str(), "rb");
     binistream *bnk_file = fp.open(fd);
 
     if( bnk_file )
@@ -492,7 +492,7 @@ bool CrolPlayer::load_voice_data( binistream *f, std::string const &bnk_filename
         }
 
         fp.close(bnk_file);
-        aud_vfs_fclose(fd);
+        vfs_fclose(fd);
 
         return true;
     }

@@ -1,4 +1,3 @@
-#define DEBUG
 #include <pthread.h>
 #include <limits.h>
 #include <stdlib.h>
@@ -12,6 +11,8 @@
 #include "settings.h"
 #include <glib.h>
 
+#include <audacious/drct.h>
+#include <audacious/debug.h>
 #include <audacious/plugin.h>
 #include <libaudcore/md5.h>
 
@@ -144,14 +145,14 @@ static item_t *create_item(Tuple *tuple, int len)
 
     item = malloc(sizeof(item_t));
 
-    item->artist = fmt_escape(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
-    item->title = fmt_escape(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
+    item->artist = fmt_escape(tuple_get_string(tuple, FIELD_ARTIST, NULL));
+    item->title = fmt_escape(tuple_get_string(tuple, FIELD_TITLE, NULL));
     item->len = len;
-    item->track = aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL);
+    item->track = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL);
     item->timeplayed = 0;
     item->utctime = time(NULL);
 
-    album = aud_tuple_get_string(tuple, FIELD_ALBUM, NULL);
+    album = tuple_get_string(tuple, FIELD_ALBUM, NULL);
     if (album)
         item->album = fmt_escape((char*) album);
     else
@@ -216,7 +217,7 @@ static int q_get(void)
 
     if (q_nitems == 0)
         return 0;
-    
+
     item = q_queue;
 
     if(item == NULL)
@@ -249,7 +250,7 @@ gboolean sc_timeout(gpointer data)
 {
     if (np_item)
     {
-        if (audacious_drct_get_playing() && !audacious_drct_get_paused())
+        if (aud_drct_get_playing() && !aud_drct_get_paused())
             np_item->timeplayed+=1;
 
         /*
@@ -447,7 +448,7 @@ static unsigned char *md5_string(char *pass, int len)
 {
     aud_md5state_t md5state;
     static unsigned char md5pword[16];
-        
+
     aud_md5_init(&md5state);
     aud_md5_append(&md5state, (unsigned const char *)pass, len);
     aud_md5_finish(&md5state, md5pword);
@@ -462,7 +463,7 @@ static void hexify(char *pass, int len)
     int i;
 
     memset(sc_response_hash, 0, sizeof(sc_response_hash));
-    
+
     for(i = 0; i < len; i++) {
         *(bp++) = hexchars[(pass[i] >> 4) & 0x0f];
         *(bp++) = hexchars[pass[i] & 0x0f];
@@ -537,7 +538,7 @@ static int sc_handshake(void)
     curl_easy_setopt(curl, CURLOPT_HTTPGET, 1);
     curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
     curl_easy_setopt(curl, CURLOPT_URL, buf);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, 
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION,
             sc_store_res);
     memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
     curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, sc_curl_errbuf);
@@ -564,7 +565,7 @@ static int sc_handshake(void)
     if (sc_challenge_hash != NULL) {
         aud_md5state_t md5state;
         unsigned char md5pword[16];
-        
+
         aud_md5_init(&md5state);
         /*AUDDBG("Pass Hash: %s", sc_password));*/
         aud_md5_append(&md5state, (unsigned const char *)sc_password,
@@ -582,7 +583,7 @@ static int sc_handshake(void)
 
     sc_free_res();
 
-    AUDDBG("submiturl: %s - interval: %d\n", 
+    AUDDBG("submiturl: %s - interval: %d\n",
                 sc_submit_url, sc_submit_interval);
 
     return 0;
@@ -699,7 +700,7 @@ static int sc_parse_sb_res(void)
 
 static gchar *sc_itemtag(char c, int n, char *str)
 {
-    static char buf[SCROBBLER_SB_MAXLEN]; 
+    static char buf[SCROBBLER_SB_MAXLEN];
     g_snprintf(buf, SCROBBLER_SB_MAXLEN, "&%c[%d]=%s", c, n, str);
     return buf;
 }
@@ -773,15 +774,15 @@ static int sc_submit_np(Tuple *tuple)
     curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
     /*cfa(&post, &last, "debug", "failed");*/
 
-        char *field_artist = fmt_escape(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
-        char *field_title = fmt_escape(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
-        char *field_album = aud_tuple_get_string(tuple, FIELD_ALBUM, NULL) ? fmt_escape(aud_tuple_get_string(tuple, FIELD_ALBUM, NULL)) : fmt_escape("");
+        char *field_artist = fmt_escape(tuple_get_string(tuple, FIELD_ARTIST, NULL));
+        char *field_title = fmt_escape(tuple_get_string(tuple, FIELD_TITLE, NULL));
+        char *field_album = tuple_get_string(tuple, FIELD_ALBUM, NULL) ? fmt_escape(tuple_get_string(tuple, FIELD_ALBUM, NULL)) : fmt_escape("");
     snprintf(entry, 16384, "s=%s&a=%s&t=%s&b=%s&l=%d&n=%d&m=", sc_session_id,
         field_artist,
         field_title,
         field_album,
-        aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000,
-        aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
+        tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000,
+        tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
         curl_free(field_artist);
         curl_free(field_title);
         curl_free(field_album);
@@ -889,7 +890,7 @@ static void sc_handlequeue(GMutex *mutex)
                         ( ((sc_sb_errors - 5) < 7) ?
                         (60 << (sc_sb_errors-5)) :
                         7200 );
-                
+
                 sc_submit_timeout = time(NULL) + wait;
 
                 AUDDBG("Error while submitting. "
@@ -909,7 +910,7 @@ static void read_cache(void)
     item_t *item;
     gchar* config_datadir;
 
-    config_datadir = audacious_get_localdir();
+    config_datadir = aud_util_get_localdir();
     g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", config_datadir);
     g_free(config_datadir);
 
@@ -943,21 +944,21 @@ static void read_cache(void)
              * we'll continue to check the value anyway, for backwards-compatibility reasons.
              */
             if (!strncmp(entry[5], "L", 1)) {
-                Tuple *tuple = aud_tuple_new();
+                Tuple *tuple = tuple_new();
                 gchar* string_value;
                 string_value = xmms_urldecode_plain(artist);
-                aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, string_value);
+                tuple_associate_string(tuple, FIELD_ARTIST, NULL, string_value);
                 g_free(string_value);
                 string_value = xmms_urldecode_plain(title);
-                aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, string_value);
+                tuple_associate_string(tuple, FIELD_TITLE, NULL, string_value);
                 g_free(string_value);
                 string_value = xmms_urldecode_plain(album);
-                aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, string_value);
+                tuple_associate_string(tuple, FIELD_ALBUM, NULL, string_value);
                 g_free(string_value);
-                aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, track);
+                tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, track);
                 item = q_put(tuple, t, len);
 
-                aud_tuple_free(tuple);
+                tuple_free(tuple);
 
                 AUDDBG("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d b[%d]=%s\n",
                                  i, I_ARTIST(item),
@@ -994,7 +995,7 @@ static void dump_queue(void)
         return;
     }
 
-    config_datadir = audacious_get_localdir();
+    config_datadir = aud_util_get_localdir();
     g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", config_datadir);
     g_free(config_datadir);
 

@@ -28,6 +28,7 @@
 #include <dbus/dbus-glib-bindings.h>
 #include <glib-object.h>
 
+#include <audacious/drct.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
@@ -95,10 +96,10 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
 		gboolean play, mute;
 
 		/* playing or not */
-		play = audacious_drct_is_playing ();
+		play = aud_drct_get_playing ();
 
 		/* get current volume */
-		audacious_drct_get_volume_main (&current_volume);
+		aud_drct_get_volume_main (&current_volume);
 		old_volume = current_volume;
 		if (current_volume)
 		{
@@ -115,10 +116,10 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
 			if (!mute)
 			{
 				volume_static = current_volume;
-				audacious_drct_set_main_volume (0);
+				aud_drct_set_volume_main (0);
 				mute = TRUE;
 			} else {
-				audacious_drct_set_main_volume (volume_static);
+				aud_drct_set_volume_main (volume_static);
 				mute = FALSE;
 			}
 			return;
@@ -179,9 +180,9 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
 		{
 			if (!play)
 			{
-				audacious_drct_play ();
+				aud_drct_play ();
 			} else {
-				audacious_drct_pause ();
+				aud_drct_pause ();
 			}
 			return;
 		}
@@ -189,8 +190,8 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
 		/* pause */
 		if (strcmp ("Pause", key) == 0)
 		{
-			if (!play) audacious_drct_play ();
-			else audacious_drct_pause ();
+			if (!play) aud_drct_play ();
+			else aud_drct_pause ();
 
 			return;
 		}
@@ -198,21 +199,21 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
 		/* stop */
 		if (strcmp ("Stop", key) == 0)
 		{
-			audacious_drct_stop ();
+			aud_drct_stop ();
 			return;
 		}
 
 		/* prev track */
 		if (strcmp ("Previous", key) == 0)
 		{
-			audacious_drct_playlist_prev ();
+			aud_drct_pl_prev ();
 			return;
 		}
 
 		/* next track */
 		if (strcmp ("Next", key) == 0)
 		{
-			audacious_drct_playlist_next ();
+			aud_drct_pl_next ();
 			return;
 		}
 	}

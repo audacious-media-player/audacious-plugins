@@ -22,8 +22,9 @@
 #include "aosd_style.h"
 #include <glib.h>
 #include <stdlib.h>
-#include <audacious/plugin.h>
 
+#include <audacious/configdb.h>
+#include <audacious/plugin.h>
 
 static gint
 aosd_cfg_util_str_to_color ( gchar * str , aosd_color_t * color )
@@ -296,7 +297,7 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
        "decoration_code" , &(cfg->osd->decoration.code) ) )
     cfg->osd->decoration.code = aosd_deco_style_get_first_code();
 
-  /* TODO not implemented yet 
+  /* TODO not implemented yet
   if ( !aud_cfg_db_get_string( cfgfile , "aosd" ,
        "decoration_skin_file" , &(cfg->osd->decoration.skin_file) ) )
     cfg->osd->decoration.skin_file = g_strdup( "" );

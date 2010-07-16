@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 
@@ -255,7 +256,7 @@ void playlist_selected_to_indexes (gint list, struct index * * namesp,
         index_append (* namesp, g_strdup (aud_playlist_entry_get_filename (list,
          count)));
 
-        if ((tuple = aud_playlist_entry_get_tuple (list, count)))
+        if ((tuple = aud_playlist_entry_get_tuple (list, count, FALSE)))
             mowgli_object_ref ((Tuple *) tuple);
 
         index_append (* tuplesp, (Tuple *) tuple);

@@ -32,10 +32,10 @@ ui_playlist_evlistener_playlistwin_show(gpointer hook_data, gpointer user_data)
 
 void ui_playlist_evlistener_init(void)
 {
-    aud_hook_associate("playlistwin show", ui_playlist_evlistener_playlistwin_show, NULL);
+    hook_associate("playlistwin show", ui_playlist_evlistener_playlistwin_show, NULL);
 }
 
 void ui_playlist_evlistener_dissociate(void)
 {
-    aud_hook_dissociate("playlistwin show", ui_playlist_evlistener_playlistwin_show);
+    hook_dissociate("playlistwin show", ui_playlist_evlistener_playlistwin_show);
 }

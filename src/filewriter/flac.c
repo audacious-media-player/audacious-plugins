@@ -45,7 +45,7 @@ static FLAC__StreamEncoder *flac_encoder;
 static FLAC__StreamEncoderWriteStatus flac_write_cb(const FLAC__StreamEncoder *encoder,
     const FLAC__byte buffer[], size_t bytes, unsigned samples, unsigned current_frame, gpointer data)
 {
-    aud_vfs_fwrite(buffer, bytes, 1, (VFSFile *) data);
+    vfs_fwrite(buffer, bytes, 1, (VFSFile *) data);
 
     return FLAC__STREAM_ENCODER_WRITE_STATUS_OK;
 }
@@ -55,7 +55,7 @@ static FLAC__StreamEncoderSeekStatus flac_seek_cb(const FLAC__StreamEncoder *enc
 {
     VFSFile *file = (VFSFile *) data;
 
-    if (aud_vfs_fseek(file, absolute_byte_offset, SEEK_SET) < 0)
+    if (vfs_fseek(file, absolute_byte_offset, SEEK_SET) < 0)
         return FLAC__STREAM_ENCODER_SEEK_STATUS_ERROR;
 
     return FLAC__STREAM_ENCODER_SEEK_STATUS_OK;
@@ -66,7 +66,7 @@ static FLAC__StreamEncoderTellStatus flac_tell_cb(const FLAC__StreamEncoder *enc
 {
     VFSFile *file = (VFSFile *) data;
 
-    *absolute_byte_offset = aud_vfs_ftell(file);
+    *absolute_byte_offset = vfs_ftell(file);
 
     return FLAC__STREAM_ENCODER_TELL_STATUS_OK;
 }
@@ -98,14 +98,14 @@ static gint flac_open(void)
 
         meta = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
-        INSERT_VORBIS_COMMENT(aud_tuple_get_string(tuple, FIELD_TITLE, NULL), "title=%s");
-        INSERT_VORBIS_COMMENT(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL), "artist=%s");
-        INSERT_VORBIS_COMMENT(aud_tuple_get_string(tuple, FIELD_ALBUM, NULL), "album=%s");
-        INSERT_VORBIS_COMMENT(aud_tuple_get_string(tuple, FIELD_GENRE, NULL), "genre=%s");
-        INSERT_VORBIS_COMMENT(aud_tuple_get_string(tuple, FIELD_COMMENT, NULL), "comment=%s");
-        INSERT_VORBIS_COMMENT(aud_tuple_get_string(tuple, FIELD_DATE, NULL), "date=%s");
-        INSERT_VORBIS_COMMENT(aud_tuple_get_int(tuple, FIELD_YEAR, NULL), "year=%d");
-        INSERT_VORBIS_COMMENT(aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL), "tracknumber=%d");
+        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, FIELD_TITLE, NULL), "title=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, FIELD_ARTIST, NULL), "artist=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, FIELD_ALBUM, NULL), "album=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, FIELD_GENRE, NULL), "genre=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, FIELD_COMMENT, NULL), "comment=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, FIELD_DATE, NULL), "date=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_int(tuple, FIELD_YEAR, NULL), "year=%d");
+        INSERT_VORBIS_COMMENT(tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL), "tracknumber=%d");
 
         FLAC__stream_encoder_set_metadata(flac_encoder, &meta, 1);
     }

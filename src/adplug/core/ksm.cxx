@@ -67,7 +67,7 @@ CksmPlayer::load (VFSFile * fd, const CFileProvider & fp)
       break;
   strcpy (fn + i + 1, "insts.dat");
   AdPlug_LogWrite ("Instruments file: \"%s\"\n", fn);
-  VFSFile *instfd = aud_vfs_fopen (fn, "rb");
+  VFSFile *instfd = vfs_fopen (fn, "rb");
   f = fp.open (instfd);
   delete[]fn;
   if (!f)
@@ -78,7 +78,7 @@ CksmPlayer::load (VFSFile * fd, const CFileProvider & fp)
   }
   loadinsts (f);
   fp.close (f);
-  aud_vfs_fclose (instfd);
+  vfs_fclose (instfd);
 
   f = fp.open (fd);
   if (!f)

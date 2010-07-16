@@ -19,7 +19,7 @@ extern void lh5_decode(unsigned char *inp,unsigned char *outp,unsigned long orig
 static int read_byte(VFSFile *fp, int *p)
 {
   int c;
-  if ((c = aud_vfs_getc(fp)) == EOF) {
+  if ((c = vfs_getc(fp)) == EOF) {
     perror("libayemu: read_byte()");
     return 1;
   }
@@ -33,13 +33,13 @@ static int read_byte(VFSFile *fp, int *p)
 static int read_word16(VFSFile *fp, int *p)
 {
   int c;
-  if ((c = aud_vfs_getc(fp)) == EOF) {
+  if ((c = vfs_getc(fp)) == EOF) {
     perror("libayemu: read_word16()");
     return 1;
   }
   *p = c;
 
-  if ((c = aud_vfs_getc(fp)) == EOF) {
+  if ((c = vfs_getc(fp)) == EOF) {
     perror("libayemu: read_word16()");
     return 1;
   }
@@ -55,25 +55,25 @@ static int read_word32(VFSFile *fp, int32_t *p)
 {
   int c;
 
-  if ((c = aud_vfs_getc(fp)) == EOF) {
+  if ((c = vfs_getc(fp)) == EOF) {
     perror("libayemu: read_word32()");
     return 1;
   }
   *p = c;
 
-  if ((c = aud_vfs_getc(fp)) == EOF) {
+  if ((c = vfs_getc(fp)) == EOF) {
     perror("libayemu: read_word32()");
     return 1;
   }
   *p += c << 8;
 
-  if ((c = aud_vfs_getc(fp)) == EOF) {
+  if ((c = vfs_getc(fp)) == EOF) {
     perror("libayemu: read_word32()");
     return 1;
   }
   *p += c << 16;
 
-  if ((c = aud_vfs_getc(fp)) == EOF) {
+  if ((c = vfs_getc(fp)) == EOF) {
     perror("libayemu: read_word32()");
     return 1;
   }
@@ -88,7 +88,7 @@ static int read_word32(VFSFile *fp, int32_t *p)
 static int read_NTstring(VFSFile *fp, char s[])
 {
   int i, c;
-  for (i = 0 ; i < AYEMU_VTX_NTSTRING_MAX && (c = aud_vfs_getc(fp)) != EOF && c ; i++)
+  for (i = 0 ; i < AYEMU_VTX_NTSTRING_MAX && (c = vfs_getc(fp)) != EOF && c ; i++)
     s[i] = c;
   s[i] = '\0';
   if (c == EOF) {
@@ -111,12 +111,12 @@ int ayemu_vtx_open (ayemu_vtx_t *vtx, const char *filename)
 
   vtx->regdata = NULL;
 
-  if ((vtx->fp = aud_vfs_fopen (filename, "rb")) == NULL) {
+  if ((vtx->fp = vfs_fopen (filename, "rb")) == NULL) {
     fprintf(stderr, "ayemu_vtx_open: Cannot open file %s: %s\n", filename, strerror(errno));
     return 0;
   }
 
-  if (aud_vfs_fread(buf, 2, 1, vtx->fp) != 1) {
+  if (vfs_fread(buf, 2, 1, vtx->fp) != 1) {
     fprintf(stderr,"ayemu_vtx_open: Can't read from %s: %s\n", filename, strerror(errno));
     error = 1;
   }
@@ -151,7 +151,7 @@ int ayemu_vtx_open (ayemu_vtx_t *vtx, const char *filename)
   if (!error) error = read_NTstring (vtx->fp, vtx->hdr.comment);
 
   if (error) {
-    aud_vfs_fclose(vtx->fp);
+    vfs_fclose(vtx->fp);
     vtx->fp = NULL;
   }
   return !error;
@@ -177,19 +177,19 @@ char *ayemu_vtx_load_data (ayemu_vtx_t *vtx)
   buf_alloc = 4096;
   packed_data = (char *) malloc (buf_alloc);
   /* read packed AY register data to end of file. */
-  while ((c = aud_vfs_getc (vtx->fp)) != EOF) {
+  while ((c = vfs_getc (vtx->fp)) != EOF) {
     if (buf_alloc < packed_size) {              
       buf_alloc *= 2;
       packed_data = (char *) realloc (packed_data, buf_alloc);
       if (packed_data == NULL) {
 	fprintf (stderr, "ayemu_vtx_load_data: Packed data out of memory!\n");
-	aud_vfs_fclose (vtx->fp);
+	vfs_fclose (vtx->fp);
 	return NULL;
       }
     }
     packed_data[packed_size++] = c;
   }  
-  aud_vfs_fclose (vtx->fp);
+  vfs_fclose (vtx->fp);
   vtx->fp = NULL;
   if ((vtx->regdata = (char *) malloc (vtx->hdr.regdata_size)) == NULL) {
     fprintf (stderr, "ayemu_vtx_load_data: Can allocate %d bytes for unpack register data\n", (int)(vtx->hdr.regdata_size));
@@ -318,7 +318,7 @@ void ayemu_vtx_sprintname (const ayemu_vtx_t *vtx, char *const buf, const int sz
 void ayemu_vtx_free (ayemu_vtx_t *vtx)
 {
   if (vtx->fp) {
-    aud_vfs_fclose(vtx->fp);
+    vfs_fclose(vtx->fp);
     vtx->fp = NULL;
   }
 

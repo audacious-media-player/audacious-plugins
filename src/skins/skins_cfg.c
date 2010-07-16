@@ -18,6 +18,13 @@
  * Audacious or using our public API to be a derived work.
  */
 
+#include <glib.h>
+#include <stdlib.h>
+
+#include <audacious/configdb.h>
+#include <audacious/debug.h>
+#include <audacious/i18n.h>
+#include <libaudcore/audstrings.h>
 
 #include "skins_cfg.h"
 #include "ui_dock.h"
@@ -32,10 +39,6 @@
 #include "plugin.h"
 #include "dnd.h"
 #include "util.h"
-#include <glib.h>
-#include <stdlib.h>
-#include <audacious/i18n.h>
-#include <libintl.h>
 
 skins_cfg_t config;
 GtkWidget *skin_view;
@@ -511,11 +514,11 @@ on_skin_view_drag_data_received(GtkWidget * widget,
 
     /* FIXME: use a real URL validator/parser */
 
-    if (aud_str_has_prefix_nocase(path, "file:///")) {
+    if (str_has_prefix_nocase(path, "file:///")) {
         path[strlen(path) - 2] = 0; /* Why the hell a CR&LF? */
         path += 7;
     }
-    else if (aud_str_has_prefix_nocase(path, "file:")) {
+    else if (str_has_prefix_nocase(path, "file:")) {
         path += 5;
     }
 

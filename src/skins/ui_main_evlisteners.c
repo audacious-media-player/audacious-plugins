@@ -21,6 +21,7 @@
 #include <glib.h>
 #include <math.h>
 
+#include <audacious/drct.h>
 #include <audacious/plugin.h>
 #include <audacious/input.h>
 
@@ -39,7 +40,7 @@ static void ui_main_evlistener_title_change (void * data, void * user_data)
     gchar * title;
 
     /* may be called asynchronously */
-    if (! audacious_drct_get_playing ())
+    if (! aud_drct_get_playing ())
         return;
 
     title = aud_playback_get_title ();
@@ -66,7 +67,7 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
     gtk_widget_show (mainwin_10sec_num);
     gtk_widget_show (mainwin_sec_num);
 
-    if (audacious_drct_get_length () > 0)
+    if (aud_drct_get_length () > 0)
     {
         gtk_widget_show (mainwin_position);
         gtk_widget_show (mainwin_sposition);
@@ -119,10 +120,10 @@ static void info_change (void * hook_data, void * user_data)
     gint bitrate, samplerate, channels;
 
     /* may be called asynchronously */
-    if (! audacious_drct_get_playing ())
+    if (! aud_drct_get_playing ())
         return;
 
-    audacious_drct_get_info (& bitrate, & samplerate, & channels);
+    aud_drct_get_info (& bitrate, & samplerate, & channels);
     mainwin_set_song_info (bitrate, samplerate, channels);
 }
 
@@ -319,41 +320,41 @@ ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
 void
 ui_main_evlistener_init(void)
 {
-    aud_hook_associate("title change", ui_main_evlistener_title_change, NULL);
-    aud_hook_associate("hide seekbar", ui_main_evlistener_hide_seekbar, NULL);
-    aud_hook_associate("playback begin", ui_main_evlistener_playback_begin, NULL);
-    aud_hook_associate("playback stop", ui_main_evlistener_playback_stop, NULL);
-    aud_hook_associate("playback pause", ui_main_evlistener_playback_pause, NULL);
-    aud_hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
-    aud_hook_associate("playback play file", ui_main_evlistener_playback_play_file, NULL);
-    aud_hook_associate ("visualization clear", vis_clear_cb, NULL);
-    aud_hook_associate ("info change", info_change, NULL);
-    aud_hook_associate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top, NULL);
-    aud_hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
-    aud_hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
+    hook_associate("title change", ui_main_evlistener_title_change, NULL);
+    hook_associate("hide seekbar", ui_main_evlistener_hide_seekbar, NULL);
+    hook_associate("playback begin", ui_main_evlistener_playback_begin, NULL);
+    hook_associate("playback stop", ui_main_evlistener_playback_stop, NULL);
+    hook_associate("playback pause", ui_main_evlistener_playback_pause, NULL);
+    hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
+    hook_associate("playback play file", ui_main_evlistener_playback_play_file, NULL);
+    hook_associate ("visualization clear", vis_clear_cb, NULL);
+    hook_associate ("info change", info_change, NULL);
+    hook_associate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top, NULL);
+    hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
+    hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
 
-    aud_hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
-    aud_hook_associate ("toggle stop after song", stop_after_song_toggled, NULL);
+    hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
+    hook_associate ("toggle stop after song", stop_after_song_toggled, NULL);
 }
 
 void
 ui_main_evlistener_dissociate(void)
 {
-    aud_hook_dissociate("title change", ui_main_evlistener_title_change);
-    aud_hook_dissociate("hide seekbar", ui_main_evlistener_hide_seekbar);
-    aud_hook_dissociate("playback begin", ui_main_evlistener_playback_begin);
-    aud_hook_dissociate("playback stop", ui_main_evlistener_playback_stop);
-    aud_hook_dissociate("playback pause", ui_main_evlistener_playback_pause);
-    aud_hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
-    aud_hook_dissociate("playback play file", ui_main_evlistener_playback_play_file);
-    aud_hook_dissociate ("visualization clear", vis_clear_cb);
-    aud_hook_dissociate ("info change", info_change);
-    aud_hook_dissociate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top);
-    aud_hook_dissociate("mainwin show", ui_main_evlistener_mainwin_show);
-    aud_hook_dissociate("equalizerwin show", ui_main_evlistener_equalizerwin_show);
+    hook_dissociate("title change", ui_main_evlistener_title_change);
+    hook_dissociate("hide seekbar", ui_main_evlistener_hide_seekbar);
+    hook_dissociate("playback begin", ui_main_evlistener_playback_begin);
+    hook_dissociate("playback stop", ui_main_evlistener_playback_stop);
+    hook_dissociate("playback pause", ui_main_evlistener_playback_pause);
+    hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
+    hook_dissociate("playback play file", ui_main_evlistener_playback_play_file);
+    hook_dissociate ("visualization clear", vis_clear_cb);
+    hook_dissociate ("info change", info_change);
+    hook_dissociate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top);
+    hook_dissociate("mainwin show", ui_main_evlistener_mainwin_show);
+    hook_dissociate("equalizerwin show", ui_main_evlistener_equalizerwin_show);
 
-    aud_hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
-    aud_hook_dissociate ("toggle stop after song", stop_after_song_toggled);
+    hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
+    hook_dissociate ("toggle stop after song", stop_after_song_toggled);
 }
 
 void start_stop_visual (void)

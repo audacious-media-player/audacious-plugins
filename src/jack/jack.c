@@ -6,18 +6,18 @@
  *    This code maps xmms calls into the jack translation library
  */
 
-#include <audacious/plugin.h>
 #include <dlfcn.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
-#include <audacious/i18n.h>
 #include <stdio.h>
 #include "config.h"
 #include "bio2jack.h" /* includes for the bio2jack library */
 #include "jack.h"
 #include <string.h>
 
-
+#include <audacious/configdb.h>
+#include <audacious/i18n.h>
+#include <audacious/plugin.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 /* set to 1 for verbose output */
 #define VERBOSE_OUTPUT          0
@@ -230,7 +230,7 @@ static OutputPluginInitStatus jack_init(void)
   jack_set_port_connection_mode();
 
   output_opened = FALSE;
-  
+
   /* Always return OK, as we don't know about physical devices here */
   return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
@@ -440,7 +440,7 @@ static void jack_about(void)
 
         audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
          _("About JACK Output Plugin 0.17"), description);
-        
+
         g_free(description);
     }
 }

@@ -2,6 +2,8 @@
 
 #include "config.h"
 #include <wavpack/wavpack.h>
+
+#include <audacious/debug.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
@@ -30,31 +32,31 @@ static gboolean pause_flag;
 static gint32
 wv_read_bytes(void *id, void *data, gint32 bcount)
 {
-    return aud_vfs_fread(data, 1, bcount, (VFSFile *) id);
+    return vfs_fread(data, 1, bcount, (VFSFile *) id);
 }
 
 static guint32
 wv_get_pos(void *id)
 {
-    return aud_vfs_ftell((VFSFile *) id);
+    return vfs_ftell((VFSFile *) id);
 }
 
 static gint
 wv_set_pos_abs(void *id, guint32 pos)
 {
-    return aud_vfs_fseek((VFSFile *) id, pos, SEEK_SET);
+    return vfs_fseek((VFSFile *) id, pos, SEEK_SET);
 }
 
 static gint
 wv_set_pos_rel(void *id, gint32 delta, gint mode)
 {
-    return aud_vfs_fseek((VFSFile *) id, delta, mode);
+    return vfs_fseek((VFSFile *) id, delta, mode);
 }
 
 static gint
 wv_push_back_byte(void *id, gint c)
 {
-    return aud_vfs_ungetc(c, (VFSFile *) id);
+    return vfs_ungetc(c, (VFSFile *) id);
 }
 
 static guint32
@@ -65,17 +67,17 @@ wv_get_length(void *id)
     if (file == NULL)
         return 0;
 
-    return aud_vfs_fsize(file);
+    return vfs_fsize(file);
 }
 
 static gint wv_can_seek(void *id)
 {
-    return (aud_vfs_is_streaming((VFSFile *) id) == FALSE);
+    return (vfs_is_streaming((VFSFile *) id) == FALSE);
 }
 
 static gint32 wv_write_bytes(void *id, void *data, gint32 bcount)
 {
-    return aud_vfs_fwrite(data, 1, bcount, (VFSFile *) id);
+    return vfs_fwrite(data, 1, bcount, (VFSFile *) id);
 }
 
 WavpackStreamReader wv_readers = {
@@ -97,7 +99,7 @@ static gboolean wv_attach (const gchar * filename, VFSFile * wv_input,
     if (flags & OPEN_WVC)
     {
         corrFilename = g_strconcat(filename, "c", NULL);
-        *wvc_input = aud_vfs_fopen(corrFilename, "rb");
+        *wvc_input = vfs_fopen(corrFilename, "rb");
         g_free(corrFilename);
     }
 
@@ -113,7 +115,7 @@ static gboolean wv_attach (const gchar * filename, VFSFile * wv_input,
 static void wv_deattach (VFSFile * wvc_input, WavpackContext * ctx)
 {
     if (wvc_input != NULL)
-        aud_vfs_fclose(wvc_input);
+        vfs_fclose(wvc_input);
     WavpackCloseFile(ctx);
 }
 
@@ -343,16 +345,16 @@ wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
 
 	AUDDBG("starting probe of %p\n", fd);
 
-	aud_vfs_fseek(fd, 0, SEEK_SET);
-	tu = aud_tuple_new_from_filename(filename);
+	vfs_fseek(fd, 0, SEEK_SET);
+	tu = tuple_new_from_filename(filename);
 
-	aud_vfs_fseek(fd, 0, SEEK_SET);
+	vfs_fseek(fd, 0, SEEK_SET);
 	tag_tuple_read(tu, fd);
 
-	aud_tuple_associate_int(tu, FIELD_LENGTH, NULL,
+	tuple_associate_int(tu, FIELD_LENGTH, NULL,
         ((guint64) WavpackGetNumSamples(ctx) * 1000) / (guint64) WavpackGetSampleRate(ctx));
-    aud_tuple_associate_string(tu, FIELD_CODEC, NULL, "WavPack");
-    aud_tuple_associate_string(tu, FIELD_QUALITY, NULL, wv_get_quality(ctx));
+    tuple_associate_string(tu, FIELD_CODEC, NULL, "WavPack");
+    tuple_associate_string(tu, FIELD_QUALITY, NULL, wv_get_quality(ctx));
 
     WavpackCloseFile(ctx);
 

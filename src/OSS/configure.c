@@ -26,8 +26,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <audacious/configdb.h>
 #include <audacious/i18n.h>
-
 
 static GtkWidget *configure_win = NULL;
 static GtkWidget *mixer_usemaster_check, *buffer_pre_spin;

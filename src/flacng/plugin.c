@@ -18,10 +18,12 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "flacng.h"
+#include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
+
+#include "flacng.h"
 
 #include "tools.h"
 #include "seekable_stream_callbacks.h"
@@ -468,7 +470,7 @@ static void insert_str_tuple_to_vc(FLAC__StreamMetadata *vc_block, Tuple *tuple,
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     gchar *str;
-    gchar *val = (gchar *) aud_tuple_get_string(tuple, tuple_name, NULL);
+    gchar *val = (gchar *) tuple_get_string(tuple, tuple_name, NULL);
 
     if (val == NULL)
         return;
@@ -484,7 +486,7 @@ static void insert_int_tuple_to_vc(FLAC__StreamMetadata *vc_block, Tuple *tuple,
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     gchar *str;
-    gint val = aud_tuple_get_int(tuple, tuple_name, NULL);
+    gint val = tuple_get_int(tuple, tuple_name, NULL);
 
     if (val <= 0)
         return;

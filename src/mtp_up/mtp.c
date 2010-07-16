@@ -2,7 +2,7 @@
  * Audacious MTP upload plugin
  *
  * Copyright (c) 2007 Cristian Magherusan <majeru@atheme.org>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; under version 3 of the License.
@@ -21,9 +21,11 @@
 #include <glib.h>
 #include <sys/types.h>
 #include <libmtp.h>
+
+#include <audacious/i18n.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <audacious/ui_plugin_menu.h>
-#include <audacious/i18n.h>
 
 #include <gtk/gtk.h>
 #include "filetype.h"
@@ -32,7 +34,7 @@
 
 #define UP_DEFAULT_LABEL  _("Upload selected track(s)")
 
-GMutex * mutex = NULL; 
+GMutex * mutex = NULL;
 gboolean mtp_initialised = FALSE;
 LIBMTP_mtpdevice_t *mtp_device = NULL;
 LIBMTP_progressfunc_t *callback;
@@ -92,13 +94,13 @@ gboolean free_device(void)
         gtk_widget_hide(mtp_submenu_item_free);
     }
     g_mutex_unlock(mutex);
-    return TRUE;        
+    return TRUE;
 }
 
 GList *
 get_upload_list(void)
 {
-    Tuple *tuple;
+    const Tuple * tuple;
     GList *up_list=NULL;
     gint current_play = aud_playlist_get_active();
     gint i = (aud_playlist_entry_count(current_play) - 1);
@@ -107,9 +109,9 @@ get_upload_list(void)
     {
         if (aud_playlist_entry_get_selected(current_play, i))
         {
-            tuple = aud_playlist_entry_get_tuple(current_play, i);
+            tuple = aud_playlist_entry_get_tuple (current_play, i, FALSE);
             aud_playlist_entry_set_selected(current_play, i, FALSE);
-            up_list = g_list_prepend(up_list, tuple);
+            up_list = g_list_prepend (up_list, (void *) tuple);
         }
     }
 
@@ -125,27 +127,27 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
     uint32_t parent_id = 0;
     struct stat sb;
 
-    uri_path = g_strdup_printf("%s/%s", aud_tuple_get_string(from_tuple, FIELD_FILE_PATH, NULL), aud_tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
+    uri_path = g_strdup_printf("%s/%s", tuple_get_string(from_tuple, FIELD_FILE_PATH, NULL), tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
     gchar *tmp = g_strescape(uri_path,NULL);
     filename=g_filename_from_uri(tmp,NULL,NULL);
-    g_free(tmp); 
+    g_free(tmp);
     /* dealing the stream upload (invalidating)*/
     if(filename)
     {
-        f = aud_vfs_fopen(uri_path,"r");
+        f = vfs_fopen(uri_path,"r");
         g_free(uri_path);
-        if(aud_vfs_is_streaming(f)) 
+        if(vfs_is_streaming(f))
         {
-            aud_vfs_fclose(f);
+            vfs_fclose(f);
             g_free(filename);
             return NULL;
         }
-    }       
-    else 
+    }
+    else
     {
         g_print("Warning! the filename is NULL, exiting");
         return NULL;
-        
+
     }
 
     if ( stat(filename, &sb) == -1 )
@@ -161,15 +163,15 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
 
     /* track metadata*/
     tr = LIBMTP_new_track_t();
-    tr->title = g_strdup((gchar*) aud_tuple_get_string(from_tuple, FIELD_TITLE, NULL)); 
-    tr->artist = g_strdup((gchar*) aud_tuple_get_string(from_tuple, FIELD_ARTIST, NULL));
-    tr->album = g_strdup((gchar*)aud_tuple_get_string(from_tuple, FIELD_ALBUM, NULL));
+    tr->title = g_strdup((gchar*) tuple_get_string(from_tuple, FIELD_TITLE, NULL));
+    tr->artist = g_strdup((gchar*) tuple_get_string(from_tuple, FIELD_ARTIST, NULL));
+    tr->album = g_strdup((gchar*)tuple_get_string(from_tuple, FIELD_ALBUM, NULL));
     tr->filesize = filesize;
-    tr->filename = g_strdup(aud_tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
-    tr->duration = (uint32_t)aud_tuple_get_int(from_tuple, FIELD_LENGTH, NULL);
+    tr->filename = g_strdup(tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
+    tr->duration = (uint32_t)tuple_get_int(from_tuple, FIELD_LENGTH, NULL);
     tr->filetype = find_filetype (filename);
-    tr->genre = g_strdup((gchar*)aud_tuple_get_string(from_tuple, FIELD_GENRE, NULL));
-    tr->date = g_strdup_printf("%d",aud_tuple_get_int(from_tuple, FIELD_YEAR, NULL));
+    tr->genre = g_strdup((gchar*)tuple_get_string(from_tuple, FIELD_GENRE, NULL));
+    tr->date = g_strdup_printf("%d",tuple_get_int(from_tuple, FIELD_YEAR, NULL));
     g_free(filename);
     return tr;
 }
@@ -181,7 +183,7 @@ gint upload_file(Tuple *from_tuple)
     uint32_t parent_id = 0;
     LIBMTP_track_t *gentrack;
     gentrack = track_metadata(from_tuple);
-    from_path = g_strdup_printf("%s/%s", aud_tuple_get_string(from_tuple, FIELD_FILE_PATH, NULL), aud_tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
+    from_path = g_strdup_printf("%s/%s", tuple_get_string(from_tuple, FIELD_FILE_PATH, NULL), tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
     if(gentrack == NULL) return 1;
     tmp = g_strescape(from_path,NULL);
     filename=g_filename_from_uri(tmp,NULL,NULL);
@@ -195,7 +197,7 @@ gint upload_file(Tuple *from_tuple)
     gentrack->parent_id = mtp_device->default_music_folder;
     ret = LIBMTP_Send_Track_From_File(mtp_device, filename , gentrack, NULL , NULL);
     LIBMTP_destroy_track_t(gentrack);
-    if (ret == 0) 
+    if (ret == 0)
         g_print("Track upload finished!\n");
     else
     {
@@ -217,13 +219,13 @@ gpointer upload(gpointer arg)
         gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))),UP_DEFAULT_LABEL);
         gtk_widget_set_sensitive(mtp_submenu_item_up, TRUE);
         return NULL;
-    } 
-    g_mutex_lock(mutex); 
+    }
+    g_mutex_lock(mutex);
     if(!mtp_device)
-    { 
+    {
         gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))),UP_DEFAULT_LABEL);
         gtk_widget_set_sensitive(mtp_submenu_item_up, TRUE);
-        g_mutex_unlock(mutex); 
+        g_mutex_unlock(mutex);
         return NULL;
     }
 
@@ -251,10 +253,10 @@ gpointer upload(gpointer arg)
     g_list_free(up_list);
     gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))),UP_DEFAULT_LABEL);
     gtk_widget_set_sensitive(mtp_submenu_item_up, TRUE);
-    g_mutex_unlock(mutex); 
+    g_mutex_unlock(mutex);
 #if DEBUG
     g_print("MTP upload process finished\n");
-#endif    
+#endif
     gtk_widget_show(mtp_submenu_item_free);
     g_thread_exit(NULL);
     return NULL;
@@ -262,7 +264,7 @@ gpointer upload(gpointer arg)
 
 gboolean mtp_press()
 {
-    if(!mutex) 
+    if(!mutex)
         return TRUE;
     g_mutex_lock(mutex);
     if(!mtp_initialised)
@@ -277,11 +279,11 @@ gboolean mtp_press()
 
     }
     g_mutex_unlock(mutex);
-    if(mtp_device == NULL) 
+    if(mtp_device == NULL)
     {
 #if DEBUG
         g_print("No MTP devices have been found !!!\n");
-#endif  
+#endif
         /* show_dialog("No MTP devices have been found !!!"); */
         mtp_initialised = FALSE;
         return TRUE;
@@ -289,7 +291,7 @@ gboolean mtp_press()
     }
     gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))), _("Upload in progress..."));
     gtk_widget_set_sensitive(mtp_submenu_item_up, FALSE);
-    g_thread_create(upload,NULL,FALSE,NULL); 
+    g_thread_create(upload,NULL,FALSE,NULL);
     return TRUE;
 
 }
@@ -313,9 +315,9 @@ void mtp_init(void)
     gtk_widget_show (mtp_root_menuitem);
 
 
-    audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, mtp_root_menuitem);
-    g_signal_connect (G_OBJECT (mtp_submenu_item_up), "button_press_event",G_CALLBACK (mtp_press), NULL);  
-    g_signal_connect (G_OBJECT (mtp_submenu_item_free), "button_press_event",G_CALLBACK (free_device), NULL);  
+    aud_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, mtp_root_menuitem);
+    g_signal_connect (G_OBJECT (mtp_submenu_item_up), "button_press_event",G_CALLBACK (mtp_press), NULL);
+    g_signal_connect (G_OBJECT (mtp_submenu_item_free), "button_press_event",G_CALLBACK (free_device), NULL);
 
     mutex = g_mutex_new();
     plugin_active = TRUE;
@@ -351,7 +353,7 @@ void mtp_cleanup(void)
         if(mtp_initialised)
             g_print("The MTP mutex has been unlocked\n");
 #endif
-        audacious_menu_plugin_item_remove(AUDACIOUS_MENU_PLAYLIST_RCLICK, mtp_root_menuitem);
+        aud_menu_plugin_item_remove(AUDACIOUS_MENU_PLAYLIST_RCLICK, mtp_root_menuitem);
         gtk_widget_destroy(mtp_submenu_item_up);
 
         gtk_widget_destroy(mtp_submenu_item_up);

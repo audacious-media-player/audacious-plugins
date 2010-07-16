@@ -306,7 +306,7 @@ GList * daap_discovery_get_devices_impl(void)
 
 
 
-VFSFile * daap_aud_vfs_fopen_impl(const gchar * path, const gchar * mode)
+VFSFile * daap_vfs_fopen_impl(const gchar * path, const gchar * mode)
 {
     VFSFile *file=NULL;
     daap_handle_t *handle = g_new0(daap_handle_t, 1);
@@ -330,7 +330,7 @@ VFSFile * daap_aud_vfs_fopen_impl(const gchar * path, const gchar * mode)
 
     if (handle->fd < 0) 
     {
-        g_print("aud_vfs_fopen got a negative FD \n");
+        g_print("vfs_fopen got a negative FD \n");
         g_free(file);
         file = NULL;
     } 
@@ -339,7 +339,7 @@ VFSFile * daap_aud_vfs_fopen_impl(const gchar * path, const gchar * mode)
     return file;
 }
 
-gint daap_aud_vfs_fclose_impl(VFSFile * file)
+gint daap_vfs_fclose_impl(VFSFile * file)
 {
     gint ret=0;
     daap_handle_t * handle = (daap_handle_t *)file->handle;
@@ -363,7 +363,7 @@ gint daap_aud_vfs_fclose_impl(VFSFile * file)
 return -1;
 }
 
-size_t daap_aud_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
+size_t daap_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
 {
     daap_handle_t *handle= (daap_handle_t *)file->handle;
     size_t ret=0;
@@ -378,12 +378,12 @@ else
     return 0;
 }
 
-size_t daap_aud_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file)
+size_t daap_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file)
 {
     return -1;
 }
 
-gint daap_aud_vfs_getc_impl(VFSFile * file)
+gint daap_vfs_getc_impl(VFSFile * file)
 {
 guchar ret=EOF;
 daap_handle_t *handle = (daap_handle_t *)file->handle;
@@ -401,44 +401,44 @@ g_print ("fgetc failed\n");
 }
 }
 
-gint daap_aud_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
+gint daap_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
 {
     return -1;
 }
 
-gint daap_aud_vfs_ungetc_impl(gint c, VFSFile * stream)
+gint daap_vfs_ungetc_impl(gint c, VFSFile * stream)
 {
 return c;
 }
 
-void daap_aud_vfs_rewind_impl(VFSFile * stream)
+void daap_vfs_rewind_impl(VFSFile * stream)
 {
     return;
 }
 
-glong daap_aud_vfs_ftell_impl(VFSFile * stream)
+glong daap_vfs_ftell_impl(VFSFile * stream)
 {
     daap_handle_t *handle=stream->handle;
    return handle->pos;
 }
 
-gboolean daap_aud_vfs_feof_impl(VFSFile * file)
+gboolean daap_vfs_feof_impl(VFSFile * file)
 {
    daap_handle_t *handle=file->handle;
-  off_t at = daap_aud_vfs_ftell_impl(file);
+  off_t at = daap_vfs_ftell_impl(file);
   return (gboolean) (at >= handle->length) ? TRUE : FALSE;
 }
 
-gint daap_aud_vfs_truncate_impl(VFSFile * file, glong size)
+gint daap_vfs_truncate_impl(VFSFile * file, glong size)
 {
     return -1;
 }
-off_t daap_aud_vfs_fsize_impl(VFSFile * file)
+off_t daap_vfs_fsize_impl(VFSFile * file)
 {
 return 0;
 }
 
-gchar *daap_aud_vfs_metadata_impl(VFSFile * file, const gchar * field)
+gchar *daap_vfs_metadata_impl(VFSFile * file, const gchar * field)
 {
 daap_handle_t *handle;
 g_print("Requested metadata: '%s' \n",field);
@@ -462,26 +462,26 @@ return NULL;
 
 VFSConstructor daap_const = {
     "daap://",
-    daap_aud_vfs_fopen_impl,
-    daap_aud_vfs_fclose_impl,
-    daap_aud_vfs_fread_impl,
-    daap_aud_vfs_fwrite_impl,
-    daap_aud_vfs_getc_impl,
-    daap_aud_vfs_ungetc_impl,
-    daap_aud_vfs_fseek_impl,
-    daap_aud_vfs_rewind_impl,
-    daap_aud_vfs_ftell_impl,
-    daap_aud_vfs_feof_impl,
-    daap_aud_vfs_truncate_impl,
-    daap_aud_vfs_fsize_impl,
-    daap_aud_vfs_metadata_impl
+    daap_vfs_fopen_impl,
+    daap_vfs_fclose_impl,
+    daap_vfs_fread_impl,
+    daap_vfs_fwrite_impl,
+    daap_vfs_getc_impl,
+    daap_vfs_ungetc_impl,
+    daap_vfs_fseek_impl,
+    daap_vfs_rewind_impl,
+    daap_vfs_ftell_impl,
+    daap_vfs_feof_impl,
+    daap_vfs_truncate_impl,
+    daap_vfs_fsize_impl,
+    daap_vfs_metadata_impl
 };
 
 static void init(void)
 {   
     mutex_init = g_mutex_new();        
     mutex_discovery = g_mutex_new();        
-    aud_vfs_register_transport(&daap_const);
+    vfs_register_transport(&daap_const);
     daap_mdns_initialize ();
     if (!login_sessions) 
         login_sessions = g_hash_table_new (g_str_hash, g_str_equal);

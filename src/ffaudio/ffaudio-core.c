@@ -189,13 +189,13 @@ ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
 
         switch (m->ttype) {
         case TUPLE_STRING:
-            tmp = aud_str_to_utf8(tag->value);
-            aud_tuple_associate_string(tuple, m->field, key_name, tmp);
+            tmp = str_to_utf8(tag->value);
+            tuple_associate_string(tuple, m->field, key_name, tmp);
             g_free(tmp);
             break;
 
         case TUPLE_INT:
-            aud_tuple_associate_int(tuple, m->field, key_name, atoi(tag->value));
+            tuple_associate_int(tuple, m->field, key_name, atoi(tag->value));
             break;
 
         default:
@@ -216,17 +216,17 @@ ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVC
             ffaudio_get_meta(tuple, ic, &metaentries[i]);
 #endif
 
-        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, ic->duration / 1000);
+        tuple_associate_int(tuple, FIELD_LENGTH, NULL, ic->duration / 1000);
     }
 
     if (c != NULL)
     {
-        aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, c->bit_rate / 1000);
+        tuple_associate_int(tuple, FIELD_BITRATE, NULL, c->bit_rate / 1000);
     }
 
     if (codec != NULL && codec->long_name != NULL)
     {
-        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, codec->long_name);
+        tuple_associate_string(tuple, FIELD_CODEC, NULL, codec->long_name);
     }
 }
 
@@ -257,7 +257,7 @@ static Tuple * read_tuple (const gchar * filename, VFSFile * file)
         }
     }
 
-    Tuple *tuple = aud_tuple_new_from_filename(filename);
+    Tuple *tuple = tuple_new_from_filename(filename);
     ffaudio_get_tuple_data(tuple, ic, c, codec);
     av_close_input_file (ic);
 
@@ -272,7 +272,7 @@ ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
     if (t == NULL)
         return NULL;
 
-    aud_vfs_fseek(fd, 0, SEEK_SET);
+    vfs_fseek(fd, 0, SEEK_SET);
     tag_tuple_read(t, fd);
 
     return t;
@@ -393,7 +393,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
     _DEBUG("setting parameters");
 #ifndef FFAUDIO_USE_AUDTAG
-    tuple = aud_tuple_new_from_filename(playback->filename);
+    tuple = tuple_new_from_filename(playback->filename);
     ffaudio_get_tuple_data(tuple, ic, c, codec);
     playback->set_tuple(playback, tuple);
 #endif

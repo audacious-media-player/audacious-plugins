@@ -23,6 +23,8 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
+#include <libaudcore/audstrings.h>
+
 #include "xs_fileinfo.h"
 #include "xs_player.h"
 #include "xs_support.h"
@@ -78,7 +80,7 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
     tmpNode = (stil_subnode_t *) data;
     if (!tmpNode && xs_fileinfostil)
         tmpNode = xs_fileinfostil->subTunes[0];
-    
+
     if (tmpNode) {
         subName = tmpNode->name;
         subAuthor = tmpNode->author;
@@ -109,7 +111,7 @@ void xs_fileinfo(const gchar * filename)
     /* Current implementation leaves old fileinfo window untouched if
      * no information can be found for the new file. Hmm...
      */
-    tmpFilename = aud_filename_split_subtune(filename, &n);
+    tmpFilename = filename_split_subtune(filename, &n);
 
     /* Get new tune information */
     XS_MUTEX_LOCK(xs_fileinfowin);
@@ -158,7 +160,7 @@ void xs_fileinfo(const gchar * filename)
         if (xs_fileinfostil && n <= xs_fileinfostil->nsubTunes && xs_fileinfostil->subTunes[n]) {
             gboolean isSet = FALSE;
             tmpNode = xs_fileinfostil->subTunes[n];
-            
+
             g_snprintf(tmpStr, sizeof(tmpStr), _("Tune #%i: "), n);
 
             if (tmpNode->name) {

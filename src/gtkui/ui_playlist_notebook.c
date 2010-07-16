@@ -22,6 +22,8 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
+#include <audacious/debug.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 
 #include "ui_playlist_notebook.h"

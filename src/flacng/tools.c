@@ -21,6 +21,9 @@
 
 #include <string.h>
 #include <strings.h>
+
+#include <audacious/debug.h>
+
 #include "tools.h"
 
 callback_info *init_callback_info(void)
@@ -161,37 +164,37 @@ Tuple* get_tuple_from_file(const gchar *filename, callback_info *info)
 {
     Tuple *tuple;
 
-    tuple = aud_tuple_new_from_filename(filename);
+    tuple = tuple_new_from_filename(filename);
 
-    aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
-    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossless");
+    tuple_associate_string(tuple, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
+    tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossless");
 
-    aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, info->comment.artist);
-    aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, info->comment.title);
-    aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, info->comment.album);
-    aud_tuple_associate_string(tuple, FIELD_GENRE, NULL, info->comment.genre);
-    aud_tuple_associate_string(tuple, FIELD_COMMENT, NULL, info->comment.comment);
+    tuple_associate_string(tuple, FIELD_ARTIST, NULL, info->comment.artist);
+    tuple_associate_string(tuple, FIELD_TITLE, NULL, info->comment.title);
+    tuple_associate_string(tuple, FIELD_ALBUM, NULL, info->comment.album);
+    tuple_associate_string(tuple, FIELD_GENRE, NULL, info->comment.genre);
+    tuple_associate_string(tuple, FIELD_COMMENT, NULL, info->comment.comment);
 
     if (info->comment.tracknumber != NULL)
-        aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(info->comment.tracknumber));
+        tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(info->comment.tracknumber));
 
     if (info->comment.date != NULL)
-        aud_tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(info->comment.date));
+        tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(info->comment.date));
 
     /* Calculate the stream length (milliseconds) */
     if (info->stream.samplerate == 0)
     {
         ERROR("Invalid sample rate for stream!\n");
-        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
+        tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
     }
     else
     {
-        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, (info->stream.samples / info->stream.samplerate) * 1000);
-        AUDDBG("Stream length: %d seconds\n", aud_tuple_get_int(tuple, FIELD_LENGTH, NULL));
+        tuple_associate_int(tuple, FIELD_LENGTH, NULL, (info->stream.samples / info->stream.samplerate) * 1000);
+        AUDDBG("Stream length: %d seconds\n", tuple_get_int(tuple, FIELD_LENGTH, NULL));
     }
 
     if (info->bitrate > 0)
-        aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, (info->bitrate + 500) / 1000);
+        tuple_associate_int(tuple, FIELD_BITRATE, NULL, (info->bitrate + 500) / 1000);
 
 
     if (info->replaygain.has_rg)

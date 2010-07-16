@@ -38,7 +38,7 @@ typedef struct {
 static GVfs *gvfs = NULL;
 
 VFSFile *
-gio_aud_vfs_fopen_impl(const gchar *path, const gchar *mode)
+gio_vfs_fopen_impl(const gchar *path, const gchar *mode)
 {
     VFSFile *file;
     VFSGIOHandle *handle;
@@ -84,7 +84,7 @@ gio_aud_vfs_fopen_impl(const gchar *path, const gchar *mode)
 }
 
 gint
-gio_aud_vfs_fclose_impl(VFSFile * file)
+gio_vfs_fclose_impl(VFSFile * file)
 {
     gint ret = 0;
 
@@ -109,7 +109,7 @@ gio_aud_vfs_fclose_impl(VFSFile * file)
     return ret;
 }
 
-gint64 gio_aud_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
+gint64 gio_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
  file)
 {
     VFSGIOHandle *handle;
@@ -139,7 +139,7 @@ gint64 gio_aud_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
     return (size > 0) ? ret / size : 0;
 }
 
-gint64 gio_aud_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
+gint64 gio_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
  VFSFile * file)
 {
     VFSGIOHandle *handle;
@@ -155,7 +155,7 @@ gint64 gio_aud_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
 }
 
 gint
-gio_aud_vfs_getc_impl(VFSFile *file)
+gio_vfs_getc_impl(VFSFile *file)
 {
     guchar buf;
     VFSGIOHandle *handle;
@@ -178,7 +178,7 @@ gio_aud_vfs_getc_impl(VFSFile *file)
 }
 
 gint
-gio_aud_vfs_ungetc_impl(gint c, VFSFile * file)
+gio_vfs_ungetc_impl(gint c, VFSFile * file)
 {
     VFSGIOHandle *handle;
 
@@ -194,7 +194,7 @@ gio_aud_vfs_ungetc_impl(gint c, VFSFile * file)
 }
 
 gint
-gio_aud_vfs_fseek_impl(VFSFile * file,
+gio_vfs_fseek_impl(VFSFile * file,
           glong offset,
           gint whence)
 {
@@ -232,7 +232,7 @@ gio_aud_vfs_fseek_impl(VFSFile * file,
 }
 
 void
-gio_aud_vfs_rewind_impl(VFSFile * file)
+gio_vfs_rewind_impl(VFSFile * file)
 {
     g_return_if_fail(file != NULL);
 
@@ -240,7 +240,7 @@ gio_aud_vfs_rewind_impl(VFSFile * file)
 }
 
 glong
-gio_aud_vfs_ftell_impl(VFSFile * file)
+gio_vfs_ftell_impl(VFSFile * file)
 {
     VFSGIOHandle *handle;
 
@@ -252,18 +252,18 @@ gio_aud_vfs_ftell_impl(VFSFile * file)
     return (glong) (g_seekable_tell(handle->seekable) - g_slist_length(handle->stream_stack));
 }
 
-gboolean gio_aud_vfs_feof_impl (VFSFile * file)
+gboolean gio_vfs_feof_impl (VFSFile * file)
 {
     guchar test;
 
-    if (gio_aud_vfs_fread_impl (& test, 1, 1, file) < 1)
+    if (gio_vfs_fread_impl (& test, 1, 1, file) < 1)
         return TRUE;
 
-    gio_aud_vfs_ungetc_impl (test, file);
+    gio_vfs_ungetc_impl (test, file);
     return FALSE;
 }
 
-gint gio_aud_vfs_ftruncate_impl (VFSFile * file, gint64 size)
+gint gio_vfs_ftruncate_impl (VFSFile * file, gint64 size)
 {
     VFSGIOHandle *handle;
 
@@ -275,7 +275,7 @@ gint gio_aud_vfs_ftruncate_impl (VFSFile * file, gint64 size)
 }
 
 off_t
-gio_aud_vfs_fsize_impl(VFSFile * file)
+gio_vfs_fsize_impl(VFSFile * file)
 {
     GFileInfo *info;
     VFSGIOHandle *handle;
@@ -316,19 +316,19 @@ static void init(void)
 
          c = g_slice_new0(VFSConstructor);
          c->uri_id = g_strdup_printf("%s://", schemes[i]);
-         c->vfs_fopen_impl = gio_aud_vfs_fopen_impl;
-         c->vfs_fclose_impl = gio_aud_vfs_fclose_impl;
-         c->vfs_fread_impl = gio_aud_vfs_fread_impl;
-         c->vfs_fwrite_impl = gio_aud_vfs_fwrite_impl;
-         c->vfs_getc_impl = gio_aud_vfs_getc_impl;
-         c->vfs_ungetc_impl = gio_aud_vfs_ungetc_impl;
-         c->vfs_fseek_impl = gio_aud_vfs_fseek_impl;
-         c->vfs_rewind_impl = gio_aud_vfs_rewind_impl;
-         c->vfs_ftell_impl = gio_aud_vfs_ftell_impl;
-         c->vfs_feof_impl = gio_aud_vfs_feof_impl;
-         c->vfs_ftruncate_impl = gio_aud_vfs_ftruncate_impl;
-         c->vfs_fsize_impl = gio_aud_vfs_fsize_impl;
-         aud_vfs_register_transport(c);
+         c->vfs_fopen_impl = gio_vfs_fopen_impl;
+         c->vfs_fclose_impl = gio_vfs_fclose_impl;
+         c->vfs_fread_impl = gio_vfs_fread_impl;
+         c->vfs_fwrite_impl = gio_vfs_fwrite_impl;
+         c->vfs_getc_impl = gio_vfs_getc_impl;
+         c->vfs_ungetc_impl = gio_vfs_ungetc_impl;
+         c->vfs_fseek_impl = gio_vfs_fseek_impl;
+         c->vfs_rewind_impl = gio_vfs_rewind_impl;
+         c->vfs_ftell_impl = gio_vfs_ftell_impl;
+         c->vfs_feof_impl = gio_vfs_feof_impl;
+         c->vfs_ftruncate_impl = gio_vfs_ftruncate_impl;
+         c->vfs_fsize_impl = gio_vfs_fsize_impl;
+         vfs_register_transport(c);
     }
 }
 
@@ -336,7 +336,7 @@ static void cleanup(void)
 {
     g_object_unref(gvfs);
 #if 0
-    aud_vfs_unregister_transport(&file_const);
+    vfs_unregister_transport(&file_const);
 #endif
 }
 

@@ -19,7 +19,7 @@
 
 #include <ne_ssl.h>
 
-int neon_aud_vfs_verify_environment_ssl_certs(
+int neon_vfs_verify_environment_ssl_certs(
     void* userdata,
     int failures,
     const ne_ssl_certificate* serverCert

@@ -36,8 +36,12 @@
 
 #include <glib.h>
 
-#include <audacious/plugin.h>
+#include <audacious/configdb.h>
+#include <audacious/debug.h>
 #include <audacious/i18n.h>
+#include <audacious/playlist.h>
+#include <audacious/plugin.h>
+#include <libaudcore/eventqueue.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -138,7 +142,7 @@ static void cdaudio_error (const gchar * message_format, ...)
     msg = g_markup_vprintf_escaped (message_format, args);
     va_end (args);
 
-    aud_event_queue_with_data_free ("interface show error", msg);
+    event_queue_with_data_free ("interface show error", msg);
 }
 
 /* main thread only */
@@ -617,7 +621,7 @@ static Tuple *create_tuple_from_trackinfo_and_filename (const gchar * filename)
 
     if (!strcmp (filename, "cdda://"))
     {
-        tuple = aud_tuple_new_from_filename (filename);
+        tuple = tuple_new_from_filename (filename);
         tuple->nsubtunes = 1 + lasttrackno - firsttrackno;
         tuple->subtunes = g_malloc (sizeof *tuple->subtunes * tuple->nsubtunes);
 
@@ -635,27 +639,27 @@ static Tuple *create_tuple_from_trackinfo_and_filename (const gchar * filename)
         goto DONE;
     }
 
-    tuple = aud_tuple_new_from_filename (filename);
+    tuple = tuple_new_from_filename (filename);
 
     if (strlen (trackinfo[trackno].performer))
     {
-        aud_tuple_associate_string (tuple, FIELD_ARTIST, NULL,
+        tuple_associate_string (tuple, FIELD_ARTIST, NULL,
                                     trackinfo[trackno].performer);
     }
     if (strlen (trackinfo[0].name))
     {
-        aud_tuple_associate_string (tuple, FIELD_ALBUM, NULL,
+        tuple_associate_string (tuple, FIELD_ALBUM, NULL,
                                     trackinfo[0].name);
     }
     if (strlen (trackinfo[trackno].name))
     {
-        aud_tuple_associate_string (tuple, FIELD_TITLE, NULL,
+        tuple_associate_string (tuple, FIELD_TITLE, NULL,
                                     trackinfo[trackno].name);
     }
 
-    aud_tuple_associate_int (tuple, FIELD_TRACK_NUMBER, NULL, trackno);
+    tuple_associate_int (tuple, FIELD_TRACK_NUMBER, NULL, trackno);
 
-    aud_tuple_associate_int (tuple, FIELD_LENGTH, NULL,
+    tuple_associate_int (tuple, FIELD_LENGTH, NULL,
                              calculate_track_length (trackinfo[trackno].
                                                      startlsn,
                                                      trackinfo[trackno].
@@ -663,7 +667,7 @@ static Tuple *create_tuple_from_trackinfo_and_filename (const gchar * filename)
 
     if (strlen (trackinfo[trackno].genre))
     {
-        aud_tuple_associate_string (tuple, FIELD_GENRE, NULL,
+        tuple_associate_string (tuple, FIELD_GENRE, NULL,
                                     trackinfo[trackno].genre);
     }
 

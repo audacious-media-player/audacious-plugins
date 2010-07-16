@@ -81,8 +81,8 @@ pixbuf_find_and_load(Tuple *tuple)
     gchar *tmp;
     const gchar *file_path, *file_name;
 
-    file_name = aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL);
-    file_path = aud_tuple_get_string(tuple, FIELD_FILE_PATH, NULL);
+    file_name = tuple_get_string(tuple, FIELD_FILE_NAME, NULL);
+    file_path = tuple_get_string(tuple, FIELD_FILE_PATH, NULL);
 
     if (file_name != NULL && file_path != NULL)
     {
@@ -134,8 +134,8 @@ dockart_trigger_func_pb_end_cb(gpointer plentry_p, gpointer unused)
 static void
 dockart_init(void)
 {
-    aud_hook_associate("playback begin", dockart_trigger_func_pb_start_cb, NULL);
-    aud_hook_associate("playback end", dockart_trigger_func_pb_end_cb, NULL);
+    hook_associate("playback begin", dockart_trigger_func_pb_start_cb, NULL);
+    hook_associate("playback end", dockart_trigger_func_pb_end_cb, NULL);
 }
 
 static void
@@ -143,8 +143,8 @@ dockart_cleanup(void)
 {
     GdkPixbuf *new;
 
-    aud_hook_dissociate("playback begin", dockart_trigger_func_pb_start_cb);
-    aud_hook_dissociate("playback end", dockart_trigger_func_pb_end_cb);
+    hook_dissociate("playback begin", dockart_trigger_func_pb_start_cb);
+    hook_dissociate("playback end", dockart_trigger_func_pb_end_cb);
 
     /* reset dock tile */
     new = gdk_pixbuf_new_from_xpm_data((const gchar **) audacious_player_xpm);

@@ -258,8 +258,8 @@ void play_call()
     printf("play callback\n");
     close_window();
     aud_output_plugin_cleanup();
-//    audacious_drct_stop();
-    audacious_drct_play();
+//    aud_drct_stop();
+    aud_drct_play();
 
 
 }

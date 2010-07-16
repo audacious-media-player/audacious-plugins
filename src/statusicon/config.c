@@ -20,6 +20,8 @@
 *
 */
 
+#include <audacious/configdb.h>
+
 #include "statusicon.h"
 
 si_cfg_t si_cfg;

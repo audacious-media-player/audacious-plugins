@@ -24,8 +24,9 @@
 #include "ed_actions.h"
 #include "ed_ui.h"
 #include "ed_common.h"
-#include <audacious/i18n.h>
 
+#include <audacious/drct.h>
+#include <audacious/i18n.h>
 
 GeneralPlugin *evdevplug_gplist[] = { &ed_gp, NULL };
 SIMPLE_GENERAL_PLUGIN(evdev-plug, evdevplug_gplist);
@@ -140,84 +141,84 @@ ed_action_call ( gint code , gpointer param )
 void
 ed_action_pb_play ( gpointer param )
 {
-  audacious_drct_play();
+  aud_drct_play();
 }
 
 void
 ed_action_pb_stop ( gpointer param )
 {
-  audacious_drct_stop();
+  aud_drct_stop();
 }
 
 void
 ed_action_pb_pause ( gpointer param )
 {
-  if (audacious_drct_get_playing() || audacious_drct_get_paused())
-    audacious_drct_pause();
+  if (aud_drct_get_playing() || aud_drct_get_paused())
+    aud_drct_pause();
   else
-    audacious_drct_play();
+    aud_drct_play();
 }
 
 void
 ed_action_pb_prev ( gpointer param )
 {
-  audacious_drct_pl_prev();
+  aud_drct_pl_prev();
 }
 
 void
 ed_action_pb_next ( gpointer param )
 {
-  audacious_drct_pl_next();
+  aud_drct_pl_next();
 }
 
 void
 ed_action_pb_eject ( gpointer param )
 {
-  audacious_drct_eject();
+  hook_call ("filebrowser show", GINT_TO_POINTER (TRUE));
 }
 
 void
 ed_action_pl_repeat ( gpointer param )
 {
-  audacious_drct_pl_repeat_toggle();
+  aud_drct_pl_repeat_toggle();
 }
 
 void
 ed_action_pl_shuffle ( gpointer param )
 {
-  audacious_drct_pl_shuffle_toggle();
+  aud_drct_pl_shuffle_toggle();
 }
 
 void
 ed_action_vol_up5 ( gpointer param )
 {
   gint vl, vr;
-  audacious_drct_get_volume( &vl , &vr );
-  audacious_drct_set_volume( CLAMP(vl + 5, 0, 100) , CLAMP(vr + 5, 0, 100) );
+  aud_drct_get_volume( &vl , &vr );
+  aud_drct_set_volume( CLAMP(vl + 5, 0, 100) , CLAMP(vr + 5, 0, 100) );
 }
 
 void
 ed_action_vol_down5 ( gpointer param )
 {
   gint vl, vr;
-  audacious_drct_get_volume( &vl , &vr );
-  audacious_drct_set_volume( CLAMP(vl - 5, 0, 100) , CLAMP(vr - 5, 0, 100) );
+  aud_drct_get_volume( &vl , &vr );
+  aud_drct_set_volume( CLAMP(vl - 5, 0, 100) , CLAMP(vr - 5, 0, 100) );
 }
 
 void
 ed_action_vol_up10 ( gpointer param )
 {
   gint vl, vr;
-  audacious_drct_get_volume( &vl , &vr );
-  audacious_drct_set_volume( CLAMP(vl + 10, 0, 100) , CLAMP(vr + 10, 0, 100) );
+  aud_drct_get_volume( &vl , &vr );
+  aud_drct_set_volume( CLAMP(vl + 10, 0, 100) , CLAMP(vr + 10, 0, 100) );
 }
 
 void
 ed_action_vol_down10 ( gpointer param )
 {
   gint vl, vr;
-  audacious_drct_get_volume( &vl , &vr );
-  audacious_drct_set_volume( CLAMP(vl - 10, 0, 100) , CLAMP(vr - 10, 0, 100) );
+  aud_drct_get_volume( &vl , &vr );
+  aud_drct_set_volume( CLAMP(vl - 10, 0, 100) , CLAMP(vr - 10, 0, 100) );
 }
 
 void
@@ -228,26 +229,26 @@ ed_action_vol_mute ( gpointer param )
 
   if ( vl == -1 ) /* no previous memory of volume before mute action */
   {
-    audacious_drct_get_volume( &vl , &vr ); /* memorize volume before mute */
-    audacious_drct_set_volume( 0 , 0 ); /* mute */
+    aud_drct_get_volume( &vl , &vr ); /* memorize volume before mute */
+    aud_drct_set_volume( 0 , 0 ); /* mute */
   }
   else /* memorized volume values exist */
   {
     gint vl_now = 0;
     gint vr_now = 0;
 
-    audacious_drct_get_volume( &vl_now , &vr_now );
+    aud_drct_get_volume( &vl_now , &vr_now );
     if (( vl_now == 0 ) && ( vr_now == 0 ))
     {
       /* the volume is still muted, restore the old values */
-      audacious_drct_set_volume( vl , vr );
+      aud_drct_set_volume( vl , vr );
       vl = -1; vr = -1; /* reset these for next use */
     }
     else
     {
       /* the volume has been raised with other commands, act as if there wasn't a previous memory */
-      audacious_drct_get_volume( &vl , &vr ); /* memorize volume before mute */
-      audacious_drct_set_volume( 0 , 0 ); /* mute */
+      aud_drct_get_volume( &vl , &vr ); /* memorize volume before mute */
+      aud_drct_set_volume( 0 , 0 ); /* mute */
     }
   }
 }
@@ -255,23 +256,27 @@ ed_action_vol_mute ( gpointer param )
 void
 ed_action_win_main ( gpointer param )
 {
-  audacious_drct_main_win_toggle( !audacious_drct_main_win_is_visible() );
+  hook_call ("interface toggle visibility", NULL);
 }
 
 void
 ed_action_win_playlist ( gpointer param )
 {
-  audacious_drct_pl_win_toggle( !audacious_drct_pl_win_is_visible () );
+#if 0
+  aud_drct_pl_win_toggle( !aud_drct_pl_win_is_visible () );
+#endif
 }
 
 void
 ed_action_win_equalizer ( gpointer param )
 {
-  audacious_drct_eq_win_toggle( !audacious_drct_eq_win_is_visible () );
+#if 0
+  aud_drct_eq_win_toggle( !aud_drct_eq_win_is_visible () );
+#endif
 }
 
 void
 ed_action_win_jtf ( gpointer param )
 {
-  audacious_drct_jtf_show();
+  hook_call ("interface show jump to track", NULL);
 }

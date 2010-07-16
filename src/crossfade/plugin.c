@@ -19,13 +19,13 @@
 
 #include <gtk/gtk.h>
 
-#include "config.h"
-
+#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
+#include "config.h"
 #include "crossfade.h"
 
 void crossfade_config_load (void)

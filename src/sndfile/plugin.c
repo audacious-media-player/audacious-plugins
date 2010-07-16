@@ -60,31 +60,31 @@ static glong seek_value;
 static sf_count_t
 sf_get_filelen (void *user_data)
 {
-    return aud_vfs_fsize (user_data);
+    return vfs_fsize (user_data);
 }
 
 static sf_count_t
 sf_vseek (sf_count_t offset, int whence, void *user_data)
 {
-    return aud_vfs_fseek(user_data, offset, whence);
+    return vfs_fseek(user_data, offset, whence);
 }
 
 static sf_count_t
 sf_vread (void *ptr, sf_count_t count, void *user_data)
 {
-    return aud_vfs_fread(ptr, 1, count, user_data);
+    return vfs_fread(ptr, 1, count, user_data);
 }
 
 static sf_count_t
 sf_vwrite (const void *ptr, sf_count_t count, void *user_data)
 {
-    return aud_vfs_fwrite(ptr, 1, count, user_data);
+    return vfs_fwrite(ptr, 1, count, user_data);
 }
 
 static sf_count_t
 sf_tell (void *user_data)
 {
-    return aud_vfs_ftell(user_data);
+    return vfs_ftell(user_data);
 }
 
 static SF_VIRTUAL_IO sf_virtual_io =
@@ -101,14 +101,14 @@ static SNDFILE *
 open_sndfile_from_uri(const gchar *filename, VFSFile **vfsfile, SF_INFO *sfinfo)
 {
     SNDFILE *snd_file = NULL;
-    *vfsfile = aud_vfs_fopen(filename, "rb");
+    *vfsfile = vfs_fopen(filename, "rb");
 
     if (*vfsfile == NULL)
         return NULL;
 
     snd_file = sf_open_virtual (&sf_virtual_io, SFM_READ, sfinfo, *vfsfile);
     if (snd_file == NULL)
-        aud_vfs_fclose(*vfsfile);
+        vfs_fclose(*vfsfile);
 
     return snd_file;
 }
@@ -119,7 +119,7 @@ close_sndfile(SNDFILE *snd_file, VFSFile *vfsfile)
     if (snd_file != NULL)
         sf_close(snd_file);
     if (vfsfile != NULL)
-        aud_vfs_fclose(vfsfile);
+        vfs_fclose(vfsfile);
 }
 
 
@@ -154,18 +154,18 @@ static Tuple * get_song_tuple (const gchar * filename)
     ti = tuple_new_from_filename (filename);
 
     if (sf_get_string(sndfile, SF_STR_TITLE) != NULL)
-        aud_tuple_associate_string(ti, FIELD_TITLE, NULL, sf_get_string(sndfile, SF_STR_TITLE));
+        tuple_associate_string(ti, FIELD_TITLE, NULL, sf_get_string(sndfile, SF_STR_TITLE));
 
-    aud_tuple_associate_string(ti, FIELD_ARTIST, NULL, sf_get_string(sndfile, SF_STR_ARTIST));
-    aud_tuple_associate_string(ti, FIELD_COMMENT, NULL, sf_get_string(sndfile, SF_STR_COMMENT));
-    aud_tuple_associate_string(ti, FIELD_DATE, NULL, sf_get_string(sndfile, SF_STR_DATE));
-    aud_tuple_associate_string(ti, -1, "software", sf_get_string(sndfile, SF_STR_SOFTWARE));
+    tuple_associate_string(ti, FIELD_ARTIST, NULL, sf_get_string(sndfile, SF_STR_ARTIST));
+    tuple_associate_string(ti, FIELD_COMMENT, NULL, sf_get_string(sndfile, SF_STR_COMMENT));
+    tuple_associate_string(ti, FIELD_DATE, NULL, sf_get_string(sndfile, SF_STR_DATE));
+    tuple_associate_string(ti, -1, "software", sf_get_string(sndfile, SF_STR_SOFTWARE));
 
     close_sndfile (sndfile, vfsfile);
 
     if (sfinfo.samplerate > 0)
     {
-        aud_tuple_associate_int(ti, FIELD_LENGTH, NULL,
+        tuple_associate_int(ti, FIELD_LENGTH, NULL,
         (gint) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
     }
 
@@ -326,10 +326,10 @@ static Tuple * get_song_tuple (const gchar * filename)
     else
         codec = g_strdup_printf("%s", format);
 
-    aud_tuple_associate_string(ti, FIELD_CODEC, NULL, codec);
+    tuple_associate_string(ti, FIELD_CODEC, NULL, codec);
     g_free(codec);
 
-    aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, lossy ? "lossy" : "lossless");
+    tuple_associate_string(ti, FIELD_QUALITY, NULL, lossy ? "lossy" : "lossless");
 
     return ti;
 }

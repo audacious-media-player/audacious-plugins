@@ -22,6 +22,8 @@
 #include "OSS.h"
 
 #include <glib.h>
+
+#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>

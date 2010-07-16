@@ -8,9 +8,12 @@
 
 #include "config.h"
 #include <math.h>
+
 extern "C" {
+#include <libaudcore/audstrings.h>
 #include <audacious/plugin.h>
 }
+
 #include "configure.h"
 #include "Music_Emu.h"
 #include "Gzip_Reader.h"
@@ -45,14 +48,14 @@ public:
     gint m_track;             // track number (0 = first track)
     Music_Emu* m_emu;         // set to 0 to take ownership
     gme_type_t m_type;
-    
+
     // Parses path and identifies file type
     ConsoleFileHandler(const gchar* path, VFSFile *fd = NULL);
-    
+
     // Creates emulator and returns 0. If this wasn't a music file or
     // emulator couldn't be created, returns 1.
     gint load(gint sample_rate);
-    
+
     // Deletes owned emu and closes file
     ~ConsoleFileHandler();
 
@@ -68,10 +71,10 @@ ConsoleFileHandler::ConsoleFileHandler(const gchar *path, VFSFile *fd)
     m_type  = 0;
     m_track = -1;
 
-    m_path = aud_filename_split_subtune(path, &m_track);
+    m_path = filename_split_subtune(path, &m_track);
     if (m_path == NULL)
         return;
-    
+
     m_track -= 1;
 
     // open vfs
@@ -79,11 +82,11 @@ ConsoleFileHandler::ConsoleFileHandler(const gchar *path, VFSFile *fd)
         vfs_in.reset(fd);
     else if (log_err(vfs_in.open(m_path)))
         return;
-    
+
     // now open gzip_reader on top of vfs
     if (log_err(gzip_in.open(&vfs_in)))
         return;
-    
+
     // read and identify header
     if (!log_err(gzip_in.read(m_header, sizeof(m_header))))
     {
@@ -107,23 +110,23 @@ gint ConsoleFileHandler::load(gint sample_rate)
 {
     if (!m_type)
         return 1;
-    
+
     m_emu = gme_new_emu(m_type, sample_rate);
     if (m_emu == NULL)
     {
         log_err("Out of memory allocating emulator engine. Fatal error.");
         return 1;
     }
-    
+
     // combine header with remaining file data
     Remaining_Reader reader(m_header, sizeof(m_header), &gzip_in);
     if (log_err(m_emu->load(reader)))
         return 1;
-    
+
     // files can be closed now
     gzip_in.close();
     vfs_in.close();
-    
+
     log_warning(m_emu);
 
 #if 0
@@ -136,7 +139,7 @@ gint ConsoleFileHandler::load(gint sample_rate)
         g_free(m3u_path);
         m3u_path = ext;
     }
-    
+
     Vfs_File_Reader m3u;
     if (!m3u.open(m3u_path))
     {
@@ -150,26 +153,26 @@ gint ConsoleFileHandler::load(gint sample_rate)
 
 static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const gint track)
 {
-    Tuple *ti = aud_tuple_new_from_filename(path);
+    Tuple *ti = tuple_new_from_filename(path);
 
     if (ti != NULL)
     {
         gint length;
-        aud_tuple_associate_string(ti, FIELD_ARTIST, NULL, info->author);
-        aud_tuple_associate_string(ti, FIELD_ALBUM, NULL, info->game);
-        aud_tuple_associate_string(ti, -1, "game", info->game);
-        aud_tuple_associate_string(ti, FIELD_TITLE, NULL, info->song ? info->song : g_path_get_basename(path));
-        aud_tuple_associate_string(ti, FIELD_COPYRIGHT, NULL, info->copyright);
-        aud_tuple_associate_string(ti, -1, "console", info->system);
-        aud_tuple_associate_string(ti, FIELD_CODEC, NULL, info->system);
-        aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
-        aud_tuple_associate_string(ti, -1, "dumper", info->dumper);
-        aud_tuple_associate_string(ti, FIELD_COMMENT, NULL, info->comment);
+        tuple_associate_string(ti, FIELD_ARTIST, NULL, info->author);
+        tuple_associate_string(ti, FIELD_ALBUM, NULL, info->game);
+        tuple_associate_string(ti, -1, "game", info->game);
+        tuple_associate_string(ti, FIELD_TITLE, NULL, info->song ? info->song : g_path_get_basename(path));
+        tuple_associate_string(ti, FIELD_COPYRIGHT, NULL, info->copyright);
+        tuple_associate_string(ti, -1, "console", info->system);
+        tuple_associate_string(ti, FIELD_CODEC, NULL, info->system);
+        tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
+        tuple_associate_string(ti, -1, "dumper", info->dumper);
+        tuple_associate_string(ti, FIELD_COMMENT, NULL, info->comment);
         if (track >= 0)
         {
-            aud_tuple_associate_int(ti, FIELD_TRACK_NUMBER, NULL, track + 1);
-            aud_tuple_associate_int(ti, FIELD_SUBSONG_ID, NULL, track + 1);
-            aud_tuple_associate_int(ti, FIELD_SUBSONG_NUM, NULL, info->track_count);
+            tuple_associate_int(ti, FIELD_TRACK_NUMBER, NULL, track + 1);
+            tuple_associate_int(ti, FIELD_SUBSONG_ID, NULL, track + 1);
+            tuple_associate_int(ti, FIELD_SUBSONG_NUM, NULL, info->track_count);
         }
         else
         {
@@ -183,7 +186,7 @@ static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const g
             length = audcfg.loop_length * 1000;
         else if (length >= fade_threshold)
             length += fade_length;
-        aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, length);
+        tuple_associate_int(ti, FIELD_LENGTH, NULL, length);
     }
 
     return ti;
@@ -192,7 +195,7 @@ static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const g
 extern "C" Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
     ConsoleFileHandler fh(filename, fd);
-    
+
     if (!fh.m_type)
         return NULL;
 
@@ -209,7 +212,7 @@ extern "C" Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd)
 extern "C" Tuple * console_get_file_tuple(const gchar *filename)
 {
     ConsoleFileHandler fh(filename);
-    
+
     if (!fh.m_type)
         return NULL;
 
@@ -232,10 +235,10 @@ extern "C" void console_play_file(InputPlayback *playback)
     ConsoleFileHandler fh(playback->filename);
     if (!fh.m_type)
         return;
-    
+
     if (fh.m_track < 0)
         fh.m_track = 0;
-    
+
     // select sample rate
     sample_rate = 0;
     if (fh.m_type == gme_spc_type)
@@ -244,46 +247,46 @@ extern "C" void console_play_file(InputPlayback *playback)
         sample_rate = audcfg.resample_rate;
     if (sample_rate == 0)
         sample_rate = 44100;
-    
+
     // create emulator and load file
     if (fh.load(sample_rate))
         return;
-    
+
     // stereo echo depth
     gme_set_stereo_depth(fh.m_emu, 1.0 / 100 * audcfg.echo);
-    
+
     // set equalizer
     if (audcfg.treble || audcfg.bass)
     {
         Music_Emu::equalizer_t eq;
-        
+
         // bass - logarithmic, 2 to 8194 Hz
         double bass = 1.0 - (audcfg.bass / 200.0 + 0.5);
         eq.bass = (long) (2.0 + pow( 2.0, bass * 13 ));
-        
+
         // treble - -50 to 0 to +5 dB
         double treble = audcfg.treble / 100.0;
         eq.treble = treble * (treble < 0 ? 50.0 : 5.0);
-        
+
         fh.m_emu->set_equalizer(eq);
     }
-    
+
     // get info
     length = -1;
     if (!log_err(fh.m_emu->track_info(&info, fh.m_track)))
     {
         if (fh.m_type == gme_spc_type && audcfg.ignore_spc_length)
             info.length = -1;
-        
+
         Tuple *ti = get_track_ti(fh.m_path, &info, fh.m_track);
         if (ti != NULL)
         {
-            length = aud_tuple_get_int(ti, FIELD_LENGTH, NULL);
+            length = tuple_get_int(ti, FIELD_LENGTH, NULL);
             tuple_free(ti);
             playback->set_params(playback, NULL, NULL, fh.m_emu->voice_count() * 1000, sample_rate, 2);
         }
     }
-    
+
     // start track
     if (log_err(fh.m_emu->start_track(fh.m_track)))
         return;
@@ -292,18 +295,18 @@ extern "C" void console_play_file(InputPlayback *playback)
 
     if (!playback->output->open_audio(FMT_S16_NE, sample_rate, 2))
         return;
-    
+
     // set fade time
     if (length <= 0)
         length = audcfg.loop_length * 1000;
     if (length >= fade_threshold + fade_length)
         length -= fade_length / 2;
     fh.m_emu->set_fade(length, fade_length);
-    
+
     playback->playing = 1;
     end_delay = 0;
     playback->set_pb_ready(playback);
-    
+
     while (playback->playing)
     {
         /* Perform seek, if requested */
@@ -316,7 +319,7 @@ extern "C" void console_play_file(InputPlayback *playback)
             g_cond_signal(seek_cond);
         }
         g_mutex_unlock(seek_mutex);
-        
+
         /* Fill and play buffer of audio */
         gint const buf_size = 1024;
         Music_Emu::sample_t buf[buf_size];
@@ -335,10 +338,10 @@ extern "C" void console_play_file(InputPlayback *playback)
                 end_delay = (fh.m_emu->sample_rate() * 3 * 2) / buf_size;
             }
         }
-        
+
         playback->output->write_audio(buf, sizeof(buf));
     }
-    
+
     // stop playing
     playback->output->close_audio();
     playback->playing = 0;

@@ -35,9 +35,9 @@ static gint update_song_timeout_source = 0;
 
 static gchar *playing_status()
 {
-    if (audacious_drct_get_playing())
+    if (aud_drct_get_playing())
     {
-        if (!audacious_drct_get_paused())
+        if (!aud_drct_get_paused())
         {
             return ("|>");
         }
@@ -85,7 +85,7 @@ static void fill_playlist()
 
 static gboolean update_song_time(gpointer data)
 {
-    gint time = audacious_drct_get_output_time() / 1000;
+    gint time = aud_drct_get_output_time() / 1000;
     gchar *text;
 
     text = g_strdup_printf("[%02i:%02i]", time / 60, time % 60);
@@ -126,20 +126,20 @@ static gboolean mainwin_keypress_cb(GntWidget *widget, const char *text, gpointe
 
     switch (text[0]) {
       case 'z':
-          audacious_drct_pl_prev();
+          aud_drct_pl_prev();
           update_playback_title();
           break;
       case 'x':
-          audacious_drct_play();
+          aud_drct_play();
           break;
       case 'c':
-          audacious_drct_pause();
+          aud_drct_pause();
           break;
       case 'v':
-          audacious_drct_stop();
+          aud_drct_stop();
           break;
       case 'b':
-          audacious_drct_pl_next();
+          aud_drct_pl_next();
           update_playback_title();
           break;
       default:
@@ -156,8 +156,8 @@ static gboolean playlist_keypress_cb(GntTree *widget, const gchar * text, gpoint
 
         aud_playlist_set_position(playlist, pos);
 
-        if (!audacious_drct_get_playing())
-            audacious_drct_play();
+        if (!aud_drct_get_playing())
+            aud_drct_play();
 
         return TRUE;
     }
@@ -272,11 +272,11 @@ static gboolean ui_initialize(InterfaceCbs * cbs)
     gnt_register_action(_("Add Files"), add_files);
     gnt_register_action(_("Open Files"), open_files);
 
-    aud_hook_associate("title change", set_song_info, NULL);
-    aud_hook_associate("playback begin", ui_playback_begin, NULL);
-    aud_hook_associate("playback stop", ui_playback_stop, NULL);
-    aud_hook_associate("playback end", ui_playback_end, NULL);
-    aud_hook_associate("playlist update", ui_playlist_update, NULL);
+    hook_associate("title change", set_song_info, NULL);
+    hook_associate("playback begin", ui_playback_begin, NULL);
+    hook_associate("playback stop", ui_playback_stop, NULL);
+    hook_associate("playback end", ui_playback_end, NULL);
+    hook_associate("playlist update", ui_playlist_update, NULL);
 
     cbs->run_filebrowser = run_fileselector;
     cbs->hide_filebrowser = hide_fileselector;
@@ -290,11 +290,11 @@ static gboolean ui_initialize(InterfaceCbs * cbs)
 
 static gboolean ui_finalize(void)
 {
-    aud_hook_dissociate("title change", set_song_info);
-    aud_hook_dissociate("playback begin", ui_playback_begin);
-    aud_hook_dissociate("playback stop", ui_playback_stop);
-    aud_hook_dissociate("playback end", ui_playback_end);
-    aud_hook_dissociate("playlist update", ui_playlist_update);
+    hook_dissociate("title change", set_song_info);
+    hook_dissociate("playback begin", ui_playback_begin);
+    hook_dissociate("playback stop", ui_playback_stop);
+    hook_dissociate("playback end", ui_playback_end);
+    hook_dissociate("playlist update", ui_playlist_update);
 
     if (update_song_timeout_source)
     {

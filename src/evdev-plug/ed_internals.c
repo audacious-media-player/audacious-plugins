@@ -476,7 +476,7 @@ ed_device_get_list_from_config ( void )
   gchar *config_datadir = NULL;
   gint i = 0;
 
-  config_datadir = (gchar*)audacious_get_localdir();
+  config_datadir = (gchar*)aud_util_get_localdir();
   config_pathfilename = g_build_filename( config_datadir , PLAYER_LOCALRC_FILE , NULL );
   g_free( config_datadir );
   keyfile = g_key_file_new();
@@ -570,7 +570,7 @@ ed_device_start_listening_from_config ( void )
   GList *system_devices_list = NULL;
   gint i = 0;
 
-  config_datadir = (gchar*)audacious_get_localdir();
+  config_datadir = (gchar*)aud_util_get_localdir();
   config_pathfilename = g_build_filename( config_datadir , PLAYER_LOCALRC_FILE , NULL );
   g_free( config_datadir );
   keyfile = g_key_file_new();
@@ -802,7 +802,7 @@ ed_config_save_from_list ( GList * config_devices_list )
   gchar *config_pathfilename = NULL;
   gchar *config_datadir = NULL;
 
-  config_datadir = (gchar*)audacious_get_localdir();
+  config_datadir = (gchar*)aud_util_get_localdir();
   config_pathfilename = g_build_filename( config_datadir , PLAYER_LOCALRC_FILE , NULL );
 
   keyfile = g_key_file_new();

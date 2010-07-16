@@ -51,7 +51,7 @@ gint xs_fload_buffer(const gchar *filename, guint8 **buf, size_t *bufSize)
         return -1;
 
 #ifdef __AUDACIOUS_NEWVFS__
-    seekPos = aud_vfs_fsize(f);
+    seekPos = vfs_fsize(f);
 #else
     xs_fseek(f, 0L, SEEK_END);
     seekPos = xs_ftell(f);

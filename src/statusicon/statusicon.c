@@ -21,6 +21,8 @@
 */
 
 #include "statusicon.h"
+
+#include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -69,7 +71,7 @@ static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpoi
       case 1:
       {
           if (event->state & GDK_SHIFT_MASK)
-              audacious_drct_pl_next();
+              aud_drct_pl_next();
           else
               aud_interface_toggle_visibility();
           break;
@@ -77,14 +79,14 @@ static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpoi
 
       case 2:
       {
-          audacious_drct_pause();
+          aud_drct_pause();
           break;
       }
 
       case 3:
       {
           if (event->state & GDK_SHIFT_MASK)
-              audacious_drct_pl_prev();
+              aud_drct_pl_prev();
           else
           {
               switch (si_cfg.rclick_menu)
@@ -97,7 +99,7 @@ static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpoi
                     break;
                 case SI_CFG_RCLICK_MENU_AUD:
                 default:
-                    aud_hook_call("show main menu", event);
+                    hook_call("show main menu", event);
                     break;
               }
               break;
@@ -272,7 +274,7 @@ static GtkWidget *si_smallmenu_create(void)
         gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_sep_item);
         gtk_widget_show(si_smenu_sep_item);
         si_smenu_quit_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, NULL);
-        g_signal_connect_swapped(si_smenu_quit_item, "activate", G_CALLBACK(audacious_drct_quit), NULL);
+        g_signal_connect_swapped(si_smenu_quit_item, "activate", G_CALLBACK(aud_drct_quit), NULL);
         gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_quit_item);
         gtk_widget_show(si_smenu_quit_item);
     }
@@ -320,7 +322,7 @@ static void si_enable(gboolean enable)
         si_smenu = si_smallmenu_create();
         g_object_set_data(G_OBJECT(si_applet), "smenu", si_smenu);
 
-        aud_hook_associate("title change", si_popup_reshow, si_applet);
+        hook_associate("title change", si_popup_reshow, si_applet);
     }
     else if (si_applet != NULL)
     {
@@ -330,7 +332,7 @@ static void si_enable(gboolean enable)
         g_object_unref(si_applet);
         si_applet = NULL;
 
-        aud_hook_dissociate("title change", si_popup_reshow);
+        hook_dissociate("title change", si_popup_reshow);
     }
 }
 

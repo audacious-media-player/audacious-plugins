@@ -23,12 +23,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <esd.h>
-#include <audacious/plugin.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
+
+#include <audacious/configdb.h>
+#include <audacious/plugin.h>
 
 #include "esdout.h"
 
@@ -63,11 +65,11 @@ esdout_mixer_init(void)
 
     /* reset player id */
     player = -1;
-    
+
     /* query n-time for player id */
     for(i=0; (i<QUERY_PLAYER_ID_ATTEMPTS) && (player == (-1)) ; i++)
 	esdout_fetch_volume(NULL, NULL);
-	
+
     if (!(OSS_AVAILABLE && esd_cfg.use_oss_mixer && !esd_cfg.use_remote))
         esdout_set_volume(lp, rp);
 }
@@ -155,7 +157,7 @@ esdout_set_volume(int l, int r)
             esd_close(fd);
         }
     }
-    
+
     /* save volume values in db */
     db = aud_cfg_db_open();
     aud_cfg_db_set_int(db, "ESD", "volume_left", lp);

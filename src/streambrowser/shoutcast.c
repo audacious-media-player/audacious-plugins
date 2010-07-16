@@ -21,6 +21,8 @@
 #include <glib.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+
+#include <audacious/debug.h>
 #include <audacious/plugin.h>
 
 #include "streambrowser.h"

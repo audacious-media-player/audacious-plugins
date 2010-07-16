@@ -34,15 +34,13 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#include <gtk/gtk.h>
-
 #include <glib.h>
-#include <audacious/i18n.h>
-
-#include <audacious/plugin.h>
-#include <audacious/auddrct.h>
-
+#include <gtk/gtk.h>
 #include <lirc/lirc_client.h>
+
+#include <audacious/drct.h>
+#include <audacious/i18n.h>
+#include <audacious/plugin.h>
 
 #include "lirc.h"
 
@@ -77,7 +75,7 @@ gint tid;
 void init_lirc(void)
 {
 	int flags;
-	
+
 	if((lirc_fd=lirc_init("audacious",1))==-1)
 	{
 		fprintf(stderr,_("%s: could not init LIRC support\n"),
@@ -122,7 +120,7 @@ gboolean reconnect_lirc(gpointer data)
 
 gboolean jump_to(gpointer data)
 {
-	audacious_drct_pl_set_pos(atoi(track_no)-1);
+	aud_drct_pl_set_pos(atoi(track_no)-1);
 	track_no_pos=0;
 	tid=0;
 	return FALSE;
@@ -137,43 +135,45 @@ void lirc_input_callback(gpointer data,gint source,
 	int ret;
 	char *ptr;
 	gint balance;
+#if 0
 	gboolean show_pl;
-        int n;
+#endif
+	int n;
 	gchar *utf8_title_markup;
-	
+
 	while((ret=lirc_nextcode(&code))==0 && code!=NULL)
 	{
 		while((ret=lirc_code2char(config,code,&c))==0 && c!=NULL)
 		{
 			if(strcasecmp("PLAY",c)==0)
 			{
-				audacious_drct_play();
+				aud_drct_play();
 			}
 			else if(strcasecmp("STOP",c)==0)
 			{
-				audacious_drct_stop();
+				aud_drct_stop();
 			}
 			else if(strcasecmp("PAUSE",c)==0)
 			{
-				audacious_drct_pause();
+				aud_drct_pause();
 			}
 			else if(strcasecmp("PLAYPAUSE",c) == 0)
 			{
-				if(audacious_drct_get_playing())
-					audacious_drct_pause();
+				if(aud_drct_get_playing())
+					aud_drct_pause();
 				else
-					audacious_drct_play();
+					aud_drct_play();
 			}
 			else if(strncasecmp("NEXT",c,4)==0)
 			{
                                 ptr=c+4;
                                 while(isspace(*ptr)) ptr++;
 				n=atoi(ptr);
-				
+
 				if(n<=0) n=1;
 				for(;n>0;n--)
 				{
-					audacious_drct_pl_next();
+					aud_drct_pl_next();
 				}
 			}
 			else if(strncasecmp("PREV",c,4)==0)
@@ -181,34 +181,34 @@ void lirc_input_callback(gpointer data,gint source,
                                 ptr=c+4;
                                 while(isspace(*ptr)) ptr++;
 				n=atoi(ptr);
-				
+
 				if(n<=0) n=1;
 				for(;n>0;n--)
 				{
-					audacious_drct_pl_prev();
+					aud_drct_pl_prev();
 				}
 			}
 			else if(strcasecmp("SHUFFLE",c)==0)
 			{
-				audacious_drct_pl_shuffle_toggle();
+				aud_drct_pl_shuffle_toggle();
 			}
 			else if(strcasecmp("REPEAT",c)==0)
 			{
-				audacious_drct_pl_repeat_toggle();
+				aud_drct_pl_repeat_toggle();
 			}
 			else if(strncasecmp("FWD",c,3)==0)
 			{
                                 ptr=c+3;
                                 while(isspace(*ptr)) ptr++;
 				n=atoi(ptr)*1000;
-				
+
 				if(n<=0) n=5000;
-				output_time=audacious_drct_get_time();
-				playlist_pos=audacious_drct_pl_get_pos();
-				playlist_time=audacious_drct_pl_get_time(playlist_pos);
+				output_time=aud_drct_get_time();
+				playlist_pos=aud_drct_pl_get_pos();
+				playlist_time=aud_drct_pl_get_time(playlist_pos);
 				if(playlist_time-output_time<n)
 					output_time=playlist_time-n;
-				audacious_drct_seek(output_time+n);
+				aud_drct_seek(output_time+n);
 			}
 			else if(strncasecmp("BWD",c,3)==0)
 			{
@@ -217,10 +217,10 @@ void lirc_input_callback(gpointer data,gint source,
 				n=atoi(ptr)*1000;
 
 				if(n<=0) n=5000;
-				output_time=audacious_drct_get_time();
+				output_time=aud_drct_get_time();
 				if(output_time<n)
 					output_time=n;
-				audacious_drct_seek(output_time-n);
+				aud_drct_seek(output_time-n);
 			}
 			else if(strncasecmp("VOL_UP",c,6)==0)
 			{
@@ -229,24 +229,24 @@ void lirc_input_callback(gpointer data,gint source,
 				n=atoi(ptr);
                                 if(n<=0) n=5;
 
-				audacious_drct_get_volume_main(&v);
+				aud_drct_get_volume_main(&v);
 				if(v > (100-n)) v=100-n;
-				audacious_drct_set_volume_main(v+n);
+				aud_drct_set_volume_main(v+n);
 			}
 			else if(strncasecmp("VOL_DOWN",c,8)==0)
-			{                                
+			{
                                 ptr=c+8;
                                 while (isspace(*ptr)) ptr++;
 				n=atoi(ptr);
                                 if(n<=0) n=5;
 
-				audacious_drct_get_volume_main(&v);
+				aud_drct_get_volume_main(&v);
 				if(v<n) v=n;
-				audacious_drct_set_volume_main(v-n);
+				aud_drct_set_volume_main(v-n);
 			}
 			else if(strcasecmp("QUIT",c)==0)
 			{
-				audacious_drct_quit();
+				aud_drct_quit();
 			}
 			else if(strcasecmp("MUTE",c)==0)
  			{
@@ -255,13 +255,13 @@ void lirc_input_callback(gpointer data,gint source,
  					mute=1;
  					/* store the master volume so
                                            we can restore it on unmute. */
-					audacious_drct_get_volume_main(&mute_vol);
- 					audacious_drct_set_volume_main(0);
+					aud_drct_get_volume_main(&mute_vol);
+ 					aud_drct_set_volume_main(0);
  				}
  				else
  				{
  					mute=0;
- 					audacious_drct_set_volume_main(mute_vol);
+ 					aud_drct_set_volume_main(mute_vol);
  				}
 			}
 			else if(strncasecmp("BAL_LEFT",c,8)==0)
@@ -270,11 +270,11 @@ void lirc_input_callback(gpointer data,gint source,
                                 while(isspace(*ptr)) ptr++;
 				n=atoi(ptr);
 				if(n<=0) n=5;
-				
-				audacious_drct_get_volume_balance(&balance);
+
+				aud_drct_get_volume_balance(&balance);
 				balance-=n;
 				if(balance<-100) balance=-100;
-				audacious_drct_set_volume_balance(balance);
+				aud_drct_set_volume_balance(balance);
 			}
 			else if(strncasecmp("BAL_RIGHT",c,9)==0)
 			{
@@ -283,44 +283,36 @@ void lirc_input_callback(gpointer data,gint source,
 				n=atoi(ptr);
 				if(n<=0) n=5;
 
-				audacious_drct_get_volume_balance(&balance);
+				aud_drct_get_volume_balance(&balance);
 				balance+=n;
 				if(balance>100) balance=100;
-				audacious_drct_set_volume_balance(balance);
+				aud_drct_set_volume_balance(balance);
 			}
 			else if(strcasecmp("BAL_CENTER",c)==0)
 			{
 				balance=0;
-				audacious_drct_set_volume_balance(balance);
+				aud_drct_set_volume_balance(balance);
 			}
 			else if(strcasecmp("LIST",c)==0)
 			{
-				show_pl=audacious_drct_pl_win_is_visible();
+#if 0
+				show_pl=aud_drct_pl_win_is_visible();
 				show_pl=(show_pl) ? 0:1;
-				audacious_drct_pl_win_toggle(show_pl);
+				aud_drct_pl_win_toggle(show_pl);
+#endif
  			}
 			else if(strcasecmp("PLAYLIST_CLEAR",c)==0)
 			{
-				gboolean pl_visible;
-
-				pl_visible=audacious_drct_pl_win_is_visible();
-				audacious_drct_stop();
-				audacious_drct_pl_clear();
-				/* This is to refresh window content */
-				audacious_drct_pl_win_toggle(pl_visible);
+				aud_drct_stop();
+				aud_drct_pl_clear();
 			}
 			else if(strncasecmp("PLAYLIST_ADD ",c,13)==0)
 			{
-				gboolean pl_visible;
 				GList list;
-
-				pl_visible=audacious_drct_pl_win_is_visible();
 				list.prev=list.next=NULL;
 				list.data=c+13;
-				audacious_drct_pl_add(&list);
-				/* This is to refresh window content */
-				audacious_drct_pl_win_toggle(pl_visible);
-                        }
+				aud_drct_pl_add_list (& list, -1);
+			}
 			else if((strlen(c)==1) && ((*c>='0') || (*c<='9')))
 			{
 				if (track_no_pos<63)
@@ -331,7 +323,7 @@ void lirc_input_callback(gpointer data,gint source,
 					tid=g_timeout_add(1500, jump_to, NULL);
 					utf8_title_markup = g_markup_printf_escaped(
 					    "<span font_desc='%s'>%s</span>", aosd_font, track_no);
-					aud_hook_call("aosd toggle", utf8_title_markup);
+					hook_call("aosd toggle", utf8_title_markup);
 				}
 			}
 			else

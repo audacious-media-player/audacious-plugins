@@ -18,14 +18,19 @@
 *
 */
 
+#include <glib.h>
+
+#include <audacious/drct.h>
+#include <audacious/i18n.h>
+#include <audacious/playlist.h>
+#include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
+#include <libaudcore/hook.h>
+
 #include "aosd_trigger.h"
 #include "aosd_trigger_private.h"
 #include "aosd_cfg.h"
 #include "aosd_osd.h"
-#include <glib.h>
-#include <audacious/i18n.h>
-#include <libaudcore/hook.h>
-#include <audacious/plugin.h>
 
 extern aosd_cfg_t * global_config;
 
@@ -135,8 +140,8 @@ aosd_trigger_start ( aosd_cfg_osd_trigger_t * cfg_trigger )
   }
   /* When called, this hook will display the text of the user pointer
      or the current playing song, if NULL */
-  aud_hook_register("aosd toggle");
-  aud_hook_associate( "aosd toggle" , aosd_trigger_func_hook_cb , NULL );
+  hook_register("aosd toggle");
+  hook_associate( "aosd toggle" , aosd_trigger_func_hook_cb , NULL );
   return;
 }
 
@@ -145,7 +150,7 @@ void
 aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger )
 {
   gint i = 0;
-  aud_hook_dissociate( "aosd toggle" , aosd_trigger_func_hook_cb );
+  hook_dissociate( "aosd toggle" , aosd_trigger_func_hook_cb );
   for ( i = 0 ; i < cfg_trigger->active->len ; i++ )
   {
     gint trig_code = g_array_index( cfg_trigger->active , gint , i );
@@ -157,11 +162,10 @@ aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger )
 
 /* HELPER FUNCTIONS */
 
-static gchar *
-aosd_trigger_utf8convert ( gchar * str )
+static gchar * aosd_trigger_utf8convert (const gchar * str)
 {
   if ( global_config->osd->text.utf8conv_disable == FALSE )
-    return aud_str_to_utf8( str );
+    return str_to_utf8( str );
   else
     return g_strdup( str );
 }
@@ -173,16 +177,16 @@ static void
 aosd_trigger_func_pb_start_onoff(gboolean turn_on)
 {
   if (turn_on == TRUE)
-    aud_hook_associate("playback begin", aosd_trigger_func_pb_start_cb, NULL);
+    hook_associate("playback begin", aosd_trigger_func_pb_start_cb, NULL);
   else
-    aud_hook_dissociate("playback begin", aosd_trigger_func_pb_start_cb);
+    hook_dissociate("playback begin", aosd_trigger_func_pb_start_cb);
   return;
 }
 
 static void
 aosd_trigger_func_pb_start_cb(gpointer hook_data, gpointer user_data)
 {
-    gchar *title = audacious_drct_pl_get_title(audacious_drct_pl_get_pos());
+    gchar *title = aud_drct_pl_get_title(aud_drct_pl_get_pos());
 
     if (title != NULL)
     {
@@ -217,11 +221,11 @@ aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
     prevs = g_malloc0(sizeof(aosd_pb_titlechange_prevs_t));
     prevs->title = NULL;
     prevs->filename = NULL;
-    aud_hook_associate( "title change" , aosd_trigger_func_pb_titlechange_cb , prevs );
+    hook_associate( "title change" , aosd_trigger_func_pb_titlechange_cb , prevs );
   }
   else
   {
-    aud_hook_dissociate( "title change" , aosd_trigger_func_pb_titlechange_cb );
+    hook_dissociate( "title change" , aosd_trigger_func_pb_titlechange_cb );
     if ( prevs != NULL )
     {
       if ( prevs->title != NULL ) g_free( prevs->title );
@@ -236,13 +240,15 @@ aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
 static void
 aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
 {
-  if (audacious_drct_get_playing ())
+  if (aud_drct_get_playing ())
   {
     aosd_pb_titlechange_prevs_t *prevs = prevs_gp;
     gint playlist = aud_playlist_get_playing();
     gint pl_entry = aud_playlist_get_position(playlist);
-    gchar *pl_entry_filename = (gchar*) aud_playlist_entry_get_filename(playlist, pl_entry);
-    gchar *pl_entry_title = (gchar*) aud_playlist_entry_get_title(playlist, pl_entry);
+    const gchar * pl_entry_filename = aud_playlist_entry_get_filename (playlist,
+     pl_entry);
+    const gchar * pl_entry_title = aud_playlist_entry_get_title (playlist,
+     pl_entry, FALSE);
 
     /* same filename but title changed, useful to detect http stream song changes */
 
@@ -292,9 +298,9 @@ static void
 aosd_trigger_func_vol_change_onoff ( gboolean turn_on )
 {
   if ( turn_on == TRUE )
-    aud_hook_associate( "volume set" , aosd_trigger_func_vol_change_cb , NULL );
+    hook_associate( "volume set" , aosd_trigger_func_vol_change_cb , NULL );
   else
-    aud_hook_dissociate( "volume set" , aosd_trigger_func_vol_change_cb );
+    hook_dissociate( "volume set" , aosd_trigger_func_vol_change_cb );
   return;
 }
 
@@ -349,9 +355,9 @@ static void
 aosd_trigger_func_pb_pauseon_onoff ( gboolean turn_on )
 {
   if ( turn_on == TRUE )
-    aud_hook_associate( "playback pause" , aosd_trigger_func_pb_pauseon_cb , NULL );
+    hook_associate( "playback pause" , aosd_trigger_func_pb_pauseon_cb , NULL );
   else
-    aud_hook_dissociate( "playback pause" , aosd_trigger_func_pb_pauseon_cb );
+    hook_dissociate( "playback pause" , aosd_trigger_func_pb_pauseon_cb );
   return;
 }
 
@@ -370,9 +376,9 @@ static void
 aosd_trigger_func_pb_pauseoff_onoff ( gboolean turn_on )
 {
   if ( turn_on == TRUE )
-    aud_hook_associate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb , NULL );
+    hook_associate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb , NULL );
   else
-    aud_hook_dissociate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb );
+    hook_dissociate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb );
   return;
 }
 
@@ -381,18 +387,19 @@ aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
 {
   gint active = aud_playlist_get_active();
   gint pos = aud_playlist_get_position(active);
-  gchar *title, *utf8_title, *utf8_title_markup;
+  const gchar * title;
+  gchar *utf8_title, *utf8_title_markup;
   gint time_cur, time_tot;
   gint time_cur_m, time_cur_s, time_tot_m, time_tot_s;
 
-  time_tot = aud_playlist_entry_get_length(active, pos) / 1000;
-  time_cur = audacious_drct_get_time() / 1000;
+  time_tot = aud_playlist_entry_get_length (active, pos, FALSE) / 1000;
+  time_cur = aud_drct_get_time() / 1000;
   time_cur_s = time_cur % 60;
   time_cur_m = (time_cur - time_cur_s) / 60;
   time_tot_s = time_tot % 60;
   time_tot_m = (time_tot - time_tot_s) / 60;
 
-  title = (gchar*) aud_playlist_entry_get_title(active, pos);
+  title = aud_playlist_entry_get_title (active, pos, FALSE);
   utf8_title = aosd_trigger_utf8convert( title );
   utf8_title_markup = g_markup_printf_escaped(
     "<span font_desc='%s'>%s (%i:%02i/%i:%02i)</span>" ,
@@ -404,7 +411,7 @@ aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
 }
 
 
-/* Call with aud_hook_call("aosd toggle", param);
+/* Call with hook_call("aosd toggle", param);
    If param != NULL, display the supplied text in the OSD
    If param == NULL, display the current playing song */
 static void
@@ -416,7 +423,7 @@ aosd_trigger_func_hook_cb ( gpointer markup_text , gpointer unused )
     aosd_osd_display( markup_text , global_config->osd , FALSE );
   } else {
     /* Display currently playing song */
-    aosd_trigger_func_pb_start_cb ( GINT_TO_POINTER(audacious_drct_pl_get_pos()), NULL );
+    aosd_trigger_func_pb_start_cb ( GINT_TO_POINTER(aud_drct_pl_get_pos()), NULL );
   }
   return;
 }

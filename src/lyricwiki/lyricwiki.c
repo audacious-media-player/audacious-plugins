@@ -37,6 +37,8 @@
 #include <libxml/xpath.h>
 #include <mowgli.h>
 
+#include <audacious/drct.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/vfs_async.h>
 
@@ -340,12 +342,12 @@ lyricwiki_playback_began(void)
 	gint playlist, pos;
 	const Tuple *tu;
 
-	if (!audacious_drct_is_playing())
+	if (!aud_drct_get_playing())
 		return;
 
 	playlist = aud_playlist_get_active();
 	pos = aud_playlist_get_position(playlist);
-	tu = aud_playlist_entry_get_tuple(playlist, pos);
+	tu = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
 
 	get_lyrics_step_1(tu);
 }
@@ -353,7 +355,7 @@ lyricwiki_playback_began(void)
 static void
 init(void)
 {
-	aud_hook_associate("playback begin", (HookFunction) lyricwiki_playback_began, NULL);
+	hook_associate("playback begin", (HookFunction) lyricwiki_playback_began, NULL);
 
 	build_widget();
 
@@ -363,7 +365,7 @@ init(void)
 static void
 cleanup(void)
 {
-	aud_hook_dissociate("playback begin", (HookFunction) lyricwiki_playback_began);
+	hook_dissociate("playback begin", (HookFunction) lyricwiki_playback_began);
 
 	gtk_widget_destroy(window);
 	window = NULL;

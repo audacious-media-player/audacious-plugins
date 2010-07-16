@@ -33,7 +33,10 @@
 #include <sys/stat.h>
 #include <sys/errno.h>
 
+#include <audacious/debug.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 
 static void
 parse_extm3u_info(const gchar * info, gchar ** title, gint * length)
@@ -48,7 +51,7 @@ parse_extm3u_info(const gchar * info, gchar ** title, gint * length)
     *title = NULL;
     *length = -1;
 
-    if (!aud_str_has_prefix_nocase(info, "#EXTINF:")) {
+    if (!str_has_prefix_nocase(info, "#EXTINF:")) {
         g_message("Invalid m3u metadata (%s)", info);
         return;
     }
@@ -85,7 +88,7 @@ playlist_load_m3u(const gchar * filename, gint pos)
 
     uri = g_filename_to_uri(filename, NULL, NULL);
 
-    if ((file = aud_vfs_fopen(uri ? uri : filename, "rb")) == NULL)
+    if ((file = vfs_fopen(uri ? uri : filename, "rb")) == NULL)
         return;
 
     g_free(uri); uri = NULL;
@@ -93,24 +96,24 @@ playlist_load_m3u(const gchar * filename, gint pos)
     add = index_new ();
 
     line = g_malloc(line_len);
-    while (aud_vfs_fgets(line, line_len, file)) {
+    while (vfs_fgets(line, line_len, file)) {
         while (strlen(line) == line_len - 1 && line[strlen(line) - 1] != '\n') {
             line_len += 1024;
             line = g_realloc(line, line_len);
-            aud_vfs_fgets(&line[strlen(line)], 1024, file);
+            vfs_fgets(&line[strlen(line)], 1024, file);
         }
 
         while (line[strlen(line) - 1] == '\r' ||
                line[strlen(line) - 1] == '\n')
             line[strlen(line) - 1] = '\0';
 
-        if (aud_str_has_prefix_nocase(line, "#EXTM3U")) {
+        if (str_has_prefix_nocase(line, "#EXTM3U")) {
             is_extm3u = TRUE;
             continue;
         }
 
-        if (is_extm3u && aud_str_has_prefix_nocase(line, "#EXTINF:")) {
-            aud_str_replace_in(&ext_info, g_strdup(line));
+        if (is_extm3u && str_has_prefix_nocase(line, "#EXTINF:")) {
+            str_replace_in(&ext_info, g_strdup(line));
             continue;
         }
 
@@ -135,11 +138,11 @@ playlist_load_m3u(const gchar * filename, gint pos)
         if (uri != NULL)
             index_append (add, uri);
 
-        aud_str_replace_in(&ext_title, NULL);
+        str_replace_in(&ext_title, NULL);
         ext_len = -1;
     }
 
-    aud_vfs_fclose(file);
+    vfs_fclose(file);
     g_free(line);
 
     aud_playlist_entry_insert_batch (aud_playlist_get_active (), pos, add, NULL);
@@ -158,7 +161,7 @@ playlist_save_m3u(const gchar *filename, gint pos)
     g_return_if_fail(filename != NULL);
 
     fn = g_filename_to_uri(filename, NULL, NULL);
-    file = aud_vfs_fopen(fn ? fn : filename, "wb");
+    file = vfs_fopen(fn ? fn : filename, "wb");
     g_free(fn);
     g_return_if_fail(file != NULL);
 
@@ -166,28 +169,30 @@ playlist_save_m3u(const gchar *filename, gint pos)
     {
         const gchar * filename = aud_playlist_entry_get_filename (playlist,
          count);
-        const gchar * title = aud_playlist_entry_get_title (playlist, count);
-        gint seconds = aud_playlist_entry_get_length (playlist, count) / 1000;
+        const gchar * title = aud_playlist_entry_get_title (playlist, count,
+         FALSE);
+        gint seconds = aud_playlist_entry_get_length (playlist, count, FALSE) /
+         1000;
 
         if (title != NULL)
         {
             outstr = g_locale_from_utf8 (title, -1, NULL, NULL, NULL);
 
             if(outstr) {
-                aud_vfs_fprintf(file, "#EXTINF:%d,%s\n", seconds, outstr);
+                vfs_fprintf(file, "#EXTINF:%d,%s\n", seconds, outstr);
                 g_free(outstr);
                 outstr = NULL;
             }
             else
-                aud_vfs_fprintf (file, "#EXTINF:%d,%s\n", seconds, title);
+                vfs_fprintf (file, "#EXTINF:%d,%s\n", seconds, title);
         }
 
         fn = g_filename_from_uri (filename, NULL, NULL);
-        aud_vfs_fprintf (file, "%s\n", fn != NULL ? fn : filename);
+        vfs_fprintf (file, "%s\n", fn != NULL ? fn : filename);
         g_free(fn);
     }
 
-    aud_vfs_fclose(file);
+    vfs_fclose(file);
 }
 
 PlaylistContainer plc_m3u = {

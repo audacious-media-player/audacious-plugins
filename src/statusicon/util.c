@@ -20,13 +20,15 @@
 *
 */
 
+#include <audacious/drct.h>
+
 #include "statusicon.h"
 
 void si_volume_change(gint value)
 {
     gint vl, vr;
-    audacious_drct_get_volume(&vl, &vr);
-    audacious_drct_set_volume(CLAMP(vl + value, 0, 100), CLAMP(vr + value, 0, 100));
+    aud_drct_get_volume(&vl, &vr);
+    aud_drct_set_volume(CLAMP(vl + value, 0, 100), CLAMP(vr + value, 0, 100));
 }
 
 void si_playback_skip(gint numsong)
@@ -55,27 +57,27 @@ void si_playback_ctrl(gpointer ctrl_code_gp)
     switch (ctrl_code)
     {
       case SI_PLAYBACK_CTRL_PREV:
-          audacious_drct_pl_prev();
+          aud_drct_pl_prev();
           break;
 
       case SI_PLAYBACK_CTRL_PLAY:
-          audacious_drct_play();
+          aud_drct_play();
           break;
 
       case SI_PLAYBACK_CTRL_PAUSE:
-          audacious_drct_pause();
+          aud_drct_pause();
           break;
 
       case SI_PLAYBACK_CTRL_STOP:
-          audacious_drct_stop();
+          aud_drct_stop();
           break;
 
       case SI_PLAYBACK_CTRL_NEXT:
-          audacious_drct_pl_next();
+          aud_drct_pl_next();
           break;
 
       case SI_PLAYBACK_CTRL_EJECT:
-          audacious_drct_eject();
+          hook_call ("interface show filebrowser", GINT_TO_POINTER (TRUE));
           break;
     }
 }

@@ -21,6 +21,8 @@
 #include <glib.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+
+#include <audacious/debug.h>
 #include <audacious/plugin.h>
 
 #include "streambrowser.h"
@@ -138,7 +140,7 @@ gboolean xiph_category_fetch (streamdir_t * streamdir, category_t * category)
         }
     }
 
-    /* if the requested category is the last one in the list ("other"), 
+    /* if the requested category is the last one in the list ("other"),
        we fill it with all the entries that don't match the rest of categories */
     if (xiph_category == &xiph_categories[xiph_category_count - 1])
     {
@@ -190,7 +192,7 @@ streamdir_t *xiph_streamdir_fetch (void)
 
 static void refresh_streamdir (void)
 {
-    gchar * unix_name = g_build_filename (audacious_get_localdir (),
+    gchar * unix_name = g_build_filename (aud_util_get_localdir (),
      XIPH_TEMP_FILENAME, NULL);
     gchar * uri_name = g_filename_to_uri (unix_name, NULL, NULL);
 
@@ -216,7 +218,7 @@ static void refresh_streamdir (void)
      XIPH_STREAMDIR_URL, uri_name);
 
     xmlDoc * doc = xmlReadFile (uri_name, NULL, 0);
-    
+
     if (doc == NULL)
     {
         failure ("xiph: failed to read stream directory file\n");

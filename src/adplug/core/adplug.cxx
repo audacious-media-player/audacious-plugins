@@ -154,7 +154,7 @@ CAdPlug::factory (VFSFile * fd, Copl * opl, const CPlayers & pl,
       if (fp.extension (fd->uri, (*i)->get_extension (j)))
       {
         AdPlug_LogWrite ("Trying direct hit: %s\n", (*i)->filetype.c_str ());
-        aud_vfs_rewind (fd);
+        vfs_rewind (fd);
         if ((p = (*i)->factory (opl)))
         {
           if (p->load (fd, fp))

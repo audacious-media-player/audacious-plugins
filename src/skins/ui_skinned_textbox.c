@@ -24,11 +24,13 @@
  * Audacious or using our public API to be a derived work.
  */
 
+#include <string.h>
+
+#include <libaudcore/audstrings.h>
+
 #include "ui_skinned_textbox.h"
 #include "skins_cfg.h"
 #include "plugin.h"
-#include <string.h>
-
 #include "util.h"
 
 #define UI_SKINNED_TEXTBOX_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_textbox_get_type(), UiSkinnedTextboxPrivate))
@@ -531,7 +533,7 @@ void ui_skinned_textbox_set_text(GtkWidget *widget, const gchar *text) {
     if (textbox->text)
         g_free(textbox->text);
 
-    textbox->text = aud_str_to_utf8(text);
+    textbox->text = str_to_utf8(text);
     priv->scroll_back = FALSE;
 
     if (widget_really_drawable (widget))

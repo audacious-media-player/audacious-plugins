@@ -21,6 +21,9 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
+#include <audacious/debug.h>
+#include <audacious/drct.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -261,9 +264,9 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
 static GdkPixbuf * get_current_album_art (void)
 {
     gint playlist = aud_playlist_get_playing ();
-    gint position = aud_playlist_get_position (playlist);
-    const gchar * filename = aud_playlist_entry_get_filename (playlist, position);
-    InputPlugin * decoder = aud_playlist_entry_get_decoder (playlist, position);
+    const gchar * filename = aud_playlist_entry_get_filename (playlist,
+     aud_playlist_get_position (playlist));
+    InputPlugin * decoder = aud_file_find_decoder (filename, FALSE);
     void * data;
     gint size;
     GdkPixbuf * pixbuf;
@@ -281,7 +284,7 @@ void ui_infoarea_draw_album_art (UIInfoArea * area)
 {
     cairo_t * cr;
 
-    if (audacious_drct_get_playing () && area->pb == NULL)
+    if (aud_drct_get_playing () && area->pb == NULL)
     {
         area->pb = get_current_album_art ();
 
@@ -372,7 +375,7 @@ static gboolean ui_infoarea_do_fade (UIInfoArea * area)
 {
     gboolean ret = FALSE;
 
-    if (audacious_drct_get_playing () && area->alpha < 1)
+    if (aud_drct_get_playing () && area->alpha < 1)
     {
         area->alpha += alpha_step;
         ret = TRUE;
@@ -396,7 +399,7 @@ void ui_infoarea_set_title (void * data, UIInfoArea * area)
 {
     gint playlist = aud_playlist_get_playing ();
     gint entry = aud_playlist_get_position (playlist);
-    const Tuple * tuple = aud_playlist_entry_get_tuple (playlist, entry);
+    const Tuple * tuple = aud_playlist_entry_get_tuple (playlist, entry, FALSE);
     const gchar * s;
 
     g_free (area->title);
@@ -409,7 +412,8 @@ void ui_infoarea_set_title (void * data, UIInfoArea * area)
     if (tuple && (s = tuple_get_string (tuple, FIELD_TITLE, NULL)))
         area->title = g_strdup (s);
     else
-        area->title = g_strdup (aud_playlist_entry_get_title (playlist, entry));
+        area->title = g_strdup (aud_playlist_entry_get_title (playlist, entry,
+         FALSE));
 
     if (tuple && (s = tuple_get_string (tuple, FIELD_ARTIST, NULL)))
         area->artist = g_strdup (s);
@@ -470,12 +474,12 @@ static void ui_infoarea_playback_stop (void * data, UIInfoArea * area)
 
 static void destroy_cb (GtkObject * parent, UIInfoArea * area)
 {
-    aud_hook_dissociate ("title change", (HookFunction) ui_infoarea_set_title);
-    aud_hook_dissociate ("playback begin", (HookFunction)
+    hook_dissociate ("title change", (HookFunction) ui_infoarea_set_title);
+    hook_dissociate ("playback begin", (HookFunction)
      ui_infoarea_playback_start);
-    aud_hook_dissociate ("playback stop", (HookFunction)
+    hook_dissociate ("playback stop", (HookFunction)
      ui_infoarea_playback_stop);
-    aud_hook_dissociate ("visualization clear", (HookFunction) vis_clear_cb);
+    hook_dissociate ("visualization clear", (HookFunction) vis_clear_cb);
     aud_vis_runner_remove_hook((HookFunction) ui_infoarea_visualization_timeout);
 
     g_free (area->title);
@@ -508,15 +512,15 @@ GtkWidget * ui_infoarea_new (void)
     g_signal_connect_swapped(area->parent, "expose-event",
                              G_CALLBACK(ui_infoarea_expose_event), area);
 
-    aud_hook_associate("title change", (HookFunction) ui_infoarea_set_title, area);
-    aud_hook_associate("playback begin", (HookFunction) ui_infoarea_playback_start, area);
-    aud_hook_associate("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
-    aud_hook_associate("visualization clear", (HookFunction) vis_clear_cb, area);
+    hook_associate("title change", (HookFunction) ui_infoarea_set_title, area);
+    hook_associate("playback begin", (HookFunction) ui_infoarea_playback_start, area);
+    hook_associate("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
+    hook_associate("visualization clear", (HookFunction) vis_clear_cb, area);
     aud_vis_runner_add_hook((HookFunction) ui_infoarea_visualization_timeout, area);
 
     g_signal_connect (area->parent, "destroy", (GCallback) destroy_cb, area);
 
-    if (audacious_drct_get_playing ())
+    if (aud_drct_get_playing ())
         ui_infoarea_playback_start (NULL, area);
 
     return area->parent;

@@ -29,12 +29,15 @@
 #include "ui_vis.h"
 #include "util.h"
 #include "skins_cfg.h"
-#include <audacious/plugin.h>
+
 #include <string.h>
 #include <ctype.h>
 #include <gtk/gtkmain.h>
 #include <gtk/gtkmarshal.h>
 #include <gtk/gtkimage.h>
+
+#include <audacious/drct.h>
+#include <audacious/plugin.h>
 
 #define UI_TYPE_SVIS           (ui_svis_get_type())
 
@@ -322,8 +325,8 @@ static gboolean ui_svis_expose (GtkWidget * widget, GdkEventExpose * event)
     if (!config.scaled)
     {
         memset (rgb_data, 0, SVIS_WIDTH * SVIS_HEIGHT);
-        if (config.vis_type == VIS_ANALYZER && !audacious_drct_get_paused ()
-            && audacious_drct_get_playing ())
+        if (config.vis_type == VIS_ANALYZER && !aud_drct_get_paused ()
+            && aud_drct_get_playing ())
         {
             for (y = 0; y < SVIS_HEIGHT; y++)
             {
@@ -402,8 +405,8 @@ static gboolean ui_svis_expose (GtkWidget * widget, GdkEventExpose * event)
         memset (rgb_data, 0,
                 SVIS_WIDTH * config.scale_factor * SVIS_HEIGHT *
                 config.scale_factor);
-        if (config.vis_type == VIS_ANALYZER && !audacious_drct_get_paused ()
-            && audacious_drct_get_playing ())
+        if (config.vis_type == VIS_ANALYZER && !aud_drct_get_paused ()
+            && aud_drct_get_playing ())
         {
             for (y = 0; y < SVIS_HEIGHT; y++)
             {

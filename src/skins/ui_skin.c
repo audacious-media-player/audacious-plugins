@@ -35,9 +35,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "plugin.h"
 
+#include <audacious/debug.h>
 #include <audacious/plugin.h>
+
+#include "plugin.h"
 #include "ui_skin.h"
 #include "util.h"
 #include "ui_main.h"

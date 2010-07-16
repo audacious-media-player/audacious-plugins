@@ -26,13 +26,13 @@
 #include <audacious/plugin.h>
 
 
-#define VFS_FOPEN( x , y )		aud_vfs_fopen( x , y )
-#define VFS_FCLOSE( x )			aud_vfs_fclose( x )
-#define VFS_FREAD( x , y , z , w )	aud_vfs_fread( x , y , z , w )
-#define VFS_FSEEK( x , y , z )		aud_vfs_fseek( x , y , z )
-#define VFS_FEOF( x )			aud_vfs_feof( x )
-#define VFS_GETC( x )			aud_vfs_getc( x )
-#define VFS_UNGETC( x , y )		aud_vfs_ungetc( x , y )
+#define VFS_FOPEN( x , y )		vfs_fopen( x , y )
+#define VFS_FCLOSE( x )			vfs_fclose( x )
+#define VFS_FREAD( x , y , z , w )	vfs_fread( x , y , z , w )
+#define VFS_FSEEK( x , y , z )		vfs_fseek( x , y , z )
+#define VFS_FEOF( x )			vfs_feof( x )
+#define VFS_GETC( x )			vfs_getc( x )
+#define VFS_UNGETC( x , y )		vfs_ungetc( x , y )
 
 
 #endif /* !_I_VFSLAYER_H */

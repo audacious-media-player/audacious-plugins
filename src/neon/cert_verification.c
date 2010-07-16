@@ -377,7 +377,7 @@ gboolean validate_directory_certs(
  * Checks if given certificate is valid certificate according to certificates
  * found from SSL_CERT_FILE or SSL_CERT_DIR environmental variables.
  */
-int neon_aud_vfs_verify_environment_ssl_certs(
+int neon_vfs_verify_environment_ssl_certs(
     void* userdata,
     int failures,
     const ne_ssl_certificate* serverCert

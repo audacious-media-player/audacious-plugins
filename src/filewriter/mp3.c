@@ -28,6 +28,9 @@
 
 #include <lame/lame.h>
 
+#include <audacious/configdb.h>
+#include <audacious/debug.h>
+
 static void mp3_init(write_output_callback write_output_func);
 static void mp3_configure(void);
 static gint mp3_open(void);
@@ -156,7 +159,7 @@ static void lame_debugf(const char *format, va_list ap)
 
 static void mp3_init(write_output_callback write_output_func)
 {
-    ConfigDb *db = aud_cfg_db_open();
+    mcs_handle_t *db = aud_cfg_db_open();
     aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_on", &vbr_on);
     aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_type", &vbr_type);
     aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_min_val", &vbr_min_val);
@@ -207,27 +210,27 @@ static gint mp3_open(void)
     if (tuple) {
         /* XXX write UTF-8 even though libmp3lame does id3v2.3. --yaz */
         lameid3.track_name =
-            g_strdup(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
+            g_strdup(tuple_get_string(tuple, FIELD_TITLE, NULL));
         id3tag_set_title(gfp, lameid3.track_name);
 
         lameid3.performer =
-            g_strdup(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
+            g_strdup(tuple_get_string(tuple, FIELD_ARTIST, NULL));
         id3tag_set_artist(gfp, lameid3.performer);
 
         lameid3.album_name =
-            g_strdup(aud_tuple_get_string(tuple, FIELD_ALBUM, NULL));
+            g_strdup(tuple_get_string(tuple, FIELD_ALBUM, NULL));
         id3tag_set_album(gfp, lameid3.album_name);
 
         lameid3.genre =
-            g_strdup(aud_tuple_get_string(tuple, FIELD_GENRE, NULL));
+            g_strdup(tuple_get_string(tuple, FIELD_GENRE, NULL));
         id3tag_set_genre(gfp, lameid3.genre);
 
         lameid3.year =
-            g_strdup_printf("%d", aud_tuple_get_int(tuple, FIELD_YEAR, NULL));
+            g_strdup_printf("%d", tuple_get_int(tuple, FIELD_YEAR, NULL));
         id3tag_set_year(gfp, lameid3.year);
 
         lameid3.track_number =
-            g_strdup_printf("%d", aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
+            g_strdup_printf("%d", tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
         id3tag_set_track(gfp, lameid3.track_number);
 
         if (force_v2_val) {
@@ -360,7 +363,7 @@ static void mp3_close(void)
         /* update v2 tag */
         imp3 = lame_get_id3v2_tag(gfp, encbuffer, sizeof(encbuffer));
         if (imp3 > 0) {
-            if (aud_vfs_fseek(output_file, 0, SEEK_SET) != 0) {
+            if (vfs_fseek(output_file, 0, SEEK_SET) != 0) {
                 AUDDBG("can't rewind\n");
             }
             else {
@@ -370,7 +373,7 @@ static void mp3_close(void)
 
         /* update lame tag */
         if (id3v2_size) {
-            if (aud_vfs_fseek(output_file, id3v2_size, SEEK_SET) != 0) {
+            if (vfs_fseek(output_file, id3v2_size, SEEK_SET) != 0) {
                 AUDDBG("fatal error: can't update LAME-tag frame!\n");
             }
             else {
@@ -646,7 +649,7 @@ static void id3_only_version(GtkToggleButton * togglebutton,
 
 static void configure_ok_cb(gpointer data)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
 
     if (vbr_min_val > vbr_max_val)
         vbr_max_val = vbr_min_val;

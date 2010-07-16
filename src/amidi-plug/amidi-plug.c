@@ -18,8 +18,11 @@
 *
 */
 
-#include "amidi-plug.h"
+#include <audacious/drct.h>
 #include <audacious/plugin.h>
+#include <libaudcore/eventqueue.h>
+
+#include "amidi-plug.h"
 
 InputPlugin *amidiplug_iplist[] = { &amidiplug_ip, NULL };
 
@@ -221,7 +224,7 @@ static gint amidiplug_get_time( InputPlayback * playback )
     {
       g_mutex_unlock( amidiplug_playing_mutex );
       DEBUGMSG( "GETTIME on halted song (an error occurred?), returning -1 and stopping the player\n" );
-      audacious_drct_stop();
+      aud_drct_stop();
       return -1;
     }
 }
@@ -252,7 +255,7 @@ static gint amidiplug_set_volume( gint  l , gint  r )
 static Tuple * amidiplug_get_song_tuple( const gchar *filename_uri )
 {
   /* song title, get it from the filename */
-  Tuple *tuple = aud_tuple_new_from_filename(filename_uri);
+  Tuple *tuple = tuple_new_from_filename(filename_uri);
   gchar *title, *filename = g_filename_from_uri(filename_uri, NULL, NULL);
   midifile_t mf;
 
@@ -263,12 +266,12 @@ static Tuple * amidiplug_get_song_tuple( const gchar *filename_uri )
   else
       title = g_strdup(filename_uri);
 
-  aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, title);
+  tuple_associate_string(tuple, FIELD_TITLE, NULL, title);
   g_free(title);
   g_free(filename);
 
   if ( i_midi_parse_from_filename( filename_uri , &mf ) )
-    aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, mf.length / 1000);
+    tuple_associate_int(tuple, FIELD_LENGTH, NULL, mf.length / 1000);
 
   i_midi_free( &mf );
 
@@ -317,7 +320,7 @@ static void amidiplug_play( InputPlayback * playback )
   port_count = backend.seq_get_port_count();
   if ( port_count < 1 )
   {
-    aud_event_queue ("interface show error", _("You have not selected any "
+    event_queue ("interface show error", _("You have not selected any "
      "sequencer ports for MIDI playback.  You can do so in the MIDI plugin "
      "preferences."));
     amidiplug_playing_status = AMIDIPLUG_ERR;

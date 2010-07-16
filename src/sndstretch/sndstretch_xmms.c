@@ -27,14 +27,15 @@
 #include "FB_logo.xpm"
 
 #include "config.h"
-#include <audacious/plugin.h>
-#include <audacious/i18n.h>
 #include <gtk/gtk.h>
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
+#include <audacious/configdb.h>
+#include <audacious/i18n.h>
+#include <audacious/plugin.h>
 #include <libaudcore/audio.h>
 
 #define SNDSTRETCH_VERSION_STRING "0.7"

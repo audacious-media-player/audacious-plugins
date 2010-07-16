@@ -70,12 +70,12 @@ CadtrackLoader::load (VFSFile * fd, const CFileProvider & fp)
   AdPlug_LogWrite ("CadtrackLoader::load(,\"%s\"): Checking for \"%s\"...\n",
                    filename.c_str (), instfilename.c_str ());
 
-  VFSFile *instfd = aud_vfs_fopen (instfilename.c_str (), "rb");
+  VFSFile *instfd = vfs_fopen (instfilename.c_str (), "rb");
   instf = fp.open (instfd);
   if (!instf || fp.filesize (instf) != 468)
   {
     fp.close (f);
-    aud_vfs_fclose (instfd);
+    vfs_fclose (instfd);
     return false;
   }
 

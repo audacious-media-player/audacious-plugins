@@ -179,8 +179,8 @@ int
 vcedit_open(vcedit_state * state, VFSFile * in)
 {
     return vcedit_open_callbacks(state, (void *) in,
-                                 (vcedit_read_func) aud_vfs_fread,
-                                 (vcedit_write_func) aud_vfs_fwrite);
+                                 (vcedit_read_func) vfs_fread,
+                                 (vcedit_write_func) vfs_fwrite);
 }
 
 int

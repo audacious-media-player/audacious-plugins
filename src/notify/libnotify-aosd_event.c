@@ -18,23 +18,27 @@
  ************************************************************************/
 
 #include <glib.h>
-#include <libaudcore/hook.h>
+
+#include <audacious/drct.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
+#include <libaudcore/hook.h>
+
 #include "libnotify-aosd_common.h"
 
 void event_init() {
 	DEBUG_PRINT("[%s] event_init: started!\n", __FILE__);
-	aud_hook_associate("playback begin", event_playback_begin, NULL);
-	aud_hook_associate("playback pause", event_playback_pause, NULL);
-	aud_hook_associate("playback unpause", event_playback_begin, NULL);
+	hook_associate("playback begin", event_playback_begin, NULL);
+	hook_associate("playback pause", event_playback_pause, NULL);
+	hook_associate("playback unpause", event_playback_begin, NULL);
 	DEBUG_PRINT("[%s] event_init: done!\n", __FILE__);
 }
 
 void event_uninit() {
 	DEBUG_PRINT("[%s] event_uninit: started!\n", __FILE__);
-	aud_hook_dissociate("playback begin", event_playback_begin);
-	aud_hook_dissociate("playback pause", event_playback_pause);
-	aud_hook_dissociate("playback unpause", event_playback_begin);
+	hook_dissociate("playback begin", event_playback_begin);
+	hook_dissociate("playback pause", event_playback_pause);
+	hook_dissociate("playback unpause", event_playback_begin);
 	DEBUG_PRINT("[%s] event_uninit: done!\n", __FILE__);
 }
 
@@ -42,10 +46,10 @@ void event_playback_begin(gpointer p1, gpointer p2) {
 	gchar *aud_title = NULL, *title = NULL;
 	DEBUG_PRINT("[%s] event_playback_begin: started!\n", __FILE__);
 
-	aud_title = audacious_drct_pl_get_title(audacious_drct_pl_get_pos());
+	aud_title = aud_drct_pl_get_title(aud_drct_pl_get_pos());
 
 	if(aud_title != NULL) {
-		title = aud_str_to_utf8(aud_title);
+		title = str_to_utf8(aud_title);
 		if(g_utf8_validate(title, -1, NULL)) {
 			osd_show(title, "notification-audio-play");
 		} else {

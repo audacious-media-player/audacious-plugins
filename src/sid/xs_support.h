@@ -66,14 +66,14 @@ extern "C" {
  */
 #ifdef __AUDACIOUS_NEWVFS__
 #define xs_file_t VFSFile
-#define xs_fopen(a,b) aud_vfs_fopen(a,b)
-#define xs_fclose(a) aud_vfs_fclose(a)
-#define xs_fgetc(a) aud_vfs_getc(a)
-#define xs_fread(a,b,c,d) aud_vfs_fread(a,b,c,d)
-#define xs_feof(a) aud_vfs_feof(a)
+#define xs_fopen(a,b) vfs_fopen(a,b)
+#define xs_fclose(a) vfs_fclose(a)
+#define xs_fgetc(a) vfs_getc(a)
+#define xs_fread(a,b,c,d) vfs_fread(a,b,c,d)
+#define xs_feof(a) vfs_feof(a)
 #define xs_ferror(a) (0)
-#define xs_ftell(a) aud_vfs_ftell(a)
-#define xs_fseek(a,b,c) aud_vfs_fseek(a,b,c)
+#define xs_ftell(a) vfs_ftell(a)
+#define xs_fseek(a,b,c) vfs_fseek(a,b,c)
 #else
 #define xs_file_t FILE
 #define xs_fopen(a,b) fopen(a,b)

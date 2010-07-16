@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <libaudcore/tuple_formatter.h>
 #include <audacious/plugin.h>
 
 #include "ao.h"
@@ -44,7 +45,7 @@ int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 
 	snprintf(buf, PATH_MAX, "%s/%s", dirname(path), filename);
 
-	aud_vfs_file_get_contents (buf, & filebuf, & size);
+	vfs_file_get_contents (buf, & filebuf, & size);
 
 	*buffer = filebuf;
 	*length = (uint64)size;
@@ -60,7 +61,7 @@ Tuple *xsf_tuple(const gchar *filename)
 	void *buf;
 	gint64 sz;
 
-	aud_vfs_file_get_contents (filename, & buf, & sz);
+	vfs_file_get_contents (filename, & buf, & sz);
 
 	if (!buf)
 		return NULL;
@@ -68,17 +69,17 @@ Tuple *xsf_tuple(const gchar *filename)
 	if (corlett_decode(buf, sz, NULL, NULL, &c) != AO_SUCCESS)
 		return NULL;
 
-	t = aud_tuple_new_from_filename(filename);
+	t = tuple_new_from_filename(filename);
 
-	aud_tuple_associate_int(t, FIELD_LENGTH, NULL, c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1);
-	aud_tuple_associate_string(t, FIELD_ARTIST, NULL, c->inf_artist);
-	aud_tuple_associate_string(t, FIELD_ALBUM, NULL, c->inf_game);
-	aud_tuple_associate_string(t, -1, "game", c->inf_game);
-	aud_tuple_associate_string(t, FIELD_TITLE, NULL, c->inf_title);
-	aud_tuple_associate_string(t, FIELD_COPYRIGHT, NULL, c->inf_copy);
-	aud_tuple_associate_string(t, FIELD_QUALITY, NULL, "sequenced");
-	aud_tuple_associate_string(t, FIELD_CODEC, NULL, "GBA/Nintendo DS Audio");
-	aud_tuple_associate_string(t, -1, "console", "GBA/Nintendo DS");
+	tuple_associate_int(t, FIELD_LENGTH, NULL, c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1);
+	tuple_associate_string(t, FIELD_ARTIST, NULL, c->inf_artist);
+	tuple_associate_string(t, FIELD_ALBUM, NULL, c->inf_game);
+	tuple_associate_string(t, -1, "game", c->inf_game);
+	tuple_associate_string(t, FIELD_TITLE, NULL, c->inf_title);
+	tuple_associate_string(t, FIELD_COPYRIGHT, NULL, c->inf_copy);
+	tuple_associate_string(t, FIELD_QUALITY, NULL, "sequenced");
+	tuple_associate_string(t, FIELD_CODEC, NULL, "GBA/Nintendo DS Audio");
+	tuple_associate_string(t, -1, "console", "GBA/Nintendo DS");
 
 	free(c);
 	g_free(buf);
@@ -93,9 +94,9 @@ gchar *xsf_title(gchar *filename, gint *length)
 
 	if (tuple != NULL)
 	{
-		title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
-		*length = aud_tuple_get_int(tuple, FIELD_LENGTH, NULL);
-		aud_tuple_free(tuple);
+		title = tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
+		*length = tuple_get_int(tuple, FIELD_LENGTH, NULL);
+		tuple_free(tuple);
 	}
 	else
 	{
@@ -119,7 +120,7 @@ void xsf_play(InputPlayback *data)
 	gfloat pos;
 
 	path = g_strdup(data->filename);
-	aud_vfs_file_get_contents (data->filename, & buffer, & size);
+	vfs_file_get_contents (data->filename, & buffer, & size);
 
 	if (xsf_start(buffer, size) != AO_SUCCESS)
 	{
@@ -244,7 +245,7 @@ void xsf_pause(InputPlayback *playback, short p)
 gint xsf_is_our_fd(const gchar *filename, VFSFile *file)
 {
 	gchar magic[4];
-	aud_vfs_fread(magic, 1, 4, file);
+	vfs_fread(magic, 1, 4, file);
 
 	if (!memcmp(magic, "PSF$", 4))
 		return 1;

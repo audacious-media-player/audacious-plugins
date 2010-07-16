@@ -52,6 +52,9 @@
 #include "ui_skin.h"
 #include "util.h"
 #include "skins_cfg.h"
+
+#include <audacious/drct.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 
@@ -410,7 +413,7 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
 
     for (i = priv->first; i < priv->first + priv->rows && i < active_length; i ++)
     {
-        gint i_length = aud_playlist_entry_get_length (active_playlist, i);
+        gint i_length = aud_playlist_entry_get_length (active_playlist, i, TRUE);
 
         if (i_length > 0)
             g_snprintf (length, sizeof (length), "%d:%02d", i_length / 60000,
@@ -433,8 +436,9 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
 
     for (i = priv->first; i < priv->first + priv->rows && i < active_length; i ++)
     {
-        const gchar * title = aud_playlist_entry_get_title (active_playlist, i);
-        gint i_length = aud_playlist_entry_get_length (active_playlist, i);
+        const gchar * title = aud_playlist_entry_get_title (active_playlist, i,
+         TRUE);
+        gint i_length = aud_playlist_entry_get_length (active_playlist, i, TRUE);
         gint pos = aud_playlist_queue_find_entry (active_playlist, i);
 
         tail[0] = 0;
@@ -816,7 +820,7 @@ gboolean ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event)
             select_single (private, TRUE, 0);
             aud_playlist_set_playing (active_playlist);
             aud_playlist_set_position (active_playlist, private->focused);
-            audacious_drct_play ();
+            aud_drct_play ();
             break;
           case GDK_Escape:
             select_single (private, FALSE, aud_playlist_get_position
@@ -1060,7 +1064,7 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
 
         aud_playlist_set_playing (active_playlist);
         aud_playlist_set_position (active_playlist, position);
-        audacious_drct_play ();
+        aud_drct_play ();
         break;
       default:
         return TRUE;

@@ -132,10 +132,10 @@ int get_xmms_title(void) {
 	}
 #endif
 
-	pos = audacious_drct_pl_get_pos();
+	pos = aud_drct_pl_get_pos();
 	/* Only check every 1 second for title change, otherwise check pos */
 	if(check_title || pos != last_pos) {
-		title = audacious_drct_pl_get_title(pos);
+		title = aud_drct_pl_get_title(pos);
 		if(title && (!last_title || strcmp(last_title,title))) {
 			globalPM->title = title;
 			globalPM->drawtitle = 1;

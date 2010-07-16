@@ -1,8 +1,8 @@
 /*      xmms - esound output plugin
  *    Copyright (C) 1999      Galex Yen
- *      
+ *
  *      this program is free software
- *      
+ *
  *      Description:
  *              This program is an output plugin for xmms v0.9 or greater.
  *              The program uses the esound daemon to output audio in order
@@ -18,9 +18,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <esd.h>
-#include <audacious/plugin.h>
-#include "esdout.h"
 
+#include <audacious/configdb.h>
+#include <audacious/plugin.h>
+
+#include "esdout.h"
 
 ESDConfig esd_cfg;
 esd_info_t *all_info;
@@ -70,12 +72,12 @@ esdout_init(void)
     aud_cfg_db_get_bool(db, "ESD", "use_oss_mixer", &esd_cfg.use_oss_mixer);
     aud_cfg_db_get_int(db, "ESD", "buffer_size", &esd_cfg.buffer_size);
     aud_cfg_db_get_int(db, "ESD", "prebuffer", &esd_cfg.prebuffer);
-    
+
     /* restore volume levels */
     aud_cfg_db_get_int(db, "ESD", "volume_left", &lp);
     aud_cfg_db_get_int(db, "ESD", "volume_right", &rp);
     esdout_set_volume(lp, rp);
-    
+
     aud_cfg_db_close(db);
 
     if (!esd_cfg.server)

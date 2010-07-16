@@ -38,7 +38,7 @@ file_add_cb(GntWidget *widget, GntFileSel **selector)
     if (uri == NULL)
         return;
 
-    audacious_drct_pl_add_url_string (uri);
+    aud_drct_pl_add_url_string (uri);
 
     gnt_widget_destroy(GNT_WIDGET(*selector));
     *selector = NULL;

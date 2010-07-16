@@ -20,6 +20,9 @@
 #include <string.h>
 #include <FLAC/all.h>
 #include <glib.h>
+
+#include <audacious/debug.h>
+
 #include "flacng.h"
 #include "tools.h"
 #include "seekable_stream_callbacks.h"
@@ -38,7 +41,7 @@ FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, 
     if (*bytes == 0)
         return FLAC__STREAM_DECODER_READ_STATUS_END_OF_STREAM;
 
-    read = aud_vfs_fread(buffer, 1, *bytes, info->fd);
+    read = vfs_fread(buffer, 1, *bytes, info->fd);
     *bytes = read;
 
     switch (read)
@@ -60,7 +63,7 @@ FLAC__StreamDecoderSeekStatus seek_callback(const FLAC__StreamDecoder *decoder, 
 {
     callback_info *info = (callback_info*) client_data;
 
-    if (aud_vfs_fseek(info->fd, offset, SEEK_SET) != 0)
+    if (vfs_fseek(info->fd, offset, SEEK_SET) != 0)
     {
         ERROR("Could not seek to %lld!\n", (long long)offset);
         return FLAC__STREAM_DECODER_SEEK_STATUS_ERROR;
@@ -73,7 +76,7 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
 {
     callback_info *info = (callback_info*) client_data;
 
-    if ((*offset = aud_vfs_ftell(info->fd)) == -1)
+    if ((*offset = vfs_ftell(info->fd)) == -1)
     {
         ERROR("Could not tell current position!\n");
         return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
@@ -87,14 +90,14 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
 FLAC__bool eof_callback(const FLAC__StreamDecoder *decoder, void *client_data)
 {
     callback_info *info = (callback_info*) client_data;
-    return aud_vfs_feof(info->fd);
+    return vfs_feof(info->fd);
 }
 
 FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decoder, FLAC__uint64 *length, void *client_data)
 {
     callback_info *info = (callback_info*) client_data;
 
-    if ((*length = aud_vfs_fsize(info->fd)) == -1)
+    if ((*length = vfs_fsize(info->fd)) == -1)
     {
         /*
          * Could not get the stream size. This is not necessarily an
@@ -192,7 +195,7 @@ void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMet
             info->stream.samplerate = metadata->data.stream_info.sample_rate;
             AUDDBG("sample_rate=%d\n", metadata->data.stream_info.sample_rate);
 
-            size = aud_vfs_fsize(info->fd);
+            size = vfs_fsize(info->fd);
 
             if (size == -1)
                 info->bitrate = 0;

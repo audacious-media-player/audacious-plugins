@@ -75,7 +75,7 @@ static gint wav_open(void)
     header.byte_p_spl = GUINT16_TO_LE((GUINT16_FROM_LE(header.bit_p_spl) / (8 / input.channels)));
     memcpy(&header.data_chunk, "data", 4);
     header.data_length = GUINT32_TO_LE(0);
-    aud_vfs_fwrite(&header, sizeof (struct wavhead), 1, output_file);
+    vfs_fwrite(&header, sizeof (struct wavhead), 1, output_file);
 
     written = 0;
 
@@ -84,7 +84,7 @@ static gint wav_open(void)
 
 static void wav_write(void *ptr, gint length)
 {
-    written += aud_vfs_fwrite(ptr, 1, length, output_file);
+    written += vfs_fwrite(ptr, 1, length, output_file);
 }
 
 static void wav_close(void)
@@ -94,7 +94,7 @@ static void wav_close(void)
         header.length = GUINT32_TO_LE(written + sizeof (struct wavhead) - 8);
 
         header.data_length = GUINT32_TO_LE(written);
-        aud_vfs_fseek(output_file, 0, SEEK_SET);
-        aud_vfs_fwrite(&header, sizeof (struct wavhead), 1, output_file);
+        vfs_fseek(output_file, 0, SEEK_SET);
+        vfs_fwrite(&header, sizeof (struct wavhead), 1, output_file);
     }
 }

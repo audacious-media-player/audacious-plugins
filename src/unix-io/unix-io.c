@@ -28,6 +28,7 @@
 
 #include <glib.h>
 
+#include <audacious/debug.h>
 #include <audacious/plugin.h>
 
 #define error(...) fprintf (stderr, "unix-io: " __VA_ARGS__)
@@ -269,7 +270,7 @@ static VFSConstructor constructor =
 
 static void unix_init (void)
 {
-    aud_vfs_register_transport (& constructor);
+    vfs_register_transport (& constructor);
 }
 
 DECLARE_PLUGIN (unix_io, unix_init, NULL)

@@ -47,7 +47,10 @@
 #include <regex.h>
 #endif
 
+#include <audacious/drct.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -87,7 +90,7 @@ void action_stop_after_current_song (GtkToggleAction * action)
     if (active != aud_cfg->stopaftersong)
     {
         aud_cfg->stopaftersong = active;
-        aud_hook_call ("toggle stop after song", NULL);
+        hook_call ("toggle stop after song", NULL);
     }
 }
 
@@ -174,24 +177,24 @@ void action_play_location(void)
 
 void action_ab_set(void)
 {
-    if (audacious_drct_get_length() > 0)
+    if (aud_drct_get_length() > 0)
     {
         if (ab_position_a == -1)
         {
-            ab_position_a = audacious_drct_get_time();
+            ab_position_a = aud_drct_get_time();
             ab_position_b = -1;
             /* info-text: Loop-Point A position set */
         }
         else if (ab_position_b == -1)
         {
-            int time = audacious_drct_get_time();
+            int time = aud_drct_get_time();
             if (time > ab_position_a)
                 ab_position_b = time;
             /* release info text */
         }
         else
         {
-            ab_position_a = audacious_drct_get_time();
+            ab_position_a = aud_drct_get_time();
             ab_position_b = -1;
             /* info-text: Loop-Point A position reset */
         }
@@ -217,7 +220,7 @@ void action_jump_to_file(void)
 
 void action_jump_to_playlist_start(void)
 {
-    audacious_drct_pl_set_pos(0);
+    aud_drct_pl_set_pos(0);
 }
 
 static void mainwin_jump_to_time_cb(GtkWidget * widget, GtkWidget * entry)
@@ -234,7 +237,7 @@ static void mainwin_jump_to_time_cb(GtkWidget * widget, GtkWidget * entry)
     else
         return;
 
-    audacious_drct_seek(time);
+    aud_drct_seek(time);
     gtk_widget_destroy(mainwin_jtt);
 }
 
@@ -247,7 +250,7 @@ void mainwin_jump_to_time(void)
     guint tindex;
     gchar time_str[10];
 
-    if (!audacious_drct_get_playing())
+    if (!aud_drct_get_playing())
     {
         dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, _("Can't jump to time when no track is being played.\n"));
         gtk_dialog_run(GTK_DIALOG(dialog));
@@ -316,7 +319,7 @@ void mainwin_jump_to_time(void)
     gtk_container_add(GTK_CONTAINER(bbox), jump);
     g_signal_connect(jump, "clicked", G_CALLBACK(mainwin_jump_to_time_cb), time_entry);
 
-    tindex = audacious_drct_get_time() / 1000;
+    tindex = aud_drct_get_time() / 1000;
     g_snprintf(time_str, sizeof(time_str), "%u:%2.2u", tindex / 60, tindex % 60);
     gtk_entry_set_text(GTK_ENTRY(time_entry), time_str);
 
@@ -335,32 +338,32 @@ void action_jump_to_time(void)
 
 void action_playback_next(void)
 {
-    audacious_drct_pl_next();
+    aud_drct_pl_next();
 }
 
 void action_playback_previous(void)
 {
-    audacious_drct_pl_prev();
+    aud_drct_pl_prev();
 }
 
 void action_playback_play(void)
 {
     if (ab_position_a != -1)
-        audacious_drct_seek(ab_position_a);
-    else if (audacious_drct_get_playing () && audacious_drct_get_paused ())
-        audacious_drct_pause();
+        aud_drct_seek(ab_position_a);
+    else if (aud_drct_get_playing () && aud_drct_get_paused ())
+        aud_drct_pause();
     else
-        audacious_drct_play();
+        aud_drct_play();
 }
 
 void action_playback_pause(void)
 {
-    audacious_drct_pause();
+    aud_drct_pause();
 }
 
 void action_playback_stop(void)
 {
-    audacious_drct_stop();
+    aud_drct_stop();
 }
 
 void action_preferences(void)
@@ -370,7 +373,7 @@ void action_preferences(void)
 
 void action_quit(void)
 {
-    audacious_drct_quit();
+    aud_drct_quit();
 }
 
 void action_playlist_track_info(void)
@@ -481,7 +484,9 @@ void action_playlist_sort_selected_by_filename(void)
 
 void action_playlist_randomize_list(void)
 {
+#if 0
     aud_playlist_randomize(aud_playlist_get_active());
+#endif
 }
 
 void action_playlist_reverse_list(void)
@@ -695,7 +700,7 @@ static void playlistwin_save_playlist(const gchar * filename)
         return;
     }
 
-    aud_str_replace_in(&aud_cfg->playlist_path, g_path_get_dirname(filename));
+    str_replace_in(&aud_cfg->playlist_path, g_path_get_dirname(filename));
 
     if (g_file_test(filename, G_FILE_TEST_IS_REGULAR))
         if (!show_playlist_overwrite_prompt(NULL, filename))
@@ -746,7 +751,7 @@ static void playlistwin_load_playlist(const gchar * filename)
 
     g_return_if_fail(filename != NULL);
 
-    aud_str_replace_in(&aud_cfg->playlist_path, g_path_get_dirname(filename));
+    str_replace_in(&aud_cfg->playlist_path, g_path_get_dirname(filename));
 
     aud_playlist_entry_delete(playlist, 0, aud_playlist_entry_count(playlist));
     aud_playlist_insert_playlist(playlist, 0, filename);

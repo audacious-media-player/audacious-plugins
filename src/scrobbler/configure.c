@@ -9,12 +9,13 @@
 #include <stdio.h>
 
 #include <glib.h>
-#include <audacious/plugin.h>
-#include <libaudcore/md5.h>
-#include <audacious/i18n.h>
-
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
+
+#include <audacious/configdb.h>
+#include <audacious/i18n.h>
+#include <audacious/plugin.h>
+#include <libaudcore/md5.h>
 
 #include "plugin.h"
 
@@ -234,7 +235,7 @@ create_cfgdlg(void)
                    NULL);
   gtk_widget_show (entry2);
   gtk_table_attach_defaults (GTK_TABLE (table1), entry2, 1, 2, 3, 4);
-  
+
   entry3 = gtk_entry_new ();
   gtk_widget_show (entry3);
   gtk_table_attach_defaults (GTK_TABLE (table1), entry3, 1, 2, 4, 5);
@@ -265,14 +266,14 @@ create_cfgdlg(void)
                         g_free(username);
 			username = NULL;
                 }
-                
+
 		aud_cfg_db_get_string(db, "audioscrobbler", "sc_url", &sc_url);
 		if (sc_url) {
                		gtk_entry_set_text(GTK_ENTRY(entry3), sc_url);
                		g_free(sc_url);
 	             	sc_url = NULL;
 		}
-				
+
                 aud_cfg_db_close(db);
         }
 
@@ -285,7 +286,7 @@ create_cfgdlg(void)
 
 /* TODO: don't use WIDGET_CUSTOM there */
 static PreferencesWidget settings[] = {
-    {WIDGET_CUSTOM, NULL, NULL, NULL, NULL, FALSE, {.populate = create_cfgdlg}},    
+    {WIDGET_CUSTOM, NULL, NULL, NULL, NULL, FALSE, {.populate = create_cfgdlg}},
 };
 
 PluginPreferences preferences = {

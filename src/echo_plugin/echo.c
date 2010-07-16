@@ -1,10 +1,13 @@
 #include "config.h"
-#include <audacious/plugin.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <gtk/gtk.h>
+
+#include <audacious/configdb.h>
 #include <audacious/i18n.h>
+#include <audacious/plugin.h>
+
 #include "echo.h"
 
 
@@ -43,7 +46,7 @@ DECLARE_PLUGIN(echo, NULL, NULL, NULL, NULL, echo_eplist, NULL, NULL, NULL);
 static void init(void)
 {
 	mcs_handle_t *cfg;
-	
+
 	if (sizeof(short) != sizeof(gint16))
 		abort();
 
@@ -58,7 +61,7 @@ static void init(void)
 static void cleanup(void)
 {
 	g_free(buffer);
-	buffer = NULL;	
+	buffer = NULL;
 }
 
 static void query_format(AFormat * fmt, gint * rate, gint * nch)

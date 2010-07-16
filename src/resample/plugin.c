@@ -19,13 +19,13 @@
 
 #include <gtk/gtk.h>
 
-#include "config.h"
-
+#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
+#include "config.h"
 #include "resample.h"
 
 int common_rates[] = {8000, 16000, 22050, 44100, 48000, 96000, 192000};

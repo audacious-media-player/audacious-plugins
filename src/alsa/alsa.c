@@ -47,6 +47,8 @@
 #include <alsa/asoundlib.h>
 #include <glib.h>
 
+#include <audacious/debug.h>
+
 #include "alsa.h"
 
 #define CHECK_VAL_RECOVER(value, function, ...) \

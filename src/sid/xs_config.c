@@ -1,11 +1,11 @@
-/*  
+/*
    XMMS-SID - SIDPlay input plugin for X MultiMedia System (XMMS)
 
    Configuration dialog
-   
+
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
    (C) Copyright 1999-2009 Tecnic Software productions (TNSP)
-   
+
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 2 of the License, or
@@ -23,7 +23,10 @@
 #include "xs_config.h"
 
 #ifdef AUDACIOUS_PLUGIN
+
+#include <audacious/configdb.h>
 #include <audacious/plugin.h>
+
 #define XS_CONFIG_FILE          mcs_handle_t
 #define XS_CONFIG_OPEN          aud_cfg_db_open
 #define XS_CONFIG_FREE          aud_cfg_db_close
@@ -73,7 +76,7 @@ static GtkWidget *xs_configwin = NULL,
 /* Samplerates
  */
 static const gchar *xs_samplerates_table[] = {
-    "8000", "11025", "22050", 
+    "8000", "11025", "22050",
     "44100", "48000", "64000",
     "96000"
 };
@@ -211,7 +214,7 @@ void xs_init_configuration(void)
     XS_MUTEX_LOCK(xs_cfg);
 
     memset(&xs_cfg, 0, sizeof(xs_cfg));
-    
+
     /* Initialize values with sensible defaults */
     xs_cfg.audioBitsPerSample = XS_RES_16BIT;
     xs_cfg.audioChannels = XS_CHN_MONO;
@@ -312,7 +315,7 @@ static void xs_filters_error(const gchar *fmt, ...)
     va_end(ap);
 #else
     gchar *msg;
-    
+
     va_start(ap, fmt);
     msg = g_strdup_vprintf(fmt, ap);
     va_end(ap);
@@ -342,27 +345,27 @@ static gboolean xs_filter_load_into(XS_CONFIG_FILE *cfg, gint nFilter, xs_sid_fi
     g_snprintf(tmpKey, sizeof(tmpKey), "filter%dType", nFilter);
     if (!XS_CFG_GET_INT(tmpKey, &(filter->type)))
         return FALSE;
-    
+
     g_snprintf(tmpKey, sizeof(tmpKey), "filter%dName", nFilter);
     if (!XS_CFG_GET_STRING(tmpKey, &tmpStr))
         return FALSE;
-    
+
     filter->name = g_strdup(tmpStr);
     if (filter->name == NULL)
         return FALSE;
-    
+
     if (filter->type == 1) {
         gint i, j;
-        
+
         /* Types 1 has points */
         g_snprintf(tmpKey, sizeof(tmpKey), "filter%dNPoints", nFilter);
         if (!XS_CFG_GET_INT(tmpKey, &(filter->npoints)))
             return FALSE;
-    
+
         g_snprintf(tmpKey, sizeof(tmpKey), "filter%dPoints", nFilter);
         if (!XS_CFG_GET_STRING(tmpKey, &tmpStr))
             return FALSE;
-    
+
         for (i = 0, j = 0; i < filter->npoints; i++, j += XS_FITEM) {
             if (sscanf(&tmpStr[j], "%4x%4x",
                 &(filter->points[i].x),
@@ -374,33 +377,33 @@ static gboolean xs_filter_load_into(XS_CONFIG_FILE *cfg, gint nFilter, xs_sid_fi
         g_snprintf(tmpKey, sizeof(tmpKey), "filter%dData", nFilter);
         if (!XS_CFG_GET_STRING(tmpKey, &tmpStr))
             return FALSE;
-        
+
         if (sscanf(tmpStr, "%f,%f,%f,%f", &filter->rate, &filter->point,
             &filter->voice_nonlinearity, &filter->cf_treshold) != 4)
             return FALSE;
-        
+
         g_snprintf(tmpKey, sizeof(tmpKey), "filter%dData3", nFilter);
         if (!XS_CFG_GET_STRING(tmpKey, &tmpStr))
             return FALSE;
-        
+
         if (sscanf(tmpStr, "%f,%f,%f,%f", &filter->baseresistance,
             &filter->offset, &filter->steepness,
             &filter->minimumfetresistance) != 4)
             return FALSE;
-        
+
     } else if (filter->type == 4) {
         /* Type 4 has fewer tunables */
         g_snprintf(tmpKey, sizeof(tmpKey), "filter%dData4", nFilter);
         if (!XS_CFG_GET_STRING(tmpKey, &tmpStr))
             return FALSE;
-        
+
         if (sscanf(tmpStr, "%f,%f", &filter->k, &filter->b) != 2)
             return FALSE;
     } else {
         xs_error("Unknown filter type %d for '%s' (#%d).\n", filter->type, filter->name, nFilter);
         return FALSE;
     }
-    
+
     return TRUE;
 }
 
@@ -408,11 +411,11 @@ static gboolean xs_filter_load_into(XS_CONFIG_FILE *cfg, gint nFilter, xs_sid_fi
 static xs_sid_filter_t * xs_filter_load(XS_CONFIG_FILE *cfg, gint nFilter)
 {
     xs_sid_filter_t *filter;
-    
+
     /* Allocate filter struct */
     if ((filter = g_malloc0(sizeof(xs_sid_filter_t))) == NULL)
         return NULL;
-    
+
     if (!xs_filter_load_into(cfg, nFilter, filter)) {
         xs_error("Error loading filter %d from configuration.\n", nFilter);
         xs_filter_free(filter);
@@ -427,29 +430,29 @@ static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, xs_sid_filter_t *pFilter, gi
 {
     gchar *tmpValue, tmpKey[64];
     gint i, j;
-    
+
     /* Allocate memory for value string */
     tmpValue = g_malloc(sizeof(gchar) * XS_FITEM * (pFilter->npoints + 1));
     if (tmpValue == NULL)
         return FALSE;
-    
+
     /* Make value string */
     for (i = 0, j = 0; i < pFilter->npoints; i++, j += XS_FITEM) {
         g_snprintf(&tmpValue[j], XS_FITEM+1, "%04x%04x",
             pFilter->points[i].x,
             pFilter->points[i].y);
     }
-    
+
     /* Write into the configuration */
     g_snprintf(tmpKey, sizeof(tmpKey), "filter%dName", nFilter);
     XS_CFG_SET_STRING(tmpKey, pFilter->name);
-    
+
     g_snprintf(tmpKey, sizeof(tmpKey), "filter%dNPoints", nFilter);
     XS_CFG_SET_INT(tmpKey, pFilter->npoints);
 
     g_snprintf(tmpKey, sizeof(tmpKey), "filter%dPoints", nFilter);
     XS_CFG_SET_STRING(tmpKey, tmpValue);
-    
+
     g_free(tmpValue);
     return TRUE;
 }
@@ -462,14 +465,14 @@ static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, xs_sid_filter_t *pFilter, gi
 static gboolean xs_fgetitem(gchar *inLine, size_t *linePos, gchar sep, gchar *tmpStr, size_t tmpMax)
 {
     size_t i;
-    
+
     for (i = 0; i < tmpMax && inLine[*linePos] &&
         inLine[*linePos] != sep; i++, (*linePos)++)
         tmpStr[i] = inLine[*linePos];
-    
+
     tmpStr[i] = 0;
     while (--i > 0 && isspace(tmpStr[i])) tmpStr[i] = 0;
-    
+
     xs_findnext(inLine, linePos);
     return (inLine[*linePos] == sep);
 }
@@ -508,13 +511,13 @@ fprintf(stderr, "xs_filters_import(%s)\n", filename);
     }
 
 fprintf(stderr, "importing...\n");
-    
+
     inSection = FALSE;
     lineNum = 0;
     while (fgets(inLine, XS_BUF_SIZE, inFile) != NULL && !isError) {
         size_t linePos = 0;
         lineNum++;
-        
+
         xs_findnext(inLine, &linePos);
         if (isalpha(inLine[linePos])) {
             /* A new key/value pair */
@@ -524,17 +527,17 @@ fprintf(stderr, "importing...\n");
             } else if (inSection) {
                 linePos++;
                 xs_findnext(inLine, &linePos);
-                
+
                 if (xs_chkf(filter, tmpStr, "points", 1)) {
-                    
+
                 } else if (xs_chkf(filter, tmpStr, "point", 1)) {
-                
+
                 } else if (!g_strncasecmp(tmpStr, "type", 4)) {
                     if (filter->type != -1) {
                         xs_error("Filter type %d already set for '%s'\n",
                             filter->type, sectName);
                     }
-                    
+
                 } else {
                     xs_error("Unsupported definition '%s' @ '%s'\n",
                         tmpStr, sectName);
@@ -548,17 +551,17 @@ fprintf(stderr, "importing...\n");
                 if ((filter = g_malloc0(sizeof(xs_sid_filter_t))) == NULL) {
                     fprintf(stderr, "could not allocate ..\n");
                 } else {
-                    
+
                 }
                 g_free(sectName);
             }
-            
+
             /* New filter(?) section starts */
             linePos++;
             for (i = 0; i < XS_BUF_SIZE-1 && inLine[linePos] && inLine[linePos] != ']'; i++, linePos++)
                 tmpStr[i] = inLine[linePos];
             tmpStr[i] = 0;
-            
+
             if (inLine[linePos] != ']') {
                 fprintf(stderr, "invalid! expected ']': %s\n", inLine);
             } else {
@@ -577,7 +580,7 @@ fprintf(stderr, "importing...\n");
             isError = TRUE;
         }
     }
-    
+
     fclose(inFile);
     return TRUE;
 }
@@ -589,11 +592,11 @@ static gboolean xs_filter_export(FILE *outFile, xs_sid_filter_t *filter)
     "[Filter%s]\n"
     "type=%d\n",
     filter->name, filter->type);
-    
+
     if (filter->type == 1) {
         gint i;
         fprintf(outFile, "points=%d\n", filter->npoints);
-        
+
         for (i = 0; i < filter->npoints; i++) {
             fprintf(outFile,
             "point%d=%d,%d\n",
@@ -610,7 +613,7 @@ static gboolean xs_filter_export(FILE *outFile, xs_sid_filter_t *filter)
         filter->rate, filter->point,
         filter->voice_nonlinearity,
         filter->cf_treshold);
-        
+
         fprintf(outFile,
         "Type3BaseResistance       = %f\n"
         "Type3Offset               = %f\n"
@@ -618,7 +621,7 @@ static gboolean xs_filter_export(FILE *outFile, xs_sid_filter_t *filter)
         "Type3MinimumFETResistance = %f\n",
         filter->baseresistance, filter->offset,
         filter->steepness, filter->minimumfetresistance);
-        
+
     } else if (filter->type == 4) {
         fprintf(outFile,
         "Type4K=%f\n"
@@ -629,7 +632,7 @@ static gboolean xs_filter_export(FILE *outFile, xs_sid_filter_t *filter)
         filter->name, filter->type);
         return FALSE;
     }
-    
+
     fprintf(outFile, "\n");
     return TRUE;
 }
@@ -640,18 +643,18 @@ static gboolean xs_filters_export(const gchar *filename, xs_sid_filter_t **filte
     gboolean result = TRUE;
     FILE *outFile;
     gint n;
-    
+
     /* Open/create the file */
     if ((outFile = fopen(filename, "wa")) == NULL) {
         xs_filters_error("Could not open '%s' for writing! Not exporting.", filename);
         return FALSE;
     }
-    
+
     /* Header */
     fprintf(outFile,
     "; SIDPlay2 compatible filter definition file\n"
     "; Exported by " PACKAGE_STRING "\n\n");
-    
+
     /* Write each filter spec in "INI"-style format */
     for (n = 0; n < nFilters; n++) {
         if (!xs_filter_export(outFile, filters[n])) {
@@ -659,12 +662,12 @@ static gboolean xs_filters_export(const gchar *filename, xs_sid_filter_t **filte
             break;
         }
     }
-    
+
     fclose(outFile);
-    
+
     if (!result)
         xs_filters_error("Some filters could not be exported!");
-    
+
     return result;
 }
 
@@ -706,7 +709,7 @@ void xs_read_configuration(void)
             XS_CFG_GET_FLOAT(xs_cfgtable[i].itemName,
                 (gfloat *) xs_cfgtable[i].itemData);
             break;
-        
+
         case CTYPE_STR:
             if (XS_CFG_GET_STRING(xs_cfgtable[i].itemName,
                 (gchar **) &tmpStr)) {
@@ -716,10 +719,10 @@ void xs_read_configuration(void)
             break;
         }
     }
-    
+
     /* Filters and presets are a special case */
     xs_filter_load_into(cfg, 0, &xs_cfg.sid2Filter);
-    
+
     if (xs_cfg.sid2NFilterPresets > 0) {
         xs_cfg.sid2FilterPresets = g_malloc0(xs_cfg.sid2NFilterPresets * sizeof(xs_sid_filter_t *));
         if (!xs_cfg.sid2FilterPresets) {
@@ -806,7 +809,7 @@ void xs_cfg_ok(void)
     gfloat tmpValue;
     gint tmpInt;
     const gchar *tmpStr;
-    
+
     xs_stop(NULL);
 
     /* Get lock on configuration */
@@ -832,7 +835,7 @@ void xs_cfg_ok(void)
 
             *((gint *) xs_widtable[i].itemData) = tmpInt;
             break;
-            
+
         case WTYPE_SPIN:
         case WTYPE_SCALE:
             /* Get the value */
@@ -844,7 +847,7 @@ void xs_cfg_ok(void)
             case WTYPE_SCALE:
                 tmpValue = gtk_range_get_adjustment(GTK_RANGE(LUW(xs_widtable[i].widName)))->value;
                 break;
-            
+
             default:
                 tmpValue = -1;
                 break;
@@ -875,7 +878,7 @@ void xs_cfg_ok(void)
             break;
         }
     }
-    
+
     /* Get filter settings */
     /*
     if (!xs_curve_get_points(XS_CURVE(LUW("")), &xs_cfg.sid2Filter.points, &xs_cfg.sid2Filter.npoints)) {
@@ -885,7 +888,7 @@ void xs_cfg_ok(void)
 
     /* Release lock */
     XS_MUTEX_UNLOCK(xs_cfg);
-    
+
     /* Close window */
     gtk_widget_destroy(xs_configwin);
     xs_configwin = NULL;
@@ -905,7 +908,7 @@ gboolean xs_confirmwin_delete(GtkWidget *widget, GdkEvent *event, gpointer user_
     (void) widget;
     (void) event;
     (void) user_data;
-    
+
     return FALSE;
 }
 
@@ -935,7 +938,7 @@ void xs_sldb_fs_ok(GtkButton *button, gpointer user_data)
 {
     (void) button;
     (void) user_data;
-    
+
     /* Selection was accepted! */
     gtk_entry_set_text(GTK_ENTRY(LUW("cfg_sld_dbpath")),
                gtk_file_selection_get_filename(GTK_FILE_SELECTION(xs_sldb_fileselector)));
@@ -1044,7 +1047,7 @@ void xs_cfg_sp2_filter_update(XSCurve *curve, xs_sid_filter_t *f)
 {
     assert(curve);
     assert(f);
-    
+
     xs_curve_reset(curve);
     xs_curve_set_range(curve, 0,0, XS_SIDPLAY2_NFPOINTS, XS_SIDPLAY2_FMAX);
     if (!xs_curve_set_points(curve, f->points, f->npoints)) {
@@ -1058,12 +1061,12 @@ void xs_cfg_sp2_presets_update(void)
 {
     GList *tmpList = NULL;
     gint i;
-    
+
     for (i = 0; i < xs_cfg.sid2NFilterPresets; i++) {
         tmpList = g_list_append(tmpList,
             (gpointer) xs_cfg.sid2FilterPresets[i]->name);
     }
-    
+
     gtk_combo_set_popdown_strings(GTK_COMBO(LUW("cfg_sp2_filter_combo")), tmpList);
     g_list_free(tmpList);
 }
@@ -1073,12 +1076,12 @@ void xs_cfg_sp2_filter_load(GtkButton *button, gpointer user_data)
 {
     const gchar *tmpStr;
     gint i, j;
-    
+
     (void) button;
     (void) user_data;
-    
+
     XS_MUTEX_LOCK(xs_cfg);
-    
+
     tmpStr = gtk_entry_get_text(GTK_ENTRY(LUW("cfg_sp2_filter_combo_entry")));
     for (i = 0, j = -1; i < xs_cfg.sid2NFilterPresets; i++) {
         if (!strcmp(tmpStr, xs_cfg.sid2FilterPresets[i]->name)) {
@@ -1086,7 +1089,7 @@ void xs_cfg_sp2_filter_load(GtkButton *button, gpointer user_data)
             break;
         }
     }
-    
+
     if (j != -1) {
         fprintf(stderr, "Updating from '%s'\n", tmpStr);
         xs_cfg_sp2_filter_update(
@@ -1096,7 +1099,7 @@ void xs_cfg_sp2_filter_load(GtkButton *button, gpointer user_data)
         /* error/warning: no such filter preset */
         fprintf(stderr, "No such filter preset '%s'!\n", tmpStr);
     }
-    
+
     XS_MUTEX_UNLOCK(xs_cfg);
 }
 
@@ -1107,17 +1110,17 @@ void xs_cfg_sp2_filter_save(GtkButton *button, gpointer user_data)
     1) check if textentry matches any current filter name
         yes) ask if saving over ok?
         no) ...
-        
-    2) save current filter to the name        
+
+    2) save current filter to the name
     */
     const gchar *tmpStr;
     gint i, j;
-    
+
     (void) button;
     (void) user_data;
-    
+
     XS_MUTEX_LOCK(xs_cfg);
-    
+
     tmpStr = gtk_entry_get_text(GTK_ENTRY(LUW("cfg_sp2_filter_combo_entry")));
     for (i = 0, j = -1; i < xs_cfg.sid2NFilterPresets; i++) {
         if (!strcmp(tmpStr, xs_cfg.sid2FilterPresets[i]->name)) {
@@ -1125,15 +1128,15 @@ void xs_cfg_sp2_filter_save(GtkButton *button, gpointer user_data)
             break;
         }
     }
-    
+
     if (j != -1) {
         fprintf(stderr, "Found, confirm overwrite?\n");
     }
-    
+
     fprintf(stderr, "saving!\n");
-    
+
     xs_cfg_sp2_presets_update();
-    
+
     XS_MUTEX_UNLOCK(xs_cfg);
 }
 
@@ -1169,7 +1172,7 @@ void xs_filter_import_fs_ok(GtkButton *button, gpointer user_data)
     const gchar *tmpStr;
     (void) button;
     (void) user_data;
-    
+
     XS_MUTEX_LOCK(xs_cfg);
 
     /* Selection was accepted! */
@@ -1416,7 +1419,7 @@ void xs_configure(void)
 
     /* Create the window */
     xs_configwin = create_xs_configwin();
-    
+
     /* Get lock on configuration */
     XS_MUTEX_LOCK(xs_cfg);
 
@@ -1427,7 +1430,7 @@ void xs_configure(void)
     }
     gtk_combo_set_popdown_strings(GTK_COMBO(LUW("cfg_samplerate_combo")), tmpList);
     g_list_free(tmpList);
-    
+
     /* Create the custom filter curve widget for libSIDPlay2 */
     xs_cfg_sp2_presets_update();
     tmpCurve = xs_curve_new();
@@ -1490,7 +1493,7 @@ void xs_configure(void)
             g_snprintf(tmpStr, sizeof(tmpStr), "%d", *(gint *) xs_widtable[i].itemData);
             gtk_entry_set_text(GTK_ENTRY(LUW(xs_widtable[i].widName)), tmpStr);
             break;
-            
+
         case WTYPE_SPIN:
         case WTYPE_SCALE:
             /* Get the value */

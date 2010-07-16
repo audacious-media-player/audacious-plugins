@@ -38,8 +38,10 @@
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
+#include <audacious/configdb.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -47,12 +49,12 @@
 
 static size_t ovcb_read (void * buffer, size_t size, size_t count, void * file)
 {
-    return aud_vfs_fread (buffer, size, count, file);
+    return vfs_fread (buffer, size, count, file);
 }
 
 static int ovcb_seek (void * file, ogg_int64_t offset, int whence)
 {
-    return aud_vfs_fseek (file, offset, whence);
+    return vfs_fseek (file, offset, whence);
 }
 
 static int ovcb_close (void * file)
@@ -62,7 +64,7 @@ static int ovcb_close (void * file)
 
 static long ovcb_tell (void * file)
 {
-    return aud_vfs_ftell (file);
+    return vfs_ftell (file);
 }
 
 ov_callbacks vorbis_callbacks = {
@@ -100,7 +102,7 @@ vorbis_check_fd(const gchar *filename, VFSFile *stream)
 
     memset(&vfile, 0, sizeof(vfile));
 
-    result = ov_test_callbacks (stream, & vfile, NULL, 0, aud_vfs_is_streaming
+    result = ov_test_callbacks (stream, & vfile, NULL, 0, vfs_is_streaming
      (stream) ? vorbis_callbacks_stream : vorbis_callbacks);
 
     switch (result) {
@@ -152,28 +154,28 @@ set_tuple_str(Tuple *tuple, const gint nfield, const gchar *field,
 {
     gchar *str = vorbis_comment_query(comment, key, 0);
     if (str != NULL) {
-        gchar *tmp = aud_str_to_utf8(str);
-        aud_tuple_associate_string(tuple, nfield, field, tmp);
+        gchar *tmp = str_to_utf8(str);
+        tuple_associate_string(tuple, nfield, field, tmp);
         g_free(tmp);
     }
 }
 
 static Tuple *
-get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
+get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
 {
     Tuple *tuple;
     gint length;
     vorbis_comment *comment = NULL;
 
-    tuple = aud_tuple_new_from_filename(filename);
+    tuple = tuple_new_from_filename(filename);
 
-    length = aud_vfs_is_streaming (vorbisfile->datasource) ? -1 : ov_time_total
+    length = vfs_is_streaming (vorbisfile->datasource) ? -1 : ov_time_total
      (vorbisfile, -1) * 1000;
 
     /* associate with tuple */
-    aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
+    tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
     /* maybe, it would be better to display nominal bitrate (like in main win), not average? --eugene */
-    aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, ov_bitrate(vorbisfile, -1) / 1000);
+    tuple_associate_int(tuple, FIELD_BITRATE, NULL, ov_bitrate(vorbisfile, -1) / 1000);
 
     if ((comment = ov_comment(vorbisfile, -1)) != NULL) {
         gchar *tmps;
@@ -184,24 +186,24 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
         set_tuple_str(tuple, FIELD_COMMENT, NULL, comment, "comment");
 
         if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != NULL)
-            aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(tmps));
+            tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(tmps));
 
         if ((tmps = vorbis_comment_query (comment, "date", 0)) != NULL)
-            aud_tuple_associate_int (tuple, FIELD_YEAR, NULL, atoi (tmps));
+            tuple_associate_int (tuple, FIELD_YEAR, NULL, atoi (tmps));
     }
 
-    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
+    tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
 
     if (comment != NULL && comment->vendor != NULL)
     {
         gchar *codec = g_strdup_printf("Ogg Vorbis [%s]", comment->vendor);
-        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, codec);
+        tuple_associate_string(tuple, FIELD_CODEC, NULL, codec);
         g_free(codec);
     }
     else
-        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "Ogg Vorbis");
+        tuple_associate_string(tuple, FIELD_CODEC, NULL, "Ogg Vorbis");
 
-    aud_tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "application/ogg");
+    tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "application/ogg");
 
     return tuple;
 }
@@ -315,7 +317,7 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
     seek_value = (start_time > 0) ? start_time : -1;
     memset(&vf, 0, sizeof(vf));
 
-    if (ov_open_callbacks (file, & vf, NULL, 0, aud_vfs_is_streaming (file) ?
+    if (ov_open_callbacks (file, & vf, NULL, 0, vfs_is_streaming (file) ?
      vorbis_callbacks_stream : vorbis_callbacks) < 0)
     {
         playback->error = TRUE;
@@ -412,7 +414,7 @@ DRAIN:
                 g_free (title);
                 title = g_strdup (new_title);
 
-                playback->set_tuple (playback, get_aud_tuple_for_vorbisfile
+                playback->set_tuple (playback, get_tuple_for_vorbisfile
                  (& vf, playback->filename));
             }
         }
@@ -529,11 +531,11 @@ static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
      * machine initialization.  If it returns zero, the stream
      * *is* Vorbis and we're fully ready to decode.
      */
-    if (ov_open_callbacks (file, & vfile, NULL, 0, aud_vfs_is_streaming (file) ?
+    if (ov_open_callbacks (file, & vfile, NULL, 0, vfs_is_streaming (file) ?
      vorbis_callbacks_stream : vorbis_callbacks) < 0)
         return NULL;
 
-    tuple = get_aud_tuple_for_vorbisfile(&vfile, filename);
+    tuple = get_tuple_for_vorbisfile(&vfile, filename);
     ov_clear(&vfile);
     return tuple;
 }

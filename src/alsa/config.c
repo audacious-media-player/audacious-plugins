@@ -20,6 +20,7 @@
 #include <alsa/asoundlib.h>
 #include <gtk/gtk.h>
 
+#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -52,7 +53,7 @@ static GtkTreeIter * list_lookup_member (GtkListStore * list, const char * text)
             free (iter_text);
             return & iter;
         }
-        
+
         free (iter_text);
     }
     while (gtk_tree_model_iter_next ((GtkTreeModel *) list, & iter));

@@ -9,6 +9,7 @@
 
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -60,7 +61,7 @@ static guint32 mp4_read_callback(void *data, void *buffer, guint32 len)
     if (data == NULL || buffer == NULL)
         return -1;
 
-    return aud_vfs_fread(buffer, 1, len, (VFSFile *) data);
+    return vfs_fread(buffer, 1, len, (VFSFile *) data);
 }
 
 static guint32 mp4_seek_callback (void * data, guint64 pos)
@@ -68,7 +69,7 @@ static guint32 mp4_seek_callback (void * data, guint64 pos)
     g_return_val_if_fail (data != NULL, -1);
     g_return_val_if_fail (pos <= G_MAXLONG, -1);
 
-    return aud_vfs_fseek((VFSFile *) data, pos, SEEK_SET);
+    return vfs_fseek((VFSFile *) data, pos, SEEK_SET);
 }
 
 static void mp4_init(void)
@@ -195,7 +196,7 @@ static gboolean parse_aac_stream (VFSFile * stream)
 
     size = 0; /* avoid bogus uninitialized variable warning */
 
-    if (aud_vfs_fread (data, 1, sizeof data, stream) != sizeof data)
+    if (vfs_fread (data, 1, sizeof data, stream) != sizeof data)
     {
         PROBE_DEBUG ("Read failed.\n");
         return FALSE;
@@ -268,12 +269,12 @@ static gint mp4_is_our_fd(const gchar *filename, VFSFile* file)
   gchar magic[8];
 
   extension = strrchr(filename, '.');
-  aud_vfs_fread(magic, 1, 8, file);
-  aud_vfs_rewind(file);
+  vfs_fread(magic, 1, 8, file);
+  vfs_rewind(file);
   if (parse_aac_stream(file) == TRUE)
     return 1;
 
-  aud_vfs_fseek (file, 0, SEEK_SET);
+  vfs_fseek (file, 0, SEEK_SET);
   return is_mp4_aac_file (file);
 }
 
@@ -310,7 +311,7 @@ static void calc_aac_info (VFSFile * handle, gint * length, gint * bitrate,
     NeAACDecHandle decoder;
     NeAACDecFrameInfo frame;
     gboolean initted = FALSE;
-    gint size = aud_vfs_fsize (handle);
+    gint size = vfs_fsize (handle);
     guchar buffer[BUFFER_SIZE];
     gint offset = 0, filled = 0;
     gint found, bytes_used = 0, time_used = 0;
@@ -324,7 +325,7 @@ static void calc_aac_info (VFSFile * handle, gint * length, gint * bitrate,
 
     /* look for a representative bitrate in the middle of the file */
     if (size > 0)
-        aud_vfs_fseek (handle, size / 2, SEEK_SET);
+        vfs_fseek (handle, size / 2, SEEK_SET);
 
     for (found = 0; found < 32; found ++)
     {
@@ -333,7 +334,7 @@ static void calc_aac_info (VFSFile * handle, gint * length, gint * bitrate,
             memmove (buffer, buffer + offset, filled);
             offset = 0;
 
-            if (aud_vfs_fread (buffer + filled, 1, BUFFER_SIZE - filled, handle)
+            if (vfs_fread (buffer + filled, 1, BUFFER_SIZE - filled, handle)
              != BUFFER_SIZE - filled)
             {
                 PROBE_DEBUG ("Read failed.\n");
@@ -417,7 +418,7 @@ static Tuple * aac_get_tuple (const gchar * filename, VFSFile * handle)
 
     tuple_associate_string (tuple, FIELD_CODEC, NULL, "MPEG-2/4 AAC");
 
-    if (! aud_vfs_is_remote (filename))
+    if (! vfs_is_remote (filename))
     {
         calc_aac_info (handle, & length, & bitrate, & samplerate, & channels);
 
@@ -428,21 +429,21 @@ static Tuple * aac_get_tuple (const gchar * filename, VFSFile * handle)
             tuple_associate_int (tuple, FIELD_BITRATE, NULL, bitrate);
     }
 
-    temp = aud_vfs_get_metadata (handle, "track-name");
+    temp = vfs_get_metadata (handle, "track-name");
     if (temp != NULL)
     {
         tuple_associate_string (tuple, FIELD_TITLE, NULL, temp);
         g_free (temp);
     }
 
-    temp = aud_vfs_get_metadata (handle, "stream-name");
+    temp = vfs_get_metadata (handle, "stream-name");
     if (temp != NULL)
     {
         tuple_associate_string (tuple, FIELD_ALBUM, NULL, temp);
         g_free (temp);
     }
 
-    temp = aud_vfs_get_metadata (handle, "content-bitrate");
+    temp = vfs_get_metadata (handle, "content-bitrate");
     if (temp != NULL)
     {
         tuple_associate_int (tuple, FIELD_BITRATE, NULL, atoi (temp) / 1000);
@@ -456,7 +457,7 @@ static gboolean aac_title_changed (const gchar * filename, VFSFile * handle,
  Tuple * tuple)
 {
     const gchar * old = tuple_get_string (tuple, FIELD_TITLE, NULL);
-    gchar * new = aud_vfs_get_metadata (handle, "track-name");
+    gchar * new = vfs_get_metadata (handle, "track-name");
     gboolean changed = FALSE;
 
     changed = (new != NULL && (old == NULL || strcmp (old, new)));
@@ -544,7 +545,7 @@ static Tuple * mp4_get_tuple (const gchar * filename, VFSFile * handle)
     if (parse_aac_stream (handle))
         return aac_get_tuple (filename, handle);
 
-    aud_vfs_fseek (handle, 0, SEEK_SET);
+    vfs_fseek (handle, 0, SEEK_SET);
 
     mp4cb.read = mp4_read_callback;
     mp4cb.seek = mp4_seek_callback;
@@ -736,8 +737,8 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     guchar      channels = 0;
     gulong      buffervalid = 0;
     gulong	ret = 0;
-    gboolean    remote = aud_str_has_prefix_nocase(filename, "http:") ||
-			 aud_str_has_prefix_nocase(filename, "https:");
+    gboolean    remote = str_has_prefix_nocase(filename, "http:") ||
+			 str_has_prefix_nocase(filename, "https:");
     gboolean paused = FALSE;
     Tuple * tuple;
     gint bitrate = 0;
@@ -752,17 +753,17 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         bitrate = 1000 * MAX (0, bitrate);
     }
 
-    aud_vfs_rewind(file);
+    vfs_rewind(file);
     if((decoder = NeAACDecOpen()) == NULL){
         g_print("AAC: Open Decoder Error\n");
-        aud_vfs_fclose(file);
+        vfs_fclose(file);
 
         playback->playing = FALSE;
         return;
     }
-    if((buffervalid = aud_vfs_fread(streambuffer, 1, BUFFER_SIZE, file))==0){
+    if((buffervalid = vfs_fread(streambuffer, 1, BUFFER_SIZE, file))==0){
         g_print("AAC: Error reading file\n");
-        aud_vfs_fclose(file);
+        vfs_fclose(file);
         NeAACDecClose(decoder);
 
         playback->playing = FALSE;
@@ -771,19 +772,19 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     if(!strncmp((char*)streambuffer, "ID3", 3)){
         gint size = 0;
 
-        aud_vfs_fseek(file, 0, SEEK_SET);
+        vfs_fseek(file, 0, SEEK_SET);
         size = (streambuffer[6]<<21) | (streambuffer[7]<<14) |
 		(streambuffer[8]<<7) | streambuffer[9];
         size+=10;
-        aud_vfs_fread(streambuffer, 1, size, file);
-        buffervalid = aud_vfs_fread(streambuffer, 1, BUFFER_SIZE, file);
+        vfs_fread(streambuffer, 1, size, file);
+        buffervalid = vfs_fread(streambuffer, 1, BUFFER_SIZE, file);
     }
 
     bufferconsumed = aac_probe(streambuffer, buffervalid);
     if(bufferconsumed) {
       buffervalid -= bufferconsumed;
       memmove(streambuffer, &streambuffer[bufferconsumed], buffervalid);
-      buffervalid += aud_vfs_fread(&streambuffer[buffervalid], 1,
+      buffervalid += vfs_fread(&streambuffer[buffervalid], 1,
                      BUFFER_SIZE-buffervalid, file);
     }
 
@@ -797,7 +798,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 #endif
     if(playback->output->open_audio(FMT_S16_NE,samplerate,channels) == FALSE){
         NeAACDecClose(decoder);
-        aud_vfs_fclose(file);
+        vfs_fclose(file);
         playback->playing = FALSE;
         playback->error = TRUE;
         return;
@@ -840,7 +841,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         {
             buffervalid -= bufferconsumed;
             memmove(streambuffer, &streambuffer[bufferconsumed], buffervalid);
-            ret = aud_vfs_fread(&streambuffer[buffervalid], 1,
+            ret = vfs_fread(&streambuffer[buffervalid], 1,
                          BUFFER_SIZE-buffervalid, file);
             buffervalid += ret;
             bufferconsumed = 0;
@@ -867,7 +868,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
             memmove(streambuffer, &streambuffer[1], buffervalid);
             if(buffervalid < BUFFER_SIZE) {
                buffervalid +=
-                 aud_vfs_fread(&streambuffer[buffervalid], 1, BUFFER_SIZE-buffervalid, file);
+                 vfs_fread(&streambuffer[buffervalid], 1, BUFFER_SIZE-buffervalid, file);
 	    }
             bufferconsumed = aac_probe(streambuffer, buffervalid);
             if(bufferconsumed) {
@@ -889,7 +890,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     }
     playback->output->close_audio();
     NeAACDecClose(decoder);
-    aud_vfs_fclose(file);
+    vfs_fclose(file);
 
     if (tuple != NULL)
         mowgli_object_unref (tuple);
@@ -907,7 +908,7 @@ static void *mp4_decode( void *args )
     InputPlayback *playback = args;
     char *filename = playback->filename;
 
-    mp4fh = aud_vfs_fopen (filename, "r");
+    mp4fh = vfs_fopen (filename, "r");
 
     if (mp4fh == NULL)
         return NULL;
@@ -915,10 +916,10 @@ static void *mp4_decode( void *args )
     ret = parse_aac_stream(mp4fh);
 
     if( ret == TRUE )
-        aud_vfs_fseek(mp4fh, 0, SEEK_SET);
+        vfs_fseek(mp4fh, 0, SEEK_SET);
     else {
-        aud_vfs_fclose(mp4fh);
-        mp4fh = aud_vfs_fopen(filename, "rb");
+        vfs_fclose(mp4fh);
+        mp4fh = vfs_fopen(filename, "rb");
     }
 
     mp4cb->read = mp4_read_callback;

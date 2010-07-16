@@ -22,12 +22,12 @@
 #include "esdout.h"
 
 #include <glib.h>
-#include <audacious/plugin.h>
-#include <audacious/i18n.h>
 #include <gtk/gtk.h>
 #include <stdlib.h>
 
-
+#include <audacious/configdb.h>
+#include <audacious/plugin.h>
+#include <audacious/i18n.h>
 
 static GtkWidget *configure_win;
 static GtkWidget *server_use_remote, *server_oss_mixer, *server_host_entry;

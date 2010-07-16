@@ -41,7 +41,7 @@ typedef struct _SMBFile {
 } SMBFile;
 
 /* TODO: make writing work. */
-VFSFile *smb_aud_vfs_fopen_impl(const gchar * path, const gchar * mode)
+VFSFile *smb_vfs_fopen_impl(const gchar * path, const gchar * mode)
 {
   VFSFile *file;
   SMBFile *handle;
@@ -66,7 +66,7 @@ VFSFile *smb_aud_vfs_fopen_impl(const gchar * path, const gchar * mode)
   return file;
 }
 
-gint smb_aud_vfs_fclose_impl(VFSFile * file)
+gint smb_vfs_fclose_impl(VFSFile * file)
 {
   gint ret = 0;
   SMBFile *handle;
@@ -85,7 +85,7 @@ gint smb_aud_vfs_fclose_impl(VFSFile * file)
   return ret;
 }
 
-size_t smb_aud_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
+size_t smb_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
 {
   SMBFile *handle;
   if (file == NULL)
@@ -94,12 +94,12 @@ size_t smb_aud_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile *
   return smbc_read(handle->fd, ptr, size * nmemb);
 }
 
-size_t smb_aud_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file)
+size_t smb_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file)
 {
   return 0;
 }
 
-gint smb_aud_vfs_getc_impl(VFSFile *file)
+gint smb_vfs_getc_impl(VFSFile *file)
 {
   SMBFile *handle;
   char temp;
@@ -108,7 +108,7 @@ gint smb_aud_vfs_getc_impl(VFSFile *file)
   return (gint) temp;
 }
 
-gint smb_aud_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
+gint smb_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
 {
   SMBFile *handle;
   glong roffset = offset;
@@ -138,19 +138,19 @@ gint smb_aud_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
   return ret;
 }
 
-gint smb_aud_vfs_ungetc_impl(gint c, VFSFile *file)
+gint smb_vfs_ungetc_impl(gint c, VFSFile *file)
 {
-  smb_aud_vfs_fseek_impl(file, -1, SEEK_CUR);
+  smb_vfs_fseek_impl(file, -1, SEEK_CUR);
   return c;
 }
 
-void smb_aud_vfs_rewind_impl(VFSFile * file)
+void smb_vfs_rewind_impl(VFSFile * file)
 {
-  smb_aud_vfs_fseek_impl(file, 0, SEEK_SET);
+  smb_vfs_fseek_impl(file, 0, SEEK_SET);
 }
 
 glong
-smb_aud_vfs_ftell_impl(VFSFile * file)
+smb_vfs_ftell_impl(VFSFile * file)
 {
   SMBFile *handle;
   handle = (SMBFile *)file->handle;
@@ -158,25 +158,25 @@ smb_aud_vfs_ftell_impl(VFSFile * file)
 }
 
 gboolean
-smb_aud_vfs_feof_impl(VFSFile * file)
+smb_vfs_feof_impl(VFSFile * file)
 {
   SMBFile *handle;
   off_t at;
 
-  at = smb_aud_vfs_ftell_impl(file);
+  at = smb_vfs_ftell_impl(file);
 
   //printf("%d %d %ld %ld\n",sizeof(int), sizeof(off_t), at, handle->length);
   return (gboolean) (at == handle->length) ? TRUE : FALSE;
 }
 
 gint
-smb_aud_vfs_truncate_impl(VFSFile * file, glong size)
+smb_vfs_truncate_impl(VFSFile * file, glong size)
 {
   return -1;
 }
 
 off_t
-smb_aud_vfs_fsize_impl(VFSFile * file)
+smb_vfs_fsize_impl(VFSFile * file)
 {
     SMBFile *handle = (SMBFile *)file->handle;
 
@@ -185,18 +185,18 @@ smb_aud_vfs_fsize_impl(VFSFile * file)
 
 VFSConstructor smb_const = {
 	"smb://",
-	smb_aud_vfs_fopen_impl,
-	smb_aud_vfs_fclose_impl,
-	smb_aud_vfs_fread_impl,
-	smb_aud_vfs_fwrite_impl,
-	smb_aud_vfs_getc_impl,
-	smb_aud_vfs_ungetc_impl,
-	smb_aud_vfs_fseek_impl,
-	smb_aud_vfs_rewind_impl,
-	smb_aud_vfs_ftell_impl,
-	smb_aud_vfs_feof_impl,
-	smb_aud_vfs_truncate_impl,
-	smb_aud_vfs_fsize_impl
+	smb_vfs_fopen_impl,
+	smb_vfs_fclose_impl,
+	smb_vfs_fread_impl,
+	smb_vfs_fwrite_impl,
+	smb_vfs_getc_impl,
+	smb_vfs_ungetc_impl,
+	smb_vfs_fseek_impl,
+	smb_vfs_rewind_impl,
+	smb_vfs_ftell_impl,
+	smb_vfs_feof_impl,
+	smb_vfs_truncate_impl,
+	smb_vfs_fsize_impl
 };
 
 static void init(void)
@@ -210,13 +210,13 @@ static void init(void)
 		return;
 	}
 
-	aud_vfs_register_transport(&smb_const);
+	vfs_register_transport(&smb_const);
 }
 
 static void cleanup(void)
 {
 #if 0
-	aud_vfs_unregister_transport(&smb_const);
+	vfs_unregister_transport(&smb_const);
 #endif
 }
 

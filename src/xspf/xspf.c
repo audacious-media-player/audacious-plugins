@@ -33,14 +33,16 @@
 #include <sys/stat.h>
 #include <sys/errno.h>
 
-#include <audacious/plugin.h>
-
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/xmlreader.h>
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 #include <libxml/uri.h>
+
+#include <audacious/debug.h>
+#include <audacious/playlist.h>
+#include <audacious/plugin.h>
 
 #define XSPF_ROOT_NODE_NAME "playlist"
 #define XSPF_XMLNS "http://xspf.org/ns/0/"
@@ -105,9 +107,9 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
     Tuple *tuple;
     gchar *location = NULL;
 
-    tuple = aud_tuple_new();
-    aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
-    aud_tuple_associate_int(tuple, FIELD_MTIME, NULL, -1);
+    tuple = tuple_new();
+    tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
+    tuple_associate_int(tuple, FIELD_MTIME, NULL, -1);
 
 
     for (nptr = track->children; nptr != NULL; nptr = nptr->next) {
@@ -156,12 +158,12 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
                     xmlChar *str = xmlNodeGetContent(nptr);
                     switch (xspf_entries[i].type) {
                         case TUPLE_STRING:
-                            aud_tuple_associate_string(tuple, xspf_entries[i].tupleField, NULL, (gchar *)str);
+                            tuple_associate_string(tuple, xspf_entries[i].tupleField, NULL, (gchar *)str);
                             break;
 
                         case TUPLE_INT:
                             AUDDBG("field=%s val=%s\n", xspf_entries[i].xspfName, str);
-                            aud_tuple_associate_int(tuple, xspf_entries[i].tupleField, NULL, atol((char *)str));
+                            tuple_associate_int(tuple, xspf_entries[i].tupleField, NULL, atol((char *)str));
                             break;
 
                         default:
@@ -429,7 +431,8 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     {
         const gchar * filename = aud_playlist_entry_get_filename (playlist,
          count);
-        const Tuple * tuple = aud_playlist_entry_get_tuple (playlist, count);
+        const Tuple * tuple = aud_playlist_entry_get_tuple (playlist, count,
+         FALSE);
         xmlNodePtr track, location;
         const gchar *scratch = NULL;
         gint scratchi = 0;
@@ -450,7 +453,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
 
                 switch (xs->type) {
                     case TUPLE_STRING:
-                        scratch = aud_tuple_get_string ((Tuple *) tuple,
+                        scratch = tuple_get_string ((Tuple *) tuple,
                          xs->tupleField, NULL);
 
                         switch (xs->compare) {
@@ -462,7 +465,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                         break;
 
                     case TUPLE_INT:
-                        scratchi = aud_tuple_get_int ((Tuple *) tuple,
+                        scratchi = tuple_get_int ((Tuple *) tuple,
                          xs->tupleField, NULL);
 
                         switch (xs->compare) {
