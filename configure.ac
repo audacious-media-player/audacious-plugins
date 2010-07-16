@@ -134,7 +134,7 @@ dnl These plugins are always built.
 INPUT_PLUGINS="tonegen console psf xsf metronom vtx"
 OUTPUT_PLUGINS="null"
 EFFECT_PLUGINS="compressor crossfade crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
-GENERAL_PLUGINS="song_change alarm skins vfstrace gtkui lyricwiki"
+GENERAL_PLUGINS="song_change alarm skins gtkui lyricwiki"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
 TRANSPORT_PLUGINS="unix-io"
@@ -1217,8 +1217,8 @@ esac
 dnl *** scrobbler ***
 
 AC_ARG_ENABLE(scrobbler,
- [  --enable-scrobbler      enable Scrobbler plugin (default=disabled)],
- [have_scrobbler=$enableval], [have_scrobbler="no"])
+ [  --enable-scrobbler      enable Scrobbler plugin (default=enabled)],
+ [have_scrobbler=$enableval], [have_scrobbler="yes"])
 
 if test "x$have_scrobbler" = "xyes"; then
     PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7],
