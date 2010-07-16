@@ -660,7 +660,6 @@ gchar *read_ini_string(INIFile *inifile, const gchar *section, const gchar *key)
     g_string_free(section_string, TRUE);
     g_string_free(key_string, TRUE);
 
-    g_return_val_if_fail(value, NULL);
     return value;
 }
 
