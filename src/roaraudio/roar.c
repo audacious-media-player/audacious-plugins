@@ -80,7 +80,7 @@ void roar_write(void *ptr, int length)
 
 	while (length)
 	{
-		if ((r = write(g_inst.data_fh, ptr, length >= 17640 ? 17640 : length)) != -1)
+		if ((r = roar_vio_write(&(g_inst.vio), ptr, length >= 17640 ? 17640 : length)) != -1)
 		{
 			g_inst.written += r;
 			ptr += r;
@@ -101,9 +101,8 @@ int roar_open(gint fmt, int rate, int nch)
 	if (!(g_inst.state & STATE_CONNECTED))
 	{
 		if (roar_simple_connect(&(g_inst.con), g_inst.server, g_inst.cfg.player_name) == -1)
-		{
 			return FALSE;
-		}
+
 		g_inst.state |= STATE_CONNECTED;
 	}
 
@@ -173,7 +172,7 @@ int roar_open(gint fmt, int rate, int nch)
 
 	roar_close();
 
-	if ((g_inst.data_fh = roar_simple_new_stream_obj(&(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY)) == -1)
+	if (roar_vio_simple_new_stream_obj(&(g_inst.vio), &(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY) == -1)
 	{
 		roar_disconnect(&(g_inst.con));
 		return FALSE;
@@ -193,11 +192,11 @@ int roar_open(gint fmt, int rate, int nch)
 
 void roar_close(void)
 {
-	if (g_inst.data_fh != -1)
-		close(g_inst.data_fh);
-	g_inst.data_fh = -1;
+	roar_vio_close(&(g_inst.vio));
+
 	g_inst.state &= ~STATE_PLAYING;
 	g_inst.written = 0;
+
 	ROAR_DBG("roar_close(void) = (void)");
 }
 
@@ -335,8 +334,6 @@ int roar_chk_metadata(void)
 }
 
 // MIXER:
-
-
 void roar_get_volume(int *l, int *r)
 {
 	struct roar_mixer_settings mixer;
@@ -382,4 +379,11 @@ void roar_set_volume(int l, int r)
 
 void roar_drain(void)
 {
+	if (!(g_inst.state & STATE_CONNECTED))
+		return;
+
+	if (!(g_inst.state & STATE_PLAYING))
+		return;
+
+	roar_vio_sync(&(g_inst.vio));
 }
