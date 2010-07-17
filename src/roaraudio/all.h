@@ -27,6 +27,8 @@
 #ifndef _ALL_H_
 #define _ALL_H_
 
+#include <config.h>
+
 #include <roaraudio.h>
 
 #include <gtk/gtk.h>
@@ -36,14 +38,10 @@
 
 #include <audacious/configdb.h>
 #include <audacious/plugin.h>
+#include <audacious/i18n.h>
 
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
-
-
-#define _(x) (x)
-
-gint ctrlsocket_get_session_id(void);
 
 OutputPluginInitStatus roar_init(void);
 void roar_about(void);
@@ -62,6 +60,8 @@ void roar_pause(short p);
 int roar_open(gint fmt, int rate, int nch);
 int roar_get_output_time(void);
 int roar_get_written_time(void);
+int roar__buffer_playing(void);
+int roar__buffer_free(void);
 
 int roar_update_metadata(void);
 int roar_chk_metadata(void);
@@ -78,9 +78,14 @@ struct xmms_roar_out
 	struct roar_connection con;
 	struct roar_stream stream;
 	long unsigned int written;
+	long unsigned int timer;
 	long unsigned int bps;
 	int session;
 	int pause;
+	int rate;
+	int nch;
+	int bits;
+	int codec;
 	struct
 	{
 		int server_type;

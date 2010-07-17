@@ -1,6 +1,7 @@
 /*
- *      Copyright (C) Philipp 'ph3-der-loewe' Schafft    - 2008,
- *                    Daniel Duntemann <dauxx@dauxx.org> - 2009
+ *      Copyright (C) Philipp 'ph3-der-loewe' Schafft      - 2008,
+ *                    Daniel Duntemann <dauxx@dauxx.org>   - 2009,
+ *                    William Pitcock <nenolod@atheme.org> - 2010.
  *
  *  This file is part of the Audacious RoarAudio output plugin a part of RoarAudio,
  *  a cross-platform sound system for both, home and professional use.
@@ -39,6 +40,8 @@ OutputPlugin roar_op = {
 	.pause = roar_pause,
 	.output_time = roar_get_output_time,
 	.written_time = roar_get_written_time,
+//	.buffer_playing = roar__buffer_playing,
+//	.buffer_free = roar__buffer_free,
 	.drain = roar_drain,
 };
 
@@ -65,6 +68,14 @@ OutputPluginInitStatus roar_init(void)
 	if (g_inst.cfg.player_name == NULL)
 		g_inst.cfg.player_name = "Audacious";
 
+	if (!(g_inst.state & STATE_CONNECTED))
+	{
+		if (roar_simple_connect(&(g_inst.con), g_inst.server, g_inst.cfg.player_name) == -1)
+			return OUTPUT_PLUGIN_INIT_FAIL;
+
+		g_inst.state |= STATE_CONNECTED;
+	}
+
 	ROAR_DBG("roar_init(*) = (void)");
 	return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
@@ -83,6 +94,7 @@ void roar_write(void *ptr, int length)
 		if ((r = roar_vio_write(&(g_inst.vio), ptr, length >= 17640 ? 17640 : length)) != -1)
 		{
 			g_inst.written += r;
+			g_inst.timer += r;
 			ptr += r;
 			length -= r;
 		}
@@ -93,18 +105,30 @@ void roar_write(void *ptr, int length)
 	}
 }
 
+gboolean roar_initialize_stream(struct roar_vio_calls *calls, struct roar_connection *con, struct roar_stream *stream, int rate, int nch, int bits, int codec, int dir)
+{
+	if (roar_vio_simple_new_stream_obj(&(g_inst.vio), &(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY) == -1)
+	{
+		roar_disconnect(&(g_inst.con));
+		return FALSE;
+	}
+
+	g_inst.bits = bits;
+	g_inst.nch = nch;
+	g_inst.rate = rate;
+	g_inst.codec = codec;
+	g_inst.written = 0;
+	g_inst.timer = 0;
+	g_inst.pause = 0;	
+	g_inst.state |= STATE_PLAYING;
+
+	return TRUE;
+}
+
 int roar_open(gint fmt, int rate, int nch)
 {
 	int codec = ROAR_CODEC_DEFAULT;
 	int bits;
-
-	if (!(g_inst.state & STATE_CONNECTED))
-	{
-		if (roar_simple_connect(&(g_inst.con), g_inst.server, g_inst.cfg.player_name) == -1)
-			return FALSE;
-
-		g_inst.state |= STATE_CONNECTED;
-	}
 
 	bits = 16;
 	switch (fmt)
@@ -170,18 +194,8 @@ int roar_open(gint fmt, int rate, int nch)
 
 	g_inst.bps = nch * rate * bits / 8;
 
-	roar_close();
-
-	if (roar_vio_simple_new_stream_obj(&(g_inst.vio), &(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY) == -1)
-	{
-		roar_disconnect(&(g_inst.con));
+	if (!roar_initialize_stream(&(g_inst.vio), &(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY))
 		return FALSE;
-	}
-
-	g_inst.state |= STATE_PLAYING;
-
-	g_inst.written = 0;
-	g_inst.pause = 0;
 
 #ifdef _WITH_BROKEN_CODE
 	roar_update_metadata();
@@ -192,16 +206,26 @@ int roar_open(gint fmt, int rate, int nch)
 
 void roar_close(void)
 {
+	gint id;
+
+	id = roar_stream_get_id(&(g_inst.stream));
+	roar_kick(&(g_inst.con), ROAR_OT_STREAM, id);
 	roar_vio_close(&(g_inst.vio));
 
 	g_inst.state &= ~STATE_PLAYING;
 	g_inst.written = 0;
+	g_inst.timer = 0;
 
 	ROAR_DBG("roar_close(void) = (void)");
 }
 
 void roar_pause(short p)
 {
+	if (p)
+		roar_stream_set_flags(&(g_inst.con), &(g_inst.stream), ROAR_FLAG_PAUSE | ROAR_FLAG_MUTE, ROAR_SET_FLAG);
+	else
+		roar_stream_set_flags(&(g_inst.con), &(g_inst.stream), ROAR_FLAG_PAUSE | ROAR_FLAG_MUTE, ROAR_RESET_FLAG);
+
 	g_inst.pause = p;
 }
 
@@ -212,12 +236,33 @@ void roar_flush(int time)
 	r *= g_inst.bps;
 	r /= 1000;
 
-	g_inst.written = r;
+	roar_close();
+	if (!roar_initialize_stream(&(g_inst.vio), &(g_inst.con), &(g_inst.stream),
+	    g_inst.rate, g_inst.nch, g_inst.bits, g_inst.codec, ROAR_DIR_PLAY))
+		return;
+
+	g_inst.timer = r;
 }
 
 int roar_get_output_time(void)
 {
+#ifdef NOTYET
+	gint id;
+	gint64 samples;
+	gint time;
+
+	/* first update our stream record. */
+	id = roar_stream_get_id(&(g_inst.stream));
+	roar_get_stream(&(g_inst.con), &(g_inst.stream), id);
+
+	/* calculate the time, given our sample count. */
+	samples = g_inst.stream.pos;
+	time = samples / (g_inst.rate * g_inst.nch);
+
+	return time * 1000;
+#else
 	return roar_get_written_time();
+#endif
 }
 
 int roar_get_written_time(void)
@@ -230,7 +275,7 @@ int roar_get_written_time(void)
 		return 0;
 	}
 
-	r = g_inst.written;
+	r = g_inst.timer;
 	r *= 1000;		// sec -> msec
 	r /= g_inst.bps;
 	ROAR_DBG("roar_get_written_time(void) = %lu", r);
@@ -238,9 +283,7 @@ int roar_get_written_time(void)
 	return r;
 }
 
-
 // META DATA:
-
 int roar_update_metadata(void)
 {
 #ifdef _WITH_BROKEN_CODE
@@ -377,6 +420,34 @@ void roar_set_volume(int l, int r)
 	roar_set_vol(&(g_inst.con), g_inst.stream.id, &mixer, 2);
 }
 
+gint roar__buffer_free(void)
+{
+	gint id;
+	gint64 samples;
+	gint server_bytes;
+
+	if (!(g_inst.state & STATE_CONNECTED))
+		return 0;
+
+	if (!(g_inst.state & STATE_PLAYING))
+		return 0;
+
+	/* first update our stream record. */
+	id = roar_stream_get_id(&(g_inst.stream));
+	roar_get_stream(&(g_inst.con), &(g_inst.stream), id);
+
+	/* calculate the space, given our sample count. */
+	samples = g_inst.stream.pos;
+	server_bytes = samples / (g_inst.bits / 8);
+
+	return (g_inst.written - server_bytes);
+}
+
+gint roar__buffer_playing(void)
+{
+	return (g_inst.state & (STATE_PLAYING|STATE_CONNECTED));
+}
+
 void roar_drain(void)
 {
 	if (!(g_inst.state & STATE_CONNECTED))
@@ -385,5 +456,5 @@ void roar_drain(void)
 	if (!(g_inst.state & STATE_PLAYING))
 		return;
 
-	roar_vio_sync(&(g_inst.vio));
+	
 }
