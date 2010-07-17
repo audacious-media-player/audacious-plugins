@@ -54,8 +54,7 @@ void roar_set_volume(int l, int r);
 void roar_mixer_init(void);
 void roar_mixer_init_vol(int l, int r);
 
-int roar_playing(void);
-int roar_free(void);
+void roar_drain(void);
 void roar_write(void *ptr, int length);
 void roar_close(void);
 void roar_flush(int time);
