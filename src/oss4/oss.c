@@ -33,7 +33,6 @@ static gint oss_paused_time;
 static audio_buf_info oss_buffer_info;
 static gint oss_delay; /* miliseconds */
 static gboolean oss_ioctl_vol = FALSE;
-static gboolean oss_playing = FALSE;
 
 OutputPluginInitStatus oss_init(void)
 {
@@ -199,16 +198,13 @@ void oss_write_audio(void *data, gint length)
 {
     gint written = 0, start = 0;
 
-    oss_playing = FALSE;
-
     if (oss_paused)
         return;
 
     while (1)
     {
-        if (oss_paused) break;
-
-        oss_playing = TRUE;
+        if (oss_paused)
+            break;
 
         written = write(oss_data->fd, data + start, length);
 
@@ -239,19 +235,12 @@ void oss_write_audio(void *data, gint length)
 #endif
         if (length == 0) break;
     }
-
-    oss_playing = FALSE;
 }
 
 void oss_drain(void)
 {
     AUDDBG("Drain.\n");
     /* TODO? */
-}
-
-gint oss_buffer_playing(void)
-{
-    return oss_playing;
 }
 
 gint oss_buffer_free(void)

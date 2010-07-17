@@ -31,7 +31,6 @@ static OutputPlugin plugin = {
     .close_audio = oss_close_audio,
     .write_audio = oss_write_audio,
     .drain = oss_drain,
-    .buffer_playing = oss_buffer_playing,
     .buffer_free = oss_buffer_free,
     .set_written_time = oss_set_written_time,
     .written_time = oss_written_time,
