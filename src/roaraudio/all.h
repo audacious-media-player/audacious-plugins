@@ -35,9 +35,7 @@
 #include <string.h>
 
 #include <audacious/configdb.h>
-#include <audacious/util.h>
 #include <audacious/plugin.h>
-#include <audacious/audctrl.h>
 
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>

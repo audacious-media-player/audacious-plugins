@@ -26,11 +26,6 @@
 
 #include "all.h"
 
-// FIXME: This interface has been changed
-gint ctrlsocket_get_session_id(void) {
- return -1;
-}
-
 OutputPlugin roar_op = {
     .description = "RoarAudio Output Plugin",
     .init = roar_init,
@@ -48,17 +43,13 @@ OutputPlugin roar_op = {
     .buffer_playing = roar_playing,
     .output_time = roar_get_output_time,
     .written_time = roar_get_written_time,
-    .tell_audio = NULL
+    .period_wait = roar_period_wait,
+    .drain = roar_drain,
 };
 
 OutputPlugin *roar_oplist[] = { &roar_op, NULL };
 
-
-SIMPLE_OUTPUT_PLUGIN("RoarAudio Audacious Plugin",roar_oplist);
-
-OutputPlugin *get_oplugin_info(void) {
- return &roar_op;
-}
+SIMPLE_OUTPUT_PLUGIN(roaraudio, roar_oplist);
 
 OutputPluginInitStatus roar_init(void) {
  mcs_handle_t * cfgfile;
@@ -67,7 +58,7 @@ OutputPluginInitStatus roar_init(void) {
 
  g_inst.state = 0;
  g_inst.server = NULL;
- g_inst.session = ctrlsocket_get_session_id();
+ g_inst.session = -1;
 
  aud_cfg_db_get_string(cfgfile, "ROAR", "server", &g_inst.server);
 
@@ -379,6 +370,14 @@ void roar_set_volume(int l, int r) {
  mixer.scale    = 100;
 
  roar_set_vol(&(g_inst.con), g_inst.stream.id, &mixer, 2);
+}
+
+void roar_period_wait(void) {
+ printf("implement period_wait\n");
+}
+
+void roar_dreain(void) {
+ printf("implement drain\n");
 }
 
 //ll
