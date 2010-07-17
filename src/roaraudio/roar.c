@@ -176,20 +176,9 @@ int roar_open(gint fmt, int rate, int nch)
 	if ((g_inst.data_fh = roar_simple_new_stream_obj(&(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY)) == -1)
 	{
 		roar_disconnect(&(g_inst.con));
-		g_inst.state |= STATE_CONNECTED;
-		g_inst.state -= STATE_CONNECTED;
-		if (!(g_inst.state & STATE_NORECONNECT))
-		{
-			g_inst.state |= STATE_NORECONNECT;
-			g_usleep(100000);
-			return roar_open(fmt, rate, nch);
-		}
-		else
-		{
-			g_inst.state -= STATE_NORECONNECT;
-			return FALSE;
-		}
+		return FALSE;
 	}
+
 	g_inst.state |= STATE_PLAYING;
 
 	g_inst.written = 0;
@@ -207,8 +196,7 @@ void roar_close(void)
 	if (g_inst.data_fh != -1)
 		close(g_inst.data_fh);
 	g_inst.data_fh = -1;
-	g_inst.state |= STATE_PLAYING;
-	g_inst.state -= STATE_PLAYING;
+	g_inst.state &= ~STATE_PLAYING;
 	g_inst.written = 0;
 	ROAR_DBG("roar_close(void) = (void)");
 }

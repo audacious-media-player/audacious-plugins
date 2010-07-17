@@ -70,23 +70,25 @@ int roar_chk_metadata(void);
 #define STATE_PLAYING     2
 #define STATE_NORECONNECT 4
 
-struct xmms_roar_out {
- int                 state;
- char              * server;
- struct roar_connection con;
- struct roar_stream     stream;
- int                 data_fh;
- long unsigned int   written;
- long unsigned int   bps;
- int                 session;
- int                 pause;
- struct {
-  int                server_type;
-  int                port;
-  int              * proxy_type;
-  char             * proxy;
-  char             * player_name;
- } cfg;
+struct xmms_roar_out
+{
+	int state;
+	char *server;
+	struct roar_vio_calls vio;
+	struct roar_connection con;
+	struct roar_stream stream;
+	long unsigned int written;
+	long unsigned int bps;
+	int session;
+	int pause;
+	struct
+	{
+		int server_type;
+		int port;
+		int *proxy_type;
+		char *proxy;
+		char *player_name;
+	} cfg;
 } g_inst;
 
 #endif
