@@ -39,11 +39,8 @@ OutputPlugin roar_op = {
     .close_audio = roar_close,
     .flush = roar_flush,
     .pause = roar_pause,
-    .buffer_free = roar_free,
-    .buffer_playing = roar_playing,
     .output_time = roar_get_output_time,
     .written_time = roar_get_written_time,
-    .period_wait = roar_period_wait,
     .drain = roar_drain,
 };
 
@@ -71,10 +68,6 @@ OutputPluginInitStatus roar_init(void) {
 
  ROAR_DBG("roar_init(*) = (void)");
  return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
-}
-
-int roar_playing(void) {
- return FALSE;
 }
 
 void roar_write(void *ptr, int length) {
@@ -179,7 +172,7 @@ int roar_open(gint fmt, int rate, int nch) {
   g_inst.state -= STATE_CONNECTED;
   if ( !(g_inst.state & STATE_NORECONNECT) ) {
    g_inst.state |= STATE_NORECONNECT;
-   usleep(100000);
+   g_usleep(100000);
    return roar_open(fmt, rate, nch);
   } else {
    g_inst.state -= STATE_NORECONNECT;
@@ -210,13 +203,6 @@ void roar_close(void) {
 
 void roar_pause(short p) {
  g_inst.pause = p;
-}
-
-int roar_free(void) {
- if ( g_inst.pause )
-  return 0;
- else
-  return 1000000; // ???
 }
 
 void roar_flush(int time) {
@@ -370,14 +356,6 @@ void roar_set_volume(int l, int r) {
  mixer.scale    = 100;
 
  roar_set_vol(&(g_inst.con), g_inst.stream.id, &mixer, 2);
-}
-
-void roar_period_wait(void) {
- printf("implement period_wait\n");
-}
-
-void roar_dreain(void) {
- printf("implement drain\n");
 }
 
 //ll
