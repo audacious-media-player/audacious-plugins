@@ -142,7 +142,6 @@ gboolean skins_init (InterfaceCbs * cbs)
     eq_init_hooks ();
     update_source = g_timeout_add (250, update_cb, NULL);
 
-    gtk_main ();
     return TRUE;
 }
 

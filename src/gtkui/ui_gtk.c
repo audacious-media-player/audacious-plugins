@@ -864,9 +864,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     cbs->run_gtk_plugin = (void *) ui_run_gtk_plugin;
     cbs->stop_gtk_plugin = (void *) ui_stop_gtk_plugin;
 
-    AUDDBG("launch\n");
-    gtk_main();
-
     return TRUE;
 }
 
