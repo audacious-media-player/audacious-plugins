@@ -237,10 +237,16 @@ void oss_write_audio(void *data, gint length)
     }
 }
 
-void oss_drain(void)
+gint oss_buffer_playing(void)
 {
-    AUDDBG("Drain.\n");
-    /* TODO? */
+    AUDDBG("Buffer playing.\n");
+
+    ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
+
+    if ((oss_buffer_info.fragstotal * oss_buffer_info.fragsize) - oss_buffer_info.bytes > oss_buffer_info.fragsize)
+        return TRUE;
+
+    return FALSE;
 }
 
 gint oss_buffer_free(void)

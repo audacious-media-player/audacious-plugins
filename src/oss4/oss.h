@@ -97,7 +97,7 @@ void oss_cleanup(void);
 gint oss_open_audio(gint aud_format, gint rate, gint channels);
 void oss_close_audio(void);
 void oss_write_audio(void *data, gint length);
-void oss_drain(void);
+gint oss_buffer_playing(void);
 gint oss_buffer_free(void);
 void oss_set_written_time(gint time);
 gint oss_written_time(void);
