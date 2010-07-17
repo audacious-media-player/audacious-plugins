@@ -58,6 +58,7 @@ OutputPluginInitStatus roar_init(void)
 	g_inst.state = 0;
 	g_inst.server = NULL;
 	g_inst.session = -1;
+	g_inst.mixer[0] = g_inst.mixer[1] = 100;
 
 	aud_cfg_db_get_string(cfgfile, "ROAR", "server", &g_inst.server);
 
@@ -121,6 +122,8 @@ gboolean roar_initialize_stream(struct roar_vio_calls *calls, struct roar_connec
 	g_inst.timer = 0;
 	g_inst.pause = 0;	
 	g_inst.state |= STATE_PLAYING;
+
+	roar_set_volume(g_inst.mixer[0], g_inst.mixer[1]);
 
 	return TRUE;
 }
@@ -334,30 +337,11 @@ int roar_update_metadata(void)
 // MIXER:
 void roar_get_volume(int *l, int *r)
 {
-	struct roar_mixer_settings mixer;
-	int channels;
-	float fs;
-
 	if (!(g_inst.state & STATE_CONNECTED))
 		return;
 
-	if (roar_get_vol(&(g_inst.con), g_inst.stream.id, &mixer, &channels) == -1)
-	{
-		*l = *r = 100;
-		return;
-	}
-
-	fs = (float)mixer.scale / 100.;
-
-	if (channels == 1)
-	{
-		*l = *r = mixer.mixer[0] / fs;
-	}
-	else
-	{
-		*l = mixer.mixer[0] / fs;
-		*r = mixer.mixer[1] / fs;
-	}
+	*l = g_inst.mixer[0];
+	*r = g_inst.mixer[1];
 }
 
 void roar_set_volume(int l, int r)
@@ -367,8 +351,8 @@ void roar_set_volume(int l, int r)
 	if (!(g_inst.state & STATE_CONNECTED))
 		return;
 
-	mixer.mixer[0] = l;
-	mixer.mixer[1] = r;
+	mixer.mixer[0] = g_inst.mixer[0] = l;
+	mixer.mixer[1] = g_inst.mixer[1] = r;
 
 	mixer.scale = 100;
 

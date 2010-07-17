@@ -87,6 +87,7 @@ struct xmms_roar_out
 	int nch;
 	int bits;
 	int codec;
+	int mixer[2];
 	struct
 	{
 		int server_type;
