@@ -37,6 +37,7 @@
 #include <string.h>
 
 #include <audacious/configdb.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 

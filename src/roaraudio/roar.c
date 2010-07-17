@@ -197,9 +197,7 @@ int roar_open(gint fmt, int rate, int nch)
 	if (!roar_initialize_stream(&(g_inst.vio), &(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY))
 		return FALSE;
 
-#ifdef _WITH_BROKEN_CODE
 	roar_update_metadata();
-#endif
 
 	return TRUE;
 }
@@ -286,13 +284,13 @@ int roar_get_written_time(void)
 // META DATA:
 int roar_update_metadata(void)
 {
-#ifdef _WITH_BROKEN_CODE
 	struct roar_meta meta;
 	char empty = 0;
-	char *info = NULL;
-	int pos;
+	const gchar *info = NULL;
+	gint pos, playlist;
 
-	pos = audacious_remote_get_playlist_pos(g_inst.session);
+	playlist = aud_playlist_get_active();
+	pos = aud_playlist_get_position(playlist);
 
 	meta.value = &empty;
 	meta.key[0] = 0;
@@ -300,8 +298,7 @@ int roar_update_metadata(void)
 
 	roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_CLEAR, &meta);
 
-	info = audacious_remote_get_playlist_file(g_inst.session, pos);
-
+	info = aud_playlist_entry_get_filename(playlist, pos);
 	if (info)
 	{
 		if (strncmp(info, "http:", 5) == 0)
@@ -309,70 +306,28 @@ int roar_update_metadata(void)
 		else
 			meta.type = ROAR_META_TYPE_FILENAME;
 
-		meta.value = info;
+		meta.value = g_strdup(info);
 		ROAR_DBG("roar_update_metadata(*): setting meta data: type=%i, strlen(value)=%i", meta.type, strlen(info));
 		roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_SET, &meta);
 
-		free(info);
+		free(meta.value);
 	}
 
-	info = audacious_remote_get_playlist_title(g_inst.session, pos);
+	info = aud_playlist_entry_get_title(playlist, pos, TRUE);
 	if (info)
 	{
 		meta.type = ROAR_META_TYPE_TITLE;
 
-		meta.value = info;
+		meta.value = g_strdup(info);
 		roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_SET, &meta);
 
-		free(info);
+		free(meta.value);
 	}
 
 	meta.value = &empty;
 	meta.type = ROAR_META_TYPE_NONE;
 	roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_FINALIZE, &meta);
 
-#endif
-	return 0;
-}
-
-int roar_chk_metadata(void)
-{
-#ifdef _WITH_BROKEN_CODE
-	static int old_pos = -1;
-	static char *old_title = "NEW TITLE";
-	int pos;
-	char *title;
-	int need_update = 0;
-
-	pos = audacious_remote_get_playlist_pos(g_inst.session);
-
-	if (pos != old_pos)
-	{
-		old_pos = pos;
-		need_update = 1;
-	}
-	else
-	{
-		title = audacious_remote_get_playlist_title(g_inst.session, pos);
-
-		if (strcmp(title, old_title))
-		{
-			free(old_title);
-			old_title = title;
-			need_update = 1;
-		}
-		else
-		{
-			free(title);
-		}
-	}
-
-	if (need_update)
-	{
-		roar_update_metadata();
-	}
-
-#endif
 	return 0;
 }
 
@@ -455,6 +410,4 @@ void roar_drain(void)
 
 	if (!(g_inst.state & STATE_PLAYING))
 		return;
-
-	
 }
