@@ -199,7 +199,10 @@ void oss_write_audio(void *data, gint length)
 {
     gint written = 0, start = 0;
 
-    if (oss_paused) return;
+    oss_playing = FALSE;
+
+    if (oss_paused)
+        return;
 
     while (1)
     {
@@ -248,11 +251,14 @@ void oss_drain(void)
 
 gint oss_buffer_playing(void)
 {
-    return oss_playing && !oss_paused;
+    return oss_playing;
 }
 
 gint oss_buffer_free(void)
 {
+    if (oss_paused)
+        return 0;
+
     ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
     return oss_buffer_info.bytes;
 }
