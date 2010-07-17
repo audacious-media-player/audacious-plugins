@@ -33,7 +33,7 @@ static gint oss_paused_time;
 static audio_buf_info oss_buffer_info;
 static gint oss_delay; /* miliseconds */
 static gboolean oss_ioctl_vol = FALSE;
-
+static gboolean oss_playing = FALSE;
 
 OutputPluginInitStatus oss_init(void)
 {
@@ -205,6 +205,8 @@ void oss_write_audio(void *data, gint length)
     {
         if (oss_paused) break;
 
+        oss_playing = TRUE;
+
         written = write(oss_data->fd, data + start, length);
 
         if (written < 0)
@@ -234,12 +236,25 @@ void oss_write_audio(void *data, gint length)
 #endif
         if (length == 0) break;
     }
+
+    oss_playing = FALSE;
 }
 
 void oss_drain(void)
 {
     AUDDBG("Drain.\n");
     /* TODO? */
+}
+
+gint oss_buffer_playing(void)
+{
+    return oss_playing && !oss_paused;
+}
+
+gint oss_buffer_free(void)
+{
+    ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
+    return oss_buffer_info.bytes;
 }
 
 void oss_set_written_time(gint time)
@@ -278,7 +293,7 @@ void oss_flush(gint time)
 {
     AUDDBG("Flush.\n");
 
-    if(ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL) == -1)
+    if (ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL) == -1)
         DEBUG_MSG;
 
     if (ioctl(oss_data->fd, SNDCTL_DSP_SKIP, NULL) == -1)
