@@ -358,4 +358,6 @@ void roar_set_volume(int l, int r) {
  roar_set_vol(&(g_inst.con), g_inst.stream.id, &mixer, 2);
 }
 
+void roar_drain(void) {}
+
 //ll
