@@ -214,11 +214,11 @@ draw_vert_line(guchar * buffer, gint x, gint y1, gint y2)
 {
     int y;
     if (y1 < y2) {
-        for (y = y1; y <= y2; y++)
+        for (y = y1 + 1; y <= y2; y++)
             draw_pixel_8(buffer, x, y, 0xFF);
     }
     else if (y2 < y1) {
-        for (y = y2; y <= y1; y++)
+        for (y = y2; y < y1; y++)
             draw_pixel_8(buffer, x, y, 0xFF);
     }
     else
@@ -233,13 +233,11 @@ bscope_render_pcm(gint16 data[2][512])
     g_static_mutex_lock(&rgb_buf_mutex);
 
     bscope_blur_8(rgb_buf, width, height, bpl);
-    prev_y = y = (height / 2) + (data[0][0] >> 9);
+    prev_y = (height / 2) + (data[0][0] >> 9);
+    prev_y = CLAMP (prev_y, 0, height - 1);
     for (i = 0; i < width; i++) {
-        y = (height / 2) + (data[0][i >> 1] >> 9);
-        if (y < 0)
-            y = 0;
-        if (y >= height)
-            y = height - 1;
+        y = (height / 2) + (data[0][i * 512 / width] >> 9);
+        y = CLAMP (y, 0, height - 1);
         draw_vert_line(rgb_buf, i, prev_y, y);
         prev_y = y;
     }
