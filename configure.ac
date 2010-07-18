@@ -238,25 +238,6 @@ case "$target" in
 		;;
 esac
 
-dnl Check for esound
-
-AC_ARG_ENABLE( esd,
-    [  --disable-esd           disable esound output plugin (default=enabled)],
-    [enable_esd=$enableval],
-    [enable_esd="yes"]
-)
-
-if test "x$enable_esd" = "xyes"; then
-    PKG_CHECK_MODULES(ESD, [esound >= 0.2],
-        [have_esd=yes
-         OUTPUT_PLUGINS="$OUTPUT_PLUGINS esd"],
-        [have_esd=no]
-    )
-else
-    AC_MSG_RESULT([*** esound plugin disabled per user request ***])
-    have_esd=no
-fi
-
 dnl *** PulseAudio
 
 AC_ARG_ENABLE( pulse,
@@ -1624,7 +1605,6 @@ echo "  Open Sound System v4 (oss4):            $have_oss4"
 echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  PulseAudio (pulse):                     $have_pulse"
 echo "  RoarAudio (roaraudio):                  $have_roar"
-echo "  Enlightenment Sound Daemon (esd):       $have_esd"
 echo "  Jack Audio Connection Kit (jack):       $have_jack"
 echo "  BSD/SUN audio output (sun):             $have_sun"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
