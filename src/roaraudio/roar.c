@@ -52,7 +52,6 @@ OutputPlugin roar_op = {
 OutputPlugin *roar_oplist[] = { &roar_op, NULL };
 
 SIMPLE_OUTPUT_PLUGIN(roaraudio, roar_oplist);
-
 OutputPluginInitStatus aud_roar_init(void)
 {
 	mcs_handle_t *cfgfile;
@@ -63,17 +62,11 @@ OutputPluginInitStatus aud_roar_init(void)
 	g_inst.server = NULL;
 	g_inst.mixer[0] = g_inst.mixer[1] = 100;
 
-	aud_cfg_db_get_string(cfgfile, "ROAR", "server", &g_inst.server);
-	aud_cfg_db_get_string(cfgfile, "ROAR", "player_name", &g_inst.cfg.player_name);
-
 	aud_cfg_db_close(cfgfile);
-
-	if (g_inst.cfg.player_name == NULL)
-		g_inst.cfg.player_name = "Audacious";
 
 	if (!(g_inst.state & STATE_CONNECTED))
 	{
-		if (roar_simple_connect(&(g_inst.con), g_inst.server, g_inst.cfg.player_name) == -1)
+		if (roar_simple_connect(&(g_inst.con), NULL, "Audacious") == -1)
 			return OUTPUT_PLUGIN_INIT_FAIL;
 
 		g_inst.state |= STATE_CONNECTED;
