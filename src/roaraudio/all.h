@@ -61,8 +61,8 @@ void roar_pause(short p);
 int roar_open(gint fmt, int rate, int nch);
 int roar_get_output_time(void);
 int roar_get_written_time(void);
-int roar__buffer_playing(void);
-int roar__buffer_free(void);
+gboolean roar_buffer_is_playing(void);
+gint roar_buffer_get_size(void);
 
 int roar_update_metadata(void);
 int roar_chk_metadata(void);

@@ -40,6 +40,8 @@ OutputPlugin roar_op = {
 	.pause = roar_pause,
 	.output_time = roar_get_output_time,
 	.written_time = roar_get_written_time,
+//	.buffer_playing = roar_buffer_is_playing,
+//	.buffer_free = roar_buffer_get_size,
 	.drain = roar_drain,
 };
 
@@ -230,7 +232,7 @@ void roar_flush(int time)
 	g_inst.sampleoff = ((time / 1000) * g_inst.rate) * g_inst.nch;
 }
 
-int roar_get_output_time(void)
+gint64 roar_get_adjusted_sample_count(void)
 {
 	gint id;
 	gint64 samples;
@@ -242,6 +244,15 @@ int roar_get_output_time(void)
 	/* calculate the time, given our sample count. */
 	samples = g_inst.stream.pos;
 	samples += g_inst.sampleoff;
+
+	return samples;
+}
+
+int roar_get_output_time(void)
+{
+	gint64 samples;
+
+	samples = roar_get_adjusted_sample_count();
 
 	return (samples * 1000) / (g_inst.rate * g_inst.nch);
 }
@@ -336,6 +347,8 @@ void roar_set_volume(int l, int r)
 
 void roar_drain(void)
 {
+	gint id;
+
 	if (!(g_inst.state & STATE_CONNECTED))
 		return;
 
@@ -343,4 +356,30 @@ void roar_drain(void)
 		return;
 
 	roar_vio_sync(&(g_inst.vio));
+
+	/* first update our stream record. */
+	id = roar_stream_get_id(&(g_inst.stream));
+	roar_get_stream(&(g_inst.con), &(g_inst.stream), id);
+
+	/* we're starting a new song, so update the sample offset so the timing is right. */
+	g_inst.sampleoff = g_inst.stream.pos;
+}
+
+gboolean roar_buffer_is_playing(void)
+{
+	return g_inst.state & (STATE_PLAYING) ? TRUE : FALSE;
+}
+
+gint roar_buffer_get_size(void)
+{
+	gint64 samples, bytes;
+
+	samples = roar_get_adjusted_sample_count();
+
+	if (samples == 0)
+		return 17640;
+
+	bytes = (samples * (g_inst.bits / 8)) * g_inst.nch;
+
+	return g_inst.written - bytes;
 }
