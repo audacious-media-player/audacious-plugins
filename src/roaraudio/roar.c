@@ -112,6 +112,7 @@ gboolean roar_initialize_stream(struct roar_vio_calls *calls, struct roar_connec
 	g_inst.codec = codec;
 	g_inst.written = 0;
 	g_inst.pause = 0;	
+	g_inst.sampleoff = 0;
 	g_inst.state |= STATE_PLAYING;
 
 	roar_set_volume(g_inst.mixer[0], g_inst.mixer[1]);
@@ -356,13 +357,14 @@ void roar_drain(void)
 		return;
 
 	roar_vio_sync(&(g_inst.vio));
-
+#ifdef NOTYET
 	/* first update our stream record. */
 	id = roar_stream_get_id(&(g_inst.stream));
 	roar_get_stream(&(g_inst.con), &(g_inst.stream), id);
 
 	/* we're starting a new song, so update the sample offset so the timing is right. */
 	g_inst.sampleoff = g_inst.stream.pos;
+#endif
 }
 
 gboolean roar_buffer_is_playing(void)
