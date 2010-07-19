@@ -41,6 +41,7 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 static GtkUIManager *ui_manager = NULL;
+static GList * attached_menus = NULL;
 
 /* toggle action entries */
 
@@ -715,6 +716,7 @@ static GtkWidget * create_menu (gint id)
             GtkWidget * sub = aud_get_plugin_menu (templates[id].plug_id);
 
             gtk_menu_item_set_submenu (GTK_MENU_ITEM(item), sub);
+            attached_menus = g_list_prepend (attached_menus, sub);
         }
 
         if (id == UI_MENU_MAIN)
@@ -804,6 +806,10 @@ void ui_popup_menu_show(gint id, gint x, gint y, gboolean leftward, gboolean
 void
 ui_manager_destroy( void )
 {
+    g_list_foreach (attached_menus, (GFunc) gtk_menu_detach, NULL);
+    g_list_free (attached_menus);
+    attached_menus = NULL;
+
     g_object_unref(G_OBJECT(toggleaction_group_others));
     g_object_unref(G_OBJECT(radioaction_group_anamode));
     g_object_unref(G_OBJECT(radioaction_group_anatype));
