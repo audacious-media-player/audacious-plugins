@@ -55,7 +55,6 @@ OutputPluginInitStatus roar_init(void)
 
 	g_inst.state = 0;
 	g_inst.server = NULL;
-	g_inst.session = -1;
 	g_inst.mixer[0] = g_inst.mixer[1] = 100;
 
 	aud_cfg_db_get_string(cfgfile, "ROAR", "server", &g_inst.server);
@@ -87,7 +86,6 @@ void roar_write(void *ptr, int length)
 		if ((r = roar_vio_write(&(g_inst.vio), ptr, length >= 17640 ? 17640 : length)) != -1)
 		{
 			g_inst.written += r;
-			g_inst.timer += r;
 			ptr += r;
 			length -= r;
 		}
@@ -111,7 +109,6 @@ gboolean roar_initialize_stream(struct roar_vio_calls *calls, struct roar_connec
 	g_inst.rate = rate;
 	g_inst.codec = codec;
 	g_inst.written = 0;
-	g_inst.timer = 0;
 	g_inst.pause = 0;	
 	g_inst.state |= STATE_PLAYING;
 
@@ -205,7 +202,6 @@ void roar_close(void)
 
 	g_inst.state &= ~STATE_PLAYING;
 	g_inst.written = 0;
-	g_inst.timer = 0;
 }
 
 void roar_pause(short p)
@@ -230,7 +226,7 @@ void roar_flush(int time)
 	    g_inst.rate, g_inst.nch, g_inst.bits, g_inst.codec, ROAR_DIR_PLAY))
 		return;
 
-	g_inst.timer = r;
+	g_inst.written = r;
 	g_inst.sampleoff = ((time / 1000) * g_inst.rate) * g_inst.nch;
 }
 
@@ -257,7 +253,7 @@ int roar_get_written_time(void)
 	if (!g_inst.bps)
 		return 0;
 
-	r = g_inst.timer;
+	r = g_inst.written;
 	r *= 1000;		// sec -> msec
 	r /= g_inst.bps;
 

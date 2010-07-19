@@ -79,9 +79,7 @@ struct xmms_roar_out
 	struct roar_connection con;
 	struct roar_stream stream;
 	long unsigned int written;
-	long unsigned int timer;
 	long unsigned int bps;
-	int session;
 	int pause;
 	int rate;
 	int nch;
