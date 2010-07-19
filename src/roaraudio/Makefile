@@ -1,6 +1,6 @@
 PLUGIN = roar${PLUGIN_SUFFIX}
 
-SRCS = roar.c gui.c
+SRCS = roar.c
 
 include ../../buildsys.mk
 include ../../extra.mk

@@ -46,8 +46,6 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 OutputPluginInitStatus aud_roar_init(void);
-void aud_roar_about(void);
-void aud_roar_configure(void);
 
 void aud_roar_get_volume(int *l, int *r);
 void aud_roar_set_volume(int l, int r);
