@@ -165,7 +165,6 @@ create_cfgdlg(void)
   GtkWidget *label1;
   GtkWidget *label2;
   GtkWidget *label4;
-  GtkWidget *himage1;
   GtkWidget *align1;
   GtkWidget *notebook1;
   GtkStyle *style;
@@ -247,11 +246,6 @@ create_cfgdlg(void)
   // common
   gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 6);
 
-  himage1 = gtk_image_new_from_file (DATA_DIR "/images/audioscrobbler_badge.png");
-  gtk_widget_show (himage1);
-  gtk_box_pack_start (GTK_BOX (vbox2), himage1, FALSE, FALSE, 0);
-  gtk_misc_set_alignment (GTK_MISC (himage1), 1, 0.5);
-
 	gtk_entry_set_text(GTK_ENTRY(entry1), "");
 	gtk_entry_set_text(GTK_ENTRY(ge_entry1), "");
 
@@ -291,10 +285,8 @@ static PreferencesWidget settings[] = {
 
 PluginPreferences preferences = {
     .title = N_("Scrobbler"),
-    .imgurl = DATA_DIR "/images/audioscrobbler.png",
     .prefs = settings,
     .n_prefs = G_N_ELEMENTS(settings),
-    .type = PREFERENCES_PAGE,
     .apply = configure_apply,
     .cleanup = configure_cleanup,
 };
