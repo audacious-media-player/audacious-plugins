@@ -116,7 +116,7 @@ static void vis_clear_cb (void * unused, void * another)
     ui_svis_clear_data (mainwin_svis);
 }
 
-static void info_change (void * hook_data, void * user_data)
+void info_change (void)
 {
     gint bitrate, samplerate, channels;
 
@@ -327,7 +327,7 @@ ui_main_evlistener_init(void)
     hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
     hook_associate("playback play file", ui_main_evlistener_playback_play_file, NULL);
     hook_associate ("visualization clear", vis_clear_cb, NULL);
-    hook_associate ("info change", info_change, NULL);
+    hook_associate ("info change", (HookFunction) info_change, NULL);
     hook_associate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top, NULL);
     hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
     hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
@@ -347,7 +347,7 @@ ui_main_evlistener_dissociate(void)
     hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
     hook_dissociate("playback play file", ui_main_evlistener_playback_play_file);
     hook_dissociate ("visualization clear", vis_clear_cb);
-    hook_dissociate ("info change", info_change);
+    hook_dissociate ("info change", (HookFunction) info_change);
     hook_dissociate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top);
     hook_dissociate("mainwin show", ui_main_evlistener_mainwin_show);
     hook_dissociate("equalizerwin show", ui_main_evlistener_equalizerwin_show);
@@ -356,11 +356,11 @@ ui_main_evlistener_dissociate(void)
     hook_dissociate ("toggle stop after song", stop_after_song_toggled);
 }
 
-void start_stop_visual (void)
+void start_stop_visual (gboolean exiting)
 {
     static char started = 0;
 
-    if (config.player_visible && config.vis_type != VIS_OFF)
+    if (config.player_visible && config.vis_type != VIS_OFF && ! exiting)
     {
         if (! started)
         {

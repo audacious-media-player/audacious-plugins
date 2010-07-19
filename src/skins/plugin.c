@@ -113,6 +113,7 @@ gboolean skins_init (InterfaceCbs * cbs)
     if (aud_drct_get_playing ())
     {
         ui_main_evlistener_playback_begin (NULL, NULL);
+        info_change ();
 
         if (aud_drct_get_paused ())
             ui_main_evlistener_playback_pause (NULL, NULL);
