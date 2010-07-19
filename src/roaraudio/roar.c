@@ -23,7 +23,10 @@
  *
  */
 
-#define DEBUG
+/*
+ * NOTE: Do not spam with requests.  You WILL get kicked out on Linux.
+ */
+
 #include "all.h"
 
 OutputPlugin roar_op = {
