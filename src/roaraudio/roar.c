@@ -448,6 +448,5 @@ void aud_roar_period_wait(void)
 
 	ROAR_VIO_SELECT_SETVIO(&vios[0], &(g_inst.vio), ROAR_VIO_SELECT_WRITE);
 
-	while (roar_vio_select(vios, 1, &(struct roar_vio_selecttv){ .sec = 1 }, NULL) != 1)
-		;
+	roar_vio_select(vios, 1, NULL, NULL);
 }
