@@ -36,6 +36,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <audacious/debug.h>
 #include <audacious/configdb.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
@@ -86,6 +87,7 @@ struct xmms_aud_roar_out
 	int bits;
 	int codec;
 	int mixer[2];
+	gsize block_size;
 	gint64 sampleoff;
 	struct
 	{

@@ -23,6 +23,7 @@
  *
  */
 
+#define DEBUG
 #include "all.h"
 
 OutputPlugin roar_op = {
@@ -59,7 +60,6 @@ OutputPluginInitStatus aud_roar_init(void)
 	g_inst.mixer[0] = g_inst.mixer[1] = 100;
 
 	aud_cfg_db_get_string(cfgfile, "ROAR", "server", &g_inst.server);
-
 	aud_cfg_db_get_string(cfgfile, "ROAR", "player_name", &g_inst.cfg.player_name);
 
 	aud_cfg_db_close(cfgfile);
@@ -99,6 +99,8 @@ void aud_roar_write(void *ptr, int length)
 
 gboolean aud_roar_initialize_stream(struct roar_vio_calls *calls, struct roar_connection *con, struct roar_stream *stream, int rate, int nch, int bits, int codec, int dir)
 {
+	struct roar_stream_info info;
+
 	if (roar_vio_simple_new_stream_obj(&(g_inst.vio), &(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY) == -1)
 		return FALSE;
 
@@ -110,6 +112,14 @@ gboolean aud_roar_initialize_stream(struct roar_vio_calls *calls, struct roar_co
 	g_inst.pause = 0;	
 	g_inst.sampleoff = 0;
 	g_inst.state |= STATE_PLAYING;
+	g_inst.block_size = 0;
+
+	if (roar_stream_get_info(&(g_inst.con), &(g_inst.stream), &info) != -1)
+	{
+		/* XXX: this is wrong. */
+		g_inst.block_size = info.block_size * 2;
+		AUDDBG("setting block size to %d\n", g_inst.block_size);
+	}
 
 	aud_roar_set_volume(g_inst.mixer[0], g_inst.mixer[1]);
 
@@ -349,19 +359,21 @@ void aud_roar_get_volume(int *l, int *r)
 	if (!(g_inst.state & STATE_CONNECTED))
 		return;
 
-	if (!(g_inst.state & STATE_PLAYING))
+#ifdef NOTYET
+	if (roar_get_vol(&(g_inst.con), g_inst.stream.id, &mixer, &channels) == -1)
 		return;
 
-	if ( roar_get_vol(&(g_inst.con), g_inst.stream.id, &mixer, &channels) == -1 )
-		return;
-
-	if ( channels == 1 )
+	if (channels == 1)
 		mixer.mixer[1] = mixer.mixer[0];
 
 	fs = (float)mixer.scale/100.;
 
 	*l = g_inst.mixer[0] = mixer.mixer[0] / fs;
 	*r = g_inst.mixer[1] = mixer.mixer[1] / fs;
+#else
+	*l = g_inst.mixer[0];
+	*r = g_inst.mixer[1];
+#endif
 }
 
 void aud_roar_set_volume(int l, int r)
@@ -369,9 +381,6 @@ void aud_roar_set_volume(int l, int r)
 	struct roar_mixer_settings mixer;
 
 	if (!(g_inst.state & STATE_CONNECTED))
-		return;
-
-	if (!(g_inst.state & STATE_PLAYING))
 		return;
 
 	mixer.mixer[0] = g_inst.mixer[0] = l;
@@ -413,8 +422,6 @@ gboolean aud_roar_vio_is_writable(struct roar_vio_calls *vio)
 
 gint aud_roar_buffer_get_size(void)
 {
-	struct roar_stream_info info;
-
 	if (!(g_inst.state & STATE_CONNECTED))
 		return 0;
 
@@ -424,8 +431,8 @@ gint aud_roar_buffer_get_size(void)
 	if (!aud_roar_vio_is_writable(&(g_inst.vio)))
 		return 0;
 
-	if (roar_stream_get_info(&(g_inst.con), &(g_inst.stream), &info) != -1)
-		return info.block_size;
+	if (g_inst.block_size != 0)
+		return g_inst.block_size;
 
 	return 0;
 }
