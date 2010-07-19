@@ -670,6 +670,9 @@ ui_manager_create_menus ( void )
   }
 }
 
+static GtkWidget * menus[UI_MENUS] = {NULL, NULL, NULL, NULL, NULL, NULL,
+ NULL, NULL, NULL, NULL, NULL, NULL};
+
 static GtkWidget * create_menu (gint id)
 {
     const struct
@@ -702,9 +705,6 @@ static GtkWidget * create_menu (gint id)
         {"/equalizer-menus/preset-menu", NULL, 0},
     };
 
-    static GtkWidget * menus[UI_MENUS] = {NULL, NULL, NULL, NULL, NULL, NULL,
-     NULL, NULL, NULL, NULL, NULL, NULL};
-
     if (menus[id] == NULL)
     {
         menus[id] = ui_manager_get_popup_menu(ui_manager, templates[id].name);
@@ -726,6 +726,18 @@ static GtkWidget * create_menu (gint id)
     }
 
     return menus[id];
+}
+
+static void destroy_menus (void)
+{
+    for (gint i = 0; i < G_N_ELEMENTS (menus); i ++)
+    {
+        if (menus[i] != NULL)
+        {
+            gtk_widget_destroy (menus[i]);
+            menus[i] = NULL;
+        }
+    }
 }
 
 GtkAccelGroup *
@@ -809,6 +821,8 @@ ui_manager_destroy( void )
     g_list_foreach (attached_menus, (GFunc) gtk_menu_detach, NULL);
     g_list_free (attached_menus);
     attached_menus = NULL;
+
+    destroy_menus ();
 
     g_object_unref(G_OBJECT(toggleaction_group_others));
     g_object_unref(G_OBJECT(radioaction_group_anamode));

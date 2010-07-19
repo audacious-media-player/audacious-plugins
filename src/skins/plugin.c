@@ -154,9 +154,6 @@ gboolean skins_cleanup (void)
         eq_end_hooks ();
         g_source_remove (update_source);
 
-        gtk_widget_destroy (mainwin);
-        gtk_widget_destroy (equalizerwin);
-        gtk_widget_destroy (playlistwin);
         skins_cfg_save();
 
         audgui_playlist_manager_destroy();

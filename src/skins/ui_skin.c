@@ -561,6 +561,13 @@ void cleanup_skins()
 {
     skin_destroy(aud_active_skin);
     aud_active_skin = NULL;
+
+    gtk_widget_destroy (mainwin);
+    mainwin = NULL;
+    gtk_widget_destroy (playlistwin);
+    playlistwin = NULL;
+    gtk_widget_destroy (equalizerwin);
+    equalizerwin = NULL;
 }
 
 
