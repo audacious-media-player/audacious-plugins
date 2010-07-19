@@ -40,7 +40,7 @@ OutputPlugin roar_op = {
 	.pause = roar_pause,
 	.output_time = roar_get_output_time,
 	.written_time = roar_get_written_time,
-//	.buffer_playing = roar_buffer_is_playing,
+	.buffer_playing = roar_buffer_is_playing,
 	.buffer_free = roar_buffer_get_size,
 };
 
@@ -347,7 +347,18 @@ void roar_set_volume(int l, int r)
 
 gboolean roar_buffer_is_playing(void)
 {
-	return g_inst.state & (STATE_PLAYING) ? TRUE : FALSE;
+	struct roar_stream_info info;
+
+	if (!(g_inst.state & STATE_PLAYING))
+		return FALSE;
+
+	if (roar_stream_get_info(&(g_inst.con), &(g_inst.stream), &info) == -1)
+		return FALSE;
+
+	if (info.post_underruns)
+		return FALSE;
+
+	return TRUE;
 }
 
 /* this really sucks. */
