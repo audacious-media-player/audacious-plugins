@@ -124,6 +124,7 @@ gboolean aud_roar_initialize_stream(struct roar_vio_calls *calls, struct roar_co
 		AUDDBG("setting block size to %d\n", g_inst.block_size);
 	}
 
+	roar_stream_set_role(&(g_inst.con), &(g_inst.stream), ROAR_ROLE_MUSIC);
 	aud_roar_set_volume(g_inst.mixer[0], g_inst.mixer[1]);
 
 	return TRUE;
