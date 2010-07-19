@@ -1,7 +1,3 @@
-- visualization is laggy:
-  this could be enhanced by adding threads.  it's due to the current design's
-  time resolution not being accurate enough.
-
 - volume is not retained across restarts:
   we could save our preferred volume as a preference.
 
