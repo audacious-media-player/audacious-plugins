@@ -41,8 +41,7 @@ OutputPlugin roar_op = {
 	.output_time = roar_get_output_time,
 	.written_time = roar_get_written_time,
 //	.buffer_playing = roar_buffer_is_playing,
-//	.buffer_free = roar_buffer_get_size,
-	.drain = roar_drain,
+	.buffer_free = roar_buffer_get_size,
 };
 
 OutputPlugin *roar_oplist[] = { &roar_op, NULL };
@@ -346,42 +345,34 @@ void roar_set_volume(int l, int r)
 	roar_set_vol(&(g_inst.con), g_inst.stream.id, &mixer, 2);
 }
 
-void roar_drain(void)
-{
-	gint id;
-
-	if (!(g_inst.state & STATE_CONNECTED))
-		return;
-
-	if (!(g_inst.state & STATE_PLAYING))
-		return;
-
-	roar_vio_sync(&(g_inst.vio));
-#ifdef NOTYET
-	/* first update our stream record. */
-	id = roar_stream_get_id(&(g_inst.stream));
-	roar_get_stream(&(g_inst.con), &(g_inst.stream), id);
-
-	/* we're starting a new song, so update the sample offset so the timing is right. */
-	g_inst.sampleoff = g_inst.stream.pos;
-#endif
-}
-
 gboolean roar_buffer_is_playing(void)
 {
 	return g_inst.state & (STATE_PLAYING) ? TRUE : FALSE;
 }
 
+/* this really sucks. */
+gboolean roar_vio_is_writable(struct roar_vio_calls *vio)
+{
+	struct roar_vio_select vios[1];
+
+	ROAR_VIO_SELECT_SETVIO(&vios[0], vio, ROAR_VIO_SELECT_WRITE);
+
+	return roar_vio_select(vios, 1, &(struct roar_vio_selecttv){ .nsec = 1 }, NULL);
+}
+
 gint roar_buffer_get_size(void)
 {
-	gint64 samples, bytes;
+	struct roar_stream_info info;
 
-	samples = roar_get_adjusted_sample_count();
+	if (!(g_inst.state & STATE_PLAYING))
+		return 0;
 
-	if (samples == 0)
-		return 17640;
+	if (!roar_vio_is_writable(&(g_inst.vio)))
+		return 0;
 
-	bytes = (samples * (g_inst.bits / 8)) * g_inst.nch;
+	if (roar_stream_get_info(&(g_inst.con), &(g_inst.stream), &info) != -1)
+		return info.block_size;
 
-	return g_inst.written - bytes;
+	return 0;
 }
+
