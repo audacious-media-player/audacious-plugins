@@ -55,6 +55,8 @@
 		</menu>
 
 		<menu action="view">
+			<menuitem action="iface menu" />
+			<separator />
 			<menuitem action="view menu" />
 			<menuitem action="view playlists" />
 			<menuitem action="view infoarea" />

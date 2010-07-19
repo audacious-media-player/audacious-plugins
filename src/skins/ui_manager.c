@@ -38,6 +38,7 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 static GtkUIManager *ui_manager = NULL;
 
@@ -227,9 +228,8 @@ static GtkActionEntry action_entries_playlist[] = {
 };
 
 static GtkActionEntry action_entries_view[] = {
-
-    { "view", NULL, N_("View") }
-};
+ {"view", NULL, N_("View")},
+ {"iface menu", NULL, N_("Interface")}};
 
 static GtkActionEntry action_entries_playlist_add[] = {
         { "playlist add url", GTK_STOCK_NETWORK, N_("Add Internet Address..."), "<Ctrl>H",
@@ -716,6 +716,11 @@ static GtkWidget * create_menu (gint id)
 
             gtk_menu_item_set_submenu (GTK_MENU_ITEM(item), sub);
         }
+
+        if (id == UI_MENU_MAIN)
+            gtk_menu_item_set_submenu ((GtkMenuItem *) gtk_ui_manager_get_widget
+             (ui_manager, "/mainwin-menus/main-menu/view/iface menu"),
+             audgui_create_iface_menu ());
     }
 
     return menus[id];

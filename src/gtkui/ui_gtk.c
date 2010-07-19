@@ -69,7 +69,7 @@ static gboolean _ui_finalize(void);
 
 Interface gtkui_interface = {
     .id = "gtkui",
-    .desc = N_("GTK Foobar-like Interface"),
+    .desc = N_("GTK Interface"),
     .init = _ui_initialize,
     .fini = _ui_finalize,
 };

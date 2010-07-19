@@ -140,9 +140,8 @@ static GtkActionEntry action_entries_output[] =
 };
 
 static GtkActionEntry action_entries_view[] = {
-
-    {"view", NULL, N_("View")}
-};
+ {"view", NULL, N_("View")},
+ {"iface menu", NULL, N_("Interface")}};
 
 static GtkActionEntry action_entries_others[] = {
 
@@ -294,6 +293,9 @@ void ui_manager_create_menus(void)
     gtk_menu_item_set_submenu ((GtkMenuItem *) gtk_ui_manager_get_widget
      (ui_manager, "/mainwin-menus/output/effects menu"),
      audgui_create_effects_menu ());
+    gtk_menu_item_set_submenu ((GtkMenuItem *) gtk_ui_manager_get_widget
+     (ui_manager, "/mainwin-menus/view/iface menu"),
+     audgui_create_iface_menu ());
 
     playlistwin_popup_menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/playlist-rightclick-menu");
 

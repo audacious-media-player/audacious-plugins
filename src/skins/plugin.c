@@ -41,7 +41,7 @@ gchar * skins_paths[SKINS_PATH_COUNT];
 Interface skins_interface =
 {
     .id = "skinned",
-    .desc = "Audacious Skinned GUI",
+    .desc = "Winamp Classic Interface",
     .init = skins_init,
     .fini = skins_cleanup
 };
@@ -167,8 +167,6 @@ gboolean skins_cleanup (void)
         ui_manager_destroy();
         plugin_is_active = FALSE;
     }
-
-    gtk_main_quit();
 
     return TRUE;
 }
