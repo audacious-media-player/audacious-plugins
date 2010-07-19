@@ -355,7 +355,10 @@ void action_playback_play(void)
     else if (aud_drct_get_playing () && aud_drct_get_paused ())
         aud_drct_pause();
     else
+    {
+        aud_playlist_set_playing (aud_playlist_get_active ());
         aud_drct_play();
+    }
 }
 
 void action_playback_pause(void)
