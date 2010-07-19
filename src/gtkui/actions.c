@@ -174,7 +174,7 @@ void action_play_file(void)
 
 void action_play_location(void)
 {
-    audgui_show_add_url_window();
+    audgui_show_add_url_window (TRUE);
 }
 
 void action_ab_set(void)
@@ -550,7 +550,7 @@ void action_playlist_add_files(void)
 
 void action_playlist_add_url(void)
 {
-    audgui_show_add_url_window();
+    audgui_show_add_url_window (FALSE);
 }
 
 void action_playlist_new(void)

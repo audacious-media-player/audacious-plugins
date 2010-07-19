@@ -2521,7 +2521,7 @@ action_play_file( void )
 void
 action_play_location( void )
 {
-    audgui_show_add_url_window();
+    audgui_show_add_url_window (TRUE);
 }
 
 void

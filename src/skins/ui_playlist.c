@@ -1496,7 +1496,7 @@ action_playlist_add_files(void)
 void
 action_playlist_add_url(void)
 {
-    audgui_show_add_url_window();
+    audgui_show_add_url_window (FALSE);
 }
 
 void action_playlist_new (void)
