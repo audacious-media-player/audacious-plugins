@@ -61,8 +61,6 @@ src/console/plugin.c
 src/crossfade/plugin.c
 src/crystalizer/crystalizer.c
 src/echo_plugin/gui.c
-src/esd/about.c
-src/esd/configure.c
 src/evdev-plug/ed.c
 src/evdev-plug/ed_internals.c
 src/evdev-plug/ed_ui.c
@@ -100,7 +98,6 @@ src/oss4/plugin.c
 src/oss4/utils.c
 src/pulse_audio/pulse_audio.c
 src/resample/plugin.c
-src/roaraudio/gui.c
 src/scrobbler/configure.c
 src/scrobbler/plugin.c
 src/scrobbler/scrobbler.c
