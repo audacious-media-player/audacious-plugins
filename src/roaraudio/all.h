@@ -44,34 +44,34 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-OutputPluginInitStatus roar_init(void);
-void roar_about(void);
-void roar_configure(void);
+OutputPluginInitStatus aud_roar_init(void);
+void aud_roar_about(void);
+void aud_roar_configure(void);
 
-void roar_get_volume(int *l, int *r);
-void roar_set_volume(int l, int r);
-void roar_mixer_init(void);
-void roar_mixer_init_vol(int l, int r);
+void aud_roar_get_volume(int *l, int *r);
+void aud_roar_set_volume(int l, int r);
+void aud_roar_mixer_init(void);
+void aud_roar_mixer_init_vol(int l, int r);
 
-void roar_drain(void);
-void roar_write(void *ptr, int length);
-void roar_close(void);
-void roar_flush(int time);
-void roar_pause(short p);
-int roar_open(gint fmt, int rate, int nch);
-int roar_get_output_time(void);
-int roar_get_written_time(void);
-gboolean roar_buffer_is_playing(void);
-gint roar_buffer_get_size(void);
+void aud_roar_drain(void);
+void aud_roar_write(void *ptr, int length);
+void aud_roar_close(void);
+void aud_roar_flush(int time);
+void aud_roar_pause(short p);
+int aud_roar_open(gint fmt, int rate, int nch);
+int aud_roar_get_output_time(void);
+int aud_roar_get_written_time(void);
+gboolean aud_roar_buffer_is_playing(void);
+gint aud_roar_buffer_get_size(void);
 
-int roar_update_metadata(void);
-int roar_chk_metadata(void);
+int aud_roar_update_metadata(void);
+int aud_roar_chk_metadata(void);
 
 #define STATE_CONNECTED   1
 #define STATE_PLAYING     2
 #define STATE_NORECONNECT 4
 
-struct xmms_roar_out
+struct xmms_aud_roar_out
 {
 	int state;
 	char *server;

@@ -27,28 +27,28 @@
 
 OutputPlugin roar_op = {
 	.description = "RoarAudio Output Plugin",
-	.init = roar_init,
+	.init = aud_roar_init,
 	.cleanup = NULL,
-	.about = roar_about,
-	.configure = roar_configure,
-	.get_volume = roar_get_volume,
-	.set_volume = roar_set_volume,
-	.open_audio = roar_open,
-	.write_audio = roar_write,
-	.close_audio = roar_close,
-	.flush = roar_flush,
-	.pause = roar_pause,
-	.output_time = roar_get_output_time,
-	.written_time = roar_get_written_time,
-	.buffer_playing = roar_buffer_is_playing,
-	.buffer_free = roar_buffer_get_size,
+	.about = aud_roar_about,
+	.configure = aud_roar_configure,
+	.get_volume = aud_roar_get_volume,
+	.set_volume = aud_roar_set_volume,
+	.open_audio = aud_roar_open,
+	.write_audio = aud_roar_write,
+	.close_audio = aud_roar_close,
+	.flush = aud_roar_flush,
+	.pause = aud_roar_pause,
+	.output_time = aud_roar_get_output_time,
+	.written_time = aud_roar_get_written_time,
+	.buffer_playing = aud_roar_buffer_is_playing,
+	.buffer_free = aud_roar_buffer_get_size,
 };
 
 OutputPlugin *roar_oplist[] = { &roar_op, NULL };
 
 SIMPLE_OUTPUT_PLUGIN(roaraudio, roar_oplist);
 
-OutputPluginInitStatus roar_init(void)
+OutputPluginInitStatus aud_roar_init(void)
 {
 	mcs_handle_t *cfgfile;
 
@@ -78,7 +78,7 @@ OutputPluginInitStatus roar_init(void)
 	return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
-void roar_write(void *ptr, int length)
+void aud_roar_write(void *ptr, int length)
 {
 	int r;
 
@@ -97,13 +97,10 @@ void roar_write(void *ptr, int length)
 	}
 }
 
-gboolean roar_initialize_stream(struct roar_vio_calls *calls, struct roar_connection *con, struct roar_stream *stream, int rate, int nch, int bits, int codec, int dir)
+gboolean aud_roar_initialize_stream(struct roar_vio_calls *calls, struct roar_connection *con, struct roar_stream *stream, int rate, int nch, int bits, int codec, int dir)
 {
 	if (roar_vio_simple_new_stream_obj(&(g_inst.vio), &(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY) == -1)
-	{
-		roar_disconnect(&(g_inst.con));
 		return FALSE;
-	}
 
 	g_inst.bits = bits;
 	g_inst.nch = nch;
@@ -114,12 +111,12 @@ gboolean roar_initialize_stream(struct roar_vio_calls *calls, struct roar_connec
 	g_inst.sampleoff = 0;
 	g_inst.state |= STATE_PLAYING;
 
-	roar_set_volume(g_inst.mixer[0], g_inst.mixer[1]);
+	aud_roar_set_volume(g_inst.mixer[0], g_inst.mixer[1]);
 
 	return TRUE;
 }
 
-int roar_open(gint fmt, int rate, int nch)
+int aud_roar_open(gint fmt, int rate, int nch)
 {
 	int codec = ROAR_CODEC_DEFAULT;
 	int bits;
@@ -186,15 +183,15 @@ int roar_open(gint fmt, int rate, int nch)
 
 	g_inst.bps = nch * rate * bits / 8;
 
-	if (!roar_initialize_stream(&(g_inst.vio), &(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY))
+	if (!aud_roar_initialize_stream(&(g_inst.vio), &(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY))
 		return FALSE;
 
-	roar_update_metadata();
+	aud_roar_update_metadata();
 
 	return TRUE;
 }
 
-void roar_close(void)
+void aud_roar_close(void)
 {
 	gint id;
 
@@ -206,7 +203,7 @@ void roar_close(void)
 	g_inst.written = 0;
 }
 
-void roar_pause(short p)
+void aud_roar_pause(short p)
 {
 	if (p)
 		roar_stream_set_flags(&(g_inst.con), &(g_inst.stream), ROAR_FLAG_PAUSE | ROAR_FLAG_MUTE, ROAR_SET_FLAG);
@@ -216,15 +213,15 @@ void roar_pause(short p)
 	g_inst.pause = p;
 }
 
-void roar_flush(int time)
+void aud_roar_flush(int time)
 {
 	gint64 r = time;
 
 	r *= g_inst.bps;
 	r /= 1000;
 
-	roar_close();
-	if (!roar_initialize_stream(&(g_inst.vio), &(g_inst.con), &(g_inst.stream),
+	aud_roar_close();
+	if (!aud_roar_initialize_stream(&(g_inst.vio), &(g_inst.con), &(g_inst.stream),
 	    g_inst.rate, g_inst.nch, g_inst.bits, g_inst.codec, ROAR_DIR_PLAY))
 		return;
 
@@ -232,7 +229,7 @@ void roar_flush(int time)
 	g_inst.sampleoff = ((time / 1000) * g_inst.rate) * g_inst.nch;
 }
 
-gint64 roar_get_adjusted_sample_count(void)
+gint64 aud_roar_get_adjusted_sample_count(void)
 {
 	gint id;
 	gint64 samples;
@@ -248,16 +245,16 @@ gint64 roar_get_adjusted_sample_count(void)
 	return samples;
 }
 
-int roar_get_output_time(void)
+int aud_roar_get_output_time(void)
 {
 	gint64 samples;
 
-	samples = roar_get_adjusted_sample_count();
+	samples = aud_roar_get_adjusted_sample_count();
 
 	return (samples * 1000) / (g_inst.rate * g_inst.nch);
 }
 
-int roar_get_written_time(void)
+int aud_roar_get_written_time(void)
 {
 	gint64 r;
 
@@ -272,7 +269,7 @@ int roar_get_written_time(void)
 }
 
 // META DATA:
-int roar_update_metadata(void)
+int aud_roar_update_metadata(void)
 {
 	struct roar_meta meta;
 	char empty = 0;
@@ -321,7 +318,7 @@ int roar_update_metadata(void)
 }
 
 // MIXER:
-void roar_get_volume(int *l, int *r)
+void aud_roar_get_volume(int *l, int *r)
 {
 	if (!(g_inst.state & STATE_CONNECTED))
 		return;
@@ -330,7 +327,7 @@ void roar_get_volume(int *l, int *r)
 	*r = g_inst.mixer[1];
 }
 
-void roar_set_volume(int l, int r)
+void aud_roar_set_volume(int l, int r)
 {
 	struct roar_mixer_settings mixer;
 
@@ -345,9 +342,12 @@ void roar_set_volume(int l, int r)
 	roar_set_vol(&(g_inst.con), g_inst.stream.id, &mixer, 2);
 }
 
-gboolean roar_buffer_is_playing(void)
+gboolean aud_roar_buffer_is_playing(void)
 {
 	struct roar_stream_info info;
+
+	if (!(g_inst.state & STATE_CONNECTED))
+		return FALSE;
 
 	if (!(g_inst.state & STATE_PLAYING))
 		return FALSE;
@@ -362,7 +362,7 @@ gboolean roar_buffer_is_playing(void)
 }
 
 /* this really sucks. */
-gboolean roar_vio_is_writable(struct roar_vio_calls *vio)
+gboolean aud_roar_vio_is_writable(struct roar_vio_calls *vio)
 {
 	struct roar_vio_select vios[1];
 
@@ -371,14 +371,17 @@ gboolean roar_vio_is_writable(struct roar_vio_calls *vio)
 	return roar_vio_select(vios, 1, &(struct roar_vio_selecttv){ .nsec = 1 }, NULL);
 }
 
-gint roar_buffer_get_size(void)
+gint aud_roar_buffer_get_size(void)
 {
 	struct roar_stream_info info;
+
+	if (!(g_inst.state & STATE_CONNECTED))
+		return 0;
 
 	if (!(g_inst.state & STATE_PLAYING))
 		return 0;
 
-	if (!roar_vio_is_writable(&(g_inst.vio)))
+	if (!aud_roar_vio_is_writable(&(g_inst.vio)))
 		return 0;
 
 	if (roar_stream_get_info(&(g_inst.con), &(g_inst.stream), &info) != -1)

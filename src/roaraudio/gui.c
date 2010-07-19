@@ -28,7 +28,7 @@
 
 // ABOUT:
 
-void roar_about(void) {
+void aud_roar_about(void) {
  static GtkWidget *window = NULL;
 
  audgui_simple_message(&window, GTK_MESSAGE_INFO, 
@@ -42,7 +42,7 @@ void roar_about(void) {
 void on_button_ok_enter(GtkButton * button, gpointer user_data) {
 }
 
-void roar_configure(void) {
+void aud_roar_configure(void) {
   GtkWidget *config_win;
   GtkWidget *vbox_main;
   GtkWidget *tabs_main;
