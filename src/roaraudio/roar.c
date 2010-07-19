@@ -84,7 +84,7 @@ void aud_roar_write(void *ptr, int length)
 
 	while (length)
 	{
-		if ((r = roar_vio_write(&(g_inst.vio), ptr, length >= 17640 ? 17640 : length)) != -1)
+		if ((r = roar_vio_write(&(g_inst.vio), ptr, length >= g_inst.block_size ? g_inst.block_size : length)) != -1)
 		{
 			g_inst.written += r;
 			ptr += r;
