@@ -64,6 +64,7 @@ int aud_roar_get_output_time(void);
 int aud_roar_get_written_time(void);
 gboolean aud_roar_buffer_is_playing(void);
 gint aud_roar_buffer_get_size(void);
+void aud_roar_period_wait(void);
 
 int aud_roar_update_metadata(void);
 int aud_roar_chk_metadata(void);
