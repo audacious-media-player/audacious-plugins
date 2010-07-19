@@ -217,11 +217,7 @@ ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVC
 #endif
 
         tuple_associate_int(tuple, FIELD_LENGTH, NULL, ic->duration / 1000);
-    }
-
-    if (c != NULL)
-    {
-        tuple_associate_int(tuple, FIELD_BITRATE, NULL, c->bit_rate / 1000);
+        tuple_associate_int(tuple, FIELD_BITRATE, NULL, ic->bit_rate / 1000);
     }
 
     if (codec != NULL && codec->long_name != NULL)
@@ -397,7 +393,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     ffaudio_get_tuple_data(tuple, ic, c, codec);
     playback->set_tuple(playback, tuple);
 #endif
-    playback->set_params(playback, NULL, 0, c->bit_rate, c->sample_rate, c->channels);
+    playback->set_params(playback, NULL, 0, ic->bit_rate, c->sample_rate, c->channels);
 
     g_mutex_lock(ctrl_mutex);
 
