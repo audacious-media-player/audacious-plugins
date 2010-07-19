@@ -41,6 +41,7 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <audacious/plugins.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/vfs_async.h>
 
@@ -386,6 +387,6 @@ SIMPLE_GENERAL_PLUGIN(lyricwiki, lyricwiki_gplist);
 
 static gboolean window_delete(void)
 {
-	aud_enable_general(&lyricwiki, FALSE);
+	aud_general_plugin_enable (aud_plugin_by_header (& lyricwiki), FALSE);
 	return TRUE;
 }

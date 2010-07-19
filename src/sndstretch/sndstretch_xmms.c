@@ -62,6 +62,7 @@ EffectPlugin sndstretch_ep = {
     .finish = sndstretch_finish,
     .decoder_to_output_time = sndstretch_decoder_to_output_time,
     .output_to_decoder_time = sndstretch_output_to_decoder_time,
+    .preserves_format = TRUE,
 };
 
 EffectPlugin *sndstretch_eplist[] = { &sndstretch_ep, NULL };

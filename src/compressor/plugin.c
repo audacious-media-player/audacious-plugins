@@ -156,6 +156,7 @@ EffectPlugin compressor_plugin =
     .finish = compressor_finish,
     .decoder_to_output_time = compressor_decoder_to_output_time,
     .output_to_decoder_time = compressor_output_to_decoder_time,
+    .preserves_format = TRUE,
 };
 
 EffectPlugin * compressor_list[] = {& compressor_plugin, NULL};
