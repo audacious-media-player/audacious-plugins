@@ -1,5 +1,5 @@
 /*
- *      Copyright (C) Philipp 'ph3-der-loewe' Schafft      - 2008,
+ *      Copyright (C) Philipp 'ph3-der-loewe' Schafft      - 2008-2010,
  *                    Daniel Duntemann <dauxx@dauxx.org>   - 2009,
  *                    William Pitcock <nenolod@atheme.org> - 2010.
  *
@@ -144,6 +144,8 @@ int aud_roar_open(gint fmt, int rate, int nch)
 	  case FMT_S16_BE:
 		  codec = ROAR_CODEC_PCM_S_BE;
 		  break;
+#if 0
+/* RoarAudio don't use this stupid 24bit-in-lower-part-of-32bit-int format */
 	  case FMT_U24_LE:	/* stored in lower 3 bytes of 32-bit value, highest byte must be 0 */
 		  codec = ROAR_CODEC_PCM_U_LE;
 		  bits = 24;
@@ -160,6 +162,7 @@ int aud_roar_open(gint fmt, int rate, int nch)
 		  bits = 24;
 		  codec = ROAR_CODEC_PCM_S_BE;
 		  break;
+#endif
 	  case FMT_U32_LE:	/* highest byte must be 0 */
 		  codec = ROAR_CODEC_PCM_U_LE;
 		  bits = 32;
@@ -177,6 +180,7 @@ int aud_roar_open(gint fmt, int rate, int nch)
 		  codec = ROAR_CODEC_PCM_S_BE;
 		  break;
 	  case FMT_FLOAT:
+	  default:
 		  return FALSE;
 		  break;
 	}
@@ -206,9 +210,9 @@ void aud_roar_close(void)
 void aud_roar_pause(short p)
 {
 	if (p)
-		roar_stream_set_flags(&(g_inst.con), &(g_inst.stream), ROAR_FLAG_PAUSE | ROAR_FLAG_MUTE, ROAR_SET_FLAG);
+		roar_stream_set_flags(&(g_inst.con), &(g_inst.stream), ROAR_FLAG_PAUSE, ROAR_SET_FLAG);
 	else
-		roar_stream_set_flags(&(g_inst.con), &(g_inst.stream), ROAR_FLAG_PAUSE | ROAR_FLAG_MUTE, ROAR_RESET_FLAG);
+		roar_stream_set_flags(&(g_inst.con), &(g_inst.stream), ROAR_FLAG_PAUSE, ROAR_RESET_FLAG);
 
 	g_inst.pause = p;
 }
@@ -275,6 +279,18 @@ int aud_roar_update_metadata(void)
 	char empty = 0;
 	const gchar *info = NULL;
 	gint pos, playlist;
+	const Tuple *songtuple;
+	gint i;
+	static struct { int ac_metatype, ra_metatype; } metamap[] = {
+		{FIELD_ARTIST,		ROAR_META_TYPE_ARTIST},
+		{FIELD_TITLE,		ROAR_META_TYPE_TITLE},
+		{FIELD_ALBUM,		ROAR_META_TYPE_ALBUM},
+		{FIELD_COMMENT,		ROAR_META_TYPE_COMMENT},
+		{FIELD_GENRE,		ROAR_META_TYPE_GENRE},
+		{FIELD_PERFORMER,	ROAR_META_TYPE_PERFORMER},
+		{FIELD_COPYRIGHT,	ROAR_META_TYPE_COPYRIGHT},
+		{FIELD_DATE,		ROAR_META_TYPE_DATE},
+	};
 
 	playlist = aud_playlist_get_active();
 	pos = aud_playlist_get_position(playlist);
@@ -288,7 +304,7 @@ int aud_roar_update_metadata(void)
 	info = aud_playlist_entry_get_filename(playlist, pos);
 	if (info)
 	{
-		if (strncmp(info, "http:", 5) == 0)
+		if (strncmp(info, "http://", 7) == 0)
 			meta.type = ROAR_META_TYPE_FILEURL;
 		else
 			meta.type = ROAR_META_TYPE_FILENAME;
@@ -299,15 +315,21 @@ int aud_roar_update_metadata(void)
 		free(meta.value);
 	}
 
-	info = aud_playlist_entry_get_title(playlist, pos, TRUE);
-	if (info)
+	songtuple = aud_playlist_entry_get_tuple(playlist, pos, TRUE);
+	if (songtuple)
 	{
-		meta.type = ROAR_META_TYPE_TITLE;
+		for (i = 0; i < sizeof(metamap)/sizeof(*metamap); i++)
+		{
+			if ((info = tuple_get_string(songtuple, metamap[i].ac_metatype, NULL)))
+			{
+				meta.type = metamap[i].ra_metatype;
+				meta.value = g_strdup(info);
 
-		meta.value = g_strdup(info);
-		roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_SET, &meta);
+				roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_SET, &meta);
 
-		free(meta.value);
+				free(meta.value);
+			}
+		}
 	}
 
 	meta.value = &empty;
@@ -320,11 +342,26 @@ int aud_roar_update_metadata(void)
 // MIXER:
 void aud_roar_get_volume(int *l, int *r)
 {
+	struct roar_mixer_settings mixer;
+	int channels;
+	float fs;
+
 	if (!(g_inst.state & STATE_CONNECTED))
 		return;
 
-	*l = g_inst.mixer[0];
-	*r = g_inst.mixer[1];
+	if (!(g_inst.state & STATE_PLAYING))
+		return;
+
+	if ( roar_get_vol(&(g_inst.con), g_inst.stream.id, &mixer, &channels) == -1 )
+		return;
+
+	if ( channels == 1 )
+		mixer.mixer[1] = mixer.mixer[0];
+
+	fs = (float)mixer.scale/100.;
+
+	*l = g_inst.mixer[0] = mixer.mixer[0] / fs;
+	*r = g_inst.mixer[1] = mixer.mixer[1] / fs;
 }
 
 void aud_roar_set_volume(int l, int r)
@@ -332,6 +369,9 @@ void aud_roar_set_volume(int l, int r)
 	struct roar_mixer_settings mixer;
 
 	if (!(g_inst.state & STATE_CONNECTED))
+		return;
+
+	if (!(g_inst.state & STATE_PLAYING))
 		return;
 
 	mixer.mixer[0] = g_inst.mixer[0] = l;
