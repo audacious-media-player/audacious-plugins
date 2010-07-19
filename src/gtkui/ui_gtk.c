@@ -885,6 +885,11 @@ static gboolean _ui_finalize(void)
     gtkui_cfg_save();
     gtkui_cfg_free();
     ui_hooks_disassociate();
+
+    /* ui_manager_destroy() must be called to detach plugin services menus
+     * before any widget are destroyed. -jlindgren */
+    ui_manager_destroy ();
+
     g_object_unref ((GObject *) UI_PLAYLIST_NOTEBOOK);
     gtk_widget_destroy (window);
     return TRUE;

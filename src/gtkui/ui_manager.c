@@ -289,7 +289,9 @@ void ui_manager_create_menus(void)
         return;
     }
 
-    gtk_menu_item_set_submenu(GTK_MENU_ITEM(gtk_ui_manager_get_widget(ui_manager, "/mainwin-menus/plugins-menu")), aud_get_plugin_menu(AUDACIOUS_MENU_MAIN));
+    gtk_menu_item_set_submenu ((GtkMenuItem *) gtk_ui_manager_get_widget
+     (ui_manager, "/mainwin-menus/plugins-menu"), aud_get_plugin_menu
+     (AUDACIOUS_MENU_MAIN));
     gtk_menu_item_set_submenu ((GtkMenuItem *) gtk_ui_manager_get_widget
      (ui_manager, "/mainwin-menus/output/effects menu"),
      audgui_create_effects_menu ());
@@ -299,7 +301,9 @@ void ui_manager_create_menus(void)
 
     playlistwin_popup_menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/playlist-rightclick-menu");
 
-    gtk_menu_item_set_submenu(GTK_MENU_ITEM(gtk_ui_manager_get_widget(ui_manager, "/playlist-menus/playlist-rightclick-menu/plugins-menu")), aud_get_plugin_menu(AUDACIOUS_MENU_PLAYLIST_RCLICK));
+    gtk_menu_item_set_submenu ((GtkMenuItem *) gtk_ui_manager_get_widget
+     (ui_manager, "/playlist-menus/playlist-rightclick-menu/plugins-menu"),
+     aud_get_plugin_menu (AUDACIOUS_MENU_PLAYLIST_RCLICK));
 }
 
 
@@ -349,6 +353,10 @@ void ui_manager_popup_menu_show(GtkMenu * menu, gint x, gint y, guint button, gu
 
 void ui_manager_destroy(void)
 {
+    gtk_menu_detach ((GtkMenu *) aud_get_plugin_menu (AUDACIOUS_MENU_MAIN));
+    gtk_menu_detach ((GtkMenu *) aud_get_plugin_menu
+     (AUDACIOUS_MENU_PLAYLIST_RCLICK));
+
     g_object_unref((GObject *) toggleaction_group_others);
     g_object_unref((GObject *) action_group_playback);
     g_object_unref((GObject *) action_group_playlist);
