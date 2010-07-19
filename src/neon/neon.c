@@ -168,10 +168,17 @@ static void handle_free(struct neon_handle* h) {
     ne_uri_free(h->purl);
     g_free(h->purl);
     destroy_rb(&h->rb);
+
+    if (h->reader_status.mutex != NULL)
+        g_mutex_free(h->reader_status.mutex);
+    if (h->reader_status.cond != NULL)
+        g_cond_free(h->reader_status.cond);
+
     g_free(h->icy_metadata.stream_name);
     g_free(h->icy_metadata.stream_title);
     g_free(h->icy_metadata.stream_url);
     g_free(h->icy_metadata.stream_contenttype);
+    g_free(h->url);
     g_free(h);
 }
 
@@ -843,7 +850,7 @@ VFSFile* neon_vfs_fopen_impl(const gchar* path, const gchar* mode) {
 
     _DEBUG("Allocated new handle: %p", handle);
 
-    if (NULL == (handle->url = strdup(path))) {
+    if (NULL == (handle->url = g_strdup(path))) {
         _ERROR ("<%p> Could not copy URL string", (void *) handle);
         handle_free(handle);
         g_free(file);
