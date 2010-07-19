@@ -46,7 +46,7 @@ OutputPlugin roar_op = {
 	.written_time = aud_roar_get_written_time,
 	.buffer_playing = aud_roar_buffer_is_playing,
 	.buffer_free = aud_roar_buffer_get_size,
-	.period_wait = aud_roar_period_wait,
+//	.period_wait = aud_roar_period_wait,
 };
 
 OutputPlugin *roar_oplist[] = { &roar_op, NULL };
@@ -445,6 +445,9 @@ gint aud_roar_buffer_get_size(void)
 void aud_roar_period_wait(void)
 {
 	struct roar_vio_select vios[1];
+
+	if (!(g_inst.state & STATE_PLAYING))
+		return;
 
 	ROAR_VIO_SELECT_SETVIO(&vios[0], &(g_inst.vio), ROAR_VIO_SELECT_WRITE);
 
