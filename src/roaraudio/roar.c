@@ -23,11 +23,6 @@
  *
  */
 
-/*
- * Enable experimental features?
- */
-#define NOTYET
-
 #include "all.h"
 
 OutputPlugin roar_op = {
@@ -236,11 +231,11 @@ void roar_flush(int time)
 		return;
 
 	g_inst.timer = r;
+	g_inst.sampleoff = ((time / 1000) * g_inst.rate) * g_inst.nch;
 }
 
 int roar_get_output_time(void)
 {
-#ifdef NOTYET
 	gint id;
 	gint64 samples;
 
@@ -250,11 +245,9 @@ int roar_get_output_time(void)
 
 	/* calculate the time, given our sample count. */
 	samples = g_inst.stream.pos;
+	samples += g_inst.sampleoff;
 
 	return (samples * 1000) / (g_inst.rate * g_inst.nch);
-#else
-	return roar_get_written_time();
-#endif
 }
 
 int roar_get_written_time(void)
