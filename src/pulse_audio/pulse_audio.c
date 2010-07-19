@@ -69,15 +69,15 @@ do { \
     if (!connected) return retval; \
 } while (0);
 
-static const char* get_song_name(void) {
-    static char t[256];
-    char *str, *u;
+static const gchar * get_song_name (void)
+{
+    if (! aud_drct_get_playing ()) /* just probing? */
+        return "";
 
-    if (!(str = aud_drct_get_title()))
-        return "Playback Stream";
-    snprintf(t, sizeof(t), "%s", u = pa_locale_to_utf8(str));
-    pa_xfree(u);
-
+    gchar * title = aud_drct_get_title ();
+    static gchar t[512];
+    snprintf (t, sizeof (t), "%s", title);
+    g_free (title);
     return t;
 }
 
