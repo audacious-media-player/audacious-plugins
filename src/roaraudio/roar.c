@@ -48,6 +48,8 @@ OutputPlugin *roar_oplist[] = { &roar_op, NULL };
 
 SIMPLE_OUTPUT_PLUGIN(roaraudio, roar_oplist);
 
+static GStaticMutex roar_mutex = G_STATIC_MUTEX_INIT;
+
 OutputPluginInitStatus roar_init(void)
 {
 	mcs_handle_t *cfgfile;
@@ -82,6 +84,8 @@ void roar_write(void *ptr, int length)
 {
 	int r;
 
+	g_static_mutex_lock(&roar_mutex);
+
 	while (length)
 	{
 		if ((r = roar_vio_write(&(g_inst.vio), ptr, length >= 17640 ? 17640 : length)) != -1)
@@ -95,6 +99,8 @@ void roar_write(void *ptr, int length)
 			return;
 		}
 	}
+
+	g_static_mutex_unlock(&roar_mutex);
 }
 
 gboolean roar_initialize_stream(struct roar_vio_calls *calls, struct roar_connection *con, struct roar_stream *stream, int rate, int nch, int bits, int codec, int dir)
@@ -123,6 +129,8 @@ int roar_open(gint fmt, int rate, int nch)
 {
 	int codec = ROAR_CODEC_DEFAULT;
 	int bits;
+
+	g_static_mutex_lock(&roar_mutex);
 
 	bits = 16;
 	switch (fmt)
@@ -187,9 +195,14 @@ int roar_open(gint fmt, int rate, int nch)
 	g_inst.bps = nch * rate * bits / 8;
 
 	if (!roar_initialize_stream(&(g_inst.vio), &(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY))
+	{
+		g_static_mutex_unlock(&roar_mutex);
 		return FALSE;
+	}
 
 	roar_update_metadata();
+
+	g_static_mutex_unlock(&roar_mutex);
 
 	return TRUE;
 }
@@ -198,38 +211,56 @@ void roar_close(void)
 {
 	gint id;
 
+	g_static_mutex_lock(&roar_mutex);
+
 	id = roar_stream_get_id(&(g_inst.stream));
 	roar_kick(&(g_inst.con), ROAR_OT_STREAM, id);
 	roar_vio_close(&(g_inst.vio));
 
 	g_inst.state &= ~STATE_PLAYING;
 	g_inst.written = 0;
+	g_inst.sampleoff = 0;
+
+	g_static_mutex_unlock(&roar_mutex);
 }
 
 void roar_pause(short p)
 {
+	g_static_mutex_lock(&roar_mutex);
+
 	if (p)
 		roar_stream_set_flags(&(g_inst.con), &(g_inst.stream), ROAR_FLAG_PAUSE | ROAR_FLAG_MUTE, ROAR_SET_FLAG);
 	else
 		roar_stream_set_flags(&(g_inst.con), &(g_inst.stream), ROAR_FLAG_PAUSE | ROAR_FLAG_MUTE, ROAR_RESET_FLAG);
 
 	g_inst.pause = p;
+
+	g_static_mutex_unlock(&roar_mutex);
 }
 
 void roar_flush(int time)
 {
-	gint64 r = time;
+	gint64 r;
 
+	r = time;
 	r *= g_inst.bps;
 	r /= 1000;
 
 	roar_close();
+
+	g_static_mutex_lock(&roar_mutex);
+
 	if (!roar_initialize_stream(&(g_inst.vio), &(g_inst.con), &(g_inst.stream),
 	    g_inst.rate, g_inst.nch, g_inst.bits, g_inst.codec, ROAR_DIR_PLAY))
+	{
+		g_static_mutex_unlock(&roar_mutex);
 		return;
+	}
 
 	g_inst.written = r;
 	g_inst.sampleoff = ((time / 1000) * g_inst.rate) * g_inst.nch;
+
+	g_static_mutex_unlock(&roar_mutex);
 }
 
 gint64 roar_get_adjusted_sample_count(void)
@@ -261,12 +292,19 @@ int roar_get_written_time(void)
 {
 	gint64 r;
 
+	g_static_mutex_lock(&roar_mutex);
+
 	if (!g_inst.bps)
+	{
+		g_static_mutex_unlock(&roar_mutex);
 		return 0;
+	}
 
 	r = g_inst.written;
 	r *= 1000;		// sec -> msec
 	r /= g_inst.bps;
+
+	g_static_mutex_unlock(&roar_mutex);
 
 	return r;
 }
@@ -323,19 +361,31 @@ int roar_update_metadata(void)
 // MIXER:
 void roar_get_volume(int *l, int *r)
 {
+	g_static_mutex_lock(&roar_mutex);
+
 	if (!(g_inst.state & STATE_CONNECTED))
+	{
+		g_static_mutex_unlock(&roar_mutex);
 		return;
+	}
 
 	*l = g_inst.mixer[0];
 	*r = g_inst.mixer[1];
+
+	g_static_mutex_unlock(&roar_mutex);
 }
 
 void roar_set_volume(int l, int r)
 {
 	struct roar_mixer_settings mixer;
 
+	g_static_mutex_lock(&roar_mutex);
+
 	if (!(g_inst.state & STATE_CONNECTED))
+	{
+		g_static_mutex_unlock(&roar_mutex);
 		return;
+	}
 
 	mixer.mixer[0] = g_inst.mixer[0] = l;
 	mixer.mixer[1] = g_inst.mixer[1] = r;
@@ -343,20 +393,35 @@ void roar_set_volume(int l, int r)
 	mixer.scale = 100;
 
 	roar_set_vol(&(g_inst.con), g_inst.stream.id, &mixer, 2);
+
+	g_static_mutex_unlock(&roar_mutex);
 }
 
 gboolean roar_buffer_is_playing(void)
 {
 	struct roar_stream_info info;
 
+	g_static_mutex_lock(&roar_mutex);
+
 	if (!(g_inst.state & STATE_PLAYING))
+	{
+		g_static_mutex_unlock(&roar_mutex);
 		return FALSE;
+	}
 
 	if (roar_stream_get_info(&(g_inst.con), &(g_inst.stream), &info) == -1)
+	{
+		g_static_mutex_unlock(&roar_mutex);
 		return FALSE;
+	}
 
 	if (info.post_underruns)
+	{
+		g_static_mutex_unlock(&roar_mutex);
 		return FALSE;
+	}
+
+	g_static_mutex_unlock(&roar_mutex);
 
 	return TRUE;
 }
@@ -375,14 +440,27 @@ gint roar_buffer_get_size(void)
 {
 	struct roar_stream_info info;
 
+	g_static_mutex_lock(&roar_mutex);
+
 	if (!(g_inst.state & STATE_PLAYING))
+	{
+		g_static_mutex_unlock(&roar_mutex);
 		return 0;
+	}
 
 	if (!roar_vio_is_writable(&(g_inst.vio)))
+	{
+		g_static_mutex_unlock(&roar_mutex);
 		return 0;
+	}
 
 	if (roar_stream_get_info(&(g_inst.con), &(g_inst.stream), &info) != -1)
+	{
+		g_static_mutex_unlock(&roar_mutex);
 		return info.block_size;
+	}
+
+	g_static_mutex_unlock(&roar_mutex);
 
 	return 0;
 }
