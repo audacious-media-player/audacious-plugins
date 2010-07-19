@@ -15,7 +15,7 @@ N_("Echo Plugin\n"
    "By Johan Levin 1999.\n\n"
    "Surround echo by Carl van Schaik 1999");
 
-static GtkWidget *conf_dialog = NULL, *surround_btn;
+static GtkWidget *conf_dialog = NULL;
 static GtkObject *echo_delay_adj, *echo_feedback_adj, *echo_volume_adj;
 
 void echo_about (void)
@@ -32,14 +32,11 @@ static void apply_changes(void)
 	echo_delay = GTK_ADJUSTMENT(echo_delay_adj)->value;
 	echo_feedback = GTK_ADJUSTMENT(echo_feedback_adj)->value;
 	echo_volume = GTK_ADJUSTMENT(echo_volume_adj)->value;
-	echo_surround_enable =
-		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(surround_btn));
 
 	cfg = aud_cfg_db_open();
 	aud_cfg_db_set_int(cfg, "echo_plugin", "delay", echo_delay);
 	aud_cfg_db_set_int(cfg, "echo_plugin", "feedback", echo_feedback);
 	aud_cfg_db_set_int(cfg, "echo_plugin", "volume", echo_volume);
-	aud_cfg_db_set_bool(cfg, "echo_plugin", "enable_surround", echo_surround_enable);
 	aud_cfg_db_close(cfg);
 }
 
@@ -114,14 +111,6 @@ void echo_configure(void)
 	gtk_scale_set_digits(GTK_SCALE(hscale), 0);
 	gtk_table_attach_defaults(GTK_TABLE(table), hscale, 1, 2, 2, 3);
 	gtk_widget_show(hscale);
-
-	surround_btn = gtk_check_button_new_with_label(_("Surround echo"));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(surround_btn),
-				     echo_surround_enable);
-	gtk_widget_show(surround_btn);
-
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(conf_dialog)->vbox), surround_btn,
-			   TRUE, TRUE, 5);
 
 	bbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
