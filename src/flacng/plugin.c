@@ -274,14 +274,14 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
             {
                 ERROR("Samplerate changed midstream (now: %d, was: %d). This is not supported yet.\n",
                     main_info->stream.samplerate, stream_info.samplerate);
-                break;
+                goto CLEANUP;
             }
 
             if (stream_info.channels != main_info->stream.channels)
             {
                 ERROR("Number of channels changed midstream (now: %d, was: %d). This is not supported yet.\n",
                     main_info->stream.channels, stream_info.channels);
-                break;
+                goto CLEANUP;
             }
 
             main_info->metadata_changed = FALSE;
@@ -292,14 +292,14 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
         {
             ERROR("Frame samplerate mismatch (stream: %d, frame: %d)!\n",
                 main_info->stream.samplerate, main_info->frame.samplerate);
-            break;
+            goto CLEANUP;
         }
 
         if (main_info->stream.channels != main_info->frame.channels)
         {
             ERROR("Frame channel mismatch (stream: %d, frame: %d)!\n",
                 main_info->stream.channels, main_info->frame.channels);
-            break;
+            goto CLEANUP;
         }
 
         g_mutex_lock(seek_mutex);
@@ -509,8 +509,13 @@ gboolean flac_update_song_tuple (const Tuple * tuple, VFSFile * fd)
     AUDDBG("Update song tuple.\n");
     FLAC__Metadata_SimpleIterator *iter;
     FLAC__StreamMetadata *vc_block;
-    gchar *filename = g_filename_from_uri(fd->uri, NULL, NULL);
+    gchar *filename;
     FLAC__bool ret;
+
+    if (fd != NULL)
+        filename = g_filename_from_uri(fd->uri, NULL, NULL);
+    else
+        return FALSE;
 
     iter = FLAC__metadata_simple_iterator_new();
     g_return_val_if_fail(iter != NULL, FALSE);
@@ -566,8 +571,10 @@ static gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, 
     FLAC__bool ret;
     gboolean has_image = FALSE;
 
-    if (filename != NULL)
+    if (fd != NULL)
         filename = g_filename_from_uri(fd->uri, NULL, NULL);
+    else
+        return FALSE;
 
     iter = FLAC__metadata_simple_iterator_new();
     g_return_val_if_fail(iter != NULL, FALSE);
