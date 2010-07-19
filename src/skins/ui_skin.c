@@ -251,6 +251,14 @@ skin_free(Skin * skin)
     skin->path = NULL;
 
     skin_set_default_vis_color(skin);
+
+    if (original_gtk_theme != NULL)
+    {
+        gtk_settings_set_string_property (gtk_settings_get_default (),
+         "gtk-theme-name", original_gtk_theme, "audacious");
+        g_free (original_gtk_theme);
+        original_gtk_theme = NULL;
+    }
 }
 
 void
@@ -1495,7 +1503,6 @@ skin_check_pixmaps(const Skin * skin, const gchar * skin_path)
 static gboolean
 skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
 {
-    GtkSettings *settings;
     gchar *gtkrcpath;
     gchar *newpath, *skin_path;
     int archive = 0;
@@ -1554,23 +1561,13 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
         return FALSE;
     }
 
-    /* restore gtk theme if changed by previous skin */
-    settings = gtk_settings_get_default();
-
-    if (original_gtk_theme != NULL) {
-        gtk_settings_set_string_property(settings, "gtk-theme-name",
-                                              original_gtk_theme, "audacious");
-        g_free(original_gtk_theme);
-        original_gtk_theme = NULL;
-    }
-
 #ifndef _WIN32
     if (! config.disable_inline_gtk && ! archive)
     {
         gtkrcpath = g_strdup_printf ("%s/gtk-2.0/gtkrc", skin->path);
 
         if (g_file_test (gtkrcpath, G_FILE_TEST_IS_REGULAR))
-            skin_set_gtk_theme (settings, skin);
+            skin_set_gtk_theme (gtk_settings_get_default (), skin);
 
         g_free (gtkrcpath);
     }
