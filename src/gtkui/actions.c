@@ -580,55 +580,16 @@ void action_playlist_delete(void)
     audgui_confirm_playlist_delete (aud_playlist_get_active ());
 }
 
-#if 0
-static void on_static_toggle(GtkToggleButton * button, gpointer data)
-{
-    Playlist *playlist = aud_playlist_get_active();
-
-    playlist->attribute = gtk_toggle_button_get_active(button) ? playlist->attribute | PLAYLIST_STATIC : playlist->attribute & ~PLAYLIST_STATIC;
-}
-
-static void on_relative_toggle(GtkToggleButton * button, gpointer data)
-{
-    Playlist *playlist = aud_playlist_get_active();
-
-    playlist->attribute = gtk_toggle_button_get_active(button) ? playlist->attribute | PLAYLIST_USE_RELATIVE : playlist->attribute & ~PLAYLIST_USE_RELATIVE;
-}
-#endif
-
 static gchar *playlist_file_selection_save(const gchar * title, const gchar * default_filename)
 {
     GtkWidget *dialog;
     gchar *filename;
-#if 0
-    GtkWidget *hbox;
-    GtkWidget *toggle, *toggle2;
-#endif
 
     g_return_val_if_fail(title != NULL, NULL);
 
     dialog = make_filebrowser(title, TRUE);
     gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), aud_cfg->playlist_path);
     gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), default_filename);
-
-#if 0
-    hbox = gtk_hbox_new(FALSE, 5);
-
-    /* static playlist */
-    toggle = gtk_check_button_new_with_label(_("Save as Static Playlist"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle), (aud_playlist_get_active()->attribute & PLAYLIST_STATIC) ? TRUE : FALSE);
-    g_signal_connect(G_OBJECT(toggle), "toggled", G_CALLBACK(on_static_toggle), dialog);
-    gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, 0);
-
-    /* use relative path */
-    toggle2 = gtk_check_button_new_with_label(_("Use Relative Path"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle2), (aud_playlist_get_active()->attribute & PLAYLIST_USE_RELATIVE) ? TRUE : FALSE);
-    g_signal_connect(G_OBJECT(toggle2), "toggled", G_CALLBACK(on_relative_toggle), dialog);
-    gtk_box_pack_start(GTK_BOX(hbox), toggle2, FALSE, FALSE, 0);
-
-    gtk_widget_show_all(hbox);
-    gtk_file_chooser_set_extra_widget(GTK_FILE_CHOOSER(dialog), hbox);
-#endif
 
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
@@ -687,7 +648,8 @@ void action_playlist_save_list(void)
     const gchar *default_filename = aud_playlist_get_filename(aud_playlist_get_active());
 
     gchar *dot = NULL, *basename = NULL;
-    gchar *filename = playlist_file_selection_save(_("Save Playlist"), default_filename);
+    gchar * filename = playlist_file_selection_save (_("Export Playlist"),
+     default_filename);
 
     if (filename)
     {
@@ -758,7 +720,8 @@ static gchar *playlist_file_selection_load(const gchar * title, const gchar * de
 void action_playlist_load_list(void)
 {
     const gchar *default_filename = aud_playlist_get_filename(aud_playlist_get_active());
-    gchar *filename = playlist_file_selection_load(_("Load Playlist"), default_filename);
+    gchar * filename = playlist_file_selection_load (_("Import Playlist"),
+     default_filename);
 
     if (filename)
     {

@@ -89,10 +89,10 @@ static GtkActionEntry action_entries_playlist[] = {
     {"playlist delete", GTK_STOCK_DELETE, N_("Delete Playlist"), "<Shift>D",
      N_("Delete Playlist"), G_CALLBACK(action_playlist_delete)},
 
-    {"playlist load", GTK_STOCK_OPEN, N_("Load List"), "O",
+    {"playlist load", GTK_STOCK_OPEN, N_("Import Playlist ..."), "O",
      N_("Loads a playlist file into the selected playlist."), G_CALLBACK(action_playlist_load_list)},
 
-    {"playlist save", GTK_STOCK_SAVE, N_("Save List"), "<Shift>S",
+    {"playlist save", GTK_STOCK_SAVE, N_("Export Playlist ..."), "<Shift>S",
      N_("Saves the selected playlist."), G_CALLBACK(action_playlist_save_list)},
 
     {"playlist save all", GTK_STOCK_SAVE, N_("Save All Playlists"), "<Alt>S",
@@ -100,19 +100,19 @@ static GtkActionEntry action_entries_playlist[] = {
         "is done automatically when Audacious quits."),
      G_CALLBACK(action_playlist_save_all_playlists)},
 
-    {"playlist refresh", GTK_STOCK_REFRESH, N_("Refresh List"), "F5",
+    {"playlist refresh", GTK_STOCK_REFRESH, N_("Refresh"), "F5",
      N_("Refreshes metadata associated with a playlist entry."),
      G_CALLBACK(action_playlist_refresh_list)},
 
-    {"playlist manager", AUD_STOCK_PLAYLIST, N_("List Manager"), "P",
+    {"playlist manager", AUD_STOCK_PLAYLIST, N_("Playlist Manager"), "P",
      N_("Opens the playlist manager."),
      G_CALLBACK(action_open_list_manager)},
 
-    {"playlist add url", GTK_STOCK_NETWORK, N_("Add Internet Address..."), "<Ctrl>H",
+    {"playlist add url", GTK_STOCK_NETWORK, N_("Add URL ..."), "<Ctrl>H",
      N_("Adds a remote track to the playlist."),
      G_CALLBACK(action_playlist_add_url)},
 
-    {"playlist add files", GTK_STOCK_ADD, N_("Add Files..."), "F",
+    {"playlist add files", GTK_STOCK_ADD, N_("Add Files ..."), "F",
      N_("Adds files to the playlist."),
      G_CALLBACK(action_playlist_add_files)},
 
@@ -162,10 +162,10 @@ static GtkActionEntry action_entries_others[] = {
     {"about audacious", GTK_STOCK_DIALOG_INFO, N_("About Audacious"), NULL,
      N_("About Audacious"), G_CALLBACK(action_about_audacious)},
 
-    {"play file", GTK_STOCK_OPEN, N_("Play File"), "L",
+    {"play file", GTK_STOCK_OPEN, N_("Open Files ..."), "L",
      N_("Load and play a file"), G_CALLBACK(action_play_file)},
 
-    {"play location", GTK_STOCK_NETWORK, N_("Play Location"), "<Ctrl>L",
+    {"play location", GTK_STOCK_NETWORK, N_("Open URL ..."), "<Ctrl>L",
      N_("Play media from the selected location"), G_CALLBACK(action_play_location)},
 
     {"plugins", NULL, N_("Plugin services")},
