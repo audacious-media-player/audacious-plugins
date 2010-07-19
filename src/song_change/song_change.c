@@ -485,8 +485,6 @@ static PluginPreferences preferences = {
     .imgurl = DATA_DIR "/images/plugins.png",
     .prefs = settings,
     .n_prefs = G_N_ELEMENTS(settings),
-    .type = PREFERENCES_PAGE,
     .init = configure_init,
-    /* TODO: .apply = configure_apply, */
     .cleanup = configure_cleanup,
 };
