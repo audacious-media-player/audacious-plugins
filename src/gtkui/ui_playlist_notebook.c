@@ -234,7 +234,12 @@ void ui_playlist_notebook_populate(void)
     for (count = 0; count < playlists; count++)
         ui_playlist_notebook_create_tab(count);
 
-    gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, aud_playlist_get_playing());
+    gtk_notebook_set_current_page (UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active ());
+
+    g_signal_connect (UI_PLAYLIST_NOTEBOOK, "switch-page", (GCallback)
+     tab_changed, NULL);
+    g_signal_connect (UI_PLAYLIST_NOTEBOOK, "page-reordered", (GCallback)
+     tab_reordered, NULL);
 }
 
 void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
@@ -288,9 +293,6 @@ GtkWidget *ui_playlist_notebook_new()
     notebook = gtk_notebook_new();
     gtk_notebook_set_scrollable(UI_PLAYLIST_NOTEBOOK, TRUE);
     gtk_notebook_set_show_border(UI_PLAYLIST_NOTEBOOK, FALSE);
-
-    g_signal_connect(notebook, "switch-page", G_CALLBACK(tab_changed), NULL);
-    g_signal_connect(notebook, "page-reordered", G_CALLBACK(tab_reordered), NULL);
 
     return notebook;
 }
