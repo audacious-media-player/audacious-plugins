@@ -210,8 +210,11 @@ static void ui_skinned_textbox_destroy(GtkObject *object) {
     }
 
     g_free (textbox->text);
+    textbox->text = NULL;
     g_free (priv->pixbuf_text);
+    priv->pixbuf_text = NULL;
     g_free (priv->fontname);
+    priv->fontname = NULL;
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
