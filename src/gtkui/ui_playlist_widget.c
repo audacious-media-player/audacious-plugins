@@ -24,6 +24,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #include <audacious/audconfig.h>
+#include <audacious/debug.h>
 #include <audacious/drct.h>
 #include <audacious/playlist.h>
 #include <libaudgui/libaudgui.h>
@@ -55,7 +56,8 @@ static void _ui_playlist_widget_drag_begin(GtkWidget *widget, GdkDragContext * c
 
     t->source = (GtkTreeView *) widget;
     t->source_playlist = playlist;
-    t->source_pos = treeview_get_focus (t->source);
+    t->source_pos = GPOINTER_TO_INT (g_object_get_data ((GObject *) widget,
+     "row-clicked"));
     t->dest_path = NULL;
     t->append = FALSE;
 }
@@ -226,6 +228,7 @@ static void _ui_playlist_widget_selection_update(GtkTreeModel * model, GtkTreePa
 
 static void _ui_playlist_widget_selection_changed(GtkTreeSelection * selection, gpointer treeview)
 {
+    AUDDBG ("Selection changed.\n");
     gint playlist = playlist_get_playlist_from_treeview(treeview);
 
     aud_playlist_select_all(playlist, FALSE);
@@ -306,8 +309,17 @@ static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventB
 
     /* Save the row clicked on for drag and drop. */
     if (path)
+        g_object_set_data ((GObject *) widget, "row-clicked", GINT_TO_POINTER
+         (gtk_tree_path_get_indices (path)[0]));
+
+    /* Update focus */
+    if (path && ! state)
         treeview_set_focus ((GtkTreeView *) widget, gtk_tree_path_get_indices
          (path)[0]);
+
+    AUDDBG ("Button press: type = %d, button = %d, state = %d, path = %d\n",
+     event->type, event->button, state, (path != NULL) ?
+     gtk_tree_path_get_indices (path)[0] : -1);
 
     if (event->button == 1 && !state)
     {
@@ -333,11 +345,13 @@ static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventB
     }
 
 NOT_HANDLED:
+    AUDDBG (" ... not handled.\n");
     if (path)
         gtk_tree_path_free (path);
     return FALSE;
 
 HANDLED:
+    AUDDBG (" ... handled.\n");
     if (path)
         gtk_tree_path_free (path);
     return TRUE;
@@ -348,6 +362,9 @@ static gboolean ui_playlist_widget_button_release_cb(GtkWidget * widget, GdkEven
     GtkTreePath *path = NULL;
     GtkTreeSelection *sel = NULL;
     gint state = event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK);
+
+    AUDDBG ("Button release: type = %d, button = %d, state = %d\n", event->type,
+     event->button, state);
 
     if (event->button == 1 && !state &&
         pos[0] == event->x && pos[1] == event->y)
