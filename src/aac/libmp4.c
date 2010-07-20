@@ -30,7 +30,8 @@
 
 static void        mp4_init(void);
 static void        mp4_about(void);
-static void        mp4_play(InputPlayback *);
+static gboolean    mp4_play(InputPlayback * playback, const gchar * filename,
+             VFSFile * file, gint start_time, gint stop_time, gboolean pause);
 static void        mp4_cleanup(void);
 static gint        mp4_is_our_fd(const char *, VFSFile *);
 
@@ -80,14 +81,16 @@ static void mp4_init(void)
     seek_cond = g_cond_new ();
 }
 
-static void mp4_play(InputPlayback *playback)
+static gboolean mp4_play(InputPlayback * playback, const gchar * filename,
+VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
-    seek_value = -1;
-    pause_flag = FALSE;
+    seek_value = (start_time > 0) ? start_time : -1;
+    pause_flag = pause;
     playback->playing = TRUE;
 
     playback->set_pb_ready(playback);
     mp4_decode(playback);
+    return ! playback->error;
 }
 
 static void mp4_stop (InputPlayback * playback)
@@ -943,7 +946,7 @@ InputPlugin mp4_ip =
     .description = "MP4 AAC decoder",
     .init = mp4_init,
     .about = mp4_about,
-    .play_file = mp4_play,
+    .play = mp4_play,
     .stop = mp4_stop,
     .pause = mp4_pause,
     .seek = mp4_seek,
