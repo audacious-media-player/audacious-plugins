@@ -272,6 +272,8 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
                     xspf_find_track (nptr2, filename, base, filenames, tuples);
                 }
             }
+
+            xmlFree (base);
         }
     }
     xmlFreeDoc(doc);

@@ -1355,6 +1355,7 @@ static void skin_load_viscolor (Skin * skin, const gchar * path, const gchar *
         return;
 
     buffer = load_text_file (filename);
+    g_free (filename);
     string = buffer;
 
     for (line = 0; string != NULL && line < 24; line ++)

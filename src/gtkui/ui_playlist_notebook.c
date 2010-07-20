@@ -286,6 +286,11 @@ void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
     }
 }
 
+static void destroy_cb (void)
+{
+    index_free (pages);
+}
+
 GtkWidget *ui_playlist_notebook_new()
 {
     AUDDBG("playlist notebook create\n");
@@ -294,5 +299,6 @@ GtkWidget *ui_playlist_notebook_new()
     gtk_notebook_set_scrollable(UI_PLAYLIST_NOTEBOOK, TRUE);
     gtk_notebook_set_show_border(UI_PLAYLIST_NOTEBOOK, FALSE);
 
+    g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
     return notebook;
 }

@@ -209,17 +209,11 @@ static void cdaudio_init ()
     cdng_cfg.use_dae = TRUE;
     cdng_cfg.use_cdtext = TRUE;
     cdng_cfg.use_cddb = TRUE;
-    cdng_cfg.device = g_strdup ("");
-    cdng_cfg.cddb_server = g_strdup (CDDA_DEFAULT_CDDB_SERVER);
-    cdng_cfg.cddb_path = g_strdup ("");
     cdng_cfg.cddb_port = CDDA_DEFAULT_CDDB_PORT;
     cdng_cfg.cddb_http = FALSE;
     cdng_cfg.disc_speed = DEFAULT_DISC_SPEED;
     cdng_cfg.use_proxy = FALSE;
-    cdng_cfg.proxy_host = g_strdup ("");
     cdng_cfg.proxy_port = CDDA_DEFAULT_PROXY_PORT;
-    cdng_cfg.proxy_username = g_strdup ("");
-    cdng_cfg.proxy_password = g_strdup ("");
 
     if ((db = aud_cfg_db_open ()) == NULL)
     {
@@ -245,6 +239,19 @@ static void cdaudio_init ()
                            &cdng_cfg.proxy_username);
     aud_cfg_db_get_string (db, "audacious", "proxy_pass",
                            &cdng_cfg.proxy_password);
+
+    if (cdng_cfg.device == NULL)
+        cdng_cfg.device = g_strdup ("");
+    if (cdng_cfg.cddb_server == NULL)
+        cdng_cfg.cddb_server = g_strdup (CDDA_DEFAULT_CDDB_SERVER);
+    if (cdng_cfg.cddb_path == NULL)
+        cdng_cfg.cddb_path = g_strdup ("");
+    if (cdng_cfg.proxy_host == NULL)
+        cdng_cfg.proxy_host = g_strdup ("");
+    if (cdng_cfg.proxy_username == NULL)
+        cdng_cfg.proxy_username = g_strdup ("");
+    if (cdng_cfg.proxy_password == NULL)
+        cdng_cfg.proxy_password = g_strdup ("");
 
     aud_cfg_db_close (db);
 
@@ -598,6 +605,13 @@ static void cdaudio_cleanup (void)
     aud_cfg_db_set_bool (db, "CDDA", "cddbhttp", cdng_cfg.cddb_http);
     aud_cfg_db_set_string (db, "CDDA", "device", cdng_cfg.device);
     aud_cfg_db_close (db);
+
+    g_free (cdng_cfg.device);
+    g_free (cdng_cfg.cddb_server);
+    g_free (cdng_cfg.cddb_path);
+    g_free (cdng_cfg.proxy_host);
+    g_free (cdng_cfg.proxy_username);
+    g_free (cdng_cfg.proxy_password);
 
     g_mutex_unlock (mutex);
     g_mutex_free (mutex);

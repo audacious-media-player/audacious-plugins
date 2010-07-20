@@ -1271,6 +1271,10 @@ void playlistwin_unhook (void)
     hook_dissociate ("playlist position", follow_cb);
     hook_dissociate ("playlist update", update_cb);
     ui_playlist_evlistener_dissociate ();
+    g_free (active_title);
+    active_title = NULL;
+    g_mutex_free (resize_mutex);
+    resize_mutex = NULL;
 }
 
 static void playlistwin_real_show (void)
