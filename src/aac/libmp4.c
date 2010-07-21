@@ -123,7 +123,7 @@ static void mp4_pause (InputPlayback * playback, gshort p)
     g_mutex_unlock (seek_mutex);
 }
 
-static void mp4_seek (InputPlayback * playback, gint time)
+static void mp4_seek (InputPlayback * playback, gulong time)
 {
     g_mutex_lock (seek_mutex);
 
@@ -646,7 +646,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         if (seek_value >= 0)
         {
             sampleID = (gint64) seek_value * samplerate / (framesize - 1);
-            playback->output->flush (seek_value * 1000);
+            playback->output->flush (seek_value);
             seek_value = -1;
             g_cond_signal (seek_cond);
         }
@@ -949,7 +949,7 @@ InputPlugin mp4_ip =
     .play = mp4_play,
     .stop = mp4_stop,
     .pause = mp4_pause,
-    .seek = mp4_seek,
+    .mseek = mp4_seek,
     .cleanup = mp4_cleanup,
     .is_our_file_from_vfs = mp4_is_our_fd,
     .probe_for_tuple = mp4_get_tuple,
