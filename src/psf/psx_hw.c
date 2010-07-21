@@ -51,7 +51,7 @@
 #include "cpuintrf.h"
 #include "psx.h"
 	
-#define DEBUG_HLE_BIOS	(1)		// debug PS1 HLE BIOS
+#define DEBUG_HLE_BIOS	(0)		// debug PS1 HLE BIOS
 #define DEBUG_SPU	(0)		// debug PS1 SPU read/write
 #define DEBUG_SPU2	(0)		// debug PS2 SPU read/write
 #define DEBUG_HLE_IOP	(0)		// debug PS2 IOP OS calls
