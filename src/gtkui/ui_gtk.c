@@ -280,6 +280,7 @@ static void ui_set_song_info(void *unused, void *another)
 
     gtk_window_set_title(GTK_WINDOW(window), title_s);
     g_free(title_s);
+    g_free(title);
 
     ui_playlist_notebook_add_tab_label_markup(aud_playlist_get_playing(), FALSE);
 }
