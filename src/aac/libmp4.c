@@ -645,7 +645,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
 
         if (seek_value >= 0)
         {
-            sampleID = (gint64) seek_value * samplerate / (framesize - 1);
+            sampleID = (gint64) seek_value * samplerate / 1000 / (framesize - 1);
             playback->output->flush (seek_value);
             seek_value = -1;
             g_cond_signal (seek_cond);
