@@ -402,7 +402,7 @@ static GtkTreeViewColumn * ui_playlist_widget_set_column (GtkWidget * treeview,
          PANGO_ELLIPSIZE_END, NULL);
     }
     else
-        gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+        gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
 
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
     return column;
