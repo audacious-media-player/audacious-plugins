@@ -273,14 +273,18 @@ static void button_next_pressed()
     aud_drct_pl_next();
 }
 
-static void ui_set_song_info(void *unused, void *another)
+static void ui_set_song_info (void * unused, void * another)
 {
-    gchar *title = aud_drct_get_title();
-    gchar *title_s = g_strdup_printf("%s - Audacious", title);
-
-    gtk_window_set_title(GTK_WINDOW(window), title_s);
-    g_free(title_s);
-    g_free(title);
+    if (aud_drct_get_playing ())
+    {
+        gchar * title = aud_drct_get_title ();
+        gchar * title_s = g_strdup_printf (_("%s - Audacious"), title);
+        gtk_window_set_title ((GtkWindow *) window, title_s);
+        g_free (title_s);
+        g_free (title);
+    }
+    else
+        gtk_window_set_title ((GtkWindow *) window, _("Audacious"));
 
     ui_playlist_notebook_add_tab_label_markup(aud_playlist_get_playing(), FALSE);
 }
@@ -393,7 +397,7 @@ static void ui_clear_song_info()
 {
     if (!GTK_IS_WINDOW(window)) return;
 
-    gtk_window_set_title(GTK_WINDOW(window), "Audacious");
+    ui_set_song_info (NULL, NULL);
     gtk_label_set_markup(GTK_LABEL(label_time), "<tt><b>00:00/00:00</b></tt>");
 }
 
@@ -833,10 +837,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
         ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
 
     if (aud_drct_get_playing())
-    {
-        ui_set_song_info(NULL, NULL);
         ui_playback_begin(NULL, NULL);
-    }
     else
         ui_playback_stop (NULL, NULL);
 
