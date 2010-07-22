@@ -4369,7 +4369,7 @@ msgstr ""
 #: src/skins/ui_main.c:1295
 #, c-format
 msgid "Volume: %d%%"
-msgstr "音量"
+msgstr ""
 
 #: src/skins/ui_main.c:1323
 #, c-format
