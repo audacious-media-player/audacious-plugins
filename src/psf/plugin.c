@@ -255,6 +255,7 @@ void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 void psf2_Stop(InputPlayback *playback)
 {
 	playback->playing = FALSE;
+	playback->output->abort_write();
 }
 
 void psf2_pause(InputPlayback *playback, short p)
