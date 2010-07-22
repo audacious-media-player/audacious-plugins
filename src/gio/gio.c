@@ -195,7 +195,7 @@ gio_vfs_ungetc_impl(gint c, VFSFile * file)
 
 gint
 gio_vfs_fseek_impl(VFSFile * file,
-          glong offset,
+          gint64 offset,
           gint whence)
 {
     VFSGIOHandle *handle;
@@ -239,7 +239,7 @@ gio_vfs_rewind_impl(VFSFile * file)
     file->base->vfs_fseek_impl(file, 0, SEEK_SET);
 }
 
-glong
+gint64
 gio_vfs_ftell_impl(VFSFile * file)
 {
     VFSGIOHandle *handle;
