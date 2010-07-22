@@ -19,7 +19,8 @@ LOCALES = ca.po \
 	  ro.po \
 	  ru.po \
 	  sk.po \
-	  tr.po
+	  tr.po \
+	  zh_CN.po
 
 include ../extra.mk
 include ../buildsys.mk
