@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
 "POT-Creation-Date: 2010-07-20 00:09+0300\n"
-"PO-Revision-Date: 2010-07-01 23:31+0100\n"
+"PO-Revision-Date: 2010-07-01 21:54+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
 "Language: \n"
@@ -1852,7 +1852,7 @@ msgstr "Wiedergabe->Abspielen"
 
 #: src/evdev-plug/ed.c:61
 msgid "Playback->Stop"
-msgstr "Wiedergabe->Stop"
+msgstr "Wiedergabe->Stopp"
 
 #: src/evdev-plug/ed.c:62
 msgid "Playback->Pause"
@@ -2480,7 +2480,7 @@ msgstr ""
 
 #: src/gntui/fileselector.c:75 src/gntui/gntui.c:273
 msgid "Open Files"
-msgstr ""
+msgstr "Dateien öffnen"
 
 #: src/gntui/fileselector.c:75 src/gntui/gntui.c:272
 msgid "Add Files"
@@ -2531,9 +2531,8 @@ msgid "Import Playlist"
 msgstr "Wiedergabeliste importieren"
 
 #: src/gtkui/ui_gtk.c:72
-#, fuzzy
 msgid "GTK Interface"
-msgstr "GNT Interface"
+msgstr "GTK Interface"
 
 #: src/gtkui/ui_manager.c:35 src/gtkui/ui_manager.c:36
 #: src/skins/ui_manager.c:53 src/skins/ui_manager.c:54
@@ -2565,29 +2564,27 @@ msgstr "Wiedergabeliste anzeigen/verstecken"
 
 #: src/gtkui/ui_manager.c:50
 msgid "Show infoarea"
-msgstr "Infobereich zeigen"
+msgstr "Infobereich anzeigen"
 
 #: src/gtkui/ui_manager.c:51
 msgid "Show/hide infoarea"
-msgstr "Infobereich zeigen/verstecken"
+msgstr "Infobereich anzeigen/verstecken"
 
 #: src/gtkui/ui_manager.c:53
 msgid "Show main menu"
-msgstr "Hauptfenster zeigen"
+msgstr "Hauptfenster anzeigen"
 
 #: src/gtkui/ui_manager.c:54
 msgid "Show/hide main menu"
-msgstr "Hauptfenster zeigen/verstecken"
+msgstr "Hauptfenster anzeigen/verstecken"
 
 #: src/gtkui/ui_manager.c:56
-#, fuzzy
 msgid "Show statusbar"
-msgstr "Status"
+msgstr "Statusleiste anzeigen"
 
 #: src/gtkui/ui_manager.c:57
-#, fuzzy
 msgid "Show/hide statusbar"
-msgstr "Wiedergabeliste anzeigen/verstecken"
+msgstr "Statusleiste anzeigen/verstecken"
 
 #: src/gtkui/ui_manager.c:69 src/gtkui/ui_manager.c:70
 #: src/skins/ui_manager.c:170 src/skins/ui_manager.c:171
@@ -2597,7 +2594,7 @@ msgstr "Pause"
 #: src/gtkui/ui_manager.c:72 src/gtkui/ui_manager.c:73 src/hotkey/gui.c:73
 #: src/skins/ui_manager.c:173 src/skins/ui_manager.c:174
 msgid "Stop"
-msgstr "Stop"
+msgstr "Stopp"
 
 #: src/gtkui/ui_manager.c:75 src/gtkui/ui_manager.c:76
 #: src/skins/ui_manager.c:176 src/skins/ui_manager.c:177
@@ -2624,18 +2621,16 @@ msgid "Delete Playlist"
 msgstr "Wiedergabeliste löschen"
 
 #: src/gtkui/ui_manager.c:92
-#, fuzzy
 msgid "Import Playlist ..."
-msgstr "Wiedergabeliste importieren"
+msgstr "Wiedergabeliste importieren ..."
 
 #: src/gtkui/ui_manager.c:93 src/skins/ui_manager.c:212
 msgid "Loads a playlist file into the selected playlist."
 msgstr "Lade Wiedergabeliste in ausgewählte Wiedergabeliste"
 
 #: src/gtkui/ui_manager.c:95
-#, fuzzy
 msgid "Export Playlist ..."
-msgstr "Wiedergabeliste exportieren"
+msgstr "Wiedergabeliste exportieren ..."
 
 #: src/gtkui/ui_manager.c:96 src/skins/ui_manager.c:215
 msgid "Saves the selected playlist."
@@ -2654,7 +2649,6 @@ msgstr ""
 "Beenden von Audacious."
 
 #: src/gtkui/ui_manager.c:103
-#, fuzzy
 msgid "Refresh"
 msgstr "Aktualisieren"
 
@@ -2671,18 +2665,16 @@ msgid "Opens the playlist manager."
 msgstr "Öffne Wiedergabelisten-Manager."
 
 #: src/gtkui/ui_manager.c:111
-#, fuzzy
 msgid "Add URL ..."
-msgstr "Dateien hinzufügen..."
+msgstr "URL hinzufügen ..."
 
 #: src/gtkui/ui_manager.c:112 src/skins/ui_manager.c:237
 msgid "Adds a remote track to the playlist."
 msgstr "Entfernter Titel hinzufügen."
 
 #: src/gtkui/ui_manager.c:115
-#, fuzzy
 msgid "Add Files ..."
-msgstr "Dateien hinzufügen..."
+msgstr "Dateien hinzufügen ..."
 
 #: src/gtkui/ui_manager.c:116 src/skins/ui_manager.c:241
 msgid "Adds files to the playlist."
@@ -2757,9 +2749,8 @@ msgid "About Audacious"
 msgstr "Über Audacious"
 
 #: src/gtkui/ui_manager.c:165
-#, fuzzy
 msgid "Open Files ..."
-msgstr "Dateien hinzufügen..."
+msgstr "Dateien öffnen ..."
 
 #: src/gtkui/ui_manager.c:166 src/skins/ui_manager.c:385
 msgid "Load and play a file"
@@ -2767,7 +2758,7 @@ msgstr "Datei laden und abspielen"
 
 #: src/gtkui/ui_manager.c:168
 msgid "Open URL ..."
-msgstr ""
+msgstr "URL öffnen ..."
 
 #: src/gtkui/ui_manager.c:169 src/skins/ui_manager.c:388
 msgid "Play media from the selected location"
@@ -2865,7 +2856,7 @@ msgstr "Kanäle"
 #: src/gtkui/ui_statusbar.c:101
 #, c-format
 msgid "%s: %d kbps, %d Hz, %s"
-msgstr ""
+msgstr "%s: %d Kbps, %d Hz, %s"
 
 #: src/hotkey/gui.c:70
 msgid "Previous Track"
@@ -2901,11 +2892,11 @@ msgstr "Lautstärke verringern"
 
 #: src/hotkey/gui.c:81
 msgid "Toggle Player Windows"
-msgstr "Player zeigen/verstecken"
+msgstr "Player anzeigen/verstecken"
 
 #: src/hotkey/gui.c:82
 msgid "Show On-Screen-Display"
-msgstr "On-Screen-Display zeigen"
+msgstr "On-Screen-Display anzeigen"
 
 #: src/hotkey/gui.c:92
 msgid "(none)"
@@ -4346,7 +4337,7 @@ msgstr "Audacious - Visibility-Warnung"
 
 #: src/skins/ui_main.c:984
 msgid "Show main player window"
-msgstr "Hauptfenster zeigen"
+msgstr "Hauptfenster anzeigen"
 
 #: src/skins/ui_main.c:985
 msgid "Ignore"
