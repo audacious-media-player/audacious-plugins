@@ -199,21 +199,6 @@ gint playlist_get_index_from_path(GtkTreePath * path)
     return pos[0];
 }
 
-gint calculate_column_width(GtkWidget *widget, gint num)
-{
-    PangoFontDescription *font_desc;
-    PangoContext *context;
-    PangoFontMetrics *font_metrics;
-    gint digits = 1 + log10(num);
-
-    font_desc = widget->style->font_desc;
-    context = gtk_widget_get_pango_context(widget);
-    font_metrics = pango_context_get_metrics(context, font_desc,
-                                             pango_context_get_language(context));
-
-    return (PANGO_PIXELS(pango_font_metrics_get_approximate_digit_width(font_metrics)) * digits) + 20;
-}
-
 void playlist_select_range (gint list, gint top, gint length)
 {
     gint count;

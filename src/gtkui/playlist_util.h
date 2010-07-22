@@ -34,7 +34,6 @@ gint playlist_get_selected_length(GtkTreeView *treeview);
 gint playlist_get_first_selected_index(GtkTreeView *treeview);
 GtkTreePath *playlist_get_first_selected_path(GtkTreeView *treeview);
 gint playlist_get_index_from_path(GtkTreePath * path);
-gint calculate_column_width(GtkWidget *widget, gint num);
 
 void playlist_select_range (gint list, gint top, gint length);
 gint playlist_count_selected_in_range (gint list, gint top, gint length);

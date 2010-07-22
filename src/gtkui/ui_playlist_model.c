@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <audacious/audconfig.h>
 #include <audacious/debug.h>
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
@@ -579,11 +580,13 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
 
     ui_playlist_widget_block_updates ((GtkWidget *) treeview, TRUE);
 
+    gtk_tree_view_column_set_visible (g_object_get_data ((GObject *) treeview,
+     "number column"), aud_cfg->show_numbers_in_pl);
+
     if (type == PLAYLIST_UPDATE_STRUCTURE)
     {
         gint changed_rows;
         changed_rows = aud_playlist_entry_count(model->playlist) - model->num_rows;
-        gboolean column_resize = (changed_rows != 0);
 
         AUDDBG("playlist structure update\n");
 
@@ -608,14 +611,6 @@ ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
                 ui_playlist_model_row_deleted(model, --model->num_rows);
                 changed_rows++;
             }
-        }
-
-        if (column_resize && multi_column_view)
-        {
-            GtkTreeViewColumn *column = gtk_tree_view_get_column(treeview, 0);
-            gint width = calculate_column_width(GTK_WIDGET(treeview), model->num_rows);
-
-            gtk_tree_view_column_set_min_width(column, width);
         }
 
         ui_playlist_model_update_position (model, aud_playlist_get_position
