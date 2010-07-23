@@ -95,22 +95,10 @@ static int sun_format(gint fmt)
 			return (AUDIO_ENCODING_ULINEAR_LE);
 		case FMT_U16_BE:
 			return (AUDIO_ENCODING_ULINEAR_BE);
-		case FMT_U16_NE:
-#ifdef WORDS_BIGENDIAN
-			return (AUDIO_ENCODING_ULINEAR_BE);
-#else
-			return (AUDIO_ENCODING_ULINEAR_LE);
-#endif
 		case FMT_S16_LE:
 			return (AUDIO_ENCODING_SLINEAR_LE);
 		case FMT_S16_BE:
 			return (AUDIO_ENCODING_SLINEAR_BE);
-		case FMT_S16_NE:
-#ifdef WORDS_BIGENDIAN
-			return (AUDIO_ENCODING_SLINEAR_BE);
-#else
-			return (AUDIO_ENCODING_SLINEAR_LE);
-#endif
 	}
 	return -1;
 }
