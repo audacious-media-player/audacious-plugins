@@ -30,7 +30,6 @@
 
 #include <glib.h>
 #include <gdk/gdk.h>
-#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
 #define POPUP_IS_ACTIVE GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "popup_active"))

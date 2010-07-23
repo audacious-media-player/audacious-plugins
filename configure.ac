@@ -515,8 +515,8 @@ AC_ARG_ENABLE(statusicon,
 )
 
 if test "x$enable_statusicon" = "xyes"; then
-    have_statusicon="yes"
-    PKG_CHECK_MODULES(GDKX11,[gdk-x11-2.0 >= 2.6.0],,[have_statusicon="no"])
+    PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.16.0], [have_statusicon=yes],
+     [have_statusicon=no])
 else
     AC_MSG_RESULT([*** X11 Status Icon plugin disabled per user request ***])
     have_statusicon="no"
