@@ -28,7 +28,6 @@
 #include <audacious/plugin.h>
 
 enum {
-    SI_CFG_RCLICK_MENU_AUD,
     SI_CFG_RCLICK_MENU_SMALL1,
     SI_CFG_RCLICK_MENU_SMALL2
 };

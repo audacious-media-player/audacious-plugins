@@ -31,7 +31,7 @@ void si_cfg_load(void)
     mcs_handle_t *cfgfile = aud_cfg_db_open();
 
     if (!aud_cfg_db_get_int(cfgfile, "statusicon", "rclick_menu", &(si_cfg.rclick_menu)))
-        si_cfg.rclick_menu = SI_CFG_RCLICK_MENU_AUD;
+        si_cfg.rclick_menu = SI_CFG_RCLICK_MENU_SMALL1;
 
     if (!aud_cfg_db_get_int(cfgfile, "statusicon", "scroll_action", &(si_cfg.scroll_action)))
         si_cfg.scroll_action = SI_CFG_SCROLL_ACTION_VOLUME;

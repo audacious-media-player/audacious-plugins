@@ -85,27 +85,15 @@ static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpoi
       }
 
       case 3:
-      {
           if (event->state & GDK_SHIFT_MASK)
               aud_drct_pl_prev();
           else
           {
-              switch (si_cfg.rclick_menu)
-              {
-                case SI_CFG_RCLICK_MENU_SMALL1:
-                case SI_CFG_RCLICK_MENU_SMALL2:
-                    if (recreate_smallmenu == TRUE)
-                        si_smallmenu_recreate(icon);
-                    si_smallmenu_show(event->x_root, event->y_root, 3, event->time, icon);
-                    break;
-                case SI_CFG_RCLICK_MENU_AUD:
-                default:
-                    hook_call("show main menu", event);
-                    break;
-              }
-              break;
+              if (recreate_smallmenu == TRUE)
+                  si_smallmenu_recreate(icon);
+              si_smallmenu_show(event->x_root, event->y_root, 3, event->time, icon);
           }
-      }
+          break;
     }
 
     return FALSE;
@@ -401,8 +389,7 @@ void si_prefs_cb_commit(gpointer prefs_win)
     si_cfg_save();
 
     /* request the recreation of status icon small-menu if necessary */
-    if (si_cfg.rclick_menu != SI_CFG_RCLICK_MENU_AUD)
-        recreate_smallmenu = TRUE;
+    recreate_smallmenu = TRUE;
 
     gtk_widget_destroy(GTK_WIDGET(prefs_win));
 }
@@ -413,7 +400,7 @@ void si_config(void)
     static GtkWidget *prefs_win = NULL;
     GtkWidget *prefs_vbox;
     GtkWidget *prefs_rclick_frame, *prefs_rclick_vbox;
-    GtkWidget *prefs_rclick_audmenu_rbt, *prefs_rclick_smallmenu1_rbt, *prefs_rclick_smallmenu2_rbt;
+    GtkWidget *prefs_rclick_smallmenu1_rbt, *prefs_rclick_smallmenu2_rbt;
     GtkWidget *prefs_scroll_frame, *prefs_scroll_vbox;
     GtkWidget *prefs_scroll_vol_rbt, *prefs_scroll_skip_rbt;
     GtkWidget *prefs_bbar_bbox;
@@ -443,11 +430,11 @@ void si_config(void)
     prefs_rclick_vbox = gtk_vbox_new(TRUE, 0);
     gtk_container_set_border_width(GTK_CONTAINER(prefs_rclick_vbox), 6);
     gtk_container_add(GTK_CONTAINER(prefs_rclick_frame), prefs_rclick_vbox);
-    prefs_rclick_audmenu_rbt = gtk_radio_button_new_with_label(NULL, _("Audacious standard menu"));
-    g_object_set_data(G_OBJECT(prefs_rclick_audmenu_rbt), "val", GINT_TO_POINTER(SI_CFG_RCLICK_MENU_AUD));
-    prefs_rclick_smallmenu1_rbt = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(prefs_rclick_audmenu_rbt), _("Small playback menu #1"));
+    prefs_rclick_smallmenu1_rbt = gtk_radio_button_new_with_label (NULL,
+     _("Small playback menu #1"));
     g_object_set_data(G_OBJECT(prefs_rclick_smallmenu1_rbt), "val", GINT_TO_POINTER(SI_CFG_RCLICK_MENU_SMALL1));
-    prefs_rclick_smallmenu2_rbt = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(prefs_rclick_audmenu_rbt), _("Small playback menu #2"));
+    prefs_rclick_smallmenu2_rbt = gtk_radio_button_new_with_label_from_widget
+     ((GtkRadioButton *) prefs_rclick_smallmenu1_rbt, _("Small playback menu #2"));
     g_object_set_data(G_OBJECT(prefs_rclick_smallmenu2_rbt), "val", GINT_TO_POINTER(SI_CFG_RCLICK_MENU_SMALL2));
     g_object_set_data(G_OBJECT(prefs_win), "rcm_grp", gtk_radio_button_get_group(GTK_RADIO_BUTTON(prefs_rclick_smallmenu1_rbt)));
     switch (si_cfg.rclick_menu)
@@ -458,12 +445,7 @@ void si_config(void)
       case SI_CFG_RCLICK_MENU_SMALL2:
           gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_rclick_smallmenu2_rbt), TRUE);
           break;
-      case SI_CFG_RCLICK_MENU_AUD:
-      default:
-          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_rclick_audmenu_rbt), TRUE);
-          break;
     }
-    gtk_box_pack_start(GTK_BOX(prefs_rclick_vbox), prefs_rclick_audmenu_rbt, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(prefs_rclick_vbox), prefs_rclick_smallmenu1_rbt, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(prefs_rclick_vbox), prefs_rclick_smallmenu2_rbt, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_rclick_frame, TRUE, TRUE, 0);
