@@ -39,7 +39,6 @@
 static GMutex *ctrl_mutex = NULL;
 static GCond *ctrl_cond = NULL;
 static gint64 seek_value = -1;
-static gboolean pause_flag;
 
 static void
 ffaudio_init(void)
@@ -309,7 +308,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 #ifndef FFAUDIO_USE_AUDTAG
     Tuple *tuple;
 #endif
-    gboolean paused = FALSE, seekable;
+    gboolean seekable;
 
     gchar uribuf[64];
     snprintf (uribuf, sizeof uribuf, "audvfsptr:%p", (void *) file);
@@ -393,13 +392,16 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     ffaudio_get_tuple_data(tuple, ic, c, codec);
     playback->set_tuple(playback, tuple);
 #endif
+
+    if (pause)
+        playback->output->pause(TRUE);
+
     playback->set_params(playback, NULL, 0, ic->bit_rate, c->sample_rate, c->channels);
 
     g_mutex_lock(ctrl_mutex);
 
     playback->playing = TRUE;
     seek_value = (start_time > 0) ? start_time : -1;
-    pause_flag = pause;
     playback->set_pb_ready(playback);
     errcount = 0;
     seekable = ffaudio_codec_is_seekable(codec);
@@ -427,19 +429,6 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
         seek_value = -1;
         g_cond_signal(ctrl_cond);
 
-        if (pause_flag != paused)
-        {
-            playback->output->pause(pause_flag);
-            paused = pause_flag;
-            g_cond_signal(ctrl_cond);
-        }
-
-        if (paused)
-        {
-            g_cond_wait(ctrl_cond, ctrl_mutex);
-            g_mutex_unlock(ctrl_mutex);
-            continue;
-        }
 
         g_mutex_unlock(ctrl_mutex);
 
@@ -591,23 +580,23 @@ error_exit:
 static void ffaudio_stop(InputPlayback * playback)
 {
     g_mutex_lock(ctrl_mutex);
-    playback->playing = FALSE;
-    g_cond_signal(ctrl_cond);
-    g_mutex_unlock(ctrl_mutex);
-    g_thread_join(playback->thread);
-    playback->thread = NULL;
+
+    if (playback->playing)
+    {
+        playback->playing = FALSE;
+        playback->output->abort_write();
+        g_cond_signal(ctrl_cond);
+    }
+
+    g_mutex_unlock (ctrl_mutex);
 }
 
-static void ffaudio_pause(InputPlayback * playback, gshort p)
+static void ffaudio_pause(InputPlayback * playback, gshort pause)
 {
     g_mutex_lock(ctrl_mutex);
 
     if (playback->playing)
-    {
-        pause_flag = p;
-        g_cond_signal(ctrl_cond);
-        g_cond_wait(ctrl_cond, ctrl_mutex);
-    }
+        playback->output->pause(pause);
 
     g_mutex_unlock(ctrl_mutex);
 }
@@ -619,6 +608,7 @@ static void ffaudio_seek (InputPlayback * playback, gulong time)
     if (playback->playing)
     {
         seek_value = time;
+        playback->output->abort_write();
         g_cond_signal(ctrl_cond);
         g_cond_wait(ctrl_cond, ctrl_mutex);
     }
