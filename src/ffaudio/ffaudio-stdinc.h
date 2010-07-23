@@ -20,7 +20,7 @@
 #ifndef __FFAUDIO_STDINC_H__GUARD
 #define __FFAUDIO_STDINC_H__GUARD
 
-#include "ffaudio-debug.h"
+#define _ERROR(...) printf ("ffaudio: " __VA_ARGS__)
 
 #include <audacious/plugin.h>
 #include <libavformat/avformat.h>
