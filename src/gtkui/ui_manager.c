@@ -127,7 +127,20 @@ static GtkActionEntry action_entries_playlist[] = {
     {"playlist remove selected", GTK_STOCK_REMOVE, N_("Remove Selected"), "Delete",
      N_("Remove selected entries from the playlist."),
      G_CALLBACK(action_playlist_remove_selected)},
-};
+
+ {"playlist sort", GTK_STOCK_SORT_ASCENDING, N_("Sort"), NULL, NULL, NULL},
+ {"playlist sort track", NULL, N_("By Track Number"), NULL, NULL, (GCallback)
+  playlist_sort_track},
+ {"playlist sort title", NULL, N_("By Title"), NULL, NULL, (GCallback)
+  playlist_sort_title},
+ {"playlist sort artist", NULL, N_("By Artist"), NULL, NULL, (GCallback)
+  playlist_sort_artist},
+ {"playlist sort album", NULL, N_("By Album"), NULL, NULL, (GCallback)
+  playlist_sort_album},
+ {"playlist sort path", NULL, N_("By File Path"), NULL, NULL, (GCallback)
+  playlist_sort_path},
+ {"playlist reverse", GTK_STOCK_SORT_DESCENDING, N_("Reverse Order"), NULL,
+  NULL, (GCallback) playlist_reverse}};
 
 static GtkActionEntry action_entries_output[] =
 {

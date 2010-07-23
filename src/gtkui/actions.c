@@ -801,3 +801,42 @@ void action_playlist_paste(void)
     treeview_add_urilist (tree, treeview_get_focus (tree), list);
     g_free (list);
 }
+
+static void playlist_sort_scheme (gint scheme)
+{
+    gint list = aud_playlist_get_active ();
+    aud_playlist_sort_by_scheme (list, scheme);
+    treeview_refresh_selection (playlist_get_treeview (list));
+}
+
+void playlist_sort_track (void)
+{
+    playlist_sort_scheme (PLAYLIST_SORT_TRACK);
+}
+
+void playlist_sort_title (void)
+{
+    playlist_sort_scheme (PLAYLIST_SORT_TITLE);
+}
+
+void playlist_sort_artist (void)
+{
+    playlist_sort_scheme (PLAYLIST_SORT_ARTIST);
+}
+
+void playlist_sort_album (void)
+{
+    playlist_sort_scheme (PLAYLIST_SORT_ALBUM);
+}
+
+void playlist_sort_path (void)
+{
+    playlist_sort_scheme (PLAYLIST_SORT_PATH);
+}
+
+void playlist_reverse (void)
+{
+    gint list = aud_playlist_get_active ();
+    aud_playlist_reverse (list);
+    treeview_refresh_selection (playlist_get_treeview (list));
+}

@@ -74,4 +74,11 @@ void action_playlist_sort_selected_by_track_number(void);
 void action_playlist_track_info(void);
 void action_queue_toggle(void);
 
+void playlist_sort_track (void);
+void playlist_sort_title (void);
+void playlist_sort_artist (void);
+void playlist_sort_album (void);
+void playlist_sort_path (void);
+void playlist_reverse (void);
+
 #endif /* AUDACIOUS_ACTIONS_PLAYLIST_H */

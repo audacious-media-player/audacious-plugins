@@ -35,6 +35,19 @@
 			<menuitem action="current track info" />
 		</menu>
 		<menu action="playlist">
+			<separator />
+			<menu action="playlist sort">
+				<menuitem action="playlist sort track" />
+				<menuitem action="playlist sort title" />
+				<menuitem action="playlist sort artist" />
+				<menuitem action="playlist sort album" />
+				<menuitem action="playlist sort path" />
+				<separator />
+				<menuitem action="playlist reverse" />
+			</menu>
+			<separator />
+			<menuitem action="playlist refresh" />
+			<separator />
 			<menuitem action="playlist new" />
 			<menuitem action="playlist delete" />
 			<separator />
@@ -43,8 +56,6 @@
 			<menuitem action="playlist save all" />
 			<separator />
 			<menuitem action="playlist manager" />
-			<separator />
-			<menuitem action="playlist refresh" />
 		</menu>
 		<menu action="plugins-menu" />
 
