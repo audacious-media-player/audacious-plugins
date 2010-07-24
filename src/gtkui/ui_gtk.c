@@ -250,27 +250,27 @@ static void button_add_pressed()
 
 static void button_play_pressed()
 {
-    aud_drct_play();
+    action_playback_play ();
 }
 
 static void button_pause_pressed()
 {
-    aud_drct_pause();
+    action_playback_pause ();
 }
 
 static void button_stop_pressed()
 {
-    aud_drct_stop();
+    action_playback_stop ();
 }
 
 static void button_previous_pressed()
 {
-    aud_drct_pl_prev();
+    action_playback_previous ();
 }
 
 static void button_next_pressed()
 {
-    aud_drct_pl_next();
+    action_playback_next ();
 }
 
 static void ui_set_song_info (void * unused, void * another)
