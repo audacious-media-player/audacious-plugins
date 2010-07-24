@@ -21,6 +21,7 @@
 
 #include "plugin.h"
 #include "skins_cfg.h"
+#include "ui_dock.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_skin.h"
@@ -160,6 +161,7 @@ gboolean skins_cleanup (void)
         audgui_playlist_manager_destroy();
 
         cleanup_skins();
+        clear_dock_window_list ();
         skins_free_paths();
         skins_cfg_free();
         ui_manager_destroy();
