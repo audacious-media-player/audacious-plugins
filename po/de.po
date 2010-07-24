@@ -2,98 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2010-07-20 00:09+0300\n"
+"POT-Creation-Date: 2010-07-24 08:42-0400\n"
 "PO-Revision-Date: 2010-07-01 21:54+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Poedit-Language: German\n"
 
-#: src/OSS/OSS.c:40
-msgid "About OSS Driver"
-msgstr "Über OSS-Treiber"
-
-#: src/OSS/OSS.c:41
-msgid ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-
-#: src/OSS/configure.c:148
-#, c-format
-msgid "Default (%s)"
-msgstr "Standard (%s)"
-
-#: src/OSS/configure.c:166 src/alarm/interface.c:612 src/alarm/interface.c:660
-#: src/alarm/interface.c:708 src/alarm/interface.c:756
-#: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/skins/ui_manager.c:439
-#: src/skins/ui_manager.c:460
-msgid "Default"
-msgstr "Standard"
-
-#: src/OSS/configure.c:197
-msgid "OSS Driver configuration"
-msgstr "OSS-Treiber-Konfiguration"
-
-#: src/OSS/configure.c:213 src/oss4/configure.c:163 src/sun/configure.c:181
-msgid "Audio device:"
-msgstr "Audiogerät:"
-
-#: src/OSS/configure.c:235 src/OSS/configure.c:276 src/oss4/configure.c:189
-msgid "Use alternate device:"
-msgstr "Alternatives Gerät benutzen:"
-
-#: src/OSS/configure.c:256 src/alsa/config.c:447 src/sun/configure.c:218
-msgid "Mixer device:"
-msgstr "Mixer-Gerät:"
-
-#: src/OSS/configure.c:298 src/sun/configure.c:246
-msgid "Devices"
-msgstr "Geräte"
-
-#: src/OSS/configure.c:300 src/sun/configure.c:257
-msgid "Buffering:"
-msgstr "Zwischenspeichern:"
-
-#: src/OSS/configure.c:313 src/sun/configure.c:288
-msgid "Pre-buffer (percent):"
-msgstr "Vorpuffer (Prozent)"
-
-#: src/OSS/configure.c:324 src/sun/configure.c:302
-msgid "Buffering"
-msgstr "Zwischenspeichern"
-
-#: src/OSS/configure.c:325
-msgid "Mixer Settings:"
-msgstr "Mixer-Einstellungen:"
-
-#: src/OSS/configure.c:331
-msgid "Volume controls Master not PCM"
-msgstr "Master anstatt PCM regeln"
-
-#: src/OSS/configure.c:337 src/sun/configure.c:392
-msgid "Mixer"
-msgstr "Mixer"
-
-#: src/aac/libmp4.c:288
+#: src/aac/libmp4.c:291
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -104,7 +23,7 @@ msgstr ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Audacious team"
 
-#: src/aac/libmp4.c:293
+#: src/aac/libmp4.c:296
 msgid "About MP4 AAC decoder plugin"
 msgstr "Über MP4-AAC-Player-Plugin"
 
@@ -435,6 +354,14 @@ msgstr "Alarm um (standardmäßig):"
 msgid "Choose the days for the alarm to come on"
 msgstr "Tage wählen, an denen der Alarm ausgelöst werden soll"
 
+#: src/alarm/interface.c:612 src/alarm/interface.c:660
+#: src/alarm/interface.c:708 src/alarm/interface.c:756
+#: src/alarm/interface.c:804 src/alarm/interface.c:852
+#: src/alarm/interface.c:900 src/OSS/configure.c:166
+#: src/skins/ui_manager.c:439 src/skins/ui_manager.c:460
+msgid "Default"
+msgstr "Standard"
+
 #: src/alarm/interface.c:938
 msgid "Day"
 msgstr "Tag"
@@ -640,7 +567,7 @@ msgstr ""
 "  Erinnerung:\n"
 "    Zeige eine Erinnerung an, wenn der Alarm ausgelöst wird.\n"
 
-#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:152
+#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:165
 #: src/skins/ui_manager.c:371
 msgid "Help"
 msgstr "Hilfe"
@@ -668,6 +595,10 @@ msgstr "ALSA-Ausgabeplugin-Einstellungen"
 #: src/alsa/config.c:445
 msgid "PCM device:"
 msgstr "PCM-Gerät:"
+
+#: src/alsa/config.c:447 src/OSS/configure.c:256 src/sun/configure.c:218
+msgid "Mixer device:"
+msgstr "Mixer-Gerät:"
 
 #: src/alsa/config.c:449
 msgid "Mixer element:"
@@ -905,6 +836,14 @@ msgstr ""
 "<span size=\"smaller\">AMIDI-\n"
 "Plug</span>"
 
+#: src/amidi-plug/i_configure.c:73
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - Datei auswählen"
+
+#: src/amidi-plug/i_configure.c:126
+msgid "AMIDI-Plug - configuration"
+msgstr "AMIDI-Plug - Konfiguration"
+
 #: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - SoundFont-Datei wählen"
@@ -1101,14 +1040,6 @@ msgid ""
 "<span size=\"smaller\">TiMidity\n"
 "backend</span>"
 msgstr ""
-
-#: src/amidi-plug/i_configure.c:73
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - Datei auswählen"
-
-#: src/amidi-plug/i_configure.c:126
-msgid "AMIDI-Plug - configuration"
-msgstr "AMIDI-Plug - Konfiguration"
 
 #: src/amidi-plug/i_fileinfo.c:169 src/bluetooth/gui.c:271
 #: src/sid/xs_interface.c:1769
@@ -1607,19 +1538,11 @@ msgstr "Blur Scope: Farbauswahl"
 msgid "Options:"
 msgstr "Optionen:"
 
-#: src/cd-menu-items/cd-menu-items.c:35
-msgid "Play CD"
-msgstr "CD wiedergeben"
-
-#: src/cd-menu-items/cd-menu-items.c:35
-msgid "Add CD"
-msgstr "CD hinzufügen"
-
-#: src/cdaudio-ng/cdaudio-ng.c:271
+#: src/cdaudio-ng/cdaudio-ng.c:278
 msgid "About Audio CD Plugin"
 msgstr "Über AudioCD-Plugin"
 
-#: src/cdaudio-ng/cdaudio-ng.c:272
+#: src/cdaudio-ng/cdaudio-ng.c:279
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -1689,6 +1612,14 @@ msgstr "HTTP anstatt CDDBP benutzen"
 #: src/cdaudio-ng/configure.c:244
 msgid "Override default device: "
 msgstr "Anderes Device verwenden: "
+
+#: src/cd-menu-items/cd-menu-items.c:35
+msgid "Play CD"
+msgstr "CD wiedergeben"
+
+#: src/cd-menu-items/cd-menu-items.c:35
+msgid "Add CD"
+msgstr "CD hinzufügen"
 
 #: src/compressor/plugin.c:58
 msgid "About Dynamic Range Compression Plugin"
@@ -2153,7 +2084,7 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:677
+#: src/ffaudio/ffaudio-core.c:663
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2169,7 +2100,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:693
+#: src/ffaudio/ffaudio-core.c:679
 msgid "About FFaudio Plugin"
 msgstr "Über FFaudio Plugin"
 
@@ -2498,8 +2429,8 @@ msgstr "GNT Interface"
 msgid "Can't jump to time when no track is being played.\n"
 msgstr "Kann nicht zu Zeit springen, wenn kein Titel gespielt wird.\n"
 
-#: src/gtkui/actions.c:272 src/gtkui/ui_manager.c:191
-#: src/gtkui/ui_manager.c:192 src/skins/ui_main.c:833
+#: src/gtkui/actions.c:272 src/gtkui/ui_manager.c:204
+#: src/gtkui/ui_manager.c:205 src/skins/ui_main.c:833
 #: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
 msgid "Jump to Time"
 msgstr "Zu Zeit springen"
@@ -2533,6 +2464,15 @@ msgstr "Wiedergabeliste importieren"
 #: src/gtkui/ui_gtk.c:72
 msgid "GTK Interface"
 msgstr "GTK Interface"
+
+#: src/gtkui/ui_gtk.c:281 src/skins/ui_main.c:388
+#, c-format
+msgid "%s - Audacious"
+msgstr "%s - Audacious"
+
+#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2165
+msgid "Audacious"
+msgstr "Audacious"
 
 #: src/gtkui/ui_manager.c:35 src/gtkui/ui_manager.c:36
 #: src/skins/ui_manager.c:53 src/skins/ui_manager.c:54
@@ -2704,139 +2644,174 @@ msgstr "Auswahl entfernen"
 msgid "Remove selected entries from the playlist."
 msgstr "Ausgewählte Wiedergabelisteneinträge entfernen."
 
-#: src/gtkui/ui_manager.c:134
+#: src/gtkui/ui_manager.c:131
+#, fuzzy
+msgid "Sort"
+msgstr "Port"
+
+#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:330
+#: src/skins/ui_manager.c:360
+msgid "By Track Number"
+msgstr "Nach Titelnummer"
+
+#: src/gtkui/ui_manager.c:134 src/skins/ui_manager.c:278
+#: src/skins/ui_manager.c:306 src/skins/ui_manager.c:336
+msgid "By Title"
+msgstr "Nach Titel"
+
+#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:314
+#: src/skins/ui_manager.c:344
+msgid "By Artist"
+msgstr "Nach Künstler"
+
+#: src/gtkui/ui_manager.c:138 src/skins/ui_manager.c:310
+#: src/skins/ui_manager.c:340
+msgid "By Album"
+msgstr "Nach Album"
+
+#: src/gtkui/ui_manager.c:140
+#, fuzzy
+msgid "By File Path"
+msgstr "Nach Dateinamen"
+
+#: src/gtkui/ui_manager.c:142
+#, fuzzy
+msgid "Reverse Order"
+msgstr "Vertauschte Balance"
+
+#: src/gtkui/ui_manager.c:147
 msgid "Output"
 msgstr "Ausgabe"
 
-#: src/gtkui/ui_manager.c:136 src/modplug/gui/interface.cxx:572
+#: src/gtkui/ui_manager.c:149 src/modplug/gui/interface.cxx:572
 msgid "Effects"
 msgstr "Effekte"
 
-#: src/gtkui/ui_manager.c:138
+#: src/gtkui/ui_manager.c:151
 msgid "Equalizer"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:143 src/skins/ui_manager.c:232
+#: src/gtkui/ui_manager.c:156 src/skins/ui_manager.c:232
 msgid "View"
 msgstr "Ansicht"
 
-#: src/gtkui/ui_manager.c:144 src/skins/ui_manager.c:233
+#: src/gtkui/ui_manager.c:157 src/skins/ui_manager.c:233
 #, fuzzy
 msgid "Interface"
 msgstr "GNT Interface"
 
-#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:370
+#: src/gtkui/ui_manager.c:164 src/skins/ui_manager.c:370
 msgid "File"
 msgstr "Datei"
 
-#: src/gtkui/ui_manager.c:154
+#: src/gtkui/ui_manager.c:167
 msgid "Components"
 msgstr "Komponenten"
 
-#: src/gtkui/ui_manager.c:156 src/gtkui/ui_manager.c:159
+#: src/gtkui/ui_manager.c:169 src/gtkui/ui_manager.c:172
 #: src/skins/ui_manager.c:375 src/skins/ui_manager.c:378
 msgid "View Track Details"
 msgstr "Zeige Titeldetails"
 
-#: src/gtkui/ui_manager.c:157 src/gtkui/ui_manager.c:160
+#: src/gtkui/ui_manager.c:170 src/gtkui/ui_manager.c:173
 #: src/skins/ui_manager.c:376 src/skins/ui_manager.c:379
 msgid "View track details"
 msgstr "Zeige Titeldetails"
 
-#: src/gtkui/ui_manager.c:162 src/gtkui/ui_manager.c:163
+#: src/gtkui/ui_manager.c:175 src/gtkui/ui_manager.c:176
 #: src/skins/ui_manager.c:381 src/skins/ui_manager.c:382
 msgid "About Audacious"
 msgstr "Über Audacious"
 
-#: src/gtkui/ui_manager.c:165
+#: src/gtkui/ui_manager.c:178
 msgid "Open Files ..."
 msgstr "Dateien öffnen ..."
 
-#: src/gtkui/ui_manager.c:166 src/skins/ui_manager.c:385
+#: src/gtkui/ui_manager.c:179 src/skins/ui_manager.c:385
 msgid "Load and play a file"
 msgstr "Datei laden und abspielen"
 
-#: src/gtkui/ui_manager.c:168
+#: src/gtkui/ui_manager.c:181
 msgid "Open URL ..."
 msgstr "URL öffnen ..."
 
-#: src/gtkui/ui_manager.c:169 src/skins/ui_manager.c:388
+#: src/gtkui/ui_manager.c:182 src/skins/ui_manager.c:388
 msgid "Play media from the selected location"
 msgstr "Medien aus bestimmter Adresse abspielen"
 
-#: src/gtkui/ui_manager.c:171 src/skins/ui_manager.c:390
+#: src/gtkui/ui_manager.c:184 src/skins/ui_manager.c:390
 msgid "Plugin services"
 msgstr "Plugin-Dienste"
 
-#: src/gtkui/ui_manager.c:173 src/skins/ui_manager.c:392
+#: src/gtkui/ui_manager.c:186 src/skins/ui_manager.c:392
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: src/gtkui/ui_manager.c:174 src/skins/ui_manager.c:393
+#: src/gtkui/ui_manager.c:187 src/skins/ui_manager.c:393
 msgid "Open preferences window"
 msgstr "Einstellungen anzeigen"
 
-#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:395
+#: src/gtkui/ui_manager.c:189 src/skins/ui_manager.c:395
 msgid "_Quit"
 msgstr "Beenden"
 
-#: src/gtkui/ui_manager.c:177 src/skins/ui_manager.c:396
+#: src/gtkui/ui_manager.c:190 src/skins/ui_manager.c:396
 msgid "Quit Audacious"
 msgstr "Audacious beenden"
 
-#: src/gtkui/ui_manager.c:179 src/gtkui/ui_manager.c:180
+#: src/gtkui/ui_manager.c:192 src/gtkui/ui_manager.c:193
 #: src/skins/ui_manager.c:398 src/skins/ui_manager.c:399
 msgid "Set A-B"
 msgstr "A-B setzen"
 
-#: src/gtkui/ui_manager.c:182 src/gtkui/ui_manager.c:183
+#: src/gtkui/ui_manager.c:195 src/gtkui/ui_manager.c:196
 #: src/skins/ui_manager.c:401 src/skins/ui_manager.c:402
 msgid "Clear A-B"
 msgstr "A-B leeren"
 
-#: src/gtkui/ui_manager.c:185 src/gtkui/ui_manager.c:186
+#: src/gtkui/ui_manager.c:198 src/gtkui/ui_manager.c:199
 #: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
 msgid "Jump to Playlist Start"
 msgstr "Zum Anfang der Liste springen"
 
-#: src/gtkui/ui_manager.c:188 src/gtkui/ui_manager.c:189 src/hotkey/gui.c:80
+#: src/gtkui/ui_manager.c:201 src/gtkui/ui_manager.c:202 src/hotkey/gui.c:80
 #: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
 msgid "Jump to File"
 msgstr "Zu Datei springen"
 
-#: src/gtkui/ui_manager.c:194 src/skins/ui_manager.c:413
+#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:413
 msgid "Queue Toggle"
 msgstr "In/Aus Warteschlange"
 
-#: src/gtkui/ui_manager.c:195 src/skins/ui_manager.c:414
+#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:414
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Eintrag in der Wiedergabenwarteschleife aktivieren/deaktivieren."
 
-#: src/gtkui/ui_manager.c:198 src/skins/ui_manager.c:417
+#: src/gtkui/ui_manager.c:211 src/skins/ui_manager.c:417
 msgid "Copy"
 msgstr "Kopieren"
 
-#: src/gtkui/ui_manager.c:201 src/skins/ui_manager.c:419
+#: src/gtkui/ui_manager.c:214 src/skins/ui_manager.c:419
 msgid "Cut"
 msgstr "Ausschneiden"
 
-#: src/gtkui/ui_manager.c:204 src/skins/ui_manager.c:421
+#: src/gtkui/ui_manager.c:217 src/skins/ui_manager.c:421
 msgid "Paste"
 msgstr "Einfügen"
 
-#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:254
+#: src/gtkui/ui_manager.c:220 src/skins/ui_manager.c:254
 msgid "Select All"
 msgstr "Alles auswählen"
 
-#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:255
+#: src/gtkui/ui_manager.c:221 src/skins/ui_manager.c:255
 msgid "Selects all of the playlist entries."
 msgstr "Wähle alle Einträge aus."
 
-#: src/gtkui/ui_manager.c:211 src/skins/ui_manager.c:258
+#: src/gtkui/ui_manager.c:224 src/skins/ui_manager.c:258
 msgid "Select None"
 msgstr "Nichts auswählen"
 
-#: src/gtkui/ui_manager.c:212 src/skins/ui_manager.c:259
+#: src/gtkui/ui_manager.c:225 src/skins/ui_manager.c:259
 msgid "Deselects all of the playlist entries."
 msgstr "Alle ausgewählten Einträge abwählen."
 
@@ -3440,6 +3415,14 @@ msgstr "1. Standardgerät"
 msgid "OSS4 Output Plugin Preferences"
 msgstr "OSS4-Ausgabeplugin-Einstellungen"
 
+#: src/oss4/configure.c:163 src/OSS/configure.c:213 src/sun/configure.c:181
+msgid "Audio device:"
+msgstr "Audiogerät:"
+
+#: src/oss4/configure.c:189 src/OSS/configure.c:235 src/OSS/configure.c:276
+msgid "Use alternate device:"
+msgstr "Alternatives Gerät benutzen:"
+
 #: src/oss4/configure.c:202
 msgid "Save volume between sessions"
 msgstr "Lautstärke speichern"
@@ -3497,6 +3480,67 @@ msgstr ""
 #: src/oss4/utils.c:204
 msgid "OSS4 error"
 msgstr "OSS4 Fehler"
+
+#: src/OSS/configure.c:148
+#, c-format
+msgid "Default (%s)"
+msgstr "Standard (%s)"
+
+#: src/OSS/configure.c:197
+msgid "OSS Driver configuration"
+msgstr "OSS-Treiber-Konfiguration"
+
+#: src/OSS/configure.c:298 src/sun/configure.c:246
+msgid "Devices"
+msgstr "Geräte"
+
+#: src/OSS/configure.c:300 src/sun/configure.c:257
+msgid "Buffering:"
+msgstr "Zwischenspeichern:"
+
+#: src/OSS/configure.c:313 src/sun/configure.c:288
+msgid "Pre-buffer (percent):"
+msgstr "Vorpuffer (Prozent)"
+
+#: src/OSS/configure.c:324 src/sun/configure.c:302
+msgid "Buffering"
+msgstr "Zwischenspeichern"
+
+#: src/OSS/configure.c:325
+msgid "Mixer Settings:"
+msgstr "Mixer-Einstellungen:"
+
+#: src/OSS/configure.c:331
+msgid "Volume controls Master not PCM"
+msgstr "Master anstatt PCM regeln"
+
+#: src/OSS/configure.c:337 src/sun/configure.c:392
+msgid "Mixer"
+msgstr "Mixer"
+
+#: src/OSS/OSS.c:40
+msgid "About OSS Driver"
+msgstr "Über OSS-Treiber"
+
+#: src/OSS/OSS.c:41
+msgid ""
+"Audacious OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
 
 #: src/pulse_audio/pulse_audio.c:691
 msgid "About Audacious PulseAudio Output Plugin"
@@ -3571,7 +3615,7 @@ msgstr ""
 msgid "Scrobbler"
 msgstr ""
 
-#: src/scrobbler/plugin.c:214
+#: src/scrobbler/plugin.c:213
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -3579,7 +3623,7 @@ msgid ""
 "com>\n"
 msgstr ""
 
-#: src/scrobbler/plugin.c:216
+#: src/scrobbler/plugin.c:215
 msgid "About Scrobbler Plugin"
 msgstr "Über Scrobbler-Plugin"
 
@@ -4310,15 +4354,6 @@ msgstr "Audacious Equalizer"
 msgid "Presets"
 msgstr "Standard"
 
-#: src/skins/ui_main.c:388
-#, c-format
-msgid "%s - Audacious"
-msgstr "%s - Audacious"
-
-#: src/skins/ui_main.c:390 src/skins/ui_main.c:2165
-msgid "Audacious"
-msgstr "Audacious"
-
 #: src/skins/ui_main.c:593
 msgid "kbps"
 msgstr ""
@@ -4680,11 +4715,6 @@ msgstr "Enfernt alle nicht verfügbaren Dateien aus der Liste."
 msgid "Remove Duplicates"
 msgstr "Duplikate entfernen"
 
-#: src/skins/ui_manager.c:278 src/skins/ui_manager.c:306
-#: src/skins/ui_manager.c:336
-msgid "By Title"
-msgstr "Nach Titel"
-
 #: src/skins/ui_manager.c:279
 msgid "Removes duplicate entries from the playlist by title."
 msgstr "Duplikate nach Titel entfernen."
@@ -4723,17 +4753,9 @@ msgstr "Liste sortieren"
 msgid "Sorts the list by title."
 msgstr "Sortiere nach Titel."
 
-#: src/skins/ui_manager.c:310 src/skins/ui_manager.c:340
-msgid "By Album"
-msgstr "Nach Album"
-
 #: src/skins/ui_manager.c:311 src/skins/ui_manager.c:341
 msgid "Sorts the list by album."
 msgstr "Sortiere nach Album."
-
-#: src/skins/ui_manager.c:314 src/skins/ui_manager.c:344
-msgid "By Artist"
-msgstr "Nach Künstler"
 
 #: src/skins/ui_manager.c:315 src/skins/ui_manager.c:345
 msgid "Sorts the list by artist."
@@ -4754,10 +4776,6 @@ msgstr "Nach Datum"
 #: src/skins/ui_manager.c:327 src/skins/ui_manager.c:357
 msgid "Sorts the list by modification time."
 msgstr "Sortiert die Liste nach Modifizierungszeitpunkt"
-
-#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
-msgid "By Track Number"
-msgstr "Nach Titelnummer"
 
 #: src/skins/ui_manager.c:331 src/skins/ui_manager.c:361
 msgid "Sorts the list by track number."
@@ -5134,11 +5152,11 @@ msgstr "Songwechsel"
 msgid "Spectrum Analyzer"
 msgstr "Analyzer-Spektrum"
 
-#: src/statusicon/statusicon.c:368
+#: src/statusicon/statusicon.c:355
 msgid "About Status Icon Plugin"
 msgstr "Über Status-Icon-Plugin"
 
-#: src/statusicon/statusicon.c:369
+#: src/statusicon/statusicon.c:356
 #, fuzzy
 msgid ""
 "Status Icon Plugin\n"
@@ -5155,35 +5173,31 @@ msgstr ""
 "Dieses Plugin stellt ein Status-Icon bereit, im\n"
 "System-Tray des Fenstermanagers.\n"
 
-#: src/statusicon/statusicon.c:432
+#: src/statusicon/statusicon.c:418
 msgid "Status Icon Plugin - Preferences"
 msgstr "Status-Icon-Plugin - Einstellungen"
 
-#: src/statusicon/statusicon.c:442
+#: src/statusicon/statusicon.c:428
 msgid "Right-Click Menu"
 msgstr "Rechtsklick-Menü"
 
-#: src/statusicon/statusicon.c:446
-msgid "Audacious standard menu"
-msgstr "Audacious-Standard-Menü"
-
-#: src/statusicon/statusicon.c:448
+#: src/statusicon/statusicon.c:433
 msgid "Small playback menu #1"
 msgstr "Kleines Wiedergabe-Menü #1"
 
-#: src/statusicon/statusicon.c:450
+#: src/statusicon/statusicon.c:436
 msgid "Small playback menu #2"
 msgstr "Kleines Wiedergabe-Menü #2"
 
-#: src/statusicon/statusicon.c:471
+#: src/statusicon/statusicon.c:452
 msgid "Mouse Scroll Action"
 msgstr "Maus-Scroll-Aktion"
 
-#: src/statusicon/statusicon.c:475
+#: src/statusicon/statusicon.c:456
 msgid "Change volume"
 msgstr "Lautstärke ändern"
 
-#: src/statusicon/statusicon.c:477
+#: src/statusicon/statusicon.c:458
 msgid "Change playing song"
 msgstr "Aktiven Titel ändern"
 
@@ -5414,6 +5428,9 @@ msgstr ""
 "Ein Teil des Plugin-Codes war von Miles Egan\n"
 "Die Wavpack-Seite befindet sich auf http://www.wavpack.com/\n"
 
+#~ msgid "Audacious standard menu"
+#~ msgstr "Audacious-Standard-Menü"
+
 #~ msgid "Surround echo"
 #~ msgstr "Surround-Echo"
 
@@ -5608,9 +5625,6 @@ msgstr ""
 
 #~ msgid "Enable volume control"
 #~ msgstr "Lautstärkeregelung aktivieren"
-
-#~ msgid "Reverse balance"
-#~ msgstr "Vertauschte Balance"
 
 #~ msgid "Volume control options"
 #~ msgstr "Lautstärkeeinstellungen"

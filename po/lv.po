@@ -6,114 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins2_22062009\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2010-07-20 00:09+0300\n"
+"POT-Creation-Date: 2010-07-24 08:42-0400\n"
 "PO-Revision-Date: 2009-10-11 01:21+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
-"Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: lv\n"
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
-#: src/OSS/OSS.c:40
-msgid "About OSS Driver"
-msgstr "Par OSS dzini"
-
-#: src/OSS/OSS.c:41
-msgid ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Audacious OSS dzinis\n"
-"\n"
-" Šī ir brīvā programmatūra. Jūs varat to izplatīt un/vai modificēt saskaņā\n"
-"ar GNU GPL licenses nosacījumiem, kurus publicējis Free Software\n"
-"Foundation; lietojiet licenses 2. versiju, vai arī (pēc jūsu izvēles)\n"
-"jebkuru vēlāku versiju.\n"
-"\n"
-"Šī programma tiek izplatīta cerot, ka tā būs noderīga, bet BEZ JEBKĀDAS\n"
-"GARANTIJAS; pat PIEPRASĪJUMA vai NODERĪBAS ĪPAŠAM MĒRĶIM garantijas.\n"
-"Sīkākai informācijai skatiet GNU General Public License.\n"
-"\n"
-"GNU GPL licenses kopijai vajadzētu būt saņemtai kopā ar šo programmu.\n"
-"Ja tā nav, rakstiet uz Free Software Foundation, Inc., 51 Franklin Street,\n"
-"Fifth Floor, Boston, MA 02110-1301, USA."
-
-#: src/OSS/configure.c:148
-#, c-format
-msgid "Default (%s)"
-msgstr "Noklusētais (%s)"
-
-#: src/OSS/configure.c:166 src/alarm/interface.c:612 src/alarm/interface.c:660
-#: src/alarm/interface.c:708 src/alarm/interface.c:756
-#: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/skins/ui_manager.c:439
-#: src/skins/ui_manager.c:460
-msgid "Default"
-msgstr "Noklusētais"
-
-#: src/OSS/configure.c:197
-msgid "OSS Driver configuration"
-msgstr "OSS dziņa konfigurācija"
-
-#: src/OSS/configure.c:213 src/oss4/configure.c:163 src/sun/configure.c:181
-msgid "Audio device:"
-msgstr "Audio ierīce:"
-
-#: src/OSS/configure.c:235 src/OSS/configure.c:276 src/oss4/configure.c:189
-msgid "Use alternate device:"
-msgstr "Lietot citu ierīci:"
-
-#: src/OSS/configure.c:256 src/alsa/config.c:447 src/sun/configure.c:218
-msgid "Mixer device:"
-msgstr "Miksera ierīce:"
-
-#: src/OSS/configure.c:298 src/sun/configure.c:246
-msgid "Devices"
-msgstr "Ierīces"
-
-#: src/OSS/configure.c:300 src/sun/configure.c:257
-msgid "Buffering:"
-msgstr "Buferizācija:"
-
-#: src/OSS/configure.c:313 src/sun/configure.c:288
-msgid "Pre-buffer (percent):"
-msgstr "Pirms-buferēšana (%):"
-
-#: src/OSS/configure.c:324 src/sun/configure.c:302
-msgid "Buffering"
-msgstr "Buferizācija"
-
-#: src/OSS/configure.c:325
-msgid "Mixer Settings:"
-msgstr "Miksera iestatījumi:"
-
-#: src/OSS/configure.c:331
-msgid "Volume controls Master not PCM"
-msgstr "Skaļuma regulators kontrolē Master nevis PCM"
-
-#: src/OSS/configure.c:337 src/sun/configure.c:392
-msgid "Mixer"
-msgstr "Mikseris"
-
-#: src/aac/libmp4.c:288
+#: src/aac/libmp4.c:291
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -124,7 +29,7 @@ msgstr ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM dekodētājs (c) Nero AG, www.nero.com\n"
 "Autortiesības (c) 2005-2006 Audacious komanda"
 
-#: src/aac/libmp4.c:293
+#: src/aac/libmp4.c:296
 msgid "About MP4 AAC decoder plugin"
 msgstr "Par MP4 AAC dekodētāja spraudni"
 
@@ -461,6 +366,14 @@ msgstr "Modināt (noklusējums):"
 msgid "Choose the days for the alarm to come on"
 msgstr "Izvēlieties dienas, kurās ieslēgsies modinātājs"
 
+#: src/alarm/interface.c:612 src/alarm/interface.c:660
+#: src/alarm/interface.c:708 src/alarm/interface.c:756
+#: src/alarm/interface.c:804 src/alarm/interface.c:852
+#: src/alarm/interface.c:900 src/OSS/configure.c:166
+#: src/skins/ui_manager.c:439 src/skins/ui_manager.c:460
+msgid "Default"
+msgstr "Noklusētais"
+
 #: src/alarm/interface.c:938
 msgid "Day"
 msgstr "Diena"
@@ -669,7 +582,7 @@ msgstr ""
 "    ķeksīti blakus esošajā rūtī, ja vēlieties, lai tas tiktu\n"
 "    parādīts.\n"
 
-#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:152
+#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:165
 #: src/skins/ui_manager.c:371
 msgid "Help"
 msgstr "Palīdzība"
@@ -699,6 +612,10 @@ msgstr "ALSA izvades spraudņa iestatījumi"
 #: src/alsa/config.c:445
 #, fuzzy
 msgid "PCM device:"
+msgstr "Miksera ierīce:"
+
+#: src/alsa/config.c:447 src/OSS/configure.c:256 src/sun/configure.c:218
+msgid "Mixer device:"
 msgstr "Miksera ierīce:"
 
 #: src/alsa/config.c:449
@@ -1006,6 +923,14 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
+#: src/amidi-plug/i_configure.c:73
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - izvēlieties failu"
+
+#: src/amidi-plug/i_configure.c:126
+msgid "AMIDI-Plug - configuration"
+msgstr "AMIDI-Plug - konfigurācija"
+
 #: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - izvēlieties SoundFont failu"
@@ -1246,14 +1171,6 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">TiMidity\n"
 "aizmugure</span>"
-
-#: src/amidi-plug/i_configure.c:73
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - izvēlieties failu"
-
-#: src/amidi-plug/i_configure.c:126
-msgid "AMIDI-Plug - configuration"
-msgstr "AMIDI-Plug - konfigurācija"
 
 #: src/amidi-plug/i_fileinfo.c:169 src/bluetooth/gui.c:271
 #: src/sid/xs_interface.c:1769
@@ -1783,19 +1700,11 @@ msgstr "Blur Scope: krāsu izvēle"
 msgid "Options:"
 msgstr "Iestatījumi:"
 
-#: src/cd-menu-items/cd-menu-items.c:35
-msgid "Play CD"
-msgstr "Atskaņot CD"
-
-#: src/cd-menu-items/cd-menu-items.c:35
-msgid "Add CD"
-msgstr "Pievienot CD"
-
-#: src/cdaudio-ng/cdaudio-ng.c:271
+#: src/cdaudio-ng/cdaudio-ng.c:278
 msgid "About Audio CD Plugin"
 msgstr "Par audio CD spraudni"
 
-#: src/cdaudio-ng/cdaudio-ng.c:272
+#: src/cdaudio-ng/cdaudio-ng.c:279
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -1864,6 +1773,14 @@ msgstr "Lietot HTTP nevis CDDBP"
 #: src/cdaudio-ng/configure.c:244
 msgid "Override default device: "
 msgstr "Aizstāt noklusēto ierīci: "
+
+#: src/cd-menu-items/cd-menu-items.c:35
+msgid "Play CD"
+msgstr "Atskaņot CD"
+
+#: src/cd-menu-items/cd-menu-items.c:35
+msgid "Add CD"
+msgstr "Pievienot CD"
 
 #: src/compressor/plugin.c:58
 #, fuzzy
@@ -2201,8 +2118,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get phys value for device \"%s"
 "\", skipping it.\n"
 msgstr ""
-"event-device-plugin: konfigurācija, neizdevās iegūt phys vērtību ierīcei "
-"\"%s \", tā tiks izlaista.\n"
+"event-device-plugin: konfigurācija, neizdevās iegūt phys vērtību ierīcei \"%"
+"s \", tā tiks izlaista.\n"
 
 #: src/evdev-plug/ed_internals.c:922
 #, c-format
@@ -2391,7 +2308,7 @@ msgstr ""
 "\n"
 "autors Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:677
+#: src/ffaudio/ffaudio-core.c:663
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2418,7 +2335,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:693
+#: src/ffaudio/ffaudio-core.c:679
 msgid "About FFaudio Plugin"
 msgstr "Par FFaudio spraudni"
 
@@ -2761,8 +2678,8 @@ msgstr "gnt saskarne"
 msgid "Can't jump to time when no track is being played.\n"
 msgstr "Nevar pāriet uz noteiktu laiku, ja nekas netiek atskaņots.\n"
 
-#: src/gtkui/actions.c:272 src/gtkui/ui_manager.c:191
-#: src/gtkui/ui_manager.c:192 src/skins/ui_main.c:833
+#: src/gtkui/actions.c:272 src/gtkui/ui_manager.c:204
+#: src/gtkui/ui_manager.c:205 src/skins/ui_main.c:833
 #: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
 msgid "Jump to Time"
 msgstr "Pāriet uz laiku"
@@ -2799,6 +2716,15 @@ msgstr "Ielādēt repertuāru"
 #, fuzzy
 msgid "GTK Interface"
 msgstr "gnt saskarne"
+
+#: src/gtkui/ui_gtk.c:281 src/skins/ui_main.c:388
+#, c-format
+msgid "%s - Audacious"
+msgstr "%s - Audacious"
+
+#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2165
+msgid "Audacious"
+msgstr "Audacious"
 
 #: src/gtkui/ui_manager.c:35 src/gtkui/ui_manager.c:36
 #: src/skins/ui_manager.c:53 src/skins/ui_manager.c:54
@@ -2980,144 +2906,179 @@ msgstr "Izņemt iezīmētos"
 msgid "Remove selected entries from the playlist."
 msgstr "Izņem no repertuāra iezīmētos ierakstus."
 
-#: src/gtkui/ui_manager.c:134
+#: src/gtkui/ui_manager.c:131
+#, fuzzy
+msgid "Sort"
+msgstr "Ports"
+
+#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:330
+#: src/skins/ui_manager.c:360
+msgid "By Track Number"
+msgstr "Pēc celiņa numura"
+
+#: src/gtkui/ui_manager.c:134 src/skins/ui_manager.c:278
+#: src/skins/ui_manager.c:306 src/skins/ui_manager.c:336
+msgid "By Title"
+msgstr "Pēc nosaukuma"
+
+#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:314
+#: src/skins/ui_manager.c:344
+msgid "By Artist"
+msgstr "Pēc izpildītāja"
+
+#: src/gtkui/ui_manager.c:138 src/skins/ui_manager.c:310
+#: src/skins/ui_manager.c:340
+msgid "By Album"
+msgstr "Pēc albuma"
+
+#: src/gtkui/ui_manager.c:140
+#, fuzzy
+msgid "By File Path"
+msgstr "Pēc faila nosaukuma"
+
+#: src/gtkui/ui_manager.c:142
+#, fuzzy
+msgid "Reverse Order"
+msgstr "Apgrieztais balanss"
+
+#: src/gtkui/ui_manager.c:147
 msgid "Output"
 msgstr "Izvade"
 
-#: src/gtkui/ui_manager.c:136 src/modplug/gui/interface.cxx:572
+#: src/gtkui/ui_manager.c:149 src/modplug/gui/interface.cxx:572
 msgid "Effects"
 msgstr "Efekti"
 
-#: src/gtkui/ui_manager.c:138
+#: src/gtkui/ui_manager.c:151
 #, fuzzy
 msgid "Equalizer"
 msgstr "Rādīt balansieri"
 
-#: src/gtkui/ui_manager.c:143 src/skins/ui_manager.c:232
+#: src/gtkui/ui_manager.c:156 src/skins/ui_manager.c:232
 msgid "View"
 msgstr "Skatīt"
 
-#: src/gtkui/ui_manager.c:144 src/skins/ui_manager.c:233
+#: src/gtkui/ui_manager.c:157 src/skins/ui_manager.c:233
 #, fuzzy
 msgid "Interface"
 msgstr "gnt saskarne"
 
-#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:370
+#: src/gtkui/ui_manager.c:164 src/skins/ui_manager.c:370
 msgid "File"
 msgstr "Fails"
 
-#: src/gtkui/ui_manager.c:154
+#: src/gtkui/ui_manager.c:167
 #, fuzzy
 msgid "Components"
 msgstr "Komentārs:"
 
-#: src/gtkui/ui_manager.c:156 src/gtkui/ui_manager.c:159
+#: src/gtkui/ui_manager.c:169 src/gtkui/ui_manager.c:172
 #: src/skins/ui_manager.c:375 src/skins/ui_manager.c:378
 msgid "View Track Details"
 msgstr "Skatīt celiņa detaļas"
 
-#: src/gtkui/ui_manager.c:157 src/gtkui/ui_manager.c:160
+#: src/gtkui/ui_manager.c:170 src/gtkui/ui_manager.c:173
 #: src/skins/ui_manager.c:376 src/skins/ui_manager.c:379
 msgid "View track details"
 msgstr "Skatīt celiņa detaļas"
 
-#: src/gtkui/ui_manager.c:162 src/gtkui/ui_manager.c:163
+#: src/gtkui/ui_manager.c:175 src/gtkui/ui_manager.c:176
 #: src/skins/ui_manager.c:381 src/skins/ui_manager.c:382
 msgid "About Audacious"
 msgstr "Par Audacious"
 
-#: src/gtkui/ui_manager.c:165
+#: src/gtkui/ui_manager.c:178
 #, fuzzy
 msgid "Open Files ..."
 msgstr "Atvērt failus"
 
-#: src/gtkui/ui_manager.c:166 src/skins/ui_manager.c:385
+#: src/gtkui/ui_manager.c:179 src/skins/ui_manager.c:385
 msgid "Load and play a file"
 msgstr "Ielādēt un atskaņot failu"
 
-#: src/gtkui/ui_manager.c:168
+#: src/gtkui/ui_manager.c:181
 msgid "Open URL ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:169 src/skins/ui_manager.c:388
+#: src/gtkui/ui_manager.c:182 src/skins/ui_manager.c:388
 msgid "Play media from the selected location"
 msgstr "Atskaņot multitvides failu no izvēlētās vietas"
 
-#: src/gtkui/ui_manager.c:171 src/skins/ui_manager.c:390
+#: src/gtkui/ui_manager.c:184 src/skins/ui_manager.c:390
 msgid "Plugin services"
 msgstr "Spraudņu servisi"
 
-#: src/gtkui/ui_manager.c:173 src/skins/ui_manager.c:392
+#: src/gtkui/ui_manager.c:186 src/skins/ui_manager.c:392
 msgid "Preferences"
 msgstr "Iestatījumi"
 
-#: src/gtkui/ui_manager.c:174 src/skins/ui_manager.c:393
+#: src/gtkui/ui_manager.c:187 src/skins/ui_manager.c:393
 msgid "Open preferences window"
 msgstr "Atver iestatījumu logu"
 
-#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:395
+#: src/gtkui/ui_manager.c:189 src/skins/ui_manager.c:395
 msgid "_Quit"
 msgstr "I_ziet"
 
-#: src/gtkui/ui_manager.c:177 src/skins/ui_manager.c:396
+#: src/gtkui/ui_manager.c:190 src/skins/ui_manager.c:396
 msgid "Quit Audacious"
 msgstr "Aizver Audacious"
 
-#: src/gtkui/ui_manager.c:179 src/gtkui/ui_manager.c:180
+#: src/gtkui/ui_manager.c:192 src/gtkui/ui_manager.c:193
 #: src/skins/ui_manager.c:398 src/skins/ui_manager.c:399
 msgid "Set A-B"
 msgstr "Uzstādīt A-B"
 
-#: src/gtkui/ui_manager.c:182 src/gtkui/ui_manager.c:183
+#: src/gtkui/ui_manager.c:195 src/gtkui/ui_manager.c:196
 #: src/skins/ui_manager.c:401 src/skins/ui_manager.c:402
 msgid "Clear A-B"
 msgstr "Notīrīt A-B"
 
-#: src/gtkui/ui_manager.c:185 src/gtkui/ui_manager.c:186
+#: src/gtkui/ui_manager.c:198 src/gtkui/ui_manager.c:199
 #: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
 msgid "Jump to Playlist Start"
 msgstr "Pāriet uz repertuāra sākumu"
 
-#: src/gtkui/ui_manager.c:188 src/gtkui/ui_manager.c:189 src/hotkey/gui.c:80
+#: src/gtkui/ui_manager.c:201 src/gtkui/ui_manager.c:202 src/hotkey/gui.c:80
 #: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
 msgid "Jump to File"
 msgstr "Pāriet uz failu"
 
-#: src/gtkui/ui_manager.c:194 src/skins/ui_manager.c:413
+#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:413
 msgid "Queue Toggle"
 msgstr "Pārslēgt ierindošanau"
 
-#: src/gtkui/ui_manager.c:195 src/skins/ui_manager.c:414
+#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:414
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Ieslēdz/izslēdz repertuāra ieraksta ierindošanu."
 
-#: src/gtkui/ui_manager.c:198 src/skins/ui_manager.c:417
+#: src/gtkui/ui_manager.c:211 src/skins/ui_manager.c:417
 msgid "Copy"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:201 src/skins/ui_manager.c:419
+#: src/gtkui/ui_manager.c:214 src/skins/ui_manager.c:419
 #, fuzzy
 msgid "Cut"
 msgstr "Pielāgots"
 
-#: src/gtkui/ui_manager.c:204 src/skins/ui_manager.c:421
+#: src/gtkui/ui_manager.c:217 src/skins/ui_manager.c:421
 #, fuzzy
 msgid "Paste"
 msgstr "Ātrākais"
 
-#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:254
+#: src/gtkui/ui_manager.c:220 src/skins/ui_manager.c:254
 msgid "Select All"
 msgstr "Iezīmēt visus"
 
-#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:255
+#: src/gtkui/ui_manager.c:221 src/skins/ui_manager.c:255
 msgid "Selects all of the playlist entries."
 msgstr "Iezīmē visus repertuāra ierakstus."
 
-#: src/gtkui/ui_manager.c:211 src/skins/ui_manager.c:258
+#: src/gtkui/ui_manager.c:224 src/skins/ui_manager.c:258
 msgid "Select None"
 msgstr "Notīrīt iezīmējumu"
 
-#: src/gtkui/ui_manager.c:212 src/skins/ui_manager.c:259
+#: src/gtkui/ui_manager.c:225 src/skins/ui_manager.c:259
 msgid "Deselects all of the playlist entries."
 msgstr "Noņem iezīmējumu no visiem ierakstiem."
 
@@ -3745,6 +3706,14 @@ msgstr "Noklusētā PCM ierīce (%s)"
 msgid "OSS4 Output Plugin Preferences"
 msgstr "ALSA izvades spraudņa iestatījumi"
 
+#: src/oss4/configure.c:163 src/OSS/configure.c:213 src/sun/configure.c:181
+msgid "Audio device:"
+msgstr "Audio ierīce:"
+
+#: src/oss4/configure.c:189 src/OSS/configure.c:235 src/OSS/configure.c:276
+msgid "Use alternate device:"
+msgstr "Lietot citu ierīci:"
+
 #: src/oss4/configure.c:202
 #, fuzzy
 msgid "Save volume between sessions"
@@ -3800,6 +3769,81 @@ msgstr ""
 #, fuzzy
 msgid "OSS4 error"
 msgstr " Kļūda"
+
+#: src/OSS/configure.c:148
+#, c-format
+msgid "Default (%s)"
+msgstr "Noklusētais (%s)"
+
+#: src/OSS/configure.c:197
+msgid "OSS Driver configuration"
+msgstr "OSS dziņa konfigurācija"
+
+#: src/OSS/configure.c:298 src/sun/configure.c:246
+msgid "Devices"
+msgstr "Ierīces"
+
+#: src/OSS/configure.c:300 src/sun/configure.c:257
+msgid "Buffering:"
+msgstr "Buferizācija:"
+
+#: src/OSS/configure.c:313 src/sun/configure.c:288
+msgid "Pre-buffer (percent):"
+msgstr "Pirms-buferēšana (%):"
+
+#: src/OSS/configure.c:324 src/sun/configure.c:302
+msgid "Buffering"
+msgstr "Buferizācija"
+
+#: src/OSS/configure.c:325
+msgid "Mixer Settings:"
+msgstr "Miksera iestatījumi:"
+
+#: src/OSS/configure.c:331
+msgid "Volume controls Master not PCM"
+msgstr "Skaļuma regulators kontrolē Master nevis PCM"
+
+#: src/OSS/configure.c:337 src/sun/configure.c:392
+msgid "Mixer"
+msgstr "Mikseris"
+
+#: src/OSS/OSS.c:40
+msgid "About OSS Driver"
+msgstr "Par OSS dzini"
+
+#: src/OSS/OSS.c:41
+msgid ""
+"Audacious OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Audacious OSS dzinis\n"
+"\n"
+" Šī ir brīvā programmatūra. Jūs varat to izplatīt un/vai modificēt saskaņā\n"
+"ar GNU GPL licenses nosacījumiem, kurus publicējis Free Software\n"
+"Foundation; lietojiet licenses 2. versiju, vai arī (pēc jūsu izvēles)\n"
+"jebkuru vēlāku versiju.\n"
+"\n"
+"Šī programma tiek izplatīta cerot, ka tā būs noderīga, bet BEZ JEBKĀDAS\n"
+"GARANTIJAS; pat PIEPRASĪJUMA vai NODERĪBAS ĪPAŠAM MĒRĶIM garantijas.\n"
+"Sīkākai informācijai skatiet GNU General Public License.\n"
+"\n"
+"GNU GPL licenses kopijai vajadzētu būt saņemtai kopā ar šo programmu.\n"
+"Ja tā nav, rakstiet uz Free Software Foundation, Inc., 51 Franklin Street,\n"
+"Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/pulse_audio/pulse_audio.c:691
 msgid "About Audacious PulseAudio Output Plugin"
@@ -3889,7 +3933,7 @@ msgstr "<b>Last.FM</b>"
 msgid "Scrobbler"
 msgstr "Scrobbler"
 
-#: src/scrobbler/plugin.c:214
+#: src/scrobbler/plugin.c:213
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -3901,7 +3945,7 @@ msgstr ""
 "Oriģinālie izveidotāji: Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
 "com>\n"
 
-#: src/scrobbler/plugin.c:216
+#: src/scrobbler/plugin.c:215
 msgid "About Scrobbler Plugin"
 msgstr "Par Scrobbler spraudni"
 
@@ -4670,15 +4714,6 @@ msgstr "Audacious balansieris"
 msgid "Presets"
 msgstr "Gatavie regulējumi"
 
-#: src/skins/ui_main.c:388
-#, c-format
-msgid "%s - Audacious"
-msgstr "%s - Audacious"
-
-#: src/skins/ui_main.c:390 src/skins/ui_main.c:2165
-msgid "Audacious"
-msgstr "Audacious"
-
 #: src/skins/ui_main.c:593
 msgid "kbps"
 msgstr ""
@@ -5053,11 +5088,6 @@ msgstr "Izņem no repertuāra nepieejamos failus."
 msgid "Remove Duplicates"
 msgstr "Izņemt dublikātus"
 
-#: src/skins/ui_manager.c:278 src/skins/ui_manager.c:306
-#: src/skins/ui_manager.c:336
-msgid "By Title"
-msgstr "Pēc nosaukuma"
-
 #: src/skins/ui_manager.c:279
 msgid "Removes duplicate entries from the playlist by title."
 msgstr "Izņem no repertuāra dublikātus pēc nosaukuma."
@@ -5096,17 +5126,9 @@ msgstr "Kārtot repertuāru"
 msgid "Sorts the list by title."
 msgstr "Kārto repertuāru pēc nosaukuma."
 
-#: src/skins/ui_manager.c:310 src/skins/ui_manager.c:340
-msgid "By Album"
-msgstr "Pēc albuma"
-
 #: src/skins/ui_manager.c:311 src/skins/ui_manager.c:341
 msgid "Sorts the list by album."
 msgstr "Kārto sarakstu pēc albuma."
-
-#: src/skins/ui_manager.c:314 src/skins/ui_manager.c:344
-msgid "By Artist"
-msgstr "Pēc izpildītāja"
 
 #: src/skins/ui_manager.c:315 src/skins/ui_manager.c:345
 msgid "Sorts the list by artist."
@@ -5127,10 +5149,6 @@ msgstr "Pēc datuma"
 #: src/skins/ui_manager.c:327 src/skins/ui_manager.c:357
 msgid "Sorts the list by modification time."
 msgstr "Kārto repertuāru pēc izmaiņas datuma."
-
-#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
-msgid "By Track Number"
-msgstr "Pēc celiņa numura"
 
 #: src/skins/ui_manager.c:331 src/skins/ui_manager.c:361
 msgid "Sorts the list by track number."
@@ -5505,11 +5523,11 @@ msgstr "Dziesmas maiņa"
 msgid "Spectrum Analyzer"
 msgstr "Spektra analizators"
 
-#: src/statusicon/statusicon.c:368
+#: src/statusicon/statusicon.c:355
 msgid "About Status Icon Plugin"
 msgstr "Par statusa ikonas spraudni"
 
-#: src/statusicon/statusicon.c:369
+#: src/statusicon/statusicon.c:356
 #, fuzzy
 msgid ""
 "Status Icon Plugin\n"
@@ -5526,35 +5544,31 @@ msgstr ""
 "Šis spraudnis nodrošina ar statusa ikonu, kas\n"
 "tiek novietota logu pārvaldnieka sistēmas ikonu joslā.\n"
 
-#: src/statusicon/statusicon.c:432
+#: src/statusicon/statusicon.c:418
 msgid "Status Icon Plugin - Preferences"
 msgstr "Statusa ikonas spraudnis - iestatījumi"
 
-#: src/statusicon/statusicon.c:442
+#: src/statusicon/statusicon.c:428
 msgid "Right-Click Menu"
 msgstr "Labā klikšķa izvēlne"
 
-#: src/statusicon/statusicon.c:446
-msgid "Audacious standard menu"
-msgstr "Audacious standarta izvēlne"
-
-#: src/statusicon/statusicon.c:448
+#: src/statusicon/statusicon.c:433
 msgid "Small playback menu #1"
 msgstr "Neliela atskaņošanas izvēlne #1"
 
-#: src/statusicon/statusicon.c:450
+#: src/statusicon/statusicon.c:436
 msgid "Small playback menu #2"
 msgstr "Neliela atskaņošanas izvēlne #2"
 
-#: src/statusicon/statusicon.c:471
+#: src/statusicon/statusicon.c:452
 msgid "Mouse Scroll Action"
 msgstr "Peles rullīša darbība"
 
-#: src/statusicon/statusicon.c:475
+#: src/statusicon/statusicon.c:456
 msgid "Change volume"
 msgstr "Mainīt skaļumu"
 
-#: src/statusicon/statusicon.c:477
+#: src/statusicon/statusicon.c:458
 msgid "Change playing song"
 msgstr "Mainīt atskaņojamo dziesmu"
 
@@ -5795,6 +5809,9 @@ msgstr ""
 "Daļas spraudņa koda autors Miles Egan\n"
 "Apciemojiet Wavpack vietni http://www.wavpack.com/\n"
 
+#~ msgid "Audacious standard menu"
+#~ msgstr "Audacious standarta izvēlne"
+
 #~ msgid "Surround echo"
 #~ msgstr "Ieskaujošā atbalss"
 
@@ -5816,8 +5833,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Audacious ESounD spraudnis\n"
@@ -6646,9 +6663,6 @@ msgstr ""
 #~ "Ieslēdz/izslēdz XMMS skaļums un balansa vadību.\n"
 #~ "Noklusējums: ieslēgts"
 
-#~ msgid "Reverse balance"
-#~ msgstr "Apgrieztais balanss"
-
 #~ msgid ""
 #~ "Reverses left and right with the balance control.\n"
 #~ "Default: Off"
@@ -6819,8 +6833,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Icecast spraudnis\n"
@@ -7059,8 +7073,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
 #~ "USA.\n"
 #~ "\n"
 #~ "Note: For any issues regarding this plugin (including patches and \n"

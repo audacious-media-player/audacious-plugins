@@ -1,6 +1,4 @@
 # Please don't update this file manually - use ./update-potfiles.sh instead!
-src/OSS/OSS.c
-src/OSS/configure.c
 src/aac/libmp4.c
 src/adplug/adplug-xmms.cc
 src/alarm/interface.c
@@ -11,9 +9,9 @@ src/amidi-plug/backend-alsa/b-alsa.c
 src/amidi-plug/backend-fluidsynth/b-fluidsynth.c
 src/amidi-plug/i_configure-alsa.c
 src/amidi-plug/i_configure-ap.c
+src/amidi-plug/i_configure.c
 src/amidi-plug/i_configure-fluidsynth.c
 src/amidi-plug/i_configure-timidity.c
-src/amidi-plug/i_configure.c
 src/amidi-plug/i_fileinfo.c
 src/amidi-plug/i_utils.c
 src/aosd/aosd_style.c
@@ -24,14 +22,16 @@ src/bluetooth/bluetooth.c
 src/bluetooth/gui.c
 src/bluetooth/scan_gui.c
 src/blur_scope/config.c
-src/cd-menu-items/cd-menu-items.c
 src/cdaudio-ng/cdaudio-ng.c
 src/cdaudio-ng/configure.c
+src/cd-menu-items/cd-menu-items.c
 src/compressor/plugin.c
+src/console/abstract_file.cxx
 src/console/Ay_Apu.cxx
 src/console/Ay_Emu.cxx
 src/console/Blip_Buffer.cxx
 src/console/Classic_Emu.cxx
+src/console/configure.c
 src/console/Data_Reader.cxx
 src/console/Dual_Resampler.cxx
 src/console/Fir_Resampler.cxx
@@ -46,8 +46,9 @@ src/console/M3u_Playlist.cxx
 src/console/Multi_Buffer.cxx
 src/console/Music_Emu.cxx
 src/console/Nes_Apu.cxx
-src/console/Nsf_Emu.cxx
 src/console/Nsfe_Emu.cxx
+src/console/Nsf_Emu.cxx
+src/console/plugin.c
 src/console/Sap_Emu.cxx
 src/console/Spc_Cpu.cxx
 src/console/Spc_Dsp.cxx
@@ -55,9 +56,6 @@ src/console/Spc_Emu.cxx
 src/console/Vfs_File.cxx
 src/console/Vgm_Emu.cxx
 src/console/Ym2612_Emu.cxx
-src/console/abstract_file.cxx
-src/console/configure.c
-src/console/plugin.c
 src/crossfade/plugin.c
 src/crystalizer/crystalizer.c
 src/echo_plugin/gui.c
@@ -96,6 +94,8 @@ src/null/null.c
 src/oss4/configure.c
 src/oss4/plugin.c
 src/oss4/utils.c
+src/OSS/configure.c
+src/OSS/OSS.c
 src/pulse_audio/pulse_audio.c
 src/resample/plugin.c
 src/scrobbler/configure.c

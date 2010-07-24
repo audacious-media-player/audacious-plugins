@@ -21,111 +21,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 9cc8503d1935\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2010-07-20 00:09+0300\n"
+"POT-Creation-Date: 2010-07-24 08:42-0400\n"
 "PO-Revision-Date: 2010-06-14 22:39+0200\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
-"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
 
-#: src/OSS/OSS.c:40
-msgid "About OSS Driver"
-msgstr "O modulu OSS"
-
-#: src/OSS/OSS.c:41
-msgid ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Ovladač OSS programu Audacious\n"
-"\n"
-"Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
-"pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
-"Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
-"libovolné novější.\n"
-"\n"
-"Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
-"ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
-"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
-"\n"
-"S tímto programem byste měli obdržet kopii GNU GPL. Pokud se tak\n"
-"nestalo, obraťte se na Free Software Foundation, Inc.,\n"
-"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#: src/OSS/configure.c:148
-#, c-format
-msgid "Default (%s)"
-msgstr "Standardně (%s)"
-
-#: src/OSS/configure.c:166 src/alarm/interface.c:612 src/alarm/interface.c:660
-#: src/alarm/interface.c:708 src/alarm/interface.c:756
-#: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/skins/ui_manager.c:439
-#: src/skins/ui_manager.c:460
-msgid "Default"
-msgstr "Standardní"
-
-#: src/OSS/configure.c:197
-msgid "OSS Driver configuration"
-msgstr "Nastavení ovladače OSS"
-
-#: src/OSS/configure.c:213 src/oss4/configure.c:163 src/sun/configure.c:181
-msgid "Audio device:"
-msgstr "Zvukové zařízení:"
-
-#: src/OSS/configure.c:235 src/OSS/configure.c:276 src/oss4/configure.c:189
-msgid "Use alternate device:"
-msgstr "Použít jiné zařízení:"
-
-#: src/OSS/configure.c:256 src/alsa/config.c:447 src/sun/configure.c:218
-msgid "Mixer device:"
-msgstr "Zařízení směšovače:"
-
-#: src/OSS/configure.c:298 src/sun/configure.c:246
-msgid "Devices"
-msgstr "Zařízení"
-
-#: src/OSS/configure.c:300 src/sun/configure.c:257
-msgid "Buffering:"
-msgstr "Vyrovnávání:"
-
-#: src/OSS/configure.c:313 src/sun/configure.c:288
-msgid "Pre-buffer (percent):"
-msgstr "Načíst předem (v procentech):"
-
-#: src/OSS/configure.c:324 src/sun/configure.c:302
-msgid "Buffering"
-msgstr "Vyrovnávání"
-
-#: src/OSS/configure.c:325
-msgid "Mixer Settings:"
-msgstr "Nastavení mixéru:"
-
-#: src/OSS/configure.c:331
-msgid "Volume controls Master not PCM"
-msgstr "Hlasitost ovládána Master kanálem místo PCM"
-
-#: src/OSS/configure.c:337 src/sun/configure.c:392
-msgid "Mixer"
-msgstr "Mixér"
-
-#: src/aac/libmp4.c:288
+#: src/aac/libmp4.c:291
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -136,7 +41,7 @@ msgstr ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM dekodér © Nero AG, www.nero.com\n"
 "Copyright © 2005–2006 tým Audacious"
 
-#: src/aac/libmp4.c:293
+#: src/aac/libmp4.c:296
 msgid "About MP4 AAC decoder plugin"
 msgstr "O modulu dekodéru MP4 AAC"
 
@@ -473,6 +378,14 @@ msgstr "Budit v (standardní):"
 msgid "Choose the days for the alarm to come on"
 msgstr "Vyberte dny, kdy má budík budit"
 
+#: src/alarm/interface.c:612 src/alarm/interface.c:660
+#: src/alarm/interface.c:708 src/alarm/interface.c:756
+#: src/alarm/interface.c:804 src/alarm/interface.c:852
+#: src/alarm/interface.c:900 src/OSS/configure.c:166
+#: src/skins/ui_manager.c:439 src/skins/ui_manager.c:460
+msgid "Default"
+msgstr "Standardní"
+
 #: src/alarm/interface.c:938
 msgid "Day"
 msgstr "Den"
@@ -679,7 +592,7 @@ msgstr ""
 "    Text vzkazu vepište do vstupního pole a zapněte tlačítko,\n"
 "    přejete-li si zobrazovat vzkaz.\n"
 
-#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:152
+#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:165
 #: src/skins/ui_manager.c:371
 msgid "Help"
 msgstr "Nápověda"
@@ -707,6 +620,10 @@ msgstr "Nastavení výstupního modulu ALSY"
 #: src/alsa/config.c:445
 msgid "PCM device:"
 msgstr "Zařízení PCM:"
+
+#: src/alsa/config.c:447 src/OSS/configure.c:256 src/sun/configure.c:218
+msgid "Mixer device:"
+msgstr "Zařízení směšovače:"
 
 #: src/alsa/config.c:449
 msgid "Mixer element:"
@@ -1015,6 +932,14 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
+#: src/amidi-plug/i_configure.c:73
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug – vyberte soubor"
+
+#: src/amidi-plug/i_configure.c:126
+msgid "AMIDI-Plug - configuration"
+msgstr "AMIDI-Plug – nastavení"
+
 #: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug – vyberte soundfontový soubor"
@@ -1253,14 +1178,6 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">Backend\n"
 "TiMidity</span>"
-
-#: src/amidi-plug/i_configure.c:73
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug – vyberte soubor"
-
-#: src/amidi-plug/i_configure.c:126
-msgid "AMIDI-Plug - configuration"
-msgstr "AMIDI-Plug – nastavení"
 
 #: src/amidi-plug/i_fileinfo.c:169 src/bluetooth/gui.c:271
 #: src/sid/xs_interface.c:1769
@@ -1793,19 +1710,11 @@ msgstr "Blur scope: výběr barvy"
 msgid "Options:"
 msgstr "Volby:"
 
-#: src/cd-menu-items/cd-menu-items.c:35
-msgid "Play CD"
-msgstr "Přehrát CD"
-
-#: src/cd-menu-items/cd-menu-items.c:35
-msgid "Add CD"
-msgstr "Přidat CD"
-
-#: src/cdaudio-ng/cdaudio-ng.c:271
+#: src/cdaudio-ng/cdaudio-ng.c:278
 msgid "About Audio CD Plugin"
 msgstr "O zásuvném modulu zvukových CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:272
+#: src/cdaudio-ng/cdaudio-ng.c:279
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -1872,6 +1781,14 @@ msgstr "Použít HTTP místo CDDBP"
 #: src/cdaudio-ng/configure.c:244
 msgid "Override default device: "
 msgstr "Přebít výchozí zařízení: "
+
+#: src/cd-menu-items/cd-menu-items.c:35
+msgid "Play CD"
+msgstr "Přehrát CD"
+
+#: src/cd-menu-items/cd-menu-items.c:35
+msgid "Add CD"
+msgstr "Přidat CD"
 
 #: src/compressor/plugin.c:58
 msgid "About Dynamic Range Compression Plugin"
@@ -2207,8 +2124,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get phys value for device \"%s"
 "\", skipping it.\n"
 msgstr ""
-"event-device-plugin: konfigurace: nelze získat hodnotu phys pro zařízení "
-"„%s“, přeskakuji.\n"
+"event-device-plugin: konfigurace: nelze získat hodnotu phys pro zařízení „%"
+"s“, přeskakuji.\n"
 
 #: src/evdev-plug/ed_internals.c:922
 #, c-format
@@ -2397,7 +2314,7 @@ msgstr ""
 "\n"
 "napsal Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:677
+#: src/ffaudio/ffaudio-core.c:663
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2424,7 +2341,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:693
+#: src/ffaudio/ffaudio-core.c:679
 msgid "About FFaudio Plugin"
 msgstr "O modulu FFaudio"
 
@@ -2767,8 +2684,8 @@ msgstr "Rozhraní gnt"
 msgid "Can't jump to time when no track is being played.\n"
 msgstr "Když nehraje žádná skladba, nelze přejít na čas.\n"
 
-#: src/gtkui/actions.c:272 src/gtkui/ui_manager.c:191
-#: src/gtkui/ui_manager.c:192 src/skins/ui_main.c:833
+#: src/gtkui/actions.c:272 src/gtkui/ui_manager.c:204
+#: src/gtkui/ui_manager.c:205 src/skins/ui_main.c:833
 #: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
 msgid "Jump to Time"
 msgstr "Přejít na čas"
@@ -2803,6 +2720,15 @@ msgstr "Importovat seznam skladeb"
 #, fuzzy
 msgid "GTK Interface"
 msgstr "Rozhraní gnt"
+
+#: src/gtkui/ui_gtk.c:281 src/skins/ui_main.c:388
+#, c-format
+msgid "%s - Audacious"
+msgstr "%s – Audacious"
+
+#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2165
+msgid "Audacious"
+msgstr "Audacious"
 
 #: src/gtkui/ui_manager.c:35 src/gtkui/ui_manager.c:36
 #: src/skins/ui_manager.c:53 src/skins/ui_manager.c:54
@@ -2983,141 +2909,176 @@ msgstr "Odebrat označené"
 msgid "Remove selected entries from the playlist."
 msgstr "Odebrat označené skladby ze seznamu."
 
-#: src/gtkui/ui_manager.c:134
+#: src/gtkui/ui_manager.c:131
+#, fuzzy
+msgid "Sort"
+msgstr "Port"
+
+#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:330
+#: src/skins/ui_manager.c:360
+msgid "By Track Number"
+msgstr "Podle čísla stopy"
+
+#: src/gtkui/ui_manager.c:134 src/skins/ui_manager.c:278
+#: src/skins/ui_manager.c:306 src/skins/ui_manager.c:336
+msgid "By Title"
+msgstr "Podle názvu"
+
+#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:314
+#: src/skins/ui_manager.c:344
+msgid "By Artist"
+msgstr "Podle umělce"
+
+#: src/gtkui/ui_manager.c:138 src/skins/ui_manager.c:310
+#: src/skins/ui_manager.c:340
+msgid "By Album"
+msgstr "Podle alba"
+
+#: src/gtkui/ui_manager.c:140
+#, fuzzy
+msgid "By File Path"
+msgstr "Cesta k souboru"
+
+#: src/gtkui/ui_manager.c:142
+#, fuzzy
+msgid "Reverse Order"
+msgstr "Obrátit vyvážení"
+
+#: src/gtkui/ui_manager.c:147
 msgid "Output"
 msgstr "Výstup"
 
-#: src/gtkui/ui_manager.c:136 src/modplug/gui/interface.cxx:572
+#: src/gtkui/ui_manager.c:149 src/modplug/gui/interface.cxx:572
 msgid "Effects"
 msgstr "Efekty"
 
-#: src/gtkui/ui_manager.c:138
+#: src/gtkui/ui_manager.c:151
 #, fuzzy
 msgid "Equalizer"
 msgstr "BMP ekvalizér"
 
-#: src/gtkui/ui_manager.c:143 src/skins/ui_manager.c:232
+#: src/gtkui/ui_manager.c:156 src/skins/ui_manager.c:232
 msgid "View"
 msgstr "Zobrazení"
 
-#: src/gtkui/ui_manager.c:144 src/skins/ui_manager.c:233
+#: src/gtkui/ui_manager.c:157 src/skins/ui_manager.c:233
 #, fuzzy
 msgid "Interface"
 msgstr "Rozhraní gnt"
 
-#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:370
+#: src/gtkui/ui_manager.c:164 src/skins/ui_manager.c:370
 msgid "File"
 msgstr "Soubor"
 
-#: src/gtkui/ui_manager.c:154
+#: src/gtkui/ui_manager.c:167
 msgid "Components"
 msgstr "Součásti"
 
-#: src/gtkui/ui_manager.c:156 src/gtkui/ui_manager.c:159
+#: src/gtkui/ui_manager.c:169 src/gtkui/ui_manager.c:172
 #: src/skins/ui_manager.c:375 src/skins/ui_manager.c:378
 msgid "View Track Details"
 msgstr "Zobrazit informace o skladbě"
 
-#: src/gtkui/ui_manager.c:157 src/gtkui/ui_manager.c:160
+#: src/gtkui/ui_manager.c:170 src/gtkui/ui_manager.c:173
 #: src/skins/ui_manager.c:376 src/skins/ui_manager.c:379
 msgid "View track details"
 msgstr "Zobrazit informace o skladbě"
 
-#: src/gtkui/ui_manager.c:162 src/gtkui/ui_manager.c:163
+#: src/gtkui/ui_manager.c:175 src/gtkui/ui_manager.c:176
 #: src/skins/ui_manager.c:381 src/skins/ui_manager.c:382
 msgid "About Audacious"
 msgstr "O Audacious"
 
-#: src/gtkui/ui_manager.c:165
+#: src/gtkui/ui_manager.c:178
 #, fuzzy
 msgid "Open Files ..."
 msgstr "Otevřít soubory"
 
-#: src/gtkui/ui_manager.c:166 src/skins/ui_manager.c:385
+#: src/gtkui/ui_manager.c:179 src/skins/ui_manager.c:385
 msgid "Load and play a file"
 msgstr "Načíst a přehrát soubor"
 
-#: src/gtkui/ui_manager.c:168
+#: src/gtkui/ui_manager.c:181
 msgid "Open URL ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:169 src/skins/ui_manager.c:388
+#: src/gtkui/ui_manager.c:182 src/skins/ui_manager.c:388
 msgid "Play media from the selected location"
 msgstr "Hrát média z vybraného místa"
 
-#: src/gtkui/ui_manager.c:171 src/skins/ui_manager.c:390
+#: src/gtkui/ui_manager.c:184 src/skins/ui_manager.c:390
 msgid "Plugin services"
 msgstr "Služby modulů"
 
-#: src/gtkui/ui_manager.c:173 src/skins/ui_manager.c:392
+#: src/gtkui/ui_manager.c:186 src/skins/ui_manager.c:392
 msgid "Preferences"
 msgstr "Nastavení"
 
-#: src/gtkui/ui_manager.c:174 src/skins/ui_manager.c:393
+#: src/gtkui/ui_manager.c:187 src/skins/ui_manager.c:393
 msgid "Open preferences window"
 msgstr "Otevřít okno s nastavením"
 
-#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:395
+#: src/gtkui/ui_manager.c:189 src/skins/ui_manager.c:395
 msgid "_Quit"
 msgstr "_Konec"
 
-#: src/gtkui/ui_manager.c:177 src/skins/ui_manager.c:396
+#: src/gtkui/ui_manager.c:190 src/skins/ui_manager.c:396
 msgid "Quit Audacious"
 msgstr "O Audacious"
 
-#: src/gtkui/ui_manager.c:179 src/gtkui/ui_manager.c:180
+#: src/gtkui/ui_manager.c:192 src/gtkui/ui_manager.c:193
 #: src/skins/ui_manager.c:398 src/skins/ui_manager.c:399
 msgid "Set A-B"
 msgstr "Nastavit A-B"
 
-#: src/gtkui/ui_manager.c:182 src/gtkui/ui_manager.c:183
+#: src/gtkui/ui_manager.c:195 src/gtkui/ui_manager.c:196
 #: src/skins/ui_manager.c:401 src/skins/ui_manager.c:402
 msgid "Clear A-B"
 msgstr "Vyprázdnit A-B"
 
-#: src/gtkui/ui_manager.c:185 src/gtkui/ui_manager.c:186
+#: src/gtkui/ui_manager.c:198 src/gtkui/ui_manager.c:199
 #: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
 msgid "Jump to Playlist Start"
 msgstr "Přejít na začátek seznamu skladeb"
 
-#: src/gtkui/ui_manager.c:188 src/gtkui/ui_manager.c:189 src/hotkey/gui.c:80
+#: src/gtkui/ui_manager.c:201 src/gtkui/ui_manager.c:202 src/hotkey/gui.c:80
 #: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
 msgid "Jump to File"
 msgstr "Přejít na soubor"
 
-#: src/gtkui/ui_manager.c:194 src/skins/ui_manager.c:413
+#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:413
 msgid "Queue Toggle"
 msgstr "Přepnout frontu"
 
-#: src/gtkui/ui_manager.c:195 src/skins/ui_manager.c:414
+#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:414
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Povolí/zakáže položku ve frontě seznamu skladeb."
 
-#: src/gtkui/ui_manager.c:198 src/skins/ui_manager.c:417
+#: src/gtkui/ui_manager.c:211 src/skins/ui_manager.c:417
 msgid "Copy"
 msgstr "Kopírovat"
 
-#: src/gtkui/ui_manager.c:201 src/skins/ui_manager.c:419
+#: src/gtkui/ui_manager.c:214 src/skins/ui_manager.c:419
 msgid "Cut"
 msgstr "Oříznout"
 
-#: src/gtkui/ui_manager.c:204 src/skins/ui_manager.c:421
+#: src/gtkui/ui_manager.c:217 src/skins/ui_manager.c:421
 msgid "Paste"
 msgstr "Vložit"
 
-#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:254
+#: src/gtkui/ui_manager.c:220 src/skins/ui_manager.c:254
 msgid "Select All"
 msgstr "Vybrat vše"
 
-#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:255
+#: src/gtkui/ui_manager.c:221 src/skins/ui_manager.c:255
 msgid "Selects all of the playlist entries."
 msgstr "Vybere všechny skladby v seznamu."
 
-#: src/gtkui/ui_manager.c:211 src/skins/ui_manager.c:258
+#: src/gtkui/ui_manager.c:224 src/skins/ui_manager.c:258
 msgid "Select None"
 msgstr "Nevybrat žádné"
 
-#: src/gtkui/ui_manager.c:212 src/skins/ui_manager.c:259
+#: src/gtkui/ui_manager.c:225 src/skins/ui_manager.c:259
 msgid "Deselects all of the playlist entries."
 msgstr "Žádná skladba v seznamu nebude vybraná."
 
@@ -3739,6 +3700,14 @@ msgstr "1. Implicitní zařízení"
 msgid "OSS4 Output Plugin Preferences"
 msgstr "Nastavení výstupního modulu OSS4"
 
+#: src/oss4/configure.c:163 src/OSS/configure.c:213 src/sun/configure.c:181
+msgid "Audio device:"
+msgstr "Zvukové zařízení:"
+
+#: src/oss4/configure.c:189 src/OSS/configure.c:235 src/OSS/configure.c:276
+msgid "Use alternate device:"
+msgstr "Použít jiné zařízení:"
+
 #: src/oss4/configure.c:202
 msgid "Save volume between sessions"
 msgstr "Mezi relacemi ukládat hlasitost"
@@ -3793,6 +3762,81 @@ msgstr ""
 #: src/oss4/utils.c:204
 msgid "OSS4 error"
 msgstr "Chyba OSS4"
+
+#: src/OSS/configure.c:148
+#, c-format
+msgid "Default (%s)"
+msgstr "Standardně (%s)"
+
+#: src/OSS/configure.c:197
+msgid "OSS Driver configuration"
+msgstr "Nastavení ovladače OSS"
+
+#: src/OSS/configure.c:298 src/sun/configure.c:246
+msgid "Devices"
+msgstr "Zařízení"
+
+#: src/OSS/configure.c:300 src/sun/configure.c:257
+msgid "Buffering:"
+msgstr "Vyrovnávání:"
+
+#: src/OSS/configure.c:313 src/sun/configure.c:288
+msgid "Pre-buffer (percent):"
+msgstr "Načíst předem (v procentech):"
+
+#: src/OSS/configure.c:324 src/sun/configure.c:302
+msgid "Buffering"
+msgstr "Vyrovnávání"
+
+#: src/OSS/configure.c:325
+msgid "Mixer Settings:"
+msgstr "Nastavení mixéru:"
+
+#: src/OSS/configure.c:331
+msgid "Volume controls Master not PCM"
+msgstr "Hlasitost ovládána Master kanálem místo PCM"
+
+#: src/OSS/configure.c:337 src/sun/configure.c:392
+msgid "Mixer"
+msgstr "Mixér"
+
+#: src/OSS/OSS.c:40
+msgid "About OSS Driver"
+msgstr "O modulu OSS"
+
+#: src/OSS/OSS.c:41
+msgid ""
+"Audacious OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Ovladač OSS programu Audacious\n"
+"\n"
+"Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
+"pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
+"Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
+"libovolné novější.\n"
+"\n"
+"Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
+"ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
+"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
+"\n"
+"S tímto programem byste měli obdržet kopii GNU GPL. Pokud se tak\n"
+"nestalo, obraťte se na Free Software Foundation, Inc.,\n"
+"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/pulse_audio/pulse_audio.c:691
 msgid "About Audacious PulseAudio Output Plugin"
@@ -3881,7 +3925,7 @@ msgstr "<b>Last.FM</b>"
 msgid "Scrobbler"
 msgstr "Scrobbler"
 
-#: src/scrobbler/plugin.c:214
+#: src/scrobbler/plugin.c:213
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -3892,7 +3936,7 @@ msgstr ""
 "\n"
 "Původně vytvořil Audun Hove <audun@nlc.no> a Pipian <pipian@pipian.com>\n"
 
-#: src/scrobbler/plugin.c:216
+#: src/scrobbler/plugin.c:215
 msgid "About Scrobbler Plugin"
 msgstr "O modulu Scrobbler"
 
@@ -4660,15 +4704,6 @@ msgstr "Ekvalizér"
 msgid "Presets"
 msgstr "Předvolby"
 
-#: src/skins/ui_main.c:388
-#, c-format
-msgid "%s - Audacious"
-msgstr "%s – Audacious"
-
-#: src/skins/ui_main.c:390 src/skins/ui_main.c:2165
-msgid "Audacious"
-msgstr "Audacious"
-
 #: src/skins/ui_main.c:593
 msgid "kbps"
 msgstr "kb/s"
@@ -5041,11 +5076,6 @@ msgstr "Ze seznamu skladeb odstraní nedostupné soubory."
 msgid "Remove Duplicates"
 msgstr "Odebrat duplikáty"
 
-#: src/skins/ui_manager.c:278 src/skins/ui_manager.c:306
-#: src/skins/ui_manager.c:336
-msgid "By Title"
-msgstr "Podle názvu"
-
 #: src/skins/ui_manager.c:279
 msgid "Removes duplicate entries from the playlist by title."
 msgstr "Ze seznamu odstraní skladby na základě jejich názvu."
@@ -5084,17 +5114,9 @@ msgstr "Seřadit seznam"
 msgid "Sorts the list by title."
 msgstr "Seřadí seznam podle názvu."
 
-#: src/skins/ui_manager.c:310 src/skins/ui_manager.c:340
-msgid "By Album"
-msgstr "Podle alba"
-
 #: src/skins/ui_manager.c:311 src/skins/ui_manager.c:341
 msgid "Sorts the list by album."
 msgstr "Seřadí seznam podle alba."
-
-#: src/skins/ui_manager.c:314 src/skins/ui_manager.c:344
-msgid "By Artist"
-msgstr "Podle umělce"
 
 #: src/skins/ui_manager.c:315 src/skins/ui_manager.c:345
 msgid "Sorts the list by artist."
@@ -5115,10 +5137,6 @@ msgstr "Podle data"
 #: src/skins/ui_manager.c:327 src/skins/ui_manager.c:357
 msgid "Sorts the list by modification time."
 msgstr "Skladby v seznamu seřadí podle času poslední změny v obsahu souboru."
-
-#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
-msgid "By Track Number"
-msgstr "Podle čísla stopy"
 
 #: src/skins/ui_manager.c:331 src/skins/ui_manager.c:361
 msgid "Sorts the list by track number."
@@ -5498,11 +5516,11 @@ msgstr "Změna skladby"
 msgid "Spectrum Analyzer"
 msgstr "Analyzátor spektra"
 
-#: src/statusicon/statusicon.c:368
+#: src/statusicon/statusicon.c:355
 msgid "About Status Icon Plugin"
 msgstr "O modulu Stavová ikona"
 
-#: src/statusicon/statusicon.c:369
+#: src/statusicon/statusicon.c:356
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -5521,35 +5539,31 @@ msgstr ""
 "Tento modul poskytuje stavovou ikonu, která\n"
 "je umístěna v systémové oblasti desktopu.\n"
 
-#: src/statusicon/statusicon.c:432
+#: src/statusicon/statusicon.c:418
 msgid "Status Icon Plugin - Preferences"
 msgstr "Modul stavové ikony – Nastavení"
 
-#: src/statusicon/statusicon.c:442
+#: src/statusicon/statusicon.c:428
 msgid "Right-Click Menu"
 msgstr "Nabídka při stisku pravého tlačítka"
 
-#: src/statusicon/statusicon.c:446
-msgid "Audacious standard menu"
-msgstr "Standardní nabídka Audacious"
-
-#: src/statusicon/statusicon.c:448
+#: src/statusicon/statusicon.c:433
 msgid "Small playback menu #1"
 msgstr "Drobná nabídka pro přehrávání č. 1"
 
-#: src/statusicon/statusicon.c:450
+#: src/statusicon/statusicon.c:436
 msgid "Small playback menu #2"
 msgstr "Drobná nabídka pro přehrávání č. 2"
 
-#: src/statusicon/statusicon.c:471
+#: src/statusicon/statusicon.c:452
 msgid "Mouse Scroll Action"
 msgstr "Reakce na rolování myší"
 
-#: src/statusicon/statusicon.c:475
+#: src/statusicon/statusicon.c:456
 msgid "Change volume"
 msgstr "Změnit hlasitost"
 
-#: src/statusicon/statusicon.c:477
+#: src/statusicon/statusicon.c:458
 msgid "Change playing song"
 msgstr "Změnit hranou skladbu"
 
@@ -5790,6 +5804,9 @@ msgstr ""
 "Části kódu modulu napsal Miles Egan\n"
 "Navštivte stránku Wavpacku na http://www.wavpack.com/\n"
 
+#~ msgid "Audacious standard menu"
+#~ msgstr "Standardní nabídka Audacious"
+
 #~ msgid "Surround echo"
 #~ msgstr "Prostorová ozvěna (surround echo)"
 
@@ -5811,8 +5828,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Modul ESounD programu Audacious\n"
@@ -6404,9 +6421,6 @@ msgstr ""
 #~ "Zapne/vypne ovládání hlasitosti a vyvážení v XMMS.\n"
 #~ "Standardně: zapnuto"
 
-#~ msgid "Reverse balance"
-#~ msgstr "Obrátit vyvážení"
-
 #~ msgid ""
 #~ "Reverses left and right with the balance control.\n"
 #~ "Default: Off"
@@ -6574,8 +6588,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Modul Icecast\n"
@@ -6802,8 +6816,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
 #~ "USA.\n"
 #~ "\n"
 #~ "Note: For any issues regarding this plugin (including patches and \n"
@@ -7549,8 +7563,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
 #~ "USA.\n"
 #~ "Author: Matthieu Sozeau (mattam@altern.org)"
 #~ msgstr ""
@@ -9268,9 +9282,6 @@ msgstr ""
 
 #~ msgid "Performer/Artist"
 #~ msgstr "Interpret/umělec"
-
-#~ msgid "File path"
-#~ msgstr "Cesta k souboru"
 
 #~ msgid "File extension"
 #~ msgstr "Přípona souboru"

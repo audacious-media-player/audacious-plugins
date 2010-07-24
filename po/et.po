@@ -8,112 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.4.2\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2010-07-20 00:09+0300\n"
+"POT-Creation-Date: 2010-07-24 08:42-0400\n"
 "PO-Revision-Date: 2007-12-30 17:49+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
-"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: et\n"
 
-#: src/OSS/OSS.c:40
-msgid "About OSS Driver"
-msgstr "OSS draiverist lähemalt"
-
-#: src/OSS/OSS.c:41
-msgid ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Audacious'e OSS draiver\n"
-"\n"
-" See programm on vaba tarkvara. Te võite seda edasi levitada ja/või\n"
-"muuta vastavalt GNU Üldise Avaliku Litsentsi tingimustele, nagu need\n"
-"on Vaba Tarkvara Fondi poolt avaldatud; kas Litsentsi versioon number\n"
-"2 või (vastavalt Teie valikule) ükskõik milline hilisem versioon.\n"
-"\n"
-"Seda programmi levitatakse lootuses, et see on kasulik, kuid ILMA\n"
-"IGASUGUSE GARANTIITA; isegi KESKMISE/TAVALISE KVALITEEDIGARANTIITA\n"
-"või SOBIVUSELE TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata\n"
-"GNU Üldist Avalikku Litsentsi.\n"
-"\n"
-"Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos käesoleva\n"
-"programmiga; kui ei, siis võtke ühendust Free Software Foundation'iga,\n"
-"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#: src/OSS/configure.c:148
-#, c-format
-msgid "Default (%s)"
-msgstr "Vaikimisi (%s)"
-
-#: src/OSS/configure.c:166 src/alarm/interface.c:612 src/alarm/interface.c:660
-#: src/alarm/interface.c:708 src/alarm/interface.c:756
-#: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/skins/ui_manager.c:439
-#: src/skins/ui_manager.c:460
-msgid "Default"
-msgstr "Vaikimisi"
-
-#: src/OSS/configure.c:197
-msgid "OSS Driver configuration"
-msgstr "OSS draiveri sätted"
-
-#: src/OSS/configure.c:213 src/oss4/configure.c:163 src/sun/configure.c:181
-msgid "Audio device:"
-msgstr "Audioseade:"
-
-#: src/OSS/configure.c:235 src/OSS/configure.c:276 src/oss4/configure.c:189
-msgid "Use alternate device:"
-msgstr "Kasutatakse alternatiivseadet:"
-
-#: src/OSS/configure.c:256 src/alsa/config.c:447 src/sun/configure.c:218
-msgid "Mixer device:"
-msgstr "Miksimisseade:"
-
-#: src/OSS/configure.c:298 src/sun/configure.c:246
-msgid "Devices"
-msgstr "Seadmed"
-
-#: src/OSS/configure.c:300 src/sun/configure.c:257
-msgid "Buffering:"
-msgstr "Puhverdamine:"
-
-#: src/OSS/configure.c:313 src/sun/configure.c:288
-msgid "Pre-buffer (percent):"
-msgstr "Eelpuhver (protsentides):"
-
-#: src/OSS/configure.c:324 src/sun/configure.c:302
-msgid "Buffering"
-msgstr "Puhverdamine"
-
-#: src/OSS/configure.c:325
-msgid "Mixer Settings:"
-msgstr "Mikseri sätted"
-
-#: src/OSS/configure.c:331
-msgid "Volume controls Master not PCM"
-msgstr ""
-
-#: src/OSS/configure.c:337 src/sun/configure.c:392
-msgid "Mixer"
-msgstr "Mikser"
-
-#: src/aac/libmp4.c:288
+#: src/aac/libmp4.c:291
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -121,7 +25,7 @@ msgid ""
 "Copyright (c) 2005-2006 Audacious team"
 msgstr ""
 
-#: src/aac/libmp4.c:293
+#: src/aac/libmp4.c:296
 #, fuzzy
 msgid "About MP4 AAC decoder plugin"
 msgstr "MP4 AAC esituspluginast lähemalt"
@@ -434,6 +338,14 @@ msgstr "Alarmi aeg (vaikimisi):"
 msgid "Choose the days for the alarm to come on"
 msgstr "Alarmi töölehakkamise päevade valimine"
 
+#: src/alarm/interface.c:612 src/alarm/interface.c:660
+#: src/alarm/interface.c:708 src/alarm/interface.c:756
+#: src/alarm/interface.c:804 src/alarm/interface.c:852
+#: src/alarm/interface.c:900 src/OSS/configure.c:166
+#: src/skins/ui_manager.c:439 src/skins/ui_manager.c:460
+msgid "Default"
+msgstr "Vaikimisi"
+
 #: src/alarm/interface.c:938
 msgid "Day"
 msgstr "Päev"
@@ -591,7 +503,7 @@ msgid ""
 "    toggle button if you want it to be shown.\n"
 msgstr ""
 
-#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:152
+#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:165
 #: src/skins/ui_manager.c:371
 msgid "Help"
 msgstr "Abi"
@@ -622,6 +534,10 @@ msgstr "Olekuikooni plugina eelistused"
 #: src/alsa/config.c:445
 #, fuzzy
 msgid "PCM device:"
+msgstr "Miksimisseade:"
+
+#: src/alsa/config.c:447 src/OSS/configure.c:256 src/sun/configure.c:218
+msgid "Mixer device:"
 msgstr "Miksimisseade:"
 
 #: src/alsa/config.c:449
@@ -859,6 +775,14 @@ msgid ""
 "Plug</span>"
 msgstr ""
 
+#: src/amidi-plug/i_configure.c:73
+msgid "AMIDI-Plug - select file"
+msgstr ""
+
+#: src/amidi-plug/i_configure.c:126
+msgid "AMIDI-Plug - configuration"
+msgstr ""
+
 #: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr ""
@@ -1052,14 +976,6 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">TiMidity\n"
 "taustaprogramm</span>"
-
-#: src/amidi-plug/i_configure.c:73
-msgid "AMIDI-Plug - select file"
-msgstr ""
-
-#: src/amidi-plug/i_configure.c:126
-msgid "AMIDI-Plug - configuration"
-msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:169 src/bluetooth/gui.c:271
 #: src/sid/xs_interface.c:1769
@@ -1545,21 +1461,12 @@ msgstr ""
 msgid "Options:"
 msgstr "Valikud:"
 
-#: src/cd-menu-items/cd-menu-items.c:35
-#, fuzzy
-msgid "Play CD"
-msgstr "Esitamine"
-
-#: src/cd-menu-items/cd-menu-items.c:35
-msgid "Add CD"
-msgstr "Lisa CD"
-
-#: src/cdaudio-ng/cdaudio-ng.c:271
+#: src/cdaudio-ng/cdaudio-ng.c:278
 #, fuzzy
 msgid "About Audio CD Plugin"
 msgstr "FLAC audiopluginast lähemalt"
 
-#: src/cdaudio-ng/cdaudio-ng.c:272
+#: src/cdaudio-ng/cdaudio-ng.c:279
 #, fuzzy
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
@@ -1628,6 +1535,15 @@ msgstr ""
 #: src/cdaudio-ng/configure.c:244
 msgid "Override default device: "
 msgstr "Vaikimisi seadme asemel kasutatakse: "
+
+#: src/cd-menu-items/cd-menu-items.c:35
+#, fuzzy
+msgid "Play CD"
+msgstr "Esitamine"
+
+#: src/cd-menu-items/cd-menu-items.c:35
+msgid "Add CD"
+msgstr "Lisa CD"
 
 #: src/compressor/plugin.c:58
 #, fuzzy
@@ -2099,7 +2015,7 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:677
+#: src/ffaudio/ffaudio-core.c:663
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2115,7 +2031,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:693
+#: src/ffaudio/ffaudio-core.c:679
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "FLAC audiopluginast lähemalt"
@@ -2457,8 +2373,8 @@ msgstr ""
 msgid "Can't jump to time when no track is being played.\n"
 msgstr ""
 
-#: src/gtkui/actions.c:272 src/gtkui/ui_manager.c:191
-#: src/gtkui/ui_manager.c:192 src/skins/ui_main.c:833
+#: src/gtkui/actions.c:272 src/gtkui/ui_manager.c:204
+#: src/gtkui/ui_manager.c:205 src/skins/ui_main.c:833
 #: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
 msgid "Jump to Time"
 msgstr ""
@@ -2496,6 +2412,16 @@ msgstr "Esitusnimekirja andmed kiiresti"
 #: src/gtkui/ui_gtk.c:72
 msgid "GTK Interface"
 msgstr ""
+
+#: src/gtkui/ui_gtk.c:281 src/skins/ui_main.c:388
+#, c-format
+msgid "%s - Audacious"
+msgstr "%s - Audacious"
+
+#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2165
+#, fuzzy
+msgid "Audacious"
+msgstr "%s - Audacious"
 
 #: src/gtkui/ui_manager.c:35 src/gtkui/ui_manager.c:36
 #: src/skins/ui_manager.c:53 src/skins/ui_manager.c:54
@@ -2682,146 +2608,184 @@ msgstr ""
 msgid "Remove selected entries from the playlist."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:134
+#: src/gtkui/ui_manager.c:131
+#, fuzzy
+msgid "Sort"
+msgstr "Vabandust"
+
+#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:330
+#: src/skins/ui_manager.c:360
+#, fuzzy
+msgid "By Track Number"
+msgstr "Loo number:"
+
+#: src/gtkui/ui_manager.c:134 src/skins/ui_manager.c:278
+#: src/skins/ui_manager.c:306 src/skins/ui_manager.c:336
+#, fuzzy
+msgid "By Title"
+msgstr "Pealkiri"
+
+#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:314
+#: src/skins/ui_manager.c:344
+#, fuzzy
+msgid "By Artist"
+msgstr "Esitaja:"
+
+#: src/gtkui/ui_manager.c:138 src/skins/ui_manager.c:310
+#: src/skins/ui_manager.c:340
+#, fuzzy
+msgid "By Album"
+msgstr "Album:"
+
+#: src/gtkui/ui_manager.c:140
+#, fuzzy
+msgid "By File Path"
+msgstr "Failinimi"
+
+#: src/gtkui/ui_manager.c:142
+msgid "Reverse Order"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:147
 msgid "Output"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:136 src/modplug/gui/interface.cxx:572
+#: src/gtkui/ui_manager.c:149 src/modplug/gui/interface.cxx:572
 msgid "Effects"
 msgstr "Efektid"
 
-#: src/gtkui/ui_manager.c:138
+#: src/gtkui/ui_manager.c:151
 msgid "Equalizer"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:143 src/skins/ui_manager.c:232
+#: src/gtkui/ui_manager.c:156 src/skins/ui_manager.c:232
 msgid "View"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:144 src/skins/ui_manager.c:233
+#: src/gtkui/ui_manager.c:157 src/skins/ui_manager.c:233
 msgid "Interface"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:370
+#: src/gtkui/ui_manager.c:164 src/skins/ui_manager.c:370
 #, fuzzy
 msgid "File"
 msgstr "Failinimi"
 
-#: src/gtkui/ui_manager.c:154
+#: src/gtkui/ui_manager.c:167
 #, fuzzy
 msgid "Components"
 msgstr "Kommentaar:"
 
-#: src/gtkui/ui_manager.c:156 src/gtkui/ui_manager.c:159
+#: src/gtkui/ui_manager.c:169 src/gtkui/ui_manager.c:172
 #: src/skins/ui_manager.c:375 src/skins/ui_manager.c:378
 msgid "View Track Details"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:157 src/gtkui/ui_manager.c:160
+#: src/gtkui/ui_manager.c:170 src/gtkui/ui_manager.c:173
 #: src/skins/ui_manager.c:376 src/skins/ui_manager.c:379
 msgid "View track details"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:162 src/gtkui/ui_manager.c:163
+#: src/gtkui/ui_manager.c:175 src/gtkui/ui_manager.c:176
 #: src/skins/ui_manager.c:381 src/skins/ui_manager.c:382
 #, fuzzy
 msgid "About Audacious"
 msgstr "Audacious'e LIRC pluginast lähemalt"
 
-#: src/gtkui/ui_manager.c:165
+#: src/gtkui/ui_manager.c:178
 msgid "Open Files ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:166 src/skins/ui_manager.c:385
+#: src/gtkui/ui_manager.c:179 src/skins/ui_manager.c:385
 msgid "Load and play a file"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:168
+#: src/gtkui/ui_manager.c:181
 msgid "Open URL ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:169 src/skins/ui_manager.c:388
+#: src/gtkui/ui_manager.c:182 src/skins/ui_manager.c:388
 msgid "Play media from the selected location"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:171 src/skins/ui_manager.c:390
+#: src/gtkui/ui_manager.c:184 src/skins/ui_manager.c:390
 msgid "Plugin services"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:173 src/skins/ui_manager.c:392
+#: src/gtkui/ui_manager.c:186 src/skins/ui_manager.c:392
 msgid "Preferences"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:174 src/skins/ui_manager.c:393
+#: src/gtkui/ui_manager.c:187 src/skins/ui_manager.c:393
 msgid "Open preferences window"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:395
+#: src/gtkui/ui_manager.c:189 src/skins/ui_manager.c:395
 #, fuzzy
 msgid "_Quit"
 msgstr "Kvaliteet"
 
-#: src/gtkui/ui_manager.c:177 src/skins/ui_manager.c:396
+#: src/gtkui/ui_manager.c:190 src/skins/ui_manager.c:396
 #, fuzzy
 msgid "Quit Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_manager.c:179 src/gtkui/ui_manager.c:180
+#: src/gtkui/ui_manager.c:192 src/gtkui/ui_manager.c:193
 #: src/skins/ui_manager.c:398 src/skins/ui_manager.c:399
 msgid "Set A-B"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:182 src/gtkui/ui_manager.c:183
+#: src/gtkui/ui_manager.c:195 src/gtkui/ui_manager.c:196
 #: src/skins/ui_manager.c:401 src/skins/ui_manager.c:402
 msgid "Clear A-B"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:185 src/gtkui/ui_manager.c:186
+#: src/gtkui/ui_manager.c:198 src/gtkui/ui_manager.c:199
 #: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
 msgid "Jump to Playlist Start"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:188 src/gtkui/ui_manager.c:189 src/hotkey/gui.c:80
+#: src/gtkui/ui_manager.c:201 src/gtkui/ui_manager.c:202 src/hotkey/gui.c:80
 #: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
 msgid "Jump to File"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:194 src/skins/ui_manager.c:413
+#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:413
 msgid "Queue Toggle"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:195 src/skins/ui_manager.c:414
+#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:414
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:198 src/skins/ui_manager.c:417
+#: src/gtkui/ui_manager.c:211 src/skins/ui_manager.c:417
 msgid "Copy"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:201 src/skins/ui_manager.c:419
+#: src/gtkui/ui_manager.c:214 src/skins/ui_manager.c:419
 #, fuzzy
 msgid "Cut"
 msgstr "Praegune"
 
-#: src/gtkui/ui_manager.c:204 src/skins/ui_manager.c:421
+#: src/gtkui/ui_manager.c:217 src/skins/ui_manager.c:421
 msgid "Paste"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:254
+#: src/gtkui/ui_manager.c:220 src/skins/ui_manager.c:254
 #, fuzzy
 msgid "Select All"
 msgstr "Esitusnimekirja valimine"
 
-#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:255
+#: src/gtkui/ui_manager.c:221 src/skins/ui_manager.c:255
 msgid "Selects all of the playlist entries."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:211 src/skins/ui_manager.c:258
+#: src/gtkui/ui_manager.c:224 src/skins/ui_manager.c:258
 #, fuzzy
 msgid "Select None"
 msgstr "Loo lõpp tuvastatakse"
 
-#: src/gtkui/ui_manager.c:212 src/skins/ui_manager.c:259
+#: src/gtkui/ui_manager.c:225 src/skins/ui_manager.c:259
 msgid "Deselects all of the playlist entries."
 msgstr ""
 
@@ -3405,6 +3369,14 @@ msgstr "Vaikimisi PCM-seade (%s)"
 msgid "OSS4 Output Plugin Preferences"
 msgstr "Olekuikooni plugina eelistused"
 
+#: src/oss4/configure.c:163 src/OSS/configure.c:213 src/sun/configure.c:181
+msgid "Audio device:"
+msgstr "Audioseade:"
+
+#: src/oss4/configure.c:189 src/OSS/configure.c:235 src/OSS/configure.c:276
+msgid "Use alternate device:"
+msgstr "Kasutatakse alternatiivseadet:"
+
 #: src/oss4/configure.c:202
 msgid "Save volume between sessions"
 msgstr ""
@@ -3460,6 +3432,82 @@ msgstr ""
 #, fuzzy
 msgid "OSS4 error"
 msgstr "Viga!"
+
+#: src/OSS/configure.c:148
+#, c-format
+msgid "Default (%s)"
+msgstr "Vaikimisi (%s)"
+
+#: src/OSS/configure.c:197
+msgid "OSS Driver configuration"
+msgstr "OSS draiveri sätted"
+
+#: src/OSS/configure.c:298 src/sun/configure.c:246
+msgid "Devices"
+msgstr "Seadmed"
+
+#: src/OSS/configure.c:300 src/sun/configure.c:257
+msgid "Buffering:"
+msgstr "Puhverdamine:"
+
+#: src/OSS/configure.c:313 src/sun/configure.c:288
+msgid "Pre-buffer (percent):"
+msgstr "Eelpuhver (protsentides):"
+
+#: src/OSS/configure.c:324 src/sun/configure.c:302
+msgid "Buffering"
+msgstr "Puhverdamine"
+
+#: src/OSS/configure.c:325
+msgid "Mixer Settings:"
+msgstr "Mikseri sätted"
+
+#: src/OSS/configure.c:331
+msgid "Volume controls Master not PCM"
+msgstr ""
+
+#: src/OSS/configure.c:337 src/sun/configure.c:392
+msgid "Mixer"
+msgstr "Mikser"
+
+#: src/OSS/OSS.c:40
+msgid "About OSS Driver"
+msgstr "OSS draiverist lähemalt"
+
+#: src/OSS/OSS.c:41
+msgid ""
+"Audacious OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Audacious'e OSS draiver\n"
+"\n"
+" See programm on vaba tarkvara. Te võite seda edasi levitada ja/või\n"
+"muuta vastavalt GNU Üldise Avaliku Litsentsi tingimustele, nagu need\n"
+"on Vaba Tarkvara Fondi poolt avaldatud; kas Litsentsi versioon number\n"
+"2 või (vastavalt Teie valikule) ükskõik milline hilisem versioon.\n"
+"\n"
+"Seda programmi levitatakse lootuses, et see on kasulik, kuid ILMA\n"
+"IGASUGUSE GARANTIITA; isegi KESKMISE/TAVALISE KVALITEEDIGARANTIITA\n"
+"või SOBIVUSELE TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata\n"
+"GNU Üldist Avalikku Litsentsi.\n"
+"\n"
+"Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos käesoleva\n"
+"programmiga; kui ei, siis võtke ühendust Free Software Foundation'iga,\n"
+"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/pulse_audio/pulse_audio.c:691
 msgid "About Audacious PulseAudio Output Plugin"
@@ -3550,7 +3598,7 @@ msgstr "<b>Last.FM</b>"
 msgid "Scrobbler"
 msgstr ""
 
-#: src/scrobbler/plugin.c:214
+#: src/scrobbler/plugin.c:213
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -3558,7 +3606,7 @@ msgid ""
 "com>\n"
 msgstr ""
 
-#: src/scrobbler/plugin.c:216
+#: src/scrobbler/plugin.c:215
 msgid "About Scrobbler Plugin"
 msgstr ""
 
@@ -4259,16 +4307,6 @@ msgstr ""
 msgid "Presets"
 msgstr ""
 
-#: src/skins/ui_main.c:388
-#, c-format
-msgid "%s - Audacious"
-msgstr "%s - Audacious"
-
-#: src/skins/ui_main.c:390 src/skins/ui_main.c:2165
-#, fuzzy
-msgid "Audacious"
-msgstr "%s - Audacious"
-
 #: src/skins/ui_main.c:593
 msgid "kbps"
 msgstr ""
@@ -4640,12 +4678,6 @@ msgstr ""
 msgid "Remove Duplicates"
 msgstr ""
 
-#: src/skins/ui_manager.c:278 src/skins/ui_manager.c:306
-#: src/skins/ui_manager.c:336
-#, fuzzy
-msgid "By Title"
-msgstr "Pealkiri"
-
 #: src/skins/ui_manager.c:279
 msgid "Removes duplicate entries from the playlist by title."
 msgstr ""
@@ -4687,19 +4719,9 @@ msgstr "Esitaja:"
 msgid "Sorts the list by title."
 msgstr ""
 
-#: src/skins/ui_manager.c:310 src/skins/ui_manager.c:340
-#, fuzzy
-msgid "By Album"
-msgstr "Album:"
-
 #: src/skins/ui_manager.c:311 src/skins/ui_manager.c:341
 msgid "Sorts the list by album."
 msgstr ""
-
-#: src/skins/ui_manager.c:314 src/skins/ui_manager.c:344
-#, fuzzy
-msgid "By Artist"
-msgstr "Esitaja:"
 
 #: src/skins/ui_manager.c:315 src/skins/ui_manager.c:345
 msgid "Sorts the list by artist."
@@ -4721,11 +4743,6 @@ msgstr "Kuupäev:"
 #: src/skins/ui_manager.c:327 src/skins/ui_manager.c:357
 msgid "Sorts the list by modification time."
 msgstr ""
-
-#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
-#, fuzzy
-msgid "By Track Number"
-msgstr "Loo number:"
 
 #: src/skins/ui_manager.c:331 src/skins/ui_manager.c:361
 msgid "Sorts the list by track number."
@@ -5083,11 +5100,11 @@ msgstr "Loo sõnum"
 msgid "Spectrum Analyzer"
 msgstr ""
 
-#: src/statusicon/statusicon.c:368
+#: src/statusicon/statusicon.c:355
 msgid "About Status Icon Plugin"
 msgstr "Olekuikooni pluginast lähemalt"
 
-#: src/statusicon/statusicon.c:369
+#: src/statusicon/statusicon.c:356
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -5098,35 +5115,31 @@ msgid ""
 "the system tray area of the window manager.\n"
 msgstr ""
 
-#: src/statusicon/statusicon.c:432
+#: src/statusicon/statusicon.c:418
 msgid "Status Icon Plugin - Preferences"
 msgstr "Olekuikooni plugina eelistused"
 
-#: src/statusicon/statusicon.c:442
+#: src/statusicon/statusicon.c:428
 msgid "Right-Click Menu"
 msgstr "Paremklõpsu menüü"
 
-#: src/statusicon/statusicon.c:446
-msgid "Audacious standard menu"
-msgstr "Audacious'e standardmenüü"
-
-#: src/statusicon/statusicon.c:448
+#: src/statusicon/statusicon.c:433
 msgid "Small playback menu #1"
 msgstr "Väike esitusmenüü nr. 1"
 
-#: src/statusicon/statusicon.c:450
+#: src/statusicon/statusicon.c:436
 msgid "Small playback menu #2"
 msgstr "Väike esitusmenüü nr. 2"
 
-#: src/statusicon/statusicon.c:471
+#: src/statusicon/statusicon.c:452
 msgid "Mouse Scroll Action"
 msgstr "Hiire kerimisel"
 
-#: src/statusicon/statusicon.c:475
+#: src/statusicon/statusicon.c:456
 msgid "Change volume"
 msgstr "Muudetakse valjust"
 
-#: src/statusicon/statusicon.c:477
+#: src/statusicon/statusicon.c:458
 msgid "Change playing song"
 msgstr "Vahetatakse esitatavat lugu"
 
@@ -5346,6 +5359,9 @@ msgid ""
 "Visit the Wavpack site at http://www.wavpack.com/\n"
 msgstr ""
 
+#~ msgid "Audacious standard menu"
+#~ msgstr "Audacious'e standardmenüü"
+
 #~ msgid "Surround echo"
 #~ msgstr "Surround-kaja"
 
@@ -5367,8 +5383,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Audacious'e ESounD plugin\n"
@@ -5650,8 +5666,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Audacious'e ESounD plugin\n"
@@ -5762,8 +5778,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
 #~ "USA.\n"
 #~ "\n"
 #~ "Note: For any issues regarding this plugin (including patches and \n"
@@ -5952,8 +5968,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+#~ "1301,\n"
 #~ "USA.\n"
 #~ "Author: Matthieu Sozeau (mattam@altern.org)"
 #~ msgstr ""
