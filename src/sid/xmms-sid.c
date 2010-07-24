@@ -113,7 +113,8 @@ void xs_reinit(void)
     /* Get settings back, in case the chosen emulator backend changed them */
     xs_cfg.audioFrequency = xs_status.audioFrequency;
     xs_cfg.audioBitsPerSample = xs_status.audioBitsPerSample;
-    xs_cfg.audioChannels = xs_status.audioChannels;
+    xs_cfg.audioChannels = (xs_status.audioChannels == XS_CHN_AUTOPAN) ? 2 :
+     xs_status.audioChannels;
     xs_cfg.oversampleEnable = xs_status.oversampleEnable;
 
     XS_MUTEX_UNLOCK(xs_status);
