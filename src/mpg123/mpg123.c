@@ -300,6 +300,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 	{
 		AUDDBG(" ... it's not.\n");
 		ctx.stream = TRUE;
+		ctx.tu = mpg123_probe_for_tuple (filename, file);
 	}
 	else
 		AUDDBG(" ... it is.\n");
@@ -474,6 +475,8 @@ decode_cleanup:
 cleanup:
 	mpg123_delete(ctx.decoder);
 	mpg123_delete_pars(ctx.params);
+	if (ctx.tu)
+		tuple_free (ctx.tu);
 	return ! data->error;
 }
 
