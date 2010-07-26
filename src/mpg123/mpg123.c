@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2010 William Pitcock <nenolod@dereferenced.org>.
+ * Copyright (c) 2010 John Lindgren <john.lindgren@tds.net>.
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -100,54 +101,53 @@ aud_mpg123_deinit(void)
 	g_cond_free(ctrl_cond);
 }
 
-static gboolean mpg123_probe_for_fd (const gchar * filename, VFSFile * handle)
+static void make_format_string (const struct mpg123_frameinfo * info, gchar *
+ buf, gint bsize)
 {
-	mpg123_handle * decoder = mpg123_new (NULL, NULL);
-	guchar buffer[8192];
-	gint result;
+	static const gchar * vers[] = {"1", "2", "2.5"};
+	snprintf (buf, bsize, "MPEG-%s layer %d", vers[info->version], info->layer);
+}
 
-	g_return_val_if_fail (decoder != NULL, FALSE);
+static gboolean mpg123_probe_for_fd (const gchar * fname, VFSFile * file)
+{
+	mpg123_handle * dec = mpg123_new (NULL, NULL);
+	g_return_val_if_fail (dec, FALSE);
+	mpg123_param (dec, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
+	mpg123_replace_reader_handle (dec, replace_read, replace_lseek, NULL);
 
-	/* Turn off annoying messages. */
-	mpg123_param (decoder, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
-
-	if (mpg123_open_feed (decoder) < 0)
-		goto ERROR_FREE;
-
-	if (vfs_fread (buffer, 1, sizeof buffer, handle) != sizeof buffer)
-		goto ERROR_FREE;
-
-	if ((result = id3_header_size (buffer, sizeof buffer)) > 0)
+	gint res;
+	if ((res = mpg123_open_handle (dec, file)) < 0)
 	{
-		AUDDBG ("Skip %d bytes of ID3 tag.\n", result);
-
-		if (vfs_fseek (handle, result, SEEK_SET))
-			goto ERROR_FREE;
-
-		if (vfs_fread (buffer, 1, sizeof buffer, handle) != sizeof buffer)
-			goto ERROR_FREE;
+ERR:
+		AUDDBG ("Probe error: %s\n", mpg123_plain_strerror (res));
+		mpg123_delete (dec);
+		return FALSE;
 	}
 
-	if ((result = mpg123_decode (decoder, buffer, sizeof buffer, NULL, 0, NULL))
-	 != MPG123_NEW_FORMAT)
-	{
-		AUDDBG ("Probe error: %s.\n", mpg123_plain_strerror (result));
-		goto ERROR_FREE;
-	}
+	glong rate;
+	gint chan, enc;
+	if ((res = mpg123_getformat (dec, & rate, & chan, & enc)) < 0)
+		goto ERR;
 
-	AUDDBG ("Accepted as MP3: %s.\n", filename);
-	mpg123_delete (decoder);
+	struct mpg123_frameinfo info;
+	if ((res = mpg123_info (dec, & info)) < 0)
+		goto ERR;
+
+	gint16 out[chan * (rate / 10)];
+	size_t done;
+	if ((res = mpg123_read (dec, (void *) out, sizeof out, & done)) < 0)
+		goto ERR;
+
+	gchar str[32];
+	make_format_string (& info, str, sizeof str);
+	AUDDBG ("Accepted as %s: %s.\n", str, fname);
+
+	mpg123_delete (dec);
 	return TRUE;
-
-ERROR_FREE:
-	mpg123_delete (decoder);
-	return FALSE;
 }
 
 static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 {
-	static const gchar * versions[] = {"1", "2", "2.5"};
-
 	mpg123_handle * decoder = mpg123_new (NULL, NULL);
 	gint result;
 	glong rate;
@@ -168,8 +168,7 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 		goto ERROR;
 
 	Tuple * tuple = tuple_new_from_filename (filename);
-	snprintf (scratch, sizeof scratch, "MPEG-%s layer %d",
-	 versions[info.version], info.layer);
+	make_format_string (& info, scratch, sizeof scratch);
 	tuple_associate_string (tuple, FIELD_CODEC, NULL, scratch);
 	snprintf (scratch, sizeof scratch, "%s, %d Hz", (channels == 2)
 	 ? _("Stereo") : (channels > 2) ? _("Surround") : _("Mono"), (gint) rate);
