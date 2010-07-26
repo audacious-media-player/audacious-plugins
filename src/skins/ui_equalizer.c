@@ -196,7 +196,6 @@ equalizerwin_eq_changed(void)
     for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
         aud_cfg->equalizer_bands[i] = equalizerwin_get_band(i);
 
-    ui_skinned_equalizer_graph_update (equalizerwin_graph);
     hook_call("equalizer changed", NULL);
 }
 
@@ -217,6 +216,18 @@ static void
 equalizerwin_on_pushed(void)
 {
     equalizerwin_activate(!aud_cfg->equalizer_active);
+}
+
+static void
+update_from_config(void *unused1, void *unused2)
+{
+    gint i;
+
+    ui_skinned_button_set_inside(equalizerwin_on, aud_cfg->equalizer_active);
+    ui_skinned_equalizer_slider_set_position(equalizerwin_preamp, aud_cfg->equalizer_preamp);
+    for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
+        ui_skinned_equalizer_slider_set_position(equalizerwin_bands[i], aud_cfg->equalizer_bands[i]);
+    ui_skinned_equalizer_graph_update(equalizerwin_graph);
 }
 
 static void
@@ -490,6 +501,8 @@ equalizerwin_create(void)
     gtk_window_add_accel_group( GTK_WINDOW(equalizerwin) , ui_manager_get_accel_group() );
 
     equalizerwin_create_widgets();
+
+    hook_associate("equalizer changed", (HookFunction) update_from_config, NULL);
 
     gtk_widget_show_all (((SkinnedWindow *) equalizerwin)->normal);
     gtk_widget_show_all (((SkinnedWindow *) equalizerwin)->shaded);
