@@ -273,7 +273,7 @@ static void button_next_pressed()
     action_playback_next ();
 }
 
-static void ui_set_song_info (void * unused, void * another)
+static void title_change_cb (void)
 {
     if (aud_drct_get_playing ())
     {
@@ -355,10 +355,10 @@ static void ui_show_error(const gchar * markup)
                              dialog);
 }
 
-static void ui_update_time_info(gint time)
+static void set_time_label (gint time)
 {
     gchar text[128];
-    gint length = aud_drct_get_length();
+    gint length = aud_drct_get_playing () ? aud_drct_get_length () : 0;
 
     time /= 1000;
     length /= 1000;
@@ -367,19 +367,12 @@ static void ui_update_time_info(gint time)
     gtk_label_set_markup(GTK_LABEL(label_time), text);
 }
 
-static gboolean ui_update_song_info(gpointer hook_data, gpointer user_data)
+static gboolean time_counter_cb (void)
 {
-    if (!aud_drct_get_playing())
-    {
-        if (GTK_IS_WIDGET(slider))
-            gtk_range_set_value(GTK_RANGE(slider), 0.0);
-        return FALSE;
-    }
-
     if (slider_is_moving)
         return TRUE;
 
-    gint time = aud_drct_get_time();
+    gint time = aud_drct_get_playing () ? aud_drct_get_time () : 0;
 
     if (!g_signal_handler_is_connected(slider, slider_change_handler_id))
         return TRUE;
@@ -388,17 +381,9 @@ static gboolean ui_update_song_info(gpointer hook_data, gpointer user_data)
     gtk_range_set_value(GTK_RANGE(slider), (gdouble) time);
     g_signal_handler_unblock(slider, slider_change_handler_id);
 
-    ui_update_time_info(time);
+    set_time_label (time);
 
     return TRUE;
-}
-
-static void ui_clear_song_info()
-{
-    if (!GTK_IS_WINDOW(window)) return;
-
-    ui_set_song_info (NULL, NULL);
-    gtk_label_set_markup(GTK_LABEL(label_time), "<tt><b>00:00/00:00</b></tt>");
 }
 
 static gboolean ui_slider_value_changed_cb(GtkRange * range, gpointer user_data)
@@ -410,7 +395,7 @@ static gboolean ui_slider_value_changed_cb(GtkRange * range, gpointer user_data)
 
 static gboolean ui_slider_change_value_cb(GtkRange * range, GtkScrollType scroll)
 {
-    ui_update_time_info(gtk_range_get_value(range));
+    set_time_label (gtk_range_get_value (range));
     return FALSE;
 }
 
@@ -503,12 +488,13 @@ static void set_slider_length (gint length)
 
 static void ui_playback_begin(gpointer hook_data, gpointer user_data)
 {
-    ui_update_song_info(NULL, NULL);
-
-    /* update song info 4 times a second */
-    update_song_timeout_source = g_timeout_add(250, (GSourceFunc) ui_update_song_info, NULL);
-
+    title_change_cb ();
     set_slider_length (aud_drct_get_length ());
+    time_counter_cb ();
+
+    /* update time counter 4 times a second */
+    update_song_timeout_source = g_timeout_add (250, (GSourceFunc)
+     time_counter_cb, NULL);
 }
 
 static void ui_playback_stop(gpointer hook_data, gpointer user_data)
@@ -519,13 +505,9 @@ static void ui_playback_stop(gpointer hook_data, gpointer user_data)
         update_song_timeout_source = 0;
     }
 
-    ui_clear_song_info();
+    title_change_cb ();
     set_slider_length (0);
-}
-
-static void ui_playback_end(gpointer hook_data, gpointer user_data)
-{
-    ui_update_song_info(NULL, NULL);
+    time_counter_cb ();
 }
 
 static GtkWidget *gtk_toolbar_button_add(GtkWidget * toolbar, void (*callback) (), const gchar * stock_id)
@@ -667,11 +649,10 @@ static void stop_after_song_toggled (void * data, void * user)
 
 static void ui_hooks_associate(void)
 {
-    hook_associate("title change", ui_set_song_info, NULL);
-    hook_associate("playback seek", (HookFunction) ui_update_song_info, NULL);
+    hook_associate ("title change", (HookFunction) title_change_cb, NULL);
+    hook_associate ("playback seek", (HookFunction) time_counter_cb, NULL);
     hook_associate("playback begin", ui_playback_begin, NULL);
     hook_associate("playback stop", ui_playback_stop, NULL);
-    hook_associate("playback end", ui_playback_end, NULL);
     hook_associate("playlist insert", ui_playlist_created, NULL);
     hook_associate("playlist delete", ui_playlist_destroyed, NULL);
     hook_associate("mainwin show", ui_mainwin_toggle_visibility, NULL);
@@ -681,11 +662,10 @@ static void ui_hooks_associate(void)
 
 static void ui_hooks_disassociate(void)
 {
-    hook_dissociate("title change", ui_set_song_info);
-    hook_dissociate("playback seek", (HookFunction) ui_update_song_info);
+    hook_dissociate ("title change", (HookFunction) title_change_cb);
+    hook_dissociate ("playback seek", (HookFunction) time_counter_cb);
     hook_dissociate("playback begin", ui_playback_begin);
     hook_dissociate("playback stop", ui_playback_stop);
-    hook_dissociate("playback end", ui_playback_end);
     hook_dissociate("playlist insert", ui_playlist_created);
     hook_dissociate("playlist delete", ui_playlist_destroyed);
     hook_dissociate("mainwin show", ui_mainwin_toggle_visibility);
