@@ -1393,17 +1393,19 @@ AC_ARG_ENABLE(projectm-1.0,
 
 if test "$have_projectm1" = "yes"; then
 	PKG_CHECK_MODULES(LIBPROJECTM1, [libprojectM >= 1.1], [have_projectm1="yes"], [have_projectm1="no"])
+fi
+
+if test "$have_projectm1" = "yes"; then
 	PKG_CHECK_MODULES(GTKGLEXT, [gtkglext-1.0], [have_projectm1="yes"], [have_projectm1="no"])
-	if test "xhave_projectm1" = "xno"; then
-	        AC_MSG_WARN([*** libprojectM not found.
-	                        libprojectM is needed to build this package.
-	                        You can download libprojectM at http://projectm.sf.net/])
-	fi
+fi
+
+if test "$have_projectm1" = "yes"; then
 	LIBPROJECTM1_datadir=`pkg-config --variable=pkgdatadir libprojectM`;
 	LIBPROJECTM1_sysconfdir=`pkg-config --variable=sysconfdir libprojectM`;
         LIBPROJECTM1_prefix=`pkg-config --variable=prefix libprojectM`;
 	LIBPROJECTM1_CFLAGS="$LIBPROJECTM1_CFLAGS -DPROJECTM_DATADIR=\\\"$LIBPROJECTM1_datadir\\\" -DPROJECTM_SYSCONFDIR=\\\"$LIBPROJECTM1_sysconfdir\\\" -DPROJECTM_PREFIX=\\\"$LIBPROJECTM1_prefix\\\"";
 fi
+
 AC_SUBST(LIBPROJECTM1_LIBS)
 AC_SUBST(LIBPROJECTM1_CFLAGS)
 AC_SUBST(GTKGLEXT_LIBS)
