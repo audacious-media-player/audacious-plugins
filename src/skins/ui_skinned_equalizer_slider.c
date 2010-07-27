@@ -432,11 +432,9 @@ gfloat ui_skinned_equalizer_slider_get_position(GtkWidget *widget) {
 
 void ui_skinned_equalizer_slider_set_mainwin_text(UiSkinnedEqualizerSlider * es) {
     gint band = 0;
-    const gchar *bandname[11] = { N_("PREAMP"), N_("60HZ"), N_("170HZ"),
-        N_("310HZ"), N_("600HZ"), N_("1KHZ"),
-        N_("3KHZ"), N_("6KHZ"), N_("12KHZ"),
-        N_("14KHZ"), N_("16KHZ")
-    };
+    const gchar * const bandname[11] = {N_("Preamp"), N_("31 Hz"), N_("63 Hz"),
+     N_("125 Hz"), N_("250 Hz"), N_("500 Hz"), N_("1 kHz"), N_("2 kHz"),
+     N_("4 kHz"), N_("8 kHz"), N_("16 kHz")};
     gchar *tmp;
 
     if (es->x > 21)
