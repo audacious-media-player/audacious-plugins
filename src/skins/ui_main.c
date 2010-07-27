@@ -1389,6 +1389,7 @@ mainwin_set_volume_diff(gint diff)
     gint vol;
 
     aud_drct_get_volume_main (& vol);
+    vol = CLAMP (vol + diff, 0, 100);
     mainwin_adjust_volume_motion(vol);
     mainwin_set_volume_slider(vol);
     equalizerwin_set_volume_slider(vol);
