@@ -348,7 +348,7 @@ lyricwiki_playback_began(void)
 	if (!aud_drct_get_playing())
 		return;
 
-	playlist = aud_playlist_get_active();
+	playlist = aud_playlist_get_playing();
 	pos = aud_playlist_get_position(playlist);
 	tu = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
 
