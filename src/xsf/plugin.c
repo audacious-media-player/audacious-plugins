@@ -110,7 +110,8 @@ gchar *xsf_title(gchar *filename, gint *length)
 
 void xsf_update(unsigned char *buffer, long count, InputPlayback *playback);
 
-void xsf_play(InputPlayback *data)
+
+static gboolean xsf_play(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
 	void *buffer;
 	gint64 size;
@@ -126,7 +127,7 @@ void xsf_play(InputPlayback *data)
 	if (xsf_start(buffer, size) != AO_SUCCESS)
 	{
 		free(buffer);
-		return;
+		return TRUE;
 	}
 
 	data->output->open_audio(FMT_S16_NE, 44100, 2);
@@ -198,7 +199,7 @@ void xsf_play(InputPlayback *data)
 
 					data->playing = FALSE;
 
-					return;
+					return TRUE;
 				}
 			}
 		}
@@ -218,6 +219,7 @@ void xsf_play(InputPlayback *data)
         g_free(title);
 
 	data->playing = FALSE;
+	return FALSE;
 }
 
 void xsf_update(guint8 *buffer, long count, InputPlayback *playback)
@@ -259,7 +261,7 @@ gint xsf_is_our_fd(const gchar *filename, VFSFile *file)
 
 void xsf_Seek(InputPlayback *playback, int time)
 {
-	seek = time * 1000;
+	seek = time;
 }
 
 static gchar *xsf_fmts[] = { "2sf", "mini2sf", "gsf", "minigsf", NULL };
@@ -267,10 +269,10 @@ static gchar *xsf_fmts[] = { "2sf", "mini2sf", "gsf", "minigsf", NULL };
 static InputPlugin xsf_ip =
 {
 	.description = "GSF/2SF Audio Plugin",
-	.play_file = xsf_play,
+	.play = xsf_play,
 	.stop = xsf_Stop,
 	.pause = xsf_pause,
-	.seek = xsf_Seek,
+	.mseek = xsf_Seek,
 	.get_song_tuple = xsf_tuple,
 	.is_our_file_from_vfs = xsf_is_our_fd,
 	.vfs_extensions = xsf_fmts,
