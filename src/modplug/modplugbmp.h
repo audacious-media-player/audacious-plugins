@@ -85,7 +85,7 @@ public:
 
 	void CloseConfigureBox();
 
-	void PlayFile(const string& aFilename, InputPlayback *data);// Play the file.
+	bool PlayFile(const string& aFilename, InputPlayback *data);// Play the file.
 	void Stop(InputPlayback *data);         // Stop playing.
 	void mseek (InputPlayback * playback, gulong time);
 	void pause (InputPlayback * playback, gshort paused);

@@ -3,7 +3,7 @@
 void Init(void);
 void ShowAboutBox(void);
 void ShowConfigureBox(void);
-void PlayFile(InputPlayback *data);
+gboolean PlayFile(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause);
 void Stop(InputPlayback *data);
 void Pause(InputPlayback *data, gshort aPaused);
 void mseek (InputPlayback * playback, gulong time);
@@ -22,7 +22,7 @@ InputPlugin gModPlug =
     .init = Init,
     .about = ShowAboutBox,
     .configure = ShowConfigureBox,
-    .play_file = PlayFile,
+    .play = PlayFile,
     .stop = Stop,
     .pause = Pause,
     .mseek = mseek,

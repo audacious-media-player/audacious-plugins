@@ -28,10 +28,10 @@ gint CanPlayFileFromVFS(const char* aFilename, VFSFile *VFSFile)
     return 0;
 }
 
-void PlayFile(InputPlayback *data)
+gboolean PlayFile(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
     char* aFilename = data->filename;
-    gModplugXMMS.PlayFile(aFilename, data);
+    return gModplugXMMS.PlayFile(aFilename, data);
 }
 
 void Stop(InputPlayback *data)
