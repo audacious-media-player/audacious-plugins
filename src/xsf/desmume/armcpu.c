@@ -124,40 +124,6 @@ remove_post_exec_fn( void *instance) {
 }
 #endif
 
-static u32
-read_cpu_reg( void *instance, u32 reg_num) {
-  armcpu_t *armcpu = (armcpu_t *)instance;
-  u32 reg_value = 0;
-
-  if ( reg_num <= 14) {
-    reg_value = armcpu->R[reg_num];
-  }
-  else if ( reg_num == 15) {
-    reg_value = armcpu->next_instruction;
-  }
-  else if ( reg_num == 16) {
-    /* CPSR */
-    reg_value = armcpu->CPSR.val;
-  }
-
-  return reg_value;
-}
-
-static void
-set_cpu_reg( void *instance, u32 reg_num, u32 value) {
-  armcpu_t *armcpu = (armcpu_t *)instance;
-
-  if ( reg_num <= 14) {
-    armcpu->R[reg_num] = value;
-  }
-  else if ( reg_num == 15) {
-    armcpu->next_instruction = value;
-  }
-  else if ( reg_num == 16) {
-    /* FIXME: setting the CPSR */
-  }
-}
-
 #ifdef GDB_STUB
 int armcpu_new( armcpu_t *armcpu, u32 id,
                 struct armcpu_memory_iface *mem_if,
@@ -404,36 +370,6 @@ u32 armcpu_prefetch(armcpu_t *armcpu)
 }
  
 
-static BOOL FASTCALL test_EQ(Status_Reg CPSR) { return ( CPSR.bits.Z); }
-static BOOL FASTCALL test_NE(Status_Reg CPSR) { return (!CPSR.bits.Z); }
-static BOOL FASTCALL test_CS(Status_Reg CPSR) { return ( CPSR.bits.C); }
-static BOOL FASTCALL test_CC(Status_Reg CPSR) { return (!CPSR.bits.C); }
-static BOOL FASTCALL test_MI(Status_Reg CPSR) { return ( CPSR.bits.N); }
-static BOOL FASTCALL test_PL(Status_Reg CPSR) { return (!CPSR.bits.N); }
-static BOOL FASTCALL test_VS(Status_Reg CPSR) { return ( CPSR.bits.V); }
-static BOOL FASTCALL test_VC(Status_Reg CPSR) { return (!CPSR.bits.V); }
-static BOOL FASTCALL test_HI(Status_Reg CPSR) { return (CPSR.bits.C) && (!CPSR.bits.Z); }
-static BOOL FASTCALL test_LS(Status_Reg CPSR) { return (CPSR.bits.Z) || (!CPSR.bits.C); }
-static BOOL FASTCALL test_GE(Status_Reg CPSR) { return (CPSR.bits.N==CPSR.bits.V); }
-static BOOL FASTCALL test_LT(Status_Reg CPSR) { return (CPSR.bits.N!=CPSR.bits.V); }
-static BOOL FASTCALL test_GT(Status_Reg CPSR) { return (!CPSR.bits.Z) && (CPSR.bits.N==CPSR.bits.V); }
-static BOOL FASTCALL test_LE(Status_Reg CPSR) { return ( CPSR.bits.Z) || (CPSR.bits.N!=CPSR.bits.V); }
-static BOOL FASTCALL test_AL(Status_Reg CPSR) { return 1; }
-
-static BOOL (FASTCALL* test_conditions[])(Status_Reg CPSR)= {
-	test_EQ , test_NE ,
-	test_CS , test_CC ,
-	test_MI , test_PL ,
-	test_VS , test_VC ,
-	test_HI , test_LS ,
-	test_GE , test_LT ,
-	test_GT , test_LE ,
-	test_AL
-};
-#define TEST_COND2(cond, CPSR) \
-	(cond<15&&test_conditions[cond](CPSR))
-
-
 BOOL armcpu_irqExeption(armcpu_t *armcpu)
 {
     Status_Reg tmp;
@@ -482,35 +418,6 @@ static BOOL armcpu_prefetchExeption(armcpu_t *armcpu)
 	return TRUE;
 }
 */
-
-static BOOL armcpu_prefetchExeption(armcpu_t *armcpu)
-{
-    Status_Reg tmp;
-    if(armcpu->CPSR.bits.I) return FALSE;
-    tmp = armcpu->CPSR;
-    armcpu_switchMode(armcpu, ABT);
-
-#ifdef GDB_STUB
-	 armcpu->R[14] = armcpu->next_instruction + 4;
-#else
-    armcpu->R[14] = armcpu->instruct_adr + 4;
-#endif
-
-    armcpu->SPSR = tmp;
-    armcpu->CPSR.bits.T = 0;
-    armcpu->CPSR.bits.I = 1;
-    armcpu->next_instruction = armcpu->intVector + 0xC;
-	armcpu->waitIRQ = 0;
-
-#ifdef GDB_STUB
-	armcpu->R[15] = armcpu->next_instruction + 8;
-#else
-    armcpu->R[15] = armcpu->next_instruction;
-	armcpu_prefetch(armcpu);
-#endif   
-	
-    return TRUE;
-}
 
 BOOL
 armcpu_flagIrq( armcpu_t *armcpu) {

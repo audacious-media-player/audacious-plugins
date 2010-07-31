@@ -259,7 +259,7 @@ gint xsf_is_our_fd(const gchar *filename, VFSFile *file)
 	return 0;
 }
 
-void xsf_Seek(InputPlayback *playback, int time)
+void xsf_Seek(InputPlayback *playback, gulong time)
 {
 	seek = time;
 }
