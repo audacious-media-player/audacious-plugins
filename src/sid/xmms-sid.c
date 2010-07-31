@@ -177,7 +177,7 @@ void xs_close(void)
 /*
  * Start playing the given file
  */
-void xs_play_file(InputPlayback *pb)
+gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, gint start_time, gint stop_time, gboolean pause)
 {
     xs_tuneinfo_t *tmpTune;
     gboolean audioOpen = FALSE;
@@ -191,14 +191,14 @@ void xs_play_file(InputPlayback *pb)
     XSDEBUG("play '%s'\n", pb->filename);
 
     tmpFilename = filename_split_subtune(pb->filename, &subTune);
-    if (tmpFilename == NULL) return;
+    if (tmpFilename == NULL) return TRUE;
 
     /* Get tune information */
     XS_MUTEX_LOCK(xs_status);
     if ((xs_status.tuneInfo = xs_status.sidPlayer->plrGetSIDInfo(tmpFilename)) == NULL) {
         XS_MUTEX_UNLOCK(xs_status);
         g_free(tmpFilename);
-        return;
+        return TRUE;
     }
 
     /* Initialize the tune */
@@ -207,7 +207,7 @@ void xs_play_file(InputPlayback *pb)
         g_free(tmpFilename);
         xs_tuneinfo_free(xs_status.tuneInfo);
         xs_status.tuneInfo = NULL;
-        return;
+        return TRUE;
     }
 
     g_free(tmpFilename);
@@ -372,6 +372,8 @@ xs_err_exit:
 
     /* Exit the playing thread */
     XSDEBUG("exiting thread, bye.\n");
+
+    return ! pb->error;
 }
 
 
@@ -417,7 +419,7 @@ void xs_pause(InputPlayback *pb, short pauseState)
 /*
  * A stub seek function (Audacious will crash if seek is NULL)
  */
-void xs_seek(InputPlayback *pb, gint time)
+void xs_seek(InputPlayback *pb, gulong time)
 {
     (void) pb; (void) time;
 }

@@ -34,10 +34,10 @@ InputPlugin xs_plugin_ip = {
     .about = xs_about,                  /* Show aboutbox */
     .configure = xs_configure,          /* Show/edit configuration */
 
-    .play_file = xs_play_file,          /* Play given file */
+    .play = xs_play_file,          /* Play given file */
     .stop = xs_stop,                    /* Stop playing */
     .pause = xs_pause,                  /* Pause playing */
-    .seek = xs_seek,                    /* Seek time */
+    .mseek = xs_seek,                   /* Seek time */
 
     .file_info_box = xs_fileinfo,       /* Show file-information dialog */
 
