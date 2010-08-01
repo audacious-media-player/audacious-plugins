@@ -5,7 +5,7 @@ void adplug_quit(void);
 void adplug_about(void);
 void adplug_config(void);
 void adplug_stop(InputPlayback * data);
-void adplug_play(InputPlayback * data);
+gboolean adplug_play(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause);
 void adplug_pause(InputPlayback * playback, gshort paused);
 void adplug_mseek (InputPlayback * playback, gulong time);
 void adplug_info_box(const gchar *filename);
@@ -25,7 +25,7 @@ InputPlugin adplug_ip = {
   .cleanup = adplug_quit,
   .about = adplug_about,
   .configure = adplug_config,
-  .play_file = adplug_play,
+  .play = adplug_play,
   .stop = adplug_stop,
   .pause = adplug_pause,
   .mseek = adplug_mseek,
