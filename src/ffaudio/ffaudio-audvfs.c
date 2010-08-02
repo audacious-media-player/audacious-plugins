@@ -28,7 +28,7 @@ static int audvfs_read(URLContext *h, unsigned char *buf, int size)
     return vfs_fread(buf, 1, size, file);
 }
 
-static int audvfs_write(URLContext *h, unsigned char *buf, int size)
+static int audvfs_write(URLContext *h, const unsigned char *buf, int size)
 {
     VFSFile *file;
     file = h->priv_data;
