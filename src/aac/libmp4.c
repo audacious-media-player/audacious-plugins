@@ -35,7 +35,7 @@ static gboolean    mp4_play(InputPlayback * playback, const gchar * filename,
 static void        mp4_cleanup(void);
 static gint        mp4_is_our_fd(const char *, VFSFile *);
 
-static gchar *fmts[] = { "m4a", "mp4", "aac", NULL };
+static const gchar *fmts[] = { "m4a", "mp4", "aac", NULL };
 
 static void *   mp4_decode(void *);
 

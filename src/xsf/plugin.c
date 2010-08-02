@@ -264,7 +264,7 @@ void xsf_Seek(InputPlayback *playback, gulong time)
 	seek = time;
 }
 
-static gchar *xsf_fmts[] = { "2sf", "mini2sf", "gsf", "minigsf", NULL };
+static const gchar *xsf_fmts[] = { "2sf", "mini2sf", "gsf", "minigsf", NULL };
 
 static InputPlugin xsf_ip =
 {

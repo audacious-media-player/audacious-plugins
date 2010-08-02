@@ -616,7 +616,7 @@ static void ffaudio_seek (InputPlayback * playback, gulong time)
     g_mutex_unlock(ctrl_mutex);
 }
 
-static gchar *ffaudio_fmts[] = {
+static const gchar *ffaudio_fmts[] = {
     /* musepack, SV7/SV8 */
     "mpc", "mp+", "mpp",
 
@@ -658,7 +658,6 @@ ffaudio_about(void)
 
     if (aboutbox == NULL)
     {
-        gchar *formats = g_strjoinv(", ", ffaudio_fmts);
         gchar *description = g_strdup_printf(
         _("Multi-format audio decoding plugin for Audacious based on\n"
         "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -666,19 +665,15 @@ ffaudio_about(void)
         "\n"
         "FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
         "\n"
-        "Supported formats: %s\n"
-        "\n"
         "Audacious plugin by:\n"
         "            William Pitcock <nenolod@nenolod.net>,\n"
         "            Matti Hämäläinen <ccr@tnsp.org>\n"),
         LIBAVFORMAT_VERSION_MAJOR, LIBAVFORMAT_VERSION_MINOR, LIBAVFORMAT_VERSION_MICRO,
-        LIBAVCODEC_VERSION_MAJOR, LIBAVCODEC_VERSION_MINOR, LIBAVCODEC_VERSION_MICRO,
-        formats);
+        LIBAVCODEC_VERSION_MAJOR, LIBAVCODEC_VERSION_MINOR, LIBAVCODEC_VERSION_MICRO);
 
         audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
          _("About FFaudio Plugin"), description);
 
-        g_free(formats);
         g_free(description);
     }
 }

@@ -393,7 +393,7 @@ static gboolean wv_write_tag (const Tuple * tuple, VFSFile * handle)
     return tag_tuple_write(tuple, handle, TAG_TYPE_APE);
 }
 
-static gchar *wv_fmts[] = { "wv", NULL };
+static const gchar *wv_fmts[] = { "wv", NULL };
 
 extern PluginPreferences preferences;
 

@@ -51,7 +51,7 @@ const int bits = 16;
 ayemu_ay_t ay;
 ayemu_vtx_t vtx;
 
-static gchar *vtx_fmts[] = { "vtx", NULL };
+static const gchar *vtx_fmts[] = { "vtx", NULL };
 
 void
 vtx_init(void)

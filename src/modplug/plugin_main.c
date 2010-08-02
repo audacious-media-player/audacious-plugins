@@ -29,7 +29,7 @@ InputPlugin gModPlug =
     .file_info_box = ShowFileInfoBox,
     .get_song_tuple = GetSongTuple,
     .is_our_file_from_vfs = CanPlayFileFromVFS,
-    .vfs_extensions = (gchar **)fmts,
+    .vfs_extensions = fmts,
     .have_subtune = TRUE,   // to exclude .zip etc which doesn't contain any mod file --yaz
 };
 

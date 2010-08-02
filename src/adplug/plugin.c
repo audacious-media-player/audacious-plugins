@@ -32,7 +32,7 @@ InputPlugin adplug_ip = {
   .file_info_box = adplug_info_box,
   .get_song_tuple = adplug_get_tuple,
   .is_our_file_from_vfs = adplug_is_our_fd,
-  .vfs_extensions = (gchar **)fmts,
+  .vfs_extensions = fmts,
 };
 
 InputPlugin *adplug_iplist[] = { &adplug_ip, NULL };

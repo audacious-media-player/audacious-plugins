@@ -660,7 +660,7 @@ vorbis_cleanup(void)
 
 extern PluginPreferences preferences;
 
-static gchar *vorbis_fmts[] = { "ogg", "ogm", "oga", NULL };
+static const gchar *vorbis_fmts[] = { "ogg", "ogm", "oga", NULL };
 
 static InputPlugin vorbis_ip = {
     .description = "Ogg Vorbis Audio Plugin",

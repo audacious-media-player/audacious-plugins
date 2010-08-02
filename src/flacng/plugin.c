@@ -614,7 +614,7 @@ CLEANUP:
     return has_image;
 }
 
-static gchar *flac_fmts[] = { "flac", "fla", NULL };
+static const gchar *flac_fmts[] = { "flac", "fla", NULL };
 
 InputPlugin flac_ip = {
     .description = "FLACng Audio Plugin",

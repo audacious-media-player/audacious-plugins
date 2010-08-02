@@ -548,7 +548,7 @@ static void plugin_about (void)
 }
 
 
-static gchar *sndfile_fmts[] = { "aiff", "au", "raw", "wav", NULL };
+static const gchar *sndfile_fmts[] = { "aiff", "au", "raw", "wav", NULL };
 
 static InputPlugin sndfile_ip = {
     .description = "sndfile plugin",

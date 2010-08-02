@@ -24,7 +24,7 @@
 #include "xs_config.h"
 #include "xs_fileinfo.h"
 
-static gchar *xs_sid_fmts[] = { "sid", "psid", NULL };
+static const gchar *xs_sid_fmts[] = { "sid", "psid", NULL };
 
 
 InputPlugin xs_plugin_ip = {

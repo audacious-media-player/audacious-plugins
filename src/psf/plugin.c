@@ -277,7 +277,7 @@ static void psf2_Seek(InputPlayback *playback, gulong time)
 	seek = time;
 }
 
-gchar *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", NULL };
+static const gchar *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", NULL };
 
 InputPlugin psf2_ip =
 {

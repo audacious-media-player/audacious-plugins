@@ -37,7 +37,7 @@ static void console_aboutbox (void)
      "        Shay Green <gblargg@gmail.com>\n"));
 }
 
-static gchar *gme_fmts[] = {
+static const gchar *gme_fmts[] = {
     "ay", "gbs", "gym",
     "hes", "kss", "nsf",
     "nsfe", "sap", "spc",
