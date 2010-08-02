@@ -417,15 +417,6 @@ void xs_pause(InputPlayback *pb, short pauseState)
 
 
 /*
- * A stub seek function (Audacious will crash if seek is NULL)
- */
-void xs_seek(InputPlayback *pb, gulong time)
-{
-    (void) pb; (void) time;
-}
-
-
-/*
  * Return song information Tuple
  */
 static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTune)

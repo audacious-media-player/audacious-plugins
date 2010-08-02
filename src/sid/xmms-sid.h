@@ -152,7 +152,6 @@ void        xs_close(void);
 gboolean    xs_play_file(InputPlayback *, const gchar *, VFSFile *, gint, gint, gboolean);
 void        xs_stop(InputPlayback *);
 void        xs_pause(InputPlayback *, short);
-void        xs_seek(InputPlayback *, gulong);
 gint        xs_get_time(InputPlayback *);
 Tuple *     xs_get_song_tuple(const gchar *);
 Tuple *     xs_probe_for_tuple(const gchar *, xs_file_t *);
