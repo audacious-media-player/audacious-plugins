@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins-2.4-alpha2\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2010-07-24 08:42-0400\n"
+"POT-Creation-Date: 2010-08-03 17:55-0400\n"
 "PO-Revision-Date: 2010-06-25 16:31+0200\n"
 "Last-Translator: Andrej Herceg <herceg.andrej@zoznam.sk>\n"
 "Language-Team: Slovak <Slovak <sk-i18n@lists.linux.sk>>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms:  nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: KBabel 1.11.4\n"
 
@@ -105,12 +105,12 @@ msgid "Channels"
 msgstr "Počet kanálov"
 
 #: src/adplug/adplug-xmms.cc:303 src/filewriter/mp3.c:934
-#: src/mpg123/mpg123.c:175 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:174 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Mono"
 
 #: src/adplug/adplug-xmms.cc:308 src/filewriter/mp3.c:929
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:175
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:174
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Stereo"
@@ -2299,16 +2299,14 @@ msgstr ""
 "\n"
 "napísal Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:663
-#, c-format
+#: src/ffaudio/ffaudio-core.c:662
+#, fuzzy, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
 "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
 "\n"
 "FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
-"\n"
-"Supported formats: %s\n"
 "\n"
 "Audacious plugin by:\n"
 "            William Pitcock <nenolod@nenolod.net>,\n"
@@ -2326,7 +2324,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:679
+#: src/ffaudio/ffaudio-core.c:675
 msgid "About FFaudio Plugin"
 msgstr "O module FFaudio"
 
@@ -2711,7 +2709,7 @@ msgstr "GNT rozhranie"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2165
+#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2166
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -3487,7 +3485,7 @@ msgstr "Rozsah"
 msgid "Bass Boost"
 msgstr "Zvýraznenie hlbokých tónov"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:175
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:174
 msgid "Surround"
 msgstr "Priestorový zvuk"
 
@@ -3502,6 +3500,7 @@ msgstr ""
 "orezanie (obťažujúce praskanie)."
 
 #: src/modplug/gui/interface.cxx:567
+#: src/skins/ui_skinned_equalizer_slider.c:435
 msgid "Preamp"
 msgstr "Predzosilnenie"
 
@@ -4557,11 +4556,11 @@ msgstr "Áno"
 msgid "No"
 msgstr "Nie"
 
-#: src/skins/plugin.c:177
+#: src/skins/plugin.c:179
 msgid "About Skinned GUI"
 msgstr "O rozhraní s meniteľným vzhľadom"
 
-#: src/skins/plugin.c:178
+#: src/skins/plugin.c:180
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -4569,35 +4568,35 @@ msgstr ""
 "Copyright (c) 2008 Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 
-#: src/skins/plugin.c:194
+#: src/skins/plugin.c:196
 msgid "Skinned Interface"
 msgstr "Rozhranie s meniteľným vzhľadom"
 
-#: src/skins/skins_cfg.c:317
+#: src/skins/skins_cfg.c:316
 msgid "_Player:"
 msgstr "V _okne prehrávača:"
 
-#: src/skins/skins_cfg.c:317
+#: src/skins/skins_cfg.c:316
 msgid "Select main player window font:"
 msgstr "Vyberte písmo pre hlavné okno prehrávača:"
 
-#: src/skins/skins_cfg.c:318
+#: src/skins/skins_cfg.c:317
 msgid "_Playlist:"
 msgstr "V zozname _skladieb:"
 
-#: src/skins/skins_cfg.c:318
+#: src/skins/skins_cfg.c:317
 msgid "Select playlist font:"
 msgstr "Vyberte písmo pre zoznam skladieb:"
 
-#: src/skins/skins_cfg.c:322
+#: src/skins/skins_cfg.c:321
 msgid "<b>_Fonts</b>"
 msgstr "<b>_Písma</b>"
 
-#: src/skins/skins_cfg.c:324
+#: src/skins/skins_cfg.c:323
 msgid "Use Bitmap fonts if available"
 msgstr "Ak sú dostupné, použiť bitmapové písma"
 
-#: src/skins/skins_cfg.c:324
+#: src/skins/skins_cfg.c:323
 msgid ""
 "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
 "strings."
@@ -4605,27 +4604,27 @@ msgstr ""
 "Ak sú dostupné, použijú sa bitmapové písma. Bitmapové písma nepodporujú "
 "Unicode reťazce."
 
-#: src/skins/skins_cfg.c:325
+#: src/skins/skins_cfg.c:324
 msgid "<b>_Miscellaneous</b>"
 msgstr "<b>_Rôzne</b>"
 
-#: src/skins/skins_cfg.c:326
+#: src/skins/skins_cfg.c:325
 msgid "Show separators in playlist"
 msgstr "Zobrazovať oddeľovače v zozname skladieb"
 
-#: src/skins/skins_cfg.c:328
+#: src/skins/skins_cfg.c:327
 msgid "Show window manager decoration"
 msgstr "Zobrazovať dekoráciu okien"
 
-#: src/skins/skins_cfg.c:329
+#: src/skins/skins_cfg.c:328
 msgid "This enables the window manager to show decorations for windows."
 msgstr "Touto voľbou povolíte zobrazovanie dekorácie okien."
 
-#: src/skins/skins_cfg.c:330
+#: src/skins/skins_cfg.c:329
 msgid "Use two-way text scroller"
 msgstr "Použiť obojsmerný posun textu"
 
-#: src/skins/skins_cfg.c:331
+#: src/skins/skins_cfg.c:330
 msgid ""
 "If selected, the file information text in the main window will scroll back "
 "and forth. If not selected, the text will only scroll in one direction."
@@ -4633,19 +4632,19 @@ msgstr ""
 "Ak je povolené, bude sa text s informáciami v hlavnom okne posúvať tam a "
 "späť. Ak nie je povolené, text sa bude posúvať iba v jednom smere."
 
-#: src/skins/skins_cfg.c:332
+#: src/skins/skins_cfg.c:331
 msgid "Disable inline gtk theme"
 msgstr "Zakázať vloženú GTK tému"
 
-#: src/skins/skins_cfg.c:334
+#: src/skins/skins_cfg.c:333
 msgid "Random skin on play"
 msgstr "Náhodný vzhľad pri prehrávaní"
 
-#: src/skins/skins_cfg.c:335
+#: src/skins/skins_cfg.c:334
 msgid "Allow loading incomplete skins"
 msgstr "Povoliť načítavanie nekompletných vzhľadov"
 
-#: src/skins/skins_cfg.c:336
+#: src/skins/skins_cfg.c:335
 msgid ""
 "If selected, audacious won't refuse loading broken skins. Use only if your "
 "favourite skin doesn't work"
@@ -4653,11 +4652,11 @@ msgstr ""
 "Ak je povolené, Audacious neodmietne načítanie poškodeného vzhľadu. Použite "
 "iba ak váš obľúbený vzhľad nefunguje"
 
-#: src/skins/skins_cfg.c:402
+#: src/skins/skins_cfg.c:401
 msgid "Color Adjustment"
 msgstr "Prispôsobenie farby"
 
-#: src/skins/skins_cfg.c:408
+#: src/skins/skins_cfg.c:407
 msgid ""
 "Audacious allows you to alter the color balance of the skinned UI. The "
 "sliders below will allow you to do this."
@@ -4665,27 +4664,32 @@ msgstr ""
 "Audacious umožňuje zmeniť zafarbenie témy užívateľského rozhrania pomocou "
 "nasledujúcich jazdcov."
 
-#: src/skins/skins_cfg.c:418
+#: src/skins/skins_cfg.c:417
 msgid "Blue"
 msgstr "Modrá"
 
-#: src/skins/skins_cfg.c:425
+#: src/skins/skins_cfg.c:424
 msgid "Green"
 msgstr "Zelená"
 
-#: src/skins/skins_cfg.c:432
+#: src/skins/skins_cfg.c:431
 msgid "Red"
 msgstr "Červená"
 
-#: src/skins/skins_cfg.c:573
+#: src/skins/skins_cfg.c:569
 msgid "<b>_Skin</b>"
 msgstr "<b>_Vzhľad</b>"
 
-#: src/skins/ui_equalizer.c:452
+#: src/skins/skins_cfg.c:574
+#, fuzzy
+msgid "Color adjustment ..."
+msgstr "Prispôsobenie farby"
+
+#: src/skins/ui_equalizer.c:463
 msgid "Audacious Equalizer"
 msgstr "Ekvalizér Audacious"
 
-#: src/skins/ui_equalizer.c:978
+#: src/skins/ui_equalizer.c:991
 msgid "Presets"
 msgstr "Prednastavenia"
 
@@ -4785,47 +4789,47 @@ msgstr "Vyváženie: stred"
 msgid "Balance: %d%% right"
 msgstr "Vyváženie: %d%% vpravo"
 
-#: src/skins/ui_main.c:1617
+#: src/skins/ui_main.c:1618
 msgid "Options Menu"
 msgstr "Ponuka s možnosťami"
 
-#: src/skins/ui_main.c:1621
+#: src/skins/ui_main.c:1622
 msgid "Disable 'Always On Top'"
 msgstr "Vypnúť „Vždy navrchu“"
 
-#: src/skins/ui_main.c:1623
+#: src/skins/ui_main.c:1624
 msgid "Enable 'Always On Top'"
 msgstr "Zapnúť „Vždy navrchu“"
 
-#: src/skins/ui_main.c:1626
+#: src/skins/ui_main.c:1627
 msgid "File Info Box"
 msgstr "Informácie o súbore"
 
-#: src/skins/ui_main.c:1630
+#: src/skins/ui_main.c:1631
 msgid "Disable 'GUI Scaling'"
 msgstr "Vypnúť „Zväčšiť GUI“"
 
-#: src/skins/ui_main.c:1632
+#: src/skins/ui_main.c:1633
 msgid "Enable 'GUI Scaling'"
 msgstr "Zapnúť „Zväčšiť GUI“"
 
-#: src/skins/ui_main.c:1635
+#: src/skins/ui_main.c:1636
 msgid "Visualization Menu"
 msgstr "Ponuka s typom znázornenia"
 
-#: src/skins/ui_main.c:2347
+#: src/skins/ui_main.c:2348
 msgid "Single mode."
 msgstr "Režim jednej skladby."
 
-#: src/skins/ui_main.c:2349
+#: src/skins/ui_main.c:2350
 msgid "Playlist mode."
 msgstr "Režim zoznamu skladieb."
 
-#: src/skins/ui_main.c:2373
+#: src/skins/ui_main.c:2374
 msgid "Stopping after song."
 msgstr "Zastaviť po skončení skladby."
 
-#: src/skins/ui_main.c:2375
+#: src/skins/ui_main.c:2376
 msgid "Not stopping after song."
 msgstr "Nezastaviť po skončení skladby."
 
@@ -5303,48 +5307,51 @@ msgid "%s (%d of %d)"
 msgstr "%s (%d z %d)"
 
 #: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "PREAMP"
-msgstr "PREAMP"
+msgid "31 Hz"
+msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "60HZ"
-msgstr "60Hz"
-
-#: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "170HZ"
-msgstr "170Hz"
+msgid "63 Hz"
+msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "310HZ"
-msgstr "310Hz"
+msgid "125 Hz"
+msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "600HZ"
-msgstr "600Hz"
+#, fuzzy
+msgid "250 Hz"
+msgstr "22050 Hz "
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "1KHZ"
-msgstr "1kHz"
+#, fuzzy
+msgid "500 Hz"
+msgstr "44100 Hz "
+
+#: src/skins/ui_skinned_equalizer_slider.c:436
+#, fuzzy
+msgid "1 kHz"
+msgstr "96 kHz"
+
+#: src/skins/ui_skinned_equalizer_slider.c:436
+#, fuzzy
+msgid "2 kHz"
+msgstr "22 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "3KHZ"
-msgstr "3kHz"
+#, fuzzy
+msgid "4 kHz"
+msgstr "44 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "6KHZ"
-msgstr "6kHz"
+#, fuzzy
+msgid "8 kHz"
+msgstr "48 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "12KHZ"
-msgstr "12kHz"
-
-#: src/skins/ui_skinned_equalizer_slider.c:438
-msgid "14KHZ"
-msgstr "14kHz"
-
-#: src/skins/ui_skinned_equalizer_slider.c:438
-msgid "16KHZ"
-msgstr "16kHz"
+#, fuzzy
+msgid "16 kHz"
+msgstr "96 kHz"
 
 #: src/skins/ui_skinselector.c:179
 msgid "Archived Winamp 2.x skin"
@@ -5786,6 +5793,39 @@ msgstr ""
 "Niektoré časti kódu modulu napísal Miles Egan\n"
 "Navštívte stránku Wavpack na adrese http://www.wavpack.com/\n"
 
+#~ msgid "PREAMP"
+#~ msgstr "PREAMP"
+
+#~ msgid "60HZ"
+#~ msgstr "60Hz"
+
+#~ msgid "170HZ"
+#~ msgstr "170Hz"
+
+#~ msgid "310HZ"
+#~ msgstr "310Hz"
+
+#~ msgid "600HZ"
+#~ msgstr "600Hz"
+
+#~ msgid "1KHZ"
+#~ msgstr "1kHz"
+
+#~ msgid "3KHZ"
+#~ msgstr "3kHz"
+
+#~ msgid "6KHZ"
+#~ msgstr "6kHz"
+
+#~ msgid "12KHZ"
+#~ msgstr "12kHz"
+
+#~ msgid "14KHZ"
+#~ msgstr "14kHz"
+
+#~ msgid "16KHZ"
+#~ msgstr "16kHz"
+
 #~ msgid "Audacious standard menu"
 #~ msgstr "Štandardná ponuka Audacious"
 
@@ -5810,8 +5850,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Modul ESounD pre Audacious\n"

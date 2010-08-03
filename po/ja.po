@@ -13,14 +13,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2010-07-24 08:42-0400\n"
+"POT-Creation-Date: 2010-08-03 17:55-0400\n"
 "PO-Revision-Date: 2008-07-08 13:10+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
 
 #: src/aac/libmp4.c:291
 #, fuzzy, c-format
@@ -109,12 +109,12 @@ msgid "Channels"
 msgstr "チャンネル数"
 
 #: src/adplug/adplug-xmms.cc:303 src/filewriter/mp3.c:934
-#: src/mpg123/mpg123.c:175 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:174 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "モノラル"
 
 #: src/adplug/adplug-xmms.cc:308 src/filewriter/mp3.c:929
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:175
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:174
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "ステレオ"
@@ -1140,8 +1140,8 @@ msgid ""
 "specify a custom value in the interval 22050Hz-96000Hz."
 msgstr ""
 "* シンセサイザーサンプリングレート *\n"
-"シンセサイザーで生成されたオーディオのサンプリングレートです. 22050Hz-"
-"96000Hz の間でカスタム値を指定することもできます.\n"
+"シンセサイザーで生成されたオーディオのサンプリングレートです. "
+"22050Hz-96000Hz の間でカスタム値を指定することもできます.\n"
 "注意: デフォルトのバッファパラメータは 44100Hz に設定されています. サンプリン"
 "グレートを変更したら, よい音質を得るために, バッファパラメータのチューニング"
 "が必要になります. "
@@ -2319,7 +2319,7 @@ msgstr ""
 "Giacomo Lozito によって書かれた.\n"
 "\n"
 
-#: src/ffaudio/ffaudio-core.c:663
+#: src/ffaudio/ffaudio-core.c:662
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2328,14 +2328,12 @@ msgid ""
 "\n"
 "FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
 "\n"
-"Supported formats: %s\n"
-"\n"
 "Audacious plugin by:\n"
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:679
+#: src/ffaudio/ffaudio-core.c:675
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "FLAC オーディオプラグインについて"
@@ -2727,7 +2725,7 @@ msgstr ""
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2165
+#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2166
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -3508,7 +3506,7 @@ msgstr "範囲"
 msgid "Bass Boost"
 msgstr "ベース増加"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:175
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:174
 msgid "Surround"
 msgstr "サラウンド"
 
@@ -3523,6 +3521,7 @@ msgstr ""
 "ブツブツ音)の原因になります!"
 
 #: src/modplug/gui/interface.cxx:567
+#: src/skins/ui_skinned_equalizer_slider.c:435
 msgid "Preamp"
 msgstr "プリアンプ"
 
@@ -4587,11 +4586,11 @@ msgstr "はい"
 msgid "No"
 msgstr "いいえ"
 
-#: src/skins/plugin.c:177
+#: src/skins/plugin.c:179
 msgid "About Skinned GUI"
 msgstr "スキン GUI について"
 
-#: src/skins/plugin.c:178
+#: src/skins/plugin.c:180
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -4599,35 +4598,35 @@ msgstr ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 
-#: src/skins/plugin.c:194
+#: src/skins/plugin.c:196
 msgid "Skinned Interface"
 msgstr ""
 
-#: src/skins/skins_cfg.c:317
+#: src/skins/skins_cfg.c:316
 msgid "_Player:"
 msgstr "プレイヤ(_P):"
 
-#: src/skins/skins_cfg.c:317
+#: src/skins/skins_cfg.c:316
 msgid "Select main player window font:"
 msgstr "メインウィンドウで使用するフォントの選択"
 
-#: src/skins/skins_cfg.c:318
+#: src/skins/skins_cfg.c:317
 msgid "_Playlist:"
 msgstr "プレイリスト(_P):"
 
-#: src/skins/skins_cfg.c:318
+#: src/skins/skins_cfg.c:317
 msgid "Select playlist font:"
 msgstr "プレイリストで使用するフォントの選択"
 
-#: src/skins/skins_cfg.c:322
+#: src/skins/skins_cfg.c:321
 msgid "<b>_Fonts</b>"
 msgstr "<b>フォント(_F)</b>"
 
-#: src/skins/skins_cfg.c:324
+#: src/skins/skins_cfg.c:323
 msgid "Use Bitmap fonts if available"
 msgstr "可能ならばビットマップフォントを使用"
 
-#: src/skins/skins_cfg.c:324
+#: src/skins/skins_cfg.c:323
 msgid ""
 "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
 "strings."
@@ -4635,27 +4634,27 @@ msgstr ""
 "可能ならばビットマップフォントを使用します. ビットマップフォントは Unicode 文"
 "字列をサポートしていません."
 
-#: src/skins/skins_cfg.c:325
+#: src/skins/skins_cfg.c:324
 msgid "<b>_Miscellaneous</b>"
 msgstr "<b>その他(_M)</b>"
 
-#: src/skins/skins_cfg.c:326
+#: src/skins/skins_cfg.c:325
 msgid "Show separators in playlist"
 msgstr "プレイリストの区切り線を表示する"
 
-#: src/skins/skins_cfg.c:328
+#: src/skins/skins_cfg.c:327
 msgid "Show window manager decoration"
 msgstr "ウィンドウマネージャ装飾を表示する"
 
-#: src/skins/skins_cfg.c:329
+#: src/skins/skins_cfg.c:328
 msgid "This enables the window manager to show decorations for windows."
 msgstr "ウィンドウマネージャによるウィンドウ装飾を有効にします."
 
-#: src/skins/skins_cfg.c:330
+#: src/skins/skins_cfg.c:329
 msgid "Use two-way text scroller"
 msgstr "双方向テキストスクロールを使う"
 
-#: src/skins/skins_cfg.c:331
+#: src/skins/skins_cfg.c:330
 msgid ""
 "If selected, the file information text in the main window will scroll back "
 "and forth. If not selected, the text will only scroll in one direction."
@@ -4663,20 +4662,20 @@ msgstr ""
 "これを使うと，メインウィンドウのファイル情報テキストが前後にスクロールしま"
 "す．そうでなければ，テキストは一方向のみにスクロールします．"
 
-#: src/skins/skins_cfg.c:332
+#: src/skins/skins_cfg.c:331
 msgid "Disable inline gtk theme"
 msgstr "インライン GTK テーマを無効にする"
 
-#: src/skins/skins_cfg.c:334
+#: src/skins/skins_cfg.c:333
 #, fuzzy
 msgid "Random skin on play"
 msgstr "プレイリストの順序をランダムにします."
 
-#: src/skins/skins_cfg.c:335
+#: src/skins/skins_cfg.c:334
 msgid "Allow loading incomplete skins"
 msgstr "不完全なスキンの読み込みを許可する"
 
-#: src/skins/skins_cfg.c:336
+#: src/skins/skins_cfg.c:335
 msgid ""
 "If selected, audacious won't refuse loading broken skins. Use only if your "
 "favourite skin doesn't work"
@@ -4684,37 +4683,42 @@ msgstr ""
 "これを使うと，audacious は壊れたスキンの読み込みを拒絶しません．お気に入りの"
 "スキンが動かないときだけ使用してください．"
 
-#: src/skins/skins_cfg.c:402
+#: src/skins/skins_cfg.c:401
 msgid "Color Adjustment"
 msgstr "色補正"
 
-#: src/skins/skins_cfg.c:408
+#: src/skins/skins_cfg.c:407
 msgid ""
 "Audacious allows you to alter the color balance of the skinned UI. The "
 "sliders below will allow you to do this."
 msgstr "以下のスライダを用いてスキン UI の色合いの変更ができます."
 
-#: src/skins/skins_cfg.c:418
+#: src/skins/skins_cfg.c:417
 msgid "Blue"
 msgstr "青"
 
-#: src/skins/skins_cfg.c:425
+#: src/skins/skins_cfg.c:424
 msgid "Green"
 msgstr "緑"
 
-#: src/skins/skins_cfg.c:432
+#: src/skins/skins_cfg.c:431
 msgid "Red"
 msgstr "赤"
 
-#: src/skins/skins_cfg.c:573
+#: src/skins/skins_cfg.c:569
 msgid "<b>_Skin</b>"
 msgstr "<b>スキン(_S)</b>"
 
-#: src/skins/ui_equalizer.c:452
+#: src/skins/skins_cfg.c:574
+#, fuzzy
+msgid "Color adjustment ..."
+msgstr "色補正"
+
+#: src/skins/ui_equalizer.c:463
 msgid "Audacious Equalizer"
 msgstr "Audacious イコライザ"
 
-#: src/skins/ui_equalizer.c:978
+#: src/skins/ui_equalizer.c:991
 msgid "Presets"
 msgstr "プリセット"
 
@@ -4815,49 +4819,49 @@ msgstr "バランス: 中央"
 msgid "Balance: %d%% right"
 msgstr "バランス: %d%% 右"
 
-#: src/skins/ui_main.c:1617
+#: src/skins/ui_main.c:1618
 msgid "Options Menu"
 msgstr "オプションメニュー"
 
-#: src/skins/ui_main.c:1621
+#: src/skins/ui_main.c:1622
 msgid "Disable 'Always On Top'"
 msgstr "「常に最前面に配置」無効"
 
-#: src/skins/ui_main.c:1623
+#: src/skins/ui_main.c:1624
 msgid "Enable 'Always On Top'"
 msgstr "「常に最前面に配置」有効"
 
-#: src/skins/ui_main.c:1626
+#: src/skins/ui_main.c:1627
 msgid "File Info Box"
 msgstr "ファイル情報ボックス"
 
-#: src/skins/ui_main.c:1630
+#: src/skins/ui_main.c:1631
 msgid "Disable 'GUI Scaling'"
 msgstr "「GUI スケーリング」無効"
 
-#: src/skins/ui_main.c:1632
+#: src/skins/ui_main.c:1633
 msgid "Enable 'GUI Scaling'"
 msgstr "「GUI スケーリング」有効"
 
-#: src/skins/ui_main.c:1635
+#: src/skins/ui_main.c:1636
 msgid "Visualization Menu"
 msgstr "視覚化メニュー"
 
-#: src/skins/ui_main.c:2347
+#: src/skins/ui_main.c:2348
 msgid "Single mode."
 msgstr ""
 
-#: src/skins/ui_main.c:2349
+#: src/skins/ui_main.c:2350
 #, fuzzy
 msgid "Playlist mode."
 msgstr "プレイリスト"
 
-#: src/skins/ui_main.c:2373
+#: src/skins/ui_main.c:2374
 #, fuzzy
 msgid "Stopping after song."
 msgstr "現在の曲の後に停止する"
 
-#: src/skins/ui_main.c:2375
+#: src/skins/ui_main.c:2376
 msgid "Not stopping after song."
 msgstr ""
 
@@ -5334,48 +5338,51 @@ msgid "%s (%d of %d)"
 msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "PREAMP"
-msgstr "プリアンプ"
+msgid "31 Hz"
+msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "60HZ"
-msgstr "60HZ"
-
-#: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "170HZ"
-msgstr "170HZ"
+msgid "63 Hz"
+msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "310HZ"
-msgstr "310HZ"
+msgid "125 Hz"
+msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "600HZ"
-msgstr "600HZ"
+#, fuzzy
+msgid "250 Hz"
+msgstr "22000 Hz "
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "1KHZ"
-msgstr "1KHZ"
+#, fuzzy
+msgid "500 Hz"
+msgstr "11000 Hz"
+
+#: src/skins/ui_skinned_equalizer_slider.c:436
+#, fuzzy
+msgid "1 kHz"
+msgstr "11 kHz"
+
+#: src/skins/ui_skinned_equalizer_slider.c:436
+#, fuzzy
+msgid "2 kHz"
+msgstr "22 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "3KHZ"
-msgstr "3KHZ"
+#, fuzzy
+msgid "4 kHz"
+msgstr "44 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "6KHZ"
-msgstr "6KHZ"
+#, fuzzy
+msgid "8 kHz"
+msgstr "48 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "12KHZ"
-msgstr "12KHZ"
-
-#: src/skins/ui_skinned_equalizer_slider.c:438
-msgid "14KHZ"
-msgstr "14KHZ"
-
-#: src/skins/ui_skinned_equalizer_slider.c:438
-msgid "16KHZ"
-msgstr "16KHZ"
+#, fuzzy
+msgid "16 kHz"
+msgstr "48 kHz"
 
 #: src/skins/ui_skinselector.c:179
 msgid "Archived Winamp 2.x skin"
@@ -5825,6 +5832,39 @@ msgstr ""
 "プラグインコードの一部は Miles Egan による\n"
 "Wavpack のサイト http://www.wavpack.com/ をご覧ください\n"
 
+#~ msgid "PREAMP"
+#~ msgstr "プリアンプ"
+
+#~ msgid "60HZ"
+#~ msgstr "60HZ"
+
+#~ msgid "170HZ"
+#~ msgstr "170HZ"
+
+#~ msgid "310HZ"
+#~ msgstr "310HZ"
+
+#~ msgid "600HZ"
+#~ msgstr "600HZ"
+
+#~ msgid "1KHZ"
+#~ msgstr "1KHZ"
+
+#~ msgid "3KHZ"
+#~ msgstr "3KHZ"
+
+#~ msgid "6KHZ"
+#~ msgstr "6KHZ"
+
+#~ msgid "12KHZ"
+#~ msgstr "12KHZ"
+
+#~ msgid "14KHZ"
+#~ msgstr "14KHZ"
+
+#~ msgid "16KHZ"
+#~ msgstr "16KHZ"
+
 #~ msgid "Audacious standard menu"
 #~ msgstr "Audacious 標準メニュー"
 
@@ -5849,8 +5889,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Audacious ESounD プラグイン\n"
@@ -5867,8 +5907,8 @@ msgstr ""
 #~ "\n"
 #~ "あなたは, 本プログラムと一緒に GNU 一般公有使用許諾契約書の\n"
 #~ "写しを受け取っているはずです. そうでない場合は, the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA.へ手紙を書いて下さい."
 
 #~ msgid "ESD Output Plugin configuration"
@@ -6387,8 +6427,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Audacious ESounD プラグイン\n"
@@ -6405,8 +6445,8 @@ msgstr ""
 #~ "\n"
 #~ "あなたは, 本プログラムと一緒に GNU 一般公有使用許諾契約書の\n"
 #~ "写しを受け取っているはずです. そうでない場合は, the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA.へ手紙を書いて下さい."
 
 #, fuzzy
@@ -6517,9 +6557,6 @@ msgstr ""
 #~ msgid "About MPEG Audio Plugin"
 #~ msgstr "MPEG オーディオプラグインについて"
 
-#~ msgid "11 kHz"
-#~ msgstr "11 kHz"
-
 #~ msgid "About OSSv4 Driver"
 #~ msgstr "OSSv4 ドライバについて"
 
@@ -6542,8 +6579,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA.\n"
 #~ "\n"
 #~ "Note: For any issues regarding this plugin (including patches and \n"
@@ -6607,9 +6644,6 @@ msgstr ""
 
 #~ msgid "TiMidity Configuration"
 #~ msgstr "TiMidity の設定"
-
-#~ msgid "11000 Hz"
-#~ msgstr "11000 Hz"
 
 #~ msgid "22000 Hz"
 #~ msgstr "22000 Hz"
@@ -7039,8 +7073,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA.\n"
 #~ "Author: Matthieu Sozeau (mattam@altern.org)"
 #~ msgstr ""
@@ -7058,8 +7092,8 @@ msgstr ""
 #~ "\n"
 #~ "あなたは, 本プログラムと一緒に GNU 一般公有使用許諾契約書の\n"
 #~ "写しを受け取っているはずです. そうでない場合は, Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA. へ手紙を書いて下さい.\n"
 #~ "作者: Matthieu Sozeau (mattam@altern.org)"
 

@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2010-07-24 08:42-0400\n"
+"POT-Creation-Date: 2010-08-03 17:55-0400\n"
 "PO-Revision-Date: 2010-07-01 21:54+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Poedit-Language: German\n"
 
 #: src/aac/libmp4.c:291
@@ -99,12 +99,12 @@ msgid "Channels"
 msgstr "Kanäle"
 
 #: src/adplug/adplug-xmms.cc:303 src/filewriter/mp3.c:934
-#: src/mpg123/mpg123.c:175 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:174 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Mono"
 
 #: src/adplug/adplug-xmms.cc:308 src/filewriter/mp3.c:929
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:175
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:174
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Stereo"
@@ -2084,7 +2084,7 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:663
+#: src/ffaudio/ffaudio-core.c:662
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2093,14 +2093,12 @@ msgid ""
 "\n"
 "FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
 "\n"
-"Supported formats: %s\n"
-"\n"
 "Audacious plugin by:\n"
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:679
+#: src/ffaudio/ffaudio-core.c:675
 msgid "About FFaudio Plugin"
 msgstr "Über FFaudio Plugin"
 
@@ -2470,7 +2468,7 @@ msgstr "GTK Interface"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2165
+#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2166
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -3229,7 +3227,7 @@ msgstr "Bereich"
 msgid "Bass Boost"
 msgstr "Bassverstärkung"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:175
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:174
 msgid "Surround"
 msgstr "Surround"
 
@@ -3243,6 +3241,7 @@ msgstr ""
 "Clipping verursachen (störende Geräusche)!"
 
 #: src/modplug/gui/interface.cxx:567
+#: src/skins/ui_skinned_equalizer_slider.c:435
 msgid "Preamp"
 msgstr "Vorverstärkung"
 
@@ -4224,45 +4223,45 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
-#: src/skins/plugin.c:177
+#: src/skins/plugin.c:179
 msgid "About Skinned GUI"
 msgstr "Über Skinned GUI"
 
-#: src/skins/plugin.c:178
+#: src/skins/plugin.c:180
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 msgstr ""
 
-#: src/skins/plugin.c:194
+#: src/skins/plugin.c:196
 msgid "Skinned Interface"
 msgstr "Oberfläche"
 
-#: src/skins/skins_cfg.c:317
+#: src/skins/skins_cfg.c:316
 msgid "_Player:"
 msgstr "Hauptfenster"
 
-#: src/skins/skins_cfg.c:317
+#: src/skins/skins_cfg.c:316
 msgid "Select main player window font:"
 msgstr "Hauptfenster-Schrift auswählen:"
 
-#: src/skins/skins_cfg.c:318
+#: src/skins/skins_cfg.c:317
 msgid "_Playlist:"
 msgstr "Wiedergabeliste"
 
-#: src/skins/skins_cfg.c:318
+#: src/skins/skins_cfg.c:317
 msgid "Select playlist font:"
 msgstr "Playlist-Schrift auswählen"
 
-#: src/skins/skins_cfg.c:322
+#: src/skins/skins_cfg.c:321
 msgid "<b>_Fonts</b>"
 msgstr "<b>Schriftarten</b>"
 
-#: src/skins/skins_cfg.c:324
+#: src/skins/skins_cfg.c:323
 msgid "Use Bitmap fonts if available"
 msgstr "Bitmap-Schriften verwenden, falls verfügbar"
 
-#: src/skins/skins_cfg.c:324
+#: src/skins/skins_cfg.c:323
 msgid ""
 "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
 "strings."
@@ -4270,27 +4269,27 @@ msgstr ""
 "Bitmap-Schriften verwenden, falls verfügbar (keine Unicode-Strings "
 "Unterstützung)"
 
-#: src/skins/skins_cfg.c:325
+#: src/skins/skins_cfg.c:324
 msgid "<b>_Miscellaneous</b>"
 msgstr "<b>Verschiedenes</b>"
 
-#: src/skins/skins_cfg.c:326
+#: src/skins/skins_cfg.c:325
 msgid "Show separators in playlist"
 msgstr "Trennstriche in Wiedergabeliste anzeigen"
 
-#: src/skins/skins_cfg.c:328
+#: src/skins/skins_cfg.c:327
 msgid "Show window manager decoration"
 msgstr "Fenstermanager-Dekorationen anzeigen"
 
-#: src/skins/skins_cfg.c:329
+#: src/skins/skins_cfg.c:328
 msgid "This enables the window manager to show decorations for windows."
 msgstr "Dies aktiviert die Anzeige der Fenstermanager-Dekorationen."
 
-#: src/skins/skins_cfg.c:330
+#: src/skins/skins_cfg.c:329
 msgid "Use two-way text scroller"
 msgstr "Text hin und her scrollen"
 
-#: src/skins/skins_cfg.c:331
+#: src/skins/skins_cfg.c:330
 msgid ""
 "If selected, the file information text in the main window will scroll back "
 "and forth. If not selected, the text will only scroll in one direction."
@@ -4298,19 +4297,19 @@ msgstr ""
 "Wenn ausgewählt, bewegt sich der Text der Dateiinformation abwechselnd von "
 "Links nach Rechts. Ansonsten bewegt er sich nur in eine Richtung."
 
-#: src/skins/skins_cfg.c:332
+#: src/skins/skins_cfg.c:331
 msgid "Disable inline gtk theme"
 msgstr "Schalte Inline-GTK-Theme aus"
 
-#: src/skins/skins_cfg.c:334
+#: src/skins/skins_cfg.c:333
 msgid "Random skin on play"
 msgstr "Zufälliger Skin beim Abspielen"
 
-#: src/skins/skins_cfg.c:335
+#: src/skins/skins_cfg.c:334
 msgid "Allow loading incomplete skins"
 msgstr "Erlaube Laden unvollständiger Skins"
 
-#: src/skins/skins_cfg.c:336
+#: src/skins/skins_cfg.c:335
 msgid ""
 "If selected, audacious won't refuse loading broken skins. Use only if your "
 "favourite skin doesn't work"
@@ -4318,11 +4317,11 @@ msgstr ""
 "Wenn aktiviert, lädt Audacious auch Skins, die nicht vollständig sind. Nur "
 "wenn nötig aktivieren."
 
-#: src/skins/skins_cfg.c:402
+#: src/skins/skins_cfg.c:401
 msgid "Color Adjustment"
 msgstr "Farbkorrektur"
 
-#: src/skins/skins_cfg.c:408
+#: src/skins/skins_cfg.c:407
 msgid ""
 "Audacious allows you to alter the color balance of the skinned UI. The "
 "sliders below will allow you to do this."
@@ -4330,27 +4329,32 @@ msgstr ""
 "Farbverläufe der Benutzeroberfläche sind durch die Schieberegler unten "
 "anpassbar:"
 
-#: src/skins/skins_cfg.c:418
+#: src/skins/skins_cfg.c:417
 msgid "Blue"
 msgstr "Blau"
 
-#: src/skins/skins_cfg.c:425
+#: src/skins/skins_cfg.c:424
 msgid "Green"
 msgstr "Rot"
 
-#: src/skins/skins_cfg.c:432
+#: src/skins/skins_cfg.c:431
 msgid "Red"
 msgstr "Grün"
 
-#: src/skins/skins_cfg.c:573
+#: src/skins/skins_cfg.c:569
 msgid "<b>_Skin</b>"
 msgstr "<b>_Skin</b>"
 
-#: src/skins/ui_equalizer.c:452
+#: src/skins/skins_cfg.c:574
+#, fuzzy
+msgid "Color adjustment ..."
+msgstr "Farbkorrektur"
+
+#: src/skins/ui_equalizer.c:463
 msgid "Audacious Equalizer"
 msgstr "Audacious Equalizer"
 
-#: src/skins/ui_equalizer.c:978
+#: src/skins/ui_equalizer.c:991
 msgid "Presets"
 msgstr "Standard"
 
@@ -4439,48 +4443,48 @@ msgstr "Balance: Mitte"
 msgid "Balance: %d%% right"
 msgstr "Balance: %d%% rechts"
 
-#: src/skins/ui_main.c:1617
+#: src/skins/ui_main.c:1618
 msgid "Options Menu"
 msgstr "Optionen"
 
-#: src/skins/ui_main.c:1621
+#: src/skins/ui_main.c:1622
 msgid "Disable 'Always On Top'"
 msgstr "'Immer im Vordergrund' aus"
 
-#: src/skins/ui_main.c:1623
+#: src/skins/ui_main.c:1624
 msgid "Enable 'Always On Top'"
 msgstr "'Immer im Vordergrund' an"
 
-#: src/skins/ui_main.c:1626
+#: src/skins/ui_main.c:1627
 msgid "File Info Box"
 msgstr "Dateiinformationen"
 
-#: src/skins/ui_main.c:1630
+#: src/skins/ui_main.c:1631
 msgid "Disable 'GUI Scaling'"
 msgstr "'GUI-Skalierung' aus"
 
-#: src/skins/ui_main.c:1632
+#: src/skins/ui_main.c:1633
 msgid "Enable 'GUI Scaling'"
 msgstr "'GUI-Skalierung' an"
 
-#: src/skins/ui_main.c:1635
+#: src/skins/ui_main.c:1636
 msgid "Visualization Menu"
 msgstr "Visualisierungs-Menü"
 
-#: src/skins/ui_main.c:2347
+#: src/skins/ui_main.c:2348
 msgid "Single mode."
 msgstr ""
 
-#: src/skins/ui_main.c:2349
+#: src/skins/ui_main.c:2350
 #, fuzzy
 msgid "Playlist mode."
 msgstr "Wiedergabeliste"
 
-#: src/skins/ui_main.c:2373
+#: src/skins/ui_main.c:2374
 msgid "Stopping after song."
 msgstr "Nach Titel stoppen."
 
-#: src/skins/ui_main.c:2375
+#: src/skins/ui_main.c:2376
 msgid "Not stopping after song."
 msgstr "Nicht nach Titel stoppen."
 
@@ -4953,48 +4957,51 @@ msgid "%s (%d of %d)"
 msgstr "%s (%d von %d)"
 
 #: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "PREAMP"
+msgid "31 Hz"
 msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "60HZ"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "170HZ"
+msgid "63 Hz"
 msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "310HZ"
+msgid "125 Hz"
 msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "600HZ"
-msgstr ""
+#, fuzzy
+msgid "250 Hz"
+msgstr "22050 Hz "
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "1KHZ"
-msgstr ""
+#, fuzzy
+msgid "500 Hz"
+msgstr "44100 Hz "
+
+#: src/skins/ui_skinned_equalizer_slider.c:436
+#, fuzzy
+msgid "1 kHz"
+msgstr "96 kHz "
+
+#: src/skins/ui_skinned_equalizer_slider.c:436
+#, fuzzy
+msgid "2 kHz"
+msgstr "22 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "3KHZ"
-msgstr ""
+#, fuzzy
+msgid "4 kHz"
+msgstr "44 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "6KHZ"
-msgstr ""
+#, fuzzy
+msgid "8 kHz"
+msgstr "48 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "12KHZ"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:438
-msgid "14KHZ"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:438
-msgid "16KHZ"
-msgstr ""
+#, fuzzy
+msgid "16 kHz"
+msgstr "96 kHz "
 
 #: src/skins/ui_skinselector.c:179
 msgid "Archived Winamp 2.x skin"

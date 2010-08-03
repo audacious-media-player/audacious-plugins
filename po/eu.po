@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins_eu\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2010-07-24 08:42-0400\n"
+"POT-Creation-Date: 2010-08-03 17:55-0400\n"
 "PO-Revision-Date: 2009-04-23 18:56+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
+"Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: eu\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -106,12 +106,12 @@ msgid "Channels"
 msgstr "Kanalak"
 
 #: src/adplug/adplug-xmms.cc:303 src/filewriter/mp3.c:934
-#: src/mpg123/mpg123.c:175 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:174 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Monoa"
 
 #: src/adplug/adplug-xmms.cc:308 src/filewriter/mp3.c:929
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:175
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:174
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Estereoa"
@@ -2333,7 +2333,7 @@ msgstr ""
 "\n"
 "garatzailea: Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:663
+#: src/ffaudio/ffaudio-core.c:662
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2342,14 +2342,12 @@ msgid ""
 "\n"
 "FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
 "\n"
-"Supported formats: %s\n"
-"\n"
 "Audacious plugin by:\n"
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:679
+#: src/ffaudio/ffaudio-core.c:675
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "FLAC audioaren pluginari buruz"
@@ -2391,8 +2389,8 @@ msgstr ""
 "\n"
 "Programa honekin batera GNU Lizentzia Publiko Orokorraren kopia bat\n"
 "ere jaso beharko zenuke; horrela ez bada, idatzi helbide honetara: \n"
-"Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-"1301,\n"
+"Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA "
+"02110-1301,\n"
 "USA."
 
 #: src/filewriter/filewriter.c:466
@@ -2741,7 +2739,7 @@ msgstr ""
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2165
+#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2166
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -3528,7 +3526,7 @@ msgstr "Barrutia"
 msgid "Bass Boost"
 msgstr "Baxuen bultzada"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:175
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:174
 msgid "Surround"
 msgstr "Surround"
 
@@ -3543,6 +3541,7 @@ msgstr ""
 "(klik eta pop nazkagarriekin!)"
 
 #: src/modplug/gui/interface.cxx:567
+#: src/skins/ui_skinned_equalizer_slider.c:435
 msgid "Preamp"
 msgstr "Aurre-anp"
 
@@ -4616,11 +4615,11 @@ msgstr "Bai"
 msgid "No"
 msgstr "Ez"
 
-#: src/skins/plugin.c:177
+#: src/skins/plugin.c:179
 msgid "About Skinned GUI"
 msgstr "Azaldun interfazeari buruz"
 
-#: src/skins/plugin.c:178
+#: src/skins/plugin.c:180
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -4628,35 +4627,35 @@ msgstr ""
 "Copyright-a (c) 2008, Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 
-#: src/skins/plugin.c:194
+#: src/skins/plugin.c:196
 msgid "Skinned Interface"
 msgstr ""
 
-#: src/skins/skins_cfg.c:317
+#: src/skins/skins_cfg.c:316
 msgid "_Player:"
 msgstr "_Erreproduzitzailea:"
 
-#: src/skins/skins_cfg.c:317
+#: src/skins/skins_cfg.c:316
 msgid "Select main player window font:"
 msgstr "Hautatu erreproduzitzaile nagusiaren leihoko letra-tipoa:"
 
-#: src/skins/skins_cfg.c:318
+#: src/skins/skins_cfg.c:317
 msgid "_Playlist:"
 msgstr "_Erreprodukzio-zerrenda:"
 
-#: src/skins/skins_cfg.c:318
+#: src/skins/skins_cfg.c:317
 msgid "Select playlist font:"
 msgstr "Hautatu erreprodukzio-zerrendaren letra-tipoa:"
 
-#: src/skins/skins_cfg.c:322
+#: src/skins/skins_cfg.c:321
 msgid "<b>_Fonts</b>"
 msgstr "<b>_Letra-tipoak</b>"
 
-#: src/skins/skins_cfg.c:324
+#: src/skins/skins_cfg.c:323
 msgid "Use Bitmap fonts if available"
 msgstr "Erabili bitmapako letra-tipoak erabilgarri badaude"
 
-#: src/skins/skins_cfg.c:324
+#: src/skins/skins_cfg.c:323
 msgid ""
 "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
 "strings."
@@ -4664,27 +4663,27 @@ msgstr ""
 "Erabili bitmapako letra-tipoak erabilgarri egonez gero. Bitmapako letra-"
 "tipoek ez dituzte Unicode kateak onartzen."
 
-#: src/skins/skins_cfg.c:325
+#: src/skins/skins_cfg.c:324
 msgid "<b>_Miscellaneous</b>"
 msgstr "<b>_Hainbat</b>"
 
-#: src/skins/skins_cfg.c:326
+#: src/skins/skins_cfg.c:325
 msgid "Show separators in playlist"
 msgstr "Erakutsi bereizleak erreprodukzio-zerrendan"
 
-#: src/skins/skins_cfg.c:328
+#: src/skins/skins_cfg.c:327
 msgid "Show window manager decoration"
 msgstr "Erakutsi leiho-kudeatzailearen dekorazioa"
 
-#: src/skins/skins_cfg.c:329
+#: src/skins/skins_cfg.c:328
 msgid "This enables the window manager to show decorations for windows."
 msgstr "Leiho-kudeatzailea gaitzen du leihoen dekorazioak erakusteko."
 
-#: src/skins/skins_cfg.c:330
+#: src/skins/skins_cfg.c:329
 msgid "Use two-way text scroller"
 msgstr "Erabili bi bideko testu-korritzailea"
 
-#: src/skins/skins_cfg.c:331
+#: src/skins/skins_cfg.c:330
 msgid ""
 "If selected, the file information text in the main window will scroll back "
 "and forth. If not selected, the text will only scroll in one direction."
@@ -4693,20 +4692,20 @@ msgstr ""
 "norabidetan korrituko da. Ez bada hautatzen, testua norabide bakar batean "
 "korrituko da."
 
-#: src/skins/skins_cfg.c:332
+#: src/skins/skins_cfg.c:331
 msgid "Disable inline gtk theme"
 msgstr "Desgaitu barneko gtk gaia"
 
-#: src/skins/skins_cfg.c:334
+#: src/skins/skins_cfg.c:333
 #, fuzzy
 msgid "Random skin on play"
 msgstr "Nahastu ausaz erreprodukzio-zerrenda"
 
-#: src/skins/skins_cfg.c:335
+#: src/skins/skins_cfg.c:334
 msgid "Allow loading incomplete skins"
 msgstr "Baimendu azal osatugabeak kargatzea"
 
-#: src/skins/skins_cfg.c:336
+#: src/skins/skins_cfg.c:335
 msgid ""
 "If selected, audacious won't refuse loading broken skins. Use only if your "
 "favourite skin doesn't work"
@@ -4714,11 +4713,11 @@ msgstr ""
 "Hautatzen bada, Audacious-ek ez du ukatuko hondatutako azalak kargatzea. "
 "Baldin eta zure azal gogokoenak ez badu funtzionatzen soilik."
 
-#: src/skins/skins_cfg.c:402
+#: src/skins/skins_cfg.c:401
 msgid "Color Adjustment"
 msgstr "Kolorea doitzea"
 
-#: src/skins/skins_cfg.c:408
+#: src/skins/skins_cfg.c:407
 msgid ""
 "Audacious allows you to alter the color balance of the skinned UI. The "
 "sliders below will allow you to do this."
@@ -4726,27 +4725,32 @@ msgstr ""
 "Audacious-ek azaldun interfazeko kolorearen balantzea aldatzea baimentzen "
 "dizu. Azpiko graduatzaileak hori egitea utziko dizu."
 
-#: src/skins/skins_cfg.c:418
+#: src/skins/skins_cfg.c:417
 msgid "Blue"
 msgstr "Urdina"
 
-#: src/skins/skins_cfg.c:425
+#: src/skins/skins_cfg.c:424
 msgid "Green"
 msgstr "Berdea"
 
-#: src/skins/skins_cfg.c:432
+#: src/skins/skins_cfg.c:431
 msgid "Red"
 msgstr "Gorria"
 
-#: src/skins/skins_cfg.c:573
+#: src/skins/skins_cfg.c:569
 msgid "<b>_Skin</b>"
 msgstr "<b>_Azala</b>"
 
-#: src/skins/ui_equalizer.c:452
+#: src/skins/skins_cfg.c:574
+#, fuzzy
+msgid "Color adjustment ..."
+msgstr "Kolorea doitzea"
+
+#: src/skins/ui_equalizer.c:463
 msgid "Audacious Equalizer"
 msgstr "Audacious-en ekualizadorea"
 
-#: src/skins/ui_equalizer.c:978
+#: src/skins/ui_equalizer.c:991
 msgid "Presets"
 msgstr "Aurrezarpenak"
 
@@ -4848,49 +4852,49 @@ msgstr "Balantzea: erdian"
 msgid "Balance: %d%% right"
 msgstr "Balantzea: %% %d eskuinean"
 
-#: src/skins/ui_main.c:1617
+#: src/skins/ui_main.c:1618
 msgid "Options Menu"
 msgstr "Aukeren menua"
 
-#: src/skins/ui_main.c:1621
+#: src/skins/ui_main.c:1622
 msgid "Disable 'Always On Top'"
 msgstr "Desgaitu 'Beti gainean'"
 
-#: src/skins/ui_main.c:1623
+#: src/skins/ui_main.c:1624
 msgid "Enable 'Always On Top'"
 msgstr "Gaitu 'Beti gainean'"
 
-#: src/skins/ui_main.c:1626
+#: src/skins/ui_main.c:1627
 msgid "File Info Box"
 msgstr "Fitxategi-informazioaren koadroa"
 
-#: src/skins/ui_main.c:1630
+#: src/skins/ui_main.c:1631
 msgid "Disable 'GUI Scaling'"
 msgstr "Desgaitu 'Interfazea eskalatzea'"
 
-#: src/skins/ui_main.c:1632
+#: src/skins/ui_main.c:1633
 msgid "Enable 'GUI Scaling'"
 msgstr "Gaitu 'Interfazea eskalatzea'"
 
-#: src/skins/ui_main.c:1635
+#: src/skins/ui_main.c:1636
 msgid "Visualization Menu"
 msgstr "Bisualizazioaren menua"
 
-#: src/skins/ui_main.c:2347
+#: src/skins/ui_main.c:2348
 msgid "Single mode."
 msgstr ""
 
-#: src/skins/ui_main.c:2349
+#: src/skins/ui_main.c:2350
 #, fuzzy
 msgid "Playlist mode."
 msgstr "Erreprodukzio-zerrenda"
 
-#: src/skins/ui_main.c:2373
+#: src/skins/ui_main.c:2374
 #, fuzzy
 msgid "Stopping after song."
 msgstr "Gelditu uneko abestiaren ondoren"
 
-#: src/skins/ui_main.c:2375
+#: src/skins/ui_main.c:2376
 msgid "Not stopping after song."
 msgstr ""
 
@@ -5377,48 +5381,51 @@ msgid "%s (%d of %d)"
 msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "PREAMP"
-msgstr "Aurre-anp"
+msgid "31 Hz"
+msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "60HZ"
-msgstr "60Hz"
-
-#: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "170HZ"
-msgstr "170Hz"
+msgid "63 Hz"
+msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "310HZ"
-msgstr "310Hz"
+msgid "125 Hz"
+msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "600HZ"
-msgstr "600Hz"
+#, fuzzy
+msgid "250 Hz"
+msgstr "22050 Hz "
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "1KHZ"
-msgstr "1KHz"
+#, fuzzy
+msgid "500 Hz"
+msgstr "11000 Hz"
+
+#: src/skins/ui_skinned_equalizer_slider.c:436
+#, fuzzy
+msgid "1 kHz"
+msgstr "11 kHz"
+
+#: src/skins/ui_skinned_equalizer_slider.c:436
+#, fuzzy
+msgid "2 kHz"
+msgstr "22 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "3KHZ"
-msgstr "3KHz"
+#, fuzzy
+msgid "4 kHz"
+msgstr "44 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "6KHZ"
-msgstr "6KHz"
+#, fuzzy
+msgid "8 kHz"
+msgstr "48 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "12KHZ"
-msgstr "12KHz"
-
-#: src/skins/ui_skinned_equalizer_slider.c:438
-msgid "14KHZ"
-msgstr "14KHz"
-
-#: src/skins/ui_skinned_equalizer_slider.c:438
-msgid "16KHZ"
-msgstr "16KHz"
+#, fuzzy
+msgid "16 kHz"
+msgstr "48 kHz"
 
 #: src/skins/ui_skinselector.c:179
 msgid "Archived Winamp 2.x skin"
@@ -5873,6 +5880,39 @@ msgstr ""
 "Pluginaren kode batzuk Miles Egan-ek garatua\n"
 "Bisitatu Wavpack gunea: http://www.wavpack.com/\n"
 
+#~ msgid "PREAMP"
+#~ msgstr "Aurre-anp"
+
+#~ msgid "60HZ"
+#~ msgstr "60Hz"
+
+#~ msgid "170HZ"
+#~ msgstr "170Hz"
+
+#~ msgid "310HZ"
+#~ msgstr "310Hz"
+
+#~ msgid "600HZ"
+#~ msgstr "600Hz"
+
+#~ msgid "1KHZ"
+#~ msgstr "1KHz"
+
+#~ msgid "3KHZ"
+#~ msgstr "3KHz"
+
+#~ msgid "6KHZ"
+#~ msgstr "6KHz"
+
+#~ msgid "12KHZ"
+#~ msgstr "12KHz"
+
+#~ msgid "14KHZ"
+#~ msgstr "14KHz"
+
+#~ msgid "16KHZ"
+#~ msgstr "16KHz"
+
 #~ msgid "Audacious standard menu"
 #~ msgstr "Audacious-en menu estandarra"
 
@@ -5897,8 +5937,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Audacious-en ESounD plugina\n"
@@ -6026,8 +6066,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA.\n"
 #~ "Author: Matthieu Sozeau (mattam@altern.org)"
 #~ msgstr ""
@@ -6495,9 +6535,6 @@ msgstr ""
 #~ msgid "About MPEG Audio Plugin"
 #~ msgstr "MPEG audioaren pluginari buruz"
 
-#~ msgid "11 kHz"
-#~ msgstr "11 kHz"
-
 #~ msgid "Musepack Decoder Plugin 1.2"
 #~ msgstr "Musepack deskodetzailearen plugina 1.2"
 
@@ -6636,8 +6673,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Audacious OSSv4 kontrolatzailea\n"
@@ -6739,9 +6776,6 @@ msgstr ""
 
 #~ msgid "TiMidity Configuration"
 #~ msgstr "TiMidity konfigurazioa"
-
-#~ msgid "11000 Hz"
-#~ msgstr "11000 Hz"
 
 #~ msgid "22000 Hz"
 #~ msgstr "22000 Hz"

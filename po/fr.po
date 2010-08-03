@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious-plugins 2.x\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2010-07-24 08:42-0400\n"
+"POT-Creation-Date: 2010-08-03 17:55-0400\n"
 "PO-Revision-Date: 2010-03-29 00:51+0100\n"
 "Last-Translator: StrassBoy <StrassBoy@gmail.com>\n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Poedit-Language: French\n"
 "X-Poedit-Country: BELGIUM\n"
 
@@ -111,12 +111,12 @@ msgid "Channels"
 msgstr "Sortie"
 
 #: src/adplug/adplug-xmms.cc:303 src/filewriter/mp3.c:934
-#: src/mpg123/mpg123.c:175 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:174 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Mono"
 
 #: src/adplug/adplug-xmms.cc:308 src/filewriter/mp3.c:929
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:175
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:174
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Stéréo"
@@ -690,10 +690,10 @@ msgid ""
 "Backend written by Giacomo Lozito."
 msgstr ""
 "Ce système envoie les événements MIDI à l'ensemble des ports du séquenceur « "
-"ALSA » que l'utilisateur a spécifié. L'interface du séquenceur « ALSA » offre "
-"des possibilités variées : elle peut fournir des ports aux synthétiseurs "
-"matériels des cartes sons (« emu10k1 », par exemple), mais aussi aux "
-"synthétiseurs logiciels, aux périphériques externes, etc.\n"
+"ALSA » que l'utilisateur a spécifié. L'interface du séquenceur « ALSA » "
+"offre des possibilités variées : elle peut fournir des ports aux "
+"synthétiseurs matériels des cartes sons (« emu10k1 », par exemple), mais "
+"aussi aux synthétiseurs logiciels, aux périphériques externes, etc.\n"
 "Ce système de sortie ne produit pas de flux audio : les événements MIDI sont "
 "gérés directement par les périphériques et les applications associés aux "
 "ports « ALSA ». Par exemple, les événements MIDI envoyés au synthétiseur "
@@ -776,8 +776,8 @@ msgid ""
 "synthesizer ports, you'll probably want to select the Synth control here."
 msgstr ""
 "* Choix du périphérique audio « ALSA » *\n"
-"Le système de sortie « ALSA » émet directement via « ALSA » : il n'utilise pas "
-"les modules d'effets du lecteur, ni les modules de sortie. Lors de la "
+"Le système de sortie « ALSA » émet directement via « ALSA » : il n'utilise "
+"pas les modules d'effets du lecteur, ni les modules de sortie. Lors de la "
 "lecture, le curseur du volume du lecteur opérera sur le contrôleur du "
 "mélangeur audio que vous avez sélectionné ici. Si vous utilisez les ports "
 "d'un synthétiseur à tables d'ondes, vous voudrez probabement choisir le "
@@ -792,8 +792,8 @@ msgid ""
 "synthesizer ports, you'll probably want to select the Synth control here."
 msgstr ""
 "* Choix du canal du mélangeur audio « ALSA » *\n"
-"Le système de sortie « ALSA » émet directement via « ALSA » : il n'utilise pas "
-"les modules d'effets du lecteur, ni les modules de sortie. Lors de la "
+"Le système de sortie « ALSA » émet directement via « ALSA » : il n'utilise "
+"pas les modules d'effets du lecteur, ni les modules de sortie. Lors de la "
 "lecture, le curseur du volume du lecteur opérera sur le canal du mélangeur "
 "audio que vous avez sélectionné ici. Si vous utilisez les ports d'un "
 "synthétiseur à tables d'ondes, vous voudrez probabement choisir le canal du "
@@ -1179,10 +1179,10 @@ msgid ""
 msgstr ""
 "* Effet de choeur du synthétiseur *\n"
 "Extrait de la documentation de « FluidSynth » (traduction) : \"Lorsque "
-"l'option « Oui » est cochée, le module d'effet de choeur est activé. Veuillez "
-"noter que, lorsque le module d'effet de choeur est actif, la quantité de "
-"signaux envoyés au module dépend du générateur d'« envoi d'effet de choeur » "
-"défini dans le fichier « SoundFont ».\""
+"l'option « Oui » est cochée, le module d'effet de choeur est activé. "
+"Veuillez noter que, lorsque le module d'effet de choeur est actif, la "
+"quantité de signaux envoyés au module dépend du générateur d'« envoi d'effet "
+"de choeur » défini dans le fichier « SoundFont ».\""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:681
 #: src/amidi-plug/i_configure-fluidsynth.c:685
@@ -1397,7 +1397,8 @@ msgstr "Mode « pause » activé"
 
 #: src/aosd/aosd_trigger.c:95
 msgid "Triggers OSD when playback is paused."
-msgstr "Déclenche la fonction « OSD » lorsque la lecture est en mode « pause »."
+msgstr ""
+"Déclenche la fonction « OSD » lorsque la lecture est en mode « pause »."
 
 #: src/aosd/aosd_trigger.c:99
 msgid "Pause Off"
@@ -1406,7 +1407,8 @@ msgstr "Mode « pause » désactivé"
 #: src/aosd/aosd_trigger.c:100
 msgid "Triggers OSD when playback is unpaused."
 msgstr ""
-"Déclenche la fonction « OSD » lorsque la lecture n'est plus en mode « pause »."
+"Déclenche la fonction « OSD » lorsque la lecture n'est plus en mode « pause "
+"»."
 
 #: src/aosd/aosd_ui.c:168
 msgid "Placement"
@@ -1700,7 +1702,8 @@ msgstr ""
 "\n"
 "Les boutons du périphérique audio seront reconnus comme des touches "
 "multimédia\n"
-"et pourront être configurés grâce au module « Global Hotkey » d'Audacious ou\n"
+"et pourront être configurés grâce au module « Global Hotkey » d'Audacious "
+"ou\n"
 "aux outils que propose le gestionnaire de fenêtres de votre système.\n"
 
 #: src/bluetooth/gui.c:148
@@ -2101,9 +2104,9 @@ msgid ""
 "event-device-plugin: unable to open device file %s , skipping this device; "
 "check that the file exists and that you have read permission for it\n"
 msgstr ""
-"Module « Event-Device » : impossible d'ouvrir le fichier de périphérique %s ; "
-"le périphérique sera ignoré...Veuillez vérifier que le fichier existe et que "
-"disposez des permissions de lecture requises.\n"
+"Module « Event-Device » : impossible d'ouvrir le fichier de périphérique "
+"%s ; le périphérique sera ignoré...Veuillez vérifier que le fichier existe "
+"et que disposez des permissions de lecture requises.\n"
 
 #: src/evdev-plug/ed_internals.c:103
 #, c-format
@@ -2152,8 +2155,8 @@ msgid ""
 "event-device-plugin: unable to load config file %s , default settings will "
 "be used.\n"
 msgstr ""
-"Module « Event-Device » : impossible de charger le fichier de configuration %"
-"s ; les paramètres par défaut seront utilisés...\n"
+"Module « Event-Device » : impossible de charger le fichier de configuration "
+"%s ; les paramètres par défaut seront utilisés...\n"
 
 #: src/evdev-plug/ed_internals.c:535
 #, c-format
@@ -2161,8 +2164,8 @@ msgid ""
 "event-device-plugin: incomplete information in config file for device \"%s"
 "\" , skipping.\n"
 msgstr ""
-"Module « Event-Device » : information incomplète au sujet du périphérique \"%s"
-"\" ; le périphérique sera ignoré...\n"
+"Module « Event-Device » : information incomplète au sujet du périphérique "
+"\"%s\" ; le périphérique sera ignoré...\n"
 
 #: src/evdev-plug/ed_internals.c:604 src/evdev-plug/ed_internals.c:936
 #, c-format
@@ -2396,16 +2399,14 @@ msgstr ""
 "Écrit par Giacomo Lozito < james@develia.org >\n"
 "\n"
 
-#: src/ffaudio/ffaudio-core.c:663
-#, c-format
+#: src/ffaudio/ffaudio-core.c:662
+#, fuzzy, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
 "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
 "\n"
 "FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
-"\n"
-"Supported formats: %s\n"
 "\n"
 "Audacious plugin by:\n"
 "            William Pitcock <nenolod@nenolod.net>,\n"
@@ -2426,7 +2427,7 @@ msgstr ""
 "William Pitcock      <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:679
+#: src/ffaudio/ffaudio-core.c:675
 msgid "About FFaudio Plugin"
 msgstr "À propos du module « FFaudio »"
 
@@ -2458,12 +2459,14 @@ msgstr ""
 "Ceci est une traduction non officielle de la « GNU General Public License »\n"
 "en français. Elle n'a pas été publiée par la « Free Software Foundation »,\n"
 "et ne détermine pas les termes de distribution pour les logiciels qui\n"
-"utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL »\n"
+"utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL "
+"»\n"
 "en a le droit. Cependant, nous espérons que cette traduction aidera les\n"
 "francophones à mieux comprendre la « GNU GPL ».\n"
 "\n"
 "Ce programme est un logiciel libre : vous pouvez le redistribuer et/ou le\n"
-"modifier selon les termes de la « Licence Publique Générale GNU » (GNU GPL),\n"
+"modifier selon les termes de la « Licence Publique Générale GNU » (GNU "
+"GPL),\n"
 "telle que publiée par la « Free Software Foundation », soit la version 2 de\n"
 "la Licence, soit (à votre convenance) toute version postérieure.\n"
 "\n"
@@ -2826,7 +2829,7 @@ msgstr "Interface gnt"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2165
+#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2166
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -3320,8 +3323,8 @@ msgstr ""
 "\n"
 "Ont contribué :\n"
 "\n"
-"Vladimir Paskov     <vlado.paskov@gmail.com> (Droits d'utilisation 2006-"
-"2007)\n"
+"Vladimir Paskov     <vlado.paskov@gmail.com> (Droits d'utilisation "
+"2006-2007)\n"
 "Ville Syrjälä            <syrjala@sci.fi>                    (Droits "
 "d'utilisation 2000-2002)\n"
 "Bryn Davies           <curious@ihug.com.au>\n"
@@ -3628,7 +3631,7 @@ msgstr "Portée"
 msgid "Bass Boost"
 msgstr "Amplification des basses"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:175
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:174
 msgid "Surround"
 msgstr "Son d'ambiance"
 
@@ -3643,6 +3646,7 @@ msgstr ""
 "(des clics et des bruits secs assez agaçants) !"
 
 #: src/modplug/gui/interface.cxx:567
+#: src/skins/ui_skinned_equalizer_slider.c:435
 msgid "Preamp"
 msgstr "Préamplification"
 
@@ -3881,12 +3885,14 @@ msgstr ""
 "Ceci est une traduction non officielle de la « GNU General Public License »\n"
 "en français. Elle n'a pas été publiée par la « Free Software Foundation »,\n"
 "et ne détermine pas les termes de distribution pour les logiciels qui\n"
-"utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL »\n"
+"utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL "
+"»\n"
 "en a le droit. Cependant, nous espérons que cette traduction aidera les\n"
 "francophones à mieux comprendre la « GNU GPL ».\n"
 "\n"
 "Ce programme est un logiciel libre : vous pouvez le redistribuer et/ou le\n"
-"modifier selon les termes de la « Licence Publique Générale GNU » (GNU GPL),\n"
+"modifier selon les termes de la « Licence Publique Générale GNU » (GNU "
+"GPL),\n"
 "telle que publiée par la « Free Software Foundation », soit la version 2 de\n"
 "la Licence, soit (à votre convenance) toute version postérieure.\n"
 "\n"
@@ -3971,12 +3977,14 @@ msgstr ""
 "Ceci est une traduction non officielle de la « GNU General Public License »\n"
 "en français. Elle n'a pas été publiée par la « Free Software Foundation »,\n"
 "et ne détermine pas les termes de distribution pour les logiciels qui\n"
-"utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL »\n"
+"utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL "
+"»\n"
 "en a le droit. Cependant, nous espérons que cette traduction aidera les\n"
 "francophones à mieux comprendre la « GNU GPL ».\n"
 "\n"
 "Ce programme est un logiciel libre : vous pouvez le redistribuer et/ou le\n"
-"modifier selon les termes de la « Licence Publique Générale GNU » (GNU GPL),\n"
+"modifier selon les termes de la « Licence Publique Générale GNU » (GNU "
+"GPL),\n"
 "telle que publiée par la « Free Software Foundation », soit la version 2 de\n"
 "la Licence, soit (à votre convenance) toute version postérieure.\n"
 "\n"
@@ -4019,12 +4027,14 @@ msgstr ""
 "Ceci est une traduction non officielle de la « GNU General Public License »\n"
 "en français. Elle n'a pas été publiée par la « Free Software Foundation »,\n"
 "et ne détermine pas les termes de distribution pour les logiciels qui\n"
-"utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL »\n"
+"utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL "
+"»\n"
 "en a le droit. Cependant, nous espérons que cette traduction aidera les\n"
 "francophones à mieux comprendre la « GNU GPL ».\n"
 "\n"
 "Ce programme est un logiciel libre : vous pouvez le redistribuer et/ou le\n"
-"modifier selon les termes de la « Licence Publique Générale GNU » (GNU GPL),\n"
+"modifier selon les termes de la « Licence Publique Générale GNU » (GNU "
+"GPL),\n"
 "telle que publiée par la « Free Software Foundation », soit la version 2 de\n"
 "la Licence, soit (à votre convenance) toute version postérieure.\n"
 "\n"
@@ -4226,10 +4236,10 @@ msgid ""
 "SID-chip model. Otherwise the preferred SID model is determined from the "
 "file (if PSIDv2NG type) or if not available, this setting is used."
 msgstr ""
-"Activée, cette option « force » le moteur de l'émulation à utiliser le modèle "
-"de puce « SID » sélectionné. Dans le cas contraire, le modèle « SID » adéquat "
-"est déterminé à partir du fichier (s'il est du type « PSIDv2NG »). Si "
-"l'information concernant le modèle n'est pas disponible, c'est le réglage "
+"Activée, cette option « force » le moteur de l'émulation à utiliser le "
+"modèle de puce « SID » sélectionné. Dans le cas contraire, le modèle « SID » "
+"adéquat est déterminé à partir du fichier (s'il est du type « PSIDv2NG »). "
+"Si l'information concernant le modèle n'est pas disponible, c'est le réglage "
 "choisi via cette option qui sera utilisé."
 
 #: src/sid/xs_interface.c:490
@@ -4246,8 +4256,8 @@ msgstr ""
 "'MOS/CSG 6581 est la toute première version majeure de la puce « SID ». Elle "
 "diffère du modèle '8580' de plusieurs manières : elle dispose d'un filtre "
 "plus complet (qui, à cause d'une erreur de conception, n'est jamais le même, "
-"d'un modèle de puce « SID » à l'autre) et présente le « problème d'ajustement "
-"du volume » qui permet la lecture des échantillons digitaux."
+"d'un modèle de puce « SID » à l'autre) et présente le « problème "
+"d'ajustement du volume » qui permet la lecture des échantillons digitaux."
 
 #: src/sid/xs_interface.c:498
 msgid "MOS 8580"
@@ -4266,9 +4276,9 @@ msgid ""
 "Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most "
 "cases, though."
 msgstr ""
-"Utilise la bibliothèque « libSIDPlay 1.x ». L'émulation est plus rapide, mais "
-"moins précise (toutefois, elle offre une bonne restitution, dans la plupart "
-"des cas)."
+"Utilise la bibliothèque « libSIDPlay 1.x ». L'émulation est plus rapide, "
+"mais moins précise (toutefois, elle offre une bonne restitution, dans la "
+"plupart des cas)."
 
 #: src/sid/xs_interface.c:530
 msgid "SIDPlay 2 (cycle-based)"
@@ -4321,8 +4331,9 @@ msgid ""
 "frame-exact. The result is lower CPU usage, but worse accuracy."
 msgstr ""
 "Ce réglage peut être utilisé pour activer le « mode d'optimisation » de la "
-"bibliothèque « libSIDPlay2 ». Ce mode réduit l'émulation de « synchronisation "
-"du cycle » à quelque chose équivalant à « synchronisation de la trame »."
+"bibliothèque « libSIDPlay2 ». Ce mode réduit l'émulation de « "
+"synchronisation du cycle » à quelque chose équivalant à « synchronisation de "
+"la trame »."
 
 #: src/sid/xs_interface.c:617
 msgid "reSID-emulation"
@@ -4410,8 +4421,8 @@ msgid ""
 "authentic at all if they utilize the filter."
 msgstr ""
 "Cette option active l'émulation des filtres « SID ». Le filtre constitue "
-"l'élément' essentiel de la qualité du son « SID », mais une émulation précise "
-"peut utiliser beaucoup de ressources du processeur. Cependant, si "
+"l'élément' essentiel de la qualité du son « SID », mais une émulation "
+"précise peut utiliser beaucoup de ressources du processeur. Cependant, si "
 "l'émulation est désactivée, alors qu'un module audio a été composé avec les "
 "fonctions d'un filtre, le son ne sera pas restitué de manière authentique."
 
@@ -4639,10 +4650,10 @@ msgid ""
 "from STIL database when HVSC SIDs are played."
 msgstr ""
 "Si cette option est activée (et que la base de données ainsi que les "
-"paramètres « HVSC » ci-dessous sont correctement configurés), « Audacious-SID "
-"» utilisera et affichera des informations supplémentaires, à partir de la "
-"base de données « STIL », lorsque des modules audio « SID » de la collection « "
-"HVSC » seront lus."
+"paramètres « HVSC » ci-dessous sont correctement configurés), « Audacious-"
+"SID » utilisera et affichera des informations supplémentaires, à partir de "
+"la base de données « STIL », lorsque des modules audio « SID » de la "
+"collection « HVSC » seront lus."
 
 #: src/sid/xs_interface.c:1190
 msgid "STIL file:"
@@ -4760,11 +4771,11 @@ msgstr "Oui"
 msgid "No"
 msgstr "Aucun"
 
-#: src/skins/plugin.c:177
+#: src/skins/plugin.c:179
 msgid "About Skinned GUI"
 msgstr "À propos de l'interface à thème"
 
-#: src/skins/plugin.c:178
+#: src/skins/plugin.c:180
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -4772,35 +4783,35 @@ msgstr ""
 "Droits d'utilisation : Tomasz Moń <desowin@gmail.com> (2008)\n"
 "\n"
 
-#: src/skins/plugin.c:194
+#: src/skins/plugin.c:196
 msgid "Skinned Interface"
 msgstr "Interface à thème"
 
-#: src/skins/skins_cfg.c:317
+#: src/skins/skins_cfg.c:316
 msgid "_Player:"
 msgstr "F_enêtre principale"
 
-#: src/skins/skins_cfg.c:317
+#: src/skins/skins_cfg.c:316
 msgid "Select main player window font:"
 msgstr "Police de la fenêtre principale du lecteur"
 
-#: src/skins/skins_cfg.c:318
+#: src/skins/skins_cfg.c:317
 msgid "_Playlist:"
 msgstr "_Liste de lecture"
 
-#: src/skins/skins_cfg.c:318
+#: src/skins/skins_cfg.c:317
 msgid "Select playlist font:"
 msgstr "Police de la liste de lecture"
 
-#: src/skins/skins_cfg.c:322
+#: src/skins/skins_cfg.c:321
 msgid "<b>_Fonts</b>"
 msgstr "<b>_Polices</b>"
 
-#: src/skins/skins_cfg.c:324
+#: src/skins/skins_cfg.c:323
 msgid "Use Bitmap fonts if available"
 msgstr "Utiliser les polices matricielles (si elles sont disponibles)"
 
-#: src/skins/skins_cfg.c:324
+#: src/skins/skins_cfg.c:323
 msgid ""
 "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
 "strings."
@@ -4809,29 +4820,29 @@ msgstr ""
 "sont disponibles. Ces polices ne gèrent pas la norme « Unicode » (caractères "
 "accentués)."
 
-#: src/skins/skins_cfg.c:325
+#: src/skins/skins_cfg.c:324
 msgid "<b>_Miscellaneous</b>"
 msgstr "<b>_Divers</b>"
 
-#: src/skins/skins_cfg.c:326
+#: src/skins/skins_cfg.c:325
 msgid "Show separators in playlist"
 msgstr "Afficher les barres de séparation dans la liste de lecture"
 
-#: src/skins/skins_cfg.c:328
+#: src/skins/skins_cfg.c:327
 msgid "Show window manager decoration"
 msgstr "Montrer la décoration du gestionnaire de fenêtres"
 
-#: src/skins/skins_cfg.c:329
+#: src/skins/skins_cfg.c:328
 msgid "This enables the window manager to show decorations for windows."
 msgstr ""
 "Cette option affiche les ornements propres au gestionnaire de fenêtres du "
 "système."
 
-#: src/skins/skins_cfg.c:330
+#: src/skins/skins_cfg.c:329
 msgid "Use two-way text scroller"
 msgstr "Utiliser le défilement de texte bidirectionnel"
 
-#: src/skins/skins_cfg.c:331
+#: src/skins/skins_cfg.c:330
 msgid ""
 "If selected, the file information text in the main window will scroll back "
 "and forth. If not selected, the text will only scroll in one direction."
@@ -4840,19 +4851,19 @@ msgstr ""
 "défilera dans la fenêtre principale, vers la gauche et vers la droite. "
 "Sinon, le texte défilera dans une seule direction."
 
-#: src/skins/skins_cfg.c:332
+#: src/skins/skins_cfg.c:331
 msgid "Disable inline gtk theme"
 msgstr "Ne pas appliquer aux menus le style « GTK » du thème sélectionné"
 
-#: src/skins/skins_cfg.c:334
+#: src/skins/skins_cfg.c:333
 msgid "Random skin on play"
 msgstr "Changer de thème de manière aléatoire, lors de la lecture"
 
-#: src/skins/skins_cfg.c:335
+#: src/skins/skins_cfg.c:334
 msgid "Allow loading incomplete skins"
 msgstr "Permettre le chargement des thèmes incomplets"
 
-#: src/skins/skins_cfg.c:336
+#: src/skins/skins_cfg.c:335
 msgid ""
 "If selected, audacious won't refuse loading broken skins. Use only if your "
 "favourite skin doesn't work"
@@ -4861,11 +4872,11 @@ msgstr ""
 "corrompus. N'utilisez cette option que si votre thème préféré ne fonctionne "
 "pas autrement."
 
-#: src/skins/skins_cfg.c:402
+#: src/skins/skins_cfg.c:401
 msgid "Color Adjustment"
 msgstr "Ajustement des couleurs"
 
-#: src/skins/skins_cfg.c:408
+#: src/skins/skins_cfg.c:407
 msgid ""
 "Audacious allows you to alter the color balance of the skinned UI. The "
 "sliders below will allow you to do this."
@@ -4873,27 +4884,32 @@ msgstr ""
 "Audacious permet de modifier la balance des couleurs de l'interface, à "
 "l'aide des curseurs ci-dessous."
 
-#: src/skins/skins_cfg.c:418
+#: src/skins/skins_cfg.c:417
 msgid "Blue"
 msgstr "Bleu"
 
-#: src/skins/skins_cfg.c:425
+#: src/skins/skins_cfg.c:424
 msgid "Green"
 msgstr "Vert"
 
-#: src/skins/skins_cfg.c:432
+#: src/skins/skins_cfg.c:431
 msgid "Red"
 msgstr "Rouge"
 
-#: src/skins/skins_cfg.c:573
+#: src/skins/skins_cfg.c:569
 msgid "<b>_Skin</b>"
 msgstr "<b>_Thème</b>"
 
-#: src/skins/ui_equalizer.c:452
+#: src/skins/skins_cfg.c:574
+#, fuzzy
+msgid "Color adjustment ..."
+msgstr "Ajustement des couleurs"
+
+#: src/skins/ui_equalizer.c:463
 msgid "Audacious Equalizer"
 msgstr "Égaliseur d'Audacious"
 
-#: src/skins/ui_equalizer.c:978
+#: src/skins/ui_equalizer.c:991
 msgid "Presets"
 msgstr "Préréglages"
 
@@ -5001,48 +5017,48 @@ msgstr "Balance : centre"
 msgid "Balance: %d%% right"
 msgstr "Balance : %d%% droite"
 
-#: src/skins/ui_main.c:1617
+#: src/skins/ui_main.c:1618
 msgid "Options Menu"
 msgstr "Menu des options"
 
-#: src/skins/ui_main.c:1621
+#: src/skins/ui_main.c:1622
 msgid "Disable 'Always On Top'"
 msgstr "Annuler « Toujours au premier plan »"
 
-#: src/skins/ui_main.c:1623
+#: src/skins/ui_main.c:1624
 msgid "Enable 'Always On Top'"
 msgstr "Activer « Toujours au premier plan »"
 
-#: src/skins/ui_main.c:1626
+#: src/skins/ui_main.c:1627
 msgid "File Info Box"
 msgstr "Informations sur le fichier"
 
-#: src/skins/ui_main.c:1630
+#: src/skins/ui_main.c:1631
 msgid "Disable 'GUI Scaling'"
 msgstr "Annuler « Agrandissement de l'interface »"
 
-#: src/skins/ui_main.c:1632
+#: src/skins/ui_main.c:1633
 msgid "Enable 'GUI Scaling'"
 msgstr "Activer « Agrandissement de l'interface »"
 
-#: src/skins/ui_main.c:1635
+#: src/skins/ui_main.c:1636
 msgid "Visualization Menu"
 msgstr "Menu des effets visuels"
 
-#: src/skins/ui_main.c:2347
+#: src/skins/ui_main.c:2348
 msgid "Single mode."
 msgstr ""
 
-#: src/skins/ui_main.c:2349
+#: src/skins/ui_main.c:2350
 #, fuzzy
 msgid "Playlist mode."
 msgstr "Liste de lecture"
 
-#: src/skins/ui_main.c:2373
+#: src/skins/ui_main.c:2374
 msgid "Stopping after song."
 msgstr "Arrêter après le titre en cours de lecture."
 
-#: src/skins/ui_main.c:2375
+#: src/skins/ui_main.c:2376
 msgid "Not stopping after song."
 msgstr "Ne pas arrêter après le titre en cours de lecture."
 
@@ -5526,48 +5542,51 @@ msgid "%s (%d of %d)"
 msgstr "%s (%d sur %d)"
 
 #: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "PREAMP"
-msgstr "Amplification "
+msgid "31 Hz"
+msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "60HZ"
-msgstr "60HZ"
-
-#: src/skins/ui_skinned_equalizer_slider.c:435
-msgid "170HZ"
-msgstr "170HZ"
+msgid "63 Hz"
+msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "310HZ"
-msgstr "310HZ"
+msgid "125 Hz"
+msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "600HZ"
-msgstr "600HZ"
+#, fuzzy
+msgid "250 Hz"
+msgstr "22050 Hz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-msgid "1KHZ"
-msgstr "1KHZ"
+#, fuzzy
+msgid "500 Hz"
+msgstr "44100 Hz"
+
+#: src/skins/ui_skinned_equalizer_slider.c:436
+#, fuzzy
+msgid "1 kHz"
+msgstr "96 kHz"
+
+#: src/skins/ui_skinned_equalizer_slider.c:436
+#, fuzzy
+msgid "2 kHz"
+msgstr "22 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "3KHZ"
-msgstr "3KHZ"
+#, fuzzy
+msgid "4 kHz"
+msgstr "44 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "6KHZ"
-msgstr "6KHZ"
+#, fuzzy
+msgid "8 kHz"
+msgstr "48 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-msgid "12KHZ"
-msgstr "12KHZ"
-
-#: src/skins/ui_skinned_equalizer_slider.c:438
-msgid "14KHZ"
-msgstr "14KHZ"
-
-#: src/skins/ui_skinned_equalizer_slider.c:438
-msgid "16KHZ"
-msgstr "16KHZ"
+#, fuzzy
+msgid "16 kHz"
+msgstr "96 kHz"
 
 #: src/skins/ui_skinselector.c:179
 msgid "Archived Winamp 2.x skin"
@@ -5616,12 +5635,14 @@ msgstr ""
 "Ceci est une traduction non officielle de la « GNU General Public License »\n"
 "en français. Elle n'a pas été publiée par la « Free Software Foundation »,\n"
 "et ne détermine pas les termes de distribution pour les logiciels qui\n"
-"utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL »\n"
+"utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL "
+"»\n"
 "en a le droit. Cependant, nous espérons que cette traduction aidera les\n"
 "francophones à mieux comprendre la « GNU GPL ».\n"
 "\n"
 "Ce programme est un logiciel libre : vous pouvez le redistribuer et/ou le\n"
-"modifier selon les termes de la « Licence Publique Générale GNU » (GNU GPL),\n"
+"modifier selon les termes de la « Licence Publique Générale GNU » (GNU "
+"GPL),\n"
 "telle que publiée par la « Free Software Foundation », soit la version 2 de\n"
 "la Licence, soit (à votre convenance) toute version postérieure.\n"
 "\n"
@@ -5853,8 +5874,8 @@ msgstr ""
 "flux en ligne\n"
 "les plus connus.\n"
 "\n"
-"Remerciements cordiaux aux développeurs de « Streamtuner » <http://www.nongnu."
-"org/streamtuner>,\n"
+"Remerciements cordiaux aux développeurs de « Streamtuner » <http://www."
+"nongnu.org/streamtuner>,\n"
 "et, bien entendu, à toute la communauté d'Audacious.\n"
 "\n"
 "Je remercie également Tony Vroon de m'avoir conseillé et soutenu, à "
@@ -6041,6 +6062,39 @@ msgstr ""
 "Vous pouvez visiter le site « Wavpack » à l'adresse suivante :\n"
 "http://www.wavpack.com/\n"
 
+#~ msgid "PREAMP"
+#~ msgstr "Amplification "
+
+#~ msgid "60HZ"
+#~ msgstr "60HZ"
+
+#~ msgid "170HZ"
+#~ msgstr "170HZ"
+
+#~ msgid "310HZ"
+#~ msgstr "310HZ"
+
+#~ msgid "600HZ"
+#~ msgstr "600HZ"
+
+#~ msgid "1KHZ"
+#~ msgstr "1KHZ"
+
+#~ msgid "3KHZ"
+#~ msgstr "3KHZ"
+
+#~ msgid "6KHZ"
+#~ msgstr "6KHZ"
+
+#~ msgid "12KHZ"
+#~ msgstr "12KHZ"
+
+#~ msgid "14KHZ"
+#~ msgstr "14KHZ"
+
+#~ msgid "16KHZ"
+#~ msgstr "16KHZ"
+
 #~ msgid "Audacious standard menu"
 #~ msgstr "Menu standard d'Audacious"
 
@@ -6065,8 +6119,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Module « EsounD » pour Audacious\n"
@@ -6076,8 +6130,8 @@ msgstr ""
 #~ "en français. Elle n'a pas été publiée par la « Free Software Foundation "
 #~ "»,\n"
 #~ "et ne détermine pas les termes de distribution pour les logiciels qui\n"
-#~ "utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL "
-#~ "»\n"
+#~ "utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU "
+#~ "GPL »\n"
 #~ "en a le droit. Cependant, nous espérons que cette traduction aidera les\n"
 #~ "francophones à mieux comprendre la « GNU GPL ».\n"
 #~ "\n"
@@ -6097,7 +6151,8 @@ msgstr ""
 #~ "Publique\n"
 #~ "Générale GNU » (GNU GPL) pour plus de détails.\n"
 #~ "\n"
-#~ "Vous devriez avoir reçu une copie de la « Licence Publique Générale GNU »\n"
+#~ "Vous devriez avoir reçu une copie de la « Licence Publique Générale GNU "
+#~ "»\n"
 #~ "(GNU GPL) avec ce programme. Dans le cas contraire, vous pouvez "
 #~ "consulter\n"
 #~ "la Licence sur la page <http://www.gnu.org/licenses/> ou écrire à la\n"
@@ -6277,8 +6332,8 @@ msgstr ""
 #~ "lorsque la fin du dernier morceau de la liste de lecture est atteinte\n"
 #~ "\n"
 #~ "* Fonction « avancer/reculer » (dans un morceau) * :\n"
-#~ "lorsque la fonction « avancer/reculer » est utilisée sur le titre en cours "
-#~ "de lecture"
+#~ "lorsque la fonction « avancer/reculer » est utilisée sur le titre en "
+#~ "cours de lecture"
 
 #~ msgid "Crossfade/Transition type:"
 #~ msgstr "Type de fondu/transition :"
@@ -6761,8 +6816,8 @@ msgstr ""
 #~ "opened or closed\n"
 #~ "Default: Off"
 #~ msgstr ""
-#~ "Maintient le périphérique de sortie ouvert tout le temps, même si « XMMS » "
-#~ "est arrêté. Cette option permet d'éviter les clics produits par les "
+#~ "Maintient le périphérique de sortie ouvert tout le temps, même si « XMMS "
+#~ "» est arrêté. Cette option permet d'éviter les clics produits par les "
 #~ "cartes son, lorsque le périphérique est ouvert ou fermé.\n"
 #~ "Comportement par défaut : option désactivée"
 
@@ -6858,8 +6913,8 @@ msgstr ""
 #~ "en français. Elle n'a pas été publiée par la « Free Software Foundation "
 #~ "»,\n"
 #~ "et ne détermine pas les termes de distribution pour les logiciels qui\n"
-#~ "utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL "
-#~ "»\n"
+#~ "utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU "
+#~ "GPL »\n"
 #~ "en a le droit. Cependant, nous espérons que cette traduction aidera les\n"
 #~ "francophones à mieux comprendre la « GNU GPL ».\n"
 #~ "\n"
@@ -6879,7 +6934,8 @@ msgstr ""
 #~ "Publique\n"
 #~ "Générale GNU » (GNU GPL) pour plus de détails.\n"
 #~ "\n"
-#~ "Vous devriez avoir reçu une copie de la « Licence Publique Générale GNU »\n"
+#~ "Vous devriez avoir reçu une copie de la « Licence Publique Générale GNU "
+#~ "»\n"
 #~ "(GNU GPL) avec ce programme. Dans le cas contraire, vous pouvez "
 #~ "consulter\n"
 #~ "la Licence sur la page <http://www.gnu.org/licenses/> ou écrire à la\n"
@@ -6917,8 +6973,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA."
 #~ msgstr ""
 #~ "Module « Icecast »\n"
@@ -6928,8 +6984,8 @@ msgstr ""
 #~ "en français. Elle n'a pas été publiée par la « Free Software Foundation "
 #~ "»,\n"
 #~ "et ne détermine pas les termes de distribution pour les logiciels qui\n"
-#~ "utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL "
-#~ "»\n"
+#~ "utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU "
+#~ "GPL »\n"
 #~ "en a le droit. Cependant, nous espérons que cette traduction aidera les\n"
 #~ "francophones à mieux comprendre la « GNU GPL ».\n"
 #~ "\n"
@@ -6949,7 +7005,8 @@ msgstr ""
 #~ "Publique\n"
 #~ "Générale GNU » (GNU GPL) pour plus de détails.\n"
 #~ "\n"
-#~ "Vous devriez avoir reçu une copie de la « Licence Publique Générale GNU »\n"
+#~ "Vous devriez avoir reçu une copie de la « Licence Publique Générale GNU "
+#~ "»\n"
 #~ "(GNU GPL) avec ce programme. Dans le cas contraire, vous pouvez "
 #~ "consulter\n"
 #~ "la Licence sur la page <http://www.gnu.org/licenses/> ou écrire à la\n"
@@ -7024,8 +7081,8 @@ msgstr ""
 #~ "settings.\n"
 #~ "The default value is \"source\""
 #~ msgstr ""
-#~ "Nom d'utilisateur de la source « Icecast » relative au flux (il dépend des "
-#~ "paramètres du serveur).\n"
+#~ "Nom d'utilisateur de la source « Icecast » relative au flux (il dépend "
+#~ "des paramètres du serveur).\n"
 #~ "La valeur par défaut est \"source\"."
 
 #~ msgid "Icecast source user password"
@@ -7161,8 +7218,8 @@ msgstr ""
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
-#~ "1301,\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
 #~ "USA.\n"
 #~ "\n"
 #~ "Note: For any issues regarding this plugin (including patches and \n"
@@ -7181,8 +7238,8 @@ msgstr ""
 #~ "en français. Elle n'a pas été publiée par la « Free Software Foundation "
 #~ "»,\n"
 #~ "et ne détermine pas les termes de distribution pour les logiciels qui\n"
-#~ "utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU GPL "
-#~ "»\n"
+#~ "utilisent la « GNU GPL » -- seul le texte anglais original de la « GNU "
+#~ "GPL »\n"
 #~ "en a le droit. Cependant, nous espérons que cette traduction aidera les\n"
 #~ "francophones à mieux comprendre la « GNU GPL ».\n"
 #~ "\n"
@@ -7202,7 +7259,8 @@ msgstr ""
 #~ "Publique\n"
 #~ "Générale GNU » (GNU GPL) pour plus de détails.\n"
 #~ "\n"
-#~ "Vous devriez avoir reçu une copie de la « Licence Publique Générale GNU »\n"
+#~ "Vous devriez avoir reçu une copie de la « Licence Publique Générale GNU "
+#~ "»\n"
 #~ "(GNU GPL) avec ce programme. Dans le cas contraire, vous pouvez "
 #~ "consulter\n"
 #~ "la Licence sur la page <http://www.gnu.org/licenses/> ou écrire à la\n"
