@@ -3112,11 +3112,12 @@ msgid "LyricWiki"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:337
-#, fuzzy
 msgid ""
 "\n"
 "No lyrics were found."
-msgstr "Keine Geräte gefunden!"
+msgstr ""
+"\n"
+"Keine Liedtexte gefunden."
 
 #: src/metronom/metronom.c:90
 msgid "About Metronom"
