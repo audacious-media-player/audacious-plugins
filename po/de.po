@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
 "POT-Creation-Date: 2010-08-03 17:55-0400\n"
-"PO-Revision-Date: 2010-07-01 21:54+0100\n"
+"PO-Revision-Date: 2010-08-04 14:51+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
 "Language: \n"
@@ -2643,9 +2643,8 @@ msgid "Remove selected entries from the playlist."
 msgstr "Ausgewählte Wiedergabelisteneinträge entfernen."
 
 #: src/gtkui/ui_manager.c:131
-#, fuzzy
 msgid "Sort"
-msgstr "Port"
+msgstr "Sortieren"
 
 #: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:330
 #: src/skins/ui_manager.c:360
@@ -2668,14 +2667,12 @@ msgid "By Album"
 msgstr "Nach Album"
 
 #: src/gtkui/ui_manager.c:140
-#, fuzzy
 msgid "By File Path"
-msgstr "Nach Dateinamen"
+msgstr "Nach Dateipfad"
 
 #: src/gtkui/ui_manager.c:142
-#, fuzzy
 msgid "Reverse Order"
-msgstr "Vertauschte Balance"
+msgstr "Vertausche Anordnung"
 
 #: src/gtkui/ui_manager.c:147
 msgid "Output"
@@ -2694,9 +2691,8 @@ msgid "View"
 msgstr "Ansicht"
 
 #: src/gtkui/ui_manager.c:157 src/skins/ui_manager.c:233
-#, fuzzy
 msgid "Interface"
-msgstr "GNT Interface"
+msgstr "Interface"
 
 #: src/gtkui/ui_manager.c:164 src/skins/ui_manager.c:370
 msgid "File"
@@ -2822,9 +2818,9 @@ msgid "stereo"
 msgstr "Stereo"
 
 #: src/gtkui/ui_statusbar.c:97
-#, fuzzy, c-format
+#, c-format
 msgid "%d channels"
-msgstr "Kanäle"
+msgstr "%d Kanäle"
 
 #: src/gtkui/ui_statusbar.c:101
 #, c-format
@@ -3115,9 +3111,7 @@ msgstr ""
 msgid ""
 "\n"
 "No lyrics were found."
-msgstr ""
-"\n"
-"Keine Liedtexte gefunden."
+msgstr "\nKeine Liedtexte gefunden."
 
 #: src/metronom/metronom.c:90
 msgid "About Metronom"
@@ -3603,9 +3597,8 @@ msgid "Password:"
 msgstr "Passwort:"
 
 #: src/scrobbler/configure.c:210
-#, fuzzy
 msgid "Scrobbler URL:"
-msgstr "Stream-URL:"
+msgstr "Scrobbler-URL:"
 
 #: src/scrobbler/configure.c:242
 msgid "<b>Last.FM</b>"
@@ -4347,9 +4340,8 @@ msgid "<b>_Skin</b>"
 msgstr "<b>_Skin</b>"
 
 #: src/skins/skins_cfg.c:574
-#, fuzzy
 msgid "Color adjustment ..."
-msgstr "Farbkorrektur"
+msgstr "Farbkorrektur ..."
 
 #: src/skins/ui_equalizer.c:463
 msgid "Audacious Equalizer"
@@ -4477,9 +4469,8 @@ msgid "Single mode."
 msgstr ""
 
 #: src/skins/ui_main.c:2350
-#, fuzzy
 msgid "Playlist mode."
-msgstr "Wiedergabeliste"
+msgstr "Wiedergabelistenmodus"
 
 #: src/skins/ui_main.c:2374
 msgid "Stopping after song."
@@ -4744,7 +4735,7 @@ msgstr "Duplikate nach vollem Pfad entfernen."
 
 #: src/skins/ui_manager.c:300
 msgid "Reverse List"
-msgstr "List umkehren"
+msgstr "Liste umkehren"
 
 #: src/skins/ui_manager.c:301
 msgid "Reverses the playlist."
@@ -4970,39 +4961,32 @@ msgid "125 Hz"
 msgstr ""
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-#, fuzzy
 msgid "250 Hz"
-msgstr "22050 Hz "
+msgstr "250 Hz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-#, fuzzy
 msgid "500 Hz"
-msgstr "44100 Hz "
+msgstr "500 Hz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-#, fuzzy
 msgid "1 kHz"
-msgstr "96 kHz "
+msgstr "1 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:436
-#, fuzzy
 msgid "2 kHz"
-msgstr "22 kHz"
+msgstr "2 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-#, fuzzy
 msgid "4 kHz"
-msgstr "44 kHz"
+msgstr "4 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-#, fuzzy
 msgid "8 kHz"
-msgstr "48 kHz"
+msgstr "8 kHz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:437
-#, fuzzy
 msgid "16 kHz"
-msgstr "96 kHz "
+msgstr "16 kHz"
 
 #: src/skins/ui_skinselector.c:179
 msgid "Archived Winamp 2.x skin"
