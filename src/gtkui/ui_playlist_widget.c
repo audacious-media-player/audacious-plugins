@@ -23,6 +23,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/debug.h>
 #include <audacious/drct.h>
 #include <audacious/playlist.h>
@@ -461,6 +462,10 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
         ui_playlist_widget_set_column (treeview, NULL, PLAYLIST_COLUMN_TIME,
          FALSE);
     }
+
+    if (! aud_cfg->show_numbers_in_pl)
+        gtk_tree_view_column_set_visible (g_object_get_data ((GObject *)
+         treeview, "number column"), FALSE);
 
     gtk_drag_dest_set(treeview, GTK_DEST_DEFAULT_ALL, target_entry, 1, GDK_ACTION_COPY | GDK_ACTION_MOVE);
     gtk_drag_source_set(treeview, GDK_BUTTON1_MASK, target_entry, 1, GDK_ACTION_MOVE);
