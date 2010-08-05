@@ -397,6 +397,9 @@ static gboolean ui_infoarea_do_fade (UIInfoArea * area)
 
 void ui_infoarea_set_title (void * data, UIInfoArea * area)
 {
+    if (! aud_drct_get_playing ())
+        return;
+
     gint playlist = aud_playlist_get_playing ();
     gint entry = aud_playlist_get_position (playlist);
     const Tuple * tuple = aud_playlist_entry_get_tuple (playlist, entry, FALSE);
