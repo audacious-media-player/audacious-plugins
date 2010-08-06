@@ -245,6 +245,22 @@ static void ui_playlist_model_get_value_time(UiPlaylistModel *model, GValue *val
     g_free(len);
 }
 
+static const gchar *ui_playlist_model_tuple_get_string(const Tuple *tuple, gint field)
+{
+    if (tuple == NULL)
+        return NULL;
+
+    return tuple_get_string(tuple, field, NULL);
+}
+
+static gint ui_playlist_model_tuple_get_int(const Tuple *tuple, gint field)
+{
+    if (tuple == NULL)
+        return 0;
+
+    return tuple_get_int(tuple, field, NULL);
+}
+
 static void
 ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint column, GValue *value)
 {
@@ -275,20 +291,21 @@ ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
                 g_value_set_uint(value, n+1);
                 break;
             case PLAYLIST_MULTI_COLUMN_ARTIST:
-                g_value_set_string(value, tuple_get_string(tu, FIELD_ARTIST, NULL));
+                g_value_set_string(value, ui_playlist_model_tuple_get_string(tu, FIELD_ARTIST));
                 break;
 
             case PLAYLIST_MULTI_COLUMN_ALBUM:
-                g_value_set_string(value, tuple_get_string(tu, FIELD_ALBUM, NULL));
+                g_value_set_string(value, ui_playlist_model_tuple_get_string(tu, FIELD_ALBUM));
                 break;
 
             case PLAYLIST_MULTI_COLUMN_TRACK_NUM:
-                g_value_set_uint(value, tuple_get_int(tu, FIELD_TRACK_NUMBER, NULL));
+                g_value_set_uint(value, ui_playlist_model_tuple_get_int(tu, FIELD_TRACK_NUMBER));
                 break;
 
             case PLAYLIST_MULTI_COLUMN_TITLE:
             {
-                const gchar *title = tuple_get_string(tu, FIELD_TITLE, NULL);
+                const gchar *title = ui_playlist_model_tuple_get_string(tu, FIELD_TITLE);
+
                 if (title == NULL)
                     g_value_set_string (value, aud_playlist_entry_get_title
                      (model->playlist, n, TRUE));
