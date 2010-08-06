@@ -204,14 +204,14 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
     if (read_metadata(main_decoder, main_info) == FALSE)
     {
         ERROR("Could not prepare file for playing!\n");
-        goto CLEANUP;
+        goto ERR_NO_CLOSE;
     }
 
     if (main_info->stream.channels > MAX_SUPPORTED_CHANNELS)
     {
         ERROR("This number of channels (%d) is currently not supported, stream not handled by this plugin.\n",
             main_info->stream.channels);
-        goto CLEANUP;
+        goto ERR_NO_CLOSE;
     }
 
     if (main_info->stream.bits_per_sample != 8  &&
@@ -221,16 +221,13 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
     {
         ERROR("This number of bits (%d) is currently not supported, stream not handled by this plugin.\n",
             main_info->stream.bits_per_sample);
-        goto CLEANUP;
+        goto ERR_NO_CLOSE;
     }
-
-    seek_value = (start_time > 0) ? start_time : -1;
-    playback->playing = TRUE;
 
     if ((play_buffer = g_malloc0(BUFFER_SIZE_BYTE)) == NULL)
     {
         ERROR("Could not allocate conversion buffer\n");
-        goto CLEANUP;
+        goto ERR_NO_CLOSE;
     }
 
     if (! playback->output->open_audio (SAMPLE_FMT
@@ -238,11 +235,14 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
      main_info->stream.channels))
     {
         ERROR("Could not open output plugin!\n");
-        goto CLEANUP;
+        goto ERR_NO_CLOSE;
     }
 
     if (pause)
         playback->output->pause (TRUE);
+
+    seek_value = (start_time > 0) ? start_time : -1;
+    playback->playing = TRUE;
 
     playback->set_params(playback, NULL, 0, main_info->bitrate,
         main_info->stream.samplerate, main_info->stream.channels);
@@ -374,6 +374,7 @@ CLEANUP:
     playback->output->close_audio();
     AUDDBG("Audio device closed.\n");
 
+ERR_NO_CLOSE:
     if (play_buffer)
         g_free(play_buffer);
 
