@@ -135,8 +135,13 @@ ERR:
 
 	gint16 out[chan * (rate / 10)];
 	size_t done;
-	if ((res = mpg123_read (dec, (void *) out, sizeof out, & done)) < 0)
-		goto ERR;
+	while ((res = mpg123_read (dec, (void *) out, sizeof out, & done)) < 0)
+	{
+		if (res != MPG123_NEW_FORMAT)
+			goto ERR;
+		if ((res = mpg123_getformat (dec, & rate, & chan, & enc) < 0))
+			goto ERR;
+	}
 
 	gchar str[32];
 	make_format_string (& info, str, sizeof str);
