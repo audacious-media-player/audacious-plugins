@@ -124,6 +124,7 @@ ERR:
 		return FALSE;
 	}
 
+RETRY:;
 	glong rate;
 	gint chan, enc;
 	if ((res = mpg123_getformat (dec, & rate, & chan, & enc)) < 0)
@@ -137,10 +138,9 @@ ERR:
 	size_t done;
 	while ((res = mpg123_read (dec, (void *) out, sizeof out, & done)) < 0)
 	{
-		if (res != MPG123_NEW_FORMAT)
-			goto ERR;
-		if ((res = mpg123_getformat (dec, & rate, & chan, & enc) < 0))
-			goto ERR;
+		if (res == MPG123_NEW_FORMAT)
+			goto RETRY;
+		goto ERR;
 	}
 
 	gchar str[32];
