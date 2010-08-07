@@ -1331,15 +1331,21 @@ if test "x$have_paranormal" = "xyes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS paranormal"
 fi
 
-AM_PATH_XML2(2.0.0, , [
-	AC_MSG_ERROR([*** libxml2 is not found! It is required for certain essential plugins. ***])
-])
 
+dnl XSPF
+dnl ----
 
-have_xspf="yes"
+PKG_CHECK_MODULES(XML2, [libxml-2.0], [have_xml2=yes], [have_xml2=no])
+
+if test $have_xml2 = "no" ; then
+    AC_MSG_ERROR([Please install libxml-2.0.])
+fi
+
 CONTAINER_PLUGINS="$CONTAINER_PLUGINS xspf"
 
-dnl *** CUE
+
+dnl CUE
+dnl ---
 
 AC_ARG_ENABLE(cue,
 [  --disable-cue           disable cue support. (default=enabled)],
@@ -1691,6 +1697,6 @@ echo "  Container"
 echo "  ---------"
 echo "  Winamp PLS playlist format (pls):       yes"
 echo "  M3U playlist format (m3u):              yes"
-echo "  XML Sharable Playlist Format (xspf):    $have_xspf"
+echo "  XML Sharable Playlist Format (xspf):    yes"
 echo "  CUE playlist format (cue):              $have_cue"
 echo
