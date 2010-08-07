@@ -21,5 +21,5 @@ include ../../extra.mk
 plugindir := ${plugindir}/${VISUALIZATION_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS}  ${GTK_CFLAGS} ${GLIB_CFLAGS}  ${ARCH_DEFINES} ${XML_CPPFLAGS} ${SDL_CFLAGS} -I../.. -I. -DPRESET_PATH="\"${prefix}/share/audacious/kanashi/presets\""
-LIBS += ${GTK_LIBS} ${GLIB_LIBS}  ${XML_LIBS} ${SDL_LIBS} -lmozjs
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${ARCH_DEFINES} ${SDL_CFLAGS} -I../.. -I. -DPRESET_PATH="\"${prefix}/share/audacious/kanashi/presets\""
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${SDL_LIBS} -lmozjs

@@ -1335,9 +1335,9 @@ fi
 dnl XSPF
 dnl ----
 
-PKG_CHECK_MODULES(XML2, [libxml-2.0], [have_xml2=yes], [have_xml2=no])
+PKG_CHECK_MODULES(XML, [libxml-2.0], [have_xml=yes], [have_xml=no])
 
-if test $have_xml2 = "no" ; then
+if test $have_xml = "no" ; then
     AC_MSG_ERROR([Please install libxml-2.0.])
 fi
 
