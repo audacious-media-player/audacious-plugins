@@ -1,6 +1,6 @@
 /*
  * ALSA Output Plugin for Audacious
- * Copyright 2009 John Lindgren
+ * Copyright 2009-2010 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -22,7 +22,6 @@
 
 #include "../../config.h"
 
-#include <pthread.h>
 #include <stdio.h>
 
 #include <audacious/plugin.h>
@@ -55,8 +54,6 @@ do { \
 } while (0)
 
 /* alsa.c */
-extern pthread_mutex_t alsa_mutex;
-
 OutputPluginInitStatus alsa_init (void);
 void alsa_soft_init (void);
 void alsa_cleanup (void);
