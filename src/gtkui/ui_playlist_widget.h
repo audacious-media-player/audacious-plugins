@@ -25,5 +25,6 @@
 
 GtkWidget *ui_playlist_widget_new(gint playlist);
 void ui_playlist_widget_block_updates (GtkWidget * widget, gboolean block);
+void ui_playlist_widget_freeze_selection (GtkWidget * widget, gboolean freeze);
 
 #endif
