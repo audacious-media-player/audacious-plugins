@@ -270,18 +270,7 @@ static GdkPixbuf * get_current_album_art (void)
     gint playlist = aud_playlist_get_playing ();
     const gchar * filename = aud_playlist_entry_get_filename (playlist,
      aud_playlist_get_position (playlist));
-    InputPlugin * decoder = aud_file_find_decoder (filename, FALSE);
-    void * data;
-    gint size;
-    GdkPixbuf * pixbuf;
-
-    if (filename == NULL || decoder == NULL || ! aud_file_read_image (filename,
-     decoder, & data, & size))
-        return NULL;
-
-    pixbuf = audgui_pixbuf_from_data (data, size);
-    g_free (data);
-    return pixbuf;
+    return audgui_pixbuf_for_file (filename);
 }
 
 void ui_infoarea_draw_album_art (UIInfoArea * area)
