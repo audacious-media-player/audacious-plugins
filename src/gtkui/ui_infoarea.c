@@ -42,7 +42,7 @@
 #define STREAM_ARTWORK DATA_DIR "/images/streambrowser-64x64.png"
 #define ICON_SIZE 64
 #define SPECT_BANDS 12
-#define VIS_OFFSET (10 + 12 * SPECT_BANDS + 7)
+#define VIS_OFFSET (10 + 7 * SPECT_BANDS + 8)
 
 #if ! GTK_CHECK_VERSION (2, 18, 0)
 #define gtk_widget_get_allocation(w, ap) (* (ap) = (w)->allocation)
@@ -97,9 +97,9 @@ static void ui_infoarea_visualization_timeout (const VisNode * vis, UIInfoArea *
 
         /* 40 dB range */
         /* 0.00305 == 1 / 32767 * 10^(40/20) */
-        n = 32 * log10 (n * 0.00305);
-        n = CLAMP (n, 0, 64);
-        area->visdata[i] = MAX (area->visdata[i] - 3, n);
+        n = 16 * log10 (n * 0.00305);
+        n = CLAMP (n, 0, 32);
+        area->visdata[i] = MAX (area->visdata[i] - 2, n);
     }
 
 #if GTK_CHECK_VERSION (2, 20, 0)
@@ -249,16 +249,30 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
 
     for (auto gint i = 0; i < SPECT_BANDS; i++)
     {
-        gint x = alloc.width - VIS_OFFSET + 10 + 12 * i;
-        gfloat r, g, b;
+        gint x = alloc.width - VIS_OFFSET + 10 + 7 * i;
+        gint h = area->visdata[i];
 
+        /* erase old (upward) bars */
         cairo_set_source_rgb (cr, 0, 0, 0);
-        cairo_rectangle (cr, x, 10, 9, 64 - area->visdata[i]);
+        cairo_rectangle (cr, x, 10, 5, 32 - h);
         cairo_fill (cr);
 
+        /* erase old (downward) reflection */
+        cairo_set_source_rgb (cr, 0, 0, 0);
+        cairo_rectangle (cr, x, 42 + h, 5, 32 - h);
+        cairo_fill (cr);
+
+        gfloat r, g, b;
         get_color (area->parent, i, & r, & g, & b);
+
+        /* draw new (upward) bars */
         cairo_set_source_rgb (cr, r, g, b);
-        cairo_rectangle (cr, x, 74 - area->visdata[i], 9, area->visdata[i]);
+        cairo_rectangle (cr, x, 42 - h, 5, h);
+        cairo_fill (cr);
+
+        /* draw new (downward) reflection */
+        cairo_set_source_rgb (cr, r * 0.5, g * 0.5, b * 0.5);
+        cairo_rectangle (cr, x, 42, 5, h);
         cairo_fill (cr);
     }
 
