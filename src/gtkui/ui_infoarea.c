@@ -38,7 +38,7 @@
 #include "ui_manager.h"
 #include "ui_infoarea.h"
 
-#define DEFAULT_ARTWORK DATA_DIR "/images/audio.png"
+#define DEFAULT_ARTWORK DATA_DIR "/images/album.png"
 #define STREAM_ARTWORK DATA_DIR "/images/streambrowser-64x64.png"
 #define ICON_SIZE 64
 #define SPECT_BANDS 12
