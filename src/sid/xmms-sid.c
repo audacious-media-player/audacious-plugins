@@ -396,6 +396,7 @@ void xs_stop(InputPlayback *pb)
     if (pb != NULL && pb->playing) {
         XSDEBUG("stopping...\n");
         pb->playing = FALSE;
+        pb->output->abort_write ();
         XS_MUTEX_UNLOCK(xs_status);
     } else {
         XS_MUTEX_UNLOCK(xs_status);
