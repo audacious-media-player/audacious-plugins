@@ -337,6 +337,9 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 	real_lyrics = lyrics != NULL ? lyrics : _("\nNo lyrics were found.");
 
 	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, real_lyrics, strlen(real_lyrics));
+
+	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
+	gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(textview), &iter, 0, TRUE, 0, 0);
 }
 
 void
