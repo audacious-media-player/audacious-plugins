@@ -111,7 +111,7 @@ give_up:
 				GMatchInfo *match_info;
 				GRegex *reg;
 
-				reg = g_regex_new("<(lyrics?)>(.*)</\\1>", (G_REGEX_MULTILINE | G_REGEX_DOTALL), 0, NULL);
+				reg = g_regex_new("<(lyrics?)>(.*)</\\1>", (G_REGEX_MULTILINE | G_REGEX_DOTALL | G_REGEX_UNGREEDY), 0, NULL);
 				g_regex_match(reg, (gchar *) lyric, G_REGEX_MATCH_NEWLINE_ANY, &match_info);
 
 				ret = g_match_info_fetch(match_info, 2);
