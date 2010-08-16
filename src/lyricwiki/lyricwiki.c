@@ -277,17 +277,6 @@ build_widget(void)
 }
 
 void
-clear_lyrics_window(void)
-{
-	GtkTextIter iter1, iter2;
-
-	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter1);
-	gtk_text_buffer_get_end_iter(GTK_TEXT_BUFFER(textbuffer), &iter2);
-
-	gtk_text_buffer_delete(GTK_TEXT_BUFFER(textbuffer), &iter1, &iter2);
-}
-
-void
 update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 {
 	GtkTextIter iter;
@@ -298,7 +287,7 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 	if (textbuffer == NULL)
 		return;
 
-	clear_lyrics_window();
+	gtk_text_buffer_set_text(GTK_TEXT_BUFFER(textbuffer), "", -1);
 
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
 
