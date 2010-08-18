@@ -153,7 +153,6 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
                             break;
 
                         case TUPLE_INT:
-                            AUDDBG("field=%s val=%s\n", xspf_entries[i].xspfName, str);
                             tuple_associate_int(tuple, xspf_entries[i].tupleField, NULL, atol((char *)str));
                             break;
 

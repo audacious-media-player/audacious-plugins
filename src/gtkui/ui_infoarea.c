@@ -141,8 +141,6 @@ static void ui_infoarea_draw_text (UIInfoArea * area, gint x, gint y, gint
     pango_layout_set_width (pl, width * PANGO_SCALE);
     pango_layout_set_ellipsize (pl, PANGO_ELLIPSIZE_END);
 
-    AUDDBG("Drawing %s to %d, %d at %p layout %p\n", text, x, y, cr, pl);
-
     pango_cairo_show_layout(cr, pl);
 
     cairo_destroy(cr);
