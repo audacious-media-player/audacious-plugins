@@ -116,17 +116,6 @@ void playlist_set_selected_list(GtkTreeView *treeview, GList *list, gint distanc
     }
 }
 
-void playlist_scroll_to_row (GtkTreeView * tree, gint row)
-{
-    gint list = treeview_get_playlist (tree);
-
-    aud_playlist_select_all (list, FALSE);
-    if (row >= 0)
-        aud_playlist_entry_set_selected (list, row, TRUE);
-
-    treeview_set_focus (tree, row);
-}
-
 GList *playlist_get_selected_list(GtkTreeView *treeview)
 {
     GtkTreeModel *treemodel;

@@ -533,22 +533,27 @@ ui_playlist_model_row_deleted(UiPlaylistModel *model, gint n)
 static void update_position (GtkTreeView * tree)
 {
     UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
-    gint song = aud_playlist_get_position (model->playlist);
 
-    if (model->position != -1)
+    if (model->position >= 0)
         ui_playlist_model_row_changed (model, model->position); /* remove bold */
 
-    model->position = song;
+    model->position = aud_playlist_get_position (model->playlist);
 
-    if (model->position != -1)
+    if (model->position >= 0)
         ui_playlist_model_row_changed (model, model->position); /* set bold */
 
-    playlist_scroll_to_row (tree, song);
+    treeview_set_focus (tree, model->position);
 }
 
 void treeview_update_position (GtkTreeView * tree)
 {
     UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
+
+    aud_playlist_select_all (model->playlist, FALSE);
+
+    gint song = aud_playlist_get_position (model->playlist);
+    if (song >= 0)
+        aud_playlist_entry_set_selected (model->playlist, song, TRUE);
 
     if (aud_playlist_update_pending ())
         model->song_changed = TRUE;

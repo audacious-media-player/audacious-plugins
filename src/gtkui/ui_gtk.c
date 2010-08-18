@@ -33,6 +33,7 @@
 #include "config.h"
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
+#include "ui_playlist_model.h"
 #include "ui_playlist_notebook.h"
 #include "ui_manager.h"
 #include "ui_infoarea.h"
@@ -536,9 +537,11 @@ void set_volume_diff(gint diff)
 
 static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
-    if (ui_playlist_notebook_tab_title_editing != NULL &&
-        event->keyval != GDK_KP_Enter && event->keyval != GDK_Escape)
+    if (ui_playlist_notebook_tab_title_editing)
     {
+        if (event->keyval == GDK_KP_Enter || event->keyval == GDK_Escape)
+            return FALSE;
+
         GtkWidget *entry = g_object_get_data(G_OBJECT(ui_playlist_notebook_tab_title_editing), "entry");
         gtk_widget_event(entry, (GdkEvent*) event);
         return TRUE;
@@ -595,14 +598,8 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                     break;
 
                 case GDK_Escape:
-                    ; /* bleah, label must come before statement */
-                    gint list = aud_playlist_get_active ();
-                    playlist_scroll_to_row (playlist_get_treeview (list),
-                     aud_playlist_get_position (list));
-
-                    if (ui_playlist_notebook_tab_title_editing != NULL)
-                        return FALSE;
-
+                    treeview_update_position (playlist_get_treeview
+                     (aud_playlist_get_active ()));
                     break;
 
                 case GDK_Tab:
