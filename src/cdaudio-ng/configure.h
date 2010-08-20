@@ -4,8 +4,6 @@
 
 typedef struct cdng_cfg_t
 {
-
-    gboolean use_dae;
     gboolean use_cdtext;
     gboolean use_cddb;
     gchar *device;

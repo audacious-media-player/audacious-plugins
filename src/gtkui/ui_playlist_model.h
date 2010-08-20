@@ -22,13 +22,6 @@
 
 #include <gtk/gtk.h>
 
-#define UI_PLAYLIST_MODEL_TYPE            (ui_playlist_model_get_type())
-#define UI_PLAYLIST_MODEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST((obj), UI_PLAYLIST_MODEL_TYPE, UiPlaylistModel))
-#define UI_PLYALIST_MODEL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST((klass), UI_PLAYLIST_MODEL_TYPE, UiPlaylistModelClass))
-#define UI_IS_PLAYLIST_MODEL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE((obj), UI_PLAYLIST_MODEL_TYPE))
-#define UI_IS_PLAYLIST_MODEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE((klass), UI_PLAYLIST_MODEL_TYPE))
-#define UI_PLAYLIST_MODEL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), UI_PLAYLIST_MODEL_TYPE, UiPlaylistModelClass))
-
 extern gboolean multi_column_view;
 
 enum
@@ -58,29 +51,12 @@ enum
 typedef struct _UiPlaylistModel      UiPlaylistModel;
 typedef struct _UiPlaylistModelClass UiPlaylistModelClass;
 
-struct _UiPlaylistModel
-{
-    GObject parent;
-
-    guint num_rows;
-    gint playlist;  /* associated playlist number */
-    gint position;
-    GList * queue;
-    gboolean song_changed, focus_changed, selection_changed;
-    gint focus;
-
-    gint n_columns;
-    GType *column_types;
-
-    gint stamp;  /* Random integer to check whether an iter belongs to our model */
-};
-
-struct _UiPlaylistModelClass
-{
-    GObjectClass parent_class;
-};
-
-GType ui_playlist_model_get_type(void);
 UiPlaylistModel *ui_playlist_model_new(gint playlist);
+gint ui_playlist_model_get_playlist (UiPlaylistModel * model);
+void ui_playlist_model_set_playlist (UiPlaylistModel * model, gint playlist);
+
+void treeview_update (GtkTreeView * tree, gint type, gint at, gint count);
+void treeview_update_position (GtkTreeView * tree);
+void treeview_set_focus_on_update (GtkTreeView * tree, gint focus);
 
 #endif /* UI_PLAYLIST_MODEL_H */

@@ -33,6 +33,7 @@
 #include "config.h"
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
+#include "ui_playlist_model.h"
 #include "ui_playlist_notebook.h"
 #include "ui_manager.h"
 #include "ui_infoarea.h"
@@ -293,16 +294,6 @@ static void title_change_cb (void)
     ui_playlist_notebook_add_tab_label_markup(aud_playlist_get_playing(), FALSE);
 }
 
-static void ui_playlist_created(void *data, void *unused)
-{
-    ui_playlist_notebook_create_tab(GPOINTER_TO_INT(data));
-}
-
-static void ui_playlist_destroyed(void *data, void *unused)
-{
-    ui_playlist_notebook_destroy_tab(GPOINTER_TO_INT(data));
-}
-
 static void ui_mainwin_show()
 {
     if (config.save_window_position)
@@ -546,9 +537,11 @@ void set_volume_diff(gint diff)
 
 static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
-    if (ui_playlist_notebook_tab_title_editing != NULL &&
-        event->keyval != GDK_KP_Enter && event->keyval != GDK_Escape)
+    if (ui_playlist_notebook_tab_title_editing)
     {
+        if (event->keyval == GDK_KP_Enter || event->keyval == GDK_Escape)
+            return FALSE;
+
         GtkWidget *entry = g_object_get_data(G_OBJECT(ui_playlist_notebook_tab_title_editing), "entry");
         gtk_widget_event(entry, (GdkEvent*) event);
         return TRUE;
@@ -605,14 +598,8 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                     break;
 
                 case GDK_Escape:
-                    ; /* bleah, label must come before statement */
-                    gint list = aud_playlist_get_active ();
-                    playlist_scroll_to_row (playlist_get_treeview (list),
-                     aud_playlist_get_position (list));
-
-                    if (ui_playlist_notebook_tab_title_editing != NULL)
-                        return FALSE;
-
+                    treeview_update_position (playlist_get_treeview
+                     (aud_playlist_get_active ()));
                     break;
 
                 case GDK_Tab:
@@ -657,10 +644,9 @@ static void ui_hooks_associate(void)
     hook_associate ("playback seek", (HookFunction) time_counter_cb, NULL);
     hook_associate("playback begin", ui_playback_begin, NULL);
     hook_associate("playback stop", ui_playback_stop, NULL);
-    hook_associate("playlist insert", ui_playlist_created, NULL);
-    hook_associate("playlist delete", ui_playlist_destroyed, NULL);
     hook_associate("mainwin show", ui_mainwin_toggle_visibility, NULL);
     hook_associate("playlist update", ui_playlist_notebook_update, NULL);
+    hook_associate ("playlist position", ui_playlist_notebook_position, NULL);
     hook_associate("toggle stop after song", stop_after_song_toggled, NULL);
 }
 
@@ -670,10 +656,9 @@ static void ui_hooks_disassociate(void)
     hook_dissociate ("playback seek", (HookFunction) time_counter_cb);
     hook_dissociate("playback begin", ui_playback_begin);
     hook_dissociate("playback stop", ui_playback_stop);
-    hook_dissociate("playlist insert", ui_playlist_created);
-    hook_dissociate("playlist delete", ui_playlist_destroyed);
     hook_dissociate("mainwin show", ui_mainwin_toggle_visibility);
     hook_dissociate("playlist update", ui_playlist_notebook_update);
+    hook_dissociate ("playlist position", ui_playlist_notebook_position);
     hook_dissociate("toggle stop after song", stop_after_song_toggled);
 }
 

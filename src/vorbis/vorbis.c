@@ -175,8 +175,6 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
 
     /* associate with tuple */
     tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
-    /* maybe, it would be better to display nominal bitrate (like in main win), not average? --eugene */
-    tuple_associate_int(tuple, FIELD_BITRATE, NULL, ov_bitrate(vorbisfile, -1) / 1000);
 
     if ((comment = ov_comment(vorbisfile, -1)) != NULL) {
         gchar *tmps;
@@ -193,16 +191,9 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
             tuple_associate_int (tuple, FIELD_YEAR, NULL, atoi (tmps));
     }
 
-    tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
-
-    if (comment != NULL && comment->vendor != NULL)
-    {
-        gchar *codec = g_strdup_printf("Ogg Vorbis [%s]", comment->vendor);
-        tuple_associate_string(tuple, FIELD_CODEC, NULL, codec);
-        g_free(codec);
-    }
-    else
-        tuple_associate_string(tuple, FIELD_CODEC, NULL, "Ogg Vorbis");
+    vorbis_info * info = ov_info (vorbisfile, -1);
+    tuple_set_format (tuple, "Ogg Vorbis", info->channels, info->rate,
+     info->bitrate_nominal / 1000);
 
     tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "application/ogg");
 
