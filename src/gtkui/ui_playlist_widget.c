@@ -157,7 +157,7 @@ static void cross_drop (GtkTreeView * tree, gint list, gint row)
     struct index * names, * tuples;
 
     playlist_selected_to_indexes (t->source_playlist, & names, & tuples);
-    treeview_remove_selected (t->source);
+    aud_playlist_delete_selected (t->source_playlist);
     treeview_add_indexes (tree, row, names, tuples);
 }
 

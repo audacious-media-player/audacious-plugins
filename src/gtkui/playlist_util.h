@@ -48,6 +48,5 @@ void treeview_refresh_selected (GtkTreeView * tree, gint at, gint count);
 void treeview_add_indexes (GtkTreeView * tree, gint row, struct index * names,
  struct index * tuples);
 void treeview_add_urilist (GtkTreeView * tree, gint row, const gchar * list);
-void treeview_remove_selected (GtkTreeView * tree);
 
 #endif

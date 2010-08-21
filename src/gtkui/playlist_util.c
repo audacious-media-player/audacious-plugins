@@ -332,14 +332,3 @@ void treeview_add_urilist (GtkTreeView * tree, gint row, const gchar * list)
     playlist_select_range (playlist, row, new - entries);
     treeview_set_focus (tree, MIN (row, new - 1));
 }
-
-void treeview_remove_selected (GtkTreeView * tree)
-{
-    gint list = treeview_get_playlist (tree);
-    gint focus = treeview_get_focus (tree);
-
-    focus -= playlist_count_selected_in_range (list, 0, focus);
-    aud_playlist_delete_selected (list);
-    treeview_set_focus (tree, (focus < aud_playlist_entry_count (list)) ? focus
-     : focus - 1);
-}
