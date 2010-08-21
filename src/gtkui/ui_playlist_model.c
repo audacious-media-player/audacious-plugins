@@ -549,12 +549,6 @@ void treeview_update_position (GtkTreeView * tree)
 {
     UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
 
-    aud_playlist_select_all (model->playlist, FALSE);
-
-    gint song = aud_playlist_get_position (model->playlist);
-    if (song >= 0)
-        aud_playlist_entry_set_selected (model->playlist, song, TRUE);
-
     if (aud_playlist_update_pending ())
         model->song_changed = TRUE;
     else

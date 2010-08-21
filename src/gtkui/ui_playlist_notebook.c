@@ -285,7 +285,16 @@ void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
 
 void ui_playlist_notebook_position (void * data, void * user)
 {
-    treeview_update_position (playlist_get_treeview (GPOINTER_TO_INT (data)));
+    gint list = GPOINTER_TO_INT (data);
+    gint song = aud_playlist_get_position (list);
+
+    aud_playlist_select_all (list, FALSE);
+    if (song >= 0)
+        aud_playlist_entry_set_selected (list, song, TRUE);
+
+    /* treeview may not have been created yet */
+    if (list < gtk_notebook_get_n_pages (UI_PLAYLIST_NOTEBOOK))
+        treeview_update_position (playlist_get_treeview (list));
 }
 
 static void destroy_cb (void)
