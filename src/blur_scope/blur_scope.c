@@ -141,53 +141,51 @@ bscope_blur_8(guchar * ptr, gint w, gint h, gint bpl_)
             sum -= 2;
         *(iptr++) = sum;
     }
-
-
 }
 
 void
 generate_cmap(void)
 {
     guint32 colors[256], i, red, blue, green;
-    if (area) {
-        red = (guint32) (bscope_cfg.color / 0x10000);
-        green = (guint32) ((bscope_cfg.color % 0x10000) / 0x100);
-        blue = (guint32) (bscope_cfg.color % 0x100);
-        for (i = 255; i > 0; i--) {
-            colors[i] =
-                (((guint32) (i * red / 256) << 16) |
-                 ((guint32) (i * green / 256) << 8) |
-                 ((guint32) (i * blue / 256)));
-        }
-        colors[0] = 0;
-        if (cmap) {
-            gdk_rgb_cmap_free(cmap);
-        }
-        cmap = gdk_rgb_cmap_new(colors, 256);
+
+    red = (guint32) (bscope_cfg.color / 0x10000);
+    green = (guint32) ((bscope_cfg.color % 0x10000) / 0x100);
+    blue = (guint32) (bscope_cfg.color % 0x100);
+    for (i = 255; i > 0; i--) {
+        colors[i] =
+            (((guint32) (i * red / 256) << 16) |
+             ((guint32) (i * green / 256) << 8) |
+             ((guint32) (i * blue / 256)));
     }
+    colors[0] = 0;
+    if (cmap) {
+        gdk_rgb_cmap_free(cmap);
+    }
+    cmap = gdk_rgb_cmap_new(colors, 256);
 }
 
 static void
 bscope_init(void)
 {
     bscope_read_config();
-
-    if (area == NULL)
-    {
-        area = gtk_drawing_area_new();
-
-        gtk_widget_set_size_request(area, D_WIDTH, D_HEIGHT);
-        bscope_resize_video(D_WIDTH, D_HEIGHT);
-        gtk_widget_show(area);
-    }
-
     generate_cmap();
-    g_signal_connect(G_OBJECT(area), "configure-event", G_CALLBACK(bscope_reconfigure), NULL);
 }
 
 /* static GtkWidget * bscope_get_widget (void) */
 static void * bscope_get_widget (void)
 {
+    if (area == NULL)
+    {
+        area = gtk_drawing_area_new ();
+        gtk_widget_set_size_request (area, D_WIDTH, D_HEIGHT);
+        bscope_resize_video (D_WIDTH, D_HEIGHT);
+
+        g_signal_connect (area, "configure-event", (GCallback)
+         bscope_reconfigure, NULL);
+        g_signal_connect (area, "destroy", (GCallback) gtk_widget_destroyed,
+         & area);
+    }
+
     return area;
 }
 
@@ -243,7 +241,7 @@ bscope_render_pcm(gint16 data[2][512])
     }
 
     GDK_THREADS_ENTER();
-    if (GTK_WIDGET_REALIZED(area))
+    if (area != NULL)
         gdk_draw_indexed_image(area->window, area->style->white_gc, 0, 0,
                                width, height, GDK_RGB_DITHER_NONE,
                                rgb_buf + bpl + 1, (width + 2), cmap);
