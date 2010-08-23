@@ -19,7 +19,7 @@
 
 #include "plugin.h"
 
-GtkWidget *entry1, *entry2, *entry3, *ge_entry1, *ge_entry2, *cfgdlg;
+GtkWidget *entry1, *entry2, *entry3, *cfgdlg;
 static GdkColor disabled_color;
 guint apply_timeout = 0; /* ID of timeout to save new config */
 gboolean running = TRUE; /* if plugin threads are running */
@@ -42,7 +42,6 @@ static char *hexify(char *pass, int len)
 }
 
 static char *pwd = NULL;
-static char *ge_pwd = NULL;
 
 static void saveconfig(void)
 {
@@ -50,11 +49,10 @@ static void saveconfig(void)
 
     const char *uid = gtk_entry_get_text(GTK_ENTRY(entry1));
     const char *url = gtk_entry_get_text(GTK_ENTRY(entry3));
-    const char *ge_uid = gtk_entry_get_text(GTK_ENTRY(ge_entry1));
 
     if ((cfgfile = aud_cfg_db_open())) {
         aud_md5state_t md5state;
-        unsigned char md5pword[16], ge_md5pword[16];
+        unsigned char md5pword[16];
 
         if (pwd != NULL && pwd[0] != '\0') {
             aud_md5_init(&md5state);
@@ -74,20 +72,6 @@ static void saveconfig(void)
         	aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", (gchar *)url);
        	else
        		aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", LASTFM_HS_URL);
-
-        if (ge_pwd != NULL && ge_pwd[0] != '\0') {
-            aud_md5_init(&md5state);
-            aud_md5_append(&md5state, (guchar *)ge_pwd, strlen(ge_pwd));
-            aud_md5_finish(&md5state, ge_md5pword);
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_password",
-                                  hexify((gchar*)ge_md5pword, sizeof(ge_md5pword)));
-        }
-        if (ge_uid != NULL && ge_uid[0] != '\0') {
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", (gchar *)ge_uid);
-        } else {
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", "");
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_password", "");
-        }
 
         aud_cfg_db_close(cfgfile);
     }
@@ -110,9 +94,7 @@ static void configure_apply(void) {
 
 static void configure_cleanup(void) {
     g_free(pwd);
-    g_free(ge_pwd);
     pwd = NULL;
-    ge_pwd = NULL;
 }
 
 static void
@@ -143,11 +125,7 @@ static void entry_focus_out(GtkWidget *widget, gpointer data)
     g_free(pwd);
     pwd = g_strdup(gtk_entry_get_text(GTK_ENTRY(entry2)));
   }
-  if (widget == ge_entry2)
-  {
-    g_free(ge_pwd);
-    ge_pwd = g_strdup(gtk_entry_get_text(GTK_ENTRY(ge_entry2)));
-  }
+
   entry_changed(widget, data);
   gtk_entry_set_text(GTK_ENTRY(widget), _("Change password"));
   gtk_widget_modify_text(widget, GTK_STATE_NORMAL, &disabled_color);
@@ -247,7 +225,6 @@ create_cfgdlg(void)
   gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 6);
 
 	gtk_entry_set_text(GTK_ENTRY(entry1), "");
-	gtk_entry_set_text(GTK_ENTRY(ge_entry1), "");
 
         if ((db = aud_cfg_db_open())) {
                 gchar *username = NULL;
@@ -273,7 +250,6 @@ create_cfgdlg(void)
 
   g_signal_connect(entry1, "changed", G_CALLBACK(entry_changed), NULL);
   g_signal_connect(entry3, "changed", G_CALLBACK(entry_changed), NULL);
-  g_signal_connect(ge_entry1, "changed", G_CALLBACK(entry_changed), NULL);
 
   return vbox2;
 }
