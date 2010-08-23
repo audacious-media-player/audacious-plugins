@@ -7,10 +7,6 @@ AC_CANONICAL_HOST
 AC_CANONICAL_TARGET
 AC_CONFIG_HEADERS([config.h])
 
-dnl Build flags
-dnl ===========
-LDFLAGS="$LDFLAGS -z defs"
-
 dnl XXX kludge for FreeBSD
 if test -d "/usr/X11R6/include"; then
 	CPPFLAGS="$CPPFLAGS -I/usr/X11R6/include"
