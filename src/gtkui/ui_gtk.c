@@ -598,8 +598,8 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                     break;
 
                 case GDK_Escape:
-                    treeview_update_position (playlist_get_treeview
-                     (aud_playlist_get_active ()));
+                    ui_playlist_notebook_position (GINT_TO_POINTER
+                     (aud_playlist_get_active ()), NULL);
                     break;
 
                 case GDK_Tab:
