@@ -5,15 +5,13 @@
 
 #include "Data_Reader.h"
 
-#include <audacious/plugin.h>
-
 class Vfs_File_Reader : public File_Reader {
 public:
-	void reset( VFSFile* ); // use already-open file and doesn't close it in close()
+	// use already-open file and doesn't close it in close()
+	void reset (/* VFSFile * */ void * file);
 	error_t open( const char* path );
-	VFSFile* file() const { return file_; }
 	void close();
-	
+
 public:
 	Vfs_File_Reader();
 	~Vfs_File_Reader();
@@ -22,8 +20,7 @@ public:
 	long tell() const;
 	error_t seek( long );
 private:
-	VFSFile* file_;
-	VFSFile* owned_file_;
+    struct reader_private * p;
 };
 
 #endif
