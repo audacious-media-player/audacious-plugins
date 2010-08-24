@@ -1,15 +1,11 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([audacious-plugins], [2.4-rc1], [bugs+audacious-plugins@atheme.org])
+AC_INIT([audacious-plugins], [2.4-rc3], [bugs+audacious-plugins@atheme.org])
 AC_PREREQ([2.59])
 
 AC_CANONICAL_HOST
 AC_CANONICAL_TARGET
 AC_CONFIG_HEADERS([config.h])
-
-dnl Build flags
-dnl ===========
-LDFLAGS="$LDFLAGS -z defs"
 
 dnl XXX kludge for FreeBSD
 if test -d "/usr/X11R6/include"; then

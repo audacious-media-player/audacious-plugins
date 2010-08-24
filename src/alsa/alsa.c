@@ -572,9 +572,22 @@ void alsa_pause (short pause)
         CHECK (snd_pcm_pause, alsa_handle, pause);
     }
 
-FAILED:
-    pthread_cond_broadcast (& alsa_cond);
+DONE:
+    if (! pause)
+        pthread_cond_broadcast (& alsa_cond);
+
     pthread_mutex_unlock (& alsa_mutex);
+    return;
+
+FAILED:
+    AUDDBG ("Trying to work around broken pause.\n");
+
+    if (pause)
+        snd_pcm_drop (alsa_handle);
+    else
+        snd_pcm_prepare (alsa_handle);
+
+    goto DONE;
 }
 
 void alsa_open_mixer (void)

@@ -18,6 +18,7 @@ LOCALES = ca.po \
 	  hu.po \
 	  ja.po \
 	  lv.po \
+	  pl.po \
 	  ro.po \
 	  ru.po \
 	  sk.po \

@@ -111,7 +111,7 @@ give_up:
 				GMatchInfo *match_info;
 				GRegex *reg;
 
-				reg = g_regex_new("<(lyrics?)>(.*)</\\1>", (G_REGEX_MULTILINE | G_REGEX_DOTALL), 0, NULL);
+				reg = g_regex_new("<(lyrics?)>(.*)</\\1>", (G_REGEX_MULTILINE | G_REGEX_DOTALL | G_REGEX_UNGREEDY), 0, NULL);
 				g_regex_match(reg, (gchar *) lyric, G_REGEX_MATCH_NEWLINE_ANY, &match_info);
 
 				ret = g_match_info_fetch(match_info, 2);
@@ -277,17 +277,6 @@ build_widget(void)
 }
 
 void
-clear_lyrics_window(void)
-{
-	GtkTextIter iter1, iter2;
-
-	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter1);
-	gtk_text_buffer_get_end_iter(GTK_TEXT_BUFFER(textbuffer), &iter2);
-
-	gtk_text_buffer_delete(GTK_TEXT_BUFFER(textbuffer), &iter1, &iter2);
-}
-
-void
 update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 {
 	GtkTextIter iter;
@@ -298,7 +287,7 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 	if (textbuffer == NULL)
 		return;
 
-	clear_lyrics_window();
+	gtk_text_buffer_set_text(GTK_TEXT_BUFFER(textbuffer), "", -1);
 
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
 
@@ -337,6 +326,9 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 	real_lyrics = lyrics != NULL ? lyrics : _("\nNo lyrics were found.");
 
 	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, real_lyrics, strlen(real_lyrics));
+
+	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
+	gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(textview), &iter, 0, TRUE, 0, 0);
 }
 
 void

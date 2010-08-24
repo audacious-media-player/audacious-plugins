@@ -38,6 +38,7 @@
 #include <stdio.h>
 #include <X11/XF86keysym.h>
 
+#include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 
 #include <audacious/configdb.h>

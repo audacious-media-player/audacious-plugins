@@ -41,6 +41,10 @@
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
 
+#if ! GTK_CHECK_VERSION (2, 18, 0)
+#define gtk_widget_set_can_focus(w, t) do {if (t) GTK_WIDGET_SET_FLAGS ((w), GTK_CAN_FOCUS); else GTK_WIDGET_UNSET_FLAGS ((w), GTK_CAN_FOCUS);} while (0)
+#endif
+
 gboolean multi_column_view;
 
 static GtkWidget *label_time;

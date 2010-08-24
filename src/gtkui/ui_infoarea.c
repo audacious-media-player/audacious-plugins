@@ -44,6 +44,10 @@
 #define SPECT_BANDS 12
 #define VIS_OFFSET (10 + 12 * SPECT_BANDS + 7)
 
+#if ! GTK_CHECK_VERSION (2, 18, 0)
+#define gtk_widget_get_allocation(w, ap) (* (ap) = (w)->allocation)
+#endif
+
 typedef struct {
     GtkWidget *parent;
 
