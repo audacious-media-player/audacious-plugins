@@ -25,7 +25,9 @@
 
 #include "compressor.h"
 
-float compressor_target = 0.5, compressor_strength = 0.5;
+/* What is a "normal" target volume?  Replay Gain stuff claims to use 89 dB, but
+ * what does that translate to in our PCM range?  Does anybody even know? */
+float compressor_target = 0.5, compressor_range = 0.5;
 
 #define CHUNK_TIME 0.2 /* seconds */
 #define CHUNKS 15
@@ -75,8 +77,8 @@ static float calc_peak (float * data, int length)
 
 static void do_ramp (float * data, int length, float peak_a, float peak_b)
 {
-    float a = powf (compressor_target / peak_a, compressor_strength);
-    float b = powf (compressor_target / peak_b, compressor_strength);
+    float a = powf (peak_a / compressor_target, compressor_range - 1);
+    float b = powf (peak_b / compressor_target, compressor_range - 1);
     int count;
 
     for (count = 0; count < length; count ++)
