@@ -75,8 +75,8 @@ static float calc_peak (float * data, int length)
 
 static void do_ramp (float * data, int length, float peak_a, float peak_b)
 {
-    float a = powf (expander_target / peak_a, expander_strength);
-    float b = powf (expander_target / peak_b, expander_strength);
+    float a = powf (peak_a / expander_target, expander_strength);
+    float b = powf (peak_b / expander_target, expander_strength);
     int count;
 
     for (count = 0; count < length; count ++)
@@ -134,8 +134,8 @@ static void do_compress (float * * data, int * samples, char finish)
         new_peak = FMAX (new_peak, current_peak * (1.0 - DECAY));
 
         for (count = 1; count < CHUNKS; count ++)
-            new_peak = FMAX (new_peak, count / (current_peak + (GET_PEAK (count) -
-             current_peak)));
+            new_peak = FMAX (new_peak, current_peak + (GET_PEAK (count) -
+             current_peak) / count);
 
         do_ramp (buffer + chunk_size * ring_at, chunk_size, current_peak,
          new_peak);
