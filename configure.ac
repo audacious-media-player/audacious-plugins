@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([audacious-plugins], [2.4-rc3], [bugs+audacious-plugins@atheme.org])
+AC_INIT([audacious-plugins], [2.4.0], [bugs+audacious-plugins@atheme.org])
 AC_PREREQ([2.59])
 
 AC_CANONICAL_HOST
@@ -132,9 +132,9 @@ TRANSPORT_PLUGINS="unix-io"
 
 dnl Check for Audacious
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 2.3],
-    [ADD_PC_REQUIRES([audacious >= 2.3])],
-    [AC_MSG_ERROR([Cannot find Audacious 2.3 or later, have you installed audacious yet?])]
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 2.4],
+    [ADD_PC_REQUIRES([audacious >= 2.4])],
+    [AC_MSG_ERROR([Cannot find Audacious 2.4 or later, have you installed audacious yet?])]
 )
 
 CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS"
