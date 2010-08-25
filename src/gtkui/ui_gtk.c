@@ -552,10 +552,6 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
         case 0:
             switch (event->keyval)
             {
-                case GDK_F2:
-                    ui_playlist_notebook_edit_tab_title(NULL);
-                    break;
-
                 case GDK_minus: //FIXME
                     set_volume_diff(-5);
                     break;

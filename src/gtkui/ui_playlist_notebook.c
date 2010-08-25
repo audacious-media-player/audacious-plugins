@@ -26,6 +26,7 @@
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 
+#include "ui_manager.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 #include "ui_playlist_model.h"
@@ -73,6 +74,17 @@ static gboolean tab_button_press_cb(GtkWidget *widget, GdkEventButton *event, gp
 {
     if (event->type == GDK_2BUTTON_PRESS && event->button == 1)
         ui_playlist_notebook_edit_tab_title(widget);
+
+    if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+    {
+        if (!GTK_IS_EVENT_BOX(widget))
+            return FALSE;
+
+        GtkWidget *page = g_object_get_data(G_OBJECT(widget), "page");
+
+        gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, gtk_notebook_page_num(UI_PLAYLIST_NOTEBOOK, page));
+        ui_manager_popup_menu_show(GTK_MENU(playlist_tab_menu), event->x_root, event->y_root + 2, 3, event->time);
+    }
 
     return FALSE;
 }
@@ -138,7 +150,7 @@ void ui_playlist_notebook_edit_tab_title(GtkWidget *ebox)
     if (!gtk_notebook_get_show_tabs(UI_PLAYLIST_NOTEBOOK))
         return;
 
-    if (ebox == NULL)
+    if (ebox == NULL || !GTK_IS_EVENT_BOX(ebox))
     {
         GtkWidget *page = gtk_notebook_get_nth_page(UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active());
         ebox = gtk_notebook_get_tab_label(UI_PLAYLIST_NOTEBOOK, page);
@@ -189,6 +201,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
 
     g_object_set_data(G_OBJECT(ebox), "label", label);
     g_object_set_data(G_OBJECT(ebox), "entry", entry);
+    g_object_set_data(G_OBJECT(ebox), "page", scrollwin);
 
     gtk_notebook_append_page(UI_PLAYLIST_NOTEBOOK, scrollwin, ebox);
     gtk_notebook_set_show_tabs(UI_PLAYLIST_NOTEBOOK, index_count(pages) > 1 ? TRUE : FALSE);

@@ -22,6 +22,7 @@
 #include "ui_manager.h"
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
+#include "ui_playlist_notebook.h"
 
 #include <audacious/misc.h>
 #include <libaudgui/libaudgui.h>
@@ -127,6 +128,10 @@ static GtkActionEntry action_entries_playlist[] = {
     {"playlist remove selected", GTK_STOCK_REMOVE, N_("Remove Selected"), "Delete",
      N_("Remove selected entries from the playlist."),
      G_CALLBACK(action_playlist_remove_selected)},
+
+    {"playlist title edit", GTK_STOCK_EDIT, N_("Edit title"), "F2",
+     N_("Edites the playlist title."),
+     G_CALLBACK(ui_playlist_notebook_edit_tab_title)},
 
  {"playlist sort", GTK_STOCK_SORT_ASCENDING, N_("Sort"), NULL, NULL, NULL},
  {"playlist sort track", NULL, N_("By Track Number"), NULL, NULL, (GCallback)
@@ -317,6 +322,8 @@ void ui_manager_create_menus(void)
     gtk_menu_item_set_submenu ((GtkMenuItem *) gtk_ui_manager_get_widget
      (ui_manager, "/playlist-menus/playlist-rightclick-menu/plugins-menu"),
      aud_get_plugin_menu (AUDACIOUS_MENU_PLAYLIST_RCLICK));
+
+    playlist_tab_menu = ui_manager_get_popup_menu(ui_manager, "/playlist-menus/playlist-tab-menu");
 }
 
 
