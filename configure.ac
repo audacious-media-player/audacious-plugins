@@ -129,7 +129,7 @@ dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen console psf xsf metronom vtx"
 OUTPUT_PLUGINS="null"
-EFFECT_PLUGINS="compressor crossfade crystalizer ladspa sndstretch stereo_plugin voice_removal echo_plugin"
+EFFECT_PLUGINS="compressor crossfade crystalizer expander ladspa sndstretch stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS="song_change alarm skins gtkui lyricwiki"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
