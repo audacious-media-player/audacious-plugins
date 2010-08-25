@@ -377,8 +377,8 @@ GeneralPlugin lyricwiki =
 GeneralPlugin *lyricwiki_gplist[] = { &lyricwiki, NULL };
 SIMPLE_GENERAL_PLUGIN(lyricwiki, lyricwiki_gplist);
 
-static gboolean window_delete(void)
+static gboolean window_delete (void)
 {
-	aud_general_plugin_enable (aud_plugin_by_header (& lyricwiki), FALSE);
+	aud_plugin_enable (aud_plugin_by_header (& lyricwiki), FALSE);
 	return TRUE;
 }

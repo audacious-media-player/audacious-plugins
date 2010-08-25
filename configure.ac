@@ -41,14 +41,9 @@ dnl ==================
 CPPFLAGS="$CPPFLAGS -D_FILE_OFFSET_BITS=64"
 
 dnl Debug support
-
-AC_SUBST(DEBUG)
-AUD_ARG_ENABLE([debug], [no],
-[additional debugging output],
-[
-    AC_DEFINE([DEBUG], 1, [Define if debugging output is required])
-])
-AUD_CONDITIONAL([DEBUG], [enable_debug])
+dnl =============
+AUD_ARG_ENABLE([debug], [no], [additional debugging output],
+ [CPPFLAGS="$CPPFLAGS -DDEBUG"])
 
 dnl Locate a program and check that its version is acceptable.
 dnl AC_PROG_CHECK_VER(var, namelist, version-switch,

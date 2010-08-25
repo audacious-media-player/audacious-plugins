@@ -48,14 +48,11 @@ static gboolean dropped = FALSE;
 static void _ui_playlist_widget_drag_begin(GtkWidget *widget, GdkDragContext * context, gpointer data)
 {
     t = g_slice_new0(UiPlaylistDragTracker);
-    gint playlist;
 
     g_signal_stop_emission_by_name(widget, "drag-begin");
 
-    playlist = playlist_get_playlist_from_treeview(GTK_TREE_VIEW(widget));
-
     t->source = (GtkTreeView *) widget;
-    t->source_playlist = playlist;
+    t->source_playlist = treeview_get_playlist ((GtkTreeView *) widget);
     t->source_pos = GPOINTER_TO_INT (g_object_get_data ((GObject *) widget,
      "row-clicked"));
     t->dest_path = NULL;
@@ -87,7 +84,7 @@ static void _ui_playlist_widget_drag_motion(GtkTreeView * widget, GdkDragContext
 
     g_signal_stop_emission_by_name(widget, "drag-motion");
 
-    dest_playlist = playlist_get_playlist_from_treeview(widget);
+    dest_playlist = treeview_get_playlist (widget);
     end_pos = aud_playlist_entry_count(dest_playlist) - 1;
 
     gdk_window_get_geometry(gtk_tree_view_get_bin_window(widget), NULL, NULL, NULL, &win.height, NULL);
@@ -160,21 +157,20 @@ static void cross_drop (GtkTreeView * tree, gint list, gint row)
     struct index * names, * tuples;
 
     playlist_selected_to_indexes (t->source_playlist, & names, & tuples);
-    treeview_remove_selected (t->source);
+    aud_playlist_delete_selected (t->source_playlist);
     treeview_add_indexes (tree, row, names, tuples);
 }
 
 static gboolean drag_drop_cb (GtkWidget * widget, GdkDragContext * context,
  gint x, gint y, guint time, void * unused)
 {
-    gint list = ((UiPlaylistModel *) gtk_tree_view_get_model ((GtkTreeView *)
-     widget))->playlist;
-
     g_signal_stop_emission_by_name (widget, "drag-drop");
     g_return_val_if_fail (t, FALSE);
 
     if (t->source)
     {
+        gint list = treeview_get_playlist ((GtkTreeView *) widget);
+
         if (list == t->source_playlist)
             local_drop ((GtkTreeView *) widget, list, get_dest_row ());
         else
@@ -214,32 +210,30 @@ static void drag_end_cb (GtkWidget * widget, GdkDragContext * context, void *
     drag_tracker_cleanup ();
 }
 
-static void _ui_playlist_widget_selection_update(GtkTreeModel * model, GtkTreePath * path, GtkTreeIter * iter, gpointer playlist_p)
+static void select_entry_cb (GtkTreeModel * model, GtkTreePath * path,
+ GtkTreeIter * iter, void * list)
 {
-    gint entry;
-
-    gtk_tree_model_get(model, iter, PLAYLIST_COLUMN_NUM, &entry, -1);
-
-    /* paths are numbered from 1, playlist index start from 0 */
-    entry -= 1;
-
-    aud_playlist_entry_set_selected(GPOINTER_TO_INT(playlist_p), entry, TRUE);
+    aud_playlist_entry_set_selected (GPOINTER_TO_INT (list),
+     gtk_tree_path_get_indices (path)[0], TRUE);
 }
 
-static void _ui_playlist_widget_selection_changed(GtkTreeSelection * selection, gpointer treeview)
+static void select_cb (GtkTreeSelection * sel, void * tree)
 {
-    AUDDBG ("Selection changed.\n");
-    gint playlist = playlist_get_playlist_from_treeview(treeview);
+    gint playlist = treeview_get_playlist (tree);
+    aud_playlist_select_all (playlist, FALSE);
+    gtk_tree_selection_selected_foreach (sel, select_entry_cb, GINT_TO_POINTER
+     (playlist));
+}
 
-    aud_playlist_select_all(playlist, FALSE);
-
-    gtk_tree_selection_selected_foreach(selection, _ui_playlist_widget_selection_update, GINT_TO_POINTER(playlist));
+static gboolean select_allow_cb (GtkTreeSelection * sel, GtkTreeModel * model,
+ GtkTreePath * path, gboolean was, void * user)
+{
+    return ! GPOINTER_TO_INT (g_object_get_data ((GObject *) sel, "frozen"));
 }
 
 static void ui_playlist_widget_change_song(GtkTreeView * treeview, guint pos)
 {
-    gint playlist = playlist_get_playlist_from_treeview(treeview);
-
+    gint playlist = treeview_get_playlist (treeview);
     aud_playlist_set_playing(playlist);
     aud_playlist_set_position(playlist, pos);
 
@@ -282,8 +276,7 @@ static gboolean ui_playlist_widget_keypress_cb(GtkWidget * widget, GdkEventKey *
             if (focus < 0)
                 return TRUE;
 
-            gint playlist = playlist_get_playlist_from_treeview ((GtkTreeView *)
-             widget);
+            gint playlist = treeview_get_playlist ((GtkTreeView *) widget);
             aud_playlist_entry_set_selected (playlist, focus, TRUE);
             focus += aud_playlist_shift (playlist, focus, (event->keyval ==
              GDK_Up) ? -1 : 1);
@@ -486,8 +479,11 @@ GtkWidget *ui_playlist_widget_new(gint playlist)
     selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);
     gtk_tree_view_set_rubber_banding(GTK_TREE_VIEW(treeview), FALSE);
-    g_signal_connect (selection, "changed", (GCallback)
-     _ui_playlist_widget_selection_changed, treeview);
+    g_signal_connect (selection, "changed", (GCallback) select_cb, treeview);
+
+    gtk_tree_selection_set_select_function (selection, select_allow_cb, NULL,
+     NULL);
+    g_object_set_data ((GObject *) selection, "frozen", GINT_TO_POINTER (FALSE));
 
     return treeview;
 }
@@ -496,10 +492,14 @@ void ui_playlist_widget_block_updates (GtkWidget * widget, gboolean block)
 {
     if (block)
         g_signal_handlers_block_by_func (gtk_tree_view_get_selection
-         ((GtkTreeView *) widget), (GCallback)
-         _ui_playlist_widget_selection_changed, widget);
+         ((GtkTreeView *) widget), (GCallback) select_cb, widget);
     else
         g_signal_handlers_unblock_by_func (gtk_tree_view_get_selection
-         ((GtkTreeView *) widget), (GCallback)
-         _ui_playlist_widget_selection_changed, widget);
+         ((GtkTreeView *) widget), (GCallback) select_cb, widget);
+}
+
+void ui_playlist_widget_freeze_selection (GtkWidget * widget, gboolean freeze)
+{
+    g_object_set_data ((GObject *) gtk_tree_view_get_selection ((GtkTreeView *)
+     widget), "frozen", GINT_TO_POINTER (freeze));
 }

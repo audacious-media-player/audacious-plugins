@@ -527,7 +527,22 @@ void action_playlist_remove_all(void)
 
 void action_playlist_remove_selected (GtkAction * act)
 {
-    treeview_remove_selected (playlist_get_treeview (aud_playlist_get_active ()));
+    gint list = aud_playlist_get_active ();
+    GtkTreeView * tree = playlist_get_treeview (list);
+
+    gint focus = treeview_get_focus (tree);
+    focus -= playlist_count_selected_in_range (list, 0, focus);
+
+    aud_drct_pl_delete_selected ();
+
+    if (aud_playlist_selected_count (list)) /* song changed? */
+        return;
+
+    if (focus == aud_playlist_entry_count (list))
+        focus --;
+    if (focus >= 0)
+        aud_playlist_entry_set_selected (list, focus, TRUE);
+    treeview_set_focus (tree, focus);
 }
 
 void action_playlist_remove_unselected(void)
@@ -752,18 +767,12 @@ void action_playlist_invert_selection(void)
 
 void action_playlist_select_none(void)
 {
-    GtkTreeSelection *selection = gtk_tree_view_get_selection(playlist_get_active_treeview());
-
-    gtk_widget_grab_focus(GTK_WIDGET(playlist_get_active_treeview()));
-    gtk_tree_selection_unselect_all(selection);
+    aud_playlist_select_all (aud_playlist_get_active (), FALSE);
 }
 
 void action_playlist_select_all(void)
 {
-    GtkTreeSelection *selection = gtk_tree_view_get_selection(playlist_get_active_treeview());
-
-    gtk_widget_grab_focus(GTK_WIDGET(playlist_get_active_treeview()));
-    gtk_tree_selection_select_all(selection);
+    aud_playlist_select_all (aud_playlist_get_active (), TRUE);
 }
 
 void action_playlist_save_all_playlists(void)
@@ -804,9 +813,7 @@ void action_playlist_paste(void)
 
 static void playlist_sort_scheme (gint scheme)
 {
-    gint list = aud_playlist_get_active ();
-    aud_playlist_sort_by_scheme (list, scheme);
-    treeview_refresh_selection (playlist_get_treeview (list));
+    aud_playlist_sort_by_scheme (aud_playlist_get_active (), scheme);
 }
 
 void playlist_sort_track (void)
@@ -836,7 +843,5 @@ void playlist_sort_path (void)
 
 void playlist_reverse (void)
 {
-    gint list = aud_playlist_get_active ();
-    aud_playlist_reverse (list);
-    treeview_refresh_selection (playlist_get_treeview (list));
+    aud_playlist_reverse (aud_playlist_get_active ());
 }
