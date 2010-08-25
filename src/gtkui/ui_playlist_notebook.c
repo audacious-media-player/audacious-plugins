@@ -77,9 +77,6 @@ static gboolean tab_button_press_cb(GtkWidget *widget, GdkEventButton *event, gp
 
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
     {
-        if (!GTK_IS_EVENT_BOX(widget))
-            return FALSE;
-
         GtkWidget *page = g_object_get_data(G_OBJECT(widget), "page");
 
         gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, gtk_notebook_page_num(UI_PLAYLIST_NOTEBOOK, page));
