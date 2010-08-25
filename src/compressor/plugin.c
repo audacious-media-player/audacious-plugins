@@ -33,7 +33,7 @@ void compressor_config_load (void)
 {
     mcs_handle_t * database = aud_cfg_db_open ();
 
-    aud_cfg_db_get_float (database, "compressor", "target", & compressor_target);
+    aud_cfg_db_get_float (database, "compressor", "center", & compressor_center);
     aud_cfg_db_get_float (database, "compressor", "range", & compressor_range);
 
     aud_cfg_db_close (database);
@@ -43,7 +43,7 @@ void compressor_config_save (void)
 {
     mcs_handle_t * database = aud_cfg_db_open ();
 
-    aud_cfg_db_set_float (database, "compressor", "target", compressor_target);
+    aud_cfg_db_set_float (database, "compressor", "center", compressor_center);
     aud_cfg_db_set_float (database, "compressor", "range", compressor_range);
 
     aud_cfg_db_close (database);
@@ -98,15 +98,15 @@ static void compressor_configure (void)
         hbox = gtk_hbox_new (FALSE, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
-        gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("Target "
+        gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("Center "
          "volume:")), FALSE, FALSE, 0);
 
         slider = gtk_hscale_new_with_range (0.1, 1.0, 0.1);
-        gtk_range_set_value ((GtkRange *) slider, compressor_target);
+        gtk_range_set_value ((GtkRange *) slider, compressor_center);
         gtk_widget_set_size_request (slider, 100, -1);
         gtk_box_pack_start ((GtkBox *) hbox, slider, FALSE, FALSE, 0);
         g_signal_connect (slider, "value-changed", (GCallback) value_changed,
-         & compressor_target);
+         & compressor_center);
 
         hbox = gtk_hbox_new (FALSE, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
