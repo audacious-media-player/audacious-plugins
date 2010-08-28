@@ -94,7 +94,6 @@ static gboolean playlistwin_select_search_kp_cb(GtkWidget *entry,
 static gboolean playlistwin_resizing = FALSE;
 static gint playlistwin_resize_x, playlistwin_resize_y;
 static int drop_position;
-static gboolean song_changed;
 
 gboolean
 playlistwin_is_shaded(void)
@@ -1221,13 +1220,7 @@ static void update_cb (void * unused, void * another)
     if (active_playlist != old)
     {
         ui_skinned_playlist_scroll_to (playlistwin_list, 0);
-        song_changed = TRUE;
-    }
-
-    if (song_changed)
-    {
         ui_skinned_playlist_follow (playlistwin_list);
-        song_changed = FALSE;
     }
 
     real_update ();
@@ -1237,7 +1230,7 @@ static void follow_cb (void * data, void * another)
 {
     /* active_playlist may be out of date at this point */
     if (GPOINTER_TO_INT (data) == aud_playlist_get_active ())
-        song_changed = TRUE;
+        ui_skinned_playlist_follow (playlistwin_list);
 }
 
 void
@@ -1260,7 +1253,6 @@ playlistwin_create(void)
 
     /* calls playlistwin_update */
     ui_skinned_playlist_follow (playlistwin_list);
-    song_changed = FALSE;
 
     hook_associate ("playlist position", follow_cb, 0);
     hook_associate ("playlist update", update_cb, 0);
