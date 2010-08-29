@@ -31,6 +31,7 @@
 #ifdef FFAUDIO_USE_AUDTAG
 #include <audacious/audtag.h>
 #endif
+#include <libaudcore/audstrings.h>
 
 /***********************************************************************************
  * Plugin glue.                                                                    *
@@ -151,21 +152,21 @@ typedef struct {
 } ffaudio_meta_t;
 
 static const ffaudio_meta_t metaentries[] = {
-    { TUPLE_STRING, FIELD_ARTIST,       "author",    { "hor", NULL } },
+    { TUPLE_STRING, FIELD_ARTIST,       "author",    { "hor", "artist", NULL } },
     { TUPLE_STRING, FIELD_TITLE,        "title",     { "le", NULL } },
     { TUPLE_STRING, FIELD_ALBUM,        "album",     { "WM/AlbumTitle", NULL } },
     { TUPLE_STRING, FIELD_PERFORMER,    "performer", { NULL } },
     { TUPLE_STRING, FIELD_COPYRIGHT,    "copyright", { NULL } },
     { TUPLE_STRING, FIELD_GENRE,        "genre",     { "WM/Genre", NULL } },
     { TUPLE_STRING, FIELD_COMMENT,      "comment",   { NULL } },
+    { TUPLE_STRING, FIELD_COMPOSER,     "composer",  { NULL } },
     { TUPLE_STRING, -1,                 "lyrics",    { "WM/Lyrics", NULL } },
-    { TUPLE_INT,    FIELD_YEAR,         "year",      { "WM/Year", NULL } },
+    { TUPLE_INT,    FIELD_YEAR,         "year",      { "WM/Year", "date", NULL } },
     { TUPLE_INT,    FIELD_TRACK_NUMBER, "track",     { "WM/TrackNumber", NULL } },
 };
 
 static const gint n_metaentries = sizeof(metaentries) / sizeof(metaentries[0]);
 
-#ifndef FFAUDIO_USE_AUDTAG
 static void
 ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
 {
@@ -202,18 +203,15 @@ ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
         }
     }
 }
-#endif
 
 static void
 ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVCodec *codec)
 {
     if (ic != NULL)
     {
-#ifndef FFAUDIO_USE_AUDTAG
         gint i;
         for (i = 0; i < n_metaentries; i++)
             ffaudio_get_meta(tuple, ic, &metaentries[i]);
-#endif
 
         tuple_associate_int(tuple, FIELD_LENGTH, NULL, ic->duration / 1000);
         tuple_associate_int(tuple, FIELD_BITRATE, NULL, ic->bit_rate / 1000);
@@ -259,7 +257,6 @@ static Tuple * read_tuple (const gchar * filename, VFSFile * file)
     return tuple;
 }
 
-#ifdef FFAUDIO_USE_AUDTAG
 static Tuple *
 ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
@@ -267,12 +264,15 @@ ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
     if (t == NULL)
         return NULL;
 
+#ifdef FFAUDIO_USE_AUDTAG
     vfs_fseek(fd, 0, SEEK_SET);
     tag_tuple_read(t, fd);
+#endif
 
     return t;
 }
 
+#ifdef FFAUDIO_USE_AUDTAG
 static gboolean ffaudio_write_tag (const Tuple * tuple, VFSFile * file)
 {
     gchar *file_uri = g_ascii_strdown(file->uri, -4);
@@ -305,9 +305,6 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     ReSampleContext *resctx = NULL;
     gboolean codec_opened = FALSE, do_resampling = FALSE;
     gint out_fmt;
-#ifndef FFAUDIO_USE_AUDTAG
-    Tuple *tuple;
-#endif
     gboolean seekable;
 
     gchar uribuf[64];
@@ -387,11 +384,6 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     resbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
 
     AUDDBG("setting parameters\n");
-#ifndef FFAUDIO_USE_AUDTAG
-    tuple = tuple_new_from_filename(playback->filename);
-    ffaudio_get_tuple_data(tuple, ic, c, codec);
-    playback->set_tuple(playback, tuple);
-#endif
 
     if (pause)
         playback->output->pause(TRUE);
@@ -682,9 +674,7 @@ InputPlugin ffaudio_ip = {
     .init = ffaudio_init,
     .cleanup = ffaudio_cleanup,
     .is_our_file_from_vfs = ffaudio_probe,
-#ifdef FFAUDIO_USE_AUDTAG
     .probe_for_tuple = ffaudio_probe_for_tuple,
-#endif
     .play = ffaudio_play,
     .stop = ffaudio_stop,
     .pause = ffaudio_pause,
