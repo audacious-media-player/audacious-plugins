@@ -577,15 +577,13 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     // We are reading an MP4 file
     gint mp4track= getAACTrack(mp4file);
     NeAACDecHandle   decoder;
-    mp4AudioSpecificConfig mp4ASC;
     guchar      *buffer = NULL;
     guint       bufferSize = 0;
     gulong      samplerate = 0;
     guchar      channels = 0;
-    gulong      msDuration;
     guint       numSamples;
     gulong      sampleID = 1;
-    guint       framesize = 1024;
+    guint       framesize = 0;
     gboolean paused = FALSE;
 
     if (mp4track < 0)
@@ -607,12 +605,6 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         return FALSE;
     }
 
-    /* Add some hacks for SBR profile */
-    if (AudioSpecificConfig(buffer, bufferSize, &mp4ASC) >= 0) {
-        if (mp4ASC.frameLengthFlag == 1) framesize = 960;
-        if (mp4ASC.sbr_present_flag == 1) framesize *= 2;
-    }
-
     g_free(buffer);
     if( !channels ) {
         NeAACDecClose(decoder);
@@ -620,7 +612,6 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         return FALSE;
     }
     numSamples = mp4ff_num_samples(mp4file, mp4track);
-    msDuration = ((float)numSamples * (float)(framesize - 1.0)/(float)samplerate) * 1000;
 
     if (! playback->output->open_audio (FMT_S16_NE, samplerate, channels))
     {
@@ -640,32 +631,6 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         void*           sampleBuffer;
         NeAACDecFrameInfo    frameInfo;
         gint            rc;
-
-        g_mutex_lock (seek_mutex);
-
-        if (seek_value >= 0)
-        {
-            sampleID = (gint64) seek_value * samplerate / 1000 / (framesize - 1);
-            playback->output->flush (seek_value);
-            seek_value = -1;
-            g_cond_signal (seek_cond);
-        }
-
-        if (pause_flag != paused)
-        {
-            playback->output->pause (pause_flag);
-            paused = pause_flag;
-            g_cond_signal (seek_cond);
-        }
-
-        if (paused)
-        {
-            g_cond_wait (seek_cond, seek_mutex);
-            g_mutex_unlock (seek_mutex);
-            continue;
-        }
-
-        g_mutex_unlock (seek_mutex);
 
         buffer=NULL;
         bufferSize=0;
@@ -721,6 +686,44 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
             buffer=NULL;
             bufferSize=0;
         }
+
+        /* Calculate frame size from the first (non-blank) frame.  This needs to
+         * be done before we try to seek. */
+        if (! framesize)
+        {
+            framesize = frameInfo.samples / frameInfo.channels;
+
+            if (! framesize)
+                continue;
+        }
+
+        /* Respond to seek/pause requests.  This needs to be done after we
+         * calculate frame size but of course before we write any audio. */
+        g_mutex_lock (seek_mutex);
+
+        if (seek_value >= 0)
+        {
+            sampleID = (gint64) seek_value * samplerate / 1000 / framesize;
+            playback->output->flush (seek_value);
+            seek_value = -1;
+            g_cond_signal (seek_cond);
+        }
+
+        if (pause_flag != paused)
+        {
+            playback->output->pause (pause_flag);
+            paused = pause_flag;
+            g_cond_signal (seek_cond);
+        }
+
+        if (paused)
+        {
+            g_cond_wait (seek_cond, seek_mutex);
+            g_mutex_unlock (seek_mutex);
+            continue;
+        }
+
+        g_mutex_unlock (seek_mutex);
 
         playback->output->write_audio (sampleBuffer, 2 * frameInfo.samples);
     }
