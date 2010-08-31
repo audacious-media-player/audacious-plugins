@@ -42,7 +42,7 @@
 #define STREAM_ARTWORK DATA_DIR "/images/streambrowser-64x64.png"
 #define ICON_SIZE 64
 #define SPECT_BANDS 12
-#define VIS_OFFSET (10 + 7 * SPECT_BANDS + 8)
+#define VIS_OFFSET (10 + 8 * SPECT_BANDS + 8)
 
 #if ! GTK_CHECK_VERSION (2, 18, 0)
 #define gtk_widget_get_allocation(w, ap) (* (ap) = (w)->allocation)
@@ -97,8 +97,8 @@ static void ui_infoarea_visualization_timeout (const VisNode * vis, UIInfoArea *
 
         /* 40 dB range */
         /* 0.00305 == 1 / 32767 * 10^(40/20) */
-        n = 16 * log10 (n * 0.00305);
-        n = CLAMP (n, 0, 32);
+        n = 20 * log10 (n * 0.00305);
+        n = CLAMP (n, 0, 40);
         area->visdata[i] = MAX (area->visdata[i] - 2, n);
     }
 
@@ -247,17 +247,18 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
 
     for (auto gint i = 0; i < SPECT_BANDS; i++)
     {
-        gint x = alloc.width - VIS_OFFSET + 10 + 7 * i;
-        gint h = area->visdata[i];
+        gint x = alloc.width - VIS_OFFSET + 10 + 8 * i;
+        gint t = 50 - area->visdata[i];
+        gint m = MIN (50 + area->visdata[i], 84);
 
         /* erase old (upward) bars */
         cairo_set_source_rgb (cr, 0, 0, 0);
-        cairo_rectangle (cr, x, 10, 5, 32 - h);
+        cairo_rectangle (cr, x, 10, 6, t - 10);
         cairo_fill (cr);
 
         /* erase old (downward) reflection */
         cairo_set_source_rgb (cr, 0, 0, 0);
-        cairo_rectangle (cr, x, 42 + h, 5, 32 - h);
+        cairo_rectangle (cr, x, m, 6, 84 - m);
         cairo_fill (cr);
 
         gfloat r, g, b;
@@ -265,12 +266,12 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
 
         /* draw new (upward) bars */
         cairo_set_source_rgb (cr, r, g, b);
-        cairo_rectangle (cr, x, 42 - h, 5, h);
+        cairo_rectangle (cr, x, t, 6, 50 - t);
         cairo_fill (cr);
 
         /* draw new (downward) reflection */
         cairo_set_source_rgb (cr, r * 0.5, g * 0.5, b * 0.5);
-        cairo_rectangle (cr, x, 42, 5, h);
+        cairo_rectangle (cr, x, 50, 6, m - 50);
         cairo_fill (cr);
     }
 
