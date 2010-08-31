@@ -246,13 +246,27 @@ ui_playlist_model_get_path(GtkTreeModel *tree_model, GtkTreeIter *iter)
     return path;
 }
 
-static void ui_playlist_model_get_value_time(UiPlaylistModel *model, GValue *value, gint position)
+static void get_time_value (UiPlaylistModel * model, GValue * val, gint i)
 {
-    gint length = aud_playlist_entry_get_length (model->playlist, position,
-     TRUE) / 1000;
-    gchar * len = g_strdup_printf("%02i:%02i", length / 60, length % 60);
-    g_value_set_string(value, len);
-    g_free(len);
+    gint len = aud_playlist_entry_get_length (model->playlist, i, TRUE);
+
+    if (! len)
+    {
+        g_value_set_string (val, "");
+        return;
+    }
+
+    len /= 1000;
+
+    gchar s[16];
+    if (len < 3600)
+        snprintf (s, sizeof s, aud_cfg->leading_zero ? "%02d:%02d" : "%d:%02d",
+         len / 60, len % 60);
+    else
+        snprintf (s, sizeof s, "%d:%02d:%02d", len / 3600, (len / 60) % 60, len
+         % 60);
+
+    g_value_set_string (val, s);
 }
 
 static const gchar *ui_playlist_model_tuple_get_string(const Tuple *tuple, gint field)
@@ -329,7 +343,7 @@ ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
                 break;
 
             case PLAYLIST_MULTI_COLUMN_TIME:
-                ui_playlist_model_get_value_time(model, value, n);
+                get_time_value (model, value, n);
                 break;
 
             case PLAYLIST_MULTI_COLUMN_WEIGHT:
@@ -363,7 +377,7 @@ ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
                 break;
 
             case PLAYLIST_COLUMN_TIME:
-                ui_playlist_model_get_value_time(model, value, n);
+                get_time_value (model, value, n);
                 break;
             case PLAYLIST_COLUMN_WEIGHT:
                 if (n == model->position)

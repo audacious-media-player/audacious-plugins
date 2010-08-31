@@ -352,14 +352,38 @@ static void ui_show_error(const gchar * markup)
 
 static void set_time_label (gint time)
 {
-    gchar text[128];
-    gint length = aud_drct_get_playing () ? aud_drct_get_length () : 0;
+    if (! aud_drct_get_playing ())
+    {
+        gtk_label_set_markup ((GtkLabel *) label_time, "");
+        return;
+    }
 
     time /= 1000;
-    length /= 1000;
+    gint len = aud_drct_get_length () / 1000;
 
-    g_snprintf(text, sizeof(text) / sizeof(gchar), "<tt><b>%.2d:%.2d/%.2d:%.2d</b></tt>", time / 60, time % 60, length / 60, length % 60);
-    gtk_label_set_markup(GTK_LABEL(label_time), text);
+    gchar s[128];
+    snprintf (s, sizeof s, "<tt><b>");
+
+    if (time < 3600)
+        snprintf (s + strlen (s), sizeof s - strlen (s), aud_cfg->leading_zero ?
+         "%02d:%02d" : "%d:%02d", time / 60, time % 60);
+    else
+        snprintf (s + strlen (s), sizeof s - strlen (s), "%d:%02d:%02d", time /
+         3600, (time / 60) % 60, time % 60);
+
+    if (len)
+    {
+        if (len < 3600)
+            snprintf (s + strlen (s), sizeof s - strlen (s),
+             aud_cfg->leading_zero ? "/%02d:%02d" : "/%d:%02d", len / 60, len %
+             60);
+        else
+            snprintf (s + strlen (s), sizeof s - strlen (s), "/%d:%02d:%02d",
+             len / 3600, (len / 60) % 60, len % 60);
+    }
+
+    snprintf (s + strlen (s), sizeof s - strlen (s), "</b></tt>");
+    gtk_label_set_markup ((GtkLabel *) label_time, s);
 }
 
 static gboolean time_counter_cb (void)
