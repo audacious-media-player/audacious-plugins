@@ -7,7 +7,6 @@
 #include "fmt.h"
 #include "plugin.h"
 #include "scrobbler.h"
-#include "config.h"
 #include "settings.h"
 #include <glib.h>
 
