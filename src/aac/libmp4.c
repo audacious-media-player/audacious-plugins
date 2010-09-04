@@ -863,7 +863,8 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 
         if (seek_value >= 0)
         {
-            gint length = tuple_get_int (tuple, FIELD_LENGTH, NULL);
+            gint length = (tuple != NULL) ? tuple_get_int (tuple, FIELD_LENGTH,
+             NULL) : 0;
 
             if (length > 0)
             {
