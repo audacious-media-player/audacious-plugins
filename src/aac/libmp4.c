@@ -7,6 +7,7 @@
 #include "mp4ff.h"
 #include "tagging.h"
 
+#include <audacious/debug.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
@@ -734,14 +735,53 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     return TRUE;
 }
 
+static void aac_seek (VFSFile * file, NeAACDecHandle dec, gint time, gint len,
+ void * buf, gint size, gint * fill, gint * used)
+{
+    AUDDBG ("Seeking to millisecond %d of %d.\n", time, len);
+
+    gint64 total = vfs_fsize (file);
+    if (total < 0)
+    {
+        fprintf (stderr, "aac: File size unknown; cannot seek.\n");
+        return;
+    }
+
+    AUDDBG ("That means byte %d of %d.\n", (gint) (total * time / len), (gint)
+     total);
+
+    if (vfs_fseek (file, total * time / len, SEEK_SET) < 0)
+    {
+        fprintf (stderr, "aac: Error seeking in file.\n");
+        return;
+    }
+
+    * fill = vfs_fread (buf, 1, size, file);
+    * used = aac_probe (buf, * fill);
+
+    AUDDBG ("Used %d of %d bytes probing.\n", * used, * fill);
+
+    if (* used == * fill)
+    {
+        AUDDBG ("No data left!\n");
+        return;
+    }
+
+    guchar chan;
+    gulong rate;
+    * used += NeAACDecInit (dec, buf + * used, * fill - * used, & rate, & chan);
+
+    AUDDBG ("After init, used %d of %d bytes.\n", * used, * fill);
+}
+
 void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 {
     NeAACDecHandle   decoder = 0;
     guchar      streambuffer[BUFFER_SIZE];
-    gulong      bufferconsumed = 0;
+    gint bufferconsumed = 0;
     gulong      samplerate = 0;
     guchar      channels = 0;
-    gulong      buffervalid = 0;
+    gint buffervalid = 0;
     gulong	ret = 0;
     gboolean    remote = str_has_prefix_nocase(filename, "http:") ||
 			 str_has_prefix_nocase(filename, "https:");
@@ -823,6 +863,15 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 
         if (seek_value >= 0)
         {
+            gint length = tuple_get_int (tuple, FIELD_LENGTH, NULL);
+
+            if (length > 0)
+            {
+                aac_seek (file, decoder, seek_value, length, streambuffer,
+                 sizeof streambuffer, & buffervalid, & bufferconsumed);
+                playback->output->flush (seek_value);
+            }
+
             seek_value = -1;
             g_cond_signal (seek_cond);
         }
