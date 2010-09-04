@@ -52,6 +52,7 @@ typedef struct
     gint scroll_action;
     gint volume_delta;
     gboolean disable_popup;
+    gboolean close_to_tray;
 } si_cfg_t;
 
 extern si_cfg_t si_cfg;

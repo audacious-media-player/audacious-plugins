@@ -282,6 +282,17 @@ static void si_smallmenu_recreate(GtkStatusIcon * icon)
     recreate_smallmenu = FALSE;
 }
 
+static void si_window_close(gpointer data, gpointer user_data)
+{
+    gboolean *handle = (gboolean*) data;
+
+    if (si_cfg.close_to_tray)
+    {
+        *handle = TRUE;
+        hook_call("interface toggle visibility", NULL);
+    }
+}
+
 static void si_enable(gboolean enable)
 {
     static GtkStatusIcon *si_applet = NULL;
@@ -314,6 +325,7 @@ static void si_enable(gboolean enable)
         g_object_set_data(G_OBJECT(si_applet), "smenu", si_smenu);
 
         hook_associate("title change", si_popup_reshow, si_applet);
+        hook_associate("window close", si_window_close, NULL);
     }
     else if (si_applet != NULL)
     {
@@ -324,6 +336,7 @@ static void si_enable(gboolean enable)
         si_applet = NULL;
 
         hook_dissociate("title change", si_popup_reshow);
+        hook_dissociate("window close", si_window_close);
     }
 }
 
@@ -364,6 +377,7 @@ void si_about(void)
 }
 
 static GtkWidget *prefs_disable_popup_chkbtn;
+static GtkWidget *prefs_close_to_tray_chkbtn;
 
 void si_prefs_cb_commit(gpointer prefs_win)
 {
@@ -390,6 +404,7 @@ void si_prefs_cb_commit(gpointer prefs_win)
     }
 
     si_cfg.disable_popup = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prefs_disable_popup_chkbtn));
+    si_cfg.close_to_tray = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prefs_close_to_tray_chkbtn));
 
     si_cfg_save();
 
@@ -486,6 +501,14 @@ void si_config(void)
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_disable_popup_chkbtn), TRUE);
 
     gtk_box_pack_start(GTK_BOX(prefs_other_vbox), prefs_disable_popup_chkbtn, TRUE, TRUE, 0);
+
+    prefs_close_to_tray_chkbtn = gtk_check_button_new_with_label(_("Close to the notification area (system tray)"));
+
+    if (si_cfg.close_to_tray)
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_close_to_tray_chkbtn), TRUE);
+
+    gtk_box_pack_start(GTK_BOX(prefs_other_vbox), prefs_close_to_tray_chkbtn, TRUE, TRUE, 0);
+
     gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_other_frame, TRUE, TRUE, 0);
 
     /* horizontal separator and buttons */

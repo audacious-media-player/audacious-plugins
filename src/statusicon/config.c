@@ -42,6 +42,9 @@ void si_cfg_load(void)
     if (!aud_cfg_db_get_bool(cfgfile, "statusicon", "disable_popup", &(si_cfg.disable_popup)))
         si_cfg.disable_popup = FALSE;
 
+    if (!aud_cfg_db_get_bool(cfgfile, "statusicon", "close_to_tray", &(si_cfg.close_to_tray)))
+        si_cfg.close_to_tray = FALSE;
+
     aud_cfg_db_close(cfgfile);
 }
 
@@ -53,5 +56,6 @@ void si_cfg_save(void)
     aud_cfg_db_set_int(cfgfile, "statusicon", "rclick_menu", si_cfg.rclick_menu);
     aud_cfg_db_set_int(cfgfile, "statusicon", "scroll_action", si_cfg.scroll_action);
     aud_cfg_db_set_bool(cfgfile, "statusicon", "disable_popup", si_cfg.disable_popup);
+    aud_cfg_db_set_bool(cfgfile, "statusicon", "close_to_tray", si_cfg.close_to_tray);
     aud_cfg_db_close(cfgfile);
 }

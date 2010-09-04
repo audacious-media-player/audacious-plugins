@@ -213,6 +213,13 @@ static void ui_stop_gtk_plugin(GtkWidget *parent)
 
 static gboolean window_delete()
 {
+    gboolean handle = FALSE;
+
+    hook_call("window close", &handle);
+
+    if (handle)
+        return TRUE;
+
     aud_drct_quit ();
     return TRUE;
 }
