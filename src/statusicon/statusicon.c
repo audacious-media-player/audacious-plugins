@@ -209,6 +209,9 @@ static void si_popup_timer_stop(GtkStatusIcon * icon)
 
 static gboolean si_cb_tooltip(GtkStatusIcon * icon, gint x, gint y, gboolean keyboard_mode, GtkTooltip * tooltip, gpointer user_data)
 {
+    if (si_cfg.disable_popup)
+        return FALSE;
+
     if (!POPUP_IS_ACTIVE && !TIMER_IS_ACTIVE)
         si_popup_timer_start(icon);
 
@@ -360,6 +363,7 @@ void si_about(void)
                           "the system tray area of the window manager.\n"));
 }
 
+static GtkWidget *prefs_disable_popup_chkbtn;
 
 void si_prefs_cb_commit(gpointer prefs_win)
 {
@@ -385,6 +389,8 @@ void si_prefs_cb_commit(gpointer prefs_win)
         list = g_slist_next(list);
     }
 
+    si_cfg.disable_popup = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prefs_disable_popup_chkbtn));
+
     si_cfg_save();
 
     /* request the recreation of status icon small-menu if necessary */
@@ -401,6 +407,7 @@ void si_config(void)
     GtkWidget *prefs_rclick_frame, *prefs_rclick_vbox;
     GtkWidget *prefs_rclick_smallmenu1_rbt, *prefs_rclick_smallmenu2_rbt;
     GtkWidget *prefs_scroll_frame, *prefs_scroll_vbox;
+    GtkWidget *prefs_other_frame, *prefs_other_vbox;
     GtkWidget *prefs_scroll_vol_rbt, *prefs_scroll_skip_rbt;
     GtkWidget *prefs_bbar_bbox;
     GtkWidget *prefs_bbar_bt_ok, *prefs_bbar_bt_cancel;
@@ -458,13 +465,28 @@ void si_config(void)
     prefs_scroll_skip_rbt = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(prefs_scroll_vol_rbt), _("Change playing song"));
     g_object_set_data(G_OBJECT(prefs_scroll_skip_rbt), "val", GINT_TO_POINTER(SI_CFG_SCROLL_ACTION_SKIP));
     g_object_set_data(G_OBJECT(prefs_win), "msa_grp", gtk_radio_button_get_group(GTK_RADIO_BUTTON(prefs_scroll_skip_rbt)));
+
     if (si_cfg.scroll_action == SI_CFG_SCROLL_ACTION_VOLUME)
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_scroll_vol_rbt), TRUE);
     else
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_scroll_skip_rbt), TRUE);
+
     gtk_box_pack_start(GTK_BOX(prefs_scroll_vbox), prefs_scroll_vol_rbt, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(prefs_scroll_vbox), prefs_scroll_skip_rbt, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_scroll_frame, TRUE, TRUE, 0);
+
+    prefs_other_frame = gtk_frame_new(_("Other settings"));
+    prefs_other_vbox = gtk_vbox_new(TRUE, 0);
+    gtk_container_set_border_width(GTK_CONTAINER(prefs_other_vbox), 6);
+    gtk_container_add(GTK_CONTAINER(prefs_other_frame), prefs_other_vbox);
+
+    prefs_disable_popup_chkbtn = gtk_check_button_new_with_label(_("Disable the popup window"));
+
+    if (si_cfg.disable_popup)
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_disable_popup_chkbtn), TRUE);
+
+    gtk_box_pack_start(GTK_BOX(prefs_other_vbox), prefs_disable_popup_chkbtn, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_other_frame, TRUE, TRUE, 0);
 
     /* horizontal separator and buttons */
     gtk_box_pack_start(GTK_BOX(prefs_vbox), gtk_hseparator_new(), FALSE, FALSE, 4);

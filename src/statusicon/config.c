@@ -39,6 +39,9 @@ void si_cfg_load(void)
     if (!aud_cfg_db_get_int(cfgfile, "audacious", "mouse_wheel_change", &(si_cfg.volume_delta)))
         si_cfg.volume_delta = 5;
 
+    if (!aud_cfg_db_get_bool(cfgfile, "statusicon", "disable_popup", &(si_cfg.disable_popup)))
+        si_cfg.disable_popup = FALSE;
+
     aud_cfg_db_close(cfgfile);
 }
 
@@ -49,5 +52,6 @@ void si_cfg_save(void)
 
     aud_cfg_db_set_int(cfgfile, "statusicon", "rclick_menu", si_cfg.rclick_menu);
     aud_cfg_db_set_int(cfgfile, "statusicon", "scroll_action", si_cfg.scroll_action);
+    aud_cfg_db_set_bool(cfgfile, "statusicon", "disable_popup", si_cfg.disable_popup);
     aud_cfg_db_close(cfgfile);
 }
