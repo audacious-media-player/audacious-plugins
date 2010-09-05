@@ -24,10 +24,7 @@
  */
 #define BUFFER_SIZE (FAAD_MIN_STREAMSIZE * 16)
 
-/*
- * AAC_MAGIC is the pattern that marks the beginning of an MP4 container.
- */
-#define AAC_MAGIC     (unsigned char [4]) { 0xFF, 0xF9, 0x5C, 0x80 }
+#define M4A_MAGIC     (unsigned char [10]) { 0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x4D, 0x34, 0x41 }
 
 static void        mp4_init(void);
 static void        mp4_about(void);
@@ -269,11 +266,12 @@ static gboolean is_mp4_aac_file (VFSFile * handle)
 
 static gint mp4_is_our_fd(const gchar *filename, VFSFile* file)
 {
-  gchar* extension;
-  gchar magic[8];
+  gchar magic[10];
 
-  extension = strrchr(filename, '.');
-  vfs_fread(magic, 1, 8, file);
+  vfs_fread(magic, 1, 10, file);
+  if (!memcmp(magic, M4A_MAGIC, 10))
+    return 1;
+
   vfs_rewind(file);
   if (parse_aac_stream(file) == TRUE)
     return 1;
