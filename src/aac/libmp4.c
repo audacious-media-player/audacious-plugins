@@ -576,7 +576,8 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     // We are reading an MP4 file
     gint mp4track= getAACTrack(mp4file);
     NeAACDecHandle   decoder;
-    guchar      *buffer = NULL;
+    NeAACDecConfigurationPtr decoder_config;
+    guchar     *buffer = NULL;
     guint       bufferSize = 0;
     gulong      samplerate = 0;
     guchar      channels = 0;
@@ -591,7 +592,14 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         return TRUE;
     }
 
+    // Open decoder
     decoder = NeAACDecOpen();
+
+    // Configure for floating point output
+    decoder_config = NeAACDecGetCurrentConfiguration(decoder);
+    decoder_config->outputFormat = FAAD_FMT_FLOAT;
+    NeAACDecSetConfiguration(decoder, decoder_config);
+
     mp4ff_get_decoder_config(mp4file, mp4track, &buffer, &bufferSize);
     if ( !buffer ) {
         NeAACDecClose(decoder);
@@ -612,7 +620,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     }
     numSamples = mp4ff_num_samples(mp4file, mp4track);
 
-    if (! playback->output->open_audio (FMT_S16_NE, samplerate, channels))
+    if (! playback->output->open_audio (FMT_FLOAT, samplerate, channels))
     {
         NeAACDecClose (decoder);
         playback->playing = FALSE;
@@ -724,7 +732,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
 
         g_mutex_unlock (seek_mutex);
 
-        playback->output->write_audio (sampleBuffer, 2 * frameInfo.samples);
+        playback->output->write_audio (sampleBuffer, sizeof(gfloat) * frameInfo.samples);
     }
 
     playback->output->close_audio();
@@ -775,6 +783,7 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, gint time, gint len,
 void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 {
     NeAACDecHandle   decoder = 0;
+    NeAACDecConfigurationPtr decoder_config;
     guchar      streambuffer[BUFFER_SIZE];
     gint bufferconsumed = 0;
     gulong      samplerate = 0;
@@ -805,6 +814,11 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         playback->playing = FALSE;
         return;
     }
+
+    decoder_config = NeAACDecGetCurrentConfiguration(decoder);
+    decoder_config->outputFormat = FAAD_FMT_FLOAT;
+    NeAACDecSetConfiguration(decoder, decoder_config);
+
     if((buffervalid = vfs_fread(streambuffer, 1, BUFFER_SIZE, file))==0){
         g_print("AAC: Error reading file\n");
         vfs_fclose(file);
@@ -840,7 +854,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 #ifdef DEBUG
     g_print("samplerate: %lu, channels: %d\n", samplerate, channels);
 #endif
-    if(playback->output->open_audio(FMT_S16_NE,samplerate,channels) == FALSE){
+    if(playback->output->open_audio(FMT_FLOAT,samplerate,channels) == FALSE){
         NeAACDecClose(decoder);
         vfs_fclose(file);
         playback->playing = FALSE;
@@ -940,7 +954,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
             continue;
         }
 
-        playback->output->write_audio (sample_buffer, 2 * samplesdecoded);
+        playback->output->write_audio (sample_buffer, sizeof(gfloat) * samplesdecoded);
     }
     playback->output->close_audio();
     NeAACDecClose(decoder);
