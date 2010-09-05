@@ -1,4 +1,4 @@
-# translation of es.po to 
+# translation of es.po to
 # Spanish translation for Audacious
 # This file is distributed under the same license as the Audacious package.
 # Cosme Domínguez Díaz <cosme.ddiaz@gmail.com>, 2010
@@ -5164,7 +5164,7 @@ msgstr "Menú pequeño de reproducción #1"
 
 #: src/statusicon/statusicon.c:436
 msgid "Small playback menu #2"
-msgstr "Menú pequeño de reproducción #1"
+msgstr "Menú pequeño de reproducción #2"
 
 #: src/statusicon/statusicon.c:452
 msgid "Mouse Scroll Action"
