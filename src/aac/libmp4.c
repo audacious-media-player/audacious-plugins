@@ -24,7 +24,7 @@
  */
 #define BUFFER_SIZE (FAAD_MIN_STREAMSIZE * 16)
 
-#define M4A_MAGIC     (unsigned char [10]) { 0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x4D, 0x34, 0x41 }
+#define M4A_MAGIC     (unsigned char [11]) { 0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x4D, 0x34, 0x41 }
 
 static void        mp4_init(void);
 static void        mp4_about(void);
@@ -268,8 +268,8 @@ static gint mp4_is_our_fd(const gchar *filename, VFSFile* file)
 {
   gchar magic[10];
 
-  vfs_fread(magic, 1, 10, file);
-  if (!memcmp(magic, M4A_MAGIC, 10))
+  vfs_fread(magic, 1, 11, file);
+  if (!memcmp(magic, M4A_MAGIC, 11))
     return 1;
 
   vfs_rewind(file);
