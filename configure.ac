@@ -127,7 +127,7 @@ OUTPUT_PLUGINS="null"
 EFFECT_PLUGINS="compressor crossfade crystalizer ladspa sndstretch stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS="song_change alarm skins gtkui lyricwiki"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
-CONTAINER_PLUGINS="m3u pls"
+CONTAINER_PLUGINS="m3u pls asx"
 TRANSPORT_PLUGINS="unix-io"
 
 dnl Check for Audacious
