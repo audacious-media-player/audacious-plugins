@@ -61,11 +61,11 @@ mms_vfs_fopen_impl(const gchar * path,
         file = NULL;
     }
 
-    handle->mms = mms_connect(NULL, NULL, path, 128 * 1024);
+    handle->mmsh = mmsh_connect(NULL, NULL, path, 128 * 1024);
 
-    if (handle->mms == NULL) {
-        AUDDBG("Failed to connect with MMS protocol; trying MMSH.\n");
-        handle->mmsh = mmsh_connect(NULL, NULL, path, 128 * 1024);
+    if (handle->mmsh == NULL) {
+        AUDDBG("Failed to connect with MMSH protocol; trying MMS.\n");
+        handle->mms = mms_connect(NULL, NULL, path, 128 * 1024);
     }
 
     if (handle->mms == NULL && handle->mmsh == NULL)
