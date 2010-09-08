@@ -196,7 +196,7 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 
 	if (! vfs_is_streaming (file))
 	{
-		vfs_fseek (file, 0, SEEK_SET);
+		vfs_rewind (file);
 		tag_tuple_read (tuple, file);
 	}
 

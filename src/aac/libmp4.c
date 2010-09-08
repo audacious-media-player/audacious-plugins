@@ -276,7 +276,7 @@ static gint mp4_is_our_fd(const gchar *filename, VFSFile* file)
   if (parse_aac_stream(file) == TRUE)
     return 1;
 
-  vfs_fseek (file, 0, SEEK_SET);
+  vfs_rewind(file);
   return is_mp4_aac_file (file);
 }
 
@@ -547,7 +547,7 @@ static Tuple * mp4_get_tuple (const gchar * filename, VFSFile * handle)
     if (parse_aac_stream (handle))
         return aac_get_tuple (filename, handle);
 
-    vfs_fseek (handle, 0, SEEK_SET);
+    vfs_rewind (handle);
 
     mp4cb.read = mp4_read_callback;
     mp4cb.seek = mp4_seek_callback;
@@ -830,7 +830,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     if(!strncmp((char*)streambuffer, "ID3", 3)){
         gint size = 0;
 
-        vfs_fseek(file, 0, SEEK_SET);
+        vfs_rewind(file);
         size = (streambuffer[6]<<21) | (streambuffer[7]<<14) |
 		(streambuffer[8]<<7) | streambuffer[9];
         size+=10;
@@ -984,7 +984,7 @@ static void *mp4_decode( void *args )
     ret = parse_aac_stream(mp4fh);
 
     if( ret == TRUE )
-        vfs_fseek(mp4fh, 0, SEEK_SET);
+        vfs_rewind(mp4fh);
     else {
         vfs_fclose(mp4fh);
         mp4fh = vfs_fopen(filename, "rb");

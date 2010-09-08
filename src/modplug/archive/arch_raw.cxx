@@ -27,7 +27,7 @@ arch_Raw::arch_Raw(const string& aFileName)
 	}
 	vfs_fseek(mFileDesc, 0, SEEK_END);
 	mSize = vfs_ftell(mFileDesc);
-	vfs_fseek(mFileDesc, 0, SEEK_SET);
+	vfs_rewind(mFileDesc);
 
 	mMap = malloc(mSize);
 	vfs_fread(mMap, 1, mSize, mFileDesc);

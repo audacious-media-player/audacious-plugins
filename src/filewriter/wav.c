@@ -94,7 +94,7 @@ static void wav_close(void)
         header.length = GUINT32_TO_LE(written + sizeof (struct wavhead) - 8);
 
         header.data_length = GUINT32_TO_LE(written);
-        vfs_fseek(output_file, 0, SEEK_SET);
+        vfs_rewind(output_file);
         vfs_fwrite(&header, sizeof (struct wavhead), 1, output_file);
     }
 }

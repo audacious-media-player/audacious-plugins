@@ -265,7 +265,7 @@ ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
         return NULL;
 
 #ifdef FFAUDIO_USE_AUDTAG
-    vfs_fseek(fd, 0, SEEK_SET);
+    vfs_rewind(fd);
     tag_tuple_read(t, fd);
 #endif
 
