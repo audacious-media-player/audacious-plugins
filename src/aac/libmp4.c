@@ -266,9 +266,9 @@ static gboolean is_mp4_aac_file (VFSFile * handle)
 
 static gint mp4_is_our_fd(const gchar *filename, VFSFile* file)
 {
-  gchar magic[10];
+  gchar magic[sizeof(M4A_MAGIC)];
 
-  vfs_fread(magic, 1, 11, file);
+  vfs_fread(magic, 1, sizeof(M4A_MAGIC), file);
   if (!memcmp(magic, M4A_MAGIC, 11))
     return 1;
 
