@@ -347,9 +347,7 @@ int alsa_open_audio (int aud_format, int rate, int channels)
     direction = 0;
     CHECK_NOISY (snd_pcm_hw_params_set_period_time_near, alsa_handle, params,
      & useconds, & direction);
-#ifdef DEBUG
     int period = useconds / 1000;
-#endif
 
     CHECK_NOISY (snd_pcm_hw_params, alsa_handle, params);
 

@@ -40,11 +40,6 @@ dnl Large file support
 dnl ==================
 CPPFLAGS="$CPPFLAGS -D_FILE_OFFSET_BITS=64"
 
-dnl Debug support
-dnl =============
-AUD_ARG_ENABLE([debug], [no], [additional debugging output],
- [CPPFLAGS="$CPPFLAGS -DDEBUG"])
-
 dnl Locate a program and check that its version is acceptable.
 dnl AC_PROG_CHECK_VER(var, namelist, version-switch,
 dnl 		      [version-extract-regexp], version-glob [, do-if-fail])
@@ -1594,7 +1589,6 @@ echo
 echo "Configuration:"
 echo
 echo "  Install path:                           ${audacious_plugin_root}"
-echo "  Additional debugging output:            $enable_debug"
 echo
 echo "  Output Plugins"
 echo "  --------------"
