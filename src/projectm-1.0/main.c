@@ -15,7 +15,7 @@
 
 static GtkWidget *projectm = NULL;
 
-GtkWidget *
+void /* GtkWidget */ *
 projectM_get_widget(void)
 {
     if (projectm == NULL)
