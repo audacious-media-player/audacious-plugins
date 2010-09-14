@@ -917,6 +917,9 @@ static gint64 neon_fread_real (void * ptr_, gint64 size, gint64 nmemb,
         return 0;
     }
 
+    if (h->eof)
+        return 0;
+
     /* If the buffer is empty, wait for the reader thread to fill it. */
     g_mutex_lock (h->reader_status.mutex);
 
@@ -1243,6 +1246,11 @@ gint neon_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
             newpos = h->pos + offset;
             break;
         case SEEK_END:
+            if (offset == 0) {
+                h->pos = content_length;
+                h->eof = TRUE;
+                return 0;
+            }
             newpos = content_length + offset;
             break;
         default:
@@ -1305,6 +1313,7 @@ gint neon_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
      * Things seem to have worked. The next read request will start
      * the reader thread again.
      */
+    h->eof = FALSE;
 
     return 0;
 }
