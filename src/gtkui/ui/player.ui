@@ -45,6 +45,7 @@
 				<separator />
 				<menuitem action="playlist reverse" />
 			</menu>
+			<menuitem action="playlist randomize" />
 			<separator />
 			<menuitem action="playlist refresh" />
 			<separator />
