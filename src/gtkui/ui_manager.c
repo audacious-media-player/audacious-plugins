@@ -144,6 +144,8 @@ static GtkActionEntry action_entries_playlist[] = {
   playlist_sort_album},
  {"playlist sort path", NULL, N_("By File Path"), NULL, NULL, (GCallback)
   playlist_sort_path},
+ {"playlist sort formatted title", NULL, N_("By Formatted Title"), NULL, NULL,
+  (GCallback) playlist_sort_path},
  {"playlist reverse", GTK_STOCK_SORT_DESCENDING, N_("Reverse Order"), NULL,
   NULL, (GCallback) playlist_reverse},
  {"playlist randomize", NULL, N_("Random Order"), NULL, NULL, (GCallback)

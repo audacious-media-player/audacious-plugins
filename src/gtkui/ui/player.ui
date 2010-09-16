@@ -42,6 +42,7 @@
 				<menuitem action="playlist sort artist" />
 				<menuitem action="playlist sort album" />
 				<menuitem action="playlist sort path" />
+				<menuitem action="playlist sort formatted title" />
 				<separator />
 				<menuitem action="playlist reverse" />
 			</menu>

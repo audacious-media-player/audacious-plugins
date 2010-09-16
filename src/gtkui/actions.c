@@ -766,6 +766,11 @@ void playlist_sort_path (void)
     playlist_sort_scheme (PLAYLIST_SORT_PATH);
 }
 
+void playlist_sort_formatted_title (void)
+{
+    playlist_sort_scheme (PLAYLIST_SORT_FORMATTED_TITLE);
+}
+
 void playlist_reverse (void)
 {
     aud_playlist_reverse (aud_playlist_get_active ());
