@@ -61,14 +61,10 @@ GtkTreeView *playlist_get_playing_treeview(void)
     return playlist_get_treeview(aud_playlist_get_playing());
 }
 
-gint playlist_get_playlist_from_treeview(GtkTreeView *treeview)
+gint treeview_get_playlist (GtkTreeView * tree)
 {
-    g_return_val_if_fail(treeview != NULL, -1);
-
-    GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
-    UiPlaylistModel *model = UI_PLAYLIST_MODEL(tree_model);
-
-    return model->playlist;
+    return ui_playlist_model_get_playlist ((UiPlaylistModel *)
+     gtk_tree_view_get_model (tree));
 }
 
 static inline void _gtk_tree_selection_select_path(GtkTreePath *path, GtkTreeSelection *sel)
@@ -118,16 +114,6 @@ void playlist_set_selected_list(GtkTreeView *treeview, GList *list, gint distanc
             gtk_tree_path_free(path);
         }
     }
-}
-
-void playlist_scroll_to_row (GtkTreeView * tree, gint row)
-{
-    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
-
-    aud_playlist_select_all (model->playlist, FALSE);
-    if (row >= 0)
-        aud_playlist_entry_set_selected (model->playlist, row, TRUE);
-    treeview_set_focus (tree, row);
 }
 
 GList *playlist_get_selected_list(GtkTreeView *treeview)
@@ -199,21 +185,6 @@ gint playlist_get_index_from_path(GtkTreePath * path)
     return pos[0];
 }
 
-gint calculate_column_width(GtkWidget *widget, gint num)
-{
-    PangoFontDescription *font_desc;
-    PangoContext *context;
-    PangoFontMetrics *font_metrics;
-    gint digits = 1 + log10(num);
-
-    font_desc = widget->style->font_desc;
-    context = gtk_widget_get_pango_context(widget);
-    font_metrics = pango_context_get_metrics(context, font_desc,
-                                             pango_context_get_language(context));
-
-    return (PANGO_PIXELS(pango_font_metrics_get_approximate_digit_width(font_metrics)) * digits) + 20;
-}
-
 void playlist_select_range (gint list, gint top, gint length)
 {
     gint count;
@@ -280,13 +251,8 @@ gint treeview_get_focus (GtkTreeView * tree)
 
 void treeview_set_focus (GtkTreeView * tree, gint focus)
 {
-    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
-
     if (aud_playlist_update_pending ())
-    {
-        model->focus_changed = TRUE;
-        model->focus = focus;
-    }
+        treeview_set_focus_on_update (tree, focus);
     else
     {
         ui_playlist_widget_block_updates ((GtkWidget *) tree, TRUE);
@@ -297,55 +263,37 @@ void treeview_set_focus (GtkTreeView * tree, gint focus)
 
 void treeview_set_focus_now (GtkTreeView * tree, gint focus)
 {
-    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
-    GtkTreePath * path;
+    gint entries = aud_playlist_entry_count (treeview_get_playlist (tree));
 
     if (focus < 0)
     {
-        if (! aud_playlist_entry_count (model->playlist))
+        if (! entries)
             return;
         focus = 0;
     }
 
-    path = gtk_tree_path_new_from_indices (focus, -1);
+    GtkTreePath * path = gtk_tree_path_new_from_indices (focus, -1);
+
+    ui_playlist_widget_freeze_selection ((GtkWidget *) tree, TRUE);
     gtk_tree_view_set_cursor (tree, path, NULL, FALSE);
+    ui_playlist_widget_freeze_selection ((GtkWidget *) tree, FALSE);
+
     gtk_tree_view_scroll_to_cell (tree, path, NULL, FALSE, 0, 0);
     gtk_tree_path_free (path);
-
-    /* set_cursor changes selection; undo it */
-    treeview_refresh_selection_now (tree);
 }
 
-void treeview_refresh_selection (GtkTreeView * tree)
+void treeview_refresh_selected (GtkTreeView * tree, gint at, gint count)
 {
     UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
-
-    if (aud_playlist_update_pending ())
-        model->selection_changed = TRUE;
-    else
-    {
-        ui_playlist_widget_block_updates ((GtkWidget *) tree, TRUE);
-        treeview_refresh_selection_now (tree);
-        ui_playlist_widget_block_updates ((GtkWidget *) tree, FALSE);
-    }
-}
-
-void treeview_refresh_selection_now (GtkTreeView * tree)
-{
-    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
+    gint playlist = ui_playlist_model_get_playlist (model);
     GtkTreeSelection * sel = gtk_tree_view_get_selection (tree);
-    gint entries = aud_playlist_entry_count (model->playlist);
+
     GtkTreeIter iter;
-    gint count;
+    gtk_tree_model_iter_nth_child ((GtkTreeModel *) model, & iter, NULL, at);
 
-    if (! entries)
-        return;
-
-    gtk_tree_model_get_iter_first ((GtkTreeModel *) model, & iter);
-
-    for (count = 0; count < entries; count ++)
+    for (gint i = at; i < at + count; i ++)
     {
-        if (aud_playlist_entry_get_selected (model->playlist, count))
+        if (aud_playlist_entry_get_selected (playlist, i))
             gtk_tree_selection_select_iter (sel, & iter);
         else
             gtk_tree_selection_unselect_iter (sel, & iter);
@@ -357,8 +305,7 @@ void treeview_refresh_selection_now (GtkTreeView * tree)
 void treeview_add_indexes (GtkTreeView * tree, gint row, struct index * names,
  struct index * tuples)
 {
-    gint playlist = ((UiPlaylistModel *) gtk_tree_view_get_model
-     (tree))->playlist;
+    gint playlist = treeview_get_playlist (tree);
     gint entries = aud_playlist_entry_count (playlist);
     gint new;
 
@@ -373,8 +320,7 @@ void treeview_add_indexes (GtkTreeView * tree, gint row, struct index * names,
 
 void treeview_add_urilist (GtkTreeView * tree, gint row, const gchar * list)
 {
-    gint playlist = ((UiPlaylistModel *) gtk_tree_view_get_model
-     (tree))->playlist;
+    gint playlist = treeview_get_playlist (tree);
     gint entries = aud_playlist_entry_count (playlist);
     gint new;
 
@@ -385,15 +331,4 @@ void treeview_add_urilist (GtkTreeView * tree, gint row, const gchar * list)
     new = aud_playlist_entry_count (playlist);
     playlist_select_range (playlist, row, new - entries);
     treeview_set_focus (tree, MIN (row, new - 1));
-}
-
-void treeview_remove_selected (GtkTreeView * tree)
-{
-    gint list = ((UiPlaylistModel *) gtk_tree_view_get_model (tree))->playlist;
-    gint focus = treeview_get_focus (tree);
-
-    focus -= playlist_count_selected_in_range (list, 0, focus);
-    aud_playlist_delete_selected (list);
-    treeview_set_focus (tree, (focus < aud_playlist_entry_count (list)) ? focus
-     : focus - 1);
 }

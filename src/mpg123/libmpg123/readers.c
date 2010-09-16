@@ -121,7 +121,7 @@ static ssize_t icy_fullread(mpg123_handle *fr, unsigned char *buf, ssize_t count
 			if(fr->icy.next > 0)
 			{
 				cut_pos = fr->icy.next;
-				ret = fr->rdat.fdread(fr,buf,cut_pos);
+				ret = fr->rdat.fdread(fr,buf+cnt,cut_pos);
 				if(ret < 1)
 				{
 					if(ret == 0) break; /* Just EOF. */
@@ -129,7 +129,8 @@ static ssize_t icy_fullread(mpg123_handle *fr, unsigned char *buf, ssize_t count
 
 					return READER_ERROR;
 				}
-				fr->rdat.filepos += ret;
+
+				if(!(fr->rdat.flags & READER_BUFFERED)) fr->rdat.filepos += ret;
 				cnt += ret;
 				fr->icy.next -= ret;
 				if(fr->icy.next > 0)

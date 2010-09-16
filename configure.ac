@@ -1,15 +1,11 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([audacious-plugins], [2.4-alpha3], [bugs+audacious-plugins@atheme.org])
+AC_INIT([audacious-plugins], [2.5-devel], [bugs+audacious-plugins@atheme.org])
 AC_PREREQ([2.59])
 
 AC_CANONICAL_HOST
 AC_CANONICAL_TARGET
 AC_CONFIG_HEADERS([config.h])
-
-dnl Build flags
-dnl ===========
-LDFLAGS="$LDFLAGS -z defs"
 
 dnl XXX kludge for FreeBSD
 if test -d "/usr/X11R6/include"; then
@@ -43,16 +39,6 @@ fi
 dnl Large file support
 dnl ==================
 CPPFLAGS="$CPPFLAGS -D_FILE_OFFSET_BITS=64"
-
-dnl Debug support
-
-AC_SUBST(DEBUG)
-AUD_ARG_ENABLE([debug], [no],
-[additional debugging output],
-[
-    AC_DEFINE([DEBUG], 1, [Define if debugging output is required])
-])
-AUD_CONDITIONAL([DEBUG], [enable_debug])
 
 dnl Locate a program and check that its version is acceptable.
 dnl AC_PROG_CHECK_VER(var, namelist, version-switch,
@@ -131,19 +117,19 @@ AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
 
 dnl These plugins are always built.
 
-INPUT_PLUGINS="tonegen console psf xsf metronom vtx"
+INPUT_PLUGINS="tonegen console xsf metronom vtx"
 OUTPUT_PLUGINS="null"
-EFFECT_PLUGINS="compressor crossfade crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
+EFFECT_PLUGINS="compressor crossfade crystalizer ladspa sndstretch stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS="song_change alarm skins gtkui lyricwiki"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
-CONTAINER_PLUGINS="m3u pls"
+CONTAINER_PLUGINS="m3u pls asx"
 TRANSPORT_PLUGINS="unix-io"
 
 dnl Check for Audacious
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 2.3],
-    [ADD_PC_REQUIRES([audacious >= 2.3])],
-    [AC_MSG_ERROR([Cannot find Audacious 2.3 or later, have you installed audacious yet?])]
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 2.4],
+    [ADD_PC_REQUIRES([audacious >= 2.4])],
+    [AC_MSG_ERROR([Cannot find Audacious 2.4 or later, have you installed audacious yet?])]
 )
 
 CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS"
@@ -166,8 +152,7 @@ AC_ARG_ENABLE(gio, [  --disable-gio           disable GIO support (default=enabl
  enable_gio=$enableval, enable_gio=yes)
 
 if test "x$enable_gio" = "xyes"; then
-    PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0], [ADD_PC_REQUIRES([gio-2.0 >=
-     2.0])], [enable_gio=no])
+    PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0], [ADD_PC_REQUIRES([gio-2.0 >= 2.0])], [enable_gio=no])
 fi
 
 if test "x$enable_gio" = "xyes"; then
@@ -238,25 +223,6 @@ case "$target" in
 		;;
 esac
 
-dnl Check for esound
-
-AC_ARG_ENABLE( esd,
-    [  --disable-esd           disable esound output plugin (default=enabled)],
-    [enable_esd=$enableval],
-    [enable_esd="yes"]
-)
-
-if test "x$enable_esd" = "xyes"; then
-    PKG_CHECK_MODULES(ESD, [esound >= 0.2],
-        [have_esd=yes
-         OUTPUT_PLUGINS="$OUTPUT_PLUGINS esd"],
-        [have_esd=no]
-    )
-else
-    AC_MSG_RESULT([*** esound plugin disabled per user request ***])
-    have_esd=no
-fi
-
 dnl *** PulseAudio
 
 AC_ARG_ENABLE( pulse,
@@ -270,6 +236,25 @@ if test "x$enable_pulse" = "xyes"; then
          [have_pulse=yes
           OUTPUT_PLUGINS="$OUTPUT_PLUGINS pulse_audio"],
          [have_pulse=no]
+    )
+else
+    AC_MSG_RESULT([*** pulseaudio output plugin disabled per user request ***])
+    have_pulse=no
+fi
+
+dnl *** RoarAudio
+
+AC_ARG_ENABLE(roar,
+    [  --disable-roar          disable PulseAudio output plugin (default=enabled)],
+    [enable_roar=$enableval],
+    [enable_roar="yes"]
+)
+
+if test "x$enable_roar" = "xyes"; then
+    PKG_CHECK_MODULES(LIBROAR, [libroar],
+         [have_roar=yes
+          OUTPUT_PLUGINS="$OUTPUT_PLUGINS roaraudio"],
+         [have_roar=no]
     )
 else
     AC_MSG_RESULT([*** pulseaudio output plugin disabled per user request ***])
@@ -360,6 +345,20 @@ if test "x$enable_sse2" = "xyes"; then
 fi
 AC_SUBST(SIMD_CFLAGS)
 CFLAGS="$ac_save_CFLAGS"
+
+
+dnl PSF
+dnl ===
+
+AC_ARG_ENABLE(psf,
+ [  --disable-psf            disable PlayStation (psf/psf2) audio decoder],
+ [enable_psf=$enableval],
+ [enable_psf=yes])
+
+if test "$enable_psf" = "yes"; then
+    INPUT_PLUGINS="$INPUT_PLUGINS psf"
+fi
+
 
 dnl *** USF
 
@@ -515,8 +514,8 @@ AC_ARG_ENABLE(statusicon,
 )
 
 if test "x$enable_statusicon" = "xyes"; then
-    have_statusicon="yes"
-    PKG_CHECK_MODULES(GDKX11,[gdk-x11-2.0 >= 2.6.0],,[have_statusicon="no"])
+    PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.16.0], [have_statusicon=yes],
+     [have_statusicon=no])
 else
     AC_MSG_RESULT([*** X11 Status Icon plugin disabled per user request ***])
     have_statusicon="no"
@@ -1332,15 +1331,21 @@ if test "x$have_paranormal" = "xyes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS paranormal"
 fi
 
-AM_PATH_XML2(2.0.0, , [
-	AC_MSG_ERROR([*** libxml2 is not found! It is required for certain essential plugins. ***])
-])
 
+dnl XSPF
+dnl ----
 
-have_xspf="yes"
+PKG_CHECK_MODULES(XML, [libxml-2.0], [have_xml=yes], [have_xml=no])
+
+if test $have_xml = "no" ; then
+    AC_MSG_ERROR([Please install libxml-2.0.])
+fi
+
 CONTAINER_PLUGINS="$CONTAINER_PLUGINS xspf"
 
-dnl *** CUE
+
+dnl CUE
+dnl ---
 
 AC_ARG_ENABLE(cue,
 [  --disable-cue           disable cue support. (default=enabled)],
@@ -1393,17 +1398,19 @@ AC_ARG_ENABLE(projectm-1.0,
 
 if test "$have_projectm1" = "yes"; then
 	PKG_CHECK_MODULES(LIBPROJECTM1, [libprojectM >= 1.1], [have_projectm1="yes"], [have_projectm1="no"])
+fi
+
+if test "$have_projectm1" = "yes"; then
 	PKG_CHECK_MODULES(GTKGLEXT, [gtkglext-1.0], [have_projectm1="yes"], [have_projectm1="no"])
-	if test "xhave_projectm1" = "xno"; then
-	        AC_MSG_WARN([*** libprojectM not found.
-	                        libprojectM is needed to build this package.
-	                        You can download libprojectM at http://projectm.sf.net/])
-	fi
+fi
+
+if test "$have_projectm1" = "yes"; then
 	LIBPROJECTM1_datadir=`pkg-config --variable=pkgdatadir libprojectM`;
 	LIBPROJECTM1_sysconfdir=`pkg-config --variable=sysconfdir libprojectM`;
         LIBPROJECTM1_prefix=`pkg-config --variable=prefix libprojectM`;
 	LIBPROJECTM1_CFLAGS="$LIBPROJECTM1_CFLAGS -DPROJECTM_DATADIR=\\\"$LIBPROJECTM1_datadir\\\" -DPROJECTM_SYSCONFDIR=\\\"$LIBPROJECTM1_sysconfdir\\\" -DPROJECTM_PREFIX=\\\"$LIBPROJECTM1_prefix\\\"";
 fi
+
 AC_SUBST(LIBPROJECTM1_LIBS)
 AC_SUBST(LIBPROJECTM1_CFLAGS)
 AC_SUBST(GTKGLEXT_LIBS)
@@ -1596,7 +1603,6 @@ echo
 echo "Configuration:"
 echo
 echo "  Install path:                           ${audacious_plugin_root}"
-echo "  Additional debugging output:            $enable_debug"
 echo
 echo "  Output Plugins"
 echo "  --------------"
@@ -1604,7 +1610,7 @@ echo "  Open Sound System (oss):                $have_oss"
 echo "  Open Sound System v4 (oss4):            $have_oss4"
 echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  PulseAudio (pulse):                     $have_pulse"
-echo "  Enlightenment Sound Daemon (esd):       $have_esd"
+echo "  RoarAudio (roaraudio):                  $have_roar"
 echo "  Jack Audio Connection Kit (jack):       $have_jack"
 echo "  BSD/SUN audio output (sun):             $have_sun"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
@@ -1633,7 +1639,7 @@ echo "    -> libSIDPlay1 support:               $xs_have_sidplay1"
 echo "    -> libSIDPlay2 support:               $xs_have_sidplay2"
 echo "    -> distortion patched libSIDPlay2:    $xs_have_distortion"
 echo "  Game music (spc, nsf & gbs):            yes"
-echo "  PlayStation (psf/psf2) audio (psf):     yes"
+echo "  PlayStation (psf/psf2) audio:           $enable_psf"
 echo "  Nintendo 64 audio (usf):                $enable_usf"
 echo "  Nintendo DS audio (xsf):                yes [experimental]"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
@@ -1690,6 +1696,6 @@ echo "  Container"
 echo "  ---------"
 echo "  Winamp PLS playlist format (pls):       yes"
 echo "  M3U playlist format (m3u):              yes"
-echo "  XML Sharable Playlist Format (xspf):    $have_xspf"
+echo "  XML Sharable Playlist Format (xspf):    yes"
 echo "  CUE playlist format (cue):              $have_cue"
 echo

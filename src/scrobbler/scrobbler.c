@@ -7,12 +7,12 @@
 #include "fmt.h"
 #include "plugin.h"
 #include "scrobbler.h"
-#include "config.h"
 #include "settings.h"
 #include <glib.h>
 
 #include <audacious/drct.h>
 #include <audacious/debug.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/md5.h>
 

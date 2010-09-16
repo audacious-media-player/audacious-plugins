@@ -35,6 +35,20 @@
 			<menuitem action="current track info" />
 		</menu>
 		<menu action="playlist">
+			<separator />
+			<menu action="playlist sort">
+				<menuitem action="playlist sort track" />
+				<menuitem action="playlist sort title" />
+				<menuitem action="playlist sort artist" />
+				<menuitem action="playlist sort album" />
+				<menuitem action="playlist sort path" />
+				<separator />
+				<menuitem action="playlist reverse" />
+			</menu>
+			<menuitem action="playlist randomize" />
+			<separator />
+			<menuitem action="playlist refresh" />
+			<separator />
 			<menuitem action="playlist new" />
 			<menuitem action="playlist delete" />
 			<separator />
@@ -43,8 +57,6 @@
 			<menuitem action="playlist save all" />
 			<separator />
 			<menuitem action="playlist manager" />
-			<separator />
-			<menuitem action="playlist refresh" />
 		</menu>
 		<menu action="plugins-menu" />
 
@@ -55,10 +67,12 @@
 		</menu>
 
 		<menu action="view">
+			<menuitem action="iface menu" />
+			<separator />
 			<menuitem action="view menu" />
 			<menuitem action="view playlists" />
 			<menuitem action="view infoarea" />
-            <menuitem action="view statusbar" />
+			<menuitem action="view statusbar" />
 		</menu>
 
 		<menu action="help">
@@ -84,6 +98,12 @@
 			<menuitem action="queue toggle" />
 			<separator />
 			<menuitem action="plugins-menu" />
+		</menu>
+		<menu action="dummy" name="playlist-tab-menu">
+			<menuitem action="playlist title edit" />
+			<separator />
+			<menuitem action="playlist delete" />
+			<menuitem action="playlist save" />
 		</menu>
 	</menubar>
 </ui>

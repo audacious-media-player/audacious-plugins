@@ -24,9 +24,9 @@
 #include "resample.h"
 
 static int sun_bps(int, int, int);
-static int sun_format(AFormat);
+static int sun_format(gint);
 
-static void sun_setformat(AFormat, int, int);
+static void sun_setformat(gint, int, int);
 static void sun_setparams(void);
 static void *sun_loop(void *);
 static int sun_downsample(gpointer, guint, guint, guint);
@@ -46,7 +46,7 @@ static guint64 written;
 
 /*
  * The format of the data from the input plugin
- * This will never change during a song. 
+ * This will never change during a song.
  */
 struct sun_format input;
 
@@ -83,7 +83,7 @@ static int sun_bps(int sunfmt, int rate, int nch)
 	return (bitrate);
 }
 
-static int sun_format(AFormat fmt)
+static int sun_format(gint fmt)
 {
 	switch (fmt)
 	{
@@ -95,30 +95,18 @@ static int sun_format(AFormat fmt)
 			return (AUDIO_ENCODING_ULINEAR_LE);
 		case FMT_U16_BE:
 			return (AUDIO_ENCODING_ULINEAR_BE);
-		case FMT_U16_NE:
-#ifdef WORDS_BIGENDIAN
-			return (AUDIO_ENCODING_ULINEAR_BE);
-#else
-			return (AUDIO_ENCODING_ULINEAR_LE);
-#endif
 		case FMT_S16_LE:
 			return (AUDIO_ENCODING_SLINEAR_LE);
 		case FMT_S16_BE:
 			return (AUDIO_ENCODING_SLINEAR_BE);
-		case FMT_S16_NE:
-#ifdef WORDS_BIGENDIAN
-			return (AUDIO_ENCODING_SLINEAR_BE);
-#else
-			return (AUDIO_ENCODING_SLINEAR_LE);
-#endif
 	}
 	return -1;
 }
 
-static void sun_setformat(AFormat fmt, int rate, int nch)
+static void sun_setformat(gint fmt, int rate, int nch)
 {
 	int sun;
-	
+
 	sun = sun_format(fmt);
 
 	effect.format.sun = sun;
@@ -465,7 +453,7 @@ static void* sun_loop(void *arg)
 	pthread_exit(NULL);
 }
 
-int sun_open(AFormat fmt, int rate, int nch)
+int sun_open(gint fmt, int rate, int nch)
 {
 	audio_info_t info;
 

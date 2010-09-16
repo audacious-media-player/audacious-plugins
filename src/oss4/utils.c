@@ -1,7 +1,7 @@
 /*
  * OSS4 Output Plugin for Audacious
  * Copyright 2010 Michał Lipski <tallica@o2.pl>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -56,11 +56,11 @@ gchar *oss_format_to_text(gint format)
     return "FMT_UNKNOWN";
 }
 
-gint oss_convert_aud_format(AFormat aud_format)
+gint oss_convert_aud_format(gint aud_format)
 {
     const struct
     {
-        AFormat aud_format;
+        gint aud_format;
         gint format;
     }
     table[] =
@@ -165,12 +165,12 @@ gchar *oss_describe_error(void)
         if (table[count].error == errno)
             return g_strdup(table[count].text);
     }
-    
+
     return g_strdup_printf("Unknown OSS error (%d)\n", errno);
 }
 
 gboolean oss_hardware_present(void)
-{    
+{
     gint mixerfd;
     oss_sysinfo sysinfo;
 
@@ -190,7 +190,7 @@ gboolean oss_hardware_present(void)
         errno = ENXIO;
         goto FAILED;
     }
-    
+
     FAILED:
         SHOW_ERROR_MSG;
         close(mixerfd);
@@ -200,6 +200,6 @@ gboolean oss_hardware_present(void)
 void oss_show_error(const gchar *message)
 {
     static GtkWidget *dialog = NULL;
-    
+
     audgui_simple_message (&dialog, GTK_MESSAGE_ERROR, _("OSS4 error"), message);
 }

@@ -23,9 +23,9 @@
 #include <libmtp.h>
 
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
-#include <audacious/ui_plugin_menu.h>
 
 #include <gtk/gtk.h>
 #include "filetype.h"
@@ -64,6 +64,7 @@ void show_dialog(const gchar* message)
             GTK_DIALOG_MODAL,
             GTK_MESSAGE_ERROR,
             GTK_BUTTONS_OK,
+            "%s",
             message);
     gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_show(dialog);
@@ -180,7 +181,6 @@ gint upload_file(Tuple *from_tuple)
 {
     int ret;
     gchar *tmp, *from_path = NULL, *filename;
-    uint32_t parent_id = 0;
     LIBMTP_track_t *gentrack;
     gentrack = track_metadata(from_tuple);
     from_path = g_strdup_printf("%s/%s", tuple_get_string(from_tuple, FIELD_FILE_PATH, NULL), tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
@@ -315,7 +315,9 @@ void mtp_init(void)
     gtk_widget_show (mtp_root_menuitem);
 
 
+    aud_menu_plugin_item_add(AUDACIOUS_MENU_MAIN, mtp_root_menuitem);
     aud_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, mtp_root_menuitem);
+
     g_signal_connect (G_OBJECT (mtp_submenu_item_up), "button_press_event",G_CALLBACK (mtp_press), NULL);
     g_signal_connect (G_OBJECT (mtp_submenu_item_free), "button_press_event",G_CALLBACK (free_device), NULL);
 
@@ -353,7 +355,9 @@ void mtp_cleanup(void)
         if(mtp_initialised)
             g_print("The MTP mutex has been unlocked\n");
 #endif
+        aud_menu_plugin_item_remove(AUDACIOUS_MENU_MAIN, mtp_root_menuitem);
         aud_menu_plugin_item_remove(AUDACIOUS_MENU_PLAYLIST_RCLICK, mtp_root_menuitem);
+
         gtk_widget_destroy(mtp_submenu_item_up);
 
         gtk_widget_destroy(mtp_submenu_item_up);

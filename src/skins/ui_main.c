@@ -36,9 +36,12 @@
 #include <string.h>
 #include <sys/types.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <audacious/playlist.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 
 /* GDK including */
@@ -51,9 +54,6 @@
 #else
 #include <regex.h>
 #endif
-
-#include <audacious/playlist.h>
-#include <audacious/plugin.h>
 
 #include "actions-playlist.h"
 #include "ui_main.h"
@@ -261,7 +261,7 @@ mainwin_vis_set_type_menu_cb(VisType mode)
     ui_vis_clear_data (mainwin_vis);
     ui_svis_clear_data (mainwin_svis);
 
-    start_stop_visual ();
+    start_stop_visual (FALSE);
 }
 
 static void
@@ -1389,6 +1389,7 @@ mainwin_set_volume_diff(gint diff)
     gint vol;
 
     aud_drct_get_volume_main (& vol);
+    vol = CLAMP (vol + diff, 0, 100);
     mainwin_adjust_volume_motion(vol);
     mainwin_set_volume_slider(vol);
     equalizerwin_set_volume_slider(vol);
@@ -1411,14 +1412,14 @@ mainwin_set_balance_diff(gint diff)
 
 static void mainwin_real_show (void)
 {
-    start_stop_visual ();
+    start_stop_visual (FALSE);
     gtk_window_present(GTK_WINDOW(mainwin));
 }
 
 static void mainwin_real_hide (void)
 {
     gtk_widget_hide(mainwin);
-    start_stop_visual ();
+    start_stop_visual (FALSE);
 }
 
 void mainwin_show (gboolean show)
@@ -2208,6 +2209,7 @@ void mainwin_unhook (void)
 
     hook_dissociate ("show main menu", (HookFunction) show_main_menu);
     ui_main_evlistener_dissociate ();
+    start_stop_visual (TRUE);
 }
 
 void
@@ -2520,7 +2522,7 @@ action_play_file( void )
 void
 action_play_location( void )
 {
-    audgui_show_add_url_window();
+    audgui_show_add_url_window (TRUE);
 }
 
 void

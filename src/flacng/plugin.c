@@ -204,14 +204,14 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
     if (read_metadata(main_decoder, main_info) == FALSE)
     {
         ERROR("Could not prepare file for playing!\n");
-        goto CLEANUP;
+        goto ERR_NO_CLOSE;
     }
 
     if (main_info->stream.channels > MAX_SUPPORTED_CHANNELS)
     {
         ERROR("This number of channels (%d) is currently not supported, stream not handled by this plugin.\n",
             main_info->stream.channels);
-        goto CLEANUP;
+        goto ERR_NO_CLOSE;
     }
 
     if (main_info->stream.bits_per_sample != 8  &&
@@ -221,16 +221,13 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
     {
         ERROR("This number of bits (%d) is currently not supported, stream not handled by this plugin.\n",
             main_info->stream.bits_per_sample);
-        goto CLEANUP;
+        goto ERR_NO_CLOSE;
     }
-
-    seek_value = (start_time > 0) ? start_time : -1;
-    playback->playing = TRUE;
 
     if ((play_buffer = g_malloc0(BUFFER_SIZE_BYTE)) == NULL)
     {
         ERROR("Could not allocate conversion buffer\n");
-        goto CLEANUP;
+        goto ERR_NO_CLOSE;
     }
 
     if (! playback->output->open_audio (SAMPLE_FMT
@@ -238,11 +235,14 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
      main_info->stream.channels))
     {
         ERROR("Could not open output plugin!\n");
-        goto CLEANUP;
+        goto ERR_NO_CLOSE;
     }
 
     if (pause)
         playback->output->pause (TRUE);
+
+    seek_value = (start_time > 0) ? start_time : -1;
+    playback->playing = TRUE;
 
     playback->set_params(playback, NULL, 0, main_info->bitrate,
         main_info->stream.samplerate, main_info->stream.channels);
@@ -274,14 +274,14 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
             {
                 ERROR("Samplerate changed midstream (now: %d, was: %d). This is not supported yet.\n",
                     main_info->stream.samplerate, stream_info.samplerate);
-                break;
+                goto CLEANUP;
             }
 
             if (stream_info.channels != main_info->stream.channels)
             {
                 ERROR("Number of channels changed midstream (now: %d, was: %d). This is not supported yet.\n",
                     main_info->stream.channels, stream_info.channels);
-                break;
+                goto CLEANUP;
             }
 
             main_info->metadata_changed = FALSE;
@@ -292,14 +292,14 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
         {
             ERROR("Frame samplerate mismatch (stream: %d, frame: %d)!\n",
                 main_info->stream.samplerate, main_info->frame.samplerate);
-            break;
+            goto CLEANUP;
         }
 
         if (main_info->stream.channels != main_info->frame.channels)
         {
             ERROR("Frame channel mismatch (stream: %d, frame: %d)!\n",
                 main_info->stream.channels, main_info->frame.channels);
-            break;
+            goto CLEANUP;
         }
 
         g_mutex_lock(seek_mutex);
@@ -374,6 +374,7 @@ CLEANUP:
     playback->output->close_audio();
     AUDDBG("Audio device closed.\n");
 
+ERR_NO_CLOSE:
     if (play_buffer)
         g_free(play_buffer);
 
@@ -466,7 +467,8 @@ static void flac_aboutbox(void)
     g_free(about_text);
 }
 
-static void insert_str_tuple_to_vc(FLAC__StreamMetadata *vc_block, Tuple *tuple, gint tuple_name, gchar *field_name)
+static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
+ const Tuple * tuple, gint tuple_name, gchar * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     gchar *str;
@@ -482,7 +484,8 @@ static void insert_str_tuple_to_vc(FLAC__StreamMetadata *vc_block, Tuple *tuple,
     g_free(str);
 }
 
-static void insert_int_tuple_to_vc(FLAC__StreamMetadata *vc_block, Tuple *tuple, gint tuple_name, gchar *field_name)
+static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
+ const Tuple * tuple, gint tuple_name, gchar * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     gchar *str;
@@ -502,13 +505,18 @@ static void insert_int_tuple_to_vc(FLAC__StreamMetadata *vc_block, Tuple *tuple,
     g_free(str);
 }
 
-gboolean flac_update_song_tuple(Tuple *tuple, VFSFile *fd)
+gboolean flac_update_song_tuple (const Tuple * tuple, VFSFile * fd)
 {
     AUDDBG("Update song tuple.\n");
     FLAC__Metadata_SimpleIterator *iter;
     FLAC__StreamMetadata *vc_block;
-    gchar *filename = g_filename_from_uri(fd->uri, NULL, NULL);
+    gchar *filename;
     FLAC__bool ret;
+
+    if (fd != NULL)
+        filename = g_filename_from_uri(fd->uri, NULL, NULL);
+    else
+        return FALSE;
 
     iter = FLAC__metadata_simple_iterator_new();
     g_return_val_if_fail(iter != NULL, FALSE);
@@ -564,8 +572,10 @@ static gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, 
     FLAC__bool ret;
     gboolean has_image = FALSE;
 
-    if (filename != NULL)
+    if (fd != NULL)
         filename = g_filename_from_uri(fd->uri, NULL, NULL);
+    else
+        return FALSE;
 
     iter = FLAC__metadata_simple_iterator_new();
     g_return_val_if_fail(iter != NULL, FALSE);
@@ -605,7 +615,7 @@ CLEANUP:
     return has_image;
 }
 
-static gchar *flac_fmts[] = { "flac", "fla", NULL };
+static const gchar *flac_fmts[] = { "flac", "fla", NULL };
 
 InputPlugin flac_ip = {
     .description = "FLACng Audio Plugin",

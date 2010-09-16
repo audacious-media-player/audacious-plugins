@@ -38,8 +38,11 @@
 #include <mowgli.h>
 
 #include <audacious/drct.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <audacious/plugins.h>
+#include <libaudcore/hook.h>
 #include <libaudcore/vfs_async.h>
 
 #include "urlencode.h"
@@ -108,7 +111,7 @@ give_up:
 				GMatchInfo *match_info;
 				GRegex *reg;
 
-				reg = g_regex_new("<(lyrics?)>(.*)</\\1>", (G_REGEX_MULTILINE | G_REGEX_DOTALL), 0, NULL);
+				reg = g_regex_new("<(lyrics?)>(.*)</\\1>", (G_REGEX_MULTILINE | G_REGEX_DOTALL | G_REGEX_UNGREEDY), 0, NULL);
 				g_regex_match(reg, (gchar *) lyric, G_REGEX_MATCH_NEWLINE_ANY, &match_info);
 
 				ret = g_match_info_fetch(match_info, 2);
@@ -274,17 +277,6 @@ build_widget(void)
 }
 
 void
-clear_lyrics_window(void)
-{
-	GtkTextIter iter1, iter2;
-
-	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter1);
-	gtk_text_buffer_get_end_iter(GTK_TEXT_BUFFER(textbuffer), &iter2);
-
-	gtk_text_buffer_delete(GTK_TEXT_BUFFER(textbuffer), &iter1, &iter2);
-}
-
-void
 update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 {
 	GtkTextIter iter;
@@ -295,7 +287,7 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 	if (textbuffer == NULL)
 		return;
 
-	clear_lyrics_window();
+	gtk_text_buffer_set_text(GTK_TEXT_BUFFER(textbuffer), "", -1);
 
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
 
@@ -334,6 +326,9 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 	real_lyrics = lyrics != NULL ? lyrics : _("\nNo lyrics were found.");
 
 	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, real_lyrics, strlen(real_lyrics));
+
+	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
+	gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(textview), &iter, 0, TRUE, 0, 0);
 }
 
 void
@@ -345,7 +340,7 @@ lyricwiki_playback_began(void)
 	if (!aud_drct_get_playing())
 		return;
 
-	playlist = aud_playlist_get_active();
+	playlist = aud_playlist_get_playing();
 	pos = aud_playlist_get_position(playlist);
 	tu = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
 
@@ -382,8 +377,8 @@ GeneralPlugin lyricwiki =
 GeneralPlugin *lyricwiki_gplist[] = { &lyricwiki, NULL };
 SIMPLE_GENERAL_PLUGIN(lyricwiki, lyricwiki_gplist);
 
-static gboolean window_delete(void)
+static gboolean window_delete (void)
 {
-	aud_enable_general(&lyricwiki, FALSE);
+	aud_plugin_enable (aud_plugin_by_header (& lyricwiki), FALSE);
 	return TRUE;
 }

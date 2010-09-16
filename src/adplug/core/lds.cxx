@@ -665,7 +665,7 @@ CldsPlayer::rewind (int subsong)
 void
 CldsPlayer::playsound (int inst_number, int channel_number, int tunehigh)
 {
-  if (inst_number > numpatch-1) {
+  if ((unsigned int)inst_number > numpatch-1) {
       return;
   }
   Channel *c = &channel[channel_number];    // current channel

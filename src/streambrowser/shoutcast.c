@@ -186,7 +186,7 @@ gboolean shoutcast_category_fetch (streamdir_t * streamdir,
             g_snprintf (streaminfo_playlist_url, DEF_STRING_LEN,
                         SHOUTCAST_STREAMINFO_URL, streaminfo_id);
 
-            AUDDBG("shoutcast: adding stream info for '%s/%d' from '%s'\n",
+            AUDDBG("shoutcast: adding stream info for '%s/%s' from '%s'\n",
                    streaminfo_name, streaminfo_id, url);
 
             streaminfo_t *streaminfo =
@@ -271,7 +271,7 @@ streamdir_t *shoutcast_streamdir_fetch ()
 
             xmlFree (category_name);
 
-            AUDDBG("shoutcast: category added\n", category_name);
+            AUDDBG("shoutcast: category added: %s.\n", category_name);
         }
     }
 

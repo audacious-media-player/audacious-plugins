@@ -23,8 +23,8 @@
 #include <glib.h>
 #include "util.h"
 
-#define MAINWIN_DEFAULT_WIDTH     450
-#define MAINWIN_DEFAULT_HEIGHT    150
+#define MAINWIN_DEFAULT_WIDTH     600
+#define MAINWIN_DEFAULT_HEIGHT    400
 #define MAINWIN_DEFAULT_POS_X     100
 #define MAINWIN_DEFAULT_POS_Y     100
 

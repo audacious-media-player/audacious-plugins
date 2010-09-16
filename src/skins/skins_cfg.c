@@ -24,6 +24,8 @@
 #include <audacious/configdb.h>
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
+#include <audacious/preferences.h>
 #include <libaudcore/audstrings.h>
 
 #include "skins_cfg.h"
@@ -42,7 +44,6 @@
 
 skins_cfg_t config;
 GtkWidget *skin_view;
-GtkWidget *skin_refresh_button;
 static GtkWidget *colorize_settings = NULL;
 /* colorize settings scales */
 GtkWidget *green_scale;
@@ -339,7 +340,7 @@ on_skin_view_realize(GtkTreeView * treeview,
                      gpointer data)
 {
     skin_view_realize(treeview);
-    skin_view_update(GTK_TREE_VIEW(skin_view), GTK_WIDGET(skin_refresh_button));
+    skin_view_update ((GtkTreeView *) skin_view);
 
     return TRUE;
 }
@@ -526,8 +527,7 @@ on_skin_view_drag_data_received(GtkWidget * widget,
         if (!aud_active_skin_load(path))
             return;
         skin_install_skin(path);
-        skin_view_update(GTK_TREE_VIEW(widget),
-                         GTK_WIDGET(skin_refresh_button));
+        skin_view_update ((GtkTreeView *) widget);
 
         /* Change skin name in the config file */
         db = aud_cfg_db_open();
@@ -545,8 +545,6 @@ GtkWidget* skins_configure(void) {
     GtkWidget *hbox13;
     GtkWidget *label103;
     GtkWidget *colorspace_button;
-    GtkWidget *image11;
-    GtkWidget *image12;
     GtkWidget *alignment95;
     GtkWidget *skin_view_scrolled_window;
 
@@ -573,20 +571,10 @@ GtkWidget* skins_configure(void) {
     gtk_label_set_use_markup (GTK_LABEL (label103), TRUE);
     gtk_misc_set_alignment (GTK_MISC (label103), 0, 0);
 
-    colorspace_button = gtk_button_new ();
+    colorspace_button = gtk_button_new_with_label (_("Color adjustment ..."));
+    gtk_button_set_image ((GtkButton *) colorspace_button,
+     gtk_image_new_from_stock (GTK_STOCK_COLOR_PICKER, GTK_ICON_SIZE_BUTTON));
     gtk_box_pack_start (GTK_BOX (hbox13), colorspace_button, FALSE, FALSE, 0);
-
-    image11 = gtk_image_new_from_stock ("gtk-properties", GTK_ICON_SIZE_BUTTON);
-    gtk_container_add (GTK_CONTAINER (colorspace_button), image11);
-
-    skin_refresh_button = gtk_button_new ();
-    gtk_box_pack_start (GTK_BOX (hbox13), skin_refresh_button, FALSE, FALSE, 0);
-    GTK_WIDGET_UNSET_FLAGS (skin_refresh_button, GTK_CAN_FOCUS);
-    gtk_button_set_relief (GTK_BUTTON (skin_refresh_button), GTK_RELIEF_HALF);
-    gtk_button_set_focus_on_click (GTK_BUTTON (skin_refresh_button), FALSE);
-
-    image12 = gtk_image_new_from_stock ("gtk-refresh", GTK_ICON_SIZE_BUTTON);
-    gtk_container_add (GTK_CONTAINER (skin_refresh_button), image12);
 
     alignment95 = gtk_alignment_new (0.5, 0.5, 1, 1);
     gtk_box_pack_start (GTK_BOX (vbox38), alignment95, TRUE, TRUE, 0);
@@ -618,15 +606,6 @@ GtkWidget* skins_configure(void) {
     g_signal_connect(mainwin, "drag-data-received",
                      G_CALLBACK(mainwin_drag_data_received),
                      skin_view);
-#if 0
-    g_signal_connect(skin_refresh_button, "clicked",
-                     G_CALLBACK(on_skin_refresh_button_clicked),
-                     NULL);
-
-    g_signal_connect_swapped(G_OBJECT(skin_refresh_button), "clicked",
-                             G_CALLBACK(on_skin_refresh_button_clicked),
-                             prefswin);
-#endif
     g_signal_connect_after(G_OBJECT(skin_view), "realize",
                            G_CALLBACK(on_skin_view_realize),
                            NULL);

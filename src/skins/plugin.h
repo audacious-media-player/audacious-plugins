@@ -22,7 +22,10 @@
 #define PLUGIN_SKINS_H
 
 #include <glib.h>
+
+#include <audacious/interface.h>
 #include <audacious/plugin.h>
+
 #include "skins_cfg.h"
 #include "ui_main.h"
 #include "ui_equalizer.h"

@@ -17,6 +17,7 @@
 */
 
 /* BMP-ladspa port by Giacomo Lozito <city_hunter@users.sf.net> */
+/* Audacious 2.4 port by John Lindgren <john.lindgren@tds.net>, 2010 */
 
 #include "config.h"
 
@@ -70,7 +71,6 @@ typedef struct
 
 static void start(void);
 static void stop(void);
-static int apply_effect(gpointer * d, gint length, AFormat afmt, gint srate, gint nch);
 static void configure(void);
 
 static void restore(void);
@@ -107,29 +107,14 @@ static plugin_instance *selected_instance;
 
 static struct
 {
-    AFormat afmt;
     gint srate;
     gint nch;
     gboolean ignore;
     gboolean running;
     gboolean initialised;
-} state =
-{
-0, 0, 0, FALSE, FALSE, FALSE};
+} state = {0, 0, FALSE, FALSE, FALSE};
 
 static GtkWidget *config_window = NULL, *run_clist = NULL;
-
-static EffectPlugin ladspa_ep = {
-    .description = PLUGIN_NAME,
-    .init = start,
-    .cleanup = stop,
-    .configure = configure,
-    .mod_samples = apply_effect,
-};
-
-EffectPlugin *ladspa_eplist[] = { &ladspa_ep, NULL };
-
-DECLARE_PLUGIN(ladspa, NULL, NULL, NULL, NULL, ladspa_eplist, NULL, NULL, NULL);
 
 static void start(void)
 {
@@ -396,102 +381,58 @@ static void reboot_plugins(void)
     G_UNLOCK(running_plugins);
 }
 
-static int apply_effect(gpointer * d, gint length, AFormat afmt, gint srate, gint nch)
+static void ladspa_process (gfloat * * datap, gint * samplesp)
 {
-    gint16 *raw16 = *d;
+    gfloat * const data = * datap;
+    const gint samples = * samplesp;
     GSList *list;
     plugin_instance *instance;
     int k;
 
-    if (running_plugins == NULL || state.running == FALSE)
-    {
-	return length;
-    }
-
-    if (state.afmt != afmt || state.srate != srate || state.nch != nch)
-    {
-	state.afmt = afmt;
-	state.srate = srate;
-	state.nch = nch;
-
-	if (nch < 1 || nch > 2)
-	    state.ignore = 1;
-	else if (afmt == FMT_S16_NE)
-	    state.ignore = 0;
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-	else if (afmt == FMT_S16_LE)
-	    state.ignore = 0;
-#elif G_BYTE_ORDER == G_BIG_ENDIAN
-	else if (afmt == FMT_S16_BE)
-	    state.ignore = 0;
-#endif
-	else
-	    state.ignore = 1;
-
-	reboot_plugins();
-    }
-
-    if (state.ignore || length > MAX_SAMPLES * 2)
-    {
-	return length;
-    }
+    if (running_plugins == NULL || state.running == FALSE || state.ignore ||
+     samples > MAX_SAMPLES)
+	return;
 
     if (state.nch == 1)
     {
-	for (k = 0; k < length / 2; ++k)
-	{
-	    left[k] = ((LADSPA_Data) raw16[k]) * (1.0f / 32768.0f);
-	}
+	for (k = 0; k < samples; k ++)
+	    left[k] = data[k];
+
 	G_LOCK(running_plugins);
 	for (list = running_plugins; list != NULL; list = g_slist_next(list))
 	{
 	    instance = (plugin_instance *) list->data;
 	    if (instance->handle)
-	    {
-		instance->descriptor->run(instance->handle, length / 2);
-	    }
+		instance->descriptor->run(instance->handle, samples);
 	}
 	G_UNLOCK(running_plugins);
-	for (k = 0; k < length / 2; ++k)
-	{
-	    raw16[k] = CLAMP((int)(left[k] * 32768.0f), -32768, 32767);
-	}
+
+	for (k = 0; k < samples; k ++)
+	    data[k] = left[k];
     }
     else
     {
-	for (k = 0; k < length / 2; k += 2)
-	{
-	    left[k / 2] = ((LADSPA_Data) raw16[k]) * (1.0f / 32768.0f);
-	}
-	for (k = 1; k < length / 2; k += 2)
-	{
-	    right[k / 2] = ((LADSPA_Data) raw16[k]) * (1.0f / 32768.0f);
-	}
+	for (k = 0; k < samples; k += 2)
+	    left[k >> 1] = data[k];
+	for (k = 1; k < samples; k += 2)
+	    right[k >> 1] = data[k];
+
 	G_LOCK(running_plugins);
 	for (list = running_plugins; list != NULL; list = g_slist_next(list))
 	{
 	    instance = (plugin_instance *) list->data;
 	    if (instance->handle)
-	    {
-		instance->descriptor->run(instance->handle, length / 4);
-	    }
+		instance->descriptor->run(instance->handle, samples / 2);
 	    if (instance->handle2)
-	    {
-		instance->descriptor->run(instance->handle2, length / 4);
-	    }
+		instance->descriptor->run(instance->handle2, samples / 2);
 	}
 	G_UNLOCK(running_plugins);
-	for (k = 0; k < length / 2; k += 2)
-	{
-	    raw16[k] = CLAMP((int)(left[k / 2] * 32768.0f), -32768, 32767);
-	}
-	for (k = 1; k < length / 2; k += 2)
-	{
-	    raw16[k] = CLAMP((int)(right[k / 2] * 32768.0f), -32768, 32767);
-	}
-    }
 
-    return length;
+	for (k = 0; k < samples; k += 2)
+	    data[k] = left[k >> 1];
+	for (k = 1; k < samples; k += 2)
+	    data[k] = right[k >> 1];
+    }
 }
 
 static void port_assign(plugin_instance * instance)
@@ -1128,3 +1069,47 @@ static void configure(void)
 
     gtk_widget_show_all(config_window);
 }
+
+void ladspa_start (gint * channels, gint * rate)
+{
+    state.nch = * channels;
+    state.srate = * rate;
+    state.ignore = (* channels < 1 || * channels > 2);
+    reboot_plugins ();
+}
+
+void ladspa_flush (void)
+{
+}
+
+void ladspa_finish (gfloat * * data, gint * samples)
+{
+    ladspa_process (data, samples);
+}
+
+gint ladspa_decoder_to_output_time (gint time)
+{
+    return time;
+}
+
+gint ladspa_output_to_decoder_time (gint time)
+{
+    return time;
+}
+
+static EffectPlugin header = {
+ .description = PLUGIN_NAME,
+ .init = start,
+ .cleanup = stop,
+ .configure = configure,
+ .start = ladspa_start,
+ .process = ladspa_process,
+ .flush = ladspa_flush,
+ .finish = ladspa_finish,
+ .decoder_to_output_time = ladspa_decoder_to_output_time,
+ .output_to_decoder_time = ladspa_output_to_decoder_time,
+ .preserves_format = TRUE,
+};
+
+EffectPlugin * header_list[] = {& header, NULL};
+SIMPLE_EFFECT_PLUGIN (ladspa, header_list)

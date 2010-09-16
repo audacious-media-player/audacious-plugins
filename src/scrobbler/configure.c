@@ -1,7 +1,5 @@
 #include "settings.h"
 
-#include "config.h"
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -14,12 +12,12 @@
 
 #include <audacious/configdb.h>
 #include <audacious/i18n.h>
-#include <audacious/plugin.h>
+#include <audacious/preferences.h>
 #include <libaudcore/md5.h>
 
 #include "plugin.h"
 
-GtkWidget *entry1, *entry2, *entry3, *ge_entry1, *ge_entry2, *cfgdlg;
+GtkWidget *entry1, *entry2, *entry3, *cfgdlg;
 static GdkColor disabled_color;
 guint apply_timeout = 0; /* ID of timeout to save new config */
 gboolean running = TRUE; /* if plugin threads are running */
@@ -42,7 +40,6 @@ static char *hexify(char *pass, int len)
 }
 
 static char *pwd = NULL;
-static char *ge_pwd = NULL;
 
 static void saveconfig(void)
 {
@@ -50,11 +47,10 @@ static void saveconfig(void)
 
     const char *uid = gtk_entry_get_text(GTK_ENTRY(entry1));
     const char *url = gtk_entry_get_text(GTK_ENTRY(entry3));
-    const char *ge_uid = gtk_entry_get_text(GTK_ENTRY(ge_entry1));
 
     if ((cfgfile = aud_cfg_db_open())) {
         aud_md5state_t md5state;
-        unsigned char md5pword[16], ge_md5pword[16];
+        unsigned char md5pword[16];
 
         if (pwd != NULL && pwd[0] != '\0') {
             aud_md5_init(&md5state);
@@ -74,20 +70,6 @@ static void saveconfig(void)
         	aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", (gchar *)url);
        	else
        		aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", LASTFM_HS_URL);
-
-        if (ge_pwd != NULL && ge_pwd[0] != '\0') {
-            aud_md5_init(&md5state);
-            aud_md5_append(&md5state, (guchar *)ge_pwd, strlen(ge_pwd));
-            aud_md5_finish(&md5state, ge_md5pword);
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_password",
-                                  hexify((gchar*)ge_md5pword, sizeof(ge_md5pword)));
-        }
-        if (ge_uid != NULL && ge_uid[0] != '\0') {
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", (gchar *)ge_uid);
-        } else {
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", "");
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_password", "");
-        }
 
         aud_cfg_db_close(cfgfile);
     }
@@ -110,9 +92,7 @@ static void configure_apply(void) {
 
 static void configure_cleanup(void) {
     g_free(pwd);
-    g_free(ge_pwd);
     pwd = NULL;
-    ge_pwd = NULL;
 }
 
 static void
@@ -143,11 +123,7 @@ static void entry_focus_out(GtkWidget *widget, gpointer data)
     g_free(pwd);
     pwd = g_strdup(gtk_entry_get_text(GTK_ENTRY(entry2)));
   }
-  if (widget == ge_entry2)
-  {
-    g_free(ge_pwd);
-    ge_pwd = g_strdup(gtk_entry_get_text(GTK_ENTRY(ge_entry2)));
-  }
+
   entry_changed(widget, data);
   gtk_entry_set_text(GTK_ENTRY(widget), _("Change password"));
   gtk_widget_modify_text(widget, GTK_STATE_NORMAL, &disabled_color);
@@ -165,7 +141,6 @@ create_cfgdlg(void)
   GtkWidget *label1;
   GtkWidget *label2;
   GtkWidget *label4;
-  GtkWidget *himage1;
   GtkWidget *align1;
   GtkWidget *notebook1;
   GtkStyle *style;
@@ -247,13 +222,7 @@ create_cfgdlg(void)
   // common
   gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 6);
 
-  himage1 = gtk_image_new_from_file (DATA_DIR "/images/audioscrobbler_badge.png");
-  gtk_widget_show (himage1);
-  gtk_box_pack_start (GTK_BOX (vbox2), himage1, FALSE, FALSE, 0);
-  gtk_misc_set_alignment (GTK_MISC (himage1), 1, 0.5);
-
 	gtk_entry_set_text(GTK_ENTRY(entry1), "");
-	gtk_entry_set_text(GTK_ENTRY(ge_entry1), "");
 
         if ((db = aud_cfg_db_open())) {
                 gchar *username = NULL;
@@ -279,7 +248,6 @@ create_cfgdlg(void)
 
   g_signal_connect(entry1, "changed", G_CALLBACK(entry_changed), NULL);
   g_signal_connect(entry3, "changed", G_CALLBACK(entry_changed), NULL);
-  g_signal_connect(ge_entry1, "changed", G_CALLBACK(entry_changed), NULL);
 
   return vbox2;
 }
@@ -291,10 +259,8 @@ static PreferencesWidget settings[] = {
 
 PluginPreferences preferences = {
     .title = N_("Scrobbler"),
-    .imgurl = DATA_DIR "/images/audioscrobbler.png",
     .prefs = settings,
     .n_prefs = G_N_ELEMENTS(settings),
-    .type = PREFERENCES_PAGE,
     .apply = configure_apply,
     .cleanup = configure_cleanup,
 };

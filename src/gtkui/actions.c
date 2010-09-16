@@ -47,10 +47,12 @@
 #include <regex.h>
 #endif
 
+#include <audacious/audconfig.h>
 #include <audacious/drct.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
-#include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -172,7 +174,7 @@ void action_play_file(void)
 
 void action_play_location(void)
 {
-    audgui_show_add_url_window();
+    audgui_show_add_url_window (TRUE);
 }
 
 void action_ab_set(void)
@@ -353,7 +355,10 @@ void action_playback_play(void)
     else if (aud_drct_get_playing () && aud_drct_get_paused ())
         aud_drct_pause();
     else
+    {
+        aud_playlist_set_playing (aud_playlist_get_active ());
         aud_drct_play();
+    }
 }
 
 void action_playback_pause(void)
@@ -412,88 +417,6 @@ void action_queue_toggle(void)
         aud_playlist_queue_delete (playlist, at, 1);
 }
 
-void action_playlist_sort_by_track_number(void)
-{
-    aud_playlist_sort_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_TRACK);
-}
-
-void action_playlist_sort_by_title(void)
-{
-    aud_playlist_sort_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_TITLE);
-}
-
-void action_playlist_sort_by_album(void)
-{
-    aud_playlist_sort_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_ALBUM);
-}
-
-void action_playlist_sort_by_artist(void)
-{
-    aud_playlist_sort_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_ARTIST);
-}
-
-void action_playlist_sort_by_full_path(void)
-{
-    aud_playlist_sort_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_PATH);
-}
-
-void action_playlist_sort_by_date(void)
-{
-    aud_playlist_sort_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_DATE);
-}
-
-void action_playlist_sort_by_filename(void)
-{
-    aud_playlist_sort_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_FILENAME);
-}
-
-void action_playlist_sort_selected_by_track_number(void)
-{
-    aud_playlist_sort_selected_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_TRACK);
-}
-
-void action_playlist_sort_selected_by_title(void)
-{
-    aud_playlist_sort_selected_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_TITLE);
-}
-
-void action_playlist_sort_selected_by_album(void)
-{
-    aud_playlist_sort_selected_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_ALBUM);
-}
-
-void action_playlist_sort_selected_by_artist(void)
-{
-    aud_playlist_sort_selected_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_ARTIST);
-}
-
-void action_playlist_sort_selected_by_full_path(void)
-{
-    aud_playlist_sort_selected_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_PATH);
-}
-
-void action_playlist_sort_selected_by_date(void)
-{
-    aud_playlist_sort_selected_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_DATE);
-}
-
-void action_playlist_sort_selected_by_filename(void)
-{
-    aud_playlist_sort_selected_by_scheme(aud_playlist_get_active(), PLAYLIST_SORT_FILENAME);
-}
-
-void action_playlist_randomize_list(void)
-{
-#if 0
-    aud_playlist_randomize(aud_playlist_get_active());
-#endif
-}
-
-void action_playlist_reverse_list(void)
-{
-    aud_playlist_reverse(aud_playlist_get_active());
-}
-
 void action_playlist_clear_queue(void)
 {
     gint playlist = aud_playlist_get_active();
@@ -529,7 +452,22 @@ void action_playlist_remove_all(void)
 
 void action_playlist_remove_selected (GtkAction * act)
 {
-    treeview_remove_selected (playlist_get_treeview (aud_playlist_get_active ()));
+    gint list = aud_playlist_get_active ();
+    GtkTreeView * tree = playlist_get_treeview (list);
+
+    gint focus = treeview_get_focus (tree);
+    focus -= playlist_count_selected_in_range (list, 0, focus);
+
+    aud_drct_pl_delete_selected ();
+
+    if (aud_playlist_selected_count (list)) /* song changed? */
+        return;
+
+    if (focus == aud_playlist_entry_count (list))
+        focus --;
+    if (focus >= 0)
+        aud_playlist_entry_set_selected (list, focus, TRUE);
+    treeview_set_focus (tree, focus);
 }
 
 void action_playlist_remove_unselected(void)
@@ -552,7 +490,7 @@ void action_playlist_add_files(void)
 
 void action_playlist_add_url(void)
 {
-    audgui_show_add_url_window();
+    audgui_show_add_url_window (FALSE);
 }
 
 void action_playlist_new(void)
@@ -582,55 +520,16 @@ void action_playlist_delete(void)
     audgui_confirm_playlist_delete (aud_playlist_get_active ());
 }
 
-#if 0
-static void on_static_toggle(GtkToggleButton * button, gpointer data)
-{
-    Playlist *playlist = aud_playlist_get_active();
-
-    playlist->attribute = gtk_toggle_button_get_active(button) ? playlist->attribute | PLAYLIST_STATIC : playlist->attribute & ~PLAYLIST_STATIC;
-}
-
-static void on_relative_toggle(GtkToggleButton * button, gpointer data)
-{
-    Playlist *playlist = aud_playlist_get_active();
-
-    playlist->attribute = gtk_toggle_button_get_active(button) ? playlist->attribute | PLAYLIST_USE_RELATIVE : playlist->attribute & ~PLAYLIST_USE_RELATIVE;
-}
-#endif
-
 static gchar *playlist_file_selection_save(const gchar * title, const gchar * default_filename)
 {
     GtkWidget *dialog;
     gchar *filename;
-#if 0
-    GtkWidget *hbox;
-    GtkWidget *toggle, *toggle2;
-#endif
 
     g_return_val_if_fail(title != NULL, NULL);
 
     dialog = make_filebrowser(title, TRUE);
     gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), aud_cfg->playlist_path);
     gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), default_filename);
-
-#if 0
-    hbox = gtk_hbox_new(FALSE, 5);
-
-    /* static playlist */
-    toggle = gtk_check_button_new_with_label(_("Save as Static Playlist"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle), (aud_playlist_get_active()->attribute & PLAYLIST_STATIC) ? TRUE : FALSE);
-    g_signal_connect(G_OBJECT(toggle), "toggled", G_CALLBACK(on_static_toggle), dialog);
-    gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, 0);
-
-    /* use relative path */
-    toggle2 = gtk_check_button_new_with_label(_("Use Relative Path"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle2), (aud_playlist_get_active()->attribute & PLAYLIST_USE_RELATIVE) ? TRUE : FALSE);
-    g_signal_connect(G_OBJECT(toggle2), "toggled", G_CALLBACK(on_relative_toggle), dialog);
-    gtk_box_pack_start(GTK_BOX(hbox), toggle2, FALSE, FALSE, 0);
-
-    gtk_widget_show_all(hbox);
-    gtk_file_chooser_set_extra_widget(GTK_FILE_CHOOSER(dialog), hbox);
-#endif
 
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
@@ -672,34 +571,8 @@ static gboolean show_playlist_overwrite_prompt(GtkWindow * parent, const gchar *
     return (result == GTK_RESPONSE_YES);
 }
 
-static void show_playlist_save_format_error(GtkWindow * parent, const gchar * filename)
-{
-    const gchar *markup = N_("<b><big>Unable to save playlist.</big></b>\n\n" "Unknown file type for '%s'.\n");
-
-    GtkWidget *dialog;
-
-    g_return_if_fail(GTK_IS_WINDOW(parent));
-    g_return_if_fail(filename != NULL);
-
-    dialog = gtk_message_dialog_new_with_markup(GTK_WINDOW(parent), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, _(markup), filename);
-
-    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);    /* centering */
-    gtk_dialog_run(GTK_DIALOG(dialog));
-    gtk_widget_destroy(dialog);
-}
-
 static void playlistwin_save_playlist(const gchar * filename)
 {
-    PlaylistContainer *plc;
-    gchar *ext = strrchr(filename, '.') + 1;
-
-    plc = aud_playlist_container_find(ext);
-    if (plc == NULL)
-    {
-        show_playlist_save_format_error(NULL, filename);
-        return;
-    }
-
     str_replace_in(&aud_cfg->playlist_path, g_path_get_dirname(filename));
 
     if (g_file_test(filename, G_FILE_TEST_IS_REGULAR))
@@ -715,7 +588,8 @@ void action_playlist_save_list(void)
     const gchar *default_filename = aud_playlist_get_filename(aud_playlist_get_active());
 
     gchar *dot = NULL, *basename = NULL;
-    gchar *filename = playlist_file_selection_save(_("Save Playlist"), default_filename);
+    gchar * filename = playlist_file_selection_save (_("Export Playlist"),
+     default_filename);
 
     if (filename)
     {
@@ -786,7 +660,8 @@ static gchar *playlist_file_selection_load(const gchar * title, const gchar * de
 void action_playlist_load_list(void)
 {
     const gchar *default_filename = aud_playlist_get_filename(aud_playlist_get_active());
-    gchar *filename = playlist_file_selection_load(_("Load Playlist"), default_filename);
+    gchar * filename = playlist_file_selection_load (_("Import Playlist"),
+     default_filename);
 
     if (filename)
     {
@@ -817,23 +692,17 @@ void action_playlist_invert_selection(void)
 
 void action_playlist_select_none(void)
 {
-    GtkTreeSelection *selection = gtk_tree_view_get_selection(playlist_get_active_treeview());
-
-    gtk_widget_grab_focus(GTK_WIDGET(playlist_get_active_treeview()));
-    gtk_tree_selection_unselect_all(selection);
+    aud_playlist_select_all (aud_playlist_get_active (), FALSE);
 }
 
 void action_playlist_select_all(void)
 {
-    GtkTreeSelection *selection = gtk_tree_view_get_selection(playlist_get_active_treeview());
-
-    gtk_widget_grab_focus(GTK_WIDGET(playlist_get_active_treeview()));
-    gtk_tree_selection_select_all(selection);
+    aud_playlist_select_all (aud_playlist_get_active (), TRUE);
 }
 
 void action_playlist_save_all_playlists(void)
 {
-    aud_save_all_playlists();
+    aud_save_playlists();
 }
 
 void action_playlist_copy(void)
@@ -865,4 +734,44 @@ void action_playlist_paste(void)
 
     treeview_add_urilist (tree, treeview_get_focus (tree), list);
     g_free (list);
+}
+
+static void playlist_sort_scheme (gint scheme)
+{
+    aud_playlist_sort_by_scheme (aud_playlist_get_active (), scheme);
+}
+
+void playlist_sort_track (void)
+{
+    playlist_sort_scheme (PLAYLIST_SORT_TRACK);
+}
+
+void playlist_sort_title (void)
+{
+    playlist_sort_scheme (PLAYLIST_SORT_TITLE);
+}
+
+void playlist_sort_artist (void)
+{
+    playlist_sort_scheme (PLAYLIST_SORT_ARTIST);
+}
+
+void playlist_sort_album (void)
+{
+    playlist_sort_scheme (PLAYLIST_SORT_ALBUM);
+}
+
+void playlist_sort_path (void)
+{
+    playlist_sort_scheme (PLAYLIST_SORT_PATH);
+}
+
+void playlist_reverse (void)
+{
+    aud_playlist_reverse (aud_playlist_get_active ());
+}
+
+void playlist_randomize (void)
+{
+    aud_playlist_randomize (aud_playlist_get_active ());
 }

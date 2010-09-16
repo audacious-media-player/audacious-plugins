@@ -23,8 +23,9 @@
 
 #include <audacious/debug.h>
 #include <audacious/drct.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
-#include <audacious/plugin.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -37,11 +38,17 @@
 #include "ui_manager.h"
 #include "ui_infoarea.h"
 
-#define DEFAULT_ARTWORK DATA_DIR "/images/audio.png"
+#define DEFAULT_ARTWORK DATA_DIR "/images/album.png"
 #define STREAM_ARTWORK DATA_DIR "/images/streambrowser-64x64.png"
 #define ICON_SIZE 64
-#define SPECT_BANDS 12
-#define VIS_OFFSET (10 + 12 * SPECT_BANDS + 7)
+#define VIS_BANDS 12
+#define VIS_OFFSET (10 + 8 * VIS_BANDS + 8)
+#define VIS_DELAY 1 /* delay before falloff in frames */
+#define VIS_FALLOFF 2 /* falloff in pixels per frame */
+
+#if ! GTK_CHECK_VERSION (2, 18, 0)
+#define gtk_widget_get_allocation(w, ap) (* (ap) = (w)->allocation)
+#endif
 
 typedef struct {
     GtkWidget *parent;
@@ -52,7 +59,8 @@ typedef struct {
 
     gboolean stopped;
     gint fade_timeout;
-    guint8 visdata[SPECT_BANDS];
+    gchar bars[VIS_BANDS];
+    gchar delay[VIS_BANDS];
 
     GdkPixbuf * pb, * last_pb;
 } UIInfoArea;
@@ -63,39 +71,47 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area);
 
 /****************************************************************************/
 
-static void
-ui_infoarea_visualization_timeout(gpointer hook_data, UIInfoArea *area)
+static void vis_update_cb (const VisNode * vis, UIInfoArea * area)
 {
-    const gfloat xscale[SPECT_BANDS + 1] = {0.00, 0.59, 1.52, 3.00, 5.36, 9.10,
+    const gfloat xscale[VIS_BANDS + 1] = {0.00, 0.59, 1.52, 3.00, 5.36, 9.10,
      15.0, 24.5, 39.4, 63.2, 101, 161, 256}; /* logarithmic scale - 1 */
-    VisNode *vis = (VisNode*) hook_data;
-    gint16 mono_freq[2][256];
 
-    aud_calc_mono_freq(mono_freq, vis->data, vis->nch);
+    gint16 fft[2][256];
+    aud_calc_mono_freq (fft, vis->data, vis->nch);
 
-    for (gint i = 0; i < SPECT_BANDS; i ++)
+    for (gint i = 0; i < VIS_BANDS; i ++)
     {
         gint a = ceil (xscale[i]);
         gint b = floor (xscale[i + 1]);
         gint n = 0;
 
         if (b < a)
-            n += mono_freq[0][b] * (xscale[i + 1] - xscale[i]);
+            n += fft[0][b] * (xscale[i + 1] - xscale[i]);
         else
         {
             if (a > 0)
-                n += mono_freq[0][a - 1] * (a - xscale[i]);
+                n += fft[0][a - 1] * (a - xscale[i]);
             for (; a < b; a ++)
-                n += mono_freq[0][a];
+                n += fft[0][a];
             if (b < 256)
-                n += mono_freq[0][b] * (xscale[i + 1] - b);
+                n += fft[0][b] * (xscale[i + 1] - b);
         }
 
         /* 40 dB range */
         /* 0.00305 == 1 / 32767 * 10^(40/20) */
-        n = 32 * log10 (n * 0.00305);
-        n = CLAMP (n, 0, 64);
-        area->visdata[i] = MAX (area->visdata[i] - 3, n);
+        n = 20 * log10 (n * 0.00305);
+        n = CLAMP (n, 0, 40);
+
+        if (area->delay[i])
+            area->delay[i] --;
+        else
+            area->bars[i] -= VIS_FALLOFF;
+
+        if (n > area->bars[i])
+        {
+            area->bars[i] = n;
+            area->delay[i] = VIS_DELAY;
+        }
     }
 
 #if GTK_CHECK_VERSION (2, 20, 0)
@@ -108,7 +124,8 @@ ui_infoarea_visualization_timeout(gpointer hook_data, UIInfoArea *area)
 
 static void vis_clear_cb (void * hook_data, UIInfoArea * area)
 {
-    memset (area->visdata, 0, sizeof area->visdata);
+    memset (area->bars, 0, sizeof area->bars);
+    memset (area->delay, 0, sizeof area->delay);
 }
 
 /****************************************************************************/
@@ -136,8 +153,6 @@ static void ui_infoarea_draw_text (UIInfoArea * area, gint x, gint y, gint
     pango_font_description_free(desc);
     pango_layout_set_width (pl, width * PANGO_SCALE);
     pango_layout_set_ellipsize (pl, PANGO_ELLIPSIZE_END);
-
-    AUDDBG("Drawing %s to %d, %d at %p layout %p\n", text, x, y, cr, pl);
 
     pango_cairo_show_layout(cr, pl);
 
@@ -228,8 +243,8 @@ static void get_color (GtkWidget * widget, gint i, gfloat * r, gfloat * g,
         s = 0.75;
     }
 
-    n = sqrt (i / 11.0);
-    s = sqrt (s) * (1 - 0.75 * n);
+    n = i / 11.0;
+    s = 1 - 0.9 * n;
     v = 0.75 + 0.25 * n;
 
     hsv_to_rgb (h, s, v, r, g, b);
@@ -243,18 +258,33 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
     gtk_widget_get_allocation(GTK_WIDGET(area->parent), &alloc);
     cr = gdk_cairo_create(area->parent->window);
 
-    for (auto gint i = 0; i < SPECT_BANDS; i++)
+    for (auto gint i = 0; i < VIS_BANDS; i++)
     {
-        gint x = alloc.width - VIS_OFFSET + 10 + 12 * i;
-        gfloat r, g, b;
+        gint x = alloc.width - VIS_OFFSET + 10 + 8 * i;
+        gint t = 50 - area->bars[i];
+        gint m = MIN (50 + area->bars[i], 84);
 
+        /* erase old (upward) bars */
         cairo_set_source_rgb (cr, 0, 0, 0);
-        cairo_rectangle (cr, x, 10, 9, 64 - area->visdata[i]);
+        cairo_rectangle (cr, x, 10, 6, t - 10);
         cairo_fill (cr);
 
+        /* erase old (downward) reflection */
+        cairo_set_source_rgb (cr, 0, 0, 0);
+        cairo_rectangle (cr, x, m, 6, 84 - m);
+        cairo_fill (cr);
+
+        gfloat r, g, b;
         get_color (area->parent, i, & r, & g, & b);
+
+        /* draw new (upward) bars */
         cairo_set_source_rgb (cr, r, g, b);
-        cairo_rectangle (cr, x, 74 - area->visdata[i], 9, area->visdata[i]);
+        cairo_rectangle (cr, x, t, 6, 50 - t);
+        cairo_fill (cr);
+
+        /* draw new (downward) reflection */
+        cairo_set_source_rgb (cr, r * 0.5, g * 0.5, b * 0.5);
+        cairo_rectangle (cr, x, 50, 6, m - 50);
         cairo_fill (cr);
     }
 
@@ -266,18 +296,7 @@ static GdkPixbuf * get_current_album_art (void)
     gint playlist = aud_playlist_get_playing ();
     const gchar * filename = aud_playlist_entry_get_filename (playlist,
      aud_playlist_get_position (playlist));
-    InputPlugin * decoder = aud_file_find_decoder (filename, FALSE);
-    void * data;
-    gint size;
-    GdkPixbuf * pixbuf;
-
-    if (filename == NULL || decoder == NULL || ! aud_file_read_image (filename,
-     decoder, & data, & size))
-        return NULL;
-
-    pixbuf = audgui_pixbuf_from_data (data, size);
-    g_free (data);
-    return pixbuf;
+    return audgui_pixbuf_for_file (filename);
 }
 
 void ui_infoarea_draw_album_art (UIInfoArea * area)
@@ -397,6 +416,9 @@ static gboolean ui_infoarea_do_fade (UIInfoArea * area)
 
 void ui_infoarea_set_title (void * data, UIInfoArea * area)
 {
+    if (! aud_drct_get_playing ())
+        return;
+
     gint playlist = aud_playlist_get_playing ();
     gint entry = aud_playlist_get_position (playlist);
     const Tuple * tuple = aud_playlist_entry_get_tuple (playlist, entry, FALSE);
@@ -480,7 +502,7 @@ static void destroy_cb (GtkObject * parent, UIInfoArea * area)
     hook_dissociate ("playback stop", (HookFunction)
      ui_infoarea_playback_stop);
     hook_dissociate ("visualization clear", (HookFunction) vis_clear_cb);
-    aud_vis_runner_remove_hook((HookFunction) ui_infoarea_visualization_timeout);
+    aud_vis_runner_remove_hook ((VisHookFunc) vis_update_cb);
 
     g_free (area->title);
     g_free (area->artist);
@@ -516,7 +538,7 @@ GtkWidget * ui_infoarea_new (void)
     hook_associate("playback begin", (HookFunction) ui_infoarea_playback_start, area);
     hook_associate("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
     hook_associate("visualization clear", (HookFunction) vis_clear_cb, area);
-    aud_vis_runner_add_hook((HookFunction) ui_infoarea_visualization_timeout, area);
+    aud_vis_runner_add_hook ((VisHookFunc) vis_update_cb, area);
 
     g_signal_connect (area->parent, "destroy", (GCallback) destroy_cb, area);
 

@@ -21,6 +21,7 @@
 */
 
 #include <audacious/drct.h>
+#include <libaudgui/libaudgui.h>
 
 #include "statusicon.h"
 
@@ -61,7 +62,10 @@ void si_playback_ctrl(gpointer ctrl_code_gp)
           break;
 
       case SI_PLAYBACK_CTRL_PLAY:
-          aud_drct_play();
+          if (aud_drct_get_playing())
+              aud_drct_pause();
+          else
+              aud_drct_play();
           break;
 
       case SI_PLAYBACK_CTRL_PAUSE:
@@ -77,7 +81,7 @@ void si_playback_ctrl(gpointer ctrl_code_gp)
           break;
 
       case SI_PLAYBACK_CTRL_EJECT:
-          hook_call ("interface show filebrowser", GINT_TO_POINTER (TRUE));
+          audgui_run_filebrowser(TRUE);
           break;
     }
 }

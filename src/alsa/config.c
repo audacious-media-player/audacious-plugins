@@ -536,9 +536,7 @@ static void connect_callbacks (void)
 
 void alsa_configure (void)
 {
-    pthread_mutex_lock (& alsa_mutex);
     alsa_soft_init ();
-    pthread_mutex_unlock (& alsa_mutex);
 
     if (window != NULL)
     {

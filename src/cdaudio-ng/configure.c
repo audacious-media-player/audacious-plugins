@@ -38,8 +38,6 @@ static void configure_values_to_gui (void)
 {
     gchar portstr[16];
 
-    /*gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usedaecheckbutton), cdng_cfg.use_dae); */
-
     gtk_spin_button_set_value ((GtkSpinButton *) disc_speed_button,
      cdng_cfg.disc_speed);
 
@@ -70,8 +68,6 @@ static void configure_values_to_gui (void)
 
 static void configure_gui_to_values (void)
 {
-    /*usedae = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton)); */
-
     cdng_cfg.disc_speed = gtk_spin_button_get_value ((GtkSpinButton *)
      disc_speed_button);
 
@@ -120,9 +116,6 @@ static void checkbutton_toggled (GtkWidget * widget, gpointer data)
 {
     (void) widget;
     (void) data;
-
-    /* gtk_widget_set_sensitive (disc_speed_button, gtk_toggle_button_get_active
-     ((GtkToggleButton *) usedaecheckbutton)); */
 
     gtk_widget_set_sensitive (cddbserverentry,
                               gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
@@ -179,13 +172,6 @@ void configure_create_gui ()
     gtk_table_attach_defaults (GTK_TABLE (maintable), miscframe, 0, 2, 2, 3);
     misctable = gtk_table_new (2, 2, TRUE);
     gtk_container_add (GTK_CONTAINER (miscframe), misctable);
-
-
-    /*
-       usedaecheckbutton = gtk_check_button_new_with_label(_("Use digital audio extraction"));
-       g_signal_connect(G_OBJECT(usedaecheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
-       gtk_table_attach_defaults(GTK_TABLE(daetable), usedaecheckbutton, 0, 2, 0, 1);
-     */
 
     gtk_table_attach_defaults ((GtkTable *) daetable, gtk_label_new (_("Disc "
      "speed:")), 0, 1, 0, 1);

@@ -91,6 +91,7 @@ static EffectPlugin audaciousBs2b = {
     .finish = bs2b_finish,
     .decoder_to_output_time = bs2b_decoder_to_output_time,
     .output_to_decoder_time = bs2b_output_to_decoder_time,
+    .preserves_format = TRUE,
 };
 
 static EffectPlugin * plugins[] = { &audaciousBs2b, NULL };

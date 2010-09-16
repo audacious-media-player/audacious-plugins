@@ -1,10 +1,10 @@
 /*
  * OSS4 Output Plugin for Audacious
  * Copyright 2010 Michał Lipski <tallica@o2.pl>
- * 
- * I would like to thank people on #audacious, especially Tony Vroon and 
+ *
+ * I would like to thank people on #audacious, especially Tony Vroon and
  * John Lindgren and of course the authors of the previous OSS plugin.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -34,11 +34,10 @@ static audio_buf_info oss_buffer_info;
 static gint oss_delay; /* miliseconds */
 static gboolean oss_ioctl_vol = FALSE;
 
-
 OutputPluginInitStatus oss_init(void)
 {
     AUDDBG("Init.\n");
-    
+
     oss_data = g_new0(oss_data_t, 1);
     oss_cfg = g_new0(oss_cfg_t, 1);
     oss_data->fd = -1;
@@ -48,9 +47,9 @@ OutputPluginInitStatus oss_init(void)
     oss_cfg->save_volume = TRUE;
     oss_cfg->volume = 0x3232;
     oss_cfg->cookedmode = TRUE;
-    
+
     oss_config_load();
-    
+
     if (oss_hardware_present())
         return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
     else
@@ -70,18 +69,18 @@ void oss_cleanup(void)
 static gboolean set_format(gint format, gint rate, gint channels)
 {
     gint param;
-    
+
     AUDDBG("Audio format: %s, sample rate: %dHz, number of channels: %d.\n", oss_format_to_text(format), rate, channels);
-    
+
     /* Enable/disable format conversions made by the OSS software */
     if (ioctl(oss_data->fd, SNDCTL_DSP_COOKEDMODE, &oss_cfg->cookedmode) == -1)
         DEBUG_MSG;
-    
+
     param = format;
 
     if (ioctl(oss_data->fd, SNDCTL_DSP_SETFMT, &param) == -1)
         goto FAILED;
-        
+
     if (param != format)
     {
         ERROR("Selected audio format is not supported by the device.\n");
@@ -103,7 +102,7 @@ static gboolean set_format(gint format, gint rate, gint channels)
 
     if (ioctl(oss_data->fd, SNDCTL_DSP_CHANNELS, &param) == -1)
         goto FAILED;
-        
+
     if (param != channels)
     {
         ERROR("Selected number of channels is not supported by the device.\n");
@@ -114,15 +113,15 @@ static gboolean set_format(gint format, gint rate, gint channels)
     oss_data->rate = rate;
     oss_data->channels = channels;
     oss_data->bits_per_sample = oss_format_to_bits(oss_data->format);
-    
+
     return TRUE;
-    
+
     FAILED:
         ERROR_MSG;
         return FALSE;
 }
 
-gint oss_open_audio(AFormat aud_format, gint rate, gint channels)
+gint oss_open_audio(gint aud_format, gint rate, gint channels)
 {
     AUDDBG("Opening audio.\n");
 
@@ -146,7 +145,7 @@ gint oss_open_audio(AFormat aud_format, gint rate, gint channels)
     format = oss_convert_aud_format(aud_format);
 
     if (!set_format(format, rate, channels))
-        goto FAILED;    
+        goto FAILED;
 
     /*gint policy = 8;
     ioctl(oss_data->fd, SNDCTL_DSP_POLICY, &policy);*/
@@ -166,18 +165,18 @@ gint oss_open_audio(AFormat aud_format, gint rate, gint channels)
     oss_ioctl_vol = TRUE;
 
     AUDDBG("Internal OSS buffer size: %dms.\n", oss_delay);
-    
+
     if (oss_cfg->save_volume)
     {
         vol_right = (oss_cfg->volume & 0xFF00) >> 8;
         vol_left  = (oss_cfg->volume & 0x00FF);
-    
+
         oss_set_volume(vol_left, vol_right);
     }
 
     return 1;
 
-    FAILED:        
+    FAILED:
         close(oss_data->fd);
         oss_data->fd = -1;
         return 0;
@@ -186,7 +185,7 @@ gint oss_open_audio(AFormat aud_format, gint rate, gint channels)
 void oss_close_audio(void)
 {
     AUDDBG ("Closing audio.\n");
- 
+
     if (ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL) == -1)
         DEBUG_MSG;
 
@@ -199,14 +198,16 @@ void oss_write_audio(void *data, gint length)
 {
     gint written = 0, start = 0;
 
-    if (oss_paused) return;
+    if (oss_paused)
+        return;
 
     while (1)
     {
-        if (oss_paused) break;
-    
+        if (oss_paused)
+            break;
+
         written = write(oss_data->fd, data + start, length);
-        
+
         if (written < 0)
         {
             ERROR_MSG;
@@ -216,14 +217,14 @@ void oss_write_audio(void *data, gint length)
 
             break;
         }
-        
+
         if (length >= written)
             length -= written;
-            
+
         start += written;
         oss_time += (gint64) oss_bytes_to_frames(written) * 1000000 / oss_data->rate;
 
-#if HARD_DEBUG == 1 
+#if HARD_DEBUG == 1
         ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
 
         printf("fragstotal: \t%d\tfragsize: \t%d\tbytes: \t%d\tlength: \t%d\n",
@@ -236,10 +237,25 @@ void oss_write_audio(void *data, gint length)
     }
 }
 
-void oss_drain(void)
+gint oss_buffer_playing(void)
 {
-    AUDDBG("Drain.\n");
-    /* TODO? */
+    AUDDBG("Buffer playing.\n");
+
+    ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
+
+    if ((oss_buffer_info.fragstotal * oss_buffer_info.fragsize) - oss_buffer_info.bytes > oss_buffer_info.fragsize)
+        return TRUE;
+
+    return FALSE;
+}
+
+gint oss_buffer_free(void)
+{
+    if (oss_paused)
+        return 0;
+
+    ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
+    return oss_buffer_info.bytes;
 }
 
 void oss_set_written_time(gint time)
@@ -278,9 +294,9 @@ void oss_flush(gint time)
 {
     AUDDBG("Flush.\n");
 
-    if(ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL) == -1)
+    if (ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL) == -1)
         DEBUG_MSG;
-        
+
     if (ioctl(oss_data->fd, SNDCTL_DSP_SKIP, NULL) == -1)
         DEBUG_MSG;
 
@@ -296,14 +312,14 @@ void oss_pause(gshort pause)
     {
         oss_paused = TRUE;
         oss_paused_time = real_output_time();
-        
+
         if (ioctl(oss_data->fd, SNDCTL_DSP_SILENCE, NULL) == -1)
             DEBUG_MSG;
     }
     else
-    {  
+    {
         oss_paused = FALSE;
-        
+
         if (ioctl(oss_data->fd, SNDCTL_DSP_SKIP, NULL) == -1)
             DEBUG_MSG;
     }
@@ -312,7 +328,7 @@ void oss_pause(gshort pause)
 void oss_get_volume(gint *left, gint *right)
 {
     gint vol;
-    
+
     if (oss_data->fd == -1 || !oss_ioctl_vol)
     {
         if (oss_cfg->save_volume)
@@ -343,10 +359,10 @@ void oss_set_volume(gint left, gint right)
     gint vol;
 
     vol = (right << 8) | left;
-    
+
     if (oss_cfg->save_volume)
         oss_cfg->volume = vol;
-    
+
     if (oss_data->fd == -1 || !oss_ioctl_vol)
         return;
 

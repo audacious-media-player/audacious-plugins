@@ -27,13 +27,14 @@
 #include <GL/gl.h>
 #define CONFIG_FILE "/share/projectM/config.inp"
 
-// Forward declarations 
+// Forward declarations
 static std::string read_config();
 
 int SDLThreadWrapper(void *);
 void handle_playback_trigger(void *, void *);
 
 static void _gtk_projectm_realize_impl(GtkWidget *widget, gpointer data);
+static void unrealize_cb (GtkWidget * widget, struct _GtkProjectMPrivate * priv);
 static gboolean _gtk_projectm_redraw_impl(GtkWidget *widget);
 static gboolean _gtk_projectm_expose_impl(GtkWidget *widget, GdkEventExpose *event, gpointer data);
 static gboolean _gtk_projectm_configure_impl(GtkWidget *widget, GdkEventConfigure *event, gpointer data);
@@ -66,6 +67,8 @@ gtk_projectm_new(void)
 
     g_signal_connect_after(G_OBJECT(priv->drawing_area), "realize",
                            G_CALLBACK(_gtk_projectm_realize_impl), priv);
+    g_signal_connect (priv->drawing_area, "unrealize", (GCallback) unrealize_cb,
+     priv);
     g_signal_connect(G_OBJECT(priv->drawing_area), "expose_event",
                      G_CALLBACK(_gtk_projectm_expose_impl), priv);
     g_signal_connect(G_OBJECT(priv->drawing_area), "destroy",
@@ -85,9 +88,9 @@ gtk_projectm_add_pcm_data(GtkWidget *widget, gint16 pcm_data[2][512])
     struct _GtkProjectMPrivate *priv = (struct _GtkProjectMPrivate *) g_object_get_data(G_OBJECT(widget), "GtkProjectMPrivate");
 
     g_return_if_fail(priv != NULL);
-    g_return_if_fail(priv->pm != NULL);
 
-    priv->pm->pcm()->addPCM16(pcm_data);
+    if (priv->pm != NULL)
+        priv->pm->pcm()->addPCM16 (pcm_data);
 }
 
 extern "C" void
@@ -135,6 +138,7 @@ _gtk_projectm_realize_impl(GtkWidget *widget, gpointer data)
 
     std::string configFile = read_config();
     priv->pm = new projectM(configFile);
+
     priv->pm->projectM_resetGL(widget->allocation.width, widget->allocation.height);
 
     gdk_gl_drawable_swap_buffers(gldrawable);
@@ -148,12 +152,30 @@ _gtk_projectm_realize_impl(GtkWidget *widget, gpointer data)
                                    priv->drawing_area);
 }
 
+static void unrealize_cb (GtkWidget * widget, struct _GtkProjectMPrivate * priv)
+{
+    if (priv->idle_id)
+    {
+        g_source_remove (priv->idle_id);
+        priv->idle_id = 0;
+    }
+
+    if (priv->pm != NULL)
+    {
+        delete priv->pm;
+        priv->pm = NULL;
+    }
+}
+
 static gboolean
 _gtk_projectm_configure_impl(GtkWidget *widget, GdkEventConfigure *event, gpointer data)
 {
     GdkGLContext *glcontext = gtk_widget_get_gl_context(widget);
     GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable(widget);
     struct _GtkProjectMPrivate *priv = (struct _GtkProjectMPrivate *) data;
+
+    if (priv->pm == NULL)
+        return FALSE;
 
     if (!gdk_gl_drawable_gl_begin(gldrawable, glcontext))
         return FALSE;

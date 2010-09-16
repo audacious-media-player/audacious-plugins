@@ -28,7 +28,6 @@
 #include <audacious/plugin.h>
 
 enum {
-    SI_CFG_RCLICK_MENU_AUD,
     SI_CFG_RCLICK_MENU_SMALL1,
     SI_CFG_RCLICK_MENU_SMALL2
 };
@@ -52,6 +51,8 @@ typedef struct
     gint rclick_menu;
     gint scroll_action;
     gint volume_delta;
+    gboolean disable_popup;
+    gboolean close_to_tray;
 } si_cfg_t;
 
 extern si_cfg_t si_cfg;

@@ -209,6 +209,13 @@ static void ui_skinned_textbox_destroy(GtkObject *object) {
         priv->scroll_timeout = 0;
     }
 
+    g_free (textbox->text);
+    textbox->text = NULL;
+    g_free (priv->pixbuf_text);
+    priv->pixbuf_text = NULL;
+    g_free (priv->fontname);
+    priv->fontname = NULL;
+
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
@@ -510,6 +517,7 @@ void ui_skinned_textbox_set_xfont(GtkWidget *widget, gboolean use_xfont, const g
         return;
 
     priv->font = pango_font_description_from_string(fontname);
+    g_free (priv->fontname);
     priv->fontname = g_strdup(fontname);
 
     text_get_extents(fontname,

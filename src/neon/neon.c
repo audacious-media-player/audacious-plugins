@@ -168,10 +168,17 @@ static void handle_free(struct neon_handle* h) {
     ne_uri_free(h->purl);
     g_free(h->purl);
     destroy_rb(&h->rb);
+
+    if (h->reader_status.mutex != NULL)
+        g_mutex_free(h->reader_status.mutex);
+    if (h->reader_status.cond != NULL)
+        g_cond_free(h->reader_status.cond);
+
     g_free(h->icy_metadata.stream_name);
     g_free(h->icy_metadata.stream_title);
     g_free(h->icy_metadata.stream_url);
     g_free(h->icy_metadata.stream_contenttype);
+    g_free(h->url);
     g_free(h);
 }
 
@@ -843,7 +850,7 @@ VFSFile* neon_vfs_fopen_impl(const gchar* path, const gchar* mode) {
 
     _DEBUG("Allocated new handle: %p", handle);
 
-    if (NULL == (handle->url = strdup(path))) {
+    if (NULL == (handle->url = g_strdup(path))) {
         _ERROR ("<%p> Could not copy URL string", (void *) handle);
         handle_free(handle);
         g_free(file);
@@ -909,6 +916,9 @@ static gint64 neon_fread_real (void * ptr_, gint64 size, gint64 nmemb,
         _ERROR ("<%p> No request to read from, seek gone wrong?", (void *) h);
         return 0;
     }
+
+    if (h->eof)
+        return 0;
 
     /* If the buffer is empty, wait for the reader thread to fill it. */
     g_mutex_lock (h->reader_status.mutex);
@@ -1236,6 +1246,11 @@ gint neon_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
             newpos = h->pos + offset;
             break;
         case SEEK_END:
+            if (offset == 0) {
+                h->pos = content_length;
+                h->eof = TRUE;
+                return 0;
+            }
             newpos = content_length + offset;
             break;
         default:
@@ -1298,6 +1313,7 @@ gint neon_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
      * Things seem to have worked. The next read request will start
      * the reader thread again.
      */
+    h->eof = FALSE;
 
     return 0;
 }

@@ -1,76 +1,84 @@
 /*
- * libxmmsstandard - XMMS plugin.
- * Copyright (C) 2000-2001 Konstantin Laevsky <debleek63@yahoo.com>
+ * Copyright (c) 2010 William Pitcock <nenolod@dereferenced.org>.
  *
- * audacious port of the voice removal code from libxmmsstandard
- * by Thomas Cort <linuxgeek@gmail.com>
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
- *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 #include "config.h"
 
-#include <gtk/gtk.h>
 #include <audacious/plugin.h>
 
+static gint voice_channels;
 
-static int apply_effect (gpointer *d, gint length, AFormat afmt,
-			gint srate, gint nch);
-static void query_format (AFormat *fmt, gint *rate, gint *nch);
+static void voice_start(gint *channels, gint *rate)
+{
+	voice_channels = *channels;
+}
 
-static EffectPlugin xmms_plugin = {
+static void voice_process(gfloat **d, gint *samples)
+{
+	gfloat *f = *d, *end;
+	end = *d + *samples;
+
+	if (voice_channels != 2 || samples == 0)
+		return;
+
+	for (f = *d; f < end; f += 2)
+	{
+		gfloat left, right;
+
+		left = (f[1] - f[0]);
+		right = (f[0] - f[1]);
+
+		f[0] = left;
+		f[1] = right;
+	}
+}
+
+static void voice_finish(gfloat **d, gint *samples)
+{
+	voice_process(d, samples);
+}
+
+static void voice_flush(void)
+{
+
+}
+
+static gint voice_decoder_to_output_time(gint time)
+{
+	return time;
+}
+
+static gint voice_output_to_decoder_time(gint time)
+{
+	return time;
+}
+
+static EffectPlugin voice = {
 	.description = "Voice Removal Plugin",
-	.mod_samples = apply_effect,
-	.query_format = query_format
+	.start = voice_start,
+	.process = voice_process,
+	.finish = voice_finish,
+	.flush = voice_flush,
+	.decoder_to_output_time = voice_decoder_to_output_time,
+	.output_to_decoder_time = voice_output_to_decoder_time
 };
 
-EffectPlugin *voice_eplist[] = { &xmms_plugin, NULL };
+EffectPlugin *voice_eplist[] = { &voice, NULL };
 
-DECLARE_PLUGIN(voice_removal, NULL, NULL, NULL, NULL, voice_eplist, NULL, NULL, NULL);
-
-static void query_format (AFormat *fmt, gint *rate, gint *nch)
-{
-	if (!((*fmt == FMT_S16_NE) ||
-		(*fmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
-		(*fmt == FMT_S16_BE && G_BYTE_ORDER == G_BIG_ENDIAN)))
-		*fmt = FMT_S16_NE;
-
-	if (*nch != 2)
-		*nch = 2;
-}
-
-static int apply_effect (gpointer *d, gint length, AFormat afmt,
-			gint srate, gint nch) {
-	int x;
-	int left, right;
-	gint16 *dataptr = (gint16 *) * d;
-
-	if (!((afmt == FMT_S16_NE) ||
-		(afmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
-		(afmt == FMT_S16_BE && G_BYTE_ORDER == G_BIG_ENDIAN))   ||
-		(nch != 2)) {
-		return length;
-	}
-
-	for (x = 0; x < length; x += 4) {
-		left  = CLAMP(dataptr[1] - dataptr[0], -32768, 32767);
-		right = CLAMP(dataptr[0] - dataptr[1], -32768, 32767);
-		dataptr[0] = left;
-		dataptr[1] = right;
-		dataptr += 2;
-	}
-
-	return (length);
-}
+SIMPLE_EFFECT_PLUGIN(voice_removal, voice_eplist);

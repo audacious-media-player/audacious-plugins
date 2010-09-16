@@ -373,8 +373,11 @@ static gboolean play_start (InputPlayback * playback, const gchar * filename,
         return FALSE;
     }
 
-    playback->set_params (playback, NULL, 0, 8 * sizeof (gfloat) *
-     sfinfo.channels * sfinfo.samplerate, sfinfo.samplerate, sfinfo.channels);
+    /* Fix me!  Find out bitrate from libsndfile.  The old calculation was based
+     * on the decoded data and therefore wrong for anything but floating-point
+     * files. */
+    playback->set_params (playback, NULL, 0, 0, sfinfo.samplerate,
+     sfinfo.channels);
 
     playback->playing = TRUE;
     pause_flag = pause;
@@ -548,7 +551,7 @@ static void plugin_about (void)
 }
 
 
-static gchar *sndfile_fmts[] = { "aiff", "au", "raw", "wav", NULL };
+static const gchar *sndfile_fmts[] = { "aiff", "au", "raw", "wav", NULL };
 
 static InputPlugin sndfile_ip = {
     .description = "sndfile plugin",

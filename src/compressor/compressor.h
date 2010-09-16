@@ -17,7 +17,7 @@
  * the use of this software.
  */
 
-extern float compressor_target, compressor_strength;
+extern float compressor_center, compressor_range;
 
 void compressor_config_load (void);
 void compressor_config_save (void);

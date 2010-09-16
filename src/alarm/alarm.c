@@ -24,9 +24,6 @@
  * the next time I get bored
  */
 
-/* this file really should get split/cleaned up sometime ;) */
-#include "config.h"
-
 #if STDC_HEADERS
 # include <stdlib.h>
 #endif

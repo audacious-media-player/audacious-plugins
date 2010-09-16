@@ -30,6 +30,8 @@ extern void close_mixer_device();
 #include <sys/ioctl.h>
 #include <sys/time.h>
 
+#include <audacious/audconfig.h>
+
 #include "OSS.h"
 
 
@@ -50,7 +52,7 @@ static gboolean select_works;
 
 struct format_info {
     union {
-        AFormat xmms;
+        gint xmms;
         int oss;
     } format;
     int frequency;
@@ -98,7 +100,7 @@ oss_calc_bitrate(int oss_fmt, int rate, int channels)
 }
 
 static int
-oss_get_format(AFormat fmt)
+oss_get_format(gint fmt)
 {
     int format = 0;
 
@@ -129,7 +131,7 @@ oss_get_format(AFormat fmt)
 }
 
 static void
-oss_setup_format(AFormat fmt, int rate, int nch)
+oss_setup_format(gint fmt, int rate, int nch)
 {
     output.bps = oss_calc_bitrate(oss_get_format(fmt), rate, nch);
     output.format.oss = oss_get_format(fmt);
@@ -394,7 +396,7 @@ oss_set_audio_params(void)
 }
 
 gint
-oss_open(AFormat fmt, gint rate, gint nch)
+oss_open(gint fmt, gint rate, gint nch)
 {
 
     if (oss_cfg.use_alt_audio_device && oss_cfg.alt_audio_device)
@@ -450,7 +452,7 @@ oss_open(AFormat fmt, gint rate, gint nch)
     return 1;
 }
 
-void oss_tell(AFormat * fmt, gint * rate, gint * nch)
+void oss_tell(gint * fmt, gint * rate, gint * nch)
 {
 	(*fmt) = input.format.xmms;
 	(*rate) = input.frequency;

@@ -13,7 +13,7 @@ typedef struct {
 
 void    xs_filter_init(t_xs_filter *);
 */
-gint    xs_filter_rateconv(void *, void *, const AFormat, const gint, const gint);
+gint    xs_filter_rateconv(void *, void *, const gint, const gint, const gint);
 
 #ifdef __cplusplus
 }

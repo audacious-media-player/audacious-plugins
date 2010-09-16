@@ -41,61 +41,55 @@
 #include <libxml/uri.h>
 
 #include <audacious/debug.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 
 #define XSPF_ROOT_NODE_NAME "playlist"
 #define XSPF_XMLNS "http://xspf.org/ns/0/"
 
-enum {
-    CMP_DEF = 0,
-    CMP_GT,
-    CMP_NULL
-} xspf_compare;
-
 typedef struct {
     gint tupleField;
     gchar *xspfName;
     TupleValueType type;
     gboolean isMeta;
-    gint compare;
 } xspf_entry_t;
 
 
 static const xspf_entry_t xspf_entries[] = {
-    { FIELD_ARTIST,       "creator",      TUPLE_STRING,   FALSE,  CMP_DEF },
-    { FIELD_TITLE,        "title",        TUPLE_STRING,   FALSE,  CMP_DEF },
-    { FIELD_ALBUM,        "album",        TUPLE_STRING,   FALSE,  CMP_DEF },
-    { FIELD_COMMENT,      "annotation",   TUPLE_STRING,   FALSE,  CMP_DEF },
-    { FIELD_GENRE,        "genre",        TUPLE_STRING,   TRUE,   CMP_DEF },
+    { FIELD_ARTIST,       "creator",      TUPLE_STRING,   FALSE},
+    { FIELD_TITLE,        "title",        TUPLE_STRING,   FALSE},
+    { FIELD_ALBUM,        "album",        TUPLE_STRING,   FALSE},
+    { FIELD_COMMENT,      "annotation",   TUPLE_STRING,   FALSE},
+    { FIELD_GENRE,        "genre",        TUPLE_STRING,   TRUE},
 
-    { FIELD_TRACK_NUMBER, "trackNum",     TUPLE_INT,      FALSE,  CMP_DEF },
-    { FIELD_LENGTH,       "duration",     TUPLE_INT,      FALSE,  CMP_GT },
-    { FIELD_YEAR,         "year",         TUPLE_INT,      TRUE,   CMP_DEF },
-    { FIELD_QUALITY,      "quality",      TUPLE_STRING,   TRUE,   CMP_DEF },
+    { FIELD_TRACK_NUMBER, "trackNum",     TUPLE_INT,      FALSE},
+    { FIELD_LENGTH,       "duration",     TUPLE_INT,      FALSE},
+    { FIELD_YEAR,         "year",         TUPLE_INT,      TRUE},
+    { FIELD_QUALITY,      "quality",      TUPLE_STRING,   TRUE},
 
-    { FIELD_CODEC,        "codec",        TUPLE_STRING,   TRUE,   CMP_DEF },
-    { FIELD_SONG_ARTIST,  "song-artist",  TUPLE_STRING,   TRUE,   CMP_DEF },
+    { FIELD_CODEC,        "codec",        TUPLE_STRING,   TRUE},
+    { FIELD_SONG_ARTIST,  "song-artist",  TUPLE_STRING,   TRUE},
 
-    { FIELD_MTIME,        "mtime",        TUPLE_INT,      TRUE,   CMP_DEF },
-    { FIELD_FORMATTER,    "formatter",    TUPLE_STRING,   TRUE,   CMP_DEF },
-    { FIELD_PERFORMER,    "performer",    TUPLE_STRING,   TRUE,   CMP_DEF },
-    { FIELD_COPYRIGHT,    "copyright",    TUPLE_STRING,   TRUE,   CMP_DEF },
-    { FIELD_DATE,         "date",         TUPLE_STRING,   TRUE,   CMP_DEF },
+    { FIELD_MTIME,        "mtime",        TUPLE_INT,      TRUE},
+    { FIELD_FORMATTER,    "formatter",    TUPLE_STRING,   TRUE},
+    { FIELD_PERFORMER,    "performer",    TUPLE_STRING,   TRUE},
+    { FIELD_COPYRIGHT,    "copyright",    TUPLE_STRING,   TRUE},
+    { FIELD_DATE,         "date",         TUPLE_STRING,   TRUE},
 
-    { FIELD_SUBSONG_ID,   "subsong-id",   TUPLE_INT,      TRUE,   CMP_DEF },
-    { FIELD_SUBSONG_NUM,  "subsong-num",  TUPLE_INT,      TRUE,   CMP_DEF },
-    { FIELD_MIMETYPE,     "mime-type",    TUPLE_STRING,   TRUE,   CMP_DEF },
-    { FIELD_BITRATE,      "bitrate",      TUPLE_INT,      TRUE,   CMP_DEF },
-    { FIELD_SEGMENT_START,"seg-start",    TUPLE_INT,      TRUE,   CMP_DEF },
-    { FIELD_SEGMENT_END,  "seg-end",      TUPLE_INT,      TRUE,   CMP_DEF },
+    { FIELD_SUBSONG_ID,   "subsong-id",   TUPLE_INT,      TRUE},
+    { FIELD_SUBSONG_NUM,  "subsong-num",  TUPLE_INT,      TRUE},
+    { FIELD_MIMETYPE,     "mime-type",    TUPLE_STRING,   TRUE},
+    { FIELD_BITRATE,      "bitrate",      TUPLE_INT,      TRUE},
+    { FIELD_SEGMENT_START,"seg-start",    TUPLE_INT,      TRUE},
+    { FIELD_SEGMENT_END,  "seg-end",      TUPLE_INT,      TRUE},
 
-    { FIELD_GAIN_ALBUM_GAIN, "gain-album-gain", TUPLE_INT, TRUE,  CMP_DEF },
-    { FIELD_GAIN_ALBUM_PEAK, "gain-album-peak", TUPLE_INT, TRUE,  CMP_DEF },
-    { FIELD_GAIN_TRACK_GAIN, "gain-track-gain", TUPLE_INT, TRUE,  CMP_DEF },
-    { FIELD_GAIN_TRACK_PEAK, "gain-track-peak", TUPLE_INT, TRUE,  CMP_DEF },
-    { FIELD_GAIN_GAIN_UNIT, "gain-gain-unit", TUPLE_INT,  TRUE,   CMP_DEF },
-    { FIELD_GAIN_PEAK_UNIT, "gain-peak-unit", TUPLE_INT,  TRUE,   CMP_DEF },
+    { FIELD_GAIN_ALBUM_GAIN, "gain-album-gain", TUPLE_INT, TRUE},
+    { FIELD_GAIN_ALBUM_PEAK, "gain-album-peak", TUPLE_INT, TRUE},
+    { FIELD_GAIN_TRACK_GAIN, "gain-track-gain", TUPLE_INT, TRUE},
+    { FIELD_GAIN_TRACK_PEAK, "gain-track-peak", TUPLE_INT, TRUE},
+    { FIELD_GAIN_GAIN_UNIT, "gain-gain-unit", TUPLE_INT,  TRUE},
+    { FIELD_GAIN_PEAK_UNIT, "gain-peak-unit", TUPLE_INT,  TRUE},
 };
 
 static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entries[0]));
@@ -108,9 +102,6 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
     gchar *location = NULL;
 
     tuple = tuple_new();
-    tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
-    tuple_associate_int(tuple, FIELD_MTIME, NULL, -1);
-
 
     for (nptr = track->children; nptr != NULL; nptr = nptr->next) {
         if (nptr->type == XML_ELEMENT_NODE) {
@@ -162,7 +153,6 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
                             break;
 
                         case TUPLE_INT:
-                            AUDDBG("field=%s val=%s\n", xspf_entries[i].xspfName, str);
                             tuple_associate_int(tuple, xspf_entries[i].tupleField, NULL, atol((char *)str));
                             break;
 
@@ -271,6 +261,8 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
                     xspf_find_track (nptr2, filename, base, filenames, tuples);
                 }
             }
+
+            xmlFree (base);
         }
     }
     xmlFreeDoc(doc);
@@ -449,31 +441,16 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
             gint i;
             for (i = 0; i < xspf_nentries; i++) {
                 const xspf_entry_t *xs = &xspf_entries[i];
-                gboolean isOK = FALSE;
+                gboolean isOK = (tuple_get_value_type (tuple, xs->tupleField,
+                 NULL) == xs->type);
 
                 switch (xs->type) {
                     case TUPLE_STRING:
-                        scratch = tuple_get_string ((Tuple *) tuple,
-                         xs->tupleField, NULL);
-
-                        switch (xs->compare) {
-                            case CMP_DEF: isOK = (scratch != NULL); break;
-                            case CMP_NULL: isOK = (scratch == NULL); break;
-                        }
-                        if (scratch != NULL && !g_utf8_validate(scratch, -1, NULL))
-                            isOK = FALSE;
+                        scratch = tuple_get_string (tuple, xs->tupleField, NULL);
                         break;
-
                     case TUPLE_INT:
-                        scratchi = tuple_get_int ((Tuple *) tuple,
-                         xs->tupleField, NULL);
-
-                        switch (xs->compare) {
-                            case CMP_DEF: isOK = (scratchi != 0); break;
-                            case CMP_GT:  isOK = (scratchi > 0); break;
-                        }
+                        scratchi = tuple_get_int (tuple, xs->tupleField, NULL);
                         break;
-
                     default:
                         break;
                 }

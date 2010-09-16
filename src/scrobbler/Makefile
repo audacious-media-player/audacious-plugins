@@ -5,9 +5,6 @@ SRCS = fmt.c			\
        scrobbler.c		\
        plugin.c
 
-DATA = images/audioscrobbler.png	\
-       images/audioscrobbler_badge.png
-
 include ../../buildsys.mk
 include ../../extra.mk
 

@@ -26,8 +26,8 @@
 
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
-#include <audacious/ui_plugin_menu.h>
 
 #define N_ITEMS 2
 #define N_MENUS 3

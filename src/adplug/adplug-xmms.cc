@@ -33,6 +33,7 @@
 extern "C" {
 #include <audacious/configdb.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/tuple_formatter.h>
 #include <libaudcore/vfs_buffered_file.h>
@@ -457,7 +458,7 @@ factory (VFSFile * fd, Copl * newopl)
 
 extern "C" {
 void adplug_stop(InputPlayback * data);
-void adplug_play(InputPlayback * data);
+gboolean adplug_play(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause);
 }
 
 static void
@@ -465,7 +466,7 @@ subsong_slider (GtkAdjustment * adj)
 {
   adplug_stop (NULL);
   plr.subsong = (unsigned int) adj->value - 1;
-  adplug_play (playback);
+  adplug_play (playback, playback->filename, NULL, 0, 0, FALSE);
 }
 
 static void
@@ -915,10 +916,9 @@ adplug_is_our_fd (const gchar * filename, VFSFile * fd)
 
 /***** Player control *****/
 
-extern "C" void
-adplug_play (InputPlayback * data)
+extern "C" gboolean
+adplug_play (InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
-  char *filename = data->filename;
   playback = data;
   dbg_printf ("adplug_play(\"%s\"): ", filename);
   audio_error = FALSE;
@@ -935,11 +935,12 @@ adplug_play (InputPlayback * data)
                   conf.stereo ? 2 : 1))
   {
     audio_error = TRUE;
-    return;
+    return TRUE;
   }
 
   play_loop (playback);
   playback->output->close_audio ();
+  return FALSE;
 }
 
 extern "C" void adplug_stop (InputPlayback * playback)

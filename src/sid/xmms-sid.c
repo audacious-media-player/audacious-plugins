@@ -177,13 +177,12 @@ void xs_close(void)
 /*
  * Start playing the given file
  */
-void xs_play_file(InputPlayback *pb)
+gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, gint start_time, gint stop_time, gboolean pause)
 {
     xs_tuneinfo_t *tmpTune;
     gboolean audioOpen = FALSE;
-    gint audioBufSize, bufChunkSize, bufRemaining, tmpLength, subTune = -1;
-    gchar *tmpFilename, *bufPointer,
-        *audioBuffer = NULL, *oversampleBuffer = NULL;
+    gint audioBufSize, bufRemaining, tmpLength, subTune = -1;
+    gchar *tmpFilename, *audioBuffer = NULL, *oversampleBuffer = NULL;
     Tuple *tmpTuple;
 
     assert(pb);
@@ -192,14 +191,14 @@ void xs_play_file(InputPlayback *pb)
     XSDEBUG("play '%s'\n", pb->filename);
 
     tmpFilename = filename_split_subtune(pb->filename, &subTune);
-    if (tmpFilename == NULL) return;
+    if (tmpFilename == NULL) return TRUE;
 
     /* Get tune information */
     XS_MUTEX_LOCK(xs_status);
     if ((xs_status.tuneInfo = xs_status.sidPlayer->plrGetSIDInfo(tmpFilename)) == NULL) {
         XS_MUTEX_UNLOCK(xs_status);
         g_free(tmpFilename);
-        return;
+        return TRUE;
     }
 
     /* Initialize the tune */
@@ -208,7 +207,7 @@ void xs_play_file(InputPlayback *pb)
         g_free(tmpFilename);
         xs_tuneinfo_free(xs_status.tuneInfo);
         xs_status.tuneInfo = NULL;
-        return;
+        return TRUE;
     }
 
     g_free(tmpFilename);
@@ -229,12 +228,13 @@ void xs_play_file(InputPlayback *pb)
 
     XSDEBUG("subtune #%i selected (#%d wanted), initializing...\n", xs_status.currSong, subTune);
 
+    gint channels = (xs_status.audioChannels == XS_CHN_AUTOPAN) ? 2 :
+     xs_status.audioChannels;
 
     /* Allocate audio buffer */
-    audioBufSize = (xs_status.audioFrequency * xs_status.audioChannels * xs_status.audioBitsPerSample) / (8 * 4);
+    audioBufSize = xs_status.audioFrequency * channels *
+     xs_status.audioBitsPerSample / (8 * 4);
     if (audioBufSize < 512) audioBufSize = 512;
-    bufChunkSize = (xs_status.audioFrequency * xs_status.audioChannels * xs_status.audioBitsPerSample) / (8 * 50);
-    if (bufChunkSize < 512) bufChunkSize = 512;
 
     audioBuffer = (gchar *) g_malloc(audioBufSize);
     if (audioBuffer == NULL) {
@@ -270,13 +270,15 @@ void xs_play_file(InputPlayback *pb)
 
     /* Open the audio output */
     XSDEBUG("open audio output (%d, %d, %d)\n",
-        xs_status.audioFormat, xs_status.audioFrequency, xs_status.audioChannels);
+        xs_status.audioFormat, xs_status.audioFrequency, channels);
 
-    if (!pb->output->open_audio(xs_status.audioFormat, xs_status.audioFrequency, xs_status.audioChannels)) {
+    if (!pb->output->open_audio(xs_status.audioFormat, xs_status.audioFrequency,
+     channels))
+    {
         xs_error("Couldn't open audio output (fmt=%x, freq=%i, nchan=%i)!\n",
             xs_status.audioFormat,
             xs_status.audioFrequency,
-            xs_status.audioChannels);
+            channels);
 
         pb->error = TRUE;
         XS_MUTEX_UNLOCK(xs_status);
@@ -292,7 +294,7 @@ void xs_play_file(InputPlayback *pb)
     xs_get_song_tuple_info(tmpTuple, tmpTune, xs_status.currSong);
     XS_MUTEX_UNLOCK(xs_status);
     pb->set_tuple(pb, tmpTuple);
-    pb->set_params(pb, NULL, 0, -1, xs_status.audioFrequency, xs_status.audioChannels);
+    pb->set_params(pb, NULL, 0, -1, xs_status.audioFrequency, channels);
     pb->set_pb_ready(pb);
 
     XS_MUTEX_UNLOCK(xs_status);
@@ -320,18 +322,7 @@ void xs_play_file(InputPlayback *pb)
                 &xs_status, audioBuffer, audioBufSize);
         }
 
-        /* I <3 visualice/haujobb */
-        bufPointer = audioBuffer;
-        while (bufRemaining > 0 && pb->playing) {
-            gint blockSize = MIN(bufChunkSize, bufRemaining);
-
-            pb->pass_audio(pb, xs_status.audioFormat,
-                xs_status.audioChannels,
-                blockSize, bufPointer, NULL);
-
-            bufPointer += blockSize;
-            bufRemaining -= blockSize;
-        }
+        pb->output->write_audio (audioBuffer, bufRemaining);
 
         /* Check if we have played enough */
         if (xs_cfg.playMaxTimeEnable) {
@@ -381,6 +372,8 @@ xs_err_exit:
 
     /* Exit the playing thread */
     XSDEBUG("exiting thread, bye.\n");
+
+    return ! pb->error;
 }
 
 
@@ -403,6 +396,7 @@ void xs_stop(InputPlayback *pb)
     if (pb != NULL && pb->playing) {
         XSDEBUG("stopping...\n");
         pb->playing = FALSE;
+        pb->output->abort_write ();
         XS_MUTEX_UNLOCK(xs_status);
     } else {
         XS_MUTEX_UNLOCK(xs_status);
@@ -420,15 +414,6 @@ void xs_pause(InputPlayback *pb, short pauseState)
     XS_MUTEX_LOCK(xs_status);
     pb->output->pause(pauseState);
     XS_MUTEX_UNLOCK(xs_status);
-}
-
-
-/*
- * A stub seek function (Audacious will crash if seek is NULL)
- */
-void xs_seek(InputPlayback *pb, gint time)
-{
-    (void) pb; (void) time;
 }
 
 

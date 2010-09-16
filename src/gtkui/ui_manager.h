@@ -27,6 +27,7 @@
 G_BEGIN_DECLS
 
 GtkWidget *playlistwin_popup_menu;
+GtkWidget *playlist_tab_menu;
 
 GtkActionGroup *toggleaction_group_others;
 

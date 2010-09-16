@@ -23,7 +23,7 @@
 #include <libxml/tree.h>
 
 #include <audacious/debug.h>
-#include <audacious/plugin.h>
+#include <audacious/misc.h>
 
 #include "streambrowser.h"
 #include "xiph.h"

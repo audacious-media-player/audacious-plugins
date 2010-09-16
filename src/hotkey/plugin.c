@@ -38,12 +38,14 @@
 #include <stdio.h>
 #include <X11/XF86keysym.h>
 
+#include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 
 #include <audacious/configdb.h>
 #include <audacious/drct.h>
-#include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <audacious/plugin.h>
+#include <libaudcore/hook.h>
 
 #include "plugin.h"
 #include "gui.h"

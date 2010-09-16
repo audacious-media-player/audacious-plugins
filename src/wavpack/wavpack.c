@@ -345,10 +345,10 @@ wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
 
 	AUDDBG("starting probe of %p\n", fd);
 
-	vfs_fseek(fd, 0, SEEK_SET);
+	vfs_rewind(fd);
 	tu = tuple_new_from_filename(filename);
 
-	vfs_fseek(fd, 0, SEEK_SET);
+	vfs_rewind(fd);
 	tag_tuple_read(tu, fd);
 
 	tuple_associate_int(tu, FIELD_LENGTH, NULL,
@@ -388,12 +388,12 @@ wv_cleanup(void)
     g_cond_free(ctrl_cond);
 }
 
-static gboolean wv_write_tag (Tuple *tuple, VFSFile *handle)
+static gboolean wv_write_tag (const Tuple * tuple, VFSFile * handle)
 {
     return tag_tuple_write(tuple, handle, TAG_TYPE_APE);
 }
 
-static gchar *wv_fmts[] = { "wv", NULL };
+static const gchar *wv_fmts[] = { "wv", NULL };
 
 extern PluginPreferences preferences;
 

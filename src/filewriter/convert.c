@@ -2,10 +2,10 @@
 
 gpointer convert_output = NULL;
 static gint nch;
-static AFormat in_fmt;
-static AFormat out_fmt;
+static gint in_fmt;
+static gint out_fmt;
 
-gboolean convert_init(AFormat input_fmt, AFormat output_fmt, gint channels)
+gboolean convert_init(gint input_fmt, gint output_fmt, gint channels)
 {
     in_fmt = input_fmt;
     out_fmt = output_fmt;

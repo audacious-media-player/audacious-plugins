@@ -28,8 +28,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libaudcore/tuple_formatter.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <libaudcore/tuple_formatter.h>
 
 #include "ao.h"
 #include "corlett.h"
@@ -150,7 +151,7 @@ gchar *psf2_title(gchar *filename, gint *length)
 	return title;
 }
 
-void psf2_play(InputPlayback *data)
+static gboolean psf2_play(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
 	void *buffer;
 	gint64 size;
@@ -166,14 +167,14 @@ void psf2_play(InputPlayback *data)
 	if (eng == ENG_NONE || eng == ENG_COUNT)
 	{
 		g_free(buffer);
-		return;
+		return FALSE;
 	}
 
 	f = &psf_functor_map[eng];
 	if (f->start(buffer, size) != AO_SUCCESS)
 	{
 		g_free(buffer);
-		return;
+		return FALSE;
 	}
 
 	data->output->open_audio(FMT_S16_NE, 44100, 2);
@@ -222,6 +223,7 @@ void psf2_play(InputPlayback *data)
         g_free(title);
 
 	data->playing = FALSE;
+	return ! data->error;
 }
 
 void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
@@ -254,6 +256,7 @@ void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 void psf2_Stop(InputPlayback *playback)
 {
 	playback->playing = FALSE;
+	playback->output->abort_write();
 }
 
 void psf2_pause(InputPlayback *playback, short p)
@@ -269,20 +272,20 @@ int psf2_is_our_fd(const gchar *filename, VFSFile *file)
 	return (psf_probe(magic) != ENG_NONE);
 }
 
-void psf2_Seek(InputPlayback *playback, int time)
+static void psf2_Seek(InputPlayback *playback, gulong time)
 {
-	seek = time * 1000;
+	seek = time;
 }
 
-gchar *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", NULL };
+static const gchar *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", NULL };
 
 InputPlugin psf2_ip =
 {
 	.description = "OpenPSF PSF1/PSF2 Audio Plugin",
-	.play_file = psf2_play,
+	.play = psf2_play,
 	.stop = psf2_Stop,
 	.pause = psf2_pause,
-	.seek = psf2_Seek,
+	.mseek = psf2_Seek,
 	.get_song_tuple = psf2_tuple,
 	.is_our_file_from_vfs = psf2_is_our_fd,
 	.vfs_extensions = psf2_fmts,

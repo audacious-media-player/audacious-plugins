@@ -39,11 +39,14 @@
 #include <unistd.h>
 #include <errno.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/debug.h>
 #include <audacious/drct.h>
-#include <audacious/playlist.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
+#include <audacious/playlist.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -91,7 +94,6 @@ static gboolean playlistwin_select_search_kp_cb(GtkWidget *entry,
 static gboolean playlistwin_resizing = FALSE;
 static gint playlistwin_resize_x, playlistwin_resize_y;
 static int drop_position;
-static gboolean song_changed;
 
 gboolean
 playlistwin_is_shaded(void)
@@ -675,43 +677,8 @@ show_playlist_overwrite_prompt(GtkWindow * parent,
 }
 
 static void
-show_playlist_save_format_error(GtkWindow * parent,
-                                const gchar * filename)
-{
-    const gchar *markup =
-        N_("<b><big>Unable to save playlist.</big></b>\n\n"
-           "Unknown file type for '%s'.\n");
-
-    GtkWidget *dialog;
-
-    g_return_if_fail(GTK_IS_WINDOW(parent));
-    g_return_if_fail(filename != NULL);
-
-    dialog =
-        gtk_message_dialog_new_with_markup(GTK_WINDOW(parent),
-                                           GTK_DIALOG_DESTROY_WITH_PARENT,
-                                           GTK_MESSAGE_ERROR,
-                                           GTK_BUTTONS_OK,
-                                           _(markup),
-                                           filename);
-
-    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER); /* centering */
-    gtk_dialog_run(GTK_DIALOG(dialog));
-    gtk_widget_destroy(dialog);
-}
-
-static void
 playlistwin_save_playlist(const gchar * filename)
 {
-    PlaylistContainer *plc;
-    gchar *ext = strrchr(filename, '.') + 1;
-
-    plc = aud_playlist_container_find(ext);
-    if (plc == NULL) {
-        show_playlist_save_format_error(GTK_WINDOW(playlistwin), filename);
-        return;
-    }
-
     str_replace_in(&aud_cfg->playlist_path, g_path_get_dirname(filename));
 
     if (g_file_test(filename, G_FILE_TEST_IS_REGULAR))
@@ -1253,13 +1220,7 @@ static void update_cb (void * unused, void * another)
     if (active_playlist != old)
     {
         ui_skinned_playlist_scroll_to (playlistwin_list, 0);
-        song_changed = TRUE;
-    }
-
-    if (song_changed)
-    {
         ui_skinned_playlist_follow (playlistwin_list);
-        song_changed = FALSE;
     }
 
     real_update ();
@@ -1269,7 +1230,7 @@ static void follow_cb (void * data, void * another)
 {
     /* active_playlist may be out of date at this point */
     if (GPOINTER_TO_INT (data) == aud_playlist_get_active ())
-        song_changed = TRUE;
+        ui_skinned_playlist_follow (playlistwin_list);
 }
 
 void
@@ -1292,7 +1253,6 @@ playlistwin_create(void)
 
     /* calls playlistwin_update */
     ui_skinned_playlist_follow (playlistwin_list);
-    song_changed = FALSE;
 
     hook_associate ("playlist position", follow_cb, 0);
     hook_associate ("playlist update", update_cb, 0);
@@ -1303,6 +1263,10 @@ void playlistwin_unhook (void)
     hook_dissociate ("playlist position", follow_cb);
     hook_dissociate ("playlist update", update_cb);
     ui_playlist_evlistener_dissociate ();
+    g_free (active_title);
+    active_title = NULL;
+    g_mutex_free (resize_mutex);
+    resize_mutex = NULL;
 }
 
 static void playlistwin_real_show (void)
@@ -1535,7 +1499,7 @@ action_playlist_add_files(void)
 void
 action_playlist_add_url(void)
 {
-    audgui_show_add_url_window();
+    audgui_show_add_url_window (FALSE);
 }
 
 void action_playlist_new (void)
@@ -1569,7 +1533,7 @@ void action_playlist_save_list (void)
 
 void action_playlist_save_all_playlists (void)
 {
-    aud_save_all_playlists ();
+    aud_save_playlists ();
 }
 
 void action_playlist_load_list (void)

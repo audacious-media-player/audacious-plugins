@@ -35,7 +35,10 @@
 
 #include "audioio.h"
 
+#include <audacious/configdb.h>
 #include <audacious/plugin.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 /* Default path to audio device. */
 #ifndef SUN_DEV_AUDIO
@@ -82,7 +85,7 @@
 struct sun_format {
 	char	name[16];
 	union {
-		AFormat	xmms;
+		gint	xmms;
 		gint	sun;
 	} format;
 	int	frequency;
@@ -131,12 +134,12 @@ extern	OutputPlugin	op;
 extern struct sun_audio		audio;
 extern struct sun_statsframe	stats_frame;
 
-void	 sun_init(void);
+OutputPluginInitStatus	 sun_init(void);
 void	 sun_about(void);
 void	 sun_configure(void);
 void	 sun_cleanup(void);
 
-gint	 sun_open(AFormat, int, int);
+gint	 sun_open(gint, int, int);
 void	 sun_write(void *, int);
 void	 sun_close(void);
 void	 sun_flush(int);

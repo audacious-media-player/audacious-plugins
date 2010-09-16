@@ -20,8 +20,10 @@
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
+#include <audacious/playlist.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/tuple.h>
 
 #include "formatter.h"
 
@@ -91,6 +93,9 @@ static void execute_command(char *cmd)
  *   s - name (since everyone's used to it)
  *   t - playlist position (%02d)
  *   p - currently playing (1 or 0)
+ *   a - artist
+ *   b - album
+ *   r - track title
  */
 /* do_command(): do @cmd after replacing the format codes
    @cmd: command to run
@@ -150,6 +155,27 @@ do_command(char *cmd, const char *current_file, int pos)
 		playing = aud_drct_get_playing();
 		g_snprintf(numbuf, sizeof(numbuf), "%d", playing);
 		formatter_associate(formatter, 'p', numbuf);
+
+		const void *tuple = aud_playlist_entry_get_tuple(aud_playlist_get_active(), pos, 0);
+
+		const char *artist = tuple_get_string(tuple, FIELD_ARTIST, NULL);
+		if (artist)
+			formatter_associate(formatter, 'a', artist);
+		else
+			formatter_associate(formatter, 'a', "");
+
+		const char *album = tuple_get_string(tuple, FIELD_ALBUM, NULL);
+		if (album)
+			formatter_associate(formatter, 'b', album);
+		else
+			formatter_associate(formatter, 'b', "");
+
+		const char *title = tuple_get_string(tuple, FIELD_TITLE, NULL);
+		if (title)
+			formatter_associate(formatter, 'r', title);
+		else
+			formatter_associate(formatter, 'r', "");
+
 		shstring = formatter_format(formatter, cmd);
 		formatter_destroy(formatter);
 
@@ -420,7 +446,10 @@ static PreferencesWidget elements[] = {
                       "%n or %s: Song name\n"
                       "%r: Rate (in bits per second)\n"
                       "%t: Playlist position (%02d)\n"
-                      "%p: Currently playing (1 or 0)"), NULL, NULL, NULL, FALSE},
+                      "%p: Currently playing (1 or 0)\n"
+                      "%a: Artist\n"
+                      "%b: Album\n"
+                      "%r: Track title"), NULL, NULL, NULL, FALSE},
 };
 
 /* static GtkWidget * custom_warning (void) */
@@ -485,8 +514,6 @@ static PluginPreferences preferences = {
     .imgurl = DATA_DIR "/images/plugins.png",
     .prefs = settings,
     .n_prefs = G_N_ELEMENTS(settings),
-    .type = PREFERENCES_PAGE,
     .init = configure_init,
-    /* TODO: .apply = configure_apply, */
     .cleanup = configure_cleanup,
 };

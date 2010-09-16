@@ -303,14 +303,14 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 	}
 }
 
-void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
+bool ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 {
 	//open and mmap the file
 	mArchive = OpenArchive(aFilename);
 	if(mArchive->Size() == 0)
 	{
 		delete mArchive;
-		return;
+		return true;
 	}
 
 	if (mBuffer)
@@ -327,7 +327,7 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 
 	mBuffer = new uchar[mBufSize];
 	if(!mBuffer)
-		return;             //out of memory!
+		return true;        //out of memory!
 
 	CSoundFile::SetWaveConfig
 	(
@@ -407,11 +407,13 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
      mModProps.mChannels))
     {
         ipb->error = TRUE;
-        return;
+        return true;
     }
 
 	this->PlayLoop(ipb);
 	ipb->output->close_audio ();
+
+    return false;
 }
 
 void ModplugXMMS::Stop (InputPlayback * playback)

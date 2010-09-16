@@ -5876,32 +5876,6 @@ static u32 FASTCALL  OP_LDRBT_M_IMM_OFF_POSTIND(armcpu_t *cpu)
      return 3 + MMU.MMU_WAIT16[cpu->proc_ID][(adr>>24)&0xF];
 }
 
-static u32 FASTCALL  OP_LDRBT_P_REG_OFF_POSTIND(armcpu_t *cpu)
-{
-     u32 oldmode;
-     u32 i;
-     u32 adr;
-     u32 val;
-
-     if(cpu->CPSR.bits.mode==USR)
-          return 2;
-          
-     oldmode = armcpu_switchMode(cpu, SYS);
-     //execute = FALSE;
-	 LOG("Untested opcode: OP_LDRBT_P_REG_OFF_POSTIND");
-          
-
-     i = cpu->instruction;
-     adr = cpu->R[REG_POS(i,16)];
-     val = READ8(cpu->mem_if->data, adr);
-     cpu->R[REG_POS(i,12)] = val;
-     cpu->R[REG_POS(i,16)] = adr + cpu->R[REG_POS(i,0)];
-     
-     armcpu_switchMode(cpu, oldmode);
-     
-     return 3 + MMU.MMU_WAIT16[cpu->proc_ID][(adr>>24)&0xF];
-}
-
 static u32 FASTCALL  OP_LDRBT_P_LSL_IMM_OFF_POSTIND(armcpu_t *cpu)
 {
      u32 oldmode;
@@ -6165,50 +6139,6 @@ static u32 FASTCALL  OP_STRBT_M_IMM_OFF_POSTIND(armcpu_t *cpu)
      adr = cpu->R[REG_POS(i,16)];
      WRITE8(cpu->mem_if->data, adr, (u8)cpu->R[REG_POS(i,12)]);
      cpu->R[REG_POS(i,16)] = adr - IMM_OFF_12;
-     
-     armcpu_switchMode(cpu, oldmode);
-
-     return 2 + MMU.MMU_WAIT16[cpu->proc_ID][(adr>>24)&0xF];
-}
-
-static u32 FASTCALL  OP_STRBT_P_REG_OFF_POSTIND(armcpu_t *cpu)
-{
-     u32 oldmode;
-     u32 i;
-     u32 adr;
-
-     if(cpu->CPSR.bits.mode==USR)
-          return 2;
-     
-     oldmode = armcpu_switchMode(cpu, SYS);
-          
-
-     i = cpu->instruction;
-     adr = cpu->R[REG_POS(i,16)];
-     WRITE8(cpu->mem_if->data, adr, (u8)cpu->R[REG_POS(i,12)]);
-     cpu->R[REG_POS(i,16)] = adr + cpu->R[REG_POS(i,0)];
-     
-     armcpu_switchMode(cpu, oldmode);
-
-     return 2 + MMU.MMU_WAIT16[cpu->proc_ID][(adr>>24)&0xF];
-}
-
-static u32 FASTCALL  OP_STRBT_M_REG_OFF_POSTIND(armcpu_t *cpu)
-{
-     u32 oldmode;
-     u32 i;
-     u32 adr;
-
-     if(cpu->CPSR.bits.mode==USR)
-          return 2;
-     
-     oldmode = armcpu_switchMode(cpu, SYS);
-          
-
-     i = cpu->instruction;
-     adr = cpu->R[REG_POS(i,16)];
-     WRITE8(cpu->mem_if->data, adr, (u8)cpu->R[REG_POS(i,12)]);
-     cpu->R[REG_POS(i,16)] = adr - cpu->R[REG_POS(i,0)];
      
      armcpu_switchMode(cpu, oldmode);
 

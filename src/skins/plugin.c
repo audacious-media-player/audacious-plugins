@@ -21,6 +21,7 @@
 
 #include "plugin.h"
 #include "skins_cfg.h"
+#include "ui_dock.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_skin.h"
@@ -28,6 +29,7 @@
 #include "ui_main_evlisteners.h"
 #include "ui_playlist_evlisteners.h"
 
+#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
@@ -40,7 +42,7 @@ gchar * skins_paths[SKINS_PATH_COUNT];
 Interface skins_interface =
 {
     .id = "skinned",
-    .desc = "Audacious Skinned GUI",
+    .desc = "Winamp Classic Interface",
     .init = skins_init,
     .fini = skins_cleanup
 };
@@ -112,6 +114,7 @@ gboolean skins_init (InterfaceCbs * cbs)
     if (aud_drct_get_playing ())
     {
         ui_main_evlistener_playback_begin (NULL, NULL);
+        info_change ();
 
         if (aud_drct_get_paused ())
             ui_main_evlistener_playback_pause (NULL, NULL);
@@ -141,7 +144,6 @@ gboolean skins_init (InterfaceCbs * cbs)
     eq_init_hooks ();
     update_source = g_timeout_add (250, update_cb, NULL);
 
-    gtk_main ();
     return TRUE;
 }
 
@@ -154,21 +156,17 @@ gboolean skins_cleanup (void)
         eq_end_hooks ();
         g_source_remove (update_source);
 
-        gtk_widget_destroy (mainwin);
-        gtk_widget_destroy (equalizerwin);
-        gtk_widget_destroy (playlistwin);
         skins_cfg_save();
 
         audgui_playlist_manager_destroy();
 
         cleanup_skins();
+        clear_dock_window_list ();
         skins_free_paths();
         skins_cfg_free();
         ui_manager_destroy();
         plugin_is_active = FALSE;
     }
-
-    gtk_main_quit();
 
     return TRUE;
 }

@@ -34,7 +34,7 @@
 
 
 struct format_info {
-    AFormat format;
+    gint format;
     int frequency;
     int channels;
 };
@@ -54,7 +54,7 @@ typedef struct _FileWriter
     gint (*open)(void);
     void (*write)(void *ptr, gint length);
     void (*close)(void);
-    AFormat format_required;
+    gint format_required;
 } FileWriter;
 
 #endif

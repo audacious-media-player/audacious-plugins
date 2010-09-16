@@ -26,6 +26,7 @@
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 
+#include "ui_manager.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 #include "ui_playlist_model.h"
@@ -74,6 +75,14 @@ static gboolean tab_button_press_cb(GtkWidget *widget, GdkEventButton *event, gp
     if (event->type == GDK_2BUTTON_PRESS && event->button == 1)
         ui_playlist_notebook_edit_tab_title(widget);
 
+    if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+    {
+        GtkWidget *page = g_object_get_data(G_OBJECT(widget), "page");
+
+        gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, gtk_notebook_page_num(UI_PLAYLIST_NOTEBOOK, page));
+        ui_manager_popup_menu_show(GTK_MENU(playlist_tab_menu), event->x_root, event->y_root + 2, 3, event->time);
+    }
+
     return FALSE;
 }
 
@@ -83,10 +92,7 @@ static void tab_changed(GtkNotebook * notebook, GtkNotebookPage * notebook_page,
 
     if (treeview != NULL)
     {
-        GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
-        UiPlaylistModel *model = UI_PLAYLIST_MODEL(tree_model);
-
-        aud_playlist_set_active(model->playlist);
+        aud_playlist_set_active (page_num);
 
         if (ui_playlist_notebook_tab_title_editing != NULL)
             tab_title_reset(ui_playlist_notebook_tab_title_editing);
@@ -100,13 +106,7 @@ static void tab_reordered(GtkNotebook *notebook, GtkWidget *child, guint page_nu
     if (treeview == NULL)
         return;
 
-    GtkTreeModel *tree_model;
-    UiPlaylistModel *model;
-
-    tree_model = gtk_tree_view_get_model(treeview);
-    model = UI_PLAYLIST_MODEL(tree_model);
-
-    aud_playlist_reorder(model->playlist, page_num, 1);
+    aud_playlist_reorder (treeview_get_playlist (treeview), page_num, 1);
 }
 
 static GtkLabel *get_tab_label(gint playlist)
@@ -147,7 +147,7 @@ void ui_playlist_notebook_edit_tab_title(GtkWidget *ebox)
     if (!gtk_notebook_get_show_tabs(UI_PLAYLIST_NOTEBOOK))
         return;
 
-    if (ebox == NULL)
+    if (ebox == NULL || !GTK_IS_EVENT_BOX(ebox))
     {
         GtkWidget *page = gtk_notebook_get_nth_page(UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active());
         ebox = gtk_notebook_get_tab_label(UI_PLAYLIST_NOTEBOOK, page);
@@ -198,6 +198,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
 
     g_object_set_data(G_OBJECT(ebox), "label", label);
     g_object_set_data(G_OBJECT(ebox), "entry", entry);
+    g_object_set_data(G_OBJECT(ebox), "page", scrollwin);
 
     gtk_notebook_append_page(UI_PLAYLIST_NOTEBOOK, scrollwin, ebox);
     gtk_notebook_set_show_tabs(UI_PLAYLIST_NOTEBOOK, index_count(pages) > 1 ? TRUE : FALSE);
@@ -234,24 +235,32 @@ void ui_playlist_notebook_populate(void)
     for (count = 0; count < playlists; count++)
         ui_playlist_notebook_create_tab(count);
 
-    gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, aud_playlist_get_playing());
+    gtk_notebook_set_current_page (UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active ());
+
+    g_signal_connect (UI_PLAYLIST_NOTEBOOK, "switch-page", (GCallback)
+     tab_changed, NULL);
+    g_signal_connect (UI_PLAYLIST_NOTEBOOK, "page-reordered", (GCallback)
+     tab_reordered, NULL);
 }
 
 void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
 {
     gint type = GPOINTER_TO_INT(hook_data);
+    gint lists = aud_playlist_count ();
 
     if (type == PLAYLIST_UPDATE_STRUCTURE)
     {
         AUDDBG("playlist order update\n");
 
-        GtkTreeView *treeview;
-        GtkTreeModel *tree_model;
-        UiPlaylistModel *model;
         GtkLabel *label;
         gint i, n_pages;
 
         n_pages = gtk_notebook_get_n_pages(UI_PLAYLIST_NOTEBOOK);
+
+        while (n_pages < lists)
+            ui_playlist_notebook_create_tab (n_pages ++);
+        while (n_pages > lists)
+            ui_playlist_notebook_destroy_tab (-- n_pages);
 
         for (i = 0; i < n_pages; i++)
         {
@@ -265,20 +274,42 @@ void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
                     gtk_label_set_text(label, aud_playlist_get_title(i));
             }
 
-            treeview = playlist_get_treeview(i);
-
-            if (treeview == NULL)
-                continue;
-
-            tree_model = gtk_tree_view_get_model(treeview);
-            model = UI_PLAYLIST_MODEL(tree_model);
-
-            model->playlist = i;
+            ui_playlist_model_set_playlist ((UiPlaylistModel *)
+             gtk_tree_view_get_model (playlist_get_treeview (i)), i);
         }
 
         gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active());
         gtk_widget_grab_focus(GTK_WIDGET(playlist_get_active_treeview()));
     }
+
+    gint list, at, count;
+    if (aud_playlist_update_range (& list, & at, & count))
+        treeview_update (playlist_get_treeview (list), type, at, count);
+    else
+    {
+        for (list = 0; list < lists; list ++)
+            treeview_update (playlist_get_treeview (list), type, 0,
+             aud_playlist_entry_count (list));
+    }
+}
+
+void ui_playlist_notebook_position (void * data, void * user)
+{
+    gint list = GPOINTER_TO_INT (data);
+    gint song = aud_playlist_get_position (list);
+
+    aud_playlist_select_all (list, FALSE);
+    if (song >= 0)
+        aud_playlist_entry_set_selected (list, song, TRUE);
+
+    /* treeview may not have been created yet */
+    if (list < gtk_notebook_get_n_pages (UI_PLAYLIST_NOTEBOOK))
+        treeview_update_position (playlist_get_treeview (list));
+}
+
+static void destroy_cb (void)
+{
+    index_free (pages);
 }
 
 GtkWidget *ui_playlist_notebook_new()
@@ -289,8 +320,6 @@ GtkWidget *ui_playlist_notebook_new()
     gtk_notebook_set_scrollable(UI_PLAYLIST_NOTEBOOK, TRUE);
     gtk_notebook_set_show_border(UI_PLAYLIST_NOTEBOOK, FALSE);
 
-    g_signal_connect(notebook, "switch-page", G_CALLBACK(tab_changed), NULL);
-    g_signal_connect(notebook, "page-reordered", G_CALLBACK(tab_reordered), NULL);
-
+    g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
     return notebook;
 }

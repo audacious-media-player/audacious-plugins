@@ -27,6 +27,7 @@
 
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <libaudcore/hook.h>
 
 GeneralPlugin *evdevplug_gplist[] = { &ed_gp, NULL };
 SIMPLE_GENERAL_PLUGIN(evdev-plug, evdevplug_gplist);

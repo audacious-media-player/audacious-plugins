@@ -23,9 +23,9 @@
 
 #include <audacious/configdb.h>
 #include <audacious/debug.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
-#include <audacious/ui_plugin_menu.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 

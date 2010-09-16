@@ -13,30 +13,19 @@
 
 #include "gtk_projectm_impl.h"
 
-GtkWidget *projectm = NULL;
-GtkWidget *window = NULL;
+static GtkWidget *projectm = NULL;
 
-void
-projectM_init(void)
-{
-    projectm = gtk_projectm_new();
-    gtk_container_add(GTK_CONTAINER(window), projectm);
-    gtk_widget_show(projectm);
-}
-
-GtkWidget *
+void /* GtkWidget */ *
 projectM_get_widget(void)
 {
+    if (projectm == NULL)
+    {
+        projectm = gtk_projectm_new ();
+        g_signal_connect (projectm, "destroy", (GCallback) gtk_widget_destroyed,
+         & projectm);
+    }
+
     return projectm;
-}
-
-void
-projectM_cleanup(void)
-{
-    g_return_if_fail(window != NULL);
-
-    gtk_widget_destroy(window);
-    window = NULL;
 }
 
 void
@@ -50,8 +39,6 @@ projectM_render_pcm(gint16 pcm_data[2][512])
 VisPlugin projectM_vtable = {
     .description = "projectM",
     .num_pcm_chs_wanted = 2,
-    .init = projectM_init,
-    .cleanup = projectM_cleanup,
     .render_pcm = projectM_render_pcm,
     .get_widget = projectM_get_widget,
 };

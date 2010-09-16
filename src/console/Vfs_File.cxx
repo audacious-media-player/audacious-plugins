@@ -1,20 +1,37 @@
 #include "Vfs_File.h"
 
-Vfs_File_Reader::Vfs_File_Reader() : file_( 0 ), owned_file_( 0 ) { }
+extern "C" {
+#include "libaudcore/vfs.h"
+}
 
-Vfs_File_Reader::~Vfs_File_Reader() { close(); }
+struct reader_private {
+	VFSFile * file, * owned_file;
+};
 
-void Vfs_File_Reader::reset( VFSFile* f )
+Vfs_File_Reader::Vfs_File_Reader ()
 {
-	close();
-	file_ = f;
+	p = new struct reader_private;
+	p->file = 0;
+	p->owned_file = 0;
+}
+
+Vfs_File_Reader::~Vfs_File_Reader ()
+{
+	close ();
+	delete p;
+}
+
+void Vfs_File_Reader::reset (/* VFSFile * */ void * file)
+{
+	close ();
+	p->file = (VFSFile *) file;
 }
 
 Vfs_File_Reader::error_t Vfs_File_Reader::open( const char* path )
 {
 	close();
-	file_ = owned_file_ = vfs_fopen( path, "rb" );
-	if ( !file_ )
+	p->file = p->owned_file = vfs_fopen (path, "r");
+	if (! p->file)
 		return "Couldn't open file";
 	return 0;
 }
@@ -22,37 +39,35 @@ Vfs_File_Reader::error_t Vfs_File_Reader::open( const char* path )
 long Vfs_File_Reader::size() const
 {
 	long pos = tell();
-	vfs_fseek( file_, 0, SEEK_END );
+	vfs_fseek (p->file, 0, SEEK_END);
 	long result = tell();
-	vfs_fseek( file_, pos, SEEK_SET );
+	vfs_fseek (p->file, pos, SEEK_SET);
 	return result;
 }
 
-long Vfs_File_Reader::read_avail( void* p, long s )
+long Vfs_File_Reader::read_avail (void * buf, long size)
 {
-	return (long) vfs_fread( p, 1, s, file_ );
+	return (long) vfs_fread (buf, 1, size, p->file);
 }
 
 long Vfs_File_Reader::tell() const
 {
-	return vfs_ftell( file_ );
+	return vfs_ftell (p->file);
 }
 
 Vfs_File_Reader::error_t Vfs_File_Reader::seek( long n )
 {
-	if ( n == 0 ) // optimization
-		vfs_rewind( file_ );
-	else if ( vfs_fseek( file_, n, SEEK_SET ) != 0 )
+	if (vfs_fseek (p->file, n, SEEK_SET) < 0)
 		return eof_error;
 	return 0;
 }
 
 void Vfs_File_Reader::close()
 {
-	file_ = 0;
-	if ( owned_file_ )
+	p->file = 0;
+	if (p->owned_file)
 	{
-		vfs_fclose( owned_file_ );
-		owned_file_ = 0;
+		vfs_fclose (p->owned_file);
+		p->owned_file = 0;
 	}
 }

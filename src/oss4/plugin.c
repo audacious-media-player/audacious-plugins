@@ -30,7 +30,8 @@ static OutputPlugin plugin = {
     .open_audio = oss_open_audio,
     .close_audio = oss_close_audio,
     .write_audio = oss_write_audio,
-    .drain = oss_drain,
+    .buffer_playing = oss_buffer_playing,
+    .buffer_free = oss_buffer_free,
     .set_written_time = oss_set_written_time,
     .written_time = oss_written_time,
     .output_time = oss_output_time,
@@ -56,7 +57,7 @@ void oss_about(void)
     "I would like to thank people on #audacious, especially Tony Vroon and "
     "John Lindgren and of course the authors of the previous OSS plugin.\n\n"
     "This program is free software: you can redistribute it and/or modify "
-    "it under the terms of the GNU General Public License as published by "  
+    "it under the terms of the GNU General Public License as published by "
     "the Free Software Foundation, either version 3 of the License, or "
     "(at your option) any later version.\n\n"
     "This program is distributed in the hope that it will be useful, "

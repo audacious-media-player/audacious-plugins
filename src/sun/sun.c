@@ -29,6 +29,7 @@ struct sun_audio audio;
 OutputPlugin sun_op =
 {
 	.description = "BSD/Sun Output Plugin",	/* Description */
+	.probe_priority = 5,
 	.init = sun_init,
 	.cleanup = sun_cleanup,
 	.about = sun_about,
@@ -48,9 +49,9 @@ OutputPlugin sun_op =
 
 OutputPlugin *sun_oplist[] = { &sun_op, NULL };
 
-DECLARE_PLUGIN(sun, NULL, NULL, NULL, sun_oplist, NULL, NULL, NULL, NULL);
+SIMPLE_OUTPUT_PLUGIN(sun, sun_oplist);
 
-void sun_init(void)
+OutputPluginInitStatus sun_init(void)
 {
 	mcs_handle_t *cfgfile;
 	char *s;
@@ -108,6 +109,8 @@ void sun_init(void)
 
 	if (pthread_mutex_init(&audio.mixer_mutex, NULL) != 0)
 		perror("mixer_mutex");
+
+	return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
 void sun_cleanup(void)

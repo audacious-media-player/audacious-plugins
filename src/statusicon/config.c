@@ -31,13 +31,19 @@ void si_cfg_load(void)
     mcs_handle_t *cfgfile = aud_cfg_db_open();
 
     if (!aud_cfg_db_get_int(cfgfile, "statusicon", "rclick_menu", &(si_cfg.rclick_menu)))
-        si_cfg.rclick_menu = SI_CFG_RCLICK_MENU_AUD;
+        si_cfg.rclick_menu = SI_CFG_RCLICK_MENU_SMALL1;
 
     if (!aud_cfg_db_get_int(cfgfile, "statusicon", "scroll_action", &(si_cfg.scroll_action)))
         si_cfg.scroll_action = SI_CFG_SCROLL_ACTION_VOLUME;
 
     if (!aud_cfg_db_get_int(cfgfile, "audacious", "mouse_wheel_change", &(si_cfg.volume_delta)))
         si_cfg.volume_delta = 5;
+
+    if (!aud_cfg_db_get_bool(cfgfile, "statusicon", "disable_popup", &(si_cfg.disable_popup)))
+        si_cfg.disable_popup = FALSE;
+
+    if (!aud_cfg_db_get_bool(cfgfile, "statusicon", "close_to_tray", &(si_cfg.close_to_tray)))
+        si_cfg.close_to_tray = FALSE;
 
     aud_cfg_db_close(cfgfile);
 }
@@ -49,5 +55,7 @@ void si_cfg_save(void)
 
     aud_cfg_db_set_int(cfgfile, "statusicon", "rclick_menu", si_cfg.rclick_menu);
     aud_cfg_db_set_int(cfgfile, "statusicon", "scroll_action", si_cfg.scroll_action);
+    aud_cfg_db_set_bool(cfgfile, "statusicon", "disable_popup", si_cfg.disable_popup);
+    aud_cfg_db_set_bool(cfgfile, "statusicon", "close_to_tray", si_cfg.close_to_tray);
     aud_cfg_db_close(cfgfile);
 }

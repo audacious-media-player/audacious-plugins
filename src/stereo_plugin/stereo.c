@@ -34,6 +34,7 @@ EffectPlugin stereo_ep =
     .finish = stereo_finish,
     .decoder_to_output_time = stereo_decoder_to_output_time,
     .output_to_decoder_time = stereo_output_to_decoder_time,
+    .preserves_format = TRUE,
 };
 
 static const char *about_text = N_("Extra Stereo Plugin\n\n"

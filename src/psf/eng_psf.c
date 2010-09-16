@@ -42,7 +42,7 @@
 
 #include "corlett.h"
 
-#define DEBUG_LOADER	(1)
+#define DEBUG_LOADER	(0)
 
 static corlett_t	*c = NULL;
 static char 		psfby[256];

@@ -1,8 +1,7 @@
-//roar.c:
-
 /*
- *      Copyright (C) Philipp 'ph3-der-loewe' Schafft    - 2008,
- *                    Daniel Duntemann <dauxx@dauxx.org> - 2009
+ *      Copyright (C) Philipp 'ph3-der-loewe' Schafft      - 2008-2010,
+ *                    Daniel Duntemann <dauxx@dauxx.org>   - 2009,
+ *                    William Pitcock <nenolod@atheme.org> - 2010.
  *
  *  This file is part of the Audacious RoarAudio output plugin a part of RoarAudio,
  *  a cross-platform sound system for both, home and professional use.
@@ -24,361 +23,424 @@
  *
  */
 
+/*
+ * NOTE: Do not spam with requests.  You WILL get kicked out on Linux.
+ */
+
 #include "all.h"
 
-// FIXME: This interface has been changed
-gint ctrlsocket_get_session_id(void) {
- return -1;
-}
-
 OutputPlugin roar_op = {
-    .description = "RoarAudio Output Plugin",         
-    .init = roar_init,
-    .cleanup = NULL,
-    .about = roar_about,
-    .configure = roar_configure,  
-    .get_volume = roar_get_volume,
-    .set_volume = roar_set_volume,
-    .open_audio = roar_open,  
-    .write_audio = roar_write,
-    .close_audio = roar_close,
-    .flush = roar_flush,
-    .pause = roar_pause,
-    .buffer_free = roar_free,
-    .buffer_playing = roar_playing,
-    .output_time = roar_get_output_time,  
-    .written_time = roar_get_written_time,
-    .tell_audio = NULL
+	.description = "RoarAudio Output Plugin",
+	.init = aud_roar_init,
+	.cleanup = NULL,
+	.get_volume = aud_roar_get_volume,
+	.set_volume = aud_roar_set_volume,
+	.open_audio = aud_roar_open,
+	.write_audio = aud_roar_write,
+	.close_audio = aud_roar_close,
+	.flush = aud_roar_flush,
+	.pause = aud_roar_pause,
+	.output_time = aud_roar_get_output_time,
+	.written_time = aud_roar_get_written_time,
+	.buffer_playing = aud_roar_buffer_is_playing,
+	.buffer_free = aud_roar_buffer_get_size,
+//	.period_wait = aud_roar_period_wait,
 };
 
 OutputPlugin *roar_oplist[] = { &roar_op, NULL };
 
+SIMPLE_OUTPUT_PLUGIN(roaraudio, roar_oplist);
+OutputPluginInitStatus aud_roar_init(void)
+{
+	mcs_handle_t *cfgfile;
 
-SIMPLE_OUTPUT_PLUGIN("RoarAudio Audacious Plugin",roar_oplist);
+	cfgfile = aud_cfg_db_open();
 
-OutputPlugin *get_oplugin_info(void) {
- return &roar_op;
+	g_inst.state = 0;
+	g_inst.server = NULL;
+	g_inst.mixer[0] = g_inst.mixer[1] = 100;
+
+	aud_cfg_db_close(cfgfile);
+
+	if (!(g_inst.state & STATE_CONNECTED))
+	{
+		if (roar_simple_connect(&(g_inst.con), NULL, "Audacious") == -1)
+			return OUTPUT_PLUGIN_INIT_FAIL;
+
+		g_inst.state |= STATE_CONNECTED;
+	}
+
+	return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
-OutputPluginInitStatus roar_init(void) {
- mcs_handle_t * cfgfile;
+void aud_roar_write(void *ptr, int length)
+{
+	int r;
 
- cfgfile = aud_cfg_db_open();
-
- g_inst.state = 0;
- g_inst.server = NULL;
- g_inst.session = ctrlsocket_get_session_id();
-
- aud_cfg_db_get_string(cfgfile, "ROAR", "server", &g_inst.server);
-
- aud_cfg_db_get_string(cfgfile, "ROAR", "player_name", &g_inst.cfg.player_name);
-
- aud_cfg_db_close(cfgfile);
-
- if ( g_inst.cfg.player_name == NULL )
-  g_inst.cfg.player_name = "Audacious";
-
- ROAR_DBG("roar_init(*) = (void)");
- return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+	while (length)
+	{
+		if ((r = roar_vio_write(&(g_inst.vio), ptr, length >= g_inst.block_size ? g_inst.block_size : length)) != -1)
+		{
+			g_inst.written += r;
+			ptr += r;
+			length -= r;
+		}
+		else
+		{
+			return;
+		}
+	}
 }
 
-int roar_playing(void) {
- return FALSE;
+gboolean aud_roar_initialize_stream(struct roar_vio_calls *calls, struct roar_connection *con, struct roar_stream *stream, int rate, int nch, int bits, int codec, int dir)
+{
+	struct roar_stream_info info;
+
+	if (roar_vio_simple_new_stream_obj(&(g_inst.vio), &(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY) == -1)
+		return FALSE;
+
+	g_inst.bits = bits;
+	g_inst.nch = nch;
+	g_inst.rate = rate;
+	g_inst.codec = codec;
+	g_inst.written = 0;
+	g_inst.pause = 0;	
+	g_inst.sampleoff = 0;
+	g_inst.state |= STATE_PLAYING;
+	g_inst.block_size = 0;
+
+	if (roar_stream_get_info(&(g_inst.con), &(g_inst.stream), &info) != -1)
+	{
+		/* XXX: this is wrong. */
+		g_inst.block_size = info.block_size * 2;
+		AUDDBG("setting block size to %d\n", g_inst.block_size);
+	}
+
+	roar_stream_set_role(&(g_inst.con), &(g_inst.stream), ROAR_ROLE_MUSIC);
+	aud_roar_set_volume(g_inst.mixer[0], g_inst.mixer[1]);
+
+	return TRUE;
 }
 
-void roar_write(void *ptr, int length) {
- int r;
+int aud_roar_open(gint fmt, int rate, int nch)
+{
+	int codec = ROAR_CODEC_DEFAULT;
+	int bits;
 
- if ( g_inst.pause )
-  return;
-
- ROAR_DBG("roar_write(ptr=%p, length=%i) = (void)", ptr, length);
-
- while (length) {
-  if ( (r = write(g_inst.data_fh, ptr, length >= 17640 ? 17640 : length)) != -1 ) {
-   g_inst.written   += r;
-   ptr              += r;
-   length           -= r;
-  } else {
-   return;
-  }
- }
-}
-
-int roar_open(AFormat fmt, int rate, int nch) {
- int codec = ROAR_CODEC_DEFAULT;
- int bits;
-
- if ( !(g_inst.state & STATE_CONNECTED) ) {
-  if ( roar_simple_connect(&(g_inst.con), g_inst.server, g_inst.cfg.player_name) == -1 ) {
-   return FALSE;
-  }
-  g_inst.state |= STATE_CONNECTED;
- }
-
-  bits = 16;
-  switch (fmt) {
-   case FMT_S8:
-     bits = 8;
-     codec = ROAR_CODEC_DEFAULT;
-    break;
-   case FMT_U8:
-     bits = 8;
-     codec = ROAR_CODEC_PCM_U_LE; // _LE, _BE, _PDP,... all the same for 8 bit output
-    break;
-   case FMT_U16_LE:
-     codec = ROAR_CODEC_PCM_U_LE;
-    break;
-   case FMT_U16_BE:
-     codec = ROAR_CODEC_PCM_U_BE;
-    break;
-   case FMT_S16_LE:
-     codec = ROAR_CODEC_PCM_S_LE;
-    break;
-   case FMT_S16_BE:
-     codec = ROAR_CODEC_PCM_S_BE;
-    break;
-   case FMT_U24_LE: /* stored in lower 3 bytes of 32-bit value, highest byte must be 0 */
-     codec = ROAR_CODEC_PCM_U_LE;
-     bits = 24;
-     break;
-   case FMT_U24_BE:
-     codec = ROAR_CODEC_PCM_U_BE;
-     bits = 24;
-     break;
-    case FMT_S24_LE:
-     bits = 24;
-     codec = ROAR_CODEC_PCM_S_LE;
-     break;
-    case FMT_S24_BE:
-     bits = 24;
-     codec = ROAR_CODEC_PCM_S_BE;
-     break;
-    case FMT_U32_LE: /* highest byte must be 0 */
-     codec = ROAR_CODEC_PCM_U_LE;
-     bits = 32;
-     break;
-    case FMT_U32_BE:
-     codec = ROAR_CODEC_PCM_U_BE;
-     bits = 32;
-     break;
-    case FMT_S32_LE:
-     bits = 32;
-     codec = ROAR_CODEC_PCM_S_LE;
-     break;
-    case FMT_S32_BE:
-     bits = 32;
-     codec = ROAR_CODEC_PCM_S_BE;
-     break;
-    case FMT_FLOAT:
-    ROAR_DBG("roar_open(*): FMT_FLOAT");
-    break;
- }
-
- ROAR_DBG("roar_open(*): fmt %i", fmt);
-
- g_inst.bps       = nch * rate * bits / 8;
-
- roar_close();
-
- if ( (g_inst.data_fh = roar_simple_new_stream_obj(&(g_inst.con), &(g_inst.stream),
-                              rate, nch, bits, codec, ROAR_DIR_PLAY)) == -1) {
-  roar_disconnect(&(g_inst.con));
-  g_inst.state |= STATE_CONNECTED;
-  g_inst.state -= STATE_CONNECTED;
-  if ( !(g_inst.state & STATE_NORECONNECT) ) {
-   g_inst.state |= STATE_NORECONNECT;
-   usleep(100000);
-   return roar_open(fmt, rate, nch);
-  } else {
-   g_inst.state -= STATE_NORECONNECT;
-   return FALSE;
-  }
- }
- g_inst.state |= STATE_PLAYING;
-
- g_inst.written = 0;
- g_inst.pause   = 0;
-
-#ifdef _WITH_BROKEN_CODE
- roar_update_metadata();
+	bits = 16;
+	switch (fmt)
+	{
+	  case FMT_S8:
+		  bits = 8;
+		  codec = ROAR_CODEC_DEFAULT;
+		  break;
+	  case FMT_U8:
+		  bits = 8;
+		  codec = ROAR_CODEC_PCM_U_LE;	// _LE, _BE, _PDP,... all the same for 8 bit output
+		  break;
+	  case FMT_U16_LE:
+		  codec = ROAR_CODEC_PCM_U_LE;
+		  break;
+	  case FMT_U16_BE:
+		  codec = ROAR_CODEC_PCM_U_BE;
+		  break;
+	  case FMT_S16_LE:
+		  codec = ROAR_CODEC_PCM_S_LE;
+		  break;
+	  case FMT_S16_BE:
+		  codec = ROAR_CODEC_PCM_S_BE;
+		  break;
+#if 0
+/* RoarAudio don't use this stupid 24bit-in-lower-part-of-32bit-int format */
+	  case FMT_U24_LE:	/* stored in lower 3 bytes of 32-bit value, highest byte must be 0 */
+		  codec = ROAR_CODEC_PCM_U_LE;
+		  bits = 24;
+		  break;
+	  case FMT_U24_BE:
+		  codec = ROAR_CODEC_PCM_U_BE;
+		  bits = 24;
+		  break;
+	  case FMT_S24_LE:
+		  bits = 24;
+		  codec = ROAR_CODEC_PCM_S_LE;
+		  break;
+	  case FMT_S24_BE:
+		  bits = 24;
+		  codec = ROAR_CODEC_PCM_S_BE;
+		  break;
 #endif
+	  case FMT_U32_LE:	/* highest byte must be 0 */
+		  codec = ROAR_CODEC_PCM_U_LE;
+		  bits = 32;
+		  break;
+	  case FMT_U32_BE:
+		  codec = ROAR_CODEC_PCM_U_BE;
+		  bits = 32;
+		  break;
+	  case FMT_S32_LE:
+		  bits = 32;
+		  codec = ROAR_CODEC_PCM_S_LE;
+		  break;
+	  case FMT_S32_BE:
+		  bits = 32;
+		  codec = ROAR_CODEC_PCM_S_BE;
+		  break;
+	  case FMT_FLOAT:
+	  default:
+		  return FALSE;
+		  break;
+	}
 
- return TRUE;
+	g_inst.bps = nch * rate * bits / 8;
+
+	if (!aud_roar_initialize_stream(&(g_inst.vio), &(g_inst.con), &(g_inst.stream), rate, nch, bits, codec, ROAR_DIR_PLAY))
+		return FALSE;
+
+	aud_roar_update_metadata();
+
+	return TRUE;
 }
 
-void roar_close(void) {
- if ( g_inst.data_fh != -1 )
-  close(g_inst.data_fh);
- g_inst.data_fh = -1;
- g_inst.state |= STATE_PLAYING;
- g_inst.state -= STATE_PLAYING;
- g_inst.written = 0;
- ROAR_DBG("roar_close(void) = (void)");
+void aud_roar_close(void)
+{
+	gint id;
+
+	id = roar_stream_get_id(&(g_inst.stream));
+	roar_kick(&(g_inst.con), ROAR_OT_STREAM, id);
+	roar_vio_close(&(g_inst.vio));
+
+	g_inst.state &= ~STATE_PLAYING;
+	g_inst.written = 0;
 }
 
-void roar_pause(short p) {
- g_inst.pause = p;
+void aud_roar_pause(short p)
+{
+	if (p)
+		roar_stream_set_flags(&(g_inst.con), &(g_inst.stream), ROAR_FLAG_PAUSE, ROAR_SET_FLAG);
+	else
+		roar_stream_set_flags(&(g_inst.con), &(g_inst.stream), ROAR_FLAG_PAUSE, ROAR_RESET_FLAG);
+
+	g_inst.pause = p;
 }
 
-int roar_free(void) {
- if ( g_inst.pause )
-  return 0;
- else
-  return 1000000; // ???
+void aud_roar_flush(int time)
+{
+	gint64 r = time;
+
+	r *= g_inst.bps;
+	r /= 1000;
+
+	aud_roar_close();
+	if (!aud_roar_initialize_stream(&(g_inst.vio), &(g_inst.con), &(g_inst.stream),
+	    g_inst.rate, g_inst.nch, g_inst.bits, g_inst.codec, ROAR_DIR_PLAY))
+		return;
+
+	g_inst.written = r;
+	g_inst.sampleoff = ((time / 1000) * g_inst.rate) * g_inst.nch;
 }
 
-void roar_flush(int time) {
- gint64 r = time;
+gint64 aud_roar_get_adjusted_sample_count(void)
+{
+	gint id;
+	gint64 samples;
 
- r *= g_inst.bps;
- r /= 1000;
+	/* first update our stream record. */
+	id = roar_stream_get_id(&(g_inst.stream));
+	roar_get_stream(&(g_inst.con), &(g_inst.stream), id);
 
- g_inst.written = r;
+	/* calculate the time, given our sample count. */
+	samples = g_inst.stream.pos;
+	samples += g_inst.sampleoff;
+
+	return samples;
 }
 
-int roar_get_output_time(void) {
- return roar_get_written_time();
+int aud_roar_get_output_time(void)
+{
+	gint64 samples;
+
+	samples = aud_roar_get_adjusted_sample_count();
+
+	return (samples * 1000) / (g_inst.rate * g_inst.nch);
 }
 
-int roar_get_written_time(void) {
- gint64 r;
+int aud_roar_get_written_time(void)
+{
+	gint64 r;
 
- if ( !g_inst.bps ) {
-  ROAR_DBG("roar_get_written_time(void) = 0");
-  return 0;
- }
+	if (!g_inst.bps)
+		return 0;
 
- r  = g_inst.written;
- r *= 1000; // sec -> msec
- r /= g_inst.bps;
- ROAR_DBG("roar_get_written_time(void) = %lu", r);
+	r = g_inst.written;
+	r *= 1000;		// sec -> msec
+	r /= g_inst.bps;
 
- return r;
+	return r;
 }
-
 
 // META DATA:
+int aud_roar_update_metadata(void)
+{
+	struct roar_meta meta;
+	char empty = 0;
+	const gchar *info = NULL;
+	gint pos, playlist;
+	const Tuple *songtuple;
+	gint i;
+	static struct { int ac_metatype, ra_metatype; } metamap[] = {
+		{FIELD_ARTIST,		ROAR_META_TYPE_ARTIST},
+		{FIELD_TITLE,		ROAR_META_TYPE_TITLE},
+		{FIELD_ALBUM,		ROAR_META_TYPE_ALBUM},
+		{FIELD_COMMENT,		ROAR_META_TYPE_COMMENT},
+		{FIELD_GENRE,		ROAR_META_TYPE_GENRE},
+		{FIELD_PERFORMER,	ROAR_META_TYPE_PERFORMER},
+		{FIELD_COPYRIGHT,	ROAR_META_TYPE_COPYRIGHT},
+		{FIELD_DATE,		ROAR_META_TYPE_DATE},
+	};
 
-int roar_update_metadata(void) {
-#ifdef _WITH_BROKEN_CODE
- struct roar_meta   meta;
- char empty = 0;
- char * info = NULL;
- int pos;
+	playlist = aud_playlist_get_active();
+	pos = aud_playlist_get_position(playlist);
 
- pos     = audacious_remote_get_playlist_pos(g_inst.session);
+	meta.value = &empty;
+	meta.key[0] = 0;
+	meta.type = ROAR_META_TYPE_NONE;
 
- meta.value = &empty;
- meta.key[0] = 0;
- meta.type = ROAR_META_TYPE_NONE;
+	roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_CLEAR, &meta);
 
- roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_CLEAR, &meta);
+	info = aud_playlist_entry_get_filename(playlist, pos);
+	if (info)
+	{
+		if (strncmp(info, "http://", 7) == 0)
+			meta.type = ROAR_META_TYPE_FILEURL;
+		else
+			meta.type = ROAR_META_TYPE_FILENAME;
 
- info = audacious_remote_get_playlist_file(g_inst.session, pos);
+		meta.value = g_strdup(info);
+		roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_SET, &meta);
 
- if ( info ) {
-  if ( strncmp(info, "http:", 5) == 0 )
-   meta.type = ROAR_META_TYPE_FILEURL;
-  else
-   meta.type = ROAR_META_TYPE_FILENAME;
+		free(meta.value);
+	}
 
-  meta.value = info;
-  ROAR_DBG("roar_update_metadata(*): setting meta data: type=%i, strlen(value)=%i", meta.type, strlen(info));
-  roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_SET, &meta);
+	songtuple = aud_playlist_entry_get_tuple(playlist, pos, TRUE);
+	if (songtuple)
+	{
+		for (i = 0; i < sizeof(metamap)/sizeof(*metamap); i++)
+		{
+			if ((info = tuple_get_string(songtuple, metamap[i].ac_metatype, NULL)))
+			{
+				meta.type = metamap[i].ra_metatype;
+				meta.value = g_strdup(info);
 
-  free(info);
- }
+				roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_SET, &meta);
 
- info = audacious_remote_get_playlist_title(g_inst.session, pos);
- if ( info ) {
-  meta.type = ROAR_META_TYPE_TITLE;
+				free(meta.value);
+			}
+		}
+	}
 
-  meta.value = info;
-  roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_SET, &meta);
+	meta.value = &empty;
+	meta.type = ROAR_META_TYPE_NONE;
+	roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_FINALIZE, &meta);
 
-  free(info);
- }
-
- meta.value = &empty;
- meta.type = ROAR_META_TYPE_NONE;
- roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_FINALIZE, &meta);
-
-#endif
- return 0;
-}
-
-int roar_chk_metadata(void) {
-#ifdef _WITH_BROKEN_CODE
- static int    old_pos = -1;
- static char * old_title = "NEW TITLE";
- int pos;
- char * title;
- int need_update = 0;
-
- pos     = audacious_remote_get_playlist_pos(g_inst.session);
-
- if ( pos != old_pos ) {
-  old_pos = pos;
-  need_update = 1;
- } else {
-  title = audacious_remote_get_playlist_title(g_inst.session, pos);
-
-  if ( strcmp(title, old_title) ) {
-   free(old_title);
-   old_title = title;
-   need_update = 1;
-  } else {
-   free(title);
-  }
- }
-
- if ( need_update ) {
-  roar_update_metadata();
- }
-
-#endif
- return 0;
+	return 0;
 }
 
 // MIXER:
+void aud_roar_get_volume(int *l, int *r)
+{
+	struct roar_mixer_settings mixer;
+	int channels;
+	float fs;
 
+	if (!(g_inst.state & STATE_CONNECTED))
+		return;
 
-void roar_get_volume(int *l, int *r) {
- struct roar_mixer_settings mixer;
- int channels;
- float fs;
+#ifdef NOTYET
+	if (roar_get_vol(&(g_inst.con), g_inst.stream.id, &mixer, &channels) == -1)
+		return;
 
- if ( !(g_inst.state & STATE_CONNECTED) )
-  return;
+	if (channels == 1)
+		mixer.mixer[1] = mixer.mixer[0];
 
- if ( roar_get_vol(&(g_inst.con), g_inst.stream.id, &mixer, &channels) == -1 ) {
-  *l = *r = 100;
-  return;
- }
+	fs = (float)mixer.scale/100.;
 
- fs = (float)mixer.scale/100.;
-
- if ( channels == 1 ) {
-  *l = *r = mixer.mixer[0]/fs;
- } else {
-  *l = mixer.mixer[0]/fs;
-  *r = mixer.mixer[1]/fs;
- }
+	*l = g_inst.mixer[0] = mixer.mixer[0] / fs;
+	*r = g_inst.mixer[1] = mixer.mixer[1] / fs;
+#else
+	*l = g_inst.mixer[0];
+	*r = g_inst.mixer[1];
+#endif
 }
 
-void roar_set_volume(int l, int r) {
- struct roar_mixer_settings mixer;
+void aud_roar_set_volume(int l, int r)
+{
+	struct roar_mixer_settings mixer;
 
- if ( !(g_inst.state & STATE_CONNECTED) )
-  return;
+	if (!(g_inst.state & STATE_CONNECTED))
+		return;
 
- mixer.mixer[0] = l;
- mixer.mixer[1] = r;
+	mixer.mixer[0] = g_inst.mixer[0] = l;
+	mixer.mixer[1] = g_inst.mixer[1] = r;
 
- mixer.scale    = 100;
+	mixer.scale = 100;
 
- roar_set_vol(&(g_inst.con), g_inst.stream.id, &mixer, 2);
+	roar_set_vol(&(g_inst.con), g_inst.stream.id, &mixer, 2);
 }
 
-//ll
+gboolean aud_roar_buffer_is_playing(void)
+{
+	struct roar_stream_info info;
+
+	if (!(g_inst.state & STATE_CONNECTED))
+		return FALSE;
+
+	if (!(g_inst.state & STATE_PLAYING))
+		return FALSE;
+
+	if (roar_stream_get_info(&(g_inst.con), &(g_inst.stream), &info) == -1)
+		return FALSE;
+
+	if (info.post_underruns)
+		return FALSE;
+
+	return TRUE;
+}
+
+/* this really sucks. */
+gboolean aud_roar_vio_is_writable(struct roar_vio_calls *vio)
+{
+	struct roar_vio_select vios[1];
+
+	ROAR_VIO_SELECT_SETVIO(&vios[0], vio, ROAR_VIO_SELECT_WRITE);
+
+	return roar_vio_select(vios, 1, &(struct roar_vio_selecttv){ .nsec = 1 }, NULL);
+}
+
+gint aud_roar_buffer_get_size(void)
+{
+	if (!(g_inst.state & STATE_CONNECTED))
+		return 0;
+
+	if (!(g_inst.state & STATE_PLAYING))
+		return 0;
+
+	if (!aud_roar_vio_is_writable(&(g_inst.vio)))
+		return 0;
+
+	if (g_inst.block_size != 0)
+		return g_inst.block_size;
+
+	return 0;
+}
+
+void aud_roar_period_wait(void)
+{
+	struct roar_vio_select vios[1];
+
+	if (!(g_inst.state & STATE_PLAYING))
+		return;
+
+	ROAR_VIO_SELECT_SETVIO(&vios[0], &(g_inst.vio), ROAR_VIO_SELECT_WRITE);
+
+	roar_vio_select(vios, 1, NULL, NULL);
+}

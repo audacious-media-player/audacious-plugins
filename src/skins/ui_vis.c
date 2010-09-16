@@ -329,7 +329,7 @@ void ui_vis_set_colors (void)
         RGB_SET_INDEX (0)
 
     end = set + 3 * 76;
-    
+
     while (set < end)
     {
         RGB_SET_INDEX (1)
@@ -367,7 +367,7 @@ static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
             h = CLAMP (h, 0, 16); /* sanity check */
 
             RGB_SEEK (x, 16 - h)
-            
+
             switch (config.analyzer_mode)
             {
             case ANALYZER_NORMAL:
@@ -404,7 +404,7 @@ static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
                 }
             }
         }
-        
+
         break;
     case VIS_VOICEPRINT:
         /* Move the ribbon only if we are called directly, not on an actual
@@ -413,7 +413,7 @@ static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
         {
             memmove (voiceprint_data, voiceprint_data + 1, sizeof voiceprint_data -
              1);
-        
+
             for (y = 0; y < 16; y ++)
                 voiceprint_data[76 * y + 75] = vis->data[y];
         }
@@ -451,7 +451,7 @@ static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
                 RGB_SEEK (x, h)
                 RGB_SET_INDEX (vis_scope_colors[h])
             }
-            
+
             break;
         case SCOPE_LINE:
             for (x = 0; x < 74; x++)
@@ -501,7 +501,7 @@ static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
                 for (y = h; y <= h2; y ++)
                     RGB_SET_INDEX_Y (vis_scope_colors[y])
             }
-            
+
             break;
         }
 
@@ -521,7 +521,7 @@ static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
         {
             get = rgb + 3 * 76 * (y >> 1);
             end = get + 3 * 76;
-            
+
             while (get < end)
             {
                 * set ++ = * get ++;
@@ -533,14 +533,14 @@ static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
                 * set ++ = * get ++;
             }
         }
-        
+
         gdk_draw_rgb_image (widget->window, vis->gc, 0, 0, 76 * 2, 16 * 2,
          GDK_RGB_DITHER_NONE, rgb2, 3 * 76 * 2);
     }
     else
         gdk_draw_rgb_image (widget->window, vis->gc, 0, 0, 76, 16,
          GDK_RGB_DITHER_NONE, rgb, 3 * 76);
-    
+
     return FALSE;
 }
 
@@ -586,7 +586,9 @@ void ui_vis_timeout_func (GtkWidget * widget, guchar * data)
 
     if (config.vis_type == VIS_ANALYZER)
     {
-        for (i = 0; i < 75; i++)
+        const gint n = (config.analyzer_type == ANALYZER_BARS) ? 19 : 75;
+
+        for (i = 0; i < n; i++)
         {
             if (data[i] > vis->data[i])
             {

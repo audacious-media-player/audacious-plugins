@@ -43,11 +43,12 @@
 #include "ui_main.h"
 #include "ui_playlist.h"
 
+#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
-#include <audacious/plugin.h>
-#include <audacious/equalizer_preset.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "images/audacious_eq.xpm"
@@ -195,7 +196,6 @@ equalizerwin_eq_changed(void)
     for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
         aud_cfg->equalizer_bands[i] = equalizerwin_get_band(i);
 
-    ui_skinned_equalizer_graph_update (equalizerwin_graph);
     hook_call("equalizer changed", NULL);
 }
 
@@ -216,6 +216,18 @@ static void
 equalizerwin_on_pushed(void)
 {
     equalizerwin_activate(!aud_cfg->equalizer_active);
+}
+
+static void
+update_from_config(void *unused1, void *unused2)
+{
+    gint i;
+
+    ui_skinned_button_set_inside(equalizerwin_on, aud_cfg->equalizer_active);
+    ui_skinned_equalizer_slider_set_position(equalizerwin_preamp, aud_cfg->equalizer_preamp);
+    for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
+        ui_skinned_equalizer_slider_set_position(equalizerwin_bands[i], aud_cfg->equalizer_bands[i]);
+    ui_skinned_equalizer_graph_update(equalizerwin_graph);
 }
 
 static void
@@ -490,6 +502,8 @@ equalizerwin_create(void)
 
     equalizerwin_create_widgets();
 
+    hook_associate("equalizer changed", (HookFunction) update_from_config, NULL);
+
     gtk_widget_show_all (((SkinnedWindow *) equalizerwin)->normal);
     gtk_widget_show_all (((SkinnedWindow *) equalizerwin)->shaded);
 }
@@ -685,7 +699,7 @@ equalizerwin_read_winamp_eqf(VFSFile * file)
 
 static gboolean equalizerwin_read_aud_preset (const gchar * file)
 {
-    EqualizerPreset * preset = aud_equalizer_read_aud_preset (file);
+    EqualizerPreset * preset = aud_load_preset_file (file);
 
     if (preset == NULL)
         return FALSE;

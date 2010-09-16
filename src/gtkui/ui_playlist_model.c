@@ -20,13 +20,36 @@
 
 #include "config.h"
 
+#include <audacious/audconfig.h>
 #include <audacious/debug.h>
 #include <audacious/playlist.h>
-#include <audacious/plugin.h>
+#include <libaudcore/hook.h>
 
 #include "ui_playlist_model.h"
 #include "ui_playlist_widget.h"
 #include "playlist_util.h"
+
+struct _UiPlaylistModel {
+    GObject parent;
+
+    guint num_rows;
+    gint playlist; /* associated playlist number */
+    gint position;
+    GList * queue;
+    gboolean song_changed, focus_changed;
+    gint focus;
+
+    gint n_columns;
+    GType * column_types;
+
+    gint stamp; /* Random integer to check whether an iter belongs to our model */
+};
+
+struct _UiPlaylistModelClass {
+    GObjectClass parent_class;
+};
+
+GType ui_playlist_model_get_type (void);
 
 static GObjectClass *parent_class = NULL;
 
@@ -46,9 +69,6 @@ static gboolean ui_playlist_model_iter_has_child(GtkTreeModel *tree_model, GtkTr
 static gint ui_playlist_model_iter_n_children(GtkTreeModel *tree_model, GtkTreeIter *iter);
 static gboolean ui_playlist_model_iter_nth_child(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *parent, gint n);
 static gboolean ui_playlist_model_iter_parent(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *child);
-
-static void ui_playlist_model_associate_hooks(UiPlaylistModel *model);
-static void ui_playlist_model_dissociate_hooks(UiPlaylistModel *model);
 
 GType
 ui_playlist_model_get_type(void)
@@ -153,9 +173,7 @@ ui_playlist_model_init(UiPlaylistModel *model)
 static void
 ui_playlist_model_finalize(GObject *object)
 {
-    UiPlaylistModel *model = UI_PLAYLIST_MODEL(object);
-
-    ui_playlist_model_dissociate_hooks(model);
+    UiPlaylistModel * model = (UiPlaylistModel *) object;
 
     g_list_free (model->queue);
     g_free(model->column_types);
@@ -166,27 +184,22 @@ ui_playlist_model_finalize(GObject *object)
 static GtkTreeModelFlags
 ui_playlist_model_get_flags(GtkTreeModel *model)
 {
-    g_return_val_if_fail(UI_IS_PLAYLIST_MODEL(model), (GtkTreeModelFlags)0);
-
     return GTK_TREE_MODEL_LIST_ONLY;
 }
 
 static gint
 ui_playlist_model_get_n_columns(GtkTreeModel *model)
 {
-    g_return_val_if_fail(UI_IS_PLAYLIST_MODEL(model), 0);
-
-    return UI_PLAYLIST_MODEL(model)->n_columns;
+    return ((UiPlaylistModel *) model)->n_columns;
 }
 
 static GType
 ui_playlist_model_get_column_type(GtkTreeModel *model, gint index)
 {
-    g_return_val_if_fail(UI_IS_PLAYLIST_MODEL(model), G_TYPE_INVALID);
-    g_return_val_if_fail((index < UI_PLAYLIST_MODEL(model)->n_columns) &&
+    g_return_val_if_fail((index < ((UiPlaylistModel *) model)->n_columns) &&
                          (index >= 0), G_TYPE_INVALID);
 
-    return UI_PLAYLIST_MODEL(model)->column_types[index];
+    return ((UiPlaylistModel *) model)->column_types[index];
 }
 
 static gboolean
@@ -195,10 +208,9 @@ ui_playlist_model_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeP
     UiPlaylistModel *model;
     gint *indices, n, depth;
 
-    g_assert(UI_IS_PLAYLIST_MODEL(tree_model));
     g_assert(path != NULL);
 
-    model = UI_PLAYLIST_MODEL(tree_model);
+    model = (UiPlaylistModel *) tree_model;
 
     indices = gtk_tree_path_get_indices(path);
     depth = gtk_tree_path_get_depth(path);
@@ -226,7 +238,6 @@ ui_playlist_model_get_path(GtkTreeModel *tree_model, GtkTreeIter *iter)
 {
     GtkTreePath *path;
 
-    g_return_val_if_fail(UI_IS_PLAYLIST_MODEL(tree_model), NULL);
     g_return_val_if_fail(iter != NULL, NULL);
 
     path = gtk_tree_path_new();
@@ -235,26 +246,53 @@ ui_playlist_model_get_path(GtkTreeModel *tree_model, GtkTreeIter *iter)
     return path;
 }
 
-static void ui_playlist_model_get_value_time(UiPlaylistModel *model, GValue *value, gint position)
+static void get_time_value (UiPlaylistModel * model, GValue * val, gint i)
 {
-    gint length = aud_playlist_entry_get_length (model->playlist, position,
-     TRUE) / 1000;
-    gchar * len = g_strdup_printf("%02i:%02i", length / 60, length % 60);
-    g_value_set_string(value, len);
-    g_free(len);
+    gint len = aud_playlist_entry_get_length (model->playlist, i, TRUE);
+
+    if (! len)
+    {
+        g_value_set_string (val, "");
+        return;
+    }
+
+    len /= 1000;
+
+    gchar s[16];
+    if (len < 3600)
+        snprintf (s, sizeof s, aud_cfg->leading_zero ? "%02d:%02d" : "%d:%02d",
+         len / 60, len % 60);
+    else
+        snprintf (s, sizeof s, "%d:%02d:%02d", len / 3600, (len / 60) % 60, len
+         % 60);
+
+    g_value_set_string (val, s);
+}
+
+static const gchar *ui_playlist_model_tuple_get_string(const Tuple *tuple, gint field)
+{
+    if (tuple == NULL)
+        return NULL;
+
+    return tuple_get_string(tuple, field, NULL);
+}
+
+static gint ui_playlist_model_tuple_get_int(const Tuple *tuple, gint field)
+{
+    if (tuple == NULL)
+        return 0;
+
+    return tuple_get_int(tuple, field, NULL);
 }
 
 static void
 ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint column, GValue *value)
 {
-    UiPlaylistModel *model;
+    UiPlaylistModel * model = (UiPlaylistModel *) tree_model;
     gint n, i;
 
-    g_return_if_fail(UI_IS_PLAYLIST_MODEL(tree_model));
     g_return_if_fail(iter != NULL);
-    g_return_if_fail(column < UI_PLAYLIST_MODEL(tree_model)->n_columns);
-
-    model = UI_PLAYLIST_MODEL(tree_model);
+    g_return_if_fail(column < model->n_columns);
 
     g_value_init(value, model->column_types[column]);
 
@@ -274,20 +312,21 @@ ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
                 g_value_set_uint(value, n+1);
                 break;
             case PLAYLIST_MULTI_COLUMN_ARTIST:
-                g_value_set_string(value, tuple_get_string(tu, FIELD_ARTIST, NULL));
+                g_value_set_string(value, ui_playlist_model_tuple_get_string(tu, FIELD_ARTIST));
                 break;
 
             case PLAYLIST_MULTI_COLUMN_ALBUM:
-                g_value_set_string(value, tuple_get_string(tu, FIELD_ALBUM, NULL));
+                g_value_set_string(value, ui_playlist_model_tuple_get_string(tu, FIELD_ALBUM));
                 break;
 
             case PLAYLIST_MULTI_COLUMN_TRACK_NUM:
-                g_value_set_uint(value, tuple_get_int(tu, FIELD_TRACK_NUMBER, NULL));
+                g_value_set_uint(value, ui_playlist_model_tuple_get_int(tu, FIELD_TRACK_NUMBER));
                 break;
 
             case PLAYLIST_MULTI_COLUMN_TITLE:
             {
-                const gchar *title = tuple_get_string(tu, FIELD_TITLE, NULL);
+                const gchar *title = ui_playlist_model_tuple_get_string(tu, FIELD_TITLE);
+
                 if (title == NULL)
                     g_value_set_string (value, aud_playlist_entry_get_title
                      (model->playlist, n, TRUE));
@@ -304,7 +343,7 @@ ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
                 break;
 
             case PLAYLIST_MULTI_COLUMN_TIME:
-                ui_playlist_model_get_value_time(model, value, n);
+                get_time_value (model, value, n);
                 break;
 
             case PLAYLIST_MULTI_COLUMN_WEIGHT:
@@ -338,7 +377,7 @@ ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
                 break;
 
             case PLAYLIST_COLUMN_TIME:
-                ui_playlist_model_get_value_time(model, value, n);
+                get_time_value (model, value, n);
                 break;
             case PLAYLIST_COLUMN_WEIGHT:
                 if (n == model->position)
@@ -355,15 +394,11 @@ ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 static gboolean
 ui_playlist_model_iter_next(GtkTreeModel *tree_model, GtkTreeIter *iter)
 {
-    UiPlaylistModel *model;
+    UiPlaylistModel * model = (UiPlaylistModel *) tree_model;
     guint n;
-
-    g_return_val_if_fail(UI_IS_PLAYLIST_MODEL(tree_model), FALSE);
 
     if (iter == NULL)
         return FALSE;
-
-    model = UI_PLAYLIST_MODEL(tree_model);
 
     n = GPOINTER_TO_INT(iter->user_data);
 
@@ -379,15 +414,11 @@ ui_playlist_model_iter_next(GtkTreeModel *tree_model, GtkTreeIter *iter)
 static gboolean
 ui_playlist_model_iter_children(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *parent)
 {
-    UiPlaylistModel *model;
+    UiPlaylistModel * model = (UiPlaylistModel *) tree_model;
 
     /* this is a list, nodes have no children */
     if (parent)
         return FALSE;
-
-    g_return_val_if_fail(UI_IS_PLAYLIST_MODEL(tree_model), FALSE);
-
-    model = UI_PLAYLIST_MODEL(tree_model);
 
     if (model->num_rows == 0)
         return FALSE;
@@ -407,11 +438,7 @@ ui_playlist_model_iter_has_child(GtkTreeModel *tree_model, GtkTreeIter *iter)
 static gint
 ui_playlist_model_iter_n_children(GtkTreeModel *tree_model, GtkTreeIter *iter)
 {
-    UiPlaylistModel *model;
-
-    g_return_val_if_fail(UI_IS_PLAYLIST_MODEL(tree_model), -1);
-
-    model = UI_PLAYLIST_MODEL(tree_model);
+    UiPlaylistModel * model = (UiPlaylistModel *) tree_model;
 
     /* return number of top-level rows */
     if (iter == NULL)
@@ -423,11 +450,7 @@ ui_playlist_model_iter_n_children(GtkTreeModel *tree_model, GtkTreeIter *iter)
 static gboolean
 ui_playlist_model_iter_nth_child(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *parent, gint n)
 {
-    UiPlaylistModel *model;
-
-    g_return_val_if_fail(UI_IS_PLAYLIST_MODEL(tree_model), FALSE);
-
-    model = UI_PLAYLIST_MODEL(tree_model);
+    UiPlaylistModel * model = (UiPlaylistModel *) tree_model;
 
     /* we have only top-level rows */
     if (parent)
@@ -453,7 +476,8 @@ ui_playlist_model_new(gint playlist)
 {
     UiPlaylistModel *model;
 
-    model = (UiPlaylistModel *) g_object_new(UI_PLAYLIST_MODEL_TYPE, NULL);
+    model = (UiPlaylistModel *) g_object_new (ui_playlist_model_get_type (),
+     NULL);
 
     g_assert(model != NULL);
 
@@ -463,11 +487,18 @@ ui_playlist_model_new(gint playlist)
     model->queue = NULL;
     model->song_changed = FALSE;
     model->focus_changed = FALSE;
-    model->selection_changed = FALSE;
-
-    ui_playlist_model_associate_hooks(model);
 
     return model;
+}
+
+gint ui_playlist_model_get_playlist (UiPlaylistModel * model)
+{
+    return model->playlist;
+}
+
+void ui_playlist_model_set_playlist (UiPlaylistModel * model, gint playlist)
+{
+    model->playlist = playlist;
 }
 
 static void
@@ -513,35 +544,29 @@ ui_playlist_model_row_deleted(UiPlaylistModel *model, gint n)
     gtk_tree_path_free(path);
 }
 
-static void
-ui_playlist_model_update_position(UiPlaylistModel *model, gint position)
+static void update_position (GtkTreeView * tree)
 {
-    if (model->position != -1)
-    {
-        ui_playlist_model_row_changed(model, model->position); /* remove bold */
-    }
+    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
 
-    model->position = position;
+    if (model->position >= 0)
+        ui_playlist_model_row_changed (model, model->position); /* remove bold */
 
-    if (model->position != -1)
-    {
-        ui_playlist_model_row_changed(model, model->position); /* set bold */
-    }
+    model->position = aud_playlist_get_position (model->playlist);
+
+    if (model->position >= 0)
+        ui_playlist_model_row_changed (model, model->position); /* set bold */
+
+    treeview_set_focus (tree, model->position);
 }
 
-static void ui_playlist_model_playlist_rearraged(UiPlaylistModel *model)
+void treeview_update_position (GtkTreeView * tree)
 {
-    gtk_widget_queue_draw(GTK_WIDGET(playlist_get_treeview(model->playlist)));
-}
+    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
 
-static void ui_playlist_model_playlist_position (void * hook_data, void *
- user_data)
-{
-    gint playlist = GPOINTER_TO_INT (hook_data);
-    UiPlaylistModel * model = user_data;
-
-    if (playlist == model->playlist)
+    if (aud_playlist_update_pending ())
         model->song_changed = TRUE;
+    else
+        update_position (tree);
 }
 
 static void update_queue_row_changed (void * row, void * model)
@@ -551,15 +576,13 @@ static void update_queue_row_changed (void * row, void * model)
 
 static void update_queue (UiPlaylistModel * model)
 {
-    gint i;
-
     /* update previously queued rows */
     g_list_foreach (model->queue, update_queue_row_changed, model);
 
     g_list_free (model->queue);
     model->queue = NULL;
 
-    for (i = aud_playlist_queue_count (model->playlist); i --; )
+    for (gint i = aud_playlist_queue_count (model->playlist); i --; )
         model->queue = g_list_prepend (model->queue, GINT_TO_POINTER
          (aud_playlist_queue_get_entry (model->playlist, i)));
 
@@ -567,122 +590,55 @@ static void update_queue (UiPlaylistModel * model)
     g_list_foreach (model->queue, update_queue_row_changed, model);
 }
 
-static void
-ui_playlist_model_playlist_update(gpointer hook_data, gpointer user_data)
+void treeview_update (GtkTreeView * tree, gint type, gint at, gint count)
 {
-    UiPlaylistModel *model = UI_PLAYLIST_MODEL(user_data);
-    GtkTreeView *treeview = playlist_get_treeview(model->playlist);
-    gint type = GPOINTER_TO_INT(hook_data);
+    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
 
-    if (model->playlist != aud_playlist_get_active())
-        return;
+    ui_playlist_widget_block_updates ((GtkWidget *) tree, TRUE);
 
-    ui_playlist_widget_block_updates ((GtkWidget *) treeview, TRUE);
-
-    if (type == PLAYLIST_UPDATE_STRUCTURE)
+    if (type >= PLAYLIST_UPDATE_STRUCTURE)
     {
-        gint changed_rows;
-        changed_rows = aud_playlist_entry_count(model->playlist) - model->num_rows;
-        gboolean column_resize = (changed_rows != 0);
+        gint entries = aud_playlist_entry_count (model->playlist);
 
-        AUDDBG("playlist structure update\n");
+        for (; model->num_rows < entries; model->num_rows ++)
+            ui_playlist_model_row_inserted (model, at);
 
-        if (changed_rows == 0)
-        {
-            ui_playlist_model_playlist_rearraged(model);
-        }
-        else if (changed_rows > 0)
-        {
-            /* entries added */
-            while (changed_rows != 0)
-            {
-                ui_playlist_model_row_inserted(model, model->num_rows++);
-                changed_rows--;
-            }
-        }
-        else
-        {
-            /* entries removed */
-            while (changed_rows != 0)
-            {
-                ui_playlist_model_row_deleted(model, --model->num_rows);
-                changed_rows++;
-            }
-        }
+        for (; model->num_rows > entries; model->num_rows --)
+            ui_playlist_model_row_deleted (model, at);
 
-        if (column_resize && multi_column_view)
-        {
-            GtkTreeViewColumn *column = gtk_tree_view_get_column(treeview, 0);
-            gint width = calculate_column_width(GTK_WIDGET(treeview), model->num_rows);
-
-            gtk_tree_view_column_set_min_width(column, width);
-        }
-
-        ui_playlist_model_update_position (model, aud_playlist_get_position
-         (model->playlist));
+        model->position = aud_playlist_get_position (model->playlist);
     }
-    else if (type == PLAYLIST_UPDATE_METADATA)
+
+    if (type >= PLAYLIST_UPDATE_METADATA)
     {
-        AUDDBG("playlist metadata update\n");
-        ui_playlist_model_playlist_rearraged(model);
+        for (gint i = 0; i < count; i ++)
+            ui_playlist_model_row_changed (model, at + i);
     }
-    else if (type == PLAYLIST_UPDATE_SELECTION)
-        update_queue (model);
+
+    treeview_refresh_selected (tree, at, count);
+    update_queue (model);
 
     if (model->song_changed)
     {
-        gint song = aud_playlist_get_position (model->playlist);
-
-        if (type != PLAYLIST_UPDATE_STRUCTURE) /* already did it? */
-            ui_playlist_model_update_position (model, song);
-
-        playlist_scroll_to_row (treeview, song);
+        update_position (tree);
         model->song_changed = FALSE;
     }
 
     if (model->focus_changed)
-        treeview_set_focus_now (treeview, model->focus);
-    else if (model->selection_changed)
-        treeview_refresh_selection_now (treeview);
-
-    model->focus_changed = FALSE;
-    model->selection_changed = FALSE;
-
-    ui_playlist_widget_block_updates ((GtkWidget *) treeview, FALSE);
-}
-
-static void
-ui_playlist_model_playlist_delete(gpointer hook_data, gpointer user_data)
-{
-    UiPlaylistModel *model = UI_PLAYLIST_MODEL(user_data);
-    gint playlist = GPOINTER_TO_INT(hook_data);
-
-    if (model->playlist > playlist)
     {
-        model->playlist--;
-        return;
+        treeview_set_focus_now (tree, model->focus);
+        model->focus_changed = FALSE;
     }
 
-    /* should happen only if GtkTreeView wasn't yet destroyed */
-    if (model->playlist == playlist)
-    {
-        model->num_rows = 0;
-        model->playlist = -1;
-    }
+    ui_playlist_widget_block_updates ((GtkWidget *) tree, FALSE);
+
+    gtk_tree_view_column_set_visible (g_object_get_data ((GObject *) tree,
+     "number column"), aud_cfg->show_numbers_in_pl);
 }
 
-static void
-ui_playlist_model_associate_hooks(UiPlaylistModel *model)
+void treeview_set_focus_on_update (GtkTreeView * tree, gint focus)
 {
-    hook_associate("playlist update", ui_playlist_model_playlist_update, model);
-    hook_associate("playlist delete", ui_playlist_model_playlist_delete, model);
-    hook_associate("playlist position", ui_playlist_model_playlist_position, model);
-}
-
-static void
-ui_playlist_model_dissociate_hooks(UiPlaylistModel *model)
-{
-    hook_dissociate_full("playlist update", ui_playlist_model_playlist_update, model);
-    hook_dissociate_full("playlist delete", ui_playlist_model_playlist_delete, model);
-    hook_dissociate_full("playlist position", ui_playlist_model_playlist_position, model);
+    UiPlaylistModel * model = (UiPlaylistModel *) gtk_tree_view_get_model (tree);
+    model->focus_changed = TRUE;
+    model->focus = focus;
 }

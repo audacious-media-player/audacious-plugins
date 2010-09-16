@@ -101,6 +101,8 @@
 <!--				<menuitem action="playlist delete" /> -->
 			</menu>
 			<menu action="view">
+				<menuitem action="iface menu" />
+				<separator />
 				<menuitem action="show player" />
 				<menuitem action="show playlist editor" />
 				<menuitem action="show equalizer" />

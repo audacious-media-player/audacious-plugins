@@ -159,7 +159,7 @@ static void configure_mixer_volumedev_scan(gchar *type, GtkWidget *option_menu)
 			item = gtk_menu_item_new_with_label(info.label.name);
 			g_signal_connect(G_OBJECT(item), "activate",
 					   (GCallback) configure_win_mixer_volume_dev_cb,
-					   (gpointer) info.index);
+					   GINT_TO_POINTER(info.index));
 
 			gtk_widget_show(item);
 			gtk_menu_append(GTK_MENU(menu), item);
@@ -334,7 +334,7 @@ static void configure_mixer_toggle_button(GtkWidget *vbox, gchar *devname, gchar
 			gtk_signal_connect(GTK_OBJECT(toggle_cbutton),
 			    "toggled",
 			    GTK_SIGNAL_FUNC(mixer_cbutton_toggled_cb),
-			    (gpointer) mixer.dev);
+			    GINT_TO_POINTER(mixer.dev));
 		}
 	}
 }

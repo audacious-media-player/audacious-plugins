@@ -56,7 +56,8 @@ amidiplug_cfg_ap_t amidiplug_cfg_ap =
   0		/* ap_opts_lyrics_extract */
 };
 
-gchar *amidiplug_vfs_extensions[] = { "mid" , "midi" , "rmi" , "rmid" , NULL };
+static const gchar * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi",
+ "rmid", NULL};
 
 gpointer amidiplug_play_loop( gpointer );
 void amidiplug_skipto( gint );

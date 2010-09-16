@@ -24,7 +24,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "config.h"
 #include "mp4ff.h"
 
 /* XXX: We will need the same for AAC eventually */

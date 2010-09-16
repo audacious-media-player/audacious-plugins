@@ -44,7 +44,7 @@ jackconfig jack_cfg;
 static int driver = 0; /* handle to the jack output device */
 
 typedef struct format_info {
-  AFormat format;
+  gint format;
   long    frequency;
   int     channels;
   long    bps;
@@ -283,7 +283,7 @@ static void jack_close(void)
 
 
 /* Open the device up */
-static gint jack_open(AFormat fmt, gint sample_rate, gint num_channels)
+static gint jack_open(gint fmt, gint sample_rate, gint num_channels)
 {
   int bits_per_sample;
   int floating_point = FALSE;
@@ -445,7 +445,7 @@ static void jack_about(void)
     }
 }
 
-static void jack_tell_audio(AFormat * fmt, gint * srate, gint * nch)
+static void jack_tell_audio(gint * fmt, gint * srate, gint * nch)
 {
     (*fmt) = input.format;
     (*srate) = input.frequency;

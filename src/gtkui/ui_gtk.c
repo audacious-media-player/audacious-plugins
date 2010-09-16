@@ -21,15 +21,19 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/debug.h>
 #include <audacious/drct.h>
+#include <audacious/interface.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 
 #include "config.h"
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
+#include "ui_playlist_model.h"
 #include "ui_playlist_notebook.h"
 #include "ui_manager.h"
 #include "ui_infoarea.h"
@@ -37,6 +41,10 @@
 #include "playlist_util.h"
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
+
+#if ! GTK_CHECK_VERSION (2, 18, 0)
+#define gtk_widget_set_can_focus(w, t) do {if (t) GTK_WIDGET_SET_FLAGS ((w), GTK_CAN_FOCUS); else GTK_WIDGET_UNSET_FLAGS ((w), GTK_CAN_FOCUS);} while (0)
+#endif
 
 gboolean multi_column_view;
 
@@ -66,7 +74,7 @@ static gboolean _ui_finalize(void);
 
 Interface gtkui_interface = {
     .id = "gtkui",
-    .desc = N_("GTK Foobar-like Interface"),
+    .desc = N_("GTK Interface"),
     .init = _ui_initialize,
     .fini = _ui_finalize,
 };
@@ -205,6 +213,13 @@ static void ui_stop_gtk_plugin(GtkWidget *parent)
 
 static gboolean window_delete()
 {
+    gboolean handle = FALSE;
+
+    hook_call("window close", &handle);
+
+    if (handle)
+        return TRUE;
+
     aud_drct_quit ();
     return TRUE;
 }
@@ -247,48 +262,43 @@ static void button_add_pressed()
 
 static void button_play_pressed()
 {
-    aud_drct_play();
+    action_playback_play ();
 }
 
 static void button_pause_pressed()
 {
-    aud_drct_pause();
+    action_playback_pause ();
 }
 
 static void button_stop_pressed()
 {
-    aud_drct_stop();
+    action_playback_stop ();
 }
 
 static void button_previous_pressed()
 {
-    aud_drct_pl_prev();
+    action_playback_previous ();
 }
 
 static void button_next_pressed()
 {
-    aud_drct_pl_next();
+    action_playback_next ();
 }
 
-static void ui_set_song_info(void *unused, void *another)
+static void title_change_cb (void)
 {
-    gchar *title = aud_playback_get_title();
-    gchar *title_s = g_strdup_printf("%s - Audacious", title);
-
-    gtk_window_set_title(GTK_WINDOW(window), title_s);
-    g_free(title_s);
+    if (aud_drct_get_playing ())
+    {
+        gchar * title = aud_drct_get_title ();
+        gchar * title_s = g_strdup_printf (_("%s - Audacious"), title);
+        gtk_window_set_title ((GtkWindow *) window, title_s);
+        g_free (title_s);
+        g_free (title);
+    }
+    else
+        gtk_window_set_title ((GtkWindow *) window, _("Audacious"));
 
     ui_playlist_notebook_add_tab_label_markup(aud_playlist_get_playing(), FALSE);
-}
-
-static void ui_playlist_created(void *data, void *unused)
-{
-    ui_playlist_notebook_create_tab(GPOINTER_TO_INT(data));
-}
-
-static void ui_playlist_destroyed(void *data, void *unused)
-{
-    ui_playlist_notebook_destroy_tab(GPOINTER_TO_INT(data));
 }
 
 static void ui_mainwin_show()
@@ -347,31 +357,48 @@ static void ui_show_error(const gchar * markup)
                              dialog);
 }
 
-static void ui_update_time_info(gint time)
+static void set_time_label (gint time)
 {
-    gchar text[128];
-    gint length = aud_drct_get_length();
-
-    time /= 1000;
-    length /= 1000;
-
-    g_snprintf(text, sizeof(text) / sizeof(gchar), "<tt><b>%.2d:%.2d/%.2d:%.2d</b></tt>", time / 60, time % 60, length / 60, length % 60);
-    gtk_label_set_markup(GTK_LABEL(label_time), text);
-}
-
-static gboolean ui_update_song_info(gpointer hook_data, gpointer user_data)
-{
-    if (!aud_drct_get_playing())
+    if (! aud_drct_get_playing ())
     {
-        if (GTK_IS_WIDGET(slider))
-            gtk_range_set_value(GTK_RANGE(slider), 0.0);
-        return FALSE;
+        gtk_label_set_markup ((GtkLabel *) label_time, "");
+        return;
     }
 
+    time /= 1000;
+    gint len = aud_drct_get_length () / 1000;
+
+    gchar s[128];
+    snprintf (s, sizeof s, "<tt><b>");
+
+    if (time < 3600)
+        snprintf (s + strlen (s), sizeof s - strlen (s), aud_cfg->leading_zero ?
+         "%02d:%02d" : "%d:%02d", time / 60, time % 60);
+    else
+        snprintf (s + strlen (s), sizeof s - strlen (s), "%d:%02d:%02d", time /
+         3600, (time / 60) % 60, time % 60);
+
+    if (len)
+    {
+        if (len < 3600)
+            snprintf (s + strlen (s), sizeof s - strlen (s),
+             aud_cfg->leading_zero ? "/%02d:%02d" : "/%d:%02d", len / 60, len %
+             60);
+        else
+            snprintf (s + strlen (s), sizeof s - strlen (s), "/%d:%02d:%02d",
+             len / 3600, (len / 60) % 60, len % 60);
+    }
+
+    snprintf (s + strlen (s), sizeof s - strlen (s), "</b></tt>");
+    gtk_label_set_markup ((GtkLabel *) label_time, s);
+}
+
+static gboolean time_counter_cb (void)
+{
     if (slider_is_moving)
         return TRUE;
 
-    gint time = aud_drct_get_time();
+    gint time = aud_drct_get_playing () ? aud_drct_get_time () : 0;
 
     if (!g_signal_handler_is_connected(slider, slider_change_handler_id))
         return TRUE;
@@ -380,17 +407,9 @@ static gboolean ui_update_song_info(gpointer hook_data, gpointer user_data)
     gtk_range_set_value(GTK_RANGE(slider), (gdouble) time);
     g_signal_handler_unblock(slider, slider_change_handler_id);
 
-    ui_update_time_info(time);
+    set_time_label (time);
 
     return TRUE;
-}
-
-static void ui_clear_song_info()
-{
-    if (!GTK_IS_WINDOW(window)) return;
-
-    gtk_window_set_title(GTK_WINDOW(window), "Audacious");
-    gtk_label_set_markup(GTK_LABEL(label_time), "<tt><b>00:00/00:00</b></tt>");
 }
 
 static gboolean ui_slider_value_changed_cb(GtkRange * range, gpointer user_data)
@@ -402,7 +421,7 @@ static gboolean ui_slider_value_changed_cb(GtkRange * range, gpointer user_data)
 
 static gboolean ui_slider_change_value_cb(GtkRange * range, GtkScrollType scroll)
 {
-    ui_update_time_info(gtk_range_get_value(range));
+    set_time_label (gtk_range_get_value (range));
     return FALSE;
 }
 
@@ -495,12 +514,13 @@ static void set_slider_length (gint length)
 
 static void ui_playback_begin(gpointer hook_data, gpointer user_data)
 {
-    ui_update_song_info(NULL, NULL);
-
-    /* update song info 4 times a second */
-    update_song_timeout_source = g_timeout_add(250, (GSourceFunc) ui_update_song_info, NULL);
-
+    title_change_cb ();
     set_slider_length (aud_drct_get_length ());
+    time_counter_cb ();
+
+    /* update time counter 4 times a second */
+    update_song_timeout_source = g_timeout_add (250, (GSourceFunc)
+     time_counter_cb, NULL);
 }
 
 static void ui_playback_stop(gpointer hook_data, gpointer user_data)
@@ -511,13 +531,9 @@ static void ui_playback_stop(gpointer hook_data, gpointer user_data)
         update_song_timeout_source = 0;
     }
 
-    ui_clear_song_info();
+    title_change_cb ();
     set_slider_length (0);
-}
-
-static void ui_playback_end(gpointer hook_data, gpointer user_data)
-{
-    ui_update_song_info(NULL, NULL);
+    time_counter_cb ();
 }
 
 static GtkWidget *gtk_toolbar_button_add(GtkWidget * toolbar, void (*callback) (), const gchar * stock_id)
@@ -552,9 +568,11 @@ void set_volume_diff(gint diff)
 
 static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
-    if (ui_playlist_notebook_tab_title_editing != NULL &&
-        event->keyval != GDK_KP_Enter && event->keyval != GDK_Escape)
+    if (ui_playlist_notebook_tab_title_editing)
     {
+        if (event->keyval == GDK_KP_Enter || event->keyval == GDK_Escape)
+            return FALSE;
+
         GtkWidget *entry = g_object_get_data(G_OBJECT(ui_playlist_notebook_tab_title_editing), "entry");
         gtk_widget_event(entry, (GdkEvent*) event);
         return TRUE;
@@ -565,10 +583,6 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
         case 0:
             switch (event->keyval)
             {
-                case GDK_F2:
-                    ui_playlist_notebook_edit_tab_title(NULL);
-                    break;
-
                 case GDK_minus: //FIXME
                     set_volume_diff(-5);
                     break;
@@ -611,14 +625,8 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                     break;
 
                 case GDK_Escape:
-                    ; /* bleah, label must come before statement */
-                    gint list = aud_playlist_get_active ();
-                    playlist_scroll_to_row (playlist_get_treeview (list),
-                     aud_playlist_get_position (list));
-
-                    if (ui_playlist_notebook_tab_title_editing != NULL)
-                        return FALSE;
-
+                    ui_playlist_notebook_position (GINT_TO_POINTER
+                     (aud_playlist_get_active ()), NULL);
                     break;
 
                 case GDK_Tab:
@@ -659,29 +667,25 @@ static void stop_after_song_toggled (void * data, void * user)
 
 static void ui_hooks_associate(void)
 {
-    hook_associate("title change", ui_set_song_info, NULL);
-    hook_associate("playback seek", (HookFunction) ui_update_song_info, NULL);
+    hook_associate ("title change", (HookFunction) title_change_cb, NULL);
+    hook_associate ("playback seek", (HookFunction) time_counter_cb, NULL);
     hook_associate("playback begin", ui_playback_begin, NULL);
     hook_associate("playback stop", ui_playback_stop, NULL);
-    hook_associate("playback end", ui_playback_end, NULL);
-    hook_associate("playlist insert", ui_playlist_created, NULL);
-    hook_associate("playlist delete", ui_playlist_destroyed, NULL);
     hook_associate("mainwin show", ui_mainwin_toggle_visibility, NULL);
     hook_associate("playlist update", ui_playlist_notebook_update, NULL);
+    hook_associate ("playlist position", ui_playlist_notebook_position, NULL);
     hook_associate("toggle stop after song", stop_after_song_toggled, NULL);
 }
 
 static void ui_hooks_disassociate(void)
 {
-    hook_dissociate("title change", ui_set_song_info);
-    hook_dissociate("playback seek", (HookFunction) ui_update_song_info);
+    hook_dissociate ("title change", (HookFunction) title_change_cb);
+    hook_dissociate ("playback seek", (HookFunction) time_counter_cb);
     hook_dissociate("playback begin", ui_playback_begin);
     hook_dissociate("playback stop", ui_playback_stop);
-    hook_dissociate("playback end", ui_playback_end);
-    hook_dissociate("playlist insert", ui_playlist_created);
-    hook_dissociate("playlist delete", ui_playlist_destroyed);
     hook_dissociate("mainwin show", ui_mainwin_toggle_visibility);
     hook_dissociate("playlist update", ui_playlist_notebook_update);
+    hook_dissociate ("playlist position", ui_playlist_notebook_position);
     hook_dissociate("toggle stop after song", stop_after_song_toggled);
 }
 
@@ -829,10 +833,7 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
         ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
 
     if (aud_drct_get_playing())
-    {
-        ui_set_song_info(NULL, NULL);
         ui_playback_begin(NULL, NULL);
-    }
     else
         ui_playback_stop (NULL, NULL);
 
@@ -861,9 +862,6 @@ static gboolean _ui_initialize(InterfaceCbs * cbs)
     cbs->run_gtk_plugin = (void *) ui_run_gtk_plugin;
     cbs->stop_gtk_plugin = (void *) ui_stop_gtk_plugin;
 
-    AUDDBG("launch\n");
-    gtk_main();
-
     return TRUE;
 }
 
@@ -885,6 +883,11 @@ static gboolean _ui_finalize(void)
     gtkui_cfg_save();
     gtkui_cfg_free();
     ui_hooks_disassociate();
+
+    /* ui_manager_destroy() must be called to detach plugin services menus
+     * before any widget are destroyed. -jlindgren */
+    ui_manager_destroy ();
+
     g_object_unref ((GObject *) UI_PLAYLIST_NOTEBOOK);
     gtk_widget_destroy (window);
     return TRUE;

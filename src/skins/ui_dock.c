@@ -375,3 +375,9 @@ GList *
 get_dock_window_list() {
     return dock_window_list;
 }
+
+void clear_dock_window_list (void)
+{
+    g_list_free (dock_window_list);
+    dock_window_list = NULL;
+}

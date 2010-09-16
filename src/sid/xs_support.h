@@ -64,7 +64,7 @@ extern "C" {
 
 /* VFS replacement functions
  */
-#ifdef __AUDACIOUS_NEWVFS__
+#ifdef AUDACIOUS_PLUGIN
 #define xs_file_t VFSFile
 #define xs_fopen(a,b) vfs_fopen(a,b)
 #define xs_fclose(a) vfs_fclose(a)

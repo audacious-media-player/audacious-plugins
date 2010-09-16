@@ -21,9 +21,10 @@
 #include <glib.h>
 #include <math.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/drct.h>
-#include <audacious/plugin.h>
-#include <audacious/input.h>
+#include <audacious/misc.h>
+#include <libaudcore/hook.h>
 
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
@@ -43,7 +44,7 @@ static void ui_main_evlistener_title_change (void * data, void * user_data)
     if (! aud_drct_get_playing ())
         return;
 
-    title = aud_playback_get_title ();
+    title = aud_drct_get_title ();
     mainwin_set_song_title (title);
     g_free (title);
 }
@@ -115,7 +116,7 @@ static void vis_clear_cb (void * unused, void * another)
     ui_svis_clear_data (mainwin_svis);
 }
 
-static void info_change (void * hook_data, void * user_data)
+void info_change (void)
 {
     gint bitrate, samplerate, channels;
 
@@ -148,11 +149,9 @@ ui_main_evlistener_equalizerwin_show(gpointer hook_data, gpointer user_data)
     equalizerwin_show(*show);
 }
 
-static void
-ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
+static void ui_main_evlistener_visualization_timeout (const VisNode * vis,
+ void * user)
 {
-    VisNode *vis = (VisNode*) hook_data;
-
     guint8 intern_vis_data[512];
     gint16 mono_freq[2][256];
     gboolean mono_freq_calced = FALSE;
@@ -328,7 +327,7 @@ ui_main_evlistener_init(void)
     hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
     hook_associate("playback play file", ui_main_evlistener_playback_play_file, NULL);
     hook_associate ("visualization clear", vis_clear_cb, NULL);
-    hook_associate ("info change", info_change, NULL);
+    hook_associate ("info change", (HookFunction) info_change, NULL);
     hook_associate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top, NULL);
     hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
     hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
@@ -348,7 +347,7 @@ ui_main_evlistener_dissociate(void)
     hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
     hook_dissociate("playback play file", ui_main_evlistener_playback_play_file);
     hook_dissociate ("visualization clear", vis_clear_cb);
-    hook_dissociate ("info change", info_change);
+    hook_dissociate ("info change", (HookFunction) info_change);
     hook_dissociate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top);
     hook_dissociate("mainwin show", ui_main_evlistener_mainwin_show);
     hook_dissociate("equalizerwin show", ui_main_evlistener_equalizerwin_show);
@@ -357,11 +356,11 @@ ui_main_evlistener_dissociate(void)
     hook_dissociate ("toggle stop after song", stop_after_song_toggled);
 }
 
-void start_stop_visual (void)
+void start_stop_visual (gboolean exiting)
 {
     static char started = 0;
 
-    if (config.player_visible && config.vis_type != VIS_OFF)
+    if (config.player_visible && config.vis_type != VIS_OFF && ! exiting)
     {
         if (! started)
         {

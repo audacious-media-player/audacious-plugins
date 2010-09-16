@@ -24,12 +24,12 @@
 
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include <glib.h>
 #include <gdk/gdk.h>
-#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
 #define POPUP_IS_ACTIVE GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "popup_active"))
@@ -73,7 +73,7 @@ static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpoi
           if (event->state & GDK_SHIFT_MASK)
               aud_drct_pl_next();
           else
-              aud_interface_toggle_visibility();
+              hook_call ("interface toggle visibility", NULL);
           break;
       }
 
@@ -84,27 +84,15 @@ static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpoi
       }
 
       case 3:
-      {
           if (event->state & GDK_SHIFT_MASK)
               aud_drct_pl_prev();
           else
           {
-              switch (si_cfg.rclick_menu)
-              {
-                case SI_CFG_RCLICK_MENU_SMALL1:
-                case SI_CFG_RCLICK_MENU_SMALL2:
-                    if (recreate_smallmenu == TRUE)
-                        si_smallmenu_recreate(icon);
-                    si_smallmenu_show(event->x_root, event->y_root, 3, event->time, icon);
-                    break;
-                case SI_CFG_RCLICK_MENU_AUD:
-                default:
-                    hook_call("show main menu", event);
-                    break;
-              }
-              break;
+              if (recreate_smallmenu == TRUE)
+                  si_smallmenu_recreate(icon);
+              si_smallmenu_show(event->x_root, event->y_root, 3, event->time, icon);
           }
-      }
+          break;
     }
 
     return FALSE;
@@ -221,6 +209,9 @@ static void si_popup_timer_stop(GtkStatusIcon * icon)
 
 static gboolean si_cb_tooltip(GtkStatusIcon * icon, gint x, gint y, gboolean keyboard_mode, GtkTooltip * tooltip, gpointer user_data)
 {
+    if (si_cfg.disable_popup)
+        return FALSE;
+
     if (!POPUP_IS_ACTIVE && !TIMER_IS_ACTIVE)
         si_popup_timer_start(icon);
 
@@ -291,6 +282,17 @@ static void si_smallmenu_recreate(GtkStatusIcon * icon)
     recreate_smallmenu = FALSE;
 }
 
+static void si_window_close(gpointer data, gpointer user_data)
+{
+    gboolean *handle = (gboolean*) data;
+
+    if (si_cfg.close_to_tray)
+    {
+        *handle = TRUE;
+        hook_call("interface toggle visibility", NULL);
+    }
+}
+
 static void si_enable(gboolean enable)
 {
     static GtkStatusIcon *si_applet = NULL;
@@ -323,6 +325,7 @@ static void si_enable(gboolean enable)
         g_object_set_data(G_OBJECT(si_applet), "smenu", si_smenu);
 
         hook_associate("title change", si_popup_reshow, si_applet);
+        hook_associate("window close", si_window_close, NULL);
     }
     else if (si_applet != NULL)
     {
@@ -333,6 +336,7 @@ static void si_enable(gboolean enable)
         si_applet = NULL;
 
         hook_dissociate("title change", si_popup_reshow);
+        hook_dissociate("window close", si_window_close);
     }
 }
 
@@ -372,6 +376,8 @@ void si_about(void)
                           "the system tray area of the window manager.\n"));
 }
 
+static GtkWidget *prefs_disable_popup_chkbtn;
+static GtkWidget *prefs_close_to_tray_chkbtn;
 
 void si_prefs_cb_commit(gpointer prefs_win)
 {
@@ -397,11 +403,13 @@ void si_prefs_cb_commit(gpointer prefs_win)
         list = g_slist_next(list);
     }
 
+    si_cfg.disable_popup = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prefs_disable_popup_chkbtn));
+    si_cfg.close_to_tray = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prefs_close_to_tray_chkbtn));
+
     si_cfg_save();
 
     /* request the recreation of status icon small-menu if necessary */
-    if (si_cfg.rclick_menu != SI_CFG_RCLICK_MENU_AUD)
-        recreate_smallmenu = TRUE;
+    recreate_smallmenu = TRUE;
 
     gtk_widget_destroy(GTK_WIDGET(prefs_win));
 }
@@ -412,8 +420,9 @@ void si_config(void)
     static GtkWidget *prefs_win = NULL;
     GtkWidget *prefs_vbox;
     GtkWidget *prefs_rclick_frame, *prefs_rclick_vbox;
-    GtkWidget *prefs_rclick_audmenu_rbt, *prefs_rclick_smallmenu1_rbt, *prefs_rclick_smallmenu2_rbt;
+    GtkWidget *prefs_rclick_smallmenu1_rbt, *prefs_rclick_smallmenu2_rbt;
     GtkWidget *prefs_scroll_frame, *prefs_scroll_vbox;
+    GtkWidget *prefs_other_frame, *prefs_other_vbox;
     GtkWidget *prefs_scroll_vol_rbt, *prefs_scroll_skip_rbt;
     GtkWidget *prefs_bbar_bbox;
     GtkWidget *prefs_bbar_bt_ok, *prefs_bbar_bt_cancel;
@@ -442,11 +451,11 @@ void si_config(void)
     prefs_rclick_vbox = gtk_vbox_new(TRUE, 0);
     gtk_container_set_border_width(GTK_CONTAINER(prefs_rclick_vbox), 6);
     gtk_container_add(GTK_CONTAINER(prefs_rclick_frame), prefs_rclick_vbox);
-    prefs_rclick_audmenu_rbt = gtk_radio_button_new_with_label(NULL, _("Audacious standard menu"));
-    g_object_set_data(G_OBJECT(prefs_rclick_audmenu_rbt), "val", GINT_TO_POINTER(SI_CFG_RCLICK_MENU_AUD));
-    prefs_rclick_smallmenu1_rbt = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(prefs_rclick_audmenu_rbt), _("Small playback menu #1"));
+    prefs_rclick_smallmenu1_rbt = gtk_radio_button_new_with_label (NULL,
+     _("Small playback menu #1"));
     g_object_set_data(G_OBJECT(prefs_rclick_smallmenu1_rbt), "val", GINT_TO_POINTER(SI_CFG_RCLICK_MENU_SMALL1));
-    prefs_rclick_smallmenu2_rbt = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(prefs_rclick_audmenu_rbt), _("Small playback menu #2"));
+    prefs_rclick_smallmenu2_rbt = gtk_radio_button_new_with_label_from_widget
+     ((GtkRadioButton *) prefs_rclick_smallmenu1_rbt, _("Small playback menu #2"));
     g_object_set_data(G_OBJECT(prefs_rclick_smallmenu2_rbt), "val", GINT_TO_POINTER(SI_CFG_RCLICK_MENU_SMALL2));
     g_object_set_data(G_OBJECT(prefs_win), "rcm_grp", gtk_radio_button_get_group(GTK_RADIO_BUTTON(prefs_rclick_smallmenu1_rbt)));
     switch (si_cfg.rclick_menu)
@@ -457,12 +466,7 @@ void si_config(void)
       case SI_CFG_RCLICK_MENU_SMALL2:
           gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_rclick_smallmenu2_rbt), TRUE);
           break;
-      case SI_CFG_RCLICK_MENU_AUD:
-      default:
-          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_rclick_audmenu_rbt), TRUE);
-          break;
     }
-    gtk_box_pack_start(GTK_BOX(prefs_rclick_vbox), prefs_rclick_audmenu_rbt, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(prefs_rclick_vbox), prefs_rclick_smallmenu1_rbt, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(prefs_rclick_vbox), prefs_rclick_smallmenu2_rbt, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_rclick_frame, TRUE, TRUE, 0);
@@ -476,13 +480,36 @@ void si_config(void)
     prefs_scroll_skip_rbt = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(prefs_scroll_vol_rbt), _("Change playing song"));
     g_object_set_data(G_OBJECT(prefs_scroll_skip_rbt), "val", GINT_TO_POINTER(SI_CFG_SCROLL_ACTION_SKIP));
     g_object_set_data(G_OBJECT(prefs_win), "msa_grp", gtk_radio_button_get_group(GTK_RADIO_BUTTON(prefs_scroll_skip_rbt)));
+
     if (si_cfg.scroll_action == SI_CFG_SCROLL_ACTION_VOLUME)
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_scroll_vol_rbt), TRUE);
     else
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_scroll_skip_rbt), TRUE);
+
     gtk_box_pack_start(GTK_BOX(prefs_scroll_vbox), prefs_scroll_vol_rbt, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(prefs_scroll_vbox), prefs_scroll_skip_rbt, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_scroll_frame, TRUE, TRUE, 0);
+
+    prefs_other_frame = gtk_frame_new(_("Other settings"));
+    prefs_other_vbox = gtk_vbox_new(TRUE, 0);
+    gtk_container_set_border_width(GTK_CONTAINER(prefs_other_vbox), 6);
+    gtk_container_add(GTK_CONTAINER(prefs_other_frame), prefs_other_vbox);
+
+    prefs_disable_popup_chkbtn = gtk_check_button_new_with_label(_("Disable the popup window"));
+
+    if (si_cfg.disable_popup)
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_disable_popup_chkbtn), TRUE);
+
+    gtk_box_pack_start(GTK_BOX(prefs_other_vbox), prefs_disable_popup_chkbtn, TRUE, TRUE, 0);
+
+    prefs_close_to_tray_chkbtn = gtk_check_button_new_with_label(_("Close to the notification area (system tray)"));
+
+    if (si_cfg.close_to_tray)
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_close_to_tray_chkbtn), TRUE);
+
+    gtk_box_pack_start(GTK_BOX(prefs_other_vbox), prefs_close_to_tray_chkbtn, TRUE, TRUE, 0);
+
+    gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_other_frame, TRUE, TRUE, 0);
 
     /* horizontal separator and buttons */
     gtk_box_pack_start(GTK_BOX(prefs_vbox), gtk_hseparator_new(), FALSE, FALSE, 4);

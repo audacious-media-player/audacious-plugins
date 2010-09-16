@@ -1,5 +1,4 @@
 #include "settings.h"
-#include "config.h"
 
 #include <glib.h>
 #include <audacious/i18n.h>
@@ -124,8 +123,7 @@ void start(void) {
 
 	if ((!username || !password) || (!*username || !*password))
 	{
-		AUDDBG("username/password not found - not starting last.fm support",
-			DEBUG);
+		AUDDBG("username/password not found - not starting last.fm support");
 		sc_going = 0;
 	}
 	else

@@ -18,8 +18,9 @@
  */
 
 #include <audacious/configdb.h>
-#include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
+#include <audacious/plugin.h>
 #include <libaudcore/tuple_formatter.h>
 
 #include "vtx.h"
@@ -50,7 +51,7 @@ const int bits = 16;
 ayemu_ay_t ay;
 ayemu_vtx_t vtx;
 
-static gchar *vtx_fmts[] = { "vtx", NULL };
+static const gchar *vtx_fmts[] = { "vtx", NULL };
 
 void
 vtx_init(void)
