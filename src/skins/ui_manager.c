@@ -301,6 +301,10 @@ static GtkActionEntry action_entries_playlist_delete[] = {
 };
 
 static GtkActionEntry action_entries_playlist_sort[] = {
+    { "playlist randomize list", AUD_STOCK_RANDOMIZEPL , N_("Randomize List"), "<Ctrl><Shift>R",
+      N_("Randomizes the playlist."),
+      G_CALLBACK(action_playlist_randomize_list) },
+
     { "playlist reverse list", GTK_STOCK_GO_UP , N_("Reverse List"), NULL,
       N_("Reverses the playlist."),
       G_CALLBACK(action_playlist_reverse_list) },

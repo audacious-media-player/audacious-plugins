@@ -56,6 +56,7 @@
 		<menu action="dummy" name="misc-menu">
 			<menuitem action="plugins-menu" />
 			<separator />
+			<menuitem action="playlist randomize list" />
 			<menuitem action="playlist reverse list" />
 			<separator />
 			<menu action="playlist sort menu">
