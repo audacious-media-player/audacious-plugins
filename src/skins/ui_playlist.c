@@ -1401,9 +1401,7 @@ void action_playlist_sort_selected_by_filename (void)
 
 void action_playlist_randomize_list (void)
 {
-#if 0
     aud_playlist_randomize (active_playlist);
-#endif
 }
 
 void action_playlist_reverse_list (void)
