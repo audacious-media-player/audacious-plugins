@@ -24,7 +24,7 @@
 
 #include <audacious/debug.h>
 
-#include "tools.h"
+#include "flacng.h"
 
 callback_info *init_callback_info(void)
 {

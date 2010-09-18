@@ -77,4 +77,20 @@ gboolean flac_update_song_tuple(const Tuple *tuple, VFSFile *fd);
 gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint *length);
 Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd);
 
+/* seekable_stream_callbacks.c */
+FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data);
+FLAC__StreamDecoderSeekStatus seek_callback(const FLAC__StreamDecoder *decoder, FLAC__uint64 absolute_byte_offset, void *client_data);
+FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, FLAC__uint64 *absolute_byte_offset, void *client_data);
+FLAC__bool eof_callback(const FLAC__StreamDecoder *decoder, void *client_data);
+FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decoder, FLAC__uint64 *stream_length, void *client_data);
+FLAC__StreamDecoderWriteStatus write_callback(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data);
+void error_callback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data);
+void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data);
+
+/* tools.c */
+callback_info* init_callback_info(void);
+void clean_callback_info(callback_info* info);
+void reset_info(callback_info* info);
+gboolean read_metadata(FLAC__StreamDecoder* decoder, callback_info* info);
+
 #endif

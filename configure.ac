@@ -656,7 +656,7 @@ if test "x$have_oggvorbis" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS vorbis"
 fi
 
-dnl *** FLACng (in progress replacement to XMMS-flac port)
+dnl *** FLACng
 
 AC_ARG_ENABLE(flacng,
     [  --disable-flacng        disable flac input plugin (default=enabled)],
@@ -665,8 +665,9 @@ AC_ARG_ENABLE(flacng,
 )
 
 if test "x$enable_flacng" = "xyes"; then
-    AM_PATH_LIBFLAC([have_flacng=yes],
-        [AC_MSG_WARN([*** Cannot find libFLAC, FLACng will not be built ***])
+    PKG_CHECK_MODULES(LIBFLAC, [flac >= 1.2.1],
+        [have_flacng=yes],
+        [AC_MSG_WARN([*** Cannot find libFLAC 1.2.1+, FLAC support will not be built ***])
          have_flacng=no]
     )
 else

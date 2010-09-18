@@ -25,10 +25,6 @@
 
 #include "flacng.h"
 
-#include "tools.h"
-#include "seekable_stream_callbacks.h"
-#include "version.h"
-
 FLAC__StreamDecoder *main_decoder;
 callback_info *main_info;
 gboolean plugin_initialized = FALSE;
@@ -389,24 +385,13 @@ static void flac_seek (InputPlayback * playback, gulong time)
 
 static void flac_aboutbox(void)
 {
-    static GtkWidget* about_window;
-    gchar *about_text;
+    static GtkWidget * window = NULL;
 
-    if (about_window) {
-        gtk_window_present(GTK_WINDOW(about_window));
-        return;
-    }
-
-    about_text = g_strjoin("", _("FLAC Audio Plugin "), _VERSION,
-			       _("\n\nOriginal code by\n"
-                               "Ralf Ertzinger <ralf@skytale.net>\n"
-                               "\n"
-                               "http://www.skytale.net/projects/bmp-flac2/"), NULL);
-
-    audgui_simple_message (& about_window, GTK_MESSAGE_INFO,
-     _("About FLAC Audio Plugin"), about_text);
-
-    g_free(about_text);
+    audgui_simple_message(& window, GTK_MESSAGE_INFO, _("About FLAC Audio Plugin"),
+        _("\n\nOriginal code by\n"
+          "Ralf Ertzinger <ralf@skytale.net>\n\n"
+          "http://www.skytale.net/projects/bmp-flac2/")
+);
 }
 
 static const gchar *flac_fmts[] = { "flac", "fla", NULL };

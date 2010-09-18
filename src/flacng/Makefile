@@ -3,7 +3,6 @@ PLUGIN = flacng${PLUGIN_SUFFIX}
 SRCS = plugin.c \
        tools.c \
        seekable_stream_callbacks.c	\
-       flac_compat112.c \
        metadata.c
 
 include ../../buildsys.mk

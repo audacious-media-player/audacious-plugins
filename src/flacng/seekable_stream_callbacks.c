@@ -1,6 +1,7 @@
 /*
  *  A FLAC decoder plugin for the Audacious Media Player
  *  Copyright (C) 2005 Ralf Ertzinger
+ *  Copyright (C) 2010 Michał Lipski <tallica@o2.pl>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,8 +25,6 @@
 #include <audacious/debug.h>
 
 #include "flacng.h"
-#include "tools.h"
-#include "seekable_stream_callbacks.h"
 
 FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data)
 {
