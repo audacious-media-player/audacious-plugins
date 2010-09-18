@@ -60,49 +60,21 @@ struct frame_info {
     guint channels;
 };
 
-/*
- * Information about the stream content, from the metadata
- */
-struct stream_comment {
-    gchar* artist;
-    gchar* album;
-    gchar* title;
-    gchar* tracknumber;
-    gchar* genre;
-    gchar* date;
-    gchar* comment;
-};
-
-/*
- * Replaygain information, from the metadata
- */
-struct stream_replaygain {
-    gboolean has_rg;
-    gchar* track_gain;
-    gchar* track_peak;
-    gchar* album_gain;
-    gchar* album_peak;
-};
-
-
 typedef struct callback_info {
-    GMutex* mutex;
-    FLAC__StreamMetadata *metadata;
     gint32* output_buffer;
     gint32* write_pointer;
     guint buffer_free;
     guint buffer_used;
     VFSFile* fd;
     struct stream_info stream;
-    struct stream_comment comment;
-    struct stream_replaygain replaygain;
     gboolean metadata_changed;
     struct frame_info frame;
     gint bitrate;
 } callback_info;
 
-/* metadata.c*/
+/* metadata.c */
 gboolean flac_update_song_tuple(const Tuple *tuple, VFSFile *fd);
 gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint *length);
+Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd);
 
 #endif

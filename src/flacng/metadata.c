@@ -1,6 +1,8 @@
 /*
  * A FLAC decoder plugin for the Audacious Media Player
- * Copyright 2010 Michał Lipski <tallica@o2.pl>
+ * Copyright (C) 2005 Ralf Ertzinger
+ * Copyright (C) 2010 John Lindgren
+ * Copyright (C) 2010 Michał Lipski <tallica@o2.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -235,7 +237,9 @@ gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint *l
         }
     }
 
+    FLAC__metadata_iterator_delete(iter);
     FLAC__metadata_chain_delete(chain);
+
     return has_image;
 
 ERROR:
@@ -244,4 +248,238 @@ ERROR:
 
     ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return FALSE;
+}
+
+static void parse_gain_text(const gchar *text, gint *value, gint *unit)
+{
+    gint sign = 1;
+
+    *value = 0;
+    *unit = 1;
+
+    if (*text == '-')
+    {
+        sign = -1;
+        text++;
+    }
+
+    while (*text >= '0' && *text <= '9')
+    {
+        *value = *value * 10 + (*text - '0');
+        text++;
+    }
+
+    if (*text == '.')
+    {
+        text++;
+
+        while (*text >= '0' && *text <= '9' && *value < G_MAXINT / 10)
+        {
+            *value = *value * 10 + (*text - '0');
+            *unit = *unit * 10;
+            text++;
+        }
+    }
+
+    *value = *value * sign;
+}
+
+static void set_gain_info(Tuple *tuple, gint field, gint unit_field, const gchar *text)
+{
+    gint value, unit;
+
+    parse_gain_text(text, &value, &unit);
+
+    if (tuple_get_value_type(tuple, unit_field, NULL) == TUPLE_INT)
+        value = value * (gint64) tuple_get_int(tuple, unit_field, NULL) / unit;
+    else
+        tuple_associate_int(tuple, unit_field, NULL, unit);
+
+    tuple_associate_int(tuple, field, NULL, value);
+}
+
+void parse_comment(Tuple *tuple, gchar *key, gchar *value)
+{
+    if (strcasecmp(key, "ARTIST") == 0)
+    {
+        AUDDBG("Found key ARTIST <%s>\n", value);
+        tuple_associate_string(tuple, FIELD_ARTIST, NULL, value);
+        return;
+    }
+
+    if (strcasecmp(key, "ALBUM") == 0)
+    {
+        AUDDBG("Found key ALBUM <%s>\n", value);
+        tuple_associate_string(tuple, FIELD_ALBUM, NULL, value);
+        return;
+    }
+
+    if (strcasecmp(key, "TITLE") == 0)
+    {
+        AUDDBG("Found key TITLE <%s>\n", value);
+        tuple_associate_string(tuple, FIELD_TITLE, NULL, value);
+        return;
+    }
+
+    if (strcasecmp(key, "TRACKNUMBER") == 0)
+    {
+        AUDDBG("Found key TRACKNUMBER <%s>\n", value);
+        tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(value));
+        return;
+    }
+
+    if (strcasecmp(key, "COMMENT") == 0)
+    {
+        AUDDBG("Found key COMMENT <%s>\n", value);
+        tuple_associate_string(tuple, FIELD_COMMENT, NULL, value);
+        return;
+    }
+
+    if (strcasecmp(key, "DATE") == 0)
+    {
+        AUDDBG("Found key DATE <%s>\n", value);
+        tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(value));
+        return;
+    }
+
+    if (strcasecmp(key, "GENRE") == 0)
+    {
+        AUDDBG("Found key GENRE <%s>\n", value);
+        tuple_associate_string(tuple, FIELD_GENRE, NULL, value);
+        return;
+    }
+
+    if (strcasecmp(key, "REPLAYGAIN_TRACK_GAIN") == 0)
+    {
+        AUDDBG("Found key REPLAYGAIN_TRACK_GAIN <%s>\n", value);
+        set_gain_info(tuple, FIELD_GAIN_TRACK_GAIN, FIELD_GAIN_GAIN_UNIT, value);
+        return;
+    }
+
+    if (strcasecmp(key, "REPLAYGAIN_TRACK_PEAK") == 0)
+    {
+        AUDDBG("Found key REPLAYGAIN_TRACK_PEAK <%s>\n", value);
+        set_gain_info(tuple, FIELD_GAIN_TRACK_PEAK, FIELD_GAIN_PEAK_UNIT, value);
+        return;
+    }
+
+    if (strcasecmp(key, "REPLAYGAIN_ALBUM_GAIN") == 0)
+    {
+        AUDDBG("Found key REPLAYGAIN_ALBUM_GAIN <%s>\n", value);
+        set_gain_info(tuple, FIELD_GAIN_ALBUM_GAIN, FIELD_GAIN_GAIN_UNIT, value);
+        return;
+    }
+
+    if (strcasecmp(key, "REPLAYGAIN_ALBUM_PEAK") == 0)
+    {
+        AUDDBG("Found key REPLAYGAIN_ALBUM_PEAK <%s>\n", value);
+        set_gain_info(tuple, FIELD_GAIN_ALBUM_PEAK, FIELD_GAIN_PEAK_UNIT, value);
+        return;
+    }
+}
+
+Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
+{
+    AUDDBG("Probe for tuple.\n");
+
+    Tuple *tuple = NULL;
+    FLAC__Metadata_Iterator *iter;
+    FLAC__Metadata_Chain *chain;
+    FLAC__StreamMetadata *metadata = NULL;
+    FLAC__Metadata_ChainStatus status;
+    FLAC__StreamMetadata_VorbisComment_Entry *entry;
+    gchar *key;
+    gchar *value;
+
+    tuple = tuple_new_from_filename(filename);
+
+    tuple_associate_string(tuple, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
+    tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossless");
+
+    chain = FLAC__metadata_chain_new();
+    g_return_val_if_fail(chain != NULL, FALSE);
+
+    if (!FLAC__metadata_chain_read_with_callbacks(chain, fd, io_callbacks))
+        goto ERROR;
+
+    iter = FLAC__metadata_iterator_new();
+    g_return_val_if_fail(iter != NULL, FALSE);
+
+    FLAC__metadata_iterator_init(iter, chain);
+
+    do
+    {
+        switch (FLAC__metadata_iterator_get_block_type(iter))
+        {
+            case FLAC__METADATA_TYPE_VORBIS_COMMENT:
+                metadata = FLAC__metadata_iterator_get_block(iter);
+
+                if (FLAC__metadata_iterator_get_block_type(iter) == FLAC__METADATA_TYPE_VORBIS_COMMENT)
+                {
+                    metadata = FLAC__metadata_iterator_get_block(iter);
+
+                    AUDDBG("Vorbis comment contains %d fields\n", metadata->data.vorbis_comment.num_comments);
+                    AUDDBG("Vendor string: %s\n", metadata->data.vorbis_comment.vendor_string.entry);
+
+                    entry = metadata->data.vorbis_comment.comments;
+
+                    for (gint i = 0; i < metadata->data.vorbis_comment.num_comments; i++, entry++)
+                    {
+                        if (FLAC__metadata_object_vorbiscomment_entry_to_name_value_pair(*entry, &key, &value) == false)
+                            AUDDBG("Could not parse comment\n");
+                        else
+                        {
+                            parse_comment(tuple, key, value);
+                            g_free(key);
+                            g_free(value);
+                        }
+                    }
+                }
+                break;
+
+            case FLAC__METADATA_TYPE_STREAMINFO:
+                metadata = FLAC__metadata_iterator_get_block(iter);
+
+                /* Calculate the stream length (milliseconds) */
+                if (metadata->data.stream_info.sample_rate == 0)
+                {
+                    ERROR("Invalid sample rate for stream!\n");
+                    tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
+                }
+                else
+                {
+                    tuple_associate_int(tuple, FIELD_LENGTH, NULL,
+                        (metadata->data.stream_info.total_samples / metadata->data.stream_info.sample_rate) * 1000);
+                    AUDDBG("Stream length: %d seconds\n", tuple_get_int(tuple, FIELD_LENGTH, NULL));
+                }
+
+                gsize size = vfs_fsize(fd);
+
+                if (size == -1)
+                    tuple_associate_int(tuple, FIELD_BITRATE, NULL, 0);
+                else
+                {
+                    gint bitrate = 8 * size *
+                        (gint64) metadata->data.stream_info.sample_rate / metadata->data.stream_info.total_samples;
+
+                    tuple_associate_int(tuple, FIELD_BITRATE, NULL, (bitrate + 500) / 1000);
+                }
+                break;
+
+            default:
+                ;
+        }
+    } while (FLAC__metadata_iterator_next(iter));
+
+    FLAC__metadata_iterator_delete(iter);
+    FLAC__metadata_chain_delete(chain);
+
+    return tuple;
+
+ERROR:
+    status = FLAC__metadata_chain_status(chain);
+    FLAC__metadata_chain_delete(chain);
+
+    ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    return tuple;
 }

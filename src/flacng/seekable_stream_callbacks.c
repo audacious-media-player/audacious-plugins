@@ -170,86 +170,31 @@ void error_callback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderError
 void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data)
 {
     callback_info *info = (callback_info*) client_data;
-    gint i;
-    FLAC__StreamMetadata *metadata_copy;
-    FLAC__StreamMetadata_VorbisComment_Entry *entry;
-    gchar *key;
-    gchar *value;
     gsize size;
 
-    switch (metadata->type)
+    if (metadata->type == FLAC__METADATA_TYPE_STREAMINFO)
     {
-        case FLAC__METADATA_TYPE_STREAMINFO:
-            /* Basic stream information. Sample rate, channels and stuff  */
-            AUDDBG("FLAC__METADATA_TYPE_STREAMINFO found.\n");
+        info->stream.samples = metadata->data.stream_info.total_samples;
+        AUDDBG("total_samples=%lld\n", (long long) metadata->data.stream_info.total_samples);
 
-            info->stream.samples = metadata->data.stream_info.total_samples;
-            AUDDBG("total_samples=%lld\n", (long long) metadata->data.stream_info.total_samples);
+        info->stream.bits_per_sample = metadata->data.stream_info.bits_per_sample;
+        AUDDBG("bits_per_sample=%d\n", metadata->data.stream_info.bits_per_sample);
 
-            info->stream.bits_per_sample = metadata->data.stream_info.bits_per_sample;
-            AUDDBG("bits_per_sample=%d\n", metadata->data.stream_info.bits_per_sample);
+        info->stream.channels = metadata->data.stream_info.channels;
+        AUDDBG("channels=%d\n", metadata->data.stream_info.channels);
 
-            info->stream.channels = metadata->data.stream_info.channels;
-            AUDDBG("channels=%d\n", metadata->data.stream_info.channels);
+        info->stream.samplerate = metadata->data.stream_info.sample_rate;
+        AUDDBG("sample_rate=%d\n", metadata->data.stream_info.sample_rate);
 
-            info->stream.samplerate = metadata->data.stream_info.sample_rate;
-            AUDDBG("sample_rate=%d\n", metadata->data.stream_info.sample_rate);
+        size = vfs_fsize(info->fd);
 
-            size = vfs_fsize(info->fd);
+        if (size == -1)
+            info->bitrate = 0;
+        else
+            info->bitrate = 8 * size * (gint64) info->stream.samplerate / info->stream.samples;
 
-            if (size == -1)
-                info->bitrate = 0;
-            else
-                info->bitrate = 8 * size * (gint64) info->stream.samplerate / info->stream.samples;
+        AUDDBG("bitrate=%d\n", info->bitrate);
 
-            AUDDBG("bitrate=%d\n", info->bitrate);
-
-            info->metadata_changed = TRUE;
-            break;
-
-        case FLAC__METADATA_TYPE_VORBIS_COMMENT:
-            /*
-             * We will possibly need to modify some of the entries
-             * in the metadata field, so we make a copy of it
-             * first.
-             * The original structure must not be modified.
-             */
-            metadata_copy = FLAC__metadata_object_clone(metadata);
-
-            /* A vorbis type comment field. */
-            AUDDBG("FLAC__METADATA_TYPE_VORBIS_COMMENT found.\n");
-            AUDDBG("Vorbis comment contains %d fields\n", metadata_copy->data.vorbis_comment.num_comments);
-            AUDDBG("Vendor string: %s\n", metadata_copy->data.vorbis_comment.vendor_string.entry);
-
-            /* Enumerate the comment entries */
-            entry = metadata_copy->data.vorbis_comment.comments;
-
-            for (i = 0; i < metadata_copy->data.vorbis_comment.num_comments; i++, entry++)
-            {
-                /*
-                 * Try and parse the comment.
-                 * If FLAC__metadata_object_vorbiscomment_entry_to_name_value_pair() succeeds,
-                 * it allocates memory for the key and value which we have to take
-                 * care of.
-                 */
-                if (FLAC__metadata_object_vorbiscomment_entry_to_name_value_pair(*entry, &key, &value) == false)
-                    AUDDBG("Could not parse comment\n");
-                else
-                {
-                    add_comment(info, key, value);
-                    g_free(key);
-                    g_free(value);
-                }
-            }
-
-            /* Free our metadata copy */
-            FLAC__metadata_object_delete(metadata_copy);
-
-            info->metadata_changed = TRUE;
-            break;
-
-        default:
-            break;
+        info->metadata_changed = TRUE;
     }
-    return;
 }

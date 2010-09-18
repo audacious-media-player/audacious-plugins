@@ -29,9 +29,7 @@
 #include "seekable_stream_callbacks.h"
 #include "version.h"
 
-FLAC__StreamDecoder *test_decoder;
 FLAC__StreamDecoder *main_decoder;
-callback_info *test_info;
 callback_info *main_info;
 gboolean plugin_initialized = FALSE;
 static GMutex *seek_mutex;
@@ -41,39 +39,6 @@ static gint seek_value;
 static void flac_init(void)
 {
     FLAC__StreamDecoderInitStatus ret;
-
-    /* Callback structure and decoder for file test purposes */
-
-    if ((test_info = init_callback_info()) == NULL)
-    {
-        ERROR("Could not initialize the test callback structure!\n");
-        return;
-    }
-
-    if ((test_decoder = FLAC__stream_decoder_new()) == NULL)
-    {
-        ERROR("Could not create the test FLAC decoder instance!\n");
-        return;
-    }
-
-    FLAC__stream_decoder_set_metadata_respond(test_decoder, FLAC__METADATA_TYPE_VORBIS_COMMENT);
-
-    if (FLAC__STREAM_DECODER_INIT_STATUS_OK != (ret = FLAC__stream_decoder_init_stream(
-        test_decoder,
-        read_callback,
-        seek_callback,
-        tell_callback,
-        length_callback,
-        eof_callback,
-        write_callback,
-        metadata_callback,
-        error_callback,
-        test_info)))
-    {
-        ERROR("Could not initialize the test FLAC decoder: %s(%d)\n",
-            FLAC__StreamDecoderInitStatusString[ret], ret);
-        return;
-    }
 
     /* Callback structure and decoder for main decoding loop */
 
@@ -120,9 +85,6 @@ static void flac_cleanup(void)
 
     FLAC__stream_decoder_delete(main_decoder);
     clean_callback_info(main_info);
-
-    FLAC__stream_decoder_delete(test_decoder);
-    clean_callback_info(test_info);
 
     plugin_initialized = FALSE;
 }
@@ -423,26 +385,6 @@ static void flac_seek (InputPlayback * playback, gulong time)
     }
 
     g_mutex_unlock(seek_mutex);
-}
-
-static Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
-{
-    AUDDBG("Probe for tuple.\n");
-    Tuple *tuple = NULL;
-
-    g_mutex_lock(test_info->mutex);
-
-    test_info->fd = fd;
-
-    if (read_metadata(test_decoder, test_info))
-        tuple = get_tuple_from_file(filename, test_info);
-    else
-        ERROR("Could not read metadata tuple for file <%s>\n", filename);
-
-    reset_info(test_info);
-    g_mutex_unlock(test_info->mutex);
-
-    return tuple;
 }
 
 static void flac_aboutbox(void)
