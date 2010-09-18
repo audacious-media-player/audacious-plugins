@@ -101,4 +101,8 @@ typedef struct callback_info {
     gint bitrate;
 } callback_info;
 
+/* metadata.c*/
+gboolean flac_update_song_tuple(const Tuple *tuple, VFSFile *fd);
+gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint *length);
+
 #endif
