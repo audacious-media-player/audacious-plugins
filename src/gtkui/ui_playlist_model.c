@@ -146,6 +146,7 @@ ui_playlist_model_init(UiPlaylistModel *model)
         model->column_types = g_new0(GType, PLAYLIST_N_MULTI_COLUMNS);
         model->column_types[PLAYLIST_MULTI_COLUMN_NUM] = G_TYPE_UINT;
         model->column_types[PLAYLIST_MULTI_COLUMN_ARTIST] = G_TYPE_STRING;
+        model->column_types[PLAYLIST_MULTI_COLUMN_YEAR] = G_TYPE_UINT;
         model->column_types[PLAYLIST_MULTI_COLUMN_ALBUM] = G_TYPE_STRING;
         model->column_types[PLAYLIST_MULTI_COLUMN_TITLE] = G_TYPE_STRING;
         model->column_types[PLAYLIST_MULTI_COLUMN_TRACK_NUM] = G_TYPE_UINT;
@@ -352,6 +353,11 @@ ui_playlist_model_get_value(GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
                 else
                     g_value_set_enum(value, PANGO_WEIGHT_NORMAL);
                 break;
+
+            case PLAYLIST_MULTI_COLUMN_YEAR:
+                g_value_set_uint(value, ui_playlist_model_tuple_get_int(tu, FIELD_YEAR));
+                break;
+
             default:
                 break;
         }
