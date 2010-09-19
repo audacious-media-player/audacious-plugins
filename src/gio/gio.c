@@ -115,7 +115,7 @@ gint64 gio_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
     VFSGIOHandle *handle;
     goffset count = 0;
     gsize realsize = (size * nmemb);
-    gsize ret;
+    gsize ret, bytes_read;
 
     g_return_val_if_fail(file != NULL, EOF);
     g_return_val_if_fail(file->handle != NULL, EOF);
@@ -135,8 +135,19 @@ gint64 gio_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
         }
     }
 
-    ret = (g_input_stream_read(G_INPUT_STREAM(handle->istream), (ptr + count), (realsize - count), NULL, NULL) + count);
-    return (size > 0) ? ret / size : 0;
+    bytes_read = 0;
+    while (realsize - bytes_read > 0)
+    {
+        ret = g_input_stream_read(G_INPUT_STREAM(handle->istream),
+            ptr + bytes_read + count, realsize - bytes_read - count, NULL, NULL) + count;
+
+        if (ret > 0)
+            bytes_read += ret;
+        else
+            break;
+    }
+
+    return bytes_read;
 }
 
 gint64 gio_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
