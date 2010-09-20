@@ -171,6 +171,16 @@ bscope_init(void)
     generate_cmap();
 }
 
+static gboolean bscope_draw (void)
+{
+    if (area == NULL || area->window == NULL)
+        return TRUE;
+
+    gdk_draw_indexed_image (area->window, area->style->white_gc, 0, 0, width,
+     height, GDK_RGB_DITHER_NONE, rgb_buf + bpl + 1, width + 2, cmap);
+    return TRUE;
+}
+
 /* static GtkWidget * bscope_get_widget (void) */
 static void * bscope_get_widget (void)
 {
@@ -180,6 +190,7 @@ static void * bscope_get_widget (void)
         gtk_widget_set_size_request (area, D_WIDTH, D_HEIGHT);
         bscope_resize_video (D_WIDTH, D_HEIGHT);
 
+        g_signal_connect (area, "expose-event", (GCallback) bscope_draw, NULL);
         g_signal_connect (area, "configure-event", (GCallback)
          bscope_reconfigure, NULL);
         g_signal_connect (area, "destroy", (GCallback) gtk_widget_destroyed,
@@ -203,8 +214,9 @@ bscope_cleanup(void)
 static void
 bscope_playback_stop(void)
 {
-    if (GTK_WIDGET_REALIZED(area))
-        gdk_window_clear(area->window);
+    g_return_if_fail (rgb_buf != NULL);
+    memset (rgb_buf, 0, (width + 2) * (height + 2));
+    bscope_draw ();
 }
 
 static inline void
@@ -240,12 +252,7 @@ bscope_render_pcm(gint16 data[2][512])
         prev_y = y;
     }
 
-    GDK_THREADS_ENTER();
-    if (area != NULL)
-        gdk_draw_indexed_image(area->window, area->style->white_gc, 0, 0,
-                               width, height, GDK_RGB_DITHER_NONE,
-                               rgb_buf + bpl + 1, (width + 2), cmap);
-    GDK_THREADS_LEAVE();
+    bscope_draw ();
 
     g_static_mutex_unlock(&rgb_buf_mutex);
 
