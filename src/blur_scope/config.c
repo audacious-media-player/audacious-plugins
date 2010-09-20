@@ -1,14 +1,34 @@
-#include "config.h"
+/*
+ *  Blur Scope plugin for Audacious
+ *  Copyright (C) 2010 John Lindgren
+ *
+ *  Based on BMP - Cross-platform multimedia player:
+ *  Copyright (C) 2003-2004  BMP development team.
+ *
+ *  Based on XMMS:
+ *  Copyright (C) 1998-2003  XMMS development team.
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
 
-#include <glib.h>
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
-#include <audacious/plugin.h>
 
 #include "blur_scope.h"
-
+#include "config.h"
 
 static GtkWidget *configure_win = NULL;
 static GtkWidget *vbox, *options_frame, *options_vbox;
@@ -18,39 +38,33 @@ static GtkWidget *bbox, *ok, *cancel;
 static void
 configure_ok(GtkWidget * w, gpointer data)
 {
-    mcs_handle_t *db;
-    gdouble color[3];
+    gdouble c[3];
 
     gtk_color_selection_get_color(GTK_COLOR_SELECTION(options_colorpicker),
-                                  color);
-    bscope_cfg.color =
-        ((guint32) (255.0 * color[0]) << 16) |
-        ((guint32) (255.0 * color[1]) << 8) | ((guint32) (255.0 * color[2]));
-    db = aud_cfg_db_open();
-    aud_cfg_db_set_int(db, "BlurScope", "color", bscope_cfg.color);
-    aud_cfg_db_close(db);
-    generate_cmap();
+                                  c);
+    color =
+        ((guint32) (255.0 * c[0]) << 16) |
+        ((guint32) (255.0 * c[1]) << 8) | ((guint32) (255.0 * c[2]));
     gtk_widget_destroy(configure_win);
 }
 
 static void
 configure_cancel(GtkWidget * w, gpointer data)
 {
-    bscope_cfg.color = GPOINTER_TO_UINT(data);
-    generate_cmap();
+    color = GPOINTER_TO_UINT(data);
     gtk_widget_destroy(configure_win);
 }
 
 static void
 color_changed(GtkWidget * w, gpointer data)
 {
-    gdouble color[3];
+    gdouble c[3];
+
     gtk_color_selection_get_color(GTK_COLOR_SELECTION(options_colorpicker),
-                                  color);
-    bscope_cfg.color =
-        ((guint32) (255.0 * color[0]) << 16) |
-        ((guint32) (255.0 * color[1]) << 8) | ((guint32) (255.0 * color[2]));
-    generate_cmap();
+                                  c);
+    color =
+        ((guint32) (255.0 * c[0]) << 16) |
+        ((guint32) (255.0 * c[1]) << 8) | ((guint32) (255.0 * c[2]));
 }
 
 void
@@ -58,14 +72,13 @@ bscope_configure(void)
 {
     /* FIXME: convert to GtkColorSelectionDialog */
 
-    gdouble color[3];
+    gdouble c[3];
     if (configure_win)
         return;
 
-    bscope_read_config();
-    color[0] = ((gdouble) (bscope_cfg.color / 0x10000)) / 256;
-    color[1] = ((gdouble) ((bscope_cfg.color % 0x10000) / 0x100)) / 256;
-    color[2] = ((gdouble) (bscope_cfg.color % 0x100)) / 256;
+    c[0] = ((gdouble) (color / 0x10000)) / 256;
+    c[1] = ((gdouble) ((color % 0x10000) / 0x100)) / 256;
+    c[2] = ((gdouble) (color % 0x100)) / 256;
 
     configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_container_set_border_width(GTK_CONTAINER(configure_win), 10);
@@ -88,7 +101,7 @@ bscope_configure(void)
 
     options_colorpicker = gtk_color_selection_new();
     gtk_color_selection_set_color(GTK_COLOR_SELECTION(options_colorpicker),
-                                  color);
+                                  c);
     g_signal_connect(G_OBJECT(options_colorpicker), "color_changed",
                      G_CALLBACK(color_changed), NULL);
 
@@ -111,7 +124,7 @@ bscope_configure(void)
     cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
     g_signal_connect(G_OBJECT(cancel), "clicked",
                      G_CALLBACK(configure_cancel),
-                     GUINT_TO_POINTER(bscope_cfg.color));
+                     GUINT_TO_POINTER(color));
     GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
     gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
     gtk_widget_show(cancel);

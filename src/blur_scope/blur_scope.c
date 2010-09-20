@@ -1,4 +1,8 @@
-/*  BMP - Cross-platform multimedia player
+/*
+ *  Blur Scope plugin for Audacious
+ *  Copyright (C) 2010 John Lindgren
+ *
+ *  Based on BMP - Cross-platform multimedia player:
  *  Copyright (C) 2003-2004  BMP development team.
  *
  *  Based on XMMS:
@@ -19,33 +23,24 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "config.h"
-
-#include <glib.h>
 #include <gtk/gtk.h>
 #include <string.h>
 
 #include <audacious/configdb.h>
-#include <audacious/i18n.h>
 #include <audacious/plugin.h>
 
 #include "blur_scope.h"
 
-static GtkWidget *area = NULL;
-static gboolean config_read = FALSE;
+#define D_WIDTH 256
+#define D_HEIGHT 128
 
 static void bscope_init(void);
 static void bscope_cleanup(void);
 static void bscope_playback_stop(void);
 static void bscope_render_pcm(gint16 data[2][512]);
-/* static GtkWidget * bscope_get_widget (void); */
-static void * bscope_get_widget (void);
+static void /* GtkWidget */ * bscope_get_widget (void);
 
-BlurScopeConfig bscope_cfg;
-
-enum { SCOPE_TOGGLE, SCOPE_CLOSE };
-
-VisPlugin bscope_vp = {
+static VisPlugin bscope_vp = {
     .description = "Blur Scope",                       /* description */
     .num_pcm_chs_wanted = 1, /* Number of PCM channels wanted */
     .num_freq_chs_wanted = 0, /* Number of freq channels wanted */
@@ -57,204 +52,137 @@ VisPlugin bscope_vp = {
     .get_widget = bscope_get_widget,
 };
 
-VisPlugin *bscope_vplist[] = { &bscope_vp, NULL };
+static VisPlugin * bscope_vplist[] = {& bscope_vp, NULL};
 
-DECLARE_PLUGIN(bscope, NULL, NULL, NULL, NULL, NULL, NULL, bscope_vplist,NULL);
+SIMPLE_VISUAL_PLUGIN (bscope, bscope_vplist)
 
-#define D_WIDTH 256
-#define D_HEIGHT 128
-#define min(x,y) ((x)<(y)?(x):(y))
-gint width = D_WIDTH;
-gint height = D_HEIGHT;
-gint bpl = (D_WIDTH + 2);
+gint color = 0xFF3F7F;
 
-static GStaticMutex rgb_buf_mutex = G_STATIC_MUTEX_INIT;
-static guchar *rgb_buf = NULL;
-static GdkRgbCmap *cmap = NULL;
+static GtkWidget * area = NULL;
+static gint width, height, stride, image_size;
+static guint32 * image = NULL, * corner = NULL;
 
-inline static void
-draw_pixel_8(guchar * buffer, gint x, gint y, guchar c)
+static void bscope_init (void)
 {
-    if (buffer == NULL)
-        return;
-
-    buffer[((y + 1) * bpl) + (x + 1)] = c;
+    mcs_handle_t * db = aud_cfg_db_open ();
+    aud_cfg_db_get_int (db, "BlurScope", "color", & color);
+    aud_cfg_db_close (db);
 }
 
-inline static void
-bscope_resize_video(gint w, gint h)
+static void bscope_cleanup (void)
 {
-    g_static_mutex_lock(&rgb_buf_mutex);
+    mcs_handle_t * db = aud_cfg_db_open ();
+    aud_cfg_db_set_int (db, "BlurScope", "color", color);
+    aud_cfg_db_close (db);
 
+    g_free (image);
+    image = NULL;
+}
+
+static void bscope_resize (gint w, gint h)
+{
     width = w;
     height = h;
-    bpl = (width + 2);
-
-    if (rgb_buf != NULL) {
-        g_free(rgb_buf);
-        rgb_buf = NULL;
-    }
-
-    rgb_buf = g_malloc0((w + 2) * (h + 2));
-
-    g_static_mutex_unlock(&rgb_buf_mutex);
+    stride = width + 2;
+    image_size = (stride << 2) * (height + 2);
+    image = g_realloc (image, image_size);
+    memset (image, 0, image_size);
+    corner = image + stride + 1;
 }
 
-gboolean
-bscope_reconfigure(GtkWidget *widget, GdkEventConfigure *event, gpointer unused)
-{
-    bscope_resize_video(event->width, event->height);
-
-    return FALSE;
-}
-
-void
-bscope_read_config(void)
-{
-    mcs_handle_t *db;
-
-    if (!config_read) {
-        bscope_cfg.color = 0xFF3F7F;
-        db = aud_cfg_db_open();
-
-        if (db) {
-            aud_cfg_db_get_int(db, "BlurScope", "color",
-                               (int *) &bscope_cfg.color);
-            aud_cfg_db_close(db);
-        }
-        config_read = TRUE;
-    }
-}
-
-
-void
-bscope_blur_8(guchar * ptr, gint w, gint h, gint bpl_)
-{
-    register guint i, sum;
-    register guchar *iptr;
-
-    iptr = ptr + bpl_ + 1;
-    i = bpl_ * h;
-    while (i--) {
-        sum = (iptr[-bpl_] + iptr[-1] + iptr[1] + iptr[bpl_]) >> 2;
-        if (sum > 2)
-            sum -= 2;
-        *(iptr++) = sum;
-    }
-}
-
-void
-generate_cmap(void)
-{
-    guint32 colors[256], i, red, blue, green;
-
-    red = (guint32) (bscope_cfg.color / 0x10000);
-    green = (guint32) ((bscope_cfg.color % 0x10000) / 0x100);
-    blue = (guint32) (bscope_cfg.color % 0x100);
-    for (i = 255; i > 0; i--) {
-        colors[i] =
-            (((guint32) (i * red / 256) << 16) |
-             ((guint32) (i * green / 256) << 8) |
-             ((guint32) (i * blue / 256)));
-    }
-    colors[0] = 0;
-    if (cmap) {
-        gdk_rgb_cmap_free(cmap);
-    }
-    cmap = gdk_rgb_cmap_new(colors, 256);
-}
-
-static void
-bscope_init(void)
-{
-    bscope_read_config();
-    generate_cmap();
-}
-
-static gboolean bscope_draw (void)
+static void bscope_draw (void)
 {
     if (area == NULL || area->window == NULL)
-        return TRUE;
+        return;
 
-    gdk_draw_indexed_image (area->window, area->style->white_gc, 0, 0, width,
-     height, GDK_RGB_DITHER_NONE, rgb_buf + bpl + 1, width + 2, cmap);
+    cairo_t * cr = gdk_cairo_create (area->window);
+    cairo_surface_t * surf = cairo_image_surface_create_for_data ((guchar *)
+     image, CAIRO_FORMAT_RGB24, width, height, stride << 2);
+    cairo_set_source_surface (cr, surf, 0, 0);
+    cairo_paint (cr);
+    cairo_surface_destroy (surf);
+    cairo_destroy (cr);
+}
+
+static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
+{
+    bscope_resize (event->width, event->height);
     return TRUE;
 }
 
-/* static GtkWidget * bscope_get_widget (void) */
-static void * bscope_get_widget (void)
+static gboolean expose_event (GtkWidget * widget)
 {
-    if (area == NULL)
-    {
-        area = gtk_drawing_area_new ();
-        gtk_widget_set_size_request (area, D_WIDTH, D_HEIGHT);
-        bscope_resize_video (D_WIDTH, D_HEIGHT);
+    bscope_draw ();
+    return TRUE;
+}
 
-        g_signal_connect (area, "expose-event", (GCallback) bscope_draw, NULL);
-        g_signal_connect (area, "configure-event", (GCallback)
-         bscope_reconfigure, NULL);
-        g_signal_connect (area, "destroy", (GCallback) gtk_widget_destroyed,
-         & area);
-    }
+static void /* GtkWidget */ * bscope_get_widget (void)
+{
+    area = gtk_drawing_area_new ();
+    gtk_widget_set_size_request (area, D_WIDTH, D_HEIGHT);
+    bscope_resize (D_WIDTH, D_HEIGHT);
+
+    g_signal_connect (area, "expose-event", (GCallback) expose_event, NULL);
+    g_signal_connect (area, "configure-event", (GCallback) configure_event, NULL);
+    g_signal_connect (area, "destroy", (GCallback) gtk_widget_destroyed, & area);
 
     return area;
 }
 
-static void
-bscope_cleanup(void)
+static void bscope_playback_stop (void)
 {
-    if (cmap) {
-        gdk_rgb_cmap_free(cmap);
-        cmap = NULL;
-    }
-
-    area = NULL;
-}
-
-static void
-bscope_playback_stop(void)
-{
-    g_return_if_fail (rgb_buf != NULL);
-    memset (rgb_buf, 0, (width + 2) * (height + 2));
+    g_return_if_fail (image != NULL);
+    memset (image, 0, image_size);
     bscope_draw ();
 }
 
-static inline void
-draw_vert_line(guchar * buffer, gint x, gint y1, gint y2)
+static void bscope_blur (void)
 {
-    int y;
-    if (y1 < y2) {
-        for (y = y1 + 1; y <= y2; y++)
-            draw_pixel_8(buffer, x, y, 0xFF);
+    for (gint y = 0; y < height; y ++)
+    {
+        guint32 * p = corner + stride * y;
+        guint32 * end = p + width;
+        guint32 * plast = p - stride;
+        guint32 * pnext = p + stride;
+
+        /* We do a quick and dirty average of four color values, first masking
+         * off the lowest two bits.  Over a large area, this masking has the net
+         * effect of subtracting 1.5 from each value, which by a happy chance
+         * is just right for a gradual fade effect. */
+        for (; p < end; p ++)
+            * p = ((* plast ++ & 0xFCFCFC) + (p[-1] & 0xFCFCFC) + (p[1] &
+             0xFCFCFC) + (* pnext ++ & 0xFCFCFC)) >> 2;
     }
-    else if (y2 < y1) {
-        for (y = y2; y < y1; y++)
-            draw_pixel_8(buffer, x, y, 0xFF);
-    }
-    else
-        draw_pixel_8(buffer, x, y1, 0xFF);
 }
 
-static void
-bscope_render_pcm(gint16 data[2][512])
+static inline void draw_vert_line (gint x, guint y1, gint y2)
 {
-    gint i, y, prev_y;
+    gint y, h;
 
-    g_static_mutex_lock(&rgb_buf_mutex);
+    if (y1 < y2) {y = y1 + 1; h = y2 - y1;}
+    else if (y2 < y1) {y = y2; h = y1 - y2;}
+    else {y = y1; h = 1;}
 
-    bscope_blur_8(rgb_buf, width, height, bpl);
-    prev_y = (height / 2) + (data[0][0] >> 9);
+    guint32 * p = corner + y * stride + x;
+
+    for (; h --; p += stride)
+        * p = color;
+}
+
+static void bscope_render_pcm (gint16 data[2][512])
+{
+    bscope_blur ();
+
+    gint prev_y = (height / 2) + (data[0][0] >> 9);
     prev_y = CLAMP (prev_y, 0, height - 1);
-    for (i = 0; i < width; i++) {
-        y = (height / 2) + (data[0][i * 512 / width] >> 9);
+
+    for (gint i = 0; i < width; i ++)
+    {
+        gint y = (height / 2) + (data[0][i * 512 / width] >> 9);
         y = CLAMP (y, 0, height - 1);
-        draw_vert_line(rgb_buf, i, prev_y, y);
+        draw_vert_line (i, prev_y, y);
         prev_y = y;
     }
 
     bscope_draw ();
-
-    g_static_mutex_unlock(&rgb_buf_mutex);
-
-    return;
 }
