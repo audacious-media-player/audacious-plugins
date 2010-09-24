@@ -169,7 +169,7 @@ static gint unix_fseek (VFSFile * file, gint64 offset, gint whence)
 {
     gint handle = GPOINTER_TO_INT (file->handle);
 
-    AUDDBG ("fseek %ld, whence = %d\n", offset, whence);
+    AUDDBG ("fseek %d, whence = %d\n", (gint) offset, whence);
 
     if (lseek (handle, offset, whence) < 0)
     {

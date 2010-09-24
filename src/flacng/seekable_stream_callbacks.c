@@ -81,7 +81,7 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
         return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
     }
 
-    AUDDBG("Current position: %ld\n", *offset);
+    AUDDBG ("Current position: %d\n", (gint) * offset);
 
     return FLAC__STREAM_DECODER_TELL_STATUS_OK;
 }
@@ -108,7 +108,7 @@ FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decod
         return FLAC__STREAM_DECODER_LENGTH_STATUS_UNSUPPORTED;
     }
 
-    AUDDBG("Stream length is %ld bytes\n", *length);
+    AUDDBG ("Stream length is %d bytes\n", (gint) * length);
 
     return FLAC__STREAM_DECODER_LENGTH_STATUS_OK;
 }

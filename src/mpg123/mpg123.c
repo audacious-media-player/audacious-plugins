@@ -453,7 +453,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 				continue;
 			}
 
-			AUDDBG("seeking to %ld (byte %ld)\n", ctx.seek, byteoff);
+			AUDDBG ("seeking to %d (byte %d)\n", (gint) ctx.seek, (gint) byteoff);
 			data->output->flush (ctx.seek);
 			vfs_fseek(ctx.fd, byteoff, SEEK_SET);
 			ctx.seek = -1;
