@@ -104,7 +104,7 @@ static void execute_command(char *cmd)
 static void
 do_command(char *cmd, const char *current_file, int pos)
 {
-	int length, rate, freq, nch;
+	int length;
 	char *str, *shstring = NULL, *temp, numbuf[32];
 	gboolean playing;
 	Formatter *formatter;
@@ -145,16 +145,22 @@ do_command(char *cmd, const char *current_file, int pos)
 		}
 		else
 			formatter_associate(formatter, 'l', "0");
-		aud_drct_get_info(&rate, &freq, &nch);
-		g_snprintf(numbuf, sizeof(numbuf), "%d", rate);
-		formatter_associate(formatter, 'r', numbuf);
-		g_snprintf(numbuf, sizeof(numbuf), "%d", freq);
-		formatter_associate(formatter, 'F', numbuf);
-		g_snprintf(numbuf, sizeof(numbuf), "%d", nch);
-		formatter_associate(formatter, 'c', numbuf);
+
 		playing = aud_drct_get_playing();
 		g_snprintf(numbuf, sizeof(numbuf), "%d", playing);
 		formatter_associate(formatter, 'p', numbuf);
+
+		if (playing)
+		{
+			int brate, srate, chans;
+			aud_drct_get_info (& brate, & srate, & chans);
+			snprintf (numbuf, sizeof numbuf, "%d", brate);
+			formatter_associate (formatter, 'r', numbuf);
+			snprintf (numbuf, sizeof numbuf, "%d", srate);
+			formatter_associate (formatter, 'F', numbuf);
+			snprintf (numbuf, sizeof numbuf, "%d", chans);
+			formatter_associate (formatter, 'c', numbuf);
+		}
 
 		const void *tuple = aud_playlist_entry_get_tuple(aud_playlist_get_active(), pos, 0);
 
@@ -394,7 +400,6 @@ static SongChangeConfig config = {NULL};
 static void configure_ok_cb()
 {
 	char *cmd, *cmd_after, *cmd_end, *cmd_ttc;
-g_message("AAAA");
 	cmd = g_strdup(config.cmd);
 	cmd_after = g_strdup(config.cmd_after);
 	cmd_end = g_strdup(config.cmd_end);
