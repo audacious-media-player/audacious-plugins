@@ -1,4 +1,13 @@
 /*
+ * NOTE: As there are no valid identifiers regarding authorship,
+ * we are choosing to consider this code as being in the public
+ * domain.  If any rightsholder would like to contest this statement,
+ * please contact us by opening a bug in our bug tracking instance.
+ *
+ * William Pitcock <nenolod@atheme.org>.  Saturday, September 25, 2010.
+ */
+
+/*
  * Sony CXD8530AQ/CXD8530BQ/CXD8530CQ/CXD8661R
  *
  * PSX CPU emulator for the MAME project written by smf
