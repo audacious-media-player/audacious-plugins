@@ -50,7 +50,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ao.h"
-#include "osd_cpu.h"
 #include "psx.h"
 	
 #define DEBUG_HLE_BIOS	(0)		// debug PS1 HLE BIOS

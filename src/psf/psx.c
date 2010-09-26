@@ -17,7 +17,6 @@
 #include <stdarg.h>
 #include <audacious/debug.h>
 #include "ao.h"
-#include "osd_cpu.h"
 #include "psx.h"
 
 #define EXC_INT ( 0 )
@@ -61,6 +60,17 @@
 #define CAUSE_CE1 ( 1L << 28 )
 #define CAUSE_CE2 ( 2L << 28 )
 #define CAUSE_BD ( 1L << 31 )
+
+typedef union {
+#ifndef WORDS_BIGENDIAN
+	struct { UINT8 l,h,h2,h3; } b;
+        struct { UINT16 l,h; } w;
+#else
+        struct { UINT8 h3,h2,h,l; } b;
+        struct { UINT16 h,l; } w;
+#endif
+        UINT32 d;
+} PAIR;
 
 extern void psx_bios_hle(uint32 pc);
 extern void psx_iop_call(uint32 pc, uint32 callnum);
@@ -523,10 +533,10 @@ int mips_execute( int cycles )
 				else
 				{
 					INT64 n_res64;
-					n_res64 = MUL_64_32_32( (INT32)mipscpu.r[ INS_RS( mipscpu.op ) ], (INT32)mipscpu.r[ INS_RT( mipscpu.op ) ] );
+					n_res64 = (INT64) ((INT32)mipscpu.r[ INS_RS( mipscpu.op ) ] * (INT32)mipscpu.r[ INS_RT( mipscpu.op ) ]);
 					mips_advance_pc();
-					mipscpu.lo = LO32_32_64( n_res64 );
-					mipscpu.hi = HI32_32_64( n_res64 );
+					mipscpu.lo = n_res64 & 0xffffffff;
+					mipscpu.hi = (((UINT64)(n_res64)) >> 32);
 				}
 				break;
 			case FUNCT_MULTU:
@@ -537,10 +547,10 @@ int mips_execute( int cycles )
 				else
 				{
 					UINT64 n_res64;
-					n_res64 = MUL_U64_U32_U32( mipscpu.r[ INS_RS( mipscpu.op ) ], mipscpu.r[ INS_RT( mipscpu.op ) ] );
+					n_res64 = (UINT64) ((UINT32)mipscpu.r[ INS_RS( mipscpu.op ) ] * (UINT32)mipscpu.r[ INS_RT( mipscpu.op ) ]);
 					mips_advance_pc();
-					mipscpu.lo = LO32_U32_U64( n_res64 );
-					mipscpu.hi = HI32_U32_U64( n_res64 );
+					mipscpu.lo = n_res64 & 0xffffffff;
+					mipscpu.hi = (((UINT64)(n_res64)) >> 32);
 				}
 				break;
 			case FUNCT_DIV:
