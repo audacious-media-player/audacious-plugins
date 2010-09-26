@@ -155,6 +155,9 @@ enum
 	MIPS_CP2CR30, MIPS_CP2CR31
 };
 
+#define CLEAR_LINE	(0)
+#define ASSERT_LINE	(1)
+
 #define MIPS_INT_NONE	( -1 )
 
 #define MIPS_IRQ0	( 0 )
@@ -284,5 +287,112 @@ extern unsigned DasmMIPS(char *buff, unsigned _pc);
 #if (HAS_PSXCPU)
 extern void psxcpu_get_info(UINT32 state, union cpuinfo *info);
 #endif
+
+#define MAX_REGS                64              /* maximum number of register of any CPU */
+
+#define ADDRESS_SPACES                  3                                               /* maximum number of address spaces */
+#define ADDRESS_SPACE_PROGRAM   0                                               /* program address space */
+#define ADDRESS_SPACE_DATA              1                                               /* data address space */
+#define ADDRESS_SPACE_IO                2                                               /* I/O address space */
+
+enum
+{
+        /* internal flags (not for use by drivers!) */
+        INTERNAL_CLEAR_LINE = 100 + CLEAR_LINE,
+        INTERNAL_ASSERT_LINE = 100 + ASSERT_LINE,
+
+        /* input lines */
+        MAX_INPUT_LINES = 32+3,
+        INPUT_LINE_IRQ0 = 0,
+        INPUT_LINE_IRQ1 = 1,
+        INPUT_LINE_IRQ2 = 2,
+        INPUT_LINE_IRQ3 = 3,
+        INPUT_LINE_IRQ4 = 4,
+        INPUT_LINE_IRQ5 = 5,
+        INPUT_LINE_IRQ6 = 6,
+        INPUT_LINE_IRQ7 = 7,
+        INPUT_LINE_IRQ8 = 8,
+        INPUT_LINE_IRQ9 = 9,
+        INPUT_LINE_NMI = MAX_INPUT_LINES - 3,
+
+        /* special input lines that are implemented in the core */
+        INPUT_LINE_RESET = MAX_INPUT_LINES - 2,
+        INPUT_LINE_HALT = MAX_INPUT_LINES - 1,
+
+        /* output lines */
+        MAX_OUTPUT_LINES = 32
+};
+
+enum
+{
+	/* --- the following bits of info are returned as 64-bit signed integers --- */
+	CPUINFO_INT_FIRST = 0x00000,
+
+	CPUINFO_INT_CONTEXT_SIZE = CPUINFO_INT_FIRST,		/* R/O: size of CPU context in bytes */
+	CPUINFO_INT_INPUT_LINES,							/* R/O: number of input lines */
+	CPUINFO_INT_OUTPUT_LINES,							/* R/O: number of output lines */
+	CPUINFO_INT_DEFAULT_IRQ_VECTOR,						/* R/O: default IRQ vector */
+	CPUINFO_INT_ENDIANNESS,								/* R/O: either CPU_IS_BE or CPU_IS_LE */
+	CPUINFO_INT_CLOCK_DIVIDER,							/* R/O: internal clock divider */
+	CPUINFO_INT_MIN_INSTRUCTION_BYTES,					/* R/O: minimum bytes per instruction */
+	CPUINFO_INT_MAX_INSTRUCTION_BYTES,					/* R/O: maximum bytes per instruction */
+	CPUINFO_INT_MIN_CYCLES,								/* R/O: minimum cycles for a single instruction */
+	CPUINFO_INT_MAX_CYCLES,								/* R/O: maximum cycles for a single instruction */
+
+	CPUINFO_INT_DATABUS_WIDTH,							/* R/O: data bus size for each address space (8,16,32,64) */
+	CPUINFO_INT_DATABUS_WIDTH_LAST = CPUINFO_INT_DATABUS_WIDTH + ADDRESS_SPACES - 1,
+	CPUINFO_INT_ADDRBUS_WIDTH,							/* R/O: address bus size for each address space (12-32) */
+	CPUINFO_INT_ADDRBUS_WIDTH_LAST = CPUINFO_INT_ADDRBUS_WIDTH + ADDRESS_SPACES - 1,
+	CPUINFO_INT_ADDRBUS_SHIFT,							/* R/O: shift applied to addresses each address space (+3 means >>3, -1 means <<1) */
+	CPUINFO_INT_ADDRBUS_SHIFT_LAST = CPUINFO_INT_ADDRBUS_SHIFT + ADDRESS_SPACES - 1,
+
+	CPUINFO_INT_SP,										/* R/W: the current stack pointer value */
+	CPUINFO_INT_PC,										/* R/W: the current PC value */
+	CPUINFO_INT_PREVIOUSPC,								/* R/W: the previous PC value */
+	CPUINFO_INT_INPUT_STATE,							/* R/W: states for each input line */
+	CPUINFO_INT_INPUT_STATE_LAST = CPUINFO_INT_INPUT_STATE + MAX_INPUT_LINES - 1,
+	CPUINFO_INT_OUTPUT_STATE,							/* R/W: states for each output line */
+	CPUINFO_INT_OUTPUT_STATE_LAST = CPUINFO_INT_OUTPUT_STATE + MAX_OUTPUT_LINES - 1,
+	CPUINFO_INT_REGISTER,								/* R/W: values of up to MAX_REGs registers */
+	CPUINFO_INT_REGISTER_LAST = CPUINFO_INT_REGISTER + MAX_REGS - 1,
+
+	CPUINFO_INT_CPU_SPECIFIC = 0x08000,					/* R/W: CPU-specific values start here */
+
+	/* --- the following bits of info are returned as pointers to data or functions --- */
+	CPUINFO_PTR_FIRST = 0x10000,
+
+	CPUINFO_PTR_SET_INFO = CPUINFO_PTR_FIRST,			/* R/O: void (*set_info)(UINT32 state, INT64 data, void *ptr) */
+	CPUINFO_PTR_GET_CONTEXT,							/* R/O: void (*get_context)(void *buffer) */
+	CPUINFO_PTR_SET_CONTEXT,							/* R/O: void (*set_context)(void *buffer) */
+	CPUINFO_PTR_INIT,									/* R/O: void (*init)(void) */
+	CPUINFO_PTR_RESET,									/* R/O: void (*reset)(void *param) */
+	CPUINFO_PTR_EXIT,									/* R/O: void (*exit)(void) */
+	CPUINFO_PTR_EXECUTE,								/* R/O: int (*execute)(int cycles) */
+	CPUINFO_PTR_BURN,									/* R/O: void (*burn)(int cycles) */
+	CPUINFO_PTR_DISASSEMBLE,							/* R/O: void (*disassemble)(char *buffer, offs_t pc) */
+	CPUINFO_PTR_IRQ_CALLBACK,							/* R/W: int (*irqcallback)(int state) */
+	CPUINFO_PTR_INSTRUCTION_COUNTER,					/* R/O: int *icount */
+	CPUINFO_PTR_REGISTER_LAYOUT,						/* R/O: struct debug_register_layout *layout */
+	CPUINFO_PTR_WINDOW_LAYOUT,							/* R/O: struct debug_window_layout *layout */
+	CPUINFO_PTR_INTERNAL_MEMORY_MAP,					/* R/O: construct_map_t map */
+	CPUINFO_PTR_INTERNAL_MEMORY_MAP_LAST = CPUINFO_PTR_INTERNAL_MEMORY_MAP + ADDRESS_SPACES - 1,
+	CPUINFO_PTR_DEBUG_REGISTER_LIST,					/* R/O: int *list: list of registers for NEW_DEBUGGER */
+
+	CPUINFO_PTR_CPU_SPECIFIC = 0x18000,					/* R/W: CPU-specific values start here */
+
+	/* --- the following bits of info are returned as NULL-terminated strings --- */
+	CPUINFO_STR_FIRST = 0x20000,
+
+	CPUINFO_STR_NAME = CPUINFO_STR_FIRST,				/* R/O: name of the CPU */
+	CPUINFO_STR_CORE_FAMILY,							/* R/O: family of the CPU */
+	CPUINFO_STR_CORE_VERSION,							/* R/O: version of the CPU core */
+	CPUINFO_STR_CORE_FILE,								/* R/O: file containing the CPU core */
+	CPUINFO_STR_CORE_CREDITS,							/* R/O: credits for the CPU core */
+	CPUINFO_STR_FLAGS,									/* R/O: string representation of the main flags value */
+	CPUINFO_STR_REGISTER,								/* R/O: string representation of up to MAX_REGs registers */
+	CPUINFO_STR_REGISTER_LAST = CPUINFO_STR_REGISTER + MAX_REGS - 1,
+
+	CPUINFO_STR_CPU_SPECIFIC = 0x28000					/* R/W: CPU-specific values start here */
+};
 
 #endif
