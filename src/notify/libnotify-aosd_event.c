@@ -48,8 +48,10 @@ void event_uninit() {
 
 void event_playback_begin(gpointer p1, gpointer p2) {
 	gint playlist, position;
-	const gchar *title;
+	const gchar *title, *artist, *album;
 	const gchar *filename;
+	const Tuple *tuple;
+	gchar *message;
 	GdkPixbuf *pb;
 
 	AUDDBG("started!\n");
@@ -58,12 +60,18 @@ void event_playback_begin(gpointer p1, gpointer p2) {
 	position = aud_playlist_get_position(playlist);
 
 	filename = aud_playlist_entry_get_filename(playlist, position);
-	title = aud_playlist_entry_get_title(playlist, position, TRUE);
+	tuple = aud_playlist_entry_get_tuple(playlist, position, TRUE);
+
+	title = tuple_get_string(tuple, FIELD_TITLE, NULL);
+	artist = tuple_get_string(tuple, FIELD_ARTIST, NULL);
+	album = tuple_get_string(tuple, FIELD_ALBUM, NULL);
 
 	pb = audgui_pixbuf_for_file(filename);
 	audgui_pixbuf_scale_within(&pb, 64);
 
-	osd_show(title, "notification-audio-play", pb);
+	message = g_strdup_printf("%s\n%s", artist, album);
+	osd_show(title, message, "notification-audio-play", pb);
+	g_free(message);
 
 	if (pb != NULL)
 		g_object_unref(pb);
@@ -73,6 +81,6 @@ void event_playback_begin(gpointer p1, gpointer p2) {
 
 void event_playback_pause(gpointer p1, gpointer p2) {
 	AUDDBG("started!\n");
-	osd_show("Playback paused", "notification-audio-pause", NULL);
+	osd_show("Playback paused", NULL, "notification-audio-pause", NULL);
 	AUDDBG("done!\n");
 }
