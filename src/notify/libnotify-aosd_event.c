@@ -67,7 +67,7 @@ void event_playback_begin(gpointer p1, gpointer p2) {
 	album = tuple_get_string(tuple, FIELD_ALBUM, NULL);
 
 	pb = audgui_pixbuf_for_file(filename);
-	audgui_pixbuf_scale_within(&pb, 64);
+	audgui_pixbuf_scale_within(&pb, 128);
 
 	message = g_strdup_printf("%s\n%s", artist, album);
 	osd_show(title, message, "notification-audio-play", pb);
