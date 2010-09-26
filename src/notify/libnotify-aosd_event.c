@@ -50,7 +50,7 @@ void event_playback_begin(gpointer p1, gpointer p2) {
 
 	if((aud_title = aud_drct_pl_get_title(aud_drct_pl_get_pos())) != NULL) {
 		if ((title = str_assert_utf8(aud_title)) != NULL)
-			osd_show(title, "notification-audio-play");
+			osd_show(title, "notification-audio-play", NULL);
 	}
 
 	AUDDBG("done!\n");
@@ -58,6 +58,6 @@ void event_playback_begin(gpointer p1, gpointer p2) {
 
 void event_playback_pause(gpointer p1, gpointer p2) {
 	AUDDBG("started!\n");
-	osd_show("Playback paused", "notification-audio-pause");
+	osd_show("Playback paused", "notification-audio-pause", NULL);
 	AUDDBG("done!\n");
 }

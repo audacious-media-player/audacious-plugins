@@ -41,7 +41,7 @@ void osd_closed_handler(NotifyNotification *notification2, gpointer data) {
 	}
 }
 
-void osd_show(const gchar *text, const gchar *icon) {
+void osd_show(const gchar *text, const gchar *icon, GdkPixbuf *pb) {
 	GError *error = NULL;
 
 	if(notification == NULL) {
@@ -55,7 +55,10 @@ void osd_show(const gchar *text, const gchar *icon) {
 			AUDDBG("could not update old osd! (notification=%p)\n", notification);
 		}
 	}
-	
+
+	if(pb != NULL)
+		notify_notification_set_icon_from_pixbuf(notification, pb);
+
 	if(!notify_notification_show(notification, &error))
 		AUDDBG("%s!\n", error->message);
 }
