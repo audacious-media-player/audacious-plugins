@@ -20,6 +20,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
+#include <audacious/debug.h>
 #include "libnotify-aosd_common.h"
 
 // The pointers to the functions of the plugin
@@ -36,25 +37,25 @@ SIMPLE_GENERAL_PLUGIN(libnotifyaosd, plugin_gplist);
 short plugin_active = 0;
 
 void plugin_init() {
-	DEBUG_PRINT("[%s] plugin_init: started!\n", __FILE__);
+	AUDDBG("started!\n");
 	if(!osd_init()) {
-		DEBUG_PRINT("[%s] plugin_init: osd_init failed!\n", __FILE__);
+		AUDDBG("osd_init failed!\n");
   		return;
 	}
 	event_init();
 
 	plugin_active = 1;
-	DEBUG_PRINT("[%s] plugin_init: done!\n", __FILE__);
+	AUDDBG("done!\n");
 }
 
 
 void plugin_cleanup() {
 	if(plugin_active) {
-		DEBUG_PRINT("[%s] plugin_cleanup: started!\n", __FILE__);
+		AUDDBG("started!\n");
 		event_uninit();
     		osd_uninit();
 		plugin_active = 0;
-		DEBUG_PRINT("[%s] plugin_cleanup: done!\n", __FILE__);
+		AUDDBG("done!\n");
 	}
 }
 
