@@ -45,11 +45,11 @@ void osd_show(const gchar *text, const gchar *icon, GdkPixbuf *pb) {
 	GError *error = NULL;
 
 	if(notification == NULL) {
-		notification = notify_notification_new(text, NULL, icon, NULL);
+		notification = notify_notification_new(text, NULL, pb == NULL ? icon : NULL, NULL);
 		g_signal_connect(notification, "closed", G_CALLBACK(osd_closed_handler), NULL);
 		AUDDBG("new osd created! (notification=%p)\n", notification);
 	} else {
-		if(notify_notification_update(notification, text, NULL, icon)) {
+		if(notify_notification_update(notification, text, NULL, pb == NULL ? icon : NULL)) {
 			AUDDBG("old osd updated! (notification=%p)\n", notification);
 		} else {
 			AUDDBG("could not update old osd! (notification=%p)\n", notification);

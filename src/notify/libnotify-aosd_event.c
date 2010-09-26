@@ -21,9 +21,12 @@
 
 #include <audacious/drct.h>
 #include <audacious/plugin.h>
+#include <audacious/playlist.h>
 #include <audacious/debug.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "libnotify-aosd_common.h"
 
@@ -44,14 +47,26 @@ void event_uninit() {
 }
 
 void event_playback_begin(gpointer p1, gpointer p2) {
-	gchar *aud_title = NULL, *title = NULL;
+	gint playlist, position;
+	const gchar *title;
+	const gchar *filename;
+	GdkPixbuf *pb;
 
 	AUDDBG("started!\n");
 
-	if((aud_title = aud_drct_pl_get_title(aud_drct_pl_get_pos())) != NULL) {
-		if ((title = str_assert_utf8(aud_title)) != NULL)
-			osd_show(title, "notification-audio-play", NULL);
-	}
+	playlist = aud_playlist_get_playing();
+	position = aud_playlist_get_position(playlist);
+
+	filename = aud_playlist_entry_get_filename(playlist, position);
+	title = aud_playlist_entry_get_title(playlist, position, TRUE);
+
+	pb = audgui_pixbuf_for_file(filename);
+	audgui_pixbuf_scale_within(&pb, 64);
+
+	osd_show(title, "notification-audio-play", pb);
+
+	if (pb != NULL)
+		g_object_unref(pb);
 
 	AUDDBG("done!\n");
 }
