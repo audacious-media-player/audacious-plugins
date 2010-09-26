@@ -1,8 +1,11 @@
 /*
  * NOTE: As there are no valid identifiers regarding authorship,
- * we are choosing to consider this code as being in the public
- * domain.  If any rightsholder would like to contest this statement,
+ * we are choosing to consider this code as being under a generic
+ * two-clause BSD license.
+ *
+ * If any rightsholder would like to contest this statement,
  * please contact us by opening a bug in our bug tracking instance.
+ * Code that is contested will be rewritten.
  *
  * William Pitcock <nenolod@atheme.org>.  Saturday, September 25, 2010.
  */
