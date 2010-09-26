@@ -3,7 +3,6 @@ and right to distribute the following files:
 
 src/psf/cpuintrf.h
 src/psf/eng_protos.h
-src/psf/mamemem.h
 src/psf/osd_cpu.h
 src/psf/psx.c
 src/psf/psx.h
