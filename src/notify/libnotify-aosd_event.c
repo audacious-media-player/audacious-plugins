@@ -48,18 +48,9 @@ void event_playback_begin(gpointer p1, gpointer p2) {
 
 	AUDDBG("started!\n");
 
-	aud_title = aud_drct_pl_get_title(aud_drct_pl_get_pos());
-
-	if(aud_title != NULL) {
-		title = str_to_utf8(aud_title);
-		if(g_utf8_validate(title, -1, NULL)) {
+	if((aud_title = aud_drct_pl_get_title(aud_drct_pl_get_pos())) != NULL) {
+		if ((title = str_assert_utf8(aud_title)) != NULL)
 			osd_show(title, "notification-audio-play");
-		} else {
-			AUDDBG("invalid utf8 title!\n");
-		}
-		g_free(title);
-	} else {
-		AUDDBG("no aud title!\n");
 	}
 
 	AUDDBG("done!\n");
