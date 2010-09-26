@@ -24,4 +24,4 @@
 gboolean osd_init();
 void osd_uninit();
 void osd_closed_handler(NotifyNotification *notification2, gpointer data);
-void osd_show(gchar *text, gchar *icon);
+void osd_show(const gchar *text, const gchar *icon);
