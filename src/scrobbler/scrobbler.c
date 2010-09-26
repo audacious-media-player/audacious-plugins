@@ -147,6 +147,13 @@ static item_t *create_item(Tuple *tuple, int len)
 
     item->artist = fmt_escape(tuple_get_string(tuple, FIELD_ARTIST, NULL));
     item->title = fmt_escape(tuple_get_string(tuple, FIELD_TITLE, NULL));
+
+    if (item->artist == NULL || item->title == NULL)
+    {
+        free (item);
+        return NULL;
+    }
+
     item->len = len;
     item->track = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL);
     item->timeplayed = 0;
@@ -167,7 +174,9 @@ static item_t *q_put(Tuple *tuple, int t, int len)
 {
     item_t *item;
 
-    item = create_item(tuple, len);
+    if ((item = create_item (tuple, len)) == NULL)
+        return NULL;
+
     item->timeplayed = len;
     item->utctime = t;
 
@@ -176,10 +185,12 @@ static item_t *q_put(Tuple *tuple, int t, int len)
 
 static item_t *set_np(Tuple *tuple, int len)
 {
-    q_item_free(np_item);
-    np_item = create_item(tuple, len);
+    if (np_item != NULL)
+        q_item_free (np_item);
 
-    AUDDBG("Tracking now-playing track: %s - %s\n", np_item->artist, np_item->title);
+    if ((np_item = create_item (tuple, len)) != NULL)
+        AUDDBG ("Tracking now-playing track: %s - %s\n", np_item->artist,
+         np_item->title);
 
     return np_item;
 }
@@ -960,12 +971,10 @@ static void read_cache(void)
 
                 tuple_free(tuple);
 
-                AUDDBG("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d b[%d]=%s\n",
-                                 i, I_ARTIST(item),
-                                 i, I_TITLE(item),
-                                 i, I_LEN(item),
-                                 i, I_TIME(item),
-                                 i, I_ALBUM(item));
+                if (item != NULL)
+                    AUDDBG ("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d b[%d]=%s\n", i,
+                     I_ARTIST (item), i, I_TITLE (item), i, I_LEN (item), i,
+                     I_TIME (item), i, I_ALBUM (item));
             }
 
             free(artist);
