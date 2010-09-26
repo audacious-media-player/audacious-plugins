@@ -5,7 +5,8 @@
  *
  * If any rightsholder would like to contest this statement,
  * please contact us by opening a bug in our bug tracking instance.
- * Code	that is	contested will be rewritten.
+ * Code that is contested will be rewritten if alternative arrangements
+ * cannot be made.
  *
  * William Pitcock <nenolod@atheme.org>.  Saturday, September 25, 2010.
  */
