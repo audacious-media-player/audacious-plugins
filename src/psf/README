@@ -12,10 +12,16 @@ It's a PSF2 plugin based on:
 It's under the BSD license, mostly, but it uses code from PeOPS, so it's
 probably GPL.
 
+The files:
+
+peops/* are GPL.
+*.[ch] are BSD.
+
+Period.
+
+Anyone who tells you otherwise is on drugs.
+
 Does it work?
 
 Yes. But there's bugs. See http://audacious-media-player.org/?title=Audacious2/PSF2Plugin 
 for suggestions on things you can do.
-
-
-
