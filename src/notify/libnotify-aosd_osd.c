@@ -35,7 +35,7 @@ void osd_uninit() {
 
 void osd_closed_handler(NotifyNotification *notification2, gpointer data) {
 	if(notification != NULL) {
-		g_object_unref(G_OBJECT(notification));
+		g_object_unref(notification);
 		notification = NULL;
 		AUDDBG("notification unrefed!\n");
 	}
@@ -46,7 +46,7 @@ void osd_show(gchar *text, gchar *icon) {
 
 	if(notification == NULL) {
 		notification = notify_notification_new(text, NULL, icon, NULL);
-		g_signal_connect(G_OBJECT(notification), "closed", G_CALLBACK(osd_closed_handler), NULL);
+		g_signal_connect(notification, "closed", G_CALLBACK(osd_closed_handler), NULL);
 		AUDDBG("new osd created! (notification=%p)\n", notification);
 	} else {
 		if(notify_notification_update(notification, text, NULL, icon)) {
@@ -58,5 +58,4 @@ void osd_show(gchar *text, gchar *icon) {
 	
 	if(!notify_notification_show(notification, &error))
 		AUDDBG("%s!\n", error->message);
-
 }
