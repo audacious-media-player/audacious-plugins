@@ -245,7 +245,7 @@ fi
 dnl *** RoarAudio
 
 AC_ARG_ENABLE(roar,
-    [  --disable-roar          disable PulseAudio output plugin (default=enabled)],
+    [  --disable-roar          disable RoarAudio output plugin (default=enabled)],
     [enable_roar=$enableval],
     [enable_roar="yes"]
 )
@@ -257,8 +257,8 @@ if test "x$enable_roar" = "xyes"; then
          [have_roar=no]
     )
 else
-    AC_MSG_RESULT([*** pulseaudio output plugin disabled per user request ***])
-    have_pulse=no
+    AC_MSG_RESULT([*** roaraudio output plugin disabled per user request ***])
+    have_roar=no
 fi
 
 dnl *** CoreAudio
