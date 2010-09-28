@@ -32,7 +32,6 @@
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
-
 struct format_info {
     gint format;
     int frequency;

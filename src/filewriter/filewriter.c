@@ -150,12 +150,12 @@ static OutputPluginInitStatus file_init(void)
     mcs_handle_t *db;
 
     db = aud_cfg_db_open();
-    aud_cfg_db_get_int(db, FILEWRITER_CFGID, "fileext", &fileext);
-    aud_cfg_db_get_string(db, FILEWRITER_CFGID, "file_path", &file_path);
-    aud_cfg_db_get_bool(db, FILEWRITER_CFGID, "save_original", &save_original);
-    aud_cfg_db_get_bool(db, FILEWRITER_CFGID, "use_suffix", &use_suffix);
-    aud_cfg_db_get_bool(db, FILEWRITER_CFGID, "filenamefromtags", &filenamefromtags);
-    aud_cfg_db_get_bool(db, FILEWRITER_CFGID, "prependnumber", &prependnumber);
+    aud_cfg_db_get_int(db, "filewriter", "fileext", &fileext);
+    aud_cfg_db_get_string(db, "filewriter", "file_path", &file_path);
+    aud_cfg_db_get_bool(db, "filewriter", "save_original", &save_original);
+    aud_cfg_db_get_bool(db, "filewriter", "use_suffix", &use_suffix);
+    aud_cfg_db_get_bool(db, "filewriter", "filenamefromtags", &filenamefromtags);
+    aud_cfg_db_get_bool(db, "filewriter", "prependnumber", &prependnumber);
     aud_cfg_db_close(db);
 
     if (file_path == NULL)
@@ -371,12 +371,12 @@ static void configure_ok_cb(gpointer data)
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prependnumber_toggle));
 
     db = aud_cfg_db_open();
-    aud_cfg_db_set_int(db, FILEWRITER_CFGID, "fileext", fileext);
-    aud_cfg_db_set_string(db, FILEWRITER_CFGID, "file_path", file_path);
-    aud_cfg_db_set_bool(db, FILEWRITER_CFGID, "save_original", save_original);
-    aud_cfg_db_set_bool(db, FILEWRITER_CFGID, "filenamefromtags", filenamefromtags);
-    aud_cfg_db_set_bool(db, FILEWRITER_CFGID, "use_suffix", use_suffix);
-    aud_cfg_db_set_bool(db, FILEWRITER_CFGID, "prependnumber", prependnumber);
+    aud_cfg_db_set_int(db, "filewriter", "fileext", fileext);
+    aud_cfg_db_set_string(db, "filewriter", "file_path", file_path);
+    aud_cfg_db_set_bool(db, "filewriter", "save_original", save_original);
+    aud_cfg_db_set_bool(db, "filewriter", "filenamefromtags", filenamefromtags);
+    aud_cfg_db_set_bool(db, "filewriter", "use_suffix", use_suffix);
+    aud_cfg_db_set_bool(db, "filewriter", "prependnumber", prependnumber);
 
     aud_cfg_db_close(db);
 
