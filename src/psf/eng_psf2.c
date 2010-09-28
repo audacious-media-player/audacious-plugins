@@ -49,6 +49,7 @@
 
 #include "ao.h"
 #include "eng_protos.h"
+#include "cpuintrf.h"
 #include "psx.h"
 
 #include "peops2/stdafx.h"
