@@ -25,10 +25,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <float.h>
-#include <dlfcn.h>
 #include <dirent.h>
 #include <sys/types.h>
 #include <gtk/gtk.h>
+#include <gmodule.h>
 
 #include <audacious/configdb.h>
 #include <audacious/i18n.h>
@@ -235,18 +235,20 @@ static plugin_instance *load(char *filename, long int num)
     instance = g_new0(plugin_instance, 1);
 
     instance->filename = filename;
-    instance->library = dlopen(filename, RTLD_NOW);
+    instance->library = g_module_open(filename, RTLD_NOW);
+
     if (instance->library == NULL)
     {
-	g_free(instance);
-	return NULL;
+        g_free(instance);
+        return NULL;
     }
-    descriptor_fn = dlsym(instance->library, "ladspa_descriptor");
-    if (descriptor_fn == NULL)
+
+    if (!g_module_symbol(instance->library, "ladspa_descriptor", (gpointer *)&descriptor_fn))
     {
-	g_free(instance);
-	return NULL;
+        g_free(instance);
+        return NULL;
     }
+
     instance->descriptor = descriptor_fn(num);
 
     return instance;
@@ -269,7 +271,7 @@ static void unload(plugin_instance * instance)
 
     if (instance->library)
     {
-	dlclose(instance->library);
+	g_module_close(instance->library);
     }
 }
 
@@ -529,15 +531,15 @@ static void find_plugins(char *path_entry)
     while ((dirent = readdir(dir)))
     {
 	snprintf(lib_name, PATH_MAX, "%s/%s", path_entry, dirent->d_name);
-	library = dlopen(lib_name, RTLD_LAZY);
+	library = g_module_open(lib_name, RTLD_LAZY);
 	if (library == NULL)
 	{
 	    continue;
 	}
-	descriptor_fn = dlsym(library, "ladspa_descriptor");
-	if (descriptor_fn == NULL)
+
+	if (!g_module_symbol(library, "ladspa_descriptor", (gpointer *)&descriptor_fn))
 	{
-	    dlclose(library);
+	    g_module_close(library);
 	    continue;
 	}
 
@@ -576,7 +578,7 @@ static void find_plugins(char *path_entry)
 	    }
 	    plugin_list = g_slist_prepend(plugin_list, plugin);
 	}
-	dlclose(library);
+	g_module_close(library);
     }
 
     closedir(dir);
