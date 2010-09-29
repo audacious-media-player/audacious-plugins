@@ -62,6 +62,39 @@ GeneralPlugin sc_gp =
 GeneralPlugin *songchange_gplist[] = { &sc_gp, NULL };
 SIMPLE_GENERAL_PLUGIN(songchange, songchange_gplist);
 
+/**
+ * Escapes characters that are special to the shell inside double quotes.
+ *
+ * @param string String to be escaped.
+ * @return Given string with special characters escaped. Must be freed with g_free().
+ */
+static gchar *
+escape_shell_chars(const gchar * string)
+{
+    const gchar *special = "$`\"\\";    /* Characters to escape */
+    const gchar *in = string;
+    gchar *out, *escaped;
+    gint num = 0;
+
+    while (*in != '\0')
+        if (strchr(special, *in++))
+            num++;
+
+    escaped = g_malloc(strlen(string) + num + 1);
+
+    in = string;
+    out = escaped;
+
+    while (*in != '\0') {
+        if (strchr(special, *in))
+            *out++ = '\\';
+        *out++ = *in++;
+    }
+    *out = '\0';
+
+    return escaped;
+}
+
 static void bury_child(int signal)
 {
 	waitpid(-1, NULL, WNOHANG);
