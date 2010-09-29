@@ -34,7 +34,7 @@ static audio_buf_info oss_buffer_info;
 static gint oss_delay; /* miliseconds */
 static gboolean oss_ioctl_vol = FALSE;
 
-OutputPluginInitStatus oss_init(void)
+gboolean oss_init(void)
 {
     AUDDBG("Init.\n");
 
@@ -51,9 +51,9 @@ OutputPluginInitStatus oss_init(void)
     oss_config_load();
 
     if (oss_hardware_present())
-        return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+        return TRUE;
     else
-        return OUTPUT_PLUGIN_INIT_NO_DEVICES;
+        return FALSE;
 }
 
 void oss_cleanup(void)
@@ -237,16 +237,18 @@ void oss_write_audio(void *data, gint length)
     }
 }
 
-gint oss_buffer_playing(void)
+void oss_drain(void)
 {
-    AUDDBG("Buffer playing.\n");
+    AUDDBG("Drain.\n");
 
     ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
 
-    if ((oss_buffer_info.fragstotal * oss_buffer_info.fragsize) - oss_buffer_info.bytes > oss_buffer_info.fragsize)
-        return TRUE;
-
-    return FALSE;
+    while ((oss_buffer_info.fragstotal * oss_buffer_info.fragsize) - oss_buffer_info.bytes > oss_buffer_info.fragsize)
+    {
+        AUDDBG("Buffer left: %d\n", (oss_buffer_info.fragstotal * oss_buffer_info.fragsize) - oss_buffer_info.bytes);
+        ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
+        g_usleep(20000);
+    }
 }
 
 gint oss_buffer_free(void)
@@ -304,7 +306,7 @@ void oss_flush(gint time)
     oss_paused_time = time;
 }
 
-void oss_pause(gshort pause)
+void oss_pause(gboolean pause)
 {
     AUDDBG("%sause.\n", pause ? "P" : "Unp");
 

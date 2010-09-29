@@ -92,18 +92,18 @@ extern oss_cfg_t *oss_cfg;
 extern gchar *oss_message;
 
 /* oss.c */
-OutputPluginInitStatus oss_init(void);
+gboolean oss_init(void);
 void oss_cleanup(void);
 gint oss_open_audio(gint aud_format, gint rate, gint channels);
 void oss_close_audio(void);
 void oss_write_audio(void *data, gint length);
-gint oss_buffer_playing(void);
+void oss_drain(void);
 gint oss_buffer_free(void);
 void oss_set_written_time(gint time);
 gint oss_written_time(void);
 gint oss_output_time(void);
 void oss_flush(gint time);
-void oss_pause(gshort pause);
+void oss_pause(gboolean pause);
 void oss_get_volume(gint *left, gint *right);
 void oss_set_volume(gint left, gint right);
 
