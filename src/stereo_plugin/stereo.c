@@ -11,7 +11,7 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-static void init(void);
+static gboolean init (void);
 static void about(void);
 static void configure(void);
 
@@ -47,13 +47,14 @@ EffectPlugin *stereo_eplist[] = { &stereo_ep, NULL };
 
 DECLARE_PLUGIN(stereo, NULL, NULL, NULL, NULL, stereo_eplist, NULL, NULL, NULL);
 
-static void init(void)
+static gboolean init (void)
 {
 	mcs_handle_t *db;
 	db = aud_cfg_db_open();
 	if (!aud_cfg_db_get_double(db, "extra_stereo", "intensity", &value))
 		value = 2.5;
 	aud_cfg_db_close(db);
+	return TRUE;
 }
 
 static void about (void)

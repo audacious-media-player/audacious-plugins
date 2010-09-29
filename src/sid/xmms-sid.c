@@ -137,7 +137,7 @@ void xs_reinit(void)
 /*
  * Initialize XMMS-SID
  */
-void xs_init(void)
+gboolean xs_init (void)
 {
     XSDEBUG("xs_init()\n");
 
@@ -148,7 +148,7 @@ void xs_init(void)
     /* Initialize subsystems */
     xs_reinit();
 
-    XSDEBUG("OK\n");
+    return TRUE;
 }
 
 

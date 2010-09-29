@@ -73,14 +73,14 @@ static gint16 tmp_pcm_data[2][512];
 static gint16 tmp_freq_data[2][256];
 
 /* XMMS interface */
-static void pn_xmms_init (void);
+static gboolean pn_xmms_init (void);
 static void pn_xmms_cleanup (void);
 static void pn_xmms_about (void);
 static void pn_xmms_configure (void);
 static void pn_xmms_render_pcm (gint16 data[2][512]);
 static void pn_xmms_render_freq (gint16 data[2][256]);
 
-static VisPlugin pn_vp = 
+static VisPlugin pn_vp =
 {
   .description = "Paranormal Visualization Studio",
   .num_pcm_chs_wanted = 2,
@@ -214,8 +214,7 @@ quit_timeout_fn (gpointer data)
   return TRUE;
 }
 
-static void
-pn_xmms_init (void)
+static gboolean pn_xmms_init (void)
 {
   /* If it isn't already loaded, load the run control */
   if (! pn_rc)
@@ -236,6 +235,8 @@ pn_xmms_init (void)
   /* Add a gtk timeout to test for quits */
   quit_timeout = gtk_timeout_add (1000, quit_timeout_fn, NULL);
   timeout_set = TRUE;
+
+  return TRUE;
 }
 
 static void

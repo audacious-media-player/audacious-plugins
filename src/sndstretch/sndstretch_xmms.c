@@ -40,7 +40,7 @@
 
 #define SNDSTRETCH_VERSION_STRING "0.7"
 
-void sndstretch_init           (void);
+gboolean sndstretch_init (void);
 void sndstretch_about          (void);
 void sndstretch_config         (void);
 
@@ -417,8 +417,7 @@ void sndstretch_config(void)
 	gtk_widget_show_all(sndstretch_config_dialog);
 }
 
-
-void sndstretch_init(void)
+gboolean sndstretch_init (void)
 {
 	mcs_handle_t *db;
 
@@ -447,6 +446,8 @@ void sndstretch_init(void)
 	if (aud_cfg_db_get_bool(db, "sndstretch", "volume_corr", &b))
 		SS.volume_corr = b;
 	aud_cfg_db_close(db);
+
+	return TRUE;
 }
 
 static gboolean initted = FALSE;

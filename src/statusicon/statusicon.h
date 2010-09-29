@@ -57,12 +57,6 @@ typedef struct
 
 extern si_cfg_t si_cfg;
 
-/* statusicon.c */
-void si_init(void);
-void si_cleanup(void);
-void si_config(void);
-void si_about(void);
-
 /* util.c */
 void si_volume_change(gint);
 void si_playback_skip(gint);

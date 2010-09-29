@@ -26,7 +26,6 @@
 
 #define M4A_MAGIC     (unsigned char [11]) { 0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x4D, 0x34, 0x41 }
 
-static void        mp4_init(void);
 static void        mp4_about(void);
 static gboolean    mp4_play(InputPlayback * playback, const gchar * filename,
              VFSFile * file, gint start_time, gint stop_time, gboolean pause);
@@ -71,12 +70,13 @@ static guint32 mp4_seek_callback (void * data, guint64 pos)
     return vfs_fseek((VFSFile *) data, pos, SEEK_SET);
 }
 
-static void mp4_init(void)
+static gboolean mp4_init (void)
 {
     mp4cfg.file_type = FILE_UNKNOWN;
 
     seek_mutex = g_mutex_new ();
     seek_cond = g_cond_new ();
+    return TRUE;
 }
 
 static gboolean mp4_play(InputPlayback * playback, const gchar * filename,

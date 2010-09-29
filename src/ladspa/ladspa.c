@@ -69,7 +69,7 @@ typedef struct
     LADSPA_Data knobs[MAX_KNOBS];
 } plugin_instance;
 
-static void start(void);
+static gboolean start (void);
 static void stop(void);
 static void configure(void);
 
@@ -116,7 +116,7 @@ static struct
 
 static GtkWidget *config_window = NULL, *run_clist = NULL;
 
-static void start(void)
+static gboolean start (void)
 {
     if (state.initialised == FALSE)
     {
@@ -127,6 +127,7 @@ static void start(void)
 	reboot_plugins();
     }
     state.running = TRUE;
+    return TRUE;
 }
 
 static void restore(void)

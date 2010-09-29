@@ -347,14 +347,14 @@ lyricwiki_playback_began(void)
 	get_lyrics_step_1(tu);
 }
 
-static void
-init(void)
+static gboolean init (void)
 {
 	hook_associate("playback begin", (HookFunction) lyricwiki_playback_began, NULL);
 
 	build_widget();
 
 	lyricwiki_playback_began();
+	return TRUE;
 }
 
 static void

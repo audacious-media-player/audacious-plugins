@@ -29,7 +29,7 @@
 
 static PluginPreferences preferences;
 
-static void init(void);
+static gboolean init (void);
 static void cleanup(void);
 static void songchange_playback_begin(gpointer unused, gpointer unused2);
 static void songchange_playback_end(gpointer unused, gpointer unused2);
@@ -317,7 +317,7 @@ static int check_command(char *command)
 	return 0;
 }
 
-static void init(void)
+static gboolean init (void)
 {
 	read_config();
 
@@ -329,6 +329,8 @@ static void init(void)
 	ttc_prevs->title = NULL;
 	ttc_prevs->filename = NULL;
 //	hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
+
+	return TRUE;
 }
 
 static void

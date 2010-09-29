@@ -251,7 +251,8 @@ fail:
         pa_threaded_mainloop_unlock(mainloop);
 }
 
-static void pulse_pause(short b) {
+static void pulse_pause (gboolean b)
+{
     pa_operation *o = NULL;
     int success = 0;
 
@@ -676,13 +677,13 @@ fail:
     return FALSE;
 }
 
-static OutputPluginInitStatus pulse_init (void)
+static gboolean pulse_init (void)
 {
     if (! pulse_open (FMT_S16_NE, 44100, 2))
-        return OUTPUT_PLUGIN_INIT_FAIL;
+        return FALSE;
 
     pulse_close ();
-    return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+    return TRUE;
 }
 
 static void pulse_about(void) {

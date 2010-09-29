@@ -55,7 +55,7 @@ static void oss_about (void)
      "USA."));
 }
 
-static OutputPluginInitStatus oss_init(void)
+static gboolean oss_init (void)
 {
     mcs_handle_t *db;
 
@@ -84,7 +84,7 @@ static OutputPluginInitStatus oss_init(void)
         aud_cfg_db_close(db);
     }
 
-    return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+    return TRUE;
 }
 
 static void oss_cleanup(void)
@@ -115,10 +115,8 @@ static OutputPlugin oss_op = {
     .flush = oss_flush,
     .pause = oss_pause,
     .buffer_free = oss_free,
-    .buffer_playing = oss_playing,
     .output_time = oss_get_output_time,
     .written_time = oss_get_written_time,
-    .tell_audio = oss_tell
 };
 
 static OutputPlugin *oss_oplist[] = { &oss_op, NULL };

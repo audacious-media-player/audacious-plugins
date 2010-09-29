@@ -152,6 +152,7 @@ static gint jack_get_output_time(void)
 /* returns TRUE if we are currently playing */
 /* NOTE: this was confusing at first BUT, if the device is open and there */
 /* is no more audio to be played, then the device is NOT PLAYING */
+#if 0
 static gint jack_playing(void)
 {
   gint return_val;
@@ -171,7 +172,7 @@ static gint jack_playing(void)
   TRACE("returning %d\n", return_val);
   return return_val;
 }
-
+#endif
 
 void jack_set_port_connection_mode()
 {
@@ -193,7 +194,7 @@ void jack_set_port_connection_mode()
 }
 
 /* Initialize necessary things */
-static OutputPluginInitStatus jack_init(void)
+static gboolean jack_init (void)
 {
   /* read the isTraceEnabled setting from the config file */
   mcs_handle_t *cfgfile;
@@ -232,7 +233,7 @@ static OutputPluginInitStatus jack_init(void)
   output_opened = FALSE;
 
   /* Always return OK, as we don't know about physical devices here */
-  return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+  return TRUE;
 }
 
 
@@ -414,7 +415,7 @@ static void jack_flush(gint ms_offset_time)
 
 
 /* Pause the jack device */
-static void jack_pause(short p)
+static void jack_pause (gboolean p)
 {
   TRACE("p == %d\n", p);
 
@@ -445,13 +446,6 @@ static void jack_about(void)
     }
 }
 
-static void jack_tell_audio(gint * fmt, gint * srate, gint * nch)
-{
-    (*fmt) = input.format;
-    (*srate) = input.frequency;
-    (*nch) = input.channels;
-}
-
 OutputPlugin jack_op =
 {
     .description = "JACK Output Plugin 0.17",
@@ -467,10 +461,8 @@ OutputPlugin jack_op =
     .flush = jack_flush,
     .pause = jack_pause,
     .buffer_free = audacious_jack_free,
-    .buffer_playing = jack_playing,
     .output_time = jack_get_output_time,
     .written_time = jack_get_written_time,
-    .tell_audio = jack_tell_audio
 };
 
 OutputPlugin *jack_oplist[] = { &jack_op, NULL };

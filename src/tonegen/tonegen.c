@@ -40,9 +40,10 @@
 
 static InputPlugin tone_ip;
 
-static void tone_init(void)
+static gboolean tone_init (void)
 {
     aud_uri_set_plugin("tone://", &tone_ip);
+    return TRUE;
 }
 
 static void tone_about (void)

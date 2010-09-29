@@ -60,10 +60,11 @@ static void reset (void)
     output_size = 0;
 }
 
-void crossfade_init (void)
+int crossfade_init (void)
 {
     AUDDBG ("Init.\n");
     crossfade_config_load ();
+    return 1;
 }
 
 void crossfade_cleanup (void)

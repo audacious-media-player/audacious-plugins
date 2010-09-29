@@ -340,12 +340,12 @@ static void si_enable(gboolean enable)
     }
 }
 
-void si_init(void)
+static gboolean si_init (void)
 {
     plugin_active = TRUE;
     si_cfg_load();
     si_enable(TRUE);
-    return;
+    return TRUE;
 }
 
 void si_cleanup(void)

@@ -79,8 +79,7 @@ static off_t replace_lseek (void * file, off_t to, int whence)
 }
 
 /** plugin glue **/
-static void
-aud_mpg123_init(void)
+static gboolean aud_mpg123_init (void)
 {
 	AUDDBG("initializing mpg123 library\n");
 	mpg123_init();
@@ -88,6 +87,8 @@ aud_mpg123_init(void)
 	AUDDBG("initializing control mutex\n");
 	ctrl_mutex = g_mutex_new();
 	ctrl_cond = g_cond_new();
+
+	return TRUE;
 }
 
 static void

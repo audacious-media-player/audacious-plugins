@@ -187,7 +187,7 @@ static void do_compress (float * * data, int * samples, char finish)
     * samples = output_filled;
 }
 
-void compressor_init (void)
+int compressor_init (void)
 {
     compressor_config_load ();
 
@@ -195,6 +195,8 @@ void compressor_init (void)
     output = NULL;
     output_size = 0;
     peaks = NULL;
+
+    return 1;
 }
 
 void compressor_cleanup (void)

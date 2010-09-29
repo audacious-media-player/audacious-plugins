@@ -559,8 +559,7 @@ static void vorbis_aboutbox (void)
 
 static InputPlugin vorbis_ip;
 
-static void
-vorbis_init(void)
+static gboolean vorbis_init (void)
 {
     mcs_handle_t *db;
     gchar *tmp = NULL;
@@ -609,6 +608,8 @@ vorbis_init(void)
     seek_cond = g_cond_new();
 
     aud_mime_set_plugin("application/ogg", &vorbis_ip);
+
+    return TRUE;
 }
 
 static void

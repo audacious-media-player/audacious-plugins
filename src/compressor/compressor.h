@@ -22,7 +22,7 @@ extern float compressor_center, compressor_range;
 void compressor_config_load (void);
 void compressor_config_save (void);
 
-void compressor_init (void);
+int compressor_init (void);
 void compressor_cleanup (void);
 void compressor_start (int * channels, int * rate);
 void compressor_process (float * * data, int * samples);

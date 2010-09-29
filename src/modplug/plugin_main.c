@@ -1,6 +1,6 @@
 #include <audacious/plugin.h>
 
-void Init(void);
+gboolean Init (void);
 void ShowAboutBox(void);
 void ShowConfigureBox(void);
 gboolean PlayFile(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause);

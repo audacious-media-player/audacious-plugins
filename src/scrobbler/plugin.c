@@ -161,9 +161,10 @@ void stop(void) {
 	hook_dissociate("playback stop", aud_hook_playback_end);
 }
 
-static void init(void)
+static gboolean init(void)
 {
     start();
+    return TRUE;
 }
 
 static void cleanup(void)

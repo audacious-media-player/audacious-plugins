@@ -54,7 +54,7 @@ typedef struct
 update_thread_data_t;
 
 
-static void sb_init ();
+static gboolean sb_init (void);
 static void sb_about ();
 static void sb_configure ();
 static void sb_cleanup ();
@@ -316,11 +316,12 @@ gboolean mystrcasestr (const char *haystack, const char *needle)
 }
 
 
-static void sb_init ()
+static gboolean sb_init (void)
 {
     AUDDBG("sb_init()\n");
     config_load ();
     gui_init ();
+    return TRUE;
 }
 
 static void sb_about (void)

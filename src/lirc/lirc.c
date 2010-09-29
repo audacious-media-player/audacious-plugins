@@ -104,12 +104,13 @@ void init_lirc(void)
 	fflush(stdout);
 }
 
-void init(void)
+gboolean init (void)
 {
 	load_cfg();
 	init_lirc();
 	track_no_pos=0;
 	tid=0;
+	return TRUE;
 }
 
 gboolean reconnect_lirc(gpointer data)

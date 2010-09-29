@@ -34,7 +34,7 @@
 #define D_WIDTH 256
 #define D_HEIGHT 128
 
-static void bscope_init(void);
+static gboolean bscope_init (void);
 static void bscope_cleanup(void);
 static void bscope_playback_stop(void);
 static void bscope_render_pcm(gint16 data[2][512]);
@@ -62,11 +62,12 @@ static GtkWidget * area = NULL;
 static gint width, height, stride, image_size;
 static guint32 * image = NULL, * corner = NULL;
 
-static void bscope_init (void)
+static gboolean bscope_init (void)
 {
     mcs_handle_t * db = aud_cfg_db_open ();
     aud_cfg_db_get_int (db, "BlurScope", "color", & color);
     aud_cfg_db_close (db);
+    return TRUE;
 }
 
 static void bscope_cleanup (void)

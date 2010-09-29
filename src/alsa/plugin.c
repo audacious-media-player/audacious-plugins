@@ -22,10 +22,12 @@
 #include <gtk/gtk.h>
 
 #include <audacious/i18n.h>
+#include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "alsa.h"
+#include "config.h"
 
 static OutputPlugin plugin =
 {

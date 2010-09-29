@@ -14,10 +14,11 @@ extern "C" {
 
 extern InputPlugin gModPlug;
 
-void Init(void)
+gboolean Init (void)
 {
     gModplugXMMS.SetInputPlugin(gModPlug);
     gModplugXMMS.Init();
+    return TRUE;
 }
 
 gint CanPlayFileFromVFS(const char* aFilename, VFSFile *VFSFile)

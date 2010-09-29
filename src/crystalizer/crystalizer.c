@@ -26,7 +26,7 @@
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 
-static void init(void);
+static gboolean init (void);
 static void configure(void);
 static void cryst_start (gint * channels, gint * rate);
 static void cryst_process (gfloat * * data, gint * samples);
@@ -58,13 +58,14 @@ EffectPlugin *crystalizer_eplist[] = { &crystalizer_ep, NULL };
 
 DECLARE_PLUGIN(crystalizer, NULL, NULL, NULL, NULL, crystalizer_eplist, NULL, NULL, NULL);
 
-static void init(void)
+static gboolean init (void)
 {
 	mcs_handle_t *db;
 	db = aud_cfg_db_open();
 	if (!aud_cfg_db_get_double(db, "crystalizer", "intensity", &value))
 		value = 1.0;
 	aud_cfg_db_close(db);
+	return TRUE;
 }
 
 /* conf dialog stuff stolen from stereo plugin --nenolod */

@@ -91,15 +91,14 @@ const Tuple *tuple = NULL;
 
 static gint64 samples_written;
 
-static OutputPluginInitStatus file_init(void);
+static gboolean file_init (void);
 static void file_about(void);
 static gint file_open(gint fmt, gint rate, gint nch);
 static void file_write(void *ptr, gint length);
 static gint file_write_output(void *ptr, gint length);
 static void file_close(void);
 static void file_flush(gint time);
-static void file_pause(short p);
-static gint file_playing(void);
+static void file_pause (gboolean p);
 static gint file_get_time (void);
 static void file_configure(void);
 
@@ -115,7 +114,6 @@ OutputPlugin file_op =
     .close_audio = file_close,
     .flush = file_flush,
     .pause = file_pause,
-    .buffer_playing = file_playing,
     .output_time = file_get_time,
     .written_time = file_get_time,
 };
@@ -145,7 +143,7 @@ static void set_plugin(void)
     plugin = plugins[fileext];
 }
 
-static OutputPluginInitStatus file_init(void)
+static gboolean file_init (void)
 {
     mcs_handle_t *db;
 
@@ -160,16 +158,16 @@ static OutputPluginInitStatus file_init(void)
 
     if (file_path == NULL)
     {
-        g_return_val_if_fail (getenv ("HOME") != NULL, OUTPUT_PLUGIN_INIT_FAIL);
+        g_return_val_if_fail (getenv ("HOME") != NULL, FALSE);
         file_path = g_filename_to_uri (getenv ("HOME"), NULL, NULL);
-        g_return_val_if_fail (file_path != NULL, OUTPUT_PLUGIN_INIT_FAIL);
+        g_return_val_if_fail (file_path != NULL, FALSE);
     }
 
     set_plugin();
     if (plugin->init)
         plugin->init(&file_write_output);
 
-    return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+    return TRUE;
 }
 
 void file_about (void)
@@ -341,13 +339,8 @@ static void file_flush(gint time)
     samples_written = time * (gint64) input.channels * input.frequency / 1000;
 }
 
-static void file_pause(short p)
+static void file_pause (gboolean p)
 {
-}
-
-static gint file_playing(void)
-{
-    return 0;
 }
 
 static gint file_get_time (void)

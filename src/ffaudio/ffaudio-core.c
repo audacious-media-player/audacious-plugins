@@ -41,8 +41,7 @@ static GMutex *ctrl_mutex = NULL;
 static GCond *ctrl_cond = NULL;
 static gint64 seek_value = -1;
 
-static void
-ffaudio_init(void)
+static gboolean ffaudio_init (void)
 {
     avcodec_init();
     av_register_all();
@@ -58,7 +57,7 @@ ffaudio_init(void)
     tag_init();
 #endif
 
-    AUDDBG("initialization completed\n");
+    return TRUE;
 }
 
 static void

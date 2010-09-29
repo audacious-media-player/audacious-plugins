@@ -26,7 +26,7 @@
 
 #include <gtk/gtk.h>
 
-void init(void);
+gboolean init (void);
 void cleanup(void);
 void about(void);
 

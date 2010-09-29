@@ -22,7 +22,7 @@ void console_play_file(InputPlayback *playback);
 void console_seek(InputPlayback *data, gint time);
 void console_stop(InputPlayback *playback);
 void console_pause(InputPlayback * playback, gshort p);
-void console_init(void);
+gboolean console_init (void);
 void console_cleanup(void);
 
 static void console_aboutbox (void)

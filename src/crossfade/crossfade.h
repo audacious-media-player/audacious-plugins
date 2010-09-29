@@ -24,7 +24,7 @@ void crossfade_config_save (void);
 void crossfade_show_channels_message (void);
 void crossfade_show_rate_message (void);
 
-void crossfade_init (void);
+int crossfade_init (void);
 void crossfade_cleanup (void);
 void crossfade_start (int * channels, int * rate);
 void crossfade_process (float * * data, int * samples);

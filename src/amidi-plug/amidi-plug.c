@@ -40,10 +40,11 @@ static GCond * audio_control_cond;
 static gboolean audio_stop_flag, audio_pause_flag;
 static gint audio_seek_time;
 
-static void amidiplug_init (void)
+static gboolean amidiplug_init (void)
 {
     init_mutex = g_mutex_new ();
     initted = FALSE;
+    return TRUE;
 }
 
 static void soft_init (void)

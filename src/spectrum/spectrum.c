@@ -53,7 +53,7 @@ static gint16 bar_heights[WIDTH];
 /*static gint timeout_tag;*/
 static gdouble scale, x00, y00;
 
-static void fsanalyzer_init(void);
+static gboolean fsanalyzer_init (void);
 static void fsanalyzer_cleanup(void);
 static void fsanalyzer_playback_start(void);
 static void fsanalyzer_playback_stop(void);
@@ -78,12 +78,10 @@ static void fsanalyzer_destroy_cb(GtkWidget *w,gpointer data) {
 	fsanalyzer_vp.disable_plugin(&fsanalyzer_vp);
 }
 
-static void fsanalyzer_init(void) {
+static gboolean fsanalyzer_init (void)
+{
 	GdkColor color;
 	int i;
-
-	if(window)
-		return;
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(window), _("Spectrum Analyzer"));
@@ -139,6 +137,8 @@ static void fsanalyzer_init(void) {
 	gtk_widget_show(window);
 	gdk_window_clear(window->window);
 	gdk_window_clear(area->window);
+
+	return TRUE;
 }
 
 static void fsanalyzer_cleanup(void) {

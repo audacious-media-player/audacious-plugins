@@ -53,7 +53,7 @@
 
 
 /* func defs */
-static void init (void);
+static gboolean init (void);
 static void cleanup (void);
 
 
@@ -86,13 +86,14 @@ PluginConfig* get_config(void)
 /*
  * plugin activated
  */
-static void init (void)
+static gboolean init (void)
 {
 	setup_filter();
 	load_config ( );
 	grab_keys ( );
 
 	loaded = TRUE;
+	return TRUE;
 }
 
 /* handle keys */

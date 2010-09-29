@@ -125,10 +125,11 @@ close_sndfile(SNDFILE *snd_file, VFSFile *vfsfile)
 
 /* Plugin initialization
  */
-static void plugin_init (void)
+static gboolean plugin_init (void)
 {
     control_mutex = g_mutex_new ();
     control_cond = g_cond_new ();
+    return TRUE;
 }
 
 static void plugin_cleanup (void)

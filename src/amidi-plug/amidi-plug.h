@@ -61,7 +61,7 @@ static const gchar * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi",
 
 gpointer amidiplug_play_loop( gpointer );
 void amidiplug_skipto( gint );
-static void amidiplug_init( void );
+static gboolean amidiplug_init (void);
 static void amidiplug_cleanup( void );
 static void amidiplug_aboutbox( void );
 static void amidiplug_configure( void );

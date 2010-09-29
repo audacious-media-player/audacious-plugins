@@ -971,7 +971,7 @@ static void *alarm_start_thread(void *args)
  * opens the config file and reads the value, creates a new
  * config in memory if the file doesnt exist and sets default vals
  */
-static void alarm_init()
+static gboolean alarm_init (void)
 {
    AUDDBG("alarm_init\n");
 
@@ -980,6 +980,8 @@ static void alarm_init()
 
    /* start the main thread running */
    start_tid = alarm_thread_create(alarm_start_thread, NULL, 1);
+
+   return TRUE;
 }
 
 /*

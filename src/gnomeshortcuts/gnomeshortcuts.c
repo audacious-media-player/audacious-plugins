@@ -34,7 +34,7 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-static void init (void);
+static gboolean init (void);
 static void about (void);
 static void cleanup (void);
 void gnome_remote_init();
@@ -309,10 +309,11 @@ static void about (void)
      "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"));
 }
 
-static void init (void)
+static gboolean init (void)
 {
 	gnome_remote_init();
 	loaded = TRUE;
+	return TRUE;
 }
 
 static void cleanup (void)

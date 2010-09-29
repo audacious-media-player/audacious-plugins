@@ -36,8 +36,7 @@ gboolean plugin_is_active = FALSE;
 /* ***************** */
 /* plug-in functions */
 
-void
-aosd_init ( void )
+gboolean aosd_init (void)
 {
   plugin_is_active = TRUE;
   g_log_set_handler( NULL , G_LOG_LEVEL_WARNING , g_log_default_handler , NULL );
@@ -49,7 +48,7 @@ aosd_init ( void )
 
   aosd_trigger_start( &global_config->osd->trigger );
 
-  return;
+  return TRUE;
 }
 
 

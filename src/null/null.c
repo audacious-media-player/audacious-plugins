@@ -43,13 +43,13 @@ static struct {
 
 #define ELAPSED_TIME (offset_time + g_timer_elapsed(timer, NULL) * 1000)
 
-static OutputPluginInitStatus null_init(void)
+static gboolean null_init (void)
 {
 	mcs_handle_t *db;
 	db = aud_cfg_db_open();
 	aud_cfg_db_get_bool(db, "null", "real_time", &real_time);
 	aud_cfg_db_close(db);
-	return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+	return TRUE;
 }
 
 static void null_about(void)
@@ -172,7 +172,7 @@ static void null_flush(int time)
 		g_timer_reset(timer);
 }
 
-static void null_pause(short p)
+static void null_pause (gboolean p)
 {
 	paused = p;
 	if (!timer)
@@ -202,6 +202,7 @@ static int null_buffer_free(void)
 	}
 }
 
+#if 0
 static int null_playing(void)
 {
 	if (!timer)
@@ -211,6 +212,7 @@ static int null_playing(void)
 		return TRUE;
 	return FALSE;
 }
+#endif
 
 static int null_get_written_time(void)
 {
@@ -240,7 +242,6 @@ OutputPlugin null_op =
 	.flush = null_flush,
 	.pause = null_pause,
 	.buffer_free = null_buffer_free,
-	.buffer_playing = null_playing,
 	.output_time = null_get_output_time,
 	.written_time = null_get_written_time,
 };

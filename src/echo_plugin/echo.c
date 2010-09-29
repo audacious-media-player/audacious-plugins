@@ -11,7 +11,7 @@
 #include "echo.h"
 
 
-static void init(void);
+static gboolean init (void);
 static void cleanup(void);
 
 #define MAX_SRATE 50000
@@ -25,7 +25,7 @@ static gfloat *buffer = NULL;
 gint echo_delay = 500, echo_feedback = 50, echo_volume = 50;
 static int w_ofs;
 
-static void init(void)
+static gboolean init (void)
 {
 	mcs_handle_t *cfg;
 
@@ -34,6 +34,8 @@ static void init(void)
 	aud_cfg_db_get_int(cfg, "echo_plugin", "feedback", &echo_feedback);
 	aud_cfg_db_get_int(cfg, "echo_plugin", "volume", &echo_volume);
 	aud_cfg_db_close(cfg);
+
+	return TRUE;
 }
 
 static void cleanup(void)

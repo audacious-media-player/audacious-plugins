@@ -1,6 +1,6 @@
 #include <audacious/plugin.h>
 
-void adplug_init(void);
+gboolean adplug_init (void);
 void adplug_quit(void);
 void adplug_about(void);
 void adplug_config(void);

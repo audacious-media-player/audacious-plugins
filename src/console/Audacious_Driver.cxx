@@ -365,11 +365,12 @@ extern "C" void console_pause(InputPlayback * playback, gshort p)
     playback->output->pause(p);
 }
 
-extern "C" void console_init(void)
+extern "C" gboolean console_init (void)
 {
     console_cfg_load();
     seek_mutex = g_mutex_new();
     seek_cond = g_cond_new();
+    return TRUE;
 }
 
 extern "C" void console_cleanup(void)

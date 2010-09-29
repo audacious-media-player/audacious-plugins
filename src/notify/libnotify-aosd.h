@@ -22,6 +22,6 @@
 #include <audacious/plugin.h>
 
 // Prototypes
-void plugin_init();
+gboolean plugin_init (void);
 void plugin_cleanup();
 void plugin_about();

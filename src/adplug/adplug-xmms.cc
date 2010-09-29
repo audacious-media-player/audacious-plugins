@@ -991,8 +991,7 @@ extern "C" void adplug_mseek (InputPlayback * data, gulong time)
 
 #define CFG_VERSION "AdPlug"
 
-extern "C" void
-adplug_init (void)
+extern "C" gboolean adplug_init (void)
 {
   dbg_printf ("adplug_init(): open, ");
   mcs_handle_t *db = aud_cfg_db_open ();
@@ -1046,6 +1045,7 @@ adplug_init (void)
 
   control_mutex = g_mutex_new ();
   control_cond = g_cond_new ();
+  return TRUE;
 }
 
 extern "C" void

@@ -54,16 +54,14 @@ void oss_configure(void);
 void oss_get_volume(int *l, int *r);
 void oss_set_volume(int l, int r);
 
-int oss_playing(void);
 int oss_free(void);
 void oss_write(void *ptr, int length);
 void oss_close(void);
 void oss_flush(int time);
-void oss_pause(short p);
+void oss_pause (gboolean p);
 int oss_open(gint fmt, int rate, int nch);
 int oss_get_output_time(void);
 int oss_get_written_time(void);
 void oss_set_audio_params(void);
-void oss_tell(gint * fmt, gint * rate, gint * nch);
 
 #endif

@@ -34,32 +34,35 @@ enum type {
 static int fd, last, state;
 static enum type type;
 
-static void rocklight_init(void) {
+static gboolean rocklight_init (void)
+{
 	type = NONE;
 
 	fd = open("/proc/acpi/ibm/light", O_RDWR);
 	if (fd >= 0) {
 		type = THINKLIGHT;
-		return;
+		return TRUE;
 	}
 
 	fd = open("/sys/class/leds/pmu-front-led/brightness", O_RDWR);
 	if (fd >= 0) {
 		type = SYSLED;
-		return;
+		return TRUE;
 	}
 
 	fd = open("/sys/class/leds/smu-front-led/brightness", O_RDWR);
 	if (fd >= 0) {
 		type = SYSLED;
-		return;
+		return TRUE;
 	}
 
 	fd = open("/sys/class/leds/b43-phy0::tx/brightness", O_RDWR);
 	if (fd >= 0) {
 		type = B43LED;
-		return;
+		return TRUE;
 	}
+
+	return FALSE;
 }
 
 static void rocklight_cleanup(void) {

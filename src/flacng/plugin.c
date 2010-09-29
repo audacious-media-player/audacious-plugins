@@ -32,7 +32,7 @@ static GMutex *seek_mutex;
 static GCond *seek_cond;
 static gint seek_value;
 
-static void flac_init(void)
+static gboolean flac_init (void)
 {
     FLAC__StreamDecoderInitStatus ret;
 
@@ -41,13 +41,13 @@ static void flac_init(void)
     if ((main_info = init_callback_info()) == NULL)
     {
         ERROR("Could not initialize the main callback structure!\n");
-        return;
+        return FALSE;
     }
 
     if ((main_decoder = FLAC__stream_decoder_new()) == NULL)
     {
         ERROR("Could not create the main FLAC decoder instance!\n");
-        return;
+        return FALSE;
     }
 
     if (FLAC__STREAM_DECODER_INIT_STATUS_OK != (ret = FLAC__stream_decoder_init_stream(
@@ -64,7 +64,7 @@ static void flac_init(void)
     {
         ERROR("Could not initialize the main FLAC decoder: %s(%d)\n",
             FLAC__StreamDecoderInitStatusString[ret], ret);
-        return;
+        return FALSE;
     }
 
     seek_mutex = g_mutex_new();
@@ -72,6 +72,7 @@ static void flac_init(void)
 
     AUDDBG("Plugin initialized.\n");
     plugin_initialized = TRUE;
+    return TRUE;
 }
 
 static void flac_cleanup(void)

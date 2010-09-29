@@ -50,6 +50,7 @@
 
 #include <audacious/audconfig.h>
 #include <audacious/debug.h>
+#include <audacious/plugin.h>
 
 #include "alsa.h"
 
@@ -244,11 +245,11 @@ static int get_output_time (void)
      alsa_buffer_data_length) - get_delay ()) * 1000 / alsa_rate;
 }
 
-OutputPluginInitStatus alsa_init (void)
+int alsa_init (void)
 {
     alsa_handle = NULL;
     alsa_initted = 0;
-    return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+    return 1;
 }
 
 void alsa_soft_init (void)
@@ -555,7 +556,7 @@ FAILED:
     pthread_mutex_unlock (& alsa_mutex);
 }
 
-void alsa_pause (short pause)
+void alsa_pause (int pause)
 {
     AUDDBG ("%sause.\n", pause ? "P" : "Unp");
     pthread_mutex_lock (& alsa_mutex);

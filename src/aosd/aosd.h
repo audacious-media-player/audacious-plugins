@@ -28,7 +28,7 @@
 #include <glib.h>
 #include <audacious/plugin.h>
 
-void aosd_init ( void );
+gboolean aosd_init (void);
 void aosd_cleanup ( void );
 void aosd_configure ( void );
 void aosd_about ( void );

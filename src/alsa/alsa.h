@@ -20,11 +20,7 @@
 #ifndef AUDACIOUS_ALSA_H
 #define AUDACIOUS_ALSA_H
 
-#include "../../config.h"
-
 #include <stdio.h>
-
-#include <audacious/plugin.h>
 
 #define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
 #define ERROR_NOISY alsa_error
@@ -54,7 +50,7 @@ do { \
 } while (0)
 
 /* alsa.c */
-OutputPluginInitStatus alsa_init (void);
+int alsa_init (void);
 void alsa_soft_init (void);
 void alsa_cleanup (void);
 int alsa_open_audio (gint aud_format, int rate, int channels);
@@ -67,7 +63,7 @@ void alsa_set_written_time (int time);
 int alsa_written_time (void);
 int alsa_output_time (void);
 void alsa_flush (int time);
-void alsa_pause (short pause);
+void alsa_pause (int pause);
 void alsa_open_mixer (void);
 void alsa_close_mixer (void);
 void alsa_get_volume (int * left, int * right);

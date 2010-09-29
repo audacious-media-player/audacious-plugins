@@ -26,6 +26,7 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "alsa.h"
+#include "config.h"
 
 char * alsa_config_pcm = NULL, * alsa_config_mixer = NULL,
  * alsa_config_mixer_element = NULL;

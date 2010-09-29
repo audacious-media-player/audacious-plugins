@@ -374,11 +374,11 @@ wv_about_box()
     "Visit the Wavpack site at http://www.wavpack.com/\n"));
 }
 
-static void
-wv_init(void)
+static gboolean wv_init (void)
 {
     ctrl_mutex = g_mutex_new();
     ctrl_cond = g_cond_new();
+    return TRUE;
 }
 
 static void

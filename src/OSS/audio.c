@@ -184,6 +184,7 @@ oss_used(void)
     return buffer_size - (rd_index - wr_index);
 }
 
+#if 0
 gint
 oss_playing(void)
 {
@@ -194,6 +195,7 @@ oss_playing(void)
 
     return TRUE;
 }
+#endif
 
 gint
 oss_free(void)
@@ -271,8 +273,7 @@ oss_flush(gint time)
         g_usleep(10000);
 }
 
-void
-oss_pause(short p)
+void oss_pause (gboolean p)
 {
     if (p == TRUE)
         do_pause = TRUE;
@@ -450,11 +451,4 @@ oss_open(gint fmt, gint rate, gint nch)
     buffer_thread = g_thread_create(oss_loop, NULL, TRUE, NULL);
 
     return 1;
-}
-
-void oss_tell(gint * fmt, gint * rate, gint * nch)
-{
-	(*fmt) = input.format.xmms;
-	(*rate) = input.frequency;
-	(*nch) = input.channels;
 }

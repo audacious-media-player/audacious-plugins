@@ -78,7 +78,7 @@ static trackinfo_t *trackinfo = NULL;
 /* read / set these variables in main thread only */
 static int monitor_source;
 
-static void cdaudio_init (void);
+static gboolean cdaudio_init (void);
 static void cdaudio_about (void);
 static void cdaudio_configure (void);
 static gint cdaudio_is_our_file (const gchar * filename);
@@ -179,7 +179,7 @@ static gboolean monitor (gpointer unused)
 }
 
 /* main thread only */
-static void cdaudio_init ()
+static gboolean cdaudio_init (void)
 {
     mcs_handle_t *db;
 
@@ -196,7 +196,7 @@ static void cdaudio_init ()
     if ((db = aud_cfg_db_open ()) == NULL)
     {
         cdaudio_error ("Failed to read configuration.");
-        return;
+        return FALSE;
     }
 
     aud_cfg_db_get_bool (db, "CDDA", "use_cdtext", &cdng_cfg.use_cdtext);
@@ -235,7 +235,7 @@ static void cdaudio_init ()
     if (!cdio_init ())
     {
         cdaudio_error ("Failed to initialize cdio subsystem.");
-        return;
+        return FALSE;
     }
 
     libcddb_init ();
@@ -244,6 +244,8 @@ static void cdaudio_init ()
 
     trackinfo = NULL;
     monitor_source = g_timeout_add (1000, monitor, NULL);
+
+    return TRUE;
 }
 
 /* main thread only */

@@ -53,8 +53,7 @@ ayemu_vtx_t vtx;
 
 static const gchar *vtx_fmts[] = { "vtx", NULL };
 
-void
-vtx_init(void)
+static gboolean vtx_init (void)
 {
         mcs_handle_t *db;
         db = aud_cfg_db_open();
@@ -64,6 +63,7 @@ vtx_init(void)
                 freq = 44100;
 
         aud_cfg_db_close(db);
+	return TRUE;
 }
 
 gint

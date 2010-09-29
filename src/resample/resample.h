@@ -32,7 +32,7 @@ extern int method;
 void resample_config_load (void);
 void resample_config_save (void);
 
-void resample_init (void);
+int resample_init (void);
 void resample_cleanup (void);
 void resample_start (int * channels, int * rate);
 void resample_process (float * * data, int * samples);

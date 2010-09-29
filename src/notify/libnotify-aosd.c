@@ -36,16 +36,17 @@ SIMPLE_GENERAL_PLUGIN(libnotifyaosd, plugin_gplist);
 
 short plugin_active = 0;
 
-void plugin_init() {
+gboolean plugin_init (void)
+{
 	AUDDBG("started!\n");
 	if(!osd_init()) {
 		AUDDBG("osd_init failed!\n");
-  		return;
+  		return FALSE;
 	}
 	event_init();
 
 	plugin_active = 1;
-	AUDDBG("done!\n");
+	return TRUE;
 }
 
 

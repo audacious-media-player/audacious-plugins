@@ -42,7 +42,7 @@ LIBMTP_file_t *filelist;
 
 static gboolean plugin_active = FALSE,exiting=FALSE;
 
-void mtp_init ( void );
+static gboolean mtp_init (void);
 void mtp_cleanup ( void );
 
 GeneralPlugin mtp_gp =
@@ -296,7 +296,7 @@ gboolean mtp_press()
 
 }
 
-void mtp_init(void)
+static gboolean mtp_init (void)
 {
     mtp_root_menuitem=gtk_menu_item_new_with_label(_("MTP device handler"));
     mtp_submenu=gtk_menu_new();
@@ -324,6 +324,7 @@ void mtp_init(void)
     mutex = g_mutex_new();
     plugin_active = TRUE;
     exiting=FALSE;
+    return TRUE;
 }
 
 void mtp_cleanup(void)

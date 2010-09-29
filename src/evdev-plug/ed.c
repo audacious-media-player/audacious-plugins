@@ -84,8 +84,7 @@ ed_action_t player_actions[] =
 /* ***************** */
 /* plug-in functions */
 
-void
-ed_init ( void )
+gboolean ed_init (void)
 {
   g_log_set_handler( NULL , G_LOG_LEVEL_WARNING , g_log_default_handler , NULL );
 
@@ -95,7 +94,7 @@ ed_init ( void )
      configuration and start listening for active ones */
   ed_device_start_listening_from_config();
 
-  return;
+  return TRUE;
 }
 
 
