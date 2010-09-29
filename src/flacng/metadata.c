@@ -412,7 +412,6 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
         switch (FLAC__metadata_iterator_get_block_type(iter))
         {
             case FLAC__METADATA_TYPE_VORBIS_COMMENT:
-                metadata = FLAC__metadata_iterator_get_block(iter);
 
                 if (FLAC__metadata_iterator_get_block_type(iter) == FLAC__METADATA_TYPE_VORBIS_COMMENT)
                 {
@@ -455,7 +454,7 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
 
                 gsize size = vfs_fsize(fd);
 
-                if (size == -1)
+                if (size == -1 || metadata->data.stream_info.total_samples == 0)
                     tuple_associate_int(tuple, FIELD_BITRATE, NULL, 0);
                 else
                 {

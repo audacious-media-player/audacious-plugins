@@ -187,7 +187,7 @@ void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMet
 
         size = vfs_fsize(info->fd);
 
-        if (size == -1)
+        if (size == -1 || info->stream.samples == 0)
             info->bitrate = 0;
         else
             info->bitrate = 8 * size * (gint64) info->stream.samplerate / info->stream.samples;
