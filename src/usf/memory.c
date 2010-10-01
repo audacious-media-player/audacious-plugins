@@ -31,6 +31,10 @@
 #include <memory.h>
 #include <sys/mman.h>
 
+/* grumble. */
+#define __USE_GNU
+#include <sys/ucontext.h>
+
 #include <signal.h>
 
 
