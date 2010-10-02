@@ -112,7 +112,7 @@ static void ui_vis_class_init (UiVisClass * klass)
 
 static void ui_vis_init (UiVis * vis)
 {
-    memset (voiceprint_data, 0, 16 * 76);
+    memset (voiceprint_data, 0, sizeof voiceprint_data);
 }
 
 GtkWidget *ui_vis_new (GtkWidget * fixed, gint x, gint y, gint width)
@@ -131,8 +131,6 @@ GtkWidget *ui_vis_new (GtkWidget * fixed, gint x, gint y, gint width)
     vis->visible_window = TRUE;
     vis->event_window = NULL;
 
-    vis->gc = NULL;
-
     gtk_fixed_put (GTK_FIXED (vis->fixed), GTK_WIDGET (vis), vis->x, vis->y);
 
     return GTK_WIDGET (vis);
@@ -146,9 +144,6 @@ static void ui_vis_destroy (GtkObject * object)
     g_return_if_fail (UI_IS_VIS (object));
 
     vis = UI_VIS (object);
-
-    if (vis->gc != NULL)
-        g_object_unref (vis->gc), vis->gc = NULL;
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
@@ -276,126 +271,118 @@ static void ui_vis_size_allocate (GtkWidget * widget,
     vis->y = widget->allocation.y / (vis->scaled ? config.scale_factor : 1);
 }
 
-#define RGB_SEEK(x,y) {set = rgb + 3 * 76 * (y) + 3 * (x);}
-#define RGB_SET(c) {guchar * p = (c); * set ++ = * p ++; * set ++ = * p ++; \
- * set ++ = * p ++;}
-#define RGB_SET_Y(c) {RGB_SET (c) set += 3 * 75;}
-#define RGB_SET_INDEX(c) {RGB_SET (vis_color[c])}
-#define RGB_SET_INDEX_Y(c) {RGB_SET_Y (vis_color[c])}
+#define MAKE_RGB(r,g,b) (((r) << 16) | ((g) << 8) | (b))
+#define RGB_SEEK(x,y) (set = rgb + 76 * (y) + (x))
+#define RGB_SET(c) (* set ++ = (c))
+#define RGB_SET_Y(c) do {* set = (c); set += 76;} while (0)
+#define RGB_SET_INDEX(c) RGB_SET (vis_color[c])
+#define RGB_SET_INDEX_Y(c) RGB_SET_Y (vis_color[c])
 
-static guchar vis_color[24][3];
-static guchar vis_voice_color[256][3];
-static guchar vis_voice_color_fire[256][3];
-static guchar vis_voice_color_ice[256][3];
-static guchar pattern_fill[3 * 76 * 2];
+static guint32 vis_color[24];
+static guint32 vis_voice_color[256];
+static guint32 vis_voice_color_fire[256];
+static guint32 vis_voice_color_ice[256];
+static guint32 pattern_fill[76 * 2];
 
 void ui_vis_set_colors (void)
 {
-    guchar * set, * end;
-    gint x, n;
+    g_return_if_fail (aud_active_skin != NULL);
 
-    skin_get_viscolor (aud_active_skin, vis_color);
+    for (gint i = 0; i < 24; i ++)
+        vis_color[i] = (aud_active_skin->vis_color[i][0] << 16) |
+         (aud_active_skin->vis_color[i][1] << 8) |
+         aud_active_skin->vis_color[i][2];
 
+    GdkColor * fgc = skin_get_color (aud_active_skin, SKIN_TEXTFG);
+    GdkColor * bgc = skin_get_color (aud_active_skin, SKIN_TEXTBG);
+    gint fg[3] = {fgc->red >> 8, fgc->green >> 8, fgc->blue >> 8};
+    gint bg[3] = {bgc->red >> 8, bgc->green >> 8, bgc->blue >> 8};
+
+    for (gint x = 0; x < 256; x ++)
     {
-        GdkColor * fgc = skin_get_color (aud_active_skin, SKIN_TEXTFG);
-        GdkColor * bgc = skin_get_color (aud_active_skin, SKIN_TEXTBG);
-        gint fg[3] = {fgc->red >> 8, fgc->green >> 8, fgc->blue >> 8};
-        gint bg[3] = {bgc->red >> 8, bgc->green >> 8, bgc->blue >> 8};
-
-        for (x = 0; x < 256; x ++)
-        for (n = 0; n < 3; n ++)
-            vis_voice_color[x][n] = bg[n] + (fg[n] - bg[n]) * x / 256;
+        guchar c[3];
+        for (gint n = 0; n < 3; n ++)
+            c[n] = bg[n] + (fg[n] - bg[n]) * x / 255;
+        vis_voice_color[x] = MAKE_RGB (c[0], c[1], c[2]);
     }
 
-    for (x = 0; x < 256; x ++)
+    for (gint x = 0; x < 256; x ++)
     {
-        vis_voice_color_fire[x][0] = (x < 64) ? x << 1 : 255;
-        vis_voice_color_fire[x][1] = (x < 64) ? 0 : (x < 128) ? (x - 64) << 1 :
-         255;
-        vis_voice_color_fire[x][2] = (x < 128) ? 0 : (x - 128) << 1;
+        guchar r = MIN (x, 127) * 2;
+        guchar g = CLAMP (x - 64, 0, 127) * 2;
+        guchar b = MAX (x - 128, 0) * 2;
+        vis_voice_color_fire[x] = MAKE_RGB (r, g, b);
     }
 
-    for (x = 0; x < 256; x ++)
+    for (gint x = 0; x < 256; x ++)
     {
-        vis_voice_color_ice[x][0] = x;
-        vis_voice_color_ice[x][1] = (x < 128) ? x << 1 : 255;
-        vis_voice_color_ice[x][2] = (x < 64) ? x << 2 : 255;
+        guchar g = MIN (x, 127) * 2;
+        guchar b = MIN (x, 63) * 4;
+        vis_voice_color_ice[x] = MAKE_RGB (x, g, b);
     }
 
-    set = pattern_fill;
-    end = set + 3 * 76;
+    guint32 * set = pattern_fill;
+    guint32 * end = set + 76;
 
     while (set < end)
-        RGB_SET_INDEX (0)
+        RGB_SET_INDEX (0);
 
-    end = set + 3 * 76;
+    end = set + 76;
 
     while (set < end)
     {
-        RGB_SET_INDEX (1)
-        RGB_SET_INDEX (0)
+        RGB_SET_INDEX (1);
+        RGB_SET_INDEX (0);
     }
 }
 
 static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
 {
     UiVis * vis = (UiVis *) widget;
-    gint x, y, h, h2;
-    guchar rgb[3 * 76 * 16];
-    guchar * get, * set, * end;
-    guchar (* voice_color)[3];
+    guint32 rgb[76 * 16];
+    guint32 rgb2[76 * 2 * 16 * 2];
+    guint32 * set;
 
     if (config.vis_type != VIS_VOICEPRINT)
     {
-        for (set = rgb; set < rgb + sizeof rgb; set += sizeof pattern_fill)
+        for (set = rgb; set < rgb + 76 * 16; set += 76 * 2)
             memcpy (set, pattern_fill, sizeof pattern_fill);
     }
 
     switch (config.vis_type)
     {
-    case VIS_ANALYZER:
-        for (x = 0; x < 75; x ++)
+    case VIS_ANALYZER:;
+        gboolean bars = (config.analyzer_type == ANALYZER_BARS);
+
+        for (gint x = 0; x < 75; x ++)
         {
-            if (config.analyzer_type == ANALYZER_BARS && (x & 3) == 3)
+            if (bars && (x & 3) == 3)
                 continue;
 
-            if (config.analyzer_type == ANALYZER_BARS)
-                h = vis->data[x >> 2];
-            else
-                h = vis->data[x];
-
-            h = CLAMP (h, 0, 16); /* sanity check */
-
-            RGB_SEEK (x, 16 - h)
+            gint h = vis->data[bars ? (x >> 2) : x];
+            h = CLAMP (h, 0, 16);
+            RGB_SEEK (x, 16 - h);
 
             switch (config.analyzer_mode)
             {
             case ANALYZER_NORMAL:
-                for (y = 0; y < h; y ++)
+                for (gint y = 0; y < h; y ++)
                     RGB_SET_INDEX_Y (18 - h + y);
-
                 break;
             case ANALYZER_FIRE:
-                for (y = 0; y < h; y ++)
+                for (gint y = 0; y < h; y ++)
                     RGB_SET_INDEX_Y (2 + y);
-
                 break;
-            /* case ANALYZER_VLINES: */
-            default:
-                for (y = 0; y < h; y ++)
+            default: /* ANALYZER_VLINES */
+                for (gint y = 0; y < h; y ++)
                     RGB_SET_INDEX_Y (18 - h);
-
                 break;
             }
 
             if (config.analyzer_peaks)
             {
-                if (config.analyzer_type == ANALYZER_BARS)
-                    h = vis->peak[x >> 2];
-                else
-                    h = vis->peak[x];
-
-                h = CLAMP (h, 0, 16); /* sanity check */
+                gint h = vis->peak[bars ? (x >> 2) : x];
+                h = CLAMP (h, 0, 16);
 
                 if (h)
                 {
@@ -411,135 +398,103 @@ static gboolean ui_vis_expose (GtkWidget * widget, GdkEventExpose * event)
          * expose. */
         if (event == NULL)
         {
-            memmove (voiceprint_data, voiceprint_data + 1, sizeof voiceprint_data -
-             1);
+            memmove (voiceprint_data, voiceprint_data + 1, sizeof
+             voiceprint_data - 1);
 
-            for (y = 0; y < 16; y ++)
+            for (gint y = 0; y < 16; y ++)
                 voiceprint_data[76 * y + 75] = vis->data[y];
         }
 
-        switch (config.voiceprint_mode)
-        {
-        case VOICEPRINT_NORMAL:
-            voice_color = vis_voice_color;
-            break;
-        case VOICEPRINT_FIRE:
-            voice_color = vis_voice_color_fire;
-            break;
-        /* case VOICEPRINT_ICE: */
-        default:
-            voice_color = vis_voice_color_ice;
-            break;
-        }
-
-        get = voiceprint_data;
+        guchar * get = voiceprint_data;
+        guint32 * colors = (config.voiceprint_mode == VOICEPRINT_NORMAL) ?
+         vis_voice_color : (config.voiceprint_mode == VOICEPRINT_FIRE) ?
+         vis_voice_color_fire : /* VOICEPRINT_ICE */ vis_voice_color_ice;
         set = rgb;
 
-        for (y = 0; y < 16; y ++)
-        for (x = 0; x < 76; x ++)
-            RGB_SET (voice_color[* get ++])
-
+        for (gint y = 0; y < 16; y ++)
+        for (gint x = 0; x < 76; x ++)
+            RGB_SET (colors[* get ++]);
         break;
     case VIS_SCOPE:
         switch (config.scope_mode)
         {
         case SCOPE_DOT:
-            for (x = 0; x < 75; x ++)
+            for (gint x = 0; x < 75; x ++)
             {
-                h = 1 + vis->data[x];
-                h = CLAMP (h, 0, 15); /* sanity check */
-                RGB_SEEK (x, h)
-                RGB_SET_INDEX (vis_scope_colors[h])
+                gint h = CLAMP (1 + vis->data[x], 0, 15);
+                RGB_SEEK (x, h);
+                RGB_SET_INDEX (vis_scope_colors[h]);
             }
-
             break;
         case SCOPE_LINE:
-            for (x = 0; x < 74; x++)
+            for (gint x = 0; x < 74; x++)
             {
-                h = 1 + vis->data[x];
-                h = CLAMP (h, 0, 15); /* sanity check */
-                h2 = 1 + vis->data[x + 1];
-                h2 = CLAMP (h2, 0, 15); /* sanity check */
+                gint h = CLAMP (1 + vis->data[x], 0, 15);
+                gint h2 = CLAMP (1 + vis->data[x + 1], 0, 15);
 
-                if (h < h2)
-                    h2 --;
-                else if (h > h2)
-                {
-                    y = h;
-                    h = h2 + 1;
-                    h2 = y;
-                }
+                if (h < h2) h2 --;
+                else if (h > h2) {gint temp = h; h = h2 + 1; h2 = temp;}
 
-                RGB_SEEK (x, h)
+                RGB_SEEK (x, h);
 
-                for (y = h; y <= h2; y ++)
-                    RGB_SET_INDEX_Y (vis_scope_colors[y])
+                for (gint y = h; y <= h2; y ++)
+                    RGB_SET_INDEX_Y (vis_scope_colors[y]);
             }
 
-            h = 1 + vis->data[74];
-            h = CLAMP (h, 0, 15); /* sanity check */
-            RGB_SEEK (74, h)
-            RGB_SET_INDEX (vis_scope_colors[h])
+            gint h = CLAMP (1 + vis->data[74], 0, 15);
+            RGB_SEEK (74, h);
+            RGB_SET_INDEX (vis_scope_colors[h]);
             break;
-        /* case SCOPE_SOLID: */
-        default:
-            for (x = 0; x < 75; x++)
+        default: /* SCOPE_SOLID */
+            for (gint x = 0; x < 75; x++)
             {
-                h = 1 + vis->data[x];
-                h = CLAMP (h, 0, 15); /* sanity check */
+                gint h = CLAMP (1 + vis->data[x], 0, 15);
+                gint h2;
 
-                if (h < 8)
-                    h2 = 7;
-                else
-                {
-                    h2 = h;
-                    h = 8;
-                }
+                if (h < 8) h2 = 7;
+                else {h2 = h; h = 8;}
 
-                RGB_SEEK (x, h)
+                RGB_SEEK (x, h);
 
-                for (y = h; y <= h2; y ++)
-                    RGB_SET_INDEX_Y (vis_scope_colors[y])
+                for (gint y = h; y <= h2; y ++)
+                    RGB_SET_INDEX_Y (vis_scope_colors[y]);
             }
-
             break;
         }
-
         break;
     }
 
-    if (vis->gc == NULL)
-        vis->gc = gdk_gc_new (widget->window);
-
     if (vis->scaled)
     {
-        guchar rgb2[3 * 76 * 2 * 16 * 2];
+        guint32 * to = rgb2;
 
-        set = rgb2;
-
-        for (y = 0; y < 16 * 2; y ++)
+        for (gint y = 0; y < 16 * 2; y ++)
         {
-            get = rgb + 3 * 76 * (y >> 1);
-            end = get + 3 * 76;
+            guint32 * from = rgb + 76 * (y >> 1);
+            guint32 * end = from + 76;
 
-            while (get < end)
+            while (from < end)
             {
-                * set ++ = * get ++;
-                * set ++ = * get ++;
-                * set ++ = * get;
-                get -= 2;
-                * set ++ = * get ++;
-                * set ++ = * get ++;
-                * set ++ = * get ++;
+                * to ++ = * from;
+                * to ++ = * from ++;
             }
         }
-
-        gdk_draw_rgb_image (widget->window, vis->gc, 0, 0, 76 * 2, 16 * 2,
-         GDK_RGB_DITHER_NONE, rgb2, 3 * 76 * 2);
     }
+
+    cairo_t * cr = gdk_cairo_create (widget->window);
+    cairo_surface_t * surf;
+
+    if (vis->scaled)
+        surf = cairo_image_surface_create_for_data ((void *) rgb2,
+         CAIRO_FORMAT_RGB24, 76 * 2, 16 * 2, 4 * 76 * 2);
     else
-        gdk_draw_rgb_image (widget->window, vis->gc, 0, 0, 76, 16,
-         GDK_RGB_DITHER_NONE, rgb, 3 * 76);
+        surf = cairo_image_surface_create_for_data ((void *) rgb,
+         CAIRO_FORMAT_RGB24, 76, 16, 4 * 76);
+
+    cairo_set_source_surface (cr, surf, 0, 0);
+    cairo_paint (cr);
+    cairo_surface_destroy (surf);
+    cairo_destroy (cr);
 
     return FALSE;
 }
