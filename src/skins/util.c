@@ -62,15 +62,13 @@ static void make_directory(const gchar *path, mode_t mode);
 
 gchar * find_file_case (const gchar * folder, const gchar * basename)
 {
-    static mowgli_dictionary_t * cache = NULL;
-    GList * list;
+    static GHashTable * cache = NULL;
+    GList * list = NULL;
 
     if (cache == NULL)
-        cache = mowgli_dictionary_create (strcmp);
+        cache = g_hash_table_new (g_str_hash, g_str_equal);
 
-    list = mowgli_dictionary_retrieve (cache, folder);
-
-    if (list == NULL)
+    if (! g_hash_table_lookup_extended (cache, folder, NULL, (void * *) & list))
     {
         DIR * handle;
         struct dirent * entry;
@@ -81,7 +79,7 @@ gchar * find_file_case (const gchar * folder, const gchar * basename)
         while ((entry = readdir (handle)) != NULL)
             list = g_list_prepend (list, g_strdup (entry->d_name));
 
-        mowgli_dictionary_add (cache, folder, list);
+        g_hash_table_insert (cache, (char *) folder, list);
         closedir (handle);
     }
 
