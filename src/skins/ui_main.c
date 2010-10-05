@@ -1092,6 +1092,12 @@ static gboolean seek_timeout (void * rewind)
     if (held < SEEK_THRESHOLD)
         return TRUE;
 
+    if (! aud_drct_get_playing ())
+    {
+        seek_source = 0;
+        return FALSE;
+    }
+
     if (GPOINTER_TO_INT (rewind))
         position = seek_start - held / SEEK_SPEED;
     else
@@ -1127,8 +1133,11 @@ static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
 {
     gint held;
 
-    if (event->button != 1)
+    if (event->button != 1 || ! seek_source)
         return FALSE;
+
+    if (! aud_drct_get_playing ())
+        goto DONE;
 
     held = (event->time >= seek_event_time) ? event->time - seek_event_time :
      86400000 + event->time - seek_event_time;
@@ -1144,6 +1153,7 @@ static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
         mainwin_position_release_cb (mainwin_position,
          ui_skinned_horizontal_slider_get_position (mainwin_position));
 
+DONE:
     g_source_remove (seek_source);
     seek_source = 0;
 
