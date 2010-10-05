@@ -1510,12 +1510,14 @@ void action_playlist_new (void)
 
 void action_playlist_prev (void)
 {
-    aud_playlist_set_active (active_playlist - 1);
+    if (active_playlist > 0)
+        aud_playlist_set_active (active_playlist - 1);
 }
 
 void action_playlist_next (void)
 {
-    aud_playlist_set_active (active_playlist + 1);
+    if (active_playlist + 1 < aud_playlist_count ())
+        aud_playlist_set_active (active_playlist + 1);
 }
 
 void action_playlist_delete (void)
