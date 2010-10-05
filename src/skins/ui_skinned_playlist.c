@@ -775,17 +775,6 @@ void ui_skinned_playlist_update (GtkWidget * widget)
         ui_skinned_playlist_slider_update (private->slider);
 }
 
-void ui_skinned_playlist_follow (GtkWidget * widget)
-{
-    UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
-     ((UiSkinnedPlaylist *) widget);
-
-    cancel_all (widget, private);
-    select_single (private, FALSE, aud_playlist_get_position (active_playlist));
-
-    playlistwin_update ();
-}
-
 gboolean ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event)
 {
     UiSkinnedPlaylistPrivate * private = UI_SKINNED_PLAYLIST_GET_PRIVATE
