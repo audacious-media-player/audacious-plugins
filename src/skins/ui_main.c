@@ -85,7 +85,7 @@
 GtkWidget *mainwin = NULL;
 
 static gint balance;
-static gint seek_source = 0, seek_start, seek_event_time, seek_time;
+static gint seek_source = 0, seek_start, seek_time;
 
 static GtkWidget *mainwin_jtt = NULL;
 
@@ -1080,24 +1080,33 @@ mainwin_eject_pushed(void)
     action_play_file();
 }
 
-static gboolean seek_timeout (void * rewind)
+static gint time_now (void)
 {
     struct timeval tv;
-    gint now, held, position;
-
     gettimeofday (& tv, NULL);
-    now = tv.tv_sec % 86400 * 1000 + tv.tv_usec / 1000;
-    held = (now >= seek_time) ? now - seek_time : 86400000 + now - seek_time;
+    return (tv.tv_sec % (24 * 3600) * 1000 + tv.tv_usec / 1000);
+}
 
-    if (held < SEEK_THRESHOLD)
-        return TRUE;
+static gint time_diff (gint a, gint b)
+{
+    if (a > 18 * 3600 * 1000 && b < 6 * 3600 * 1000) /* detect midnight */
+        b += 24 * 3600 * 1000;
+    return (b > a) ? b - a : 0;
+}
 
+static gboolean seek_timeout (void * rewind)
+{
     if (! aud_drct_get_playing ())
     {
         seek_source = 0;
         return FALSE;
     }
 
+    gint held = time_diff (seek_time, time_now ());
+    if (held < SEEK_THRESHOLD)
+        return TRUE;
+
+    gint position;
     if (GPOINTER_TO_INT (rewind))
         position = seek_start - held / SEEK_SPEED;
     else
@@ -1113,36 +1122,23 @@ static gboolean seek_timeout (void * rewind)
 static gboolean seek_press (GtkWidget * widget, GdkEventButton * event,
  void * rewind)
 {
-    struct timeval tv;
-
-    if (event->button != 1 || seek_source != 0)
+    if (event->button != 1 || seek_source || ! aud_drct_get_playing ())
         return FALSE;
 
     seek_start = ui_skinned_horizontal_slider_get_position (mainwin_position);
-    seek_event_time = event->time;
-    gettimeofday (& tv, NULL);
-    seek_time = tv.tv_sec % 86400 * 1000 + tv.tv_usec / 1000;
-
+    seek_time = time_now ();
     seek_source = g_timeout_add (SEEK_TIMEOUT, seek_timeout, rewind);
-
     return FALSE;
 }
 
 static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
  void * rewind)
 {
-    gint held;
-
     if (event->button != 1 || ! seek_source)
         return FALSE;
 
-    if (! aud_drct_get_playing ())
-        goto DONE;
-
-    held = (event->time >= seek_event_time) ? event->time - seek_event_time :
-     86400000 + event->time - seek_event_time;
-
-    if (held < SEEK_THRESHOLD)
+    if (! aud_drct_get_playing () || time_diff (seek_time, time_now ()) <
+     SEEK_THRESHOLD)
     {
         if (GPOINTER_TO_INT (rewind))
             aud_drct_pl_prev ();
@@ -1153,10 +1149,8 @@ static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
         mainwin_position_release_cb (mainwin_position,
          ui_skinned_horizontal_slider_get_position (mainwin_position));
 
-DONE:
     g_source_remove (seek_source);
     seek_source = 0;
-
     return FALSE;
 }
 
