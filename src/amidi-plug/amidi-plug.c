@@ -614,6 +614,7 @@ gpointer amidiplug_play_loop( gpointer arg )
             g_cond_signal (control_cond);
         }
 
+        g_cond_wait (control_cond, amidiplug_playing_mutex);
         g_mutex_unlock (amidiplug_playing_mutex);
         continue;
     }
