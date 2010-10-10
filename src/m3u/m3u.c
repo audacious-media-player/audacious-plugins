@@ -70,30 +70,10 @@ static gchar * split_line (gchar * line)
 
 static gchar * convert_path (gchar * path, const gchar * base)
 {
-    gchar * pre = NULL;
-    gchar * split;
+    if (strstr (path, "://") != NULL)
+        return g_strdup (path);
 
-    if ((split = strstr (path, "://")) != NULL)
-    {
-        pre = path;
-        * split = 0;
-        path = split + 3;
-    }
-
-    gchar * coded = string_encode_percent (path, TRUE);
-    gchar buf[(pre != NULL ? strlen (pre) + 3 : 0) + strlen (coded) + 1];
-
-    if (pre != NULL)
-    {
-        strcpy (buf, pre);
-        strcpy (buf + strlen (pre), "://");
-        strcpy (buf + strlen (pre) + 3, coded);
-    }
-    else
-        strcpy (buf, coded);
-
-    g_free (coded);
-    return aud_construct_uri (buf, base);
+    return aud_construct_uri (path, base);
 }
 
 static void playlist_load_m3u (const gchar * path, gint at)
