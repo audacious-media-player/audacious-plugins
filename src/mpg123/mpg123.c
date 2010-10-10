@@ -217,6 +217,7 @@ typedef struct {
 	gint channels;
 	gint encoding;
 	gint64 seek;
+	gboolean stop;
 	gboolean stream;
 	Tuple *tu;
 } MPG123PlaybackContext;
@@ -261,10 +262,11 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 	memset(&ctx, 0, sizeof(MPG123PlaybackContext));
 	memset(&fi, 0, sizeof(struct mpg123_frameinfo));
 
-	AUDDBG("playback worker started for %s\n", data->filename);
+	AUDDBG("playback worker started for %s\n", filename);
 
 	ctx.seek = (start_time > 0) ? start_time : -1;
-	data->data = &ctx;
+	ctx.stop = FALSE;
+	data->set_data (data, & ctx);
 
 	AUDDBG("decoder setup\n");
 	mpg123_rates(&rates, &num_rates);
@@ -280,7 +282,6 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 	{
 		AUDDBG("mpg123 error: %s", mpg123_plain_strerror(ret));
 		mpg123_delete_pars(ctx.params);
-		data->error = TRUE;
 		return FALSE;
 	}
 
@@ -289,7 +290,6 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 		AUDDBG("mpg123 error: %s", mpg123_plain_strerror(ret));
 		mpg123_delete(ctx.decoder);
 		mpg123_delete_pars(ctx.params);
-		data->error = TRUE;
 		return FALSE;
 	}
 
@@ -311,11 +311,13 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 	else
 		AUDDBG(" ... it is.\n");
 
+	gboolean error = FALSE;
+
 	AUDDBG("decoder format identification\n");
 	if (! mpg123_prefill (ctx.decoder, ctx.fd, & ret) || ret !=
 	 MPG123_NEW_FORMAT)
 	{
-		data->error = TRUE;
+		error = TRUE;
 		goto cleanup;
 	}
 
@@ -327,7 +329,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 	AUDDBG("opening audio\n");
 	if (! data->output->open_audio (FMT_S16_NE, ctx.rate, ctx.channels))
 	{
-		data->error = TRUE;
+		error = TRUE;
 		goto cleanup;
 	}
 
@@ -339,13 +341,11 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 	g_mutex_lock(ctrl_mutex);
 
 	AUDDBG("starting decode\n");
-	data->playing = TRUE;
 	data->set_pb_ready(data);
 
 	g_mutex_unlock(ctrl_mutex);
 
-	while (data->playing && (stop_time < 0 || data->output->written_time () <
-	 stop_time))
+	while (stop_time < 0 || data->output->written_time () < stop_time)
 	{
 		gint16 outbuf[ctx.channels * (ctx.rate / 100)];
 		gsize outbuf_size;
@@ -357,7 +357,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 		if (bitrate_sum / bitrate_count != bitrate && abs
 		 (data->output->written_time () - bitrate_updated) >= 1000)
 		{
-			data->set_params(data, NULL, 0, bitrate_sum / bitrate_count * 1000,
+			data->set_params (data, bitrate_sum / bitrate_count * 1000,
 			 ctx.rate, ctx.channels);
 			bitrate = bitrate_sum / bitrate_count;
 			bitrate_sum = 0;
@@ -371,7 +371,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 			gboolean changed = FALSE;
 
 			if (!ctx.tu)
-				ctx.tu = tuple_new_from_filename(data->filename);
+				ctx.tu = tuple_new_from_filename (filename);
 
 			changed = changed || update_stream_metadata(ctx.fd, "track-name", ctx.tu, FIELD_TITLE);
 			changed = changed || update_stream_metadata(ctx.fd, "stream-name", ctx.tu, FIELD_ALBUM);
@@ -403,7 +403,6 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 
 						MPG123_IODBG("passing %ld bytes of audio\n", outbuf_size);
 						data->output->write_audio (outbuf, outbuf_size);
-						data->eof = TRUE;
 						goto decode_cleanup;
 					}
 					else
@@ -424,7 +423,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 
 			if (++ error_count >= 10)
 			{
-				data->error = TRUE;
+				error = TRUE;
 				goto decode_cleanup;
 			}
 		}
@@ -433,7 +432,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 
 		g_mutex_lock(ctrl_mutex);
 
-		if (data->playing == FALSE)
+		if (ctx.stop)
 		{
 			g_mutex_unlock(ctrl_mutex);
 			break;
@@ -466,13 +465,12 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 	}
 
 decode_cleanup:
-	AUDDBG("eof reached\n");
-	while (data->playing && data->output->buffer_playing())
+	while (data->output->buffer_playing ())
 		g_usleep(10000);
 
 	AUDDBG("decode complete\n");
 	g_mutex_lock (ctrl_mutex);
-	data->playing = FALSE;
+	data->set_data (data, NULL);
 	g_cond_signal (ctrl_cond); /* wake up any waiting request */
 	g_mutex_unlock (ctrl_mutex);
 
@@ -483,40 +481,43 @@ cleanup:
 	mpg123_delete_pars(ctx.params);
 	if (ctx.tu)
 		tuple_free (ctx.tu);
-	return ! data->error;
+	return ! error;
 }
 
 static void mpg123_stop_playback_worker (InputPlayback * data)
 {
 	g_mutex_lock (ctrl_mutex);
+	MPG123PlaybackContext * context = data->get_data (data);
 
-	if (data->playing)
+	if (context != NULL)
 	{
+		context->stop = TRUE;
 		data->output->abort_write ();
-		data->playing = FALSE;
 		g_cond_signal (ctrl_cond);
 	}
 
 	g_mutex_unlock (ctrl_mutex);
 }
 
-static void mpg123_pause_playback_worker (InputPlayback * data, gshort pause)
+static void mpg123_pause_playback_worker (InputPlayback * data, gboolean pause)
 {
 	g_mutex_lock (ctrl_mutex);
+	MPG123PlaybackContext * context = data->get_data (data);
 
-	if (data->playing)
-        data->output->pause (pause);
+	if (context != NULL)
+		data->output->pause (pause);
 
 	g_mutex_unlock (ctrl_mutex);
 }
 
-static void mpg123_seek_time (InputPlayback * data, gulong time)
+static void mpg123_seek_time (InputPlayback * data, gint time)
 {
 	g_mutex_lock (ctrl_mutex);
+	MPG123PlaybackContext * context = data->get_data (data);
 
-	if (data->playing)
+	if (context != NULL)
 	{
-		((MPG123PlaybackContext *) data->data)->seek = time;
+		context->seek = time;
 		data->output->abort_write ();
 		g_cond_signal (ctrl_cond);
 		g_cond_wait (ctrl_cond, ctrl_mutex);

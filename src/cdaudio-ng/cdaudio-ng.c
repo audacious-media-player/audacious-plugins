@@ -67,6 +67,7 @@ trackinfo_t;
 
 static GMutex *mutex;
 static gint seek_time;
+static gboolean stop_flag;
 
 /* lock mutex to read / set these variables */
 cdng_cfg_t cdng_cfg;
@@ -81,14 +82,14 @@ static int monitor_source;
 static gboolean cdaudio_init (void);
 static void cdaudio_about (void);
 static void cdaudio_configure (void);
-static gint cdaudio_is_our_file (const gchar * filename);
+static gint cdaudio_is_our_file (const gchar * filename, VFSFile * file);
 static gboolean cdaudio_play (InputPlayback * p, const gchar * name, VFSFile *
  file, gint start, gint stop, gboolean pause);
 static void cdaudio_stop (InputPlayback * pinputplayback);
-static void cdaudio_pause (InputPlayback * pinputplayback, gshort paused);
-static void cdaudio_mseek (InputPlayback * p, gulong time);
+static void cdaudio_pause (InputPlayback * p, gboolean paused);
+static void cdaudio_mseek (InputPlayback * p, gint time);
 static void cdaudio_cleanup (void);
-static Tuple *create_tuple_from_trackinfo_and_filename (const gchar * filename);
+static Tuple * make_tuple (const gchar * filename, VFSFile * file);
 static void scan_cd (void);
 static void refresh_trackinfo (void);
 static gint calculate_track_length (gint startlsn, gint endlsn);
@@ -100,13 +101,13 @@ static InputPlugin inputplugin = {
     .init = cdaudio_init,
     .about = cdaudio_about,
     .configure = cdaudio_configure,
-    .is_our_file = cdaudio_is_our_file,
+    .is_our_file_from_vfs = cdaudio_is_our_file,
     .play = cdaudio_play,
     .stop = cdaudio_stop,
     .pause = cdaudio_pause,
     .mseek = cdaudio_mseek,
     .cleanup = cdaudio_cleanup,
-    .get_song_tuple = create_tuple_from_trackinfo_and_filename,
+    .probe_for_tuple = make_tuple,
     .have_subtune = TRUE,
 };
 
@@ -138,7 +139,7 @@ static void purge_playlist (gint playlist)
     {
         filename = aud_playlist_entry_get_filename (playlist, count);
 
-        if (cdaudio_is_our_file (filename))
+        if (cdaudio_is_our_file (filename, NULL))
         {
             aud_playlist_entry_delete (playlist, count, 1);
             count--;
@@ -270,7 +271,7 @@ static void cdaudio_configure ()
 }
 
 /* thread safe (mutex may be locked) */
-static gint cdaudio_is_our_file (const gchar * filename)
+static gint cdaudio_is_our_file (const gchar * filename, VFSFile * file)
 {
     return !strncmp (filename, "cdda://", 7);
 }
@@ -339,6 +340,7 @@ ERROR:
     }
 
     seek_time = (start > 0) ? start : -1;
+    stop_flag = FALSE;
 
     if (stop >= 0)
         endlsn = MIN (endlsn, startlsn + stop * 75 / 1000);
@@ -346,8 +348,7 @@ ERROR:
     if (pause)
         p->output->pause (TRUE);
 
-    p->set_params (p, NULL, 0, 1411200, 44100, 2);
-    p->playing = TRUE;
+    p->set_params (p, 1411200, 44100, 2);
     p->set_pb_ready (p);
 
     g_mutex_unlock (mutex);
@@ -362,7 +363,7 @@ ERROR:
     {
         g_mutex_lock (mutex);
 
-        if (! p->playing)
+        if (stop_flag)
         {
             g_mutex_unlock (mutex);
             goto CLOSE;
@@ -420,7 +421,7 @@ ERROR:
         g_usleep (20000);
 
     g_mutex_lock (mutex);
-    p->playing = FALSE;
+    stop_flag = FALSE;
     g_mutex_unlock (mutex);
 
 CLOSE:
@@ -433,9 +434,9 @@ static void cdaudio_stop (InputPlayback * p)
 {
     g_mutex_lock (mutex);
 
-    if (p->playing)
+    if (! stop_flag)
     {
-        p->playing = FALSE;
+        stop_flag = TRUE;
         p->output->abort_write();
     }
 
@@ -443,22 +444,22 @@ static void cdaudio_stop (InputPlayback * p)
 }
 
 /* main thread only */
-static void cdaudio_pause (InputPlayback * p, gshort pause)
+static void cdaudio_pause (InputPlayback * p, gboolean pause)
 {
     g_mutex_lock (mutex);
 
-    if (p->playing)
+    if (! stop_flag)
         p->output->pause (pause);
 
     g_mutex_unlock (mutex);
 }
 
 /* main thread only */
-static void cdaudio_mseek (InputPlayback * p, gulong time)
+static void cdaudio_mseek (InputPlayback * p, gint time)
 {
     g_mutex_lock (mutex);
 
-    if (p->playing)
+    if (! stop_flag)
     {
         seek_time = time;
         p->output->abort_write();
@@ -512,7 +513,7 @@ static void cdaudio_cleanup (void)
 }
 
 /* thread safe */
-static Tuple *create_tuple_from_trackinfo_and_filename (const gchar * filename)
+static Tuple * make_tuple (const gchar * filename, VFSFile * file)
 {
     Tuple *tuple = NULL;
     gint trackno;
