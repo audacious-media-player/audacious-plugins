@@ -1,5 +1,3 @@
-//#define AUD_DEBUG
-
 #include "config.h"
 #include <wavpack/wavpack.h>
 
@@ -23,8 +21,7 @@
 static GMutex *ctrl_mutex = NULL;
 static GCond *ctrl_cond = NULL;
 static gint64 seek_value = -1;
-static gboolean pause_flag;
-
+static gboolean stop_flag = FALSE;
 
 /* Audacious VFS wrappers for Wavpack stream reading
  */
@@ -125,20 +122,19 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
     if (file == NULL)
         return FALSE;
 
-    gshort paused = 0;
     gint32 *input = NULL;
     void *output = NULL;
     gint sample_rate, num_channels, bits_per_sample;
     guint num_samples, length;
-    gchar error[1024];  // fixme?! FIX ME halb apua hilfe scheisse --ccr
     WavpackContext *ctx = NULL;
     VFSFile *wvc_input = NULL;
+    gboolean error = FALSE;
 
-    if (! wv_attach (filename, file, & wvc_input, & ctx, error, OPEN_TAGS |
+    if (! wv_attach (filename, file, & wvc_input, & ctx, NULL, OPEN_TAGS |
      OPEN_WVC))
     {
-        g_warning("Error opening Wavpack file '%s'.", playback->filename);
-        playback->error = 2;
+        g_warning("Error opening Wavpack file '%s'.", filename);
+        error = TRUE;
         goto error_exit;
     }
 
@@ -151,9 +147,12 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
     if (!playback->output->open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
     {
         g_warning("Error opening audio output.");
-        playback->error = 1;
+        error = TRUE;
         goto error_exit;
     }
+
+    if (pause)
+        playback->output->pause(TRUE);
 
     input = g_malloc(BUFFER_SIZE * num_channels * sizeof(guint32));
     output = g_malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));
@@ -164,20 +163,17 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
 
     g_mutex_lock(ctrl_mutex);
 
-    playback->set_params(playback, NULL, 0,
-        (gint) WavpackGetAverageBitrate(ctx, num_channels),
+    playback->set_params(playback, (gint) WavpackGetAverageBitrate(ctx, num_channels),
         sample_rate, num_channels);
 
-    pause_flag = pause;
     seek_value = (start_time > 0) ? start_time : -1;
+    stop_flag = FALSE;
 
-    playback->playing = TRUE;
-    playback->eof = FALSE;
     playback->set_pb_ready(playback);
 
     g_mutex_unlock(ctrl_mutex);
 
-    while (playback->playing && ! playback->eof && (stop_time < 0 ||
+    while (!stop_flag && (stop_time < 0 ||
      playback->output->written_time () < stop_time))
     {
         gint ret;
@@ -194,20 +190,6 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
             g_cond_signal(ctrl_cond);
         }
 
-        if (pause_flag != paused)
-        {
-            playback->output->pause(pause_flag);
-            paused = pause_flag;
-            g_cond_signal(ctrl_cond);
-        }
-
-        if (paused)
-        {
-            g_cond_wait(ctrl_cond, ctrl_mutex);
-            g_mutex_unlock(ctrl_mutex);
-            continue;
-        }
-
         g_mutex_unlock(ctrl_mutex);
 
         /* Decode audio data */
@@ -215,7 +197,7 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
 
         ret = WavpackUnpackSamples(ctx, input, BUFFER_SIZE);
         if (samples_left == 0)
-            playback->eof = TRUE;
+            stop_flag = TRUE;
         else if (ret < 0)
         {
             g_warning("Error decoding file.\n");
@@ -253,7 +235,7 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
     /* Flush buffer */
     g_mutex_lock(ctrl_mutex);
 
-    while (playback->playing && playback->output->buffer_playing())
+    while (!stop_flag && playback->output->buffer_playing())
         g_usleep(20000);
 
     g_cond_signal(ctrl_cond);
@@ -265,44 +247,45 @@ error_exit:
     g_free(output);
     wv_deattach (wvc_input, ctx);
 
-    playback->playing = FALSE;
+    stop_flag = TRUE;
     playback->output->close_audio();
-    return ! playback->error;
+    return ! error;
 }
 
 static void
 wv_stop(InputPlayback * playback)
 {
     g_mutex_lock(ctrl_mutex);
-    playback->playing = FALSE;
-    g_cond_signal(ctrl_cond);
-    g_mutex_unlock(ctrl_mutex);
-    g_thread_join(playback->thread);
-    playback->thread = NULL;
+
+    if (!stop_flag)
+    {
+        stop_flag = TRUE;
+        playback->output->abort_write();
+        g_cond_signal(ctrl_cond);
+    }
+
+    g_mutex_unlock (ctrl_mutex);
 }
 
 static void
-wv_pause(InputPlayback * playback, gshort p)
+wv_pause(InputPlayback * playback, gboolean pause)
 {
     g_mutex_lock(ctrl_mutex);
 
-    if (playback->playing)
-    {
-        pause_flag = p;
-        g_cond_signal(ctrl_cond);
-        g_cond_wait(ctrl_cond, ctrl_mutex);
-    }
+    if (!stop_flag)
+        playback->output->pause(pause);
 
     g_mutex_unlock(ctrl_mutex);
 }
 
-static void wv_seek (InputPlayback * playback, gulong time)
+static void wv_seek (InputPlayback * playback, gint time)
 {
     g_mutex_lock(ctrl_mutex);
 
-    if (playback->playing)
+    if (!stop_flag)
     {
         seek_value = time;
+        playback->output->abort_write();
         g_cond_signal(ctrl_cond);
         g_cond_wait(ctrl_cond, ctrl_mutex);
     }

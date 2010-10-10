@@ -31,6 +31,7 @@ gboolean plugin_initialized = FALSE;
 static GMutex *seek_mutex;
 static GCond *seek_cond;
 static gint seek_value;
+static gboolean stop_flag = FALSE;
 
 static gboolean flac_init (void)
 {
@@ -151,6 +152,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
     struct stream_info stream_info;
     guint sample_count;
     gpointer play_buffer = NULL;
+    gboolean error = FALSE;
 
     if (!plugin_initialized)
     {
@@ -201,9 +203,9 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
         playback->output->pause (TRUE);
 
     seek_value = (start_time > 0) ? start_time : -1;
-    playback->playing = TRUE;
+    stop_flag = FALSE;
 
-    playback->set_params(playback, NULL, 0, main_info->bitrate,
+    playback->set_params(playback, main_info->bitrate,
         main_info->stream.samplerate, main_info->stream.channels);
     playback->set_pb_ready(playback);
 
@@ -213,7 +215,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
 
     playback->set_gain_from_playlist(playback);
 
-    while (playback->playing)
+    while (!stop_flag)
     {
         if (stop_time >= 0 && playback->output->written_time () >= stop_time)
             goto DRAIN;
@@ -288,7 +290,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
         read_pointer = main_info->output_buffer;
         elements_left = main_info->buffer_used;
 
-        while (playback->playing && elements_left != 0)
+        while (!stop_flag && elements_left != 0)
         {
             if (stop_time >= 0 && playback->output->written_time () >= stop_time)
                 goto DRAIN;
@@ -316,7 +318,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
             AUDDBG("End of stream reached, draining output buffer\n");
 
 DRAIN:
-            while (playback->output->buffer_playing() && playback->playing)
+            while (playback->output->buffer_playing() && !stop_flag)
                 g_usleep(20000);
 
             goto CLEANUP;
@@ -325,7 +327,7 @@ DRAIN:
 
 CLEANUP:
     g_mutex_lock(seek_mutex);
-    playback->playing = FALSE;
+    stop_flag = TRUE;
     g_cond_signal(seek_cond); /* wake up any waiting request */
     g_mutex_unlock(seek_mutex);
 
@@ -342,16 +344,16 @@ ERR_NO_CLOSE:
     if (FLAC__stream_decoder_flush(main_decoder) == FALSE)
         ERROR("Could not flush decoder state!\n");
 
-    return ! playback->error;
+    return ! error;
 }
 
 static void flac_stop(InputPlayback *playback)
 {
     g_mutex_lock(seek_mutex);
 
-    if (playback->playing)
+    if (!stop_flag)
     {
-        playback->playing = FALSE;
+        stop_flag = TRUE;
         playback->output->abort_write();
         g_cond_signal(seek_cond);
     }
@@ -359,21 +361,21 @@ static void flac_stop(InputPlayback *playback)
     g_mutex_unlock (seek_mutex);
 }
 
-static void flac_pause(InputPlayback *playback, gshort pause)
+static void flac_pause(InputPlayback *playback, gboolean pause)
 {
     g_mutex_lock(seek_mutex);
 
-    if (playback->playing)
+    if (!stop_flag)
         playback->output->pause(pause);
 
     g_mutex_unlock(seek_mutex);
 }
 
-static void flac_seek (InputPlayback * playback, gulong time)
+static void flac_seek (InputPlayback * playback, gint time)
 {
     g_mutex_lock(seek_mutex);
 
-    if (playback->playing)
+    if (!stop_flag)
     {
         seek_value = time;
         playback->output->abort_write();
