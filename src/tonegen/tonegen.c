@@ -38,6 +38,8 @@
 #define PI              3.14159265358979323846
 #endif
 
+static gboolean stop_flag = FALSE;
+
 static InputPlugin tone_ip;
 
 static gboolean tone_init (void)
@@ -59,7 +61,7 @@ static void tone_about (void)
      "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"));
 }
 
-static gint tone_is_our_file(const gchar * filename)
+static gboolean tone_is_our_fd(const gchar *filename, VFSFile *fd)
 {
     if (!strncmp(filename, "tone://", 7))
         return TRUE;
@@ -115,12 +117,13 @@ static gchar *tone_title(const gchar * filename)
     return title;
 }
 
-static void tone_play(InputPlayback * playback)
+static gboolean tone_play(InputPlayback *playback, const gchar *filename,
+    VFSFile *file, gint start_time, gint stop_time, gboolean pause)
 {
     GArray *frequencies;
-    gchar *name, *filename = playback->filename;
     gfloat data[BUF_SAMPLES];
     gsize i;
+    gboolean error = FALSE;
     struct
     {
         gdouble wd;
@@ -129,17 +132,15 @@ static void tone_play(InputPlayback * playback)
 
     frequencies = tone_filename_parse(filename);
     if (frequencies == NULL)
-        return;
+        return FALSE;
 
     if (playback->output->open_audio(FMT_FLOAT, OUTPUT_FREQ, 1) == 0)
     {
-        playback->error = TRUE;
+        error = TRUE;
         goto error_exit;
     }
 
-    name = tone_title(filename);
-    playback->set_params(playback, name, -1, 16 * OUTPUT_FREQ, OUTPUT_FREQ, 1);
-    g_free(name);
+    playback->set_params(playback, 16 * OUTPUT_FREQ, OUTPUT_FREQ, 1);
 
     tone = g_malloc(frequencies->len * sizeof(*tone));
     for (i = 0; i < frequencies->len; i++)
@@ -150,11 +151,10 @@ static void tone_play(InputPlayback * playback)
         tone[i].t = 0;
     }
 
-    playback->playing = TRUE;
-    playback->error = FALSE;
+    stop_flag = FALSE;
     playback->set_pb_ready(playback);
 
-    while (playback->playing)
+    while (!stop_flag)
     {
         for (i = 0; i < BUF_SAMPLES; i++)
         {
@@ -172,7 +172,7 @@ static void tone_play(InputPlayback * playback)
             data[i] = (sum_sines * 0.999 / (gdouble) frequencies->len);
         }
 
-        playback->pass_audio(playback, FMT_FLOAT, 1, BUF_BYTES, data, &playback->playing);
+        playback->output->write_audio(data, BUF_BYTES);
     }
 
 error_exit:
@@ -180,20 +180,23 @@ error_exit:
     g_free(tone);
 
     playback->output->close_audio();
-    playback->playing = FALSE;
+    stop_flag = TRUE;
+
+    return !error;
 }
 
 static void tone_stop(InputPlayback * playback)
 {
-    playback->playing = FALSE;
+    stop_flag = TRUE;
 }
 
-static void tone_pause(InputPlayback * playback, gshort paused)
+static void tone_pause(InputPlayback * playback, gboolean pause)
 {
-    playback->output->pause(paused);
+    if (!stop_flag)
+        playback->output->pause(pause);
 }
 
-static Tuple *tone_get_song_tuple(const gchar * filename)
+static Tuple *tone_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
     Tuple *tuple = tuple_new_from_filename(filename);
     gchar *tmp;
@@ -214,11 +217,11 @@ static InputPlugin tone_ip = {
     .description = "Tone Generator",
     .init = tone_init,
     .about = tone_about,
-    .is_our_file = tone_is_our_file,
-    .play_file = tone_play,
+    .is_our_file_from_vfs = tone_is_our_fd,
+    .play = tone_play,
     .stop = tone_stop,
     .pause = tone_pause,
-    .get_song_tuple = tone_get_song_tuple
+    .probe_for_tuple = tone_probe_for_tuple
 };
 
 static InputPlugin *tonegen_iplist[] = { &tone_ip, NULL };
