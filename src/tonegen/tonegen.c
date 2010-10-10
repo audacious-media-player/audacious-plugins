@@ -140,6 +140,9 @@ static gboolean tone_play(InputPlayback *playback, const gchar *filename,
         goto error_exit;
     }
 
+    if (pause)
+        playback->output->pause(TRUE);
+
     playback->set_params(playback, 16 * OUTPUT_FREQ, OUTPUT_FREQ, 1);
 
     tone = g_malloc(frequencies->len * sizeof(*tone));
@@ -172,7 +175,8 @@ static gboolean tone_play(InputPlayback *playback, const gchar *filename,
             data[i] = (sum_sines * 0.999 / (gdouble) frequencies->len);
         }
 
-        playback->output->write_audio(data, BUF_BYTES);
+        if (!stop_flag)
+            playback->output->write_audio(data, BUF_BYTES);
     }
 
 error_exit:
@@ -188,6 +192,7 @@ error_exit:
 static void tone_stop(InputPlayback * playback)
 {
     stop_flag = TRUE;
+    playback->output->abort_write();
 }
 
 static void tone_pause(InputPlayback * playback, gboolean pause)

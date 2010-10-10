@@ -179,6 +179,9 @@ static gboolean metronom_play(InputPlayback *playback, const gchar *filename,
         goto error_exit;
     }
 
+    if (pause)
+        playback->output->pause(TRUE);
+
     playback->set_params(playback, sizeof(data[0]) * 8 * AUDIO_FREQ, AUDIO_FREQ, 1);
 
     tact = 60 * AUDIO_FREQ / pmetronom.bpm;
@@ -225,7 +228,8 @@ static gboolean metronom_play(InputPlayback *playback, const gchar *filename,
             t++;
         }
 
-        playback->output->write_audio(data, BUF_BYTES);
+        if (!stop_flag)
+            playback->output->write_audio(data, BUF_BYTES);
     }
 
 error_exit:
@@ -239,6 +243,7 @@ error_exit:
 static void metronom_stop(InputPlayback * playback)
 {
     stop_flag = TRUE;
+    playback->output->abort_write();
 }
 
 static void metronom_pause(InputPlayback * playback, gboolean pause)
