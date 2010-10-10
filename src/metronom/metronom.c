@@ -77,6 +77,7 @@ gdouble tact_form[TACT_ID_MAX][TACT_FORM_MAX] = {
 };
 
 static InputPlugin metronom_ip;
+static gboolean stop_flag = FALSE;
 
 static gboolean metronom_init (void)
 {
@@ -95,7 +96,7 @@ static void metronom_about (void)
      "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"));
 }
 
-static gint metronom_is_our_file(const gchar * filename)
+static gboolean metronom_is_our_fd(const gchar * filename, VFSFile *fd)
 {
     if (!strncmp(filename, "tact://", 7))
         return TRUE;
@@ -142,6 +143,9 @@ static gboolean metronom_get_cp(const gchar *filename, metronom_t *pmetronom, gc
             pmetronom->id = id;
     }
 
+    if (str == NULL)
+        return TRUE;
+
     if (pmetronom->num == 1 && pmetronom->den == 1)
         *str = g_strdup_printf(_("Tact generator: %d bpm"), pmetronom->bpm);
     else
@@ -150,9 +154,9 @@ static gboolean metronom_get_cp(const gchar *filename, metronom_t *pmetronom, gc
     return TRUE;
 }
 
-static void metronom_play(InputPlayback * playback)
+static gboolean metronom_play(InputPlayback *playback, const gchar *filename,
+    VFSFile *file, gint start_time, gint stop_time, gboolean pause)
 {
-    gchar *name = NULL;
     metronom_t pmetronom;
     gint16 data[BUF_SAMPLES];
     gint t = 0, tact, num;
@@ -161,21 +165,21 @@ static void metronom_play(InputPlayback * playback)
     gint datacurrent = datamiddle;
     gint datalast = datamiddle;
     gint data_form[TACT_FORM_MAX];
+    gboolean error = FALSE;
 
     if (playback->output->open_audio(FMT_S16_LE, AUDIO_FREQ, 1) == 0)
     {
-        playback->error = TRUE;
+        error = TRUE;
         goto error_exit;
     }
 
-    if (!metronom_get_cp(playback->filename, &pmetronom, &name))
+    if (!metronom_get_cp(filename, &pmetronom, NULL))
     {
-        g_message("Invalid metronom tact parameters in URI %s", playback->filename);
+        g_message("Invalid metronom tact parameters in URI %s", filename);
         goto error_exit;
     }
 
-    playback->set_params(playback, name, -1, sizeof(data[0]) * 8 * AUDIO_FREQ, AUDIO_FREQ, 1);
-    g_free(name);
+    playback->set_params(playback, sizeof(data[0]) * 8 * AUDIO_FREQ, AUDIO_FREQ, 1);
 
     tact = 60 * AUDIO_FREQ / pmetronom.bpm;
 
@@ -185,11 +189,11 @@ static void metronom_play(InputPlayback * playback)
         data_form[num] = MAX_AMPL * tact_form[pmetronom.id][num];
     }
 
-    playback->playing = TRUE;
+    stop_flag = FALSE;
     playback->set_pb_ready(playback);
 
     num = 0;
-    while (playback->playing)
+    while (!stop_flag)
     {
         gint i;
 
@@ -220,28 +224,30 @@ static void metronom_play(InputPlayback * playback)
                 datagoal = (datamiddle + 7 * datagoal) / 8;
             t++;
         }
-        if (playback->playing)
-            playback->pass_audio(playback, FMT_S16_LE, 1, BUF_BYTES, data, &playback->playing);
+
+        playback->output->write_audio(data, BUF_BYTES);
     }
 
 error_exit:
 
-    playback->playing = 0;
-    playback->eof = TRUE;
+    stop_flag = TRUE;
     playback->output->close_audio();
+
+    return !error;
 }
 
 static void metronom_stop(InputPlayback * playback)
 {
-    playback->playing = FALSE;
+    stop_flag = TRUE;
 }
 
-static void metronom_pause(InputPlayback * playback, short paused)
+static void metronom_pause(InputPlayback * playback, gboolean pause)
 {
-    playback->output->pause(paused);
+    if (!stop_flag)
+        playback->output->pause(pause);
 }
 
-static Tuple *metronom_get_song_tuple(const gchar * filename)
+static Tuple *metronom_probe_for_tuple(const gchar * filename, VFSFile *fd)
 {
     Tuple *tuple = tuple_new_from_filename(filename);
     metronom_t metronom;
@@ -259,11 +265,11 @@ static InputPlugin metronom_ip = {
     .description = "Tact Generator",
     .init = metronom_init,
     .about = metronom_about,
-    .is_our_file = metronom_is_our_file,
-    .play_file = metronom_play,
+    .is_our_file_from_vfs = metronom_is_our_fd,
+    .play = metronom_play,
     .stop = metronom_stop,
     .pause = metronom_pause,
-    .get_song_tuple = metronom_get_song_tuple,
+    .probe_for_tuple = metronom_probe_for_tuple,
 };
 
 static InputPlugin *metronom_iplist[] = { &metronom_ip, NULL };
