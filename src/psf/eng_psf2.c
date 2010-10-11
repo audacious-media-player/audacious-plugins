@@ -88,6 +88,7 @@ extern void psx_hw_init(void);
 extern void ps2_hw_slice(void);
 extern void ps2_hw_frame(void);
 extern void setlength2(int32 stop, int32 fade);
+extern gboolean stop_flag;
 
 static void do_iopmod(uint8 *start, uint32 offset)
 {
@@ -97,9 +98,9 @@ static void do_iopmod(uint8 *start, uint32 offset)
 
 	saddr = start[offset+4] | start[offset+5]<<8 | start[offset+6]<<16 | start[offset+7]<<24;
 	heap = start[offset+8] | start[offset+9]<<8 | start[offset+10]<<16 | start[offset+11]<<24;
-	tsize = start[offset+12] | start[offset+13]<<8 | start[offset+14]<<16 | start[offset+15]<<24; 
-	dsize = start[offset+16] | start[offset+17]<<8 | start[offset+18]<<16 | start[offset+19]<<24; 
-	bsize = start[offset+20] | start[offset+21]<<8 | start[offset+22]<<16 | start[offset+23]<<24; 
+	tsize = start[offset+12] | start[offset+13]<<8 | start[offset+14]<<16 | start[offset+15]<<24;
+	dsize = start[offset+16] | start[offset+17]<<8 | start[offset+18]<<16 | start[offset+19]<<24;
+	bsize = start[offset+20] | start[offset+21]<<8 | start[offset+22]<<16 | start[offset+23]<<24;
 	vers2 = start[offset+24] | start[offset+25]<<8;
 
 //	printf("nameoffs %08x saddr %08x heap %08x tsize %08x dsize %08x bsize %08x\n", nameoffs, saddr, heap, tsize, dsize, bsize);
@@ -135,7 +136,7 @@ uint32 psf2_load_elf(uint8 *start, uint32 len)
 	entry = start[24] | start[25]<<8 | start[26]<<16 | start[27]<<24;	// 0x18
 	phoff = start[28] | start[29]<<8 | start[30]<<16 | start[31]<<24; 	// 0x1c
 	shoff = start[32] | start[33]<<8 | start[34]<<16 | start[35]<<24; 	// 0x20
-		
+
 //	printf("Entry: %08x phoff %08x shoff %08x\n", entry, phoff, shoff);
 
 	phentsize = start[42] | start[43]<<8;			// 0x2a
@@ -144,7 +145,7 @@ uint32 psf2_load_elf(uint8 *start, uint32 len)
 	shnum = start[48] | start[49]<<8;			// 0x30
 	shstrndx = start[50] | start[51]<<8;			// 0x32
 
-//	printf("phentsize %08x phnum %d shentsize %08x shnum %d shstrndx %d\n", phentsize, phnum, shentsize, shnum, shstrndx);	
+//	printf("phentsize %08x phnum %d shentsize %08x shnum %d shstrndx %d\n", phentsize, phnum, shentsize, shnum, shstrndx);
 
 	// process ELF sections
 	shent = shoff;
@@ -190,7 +191,7 @@ uint32 psf2_load_elf(uint8 *start, uint32 len)
 					offs = start[offset+(rec*8)] | start[offset+1+(rec*8)]<<8 | start[offset+2+(rec*8)]<<16 | start[offset+3+(rec*8)]<<24;
 					info = start[offset+4+(rec*8)] | start[offset+5+(rec*8)]<<8 | start[offset+6+(rec*8)]<<16 | start[offset+7+(rec*8)]<<24;
 					target = LE32(psx_ram[(loadAddr+offs)/4]);
-					
+
 //					printf("[%04d] offs %08x type %02x info %08x => %08x\n", rec, offs, ELF32_R_TYPE(info), ELF32_R_SYM(info), target);
 
 					switch (ELF32_R_TYPE(info))
@@ -238,7 +239,7 @@ uint32 psf2_load_elf(uint8 *start, uint32 len)
 					}
 
 					psx_ram[(loadAddr+offs)/4] = LE32(target);
-				}						
+				}
 				break;
 
 			case 0x70000080:	// .iopmod
@@ -253,7 +254,7 @@ uint32 psf2_load_elf(uint8 *start, uint32 len)
 		}
 
 		shent += shentsize;
-	}	
+	}
 
 	entry += loadAddr;
 	entry |= 0x80000000;
@@ -284,8 +285,8 @@ static uint32 load_file_ex(uint8 *top, uint8 *start, uint32 len, char *file, uin
 	}
 	matchname[i] = '\0';
 	remainder = &file[i+1];
-	
-	cptr = start + 4; 
+
+	cptr = start + 4;
 
 	numfiles = start[0] | start[1]<<8 | start[2]<<16 | start[3]<<24;
 
@@ -298,7 +299,7 @@ static uint32 load_file_ex(uint8 *top, uint8 *start, uint32 len, char *file, uin
 		#if DEBUG_LOADER
 		printf("[%s vs %s]: ofs %08x uncomp %08x bsize %08x\n", cptr, matchname, offs, uncomp, bsize);
 		#endif
-		
+
 		if (!strcasecmp((char *)cptr, matchname))
 		{
 			if ((uncomp == 0) && (bsize == 0))
@@ -310,7 +311,7 @@ static uint32 load_file_ex(uint8 *top, uint8 *start, uint32 len, char *file, uin
 			}
 
 			X = (uncomp + bsize - 1) / bsize;
-			
+
 			cofs = offs + (X*4);
 			uofs = 0;
 			for (j = 0; j < X; j++)
@@ -320,7 +321,7 @@ static uint32 load_file_ex(uint8 *top, uint8 *start, uint32 len, char *file, uin
 				usize = top[offs+(j*4)] | top[offs+1+(j*4)]<<8 | top[offs+2+(j*4)]<<16 | top[offs+3+(j*4)]<<24;
 
 				dlength = buflen - uofs;
-		
+
 				uerr = uncompress(&buf[uofs], &dlength, &top[cofs], usize);
 				if (uerr != Z_OK)
 				{
@@ -363,11 +364,11 @@ static dump_files(int fs, uint8 *buf, uint32 buflen)
 	char tfn[128];
 
 	printf("Dumping FS %d\n", fs);
-		
+
 	start = filesys[fs];
 	len = fssize[fs];
 
-	cptr = start + 4; 
+	cptr = start + 4;
 
 	numfiles = start[0] | start[1]<<8 | start[2]<<16 | start[3]<<24;
 
@@ -377,7 +378,7 @@ static dump_files(int fs, uint8 *buf, uint32 buflen)
 		uncomp = cptr[40] | cptr[41]<<8 | cptr[42]<<16 | cptr[43]<<24;
 		bsize = cptr[44] | cptr[45]<<8 | cptr[46]<<16 | cptr[47]<<24;
 
-		if (bsize > 0)		
+		if (bsize > 0)
 		{
 			X = (uncomp + bsize - 1) / bsize;
 
@@ -392,7 +393,7 @@ static dump_files(int fs, uint8 *buf, uint32 buflen)
 				usize = start[offs+(j*4)] | start[offs+1+(j*4)]<<8 | start[offs+2+(j*4)]<<16 | start[offs+3+(j*4)]<<24;
 
 				dlength = buflen - uofs;
-		
+
 				uerr = uncompress(&buf[uofs], &dlength, &start[cofs], usize);
 				if (uerr != Z_OK)
 				{
@@ -448,7 +449,7 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 	union cpuinfo mipsinfo;
 	corlett_t *lib;
 
-	loadAddr = 0x23f00;	// this value makes allocations work out similarly to how they would 
+	loadAddr = 0x23f00;	// this value makes allocations work out similarly to how they would
 				// in Highly Experimental (as per Shadow Hearts' hard-coded assumptions)
 
 	// clear IOP work RAM before we start scribbling in it
@@ -474,8 +475,8 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 	if (c->lib[0] != 0)
 	{
 		uint64 tmp_length;
-	
-		#if DEBUG_LOADER	
+
+		#if DEBUG_LOADER
 		printf("Loading library: %s\n", c->lib);
 		#endif
 		if (ao_get_lib(c->lib, &lib_raw_file, &tmp_length) != AO_SUCCESS)
@@ -489,7 +490,7 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 			free(lib_raw_file);
 			return AO_FAIL;
 		}
-				
+
 		#if DEBUG_LOADER
 		printf("Lib FS section: size %x bytes\n", lib->res_size);
 		#endif
@@ -526,7 +527,7 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 
 	lengthMS = psfTimeToMS(c->inf_length);
 	fadeMS = psfTimeToMS(c->inf_fade);
-	if (lengthMS == 0) 
+	if (lengthMS == 0)
 	{
 		lengthMS = ~0;
 	}
@@ -553,9 +554,9 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 	mipsinfo.i = 0x80000004;	// argv
 	mips_set_info(CPUINFO_INT_REGISTER + MIPS_R5, &mipsinfo);
 	psx_ram[1] = LE32(0x80000008);
-	
+
 	buf = (uint8 *)&psx_ram[2];
-	strcpy((char *)buf, "aofile:/");		
+	strcpy((char *)buf, "aofile:/");
 
 	psx_ram[0] = LE32(FUNCT_HLECALL);
 
@@ -570,10 +571,10 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 }
 
 int32 psf2_execute(InputPlayback *playback)
-{	
+{
 	int i;
 
-	while (playback->playing && !playback->eof)
+	while (!stop_flag)
 	{
 		for (i = 0; i < 44100 / 60; i++)
 		{
@@ -639,14 +640,14 @@ int32 psf2_command(int32 command, int32 parameter)
 
 			lengthMS = psfTimeToMS(c->inf_length);
 			fadeMS = psfTimeToMS(c->inf_fade);
-			if (lengthMS == 0) 
+			if (lengthMS == 0)
 			{
 				lengthMS = ~0;
 			}
 			setlength2(lengthMS, fadeMS);
 
 			return AO_SUCCESS;
-		
+
 	}
 	return AO_FAIL;
 }

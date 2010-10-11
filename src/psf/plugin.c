@@ -97,8 +97,9 @@ int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 }
 
 static gint seek = 0;
+gboolean stop_flag = FALSE;
 
-Tuple *psf2_tuple(const gchar *filename)
+Tuple *psf2_tuple(const gchar *filename, VFSFile *file)
 {
 	Tuple *t;
 	corlett_t *c;
@@ -131,37 +132,17 @@ Tuple *psf2_tuple(const gchar *filename)
 	return t;
 }
 
-gchar *psf2_title(gchar *filename, gint *length)
-{
-	gchar *title = NULL;
-	Tuple *tuple = psf2_tuple(filename);
-
-	if (tuple != NULL)
-	{
-		title = tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
-		*length = tuple_get_int(tuple, FIELD_LENGTH, NULL);
-		tuple_free(tuple);
-	}
-	else
-	{
-		title = g_path_get_basename(filename);
-		*length = -1;
-	}
-
-	return title;
-}
-
 static gboolean psf2_play(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
 	void *buffer;
 	gint64 size;
 	gint length;
-	gchar *title = psf2_title(data->filename, &length);
 	PSFEngine eng;
 	PSFEngineFunctors *f;
+	gboolean error = FALSE;
 
-	path = g_strdup(data->filename);
-	vfs_file_get_contents (data->filename, & buffer, & size);
+	path = g_strdup(filename);
+	vfs_file_get_contents (filename, & buffer, & size);
 
 	eng = psf_probe(buffer);
 	if (eng == ENG_NONE || eng == ENG_COUNT)
@@ -179,9 +160,9 @@ static gboolean psf2_play(InputPlayback * data, const gchar * filename, VFSFile 
 
 	data->output->open_audio(FMT_S16_NE, 44100, 2);
 
-        data->set_params(data, title, length, 44100*2*2*8, 44100, 2);
+	data->set_params(data, 44100*2*2*8, 44100, 2);
 
-	data->playing = TRUE;
+	stop_flag = FALSE;
 	data->set_pb_ready(data);
 
 	for (;;)
@@ -190,7 +171,6 @@ static gboolean psf2_play(InputPlayback * data, const gchar * filename, VFSFile 
 
 		if (seek)
 		{
-			data->eof = FALSE;
 			data->output->flush(seek);
 
 			f->stop();
@@ -210,7 +190,7 @@ static gboolean psf2_play(InputPlayback * data, const gchar * filename, VFSFile 
 
 		f->stop();
 
-		while (data->eof && data->output->buffer_playing())
+		while (!stop_flag && data->output->buffer_playing())
 			g_usleep(10000);
 
 		data->output->close_audio();
@@ -220,18 +200,16 @@ static gboolean psf2_play(InputPlayback * data, const gchar * filename, VFSFile 
 
 	g_free(buffer);
 	g_free(path);
-        g_free(title);
 
-	data->playing = FALSE;
-	return ! data->error;
+	stop_flag = TRUE;
+	return ! error;
 }
 
 void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 {
 	if (buffer == NULL)
 	{
-		playback->playing = FALSE;
-		playback->eof = TRUE;
+		stop_flag = TRUE;
 
 		return;
 	}
@@ -247,7 +225,7 @@ void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 		}
 		else
 		{
-			playback->eof = TRUE;
+			stop_flag = TRUE;
 			return;
 		}
 	}
@@ -255,13 +233,14 @@ void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 
 void psf2_Stop(InputPlayback *playback)
 {
-	playback->playing = FALSE;
+	stop_flag = TRUE;
 	playback->output->abort_write();
 }
 
-void psf2_pause(InputPlayback *playback, short p)
+void psf2_pause(InputPlayback *playback, gboolean pause)
 {
-	playback->output->pause(p);
+	if (!stop_flag)
+		playback->output->pause(pause);
 }
 
 int psf2_is_our_fd(const gchar *filename, VFSFile *file)
@@ -286,7 +265,7 @@ InputPlugin psf2_ip =
 	.stop = psf2_Stop,
 	.pause = psf2_pause,
 	.mseek = psf2_Seek,
-	.get_song_tuple = psf2_tuple,
+	.probe_for_tuple = psf2_tuple,
 	.is_our_file_from_vfs = psf2_is_our_fd,
 	.vfs_extensions = psf2_fmts,
 };
