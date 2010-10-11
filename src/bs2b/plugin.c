@@ -25,12 +25,16 @@
 static t_bs2bdp bs2b = NULL;
 static gint bs2b_channels;
 
-void init() {
+gboolean init()
+{
     bs2b = bs2b_open();
-    if (bs2b == NULL) {
-        return;
-    }
+
+    if (bs2b == NULL)
+        return FALSE;
+
     bs2b_set_level(bs2b, AB_EFFECT_LEVEL);
+
+    return TRUE;
 }
 
 static void cleanup() {
