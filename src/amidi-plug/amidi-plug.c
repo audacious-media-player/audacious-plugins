@@ -24,6 +24,34 @@
 
 #include "amidi-plug.h"
 
+static void amidiplug_play_loop (InputPlayback * playback);
+
+static gboolean amidiplug_play (InputPlayback * playback, const gchar *
+ filename_uri, VFSFile * file, gint start_time, gint stop_time, gboolean pause);
+static void amidiplug_pause (InputPlayback * playback, gboolean paused);
+static void amidiplug_mseek (InputPlayback * playback, gint time);
+static Tuple * amidiplug_get_song_tuple (const gchar * filename_uri, VFSFile *
+ file);
+
+static InputPlugin amidiplug_ip = {
+    .description = "AMIDI-Plug " AMIDIPLUG_VERSION " (MIDI Player)",
+    .init = amidiplug_init,
+    .about = amidiplug_aboutbox,
+    .configure = amidiplug_configure,
+    .play = amidiplug_play,
+    .stop = amidiplug_stop,
+    .pause = amidiplug_pause,
+    .mseek = amidiplug_mseek,
+    .get_time = amidiplug_get_time,
+    .get_volume = amidiplug_get_volume,
+    .set_volume = amidiplug_set_volume,
+    .cleanup = amidiplug_cleanup,
+    .probe_for_tuple = amidiplug_get_song_tuple,
+    .file_info_box = amidiplug_file_info_box,
+    .is_our_file_from_vfs = amidiplug_is_our_file_from_vfs,
+    .vfs_extensions = amidiplug_vfs_extensions,
+};
+
 InputPlugin *amidiplug_iplist[] = { &amidiplug_ip, NULL };
 
 SIMPLE_INPUT_PLUGIN (amidi-plug, amidiplug_iplist)
@@ -152,24 +180,9 @@ static void amidiplug_stop( InputPlayback * playback )
   amidiplug_playing_status = AMIDIPLUG_STOP;
   g_cond_signal (control_cond);
   g_mutex_unlock( amidiplug_playing_mutex );
-
-  g_thread_join (playback->thread);
-  playback->thread = NULL;
-
-  /* kill the sequencer (while it may have been already killed if coming
-     from pause, it's safe to do anyway since it checks for multiple calls) */
-  if ( backend.gmodule != NULL )
-    backend.seq_off();
-
-  /* call seq_stop */
-  if ( backend.gmodule != NULL )
-    backend.seq_stop();
-
-  /* free midi data (if it has not been freed yet) */
-  i_midi_free( &midifile );
 }
 
-static void amidiplug_pause (InputPlayback * playback, gshort paused)
+static void amidiplug_pause (InputPlayback * playback, gboolean paused)
 {
     g_mutex_lock (amidiplug_playing_mutex);
     amidiplug_playing_status = paused ? AMIDIPLUG_PAUSE : AMIDIPLUG_PLAY;
@@ -178,7 +191,7 @@ static void amidiplug_pause (InputPlayback * playback, gshort paused)
     g_mutex_unlock (amidiplug_playing_mutex);
 }
 
-static void amidiplug_mseek (InputPlayback * playback, gulong time)
+static void amidiplug_mseek (InputPlayback * playback, gint time)
 {
     g_mutex_lock (amidiplug_playing_mutex);
     amidiplug_playing_status = AMIDIPLUG_SEEK;
@@ -253,7 +266,8 @@ static gint amidiplug_set_volume( gint  l , gint  r )
 }
 
 
-static Tuple * amidiplug_get_song_tuple( const gchar *filename_uri )
+static Tuple * amidiplug_get_song_tuple (const gchar * filename_uri, VFSFile *
+ file)
 {
   /* song title, get it from the filename */
   Tuple *tuple = tuple_new_from_filename(filename_uri);
@@ -280,13 +294,13 @@ static Tuple * amidiplug_get_song_tuple( const gchar *filename_uri )
 }
 
 
-static void amidiplug_play( InputPlayback * playback )
+static gboolean amidiplug_play (InputPlayback * playback, const gchar *
+ filename_uri, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
-  gchar * filename_uri = playback->filename;
-  gchar * filename = NULL;
+  g_return_val_if_fail (file != NULL, FALSE);
+
   gint port_count = 0;
   gint au_samplerate = -1, au_bitdepth = -1, au_channels = -1;
-  Tuple *tu;
 
   soft_init ();
 
@@ -299,7 +313,7 @@ static void amidiplug_play( InputPlayback * playback )
                    AMIDIPLUG_MESSAGE_WARN , NULL , TRUE );
     */
     amidiplug_playing_status = AMIDIPLUG_ERR;
-    return;
+    return FALSE;
   }
 
   /* get information about audio from backend, if available */
@@ -325,17 +339,11 @@ static void amidiplug_play( InputPlayback * playback )
      "sequencer ports for MIDI playback.  You can do so in the MIDI plugin "
      "preferences."));
     amidiplug_playing_status = AMIDIPLUG_ERR;
-    return;
+    return FALSE;
   }
 
   DEBUGMSG( "PLAY requested, opening file: %s\n" , filename_uri );
-  midifile.file_pointer = VFS_FOPEN( filename_uri , "rb" );
-  if (!midifile.file_pointer)
-  {
-    g_warning( "Cannot open %s\n" , filename_uri );
-    amidiplug_playing_status = AMIDIPLUG_ERR;
-    return;
-  }
+  midifile.file_pointer = file;
   midifile.file_name = g_strdup(filename_uri);
 
   switch( i_midi_file_read_id( &midifile ) )
@@ -386,20 +394,10 @@ static void amidiplug_play( InputPlayback * playback )
       i_midi_setget_length( &midifile );
       DEBUGMSG( "PLAY requested, song length calculated: %i msec\n" , (gint)(midifile.length / 1000) );
 
-
-      /* our length is in microseconds, but the player wants milliseconds */
-      filename = g_filename_from_uri( filename_uri , NULL , NULL );
-      if ( !filename ) filename = g_strdup( filename_uri );
-      tu = amidiplug_get_song_tuple(filename_uri);
-
-      playback->set_tuple( playback , tu );
-      playback->set_params( playback , NULL , 0 ,
-                             au_bitdepth * au_samplerate * au_channels / 8 ,
-                             au_samplerate , au_channels );
-      g_free( filename );
+      playback->set_params (playback, au_bitdepth * au_samplerate * au_channels
+       / 8, au_samplerate, au_channels);
 
       /* done with file */
-      VFS_FCLOSE( midifile.file_pointer );
       midifile.file_pointer = NULL;
 
       /* play play play! */
@@ -409,7 +407,6 @@ static void amidiplug_play( InputPlayback * playback )
       g_mutex_unlock( amidiplug_playing_mutex );
 
       seek_time = -1;
-      playback->playing = TRUE;
       playback->set_pb_ready(playback);
       amidiplug_play_loop(playback);
       break;
@@ -426,12 +423,7 @@ static void amidiplug_play( InputPlayback * playback )
   if (! backend.autonomous_audio)
       playback->output->close_audio ();
 
-  if ( midifile.file_pointer )
-  {
-    /* done with file */
-    VFS_FCLOSE( midifile.file_pointer );
-    midifile.file_pointer = NULL;
-  }
+  return TRUE;
 }
 
 static void * audio_loop (void * arg)
@@ -483,8 +475,7 @@ static void * audio_loop (void * arg)
         g_mutex_unlock (audio_control_mutex);
 
         if (backend.seq_output (& buffer, & buffer_size))
-            playback->pass_audio (playback, FMT_S16_NE, 2, buffer_size, buffer,
-             NULL);
+            playback->output->write_audio (buffer, buffer_size);
     }
 
     g_free (buffer);
@@ -496,7 +487,7 @@ static void audio_start (InputPlayback * playback)
     audio_stop_flag = FALSE;
     audio_pause_flag = FALSE;
     audio_seek_time = -1;
-    audio_thread = g_thread_create (audio_loop, playback, TRUE, NULL);
+    audio_thread = g_thread_create (audio_loop, (void *) playback, TRUE, NULL);
 }
 
 static void audio_seek (gint time)
@@ -547,10 +538,8 @@ static void do_pause (gboolean pause)
     }
 }
 
-
-gpointer amidiplug_play_loop( gpointer arg )
+static void amidiplug_play_loop (InputPlayback * playback)
 {
-  InputPlayback *playback = arg;
   gint j = 0;
   gboolean rewind = TRUE, paused = FALSE, stopped = FALSE;
 
@@ -731,7 +720,9 @@ gpointer amidiplug_play_loop( gpointer arg )
       }
   }
 
-  return NULL;
+  backend.seq_off ();
+  backend.seq_stop ();
+  i_midi_free (& midifile);
 }
 
 

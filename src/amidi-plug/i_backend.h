@@ -48,7 +48,7 @@ typedef struct
   gint (*audio_info_get)( gint * , gint * , gint * );
   gint (*audio_volume_get)( gint * , gint * );
   gint (*audio_volume_set)( gint , gint );
-  gint (*seq_start)( gchar * );
+  gint (* seq_start) (const gchar * filename);
   gint (*seq_stop)( void );
   gint (*seq_on)( void );
   gint (*seq_off)( void );

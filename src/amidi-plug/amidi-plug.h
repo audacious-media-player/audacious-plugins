@@ -59,41 +59,16 @@ amidiplug_cfg_ap_t amidiplug_cfg_ap =
 static const gchar * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi",
  "rmid", NULL};
 
-gpointer amidiplug_play_loop( gpointer );
 void amidiplug_skipto( gint );
 static gboolean amidiplug_init (void);
 static void amidiplug_cleanup( void );
 static void amidiplug_aboutbox( void );
 static void amidiplug_configure( void );
 static gint amidiplug_is_our_file_from_vfs( const gchar * , VFSFile * );
-static void amidiplug_play( InputPlayback * );
 static void amidiplug_stop( InputPlayback * );
-static void amidiplug_pause( InputPlayback *, gshort );
-static void amidiplug_mseek (InputPlayback * playback, gulong time);
 static gint amidiplug_get_time( InputPlayback * );
 static gint amidiplug_get_volume( gint * , gint * );
 static gint amidiplug_set_volume( gint , gint );
-static Tuple *amidiplug_get_song_tuple( const gchar * );
 static void amidiplug_file_info_box( const gchar * );
-
-InputPlugin amidiplug_ip =
-{
-  .description = "AMIDI-Plug " AMIDIPLUG_VERSION " (MIDI Player)", /* description */
-  .init = amidiplug_init,			/* init */
-  .about = amidiplug_aboutbox,			/* aboutbox */
-  .configure = amidiplug_configure,			/* configure */
-  .play_file = amidiplug_play,			/* play_file */
-  .stop = amidiplug_stop,			/* stop */
-  .pause = amidiplug_pause,			/* pause */
-  .mseek = amidiplug_mseek,			/* seek */
-  .get_time = amidiplug_get_time,			/* get_time */
-  .get_volume = amidiplug_get_volume,			/* get_volume */
-  .set_volume = amidiplug_set_volume,			/* set_volume */
-  .cleanup = amidiplug_cleanup,			/* cleanup */
-  .get_song_tuple = amidiplug_get_song_tuple,		/* get_song_info */
-  .file_info_box = amidiplug_file_info_box,		/* file_info_box */
-  .is_our_file_from_vfs = amidiplug_is_our_file_from_vfs,	/* is_our_file_from_vfs */
-  .vfs_extensions = amidiplug_vfs_extensions		/* vfs_extensions */
-};
 
 #endif /* !_I_AMIDIPLUG_H */

@@ -333,6 +333,8 @@ gint sequencer_output( gpointer * buffer , gint * len )
 
 gint sequencer_output_shut( guint max_tick , gint skip_offset )
 {
+  g_return_val_if_fail (sc.seq != NULL, 0);
+
   gint i = 0 , c = 0;
   /* time to shutdown playback! */
   /* send "ALL SOUNDS OFF" to all channels on all ports */
