@@ -40,6 +40,7 @@
 static GMutex *ctrl_mutex = NULL;
 static GCond *ctrl_cond = NULL;
 static gint64 seek_value = -1;
+static gboolean stop_flag = FALSE;
 
 static gboolean ffaudio_init (void)
 {
@@ -305,6 +306,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     gboolean codec_opened = FALSE, do_resampling = FALSE;
     gint out_fmt;
     gboolean seekable;
+    gboolean error = FALSE;
 
     gchar uribuf[64];
     snprintf (uribuf, sizeof uribuf, "audvfsptr:%p", (void *) file);
@@ -372,7 +374,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
     if (playback->output->open_audio(out_fmt, c->sample_rate, c->channels) <= 0)
     {
-        playback->error = TRUE;
+        error = TRUE;
         goto error_exit;
     }
 
@@ -387,11 +389,11 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     if (pause)
         playback->output->pause(TRUE);
 
-    playback->set_params(playback, NULL, 0, ic->bit_rate, c->sample_rate, c->channels);
+    playback->set_params(playback, ic->bit_rate, c->sample_rate, c->channels);
 
     g_mutex_lock(ctrl_mutex);
 
-    playback->playing = TRUE;
+    stop_flag = FALSE;
     seek_value = (start_time > 0) ? start_time : -1;
     playback->set_pb_ready(playback);
     errcount = 0;
@@ -399,7 +401,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
     g_mutex_unlock(ctrl_mutex);
 
-    while (playback->playing && (stop_time < 0 ||
+    while (!stop_flag && (stop_time < 0 ||
      playback->output->written_time () < stop_time))
     {
         AVPacket tmp;
@@ -452,7 +454,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
         /* Decode and play packet/frame */
         memcpy(&tmp, &pkt, sizeof(tmp));
-        while (tmp.size > 0 && playback->playing)
+        while (tmp.size > 0 && !stop_flag)
         {
             gint len, out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
             guint8 *outbuf_p;
@@ -504,7 +506,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
                 outbuf_p = outbuf;
 
             /* Output audio in small blocks */
-            while (out_size > 0 && playback->playing && (stop_time < 0 ||
+            while (out_size > 0 && !stop_flag && (stop_time < 0 ||
              playback->output->written_time () < stop_time))
             {
                 gint writeoff = MIN (chunk_size, out_size);
@@ -539,7 +541,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
     g_mutex_lock(ctrl_mutex);
 
-    while (playback->playing && playback->output->buffer_playing())
+    while (!stop_flag && playback->output->buffer_playing())
         g_usleep(20000);
 
     playback->output->close_audio();
@@ -551,7 +553,7 @@ error_exit:
 
     AUDDBG("decode loop finished, shutting down\n");
 
-    playback->playing = FALSE;
+    stop_flag = TRUE;
 
     av_free(outbuf);
     av_free(resbuf);
@@ -565,16 +567,16 @@ error_exit:
         av_close_input_file(ic);
 
     AUDDBG("exiting thread\n");
-    return ! playback->error;
+    return ! error;
 }
 
 static void ffaudio_stop(InputPlayback * playback)
 {
     g_mutex_lock(ctrl_mutex);
 
-    if (playback->playing)
+    if (!stop_flag)
     {
-        playback->playing = FALSE;
+        stop_flag = TRUE;
         playback->output->abort_write();
         g_cond_signal(ctrl_cond);
     }
@@ -582,21 +584,21 @@ static void ffaudio_stop(InputPlayback * playback)
     g_mutex_unlock (ctrl_mutex);
 }
 
-static void ffaudio_pause(InputPlayback * playback, gshort pause)
+static void ffaudio_pause(InputPlayback * playback, gboolean pause)
 {
     g_mutex_lock(ctrl_mutex);
 
-    if (playback->playing)
+    if (!stop_flag)
         playback->output->pause(pause);
 
     g_mutex_unlock(ctrl_mutex);
 }
 
-static void ffaudio_seek (InputPlayback * playback, gulong time)
+static void ffaudio_seek (InputPlayback * playback, gint time)
 {
     g_mutex_lock(ctrl_mutex);
 
-    if (playback->playing)
+    if (!stop_flag)
     {
         seek_value = time;
         playback->output->abort_write();
