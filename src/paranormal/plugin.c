@@ -33,19 +33,19 @@
 #include <setjmp.h>
 #include <unistd.h>
 
-#include <glib.h>
-#include <audacious/i18n.h>
-
 #include <gtk/gtk.h>
-#include <audacious/plugin.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 #include <SDL.h>
 #include <SDL_thread.h>
 
 #ifdef _POSIX_PRIORITY_SCHEDULING
 #include <sched.h>
 #endif
+
+#include <audacious/i18n.h>
+#include <audacious/plugin.h>
+#include <audacious/plugins.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "paranormal.h"
 #include "actuators.h"
@@ -207,7 +207,7 @@ quit_timeout_fn (gpointer data)
 {
   if (pn_done)
     {
-      pn_vp.disable_plugin (&pn_vp);
+      aud_plugin_enable (aud_plugin_by_header (& pn_vp), FALSE);
       return FALSE;
     }
 
@@ -473,7 +473,7 @@ pn_quit (void)
       /* We're not in the draw thread, so don't sweat it...
 	 addendum: looks like we have to bend over backwards (forwards?)
 	 for xmms here too */
-      pn_vp.disable_plugin (&pn_vp);
+      aud_plugin_enable (aud_plugin_by_header (& pn_vp), FALSE);
       while (1)
 	gtk_main_iteration ();
     }

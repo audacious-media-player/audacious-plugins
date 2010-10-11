@@ -23,8 +23,10 @@
 
 #include <gtk/gtk.h>
 #include <math.h>
-#include <audacious/plugin.h>
+
 #include <audacious/i18n.h>
+#include <audacious/plugin.h>
+#include <audacious/plugins.h>
 
 #include "logo.xpm"
 
@@ -74,8 +76,9 @@ VisPlugin *spectrum_vplist[] = { &fsanalyzer_vp, NULL };
 
 DECLARE_PLUGIN(spectrum, NULL, NULL, NULL, NULL, NULL, NULL, spectrum_vplist,NULL);
 
-static void fsanalyzer_destroy_cb(GtkWidget *w,gpointer data) {
-	fsanalyzer_vp.disable_plugin(&fsanalyzer_vp);
+static void fsanalyzer_destroy_cb (void)
+{
+	aud_plugin_enable (aud_plugin_by_header (& fsanalyzer_vp), FALSE);
 }
 
 static gboolean fsanalyzer_init (void)
