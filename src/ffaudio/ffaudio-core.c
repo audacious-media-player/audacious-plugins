@@ -640,6 +640,9 @@ static const gchar *ffaudio_fmts[] = {
     /* Handle OGG streams (FLAC/Vorbis etc.) */
     "ogg",
 
+    /* Speex */
+    "spx",
+
     /* end of table */
     NULL
 };
