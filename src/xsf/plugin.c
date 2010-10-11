@@ -36,6 +36,25 @@
 #include "corlett.h"
 #include "vio2sf.h"
 
+static GMutex *seek_mutex;
+static GCond *seek_cond;
+static gint seek_value = -1;
+static gboolean stop_flag = FALSE;
+
+static gboolean xsf_init(void)
+{
+	seek_mutex = g_mutex_new();
+	seek_cond = g_cond_new();
+
+	return TRUE;
+}
+
+static void xsf_cleanup(void)
+{
+	g_mutex_free(seek_mutex);
+	g_cond_free(seek_cond);
+}
+
 /* xsf_get_lib: called to load secondary files */
 static gchar *path;
 int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
@@ -54,8 +73,7 @@ int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 	return AO_SUCCESS;
 }
 
-static gint seek = 0;
-Tuple *xsf_tuple(const gchar *filename)
+Tuple *xsf_tuple(const gchar *filename, VFSFile *fd)
 {
 	Tuple *t;
 	corlett_t *c;
@@ -88,161 +106,165 @@ Tuple *xsf_tuple(const gchar *filename)
 	return t;
 }
 
-gchar *xsf_title(gchar *filename, gint *length)
+static gint xsf_get_length(const gchar *filename)
 {
-	gchar *title = NULL;
-	Tuple *tuple = xsf_tuple(filename);
+	corlett_t *c;
+	void *buf;
+	gint64 size;
 
-	if (tuple != NULL)
+	vfs_file_get_contents(filename, &buf, &size);
+
+	if (!buf)
+		return -1;
+
+	if (corlett_decode(buf, size, NULL, NULL, &c) != AO_SUCCESS)
 	{
-		title = tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
-		*length = tuple_get_int(tuple, FIELD_LENGTH, NULL);
-		tuple_free(tuple);
-	}
-	else
-	{
-		title = g_path_get_basename(filename);
-		*length = -1;
+		g_free(buf);
+		return -1;
 	}
 
-	return title;
+	free(c);
+	g_free(buf);
+
+	return c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
 }
 
-void xsf_update(unsigned char *buffer, long count, InputPlayback *playback);
-
-
-static gboolean xsf_play(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
+static gboolean xsf_play(InputPlayback * playback, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
 	void *buffer;
 	gint64 size;
-	gint length;
-	gchar *title = xsf_title(data->filename, &length);
+	gint length = xsf_get_length(filename);
 	gint16 samples[44100*2];
 	gint seglen = 44100 / 60;
 	gfloat pos;
+	gboolean error = FALSE;
 
-	path = g_strdup(data->filename);
-	vfs_file_get_contents (data->filename, & buffer, & size);
+	path = g_strdup(filename);
+	vfs_file_get_contents (filename, & buffer, & size);
 
 	if (xsf_start(buffer, size) != AO_SUCCESS)
 	{
-		free(buffer);
-		return TRUE;
+		error = TRUE;
+		goto ERR_NO_CLOSE;
 	}
 
-	data->output->open_audio(FMT_S16_NE, 44100, 2);
-
-        data->set_params(data, title, length, 44100*2*2*8, 44100, 2);
-
-	data->playing = TRUE;
-	data->set_pb_ready(data);
-
-	for (;;)
+	if (!playback->output->open_audio(FMT_S16_NE, 44100, 2))
 	{
-		while (data->playing && !seek && !data->eof)
-		{
-			xsf_gen(samples, seglen);
-			xsf_update((guint8 *)samples, seglen * 4, data);
+		error = TRUE;
+		goto ERR_NO_CLOSE;
+	}
 
-			if (data->output->written_time () > length)
-				data->eof = TRUE;
-		}
+	playback->set_params(playback, 44100*2*2*8, 44100, 2);
 
-		if (seek)
+	if (pause)
+		playback->output->pause (TRUE);
+
+	stop_flag = FALSE;
+	playback->set_pb_ready(playback);
+
+	while (!stop_flag)
+	{
+		g_mutex_lock(seek_mutex);
+
+		if (seek_value >= 0)
 		{
-			if (seek > data->output->written_time ())
+			if (seek_value > playback->output->written_time ())
 			{
-				pos = data->output->written_time ();
-				while (pos < seek)
+				pos = playback->output->written_time ();
+
+				while (pos < seek_value)
 				{
 					xsf_gen(samples, seglen);
 					pos += 16.666;
 				}
 
-				data->output->flush(seek);
-				seek = 0;
+				playback->output->flush(seek_value);
+				seek_value = -1;
 
-				continue;
+				g_cond_signal(seek_cond);
 			}
-			else if (seek < data->output->written_time ())
+			else if (seek_value < playback->output->written_time ())
 			{
-				data->eof = FALSE;
-
-				g_print("xsf_term\n");
 				xsf_term();
 
-				g_print("xsf_start... ");
+				g_free(path);
+				path = g_strdup(filename);
+
 				if (xsf_start(buffer, size) == AO_SUCCESS)
 				{
-					g_print("ok!\n");
 					pos = 0;
-					while (pos < seek)
+					while (pos < seek_value)
 					{
 						xsf_gen(samples, seglen);
 						pos += 16.666; /* each segment is 16.666ms */
 					}
 
-					data->output->flush(seek);
-					seek = 0;
+					playback->output->flush(seek_value);
+					seek_value = -1;
 
-					continue;
+					g_cond_signal(seek_cond);
 				}
-				else
+			   	else
 				{
-					g_print("fail :(\n");
-
-					data->output->close_audio();
-
-					g_free(buffer);
-					g_free(path);
-				        g_free(title);
-
-					data->playing = FALSE;
-
-					return TRUE;
+					error = TRUE;
+					goto CLEANUP;
 				}
 			}
 		}
 
-		xsf_term();
+		g_mutex_unlock(seek_mutex);
 
-		while (data->eof && data->output->buffer_playing())
-			g_usleep(10000);
+		xsf_gen(samples, seglen);
+		playback->output->write_audio((guint8 *)samples, seglen * 4);
 
-		data->output->close_audio();
+		if (playback->output->written_time() >= length)
+		{
+			while (!stop_flag && playback->output->buffer_playing())
+				g_usleep(10000);
 
-		break;
+			goto CLEANUP;
+		}
 	}
 
+CLEANUP:
+	xsf_term();
+
+	g_mutex_lock(seek_mutex);
+	stop_flag = TRUE;
+	g_cond_signal(seek_cond); /* wake up any waiting request */
+	g_mutex_unlock(seek_mutex);
+
+	playback->output->close_audio();
+
+ERR_NO_CLOSE:
 	g_free(buffer);
 	g_free(path);
-        g_free(title);
 
-	data->playing = FALSE;
-	return FALSE;
+	return !error;
 }
 
-void xsf_update(guint8 *buffer, long count, InputPlayback *playback)
+void xsf_stop(InputPlayback *playback)
 {
-	if (buffer == NULL)
-	{
-		playback->playing = FALSE;
-		playback->eof = TRUE;
+	g_mutex_lock(seek_mutex);
 
-		return;
+	if (!stop_flag)
+	{
+		stop_flag = TRUE;
+		playback->output->abort_write();
+		g_cond_signal(seek_cond);
 	}
 
-	playback->output->write_audio (buffer, count);
+	g_mutex_unlock (seek_mutex);
 }
 
-void xsf_Stop(InputPlayback *playback)
+void xsf_pause(InputPlayback *playback, gboolean pause)
 {
-	playback->playing = FALSE;
-}
+	g_mutex_lock(seek_mutex);
 
-void xsf_pause(InputPlayback *playback, short p)
-{
-	playback->output->pause(p);
+	if (!stop_flag)
+		playback->output->pause(pause);
+
+	g_mutex_unlock(seek_mutex);
 }
 
 gint xsf_is_our_fd(const gchar *filename, VFSFile *file)
@@ -259,9 +281,19 @@ gint xsf_is_our_fd(const gchar *filename, VFSFile *file)
 	return 0;
 }
 
-void xsf_Seek(InputPlayback *playback, gulong time)
+void xsf_seek(InputPlayback *playback, gint time)
 {
-	seek = time;
+	g_mutex_lock(seek_mutex);
+
+	if (!stop_flag)
+	{
+		seek_value = time;
+		playback->output->abort_write();
+		g_cond_signal(seek_cond);
+		g_cond_wait(seek_cond, seek_mutex);
+	}
+
+	g_mutex_unlock(seek_mutex);
 }
 
 static const gchar *xsf_fmts[] = { "2sf", "mini2sf", "gsf", "minigsf", NULL };
@@ -269,11 +301,13 @@ static const gchar *xsf_fmts[] = { "2sf", "mini2sf", "gsf", "minigsf", NULL };
 static InputPlugin xsf_ip =
 {
 	.description = "GSF/2SF Audio Plugin",
+	.init = xsf_init,
+	.cleanup = xsf_cleanup,
 	.play = xsf_play,
-	.stop = xsf_Stop,
+	.stop = xsf_stop,
 	.pause = xsf_pause,
-	.mseek = xsf_Seek,
-	.get_song_tuple = xsf_tuple,
+	.mseek = xsf_seek,
+	.probe_for_tuple = xsf_tuple,
 	.is_our_file_from_vfs = xsf_is_our_fd,
 	.vfs_extensions = xsf_fmts,
 };
