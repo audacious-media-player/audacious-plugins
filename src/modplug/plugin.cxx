@@ -4,8 +4,6 @@
  * This source code is public domain.
  */
 
-// #define AUD_DEBUG 1
-
 #include "gui/main.h"
 extern "C" {
 #include <audacious/debug.h>
@@ -31,8 +29,7 @@ gint CanPlayFileFromVFS(const char* aFilename, VFSFile *VFSFile)
 
 gboolean PlayFile(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
-    char* aFilename = data->filename;
-    return gModplugXMMS.PlayFile(aFilename, data);
+    return gModplugXMMS.PlayFile(filename, data);
 }
 
 void Stop(InputPlayback *data)
@@ -40,17 +37,17 @@ void Stop(InputPlayback *data)
     gModplugXMMS.Stop(data);
 }
 
-void Pause (InputPlayback * playback, gshort paused)
+void Pause (InputPlayback * playback, gboolean pause)
 {
-    gModplugXMMS.pause (playback, paused);
+    gModplugXMMS.pause (playback, pause);
 }
 
-void mseek (InputPlayback * playback, gulong time)
+void mseek (InputPlayback * playback, gint time)
 {
     gModplugXMMS.mseek (playback, time);
 }
 
-Tuple* GetSongTuple(const gchar* aFilename)
+Tuple* GetSongTuple(const gchar* aFilename, VFSFile *fd)
 {
     return gModplugXMMS.GetSongTuple(aFilename);
 }

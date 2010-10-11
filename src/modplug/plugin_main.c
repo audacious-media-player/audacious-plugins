@@ -5,10 +5,10 @@ void ShowAboutBox(void);
 void ShowConfigureBox(void);
 gboolean PlayFile(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause);
 void Stop(InputPlayback *data);
-void Pause(InputPlayback *data, gshort aPaused);
-void mseek (InputPlayback * playback, gulong time);
+void Pause(InputPlayback *data, gboolean pause);
+void mseek (InputPlayback * playback, gint time);
 void ShowFileInfoBox(const gchar* aFilename);
-Tuple* GetSongTuple(const gchar* aFilename);
+Tuple* GetSongTuple(const gchar* aFilename, VFSFile *fd);
 gint CanPlayFileFromVFS(const gchar* aFilename, VFSFile *VFSFile);
 
 static const gchar *fmts[] =
@@ -27,7 +27,7 @@ InputPlugin gModPlug =
     .pause = Pause,
     .mseek = mseek,
     .file_info_box = ShowFileInfoBox,
-    .get_song_tuple = GetSongTuple,
+    .probe_for_tuple = GetSongTuple,
     .is_our_file_from_vfs = CanPlayFileFromVFS,
     .vfs_extensions = fmts,
     .have_subtune = TRUE,   // to exclude .zip etc which doesn't contain any mod file --yaz

@@ -1,4 +1,3 @@
-#define AUD_DEBUG 1
 /* Modplug XMMS Plugin
  * Authors: Kenton Varda <temporal@gauge3d.org>
  *
@@ -11,6 +10,7 @@
 
 extern "C" {
 #include <audacious/configdb.h>
+#include <audacious/debug.h>
 }
 
 #include "modplugbmp.h"
@@ -18,6 +18,8 @@ extern "C" {
 #include "sndfile.h"
 #include "stddefs.h"
 #include "archive/open.h"
+
+static gboolean stop_flag = FALSE;
 
 // ModplugXMMS member functions ===============================
 
@@ -202,12 +204,10 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 void ModplugXMMS::PlayLoop(InputPlayback *playback)
 {
 	uint32 lLength;
-    gboolean paused = FALSE;
 
     g_mutex_lock (control_mutex);
     seek_time = -1;
-    mPaused = FALSE;
-    playback->playing = TRUE;
+    stop_flag = FALSE;
     playback->set_pb_ready (playback);
     g_mutex_unlock (control_mutex);
 
@@ -215,7 +215,7 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
     {
         g_mutex_lock (control_mutex);
 
-        if (! playback->playing)
+        if (stop_flag)
         {
             g_mutex_unlock (control_mutex);
             break;
@@ -228,20 +228,6 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
             playback->output->flush (seek_time);
             seek_time = -1;
             g_cond_signal (control_cond);
-        }
-
-        if (mPaused != paused)
-        {
-            playback->output->pause (mPaused);
-            paused = mPaused;
-            g_cond_signal (control_cond);
-        }
-
-        if (paused)
-        {
-            g_cond_wait (control_cond, control_mutex);
-            g_mutex_unlock (control_mutex);
-            continue;
         }
 
         g_mutex_unlock (control_mutex);
@@ -285,10 +271,10 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 
     g_mutex_lock (control_mutex);
 
-    while (playback->playing && playback->output->buffer_playing ())
+    while (!stop_flag && playback->output->buffer_playing ())
         g_usleep (10000);
 
-    playback->playing = FALSE;
+    stop_flag = TRUE;
     g_cond_signal (control_cond); /* wake up any waiting request */
     g_mutex_unlock (control_mutex);
 
@@ -388,15 +374,7 @@ bool ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
         ipb->set_tuple(ipb,ti);
     }
 
-	ipb->set_params
-	(
-		ipb,
-		NULL,
-		0,
-		mSoundFile->GetNumChannels() * 1000,
-		mModProps.mFrequency,
-		mModProps.mChannels
-	);
+	ipb->set_params(ipb, mSoundFile->GetNumChannels() * 1000, mModProps.mFrequency,	mModProps.mChannels);
 
 	if(mModProps.mBits == 16)
 		mFormat = FMT_S16_NE;
@@ -405,10 +383,7 @@ bool ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 
     if (! ipb->output->open_audio (mFormat, mModProps.mFrequency,
      mModProps.mChannels))
-    {
-        ipb->error = TRUE;
         return true;
-    }
 
 	this->PlayLoop(ipb);
 	ipb->output->close_audio ();
@@ -418,41 +393,36 @@ bool ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 
 void ModplugXMMS::Stop (InputPlayback * playback)
 {
-    g_mutex_lock (control_mutex);
+	g_mutex_lock(control_mutex);
 
-    if (playback->playing)
-    {
-        playback->playing = FALSE;
-        g_cond_signal (control_cond);
-        g_mutex_unlock (control_mutex);
-        g_thread_join (playback->thread);
-        playback->thread = NULL;
-    }
-    else
-        g_mutex_unlock (control_mutex);
+	if (!stop_flag)
+	{
+		stop_flag = TRUE;
+		playback->output->abort_write();
+		g_cond_signal(control_cond);
+	}
+
+	g_mutex_unlock(control_mutex);
 }
 
-void ModplugXMMS::pause (InputPlayback * playback, gshort paused)
+void ModplugXMMS::pause (InputPlayback * playback, gboolean pause)
+{
+	g_mutex_lock(control_mutex);
+
+	if (!stop_flag)
+		playback->output->pause(pause);
+
+	g_mutex_unlock(control_mutex);
+}
+
+void ModplugXMMS::mseek (InputPlayback * playback, gint time)
 {
     g_mutex_lock (control_mutex);
 
-    if (playback->playing)
-    {
-        mPaused = paused;
-        g_cond_signal (control_cond);
-        g_cond_wait (control_cond, control_mutex);
-    }
-
-    g_mutex_unlock (control_mutex);
-}
-
-void ModplugXMMS::mseek (InputPlayback * playback, gulong time)
-{
-    g_mutex_lock (control_mutex);
-
-    if (playback->playing)
+    if (!stop_flag)
     {
         seek_time = time;
+        playback->output->abort_write();
         g_cond_signal (control_cond);
         g_cond_wait (control_cond, control_mutex);
     }
