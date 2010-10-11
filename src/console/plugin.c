@@ -17,11 +17,11 @@
 #include "configure.h"
 
 Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd);
-Tuple * console_get_file_tuple(const gchar *filename);
-void console_play_file(InputPlayback *playback);
+gboolean console_play(InputPlayback *playback, const gchar *filename,
+    VFSFile *file, gint start_time, gint stop_time, gboolean pause);
 void console_seek(InputPlayback *data, gint time);
 void console_stop(InputPlayback *playback);
-void console_pause(InputPlayback * playback, gshort p);
+void console_pause(InputPlayback * playback, gboolean pause);
 gboolean console_init (void);
 void console_cleanup(void);
 
@@ -51,12 +51,11 @@ static InputPlugin console_ip =
     .cleanup = console_cleanup,
     .about = console_aboutbox,
     .configure = console_cfg_ui,
-    .play_file = console_play_file,
+    .play = console_play,
     .stop = console_stop,
     .pause = console_pause,
-    .seek = console_seek,
+    .mseek = console_seek,
     .vfs_extensions = gme_fmts,
-    .get_song_tuple = console_get_file_tuple,
     .probe_for_tuple = console_probe_for_tuple,
     .have_subtune = TRUE
 };

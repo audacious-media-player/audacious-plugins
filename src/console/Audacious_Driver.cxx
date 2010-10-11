@@ -21,6 +21,7 @@ extern "C" {
 static GMutex *seek_mutex = NULL;
 static GCond *seek_cond = NULL;
 static gint seek_value = -1;
+static gboolean stop_flag = FALSE;
 
 static const gint fade_threshold = 10 * 1000;
 static const gint fade_length    = 8 * 1000;
@@ -209,32 +210,17 @@ extern "C" Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd)
     return NULL;
 }
 
-extern "C" Tuple * console_get_file_tuple(const gchar *filename)
-{
-    ConsoleFileHandler fh(filename);
-
-    if (!fh.m_type)
-        return NULL;
-
-    if (!fh.load(gme_info_only))
-    {
-        track_info_t info;
-        if (!log_err(fh.m_emu->track_info(&info, fh.m_track < 0 ? 0 : fh.m_track)))
-            return get_track_ti(fh.m_path, &info, fh.m_track);
-    }
-
-    return NULL;
-}
-
-extern "C" void console_play_file(InputPlayback *playback)
+extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
+    VFSFile *file, gint start_time, gint stop_time, gboolean pause)
 {
     gint length, end_delay, sample_rate;
     track_info_t info;
+    gboolean error = FALSE;
 
     // identify file
-    ConsoleFileHandler fh(playback->filename);
+    ConsoleFileHandler fh(filename);
     if (!fh.m_type)
-        return;
+        return FALSE;
 
     if (fh.m_track < 0)
         fh.m_track = 0;
@@ -250,7 +236,7 @@ extern "C" void console_play_file(InputPlayback *playback)
 
     // create emulator and load file
     if (fh.load(sample_rate))
-        return;
+        return FALSE;
 
     // stereo echo depth
     gme_set_stereo_depth(fh.m_emu, 1.0 / 100 * audcfg.echo);
@@ -283,18 +269,21 @@ extern "C" void console_play_file(InputPlayback *playback)
         {
             length = tuple_get_int(ti, FIELD_LENGTH, NULL);
             tuple_free(ti);
-            playback->set_params(playback, NULL, NULL, fh.m_emu->voice_count() * 1000, sample_rate, 2);
+            playback->set_params(playback, fh.m_emu->voice_count() * 1000, sample_rate, 2);
         }
     }
 
     // start track
     if (log_err(fh.m_emu->start_track(fh.m_track)))
-        return;
+        return FALSE;
 
     log_warning(fh.m_emu);
 
     if (!playback->output->open_audio(FMT_S16_NE, sample_rate, 2))
-        return;
+        return FALSE;
+
+    if (pause)
+        playback->output->pause(TRUE);
 
     // set fade time
     if (length <= 0)
@@ -303,18 +292,18 @@ extern "C" void console_play_file(InputPlayback *playback)
         length -= fade_length / 2;
     fh.m_emu->set_fade(length, fade_length);
 
-    playback->playing = 1;
+    stop_flag = FALSE;
     end_delay = 0;
     playback->set_pb_ready(playback);
 
-    while (playback->playing)
+    while (!stop_flag)
     {
         /* Perform seek, if requested */
         g_mutex_lock(seek_mutex);
         if (seek_value >= 0)
         {
-            playback->output->flush(seek_value * 1000);
-            fh.m_emu->seek(seek_value * 1000);
+            playback->output->flush(seek_value);
+            fh.m_emu->seek(seek_value);
             seek_value = -1;
             g_cond_signal(seek_cond);
         }
@@ -327,7 +316,7 @@ extern "C" void console_play_file(InputPlayback *playback)
         {
             // TODO: remove delay once host doesn't cut the end of track off
             if (!--end_delay)
-                playback->playing = 0;
+                stop_flag = TRUE;
             memset(buf, 0, sizeof(buf));
         }
         else
@@ -344,25 +333,48 @@ extern "C" void console_play_file(InputPlayback *playback)
 
     // stop playing
     playback->output->close_audio();
-    playback->playing = 0;
+    stop_flag = TRUE;
+
+    return !error;
 }
 
-extern "C" void console_seek(InputPlayback *data, gint time)
+extern "C" void console_seek(InputPlayback *playback, gint time)
 {
     g_mutex_lock(seek_mutex);
-    seek_value = time;
-    g_cond_wait(seek_cond, seek_mutex);
+
+    if (!stop_flag)
+    {
+        seek_value = time;
+        playback->output->abort_write();
+        g_cond_signal(seek_cond);
+        g_cond_wait(seek_cond, seek_mutex);
+    }
+
     g_mutex_unlock(seek_mutex);
 }
 
 extern "C" void console_stop(InputPlayback *playback)
 {
-    playback->playing = 0;
+    g_mutex_lock(seek_mutex);
+
+    if (!stop_flag)
+    {
+        stop_flag = TRUE;
+        playback->output->abort_write();
+        g_cond_signal(seek_cond);
+    }
+
+    g_mutex_unlock (seek_mutex);
 }
 
-extern "C" void console_pause(InputPlayback * playback, gshort p)
+extern "C" void console_pause(InputPlayback * playback, gboolean pause)
 {
-    playback->output->pause(p);
+    g_mutex_lock(seek_mutex);
+
+    if (!stop_flag)
+        playback->output->pause(pause);
+
+    g_mutex_unlock(seek_mutex);
 }
 
 extern "C" gboolean console_init (void)
