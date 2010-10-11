@@ -71,6 +71,8 @@ static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
     else
         handle = open (filename, mode_flag);
 
+    AUDDBG (" = %d.\n", handle);
+
     if (handle < 0)
     {
         error ("Cannot open %s: %s.\n", filename, strerror (errno));
@@ -92,7 +94,7 @@ static gint unix_fclose (VFSFile * file)
     gint handle = GPOINTER_TO_INT (file->handle);
     gint result = 0;
 
-    AUDDBG ("fclose\n");
+    AUDDBG ("[%d] fclose\n", handle);
 
     if (fsync (handle) < 0)
     {
@@ -115,7 +117,7 @@ static gint64 unix_fread (void * ptr, gint64 size, gint64 nitems, VFSFile * file
     gint64 goal = size * nitems;
     gint64 total = 0;
 
-/*    AUDDBG ("fread %d x %d\n", (gint) size, (gint) nitems); */
+/*    AUDDBG ("[%d] fread %d x %d\n", handle, (gint) size, (gint) nitems); */
 
     while (total < goal)
     {
@@ -133,7 +135,7 @@ static gint64 unix_fread (void * ptr, gint64 size, gint64 nitems, VFSFile * file
         total += readed;
     }
 
-/*    AUDDBG (" = %d\n", total); */
+/*    AUDDBG (" = %d\n", (gint) total); */
 
     return (size > 0) ? total / size : 0;
 }
@@ -142,8 +144,8 @@ static gint64 unix_fwrite (const void * ptr, gint64 size, gint64 nitems,
  VFSFile * file)
 {
     gint handle = GPOINTER_TO_INT (file->handle);
-    gint goal = size * nitems;
-    gint total = 0;
+    gint64 goal = size * nitems;
+    gint64 total = 0;
 
     AUDDBG ("fwrite %d x %d\n", (gint) size, (gint) nitems);
 
@@ -160,7 +162,7 @@ static gint64 unix_fwrite (const void * ptr, gint64 size, gint64 nitems,
         total += written;
     }
 
-    AUDDBG (" = %d\n", total);
+    AUDDBG (" = %d\n", (gint) total);
 
     return (size > 0) ? total / size : 0;
 }
@@ -169,7 +171,7 @@ static gint unix_fseek (VFSFile * file, gint64 offset, gint whence)
 {
     gint handle = GPOINTER_TO_INT (file->handle);
 
-    AUDDBG ("fseek %d, whence = %d\n", (gint) offset, whence);
+    AUDDBG ("[%d] fseek %d, whence = %d\n", handle, (gint) offset, whence);
 
     if (lseek (handle, offset, whence) < 0)
     {
