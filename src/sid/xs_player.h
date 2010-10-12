@@ -39,6 +39,7 @@ typedef struct xs_status_t {
     xs_engine_t *sidPlayer;         /* Selected player engine */
     gboolean    isPaused,
                 isInitialized;
+    gboolean stop_flag;
     gint        currSong,           /* Current sub-tune */
                 lastTime;
 

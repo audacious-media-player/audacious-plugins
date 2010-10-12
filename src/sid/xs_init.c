@@ -1,8 +1,8 @@
-/*  
+/*
    XMMS-SID - SIDPlay input plugin for X MultiMedia System (XMMS)
 
    Plugin initialization point
-   
+
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
    (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
 
@@ -39,10 +39,9 @@ InputPlugin xs_plugin_ip = {
     .pause = xs_pause,                  /* Pause playing */
 
     .file_info_box = xs_fileinfo,       /* Show file-information dialog */
-
-    .get_song_tuple = xs_get_song_tuple,/* Get Tuple */
-    .vfs_extensions = xs_sid_fmts,      /* File ext assist */
     .probe_for_tuple = xs_probe_for_tuple,
+
+    .vfs_extensions = xs_sid_fmts,      /* File ext assist */
     .have_subtune = TRUE
 };
 
