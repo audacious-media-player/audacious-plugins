@@ -39,6 +39,8 @@ extern "C" {
 #include <libaudcore/vfs_buffered_file.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
+
+#include "adplug-xmms.h"
 }
 
 
@@ -67,7 +69,7 @@ static gboolean audio_error = FALSE;
 GtkWidget *about_win = NULL;
 static GMutex * control_mutex;
 static GCond * control_cond;
-static gboolean pause_flag;
+static gboolean stop_flag;
 
 // Configuration (and defaults)
 static struct
@@ -87,13 +89,9 @@ static struct
   unsigned int subsong, songlength;
   int seek;
   char filename[PATH_MAX];
-  char *songtitle;
-  float time_ms;
   GtkLabel *infobox;
   GtkDialog *infodlg;
-} plr =
-{
-0, 0, 0, 0, -1, "", NULL, 0.0f, NULL, NULL};
+} plr = {0, 0, 0, 0, -1, "", NULL, NULL};
 
 static InputPlayback *playback;
 
@@ -461,6 +459,7 @@ void adplug_stop(InputPlayback * data);
 gboolean adplug_play(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause);
 }
 
+#if 0
 static void
 subsong_slider (GtkAdjustment * adj)
 {
@@ -468,6 +467,7 @@ subsong_slider (GtkAdjustment * adj)
   plr.subsong = (unsigned int) adj->value - 1;
   adplug_play (playback, playback->filename, NULL, 0, 0, FALSE);
 }
+#endif
 
 static void
 close_infobox (GtkDialog * infodlg)
@@ -620,6 +620,7 @@ adplug_info_box (const gchar *filename)
                       TRUE, 2);
   }
 
+#if 0
   // Add subsong slider section
   if (p == plr.p && p->getsubsongs () > 1)
   {
@@ -641,6 +642,7 @@ adplug_info_box (const gchar *filename)
                       make_framed (GTK_WIDGET (slider), _("Subsong selection")),
                       TRUE, TRUE, 2);
   }
+#endif
 
   // Show dialog box
   gtk_widget_show_all (GTK_WIDGET (infobox));
@@ -654,12 +656,10 @@ adplug_info_box (const gchar *filename)
 
 /***** Main player (!! threaded !!) *****/
 
-extern "C" Tuple*
-adplug_get_tuple (const gchar *filename)
+extern "C" Tuple * adplug_get_tuple (const gchar * filename, VFSFile * fd)
 {
   Tuple * ti = NULL;
   CSilentopl tmpopl;
-  VFSFile *fd = vfs_buffered_file_new_from_uri (filename);
 
   if (!fd)
     return NULL;
@@ -684,18 +684,7 @@ adplug_get_tuple (const gchar *filename)
     delete p;
   }
 
-  vfs_fclose (fd);
   return ti;
-}
-
-static char* format_and_free_ti( Tuple* ti, int* length )
-{
-  char* result = tuple_formatter_make_title_string(ti, aud_get_gentitle_format());
-  if ( result )
-    *length = tuple_get_int(ti, FIELD_LENGTH, NULL);
-  tuple_free((void *) ti);
-
-  return result;
 }
 
 static void
@@ -720,30 +709,21 @@ update_infobox (void)
 // Define sampsize macro (only usable inside play_loop()!)
 #define sampsize ((bit16 ? 2 : 1) * (stereo ? 2 : 1))
 
-static void *
-play_loop (void *data)
+static gboolean play_loop (InputPlayback * playback, const gchar * filename,
+ VFSFile * fd)
 /* Main playback thread. Takes the filename to play as argument. */
 {
-  InputPlayback *playback = (InputPlayback *) data;
-  char *filename = (char *) playback->filename;
   dbg_printf ("play_loop(\"%s\"): ", filename);
   CEmuopl opl (conf.freq, conf.bit16, conf.stereo);
   long toadd = 0, i, towrite;
   char *sndbuf, *sndbufpos;
-  int songlength = 0;
   bool playing = true,          // Song self-end indicator.
     bit16 = conf.bit16,          // Duplicate config, so it doesn't affect us if
     stereo = conf.stereo;        // the user changes it while we're playing.
   unsigned long freq = conf.freq;
-  gboolean paused = FALSE;
-
-  // we use VfsBufferedFile class here because adplug does a lot of
-  // probing. a short delay before probing begins is better than
-  // a lot of delay during probing.
-  VFSFile *fd = vfs_buffered_file_new_from_uri (playback->filename);
 
   if (!fd)
-    return (NULL);
+    return FALSE;
 
   // Try to load module
   dbg_printf ("factory, ");
@@ -751,17 +731,8 @@ play_loop (void *data)
   {
     dbg_printf ("error!\n");
     // MessageBox("AdPlug :: Error", "File could not be opened!", "Ok");
-    return (NULL);
+    return FALSE;
   }
-
-  // cache song title & length from tuple
-  dbg_printf ("title, ");
-  Tuple* ti = adplug_get_tuple(filename);
-  if (ti)
-  {
-    plr.songtitle = format_and_free_ti( ti, &songlength );
-  }
-  plr.songlength = songlength;
 
   // reset to first subsong on new file
   dbg_printf ("subsong, ");
@@ -777,18 +748,15 @@ play_loop (void *data)
 
   // Set XMMS main window information
   dbg_printf ("xmms, ");
-  playback->set_params (playback, NULL, 0, freq * sampsize * 8,
-                      freq, stereo ? 2 : 1);
+  playback->set_params (playback, freq * sampsize * 8, freq, stereo ? 2 : 1);
 
   // Rewind player to right subsong
   dbg_printf ("rewind, ");
   plr.p->rewind (plr.subsong);
-  plr.time_ms = 0;
 
   g_mutex_lock (control_mutex);
   plr.seek = -1;
-  pause_flag = FALSE;
-  playback->playing = TRUE;
+  stop_flag = FALSE;
   playback->set_pb_ready (playback);
   g_mutex_unlock (control_mutex);
 
@@ -798,7 +766,7 @@ play_loop (void *data)
   {
     g_mutex_lock (control_mutex);
 
-    if (! playback->playing)
+    if (stop_flag)
     {
         g_mutex_unlock (control_mutex);
         break;
@@ -807,35 +775,23 @@ play_loop (void *data)
     // seek requested ?
     if (plr.seek != -1)
     {
+      gint time = playback->output->written_time ();
+
       // backward seek ?
-      if (plr.seek < plr.time_ms)
+      if (plr.seek < time)
       {
         plr.p->rewind (plr.subsong);
-        plr.time_ms = 0.0f;
+        time = 0;
       }
 
       // seek to requested position
-      while ((plr.time_ms < plr.seek) && plr.p->update ())
-        plr.time_ms += 1000 / plr.p->getrefresh ();
+      while (time < plr.seek && plr.p->update ())
+        time += 1000 / plr.p->getrefresh ();
 
       // Reset output plugin and some values
-      playback->output->flush ((int) plr.time_ms);
+      playback->output->flush (time);
       plr.seek = -1;
       g_cond_signal (control_cond);
-    }
-
-    if (pause_flag != paused)
-    {
-        playback->output->pause (pause_flag);
-        paused = pause_flag;
-        g_cond_signal (control_cond);
-    }
-
-    if (paused)
-    {
-        g_cond_wait (control_cond, control_mutex);
-        g_mutex_unlock (control_mutex);
-        continue;
     }
 
     g_mutex_unlock (control_mutex);
@@ -849,7 +805,6 @@ play_loop (void *data)
       {
         toadd += freq;
         playing = plr.p->update ();
-        plr.time_ms += 1000 / plr.p->getrefresh ();
       }
       i = MIN (towrite, (long) (toadd / plr.p->getrefresh () + 4) & ~3);
       opl.update ((short *) sndbufpos, i);
@@ -865,12 +820,11 @@ play_loop (void *data)
       update_infobox ();
   }
 
-  g_mutex_lock (control_mutex);
-
-  while (playback->playing && playback->output->buffer_playing ())
+  while (playback->output->buffer_playing ())
       g_usleep (10000);
 
-  playback->playing = FALSE;
+  g_mutex_lock (control_mutex);
+  stop_flag = FALSE;
   g_cond_signal (control_cond); /* wake up any waiting request */
   g_mutex_unlock (control_mutex);
 
@@ -878,15 +832,9 @@ play_loop (void *data)
   dbg_printf ("free");
   delete plr.p;
   plr.p = 0;
-  if (plr.songtitle)
-  {
-    free (plr.songtitle);
-    plr.songtitle = NULL;
-  }
   free (sndbuf);
   dbg_printf (".\n");
-  vfs_fclose (fd);
-  return (NULL);
+  return TRUE;
 }
 
 // sampsize macro not useful anymore.
@@ -938,34 +886,19 @@ adplug_play (InputPlayback * data, const gchar * filename, VFSFile * file, gint 
     return TRUE;
   }
 
-  play_loop (playback);
+  play_loop (playback, filename, file);
   playback->output->close_audio ();
   return FALSE;
 }
 
-extern "C" void adplug_stop (InputPlayback * playback)
+extern "C" void adplug_stop (InputPlayback * p)
 {
     g_mutex_lock (control_mutex);
 
-    if (playback->playing)
+    if (! stop_flag)
     {
-        playback->playing = FALSE;
-        g_cond_signal (control_cond);
-        g_mutex_unlock (control_mutex);
-        g_thread_join (playback->thread);
-        playback->thread = NULL;
-    }
-    else
-        g_mutex_unlock (control_mutex);
-}
-
-extern "C" void adplug_pause (InputPlayback * playback, gshort paused)
-{
-    g_mutex_lock (control_mutex);
-
-    if (playback->playing)
-    {
-        pause_flag = paused;
+        stop_flag = TRUE;
+        p->output->abort_write ();
         g_cond_signal (control_cond);
         g_cond_wait (control_cond, control_mutex);
     }
@@ -973,13 +906,24 @@ extern "C" void adplug_pause (InputPlayback * playback, gshort paused)
     g_mutex_unlock (control_mutex);
 }
 
-extern "C" void adplug_mseek (InputPlayback * data, gulong time)
+extern "C" void adplug_pause (InputPlayback * p, gboolean pause)
 {
     g_mutex_lock (control_mutex);
 
-    if (playback->playing)
+    if (! stop_flag)
+        p->output->pause (pause);
+
+    g_mutex_unlock (control_mutex);
+}
+
+extern "C" void adplug_mseek (InputPlayback * p, gint time)
+{
+    g_mutex_lock (control_mutex);
+
+    if (! stop_flag)
     {
         plr.seek = time;
+        p->output->abort_write();
         g_cond_signal (control_cond);
         g_cond_wait (control_cond, control_mutex);
     }
