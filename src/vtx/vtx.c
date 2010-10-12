@@ -216,18 +216,18 @@ static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
     }
 
 CLEANUP:
-	ayemu_vtx_free(&vtx);
+    ayemu_vtx_free(&vtx);
 
-	g_mutex_lock(seek_mutex);
-	stop_flag = TRUE;
-	g_cond_signal(seek_cond); /* wake up any waiting request */
-	g_mutex_unlock(seek_mutex);
+    g_mutex_lock(seek_mutex);
+    stop_flag = TRUE;
+    g_cond_signal(seek_cond); /* wake up any waiting request */
+    g_mutex_unlock(seek_mutex);
 
-	playback->output->close_audio();
+    playback->output->close_audio();
 
 ERR_NO_CLOSE:
 
-	return !error;
+    return !error;
 }
 
 void vtx_stop(InputPlayback * playback)
