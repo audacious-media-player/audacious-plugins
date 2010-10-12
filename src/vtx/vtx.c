@@ -1,6 +1,7 @@
-/*  VTXplugin - VTX player for XMMS
+/*  VTX Input Plugin for Audacious
  *
  *  Copyright (C) 2002-2004 Sashnov Alexander
+ *  Copyright (C) 2010 Michał Lipski <tallica@o2.pl>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,31 +23,21 @@
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/tuple_formatter.h>
+#include <audacious/debug.h>
 
 #include "vtx.h"
 #include "ayemu.h"
 
-extern InputPlugin vtx_ip;
-
 #define SNDBUFSIZE 1024
-char sndbuf[SNDBUFSIZE];
+static gchar sndbuf[SNDBUFSIZE];
+static gint freq = 44100;
+static gint chans = 2;
+static gint bits = 16;
 
-static GThread *play_thread = NULL;
-
-int seek_to;
-
-int freq = 44100;
-int chans = 2;
-
-/* NOTE: if you change 'bits' you also need change constant FMT_S16_NE
- * to more appropriate in line
- *
- * (vtx_ip.output->open_audio (FMT_S16_NE, * freq, chans) == 0)
- * in function vtx_play_file()
- *
- * and in produce_audio() function call.
- */
-const int bits = 16;
+static GMutex *seek_mutex;
+static GCond *seek_cond;
+static gint seek_value;
+static gboolean stop_flag = FALSE;
 
 ayemu_ay_t ay;
 ayemu_vtx_t vtx;
@@ -63,27 +54,25 @@ static gboolean vtx_init(void)
         freq = 44100;
 
     aud_cfg_db_close(db);
+
+    seek_mutex = g_mutex_new();
+    seek_cond = g_cond_new();
+
     return TRUE;
+}
+
+static void vtx_cleanup(void)
+{
+    g_mutex_free(seek_mutex);
+    g_cond_free(seek_cond);
 }
 
 gint vtx_is_our_fd(const gchar * filename, VFSFile * fp)
 {
-    char buf[2];
+    gchar buf[2];
 
     vfs_fread(buf, 2, 1, fp);
     return (!strncasecmp(buf, "ay", 2) || !strncasecmp(buf, "ym", 2));
-}
-
-gint vtx_is_our_file(const gchar * filename)
-{
-    gboolean ret;
-    VFSFile *fp;
-
-    fp = vfs_fopen(filename, "rb");
-    ret = vtx_is_our_fd(filename, fp);
-    vfs_fclose(fp);
-
-    return ret;
 }
 
 Tuple *vtx_get_song_tuple_from_vtx(const gchar * filename, ayemu_vtx_t * in)
@@ -108,7 +97,7 @@ Tuple *vtx_get_song_tuple_from_vtx(const gchar * filename, ayemu_vtx_t * in)
     return out;
 }
 
-Tuple *vtx_get_song_tuple(const gchar * filename)
+Tuple *vtx_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
     ayemu_vtx_t tmp;
 
@@ -122,24 +111,73 @@ Tuple *vtx_get_song_tuple(const gchar * filename)
     return NULL;
 }
 
-/* sound playing thread, runing by vtx_play_file() */
-static gpointer play_loop(gpointer args)
+static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
+ VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
-    InputPlayback *playback = (InputPlayback *) args;
+    gboolean error = FALSE;
+    gboolean eof = FALSE;
     void *stream;               /* pointer to current position in sound buffer */
-    unsigned char regs[14];
-    int need;
-    int left;                   /* how many sound frames can play with current AY register frame */
-    int donow;
-    int rate;
+    guchar regs[14];
+    gint need;
+    gint left;                   /* how many sound frames can play with current AY register frame */
+    gint donow;
+    gint rate;
 
     left = 0;
     rate = chans * (bits / 8);
 
-    while (playback->playing && !playback->eof)
+    memset(&ay, 0, sizeof(ay));
+
+    if (!ayemu_vtx_open(&vtx, filename))
     {
+        g_print("libvtx: Error read vtx header from %s\n", filename);
+        error = TRUE;
+        goto ERR_NO_CLOSE;
+    }
+    else if (!ayemu_vtx_load_data(&vtx))
+    {
+        g_print("libvtx: Error read vtx data from %s\n", filename);
+        error = TRUE;
+        goto ERR_NO_CLOSE;
+    }
+
+    ayemu_init(&ay);
+    ayemu_set_chip_type(&ay, vtx.hdr.chiptype, NULL);
+    ayemu_set_chip_freq(&ay, vtx.hdr.chipFreq);
+    ayemu_set_stereo(&ay, vtx.hdr.stereo, NULL);
+
+    if (playback->output->open_audio(FMT_S16_NE, freq, chans) == 0)
+    {
+        g_print("libvtx: output audio error!\n");
+        error = TRUE;
+        goto ERR_NO_CLOSE;
+    }
+
+    if (pause)
+        playback->output->pause (TRUE);
+
+    stop_flag = FALSE;
+
+    playback->set_params(playback, 14 * 50 * 8, freq, bits / 8);
+    playback->set_pb_ready(playback);
+
+    while (!stop_flag)
+    {
+        g_mutex_lock(seek_mutex);
+
+        if (seek_value >= 0)
+        {
+            vtx.pos = seek_value * 50 / 1000;     /* (time in sec) * 50 = offset in AY register data frames */
+            playback->output->flush(seek_value);
+            seek_value = -1;
+            g_cond_signal(seek_cond);
+        }
+
+        g_mutex_unlock(seek_mutex);
+
         /* fill sound buffer */
         stream = sndbuf;
+
         for (need = SNDBUFSIZE / rate; need > 0; need -= donow)
             if (left > 0)
             {                   /* use current AY register frame */
@@ -151,9 +189,9 @@ static gpointer play_loop(gpointer args)
             {                   /* get next AY register frame */
                 if (ayemu_vtx_get_next_frame(&vtx, (char *)regs) == 0)
                 {
-                    playback->eof = TRUE;
                     donow = need;
                     memset(stream, 0, donow * rate);
+                    eof = TRUE;
                 }
                 else
                 {
@@ -163,122 +201,87 @@ static gpointer play_loop(gpointer args)
                 }
             }
 
-        if (playback->playing && seek_to == -1)
-            playback->pass_audio(playback, FMT_S16_NE, chans, SNDBUFSIZE, sndbuf, &playback->playing);
+        if (!stop_flag)
+            playback->output->write_audio(sndbuf, SNDBUFSIZE);
 
-        if (playback->eof)
+        if (eof)
         {
-            while (playback->output->buffer_playing())
+            AUDDBG("EOF.\n");
+
+            while (!stop_flag && playback->output->buffer_playing())
                 g_usleep(10000);
-            playback->playing = 0;
-        }
 
-        /* jump to time in seek_to (in seconds) */
-        if (seek_to != -1)
-        {
-            vtx.pos = seek_to * 50;     /* (time in sec) * 50 = offset in AY register data frames */
-            playback->output->flush(seek_to * 1000);
-            seek_to = -1;
+            goto CLEANUP;
         }
     }
-    ayemu_vtx_free(&vtx);
-    return NULL;
-}
 
-void vtx_play_file(InputPlayback * playback)
-{
-    gchar *filename = playback->filename;
-    gchar *buf;
-    Tuple *ti;
+CLEANUP:
+	ayemu_vtx_free(&vtx);
 
-    memset(&ay, 0, sizeof(ay));
+	g_mutex_lock(seek_mutex);
+	stop_flag = TRUE;
+	g_cond_signal(seek_cond); /* wake up any waiting request */
+	g_mutex_unlock(seek_mutex);
 
-    if (!ayemu_vtx_open(&vtx, filename))
-        g_print("libvtx: Error read vtx header from %s\n", filename);
-    else if (!ayemu_vtx_load_data(&vtx))
-        g_print("libvtx: Error read vtx data from %s\n", filename);
-    else
-    {
-        ayemu_init(&ay);
-        ayemu_set_chip_type(&ay, vtx.hdr.chiptype, NULL);
-        ayemu_set_chip_freq(&ay, vtx.hdr.chipFreq);
-        ayemu_set_stereo(&ay, vtx.hdr.stereo, NULL);
+	playback->output->close_audio();
 
-        playback->error = FALSE;
-        if (playback->output->open_audio(FMT_S16_NE, freq, chans) == 0)
-        {
-            g_print("libvtx: output audio error!\n");
-            playback->error = TRUE;
-            playback->playing = FALSE;
-            return;
-        }
+ERR_NO_CLOSE:
 
-        playback->eof = FALSE;
-        seek_to = -1;
-
-        ti = vtx_get_song_tuple_from_vtx(playback->filename, &vtx);
-        buf = tuple_formatter_make_title_string(ti, aud_get_gentitle_format());
-
-        playback->set_params(playback, buf, vtx.hdr.regdata_size / 14 * 1000 / 50, 14 * 50 * 8, freq, bits / 8);
-
-        g_free(buf);
-
-        tuple_free(ti);
-
-        playback->playing = TRUE;
-        play_thread = g_thread_self();
-        playback->set_pb_ready(playback);
-        play_loop(playback);
-    }
+	return !error;
 }
 
 void vtx_stop(InputPlayback * playback)
 {
-    if (playback->playing && play_thread != NULL)
-    {
-        playback->playing = FALSE;
+    g_mutex_lock(seek_mutex);
 
-        g_thread_join(play_thread);
-        play_thread = NULL;
-        playback->output->close_audio();
-        ayemu_vtx_free(&vtx);
+    if (!stop_flag)
+    {
+        stop_flag = TRUE;
+        playback->output->abort_write();
+        g_cond_signal(seek_cond);
     }
+
+    g_mutex_unlock (seek_mutex);
 }
 
-/* seek to specified number of seconds */
 void vtx_seek(InputPlayback * playback, gint time)
 {
-    if (time * 50 < vtx.hdr.regdata_size / 14)
-    {
-        playback->eof = FALSE;
-        seek_to = time;
+    g_mutex_lock(seek_mutex);
 
-        /* wait for affect changes in parallel thread */
-        while (seek_to != -1)
-            g_usleep(10000);
+    if (!stop_flag)
+    {
+        seek_value = time;
+        playback->output->abort_write();
+        g_cond_signal(seek_cond);
+        g_cond_wait(seek_cond, seek_mutex);
     }
+
+    g_mutex_unlock(seek_mutex);
 }
 
-/* Pause or unpause */
-void vtx_pause(InputPlayback * playback, gshort p)
+void vtx_pause(InputPlayback * playback, gboolean pause)
 {
-    playback->output->pause(p);
+    g_mutex_lock(seek_mutex);
+
+    if (!stop_flag)
+        playback->output->pause(pause);
+
+    g_mutex_unlock(seek_mutex);
 }
 
 InputPlugin vtx_ip = {
-    .description = "VTX Audio Plugin",  /* Plugin description */
-    .init = vtx_init,           /* Initialization */
-    .about = vtx_about,         /* Show aboutbox */
-    .configure = NULL,
-    .is_our_file = vtx_is_our_file,     /* Check file, return 1 if the plugin can handle this file */
-    .play_file = vtx_play_file, /* Play given file */
-    .stop = vtx_stop,           /* Stop playing */
-    .pause = vtx_pause,         /* Pause playing */
-    .seek = vtx_seek,           /* Seek time */
-    .file_info_box = vtx_file_info,     /* Show file-information dialog */
-    .get_song_tuple = vtx_get_song_tuple,       /* Tuple */
-    .is_our_file_from_vfs = vtx_is_our_fd,      /* VFS */
-    .vfs_extensions = vtx_fmts  /* ext assist */
+    .description = "VTX Audio Plugin",
+    .init = vtx_init,
+    .cleanup = vtx_cleanup,
+    .about = vtx_about,
+    .play = vtx_play,
+    .stop = vtx_stop,
+    .pause = vtx_pause,
+    .mseek = vtx_seek,
+    .file_info_box = vtx_file_info,
+    .probe_for_tuple = vtx_probe_for_tuple,
+    .is_our_file_from_vfs = vtx_is_our_fd,
+    .vfs_extensions = vtx_fmts
 };
 
 InputPlugin *vtx_iplist[] = { &vtx_ip, NULL };
