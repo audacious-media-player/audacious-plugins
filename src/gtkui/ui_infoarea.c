@@ -43,7 +43,7 @@
 #define ICON_SIZE 64
 #define VIS_BANDS 12
 #define VIS_OFFSET (10 + 8 * VIS_BANDS + 8)
-#define VIS_DELAY 1 /* delay before falloff in frames */
+#define VIS_DELAY 2 /* delay before falloff in frames */
 #define VIS_FALLOFF 2 /* falloff in pixels per frame */
 
 #if ! GTK_CHECK_VERSION (2, 18, 0)
@@ -102,10 +102,10 @@ static void vis_update_cb (const VisNode * vis, UIInfoArea * area)
         n = 20 * log10 (n * 0.00305);
         n = CLAMP (n, 0, 40);
 
+        area->bars[i] -= MAX (0, VIS_FALLOFF - area->delay[i]);
+
         if (area->delay[i])
             area->delay[i] --;
-        else
-            area->bars[i] -= VIS_FALLOFF;
 
         if (n > area->bars[i])
         {
