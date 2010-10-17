@@ -230,7 +230,7 @@ int32 spx_execute(InputPlayback *playback)
 			for (i = 0; i < 44100 / 60; i++)
 			{
 			  	spx_tick();
-				SPUasync(384, playback);
+				SPUasync(384, (void *) playback);
 			}
 		}
 	}

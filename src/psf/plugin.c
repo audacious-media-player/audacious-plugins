@@ -136,7 +136,6 @@ static gboolean psf2_play(InputPlayback * data, const gchar * filename, VFSFile 
 {
 	void *buffer;
 	gint64 size;
-	gint length;
 	PSFEngine eng;
 	PSFEngineFunctors *f;
 	gboolean error = FALSE;
@@ -251,7 +250,7 @@ int psf2_is_our_fd(const gchar *filename, VFSFile *file)
 	return (psf_probe(magic) != ENG_NONE);
 }
 
-static void psf2_Seek(InputPlayback *playback, gulong time)
+static void psf2_Seek(InputPlayback *playback, gint time)
 {
 	seek = time;
 }

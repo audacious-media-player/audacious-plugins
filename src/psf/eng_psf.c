@@ -361,7 +361,7 @@ int32 psf_execute(InputPlayback *playback)
 	while (!stop_flag) {
 		for (i = 0; i < 44100 / 60; i++) {
 			psx_hw_slice();
-			SPUasync(384, playback);
+			SPUasync(384, (void *) playback);
 		}
 
 		psx_hw_frame();

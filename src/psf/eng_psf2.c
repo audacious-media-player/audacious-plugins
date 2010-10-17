@@ -578,7 +578,7 @@ int32 psf2_execute(InputPlayback *playback)
 	{
 		for (i = 0; i < 44100 / 60; i++)
 		{
-			SPU2async(1, playback);
+			SPU2async(1, (void *) playback);
 			ps2_hw_slice();
 		}
 
