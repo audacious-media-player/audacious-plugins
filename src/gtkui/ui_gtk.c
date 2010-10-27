@@ -536,8 +536,9 @@ static void ui_playback_begin(gpointer hook_data, gpointer user_data)
     time_counter_cb ();
 
     /* update time counter 4 times a second */
-    update_song_timeout_source = g_timeout_add (250, (GSourceFunc)
-     time_counter_cb, NULL);
+    if (! update_song_timeout_source)
+        update_song_timeout_source = g_timeout_add (250, (GSourceFunc)
+         time_counter_cb, NULL);
 
     gtk_widget_show (label_time);
 }
