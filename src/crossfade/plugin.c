@@ -28,6 +28,10 @@
 #include "config.h"
 #include "crossfade.h"
 
+static GtkWidget * about_window = NULL;
+static GtkWidget * config_window = NULL;
+static GtkWidget * error_window = NULL;
+
 void crossfade_config_load (void)
 {
     mcs_handle_t * database = aud_cfg_db_open ();
@@ -42,13 +46,19 @@ void crossfade_config_save (void)
 
     aud_cfg_db_set_int (database, "crossfade", "length", crossfade_length);
     aud_cfg_db_close (database);
+
+    if (about_window != NULL)
+        gtk_widget_destroy (about_window);
+    if (config_window != NULL)
+        gtk_widget_destroy (config_window);
+    if (error_window != NULL)
+        gtk_widget_destroy (error_window);
 }
 
 static void crossfade_about (void)
 {
-    static GtkWidget * window = NULL;
-
-    audgui_simple_message (& window, GTK_MESSAGE_INFO, _("About Crossfade"),
+    audgui_simple_message (& about_window, GTK_MESSAGE_INFO, _("About "
+     "Crossfade"),
      "Crossfade Plugin for Audacious\n"
      "Copyright 2010 John Lindgren\n\n"
      "Redistribution and use in source and binary forms, with or without "
@@ -71,23 +81,22 @@ static void value_changed (GtkRange * range, void * data)
 
 static void crossfade_configure (void)
 {
-    static GtkWidget * window = NULL;
-
-    if (window == NULL)
+    if (config_window == NULL)
     {
         GtkWidget * vbox, * hbox, * slider, * button;
 
-        window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_type_hint ((GtkWindow *) window,
+        config_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_type_hint ((GtkWindow *) config_window,
          GDK_WINDOW_TYPE_HINT_DIALOG);
-        gtk_window_set_resizable ((GtkWindow *) window, FALSE);
-        gtk_window_set_title ((GtkWindow *) window, _("Crossfade Preferences"));
-        gtk_container_set_border_width ((GtkContainer *) window, 6);
-        g_signal_connect (window, "destroy", (GCallback) gtk_widget_destroyed,
-         & window);
+        gtk_window_set_resizable ((GtkWindow *) config_window, FALSE);
+        gtk_window_set_title ((GtkWindow *) config_window, _("Crossfade "
+         "Preferences"));
+        gtk_container_set_border_width ((GtkContainer *) config_window, 6);
+        g_signal_connect (config_window, "destroy", (GCallback)
+         gtk_widget_destroyed, & config_window);
 
         vbox = gtk_vbox_new (FALSE, 6);
-        gtk_container_add ((GtkContainer *) window, vbox);
+        gtk_container_add ((GtkContainer *) config_window, vbox);
 
         hbox = gtk_hbox_new (FALSE, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
@@ -112,29 +121,27 @@ static void crossfade_configure (void)
 #endif
         gtk_widget_grab_default (button);
         g_signal_connect_swapped (button, "clicked", (GCallback)
-         gtk_widget_destroy, window);
+         gtk_widget_destroy, config_window);
 
-        audgui_destroy_on_escape (window);
+        audgui_destroy_on_escape (config_window);
 
         gtk_widget_show_all (vbox);
     }
 
-    gtk_window_present ((GtkWindow *) window);
+    gtk_window_present ((GtkWindow *) config_window);
 }
 
 void crossfade_show_channels_message (void)
 {
-    static GtkWidget * window = NULL;
-
-    audgui_simple_message (& window, GTK_MESSAGE_ERROR, _("Crossfade Error"),
-     _("Crossfading failed because the songs had a different number of channels."));
+    audgui_simple_message (& error_window, GTK_MESSAGE_ERROR,
+     _("Crossfade Error"), _("Crossfading failed because the songs had a "
+     "different number of channels."));
 }
 
 void crossfade_show_rate_message (void)
 {
-    static GtkWidget * window = NULL;
-
-    audgui_simple_message (& window, GTK_MESSAGE_ERROR, _("Crossfade Error"),
+    audgui_simple_message (& error_window, GTK_MESSAGE_ERROR, _("Crossfade "
+     "Error"),
      _("Crossfading failed because the songs had different sample rates.\n\n"
      "You can use the Sample Rate Converter effect to resample the songs to "
      "the same rate."));
