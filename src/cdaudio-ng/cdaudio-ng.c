@@ -171,7 +171,7 @@ static gboolean monitor (gpointer unused)
         {
             g_mutex_unlock (mutex);
             purge_all_playlists ();
-            return FALSE;
+            return TRUE;
         }
     }
 
@@ -588,12 +588,10 @@ static Tuple * make_tuple (const gchar * filename, VFSFile * file)
 }
 
 /* mutex must be locked */
-static void scan_cd (void)
+static void open_cd (void)
 {
-    gint trackno;
-
-    g_free (trackinfo);
-    trackinfo = NULL;
+    AUDDBG ("Opening CD drive.\n");
+    g_return_if_fail (pcdio == NULL);
 
     /* find an available, audio capable, cd drive  */
     if (cdng_cfg.device != NULL && strlen (cdng_cfg.device) > 0)
@@ -602,31 +600,41 @@ static void scan_cd (void)
         if (pcdio == NULL)
         {
             cdaudio_error ("Failed to open CD device \"%s\".", cdng_cfg.device);
-            goto ERROR;
+            return;
         }
     }
     else
     {
         gchar **ppcd_drives =
             cdio_get_devices_with_cap (NULL, CDIO_FS_AUDIO, false);
-        pcdio = NULL;
+
         if (ppcd_drives != NULL && *ppcd_drives != NULL)
         {                       /* we have at least one audio capable cd drive */
             pcdio = cdio_open (*ppcd_drives, DRIVER_UNKNOWN);
             if (pcdio == NULL)
             {
                 cdaudio_error ("Failed to open CD.");
-                goto ERROR;
+                return;
             }
             AUDDBG ("found cd drive \"%s\" with audio capable media\n",
                    *ppcd_drives);
         }
         else
-            goto ERROR;
+            return;
 
         if (ppcd_drives != NULL && *ppcd_drives != NULL)
             cdio_free_device_list (ppcd_drives);
     }
+}
+
+/* mutex must be locked */
+static void scan_cd (void)
+{
+    AUDDBG ("Scanning CD drive.\n");
+    g_return_if_fail (pcdio != NULL);
+    g_return_if_fail (trackinfo == NULL);
+
+    gint trackno;
 
     if (cdio_set_speed (pcdio, cdng_cfg.disc_speed) != DRIVER_OP_SUCCESS)
         warn ("Cannot set drive speed.\n");
@@ -875,8 +883,27 @@ static void scan_cd (void)
 /* mutex must be locked */
 static void refresh_trackinfo (void)
 {
-    if (trackinfo == NULL || pcdio == NULL || cdio_get_media_changed (pcdio))
+    if (pcdio == NULL)
+    {
+        open_cd ();
+        if (pcdio == NULL)
+            return;
+    }
+
+    int mode = cdio_get_discmode (pcdio);
+    if (mode != CDIO_DISC_MODE_CD_DA && mode != CDIO_DISC_MODE_CD_MIXED)
+    {
+        g_free (trackinfo);
+        trackinfo = NULL;
+        return;
+    }
+
+    if (trackinfo == NULL || cdio_get_media_changed (pcdio))
+    {
+        g_free (trackinfo);
+        trackinfo = NULL;
         scan_cd ();
+    }
 }
 
 /* thread safe (mutex may be locked) */
