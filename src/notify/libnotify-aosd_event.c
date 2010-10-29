@@ -35,6 +35,7 @@ void event_init() {
 	hook_associate("playback begin", event_playback_begin, NULL);
 	hook_associate("playback pause", event_playback_pause, NULL);
 	hook_associate("playback unpause", event_playback_begin, NULL);
+	hook_associate("title change", event_playback_begin, NULL);
 	AUDDBG("done!");
 }
 
@@ -43,6 +44,7 @@ void event_uninit() {
 	hook_dissociate("playback begin", event_playback_begin);
 	hook_dissociate("playback pause", event_playback_pause);
 	hook_dissociate("playback unpause", event_playback_begin);
+	hook_dissociate("title change", event_playback_begin);
 	AUDDBG("done!\n");
 }
 
