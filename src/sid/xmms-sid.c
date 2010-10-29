@@ -156,9 +156,6 @@ void xs_close(void)
 {
     XSDEBUG("xs_close(): shutting down...\n");
 
-    /* Stop playing, free structures */
-    xs_stop(NULL);
-
     xs_tuneinfo_free(xs_status.tuneInfo);
     xs_status.tuneInfo = NULL;
     xs_status.sidPlayer->plrDeleteSID(&xs_status);
