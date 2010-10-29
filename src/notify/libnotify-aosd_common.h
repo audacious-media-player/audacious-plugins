@@ -18,7 +18,7 @@
  ************************************************************************/
 
 #define PLUGIN_NAME		"libnotify-aosd"
-#define PLUGIN_VERSION		PACKAGE_VERSION
+#define PLUGIN_VERSION		"0.1.1 (forked)"
 #define PLUGIN_AUTHORS		"Maximilian Bogner <max@mbogner.de>"
 #define PLUGIN_COPYRIGHT	"Copyright (C) 2010 Maximilian Bogner"
 #define PLUGIN_WEBSITE		"http://www.mbogner.de/projects/libnotify-aosd/"

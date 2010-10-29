@@ -20,6 +20,7 @@
 #include <glib.h>
 
 #include <audacious/drct.h>
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <audacious/playlist.h>
 #include <audacious/debug.h>
@@ -28,6 +29,7 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
+#include "config.h"
 #include "libnotify-aosd_common.h"
 
 void event_init() {
@@ -62,16 +64,22 @@ void event_playback_begin(gpointer p1, gpointer p2) {
 	position = aud_playlist_get_position(playlist);
 
 	filename = aud_playlist_entry_get_filename(playlist, position);
-	tuple = aud_playlist_entry_get_tuple(playlist, position, TRUE);
+	tuple = aud_playlist_entry_get_tuple(playlist, position, FALSE);
 
 	title = tuple_get_string(tuple, FIELD_TITLE, NULL);
+	if (title == NULL)
+		title = aud_playlist_entry_get_title(playlist, position, FALSE);
+
 	artist = tuple_get_string(tuple, FIELD_ARTIST, NULL);
 	album = tuple_get_string(tuple, FIELD_ALBUM, NULL);
 
 	pb = audgui_pixbuf_for_file(filename);
-	audgui_pixbuf_scale_within(&pb, 128);
+	if (pb != NULL)
+		audgui_pixbuf_scale_within(&pb, 128);
 
-	message = g_strdup_printf("%s\n%s", artist, album);
+	message = g_strdup_printf("%s\n%s", (artist != NULL && artist[0]) ? artist :
+	 _("Unknown artist"), (album != NULL && album[0]) ? album : _("Unknown album"));
+
 	osd_show(title, message, "notification-audio-play", pb);
 	g_free(message);
 
