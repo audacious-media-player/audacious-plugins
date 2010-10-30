@@ -107,7 +107,7 @@ static void playlist_load_cue (const gchar * cue_filename, gint at)
 
         if (base_tuple == NULL)
         {
-            InputPlugin * decoder = aud_file_find_decoder (filename, TRUE);
+            PluginHandle * decoder = aud_file_find_decoder (filename, FALSE);
             if (decoder != NULL)
                 base_tuple = aud_file_read_tuple (filename, decoder);
         }

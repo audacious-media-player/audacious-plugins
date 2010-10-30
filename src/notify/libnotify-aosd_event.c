@@ -69,7 +69,7 @@ void event_playback_begin(gpointer p1, gpointer p2) {
 	artist = tuple_get_string(tuple, FIELD_ARTIST, NULL);
 	album = tuple_get_string(tuple, FIELD_ALBUM, NULL);
 
-	pb = audgui_pixbuf_for_file(filename);
+	pb = audgui_pixbuf_for_entry(playlist, position);
 	if (pb != NULL)
 		audgui_pixbuf_scale_within(&pb, 128);
 

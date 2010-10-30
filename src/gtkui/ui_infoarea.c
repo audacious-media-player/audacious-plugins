@@ -293,10 +293,8 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
 
 static GdkPixbuf * get_current_album_art (void)
 {
-    gint playlist = aud_playlist_get_playing ();
-    const gchar * filename = aud_playlist_entry_get_filename (playlist,
-     aud_playlist_get_position (playlist));
-    return audgui_pixbuf_for_file (filename);
+    gint list = aud_playlist_get_playing ();
+    return audgui_pixbuf_for_entry (list, aud_playlist_get_position (list));
 }
 
 void ui_infoarea_draw_album_art (UIInfoArea * area)
