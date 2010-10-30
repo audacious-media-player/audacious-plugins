@@ -41,10 +41,9 @@ void osd_closed_handler(NotifyNotification *notification2, gpointer data) {
 	}
 }
 
-void osd_show (const gchar * _title, const gchar * _message, const gchar * icon,
+void osd_show (const gchar * title, const gchar * _message, const gchar * icon,
  GdkPixbuf * pb)
 {
-	gchar * title = g_markup_escape_text (_title, -1);
 	gchar * message = g_markup_escape_text (_message, -1);
 	GError *error = NULL;
 
@@ -66,6 +65,5 @@ void osd_show (const gchar * _title, const gchar * _message, const gchar * icon,
 	if(!notify_notification_show(notification, &error))
 		AUDDBG("%s!\n", error->message);
 
-	g_free (title);
 	g_free (message);
 }
