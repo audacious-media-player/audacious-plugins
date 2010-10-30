@@ -24,7 +24,6 @@
 #include <audacious/plugin.h>
 #include <audacious/playlist.h>
 #include <audacious/debug.h>
-#include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -46,41 +45,44 @@ void event_uninit() {
 	AUDDBG("done!\n");
 }
 
-void event_playback_begin(gpointer p1, gpointer p2) {
-	gint playlist, position;
-	const gchar *title, *artist, *album;
-	const gchar *filename;
-	const Tuple *tuple;
-	gchar *message;
-	GdkPixbuf *pb;
+void event_playback_begin (void * a, void * b)
+{
+	gint list = aud_playlist_get_playing ();
+	gint entry = aud_playlist_get_position (list);
 
-	AUDDBG("started!\n");
+	gchar * title, * artist, * album;
+	audgui_three_strings (list, entry, & title, & artist, & album);
 
-	playlist = aud_playlist_get_playing();
-	position = aud_playlist_get_position(playlist);
+	gchar * message;
+	if (artist)
+	{
+		if (album)
+			message = g_strdup_printf ("%s\n%s", artist, album);
+		else
+		{
+			message = artist;
+			artist = NULL;
+		}
+	}
+	else if (album)
+	{
+		message = album;
+		album = NULL;
+	}
+	else
+		message = g_strdup ("");
 
-	filename = aud_playlist_entry_get_filename(playlist, position);
-	tuple = aud_playlist_entry_get_tuple(playlist, position, FALSE);
+	g_free (artist);
+	g_free (album);
 
-	title = tuple_get_string(tuple, FIELD_TITLE, NULL);
-	if (title == NULL)
-		title = aud_playlist_entry_get_title(playlist, position, FALSE);
-
-	artist = tuple_get_string(tuple, FIELD_ARTIST, NULL);
-	album = tuple_get_string(tuple, FIELD_ALBUM, NULL);
-
-	pb = audgui_pixbuf_for_entry(playlist, position);
+	GdkPixbuf * pb = audgui_pixbuf_for_entry (list, entry);
 	if (pb != NULL)
 		audgui_pixbuf_scale_within(&pb, 128);
 
-	message = g_strdup_printf("%s\n%s", (artist != NULL && artist[0]) ? artist :
-	 _("Unknown artist"), (album != NULL && album[0]) ? album : _("Unknown album"));
-
 	osd_show(title, message, "audio-x-generic", pb);
+	g_free(title);
 	g_free(message);
 
 	if (pb != NULL)
 		g_object_unref(pb);
-
-	AUDDBG("done!\n");
 }
