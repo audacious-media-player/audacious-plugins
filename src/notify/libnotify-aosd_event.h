@@ -25,4 +25,3 @@
 void event_init();
 void event_uninit();
 void event_playback_begin(gpointer p1, gpointer p2);
-void event_playback_pause(gpointer p1, gpointer p2);

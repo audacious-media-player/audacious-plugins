@@ -35,8 +35,6 @@
 void event_init() {
 	AUDDBG("started!\n");
 	hook_associate("playback begin", event_playback_begin, NULL);
-	hook_associate("playback pause", event_playback_pause, NULL);
-	hook_associate("playback unpause", event_playback_begin, NULL);
 	hook_associate("title change", event_playback_begin, NULL);
 	AUDDBG("done!");
 }
@@ -44,8 +42,6 @@ void event_init() {
 void event_uninit() {
 	AUDDBG("started!\n");
 	hook_dissociate("playback begin", event_playback_begin);
-	hook_dissociate("playback pause", event_playback_pause);
-	hook_dissociate("playback unpause", event_playback_begin);
 	hook_dissociate("title change", event_playback_begin);
 	AUDDBG("done!\n");
 }
@@ -80,17 +76,11 @@ void event_playback_begin(gpointer p1, gpointer p2) {
 	message = g_strdup_printf("%s\n%s", (artist != NULL && artist[0]) ? artist :
 	 _("Unknown artist"), (album != NULL && album[0]) ? album : _("Unknown album"));
 
-	osd_show(title, message, "notification-audio-play", pb);
+	osd_show(title, message, "audio-x-generic", pb);
 	g_free(message);
 
 	if (pb != NULL)
 		g_object_unref(pb);
 
-	AUDDBG("done!\n");
-}
-
-void event_playback_pause(gpointer p1, gpointer p2) {
-	AUDDBG("started!\n");
-	osd_show("Playback paused", NULL, "notification-audio-pause", NULL);
 	AUDDBG("done!\n");
 }
