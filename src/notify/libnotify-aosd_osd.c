@@ -29,7 +29,14 @@ gboolean osd_init() {
 	return notify_init(PLUGIN_NAME);
 }
 
-void osd_uninit() {
+void osd_uninit (void)
+{
+	if (notification)
+	{
+		g_object_unref (notification);
+		notification = NULL;
+	}
+
 	notify_uninit();
 }
 
