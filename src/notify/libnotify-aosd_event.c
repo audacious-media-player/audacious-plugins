@@ -32,17 +32,13 @@
 #include "libnotify-aosd_common.h"
 
 void event_init() {
-	AUDDBG("started!\n");
 	hook_associate("playback begin", event_playback_begin, NULL);
 	hook_associate("title change", event_playback_begin, NULL);
-	AUDDBG("done!");
 }
 
 void event_uninit() {
-	AUDDBG("started!\n");
 	hook_dissociate("playback begin", event_playback_begin);
 	hook_dissociate("title change", event_playback_begin);
-	AUDDBG("done!\n");
 }
 
 void event_playback_begin (void * a, void * b)
@@ -75,7 +71,7 @@ void event_playback_begin (void * a, void * b)
 	g_free (artist);
 	g_free (album);
 
-	GdkPixbuf * pb = audgui_pixbuf_for_entry (list, entry);
+	GdkPixbuf * pb = audgui_pixbuf_for_current ();
 	if (pb != NULL)
 		audgui_pixbuf_scale_within(&pb, 128);
 
