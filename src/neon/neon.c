@@ -27,6 +27,7 @@
 
 #include <audacious/configdb.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 
 #include <ne_socket.h>
 #include <ne_utils.h>
@@ -1328,17 +1329,12 @@ gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar* field) {
 
     _DEBUG("<%p> Field name: %s", h, field);
 
-    if (neon_strcmp(field, "track-name")) {
-        return g_strdup(h->icy_metadata.stream_title);
-    }
-
-    if (neon_strcmp(field, "stream-name")) {
-        return g_strdup(h->icy_metadata.stream_name);
-    }
-
-    if (neon_strcmp(field, "content-type")) {
-        return g_strdup(h->icy_metadata.stream_contenttype);
-    }
+    if (strcmp (field, "track-name"))
+        return str_to_utf8 (h->icy_metadata.stream_title);
+    if (strcmp (field, "stream-name"))
+        return str_to_utf8 (h->icy_metadata.stream_name);
+    if (strcmp (field, "content-type"))
+        return str_to_utf8 (h->icy_metadata.stream_contenttype);
 
     if (neon_strcmp(field, "content-bitrate")) {
         return g_strdup_printf("%d", h->icy_metadata.stream_bitrate * 1000);
