@@ -291,25 +291,15 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
     cairo_destroy(cr);
 }
 
-static GdkPixbuf * get_current_album_art (void)
-{
-    gint list = aud_playlist_get_playing ();
-    return audgui_pixbuf_for_entry (list, aud_playlist_get_position (list));
-}
-
 void ui_infoarea_draw_album_art (UIInfoArea * area)
 {
     cairo_t * cr;
 
     if (aud_drct_get_playing () && area->pb == NULL)
     {
-        area->pb = get_current_album_art ();
-
-        if (area->pb == NULL)
-            area->pb = gdk_pixbuf_new_from_file (DEFAULT_ARTWORK, NULL);
-
-        if (area->pb != NULL)
-            audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
+        area->pb = audgui_pixbuf_for_current ();
+        g_return_if_fail (area->pb);
+        audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
     }
 
     cr = gdk_cairo_create (area->parent->window);
