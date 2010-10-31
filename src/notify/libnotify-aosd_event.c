@@ -31,14 +31,14 @@
 #include "config.h"
 #include "libnotify-aosd_common.h"
 
-void event_init() {
-	hook_associate("playback begin", event_playback_begin, NULL);
-	hook_associate("title change", event_playback_begin, NULL);
+void event_init (void)
+{
+	hook_associate ("title change", event_playback_begin, NULL);
 }
 
-void event_uninit() {
-	hook_dissociate("playback begin", event_playback_begin);
-	hook_dissociate("title change", event_playback_begin);
+void event_uninit (void)
+{
+	hook_dissociate ("title change", event_playback_begin);
 }
 
 void event_playback_begin (void * a, void * b)
