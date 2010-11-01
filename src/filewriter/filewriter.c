@@ -113,6 +113,7 @@ OutputPlugin file_op =
     .write_audio = file_write,
     .close_audio = file_close,
     .flush = file_flush,
+    .set_written_time = file_flush,
     .pause = file_pause,
     .output_time = file_get_time,
     .written_time = file_get_time,
