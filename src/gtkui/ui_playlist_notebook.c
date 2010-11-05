@@ -165,6 +165,25 @@ void ui_playlist_notebook_edit_tab_title(GtkWidget *ebox)
     ui_playlist_notebook_tab_title_editing = ebox;
 }
 
+static void change_view (void)
+{
+    gint count = index_count (pages);
+    g_return_if_fail (count >= 1);
+
+    if (count > 1)
+    {
+        gtk_notebook_set_show_tabs (UI_PLAYLIST_NOTEBOOK, TRUE);
+
+        for (gint i = 0; i < count; i ++)
+            gtk_container_set_border_width (index_get (pages, i), 4);
+    }
+    else
+    {
+        gtk_notebook_set_show_tabs (UI_PLAYLIST_NOTEBOOK, FALSE);
+        gtk_container_set_border_width (index_get (pages, 0), 0);
+    }
+}
+
 void ui_playlist_notebook_create_tab(gint playlist)
 {
     GtkWidget *scrollwin, *treeview;
@@ -172,6 +191,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
     gint position = aud_playlist_get_position (playlist);
 
     scrollwin = gtk_scrolled_window_new(NULL, NULL);
+    gtk_container_set_border_width ((GtkContainer *) scrollwin, 4);
     index_insert(pages, playlist, scrollwin);
 
     treeview = ui_playlist_widget_new(playlist);
@@ -201,8 +221,8 @@ void ui_playlist_notebook_create_tab(gint playlist)
     g_object_set_data(G_OBJECT(ebox), "page", scrollwin);
 
     gtk_notebook_append_page(UI_PLAYLIST_NOTEBOOK, scrollwin, ebox);
-    gtk_notebook_set_show_tabs(UI_PLAYLIST_NOTEBOOK, index_count(pages) > 1 ? TRUE : FALSE);
     gtk_notebook_set_tab_reorderable(UI_PLAYLIST_NOTEBOOK, scrollwin, TRUE);
+    change_view ();
 
     if (position >= 0)
     {
@@ -222,7 +242,7 @@ void ui_playlist_notebook_destroy_tab(gint playlist)
 
     gtk_notebook_remove_page(UI_PLAYLIST_NOTEBOOK, gtk_notebook_page_num(UI_PLAYLIST_NOTEBOOK, page));
     index_delete(pages, playlist, 1);
-    gtk_notebook_set_show_tabs(UI_PLAYLIST_NOTEBOOK, index_count(pages) > 1 ? TRUE : FALSE);
+    change_view ();
 }
 
 void ui_playlist_notebook_populate(void)
@@ -319,6 +339,7 @@ GtkWidget *ui_playlist_notebook_new()
     notebook = gtk_notebook_new();
     gtk_notebook_set_scrollable(UI_PLAYLIST_NOTEBOOK, TRUE);
     gtk_notebook_set_show_border(UI_PLAYLIST_NOTEBOOK, FALSE);
+    gtk_container_set_border_width ((GtkContainer *) UI_PLAYLIST_NOTEBOOK, 3);
 
     g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
     return notebook;
