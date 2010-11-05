@@ -61,7 +61,7 @@ static guint32 mp4_read_callback (void *data, void *buffer, guint32 len)
 static guint32 mp4_seek_callback (void *data, guint64 pos)
 {
     g_return_val_if_fail (data != NULL, -1);
-    g_return_val_if_fail (pos <= G_MAXLONG, -1);
+    g_return_val_if_fail (pos <= G_MAXINT64, -1);
 
     return vfs_fseek ((VFSFile *) data, pos, SEEK_SET);
 }
