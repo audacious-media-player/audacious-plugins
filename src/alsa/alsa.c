@@ -156,7 +156,8 @@ static void * pump (void * unused)
 
     while (! pump_quit)
     {
-        if (alsa_prebuffer || alsa_paused || ! alsa_buffer_data_length)
+        if (alsa_prebuffer || alsa_paused || ! snd_pcm_bytes_to_frames
+         (alsa_handle, alsa_buffer_data_length))
         {
             pthread_cond_wait (& alsa_cond, & alsa_mutex);
             continue;
@@ -469,7 +470,7 @@ void alsa_drain (void)
     if (alsa_prebuffer)
         start_playback ();
 
-    while (alsa_buffer_data_length > 0)
+    while (snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer_data_length))
         pthread_cond_wait (& alsa_cond, & alsa_mutex);
 
     pump_stop ();
