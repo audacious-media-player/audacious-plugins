@@ -236,7 +236,7 @@ static plugin_instance *load(char *filename, long int num)
     instance = g_new0(plugin_instance, 1);
 
     instance->filename = filename;
-    instance->library = g_module_open(filename, RTLD_NOW);
+    instance->library = g_module_open(filename, G_MODULE_BIND_LOCAL);
 
     if (instance->library == NULL)
     {
@@ -532,7 +532,7 @@ static void find_plugins(char *path_entry)
     while ((dirent = readdir(dir)))
     {
 	snprintf(lib_name, PATH_MAX, "%s/%s", path_entry, dirent->d_name);
-	library = g_module_open(lib_name, RTLD_LAZY);
+	library = g_module_open(lib_name, G_MODULE_BIND_LAZY);
 	if (library == NULL)
 	{
 	    continue;
