@@ -310,10 +310,6 @@ static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventB
         treeview_set_focus ((GtkTreeView *) widget, gtk_tree_path_get_indices
          (path)[0]);
 
-    AUDDBG ("Button press: type = %d, button = %d, state = %d, path = %d\n",
-     event->type, event->button, state, (path != NULL) ?
-     gtk_tree_path_get_indices (path)[0] : -1);
-
     if (event->button == 1 && !state)
     {
         pos[0] = event->x;
@@ -338,13 +334,11 @@ static gboolean ui_playlist_widget_button_press_cb(GtkWidget * widget, GdkEventB
     }
 
 NOT_HANDLED:
-    AUDDBG (" ... not handled.\n");
     if (path)
         gtk_tree_path_free (path);
     return FALSE;
 
 HANDLED:
-    AUDDBG (" ... handled.\n");
     if (path)
         gtk_tree_path_free (path);
     return TRUE;
