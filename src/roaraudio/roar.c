@@ -50,7 +50,7 @@ OutputPlugin roar_op = {
 OutputPlugin *roar_oplist[] = { &roar_op, NULL };
 
 SIMPLE_OUTPUT_PLUGIN(roaraudio, roar_oplist);
-OutputPluginInitStatus aud_roar_init(void)
+gboolean aud_roar_init(void)
 {
 	mcs_handle_t *cfgfile;
 
@@ -65,12 +65,12 @@ OutputPluginInitStatus aud_roar_init(void)
 	if (!(g_inst.state & STATE_CONNECTED))
 	{
 		if (roar_simple_connect(&(g_inst.con), NULL, "Audacious") == -1)
-			return OUTPUT_PLUGIN_INIT_FAIL;
+			return FALSE;
 
 		g_inst.state |= STATE_CONNECTED;
 	}
 
-	return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+	return TRUE;
 }
 
 void aud_roar_write(void *ptr, int length)
