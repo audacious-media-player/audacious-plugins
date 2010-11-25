@@ -41,19 +41,13 @@
 
 #include "util.h"
 
-static void
-playlist_load_pls(const gchar * filename, gint pos)
+static gboolean playlist_load_pls (const gchar * filename, gint list, gint pos)
 {
     gint i, count;
     gchar line_key[16];
     gchar * line;
     gchar *uri = NULL;
     struct index * add;
-
-    g_return_if_fail(filename != NULL);
-
-    if (!str_has_suffix_nocase(filename, ".pls"))
-        return;
 
     uri = g_filename_to_uri(filename, NULL, NULL);
 
@@ -63,7 +57,7 @@ playlist_load_pls(const gchar * filename, gint pos)
     if (!(line = read_ini_string(inifile, "playlist", "NumberOfEntries")))
     {
         close_ini_file(inifile);
-        return;
+        return FALSE;
     }
 
     count = atoi(line);
@@ -85,13 +79,12 @@ playlist_load_pls(const gchar * filename, gint pos)
 
     close_ini_file(inifile);
 
-    aud_playlist_entry_insert_batch (aud_playlist_get_active (), pos, add, NULL);
+    aud_playlist_entry_insert_batch (list, pos, add, NULL);
+    return TRUE;
 }
 
-static void
-playlist_save_pls(const gchar *filename, gint pos)
+static gboolean playlist_save_pls (const gchar * filename, gint playlist)
 {
-    gint playlist = aud_playlist_get_active ();
     gint entries = aud_playlist_entry_count (playlist);
     gchar *uri = g_filename_to_uri(filename, NULL, NULL);
     VFSFile *file = vfs_fopen(uri, "wb");
@@ -100,12 +93,13 @@ playlist_save_pls(const gchar *filename, gint pos)
     AUDDBG("filename=%s\n", filename);
     AUDDBG("uri=%s\n", uri);
 
-    g_return_if_fail(file != NULL);
+    if (! file)
+        return FALSE;
 
     vfs_fprintf(file, "[playlist]\n");
-    vfs_fprintf(file, "NumberOfEntries=%d\n", entries - pos);
+    vfs_fprintf(file, "NumberOfEntries=%d\n", entries);
 
-    for (count = pos; count < entries; count ++)
+    for (count = 0; count < entries; count ++)
     {
         const gchar * filename = aud_playlist_entry_get_filename (playlist,
          count);
@@ -116,28 +110,23 @@ playlist_save_pls(const gchar *filename, gint pos)
         else
             fn = g_filename_from_uri (filename, NULL, NULL);
 
-        vfs_fprintf (file, "File%d=%s\n", 1 + pos + count, fn);
+        vfs_fprintf (file, "File%d=%s\n", 1 + count, fn);
         g_free(fn);
     }
 
     vfs_fclose(file);
+    return TRUE;
 }
 
-PlaylistContainer plc_pls = {
-    .name = "Winamp .pls Playlist Format",
-    .ext = "pls",
-    .plc_read = playlist_load_pls,
-    .plc_write = playlist_save_pls,
+static const gchar * const pls_exts[] = {"pls", NULL};
+
+static PlaylistPlugin pls_plugin = {
+ .description = "PLS Playlist Format",
+ .extensions = pls_exts,
+ .load = playlist_load_pls,
+ .save = playlist_save_pls
 };
 
-static void init(void)
-{
-    aud_playlist_container_register(&plc_pls);
-}
+static PlaylistPlugin * const pls_plugins[] = {& pls_plugin, NULL};
 
-static void cleanup(void)
-{
-    aud_playlist_container_unregister(&plc_pls);
-}
-
-DECLARE_PLUGIN (pls, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL)
+SIMPLE_PLAYLIST_PLUGIN (pls, pls_plugins)

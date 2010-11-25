@@ -213,7 +213,7 @@ static void xspf_find_audoptions(xmlNode *tracklist, const gchar *filename, gint
 }
 #endif
 
-static void xspf_playlist_load(const gchar *filename, gint pos)
+static gboolean xspf_playlist_load (const gchar * filename, gint list, gint pos)
 {
     xmlDocPtr doc;
     xmlNode *nptr, *nptr2;
@@ -221,7 +221,7 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
 
     doc = xmlRecoverFile(filename);
     if (doc == NULL)
-        return;
+        return FALSE;
 
     filenames = index_new ();
     tuples = index_new ();
@@ -267,8 +267,8 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
     }
     xmlFreeDoc(doc);
 
-    aud_playlist_entry_insert_batch (aud_playlist_get_active (), pos, filenames,
-     tuples);
+    aud_playlist_entry_insert_batch (list, pos, filenames, tuples);
+    return TRUE;
 }
 
 
@@ -303,9 +303,8 @@ static void xspf_add_node(xmlNodePtr node, TupleValueType type,
 }
 
 
-static void xspf_playlist_save(const gchar *filename, gint pos)
+static gboolean xspf_playlist_save (const gchar * filename, gint playlist)
 {
-    gint playlist = aud_playlist_get_active ();
     const gchar * title = aud_playlist_get_title (playlist);
     gint entries = aud_playlist_entry_count (playlist);
     xmlDocPtr doc;
@@ -315,8 +314,6 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     gchar *base = NULL;
 #endif
     gint count;
-
-    AUDDBG("filename='%s', pos=%d\n", filename, pos);
 
     doc = xmlNewDoc((xmlChar *)"1.0");
     doc->charset = XML_CHAR_ENCODING_UTF8;
@@ -419,7 +416,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     tracklist = xmlNewNode(NULL, (xmlChar *)"trackList");
     xmlAddChild(rootnode, tracklist);
 
-    for (count = pos; count < entries; count ++)
+    for (count = 0; count < entries; count ++)
     {
         const gchar * filename = aud_playlist_entry_get_filename (playlist,
          count);
@@ -466,28 +463,18 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
 #if 0
     xmlFree(base);
 #endif
+    return TRUE;
 }
 
+static const gchar * const xspf_exts[] = {"xspf", NULL};
 
-PlaylistContainer plc_xspf = {
-    .name = "XSPF Playlist Format",
-    .ext = "xspf",
-    .plc_read = xspf_playlist_load,
-    .plc_write = xspf_playlist_save,
+static PlaylistPlugin xspf_plugin = {
+ .description = "XML Shareable Playlist Format",
+ .extensions = xspf_exts,
+ .load = xspf_playlist_load,
+ .save = xspf_playlist_save
 };
 
+static PlaylistPlugin * const xspf_plugins[] = {& xspf_plugin, NULL};
 
-static void xspf_init(void)
-{
-    aud_playlist_container_register(&plc_xspf);
-}
-
-
-static void xspf_cleanup(void)
-{
-    aud_playlist_container_unregister(&plc_xspf);
-}
-
-
-DECLARE_PLUGIN (xspf, xspf_init, xspf_cleanup, NULL, NULL, NULL, NULL, NULL,
- NULL)
+SIMPLE_PLAYLIST_PLUGIN (xspf, xspf_plugins)

@@ -41,19 +41,13 @@
 
 #include "util.h"
 
-static void
-playlist_load_asx(const gchar * filename, gint pos)
+static gboolean playlist_load_asx (const gchar * filename, gint list, gint pos)
 {
     gint i;
     gchar line_key[16];
     gchar * line;
     gchar *uri = NULL;
     struct index * add;
-
-    g_return_if_fail(filename != NULL);
-
-    if (!str_has_suffix_nocase(filename, ".asx"))
-       return;
 
     uri = g_filename_to_uri(filename, NULL, NULL);
 
@@ -83,13 +77,12 @@ playlist_load_asx(const gchar * filename, gint pos)
 
     close_ini_file(inifile);
 
-    aud_playlist_entry_insert_batch (aud_playlist_get_active (), pos, add, NULL);
+    aud_playlist_entry_insert_batch (list, pos, add, NULL);
+    return TRUE;
 }
 
-static void
-playlist_save_asx(const gchar *filename, gint pos)
+static gboolean playlist_save_asx (const gchar * filename, gint playlist)
 {
-    gint playlist = aud_playlist_get_active ();
     gint entries = aud_playlist_entry_count (playlist);
     gchar *uri = g_filename_to_uri(filename, NULL, NULL);
     VFSFile *file = vfs_fopen(uri, "wb");
@@ -98,11 +91,12 @@ playlist_save_asx(const gchar *filename, gint pos)
     AUDDBG("filename=%s\n", filename);
     AUDDBG("uri=%s\n", uri);
 
-    g_return_if_fail(file != NULL);
+    if (! file)
+        return FALSE;
 
     vfs_fprintf(file, "[Reference]\r\n");
 
-    for (count = pos; count < entries; count ++)
+    for (count = 0; count < entries; count ++)
     {
         const gchar * filename = aud_playlist_entry_get_filename (playlist,
          count);
@@ -113,28 +107,23 @@ playlist_save_asx(const gchar *filename, gint pos)
         else
             fn = g_filename_from_uri (filename, NULL, NULL);
 
-        vfs_fprintf (file, "Ref%d=%s\r\n", 1 + pos + count, fn);
+        vfs_fprintf (file, "Ref%d=%s\r\n", 1 + count, fn);
         g_free(fn);
     }
 
     vfs_fclose(file);
+    return TRUE;
 }
 
-PlaylistContainer plc_asx = {
-    .name = "ASXv1/ASXv2 playlist format",
-    .ext = "asx",
-    .plc_read = playlist_load_asx,
-    .plc_write = playlist_save_asx,
+static const gchar * const asx_exts[] = {"asx", NULL};
+
+static PlaylistPlugin asx_plugin = {
+ .description = "ASXv1/ASXv2 Playlist Format",
+ .extensions = asx_exts,
+ .load = playlist_load_asx,
+ .save = playlist_save_asx
 };
 
-static void init(void)
-{
-    aud_playlist_container_register(&plc_asx);
-}
+static PlaylistPlugin * const asx_plugins[] = {& asx_plugin, NULL};
 
-static void cleanup(void)
-{
-    aud_playlist_container_unregister(&plc_asx);
-}
-
-DECLARE_PLUGIN (asx, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL)
+SIMPLE_PLAYLIST_PLUGIN (asx, asx_plugins)

@@ -44,78 +44,16 @@
 #define NEON_ICY_BUFSIZE    (4096)
 #define NEON_RETRY_COUNT 6
 
-
-VFSFile *neon_vfs_fopen_impl(const gchar* path, const gchar* mode);
-gint neon_vfs_fclose_impl(VFSFile* file);
-gint64 neon_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
- file);
-gint64 neon_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
- VFSFile * file);
-gint neon_vfs_getc_impl(VFSFile* file);
-gint neon_vfs_ungetc_impl(gint c, VFSFile* file);
-void neon_vfs_rewind_impl(VFSFile* file);
-gint64 neon_vfs_ftell_impl (VFSFile * file);
-gboolean neon_vfs_feof_impl(VFSFile* file);
-gint neon_vfs_truncate_impl (VFSFile * file, gint64 size);
-gint neon_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence);
-gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar * field);
-gint64 neon_vfs_fsize_impl (VFSFile * file);
-
-
-VFSConstructor neon_http_const = {
-    "http://",
-    neon_vfs_fopen_impl,
-    neon_vfs_fclose_impl,
-    neon_vfs_fread_impl,
-    neon_vfs_fwrite_impl,
-    neon_vfs_getc_impl,
-    neon_vfs_ungetc_impl,
-    neon_vfs_fseek_impl,
-    neon_vfs_rewind_impl,
-    neon_vfs_ftell_impl,
-    neon_vfs_feof_impl,
-    neon_vfs_truncate_impl,
-    neon_vfs_fsize_impl,
-    neon_vfs_metadata_impl
-};
-
-VFSConstructor neon_https_const = {
-    "https://",
-    neon_vfs_fopen_impl,
-    neon_vfs_fclose_impl,
-    neon_vfs_fread_impl,
-    neon_vfs_fwrite_impl,
-    neon_vfs_getc_impl,
-    neon_vfs_ungetc_impl,
-    neon_vfs_fseek_impl,
-    neon_vfs_rewind_impl,
-    neon_vfs_ftell_impl,
-    neon_vfs_feof_impl,
-    neon_vfs_truncate_impl,
-    neon_vfs_fsize_impl,
-    neon_vfs_metadata_impl
-};
-
-
-/*
- * ----
- */
-
-static void neon_plugin_init(void) {
+static gboolean neon_plugin_init(void) {
 
     gint ret;
 
     if (0 != (ret = ne_sock_init())) {
         _ERROR("Could not initialize neon library: %d\n", ret);
-        return;
+        return FALSE;
     }
 
-    vfs_register_transport(&neon_http_const);
-
-    if (0 != ne_has_support(NE_FEATURE_SSL)) {
-        _DEBUG("neon compiled with thread-safe SSL, enabling https:// transport");
-        vfs_register_transport(&neon_https_const);
-    }
+    return TRUE;
 }
 
 /*
@@ -125,13 +63,6 @@ static void neon_plugin_init(void) {
 static void neon_plugin_fini(void) {
     ne_sock_exit();
 }
-
-DECLARE_PLUGIN(neon, neon_plugin_init, neon_plugin_fini)
-
-
-/*
- * ========
- */
 
 static struct neon_handle* handle_init(void) {
 
@@ -866,8 +797,6 @@ VFSFile* neon_vfs_fopen_impl(const gchar* path, const gchar* mode) {
     }
 
     file->handle = handle;
-    file->base = &neon_http_const;
-
     return file;
 }
 
@@ -1171,18 +1100,6 @@ gint neon_vfs_ungetc_impl(gint c, VFSFile* stream) {
     return 0;
 }
 
-/*
- * -----
- */
-
-void neon_vfs_rewind_impl(VFSFile* file) {
-    (void)neon_vfs_fseek_impl(file, 0L, SEEK_SET);
-}
-
-/*
- * -----
- */
-
 gint64 neon_vfs_ftell_impl (VFSFile * file)
 {
     struct neon_handle* h = (struct neon_handle *)file->handle;
@@ -1319,6 +1236,10 @@ gint neon_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
     return 0;
 }
 
+void neon_vfs_rewind_impl(VFSFile* file) {
+    (void)neon_vfs_fseek_impl(file, 0L, SEEK_SET);
+}
+
 /*
  * -----
  */
@@ -1358,3 +1279,33 @@ gint64 neon_vfs_fsize_impl (VFSFile * file)
 
     return (h->content_start + h->content_length);
 }
+
+static const gchar * const neon_schemes[] = {"http", "https", NULL};
+
+static VFSConstructor constructor = {
+ .vfs_fopen_impl = neon_vfs_fopen_impl,
+ .vfs_fclose_impl = neon_vfs_fclose_impl,
+ .vfs_fread_impl = neon_vfs_fread_impl,
+ .vfs_fwrite_impl = neon_vfs_fwrite_impl,
+ .vfs_getc_impl = neon_vfs_getc_impl,
+ .vfs_ungetc_impl = neon_vfs_ungetc_impl,
+ .vfs_fseek_impl = neon_vfs_fseek_impl,
+ .vfs_rewind_impl = neon_vfs_rewind_impl,
+ .vfs_ftell_impl = neon_vfs_ftell_impl,
+ .vfs_feof_impl = neon_vfs_feof_impl,
+ .vfs_ftruncate_impl = neon_vfs_truncate_impl,
+ .vfs_fsize_impl = neon_vfs_fsize_impl,
+ .vfs_get_metadata_impl = neon_vfs_metadata_impl
+};
+
+static TransportPlugin neon_plugin = {
+ .description = "Neon HTTP/HTTPS Support",
+ .schemes = neon_schemes,
+ .init = neon_plugin_init,
+ .cleanup = neon_plugin_fini,
+ .vtable = & constructor
+};
+
+static TransportPlugin * const neon_plugins[] = {& neon_plugin, NULL};
+
+SIMPLE_TRANSPORT_PLUGIN (neon, neon_plugins)

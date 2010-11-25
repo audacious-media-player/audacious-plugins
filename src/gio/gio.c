@@ -312,43 +312,30 @@ gio_vfs_fsize_impl(VFSFile * file)
     return size;
 }
 
-static void init(void)
-{
-    gint i;
-    const gchar * const *schemes;
+/* FIXME: What URI schemes can GIO actually handle? */
+static const gchar * const gio_schemes[] = {NULL};
 
-    gvfs = g_vfs_get_default();
-    schemes = g_vfs_get_supported_uri_schemes(gvfs);
+static VFSConstructor constructor = {
+ .vfs_fopen_impl = gio_vfs_fopen_impl,
+ .vfs_fclose_impl = gio_vfs_fclose_impl,
+ .vfs_fread_impl = gio_vfs_fread_impl,
+ .vfs_fwrite_impl = gio_vfs_fwrite_impl,
+ .vfs_getc_impl = gio_vfs_getc_impl,
+ .vfs_ungetc_impl = gio_vfs_ungetc_impl,
+ .vfs_fseek_impl = gio_vfs_fseek_impl,
+ .vfs_rewind_impl = gio_vfs_rewind_impl,
+ .vfs_ftell_impl = gio_vfs_ftell_impl,
+ .vfs_feof_impl = gio_vfs_feof_impl,
+ .vfs_ftruncate_impl = gio_vfs_ftruncate_impl,
+ .vfs_fsize_impl = gio_vfs_fsize_impl
+};
 
-    for (i = 0; schemes[i] != NULL; i++) {
-         VFSConstructor *c;
-         if (!g_ascii_strcasecmp(schemes[i], "http") || !g_ascii_strcasecmp(schemes[i], "file") || !g_ascii_strcasecmp(schemes[i], "cdda"))
-             continue;
+static TransportPlugin gio_plugin = {
+ .description = "GIO Support",
+ .schemes = gio_schemes,
+ .vtable = & constructor
+};
 
-         c = g_slice_new0(VFSConstructor);
-         c->uri_id = g_strdup_printf("%s://", schemes[i]);
-         c->vfs_fopen_impl = gio_vfs_fopen_impl;
-         c->vfs_fclose_impl = gio_vfs_fclose_impl;
-         c->vfs_fread_impl = gio_vfs_fread_impl;
-         c->vfs_fwrite_impl = gio_vfs_fwrite_impl;
-         c->vfs_getc_impl = gio_vfs_getc_impl;
-         c->vfs_ungetc_impl = gio_vfs_ungetc_impl;
-         c->vfs_fseek_impl = gio_vfs_fseek_impl;
-         c->vfs_rewind_impl = gio_vfs_rewind_impl;
-         c->vfs_ftell_impl = gio_vfs_ftell_impl;
-         c->vfs_feof_impl = gio_vfs_feof_impl;
-         c->vfs_ftruncate_impl = gio_vfs_ftruncate_impl;
-         c->vfs_fsize_impl = gio_vfs_fsize_impl;
-         vfs_register_transport(c);
-    }
-}
+static TransportPlugin * const gio_plugins[] = {& gio_plugin, NULL};
 
-static void cleanup(void)
-{
-    g_object_unref(gvfs);
-#if 0
-    vfs_unregister_transport(&file_const);
-#endif
-}
-
-DECLARE_PLUGIN(gio, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL);
+SIMPLE_TRANSPORT_PLUGIN (gio, gio_plugins)
