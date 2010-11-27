@@ -287,7 +287,7 @@ static void button_next_pressed()
 
 static void title_change_cb (void)
 {
-    if (aud_drct_get_playing ())
+    if (aud_drct_get_playing () && config.show_song_titles)
     {
         gchar * title = aud_drct_get_title ();
         gchar * title_s = g_strdup_printf (_("%s - Audacious"), title);

@@ -56,6 +56,7 @@ static gtkui_cfg_boolent gtkui_boolents[] = {
     {"infoarea_visible", &config.infoarea_visible, TRUE},
     {"menu_visible", &config.menu_visible, TRUE},
     {"statusbar_visible", &config.statusbar_visible, TRUE},
+    {"show_song_titles", &config.show_song_titles, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(gtkui_boolents);

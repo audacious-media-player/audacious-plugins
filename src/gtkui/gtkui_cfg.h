@@ -49,6 +49,7 @@ typedef struct
     gboolean infoarea_visible;
     gboolean menu_visible;
     gboolean statusbar_visible;
+    gboolean show_song_titles;
 } gtkui_cfg_t;
 
 extern gtkui_cfg_t config;
