@@ -70,13 +70,14 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, gint tuple_type, gint pti)
     tuple_associate_string(tuple, tuple_type, NULL, text);
 }
 
-static void playlist_load_cue (const gchar * cue_filename, gint at)
+static gboolean playlist_load_cue (const gchar * cue_filename, gint list, gint
+ at)
 {
     void * buffer;
     gint64 size;
     vfs_file_get_contents (cue_filename, & buffer, & size);
     if (buffer == NULL)
-        return;
+        return FALSE;
 
     buffer = g_realloc (buffer, size + 1);
     ((gchar *) buffer)[size] = 0;
@@ -84,17 +85,17 @@ static void playlist_load_cue (const gchar * cue_filename, gint at)
     Cd * cd = cue_parse_string (buffer);
     g_free (buffer);
     if (cd == NULL)
-        return;
+        return FALSE;
 
     gint tracks = cd_get_ntrack (cd);
     if (tracks == 0)
-        return;
+        return FALSE;
 
     struct index * filenames = index_new ();
     struct index * tuples = index_new ();
 
     Track * current = cd_get_track (cd, 1);
-    g_return_if_fail (current != NULL);
+    g_return_val_if_fail (current != NULL, FALSE);
     gchar * filename = aud_construct_uri (track_get_filename (current),
      cue_filename);
 
@@ -102,8 +103,8 @@ static void playlist_load_cue (const gchar * cue_filename, gint at)
 
     for (gint track = 1; track <= tracks; track ++)
     {
-        g_return_if_fail (current != NULL);
-        g_return_if_fail (filename != NULL);
+        g_return_val_if_fail (current != NULL, FALSE);
+        g_return_val_if_fail (filename != NULL, FALSE);
 
         if (base_tuple == NULL)
         {
@@ -157,31 +158,18 @@ static void playlist_load_cue (const gchar * cue_filename, gint at)
         }
     }
 
-    aud_playlist_entry_insert_batch (aud_playlist_get_active (), at, filenames,
-     tuples);
+    aud_playlist_entry_insert_batch (list, at, filenames, tuples);
+    return TRUE;
 }
 
-static void
-playlist_save_cue(const gchar *filename, gint pos)
-{
-    AUDDBG("todo\n");
-}
+static const gchar * const cue_exts[] = {"cue", NULL};
 
-PlaylistContainer plc_cue = {
-    .name = "cue Playlist Format",
-    .ext = "cue",
-    .plc_read = playlist_load_cue,
-    .plc_write = playlist_save_cue,
+static PlaylistPlugin cue_plugin = {
+ .description = "Cue Sheet Support",
+ .extensions = cue_exts,
+ .load = playlist_load_cue
 };
 
-static void init(void)
-{
-    aud_playlist_container_register(&plc_cue);
-}
+static PlaylistPlugin * const cue_plugins[] = {& cue_plugin, NULL};
 
-static void cleanup(void)
-{
-    aud_playlist_container_unregister(&plc_cue);
-}
-
-DECLARE_PLUGIN(cue, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL);
+SIMPLE_PLAYLIST_PLUGIN (cue, cue_plugins)

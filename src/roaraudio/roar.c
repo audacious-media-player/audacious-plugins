@@ -42,7 +42,7 @@ OutputPlugin roar_op = {
 	.pause = aud_roar_pause,
 	.output_time = aud_roar_get_output_time,
 	.written_time = aud_roar_get_written_time,
-	.buffer_playing = aud_roar_buffer_is_playing,
+	.drain = aud_roar_drain,
 	.buffer_free = aud_roar_buffer_get_size,
 //	.period_wait = aud_roar_period_wait,
 };
@@ -104,7 +104,7 @@ gboolean aud_roar_initialize_stream(struct roar_vio_calls *calls, struct roar_co
 	g_inst.rate = rate;
 	g_inst.codec = codec;
 	g_inst.written = 0;
-	g_inst.pause = 0;	
+	g_inst.pause = 0;
 	g_inst.sampleoff = 0;
 	g_inst.state |= STATE_PLAYING;
 	g_inst.block_size = 0;
@@ -213,7 +213,7 @@ void aud_roar_close(void)
 	g_inst.written = 0;
 }
 
-void aud_roar_pause(short p)
+void aud_roar_pause(gboolean p)
 {
 	if (p)
 		roar_stream_set_flags(&(g_inst.con), &(g_inst.stream), ROAR_FLAG_PAUSE, ROAR_SET_FLAG);
@@ -387,25 +387,6 @@ void aud_roar_set_volume(int l, int r)
 	roar_set_vol(&(g_inst.con), g_inst.stream.id, &mixer, 2);
 }
 
-gboolean aud_roar_buffer_is_playing(void)
-{
-	struct roar_stream_info info;
-
-	if (!(g_inst.state & STATE_CONNECTED))
-		return FALSE;
-
-	if (!(g_inst.state & STATE_PLAYING))
-		return FALSE;
-
-	if (roar_stream_get_info(&(g_inst.con), &(g_inst.stream), &info) == -1)
-		return FALSE;
-
-	if (info.post_underruns)
-		return FALSE;
-
-	return TRUE;
-}
-
 /* this really sucks. */
 gboolean aud_roar_vio_is_writable(struct roar_vio_calls *vio)
 {
@@ -444,3 +425,20 @@ void aud_roar_period_wait(void)
 
 	roar_vio_select(vios, 1, NULL, NULL);
 }
+
+void aud_roar_drain (void) {
+	struct roar_event waits, triggered;
+
+	memset(&waits, 0, sizeof(waits));
+	waits.event             = ROAR_OE_STREAM_XRUN;
+	waits.emitter           = -1;
+	waits.target            = roar_stream_get_id(&(g_inst.stream));
+	waits.target_type       = ROAR_OT_STREAM;
+
+	// ignore errors as we are in void context anyway.
+
+	roar_vio_sync(&(g_inst.vio));
+
+	roar_wait(&(g_inst.con), &triggered, &waits, 1);
+}
+

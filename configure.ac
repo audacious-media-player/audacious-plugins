@@ -1644,7 +1644,6 @@ echo "  PlayStation (psf/psf2) audio:           $enable_psf"
 echo "  Nintendo 64 audio (usf):                $enable_usf"
 echo "  Nintendo DS audio (xsf):                yes [experimental]"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
-echo "  Apple Lossless Audio Codec (alac):      $have_ffaudio"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
 echo "  Metronom:                               yes"
 echo

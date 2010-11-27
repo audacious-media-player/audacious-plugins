@@ -252,27 +252,29 @@ static gint64 unix_fsize (VFSFile * file)
     return length;
 }
 
-static VFSConstructor constructor =
-{
-    .uri_id = "file://",
-    .vfs_fopen_impl = unix_fopen,
-    .vfs_fclose_impl = unix_fclose,
-    .vfs_fread_impl = unix_fread,
-    .vfs_fwrite_impl = unix_fwrite,
-    .vfs_getc_impl = unix_getc,
-    .vfs_ungetc_impl = unix_ungetc,
-    .vfs_fseek_impl = unix_fseek,
-    .vfs_rewind_impl = unix_rewind,
-    .vfs_ftell_impl = unix_ftell,
-    .vfs_feof_impl = unix_feof,
-    .vfs_ftruncate_impl = unix_ftruncate,
-    .vfs_fsize_impl = unix_fsize,
-    .vfs_get_metadata_impl = NULL,
+static const gchar * const unix_schemes[] = {"file", NULL};
+
+static VFSConstructor constructor = {
+ .vfs_fopen_impl = unix_fopen,
+ .vfs_fclose_impl = unix_fclose,
+ .vfs_fread_impl = unix_fread,
+ .vfs_fwrite_impl = unix_fwrite,
+ .vfs_getc_impl = unix_getc,
+ .vfs_ungetc_impl = unix_ungetc,
+ .vfs_fseek_impl = unix_fseek,
+ .vfs_rewind_impl = unix_rewind,
+ .vfs_ftell_impl = unix_ftell,
+ .vfs_feof_impl = unix_feof,
+ .vfs_ftruncate_impl = unix_ftruncate,
+ .vfs_fsize_impl = unix_fsize
 };
 
-static void unix_init (void)
-{
-    vfs_register_transport (& constructor);
-}
+static TransportPlugin unix_plugin = {
+ .description = "UNIX File I/O",
+ .schemes = unix_schemes,
+ .vtable = & constructor
+};
 
-DECLARE_PLUGIN (unix_io, unix_init, NULL)
+static TransportPlugin * const unix_plugins[] = {& unix_plugin, NULL};
+
+SIMPLE_TRANSPORT_PLUGIN (unix, unix_plugins)

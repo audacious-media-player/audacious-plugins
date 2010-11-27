@@ -76,12 +76,12 @@ static gchar * convert_path (gchar * path, const gchar * base)
     return aud_construct_uri (path, base);
 }
 
-static void playlist_load_m3u (const gchar * path, gint at)
+static gboolean playlist_load_m3u (const gchar * path, gint list, gint at)
 {
     gchar * text = read_win_text (path);
 
     if (text == NULL)
-        return;
+        return FALSE;
 
     gchar * parse = text;
     struct index * add = index_new ();
@@ -108,28 +108,27 @@ NEXT:
         parse = next;
     }
 
-    aud_playlist_entry_insert_batch (aud_playlist_get_active (), at, add, NULL);
+    aud_playlist_entry_insert_batch (list, at, add, NULL);
     g_free (text);
+    return TRUE;
 }
 
-static void
-playlist_save_m3u(const gchar *filename, gint pos)
+static gboolean playlist_save_m3u (const gchar * filename, gint playlist)
 {
-    gint playlist = aud_playlist_get_active ();
     gint entries = aud_playlist_entry_count (playlist);
     gchar *outstr = NULL;
     VFSFile *file;
     gchar *fn = NULL;
     gint count;
 
-    g_return_if_fail(filename != NULL);
-
     fn = g_filename_to_uri(filename, NULL, NULL);
     file = vfs_fopen(fn ? fn : filename, "wb");
     g_free(fn);
-    g_return_if_fail(file != NULL);
 
-    for (count = pos; count < entries; count ++)
+    if (! file)
+        return FALSE;
+
+    for (count = 0; count < entries; count ++)
     {
         const gchar * filename = aud_playlist_entry_get_filename (playlist,
          count);
@@ -157,23 +156,18 @@ playlist_save_m3u(const gchar *filename, gint pos)
     }
 
     vfs_fclose(file);
+    return TRUE;
 }
 
-PlaylistContainer plc_m3u = {
-	.name = "M3U Playlist Format",
-	.ext = "m3u",
-	.plc_read = playlist_load_m3u,
-	.plc_write = playlist_save_m3u,
+static const gchar * const m3u_exts[] = {"m3u", NULL};
+
+static PlaylistPlugin m3u_plugin = {
+ .description = "M3U Playlist Format",
+ .extensions = m3u_exts,
+ .load = playlist_load_m3u,
+ .save = playlist_save_m3u
 };
 
-static void init(void)
-{
-	aud_playlist_container_register(&plc_m3u);
-}
+static PlaylistPlugin * const m3u_plugins[] = {& m3u_plugin, NULL};
 
-static void cleanup(void)
-{
-	aud_playlist_container_unregister(&plc_m3u);
-}
-
-DECLARE_PLUGIN (m3u, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL)
+SIMPLE_PLAYLIST_PLUGIN (m3u, m3u_plugins)

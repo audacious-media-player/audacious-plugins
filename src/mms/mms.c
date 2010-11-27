@@ -219,32 +219,29 @@ mms_vfs_fsize_impl(VFSFile * file)
     return -1;
 }
 
-VFSConstructor mms_const = {
-	"mms://",
-	mms_vfs_fopen_impl,
-	mms_vfs_fclose_impl,
-	mms_vfs_fread_impl,
-	mms_vfs_fwrite_impl,
-	mms_vfs_getc_impl,
-	mms_vfs_ungetc_impl,
-	mms_vfs_fseek_impl,
-	mms_vfs_rewind_impl,
-	mms_vfs_ftell_impl,
-	mms_vfs_feof_impl,
-	mms_vfs_truncate_impl,
-	mms_vfs_fsize_impl
+static const gchar * const mms_schemes[] = {"mms", NULL};
+
+static VFSConstructor constructor = {
+ .vfs_fopen_impl = mms_vfs_fopen_impl,
+ .vfs_fclose_impl = mms_vfs_fclose_impl,
+ .vfs_fread_impl = mms_vfs_fread_impl,
+ .vfs_fwrite_impl = mms_vfs_fwrite_impl,
+ .vfs_getc_impl = mms_vfs_getc_impl,
+ .vfs_ungetc_impl = mms_vfs_ungetc_impl,
+ .vfs_fseek_impl = mms_vfs_fseek_impl,
+ .vfs_rewind_impl = mms_vfs_rewind_impl,
+ .vfs_ftell_impl = mms_vfs_ftell_impl,
+ .vfs_feof_impl = mms_vfs_feof_impl,
+ .vfs_ftruncate_impl = mms_vfs_truncate_impl,
+ .vfs_fsize_impl = mms_vfs_fsize_impl
 };
 
-static void init(void)
-{
-	vfs_register_transport(&mms_const);
-}
+static TransportPlugin mms_plugin = {
+ .description = "MMS Support",
+ .schemes = mms_schemes,
+ .vtable = & constructor
+};
 
-static void cleanup(void)
-{
-#if 0
-	vfs_unregister_transport(&mms_const);
-#endif
-}
+static TransportPlugin * const mms_plugins[] = {& mms_plugin, NULL};
 
-DECLARE_PLUGIN (mms, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL)
+SIMPLE_TRANSPORT_PLUGIN (mms, mms_plugins)

@@ -56,13 +56,13 @@ void aud_roar_drain(void);
 void aud_roar_write(void *ptr, int length);
 void aud_roar_close(void);
 void aud_roar_flush(int time);
-void aud_roar_pause(short p);
+void aud_roar_pause(gboolean p);
 int aud_roar_open(gint fmt, int rate, int nch);
 int aud_roar_get_output_time(void);
 int aud_roar_get_written_time(void);
-gboolean aud_roar_buffer_is_playing(void);
 gint aud_roar_buffer_get_size(void);
 void aud_roar_period_wait(void);
+void aud_roar_drain (void);
 
 int aud_roar_update_metadata(void);
 int aud_roar_chk_metadata(void);
