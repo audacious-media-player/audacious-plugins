@@ -979,6 +979,9 @@ static gboolean mp4_play (InputPlayback * playback, const gchar * filename,
     return my_decode_mp4 (playback, filename, mp4file);
 }
 
+gboolean read_itunes_cover (const gchar * filename, VFSFile * file, void * *
+ data, gint * size);
+
 InputPlugin mp4_ip = {
     .description = "MP4 AAC decoder",
     .init = mp4_init,
@@ -990,6 +993,7 @@ InputPlugin mp4_ip = {
     .cleanup = mp4_cleanup,
     .is_our_file_from_vfs = mp4_is_our_fd,
     .probe_for_tuple = mp4_get_tuple,
+    .get_song_image = read_itunes_cover,
     .vfs_extensions = fmts,
 };
 

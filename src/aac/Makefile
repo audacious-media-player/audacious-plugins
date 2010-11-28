@@ -1,6 +1,7 @@
 PLUGIN = aac${PLUGIN_SUFFIX}
 
-SRCS = libmp4.c			\
+SRCS = itunes-cover.c \
+       libmp4.c \
        mp4_utils.c		\
        aac_utils.c		\
        tagging_mp4.c		\
@@ -16,6 +17,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
-CFLAGS += ${PLUGIN_CFLAGS}
+CFLAGS += ${PLUGIN_CFLAGS} -std=gnu99
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${FAAD_CFLAGS} -I../.. -I. -Imp4ff -DUSE_TAGGING=1
 LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${MOWGLI_LIBS} ${FAAD_LIBS} -lm
