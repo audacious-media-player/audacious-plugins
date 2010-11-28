@@ -62,9 +62,9 @@ gboolean read_itunes_cover (const gchar * filename, VFSFile * file, void * *
         stop = at + bsize;
         at += 8;
 
-		/* Skip leading bytes in some frames. */
+        /* Skip leading bytes in some frames. */
 
-		if (skip[h])
+        if (skip[h])
         {
             if (vfs_fseek (file, skip[h], SEEK_CUR))
                 return FALSE;
@@ -72,7 +72,7 @@ gboolean read_itunes_cover (const gchar * filename, VFSFile * file, void * *
         }
     }
 
-	/* We're there. */
+    /* We're there. */
 
     * size = stop - at;
     * data = g_malloc (stop - at);
