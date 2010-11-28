@@ -708,6 +708,8 @@ static void ui_hooks_disassociate(void)
     hook_dissociate ("title change", (HookFunction) title_change_cb);
     hook_dissociate ("playback seek", (HookFunction) time_counter_cb);
     hook_dissociate("playback begin", ui_playback_begin);
+    hook_dissociate ("playback pause", (HookFunction) pause_cb);
+    hook_dissociate ("playback unpause", (HookFunction) pause_cb);
     hook_dissociate("playback stop", ui_playback_stop);
     hook_dissociate("mainwin show", ui_mainwin_toggle_visibility);
     hook_dissociate("playlist update", ui_playlist_notebook_update);
