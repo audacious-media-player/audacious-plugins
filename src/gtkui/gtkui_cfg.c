@@ -39,6 +39,7 @@ gtkui_cfg_t gtkui_default_config = {
     .infoarea_visible = TRUE,
     .menu_visible = TRUE,
     .statusbar_visible = TRUE,
+    .show_song_titles = TRUE,
 };
 
 typedef struct gtkui_cfg_boolent_t
