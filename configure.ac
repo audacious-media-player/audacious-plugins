@@ -1217,7 +1217,7 @@ esac
 dnl *** scrobbler ***
 
 AC_ARG_ENABLE(scrobbler,
- [  --enable-scrobbler      enable Scrobbler plugin (default=enabled)],
+ [  --disable-scrobbler     disable Scrobbler plugin (default=enabled)],
  [have_scrobbler=$enableval], [have_scrobbler="yes"])
 
 if test "x$have_scrobbler" = "xyes"; then
