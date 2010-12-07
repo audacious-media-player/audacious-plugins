@@ -38,7 +38,6 @@ static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
     VFSFile * file = NULL;
     gboolean update;
     mode_t mode_flag;
-    gchar * filename;
     gint handle;
 
     AUDDBG ("fopen %s, mode = %s\n", uri, mode);
@@ -60,10 +59,15 @@ static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
         return NULL;
     }
 
-    filename = g_filename_from_uri (uri, NULL, NULL);
-
-    if (filename == NULL)
+    gchar * utf8 = g_filename_from_uri (uri, NULL, NULL);
+    if (! utf8)
         return NULL;
+
+    gchar * filename = g_locale_from_utf8 (utf8, -1, NULL, NULL, NULL);
+    if (! filename)
+        filename = g_strdup (utf8);
+
+    g_free (utf8);
 
     if (mode_flag & O_CREAT)
         handle = open (filename, mode_flag, S_IRUSR | S_IWUSR | S_IRGRP |
