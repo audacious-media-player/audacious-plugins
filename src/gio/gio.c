@@ -285,13 +285,13 @@ gint gio_vfs_ftruncate_impl (VFSFile * file, gint64 size)
     return g_seekable_truncate (handle->seekable, size, NULL, NULL) ? 0 : -1;
 }
 
-off_t
+gint64
 gio_vfs_fsize_impl(VFSFile * file)
 {
     GFileInfo *info;
     VFSGIOHandle *handle;
     GError *error = NULL;
-    goffset size;
+    gint64 size;
 
     g_return_val_if_fail(file != NULL, -1);
     g_return_val_if_fail(file->handle != NULL, -1);
