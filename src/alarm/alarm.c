@@ -51,8 +51,13 @@
 #include "interface.h"
 #include "callbacks.h"
 
-static pthread_t start_tid;	       /* thread id of alarm loop */
-static pthread_t stop_tid;	       /* thread id of stop loop */
+typedef struct {
+    pthread_t tid;
+    volatile gboolean  is_valid;
+} alarm_thread_t;
+
+static alarm_thread_t start;    /* thread id of alarm loop */
+static alarm_thread_t stop;     /* thread id of stop loop */
 static pthread_mutex_t fader_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static GeneralPlugin alarm_plugin;
@@ -289,7 +294,7 @@ void alarm_save(GtkButton *w, gpointer data)
 /*
  * read the current configuration from the file
  */
-static void alarm_read_config()
+static void alarm_read_config(void)
 {
    int daynum = 0;   // used for day number
    mcs_handle_t *conf;
@@ -365,7 +370,7 @@ static void alarm_read_config()
 /*
  * display an about box
  */
-static void alarm_about()
+static void alarm_about(void)
 {
    static GtkWidget *about_dialog = NULL;
 
@@ -669,9 +674,9 @@ static void threadsleep(float x)
    return;
 }
 
-static inline pthread_t alarm_thread_create(void *(*start_routine)(void *), void *args, unsigned int detach)
+static inline alarm_thread_t alarm_thread_create(void *(*start_routine)(void *), void *args, unsigned int detach)
 {
-   pthread_t tid;
+   alarm_thread_t thrd;
    pthread_attr_t attr;
 
    pthread_attr_init(&attr);
@@ -683,9 +688,9 @@ static inline pthread_t alarm_thread_create(void *(*start_routine)(void *), void
    pthread_attr_setschedpolicy(&attr, SCHED_OTHER);
    pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
 
-   pthread_create(&tid, &attr, start_routine, args);
+   thrd.is_valid = (pthread_create(&thrd.tid, &attr, start_routine, args) == 0);
 
-   return(tid);
+   return thrd;
 }
 
 static void *alarm_fade(void *arg)
@@ -741,7 +746,7 @@ static void *alarm_stop_thread( void *args )
 {
    gint currvol;
    fader fade_vols;
-   pthread_t f_tid;
+   alarm_thread_t f;
 
    AUDDBG("alarm_stop_thread\n");
 
@@ -763,9 +768,9 @@ static void *alarm_stop_thread( void *args )
    fade_vols.end = 0;
 
    /* The fader thread locks the fader_mutex now */
-   f_tid = alarm_thread_create(alarm_fade, &fade_vols, 0);
+   f = alarm_thread_create(alarm_fade, &fade_vols, 0);
 
-   pthread_join(f_tid, NULL);
+   pthread_join(f.tid, NULL);
    aud_drct_stop();
 
    /* might as well set the volume to something higher than zero so we
@@ -781,7 +786,9 @@ static void *alarm_stop_thread( void *args )
 void alarm_stop_cancel(GtkButton *w, gpointer data)
 {
    AUDDBG("alarm_stop_cancel\n");
-   pthread_cancel(stop_tid);
+   if (pthread_cancel(stop.tid) == 0) {
+      stop.is_valid = FALSE;
+   }
 }
 
 /* the main alarm thread */
@@ -795,7 +802,7 @@ static void *alarm_start_thread(void *args)
    /* give it time to set start_tid to something */
    threadsleep(1);
 
-   while(start_tid != 0)
+   while (start.is_valid)
    {
      /* sit around and wait for the faders to not be doing anything */
      AUDDBG("Waiting for fader to be unlocked..");
@@ -937,15 +944,17 @@ static void *alarm_start_thread(void *args)
             AUDDBG("dialog now showing\n");
 
             AUDDBG("now starting stop thread\n");
-            stop_tid = alarm_thread_create(alarm_stop_thread, NULL, 0);
-            AUDDBG("Created wakeup dialog and started stop thread(%d)\n", (int)stop_tid);
+            stop = alarm_thread_create(alarm_stop_thread, NULL, 0);
+            AUDDBG("Created wakeup dialog and started stop thread\n");
 
 	        }
 	        GDK_THREADS_LEAVE();
 
           /* now wait for the stop thread */
-          AUDDBG("Waiting for stop to stop.... (%d)", (int)stop_tid);
-          pthread_join(stop_tid, NULL);
+          AUDDBG("Waiting for stop to stop.... ");
+          if (pthread_join(stop.tid, NULL) == 0)
+             stop.is_valid = FALSE;
+
           /* loop until we are out of the starting minute */
           while(time(NULL) < (play_start + 61))
           {
@@ -979,7 +988,7 @@ static gboolean alarm_init (void)
    alarm_read_config();
 
    /* start the main thread running */
-   start_tid = alarm_thread_create(alarm_start_thread, NULL, 1);
+   start = alarm_thread_create(alarm_start_thread, NULL, 1);
 
    return TRUE;
 }
@@ -987,16 +996,18 @@ static gboolean alarm_init (void)
 /*
  * kill the main thread
  */
-static void alarm_cleanup()
+static void alarm_cleanup(void)
 {
    AUDDBG("alarm_cleanup\n");
 
-   if (start_tid)
-     pthread_cancel(start_tid);
-   start_tid = 0;
-   if(stop_tid)
-     pthread_cancel(stop_tid);
-   stop_tid = 0;
+   if (start.is_valid) {
+     pthread_cancel(start.tid);
+     start.is_valid = FALSE;
+   }
+   if (stop.is_valid) {
+     pthread_cancel(stop.tid);
+     stop.is_valid = FALSE;
+   }
 
    g_free(alarm_conf.reminder_msg);
    alarm_conf.reminder_msg = NULL;
