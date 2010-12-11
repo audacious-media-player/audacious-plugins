@@ -79,6 +79,7 @@ static int alsa_channels, alsa_rate;
 
 static void * alsa_buffer;
 static int alsa_buffer_length, alsa_buffer_data_start, alsa_buffer_data_length;
+static int alsa_period; /* milliseconds */
 
 static int64_t alsa_written; /* frames */
 static char alsa_prebuffer, alsa_paused;
@@ -195,6 +196,9 @@ static void * pump (void * unused)
             continue;
         }
 
+        if (! snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer_data_length))
+            continue;
+
     WAIT:
         pthread_mutex_unlock (& alsa_mutex);
 
@@ -215,7 +219,8 @@ static void * pump (void * unused)
 
         if (workaround && slept)
         {
-            const struct timespec delay = {.tv_sec = 00, .tv_nsec = 100000000};
+            const struct timespec delay = {.tv_sec = 0, .tv_nsec = 600000 *
+             alsa_period};
             nanosleep (& delay, NULL);
         }
         else
@@ -380,14 +385,14 @@ int alsa_open_audio (int aud_format, int rate, int channels)
     direction = 0;
     CHECK_NOISY (snd_pcm_hw_params_set_period_time_near, alsa_handle, params,
      & useconds, & direction);
-    int period = useconds / 1000;
+    alsa_period = useconds / 1000;
 
     CHECK_NOISY (snd_pcm_hw_params, alsa_handle, params);
 
     int soft_buffer = MAX (aud_cfg->output_buffer_size / 2,
      aud_cfg->output_buffer_size - hard_buffer);
     AUDDBG ("Buffer: hardware %d ms, software %d ms, period %d ms.\n",
-     hard_buffer, soft_buffer, period);
+     hard_buffer, soft_buffer, alsa_period);
 
     alsa_buffer_length = snd_pcm_frames_to_bytes (alsa_handle, (int64_t)
      soft_buffer * rate / 1000);
@@ -467,6 +472,9 @@ void alsa_write_audio (void * data, int length)
 
     alsa_buffer_data_length += length;
     alsa_written += snd_pcm_bytes_to_frames (alsa_handle, length);
+
+    if (! alsa_paused)
+        pthread_cond_broadcast (& alsa_cond);
 
     pthread_mutex_unlock (& alsa_mutex);
 }
