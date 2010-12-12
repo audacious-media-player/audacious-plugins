@@ -250,10 +250,9 @@ static gboolean xspf_playlist_load (const gchar * filename, gint list, gint pos)
                     !xmlStrcmp(nptr2->name, (xmlChar *)"title")) {
                     xmlChar *title = xmlNodeGetContent(nptr2);
 
-                    if (title && *title) {
-                        aud_playlist_set_title (aud_playlist_get_active (),
-                         (const gchar *) title);
-                    }
+                    if (title && title[0] && ! aud_playlist_entry_count (list))
+                        aud_playlist_set_title (list, (const gchar *) title);
+
                     xmlFree(title);
                 } else
                 if (nptr2->type == XML_ELEMENT_NODE &&
