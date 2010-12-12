@@ -154,91 +154,87 @@ gboolean vorbis_update_song_tuple (const Tuple * tuple, VFSFile * fd)
     return ret;
 }
 
-/* from stdio VFS plugin */
-static gchar *
-vfs_stdio_urldecode_path(const gchar * encoded_path)
+gchar * filename_to_uri (const gchar * filename)
 {
-    const gchar *cur, *ext;
-    gchar *path, *tmp;
-    guint realchar;
+    gchar * utf8 = g_locale_to_utf8 (filename, -1, NULL, NULL, NULL);
+    if (! utf8)
+        utf8 = g_strdup (filename);
 
-    if (!encoded_path)
-        return NULL;
+    gchar * uri = g_filename_to_uri (utf8, NULL, NULL);
 
-    if (!str_has_prefix_nocase(encoded_path, "file:"))
-        return NULL;
-
-    cur = encoded_path + 5;
-
-    if (str_has_prefix_nocase(cur, "//localhost"))
-        cur += 11;
-
-    if (*cur == '/')
-        while (cur[1] == '/')
-            cur++;
-
-    tmp = g_malloc0(strlen(cur) + 1);
-
-    while ((ext = strchr(cur, '%')) != NULL) {
-        strncat(tmp, cur, ext - cur);
-        ext++;
-        cur = ext + 2;
-        if (!sscanf(ext, "%2x", &realchar)) {
-            /* Assume it is a literal '%'.  Several file
-             * managers send unencoded file: urls on drag
-             * and drop. */
-            realchar = '%';
-            cur -= 2;
-        }
-        tmp[strlen(tmp)] = realchar;
-    }
-
-    path = g_strconcat(tmp, cur, NULL);
-    g_free(tmp);
-    return path;
+    g_free (utf8);
+    return uri;
 }
 
-gboolean
-write_and_pivot_files(vcedit_state * state)
+#define COPY_BUF 65536
+
+gboolean copy_vfs (VFSFile * in, VFSFile * out)
 {
-    gint retval;
-    gchar *tmpfn, *unq_tmpfn, *unq_in;
-    VFSFile *out;
+    if (vfs_fseek (in, 0, SEEK_SET) < 0 || vfs_fseek (out, 0, SEEK_SET) < 0)
+        return FALSE;
 
-    tmpfn = g_strdup_printf("%s.XXXXXX", ((VFSFile*)state->in)->uri);
-    mktemp(tmpfn);
+    gchar * buffer = g_malloc (COPY_BUF);
+    gint64 size = 0, readed;
 
-    AUDDBG("creating temp file: %s\n", tmpfn);
+    while ((readed = vfs_fread (buffer, 1, COPY_BUF, in)) > 0)
+    {
+        if (vfs_fwrite (buffer, 1, readed, out) != readed)
+            return FALSE;
 
-    if ((out = vfs_fopen(tmpfn, "wb")) == NULL) {
-        g_free(tmpfn);
-        AUDDBG("fileinfo.c: couldn't create temp file, %s\n", tmpfn);
+        size += readed;
+    }
+
+    if (vfs_ftruncate (out, size) < 0)
+        return FALSE;
+
+    return TRUE;
+}
+
+#undef COPY_BUF
+
+gboolean write_and_pivot_files (vcedit_state * state)
+{
+    gchar * temp = g_build_filename (g_get_tmp_dir (), "XXXXXX", NULL);
+    gint handle = mkstemp (temp);
+
+    if (handle < 0)
+    {
+        fprintf (stderr, "Failed to create temp file: %s.\n", strerror (errno));
+        g_free (temp);
         return FALSE;
     }
 
-    if (vcedit_write(state, out) < 0) {
-        g_free(tmpfn);
-        vfs_fclose(out);
-        AUDDBG("vcedit_write: %s\n", state->lasterror);
+    close (handle);
+
+    gchar * temp_uri = filename_to_uri (temp);
+    g_return_val_if_fail (temp_uri, FALSE);
+    VFSFile * temp_vfs = vfs_fopen (temp_uri, "r+");
+    g_return_val_if_fail (temp_vfs, FALSE);
+
+    g_free (temp_uri);
+
+    if (vcedit_write (state, temp_vfs) < 0)
+    {
+        fprintf (stderr, "Tag update failed: %s.\n", state->lasterror);
+        vfs_fclose (temp_vfs);
+        g_free (temp);
         return FALSE;
     }
 
-    vfs_fclose(out);
-
-    unq_tmpfn = vfs_stdio_urldecode_path(tmpfn);
-    unq_in = vfs_stdio_urldecode_path(((VFSFile*)state->in)->uri);
-
-    if((retval = rename(unq_tmpfn, unq_in)) == 0) {
-        AUDDBG("fileinfo.c: file %s renamed successfully to %s\n", unq_tmpfn, unq_in);
-    } else {
-        remove(unq_tmpfn);
-        AUDDBG("fileinfo.c: couldn't rename file\n");
+    if (! copy_vfs (temp_vfs, state->in))
+    {
+        fprintf (stderr, "Failed to copy temp file.  The temp file has not "
+         "been deleted: %s.\n", temp);
+        vfs_fclose (temp_vfs);
+        g_free (temp);
+        return FALSE;
     }
 
-    g_free(unq_in);
-    g_free(unq_tmpfn);
-    g_free(tmpfn);
+    vfs_fclose (temp_vfs);
 
-    return retval == 0;
+    if (unlink (temp) < 0)
+        fprintf (stderr, "Failed to delete temp file: %s.\n", temp);
+
+    g_free (temp);
+    return TRUE;
 }
-
