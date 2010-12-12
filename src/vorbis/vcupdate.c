@@ -179,15 +179,20 @@ gboolean copy_vfs (VFSFile * in, VFSFile * out)
     while ((readed = vfs_fread (buffer, 1, COPY_BUF, in)) > 0)
     {
         if (vfs_fwrite (buffer, 1, readed, out) != readed)
-            return FALSE;
+            goto FAILED;
 
         size += readed;
     }
 
     if (vfs_ftruncate (out, size) < 0)
-        return FALSE;
+        goto FAILED;
 
+    g_free (buffer);
     return TRUE;
+
+FAILED:
+    g_free (buffer);
+    return FALSE;
 }
 
 #undef COPY_BUF
