@@ -151,7 +151,7 @@ static gint64 unix_fwrite (const void * ptr, gint64 size, gint64 nitems,
     gint64 goal = size * nitems;
     gint64 total = 0;
 
-    AUDDBG ("fwrite %d x %d\n", (gint) size, (gint) nitems);
+    AUDDBG ("[%d] fwrite %d x %d\n", handle, (gint) size, (gint) nitems);
 
     while (total < goal)
     {
@@ -228,6 +228,9 @@ static gboolean unix_feof (VFSFile * file)
 static gint unix_ftruncate (VFSFile * file, gint64 length)
 {
     gint handle = GPOINTER_TO_INT (file->handle);
+
+    AUDDBG ("[%d] ftruncate %d\n", handle, (gint) length);
+
     gint result = ftruncate (handle, length);
 
     if (result < 0)
