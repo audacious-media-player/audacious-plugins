@@ -199,13 +199,14 @@ FAILED:
 
 gboolean write_and_pivot_files (vcedit_state * state)
 {
-    gchar * temp = g_build_filename (g_get_tmp_dir (), "XXXXXX", NULL);
-    gint handle = mkstemp (temp);
+    gchar * temp;
+    GError * error;
+    gint handle = g_file_open_tmp (NULL, & temp, & error);
 
     if (handle < 0)
     {
-        fprintf (stderr, "Failed to create temp file: %s.\n", strerror (errno));
-        g_free (temp);
+        fprintf (stderr, "Failed to create temp file: %s.\n", error->message);
+        g_error_free (error);
         return FALSE;
     }
 
