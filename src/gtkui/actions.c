@@ -239,7 +239,7 @@ static void mainwin_jump_to_time_cb(GtkWidget * widget, GtkWidget * entry)
     else
         return;
 
-    aud_drct_seek(time);
+    aud_drct_seek (1000 * time);
     gtk_widget_destroy(mainwin_jtt);
 }
 
