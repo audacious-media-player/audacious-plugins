@@ -81,7 +81,7 @@ static FLAC__int64 tell_cb(FLAC__IOHandle handle)
         return -1;
     }
 
-    AUDDBG("Current position: %ld\n", offset);
+    AUDDBG ("Current position: %d\n", (gint) offset);
     return offset;
 }
 
