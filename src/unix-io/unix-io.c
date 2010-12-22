@@ -30,6 +30,7 @@
 
 #include <audacious/debug.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 
 #define error(...) fprintf (stderr, "unix-io: " __VA_ARGS__)
 
@@ -59,15 +60,9 @@ static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
         return NULL;
     }
 
-    gchar * utf8 = g_filename_from_uri (uri, NULL, NULL);
-    if (! utf8)
-        return NULL;
-
-    gchar * filename = g_locale_from_utf8 (utf8, -1, NULL, NULL, NULL);
+    gchar * filename = uri_to_filename (uri);
     if (! filename)
-        filename = g_strdup (utf8);
-
-    g_free (utf8);
+        return NULL;
 
     if (mode_flag & O_CREAT)
         handle = open (filename, mode_flag, S_IRUSR | S_IWUSR | S_IRGRP |
