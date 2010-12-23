@@ -42,9 +42,9 @@ enum {
 };
 
 extern gchar *skins_paths[];
-extern Interface skins_interface;
+extern Iface skins_interface;
 
-gboolean skins_init(InterfaceCbs *cbs);
+gboolean skins_init (IfaceCbs * cbs);
 gboolean skins_cleanup(void);
 void skins_about(void);
 void show_preferences_window(gboolean show);

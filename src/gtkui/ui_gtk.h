@@ -22,8 +22,6 @@
 
 extern gboolean multi_columns_view;
 
-extern Interface gtkui_interface;
-
 extern GtkWidget *window;
 extern GtkWidget *vbox;
 extern GtkWidget *menu;

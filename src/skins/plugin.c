@@ -39,7 +39,7 @@
 
 gchar * skins_paths[SKINS_PATH_COUNT];
 
-Interface skins_interface =
+Iface skins_interface =
 {
     .id = "skinned",
     .desc = "Winamp Classic Interface",
@@ -47,7 +47,7 @@ Interface skins_interface =
     .fini = skins_cleanup
 };
 
-SIMPLE_INTERFACE_PLUGIN ("skinned", & skins_interface)
+SIMPLE_IFACE_PLUGIN (skinned, & skins_interface)
 gboolean plugin_is_active = FALSE;
 
 static gint update_source;
@@ -92,7 +92,7 @@ static gboolean update_cb (void * unused)
     return TRUE;
 }
 
-gboolean skins_init (InterfaceCbs * cbs)
+gboolean skins_init (IfaceCbs * cbs)
 {
     plugin_is_active = TRUE;
     g_log_set_handler(NULL, G_LOG_LEVEL_WARNING, g_log_default_handler, NULL);

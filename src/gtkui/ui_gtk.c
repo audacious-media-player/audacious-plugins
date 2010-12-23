@@ -69,17 +69,17 @@ static gulong volume_change_handler_id;
 
 extern GtkWidget *ui_playlist_notebook_tab_title_editing;
 
-static gboolean _ui_initialize(InterfaceCbs * cbs);
+static gboolean _ui_initialize (IfaceCbs * cbs);
 static gboolean _ui_finalize(void);
 
-Interface gtkui_interface = {
+Iface gtkui_interface = {
     .id = "gtkui",
     .desc = N_("GTK Interface"),
     .init = _ui_initialize,
     .fini = _ui_finalize,
 };
 
-SIMPLE_INTERFACE_PLUGIN("gtkui", &gtkui_interface);
+SIMPLE_IFACE_PLUGIN ("gtkui", & gtkui_interface)
 
 static void save_window_size (void)
 {
@@ -717,7 +717,7 @@ static void ui_hooks_disassociate(void)
     hook_dissociate("toggle stop after song", stop_after_song_toggled);
 }
 
-static gboolean _ui_initialize(InterfaceCbs * cbs)
+static gboolean _ui_initialize(IfaceCbs * cbs)
 {
     GtkWidget *tophbox;         /* box to contain toolbar and shbox */
     GtkWidget *buttonbox;       /* contains buttons like "open", "next" */
