@@ -190,29 +190,6 @@ static void xspf_find_track (xmlNode * tracklist, const gchar * filename, const
     }
 }
 
-#if 0
-static void xspf_find_audoptions(xmlNode *tracklist, const gchar *filename, gint pos)
-{
-    xmlNode *nptr;
-    Playlist *playlist = aud_playlist_get_active();
-
-    for (nptr = tracklist->children; nptr != NULL; nptr = nptr->next) {
-        if (nptr->type == XML_ELEMENT_NODE &&
-            !xmlStrcmp(nptr->name, (xmlChar *)"options")) {
-            xmlChar *opt = NULL;
-
-            opt = xmlGetProp(nptr, (xmlChar *)"staticlist");
-            if (!g_strcasecmp((char *)opt, "true"))
-                playlist->attribute |= PLAYLIST_STATIC;
-            else
-                playlist->attribute ^= PLAYLIST_STATIC;
-
-            xmlFree(opt);
-        }
-    }
-}
-#endif
-
 static gboolean xspf_playlist_load (const gchar * filename, gint list, gint pos)
 {
     xmlDocPtr doc;
@@ -235,17 +212,6 @@ static gboolean xspf_playlist_load (const gchar * filename, gint list, gint pos)
             base = (gchar *)xmlNodeGetBase(doc, nptr);
 
             for (nptr2 = nptr->children; nptr2 != NULL; nptr2 = nptr2->next) {
-#if 0
-                if (nptr2->type == XML_ELEMENT_NODE &&
-                    !xmlStrcmp(nptr2->name, (xmlChar *)"extension")) {
-                    //check if application is audacious
-                    xmlChar *app = NULL;
-                    app = xmlGetProp(nptr2, (xmlChar *)"application");
-                    if (!xmlStrcmp(app, (xmlChar *)"audacious"))
-                        xspf_find_audoptions(nptr2, filename, pos);
-                    xmlFree(app);
-                } else
-#endif
                 if (nptr2->type == XML_ELEMENT_NODE &&
                     !xmlStrcmp(nptr2->name, (xmlChar *)"title")) {
                     xmlChar *title = xmlNodeGetContent(nptr2);
@@ -308,10 +274,6 @@ static gboolean xspf_playlist_save (const gchar * filename, gint playlist)
     gint entries = aud_playlist_entry_count (playlist);
     xmlDocPtr doc;
     xmlNodePtr rootnode, tracklist;
-#if 0
-    gint baselen = 0;
-    gchar *base = NULL;
-#endif
     gint count;
 
     doc = xmlNewDoc((xmlChar *)"1.0");
@@ -322,92 +284,9 @@ static gboolean xspf_playlist_save (const gchar * filename, gint playlist)
     xmlSetProp(rootnode, (xmlChar *)"version", (xmlChar *)"1");
     xmlSetProp(rootnode, (xmlChar *)"xmlns", (xmlChar *)XSPF_XMLNS);
 
-#if 0
-    /* relative */
-    if (playlist->attribute & PLAYLIST_USE_RELATIVE) {
-        /* prescan to determine base uri */
-        for (node = playlist->entries; node != NULL; node = g_list_next(node)) {
-            gchar *ptr1, *ptr2, *ptrslash;
-            PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
-            gchar *tmp;
-            gint tmplen = 0;
-
-            if (!is_uri(entry->filename)) { //obsolete
-                gchar *tmp2 = g_path_get_dirname(entry->filename);
-                tmp = g_strdup_printf("%s/", tmp2);
-                g_free(tmp2);
-            } else
-                tmp = g_strdup(entry->filename);
-
-            if (!base) {
-                base = strdup(tmp);
-                baselen = strlen(base);
-            }
-
-            ptr1 = base;
-            ptrslash = ptr2 = tmp;
-
-            while(ptr1 && ptr2 && *ptr1 && *ptr2 && *ptr1 == *ptr2) {
-                if (*ptr2 == '/') ptrslash = ptr2 + 1;
-
-                ptr1++;
-                ptr2++;
-            }
-
-            if (!(*ptrslash)) ptrslash--;
-            *ptrslash = '\0';       //terminate
-            tmplen = ptrslash - tmp;
-
-            if (tmplen <= baselen) {
-                g_free(base);
-                base = tmp;
-                baselen = tmplen;
-                AUDDBG("base='%s', baselen=%d\n", base, baselen);
-            } else
-                g_free(tmp);
-        }
-
-        /* set base URI */
-        if (base) {
-            gchar *tmp;
-            if (!is_uri(base)) {
-                tmp = (gchar *) xspf_path_to_uri((xmlChar *)base);
-                if (tmp) {
-                    g_free(base);
-                    base = tmp;
-                }
-            }
-
-            if (!is_uri(base)) {
-                AUDDBG("base is not uri. something is wrong.\n");
-                tmp = g_strdup_printf("file://%s", base);
-                xmlSetProp(rootnode, (xmlChar *)"xml:base", (xmlChar *)tmp);
-                g_free(tmp);
-            } else
-                xmlSetProp(rootnode, (xmlChar *)"xml:base", (xmlChar *)base);
-        }
-    }                           /* USE_RELATIVE */
-#endif
-
     /* common */
     xmlDocSetRootElement(doc, rootnode);
     xspf_add_node(rootnode, TUPLE_STRING, FALSE, "creator", PACKAGE "-" VERSION, 0);
-
-#if 0
-    /* add staticlist marker */
-    if (playlist->attribute & PLAYLIST_STATIC) {
-        xmlNodePtr extension, options;
-
-        extension = xmlNewNode(NULL, (xmlChar *)"extension");
-        xmlSetProp(extension, (xmlChar *)"application", (xmlChar *)"audacious");
-
-        options = xmlNewNode(NULL, (xmlChar *)"options");
-        xmlSetProp(options, (xmlChar *)"staticlist", (xmlChar *)"true");
-
-        xmlAddChild(extension, options);
-        xmlAddChild(rootnode, extension);
-    }
-#endif
 
     if (title != NULL)
         xspf_add_node (rootnode, TUPLE_STRING, FALSE, "title", title, 0);
@@ -459,9 +338,6 @@ static gboolean xspf_playlist_save (const gchar * filename, gint playlist)
 
     xmlSaveFormatFile(filename, doc, 1);
     xmlFreeDoc(doc);
-#if 0
-    xmlFree(base);
-#endif
     return TRUE;
 }
 
