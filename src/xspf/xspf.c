@@ -181,6 +181,11 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
 static void xspf_find_track (xmlNode * tracklist, const gchar * filename, const
  gchar * base, struct index * filenames, struct index * tuples)
 {
+    /* Preallocate space to avoid reallocs. */
+    gint count = xmlChildElementCount (tracklist);
+    index_allocate (filenames, count);
+    index_allocate (tuples, count);
+
     xmlNode *nptr;
 
     for (nptr = tracklist->children; nptr != NULL; nptr = nptr->next) {
