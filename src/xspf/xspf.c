@@ -31,7 +31,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/errno.h>
 
 #include <libxml/tree.h>
 #include <libxml/parser.h>
