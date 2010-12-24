@@ -224,8 +224,6 @@ dnl plugin stuff
 dnl ========================
 
 BUILDSYS_SHARED_LIB
-BUILDSYS_PROG_IMPLIB
-test "x$PROG_IMPLIB_NEEDED" = "xyes" && LIBS="$LIBS -L\${libdir} -laudacious.exe"
 
 AC_MSG_CHECKING([if you are running Apple-GCC])
 case "$target" in
