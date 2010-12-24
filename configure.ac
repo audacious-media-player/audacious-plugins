@@ -93,9 +93,13 @@ AC_PATH_PROG(RANLIB, ranlib)
 dnl Gettext -nenolod
 AM_GNU_GETTEXT([external])
 
-AC_CHECK_FUNC(strnlen, [AC_DEFINE(HAVE_STRNLEN, 1, [Whether we have strnlen])],)
+dnl Check for common functions
+dnl ==========================
 
-dnl Path settings
+AC_CHECK_FUNCS([fcntl fsync mkdtemp strnlen strtoul])
+
+dnl OSS stuff (Why is this here?)
+dnl =============================
 
 AC_ARG_WITH(dev-dsp,
     [  --with-dev-dsp=path            Path to OSS DSP data pipe, default is /dev/dsp.],
@@ -117,10 +121,10 @@ AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
 
 dnl These plugins are always built.
 
-INPUT_PLUGINS="tonegen console xsf metronom vtx"
+INPUT_PLUGINS="tonegen metronom vtx"
 OUTPUT_PLUGINS="null"
 EFFECT_PLUGINS="compressor crossfade crystalizer ladspa sndstretch stereo_plugin voice_removal echo_plugin"
-GENERAL_PLUGINS="song_change alarm skins gtkui lyricwiki"
+GENERAL_PLUGINS="alarm lyricwiki"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls asx"
 TRANSPORT_PLUGINS="unix-io"
@@ -236,7 +240,32 @@ case "$target" in
 		;;
 esac
 
-dnl *** PulseAudio
+dnl Console
+dnl =======
+
+AC_ARG_ENABLE(console,
+ [  --disable-console       disable game music decoder (console)],
+ [enable_console=$enableval], [enable_console="yes"])
+
+if test $enable_console = yes ; then
+    INPUT_PLUGINS="$INPUT_PLUGINS console"
+fi
+
+
+dnl XSF
+dnl =======
+
+AC_ARG_ENABLE(xsf,
+ [  --disable-xsf           disable Nintendo DS audio decoder (xsf)],
+ [enable_xsf=$enableval], [enable_xsf="yes"])
+
+if test $enable_xsf = yes ; then
+    INPUT_PLUGINS="$INPUT_PLUGINS xsf"
+fi
+
+
+dnl PulseAudio
+dnl ==========
 
 AC_ARG_ENABLE( pulse,
     [  --disable-pulse         disable PulseAudio output plugin (default=enabled)],
@@ -518,7 +547,19 @@ if test "x$have_gnomeshortcuts" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS gnomeshortcuts"
 fi
 
-dnl *** Status Icon plugin (for X11 only)
+dnl Song Change
+dnl ===========
+
+AC_ARG_ENABLE(songchange,
+ [  --disable-songchange    disable song change plugin],
+ [enable_songchange=$enableval], [enable_songchange="yes"])
+
+if test $enable_songchange = yes ; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS song_change"
+fi
+
+dnl Status Icon
+dnl ===========
 
 AC_ARG_ENABLE(statusicon,
     [  --disable-statusicon    disable X11 Status Icon plugin (default=enabled)],
@@ -1118,8 +1159,6 @@ AC_CHECK_DECL([lrintf],[AC_DEFINE(HAVE_LRINTF,1)],[AC_CHECK_FUNCS([lrintf])],[
 #define _ISOC9X_SOURCE
 #include <math.h>
 ], [AC_CHECK_FUNCS([lrintf])])
-AC_CHECK_FUNCS([mkdtemp getmntinfo statvfs strtoul])
-
 
 dnl CD-Audio New Generation
 
@@ -1538,6 +1577,28 @@ if test "x$enable_resample" = "xyes"; then
 	EFFECT_PLUGINS="$EFFECT_PLUGINS resample"
 fi
 
+dnl GTK Interface
+dnl =============
+
+AC_ARG_ENABLE(gtkui,
+ [  --disable-gtkui         disable GTK interface (gtkui)],
+ [enable_gtkui=$enableval], [enable_gtkui="yes"])
+
+if test $enable_gtkui = yes ; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui"
+fi
+
+dnl Winamp Classic Interface
+dnl =============
+
+AC_ARG_ENABLE(skins,
+ [  --disable-skins         disable Winamp Classic interface (skins)],
+ [enable_skins=$enableval], [enable_skins="yes"])
+
+if test $enable_skins = yes ; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS skins"
+fi
+
 dnl *** End of all plugin checks ***
 
 AC_SUBST(ARCH_DEFINES)
@@ -1652,10 +1713,10 @@ echo "  Commodore 64 audio (SID):               $have_sidplay $xs_have_sidplay2_
 echo "    -> libSIDPlay1 support:               $xs_have_sidplay1"
 echo "    -> libSIDPlay2 support:               $xs_have_sidplay2"
 echo "    -> distortion patched libSIDPlay2:    $xs_have_distortion"
-echo "  Game music (spc, nsf & gbs):            yes"
+echo "  Game music (spc, nsf & gbs):            $enable_console"
 echo "  PlayStation (psf/psf2) audio:           $enable_psf"
 echo "  Nintendo 64 audio (usf):                $enable_usf"
-echo "  Nintendo DS audio (xsf):                yes [experimental]"
+echo "  Nintendo DS audio (xsf):                $enable_xsf"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
 echo "  Metronom:                               yes"
@@ -1663,7 +1724,7 @@ echo
 echo "  General"
 echo "  -------"
 echo "  Alarm:                                  yes"
-echo "  Song Change:                            yes"
+echo "  Song Change:                            $enable_songchange"
 echo "  Status Icon:                            $have_statusicon"
 echo "  Audacious OSD:                          $have_aosd"
 echo "    -> X Composite support:               $have_aosd_xcomp"
@@ -1711,4 +1772,9 @@ echo "  Winamp PLS playlist format (pls):       yes"
 echo "  M3U playlist format (m3u):              yes"
 echo "  XML Sharable Playlist Format (xspf):    yes"
 echo "  CUE playlist format (cue):              $have_cue"
+echo
+echo "  Interfaces"
+echo "  ----------"
+echo "  GTK (gtkui):                            $enable_gtkui"
+echo "  Winamp Classic (skins):                 $enable_skins"
 echo
