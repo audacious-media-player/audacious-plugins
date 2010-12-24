@@ -35,6 +35,7 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/xmlreader.h>
+#include <libxml/xmlsave.h>
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 #include <libxml/uri.h>
@@ -194,15 +195,34 @@ static void xspf_find_track (xmlNode * tracklist, const gchar * filename, const
     }
 }
 
+static gint read_cb (void * file, gchar * buf, gint len)
+{
+    return vfs_fread (buf, 1, len, file);
+}
+
+static gint write_cb (void * file, const gchar * buf, gint len)
+{
+    return vfs_fwrite (buf, 1, len, file);
+}
+
+static gint close_cb (void * file)
+{
+    return vfs_fclose (file);
+}
+
 static gboolean xspf_playlist_load (const gchar * filename, gint list, gint pos)
 {
-    xmlDocPtr doc;
+    VFSFile * file = vfs_fopen (filename, "r");
+    if (! file)
+        return FALSE;
+
+    xmlDoc * doc = xmlReadIO (read_cb, close_cb, file, filename, NULL,
+     XML_PARSE_RECOVER);
+    if (! doc)
+        return FALSE;
+
     xmlNode *nptr, *nptr2;
     struct index * filenames, * tuples;
-
-    doc = xmlRecoverFile(filename);
-    if (doc == NULL)
-        return FALSE;
 
     filenames = index_new ();
     tuples = index_new ();
@@ -340,9 +360,24 @@ static gboolean xspf_playlist_save (const gchar * filename, gint playlist)
         }
     }
 
-    xmlSaveFormatFile(filename, doc, 1);
+    VFSFile * file = vfs_fopen (filename, "w");
+    if (! file)
+        goto ERR;
+
+    xmlSaveCtxt * save = xmlSaveToIO (write_cb, close_cb, file, NULL,
+     XML_SAVE_FORMAT);
+    if (! save)
+        goto ERR;
+
+    if (xmlSaveDoc (save, doc) < 0 || xmlSaveClose (save) < 0)
+        goto ERR;
+
     xmlFreeDoc(doc);
     return TRUE;
+
+ERR:
+    xmlFreeDoc (doc);
+    return FALSE;
 }
 
 static const gchar * const xspf_exts[] = {"xspf", NULL};
