@@ -65,8 +65,12 @@ static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
         return NULL;
 
     if (mode_flag & O_CREAT)
+#ifdef S_IRGRP
         handle = open (filename, mode_flag, S_IRUSR | S_IWUSR | S_IRGRP |
          S_IROTH);
+#else
+        handle = open (filename, mode_flag, S_IRUSR | S_IWUSR);
+#endif
     else
         handle = open (filename, mode_flag);
 
@@ -78,7 +82,9 @@ static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
         goto DONE;
     }
 
+#ifdef HAVE_FCNTL
     fcntl (handle, F_SETFD, FD_CLOEXEC);
+#endif
 
     file = g_malloc (sizeof * file);
     file->handle = GINT_TO_POINTER (handle);
@@ -95,11 +101,13 @@ static gint unix_fclose (VFSFile * file)
 
     AUDDBG ("[%d] fclose\n", handle);
 
+#ifdef HAVE_FSYNC
     if (fsync (handle) < 0)
     {
         error ("fsync failed: %s.\n", strerror (errno));
         result = -1;
     }
+#endif
 
     if (close (handle) < 0)
     {
