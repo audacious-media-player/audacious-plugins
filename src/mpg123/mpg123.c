@@ -166,12 +166,12 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 	mpg123_replace_reader_handle (decoder, replace_read, replace_lseek, NULL);
 
 	if ((result = mpg123_open_handle (decoder, file)) < 0)
-		goto ERROR;
+		goto ERR;
 	if ((result = mpg123_getformat (decoder, & rate, & channels, & encoding)) <
 	 0)
-		goto ERROR;
+		goto ERR;
 	if ((result = mpg123_info (decoder, & info)) < 0)
-		goto ERROR;
+		goto ERR;
 
 	Tuple * tuple = tuple_new_from_filename (filename);
 	make_format_string (& info, scratch, sizeof scratch);
@@ -203,7 +203,7 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 
 	return tuple;
 
-ERROR:
+ERR:
 	fprintf (stderr, "mpg123 error: %s\n", mpg123_plain_strerror (result));
 	mpg123_delete (decoder);
 	return NULL;
