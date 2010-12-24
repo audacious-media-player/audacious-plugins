@@ -60,6 +60,10 @@ static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
         return NULL;
     }
 
+#ifdef _WIN32
+    mode_flag |= O_BINARY;
+#endif
+
     gchar * filename = uri_to_filename (uri);
     if (! filename)
         return NULL;
