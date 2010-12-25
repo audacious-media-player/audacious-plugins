@@ -134,7 +134,7 @@ int sdlout_open_audio (int format, int rate, int chan)
      .freq = rate,
      .format = AUDIO_S16,
      .channels = chan,
-     .samples = 1024,
+     .samples = 4096,
      .callback = callback,
      .userdata = NULL};
 
