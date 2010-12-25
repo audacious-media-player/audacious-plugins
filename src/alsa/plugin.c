@@ -32,7 +32,7 @@
 static OutputPlugin plugin =
 {
     .description = "ALSA Output Plugin",
-    .probe_priority = 2,
+    .probe_priority = 5,
     .init = alsa_init,
     .cleanup = alsa_cleanup,
     .open_audio = alsa_open_audio,

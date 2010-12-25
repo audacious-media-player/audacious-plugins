@@ -24,7 +24,7 @@
 
 static OutputPlugin plugin = {
     .description = "OSS4 Output Plugin",
-    .probe_priority = 1,
+    .probe_priority = 5,
     .init = oss_init,
     .cleanup = oss_cleanup,
     .open_audio = oss_open_audio,

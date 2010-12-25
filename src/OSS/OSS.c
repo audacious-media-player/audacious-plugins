@@ -102,7 +102,7 @@ static void oss_cleanup(void)
 
 static OutputPlugin oss_op = {
     .description = "OSS Output Plugin",
-    .probe_priority = 1,
+    .probe_priority = 3,
     .init = oss_init,
     .cleanup = oss_cleanup,
     .about = oss_about,
