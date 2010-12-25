@@ -393,7 +393,7 @@ dnl PSF
 dnl ===
 
 AC_ARG_ENABLE(psf,
- [  --disable-psf            disable PlayStation (psf/psf2) audio decoder],
+ [  --disable-psf           disable PlayStation (psf/psf2) audio decoder],
  [enable_psf=$enableval],
  [enable_psf=yes])
 
@@ -1016,7 +1016,7 @@ AC_SUBST(OSS_LIBS)
 dnl *** ALSA output plugin
 
 AC_ARG_ENABLE(alsa,
-    [  --disable-alsa          disable ALSA input plugin (default=enabled)],
+    [  --disable-alsa          disable ALSA output plugin],
     [enable_alsa=$enableval],
     [enable_alsa=yes]
 )
@@ -1030,6 +1030,21 @@ fi
 
 if test "x$have_alsa" = "xyes"; then
 	OUTPUT_PLUGINS="$OUTPUT_PLUGINS alsa"
+fi
+
+dnl SDL Output
+dnl ==========
+
+AC_ARG_ENABLE(sdlout,
+ [  --disable-sdlout        disable SDL output plugin],
+ [enable_sdlout=$enableval], [enable_sdlout=yes])
+
+if test $enable_sdlout = yes ; then
+    AM_PATH_SDL(1.2.5, [enable_sdlout=yes], [enable_sdlout=no])
+fi
+
+if test $enable_sdlout = yes ; then
+	OUTPUT_PLUGINS="$OUTPUT_PLUGINS sdlout"
 fi
 
 
@@ -1689,6 +1704,7 @@ echo "  RoarAudio (roaraudio):                  $have_roar"
 echo "  Jack Audio Connection Kit (jack):       $have_jack"
 echo "  BSD/SUN audio output (sun):             $have_sun"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
+echo "  Simple DirectMedia Layer (sdlout):      $enable_sdlout"
 echo "  FileWriter:                             $enable_filewriter"
 echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
