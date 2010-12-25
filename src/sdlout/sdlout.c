@@ -19,6 +19,7 @@
 
 #include <assert.h>
 #include <pthread.h>
+#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -51,7 +52,7 @@ int sdlout_init (void)
 {
     if (SDL_Init (SDL_INIT_AUDIO) < 0)
     {
-        ERROR ("Failed to init SDL: %s.\n", SDL_GetError ());
+        fprintf (stderr, "Failed to init SDL: %s.\n", SDL_GetError ());
         return 0;
     }
 
@@ -111,7 +112,7 @@ int sdlout_open_audio (int format, int rate, int chan)
 {
     if (format != FMT_S16_NE)
     {
-        ERROR ("Only signed 16-bit, native endian audio is supported.\n");
+        sdlout_error ("Only signed 16-bit, native endian audio is supported.\n");
         return 0;
     }
 
@@ -139,7 +140,7 @@ int sdlout_open_audio (int format, int rate, int chan)
 
     if (SDL_OpenAudio (& spec, NULL) < 0)
     {
-        ERROR_NOISY ("Failed to open audio stream: %s.\n", SDL_GetError ());
+        sdlout_error ("Failed to open audio stream: %s.\n", SDL_GetError ());
         free (buffer);
         buffer = NULL;
         return 0;

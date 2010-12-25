@@ -20,17 +20,12 @@
 #ifndef AUDACIOUS_SDLOUT_H
 #define AUDACIOUS_SDLOUT_H
 
-#include <stdio.h>
-
-#define ERROR(...) fprintf (stderr, "sdlout: " __VA_ARGS__)
-#define ERROR_NOISY sdlout_error
-
 /* sdlout.c */
 int sdlout_init (void);
 void sdlout_cleanup (void);
 void sdlout_get_volume (int * left, int * right);
 void sdlout_set_volume (int left, int right);
-int sdlout_open_audio (gint format, int rate, int chan);
+int sdlout_open_audio (int format, int rate, int chan);
 void sdlout_close_audio (void);
 int sdlout_buffer_free (void);
 void sdlout_period_wait (void);
