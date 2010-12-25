@@ -24,7 +24,7 @@
 #define _ACTUATORS_H
 
 #include <glib.h>
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 /* Helper macros for actuator functions */
 #define PN_ACTUATOR_INIT_FUNC(f) ((void (*) (gpointer *data))f)
@@ -89,7 +89,7 @@ struct pn_actuator_desc
 
   /* Init function - data points to the actuator.data - OPTIONAL */
   void (*init) (gpointer *data);
-  
+
   /* Cleanup actuatortion - OPTIONAL */
   void (*cleanup) (gpointer data);
 

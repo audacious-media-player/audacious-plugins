@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <math.h>
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
@@ -112,7 +112,7 @@ take_screenshot (void)
 static void
 toggle_fullscreen (void)
 {
-  SDL_WM_ToggleFullScreen (screen);  
+  SDL_WM_ToggleFullScreen (screen);
   if (SDL_ShowCursor (SDL_QUERY) == SDL_ENABLE)
     SDL_ShowCursor (SDL_DISABLE);
   else
@@ -208,7 +208,7 @@ pn_render (void)
 	    }
 	  break;
 	case SDL_VIDEORESIZE:
-	  resize_video (event.resize.w, event.resize.h);	  
+	  resize_video (event.resize.w, event.resize.h);
 	  break;
 	}
     }
