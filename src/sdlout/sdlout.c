@@ -21,6 +21,7 @@
 #include <pthread.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #include <glib.h>
 #include <SDL/SDL.h>
@@ -42,6 +43,9 @@ static int buffer_size, buffer_data_start, buffer_data_len;
 
 static int64_t frames_written;
 static char prebuffer_flag, paused_flag;
+
+static int block_delay;
+static struct timeval block_time;
 
 int sdlout_init (void)
 {
@@ -92,6 +96,12 @@ static void callback (void * user, unsigned char * buf, int len)
 
     if (copy < len)
         memset (buf + copy, 0, len - copy);
+
+    /* At this moment, we know that there is a delay of (at least) the block of
+     * data just written.  We save the block size and the current time for
+     * estimating the delay later on. */
+    block_delay = copy / (2 * sdlout_chan) * 1000 / sdlout_rate;
+    gettimeofday (& block_time, NULL);
 
     pthread_cond_broadcast (& sdlout_cond);
     pthread_mutex_unlock (& sdlout_mutex);
@@ -154,18 +164,25 @@ int sdlout_buffer_free (void)
     return space;
 }
 
+static void check_started (void)
+{
+    if (! prebuffer_flag)
+        return;
+
+    AUDDBG ("Starting playback.\n");
+    prebuffer_flag = 0;
+    block_delay = 0;
+    SDL_PauseAudio (0);
+}
+
 void sdlout_period_wait (void)
 {
     pthread_mutex_lock (& sdlout_mutex);
 
     while (buffer_data_len == buffer_size)
     {
-        if (prebuffer_flag && ! paused_flag)
-        {
-            AUDDBG ("Starting playback.\n");
-            prebuffer_flag = 0;
-            SDL_PauseAudio (0);
-        }
+        if (! paused_flag)
+            check_started ();
 
         pthread_cond_wait (& sdlout_cond, & sdlout_mutex);
     }
@@ -201,14 +218,7 @@ void sdlout_drain (void)
     AUDDBG ("Draining.\n");
     pthread_mutex_lock (& sdlout_mutex);
 
-    assert (! paused_flag);
-
-    if (prebuffer_flag)
-    {
-        AUDDBG ("Starting playback.\n");
-        prebuffer_flag = 0;
-        SDL_PauseAudio (0);
-    }
+    check_started ();
 
     while (buffer_data_len)
         pthread_cond_wait (& sdlout_cond, & sdlout_mutex);
@@ -235,10 +245,25 @@ int sdlout_written_time (void)
 int sdlout_output_time (void)
 {
     pthread_mutex_lock (& sdlout_mutex);
-    int time = (int64_t) (frames_written - buffer_data_len / (2 * sdlout_chan))
+
+    int out = (int64_t) (frames_written - buffer_data_len / (2 * sdlout_chan))
      * 1000 / sdlout_rate;
+
+    /* Estimate the additional delay of the last block written. */
+    if (! prebuffer_flag && ! paused_flag && block_delay)
+    {
+        struct timeval cur;
+        gettimeofday (& cur, NULL);
+
+        int elapsed = 1000 * (cur.tv_sec - block_time.tv_sec) + (cur.tv_usec -
+         block_time.tv_usec) / 1000;
+
+        if (elapsed < block_delay)
+            out -= block_delay - elapsed;
+    }
+
     pthread_mutex_unlock (& sdlout_mutex);
-    return time;
+    return out;
 }
 
 void sdlout_pause (int pause)
