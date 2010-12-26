@@ -1141,26 +1141,6 @@ if test "x$enable_amidiplug" = "xyes"; then
   AC_SUBST(AMIDIPLUG_BACKENDS)
 fi
 
-dnl FreeBSD newpcm driver detection
-
-AC_CACHE_CHECK(for FreeBSD newpcm driver, beep_cv_newpcm_driver,
-    if test -r "/dev/sndstat"; then
-        grep 'newpcm' /dev/sndstat 2>/dev/null 1>/dev/null
-        if test "x$?" = "x0"; then
-            beep_cv_newpcm_driver="yes"
-        else
-            beep_cv_newpcm_driver="no"
-        fi
-    else
-        beep_cv_newpcm_driver="no"
-    fi
-)
-
-if test "x$beep_cv_newpcm_driver" = "xyes"; then
-    AC_DEFINE(HAVE_NEWPCM, 1, [Define if you have the FreeBSD newpcm driver])
-fi
-
-
 AC_CHECK_HEADERS(linux/joystick.h)
 AC_CHECK_HEADERS(unistd.h)
 AC_CHECK_HEADERS(fcntl.h)
@@ -1658,18 +1638,12 @@ fi
 localedir="$datadir/locale"
 AC_SUBST(localedir)
 
-BEEP_DEFINES="$CFLAGS -DDATA_DIR=\\\"$datadir/audacious\\\" -DPLUGIN_DIR=\\\"$plugindir\\\" -DPLUGINSUBS=$pluginsubs -DLOCALEDIR=\\\"$localedir\\\""
 CFLAGS="$CFLAGS $EXTRA_CFLAGS"
 
 if test "x$enable_user_plugin_dir" = "xno"; then
     AC_DEFINE(DISABLE_USER_PLUGIN_DIR,, [Define to disable per user plugin directory])
 fi
 
-AC_DEFINE(BMP_RCPATH, ".audacious", [Config dir to use])
-
-AC_SUBST(BEEP_DEFINES)
-
-AC_SUBST(beepdir)
 AC_SUBST(plugindir)
 
 AC_SUBST(EFFECT_PLUGINS)

@@ -24,6 +24,7 @@
 
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -56,7 +57,12 @@ static GtkStatusIcon *si_create(void)
     else if (gtk_icon_theme_has_icon(theme, "audacious"))
         icon = gtk_status_icon_new_from_icon_name("audacious");
     else
-        icon = gtk_status_icon_new_from_file(DATA_DIR "/images/audacious_player.xpm");
+    {
+        gchar * path = g_strdup_printf ("%s/images/audacious_player.xpm",
+         aud_get_path (AUD_PATH_DATA_DIR));
+        icon = gtk_status_icon_new_from_file (path);
+        g_free (path);
+    }
 
     return icon;
 }

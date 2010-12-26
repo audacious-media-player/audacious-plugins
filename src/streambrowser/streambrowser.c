@@ -356,9 +356,9 @@ static void gui_init ()
     /* the plugin services menu */
     playlist_menu_item =
         gtk_image_menu_item_new_with_label (_("Streambrowser"));
-    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (playlist_menu_item),
+/*    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (playlist_menu_item),
                                    gtk_image_new_from_file
-                                   (STREAMBROWSER_ICON_SMALL));
+                                   (STREAMBROWSER_ICON_SMALL)); */
     gtk_widget_show (playlist_menu_item);
     g_signal_connect (G_OBJECT (playlist_menu_item), "activate",
                       G_CALLBACK (on_plugin_services_menu_item_click), NULL);
@@ -366,9 +366,9 @@ static void gui_init ()
                                     playlist_menu_item);
 
     main_menu_item = gtk_image_menu_item_new_with_label (_("Streambrowser"));
-    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (main_menu_item),
+/*    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (main_menu_item),
                                    gtk_image_new_from_file
-                                   (STREAMBROWSER_ICON_SMALL));
+                                   (STREAMBROWSER_ICON_SMALL)); */
     gtk_widget_show (main_menu_item);
     g_signal_connect (G_OBJECT (main_menu_item), "activate",
                       G_CALLBACK (on_plugin_services_menu_item_click), NULL);
@@ -621,7 +621,7 @@ static gpointer update_thread_core (gpointer user_data)
                 if (streamdir != NULL)
                 {
                     gdk_threads_enter ();
-                    streambrowser_win_set_streamdir (streamdir, SHOUTCAST_ICON);
+/*                    streambrowser_win_set_streamdir (streamdir, SHOUTCAST_ICON); */
                     gdk_threads_leave ();
                 }
             }
@@ -634,7 +634,7 @@ static gpointer update_thread_core (gpointer user_data)
                 if (streamdir != NULL)
                 {
                     gdk_threads_enter ();
-                    streambrowser_win_set_streamdir (streamdir, XIPH_ICON);
+/*                    streambrowser_win_set_streamdir (streamdir, XIPH_ICON); */
                     gdk_threads_leave ();
                 }
             }
@@ -649,7 +649,7 @@ static gpointer update_thread_core (gpointer user_data)
                 if (streamdir != NULL)
                 {
                     gdk_threads_enter ();
-                    streambrowser_win_set_streamdir (streamdir, BOOKMARKS_ICON);
+/*                    streambrowser_win_set_streamdir (streamdir, BOOKMARKS_ICON); */
                     gdk_threads_leave ();
                 }
             }
@@ -662,7 +662,7 @@ static gpointer update_thread_core (gpointer user_data)
             if (streamdir != NULL)
             {
                 gdk_threads_enter ();
-                streambrowser_win_set_streamdir (streamdir, SHOUTCAST_ICON);
+/*                streambrowser_win_set_streamdir (streamdir, SHOUTCAST_ICON); */
                 gdk_threads_leave ();
             }
             /* xiph */
@@ -670,7 +670,7 @@ static gpointer update_thread_core (gpointer user_data)
             if (streamdir != NULL)
             {
                 gdk_threads_enter ();
-                streambrowser_win_set_streamdir (streamdir, XIPH_ICON);
+/*                streambrowser_win_set_streamdir (streamdir, XIPH_ICON); */
                 gdk_threads_leave ();
             }
             /* bookmarks */
@@ -680,7 +680,7 @@ static gpointer update_thread_core (gpointer user_data)
             if (streamdir != NULL)
             {
                 gdk_threads_enter ();
-                streambrowser_win_set_streamdir (streamdir, BOOKMARKS_ICON);
+/*                streambrowser_win_set_streamdir (streamdir, BOOKMARKS_ICON); */
                 gdk_threads_leave ();
 
                 int i;

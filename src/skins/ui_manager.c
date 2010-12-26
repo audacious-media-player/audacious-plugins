@@ -17,6 +17,8 @@
  *  Audacious or using our public API to be a derived work.
  */
 
+#include <limits.h>
+
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -629,10 +631,13 @@ static GtkWidget *carbon_menubar;
 void
 ui_manager_create_menus ( void )
 {
+  const gchar * data = aud_get_path (AUD_PATH_DATA_DIR);
+  gchar path[PATH_MAX];
   GError *gerr = NULL;
 
   /* attach xml menu definitions */
-  gtk_ui_manager_add_ui_from_file( ui_manager , DATA_DIR "/ui/mainwin.ui" , &gerr );
+  snprintf (path, sizeof path, "%s/ui/mainwin.ui", data);
+  gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
 
   if ( gerr != NULL )
   {
@@ -642,7 +647,8 @@ ui_manager_create_menus ( void )
   }
 
 #ifdef GDK_WINDOWING_QUARTZ
-  gtk_ui_manager_add_ui_from_file( ui_manager , DATA_DIR "/ui/carbon-menubar.ui" , &gerr );
+  snprintf (path, sizeof path, "%s/ui/carbon-menubar.ui", data);
+  gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
 
   if ( gerr != NULL )
   {
@@ -655,7 +661,8 @@ ui_manager_create_menus ( void )
   sync_menu_takeover_menu(GTK_MENU_SHELL(carbon_menubar));
 #endif
 
-  gtk_ui_manager_add_ui_from_file( ui_manager , DATA_DIR "/ui/playlist.ui" , &gerr );
+  snprintf (path, sizeof path, "%s/ui/playlist.ui", data);
+  gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
 
   if ( gerr != NULL )
   {
@@ -664,7 +671,8 @@ ui_manager_create_menus ( void )
     return;
   }
 
-  gtk_ui_manager_add_ui_from_file( ui_manager , DATA_DIR "/ui/equalizer.ui" , &gerr );
+  snprintf (path, sizeof path, "%s/ui/equalizer.ui", data);
+  gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
 
   if ( gerr != NULL )
   {

@@ -37,6 +37,7 @@
 #include <ctype.h>
 
 #include <audacious/debug.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 #include "plugin.h"
@@ -552,11 +553,17 @@ init_skins(const gchar * path)
             AUDDBG("Skin not defined: trying default...\n");
 
         /* can't load configured skin, retry with default */
-        if (!aud_active_skin_load(BMP_DEFAULT_SKIN_PATH)) {
-            AUDDBG("Unable to load default skin (%s)! Giving up.\n",
-                      BMP_DEFAULT_SKIN_PATH);
+        gchar * def = g_strdup_printf ("%s/Skins/Default",
+         aud_get_path (AUD_PATH_DATA_DIR));
+
+        if (! aud_active_skin_load (def))
+        {
+            AUDDBG ("Unable to load default skin (%s)! Giving up.\n", def);
+            g_free (def);
             return FALSE;
         }
+
+        g_free (def);
     }
 
     if (config.random_skin_on_play)

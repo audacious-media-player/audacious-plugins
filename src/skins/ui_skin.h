@@ -30,9 +30,6 @@
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
-#define BMP_DEFAULT_SKIN_PATH \
-  DATA_DIR G_DIR_SEPARATOR_S "Skins" G_DIR_SEPARATOR_S "Default"
-
 typedef enum {
     SKIN_MAIN = 0,
     SKIN_CBUTTONS,
@@ -109,10 +106,10 @@ typedef struct _SkinProperties {
 	gint mainwin_playstatus_y;
 
 	gint mainwin_volume_x;
-	gint mainwin_volume_y;	
+	gint mainwin_volume_y;
 
 	gint mainwin_balance_x;
-	gint mainwin_balance_y;	
+	gint mainwin_balance_y;
 
 	gint mainwin_position_x;
 	gint mainwin_position_y;

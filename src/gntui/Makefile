@@ -11,6 +11,6 @@ plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 GNT_CFLAGS = `pkg-config --cflags gnt`
 GNT_LIBS = `pkg-config --libs gnt`
 
-CFLAGS += ${PLUGIN_CFLAGS} ${BEEP_DEFINES}
+CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GLIB_CFLAGS} ${GNT_CFLAGS} -I../..
 LIBS += ${GLIB_LIBS} ${MOWGLI_LIBS} ${GNT_LIBS}

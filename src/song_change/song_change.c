@@ -551,7 +551,7 @@ configure_cleanup(void)
 
 static PluginPreferences preferences = {
     .title = N_("Song Change"),
-    .imgurl = DATA_DIR "/images/plugins.png",
+/*    .imgurl = DATA_DIR "/images/plugins.png", */
     .prefs = settings,
     .n_prefs = G_N_ELEMENTS(settings),
     .init = configure_init,

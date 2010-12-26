@@ -32,6 +32,7 @@
 #include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -193,7 +194,12 @@ void show_preferences_window(gboolean show) {
 
         prefswin = skins_interface.ops->create_prefs_window();
         cfgdlg = skins_configure();
-        skins_interface.ops->prefswin_page_new(cfgdlg, _("Skinned Interface"), DATA_DIR "/images/appearance.png");
+
+        gchar * path = g_strdup_printf ("%s/images/appearance.png",
+         aud_get_path (AUD_PATH_DATA_DIR));
+        skins_interface.ops->prefswin_page_new (cfgdlg, _("Skinned Interface"),
+         path);
+        g_free (path);
 
         gtk_widget_show_all(*prefswin);
     } else {

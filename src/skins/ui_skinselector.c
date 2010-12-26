@@ -35,6 +35,7 @@
 #include <string.h>
 
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 
 #include "plugin.h"
 #include "ui_skin.h"
@@ -256,7 +257,10 @@ skinlist_update(void)
     skinlist_clear();
 
     scan_skindir(skins_paths[SKINS_PATH_USER_SKIN_DIR]);
-    scan_skindir(DATA_DIR G_DIR_SEPARATOR_S "Skins");
+
+    gchar * path = g_strdup_printf ("%s/Skins", aud_get_path (AUD_PATH_DATA_DIR));
+    scan_skindir (path);
+    g_free (path);
 
     skinsdir = getenv("SKINSDIR");
     if (skinsdir) {

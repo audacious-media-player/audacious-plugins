@@ -302,7 +302,10 @@ void ui_manager_create_menus(void)
     GError *gerr = NULL;
 
     /* attach xml menu definitions */
-    gtk_ui_manager_add_ui_from_file(ui_manager, DATA_DIR "/ui/player.ui", &gerr);
+    gchar * path = g_strdup_printf ("%s/ui/player.ui",
+     aud_get_path (AUD_PATH_DATA_DIR));
+    gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
+    g_free (path);
 
     if (gerr != NULL)
     {
