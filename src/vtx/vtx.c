@@ -49,11 +49,14 @@ static gboolean vtx_init(void)
     mcs_handle_t *db;
     db = aud_cfg_db_open();
 
-    aud_cfg_db_get_int(db, NULL, "src_rate", &freq);
-    if (freq < 4000 || freq > 192000)
-        freq = 44100;
+    if (db)
+    {
+        aud_cfg_db_get_int (db, NULL, "src_rate", & freq);
+        if (freq < 4000 || freq > 192000)
+            freq = 44100;
 
-    aud_cfg_db_close(db);
+        aud_cfg_db_close (db);
+    }
 
     seek_mutex = g_mutex_new();
     seek_cond = g_cond_new();
