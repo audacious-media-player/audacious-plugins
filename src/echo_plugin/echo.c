@@ -30,6 +30,8 @@ static gboolean init (void)
 	mcs_handle_t *cfg;
 
 	cfg = aud_cfg_db_open();
+	if (! cfg)
+		return TRUE;
 	aud_cfg_db_get_int(cfg, "echo_plugin", "delay", &echo_delay);
 	aud_cfg_db_get_int(cfg, "echo_plugin", "feedback", &echo_feedback);
 	aud_cfg_db_get_int(cfg, "echo_plugin", "volume", &echo_volume);

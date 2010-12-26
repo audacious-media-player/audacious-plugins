@@ -274,14 +274,14 @@ static void sndstretch_config_logobutton_cb(GtkButton * button, gpointer data)
 static gint sndstretch_config_destroy_cb(GtkWidget * w, GdkEventAny * e, gpointer data)
 {
 	mcs_handle_t *db = aud_cfg_db_open();
-
-	aud_cfg_db_set_double(db, "sndstretch", "pitch", SS.pitch);
-	aud_cfg_db_set_double(db, "sndstretch", "speed", SS.speed);
-
-	aud_cfg_db_set_bool(db, "sndstretch", "short_overlap", SS.short_overlap);
-	aud_cfg_db_set_bool(db, "sndstretch", "volume_corr", SS.volume_corr);
-
-	aud_cfg_db_close(db);
+	if (db)
+	{
+		aud_cfg_db_set_double (db, "sndstretch", "pitch", SS.pitch);
+		aud_cfg_db_set_double (db, "sndstretch", "speed", SS.speed);
+		aud_cfg_db_set_bool (db, "sndstretch", "short_overlap", SS.short_overlap);
+		aud_cfg_db_set_bool (db, "sndstretch", "volume_corr", SS.volume_corr);
+		aud_cfg_db_close (db);
+	}
 
 	gtk_widget_destroy(sndstretch_config_dialog);
 	sndstretch_config_dialog = NULL;
@@ -419,10 +419,6 @@ void sndstretch_config(void)
 
 gboolean sndstretch_init (void)
 {
-	mcs_handle_t *db;
-
-	db = aud_cfg_db_open();
-
 	SS.fragsize=0;
 	SS.chnr=2;
 	SS.paused=0;
@@ -437,6 +433,10 @@ gboolean sndstretch_init (void)
 	SS.pitch=1.0;
 	SS.speed=1.0;
 	SS.scale=1.0;
+
+	mcs_handle_t * db = aud_cfg_db_open ();
+	if (! db)
+		return TRUE;
 
 	gboolean b;
 	aud_cfg_db_get_double(db, "sndstretch", "pitch", &SS.pitch);

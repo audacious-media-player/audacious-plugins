@@ -49,10 +49,13 @@ DECLARE_PLUGIN(stereo, NULL, NULL, NULL, NULL, stereo_eplist, NULL, NULL, NULL);
 
 static gboolean init (void)
 {
-	mcs_handle_t *db;
-	db = aud_cfg_db_open();
+	value = 2.5;
+
+	mcs_handle_t * db = aud_cfg_db_open ();
+	if (! db)
+		return TRUE;
+
 	if (!aud_cfg_db_get_double(db, "extra_stereo", "intensity", &value))
-		value = 2.5;
 	aud_cfg_db_close(db);
 	return TRUE;
 }
@@ -67,13 +70,15 @@ static void about (void)
 
 static void conf_ok_cb(GtkButton * button, gpointer data)
 {
-	mcs_handle_t *db;
-
 	value = *(gdouble *) data;
 
-	db = aud_cfg_db_open();
-	aud_cfg_db_set_double(db, "extra_stereo", "intensity", value);
-	aud_cfg_db_close(db);
+	mcs_handle_t * db = aud_cfg_db_open ();
+	if (db)
+	{
+		aud_cfg_db_set_double (db, "extra_stereo", "intensity", value);
+		aud_cfg_db_close (db);
+	}
+
 	gtk_widget_destroy(conf_dialog);
 }
 

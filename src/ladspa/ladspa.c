@@ -136,6 +136,8 @@ static void restore(void)
     gint k, plugins = 0;
 
     db = aud_cfg_db_open();
+    if (! db)
+	goto DONE;
 
     aud_cfg_db_get_int(db, "ladspa", "plugins", &plugins);
     for (k = 0; k < plugins; ++k)
@@ -171,6 +173,7 @@ static void restore(void)
 
     aud_cfg_db_close(db);
 
+DONE:
     state.initialised = TRUE;
 }
 
@@ -292,6 +295,10 @@ static void stop(void)
     for (list = running_plugins; list != NULL; list = g_slist_next(list))
     {
 	plugin_instance *instance = (plugin_instance *) list->data;
+
+	if (! db)
+	    goto SHUTDOWN;
+
 	gchar *bn;
 	gchar *section;
 	int port, ports = 0;
@@ -315,8 +322,10 @@ static void stop(void)
 	}
 	aud_cfg_db_set_int(db, section, "ports", ports);
 	g_free(section);
+
+SHUTDOWN:
 	ladspa_shutdown(instance);
-    plugins++;
+	plugins++;
     }
     G_UNLOCK(running_plugins);
 

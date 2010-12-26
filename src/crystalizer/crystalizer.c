@@ -60,24 +60,30 @@ DECLARE_PLUGIN(crystalizer, NULL, NULL, NULL, NULL, crystalizer_eplist, NULL, NU
 
 static gboolean init (void)
 {
-	mcs_handle_t *db;
-	db = aud_cfg_db_open();
-	if (!aud_cfg_db_get_double(db, "crystalizer", "intensity", &value))
-		value = 1.0;
-	aud_cfg_db_close(db);
+	value = 1.0;
+
+	mcs_handle_t * db = aud_cfg_db_open ();
+	if (db)
+	{
+		aud_cfg_db_get_double (db, "crystalizer", "intensity", & value);
+		aud_cfg_db_close (db);
+	}
+
 	return TRUE;
 }
 
 /* conf dialog stuff stolen from stereo plugin --nenolod */
 static void conf_ok_cb(GtkButton * button, gpointer data)
 {
-	mcs_handle_t *db;
+	value = * (gdouble *) data;
 
-	value = *(gdouble *) data;
+	mcs_handle_t * db = aud_cfg_db_open ();
+	if (db)
+	{
+		aud_cfg_db_set_double (db, "crystalizer", "intensity", value);
+		aud_cfg_db_close (db);
+	}
 
-	db = aud_cfg_db_open();
-	aud_cfg_db_set_double(db, "crystalizer", "intensity", value);
-	aud_cfg_db_close(db);
 	gtk_widget_destroy(conf_dialog);
 }
 

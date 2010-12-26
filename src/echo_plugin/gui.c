@@ -34,6 +34,8 @@ static void apply_changes(void)
 	echo_volume = GTK_ADJUSTMENT(echo_volume_adj)->value;
 
 	cfg = aud_cfg_db_open();
+	if (! cfg)
+		return;
 	aud_cfg_db_set_int(cfg, "echo_plugin", "delay", echo_delay);
 	aud_cfg_db_set_int(cfg, "echo_plugin", "feedback", echo_feedback);
 	aud_cfg_db_set_int(cfg, "echo_plugin", "volume", echo_volume);
