@@ -35,6 +35,8 @@ static GtkWidget * config_window = NULL;
 void compressor_config_load (void)
 {
     mcs_handle_t * database = aud_cfg_db_open ();
+    if (! database)
+        return;
 
     aud_cfg_db_get_float (database, "compressor", "center", & compressor_center);
     aud_cfg_db_get_float (database, "compressor", "range", & compressor_range);
@@ -44,17 +46,19 @@ void compressor_config_load (void)
 
 void compressor_config_save (void)
 {
+    if (about_window != NULL)
+        gtk_widget_destroy (about_window);
+    if (config_window != NULL)
+        gtk_widget_destroy (config_window);
+
     mcs_handle_t * database = aud_cfg_db_open ();
+    if (! database)
+        return;
 
     aud_cfg_db_set_float (database, "compressor", "center", compressor_center);
     aud_cfg_db_set_float (database, "compressor", "range", compressor_range);
 
     aud_cfg_db_close (database);
-
-    if (about_window != NULL)
-        gtk_widget_destroy (about_window);
-    if (config_window != NULL)
-        gtk_widget_destroy (config_window);
 }
 
 static void compressor_about (void)

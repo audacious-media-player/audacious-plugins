@@ -35,6 +35,8 @@ static GtkWidget * error_window = NULL;
 void crossfade_config_load (void)
 {
     mcs_handle_t * database = aud_cfg_db_open ();
+    if (! database)
+        return;
 
     aud_cfg_db_get_int (database, "crossfade", "length", & crossfade_length);
     aud_cfg_db_close (database);
@@ -42,17 +44,19 @@ void crossfade_config_load (void)
 
 void crossfade_config_save (void)
 {
-    mcs_handle_t * database = aud_cfg_db_open ();
-
-    aud_cfg_db_set_int (database, "crossfade", "length", crossfade_length);
-    aud_cfg_db_close (database);
-
     if (about_window != NULL)
         gtk_widget_destroy (about_window);
     if (config_window != NULL)
         gtk_widget_destroy (config_window);
     if (error_window != NULL)
         gtk_widget_destroy (error_window);
+
+    mcs_handle_t * database = aud_cfg_db_open ();
+    if (! database)
+        return;
+
+    aud_cfg_db_set_int (database, "crossfade", "length", crossfade_length);
+    aud_cfg_db_close (database);
 }
 
 static void crossfade_about (void)

@@ -40,6 +40,9 @@ static GtkWidget * config_window = NULL;
 void resample_config_load (void)
 {
     mcs_handle_t * database = aud_cfg_db_open ();
+    if (! database)
+        return;
+
     char scratch[16];
     int count;
 
@@ -58,7 +61,15 @@ void resample_config_load (void)
 
 void resample_config_save (void)
 {
+    if (about_window != NULL)
+        gtk_widget_destroy (about_window);
+    if (config_window != NULL)
+        gtk_widget_destroy (config_window);
+
     mcs_handle_t * database = aud_cfg_db_open ();
+    if (! database)
+        return;
+
     char scratch[16];
     int count;
 
