@@ -110,24 +110,21 @@ void gtkui_cfg_free()
 void gtkui_cfg_load()
 {
     mcs_handle_t *cfgfile = aud_cfg_db_open();
+    if (! cfgfile)
+        return;
+
     gint i;
 
     memcpy(&config, &gtkui_default_config, sizeof(gtkui_cfg_t));
 
     for (i = 0; i < ncfgbent; ++i)
-    {
         aud_cfg_db_get_bool(cfgfile, "gtkui", gtkui_boolents[i].be_vname, gtkui_boolents[i].be_vloc);
-    }
 
     for (i = 0; i < ncfgient; ++i)
-    {
         aud_cfg_db_get_int(cfgfile, "gtkui", gtkui_numents[i].ie_vname, gtkui_numents[i].ie_vloc);
-    }
 
     for (i = 0; i < ncfgsent; ++i)
-    {
         aud_cfg_db_get_string(cfgfile, "gtkui", gtkui_strents[i].se_vname, gtkui_strents[i].se_vloc);
-    }
 
     aud_cfg_db_close(cfgfile);
 }
@@ -136,6 +133,9 @@ void gtkui_cfg_load()
 void gtkui_cfg_save()
 {
     mcs_handle_t *cfgfile = aud_cfg_db_open();
+    if (! cfgfile)
+        return;
+
     gint i;
 
     for (i = 0; i < ncfgsent; ++i)
