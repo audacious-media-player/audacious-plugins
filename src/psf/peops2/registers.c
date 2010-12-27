@@ -87,19 +87,19 @@ EXPORT_GCC void CALLBACK SPU2write(unsigned long reg, unsigned short val)
   {
    int ch=(r>>4)&0x1f;
    if(r>=0x400) ch+=24;
-   
+
    switch(r&0x0f)
     {
      //------------------------------------------------// r volume
-     case 0:                                           
+     case 0:
        SetVolumeL((unsigned char)ch,val);
        break;
      //------------------------------------------------// l volume
-     case 2:                                           
+     case 2:
        SetVolumeR((unsigned char)ch,val);
        break;
      //------------------------------------------------// pitch
-     case 4:                                           
+     case 4:
        SetPitch(ch,val);
        break;
      //------------------------------------------------// level with pre-calcs
@@ -107,7 +107,7 @@ EXPORT_GCC void CALLBACK SPU2write(unsigned long reg, unsigned short val)
        {
         const unsigned long lval=val;unsigned long lx;
         //---------------------------------------------//
-        s_chan[ch].ADSRX.AttackModeExp=(lval&0x8000)?1:0; 
+        s_chan[ch].ADSRX.AttackModeExp=(lval&0x8000)?1:0;
         s_chan[ch].ADSRX.AttackRate=(lval>>8) & 0x007f;
         s_chan[ch].ADSRX.DecayRate=(lval>>4) & 0x000f;
         s_chan[ch].ADSRX.SustainLevel=lval & 0x000f;
@@ -118,15 +118,15 @@ EXPORT_GCC void CALLBACK SPU2write(unsigned long reg, unsigned short val)
         s_chan[ch].ADSR.AttackModeExp=(lval&0x8000)?1:0;        //0x007f
 
         lx=(((lval>>8) & 0x007f)>>2);                  // attack time to run from 0 to 100% volume
-        lx=min(31,lx);                                 // no overflow on shift!
-        if(lx) 
-         { 
+        lx = (lx < 31) ? lx : 31;                      // no overflow on shift!
+        if(lx)
+         {
           lx = (1<<lx);
           if(lx<2147483) lx=(lx*ATTACK_MS)/10000L;     // another overflow check
           else           lx=(lx/10000L)*ATTACK_MS;
           if(!lx) lx=1;
          }
-        s_chan[ch].ADSR.AttackTime=lx;                
+        s_chan[ch].ADSR.AttackTime=lx;
 
         s_chan[ch].ADSR.SustainLevel=                 // our adsr vol runs from 0 to 1024, so scale the sustain level
          (1024*((lval) & 0x000f))/15;
@@ -158,14 +158,14 @@ EXPORT_GCC void CALLBACK SPU2write(unsigned long reg, unsigned short val)
 
        s_chan[ch].ADSR.SustainModeExp = (lval&0x8000)?1:0;
        s_chan[ch].ADSR.ReleaseModeExp = (lval&0x0020)?1:0;
-                   
+
        lx=((((lval>>6) & 0x007f)>>2));                 // sustain time... often very high
-       lx=min(31,lx);                                  // values are used to hold the volume
+       lx = (lx < 31) ? lx : 31;                       // values are used to hold the volume
        if(lx)                                          // until a sound stop occurs
-        {                                              // the highest value we reach (due to 
-         lx = (1<<lx);                                 // overflow checking) is: 
-         if(lx<2147483) lx=(lx*SUSTAIN_MS)/10000L;     // 94704 seconds = 1578 minutes = 26 hours... 
-         else           lx=(lx/10000L)*SUSTAIN_MS;     // should be enuff... if the stop doesn't 
+        {                                              // the highest value we reach (due to
+         lx = (1<<lx);                                 // overflow checking) is:
+         if(lx<2147483) lx=(lx*SUSTAIN_MS)/10000L;     // 94704 seconds = 1578 minutes = 26 hours...
+         else           lx=(lx/10000L)*SUSTAIN_MS;     // should be enuff... if the stop doesn't
          if(!lx) lx=1;                                 // come in this time span, I don't care :)
         }
        s_chan[ch].ADSR.SustainTime = lx;
@@ -175,7 +175,7 @@ EXPORT_GCC void CALLBACK SPU2write(unsigned long reg, unsigned short val)
        if(lx)                                          // release time from 100% to 0%
         {                                              // note: the release time will be
          lx = (1<<lx);                                 // adjusted when a stop is coming,
-         if(lx<2147483) lx=(lx*RELEASE_MS)/10000L;     // so at this time the adsr vol will 
+         if(lx<2147483) lx=(lx*RELEASE_MS)/10000L;     // so at this time the adsr vol will
          else           lx=(lx/10000L)*RELEASE_MS;     // run from (current volume) to 0%
          if(!lx) lx=1;
         }
@@ -238,7 +238,7 @@ EXPORT_GCC void CALLBACK SPU2write(unsigned long reg, unsigned short val)
    iSpuAsyncWait=0;
 
    return;
-  } 
+  }
 
  switch(r)
    {
@@ -801,13 +801,13 @@ EXPORT_GCC unsigned short CALLBACK SPU2read(unsigned long reg)
    switch(r&0x0f)
     {
      //------------------------------------------------// env value
-     case 10:                                           
+     case 10:
       {
        int ch=(r>>4)&0x1f;
        if(r>=0x400) ch+=24;
        if(s_chan[ch].bNew) return 1;                   // we are started, but not processed? return 1
        if(s_chan[ch].ADSRX.lVolume &&                  // same here... we haven't decoded one sample yet, so no envelope yet. return 1 as well
-          !s_chan[ch].ADSRX.EnvelopeVol)                   
+          !s_chan[ch].ADSRX.EnvelopeVol)
         return 1;
        return (unsigned short)(s_chan[ch].ADSRX.EnvelopeVol>>16);
       }break;
@@ -818,10 +818,10 @@ EXPORT_GCC unsigned short CALLBACK SPU2read(unsigned long reg)
   {
    int ch=0;unsigned long rx=r;
    if(rx>=0x400) {ch=24;rx-=0x400;}
-        
+
    ch+=(rx-0x1c0)/12;
    rx-=(ch%24)*12;
-   
+
    switch(rx)
     {
      //------------------------------------------------//
@@ -947,7 +947,7 @@ EXPORT_GCC void CALLBACK SPU2writePS1Port(unsigned long reg, unsigned short val)
       pSpuIrq[0]=spuMemC+((u32) val<<1);
       break;
     //-------------------------------------------------//
-    /* Volume settings appear to be at least 15-bit unsigned in this case.  
+    /* Volume settings appear to be at least 15-bit unsigned in this case.
        Definitely NOT 15-bit signed.  Probably 16-bit signed, so s16 type cast.
        Check out "Chrono Cross:  Shadow's End Forest"
     */
@@ -1088,7 +1088,7 @@ EXPORT_GCC unsigned short CALLBACK SPU2readPS1Port(unsigned long reg)
     case H_SPUstat:
      return spuStat2[0];
      break;
-        
+
     case H_SPUaddr:
      return (u16)(spuAddr2[0]>>2);
      break;
@@ -1141,7 +1141,7 @@ void SoundOff(int start,int end,unsigned short val)    // SOUND OFF PSX COMMAND
    if(val&1)                                           // && s_chan[i].bOn)  mmm...
     {
      s_chan[ch].bStop=1;
-    }                                                  
+    }
   }
 }
 
@@ -1157,7 +1157,7 @@ void FModOn(int start,int end,unsigned short val)      // FMOD ON PSX COMMAND
   {
    if(val&1)                                           // -> fmod on/off
     {
-     if(ch>0) 
+     if(ch>0)
       {
        s_chan[ch].bFMod=1;                             // --> sound channel
        s_chan[ch-1].bFMod=2;                           // --> freq channel
@@ -1184,7 +1184,7 @@ void NoiseOn(int start,int end,unsigned short val)     // NOISE ON PSX COMMAND
     {
      s_chan[ch].bNoise=1;
     }
-   else 
+   else
     {
      s_chan[ch].bNoise=0;
     }
@@ -1235,11 +1235,11 @@ void SetVolumeR(unsigned char ch,short vol)            // RIGHT VOLUME
    short sInc=1;
    if(vol&0x2000) sInc=-1;
    if(vol&0x1000) vol^=0xffff;
-   vol=((vol&0x7f)+1)/2;        
+   vol=((vol&0x7f)+1)/2;
    vol+=vol/(2*sInc);
    vol*=128;
   }
- else            
+ else
   {
    if(vol&0x4000) //vol=vol^=0xffff;
     vol=0x3fff-(vol&0x3fff);
@@ -1287,7 +1287,7 @@ void ReverbOn(int start,int end,unsigned short val,int iRight)  // REVERB ON PSX
      if(iRight) s_chan[ch].bReverbR=1;
      else       s_chan[ch].bReverbL=1;
     }
-   else 
+   else
     {
      if(iRight) s_chan[ch].bReverbR=0;
      else       s_chan[ch].bReverbL=0;
@@ -1302,7 +1302,7 @@ void ReverbOn(int start,int end,unsigned short val,int iRight)  // REVERB ON PSX
 void SetReverbAddr(int core)
 {
  long val=spuRvbAddr2[core];
- 
+
  if(rvb[core].StartAddr!=val)
   {
    if(val<=0x27ff)
@@ -1313,7 +1313,7 @@ void SetReverbAddr(int core)
     {
      rvb[core].StartAddr=val;
      rvb[core].CurrAddr=rvb[core].StartAddr;
-    } 
+    }
   }
 }
 
@@ -1332,7 +1332,7 @@ void VolumeOn(int start,int end,unsigned short val,int iRight)  // VOLUME ON PSX
      if(iRight) s_chan[ch].bVolumeR=1;
      else       s_chan[ch].bVolumeL=1;
     }
-   else 
+   else
     {
      if(iRight) s_chan[ch].bVolumeR=0;
      else       s_chan[ch].bVolumeL=0;

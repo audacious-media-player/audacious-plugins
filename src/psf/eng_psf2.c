@@ -461,7 +461,8 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 		return AO_FAIL;
 	}
 
-	if (file_len > 0) printf("ERROR: PSF2 can't have a program section!  ps %llx\n", file_len);
+	if (file_len > 0)
+		printf ("ERROR: PSF2 can't have a program section!  ps %lx\n", (unsigned long) file_len);
 
 	#if DEBUG_LOADER
 	printf("FS section: size %x\n", c->res_size);

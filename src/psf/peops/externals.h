@@ -51,9 +51,6 @@ static INLINE u16 BFLIP16(u16 x)
 //
 //*************************************************************************//
 
-#define max(a,b)            (((a) > (b)) ? (a) : (b))
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
-
 ////////////////////////////////////////////////////////////////////////
 // spu defines
 ////////////////////////////////////////////////////////////////////////
@@ -78,8 +75,8 @@ typedef struct
  int            ReleaseModeExp;
  u32  ReleaseVal;
  s32           ReleaseTime;
- s32           ReleaseStartTime; 
- s32           ReleaseVol; 
+ s32           ReleaseStartTime;
+ s32           ReleaseVol;
  s32           lTime;
  s32           lVolume;
 } ADSRInfo;
@@ -101,7 +98,7 @@ typedef struct
  s32           lDummy1;
  s32           lDummy2;
 } ADSRInfoEx;
-              
+
 ///////////////////////////////////////////////////////////
 
 // Tmp Flags
@@ -144,7 +141,7 @@ typedef struct
  int               iRVBRepeat;                         // reverb repeat
  int               bNoise;                             // noise active flag
  int               bFMod;                              // freq mod (0=off, 1=sound channel, 2=freq channel)
- int               iOldNoise;                          // old noise val for this channel   
+ int               iOldNoise;                          // old noise val for this channel
  ADSRInfo          ADSR;                               // active ADSR settings
  ADSRInfoEx        ADSRX;                              // next ADSR settings (will be moved to active on sample start)
 
