@@ -556,8 +556,8 @@ init_skins(const gchar * path)
             AUDDBG("Skin not defined: trying default...\n");
 
         /* can't load configured skin, retry with default */
-        gchar * def = g_strdup_printf ("%s/Skins/Default",
-         aud_get_path (AUD_PATH_DATA_DIR));
+        gchar * def = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "Skins"
+         G_DIR_SEPARATOR_S "Default", aud_get_path (AUD_PATH_DATA_DIR));
 
         if (! aud_active_skin_load (def))
         {
@@ -1525,7 +1525,7 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     g_return_val_if_fail(path != NULL, FALSE);
     REQUIRE_LOCK(skin->lock);
 
-    if (!g_file_test(path, G_FILE_TEST_IS_REGULAR | G_FILE_TEST_IS_DIR))
+    if (! g_file_test (path, G_FILE_TEST_EXISTS))
         return FALSE;
 
     if(force) AUDDBG("reloading forced!\n");
