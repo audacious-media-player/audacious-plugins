@@ -126,8 +126,10 @@ static gint get_dest_row (void)
      (t->append ? 1 : 0) : 0;
 }
 
-static void drag_tracker_cleanup()
+static void drag_tracker_cleanup (GtkTreeView * widget)
 {
+    gtk_tree_view_set_drag_dest_row (widget, NULL, 0);
+
     if (!t)
         return;
 
@@ -179,6 +181,8 @@ static gboolean drag_drop_cb (GtkWidget * widget, GdkDragContext * context,
             local_drop ((GtkTreeView *) widget, list, get_dest_row ());
         else
             cross_drop ((GtkTreeView *) widget, list, get_dest_row ());
+
+        drag_tracker_cleanup ((GtkTreeView *) widget);
     }
     else
     {
@@ -206,12 +210,13 @@ static void drag_data_cb (GtkWidget * widget, GdkDragContext * context, gint x,
     treeview_add_urilist ((GtkTreeView *) widget, get_dest_row (),
      (const gchar *) data->data);
     gtk_drag_finish (context, FALSE, FALSE, time);
+    drag_tracker_cleanup ((GtkTreeView *) widget);
 }
 
 static void drag_end_cb (GtkWidget * widget, GdkDragContext * context, void *
  unused)
 {
-    drag_tracker_cleanup ();
+    drag_tracker_cleanup ((GtkTreeView *) widget);
 }
 
 static void select_entry_cb (GtkTreeModel * model, GtkTreePath * path,
