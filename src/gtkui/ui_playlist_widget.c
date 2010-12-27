@@ -164,6 +164,10 @@ static void cross_drop (GtkTreeView * tree, gint list, gint row)
 static gboolean drag_drop_cb (GtkWidget * widget, GdkDragContext * context,
  gint x, gint y, guint time, void * unused)
 {
+    /* usually this would already have been called, but not always ... */
+    _ui_playlist_widget_drag_motion ((GtkTreeView *) widget, context, x, y,
+     time, NULL);
+
     g_signal_stop_emission_by_name (widget, "drag-drop");
     g_return_val_if_fail (t, FALSE);
 
