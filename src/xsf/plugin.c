@@ -63,7 +63,10 @@ int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 	gint64 size;
 	char buf[PATH_MAX];
 
-	snprintf(buf, PATH_MAX, "%s/%s", dirname(path), filename);
+	char * c = strrchr (path, '/');
+	if (c)
+		c[1] = 0;
+	snprintf (buf, sizeof buf, "%s%s", path, filename);
 
 	vfs_file_get_contents (buf, & filebuf, & size);
 
