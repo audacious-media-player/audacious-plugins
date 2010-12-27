@@ -31,10 +31,13 @@
 /* TODO: enforce default sizes! */
 
 #include <glib.h>
+
+#include <ctype.h>
+#include <libgen.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
+#include <unistd.h>
 
 #include <audacious/debug.h>
 #include <audacious/misc.h>
@@ -1468,6 +1471,7 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
     return TRUE;
 }
 
+#ifndef _WIN32
 static void
 skin_set_gtk_theme(GtkSettings * settings, Skin * skin)
 {
@@ -1488,6 +1492,7 @@ skin_set_gtk_theme(GtkSettings * settings, Skin * skin)
                                      basename(tmp), "audacious");
     g_free(tmp);
 }
+#endif
 
 /**
  * Checks if all pixmap files exist that skin needs.
@@ -1511,7 +1516,6 @@ skin_check_pixmaps(const Skin * skin, const gchar * skin_path)
 static gboolean
 skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
 {
-    gchar *gtkrcpath;
     gchar *newpath, *skin_path;
     int archive = 0;
 
@@ -1572,7 +1576,7 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
 #ifndef _WIN32
     if (! config.disable_inline_gtk && ! archive)
     {
-        gtkrcpath = g_strdup_printf ("%s/gtk-2.0/gtkrc", skin->path);
+        gchar * gtkrcpath = g_strdup_printf ("%s/gtk-2.0/gtkrc", skin->path);
 
         if (g_file_test (gtkrcpath, G_FILE_TEST_IS_REGULAR))
             skin_set_gtk_theme (gtk_settings_get_default (), skin);
@@ -1686,7 +1690,7 @@ skin_get_mask(Skin * skin, SkinMaskId mi)
     GdkBitmap **masks;
 
     g_return_val_if_fail(skin != NULL, NULL);
-    g_return_val_if_fail(mi < SKIN_PIXMAP_COUNT, NULL);
+    g_return_val_if_fail(mi < SKIN_MASK_COUNT, NULL);
 
     masks = config.scaled ? skin->scaled_masks : skin->masks;
     return masks[mi];

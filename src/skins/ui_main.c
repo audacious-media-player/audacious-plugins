@@ -31,9 +31,11 @@
 #include <glib/gprintf.h>
 #include <gtk/gtk.h>
 #include <gtk/gtkmessagedialog.h>
+
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
 #include <sys/types.h>
 
 #include <audacious/audconfig.h>

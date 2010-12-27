@@ -341,7 +341,11 @@ gchar *archive_decompress(const gchar *filename)
     gchar *tmpdir, *cmd, *escaped_filename;
     ArchiveType type;
 #ifndef HAVE_MKDTEMP
+#ifdef S_IRGRP
     mode_t mode755 = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+#else
+    mode_t mode755 = S_IRWXU;
+#endif
 #endif
 
     if ((type = archive_get_type(filename)) <= ARCHIVE_DIR)
