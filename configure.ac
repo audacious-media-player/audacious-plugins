@@ -140,7 +140,7 @@ CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS"
 CPPFLAGS="$CPPFLAGS $AUDACIOUS_CPPFLAGS"
 LIBS="$LIBS $AUDACIOUS_LIBS"
 
-dnl Check for GTK/GLib/GThread/Pango/DBus
+dnl Check for GTK/GLib/GThread/Pango
 
 PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.12.0 gthread-2.0],
     [ADD_PC_REQUIRES([glib-2.0 >= 2.12.0])],
@@ -168,19 +168,8 @@ PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
     [AC_MSG_ERROR([Cannot find Pango >= 1.8.0])]
 )
 
-AC_ARG_ENABLE(dbus,
-	[  --disable-dbus          disable DBus support (default=enabled)],
-			enable_dbus=$enableval, enable_dbus=yes)
-if test "x$enable_dbus" = "xyes"; then
-	PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60],
-	    [ADD_PC_REQUIRES([dbus-1 >= 0.60 dbus-glib-1 >= 0.60])
-	     AC_DEFINE(USE_DBUS, 1, [Define if D-Bus support enabled])],
-	    [AC_MSG_ERROR([Cannot find dbus-glib >= 0.60])]
-	])
-fi
-
-
-dnl Check for libmowgli.
+dnl Check for libmowgli
+dnl ===================
 
 PKG_CHECK_MODULES(MOWGLI, [libmowgli >= 0.4.0],
     [ADD_PC_REQUIRES([libmowgli >= 0.4.0])],
@@ -536,8 +525,10 @@ AC_ARG_ENABLE(gnomeshortcuts,
 
 if test "x$enable_gnomeshortcuts" = "xyes"; then
     have_gnomeshortcuts="yes"
-    PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60],,
-         [AC_MSG_ERROR([Cannot find dbus-glib >= 0.60 for gnomeshortcuts plugin])])
+    PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60],
+     [have_gnomeshortcuts=yes],
+     [AC_MSG_WARN([Cannot find dbus-glib >= 0.60; disabling Gnome shortcuts plugin.])
+      have_gnomeshortcuts=no])
 else
     AC_MSG_RESULT([*** Gnome Shortcuts Plugin disabled per user request ***])
     have_gnomeshortcuts="no"
