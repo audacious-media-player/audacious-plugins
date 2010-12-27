@@ -24,6 +24,7 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <libgen.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -63,10 +64,7 @@ int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 	gint64 size;
 	char buf[PATH_MAX];
 
-	char * c = strrchr (path, '/');
-	if (c)
-		c[1] = 0;
-	snprintf (buf, sizeof buf, "%s%s", path, filename);
+	snprintf(buf, PATH_MAX, "%s/%s", dirname(path), filename);
 
 	vfs_file_get_contents (buf, & filebuf, & size);
 
