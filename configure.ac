@@ -237,6 +237,12 @@ AC_ARG_ENABLE(console,
  [enable_console=$enableval], [enable_console="yes"])
 
 if test $enable_console = yes ; then
+    AC_CHECK_HEADERS([zlib.h], [enable_console=yes],
+     [AC_MSG_WARN([Cannot find zlib.h; disabling game music decoder (console)])
+      enable_console=no])
+fi
+ 
+if test $enable_console = yes ; then
     INPUT_PLUGINS="$INPUT_PLUGINS console"
 fi
 
@@ -806,6 +812,12 @@ AC_ARG_ENABLE(modplug,
     [enable_modplug=$enableval],
     [enable_modplug="yes"]
 )
+
+if test $enable_console = yes ; then
+    AC_CHECK_HEADERS([sys/mman.h], [enable_modplug=yes],
+     [AC_MSG_WARN([Cannot find sys/mman.h; disabling ModPlug plugin])
+      enable_modplug=no])
+fi
 
 if test "x$enable_modplug" = "xyes"; then
     INPUT_PLUGINS="$INPUT_PLUGINS modplug"
