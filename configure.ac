@@ -552,6 +552,12 @@ AC_ARG_ENABLE(songchange,
  [enable_songchange=$enableval], [enable_songchange="yes"])
 
 if test $enable_songchange = yes ; then
+    AC_CHECK_HEADERS([sys/wait.h], [enable_songchange=yes],
+     [AC_MSG_WARN([Cannot find sys/wait.h; disabling song change plugin])
+      enable_songchange=no])
+fi
+
+if test $enable_songchange = yes ; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS song_change"
 fi
 
@@ -813,7 +819,7 @@ AC_ARG_ENABLE(modplug,
     [enable_modplug="yes"]
 )
 
-if test $enable_console = yes ; then
+if test $enable_modplug = yes ; then
     AC_CHECK_HEADERS([sys/mman.h], [enable_modplug=yes],
      [AC_MSG_WARN([Cannot find sys/mman.h; disabling ModPlug plugin])
       enable_modplug=no])
@@ -1198,11 +1204,20 @@ if test "$enable_cdaudio_ng" = "yes"; then
 )
 fi
 
+dnl Streambrowser
+dnl =============
+
 AC_ARG_ENABLE(streambrowser,
     [  --disable-streambrowser       disable streambrowser general plugin (default=enabled) ],
     [enable_streambrowser=$enableval],
     [enable_streambrowser=yes]
 )
+
+if test $enable_streambrowser = yes ; then
+    AC_CHECK_FUNCS([strtok_r], [enable_streambrowser=yes],
+     [AC_MSG_WARN([Cannot find strtok_r; disabling streambrowser plugin])
+      enable_streambrowser=no])
+fi
 
 if test "$enable_streambrowser" = "yes"; then
    GENERAL_PLUGINS="$GENERAL_PLUGINS streambrowser"
