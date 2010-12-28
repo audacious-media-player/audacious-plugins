@@ -310,7 +310,7 @@ static gboolean cdaudio_play (InputPlayback * p, const gchar * name, VFSFile *
         if (trackinfo == NULL)
         {
             cdaudio_error ("No audio CD found.");
-ERROR:
+ERR:
             g_mutex_unlock (mutex);
             return FALSE;
         }
@@ -321,13 +321,13 @@ ERROR:
     if (trackno < 0)
     {
         cdaudio_error ("Invalid URI %s.", name);
-        goto ERROR;
+        goto ERR;
     }
 
     if (trackno < firsttrackno || trackno > lasttrackno)
     {
         cdaudio_error ("Track %d not found.", trackno);
-        goto ERROR;
+        goto ERR;
     }
 
     gint startlsn = trackinfo[trackno].startlsn;
@@ -336,7 +336,7 @@ ERROR:
     if (! p->output->open_audio (FMT_S16_LE, 44100, 2))
     {
         cdaudio_error ("Failed to open audio output.");
-        goto ERROR;
+        goto ERR;
     }
 
     seek_time = (start > 0) ? start : -1;
@@ -646,7 +646,7 @@ static void scan_cd (void)
     if (firsttrackno == CDIO_INVALID_TRACK || lasttrackno == CDIO_INVALID_TRACK)
     {
         cdaudio_error ("Failed to retrieve first/last track number.");
-        goto ERROR;
+        goto ERR;
     }
     AUDDBG ("first track is %d and last track is %d\n", firsttrackno,
            lasttrackno);
@@ -671,7 +671,7 @@ static void scan_cd (void)
             || trackinfo[trackno].endlsn == CDIO_INVALID_LSN)
         {
             cdaudio_error ("Cannot read start/end LSN for track %d.", trackno);
-            goto ERROR;
+            goto ERR;
         }
     }
 
@@ -875,7 +875,7 @@ static void scan_cd (void)
 
     return;
 
-  ERROR:
+  ERR:
     g_free (trackinfo);
     trackinfo = NULL;
 }
