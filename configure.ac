@@ -241,7 +241,7 @@ if test $enable_console = yes ; then
      [AC_MSG_WARN([Cannot find zlib.h; disabling game music decoder (console)])
       enable_console=no])
 fi
- 
+
 if test $enable_console = yes ; then
     INPUT_PLUGINS="$INPUT_PLUGINS console"
 fi
@@ -1150,19 +1150,8 @@ if test "x$enable_amidiplug" = "xyes"; then
   AC_SUBST(AMIDIPLUG_BACKENDS)
 fi
 
-AC_CHECK_HEADERS(linux/joystick.h)
 AC_CHECK_HEADERS(unistd.h)
-AC_CHECK_HEADERS(fcntl.h)
-AC_CHECK_HEADERS(sys/ioctl.h)
-AC_CHECK_HEADERS(fnmatch.h)
-AC_CHECK_HEADERS(limits.h)
-AC_CHECK_HEADERS(wchar.h)
 AC_CHECK_HEADERS(fts.h)
-
-AC_CHECK_DECL([lrintf],[AC_DEFINE(HAVE_LRINTF,1)],[AC_CHECK_FUNCS([lrintf])],[
-#define _ISOC9X_SOURCE
-#include <math.h>
-], [AC_CHECK_FUNCS([lrintf])])
 
 dnl CD-Audio New Generation
 
