@@ -29,6 +29,7 @@
 #include <audacious/plugin.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "config.h"
 #include "gtkui_cfg.h"
@@ -58,6 +59,8 @@ GtkWidget *vbox;         /* the main vertical box */
 GtkWidget *menu;
 GtkWidget *infoarea = NULL;
 GtkWidget *statusbar = NULL;
+
+static GtkWidget * error_win = NULL;
 
 static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
@@ -340,21 +343,9 @@ static void ui_toggle_visibility(void)
     ui_mainwin_toggle_visibility(GINT_TO_POINTER(!config.player_visible), NULL);
 }
 
-static void ui_show_error(const gchar * markup)
+static void ui_show_error (const gchar * text)
 {
-    GtkWidget *dialog =
-        gtk_message_dialog_new_with_markup(GTK_WINDOW(window),
-                                           GTK_DIALOG_DESTROY_WITH_PARENT,
-                                           GTK_MESSAGE_ERROR,
-                                           GTK_BUTTONS_OK,
-                                           "%s",_(markup));
-
-    gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
-    gtk_widget_show(GTK_WIDGET(dialog));
-
-    g_signal_connect_swapped(dialog, "response",
-                             G_CALLBACK(gtk_widget_destroy),
-                             dialog);
+    audgui_simple_message (& error_win, GTK_MESSAGE_ERROR, _("Error"), _(text));
 }
 
 static void set_time_label (gint time, gint len)
@@ -908,6 +899,9 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
 
 static gboolean _ui_finalize(void)
 {
+    if (error_win)
+        gtk_widget_destroy (error_win);
+
     if (update_song_timeout_source)
     {
         g_source_remove(update_song_timeout_source);
