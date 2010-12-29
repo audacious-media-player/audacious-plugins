@@ -904,7 +904,11 @@ static void refresh_trackinfo (gboolean warning)
     }
 
     int mode = cdio_get_discmode (pcdio);
+#ifdef _WIN32 /* cdio_get_discmode reports the wrong disk type sometimes */
+    if (mode == CDIO_DISC_MODE_NO_INFO || mode == CDIO_DISC_MODE_ERROR)
+#else
     if (mode != CDIO_DISC_MODE_CD_DA && mode != CDIO_DISC_MODE_CD_MIXED)
+#endif
     {
         if (warning)
         {
