@@ -1301,8 +1301,20 @@ fi
 AC_SUBST([NEON_LIBS])
 AC_SUBST([NEON_CFLAGS])
 
+dnl WinINet HTTP plugin
+dnl ===================
 
-dnl *** MMS
+AC_ARG_ENABLE(wininet,
+ [  --disable-wininet       disable WinINet HTTP support],
+ [enable_wininet=$enableval], [enable_wininet=yes])
+
+if test $enable_wininet = yes ; then
+    AC_CHECK_HEADERS([wininet.h],
+     [TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS wininet"], [enable_wininet=no])
+fi
+
+dnl MMS
+dnl ===
 
 AC_ARG_ENABLE(mms,
 [  --disable-mms           disable mms support. (default=enabled)],
@@ -1761,6 +1773,7 @@ echo "  Transport"
 echo "  ---------"
 echo "  gio transport:                          $enable_gio"
 echo "  neon-based http/https:                  $have_neon"
+echo "  WinINet-based http/https:               $enable_wininet"
 echo "  libmms-based mms:                       $have_mms"
 echo
 echo "  Container"
