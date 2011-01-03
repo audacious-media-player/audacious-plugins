@@ -123,7 +123,7 @@ dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen metronom vtx"
 OUTPUT_PLUGINS="null"
-EFFECT_PLUGINS="compressor crossfade crystalizer ladspa sndstretch stereo_plugin voice_removal echo_plugin"
+EFFECT_PLUGINS="compressor crossfade crystalizer mixdown ladspa sndstretch stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS="alarm lyricwiki"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls asx"
@@ -1758,6 +1758,7 @@ echo "  Extra Stereo:                           yes"
 echo "  Echo/Surround:                          yes"
 echo "  SndStretch:                             yes"
 echo "  Crystalizer:                            yes"
+echo "  Mixdown:                                yes"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
 echo "  Sample Rate Converter (resample):       $enable_resample"
 echo
