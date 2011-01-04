@@ -230,20 +230,13 @@ get_lyrics_step_1(const Tuple *tu)
 	g_free(uri);
 }
 
-GtkWidget *window, *textview;
+GtkWidget *scrollview, *vbox;
+GtkWidget *textview;
 GtkTextBuffer *textbuffer;
-
-static gboolean window_delete();
 
 GtkWidget *
 build_widget(void)
 {
-	GtkWidget *scrollview, *vbox;
-
-	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title(GTK_WINDOW(window), _("LyricWiki"));
-	gtk_window_set_default_size(GTK_WINDOW(window), 300, 500);
-
 	textview = gtk_text_view_new();
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(textview), FALSE);
 	gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(textview), FALSE);
@@ -260,20 +253,15 @@ build_widget(void)
 
 	gtk_box_pack_start(GTK_BOX(vbox), scrollview, TRUE, TRUE, 0);
 
-	gtk_container_add(GTK_CONTAINER(window), vbox);
-
 	gtk_widget_show(textview);
 	gtk_widget_show(scrollview);
 	gtk_widget_show(vbox);
-	gtk_widget_show(window);
 
 	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "weight_bold", "weight", PANGO_WEIGHT_BOLD, NULL);
 	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "size_x_large", "scale", PANGO_SCALE_X_LARGE, NULL);
 	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "style_italic", "style", PANGO_STYLE_ITALIC, NULL);
 
-	g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), NULL);
-
-	return window;
+	return vbox;
 }
 
 void
@@ -362,9 +350,14 @@ cleanup(void)
 {
 	hook_dissociate("playback begin", (HookFunction) lyricwiki_playback_began);
 
-	gtk_widget_destroy(window);
-	window = NULL;
+	gtk_widget_destroy(vbox);
 	textbuffer = NULL;
+}
+
+static gpointer
+get_widget(void)
+{
+	return vbox;
 }
 
 GeneralPlugin lyricwiki =
@@ -372,13 +365,8 @@ GeneralPlugin lyricwiki =
 	.description = "LyricWiki",
 	.init = init,
 	.cleanup = cleanup,
+	.get_widget = get_widget,
 };
 
 GeneralPlugin *lyricwiki_gplist[] = { &lyricwiki, NULL };
 SIMPLE_GENERAL_PLUGIN(lyricwiki, lyricwiki_gplist);
-
-static gboolean window_delete (void)
-{
-	aud_plugin_enable (aud_plugin_by_header (& lyricwiki), FALSE);
-	return TRUE;
-}
