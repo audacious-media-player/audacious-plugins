@@ -54,7 +54,6 @@ gboolean multi_column_view;
 static GtkWidget * button_play, * button_pause, * button_stop, * slider,
  * label_time, * volume;
 static GtkWidget *volume;
-static GtkWidget *visualizer = NULL;
 GtkWidget *playlist_box;
 GtkWidget *window;       /* the main window */
 GtkWidget *vbox;         /* the main vertical box */
@@ -101,43 +100,30 @@ static void save_window_size (void)
 
 static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
 {
-    GtkWidget *label;
+    GtkWidget *item;
 
     g_return_if_fail(parent != NULL);
     g_return_if_fail(name != NULL);
 
-    if (visualizer) /* only one at a time */
-        return;
-
-    visualizer = parent;
-    g_object_ref ((GObject *) visualizer);
-
-#if 0
-    if (config.vis_position == VIS_IN_TABS)
-    {
-        label = gtk_label_new(name);
-        gtk_notebook_append_page(UI_PLAYLIST_NOTEBOOK, parent, label);
-    }
-    else
-        setup_panes ();
-#endif
+    item = gdl_dock_item_new(name, name, GDL_DOCK_ITEM_BEH_CANT_ICONIFY | GDL_DOCK_ITEM_BEH_CANT_CLOSE);
+    gtk_container_add(GTK_CONTAINER(item), GTK_WIDGET(parent));
+    gdl_dock_add_item(GDL_DOCK(dock), GDL_DOCK_ITEM(item), GDL_DOCK_RIGHT);
+    gtk_widget_show_all(item);
 }
 
 static void ui_stop_gtk_plugin(GtkWidget *parent)
 {
-    if (parent != visualizer) /* only one at a time */
-        return;
+    GdlDockMaster *master;
+    GtkWidget *item;
 
-    g_object_unref ((GObject *) visualizer);
-    visualizer = NULL;
+    g_return_if_fail(parent != NULL);
 
-#if 0
-    if (config.vis_position == VIS_IN_TABS)
-        gtk_notebook_remove_page(UI_PLAYLIST_NOTEBOOK, gtk_notebook_page_num
-         (UI_PLAYLIST_NOTEBOOK, parent));
-    else
-        setup_panes ();
-#endif
+    item = gtk_widget_get_parent(parent);
+
+    master = GDL_DOCK_OBJECT_GET_MASTER(GDL_DOCK_OBJECT(dock));
+    gdl_dock_master_remove(master, GDL_DOCK_OBJECT(item));
+
+    g_object_unref(item);
 }
 
 static gboolean window_delete()
@@ -641,6 +627,7 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
     GtkWidget *button_open, *button_add, *button_previous, *button_next;
     GtkWidget *evbox;
+    GtkWidget *plbox;
     GtkAccelGroup *accel;
 
     gint lvol = 0, rvol = 0;    /* Left and Right for the volume control */
@@ -747,8 +734,15 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
         gtk_box_pack_end(GTK_BOX(vbox), statusbar, FALSE, FALSE, 3);
     }
 
-    gtk_box_pack_end(GTK_BOX(playlist_box), (GtkWidget *)
-         UI_PLAYLIST_NOTEBOOK, TRUE, TRUE, 0);
+    dock = gdl_dock_new();
+    layout = gdl_dock_layout_new(GDL_DOCK(dock));
+
+    plbox = gdl_dock_item_new("plbox", _("Playlists"), GDL_DOCK_ITEM_BEH_LOCKED);
+    gtk_container_add(GTK_CONTAINER(plbox), GTK_WIDGET(UI_PLAYLIST_NOTEBOOK));
+    gdl_dock_add_item(GDL_DOCK(dock), GDL_DOCK_ITEM(plbox), GDL_DOCK_CENTER);
+    gtk_widget_show(plbox);
+
+    gtk_box_pack_end(GTK_BOX(playlist_box), dock, TRUE, TRUE, 0);
 
     if (config.infoarea_visible)
     {
