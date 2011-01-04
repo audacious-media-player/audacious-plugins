@@ -99,7 +99,6 @@ void action_stop_after_current_song (GtkToggleAction * action)
 void action_view_playlist(GtkToggleAction *action)
 {
     config.playlist_visible = gtk_toggle_action_get_active (action);
-    setup_panes ();
 }
 
 void action_view_infoarea(GtkToggleAction *action)
@@ -120,8 +119,6 @@ void action_view_infoarea(GtkToggleAction *action)
         gtk_widget_destroy (infoarea);
         infoarea = NULL;
     }
-
-    setup_panes ();
 }
 
 void action_view_menu(GtkToggleAction *action)
@@ -132,8 +129,6 @@ void action_view_menu(GtkToggleAction *action)
         gtk_widget_show (menu);
     else
         gtk_widget_hide (menu);
-
-    setup_panes ();
 }
 
 void action_view_statusbar(GtkToggleAction *action)
@@ -156,8 +151,6 @@ void action_view_statusbar(GtkToggleAction *action)
         gtk_widget_destroy(statusbar);
         statusbar = NULL;
     }
-
-    setup_panes();
 }
 
 /* actionentries actions */

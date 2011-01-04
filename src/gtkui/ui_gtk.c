@@ -21,6 +21,8 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
+#include <gdl/gdl.h>
+
 #include <audacious/audconfig.h>
 #include <audacious/debug.h>
 #include <audacious/drct.h>
@@ -60,6 +62,9 @@ GtkWidget *menu;
 GtkWidget *infoarea = NULL;
 GtkWidget *statusbar = NULL;
 
+GtkWidget *dock;
+GdlDockLayout *layout;
+
 static GtkWidget * error_win = NULL;
 
 static gulong slider_change_handler_id;
@@ -94,89 +99,6 @@ static void save_window_size (void)
          & config.player_height);
 }
 
-static void shrink_window (void)
-{
-    GtkRequisition r;
-
-    gtk_widget_size_request (window, & r);
-    gtk_window_resize ((GtkWindow *) window, r.width, r.height);
-    gtk_window_set_resizable ((GtkWindow *) window, FALSE);
-}
-
-static void unshrink_window (void)
-{
-    gtk_window_resize ((GtkWindow *) window, config.player_width,
-     config.player_height);
-    gtk_window_set_resizable ((GtkWindow *) window, TRUE);
-}
-
-static void container_remove_reversed (GtkWidget * w, GtkWidget * c)
-{
-    gtk_container_remove ((GtkContainer *) c, w);
-}
-
-void setup_panes (void)
-{
-    static GtkWidget * panes = NULL;
-    GtkWidget * a, * b;
-
-    save_window_size ();
-
-    if (panes)
-    {
-        gtk_container_foreach ((GtkContainer *) panes, (GtkCallback)
-         container_remove_reversed, panes);
-        gtk_widget_destroy (panes);
-    }
-
-    gtk_container_foreach ((GtkContainer *) playlist_box, (GtkCallback)
-     container_remove_reversed, playlist_box);
-
-    if (config.vis_position == VIS_ON_LEFT || config.vis_position == VIS_ON_TOP)
-    {
-        a = (config.vis_position == VIS_IN_TABS) ? NULL : visualizer;
-        b = config.playlist_visible ? (GtkWidget *) UI_PLAYLIST_NOTEBOOK : NULL;
-    }
-    else
-    {
-        a = config.playlist_visible ? (GtkWidget *) UI_PLAYLIST_NOTEBOOK : NULL;
-        b = (config.vis_position == VIS_IN_TABS) ? NULL : visualizer;
-    }
-
-    if (! a)
-    {
-        a = b;
-        b = NULL;
-    }
-
-    if (! a)
-    {
-        shrink_window ();
-        return;
-    }
-
-    unshrink_window ();
-
-    if (! b)
-    {
-        gtk_box_pack_start ((GtkBox *) playlist_box, a, TRUE, TRUE, 0);
-        gtk_widget_show (a);
-        return;
-    }
-
-    panes = (config.vis_position == VIS_ON_LEFT || config.vis_position ==
-     VIS_ON_RIGHT) ? gtk_hpaned_new () : gtk_vpaned_new ();
-    gtk_box_pack_start ((GtkBox *) playlist_box, panes, TRUE, TRUE, 0);
-    g_signal_connect ((GObject *) panes, "destroy", (GCallback)
-     gtk_widget_destroyed, & panes);
-
-    gtk_paned_add1 ((GtkPaned *) panes, a);
-    gtk_paned_add2 ((GtkPaned *) panes, b);
-    gtk_widget_show (panes);
-    gtk_widget_show (a);
-    gtk_widget_show (b);
-}
-
 static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
 {
     GtkWidget *label;
@@ -190,6 +112,7 @@ static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
     visualizer = parent;
     g_object_ref ((GObject *) visualizer);
 
+#if 0
     if (config.vis_position == VIS_IN_TABS)
     {
         label = gtk_label_new(name);
@@ -197,6 +120,7 @@ static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
     }
     else
         setup_panes ();
+#endif
 }
 
 static void ui_stop_gtk_plugin(GtkWidget *parent)
@@ -207,11 +131,13 @@ static void ui_stop_gtk_plugin(GtkWidget *parent)
     g_object_unref ((GObject *) visualizer);
     visualizer = NULL;
 
+#if 0
     if (config.vis_position == VIS_IN_TABS)
         gtk_notebook_remove_page(UI_PLAYLIST_NOTEBOOK, gtk_notebook_page_num
          (UI_PLAYLIST_NOTEBOOK, parent));
     else
         setup_panes ();
+#endif
 }
 
 static gboolean window_delete()
@@ -821,12 +747,8 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
         gtk_box_pack_end(GTK_BOX(vbox), statusbar, FALSE, FALSE, 3);
     }
 
-    if (config.vis_position == VIS_IN_TABS)
-    {
-        AUDDBG("vis in tabs\n");
-        gtk_box_pack_end(GTK_BOX(playlist_box), (GtkWidget *)
+    gtk_box_pack_end(GTK_BOX(playlist_box), (GtkWidget *)
          UI_PLAYLIST_NOTEBOOK, TRUE, TRUE, 0);
-    }
 
     if (config.infoarea_visible)
     {
@@ -856,8 +778,6 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
 
     if (!config.menu_visible)
         gtk_widget_hide(menu);
-
-    setup_panes ();
 
     if (aud_drct_get_playing())
         ui_playback_begin(NULL, NULL);
