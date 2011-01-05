@@ -736,7 +736,7 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     dock = gdl_dock_new();
     layout = gdl_dock_layout_new(GDL_DOCK(dock));
 
-    plbox = gdl_dock_item_new("plbox", _("Playlists"), GDL_DOCK_ITEM_BEH_LOCKED);
+    plbox = gdl_dock_item_new("plbox", _("Playlists"), GDL_DOCK_ITEM_BEH_CANT_ICONIFY | GDL_DOCK_ITEM_BEH_CANT_CLOSE);
     gtk_container_add(GTK_CONTAINER(plbox), GTK_WIDGET(UI_PLAYLIST_NOTEBOOK));
     gdl_dock_add_item(GDL_DOCK(dock), GDL_DOCK_ITEM(plbox), GDL_DOCK_CENTER);
     gtk_widget_show(plbox);
