@@ -113,17 +113,16 @@ static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
 
 static void ui_stop_gtk_plugin(GtkWidget *parent)
 {
-    GdlDockMaster *master;
     GtkWidget *item;
 
     g_return_if_fail(parent != NULL);
 
     item = gtk_widget_get_parent(parent);
+    if (!GDL_IS_DOCK_ITEM(item))
+        return;
 
-    master = GDL_DOCK_OBJECT_GET_MASTER(GDL_DOCK_OBJECT(dock));
-    gdl_dock_master_remove(master, GDL_DOCK_OBJECT(item));
-
-    g_object_unref(item);
+    gtk_container_remove(GTK_CONTAINER(item), parent);
+    gdl_dock_item_unbind(GDL_DOCK_ITEM(item));
 }
 
 static gboolean window_delete()
