@@ -339,7 +339,6 @@ GtkWidget *ui_playlist_notebook_new()
     notebook = gtk_notebook_new();
     gtk_notebook_set_scrollable(UI_PLAYLIST_NOTEBOOK, TRUE);
     gtk_notebook_set_show_border(UI_PLAYLIST_NOTEBOOK, FALSE);
-    gtk_container_set_border_width ((GtkContainer *) UI_PLAYLIST_NOTEBOOK, 3);
 
     g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
     return notebook;
