@@ -261,6 +261,7 @@ build_widget(void)
 	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "size_x_large", "scale", PANGO_SCALE_X_LARGE, NULL);
 	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "style_italic", "style", PANGO_STYLE_ITALIC, NULL);
 
+	g_signal_connect (vbox, "destroy", (GCallback) gtk_widget_destroyed, & vbox);
 	return vbox;
 }
 
@@ -350,13 +351,16 @@ cleanup(void)
 {
 	hook_dissociate("playback begin", (HookFunction) lyricwiki_playback_began);
 
-	gtk_widget_destroy(vbox);
+	if (vbox)
+		gtk_widget_destroy (vbox);
 	textbuffer = NULL;
 }
 
 static gpointer
 get_widget(void)
 {
+	if (! vbox)
+		build_widget ();
 	return vbox;
 }
 
