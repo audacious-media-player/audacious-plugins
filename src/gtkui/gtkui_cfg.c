@@ -33,13 +33,14 @@ gtkui_cfg_t gtkui_default_config = {
     .player_visible = TRUE,
     .playlist_visible = TRUE,
     .vis_position = VIS_ON_TOP,
-    .multi_column_view = FALSE,
     .playlist_width = 0,
     .playlist_height = 0,
     .infoarea_visible = TRUE,
     .menu_visible = TRUE,
     .statusbar_visible = TRUE,
     .show_song_titles = TRUE,
+    .playlist_columns = NULL,
+    .playlist_headers = TRUE,
 };
 
 typedef struct gtkui_cfg_boolent_t
@@ -52,12 +53,12 @@ typedef struct gtkui_cfg_boolent_t
 static gtkui_cfg_boolent gtkui_boolents[] = {
     {"save_window_position", &config.save_window_position, TRUE},
     {"player_visible", &config.player_visible, TRUE},
-    {"multi_column_view", &config.multi_column_view, TRUE},
     {"playlist_visible", &config.playlist_visible, TRUE},
     {"infoarea_visible", &config.infoarea_visible, TRUE},
     {"menu_visible", &config.menu_visible, TRUE},
     {"statusbar_visible", &config.statusbar_visible, TRUE},
     {"show_song_titles", &config.show_song_titles, TRUE},
+    {"playlist_headers", & config.playlist_headers, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(gtkui_boolents);
@@ -89,6 +90,7 @@ typedef struct gtkui_cfg_strent_t
 } gtkui_cfg_strent;
 
 static gtkui_cfg_strent gtkui_strents[] = {
+    {"playlist_columns", & config.playlist_columns, TRUE},
 };
 
 static gint ncfgsent = G_N_ELEMENTS(gtkui_strents);

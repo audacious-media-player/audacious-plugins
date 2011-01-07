@@ -34,23 +34,62 @@
 #include "ui_manager.h"
 #include "ui_playlist_widget.h"
 
-enum {
- PLAYLIST_COL_NUMBER = AUDGUI_LIST_FIRST_COLUMN,
- PLAYLIST_COL_TITLE,
- PLAYLIST_COL_QUEUED,
- PLAYLIST_COL_LENGTH,
- PLAYLIST_COLS};
+enum {PW_COL_NUMBER, PW_COL_TITLE, PW_COL_ARTIST, PW_COL_YEAR, PW_COL_ALBUM,
+ PW_COL_TRACK, PW_COL_QUEUED, PW_COL_LENGTH, PW_COL_PATH, PW_COL_FILENAME,
+ PW_COLS};
+static const gchar * const pw_col_keys[PW_COLS] = {"number", "title", "artist",
+ "year", "album", "track", "queued", "length", "path", "filename"};
+static const gchar * const pw_col_names[PW_COLS] = {NULL, N_("Title"),
+ N_("Artist"), N_("Year"), N_("Album"), NULL, NULL, NULL, N_("File path"),
+ N_("File name")};
+static const GType pw_col_types[PW_COLS] = {G_TYPE_INT, G_TYPE_STRING,
+ G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
+ G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING};
+static const gboolean pw_col_expand[PW_COLS] = {FALSE, TRUE, TRUE, FALSE, TRUE,
+ FALSE, FALSE, FALSE, TRUE, TRUE};
 
-enum {
- PLAYLIST_MCOL_NUMBER = AUDGUI_LIST_FIRST_COLUMN,
- PLAYLIST_MCOL_ARTIST,
- PLAYLIST_MCOL_YEAR,
- PLAYLIST_MCOL_ALBUM,
- PLAYLIST_MCOL_TRACK,
- PLAYLIST_MCOL_TITLE,
- PLAYLIST_MCOL_QUEUED,
- PLAYLIST_MCOL_LENGTH,
- PLAYLIST_MCOLS};
+static gboolean pw_setup = FALSE;
+static gint pw_num_cols;
+static gint pw_cols[PW_COLS];
+
+static void do_setup (void)
+{
+    if (pw_setup)
+        return;
+
+    if (! config.playlist_columns || ! config.playlist_columns[0])
+    {
+        g_free (config.playlist_columns);
+        config.playlist_columns = g_strdup ("number title artist album queued "
+         "length");
+    }
+
+    pw_num_cols = 0;
+    const gchar * c = config.playlist_columns;
+    while (pw_num_cols < PW_COLS)
+    {
+        while (* c == ' ' || * c == ',')
+            c ++;
+        if (! * c)
+            break;
+
+        gint i = 0;
+        while (i < PW_COLS && strncasecmp (c, pw_col_keys[i], strlen
+         (pw_col_keys[i])))
+            i ++;
+
+        if (i == PW_COLS)
+        {
+            fprintf (stderr, "Error parsing config.playlist_columns: %s\n", c);
+            break;
+        }
+
+        pw_cols[pw_num_cols ++] = i;
+        c += strlen (pw_col_keys[i]);
+    }
+
+    pw_setup = TRUE;
+}
 
 typedef struct {
     gint list;
@@ -59,7 +98,11 @@ typedef struct {
 
 static void set_int_from_tuple (GValue * value, const Tuple * tuple, gint field)
 {
-    g_value_set_int (value, tuple ? tuple_get_int (tuple, field, NULL) : 0);
+    gint i = tuple ? tuple_get_int (tuple, field, NULL) : 0;
+    if (i > 0)
+        g_value_take_string (value, g_strdup_printf ("%d", i));
+    else
+        g_value_set_string (value, "");
 }
 
 static void set_string_from_tuple (GValue * value, const Tuple * tuple,
@@ -102,65 +145,46 @@ static void set_length (GValue * value, gint list, gint row)
 static void get_value (void * user, gint row, gint column, GValue * value)
 {
     PlaylistWidgetData * data = user;
+    g_return_if_fail (column >= 0 && column < pw_num_cols);
+    g_return_if_fail (row >= 0 && row < aud_playlist_entry_count (data->list));
 
-    if (config.multi_column_view)
+    const Tuple * tuple = aud_playlist_entry_get_tuple (data->list, row, TRUE);
+
+    switch (pw_cols[column])
     {
-        g_return_if_fail (column >= 0 && column < PLAYLIST_MCOLS);
-
-        const Tuple * tuple = aud_playlist_entry_get_tuple (data->list, row,
-         TRUE);
-
-        switch (column)
-        {
-        case PLAYLIST_MCOL_NUMBER:
-            g_value_set_int (value, 1 + row);
-            break;
-        case PLAYLIST_MCOL_ARTIST:
-            set_string_from_tuple (value, tuple, FIELD_ARTIST);
-            break;
-        case PLAYLIST_MCOL_YEAR:
-            set_int_from_tuple (value, tuple, FIELD_YEAR);
-            break;
-        case PLAYLIST_MCOL_ALBUM:
-            set_string_from_tuple (value, tuple, FIELD_ALBUM);
-            break;
-        case PLAYLIST_MCOL_TRACK:
-            set_int_from_tuple (value, tuple, FIELD_TRACK_NUMBER);
-            break;
-        case PLAYLIST_MCOL_TITLE:;
-            const gchar * title = tuple ? tuple_get_string (tuple, FIELD_TITLE,
-             NULL) : NULL;
-            g_value_set_string (value, title ? title :
-             aud_playlist_entry_get_title (data->list, row, TRUE));
-            break;
-        case PLAYLIST_MCOL_QUEUED:
-            set_queued (value, data->list, row);
-            break;
-        case PLAYLIST_MCOL_LENGTH:
-            set_length (value, data->list, row);
-            break;
-        }
-    }
-    else
-    {
-        g_return_if_fail (column >= 0 && column < PLAYLIST_COLS);
-
-        switch (column)
-        {
-        case PLAYLIST_COL_NUMBER:
-            g_value_set_int (value, 1 + row);
-            break;
-        case PLAYLIST_COL_TITLE:
-            g_value_set_string (value, aud_playlist_entry_get_title (data->list,
-             row, TRUE));
-            break;
-        case PLAYLIST_COL_QUEUED:
-            set_queued (value, data->list, row);
-            break;
-        case PLAYLIST_COL_LENGTH:
-            set_length (value, data->list, row);
-            break;
-        }
+    case PW_COL_NUMBER:
+        g_value_set_int (value, 1 + row);
+        break;
+    case PW_COL_TITLE:;
+        const gchar * title = tuple ? tuple_get_string (tuple, FIELD_TITLE,
+         NULL) : NULL;
+        g_value_set_string (value, title ? title : aud_playlist_entry_get_title
+         (data->list, row, TRUE));
+        break;
+    case PW_COL_ARTIST:
+        set_string_from_tuple (value, tuple, FIELD_ARTIST);
+        break;
+    case PW_COL_YEAR:
+        set_int_from_tuple (value, tuple, FIELD_YEAR);
+        break;
+    case PW_COL_ALBUM:
+        set_string_from_tuple (value, tuple, FIELD_ALBUM);
+        break;
+    case PW_COL_TRACK:
+        set_int_from_tuple (value, tuple, FIELD_TRACK_NUMBER);
+        break;
+    case PW_COL_QUEUED:
+        set_queued (value, data->list, row);
+        break;
+    case PW_COL_LENGTH:
+        set_length (value, data->list, row);
+        break;
+    case PW_COL_FILENAME:
+        set_string_from_tuple (value, tuple, FIELD_FILE_NAME);
+        break;
+    case PW_COL_PATH:
+        set_string_from_tuple (value, tuple, FIELD_FILE_PATH);
+        break;
     }
 }
 
@@ -247,46 +271,21 @@ static void destroy_cb (PlaylistWidgetData * data)
 
 GtkWidget * ui_playlist_widget_new (gint playlist)
 {
+    do_setup ();
+
     PlaylistWidgetData * data = g_malloc0 (sizeof (PlaylistWidgetData));
     data->list = playlist;
     data->queue = NULL;
 
     GtkWidget * list = audgui_list_new (& callbacks, data,
      aud_playlist_entry_count (playlist));
+    gtk_tree_view_set_headers_visible ((GtkTreeView *) list,
+     config.playlist_headers);
     g_signal_connect_swapped (list, "destroy", (GCallback) destroy_cb, data);
 
-    if (config.multi_column_view)
-    {
-        audgui_list_add_column (list, NULL, PLAYLIST_MCOL_NUMBER,
-         G_TYPE_INT, FALSE);
-        audgui_list_add_column (list, _("Artist"), PLAYLIST_MCOL_ARTIST,
-         G_TYPE_STRING, TRUE);
-        audgui_list_add_column (list, _("Year"), PLAYLIST_MCOL_YEAR, G_TYPE_INT,
-         FALSE);
-        audgui_list_add_column (list, _("Album"), PLAYLIST_MCOL_ALBUM,
-         G_TYPE_STRING, TRUE);
-        audgui_list_add_column (list, "#", PLAYLIST_MCOL_TRACK, G_TYPE_INT,
-         FALSE);
-        audgui_list_add_column (list, _("Title"), PLAYLIST_MCOL_TITLE,
-         G_TYPE_STRING, TRUE);
-        audgui_list_add_column (list, _("Queue"), PLAYLIST_MCOL_QUEUED,
-         G_TYPE_STRING, FALSE);
-        audgui_list_add_column (list, _("Length"), PLAYLIST_MCOL_LENGTH,
-         G_TYPE_INT, FALSE);
-    }
-    else
-    {
-        gtk_tree_view_set_headers_visible ((GtkTreeView *) list, FALSE);
-
-        audgui_list_add_column (list, NULL, PLAYLIST_COL_NUMBER, G_TYPE_INT,
-         FALSE);
-        audgui_list_add_column (list, NULL, PLAYLIST_COL_TITLE, G_TYPE_STRING,
-         TRUE);
-        audgui_list_add_column (list, NULL, PLAYLIST_COL_QUEUED, G_TYPE_STRING,
-         FALSE);
-        audgui_list_add_column (list, NULL, PLAYLIST_COL_LENGTH, G_TYPE_STRING,
-         FALSE);
-    }
+    for (gint i = 0; i < pw_num_cols; i ++)
+        audgui_list_add_column (list, _(pw_col_names[pw_cols[i]]), i,
+         pw_col_types[pw_cols[i]], pw_col_expand[pw_cols[i]]);
 
     return list;
 }

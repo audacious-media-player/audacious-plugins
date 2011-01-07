@@ -45,11 +45,12 @@ typedef struct
     gboolean player_visible;
     gboolean playlist_visible;
     VisPosition vis_position;
-    gboolean multi_column_view;
     gboolean infoarea_visible;
     gboolean menu_visible;
     gboolean statusbar_visible;
     gboolean show_song_titles;
+    gchar * playlist_columns;
+    gboolean playlist_headers;
 } gtkui_cfg_t;
 
 extern gtkui_cfg_t config;
