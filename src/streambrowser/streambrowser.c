@@ -67,14 +67,18 @@ static void streamdir_update (streamdir_t * streamdir, category_t * category,
                               gboolean add_to_playlist);
 static gpointer update_thread_core (gpointer user_data);
 static void streaminfo_add_to_playlist (streaminfo_t * streaminfo);
-static void on_plugin_services_menu_item_click ();
 
-static GtkWidget *playlist_menu_item;
-static GtkWidget *main_menu_item;
 static GQueue *update_thread_data_queue = NULL;
 static GMutex *update_thread_mutex = NULL;
 
 streambrowser_cfg_t streambrowser_cfg;
+
+GtkWidget *sb_gui_widget = NULL;
+
+static gpointer sb_widget ()
+{
+	return sb_gui_widget;
+}
 
 static GeneralPlugin sb_plugin =
 {
@@ -82,7 +86,8 @@ static GeneralPlugin sb_plugin =
     .init = sb_init,
     .about = sb_about,
     .configure = sb_configure,
-    .cleanup = sb_cleanup
+    .cleanup = sb_cleanup,
+    .get_widget = sb_widget,
 };
 
 GeneralPlugin *sb_gplist[] =
@@ -353,29 +358,8 @@ static void sb_cleanup ()
 
 static void gui_init ()
 {
-    /* the plugin services menu */
-    playlist_menu_item =
-        gtk_image_menu_item_new_with_label (_("Streambrowser"));
-/*    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (playlist_menu_item),
-                                   gtk_image_new_from_file
-                                   (STREAMBROWSER_ICON_SMALL)); */
-    gtk_widget_show (playlist_menu_item);
-    g_signal_connect (G_OBJECT (playlist_menu_item), "activate",
-                      G_CALLBACK (on_plugin_services_menu_item_click), NULL);
-    aud_menu_plugin_item_add (AUDACIOUS_MENU_PLAYLIST_RCLICK,
-                                    playlist_menu_item);
-
-    main_menu_item = gtk_image_menu_item_new_with_label (_("Streambrowser"));
-/*    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (main_menu_item),
-                                   gtk_image_new_from_file
-                                   (STREAMBROWSER_ICON_SMALL)); */
-    gtk_widget_show (main_menu_item);
-    g_signal_connect (G_OBJECT (main_menu_item), "activate",
-                      G_CALLBACK (on_plugin_services_menu_item_click), NULL);
-    aud_menu_plugin_item_add (AUDACIOUS_MENU_MAIN, main_menu_item);
-
     /* main streambrowser window */
-    streambrowser_win_init ();
+    sb_gui_widget = streambrowser_win_init ();
     streambrowser_win_set_update_function (streamdir_update);
 
     /* others */
@@ -383,15 +367,12 @@ static void gui_init ()
     update_thread_data_queue = g_queue_new ();
 
     AUDDBG("gui initialized\n");
+
+    streamdir_update (NULL, NULL, NULL, FALSE);
 }
 
 static void gui_done ()
 {
-    /* the plugin services menu */
-    aud_menu_plugin_item_remove (AUDACIOUS_MENU_PLAYLIST_RCLICK,
-                                       playlist_menu_item);
-    aud_menu_plugin_item_remove (AUDACIOUS_MENU_MAIN, main_menu_item);
-
     /* main streambrowser window */
     streambrowser_win_hide ();
     streambrowser_win_done ();
@@ -621,7 +602,7 @@ static gpointer update_thread_core (gpointer user_data)
                 if (streamdir != NULL)
                 {
                     gdk_threads_enter ();
-/*                    streambrowser_win_set_streamdir (streamdir, SHOUTCAST_ICON); */
+                    streambrowser_win_set_streamdir (streamdir, SHOUTCAST_ICON);
                     gdk_threads_leave ();
                 }
             }
@@ -634,7 +615,7 @@ static gpointer update_thread_core (gpointer user_data)
                 if (streamdir != NULL)
                 {
                     gdk_threads_enter ();
-/*                    streambrowser_win_set_streamdir (streamdir, XIPH_ICON); */
+                    streambrowser_win_set_streamdir (streamdir, XIPH_ICON);
                     gdk_threads_leave ();
                 }
             }
@@ -649,7 +630,7 @@ static gpointer update_thread_core (gpointer user_data)
                 if (streamdir != NULL)
                 {
                     gdk_threads_enter ();
-/*                    streambrowser_win_set_streamdir (streamdir, BOOKMARKS_ICON); */
+                    streambrowser_win_set_streamdir (streamdir, BOOKMARKS_ICON);
                     gdk_threads_leave ();
                 }
             }
@@ -662,7 +643,7 @@ static gpointer update_thread_core (gpointer user_data)
             if (streamdir != NULL)
             {
                 gdk_threads_enter ();
-/*                streambrowser_win_set_streamdir (streamdir, SHOUTCAST_ICON); */
+                streambrowser_win_set_streamdir (streamdir, SHOUTCAST_ICON);
                 gdk_threads_leave ();
             }
             /* xiph */
@@ -670,7 +651,7 @@ static gpointer update_thread_core (gpointer user_data)
             if (streamdir != NULL)
             {
                 gdk_threads_enter ();
-/*                streambrowser_win_set_streamdir (streamdir, XIPH_ICON); */
+                streambrowser_win_set_streamdir (streamdir, XIPH_ICON);
                 gdk_threads_leave ();
             }
             /* bookmarks */
@@ -680,7 +661,7 @@ static gpointer update_thread_core (gpointer user_data)
             if (streamdir != NULL)
             {
                 gdk_threads_enter ();
-/*                streambrowser_win_set_streamdir (streamdir, BOOKMARKS_ICON); */
+                streambrowser_win_set_streamdir (streamdir, BOOKMARKS_ICON);
                 gdk_threads_leave ();
 
                 int i;
@@ -748,12 +729,4 @@ static void streaminfo_add_to_playlist (streaminfo_t * streaminfo)
 DONE:
     g_free (unix_name);
     g_free (uri_name);
-}
-
-static void on_plugin_services_menu_item_click ()
-{
-    AUDDBG("on_plugin_services_menu_item_click()\n");
-
-    streambrowser_win_show ();
-    streamdir_update (NULL, NULL, NULL, FALSE);
 }

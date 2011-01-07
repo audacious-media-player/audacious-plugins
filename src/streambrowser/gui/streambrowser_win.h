@@ -5,7 +5,7 @@
 #include "../streamdir.h"
 
 
-void			streambrowser_win_init();
+GtkWidget *		streambrowser_win_init();
 void			streambrowser_win_done();
 void			streambrowser_win_show();
 void			streambrowser_win_hide();

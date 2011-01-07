@@ -39,7 +39,7 @@ static streamdir_gui_t*	find_streamdir_gui_by_table(GtkTable *table);
 static streamdir_gui_t*	find_streamdir_gui_by_streamdir(streamdir_t *streamdir);
 static gboolean			tree_view_search_equal_func(GtkTreeModel *model, gint column, const gchar *key, GtkTreeIter *iter, gpointer data);
 
-static GtkWidget*		notebook;
+GtkWidget*		notebook;
 static GtkWidget*		search_entry;
 static GtkWidget*		add_button;
 static GtkWidget*		bookmark_button;
@@ -52,12 +52,12 @@ static gboolean			tree_view_button_pressed = FALSE;
 
 
 
-void streambrowser_win_init()
+GtkWidget *streambrowser_win_init()
 {
 	/* notebook */
 	notebook = gtk_notebook_new();
 	g_signal_connect(G_OBJECT(notebook), "switch-page", G_CALLBACK(on_notebook_switch_page), NULL);
-	gtk_widget_show(notebook);
+	gtk_widget_show_all(notebook);
 
 	GtkWidget *search_label = gtk_label_new(_("Search:"));
 	gtk_widget_show(search_label);
@@ -90,18 +90,11 @@ void streambrowser_win_init()
 	gtk_box_pack_start(GTK_BOX(vbox1), bookmark_button, FALSE, TRUE, 0);
 	gtk_widget_show(vbox1);
 
-	/* streambrowser window */
-	streambrowser_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title(GTK_WINDOW(streambrowser_window), _("Stream browser"));
-	gtk_window_set_position(GTK_WINDOW(streambrowser_window), GTK_WIN_POS_CENTER);
-	gtk_window_set_default_size(GTK_WINDOW(streambrowser_window), 1000, 700);
-/*	gtk_window_set_icon_from_file(GTK_WINDOW(streambrowser_window), STREAMBROWSER_ICON, NULL); */
-	g_signal_connect(G_OBJECT(streambrowser_window), "delete-event", G_CALLBACK(gtk_widget_hide_on_delete), streambrowser_window);
-	gtk_container_add(GTK_CONTAINER(streambrowser_window), vbox1);
-
 	/* others */
 	cell_renderer_pixbuf = gtk_cell_renderer_pixbuf_new();
 	cell_renderer_text = gtk_cell_renderer_text_new();
+
+	return vbox1;
 }
 
 void streambrowser_win_done()
@@ -148,6 +141,8 @@ void streambrowser_win_set_streamdir(streamdir_t *streamdir, gchar *icon_filenam
 		streamdir_gui_list = g_list_append(streamdir_gui_list, streamdir_gui);
 
 		gtk_notebook_append_page(GTK_NOTEBOOK(notebook), table, label);
+
+		gtk_widget_show_all(notebook);
 	}
 
 	/* fill the tree with categories */
@@ -236,6 +231,11 @@ void streambrowser_win_set_update_function(void (*function) (streamdir_t *stream
 void streambrowser_win_set_category_state(streamdir_t *streamdir, category_t *category, gboolean fetching)
 {
 	streamdir_gui_t *streamdir_gui = find_streamdir_gui_by_streamdir(streamdir);
+	if (streamdir_gui == NULL) {
+		failure("gui: streambrowser_win_set_category() called with non-existent streamdir\n");
+		return;
+	}
+
 	GtkTreeView *tree_view = GTK_TREE_VIEW(streamdir_gui->tree_view);
 	GtkTreeStore *store = GTK_TREE_STORE(gtk_tree_view_get_model(tree_view));
 	GtkTreePath *path;
