@@ -148,27 +148,35 @@ static void get_value (void * user, gint row, gint column, GValue * value)
     g_return_if_fail (column >= 0 && column < pw_num_cols);
     g_return_if_fail (row >= 0 && row < aud_playlist_entry_count (data->list));
 
-    const Tuple * tuple = aud_playlist_entry_get_tuple (data->list, row, TRUE);
+    column = pw_cols[column];
 
-    switch (pw_cols[column])
+    const gchar * title = NULL, * artist = NULL, * album = NULL;
+    const Tuple * tuple = NULL;
+
+    if (column == PW_COL_TITLE || column == PW_COL_ARTIST || column ==
+     PW_COL_ALBUM)
+        aud_playlist_entry_describe (data->list, row, & title, & artist,
+         & album, TRUE);
+    else if (column == PW_COL_YEAR || column == PW_COL_TRACK || column ==
+     PW_COL_FILENAME || column == PW_COL_PATH)
+        tuple = aud_playlist_entry_get_tuple (data->list, row, TRUE);
+
+    switch (column)
     {
     case PW_COL_NUMBER:
         g_value_set_int (value, 1 + row);
         break;
-    case PW_COL_TITLE:;
-        const gchar * title = tuple ? tuple_get_string (tuple, FIELD_TITLE,
-         NULL) : NULL;
-        g_value_set_string (value, title ? title : aud_playlist_entry_get_title
-         (data->list, row, TRUE));
+    case PW_COL_TITLE:
+        g_value_set_string (value, title);
         break;
     case PW_COL_ARTIST:
-        set_string_from_tuple (value, tuple, FIELD_ARTIST);
+        g_value_set_string (value, artist);
         break;
     case PW_COL_YEAR:
         set_int_from_tuple (value, tuple, FIELD_YEAR);
         break;
     case PW_COL_ALBUM:
-        set_string_from_tuple (value, tuple, FIELD_ALBUM);
+        g_value_set_string (value, album);
         break;
     case PW_COL_TRACK:
         set_int_from_tuple (value, tuple, FIELD_TRACK_NUMBER);

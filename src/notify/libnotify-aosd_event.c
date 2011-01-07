@@ -46,8 +46,8 @@ void event_playback_begin (void * a, void * b)
 	gint list = aud_playlist_get_playing ();
 	gint entry = aud_playlist_get_position (list);
 
-	gchar * title, * artist, * album;
-	audgui_three_strings (list, entry, & title, & artist, & album);
+	const gchar * title, * artist, * album;
+	aud_playlist_entry_describe (list, entry, & title, & artist, & album, FALSE);
 
 	gchar * message;
 	if (artist)
@@ -55,28 +55,18 @@ void event_playback_begin (void * a, void * b)
 		if (album)
 			message = g_strdup_printf ("%s\n%s", artist, album);
 		else
-		{
-			message = artist;
-			artist = NULL;
-		}
+			message = g_strdup (artist);
 	}
 	else if (album)
-	{
-		message = album;
-		album = NULL;
-	}
+		message = g_strdup (album);
 	else
 		message = g_strdup ("");
-
-	g_free (artist);
-	g_free (album);
 
 	GdkPixbuf * pb = audgui_pixbuf_for_current ();
 	if (pb != NULL)
 		audgui_pixbuf_scale_within(&pb, 128);
 
 	osd_show(title, message, "audio-x-generic", pb);
-	g_free(title);
 	g_free(message);
 
 	if (pb != NULL)

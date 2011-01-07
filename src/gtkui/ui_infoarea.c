@@ -409,12 +409,16 @@ void ui_infoarea_set_title (void * data, UIInfoArea * area)
     gint playlist = aud_playlist_get_playing ();
     gint entry = aud_playlist_get_position (playlist);
 
+    const gchar * title, * artist, * album;
+    aud_playlist_entry_describe (playlist, entry, & title, & artist, & album,
+     FALSE);
+
     g_free (area->title);
     g_free (area->artist);
     g_free (area->album);
-
-    audgui_three_strings (playlist, entry, & area->title, & area->artist,
-     & area->album);
+    area->title = title ? g_strdup (title) : NULL;
+    area->artist = artist ? g_strdup (artist) : NULL;
+    area->album = album ? g_strdup (album) : NULL;
 
     gtk_widget_queue_draw ((GtkWidget *) area->parent);
 }
