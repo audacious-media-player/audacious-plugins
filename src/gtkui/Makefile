@@ -5,7 +5,6 @@ SRCS = gtkui_cfg.c \
        ui_gtk.c \
        ui_manager.c \
        ui_playlist_widget.c \
-       ui_playlist_model.c \
        ui_playlist_notebook.c \
        ui_statusbar.c \
        util.c \

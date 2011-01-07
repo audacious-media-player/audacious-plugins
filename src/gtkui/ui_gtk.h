@@ -20,8 +20,6 @@
 #ifndef UI_NEW_H
 #define UI_NEW_H
 
-extern gboolean multi_columns_view;
-
 extern GtkWidget *window;
 extern GtkWidget *vbox;
 extern GtkWidget *menu;

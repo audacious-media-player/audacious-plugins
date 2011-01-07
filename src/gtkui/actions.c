@@ -374,31 +374,21 @@ void action_quit(void)
     aud_drct_quit();
 }
 
-void action_playlist_track_info(void)
+void action_playlist_track_info (void)
 {
-    gint playlist = aud_playlist_get_active();
+    gint list = aud_playlist_get_active ();
+    gint row = playlist_get_focus (list);
 
-    if (aud_playlist_selected_count(playlist) == 0)
+    if (row < 0)
         audgui_infowin_show_current ();
     else
-    {
-        gint entries = aud_playlist_entry_count(playlist);
-        gint count;
-
-        for (count = 0; count < entries; count++)
-        {
-            if (aud_playlist_entry_get_selected(playlist, count))
-                break;
-        }
-
-        audgui_infowin_show (playlist, count);
-    }
+        audgui_infowin_show (list, row);
 }
 
 void action_queue_toggle(void)
 {
     gint playlist = aud_playlist_get_active ();
-    gint focus = treeview_get_focus (playlist_get_treeview (playlist));
+    gint focus = playlist_get_focus (playlist);
     gint at;
 
     if (focus < 0)
@@ -446,9 +436,7 @@ void action_playlist_remove_all(void)
 void action_playlist_remove_selected (GtkAction * act)
 {
     gint list = aud_playlist_get_active ();
-    GtkTreeView * tree = playlist_get_treeview (list);
-
-    gint focus = treeview_get_focus (tree);
+    gint focus = playlist_get_focus (list);
     focus -= playlist_count_selected_in_range (list, 0, focus);
 
     aud_drct_pl_delete_selected ();
@@ -459,8 +447,7 @@ void action_playlist_remove_selected (GtkAction * act)
     if (focus == aud_playlist_entry_count (list))
         focus --;
     if (focus >= 0)
-        aud_playlist_entry_set_selected (list, focus, TRUE);
-    treeview_set_focus (tree, focus);
+        playlist_follow (list, focus);
 }
 
 void action_playlist_remove_unselected(void)
@@ -720,12 +707,10 @@ void action_playlist_paste(void)
 {
     GtkClipboard *clip = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
     gchar *list = gtk_clipboard_wait_for_text(clip);
-    GtkTreeView * tree = playlist_get_treeview (aud_playlist_get_active ());
 
-    if (list == NULL)
-        return;
+    gint playlist = aud_playlist_get_active ();
+    audgui_urilist_insert (playlist, playlist_get_focus (playlist), list);
 
-    treeview_add_urilist (tree, treeview_get_focus (tree), list);
     g_free (list);
 }
 

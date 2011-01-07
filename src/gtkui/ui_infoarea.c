@@ -34,7 +34,6 @@
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
 #include "ui_playlist_widget.h"
-#include "ui_playlist_model.h"
 #include "ui_manager.h"
 #include "ui_infoarea.h"
 

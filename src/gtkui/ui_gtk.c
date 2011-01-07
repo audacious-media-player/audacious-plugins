@@ -36,7 +36,6 @@
 #include "config.h"
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
-#include "ui_playlist_model.h"
 #include "ui_playlist_notebook.h"
 #include "ui_manager.h"
 #include "ui_infoarea.h"
@@ -48,8 +47,6 @@
 #if ! GTK_CHECK_VERSION (2, 18, 0)
 #define gtk_widget_set_can_focus(w, t) do {if (t) GTK_WIDGET_SET_FLAGS ((w), GTK_CAN_FOCUS); else GTK_WIDGET_UNSET_FLAGS ((w), GTK_CAN_FOCUS);} while (0)
 #endif
-
-gboolean multi_column_view;
 
 static GtkWidget * button_play, * button_pause, * button_stop, * slider,
  * label_time, * volume;
@@ -632,8 +629,6 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     gint lvol = 0, rvol = 0;    /* Left and Right for the volume control */
 
     gtkui_cfg_load();
-
-    multi_column_view = config.multi_column_view;
 
     audgui_set_default_icon();
     audgui_register_stock_icons();

@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2010  Audacious development team
+ *  Copyright (C) 2005-2011  Audacious development team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,14 +25,16 @@
 #include <audacious/debug.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <libaudgui/list.h>
 
 #include "ui_manager.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
-#include "ui_playlist_model.h"
 #include "playlist_util.h"
 
-static GtkWidget *notebook;
+static GtkWidget * notebook = NULL;
+static GQueue follow_queue = G_QUEUE_INIT;
+
 static struct index *pages;
 GtkWidget *ui_playlist_notebook_tab_title_editing = NULL;
 
@@ -88,7 +90,7 @@ static gboolean tab_button_press_cb(GtkWidget *widget, GdkEventButton *event, gp
 
 static void tab_changed(GtkNotebook * notebook, GtkNotebookPage * notebook_page, gint page_num, void *unused)
 {
-    GtkTreeView *treeview = playlist_get_treeview(page_num);
+    GtkWidget * treeview = playlist_get_treeview (page_num);
 
     if (treeview != NULL)
     {
@@ -101,12 +103,9 @@ static void tab_changed(GtkNotebook * notebook, GtkNotebookPage * notebook_page,
 
 static void tab_reordered(GtkNotebook *notebook, GtkWidget *child, guint page_num, gpointer user_data)
 {
-    GtkTreeView *treeview = playlist_get_treeview_from_page(child);
-
-    if (treeview == NULL)
-        return;
-
-    aud_playlist_reorder (treeview_get_playlist (treeview), page_num, 1);
+    GtkWidget * widget = g_object_get_data ((GObject *) child, "treeview");
+    g_return_if_fail (widget);
+    aud_playlist_reorder (ui_playlist_widget_get_playlist (widget), page_num, 1);
 }
 
 static GtkLabel *get_tab_label(gint playlist)
@@ -228,7 +227,8 @@ void ui_playlist_notebook_create_tab(gint playlist)
     {
         aud_playlist_select_all (playlist, FALSE);
         aud_playlist_entry_set_selected (playlist, position, TRUE);
-        treeview_set_focus_now ((GtkTreeView *) treeview, position);
+        audgui_list_set_highlight (treeview, position);
+        audgui_list_set_focus (treeview, position);
     }
 
     g_signal_connect(ebox, "button-press-event", G_CALLBACK(tab_button_press_cb), NULL);
@@ -263,6 +263,25 @@ void ui_playlist_notebook_populate(void)
      tab_reordered, NULL);
 }
 
+static void do_follow (void)
+{
+    gint lists = aud_playlist_count ();
+
+    while (! g_queue_is_empty (& follow_queue))
+    {
+        gint list = GPOINTER_TO_INT (g_queue_pop_head (& follow_queue));
+        gint row = GPOINTER_TO_INT (g_queue_pop_head (& follow_queue));
+
+        if (list >= lists)
+            continue;
+
+        GtkWidget * widget = playlist_get_treeview (list);
+        if (row == aud_playlist_get_position (list))
+            audgui_list_set_highlight (widget, row);
+        audgui_list_set_focus (widget, row);
+    }
+}
+
 void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
 {
     gint type = GPOINTER_TO_INT(hook_data);
@@ -294,41 +313,48 @@ void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
                     gtk_label_set_text(label, aud_playlist_get_title(i));
             }
 
-            ui_playlist_model_set_playlist ((UiPlaylistModel *)
-             gtk_tree_view_get_model (playlist_get_treeview (i)), i);
+            ui_playlist_widget_set_playlist (playlist_get_treeview (i), i);
         }
 
         gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active());
-        gtk_widget_grab_focus(GTK_WIDGET(playlist_get_active_treeview()));
     }
 
     gint list, at, count;
     if (aud_playlist_update_range (& list, & at, & count))
-        treeview_update (playlist_get_treeview (list), type, at, count);
+        ui_playlist_widget_update (playlist_get_treeview (list), type, at, count);
     else
     {
         for (list = 0; list < lists; list ++)
-            treeview_update (playlist_get_treeview (list), type, 0,
+            ui_playlist_widget_update (playlist_get_treeview (list), type, 0,
              aud_playlist_entry_count (list));
     }
+
+    do_follow ();
+}
+
+void playlist_follow (gint list, gint row)
+{
+    aud_playlist_select_all (list, FALSE);
+    if (row >= 0)
+        aud_playlist_entry_set_selected (list, row, TRUE);
+
+    g_queue_push_tail (& follow_queue, GINT_TO_POINTER (list));
+    g_queue_push_tail (& follow_queue, GINT_TO_POINTER (row));
+
+    if (! aud_playlist_update_pending ())
+        do_follow ();
 }
 
 void ui_playlist_notebook_position (void * data, void * user)
 {
     gint list = GPOINTER_TO_INT (data);
-    gint song = aud_playlist_get_position (list);
-
-    aud_playlist_select_all (list, FALSE);
-    if (song >= 0)
-        aud_playlist_entry_set_selected (list, song, TRUE);
-
-    /* treeview may not have been created yet */
-    if (list < gtk_notebook_get_n_pages (UI_PLAYLIST_NOTEBOOK))
-        treeview_update_position (playlist_get_treeview (list));
+    playlist_follow (list, aud_playlist_get_position (list));
 }
 
 static void destroy_cb (void)
 {
+    notebook = NULL;
+    g_queue_clear (& follow_queue);
     index_free (pages);
 }
 
