@@ -41,6 +41,9 @@ gtkui_cfg_t gtkui_default_config = {
     .show_song_titles = TRUE,
     .playlist_columns = NULL,
     .playlist_headers = TRUE,
+    .custom_playlist_colors = FALSE,
+    .playlist_fg = NULL,
+    .playlist_bg = NULL,
 };
 
 typedef struct gtkui_cfg_boolent_t
@@ -58,7 +61,8 @@ static gtkui_cfg_boolent gtkui_boolents[] = {
     {"menu_visible", &config.menu_visible, TRUE},
     {"statusbar_visible", &config.statusbar_visible, TRUE},
     {"show_song_titles", &config.show_song_titles, TRUE},
-    {"playlist_headers", & config.playlist_headers, TRUE},
+    {"playlist_headers", &config.playlist_headers, TRUE},
+    {"custom_playlist_colors", &config.custom_playlist_colors, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(gtkui_boolents);
@@ -90,7 +94,9 @@ typedef struct gtkui_cfg_strent_t
 } gtkui_cfg_strent;
 
 static gtkui_cfg_strent gtkui_strents[] = {
-    {"playlist_columns", & config.playlist_columns, TRUE},
+    {"playlist_columns", &config.playlist_columns, TRUE},
+    {"playlist_bg", &config.playlist_bg, TRUE},
+    {"playlist_fg", &config.playlist_fg, TRUE},
 };
 
 static gint ncfgsent = G_N_ELEMENTS(gtkui_strents);

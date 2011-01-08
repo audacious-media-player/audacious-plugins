@@ -51,6 +51,9 @@ typedef struct
     gboolean show_song_titles;
     gchar * playlist_columns;
     gboolean playlist_headers;
+    gboolean custom_playlist_colors;
+    gchar * playlist_bg;
+    gchar * playlist_fg;
 } gtkui_cfg_t;
 
 extern gtkui_cfg_t config;

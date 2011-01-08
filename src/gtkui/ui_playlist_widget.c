@@ -236,6 +236,18 @@ GtkWidget * ui_playlist_widget_new (gint playlist)
 
     GtkWidget * list = audgui_list_new (& callbacks, data,
      aud_playlist_entry_count (playlist));
+
+    if (config.custom_playlist_colors)
+    {
+        GdkColor c;
+
+        gdk_color_parse(config.playlist_bg, &c);
+        gtk_widget_modify_base(list, GTK_STATE_NORMAL, &c);
+
+        gdk_color_parse(config.playlist_fg, &c);
+        gtk_widget_modify_text(list, GTK_STATE_NORMAL, &c);
+    }
+
     gtk_tree_view_set_headers_visible ((GtkTreeView *) list,
      config.playlist_headers);
     g_signal_connect_swapped (list, "destroy", (GCallback) destroy_cb, data);
