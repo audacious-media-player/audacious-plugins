@@ -36,11 +36,11 @@
 
 static const GType pw_col_types[PW_COLS] = {G_TYPE_INT, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
- G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING};
+ G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING};
 static const gboolean pw_col_expand[PW_COLS] = {FALSE, TRUE, TRUE, FALSE, TRUE,
- FALSE, FALSE, FALSE, TRUE, TRUE};
+ FALSE, FALSE, FALSE, TRUE, TRUE, TRUE};
 static const gboolean pw_col_label[PW_COLS] = {FALSE, TRUE, TRUE, TRUE, TRUE,
- FALSE, FALSE, FALSE, TRUE, TRUE};
+ FALSE, FALSE, FALSE, TRUE, TRUE, TRUE};
 
 typedef struct {
     gint list;
@@ -143,6 +143,10 @@ static void get_value (void * user, gint row, gint column, GValue * value)
         break;
     case PW_COL_PATH:
         set_string_from_tuple (value, tuple, FIELD_FILE_PATH);
+        break;
+    case PW_COL_CUSTOM:
+        g_value_set_string (value, aud_playlist_entry_get_title (data->list,
+         row, TRUE));
         break;
     }
 }
