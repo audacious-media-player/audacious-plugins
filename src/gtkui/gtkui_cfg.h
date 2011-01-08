@@ -54,6 +54,7 @@ typedef struct
     gboolean custom_playlist_colors;
     gchar * playlist_bg;
     gchar * playlist_fg;
+    gchar * playlist_font;
 } gtkui_cfg_t;
 
 extern gtkui_cfg_t config;

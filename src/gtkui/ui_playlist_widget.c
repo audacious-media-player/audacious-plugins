@@ -248,6 +248,16 @@ GtkWidget * ui_playlist_widget_new (gint playlist)
         gtk_widget_modify_text(list, GTK_STATE_NORMAL, &c);
     }
 
+    if (config.playlist_font != NULL)
+    {
+        PangoFontDescription *desc;
+
+        desc = pango_font_description_from_string(config.playlist_font);
+        gtk_widget_modify_font(list, desc);
+
+        pango_font_description_free(desc);
+    }
+
     gtk_tree_view_set_headers_visible ((GtkTreeView *) list,
      config.playlist_headers);
     g_signal_connect_swapped (list, "destroy", (GCallback) destroy_cb, data);
