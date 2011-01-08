@@ -639,6 +639,7 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), MAINWIN_DEFAULT_WIDTH, MAINWIN_DEFAULT_HEIGHT);
+    gtk_window_set_keep_above(GTK_WINDOW(window), config.always_on_top);
 
     if (config.save_window_position && config.player_width && config.player_height)
         gtk_window_resize(GTK_WINDOW(window), config.player_width, config.player_height);

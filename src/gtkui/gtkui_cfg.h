@@ -55,6 +55,7 @@ typedef struct
     gchar * playlist_bg;
     gchar * playlist_fg;
     gchar * playlist_font;
+    gboolean always_on_top;
 } gtkui_cfg_t;
 
 extern gtkui_cfg_t config;

@@ -64,6 +64,7 @@ static gtkui_cfg_boolent gtkui_boolents[] = {
     {"show_song_titles", &config.show_song_titles, TRUE},
     {"playlist_headers", &config.playlist_headers, TRUE},
     {"custom_playlist_colors", &config.custom_playlist_colors, TRUE},
+    {"always_on_top", &config.always_on_top, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(gtkui_boolents);
