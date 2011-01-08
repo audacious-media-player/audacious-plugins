@@ -99,6 +99,9 @@
 			<menuitem action="queue toggle" />
 			<separator />
 			<menuitem action="plugins-menu" />
+			<separator />
+			<menuitem action="playlist show headers" />
+			<menuitem action="playlist choose columns" />
 		</menu>
 		<menu action="dummy" name="playlist-tab-menu">
 			<menuitem action="playlist title edit" />

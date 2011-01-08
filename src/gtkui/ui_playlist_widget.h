@@ -30,4 +30,17 @@ void ui_playlist_widget_set_playlist (GtkWidget * widget, gint playlist);
 void ui_playlist_widget_update (GtkWidget * widget, gint type, gint at,
  gint count);
 
+enum {PW_COL_NUMBER, PW_COL_TITLE, PW_COL_ARTIST, PW_COL_YEAR, PW_COL_ALBUM,
+ PW_COL_TRACK, PW_COL_QUEUED, PW_COL_LENGTH, PW_COL_PATH, PW_COL_FILENAME,
+ PW_COLS};
+
+extern const gchar * const pw_col_names[PW_COLS];
+
+extern gint pw_num_cols;
+extern gint pw_cols[PW_COLS];
+
+void pw_col_init (void);
+void pw_col_choose (void);
+void pw_col_cleanup (void);
+
 #endif

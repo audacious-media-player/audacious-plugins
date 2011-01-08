@@ -34,62 +34,13 @@
 #include "ui_manager.h"
 #include "ui_playlist_widget.h"
 
-enum {PW_COL_NUMBER, PW_COL_TITLE, PW_COL_ARTIST, PW_COL_YEAR, PW_COL_ALBUM,
- PW_COL_TRACK, PW_COL_QUEUED, PW_COL_LENGTH, PW_COL_PATH, PW_COL_FILENAME,
- PW_COLS};
-static const gchar * const pw_col_keys[PW_COLS] = {"number", "title", "artist",
- "year", "album", "track", "queued", "length", "path", "filename"};
-static const gchar * const pw_col_names[PW_COLS] = {NULL, N_("Title"),
- N_("Artist"), N_("Year"), N_("Album"), NULL, NULL, NULL, N_("File path"),
- N_("File name")};
 static const GType pw_col_types[PW_COLS] = {G_TYPE_INT, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING};
 static const gboolean pw_col_expand[PW_COLS] = {FALSE, TRUE, TRUE, FALSE, TRUE,
  FALSE, FALSE, FALSE, TRUE, TRUE};
-
-static gboolean pw_setup = FALSE;
-static gint pw_num_cols;
-static gint pw_cols[PW_COLS];
-
-static void do_setup (void)
-{
-    if (pw_setup)
-        return;
-
-    if (! config.playlist_columns || ! config.playlist_columns[0])
-    {
-        g_free (config.playlist_columns);
-        config.playlist_columns = g_strdup ("number title artist album queued "
-         "length");
-    }
-
-    pw_num_cols = 0;
-    const gchar * c = config.playlist_columns;
-    while (pw_num_cols < PW_COLS)
-    {
-        while (* c == ' ' || * c == ',')
-            c ++;
-        if (! * c)
-            break;
-
-        gint i = 0;
-        while (i < PW_COLS && strncasecmp (c, pw_col_keys[i], strlen
-         (pw_col_keys[i])))
-            i ++;
-
-        if (i == PW_COLS)
-        {
-            fprintf (stderr, "Error parsing config.playlist_columns: %s\n", c);
-            break;
-        }
-
-        pw_cols[pw_num_cols ++] = i;
-        c += strlen (pw_col_keys[i]);
-    }
-
-    pw_setup = TRUE;
-}
+static const gboolean pw_col_label[PW_COLS] = {FALSE, TRUE, TRUE, TRUE, TRUE,
+ FALSE, FALSE, FALSE, TRUE, TRUE};
 
 typedef struct {
     gint list;
@@ -279,8 +230,6 @@ static void destroy_cb (PlaylistWidgetData * data)
 
 GtkWidget * ui_playlist_widget_new (gint playlist)
 {
-    do_setup ();
-
     PlaylistWidgetData * data = g_malloc0 (sizeof (PlaylistWidgetData));
     data->list = playlist;
     data->queue = NULL;
@@ -292,8 +241,11 @@ GtkWidget * ui_playlist_widget_new (gint playlist)
     g_signal_connect_swapped (list, "destroy", (GCallback) destroy_cb, data);
 
     for (gint i = 0; i < pw_num_cols; i ++)
-        audgui_list_add_column (list, _(pw_col_names[pw_cols[i]]), i,
-         pw_col_types[pw_cols[i]], pw_col_expand[pw_cols[i]]);
+    {
+        gint n = pw_cols[i];
+        audgui_list_add_column (list, pw_col_label[n] ? _(pw_col_names[n]) :
+         NULL, i, pw_col_types[n], pw_col_expand[n]);
+    }
 
     return list;
 }

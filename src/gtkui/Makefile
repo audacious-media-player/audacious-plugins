@@ -1,6 +1,7 @@
 PLUGIN = gtkui${PLUGIN_SUFFIX}
 
-SRCS = gtkui_cfg.c \
+SRCS = columns.c \
+       gtkui_cfg.c \
        ui_infoarea.c \
        ui_gtk.c \
        ui_manager.c \

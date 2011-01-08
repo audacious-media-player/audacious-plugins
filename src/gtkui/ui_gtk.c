@@ -37,6 +37,7 @@
 #include "gtkui_cfg.h"
 #include "ui_gtk.h"
 #include "ui_playlist_notebook.h"
+#include "ui_playlist_widget.h"
 #include "ui_manager.h"
 #include "ui_infoarea.h"
 #include "ui_statusbar.h"
@@ -208,8 +209,6 @@ static void title_change_cb (void)
     }
     else
         gtk_window_set_title ((GtkWindow *) window, _("Audacious"));
-
-    ui_playlist_notebook_add_tab_label_markup(aud_playlist_get_playing(), FALSE);
 }
 
 static void ui_mainwin_show()
@@ -636,6 +635,8 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     ui_manager_init();
     ui_manager_create_menus();
 
+    pw_col_init ();
+
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), MAINWIN_DEFAULT_WIDTH, MAINWIN_DEFAULT_HEIGHT);
 
@@ -793,6 +794,8 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     check_set(toggleaction_group_others, "playback shuffle", aud_cfg->shuffle);
     check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
     check_set(toggleaction_group_others, "stop after current song", aud_cfg->stopaftersong);
+    check_set (toggleaction_group_others, "playlist show headers",
+     config.playlist_headers);
 
     AUDDBG("callback setup\n");
 
@@ -828,6 +831,8 @@ static gboolean _ui_finalize(void)
         g_source_remove(update_volume_timeout_source);
         update_volume_timeout_source = 0;
     }
+
+    pw_col_cleanup ();
 
     save_window_size ();
     gtkui_cfg_save();

@@ -23,6 +23,7 @@
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
 #include "ui_playlist_notebook.h"
+#include "ui_playlist_widget.h"
 
 #include <audacious/misc.h>
 #include <libaudgui/libaudgui.h>
@@ -56,7 +57,9 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
 
     {"view statusbar", NULL, N_("Show statusbar"), "<Shift><Ctrl>S",
      N_("Show/hide statusbar"), G_CALLBACK(action_view_statusbar), FALSE},
-};
+
+ {"playlist show headers", NULL, N_("Show Column Headers"), NULL, NULL,
+  (GCallback) playlist_show_headers, FALSE}};
 
 /* normal actions */
 
@@ -132,6 +135,9 @@ static GtkActionEntry action_entries_playlist[] = {
     {"playlist title edit", GTK_STOCK_EDIT, N_("Edit title"), "F2",
      N_("Edites the playlist title."),
      G_CALLBACK(ui_playlist_notebook_edit_tab_title)},
+
+ {"playlist choose columns", NULL, N_("Choose Columns ..."), NULL, NULL,
+  (GCallback) pw_col_choose},
 
  {"playlist sort", GTK_STOCK_SORT_ASCENDING, N_("Sort"), NULL, NULL, NULL},
  {"playlist sort track", NULL, N_("By Track Number"), NULL, NULL, (GCallback)

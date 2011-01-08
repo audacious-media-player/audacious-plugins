@@ -27,6 +27,7 @@
 #include <audacious/plugin.h>
 #include <libaudgui/list.h>
 
+#include "gtkui_cfg.h"
 #include "ui_manager.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
@@ -37,6 +38,8 @@ static GQueue follow_queue = G_QUEUE_INIT;
 
 static struct index *pages;
 GtkWidget *ui_playlist_notebook_tab_title_editing = NULL;
+
+gint switch_handler = 0, reorder_handler = 0;
 
 GtkNotebook *ui_playlist_get_notebook(void)
 {
@@ -115,30 +118,18 @@ static GtkLabel *get_tab_label(gint playlist)
     return GTK_LABEL(g_object_get_data(G_OBJECT(ebox), "label"));
 }
 
-void ui_playlist_notebook_add_tab_label_markup(gint playlist, gboolean new_title)
+static void set_tab_label (gint list, GtkLabel * label)
 {
-    static gint last_playlist = -1;
-    static GtkLabel *last_label = NULL;
+    const gchar * title = aud_playlist_get_title (list);
 
-    if (last_playlist == playlist && !new_title)
-        return;
-    else
+    if (list == aud_playlist_get_playing ())
     {
-        if (last_playlist > -1 && last_label != NULL && !new_title)
-            gtk_label_set_text(last_label, aud_playlist_get_title(last_playlist));
-
-        GtkLabel *label = get_tab_label(playlist);
-
-        if (!GTK_IS_LABEL(label))
-            return;
-
-        gchar *markup = g_markup_printf_escaped("<b>%s</b>", aud_playlist_get_title(playlist));
-        gtk_label_set_markup(label, markup);
-        g_free(markup);
-
-        last_playlist = playlist;
-        last_label = label;
+        gchar * markup = g_markup_printf_escaped ("<b>%s</b>", title);
+        gtk_label_set_markup (label, markup);
+        g_free (markup);
     }
+    else
+        gtk_label_set_text (label, title);
 }
 
 void ui_playlist_notebook_edit_tab_title(GtkWidget *ebox)
@@ -167,7 +158,8 @@ void ui_playlist_notebook_edit_tab_title(GtkWidget *ebox)
 static void change_view (void)
 {
     gint count = index_count (pages);
-    g_return_if_fail (count >= 1);
+    if (! count)
+        return;
 
     if (count > 1)
     {
@@ -206,7 +198,8 @@ void ui_playlist_notebook_create_tab(gint playlist)
 
     hbox = gtk_hbox_new(FALSE, 2);
 
-    label = gtk_label_new(aud_playlist_get_title(playlist));
+    label = gtk_label_new ("");
+    set_tab_label (playlist, (GtkLabel *) label);
     gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 
     entry = gtk_entry_new();
@@ -257,10 +250,26 @@ void ui_playlist_notebook_populate(void)
 
     gtk_notebook_set_current_page (UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active ());
 
-    g_signal_connect (UI_PLAYLIST_NOTEBOOK, "switch-page", (GCallback)
-     tab_changed, NULL);
-    g_signal_connect (UI_PLAYLIST_NOTEBOOK, "page-reordered", (GCallback)
-     tab_reordered, NULL);
+    if (! switch_handler)
+        switch_handler = g_signal_connect (notebook, "switch-page", (GCallback)
+         tab_changed, NULL);
+    if (! reorder_handler)
+        reorder_handler = g_signal_connect (notebook, "page-reordered",
+         (GCallback) tab_reordered, NULL);
+}
+
+void ui_playlist_notebook_empty (void)
+{
+    if (switch_handler)
+        g_signal_handler_disconnect (notebook, switch_handler);
+    switch_handler = 0;
+    if (reorder_handler)
+        g_signal_handler_disconnect (notebook, reorder_handler);
+    reorder_handler = 0;
+
+    gint n_pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
+    while (n_pages)
+        ui_playlist_notebook_destroy_tab (-- n_pages);
 }
 
 static void do_follow (void)
@@ -290,8 +299,6 @@ void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
     if (type == PLAYLIST_UPDATE_STRUCTURE)
     {
         AUDDBG("playlist order update\n");
-
-        GtkLabel *label;
         gint i, n_pages;
 
         n_pages = gtk_notebook_get_n_pages(UI_PLAYLIST_NOTEBOOK);
@@ -303,16 +310,7 @@ void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
 
         for (i = 0; i < n_pages; i++)
         {
-            if (i == aud_playlist_get_playing())
-                ui_playlist_notebook_add_tab_label_markup(i, TRUE);
-            else
-            {
-                label = get_tab_label(i);
-
-                if (GTK_IS_LABEL(label))
-                    gtk_label_set_text(label, aud_playlist_get_title(i));
-            }
-
+            set_tab_label (i, get_tab_label (i));
             ui_playlist_widget_set_playlist (playlist_get_treeview (i), i);
         }
 
@@ -356,6 +354,8 @@ static void destroy_cb (void)
     notebook = NULL;
     g_queue_clear (& follow_queue);
     index_free (pages);
+    switch_handler = 0;
+    reorder_handler = 0;
 }
 
 GtkWidget *ui_playlist_notebook_new()
@@ -368,4 +368,13 @@ GtkWidget *ui_playlist_notebook_new()
 
     g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
     return notebook;
+}
+
+void playlist_show_headers (GtkToggleAction * a)
+{
+    if (config.playlist_headers == gtk_toggle_action_get_active (a))
+        return;
+    config.playlist_headers = gtk_toggle_action_get_active (a);
+    ui_playlist_notebook_empty ();
+    ui_playlist_notebook_populate ();
 }
