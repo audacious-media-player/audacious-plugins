@@ -202,6 +202,13 @@ get_lyrics_step_2(gchar *buf, gint64 len, Tuple *tu)
 	gchar *uri;
 
 	uri = scrape_uri_from_lyricwiki_search_result(buf, len);
+	if (uri == NULL)
+	{
+		update_lyrics_window(tu, NULL);
+		mowgli_object_unref(tu);
+
+		return FALSE;
+	}
 
 	vfs_async_file_get_contents(uri, (VFSConsumer) get_lyrics_step_3, tu);
 
