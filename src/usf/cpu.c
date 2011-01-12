@@ -499,7 +499,7 @@ void StartEmulationFromSave ( void * savestate ) {
 
 	OpenSound();
 	
-	pcontext->set_params(pcontext, NULL, 0, SampleRate * 4, SampleRate, 2);	
+	pcontext->set_params(pcontext, SampleRate * 4, SampleRate, 2);	
 
 	if(enableFIFOfull) {
 		const float VSyncTiming = 789000.0f;

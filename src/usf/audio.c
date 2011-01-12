@@ -55,9 +55,6 @@ void AddBuffer(unsigned char *buf, unsigned int length) {
 		samplebuf[out++] = (int16_t)(vol * (double)((int16_t*)buf)[i]);
 	}
 	
-	pcontext->playing = play_time < (track_time + fade_time);
-  	pcontext->eof = play_time >= (track_time + fade_time);
-	
 	play_time += (((double)(length >> 2) / (double)SampleRate) * 1000.0);
  	
 	pcontext->output->write_audio (samplebuf, length);
