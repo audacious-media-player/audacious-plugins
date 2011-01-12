@@ -17,6 +17,7 @@
 #include <stdlib.h>
 
 extern InputPlayback * pcontext;
+extern gboolean usf_playing;
 int32_t SampleRate = 0;
 static int16_t samplebuf[16384];
 
@@ -56,7 +57,9 @@ void AddBuffer(unsigned char *buf, unsigned int length) {
 	}
 	
 	play_time += (((double)(length >> 2) / (double)SampleRate) * 1000.0);
- 	
+
+	usf_playing = play_time < (track_time + fade_time);
+
 	pcontext->output->write_audio (samplebuf, length);
 	
 	if(play_time > (track_time + fade_time))

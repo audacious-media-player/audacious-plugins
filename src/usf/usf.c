@@ -67,9 +67,8 @@ uint32_t get_length_from_string(uint8_t * str_length) {
     return ttime;
 }
 
-int LoadUSF(const gchar * fn)
+int LoadUSF(const gchar * fn, VFSFile *fil)
 {
-	VFSFile * fil = NULL;
 	uint32_t reservedsize = 0, codesize = 0, crc = 0, tagstart = 0, reservestart = 0;
 	uint32_t filesize = 0, tagsize = 0, temp = 0;
 	uint8_t buffer[16], * buffer2 = NULL, * tagbuffer = NULL;
@@ -83,8 +82,6 @@ int LoadUSF(const gchar * fn)
 	seek_backwards = 0;
 	seek_time = 0;
 
-	fil = vfs_fopen(fn, "rb");
-
 	if(!fil) {
 		printf("Could not open USF!\n");
 		return 0;
@@ -93,7 +90,6 @@ int LoadUSF(const gchar * fn)
 	vfs_fread(buffer,4 ,1 ,fil);
 	if(buffer[0] != 'P' && buffer[1] != 'S' && buffer[2] != 'F' && buffer[3] != 0x21) {
 		printf("Invalid header in file!\n");
-		vfs_fclose(fil);
 		return 0;
 	}
 
@@ -114,7 +110,6 @@ int LoadUSF(const gchar * fn)
 
 		if(buffer[0] != '[' && buffer[1] != 'T' && buffer[2] != 'A' && buffer[3] != 'G' && buffer[4] != ']') {
 			printf("Erroneous data in tag area! %" PRIu32 "\n", tagsize);
-			vfs_fclose(fil);
 			return 0;
 		}
 
@@ -140,7 +135,9 @@ int LoadUSF(const gchar * fn)
 			path[pathlength] = 0;
 			strcat(path, buffer2);
 
-			LoadUSF(path);
+			VFSFile *file2 = vfs_fopen(path, "rb");
+			LoadUSF(path, file2);
+			vfs_fclose(file2);
 		}
 
 		psftag_raw_getvar(tagbuffer,"_enablecompare",buffer2,50000);
@@ -244,18 +241,18 @@ int LoadUSF(const gchar * fn)
 		savestatespace = realloc(savestatespace, 0x40275c);
 	} else if(*(uint32_t*)(savestatespace + 4) == 0x800000)
 		RdramSize = 0x800000;
-	
-	vfs_fclose(fil);
 
 	return 1;
 }
 
 
-void usf_init()
+gboolean usf_init()
 {
 	use_audiohle = 0;
 	use_interpreter = 0;
 	RSP_Cpu = 0; // 0 is recompiler, 1 is interpreter
+
+	return TRUE;
 }
 
 void usf_destroy()
@@ -292,9 +289,12 @@ void usf_mseek(InputPlayback * context, gulong millisecond)
 	context->output->flush(millisecond/1000);
 }
 
-void usf_play(InputPlayback * context)
+gboolean usf_playing;
+
+void usf_play(InputPlayback * context, const gchar * filename,
+     VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
-	if(!context->filename)
+	if(!filename)
 		return;
 
 	// Defaults (which would be overriden by Tags / playing
@@ -318,17 +318,18 @@ void usf_play(InputPlayback * context)
 	
 	PreAllocate_Memory();
 
-    if(!LoadUSF(context->filename)) {
-		Release_Memory();
+    if(!LoadUSF(filename, file)) {
+	Release_Memory();
+	vfs_fclose(file);
     	return;
     }
 	
 	context->set_pb_ready(context);
 
 	Allocate_Memory();
-	
-	context->playing = TRUE;
-	while(context->playing) {		
+
+	usf_playing = TRUE;	
+	while(usf_playing) {		
 		is_fading = 0;
 		play_time = 0;
 
@@ -340,10 +341,10 @@ void usf_play(InputPlayback * context)
 	}
 
 	Release_Memory();
-	context->playing = FALSE;
-	context->eof = TRUE;
 
 	context->output->close_audio();
+
+	return TRUE;
 }
 
 void usf_stop(InputPlayback *context)
@@ -354,9 +355,8 @@ void usf_stop(InputPlayback *context)
 		CloseCpu();
 	}
 
-	context->playing = FALSE;
+	usf_playing = FALSE;
 	is_paused = 0;
-	context->eof = FALSE;
 }
 
 void usf_pause(InputPlayback *context, gshort paused)
@@ -372,15 +372,11 @@ static const gchar *usf_exts [] =
 };
 
 
-Tuple * usf_get_song_tuple(const gchar * fn)
+Tuple * usf_get_song_tuple(const gchar * fn, VFSFile *fil)
 {
 	Tuple *	tuple = NULL;
-
-	VFSFile * fil = NULL;
 	uint32_t reservedsize = 0, codesize = 0, crc = 0, tagstart = 0, reservestart = 0, filesize = 0, tagsize = 0;
 	uint8_t buffer[16], * buffer2 = NULL, * tagbuffer = NULL;
-
-	fil = vfs_fopen(fn, "rb");
 
 	if(!fil) {
 		printf("Could not open USF!\n");
@@ -391,7 +387,6 @@ Tuple * usf_get_song_tuple(const gchar * fn)
 
 	if(buffer[0] != 'P' && buffer[1] != 'S' && buffer[2] != 'F' && buffer[3] != 0x21) {
 		printf("Invalid header in file!\n");
-		vfs_fclose(fil);
 		return NULL;
 	}
 
@@ -415,7 +410,6 @@ Tuple * usf_get_song_tuple(const gchar * fn)
 
 		if(buffer[0] != '[' && buffer[1] != 'T' && buffer[2] != 'A' && buffer[3] != 'G' && buffer[4] != ']') {
 			printf("Erroneous data in tag area! %" PRIu32 "\n", tagsize);
-			vfs_fclose(fil);
 			return NULL;
 		}
 
@@ -497,21 +491,18 @@ Tuple * usf_get_song_tuple(const gchar * fn)
 		tuple_associate_string(tuple, FIELD_TITLE, NULL, title);
 	}
 	
-	vfs_fclose(fil);
-
 	return tuple;
 }
 
 InputPlugin usf_ip = {
   .description = "USF Plugin",
   .init = usf_init,
-  .play_file = usf_play,
+  .play = usf_play,
   .stop = usf_stop,
   .pause = usf_pause,
-  .seek = usf_seek,
   .mseek = usf_mseek,
   .vfs_extensions = (gchar **)usf_exts,
-  .get_song_tuple = usf_get_song_tuple,
+  .probe_for_tuple = usf_get_song_tuple,
 };
 
 
