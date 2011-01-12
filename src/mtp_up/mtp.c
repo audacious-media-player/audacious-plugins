@@ -316,7 +316,6 @@ static gboolean mtp_init (void)
 
 
     aud_menu_plugin_item_add(AUDACIOUS_MENU_MAIN, mtp_root_menuitem);
-    aud_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, mtp_root_menuitem);
 
     g_signal_connect (G_OBJECT (mtp_submenu_item_up), "button_press_event",G_CALLBACK (mtp_press), NULL);
     g_signal_connect (G_OBJECT (mtp_submenu_item_free), "button_press_event",G_CALLBACK (free_device), NULL);
@@ -357,9 +356,6 @@ void mtp_cleanup(void)
             g_print("The MTP mutex has been unlocked\n");
 #endif
         aud_menu_plugin_item_remove(AUDACIOUS_MENU_MAIN, mtp_root_menuitem);
-        aud_menu_plugin_item_remove(AUDACIOUS_MENU_PLAYLIST_RCLICK, mtp_root_menuitem);
-
-        gtk_widget_destroy(mtp_submenu_item_up);
 
         gtk_widget_destroy(mtp_submenu_item_up);
         gtk_widget_destroy(mtp_submenu_item_free);
