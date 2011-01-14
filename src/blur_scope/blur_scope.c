@@ -174,12 +174,12 @@ static void bscope_render_pcm (gint16 data[2][512])
 {
     bscope_blur ();
 
-    gint prev_y = (height / 2) + (data[0][0] >> 9);
+    gint prev_y = ((32768 + (gint) data[0][0]) * height) >> 16;
     prev_y = CLAMP (prev_y, 0, height - 1);
 
     for (gint i = 0; i < width; i ++)
     {
-        gint y = (height / 2) + (data[0][i * 512 / width] >> 9);
+        gint y = ((32768 + (gint) data[0][i * 512 / width]) * height) >> 16;
         y = CLAMP (y, 0, height - 1);
         draw_vert_line (i, prev_y, y);
         prev_y = y;
