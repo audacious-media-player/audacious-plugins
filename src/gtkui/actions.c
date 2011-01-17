@@ -655,6 +655,11 @@ void action_playlist_refresh_list(void)
     aud_playlist_rescan(aud_playlist_get_active());
 }
 
+void action_playlist_refresh_selected(void)
+{
+    aud_playlist_rescan_selected(aud_playlist_get_active());
+}
+
 void action_open_list_manager(void)
 {
     audgui_playlist_manager_ui_show(window);

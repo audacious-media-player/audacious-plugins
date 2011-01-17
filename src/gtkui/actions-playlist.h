@@ -25,6 +25,7 @@ void action_playlist_save_list(void);
 void action_playlist_save_default_list(void);
 void action_playlist_save_all_playlists(void);
 void action_playlist_refresh_list(void);
+void action_playlist_refresh_selected(void);
 void action_open_list_manager(void);
 
 void action_playlist_prev(void);

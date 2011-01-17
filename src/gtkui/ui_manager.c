@@ -108,6 +108,11 @@ static GtkActionEntry action_entries_playlist[] = {
      N_("Refreshes metadata associated with a playlist entry."),
      G_CALLBACK(action_playlist_refresh_list)},
 
+    {"playlist refresh selected", GTK_STOCK_REFRESH, N_("Refresh Selected"), 
+     "F6", N_("Refreshes metadata associated with selected entries."),
+     G_CALLBACK(action_playlist_refresh_selected)},
+							
+
     {"playlist manager", AUD_STOCK_PLAYLIST, N_("Playlist Manager"), "P",
      N_("Opens the playlist manager."),
      G_CALLBACK(action_open_list_manager)},

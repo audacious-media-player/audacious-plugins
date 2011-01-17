@@ -49,6 +49,7 @@
 			<menuitem action="playlist randomize" />
 			<separator />
 			<menuitem action="playlist refresh" />
+			<menuitem action="playlist refresh selected" />
 			<separator />
 			<menuitem action="playlist new" />
 			<menuitem action="playlist delete" />
@@ -95,6 +96,8 @@
 			<menuitem action="playlist remove selected" />
 			<menuitem action="playlist remove unselected" />
 			<menuitem action="playlist remove all" />
+			<separator />
+			<menuitem action="playlist refresh selected" />
 			<separator />
 			<menuitem action="queue toggle" />
 			<separator />
