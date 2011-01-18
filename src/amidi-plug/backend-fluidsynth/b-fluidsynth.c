@@ -21,9 +21,6 @@
 #include "b-fluidsynth.h"
 #include "b-fluidsynth-config.h"
 
-/* some versions of fluidsynth don't export this in the public headers */
-extern int fluid_synth_all_notes_off(fluid_synth_t* synth, int chan);
-
 /* sequencer instance */
 static sequencer_client_t sc;
 /* options */
@@ -289,7 +286,7 @@ gint sequencer_event_allnoteoff( gint unused )
   gint c = 0;
   for ( c = 0 ; c < 16 ; c++ )
   {
-    fluid_synth_all_notes_off( sc.synth , c );
+    fluid_synth_cc (sc.synth, c, 123 /* all notes off */, 0);
   }
   return 1;
 }
