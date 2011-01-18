@@ -226,6 +226,51 @@ static const AudguiListCallbacks callbacks = {
  .get_data = get_data,
  .receive_data = receive_data};
 
+static gboolean search_cb (GtkTreeModel * model, gint column, const gchar * key,
+ GtkTreeIter * iter, void * user)
+{
+    GtkTreePath * path = gtk_tree_model_get_path (model, iter);
+    g_return_val_if_fail (path, TRUE);
+    gint row = gtk_tree_path_get_indices (path)[0];
+    g_return_val_if_fail (row >= 0, TRUE);
+    const gchar * s[3] = {NULL, NULL, NULL};
+    aud_playlist_entry_describe (((PlaylistWidgetData *) user)->list, row,
+     & s[0], & s[1], & s[2], FALSE);
+    gtk_tree_path_free (path);
+
+    gchar * temp = g_utf8_strdown (key, -1);
+    gchar * * keys = g_strsplit (temp, " ", 0);
+    g_free (temp);
+
+    gint remain = 0; /* number of keys remaining to be matched */
+    for (gint j = 0; keys[j]; j ++)
+    {
+        if (keys[j][0])
+            remain ++;
+    }
+    if (! remain)
+        remain ++; /* force non-match if there are no non-blank keys */
+
+    for (gint i = 0; i < G_N_ELEMENTS (s) && remain; i ++)
+    {
+        if (! s[i])
+            continue;
+        temp = g_utf8_strdown (s[i], -1);
+        for (gint j = 0; keys[j] && remain; j ++)
+        {
+            if (keys[j][0] && strstr (temp, keys[j]))
+            {
+                keys[j][0] = 0; /* don't look for this one again */
+                remain --;
+            }
+        }
+        g_free (temp);
+    }
+
+    g_strfreev (keys);
+    return remain ? TRUE : FALSE; /* TRUE == not matched, FALSE == matched */
+}
+
 static void destroy_cb (PlaylistWidgetData * data)
 {
     g_list_free (data->queue);
@@ -264,6 +309,8 @@ GtkWidget * ui_playlist_widget_new (gint playlist)
 
     gtk_tree_view_set_headers_visible ((GtkTreeView *) list,
      config.playlist_headers);
+    gtk_tree_view_set_search_equal_func ((GtkTreeView *) list, search_cb, data,
+     NULL);
     g_signal_connect_swapped (list, "destroy", (GCallback) destroy_cb, data);
 
     for (gint i = 0; i < pw_num_cols; i ++)
