@@ -97,6 +97,7 @@ int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 	return AO_SUCCESS;
 }
 
+static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
 static gint seek = 0;
 gboolean stop_flag = FALSE;
 
@@ -182,10 +183,7 @@ static gboolean psf2_play(InputPlayback * data, const gchar * filename, VFSFile 
 				continue;
 			}
 			else
-			{
-				data->output->close_audio();
 				break;
-			}
 		}
 
 		f->stop();
@@ -193,15 +191,17 @@ static gboolean psf2_play(InputPlayback * data, const gchar * filename, VFSFile 
 		while (!stop_flag && data->output->buffer_playing())
 			g_usleep(10000);
 
-		data->output->close_audio();
-
 		break;
 	}
+
+	g_static_mutex_lock (& mutex);
+	stop_flag = TRUE;
+	data->output->close_audio ();
+	g_static_mutex_unlock (& mutex);
 
 	g_free(buffer);
 	g_free(path);
 
-	stop_flag = TRUE;
 	return ! error;
 }
 
@@ -233,8 +233,13 @@ void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 
 void psf2_Stop(InputPlayback *playback)
 {
-	stop_flag = TRUE;
-	playback->output->abort_write();
+	g_static_mutex_lock (& mutex);
+	if (! stop_flag)
+	{
+		stop_flag = TRUE;
+		playback->output->abort_write ();
+	}
+	g_static_mutex_unlock (& mutex);
 }
 
 void psf2_pause(InputPlayback *playback, gboolean pause)
