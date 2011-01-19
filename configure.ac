@@ -1207,12 +1207,6 @@ AC_ARG_ENABLE(streambrowser,
     [enable_streambrowser=yes]
 )
 
-if test $enable_streambrowser = yes ; then
-    AC_CHECK_FUNCS([strtok_r], [enable_streambrowser=yes],
-     [AC_MSG_WARN([Cannot find strtok_r; disabling streambrowser plugin])
-      enable_streambrowser=no])
-fi
-
 if test "$enable_streambrowser" = "yes"; then
    GENERAL_PLUGINS="$GENERAL_PLUGINS streambrowser"
 fi

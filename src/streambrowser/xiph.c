@@ -283,17 +283,21 @@ DONE:
 
 static gboolean genre_match (gchar * string1, gchar * string2)
 {
-    gchar *saveptr = NULL, *token;
+    gchar **genres = g_strsplit (string1, " ", -1);
     gboolean matched = FALSE;
-    gchar *temp1 = g_strdup (string1), *temp2 = g_strdup (string2);
+    gint n;
 
-    token = strtok_r (temp1, " ", &saveptr);
-    while (token != NULL)
+    if (genres != NULL)
     {
-        if (mystrcasestr (temp2, token))
-            matched = TRUE;
-
-        token = strtok_r (NULL, " ", &saveptr);
+        for (n = 0; genres[n] != NULL; n++)
+        {
+            if (mystrcasestr (string2, genres[n]))
+            {
+                matched = TRUE;
+                break;
+            }
+        }
+        g_strfreev (genres);
     }
 
     return matched;
