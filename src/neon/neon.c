@@ -506,9 +506,6 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
                 handle_headers(handle);
                 return 0;
             }
-            else
-                goto ERROR;
-
             break;
 
         case NE_REDIRECT:
@@ -528,22 +525,19 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
             ne_uri_copy(handle->purl, rediruri);
             return 1;
             break;
-
-        default:
-        ERROR:
-            /* Something went wrong. */
-            _ERROR ("<%p> Could not open URL: %d (%d)", (void *) handle, ret,
-             status->code);
-
-            if (ret)
-                _ERROR ("<%p> neon error string: %s", (void *) handle,
-                 ne_get_error (handle->session));
-
-            ne_request_destroy(handle->request);
-            handle->request = NULL;
-            return -1;
-            break;
     }
+
+    /* Something went wrong. */
+    _ERROR ("<%p> Could not open URL: %d (%d)", (void *) handle, ret,
+     status->code);
+
+    if (ret)
+        _ERROR ("<%p> neon error string: %s", (void *) handle,
+         ne_get_error (handle->session));
+
+    ne_request_destroy(handle->request);
+    handle->request = NULL;
+    return -1;
 }
 
 /*
