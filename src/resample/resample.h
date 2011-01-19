@@ -21,7 +21,7 @@
 
 #include <samplerate.h>
 
-#define ERROR(e) fprintf (stderr, "resample: %s\n", src_strerror (e))
+#define RESAMPLE_ERROR(e) fprintf (stderr, "resample: %s\n", src_strerror (e))
 
 extern int common_rates[];
 extern int n_common_rates;

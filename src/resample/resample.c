@@ -72,7 +72,7 @@ void resample_start (int * channels, int * rate)
 
     if ((state = src_new (method, * channels, & error)) == NULL)
     {
-        ERROR (error);
+        RESAMPLE_ERROR (error);
         return;
     }
 
@@ -104,7 +104,7 @@ void do_resample (float * * data, int * samples, char finish)
 
     if ((error = src_process (state, & d)))
     {
-        ERROR (error);
+        RESAMPLE_ERROR (error);
         return;
     }
 
@@ -122,7 +122,7 @@ void resample_flush (void)
     int error;
 
     if (state != NULL && (error = src_reset (state)))
-        ERROR (error);
+        RESAMPLE_ERROR (error);
 }
 
 void resample_finish (float * * data, int * samples)
