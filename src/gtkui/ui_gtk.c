@@ -29,6 +29,7 @@
 #include <audacious/interface.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <audacious/misc.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -85,6 +86,15 @@ Iface gtkui_interface = {
 };
 
 SIMPLE_IFACE_PLUGIN ("gtkui", & gtkui_interface)
+
+static void save_window_layout (void)
+{
+    gchar *path;
+
+    path = g_build_filename(aud_get_path(AUD_PATH_USER_DIR), "gtkui-layout.xml", NULL);
+    gdl_dock_layout_save_to_file(GDL_DOCK_LAYOUT(layout), path);
+    g_free(path);
+}
 
 static void save_window_size (void)
 {
@@ -836,6 +846,7 @@ static gboolean _ui_finalize(void)
     pw_col_cleanup ();
 
     save_window_size ();
+    save_window_layout ();
     gtkui_cfg_save();
     gtkui_cfg_free();
     ui_hooks_disassociate();
