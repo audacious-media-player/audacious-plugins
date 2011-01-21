@@ -96,6 +96,15 @@ static void save_window_layout (void)
     g_free(path);
 }
 
+static void load_window_layout (void)
+{
+    gchar *path;
+
+    path = g_build_filename(aud_get_path(AUD_PATH_USER_DIR), "gtkui-layout.xml", NULL);
+    gdl_dock_layout_load_from_file(GDL_DOCK_LAYOUT(layout), path);
+    g_free(path);
+}
+
 static void save_window_size (void)
 {
     gtk_window_get_position ((GtkWindow *) window, & config.player_x,
@@ -116,6 +125,8 @@ static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
     item = gdl_dock_item_new(name, name, GDL_DOCK_ITEM_BEH_CANT_ICONIFY | GDL_DOCK_ITEM_BEH_CANT_CLOSE);
     gtk_container_add(GTK_CONTAINER(item), GTK_WIDGET(parent));
     gdl_dock_add_item(GDL_DOCK(dock), GDL_DOCK_ITEM(item), GDL_DOCK_RIGHT);
+    gdl_dock_layout_load_layout(GDL_DOCK_LAYOUT(layout), NULL);
+
     gtk_widget_show_all(item);
 }
 
@@ -749,6 +760,8 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
 
     dock = gdl_dock_new();
     layout = gdl_dock_layout_new(GDL_DOCK(dock));
+
+    load_window_layout();
 
     plbox = gdl_dock_item_new("plbox", _("Playlists"), GDL_DOCK_ITEM_BEH_CANT_ICONIFY | GDL_DOCK_ITEM_BEH_CANT_CLOSE);
     gtk_container_add(GTK_CONTAINER(plbox), GTK_WIDGET(UI_PLAYLIST_NOTEBOOK));
