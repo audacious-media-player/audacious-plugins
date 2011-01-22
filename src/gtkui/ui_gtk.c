@@ -62,6 +62,7 @@ GtkWidget *statusbar = NULL;
 
 GtkWidget *dock;
 GdlDockLayout *layout;
+static GList * docked_widgets = NULL;
 
 static GtkWidget * error_win = NULL;
 
@@ -86,6 +87,21 @@ Iface gtkui_interface = {
 };
 
 SIMPLE_IFACE_PLUGIN ("gtkui", & gtkui_interface)
+
+/* GDL has a knack for hiding widgets and leaving the user no way of getting
+ * them back.  This is the best workaround I can think of at the moment.
+ * -- jlindgren */
+static void unhide_docked_widgets (void)
+{
+    if (! config.player_visible)
+        return;
+
+    for (GList * node = docked_widgets; node; node = node->next)
+    {
+        if (! ((GtkWidget *) node->data)->window)
+            gdl_dock_item_show_item ((GdlDockItem *) node->data);
+    }
+}
 
 static void save_window_layout (void)
 {
@@ -127,20 +143,13 @@ static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
 
     /* gdl_dock_add_item always adds the widget in a fixed position (in this
      * case, GDL_DOCK_RIGHT), ignoring the saved position.  To get the saved
-     * position back, we call gdl_dock_layout_load_layout.  However, if the
-     * widget was not present when the layout was saved,
-     * gdl_dock_layout_load_layout hides it.  To detect this, we check whether
-     * the widget has a window assigned.  (Of course, this only works if the
-     * interface itself is shown.)  If necessary, we show the widget again.  The
-     * whole thing is a mess.  -jlindgren */
+     * position back, we call gdl_dock_layout_load_layout. */
 
     gdl_dock_add_item(GDL_DOCK(dock), GDL_DOCK_ITEM(item), GDL_DOCK_RIGHT);
     gdl_dock_layout_load_layout(GDL_DOCK_LAYOUT(layout), NULL);
-
-    if (config.player_visible && ! item->window)
-        gdl_dock_item_show_item ((GdlDockItem *) item);
-
     gtk_widget_show_all(item);
+
+    docked_widgets = g_list_prepend (docked_widgets, item);
 }
 
 static void ui_stop_gtk_plugin(GtkWidget *parent)
@@ -155,6 +164,8 @@ static void ui_stop_gtk_plugin(GtkWidget *parent)
 
     gtk_container_remove(GTK_CONTAINER(item), parent);
     gdl_dock_item_unbind(GDL_DOCK_ITEM(item));
+
+    docked_widgets = g_list_remove (docked_widgets, item);
 }
 
 static gboolean window_delete()
@@ -404,6 +415,10 @@ static void ui_volume_released_cb(GtkButton *button, gpointer user_data)
 
 static gboolean ui_volume_slider_update(gpointer data)
 {
+    /* You are correct, this doesn't belong here.  It doesn't belong anywhere.
+     * -- jlindgren */
+    unhide_docked_widgets ();
+
     gint volume;
     static gint last_volume = -1;
 
@@ -792,6 +807,7 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
 
     /* See ui_run_gtk_plugin for an explanation of why we do this. */
     gdl_dock_layout_load_layout ((GdlDockLayout *) layout, NULL);
+    docked_widgets = g_list_prepend (docked_widgets, plbox);
 
     gtk_box_pack_end(GTK_BOX(playlist_box), dock, TRUE, TRUE, 0);
 
@@ -833,10 +849,6 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
 
     if (config.player_visible)
         ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
-
-    /* See ui_run_gtk_plugin for an explanation of why we do this. */
-    if (config.player_visible && ! plbox->window)
-        gdl_dock_item_show_item ((GdlDockItem *) plbox);
 
     AUDDBG("check menu settings\n");
     check_set(toggleaction_group_others, "view menu", config.menu_visible);
