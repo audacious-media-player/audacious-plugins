@@ -41,6 +41,7 @@ extern gint pw_cols[PW_COLS];
 
 void pw_col_init (void);
 void pw_col_choose (void);
+void pw_col_save (void);
 void pw_col_cleanup (void);
 
 #endif

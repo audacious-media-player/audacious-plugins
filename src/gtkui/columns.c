@@ -347,11 +347,8 @@ void pw_col_choose (void)
     gtk_widget_show_all (window);
 }
 
-void pw_col_cleanup (void)
+void pw_col_save (void)
 {
-    if (window)
-        gtk_widget_destroy (window);
-
     GString * s = g_string_new_len (NULL, 0);
     for (gint i = 0; ; )
     {
@@ -365,4 +362,10 @@ void pw_col_cleanup (void)
     g_free (config.playlist_columns);
     config.playlist_columns = s->str;
     g_string_free (s, FALSE);
+}
+
+void pw_col_cleanup (void)
+{
+    if (window)
+        gtk_widget_destroy (window);
 }

@@ -124,8 +124,20 @@ static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
 
     item = gdl_dock_item_new(name, name, GDL_DOCK_ITEM_BEH_CANT_ICONIFY | GDL_DOCK_ITEM_BEH_CANT_CLOSE);
     gtk_container_add(GTK_CONTAINER(item), GTK_WIDGET(parent));
+
+    /* gdl_dock_add_item always adds the widget in a fixed position (in this
+     * case, GDL_DOCK_RIGHT), ignoring the saved position.  To get the saved
+     * position back, we call gdl_dock_layout_load_layout.  However, if the
+     * widget was not present when the layout was saved,
+     * gdl_dock_layout_load_layout hides it.  To detect this, we check whether
+     * the widget has a window assigned.  If necessary, we show it again.  The
+     * whole thing is a mess.  -jlindgren */
+
     gdl_dock_add_item(GDL_DOCK(dock), GDL_DOCK_ITEM(item), GDL_DOCK_RIGHT);
     gdl_dock_layout_load_layout(GDL_DOCK_LAYOUT(layout), NULL);
+
+    if (! item->window)
+        gdl_dock_item_show_item ((GdlDockItem *) item);
 
     gtk_widget_show_all(item);
 }
@@ -608,6 +620,13 @@ static void stop_after_song_toggled (void * data, void * user)
      aud_cfg->stopaftersong);
 }
 
+static void config_save (void)
+{
+    save_window_size ();
+    save_window_layout ();
+    gtkui_cfg_save ();
+}
+
 static void ui_hooks_associate(void)
 {
     hook_associate ("title change", (HookFunction) title_change_cb, NULL);
@@ -620,6 +639,7 @@ static void ui_hooks_associate(void)
     hook_associate("playlist update", ui_playlist_notebook_update, NULL);
     hook_associate ("playlist position", ui_playlist_notebook_position, NULL);
     hook_associate("toggle stop after song", stop_after_song_toggled, NULL);
+    hook_associate ("config save", (HookFunction) config_save, NULL);
 }
 
 static void ui_hooks_disassociate(void)
@@ -634,6 +654,7 @@ static void ui_hooks_disassociate(void)
     hook_dissociate("playlist update", ui_playlist_notebook_update);
     hook_dissociate ("playlist position", ui_playlist_notebook_position);
     hook_dissociate("toggle stop after song", stop_after_song_toggled);
+    hook_dissociate ("config save", (HookFunction) config_save);
 }
 
 static gboolean _ui_initialize(IfaceCbs * cbs)
@@ -856,17 +877,13 @@ static gboolean _ui_finalize(void)
         update_volume_timeout_source = 0;
     }
 
-    pw_col_cleanup ();
-
-    save_window_size ();
-    save_window_layout ();
-    gtkui_cfg_save();
     gtkui_cfg_free();
     ui_hooks_disassociate();
 
     /* ui_manager_destroy() must be called to detach plugin services menus
      * before any widgets are destroyed. -jlindgren */
     ui_manager_destroy ();
+    pw_col_cleanup ();
 
     g_object_unref ((GObject *) UI_PLAYLIST_NOTEBOOK);
     gtk_widget_destroy (window);
