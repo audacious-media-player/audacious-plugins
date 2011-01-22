@@ -130,13 +130,14 @@ static void ui_run_gtk_plugin(GtkWidget *parent, const gchar *name)
      * position back, we call gdl_dock_layout_load_layout.  However, if the
      * widget was not present when the layout was saved,
      * gdl_dock_layout_load_layout hides it.  To detect this, we check whether
-     * the widget has a window assigned.  If necessary, we show it again.  The
+     * the widget has a window assigned.  (Of course, this only works if the
+     * interface itself is shown.)  If necessary, we show the widget again.  The
      * whole thing is a mess.  -jlindgren */
 
     gdl_dock_add_item(GDL_DOCK(dock), GDL_DOCK_ITEM(item), GDL_DOCK_RIGHT);
     gdl_dock_layout_load_layout(GDL_DOCK_LAYOUT(layout), NULL);
 
-    if (! item->window)
+    if (config.player_visible && ! item->window)
         gdl_dock_item_show_item ((GdlDockItem *) item);
 
     gtk_widget_show_all(item);
@@ -787,7 +788,10 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     plbox = gdl_dock_item_new("plbox", _("Playlists"), GDL_DOCK_ITEM_BEH_CANT_ICONIFY | GDL_DOCK_ITEM_BEH_CANT_CLOSE);
     gtk_container_add(GTK_CONTAINER(plbox), GTK_WIDGET(UI_PLAYLIST_NOTEBOOK));
     gdl_dock_add_item(GDL_DOCK(dock), GDL_DOCK_ITEM(plbox), GDL_DOCK_CENTER);
-    gtk_widget_show(plbox);
+    gtk_widget_show_all(plbox);
+
+    /* See ui_run_gtk_plugin for an explanation of why we do this. */
+    gdl_dock_layout_load_layout ((GdlDockLayout *) layout, NULL);
 
     gtk_box_pack_end(GTK_BOX(playlist_box), dock, TRUE, TRUE, 0);
 
@@ -829,6 +833,10 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
 
     if (config.player_visible)
         ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
+
+    /* See ui_run_gtk_plugin for an explanation of why we do this. */
+    if (config.player_visible && ! plbox->window)
+        gdl_dock_item_show_item ((GdlDockItem *) plbox);
 
     AUDDBG("check menu settings\n");
     check_set(toggleaction_group_others, "view menu", config.menu_visible);
