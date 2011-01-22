@@ -1428,35 +1428,6 @@ fi
 
 dnl *** projectM (GL Milkdrop port)
 
-AC_ARG_ENABLE(projectm,
-[  --disable-projectm      disable projectM vis plugin. (default=enabled)],
-[have_projectm=$enableval],
-[have_projectm=yes])
-
-if test "x$have_projectm" = "xyes"; then
-	PKG_CHECK_MODULES(LIBPROJECTM, libprojectM < 1.0, [have_projectm="yes"], [have_projectm="no"])
-	AM_PATH_SDL(1.2.5, , [
-		AC_MSG_WARN([*** SDL is not installed. projectM will not be built. ***])
-		have_projectm="no"
-	])
-	if test "x$libprjM" = "xno"; then
-	        AC_MSG_WARN([*** libprojectM not found.
-	                        libprojectM is needed to build this package.
-	                        You can download libprojectM at http://projectm.sf.net/])
-	fi
-	LIBPROJECTM_datadir=`pkg-config --variable=pkgdatadir libprojectM`;
-	LIBPROJECTM_sysconfdir=`pkg-config --variable=sysconfdir libprojectM`;
-	LIBPROJECTM_CFLAGS="$LIBPROJECTM_CFLAGS -DPROJECTM_DATADIR=\\\"$LIBPROJECTM_datadir\\\" -DPROJECTM_SYSCONFDIR=\\\"$LIBPROJECTM_sysconfdir\\\"";
-fi
-AC_SUBST(LIBPROJECTM_LIBS)
-AC_SUBST(LIBPROJECTM_CFLAGS)
-
-if test "x$have_projectm" = "xyes"; then
-	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS projectm"
-fi
-
-dnl *** projectM (GL Milkdrop port)
-
 AC_ARG_ENABLE(projectm-1.0,
 [  --disable-projectm-1.0      disable projectM 1.0+ vis plugin. (default=enabled)],
 [have_projectm1=$enableval],
