@@ -360,6 +360,8 @@ static void gui_init ()
 {
     /* main streambrowser window */
     sb_gui_widget = streambrowser_win_init ();
+    g_signal_connect (sb_gui_widget, "destroy", (GCallback) gtk_widget_destroyed, & sb_gui_widget);
+
     streambrowser_win_set_update_function (streamdir_update);
 
     /* others */
@@ -373,10 +375,6 @@ static void gui_init ()
 
 static void gui_done ()
 {
-    /* main streambrowser window */
-    streambrowser_win_hide ();
-    streambrowser_win_done ();
-
     /* others */
     if (update_thread_mutex)
         g_mutex_free (update_thread_mutex);
@@ -510,9 +508,8 @@ static gpointer update_thread_core (gpointer user_data)
         if (data->streaminfo != NULL)
         {
             gdk_threads_enter ();
-            streambrowser_win_set_streaminfo_state (data->streamdir,
-                                                    data->category,
-                                                    data->streaminfo, TRUE);
+            if (sb_gui_widget)
+                streambrowser_win_set_streaminfo_state (data->streamdir, data->category, data->streaminfo, TRUE);
             gdk_threads_leave ();
 
             if (data->add_to_playlist)
@@ -545,21 +542,20 @@ static gpointer update_thread_core (gpointer user_data)
             }
 
             gdk_threads_enter ();
-            if (!data->add_to_playlist)
-                streambrowser_win_set_streaminfo (data->streamdir,
-                                                  data->category,
-                                                  data->streaminfo);
-            streambrowser_win_set_streaminfo_state (data->streamdir,
-                                                    data->category,
-                                                    data->streaminfo, FALSE);
+            if (sb_gui_widget)
+            {
+                if (! data->add_to_playlist)
+                    streambrowser_win_set_streaminfo (data->streamdir, data->category, data->streaminfo);
+                streambrowser_win_set_streaminfo_state (data->streamdir, data->category, data->streaminfo, FALSE);
+            }
             gdk_threads_leave ();
         }
         /* update a category */
         else if (data->category != NULL)
         {
             gdk_threads_enter ();
-            streambrowser_win_set_category_state (data->streamdir,
-                                                  data->category, TRUE);
+            if (sb_gui_widget)
+                streambrowser_win_set_category_state (data->streamdir, data->category, TRUE);
             gdk_threads_leave ();
 
             /* shoutcast */
@@ -585,9 +581,11 @@ static gpointer update_thread_core (gpointer user_data)
             }
 
             gdk_threads_enter ();
-            streambrowser_win_set_category (data->streamdir, data->category);
-            streambrowser_win_set_category_state (data->streamdir,
-                                                  data->category, FALSE);
+            if (sb_gui_widget)
+            {
+                streambrowser_win_set_category (data->streamdir, data->category);
+                streambrowser_win_set_category_state (data->streamdir, data->category, FALSE);
+            }
             gdk_threads_leave ();
         }
         /* update a streamdir */
@@ -602,7 +600,8 @@ static gpointer update_thread_core (gpointer user_data)
                 if (streamdir != NULL)
                 {
                     gdk_threads_enter ();
-                    streambrowser_win_set_streamdir (streamdir, SHOUTCAST_ICON);
+                    if (sb_gui_widget)
+                        streambrowser_win_set_streamdir (streamdir, SHOUTCAST_ICON);
                     gdk_threads_leave ();
                 }
             }
@@ -615,7 +614,8 @@ static gpointer update_thread_core (gpointer user_data)
                 if (streamdir != NULL)
                 {
                     gdk_threads_enter ();
-                    streambrowser_win_set_streamdir (streamdir, XIPH_ICON);
+                    if (sb_gui_widget)
+                        streambrowser_win_set_streamdir (streamdir, XIPH_ICON);
                     gdk_threads_leave ();
                 }
             }
@@ -630,7 +630,8 @@ static gpointer update_thread_core (gpointer user_data)
                 if (streamdir != NULL)
                 {
                     gdk_threads_enter ();
-                    streambrowser_win_set_streamdir (streamdir, BOOKMARKS_ICON);
+                    if (sb_gui_widget)
+                        streambrowser_win_set_streamdir (streamdir, BOOKMARKS_ICON);
                     gdk_threads_leave ();
                 }
             }
@@ -643,7 +644,8 @@ static gpointer update_thread_core (gpointer user_data)
             if (streamdir != NULL)
             {
                 gdk_threads_enter ();
-                streambrowser_win_set_streamdir (streamdir, SHOUTCAST_ICON);
+                if (sb_gui_widget)
+                    streambrowser_win_set_streamdir (streamdir, SHOUTCAST_ICON);
                 gdk_threads_leave ();
             }
             /* xiph */
@@ -651,7 +653,8 @@ static gpointer update_thread_core (gpointer user_data)
             if (streamdir != NULL)
             {
                 gdk_threads_enter ();
-                streambrowser_win_set_streamdir (streamdir, XIPH_ICON);
+                if (sb_gui_widget)
+                    streambrowser_win_set_streamdir (streamdir, XIPH_ICON);
                 gdk_threads_leave ();
             }
             /* bookmarks */
@@ -661,7 +664,8 @@ static gpointer update_thread_core (gpointer user_data)
             if (streamdir != NULL)
             {
                 gdk_threads_enter ();
-                streambrowser_win_set_streamdir (streamdir, BOOKMARKS_ICON);
+                if (sb_gui_widget)
+                    streambrowser_win_set_streamdir (streamdir, BOOKMARKS_ICON);
                 gdk_threads_leave ();
 
                 int i;

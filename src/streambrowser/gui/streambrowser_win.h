@@ -6,9 +6,6 @@
 
 
 GtkWidget *		streambrowser_win_init();
-void			streambrowser_win_done();
-void			streambrowser_win_show();
-void			streambrowser_win_hide();
 
 void			streambrowser_win_set_streamdir(streamdir_t *streamdir, gchar *icon_filename);
 void			streambrowser_win_set_category(streamdir_t *streamdir, category_t *category);

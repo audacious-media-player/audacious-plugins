@@ -43,14 +43,26 @@ GtkWidget*		notebook;
 static GtkWidget*		search_entry;
 static GtkWidget*		add_button;
 static GtkWidget*		bookmark_button;
-static GtkWidget*		streambrowser_window;
 static GList*			streamdir_gui_list = NULL;
 static GtkCellRenderer*	cell_renderer_pixbuf;
 static GtkCellRenderer*	cell_renderer_text;
 
 static gboolean			tree_view_button_pressed = FALSE;
 
+static void list_cleanup (void)
+{
+	GList * node;
+	for (node = streamdir_gui_list; node; node = node->next)
+	{
+		streamdir_gui_t * gui = node->data;
+		streamdir_delete (gui->streamdir);
+		memset (gui, 0, sizeof gui);
+		g_free (gui);
+	}
 
+	g_list_free (streamdir_gui_list);
+	streamdir_gui_list = NULL;
+}
 
 GtkWidget *streambrowser_win_init()
 {
@@ -94,21 +106,8 @@ GtkWidget *streambrowser_win_init()
 	cell_renderer_pixbuf = gtk_cell_renderer_pixbuf_new();
 	cell_renderer_text = gtk_cell_renderer_text_new();
 
+	g_signal_connect (vbox1, "destroy", (GCallback) list_cleanup, NULL);
 	return vbox1;
-}
-
-void streambrowser_win_done()
-{
-}
-
-void streambrowser_win_show()
-{
-	gtk_widget_show(streambrowser_window);
-}
-
-void streambrowser_win_hide()
-{
-	gtk_widget_hide(streambrowser_window);
 }
 
 void streambrowser_win_set_streamdir(streamdir_t *streamdir, gchar *icon_filename)
