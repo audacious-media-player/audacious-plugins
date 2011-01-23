@@ -323,6 +323,9 @@ gboolean mystrcasestr (const char *haystack, const char *needle)
 
 static gboolean sb_init (void)
 {
+    /* Preload http:// transport for access from secondary thread */
+    vfs_prepare ("http");
+
     AUDDBG("sb_init()\n");
     config_load ();
     gui_init ();
