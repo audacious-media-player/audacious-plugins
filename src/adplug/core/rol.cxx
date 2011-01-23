@@ -257,6 +257,9 @@ void CrolPlayer::UpdateVoice( int const voice, CVoiceData &voiceData )
     TVolumeEvents      &vEvents = voiceData.volume_events;
     TPitchEvents       &pEvents = voiceData.pitch_events;
 
+    if (iEvents.empty()) {
+        return;  // prevent out-of-bounds access
+    }
     if( !(voiceData.mEventStatus & CVoiceData::kES_InstrEnd ) &&
         iEvents[voiceData.next_instrument_event].time == mCurrTick )
     {
@@ -271,6 +274,9 @@ void CrolPlayer::UpdateVoice( int const voice, CVoiceData &voiceData )
         }
     }
 
+    if (vEvents.empty()) {
+        return;  // prevent out-of-bounds access
+    }
     if( !(voiceData.mEventStatus & CVoiceData::kES_VolumeEnd ) &&
         vEvents[voiceData.next_volume_event].time == mCurrTick )
     {
@@ -314,6 +320,9 @@ void CrolPlayer::UpdateVoice( int const voice, CVoiceData &voiceData )
         }
     }
 
+    if (pEvents.empty()) {
+        return;  // prevent out-of-bounds access
+    }
     if( !(voiceData.mEventStatus & CVoiceData::kES_PitchEnd ) &&
         pEvents[voiceData.next_pitch_event].time == mCurrTick )
     {
@@ -454,6 +463,9 @@ void CrolPlayer::load_tempo_events( binistream *f )
 {
     int16 const num_tempo_events = f->readInt( 2 );
 
+    if (num_tempo_events<0) {
+        return;
+    }
     mTempoEvents.reserve( num_tempo_events );
 
     for(int i=0; i<num_tempo_events; ++i)
@@ -538,6 +550,9 @@ void CrolPlayer::load_instrument_events( binistream *f, CVoiceData &voice,
                                          binistream *bnk_file, SBnkHeader const &bnk_header )
 {
     int16 const number_of_instrument_events = f->readInt( 2 );
+    if (number_of_instrument_events<0) {
+        return;
+    }
 
     TInstrumentEvents &instrument_events = voice.instrument_events;
 
@@ -563,6 +578,9 @@ void CrolPlayer::load_instrument_events( binistream *f, CVoiceData &voice,
 void CrolPlayer::load_volume_events( binistream *f, CVoiceData &voice )
 {
     int16 const number_of_volume_events = f->readInt( 2 );
+    if (number_of_volume_events<0) {
+        return;
+    }
 
     TVolumeEvents &volume_events = voice.volume_events;
 
@@ -583,6 +601,9 @@ void CrolPlayer::load_volume_events( binistream *f, CVoiceData &voice )
 void CrolPlayer::load_pitch_events( binistream *f, CVoiceData &voice )
 {
     int16 const number_of_pitch_events = f->readInt( 2 );
+    if (number_of_pitch_events<0) {
+        return;
+    }
 
     TPitchEvents &pitch_events = voice.pitch_events;
 

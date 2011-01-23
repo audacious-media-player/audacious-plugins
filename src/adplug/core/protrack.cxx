@@ -266,6 +266,10 @@ CmodPlayer::update ()
     else
       track--;
 
+    if (track >= npats*nchans) {  // prevent overflow
+        songend = 1;
+        return !songend;
+    }
     AdPlug_LogWrite ("%3d%3d%2X%2X%2X|", tracks[track][row].note,
                      tracks[track][row].inst, tracks[track][row].command,
                      tracks[track][row].param1, tracks[track][row].param2);
