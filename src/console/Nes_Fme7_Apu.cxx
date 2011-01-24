@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.5. http://www.slack.net/~ant/
 
 #include "Nes_Fme7_Apu.h"
 
@@ -46,7 +46,7 @@ void Nes_Fme7_Apu::run_until( blip_time_t end_time )
 	{
 		int mode = regs [7] >> index;
 		int vol_mode = regs [010 + index];
-		int volume = amp_table [vol_mode & 0x0f];
+		int volume = amp_table [vol_mode & 0x0F];
 		
 		Blip_Buffer* const osc_output = oscs [index].output;
 		if ( !osc_output )
@@ -55,9 +55,9 @@ void Nes_Fme7_Apu::run_until( blip_time_t end_time )
 		
 		// check for unsupported mode
 		#ifndef NDEBUG
-			if ( (mode & 011) <= 001 && vol_mode & 0x1f )
-				dprintf( "FME7 used unimplemented sound mode: %02X, vol_mode: %02X\n",
-						mode, vol_mode & 0x1f );
+			if ( (mode & 011) <= 001 && vol_mode & 0x1F )
+				debug_printf( "FME7 used unimplemented sound mode: %02X, vol_mode: %02X\n",
+						mode, vol_mode & 0x1F );
 		#endif
 		
 		if ( (mode & 001) | (vol_mode & 0x10) )
@@ -65,7 +65,7 @@ void Nes_Fme7_Apu::run_until( blip_time_t end_time )
 		
 		// period
 		int const period_factor = 16;
-		unsigned period = (regs [index * 2 + 1] & 0x0f) * 0x100 * period_factor +
+		unsigned period = (regs [index * 2 + 1] & 0x0F) * 0x100 * period_factor +
 				regs [index * 2] * period_factor;
 		if ( period < 50 ) // around 22 kHz
 		{

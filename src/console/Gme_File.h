@@ -1,6 +1,6 @@
 // Common interface to game music file loading and information
 
-// Game_Music_Emu 0.5.2
+// Game_Music_Emu 0.5.5
 #ifndef GME_FILE_H
 #define GME_FILE_H
 
@@ -11,6 +11,38 @@
 
 // Error returned if file is wrong type
 //extern const char gme_wrong_file_type []; // declared in gme.h
+
+struct gme_type_t_
+{
+	const char* system;         /* name of system this music file type is generally for */
+	int track_count;            /* non-zero for formats with a fixed number of tracks */
+	Music_Emu* (*new_emu)();    /* Create new emulator for this type (useful in C++ only) */
+	Music_Emu* (*new_info)();   /* Create new info reader for this type */
+	
+	/* internal */
+	const char* extension_;
+	int flags_;
+};
+
+struct track_info_t
+{
+	long track_count;
+	
+	/* times in milliseconds; -1 if unknown */
+	long length;
+	long intro_length;
+	long loop_length;
+	
+	/* empty string if not available */
+	char system    [256];
+	char game      [256];
+	char song      [256];
+	char author    [256];
+	char copyright [256];
+	char comment   [256];
+	char dumper    [256];
+};
+enum { gme_max_field = 255 };
 
 struct Gme_File {
 public:

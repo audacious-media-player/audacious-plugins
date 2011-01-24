@@ -27,7 +27,7 @@ int const silent_buf_size = 1; // size used for Silent_Blip_Buffer
 
 Blip_Buffer::Blip_Buffer()
 {
-	factor_       = UINT_MAX;
+	factor_       = (blip_ulong)-1 / 2;
 	offset_       = 0;
 	buffer_       = 0;
 	buffer_size_  = 0;
@@ -85,7 +85,7 @@ Blip_Buffer::blargg_err_t Blip_Buffer::set_sample_rate( long new_rate, int msec 
 	}
 	
 	// start with maximum length that resampled time can represent
-	long new_size = (ULONG_MAX >> BLIP_BUFFER_ACCURACY) - blip_buffer_extra_ - 64;
+	long new_size = (UINT_MAX >> BLIP_BUFFER_ACCURACY) - blip_buffer_extra_ - 64;
 	if ( msec != blip_max_length )
 	{
 		long s = (new_rate * (msec + 1) + 999) / 1000;
@@ -233,18 +233,32 @@ static void gen_sinc( float* out, int count, double oversample, double treble, d
 	double const to_angle = PI / 2 / maxh / oversample;
 	for ( int i = 0; i < count; i++ )
 	{
-		double angle = ((i - count) * 2 + 1) * to_angle;
-		double c = rolloff * cos( (maxh - 1.0) * angle ) - cos( maxh * angle );
-		double cos_nc_angle = cos( maxh * cutoff * angle );
-		double cos_nc1_angle = cos( (maxh * cutoff - 1.0) * angle );
-		double cos_angle = cos( angle );
+		double angle          = ((i - count) * 2 + 1) * to_angle;
+		double angle_maxh     = angle * maxh;
+		double angle_maxh_mid = angle_maxh * cutoff;
 		
-		c = c * pow_a_n - rolloff * cos_nc1_angle + cos_nc_angle;
-		double d = 1.0 + rolloff * (rolloff - cos_angle - cos_angle);
-		double b = 2.0 - cos_angle - cos_angle;
-		double a = 1.0 - cos_angle - cos_nc_angle + cos_nc1_angle;
+		double y = maxh;
 		
-		out [i] = (float) ((a * d + c * b) / (b * d)); // a / b + c / d
+		// 0 to Fs/2*cutoff, flat
+		if ( angle_maxh_mid ) // unstable at t=0
+			y *= sin( angle_maxh_mid ) / angle_maxh_mid;
+		
+		// Fs/2*cutoff to Fs/2, logarithmic rolloff
+		double cosa = cos( angle );
+		double den = 1 + rolloff * (rolloff - cosa - cosa);
+		
+		// Becomes unstable when rolloff is near 1.0 and t is near 0,
+		// which is the only time den becomes small
+		if ( den > 1e-13 )
+		{
+			double num =
+				(cos( angle_maxh     - angle ) * rolloff - cos( angle_maxh     )) * pow_a_n -
+				 cos( angle_maxh_mid - angle ) * rolloff + cos( angle_maxh_mid );
+			
+			y = y * cutoff + num / den;
+		}
+		
+		out [i] = (float) y;
 	}
 }
 
@@ -263,7 +277,7 @@ void blip_eq_t::generate( float* out, int count ) const
 	// apply (half of) hamming window
 	double to_fraction = PI / (count - 1);
 	for ( int i = count; i--; )
-		out [i] *= 0.54 - 0.46 * cos( i * to_fraction );
+		out [i] *= 0.54f - 0.46f * (float) cos( i * to_fraction );
 }
 
 void Blip_Synth_::adjust_impulse()
@@ -281,7 +295,7 @@ void Blip_Synth_::adjust_impulse()
 		}
 		if ( p == p2 )
 			error /= 2; // phase = 0.5 impulse uses same half for both sides
-		impulses [size - blip_res + p] += error;
+		impulses [size - blip_res + p] += (short) error;
 		//printf( "error: %ld\n", error );
 	}
 	

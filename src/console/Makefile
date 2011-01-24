@@ -42,6 +42,7 @@ SRCS = Ay_Apu.cxx              \
        Spc_Cpu.cxx             \
        Spc_Dsp.cxx             \
        Spc_Emu.cxx             \
+       Spc_Filter.cxx          \
        Vfs_File.cxx            \
        Vgm_Emu.cxx             \
        Vgm_Emu_Impl.cxx        \

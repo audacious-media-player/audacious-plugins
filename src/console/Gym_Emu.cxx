@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.5. http://www.slack.net/~ant/
 
 #include "Gym_Emu.h"
 
@@ -161,7 +161,8 @@ struct Gym_File : Gme_Info_
 static Music_Emu* new_gym_emu () { return BLARGG_NEW Gym_Emu ; }
 static Music_Emu* new_gym_file() { return BLARGG_NEW Gym_File; }
 
-gme_type_t_ const gme_gym_type [1] = {{ "Sega Genesis", 1, &new_gym_emu, &new_gym_file, "GYM", 0 }};
+static gme_type_t_ const gme_gym_type_ = { "Sega Genesis", 1, &new_gym_emu, &new_gym_file, "GYM", 0 };
+gme_type_t const gme_gym_type = &gme_gym_type_;
 
 // Setup
 
@@ -203,7 +204,7 @@ void Gym_Emu::mute_voices_( int mask )
 {
 	Music_Emu::mute_voices_( mask );
 	fm.mute_voices( mask );
-	dac_muted = mask & 0x40;
+	dac_muted = (mask & 0x40) != 0;
 	apu.output( (mask & 0x80) ? 0 : &blip_buf );
 }
 

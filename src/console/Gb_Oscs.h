@@ -21,7 +21,7 @@ struct Gb_Osc
 	int last_amp;
 	int volume;
 	int length;
-	bool enabled;
+	int enabled;
 	
 	void reset();
 	void clock_length();

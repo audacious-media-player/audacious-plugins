@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.5. http://www.slack.net/~ant/
 
 #include "Effects_Buffer.h"
 
@@ -415,8 +415,8 @@ void Effects_Buffer::mix_mono_enhanced( blip_sample_t* out_, blargg_long count )
 				reverb_buf [(reverb_pos + chans.reverb_delay_r) & reverb_mask];
 		
 		fixed_t reverb_level = chans.reverb_level;
-		reverb_buf [reverb_pos] = FMUL( new_reverb_l, reverb_level );
-		reverb_buf [reverb_pos + 1] = FMUL( new_reverb_r, reverb_level );
+		reverb_buf [reverb_pos] = (blip_sample_t) FMUL( new_reverb_l, reverb_level );
+		reverb_buf [reverb_pos + 1] = (blip_sample_t) FMUL( new_reverb_r, reverb_level );
 		reverb_pos = (reverb_pos + 2) & reverb_mask;
 		
 		int sum3_s = BLIP_READER_READ( center );
@@ -486,8 +486,8 @@ void Effects_Buffer::mix_enhanced( blip_sample_t* out_, blargg_long count )
 		BLIP_READER_NEXT( r1, bass );
 		
 		fixed_t reverb_level = chans.reverb_level;
-		reverb_buf [reverb_pos] = FMUL( new_reverb_l, reverb_level );
-		reverb_buf [reverb_pos + 1] = FMUL( new_reverb_r, reverb_level );
+		reverb_buf [reverb_pos] = (blip_sample_t) FMUL( new_reverb_l, reverb_level );
+		reverb_buf [reverb_pos + 1] = (blip_sample_t) FMUL( new_reverb_r, reverb_level );
 		reverb_pos = (reverb_pos + 2) & reverb_mask;
 		
 		int sum3_s = BLIP_READER_READ( center );

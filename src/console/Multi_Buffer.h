@@ -126,10 +126,7 @@ class Silent_Buffer : public Multi_Buffer {
 	channel_t chan;
 public:
 	Silent_Buffer();
-	blargg_err_t set_sample_rate( long rate, int msec = blip_default_length )
-	{
-		return Multi_Buffer::set_sample_rate( rate, msec );
-	}
+	blargg_err_t set_sample_rate( long rate, int msec = blip_default_length );
 	void clock_rate( long ) { }
 	void bass_freq( int ) { }
 	void clear() { }
@@ -145,6 +142,11 @@ inline blargg_err_t Multi_Buffer::set_sample_rate( long rate, int msec )
 	sample_rate_ = rate;
 	length_ = msec;
 	return 0;
+}
+
+inline blargg_err_t Silent_Buffer::set_sample_rate( long rate, int msec )
+{
+	return Multi_Buffer::set_sample_rate( rate, msec );
 }
 
 inline int Multi_Buffer::samples_per_frame() const { return samples_per_frame_; }

@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.5. http://www.slack.net/~ant/
 
 #include "Ay_Emu.h"
 
@@ -116,7 +116,8 @@ struct Ay_File : Gme_Info_
 static Music_Emu* new_ay_emu () { return BLARGG_NEW Ay_Emu ; }
 static Music_Emu* new_ay_file() { return BLARGG_NEW Ay_File; }
 
-gme_type_t_ const gme_ay_type [1] = {{ "ZX Spectrum", 0, &new_ay_emu, &new_ay_file, "AY", 1 }};
+static gme_type_t_ const gme_ay_type_ = { "ZX Spectrum", 0, &new_ay_emu, &new_ay_file, "AY", 1 };
+gme_type_t const gme_ay_type = &gme_ay_type_;
 
 // Setup
 
@@ -208,9 +209,9 @@ blargg_err_t Ay_Emu::start_track_( int track )
 			set_warning( "Missing file data" );
 			len = file.end - in;
 		}
-		//dprintf( "addr: $%04X, len: $%04X\n", addr, len );
+		//debug_printf( "addr: $%04X, len: $%04X\n", addr, len );
 		if ( addr < ram_start && addr >= 0x400 ) // several tracks use low data
-			dprintf( "Block addr in ROM\n" );
+			debug_printf( "Block addr in ROM\n" );
 		memcpy( mem.ram + addr, in, len );
 		
 		if ( file.end - blocks < 8 )
@@ -241,7 +242,7 @@ blargg_err_t Ay_Emu::start_track_( int track )
 	};
 	memcpy( mem.ram, passive, sizeof passive );
 	unsigned play_addr = get_be16( more_data + 4 );
-	//dprintf( "Play: $%04X\n", play_addr );
+	//debug_printf( "Play: $%04X\n", play_addr );
 	if ( play_addr )
 	{
 		memcpy( mem.ram, active, sizeof active );
@@ -314,7 +315,7 @@ void Ay_Emu::cpu_out_misc( cpu_time_t time, unsigned addr, int data )
 		}
 	}
 	
-	dprintf( "Unmapped OUT: $%04X <- $%02X\n", addr, data );
+	debug_printf( "Unmapped OUT: $%04X <- $%02X\n", addr, data );
 	return;
 	
 enable_cpc:
@@ -355,7 +356,7 @@ int ay_cpu_in( Ay_Cpu*, unsigned addr )
 	if ( (addr & 0xFF) == 0xFE )
 		return 0xFF; // other values break some beeper tunes
 	
-	dprintf( "Unmapped IN : $%04X\n", addr );
+	debug_printf( "Unmapped IN : $%04X\n", addr );
 	return 0xFF;
 }
 
@@ -367,7 +368,7 @@ blargg_err_t Ay_Emu::run_clocks( blip_time_t& duration, int )
 	
 	while ( time() < duration )
 	{
-		cpu::run( min( duration, next_play ) );
+		cpu::run( min( duration, (blip_time_t) next_play ) );
 		
 		if ( time() >= next_play )
 		{
@@ -380,8 +381,8 @@ blargg_err_t Ay_Emu::run_clocks( blip_time_t& duration, int )
 				
 				r.iff1 = r.iff2 = 0;
 				
-				mem.ram [--r.sp] = r.pc >> 8;
-				mem.ram [--r.sp] = r.pc;
+				mem.ram [--r.sp] = uint8_t (r.pc >> 8);
+				mem.ram [--r.sp] = uint8_t (r.pc);
 				r.pc = 0x38;
 				cpu::adjust_time( 12 );
 				if ( r.im == 2 )

@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.5. http://www.slack.net/~ant/
 
 #include "Sap_Emu.h"
 
@@ -201,7 +201,7 @@ static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out 
 
 static void copy_sap_fields( Sap_Emu::info_t const& in, track_info_t* out )
 {
-	Gme_File::copy_field_( out->song,      in.name );
+	Gme_File::copy_field_( out->game,      in.name );
 	Gme_File::copy_field_( out->author,    in.author );
 	Gme_File::copy_field_( out->copyright, in.copyright );
 }
@@ -235,7 +235,9 @@ struct Sap_File : Gme_Info_
 static Music_Emu* new_sap_emu () { return BLARGG_NEW Sap_Emu ; }
 static Music_Emu* new_sap_file() { return BLARGG_NEW Sap_File; }
 
-gme_type_t_ const gme_sap_type [1] = {{ "Atari XL", 0, &new_sap_emu, &new_sap_file, "SAP", 1 }};
+static gme_type_t_ const gme_sap_type_ = { "Atari XL", 0, &new_sap_emu, &new_sap_file, "SAP", 1 };
+gme_type_t const gme_sap_type = &gme_sap_type_;
+
 
 // Setup
 
@@ -334,7 +336,7 @@ blargg_err_t Sap_Emu::start_track_( int track )
 	{
 		unsigned start = get_le16( in );
 		unsigned end   = get_le16( in + 2 );
-		//dprintf( "Block $%04X-$%04X\n", start, end );
+		//debug_printf( "Block $%04X-$%04X\n", start, end );
 		in += 4;
 		if ( end < start )
 		{
@@ -388,7 +390,7 @@ void Sap_Emu::cpu_write_( sap_addr_t addr, int data )
 	}
 
 	if ( (addr & ~0x0010) != 0xD20F || data != 0x03 )
-		dprintf( "Unmapped write $%04X <- $%02X\n", addr, data );
+		debug_printf( "Unmapped write $%04X <- $%02X\n", addr, data );
 }
 
 inline void Sap_Emu::call_play()

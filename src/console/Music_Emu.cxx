@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.5. http://www.slack.net/~ant/
 
 #include "Music_Emu.h"
 
@@ -147,7 +147,7 @@ blargg_err_t Music_Emu::start_track( int track )
 		for ( long end = max_initial_silence * stereo * sample_rate(); emu_time < end; )
 		{
 			fill_buf();
-			if ( buf_remain | emu_track_ended_ )
+			if ( buf_remain | (int) emu_track_ended_ )
 				break;
 		}
 		
@@ -340,7 +340,7 @@ blargg_err_t Music_Emu::play( long out_count, sample_t* out )
 		assert( emu_time >= out_time );
 		
 		// prints nifty graph of how far ahead we are when searching for silence
-		//dprintf( "%*s \n", int ((emu_time - out_time) * 7 / sample_rate()), "*" );
+		//debug_printf( "%*s \n", int ((emu_time - out_time) * 7 / sample_rate()), "*" );
 		
 		long pos = 0;
 		if ( silence_count )
@@ -404,6 +404,7 @@ blargg_err_t Gme_Info_::set_sample_rate_( long )            { return 0; }
 void         Gme_Info_::pre_load()                          { Gme_File::pre_load(); } // skip Music_Emu
 void         Gme_Info_::post_load_()                        { Gme_File::post_load_(); } // skip Music_Emu
 void         Gme_Info_::set_equalizer_( equalizer_t const& ){ check( false ); }
+void         Gme_Info_::enable_accuracy_( bool )            { check( false ); }
 void         Gme_Info_::mute_voices_( int )                 { check( false ); }
 void         Gme_Info_::set_tempo_( double )                { }
 blargg_err_t Gme_Info_::start_track_( int )                 { return "Use full emulator for playback"; }

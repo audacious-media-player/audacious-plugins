@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.5. http://www.slack.net/~ant/
 
 #include "Vgm_Emu.h"
 
@@ -177,7 +177,7 @@ struct Vgm_File : Gme_Info_
 		long gd3_offset = get_le32( h.gd3_offset ) - 0x2C;
 		long remain = file_size - Vgm_Emu::header_size - gd3_offset;
 		byte gd3_h [gd3_header_size];
-		if ( gd3_offset > 0 || remain >= gd3_header_size )
+		if ( gd3_offset > 0 && remain >= gd3_header_size )
 		{
 			RETURN_ERR( in.skip( gd3_offset ) );
 			RETURN_ERR( in.read( gd3_h, sizeof gd3_h ) );
@@ -203,8 +203,12 @@ struct Vgm_File : Gme_Info_
 static Music_Emu* new_vgm_emu () { return BLARGG_NEW Vgm_Emu ; }
 static Music_Emu* new_vgm_file() { return BLARGG_NEW Vgm_File; }
 
-gme_type_t_ const gme_vgm_type [1] = {{ "Sega SMS/Genesis", 1, &new_vgm_emu, &new_vgm_file, "VGM", 1 }};
-gme_type_t_ const gme_vgz_type [1] = {{ "Sega SMS/Genesis", 1, &new_vgm_emu, &new_vgm_file, "VGZ", 1 }};
+static gme_type_t_ const gme_vgm_type_ = { "Sega SMS/Genesis", 1, &new_vgm_emu, &new_vgm_file, "VGM", 1 };
+gme_type_t const gme_vgm_type = &gme_vgm_type_;
+
+static gme_type_t_ const gme_vgz_type_ = { "Sega SMS/Genesis", 1, &new_vgm_emu, &new_vgm_file, "VGZ", 1 };
+gme_type_t const gme_vgz_type = &gme_vgz_type_;
+
 
 // Setup
 
@@ -214,8 +218,8 @@ void Vgm_Emu::set_tempo_( double t )
 	{
 		vgm_rate = (long) (44100 * t + 0.5);
 		blip_time_factor = (long) floor( double (1L << blip_time_bits) / vgm_rate * psg_rate + 0.5 );
-		//dprintf( "blip_time_factor: %ld\n", blip_time_factor );
-		//dprintf( "vgm_rate: %ld\n", vgm_rate );
+		//debug_printf( "blip_time_factor: %ld\n", blip_time_factor );
+		//debug_printf( "vgm_rate: %ld\n", vgm_rate );
 		// TODO: remove? calculates vgm_rate more accurately (above differs at most by one Hz only)
 		//blip_time_factor = (long) floor( double (1L << blip_time_bits) * psg_rate / 44100 / t + 0.5 );
 		//vgm_rate = (long) floor( double (1L << blip_time_bits) * psg_rate / blip_time_factor + 0.5 );

@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.5. http://www.slack.net/~ant/
 
 #include "Nsfe_Emu.h"
 
@@ -135,7 +135,7 @@ blargg_err_t Nsfe_Info::load( Data_Reader& in, Nsf_Emu* nsf_emu )
 		blargg_long size = get_le32( block_header [0] );
 		blargg_long tag  = get_le32( block_header [1] );
 		
-		//dprintf( "tag: %c%c%c%c\n", char(tag), char(tag>>8), char(tag>>16), char(tag>>24) );
+		//debug_printf( "tag: %c%c%c%c\n", char(tag), char(tag>>8), char(tag>>16), char(tag>>24) );
 		
 		switch ( tag )
 		{
@@ -297,7 +297,9 @@ struct Nsfe_File : Gme_Info_
 static Music_Emu* new_nsfe_emu () { return BLARGG_NEW Nsfe_Emu ; }
 static Music_Emu* new_nsfe_file() { return BLARGG_NEW Nsfe_File; }
 
-gme_type_t_ const gme_nsfe_type [1] = {{ "Nintendo NES", 0, &new_nsfe_emu, &new_nsfe_file, "NSFE", 1 }};
+static gme_type_t_ const gme_nsfe_type_ = { "Nintendo NES", 0, &new_nsfe_emu, &new_nsfe_file, "NSFE", 1 };
+gme_type_t const gme_nsfe_type = &gme_nsfe_type_;
+
 
 blargg_err_t Nsfe_Emu::load_( Data_Reader& in )
 {

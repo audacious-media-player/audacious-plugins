@@ -122,7 +122,7 @@ blargg_err_t Remaining_Reader::read( void* out, long count )
 {
 	long first = read_first( out, count );
 	long second = count - first;
-	if ( second <= 0 )
+	if ( !second )
 		return 0;
 	return in->read( (char*) out + first, second );
 }

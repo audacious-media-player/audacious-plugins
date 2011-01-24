@@ -1,6 +1,6 @@
 // YM2612 FM sound chip emulator interface
 
-// Game_Music_Emu 0.5.2
+// Game_Music_Emu 0.5.5
 #ifndef YM2612_EMU_H
 #define YM2612_EMU_H
 

@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.5. http://www.slack.net/~ant/
 
 #include "Classic_Emu.h"
 
@@ -40,7 +40,7 @@ void Classic_Emu::set_equalizer_( equalizer_t const& eq )
 	Music_Emu::set_equalizer_( eq );
 	update_eq( eq.treble );
 	if ( buf )
-		buf->bass_freq( equalizer().bass );
+		buf->bass_freq( (int) equalizer().bass );
 }
 	
 blargg_err_t Classic_Emu::set_sample_rate_( long rate )
@@ -176,9 +176,9 @@ void Rom_Data_::set_addr_( long addr, int unit )
 
 	if ( 0 )
 	{
-		dprintf( "addr: %X\n", addr );
-		dprintf( "file_size: %d\n", file_size_ );
-		dprintf( "rounded: %d\n", rounded );
-		dprintf( "mask: $%X\n", mask );
+		debug_printf( "addr: %X\n", addr );
+		debug_printf( "file_size: %d\n", file_size_ );
+		debug_printf( "rounded: %d\n", rounded );
+		debug_printf( "mask: $%X\n", mask );
 	}
 }

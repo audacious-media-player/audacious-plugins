@@ -1,6 +1,6 @@
 // Sunsoft FME-7 sound emulator
 
-// Game_Music_Emu 0.5.2
+// Game_Music_Emu 0.5.5
 #ifndef NES_FME7_APU_H
 #define NES_FME7_APU_H
 
@@ -30,9 +30,9 @@ public:
 	void load_state( fme7_apu_state_t const& );
 	
 	// Mask and addresses of registers
-	enum { addr_mask = 0xe000 };
-	enum { data_addr = 0xe000 };
-	enum { latch_addr = 0xc000 };
+	enum { addr_mask = 0xE000 };
+	enum { data_addr = 0xE000 };
+	enum { latch_addr = 0xC000 };
 	
 	// (addr & addr_mask) == latch_addr
 	void write_latch( int );
@@ -97,8 +97,8 @@ inline void Nes_Fme7_Apu::write_data( blip_time_t time, int data )
 {
 	if ( (unsigned) latch >= reg_count )
 	{
-		#ifdef dprintf
-			dprintf( "FME7 write to %02X (past end of sound registers)\n", (int) latch );
+		#ifdef debug_printf
+			debug_printf( "FME7 write to %02X (past end of sound registers)\n", (int) latch );
 		#endif
 		return;
 	}

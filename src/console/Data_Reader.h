@@ -116,7 +116,7 @@ private:
 // Invokes callback function to read data. Size of data must be specified in advance.
 class Callback_Reader : public Data_Reader {
 public:
-	typedef const char* (*callback_t)( void* data, void* out, long count );
+	typedef const char* (*callback_t)( void* data, void* out, int count );
 	Callback_Reader( callback_t, long size, void* data = 0 );
 public:
 	long read_avail( void*, long );
