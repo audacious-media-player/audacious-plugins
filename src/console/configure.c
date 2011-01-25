@@ -268,9 +268,11 @@ void console_cfg_ui(void)
     gtk_container_add( GTK_CONTAINER(hbuttonbox) , button_ok );
     gtk_box_pack_start( GTK_BOX(configwin_vbox) , hbuttonbox , FALSE , FALSE , 0 );
 
+#if GTK_CHECK_VERSION (2, 12, 0)
     gtk_widget_set_tooltip_text( configwin_gen_playback_deflen_spbt ,
                                  _("The default song length, expressed in seconds, is used for songs "
                                  "that do not provide length information (i.e. looping tracks)."));
+#endif
 
     gtk_widget_show_all( configwin );
 }

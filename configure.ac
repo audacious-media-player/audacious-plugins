@@ -124,8 +124,8 @@ dnl These plugins are always built.
 INPUT_PLUGINS="tonegen metronom vtx"
 OUTPUT_PLUGINS="null"
 EFFECT_PLUGINS="compressor crossfade crystalizer mixdown ladspa sndstretch stereo_plugin voice_removal echo_plugin"
-GENERAL_PLUGINS="alarm lyricwiki"
-VISUALIZATION_PLUGINS="blur_scope spectrum moodbar"
+GENERAL_PLUGINS="alarm"
+VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls asx"
 TRANSPORT_PLUGINS="unix-io"
 
@@ -1032,6 +1032,8 @@ AC_ARG_ENABLE(alsa,
 
 if test "x$enable_alsa" = "xyes"; then
     PKG_CHECK_MODULES([ALSA], [alsa >= 1.0], [have_alsa=yes], [have_alsa=no])
+    AC_CHECK_LIB([asound], [snd_device_name_hint],
+     AC_DEFINE(HAVE_SND_DEVICE_NAME_HINT, 1, Define if you have snd_device_name_hint))
 else
     AC_MSG_RESULT([*** ALSA output plugin disabled per user request ***])
     have_alsa=no
@@ -1452,7 +1454,23 @@ if test "x$have_projectm1" = "xyes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS projectm-1.0"
 fi
 
-dnl *** FileWriter
+dnl Moodbar
+dnl =========
+
+AC_ARG_ENABLE(moodbar,
+ [  --disable-moodbar       disable Moodbar data renderer (default=enabled)],
+ [enable_moodbar=$enableval], [enable_moodbar=yes])
+
+if test "x$enable_moodbar" = "xyes"; then
+    PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.18], [enable_moodbar=yes], [enable_moodbar=no])
+fi
+
+if test "x$enable_moodbar" = "xyes"; then
+    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS moodbar"
+fi
+
+dnl FileWriter
+dnl ==========
 
 AC_ARG_ENABLE(filewriter,
     [  --disable-filewriter    disable FileWriter output plugin (default=enabled) ],
@@ -1576,6 +1594,21 @@ AC_ARG_ENABLE(skins,
 
 if test $enable_skins = yes ; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS skins"
+fi
+
+dnl LyricWiki
+dnl =========
+
+AC_ARG_ENABLE(lyricwiki,
+ [  --disable-lyricwiki     disable LyricWiki plugin (default=enabled)],
+ [enable_lyricwiki=$enableval], [enable_lyricwiki=yes])
+
+if test "x$enable_lyricwiki" = "xyes"; then
+    PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.14], [enable_lyricwiki=yes], [enable_lyricwiki=no])
+fi
+
+if test "x$enable_lyricwiki" = "xyes"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS lyricwiki"
 fi
 
 dnl *** End of all plugin checks ***
@@ -1712,7 +1745,7 @@ echo "  Upload to MTP device:                   $have_mtp_up"
 echo "  Bluetooth audio support:                $have_bluetooth"
 echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
 echo "  Streambrowser:                          $enable_streambrowser"
-echo "  LyricWiki viewer:                       yes"
+echo "  LyricWiki viewer:                       $enable_lyricwiki"
 echo
 echo "  Effect"
 echo "  ------"
@@ -1731,7 +1764,7 @@ echo "  Visualization"
 echo "  -------------"
 echo "  Blur Scope:                             yes"
 echo "  Spectrum Analyzer:                      yes"
-echo "  Moodbar data renderer:                  yes"
+echo "  Moodbar data renderer:                  $enable_moodbar"
 echo "  Paranormal Visualization Library:       $have_paranormal"
 echo "  projectM 0.x (GL milkdrop):             $have_projectm"
 echo "  projectM 1.x (GL milkdrop):             $have_projectm1"

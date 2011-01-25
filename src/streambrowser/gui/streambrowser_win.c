@@ -297,7 +297,9 @@ static GtkWidget *gtk_streamdir_tree_view_new()
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), GTK_TREE_MODEL(store));
 
 	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(tree_view), TRUE);
+#if GTK_CHECK_VERSION (2, 10, 0)
 	gtk_tree_view_set_search_entry(GTK_TREE_VIEW(tree_view), GTK_ENTRY(search_entry));
+#endif
 	gtk_tree_view_set_search_equal_func(GTK_TREE_VIEW(tree_view), tree_view_search_equal_func, NULL, NULL);
 	gtk_tree_view_set_search_column(GTK_TREE_VIEW(tree_view), 1);
 	g_signal_connect(G_OBJECT(tree_view), "key-press-event", G_CALLBACK(on_tree_view_key_pressed), NULL);

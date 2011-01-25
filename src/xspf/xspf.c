@@ -182,9 +182,11 @@ static void xspf_find_track (xmlNode * tracklist, const gchar * filename, const
  gchar * base, struct index * filenames, struct index * tuples)
 {
     /* Preallocate space to avoid reallocs. */
+#if 0 /* Fix me: Find out what version of libxml2 this was added in. */
     gint count = xmlChildElementCount (tracklist);
     index_allocate (filenames, count);
     index_allocate (tuples, count);
+#endif
 
     xmlNode *nptr;
 

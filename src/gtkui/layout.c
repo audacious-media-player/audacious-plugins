@@ -172,10 +172,9 @@ typedef struct {
 
 static gboolean restore_size_cb (RestoreSizeData * d)
 {
-    GdkRectangle rect;
-    gtk_widget_get_allocation (d->widget, & rect);
+    GdkRectangle * rect = & d->widget->allocation;
     gint pos = gtk_paned_get_position ((GtkPaned *) d->paned);
-    pos -= d->vertical ? d->h - rect.height : d->w - rect.width;
+    pos -= d->vertical ? d->h - rect->height : d->w - rect->width;
     gtk_paned_set_position ((GtkPaned *) d->paned, pos);
 
     g_slice_free (RestoreSizeData, d);
@@ -325,25 +324,24 @@ static void item_save_size (Item * item)
 {
     g_return_if_fail (item->widget && item->vbox);
 
-    GdkRectangle rect;
-    gtk_widget_get_allocation (item->vbox, & rect);
+    GdkRectangle * rect = & item->vbox->allocation;
 
     if (item->pane < 0)
     {
         g_return_if_fail (item->window);
 
         gtk_window_get_position ((GtkWindow *) item->window, & item->x, & item->y);
-        item->w = rect.width;
-        item->h = rect.height;
+        item->w = rect->width;
+        item->h = rect->height;
     }
     else
     {
         g_return_if_fail (! item->window && item->pane < PANES && panes[item->pane]);
 
         if (IS_VERTICAL (item->pane))
-            item->h = rect.height;
+            item->h = rect->height;
         else
-            item->w = rect.width;
+            item->w = rect->width;
     }
 }
 
