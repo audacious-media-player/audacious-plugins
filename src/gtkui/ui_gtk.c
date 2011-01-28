@@ -818,5 +818,8 @@ static gboolean _ui_finalize(void)
 
     g_object_unref ((GObject *) UI_PLAYLIST_NOTEBOOK);
     gtk_widget_destroy (window);
+
+    layout_cleanup ();
+
     return TRUE;
 }

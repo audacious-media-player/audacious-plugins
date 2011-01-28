@@ -535,3 +535,16 @@ void layout_load (void)
 
     fclose (handle);
 }
+
+void layout_cleanup (void)
+{
+    for (GList * node = items; node; node = node->next)
+    {
+        Item * item = node->data;
+        g_return_if_fail (item && ! item->widget && ! item->vbox && ! item->window);
+        g_slice_free (Item, item);
+    }
+
+    g_list_free (items);
+    items = NULL;
+}

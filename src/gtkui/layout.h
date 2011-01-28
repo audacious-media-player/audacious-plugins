@@ -26,6 +26,7 @@
 
 void layout_load (void);
 void layout_save (void);
+void layout_cleanup (void);
 
 GtkWidget * layout_new (void);
 void layout_add_center (GtkWidget * add);
