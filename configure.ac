@@ -152,11 +152,6 @@ PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.8.0],
     [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.8.0])]
 )
 
-PKG_CHECK_MODULES(GDL, [gdl-1.0],
-    [ADD_PC_REQUIRES([gdl-1.0])],
-    [AC_MSG_ERROR([Cannot find GDL])]
-)
-
 AC_ARG_ENABLE(gio, [  --disable-gio           disable GIO support (default=enabled if GIO present)],
  enable_gio=$enableval, enable_gio=yes)
 
