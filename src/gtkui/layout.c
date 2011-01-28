@@ -31,7 +31,7 @@
 #include "layout.h"
 
 #if ! GTK_CHECK_VERSION (2, 18, 0)
-#define gtk_widget_get_allocation(w, a) memcpy ((a), (w)->allocation, sizeof GtkAllocation)
+#define gtk_widget_get_allocation(w, a) memcpy ((a), & (w)->allocation, sizeof (GtkAllocation))
 #endif
 
 #define LAYOUT_FILE "gtkui-layout"
