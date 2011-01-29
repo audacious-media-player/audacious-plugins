@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins2_22062009\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2010-08-03 17:55-0400\n"
+"POT-Creation-Date: 2011-01-29 15:26-0500\n"
 "PO-Revision-Date: 2009-10-11 01:21+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
-#: src/aac/libmp4.c:291
+#: src/aac/libmp4.c:277
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -29,15 +29,15 @@ msgstr ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM dekodētājs (c) Nero AG, www.nero.com\n"
 "Autortiesības (c) 2005-2006 Audacious komanda"
 
-#: src/aac/libmp4.c:296
+#: src/aac/libmp4.c:282
 msgid "About MP4 AAC decoder plugin"
 msgstr "Par MP4 AAC dekodētāja spraudni"
 
-#: src/adplug/adplug-xmms.cc:153
+#: src/adplug/adplug-xmms.cc:151
 msgid "About "
 msgstr "Par"
 
-#: src/adplug/adplug-xmms.cc:157
+#: src/adplug/adplug-xmms.cc:155
 msgid ""
 "\n"
 "Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
@@ -58,62 +58,62 @@ msgstr ""
 "Šis spraudnis izmanto AdPlug bibliotēku, autortiesības (C) Simon Peter u.c.\n"
 "Saistītās AdPlug bibliotēkas versija: "
 
-#: src/adplug/adplug-xmms.cc:234
+#: src/adplug/adplug-xmms.cc:232
 msgid "AdPlug :: Configuration"
 msgstr "AdPlug :: Konfigurācija"
 
-#: src/adplug/adplug-xmms.cc:243 src/adplug/adplug-xmms.cc:504
-#: src/cdaudio-ng/configure.c:258 src/crystalizer/crystalizer.c:127
-#: src/echo_plugin/gui.c:122 src/jack/configure.c:146 src/null/null.c:109
-#: src/stereo_plugin/stereo.c:123 src/sun/configure.c:557
+#: src/adplug/adplug-xmms.cc:241 src/adplug/adplug-xmms.cc:504
+#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:134
+#: src/echo_plugin/gui.c:124 src/jack/configure.c:146 src/null/null.c:109
+#: src/stereo_plugin/stereo.c:129 src/sun/configure.c:557
 msgid "Ok"
 msgstr "Labi"
 
-#: src/adplug/adplug-xmms.cc:253 src/alarm/interface.c:1398
-#: src/cdaudio-ng/configure.c:263 src/crystalizer/crystalizer.c:136
-#: src/echo_plugin/gui.c:130 src/jack/configure.c:153
+#: src/adplug/adplug-xmms.cc:251 src/alarm/interface.c:1398
+#: src/cdaudio-ng/configure.c:249 src/crystalizer/crystalizer.c:143
+#: src/echo_plugin/gui.c:132 src/jack/configure.c:153
 #: src/modplug/gui/interface.cxx:715 src/null/null.c:110
-#: src/stereo_plugin/stereo.c:132 src/sun/configure.c:565
+#: src/stereo_plugin/stereo.c:138 src/sun/configure.c:565
 msgid "Cancel"
 msgstr "Atcelt"
 
-#: src/adplug/adplug-xmms.cc:269 src/console/configure.c:154
+#: src/adplug/adplug-xmms.cc:267 src/console/configure.c:154
 #: src/modplug/gui/interface.cxx:629 src/modplug/gui/interface.cxx:888
 msgid "General"
 msgstr "Vispārīgi"
 
-#: src/adplug/adplug-xmms.cc:281
+#: src/adplug/adplug-xmms.cc:279
 msgid "Sound quality"
 msgstr "Skaņas kvalitāte"
 
-#: src/adplug/adplug-xmms.cc:286 src/modplug/gui/interface.cxx:188
+#: src/adplug/adplug-xmms.cc:284 src/modplug/gui/interface.cxx:188
 msgid "Resolution"
 msgstr "Izšķirtspēja"
 
-#: src/adplug/adplug-xmms.cc:288
+#: src/adplug/adplug-xmms.cc:286
 msgid "8bit"
 msgstr "8bit"
 
-#: src/adplug/adplug-xmms.cc:293
+#: src/adplug/adplug-xmms.cc:291
 msgid "16bit"
 msgstr "16bit"
 
-#: src/adplug/adplug-xmms.cc:301 src/modplug/gui/interface.cxx:219
+#: src/adplug/adplug-xmms.cc:299 src/modplug/gui/interface.cxx:219
 msgid "Channels"
 msgstr "Kanāli"
 
-#: src/adplug/adplug-xmms.cc:303 src/filewriter/mp3.c:934
-#: src/mpg123/mpg123.c:174 src/sid/xs_interface.c:301
+#: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:934
+#: src/mpg123/mpg123.c:180 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Mono"
 
-#: src/adplug/adplug-xmms.cc:308 src/filewriter/mp3.c:929
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:174
+#: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:929
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:180
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/adplug/adplug-xmms.cc:312
+#: src/adplug/adplug-xmms.cc:310
 msgid ""
 "Setting stereo is not recommended, unless you need to. This won't add any "
 "stereo effects to the sound - OPL2 is just mono - but eats up more CPU power!"
@@ -122,21 +122,21 @@ msgstr ""
 "nepievienos skaņai stereo efektu (OPL2 ir tikai mono), bet patērēs vairāk "
 "procesora resursu!"
 
-#: src/adplug/adplug-xmms.cc:320
+#: src/adplug/adplug-xmms.cc:318
 msgid "Frequency"
 msgstr "Frekvence"
 
-#: src/adplug/adplug-xmms.cc:356 src/adplug/adplug-xmms.cc:560
-#: src/console/configure.c:156 src/gtkui/ui_manager.c:64
-#: src/skins/ui_manager.c:165
+#: src/adplug/adplug-xmms.cc:354 src/adplug/adplug-xmms.cc:560
+#: src/console/configure.c:156 src/gtkui/ui_manager.c:68
+#: src/skins/ui_manager.c:167
 msgid "Playback"
 msgstr "Atskaņošana"
 
-#: src/adplug/adplug-xmms.cc:360
+#: src/adplug/adplug-xmms.cc:358
 msgid "Detect songend"
 msgstr "Noteikt dziesmas beigas"
 
-#: src/adplug/adplug-xmms.cc:364
+#: src/adplug/adplug-xmms.cc:362
 msgid ""
 "If enabled, XMMS will detect a song's ending, stop it and advance in the "
 "playlist. If disabled, XMMS won't take notice of a song's ending and loop it "
@@ -146,23 +146,23 @@ msgstr ""
 "priekšu repertuārā. Ja izslēgts, XMMS neievēros dziesmas beigas un atkārtos "
 "to."
 
-#: src/adplug/adplug-xmms.cc:375
+#: src/adplug/adplug-xmms.cc:373
 msgid "Formats"
 msgstr "Formāti"
 
-#: src/adplug/adplug-xmms.cc:382
+#: src/adplug/adplug-xmms.cc:380
 msgid "Format selection"
 msgstr "Formāta izvēle"
 
-#: src/adplug/adplug-xmms.cc:385
+#: src/adplug/adplug-xmms.cc:383
 msgid "Format"
 msgstr "Formāts"
 
-#: src/adplug/adplug-xmms.cc:385
+#: src/adplug/adplug-xmms.cc:383
 msgid "Extension"
 msgstr "Paplašinājums"
 
-#: src/adplug/adplug-xmms.cc:425
+#: src/adplug/adplug-xmms.cc:423
 msgid ""
 "Selected file types will be recognized and played back by this plugin. "
 "Deselected types will be ignored to make room for other plugins to play "
@@ -219,31 +219,31 @@ msgstr "Instrumenta nosaukums"
 msgid "Song message"
 msgstr "Dziesmas ziņojums"
 
-#: src/adplug/adplug-xmms.cc:641
+#: src/adplug/adplug-xmms.cc:642
 msgid "Subsong selection"
 msgstr "Apakšdziesmas izvēle"
 
-#: src/adplug/adplug-xmms.cc:707
+#: src/adplug/adplug-xmms.cc:696
 msgid "Order: "
 msgstr "Kārtība: "
 
-#: src/adplug/adplug-xmms.cc:708
+#: src/adplug/adplug-xmms.cc:697
 msgid "Pattern: "
 msgstr "Paraugs: "
 
-#: src/adplug/adplug-xmms.cc:710
+#: src/adplug/adplug-xmms.cc:699
 msgid "Row: "
 msgstr "Rinda: "
 
-#: src/adplug/adplug-xmms.cc:711
+#: src/adplug/adplug-xmms.cc:700
 msgid "Speed: "
 msgstr "Ātrums: "
 
-#: src/adplug/adplug-xmms.cc:712
+#: src/adplug/adplug-xmms.cc:701
 msgid "Timer: "
 msgstr "Taimeris: "
 
-#: src/adplug/adplug-xmms.cc:713 src/console/configure.c:234
+#: src/adplug/adplug-xmms.cc:702 src/console/configure.c:234
 #: src/sid/xs_interface.c:354
 msgid "Hz"
 msgstr "Hz"
@@ -370,7 +370,7 @@ msgstr "Izvēlieties dienas, kurās ieslēgsies modinātājs"
 #: src/alarm/interface.c:708 src/alarm/interface.c:756
 #: src/alarm/interface.c:804 src/alarm/interface.c:852
 #: src/alarm/interface.c:900 src/OSS/configure.c:166
-#: src/skins/ui_manager.c:439 src/skins/ui_manager.c:460
+#: src/skins/ui_manager.c:445 src/skins/ui_manager.c:466
 msgid "Default"
 msgstr "Noklusētais"
 
@@ -582,8 +582,8 @@ msgstr ""
 "    ķeksīti blakus esošajā rūtī, ja vēlieties, lai tas tiktu\n"
 "    parādīts.\n"
 
-#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:165
-#: src/skins/ui_manager.c:371
+#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:185
+#: src/skins/ui_manager.c:377
 msgid "Help"
 msgstr "Palīdzība"
 
@@ -595,48 +595,48 @@ msgstr "Jūsu atgādinājums šodienai ir.."
 msgid "Thankyou"
 msgstr "Paldies"
 
-#: src/alsa/config.c:209
+#: src/alsa/config.c:210
 #, fuzzy
 msgid "Default PCM device"
 msgstr "Noklusētā PCM ierīce (%s)"
 
-#: src/alsa/config.c:234
+#: src/alsa/config.c:235
 #, fuzzy
 msgid "Default mixer device"
 msgstr "Noklusētā PCM ierīce (%s)"
 
-#: src/alsa/config.c:438
+#: src/alsa/config.c:439
 msgid "ALSA Output Plugin Preferences"
 msgstr "ALSA izvades spraudņa iestatījumi"
 
-#: src/alsa/config.c:445
+#: src/alsa/config.c:446
 #, fuzzy
 msgid "PCM device:"
 msgstr "Miksera ierīce:"
 
-#: src/alsa/config.c:447 src/OSS/configure.c:256 src/sun/configure.c:218
+#: src/alsa/config.c:448 src/OSS/configure.c:256 src/sun/configure.c:218
 msgid "Mixer device:"
 msgstr "Miksera ierīce:"
 
-#: src/alsa/config.c:449
+#: src/alsa/config.c:450
 msgid "Mixer element:"
 msgstr "Miksera elements:"
 
-#: src/alsa/config.c:452
+#: src/alsa/config.c:453
 msgid "Work around drain hangup"
 msgstr ""
 
-#: src/alsa/plugin.c:61
+#: src/alsa/plugin.c:63
 #, fuzzy
 msgid "About ALSA Output Plugin"
 msgstr "Par JACK izvades spraudni 0.17"
 
-#: src/alsa/plugin.c:83
+#: src/alsa/plugin.c:85
 #, fuzzy
 msgid "ALSA error"
 msgstr " Kļūda"
 
-#: src/amidi-plug/amidi-plug.c:323
+#: src/amidi-plug/amidi-plug.c:338
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
@@ -666,11 +666,11 @@ msgstr ""
 "aparatūras sintezatoru, tiks atskaņoti tieši.\n"
 "Aizmuguri uzrakstījis Giacomo Lozito."
 
-#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:41
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
 msgstr "FluidSynth aizmugure "
 
-#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:43
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
 "This backend produces audio by sending MIDI events to FluidSynth, a real-"
 "time software synthesizer based on the SoundFont2 specification (www."
@@ -1524,7 +1524,7 @@ msgstr "Noformējums"
 msgid "Trigger"
 msgstr "Palaidējs"
 
-#: src/aosd/aosd_ui.c:1073 src/cdaudio-ng/configure.c:178
+#: src/aosd/aosd_ui.c:1073 src/cdaudio-ng/configure.c:171
 #: src/modplug/gui/interface.cxx:689 src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr "Dažādi"
@@ -1686,25 +1686,25 @@ msgstr "Pāro..."
 msgid "Rescan"
 msgstr "Pārskenēt"
 
-#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:66
-#: src/gtkui/ui_manager.c:67 src/hotkey/gui.c:71 src/skins/ui_manager.c:167
-#: src/skins/ui_manager.c:168
+#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:70
+#: src/gtkui/ui_manager.c:71 src/hotkey/gui.c:71 src/skins/ui_manager.c:169
+#: src/skins/ui_manager.c:170
 msgid "Play"
 msgstr "Atskaņot"
 
-#: src/blur_scope/config.c:73
+#: src/blur_scope/config.c:86
 msgid "Blur Scope: Color selection"
 msgstr "Blur Scope: krāsu izvēle"
 
-#: src/blur_scope/config.c:83 src/jack/configure.c:111
+#: src/blur_scope/config.c:96 src/jack/configure.c:111
 msgid "Options:"
 msgstr "Iestatījumi:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:278
+#: src/cdaudio-ng/cdaudio-ng.c:267
 msgid "About Audio CD Plugin"
 msgstr "Par audio CD spraudni"
 
-#: src/cdaudio-ng/cdaudio-ng.c:279
+#: src/cdaudio-ng/cdaudio-ng.c:268
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -1729,48 +1729,61 @@ msgstr ""
 "\n"
 "Autortiesības 2009 John Lindgren"
 
-#: src/cdaudio-ng/configure.c:155
+#: src/cdaudio-ng/cdaudio-ng.c:561
+#, fuzzy
+msgid "Audio CD"
+msgstr "Audio"
+
+#: src/cdaudio-ng/cdaudio-ng.c:916
+msgid "Drive is empty."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:918
+msgid "Unsupported disk type."
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:148
 msgid "CD Audio Plugin Configuration"
 msgstr "CD Audio spraudņa konfigurācija"
 
-#: src/cdaudio-ng/configure.c:167
+#: src/cdaudio-ng/configure.c:160
 msgid "Digital audio extraction"
 msgstr "Ciparu audio ekstrakcija"
 
-#: src/cdaudio-ng/configure.c:172
+#: src/cdaudio-ng/configure.c:165
 msgid "Title information"
 msgstr "Nosaukuma informācija"
 
-#: src/cdaudio-ng/configure.c:190
+#: src/cdaudio-ng/configure.c:176
 #, fuzzy
 msgid "Disc speed:"
 msgstr "Taktātrums:"
 
-#: src/cdaudio-ng/configure.c:198
+#: src/cdaudio-ng/configure.c:184
 msgid "Use cd-text if available"
 msgstr "Izmantot cd-text, ja pieejams"
 
-#: src/cdaudio-ng/configure.c:205
+#: src/cdaudio-ng/configure.c:191
 msgid "Use CDDB if available"
 msgstr "Izmantot CDDB, ja pieejams"
 
-#: src/cdaudio-ng/configure.c:211
+#: src/cdaudio-ng/configure.c:197
 msgid "Server: "
 msgstr "Serveris: "
 
-#: src/cdaudio-ng/configure.c:215
+#: src/cdaudio-ng/configure.c:201
 msgid "Path: "
 msgstr "Ceļš: "
 
-#: src/cdaudio-ng/configure.c:219
+#: src/cdaudio-ng/configure.c:205
 msgid "Port: "
 msgstr "Ports: "
 
-#: src/cdaudio-ng/configure.c:232
+#: src/cdaudio-ng/configure.c:218
 msgid "Use HTTP instead of CDDBP"
 msgstr "Lietot HTTP nevis CDDBP"
 
-#: src/cdaudio-ng/configure.c:244
+#: src/cdaudio-ng/configure.c:230
 msgid "Override default device: "
 msgstr "Aizstāt noklusēto ierīci: "
 
@@ -1782,25 +1795,24 @@ msgstr "Atskaņot CD"
 msgid "Add CD"
 msgstr "Pievienot CD"
 
-#: src/compressor/plugin.c:58
+#: src/compressor/plugin.c:66
 #, fuzzy
 msgid "About Dynamic Range Compression Plugin"
 msgstr "Par Extra Stereo spraudni"
 
-#: src/compressor/plugin.c:91
+#: src/compressor/plugin.c:98
 #, fuzzy
 msgid "Dynamic Range Compressor Preferences"
 msgstr "AudioCompress iestatījumi"
 
-#: src/compressor/plugin.c:103
+#: src/compressor/plugin.c:110
 #, fuzzy
-msgid "Target volume:"
+msgid "Center volume:"
 msgstr "Mainīt skaļumu"
 
-#: src/compressor/plugin.c:116
-#, fuzzy
-msgid "Effect strength:"
-msgstr "Efekta intensitāte:"
+#: src/compressor/plugin.c:123
+msgid "Dynamic range:"
+msgstr ""
 
 #: src/console/configure.c:137
 msgid "Game Console Music Decoder"
@@ -1872,31 +1884,31 @@ msgstr ""
 "Ieviešana iekš Audacious: William Pitcock <nenolod@dereferenced.org>, \n"
 "        Shay Green <gblargg@gmail.com>\n"
 
-#: src/crossfade/plugin.c:51
+#: src/crossfade/plugin.c:64
 #, fuzzy
 msgid "About Crossfade"
 msgstr "Par sapludināšanas spraudni"
 
-#: src/crossfade/plugin.c:84
+#: src/crossfade/plugin.c:96
 #, fuzzy
 msgid "Crossfade Preferences"
 msgstr "Iestatījumi"
 
-#: src/crossfade/plugin.c:95
+#: src/crossfade/plugin.c:108
 msgid "Overlap (in seconds):"
 msgstr ""
 
-#: src/crossfade/plugin.c:129 src/crossfade/plugin.c:137
+#: src/crossfade/plugin.c:141 src/crossfade/plugin.c:147
 #, fuzzy
 msgid "Crossfade Error"
 msgstr "Sapludinātājs"
 
-#: src/crossfade/plugin.c:130
+#: src/crossfade/plugin.c:141
 msgid ""
 "Crossfading failed because the songs had a different number of channels."
 msgstr ""
 
-#: src/crossfade/plugin.c:138
+#: src/crossfade/plugin.c:149
 msgid ""
 "Crossfading failed because the songs had different sample rates.\n"
 "\n"
@@ -1904,16 +1916,16 @@ msgid ""
 "same rate."
 msgstr ""
 
-#: src/crystalizer/crystalizer.c:104
+#: src/crystalizer/crystalizer.c:111
 msgid "Configure Crystalizer"
 msgstr "Konfigurēt Crystalizer"
 
-#: src/crystalizer/crystalizer.c:106 src/stereo_plugin/stereo.c:102
+#: src/crystalizer/crystalizer.c:113 src/stereo_plugin/stereo.c:108
 msgid "Effect intensity:"
 msgstr "Efekta intensitāte:"
 
-#: src/crystalizer/crystalizer.c:143 src/echo_plugin/gui.c:137
-#: src/modplug/gui/interface.cxx:709 src/stereo_plugin/stereo.c:139
+#: src/crystalizer/crystalizer.c:150 src/echo_plugin/gui.c:139
+#: src/modplug/gui/interface.cxx:709 src/stereo_plugin/stereo.c:145
 msgid "Apply"
 msgstr "Pielietot"
 
@@ -1933,19 +1945,19 @@ msgstr ""
 msgid "About Echo Plugin"
 msgstr "Par atbalss spraudni"
 
-#: src/echo_plugin/gui.c:69
+#: src/echo_plugin/gui.c:71
 msgid "Configure Echo"
 msgstr "Konfigurēt atbalss"
 
-#: src/echo_plugin/gui.c:82
+#: src/echo_plugin/gui.c:84
 msgid "Delay: (ms)"
 msgstr "Aizture: (ms)"
 
-#: src/echo_plugin/gui.c:87
+#: src/echo_plugin/gui.c:89
 msgid "Feedback: (%)"
 msgstr "Atbilde: (%)"
 
-#: src/echo_plugin/gui.c:92
+#: src/echo_plugin/gui.c:94
 msgid "Volume: (%)"
 msgstr "Skaļums: (%)"
 
@@ -2164,7 +2176,7 @@ msgstr ""
 "Nevar atvērt piesaistu logu ierīcei, kas nav atrasta.\n"
 "Pārliecinieties, ka ir pareizi pievienota."
 
-#: src/evdev-plug/ed_ui.c:319
+#: src/evdev-plug/ed_ui.c:319 src/gtkui/ui_gtk.c:225
 msgid "Error"
 msgstr "Kļūda"
 
@@ -2308,7 +2320,7 @@ msgstr ""
 "\n"
 "autors Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:662
+#: src/ffaudio/ffaudio-core.c:669
 #, fuzzy, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2333,15 +2345,15 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:675
+#: src/ffaudio/ffaudio-core.c:682
 msgid "About FFaudio Plugin"
 msgstr "Par FFaudio spraudni"
 
-#: src/filewriter/filewriter.c:180
+#: src/filewriter/filewriter.c:179
 msgid "About FileWriter-Plugin"
 msgstr "Par FileWriter spraudni"
 
-#: src/filewriter/filewriter.c:181
+#: src/filewriter/filewriter.c:180
 msgid ""
 "FileWriter-Plugin\n"
 "\n"
@@ -2375,51 +2387,51 @@ msgstr ""
 "Ja tā nav, rakstiet uz Free Software Foundation, Inc., 51 Franklin Street,\n"
 "Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/filewriter/filewriter.c:466
+#: src/filewriter/filewriter.c:460
 msgid "File Writer Configuration"
 msgstr "Failu rakstītāja konfigurācija"
 
-#: src/filewriter/filewriter.c:478
+#: src/filewriter/filewriter.c:472
 msgid "Output file format:"
 msgstr "Izvades faila formāts:"
 
-#: src/filewriter/filewriter.c:496 src/ladspa/ladspa.c:1058
+#: src/filewriter/filewriter.c:490 src/ladspa/ladspa.c:1070
 msgid "Configure"
 msgstr "Konfigurēt"
 
-#: src/filewriter/filewriter.c:511
+#: src/filewriter/filewriter.c:505
 msgid "Save into original directory"
 msgstr "Saglabāt oriģinālajā mapē"
 
-#: src/filewriter/filewriter.c:516
+#: src/filewriter/filewriter.c:510
 msgid "Save into custom directory"
 msgstr "Saglabāt pielāgotā mapē"
 
-#: src/filewriter/filewriter.c:528
+#: src/filewriter/filewriter.c:522
 msgid "Output file folder:"
 msgstr "Izvades faila mape:"
 
-#: src/filewriter/filewriter.c:532
+#: src/filewriter/filewriter.c:526
 msgid "Pick a folder"
 msgstr "Izvēlieties mapi"
 
-#: src/filewriter/filewriter.c:551
+#: src/filewriter/filewriter.c:545
 msgid "Get filename from:"
 msgstr "Iegūt faila nosaukumu no:"
 
-#: src/filewriter/filewriter.c:554
+#: src/filewriter/filewriter.c:548
 msgid "original file tags"
 msgstr "oriģinālajiem faila tagiem"
 
-#: src/filewriter/filewriter.c:560
+#: src/filewriter/filewriter.c:554
 msgid "original filename"
 msgstr "oriģinālā faila nosaukuma"
 
-#: src/filewriter/filewriter.c:570
+#: src/filewriter/filewriter.c:564
 msgid "Don't strip file name extension"
 msgstr "Neatmest faila paplašinājumu"
 
-#: src/filewriter/filewriter.c:574
+#: src/filewriter/filewriter.c:568
 msgid ""
 "If enabled, the extension from the original filename will not be stripped "
 "before adding the new file extension to the end."
@@ -2427,7 +2439,7 @@ msgstr ""
 "Ja ieslēgts, paplašinājums no oriģinālā faila nosaukuma netiks atmests pirms "
 "jaunā faila paplašinājuma pievienošanas beigās."
 
-#: src/filewriter/filewriter.c:588
+#: src/filewriter/filewriter.c:582
 msgid "Prepend track number to filename"
 msgstr "Pievienot celiņa numuru pirms faila nosaukuma"
 
@@ -2614,11 +2626,11 @@ msgstr "Vorbis kodētāja konfigurācija"
 msgid "Quality level (0 - 10):"
 msgstr "Kvalitātes līmenis (0 - 10):"
 
-#: src/flacng/plugin.c:457
-msgid "FLAC Audio Plugin "
-msgstr "FLAC audio spraudnis"
+#: src/flacng/plugin.c:393
+msgid "About FLAC Audio Plugin"
+msgstr "Par FLAC audio spraudni"
 
-#: src/flacng/plugin.c:458
+#: src/flacng/plugin.c:394
 msgid ""
 "\n"
 "\n"
@@ -2633,10 +2645,6 @@ msgstr ""
 "Ralf Ertzinger <ralf@skytale.net>\n"
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
-
-#: src/flacng/plugin.c:464
-msgid "About FLAC Audio Plugin"
-msgstr "Par FLAC audio spraudni"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:306
 msgid "About Gnome Shortcut Plugin"
@@ -2672,172 +2680,177 @@ msgstr "Audacious2"
 msgid "gnt interface"
 msgstr "gnt saskarne"
 
-#: src/gtkui/actions.c:257 src/skins/ui_main.c:818
+#: src/gtkui/actions.c:250 src/skins/ui_main.c:820
 msgid "Can't jump to time when no track is being played.\n"
 msgstr "Nevar pāriet uz noteiktu laiku, ja nekas netiek atskaņots.\n"
 
-#: src/gtkui/actions.c:272 src/gtkui/ui_manager.c:204
-#: src/gtkui/ui_manager.c:205 src/skins/ui_main.c:833
-#: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
+#: src/gtkui/actions.c:265 src/gtkui/ui_manager.c:224
+#: src/gtkui/ui_manager.c:225 src/skins/ui_main.c:835
+#: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Jump to Time"
 msgstr "Pāriet uz laiku"
 
-#: src/gtkui/actions.c:289 src/skins/ui_main.c:854
+#: src/gtkui/actions.c:282 src/skins/ui_main.c:856
 msgid "minutes:seconds"
 msgstr "minūtes:sekundes"
 
-#: src/gtkui/actions.c:299 src/skins/ui_main.c:864
+#: src/gtkui/actions.c:292 src/skins/ui_main.c:866
 msgid "Track length:"
 msgstr "Celiņa garums:"
 
-#: src/gtkui/actions.c:610 src/skins/ui_playlist.c:648
+#: src/gtkui/actions.c:530 src/skins/ui_playlist.c:648
 #, c-format
 msgid "Error writing playlist \"%s\": %s"
 msgstr "Kļūda rakstot repertuāru \"%s\": %s"
 
-#: src/gtkui/actions.c:625 src/skins/ui_playlist.c:670
+#: src/gtkui/actions.c:545 src/skins/ui_playlist.c:670
 #, c-format
 msgid "%s already exist. Continue?"
 msgstr "%s jau pastāv. Turpināt?"
 
-#: src/gtkui/actions.c:651 src/skins/ui_manager.c:214
+#: src/gtkui/actions.c:571 src/skins/ui_manager.c:216
 #, fuzzy
 msgid "Export Playlist"
 msgstr "Ielādēt repertuāru"
 
-#: src/gtkui/actions.c:723 src/skins/ui_manager.c:211
+#: src/gtkui/actions.c:643 src/skins/ui_manager.c:213
 #, fuzzy
 msgid "Import Playlist"
 msgstr "Ielādēt repertuāru"
 
-#: src/gtkui/ui_gtk.c:72
+#: src/gtkui/ui_gtk.c:79
 #, fuzzy
 msgid "GTK Interface"
 msgstr "gnt saskarne"
 
-#: src/gtkui/ui_gtk.c:281 src/skins/ui_main.c:388
+#: src/gtkui/ui_gtk.c:175 src/skins/ui_main.c:390
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:287 src/skins/ui_main.c:390 src/skins/ui_main.c:2166
+#: src/gtkui/ui_gtk.c:181 src/skins/ui_main.c:392 src/skins/ui_main.c:2172
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_manager.c:35 src/gtkui/ui_manager.c:36
-#: src/skins/ui_manager.c:53 src/skins/ui_manager.c:54
+#: src/gtkui/ui_manager.c:37 src/gtkui/ui_manager.c:38
+#: src/skins/ui_manager.c:55 src/skins/ui_manager.c:56
 msgid "Stop after Current Song"
 msgstr "Apturēt pēc pašreizējās dziesmas"
 
-#: src/gtkui/ui_manager.c:38 src/gtkui/ui_manager.c:39
-#: src/skins/ui_manager.c:59 src/skins/ui_manager.c:60
+#: src/gtkui/ui_manager.c:40 src/gtkui/ui_manager.c:41
+#: src/skins/ui_manager.c:61 src/skins/ui_manager.c:62
 msgid "Repeat"
 msgstr "Atkārtot"
 
-#: src/gtkui/ui_manager.c:41 src/gtkui/ui_manager.c:42
-#: src/skins/ui_manager.c:62 src/skins/ui_manager.c:63
+#: src/gtkui/ui_manager.c:43 src/gtkui/ui_manager.c:44
+#: src/skins/ui_manager.c:64 src/skins/ui_manager.c:65
 msgid "Shuffle"
 msgstr "Jaukt"
 
-#: src/gtkui/ui_manager.c:44 src/gtkui/ui_manager.c:45
-#: src/skins/ui_manager.c:65 src/skins/ui_manager.c:66
+#: src/gtkui/ui_manager.c:46 src/gtkui/ui_manager.c:47
+#: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
 msgid "No Playlist Advance"
 msgstr "Nevirzīties uz priekšu repertuārā"
 
-#: src/gtkui/ui_manager.c:47
+#: src/gtkui/ui_manager.c:49
 #, fuzzy
 msgid "Show playlists"
 msgstr "Rādīt repertuāra redaktoru"
 
-#: src/gtkui/ui_manager.c:48
+#: src/gtkui/ui_manager.c:50
 #, fuzzy
 msgid "Show/hide playlists"
 msgstr "Saglabāt repertuāru"
 
-#: src/gtkui/ui_manager.c:50
+#: src/gtkui/ui_manager.c:52
 msgid "Show infoarea"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:51
+#: src/gtkui/ui_manager.c:53
 msgid "Show/hide infoarea"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:53
+#: src/gtkui/ui_manager.c:55
 #, fuzzy
 msgid "Show main menu"
 msgstr "Rādīt galveno atskaņotāja logu"
 
-#: src/gtkui/ui_manager.c:54
+#: src/gtkui/ui_manager.c:56
 msgid "Show/hide main menu"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:56
+#: src/gtkui/ui_manager.c:58
 #, fuzzy
 msgid "Show statusbar"
 msgstr "Statuss"
 
-#: src/gtkui/ui_manager.c:57
+#: src/gtkui/ui_manager.c:59
 #, fuzzy
 msgid "Show/hide statusbar"
 msgstr "Saglabāt repertuāru"
 
-#: src/gtkui/ui_manager.c:69 src/gtkui/ui_manager.c:70
-#: src/skins/ui_manager.c:170 src/skins/ui_manager.c:171
+#: src/gtkui/ui_manager.c:61
+#, fuzzy
+msgid "Show Column Headers"
+msgstr "Rādīt atskaņotāju"
+
+#: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74
+#: src/skins/ui_manager.c:172 src/skins/ui_manager.c:173
 msgid "Pause"
 msgstr "Pauze"
 
-#: src/gtkui/ui_manager.c:72 src/gtkui/ui_manager.c:73 src/hotkey/gui.c:73
-#: src/skins/ui_manager.c:173 src/skins/ui_manager.c:174
+#: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77 src/hotkey/gui.c:73
+#: src/skins/ui_manager.c:175 src/skins/ui_manager.c:176
 msgid "Stop"
 msgstr "Stop"
 
-#: src/gtkui/ui_manager.c:75 src/gtkui/ui_manager.c:76
-#: src/skins/ui_manager.c:176 src/skins/ui_manager.c:177
+#: src/gtkui/ui_manager.c:79 src/gtkui/ui_manager.c:80
+#: src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
 msgid "Previous"
 msgstr "Iepriekšējais"
 
-#: src/gtkui/ui_manager.c:78 src/gtkui/ui_manager.c:79
-#: src/skins/ui_manager.c:179 src/skins/ui_manager.c:180
+#: src/gtkui/ui_manager.c:82 src/gtkui/ui_manager.c:83
+#: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
 msgid "Next"
 msgstr "Nākamais"
 
-#: src/gtkui/ui_manager.c:84 src/skins/ui_manager.c:197
+#: src/gtkui/ui_manager.c:88 src/skins/ui_manager.c:199
 msgid "Playlist"
 msgstr "Repertuārs"
 
-#: src/gtkui/ui_manager.c:86 src/gtkui/ui_manager.c:87
-#: src/skins/ui_manager.c:199 src/skins/ui_manager.c:200
+#: src/gtkui/ui_manager.c:90 src/gtkui/ui_manager.c:91
+#: src/skins/ui_manager.c:201 src/skins/ui_manager.c:202
 msgid "New Playlist"
 msgstr "Jauns repertuārs"
 
-#: src/gtkui/ui_manager.c:89 src/gtkui/ui_manager.c:90
-#: src/skins/ui_manager.c:208 src/skins/ui_manager.c:209
+#: src/gtkui/ui_manager.c:93 src/gtkui/ui_manager.c:94
+#: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 msgid "Delete Playlist"
 msgstr "Dzēst repertuāru"
 
-#: src/gtkui/ui_manager.c:92
+#: src/gtkui/ui_manager.c:96
 #, fuzzy
 msgid "Import Playlist ..."
 msgstr "Ielādēt repertuāru"
 
-#: src/gtkui/ui_manager.c:93 src/skins/ui_manager.c:212
+#: src/gtkui/ui_manager.c:97 src/skins/ui_manager.c:214
 msgid "Loads a playlist file into the selected playlist."
 msgstr "Ielādē repertuāra failu izvēlētajā repertuārā."
 
-#: src/gtkui/ui_manager.c:95
+#: src/gtkui/ui_manager.c:99
 #, fuzzy
 msgid "Export Playlist ..."
 msgstr "Ielādēt repertuāru"
 
-#: src/gtkui/ui_manager.c:96 src/skins/ui_manager.c:215
+#: src/gtkui/ui_manager.c:100 src/skins/ui_manager.c:217
 msgid "Saves the selected playlist."
 msgstr "Saglabā izvēlēto repertuāru."
 
-#: src/gtkui/ui_manager.c:98 src/skins/ui_manager.c:217
+#: src/gtkui/ui_manager.c:102 src/skins/ui_manager.c:219
 msgid "Save All Playlists"
 msgstr "Saglabāt visus repertuārus"
 
-#: src/gtkui/ui_manager.c:99 src/skins/ui_manager.c:218
+#: src/gtkui/ui_manager.c:103 src/skins/ui_manager.c:220
 msgid ""
 "Saves all the playlists that are open. Note that this is done automatically "
 "when Audacious quits."
@@ -2845,246 +2858,278 @@ msgstr ""
 "Saglabā visus atvērtos repertuārus. Ievēro, ka tas tiek izdarīts "
 "automātiski, izejot no Audacious."
 
-#: src/gtkui/ui_manager.c:103
+#: src/gtkui/ui_manager.c:107
 #, fuzzy
 msgid "Refresh"
 msgstr "A_tsvaidzināt"
 
-#: src/gtkui/ui_manager.c:104 src/skins/ui_manager.c:223
+#: src/gtkui/ui_manager.c:108 src/skins/ui_manager.c:225
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr "Atsvaidzina ar repertuāra ierakstu saistītos metadatus."
 
-#: src/gtkui/ui_manager.c:107
+#: src/gtkui/ui_manager.c:111
+#, fuzzy
+msgid "Refresh Selected"
+msgstr "Izņemt iezīmētos"
+
+#: src/gtkui/ui_manager.c:112
+#, fuzzy
+msgid "Refreshes metadata associated with selected entries."
+msgstr "Atsvaidzina ar repertuāra ierakstu saistītos metadatus."
+
+#: src/gtkui/ui_manager.c:116
 msgid "Playlist Manager"
 msgstr "Repertuāru pārvaldnieks"
 
-#: src/gtkui/ui_manager.c:108 src/skins/ui_manager.c:227
+#: src/gtkui/ui_manager.c:117 src/skins/ui_manager.c:229
 msgid "Opens the playlist manager."
 msgstr "Atver repertuāru pārvaldnieku."
 
-#: src/gtkui/ui_manager.c:111
+#: src/gtkui/ui_manager.c:120
 #, fuzzy
 msgid "Add URL ..."
 msgstr "Pievienot failus..."
 
-#: src/gtkui/ui_manager.c:112 src/skins/ui_manager.c:237
+#: src/gtkui/ui_manager.c:121 src/skins/ui_manager.c:239
 msgid "Adds a remote track to the playlist."
 msgstr "Pievieno repertuāram attālinātu celiņu."
 
-#: src/gtkui/ui_manager.c:115
+#: src/gtkui/ui_manager.c:124
 #, fuzzy
 msgid "Add Files ..."
 msgstr "Pievienot failus..."
 
-#: src/gtkui/ui_manager.c:116 src/skins/ui_manager.c:241
+#: src/gtkui/ui_manager.c:125 src/skins/ui_manager.c:243
 msgid "Adds files to the playlist."
 msgstr "Pievieno failus repertuāram."
 
-#: src/gtkui/ui_manager.c:119 src/skins/ui_manager.c:264
+#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:266
 msgid "Remove All"
 msgstr "Izņemt visus"
 
-#: src/gtkui/ui_manager.c:120 src/skins/ui_manager.c:265
+#: src/gtkui/ui_manager.c:129 src/skins/ui_manager.c:267
 msgid "Removes all entries from the playlist."
 msgstr "Izņem no repertuāra visus ierakstus."
 
-#: src/gtkui/ui_manager.c:123 src/skins/ui_manager.c:290
+#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:292
 msgid "Remove Unselected"
 msgstr "Izņemt neiezīmētos"
 
-#: src/gtkui/ui_manager.c:124 src/skins/ui_manager.c:291
+#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:293
 msgid "Remove unselected entries from the playlist."
 msgstr "Izņem no repertuāra neiezīmētos ierakstus."
 
-#: src/gtkui/ui_manager.c:127 src/skins/ui_manager.c:294
+#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:296
 msgid "Remove Selected"
 msgstr "Izņemt iezīmētos"
 
-#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:295
+#: src/gtkui/ui_manager.c:137 src/skins/ui_manager.c:297
 msgid "Remove selected entries from the playlist."
 msgstr "Izņem no repertuāra iezīmētos ierakstus."
 
-#: src/gtkui/ui_manager.c:131
+#: src/gtkui/ui_manager.c:140
+msgid "Edit title"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:141
+#, fuzzy
+msgid "Edites the playlist title."
+msgstr "Sajauc repertuāra ierakstu atskaņošanas kārtību."
+
+#: src/gtkui/ui_manager.c:144
+msgid "Choose Columns ..."
+msgstr ""
+
+#: src/gtkui/ui_manager.c:147
 #, fuzzy
 msgid "Sort"
 msgstr "Ports"
 
-#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:330
-#: src/skins/ui_manager.c:360
+#: src/gtkui/ui_manager.c:148 src/skins/ui_manager.c:336
+#: src/skins/ui_manager.c:366
 msgid "By Track Number"
 msgstr "Pēc celiņa numura"
 
-#: src/gtkui/ui_manager.c:134 src/skins/ui_manager.c:278
-#: src/skins/ui_manager.c:306 src/skins/ui_manager.c:336
+#: src/gtkui/ui_manager.c:150 src/skins/ui_manager.c:280
+#: src/skins/ui_manager.c:312 src/skins/ui_manager.c:342
 msgid "By Title"
 msgstr "Pēc nosaukuma"
 
-#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:314
-#: src/skins/ui_manager.c:344
+#: src/gtkui/ui_manager.c:152 src/skins/ui_manager.c:320
+#: src/skins/ui_manager.c:350
 msgid "By Artist"
 msgstr "Pēc izpildītāja"
 
-#: src/gtkui/ui_manager.c:138 src/skins/ui_manager.c:310
-#: src/skins/ui_manager.c:340
+#: src/gtkui/ui_manager.c:154 src/skins/ui_manager.c:316
+#: src/skins/ui_manager.c:346
 msgid "By Album"
 msgstr "Pēc albuma"
 
-#: src/gtkui/ui_manager.c:140
+#: src/gtkui/ui_manager.c:156
 #, fuzzy
 msgid "By File Path"
 msgstr "Pēc faila nosaukuma"
 
-#: src/gtkui/ui_manager.c:142
+#: src/gtkui/ui_manager.c:158
+#, fuzzy
+msgid "By Formatted Title"
+msgstr "Pēc nosaukuma"
+
+#: src/gtkui/ui_manager.c:160
 #, fuzzy
 msgid "Reverse Order"
 msgstr "Apgrieztais balanss"
 
-#: src/gtkui/ui_manager.c:147
+#: src/gtkui/ui_manager.c:162
+msgid "Random Order"
+msgstr ""
+
+#: src/gtkui/ui_manager.c:167
 msgid "Output"
 msgstr "Izvade"
 
-#: src/gtkui/ui_manager.c:149 src/modplug/gui/interface.cxx:572
+#: src/gtkui/ui_manager.c:169 src/modplug/gui/interface.cxx:572
 msgid "Effects"
 msgstr "Efekti"
 
-#: src/gtkui/ui_manager.c:151
+#: src/gtkui/ui_manager.c:171
 #, fuzzy
 msgid "Equalizer"
 msgstr "Rādīt balansieri"
 
-#: src/gtkui/ui_manager.c:156 src/skins/ui_manager.c:232
+#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:234
 msgid "View"
 msgstr "Skatīt"
 
-#: src/gtkui/ui_manager.c:157 src/skins/ui_manager.c:233
+#: src/gtkui/ui_manager.c:177 src/skins/ui_manager.c:235
 #, fuzzy
 msgid "Interface"
 msgstr "gnt saskarne"
 
-#: src/gtkui/ui_manager.c:164 src/skins/ui_manager.c:370
+#: src/gtkui/ui_manager.c:184 src/skins/ui_manager.c:376
 msgid "File"
 msgstr "Fails"
 
-#: src/gtkui/ui_manager.c:167
+#: src/gtkui/ui_manager.c:187
 #, fuzzy
 msgid "Components"
 msgstr "Komentārs:"
 
-#: src/gtkui/ui_manager.c:169 src/gtkui/ui_manager.c:172
-#: src/skins/ui_manager.c:375 src/skins/ui_manager.c:378
+#: src/gtkui/ui_manager.c:189 src/gtkui/ui_manager.c:192
+#: src/skins/ui_manager.c:381 src/skins/ui_manager.c:384
 msgid "View Track Details"
 msgstr "Skatīt celiņa detaļas"
 
-#: src/gtkui/ui_manager.c:170 src/gtkui/ui_manager.c:173
-#: src/skins/ui_manager.c:376 src/skins/ui_manager.c:379
+#: src/gtkui/ui_manager.c:190 src/gtkui/ui_manager.c:193
+#: src/skins/ui_manager.c:382 src/skins/ui_manager.c:385
 msgid "View track details"
 msgstr "Skatīt celiņa detaļas"
 
-#: src/gtkui/ui_manager.c:175 src/gtkui/ui_manager.c:176
-#: src/skins/ui_manager.c:381 src/skins/ui_manager.c:382
+#: src/gtkui/ui_manager.c:195 src/gtkui/ui_manager.c:196
+#: src/skins/ui_manager.c:387 src/skins/ui_manager.c:388
 msgid "About Audacious"
 msgstr "Par Audacious"
 
-#: src/gtkui/ui_manager.c:178
+#: src/gtkui/ui_manager.c:198
 #, fuzzy
 msgid "Open Files ..."
 msgstr "Atvērt failus"
 
-#: src/gtkui/ui_manager.c:179 src/skins/ui_manager.c:385
+#: src/gtkui/ui_manager.c:199 src/skins/ui_manager.c:391
 msgid "Load and play a file"
 msgstr "Ielādēt un atskaņot failu"
 
-#: src/gtkui/ui_manager.c:181
+#: src/gtkui/ui_manager.c:201
 msgid "Open URL ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:182 src/skins/ui_manager.c:388
+#: src/gtkui/ui_manager.c:202 src/skins/ui_manager.c:394
 msgid "Play media from the selected location"
 msgstr "Atskaņot multitvides failu no izvēlētās vietas"
 
-#: src/gtkui/ui_manager.c:184 src/skins/ui_manager.c:390
+#: src/gtkui/ui_manager.c:204 src/skins/ui_manager.c:396
 msgid "Plugin services"
 msgstr "Spraudņu servisi"
 
-#: src/gtkui/ui_manager.c:186 src/skins/ui_manager.c:392
+#: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:398
 msgid "Preferences"
 msgstr "Iestatījumi"
 
-#: src/gtkui/ui_manager.c:187 src/skins/ui_manager.c:393
+#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:399
 msgid "Open preferences window"
 msgstr "Atver iestatījumu logu"
 
-#: src/gtkui/ui_manager.c:189 src/skins/ui_manager.c:395
+#: src/gtkui/ui_manager.c:209 src/skins/ui_manager.c:401
 msgid "_Quit"
 msgstr "I_ziet"
 
-#: src/gtkui/ui_manager.c:190 src/skins/ui_manager.c:396
+#: src/gtkui/ui_manager.c:210 src/skins/ui_manager.c:402
 msgid "Quit Audacious"
 msgstr "Aizver Audacious"
 
-#: src/gtkui/ui_manager.c:192 src/gtkui/ui_manager.c:193
-#: src/skins/ui_manager.c:398 src/skins/ui_manager.c:399
+#: src/gtkui/ui_manager.c:212 src/gtkui/ui_manager.c:213
+#: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
 msgid "Set A-B"
 msgstr "Uzstādīt A-B"
 
-#: src/gtkui/ui_manager.c:195 src/gtkui/ui_manager.c:196
-#: src/skins/ui_manager.c:401 src/skins/ui_manager.c:402
+#: src/gtkui/ui_manager.c:215 src/gtkui/ui_manager.c:216
+#: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
 msgid "Clear A-B"
 msgstr "Notīrīt A-B"
 
-#: src/gtkui/ui_manager.c:198 src/gtkui/ui_manager.c:199
-#: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
+#: src/gtkui/ui_manager.c:218 src/gtkui/ui_manager.c:219
+#: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
 msgid "Jump to Playlist Start"
 msgstr "Pāriet uz repertuāra sākumu"
 
-#: src/gtkui/ui_manager.c:201 src/gtkui/ui_manager.c:202 src/hotkey/gui.c:80
-#: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
+#: src/gtkui/ui_manager.c:221 src/gtkui/ui_manager.c:222 src/hotkey/gui.c:80
+#: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
 msgid "Jump to File"
 msgstr "Pāriet uz failu"
 
-#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:413
+#: src/gtkui/ui_manager.c:227 src/skins/ui_manager.c:419
 msgid "Queue Toggle"
 msgstr "Pārslēgt ierindošanau"
 
-#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:414
+#: src/gtkui/ui_manager.c:228 src/skins/ui_manager.c:420
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Ieslēdz/izslēdz repertuāra ieraksta ierindošanu."
 
-#: src/gtkui/ui_manager.c:211 src/skins/ui_manager.c:417
+#: src/gtkui/ui_manager.c:231 src/skins/ui_manager.c:423
 msgid "Copy"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:214 src/skins/ui_manager.c:419
+#: src/gtkui/ui_manager.c:234 src/skins/ui_manager.c:425
 #, fuzzy
 msgid "Cut"
 msgstr "Pielāgots"
 
-#: src/gtkui/ui_manager.c:217 src/skins/ui_manager.c:421
+#: src/gtkui/ui_manager.c:237 src/skins/ui_manager.c:427
 #, fuzzy
 msgid "Paste"
 msgstr "Ātrākais"
 
-#: src/gtkui/ui_manager.c:220 src/skins/ui_manager.c:254
+#: src/gtkui/ui_manager.c:240 src/skins/ui_manager.c:256
 msgid "Select All"
 msgstr "Iezīmēt visus"
 
-#: src/gtkui/ui_manager.c:221 src/skins/ui_manager.c:255
+#: src/gtkui/ui_manager.c:241 src/skins/ui_manager.c:257
 msgid "Selects all of the playlist entries."
 msgstr "Iezīmē visus repertuāra ierakstus."
 
-#: src/gtkui/ui_manager.c:224 src/skins/ui_manager.c:258
+#: src/gtkui/ui_manager.c:244 src/skins/ui_manager.c:260
 msgid "Select None"
 msgstr "Notīrīt iezīmējumu"
 
-#: src/gtkui/ui_manager.c:225 src/skins/ui_manager.c:259
+#: src/gtkui/ui_manager.c:245 src/skins/ui_manager.c:261
 msgid "Deselects all of the playlist entries."
 msgstr "Noņem iezīmējumu no visiem ierakstiem."
 
-#: src/gtkui/ui_statusbar.c:91 src/skins/ui_main.c:609
+#: src/gtkui/ui_statusbar.c:91 src/skins/ui_main.c:611
 msgid "mono"
 msgstr "mono"
 
-#: src/gtkui/ui_statusbar.c:94 src/skins/ui_main.c:608
+#: src/gtkui/ui_statusbar.c:94 src/skins/ui_main.c:610
 msgid "stereo"
 msgstr "stereo"
 
@@ -3238,7 +3283,7 @@ msgstr "Savienojuma režīms:"
 msgid "Enable debug printing"
 msgstr "Ieslēgt atkļūdošanas izvadi"
 
-#: src/jack/jack.c:437
+#: src/jack/jack.c:438
 msgid ""
 "XMMS jack Driver 0.17\n"
 "\n"
@@ -3256,39 +3301,39 @@ msgstr ""
 "Audacious porta autors\n"
 "Giacomo Lozito no develia.org"
 
-#: src/jack/jack.c:442
+#: src/jack/jack.c:443
 msgid "About JACK Output Plugin 0.17"
 msgstr "Par JACK izvades spraudni 0.17"
 
-#: src/ladspa/ladspa.c:824
+#: src/ladspa/ladspa.c:836
 msgid "This LADSPA plugin has no user controls"
 msgstr "Šim LADSPA spraudnim nav lietotāja vadīklu"
 
-#: src/ladspa/ladspa.c:865 src/ladspa/ladspa.c:952
+#: src/ladspa/ladspa.c:877 src/ladspa/ladspa.c:964
 msgid "Name"
 msgstr "Nosaukums"
 
-#: src/ladspa/ladspa.c:952
+#: src/ladspa/ladspa.c:964
 msgid "UID"
 msgstr "UID"
 
-#: src/ladspa/ladspa.c:1029
+#: src/ladspa/ladspa.c:1041
 msgid "Installed plugins"
 msgstr "Instalētie spraudņi"
 
-#: src/ladspa/ladspa.c:1037
+#: src/ladspa/ladspa.c:1049
 msgid "Running plugins"
 msgstr "Spraudņi, kas pašreiz darbojas"
 
-#: src/ladspa/ladspa.c:1052
+#: src/ladspa/ladspa.c:1064
 msgid "Add"
 msgstr "Pievienot"
 
-#: src/ladspa/ladspa.c:1055
+#: src/ladspa/ladspa.c:1067
 msgid "Remove"
 msgstr "Izņemt"
 
-#: src/ladspa/ladspa.c:1066
+#: src/ladspa/ladspa.c:1078
 msgid "LADSPA Plugin Catalog"
 msgstr "LADSPA spraudņu katalogs"
 
@@ -3362,42 +3407,38 @@ msgstr ""
 "%s: lūdzu, lasiet LIRC dokumentācijā\n"
 "%s: kā izveidot pareizu konf. failu\n"
 
-#: src/lirc/lirc.c:117
+#: src/lirc/lirc.c:118
 #, c-format
 msgid "%s: trying to reconnect...\n"
 msgstr "%s: mēģina pieslēgties vēlreiz...\n"
 
-#: src/lirc/lirc.c:332
+#: src/lirc/lirc.c:333
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
 msgstr "%s: nezināma komanda \"%s\"\n"
 
-#: src/lirc/lirc.c:342
+#: src/lirc/lirc.c:343
 #, c-format
 msgid "%s: disconnected from LIRC\n"
 msgstr "%s: atvienots no LIRC\n"
 
-#: src/lirc/lirc.c:346
+#: src/lirc/lirc.c:347
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr "%s: tiks mēģināts pieslēgties vēlreiz katras %d sekundes...\n"
 
-#: src/lyricwiki/lyricwiki.c:244
-msgid "LyricWiki"
-msgstr ""
-
-#: src/lyricwiki/lyricwiki.c:337
+#: src/lyricwiki/lyricwiki.c:322
 #, fuzzy
 msgid ""
 "\n"
 "No lyrics were found."
 msgstr "Nav atrasta neviena ierīce!"
 
-#: src/metronom/metronom.c:90
+#: src/metronom/metronom.c:92
 msgid "About Metronom"
 msgstr "Par Metronom"
 
-#: src/metronom/metronom.c:91
+#: src/metronom/metronom.c:93
 msgid ""
 "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
@@ -3411,12 +3452,12 @@ msgstr ""
 "piem., tact://77 , lai atskaņotu 77 sitienus minūtē\n"
 "vai tact://60*3/4 , lai atskaņotu 60 sit./min. 3/4 taktīs"
 
-#: src/metronom/metronom.c:145
+#: src/metronom/metronom.c:150
 #, c-format
 msgid "Tact generator: %d bpm"
 msgstr "Takts ģenerators: %d sit./min."
 
-#: src/metronom/metronom.c:147
+#: src/metronom/metronom.c:152
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "Takts ģenerators: %d sit./min. %d/%d"
@@ -3503,7 +3544,7 @@ msgstr "Apgabals"
 msgid "Bass Boost"
 msgstr "Basu uzsvēršana"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:174
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:180
 msgid "Surround"
 msgstr "Ieskaušana"
 
@@ -3658,15 +3699,15 @@ msgstr "Neizdevās atrast pikseļkartes failu: %s"
 msgid "Upload selected track(s)"
 msgstr "Augšupielādēt izvēlēto celiņu(s)"
 
-#: src/mtp_up/mtp.c:291
+#: src/mtp_up/mtp.c:292
 msgid "Upload in progress..."
 msgstr "Notiek augšupielāde..."
 
-#: src/mtp_up/mtp.c:300
+#: src/mtp_up/mtp.c:301
 msgid "MTP device handler"
 msgstr "MTP ierīces apstrādātājs"
 
-#: src/mtp_up/mtp.c:304
+#: src/mtp_up/mtp.c:305
 msgid "Disconnect the device"
 msgstr "Atvienot ierīci"
 
@@ -3844,11 +3885,11 @@ msgstr ""
 "Ja tā nav, rakstiet uz Free Software Foundation, Inc., 51 Franklin Street,\n"
 "Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/pulse_audio/pulse_audio.c:691
+#: src/pulse_audio/pulse_audio.c:692
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "Par Audacious PulseAudio izvades spraudni"
 
-#: src/pulse_audio/pulse_audio.c:692
+#: src/pulse_audio/pulse_audio.c:693
 #, fuzzy
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
@@ -3883,52 +3924,52 @@ msgstr ""
 "Ja tā nav, rakstiet uz Free Software Foundation, Inc., 51 Franklin Street,\n"
 "Fifth Floor, Boston, MA 02110-1301, USA.\n"
 
-#: src/resample/plugin.c:78
+#: src/resample/plugin.c:90
 #, fuzzy
 msgid "About Sample Rate Converter Plugin"
 msgstr "Par statusa ikonas spraudni"
 
-#: src/resample/plugin.c:134
+#: src/resample/plugin.c:145
 msgid "Sample Rate Converter Preferences"
 msgstr ""
 
-#: src/resample/plugin.c:146
+#: src/resample/plugin.c:157
 msgid "Rate mappings:"
 msgstr ""
 
-#: src/resample/plugin.c:169
+#: src/resample/plugin.c:180
 msgid "All others:"
 msgstr ""
 
-#: src/resample/plugin.c:181
+#: src/resample/plugin.c:192
 msgid "Method:"
 msgstr ""
 
-#: src/scrobbler/configure.c:152 src/scrobbler/configure.c:228
+#: src/scrobbler/configure.c:128 src/scrobbler/configure.c:204
 msgid "Change password"
 msgstr "Mainīt paroli"
 
-#: src/scrobbler/configure.c:174
+#: src/scrobbler/configure.c:150
 msgid "<b>Services</b>"
 msgstr "<b>Servisi</b>"
 
-#: src/scrobbler/configure.c:196
+#: src/scrobbler/configure.c:172
 msgid "Username:"
 msgstr "Lietotājvārds:"
 
-#: src/scrobbler/configure.c:202
+#: src/scrobbler/configure.c:178
 msgid "Password:"
 msgstr "Parole:"
 
-#: src/scrobbler/configure.c:210
+#: src/scrobbler/configure.c:186
 msgid "Scrobbler URL:"
 msgstr "Scrobbler URL:"
 
-#: src/scrobbler/configure.c:242
+#: src/scrobbler/configure.c:218
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:287
+#: src/scrobbler/configure.c:261
 msgid "Scrobbler"
 msgstr "Scrobbler"
 
@@ -4279,15 +4320,15 @@ msgstr "Export"
 msgid "Use"
 msgstr "Lietot"
 
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:430
+#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:436
 msgid "Save"
 msgstr "Saglabāt"
 
-#: src/sid/xs_interface.c:841 src/skins/ui_manager.c:429
+#: src/sid/xs_interface.c:841 src/skins/ui_manager.c:435
 msgid "Import"
 msgstr "Importēt"
 
-#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:431
+#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:437
 msgid "Delete"
 msgstr "Dzēst"
 
@@ -4580,11 +4621,11 @@ msgstr "Jā"
 msgid "No"
 msgstr "Nē"
 
-#: src/skins/plugin.c:179
+#: src/skins/plugin.c:180
 msgid "About Skinned GUI"
 msgstr "Par apdarināto GLS"
 
-#: src/skins/plugin.c:180
+#: src/skins/plugin.c:181
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -4592,7 +4633,7 @@ msgstr ""
 "Autortiesības (c) 2008, autors Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 
-#: src/skins/plugin.c:196
+#: src/skins/plugin.c:200
 msgid "Skinned Interface"
 msgstr "Apdarinātā saskarne"
 
@@ -4718,33 +4759,33 @@ msgstr "Audacious balansieris"
 msgid "Presets"
 msgstr "Gatavie regulējumi"
 
-#: src/skins/ui_main.c:593
+#: src/skins/ui_main.c:595
 msgid "kbps"
 msgstr ""
 
-#: src/skins/ui_main.c:601
+#: src/skins/ui_main.c:603
 #, fuzzy
 msgid "kHz"
 msgstr "Hz"
 
-#: src/skins/ui_main.c:608
+#: src/skins/ui_main.c:610
 #, fuzzy
 msgid "surround"
 msgstr "Ieskaušana"
 
-#: src/skins/ui_main.c:981
+#: src/skins/ui_main.c:983
 msgid "Audacious - visibility warning"
 msgstr "Audacious - redzamības brīdinājums"
 
-#: src/skins/ui_main.c:984
+#: src/skins/ui_main.c:986
 msgid "Show main player window"
 msgstr "Rādīt galveno atskaņotāja logu"
 
-#: src/skins/ui_main.c:985
+#: src/skins/ui_main.c:987
 msgid "Ignore"
 msgstr "Ignorēt"
 
-#: src/skins/ui_main.c:991
+#: src/skins/ui_main.c:993
 msgid ""
 "Audacious has been started with all of its windows hidden.\n"
 "You may want to show the player window again to control Audacious; "
@@ -4756,15 +4797,15 @@ msgstr ""
 "Audacious. Ja nē, jums nāksies to kontrolēt attālināti ar 'audtool' vai "
 "spraudņu (piemēram, sistēmjoslas ikonas spraudņa) palīdzību."
 
-#: src/skins/ui_main.c:997
+#: src/skins/ui_main.c:999
 msgid "Always ignore, show/hide is controlled remotely"
 msgstr "Vienmēr ignorēt, rādīt/slēpt tiek kontrolēts attālināti"
 
-#: src/skins/ui_main.c:1042
+#: src/skins/ui_main.c:1044
 msgid "Audacious - broken GTK engine usage warning"
 msgstr "Audacious - salauzta GTK dzinēja izmantošanas brīdinājums"
 
-#: src/skins/ui_main.c:1050
+#: src/skins/ui_main.c:1052
 #, c-format
 msgid ""
 "<big><b>Broken GTK engine in use</b></big>\n"
@@ -4786,485 +4827,493 @@ msgstr ""
 "\n"
 "Lai izmantotu šīs iespējas, lūdzu, izmantojiet citu GTK tēmu dzinēju."
 
-#: src/skins/ui_main.c:1061
+#: src/skins/ui_main.c:1063
 msgid "Do not display this warning again"
 msgstr "Vairs nerādīt šo brīdinājumu"
 
-#: src/skins/ui_main.c:1269
+#: src/skins/ui_main.c:1275
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
 msgstr "Pārlekt uz:%d:%-2.2d/%d:%-2.2d (%d%%)"
 
-#: src/skins/ui_main.c:1299
+#: src/skins/ui_main.c:1305
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Skaļums: %d%%"
 
-#: src/skins/ui_main.c:1322
+#: src/skins/ui_main.c:1328
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Balanss: %d%% pa kreisi"
 
-#: src/skins/ui_main.c:1324
+#: src/skins/ui_main.c:1330
 msgid "Balance: center"
 msgstr "Balanss: centrs"
 
-#: src/skins/ui_main.c:1326
+#: src/skins/ui_main.c:1332
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Balanss: %d%% pa labi"
 
-#: src/skins/ui_main.c:1618
+#: src/skins/ui_main.c:1624
 msgid "Options Menu"
 msgstr "Iestatījumu izvēlne"
 
-#: src/skins/ui_main.c:1622
+#: src/skins/ui_main.c:1628
 msgid "Disable 'Always On Top'"
 msgstr "Izslēgt 'Vienmēr virspusē'"
 
-#: src/skins/ui_main.c:1624
+#: src/skins/ui_main.c:1630
 msgid "Enable 'Always On Top'"
 msgstr "Ieslēgt 'Vienmēr virspusē'"
 
-#: src/skins/ui_main.c:1627
+#: src/skins/ui_main.c:1633
 msgid "File Info Box"
 msgstr "Faila info lodziņš"
 
-#: src/skins/ui_main.c:1631
+#: src/skins/ui_main.c:1637
 msgid "Disable 'GUI Scaling'"
 msgstr "Atslēgt 'GLS mērogošana'"
 
-#: src/skins/ui_main.c:1633
+#: src/skins/ui_main.c:1639
 msgid "Enable 'GUI Scaling'"
 msgstr "Ieslēgt 'GLS mērogošana'"
 
-#: src/skins/ui_main.c:1636
+#: src/skins/ui_main.c:1642
 msgid "Visualization Menu"
 msgstr "Vizualizēšanas izvēlne"
 
-#: src/skins/ui_main.c:2348
+#: src/skins/ui_main.c:2354
 msgid "Single mode."
 msgstr ""
 
-#: src/skins/ui_main.c:2350
+#: src/skins/ui_main.c:2356
 #, fuzzy
 msgid "Playlist mode."
 msgstr "Repertuārs"
 
-#: src/skins/ui_main.c:2374
+#: src/skins/ui_main.c:2380
 #, fuzzy
 msgid "Stopping after song."
 msgstr "Apturēt pēc pašreizējās dziesmas"
 
-#: src/skins/ui_main.c:2376
+#: src/skins/ui_main.c:2382
 msgid "Not stopping after song."
 msgstr ""
 
-#: src/skins/ui_manager.c:50 src/skins/ui_manager.c:51
+#: src/skins/ui_manager.c:52 src/skins/ui_manager.c:53
 msgid "Autoscroll Songname"
 msgstr "Automātiski tīt dziesmas nosaukumu"
 
-#: src/skins/ui_manager.c:56 src/skins/ui_manager.c:57
+#: src/skins/ui_manager.c:58 src/skins/ui_manager.c:59
 msgid "Peaks"
 msgstr "Maksimumi"
 
-#: src/skins/ui_manager.c:68 src/skins/ui_manager.c:69
+#: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Show Player"
 msgstr "Rādīt atskaņotāju"
 
-#: src/skins/ui_manager.c:71 src/skins/ui_manager.c:72
+#: src/skins/ui_manager.c:73 src/skins/ui_manager.c:74
 msgid "Show Playlist Editor"
 msgstr "Rādīt repertuāra redaktoru"
 
-#: src/skins/ui_manager.c:74 src/skins/ui_manager.c:75
+#: src/skins/ui_manager.c:76 src/skins/ui_manager.c:77
 msgid "Show Equalizer"
 msgstr "Rādīt balansieri"
 
-#: src/skins/ui_manager.c:77 src/skins/ui_manager.c:78
+#: src/skins/ui_manager.c:79 src/skins/ui_manager.c:80
 msgid "Always on Top"
 msgstr "Vienmēr virspusē"
 
-#: src/skins/ui_manager.c:80 src/skins/ui_manager.c:81
+#: src/skins/ui_manager.c:82 src/skins/ui_manager.c:83
 msgid "Put on All Workspaces"
 msgstr "Uzlikt uz visām darbvirsmām"
 
-#: src/skins/ui_manager.c:83 src/skins/ui_manager.c:84
+#: src/skins/ui_manager.c:85 src/skins/ui_manager.c:86
 msgid "Roll up Player"
 msgstr "Saritināt atskaņotāju"
 
-#: src/skins/ui_manager.c:86 src/skins/ui_manager.c:87
+#: src/skins/ui_manager.c:88 src/skins/ui_manager.c:89
 msgid "Roll up Playlist Editor"
 msgstr "Saritināt repertuāra redaktoru"
 
-#: src/skins/ui_manager.c:89 src/skins/ui_manager.c:90
+#: src/skins/ui_manager.c:91 src/skins/ui_manager.c:92
 msgid "Roll up Equalizer"
 msgstr "Saritināt balansieri"
 
-#: src/skins/ui_manager.c:92 src/sndstretch/sndstretch_xmms.c:393
+#: src/skins/ui_manager.c:94 src/sndstretch/sndstretch_xmms.c:393
 msgid "Scale"
 msgstr "Mērogot"
 
-#: src/skins/ui_manager.c:93
+#: src/skins/ui_manager.c:95
 msgid "DoubleSize"
 msgstr "Dubultizmērs"
 
-#: src/skins/ui_manager.c:95 src/skins/ui_manager.c:96
+#: src/skins/ui_manager.c:97 src/skins/ui_manager.c:98
 msgid "Easy Move"
 msgstr "Vienkāršā pārvietošana"
 
-#: src/skins/ui_manager.c:104
+#: src/skins/ui_manager.c:106
 msgid "Analyzer"
 msgstr "Analizators"
 
-#: src/skins/ui_manager.c:105
+#: src/skins/ui_manager.c:107
 msgid "Scope"
 msgstr "Loks"
 
-#: src/skins/ui_manager.c:106
+#: src/skins/ui_manager.c:108
 msgid "Voiceprint"
 msgstr "Balss vizualizēšana"
 
-#: src/skins/ui_manager.c:107
+#: src/skins/ui_manager.c:109
 msgid "Off"
 msgstr "Izslēgts"
 
-#: src/skins/ui_manager.c:111 src/skins/ui_manager.c:128
-#: src/skins/ui_manager.c:134
+#: src/skins/ui_manager.c:113 src/skins/ui_manager.c:130
+#: src/skins/ui_manager.c:136
 msgid "Normal"
 msgstr "Normāls"
 
-#: src/skins/ui_manager.c:112 src/skins/ui_manager.c:129
+#: src/skins/ui_manager.c:114 src/skins/ui_manager.c:131
 msgid "Fire"
 msgstr "Uguns"
 
-#: src/skins/ui_manager.c:113
+#: src/skins/ui_manager.c:115
 msgid "Vertical Lines"
 msgstr "Vertikālas līnijas"
 
-#: src/skins/ui_manager.c:117
+#: src/skins/ui_manager.c:119
 msgid "Lines"
 msgstr "Līnijas"
 
-#: src/skins/ui_manager.c:118
+#: src/skins/ui_manager.c:120
 msgid "Bars"
 msgstr "Joslas"
 
-#: src/skins/ui_manager.c:122
+#: src/skins/ui_manager.c:124
 msgid "Dot Scope"
 msgstr "Punktēts loks"
 
-#: src/skins/ui_manager.c:123
+#: src/skins/ui_manager.c:125
 msgid "Line Scope"
 msgstr "Līnijveida loks"
 
-#: src/skins/ui_manager.c:124
+#: src/skins/ui_manager.c:126
 msgid "Solid Scope"
 msgstr "Aizpildīts loks"
 
-#: src/skins/ui_manager.c:130
+#: src/skins/ui_manager.c:132
 msgid "Ice"
 msgstr "Ledus"
 
-#: src/skins/ui_manager.c:135
+#: src/skins/ui_manager.c:137
 msgid "Smooth"
 msgstr "Gluds"
 
-#: src/skins/ui_manager.c:139 src/skins/ui_manager.c:147
+#: src/skins/ui_manager.c:141 src/skins/ui_manager.c:149
 msgid "Slowest"
 msgstr "Lēnākais"
 
-#: src/skins/ui_manager.c:140 src/skins/ui_manager.c:148
+#: src/skins/ui_manager.c:142 src/skins/ui_manager.c:150
 msgid "Slow"
 msgstr "Lēni"
 
-#: src/skins/ui_manager.c:141 src/skins/ui_manager.c:149
+#: src/skins/ui_manager.c:143 src/skins/ui_manager.c:151
 msgid "Medium"
 msgstr "Vidēji"
 
-#: src/skins/ui_manager.c:142 src/skins/ui_manager.c:150
+#: src/skins/ui_manager.c:144 src/skins/ui_manager.c:152
 msgid "Fast"
 msgstr "Ātri"
 
-#: src/skins/ui_manager.c:143 src/skins/ui_manager.c:151
+#: src/skins/ui_manager.c:145 src/skins/ui_manager.c:153
 msgid "Fastest"
 msgstr "Ātrākais"
 
-#: src/skins/ui_manager.c:155
+#: src/skins/ui_manager.c:157
 msgid "Time Elapsed"
 msgstr "Pavadītais laiks"
 
-#: src/skins/ui_manager.c:156
+#: src/skins/ui_manager.c:158
 msgid "Time Remaining"
 msgstr "Atlikušais laiks"
 
-#: src/skins/ui_manager.c:185
+#: src/skins/ui_manager.c:187
 msgid "Visualization"
 msgstr "Vizualizēšana"
 
-#: src/skins/ui_manager.c:186
+#: src/skins/ui_manager.c:188
 msgid "Visualization Mode"
 msgstr "Vizualizēšanas režīms"
 
-#: src/skins/ui_manager.c:187
+#: src/skins/ui_manager.c:189
 msgid "Analyzer Mode"
 msgstr "Analizatora režīms"
 
-#: src/skins/ui_manager.c:188
+#: src/skins/ui_manager.c:190
 msgid "Scope Mode"
 msgstr "Loka režīms"
 
-#: src/skins/ui_manager.c:189
+#: src/skins/ui_manager.c:191
 msgid "Voiceprint Mode"
 msgstr "Balss vizualizēšanas režīms"
 
-#: src/skins/ui_manager.c:190
+#: src/skins/ui_manager.c:192
 msgid "WindowShade VU Mode"
 msgstr "Loga saritināšanas VU režīms"
 
-#: src/skins/ui_manager.c:191
+#: src/skins/ui_manager.c:193
 msgid "Analyzer Falloff"
 msgstr "Analizatora krišana"
 
-#: src/skins/ui_manager.c:192
+#: src/skins/ui_manager.c:194
 msgid "Peaks Falloff"
 msgstr "Maksimumu krišana"
 
-#: src/skins/ui_manager.c:202 src/skins/ui_manager.c:203
+#: src/skins/ui_manager.c:204 src/skins/ui_manager.c:205
 msgid "Select Next Playlist"
 msgstr "Iezīmēt nākamo repertuāru"
 
-#: src/skins/ui_manager.c:205 src/skins/ui_manager.c:206
+#: src/skins/ui_manager.c:207 src/skins/ui_manager.c:208
 msgid "Select Previous Playlist"
 msgstr "Iezīmēt iepriekšējo repertuāru"
 
-#: src/skins/ui_manager.c:222
+#: src/skins/ui_manager.c:224
 msgid "Refresh List"
 msgstr "Atsvaidzināt repertuāru"
 
-#: src/skins/ui_manager.c:226
+#: src/skins/ui_manager.c:228
 msgid "List Manager"
 msgstr "Repertuāru pārvaldnieks"
 
-#: src/skins/ui_manager.c:236
+#: src/skins/ui_manager.c:238
 msgid "Add Internet Address..."
 msgstr "Pievienot interneta adresi..."
 
-#: src/skins/ui_manager.c:240
+#: src/skins/ui_manager.c:242
 msgid "Add Files..."
 msgstr "Pievienot failus..."
 
-#: src/skins/ui_manager.c:246
+#: src/skins/ui_manager.c:248
 msgid "Search and Select"
 msgstr "Meklēt un iezīmēt"
 
-#: src/skins/ui_manager.c:247
+#: src/skins/ui_manager.c:249
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
 msgstr ""
 "Meklē un atlasa repertuāra ierakstus, balstoties uz norādītajiem kritērijiem."
 
-#: src/skins/ui_manager.c:250
+#: src/skins/ui_manager.c:252
 msgid "Invert Selection"
 msgstr "Apgriezt iezīmēto"
 
-#: src/skins/ui_manager.c:251
+#: src/skins/ui_manager.c:253
 msgid "Inverts the selected and unselected entries."
 msgstr "Invertē iezīmētos un neiezīmētos ierakstus."
 
-#: src/skins/ui_manager.c:268
+#: src/skins/ui_manager.c:270
 msgid "Clear Queue"
 msgstr "Notīrīt ierindošanu"
 
-#: src/skins/ui_manager.c:269
+#: src/skins/ui_manager.c:271
 msgid "Clears the queue associated with this playlist."
 msgstr "Notīra ar šo repertuāru saistīto ierindošanu."
 
-#: src/skins/ui_manager.c:272
+#: src/skins/ui_manager.c:274
 msgid "Remove Unavailable Files"
 msgstr "Izņemt nepieejamos failus"
 
-#: src/skins/ui_manager.c:273
+#: src/skins/ui_manager.c:275
 msgid "Removes unavailable files from the playlist."
 msgstr "Izņem no repertuāra nepieejamos failus."
 
-#: src/skins/ui_manager.c:276
+#: src/skins/ui_manager.c:278
 msgid "Remove Duplicates"
 msgstr "Izņemt dublikātus"
 
-#: src/skins/ui_manager.c:279
+#: src/skins/ui_manager.c:281
 msgid "Removes duplicate entries from the playlist by title."
 msgstr "Izņem no repertuāra dublikātus pēc nosaukuma."
 
-#: src/skins/ui_manager.c:282 src/skins/ui_manager.c:318
-#: src/skins/ui_manager.c:348
+#: src/skins/ui_manager.c:284 src/skins/ui_manager.c:324
+#: src/skins/ui_manager.c:354
 msgid "By Filename"
 msgstr "Pēc faila nosaukuma"
 
-#: src/skins/ui_manager.c:283
+#: src/skins/ui_manager.c:285
 msgid "Removes duplicate entries from the playlist by filename."
 msgstr "Izņem no repertuāra dublikātus pēc faila nosaukuma."
 
-#: src/skins/ui_manager.c:286 src/skins/ui_manager.c:322
-#: src/skins/ui_manager.c:352
+#: src/skins/ui_manager.c:288 src/skins/ui_manager.c:328
+#: src/skins/ui_manager.c:358
 msgid "By Path + Filename"
 msgstr "Pēc ceļa + faila nosaukuma"
 
-#: src/skins/ui_manager.c:287
+#: src/skins/ui_manager.c:289
 msgid "Removes duplicate entries from the playlist by their full path."
 msgstr "Izņem no repertuāra dublikātus pēc to pilna ceļa."
 
-#: src/skins/ui_manager.c:300
+#: src/skins/ui_manager.c:302
+msgid "Randomize List"
+msgstr "Sajaukt repertuāru"
+
+#: src/skins/ui_manager.c:303
+msgid "Randomizes the playlist."
+msgstr "Sajauc repertuāra ierakstu atskaņošanas kārtību."
+
+#: src/skins/ui_manager.c:306
 msgid "Reverse List"
 msgstr "Apgriezt repertuāru"
 
-#: src/skins/ui_manager.c:301
+#: src/skins/ui_manager.c:307
 msgid "Reverses the playlist."
 msgstr "Apgriež repertuāru."
 
-#: src/skins/ui_manager.c:304
+#: src/skins/ui_manager.c:310
 msgid "Sort List"
 msgstr "Kārtot repertuāru"
 
-#: src/skins/ui_manager.c:307 src/skins/ui_manager.c:337
+#: src/skins/ui_manager.c:313 src/skins/ui_manager.c:343
 msgid "Sorts the list by title."
 msgstr "Kārto repertuāru pēc nosaukuma."
 
-#: src/skins/ui_manager.c:311 src/skins/ui_manager.c:341
+#: src/skins/ui_manager.c:317 src/skins/ui_manager.c:347
 msgid "Sorts the list by album."
 msgstr "Kārto sarakstu pēc albuma."
 
-#: src/skins/ui_manager.c:315 src/skins/ui_manager.c:345
+#: src/skins/ui_manager.c:321 src/skins/ui_manager.c:351
 msgid "Sorts the list by artist."
 msgstr "Kārto repertuāru pēc izpildītāja."
 
-#: src/skins/ui_manager.c:319 src/skins/ui_manager.c:349
+#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
 msgid "Sorts the list by filename."
 msgstr "Kārto repertuāru pēc faila nosaukuma."
 
-#: src/skins/ui_manager.c:323 src/skins/ui_manager.c:353
+#: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 msgid "Sorts the list by full pathname."
 msgstr "Kārto repertuāru pēc pilnā ceļa."
 
-#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
+#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
 msgid "By Date"
 msgstr "Pēc datuma"
 
-#: src/skins/ui_manager.c:327 src/skins/ui_manager.c:357
+#: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "Sorts the list by modification time."
 msgstr "Kārto repertuāru pēc izmaiņas datuma."
 
-#: src/skins/ui_manager.c:331 src/skins/ui_manager.c:361
+#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
 msgid "Sorts the list by track number."
 msgstr "Kārto repertuāru pēc celiņa numura."
 
-#: src/skins/ui_manager.c:334
+#: src/skins/ui_manager.c:340
 msgid "Sort Selected"
 msgstr "Kārtot iezīmētos"
 
-#: src/skins/ui_manager.c:373
+#: src/skins/ui_manager.c:379
 msgid "Plugin Services"
 msgstr "Spraudņu servisi"
 
-#: src/skins/ui_manager.c:384
+#: src/skins/ui_manager.c:390
 msgid "Play File"
 msgstr "Atskaņot failu"
 
-#: src/skins/ui_manager.c:387
+#: src/skins/ui_manager.c:393
 msgid "Play Location"
 msgstr "Atskaņot vietu"
 
-#: src/skins/ui_manager.c:428
+#: src/skins/ui_manager.c:434
 msgid "Load"
 msgstr "Ielādēt"
 
-#: src/skins/ui_manager.c:433 src/skins/ui_manager.c:454
-#: src/skins/ui_manager.c:469
+#: src/skins/ui_manager.c:439 src/skins/ui_manager.c:460
+#: src/skins/ui_manager.c:475
 msgid "Preset"
 msgstr "Sākumuzstādījumi"
 
-#: src/skins/ui_manager.c:434
+#: src/skins/ui_manager.c:440
 msgid "Load preset"
 msgstr "Ielādēt sākumuzstādījumu"
 
-#: src/skins/ui_manager.c:436 src/skins/ui_manager.c:457
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:442 src/skins/ui_manager.c:463
+#: src/skins/ui_manager.c:478
 msgid "Auto-load preset"
 msgstr "Auto-ielādes sākumuzstādījums"
 
-#: src/skins/ui_manager.c:437
+#: src/skins/ui_manager.c:443
 msgid "Load auto-load preset"
 msgstr "Ielādē auto-ielādes sākumuzstādījumu"
 
-#: src/skins/ui_manager.c:440
+#: src/skins/ui_manager.c:446
 msgid "Load default preset into equalizer"
 msgstr "Ielādēt noklusēto sākumuzstādījumu"
 
-#: src/skins/ui_manager.c:442
+#: src/skins/ui_manager.c:448
 msgid "Zero"
 msgstr "Nulle"
 
-#: src/skins/ui_manager.c:443
+#: src/skins/ui_manager.c:449
 msgid "Set equalizer preset levels to zero"
 msgstr "Uzstādīt balansiera sākumuzstādījumu līmeņus uz 0"
 
-#: src/skins/ui_manager.c:445
+#: src/skins/ui_manager.c:451
 msgid "From file"
 msgstr "No faila"
 
-#: src/skins/ui_manager.c:446
+#: src/skins/ui_manager.c:452
 msgid "Load preset from file"
 msgstr "Ielādēt sākumuzstādījumu no faila"
 
-#: src/skins/ui_manager.c:448
+#: src/skins/ui_manager.c:454
 msgid "From WinAMP EQF file"
 msgstr "No WinAMP EQF faila"
 
-#: src/skins/ui_manager.c:449
+#: src/skins/ui_manager.c:455
 msgid "Load preset from WinAMP EQF file"
 msgstr "Ielādēt sākumuzstādījumu no WinAMP EQF faila"
 
-#: src/skins/ui_manager.c:451
+#: src/skins/ui_manager.c:457
 msgid "WinAMP Presets"
 msgstr "WinAMP sākumuzstādījumi"
 
-#: src/skins/ui_manager.c:452
+#: src/skins/ui_manager.c:458
 msgid "Import WinAMP presets"
 msgstr "Importēt WinAMP sākumuzstādījumus"
 
-#: src/skins/ui_manager.c:455
+#: src/skins/ui_manager.c:461
 msgid "Save preset"
 msgstr "Saglabāt sākumuzstādījumu"
 
-#: src/skins/ui_manager.c:458
+#: src/skins/ui_manager.c:464
 msgid "Save auto-load preset"
 msgstr "Saglabāt auto-ielādes sākumuzstādījumu"
 
-#: src/skins/ui_manager.c:461
+#: src/skins/ui_manager.c:467
 msgid "Save default preset"
 msgstr "Saglabāt noklusēto sākumuzstādījumu"
 
-#: src/skins/ui_manager.c:463
+#: src/skins/ui_manager.c:469
 msgid "To file"
 msgstr "Uz failu"
 
-#: src/skins/ui_manager.c:464
+#: src/skins/ui_manager.c:470
 msgid "Save preset to file"
 msgstr "Saglabāt sākumuzstādījumu failā"
 
-#: src/skins/ui_manager.c:466
+#: src/skins/ui_manager.c:472
 msgid "To WinAMP EQF file"
 msgstr "Uz WinAMP EQF failu"
 
-#: src/skins/ui_manager.c:467
+#: src/skins/ui_manager.c:473
 msgid "Save preset to WinAMP EQF file"
 msgstr "Saglabāt sākumuzstādījumu WinAMP EQF failā"
 
-#: src/skins/ui_manager.c:470
+#: src/skins/ui_manager.c:476
 msgid "Delete preset"
 msgstr "Dzēst sākumuzstādījumu"
 
-#: src/skins/ui_manager.c:473
+#: src/skins/ui_manager.c:479
 msgid "Delete auto-load preset"
 msgstr "Dzēst auto-ielādes sākumuzstādījumu"
 
@@ -5379,24 +5428,24 @@ msgstr "48 kHz"
 msgid "16 kHz"
 msgstr "48 kHz"
 
-#: src/skins/ui_skinselector.c:179
+#: src/skins/ui_skinselector.c:180
 msgid "Archived Winamp 2.x skin"
 msgstr "Arhivēta Winamp 2.x apdare"
 
-#: src/skins/ui_skinselector.c:184
+#: src/skins/ui_skinselector.c:185
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Atarhivēta Winamp 2.x apdare"
 
-#: src/skins/util.c:834
+#: src/skins/util.c:869
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "Neizdevās izveidot mapi (%s): %s\n"
 
-#: src/sndfile/plugin.c:531
+#: src/sndfile/plugin.c:454
 msgid "About sndfile plugin"
 msgstr "Par sndfile spraudni"
 
-#: src/sndfile/plugin.c:532
+#: src/sndfile/plugin.c:455
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -5459,30 +5508,31 @@ msgstr "Augstums"
 msgid "SndStretch - Configuration"
 msgstr "SndStretch - konfigurācija"
 
-#: src/song_change/song_change.c:397
+#: src/song_change/song_change.c:463
 msgid "Command to run when Audacious starts a new song."
 msgstr "Komanda, ko palaist, kad Audacious sāk atskaņot jaunu dziesmu."
 
-#: src/song_change/song_change.c:398 src/song_change/song_change.c:402
-#: src/song_change/song_change.c:406 src/song_change/song_change.c:410
+#: src/song_change/song_change.c:464 src/song_change/song_change.c:468
+#: src/song_change/song_change.c:472 src/song_change/song_change.c:476
 msgid "Command:"
 msgstr "Komanda:"
 
-#: src/song_change/song_change.c:401
+#: src/song_change/song_change.c:467
 msgid "Command to run toward the end of a song."
 msgstr "Komanda, ko palaist dziesmas beigās."
 
-#: src/song_change/song_change.c:405
+#: src/song_change/song_change.c:471
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Komanda, ko palaist, kad Audacious sasniedz repertuāra beigas."
 
-#: src/song_change/song_change.c:409
+#: src/song_change/song_change.c:475
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "Komanda, ko palaist, kad nomainās dziesmas nosaukums (piem., tīkla plūsmas)."
 
-#: src/song_change/song_change.c:413
+#: src/song_change/song_change.c:479
+#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -5495,7 +5545,10 @@ msgid ""
 "%n or %s: Song name\n"
 "%r: Rate (in bits per second)\n"
 "%t: Playlist position (%02d)\n"
-"%p: Currently playing (1 or 0)"
+"%p: Currently playing (1 or 0)\n"
+"%a: Artist\n"
+"%b: Album\n"
+"%r: Track title"
 msgstr ""
 "Varat izmantot sekojoša formāta virknes, kuras\n"
 "pirms komandas izsaukšanas tiks aizvietotas\n"
@@ -5510,7 +5563,7 @@ msgstr ""
 "%t: Repertuāra pozīcija (%02d)\n"
 "%p: Pašreiz atskaņo (1 vai 0)"
 
-#: src/song_change/song_change.c:437
+#: src/song_change/song_change.c:506
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -5518,23 +5571,23 @@ msgstr ""
 "<span size='small'>Parametrus, kuri tiek padoti čaulai, vajadzētu ietvert "
 "pēdiņās. Pretējā gadījumā rodas risks drošībai.</span>"
 
-#: src/song_change/song_change.c:448
+#: src/song_change/song_change.c:517
 msgid "Commands"
 msgstr "Komandas"
 
-#: src/song_change/song_change.c:484
+#: src/song_change/song_change.c:553
 msgid "Song Change"
 msgstr "Dziesmas maiņa"
 
-#: src/spectrum/spectrum.c:89
+#: src/spectrum/spectrum.c:90
 msgid "Spectrum Analyzer"
 msgstr "Spektra analizators"
 
-#: src/statusicon/statusicon.c:355
+#: src/statusicon/statusicon.c:377
 msgid "About Status Icon Plugin"
 msgstr "Par statusa ikonas spraudni"
 
-#: src/statusicon/statusicon.c:356
+#: src/statusicon/statusicon.c:378
 #, fuzzy
 msgid ""
 "Status Icon Plugin\n"
@@ -5551,33 +5604,46 @@ msgstr ""
 "Šis spraudnis nodrošina ar statusa ikonu, kas\n"
 "tiek novietota logu pārvaldnieka sistēmas ikonu joslā.\n"
 
-#: src/statusicon/statusicon.c:418
+#: src/statusicon/statusicon.c:446
 msgid "Status Icon Plugin - Preferences"
 msgstr "Statusa ikonas spraudnis - iestatījumi"
 
-#: src/statusicon/statusicon.c:428
+#: src/statusicon/statusicon.c:456
 msgid "Right-Click Menu"
 msgstr "Labā klikšķa izvēlne"
 
-#: src/statusicon/statusicon.c:433
+#: src/statusicon/statusicon.c:461
 msgid "Small playback menu #1"
 msgstr "Neliela atskaņošanas izvēlne #1"
 
-#: src/statusicon/statusicon.c:436
+#: src/statusicon/statusicon.c:464
 msgid "Small playback menu #2"
 msgstr "Neliela atskaņošanas izvēlne #2"
 
-#: src/statusicon/statusicon.c:452
+#: src/statusicon/statusicon.c:480
 msgid "Mouse Scroll Action"
 msgstr "Peles rullīša darbība"
 
-#: src/statusicon/statusicon.c:456
+#: src/statusicon/statusicon.c:484
 msgid "Change volume"
 msgstr "Mainīt skaļumu"
 
-#: src/statusicon/statusicon.c:458
+#: src/statusicon/statusicon.c:486
 msgid "Change playing song"
 msgstr "Mainīt atskaņojamo dziesmu"
+
+#: src/statusicon/statusicon.c:499
+#, fuzzy
+msgid "Other settings"
+msgstr "Miksera iestatījumi"
+
+#: src/statusicon/statusicon.c:504
+msgid "Disable the popup window"
+msgstr ""
+
+#: src/statusicon/statusicon.c:511
+msgid "Close to the notification area (system tray)"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:40
 msgid ""
@@ -5589,44 +5655,40 @@ msgstr ""
 "\n"
 "Autors Johan Levin 1999."
 
-#: src/stereo_plugin/stereo.c:64
+#: src/stereo_plugin/stereo.c:68
 msgid "About Extra Stereo Plugin"
 msgstr "Par Extra Stereo spraudni"
 
-#: src/stereo_plugin/stereo.c:100
+#: src/stereo_plugin/stereo.c:106
 msgid "Configure Extra Stereo"
 msgstr "Konfigurēt Extra Stereo"
 
-#: src/streambrowser/gui/streambrowser_win.c:62
+#: src/streambrowser/gui/streambrowser_win.c:74
 msgid "Search:"
 msgstr "Meklēt:"
 
-#: src/streambrowser/gui/streambrowser_win.c:81
-#: src/streambrowser/gui/streambrowser_win.c:370
+#: src/streambrowser/gui/streambrowser_win.c:93
+#: src/streambrowser/gui/streambrowser_win.c:369
 msgid "Add Bookmark"
 msgstr "Pievienot grāmatzīmi"
 
-#: src/streambrowser/gui/streambrowser_win.c:95
-msgid "Stream browser"
-msgstr "Plūsmu pārlūks"
-
-#: src/streambrowser/gui/streambrowser_win.c:319
+#: src/streambrowser/gui/streambrowser_win.c:318
 msgid "Stream name"
 msgstr "Plūsmas nosaukums"
 
-#: src/streambrowser/gui/streambrowser_win.c:326
+#: src/streambrowser/gui/streambrowser_win.c:325
 msgid "Now playing"
 msgstr "Pašreiz atskaņo"
 
-#: src/streambrowser/gui/streambrowser_win.c:367
+#: src/streambrowser/gui/streambrowser_win.c:366
 msgid "Remove Bookmark"
 msgstr "Dzēst grāmatzīmi"
 
-#: src/streambrowser/streambrowser.c:331
+#: src/streambrowser/streambrowser.c:340
 msgid "About Stream Browser"
 msgstr "Par plūsmu pārlūku"
 
-#: src/streambrowser/streambrowser.c:332
+#: src/streambrowser/streambrowser.c:341
 msgid ""
 "Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -5653,10 +5715,6 @@ msgstr ""
 "Paldies arī Tony Vroon par padomiem, vēlreiz.\n"
 "\n"
 "Šis bija Google Summer of Code 2008 projekts."
-
-#: src/streambrowser/streambrowser.c:357 src/streambrowser/streambrowser.c:367
-msgid "Streambrowser"
-msgstr "Plūsmu pārlūks"
 
 #: src/sun/about.c:30
 msgid "About the Sun Driver"
@@ -5694,11 +5752,11 @@ msgstr "XMMS izmanto tikai mikseri."
 msgid "Sun driver configuration"
 msgstr "Sun dziņa konfigurācija"
 
-#: src/tonegen/tonegen.c:53
+#: src/tonegen/tonegen.c:56
 msgid "About Tone Generator"
 msgstr "Par toņa ģeneratoru"
 
-#: src/tonegen/tonegen.c:55
+#: src/tonegen/tonegen.c:58
 msgid ""
 "Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
 "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
@@ -5712,12 +5770,12 @@ msgstr ""
 "Lai to izmantotu, ievadiet URL: tone://frekvence1;frekvence2;frekvence3;...\n"
 "piem., tone://2000;2005 , lai atskaņotu 2000Hz un 2005Hz toni"
 
-#: src/tonegen/tonegen.c:105
+#: src/tonegen/tonegen.c:108
 #, c-format
 msgid "%s %.1f Hz"
 msgstr "%s %.1f Hz"
 
-#: src/tonegen/tonegen.c:105
+#: src/tonegen/tonegen.c:108
 msgid "Tone Generator: "
 msgstr "Toņa ģenerators: "
 
@@ -5737,11 +5795,11 @@ msgstr "Ogg Vorbis tagi"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ogg Vorbis Audio spraudņa konfigurācija"
 
-#: src/vorbis/vorbis.c:549
+#: src/vorbis/vorbis.c:526
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Par Ogg Vorbis Audio spraudni"
 
-#: src/vorbis/vorbis.c:554
+#: src/vorbis/vorbis.c:531
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5799,12 +5857,12 @@ msgstr ""
 "\n"
 "Ieviešana iekš Audacious: Pavel Vymetalek <pvymetalek@seznam.cz>"
 
-#: src/wavpack/wavpack.c:371
+#: src/wavpack/wavpack.c:354
 #, c-format
 msgid "Wavpack Decoder Plugin %s"
 msgstr "Wavpack dekodētāja spraudnis %s"
 
-#: src/wavpack/wavpack.c:372
+#: src/wavpack/wavpack.c:355
 msgid ""
 "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
 "\n"
@@ -5815,6 +5873,23 @@ msgstr ""
 "\n"
 "Daļas spraudņa koda autors Miles Egan\n"
 "Apciemojiet Wavpack vietni http://www.wavpack.com/\n"
+
+#, fuzzy
+#~ msgid "Target volume:"
+#~ msgstr "Mainīt skaļumu"
+
+#, fuzzy
+#~ msgid "Effect strength:"
+#~ msgstr "Efekta intensitāte:"
+
+#~ msgid "FLAC Audio Plugin "
+#~ msgstr "FLAC audio spraudnis"
+
+#~ msgid "Stream browser"
+#~ msgstr "Plūsmu pārlūks"
+
+#~ msgid "Streambrowser"
+#~ msgstr "Plūsmu pārlūks"
 
 #~ msgid "PREAMP"
 #~ msgstr "PRIEKŠPASTIPRINĀT"
@@ -5969,12 +6044,6 @@ msgstr ""
 #~ "<b><big>Neizdevās saglabāt repertuāru.</big></b>\n"
 #~ "\n"
 #~ "Nezināms faila tips '%s'.\n"
-
-#~ msgid "Randomize List"
-#~ msgstr "Sajaukt repertuāru"
-
-#~ msgid "Randomizes the playlist."
-#~ msgstr "Sajauc repertuāra ierakstu atskaņošanas kārtību."
 
 #~ msgid "ALSA Gapless Output Plugin Preferences"
 #~ msgstr "ALSA bezstarplaiku spraudņa iestatījumi"
