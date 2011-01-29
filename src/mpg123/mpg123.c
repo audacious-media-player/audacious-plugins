@@ -204,7 +204,7 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 	return tuple;
 
 ERR:
-	fprintf (stderr, "mpg123 error: %s\n", mpg123_plain_strerror (result));
+	fprintf (stderr, "mpg123 probe error for %s: %s\n", filename, mpg123_plain_strerror (result));
 	mpg123_delete (decoder);
 	return NULL;
 }
@@ -419,7 +419,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 
 		if (ret < 0)
 		{
-			fprintf (stderr, "mpg123 error: %s\n", mpg123_plain_strerror (ret));
+			fprintf (stderr, "mpg123 error in %s: %s\n", filename, mpg123_plain_strerror (ret));
 
 			if (++ error_count >= 10)
 			{
@@ -446,7 +446,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 			 ctx.rate / 1000, SEEK_SET, & byteoff);
 			if (sampleoff < 0)
 			{
-				fprintf (stderr, "mpg123 error: %s\n", mpg123_strerror (ctx.decoder));
+				fprintf (stderr, "mpg123 error in %s: %s\n", filename, mpg123_strerror (ctx.decoder));
 				ctx.seek = -1;
 				g_cond_signal (ctrl_cond);
 				g_mutex_unlock(ctrl_mutex);

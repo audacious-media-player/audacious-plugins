@@ -32,6 +32,8 @@
 #ifndef H_DEBUG
 #define H_DEBUG
 
+#define ADL_DEBUG
+
 extern "C"
 {
         void AdPlug_LogFile(const char *filename);
