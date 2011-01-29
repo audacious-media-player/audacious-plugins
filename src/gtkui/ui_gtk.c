@@ -763,7 +763,6 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
 
     AUDDBG("check menu settings\n");
     check_set(toggleaction_group_others, "view menu", config.menu_visible);
-    check_set(toggleaction_group_others, "view playlists", config.playlist_visible);
     check_set(toggleaction_group_others, "view infoarea", config.infoarea_visible);
     check_set(toggleaction_group_others, "view statusbar", config.statusbar_visible);
     check_set(toggleaction_group_others, "playback repeat", aud_cfg->repeat);

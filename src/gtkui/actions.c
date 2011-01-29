@@ -96,11 +96,6 @@ void action_stop_after_current_song (GtkToggleAction * action)
     }
 }
 
-void action_view_playlist(GtkToggleAction *action)
-{
-    config.playlist_visible = gtk_toggle_action_get_active (action);
-}
-
 void action_view_infoarea(GtkToggleAction *action)
 {
     config.infoarea_visible = gtk_toggle_action_get_active (action);

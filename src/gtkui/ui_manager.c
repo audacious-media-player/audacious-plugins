@@ -46,9 +46,6 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
     {"playback no playlist advance", NULL, N_("No Playlist Advance"), "<Ctrl>N",
      N_("No Playlist Advance"), G_CALLBACK(action_playback_noplaylistadvance), FALSE},
 
-    {"view playlists", NULL, N_("Show playlists"), "<Shift><Ctrl>P",
-     N_("Show/hide playlists"), G_CALLBACK(action_view_playlist), FALSE},
-
     {"view infoarea", NULL, N_("Show infoarea"), "<Shift><Ctrl>I",
      N_("Show/hide infoarea"), G_CALLBACK(action_view_infoarea), FALSE},
 
@@ -108,10 +105,10 @@ static GtkActionEntry action_entries_playlist[] = {
      N_("Refreshes metadata associated with a playlist entry."),
      G_CALLBACK(action_playlist_refresh_list)},
 
-    {"playlist refresh selected", GTK_STOCK_REFRESH, N_("Refresh Selected"), 
+    {"playlist refresh selected", GTK_STOCK_REFRESH, N_("Refresh Selected"),
      "F6", N_("Refreshes metadata associated with selected entries."),
      G_CALLBACK(action_playlist_refresh_selected)},
-							
+
 
     {"playlist manager", AUD_STOCK_PLAYLIST, N_("Playlist Manager"), "P",
      N_("Opens the playlist manager."),
