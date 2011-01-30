@@ -58,7 +58,7 @@ static gulong volume_change_handler_id;
 #endif
 
 static GtkWidget * button_play, * button_pause, * button_stop, * slider,
- * label_time;
+ * label_time, * button_shuffle, * button_repeat;
 GtkWidget *playlist_box;
 GtkWidget *window;       /* the main window */
 GtkWidget *vbox;         /* the main vertical box */
@@ -457,6 +457,18 @@ static GtkWidget *gtk_toolbar_button_add(GtkWidget * toolbar, void (*callback) (
     return button;
 }
 
+static GtkWidget * toggle_button_new (const gchar * icon, void (* toggled)
+ (GtkToggleButton * button, void * user), void * user)
+{
+    GtkWidget * button = gtk_toggle_button_new ();
+    gtk_widget_set_can_focus (button, FALSE);
+    gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
+    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
+     (icon, GTK_ICON_SIZE_BUTTON));
+    g_signal_connect (button, "toggled", (GCallback) toggled, user);
+    return button;
+}
+
 static GtkWidget *gtk_markup_label_new(const gchar * str)
 {
     GtkWidget *label = gtk_label_new(str);
@@ -559,10 +571,39 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
     return TRUE;
 }
 
-static void stop_after_song_toggled (void * data, void * user)
+static void update_toggles (void * data, void * user)
 {
+    check_set (toggleaction_group_others, "playback repeat", aud_cfg->repeat);
+    check_set (toggleaction_group_others, "playback shuffle", aud_cfg->shuffle);
     check_set (toggleaction_group_others, "stop after current song",
      aud_cfg->stopaftersong);
+
+    if (gtk_toggle_button_get_active ((GtkToggleButton *) button_repeat) !=
+     aud_cfg->repeat)
+        gtk_toggle_button_set_active ((GtkToggleButton *) button_repeat,
+         aud_cfg->repeat);
+    if (gtk_toggle_button_get_active ((GtkToggleButton *) button_shuffle) !=
+     aud_cfg->shuffle)
+        gtk_toggle_button_set_active ((GtkToggleButton *) button_shuffle,
+         aud_cfg->shuffle);
+}
+
+static void toggle_repeat (GtkToggleButton * button, void * unused)
+{
+    if (aud_cfg->repeat != gtk_toggle_button_get_active (button))
+    {
+        aud_cfg->repeat = gtk_toggle_button_get_active (button);
+        hook_call ("toggle repeat", NULL);
+    }
+}
+
+static void toggle_shuffle (GtkToggleButton * button, void * unused)
+{
+    if (aud_cfg->shuffle != gtk_toggle_button_get_active (button))
+    {
+        aud_cfg->shuffle = gtk_toggle_button_get_active (button);
+        hook_call ("toggle shuffle", NULL);
+    }
 }
 
 static void config_save (void)
@@ -584,7 +625,9 @@ static void ui_hooks_associate(void)
     hook_associate("mainwin show", ui_mainwin_toggle_visibility, NULL);
     hook_associate("playlist update", ui_playlist_notebook_update, NULL);
     hook_associate ("playlist position", ui_playlist_notebook_position, NULL);
-    hook_associate("toggle stop after song", stop_after_song_toggled, NULL);
+    hook_associate ("toggle stop after song", update_toggles, NULL);
+    hook_associate ("toggle shuffle", update_toggles, NULL);
+    hook_associate ("toggle repeat", update_toggles, NULL);
     hook_associate ("config save", (HookFunction) config_save, NULL);
 }
 
@@ -599,7 +642,9 @@ static void ui_hooks_disassociate(void)
     hook_dissociate("mainwin show", ui_mainwin_toggle_visibility);
     hook_dissociate("playlist update", ui_playlist_notebook_update);
     hook_dissociate ("playlist position", ui_playlist_notebook_position);
-    hook_dissociate("toggle stop after song", stop_after_song_toggled);
+    hook_dissociate ("toggle stop after song", update_toggles);
+    hook_dissociate ("toggle shuffle", update_toggles);
+    hook_dissociate ("toggle repeat", update_toggles);
     hook_dissociate ("config save", (HookFunction) config_save);
 }
 
@@ -711,6 +756,11 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     gtk_box_pack_end ((GtkBox *) tophbox, volume, FALSE, FALSE, 0);
 #endif
 
+    button_shuffle = toggle_button_new ("stock_shuffle", toggle_shuffle, NULL);
+    gtk_box_pack_end ((GtkBox *) tophbox, button_shuffle, FALSE, FALSE, 0);
+    button_repeat = toggle_button_new ("stock_repeat", toggle_repeat, NULL);
+    gtk_box_pack_end ((GtkBox *) tophbox, button_repeat, FALSE, FALSE, 0);
+
     playlist_box = gtk_hbox_new(FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), playlist_box, TRUE, TRUE, 0);
 
@@ -776,12 +826,11 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     check_set(toggleaction_group_others, "view menu", config.menu_visible);
     check_set(toggleaction_group_others, "view infoarea", config.infoarea_visible);
     check_set(toggleaction_group_others, "view statusbar", config.statusbar_visible);
-    check_set(toggleaction_group_others, "playback repeat", aud_cfg->repeat);
-    check_set(toggleaction_group_others, "playback shuffle", aud_cfg->shuffle);
     check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
-    check_set(toggleaction_group_others, "stop after current song", aud_cfg->stopaftersong);
     check_set (toggleaction_group_others, "playlist show headers",
      config.playlist_headers);
+
+    update_toggles (NULL, NULL);
 
     AUDDBG("callback setup\n");
 

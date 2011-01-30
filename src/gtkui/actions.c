@@ -77,12 +77,20 @@ void action_playback_noplaylistadvance(GtkToggleAction * action)
 
 void action_playback_repeat(GtkToggleAction * action)
 {
-    aud_cfg->repeat = gtk_toggle_action_get_active(action);
+    if (aud_cfg->repeat != gtk_toggle_action_get_active (action))
+    {
+        aud_cfg->repeat = gtk_toggle_action_get_active (action);
+        hook_call ("toggle repeat", NULL);
+    }
 }
 
 void action_playback_shuffle(GtkToggleAction * action)
 {
-    aud_cfg->shuffle = gtk_toggle_action_get_active(action);
+    if (aud_cfg->shuffle != gtk_toggle_action_get_active (action))
+    {
+        aud_cfg->shuffle = gtk_toggle_action_get_active (action);
+        hook_call ("toggle shuffle", NULL);
+    }
 }
 
 void action_stop_after_current_song (GtkToggleAction * action)
