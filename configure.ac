@@ -216,6 +216,7 @@ AC_SUBST(USE_CHARDET)
 dnl plugin stuff
 dnl ========================
 
+BUILDSYS_INIT
 BUILDSYS_SHARED_LIB
 
 AC_MSG_CHECKING([if you are running Apple-GCC])
