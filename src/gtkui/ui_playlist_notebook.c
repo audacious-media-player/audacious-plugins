@@ -48,7 +48,7 @@ static gint switch_handler = 0;
 
 #if GTK_CHECK_VERSION (2, 10, 0)
 #define HAVE_REORDER
-static reorder_handler = 0;
+static gint reorder_handler = 0;
 #endif
 
 GtkNotebook *ui_playlist_get_notebook(void)
