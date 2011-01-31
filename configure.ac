@@ -291,7 +291,8 @@ AC_ARG_ENABLE(roar,
 if test "x$enable_roar" = "xyes"; then
     PKG_CHECK_MODULES(LIBROAR, [libroar],
          [have_roar=yes
-          OUTPUT_PLUGINS="$OUTPUT_PLUGINS roaraudio"],
+          OUTPUT_PLUGINS="$OUTPUT_PLUGINS roaraudio"
+          TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS roaraudio-vio"],
          [have_roar=no]
     )
 else
