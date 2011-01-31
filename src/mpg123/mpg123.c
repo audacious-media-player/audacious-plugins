@@ -374,7 +374,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 				ctx.tu = tuple_new_from_filename (filename);
 
 			changed = changed || update_stream_metadata(ctx.fd, "track-name", ctx.tu, FIELD_TITLE);
-			changed = changed || update_stream_metadata(ctx.fd, "stream-name", ctx.tu, FIELD_ALBUM);
+			changed = changed || update_stream_metadata(ctx.fd, "stream-name", ctx.tu, FIELD_ARTIST);
 
 			if (changed)
 			{
