@@ -317,6 +317,32 @@ else
 	have_coreaudio=no
 fi
 
+dnl *** Windows Wavemapper audio
+
+AC_ARG_ENABLE(winmm,
+    [  --disable-winmm         disable Windows Wavemapper output plugin (default=enabled)],
+    [have_winmm=$enableval],
+    [have_winmm="yes"]
+)
+
+if test "x$have_winmm" = "xyes"; then
+	AC_MSG_CHECKING([Windows Wavemapper Audio is supported])
+	case "$target" in
+	*mingw*)
+		OUTPUT_PLUGINS="$OUTPUT_PLUGINS winmm"
+		have_winmm=yes
+		AC_MSG_RESULT([yes])
+		;;
+	*)
+		have_winmm=no
+		AC_MSG_RESULT([no])
+		;;
+	esac
+else
+	AC_MSG_RESULT([*** Windows Wavemapper Audio plugin disabled per user request ***])
+	have_winmm=no
+fi
+
 dnl *** Dock Album Art (MacOS)
 
 AC_ARG_ENABLE(dockalbumart,
@@ -1702,6 +1728,7 @@ echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
 echo "    -> FileWriter FLAC output part:       $have_writer_flac"
 echo "  Null Audio output (null):               yes"
+echo "  Windows Wavemapper Audio output:        $have_winmm"
 echo
 echo "  Input Plugins"
 echo "  -------------"
