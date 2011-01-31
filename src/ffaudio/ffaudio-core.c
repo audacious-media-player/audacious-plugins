@@ -48,7 +48,7 @@ static gboolean ffaudio_init (void)
     av_register_all();
 
     AUDDBG("registering audvfsptr protocol\n");
-#if (LIBAVCODEC_VERSION_MAJOR <= 52) && (LIBAVCODEC_VERSION_MINOR <= 68)
+#if (LIBAVFORMAT_VERSION_MAJOR <= 52) && (LIBAVFORMAT_VERSION_MINOR <= 68)
     av_register_protocol(&audvfsptr_protocol);
 #else
     av_register_protocol2(&audvfsptr_protocol, sizeof(audvfsptr_protocol));
