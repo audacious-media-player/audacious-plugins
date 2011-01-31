@@ -401,6 +401,15 @@ static gboolean ui_infoarea_do_fade (UIInfoArea * area)
     return ret;
 }
 
+static gint strcmp_null (const gchar * a, const gchar * b)
+{
+    if (! a)
+        return (! b) ? 0 : -1;
+    if (! b)
+        return 1;
+    return strcmp (a, b);
+}
+
 void ui_infoarea_set_title (void * data, UIInfoArea * area)
 {
     if (! aud_drct_get_playing ())
@@ -412,6 +421,10 @@ void ui_infoarea_set_title (void * data, UIInfoArea * area)
     const gchar * title, * artist, * album;
     aud_playlist_entry_describe (playlist, entry, & title, & artist, & album,
      FALSE);
+
+    if (! strcmp_null (title, area->title) && ! strcmp_null (artist,
+     area->artist) && ! strcmp_null (album, area->album))
+        return;
 
     g_free (area->title);
     g_free (area->artist);
@@ -473,7 +486,7 @@ static void ui_infoarea_playback_stop (void * data, UIInfoArea * area)
 
 static void destroy_cb (GtkObject * parent, UIInfoArea * area)
 {
-    hook_dissociate ("title change", (HookFunction) ui_infoarea_set_title);
+    hook_dissociate ("playlist update", (HookFunction) ui_infoarea_set_title);
     hook_dissociate ("playback begin", (HookFunction)
      ui_infoarea_playback_start);
     hook_dissociate ("playback stop", (HookFunction)
@@ -511,7 +524,7 @@ GtkWidget * ui_infoarea_new (void)
     g_signal_connect_swapped(area->parent, "expose-event",
                              G_CALLBACK(ui_infoarea_expose_event), area);
 
-    hook_associate("title change", (HookFunction) ui_infoarea_set_title, area);
+    hook_associate ("playlist update", (HookFunction) ui_infoarea_set_title, area);
     hook_associate("playback begin", (HookFunction) ui_infoarea_playback_start, area);
     hook_associate("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
     hook_associate("visualization clear", (HookFunction) vis_clear_cb, area);
