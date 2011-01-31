@@ -120,10 +120,14 @@ give_up:
 					g_free(ret);
 					ret = NULL;
 				}
+
+				g_regex_unref(reg);
 			}
 
 			xmlFree(lyric);
 		}
+
+		xmlFreeDoc(doc);
 	}
 
 	return ret;
@@ -169,6 +173,8 @@ scrape_uri_from_lyricwiki_search_result(const gchar *buf, gsize len)
 				xmlFree(lyric);
 			}
 		}
+
+		xmlFreeDoc(doc);
 	}
 
 	return uri;
