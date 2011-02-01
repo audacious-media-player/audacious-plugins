@@ -40,6 +40,7 @@
 
 static GtkWidget * notebook = NULL;
 static GQueue follow_queue = G_QUEUE_INIT;
+static gint bolded_playlist = -1;
 
 static struct index *pages;
 GtkWidget *ui_playlist_notebook_tab_title_editing = NULL;
@@ -263,6 +264,7 @@ void ui_playlist_notebook_populate(void)
         ui_playlist_notebook_create_tab(count);
 
     gtk_notebook_set_current_page (UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active ());
+    bolded_playlist = aud_playlist_get_playing ();
 
     if (! switch_handler)
         switch_handler = g_signal_connect (notebook, "switch-page", (GCallback)
@@ -293,6 +295,17 @@ void ui_playlist_notebook_empty (void)
 static void do_follow (void)
 {
     gint lists = aud_playlist_count ();
+    gint playing = aud_playlist_get_playing ();
+
+    if (bolded_playlist != playing)
+    {
+        if (bolded_playlist >= 0)
+            set_tab_label (bolded_playlist, get_tab_label (bolded_playlist));
+        if (playing >= 0)
+            set_tab_label (playing, get_tab_label (playing));
+
+        bolded_playlist = playing;
+    }
 
     while (! g_queue_is_empty (& follow_queue))
     {
@@ -333,6 +346,7 @@ void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
         }
 
         gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active());
+        bolded_playlist = aud_playlist_get_playing ();
     }
 
     gint list, at, count;
