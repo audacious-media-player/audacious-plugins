@@ -756,9 +756,9 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     gtk_box_pack_end ((GtkBox *) tophbox, volume, FALSE, FALSE, 0);
 #endif
 
-    button_shuffle = toggle_button_new ("stock_shuffle", toggle_shuffle, NULL);
+    button_shuffle = toggle_button_new ("media-playlist-shuffle", toggle_shuffle, NULL);
     gtk_box_pack_end ((GtkBox *) tophbox, button_shuffle, FALSE, FALSE, 0);
-    button_repeat = toggle_button_new ("stock_repeat", toggle_repeat, NULL);
+    button_repeat = toggle_button_new ("media-playlist-repeat", toggle_repeat, NULL);
     gtk_box_pack_end ((GtkBox *) tophbox, button_repeat, FALSE, FALSE, 0);
 
     playlist_box = gtk_hbox_new(FALSE, 0);
