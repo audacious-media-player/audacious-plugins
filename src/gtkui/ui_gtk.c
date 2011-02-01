@@ -457,14 +457,25 @@ static GtkWidget *gtk_toolbar_button_add(GtkWidget * toolbar, void (*callback) (
     return button;
 }
 
-static GtkWidget * toggle_button_new (const gchar * icon, void (* toggled)
- (GtkToggleButton * button, void * user), void * user)
+static GtkWidget * toggle_button_new (const gchar * icon, const gchar * alt,
+ void (* toggled) (GtkToggleButton * button, void * user), void * user)
 {
     GtkWidget * button = gtk_toggle_button_new ();
     gtk_widget_set_can_focus (button, FALSE);
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
-    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
-     (icon, GTK_ICON_SIZE_BUTTON));
+
+    if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), icon))
+        gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
+         (icon, GTK_ICON_SIZE_BUTTON));
+    else
+    {
+        GtkWidget * label = gtk_label_new (NULL);
+        gchar * markup = g_markup_printf_escaped ("<small>%s</small>", alt);
+        gtk_label_set_markup ((GtkLabel *) label, markup);
+        g_free (markup);
+        gtk_container_add ((GtkContainer *) button, label);
+    }
+
     g_signal_connect (button, "toggled", (GCallback) toggled, user);
     return button;
 }
@@ -756,9 +767,11 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     gtk_box_pack_end ((GtkBox *) tophbox, volume, FALSE, FALSE, 0);
 #endif
 
-    button_shuffle = toggle_button_new ("media-playlist-shuffle", toggle_shuffle, NULL);
+    button_shuffle = toggle_button_new ("media-playlist-shuffle", "SHUF",
+     toggle_shuffle, NULL);
     gtk_box_pack_end ((GtkBox *) tophbox, button_shuffle, FALSE, FALSE, 0);
-    button_repeat = toggle_button_new ("media-playlist-repeat", toggle_repeat, NULL);
+    button_repeat = toggle_button_new ("media-playlist-repeat", "REP",
+     toggle_repeat, NULL);
     gtk_box_pack_end ((GtkBox *) tophbox, button_repeat, FALSE, FALSE, 0);
 
     playlist_box = gtk_hbox_new(FALSE, 0);
