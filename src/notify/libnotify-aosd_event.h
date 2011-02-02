@@ -24,4 +24,3 @@
 // Prototypes
 void event_init();
 void event_uninit();
-void event_playback_begin(gpointer p1, gpointer p2);
