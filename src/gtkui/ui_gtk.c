@@ -552,6 +552,15 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                      (aud_playlist_get_active ()), NULL);
                     break;
 
+                default:
+                    return FALSE;
+            }
+            break;
+
+	case GDK_CONTROL_MASK:
+            switch (event->keyval)
+            {
+                case GDK_ISO_Left_Tab:
                 case GDK_Tab:
                     action_playlist_next();
                     break;
@@ -561,8 +570,7 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
             }
             break;
 
-        case GDK_SHIFT_MASK:
-        {
+        case (GDK_CONTROL_MASK | GDK_SHIFT_MASK):
             switch (event->keyval)
             {
                 case GDK_ISO_Left_Tab:
@@ -574,7 +582,7 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                     return FALSE;
             }
             break;
-        }
+
         default:
             return FALSE;
     }
