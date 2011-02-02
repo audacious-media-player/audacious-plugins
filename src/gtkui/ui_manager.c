@@ -84,10 +84,10 @@ static GtkActionEntry action_entries_playlist[] = {
 
     {"playlist", NULL, N_("Playlist")},
 
-    {"playlist new", GTK_STOCK_NEW, N_("New Playlist"), "<Shift>N",
+    {"playlist new", GTK_STOCK_NEW, N_("New Playlist"), "<Ctrl>T",
      N_("New Playlist"), G_CALLBACK(action_playlist_new)},
 
-    {"playlist delete", GTK_STOCK_DELETE, N_("Delete Playlist"), "<Shift>D",
+    {"playlist delete", GTK_STOCK_DELETE, N_("Delete Playlist"), "<Ctrl>W",
      N_("Delete Playlist"), G_CALLBACK(action_playlist_delete)},
 
     {"playlist load", GTK_STOCK_OPEN, N_("Import Playlist ..."), "O",
