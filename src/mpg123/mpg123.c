@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2010 William Pitcock <nenolod@dereferenced.org>.
- * Copyright (c) 2010 John Lindgren <john.lindgren@tds.net>.
+ * Copyright (c) 2010-2011 John Lindgren <john.lindgren@tds.net>.
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -246,6 +246,33 @@ update_stream_metadata(VFSFile *file, const gchar *name, Tuple *tuple, gint item
 	return changed;
 }
 
+static Tuple * get_stream_tuple (InputPlayback * p, const gchar * filename,
+ VFSFile * file)
+{
+	Tuple * tuple = mpg123_probe_for_tuple (filename, file);
+	if (! tuple)
+		tuple = tuple_new_from_filename (filename);
+
+	update_stream_metadata (file, "track-name", tuple, FIELD_TITLE);
+	update_stream_metadata (file, "stream-name", tuple, FIELD_ARTIST);
+
+	mowgli_object_ref (tuple);
+	p->set_tuple (p, tuple);
+
+	return tuple;
+}
+
+static void update_stream_tuple (InputPlayback * p, VFSFile * file,
+ Tuple * tuple)
+{
+	if (update_stream_metadata (file, "track-name", tuple, FIELD_TITLE) ||
+	 update_stream_metadata (file, "stream-name", tuple, FIELD_ARTIST))
+	{
+		mowgli_object_ref (tuple);
+		p->set_tuple (p, tuple);
+	}
+}
+
 static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
  filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
@@ -263,6 +290,11 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 	memset(&fi, 0, sizeof(struct mpg123_frameinfo));
 
 	AUDDBG("playback worker started for %s\n", filename);
+
+	AUDDBG ("Checking for streaming ...\n");
+	g_return_val_if_fail (file, FALSE);
+	ctx.stream = vfs_is_streaming (file);
+	ctx.tu = ctx.stream ? get_stream_tuple (data, filename, file) : NULL;
 
 	ctx.seek = (start_time > 0) ? start_time : -1;
 	ctx.stop = FALSE;
@@ -300,16 +332,6 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 		 MPG123_ENC_SIGNED_16);
 
 	ctx.fd = file;
-
-	AUDDBG("checking if stream @%p is seekable\n", ctx.fd);
-	if (vfs_is_streaming(ctx.fd))
-	{
-		AUDDBG(" ... it's not.\n");
-		ctx.stream = TRUE;
-		ctx.tu = mpg123_probe_for_tuple (filename, file);
-	}
-	else
-		AUDDBG(" ... it is.\n");
 
 	gboolean error = FALSE;
 
@@ -365,23 +387,8 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 			bitrate_updated = data->output->written_time ();
 		}
 
-		/* deal with shoutcast titles nonsense */
 		if (ctx.stream)
-		{
-			gboolean changed = FALSE;
-
-			if (!ctx.tu)
-				ctx.tu = tuple_new_from_filename (filename);
-
-			changed = changed || update_stream_metadata(ctx.fd, "track-name", ctx.tu, FIELD_TITLE);
-			changed = changed || update_stream_metadata(ctx.fd, "stream-name", ctx.tu, FIELD_ARTIST);
-
-			if (changed)
-			{
-				mowgli_object_ref(ctx.tu);
-				data->set_tuple(data, ctx.tu);
-			}
-		}
+			update_stream_tuple (data, file, ctx.tu);
 
 		do
 		{
