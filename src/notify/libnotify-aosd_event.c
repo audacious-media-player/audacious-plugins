@@ -94,4 +94,5 @@ void event_uninit (void)
     hook_dissociate ("playback ready", (HookFunction) update);
     hook_dissociate ("playlist update", (HookFunction) update);
     hook_dissociate ("playback stop", (HookFunction) clear);
+    clear ();
 }
