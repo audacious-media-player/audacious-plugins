@@ -247,7 +247,6 @@ if test $enable_console = yes ; then
     INPUT_PLUGINS="$INPUT_PLUGINS console"
 fi
 
-
 dnl XSF
 dnl =======
 
@@ -298,6 +297,22 @@ if test "x$enable_roar" = "xyes"; then
 else
     AC_MSG_RESULT([*** roaraudio output plugin disabled per user request ***])
     have_roar=no
+fi
+
+dnl *** OpenAL
+
+AC_ARG_ENABLE(openal,
+ [  --disable-openal        disable OpenAL output plugin],
+ [enable_openal=$enableval], [enable_openal="yes"])
+
+if test $enable_openal = yes ; then
+    AC_CHECK_HEADERS([AL/al.h], [enable_openal=yes],
+     [AC_MSG_WARN([Cannot find OpenAL development headers; disabling OpenAL plugin])
+      enable_openal=no])
+fi
+
+if test $enable_openal = yes ; then
+    OUTPUT_PLUGINS="$OUTPUT_PLUGINS openal"
 fi
 
 dnl *** CoreAudio
@@ -1730,6 +1745,7 @@ echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
 echo "    -> FileWriter FLAC output part:       $have_writer_flac"
 echo "  Null Audio output (null):               yes"
 echo "  Windows Wavemapper Audio output:        $have_winmm"
+echo "  OpenAL:                                 $enable_openal"
 echo
 echo "  Input Plugins"
 echo "  -------------"
