@@ -276,9 +276,6 @@ gint xsf_is_our_fd(const gchar *filename, VFSFile *file)
 	if (!memcmp(magic, "PSF$", 4))
 		return 1;
 
-	if (!memcmp(magic, "PSF\"", 4))
-		return 1;
-
 	return 0;
 }
 
@@ -297,11 +294,11 @@ void xsf_seek(InputPlayback *playback, gint time)
 	g_mutex_unlock(seek_mutex);
 }
 
-static const gchar *xsf_fmts[] = { "2sf", "mini2sf", "gsf", "minigsf", NULL };
+static const gchar *xsf_fmts[] = { "2sf", "mini2sf", NULL };
 
 static InputPlugin xsf_ip =
 {
-	.description = "GSF/2SF Audio Plugin",
+	.description = "2SF Audio Plugin",
 	.init = xsf_init,
 	.cleanup = xsf_cleanup,
 	.play = xsf_play,
