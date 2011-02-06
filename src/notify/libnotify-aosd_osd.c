@@ -22,6 +22,10 @@
 #include <libnotify/notify.h>
 #include "libnotify-aosd_common.h"
 
+#ifndef NOTIFY_CHECK_VERSION
+#define NOTIFY_CHECK_VERSION(x,y,z) 0
+#endif
+
 NotifyNotification *notification = NULL;
 
 gboolean osd_init() {
@@ -55,7 +59,12 @@ void osd_show (const gchar * title, const gchar * _message, const gchar * icon,
 	GError *error = NULL;
 
 	if(notification == NULL) {
-		notification = notify_notification_new(title, message, pb == NULL ? icon : NULL, NULL);
+		notification = notify_notification_new(title, message, pb == NULL ? icon : NULL
+#if NOTIFY_CHECK_VERSION (0, 7, 0)
+		);
+#else
+		, NULL);
+#endif
 		g_signal_connect(notification, "closed", G_CALLBACK(osd_closed_handler), NULL);
 		AUDDBG("new osd created! (notification=%p)\n", notification);
 	} else {
