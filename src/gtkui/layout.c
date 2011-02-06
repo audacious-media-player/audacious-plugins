@@ -32,31 +32,25 @@
 
 #define LAYOUT_FILE "gtkui-layout"
 
-enum {
- PANE_LEFT,
- PANE_RIGHT,
- PANE_TOP,
- PANE_BOTTOM,
- PANES};
+enum {DOCK_LEFT, DOCK_RIGHT, DOCK_TOP, DOCK_BOTTOM, DOCKS};
 
-#define IS_VERTICAL(p) ((p) & 2)
-#define IS_AFTER(p) ((p) & 1)
+#define IS_VERTICAL(d) ((d) & 2)
+#define IS_AFTER(d) ((d) & 1)
 
-#define NULL_ON_DESTROY(w) g_signal_connect ((w), "destroy", \
- (GCallback) gtk_widget_destroyed, & (w))
+#define NULL_ON_DESTROY(w) g_signal_connect ((w), "destroy", (GCallback) \
+ gtk_widget_destroyed, & (w))
 
 typedef struct {
-    GtkWidget * widget, * vbox, * window;
     gchar * name;
-    gint pane;
-    gint x, y, w, h;
+    GtkWidget * widget, * vbox, * paned, * window;
+    gint dock, x, y, w, h;
 } Item;
 
 static GList * items = NULL;
 
 static GtkWidget * layout = NULL;
 static GtkWidget * center = NULL;
-static GtkWidget * panes[PANES] = {NULL, NULL, NULL, NULL};
+static GtkWidget * docks[DOCKS] = {NULL, NULL, NULL, NULL};
 static GtkWidget * menu = NULL;
 
 GtkWidget * layout_new (void)
@@ -71,30 +65,31 @@ GtkWidget * layout_new (void)
 void layout_add_center (GtkWidget * widget)
 {
     g_return_if_fail (layout && ! center && widget);
-    gtk_container_add ((GtkContainer *) layout, (center = widget));
+    center = widget;
+    gtk_container_add ((GtkContainer *) layout, center);
     NULL_ON_DESTROY (center);
 }
 
-static void layout_move (GtkWidget * widget, gint pane);
+static void layout_move (GtkWidget * widget, gint dock);
 
 static void layout_dock_left (GtkWidget * widget)
 {
-    layout_move (widget, PANE_LEFT);
+    layout_move (widget, DOCK_LEFT);
 }
 
 static void layout_dock_right (GtkWidget * widget)
 {
-    layout_move (widget, PANE_RIGHT);
+    layout_move (widget, DOCK_RIGHT);
 }
 
 static void layout_dock_top (GtkWidget * widget)
 {
-    layout_move (widget, PANE_TOP);
+    layout_move (widget, DOCK_TOP);
 }
 
 static void layout_dock_bottom (GtkWidget * widget)
 {
-    layout_move (widget, PANE_BOTTOM);
+    layout_move (widget, DOCK_BOTTOM);
 }
 
 static void layout_undock (GtkWidget * widget)
@@ -115,18 +110,10 @@ static gboolean menu_cb (GtkWidget * widget, GdkEventButton * event)
     menu = gtk_menu_new ();
     g_signal_connect (menu, "destroy", (GCallback) gtk_widget_destroyed, & menu);
 
-    const gchar * names[5] = {
-     N_("Dock at Left"),
-     N_("Dock at Right"),
-     N_("Dock at Top"),
-     N_("Dock at Bottom"),
-     N_("Undock")};
-    void (* const funcs[5]) (GtkWidget * widget) = {
-     layout_dock_left,
-     layout_dock_right,
-     layout_dock_top,
-     layout_dock_bottom,
-     layout_undock};
+    const gchar * names[5] = {N_("Dock at Left"), N_("Dock at Right"),
+     N_("Dock at Top"), N_("Dock at Bottom"), N_("Undock")};
+    void (* const funcs[5]) (GtkWidget * widget) = {layout_dock_left,
+     layout_dock_right, layout_dock_top, layout_dock_bottom, layout_undock};
 
     for (gint i = 0; i < 5; i ++)
     {
@@ -149,7 +136,8 @@ static GtkWidget * vbox_new (GtkWidget * widget, const gchar * name)
 
     GtkWidget * ebox = gtk_event_box_new ();
     gtk_box_pack_start ((GtkBox *) vbox, ebox, FALSE, FALSE, 0);
-    g_signal_connect_swapped (ebox, "button-press-event", (GCallback) menu_cb, widget);
+    g_signal_connect_swapped (ebox, "button-press-event", (GCallback) menu_cb,
+     widget);
 
     GtkWidget * label = gtk_label_new (NULL);
     gchar * markup = g_markup_printf_escaped ("<small><b>%s</b></small>", name);
@@ -159,6 +147,8 @@ static GtkWidget * vbox_new (GtkWidget * widget, const gchar * name)
     gtk_container_add ((GtkContainer *) ebox, label);
 
     gtk_box_pack_start ((GtkBox *) vbox, widget, TRUE, TRUE, 0);
+
+    gtk_widget_show_all (vbox);
 
     return vbox;
 }
@@ -181,32 +171,17 @@ static gboolean restore_size_cb (RestoreSizeData * d)
     return FALSE;
 }
 
-static GtkWidget * paned_add (GtkWidget * parent, GtkWidget * vbox,
- gboolean vertical, gboolean after, gint w, gint h)
+static GtkWidget * paned_new (gboolean vertical, gboolean after, gint w, gint h)
 {
-    g_return_val_if_fail (parent && vbox, NULL);
-
-    GtkWidget * child = gtk_bin_get_child ((GtkBin *) parent);
-    g_return_val_if_fail (child, NULL);
-    g_object_ref ((GObject *) child);
-    gtk_container_remove ((GtkContainer *) parent, child);
-
     GtkWidget * paned = vertical ? gtk_vpaned_new () : gtk_hpaned_new ();
-    gtk_container_add ((GtkContainer *) parent, paned);
 
-    GtkWidget * socket = gtk_alignment_new (0, 0, 1, 1);
-    gtk_paned_pack1 ((GtkPaned *) paned, after ? socket : vbox, after, FALSE);
-    gtk_paned_pack2 ((GtkPaned *) paned, after ? vbox : socket, ! after, FALSE);
+    GtkWidget * mine = gtk_alignment_new (0, 0, 1, 1);
+    GtkWidget * next = gtk_alignment_new (0, 0, 1, 1);
+    gtk_paned_pack1 ((GtkPaned *) paned, after ? next : mine, after, FALSE);
+    gtk_paned_pack2 ((GtkPaned *) paned, after ? mine : next, ! after, FALSE);
 
-    gtk_container_add ((GtkContainer *) socket, child);
-    g_object_unref (child);
-
-    g_object_set_data ((GObject *) paned, "parent", parent);
-    g_object_set_data ((GObject *) paned, "vbox", vbox);
-    g_object_set_data ((GObject *) paned, "socket", socket);
-
-    if (child != center)
-        g_object_set_data ((GObject *) child, "parent", socket);
+    g_object_set_data ((GObject *) paned, "mine", mine);
+    g_object_set_data ((GObject *) paned, "next", next);
 
     gtk_widget_show_all (paned);
 
@@ -217,7 +192,7 @@ static GtkWidget * paned_add (GtkWidget * parent, GtkWidget * vbox,
             /* hack to set the size of the second pane */
             RestoreSizeData * d = g_slice_new (RestoreSizeData);
             d->paned = paned;
-            d->widget = vbox;
+            d->widget = mine;
             d->vertical = vertical;
             d->w = w;
             d->h = h;
@@ -230,35 +205,14 @@ static GtkWidget * paned_add (GtkWidget * parent, GtkWidget * vbox,
     return paned;
 }
 
-static void paned_remove (GtkWidget * paned)
-{
-    g_return_if_fail (paned);
-
-    GtkWidget * parent = g_object_get_data ((GObject *) paned, "parent");
-    GtkWidget * socket = g_object_get_data ((GObject *) paned, "socket");
-    g_return_if_fail (parent && socket);
-    GtkWidget * child = gtk_bin_get_child ((GtkBin *) socket);
-    g_return_if_fail (child);
-
-    g_object_ref ((GObject *) child);
-    gtk_container_remove ((GtkContainer *) socket, child);
-    gtk_widget_destroy (paned);
-    gtk_container_add ((GtkContainer *) parent, child);
-    g_object_unref (child);
-
-    if (child != center)
-        g_object_set_data ((GObject *) child, "parent", parent);
-}
-
 static Item * item_new (const gchar * name)
 {
     Item * item = g_slice_new (Item);
     item->name = g_strdup (name);
-    item->widget = item->vbox = item->window = NULL;
-    item->pane = -1;
-    item->x = item->y = -1;
+    item->widget = item->vbox = item->paned = item->window = NULL;
+    item->dock = item->x = item->y = -1;
     item->w = item->h = 0;
-    items = g_list_prepend (items, item);
+    items = g_list_append (items, item);
     return item;
 }
 
@@ -277,97 +231,199 @@ static gboolean delete_cb (void)
     return TRUE;
 }
 
-static void item_add (Item * item)
+static GtkWidget * dock_get_parent (gint dock)
 {
-    g_return_if_fail (item->name && item->widget && item->vbox && ! item->window);
+    g_return_val_if_fail (dock >= 0 && dock < DOCKS, NULL);
 
-    if (item->pane < 0)
+    for (gint scan = dock; scan --; )
     {
-        item->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-        NULL_ON_DESTROY (item->window);
-
-        gtk_window_set_title ((GtkWindow *) item->window, item->name);
-        gtk_container_set_border_width ((GtkContainer *) item->window, 3);
-        g_signal_connect (item->window, "delete-event", (GCallback) delete_cb, NULL);
-
-        if (item->x >= 0 && item->y >= 0)
-            gtk_window_move ((GtkWindow *) item->window, item->x, item->y);
-        if (item->w > 0 && item->h > 0)
-            gtk_window_set_default_size ((GtkWindow *) item->window, item->w, item->h);
-
-        gtk_container_add ((GtkContainer *) item->window, item->vbox);
-        gtk_widget_show_all (item->window);
+        if (docks[scan])
+            return g_object_get_data ((GObject *) docks[scan], "next");
     }
-    else
+
+    return layout;
+}
+
+static Item * item_get_prev (Item * item)
+{
+    GList * this = g_list_find (items, item);
+    g_return_val_if_fail (this, NULL);
+
+    for (GList * node = this->prev; node; node = node->prev)
     {
-        g_return_if_fail (item->pane < PANES && ! panes[item->pane]);
-
-        GtkWidget * parent = layout;
-
-        for (gint scan = item->pane; scan --; )
-        {
-            if (panes[scan])
-            {
-                parent = g_object_get_data ((GObject *) panes[scan], "socket");
-                g_return_if_fail (parent);
-                break;
-            }
-        }
-
-        panes[item->pane] = paned_add (parent, item->vbox, IS_VERTICAL (item->pane),
-         IS_AFTER (item->pane), item->w, item->h);
-        NULL_ON_DESTROY (panes[item->pane]);
+        Item * test = node->data;
+        if (test->widget && test->dock == item->dock)
+            return test;
     }
+
+    return NULL;
+}
+
+static Item * item_get_next (Item * item)
+{
+    GList * this = g_list_find (items, item);
+    g_return_val_if_fail (this, NULL);
+
+    for (GList * node = this->next; node; node = node->next)
+    {
+        Item * test = node->data;
+        if (test->widget && test->dock == item->dock)
+            return test;
+    }
+
+    return NULL;
+}
+
+static GtkWidget * item_get_parent (Item * item)
+{
+    Item * prev = item_get_prev (item);
+    return prev ? g_object_get_data ((GObject *) prev->paned, "next") :
+     g_object_get_data ((GObject *) docks[item->dock], "mine");
 }
 
 static void item_save_size (Item * item)
 {
     g_return_if_fail (item->widget && item->vbox);
 
-    GdkRectangle * rect = & item->vbox->allocation;
+    item->w = item->vbox->allocation.width;
+    item->h = item->vbox->allocation.height;
 
-    if (item->pane < 0)
+    if (item->dock < 0)
     {
         g_return_if_fail (item->window);
-
         gtk_window_get_position ((GtkWindow *) item->window, & item->x, & item->y);
-        item->w = rect->width;
-        item->h = rect->height;
-    }
-    else
-    {
-        g_return_if_fail (! item->window && item->pane < PANES && panes[item->pane]);
-
-        if (IS_VERTICAL (item->pane))
-            item->h = rect->height;
-        else
-            item->w = rect->width;
     }
 }
 
-static void item_remove (Item * item, gboolean keep_vbox)
+static void item_add (Item * item)
+{
+    g_return_if_fail (item->name && item->widget && item->vbox && ! item->paned
+     && ! item->window && item->dock < DOCKS);
+
+    if (item->dock < 0)
+    {
+        item->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+        NULL_ON_DESTROY (item->window);
+
+        gtk_window_set_title ((GtkWindow *) item->window, item->name);
+        gtk_container_set_border_width ((GtkContainer *) item->window, 3);
+        g_signal_connect (item->window, "delete-event", (GCallback) delete_cb,
+         NULL);
+
+        if (item->x >= 0 && item->y >= 0)
+            gtk_window_move ((GtkWindow *) item->window, item->x, item->y);
+        if (item->w > 0 && item->h > 0)
+            gtk_window_set_default_size ((GtkWindow *) item->window, item->w,
+             item->h);
+
+        gtk_container_add ((GtkContainer *) item->window, item->vbox);
+        gtk_widget_show_all (item->window);
+    }
+    else
+    {
+        /* Screwy logic to figure out where we need to add a GtkPaned and which
+         * widget goes in which pane of it. */
+        gboolean swap = FALSE;
+        Item * where = item;
+        GtkWidget * parent, * paned;
+
+        if (docks[item->dock])
+        {
+            if (! item_get_next (item))
+            {
+                swap = TRUE;
+                where = item_get_prev (item);
+                g_return_if_fail (where && ! where->paned);
+                item_save_size (where);
+            }
+
+            parent = item_get_parent (where);
+            g_return_if_fail (parent);
+
+            paned = paned_new (! IS_VERTICAL (where->dock), FALSE, where->w,
+             where->h);
+            where->paned = paned;
+            NULL_ON_DESTROY (where->paned);
+        }
+        else
+        {
+            parent = dock_get_parent (item->dock);
+            g_return_if_fail (parent);
+
+            paned = paned_new (IS_VERTICAL (item->dock), IS_AFTER (item->dock),
+             item->w, item->h);
+            docks[item->dock] = paned;
+            NULL_ON_DESTROY (docks[item->dock]);
+        }
+
+        GtkWidget * mine = g_object_get_data ((GObject *) paned, "mine");
+        GtkWidget * next = g_object_get_data ((GObject *) paned, "next");
+        GtkWidget * child = gtk_bin_get_child ((GtkBin *) parent);
+        g_return_if_fail (mine && next && child);
+
+        g_object_ref (child);
+        gtk_container_remove ((GtkContainer *) parent, child);
+        gtk_container_add ((GtkContainer *) parent, paned);
+        gtk_container_add ((GtkContainer *) (swap ? next : mine), item->vbox);
+        gtk_container_add ((GtkContainer *) (swap ? mine : next), child);
+        g_object_unref (child);
+    }
+}
+
+static void item_remove (Item * item)
 {
     g_return_if_fail (item->widget && item->vbox);
 
     item_save_size (item);
 
-    if (item->pane < 0)
+    if (item->dock < 0)
     {
         g_return_if_fail (item->window);
-
-        if (keep_vbox)
-            gtk_container_remove ((GtkContainer *) item->window, item->vbox);
-
+        gtk_container_remove ((GtkContainer *) item->window, item->vbox);
         gtk_widget_destroy (item->window);
     }
     else
     {
-        g_return_if_fail (! item->window && item->pane < PANES && panes[item->pane]);
+        /* Screwy logic to figure out which GtkPaned we need to remove and which
+         * pane of it has the widget we need to keep. */
+        gboolean swap = FALSE;
+        Item * where = item;
+        GtkWidget * parent, * paned;
 
-        if (keep_vbox)
-            gtk_container_remove ((GtkContainer *) panes[item->pane], item->vbox);
+        Item * prev = item_get_prev (item);
+        if (item->paned || prev)
+        {
+            if (! item->paned)
+            {
+                swap = TRUE;
+                where = item_get_prev (item);
+                g_return_if_fail (where && where->paned);
+            }
 
-        paned_remove (panes[item->pane]);
+            parent = item_get_parent (where);
+            g_return_if_fail (parent);
+
+            paned = where->paned;
+        }
+        else
+        {
+            parent = dock_get_parent (item->dock);
+            g_return_if_fail (parent);
+
+            paned = docks[item->dock];
+        }
+
+        GtkWidget * mine = g_object_get_data ((GObject *) paned, "mine");
+        GtkWidget * next = g_object_get_data ((GObject *) paned, "next");
+        GtkWidget * child = gtk_bin_get_child ((GtkBin *) (swap ? mine : next));
+        g_return_if_fail (mine && next && child);
+
+        g_object_ref (child);
+        gtk_container_remove ((GtkContainer *) (swap ? next : mine), item->vbox);
+        gtk_container_remove ((GtkContainer *) (swap ? mine : next), child);
+        gtk_container_remove ((GtkContainer *) parent, paned);
+        gtk_container_add ((GtkContainer *) parent, child);
+        g_object_unref (child);
     }
 }
 
@@ -382,9 +438,8 @@ void layout_add (GtkWidget * widget, const gchar * name)
     if (item)
     {
         g_return_if_fail (! item->widget && ! item->vbox && ! item->window);
-
-        if (item->pane < 0 || item->pane >= PANES || panes[item->pane])
-            item->pane = -1;
+        if (item->dock >= DOCKS)
+            item->dock = -1;
     }
     else
         item = item_new (name);
@@ -397,12 +452,9 @@ void layout_add (GtkWidget * widget, const gchar * name)
     item_add (item);
 }
 
-static void layout_move (GtkWidget * widget, gint pane)
+static void layout_move (GtkWidget * widget, gint dock)
 {
-    g_return_if_fail (layout && center && widget && pane < PANES);
-
-    if (pane >= 0 && panes[pane])
-        return;
+    g_return_if_fail (layout && center && widget && dock < DOCKS);
 
     GList * node = g_list_find_custom (items, widget, (GCompareFunc) item_by_widget);
     g_return_if_fail (node && node->data);
@@ -411,8 +463,10 @@ static void layout_move (GtkWidget * widget, gint pane)
     g_return_if_fail (item->vbox);
     g_object_ref (item->vbox);
 
-    item_remove (item, TRUE);
-    item->pane = pane;
+    item_remove (item);
+    items = g_list_remove_link (items, node);
+    item->dock = dock;
+    items = g_list_concat (items, node);
     item_add (item);
 
     g_object_unref (item->vbox);
@@ -430,7 +484,7 @@ void layout_remove (GtkWidget * widget)
     g_return_if_fail (node && node->data);
     Item * item = node->data;
 
-    item_remove (item, FALSE);
+    item_remove (item);
     g_return_if_fail (! item->widget && ! item->vbox && ! item->window);
 }
 
@@ -453,7 +507,7 @@ void layout_save (void)
             item_save_size (item);
 
         fprintf (handle, "item %s\npane %d\nx %d\ny %d\nw %d\nh %d\n",
-         item->name, item->pane, item->x, item->y, item->w, item->h);
+         item->name, item->dock, item->x, item->y, item->w, item->h);
     }
 
     fclose (handle);
@@ -515,7 +569,7 @@ void layout_load (void)
         Item * item = item_new (name);
 
         parse_next (handle);
-        if (! parse_integer ("pane", & item->pane))
+        if (! parse_integer ("pane", & item->dock))
             break;
         parse_next (handle);
         if (! parse_integer ("x", & item->x))
