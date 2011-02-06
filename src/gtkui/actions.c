@@ -747,6 +747,11 @@ void playlist_sort_album (void)
     playlist_sort_scheme (PLAYLIST_SORT_ALBUM);
 }
 
+void playlist_sort_date (void)
+{
+    playlist_sort_scheme (PLAYLIST_SORT_DATE);
+}
+
 void playlist_sort_path (void)
 {
     playlist_sort_scheme (PLAYLIST_SORT_PATH);

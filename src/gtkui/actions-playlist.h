@@ -61,6 +61,7 @@ void playlist_sort_track (void);
 void playlist_sort_title (void);
 void playlist_sort_artist (void);
 void playlist_sort_album (void);
+void playlist_sort_date (void);
 void playlist_sort_path (void);
 void playlist_sort_formatted_title (void);
 void playlist_reverse (void);

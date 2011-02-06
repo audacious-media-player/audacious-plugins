@@ -150,6 +150,8 @@ static GtkActionEntry action_entries_playlist[] = {
   playlist_sort_artist},
  {"playlist sort album", NULL, N_("By Album"), NULL, NULL, (GCallback)
   playlist_sort_album},
+ {"playlist sort date", NULL, N_("By Release Date"), NULL, NULL, (GCallback)
+  playlist_sort_date},
  {"playlist sort path", NULL, N_("By File Path"), NULL, NULL, (GCallback)
   playlist_sort_path},
  {"playlist sort formatted title", NULL, N_("By Formatted Title"), NULL, NULL,
