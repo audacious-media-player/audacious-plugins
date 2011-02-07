@@ -367,8 +367,45 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 
 	g_mutex_unlock(ctrl_mutex);
 
-	while (stop_time < 0 || data->output->written_time () < stop_time)
+	while (1)
 	{
+		g_mutex_lock (ctrl_mutex);
+
+		if (ctx.stop)
+		{
+			g_mutex_unlock (ctrl_mutex);
+			break;
+		}
+
+		if (ctx.seek >= 0)
+		{
+			off_t byteoff, sampleoff;
+
+			sampleoff = mpg123_feedseek (ctx.decoder, (gint64) ctx.seek *
+			 ctx.rate / 1000, SEEK_SET, & byteoff);
+
+			if (sampleoff < 0)
+			{
+				fprintf (stderr, "mpg123 error in %s: %s\n", filename,
+				 mpg123_strerror (ctx.decoder));
+				ctx.seek = -1;
+				g_cond_signal (ctrl_cond);
+				g_mutex_unlock (ctrl_mutex);
+			}
+			else
+			{
+				AUDDBG ("seeking to %d (byte %d)\n", (gint) ctx.seek, (gint)
+				 byteoff);
+				vfs_fseek (ctx.fd, byteoff, SEEK_SET);
+				data->output->flush (ctx.seek);
+				ctx.seek = -1;
+			}
+
+			g_cond_signal (ctrl_cond);
+		}
+
+		g_mutex_unlock (ctrl_mutex);
+
 		gint16 outbuf[ctx.channels * (ctx.rate / 100)];
 		gsize outbuf_size;
 
@@ -390,6 +427,8 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 		if (ctx.stream)
 			update_stream_tuple (data, file, ctx.tu);
 
+		gboolean stop = FALSE;
+
 		do
 		{
 			guchar buf[16384];
@@ -397,32 +436,33 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 
 			if (ret == MPG123_NEED_MORE)
 			{
-				MPG123_IODBG("mpg123 requested more data\n");
-
-				len = vfs_fread(buf, 1, 16384, ctx.fd);
-				if (len <= 0)
-				{
-					if (len == 0)
-					{
-						MPG123_IODBG("stream EOF (well, read failed)\n");
-						mpg123_decode (ctx.decoder, NULL, 0, (guchar *) outbuf,
-						 sizeof outbuf, & outbuf_size);
-
-						MPG123_IODBG("passing %ld bytes of audio\n", outbuf_size);
-						data->output->write_audio (outbuf, outbuf_size);
-						goto decode_cleanup;
-					}
-					else
-						goto decode_cleanup;
-				}
-
-				MPG123_IODBG("got %ld bytes for mpg123\n", len);
+				len = vfs_fread (buf, 1, sizeof buf, ctx.fd);
+				if (len < sizeof buf)
+					stop = TRUE;
 			}
 
 			ret = mpg123_decode (ctx.decoder, buf, len, (guchar *) outbuf,
 			 sizeof outbuf, & outbuf_size);
+
+			if (stop_time >= 0)
+			{
+				gint64 remain = (stop_time - data->output->written_time ()) *
+				 (gint64) ctx.rate / 1000 * (2 * ctx.channels);
+				remain = MAX (0, remain);
+
+				if (outbuf_size >= remain)
+				{
+					outbuf_size = remain;
+					stop = TRUE;
+				}
+			}
+
 			data->output->write_audio (outbuf, outbuf_size);
-		} while (ret == MPG123_NEED_MORE);
+
+			if (stop)
+				goto decode_cleanup;
+		}
+		while (ret == MPG123_NEED_MORE);
 
 		if (ret < 0)
 		{
@@ -436,39 +476,6 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 		}
 		else
 			error_count = 0;
-
-		g_mutex_lock(ctrl_mutex);
-
-		if (ctx.stop)
-		{
-			g_mutex_unlock(ctrl_mutex);
-			break;
-		}
-
-		if (ctx.seek != -1)
-		{
-			off_t byteoff, sampleoff;
-
-			sampleoff = mpg123_feedseek (ctx.decoder, (gint64) ctx.seek *
-			 ctx.rate / 1000, SEEK_SET, & byteoff);
-			if (sampleoff < 0)
-			{
-				fprintf (stderr, "mpg123 error in %s: %s\n", filename, mpg123_strerror (ctx.decoder));
-				ctx.seek = -1;
-				g_cond_signal (ctrl_cond);
-				g_mutex_unlock(ctrl_mutex);
-				continue;
-			}
-
-			AUDDBG ("seeking to %d (byte %d)\n", (gint) ctx.seek, (gint) byteoff);
-			data->output->flush (ctx.seek);
-			vfs_fseek(ctx.fd, byteoff, SEEK_SET);
-			ctx.seek = -1;
-
-			g_cond_signal(ctrl_cond);
-		}
-
-		g_mutex_unlock(ctrl_mutex);
 	}
 
 decode_cleanup:
