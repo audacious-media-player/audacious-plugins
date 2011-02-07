@@ -91,38 +91,6 @@ const Tuple *tuple = NULL;
 
 static gint64 samples_written;
 
-static gboolean file_init (void);
-static void file_about(void);
-static gint file_open(gint fmt, gint rate, gint nch);
-static void file_write(void *ptr, gint length);
-static gint file_write_output(void *ptr, gint length);
-static void file_close(void);
-static void file_flush(gint time);
-static void file_pause (gboolean p);
-static gint file_get_time (void);
-static void file_configure(void);
-
-OutputPlugin file_op =
-{
-    .description = "FileWriter Plugin",
-    .probe_priority = 0,
-    .init = file_init,
-    .about = file_about,
-    .configure = file_configure,
-    .open_audio = file_open,
-    .write_audio = file_write,
-    .close_audio = file_close,
-    .flush = file_flush,
-    .set_written_time = file_flush,
-    .pause = file_pause,
-    .output_time = file_get_time,
-    .written_time = file_get_time,
-};
-
-OutputPlugin *file_oplist[] = { &file_op, NULL };
-
-SIMPLE_OUTPUT_PLUGIN (filewriter, file_oplist)
-
 FileWriter *plugins[FILEEXT_MAX] = {
     &wav_plugin,
 #ifdef FILEWRITER_MP3
@@ -142,6 +110,11 @@ static void set_plugin(void)
         fileext = 0;
 
     plugin = plugins[fileext];
+}
+
+static gint file_write_output (void * data, gint length)
+{
+    return vfs_fwrite (data, 1, length, output_file);
 }
 
 static gboolean file_init (void)
@@ -317,9 +290,8 @@ static void file_write(void *ptr, gint length)
     samples_written += length / FMT_SIZEOF (input.format);
 }
 
-static gint file_write_output(void *ptr, gint length)
+static void file_drain (void)
 {
-    return vfs_fwrite(ptr, 1, length, output_file);
 }
 
 static void file_close(void)
@@ -334,8 +306,20 @@ static void file_close(void)
 
 static void file_flush(gint time)
 {
-    file_close();
-    file_open(input.format, input.frequency, input.channels);
+    samples_written = time * (gint64) input.channels * input.frequency / 1000;
+}
+
+static void file_set_written_time (gint time)
+{
+    /* Guesswork:
+     * If time = 0, we are starting a new song and need to open a new file.  If
+     * time > 0, we have already done this, and we are just setting the time
+     * counter. */
+    if (! time)
+    {
+        file_close ();
+        file_open (input.format, input.frequency, input.channels);
+    }
 
     samples_written = time * (gint64) input.channels * input.frequency / 1000;
 }
@@ -608,3 +592,23 @@ static void file_configure(void)
         gtk_widget_show_all(configure_win);
     }
 }
+
+static OutputPlugin file_op = {
+ .description = "FileWriter Plugin",
+ .init = file_init,
+ .about = file_about,
+ .configure = file_configure,
+ .probe_priority = 0,
+ .open_audio = file_open,
+ .close_audio = file_close,
+ .write_audio = file_write,
+ .drain = file_drain,
+ .written_time = file_get_time,
+ .output_time = file_get_time,
+ .pause = file_pause,
+ .flush = file_flush,
+ .set_written_time = file_set_written_time};
+
+static OutputPlugin * file_oplist[] = {& file_op, NULL};
+
+SIMPLE_OUTPUT_PLUGIN (filewriter, file_oplist)
