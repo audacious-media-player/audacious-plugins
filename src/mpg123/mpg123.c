@@ -367,6 +367,9 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 
 	g_mutex_unlock(ctrl_mutex);
 
+	gint64 frames_played = 0;
+	gint64 frames_total = (stop_time - start_time) * ctx.rate / 1000;
+
 	while (1)
 	{
 		g_mutex_lock (ctrl_mutex);
@@ -398,6 +401,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 				 byteoff);
 				vfs_fseek (ctx.fd, byteoff, SEEK_SET);
 				data->output->flush (ctx.seek);
+				frames_played = (ctx.seek - start_time) * ctx.rate / 1000;
 				ctx.seek = -1;
 			}
 
@@ -446,8 +450,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 
 			if (stop_time >= 0)
 			{
-				gint64 remain = (stop_time - data->output->written_time ()) *
-				 (gint64) ctx.rate / 1000 * (2 * ctx.channels);
+				gint64 remain = 2 * ctx.channels * (frames_total - frames_played);
 				remain = MAX (0, remain);
 
 				if (outbuf_size >= remain)
@@ -458,6 +461,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 			}
 
 			data->output->write_audio (outbuf, outbuf_size);
+			frames_played += outbuf_size / (2 * ctx.channels);
 
 			if (stop)
 				goto decode_cleanup;
