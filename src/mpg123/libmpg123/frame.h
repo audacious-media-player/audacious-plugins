@@ -394,8 +394,4 @@ void frame_set_seek(mpg123_handle *fr, off_t sp);
 off_t frame_tell_seek(mpg123_handle *fr);
 /* Take a copy of the Xing VBR TOC for fuzzy seeking. */
 int frame_fill_toc(mpg123_handle *fr, unsigned char* in);
-
-
-/* adjust volume to current outscale and rva values if wanted */
-void do_rva(mpg123_handle *fr);
 #endif

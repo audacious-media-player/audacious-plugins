@@ -1,7 +1,7 @@
 /*
-	libmpg123: MPEG Audio Decoder library (version 1.12.3)
+	libmpg123: MPEG Audio Decoder library (version 1.13.1)
 
-	copyright 1995-2009 by the mpg123 project - free software under the terms of the LGPL 2.1
+	copyright 1995-2010 by the mpg123 project - free software under the terms of the LGPL 2.1
 	see COPYING and AUTHORS files in distribution or http://mpg123.org
 */
 
@@ -12,7 +12,7 @@
 
 /* A macro to check at compile time which set of API functions to expect.
    This should be incremented at least each time a new symbol is added to the header. */
-#define MPG123_API_VERSION 25
+#define MPG123_API_VERSION 29
 
 /* Nothing on normal/UNIX builds */
 #define EXPORT
@@ -99,6 +99,7 @@ enum mpg123_param_flags
 	,MPG123_FORCE_FLOAT  = 0x400 /**< 010000000000 Force floating point output (32 or 64 bits depends on mpg123 internal precision). */
 	,MPG123_PLAIN_ID3TEXT = 0x800 /**< 100000000000 Do not translate ID3 text data to UTF-8. ID3 strings will contain the raw text data, with the first byte containing the ID3 encoding code. */
 	,MPG123_IGNORE_STREAMLENGTH = 0x1000 /**< 1000000000000 Ignore any stream length information contained in the stream, which can be contained in a 'TLEN' frame of an ID3v2 tag or a Xing tag */
+	,MPG123_SKIP_ID3V2 = 0x2000 /**< 10 0000 0000 0000 Do not parse ID3v2 tags, just skip them. */
 };
 
 /** choices for MPG123_RVA */
@@ -264,20 +265,23 @@ EXPORT const char* mpg123_current_decoder(mpg123_handle *mh);
  *  Note that (your build of) libmpg123 does not necessarily support all these.
  *  Usually, you can expect the 8bit encodings and signed 16 bit.
  *  Also 32bit float will be usual beginning with mpg123-1.7.0 .
- *  What you should bear in mind is that (SSE, etc) optimized routines are just for
- *  signed 16bit (and 8bit derived from that). Other formats use plain C code.
+ *  What you should bear in mind is that (SSE, etc) optimized routines may be absent
+ *  for some formats. We do have SSE for 16, 32 bit and float, though.
+ *  24 bit integer is done via postprocessing of 32 bit output -- just cutting
+ *  the last byte, no rounding, even. If you want better, do it yourself.
  *
- *  All formats are in native byte order. On a little endian machine this should mean
- *  that you can just feed the MPG123_ENC_SIGNED_32 data to common 24bit hardware that
- *  ignores the lowest byte (or you could choose to do rounding with these lower bits).
+ *  All formats are in native byte order. If you need different endinaness, you
+ *  can simply postprocess the output buffers (libmpg123 wouldn't do anything else).
+ *  mpg123_encsize() can be helpful there.
  */
 enum mpg123_enc_enum
 {
-	 MPG123_ENC_8      = 0x00f  /**< 0000 0000 1111 Some 8 bit  integer encoding. */ 
-	,MPG123_ENC_16     = 0x040  /**< 0000 0100 0000 Some 16 bit integer encoding. */
-	,MPG123_ENC_32     = 0x100  /**< 0001 0000 0000 Some 32 bit integer encoding. */
-	,MPG123_ENC_SIGNED = 0x080  /**< 0000 1000 0000 Some signed integer encoding. */
-	,MPG123_ENC_FLOAT  = 0xe00  /**< 1110 0000 0000 Some float encoding. */
+	 MPG123_ENC_8      = 0x00f  /**<      0000 0000 1111 Some 8 bit  integer encoding. */
+	,MPG123_ENC_16     = 0x040  /**<      0000 0100 0000 Some 16 bit integer encoding. */
+	,MPG123_ENC_24     = 0x4000 /**< 0100 0000 0000 0000 Some 24 bit integer encoding. */
+	,MPG123_ENC_32     = 0x100  /**<      0001 0000 0000 Some 32 bit integer encoding. */
+	,MPG123_ENC_SIGNED = 0x080  /**<      0000 1000 0000 Some signed integer encoding. */
+	,MPG123_ENC_FLOAT  = 0xe00  /**<      1110 0000 0000 Some float encoding. */
 	,MPG123_ENC_SIGNED_16   = (MPG123_ENC_16|MPG123_ENC_SIGNED|0x10) /**<           1101 0000 signed 16 bit */
 	,MPG123_ENC_UNSIGNED_16 = (MPG123_ENC_16|0x20)                   /**<           0110 0000 unsigned 16 bit */
 	,MPG123_ENC_UNSIGNED_8  = 0x01                                   /**<           0000 0001 unsigned 8 bit */
@@ -286,12 +290,15 @@ enum mpg123_enc_enum
 	,MPG123_ENC_ALAW_8      = 0x08                                   /**<           0000 1000 alaw 8 bit */
 	,MPG123_ENC_SIGNED_32   = MPG123_ENC_32|MPG123_ENC_SIGNED|0x1000 /**< 0001 0001 1000 0000 signed 32 bit */
 	,MPG123_ENC_UNSIGNED_32 = MPG123_ENC_32|0x2000                   /**< 0010 0001 0000 0000 unsigned 32 bit */
+	,MPG123_ENC_SIGNED_24   = MPG123_ENC_24|MPG123_ENC_SIGNED|0x1000 /**< 0101 0000 1000 0000 signed 24 bit */
+	,MPG123_ENC_UNSIGNED_24 = MPG123_ENC_24|0x2000                   /**< 0110 0000 0000 0000 unsigned 24 bit */
 	,MPG123_ENC_FLOAT_32    = 0x200                                  /**<      0010 0000 0000 32bit float */
 	,MPG123_ENC_FLOAT_64    = 0x400                                  /**<      0100 0000 0000 64bit float */
 	,MPG123_ENC_ANY = ( MPG123_ENC_SIGNED_16  | MPG123_ENC_UNSIGNED_16 | MPG123_ENC_UNSIGNED_8 
 	                  | MPG123_ENC_SIGNED_8   | MPG123_ENC_ULAW_8      | MPG123_ENC_ALAW_8
 	                  | MPG123_ENC_SIGNED_32  | MPG123_ENC_UNSIGNED_32
-	                  | MPG123_ENC_FLOAT_32   | MPG123_ENC_FLOAT_64 ) /**< any encoding */
+	                  | MPG123_ENC_SIGNED_24  | MPG123_ENC_UNSIGNED_24
+	                  | MPG123_ENC_FLOAT_32   | MPG123_ENC_FLOAT_64 ) /**< Any encoding on the list. */
 };
 
 /** They can be combined into one number (3) to indicate mono and stereo... */
@@ -313,6 +320,11 @@ EXPORT void mpg123_rates(const long **list, size_t *number);
  *  \param list Store a pointer to the encodings array there.
  *  \param number Store the number of encodings there. */
 EXPORT void mpg123_encodings(const int **list, size_t *number);
+
+/** Return the size (in bytes) of one mono sample of the named encoding.
+ * \param encoding The encoding value to analyze.
+ * \return positive size of encoding in bytes, 0 on invalid encoding. */
+EXPORT int mpg123_encsize(int encoding);
 
 /** Configure a mpg123 handle to accept no output format at all, 
  *  use before specifying supported formats with mpg123_format */
@@ -713,6 +725,14 @@ EXPORT int  mpg123_set_string(mpg123_string* sb, const char* stuff);
  *  \param from offset to copy from
  *  \param count number of characters to copy (a null-byte is always appended) */
 EXPORT int  mpg123_set_substring(mpg123_string *sb, const char *stuff, size_t from, size_t count);
+
+/** Count characters in a mpg123 string (non-null bytes or UTF-8 characters).
+ *  \return character count
+ *  \param sb the string
+ *  \param utf8 a flag to tell if the string is in utf8 encoding
+ *  Even with the fill property, the character count is not obvious as there could be multiple trailing null bytes.
+*/
+EXPORT size_t mpg123_strlen(mpg123_string *sb, int utf8);
 
 /** The mpg123 text encodings. This contains encodings we encounter in ID3 tags or ICY meta info. */
 enum mpg123_text_encoding

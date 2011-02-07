@@ -15,6 +15,7 @@
 #define MPG123_COMPAT_H
 
 #include "config.h"
+#include "intsym.h"
 
 #ifdef HAVE_STDLIB_H
 /* realloc, size_t */
@@ -128,7 +129,7 @@ typedef long ssize_p;
  * @param[in] mbptr Pointer to multibyte string.
  * @return file descriptor (>=0) or error code.
  */
-int compat_open(const char *filename, int mode);
+int compat_open(const char *filename, int flags);
 
 /**
  * Closing a file handle can be platform specific.

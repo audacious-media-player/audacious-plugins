@@ -21,6 +21,9 @@ John Lindgren, July 16, 2010:
  * Updated to libmpg123 1.12.3.
  * Imported upstream revision 2760 (fixes an unused variable warning).
 
+John Lindgren, February 6, 2010:
+ * Updated to libmpg123 1.13.1.
+
  ======
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -36,7 +39,7 @@ John Lindgren, July 16, 2010:
 
 For building/installation info see INSTALL.
 
-The mpg123 project was started by Michel Hipp and is now being maintained by Thomas Orgis and Nicholas J. Humfrey, who intitated the Sourceforge project.
+The mpg123 project was started by Michel Hipp and is now being maintained by Thomas Orgis and Nicholas J. Humfrey, who initiated the Sourceforge project.
 The source code contains contributions from quite a few people - see AUTHORS for more info.
 It is Open Source software licensed mostly under the LGPL with some parts restricted to GPL. See COPYING for details.
 As for every mp3 player, some of mpg123's functionality may be covered by patents in a country where these are valid. See PATENTS for details.
@@ -150,14 +153,14 @@ Also, version 0.66 adds the merged x86 optimization build, which includes every 
 Now mpg123 catched up with MPlayer's mp3lib concerning decoding speed on my Pentium M (which supports SSE):
 Decoding a certain album (Queensryche's Rage for Order) to /dev/null took 22.4s user time with mpg123-0.66 compared to 24.7s with MPlayer-1.0rc1 .
 
-Also, beginning with mpg123 1.8.0, there are fresh x86-64 SSE optimizations (provided by Taihei Monma) wich make mpg123 the fastest MPEG audio decoder in my knowledge also on current 64bit x86 systems.
+Also, beginning with mpg123 1.8.0, there are fresh x86-64 SSE optimizations (provided by Taihei Monma) which make mpg123 the fastest MPEG audio decoder in my knowledge also on current 64bit x86 systems.
 
 5. Accuracy
 
 The mpg123 engine is able to decode in full compliance to ISO/IEC 11172-3, for all three layers, using floating point or integer math (the latter since 1.8.1).
 Accuracy of 16bit output depends on specific optimization in use and compile-time choice about the rounding mode (which is performance relevant).
 
-The ISO test suite is incorporated in the mpg123 subversion repository under svn://orgis.org/mpg123/test, nighlty tests of a build (with high-quality 16bit rounding) are published on the mpg123 website.
+The ISO test suite is incorporated in the mpg123 subversion repository under svn://orgis.org/mpg123/test, nightly tests of a build (with high-quality 16bit rounding) are published on the mpg123 website.
 
 Dithered 16bit output is available as an option (the --cpu choices ending with _dither). See
 
@@ -165,7 +168,7 @@ Dithered 16bit output is available as an option (the --cpu choices ending with _
 
 on the whereabouts.
 
-7. History
+6. History
 
 A looooong time ago (mid-90s), Michael Hipp wrote some initial mpg123 and made it _the_ Unix console mp3 player in the following years.
 The exact date of birth is fuzzy in human memory, but according to the master himself (Michael) mpg123 started in 1994 as an MP2 player which a year later, 1995, gained MP3 ability.
@@ -178,13 +181,13 @@ This is the historic description:
 	on the mpegaudio (FHG-version) package. The DCT algorithm in the
 	synthesis filter is a rewritten version of the DCT first seen in the maplay
 	package, which was written by Tobias Bading (bading@cs.tu-berlin.de). The 
-	rewrite was neccassary, because the GPL may not allow this copyright mix.
+	rewrite was necessary, because the GPL may not allow this copyright mix.
 	The mpegaudio package was written by various people from the MPEG/audio
 	software simulation group. The maplay is under GPL .. You can find the
 	original source code and the mpegaudio package on: ftp.tnt.uni-hannover.de.
 
 	Especially layer3.c common.c and mpg123.h is based on the dist10 package.
-	The code is fullly rewritten but I'm using sometimes the
+	The code is fully rewritten but I'm using sometimes the
 	same variable names or similar function names as in the
 	original package.
 
@@ -221,7 +224,7 @@ A lot of emails and some weeks later there was the two-developer team of Nichola
 
 And there we are now...
 
-8. End
+7. End
 
 Have fun!
 ____________

@@ -11,9 +11,10 @@
 #define MPG123_H_INTERN
 
 #define MPG123_RATES 9
-#define MPG123_ENCODINGS 10
+#define MPG123_ENCODINGS 12
 
 #include "config.h" /* Load this before _anything_ */
+#include "intsym.h" /* Prefixing of internal symbols that still are public in a static lib. */
 
 /* ABI conformance for other compilers.
    mpg123 needs 16byte-aligned stack for SSE and friends.
@@ -321,8 +322,11 @@ static inline long scale_rounded(long x, int shift)
 
 int decode_update(mpg123_handle *mh);
 /* residing in format.c  */
+off_t samples_to_storage(mpg123_handle *fr , off_t s);
 off_t samples_to_bytes(mpg123_handle *fr , off_t s);
 off_t bytes_to_samples(mpg123_handle *fr , off_t b);
+/* Postprocessing format conversion of freshly decoded buffer. */
+void postprocess_buffer(mpg123_handle *fr);
 
 /* If networking is enabled and we really mean internal networking, the timeout_read function is available. */
 #if defined (NETWORK) && !defined (WANT_WIN32_SOCKETS)

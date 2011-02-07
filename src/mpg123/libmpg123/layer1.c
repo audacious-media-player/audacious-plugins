@@ -11,7 +11,7 @@
 #include "mpg123lib_intern.h"
 #include "getbits.h"
 
-void I_step_one(unsigned int balloc[], unsigned int scale_index[2][SBLIMIT],mpg123_handle *fr)
+static void I_step_one(unsigned int balloc[], unsigned int scale_index[2][SBLIMIT],mpg123_handle *fr)
 {
 	unsigned int *ba=balloc;
 	unsigned int *sca = (unsigned int *) scale_index;
@@ -55,7 +55,7 @@ void I_step_one(unsigned int balloc[], unsigned int scale_index[2][SBLIMIT],mpg1
 	}
 }
 
-void I_step_two(real fraction[2][SBLIMIT],unsigned int balloc[2*SBLIMIT], unsigned int scale_index[2][SBLIMIT],mpg123_handle *fr)
+static void I_step_two(real fraction[2][SBLIMIT],unsigned int balloc[2*SBLIMIT], unsigned int scale_index[2][SBLIMIT],mpg123_handle *fr)
 {
 	int i,n;
 	int smpb[2*SBLIMIT]; /* values: 0-65535 */

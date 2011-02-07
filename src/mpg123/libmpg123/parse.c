@@ -39,7 +39,7 @@
 	C: layer
 	D: CRC
 	E: bitrate
-	F:sampling rate
+	F: sampling rate
 	G: padding
 	H: private
 	I: channel mode
@@ -61,9 +61,11 @@
 	Even more, I'll allow varying crc bit.
 	11111111 11111110 00001101 00000000
 
-	(still unsure about this private bit)
+	Still unsure about this private bit... well, as Marcel pointed out:
+	The decoder should not care about this.
+	11111111 11111110 00001100 00000000
 */
-#define HDRCMPMASK 0xfffe0d00
+#define HDRCMPMASK 0xfffe0c00
 #define HDRSAMPMASK 0xc00 /* 1100 00000000, FF bits (sample rate) */
 
 /* bitrates for [mpeg1/2][layer] */
@@ -81,7 +83,7 @@ static const int tabsel_123[2][3][16] =
 	}
 };
 
-const long freqs[9] = { 44100, 48000, 32000, 22050, 24000, 16000 , 11025 , 12000 , 8000 };
+static const long freqs[9] = { 44100, 48000, 32000, 22050, 24000, 16000 , 11025 , 12000 , 8000 };
 
 static int decode_header(mpg123_handle *fr,unsigned long newhead);
 
@@ -100,7 +102,7 @@ long frame_freq(mpg123_handle *fr)
 #define free_format_header(head) ( ((head & 0xffe00000) == 0xffe00000) && ((head>>17)&3) && (((head>>12)&0xf) == 0x0) && (((head>>10)&0x3) != 0x3 ))
 
 /* compiler is smart enought to inline this one or should I really do it as macro...? */
-int head_check(unsigned long head)
+static int head_check(unsigned long head)
 {
 	if
 	(
