@@ -179,7 +179,7 @@ static void change_view (void)
         gtk_notebook_set_show_tabs (UI_PLAYLIST_NOTEBOOK, TRUE);
 
         for (gint i = 0; i < count; i ++)
-            gtk_container_set_border_width (index_get (pages, i), 4);
+            gtk_container_set_border_width (index_get (pages, i), 0);
     }
     else
     {
@@ -195,7 +195,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
     gint position = aud_playlist_get_position (playlist);
 
     scrollwin = gtk_scrolled_window_new(NULL, NULL);
-    gtk_container_set_border_width ((GtkContainer *) scrollwin, 4);
+    gtk_container_set_border_width ((GtkContainer *) scrollwin, 0);
     index_insert(pages, playlist, scrollwin);
 
     treeview = ui_playlist_widget_new(playlist);
