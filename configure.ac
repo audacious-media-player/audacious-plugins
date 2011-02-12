@@ -1151,7 +1151,7 @@ if test "x$enable_amidiplug" = "xcheck"; then
       enable_amidiplug=yes
     else
       enable_amidiplug=no
-      AC_MSG_WARN([*** Neither ALSA or FluidSynth software synth (>= 1.0.6) have been found, so amidi-plug won't be compiled unless you explicitly request it with --enable-amidiplug ***])
+      AC_MSG_WARN(["*** Neither ALSA or FluidSynth software synth (>= 1.0.6) have been found, so amidi-plug won't be compiled unless you explicitly request it with --enable-amidiplug ***"])
     fi
   fi
 fi
