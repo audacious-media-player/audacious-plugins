@@ -28,6 +28,10 @@
 
 #include "util.h"
 
+#if ! GTK_CHECK_VERSION (2, 18, 0)
+#define gtk_widget_set_can_default(w, t) do {if (t) GTK_WIDGET_SET_FLAGS ((w), GTK_CAN_DEFAULT); else GTK_WIDGET_UNSET_FLAGS ((w), GTK_CAN_DEFAULT);} while (0)
+#endif
+
 GtkWidget *make_filebrowser(const gchar * title, gboolean save)
 {
     GtkWidget *dialog;
@@ -40,7 +44,7 @@ GtkWidget *make_filebrowser(const gchar * title, gboolean save)
     button = gtk_dialog_add_button(GTK_DIALOG(dialog), GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT);
 
     gtk_button_set_use_stock(GTK_BUTTON(button), TRUE);
-    GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+    gtk_widget_set_can_default (button, TRUE);
 
     button = gtk_dialog_add_button(GTK_DIALOG(dialog), save ? GTK_STOCK_SAVE : GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT);
 

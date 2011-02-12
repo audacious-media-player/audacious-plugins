@@ -19,7 +19,12 @@
 
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
+
+#if GTK_CHECK_VERSION (3, 0, 0)
+#include <gdk/gdkkeysyms-compat.h>
+#else
 #include <gdk/gdkkeysyms.h>
+#endif
 
 #include <audacious/audconfig.h>
 #include <audacious/debug.h>
@@ -743,8 +748,9 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
 
     slider = gtk_hscale_new(NULL);
     gtk_scale_set_draw_value(GTK_SCALE(slider), FALSE);
-    /* TODO: make this configureable */
+#if ! GTK_CHECK_VERSION (3, 0, 0) /* Why did GTK remove this?  It was useful. */
     gtk_range_set_update_policy(GTK_RANGE(slider), GTK_UPDATE_DISCONTINUOUS);
+#endif
     gtk_widget_set_size_request(slider, 120, -1);
     gtk_widget_set_can_focus(slider, FALSE);
     gtk_box_pack_start ((GtkBox *) shbox, slider, TRUE, TRUE, 6);

@@ -2,7 +2,7 @@
 #define XS_CURVE_H
 
 #include <gdk/gdk.h>
-#include <gtk/gtkdrawingarea.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

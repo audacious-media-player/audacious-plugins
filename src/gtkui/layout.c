@@ -30,6 +30,10 @@
 #include "config.h"
 #include "layout.h"
 
+#if ! GTK_CHECK_VERSION (2, 18, 0)
+#define gtk_widget_get_allocation(w, a) memcpy ((a), (w)->allocation, sizeof GtkAllocation)
+#endif
+
 #define LAYOUT_FILE "gtkui-layout"
 
 enum {DOCK_LEFT, DOCK_RIGHT, DOCK_TOP, DOCK_BOTTOM, DOCKS};
@@ -162,9 +166,10 @@ typedef struct {
 
 static gboolean restore_size_cb (RestoreSizeData * d)
 {
-    GdkRectangle * rect = & d->widget->allocation;
+    GtkAllocation rect;
+    gtk_widget_get_allocation (d->widget, & rect);
     gint pos = gtk_paned_get_position ((GtkPaned *) d->paned);
-    pos -= d->vertical ? d->h - rect->height : d->w - rect->width;
+    pos -= d->vertical ? d->h - rect.height : d->w - rect.width;
     gtk_paned_set_position ((GtkPaned *) d->paned, pos);
 
     g_slice_free (RestoreSizeData, d);
@@ -285,8 +290,10 @@ static void item_save_size (Item * item)
 {
     g_return_if_fail (item->widget && item->vbox);
 
-    item->w = item->vbox->allocation.width;
-    item->h = item->vbox->allocation.height;
+    GtkAllocation rect;
+    gtk_widget_get_allocation (item->vbox, & rect);
+    item->w = rect.width;
+    item->h = rect.height;
 
     if (item->dock < 0)
     {

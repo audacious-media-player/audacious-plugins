@@ -142,15 +142,11 @@ LIBS="$LIBS $AUDACIOUS_LIBS"
 
 dnl Check for GTK/GLib/GThread/Pango
 
-PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.12.0 gthread-2.0],
-    [ADD_PC_REQUIRES([glib-2.0 >= 2.12.0])],
-    [AC_MSG_ERROR([Cannot find Glib2 >= 2.12.0])]
-)
+AC_ARG_ENABLE([gtk3],
+ [AS_HELP_STRING([--enable-gtk3], [Use GTK3 instead of GTK2])],
+ [use_gtk3=yes], [use_gtk3=no])
 
-PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.8.0],
-    [ADD_PC_REQUIRES([gtk+-2.0 >= 2.8.0])],
-    [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.8.0])]
-)
+AUD_COMMON_PROGS
 
 AC_ARG_ENABLE(gio, [  --disable-gio           disable GIO support (default=enabled if GIO present)],
  enable_gio=$enableval, enable_gio=yes)
@@ -162,19 +158,6 @@ fi
 if test "x$enable_gio" = "xyes"; then
     TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS gio"
 fi
-
-PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
-    [ADD_PC_REQUIRES([pango >= 1.8.0])],
-    [AC_MSG_ERROR([Cannot find Pango >= 1.8.0])]
-)
-
-dnl Check for libmowgli
-dnl ===================
-
-PKG_CHECK_MODULES(MOWGLI, [libmowgli >= 0.4.0],
-    [ADD_PC_REQUIRES([libmowgli >= 0.4.0])],
-    [AC_MSG_ERROR([Cannot find libmowgli >= 0.4.0, try http://www.atheme.org/projects/mowgli.shtml])]
-)
 
 ### ---------------------------------------------------------------------------
 dnl Pthread support
@@ -608,17 +591,16 @@ dnl Status Icon
 dnl ===========
 
 AC_ARG_ENABLE(statusicon,
-    [  --disable-statusicon    disable X11 Status Icon plugin (default=enabled)],
-    [enable_statusicon=$enableval],
-    [enable_statusicon="yes"]
-)
+ [  --disable-statusicon    disable X11 Status Icon plugin (default=enabled)],
+ [have_statusicon=$enableval], [have_statusicon="yes"])
 
-if test "x$enable_statusicon" = "xyes"; then
-    PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.16.0], [have_statusicon=yes],
-     [have_statusicon=no])
+if test $have_statusicon = yes ; then
+    if test $use_gtk3 != yes ; then
+        PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.16.0], [have_statusicon=yes],
+         [have_statusicon=no])
+    fi
 else
     AC_MSG_RESULT([*** X11 Status Icon plugin disabled per user request ***])
-    have_statusicon="no"
 fi
 
 if test "x$have_statusicon" = "xyes"; then
@@ -1652,6 +1634,37 @@ fi
 
 if test "x$enable_lyricwiki" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS lyricwiki"
+fi
+
+dnl GTK3 overrides
+dnl ==============
+
+if test $use_gtk3 = yes ; then
+    for name in adplug alarm amidi-plug aosd crystalizer echo_plugin evdev-plug filewriter hotkey jack ladspa lirc modplug null OSS sid skins sndstretch stereo_plugin streambrowser
+    do
+        echo " *** Disabling plugin because not GTK3-compatible: $name"
+        CONTAINER_PLUGINS=`sed s/$name// << EOF
+$CONTAINER_PLUGINS
+EOF`
+        EFFECT_PLUGINS=`sed s/$name// << EOF
+$EFFECT_PLUGINS
+EOF`
+        GENERAL_PLUGINS=`sed s/$name// << EOF
+$GENERAL_PLUGINS
+EOF`
+        INPUT_PLUGINS=`sed s/$name// << EOF
+$INPUT_PLUGINS
+EOF`
+        OUTPUT_PLUGINS=`sed s/$name// << EOF
+$OUTPUT_PLUGINS
+EOF`
+        TRANSPORT_PLUGINS=`sed s/$name// << EOF
+$TRANSPORT_PLUGINS
+EOF`
+        VISUALIZATION_PLUGINS=`sed s/$name// << EOF
+$INPUT_PLUGINS
+EOF`
+    done
 fi
 
 dnl *** End of all plugin checks ***

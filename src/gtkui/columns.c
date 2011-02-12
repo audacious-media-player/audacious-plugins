@@ -32,6 +32,10 @@
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 
+#if ! GTK_CHECK_VERSION (2, 14, 0)
+#define gtk_dialog_get_content_area(d) ((d)->vbox)
+#endif
+
 const gchar * const pw_col_names[PW_COLS] = {N_("Entry number"), N_("Title"),
  N_("Artist"), N_("Year"), N_("Album"), N_("Track"), N_("Queue position"),
  N_("Length"), N_("File path"), N_("File name"), N_("Custom title")};
@@ -288,8 +292,8 @@ void pw_col_choose (void)
     g_signal_connect (window, "destroy", (GCallback) destroy_cb, NULL);
 
     GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
-    gtk_box_pack_start ((GtkBox *) ((GtkDialog *) window)->vbox, hbox, TRUE,
-     TRUE, 0);
+    gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
+     window), hbox, TRUE, TRUE, 0);
 
     GtkWidget * vbox = gtk_vbox_new (FALSE, 3);
     gtk_box_pack_start ((GtkBox *) hbox, vbox, TRUE, TRUE, 0);

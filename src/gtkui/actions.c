@@ -63,6 +63,10 @@
 #include "ui_infoarea.h"
 #include "ui_statusbar.h"
 
+#if ! GTK_CHECK_VERSION (2, 18, 0)
+#define gtk_widget_set_can_default(w, t) do {if (t) GTK_WIDGET_SET_FLAGS ((w), GTK_CAN_DEFAULT); else GTK_WIDGET_UNSET_FLAGS ((w), GTK_CAN_DEFAULT);} while (0)
+#endif
+
 static GtkWidget *mainwin_jtt = NULL;
 
 static int ab_position_a = -1;
@@ -308,12 +312,12 @@ void mainwin_jump_to_time(void)
     gtk_box_set_spacing(GTK_BOX(bbox), 5);
 
     cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-    GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
+    gtk_widget_set_can_default (cancel, TRUE);
     gtk_container_add(GTK_CONTAINER(bbox), cancel);
     g_signal_connect_swapped(cancel, "clicked", G_CALLBACK(gtk_widget_destroy), mainwin_jtt);
 
     jump = gtk_button_new_from_stock(GTK_STOCK_JUMP_TO);
-    GTK_WIDGET_SET_FLAGS(jump, GTK_CAN_DEFAULT);
+    gtk_widget_set_can_default (jump, TRUE);
     gtk_container_add(GTK_CONTAINER(bbox), jump);
     g_signal_connect(jump, "clicked", G_CALLBACK(mainwin_jump_to_time_cb), time_entry);
 

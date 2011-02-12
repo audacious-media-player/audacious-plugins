@@ -28,6 +28,12 @@
 #include "config.h"
 #include "resample.h"
 
+#if ! GTK_CHECK_VERSION (3, 0, 0)
+#define GtkComboBoxText GtkComboBox
+#define gtk_combo_box_text_new gtk_combo_box_new_text
+#define gtk_combo_box_text_append_text gtk_combo_box_append_text
+#endif
+
 int common_rates[] = {8000, 16000, 22050, 44100, 48000, 96000, 192000};
 int n_common_rates = sizeof common_rates / sizeof common_rates[0];
 int converted_rates[] = {48000, 48000, 44100, 44100, 48000, 96000, 96000};
@@ -119,10 +125,10 @@ static GtkWidget * make_method_list (void)
     int count;
     const char * name;
 
-    GtkWidget * list = gtk_combo_box_new_text ();
+    GtkWidget * list = gtk_combo_box_text_new ();
 
     for (count = 0; (name = src_get_name (count)) != NULL; count ++)
-        gtk_combo_box_append_text ((GtkComboBox *) list, name);
+        gtk_combo_box_text_append_text ((GtkComboBoxText *) list, name);
 
     gtk_combo_box_set_active ((GtkComboBox *) list, method);
     g_signal_connect (list, "changed", (GCallback) list_changed, & method);

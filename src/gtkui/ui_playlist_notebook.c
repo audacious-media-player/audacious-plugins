@@ -20,7 +20,12 @@
 #include "config.h"
 
 #include <gtk/gtk.h>
+
+#if GTK_CHECK_VERSION (3, 0, 0)
+#include <gdk/gdkkeysyms-compat.h>
+#else
 #include <gdk/gdkkeysyms.h>
+#endif
 
 #include <audacious/debug.h>
 #include <audacious/playlist.h>
@@ -102,7 +107,8 @@ static gboolean tab_button_press_cb(GtkWidget *widget, GdkEventButton *event, gp
     return FALSE;
 }
 
-static void tab_changed(GtkNotebook * notebook, GtkNotebookPage * notebook_page, gint page_num, void *unused)
+static void tab_changed (GtkNotebook * notebook, GtkWidget * page, gint
+ page_num, void * unused)
 {
     GtkWidget * treeview = playlist_get_treeview (page_num);
 
@@ -207,7 +213,6 @@ void ui_playlist_notebook_create_tab(gint playlist)
     gtk_widget_show_all(scrollwin);
 
     ebox = gtk_event_box_new();
-    GTK_WIDGET_SET_FLAGS(ebox, GTK_NO_WINDOW);
 
     hbox = gtk_hbox_new(FALSE, 2);
 

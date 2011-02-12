@@ -45,8 +45,12 @@
 #define VIS_DELAY 2 /* delay before falloff in frames */
 #define VIS_FALLOFF 2 /* falloff in pixels per frame */
 
+#if ! GTK_CHECK_VERSION (2, 14, 0)
+#define gtk_widget_get_window(w) ((w)->window)
+#endif
+
 #if ! GTK_CHECK_VERSION (2, 18, 0)
-#define gtk_widget_get_allocation(w, ap) (* (ap) = (w)->allocation)
+#define gtk_widget_get_allocation(w, a) memcpy ((a), (w)->allocation, sizeof GtkAllocation)
 #endif
 
 typedef struct {
@@ -140,7 +144,7 @@ static void ui_infoarea_draw_text (UIInfoArea * area, gint x, gint y, gint
 
     str = g_markup_escape_text(text, -1);
 
-    cr = gdk_cairo_create(area->parent->window);
+    cr = gdk_cairo_create (gtk_widget_get_window (area->parent));
     cairo_move_to(cr, x, y);
     cairo_set_operator(cr, CAIRO_OPERATOR_ATOP);
     cairo_set_source_rgba(cr, r, g, b, a);
@@ -230,7 +234,7 @@ static void hsv_to_rgb (gfloat h, gfloat s, gfloat v, gfloat * r, gfloat * g,
 static void get_color (GtkWidget * widget, gint i, gfloat * r, gfloat * g,
  gfloat * b)
 {
-    GdkColor * c = widget->style->base + GTK_STATE_SELECTED;
+    GdkColor * c = (gtk_widget_get_style (widget))->base + GTK_STATE_SELECTED;
     gfloat h, s, v, n;
 
     rgb_to_hsv (c->red / 65535.0, c->green / 65535.0, c->blue / 65535.0, & h,
@@ -255,7 +259,7 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
     cairo_t *cr;
 
     gtk_widget_get_allocation(GTK_WIDGET(area->parent), &alloc);
-    cr = gdk_cairo_create(area->parent->window);
+    cr = gdk_cairo_create (gtk_widget_get_window (area->parent));
 
     for (auto gint i = 0; i < VIS_BANDS; i++)
     {
@@ -301,7 +305,7 @@ void ui_infoarea_draw_album_art (UIInfoArea * area)
         audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
     }
 
-    cr = gdk_cairo_create (area->parent->window);
+    cr = gdk_cairo_create (gtk_widget_get_window (area->parent));
 
     if (area->pb != NULL)
     {
@@ -356,7 +360,7 @@ ui_infoarea_draw_background(UIInfoArea *area)
     g_return_if_fail(area != NULL);
 
     evbox = area->parent;
-    cr = gdk_cairo_create(evbox->window);
+    cr = gdk_cairo_create (gtk_widget_get_window (evbox));
 
     gtk_widget_get_allocation(GTK_WIDGET(evbox), &alloc);
 
@@ -484,7 +488,7 @@ static void ui_infoarea_playback_stop (void * data, UIInfoArea * area)
          ui_infoarea_do_fade, area);
 }
 
-static void destroy_cb (GtkObject * parent, UIInfoArea * area)
+static void destroy_cb (GtkWidget * parent, UIInfoArea * area)
 {
     hook_dissociate ("playlist update", (HookFunction) ui_infoarea_set_title);
     hook_dissociate ("playback begin", (HookFunction)
