@@ -74,7 +74,7 @@ static VFSFile * inet_fopen (const char * uri, const char * mode)
     if (! file->h)
     {
         error ("Failed to open %s (code %d).\n", uri, (int) GetLastError ());
-        free (file);
+        g_free (file);
         return NULL;
     }
 
