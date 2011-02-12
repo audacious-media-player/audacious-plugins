@@ -50,12 +50,12 @@ if test -z "[$]$1"; then
 else
   # Found it, now check the version.
   AC_MSG_CHECKING([version of [$]$1])
-changequote(<<,>>)dnl
-  ac_prog_version=`<<$>>$1 $3 2>&1 ifelse(<<$4>>,,,
-                   <<| sed -n 's/^.*patsubst(<<$4>>,/,\/).*$/\1/p'>>)`
+changequote(<<<,>>>)dnl
+  ac_prog_version=`<<<$>>>$1 $3 2>&1 ifelse(<<<$4>>>,,,
+                   <<<| sed -n 's/^.*patsubst(<<<$4>>>,/,\/).*$/\1/p'>>>)`
   case $ac_prog_version in
     '') ac_prog_version="v. ?.??, bad"; ac_verc_fail=yes;;
-    <<$5>>)
+    <<<$5>>>)
 changequote([,])dnl
        ac_prog_version="$ac_prog_version, ok"; ac_verc_fail=no;;
     *) ac_prog_version="$ac_prog_version, bad"; ac_verc_fail=yes;;
