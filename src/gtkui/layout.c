@@ -594,6 +594,7 @@ void layout_cleanup (void)
     {
         Item * item = node->data;
         g_return_if_fail (item && ! item->widget && ! item->vbox && ! item->window);
+        g_free (item->name);
         g_slice_free (Item, item);
     }
 
