@@ -173,19 +173,24 @@ AC_PATH_PROG([AR], [ar])
 AC_PATH_PROG([TR], [tr])
 AC_PATH_PROG([RANLIB], [ranlib])
 
-
 dnl Check for Gtk+/GLib and pals
 dnl ============================
 AUD_CHECK_MODULE([GLIB], [glib-2.0], [>= 2.12.0], [Glib2])
 AUD_CHECK_MODULE([GTHREAD], [gthread-2.0], [>= 2.12.0], [gthread-2.0])
-AUD_CHECK_MODULE([GTK], [gtk+-2.0], [>= 2.8.0], [Gtk+2])
+
+if test $use_gtk3 = yes ; then
+    AUD_CHECK_MODULE([GTK], [gtk+-3.0], [>= 3.0.0], [Gtk+3])
+else
+    AUD_CHECK_MODULE([GTK], [gtk+-2.0], [>= 2.8.0], [Gtk+2])
+fi
+
 AUD_CHECK_MODULE([PANGO], [pango], [>= 1.8.0], [Pango])
 AUD_CHECK_MODULE([CAIRO], [cairo], [>= 1.2.4], [Cairo])
 
 
 dnl Check for libmowgli
 dnl ===================
-AUD_CHECK_MODULE([MOWGLI], [libmowgli], [>= 0.4.0], [libmowgli],
+AUD_CHECK_MODULE([MOWGLI], [libmowgli], [>= 0.9], [libmowgli],
     [http://www.atheme.org/projects/mowgli.shtml])
 
 
@@ -244,6 +249,8 @@ AUD_ARG_ENABLE([altivec], [yes], [AltiVec support],
         enable_altivec="no"
     ])
 ])
+
+AC_CHECK_FUNC([getrlimit])
 
 ])
 
