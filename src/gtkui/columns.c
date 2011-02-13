@@ -23,6 +23,7 @@
 
 #include <gtk/gtk.h>
 
+#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <libaudcore/index.h>
 #include <libaudgui/list.h>
@@ -31,10 +32,6 @@
 #include "gtkui_cfg.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
-
-#if ! GTK_CHECK_VERSION (2, 14, 0)
-#define gtk_dialog_get_content_area(d) ((d)->vbox)
-#endif
 
 const gchar * const pw_col_names[PW_COLS] = {N_("Entry number"), N_("Title"),
  N_("Artist"), N_("Year"), N_("Album"), N_("Track"), N_("Queue position"),

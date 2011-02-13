@@ -19,15 +19,12 @@
 
 #include "config.h"
 
+#include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#if GTK_CHECK_VERSION (3, 0, 0)
-#include <gdk/gdkkeysyms-compat.h>
-#else
-#include <gdk/gdkkeysyms.h>
-#endif
-
 #include <audacious/debug.h>
+#include <audacious/glib-compat.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudgui/list.h>
@@ -37,11 +34,6 @@
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 #include "playlist_util.h"
-
-#if ! GLIB_CHECK_VERSION (2, 14, 0)
-#define G_QUEUE_INIT {NULL, NULL, 0}
-#define g_queue_clear(q) do {g_list_free ((q)->head); (q)->head = NULL; (q)->tail = NULL; (q)->length = 0;} while (0)
-#endif
 
 static GtkWidget * notebook = NULL;
 static GQueue follow_queue = G_QUEUE_INIT;
@@ -213,6 +205,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
     gtk_widget_show_all(scrollwin);
 
     ebox = gtk_event_box_new();
+    gtk_event_box_set_visible_window ((GtkEventBox *) ebox, FALSE);
 
     hbox = gtk_hbox_new(FALSE, 2);
 

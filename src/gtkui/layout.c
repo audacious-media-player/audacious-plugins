@@ -24,15 +24,12 @@
 
 #include <gtk/gtk.h>
 
+#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 
 #include "config.h"
 #include "layout.h"
-
-#if ! GTK_CHECK_VERSION (2, 18, 0)
-#define gtk_widget_get_allocation(w, a) memcpy ((a), & (w)->allocation, sizeof (GtkAllocation))
-#endif
 
 #define LAYOUT_FILE "gtkui-layout"
 

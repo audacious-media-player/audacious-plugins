@@ -17,18 +17,13 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#include <glib/gi18n.h>
-#include <gtk/gtk.h>
-
-#if GTK_CHECK_VERSION (3, 0, 0)
-#include <gdk/gdkkeysyms-compat.h>
-#else
 #include <gdk/gdkkeysyms.h>
-#endif
+#include <gtk/gtk.h>
 
 #include <audacious/audconfig.h>
 #include <audacious/debug.h>
 #include <audacious/drct.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/interface.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
@@ -49,10 +44,6 @@
 #include "playlist_util.h"
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
-
-#if ! GTK_CHECK_VERSION (2, 18, 0)
-#define gtk_widget_set_can_focus(w, t) do {if (t) GTK_WIDGET_SET_FLAGS ((w), GTK_CAN_FOCUS); else GTK_WIDGET_UNSET_FLAGS ((w), GTK_CAN_FOCUS);} while (0)
-#endif
 
 #if GTK_CHECK_VERSION (2, 12, 0)
 #define HAVE_VOLUME
@@ -748,9 +739,7 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
 
     slider = gtk_hscale_new(NULL);
     gtk_scale_set_draw_value(GTK_SCALE(slider), FALSE);
-#if ! GTK_CHECK_VERSION (3, 0, 0) /* Why did GTK remove this?  It was useful. */
     gtk_range_set_update_policy(GTK_RANGE(slider), GTK_UPDATE_DISCONTINUOUS);
-#endif
     gtk_widget_set_size_request(slider, 120, -1);
     gtk_widget_set_can_focus(slider, FALSE);
     gtk_box_pack_start ((GtkBox *) shbox, slider, TRUE, TRUE, 6);

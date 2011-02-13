@@ -23,6 +23,7 @@
 
 #include <audacious/debug.h>
 #include <audacious/drct.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
@@ -42,18 +43,6 @@
 #define VIS_OFFSET (10 + 8 * VIS_BANDS + 8)
 #define VIS_DELAY 2 /* delay before falloff in frames */
 #define VIS_FALLOFF 2 /* falloff in pixels per frame */
-
-#if ! GTK_CHECK_VERSION (2, 14, 0)
-#define gtk_widget_get_window(w) ((w)->window)
-#endif
-
-#if ! GTK_CHECK_VERSION (2, 18, 0)
-#define gtk_widget_get_allocation(w, a) memcpy ((a), & (w)->allocation, sizeof (GtkAllocation))
-#endif
-
-#if ! GTK_CHECK_VERSION (2, 20, 0)
-#define gtk_widget_is_drawable(w) GTK_WIDGET_DRAWABLE (w)
-#endif
 
 typedef struct {
     GtkWidget *parent;

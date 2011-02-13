@@ -1640,7 +1640,7 @@ dnl GTK3 overrides
 dnl ==============
 
 if test $use_gtk3 = yes ; then
-    for name in adplug alarm amidi-plug aosd crystalizer echo_plugin evdev-plug filewriter hotkey jack ladspa lirc modplug null OSS sid skins sndstretch stereo_plugin streambrowser
+    for name in adplug alarm amidi-plug aosd blur_scope crystalizer echo_plugin evdev-plug filewriter hotkey jack ladspa lirc modplug moodbar null OSS paranormal projectm-1.0 sid skins sndstretch spectrum stereo_plugin streambrowser
     do
         echo " *** Disabling plugin because not GTK3-compatible: $name"
         CONTAINER_PLUGINS=`sed s/$name// << EOF
@@ -1662,7 +1662,7 @@ EOF`
 $TRANSPORT_PLUGINS
 EOF`
         VISUALIZATION_PLUGINS=`sed s/$name// << EOF
-$INPUT_PLUGINS
+$VISUALIZATION_PLUGINS
 EOF`
     done
 fi

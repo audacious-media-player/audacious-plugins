@@ -20,6 +20,7 @@
 #include <gtk/gtk.h>
 
 #include <audacious/configdb.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
@@ -27,12 +28,6 @@
 
 #include "config.h"
 #include "resample.h"
-
-#if ! GTK_CHECK_VERSION (3, 0, 0)
-#define GtkComboBoxText GtkComboBox
-#define gtk_combo_box_text_new gtk_combo_box_new_text
-#define gtk_combo_box_text_append_text gtk_combo_box_append_text
-#endif
 
 int common_rates[] = {8000, 16000, 22050, 44100, 48000, 96000, 192000};
 int n_common_rates = sizeof common_rates / sizeof common_rates[0];
@@ -205,11 +200,7 @@ static void resample_configure (void)
 
         button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
         gtk_box_pack_end ((GtkBox *) hbox, button, FALSE, FALSE, 0);
-#if GTK_CHECK_VERSION (2, 18, 0)
         gtk_widget_set_can_default (button, TRUE);
-#else
-        GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-#endif
         gtk_widget_grab_default (button);
         g_signal_connect_swapped (button, "clicked", (GCallback)
          gtk_widget_destroy, config_window);

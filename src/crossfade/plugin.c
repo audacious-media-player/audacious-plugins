@@ -20,6 +20,7 @@
 #include <gtk/gtk.h>
 
 #include <audacious/configdb.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
@@ -120,9 +121,7 @@ static void crossfade_configure (void)
 
         button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
         gtk_box_pack_end ((GtkBox *) hbox, button, FALSE, FALSE, 0);
-#if GTK_CHECK_VERSION (2, 18, 0)
         gtk_widget_set_can_default (button, TRUE);
-#endif
         gtk_widget_grab_default (button);
         g_signal_connect_swapped (button, "clicked", (GCallback)
          gtk_widget_destroy, config_window);

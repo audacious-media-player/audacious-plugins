@@ -24,13 +24,11 @@
  */
 
 #include <gtk/gtk.h>
+
+#include <audacious/gtk-compat.h>
 #include <libaudcore/hook.h>
 
 #include "util.h"
-
-#if ! GTK_CHECK_VERSION (2, 18, 0)
-#define gtk_widget_set_can_default(w, t) do {if (t) GTK_WIDGET_SET_FLAGS ((w), GTK_CAN_DEFAULT); else GTK_WIDGET_UNSET_FLAGS ((w), GTK_CAN_DEFAULT);} while (0)
-#endif
 
 GtkWidget *make_filebrowser(const gchar * title, gboolean save)
 {

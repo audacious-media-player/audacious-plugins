@@ -49,6 +49,7 @@
 
 #include <audacious/audconfig.h>
 #include <audacious/drct.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudcore/audstrings.h>
@@ -62,10 +63,6 @@
 #include "gtkui_cfg.h"
 #include "ui_infoarea.h"
 #include "ui_statusbar.h"
-
-#if ! GTK_CHECK_VERSION (2, 18, 0)
-#define gtk_widget_set_can_default(w, t) do {if (t) GTK_WIDGET_SET_FLAGS ((w), GTK_CAN_DEFAULT); else GTK_WIDGET_UNSET_FLAGS ((w), GTK_CAN_DEFAULT);} while (0)
-#endif
 
 static GtkWidget *mainwin_jtt = NULL;
 
