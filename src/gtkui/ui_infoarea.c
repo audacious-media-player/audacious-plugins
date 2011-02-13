@@ -37,8 +37,6 @@
 #include "ui_manager.h"
 #include "ui_infoarea.h"
 
-#define DEFAULT_ARTWORK DATA_DIR "/images/album.png"
-#define STREAM_ARTWORK DATA_DIR "/images/streambrowser-64x64.png"
 #define ICON_SIZE 64
 #define VIS_BANDS 12
 #define VIS_OFFSET (10 + 8 * VIS_BANDS + 8)
@@ -51,6 +49,10 @@
 
 #if ! GTK_CHECK_VERSION (2, 18, 0)
 #define gtk_widget_get_allocation(w, a) memcpy ((a), (w)->allocation, sizeof GtkAllocation)
+#endif
+
+#if ! GTK_CHECK_VERSION (2, 20, 0)
+#define gtk_widget_is_drawable(w) GTK_WIDGET_DRAWABLE (w)
 #endif
 
 typedef struct {
@@ -70,7 +72,7 @@ typedef struct {
 
 static const gfloat alpha_step = 0.10;
 
-static void ui_infoarea_draw_visualizer (UIInfoArea * area);
+static void draw_visualizer (UIInfoArea * area, cairo_t * cr);
 
 /****************************************************************************/
 
@@ -117,12 +119,12 @@ static void vis_update_cb (const VisNode * vis, UIInfoArea * area)
         }
     }
 
-#if GTK_CHECK_VERSION (2, 20, 0)
     if (gtk_widget_is_drawable (area->parent))
-#else
-    if (GTK_WIDGET_DRAWABLE (area->parent))
-#endif
-        ui_infoarea_draw_visualizer (area);
+    {
+        cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (area->parent));
+        draw_visualizer (area, cr);
+        cairo_destroy (cr);
+    }
 }
 
 static void vis_clear_cb (void * hook_data, UIInfoArea * area)
@@ -133,18 +135,16 @@ static void vis_clear_cb (void * hook_data, UIInfoArea * area)
 
 /****************************************************************************/
 
-static void ui_infoarea_draw_text (UIInfoArea * area, gint x, gint y, gint
+static void draw_text (UIInfoArea * area, cairo_t * cr, gint x, gint y, gint
  width, gfloat r, gfloat g, gfloat b, gfloat a, const gchar * font,
  const gchar * text)
 {
-    cairo_t *cr;
     PangoLayout *pl;
     PangoFontDescription *desc;
     gchar *str;
 
     str = g_markup_escape_text(text, -1);
 
-    cr = gdk_cairo_create (gtk_widget_get_window (area->parent));
     cairo_move_to(cr, x, y);
     cairo_set_operator(cr, CAIRO_OPERATOR_ATOP);
     cairo_set_source_rgba(cr, r, g, b, a);
@@ -159,7 +159,6 @@ static void ui_infoarea_draw_text (UIInfoArea * area, gint x, gint y, gint
 
     pango_cairo_show_layout(cr, pl);
 
-    cairo_destroy(cr);
     g_object_unref(pl);
     g_free(str);
 }
@@ -253,13 +252,10 @@ static void get_color (GtkWidget * widget, gint i, gfloat * r, gfloat * g,
     hsv_to_rgb (h, s, v, r, g, b);
 }
 
-static void ui_infoarea_draw_visualizer (UIInfoArea * area)
+static void draw_visualizer (UIInfoArea * area, cairo_t * cr)
 {
     GtkAllocation alloc;
-    cairo_t *cr;
-
     gtk_widget_get_allocation(GTK_WIDGET(area->parent), &alloc);
-    cr = gdk_cairo_create (gtk_widget_get_window (area->parent));
 
     for (auto gint i = 0; i < VIS_BANDS; i++)
     {
@@ -290,22 +286,16 @@ static void ui_infoarea_draw_visualizer (UIInfoArea * area)
         cairo_rectangle (cr, x, 50, 6, m - 50);
         cairo_fill (cr);
     }
-
-    cairo_destroy(cr);
 }
 
-void ui_infoarea_draw_album_art (UIInfoArea * area)
+static void draw_album_art (UIInfoArea * area, cairo_t * cr)
 {
-    cairo_t * cr;
-
     if (aud_drct_get_playing () && area->pb == NULL)
     {
         area->pb = audgui_pixbuf_for_current ();
         g_return_if_fail (area->pb);
         audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
     }
-
-    cr = gdk_cairo_create (gtk_widget_get_window (area->parent));
 
     if (area->pb != NULL)
     {
@@ -318,11 +308,9 @@ void ui_infoarea_draw_album_art (UIInfoArea * area)
         gdk_cairo_set_source_pixbuf (cr, area->last_pb, 10.0, 10.0);
         cairo_paint_with_alpha (cr, area->last_alpha);
     }
-
-    cairo_destroy (cr);
 }
 
-void ui_infoarea_draw_title (UIInfoArea * area)
+static void draw_title (UIInfoArea * area, cairo_t * cr)
 {
     GtkAllocation alloc;
     gint width;
@@ -331,53 +319,52 @@ void ui_infoarea_draw_title (UIInfoArea * area)
     width = alloc.width - (86 + VIS_OFFSET + 6);
 
     if (area->title != NULL)
-        ui_infoarea_draw_text (area, 86, 8, width, 1, 1, 1, area->alpha,
-         "Sans 18", area->title);
+        draw_text (area, cr, 86, 8, width, 1, 1, 1, area->alpha, "Sans 18",
+         area->title);
     if (area->last_title != NULL)
-        ui_infoarea_draw_text (area, 86, 8, width, 1, 1, 1, area->last_alpha,
-         "Sans 18", area->last_title);
+        draw_text (area, cr, 86, 8, width, 1, 1, 1, area->last_alpha, "Sans 18",
+         area->last_title);
     if (area->artist != NULL)
-        ui_infoarea_draw_text (area, 86, 42, width, 1, 1, 1, area->alpha,
-         "Sans 9", area->artist);
+        draw_text (area, cr, 86, 42, width, 1, 1, 1, area->alpha, "Sans 9",
+         area->artist);
     if (area->last_artist != NULL)
-        ui_infoarea_draw_text (area, 86, 42, width, 1, 1, 1, area->last_alpha,
-         "Sans 9", area->last_artist);
+        draw_text (area, cr, 86, 42, width, 1, 1, 1, area->last_alpha, "Sans 9",
+         area->last_artist);
     if (area->album != NULL)
-        ui_infoarea_draw_text (area, 86, 58, width, 0.7, 0.7, 0.7, area->alpha,
+        draw_text (area, cr, 86, 58, width, 0.7, 0.7, 0.7, area->alpha,
          "Sans 9", area->album);
     if (area->last_album != NULL)
-        ui_infoarea_draw_text (area, 86, 58, width, 0.7, 0.7, 0.7,
-         area->last_alpha, "Sans 9", area->last_album);
+        draw_text (area, cr, 86, 58, width, 0.7, 0.7, 0.7, area->last_alpha,
+         "Sans 9", area->last_album);
 }
 
-void
-ui_infoarea_draw_background(UIInfoArea *area)
+static void draw_background (UIInfoArea * area, cairo_t * cr)
 {
-    GtkWidget *evbox;
     GtkAllocation alloc;
-    cairo_t *cr;
-
-    g_return_if_fail(area != NULL);
-
-    evbox = area->parent;
-    cr = gdk_cairo_create (gtk_widget_get_window (evbox));
-
-    gtk_widget_get_allocation(GTK_WIDGET(evbox), &alloc);
+    gtk_widget_get_allocation (area->parent, & alloc);
 
     cairo_rectangle(cr, 0, 0, alloc.width, alloc.height);
-    cairo_paint(cr);
-
-    cairo_destroy(cr);
+    cairo_fill (cr);
 }
 
-gboolean
-ui_infoarea_expose_event(UIInfoArea *area, GdkEventExpose *event, gpointer unused)
+#if GTK_CHECK_VERSION (3, 0, 0)
+static gboolean draw_cb (GtkWidget * widget, cairo_t * cr, UIInfoArea * area)
 {
-    ui_infoarea_draw_background(area);
-    ui_infoarea_draw_album_art(area);
-    ui_infoarea_draw_title(area);
-    ui_infoarea_draw_visualizer(area);
+#else
+static gboolean expose_cb (GtkWidget * widget, GdkEventExpose * event,
+ UIInfoArea * area)
+{
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (area->parent));
+#endif
 
+    draw_background (area, cr);
+    draw_album_art (area, cr);
+    draw_title (area, cr);
+    draw_visualizer (area, cr);
+
+#if ! GTK_CHECK_VERSION (3, 0, 0)
+    cairo_destroy (cr);
+#endif
     return TRUE;
 }
 
@@ -525,8 +512,11 @@ GtkWidget * ui_infoarea_new (void)
 
     gtk_widget_set_size_request(GTK_WIDGET(evbox), -1, 84);
 
-    g_signal_connect_swapped(area->parent, "expose-event",
-                             G_CALLBACK(ui_infoarea_expose_event), area);
+#if GTK_CHECK_VERSION (3, 0, 0)
+    g_signal_connect (area->parent, "draw", (GCallback) draw_cb, area);
+#else
+    g_signal_connect (area->parent, "expose-event", (GCallback) expose_cb, area);
+#endif
 
     hook_associate ("playlist update", (HookFunction) ui_infoarea_set_title, area);
     hook_associate("playback begin", (HookFunction) ui_infoarea_playback_start, area);
