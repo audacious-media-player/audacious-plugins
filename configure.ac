@@ -1251,16 +1251,13 @@ AC_MSG_RESULT([${is_elf}])
 
 
 have_solaris=no
-have_sun=no
 ARCH_DEFINES=""
 case "$host" in
     *-*-openbsd* | *-*-netbsd* | *-*-mirbsd*)
-        have_sun=yes
         if test "${is_elf}" = "no"
         then
             AC_DEFINE(SYMBOL_PREFIX, "_", [Define to symbol prefix, if any])
         fi
-        OUTPUT_PLUGINS="$OUTPUT_PLUGINS sun"
     ;;
     *-*-darwin*)
         AC_DEFINE(SYMBOL_PREFIX, "_", [Define to symbol prefix, if any])
@@ -1675,7 +1672,6 @@ dnl XXX delete ASAP -nenolod
 AM_CONDITIONAL(ARCH_X86, test "x$arch_type" = "xix86")
 AM_CONDITIONAL(USE_X86ASM, test "x$x86_asm" = xyes)
 AM_CONDITIONAL(HAVE_SOLARIS, test "x$have_solaris" = xyes)
-AM_CONDITIONAL(HAVE_SUN, test "x$have_sun" = xyes)
 
 plugindir=`pkg-config audacious --variable=plugin_dir`
 AC_SUBST(plugindir)
@@ -1749,7 +1745,6 @@ echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  PulseAudio (pulse):                     $have_pulse"
 echo "  RoarAudio (roaraudio):                  $have_roar"
 echo "  Jack Audio Connection Kit (jack):       $have_jack"
-echo "  BSD/SUN audio output (sun):             $have_sun"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
 echo "  Simple DirectMedia Layer (sdlout):      $enable_sdlout"
 echo "  FileWriter:                             $enable_filewriter"
