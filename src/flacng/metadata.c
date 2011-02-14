@@ -30,7 +30,7 @@ static size_t read_cb(void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handl
 
     if (handle == NULL)
     {
-        ERROR("Trying to read data from an uninitialized file!\n");
+        FLACNG_ERROR("Trying to read data from an uninitialized file!\n");
         return -1;
     }
 
@@ -39,7 +39,7 @@ static size_t read_cb(void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handl
     switch (read)
     {
         case -1:
-            ERROR("Error while reading from stream!\n");
+            FLACNG_ERROR("Error while reading from stream!\n");
             return -1;
 
         case 0:
@@ -64,7 +64,7 @@ static int seek_cb(FLAC__IOHandle handle, FLAC__int64 offset, int whence)
 
     if (vfs_fseek(handle, offset, whence) != 0)
     {
-        ERROR("Could not seek to %lld!\n", (long long)offset);
+        FLACNG_ERROR("Could not seek to %lld!\n", (long long)offset);
         return -1;
     }
 
@@ -77,7 +77,7 @@ static FLAC__int64 tell_cb(FLAC__IOHandle handle)
 
     if ((offset = vfs_ftell(handle)) == -1)
     {
-        ERROR("Could not tell current position!\n");
+        FLACNG_ERROR("Could not tell current position!\n");
         return -1;
     }
 
@@ -154,7 +154,7 @@ gboolean flac_update_song_tuple(const Tuple *tuple, VFSFile *fd)
     g_return_val_if_fail(chain != NULL, FALSE);
 
     if (!FLAC__metadata_chain_read_with_callbacks(chain, fd, io_callbacks))
-        goto ERROR;
+        goto ERR;
 
     iter = FLAC__metadata_iterator_new();
     g_return_val_if_fail(iter != NULL, FALSE);
@@ -185,16 +185,16 @@ gboolean flac_update_song_tuple(const Tuple *tuple, VFSFile *fd)
     FLAC__metadata_chain_sort_padding(chain);
 
     if (!FLAC__metadata_chain_write_with_callbacks(chain, TRUE, fd, io_callbacks))
-        goto ERROR;
+        goto ERR;
 
     FLAC__metadata_chain_delete(chain);
     return TRUE;
 
-ERROR:
+ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
-    ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    FLACNG_ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return FALSE;
 }
 
@@ -212,7 +212,7 @@ gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint *l
     g_return_val_if_fail(chain != NULL, FALSE);
 
     if (!FLAC__metadata_chain_read_with_callbacks(chain, fd, io_callbacks))
-        goto ERROR;
+        goto ERR;
 
     iter = FLAC__metadata_iterator_new();
     g_return_val_if_fail(iter != NULL, FALSE);
@@ -242,11 +242,11 @@ gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint *l
 
     return has_image;
 
-ERROR:
+ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
-    ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    FLACNG_ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return FALSE;
 }
 
@@ -400,7 +400,7 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
     g_return_val_if_fail(chain != NULL, FALSE);
 
     if (!FLAC__metadata_chain_read_with_callbacks(chain, fd, io_callbacks))
-        goto ERROR;
+        goto ERR;
 
     iter = FLAC__metadata_iterator_new();
     g_return_val_if_fail(iter != NULL, FALSE);
@@ -442,7 +442,7 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
                 /* Calculate the stream length (milliseconds) */
                 if (metadata->data.stream_info.sample_rate == 0)
                 {
-                    ERROR("Invalid sample rate for stream!\n");
+                    FLACNG_ERROR("Invalid sample rate for stream!\n");
                     tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
                 }
                 else
@@ -475,10 +475,10 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
 
     return tuple;
 
-ERROR:
+ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
-    ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    FLACNG_ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return tuple;
 }

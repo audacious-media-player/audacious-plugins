@@ -32,13 +32,13 @@ callback_info *init_callback_info(void)
 
     if ((info = g_slice_new0(callback_info)) == NULL)
     {
-        ERROR("Could not allocate memory for callback structure!");
+        FLACNG_ERROR("Could not allocate memory for callback structure!");
         return NULL;
     }
 
     if ((info->output_buffer = g_malloc0(BUFFER_SIZE_BYTE)) == NULL)
     {
-        ERROR("Could not allocate memory for output buffer!");
+        FLACNG_ERROR("Could not allocate memory for output buffer!");
         return NULL;
     }
 
@@ -77,7 +77,7 @@ gboolean read_metadata(FLAC__StreamDecoder *decoder, callback_info *info)
     /* Reset the decoder */
     if (FLAC__stream_decoder_reset(decoder) == false)
     {
-        ERROR("Could not reset the decoder!\n");
+        FLACNG_ERROR("Could not reset the decoder!\n");
         return FALSE;
     }
 

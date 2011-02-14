@@ -25,7 +25,7 @@
 #include <audacious/i18n.h>
 #include <FLAC/all.h>
 
-#define ERROR(...) do { \
+#define FLACNG_ERROR(...) do { \
     printf("flacng: " __VA_ARGS__); \
 } while (0)
 
