@@ -39,8 +39,8 @@ const unsigned int
   Ca2mLoader::CODESPERRANGE = ADPLUG_A2M_CODESPERRANGE,
   Ca2mLoader::TERMINATE = 256,
   Ca2mLoader::FIRSTCODE = ADPLUG_A2M_FIRSTCODE,
-  Ca2mLoader::MAXCHAR = FIRSTCODE + COPYRANGES * CODESPERRANGE - 1,
-  Ca2mLoader::SUCCMAX = MAXCHAR + 1,
+  Ca2mLoader::MAXCODE = FIRSTCODE + COPYRANGES * CODESPERRANGE - 1,
+  Ca2mLoader::SUCCMAX = MAXCODE + 1,
   Ca2mLoader::TWICEMAX = ADPLUG_A2M_TWICEMAX,
   Ca2mLoader::ROOT = 1, Ca2mLoader::MAXBUF = 42 * 1024,
   Ca2mLoader::MAXDISTANCE = 21389, Ca2mLoader::MAXSIZE = 21389 + MAXCOPY;
@@ -368,7 +368,7 @@ Ca2mLoader::inittree ()
     freq[i] = 1;
   }
 
-  for (i = 1; i <= MAXCHAR; i++)
+  for (i = 1; i <= MAXCODE; i++)
   {
     leftc[i] = 2 * i;
     rghtc[i] = 2 * i + 1;
@@ -497,7 +497,7 @@ Ca2mLoader::uncompress ()
     else
       a = leftc[a];
     ibitbuffer <<= 1;
-  } while (a <= MAXCHAR);
+  } while (a <= MAXCODE);
 
   a -= SUCCMAX;
   updatemodel (a);
