@@ -1,7 +1,7 @@
 /*
  *  A FLAC decoder plugin for the Audacious Media Player
  *  Copyright (C) 2005 Ralf Ertzinger
- *  Copyright (C) 2010 Michał Lipski <tallica@o2.pl>
+ *  Copyright (C) 2010-2011 Michał Lipski <tallica@o2.pl>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -215,10 +215,26 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
 
     playback->set_gain_from_playlist(playback);
 
-    while (!stop_flag)
+    while (1)
     {
-        if (stop_time >= 0 && playback->output->written_time () >= stop_time)
-            goto DRAIN;
+        g_mutex_lock(seek_mutex);
+
+        if (stop_flag)
+        {
+            g_mutex_unlock(seek_mutex);
+            break;
+        }
+
+        if (seek_value >= 0)
+        {
+            playback->output->flush (seek_value);
+            FLAC__stream_decoder_seek_absolute (main_decoder, (gint64)
+             seek_value * main_info->stream.samplerate / 1000);
+            seek_value = -1;
+            g_cond_signal(seek_cond);
+        }
+
+        g_mutex_unlock(seek_mutex);
 
         /* Try to decode a single frame of audio */
         if (FLAC__stream_decoder_process_single(main_decoder) == FALSE)
@@ -263,19 +279,6 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
             goto CLEANUP;
         }
 
-        g_mutex_lock(seek_mutex);
-
-        if (seek_value >= 0)
-        {
-            playback->output->flush (seek_value);
-            FLAC__stream_decoder_seek_absolute (main_decoder, (gint64)
-             seek_value * main_info->stream.samplerate / 1000);
-            seek_value = -1;
-            g_cond_signal(seek_cond);
-        }
-
-        g_mutex_unlock(seek_mutex);
-
         /*
          * If the frame decoded was an audio frame we now
          * have data in main_info->output_buffer
@@ -293,7 +296,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
         while (!stop_flag && elements_left != 0)
         {
             if (stop_time >= 0 && playback->output->written_time () >= stop_time)
-                goto DRAIN;
+                goto CLEANUP;
 
             sample_count = MIN(OUTPUT_BLOCK_SIZE, elements_left);
 
@@ -316,18 +319,15 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
         {
             /* Yes. Drain the output buffer and stop playing. */
             AUDDBG("End of stream reached, draining output buffer\n");
-
-DRAIN:
-            while (playback->output->buffer_playing() && !stop_flag)
-                g_usleep(20000);
-
             goto CLEANUP;
         }
     }
 
 CLEANUP:
+    while (playback->output->buffer_playing())
+        g_usleep(20000);
+
     g_mutex_lock(seek_mutex);
-    stop_flag = TRUE;
     g_cond_signal(seek_cond); /* wake up any waiting request */
     g_mutex_unlock(seek_mutex);
 
@@ -336,9 +336,7 @@ CLEANUP:
     AUDDBG("Audio device closed.\n");
 
 ERR_NO_CLOSE:
-    if (play_buffer)
-        g_free(play_buffer);
-
+    g_free(play_buffer);
     reset_info(main_info);
 
     if (FLAC__stream_decoder_flush(main_decoder) == FALSE)
