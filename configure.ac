@@ -1541,7 +1541,7 @@ AC_ARG_ENABLE(filewriter_flac,
 )
 
 if test "x$enable_filewriter_flac" = "xyes"; then
-   PKG_CHECK_MODULES(FLAC, [flac >= 1.1.2],
+   PKG_CHECK_MODULES(FLAC, [flac >= 1.1.3],
       [have_writer_flac=yes], [have_writer_flac=no]
    )
    if test "x$have_writer_flac" = "xyes"; then
