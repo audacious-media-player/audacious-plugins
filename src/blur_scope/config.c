@@ -1,6 +1,6 @@
 /*
  *  Blur Scope plugin for Audacious
- *  Copyright (C) 2010 John Lindgren
+ *  Copyright (C) 2010-2011 John Lindgren
  *
  *  Based on BMP - Cross-platform multimedia player:
  *  Copyright (C) 2003-2004  BMP development team.
@@ -25,6 +25,7 @@
 
 #include <gtk/gtk.h>
 
+#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 
 #include "blur_scope.h"
@@ -38,13 +39,6 @@ static GtkWidget *bbox, *ok, *cancel;
 static void
 configure_ok(GtkWidget * w, gpointer data)
 {
-    gdouble c[3];
-
-    gtk_color_selection_get_color(GTK_COLOR_SELECTION(options_colorpicker),
-                                  c);
-    color =
-        ((guint32) (255.0 * c[0]) << 16) |
-        ((guint32) (255.0 * c[1]) << 8) | ((guint32) (255.0 * c[2]));
     gtk_widget_destroy(configure_win);
 }
 
@@ -58,13 +52,11 @@ configure_cancel(GtkWidget * w, gpointer data)
 static void
 color_changed(GtkWidget * w, gpointer data)
 {
-    gdouble c[3];
-
-    gtk_color_selection_get_color(GTK_COLOR_SELECTION(options_colorpicker),
-                                  c);
-    color =
-        ((guint32) (255.0 * c[0]) << 16) |
-        ((guint32) (255.0 * c[1]) << 8) | ((guint32) (255.0 * c[2]));
+    GdkColor c;
+    gtk_color_selection_get_current_color ((GtkColorSelection *)
+     options_colorpicker, & c);
+    color = (((guint32) c.red << 8) & 0xff0000) | ((guint32) c.green & 0xff00) |
+     ((guint32) c.blue >> 8);
 }
 
 void
@@ -72,13 +64,8 @@ bscope_configure(void)
 {
     /* FIXME: convert to GtkColorSelectionDialog */
 
-    gdouble c[3];
     if (configure_win)
         return;
-
-    c[0] = ((gdouble) (color / 0x10000)) / 256;
-    c[1] = ((gdouble) ((color % 0x10000) / 0x100)) / 256;
-    c[2] = ((gdouble) (color % 0x100)) / 256;
 
     configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_container_set_border_width(GTK_CONTAINER(configure_win), 10);
@@ -100,8 +87,12 @@ bscope_configure(void)
     gtk_container_set_border_width(GTK_CONTAINER(options_vbox), 5);
 
     options_colorpicker = gtk_color_selection_new();
-    gtk_color_selection_set_color(GTK_COLOR_SELECTION(options_colorpicker),
-                                  c);
+
+    GdkColor c = {.red = (color & 0xff0000) >> 8, .green = color & 0xff00, .blue
+     = (color & 0xff) << 8};
+    gtk_color_selection_set_current_color ((GtkColorSelection *)
+     options_colorpicker, & c);
+
     g_signal_connect(G_OBJECT(options_colorpicker), "color_changed",
                      G_CALLBACK(color_changed), NULL);
 
@@ -118,20 +109,19 @@ bscope_configure(void)
 
     bbox = gtk_hbutton_box_new();
     gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-    gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
     cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
     g_signal_connect(G_OBJECT(cancel), "clicked",
                      G_CALLBACK(configure_cancel),
                      GUINT_TO_POINTER(color));
-    GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
+    gtk_widget_set_can_default (cancel, TRUE);
     gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
     gtk_widget_show(cancel);
 
     ok = gtk_button_new_from_stock(GTK_STOCK_OK);
     g_signal_connect(G_OBJECT(ok), "clicked", G_CALLBACK(configure_ok), NULL);
-    GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
+    gtk_widget_set_can_default (ok, TRUE);
     gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
     gtk_widget_show(ok);
 
