@@ -18,6 +18,9 @@
 *
 */
 
+#include <gtk/gtk.h>
+
+#include <audacious/gtk-compat.h>
 
 #include "i_configure-fluidsynth.h"
 #include "backend-fluidsynth/b-fluidsynth-config.h"
@@ -171,7 +174,7 @@ void i_configure_ev_sfload_commit( gpointer sfload_radiobt )
 void i_configure_ev_sygain_commit( gpointer gain_spinbt )
 {
   amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-  if (gtk_widget_is_sensitive (gain_spinbt))
+  if (gtk_widget_get_sensitive (gain_spinbt))
     fsyncfg->fsyn_synth_gain = (gint)(gtk_spin_button_get_value(GTK_SPIN_BUTTON(gain_spinbt)) * 10);
   else
     fsyncfg->fsyn_synth_gain = -1;
@@ -181,7 +184,7 @@ void i_configure_ev_sygain_commit( gpointer gain_spinbt )
 void i_configure_ev_sypoly_commit( gpointer poly_spinbt )
 {
   amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-  if (gtk_widget_is_sensitive (poly_spinbt))
+  if (gtk_widget_get_sensitive (poly_spinbt))
     fsyncfg->fsyn_synth_poliphony = (gint)(gtk_spin_button_get_value(GTK_SPIN_BUTTON(poly_spinbt)));
   else
     fsyncfg->fsyn_synth_poliphony = -1;
@@ -191,7 +194,7 @@ void i_configure_ev_sypoly_commit( gpointer poly_spinbt )
 void i_configure_ev_syreverb_commit( gpointer reverb_yes_radiobt )
 {
   amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-  if (gtk_widget_is_sensitive (reverb_yes_radiobt))
+  if (gtk_widget_get_sensitive (reverb_yes_radiobt))
   {
     if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(reverb_yes_radiobt) ) )
       fsyncfg->fsyn_synth_reverb = 1;
@@ -206,7 +209,7 @@ void i_configure_ev_syreverb_commit( gpointer reverb_yes_radiobt )
 void i_configure_ev_sychorus_commit( gpointer chorus_yes_radiobt )
 {
   amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-  if (gtk_widget_is_sensitive (chorus_yes_radiobt))
+  if (gtk_widget_get_sensitive (chorus_yes_radiobt))
   {
     if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(chorus_yes_radiobt) ) )
       fsyncfg->fsyn_synth_chorus = 1;
