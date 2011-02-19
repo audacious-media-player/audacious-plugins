@@ -169,10 +169,7 @@ mms_vfs_ungetc_impl(gint c, VFSFile *stream)
     return EOF;
 }
 
-gint
-mms_vfs_fseek_impl(VFSFile * file,
-          glong offset,
-          gint whence)
+static gint mms_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
 {
     return -1;
 }
@@ -183,8 +180,7 @@ mms_vfs_rewind_impl(VFSFile * file)
     return;
 }
 
-glong
-mms_vfs_ftell_impl(VFSFile * file)
+static gint64 mms_vfs_ftell_impl (VFSFile * file)
 {
     MMSHandle *handle = (MMSHandle *) file->handle;
 
@@ -207,8 +203,7 @@ mms_vfs_feof_impl(VFSFile * file)
          mmsh_get_length(handle->mmsh));
 }
 
-gint
-mms_vfs_truncate_impl(VFSFile * file, glong size)
+static gint mms_vfs_truncate_impl (VFSFile * file, gint64 size)
 {
     return -1;
 }

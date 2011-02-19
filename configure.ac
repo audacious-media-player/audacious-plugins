@@ -252,7 +252,7 @@ AC_ARG_ENABLE( pulse,
 )
 
 if test "x$enable_pulse" = "xyes"; then
-    PKG_CHECK_MODULES(PULSE, [libpulse >= 0.9.9],
+    PKG_CHECK_MODULES(PULSE, [libpulse >= 0.9.5],
          [have_pulse=yes
           OUTPUT_PLUGINS="$OUTPUT_PLUGINS pulse_audio"],
          [have_pulse=no]
@@ -627,9 +627,9 @@ if test "x$enable_aosd" = "xguess"; then
         [have_aosd="no"
         AC_MSG_RESULT([*** pango >= 1.14.7 is required for Audacious OSD plugin ***])]
     )
-    PKG_CHECK_MODULES(CAIRO,[cairo >= 1.2.6],,
+    PKG_CHECK_MODULES(CAIRO,[cairo >= 1.2.4],,
         [have_aosd="no"
-        AC_MSG_RESULT([*** cairo >= 1.2.6 is required for Audacious OSD plugin ***])]
+        AC_MSG_RESULT([*** cairo >= 1.2.4 is required for Audacious OSD plugin ***])]
     )
     PKG_CHECK_MODULES(PANGOCAIRO,[pangocairo >= 1.14.7],,
         [have_aosd="no"
