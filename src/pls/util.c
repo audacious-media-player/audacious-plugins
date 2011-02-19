@@ -72,9 +72,12 @@ INIFile *open_ini_file(const gchar *filename)
     unsigned char x[] = { 0xff, 0xfe, 0x00 };
 
     g_return_val_if_fail(filename, NULL);
-    vfs_file_get_contents(filename, (void * *) &buffer, &filesize);
-    if (buffer == NULL)
+
+    void * vbuf = NULL;
+    vfs_file_get_contents (filename, & vbuf, & filesize);
+    if (! vbuf)
         return NULL;
+    buffer = vbuf;
 
     /*
      * Convert UTF-16 into something useful. Original implementation

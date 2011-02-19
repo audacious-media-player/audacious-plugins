@@ -49,6 +49,13 @@ enum
   LISTMIXER_N_COLUMNS
 };
 
+/* GCC does not like casting func * * to void * *. */
+static void * get_symbol (GModule * mod, const gchar * name)
+{
+    void * sym = NULL;
+    g_module_symbol (mod, name, & sym);
+    return sym;
+}
 
 void i_configure_ev_portlv_changetoggle( GtkCellRendererToggle * rdtoggle ,
                                          gchar * path_str , gpointer data )
@@ -267,10 +274,12 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
     /* it's legit to assume that this can't fail,
        since the module is present in the backend_list */
     alsa_module = g_module_open( alsa_module_pathfilename , 0 );
-    g_module_symbol( alsa_module , "sequencer_port_get_list" , (gpointer*)&get_port_list );
-    g_module_symbol( alsa_module , "sequencer_port_free_list" , (gpointer*)&free_port_list );
-    g_module_symbol( alsa_module , "alsa_card_get_list" , (gpointer*)&get_card_list );
-    g_module_symbol( alsa_module , "alsa_card_free_list" , (gpointer*)&free_card_list );
+
+    get_port_list = get_symbol (alsa_module, "sequencer_port_get_list");
+    free_port_list = get_symbol (alsa_module, "sequencer_port_free_list");
+    get_card_list = get_symbol (alsa_module, "alsa_card_get_list");
+    free_card_list = get_symbol (alsa_module, "alsa_card_free_list");
+
     /* get an updated list of writable ALSA MIDI ports and ALSA-enabled sound cards*/
     wports = get_port_list(); wports_h = wports;
     scards = get_card_list(); scards_h = scards;

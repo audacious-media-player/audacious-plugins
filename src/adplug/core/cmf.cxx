@@ -548,7 +548,7 @@ void CcmfPlayer::cmfNoteOn(uint8_t iChannel, uint8_t iNote, uint8_t iVelocity)
 		00 -> N/A (note off)
 		*/
 		// Approximate formula, need to figure out more accurate one (my maths isn't so good...)
-		int iLevel = 0x25 - sqrt(iVelocity * 16/*6*/);//(127 - iVelocity) * 0x20 / 127;
+		int iLevel = 0x25 - (int) sqrt(iVelocity * 16 /* 6 */); // (127 - iVelocity) * 0x20 / 127;
 		if (iVelocity > 0x7b) iLevel = 0; // full volume
 		if (iLevel < 0) iLevel = 0;
 		if (iLevel > 0x3F) iLevel = 0x3F;

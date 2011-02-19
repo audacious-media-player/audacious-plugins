@@ -20,6 +20,13 @@
 
 #include "i_backend.h"
 
+/* GCC does not like casting func * * to void * *. */
+static void * get_symbol (GModule * mod, const gchar * name)
+{
+    void * sym = NULL;
+    g_module_symbol (mod, name, & sym);
+    return sym;
+}
 
 gboolean i_str_has_pref_and_suff( const gchar *str , gchar *pref , gchar *suff )
 {
@@ -55,7 +62,7 @@ GSList * i_backend_list_lookup( void )
         else
         {
           /* try to get the module name */
-          if ( g_module_symbol( module , "backend_info_get" , (gpointer*)&getapmoduleinfo ) )
+          if ((getapmoduleinfo = get_symbol (module , "backend_info_get")))
           {
             /* module name found, ok! add its name and filename to the list */
             amidiplug_sequencer_backend_name_t * mn = g_malloc(sizeof(amidiplug_sequencer_backend_name_t));
@@ -112,35 +119,38 @@ gint i_backend_load( gchar * module_name )
   {
     gchar * (*getapmoduleinfo)( gchar ** , gchar ** , gchar ** , gint * );
     gboolean (*checkautonomousaudio)( void );
-    g_module_symbol( backend.gmodule , "backend_init" , (gpointer *)&backend.init );
-    g_module_symbol( backend.gmodule , "backend_cleanup" , (gpointer *)&backend.cleanup );
-    g_module_symbol( backend.gmodule , "audio_info_get" , (gpointer*)&backend.audio_info_get );
-    g_module_symbol( backend.gmodule , "audio_volume_get" , (gpointer *)&backend.audio_volume_get );
-    g_module_symbol( backend.gmodule , "audio_volume_set" , (gpointer *)&backend.audio_volume_set );
-    g_module_symbol( backend.gmodule , "sequencer_start" , (gpointer *)&backend.seq_start );
-    g_module_symbol( backend.gmodule , "sequencer_stop" , (gpointer *)&backend.seq_stop );
-    g_module_symbol( backend.gmodule , "sequencer_on" , (gpointer *)&backend.seq_on );
-    g_module_symbol( backend.gmodule , "sequencer_off" , (gpointer *)&backend.seq_off );
-    g_module_symbol( backend.gmodule , "sequencer_queue_tempo" , (gpointer *)&backend.seq_queue_tempo );
-    g_module_symbol( backend.gmodule , "sequencer_queue_start" , (gpointer *)&backend.seq_queue_start );
-    g_module_symbol( backend.gmodule , "sequencer_queue_stop" , (gpointer *)&backend.seq_queue_stop );
-    g_module_symbol( backend.gmodule , "sequencer_event_init" , (gpointer *)&backend.seq_event_init );
-    g_module_symbol( backend.gmodule , "sequencer_event_noteon" , (gpointer *)&backend.seq_event_noteon );
-    g_module_symbol( backend.gmodule , "sequencer_event_noteoff" , (gpointer *)&backend.seq_event_noteoff );
-    g_module_symbol( backend.gmodule , "sequencer_event_allnoteoff" , (gpointer *)&backend.seq_event_allnoteoff );
-    g_module_symbol( backend.gmodule , "sequencer_event_keypress" , (gpointer *)&backend.seq_event_keypress );
-    g_module_symbol( backend.gmodule , "sequencer_event_controller" , (gpointer *)&backend.seq_event_controller );
-    g_module_symbol( backend.gmodule , "sequencer_event_pgmchange" , (gpointer *)&backend.seq_event_pgmchange );
-    g_module_symbol( backend.gmodule , "sequencer_event_chanpress" , (gpointer *)&backend.seq_event_chanpress );
-    g_module_symbol( backend.gmodule , "sequencer_event_pitchbend" , (gpointer *)&backend.seq_event_pitchbend );
-    g_module_symbol( backend.gmodule , "sequencer_event_sysex" , (gpointer *)&backend.seq_event_sysex );
-    g_module_symbol( backend.gmodule , "sequencer_event_tempo" , (gpointer *)&backend.seq_event_tempo );
-    g_module_symbol( backend.gmodule , "sequencer_event_other" , (gpointer *)&backend.seq_event_other );
-    g_module_symbol( backend.gmodule , "sequencer_output" , (gpointer *)&backend.seq_output );
-    g_module_symbol( backend.gmodule , "sequencer_output_shut" , (gpointer *)&backend.seq_output_shut );
-    g_module_symbol( backend.gmodule , "sequencer_get_port_count" , (gpointer *)&backend.seq_get_port_count );
-    g_module_symbol( backend.gmodule , "backend_info_get" , (gpointer*)&getapmoduleinfo );
-    g_module_symbol( backend.gmodule , "audio_check_autonomous" , (gpointer*)&checkautonomousaudio );
+
+    backend.init = get_symbol (backend.gmodule, "backend_init");
+    backend.cleanup = get_symbol (backend.gmodule, "backend_cleanup");
+    backend.audio_info_get = get_symbol (backend.gmodule, "audio_info_get");
+    backend.audio_volume_get = get_symbol (backend.gmodule, "audio_volume_get");
+    backend.audio_volume_set = get_symbol (backend.gmodule, "audio_volume_set");
+    backend.seq_start = get_symbol (backend.gmodule, "sequencer_start");
+    backend.seq_stop = get_symbol (backend.gmodule, "sequencer_stop");
+    backend.seq_on = get_symbol (backend.gmodule, "sequencer_on");
+    backend.seq_off = get_symbol (backend.gmodule, "sequencer_off");
+    backend.seq_queue_tempo = get_symbol (backend.gmodule, "sequencer_queue_tempo");
+    backend.seq_queue_start = get_symbol (backend.gmodule, "sequencer_queue_start");
+    backend.seq_queue_stop = get_symbol (backend.gmodule, "sequencer_queue_stop");
+    backend.seq_event_init = get_symbol (backend.gmodule, "sequencer_event_init");
+    backend.seq_event_noteon = get_symbol (backend.gmodule, "sequencer_event_noteon");
+    backend.seq_event_noteoff = get_symbol (backend.gmodule, "sequencer_event_noteoff");
+    backend.seq_event_allnoteoff = get_symbol (backend.gmodule, "sequencer_event_allnoteoff");
+    backend.seq_event_keypress = get_symbol (backend.gmodule, "sequencer_event_keypress");
+    backend.seq_event_controller = get_symbol (backend.gmodule, "sequencer_event_controller");
+    backend.seq_event_pgmchange = get_symbol (backend.gmodule, "sequencer_event_pgmchange");
+    backend.seq_event_chanpress = get_symbol (backend.gmodule, "sequencer_event_chanpress");
+    backend.seq_event_pitchbend = get_symbol (backend.gmodule, "sequencer_event_pitchbend");
+    backend.seq_event_sysex = get_symbol (backend.gmodule, "sequencer_event_sysex");
+    backend.seq_event_tempo = get_symbol (backend.gmodule, "sequencer_event_tempo");
+    backend.seq_event_other = get_symbol (backend.gmodule, "sequencer_event_other");
+    backend.seq_output = get_symbol (backend.gmodule, "sequencer_output");
+    backend.seq_output_shut = get_symbol (backend.gmodule, "sequencer_output_shut");
+    backend.seq_get_port_count = get_symbol (backend.gmodule, "sequencer_get_port_count");
+
+    getapmoduleinfo = get_symbol (backend.gmodule, "backend_info_get");
+    checkautonomousaudio = get_symbol (backend.gmodule, "audio_check_autonomous");
+
     getapmoduleinfo( &backend.name , NULL , NULL , NULL );
     backend.autonomous_audio = checkautonomousaudio();
     DEBUGMSG( "backend %s (name '%s') successfully loaded\n" , module_pathfilename , backend.name );

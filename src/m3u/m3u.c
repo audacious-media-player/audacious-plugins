@@ -43,10 +43,10 @@ static void strip_char (gchar * text, gchar c)
 
 static gchar * read_win_text (const gchar * path)
 {
-    gchar * raw;
+    void * raw;
     gint64 size;
 
-    vfs_file_get_contents (path, (void * *) & raw, & size);
+    vfs_file_get_contents (path, & raw, & size);
 
     if (raw == NULL)
         return NULL;
