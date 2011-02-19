@@ -68,7 +68,7 @@ void i_configure_ev_browse_for_entry( GtkWidget * target_entry )
 {
   GtkWidget *parent_window = gtk_widget_get_toplevel( target_entry );
   GtkFileChooserAction act = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(target_entry),"fc-act"));
-  if ( GTK_WIDGET_TOPLEVEL(parent_window) )
+  if (gtk_widget_is_toplevel (parent_window))
   {
     GtkWidget *browse_dialog = gtk_file_chooser_dialog_new( _("AMIDI-Plug - select file") ,
                                                             GTK_WINDOW(parent_window) , act ,
@@ -128,12 +128,10 @@ void i_configure_gui( void )
   g_signal_connect( G_OBJECT(configwin) , "destroy" ,
                     G_CALLBACK(gtk_widget_destroyed) , &configwin );
   button_ok = gtk_button_new_from_stock( GTK_STOCK_OK );
-  if ( g_signal_lookup( "ap-commit" , GTK_WIDGET_TYPE(button_ok) ) == 0 )
-  {
-    g_signal_new( "ap-commit" , GTK_WIDGET_TYPE(button_ok) ,
-                  G_SIGNAL_ACTION , 0 , NULL , NULL ,
-                  g_cclosure_marshal_VOID__VOID , G_TYPE_NONE , 0 );
-  }
+
+  if (! g_signal_lookup ("ap-commit", G_OBJECT_TYPE (button_ok)))
+    g_signal_new ("ap-commit", G_OBJECT_TYPE (button_ok), G_SIGNAL_ACTION, 0,
+     NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
   g_signal_connect (button_ok, "clicked", (GCallback) commit_cb, NULL);
 

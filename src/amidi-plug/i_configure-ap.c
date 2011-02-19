@@ -67,7 +67,8 @@ void i_configure_ev_backendlv_info( gpointer backend_lv )
     gtk_label_set_markup( GTK_LABEL(title_label) , longname_title );
     g_free( longname_title ); g_free( longname );
     gtk_container_add( GTK_CONTAINER(title_frame) , title_label );
-    gtk_box_pack_start( GTK_BOX(GTK_DIALOG(bidialog)->vbox) , title_frame , FALSE , FALSE , 0 );
+    gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
+     bidialog), title_frame, FALSE, FALSE, 0);
 
     filename_frame = gtk_frame_new( NULL );
     filename_entry = gtk_entry_new();
@@ -77,7 +78,8 @@ void i_configure_ev_backendlv_info( gpointer backend_lv )
     gtk_entry_set_has_frame( GTK_ENTRY(filename_entry) , FALSE );
     g_free( filename );
     gtk_container_add( GTK_CONTAINER(filename_frame) , filename_entry );
-    gtk_box_pack_start( GTK_BOX(GTK_DIALOG(bidialog)->vbox) , filename_frame , FALSE , FALSE , 0 );
+    gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
+     bidialog), filename_frame, FALSE, FALSE, 0);
 
     description_frame = gtk_frame_new( NULL );
     description_label = gtk_label_new( description );
@@ -85,7 +87,8 @@ void i_configure_ev_backendlv_info( gpointer backend_lv )
     gtk_label_set_line_wrap( GTK_LABEL(description_label) , TRUE );
     g_free( description );
     gtk_container_add( GTK_CONTAINER(description_frame) , description_label );
-    gtk_box_pack_start( GTK_BOX(GTK_DIALOG(bidialog)->vbox) , description_frame , TRUE , TRUE , 0 );
+    gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
+     bidialog), description_frame, FALSE, FALSE, 0);
 
     gtk_widget_show_all( bidialog );
     gtk_window_set_focus( GTK_WINDOW(bidialog) , NULL );
@@ -183,11 +186,7 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   GtkTreeIter backend_lv_iter_selected;
   GtkTreeSelection *backend_lv_sel;
   GtkTreeIter iter;
-  GtkTooltips *tips;
   GSList * backend_list = backend_list_p;
-
-  tips = gtk_tooltips_new();
-  g_object_set_data_full( G_OBJECT(ap_page_alignment) , "tt" , tips , g_object_unref );
 
   ap_page_vbox = gtk_vbox_new( FALSE , 0 );
 
@@ -315,50 +314,6 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   gtk_box_pack_start( GTK_BOX(content_vbox) , settings_vbox , TRUE , TRUE , 0 );
   gtk_box_pack_start( GTK_BOX(ap_page_vbox) , content_vbox , TRUE , TRUE , 2 );
   gtk_container_add( GTK_CONTAINER(ap_page_alignment) , ap_page_vbox );
-
-  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , backend_lv ,
-                        _("* Backend selection *\n"
-                        "AMIDI-Plug works with backends, in a modular fashion; here you should "
-                        "select your backend; that is, the way MIDI events are going to be handled "
-                        "and played.\nIf you have a hardware synthesizer on your audio card, and ALSA "
-                        "supports it, you'll want to use the ALSA backend. It can also be "
-                        "used with anything that provides an interface to the ALSA sequencer, including "
-                        "software synths or external devices.\nIf you want to rely on a software "
-                        "synthesizer and/or want to pipe audio into effect and output plugins of the "
-                        "player you'll want to use the good FluidSynth backend.\nPress the info "
-                        "button to read specific information about each backend.") , "" );
-  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settplay_transpose_spinbt ,
-                        _("* Transpose function *\n"
-                        "This option allows you to play the midi file transposed in a different key, "
-                        "by shifting of the desired number of semitones all its notes (excepting those "
-                        "on midi channel 10, reserved for percussions). Especially useful if you wish "
-                        "to sing or play along with another instrument.") , "" );
-  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settplay_drumshift_spinbt ,
-                        _("* Drumshift function *\n"
-                        "This option allows you to shift notes on midi channel 10 (the standard "
-                        "percussions channel) of the desired number of semitones. This results in "
-                        "different drumset and percussions being used during midi playback, so if "
-                        "you wish to enhance (or reduce, or alter) percussion sounds, try to play "
-                        "with this value.") , "" );
-  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settadva_precalc_checkbt ,
-                        _("* Pre-calculate MIDI length *\n"
-                        "If this option is enabled, AMIDI-Plug will calculate the MIDI file "
-                        "length as soon as the player requests it, instead of doing that only "
-                        "when the MIDI file is being played. In example, MIDI length "
-                        "will be calculated straight after adding MIDI files in a playlist. "
-                        "Disable this option if you want faster playlist loading (when a lot "
-                        "of MIDI files are added), enable it to display more information "
-                        "in the playlist straight after loading.") , "" );
-  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settadva_extractcomm_checkbt ,
-                        _("* Extract comments from MIDI files *\n"
-                        "Some MIDI files contain text comments (author, copyright, instrument notes, "
-                        "etc.). If this option is enabled, AMIDI-Plug will extract and display comments "
-                        "(if available) in the file information dialog.") , "" );
-  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settadva_extractlyr_checkbt ,
-                        _("* Extract lyrics from MIDI files *\n"
-                        "Some MIDI files contain song lyrics. If this option is enabled, AMIDI-Plug "
-                        "will extract and display song lyrics (if available) in the file "
-                        "information dialog.") , "" );
 }
 
 

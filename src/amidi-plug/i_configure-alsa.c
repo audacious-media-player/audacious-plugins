@@ -249,7 +249,6 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
     GtkCellRenderer *mixer_card_cmb_text_rndr, *mixer_ctl_cmb_text_rndr;
     GtkWidget *mixer_card_cmb_evbox, *mixer_card_cmb, *mixer_card_label;
     GtkWidget *mixer_ctl_cmb_evbox, *mixer_ctl_cmb, *mixer_ctl_label;
-    GtkTooltips *tips;
 
     amidiplug_cfg_alsa_t * alsacfg = amidiplug_cfg_backend->alsa;
 
@@ -264,9 +263,6 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
 
     if ( strlen( alsacfg->alsa_seq_wports ) > 0 )
       portstring_from_cfg = g_strsplit( alsacfg->alsa_seq_wports , "," , 0 );
-
-    tips = gtk_tooltips_new();
-    g_object_set_data_full( G_OBJECT(alsa_page_alignment) , "tt" , tips , g_object_unref );
 
     /* it's legit to assume that this can't fail,
        since the module is present in the backend_list */
@@ -416,26 +412,6 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
     free_card_list( scards_h );
     free_port_list( wports_h );
     g_module_close( alsa_module );
-
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , port_lv ,
-                        _("* Select ALSA output ports *\n"
-                        "MIDI events will be sent to the ports selected here. In example, if your "
-                        "audio card provides a hardware synth and you want to play MIDI with it, "
-                        "you'll probably want to select the wavetable synthesizer ports.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , mixer_card_cmb_evbox ,
-                        _("* Select ALSA mixer card *\n"
-                        "The ALSA backend outputs directly through ALSA, it doesn't use effect "
-                        "and ouput plugins from the player. During playback, the player volume"
-                        "slider will manipulate the mixer control you select here. "
-                        "If you're using wavetable synthesizer ports, you'll probably want to "
-                        "select the Synth control here.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , mixer_ctl_cmb_evbox ,
-                        _("* Select ALSA mixer control *\n"
-                        "The ALSA backend outputs directly through ALSA, it doesn't use effect "
-                        "and ouput plugins from the player. During playback, the player volume "
-                        "slider will manipulate the mixer control you select here. "
-                        "If you're using wavetable synthesizer ports, you'll probably want to "
-                        "select the Synth control here.") , "" );
   }
   else
   {
