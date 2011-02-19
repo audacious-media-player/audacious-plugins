@@ -152,6 +152,13 @@ scrape_uri_from_lyricwiki_search_result(const gchar *buf, gsize len)
 	doc = xmlParseMemory(buf, (int) len);
 	xmlSetGenericErrorFunc(NULL, NULL);
 
+/* workaround for uninitialized libxml func pointers; see:
+ * http://www.linuxquestions.org/questions/programming-9/[solved]using-libxml2-on-mingw-xmlfree-crashes-839802 */
+#ifdef _WIN32
+    if (! xmlFree)
+        xmlMemGet (& xmlFree, & xmlMalloc, & xmlRealloc, NULL);
+#endif
+
 	if (doc != NULL)
 	{
 		xmlNodePtr root, cur;
