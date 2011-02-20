@@ -34,6 +34,7 @@
 #include <string.h>
 
 #include <audacious/configdb.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audio.h>
@@ -88,9 +89,7 @@ struct sndstretch_settings
 	double scale;
 	int short_overlap;
 	int volume_corr;
-	GtkObject * pitch_adj;
-	GtkObject * speed_adj;
-	GtkObject * scale_adj;
+	GtkAdjustment * pitch_adj, * speed_adj, * scale_adj;
 };
 
 static struct sndstretch_settings SS;
@@ -140,14 +139,6 @@ void sndstretch_about(void)
 	GtkWidget * text;
 	GtkTextBuffer * textbuffer;
 	GtkTextIter iter;
-
-	GdkPixmap * logopix;
-	GdkBitmap * logomask;
-	GtkWidget * logo;
-
-	GdkPixmap * FBlogopix;
-	GdkBitmap * FBlogomask;
-	GtkWidget * FBlogo;
 	GtkWidget * copyhbox, * copy_rbox, * copy_lbox;
 
 
@@ -157,21 +148,13 @@ void sndstretch_about(void)
 	sndstretch_about_dialog = gtk_dialog_new();
 	gtk_widget_show(sndstretch_about_dialog);
 
-	/* title logo */
-	logopix = gdk_pixmap_create_from_xpm_d(sndstretch_about_dialog->window, &logomask,
-										   NULL,
-										   (gchar **) sndstretch_xmms_logo_xpm);
-	logo = gtk_pixmap_new(logopix,logomask);
+	GtkWidget * logo = gtk_image_new_from_pixbuf (gdk_pixbuf_new_from_xpm_data
+	 ((const gchar * *) sndstretch_xmms_logo_xpm));
+	GtkWidget * FBlogo = gtk_image_new_from_pixbuf (gdk_pixbuf_new_from_xpm_data
+	 ((const gchar * *) FB_logo_xpm));
 
-	/* FB-logo */
-	FBlogopix = gdk_pixmap_create_from_xpm_d(sndstretch_about_dialog->window, &FBlogomask,
-											 NULL,
-											 (gchar **) FB_logo_xpm);
-	FBlogo = gtk_pixmap_new(FBlogopix,FBlogomask);
-
-
-	gtk_signal_connect(GTK_OBJECT(sndstretch_about_dialog), "destroy",
-					   GTK_SIGNAL_FUNC(sndstretch_about_destroy_cb), NULL);
+	g_signal_connect (sndstretch_about_dialog, "destroy", (GCallback)
+	 sndstretch_about_destroy_cb, NULL);
 	gtk_window_set_title(GTK_WINDOW(sndstretch_about_dialog), _("About SndStretch"));
 
 
@@ -189,8 +172,8 @@ void sndstretch_about(void)
 	gtk_box_pack_start(GTK_BOX(copyhbox), copy_rbox,    TRUE, TRUE,  5);
 
 	vbox = gtk_vbox_new(FALSE, 5);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(sndstretch_about_dialog)->vbox), vbox,
-					   TRUE, TRUE, 5);
+	gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
+	 sndstretch_about_dialog), vbox, TRUE, TRUE, 5);
 
 	scrolltext = gtk_scrolled_window_new(NULL,NULL);
 	text = gtk_text_view_new();
@@ -213,14 +196,13 @@ void sndstretch_about(void)
 	gtk_box_pack_start(GTK_BOX(vbox), copyhbox, FALSE, TRUE, 5);
 	gtk_box_pack_start(GTK_BOX(vbox), scrolltext, TRUE, TRUE, 5);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 8);
-	gtk_widget_set_usize(scrolltext, -1, 110);
 
 	button = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(sndstretch_about_dialog)->action_area),
-					   button, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(button), "clicked",
-					   GTK_SIGNAL_FUNC(sndstretch_about_ok_cb), NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_box_pack_start ((GtkBox *) gtk_dialog_get_action_area ((GtkDialog *)
+	 sndstretch_about_dialog), button, FALSE, FALSE, 0);
+	g_signal_connect (button, "clicked", (GCallback) sndstretch_about_ok_cb,
+	 NULL);
+	gtk_widget_set_can_default (button, TRUE);
 	gtk_widget_grab_default(button);
 	gtk_widget_show(button);
 	gtk_widget_show_all(sndstretch_about_dialog);
@@ -230,30 +212,34 @@ void sndstretch_about(void)
 
 static void speed_change_cb(GtkAdjustment * adj, gpointer data)
 {
-	SS.speed = pow(2.0, GTK_ADJUSTMENT(adj)->value / (GTK_ADJUSTMENT(adj)->upper-10));
+	SS.speed = pow (2, gtk_adjustment_get_value (adj) /
+	 (gtk_adjustment_get_upper (adj) - 10));
 }
 
 static void pitch_change_cb(GtkAdjustment * adj, gpointer data)
 {
-	SS.pitch = pow(2.0, GTK_ADJUSTMENT(adj)->value / (GTK_ADJUSTMENT(adj)->upper-10));
-	gtk_adjustment_set_value(GTK_ADJUSTMENT(SS.scale_adj),
-							 (GTK_ADJUSTMENT(SS.scale_adj)->upper-10.0)*log(SS.pitch)/log(2.0));
+	SS.pitch = pow (2, gtk_adjustment_get_value (adj) /
+	 (gtk_adjustment_get_upper (adj) - 10));
+	gtk_adjustment_set_value (SS.scale_adj, (gtk_adjustment_get_upper
+	 (SS.scale_adj) - 10) * log (SS.pitch) / log (2));
 }
 
 static void scale_change_cb(GtkAdjustment * adj, gpointer data)
 {
 	double speed_eff;
 
-	SS.scale = pow(2.0, GTK_ADJUSTMENT(adj)->value / (GTK_ADJUSTMENT(adj)->upper-10));
+	SS.scale = pow (2, gtk_adjustment_get_value (adj) /
+	 (gtk_adjustment_get_upper (adj) - 10));
 	speed_eff= SS.speed/SS.pitch;
 	SS.pitch = SS.scale;
 	SS.speed = speed_eff*SS.scale;
 	if (SS.speed>2.0) SS.speed=2.0;
 	if (SS.speed<0.5) SS.speed=0.5;
-	gtk_adjustment_set_value(GTK_ADJUSTMENT(SS.speed_adj),
-							 (GTK_ADJUSTMENT(SS.speed_adj)->upper-10.0)*log(SS.speed)/log(2.0));
-	gtk_adjustment_set_value(GTK_ADJUSTMENT(SS.pitch_adj),
-							 (GTK_ADJUSTMENT(SS.pitch_adj)->upper-10.0)*log(SS.pitch)/log(2.0));
+
+	gtk_adjustment_set_value (SS.speed_adj, (gtk_adjustment_get_upper
+	 (SS.speed_adj) - 10) * log (SS.speed) / log (2));
+	gtk_adjustment_set_value (SS.pitch_adj, (gtk_adjustment_get_upper
+	 (SS.pitch_adj) - 10) * log (SS.pitch) / log (2));
 }
 
 static void overlap_toggle_cb(GtkToggleButton *butt, gpointer user_data)
@@ -295,9 +281,6 @@ void sndstretch_config(void)
 	GtkWidget * speed_spin,  * pitch_spin,  * scale_spin;
 	GtkWidget * speed_hbox,  * pitch_hbox,  * scale_hbox,  * opt_hbox;
 	GtkWidget * speed_frame, * pitch_frame, * scale_frame, * opt_frame;
-	GdkPixmap * logopix;
-	GdkBitmap * logomask;
-	GtkWidget * logo;
 	GtkWidget * logohbox;
 	GtkWidget * logobutton;
 	GtkWidget * volume_toggle;
@@ -310,49 +293,41 @@ void sndstretch_config(void)
  	gtk_window_set_type_hint(GTK_WINDOW(sndstretch_config_dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 	gtk_widget_show(sndstretch_config_dialog);
 
-	logopix = gdk_pixmap_create_from_xpm_d(sndstretch_config_dialog->window, &logomask,
-										   NULL, (gchar **)sndstretch_xmms_logo_xpm);
-
-	logo = gtk_pixmap_new(logopix,logomask);
+	GtkWidget * logo = gtk_image_new_from_pixbuf (gdk_pixbuf_new_from_xpm_data
+	 ((const gchar * *) sndstretch_xmms_logo_xpm));
 
 	logobutton = gtk_button_new();
 	gtk_button_set_relief(GTK_BUTTON(logobutton), GTK_RELIEF_NONE);
 	gtk_container_add(GTK_CONTAINER(logobutton), logo);
-	gtk_signal_connect(GTK_OBJECT(logobutton), "clicked",
-					   GTK_SIGNAL_FUNC(sndstretch_config_logobutton_cb), NULL);
-	GTK_WIDGET_SET_FLAGS(logobutton, GTK_CAN_DEFAULT);
-	gtk_widget_grab_default(logobutton);
+	g_signal_connect (logobutton, "clicked", (GCallback)
+	 sndstretch_config_logobutton_cb, NULL);
+	gtk_widget_set_can_default (logobutton, TRUE);
 
 	logohbox = gtk_hbox_new(FALSE,0);  // to make it rightbound
 	gtk_box_pack_end(GTK_BOX(logohbox), logobutton, FALSE, TRUE, 4);
 
-	SS.speed_adj = gtk_adjustment_new( 100.0*log(SS.speed)/log(2.0),
-									   -100, 100+10, 2, 10, 10);
-	SS.pitch_adj = gtk_adjustment_new( 120.0*log(SS.pitch)/log(2.0),
-									   -120, 120+10, 2, 10, 10);
-	SS.scale_adj = gtk_adjustment_new( 100.0*log(SS.scale)/log(2.0),
-									   -100, 100+10, 2, 10, 10);
+	SS.speed_adj = (GtkAdjustment *) gtk_adjustment_new (100 * log (SS.speed) /
+	 log (2), -100, 100 + 10, 2, 10, 10);
+	SS.pitch_adj = (GtkAdjustment *) gtk_adjustment_new (120 * log (SS.pitch) /
+	 log (2), -120, 120 + 10, 2, 10, 10);
+	SS.scale_adj = (GtkAdjustment *) gtk_adjustment_new (100 * log (SS.scale) /
+	 log (2), -100, 100 + 10, 2, 10, 10);
 
 	volume_toggle  = gtk_check_button_new_with_label(_("Volume corr."));
 	overlap_toggle = gtk_check_button_new_with_label(_("Short Overlap"));
 	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(volume_toggle), SS.volume_corr );
 	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(overlap_toggle), SS.short_overlap );
 
-
-	gtk_signal_connect(GTK_OBJECT(SS.speed_adj), "value-changed",
-					   GTK_SIGNAL_FUNC(speed_change_cb), NULL);
-
-	gtk_signal_connect(GTK_OBJECT(SS.pitch_adj), "value-changed",
-					   GTK_SIGNAL_FUNC(pitch_change_cb), NULL);
-
-	gtk_signal_connect(GTK_OBJECT(SS.scale_adj), "value-changed",
-					   GTK_SIGNAL_FUNC(scale_change_cb), NULL);
-
-	gtk_signal_connect(GTK_OBJECT(volume_toggle), "toggled",
-					   GTK_SIGNAL_FUNC(volume_toggle_cb), NULL);
-
-	gtk_signal_connect(GTK_OBJECT(overlap_toggle), "toggled",
-					   GTK_SIGNAL_FUNC(overlap_toggle_cb), NULL);
+	g_signal_connect (SS.speed_adj, "value-changed", (GCallback)
+	 speed_change_cb, NULL);
+	g_signal_connect (SS.pitch_adj, "value-changed", (GCallback)
+	 pitch_change_cb, NULL);
+	g_signal_connect (SS.scale_adj, "value-changed", (GCallback)
+	 scale_change_cb, NULL);
+	g_signal_connect (volume_toggle, "toggled", (GCallback) volume_toggle_cb,
+	 NULL);
+	g_signal_connect (overlap_toggle, "toggled", (GCallback) overlap_toggle_cb,
+	 NULL);
 
 	speed_scale = gtk_hscale_new(GTK_ADJUSTMENT(SS.speed_adj));
 	pitch_scale = gtk_hscale_new(GTK_ADJUSTMENT(SS.pitch_adj));
@@ -364,9 +339,6 @@ void sndstretch_config(void)
 	speed_spin = gtk_spin_button_new(GTK_ADJUSTMENT(SS.speed_adj),1.0,2);
 	pitch_spin = gtk_spin_button_new(GTK_ADJUSTMENT(SS.pitch_adj),1.0,2);
 	scale_spin = gtk_spin_button_new(GTK_ADJUSTMENT(SS.scale_adj),1.0,2);
-	gtk_widget_set_usize (speed_spin,70,20);
-	gtk_widget_set_usize (pitch_spin,70,20);
-	gtk_widget_set_usize (scale_spin,70,20);
 	gtk_entry_set_max_length (GTK_ENTRY(pitch_spin),7);
 	gtk_entry_set_max_length (GTK_ENTRY(speed_spin),7);
 	gtk_entry_set_max_length (GTK_ENTRY(scale_spin),7);
@@ -408,12 +380,12 @@ void sndstretch_config(void)
 	gtk_box_pack_start(GTK_BOX(vbox), opt_frame,     FALSE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), logohbox,      FALSE, TRUE, 0);
 
-	gtk_signal_connect(GTK_OBJECT(sndstretch_config_dialog), "destroy",
-					   GTK_SIGNAL_FUNC(sndstretch_config_destroy_cb), NULL);
+	g_signal_connect (sndstretch_config_dialog, "destroy", (GCallback)
+	 sndstretch_config_destroy_cb, NULL);
 	gtk_window_set_title(GTK_WINDOW(sndstretch_config_dialog), _("SndStretch - Configuration"));
 	gtk_container_add(GTK_CONTAINER(sndstretch_config_dialog), vbox);
 
-	gtk_widget_set_usize(sndstretch_config_dialog, -1, -1);
+	gtk_widget_grab_default(logobutton);
 	gtk_widget_show_all(sndstretch_config_dialog);
 }
 

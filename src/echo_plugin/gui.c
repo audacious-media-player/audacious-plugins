@@ -3,6 +3,7 @@
 #include <gtk/gtk.h>
 
 #include <audacious/configdb.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
@@ -16,7 +17,7 @@ N_("Echo Plugin\n"
    "Surround echo by Carl van Schaik 1999");
 
 static GtkWidget *conf_dialog = NULL;
-static GtkObject *echo_delay_adj, *echo_feedback_adj, *echo_volume_adj;
+static GtkAdjustment * echo_delay_adj, * echo_feedback_adj, * echo_volume_adj;
 
 void echo_about (void)
 {
@@ -29,9 +30,9 @@ void echo_about (void)
 static void apply_changes(void)
 {
 	mcs_handle_t *cfg;
-	echo_delay = GTK_ADJUSTMENT(echo_delay_adj)->value;
-	echo_feedback = GTK_ADJUSTMENT(echo_feedback_adj)->value;
-	echo_volume = GTK_ADJUSTMENT(echo_volume_adj)->value;
+	echo_delay = gtk_adjustment_get_value (echo_delay_adj);
+	echo_feedback = gtk_adjustment_get_value (echo_feedback_adj);
+	echo_volume = gtk_adjustment_get_value (echo_volume_adj);
 
 	cfg = aud_cfg_db_open();
 	if (! cfg)
@@ -66,19 +67,22 @@ void echo_configure(void)
 		return;
 
 	conf_dialog = gtk_dialog_new();
-	gtk_signal_connect(GTK_OBJECT(conf_dialog), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &conf_dialog);
+	g_signal_connect (conf_dialog, "destroy", (GCallback) gtk_widget_destroyed,
+	 & conf_dialog);
 	gtk_window_set_title(GTK_WINDOW(conf_dialog), _("Configure Echo"));
 
-	echo_delay_adj = gtk_adjustment_new(echo_delay, 0, MAX_DELAY + 100, 10, 100, 100);
-	echo_feedback_adj = gtk_adjustment_new(echo_feedback, 0, 100 + 10, 2, 10, 10);
-	echo_volume_adj = gtk_adjustment_new(echo_volume, 0, 100 + 10, 2, 10, 10);
+	echo_delay_adj = (GtkAdjustment *) gtk_adjustment_new (echo_delay, 0,
+	 MAX_DELAY + 100, 10, 100, 100);
+	echo_feedback_adj = (GtkAdjustment *) gtk_adjustment_new (echo_feedback, 0,
+	 100 + 10, 2, 10, 10);
+	echo_volume_adj = (GtkAdjustment *) gtk_adjustment_new (echo_volume, 0, 100
+	 + 10, 2, 10, 10);
 
 	table = gtk_table_new(2, 3, FALSE);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(conf_dialog)->vbox), table,
-			   TRUE, TRUE, 5);
+	gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
+	 conf_dialog), table, TRUE, TRUE, 5);
 	gtk_widget_show(table);
 
 	label = gtk_label_new(_("Delay: (ms)"));
@@ -97,50 +101,42 @@ void echo_configure(void)
 	gtk_widget_show(label);
 
 	hscale = gtk_hscale_new(GTK_ADJUSTMENT(echo_delay_adj));
-	gtk_widget_set_usize(hscale, 400, 35);
 	gtk_scale_set_digits(GTK_SCALE(hscale), 0);
 	gtk_table_attach_defaults(GTK_TABLE(table), hscale, 1, 2, 0, 1);
 	gtk_widget_show(hscale);
 
 	hscale = gtk_hscale_new(GTK_ADJUSTMENT(echo_feedback_adj));
-	gtk_widget_set_usize(hscale, 400, 35);
 	gtk_scale_set_digits(GTK_SCALE(hscale), 0);
 	gtk_table_attach_defaults(GTK_TABLE(table), hscale, 1, 2, 1, 2);
 	gtk_widget_show(hscale);
 
 	hscale = gtk_hscale_new(GTK_ADJUSTMENT(echo_volume_adj));
-	gtk_widget_set_usize(hscale, 400, 35);
 	gtk_scale_set_digits(GTK_SCALE(hscale), 0);
 	gtk_table_attach_defaults(GTK_TABLE(table), hscale, 1, 2, 2, 3);
 	gtk_widget_show(hscale);
 
 	bbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
-	gtk_box_pack_start(GTK_BOX((GTK_DIALOG(conf_dialog)->action_area)),
-			   bbox, TRUE, TRUE, 0);
-
+	gtk_box_pack_start ((GtkBox *) gtk_dialog_get_action_area ((GtkDialog *)
+	 conf_dialog), bbox, TRUE, TRUE, 0);
 
 	button = gtk_button_new_with_label(_("Ok"));
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button, TRUE);
 	gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-	gtk_signal_connect(GTK_OBJECT(button), "clicked",
-			   GTK_SIGNAL_FUNC(conf_ok_cb), NULL);
+	g_signal_connect (button, "clicked", (GCallback) conf_ok_cb, NULL);
 	gtk_widget_grab_default(button);
 	gtk_widget_show(button);
 
 	button = gtk_button_new_with_label(_("Cancel"));
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button, TRUE);
 	gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-	gtk_signal_connect(GTK_OBJECT(button), "clicked",
-			   GTK_SIGNAL_FUNC(conf_cancel_cb), NULL);
+	g_signal_connect (button, "clicked", (GCallback) conf_cancel_cb, NULL);
 	gtk_widget_show(button);
 
 	button = gtk_button_new_with_label(_("Apply"));
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button, TRUE);
 	gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-	gtk_signal_connect(GTK_OBJECT(button), "clicked",
-			   GTK_SIGNAL_FUNC(conf_apply_cb), NULL);
+	g_signal_connect (button, "clicked", (GCallback) conf_apply_cb, NULL);
 	gtk_widget_show(button);
 	gtk_widget_show(bbox);
 
