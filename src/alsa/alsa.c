@@ -141,7 +141,7 @@ static void poll_wake (void)
 {
     const char c = 0;
     if (write (poll_pipe[1], & c, 1) < 0)
-	ERROR ("Failed to write to pipe: %s.\n", strerror (errno));
+        ERROR ("Failed to write to pipe: %s.\n", strerror (errno));
 }
 
 static void poll_cleanup (void)
