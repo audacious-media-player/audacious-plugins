@@ -1819,7 +1819,6 @@ echo "  Blur Scope:                             yes"
 echo "  Spectrum Analyzer:                      yes"
 echo "  Moodbar data renderer:                  $enable_moodbar"
 echo "  Paranormal Visualization Library:       $have_paranormal"
-echo "  projectM 0.x (GL milkdrop):             $have_projectm"
 echo "  projectM 1.x (GL milkdrop):             $have_projectm1"
 echo
 echo "  Transport"
