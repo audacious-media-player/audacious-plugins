@@ -36,6 +36,9 @@ if test "x$GCC" = "xyes"; then
 	CXXFLAGS="$CXXFLAGS -pipe -Wall"
 fi
 
+dnl Chainsaw says this is broken.
+dnl LDFLAGS="$LDFLAGS -z defs"
+
 dnl Large file support
 dnl ==================
 CPPFLAGS="$CPPFLAGS -D_FILE_OFFSET_BITS=64"
@@ -871,7 +874,7 @@ dnl In 2010, some libavcodec functions were moved into a new library called
 dnl libavcore, making our checks here a bit complex.
 
 if test $enable_ffaudio = yes ; then
-    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 52.94.3],
+    PKG_CHECK_MODULES([NEED_AVCORE], [libavcodec >= 52.94.3],
      [have_new_ffmpeg=yes], [have_new_ffmpeg=no])
 
     if test $have_new_ffmpeg = yes ; then
