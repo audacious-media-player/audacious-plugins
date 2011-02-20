@@ -2,7 +2,7 @@
  *  Copyright 2006 Christian Birchinger <joker@netswarm.net>
  *
  *  Based on the XMMS plugin:
- *  Copyright 2000 H�vard Kv�len <havardk@sol.no>
+ *  Copyright 2000 Håvard Kvålen <havardk@sol.no>
  *
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -91,10 +91,12 @@ static void null_configure(void)
 
 	configurewin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(configurewin), _("Null output preferences"));
-	gtk_window_set_policy(GTK_WINDOW(configurewin), FALSE, FALSE, FALSE);
+	gtk_window_set_type_hint(GTK_WINDOW(configurewin), GDK_WINDOW_TYPE_HINT_DIALOG);
+	gtk_window_set_resizable(GTK_WINDOW(configurewin), FALSE);
+	gtk_window_set_position(GTK_WINDOW(configurewin), GTK_WIN_POS_CENTER);
 	gtk_container_set_border_width(GTK_CONTAINER(configurewin), 10);
-	gtk_signal_connect(GTK_OBJECT(configurewin), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &configurewin);
+	g_signal_connect(G_OBJECT(configurewin), "destroy",
+			 G_CALLBACK(gtk_widget_destroyed), &configurewin);
 
 	vbox = gtk_vbox_new(FALSE, 10);
 	gtk_container_add(GTK_CONTAINER(configurewin), vbox);
@@ -104,20 +106,19 @@ static void null_configure(void)
 	gtk_box_pack_start(GTK_BOX(vbox), rt_btn, FALSE, FALSE, 0);
 	bbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
+	gtk_box_set_spacing(GTK_BOX(bbox), 5);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 	ok_button = gtk_button_new_with_label(_("Ok"));
 	cancel_button = gtk_button_new_with_label(_("Cancel"));
-	GTK_WIDGET_SET_FLAGS(ok_button, GTK_CAN_DEFAULT);
-	GTK_WIDGET_SET_FLAGS(cancel_button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(ok_button, TRUE);
+	gtk_widget_set_can_default(cancel_button, TRUE);
+	g_signal_connect_swapped(G_OBJECT(cancel_button), "clicked",
+				 G_CALLBACK(gtk_widget_destroy), configurewin);
+	g_signal_connect(G_OBJECT(ok_button), "clicked",
+			 G_CALLBACK(null_configure_ok_cb), rt_btn);
+	gtk_box_pack_start(GTK_BOX(bbox), ok_button, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(bbox), cancel_button, FALSE, FALSE, 0);
 	gtk_widget_grab_default(ok_button);
-	gtk_signal_connect_object(GTK_OBJECT(cancel_button), "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-				  GTK_OBJECT(configurewin));
-	gtk_signal_connect(GTK_OBJECT(ok_button), "clicked",
-			   GTK_SIGNAL_FUNC(null_configure_ok_cb), rt_btn);
-	gtk_box_pack_start_defaults(GTK_BOX(bbox), ok_button);
-	gtk_box_pack_start_defaults(GTK_BOX(bbox), cancel_button);
 
 	gtk_widget_show_all(configurewin);
 }
