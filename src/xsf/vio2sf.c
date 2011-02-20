@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,7 +42,7 @@ static void load_term(void)
 }
 
 static int load_map(int issave, unsigned char *udata, unsigned usize)
-{	
+{
 	unsigned char *iptr;
 	unsigned isize;
 	unsigned char *xptr;
@@ -246,7 +247,7 @@ static int load_psfcb(void *pWork, const char *pNameTop, const char *pNameEnd, c
 			}
 			else
 			{
-				if (!load_libs(pwork->level + 1, libbuf, libsize) || !load_psf_one(libbuf, libsize))				
+				if (!load_libs(pwork->level + 1, libbuf, libsize) || !load_psf_one(libbuf, libsize))
 					ret = xsf_tagenum_callback_returnvaluebreak;
 				else
 				{
@@ -521,7 +522,7 @@ static void load_setstate(void)
 	load_getu8 (ARM9Mem.MAIN_MEM, 0x400000);
 	load_getu8 (ARM9Mem.ARM9_REG, 0x10000);
 	load_getu8 (ARM9Mem.ARM9_VMEM, 0x800);
-	load_getu8 (ARM9Mem.ARM9_OAM, 0x800);    
+	load_getu8 (ARM9Mem.ARM9_OAM, 0x800);
 	load_getu8 (ARM9Mem.ARM9_ABG, 0x80000);
 	load_getu8 (ARM9Mem.ARM9_BBG, 0x20000);
 	load_getu8 (ARM9Mem.ARM9_AOBJ, 0x40000);
@@ -574,7 +575,7 @@ static int SNDIFInit(int buffersize)
 	sndifwork.pcmbufalloc = malloc(bufferbytes + 3);
 	if (!sndifwork.pcmbufalloc)
 		return -1;
-	sndifwork.pcmbuftop = sndifwork.pcmbufalloc + ((4 - (((int)sndifwork.pcmbufalloc) & 3)) & 3);
+	sndifwork.pcmbuftop = (void *) (((uintptr_t) sndifwork.pcmbufalloc + 3) & ~3);
 	sndifwork.bufferbytes = bufferbytes;
 	sndifwork.filled = 0;
 	sndifwork.used = 0;
@@ -634,7 +635,7 @@ int xsf_start(void *pfile, unsigned bytes)
 	sndifwork.sync_type = xsf_tagget_int("_vio2sf_sync_type", pfile, bytes, 0);
 	sndifwork.arm9_clockdown_level = xsf_tagget_int("_vio2sf_arm9_clockdown_level", pfile, bytes, clockdown);
 	sndifwork.arm7_clockdown_level = xsf_tagget_int("_vio2sf_arm7_clockdown_level", pfile, bytes, clockdown);
-	
+
 	sndifwork.xfs_load = 0;
 	printf("load_psf... ");
 	if (!load_psf(pfile, bytes))
