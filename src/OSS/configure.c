@@ -117,17 +117,13 @@ mixer_device_toggled(GtkToggleButton * widget, gpointer data)
     gtk_widget_set_sensitive(mixer_alt_device_entry, use_alt_device);
 }
 
-static GtkTreeModel *
-scan_devices(gchar * type)
+static void
+scan_devices(gchar * type, GtkWidget * widget)
 {
-    GtkListStore *list;
-    GtkTreeIter iter;
     FILE *file;
     gchar buffer[256], *temp, *tmp2;
     gboolean found = FALSE;
     gint index = 0;
-
-    list = gtk_list_store_new(2, G_TYPE_STRING);
 
     if ((file = fopen("/dev/sndstat",             "r")) ||
         (file = fopen("/proc/asound/sndstat",     "r")) ||
@@ -148,15 +144,11 @@ scan_devices(gchar * type)
                     else
                         tmp2 = buffer;
                     temp = g_strdup_printf(_("Default (%s)"), tmp2);
-                    gtk_list_store_append(list, &iter);
-                    gtk_list_store_set(list, &iter, 0, temp, -1);
+                    gtk_combo_box_text_append_text((GtkComboBoxText *) widget, temp);
                     g_free(temp);
                 }
                 else
-                {
-                    gtk_list_store_append(list, &iter);
-                    gtk_list_store_set(list, &iter, 0, buffer, -1);
-                }
+                    gtk_combo_box_text_append_text((GtkComboBoxText *) widget, buffer);
 
                 ++index;
             }
@@ -166,27 +158,8 @@ scan_devices(gchar * type)
         }
         fclose(file);
     }
-    else {
-        gtk_list_store_append(list, &iter);
-        gtk_list_store_set(list, &iter, 0, _("Default"), -1);
-    }
-
-    return GTK_TREE_MODEL(list);
-}
-
-static GtkWidget *
-combo_box_new(GtkTreeModel *model, GCallback cb)
-{
-    GtkWidget *cbox = gtk_combo_box_new_with_model(model);
-    g_signal_connect(G_OBJECT(cbox), "changed", cb, NULL);
-
-    GtkCellRenderer *cell = gtk_cell_renderer_text_new();
-    gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(cbox), cell, TRUE);
-    gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(cbox), cell, "text", 0, NULL);
-
-    g_object_unref(G_OBJECT(model));
-
-    return cbox;
+    else
+        gtk_combo_box_text_append_text((GtkComboBoxText *) widget, _("Default"));
 }
 
 void
@@ -201,7 +174,6 @@ oss_configure(void)
     GtkWidget *audio_alt_box, *mixer_alt_box;
     GtkWidget *bbox, *ok, *cancel;
     GtkWidget *mixer_table, *mixer_frame;
-    GtkTreeModel *dev_list_model;
 
     if (configure_win) {
         gtk_window_present(GTK_WINDOW(configure_win));
@@ -235,13 +207,15 @@ oss_configure(void)
     gtk_container_set_border_width(GTK_CONTAINER(adevice_box), 5);
     gtk_container_add(GTK_CONTAINER(adevice_frame), adevice_box);
 
+    adevice = gtk_combo_box_text_new();
 #if defined(HAVE_NEWPCM)
-    dev_list_model = scan_devices("Installed devices:");
+    scan_devices("Installed devices:", adevice);
 #else
-    dev_list_model = scan_devices("Audio devices:");
+    scan_devices("Audio devices:", adevice);
 #endif
+    g_signal_connect(G_OBJECT(adevice), "changed",
+                     G_CALLBACK(configure_win_audio_dev_cb), NULL);
 
-    adevice = combo_box_new(dev_list_model, G_CALLBACK(configure_win_audio_dev_cb));
     gtk_box_pack_start(GTK_BOX(adevice_box), adevice, TRUE, TRUE, 0);
 
     audio_device = oss_cfg.audio_device;
@@ -276,13 +250,15 @@ oss_configure(void)
     gtk_container_set_border_width(GTK_CONTAINER(mdevice_box), 5);
     gtk_container_add(GTK_CONTAINER(mdevice_frame), mdevice_box);
 
+    mdevice = gtk_combo_box_text_new();
 #if defined(HAVE_NEWPCM)
-    dev_list_model = scan_devices("Installed devices:");
+    scan_devices("Installed devices:", mdevice);
 #else
-    dev_list_model = scan_devices("Mixers:");
+    scan_devices("Mixers:", mdevice);
 #endif
+    g_signal_connect(G_OBJECT(mdevice), "changed",
+                     G_CALLBACK(configure_win_mixer_dev_cb), NULL);
 
-    mdevice = combo_box_new(dev_list_model, G_CALLBACK(configure_win_mixer_dev_cb));
     gtk_box_pack_start(GTK_BOX(mdevice_box), mdevice, TRUE, TRUE, 0);
 
     mixer_device = oss_cfg.mixer_device;
