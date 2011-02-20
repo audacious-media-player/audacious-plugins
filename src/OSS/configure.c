@@ -196,11 +196,7 @@ oss_configure(void)
     GtkWidget *dev_vbox, *adevice_frame, *adevice_box, *adevice;
     GtkWidget *mdevice_frame, *mdevice_box, *mdevice;
     GtkWidget *buffer_frame, *buffer_vbox, *buffer_table;
-#if GTK_CHECK_VERSION (3, 0, 0)
     GtkAdjustment *buffer_pre_adj;
-#else
-    GtkObject *buffer_pre_adj;
-#endif
     GtkWidget *buffer_pre_box, *buffer_pre_label;
     GtkWidget *audio_alt_box, *mixer_alt_box;
     GtkWidget *bbox, *ok, *cancel;
@@ -333,7 +329,7 @@ oss_configure(void)
     buffer_pre_label = gtk_label_new(_("Pre-buffer (percent):"));
     gtk_box_pack_start(GTK_BOX(buffer_pre_box), buffer_pre_label, FALSE,
                        FALSE, 0);
-    buffer_pre_adj = gtk_adjustment_new(oss_cfg.prebuffer, 0, 90, 1, 1, 0);
+    buffer_pre_adj = (GtkAdjustment *) gtk_adjustment_new(oss_cfg.prebuffer, 0, 90, 1, 1, 0);
     buffer_pre_spin =
         gtk_spin_button_new(GTK_ADJUSTMENT(buffer_pre_adj), 1, 0);
     gtk_widget_set_size_request(buffer_pre_spin, 60, -1);
