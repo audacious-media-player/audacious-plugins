@@ -900,8 +900,7 @@ import_winamp_file(const gchar * filename)
     vfs_fclose(file);
 }
 
-static void
-save_winamp_file(const gchar * filename)
+static gboolean save_winamp_file (const gchar * filename)
 {
     VFSFile *file;
 
@@ -910,21 +909,31 @@ save_winamp_file(const gchar * filename)
     guchar bands[11];
 
     if (!(file = open_vfs_file(filename, "wb")))
-        return;
+        return FALSE;
 
-    vfs_fwrite("Winamp EQ library file v1.1\x1a!--", 1, 31, file);
+    if (vfs_fwrite ("Winamp EQ library file v1.1\x1a!--", 1, 31, file) != 31)
+        goto ERR;
 
     memset(name, 0, 257);
     g_strlcpy(name, "Entry1", 257);
-    vfs_fwrite(name, 1, 257, file);
+
+    if (vfs_fwrite (name, 1, 257, file) != 257)
+        goto ERR;
 
     for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
         bands[i] = 63 - (((equalizerwin_get_band(i) + EQUALIZER_MAX_GAIN) * 63) / EQUALIZER_MAX_GAIN / 2);
 
     bands[AUD_EQUALIZER_NBANDS] = 63 - (((equalizerwin_get_preamp() + EQUALIZER_MAX_GAIN) * 63) / EQUALIZER_MAX_GAIN / 2);
 
-    vfs_fwrite(bands, 1, 11, file);
-    vfs_fclose(file);
+    if (vfs_fwrite (bands, 1, 11, file) != 11)
+        goto ERR;
+
+    vfs_fclose (file);
+    return TRUE;
+
+ERR:
+    vfs_fclose (file);
+    return FALSE;
 }
 
 static GtkWidget *

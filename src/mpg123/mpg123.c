@@ -399,7 +399,12 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 			{
 				AUDDBG ("seeking to %d (byte %d)\n", (gint) ctx.seek, (gint)
 				 byteoff);
-				vfs_fseek (ctx.fd, byteoff, SEEK_SET);
+				if (vfs_fseek (ctx.fd, byteoff, SEEK_SET))
+				{
+					g_mutex_unlock (ctrl_mutex);
+					goto decode_cleanup;
+				}
+
 				data->output->flush (ctx.seek);
 				frames_played = (ctx.seek - start_time) * ctx.rate / 1000;
 				ctx.seek = -1;

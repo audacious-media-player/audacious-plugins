@@ -158,7 +158,8 @@ gint i_midi_file_read_track( midifile_t * mf , midifile_track_t * track ,
         last_cmd = cmd;
     } else {
       /* running status */
-      VFS_UNGETC(c, mf->file_pointer);
+      if (VFS_UNGETC (c, mf->file_pointer) < 0)
+        break;
       mf->file_offset--;
       cmd = last_cmd;
       if (!cmd)
