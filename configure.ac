@@ -867,9 +867,22 @@ AC_ARG_ENABLE(ffaudio,
     [enable_ffaudio="yes"]
 )
 
-if test "x$enable_ffaudio" = "xyes"; then
-    PKG_CHECK_MODULES(FFMPEG, [libavcore >= 0.12.0  libavcodec >= 52.20.0  libavutil >= 49.15.0  libavformat >= 52.31.0],
-                      [have_ffaudio="yes"], [have_ffaudio="no"])
+dnl In 2010, some libavcodec functions were moved into a new library called
+dnl libavcore, making our checks here a bit complex.
+
+if test $enable_ffaudio = yes ; then
+    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 52.94.3],
+     [have_new_ffmpeg=yes], [have_new_ffmpeg=no])
+
+    if test $have_new_ffmpeg = yes ; then
+        PKG_CHECK_MODULES([FFMPEG],
+         [libavcodec >= 52.20.0 libavcore >= 0.12.0 libavformat >= 52.31.0 libavutil >= 49.15.0],
+         [have_ffaudio=yes], [have_ffaudio=no])
+    else
+        PKG_CHECK_MODULES([FFMPEG],
+         [libavcodec >= 52.20.0 libavformat >= 52.31.0 libavutil >= 49.15.0],
+         [have_ffaudio=yes], [have_ffaudio=no])
+    fi
 fi
 
 if test "x$have_ffaudio" = "xyes"; then
