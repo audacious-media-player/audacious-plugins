@@ -292,13 +292,14 @@ AC_ARG_ENABLE(openal,
  [enable_openal=$enableval], [enable_openal="yes"])
 
 if test $enable_openal = yes ; then
-    AC_CHECK_HEADERS([AL/al.h], [enable_openal=yes],
-     [AC_MSG_WARN([Cannot find OpenAL development headers; disabling OpenAL plugin])
-      enable_openal=no])
-fi
-
-if test $enable_openal = yes ; then
-    OUTPUT_PLUGINS="$OUTPUT_PLUGINS openal"
+    PKG_CHECK_MODULES(OPENAL, [openal],
+         [enable_openal=yes
+          OUTPUT_PLUGINS="$OUTPUT_PLUGINS openal"],
+         [enable_openal=no]
+    )
+else
+    AC_MSG_RESULT([*** OpenAL output plugin disabled per user request ***])
+    enable_openal=no
 fi
 
 dnl *** CoreAudio
