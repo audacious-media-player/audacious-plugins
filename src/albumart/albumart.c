@@ -50,7 +50,9 @@ static void draw_albumart(GtkWidget *widget, cairo_t *cr)
     }
 
     cairo_destroy(cr);
-    g_object_unref(album);
+
+    if (album != NULL)
+        g_object_unref(album);
 }
 
 #if GTK_CHECK_VERSION (3, 0, 0)
