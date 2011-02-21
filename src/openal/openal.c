@@ -65,8 +65,6 @@ static struct {
 gint
 openal_open(gint fmt, int rate, int nch)
 {
-	gint i;
-
 	state.rate = rate;
 	state.nch = nch;
 

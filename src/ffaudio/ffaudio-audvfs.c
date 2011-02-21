@@ -28,7 +28,11 @@ static int audvfs_read(URLContext *h, unsigned char *buf, int size)
     return vfs_fread(buf, 1, size, file);
 }
 
-static int audvfs_write(URLContext *h, const unsigned char *buf, int size)
+#if CHECK_LIBAVFORMAT_VERSION (52, 68, 0)
+static int audvfs_write (URLContext * h, const unsigned char * buf, int size)
+#else
+static int audvfs_write (URLContext * h, unsigned char * buf, int size)
+#endif
 {
     VFSFile *file;
     file = h->priv_data;

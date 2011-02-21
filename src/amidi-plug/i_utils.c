@@ -124,10 +124,10 @@ gpointer i_message_gui( gchar * title , gchar * message ,
   }
 
   if ( parent_win != NULL )
-    win = gtk_message_dialog_new( GTK_WINDOW(parent_win) , GTK_DIALOG_DESTROY_WITH_PARENT ,
-                                  mtype , GTK_BUTTONS_OK , message );
+    win = gtk_message_dialog_new ((GtkWindow *) parent_win,
+     GTK_DIALOG_DESTROY_WITH_PARENT, mtype, GTK_BUTTONS_OK, "%s", message);
   else
-    win = gtk_message_dialog_new( NULL , 0 , mtype , GTK_BUTTONS_OK , message );
+    win = gtk_message_dialog_new (NULL, 0, mtype, GTK_BUTTONS_OK, "%s", message);
 
   gtk_window_set_title( GTK_WINDOW(win) , title );
   g_signal_connect_swapped( G_OBJECT(win) , "response" , G_CALLBACK(gtk_widget_destroy) , win );

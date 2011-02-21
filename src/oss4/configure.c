@@ -152,7 +152,7 @@ static void window_create(void)
     gtk_window_set_type_hint(GTK_WINDOW(window), GDK_WINDOW_TYPE_HINT_DIALOG);
     gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-    gtk_container_border_width(GTK_CONTAINER(window), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(window), 10);
 
     vbox = gtk_vbox_new(FALSE, 10);
     gtk_container_add(GTK_CONTAINER(window), vbox);
@@ -209,7 +209,7 @@ static void window_create(void)
 
     button_box = gtk_hbutton_box_new();
     gtk_button_box_set_layout(GTK_BUTTON_BOX(button_box), GTK_BUTTONBOX_END);
-    gtk_button_box_set_spacing(GTK_BUTTON_BOX(button_box), 5);
+    gtk_box_set_spacing(GTK_BOX(button_box), 5);
     gtk_box_pack_start(GTK_BOX(vbox), button_box, TRUE, TRUE, 5);
 
     button_cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);

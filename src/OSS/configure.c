@@ -28,6 +28,7 @@
 
 #include <audacious/configdb.h>
 #include <audacious/i18n.h>
+#include <audacious/gtk-compat.h>
 
 static GtkWidget *configure_win = NULL;
 static GtkWidget *mixer_usemaster_check, *buffer_pre_spin;
@@ -89,15 +90,15 @@ configure_win_ok_cb(GtkWidget * w, gpointer data)
 }
 
 static void
-configure_win_audio_dev_cb(GtkWidget * widget, gint device)
+configure_win_audio_dev_cb(GtkComboBox * widget, gpointer data)
 {
-    audio_device = device;
+    audio_device = gtk_combo_box_get_active(widget);
 }
 
 static void
-configure_win_mixer_dev_cb(GtkWidget * widget, gint device)
+configure_win_mixer_dev_cb(GtkComboBox * widget, gpointer data)
 {
-    mixer_device = device;
+    mixer_device = gtk_combo_box_get_active(widget);
 }
 
 static void
@@ -117,15 +118,12 @@ mixer_device_toggled(GtkToggleButton * widget, gpointer data)
 }
 
 static void
-scan_devices(gchar * type, GtkWidget * option_menu, GtkSignalFunc sigfunc)
+scan_devices(gchar * type, GtkWidget * widget)
 {
-    GtkWidget *menu, *item;
     FILE *file;
     gchar buffer[256], *temp, *tmp2;
     gboolean found = FALSE;
     gint index = 0;
-
-    menu = gtk_menu_new();
 
     if ((file = fopen("/dev/sndstat",             "r")) ||
         (file = fopen("/proc/asound/sndstat",     "r")) ||
@@ -146,15 +144,13 @@ scan_devices(gchar * type, GtkWidget * option_menu, GtkSignalFunc sigfunc)
                     else
                         tmp2 = buffer;
                     temp = g_strdup_printf(_("Default (%s)"), tmp2);
-                    item = gtk_menu_item_new_with_label(temp);
+                    gtk_combo_box_text_append_text((GtkComboBoxText *) widget, temp);
                     g_free(temp);
                 }
                 else
-                    item = gtk_menu_item_new_with_label(buffer);
-                g_signal_connect(G_OBJECT(item), "activate",
-                                 G_CALLBACK(sigfunc), (gpointer)(long)(index++));
-                gtk_widget_show(item);
-                gtk_menu_append(GTK_MENU(menu), item);
+                    gtk_combo_box_text_append_text((GtkComboBoxText *) widget, buffer);
+
+                ++index;
             }
             if (!strcasecmp(buffer, type))
                 found = 1;
@@ -162,14 +158,8 @@ scan_devices(gchar * type, GtkWidget * option_menu, GtkSignalFunc sigfunc)
         }
         fclose(file);
     }
-    else {
-        item = gtk_menu_item_new_with_label(_("Default"));
-        g_signal_connect(G_OBJECT(item), "activate", G_CALLBACK(sigfunc),
-                         (gpointer) 0);
-        gtk_widget_show(item);
-        gtk_menu_append(GTK_MENU(menu), item);
-    }
-    gtk_option_menu_set_menu(GTK_OPTION_MENU(option_menu), menu);
+    else
+        gtk_combo_box_text_append_text((GtkComboBoxText *) widget, _("Default"));
 }
 
 void
@@ -179,7 +169,7 @@ oss_configure(void)
     GtkWidget *dev_vbox, *adevice_frame, *adevice_box, *adevice;
     GtkWidget *mdevice_frame, *mdevice_box, *mdevice;
     GtkWidget *buffer_frame, *buffer_vbox, *buffer_table;
-    GtkObject *buffer_pre_adj;
+    GtkAdjustment *buffer_pre_adj;
     GtkWidget *buffer_pre_box, *buffer_pre_label;
     GtkWidget *audio_alt_box, *mixer_alt_box;
     GtkWidget *bbox, *ok, *cancel;
@@ -199,7 +189,7 @@ oss_configure(void)
                              GDK_WINDOW_TYPE_HINT_DIALOG);
     gtk_window_set_resizable(GTK_WINDOW(configure_win), FALSE);
     gtk_window_set_position(GTK_WINDOW(configure_win), GTK_WIN_POS_CENTER);
-    gtk_container_border_width(GTK_CONTAINER(configure_win), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(configure_win), 10);
 
     vbox = gtk_vbox_new(FALSE, 10);
     gtk_container_add(GTK_CONTAINER(configure_win), vbox);
@@ -217,20 +207,21 @@ oss_configure(void)
     gtk_container_set_border_width(GTK_CONTAINER(adevice_box), 5);
     gtk_container_add(GTK_CONTAINER(adevice_frame), adevice_box);
 
-    adevice = gtk_option_menu_new();
-    gtk_box_pack_start(GTK_BOX(adevice_box), adevice, TRUE, TRUE, 0);
+    adevice = gtk_combo_box_text_new();
 #if defined(HAVE_NEWPCM)
-    scan_devices("Installed devices:", adevice,
-                 GTK_SIGNAL_FUNC(configure_win_audio_dev_cb));
+    scan_devices("Installed devices:", adevice);
 #else
-    scan_devices("Audio devices:", adevice,
-                 GTK_SIGNAL_FUNC(configure_win_audio_dev_cb));
+    scan_devices("Audio devices:", adevice);
 #endif
+    g_signal_connect(G_OBJECT(adevice), "changed",
+                     G_CALLBACK(configure_win_audio_dev_cb), NULL);
+
+    gtk_box_pack_start(GTK_BOX(adevice_box), adevice, TRUE, TRUE, 0);
+
     audio_device = oss_cfg.audio_device;
-    gtk_option_menu_set_history(GTK_OPTION_MENU(adevice),
-                                oss_cfg.audio_device);
+    gtk_combo_box_set_active(GTK_COMBO_BOX(adevice), oss_cfg.audio_device);
     audio_alt_box = gtk_hbox_new(FALSE, 0);
-    gtk_box_pack_start_defaults(GTK_BOX(adevice_box), audio_alt_box);
+    gtk_box_pack_start(GTK_BOX(adevice_box), audio_alt_box, FALSE, FALSE, 0);
     adevice_use_alt_check =
         gtk_check_button_new_with_label(_("Use alternate device:"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(adevice_use_alt_check),
@@ -245,8 +236,7 @@ oss_configure(void)
                            oss_cfg.alt_audio_device);
     else
         gtk_entry_set_text(GTK_ENTRY(audio_alt_device_entry), DEV_DSP);
-    gtk_box_pack_start_defaults(GTK_BOX(audio_alt_box),
-                                audio_alt_device_entry);
+    gtk_box_pack_start(GTK_BOX(audio_alt_box), audio_alt_device_entry, FALSE, FALSE, 0);
 
     if (oss_cfg.use_alt_audio_device)
         gtk_widget_set_sensitive(adevice, FALSE);
@@ -260,18 +250,21 @@ oss_configure(void)
     gtk_container_set_border_width(GTK_CONTAINER(mdevice_box), 5);
     gtk_container_add(GTK_CONTAINER(mdevice_frame), mdevice_box);
 
-    mdevice = gtk_option_menu_new();
-    gtk_box_pack_start(GTK_BOX(mdevice_box), mdevice, TRUE, TRUE, 0);
+    mdevice = gtk_combo_box_text_new();
 #if defined(HAVE_NEWPCM)
-    scan_devices("Installed devices:", mdevice, configure_win_mixer_dev_cb);
+    scan_devices("Installed devices:", mdevice);
 #else
-    scan_devices("Mixers:", mdevice, G_CALLBACK(configure_win_mixer_dev_cb));
+    scan_devices("Mixers:", mdevice);
 #endif
+    g_signal_connect(G_OBJECT(mdevice), "changed",
+                     G_CALLBACK(configure_win_mixer_dev_cb), NULL);
+
+    gtk_box_pack_start(GTK_BOX(mdevice_box), mdevice, TRUE, TRUE, 0);
+
     mixer_device = oss_cfg.mixer_device;
-    gtk_option_menu_set_history(GTK_OPTION_MENU(mdevice),
-                                oss_cfg.mixer_device);
+    gtk_combo_box_set_active(GTK_COMBO_BOX(mdevice), oss_cfg.mixer_device);
     mixer_alt_box = gtk_hbox_new(FALSE, 0);
-    gtk_box_pack_start_defaults(GTK_BOX(mdevice_box), mixer_alt_box);
+    gtk_box_pack_start(GTK_BOX(mdevice_box), mixer_alt_box, FALSE, FALSE, 0);
     mdevice_use_alt_check =
         gtk_check_button_new_with_label(_("Use alternate device:"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(mdevice_use_alt_check),
@@ -286,8 +279,7 @@ oss_configure(void)
                            oss_cfg.alt_mixer_device);
     else
         gtk_entry_set_text(GTK_ENTRY(mixer_alt_device_entry), DEV_MIXER);
-    gtk_box_pack_start_defaults(GTK_BOX(mixer_alt_box),
-                                mixer_alt_device_entry);
+    gtk_box_pack_start(GTK_BOX(mixer_alt_box), mixer_alt_device_entry, FALSE, FALSE, 0);
 
     if (oss_cfg.use_alt_mixer_device)
         gtk_widget_set_sensitive(mdevice, FALSE);
@@ -313,10 +305,10 @@ oss_configure(void)
     buffer_pre_label = gtk_label_new(_("Pre-buffer (percent):"));
     gtk_box_pack_start(GTK_BOX(buffer_pre_box), buffer_pre_label, FALSE,
                        FALSE, 0);
-    buffer_pre_adj = gtk_adjustment_new(oss_cfg.prebuffer, 0, 90, 1, 1, 1);
+    buffer_pre_adj = (GtkAdjustment *) gtk_adjustment_new(oss_cfg.prebuffer, 0, 90, 1, 1, 0);
     buffer_pre_spin =
         gtk_spin_button_new(GTK_ADJUSTMENT(buffer_pre_adj), 1, 0);
-    gtk_widget_set_usize(buffer_pre_spin, 60, -1);
+    gtk_widget_set_size_request(buffer_pre_spin, 60, -1);
     gtk_box_pack_start(GTK_BOX(buffer_pre_box), buffer_pre_spin, FALSE,
                        FALSE, 0);
 
@@ -338,20 +330,20 @@ oss_configure(void)
 
     bbox = gtk_hbutton_box_new();
     gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-    gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
+    gtk_box_set_spacing(GTK_BOX(bbox), 5);
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
     cancel = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
     g_signal_connect_swapped(G_OBJECT(cancel), "clicked",
                              G_CALLBACK(gtk_widget_destroy),
-                             GTK_OBJECT(configure_win));
-    GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
+                             configure_win);
+    gtk_widget_set_can_default(cancel, TRUE);
     gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
 
     ok = gtk_button_new_from_stock(GTK_STOCK_APPLY);
     g_signal_connect(G_OBJECT(ok), "clicked",
                      G_CALLBACK(configure_win_ok_cb), NULL);
-    GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
+    gtk_widget_set_can_default(ok, TRUE);
     gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
     gtk_widget_grab_default(ok);
 

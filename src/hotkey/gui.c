@@ -41,6 +41,7 @@
 
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <audacious/gtk-compat.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -318,12 +319,12 @@ KeyControls* add_event_controls(KeyControls* list,
 		controls->hotkey.event = 0;
 	}
 
-	controls->combobox = gtk_combo_box_new_text();
+	controls->combobox = gtk_combo_box_text_new();
 	for (i=0;i<EVENT_MAX;i++)
 	{
-		gtk_combo_box_append_text( GTK_COMBO_BOX(controls->combobox), _(event_desc[i]) );
+		gtk_combo_box_text_append_text((GtkComboBoxText *) controls->combobox, _(event_desc[i]));
 	}
-	gtk_combo_box_set_active( GTK_COMBO_BOX(controls->combobox), controls->hotkey.event);
+	gtk_combo_box_set_active(GTK_COMBO_BOX(controls->combobox), controls->hotkey.event);
 	gtk_table_attach (GTK_TABLE (table), controls->combobox, 0, 1, row, row+1,
 			(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
 
@@ -331,7 +332,7 @@ KeyControls* add_event_controls(KeyControls* list,
 	controls->keytext = gtk_entry_new ();
 	gtk_table_attach (GTK_TABLE (table), controls->keytext, 1, 2, row, row+1,
 			(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
-	gtk_entry_set_editable (GTK_ENTRY (controls->keytext), FALSE);
+	gtk_editable_set_editable(GTK_EDITABLE(controls->keytext), FALSE);
 
 
 	set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);

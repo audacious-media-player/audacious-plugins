@@ -91,23 +91,11 @@ gboolean flac_is_our_fd(const gchar *filename, VFSFile *fd)
 {
     AUDDBG("Probe for FLAC.\n");
 
-    gchar *buf = g_new0(gchar, 4);
-    gboolean flac;
-
-    if (vfs_fseek(fd, 0, SEEK_SET))
-    {
-        g_free(buf);
+    gchar buf[4];
+    if (vfs_fread (buf, 1, sizeof buf, fd) != sizeof buf)
         return FALSE;
-    }
 
-    vfs_fread(buf, 4, 1, fd);
-    flac = strncmp(buf, "fLaC", 4);
-    g_free(buf);
-
-    if (!flac)
-        return TRUE;
-    else
-        return FALSE;
+    return ! strncmp (buf, "fLaC", sizeof buf);
 }
 
 static void squeeze_audio(gint32* src, void* dst, guint count, guint res)

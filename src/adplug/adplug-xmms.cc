@@ -786,7 +786,7 @@ static gboolean play_loop (InputPlayback * playback, const gchar * filename,
 
       // seek to requested position
       while (time < plr.seek && plr.p->update ())
-        time += 1000 / plr.p->getrefresh ();
+        time += (gint) (1000 / plr.p->getrefresh ());
 
       // Reset output plugin and some values
       playback->output->flush (time);

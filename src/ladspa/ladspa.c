@@ -116,6 +116,14 @@ static struct
 
 static GtkWidget *config_window = NULL, *run_clist = NULL;
 
+/* GCC does not like casting func * * to void * *. */
+static void * get_symbol (GModule * mod, const gchar * name)
+{
+    void * sym = NULL;
+    g_module_symbol (mod, name, & sym);
+    return sym;
+}
+
 static gboolean start (void)
 {
     if (state.initialised == FALSE)
@@ -247,7 +255,7 @@ static plugin_instance *load(char *filename, long int num)
         return NULL;
     }
 
-    if (!g_module_symbol(instance->library, "ladspa_descriptor", (gpointer *)&descriptor_fn))
+    if (! (descriptor_fn = get_symbol (instance->library, "ladspa_descriptor")))
     {
         g_free(instance);
         return NULL;
@@ -547,7 +555,7 @@ static void find_plugins(char *path_entry)
 	    continue;
 	}
 
-	if (!g_module_symbol(library, "ladspa_descriptor", (gpointer *)&descriptor_fn))
+        if (! (descriptor_fn = get_symbol (library, "ladspa_descriptor")))
 	{
 	    g_module_close(library);
 	    continue;

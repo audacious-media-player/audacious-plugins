@@ -11,6 +11,7 @@
 #include <gtk/gtk.h>
 
 #include <audacious/configdb.h>
+#include <audacious/glib-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/preferences.h>
 #include <libaudcore/md5.h>

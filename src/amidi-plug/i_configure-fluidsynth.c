@@ -18,6 +18,9 @@
 *
 */
 
+#include <gtk/gtk.h>
+
+#include <audacious/gtk-compat.h>
 
 #include "i_configure-fluidsynth.h"
 #include "backend-fluidsynth/b-fluidsynth-config.h"
@@ -45,7 +48,7 @@ void i_configure_ev_toggle_default( GtkToggleButton *togglebutton , gpointer hbo
 void i_configure_ev_sflist_add( gpointer sfont_lv )
 {
   GtkWidget *parent_window = gtk_widget_get_toplevel( sfont_lv );
-  if ( GTK_WIDGET_TOPLEVEL(parent_window) )
+  if (gtk_widget_is_toplevel (parent_window))
   {
     GtkTreeSelection *listsel = gtk_tree_view_get_selection( GTK_TREE_VIEW(sfont_lv) );
     GtkTreeIter itersel, iterapp;
@@ -171,7 +174,7 @@ void i_configure_ev_sfload_commit( gpointer sfload_radiobt )
 void i_configure_ev_sygain_commit( gpointer gain_spinbt )
 {
   amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-  if ( GTK_WIDGET_IS_SENSITIVE(GTK_WIDGET(gain_spinbt)) )
+  if (gtk_widget_get_sensitive (gain_spinbt))
     fsyncfg->fsyn_synth_gain = (gint)(gtk_spin_button_get_value(GTK_SPIN_BUTTON(gain_spinbt)) * 10);
   else
     fsyncfg->fsyn_synth_gain = -1;
@@ -181,7 +184,7 @@ void i_configure_ev_sygain_commit( gpointer gain_spinbt )
 void i_configure_ev_sypoly_commit( gpointer poly_spinbt )
 {
   amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-  if ( GTK_WIDGET_IS_SENSITIVE(GTK_WIDGET(poly_spinbt)) )
+  if (gtk_widget_get_sensitive (poly_spinbt))
     fsyncfg->fsyn_synth_poliphony = (gint)(gtk_spin_button_get_value(GTK_SPIN_BUTTON(poly_spinbt)));
   else
     fsyncfg->fsyn_synth_poliphony = -1;
@@ -191,7 +194,7 @@ void i_configure_ev_sypoly_commit( gpointer poly_spinbt )
 void i_configure_ev_syreverb_commit( gpointer reverb_yes_radiobt )
 {
   amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-  if ( GTK_WIDGET_IS_SENSITIVE(GTK_WIDGET(reverb_yes_radiobt)) )
+  if (gtk_widget_get_sensitive (reverb_yes_radiobt))
   {
     if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(reverb_yes_radiobt) ) )
       fsyncfg->fsyn_synth_reverb = 1;
@@ -206,7 +209,7 @@ void i_configure_ev_syreverb_commit( gpointer reverb_yes_radiobt )
 void i_configure_ev_sychorus_commit( gpointer chorus_yes_radiobt )
 {
   amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-  if ( GTK_WIDGET_IS_SENSITIVE(GTK_WIDGET(chorus_yes_radiobt)) )
+  if (gtk_widget_get_sensitive (chorus_yes_radiobt))
   {
     if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(chorus_yes_radiobt) ) )
       fsyncfg->fsyn_synth_chorus = 1;
@@ -305,12 +308,8 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     GtkWidget *synth_reverb_value_option[2], *synth_reverb_defcheckbt;
     GtkWidget *synth_chorus_frame, *synth_chorus_hbox, *synth_chorus_value_hbox;
     GtkWidget *synth_chorus_value_option[2], *synth_chorus_defcheckbt;
-    GtkTooltips *tips;
 
     amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-
-    tips = gtk_tooltips_new();
-    g_object_set_data_full( G_OBJECT(fsyn_page_alignment) , "tt" , tips , g_object_unref );
 
     /* soundfont settings */
     soundfont_frame = gtk_frame_new( _("SoundFont settings") );
@@ -616,83 +615,6 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
                               G_CALLBACK(i_configure_ev_sychorus_commit) , synth_chorus_value_option[0] );
     g_signal_connect_swapped( G_OBJECT(commit_button) , "ap-commit" ,
                               G_CALLBACK(i_configure_ev_sysamplerate_commit) , synth_samplerate_option[3] );
-
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , soundfont_file_lv ,
-                          _("* Select SoundFont files *\n"
-                          "In order to play MIDI with FluidSynth, you need to specify at "
-                          "least one valid SoundFont file here (use absolute paths). The "
-                          "loading order is from the top (first) to the bottom (last).") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , soundfont_load_option[0] ,
-                          _("* Load SoundFont on player start *\n"
-                          "Depending on your system speed, SoundFont loading in FluidSynth will "
-                          "require up to a few seconds. This is a one-time task (the soundfont "
-                          "will stay loaded until it is changed or the backend is unloaded) that "
-                          "can be done at player start, or before the first MIDI file is played "
-                          "(the latter is a better choice if you don't use your player to listen "
-                          "MIDI files only).") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , soundfont_load_option[1] ,
-                          _("* Load SoundFont on first midifile play *\n"
-                          "Depending on your system speed, SoundFont loading in FluidSynth will "
-                          "require up to a few seconds. This is a one-time task (the soundfont "
-                          "will stay loaded until it is changed or the backend is unloaded) that "
-                          "can be done at player start, or before the first MIDI file is played "
-                          "(the latter is a better choice if you don't use your player to listen "
-                          "MIDI files only).") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_gain_value_spin ,
-                          _("* Synthesizer gain *\n"
-                          "From FluidSynth docs: the gain is applied to the final or master output "
-                          "of the synthesizer; it is set to a low value by default to avoid the "
-                          "saturation of the output when random MIDI files are played.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_poly_value_spin ,
-                          _("* Synthesizer polyphony *\n"
-                          "From FluidSynth docs: the polyphony defines how many voices can be played "
-                          "in parallel; the number of voices is not necessarily equivalent to the "
-                          "number of notes played simultaneously; indeed, when a note is struck on a "
-                          "specific MIDI channel, the preset on that channel may create several voices, "
-                          "for example, one for the left audio channel and one for the right audio "
-                          "channels; the number of voices activated depends on the number of instrument "
-                          "zones that fall in the correspond to the velocity and key of the played "
-                          "note.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_reverb_value_option[0] ,
-                          _("* Synthesizer reverb *\n"
-                          "From FluidSynth docs: when set to \"yes\" the reverb effects module is "
-                          "activated; note that when the reverb module is active, the amount of "
-                          "signal sent to the reverb module depends on the \"reverb send\" generator "
-                          "defined in the SoundFont.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_reverb_value_option[1] ,
-                          _("* Synthesizer reverb *\n"
-                          "From FluidSynth docs: when set to \"yes\" the reverb effects module is "
-                          "activated; note that when the reverb module is active, the amount of "
-                          "signal sent to the reverb module depends on the \"reverb send\" generator "
-                          "defined in the SoundFont.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_chorus_value_option[0] ,
-                          _("* Synthesizer chorus *\n"
-                          "From FluidSynth docs: when set to \"yes\" the chorus effects module is "
-                          "activated; note that when the chorus module is active, the amount of "
-                          "signal sent to the chorus module depends on the \"chorus send\" generator "
-                          "defined in the SoundFont.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_chorus_value_option[1] ,
-                          _("* Synthesizer chorus *\n"
-                          "From FluidSynth docs: when set to \"yes\" the chorus effects module is "
-                          "activated; note that when the chorus module is active, the amount of "
-                          "signal sent to the chorus module depends on the \"chorus send\" generator "
-                          "defined in the SoundFont.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_samplerate_option[0] ,
-                          _("* Synthesizer samplerate *\n"
-                          "The sample rate of the audio generated by the synthesizer. You can also specify "
-                          "a custom value in the interval 22050Hz-96000Hz.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_samplerate_option[1] ,
-                          _("* Synthesizer samplerate *\n"
-                          "The sample rate of the audio generated by the synthesizer. You can also specify "
-                          "a custom value in the interval 22050Hz-96000Hz.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_samplerate_option[2] ,
-                          _("* Synthesizer samplerate *\n"
-                          "The sample rate of the audio generated by the synthesizer. You can also specify "
-                          "a custom value in the interval 22050Hz-96000Hz.") , "" );
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , synth_samplerate_option[3] ,
-                          _("* Synthesizer samplerate *\n"
-                          "The sample rate of the audio generated by the synthesizer. You can also specify "
-                          "a custom value in the interval 22050Hz-96000Hz.") , "" );
   }
   else
   {

@@ -64,11 +64,14 @@ gchar * find_file_case (const gchar * folder, const gchar * basename)
 {
     static GHashTable * cache = NULL;
     GList * list = NULL;
+    void * vlist;
 
     if (cache == NULL)
         cache = g_hash_table_new (g_str_hash, g_str_equal);
 
-    if (! g_hash_table_lookup_extended (cache, folder, NULL, (void * *) & list))
+    if (g_hash_table_lookup_extended (cache, folder, NULL, & vlist))
+        list = vlist;
+    else
     {
         DIR * handle;
         struct dirent * entry;
@@ -489,9 +492,12 @@ INIFile *open_ini_file(const gchar *filename)
     unsigned char x[] = { 0xff, 0xfe, 0x00 };
 
     g_return_val_if_fail(filename, NULL);
-    vfs_file_get_contents(filename, (void * *) &buffer, &filesize);
-    if (buffer == NULL)
+
+    void * vbuf = NULL;
+    vfs_file_get_contents (filename, & vbuf, & filesize);
+    if (! vbuf)
         return NULL;
+    buffer = vbuf;
 
     /*
      * Convert UTF-16 into something useful. Original implementation

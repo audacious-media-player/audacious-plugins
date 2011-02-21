@@ -45,7 +45,8 @@ static FLAC__StreamEncoder *flac_encoder;
 static FLAC__StreamEncoderWriteStatus flac_write_cb(const FLAC__StreamEncoder *encoder,
     const FLAC__byte buffer[], size_t bytes, unsigned samples, unsigned current_frame, gpointer data)
 {
-    vfs_fwrite(buffer, bytes, 1, (VFSFile *) data);
+    if (vfs_fwrite (buffer, 1, bytes, data) != bytes)
+        return FLAC__STREAM_ENCODER_WRITE_STATUS_FATAL_ERROR;
 
     return FLAC__STREAM_ENCODER_WRITE_STATUS_OK;
 }

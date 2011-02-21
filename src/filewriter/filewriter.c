@@ -20,7 +20,10 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <gtk/gtk.h>
+
 #include <audacious/configdb.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudcore/audstrings.h>
@@ -427,18 +430,15 @@ static void configure_destroy(void)
 
 static void file_configure(void)
 {
-    GtkTooltips *use_suffix_tooltips;
-
     if (!configure_win)
     {
         configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
         gtk_window_set_type_hint(GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
 
-        gtk_signal_connect(GTK_OBJECT(configure_win), "destroy",
-                           GTK_SIGNAL_FUNC(configure_destroy), NULL);
-        gtk_signal_connect(GTK_OBJECT(configure_win), "destroy",
-                           GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-                           &configure_win);
+        g_signal_connect (configure_win, "destroy", (GCallback)
+         configure_destroy, NULL);
+        g_signal_connect (configure_win, "destroy", (GCallback)
+         gtk_widget_destroyed, & configure_win);
 
         gtk_window_set_title(GTK_WINDOW(configure_win),
                              _("File Writer Configuration"));
@@ -456,16 +456,16 @@ static void file_configure(void)
         fileext_label = gtk_label_new(_("Output file format:"));
         gtk_box_pack_start(GTK_BOX(fileext_hbox), fileext_label, FALSE, FALSE, 0);
 
-        fileext_combo = gtk_combo_box_new_text();
-        gtk_combo_box_append_text(GTK_COMBO_BOX(fileext_combo), "WAV");
+        fileext_combo = gtk_combo_box_text_new ();
+        gtk_combo_box_text_append_text ((GtkComboBoxText *) fileext_combo, "WAV");
 #ifdef FILEWRITER_MP3
-        gtk_combo_box_append_text(GTK_COMBO_BOX(fileext_combo), "MP3");
+        gtk_combo_box_text_append_text ((GtkComboBoxText *) fileext_combo, "MP3");
 #endif
 #ifdef FILEWRITER_VORBIS
-        gtk_combo_box_append_text(GTK_COMBO_BOX(fileext_combo), "Vorbis");
+        gtk_combo_box_text_append_text ((GtkComboBoxText *) fileext_combo, "Vorbis");
 #endif
 #ifdef FILEWRITER_FLAC
-        gtk_combo_box_append_text(GTK_COMBO_BOX(fileext_combo), "FLAC");
+        gtk_combo_box_text_append_text ((GtkComboBoxText *) fileext_combo, "FLAC");
 #endif
         gtk_box_pack_start(GTK_BOX(fileext_hbox), fileext_combo, FALSE, FALSE, 0);
         gtk_combo_box_set_active(GTK_COMBO_BOX(fileext_combo), fileext);
@@ -492,13 +492,11 @@ static void file_configure(void)
 
         saveplace = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(saveplace),
                                                                 _("Save into custom directory"));
-        g_signal_connect(G_OBJECT(saveplace), "toggled", G_CALLBACK(saveplace_custom_cb), NULL);
-        gtk_box_pack_start(GTK_BOX(saveplace_hbox), saveplace, FALSE, FALSE, 0);
-
         if (!save_original)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(saveplace), TRUE);
 
-
+        g_signal_connect(G_OBJECT(saveplace), "toggled", G_CALLBACK(saveplace_custom_cb), NULL);
+        gtk_box_pack_start(GTK_BOX(saveplace_hbox), saveplace, FALSE, FALSE, 0);
 
         path_hbox = gtk_hbox_new(FALSE, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), path_hbox, FALSE, FALSE, 0);
@@ -548,9 +546,6 @@ static void file_configure(void)
         use_suffix_toggle = gtk_check_button_new_with_label(_("Don't strip file name extension"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), use_suffix);
         gtk_box_pack_start(GTK_BOX(configure_vbox), use_suffix_toggle, FALSE, FALSE, 0);
-        use_suffix_tooltips = gtk_tooltips_new();
-        gtk_tooltips_set_tip(use_suffix_tooltips, use_suffix_toggle, _("If enabled, the extension from the original filename will not be stripped before adding the new file extension to the end."), NULL);
-        gtk_tooltips_enable(use_suffix_tooltips);
 
         if (filenamefromtags)
             gtk_widget_set_sensitive(use_suffix_toggle, FALSE);
@@ -572,20 +567,18 @@ static void file_configure(void)
         configure_bbox = gtk_hbutton_box_new();
         gtk_button_box_set_layout(GTK_BUTTON_BOX(configure_bbox),
                                   GTK_BUTTONBOX_END);
-        gtk_button_box_set_spacing(GTK_BUTTON_BOX(configure_bbox), 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), configure_bbox,
                            FALSE, FALSE, 0);
 
         configure_cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-        gtk_signal_connect_object(GTK_OBJECT(configure_cancel), "clicked",
-                                  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-                                  GTK_OBJECT(configure_win));
+        g_signal_connect_swapped (configure_cancel, "clicked", (GCallback)
+         gtk_widget_destroy, configure_win);
         gtk_box_pack_start(GTK_BOX(configure_bbox), configure_cancel,
                            TRUE, TRUE, 0);
 
         configure_ok = gtk_button_new_from_stock(GTK_STOCK_OK);
-        gtk_signal_connect(GTK_OBJECT(configure_ok), "clicked",
-                           GTK_SIGNAL_FUNC(configure_ok_cb), NULL);
+        g_signal_connect (configure_ok, "clicked", (GCallback) configure_ok_cb,
+         NULL);
         gtk_box_pack_start(GTK_BOX(configure_bbox), configure_ok,
                            TRUE, TRUE, 0);
 

@@ -36,7 +36,8 @@ FileWriter wav_plugin =
     .format_required = FMT_S16_LE,
 };
 
-
+#pragma pack(push) /* must be byte-aligned */
+#pragma pack(1)
 struct wavhead
 {
     guint32 main_chunk;
@@ -53,6 +54,8 @@ struct wavhead
     guint32 data_chunk;
     guint32 data_length;
 };
+#pragma pack(pop)
+
 static struct wavhead header;
 
 static guint64 written;
@@ -75,16 +78,20 @@ static gint wav_open(void)
     header.byte_p_spl = GUINT16_TO_LE((GUINT16_FROM_LE(header.bit_p_spl) / (8 / input.channels)));
     memcpy(&header.data_chunk, "data", 4);
     header.data_length = GUINT32_TO_LE(0);
-    vfs_fwrite(&header, sizeof (struct wavhead), 1, output_file);
+
+    if (vfs_fwrite (& header, 1, sizeof header, output_file) != sizeof header)
+        return 0;
 
     written = 0;
 
     return 1;
 }
 
-static void wav_write(void *ptr, gint length)
+static void wav_write (void * data, gint len)
 {
-    written += vfs_fwrite(ptr, 1, length, output_file);
+    written += len;
+    if (vfs_fwrite (data, 1, len, output_file) != len)
+        fprintf (stderr, "Error while writing to .wav output file.\n");
 }
 
 static void wav_close(void)
@@ -92,9 +99,10 @@ static void wav_close(void)
     if (output_file)
     {
         header.length = GUINT32_TO_LE(written + sizeof (struct wavhead) - 8);
-
         header.data_length = GUINT32_TO_LE(written);
-        vfs_rewind(output_file);
-        vfs_fwrite(&header, sizeof (struct wavhead), 1, output_file);
+
+        if (vfs_fseek (output_file, 0, SEEK_SET) || vfs_fwrite (& header, 1,
+         sizeof header, output_file) != sizeof header)
+            fprintf (stderr, "Error while writing to .wav output file.\n");
     }
 }

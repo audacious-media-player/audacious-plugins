@@ -36,6 +36,9 @@ if test "x$GCC" = "xyes"; then
 	CXXFLAGS="$CXXFLAGS -pipe -Wall"
 fi
 
+dnl Chainsaw says this is broken.
+dnl LDFLAGS="$LDFLAGS -z defs"
+
 dnl Large file support
 dnl ==================
 CPPFLAGS="$CPPFLAGS -D_FILE_OFFSET_BITS=64"
@@ -252,7 +255,7 @@ AC_ARG_ENABLE( pulse,
 )
 
 if test "x$enable_pulse" = "xyes"; then
-    PKG_CHECK_MODULES(PULSE, [libpulse >= 0.9.9],
+    PKG_CHECK_MODULES(PULSE, [libpulse >= 0.9.5],
          [have_pulse=yes
           OUTPUT_PLUGINS="$OUTPUT_PLUGINS pulse_audio"],
          [have_pulse=no]
@@ -289,13 +292,14 @@ AC_ARG_ENABLE(openal,
  [enable_openal=$enableval], [enable_openal="yes"])
 
 if test $enable_openal = yes ; then
-    AC_CHECK_HEADERS([AL/al.h], [enable_openal=yes],
-     [AC_MSG_WARN([Cannot find OpenAL development headers; disabling OpenAL plugin])
-      enable_openal=no])
-fi
-
-if test $enable_openal = yes ; then
-    OUTPUT_PLUGINS="$OUTPUT_PLUGINS openal"
+    PKG_CHECK_MODULES(OPENAL, [openal],
+         [enable_openal=yes
+          OUTPUT_PLUGINS="$OUTPUT_PLUGINS openal"],
+         [enable_openal=no]
+    )
+else
+    AC_MSG_RESULT([*** OpenAL output plugin disabled per user request ***])
+    enable_openal=no
 fi
 
 dnl *** CoreAudio
@@ -627,9 +631,9 @@ if test "x$enable_aosd" = "xguess"; then
         [have_aosd="no"
         AC_MSG_RESULT([*** pango >= 1.14.7 is required for Audacious OSD plugin ***])]
     )
-    PKG_CHECK_MODULES(CAIRO,[cairo >= 1.2.6],,
+    PKG_CHECK_MODULES(CAIRO,[cairo >= 1.2.4],,
         [have_aosd="no"
-        AC_MSG_RESULT([*** cairo >= 1.2.6 is required for Audacious OSD plugin ***])]
+        AC_MSG_RESULT([*** cairo >= 1.2.4 is required for Audacious OSD plugin ***])]
     )
     PKG_CHECK_MODULES(PANGOCAIRO,[pangocairo >= 1.14.7],,
         [have_aosd="no"
@@ -867,9 +871,22 @@ AC_ARG_ENABLE(ffaudio,
     [enable_ffaudio="yes"]
 )
 
-if test "x$enable_ffaudio" = "xyes"; then
-    PKG_CHECK_MODULES(FFMPEG, [libavcore >= 0.12.0  libavcodec >= 52.20.0  libavutil >= 49.15.0  libavformat >= 52.31.0],
-                      [have_ffaudio="yes"], [have_ffaudio="no"])
+dnl In 2010, some libavcodec functions were moved into a new library called
+dnl libavcore, making our checks here a bit complex.
+
+if test $enable_ffaudio = yes ; then
+    PKG_CHECK_MODULES([NEED_AVCORE], [libavcodec >= 52.94.3],
+     [have_new_ffmpeg=yes], [have_new_ffmpeg=no])
+
+    if test $have_new_ffmpeg = yes ; then
+        PKG_CHECK_MODULES([FFMPEG],
+         [libavcodec >= 52.20.0 libavcore >= 0.12.0 libavformat >= 52.31.0 libavutil >= 49.15.0],
+         [have_ffaudio=yes], [have_ffaudio=no])
+    else
+        PKG_CHECK_MODULES([FFMPEG],
+         [libavcodec >= 52.20.0 libavformat >= 52.31.0 libavutil >= 49.15.0],
+         [have_ffaudio=yes], [have_ffaudio=no])
+    fi
 fi
 
 if test "x$have_ffaudio" = "xyes"; then
@@ -1541,7 +1558,7 @@ AC_ARG_ENABLE(filewriter_flac,
 )
 
 if test "x$enable_filewriter_flac" = "xyes"; then
-   PKG_CHECK_MODULES(FLAC, [flac >= 1.1.2],
+   PKG_CHECK_MODULES(FLAC, [flac >= 1.1.3],
       [have_writer_flac=yes], [have_writer_flac=no]
    )
    if test "x$have_writer_flac" = "xyes"; then
@@ -1637,7 +1654,7 @@ dnl GTK3 overrides
 dnl ==============
 
 if test $use_gtk3 = yes ; then
-    for name in adplug alarm amidi-plug aosd blur_scope crystalizer echo_plugin evdev-plug filewriter hotkey jack ladspa lirc modplug moodbar null OSS paranormal projectm-1.0 sid skins sndstretch spectrum stereo_plugin streambrowser
+    for name in adplug alarm aosd evdev-plug jack ladspa lirc modplug moodbar paranormal projectm-1.0 sid skins spectrum streambrowser
     do
         echo " *** Disabling plugin because not GTK3-compatible: $name"
         CONTAINER_PLUGINS=`sed s/$name// << EOF
@@ -1819,7 +1836,6 @@ echo "  Blur Scope:                             yes"
 echo "  Spectrum Analyzer:                      yes"
 echo "  Moodbar data renderer:                  $enable_moodbar"
 echo "  Paranormal Visualization Library:       $have_paranormal"
-echo "  projectM 0.x (GL milkdrop):             $have_projectm"
 echo "  projectM 1.x (GL milkdrop):             $have_projectm1"
 echo
 echo "  Transport"

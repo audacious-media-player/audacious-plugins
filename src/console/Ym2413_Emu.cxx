@@ -2185,7 +2185,7 @@ int Ym2413_Emu::set_rate( double sample_rate, double clock_rate )
 	assert( use_count == 0 );
 	use_count++;
 	
-	opll = OPLL_new( clock_rate, sample_rate );
+	opll = OPLL_new ((int) clock_rate, (int) sample_rate);
 	if ( !opll )
 		return 1;
 	

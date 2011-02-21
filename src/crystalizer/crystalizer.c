@@ -23,6 +23,7 @@
 #include <gtk/gtk.h>
 
 #include <audacious/configdb.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 
@@ -73,9 +74,9 @@ static gboolean init (void)
 }
 
 /* conf dialog stuff stolen from stereo plugin --nenolod */
-static void conf_ok_cb(GtkButton * button, gpointer data)
+static void conf_ok_cb (GtkButton * button, GtkAdjustment * adj)
 {
-	value = * (gdouble *) data;
+	value = gtk_adjustment_get_value (adj);
 
 	mcs_handle_t * db = aud_cfg_db_open ();
 	if (db)
@@ -92,67 +93,63 @@ static void conf_cancel_cb(GtkButton * button, gpointer data)
 	gtk_widget_destroy(conf_dialog);
 }
 
-static void conf_apply_cb(GtkButton *button, gpointer data)
+static void conf_apply_cb (GtkButton * button, GtkAdjustment * adj)
 {
-	value = *(gdouble *) data;
+	value = gtk_adjustment_get_value (adj);
 }
 
 static void configure(void)
 {
 	GtkWidget *hbox, *label, *scale, *button, *bbox;
-	GtkObject *adjustment;
+	GtkAdjustment * adjustment;
 
 	if (conf_dialog != NULL)
 		return;
 
 	conf_dialog = gtk_dialog_new();
-	g_signal_connect(GTK_OBJECT(conf_dialog), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &conf_dialog);
+	g_signal_connect (conf_dialog, "destroy", (GCallback)
+	 gtk_widget_destroyed, & conf_dialog);
 	gtk_window_set_title(GTK_WINDOW(conf_dialog), _("Configure Crystalizer"));
 
 	label = gtk_label_new(_("Effect intensity:"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(conf_dialog)->vbox), label,
-			   TRUE, TRUE, 0);
+	gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area
+	 ((GtkDialog *) conf_dialog), label, TRUE, TRUE, 0);
 	gtk_widget_show(label);
 
 	hbox = gtk_hbox_new(FALSE, 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(conf_dialog)->vbox), hbox,
-			   TRUE, TRUE, 10);
+	gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area
+	 ((GtkDialog *) conf_dialog), hbox, TRUE, TRUE, 10);
 	gtk_widget_show(hbox);
 
-	adjustment = gtk_adjustment_new(value, 0.0, 15.0 + 1.0, 0.1, 1.0, 1.0);
+	adjustment = (GtkAdjustment *) gtk_adjustment_new (value, 0, 15 + 1,
+	 0.1, 1, 1);
 	scale = gtk_hscale_new(GTK_ADJUSTMENT(adjustment));
 	gtk_box_pack_start(GTK_BOX(hbox), scale, TRUE, TRUE, 10);
 	gtk_widget_show(scale);
 
 	bbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
-	gtk_box_pack_start(GTK_BOX((GTK_DIALOG(conf_dialog)->action_area)),
-			   bbox, TRUE, TRUE, 0);
+	gtk_box_pack_start ((GtkBox *) gtk_dialog_get_action_area ((GtkDialog *)
+	 conf_dialog), bbox, TRUE, TRUE, 0);
 
 	button = gtk_button_new_with_label(_("Ok"));
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button, TRUE);
 	gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-	g_signal_connect(GTK_OBJECT(button), "clicked",
-			   GTK_SIGNAL_FUNC(conf_ok_cb),
-			   &GTK_ADJUSTMENT(adjustment)->value);
+	g_signal_connect (button, "clicked", (GCallback) conf_ok_cb, adjustment);
 	gtk_widget_grab_default(button);
 	gtk_widget_show(button);
 
 	button = gtk_button_new_with_label(_("Cancel"));
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button, TRUE);
 	gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-	g_signal_connect(GTK_OBJECT(button), "clicked",
-			   GTK_SIGNAL_FUNC(conf_cancel_cb), NULL);
+	g_signal_connect (button, "clicked", (GCallback) conf_cancel_cb, NULL);
 	gtk_widget_show(button);
 
 	button = gtk_button_new_with_label(_("Apply"));
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button, TRUE);
 	gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-	g_signal_connect(GTK_OBJECT(button), "clicked",
-			   GTK_SIGNAL_FUNC(conf_apply_cb),
-			   &GTK_ADJUSTMENT(adjustment)->value);
+	g_signal_connect (button, "clicked", (GCallback) conf_apply_cb,
+	 adjustment);
 	gtk_widget_show(button);
 
 	gtk_widget_show(bbox);

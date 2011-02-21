@@ -28,6 +28,7 @@
 #include <stdint.h>
 
 #include <audacious/configdb.h>
+#include <audacious/gtk-compat.h>
 
 static void vorbis_init(write_output_callback write_output_func);
 static void vorbis_configure(void);
@@ -205,14 +206,11 @@ static void vorbis_close(void)
 /* configuration stuff */
 static GtkWidget *configure_win = NULL;
 static GtkWidget *quality_frame, *quality_vbox, *quality_hbox1, *quality_spin, *quality_label;
-static GtkObject *quality_adj;
+static GtkAdjustment * quality_adj;
 
 static void quality_change(GtkAdjustment *adjustment, gpointer user_data)
 {
-    if (gtk_spin_button_get_value_as_float(GTK_SPIN_BUTTON(quality_spin)))
-        v_base_quality = gtk_spin_button_get_value_as_float(GTK_SPIN_BUTTON(quality_spin)) / 10;
-    else
-        v_base_quality = 0.0;
+    v_base_quality = gtk_spin_button_get_value ((GtkSpinButton *) quality_spin) / 10;
 }
 
 static void configure_ok_cb(gpointer data)
@@ -261,7 +259,7 @@ static void vorbis_configure(void)
         gtk_misc_set_alignment(GTK_MISC(quality_label), 0, 0.5);
         gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_label, TRUE, TRUE, 0);
 
-        quality_adj = gtk_adjustment_new(5, 0, 10, 0.1, 1, 1);
+        quality_adj = (GtkAdjustment *) gtk_adjustment_new (5, 0, 10, 0.1, 1, 0);
         quality_spin = gtk_spin_button_new(GTK_ADJUSTMENT(quality_adj), 1, 2);
         gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_spin, TRUE, TRUE, 0);
         g_signal_connect(G_OBJECT(quality_adj), "value-changed", G_CALLBACK(quality_change), NULL);
@@ -271,17 +269,16 @@ static void vorbis_configure(void)
         /* buttons */
         bbox = gtk_hbutton_box_new();
         gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-        gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
         gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
         button = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-        g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK(gtk_widget_hide), GTK_OBJECT(configure_win));
+        g_signal_connect_swapped (button, "clicked", (GCallback)
+         gtk_widget_hide, configure_win);
         gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
 
         button = gtk_button_new_from_stock(GTK_STOCK_OK);
         g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(configure_ok_cb), NULL);
         gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-        gtk_widget_grab_default(button);
     }
 
     gtk_widget_show_all(configure_win);

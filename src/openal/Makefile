@@ -7,6 +7,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${OUTPUT_PLUGIN_DIR}
 
-CFLAGS += -std=gnu99 ${PLUGIN_CFLAGS} ${PTHREAD_CFLAGS} ${GTK_CFLAGS} ${SDL_CFLAGS}
+CFLAGS += -std=gnu99 ${PLUGIN_CFLAGS} ${PTHREAD_CFLAGS} ${GTK_CFLAGS} ${OPENAL_CFLAGS}
 CPPFLAGS += -I../..
-LIBS += ${PTHREAD_LIBS} ${GTK_LIBS} ${SDL_LIBS} -lopenal
+LIBS += ${PTHREAD_LIBS} ${GTK_LIBS} ${OPENAL_LIBS}

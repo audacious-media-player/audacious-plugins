@@ -24,7 +24,8 @@
  */
 #define BUFFER_SIZE (FAAD_MIN_STREAMSIZE * 16)
 
-#define M4A_MAGIC     (unsigned char [11]) { 0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x4D, 0x34, 0x41 }
+static const guchar M4A_MAGIC[11] = {0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79,
+ 0x70, 0x4D, 0x34, 0x41};
 
 static void mp4_about (void);
 static void mp4_cleanup (void);
@@ -251,19 +252,22 @@ static gboolean is_mp4_aac_file (VFSFile * handle)
     return success;
 }
 
-static gint mp4_is_our_fd (const gchar * filename, VFSFile * file)
+static gboolean mp4_is_our_fd (const gchar * filename, VFSFile * file)
 {
-    gchar magic[sizeof (M4A_MAGIC)];
+    gchar magic[sizeof M4A_MAGIC];
 
-    vfs_fread (magic, 1, sizeof (M4A_MAGIC), file);
-    if (!memcmp (magic, M4A_MAGIC, 11))
-        return 1;
+    if (vfs_fread (magic, 1, sizeof magic, file) != sizeof magic)
+        return FALSE;
+    if (! memcmp (magic, M4A_MAGIC, sizeof magic))
+        return TRUE;
 
-    vfs_rewind (file);
-    if (parse_aac_stream (file) == TRUE)
-        return 1;
+    if (vfs_fseek (file, 0, SEEK_SET))
+        return FALSE;
+    if (parse_aac_stream (file))
+        return TRUE;
 
-    vfs_rewind (file);
+    if (vfs_fseek (file, 0, SEEK_SET))
+        return FALSE;
     return is_mp4_aac_file (file);
 }
 
@@ -313,8 +317,8 @@ static void calc_aac_info (VFSFile * handle, gint * length, gint * bitrate,
     *channels = -1;
 
     /* look for a representative bitrate in the middle of the file */
-    if (size > 0)
-        vfs_fseek (handle, size / 2, SEEK_SET);
+    if (size > 0 && vfs_fseek (handle, size / 2, SEEK_SET))
+        goto DONE;
 
     for (found = 0; found < 32; found++)
     {
@@ -811,13 +815,10 @@ static gboolean my_decode_aac (InputPlayback * playback, const char * filename,
 
     if (!strncmp ((char *) streambuffer, "ID3", 3))
     {
-        gint size = 0;
+        if (vfs_fseek (file, 10 + (streambuffer[6] << 21) + (streambuffer[7] <<
+         14) + (streambuffer[8] << 7) + streambuffer[9], SEEK_SET))
+            return FALSE;
 
-        vfs_rewind (file);
-        size = (streambuffer[6] << 21) | (streambuffer[7] << 14) |
-         (streambuffer[8] << 7) | streambuffer[9];
-        size += 10;
-        vfs_fread (streambuffer, 1, size, file);
         buffervalid = vfs_fread (streambuffer, 1, BUFFER_SIZE, file);
     }
 

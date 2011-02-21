@@ -27,6 +27,7 @@
 #include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
+#include <audacious/plugins.h>
 
 #include "config.h"
 #include "layout.h"
@@ -98,6 +99,13 @@ static void layout_undock (GtkWidget * widget)
     layout_move (widget, -1);
 }
 
+static void layout_disable (GtkWidget * widget)
+{
+    PluginHandle * plugin = aud_plugin_by_widget (widget);
+    g_return_if_fail (plugin);
+    aud_plugin_enable (plugin, FALSE);
+}
+
 static gboolean menu_cb (GtkWidget * widget, GdkEventButton * event)
 {
     g_return_val_if_fail (widget && event, FALSE);
@@ -111,12 +119,13 @@ static gboolean menu_cb (GtkWidget * widget, GdkEventButton * event)
     menu = gtk_menu_new ();
     g_signal_connect (menu, "destroy", (GCallback) gtk_widget_destroyed, & menu);
 
-    const gchar * names[5] = {N_("Dock at Left"), N_("Dock at Right"),
-     N_("Dock at Top"), N_("Dock at Bottom"), N_("Undock")};
-    void (* const funcs[5]) (GtkWidget * widget) = {layout_dock_left,
-     layout_dock_right, layout_dock_top, layout_dock_bottom, layout_undock};
+    const gchar * names[6] = {N_("Dock at Left"), N_("Dock at Right"),
+     N_("Dock at Top"), N_("Dock at Bottom"), N_("Undock"), N_("Disable")};
+    void (* const funcs[6]) (GtkWidget * widget) = {layout_dock_left,
+     layout_dock_right, layout_dock_top, layout_dock_bottom, layout_undock,
+     layout_disable};
 
-    for (gint i = 0; i < 5; i ++)
+    for (gint i = 0; i < 6; i ++)
     {
         GtkWidget * item = gtk_menu_item_new_with_label (_(names[i]));
         gtk_menu_shell_append ((GtkMenuShell *) menu, item);
@@ -228,8 +237,9 @@ static gint item_by_name (Item * item, const gchar * name)
     return strcmp (item->name, name);
 }
 
-static gboolean delete_cb (void)
+static gboolean delete_cb (GtkWidget * widget)
 {
+    layout_disable (widget);
     return TRUE;
 }
 
@@ -311,8 +321,8 @@ static void item_add (Item * item)
 
         gtk_window_set_title ((GtkWindow *) item->window, item->name);
         gtk_container_set_border_width ((GtkContainer *) item->window, 3);
-        g_signal_connect (item->window, "delete-event", (GCallback) delete_cb,
-         NULL);
+        g_signal_connect_swapped (item->window, "delete-event", (GCallback)
+         delete_cb, item->widget);
 
         if (item->x >= 0 && item->y >= 0)
             gtk_window_move ((GtkWindow *) item->window, item->x, item->y);

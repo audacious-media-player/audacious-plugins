@@ -373,6 +373,8 @@ static int pulse_get_output_time (void)
      timing->timestamp.tv_sec) * 1000) + (int) ((now.tv_usec -
      timing->timestamp.tv_usec) / 1000);
 
+#ifdef PA_CHECK_VERSION
+#if PA_CHECK_VERSION (0, 9, 11)
     if (pa_stream_is_corked(stream))
     {
 	int delta = time - cached_time;
@@ -380,9 +382,11 @@ static int pulse_get_output_time (void)
              time = cached_time;
         else
              cached_time = time;
-    } else {
-        cached_time = time;
     }
+    else
+#endif
+#endif
+        cached_time = time;
 
 fail:
     pa_threaded_mainloop_unlock(mainloop);
@@ -543,12 +547,15 @@ static int pulse_open(gint fmt, int rate, int nch) {
             break;
 #endif
 
+#ifdef PA_SAMPLE_S32LE
         case FMT_S32_LE:
             ss.format = PA_SAMPLE_S32LE;
             break;
         case FMT_S32_BE:
             ss.format = PA_SAMPLE_S32BE;
             break;
+#endif
+
 	case FMT_FLOAT:
             ss.format = PA_SAMPLE_FLOAT32NE;
             break;

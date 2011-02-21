@@ -1,6 +1,6 @@
 /*
  *  Blur Scope plugin for Audacious
- *  Copyright (C) 2010 John Lindgren
+ *  Copyright (C) 2010-2011 John Lindgren
  *
  *  Based on BMP - Cross-platform multimedia player:
  *  Copyright (C) 2003-2004  BMP development team.
@@ -27,6 +27,7 @@
 #include <string.h>
 
 #include <audacious/configdb.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/plugin.h>
 
 #include "blur_scope.h"
@@ -91,17 +92,22 @@ static void bscope_resize (gint w, gint h)
     corner = image + stride + 1;
 }
 
-static void bscope_draw (void)
+static void bscope_draw_to_cairo (cairo_t * cr)
 {
-    if (area == NULL || area->window == NULL)
-        return;
-
-    cairo_t * cr = gdk_cairo_create (area->window);
     cairo_surface_t * surf = cairo_image_surface_create_for_data ((guchar *)
      image, CAIRO_FORMAT_RGB24, width, height, stride << 2);
     cairo_set_source_surface (cr, surf, 0, 0);
     cairo_paint (cr);
     cairo_surface_destroy (surf);
+}
+
+static void bscope_draw (void)
+{
+    if (! area || ! gtk_widget_get_window (area))
+        return;
+
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (area));
+    bscope_draw_to_cairo (cr);
     cairo_destroy (cr);
 }
 
@@ -111,11 +117,19 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
     return TRUE;
 }
 
+#if GTK_CHECK_VERSION (3, 0, 0)
+static gboolean draw_cb (GtkWidget * widget, cairo_t * cr)
+{
+    bscope_draw_to_cairo (cr);
+    return TRUE;
+}
+#else
 static gboolean expose_event (GtkWidget * widget)
 {
     bscope_draw ();
     return TRUE;
 }
+#endif
 
 static void /* GtkWidget */ * bscope_get_widget (void)
 {
@@ -123,7 +137,11 @@ static void /* GtkWidget */ * bscope_get_widget (void)
     gtk_widget_set_size_request (area, D_WIDTH, D_HEIGHT);
     bscope_resize (D_WIDTH, D_HEIGHT);
 
+#if GTK_CHECK_VERSION (3, 0, 0)
+    g_signal_connect (area, "draw", (GCallback) draw_cb, NULL);
+#else
     g_signal_connect (area, "expose-event", (GCallback) expose_event, NULL);
+#endif
     g_signal_connect (area, "configure-event", (GCallback) configure_event, NULL);
     g_signal_connect (area, "destroy", (GCallback) gtk_widget_destroyed, & area);
 
