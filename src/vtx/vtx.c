@@ -73,8 +73,8 @@ static void vtx_cleanup(void)
 gint vtx_is_our_fd(const gchar * filename, VFSFile * fp)
 {
     gchar buf[2];
-
-    vfs_fread(buf, 2, 1, fp);
+    if (vfs_fread(buf, 1, 2, fp) < 2)
+        return FALSE;
     return (!strncasecmp(buf, "ay", 2) || !strncasecmp(buf, "ym", 2));
 }
 

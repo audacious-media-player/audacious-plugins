@@ -17,20 +17,29 @@
 
 arch_Raw::arch_Raw(const string& aFileName)
 {
-	mFileDesc = vfs_fopen(aFileName.c_str(), "rb");
-
-	//open and mmap the file
-	if(mFileDesc == NULL)
+	mFileDesc = vfs_fopen(aFileName.c_str(), "r");
+	if (!mFileDesc)
 	{
 		mSize = 0;
 		return;
 	}
-	vfs_fseek(mFileDesc, 0, SEEK_END);
-	mSize = vfs_ftell(mFileDesc);
-	vfs_rewind(mFileDesc);
+
+	mSize = vfs_fsize(mFileDesc);
+	if (mSize <= 0)
+	{
+		vfs_fclose(mFileDesc);
+		mSize = 0;
+		return;
+	}
 
 	mMap = malloc(mSize);
-	vfs_fread(mMap, 1, mSize, mFileDesc);
+	if (vfs_fread(mMap, 1, mSize, mFileDesc) < mSize)
+	{
+		free(mMap);
+		vfs_fclose(mFileDesc);
+		mSize = 0;
+		return;
+	}
 }
 
 arch_Raw::~arch_Raw()
