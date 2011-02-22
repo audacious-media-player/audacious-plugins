@@ -53,11 +53,11 @@ src/console/Sap_Emu.cxx
 src/console/Spc_Cpu.cxx
 src/console/Spc_Dsp.cxx
 src/console/Spc_Emu.cxx
-src/console/Vfs_File.cxx
 src/console/Vgm_Emu.cxx
 src/console/Ym2612_Emu.cxx
 src/crossfade/plugin.c
 src/crystalizer/crystalizer.c
+src/daemon/daemon.c
 src/echo_plugin/gui.c
 src/evdev-plug/ed.c
 src/evdev-plug/ed_internals.c
@@ -71,8 +71,11 @@ src/gnomeshortcuts/gnomeshortcuts.c
 src/gntui/fileselector.c
 src/gntui/gntui.c
 src/gtkui/actions.c
+src/gtkui/columns.c
+src/gtkui/layout.c
 src/gtkui/ui_gtk.c
 src/gtkui/ui_manager.c
+src/gtkui/ui_playlist_widget.c
 src/gtkui/ui_statusbar.c
 src/hotkey/gui.c
 src/jack/bio2jack.c
@@ -96,11 +99,13 @@ src/oss4/plugin.c
 src/oss4/utils.c
 src/OSS/configure.c
 src/OSS/OSS.c
+src/paranormal/libcalc/parser.c
 src/pulse_audio/pulse_audio.c
 src/resample/plugin.c
 src/scrobbler/configure.c
 src/scrobbler/plugin.c
 src/scrobbler/scrobbler.c
+src/sdlout/plugin.c
 src/sid/xmms-sid.glade
 src/sid/xs_about.c
 src/sid/xs_config.c
@@ -124,8 +129,6 @@ src/statusicon/statusicon.c
 src/stereo_plugin/stereo.c
 src/streambrowser/gui/streambrowser_win.c
 src/streambrowser/streambrowser.c
-src/sun/about.c
-src/sun/configure.c
 src/tonegen/tonegen.c
 src/usf/recompiler_cpu.c
 src/usf/rsp_recompiler_cpu.c

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5.1\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-01-29 15:26-0500\n"
+"POT-Creation-Date: 2011-02-21 21:34-0500\n"
 "PO-Revision-Date: 2009-04-11 16:07+0200\n"
 "Last-Translator: Ernest Adrogué <eadrogue@gmx.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/aac/libmp4.c:277
+#: src/aac/libmp4.c:281
 #, fuzzy, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Descodificador FAAD2 AAC/HE-AAC/HE-AACv2/DRM (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Equip de l'Audacious"
 
-#: src/aac/libmp4.c:282
+#: src/aac/libmp4.c:286
 #, fuzzy
 msgid "About MP4 AAC decoder plugin"
 msgstr "Quant al connector per a àudio MPEG"
@@ -64,21 +64,21 @@ msgid "AdPlug :: Configuration"
 msgstr "AdPlug :: Configuració"
 
 #: src/adplug/adplug-xmms.cc:241 src/adplug/adplug-xmms.cc:504
-#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:134
-#: src/echo_plugin/gui.c:124 src/jack/configure.c:146 src/null/null.c:109
-#: src/stereo_plugin/stereo.c:129 src/sun/configure.c:557
+#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:135
+#: src/echo_plugin/gui.c:123 src/jack/configure.c:146 src/null/null.c:112
+#: src/stereo_plugin/stereo.c:129
 msgid "Ok"
 msgstr "D'acord"
 
 #: src/adplug/adplug-xmms.cc:251 src/alarm/interface.c:1398
-#: src/cdaudio-ng/configure.c:249 src/crystalizer/crystalizer.c:143
-#: src/echo_plugin/gui.c:132 src/jack/configure.c:153
-#: src/modplug/gui/interface.cxx:715 src/null/null.c:110
-#: src/stereo_plugin/stereo.c:138 src/sun/configure.c:565
+#: src/cdaudio-ng/configure.c:249 src/crystalizer/crystalizer.c:142
+#: src/echo_plugin/gui.c:130 src/jack/configure.c:153
+#: src/modplug/gui/interface.cxx:715 src/null/null.c:113
+#: src/stereo_plugin/stereo.c:136
 msgid "Cancel"
 msgstr "Cancel·la"
 
-#: src/adplug/adplug-xmms.cc:267 src/console/configure.c:154
+#: src/adplug/adplug-xmms.cc:267 src/console/configure.c:155
 #: src/modplug/gui/interface.cxx:629 src/modplug/gui/interface.cxx:888
 msgid "General"
 msgstr "General"
@@ -103,12 +103,12 @@ msgstr "16 bits"
 msgid "Channels"
 msgstr "Canals"
 
-#: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:934
+#: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
 #: src/mpg123/mpg123.c:180 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Mono"
 
-#: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:929
+#: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
 #: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:180
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
@@ -127,7 +127,7 @@ msgid "Frequency"
 msgstr "Freqüència"
 
 #: src/adplug/adplug-xmms.cc:354 src/adplug/adplug-xmms.cc:560
-#: src/console/configure.c:156 src/gtkui/ui_manager.c:68
+#: src/console/configure.c:157 src/gtkui/ui_manager.c:65
 #: src/skins/ui_manager.c:167
 msgid "Playback"
 msgstr "Reproducció"
@@ -176,7 +176,7 @@ msgstr ""
 msgid "AdPlug :: File Info"
 msgstr "AdPlug :: Informació del fitxer"
 
-#: src/adplug/adplug-xmms.cc:533 src/amidi-plug/i_configure-fluidsynth.c:348
+#: src/adplug/adplug-xmms.cc:533 src/amidi-plug/i_configure-fluidsynth.c:347
 msgid "Filename"
 msgstr "Nom del fitxer"
 
@@ -244,7 +244,7 @@ msgstr "Velocitat: "
 msgid "Timer: "
 msgstr "Temporitzador: "
 
-#: src/adplug/adplug-xmms.cc:702 src/console/configure.c:234
+#: src/adplug/adplug-xmms.cc:702 src/console/configure.c:235
 #: src/sid/xs_interface.c:354
 msgid "Hz"
 msgstr "Hz"
@@ -369,7 +369,7 @@ msgstr "Trieu els dies que ha de saltar l'alarma"
 #: src/alarm/interface.c:612 src/alarm/interface.c:660
 #: src/alarm/interface.c:708 src/alarm/interface.c:756
 #: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/OSS/configure.c:166
+#: src/alarm/interface.c:900 src/OSS/configure.c:162
 #: src/skins/ui_manager.c:445 src/skins/ui_manager.c:466
 msgid "Default"
 msgstr "Per defecte"
@@ -468,7 +468,7 @@ msgstr "Recordatori"
 msgid "Use reminder"
 msgstr "Activa els recordatoris"
 
-#: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:394
+#: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:366
 msgid "Options"
 msgstr "Opcions"
 
@@ -581,7 +581,7 @@ msgstr ""
 "    escriviu el recordatori en el camp de text i\n"
 "    marqueu la casella si voleu que es mostri.\n"
 
-#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:185
+#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:184
 #: src/skins/ui_manager.c:377
 msgid "Help"
 msgstr "Ajuda"
@@ -594,36 +594,36 @@ msgstr "El vostre recordatori d'avui és.."
 msgid "Thankyou"
 msgstr "Gràcies"
 
-#: src/alsa/config.c:210
+#: src/alsa/config.c:212
 #, fuzzy
 msgid "Default PCM device"
 msgstr "Dispositiu PCM per defecte (%s)"
 
-#: src/alsa/config.c:235
+#: src/alsa/config.c:237
 #, fuzzy
 msgid "Default mixer device"
 msgstr "Dispositiu PCM per defecte (%s)"
 
-#: src/alsa/config.c:439
+#: src/alsa/config.c:441
 #, fuzzy
 msgid "ALSA Output Plugin Preferences"
 msgstr "Connector d'Icona d'Estat - Preferències"
 
-#: src/alsa/config.c:446
+#: src/alsa/config.c:448
 #, fuzzy
 msgid "PCM device:"
 msgstr "Dispositiu de mescla:"
 
-#: src/alsa/config.c:448 src/OSS/configure.c:256 src/sun/configure.c:218
+#: src/alsa/config.c:450 src/OSS/configure.c:246
 msgid "Mixer device:"
 msgstr "Dispositiu de mescla:"
 
-#: src/alsa/config.c:450
+#: src/alsa/config.c:452
 #, fuzzy
 msgid "Mixer element:"
 msgstr "Dispositiu de mescla:"
 
-#: src/alsa/config.c:453
+#: src/alsa/config.c:455
 msgid "Work around drain hangup"
 msgstr ""
 
@@ -689,86 +689,43 @@ msgstr ""
 "reproductor i és processat pel connector de sortida que trieu.\n"
 "Fons escrit per Giacomo Lozito."
 
-#: src/amidi-plug/i_configure-alsa.c:221
+#: src/amidi-plug/i_configure-alsa.c:228
 msgid "ALSA BACKEND CONFIGURATION"
 msgstr "CONFIGURACIÓ DEL FONS ALSA"
 
-#: src/amidi-plug/i_configure-alsa.c:326
+#: src/amidi-plug/i_configure-alsa.c:331
 msgid "Port"
 msgstr "Port"
 
-#: src/amidi-plug/i_configure-alsa.c:328
+#: src/amidi-plug/i_configure-alsa.c:333
 msgid "Client name"
 msgstr "Nom del client"
 
-#: src/amidi-plug/i_configure-alsa.c:330
+#: src/amidi-plug/i_configure-alsa.c:335
 msgid "Port name"
 msgstr "Nom del port"
 
-#: src/amidi-plug/i_configure-alsa.c:341
+#: src/amidi-plug/i_configure-alsa.c:346
 msgid "ALSA output ports"
 msgstr "Ports ALSA de sortida"
 
-#: src/amidi-plug/i_configure-alsa.c:394
+#: src/amidi-plug/i_configure-alsa.c:399
 msgid "Soundcard: "
 msgstr "Targeta de so: "
 
-#: src/amidi-plug/i_configure-alsa.c:396
+#: src/amidi-plug/i_configure-alsa.c:401
 msgid "Mixer control: "
 msgstr "Control del volum:"
 
-#: src/amidi-plug/i_configure-alsa.c:408
+#: src/amidi-plug/i_configure-alsa.c:413
 msgid "Mixer settings"
 msgstr "Paràmetres del mesclador"
 
-#: src/amidi-plug/i_configure-alsa.c:421
-msgid ""
-"* Select ALSA output ports *\n"
-"MIDI events will be sent to the ports selected here. In example, if your "
-"audio card provides a hardware synth and you want to play MIDI with it, "
-"you'll probably want to select the wavetable synthesizer ports."
-msgstr ""
-"* Seleccioneu els ports ALSA de sortida *\n"
-"Els esdeveniments MIDI seran enviats a els ports seleccionats. Per exemple, "
-"si la vostra targeta de so té un sintetitzador integrat i voleu que "
-"reprodueixi MIDI, probablement voldreu seleccionar els ports de la taula "
-"d'ones del sintetitzador."
-
-#: src/amidi-plug/i_configure-alsa.c:426
-msgid ""
-"* Select ALSA mixer card *\n"
-"The ALSA backend outputs directly through ALSA, it doesn't use effect and "
-"ouput plugins from the player. During playback, the player volumeslider will "
-"manipulate the mixer control you select here. If you're using wavetable "
-"synthesizer ports, you'll probably want to select the Synth control here."
-msgstr ""
-"* Seleccioneu la targeta de so *\n"
-"El fons ALSA envia la sortida directament a través d'ALSA, no fa servir cap "
-"altre connector d'efectes o de sortida del reproductor. Durant la "
-"reproducció, la maneta del volum tindrà efecte sobre el control que "
-"seleccioneu aquí. Si esteu utilitzant ports de la taula d'ones d'un "
-"sintetitzador, probablement voldreu seleccionar el control \"Synth\"."
-
-#: src/amidi-plug/i_configure-alsa.c:433
-msgid ""
-"* Select ALSA mixer control *\n"
-"The ALSA backend outputs directly through ALSA, it doesn't use effect and "
-"ouput plugins from the player. During playback, the player volume slider "
-"will manipulate the mixer control you select here. If you're using wavetable "
-"synthesizer ports, you'll probably want to select the Synth control here."
-msgstr ""
-"* Seleccioneu el control de volum *\n"
-"El fons ALSA envia la sortida directament a través d'ALSA, no fa servir cap "
-"altre connector d'efectes o de sortida del reproductor. Durant la "
-"reproducció, la maneta del volum tindrà efecte sobre el control que "
-"seleccioneu aquí. Si esteu utilitzant ports de la taula d'ones d'un "
-"sintetitzador, probablement voldreu seleccionar el control \"Synth\"."
-
-#: src/amidi-plug/i_configure-alsa.c:444
+#: src/amidi-plug/i_configure-alsa.c:429
 msgid "ALSA Backend not loaded or not available"
 msgstr "Fons ALSA no carregat o no disponible"
 
-#: src/amidi-plug/i_configure-alsa.c:463
+#: src/amidi-plug/i_configure-alsa.c:448
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
@@ -776,154 +733,51 @@ msgstr ""
 "<span size=\"smaller\">Fons\n"
 "ALSA</span>"
 
-#: src/amidi-plug/i_configure-ap.c:56
+#: src/amidi-plug/i_configure-ap.c:59
 msgid "AMIDI-Plug - backend information"
 msgstr "Connector AMIDI-Plug - Informació de l'aplicació de fons"
 
-#: src/amidi-plug/i_configure-ap.c:194
+#: src/amidi-plug/i_configure-ap.c:196
 msgid "AMIDI-PLUG PREFERENCES"
 msgstr "PREFERÈNCIES DEL CONNECTOR AMIDI-PLUG"
 
-#: src/amidi-plug/i_configure-ap.c:221
+#: src/amidi-plug/i_configure-ap.c:223
 msgid "Backend selection"
 msgstr "Selecció de l'aplicació de fons"
 
-#: src/amidi-plug/i_configure-ap.c:225
+#: src/amidi-plug/i_configure-ap.c:227
 msgid "Available backends"
 msgstr "Aplicacions de fons disponibles"
 
-#: src/amidi-plug/i_configure-ap.c:255
+#: src/amidi-plug/i_configure-ap.c:257
 msgid "Playback settings"
 msgstr "Paràmetres de la reproducció"
 
-#: src/amidi-plug/i_configure-ap.c:260
+#: src/amidi-plug/i_configure-ap.c:262
 msgid "Transpose: "
 msgstr "Transposició: "
 
-#: src/amidi-plug/i_configure-ap.c:269
+#: src/amidi-plug/i_configure-ap.c:271
 msgid "Drum shift: "
 msgstr "Desplaçament de la percussió: "
 
-#: src/amidi-plug/i_configure-ap.c:287
+#: src/amidi-plug/i_configure-ap.c:289
 msgid "Advanced settings"
 msgstr "Paràmetres avançats"
 
-#: src/amidi-plug/i_configure-ap.c:291
+#: src/amidi-plug/i_configure-ap.c:293
 msgid "pre-calculate length of MIDI files in playlist"
 msgstr "pre-calcula la durada dels fitxers MIDI a la llista de reproducció"
 
-#: src/amidi-plug/i_configure-ap.c:296
+#: src/amidi-plug/i_configure-ap.c:298
 msgid "extract comments from MIDI file (if available)"
 msgstr "extreu els comentaris del fitxer MIDI (si n'hi ha)"
 
-#: src/amidi-plug/i_configure-ap.c:301
+#: src/amidi-plug/i_configure-ap.c:303
 msgid "extract lyrics from MIDI file (if available)"
 msgstr "extreu la lletra del fitxer MIDI (si n'hi ha)"
 
-#: src/amidi-plug/i_configure-ap.c:320
-msgid ""
-"* Backend selection *\n"
-"AMIDI-Plug works with backends, in a modular fashion; here you should select "
-"your backend; that is, the way MIDI events are going to be handled and "
-"played.\n"
-"If you have a hardware synthesizer on your audio card, and ALSA supports it, "
-"you'll want to use the ALSA backend. It can also be used with anything that "
-"provides an interface to the ALSA sequencer, including software synths or "
-"external devices.\n"
-"If you want to rely on a software synthesizer and/or want to pipe audio into "
-"effect and output plugins of the player you'll want to use the good "
-"FluidSynth backend.\n"
-"Press the info button to read specific information about each backend."
-msgstr ""
-"* Selecció de l'aplicació de fons *\n"
-"El connector AMIDI-Plug funciona amb aplicacions de fons, d'una manera "
-"modular; aquí hauríeu de seleccionar un fons; és a dir, la manera com els "
-"esdeveniments MIDI han de ser tractats i reproduïts.\n"
-"Si teniu maquinari de síntesi a la targeta de so, i ALSA el suporta, voldreu "
-"fer servir el fons ALSA. També es pot fer servir amb qualsevol cosa que "
-"tingui una interfície amb el seqüenciador ALSA, incloent programari de "
-"síntesi o dispositius externs.\n"
-"Si voleu fer servir programari de síntesi i/o voleu que el so generat sigui "
-"processat pels connectors d'efectes i de sortida del reproductor, voldreu "
-"fer servir el fons FluidSynth.\n"
-"Premeu el botó d'informació per a llegir informació específica de cada fons."
-
-#: src/amidi-plug/i_configure-ap.c:331
-#, fuzzy
-msgid ""
-"* Transpose function *\n"
-"This option allows you to play the midi file transposed in a different key, "
-"by shifting of the desired number of semitones all its notes (excepting "
-"those on midi channel 10, reserved for percussions). Especially useful if "
-"you wish to sing or play along with another instrument."
-msgstr ""
-"* Funció de transposició *\n"
-"Aquesta opció permet reproduir el fitxer MIDI transposat a una clau "
-"diferent, tot desplaçant totes les notes el nombre desitjat de semitons "
-"(exceptuant aquelles en el canal MIDI 10, reservat per a percussió). Resulta "
-"útil especialment per a cantar o acompanyar amb un altre instrument."
-
-#: src/amidi-plug/i_configure-ap.c:337
-msgid ""
-"* Drumshift function *\n"
-"This option allows you to shift notes on midi channel 10 (the standard "
-"percussions channel) of the desired number of semitones. This results in "
-"different drumset and percussions being used during midi playback, so if you "
-"wish to enhance (or reduce, or alter) percussion sounds, try to play with "
-"this value."
-msgstr ""
-"* Funció de desplaçament de la percussió *\n"
-"Aquesta opció permet desplaçar les notes del canal MIDI 10 (el canal "
-"estàndard de percussió) el nombre desitjat de semitons. El resultat és un "
-"conjunt diferent d'instruments usats en la reproducció MIDI, de manera que "
-"si voleu millorar (o reduir, o alterar) la percussió, proveu de jugar amb "
-"aquest valor."
-
-#: src/amidi-plug/i_configure-ap.c:344
-msgid ""
-"* Pre-calculate MIDI length *\n"
-"If this option is enabled, AMIDI-Plug will calculate the MIDI file length as "
-"soon as the player requests it, instead of doing that only when the MIDI "
-"file is being played. In example, MIDI length will be calculated straight "
-"after adding MIDI files in a playlist. Disable this option if you want "
-"faster playlist loading (when a lot of MIDI files are added), enable it to "
-"display more information in the playlist straight after loading."
-msgstr ""
-"* Pre-càlcul de la durada MIDI *\n"
-"Si aquesta opció està activada, el connector AMIDI-Plug calcularà la durada "
-"del fitxer MIDI tan aviat com el reproductor ho requereixi, en lloc de fer-"
-"ho només quan es reprodueix el fitxer. Per exemple, la durada d'un fitxer "
-"MIDI es calcularà just després de ser afegit a la llista de reproducció. "
-"Desactiveu aquesta opció si voleu que les llistes de reproducció es "
-"carreguin més ràpidament (quan s'afegeixen molts fitxers MIDI), activeu-la "
-"per a mostrar més informació immediatament en carregar fitxers."
-
-#: src/amidi-plug/i_configure-ap.c:353
-msgid ""
-"* Extract comments from MIDI files *\n"
-"Some MIDI files contain text comments (author, copyright, instrument notes, "
-"etc.). If this option is enabled, AMIDI-Plug will extract and display "
-"comments (if available) in the file information dialog."
-msgstr ""
-"* Extracció de comentaris de fitxers MIDI *\n"
-"Alguns fitxers MIDI contenen comentaris (autor, copyright, comentaris sobre "
-"instruments, etc.). Si aquesta opció està activada, el connector AMIDI-Plug "
-"extraurà i mostrarà els comentaris (si n'hi ha cap) en el diàleg "
-"d'informació del fitxer."
-
-#: src/amidi-plug/i_configure-ap.c:358
-msgid ""
-"* Extract lyrics from MIDI files *\n"
-"Some MIDI files contain song lyrics. If this option is enabled, AMIDI-Plug "
-"will extract and display song lyrics (if available) in the file information "
-"dialog."
-msgstr ""
-"* Extracció de lletres de fitxer MIDI *\n"
-"Alguns fitxers MIDI contenen les lletres de les cançons. Si aquesta opció "
-"està activada, el connector AMIDI-Plug extraurà i mostrarà les lletres de "
-"les cançons (si n'hi ha cap) en el diàleg d'informació del fitxer."
-
-#: src/amidi-plug/i_configure-ap.c:375
+#: src/amidi-plug/i_configure-ap.c:333
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
@@ -931,235 +785,109 @@ msgstr ""
 "<span size=\"smaller\">Connector\n"
 "AMIDI</span>"
 
-#: src/amidi-plug/i_configure.c:73
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug - select file"
 msgstr "Connector AMIDI-Plug - Seleccioneu un fitxer"
 
-#: src/amidi-plug/i_configure.c:126
+#: src/amidi-plug/i_configure.c:129
 msgid "AMIDI-Plug - configuration"
 msgstr "Connector AMIDI-Plug - Configuració"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:52
+#: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "Connector AMIDI-Plug - Seleccioneu un fitxer SoundFont"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:268
+#: src/amidi-plug/i_configure-fluidsynth.c:271
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
 msgstr "CONFIGURACIÓ DEL FONS FLUIDSYNTH"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:316
+#: src/amidi-plug/i_configure-fluidsynth.c:315
 msgid "SoundFont settings"
 msgstr "Paràmetres SoundFont"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:352
+#: src/amidi-plug/i_configure-fluidsynth.c:351
 msgid "Size (bytes)"
 msgstr "Mida (octets)"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:401
+#: src/amidi-plug/i_configure-fluidsynth.c:400
 msgid "Load SF on player start"
 msgstr "Carrega les SF en arrencar el reproductor"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:405
+#: src/amidi-plug/i_configure-fluidsynth.c:404
 msgid "Load SF on first midifile play"
 msgstr "Carrega les SF abans de reproduir fitxers MIDI"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:420
+#: src/amidi-plug/i_configure-fluidsynth.c:419
 msgid "Synthesizer settings"
 msgstr "Paràmetres del sintetitzador"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:429
+#: src/amidi-plug/i_configure-fluidsynth.c:428
 msgid "gain"
 msgstr "guany"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:435
-#: src/amidi-plug/i_configure-fluidsynth.c:463
-#: src/amidi-plug/i_configure-fluidsynth.c:491
-#: src/amidi-plug/i_configure-fluidsynth.c:522
+#: src/amidi-plug/i_configure-fluidsynth.c:434
+#: src/amidi-plug/i_configure-fluidsynth.c:462
+#: src/amidi-plug/i_configure-fluidsynth.c:490
+#: src/amidi-plug/i_configure-fluidsynth.c:521
 msgid "use default"
 msgstr "per defecte"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:438
-#: src/amidi-plug/i_configure-fluidsynth.c:466
+#: src/amidi-plug/i_configure-fluidsynth.c:437
+#: src/amidi-plug/i_configure-fluidsynth.c:465
 msgid "value:"
 msgstr "valor:"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:457
+#: src/amidi-plug/i_configure-fluidsynth.c:456
 msgid "poliphony"
 msgstr "polifonia"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:485
+#: src/amidi-plug/i_configure-fluidsynth.c:484
 msgid "reverb"
 msgstr "reverberació"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:494
-#: src/amidi-plug/i_configure-fluidsynth.c:525
+#: src/amidi-plug/i_configure-fluidsynth.c:493
+#: src/amidi-plug/i_configure-fluidsynth.c:524
 msgid "yes"
 msgstr "sí"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:496
-#: src/amidi-plug/i_configure-fluidsynth.c:527
+#: src/amidi-plug/i_configure-fluidsynth.c:495
+#: src/amidi-plug/i_configure-fluidsynth.c:526
 msgid "no"
 msgstr "no"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:516
+#: src/amidi-plug/i_configure-fluidsynth.c:515
 msgid "chorus"
 msgstr "cor"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:547
+#: src/amidi-plug/i_configure-fluidsynth.c:546
 msgid "sample rate"
 msgstr "freqüència de mostra"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:553
+#: src/amidi-plug/i_configure-fluidsynth.c:552
 msgid "22050 Hz "
 msgstr "22050 Hz "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:556
+#: src/amidi-plug/i_configure-fluidsynth.c:555
 msgid "44100 Hz "
 msgstr "44100 Hz "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:559
+#: src/amidi-plug/i_configure-fluidsynth.c:558
 msgid "96000 Hz "
 msgstr "96000 Hz "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:562
+#: src/amidi-plug/i_configure-fluidsynth.c:561
 msgid "custom "
 msgstr "personalitzat"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:571
+#: src/amidi-plug/i_configure-fluidsynth.c:570
 msgid "Hz "
 msgstr "Hz "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:621
-msgid ""
-"* Select SoundFont files *\n"
-"In order to play MIDI with FluidSynth, you need to specify at least one "
-"valid SoundFont file here (use absolute paths). The loading order is from "
-"the top (first) to the bottom (last)."
-msgstr ""
-"* Selecció de fitxers SoundFont *\n"
-"Per a reproduir fitxers MIDI amb el FluidSynth, heu d'especificar almenys un "
-"fitxer SoundFont vàlid (useu camins absoluts). L'ordre de càrrega és de dalt "
-"(primer) a baix (últim)."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:626
-msgid ""
-"* Load SoundFont on player start *\n"
-"Depending on your system speed, SoundFont loading in FluidSynth will require "
-"up to a few seconds. This is a one-time task (the soundfont will stay loaded "
-"until it is changed or the backend is unloaded) that can be done at player "
-"start, or before the first MIDI file is played (the latter is a better "
-"choice if you don't use your player to listen MIDI files only)."
-msgstr ""
-"* Carrega la SoundFont en arrencar el reproductor *\n"
-"Depenent de la velocitat del vostre sistema, la càrrega de SoundFonts pot "
-"trigar uns quants segons. Aquesta tasca s'ha de fer un sol cop (la SoundFont "
-"quedarà carregada fins que es canvii per una altra, o el fons sigui "
-"descarregat), i es pot for quan arrenca el reproductor, o abans de reproduir "
-"el primer fitxer MIDI (aquesta última és l'opció més recomanable si no useu "
-"el reproductor per escoltar només fitxers MIDI)."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:634
-msgid ""
-"* Load SoundFont on first midifile play *\n"
-"Depending on your system speed, SoundFont loading in FluidSynth will require "
-"up to a few seconds. This is a one-time task (the soundfont will stay loaded "
-"until it is changed or the backend is unloaded) that can be done at player "
-"start, or before the first MIDI file is played (the latter is a better "
-"choice if you don't use your player to listen MIDI files only)."
-msgstr ""
-"* Carrega la SoundFont abans de reproduir fitxers MIDI *\n"
-"Depenent de la velocitat del vostre sistema, la càrrega de SoundFonts pot "
-"trigar uns quants segons. Aquesta tasca s'ha de fer un sol cop (la SoundFont "
-"quedarà carregada fins que es canvii per una altra, o el fons sigui "
-"descarregat), i es pot for quan arrenca el reproductor, o abans de reproduir "
-"el primer fitxer MIDI (aquesta última és l'opció més recomanable si no useu "
-"el reproductor per escoltar només fitxers MIDI)."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:642
-msgid ""
-"* Synthesizer gain *\n"
-"From FluidSynth docs: the gain is applied to the final or master output of "
-"the synthesizer; it is set to a low value by default to avoid the saturation "
-"of the output when random MIDI files are played."
-msgstr ""
-"* Guany del sintetitzador *\n"
-"De la documentació del FluidSynth: el guany s'aplica a la sortida final o "
-"màster del sintetitzador; per defecte és un valor baix, per a evitar la "
-"saturació de la sortida quan es reprodueixen fitxers MIDI arbitraris."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:647
-msgid ""
-"* Synthesizer polyphony *\n"
-"From FluidSynth docs: the polyphony defines how many voices can be played in "
-"parallel; the number of voices is not necessarily equivalent to the number "
-"of notes played simultaneously; indeed, when a note is struck on a specific "
-"MIDI channel, the preset on that channel may create several voices, for "
-"example, one for the left audio channel and one for the right audio "
-"channels; the number of voices activated depends on the number of instrument "
-"zones that fall in the correspond to the velocity and key of the played note."
-msgstr ""
-"* Polifonia *\n"
-"De la documentació del FluidSynth: la polifonia defineix quantes veus poden "
-"ser reproduïdes en paral·lel; el nombre de veus no és necessàriament "
-"equivalent al nombre de notes que sonen de forma simultània; quan una nota "
-"sona en un canal MIDI específic, el perfil del canal pot crear diverses "
-"veus, per exemple, una per al canal de so esquerre i una altra per al canal "
-"dret; el nombre de veus que s'activen depèn del nombre de zones "
-"d'instruments que s'activen, depenent de la velocitat i la clau de la nota "
-"reproduïda."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:657
-#: src/amidi-plug/i_configure-fluidsynth.c:663
-msgid ""
-"* Synthesizer reverb *\n"
-"From FluidSynth docs: when set to \"yes\" the reverb effects module is "
-"activated; note that when the reverb module is active, the amount of signal "
-"sent to the reverb module depends on the \"reverb send\" generator defined "
-"in the SoundFont."
-msgstr ""
-"* Reverberació del sintetitzador *\n"
-"De la documentació del FluidSynth: aquesta opció activa el mòdul d'efecte de "
-"reverberació; tingueu en compte que la quantitat de senyal que s'envia al "
-"mòdul de reverberació depèn del generador \"reverb send\" definit a la "
-"SoundFont."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:669
-#: src/amidi-plug/i_configure-fluidsynth.c:675
-msgid ""
-"* Synthesizer chorus *\n"
-"From FluidSynth docs: when set to \"yes\" the chorus effects module is "
-"activated; note that when the chorus module is active, the amount of signal "
-"sent to the chorus module depends on the \"chorus send\" generator defined "
-"in the SoundFont."
-msgstr ""
-"* Cor del sintetitzador *\n"
-"De la documentació de FluidSynth: aquesta opció activa el mòdul d'efecte de "
-"cor; tingueu en compte que quan el mòdul de cor està actiu, la quantitat de "
-"senyal enviada al mòdul de cor depèn del generador \"chorus send\" definit a "
-"la SoundFont."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:681
-#: src/amidi-plug/i_configure-fluidsynth.c:685
-#: src/amidi-plug/i_configure-fluidsynth.c:689
-#: src/amidi-plug/i_configure-fluidsynth.c:693
-#, fuzzy
-msgid ""
-"* Synthesizer samplerate *\n"
-"The sample rate of the audio generated by the synthesizer. You can also "
-"specify a custom value in the interval 22050Hz-96000Hz."
-msgstr ""
-"* Freqüència de mostra del sintetitzador *\n"
-"Freqüència de mostra de l'àudio que genera el sintetitzador. També podeu "
-"especificar un valor pertanyent a l'interval 22050Hz-96000Hz.\n"
-"NOTA: els buffers per defecte estan configurats per a 44100Hz; si canvieu la "
-"freqüència de mostra potser haureu de canviar també els buffers per a "
-"obtenir una qualitat de so bona."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:701
+#: src/amidi-plug/i_configure-fluidsynth.c:623
 msgid "FluidSynth Backend not loaded or not available"
 msgstr "Fons FluidSynth no carregat o no disponible"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:720
+#: src/amidi-plug/i_configure-fluidsynth.c:642
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
@@ -1696,17 +1424,17 @@ msgstr ""
 msgid "Rescan"
 msgstr "Rellegeix el CD"
 
-#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:70
-#: src/gtkui/ui_manager.c:71 src/hotkey/gui.c:71 src/skins/ui_manager.c:169
+#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:67
+#: src/gtkui/ui_manager.c:68 src/hotkey/gui.c:72 src/skins/ui_manager.c:169
 #: src/skins/ui_manager.c:170
 msgid "Play"
 msgstr "Reprodueix"
 
-#: src/blur_scope/config.c:86
+#: src/blur_scope/config.c:73
 msgid "Blur Scope: Color selection"
 msgstr "Oscil·loscopi difús: Selecció de color"
 
-#: src/blur_scope/config.c:96 src/jack/configure.c:111
+#: src/blur_scope/config.c:83 src/jack/configure.c:111
 msgid "Options:"
 msgstr "Opcions:"
 
@@ -1808,73 +1536,73 @@ msgstr "Reprodueix"
 msgid "Add CD"
 msgstr "Afegeix CD"
 
-#: src/compressor/plugin.c:66
+#: src/compressor/plugin.c:67
 #, fuzzy
 msgid "About Dynamic Range Compression Plugin"
 msgstr "Quant al connector d'estèreo extra"
 
-#: src/compressor/plugin.c:98
+#: src/compressor/plugin.c:99
 #, fuzzy
 msgid "Dynamic Range Compressor Preferences"
 msgstr "Preferències per a l'AudioCompress"
 
-#: src/compressor/plugin.c:110
+#: src/compressor/plugin.c:111
 #, fuzzy
 msgid "Center volume:"
 msgstr "Canvia el volum"
 
-#: src/compressor/plugin.c:123
+#: src/compressor/plugin.c:124
 msgid "Dynamic range:"
 msgstr ""
 
-#: src/console/configure.c:137
+#: src/console/configure.c:138
 #, fuzzy
 msgid "Game Console Music Decoder"
 msgstr "Descodificador de música de consoles"
 
-#: src/console/configure.c:171
+#: src/console/configure.c:172
 msgid "Bass:"
 msgstr "Baixos:"
 
-#: src/console/configure.c:175 src/console/configure.c:186
-#: src/console/configure.c:207
+#: src/console/configure.c:176 src/console/configure.c:187
+#: src/console/configure.c:208
 msgid "secs"
 msgstr "segons"
 
-#: src/console/configure.c:182
+#: src/console/configure.c:183
 msgid "Treble:"
 msgstr "Aguts:"
 
-#: src/console/configure.c:203
+#: src/console/configure.c:204
 msgid "Default song length:"
 msgstr "Durada per defecte:"
 
-#: src/console/configure.c:209 src/modplug/gui/interface.cxx:269
+#: src/console/configure.c:210 src/modplug/gui/interface.cxx:269
 #: src/sid/xs_interface.c:666
 msgid "Resampling"
 msgstr "Remostratge"
 
-#: src/console/configure.c:215
+#: src/console/configure.c:216
 msgid "Enable audio resampling"
 msgstr "Activa el remostratge d'àudio"
 
-#: src/console/configure.c:230
+#: src/console/configure.c:231
 msgid "Resampling rate:"
 msgstr "Taxa de remostratge:"
 
-#: src/console/configure.c:245
+#: src/console/configure.c:246
 msgid "SPC"
 msgstr "SPC"
 
-#: src/console/configure.c:246
+#: src/console/configure.c:247
 msgid "Ignore length from SPC tags"
 msgstr "Ignora la durada indicada a les etiquetes SPC"
 
-#: src/console/configure.c:247
+#: src/console/configure.c:248
 msgid "Increase reverb"
 msgstr "Incrementa la reverberació"
 
-#: src/console/configure.c:272
+#: src/console/configure.c:273
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
@@ -1901,31 +1629,31 @@ msgstr ""
 "Implemetació en l'Audacious per: William Pitcock <nenolod@nenolod.net>,\n"
 "Shay Green <gblargg@gmail.com>"
 
-#: src/crossfade/plugin.c:64
+#: src/crossfade/plugin.c:65
 #, fuzzy
 msgid "About Crossfade"
 msgstr "Quant al connector Scrobbler"
 
-#: src/crossfade/plugin.c:96
+#: src/crossfade/plugin.c:97
 #, fuzzy
 msgid "Crossfade Preferences"
 msgstr "Preferències"
 
-#: src/crossfade/plugin.c:108
+#: src/crossfade/plugin.c:109
 msgid "Overlap (in seconds):"
 msgstr ""
 
-#: src/crossfade/plugin.c:141 src/crossfade/plugin.c:147
+#: src/crossfade/plugin.c:140 src/crossfade/plugin.c:146
 #, fuzzy
 msgid "Crossfade Error"
 msgstr "Crossover"
 
-#: src/crossfade/plugin.c:141
+#: src/crossfade/plugin.c:140
 msgid ""
 "Crossfading failed because the songs had a different number of channels."
 msgstr ""
 
-#: src/crossfade/plugin.c:149
+#: src/crossfade/plugin.c:148
 msgid ""
 "Crossfading failed because the songs had different sample rates.\n"
 "\n"
@@ -1933,20 +1661,24 @@ msgid ""
 "same rate."
 msgstr ""
 
-#: src/crystalizer/crystalizer.c:111
+#: src/crystalizer/crystalizer.c:112
 msgid "Configure Crystalizer"
 msgstr "Configuració del Crystalizer"
 
-#: src/crystalizer/crystalizer.c:113 src/stereo_plugin/stereo.c:108
+#: src/crystalizer/crystalizer.c:114 src/stereo_plugin/stereo.c:108
 msgid "Effect intensity:"
 msgstr "Intensitat de l'efecte:"
 
-#: src/crystalizer/crystalizer.c:150 src/echo_plugin/gui.c:139
-#: src/modplug/gui/interface.cxx:709 src/stereo_plugin/stereo.c:145
+#: src/crystalizer/crystalizer.c:148 src/echo_plugin/gui.c:136
+#: src/modplug/gui/interface.cxx:709 src/stereo_plugin/stereo.c:142
 msgid "Apply"
 msgstr "Aplica"
 
-#: src/echo_plugin/gui.c:14
+#: src/daemon/daemon.c:58
+msgid "Daemon Interface (like old headless mode)"
+msgstr ""
+
+#: src/echo_plugin/gui.c:15
 msgid ""
 "Echo Plugin\n"
 "By Johan Levin 1999.\n"
@@ -1958,23 +1690,23 @@ msgstr ""
 "\n"
 "Eco envolvent per Carl van Schaik, 1999."
 
-#: src/echo_plugin/gui.c:26
+#: src/echo_plugin/gui.c:27
 msgid "About Echo Plugin"
 msgstr "Quant al connector d'eco"
 
-#: src/echo_plugin/gui.c:71
+#: src/echo_plugin/gui.c:72
 msgid "Configure Echo"
 msgstr "Configuració de l'eco"
 
-#: src/echo_plugin/gui.c:84
+#: src/echo_plugin/gui.c:88
 msgid "Delay: (ms)"
 msgstr "Retard: (ms)"
 
-#: src/echo_plugin/gui.c:89
+#: src/echo_plugin/gui.c:93
 msgid "Feedback: (%)"
 msgstr "Retorn: (%)"
 
-#: src/echo_plugin/gui.c:94
+#: src/echo_plugin/gui.c:98
 msgid "Volume: (%)"
 msgstr "Volum: (%)"
 
@@ -2265,7 +1997,7 @@ msgstr "EvDev-Plug - Configuració"
 msgid "Active"
 msgstr "Actiu"
 
-#: src/evdev-plug/ed_ui.c:655 src/sun/configure.c:486
+#: src/evdev-plug/ed_ui.c:655
 msgid "Status"
 msgstr "Estat"
 
@@ -2341,7 +2073,7 @@ msgstr ""
 "\n"
 "escrit per Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:669
+#: src/ffaudio/ffaudio-core.c:668
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2355,16 +2087,16 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:682
+#: src/ffaudio/ffaudio-core.c:681
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "Quant al connector d'àudio FLAC"
 
-#: src/filewriter/filewriter.c:179
+#: src/filewriter/filewriter.c:155
 msgid "About FileWriter-Plugin"
 msgstr "Quant al connector FileWriter"
 
-#: src/filewriter/filewriter.c:180
+#: src/filewriter/filewriter.c:156
 #, fuzzy
 msgid ""
 "FileWriter-Plugin\n"
@@ -2401,250 +2133,201 @@ msgstr ""
 "Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
 "Boston, MA 02110-1301, USA."
 
-#: src/filewriter/filewriter.c:460
+#: src/filewriter/filewriter.c:444
 msgid "File Writer Configuration"
 msgstr "Configuració de l'escriptura al disc"
 
-#: src/filewriter/filewriter.c:472
+#: src/filewriter/filewriter.c:456
 msgid "Output file format:"
 msgstr "Format del fitxer de sortida:"
 
-#: src/filewriter/filewriter.c:490 src/ladspa/ladspa.c:1070
+#: src/filewriter/filewriter.c:474 src/ladspa/ladspa.c:1078
 msgid "Configure"
 msgstr "Configuració"
 
-#: src/filewriter/filewriter.c:505
+#: src/filewriter/filewriter.c:489
 msgid "Save into original directory"
 msgstr "Desa al directori original"
 
-#: src/filewriter/filewriter.c:510
+#: src/filewriter/filewriter.c:494
 msgid "Save into custom directory"
 msgstr "Desa a un altre directori"
 
-#: src/filewriter/filewriter.c:522
+#: src/filewriter/filewriter.c:504
 msgid "Output file folder:"
 msgstr "Directori de sortida:"
 
-#: src/filewriter/filewriter.c:526
+#: src/filewriter/filewriter.c:508
 msgid "Pick a folder"
 msgstr "Trieu un directori"
 
-#: src/filewriter/filewriter.c:545
+#: src/filewriter/filewriter.c:527
 msgid "Get filename from:"
 msgstr "Agafa el nom del fitxer de:"
 
-#: src/filewriter/filewriter.c:548
+#: src/filewriter/filewriter.c:530
 msgid "original file tags"
 msgstr "etiquetes del fitxer originals"
 
-#: src/filewriter/filewriter.c:554
+#: src/filewriter/filewriter.c:536
 msgid "original filename"
 msgstr "nom del fitxer original"
 
-#: src/filewriter/filewriter.c:564
+#: src/filewriter/filewriter.c:546
 msgid "Don't strip file name extension"
 msgstr "Deixa l'extensió del fitxer"
 
-#: src/filewriter/filewriter.c:568
-msgid ""
-"If enabled, the extension from the original filename will not be stripped "
-"before adding the new file extension to the end."
-msgstr ""
-"Si està activat, l'extensió del nom de fitxer original no s'esborrarà abans "
-"d'afegir una nova extensió al final."
-
-#: src/filewriter/filewriter.c:582
+#: src/filewriter/filewriter.c:561
 msgid "Prepend track number to filename"
 msgstr "Precedeix el nom del fitxer pel nombre de pista"
 
-#: src/filewriter/mp3.c:710
+#: src/filewriter/mp3.c:38 src/filewriter/mp3.c:783
+msgid "Auto"
+msgstr "Auto"
+
+#: src/filewriter/mp3.c:38
+#, fuzzy
+msgid "Joint Stereo"
+msgstr "Estèreo conjunt"
+
+#: src/filewriter/mp3.c:724
 msgid "MP3 Configuration"
 msgstr "Configuració d'MP3"
 
-#: src/filewriter/mp3.c:737
+#: src/filewriter/mp3.c:747
 msgid "Algorithm Quality:"
 msgstr "Qualitat de l'algoritme:"
 
-#: src/filewriter/mp3.c:759
-msgid ""
-"best/slowest:0;\n"
-"worst/fastest:9;\n"
-"recommended:2;\n"
-"default:5;"
-msgstr ""
-"millor/més lent:0;\n"
-"pitjor/més ràpid:9;\n"
-"recomanat:2;\n"
-"per defecte:5;"
-
-#: src/filewriter/mp3.c:767
+#: src/filewriter/mp3.c:772
 msgid "Output Samplerate:"
 msgstr "Freqüència de mostra de sortida:"
-
-#: src/filewriter/mp3.c:778 src/filewriter/mp3.c:919
-msgid "Auto"
-msgstr "Auto"
 
 #: src/filewriter/mp3.c:800
 msgid "(Hz)"
 msgstr "(Hz)"
 
-#: src/filewriter/mp3.c:812
+#: src/filewriter/mp3.c:807
 msgid "Bitrate / Compression ratio:"
 msgstr "Flux de bits / Ràtio de compressió:"
 
-#: src/filewriter/mp3.c:838
+#: src/filewriter/mp3.c:831
 msgid "Bitrate (kbps):"
 msgstr "Flux de bits (kbps):"
 
-#: src/filewriter/mp3.c:879
+#: src/filewriter/mp3.c:864
 msgid "Compression ratio:"
 msgstr "Ràtio de compressió:"
 
-#: src/filewriter/mp3.c:909
+#: src/filewriter/mp3.c:888
 msgid "Audio Mode:"
 msgstr "Mode d'àudio:"
 
-#: src/filewriter/mp3.c:924
-msgid "Joint-Stereo"
-msgstr "Estèreo conjunt"
-
-#: src/filewriter/mp3.c:967
+#: src/filewriter/mp3.c:913
 msgid "Misc:"
 msgstr "Misc:"
 
-#: src/filewriter/mp3.c:978
+#: src/filewriter/mp3.c:924
 msgid "Enforce strict ISO complience"
 msgstr "Força el compliment estricte de l'estàndard ISO"
 
-#: src/filewriter/mp3.c:989
+#: src/filewriter/mp3.c:935
 msgid "Error protection"
 msgstr "Protecció d'errors"
 
-#: src/filewriter/mp3.c:1001
-msgid "Adds 16 bit checksum to every frame"
-msgstr "Afegeix una suma de verificació de 16 bits a cada marc"
-
-#: src/filewriter/mp3.c:1006 src/filewriter/vorbis.c:247
+#: src/filewriter/mp3.c:947 src/filewriter/vorbis.c:245
 #: src/modplug/gui/interface.cxx:320
 msgid "Quality"
 msgstr "Qualitat"
 
-#: src/filewriter/mp3.c:1018
+#: src/filewriter/mp3.c:957
 msgid "Enable VBR/ABR"
 msgstr "Activa VBR/ABR"
 
-#: src/filewriter/mp3.c:1030
+#: src/filewriter/mp3.c:967
 msgid "Type:"
 msgstr "Tipus:"
 
-#: src/filewriter/mp3.c:1041
-msgid "Variable bitrate"
-msgstr "Flux de bits variable"
-
-#: src/filewriter/mp3.c:1053
-msgid "Average bitrate"
-msgstr "Flux de bits mitjà"
-
-#: src/filewriter/mp3.c:1067
+#: src/filewriter/mp3.c:1000
 msgid "VBR Options:"
 msgstr "Opcions VBR:"
 
-#: src/filewriter/mp3.c:1083
+#: src/filewriter/mp3.c:1016
 msgid "Minimum bitrate (kbps):"
 msgstr "Flux de bits mínim (kbps):"
 
-#: src/filewriter/mp3.c:1119
+#: src/filewriter/mp3.c:1043
 msgid "Maximum bitrate (kbps):"
 msgstr "Flux de bits màxim (kbps):"
 
-#: src/filewriter/mp3.c:1151
+#: src/filewriter/mp3.c:1066
 msgid "Strictly enforce minimum bitrate"
 msgstr "Compliment estricte el flux de bit mínim"
 
-#: src/filewriter/mp3.c:1153
-msgid ""
-"For use with players that do not support low bitrate mp3 (Apex AD600-A DVD/"
-"mp3 player)"
-msgstr ""
-"Per a reproductors que no suporten MP3 amb flux de bits baixos (reproductor "
-"DVD/MP3 Apex AD600-A)"
-
-#: src/filewriter/mp3.c:1166
+#: src/filewriter/mp3.c:1078
 msgid "ABR Options:"
 msgstr "Opcions ABR:"
 
-#: src/filewriter/mp3.c:1176
+#: src/filewriter/mp3.c:1088
 msgid "Average bitrate (kbps):"
 msgstr "Flux de bits mitjà (kbps):"
 
-#: src/filewriter/mp3.c:1213
+#: src/filewriter/mp3.c:1116
 msgid "VBR quality level:"
 msgstr "Nivell de qualitat VBR:"
 
-#: src/filewriter/mp3.c:1228
-msgid ""
-"highest:0;\n"
-"lowest:9;\n"
-"default:4;"
-msgstr ""
-"el més alt:0;\n"
-"el més baix:9;\n"
-"per defecte:4;"
-
-#: src/filewriter/mp3.c:1236
+#: src/filewriter/mp3.c:1135
 msgid "Don't write Xing VBR header"
 msgstr "Omet escriure la capçalera VBR Xing"
 
-#: src/filewriter/mp3.c:1250
+#: src/filewriter/mp3.c:1149
 msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
-#: src/filewriter/mp3.c:1262
+#: src/filewriter/mp3.c:1159
 msgid "Frame params:"
 msgstr "Paràmetres dels marcs:"
 
-#: src/filewriter/mp3.c:1274
+#: src/filewriter/mp3.c:1171
 msgid "Mark as copyright"
 msgstr "Marca com a copyright"
 
-#: src/filewriter/mp3.c:1285
+#: src/filewriter/mp3.c:1182
 msgid "Mark as original"
 msgstr "Marca com a original"
 
-#: src/filewriter/mp3.c:1297
+#: src/filewriter/mp3.c:1194
 msgid "ID3 params:"
 msgstr "Etiquetes ID3:"
 
-#: src/filewriter/mp3.c:1308
+#: src/filewriter/mp3.c:1205
 msgid "Force addition of version 2 tag"
 msgstr "Força l'afegit d'etiquetes ID3 versió 2"
 
-#: src/filewriter/mp3.c:1318
+#: src/filewriter/mp3.c:1215
 msgid "Only add v1 tag"
 msgstr "Només etiquetes v1"
 
-#: src/filewriter/mp3.c:1325
+#: src/filewriter/mp3.c:1222
 msgid "Only add v2 tag"
 msgstr "Només etiquetes v2"
 
-#: src/filewriter/mp3.c:1346
+#: src/filewriter/mp3.c:1243
 msgid "Tags"
 msgstr "Etiquetes"
 
-#: src/filewriter/vorbis.c:240
+#: src/filewriter/vorbis.c:238
 msgid "Vorbis Encoder Configuration"
 msgstr "Configuració del codificador Vorbis"
 
-#: src/filewriter/vorbis.c:260
+#: src/filewriter/vorbis.c:258
 msgid "Quality level (0 - 10):"
 msgstr "Nivell de qualitat (0 - 10):"
 
-#: src/flacng/plugin.c:393
+#: src/flacng/plugin.c:379
 msgid "About FLAC Audio Plugin"
 msgstr "Quant al connector d'àudio FLAC"
 
-#: src/flacng/plugin.c:394
+#: src/flacng/plugin.c:380
 msgid ""
 "\n"
 "\n"
@@ -2696,43 +2379,136 @@ msgstr "Audacious"
 msgid "gnt interface"
 msgstr ""
 
-#: src/gtkui/actions.c:250 src/skins/ui_main.c:820
+#: src/gtkui/actions.c:254 src/skins/ui_main.c:820
 msgid "Can't jump to time when no track is being played.\n"
 msgstr "No es pot saltar al temps quan no s'està reproduint cap pista.\n"
 
-#: src/gtkui/actions.c:265 src/gtkui/ui_manager.c:224
-#: src/gtkui/ui_manager.c:225 src/skins/ui_main.c:835
+#: src/gtkui/actions.c:269 src/gtkui/ui_manager.c:223
+#: src/gtkui/ui_manager.c:224 src/skins/ui_main.c:835
 #: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Jump to Time"
 msgstr "Salta al temps"
 
-#: src/gtkui/actions.c:282 src/skins/ui_main.c:856
+#: src/gtkui/actions.c:286 src/skins/ui_main.c:856
 msgid "minutes:seconds"
 msgstr "minuts:segons"
 
-#: src/gtkui/actions.c:292 src/skins/ui_main.c:866
+#: src/gtkui/actions.c:296 src/skins/ui_main.c:866
 msgid "Track length:"
 msgstr "Durada de la pista:"
 
-#: src/gtkui/actions.c:530 src/skins/ui_playlist.c:648
+#: src/gtkui/actions.c:534 src/skins/ui_playlist.c:648
 #, c-format
 msgid "Error writing playlist \"%s\": %s"
 msgstr "Error quan s'escrivia la llista de reproducció \"%s\": %s"
 
-#: src/gtkui/actions.c:545 src/skins/ui_playlist.c:670
+#: src/gtkui/actions.c:549 src/skins/ui_playlist.c:670
 #, c-format
 msgid "%s already exist. Continue?"
 msgstr "%s ja existeix. Voleu continuar?"
 
-#: src/gtkui/actions.c:571 src/skins/ui_manager.c:216
+#: src/gtkui/actions.c:575 src/skins/ui_manager.c:216
 #, fuzzy
 msgid "Export Playlist"
 msgstr "Carrega una llista de reproducció"
 
-#: src/gtkui/actions.c:643 src/skins/ui_manager.c:213
+#: src/gtkui/actions.c:647 src/skins/ui_manager.c:213
 #, fuzzy
 msgid "Import Playlist"
 msgstr "Carrega una llista de reproducció"
+
+#: src/gtkui/columns.c:36
+#, fuzzy
+msgid "Entry number"
+msgstr "Número de pista:"
+
+#: src/gtkui/columns.c:36 src/sid/xs_interface.c:1103
+msgid "Title"
+msgstr "Títol"
+
+#: src/gtkui/columns.c:37
+#, fuzzy
+msgid "Artist"
+msgstr "Artista:"
+
+#: src/gtkui/columns.c:37
+#, fuzzy
+msgid "Year"
+msgstr "Any:"
+
+#: src/gtkui/columns.c:37
+#, fuzzy
+msgid "Album"
+msgstr "Àlbum:"
+
+#: src/gtkui/columns.c:37
+#, fuzzy
+msgid "Track"
+msgstr "Pista:"
+
+#: src/gtkui/columns.c:37
+#, fuzzy
+msgid "Queue position"
+msgstr "Posició"
+
+#: src/gtkui/columns.c:38
+#, fuzzy
+msgid "Length"
+msgstr "Durada (ms):"
+
+#: src/gtkui/columns.c:38
+#, fuzzy
+msgid "File path"
+msgstr "Per nom de fitxer"
+
+#: src/gtkui/columns.c:38
+#, fuzzy
+msgid "File name"
+msgstr "Nom del fitxer"
+
+#: src/gtkui/columns.c:38
+#, fuzzy
+msgid "Custom title"
+msgstr "Decoració personalitzada"
+
+#: src/gtkui/columns.c:284
+#, fuzzy
+msgid "Choose Columns"
+msgstr "Mostra el reproductor"
+
+#: src/gtkui/columns.c:298
+#, fuzzy
+msgid "Available:"
+msgstr "variable"
+
+#: src/gtkui/columns.c:332
+msgid "Chosen:"
+msgstr ""
+
+#: src/gtkui/layout.c:122
+msgid "Dock at Left"
+msgstr ""
+
+#: src/gtkui/layout.c:122
+msgid "Dock at Right"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+msgid "Dock at Top"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+msgid "Dock at Bottom"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+msgid "Undock"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+#, fuzzy
+msgid "Disable"
+msgstr "variable"
 
 #: src/gtkui/ui_gtk.c:79
 msgid "GTK Interface"
@@ -2768,376 +2544,371 @@ msgid "No Playlist Advance"
 msgstr "Discontinua la reproducció programada"
 
 #: src/gtkui/ui_manager.c:49
-#, fuzzy
-msgid "Show playlists"
-msgstr "Mostra l'editor de llistes"
-
-#: src/gtkui/ui_manager.c:50
-#, fuzzy
-msgid "Show/hide playlists"
-msgstr "Desa una llista de reproducció"
-
-#: src/gtkui/ui_manager.c:52
 msgid "Show infoarea"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:53
+#: src/gtkui/ui_manager.c:50
 msgid "Show/hide infoarea"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:55
+#: src/gtkui/ui_manager.c:52
 #, fuzzy
 msgid "Show main menu"
 msgstr "Mostra la finestra principal"
 
-#: src/gtkui/ui_manager.c:56
+#: src/gtkui/ui_manager.c:53
 msgid "Show/hide main menu"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:58
+#: src/gtkui/ui_manager.c:55
 #, fuzzy
 msgid "Show statusbar"
 msgstr "Estat"
 
-#: src/gtkui/ui_manager.c:59
+#: src/gtkui/ui_manager.c:56
 #, fuzzy
 msgid "Show/hide statusbar"
 msgstr "Desa una llista de reproducció"
 
-#: src/gtkui/ui_manager.c:61
+#: src/gtkui/ui_manager.c:58
 #, fuzzy
 msgid "Show Column Headers"
 msgstr "Mostra el reproductor"
 
-#: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74
+#: src/gtkui/ui_manager.c:70 src/gtkui/ui_manager.c:71
 #: src/skins/ui_manager.c:172 src/skins/ui_manager.c:173
 msgid "Pause"
 msgstr "Pausa"
 
-#: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77 src/hotkey/gui.c:73
+#: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74 src/hotkey/gui.c:74
 #: src/skins/ui_manager.c:175 src/skins/ui_manager.c:176
 msgid "Stop"
 msgstr "Para"
 
-#: src/gtkui/ui_manager.c:79 src/gtkui/ui_manager.c:80
+#: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77
 #: src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
 msgid "Previous"
 msgstr "Anterior"
 
-#: src/gtkui/ui_manager.c:82 src/gtkui/ui_manager.c:83
+#: src/gtkui/ui_manager.c:79 src/gtkui/ui_manager.c:80
 #: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
 msgid "Next"
 msgstr "Següent"
 
-#: src/gtkui/ui_manager.c:88 src/skins/ui_manager.c:199
+#: src/gtkui/ui_manager.c:85 src/skins/ui_manager.c:199
 msgid "Playlist"
 msgstr "Llistes"
 
-#: src/gtkui/ui_manager.c:90 src/gtkui/ui_manager.c:91
+#: src/gtkui/ui_manager.c:87 src/gtkui/ui_manager.c:88
 #: src/skins/ui_manager.c:201 src/skins/ui_manager.c:202
 msgid "New Playlist"
 msgstr "Llista de reproducció nova"
 
-#: src/gtkui/ui_manager.c:93 src/gtkui/ui_manager.c:94
+#: src/gtkui/ui_manager.c:90 src/gtkui/ui_manager.c:91
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 msgid "Delete Playlist"
 msgstr "Esborra la llista"
 
-#: src/gtkui/ui_manager.c:96
+#: src/gtkui/ui_manager.c:93
 #, fuzzy
 msgid "Import Playlist ..."
 msgstr "Carrega una llista de reproducció"
 
-#: src/gtkui/ui_manager.c:97 src/skins/ui_manager.c:214
+#: src/gtkui/ui_manager.c:94 src/skins/ui_manager.c:214
 msgid "Loads a playlist file into the selected playlist."
 msgstr "Afegeix una llista de reproducció a la llista seleccionada"
 
-#: src/gtkui/ui_manager.c:99
+#: src/gtkui/ui_manager.c:96
 #, fuzzy
 msgid "Export Playlist ..."
 msgstr "Carrega una llista de reproducció"
 
-#: src/gtkui/ui_manager.c:100 src/skins/ui_manager.c:217
+#: src/gtkui/ui_manager.c:97 src/skins/ui_manager.c:217
 msgid "Saves the selected playlist."
 msgstr "Desa les llistes de reproducció seleccionades."
 
-#: src/gtkui/ui_manager.c:102 src/skins/ui_manager.c:219
+#: src/gtkui/ui_manager.c:99 src/skins/ui_manager.c:219
 #, fuzzy
 msgid "Save All Playlists"
 msgstr "Desa una llista de reproducció"
 
-#: src/gtkui/ui_manager.c:103 src/skins/ui_manager.c:220
+#: src/gtkui/ui_manager.c:100 src/skins/ui_manager.c:220
 msgid ""
 "Saves all the playlists that are open. Note that this is done automatically "
 "when Audacious quits."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:107
+#: src/gtkui/ui_manager.c:104
 #, fuzzy
 msgid "Refresh"
 msgstr "Velocitat de refresc"
 
-#: src/gtkui/ui_manager.c:108 src/skins/ui_manager.c:225
+#: src/gtkui/ui_manager.c:105 src/skins/ui_manager.c:225
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr "Refresca les meta-dades associades a cada element de la llista."
 
-#: src/gtkui/ui_manager.c:111
+#: src/gtkui/ui_manager.c:108
 #, fuzzy
 msgid "Refresh Selected"
 msgstr "Treu els seleccionats"
 
-#: src/gtkui/ui_manager.c:112
+#: src/gtkui/ui_manager.c:109
 #, fuzzy
 msgid "Refreshes metadata associated with selected entries."
 msgstr "Refresca les meta-dades associades a cada element de la llista."
 
-#: src/gtkui/ui_manager.c:116
+#: src/gtkui/ui_manager.c:113
 #, fuzzy
 msgid "Playlist Manager"
 msgstr "Gestor de llistes"
 
-#: src/gtkui/ui_manager.c:117 src/skins/ui_manager.c:229
+#: src/gtkui/ui_manager.c:114 src/skins/ui_manager.c:229
 msgid "Opens the playlist manager."
 msgstr "Obre el gestor de llistes de reproducció."
 
-#: src/gtkui/ui_manager.c:120
+#: src/gtkui/ui_manager.c:117
 #, fuzzy
 msgid "Add URL ..."
 msgstr "Afegeix fitxers..."
 
-#: src/gtkui/ui_manager.c:121 src/skins/ui_manager.c:239
+#: src/gtkui/ui_manager.c:118 src/skins/ui_manager.c:239
 msgid "Adds a remote track to the playlist."
 msgstr "Afegeix una pista remota a la llista de reproducció."
 
-#: src/gtkui/ui_manager.c:124
+#: src/gtkui/ui_manager.c:121
 #, fuzzy
 msgid "Add Files ..."
 msgstr "Afegeix fitxers..."
 
-#: src/gtkui/ui_manager.c:125 src/skins/ui_manager.c:243
+#: src/gtkui/ui_manager.c:122 src/skins/ui_manager.c:243
 msgid "Adds files to the playlist."
 msgstr "Afegeix fitxers a la llista de reproducció."
 
-#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:266
+#: src/gtkui/ui_manager.c:125 src/skins/ui_manager.c:266
 msgid "Remove All"
 msgstr "Treu tots els elements"
 
-#: src/gtkui/ui_manager.c:129 src/skins/ui_manager.c:267
+#: src/gtkui/ui_manager.c:126 src/skins/ui_manager.c:267
 msgid "Removes all entries from the playlist."
 msgstr "Treu tots els elements de la llista de reproducció."
 
-#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:292
+#: src/gtkui/ui_manager.c:129 src/skins/ui_manager.c:292
 msgid "Remove Unselected"
 msgstr "Treu els no seleccionats"
 
-#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:293
+#: src/gtkui/ui_manager.c:130 src/skins/ui_manager.c:293
 msgid "Remove unselected entries from the playlist."
 msgstr "Treu els elements no seleccionats de la llista de reproducció."
 
-#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:296
+#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:296
 msgid "Remove Selected"
 msgstr "Treu els seleccionats"
 
-#: src/gtkui/ui_manager.c:137 src/skins/ui_manager.c:297
+#: src/gtkui/ui_manager.c:134 src/skins/ui_manager.c:297
 msgid "Remove selected entries from the playlist."
 msgstr "Treu els elements seleccionats de la llista de reproducció."
 
-#: src/gtkui/ui_manager.c:140
+#: src/gtkui/ui_manager.c:137
 msgid "Edit title"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:141
+#: src/gtkui/ui_manager.c:138
 #, fuzzy
 msgid "Edites the playlist title."
 msgstr "Reordena la llista de forma aleatòria."
 
-#: src/gtkui/ui_manager.c:144
+#: src/gtkui/ui_manager.c:141
 msgid "Choose Columns ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:147
+#: src/gtkui/ui_manager.c:144
 #, fuzzy
 msgid "Sort"
 msgstr "Port"
 
-#: src/gtkui/ui_manager.c:148 src/skins/ui_manager.c:336
+#: src/gtkui/ui_manager.c:145 src/skins/ui_manager.c:336
 #: src/skins/ui_manager.c:366
 msgid "By Track Number"
 msgstr "Pel número de pista"
 
-#: src/gtkui/ui_manager.c:150 src/skins/ui_manager.c:280
+#: src/gtkui/ui_manager.c:147 src/skins/ui_manager.c:280
 #: src/skins/ui_manager.c:312 src/skins/ui_manager.c:342
 msgid "By Title"
 msgstr "Per títol"
 
-#: src/gtkui/ui_manager.c:152 src/skins/ui_manager.c:320
+#: src/gtkui/ui_manager.c:149 src/skins/ui_manager.c:320
 #: src/skins/ui_manager.c:350
 msgid "By Artist"
 msgstr "Per l'artista"
 
-#: src/gtkui/ui_manager.c:154 src/skins/ui_manager.c:316
+#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:316
 #: src/skins/ui_manager.c:346
 #, fuzzy
 msgid "By Album"
 msgstr "Àlbum:"
 
-#: src/gtkui/ui_manager.c:156
+#: src/gtkui/ui_manager.c:153
+#, fuzzy
+msgid "By Release Date"
+msgstr "Per la data"
+
+#: src/gtkui/ui_manager.c:155
 #, fuzzy
 msgid "By File Path"
 msgstr "Per nom de fitxer"
 
-#: src/gtkui/ui_manager.c:158
+#: src/gtkui/ui_manager.c:157
 #, fuzzy
 msgid "By Formatted Title"
 msgstr "Per títol"
 
-#: src/gtkui/ui_manager.c:160
+#: src/gtkui/ui_manager.c:159
 #, fuzzy
 msgid "Reverse Order"
 msgstr "Inverteix la llista"
 
-#: src/gtkui/ui_manager.c:162
+#: src/gtkui/ui_manager.c:161
 #, fuzzy
 msgid "Random Order"
 msgstr "_Aleatori"
 
-#: src/gtkui/ui_manager.c:167
+#: src/gtkui/ui_manager.c:166
 msgid "Output"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:169 src/modplug/gui/interface.cxx:572
+#: src/gtkui/ui_manager.c:168 src/modplug/gui/interface.cxx:572
 msgid "Effects"
 msgstr "Efectes"
 
-#: src/gtkui/ui_manager.c:171
+#: src/gtkui/ui_manager.c:170
 #, fuzzy
 msgid "Equalizer"
 msgstr "Mostra l'equalitzador"
 
-#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:234
+#: src/gtkui/ui_manager.c:175 src/skins/ui_manager.c:234
 msgid "View"
 msgstr "Finestres"
 
-#: src/gtkui/ui_manager.c:177 src/skins/ui_manager.c:235
+#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:235
 msgid "Interface"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:184 src/skins/ui_manager.c:376
+#: src/gtkui/ui_manager.c:183 src/skins/ui_manager.c:376
 msgid "File"
 msgstr "Fitxer"
 
-#: src/gtkui/ui_manager.c:187
+#: src/gtkui/ui_manager.c:186
 #, fuzzy
 msgid "Components"
 msgstr "Comentari:"
 
-#: src/gtkui/ui_manager.c:189 src/gtkui/ui_manager.c:192
+#: src/gtkui/ui_manager.c:188 src/gtkui/ui_manager.c:191
 #: src/skins/ui_manager.c:381 src/skins/ui_manager.c:384
 msgid "View Track Details"
 msgstr "Mostra detalls de la pista"
 
-#: src/gtkui/ui_manager.c:190 src/gtkui/ui_manager.c:193
+#: src/gtkui/ui_manager.c:189 src/gtkui/ui_manager.c:192
 #: src/skins/ui_manager.c:382 src/skins/ui_manager.c:385
 msgid "View track details"
 msgstr "Mostra detalls de la pista"
 
-#: src/gtkui/ui_manager.c:195 src/gtkui/ui_manager.c:196
+#: src/gtkui/ui_manager.c:194 src/gtkui/ui_manager.c:195
 #: src/skins/ui_manager.c:387 src/skins/ui_manager.c:388
 msgid "About Audacious"
 msgstr "Quant a l'Audacious"
 
-#: src/gtkui/ui_manager.c:198
+#: src/gtkui/ui_manager.c:197
 #, fuzzy
 msgid "Open Files ..."
 msgstr "Afegeix fitxers..."
 
-#: src/gtkui/ui_manager.c:199 src/skins/ui_manager.c:391
+#: src/gtkui/ui_manager.c:198 src/skins/ui_manager.c:391
 msgid "Load and play a file"
 msgstr "Carrega i reprodueix un fitxer"
 
-#: src/gtkui/ui_manager.c:201
+#: src/gtkui/ui_manager.c:200
 msgid "Open URL ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:202 src/skins/ui_manager.c:394
+#: src/gtkui/ui_manager.c:201 src/skins/ui_manager.c:394
 msgid "Play media from the selected location"
 msgstr "Reprodueix un mitjà des de la ubicació seleccionada"
 
-#: src/gtkui/ui_manager.c:204 src/skins/ui_manager.c:396
+#: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:396
 msgid "Plugin services"
 msgstr "Serveis de connectors"
 
-#: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:398
+#: src/gtkui/ui_manager.c:205 src/skins/ui_manager.c:398
 msgid "Preferences"
 msgstr "Preferències"
 
-#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:399
+#: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:399
 msgid "Open preferences window"
 msgstr "Obre la finestra de preferències"
 
-#: src/gtkui/ui_manager.c:209 src/skins/ui_manager.c:401
+#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:401
 msgid "_Quit"
 msgstr "_Surt"
 
-#: src/gtkui/ui_manager.c:210 src/skins/ui_manager.c:402
+#: src/gtkui/ui_manager.c:209 src/skins/ui_manager.c:402
 msgid "Quit Audacious"
 msgstr "Tanca l'Audacious"
 
-#: src/gtkui/ui_manager.c:212 src/gtkui/ui_manager.c:213
+#: src/gtkui/ui_manager.c:211 src/gtkui/ui_manager.c:212
 #: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
 msgid "Set A-B"
 msgstr "Estableix A-B"
 
-#: src/gtkui/ui_manager.c:215 src/gtkui/ui_manager.c:216
+#: src/gtkui/ui_manager.c:214 src/gtkui/ui_manager.c:215
 #: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
 msgid "Clear A-B"
 msgstr "Esborra A-B"
 
-#: src/gtkui/ui_manager.c:218 src/gtkui/ui_manager.c:219
+#: src/gtkui/ui_manager.c:217 src/gtkui/ui_manager.c:218
 #: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
 msgid "Jump to Playlist Start"
 msgstr "Salta a l'inici de la llista"
 
-#: src/gtkui/ui_manager.c:221 src/gtkui/ui_manager.c:222 src/hotkey/gui.c:80
+#: src/gtkui/ui_manager.c:220 src/gtkui/ui_manager.c:221 src/hotkey/gui.c:81
 #: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
 msgid "Jump to File"
 msgstr "Salta al fitxer"
 
-#: src/gtkui/ui_manager.c:227 src/skins/ui_manager.c:419
+#: src/gtkui/ui_manager.c:226 src/skins/ui_manager.c:419
 msgid "Queue Toggle"
 msgstr "Posa o treu de la cua"
 
-#: src/gtkui/ui_manager.c:228 src/skins/ui_manager.c:420
+#: src/gtkui/ui_manager.c:227 src/skins/ui_manager.c:420
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Posa o lleva un element de la cua."
 
-#: src/gtkui/ui_manager.c:231 src/skins/ui_manager.c:423
+#: src/gtkui/ui_manager.c:230 src/skins/ui_manager.c:423
 msgid "Copy"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:234 src/skins/ui_manager.c:425
+#: src/gtkui/ui_manager.c:233 src/skins/ui_manager.c:425
 #, fuzzy
 msgid "Cut"
 msgstr "De culte"
 
-#: src/gtkui/ui_manager.c:237 src/skins/ui_manager.c:427
+#: src/gtkui/ui_manager.c:236 src/skins/ui_manager.c:427
 #, fuzzy
 msgid "Paste"
 msgstr "Al màxim"
 
-#: src/gtkui/ui_manager.c:240 src/skins/ui_manager.c:256
+#: src/gtkui/ui_manager.c:239 src/skins/ui_manager.c:256
 msgid "Select All"
 msgstr "Selecciona tots els elements"
 
-#: src/gtkui/ui_manager.c:241 src/skins/ui_manager.c:257
+#: src/gtkui/ui_manager.c:240 src/skins/ui_manager.c:257
 msgid "Selects all of the playlist entries."
 msgstr "Selecciona tots els elements de la llista de reproducció."
 
-#: src/gtkui/ui_manager.c:244 src/skins/ui_manager.c:260
+#: src/gtkui/ui_manager.c:243 src/skins/ui_manager.c:260
 msgid "Select None"
 msgstr "Selecciona no res"
 
-#: src/gtkui/ui_manager.c:245 src/skins/ui_manager.c:261
+#: src/gtkui/ui_manager.c:244 src/skins/ui_manager.c:261
 msgid "Deselects all of the playlist entries."
 msgstr "Deselecciona tots els elements de la llista de reproducció."
 
@@ -3159,51 +2930,51 @@ msgstr "Canals"
 msgid "%s: %d kbps, %d Hz, %s"
 msgstr ""
 
-#: src/hotkey/gui.c:70
+#: src/hotkey/gui.c:71
 msgid "Previous Track"
 msgstr "Pista anterior"
 
-#: src/hotkey/gui.c:72
+#: src/hotkey/gui.c:73
 msgid "Pause/Resume"
 msgstr "Pausa/Represa"
 
-#: src/hotkey/gui.c:74
+#: src/hotkey/gui.c:75
 msgid "Next Track"
 msgstr "Següent pista"
 
-#: src/hotkey/gui.c:75
+#: src/hotkey/gui.c:76
 msgid "Forward 5 Seconds"
 msgstr "Endavant 5 segons"
 
-#: src/hotkey/gui.c:76
+#: src/hotkey/gui.c:77
 msgid "Rewind 5 Seconds"
 msgstr "Enrere 5 segons"
 
-#: src/hotkey/gui.c:77
+#: src/hotkey/gui.c:78
 msgid "Mute"
 msgstr "Silencia"
 
-#: src/hotkey/gui.c:78
+#: src/hotkey/gui.c:79
 msgid "Volume Up"
 msgstr "Puja el volum"
 
-#: src/hotkey/gui.c:79
+#: src/hotkey/gui.c:80
 msgid "Volume Down"
 msgstr "Baixa el volum"
 
-#: src/hotkey/gui.c:81
+#: src/hotkey/gui.c:82
 msgid "Toggle Player Windows"
 msgstr "Commuta les finestres"
 
-#: src/hotkey/gui.c:82
+#: src/hotkey/gui.c:83
 msgid "Show On-Screen-Display"
 msgstr "Activa l'OSD (sobre-impressió)"
 
-#: src/hotkey/gui.c:92
+#: src/hotkey/gui.c:93
 msgid "(none)"
 msgstr "(cap)"
 
-#: src/hotkey/gui.c:229
+#: src/hotkey/gui.c:230
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -3215,15 +2986,15 @@ msgstr ""
 "\n"
 "Voleu continuar?"
 
-#: src/hotkey/gui.c:231
+#: src/hotkey/gui.c:232
 msgid "Binding mouse buttons"
 msgstr "Vinculació dels botons del ratolí"
 
-#: src/hotkey/gui.c:381
+#: src/hotkey/gui.c:382
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Configuració del connector de tecles ràpides globals"
 
-#: src/hotkey/gui.c:397
+#: src/hotkey/gui.c:398
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -3231,23 +3002,23 @@ msgstr ""
 "Premeu una combinació de tecles dins del camp de text.\n"
 "També podeu vincular botons del ratolí."
 
-#: src/hotkey/gui.c:402
+#: src/hotkey/gui.c:403
 msgid "Hotkeys:"
 msgstr "Tecles ràpides:"
 
-#: src/hotkey/gui.c:421
+#: src/hotkey/gui.c:422
 msgid "<b>Action:</b>"
 msgstr "<b>Acció:</b>"
 
-#: src/hotkey/gui.c:429
+#: src/hotkey/gui.c:430
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Vinculació de tecles:</b>"
 
-#: src/hotkey/gui.c:660
+#: src/hotkey/gui.c:661
 msgid "About Global Hotkey Plugin"
 msgstr "Quant al connector de tecles ràpides globals"
 
-#: src/hotkey/gui.c:661
+#: src/hotkey/gui.c:662
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3322,35 +3093,35 @@ msgstr ""
 msgid "About JACK Output Plugin 0.17"
 msgstr "Quant al connector de sortida JACK 0.17"
 
-#: src/ladspa/ladspa.c:836
+#: src/ladspa/ladspa.c:844
 msgid "This LADSPA plugin has no user controls"
 msgstr "Aquest connector LADSPA no té controls d'usuari"
 
-#: src/ladspa/ladspa.c:877 src/ladspa/ladspa.c:964
+#: src/ladspa/ladspa.c:885 src/ladspa/ladspa.c:972
 msgid "Name"
 msgstr "Nom"
 
-#: src/ladspa/ladspa.c:964
+#: src/ladspa/ladspa.c:972
 msgid "UID"
 msgstr "UID"
 
-#: src/ladspa/ladspa.c:1041
+#: src/ladspa/ladspa.c:1049
 msgid "Installed plugins"
 msgstr "Connectors instal·lats"
 
-#: src/ladspa/ladspa.c:1049
+#: src/ladspa/ladspa.c:1057
 msgid "Running plugins"
 msgstr "Connectors actius"
 
-#: src/ladspa/ladspa.c:1064
+#: src/ladspa/ladspa.c:1072
 msgid "Add"
 msgstr "Afegeix"
 
-#: src/ladspa/ladspa.c:1067
+#: src/ladspa/ladspa.c:1075
 msgid "Remove"
 msgstr "Elimina"
 
-#: src/ladspa/ladspa.c:1078
+#: src/ladspa/ladspa.c:1086
 msgid "LADSPA Plugin Catalog"
 msgstr "Catàleg de connectors LADSPA"
 
@@ -3444,7 +3215,7 @@ msgstr "%s: desconnectat del LIRC\n"
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr "%s: s'intentarà reconnectar cada %d segons...\n"
 
-#: src/lyricwiki/lyricwiki.c:322
+#: src/lyricwiki/lyricwiki.c:335
 msgid ""
 "\n"
 "No lyrics were found."
@@ -3726,11 +3497,11 @@ msgstr "Gestor de dispositius MTP"
 msgid "Disconnect the device"
 msgstr "Desconnecta el dispositiu"
 
-#: src/null/null.c:63
+#: src/null/null.c:64
 msgid "Null output plugin "
 msgstr "Connector de sortida nul"
 
-#: src/null/null.c:64
+#: src/null/null.c:65
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
 "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
@@ -3738,15 +3509,15 @@ msgstr ""
 " per Christian Birchinger <joker@netswarm.net>\n"
 " basat el connector XMMS de Håvard Kvål <havardk@xmms.org>"
 
-#: src/null/null.c:67
+#: src/null/null.c:68
 msgid "About Null Output"
 msgstr "Quant a la sortida nul·la"
 
-#: src/null/null.c:93
+#: src/null/null.c:94
 msgid "Null output preferences"
 msgstr "Preferències de la sortida nul·la"
 
-#: src/null/null.c:102
+#: src/null/null.c:105
 msgid "Run in real time"
 msgstr "Funciona en temps real"
 
@@ -3760,11 +3531,11 @@ msgstr "Dispositiu PCM per defecte (%s)"
 msgid "OSS4 Output Plugin Preferences"
 msgstr "Connector d'Icona d'Estat - Preferències"
 
-#: src/oss4/configure.c:163 src/OSS/configure.c:213 src/sun/configure.c:181
+#: src/oss4/configure.c:163 src/OSS/configure.c:203
 msgid "Audio device:"
 msgstr "Dispositiu d'àudio:"
 
-#: src/oss4/configure.c:189 src/OSS/configure.c:235 src/OSS/configure.c:276
+#: src/oss4/configure.c:189 src/OSS/configure.c:226 src/OSS/configure.c:269
 msgid "Use alternate device:"
 msgstr "Usa un dispositiu alternatiu:"
 
@@ -3826,40 +3597,40 @@ msgstr ""
 msgid "OSS4 error"
 msgstr "Error"
 
-#: src/OSS/configure.c:148
+#: src/OSS/configure.c:146
 #, c-format
 msgid "Default (%s)"
 msgstr "Per defecte (%s)"
 
-#: src/OSS/configure.c:197
+#: src/OSS/configure.c:187
 msgid "OSS Driver configuration"
 msgstr "Configuració del driver OSS"
 
-#: src/OSS/configure.c:298 src/sun/configure.c:246
+#: src/OSS/configure.c:290
 msgid "Devices"
 msgstr "Dispositius"
 
-#: src/OSS/configure.c:300 src/sun/configure.c:257
+#: src/OSS/configure.c:292
 msgid "Buffering:"
 msgstr "Buffers:"
 
-#: src/OSS/configure.c:313 src/sun/configure.c:288
+#: src/OSS/configure.c:305
 msgid "Pre-buffer (percent):"
 msgstr "Pre-buffer (percentatge):"
 
-#: src/OSS/configure.c:324 src/sun/configure.c:302
+#: src/OSS/configure.c:316
 msgid "Buffering"
 msgstr "Buffers"
 
-#: src/OSS/configure.c:325
+#: src/OSS/configure.c:317
 msgid "Mixer Settings:"
 msgstr "Paràmetres del mesclador:"
 
-#: src/OSS/configure.c:331
+#: src/OSS/configure.c:323
 msgid "Volume controls Master not PCM"
 msgstr "El volum canvia el màster, no el PCM"
 
-#: src/OSS/configure.c:337 src/sun/configure.c:392
+#: src/OSS/configure.c:329
 msgid "Mixer"
 msgstr "Mesclador"
 
@@ -3903,11 +3674,11 @@ msgstr ""
 "Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
 "Boston, MA 02110-1301, USA."
 
-#: src/pulse_audio/pulse_audio.c:692
+#: src/pulse_audio/pulse_audio.c:699
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "Quant al connector de sortida PulseAudio"
 
-#: src/pulse_audio/pulse_audio.c:693
+#: src/pulse_audio/pulse_audio.c:700
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -3943,59 +3714,59 @@ msgstr ""
 "Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
 "Boston, MA 02110-1301, USA."
 
-#: src/resample/plugin.c:90
+#: src/resample/plugin.c:91
 #, fuzzy
 msgid "About Sample Rate Converter Plugin"
 msgstr "Quant al connector d'icona d'estat"
 
-#: src/resample/plugin.c:145
+#: src/resample/plugin.c:146
 msgid "Sample Rate Converter Preferences"
 msgstr ""
 
-#: src/resample/plugin.c:157
+#: src/resample/plugin.c:158
 msgid "Rate mappings:"
 msgstr ""
 
-#: src/resample/plugin.c:180
+#: src/resample/plugin.c:181
 msgid "All others:"
 msgstr ""
 
-#: src/resample/plugin.c:192
+#: src/resample/plugin.c:193
 msgid "Method:"
 msgstr ""
 
-#: src/scrobbler/configure.c:128 src/scrobbler/configure.c:204
+#: src/scrobbler/configure.c:129 src/scrobbler/configure.c:205
 #, fuzzy
 msgid "Change password"
 msgstr "Canvia la cançó"
 
-#: src/scrobbler/configure.c:150
+#: src/scrobbler/configure.c:151
 msgid "<b>Services</b>"
 msgstr "<b>Serveis</b>"
 
-#: src/scrobbler/configure.c:172
+#: src/scrobbler/configure.c:173
 msgid "Username:"
 msgstr "Nom d'usuari:"
 
-#: src/scrobbler/configure.c:178
+#: src/scrobbler/configure.c:179
 msgid "Password:"
 msgstr "Contrasenya:"
 
-#: src/scrobbler/configure.c:186
+#: src/scrobbler/configure.c:187
 #, fuzzy
 msgid "Scrobbler URL:"
 msgstr "Error de Scrobbler"
 
-#: src/scrobbler/configure.c:218
+#: src/scrobbler/configure.c:219
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:261
+#: src/scrobbler/configure.c:262
 #, fuzzy
 msgid "Scrobbler"
 msgstr "Error de Scrobbler"
 
-#: src/scrobbler/plugin.c:213
+#: src/scrobbler/plugin.c:214
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -4007,9 +3778,19 @@ msgstr ""
 "Creat originalment per Audun Hove <audun@nlc.no> i Pipian <pipian@pipian."
 "com>\n"
 
-#: src/scrobbler/plugin.c:215
+#: src/scrobbler/plugin.c:216
 msgid "About Scrobbler Plugin"
 msgstr "Quant al connector Scrobbler"
+
+#: src/sdlout/plugin.c:62
+#, fuzzy
+msgid "About SDL Output Plugin"
+msgstr "Quant al connector de sortida JACK 0.17"
+
+#: src/sdlout/plugin.c:82
+#, fuzzy
+msgid "SDL error"
+msgstr "Error"
 
 #: src/sid/xs_about.c:84
 #, c-format
@@ -4495,10 +4276,6 @@ msgstr ""
 msgid "Song title format:"
 msgstr "Format del títol:"
 
-#: src/sid/xs_interface.c:1103
-msgid "Title"
-msgstr "Títol"
-
 #: src/sid/xs_interface.c:1125
 msgid "Add sub-tunes to playlist"
 msgstr "Afegeix les sub-melodies a la llista de reproducció"
@@ -4788,7 +4565,7 @@ msgstr "Ajustament del color"
 msgid "Audacious Equalizer"
 msgstr "Equalitzador de l'Audacious"
 
-#: src/skins/ui_equalizer.c:991
+#: src/skins/ui_equalizer.c:1000
 msgid "Presets"
 msgstr "Perfils"
 
@@ -4975,7 +4752,7 @@ msgstr "Enrotlla l'editor de llistes"
 msgid "Roll up Equalizer"
 msgstr "Enrotlla l'equalitzador"
 
-#: src/skins/ui_manager.c:94 src/sndstretch/sndstretch_xmms.c:393
+#: src/skins/ui_manager.c:94 src/sndstretch/sndstretch_xmms.c:365
 msgid "Scale"
 msgstr "Escala"
 
@@ -5476,7 +5253,7 @@ msgstr "Decoració del Winamp 2.x arxivada"
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Decoració del Winamp 2.x no arxivada"
 
-#: src/skins/util.c:869
+#: src/skins/util.c:875
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "No s'ha pogut crear el directori (%s): %s\n"
@@ -5526,27 +5303,27 @@ msgstr ""
 "Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
 "Boston, MA 02110-1301, USA."
 
-#: src/sndstretch/sndstretch_xmms.c:175
+#: src/sndstretch/sndstretch_xmms.c:158
 msgid "About SndStretch"
 msgstr "Quant a SndStretch"
 
-#: src/sndstretch/sndstretch_xmms.c:336
+#: src/sndstretch/sndstretch_xmms.c:316
 msgid "Volume corr."
 msgstr "Correcció de volum"
 
-#: src/sndstretch/sndstretch_xmms.c:337
+#: src/sndstretch/sndstretch_xmms.c:317
 msgid "Short Overlap"
 msgstr "Encavalcament curt"
 
-#: src/sndstretch/sndstretch_xmms.c:391
+#: src/sndstretch/sndstretch_xmms.c:363
 msgid "Speed"
 msgstr "Velocitat"
 
-#: src/sndstretch/sndstretch_xmms.c:392
+#: src/sndstretch/sndstretch_xmms.c:364
 msgid "Pitch"
 msgstr "To"
 
-#: src/sndstretch/sndstretch_xmms.c:413
+#: src/sndstretch/sndstretch_xmms.c:385
 msgid "SndStretch - Configuration"
 msgstr "SndStretch - Configuració"
 
@@ -5690,7 +5467,7 @@ msgstr ""
 msgid "Close to the notification area (system tray)"
 msgstr ""
 
-#: src/stereo_plugin/stereo.c:40
+#: src/stereo_plugin/stereo.c:41
 msgid ""
 "Extra Stereo Plugin\n"
 "\n"
@@ -5700,7 +5477,7 @@ msgstr ""
 "\n"
 "Per Johan Levin, 1999."
 
-#: src/stereo_plugin/stereo.c:68
+#: src/stereo_plugin/stereo.c:69
 msgid "About Extra Stereo Plugin"
 msgstr "Quant al connector d'estèreo extra"
 
@@ -5714,21 +5491,21 @@ msgid "Search:"
 msgstr "Any:"
 
 #: src/streambrowser/gui/streambrowser_win.c:93
-#: src/streambrowser/gui/streambrowser_win.c:369
+#: src/streambrowser/gui/streambrowser_win.c:371
 msgid "Add Bookmark"
 msgstr ""
 
-#: src/streambrowser/gui/streambrowser_win.c:318
+#: src/streambrowser/gui/streambrowser_win.c:320
 #, fuzzy
 msgid "Stream name"
 msgstr "Nom de l'instrument"
 
-#: src/streambrowser/gui/streambrowser_win.c:325
+#: src/streambrowser/gui/streambrowser_win.c:327
 #, fuzzy
 msgid "Now playing"
 msgstr "Llista de reproducció nova"
 
-#: src/streambrowser/gui/streambrowser_win.c:366
+#: src/streambrowser/gui/streambrowser_win.c:368
 #, fuzzy
 msgid "Remove Bookmark"
 msgstr "Esborra l'etiqueta"
@@ -5764,42 +5541,6 @@ msgstr ""
 "També gràcies al meu mentor Tony Vroon pels seus consells.\n"
 "\n"
 "Això va ser un projecte del Google Summer of Code de 2007."
-
-#: src/sun/about.c:30
-msgid "About the Sun Driver"
-msgstr "Quant al driver Sun"
-
-#: src/sun/about.c:31
-msgid ""
-"XMMS BSD Sun Driver\n"
-"\n"
-"Copyright (c) 2001 CubeSoft Communications, Inc.\n"
-"Maintainer: <vedge at csoft.org>.\n"
-msgstr ""
-"Driver BSD Sun per a l'XMMS\n"
-"\n"
-"Copyright (C) 2001 CubeSoft Communications, Inc.\n"
-"Mantenidor: <vedge at csoft.org>.\n"
-
-#: src/sun/configure.c:199
-msgid "Audio control device:"
-msgstr "Dispositiu de control d'àudio:"
-
-#: src/sun/configure.c:270
-msgid "Buffer size (ms):"
-msgstr "Mida del buffer (ms):"
-
-#: src/sun/configure.c:348
-msgid "Volume controls device:"
-msgstr "Dispositiu de control del volum:"
-
-#: src/sun/configure.c:361
-msgid "XMMS uses mixer exclusively."
-msgstr "L'XMMS usa el mesclador exclusivament."
-
-#: src/sun/configure.c:536
-msgid "Sun driver configuration"
-msgstr "Configuració del driver Sun"
 
 #: src/tonegen/tonegen.c:56
 msgid "About Tone Generator"
@@ -5924,6 +5665,346 @@ msgstr ""
 "\n"
 "Alguns trossos del codi són de Miles Egan\n"
 "Visiteu la plana web de Wavpack a http://www.wavpack.com/\n"
+
+#~ msgid ""
+#~ "* Select ALSA output ports *\n"
+#~ "MIDI events will be sent to the ports selected here. In example, if your "
+#~ "audio card provides a hardware synth and you want to play MIDI with it, "
+#~ "you'll probably want to select the wavetable synthesizer ports."
+#~ msgstr ""
+#~ "* Seleccioneu els ports ALSA de sortida *\n"
+#~ "Els esdeveniments MIDI seran enviats a els ports seleccionats. Per "
+#~ "exemple, si la vostra targeta de so té un sintetitzador integrat i voleu "
+#~ "que reprodueixi MIDI, probablement voldreu seleccionar els ports de la "
+#~ "taula d'ones del sintetitzador."
+
+#~ msgid ""
+#~ "* Select ALSA mixer card *\n"
+#~ "The ALSA backend outputs directly through ALSA, it doesn't use effect and "
+#~ "ouput plugins from the player. During playback, the player volumeslider "
+#~ "will manipulate the mixer control you select here. If you're using "
+#~ "wavetable synthesizer ports, you'll probably want to select the Synth "
+#~ "control here."
+#~ msgstr ""
+#~ "* Seleccioneu la targeta de so *\n"
+#~ "El fons ALSA envia la sortida directament a través d'ALSA, no fa servir "
+#~ "cap altre connector d'efectes o de sortida del reproductor. Durant la "
+#~ "reproducció, la maneta del volum tindrà efecte sobre el control que "
+#~ "seleccioneu aquí. Si esteu utilitzant ports de la taula d'ones d'un "
+#~ "sintetitzador, probablement voldreu seleccionar el control \"Synth\"."
+
+#~ msgid ""
+#~ "* Select ALSA mixer control *\n"
+#~ "The ALSA backend outputs directly through ALSA, it doesn't use effect and "
+#~ "ouput plugins from the player. During playback, the player volume slider "
+#~ "will manipulate the mixer control you select here. If you're using "
+#~ "wavetable synthesizer ports, you'll probably want to select the Synth "
+#~ "control here."
+#~ msgstr ""
+#~ "* Seleccioneu el control de volum *\n"
+#~ "El fons ALSA envia la sortida directament a través d'ALSA, no fa servir "
+#~ "cap altre connector d'efectes o de sortida del reproductor. Durant la "
+#~ "reproducció, la maneta del volum tindrà efecte sobre el control que "
+#~ "seleccioneu aquí. Si esteu utilitzant ports de la taula d'ones d'un "
+#~ "sintetitzador, probablement voldreu seleccionar el control \"Synth\"."
+
+#~ msgid ""
+#~ "* Backend selection *\n"
+#~ "AMIDI-Plug works with backends, in a modular fashion; here you should "
+#~ "select your backend; that is, the way MIDI events are going to be handled "
+#~ "and played.\n"
+#~ "If you have a hardware synthesizer on your audio card, and ALSA supports "
+#~ "it, you'll want to use the ALSA backend. It can also be used with "
+#~ "anything that provides an interface to the ALSA sequencer, including "
+#~ "software synths or external devices.\n"
+#~ "If you want to rely on a software synthesizer and/or want to pipe audio "
+#~ "into effect and output plugins of the player you'll want to use the good "
+#~ "FluidSynth backend.\n"
+#~ "Press the info button to read specific information about each backend."
+#~ msgstr ""
+#~ "* Selecció de l'aplicació de fons *\n"
+#~ "El connector AMIDI-Plug funciona amb aplicacions de fons, d'una manera "
+#~ "modular; aquí hauríeu de seleccionar un fons; és a dir, la manera com els "
+#~ "esdeveniments MIDI han de ser tractats i reproduïts.\n"
+#~ "Si teniu maquinari de síntesi a la targeta de so, i ALSA el suporta, "
+#~ "voldreu fer servir el fons ALSA. També es pot fer servir amb qualsevol "
+#~ "cosa que tingui una interfície amb el seqüenciador ALSA, incloent "
+#~ "programari de síntesi o dispositius externs.\n"
+#~ "Si voleu fer servir programari de síntesi i/o voleu que el so generat "
+#~ "sigui processat pels connectors d'efectes i de sortida del reproductor, "
+#~ "voldreu fer servir el fons FluidSynth.\n"
+#~ "Premeu el botó d'informació per a llegir informació específica de cada "
+#~ "fons."
+
+#, fuzzy
+#~ msgid ""
+#~ "* Transpose function *\n"
+#~ "This option allows you to play the midi file transposed in a different "
+#~ "key, by shifting of the desired number of semitones all its notes "
+#~ "(excepting those on midi channel 10, reserved for percussions). "
+#~ "Especially useful if you wish to sing or play along with another "
+#~ "instrument."
+#~ msgstr ""
+#~ "* Funció de transposició *\n"
+#~ "Aquesta opció permet reproduir el fitxer MIDI transposat a una clau "
+#~ "diferent, tot desplaçant totes les notes el nombre desitjat de semitons "
+#~ "(exceptuant aquelles en el canal MIDI 10, reservat per a percussió). "
+#~ "Resulta útil especialment per a cantar o acompanyar amb un altre "
+#~ "instrument."
+
+#~ msgid ""
+#~ "* Drumshift function *\n"
+#~ "This option allows you to shift notes on midi channel 10 (the standard "
+#~ "percussions channel) of the desired number of semitones. This results in "
+#~ "different drumset and percussions being used during midi playback, so if "
+#~ "you wish to enhance (or reduce, or alter) percussion sounds, try to play "
+#~ "with this value."
+#~ msgstr ""
+#~ "* Funció de desplaçament de la percussió *\n"
+#~ "Aquesta opció permet desplaçar les notes del canal MIDI 10 (el canal "
+#~ "estàndard de percussió) el nombre desitjat de semitons. El resultat és un "
+#~ "conjunt diferent d'instruments usats en la reproducció MIDI, de manera "
+#~ "que si voleu millorar (o reduir, o alterar) la percussió, proveu de jugar "
+#~ "amb aquest valor."
+
+#~ msgid ""
+#~ "* Pre-calculate MIDI length *\n"
+#~ "If this option is enabled, AMIDI-Plug will calculate the MIDI file length "
+#~ "as soon as the player requests it, instead of doing that only when the "
+#~ "MIDI file is being played. In example, MIDI length will be calculated "
+#~ "straight after adding MIDI files in a playlist. Disable this option if "
+#~ "you want faster playlist loading (when a lot of MIDI files are added), "
+#~ "enable it to display more information in the playlist straight after "
+#~ "loading."
+#~ msgstr ""
+#~ "* Pre-càlcul de la durada MIDI *\n"
+#~ "Si aquesta opció està activada, el connector AMIDI-Plug calcularà la "
+#~ "durada del fitxer MIDI tan aviat com el reproductor ho requereixi, en "
+#~ "lloc de fer-ho només quan es reprodueix el fitxer. Per exemple, la durada "
+#~ "d'un fitxer MIDI es calcularà just després de ser afegit a la llista de "
+#~ "reproducció. Desactiveu aquesta opció si voleu que les llistes de "
+#~ "reproducció es carreguin més ràpidament (quan s'afegeixen molts fitxers "
+#~ "MIDI), activeu-la per a mostrar més informació immediatament en carregar "
+#~ "fitxers."
+
+#~ msgid ""
+#~ "* Extract comments from MIDI files *\n"
+#~ "Some MIDI files contain text comments (author, copyright, instrument "
+#~ "notes, etc.). If this option is enabled, AMIDI-Plug will extract and "
+#~ "display comments (if available) in the file information dialog."
+#~ msgstr ""
+#~ "* Extracció de comentaris de fitxers MIDI *\n"
+#~ "Alguns fitxers MIDI contenen comentaris (autor, copyright, comentaris "
+#~ "sobre instruments, etc.). Si aquesta opció està activada, el connector "
+#~ "AMIDI-Plug extraurà i mostrarà els comentaris (si n'hi ha cap) en el "
+#~ "diàleg d'informació del fitxer."
+
+#~ msgid ""
+#~ "* Extract lyrics from MIDI files *\n"
+#~ "Some MIDI files contain song lyrics. If this option is enabled, AMIDI-"
+#~ "Plug will extract and display song lyrics (if available) in the file "
+#~ "information dialog."
+#~ msgstr ""
+#~ "* Extracció de lletres de fitxer MIDI *\n"
+#~ "Alguns fitxers MIDI contenen les lletres de les cançons. Si aquesta opció "
+#~ "està activada, el connector AMIDI-Plug extraurà i mostrarà les lletres de "
+#~ "les cançons (si n'hi ha cap) en el diàleg d'informació del fitxer."
+
+#~ msgid ""
+#~ "* Select SoundFont files *\n"
+#~ "In order to play MIDI with FluidSynth, you need to specify at least one "
+#~ "valid SoundFont file here (use absolute paths). The loading order is from "
+#~ "the top (first) to the bottom (last)."
+#~ msgstr ""
+#~ "* Selecció de fitxers SoundFont *\n"
+#~ "Per a reproduir fitxers MIDI amb el FluidSynth, heu d'especificar almenys "
+#~ "un fitxer SoundFont vàlid (useu camins absoluts). L'ordre de càrrega és "
+#~ "de dalt (primer) a baix (últim)."
+
+#~ msgid ""
+#~ "* Load SoundFont on player start *\n"
+#~ "Depending on your system speed, SoundFont loading in FluidSynth will "
+#~ "require up to a few seconds. This is a one-time task (the soundfont will "
+#~ "stay loaded until it is changed or the backend is unloaded) that can be "
+#~ "done at player start, or before the first MIDI file is played (the latter "
+#~ "is a better choice if you don't use your player to listen MIDI files "
+#~ "only)."
+#~ msgstr ""
+#~ "* Carrega la SoundFont en arrencar el reproductor *\n"
+#~ "Depenent de la velocitat del vostre sistema, la càrrega de SoundFonts pot "
+#~ "trigar uns quants segons. Aquesta tasca s'ha de fer un sol cop (la "
+#~ "SoundFont quedarà carregada fins que es canvii per una altra, o el fons "
+#~ "sigui descarregat), i es pot for quan arrenca el reproductor, o abans de "
+#~ "reproduir el primer fitxer MIDI (aquesta última és l'opció més "
+#~ "recomanable si no useu el reproductor per escoltar només fitxers MIDI)."
+
+#~ msgid ""
+#~ "* Load SoundFont on first midifile play *\n"
+#~ "Depending on your system speed, SoundFont loading in FluidSynth will "
+#~ "require up to a few seconds. This is a one-time task (the soundfont will "
+#~ "stay loaded until it is changed or the backend is unloaded) that can be "
+#~ "done at player start, or before the first MIDI file is played (the latter "
+#~ "is a better choice if you don't use your player to listen MIDI files "
+#~ "only)."
+#~ msgstr ""
+#~ "* Carrega la SoundFont abans de reproduir fitxers MIDI *\n"
+#~ "Depenent de la velocitat del vostre sistema, la càrrega de SoundFonts pot "
+#~ "trigar uns quants segons. Aquesta tasca s'ha de fer un sol cop (la "
+#~ "SoundFont quedarà carregada fins que es canvii per una altra, o el fons "
+#~ "sigui descarregat), i es pot for quan arrenca el reproductor, o abans de "
+#~ "reproduir el primer fitxer MIDI (aquesta última és l'opció més "
+#~ "recomanable si no useu el reproductor per escoltar només fitxers MIDI)."
+
+#~ msgid ""
+#~ "* Synthesizer gain *\n"
+#~ "From FluidSynth docs: the gain is applied to the final or master output "
+#~ "of the synthesizer; it is set to a low value by default to avoid the "
+#~ "saturation of the output when random MIDI files are played."
+#~ msgstr ""
+#~ "* Guany del sintetitzador *\n"
+#~ "De la documentació del FluidSynth: el guany s'aplica a la sortida final o "
+#~ "màster del sintetitzador; per defecte és un valor baix, per a evitar la "
+#~ "saturació de la sortida quan es reprodueixen fitxers MIDI arbitraris."
+
+#~ msgid ""
+#~ "* Synthesizer polyphony *\n"
+#~ "From FluidSynth docs: the polyphony defines how many voices can be played "
+#~ "in parallel; the number of voices is not necessarily equivalent to the "
+#~ "number of notes played simultaneously; indeed, when a note is struck on a "
+#~ "specific MIDI channel, the preset on that channel may create several "
+#~ "voices, for example, one for the left audio channel and one for the right "
+#~ "audio channels; the number of voices activated depends on the number of "
+#~ "instrument zones that fall in the correspond to the velocity and key of "
+#~ "the played note."
+#~ msgstr ""
+#~ "* Polifonia *\n"
+#~ "De la documentació del FluidSynth: la polifonia defineix quantes veus "
+#~ "poden ser reproduïdes en paral·lel; el nombre de veus no és "
+#~ "necessàriament equivalent al nombre de notes que sonen de forma "
+#~ "simultània; quan una nota sona en un canal MIDI específic, el perfil del "
+#~ "canal pot crear diverses veus, per exemple, una per al canal de so "
+#~ "esquerre i una altra per al canal dret; el nombre de veus que s'activen "
+#~ "depèn del nombre de zones d'instruments que s'activen, depenent de la "
+#~ "velocitat i la clau de la nota reproduïda."
+
+#~ msgid ""
+#~ "* Synthesizer reverb *\n"
+#~ "From FluidSynth docs: when set to \"yes\" the reverb effects module is "
+#~ "activated; note that when the reverb module is active, the amount of "
+#~ "signal sent to the reverb module depends on the \"reverb send\" generator "
+#~ "defined in the SoundFont."
+#~ msgstr ""
+#~ "* Reverberació del sintetitzador *\n"
+#~ "De la documentació del FluidSynth: aquesta opció activa el mòdul d'efecte "
+#~ "de reverberació; tingueu en compte que la quantitat de senyal que s'envia "
+#~ "al mòdul de reverberació depèn del generador \"reverb send\" definit a la "
+#~ "SoundFont."
+
+#~ msgid ""
+#~ "* Synthesizer chorus *\n"
+#~ "From FluidSynth docs: when set to \"yes\" the chorus effects module is "
+#~ "activated; note that when the chorus module is active, the amount of "
+#~ "signal sent to the chorus module depends on the \"chorus send\" generator "
+#~ "defined in the SoundFont."
+#~ msgstr ""
+#~ "* Cor del sintetitzador *\n"
+#~ "De la documentació de FluidSynth: aquesta opció activa el mòdul d'efecte "
+#~ "de cor; tingueu en compte que quan el mòdul de cor està actiu, la "
+#~ "quantitat de senyal enviada al mòdul de cor depèn del generador \"chorus "
+#~ "send\" definit a la SoundFont."
+
+#, fuzzy
+#~ msgid ""
+#~ "* Synthesizer samplerate *\n"
+#~ "The sample rate of the audio generated by the synthesizer. You can also "
+#~ "specify a custom value in the interval 22050Hz-96000Hz."
+#~ msgstr ""
+#~ "* Freqüència de mostra del sintetitzador *\n"
+#~ "Freqüència de mostra de l'àudio que genera el sintetitzador. També podeu "
+#~ "especificar un valor pertanyent a l'interval 22050Hz-96000Hz.\n"
+#~ "NOTA: els buffers per defecte estan configurats per a 44100Hz; si canvieu "
+#~ "la freqüència de mostra potser haureu de canviar també els buffers per a "
+#~ "obtenir una qualitat de so bona."
+
+#~ msgid ""
+#~ "If enabled, the extension from the original filename will not be stripped "
+#~ "before adding the new file extension to the end."
+#~ msgstr ""
+#~ "Si està activat, l'extensió del nom de fitxer original no s'esborrarà "
+#~ "abans d'afegir una nova extensió al final."
+
+#~ msgid ""
+#~ "best/slowest:0;\n"
+#~ "worst/fastest:9;\n"
+#~ "recommended:2;\n"
+#~ "default:5;"
+#~ msgstr ""
+#~ "millor/més lent:0;\n"
+#~ "pitjor/més ràpid:9;\n"
+#~ "recomanat:2;\n"
+#~ "per defecte:5;"
+
+#~ msgid "Adds 16 bit checksum to every frame"
+#~ msgstr "Afegeix una suma de verificació de 16 bits a cada marc"
+
+#~ msgid "Variable bitrate"
+#~ msgstr "Flux de bits variable"
+
+#~ msgid "Average bitrate"
+#~ msgstr "Flux de bits mitjà"
+
+#~ msgid ""
+#~ "For use with players that do not support low bitrate mp3 (Apex AD600-A "
+#~ "DVD/mp3 player)"
+#~ msgstr ""
+#~ "Per a reproductors que no suporten MP3 amb flux de bits baixos "
+#~ "(reproductor DVD/MP3 Apex AD600-A)"
+
+#~ msgid ""
+#~ "highest:0;\n"
+#~ "lowest:9;\n"
+#~ "default:4;"
+#~ msgstr ""
+#~ "el més alt:0;\n"
+#~ "el més baix:9;\n"
+#~ "per defecte:4;"
+
+#, fuzzy
+#~ msgid "Show playlists"
+#~ msgstr "Mostra l'editor de llistes"
+
+#, fuzzy
+#~ msgid "Show/hide playlists"
+#~ msgstr "Desa una llista de reproducció"
+
+#~ msgid "About the Sun Driver"
+#~ msgstr "Quant al driver Sun"
+
+#~ msgid ""
+#~ "XMMS BSD Sun Driver\n"
+#~ "\n"
+#~ "Copyright (c) 2001 CubeSoft Communications, Inc.\n"
+#~ "Maintainer: <vedge at csoft.org>.\n"
+#~ msgstr ""
+#~ "Driver BSD Sun per a l'XMMS\n"
+#~ "\n"
+#~ "Copyright (C) 2001 CubeSoft Communications, Inc.\n"
+#~ "Mantenidor: <vedge at csoft.org>.\n"
+
+#~ msgid "Audio control device:"
+#~ msgstr "Dispositiu de control d'àudio:"
+
+#~ msgid "Buffer size (ms):"
+#~ msgstr "Mida del buffer (ms):"
+
+#~ msgid "Volume controls device:"
+#~ msgstr "Dispositiu de control del volum:"
+
+#~ msgid "XMMS uses mixer exclusively."
+#~ msgstr "L'XMMS usa el mesclador exclusivament."
+
+#~ msgid "Sun driver configuration"
+#~ msgstr "Configuració del driver Sun"
 
 #, fuzzy
 #~ msgid "Target volume:"
@@ -6816,20 +6897,8 @@ msgstr ""
 #~ msgid "Title:"
 #~ msgstr "Títol:"
 
-#~ msgid "Artist:"
-#~ msgstr "Artista:"
-
-#~ msgid "Album:"
-#~ msgstr "Àlbum:"
-
 #~ msgid "Comment:"
 #~ msgstr "Comentari:"
-
-#~ msgid "Year:"
-#~ msgstr "Any:"
-
-#~ msgid "Track number:"
-#~ msgstr "Número de pista:"
 
 #~ msgid "Genre:"
 #~ msgstr "Gènere:"
@@ -7074,9 +7143,6 @@ msgstr ""
 
 #~ msgid "Musepack Tag"
 #~ msgstr "Etiqueta Musepack"
-
-#~ msgid "Track:"
-#~ msgstr "Pista:"
 
 #~ msgid "Musepack Info"
 #~ msgstr "Informació Musepack"
@@ -7987,10 +8053,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Bit rate:"
 #~ msgstr "Para al cap de:"
-
-#, fuzzy
-#~ msgid "Length:"
-#~ msgstr "Durada (ms):"
 
 #, fuzzy
 #~ msgid "File size:"

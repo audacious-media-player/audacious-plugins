@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins_eu\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-01-29 15:26-0500\n"
+"POT-Creation-Date: 2011-02-21 21:34-0500\n"
 "PO-Revision-Date: 2009-04-23 18:56+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/aac/libmp4.c:277
+#: src/aac/libmp4.c:281
 #, fuzzy, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -29,7 +29,7 @@ msgstr ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM (c) Nero AG, www.nero.com\n"
 "Copyright-a (c) 2005-2006 Audacious taldea"
 
-#: src/aac/libmp4.c:282
+#: src/aac/libmp4.c:286
 #, fuzzy
 msgid "About MP4 AAC decoder plugin"
 msgstr "MP4 AAC erreproduzitzailearen pluginari buruz"
@@ -66,21 +66,21 @@ msgid "AdPlug :: Configuration"
 msgstr "AdPlug :: Konfigurazioa"
 
 #: src/adplug/adplug-xmms.cc:241 src/adplug/adplug-xmms.cc:504
-#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:134
-#: src/echo_plugin/gui.c:124 src/jack/configure.c:146 src/null/null.c:109
-#: src/stereo_plugin/stereo.c:129 src/sun/configure.c:557
+#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:135
+#: src/echo_plugin/gui.c:123 src/jack/configure.c:146 src/null/null.c:112
+#: src/stereo_plugin/stereo.c:129
 msgid "Ok"
 msgstr "Ados"
 
 #: src/adplug/adplug-xmms.cc:251 src/alarm/interface.c:1398
-#: src/cdaudio-ng/configure.c:249 src/crystalizer/crystalizer.c:143
-#: src/echo_plugin/gui.c:132 src/jack/configure.c:153
-#: src/modplug/gui/interface.cxx:715 src/null/null.c:110
-#: src/stereo_plugin/stereo.c:138 src/sun/configure.c:565
+#: src/cdaudio-ng/configure.c:249 src/crystalizer/crystalizer.c:142
+#: src/echo_plugin/gui.c:130 src/jack/configure.c:153
+#: src/modplug/gui/interface.cxx:715 src/null/null.c:113
+#: src/stereo_plugin/stereo.c:136
 msgid "Cancel"
 msgstr "Utzi"
 
-#: src/adplug/adplug-xmms.cc:267 src/console/configure.c:154
+#: src/adplug/adplug-xmms.cc:267 src/console/configure.c:155
 #: src/modplug/gui/interface.cxx:629 src/modplug/gui/interface.cxx:888
 msgid "General"
 msgstr "Orokorra"
@@ -105,12 +105,12 @@ msgstr "16 bit"
 msgid "Channels"
 msgstr "Kanalak"
 
-#: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:934
+#: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
 #: src/mpg123/mpg123.c:180 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Monoa"
 
-#: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:929
+#: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
 #: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:180
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
@@ -130,7 +130,7 @@ msgid "Frequency"
 msgstr "Maiztasuna"
 
 #: src/adplug/adplug-xmms.cc:354 src/adplug/adplug-xmms.cc:560
-#: src/console/configure.c:156 src/gtkui/ui_manager.c:68
+#: src/console/configure.c:157 src/gtkui/ui_manager.c:65
 #: src/skins/ui_manager.c:167
 msgid "Playback"
 msgstr "Erreprodukzioa"
@@ -179,7 +179,7 @@ msgstr ""
 msgid "AdPlug :: File Info"
 msgstr "AdPlug :: Fitxategiaren informazioa"
 
-#: src/adplug/adplug-xmms.cc:533 src/amidi-plug/i_configure-fluidsynth.c:348
+#: src/adplug/adplug-xmms.cc:533 src/amidi-plug/i_configure-fluidsynth.c:347
 msgid "Filename"
 msgstr "Fitxategi-Izena"
 
@@ -247,7 +247,7 @@ msgstr "Abiadura: "
 msgid "Timer: "
 msgstr "Tenporizadorea: "
 
-#: src/adplug/adplug-xmms.cc:702 src/console/configure.c:234
+#: src/adplug/adplug-xmms.cc:702 src/console/configure.c:235
 #: src/sid/xs_interface.c:354
 msgid "Hz"
 msgstr "Hz"
@@ -373,7 +373,7 @@ msgstr "Aukeratu zein egunetan alarma aktibatuko den"
 #: src/alarm/interface.c:612 src/alarm/interface.c:660
 #: src/alarm/interface.c:708 src/alarm/interface.c:756
 #: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/OSS/configure.c:166
+#: src/alarm/interface.c:900 src/OSS/configure.c:162
 #: src/skins/ui_manager.c:445 src/skins/ui_manager.c:466
 msgid "Default"
 msgstr "Lehenetsia"
@@ -472,7 +472,7 @@ msgstr "Oroigarria"
 msgid "Use reminder"
 msgstr "Erabili oroigarria"
 
-#: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:394
+#: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:366
 msgid "Options"
 msgstr "Aukerak"
 
@@ -587,7 +587,7 @@ msgstr ""
 "    idatzi oroigarria kutxan eta piztu txandakatzeko\n"
 "    botoia oroigarri hori bistaratzea nahi baduzu.\n"
 
-#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:185
+#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:184
 #: src/skins/ui_manager.c:377
 msgid "Help"
 msgstr "Laguntza"
@@ -600,36 +600,36 @@ msgstr "Gaurko zure oroigarria: "
 msgid "Thankyou"
 msgstr "Eskerrik asko"
 
-#: src/alsa/config.c:210
+#: src/alsa/config.c:212
 #, fuzzy
 msgid "Default PCM device"
 msgstr "PCM gailu lehenetsia (%s)"
 
-#: src/alsa/config.c:235
+#: src/alsa/config.c:237
 #, fuzzy
 msgid "Default mixer device"
 msgstr "PCM gailu lehenetsia (%s)"
 
-#: src/alsa/config.c:439
+#: src/alsa/config.c:441
 #, fuzzy
 msgid "ALSA Output Plugin Preferences"
 msgstr "Egoeraren ikonoa plugina - Hobespenak"
 
-#: src/alsa/config.c:446
+#: src/alsa/config.c:448
 #, fuzzy
 msgid "PCM device:"
 msgstr "Nahastailearen gailua:"
 
-#: src/alsa/config.c:448 src/OSS/configure.c:256 src/sun/configure.c:218
+#: src/alsa/config.c:450 src/OSS/configure.c:246
 msgid "Mixer device:"
 msgstr "Nahastailearen gailua:"
 
-#: src/alsa/config.c:450
+#: src/alsa/config.c:452
 #, fuzzy
 msgid "Mixer element:"
 msgstr "Nahastailearen gailua:"
 
-#: src/alsa/config.c:453
+#: src/alsa/config.c:455
 msgid "Work around drain hangup"
 msgstr ""
 
@@ -693,86 +693,43 @@ msgstr ""
 "aukeratutako irteerako pluginarekin erreproduzitu.\n"
 "Motorra Giacomo Lozito-k garatu zuen."
 
-#: src/amidi-plug/i_configure-alsa.c:221
+#: src/amidi-plug/i_configure-alsa.c:228
 msgid "ALSA BACKEND CONFIGURATION"
 msgstr "ALSA motorraren konfigurazioa"
 
-#: src/amidi-plug/i_configure-alsa.c:326
+#: src/amidi-plug/i_configure-alsa.c:331
 msgid "Port"
 msgstr "Ataka"
 
-#: src/amidi-plug/i_configure-alsa.c:328
+#: src/amidi-plug/i_configure-alsa.c:333
 msgid "Client name"
 msgstr "Bezeroaren izena"
 
-#: src/amidi-plug/i_configure-alsa.c:330
+#: src/amidi-plug/i_configure-alsa.c:335
 msgid "Port name"
 msgstr "Atakaren izena"
 
-#: src/amidi-plug/i_configure-alsa.c:341
+#: src/amidi-plug/i_configure-alsa.c:346
 msgid "ALSA output ports"
 msgstr "ALSAren irteeraren atakak"
 
-#: src/amidi-plug/i_configure-alsa.c:394
+#: src/amidi-plug/i_configure-alsa.c:399
 msgid "Soundcard: "
 msgstr "Soinu-txartela: "
 
-#: src/amidi-plug/i_configure-alsa.c:396
+#: src/amidi-plug/i_configure-alsa.c:401
 msgid "Mixer control: "
 msgstr "Nahastaile-kontrola: "
 
-#: src/amidi-plug/i_configure-alsa.c:408
+#: src/amidi-plug/i_configure-alsa.c:413
 msgid "Mixer settings"
 msgstr "Nahastailearen ezarpenak"
 
-#: src/amidi-plug/i_configure-alsa.c:421
-msgid ""
-"* Select ALSA output ports *\n"
-"MIDI events will be sent to the ports selected here. In example, if your "
-"audio card provides a hardware synth and you want to play MIDI with it, "
-"you'll probably want to select the wavetable synthesizer ports."
-msgstr ""
-"* Hautatu ALSAren irteerako atakak *\n"
-"MIDI gertaerak hemen hautatutako ataketara bidaliko dira. Adibidez, soinu-"
-"txartelak hardware-sintetizadorea badu, eta horrekin MIDIa erreproduzitzea "
-"nahi baduzu, baliteke zuk uhin-taulako sintetizadorearen atakak hautatu nahi "
-"izatea."
-
-#: src/amidi-plug/i_configure-alsa.c:426
-msgid ""
-"* Select ALSA mixer card *\n"
-"The ALSA backend outputs directly through ALSA, it doesn't use effect and "
-"ouput plugins from the player. During playback, the player volumeslider will "
-"manipulate the mixer control you select here. If you're using wavetable "
-"synthesizer ports, you'll probably want to select the Synth control here."
-msgstr ""
-"* Hautatu ALSAren nahastailearen txartela *\n"
-"ALSA motorrak ALSA bidez ateratzen da, erreproduzitzaileak ez du efekturik "
-"ezta irteerako pluginik erabiltzen. Erreprodukzioan, erreproduzitzailearen "
-"bolumenaren graduatzaileak zuk hemen hautatutako nahastailearen kontrola "
-"kudea dezake. Uhin-taulako sintetizadorearen atakak erabiltzen badituzu, "
-"baliteke zuk hemen sintetizadorearen kontrola hautatu nahi izatea."
-
-#: src/amidi-plug/i_configure-alsa.c:433
-msgid ""
-"* Select ALSA mixer control *\n"
-"The ALSA backend outputs directly through ALSA, it doesn't use effect and "
-"ouput plugins from the player. During playback, the player volume slider "
-"will manipulate the mixer control you select here. If you're using wavetable "
-"synthesizer ports, you'll probably want to select the Synth control here."
-msgstr ""
-"* Hautatu ALSAren nahastailearen kontrola *\n"
-"ALSA motorrak ALSA bidez ateratzen da, erreproduzitzaileak ez du efekturik "
-"ezta irteerako pluginik erabiltzen. Erreprodukzioan, erreproduzitzailearen "
-"bolumenaren graduatzaileak zuk hemen hautatutako nahastailearen kontrola "
-"kudea dezake. Uhin-taulako sintetizadorearen atakak erabiltzen badituzu, "
-"baliteke zuk hemen sintetizadorearen kontrola hautatu nahi izatea."
-
-#: src/amidi-plug/i_configure-alsa.c:444
+#: src/amidi-plug/i_configure-alsa.c:429
 msgid "ALSA Backend not loaded or not available"
 msgstr "ALSA motorra ez da kargatu edo ez dago erabilgarri"
 
-#: src/amidi-plug/i_configure-alsa.c:463
+#: src/amidi-plug/i_configure-alsa.c:448
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
@@ -780,156 +737,51 @@ msgstr ""
 "<span size=\"smaller\">ALSA\n"
 "motorra</span>"
 
-#: src/amidi-plug/i_configure-ap.c:56
+#: src/amidi-plug/i_configure-ap.c:59
 msgid "AMIDI-Plug - backend information"
 msgstr "AMIDI-Plug - motorraren informazioa"
 
-#: src/amidi-plug/i_configure-ap.c:194
+#: src/amidi-plug/i_configure-ap.c:196
 msgid "AMIDI-PLUG PREFERENCES"
 msgstr "AMIDI-PLUG Hobespenak"
 
-#: src/amidi-plug/i_configure-ap.c:221
+#: src/amidi-plug/i_configure-ap.c:223
 msgid "Backend selection"
 msgstr "Motorraren hautapena"
 
-#: src/amidi-plug/i_configure-ap.c:225
+#: src/amidi-plug/i_configure-ap.c:227
 msgid "Available backends"
 msgstr "Motor erabilgarriak"
 
-#: src/amidi-plug/i_configure-ap.c:255
+#: src/amidi-plug/i_configure-ap.c:257
 msgid "Playback settings"
 msgstr "Erreprodukzioaren ezarpenak"
 
-#: src/amidi-plug/i_configure-ap.c:260
+#: src/amidi-plug/i_configure-ap.c:262
 msgid "Transpose: "
 msgstr "Irauli: "
 
-#: src/amidi-plug/i_configure-ap.c:269
+#: src/amidi-plug/i_configure-ap.c:271
 msgid "Drum shift: "
 msgstr "Perkusio-desplazamendua:"
 
-#: src/amidi-plug/i_configure-ap.c:287
+#: src/amidi-plug/i_configure-ap.c:289
 msgid "Advanced settings"
 msgstr "Ezarpen aurreratuak"
 
-#: src/amidi-plug/i_configure-ap.c:291
+#: src/amidi-plug/i_configure-ap.c:293
 msgid "pre-calculate length of MIDI files in playlist"
 msgstr "aurre-kalkulatu erreprodukzio-zerrendako MIDI fitxategien luzera"
 
-#: src/amidi-plug/i_configure-ap.c:296
+#: src/amidi-plug/i_configure-ap.c:298
 msgid "extract comments from MIDI file (if available)"
 msgstr "erauzi MIDI fitxategiko iruzkinak (egonez gero)"
 
-#: src/amidi-plug/i_configure-ap.c:301
+#: src/amidi-plug/i_configure-ap.c:303
 msgid "extract lyrics from MIDI file (if available)"
 msgstr "erauzi MIDI fitxategiko letrak (egonez gero)"
 
-#: src/amidi-plug/i_configure-ap.c:320
-msgid ""
-"* Backend selection *\n"
-"AMIDI-Plug works with backends, in a modular fashion; here you should select "
-"your backend; that is, the way MIDI events are going to be handled and "
-"played.\n"
-"If you have a hardware synthesizer on your audio card, and ALSA supports it, "
-"you'll want to use the ALSA backend. It can also be used with anything that "
-"provides an interface to the ALSA sequencer, including software synths or "
-"external devices.\n"
-"If you want to rely on a software synthesizer and/or want to pipe audio into "
-"effect and output plugins of the player you'll want to use the good "
-"FluidSynth backend.\n"
-"Press the info button to read specific information about each backend."
-msgstr ""
-"* Motorraren hautapena *\n"
-"AMIDI-Plug motorrekin lan egiten du , era modular batean. Hemen motorra "
-"hauta dezakezu: hau da, MIDI gertaerak nola kudeatu eta erreproduzituko "
-"diren modua.\n"
-"Hardware-sintetizadore bat badu audio-txartelak, eta ALSAk onartzen badu, "
-"ALSA motorra erabiltzea nahi izan dezakezu. ALSA sekuentziadorearen "
-"interfaze bat eskaintzen duen edozerrekin ere erabil daiteke, software-"
-"sintetizadorea edo kanpoko gailuak barne.\n"
-"Software-sintetizadorean oinarritzea nahi baduzu, edo eta audioa "
-"erreproduzitzailearen efektuetara eta irteerako pluginak kanalizatzea nahi "
-"baduzu, FluidSynth motor ona erabiltzea nahi izan dezakezu.\n"
-"Sakatu Informazioa botoia motor bakoitzari buruzko informazio zehatza "
-"irakurtzeko."
-
-#: src/amidi-plug/i_configure-ap.c:331
-#, fuzzy
-msgid ""
-"* Transpose function *\n"
-"This option allows you to play the midi file transposed in a different key, "
-"by shifting of the desired number of semitones all its notes (excepting "
-"those on midi channel 10, reserved for percussions). Especially useful if "
-"you wish to sing or play along with another instrument."
-msgstr ""
-"* Irauli funtzioa *\n"
-"Aukera honek MIDI fitxategia beste tekla desberdin batean iraulita "
-"erreproduzitzea baimentzen dizu, bere nota guztien nahi duzun semintonu "
-"kopurua desplazatuz (MIDIko 10. kanalekoak izan ezik, perkusioentzako "
-"gordeta baitago). Bereziki erabilgarria da beste instrumentu batekin abestea "
-"edo erreproduzitzea nahi baduzu."
-
-#: src/amidi-plug/i_configure-ap.c:337
-msgid ""
-"* Drumshift function *\n"
-"This option allows you to shift notes on midi channel 10 (the standard "
-"percussions channel) of the desired number of semitones. This results in "
-"different drumset and percussions being used during midi playback, so if you "
-"wish to enhance (or reduce, or alter) percussion sounds, try to play with "
-"this value."
-msgstr ""
-"* Perkusio-desplazamendua funtzioa *\n"
-"Aukera honek MIDIko 10. kanaleko notak nahi duzun semitonu kopurua "
-"desplazatzea uzten dizu. MIDI erreproduzitzean erabiltzen den bestelako "
-"perkusio multzo desberdin bat dakaer, eta honela perkusioen soinuak hobetu "
-"(edo gutxiagotu edo eraldatu) nahi badituzu, saiatu balio honekin "
-"erreproduzitzen."
-
-#: src/amidi-plug/i_configure-ap.c:344
-msgid ""
-"* Pre-calculate MIDI length *\n"
-"If this option is enabled, AMIDI-Plug will calculate the MIDI file length as "
-"soon as the player requests it, instead of doing that only when the MIDI "
-"file is being played. In example, MIDI length will be calculated straight "
-"after adding MIDI files in a playlist. Disable this option if you want "
-"faster playlist loading (when a lot of MIDI files are added), enable it to "
-"display more information in the playlist straight after loading."
-msgstr ""
-"* Aurre-kalkulatu MIDI luzera *\n"
-"Aukera hau gaituta egonez gero, 'AMIDI-Plug'-ek MIDI fitxategiaren luzera "
-"kalkula dezake erreproduzaileak eskatu bezain laster, MIDI fitxategia "
-"erreproduzitzen ari den bitartean egin ordez. Adibidez, MIDI fitxategiak "
-"erreprodukzio-zerrendari gehitu bezain laster kalkula daiteke MIDIaren "
-"luzera. Desgaitu aukera hau erreprodukzio-zerrenda azkarrago kargatzea nahi "
-"naduzu (MIDI fitxategi asko gehitzen direnean), gaitu ezazu kargatu bezain "
-"laster erreprodukzio-zerrendan informazio gehiago bistaratzeko."
-
-#: src/amidi-plug/i_configure-ap.c:353
-msgid ""
-"* Extract comments from MIDI files *\n"
-"Some MIDI files contain text comments (author, copyright, instrument notes, "
-"etc.). If this option is enabled, AMIDI-Plug will extract and display "
-"comments (if available) in the file information dialog."
-msgstr ""
-"* Erauzi iruzkinak MIDI fitxategietatik *\n"
-"MIDI fitxategi batzuk testu iruzkinak dituzte (egilea, copyright-a, "
-"instrumentuen oharrak, e.a.). Aukera hau gaitzen bada, AMIDI-Plug-ek "
-"iruzkinak (egonez gero) erauzi eta bistaratuko ditu fitxategiaren "
-"informazioaren elkarrizketa-koadroan."
-
-#: src/amidi-plug/i_configure-ap.c:358
-msgid ""
-"* Extract lyrics from MIDI files *\n"
-"Some MIDI files contain song lyrics. If this option is enabled, AMIDI-Plug "
-"will extract and display song lyrics (if available) in the file information "
-"dialog."
-msgstr ""
-"* Erauzi letrak MIDI fitxategietatik *\n"
-"MIDI fitxategi batzuk abestien letrak dituzte. Aukera hau gaitzen bada, "
-"AMIDI-Plug-ek iruzkinak (egonez gero) erauzi eta bistaratuko ditu "
-"fitxategiaren informazioaren elkarrizketa-koadroan."
-
-#: src/amidi-plug/i_configure-ap.c:375
+#: src/amidi-plug/i_configure-ap.c:333
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
@@ -937,235 +789,109 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:73
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug - select file"
 msgstr "AMIDI-Plug - hautatu fitxategia"
 
-#: src/amidi-plug/i_configure.c:126
+#: src/amidi-plug/i_configure.c:129
 msgid "AMIDI-Plug - configuration"
 msgstr "AMIDI-Plug - konfigurazioa"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:52
+#: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - hautatu SoundFont fitxategia"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:268
+#: src/amidi-plug/i_configure-fluidsynth.c:271
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
 msgstr "FluidSynth motorraren konfigurazioa"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:316
+#: src/amidi-plug/i_configure-fluidsynth.c:315
 msgid "SoundFont settings"
 msgstr "SoundFont ezarpenak"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:352
+#: src/amidi-plug/i_configure-fluidsynth.c:351
 msgid "Size (bytes)"
 msgstr "Tamaina (byte)"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:401
+#: src/amidi-plug/i_configure-fluidsynth.c:400
 msgid "Load SF on player start"
 msgstr "Kargatu SF erreproduzitzailea abiatzean"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:405
+#: src/amidi-plug/i_configure-fluidsynth.c:404
 msgid "Load SF on first midifile play"
 msgstr "Kargatu SF MIDI fitxategia lehenbizi erreproduzitzean"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:420
+#: src/amidi-plug/i_configure-fluidsynth.c:419
 msgid "Synthesizer settings"
 msgstr "Sintetizadorearen ezarpenak"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:429
+#: src/amidi-plug/i_configure-fluidsynth.c:428
 msgid "gain"
 msgstr "irabazia"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:435
-#: src/amidi-plug/i_configure-fluidsynth.c:463
-#: src/amidi-plug/i_configure-fluidsynth.c:491
-#: src/amidi-plug/i_configure-fluidsynth.c:522
+#: src/amidi-plug/i_configure-fluidsynth.c:434
+#: src/amidi-plug/i_configure-fluidsynth.c:462
+#: src/amidi-plug/i_configure-fluidsynth.c:490
+#: src/amidi-plug/i_configure-fluidsynth.c:521
 msgid "use default"
 msgstr "erabili lehenetsia"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:438
-#: src/amidi-plug/i_configure-fluidsynth.c:466
+#: src/amidi-plug/i_configure-fluidsynth.c:437
+#: src/amidi-plug/i_configure-fluidsynth.c:465
 msgid "value:"
 msgstr "balioa:"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:457
+#: src/amidi-plug/i_configure-fluidsynth.c:456
 msgid "poliphony"
 msgstr "polifonia"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:485
+#: src/amidi-plug/i_configure-fluidsynth.c:484
 msgid "reverb"
 msgstr "reverb"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:494
-#: src/amidi-plug/i_configure-fluidsynth.c:525
+#: src/amidi-plug/i_configure-fluidsynth.c:493
+#: src/amidi-plug/i_configure-fluidsynth.c:524
 msgid "yes"
 msgstr "bai"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:496
-#: src/amidi-plug/i_configure-fluidsynth.c:527
+#: src/amidi-plug/i_configure-fluidsynth.c:495
+#: src/amidi-plug/i_configure-fluidsynth.c:526
 msgid "no"
 msgstr "ez"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:516
+#: src/amidi-plug/i_configure-fluidsynth.c:515
 msgid "chorus"
 msgstr "chorus"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:547
+#: src/amidi-plug/i_configure-fluidsynth.c:546
 msgid "sample rate"
 msgstr "lagin-tasa"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:553
+#: src/amidi-plug/i_configure-fluidsynth.c:552
 msgid "22050 Hz "
 msgstr "22050 Hz "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:556
+#: src/amidi-plug/i_configure-fluidsynth.c:555
 msgid "44100 Hz "
 msgstr "44100 Hz "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:559
+#: src/amidi-plug/i_configure-fluidsynth.c:558
 msgid "96000 Hz "
 msgstr "96000 Hz "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:562
+#: src/amidi-plug/i_configure-fluidsynth.c:561
 msgid "custom "
 msgstr "pertsonalizatua "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:571
+#: src/amidi-plug/i_configure-fluidsynth.c:570
 msgid "Hz "
 msgstr "Hz "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:621
-msgid ""
-"* Select SoundFont files *\n"
-"In order to play MIDI with FluidSynth, you need to specify at least one "
-"valid SoundFont file here (use absolute paths). The loading order is from "
-"the top (first) to the bottom (last)."
-msgstr ""
-"* Hautatu SoundFont fitxategiak *\n"
-"MIDIa FluidSynth-ekin erreproduzitzeko, gutxienez SoundFont fitxategi bat "
-"zehaztu behar duzu hemen (erabili bide-izen absolutua). Kargatzeko ordena "
-"goitik (aurrenekoa) behera (azkena) da."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:626
-msgid ""
-"* Load SoundFont on player start *\n"
-"Depending on your system speed, SoundFont loading in FluidSynth will require "
-"up to a few seconds. This is a one-time task (the soundfont will stay loaded "
-"until it is changed or the backend is unloaded) that can be done at player "
-"start, or before the first MIDI file is played (the latter is a better "
-"choice if you don't use your player to listen MIDI files only)."
-msgstr ""
-"* Kargatu SoundFont erreproduzitzailea abiaraztean *\n"
-"Sistemaren abiaduraren arabera, FluidSynth-en SoundFont kargatzeak segundo "
-"gutxi batzuk beharko ditu. Aldi bateko zeregina da hau (soundfont kargatuta "
-"jarraituko du hura aldatu arte, edo motorra memoritik kendu arte) "
-"erreproduzitzailea abiaraztean edo aurreneko MIDI fitxategia erreproduzitu "
-"aurretik egin daitekeena (azkenengoa aukera soilik egokiagoa da ez baduzu "
-"erreproduzitzailerik erabiltzen MIDI fitxategiak entzuteko)."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:634
-msgid ""
-"* Load SoundFont on first midifile play *\n"
-"Depending on your system speed, SoundFont loading in FluidSynth will require "
-"up to a few seconds. This is a one-time task (the soundfont will stay loaded "
-"until it is changed or the backend is unloaded) that can be done at player "
-"start, or before the first MIDI file is played (the latter is a better "
-"choice if you don't use your player to listen MIDI files only)."
-msgstr ""
-"* Kargatu SoundFont aurreneko MIDI fitxategia erreproduzitzean *\n"
-"Sistemaren abiaduraren arabera, FluidSynth-en SoundFont kargatzeak segundo "
-"gutxi batzuk beharko ditu. Aldi bateko zeregina da hau (soundfont kargatuta "
-"jarraituko du hura aldatu arte, edo motorra memoritik kendu arte) "
-"erreproduzitzailea abiaraztean edo aurreneko MIDI fitxategia erreproduzitu "
-"aurretik egin daitekeena (azkenengoa aukera soilik egokiagoa da ez baduzu "
-"erreproduzitzailerik erabiltzen MIDI fitxategiak entzuteko)."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:642
-msgid ""
-"* Synthesizer gain *\n"
-"From FluidSynth docs: the gain is applied to the final or master output of "
-"the synthesizer; it is set to a low value by default to avoid the saturation "
-"of the output when random MIDI files are played."
-msgstr ""
-"* Sintetizadorearen irabazia *\n"
-"FluidSynth-en dokumentaziotik: sintetizadorearen amaierako irteerari edo "
-"irteera maisuari aplikatzen zaio irabazia; balio baxu batekin ezartzen da "
-"lehenetsi gisa irteeraren saturazioa saihesteko ausazko MIDI fitxategiak "
-"erreproduzitzen direnean."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:647
-msgid ""
-"* Synthesizer polyphony *\n"
-"From FluidSynth docs: the polyphony defines how many voices can be played in "
-"parallel; the number of voices is not necessarily equivalent to the number "
-"of notes played simultaneously; indeed, when a note is struck on a specific "
-"MIDI channel, the preset on that channel may create several voices, for "
-"example, one for the left audio channel and one for the right audio "
-"channels; the number of voices activated depends on the number of instrument "
-"zones that fall in the correspond to the velocity and key of the played note."
-msgstr ""
-"* Sintetizadorearen polifonia *\n"
-"FluidSynth-en dokumentaziotik: zenbat ahots paraleloki erreproduzi "
-"daitezkeen definitzen du polifoniak; ahots kopuruak ez dauka aldi berean "
-"erreproduzitutako noten kopuruarekin zer ikusirik derrigorrez; nota bat "
-"jotzen denean MIDI kanalean, kanal horretako aurrezarpenak hainbat ahots "
-"sortuko ditu, adibidez, bat ezkerreko audioaren kanalarentzako eta beste bat "
-"eskuinekoarentzako; aktibatutako ahots kopurua instrumentuen zona "
-"(erreproduzitutako notan eta abiaduran erortzen dena) kopuruaren mende dago."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:657
-#: src/amidi-plug/i_configure-fluidsynth.c:663
-msgid ""
-"* Synthesizer reverb *\n"
-"From FluidSynth docs: when set to \"yes\" the reverb effects module is "
-"activated; note that when the reverb module is active, the amount of signal "
-"sent to the reverb module depends on the \"reverb send\" generator defined "
-"in the SoundFont."
-msgstr ""
-"* Sintetizadorearen reverb-a *\n"
-"FluidSynth-en dokumentaziotik: \"bai\" ezartzean reverb efektuen moduloa "
-"aktibatzen da. Jakin ezazu reverb moduloa aktibo dagoenean, reverb moduloari "
-"bidaltzen zaizkion seinale kopurua SoundFont-en definitutako \"reverb bidali"
-"\" sortzailean mende dago."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:669
-#: src/amidi-plug/i_configure-fluidsynth.c:675
-msgid ""
-"* Synthesizer chorus *\n"
-"From FluidSynth docs: when set to \"yes\" the chorus effects module is "
-"activated; note that when the chorus module is active, the amount of signal "
-"sent to the chorus module depends on the \"chorus send\" generator defined "
-"in the SoundFont."
-msgstr ""
-"* Sintetizadorearen chorus-a *\n"
-"FluidSynth-en dokumentaziotik: \"bai\" bezala ezarritakoan chorus-en "
-"efektuen moduloa aktibatzen da. Jakin ezazu chorus moduloa aktibatuta "
-"dagoenean, chorus moduloari bidalitako seinu kopurua SoundFont-en "
-"definitutako \"chorus bidali\" sortzailean mende dago."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:681
-#: src/amidi-plug/i_configure-fluidsynth.c:685
-#: src/amidi-plug/i_configure-fluidsynth.c:689
-#: src/amidi-plug/i_configure-fluidsynth.c:693
-#, fuzzy
-msgid ""
-"* Synthesizer samplerate *\n"
-"The sample rate of the audio generated by the synthesizer. You can also "
-"specify a custom value in the interval 22050Hz-96000Hz."
-msgstr ""
-"* Sintetizadorearen lagin-tasa *\n"
-"Sintetizadoreak sortutako audioaren lagin-tasa. Balio pertsonalizatua ere "
-"zehaz dezakezu 22050Hz-96000Hz barrutian.\n"
-"OHARRA: buffer lehenetsiaren parametroak 44100Hz balioarekin ezarrita dago. "
-"Lagin-tasa aldatzean bufferraren parametroa egokitu behar da soinuaren "
-"kalitate ona lortzeko."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:701
+#: src/amidi-plug/i_configure-fluidsynth.c:623
 msgid "FluidSynth Backend not loaded or not available"
 msgstr "FluidSynth motorra ez da kargatu edo ez dago erabilgarri"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:720
+#: src/amidi-plug/i_configure-fluidsynth.c:642
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
@@ -1701,17 +1427,17 @@ msgstr ""
 msgid "Rescan"
 msgstr "Berreskaneatu CDa"
 
-#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:70
-#: src/gtkui/ui_manager.c:71 src/hotkey/gui.c:71 src/skins/ui_manager.c:169
+#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:67
+#: src/gtkui/ui_manager.c:68 src/hotkey/gui.c:72 src/skins/ui_manager.c:169
 #: src/skins/ui_manager.c:170
 msgid "Play"
 msgstr "Erreproduzitu"
 
-#: src/blur_scope/config.c:86
+#: src/blur_scope/config.c:73
 msgid "Blur Scope: Color selection"
 msgstr "Lausotu esparrua: kolore hautapena"
 
-#: src/blur_scope/config.c:96 src/jack/configure.c:111
+#: src/blur_scope/config.c:83 src/jack/configure.c:111
 msgid "Options:"
 msgstr "Aukerak:"
 
@@ -1813,73 +1539,73 @@ msgstr "Erreproduzitu"
 msgid "Add CD"
 msgstr "Gehitu CDa"
 
-#: src/compressor/plugin.c:66
+#: src/compressor/plugin.c:67
 #, fuzzy
 msgid "About Dynamic Range Compression Plugin"
 msgstr "Estra Estereo plugina"
 
-#: src/compressor/plugin.c:98
+#: src/compressor/plugin.c:99
 #, fuzzy
 msgid "Dynamic Range Compressor Preferences"
 msgstr "AudioKonpresioa hobespenak"
 
-#: src/compressor/plugin.c:110
+#: src/compressor/plugin.c:111
 #, fuzzy
 msgid "Center volume:"
 msgstr "Aldatu bolumena"
 
-#: src/compressor/plugin.c:123
+#: src/compressor/plugin.c:124
 msgid "Dynamic range:"
 msgstr ""
 
-#: src/console/configure.c:137
+#: src/console/configure.c:138
 #, fuzzy
 msgid "Game Console Music Decoder"
 msgstr "Kontsolako musika dekodetzailea"
 
-#: src/console/configure.c:171
+#: src/console/configure.c:172
 msgid "Bass:"
 msgstr "Baxua:"
 
-#: src/console/configure.c:175 src/console/configure.c:186
-#: src/console/configure.c:207
+#: src/console/configure.c:176 src/console/configure.c:187
+#: src/console/configure.c:208
 msgid "secs"
 msgstr "seg"
 
-#: src/console/configure.c:182
+#: src/console/configure.c:183
 msgid "Treble:"
 msgstr "Altua:"
 
-#: src/console/configure.c:203
+#: src/console/configure.c:204
 msgid "Default song length:"
 msgstr "Abestiaren luzera lehenetsia:"
 
-#: src/console/configure.c:209 src/modplug/gui/interface.cxx:269
+#: src/console/configure.c:210 src/modplug/gui/interface.cxx:269
 #: src/sid/xs_interface.c:666
 msgid "Resampling"
 msgstr "Birlagintzea"
 
-#: src/console/configure.c:215
+#: src/console/configure.c:216
 msgid "Enable audio resampling"
 msgstr "Gaitu audioa berriro lagintzea"
 
-#: src/console/configure.c:230
+#: src/console/configure.c:231
 msgid "Resampling rate:"
 msgstr "Birlagintze-tasa:"
 
-#: src/console/configure.c:245
+#: src/console/configure.c:246
 msgid "SPC"
 msgstr "SPC"
 
-#: src/console/configure.c:246
+#: src/console/configure.c:247
 msgid "Ignore length from SPC tags"
 msgstr "Ezikusi egin SPCko etiketetako luzerari"
 
-#: src/console/configure.c:247
+#: src/console/configure.c:248
 msgid "Increase reverb"
 msgstr "Handiagotu reverb-a"
 
-#: src/console/configure.c:272
+#: src/console/configure.c:273
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
@@ -1906,31 +1632,31 @@ msgstr ""
 "Audacious-entzako garapena: William Pitcock <nenolod@nenolod.net>, \n"
 "        Shay Green <gblargg@gmail.com>"
 
-#: src/crossfade/plugin.c:64
+#: src/crossfade/plugin.c:65
 #, fuzzy
 msgid "About Crossfade"
 msgstr "%s(r)i buruz"
 
-#: src/crossfade/plugin.c:96
+#: src/crossfade/plugin.c:97
 #, fuzzy
 msgid "Crossfade Preferences"
 msgstr "Hobespenak"
 
-#: src/crossfade/plugin.c:108
+#: src/crossfade/plugin.c:109
 msgid "Overlap (in seconds):"
 msgstr ""
 
-#: src/crossfade/plugin.c:141 src/crossfade/plugin.c:147
+#: src/crossfade/plugin.c:140 src/crossfade/plugin.c:146
 #, fuzzy
 msgid "Crossfade Error"
 msgstr "Scrobbler errorea"
 
-#: src/crossfade/plugin.c:141
+#: src/crossfade/plugin.c:140
 msgid ""
 "Crossfading failed because the songs had a different number of channels."
 msgstr ""
 
-#: src/crossfade/plugin.c:149
+#: src/crossfade/plugin.c:148
 msgid ""
 "Crossfading failed because the songs had different sample rates.\n"
 "\n"
@@ -1938,20 +1664,24 @@ msgid ""
 "same rate."
 msgstr ""
 
-#: src/crystalizer/crystalizer.c:111
+#: src/crystalizer/crystalizer.c:112
 msgid "Configure Crystalizer"
 msgstr "Konfiguratu Crystalizer"
 
-#: src/crystalizer/crystalizer.c:113 src/stereo_plugin/stereo.c:108
+#: src/crystalizer/crystalizer.c:114 src/stereo_plugin/stereo.c:108
 msgid "Effect intensity:"
 msgstr "Efektuaren intentsitatea:"
 
-#: src/crystalizer/crystalizer.c:150 src/echo_plugin/gui.c:139
-#: src/modplug/gui/interface.cxx:709 src/stereo_plugin/stereo.c:145
+#: src/crystalizer/crystalizer.c:148 src/echo_plugin/gui.c:136
+#: src/modplug/gui/interface.cxx:709 src/stereo_plugin/stereo.c:142
 msgid "Apply"
 msgstr "Aplikatu"
 
-#: src/echo_plugin/gui.c:14
+#: src/daemon/daemon.c:58
+msgid "Daemon Interface (like old headless mode)"
+msgstr ""
+
+#: src/echo_plugin/gui.c:15
 msgid ""
 "Echo Plugin\n"
 "By Johan Levin 1999.\n"
@@ -1963,23 +1693,23 @@ msgstr ""
 "\n"
 "Surround-aren ohiartzuna Carl van Schaik 1999"
 
-#: src/echo_plugin/gui.c:26
+#: src/echo_plugin/gui.c:27
 msgid "About Echo Plugin"
 msgstr "Echo pluginari buruz"
 
-#: src/echo_plugin/gui.c:71
+#: src/echo_plugin/gui.c:72
 msgid "Configure Echo"
 msgstr "Konfiguratu Echo"
 
-#: src/echo_plugin/gui.c:84
+#: src/echo_plugin/gui.c:88
 msgid "Delay: (ms)"
 msgstr "Atzerapena (ms): "
 
-#: src/echo_plugin/gui.c:89
+#: src/echo_plugin/gui.c:93
 msgid "Feedback: (%)"
 msgstr "Berrelikadura (%): "
 
-#: src/echo_plugin/gui.c:94
+#: src/echo_plugin/gui.c:98
 msgid "Volume: (%)"
 msgstr "Bolumena (%):"
 
@@ -2269,7 +1999,7 @@ msgstr "EvDev-Plug - Konfigurazioa"
 msgid "Active"
 msgstr "Aktibo"
 
-#: src/evdev-plug/ed_ui.c:655 src/sun/configure.c:486
+#: src/evdev-plug/ed_ui.c:655
 msgid "Status"
 msgstr "Egoera"
 
@@ -2345,7 +2075,7 @@ msgstr ""
 "\n"
 "garatzailea: Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:669
+#: src/ffaudio/ffaudio-core.c:668
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2359,16 +2089,16 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:682
+#: src/ffaudio/ffaudio-core.c:681
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "FLAC audioaren pluginari buruz"
 
-#: src/filewriter/filewriter.c:179
+#: src/filewriter/filewriter.c:155
 msgid "About FileWriter-Plugin"
 msgstr "FileWriter-pluginari buruz"
 
-#: src/filewriter/filewriter.c:180
+#: src/filewriter/filewriter.c:156
 #, fuzzy
 msgid ""
 "FileWriter-Plugin\n"
@@ -2405,250 +2135,201 @@ msgstr ""
 "02110-1301,\n"
 "USA."
 
-#: src/filewriter/filewriter.c:460
+#: src/filewriter/filewriter.c:444
 msgid "File Writer Configuration"
 msgstr "FileWriter konfigurazioa"
 
-#: src/filewriter/filewriter.c:472
+#: src/filewriter/filewriter.c:456
 msgid "Output file format:"
 msgstr "Irteerako fitxategi-formatua:"
 
-#: src/filewriter/filewriter.c:490 src/ladspa/ladspa.c:1070
+#: src/filewriter/filewriter.c:474 src/ladspa/ladspa.c:1078
 msgid "Configure"
 msgstr "Konfiguratu"
 
-#: src/filewriter/filewriter.c:505
+#: src/filewriter/filewriter.c:489
 msgid "Save into original directory"
 msgstr "Gorde jatorrizko direktorioan"
 
-#: src/filewriter/filewriter.c:510
+#: src/filewriter/filewriter.c:494
 msgid "Save into custom directory"
 msgstr "Gorde direktorio pertsonalizatuan"
 
-#: src/filewriter/filewriter.c:522
+#: src/filewriter/filewriter.c:504
 msgid "Output file folder:"
 msgstr "Irteerako fitxategiaren karpeta:"
 
-#: src/filewriter/filewriter.c:526
+#: src/filewriter/filewriter.c:508
 msgid "Pick a folder"
 msgstr "Hautatu karpeta"
 
-#: src/filewriter/filewriter.c:545
+#: src/filewriter/filewriter.c:527
 msgid "Get filename from:"
 msgstr "Lortu fitxategi-izena hemendik:"
 
-#: src/filewriter/filewriter.c:548
+#: src/filewriter/filewriter.c:530
 msgid "original file tags"
 msgstr "jatorrizko fitxategi-etiketak"
 
-#: src/filewriter/filewriter.c:554
+#: src/filewriter/filewriter.c:536
 msgid "original filename"
 msgstr "jatorrizko fitxategi-izena"
 
-#: src/filewriter/filewriter.c:564
+#: src/filewriter/filewriter.c:546
 msgid "Don't strip file name extension"
 msgstr "Ez kendu fitxategi-izenaren luzapena"
 
-#: src/filewriter/filewriter.c:568
-msgid ""
-"If enabled, the extension from the original filename will not be stripped "
-"before adding the new file extension to the end."
-msgstr ""
-"Gaituta badago, jatorrizko fitxategi-izenaren luzapena ez da kenduko "
-"fitxategiaren luzapen berria amaieran gehitu aurretik."
-
-#: src/filewriter/filewriter.c:582
+#: src/filewriter/filewriter.c:561
 msgid "Prepend track number to filename"
 msgstr "Jarri pistaren zenbakia fitxategi-izenaren aurretik"
 
-#: src/filewriter/mp3.c:710
+#: src/filewriter/mp3.c:38 src/filewriter/mp3.c:783
+msgid "Auto"
+msgstr "Automatikoa"
+
+#: src/filewriter/mp3.c:38
+#, fuzzy
+msgid "Joint Stereo"
+msgstr "Estereo-lotura"
+
+#: src/filewriter/mp3.c:724
 msgid "MP3 Configuration"
 msgstr "MP3 konfigurazioa"
 
-#: src/filewriter/mp3.c:737
+#: src/filewriter/mp3.c:747
 msgid "Algorithm Quality:"
 msgstr "Algoritmoaren kalitatea:"
 
-#: src/filewriter/mp3.c:759
-msgid ""
-"best/slowest:0;\n"
-"worst/fastest:9;\n"
-"recommended:2;\n"
-"default:5;"
-msgstr ""
-"onena/motelena:0;\n"
-"txarrena/azkarrena:9;\n"
-"gomendatua:2;\n"
-"lehenetsia:5;"
-
-#: src/filewriter/mp3.c:767
+#: src/filewriter/mp3.c:772
 msgid "Output Samplerate:"
 msgstr "Irteerako lagin-tasa:"
-
-#: src/filewriter/mp3.c:778 src/filewriter/mp3.c:919
-msgid "Auto"
-msgstr "Automatikoa"
 
 #: src/filewriter/mp3.c:800
 msgid "(Hz)"
 msgstr "(Hz)"
 
-#: src/filewriter/mp3.c:812
+#: src/filewriter/mp3.c:807
 msgid "Bitrate / Compression ratio:"
 msgstr "Bit-tasa / Konpresio-tasa:"
 
-#: src/filewriter/mp3.c:838
+#: src/filewriter/mp3.c:831
 msgid "Bitrate (kbps):"
 msgstr "Bit-tasa (kbps):"
 
-#: src/filewriter/mp3.c:879
+#: src/filewriter/mp3.c:864
 msgid "Compression ratio:"
 msgstr "Konpresio-tasa:"
 
-#: src/filewriter/mp3.c:909
+#: src/filewriter/mp3.c:888
 msgid "Audio Mode:"
 msgstr "Audio modua:"
 
-#: src/filewriter/mp3.c:924
-msgid "Joint-Stereo"
-msgstr "Estereo-lotura"
-
-#: src/filewriter/mp3.c:967
+#: src/filewriter/mp3.c:913
 msgid "Misc:"
 msgstr "Hainbat:"
 
-#: src/filewriter/mp3.c:978
+#: src/filewriter/mp3.c:924
 msgid "Enforce strict ISO complience"
 msgstr "Derrigortu ISOa betetzen duela"
 
-#: src/filewriter/mp3.c:989
+#: src/filewriter/mp3.c:935
 msgid "Error protection"
 msgstr "Erroreen aurkako babesa"
 
-#: src/filewriter/mp3.c:1001
-msgid "Adds 16 bit checksum to every frame"
-msgstr "Gehitu 16 bit-eko kontrol-batura bilbe bakoitzari"
-
-#: src/filewriter/mp3.c:1006 src/filewriter/vorbis.c:247
+#: src/filewriter/mp3.c:947 src/filewriter/vorbis.c:245
 #: src/modplug/gui/interface.cxx:320
 msgid "Quality"
 msgstr "Kalitatea"
 
-#: src/filewriter/mp3.c:1018
+#: src/filewriter/mp3.c:957
 msgid "Enable VBR/ABR"
 msgstr "Gaitu VBR/ABR"
 
-#: src/filewriter/mp3.c:1030
+#: src/filewriter/mp3.c:967
 msgid "Type:"
 msgstr "Mota:"
 
-#: src/filewriter/mp3.c:1041
-msgid "Variable bitrate"
-msgstr "Bit-tasa aldagarria (VBR)"
-
-#: src/filewriter/mp3.c:1053
-msgid "Average bitrate"
-msgstr "Batez besteko bit-tasa"
-
-#: src/filewriter/mp3.c:1067
+#: src/filewriter/mp3.c:1000
 msgid "VBR Options:"
 msgstr "VBR aukerak:"
 
-#: src/filewriter/mp3.c:1083
+#: src/filewriter/mp3.c:1016
 msgid "Minimum bitrate (kbps):"
 msgstr "Gutxieneko bit-tasa (kbps):"
 
-#: src/filewriter/mp3.c:1119
+#: src/filewriter/mp3.c:1043
 msgid "Maximum bitrate (kbps):"
 msgstr "Gehienezko bit-tasa (kbps):"
 
-#: src/filewriter/mp3.c:1151
+#: src/filewriter/mp3.c:1066
 msgid "Strictly enforce minimum bitrate"
 msgstr "Derrigortu gutxieneko bit-tasa"
 
-#: src/filewriter/mp3.c:1153
-msgid ""
-"For use with players that do not support low bitrate mp3 (Apex AD600-A DVD/"
-"mp3 player)"
-msgstr ""
-"MP3ren bit-tasa baxua onartzen ez duten erreproduzitzaileetan erabiltzeko "
-"(Apex AD600-A DVD/ mp3 erreproduzigailua)"
-
-#: src/filewriter/mp3.c:1166
+#: src/filewriter/mp3.c:1078
 msgid "ABR Options:"
 msgstr "ABR aukerak:"
 
-#: src/filewriter/mp3.c:1176
+#: src/filewriter/mp3.c:1088
 msgid "Average bitrate (kbps):"
 msgstr "Batez besteko bit-tasa (kbps):"
 
-#: src/filewriter/mp3.c:1213
+#: src/filewriter/mp3.c:1116
 msgid "VBR quality level:"
 msgstr "VBR kalitate-maila:"
 
-#: src/filewriter/mp3.c:1228
-msgid ""
-"highest:0;\n"
-"lowest:9;\n"
-"default:4;"
-msgstr ""
-"altuena:0;\n"
-"baxuena:9;\n"
-"lehenetsia:4;"
-
-#: src/filewriter/mp3.c:1236
+#: src/filewriter/mp3.c:1135
 msgid "Don't write Xing VBR header"
 msgstr "Ez idatzi Xing VBR goiburukoa"
 
-#: src/filewriter/mp3.c:1250
+#: src/filewriter/mp3.c:1149
 msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
-#: src/filewriter/mp3.c:1262
+#: src/filewriter/mp3.c:1159
 msgid "Frame params:"
 msgstr "Bilbearen parametroak:"
 
-#: src/filewriter/mp3.c:1274
+#: src/filewriter/mp3.c:1171
 msgid "Mark as copyright"
 msgstr "Markatu copyright gisa"
 
-#: src/filewriter/mp3.c:1285
+#: src/filewriter/mp3.c:1182
 msgid "Mark as original"
 msgstr "Markatu jatorrizko gisa"
 
-#: src/filewriter/mp3.c:1297
+#: src/filewriter/mp3.c:1194
 msgid "ID3 params:"
 msgstr "ID3 parametroak:"
 
-#: src/filewriter/mp3.c:1308
+#: src/filewriter/mp3.c:1205
 msgid "Force addition of version 2 tag"
 msgstr "Derrigortu v2 etiketa gehitzea"
 
-#: src/filewriter/mp3.c:1318
+#: src/filewriter/mp3.c:1215
 msgid "Only add v1 tag"
 msgstr "Gehitu v1 etiketa soilik"
 
-#: src/filewriter/mp3.c:1325
+#: src/filewriter/mp3.c:1222
 msgid "Only add v2 tag"
 msgstr "Gehitu v2 etiketa soilik"
 
-#: src/filewriter/mp3.c:1346
+#: src/filewriter/mp3.c:1243
 msgid "Tags"
 msgstr "Etiketak"
 
-#: src/filewriter/vorbis.c:240
+#: src/filewriter/vorbis.c:238
 msgid "Vorbis Encoder Configuration"
 msgstr "Vorbis kodetzailearen konfigurazioa"
 
-#: src/filewriter/vorbis.c:260
+#: src/filewriter/vorbis.c:258
 msgid "Quality level (0 - 10):"
 msgstr "Kalitate maila (0 - 10):"
 
-#: src/flacng/plugin.c:393
+#: src/flacng/plugin.c:379
 msgid "About FLAC Audio Plugin"
 msgstr "FLAC audioaren pluginari buruz"
 
-#: src/flacng/plugin.c:394
+#: src/flacng/plugin.c:380
 msgid ""
 "\n"
 "\n"
@@ -2700,43 +2381,136 @@ msgstr "Audacious"
 msgid "gnt interface"
 msgstr ""
 
-#: src/gtkui/actions.c:250 src/skins/ui_main.c:820
+#: src/gtkui/actions.c:254 src/skins/ui_main.c:820
 msgid "Can't jump to time when no track is being played.\n"
 msgstr "Ezin da denboran jauzirik egin pista ez denean erreproduzitzen ari.\n"
 
-#: src/gtkui/actions.c:265 src/gtkui/ui_manager.c:224
-#: src/gtkui/ui_manager.c:225 src/skins/ui_main.c:835
+#: src/gtkui/actions.c:269 src/gtkui/ui_manager.c:223
+#: src/gtkui/ui_manager.c:224 src/skins/ui_main.c:835
 #: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Jump to Time"
 msgstr "Jauzi denborara"
 
-#: src/gtkui/actions.c:282 src/skins/ui_main.c:856
+#: src/gtkui/actions.c:286 src/skins/ui_main.c:856
 msgid "minutes:seconds"
 msgstr "minutu:segundo"
 
-#: src/gtkui/actions.c:292 src/skins/ui_main.c:866
+#: src/gtkui/actions.c:296 src/skins/ui_main.c:866
 msgid "Track length:"
 msgstr "Pistaren luzera:"
 
-#: src/gtkui/actions.c:530 src/skins/ui_playlist.c:648
+#: src/gtkui/actions.c:534 src/skins/ui_playlist.c:648
 #, c-format
 msgid "Error writing playlist \"%s\": %s"
 msgstr "Errorea \"%s\" erreprodukzio-zerrenda idaztean: %s"
 
-#: src/gtkui/actions.c:545 src/skins/ui_playlist.c:670
+#: src/gtkui/actions.c:549 src/skins/ui_playlist.c:670
 #, c-format
 msgid "%s already exist. Continue?"
 msgstr "%s badago lehendik ere. Jarraitu?"
 
-#: src/gtkui/actions.c:571 src/skins/ui_manager.c:216
+#: src/gtkui/actions.c:575 src/skins/ui_manager.c:216
 #, fuzzy
 msgid "Export Playlist"
 msgstr "Kargatu erreprodukzio-zerrenda"
 
-#: src/gtkui/actions.c:643 src/skins/ui_manager.c:213
+#: src/gtkui/actions.c:647 src/skins/ui_manager.c:213
 #, fuzzy
 msgid "Import Playlist"
 msgstr "Kargatu erreprodukzio-zerrenda"
+
+#: src/gtkui/columns.c:36
+#, fuzzy
+msgid "Entry number"
+msgstr "Pista zenbakia:"
+
+#: src/gtkui/columns.c:36 src/sid/xs_interface.c:1103
+msgid "Title"
+msgstr "Titulua"
+
+#: src/gtkui/columns.c:37
+#, fuzzy
+msgid "Artist"
+msgstr "Artista:"
+
+#: src/gtkui/columns.c:37
+#, fuzzy
+msgid "Year"
+msgstr "Urtea:"
+
+#: src/gtkui/columns.c:37
+#, fuzzy
+msgid "Album"
+msgstr "Albuma: "
+
+#: src/gtkui/columns.c:37
+#, fuzzy
+msgid "Track"
+msgstr "Pista:"
+
+#: src/gtkui/columns.c:37
+#, fuzzy
+msgid "Queue position"
+msgstr "Posizioa"
+
+#: src/gtkui/columns.c:38
+#, fuzzy
+msgid "Length"
+msgstr "Abestiaren luzera"
+
+#: src/gtkui/columns.c:38
+#, fuzzy
+msgid "File path"
+msgstr "Fitxategi-izenaren arabera"
+
+#: src/gtkui/columns.c:38
+#, fuzzy
+msgid "File name"
+msgstr "Fitxategi-Izena"
+
+#: src/gtkui/columns.c:38
+#, fuzzy
+msgid "Custom title"
+msgstr "Azal pertsonalizatua"
+
+#: src/gtkui/columns.c:284
+#, fuzzy
+msgid "Choose Columns"
+msgstr "Erakutsi erreproduzitzailea"
+
+#: src/gtkui/columns.c:298
+#, fuzzy
+msgid "Available:"
+msgstr "aldagaia"
+
+#: src/gtkui/columns.c:332
+msgid "Chosen:"
+msgstr ""
+
+#: src/gtkui/layout.c:122
+msgid "Dock at Left"
+msgstr ""
+
+#: src/gtkui/layout.c:122
+msgid "Dock at Right"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+msgid "Dock at Top"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+msgid "Dock at Bottom"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+msgid "Undock"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+#, fuzzy
+msgid "Disable"
+msgstr "aldagaia"
 
 #: src/gtkui/ui_gtk.c:79
 msgid "GTK Interface"
@@ -2772,382 +2546,377 @@ msgid "No Playlist Advance"
 msgstr "Erreprodukzio-zerrenda aurreraturik ez"
 
 #: src/gtkui/ui_manager.c:49
-#, fuzzy
-msgid "Show playlists"
-msgstr "Erakutsi erreprodukzio-zerrendaren editorea"
-
-#: src/gtkui/ui_manager.c:50
-#, fuzzy
-msgid "Show/hide playlists"
-msgstr "Kargatu erreprodukzio-zerrenda"
-
-#: src/gtkui/ui_manager.c:52
 msgid "Show infoarea"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:53
+#: src/gtkui/ui_manager.c:50
 msgid "Show/hide infoarea"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:55
+#: src/gtkui/ui_manager.c:52
 #, fuzzy
 msgid "Show main menu"
 msgstr "Erakutsi erreproduzitzaile nagusiaren leihoa"
 
-#: src/gtkui/ui_manager.c:56
+#: src/gtkui/ui_manager.c:53
 msgid "Show/hide main menu"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:58
+#: src/gtkui/ui_manager.c:55
 #, fuzzy
 msgid "Show statusbar"
 msgstr "Egoera"
 
-#: src/gtkui/ui_manager.c:59
+#: src/gtkui/ui_manager.c:56
 #, fuzzy
 msgid "Show/hide statusbar"
 msgstr "Kargatu erreprodukzio-zerrenda"
 
-#: src/gtkui/ui_manager.c:61
+#: src/gtkui/ui_manager.c:58
 #, fuzzy
 msgid "Show Column Headers"
 msgstr "Erakutsi erreproduzitzailea"
 
-#: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74
+#: src/gtkui/ui_manager.c:70 src/gtkui/ui_manager.c:71
 #: src/skins/ui_manager.c:172 src/skins/ui_manager.c:173
 msgid "Pause"
 msgstr "Pausatu"
 
-#: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77 src/hotkey/gui.c:73
+#: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74 src/hotkey/gui.c:74
 #: src/skins/ui_manager.c:175 src/skins/ui_manager.c:176
 msgid "Stop"
 msgstr "Gelditu"
 
-#: src/gtkui/ui_manager.c:79 src/gtkui/ui_manager.c:80
+#: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77
 #: src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
 msgid "Previous"
 msgstr "Aurrekoa"
 
-#: src/gtkui/ui_manager.c:82 src/gtkui/ui_manager.c:83
+#: src/gtkui/ui_manager.c:79 src/gtkui/ui_manager.c:80
 #: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
 msgid "Next"
 msgstr "Hurrengoa"
 
-#: src/gtkui/ui_manager.c:88 src/skins/ui_manager.c:199
+#: src/gtkui/ui_manager.c:85 src/skins/ui_manager.c:199
 msgid "Playlist"
 msgstr "Erreprodukzio-zerrenda"
 
-#: src/gtkui/ui_manager.c:90 src/gtkui/ui_manager.c:91
+#: src/gtkui/ui_manager.c:87 src/gtkui/ui_manager.c:88
 #: src/skins/ui_manager.c:201 src/skins/ui_manager.c:202
 msgid "New Playlist"
 msgstr "Erreprodukzio-zerrenda berria"
 
-#: src/gtkui/ui_manager.c:93 src/gtkui/ui_manager.c:94
+#: src/gtkui/ui_manager.c:90 src/gtkui/ui_manager.c:91
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 msgid "Delete Playlist"
 msgstr "Ezabatu erreprodukzio-zerrenda"
 
-#: src/gtkui/ui_manager.c:96
+#: src/gtkui/ui_manager.c:93
 #, fuzzy
 msgid "Import Playlist ..."
 msgstr "Kargatu erreprodukzio-zerrenda"
 
-#: src/gtkui/ui_manager.c:97 src/skins/ui_manager.c:214
+#: src/gtkui/ui_manager.c:94 src/skins/ui_manager.c:214
 msgid "Loads a playlist file into the selected playlist."
 msgstr ""
 "Erreprodukzio-zerrendaren fitxategia kargatzen du hautatutako erreprodukzio-"
 "zerrendan."
 
-#: src/gtkui/ui_manager.c:99
+#: src/gtkui/ui_manager.c:96
 #, fuzzy
 msgid "Export Playlist ..."
 msgstr "Kargatu erreprodukzio-zerrenda"
 
-#: src/gtkui/ui_manager.c:100 src/skins/ui_manager.c:217
+#: src/gtkui/ui_manager.c:97 src/skins/ui_manager.c:217
 msgid "Saves the selected playlist."
 msgstr "Hautatutako erreprodukzio-zerrenda gordetzen du"
 
-#: src/gtkui/ui_manager.c:102 src/skins/ui_manager.c:219
+#: src/gtkui/ui_manager.c:99 src/skins/ui_manager.c:219
 #, fuzzy
 msgid "Save All Playlists"
 msgstr "Gorde erreprodukzio-zerrenda"
 
-#: src/gtkui/ui_manager.c:103 src/skins/ui_manager.c:220
+#: src/gtkui/ui_manager.c:100 src/skins/ui_manager.c:220
 msgid ""
 "Saves all the playlists that are open. Note that this is done automatically "
 "when Audacious quits."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:107
+#: src/gtkui/ui_manager.c:104
 #, fuzzy
 msgid "Refresh"
 msgstr "Freskatu tasa"
 
-#: src/gtkui/ui_manager.c:108 src/skins/ui_manager.c:225
+#: src/gtkui/ui_manager.c:105 src/skins/ui_manager.c:225
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr ""
 "Erreprodukzio-zerrendako sarrera bati esleituta dagoen metadatuak freskatzen "
 "ditu."
 
-#: src/gtkui/ui_manager.c:111
+#: src/gtkui/ui_manager.c:108
 #, fuzzy
 msgid "Refresh Selected"
 msgstr "Kendu hautatutakoak"
 
-#: src/gtkui/ui_manager.c:112
+#: src/gtkui/ui_manager.c:109
 #, fuzzy
 msgid "Refreshes metadata associated with selected entries."
 msgstr ""
 "Erreprodukzio-zerrendako sarrera bati esleituta dagoen metadatuak freskatzen "
 "ditu."
 
-#: src/gtkui/ui_manager.c:116
+#: src/gtkui/ui_manager.c:113
 #, fuzzy
 msgid "Playlist Manager"
 msgstr "Zerrenda-kudeatzailea"
 
-#: src/gtkui/ui_manager.c:117 src/skins/ui_manager.c:229
+#: src/gtkui/ui_manager.c:114 src/skins/ui_manager.c:229
 msgid "Opens the playlist manager."
 msgstr "Erreprodukzio-zerrenden kudeatzailea irekitzen du."
 
-#: src/gtkui/ui_manager.c:120
+#: src/gtkui/ui_manager.c:117
 #, fuzzy
 msgid "Add URL ..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/gtkui/ui_manager.c:121 src/skins/ui_manager.c:239
+#: src/gtkui/ui_manager.c:118 src/skins/ui_manager.c:239
 msgid "Adds a remote track to the playlist."
 msgstr "Gehitu urruneko pista erreprodukzio-zerrendari."
 
-#: src/gtkui/ui_manager.c:124
+#: src/gtkui/ui_manager.c:121
 #, fuzzy
 msgid "Add Files ..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/gtkui/ui_manager.c:125 src/skins/ui_manager.c:243
+#: src/gtkui/ui_manager.c:122 src/skins/ui_manager.c:243
 msgid "Adds files to the playlist."
 msgstr "Gehitu fitxategiak erreprodukzio-zerrendari."
 
-#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:266
+#: src/gtkui/ui_manager.c:125 src/skins/ui_manager.c:266
 msgid "Remove All"
 msgstr "Kendu guztiak"
 
-#: src/gtkui/ui_manager.c:129 src/skins/ui_manager.c:267
+#: src/gtkui/ui_manager.c:126 src/skins/ui_manager.c:267
 msgid "Removes all entries from the playlist."
 msgstr "Sarrera guztiak kentzen ditu erreprodukzio-zerrendatik"
 
-#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:292
+#: src/gtkui/ui_manager.c:129 src/skins/ui_manager.c:292
 msgid "Remove Unselected"
 msgstr "Kendu desautatutakoak"
 
-#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:293
+#: src/gtkui/ui_manager.c:130 src/skins/ui_manager.c:293
 msgid "Remove unselected entries from the playlist."
 msgstr "Desautatutako sarrerak kentzen ditu erreprodukzio-zerrendatik."
 
-#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:296
+#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:296
 msgid "Remove Selected"
 msgstr "Kendu hautatutakoak"
 
-#: src/gtkui/ui_manager.c:137 src/skins/ui_manager.c:297
+#: src/gtkui/ui_manager.c:134 src/skins/ui_manager.c:297
 msgid "Remove selected entries from the playlist."
 msgstr "Hautatutako sarrerak kentzen ditu erreprodukzio-zerrendatik."
 
-#: src/gtkui/ui_manager.c:140
+#: src/gtkui/ui_manager.c:137
 msgid "Edit title"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:141
+#: src/gtkui/ui_manager.c:138
 #, fuzzy
 msgid "Edites the playlist title."
 msgstr "Nahastu ausaz erreprodukzio-zerrenda"
 
-#: src/gtkui/ui_manager.c:144
+#: src/gtkui/ui_manager.c:141
 msgid "Choose Columns ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:147
+#: src/gtkui/ui_manager.c:144
 #, fuzzy
 msgid "Sort"
 msgstr "Ataka"
 
-#: src/gtkui/ui_manager.c:148 src/skins/ui_manager.c:336
+#: src/gtkui/ui_manager.c:145 src/skins/ui_manager.c:336
 #: src/skins/ui_manager.c:366
 msgid "By Track Number"
 msgstr "Pista zenbakiaren arabera"
 
-#: src/gtkui/ui_manager.c:150 src/skins/ui_manager.c:280
+#: src/gtkui/ui_manager.c:147 src/skins/ui_manager.c:280
 #: src/skins/ui_manager.c:312 src/skins/ui_manager.c:342
 msgid "By Title"
 msgstr "Tituluaren arabera"
 
-#: src/gtkui/ui_manager.c:152 src/skins/ui_manager.c:320
+#: src/gtkui/ui_manager.c:149 src/skins/ui_manager.c:320
 #: src/skins/ui_manager.c:350
 msgid "By Artist"
 msgstr "Artistaren arabera"
 
-#: src/gtkui/ui_manager.c:154 src/skins/ui_manager.c:316
+#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:316
 #: src/skins/ui_manager.c:346
 #, fuzzy
 msgid "By Album"
 msgstr "Albuma:"
 
-#: src/gtkui/ui_manager.c:156
+#: src/gtkui/ui_manager.c:153
+#, fuzzy
+msgid "By Release Date"
+msgstr "Dataren arabera"
+
+#: src/gtkui/ui_manager.c:155
 #, fuzzy
 msgid "By File Path"
 msgstr "Fitxategi-izenaren arabera"
 
-#: src/gtkui/ui_manager.c:158
+#: src/gtkui/ui_manager.c:157
 #, fuzzy
 msgid "By Formatted Title"
 msgstr "Tituluaren arabera"
 
-#: src/gtkui/ui_manager.c:160
+#: src/gtkui/ui_manager.c:159
 #, fuzzy
 msgid "Reverse Order"
 msgstr "Alderantzikatu zerrenda"
 
-#: src/gtkui/ui_manager.c:162
+#: src/gtkui/ui_manager.c:161
 #, fuzzy
 msgid "Random Order"
 msgstr "_Ausazkoa"
 
-#: src/gtkui/ui_manager.c:167
+#: src/gtkui/ui_manager.c:166
 msgid "Output"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:169 src/modplug/gui/interface.cxx:572
+#: src/gtkui/ui_manager.c:168 src/modplug/gui/interface.cxx:572
 msgid "Effects"
 msgstr "Efektuak"
 
-#: src/gtkui/ui_manager.c:171
+#: src/gtkui/ui_manager.c:170
 #, fuzzy
 msgid "Equalizer"
 msgstr "Erakutsi ekualizadorea"
 
-#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:234
+#: src/gtkui/ui_manager.c:175 src/skins/ui_manager.c:234
 msgid "View"
 msgstr "Ikusi"
 
-#: src/gtkui/ui_manager.c:177 src/skins/ui_manager.c:235
+#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:235
 msgid "Interface"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:184 src/skins/ui_manager.c:376
+#: src/gtkui/ui_manager.c:183 src/skins/ui_manager.c:376
 msgid "File"
 msgstr "Fitxategia"
 
-#: src/gtkui/ui_manager.c:187
+#: src/gtkui/ui_manager.c:186
 #, fuzzy
 msgid "Components"
 msgstr "Konpositorea:"
 
-#: src/gtkui/ui_manager.c:189 src/gtkui/ui_manager.c:192
+#: src/gtkui/ui_manager.c:188 src/gtkui/ui_manager.c:191
 #: src/skins/ui_manager.c:381 src/skins/ui_manager.c:384
 msgid "View Track Details"
 msgstr "Ikusi pistaren xehetasunak"
 
-#: src/gtkui/ui_manager.c:190 src/gtkui/ui_manager.c:193
+#: src/gtkui/ui_manager.c:189 src/gtkui/ui_manager.c:192
 #: src/skins/ui_manager.c:382 src/skins/ui_manager.c:385
 msgid "View track details"
 msgstr "Ikusi pistaren xehetasunak"
 
-#: src/gtkui/ui_manager.c:195 src/gtkui/ui_manager.c:196
+#: src/gtkui/ui_manager.c:194 src/gtkui/ui_manager.c:195
 #: src/skins/ui_manager.c:387 src/skins/ui_manager.c:388
 msgid "About Audacious"
 msgstr "Audacious-i buruz"
 
-#: src/gtkui/ui_manager.c:198
+#: src/gtkui/ui_manager.c:197
 #, fuzzy
 msgid "Open Files ..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/gtkui/ui_manager.c:199 src/skins/ui_manager.c:391
+#: src/gtkui/ui_manager.c:198 src/skins/ui_manager.c:391
 msgid "Load and play a file"
 msgstr "Kargatu eta erreproduzitu fitxategi bat"
 
-#: src/gtkui/ui_manager.c:201
+#: src/gtkui/ui_manager.c:200
 msgid "Open URL ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:202 src/skins/ui_manager.c:394
+#: src/gtkui/ui_manager.c:201 src/skins/ui_manager.c:394
 msgid "Play media from the selected location"
 msgstr "Erreproduzitu multimedia hautatutako kokalekutik"
 
-#: src/gtkui/ui_manager.c:204 src/skins/ui_manager.c:396
+#: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:396
 msgid "Plugin services"
 msgstr "Pluginen zerbitzuak"
 
-#: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:398
+#: src/gtkui/ui_manager.c:205 src/skins/ui_manager.c:398
 msgid "Preferences"
 msgstr "Hobespenak"
 
-#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:399
+#: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:399
 msgid "Open preferences window"
 msgstr "Ireki hobespenen leihoa"
 
-#: src/gtkui/ui_manager.c:209 src/skins/ui_manager.c:401
+#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:401
 msgid "_Quit"
 msgstr "I_rten"
 
-#: src/gtkui/ui_manager.c:210 src/skins/ui_manager.c:402
+#: src/gtkui/ui_manager.c:209 src/skins/ui_manager.c:402
 msgid "Quit Audacious"
 msgstr "Irten Audacious-etik"
 
-#: src/gtkui/ui_manager.c:212 src/gtkui/ui_manager.c:213
+#: src/gtkui/ui_manager.c:211 src/gtkui/ui_manager.c:212
 #: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
 msgid "Set A-B"
 msgstr "Ezarri A-B"
 
-#: src/gtkui/ui_manager.c:215 src/gtkui/ui_manager.c:216
+#: src/gtkui/ui_manager.c:214 src/gtkui/ui_manager.c:215
 #: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
 msgid "Clear A-B"
 msgstr "Garbitu A-B"
 
-#: src/gtkui/ui_manager.c:218 src/gtkui/ui_manager.c:219
+#: src/gtkui/ui_manager.c:217 src/gtkui/ui_manager.c:218
 #: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
 msgid "Jump to Playlist Start"
 msgstr "Saltatu zerrendaren hasierara"
 
-#: src/gtkui/ui_manager.c:221 src/gtkui/ui_manager.c:222 src/hotkey/gui.c:80
+#: src/gtkui/ui_manager.c:220 src/gtkui/ui_manager.c:221 src/hotkey/gui.c:81
 #: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
 msgid "Jump to File"
 msgstr "Joan fitxategira"
 
-#: src/gtkui/ui_manager.c:227 src/skins/ui_manager.c:419
+#: src/gtkui/ui_manager.c:226 src/skins/ui_manager.c:419
 msgid "Queue Toggle"
 msgstr "Txandakatu ilara"
 
-#: src/gtkui/ui_manager.c:228 src/skins/ui_manager.c:420
+#: src/gtkui/ui_manager.c:227 src/skins/ui_manager.c:420
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Erreprodukzio-zerrendako ilarako sarrerak gaitzen/desgaitzen ditu."
 
-#: src/gtkui/ui_manager.c:231 src/skins/ui_manager.c:423
+#: src/gtkui/ui_manager.c:230 src/skins/ui_manager.c:423
 msgid "Copy"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:234 src/skins/ui_manager.c:425
+#: src/gtkui/ui_manager.c:233 src/skins/ui_manager.c:425
 #, fuzzy
 msgid "Cut"
 msgstr "Unekoa"
 
-#: src/gtkui/ui_manager.c:237 src/skins/ui_manager.c:427
+#: src/gtkui/ui_manager.c:236 src/skins/ui_manager.c:427
 #, fuzzy
 msgid "Paste"
 msgstr "Azkarrena"
 
-#: src/gtkui/ui_manager.c:240 src/skins/ui_manager.c:256
+#: src/gtkui/ui_manager.c:239 src/skins/ui_manager.c:256
 msgid "Select All"
 msgstr "Hautatu denak"
 
-#: src/gtkui/ui_manager.c:241 src/skins/ui_manager.c:257
+#: src/gtkui/ui_manager.c:240 src/skins/ui_manager.c:257
 msgid "Selects all of the playlist entries."
 msgstr "Hautatu erreprodukzio-zerrendako sarrera guztiak."
 
-#: src/gtkui/ui_manager.c:244 src/skins/ui_manager.c:260
+#: src/gtkui/ui_manager.c:243 src/skins/ui_manager.c:260
 msgid "Select None"
 msgstr "Ez hautatu ezer"
 
-#: src/gtkui/ui_manager.c:245 src/skins/ui_manager.c:261
+#: src/gtkui/ui_manager.c:244 src/skins/ui_manager.c:261
 msgid "Deselects all of the playlist entries."
 msgstr "Erreprodukzio-zerrendako sarrera guztiak desautatzen ditu."
 
@@ -3169,51 +2938,51 @@ msgstr "Kanalak"
 msgid "%s: %d kbps, %d Hz, %s"
 msgstr ""
 
-#: src/hotkey/gui.c:70
+#: src/hotkey/gui.c:71
 msgid "Previous Track"
 msgstr "Aurreko pista"
 
-#: src/hotkey/gui.c:72
+#: src/hotkey/gui.c:73
 msgid "Pause/Resume"
 msgstr "Pausatu/jarraitu"
 
-#: src/hotkey/gui.c:74
+#: src/hotkey/gui.c:75
 msgid "Next Track"
 msgstr "Hurrengo pista"
 
-#: src/hotkey/gui.c:75
+#: src/hotkey/gui.c:76
 msgid "Forward 5 Seconds"
 msgstr "Joan 5 segundo aurrera"
 
-#: src/hotkey/gui.c:76
+#: src/hotkey/gui.c:77
 msgid "Rewind 5 Seconds"
 msgstr "Joan 5 segundo atzera"
 
-#: src/hotkey/gui.c:77
+#: src/hotkey/gui.c:78
 msgid "Mute"
 msgstr "Mututu"
 
-#: src/hotkey/gui.c:78
+#: src/hotkey/gui.c:79
 msgid "Volume Up"
 msgstr "Igo bolumena"
 
-#: src/hotkey/gui.c:79
+#: src/hotkey/gui.c:80
 msgid "Volume Down"
 msgstr "Jeitsi bolumena"
 
-#: src/hotkey/gui.c:81
+#: src/hotkey/gui.c:82
 msgid "Toggle Player Windows"
 msgstr "Txandakatu erreproduzitzailearen leihoak"
 
-#: src/hotkey/gui.c:82
+#: src/hotkey/gui.c:83
 msgid "Show On-Screen-Display"
 msgstr "Erakutsi pantaila gaineko mezuak (OSD)"
 
-#: src/hotkey/gui.c:92
+#: src/hotkey/gui.c:93
 msgid "(none)"
 msgstr "(bat ere ez)"
 
-#: src/hotkey/gui.c:229
+#: src/hotkey/gui.c:230
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -3224,15 +2993,15 @@ msgstr ""
 "\n"
 "Jarraitzea nahi duzu?"
 
-#: src/hotkey/gui.c:231
+#: src/hotkey/gui.c:232
 msgid "Binding mouse buttons"
 msgstr "Saguaren botoiak lotzea"
 
-#: src/hotkey/gui.c:381
+#: src/hotkey/gui.c:382
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Laster-tekla globalen pluginaren konfigurazioa"
 
-#: src/hotkey/gui.c:397
+#: src/hotkey/gui.c:398
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -3240,23 +3009,23 @@ msgstr ""
 "Sakatu tekla konbinazioa testu-eremuaren barruan.\n"
 "Saguaren botoiak ere lotu ditzakezu."
 
-#: src/hotkey/gui.c:402
+#: src/hotkey/gui.c:403
 msgid "Hotkeys:"
 msgstr "Laster-teklak"
 
-#: src/hotkey/gui.c:421
+#: src/hotkey/gui.c:422
 msgid "<b>Action:</b>"
 msgstr "<b>Ekintza:</b>"
 
-#: src/hotkey/gui.c:429
+#: src/hotkey/gui.c:430
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Tekla-konbinazioa:</b>"
 
-#: src/hotkey/gui.c:660
+#: src/hotkey/gui.c:661
 msgid "About Global Hotkey Plugin"
 msgstr "Laster-tekla globalen pluginari buruz"
 
-#: src/hotkey/gui.c:661
+#: src/hotkey/gui.c:662
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3331,35 +3100,35 @@ msgstr ""
 msgid "About JACK Output Plugin 0.17"
 msgstr "JACK irteerako plugina 0.17 buruz"
 
-#: src/ladspa/ladspa.c:836
+#: src/ladspa/ladspa.c:844
 msgid "This LADSPA plugin has no user controls"
 msgstr "LADSPA plugin honek ez du erabiltzale-kontrolik"
 
-#: src/ladspa/ladspa.c:877 src/ladspa/ladspa.c:964
+#: src/ladspa/ladspa.c:885 src/ladspa/ladspa.c:972
 msgid "Name"
 msgstr "Izena"
 
-#: src/ladspa/ladspa.c:964
+#: src/ladspa/ladspa.c:972
 msgid "UID"
 msgstr "UIDa"
 
-#: src/ladspa/ladspa.c:1041
+#: src/ladspa/ladspa.c:1049
 msgid "Installed plugins"
 msgstr "Instalatutako pluginak"
 
-#: src/ladspa/ladspa.c:1049
+#: src/ladspa/ladspa.c:1057
 msgid "Running plugins"
 msgstr "Exekutatzen dauden pluginak"
 
-#: src/ladspa/ladspa.c:1064
+#: src/ladspa/ladspa.c:1072
 msgid "Add"
 msgstr "Gehitu"
 
-#: src/ladspa/ladspa.c:1067
+#: src/ladspa/ladspa.c:1075
 msgid "Remove"
 msgstr "Kendu"
 
-#: src/ladspa/ladspa.c:1078
+#: src/ladspa/ladspa.c:1086
 msgid "LADSPA Plugin Catalog"
 msgstr "LADSPA pluginen katalogoa"
 
@@ -3453,7 +3222,7 @@ msgstr "%s: LIRCtik deskonektatuta\n"
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr "%s: saiatu %d segundoro birkonektatzen...\n"
 
-#: src/lyricwiki/lyricwiki.c:322
+#: src/lyricwiki/lyricwiki.c:335
 msgid ""
 "\n"
 "No lyrics were found."
@@ -3736,11 +3505,11 @@ msgstr "MTP gailuaren kudeatzailea"
 msgid "Disconnect the device"
 msgstr "Deskonektatu gailua"
 
-#: src/null/null.c:63
+#: src/null/null.c:64
 msgid "Null output plugin "
 msgstr "Null irteerako plugina "
 
-#: src/null/null.c:64
+#: src/null/null.c:65
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
 "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
@@ -3748,15 +3517,15 @@ msgstr ""
 " Christian Birchinger <joker@netswarm.net>\n"
 "XMMS-eko pluginean oinarrituta, Håvard Kvål <havardk@xmms.org>"
 
-#: src/null/null.c:67
+#: src/null/null.c:68
 msgid "About Null Output"
 msgstr "Null irteerari buruz"
 
-#: src/null/null.c:93
+#: src/null/null.c:94
 msgid "Null output preferences"
 msgstr "Null irteeraren hobespenak"
 
-#: src/null/null.c:102
+#: src/null/null.c:105
 msgid "Run in real time"
 msgstr "Exekutatu denbora-errealean"
 
@@ -3770,11 +3539,11 @@ msgstr "PCM gailu lehenetsia (%s)"
 msgid "OSS4 Output Plugin Preferences"
 msgstr "Egoeraren ikonoa plugina - Hobespenak"
 
-#: src/oss4/configure.c:163 src/OSS/configure.c:213 src/sun/configure.c:181
+#: src/oss4/configure.c:163 src/OSS/configure.c:203
 msgid "Audio device:"
 msgstr "Soinu-gailua:"
 
-#: src/oss4/configure.c:189 src/OSS/configure.c:235 src/OSS/configure.c:276
+#: src/oss4/configure.c:189 src/OSS/configure.c:226 src/OSS/configure.c:269
 msgid "Use alternate device:"
 msgstr "Erabili bestelako gailua:"
 
@@ -3835,40 +3604,40 @@ msgstr ""
 msgid "OSS4 error"
 msgstr ""
 
-#: src/OSS/configure.c:148
+#: src/OSS/configure.c:146
 #, c-format
 msgid "Default (%s)"
 msgstr "Lehenetsia (%s)"
 
-#: src/OSS/configure.c:197
+#: src/OSS/configure.c:187
 msgid "OSS Driver configuration"
 msgstr "OSS kontrolatzailearen konfigurazioa"
 
-#: src/OSS/configure.c:298 src/sun/configure.c:246
+#: src/OSS/configure.c:290
 msgid "Devices"
 msgstr "Gailuak"
 
-#: src/OSS/configure.c:300 src/sun/configure.c:257
+#: src/OSS/configure.c:292
 msgid "Buffering:"
 msgstr "Bufferreratzea:"
 
-#: src/OSS/configure.c:313 src/sun/configure.c:288
+#: src/OSS/configure.c:305
 msgid "Pre-buffer (percent):"
 msgstr "Aurrebufferra (ehunekoa):"
 
-#: src/OSS/configure.c:324 src/sun/configure.c:302
+#: src/OSS/configure.c:316
 msgid "Buffering"
 msgstr "Bufferreratzen"
 
-#: src/OSS/configure.c:325
+#: src/OSS/configure.c:317
 msgid "Mixer Settings:"
 msgstr "Nahastailearen ezarpenak:"
 
-#: src/OSS/configure.c:331
+#: src/OSS/configure.c:323
 msgid "Volume controls Master not PCM"
 msgstr "Bolumenak Nagusia kontrolatzen du, ez PCMa"
 
-#: src/OSS/configure.c:337 src/sun/configure.c:392
+#: src/OSS/configure.c:329
 msgid "Mixer"
 msgstr "Nahastailea"
 
@@ -3912,11 +3681,11 @@ msgstr ""
 "Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
 "Boston, MA 02110-1301, USA."
 
-#: src/pulse_audio/pulse_audio.c:692
+#: src/pulse_audio/pulse_audio.c:699
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "Audacious PulseAudio irteeraren plugina"
 
-#: src/pulse_audio/pulse_audio.c:693
+#: src/pulse_audio/pulse_audio.c:700
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -3952,59 +3721,59 @@ msgstr ""
 "Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
 "Boston, MA 02110-1301, USA."
 
-#: src/resample/plugin.c:90
+#: src/resample/plugin.c:91
 #, fuzzy
 msgid "About Sample Rate Converter Plugin"
 msgstr "Egoeraren ikonoa pluginari buruz"
 
-#: src/resample/plugin.c:145
+#: src/resample/plugin.c:146
 msgid "Sample Rate Converter Preferences"
 msgstr ""
 
-#: src/resample/plugin.c:157
+#: src/resample/plugin.c:158
 msgid "Rate mappings:"
 msgstr ""
 
-#: src/resample/plugin.c:180
+#: src/resample/plugin.c:181
 msgid "All others:"
 msgstr ""
 
-#: src/resample/plugin.c:192
+#: src/resample/plugin.c:193
 msgid "Method:"
 msgstr ""
 
-#: src/scrobbler/configure.c:128 src/scrobbler/configure.c:204
+#: src/scrobbler/configure.c:129 src/scrobbler/configure.c:205
 #, fuzzy
 msgid "Change password"
 msgstr "Aldatu erreprodukzioaren abestia"
 
-#: src/scrobbler/configure.c:150
+#: src/scrobbler/configure.c:151
 msgid "<b>Services</b>"
 msgstr "<b>Zerbitzuak</b>"
 
-#: src/scrobbler/configure.c:172
+#: src/scrobbler/configure.c:173
 msgid "Username:"
 msgstr "Erabiltzaile-izena:"
 
-#: src/scrobbler/configure.c:178
+#: src/scrobbler/configure.c:179
 msgid "Password:"
 msgstr "Pasahitza:"
 
-#: src/scrobbler/configure.c:186
+#: src/scrobbler/configure.c:187
 #, fuzzy
 msgid "Scrobbler URL:"
 msgstr "Scrobbler errorea"
 
-#: src/scrobbler/configure.c:218
+#: src/scrobbler/configure.c:219
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:261
+#: src/scrobbler/configure.c:262
 #, fuzzy
 msgid "Scrobbler"
 msgstr "Scrobbler errorea"
 
-#: src/scrobbler/plugin.c:213
+#: src/scrobbler/plugin.c:214
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -4016,9 +3785,19 @@ msgstr ""
 "Jatorriko garatzaileak: Audun Hove <audun@nlc.no> eta Pipian <pipian@pipian."
 "com>\n"
 
-#: src/scrobbler/plugin.c:215
+#: src/scrobbler/plugin.c:216
 msgid "About Scrobbler Plugin"
 msgstr "Scrobbler pluginari buruz"
+
+#: src/sdlout/plugin.c:62
+#, fuzzy
+msgid "About SDL Output Plugin"
+msgstr "JACK irteerako plugina 0.17 buruz"
+
+#: src/sdlout/plugin.c:82
+#, fuzzy
+msgid "SDL error"
+msgstr "Errorea"
 
 #: src/sid/xs_about.c:84
 #, c-format
@@ -4504,10 +4283,6 @@ msgstr ""
 msgid "Song title format:"
 msgstr "Abestiaren titulu-formatua:"
 
-#: src/sid/xs_interface.c:1103
-msgid "Title"
-msgstr "Titulua"
-
 #: src/sid/xs_interface.c:1125
 msgid "Add sub-tunes to playlist"
 msgstr "Gehitu azpidoinuak erreprodukzio-zerrendari"
@@ -4794,7 +4569,7 @@ msgstr "Kolorea doitzea"
 msgid "Audacious Equalizer"
 msgstr "Audacious-en ekualizadorea"
 
-#: src/skins/ui_equalizer.c:991
+#: src/skins/ui_equalizer.c:1000
 msgid "Presets"
 msgstr "Aurrezarpenak"
 
@@ -4982,7 +4757,7 @@ msgstr "Bildu erreprodukzio-zerrendaren editorea"
 msgid "Roll up Equalizer"
 msgstr "Bildu ekualizadorea"
 
-#: src/skins/ui_manager.c:94 src/sndstretch/sndstretch_xmms.c:393
+#: src/skins/ui_manager.c:94 src/sndstretch/sndstretch_xmms.c:365
 msgid "Scale"
 msgstr "Eskalatu"
 
@@ -5487,7 +5262,7 @@ msgstr "Konprimitutako Winamp 2.x azala"
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Deskonprimitutako Winamp 2.x azala"
 
-#: src/skins/util.c:869
+#: src/skins/util.c:875
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "Ezin izan da direktorioa (%s) sortu: %s\n"
@@ -5537,27 +5312,27 @@ msgstr ""
 "Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
 "Boston, MA 02110-1301, USA."
 
-#: src/sndstretch/sndstretch_xmms.c:175
+#: src/sndstretch/sndstretch_xmms.c:158
 msgid "About SndStretch"
 msgstr "SndStretch-i buruz"
 
-#: src/sndstretch/sndstretch_xmms.c:336
+#: src/sndstretch/sndstretch_xmms.c:316
 msgid "Volume corr."
 msgstr "Bolumenaren korr."
 
-#: src/sndstretch/sndstretch_xmms.c:337
+#: src/sndstretch/sndstretch_xmms.c:317
 msgid "Short Overlap"
 msgstr "Teilakatze laburra"
 
-#: src/sndstretch/sndstretch_xmms.c:391
+#: src/sndstretch/sndstretch_xmms.c:363
 msgid "Speed"
 msgstr "Abiadura"
 
-#: src/sndstretch/sndstretch_xmms.c:392
+#: src/sndstretch/sndstretch_xmms.c:364
 msgid "Pitch"
 msgstr "Tonua"
 
-#: src/sndstretch/sndstretch_xmms.c:413
+#: src/sndstretch/sndstretch_xmms.c:385
 msgid "SndStretch - Configuration"
 msgstr "SndStretch - Konfigurazioa"
 
@@ -5703,7 +5478,7 @@ msgstr ""
 msgid "Close to the notification area (system tray)"
 msgstr ""
 
-#: src/stereo_plugin/stereo.c:40
+#: src/stereo_plugin/stereo.c:41
 msgid ""
 "Extra Stereo Plugin\n"
 "\n"
@@ -5713,7 +5488,7 @@ msgstr ""
 "\n"
 "Johan Levin 1999."
 
-#: src/stereo_plugin/stereo.c:68
+#: src/stereo_plugin/stereo.c:69
 msgid "About Extra Stereo Plugin"
 msgstr "Estra Estereo plugina"
 
@@ -5726,20 +5501,20 @@ msgid "Search:"
 msgstr ""
 
 #: src/streambrowser/gui/streambrowser_win.c:93
-#: src/streambrowser/gui/streambrowser_win.c:369
+#: src/streambrowser/gui/streambrowser_win.c:371
 msgid "Add Bookmark"
 msgstr ""
 
-#: src/streambrowser/gui/streambrowser_win.c:318
+#: src/streambrowser/gui/streambrowser_win.c:320
 #, fuzzy
 msgid "Stream name"
 msgstr "Instrumentuaren izena"
 
-#: src/streambrowser/gui/streambrowser_win.c:325
+#: src/streambrowser/gui/streambrowser_win.c:327
 msgid "Now playing"
 msgstr ""
 
-#: src/streambrowser/gui/streambrowser_win.c:366
+#: src/streambrowser/gui/streambrowser_win.c:368
 #, fuzzy
 msgid "Remove Bookmark"
 msgstr "Kendu etiketa"
@@ -5775,42 +5550,6 @@ msgstr ""
 "Eskerrik asko Tony Vroon-i gainbegiratzeagatik eta ni gidatzeagatik\n"
 "\n"
 "Google Summer of Code 2007 proiektu bat izan da."
-
-#: src/sun/about.c:30
-msgid "About the Sun Driver"
-msgstr "Sun kontrolatzaileari buruz"
-
-#: src/sun/about.c:31
-msgid ""
-"XMMS BSD Sun Driver\n"
-"\n"
-"Copyright (c) 2001 CubeSoft Communications, Inc.\n"
-"Maintainer: <vedge at csoft.org>.\n"
-msgstr ""
-"XMMS BSD Sun kontrolatzailea\n"
-"\n"
-"Copyright-a (c) 2001 CubeSoft Communications, Inc.\n"
-"Mantentzailea: <vedge abildua csoft.org>.\n"
-
-#: src/sun/configure.c:199
-msgid "Audio control device:"
-msgstr "Audioa kontrolatzeko gailua:"
-
-#: src/sun/configure.c:270
-msgid "Buffer size (ms):"
-msgstr "Buffer-tamaina (ms):"
-
-#: src/sun/configure.c:348
-msgid "Volume controls device:"
-msgstr "Bolumena kontrolatzeko gailua:"
-
-#: src/sun/configure.c:361
-msgid "XMMS uses mixer exclusively."
-msgstr "XMMSek esklusiboki darabil nahastailea"
-
-#: src/sun/configure.c:536
-msgid "Sun driver configuration"
-msgstr "Sun kontrolatzailearen konfigurazioa"
 
 #: src/tonegen/tonegen.c:56
 msgid "About Tone Generator"
@@ -5937,6 +5676,350 @@ msgstr ""
 "\n"
 "Pluginaren kode batzuk Miles Egan-ek garatua\n"
 "Bisitatu Wavpack gunea: http://www.wavpack.com/\n"
+
+#~ msgid ""
+#~ "* Select ALSA output ports *\n"
+#~ "MIDI events will be sent to the ports selected here. In example, if your "
+#~ "audio card provides a hardware synth and you want to play MIDI with it, "
+#~ "you'll probably want to select the wavetable synthesizer ports."
+#~ msgstr ""
+#~ "* Hautatu ALSAren irteerako atakak *\n"
+#~ "MIDI gertaerak hemen hautatutako ataketara bidaliko dira. Adibidez, soinu-"
+#~ "txartelak hardware-sintetizadorea badu, eta horrekin MIDIa "
+#~ "erreproduzitzea nahi baduzu, baliteke zuk uhin-taulako sintetizadorearen "
+#~ "atakak hautatu nahi izatea."
+
+#~ msgid ""
+#~ "* Select ALSA mixer card *\n"
+#~ "The ALSA backend outputs directly through ALSA, it doesn't use effect and "
+#~ "ouput plugins from the player. During playback, the player volumeslider "
+#~ "will manipulate the mixer control you select here. If you're using "
+#~ "wavetable synthesizer ports, you'll probably want to select the Synth "
+#~ "control here."
+#~ msgstr ""
+#~ "* Hautatu ALSAren nahastailearen txartela *\n"
+#~ "ALSA motorrak ALSA bidez ateratzen da, erreproduzitzaileak ez du "
+#~ "efekturik ezta irteerako pluginik erabiltzen. Erreprodukzioan, "
+#~ "erreproduzitzailearen bolumenaren graduatzaileak zuk hemen hautatutako "
+#~ "nahastailearen kontrola kudea dezake. Uhin-taulako sintetizadorearen "
+#~ "atakak erabiltzen badituzu, baliteke zuk hemen sintetizadorearen kontrola "
+#~ "hautatu nahi izatea."
+
+#~ msgid ""
+#~ "* Select ALSA mixer control *\n"
+#~ "The ALSA backend outputs directly through ALSA, it doesn't use effect and "
+#~ "ouput plugins from the player. During playback, the player volume slider "
+#~ "will manipulate the mixer control you select here. If you're using "
+#~ "wavetable synthesizer ports, you'll probably want to select the Synth "
+#~ "control here."
+#~ msgstr ""
+#~ "* Hautatu ALSAren nahastailearen kontrola *\n"
+#~ "ALSA motorrak ALSA bidez ateratzen da, erreproduzitzaileak ez du "
+#~ "efekturik ezta irteerako pluginik erabiltzen. Erreprodukzioan, "
+#~ "erreproduzitzailearen bolumenaren graduatzaileak zuk hemen hautatutako "
+#~ "nahastailearen kontrola kudea dezake. Uhin-taulako sintetizadorearen "
+#~ "atakak erabiltzen badituzu, baliteke zuk hemen sintetizadorearen kontrola "
+#~ "hautatu nahi izatea."
+
+#~ msgid ""
+#~ "* Backend selection *\n"
+#~ "AMIDI-Plug works with backends, in a modular fashion; here you should "
+#~ "select your backend; that is, the way MIDI events are going to be handled "
+#~ "and played.\n"
+#~ "If you have a hardware synthesizer on your audio card, and ALSA supports "
+#~ "it, you'll want to use the ALSA backend. It can also be used with "
+#~ "anything that provides an interface to the ALSA sequencer, including "
+#~ "software synths or external devices.\n"
+#~ "If you want to rely on a software synthesizer and/or want to pipe audio "
+#~ "into effect and output plugins of the player you'll want to use the good "
+#~ "FluidSynth backend.\n"
+#~ "Press the info button to read specific information about each backend."
+#~ msgstr ""
+#~ "* Motorraren hautapena *\n"
+#~ "AMIDI-Plug motorrekin lan egiten du , era modular batean. Hemen motorra "
+#~ "hauta dezakezu: hau da, MIDI gertaerak nola kudeatu eta erreproduzituko "
+#~ "diren modua.\n"
+#~ "Hardware-sintetizadore bat badu audio-txartelak, eta ALSAk onartzen badu, "
+#~ "ALSA motorra erabiltzea nahi izan dezakezu. ALSA sekuentziadorearen "
+#~ "interfaze bat eskaintzen duen edozerrekin ere erabil daiteke, software-"
+#~ "sintetizadorea edo kanpoko gailuak barne.\n"
+#~ "Software-sintetizadorean oinarritzea nahi baduzu, edo eta audioa "
+#~ "erreproduzitzailearen efektuetara eta irteerako pluginak kanalizatzea "
+#~ "nahi baduzu, FluidSynth motor ona erabiltzea nahi izan dezakezu.\n"
+#~ "Sakatu Informazioa botoia motor bakoitzari buruzko informazio zehatza "
+#~ "irakurtzeko."
+
+#, fuzzy
+#~ msgid ""
+#~ "* Transpose function *\n"
+#~ "This option allows you to play the midi file transposed in a different "
+#~ "key, by shifting of the desired number of semitones all its notes "
+#~ "(excepting those on midi channel 10, reserved for percussions). "
+#~ "Especially useful if you wish to sing or play along with another "
+#~ "instrument."
+#~ msgstr ""
+#~ "* Irauli funtzioa *\n"
+#~ "Aukera honek MIDI fitxategia beste tekla desberdin batean iraulita "
+#~ "erreproduzitzea baimentzen dizu, bere nota guztien nahi duzun semintonu "
+#~ "kopurua desplazatuz (MIDIko 10. kanalekoak izan ezik, perkusioentzako "
+#~ "gordeta baitago). Bereziki erabilgarria da beste instrumentu batekin "
+#~ "abestea edo erreproduzitzea nahi baduzu."
+
+#~ msgid ""
+#~ "* Drumshift function *\n"
+#~ "This option allows you to shift notes on midi channel 10 (the standard "
+#~ "percussions channel) of the desired number of semitones. This results in "
+#~ "different drumset and percussions being used during midi playback, so if "
+#~ "you wish to enhance (or reduce, or alter) percussion sounds, try to play "
+#~ "with this value."
+#~ msgstr ""
+#~ "* Perkusio-desplazamendua funtzioa *\n"
+#~ "Aukera honek MIDIko 10. kanaleko notak nahi duzun semitonu kopurua "
+#~ "desplazatzea uzten dizu. MIDI erreproduzitzean erabiltzen den bestelako "
+#~ "perkusio multzo desberdin bat dakaer, eta honela perkusioen soinuak "
+#~ "hobetu (edo gutxiagotu edo eraldatu) nahi badituzu, saiatu balio honekin "
+#~ "erreproduzitzen."
+
+#~ msgid ""
+#~ "* Pre-calculate MIDI length *\n"
+#~ "If this option is enabled, AMIDI-Plug will calculate the MIDI file length "
+#~ "as soon as the player requests it, instead of doing that only when the "
+#~ "MIDI file is being played. In example, MIDI length will be calculated "
+#~ "straight after adding MIDI files in a playlist. Disable this option if "
+#~ "you want faster playlist loading (when a lot of MIDI files are added), "
+#~ "enable it to display more information in the playlist straight after "
+#~ "loading."
+#~ msgstr ""
+#~ "* Aurre-kalkulatu MIDI luzera *\n"
+#~ "Aukera hau gaituta egonez gero, 'AMIDI-Plug'-ek MIDI fitxategiaren luzera "
+#~ "kalkula dezake erreproduzaileak eskatu bezain laster, MIDI fitxategia "
+#~ "erreproduzitzen ari den bitartean egin ordez. Adibidez, MIDI fitxategiak "
+#~ "erreprodukzio-zerrendari gehitu bezain laster kalkula daiteke MIDIaren "
+#~ "luzera. Desgaitu aukera hau erreprodukzio-zerrenda azkarrago kargatzea "
+#~ "nahi naduzu (MIDI fitxategi asko gehitzen direnean), gaitu ezazu kargatu "
+#~ "bezain laster erreprodukzio-zerrendan informazio gehiago bistaratzeko."
+
+#~ msgid ""
+#~ "* Extract comments from MIDI files *\n"
+#~ "Some MIDI files contain text comments (author, copyright, instrument "
+#~ "notes, etc.). If this option is enabled, AMIDI-Plug will extract and "
+#~ "display comments (if available) in the file information dialog."
+#~ msgstr ""
+#~ "* Erauzi iruzkinak MIDI fitxategietatik *\n"
+#~ "MIDI fitxategi batzuk testu iruzkinak dituzte (egilea, copyright-a, "
+#~ "instrumentuen oharrak, e.a.). Aukera hau gaitzen bada, AMIDI-Plug-ek "
+#~ "iruzkinak (egonez gero) erauzi eta bistaratuko ditu fitxategiaren "
+#~ "informazioaren elkarrizketa-koadroan."
+
+#~ msgid ""
+#~ "* Extract lyrics from MIDI files *\n"
+#~ "Some MIDI files contain song lyrics. If this option is enabled, AMIDI-"
+#~ "Plug will extract and display song lyrics (if available) in the file "
+#~ "information dialog."
+#~ msgstr ""
+#~ "* Erauzi letrak MIDI fitxategietatik *\n"
+#~ "MIDI fitxategi batzuk abestien letrak dituzte. Aukera hau gaitzen bada, "
+#~ "AMIDI-Plug-ek iruzkinak (egonez gero) erauzi eta bistaratuko ditu "
+#~ "fitxategiaren informazioaren elkarrizketa-koadroan."
+
+#~ msgid ""
+#~ "* Select SoundFont files *\n"
+#~ "In order to play MIDI with FluidSynth, you need to specify at least one "
+#~ "valid SoundFont file here (use absolute paths). The loading order is from "
+#~ "the top (first) to the bottom (last)."
+#~ msgstr ""
+#~ "* Hautatu SoundFont fitxategiak *\n"
+#~ "MIDIa FluidSynth-ekin erreproduzitzeko, gutxienez SoundFont fitxategi bat "
+#~ "zehaztu behar duzu hemen (erabili bide-izen absolutua). Kargatzeko ordena "
+#~ "goitik (aurrenekoa) behera (azkena) da."
+
+#~ msgid ""
+#~ "* Load SoundFont on player start *\n"
+#~ "Depending on your system speed, SoundFont loading in FluidSynth will "
+#~ "require up to a few seconds. This is a one-time task (the soundfont will "
+#~ "stay loaded until it is changed or the backend is unloaded) that can be "
+#~ "done at player start, or before the first MIDI file is played (the latter "
+#~ "is a better choice if you don't use your player to listen MIDI files "
+#~ "only)."
+#~ msgstr ""
+#~ "* Kargatu SoundFont erreproduzitzailea abiaraztean *\n"
+#~ "Sistemaren abiaduraren arabera, FluidSynth-en SoundFont kargatzeak "
+#~ "segundo gutxi batzuk beharko ditu. Aldi bateko zeregina da hau (soundfont "
+#~ "kargatuta jarraituko du hura aldatu arte, edo motorra memoritik kendu "
+#~ "arte) erreproduzitzailea abiaraztean edo aurreneko MIDI fitxategia "
+#~ "erreproduzitu aurretik egin daitekeena (azkenengoa aukera soilik "
+#~ "egokiagoa da ez baduzu erreproduzitzailerik erabiltzen MIDI fitxategiak "
+#~ "entzuteko)."
+
+#~ msgid ""
+#~ "* Load SoundFont on first midifile play *\n"
+#~ "Depending on your system speed, SoundFont loading in FluidSynth will "
+#~ "require up to a few seconds. This is a one-time task (the soundfont will "
+#~ "stay loaded until it is changed or the backend is unloaded) that can be "
+#~ "done at player start, or before the first MIDI file is played (the latter "
+#~ "is a better choice if you don't use your player to listen MIDI files "
+#~ "only)."
+#~ msgstr ""
+#~ "* Kargatu SoundFont aurreneko MIDI fitxategia erreproduzitzean *\n"
+#~ "Sistemaren abiaduraren arabera, FluidSynth-en SoundFont kargatzeak "
+#~ "segundo gutxi batzuk beharko ditu. Aldi bateko zeregina da hau (soundfont "
+#~ "kargatuta jarraituko du hura aldatu arte, edo motorra memoritik kendu "
+#~ "arte) erreproduzitzailea abiaraztean edo aurreneko MIDI fitxategia "
+#~ "erreproduzitu aurretik egin daitekeena (azkenengoa aukera soilik "
+#~ "egokiagoa da ez baduzu erreproduzitzailerik erabiltzen MIDI fitxategiak "
+#~ "entzuteko)."
+
+#~ msgid ""
+#~ "* Synthesizer gain *\n"
+#~ "From FluidSynth docs: the gain is applied to the final or master output "
+#~ "of the synthesizer; it is set to a low value by default to avoid the "
+#~ "saturation of the output when random MIDI files are played."
+#~ msgstr ""
+#~ "* Sintetizadorearen irabazia *\n"
+#~ "FluidSynth-en dokumentaziotik: sintetizadorearen amaierako irteerari edo "
+#~ "irteera maisuari aplikatzen zaio irabazia; balio baxu batekin ezartzen da "
+#~ "lehenetsi gisa irteeraren saturazioa saihesteko ausazko MIDI fitxategiak "
+#~ "erreproduzitzen direnean."
+
+#~ msgid ""
+#~ "* Synthesizer polyphony *\n"
+#~ "From FluidSynth docs: the polyphony defines how many voices can be played "
+#~ "in parallel; the number of voices is not necessarily equivalent to the "
+#~ "number of notes played simultaneously; indeed, when a note is struck on a "
+#~ "specific MIDI channel, the preset on that channel may create several "
+#~ "voices, for example, one for the left audio channel and one for the right "
+#~ "audio channels; the number of voices activated depends on the number of "
+#~ "instrument zones that fall in the correspond to the velocity and key of "
+#~ "the played note."
+#~ msgstr ""
+#~ "* Sintetizadorearen polifonia *\n"
+#~ "FluidSynth-en dokumentaziotik: zenbat ahots paraleloki erreproduzi "
+#~ "daitezkeen definitzen du polifoniak; ahots kopuruak ez dauka aldi berean "
+#~ "erreproduzitutako noten kopuruarekin zer ikusirik derrigorrez; nota bat "
+#~ "jotzen denean MIDI kanalean, kanal horretako aurrezarpenak hainbat ahots "
+#~ "sortuko ditu, adibidez, bat ezkerreko audioaren kanalarentzako eta beste "
+#~ "bat eskuinekoarentzako; aktibatutako ahots kopurua instrumentuen zona "
+#~ "(erreproduzitutako notan eta abiaduran erortzen dena) kopuruaren mende "
+#~ "dago."
+
+#~ msgid ""
+#~ "* Synthesizer reverb *\n"
+#~ "From FluidSynth docs: when set to \"yes\" the reverb effects module is "
+#~ "activated; note that when the reverb module is active, the amount of "
+#~ "signal sent to the reverb module depends on the \"reverb send\" generator "
+#~ "defined in the SoundFont."
+#~ msgstr ""
+#~ "* Sintetizadorearen reverb-a *\n"
+#~ "FluidSynth-en dokumentaziotik: \"bai\" ezartzean reverb efektuen moduloa "
+#~ "aktibatzen da. Jakin ezazu reverb moduloa aktibo dagoenean, reverb "
+#~ "moduloari bidaltzen zaizkion seinale kopurua SoundFont-en definitutako "
+#~ "\"reverb bidali\" sortzailean mende dago."
+
+#~ msgid ""
+#~ "* Synthesizer chorus *\n"
+#~ "From FluidSynth docs: when set to \"yes\" the chorus effects module is "
+#~ "activated; note that when the chorus module is active, the amount of "
+#~ "signal sent to the chorus module depends on the \"chorus send\" generator "
+#~ "defined in the SoundFont."
+#~ msgstr ""
+#~ "* Sintetizadorearen chorus-a *\n"
+#~ "FluidSynth-en dokumentaziotik: \"bai\" bezala ezarritakoan chorus-en "
+#~ "efektuen moduloa aktibatzen da. Jakin ezazu chorus moduloa aktibatuta "
+#~ "dagoenean, chorus moduloari bidalitako seinu kopurua SoundFont-en "
+#~ "definitutako \"chorus bidali\" sortzailean mende dago."
+
+#, fuzzy
+#~ msgid ""
+#~ "* Synthesizer samplerate *\n"
+#~ "The sample rate of the audio generated by the synthesizer. You can also "
+#~ "specify a custom value in the interval 22050Hz-96000Hz."
+#~ msgstr ""
+#~ "* Sintetizadorearen lagin-tasa *\n"
+#~ "Sintetizadoreak sortutako audioaren lagin-tasa. Balio pertsonalizatua ere "
+#~ "zehaz dezakezu 22050Hz-96000Hz barrutian.\n"
+#~ "OHARRA: buffer lehenetsiaren parametroak 44100Hz balioarekin ezarrita "
+#~ "dago. Lagin-tasa aldatzean bufferraren parametroa egokitu behar da "
+#~ "soinuaren kalitate ona lortzeko."
+
+#~ msgid ""
+#~ "If enabled, the extension from the original filename will not be stripped "
+#~ "before adding the new file extension to the end."
+#~ msgstr ""
+#~ "Gaituta badago, jatorrizko fitxategi-izenaren luzapena ez da kenduko "
+#~ "fitxategiaren luzapen berria amaieran gehitu aurretik."
+
+#~ msgid ""
+#~ "best/slowest:0;\n"
+#~ "worst/fastest:9;\n"
+#~ "recommended:2;\n"
+#~ "default:5;"
+#~ msgstr ""
+#~ "onena/motelena:0;\n"
+#~ "txarrena/azkarrena:9;\n"
+#~ "gomendatua:2;\n"
+#~ "lehenetsia:5;"
+
+#~ msgid "Adds 16 bit checksum to every frame"
+#~ msgstr "Gehitu 16 bit-eko kontrol-batura bilbe bakoitzari"
+
+#~ msgid "Variable bitrate"
+#~ msgstr "Bit-tasa aldagarria (VBR)"
+
+#~ msgid "Average bitrate"
+#~ msgstr "Batez besteko bit-tasa"
+
+#~ msgid ""
+#~ "For use with players that do not support low bitrate mp3 (Apex AD600-A "
+#~ "DVD/mp3 player)"
+#~ msgstr ""
+#~ "MP3ren bit-tasa baxua onartzen ez duten erreproduzitzaileetan erabiltzeko "
+#~ "(Apex AD600-A DVD/ mp3 erreproduzigailua)"
+
+#~ msgid ""
+#~ "highest:0;\n"
+#~ "lowest:9;\n"
+#~ "default:4;"
+#~ msgstr ""
+#~ "altuena:0;\n"
+#~ "baxuena:9;\n"
+#~ "lehenetsia:4;"
+
+#, fuzzy
+#~ msgid "Show playlists"
+#~ msgstr "Erakutsi erreprodukzio-zerrendaren editorea"
+
+#, fuzzy
+#~ msgid "Show/hide playlists"
+#~ msgstr "Kargatu erreprodukzio-zerrenda"
+
+#~ msgid "About the Sun Driver"
+#~ msgstr "Sun kontrolatzaileari buruz"
+
+#~ msgid ""
+#~ "XMMS BSD Sun Driver\n"
+#~ "\n"
+#~ "Copyright (c) 2001 CubeSoft Communications, Inc.\n"
+#~ "Maintainer: <vedge at csoft.org>.\n"
+#~ msgstr ""
+#~ "XMMS BSD Sun kontrolatzailea\n"
+#~ "\n"
+#~ "Copyright-a (c) 2001 CubeSoft Communications, Inc.\n"
+#~ "Mantentzailea: <vedge abildua csoft.org>.\n"
+
+#~ msgid "Audio control device:"
+#~ msgstr "Audioa kontrolatzeko gailua:"
+
+#~ msgid "Buffer size (ms):"
+#~ msgstr "Buffer-tamaina (ms):"
+
+#~ msgid "Volume controls device:"
+#~ msgstr "Bolumena kontrolatzeko gailua:"
+
+#~ msgid "XMMS uses mixer exclusively."
+#~ msgstr "XMMSek esklusiboki darabil nahastailea"
+
+#~ msgid "Sun driver configuration"
+#~ msgstr "Sun kontrolatzailearen konfigurazioa"
 
 #, fuzzy
 #~ msgid "Target volume:"
@@ -6666,17 +6749,8 @@ msgstr ""
 #~ msgid "Title:"
 #~ msgstr "Titulua:"
 
-#~ msgid "Artist:"
-#~ msgstr "Artista:"
-
 #~ msgid "Comment:"
 #~ msgstr "Iruzkina:"
-
-#~ msgid "Year:"
-#~ msgstr "Urtea:"
-
-#~ msgid "Track:"
-#~ msgstr "Pista:"
 
 #~ msgid "Genre:"
 #~ msgstr "Generoa:"
@@ -6908,9 +6982,6 @@ msgstr ""
 
 #~ msgid "ID3 Tag:"
 #~ msgstr "ID3 etiketa:"
-
-#~ msgid "Track number:"
-#~ msgstr "Pista zenbakia:"
 
 #~ msgid "Ape2 Tag"
 #~ msgstr "Ape2 etiketa"

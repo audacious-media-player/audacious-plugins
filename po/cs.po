@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 35d2fd1fde82\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-01-29 15:26-0500\n"
+"POT-Creation-Date: 2011-02-21 21:34-0500\n"
 "PO-Revision-Date: 2010-11-14 22:31+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/aac/libmp4.c:277
+#: src/aac/libmp4.c:281
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -41,7 +41,7 @@ msgstr ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM dekodér © Nero AG, www.nero.com\n"
 "Copyright © 2005–2006 tým Audacious"
 
-#: src/aac/libmp4.c:282
+#: src/aac/libmp4.c:286
 msgid "About MP4 AAC decoder plugin"
 msgstr "O modulu dekodéru MP4 AAC"
 
@@ -75,21 +75,21 @@ msgid "AdPlug :: Configuration"
 msgstr "AdPlug :: Nastavení"
 
 #: src/adplug/adplug-xmms.cc:241 src/adplug/adplug-xmms.cc:504
-#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:134
-#: src/echo_plugin/gui.c:124 src/jack/configure.c:146 src/null/null.c:109
-#: src/stereo_plugin/stereo.c:129 src/sun/configure.c:557
+#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:135
+#: src/echo_plugin/gui.c:123 src/jack/configure.c:146 src/null/null.c:112
+#: src/stereo_plugin/stereo.c:129
 msgid "Ok"
 msgstr "OK"
 
 #: src/adplug/adplug-xmms.cc:251 src/alarm/interface.c:1398
-#: src/cdaudio-ng/configure.c:249 src/crystalizer/crystalizer.c:143
-#: src/echo_plugin/gui.c:132 src/jack/configure.c:153
-#: src/modplug/gui/interface.cxx:715 src/null/null.c:110
-#: src/stereo_plugin/stereo.c:138 src/sun/configure.c:565
+#: src/cdaudio-ng/configure.c:249 src/crystalizer/crystalizer.c:142
+#: src/echo_plugin/gui.c:130 src/jack/configure.c:153
+#: src/modplug/gui/interface.cxx:715 src/null/null.c:113
+#: src/stereo_plugin/stereo.c:136
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: src/adplug/adplug-xmms.cc:267 src/console/configure.c:154
+#: src/adplug/adplug-xmms.cc:267 src/console/configure.c:155
 #: src/modplug/gui/interface.cxx:629 src/modplug/gui/interface.cxx:888
 msgid "General"
 msgstr "Obecné"
@@ -114,12 +114,12 @@ msgstr "16 bitů"
 msgid "Channels"
 msgstr "Kanály"
 
-#: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:934
+#: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
 #: src/mpg123/mpg123.c:180 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Mono"
 
-#: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:929
+#: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
 #: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:180
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
@@ -139,7 +139,7 @@ msgid "Frequency"
 msgstr "Frekvence"
 
 #: src/adplug/adplug-xmms.cc:354 src/adplug/adplug-xmms.cc:560
-#: src/console/configure.c:156 src/gtkui/ui_manager.c:68
+#: src/console/configure.c:157 src/gtkui/ui_manager.c:65
 #: src/skins/ui_manager.c:167
 msgid "Playback"
 msgstr "Přehrát"
@@ -187,7 +187,7 @@ msgstr ""
 msgid "AdPlug :: File Info"
 msgstr "AdPlug :: Informace o souboru"
 
-#: src/adplug/adplug-xmms.cc:533 src/amidi-plug/i_configure-fluidsynth.c:348
+#: src/adplug/adplug-xmms.cc:533 src/amidi-plug/i_configure-fluidsynth.c:347
 msgid "Filename"
 msgstr "Jméno souboru"
 
@@ -255,7 +255,7 @@ msgstr "Rychlost: "
 msgid "Timer: "
 msgstr "Časovač: "
 
-#: src/adplug/adplug-xmms.cc:702 src/console/configure.c:234
+#: src/adplug/adplug-xmms.cc:702 src/console/configure.c:235
 #: src/sid/xs_interface.c:354
 msgid "Hz"
 msgstr "Hz"
@@ -381,7 +381,7 @@ msgstr "Vyberte dny, kdy má budík budit"
 #: src/alarm/interface.c:612 src/alarm/interface.c:660
 #: src/alarm/interface.c:708 src/alarm/interface.c:756
 #: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/OSS/configure.c:166
+#: src/alarm/interface.c:900 src/OSS/configure.c:162
 #: src/skins/ui_manager.c:445 src/skins/ui_manager.c:466
 msgid "Default"
 msgstr "Standardní"
@@ -480,7 +480,7 @@ msgstr "Upomínání"
 msgid "Use reminder"
 msgstr "Upomínat"
 
-#: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:394
+#: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:366
 msgid "Options"
 msgstr "Nastavení"
 
@@ -592,7 +592,7 @@ msgstr ""
 "    Text vzkazu vepište do vstupního pole a zapněte tlačítko,\n"
 "    přejete-li si zobrazovat vzkaz.\n"
 
-#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:185
+#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:184
 #: src/skins/ui_manager.c:377
 msgid "Help"
 msgstr "Nápověda"
@@ -605,31 +605,31 @@ msgstr "Váš vzkaz pro dnešek je…"
 msgid "Thankyou"
 msgstr "Děkuji"
 
-#: src/alsa/config.c:210
+#: src/alsa/config.c:212
 msgid "Default PCM device"
 msgstr "Implicitní PCM zařízení"
 
-#: src/alsa/config.c:235
+#: src/alsa/config.c:237
 msgid "Default mixer device"
 msgstr "Implicitní směšovací zařízení"
 
-#: src/alsa/config.c:439
+#: src/alsa/config.c:441
 msgid "ALSA Output Plugin Preferences"
 msgstr "Nastavení výstupního modulu ALSY"
 
-#: src/alsa/config.c:446
+#: src/alsa/config.c:448
 msgid "PCM device:"
 msgstr "Zařízení PCM:"
 
-#: src/alsa/config.c:448 src/OSS/configure.c:256 src/sun/configure.c:218
+#: src/alsa/config.c:450 src/OSS/configure.c:246
 msgid "Mixer device:"
 msgstr "Zařízení směšovače:"
 
-#: src/alsa/config.c:450
+#: src/alsa/config.c:452
 msgid "Mixer element:"
 msgstr "Prvek směšovače:"
 
-#: src/alsa/config.c:453
+#: src/alsa/config.c:455
 msgid "Work around drain hangup"
 msgstr "Obejít zaseknutí při vyprazdňovaní"
 
@@ -693,86 +693,43 @@ msgstr ""
 "je zpracován vybraným výstupním modulem.\n"
 "Backend napsal Giacomo Lozito."
 
-#: src/amidi-plug/i_configure-alsa.c:221
+#: src/amidi-plug/i_configure-alsa.c:228
 msgid "ALSA BACKEND CONFIGURATION"
 msgstr "NASTAVENÍ BACKANDU ALSY"
 
-#: src/amidi-plug/i_configure-alsa.c:326
+#: src/amidi-plug/i_configure-alsa.c:331
 msgid "Port"
 msgstr "Port"
 
-#: src/amidi-plug/i_configure-alsa.c:328
+#: src/amidi-plug/i_configure-alsa.c:333
 msgid "Client name"
 msgstr "Jméno klientu"
 
-#: src/amidi-plug/i_configure-alsa.c:330
+#: src/amidi-plug/i_configure-alsa.c:335
 msgid "Port name"
 msgstr "Jméno portu"
 
-#: src/amidi-plug/i_configure-alsa.c:341
+#: src/amidi-plug/i_configure-alsa.c:346
 msgid "ALSA output ports"
 msgstr "Výstupní port ALSY"
 
-#: src/amidi-plug/i_configure-alsa.c:394
+#: src/amidi-plug/i_configure-alsa.c:399
 msgid "Soundcard: "
 msgstr "Zvuková karta: "
 
-#: src/amidi-plug/i_configure-alsa.c:396
+#: src/amidi-plug/i_configure-alsa.c:401
 msgid "Mixer control: "
 msgstr "Ovládání směšovače: "
 
-#: src/amidi-plug/i_configure-alsa.c:408
+#: src/amidi-plug/i_configure-alsa.c:413
 msgid "Mixer settings"
 msgstr "Nastavení směšovače"
 
-#: src/amidi-plug/i_configure-alsa.c:421
-msgid ""
-"* Select ALSA output ports *\n"
-"MIDI events will be sent to the ports selected here. In example, if your "
-"audio card provides a hardware synth and you want to play MIDI with it, "
-"you'll probably want to select the wavetable synthesizer ports."
-msgstr ""
-"* Vyberte výstupní port ALSY *\n"
-"MIDI události budou zasílány portům zde vybraným. Na příklad pokud vaše "
-"zvuková karta poskytuje hardwarový syntetizátor a chcete-li jím přehrávat "
-"MIDI, budete pravděpodobně potřebovat vybrat porty tabulkového (wavetable) "
-"syntetizátoru."
-
-#: src/amidi-plug/i_configure-alsa.c:426
-msgid ""
-"* Select ALSA mixer card *\n"
-"The ALSA backend outputs directly through ALSA, it doesn't use effect and "
-"ouput plugins from the player. During playback, the player volumeslider will "
-"manipulate the mixer control you select here. If you're using wavetable "
-"synthesizer ports, you'll probably want to select the Synth control here."
-msgstr ""
-"* Vyberte kartu se směšovačem ALSY *\n"
-"Backend ALSY posílá výstup přímo skrz ALSU. Efekty a výstupní moduly "
-"přehrávače nebudou použity. Během přehrávání jezdec ovládající hlasitost "
-"bude pracovat se směšovačem, který zde vyberete. Používáte-li porty "
-"tabulkového syntetizátoru, pravděpodobně zde budete chtít vybrat „Ovládání "
-"syntézy“."
-
-#: src/amidi-plug/i_configure-alsa.c:433
-msgid ""
-"* Select ALSA mixer control *\n"
-"The ALSA backend outputs directly through ALSA, it doesn't use effect and "
-"ouput plugins from the player. During playback, the player volume slider "
-"will manipulate the mixer control you select here. If you're using wavetable "
-"synthesizer ports, you'll probably want to select the Synth control here."
-msgstr ""
-"* Vyberte ovládání směšovače ALSY *\n"
-"Backend ALSY posílá výstup přímo skrz ALSU. Efekty a výstupní moduly "
-"přehrávače nebudou použity. Během přehrávání jezdec ovládající hlasitost "
-"bude pracovat se směšovačem, který zde vyberete. Používáte-li porty "
-"tabulkového syntetizátoru, pravděpodobně zde budete chtít vybrat „Ovládání "
-"syntézy“."
-
-#: src/amidi-plug/i_configure-alsa.c:444
+#: src/amidi-plug/i_configure-alsa.c:429
 msgid "ALSA Backend not loaded or not available"
 msgstr "Backend ALSY není nahrán nebo není dostupný"
 
-#: src/amidi-plug/i_configure-alsa.c:463
+#: src/amidi-plug/i_configure-alsa.c:448
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
@@ -780,151 +737,51 @@ msgstr ""
 "<span size=\"smaller\">Backend\n"
 "ALSA</span>"
 
-#: src/amidi-plug/i_configure-ap.c:56
+#: src/amidi-plug/i_configure-ap.c:59
 msgid "AMIDI-Plug - backend information"
 msgstr "AMIDI-Plug – podrobnosti o backendu"
 
-#: src/amidi-plug/i_configure-ap.c:194
+#: src/amidi-plug/i_configure-ap.c:196
 msgid "AMIDI-PLUG PREFERENCES"
 msgstr "NASTAVENÍ AMIDI-PLUGU"
 
-#: src/amidi-plug/i_configure-ap.c:221
+#: src/amidi-plug/i_configure-ap.c:223
 msgid "Backend selection"
 msgstr "Výběr backendu"
 
-#: src/amidi-plug/i_configure-ap.c:225
+#: src/amidi-plug/i_configure-ap.c:227
 msgid "Available backends"
 msgstr "Dostupné backendy"
 
-#: src/amidi-plug/i_configure-ap.c:255
+#: src/amidi-plug/i_configure-ap.c:257
 msgid "Playback settings"
 msgstr "Nastavení přehrávání"
 
-#: src/amidi-plug/i_configure-ap.c:260
+#: src/amidi-plug/i_configure-ap.c:262
 msgid "Transpose: "
 msgstr "Transponovat: "
 
-#: src/amidi-plug/i_configure-ap.c:269
+#: src/amidi-plug/i_configure-ap.c:271
 msgid "Drum shift: "
 msgstr "Posun bubnu: "
 
-#: src/amidi-plug/i_configure-ap.c:287
+#: src/amidi-plug/i_configure-ap.c:289
 msgid "Advanced settings"
 msgstr "Pokročilá nastavení"
 
-#: src/amidi-plug/i_configure-ap.c:291
+#: src/amidi-plug/i_configure-ap.c:293
 msgid "pre-calculate length of MIDI files in playlist"
 msgstr "předpočítat délku MIDI souborů v seznamu skladeb"
 
-#: src/amidi-plug/i_configure-ap.c:296
+#: src/amidi-plug/i_configure-ap.c:298
 msgid "extract comments from MIDI file (if available)"
 msgstr "vytáhnout komentáře z MIDI souboru (pokud existují)"
 
-#: src/amidi-plug/i_configure-ap.c:301
+#: src/amidi-plug/i_configure-ap.c:303
 msgid "extract lyrics from MIDI file (if available)"
 msgstr "vytáhnout text z MIDI souboru (pokud existuje)"
 
-#: src/amidi-plug/i_configure-ap.c:320
-msgid ""
-"* Backend selection *\n"
-"AMIDI-Plug works with backends, in a modular fashion; here you should select "
-"your backend; that is, the way MIDI events are going to be handled and "
-"played.\n"
-"If you have a hardware synthesizer on your audio card, and ALSA supports it, "
-"you'll want to use the ALSA backend. It can also be used with anything that "
-"provides an interface to the ALSA sequencer, including software synths or "
-"external devices.\n"
-"If you want to rely on a software synthesizer and/or want to pipe audio into "
-"effect and output plugins of the player you'll want to use the good "
-"FluidSynth backend.\n"
-"Press the info button to read specific information about each backend."
-msgstr ""
-"* Výběr backendu *\n"
-"AMIDI-Plug pracuje s backendy modulárním způsobem. Zde byste si měli vybrat "
-"svůj backend, tj. způsob, jakým způsobem se bude zacházet s MIDI událostmi a "
-"jak budou hrány.\n"
-"Jestliže na zvukové kartě máte hardwarový syntetizátor a ALSA jej podporuje, "
-"je rozumné použít backend ALSY. Taktéž přijde vhod, máte cokoliv jiného, "
-"včetně softwarových syntetizátorů nebo vnějších zařízení, co má rozhraní "
-"k sekvenceru ALSY.\n"
-"Pokud se chcete spolehnout na softwarový syntetizátor a/nebo chcete zvuk "
-"protáhnout efektovými a výstupním modulem, dobrou volbou bude backend "
-"FluidSynth.\n"
-"Podrobnosti o jednotlivých backendech získáte přes tlačítko „Podrobnosti“."
-
-#: src/amidi-plug/i_configure-ap.c:331
-msgid ""
-"* Transpose function *\n"
-"This option allows you to play the midi file transposed in a different key, "
-"by shifting of the desired number of semitones all its notes (excepting "
-"those on midi channel 10, reserved for percussions). Especially useful if "
-"you wish to sing or play along with another instrument."
-msgstr ""
-"* Funkce transpozice *\n"
-"Tato volba nabízí transpozici přehrávaného MIDI souboru do jiné tóniny "
-"o zadaný počet půltónů (kromě tónů 10. stopy, která je vyhrazena pro bicí). "
-"Tato funkce je užitečná, chcete-li doprovázet skladbu zpěvem či jiným "
-"nástrojem."
-
-#: src/amidi-plug/i_configure-ap.c:337
-msgid ""
-"* Drumshift function *\n"
-"This option allows you to shift notes on midi channel 10 (the standard "
-"percussions channel) of the desired number of semitones. This results in "
-"different drumset and percussions being used during midi playback, so if you "
-"wish to enhance (or reduce, or alter) percussion sounds, try to play with "
-"this value."
-msgstr ""
-"* Funkce posunu bubnů *\n"
-"Tato volba nabízí posun not na 10. MIDI kanále (standardní kanál pro bicí) "
-"o zadaný počet půltónů. Výsledkem je odlišná sada bicích nástrojů použitá "
-"během přehrávání. Takže chcete-li vylepšit (ztlumit či jinak pozměnit) zvuk "
-"bicích, pohrejte si s touto hodnotou."
-
-#: src/amidi-plug/i_configure-ap.c:344
-msgid ""
-"* Pre-calculate MIDI length *\n"
-"If this option is enabled, AMIDI-Plug will calculate the MIDI file length as "
-"soon as the player requests it, instead of doing that only when the MIDI "
-"file is being played. In example, MIDI length will be calculated straight "
-"after adding MIDI files in a playlist. Disable this option if you want "
-"faster playlist loading (when a lot of MIDI files are added), enable it to "
-"display more information in the playlist straight after loading."
-msgstr ""
-"* Předpočítat délku skladby *\n"
-"Pokud je tato funkce zapnuta, AMIDI-Plug vypočítá délku MIDI souboru "
-"okamžitě, jak o ni přehrávač požádá. Jinak bude délka určena až při prvním "
-"přehrání. Na příklad délka skladby bude vypočtena ihned po přidání MIDI "
-"souboru do seznamu skladeb. Vypněte tuto funkci, požadujete-li rychlejší "
-"nahrávání seznamu skladeb (obzvláště má-li mnoho MIDI souborů), zapněte tuto "
-"funkci, potřebujete-li vidět délku skladeb ihned po načtení seznamu."
-
-#: src/amidi-plug/i_configure-ap.c:353
-msgid ""
-"* Extract comments from MIDI files *\n"
-"Some MIDI files contain text comments (author, copyright, instrument notes, "
-"etc.). If this option is enabled, AMIDI-Plug will extract and display "
-"comments (if available) in the file information dialog."
-msgstr ""
-"* Vytáhnout komentáře z MIDI souborů *\n"
-"Některé MIDI soubory obsahují textové komentáře (autora, autorská práva, "
-"poznámky k nástrojům apod.). Pokud je tato funkce zapnutá, AMIDI-Plug tyto "
-"komentáře zjistí a zobrazí v dialogu o podrobnostech souboru (pokud "
-"existují)."
-
-#: src/amidi-plug/i_configure-ap.c:358
-msgid ""
-"* Extract lyrics from MIDI files *\n"
-"Some MIDI files contain song lyrics. If this option is enabled, AMIDI-Plug "
-"will extract and display song lyrics (if available) in the file information "
-"dialog."
-msgstr ""
-"* Vytáhnout text z MIDI souborů *\n"
-"Některé MIDI soubory obsahují text písně. Pokud je tato funkce zapnuta, "
-"AMIDI-Plug tento text získá a zobrazí v dialogu o podrobnostech souboru "
-"(pokud existuje)."
-
-#: src/amidi-plug/i_configure-ap.c:375
+#: src/amidi-plug/i_configure-ap.c:333
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
@@ -932,230 +789,109 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:73
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug - select file"
 msgstr "AMIDI-Plug – vyberte soubor"
 
-#: src/amidi-plug/i_configure.c:126
+#: src/amidi-plug/i_configure.c:129
 msgid "AMIDI-Plug - configuration"
 msgstr "AMIDI-Plug – nastavení"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:52
+#: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug – vyberte soundfontový soubor"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:268
+#: src/amidi-plug/i_configure-fluidsynth.c:271
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
 msgstr "NASTAVENÍ FLUIDSYNTH BACKENDU"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:316
+#: src/amidi-plug/i_configure-fluidsynth.c:315
 msgid "SoundFont settings"
 msgstr "Nastavení SoundFontu"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:352
+#: src/amidi-plug/i_configure-fluidsynth.c:351
 msgid "Size (bytes)"
 msgstr "Velikost (v bajtech):"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:401
+#: src/amidi-plug/i_configure-fluidsynth.c:400
 msgid "Load SF on player start"
 msgstr "SoundFont nahrát při spuštění přehrávače"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:405
+#: src/amidi-plug/i_configure-fluidsynth.c:404
 msgid "Load SF on first midifile play"
 msgstr "SoundFont nahrát při přehrání prvního MIDI souboru"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:420
+#: src/amidi-plug/i_configure-fluidsynth.c:419
 msgid "Synthesizer settings"
 msgstr "Nastavení syntetizátoru"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:429
+#: src/amidi-plug/i_configure-fluidsynth.c:428
 msgid "gain"
 msgstr "zesílení"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:435
-#: src/amidi-plug/i_configure-fluidsynth.c:463
-#: src/amidi-plug/i_configure-fluidsynth.c:491
-#: src/amidi-plug/i_configure-fluidsynth.c:522
+#: src/amidi-plug/i_configure-fluidsynth.c:434
+#: src/amidi-plug/i_configure-fluidsynth.c:462
+#: src/amidi-plug/i_configure-fluidsynth.c:490
+#: src/amidi-plug/i_configure-fluidsynth.c:521
 msgid "use default"
 msgstr "použít implicitní"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:438
-#: src/amidi-plug/i_configure-fluidsynth.c:466
+#: src/amidi-plug/i_configure-fluidsynth.c:437
+#: src/amidi-plug/i_configure-fluidsynth.c:465
 msgid "value:"
 msgstr "hodnota:"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:457
+#: src/amidi-plug/i_configure-fluidsynth.c:456
 msgid "poliphony"
 msgstr "vícehlas"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:485
+#: src/amidi-plug/i_configure-fluidsynth.c:484
 msgid "reverb"
 msgstr "dozvuk"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:494
-#: src/amidi-plug/i_configure-fluidsynth.c:525
+#: src/amidi-plug/i_configure-fluidsynth.c:493
+#: src/amidi-plug/i_configure-fluidsynth.c:524
 msgid "yes"
 msgstr "ano"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:496
-#: src/amidi-plug/i_configure-fluidsynth.c:527
+#: src/amidi-plug/i_configure-fluidsynth.c:495
+#: src/amidi-plug/i_configure-fluidsynth.c:526
 msgid "no"
 msgstr "ne"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:516
+#: src/amidi-plug/i_configure-fluidsynth.c:515
 msgid "chorus"
 msgstr "sbor"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:547
+#: src/amidi-plug/i_configure-fluidsynth.c:546
 msgid "sample rate"
 msgstr "vzorkovací kmitočet"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:553
+#: src/amidi-plug/i_configure-fluidsynth.c:552
 msgid "22050 Hz "
 msgstr "22050 Hz "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:556
+#: src/amidi-plug/i_configure-fluidsynth.c:555
 msgid "44100 Hz "
 msgstr "44100 Hz "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:559
+#: src/amidi-plug/i_configure-fluidsynth.c:558
 msgid "96000 Hz "
 msgstr "96000 Hz "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:562
+#: src/amidi-plug/i_configure-fluidsynth.c:561
 msgid "custom "
 msgstr "vlastní "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:571
+#: src/amidi-plug/i_configure-fluidsynth.c:570
 msgid "Hz "
 msgstr "Hz "
 
-#: src/amidi-plug/i_configure-fluidsynth.c:621
-msgid ""
-"* Select SoundFont files *\n"
-"In order to play MIDI with FluidSynth, you need to specify at least one "
-"valid SoundFont file here (use absolute paths). The loading order is from "
-"the top (first) to the bottom (last)."
-msgstr ""
-"* Výběr SoundFont souborů *\n"
-"Abyste mohli přehrávat MIDI přes FluidSynth, musíte určit alespoň jeden "
-"platný soundfontový soubor (použijte absolutní cesty). Pořadí nahrávání je "
-"od shora (první) dolů (poslední)."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:626
-msgid ""
-"* Load SoundFont on player start *\n"
-"Depending on your system speed, SoundFont loading in FluidSynth will require "
-"up to a few seconds. This is a one-time task (the soundfont will stay loaded "
-"until it is changed or the backend is unloaded) that can be done at player "
-"start, or before the first MIDI file is played (the latter is a better "
-"choice if you don't use your player to listen MIDI files only)."
-msgstr ""
-"* Nahrát SoundFont při spuštění přehrávače *\n"
-"V závislosti na rychlosti vašeho systému nahrávání SoundFontu do FluidSynthu "
-"může trvat i několik sekund. Jedná se jednorázovou záležitost (soundfont "
-"zůstane nahraný, dokud jej nevyměníte nebo nezrušíte backend), která může "
-"být provedena během spouštění přehrávače nebo před zahájením produkce "
-"prvního MIDI souboru (druhá možnost je výhodnější, jestliže neplánujete "
-"poslouchat jen MIDI soubory)."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:634
-msgid ""
-"* Load SoundFont on first midifile play *\n"
-"Depending on your system speed, SoundFont loading in FluidSynth will require "
-"up to a few seconds. This is a one-time task (the soundfont will stay loaded "
-"until it is changed or the backend is unloaded) that can be done at player "
-"start, or before the first MIDI file is played (the latter is a better "
-"choice if you don't use your player to listen MIDI files only)."
-msgstr ""
-"* Nahrát SoundFont před prvním MIDI souborem *\n"
-"V závislosti na rychlosti vašeho systému nahrávání SoundFontu do FluidSynthu "
-"může trvat i několik sekund. Jedná se jednorázovou záležitost (soundfont "
-"zůstane nahraný, dokud jej nevyměníte nebo nezrušíte backend), která může "
-"být provedena během spouštění přehrávače nebo před zahájením produkce "
-"prvního MIDI souboru (druhá možnost je výhodnější, jestliže neplánujete "
-"poslouchat jen MIDI soubory)."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:642
-msgid ""
-"* Synthesizer gain *\n"
-"From FluidSynth docs: the gain is applied to the final or master output of "
-"the synthesizer; it is set to a low value by default to avoid the saturation "
-"of the output when random MIDI files are played."
-msgstr ""
-"* Zesílení syntetizátoru *\n"
-"Z dokumentace FluidSynth: zesílení je aplikován na konečný nebo hlavní "
-"výstup syntetizátoru. Implicitně je nastaveno na nízkou hodnotu, aby se "
-"zabránilo ořezávání při přehrávání různorodých MIDI souborů."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:647
-msgid ""
-"* Synthesizer polyphony *\n"
-"From FluidSynth docs: the polyphony defines how many voices can be played in "
-"parallel; the number of voices is not necessarily equivalent to the number "
-"of notes played simultaneously; indeed, when a note is struck on a specific "
-"MIDI channel, the preset on that channel may create several voices, for "
-"example, one for the left audio channel and one for the right audio "
-"channels; the number of voices activated depends on the number of instrument "
-"zones that fall in the correspond to the velocity and key of the played note."
-msgstr ""
-"* Vícehlas syntetizátoru *\n"
-"Z dokumentace FluidSynth: vícehlas určuje, kolik hlasů může hrát najednou. "
-"Počet hlasů není nezbytně shodný s počtem not hraných současně. Ve "
-"skutečnosti když je nota vyslána na určitém MIDI kanálu, předvolba na "
-"takovém kanálu může vytvořit více hlasů, na příklad jeden pro levý zvukový "
-"kanál a jeden pro pravý zvukový kanál. Počet aktivovaných hlasů závisí na "
-"počtu nástrojových zón, které spadají do odpovídající rychlosti a klíči "
-"hrané noty."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:657
-#: src/amidi-plug/i_configure-fluidsynth.c:663
-msgid ""
-"* Synthesizer reverb *\n"
-"From FluidSynth docs: when set to \"yes\" the reverb effects module is "
-"activated; note that when the reverb module is active, the amount of signal "
-"sent to the reverb module depends on the \"reverb send\" generator defined "
-"in the SoundFont."
-msgstr ""
-"* Dozvuk syntetizátoru *\n"
-"Z dokumentace FluidSynth: je-li nastaveno na „ano“, modul efektu dozvuku je "
-"aktivován. Pamatujte, že při aktivovaném modulu dozvuku je množství signálu "
-"zasílaného tomuto modulu závislé na generátoru „zasílání dozvuku“, který je "
-"definován v SoundFontu."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:669
-#: src/amidi-plug/i_configure-fluidsynth.c:675
-msgid ""
-"* Synthesizer chorus *\n"
-"From FluidSynth docs: when set to \"yes\" the chorus effects module is "
-"activated; note that when the chorus module is active, the amount of signal "
-"sent to the chorus module depends on the \"chorus send\" generator defined "
-"in the SoundFont."
-msgstr ""
-"* Sbor syntetizátoru *\n"
-"Z dokumentace FluidSynth: je-li nastaveno na „ano“, modul efektu sboru je "
-"aktivován. Pamatujte, že při aktivovaném modulu sboru je množství signálu "
-"zasílaného tomuto modulu závislé na generátoru „zasílání sboru“, který je "
-"definován v SoundFontu."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:681
-#: src/amidi-plug/i_configure-fluidsynth.c:685
-#: src/amidi-plug/i_configure-fluidsynth.c:689
-#: src/amidi-plug/i_configure-fluidsynth.c:693
-msgid ""
-"* Synthesizer samplerate *\n"
-"The sample rate of the audio generated by the synthesizer. You can also "
-"specify a custom value in the interval 22050Hz-96000Hz."
-msgstr ""
-"* Vzorkovací frekvence syntetizátoru *\n"
-"Vzorkovací frekvence zvuku generovaného syntetizátorem. Lze zadat vlastní "
-"hodnotu z intervalu 22050 Hz–96000 Hz."
-
-#: src/amidi-plug/i_configure-fluidsynth.c:701
+#: src/amidi-plug/i_configure-fluidsynth.c:623
 msgid "FluidSynth Backend not loaded or not available"
 msgstr "FluidSynth backend není nahrán nebo není dostupný"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:720
+#: src/amidi-plug/i_configure-fluidsynth.c:642
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
@@ -1696,17 +1432,17 @@ msgstr "Páruje se…"
 msgid "Rescan"
 msgstr "Znovu vyhledat"
 
-#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:70
-#: src/gtkui/ui_manager.c:71 src/hotkey/gui.c:71 src/skins/ui_manager.c:169
+#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:67
+#: src/gtkui/ui_manager.c:68 src/hotkey/gui.c:72 src/skins/ui_manager.c:169
 #: src/skins/ui_manager.c:170
 msgid "Play"
 msgstr "Hrát"
 
-#: src/blur_scope/config.c:86
+#: src/blur_scope/config.c:73
 msgid "Blur Scope: Color selection"
 msgstr "Blur scope: výběr barvy"
 
-#: src/blur_scope/config.c:96 src/jack/configure.c:111
+#: src/blur_scope/config.c:83 src/jack/configure.c:111
 msgid "Options:"
 msgstr "Volby:"
 
@@ -1802,69 +1538,69 @@ msgstr "Přehrát CD"
 msgid "Add CD"
 msgstr "Přidat CD"
 
-#: src/compressor/plugin.c:66
+#: src/compressor/plugin.c:67
 msgid "About Dynamic Range Compression Plugin"
 msgstr "O modulu Komprese dynamického rozsahu"
 
-#: src/compressor/plugin.c:98
+#: src/compressor/plugin.c:99
 msgid "Dynamic Range Compressor Preferences"
 msgstr "Nastavení komprese dynamického rozsahu"
 
-#: src/compressor/plugin.c:110
+#: src/compressor/plugin.c:111
 msgid "Center volume:"
 msgstr "Hlasitost středu:"
 
-#: src/compressor/plugin.c:123
+#: src/compressor/plugin.c:124
 msgid "Dynamic range:"
 msgstr "Rozsah dynamiky:"
 
-#: src/console/configure.c:137
+#: src/console/configure.c:138
 msgid "Game Console Music Decoder"
 msgstr "Dekodér hudby pro herní konzole"
 
-#: src/console/configure.c:171
+#: src/console/configure.c:172
 msgid "Bass:"
 msgstr "Hloubky:"
 
-#: src/console/configure.c:175 src/console/configure.c:186
-#: src/console/configure.c:207
+#: src/console/configure.c:176 src/console/configure.c:187
+#: src/console/configure.c:208
 msgid "secs"
 msgstr "s"
 
-#: src/console/configure.c:182
+#: src/console/configure.c:183
 msgid "Treble:"
 msgstr "Výšky:"
 
-#: src/console/configure.c:203
+#: src/console/configure.c:204
 msgid "Default song length:"
 msgstr "Implicitní délka skladby:"
 
-#: src/console/configure.c:209 src/modplug/gui/interface.cxx:269
+#: src/console/configure.c:210 src/modplug/gui/interface.cxx:269
 #: src/sid/xs_interface.c:666
 msgid "Resampling"
 msgstr "Převzorkování"
 
-#: src/console/configure.c:215
+#: src/console/configure.c:216
 msgid "Enable audio resampling"
 msgstr "Povolit převzorkování zvuku"
 
-#: src/console/configure.c:230
+#: src/console/configure.c:231
 msgid "Resampling rate:"
 msgstr "Převzorkovat na:"
 
-#: src/console/configure.c:245
+#: src/console/configure.c:246
 msgid "SPC"
 msgstr "SPC"
 
-#: src/console/configure.c:246
+#: src/console/configure.c:247
 msgid "Ignore length from SPC tags"
 msgstr "Ignorovat délku z SPC popisků"
 
-#: src/console/configure.c:247
+#: src/console/configure.c:248
 msgid "Increase reverb"
 msgstr "Prodloužit dozvuk"
 
-#: src/console/configure.c:272
+#: src/console/configure.c:273
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
@@ -1888,29 +1624,29 @@ msgstr ""
 "Implementace v Audacious: William Pitcock <nenold@dereferenced.org>,\n"
 "        Shay Green <gblargg@gmail.com>\n"
 
-#: src/crossfade/plugin.c:64
+#: src/crossfade/plugin.c:65
 msgid "About Crossfade"
 msgstr "O modulu Crossfade (přechodu)"
 
-#: src/crossfade/plugin.c:96
+#: src/crossfade/plugin.c:97
 msgid "Crossfade Preferences"
 msgstr "Nastavení modulu Crossfade"
 
-#: src/crossfade/plugin.c:108
+#: src/crossfade/plugin.c:109
 msgid "Overlap (in seconds):"
 msgstr "Přesah (v sekundách):"
 
-#: src/crossfade/plugin.c:141 src/crossfade/plugin.c:147
+#: src/crossfade/plugin.c:140 src/crossfade/plugin.c:146
 msgid "Crossfade Error"
 msgstr "Chyba přechodu"
 
-#: src/crossfade/plugin.c:141
+#: src/crossfade/plugin.c:140
 msgid ""
 "Crossfading failed because the songs had a different number of channels."
 msgstr ""
 "Uplatnění použití přechodu selhalo, protože skladby mají jiný počet kanálů."
 
-#: src/crossfade/plugin.c:149
+#: src/crossfade/plugin.c:148
 msgid ""
 "Crossfading failed because the songs had different sample rates.\n"
 "\n"
@@ -1923,20 +1659,24 @@ msgstr ""
 "Skladby můžete převzorkovat na stejnou frekvenci pomocí efektu Převodníku "
 "vzorkovací frekvence."
 
-#: src/crystalizer/crystalizer.c:111
+#: src/crystalizer/crystalizer.c:112
 msgid "Configure Crystalizer"
 msgstr "Nastavit krystalizér"
 
-#: src/crystalizer/crystalizer.c:113 src/stereo_plugin/stereo.c:108
+#: src/crystalizer/crystalizer.c:114 src/stereo_plugin/stereo.c:108
 msgid "Effect intensity:"
 msgstr "Síla efektu:"
 
-#: src/crystalizer/crystalizer.c:150 src/echo_plugin/gui.c:139
-#: src/modplug/gui/interface.cxx:709 src/stereo_plugin/stereo.c:145
+#: src/crystalizer/crystalizer.c:148 src/echo_plugin/gui.c:136
+#: src/modplug/gui/interface.cxx:709 src/stereo_plugin/stereo.c:142
 msgid "Apply"
 msgstr "Použít"
 
-#: src/echo_plugin/gui.c:14
+#: src/daemon/daemon.c:58
+msgid "Daemon Interface (like old headless mode)"
+msgstr ""
+
+#: src/echo_plugin/gui.c:15
 msgid ""
 "Echo Plugin\n"
 "By Johan Levin 1999.\n"
@@ -1948,23 +1688,23 @@ msgstr ""
 "\n"
 "Prostorovou ozvěnu přidal Carl van Schaik, 1999"
 
-#: src/echo_plugin/gui.c:26
+#: src/echo_plugin/gui.c:27
 msgid "About Echo Plugin"
 msgstr "O modulu ozvěny"
 
-#: src/echo_plugin/gui.c:71
+#: src/echo_plugin/gui.c:72
 msgid "Configure Echo"
 msgstr "Nastavit ozvěnu"
 
-#: src/echo_plugin/gui.c:84
+#: src/echo_plugin/gui.c:88
 msgid "Delay: (ms)"
 msgstr "Zpoždění: (ms)"
 
-#: src/echo_plugin/gui.c:89
+#: src/echo_plugin/gui.c:93
 msgid "Feedback: (%)"
 msgstr "Zpětná vazba: (%)"
 
-#: src/echo_plugin/gui.c:94
+#: src/echo_plugin/gui.c:98
 msgid "Volume: (%)"
 msgstr "Hlasitost: (%)"
 
@@ -2250,7 +1990,7 @@ msgstr "EvDev-Plug – Nastavení"
 msgid "Active"
 msgstr "Aktivní"
 
-#: src/evdev-plug/ed_ui.c:655 src/sun/configure.c:486
+#: src/evdev-plug/ed_ui.c:655
 msgid "Status"
 msgstr "Stav"
 
@@ -2326,7 +2066,7 @@ msgstr ""
 "\n"
 "napsal Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:669
+#: src/ffaudio/ffaudio-core.c:668
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2349,15 +2089,15 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:682
+#: src/ffaudio/ffaudio-core.c:681
 msgid "About FFaudio Plugin"
 msgstr "O modulu FFaudio"
 
-#: src/filewriter/filewriter.c:179
+#: src/filewriter/filewriter.c:155
 msgid "About FileWriter-Plugin"
 msgstr "O modulu FileWriter"
 
-#: src/filewriter/filewriter.c:180
+#: src/filewriter/filewriter.c:156
 msgid ""
 "FileWriter-Plugin\n"
 "\n"
@@ -2391,250 +2131,201 @@ msgstr ""
 "tak nestalo, obraťte se na Free Software Foundation, Inc.,\n"
 "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/filewriter/filewriter.c:460
+#: src/filewriter/filewriter.c:444
 msgid "File Writer Configuration"
 msgstr "Nastavení zápisu do souboru"
 
-#: src/filewriter/filewriter.c:472
+#: src/filewriter/filewriter.c:456
 msgid "Output file format:"
 msgstr "Formát výstupního souboru:"
 
-#: src/filewriter/filewriter.c:490 src/ladspa/ladspa.c:1070
+#: src/filewriter/filewriter.c:474 src/ladspa/ladspa.c:1078
 msgid "Configure"
 msgstr "Nastavit"
 
-#: src/filewriter/filewriter.c:505
+#: src/filewriter/filewriter.c:489
 msgid "Save into original directory"
 msgstr "Ukládat do původního adresáře"
 
-#: src/filewriter/filewriter.c:510
+#: src/filewriter/filewriter.c:494
 msgid "Save into custom directory"
 msgstr "Ukládat do vlastního adresáře"
 
-#: src/filewriter/filewriter.c:522
+#: src/filewriter/filewriter.c:504
 msgid "Output file folder:"
 msgstr "Složka s výstupními soubory:"
 
-#: src/filewriter/filewriter.c:526
+#: src/filewriter/filewriter.c:508
 msgid "Pick a folder"
 msgstr "Vybrat složku"
 
-#: src/filewriter/filewriter.c:545
+#: src/filewriter/filewriter.c:527
 msgid "Get filename from:"
 msgstr "Získat jméno souboru z:"
 
-#: src/filewriter/filewriter.c:548
+#: src/filewriter/filewriter.c:530
 msgid "original file tags"
 msgstr "původních značek v souboru"
 
-#: src/filewriter/filewriter.c:554
+#: src/filewriter/filewriter.c:536
 msgid "original filename"
 msgstr "jména původního souboru"
 
-#: src/filewriter/filewriter.c:564
+#: src/filewriter/filewriter.c:546
 msgid "Don't strip file name extension"
 msgstr "Nezkracovat příponu jména souboru"
 
-#: src/filewriter/filewriter.c:568
-msgid ""
-"If enabled, the extension from the original filename will not be stripped "
-"before adding the new file extension to the end."
-msgstr ""
-"Je-li zapnuto, přípona ze jména původního souboru nebude před přidáním nové "
-"přípony odstraněna."
-
-#: src/filewriter/filewriter.c:582
+#: src/filewriter/filewriter.c:561
 msgid "Prepend track number to filename"
 msgstr "Předřadit jménu souboru číslo stopy"
 
-#: src/filewriter/mp3.c:710
+#: src/filewriter/mp3.c:38 src/filewriter/mp3.c:783
+msgid "Auto"
+msgstr "Auto"
+
+#: src/filewriter/mp3.c:38
+#, fuzzy
+msgid "Joint Stereo"
+msgstr "Joint-Stereo"
+
+#: src/filewriter/mp3.c:724
 msgid "MP3 Configuration"
 msgstr "Nastavení MP3"
 
-#: src/filewriter/mp3.c:737
+#: src/filewriter/mp3.c:747
 msgid "Algorithm Quality:"
 msgstr "Kvalita algoritmu:"
 
-#: src/filewriter/mp3.c:759
-msgid ""
-"best/slowest:0;\n"
-"worst/fastest:9;\n"
-"recommended:2;\n"
-"default:5;"
-msgstr ""
-"nejlepší/nejpomalejší:0;\n"
-"nejhorší/nejrychlejší:9;\n"
-"doporučená:2;\n"
-"výchozí:5;"
-
-#: src/filewriter/mp3.c:767
+#: src/filewriter/mp3.c:772
 msgid "Output Samplerate:"
 msgstr "Výstupní vzorkovací kmitočet"
-
-#: src/filewriter/mp3.c:778 src/filewriter/mp3.c:919
-msgid "Auto"
-msgstr "Auto"
 
 #: src/filewriter/mp3.c:800
 msgid "(Hz)"
 msgstr "(Hz)"
 
-#: src/filewriter/mp3.c:812
+#: src/filewriter/mp3.c:807
 msgid "Bitrate / Compression ratio:"
 msgstr "Datový tok / Kompresní poměr:"
 
-#: src/filewriter/mp3.c:838
+#: src/filewriter/mp3.c:831
 msgid "Bitrate (kbps):"
 msgstr "Datový tok (kb/s):"
 
-#: src/filewriter/mp3.c:879
+#: src/filewriter/mp3.c:864
 msgid "Compression ratio:"
 msgstr "Kompresní poměr:"
 
-#: src/filewriter/mp3.c:909
+#: src/filewriter/mp3.c:888
 msgid "Audio Mode:"
 msgstr "Zvukový režim:"
 
-#: src/filewriter/mp3.c:924
-msgid "Joint-Stereo"
-msgstr "Joint-Stereo"
-
-#: src/filewriter/mp3.c:967
+#: src/filewriter/mp3.c:913
 msgid "Misc:"
 msgstr "Různé:"
 
-#: src/filewriter/mp3.c:978
+#: src/filewriter/mp3.c:924
 msgid "Enforce strict ISO complience"
 msgstr "Vynutit přísnou shodu s ISO"
 
-#: src/filewriter/mp3.c:989
+#: src/filewriter/mp3.c:935
 msgid "Error protection"
 msgstr "Ochrana před chybami"
 
-#: src/filewriter/mp3.c:1001
-msgid "Adds 16 bit checksum to every frame"
-msgstr "Ke každému rámci přidat 16b kontrolní součet"
-
-#: src/filewriter/mp3.c:1006 src/filewriter/vorbis.c:247
+#: src/filewriter/mp3.c:947 src/filewriter/vorbis.c:245
 #: src/modplug/gui/interface.cxx:320
 msgid "Quality"
 msgstr "Kvalita"
 
-#: src/filewriter/mp3.c:1018
+#: src/filewriter/mp3.c:957
 msgid "Enable VBR/ABR"
 msgstr "Povolit VBR/ABR"
 
-#: src/filewriter/mp3.c:1030
+#: src/filewriter/mp3.c:967
 msgid "Type:"
 msgstr "Druh:"
 
-#: src/filewriter/mp3.c:1041
-msgid "Variable bitrate"
-msgstr "Proměnný datový tok"
-
-#: src/filewriter/mp3.c:1053
-msgid "Average bitrate"
-msgstr "Průměrný datový tok"
-
-#: src/filewriter/mp3.c:1067
+#: src/filewriter/mp3.c:1000
 msgid "VBR Options:"
 msgstr "Nastavení VBR:"
 
-#: src/filewriter/mp3.c:1083
+#: src/filewriter/mp3.c:1016
 msgid "Minimum bitrate (kbps):"
 msgstr "Nejmenší datový tok (kb/s):"
 
-#: src/filewriter/mp3.c:1119
+#: src/filewriter/mp3.c:1043
 msgid "Maximum bitrate (kbps):"
 msgstr "Největší datový tok (kb/s):"
 
-#: src/filewriter/mp3.c:1151
+#: src/filewriter/mp3.c:1066
 msgid "Strictly enforce minimum bitrate"
 msgstr "Přísně vynucovat nejmenší datový tok"
 
-#: src/filewriter/mp3.c:1153
-msgid ""
-"For use with players that do not support low bitrate mp3 (Apex AD600-A DVD/"
-"mp3 player)"
-msgstr ""
-"Pro použití v přehrávačích, které nepodporují úzkopásmové MP3 (přehrávač "
-"Apex AD600-A DVD/MP3)"
-
-#: src/filewriter/mp3.c:1166
+#: src/filewriter/mp3.c:1078
 msgid "ABR Options:"
 msgstr "Nastavení ABR:"
 
-#: src/filewriter/mp3.c:1176
+#: src/filewriter/mp3.c:1088
 msgid "Average bitrate (kbps):"
 msgstr "Průměrný datový tok (kb/s):"
 
-#: src/filewriter/mp3.c:1213
+#: src/filewriter/mp3.c:1116
 msgid "VBR quality level:"
 msgstr "Úroveň kvality VBR:"
 
-#: src/filewriter/mp3.c:1228
-msgid ""
-"highest:0;\n"
-"lowest:9;\n"
-"default:4;"
-msgstr ""
-"nejvyšší:0;\n"
-"nejnižší:9;\n"
-"výchozí:4;"
-
-#: src/filewriter/mp3.c:1236
+#: src/filewriter/mp3.c:1135
 msgid "Don't write Xing VBR header"
 msgstr "Nezapisovat VBR hlavičku Xing"
 
-#: src/filewriter/mp3.c:1250
+#: src/filewriter/mp3.c:1149
 msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
-#: src/filewriter/mp3.c:1262
+#: src/filewriter/mp3.c:1159
 msgid "Frame params:"
 msgstr "Parametry rámců:"
 
-#: src/filewriter/mp3.c:1274
+#: src/filewriter/mp3.c:1171
 msgid "Mark as copyright"
 msgstr "Označit jako podléhající autorskému právu"
 
-#: src/filewriter/mp3.c:1285
+#: src/filewriter/mp3.c:1182
 msgid "Mark as original"
 msgstr "Označit jako původní"
 
-#: src/filewriter/mp3.c:1297
+#: src/filewriter/mp3.c:1194
 msgid "ID3 params:"
 msgstr "Parametry ID3:"
 
-#: src/filewriter/mp3.c:1308
+#: src/filewriter/mp3.c:1205
 msgid "Force addition of version 2 tag"
 msgstr "Vynutit přidání popisků verze 2"
 
-#: src/filewriter/mp3.c:1318
+#: src/filewriter/mp3.c:1215
 msgid "Only add v1 tag"
 msgstr "Přidávat jen popisky verze 1"
 
-#: src/filewriter/mp3.c:1325
+#: src/filewriter/mp3.c:1222
 msgid "Only add v2 tag"
 msgstr "Přidávat jen popisky verze 2"
 
-#: src/filewriter/mp3.c:1346
+#: src/filewriter/mp3.c:1243
 msgid "Tags"
 msgstr "Popisky"
 
-#: src/filewriter/vorbis.c:240
+#: src/filewriter/vorbis.c:238
 msgid "Vorbis Encoder Configuration"
 msgstr "Nastavení vorbis kodéru"
 
-#: src/filewriter/vorbis.c:260
+#: src/filewriter/vorbis.c:258
 msgid "Quality level (0 - 10):"
 msgstr "Úroveň kvality (0–10):"
 
-#: src/flacng/plugin.c:393
+#: src/flacng/plugin.c:379
 msgid "About FLAC Audio Plugin"
 msgstr "O zvukovém modulu FLAC"
 
-#: src/flacng/plugin.c:394
+#: src/flacng/plugin.c:380
 msgid ""
 "\n"
 "\n"
@@ -2684,41 +2375,131 @@ msgstr "Audacious2"
 msgid "gnt interface"
 msgstr "Rozhraní gnt"
 
-#: src/gtkui/actions.c:250 src/skins/ui_main.c:820
+#: src/gtkui/actions.c:254 src/skins/ui_main.c:820
 msgid "Can't jump to time when no track is being played.\n"
 msgstr "Když nehraje žádná skladba, nelze přejít na čas.\n"
 
-#: src/gtkui/actions.c:265 src/gtkui/ui_manager.c:224
-#: src/gtkui/ui_manager.c:225 src/skins/ui_main.c:835
+#: src/gtkui/actions.c:269 src/gtkui/ui_manager.c:223
+#: src/gtkui/ui_manager.c:224 src/skins/ui_main.c:835
 #: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Jump to Time"
 msgstr "Přejít na čas"
 
-#: src/gtkui/actions.c:282 src/skins/ui_main.c:856
+#: src/gtkui/actions.c:286 src/skins/ui_main.c:856
 msgid "minutes:seconds"
 msgstr "minuty:sekundy"
 
-#: src/gtkui/actions.c:292 src/skins/ui_main.c:866
+#: src/gtkui/actions.c:296 src/skins/ui_main.c:866
 msgid "Track length:"
 msgstr "Délka stopy:"
 
-#: src/gtkui/actions.c:530 src/skins/ui_playlist.c:648
+#: src/gtkui/actions.c:534 src/skins/ui_playlist.c:648
 #, c-format
 msgid "Error writing playlist \"%s\": %s"
 msgstr "Chyba při zapisování seznamu skladeb „%s“: %s"
 
-#: src/gtkui/actions.c:545 src/skins/ui_playlist.c:670
+#: src/gtkui/actions.c:549 src/skins/ui_playlist.c:670
 #, c-format
 msgid "%s already exist. Continue?"
 msgstr "%s už existuje. Pokračovat?"
 
-#: src/gtkui/actions.c:571 src/skins/ui_manager.c:216
+#: src/gtkui/actions.c:575 src/skins/ui_manager.c:216
 msgid "Export Playlist"
 msgstr "Exportovat seznam skladeb"
 
-#: src/gtkui/actions.c:643 src/skins/ui_manager.c:213
+#: src/gtkui/actions.c:647 src/skins/ui_manager.c:213
 msgid "Import Playlist"
 msgstr "Importovat seznam skladeb"
+
+#: src/gtkui/columns.c:36
+#, fuzzy
+msgid "Entry number"
+msgstr "Číslo stopy"
+
+#: src/gtkui/columns.c:36 src/sid/xs_interface.c:1103
+msgid "Title"
+msgstr "Název"
+
+#: src/gtkui/columns.c:37
+msgid "Artist"
+msgstr "Umělec"
+
+#: src/gtkui/columns.c:37
+msgid "Year"
+msgstr "Rok"
+
+#: src/gtkui/columns.c:37
+msgid "Album"
+msgstr "Album"
+
+#: src/gtkui/columns.c:37
+#, fuzzy
+msgid "Track"
+msgstr "Stopa:"
+
+#: src/gtkui/columns.c:37
+#, fuzzy
+msgid "Queue position"
+msgstr "Umístění"
+
+#: src/gtkui/columns.c:38
+#, fuzzy
+msgid "Length"
+msgstr "Délka:"
+
+#: src/gtkui/columns.c:38
+#, fuzzy
+msgid "File path"
+msgstr "Cesta k souboru"
+
+#: src/gtkui/columns.c:38
+#, fuzzy
+msgid "File name"
+msgstr "Jméno souboru"
+
+#: src/gtkui/columns.c:38
+#, fuzzy
+msgid "Custom title"
+msgstr "Vlastní skin:"
+
+#: src/gtkui/columns.c:284
+#, fuzzy
+msgid "Choose Columns"
+msgstr "Zobrazit přehrávač"
+
+#: src/gtkui/columns.c:298
+#, fuzzy
+msgid "Available:"
+msgstr "proměnlivé"
+
+#: src/gtkui/columns.c:332
+msgid "Chosen:"
+msgstr ""
+
+#: src/gtkui/layout.c:122
+msgid "Dock at Left"
+msgstr ""
+
+#: src/gtkui/layout.c:122
+msgid "Dock at Right"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+msgid "Dock at Top"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+msgid "Dock at Bottom"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+msgid "Undock"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+#, fuzzy
+msgid "Disable"
+msgstr "Povolit/zakázat"
 
 #: src/gtkui/ui_gtk.c:79
 msgid "GTK Interface"
@@ -2754,97 +2535,89 @@ msgid "No Playlist Advance"
 msgstr "Žádné pokračování dle seznamu skladeb"
 
 #: src/gtkui/ui_manager.c:49
-msgid "Show playlists"
-msgstr "Zobrazit seznamy skladeb"
-
-#: src/gtkui/ui_manager.c:50
-msgid "Show/hide playlists"
-msgstr "Zobrazit/skrýt seznamy skladeb"
-
-#: src/gtkui/ui_manager.c:52
 msgid "Show infoarea"
 msgstr "Zobrazit oblast informací"
 
-#: src/gtkui/ui_manager.c:53
+#: src/gtkui/ui_manager.c:50
 msgid "Show/hide infoarea"
 msgstr "Zobrazit/skrýt oblast informací"
 
-#: src/gtkui/ui_manager.c:55
+#: src/gtkui/ui_manager.c:52
 msgid "Show main menu"
 msgstr "Zobrazit hlavní nabídku"
 
-#: src/gtkui/ui_manager.c:56
+#: src/gtkui/ui_manager.c:53
 msgid "Show/hide main menu"
 msgstr "Zobrazit/skrýt hlavní nabídku"
 
-#: src/gtkui/ui_manager.c:58
+#: src/gtkui/ui_manager.c:55
 msgid "Show statusbar"
 msgstr "Stav stavový panel"
 
-#: src/gtkui/ui_manager.c:59
+#: src/gtkui/ui_manager.c:56
 msgid "Show/hide statusbar"
 msgstr "Zobrazit/skrýt stavový panel"
 
-#: src/gtkui/ui_manager.c:61
+#: src/gtkui/ui_manager.c:58
 #, fuzzy
 msgid "Show Column Headers"
 msgstr "Zobrazit přehrávač"
 
-#: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74
+#: src/gtkui/ui_manager.c:70 src/gtkui/ui_manager.c:71
 #: src/skins/ui_manager.c:172 src/skins/ui_manager.c:173
 msgid "Pause"
 msgstr "Pozastavit"
 
-#: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77 src/hotkey/gui.c:73
+#: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74 src/hotkey/gui.c:74
 #: src/skins/ui_manager.c:175 src/skins/ui_manager.c:176
 msgid "Stop"
 msgstr "Zastavit"
 
-#: src/gtkui/ui_manager.c:79 src/gtkui/ui_manager.c:80
+#: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77
 #: src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
 msgid "Previous"
 msgstr "Předchozí"
 
-#: src/gtkui/ui_manager.c:82 src/gtkui/ui_manager.c:83
+#: src/gtkui/ui_manager.c:79 src/gtkui/ui_manager.c:80
 #: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
 msgid "Next"
 msgstr "Další"
 
-#: src/gtkui/ui_manager.c:88 src/skins/ui_manager.c:199
+#: src/gtkui/ui_manager.c:85 src/skins/ui_manager.c:199
 msgid "Playlist"
 msgstr "Seznam skladeb"
 
-#: src/gtkui/ui_manager.c:90 src/gtkui/ui_manager.c:91
+#: src/gtkui/ui_manager.c:87 src/gtkui/ui_manager.c:88
 #: src/skins/ui_manager.c:201 src/skins/ui_manager.c:202
 msgid "New Playlist"
 msgstr "Nový seznam skladeb"
 
-#: src/gtkui/ui_manager.c:93 src/gtkui/ui_manager.c:94
+#: src/gtkui/ui_manager.c:90 src/gtkui/ui_manager.c:91
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 msgid "Delete Playlist"
 msgstr "Smazat seznam skladeb"
 
-#: src/gtkui/ui_manager.c:96
+#: src/gtkui/ui_manager.c:93
 msgid "Import Playlist ..."
 msgstr "Importovat seznam skladeb…"
 
-#: src/gtkui/ui_manager.c:97 src/skins/ui_manager.c:214
+#: src/gtkui/ui_manager.c:94 src/skins/ui_manager.c:214
 msgid "Loads a playlist file into the selected playlist."
 msgstr "Načte soubor se seznamem skladeb do vybraného seznamu."
 
-#: src/gtkui/ui_manager.c:99
+#: src/gtkui/ui_manager.c:96
 msgid "Export Playlist ..."
 msgstr "Exportovat seznam skladeb…"
 
-#: src/gtkui/ui_manager.c:100 src/skins/ui_manager.c:217
+#: src/gtkui/ui_manager.c:97 src/skins/ui_manager.c:217
 msgid "Saves the selected playlist."
 msgstr "Uloží vybraný seznam skladeb."
 
-#: src/gtkui/ui_manager.c:102 src/skins/ui_manager.c:219
+#: src/gtkui/ui_manager.c:99 src/skins/ui_manager.c:219
 msgid "Save All Playlists"
 msgstr "Uložit všechny seznamy skladeb"
 
-#: src/gtkui/ui_manager.c:103 src/skins/ui_manager.c:220
+#: src/gtkui/ui_manager.c:100 src/skins/ui_manager.c:220
 msgid ""
 "Saves all the playlists that are open. Note that this is done automatically "
 "when Audacious quits."
@@ -2852,256 +2625,261 @@ msgstr ""
 "Uloží všechny seznamy skladeb, které jsou otevřeny. Vezměte na vědomí, že "
 "toto bude rovněž provedeno při ukončení Audacious."
 
-#: src/gtkui/ui_manager.c:107
+#: src/gtkui/ui_manager.c:104
 msgid "Refresh"
 msgstr "Obnovit"
 
-#: src/gtkui/ui_manager.c:108 src/skins/ui_manager.c:225
+#: src/gtkui/ui_manager.c:105 src/skins/ui_manager.c:225
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr "Obnovuje metadata náležící skladbě ze seznamu."
 
-#: src/gtkui/ui_manager.c:111
+#: src/gtkui/ui_manager.c:108
 #, fuzzy
 msgid "Refresh Selected"
 msgstr "Odebrat označené"
 
-#: src/gtkui/ui_manager.c:112
+#: src/gtkui/ui_manager.c:109
 #, fuzzy
 msgid "Refreshes metadata associated with selected entries."
 msgstr "Obnovuje metadata náležící skladbě ze seznamu."
 
-#: src/gtkui/ui_manager.c:116
+#: src/gtkui/ui_manager.c:113
 msgid "Playlist Manager"
 msgstr "Správce seznamů skladeb"
 
-#: src/gtkui/ui_manager.c:117 src/skins/ui_manager.c:229
+#: src/gtkui/ui_manager.c:114 src/skins/ui_manager.c:229
 msgid "Opens the playlist manager."
 msgstr "Otevře správce seznamu skladeb."
 
-#: src/gtkui/ui_manager.c:120
+#: src/gtkui/ui_manager.c:117
 msgid "Add URL ..."
 msgstr "Přidat URL…"
 
-#: src/gtkui/ui_manager.c:121 src/skins/ui_manager.c:239
+#: src/gtkui/ui_manager.c:118 src/skins/ui_manager.c:239
 msgid "Adds a remote track to the playlist."
 msgstr "Do seznamu přidá vzdálenou stopu."
 
-#: src/gtkui/ui_manager.c:124
+#: src/gtkui/ui_manager.c:121
 msgid "Add Files ..."
 msgstr "Přidat soubory…"
 
-#: src/gtkui/ui_manager.c:125 src/skins/ui_manager.c:243
+#: src/gtkui/ui_manager.c:122 src/skins/ui_manager.c:243
 msgid "Adds files to the playlist."
 msgstr "Přidá soubory do seznamu skladeb."
 
-#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:266
+#: src/gtkui/ui_manager.c:125 src/skins/ui_manager.c:266
 msgid "Remove All"
 msgstr "Odebrat všechny"
 
-#: src/gtkui/ui_manager.c:129 src/skins/ui_manager.c:267
+#: src/gtkui/ui_manager.c:126 src/skins/ui_manager.c:267
 msgid "Removes all entries from the playlist."
 msgstr "Ze seznamu odstraní všechny skladby."
 
-#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:292
+#: src/gtkui/ui_manager.c:129 src/skins/ui_manager.c:292
 msgid "Remove Unselected"
 msgstr "Odebrat neoznačené"
 
-#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:293
+#: src/gtkui/ui_manager.c:130 src/skins/ui_manager.c:293
 msgid "Remove unselected entries from the playlist."
 msgstr "Odebrat neoznačené skladby se seznamu."
 
-#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:296
+#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:296
 msgid "Remove Selected"
 msgstr "Odebrat označené"
 
-#: src/gtkui/ui_manager.c:137 src/skins/ui_manager.c:297
+#: src/gtkui/ui_manager.c:134 src/skins/ui_manager.c:297
 msgid "Remove selected entries from the playlist."
 msgstr "Odebrat označené skladby ze seznamu."
 
-#: src/gtkui/ui_manager.c:140
+#: src/gtkui/ui_manager.c:137
 msgid "Edit title"
 msgstr "Upravit název"
 
-#: src/gtkui/ui_manager.c:141
+#: src/gtkui/ui_manager.c:138
 msgid "Edites the playlist title."
 msgstr "Upraví název seznamu skladeb."
 
-#: src/gtkui/ui_manager.c:144
+#: src/gtkui/ui_manager.c:141
 msgid "Choose Columns ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:147
+#: src/gtkui/ui_manager.c:144
 msgid "Sort"
 msgstr "Seřadit"
 
-#: src/gtkui/ui_manager.c:148 src/skins/ui_manager.c:336
+#: src/gtkui/ui_manager.c:145 src/skins/ui_manager.c:336
 #: src/skins/ui_manager.c:366
 msgid "By Track Number"
 msgstr "Podle čísla stopy"
 
-#: src/gtkui/ui_manager.c:150 src/skins/ui_manager.c:280
+#: src/gtkui/ui_manager.c:147 src/skins/ui_manager.c:280
 #: src/skins/ui_manager.c:312 src/skins/ui_manager.c:342
 msgid "By Title"
 msgstr "Podle názvu"
 
-#: src/gtkui/ui_manager.c:152 src/skins/ui_manager.c:320
+#: src/gtkui/ui_manager.c:149 src/skins/ui_manager.c:320
 #: src/skins/ui_manager.c:350
 msgid "By Artist"
 msgstr "Podle umělce"
 
-#: src/gtkui/ui_manager.c:154 src/skins/ui_manager.c:316
+#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:316
 #: src/skins/ui_manager.c:346
 msgid "By Album"
 msgstr "Podle alba"
 
-#: src/gtkui/ui_manager.c:156
+#: src/gtkui/ui_manager.c:153
+#, fuzzy
+msgid "By Release Date"
+msgstr "Podle data"
+
+#: src/gtkui/ui_manager.c:155
 msgid "By File Path"
 msgstr "Podle cesty k souboru"
 
-#: src/gtkui/ui_manager.c:158
+#: src/gtkui/ui_manager.c:157
 msgid "By Formatted Title"
 msgstr "Podle formátovaného názvu"
 
-#: src/gtkui/ui_manager.c:160
+#: src/gtkui/ui_manager.c:159
 msgid "Reverse Order"
 msgstr "Obrátit pořadí"
 
-#: src/gtkui/ui_manager.c:162
+#: src/gtkui/ui_manager.c:161
 msgid "Random Order"
 msgstr "Náhodné pořadí"
 
-#: src/gtkui/ui_manager.c:167
+#: src/gtkui/ui_manager.c:166
 msgid "Output"
 msgstr "Výstup"
 
-#: src/gtkui/ui_manager.c:169 src/modplug/gui/interface.cxx:572
+#: src/gtkui/ui_manager.c:168 src/modplug/gui/interface.cxx:572
 msgid "Effects"
 msgstr "Efekty"
 
-#: src/gtkui/ui_manager.c:171
+#: src/gtkui/ui_manager.c:170
 msgid "Equalizer"
 msgstr "Ekvalizér"
 
-#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:234
+#: src/gtkui/ui_manager.c:175 src/skins/ui_manager.c:234
 msgid "View"
 msgstr "Zobrazení"
 
-#: src/gtkui/ui_manager.c:177 src/skins/ui_manager.c:235
+#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:235
 msgid "Interface"
 msgstr "Rozhraní"
 
-#: src/gtkui/ui_manager.c:184 src/skins/ui_manager.c:376
+#: src/gtkui/ui_manager.c:183 src/skins/ui_manager.c:376
 msgid "File"
 msgstr "Soubor"
 
-#: src/gtkui/ui_manager.c:187
+#: src/gtkui/ui_manager.c:186
 msgid "Components"
 msgstr "Součásti"
 
-#: src/gtkui/ui_manager.c:189 src/gtkui/ui_manager.c:192
+#: src/gtkui/ui_manager.c:188 src/gtkui/ui_manager.c:191
 #: src/skins/ui_manager.c:381 src/skins/ui_manager.c:384
 msgid "View Track Details"
 msgstr "Zobrazit informace o skladbě"
 
-#: src/gtkui/ui_manager.c:190 src/gtkui/ui_manager.c:193
+#: src/gtkui/ui_manager.c:189 src/gtkui/ui_manager.c:192
 #: src/skins/ui_manager.c:382 src/skins/ui_manager.c:385
 msgid "View track details"
 msgstr "Zobrazit informace o skladbě"
 
-#: src/gtkui/ui_manager.c:195 src/gtkui/ui_manager.c:196
+#: src/gtkui/ui_manager.c:194 src/gtkui/ui_manager.c:195
 #: src/skins/ui_manager.c:387 src/skins/ui_manager.c:388
 msgid "About Audacious"
 msgstr "O Audacious"
 
-#: src/gtkui/ui_manager.c:198
+#: src/gtkui/ui_manager.c:197
 msgid "Open Files ..."
 msgstr "Otevřít soubory…"
 
-#: src/gtkui/ui_manager.c:199 src/skins/ui_manager.c:391
+#: src/gtkui/ui_manager.c:198 src/skins/ui_manager.c:391
 msgid "Load and play a file"
 msgstr "Načíst a přehrát soubor"
 
-#: src/gtkui/ui_manager.c:201
+#: src/gtkui/ui_manager.c:200
 msgid "Open URL ..."
 msgstr "Otevřít URL…"
 
-#: src/gtkui/ui_manager.c:202 src/skins/ui_manager.c:394
+#: src/gtkui/ui_manager.c:201 src/skins/ui_manager.c:394
 msgid "Play media from the selected location"
 msgstr "Hrát média z vybraného místa"
 
-#: src/gtkui/ui_manager.c:204 src/skins/ui_manager.c:396
+#: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:396
 msgid "Plugin services"
 msgstr "Služby modulů"
 
-#: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:398
+#: src/gtkui/ui_manager.c:205 src/skins/ui_manager.c:398
 msgid "Preferences"
 msgstr "Nastavení"
 
-#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:399
+#: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:399
 msgid "Open preferences window"
 msgstr "Otevřít okno s nastavením"
 
-#: src/gtkui/ui_manager.c:209 src/skins/ui_manager.c:401
+#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:401
 msgid "_Quit"
 msgstr "_Konec"
 
-#: src/gtkui/ui_manager.c:210 src/skins/ui_manager.c:402
+#: src/gtkui/ui_manager.c:209 src/skins/ui_manager.c:402
 msgid "Quit Audacious"
 msgstr "O Audacious"
 
-#: src/gtkui/ui_manager.c:212 src/gtkui/ui_manager.c:213
+#: src/gtkui/ui_manager.c:211 src/gtkui/ui_manager.c:212
 #: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
 msgid "Set A-B"
 msgstr "Nastavit A-B"
 
-#: src/gtkui/ui_manager.c:215 src/gtkui/ui_manager.c:216
+#: src/gtkui/ui_manager.c:214 src/gtkui/ui_manager.c:215
 #: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
 msgid "Clear A-B"
 msgstr "Vyprázdnit A-B"
 
-#: src/gtkui/ui_manager.c:218 src/gtkui/ui_manager.c:219
+#: src/gtkui/ui_manager.c:217 src/gtkui/ui_manager.c:218
 #: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
 msgid "Jump to Playlist Start"
 msgstr "Přejít na začátek seznamu skladeb"
 
-#: src/gtkui/ui_manager.c:221 src/gtkui/ui_manager.c:222 src/hotkey/gui.c:80
+#: src/gtkui/ui_manager.c:220 src/gtkui/ui_manager.c:221 src/hotkey/gui.c:81
 #: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
 msgid "Jump to File"
 msgstr "Přejít na soubor"
 
-#: src/gtkui/ui_manager.c:227 src/skins/ui_manager.c:419
+#: src/gtkui/ui_manager.c:226 src/skins/ui_manager.c:419
 msgid "Queue Toggle"
 msgstr "Přepnout frontu"
 
-#: src/gtkui/ui_manager.c:228 src/skins/ui_manager.c:420
+#: src/gtkui/ui_manager.c:227 src/skins/ui_manager.c:420
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Povolí/zakáže položku ve frontě seznamu skladeb."
 
-#: src/gtkui/ui_manager.c:231 src/skins/ui_manager.c:423
+#: src/gtkui/ui_manager.c:230 src/skins/ui_manager.c:423
 msgid "Copy"
 msgstr "Kopírovat"
 
-#: src/gtkui/ui_manager.c:234 src/skins/ui_manager.c:425
+#: src/gtkui/ui_manager.c:233 src/skins/ui_manager.c:425
 msgid "Cut"
 msgstr "Oříznout"
 
-#: src/gtkui/ui_manager.c:237 src/skins/ui_manager.c:427
+#: src/gtkui/ui_manager.c:236 src/skins/ui_manager.c:427
 msgid "Paste"
 msgstr "Vložit"
 
-#: src/gtkui/ui_manager.c:240 src/skins/ui_manager.c:256
+#: src/gtkui/ui_manager.c:239 src/skins/ui_manager.c:256
 msgid "Select All"
 msgstr "Vybrat vše"
 
-#: src/gtkui/ui_manager.c:241 src/skins/ui_manager.c:257
+#: src/gtkui/ui_manager.c:240 src/skins/ui_manager.c:257
 msgid "Selects all of the playlist entries."
 msgstr "Vybere všechny skladby v seznamu."
 
-#: src/gtkui/ui_manager.c:244 src/skins/ui_manager.c:260
+#: src/gtkui/ui_manager.c:243 src/skins/ui_manager.c:260
 msgid "Select None"
 msgstr "Nevybrat žádné"
 
-#: src/gtkui/ui_manager.c:245 src/skins/ui_manager.c:261
+#: src/gtkui/ui_manager.c:244 src/skins/ui_manager.c:261
 msgid "Deselects all of the playlist entries."
 msgstr "Žádná skladba v seznamu nebude vybraná."
 
@@ -3124,51 +2902,51 @@ msgstr "%d kanálů"
 msgid "%s: %d kbps, %d Hz, %s"
 msgstr "%s: %d kb/s, %d Hz, %s"
 
-#: src/hotkey/gui.c:70
+#: src/hotkey/gui.c:71
 msgid "Previous Track"
 msgstr "Předchozí stopa"
 
-#: src/hotkey/gui.c:72
+#: src/hotkey/gui.c:73
 msgid "Pause/Resume"
 msgstr "Pozastavit/Pokračovat"
 
-#: src/hotkey/gui.c:74
+#: src/hotkey/gui.c:75
 msgid "Next Track"
 msgstr "Další stopa"
 
-#: src/hotkey/gui.c:75
+#: src/hotkey/gui.c:76
 msgid "Forward 5 Seconds"
 msgstr "O 5 sekund vpřed"
 
-#: src/hotkey/gui.c:76
+#: src/hotkey/gui.c:77
 msgid "Rewind 5 Seconds"
 msgstr "O 5 sekund zpět"
 
-#: src/hotkey/gui.c:77
+#: src/hotkey/gui.c:78
 msgid "Mute"
 msgstr "Vypnout zvuk"
 
-#: src/hotkey/gui.c:78
+#: src/hotkey/gui.c:79
 msgid "Volume Up"
 msgstr "Zesílit"
 
-#: src/hotkey/gui.c:79
+#: src/hotkey/gui.c:80
 msgid "Volume Down"
 msgstr "Ztišit"
 
-#: src/hotkey/gui.c:81
+#: src/hotkey/gui.c:82
 msgid "Toggle Player Windows"
 msgstr "Přepnout okna přehrávače"
 
-#: src/hotkey/gui.c:82
+#: src/hotkey/gui.c:83
 msgid "Show On-Screen-Display"
 msgstr "Zobrazit OSD (nápis na obrazovce)"
 
-#: src/hotkey/gui.c:92
+#: src/hotkey/gui.c:93
 msgid "(none)"
 msgstr "(žádné)"
 
-#: src/hotkey/gui.c:229
+#: src/hotkey/gui.c:230
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -3179,15 +2957,15 @@ msgstr ""
 "\n"
 "Chcete pokračovat?"
 
-#: src/hotkey/gui.c:231
+#: src/hotkey/gui.c:232
 msgid "Binding mouse buttons"
 msgstr "Přiřazuji tlačítka myši"
 
-#: src/hotkey/gui.c:381
+#: src/hotkey/gui.c:382
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Hlavní nastavení modulu pro horké klávesy"
 
-#: src/hotkey/gui.c:397
+#: src/hotkey/gui.c:398
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -3195,23 +2973,23 @@ msgstr ""
 "Uvnitř textového pole stiskněte kombinaci kláves.\n"
 "Navázat lze také tlačítka myši."
 
-#: src/hotkey/gui.c:402
+#: src/hotkey/gui.c:403
 msgid "Hotkeys:"
 msgstr "Horké klávesy:"
 
-#: src/hotkey/gui.c:421
+#: src/hotkey/gui.c:422
 msgid "<b>Action:</b>"
 msgstr "<b>Akce</b>"
 
-#: src/hotkey/gui.c:429
+#: src/hotkey/gui.c:430
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Navázání kláves:</b>"
 
-#: src/hotkey/gui.c:660
+#: src/hotkey/gui.c:661
 msgid "About Global Hotkey Plugin"
 msgstr "O modulu Global Hotkey"
 
-#: src/hotkey/gui.c:661
+#: src/hotkey/gui.c:662
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3286,35 +3064,35 @@ msgstr ""
 msgid "About JACK Output Plugin 0.17"
 msgstr "O výstupním modulu JACK 0.17"
 
-#: src/ladspa/ladspa.c:836
+#: src/ladspa/ladspa.c:844
 msgid "This LADSPA plugin has no user controls"
 msgstr "Tento LADSPA modul nemá žádné možnosti nastavení uživatelem"
 
-#: src/ladspa/ladspa.c:877 src/ladspa/ladspa.c:964
+#: src/ladspa/ladspa.c:885 src/ladspa/ladspa.c:972
 msgid "Name"
 msgstr "Jméno"
 
-#: src/ladspa/ladspa.c:964
+#: src/ladspa/ladspa.c:972
 msgid "UID"
 msgstr "UID"
 
-#: src/ladspa/ladspa.c:1041
+#: src/ladspa/ladspa.c:1049
 msgid "Installed plugins"
 msgstr "Nainstalované moduly"
 
-#: src/ladspa/ladspa.c:1049
+#: src/ladspa/ladspa.c:1057
 msgid "Running plugins"
 msgstr "Bežící moduly"
 
-#: src/ladspa/ladspa.c:1064
+#: src/ladspa/ladspa.c:1072
 msgid "Add"
 msgstr "Přidat"
 
-#: src/ladspa/ladspa.c:1067
+#: src/ladspa/ladspa.c:1075
 msgid "Remove"
 msgstr "Odebrat"
 
-#: src/ladspa/ladspa.c:1078
+#: src/ladspa/ladspa.c:1086
 msgid "LADSPA Plugin Catalog"
 msgstr "Katalog LADSPA modulů"
 
@@ -3409,7 +3187,7 @@ msgstr "%s: odpojeno od LIRC\n"
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr "%s: pokus o připojení budu opakovat každých %d sekund…\n"
 
-#: src/lyricwiki/lyricwiki.c:322
+#: src/lyricwiki/lyricwiki.c:335
 msgid ""
 "\n"
 "No lyrics were found."
@@ -3691,11 +3469,11 @@ msgstr "Deskriptor MTP zařízení"
 msgid "Disconnect the device"
 msgstr "Odpojit zařízení"
 
-#: src/null/null.c:63
+#: src/null/null.c:64
 msgid "Null output plugin "
 msgstr "Slepý výstupní modul "
 
-#: src/null/null.c:64
+#: src/null/null.c:65
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
 "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
@@ -3703,15 +3481,15 @@ msgstr ""
 " napsal Christian Birchinger <joker@netswaje.net>\n"
 "založeno na modulu pro XMMS, jehož autor je Håvard Kvål <havardk@xmms.org>"
 
-#: src/null/null.c:67
+#: src/null/null.c:68
 msgid "About Null Output"
 msgstr "O slepém výstupu"
 
-#: src/null/null.c:93
+#: src/null/null.c:94
 msgid "Null output preferences"
 msgstr "Nastavení slepého výstupu"
 
-#: src/null/null.c:102
+#: src/null/null.c:105
 msgid "Run in real time"
 msgstr "Běžet v reálném čase"
 
@@ -3723,11 +3501,11 @@ msgstr "1. Implicitní zařízení"
 msgid "OSS4 Output Plugin Preferences"
 msgstr "Nastavení výstupního modulu OSS4"
 
-#: src/oss4/configure.c:163 src/OSS/configure.c:213 src/sun/configure.c:181
+#: src/oss4/configure.c:163 src/OSS/configure.c:203
 msgid "Audio device:"
 msgstr "Zvukové zařízení:"
 
-#: src/oss4/configure.c:189 src/OSS/configure.c:235 src/OSS/configure.c:276
+#: src/oss4/configure.c:189 src/OSS/configure.c:226 src/OSS/configure.c:269
 msgid "Use alternate device:"
 msgstr "Použít jiné zařízení:"
 
@@ -3786,40 +3564,40 @@ msgstr ""
 msgid "OSS4 error"
 msgstr "Chyba OSS4"
 
-#: src/OSS/configure.c:148
+#: src/OSS/configure.c:146
 #, c-format
 msgid "Default (%s)"
 msgstr "Standardně (%s)"
 
-#: src/OSS/configure.c:197
+#: src/OSS/configure.c:187
 msgid "OSS Driver configuration"
 msgstr "Nastavení ovladače OSS"
 
-#: src/OSS/configure.c:298 src/sun/configure.c:246
+#: src/OSS/configure.c:290
 msgid "Devices"
 msgstr "Zařízení"
 
-#: src/OSS/configure.c:300 src/sun/configure.c:257
+#: src/OSS/configure.c:292
 msgid "Buffering:"
 msgstr "Vyrovnávání:"
 
-#: src/OSS/configure.c:313 src/sun/configure.c:288
+#: src/OSS/configure.c:305
 msgid "Pre-buffer (percent):"
 msgstr "Načíst předem (v procentech):"
 
-#: src/OSS/configure.c:324 src/sun/configure.c:302
+#: src/OSS/configure.c:316
 msgid "Buffering"
 msgstr "Vyrovnávání"
 
-#: src/OSS/configure.c:325
+#: src/OSS/configure.c:317
 msgid "Mixer Settings:"
 msgstr "Nastavení mixéru:"
 
-#: src/OSS/configure.c:331
+#: src/OSS/configure.c:323
 msgid "Volume controls Master not PCM"
 msgstr "Hlasitost ovládána Master kanálem místo PCM"
 
-#: src/OSS/configure.c:337 src/sun/configure.c:392
+#: src/OSS/configure.c:329
 msgid "Mixer"
 msgstr "Mixér"
 
@@ -3861,11 +3639,11 @@ msgstr ""
 "nestalo, obraťte se na Free Software Foundation, Inc.,\n"
 "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/pulse_audio/pulse_audio.c:692
+#: src/pulse_audio/pulse_audio.c:699
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "O výstupním modulu PulseAudio pro Audacious"
 
-#: src/pulse_audio/pulse_audio.c:693
+#: src/pulse_audio/pulse_audio.c:700
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -3899,56 +3677,56 @@ msgstr ""
 "tak nestalo, obraťte se na Free Software Foundation, Inc.,\n"
 "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/resample/plugin.c:90
+#: src/resample/plugin.c:91
 msgid "About Sample Rate Converter Plugin"
 msgstr "O modulu Převodník vzorkovací frekvence"
 
-#: src/resample/plugin.c:145
+#: src/resample/plugin.c:146
 msgid "Sample Rate Converter Preferences"
 msgstr "Nastavení Převodníku vzorkovací frekvence"
 
-#: src/resample/plugin.c:157
+#: src/resample/plugin.c:158
 msgid "Rate mappings:"
 msgstr "Přiřazení frekvencí:"
 
 # FIXME: Rod? Rate mappings?
-#: src/resample/plugin.c:180
+#: src/resample/plugin.c:181
 msgid "All others:"
 msgstr "Všechna ostatní:"
 
-#: src/resample/plugin.c:192
+#: src/resample/plugin.c:193
 msgid "Method:"
 msgstr "Metoda:"
 
-#: src/scrobbler/configure.c:128 src/scrobbler/configure.c:204
+#: src/scrobbler/configure.c:129 src/scrobbler/configure.c:205
 msgid "Change password"
 msgstr "Změnit heslo"
 
-#: src/scrobbler/configure.c:150
+#: src/scrobbler/configure.c:151
 msgid "<b>Services</b>"
 msgstr "<b>Služby</b>"
 
-#: src/scrobbler/configure.c:172
+#: src/scrobbler/configure.c:173
 msgid "Username:"
 msgstr "Přístupové jméno:"
 
-#: src/scrobbler/configure.c:178
+#: src/scrobbler/configure.c:179
 msgid "Password:"
 msgstr "Heslo:"
 
-#: src/scrobbler/configure.c:186
+#: src/scrobbler/configure.c:187
 msgid "Scrobbler URL:"
 msgstr "URL Scrobbleru:"
 
-#: src/scrobbler/configure.c:218
+#: src/scrobbler/configure.c:219
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:261
+#: src/scrobbler/configure.c:262
 msgid "Scrobbler"
 msgstr "Scrobbler"
 
-#: src/scrobbler/plugin.c:213
+#: src/scrobbler/plugin.c:214
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -3959,9 +3737,19 @@ msgstr ""
 "\n"
 "Původně vytvořil Audun Hove <audun@nlc.no> a Pipian <pipian@pipian.com>\n"
 
-#: src/scrobbler/plugin.c:215
+#: src/scrobbler/plugin.c:216
 msgid "About Scrobbler Plugin"
 msgstr "O modulu Scrobbler"
+
+#: src/sdlout/plugin.c:62
+#, fuzzy
+msgid "About SDL Output Plugin"
+msgstr "O výstupním modulu ALSA"
+
+#: src/sdlout/plugin.c:82
+#, fuzzy
+msgid "SDL error"
+msgstr "Chyba ALSY"
 
 #: src/sid/xs_about.c:84
 #, c-format
@@ -4440,10 +4228,6 @@ msgstr ""
 msgid "Song title format:"
 msgstr "Formát názvu skladby:"
 
-#: src/sid/xs_interface.c:1103
-msgid "Title"
-msgstr "Název"
-
 #: src/sid/xs_interface.c:1125
 msgid "Add sub-tunes to playlist"
 msgstr "Do seznamu skladeb přidat podskladby"
@@ -4727,7 +4511,7 @@ msgstr "Přizpůsobení barvy…"
 msgid "Audacious Equalizer"
 msgstr "Ekvalizér"
 
-#: src/skins/ui_equalizer.c:991
+#: src/skins/ui_equalizer.c:1000
 msgid "Presets"
 msgstr "Předvolby"
 
@@ -4911,7 +4695,7 @@ msgstr "Sbalit editor seznamu skladeb"
 msgid "Roll up Equalizer"
 msgstr "Sbalit ekvalizér"
 
-#: src/skins/ui_manager.c:94 src/sndstretch/sndstretch_xmms.c:393
+#: src/skins/ui_manager.c:94 src/sndstretch/sndstretch_xmms.c:365
 msgid "Scale"
 msgstr "Natažení"
 
@@ -5401,7 +5185,7 @@ msgstr "Zabalený skin Winapmu 2.x"
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Nezabalený skin Winampu 2.x"
 
-#: src/skins/util.c:869
+#: src/skins/util.c:875
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "Adresář („%s“) nebylo možné vytvořit: %s\n"
@@ -5451,27 +5235,27 @@ msgstr ""
 "51 Franklin Street, Fifth Floor, \n"
 "Boston, MA  02110-1301  USA"
 
-#: src/sndstretch/sndstretch_xmms.c:175
+#: src/sndstretch/sndstretch_xmms.c:158
 msgid "About SndStretch"
 msgstr "O modulu SndStrech"
 
-#: src/sndstretch/sndstretch_xmms.c:336
+#: src/sndstretch/sndstretch_xmms.c:316
 msgid "Volume corr."
 msgstr "Oprava hlasitosti"
 
-#: src/sndstretch/sndstretch_xmms.c:337
+#: src/sndstretch/sndstretch_xmms.c:317
 msgid "Short Overlap"
 msgstr "Krátké přesahy"
 
-#: src/sndstretch/sndstretch_xmms.c:391
+#: src/sndstretch/sndstretch_xmms.c:363
 msgid "Speed"
 msgstr "Rychlost"
 
-#: src/sndstretch/sndstretch_xmms.c:392
+#: src/sndstretch/sndstretch_xmms.c:364
 msgid "Pitch"
 msgstr "Výška"
 
-#: src/sndstretch/sndstretch_xmms.c:413
+#: src/sndstretch/sndstretch_xmms.c:385
 msgid "SndStretch - Configuration"
 msgstr "SndStrech – Nastavení"
 
@@ -5617,7 +5401,7 @@ msgstr "Zakázat vyskakovací okno"
 msgid "Close to the notification area (system tray)"
 msgstr "Zavřít do oznamovací oblasti (systémové oblasti)"
 
-#: src/stereo_plugin/stereo.c:40
+#: src/stereo_plugin/stereo.c:41
 msgid ""
 "Extra Stereo Plugin\n"
 "\n"
@@ -5627,7 +5411,7 @@ msgstr ""
 "\n"
 "Napsal Johan Levin, 1999."
 
-#: src/stereo_plugin/stereo.c:68
+#: src/stereo_plugin/stereo.c:69
 msgid "About Extra Stereo Plugin"
 msgstr "O modulu Extra sterou"
 
@@ -5640,19 +5424,19 @@ msgid "Search:"
 msgstr "Hledat:"
 
 #: src/streambrowser/gui/streambrowser_win.c:93
-#: src/streambrowser/gui/streambrowser_win.c:369
+#: src/streambrowser/gui/streambrowser_win.c:371
 msgid "Add Bookmark"
 msgstr "Přidat záložku"
 
-#: src/streambrowser/gui/streambrowser_win.c:318
+#: src/streambrowser/gui/streambrowser_win.c:320
 msgid "Stream name"
 msgstr "Název proudu"
 
-#: src/streambrowser/gui/streambrowser_win.c:325
+#: src/streambrowser/gui/streambrowser_win.c:327
 msgid "Now playing"
 msgstr "Právě hraje"
 
-#: src/streambrowser/gui/streambrowser_win.c:366
+#: src/streambrowser/gui/streambrowser_win.c:368
 msgid "Remove Bookmark"
 msgstr "Odstranit záložku"
 
@@ -5686,42 +5470,6 @@ msgstr ""
 "Také děkuji tobě, Tony Vroone, za rady a vedení, opět.\n"
 "\n"
 "Toto byl projekt z Google Summer of Code 2008."
-
-#: src/sun/about.c:30
-msgid "About the Sun Driver"
-msgstr "O ovladači pro Sun"
-
-#: src/sun/about.c:31
-msgid ""
-"XMMS BSD Sun Driver\n"
-"\n"
-"Copyright (c) 2001 CubeSoft Communications, Inc.\n"
-"Maintainer: <vedge at csoft.org>.\n"
-msgstr ""
-"BSD ovladač pro Sun programu XMMS\n"
-"\n"
-"Copyright © 2001 CubeSoft Communications, Inc.\n"
-"Správce: <vedge na csoft.org>.\n"
-
-#: src/sun/configure.c:199
-msgid "Audio control device:"
-msgstr "Zařízení ovládání zvuku:"
-
-#: src/sun/configure.c:270
-msgid "Buffer size (ms):"
-msgstr "Velikost vyrovnávací paměti (ms):"
-
-#: src/sun/configure.c:348
-msgid "Volume controls device:"
-msgstr "Zařízení ovládání hlasitosti:"
-
-#: src/sun/configure.c:361
-msgid "XMMS uses mixer exclusively."
-msgstr "XMMS používá výlučný přístup k mixéru"
-
-#: src/sun/configure.c:536
-msgid "Sun driver configuration"
-msgstr "Nastavení ovladače pro Sun"
 
 #: src/tonegen/tonegen.c:56
 msgid "About Tone Generator"
@@ -5846,14 +5594,333 @@ msgstr ""
 "Části kódu modulu napsal Miles Egan\n"
 "Navštivte stránku Wavpacku na http://www.wavpack.com/\n"
 
-#~ msgid "Artist"
-#~ msgstr "Umělec"
+#~ msgid ""
+#~ "* Select ALSA output ports *\n"
+#~ "MIDI events will be sent to the ports selected here. In example, if your "
+#~ "audio card provides a hardware synth and you want to play MIDI with it, "
+#~ "you'll probably want to select the wavetable synthesizer ports."
+#~ msgstr ""
+#~ "* Vyberte výstupní port ALSY *\n"
+#~ "MIDI události budou zasílány portům zde vybraným. Na příklad pokud vaše "
+#~ "zvuková karta poskytuje hardwarový syntetizátor a chcete-li jím přehrávat "
+#~ "MIDI, budete pravděpodobně potřebovat vybrat porty tabulkového "
+#~ "(wavetable) syntetizátoru."
 
-#~ msgid "Year"
-#~ msgstr "Rok"
+#~ msgid ""
+#~ "* Select ALSA mixer card *\n"
+#~ "The ALSA backend outputs directly through ALSA, it doesn't use effect and "
+#~ "ouput plugins from the player. During playback, the player volumeslider "
+#~ "will manipulate the mixer control you select here. If you're using "
+#~ "wavetable synthesizer ports, you'll probably want to select the Synth "
+#~ "control here."
+#~ msgstr ""
+#~ "* Vyberte kartu se směšovačem ALSY *\n"
+#~ "Backend ALSY posílá výstup přímo skrz ALSU. Efekty a výstupní moduly "
+#~ "přehrávače nebudou použity. Během přehrávání jezdec ovládající hlasitost "
+#~ "bude pracovat se směšovačem, který zde vyberete. Používáte-li porty "
+#~ "tabulkového syntetizátoru, pravděpodobně zde budete chtít vybrat "
+#~ "„Ovládání syntézy“."
 
-#~ msgid "Album"
-#~ msgstr "Album"
+#~ msgid ""
+#~ "* Select ALSA mixer control *\n"
+#~ "The ALSA backend outputs directly through ALSA, it doesn't use effect and "
+#~ "ouput plugins from the player. During playback, the player volume slider "
+#~ "will manipulate the mixer control you select here. If you're using "
+#~ "wavetable synthesizer ports, you'll probably want to select the Synth "
+#~ "control here."
+#~ msgstr ""
+#~ "* Vyberte ovládání směšovače ALSY *\n"
+#~ "Backend ALSY posílá výstup přímo skrz ALSU. Efekty a výstupní moduly "
+#~ "přehrávače nebudou použity. Během přehrávání jezdec ovládající hlasitost "
+#~ "bude pracovat se směšovačem, který zde vyberete. Používáte-li porty "
+#~ "tabulkového syntetizátoru, pravděpodobně zde budete chtít vybrat "
+#~ "„Ovládání syntézy“."
+
+#~ msgid ""
+#~ "* Backend selection *\n"
+#~ "AMIDI-Plug works with backends, in a modular fashion; here you should "
+#~ "select your backend; that is, the way MIDI events are going to be handled "
+#~ "and played.\n"
+#~ "If you have a hardware synthesizer on your audio card, and ALSA supports "
+#~ "it, you'll want to use the ALSA backend. It can also be used with "
+#~ "anything that provides an interface to the ALSA sequencer, including "
+#~ "software synths or external devices.\n"
+#~ "If you want to rely on a software synthesizer and/or want to pipe audio "
+#~ "into effect and output plugins of the player you'll want to use the good "
+#~ "FluidSynth backend.\n"
+#~ "Press the info button to read specific information about each backend."
+#~ msgstr ""
+#~ "* Výběr backendu *\n"
+#~ "AMIDI-Plug pracuje s backendy modulárním způsobem. Zde byste si měli "
+#~ "vybrat svůj backend, tj. způsob, jakým způsobem se bude zacházet s MIDI "
+#~ "událostmi a jak budou hrány.\n"
+#~ "Jestliže na zvukové kartě máte hardwarový syntetizátor a ALSA jej "
+#~ "podporuje, je rozumné použít backend ALSY. Taktéž přijde vhod, máte "
+#~ "cokoliv jiného, včetně softwarových syntetizátorů nebo vnějších zařízení, "
+#~ "co má rozhraní k sekvenceru ALSY.\n"
+#~ "Pokud se chcete spolehnout na softwarový syntetizátor a/nebo chcete zvuk "
+#~ "protáhnout efektovými a výstupním modulem, dobrou volbou bude backend "
+#~ "FluidSynth.\n"
+#~ "Podrobnosti o jednotlivých backendech získáte přes tlačítko „Podrobnosti“."
+
+#~ msgid ""
+#~ "* Transpose function *\n"
+#~ "This option allows you to play the midi file transposed in a different "
+#~ "key, by shifting of the desired number of semitones all its notes "
+#~ "(excepting those on midi channel 10, reserved for percussions). "
+#~ "Especially useful if you wish to sing or play along with another "
+#~ "instrument."
+#~ msgstr ""
+#~ "* Funkce transpozice *\n"
+#~ "Tato volba nabízí transpozici přehrávaného MIDI souboru do jiné tóniny "
+#~ "o zadaný počet půltónů (kromě tónů 10. stopy, která je vyhrazena pro "
+#~ "bicí). Tato funkce je užitečná, chcete-li doprovázet skladbu zpěvem či "
+#~ "jiným nástrojem."
+
+#~ msgid ""
+#~ "* Drumshift function *\n"
+#~ "This option allows you to shift notes on midi channel 10 (the standard "
+#~ "percussions channel) of the desired number of semitones. This results in "
+#~ "different drumset and percussions being used during midi playback, so if "
+#~ "you wish to enhance (or reduce, or alter) percussion sounds, try to play "
+#~ "with this value."
+#~ msgstr ""
+#~ "* Funkce posunu bubnů *\n"
+#~ "Tato volba nabízí posun not na 10. MIDI kanále (standardní kanál pro "
+#~ "bicí) o zadaný počet půltónů. Výsledkem je odlišná sada bicích nástrojů "
+#~ "použitá během přehrávání. Takže chcete-li vylepšit (ztlumit či jinak "
+#~ "pozměnit) zvuk bicích, pohrejte si s touto hodnotou."
+
+#~ msgid ""
+#~ "* Pre-calculate MIDI length *\n"
+#~ "If this option is enabled, AMIDI-Plug will calculate the MIDI file length "
+#~ "as soon as the player requests it, instead of doing that only when the "
+#~ "MIDI file is being played. In example, MIDI length will be calculated "
+#~ "straight after adding MIDI files in a playlist. Disable this option if "
+#~ "you want faster playlist loading (when a lot of MIDI files are added), "
+#~ "enable it to display more information in the playlist straight after "
+#~ "loading."
+#~ msgstr ""
+#~ "* Předpočítat délku skladby *\n"
+#~ "Pokud je tato funkce zapnuta, AMIDI-Plug vypočítá délku MIDI souboru "
+#~ "okamžitě, jak o ni přehrávač požádá. Jinak bude délka určena až při "
+#~ "prvním přehrání. Na příklad délka skladby bude vypočtena ihned po přidání "
+#~ "MIDI souboru do seznamu skladeb. Vypněte tuto funkci, požadujete-li "
+#~ "rychlejší nahrávání seznamu skladeb (obzvláště má-li mnoho MIDI souborů), "
+#~ "zapněte tuto funkci, potřebujete-li vidět délku skladeb ihned po načtení "
+#~ "seznamu."
+
+#~ msgid ""
+#~ "* Extract comments from MIDI files *\n"
+#~ "Some MIDI files contain text comments (author, copyright, instrument "
+#~ "notes, etc.). If this option is enabled, AMIDI-Plug will extract and "
+#~ "display comments (if available) in the file information dialog."
+#~ msgstr ""
+#~ "* Vytáhnout komentáře z MIDI souborů *\n"
+#~ "Některé MIDI soubory obsahují textové komentáře (autora, autorská práva, "
+#~ "poznámky k nástrojům apod.). Pokud je tato funkce zapnutá, AMIDI-Plug "
+#~ "tyto komentáře zjistí a zobrazí v dialogu o podrobnostech souboru (pokud "
+#~ "existují)."
+
+#~ msgid ""
+#~ "* Extract lyrics from MIDI files *\n"
+#~ "Some MIDI files contain song lyrics. If this option is enabled, AMIDI-"
+#~ "Plug will extract and display song lyrics (if available) in the file "
+#~ "information dialog."
+#~ msgstr ""
+#~ "* Vytáhnout text z MIDI souborů *\n"
+#~ "Některé MIDI soubory obsahují text písně. Pokud je tato funkce zapnuta, "
+#~ "AMIDI-Plug tento text získá a zobrazí v dialogu o podrobnostech souboru "
+#~ "(pokud existuje)."
+
+#~ msgid ""
+#~ "* Select SoundFont files *\n"
+#~ "In order to play MIDI with FluidSynth, you need to specify at least one "
+#~ "valid SoundFont file here (use absolute paths). The loading order is from "
+#~ "the top (first) to the bottom (last)."
+#~ msgstr ""
+#~ "* Výběr SoundFont souborů *\n"
+#~ "Abyste mohli přehrávat MIDI přes FluidSynth, musíte určit alespoň jeden "
+#~ "platný soundfontový soubor (použijte absolutní cesty). Pořadí nahrávání "
+#~ "je od shora (první) dolů (poslední)."
+
+#~ msgid ""
+#~ "* Load SoundFont on player start *\n"
+#~ "Depending on your system speed, SoundFont loading in FluidSynth will "
+#~ "require up to a few seconds. This is a one-time task (the soundfont will "
+#~ "stay loaded until it is changed or the backend is unloaded) that can be "
+#~ "done at player start, or before the first MIDI file is played (the latter "
+#~ "is a better choice if you don't use your player to listen MIDI files "
+#~ "only)."
+#~ msgstr ""
+#~ "* Nahrát SoundFont při spuštění přehrávače *\n"
+#~ "V závislosti na rychlosti vašeho systému nahrávání SoundFontu do "
+#~ "FluidSynthu může trvat i několik sekund. Jedná se jednorázovou záležitost "
+#~ "(soundfont zůstane nahraný, dokud jej nevyměníte nebo nezrušíte backend), "
+#~ "která může být provedena během spouštění přehrávače nebo před zahájením "
+#~ "produkce prvního MIDI souboru (druhá možnost je výhodnější, jestliže "
+#~ "neplánujete poslouchat jen MIDI soubory)."
+
+#~ msgid ""
+#~ "* Load SoundFont on first midifile play *\n"
+#~ "Depending on your system speed, SoundFont loading in FluidSynth will "
+#~ "require up to a few seconds. This is a one-time task (the soundfont will "
+#~ "stay loaded until it is changed or the backend is unloaded) that can be "
+#~ "done at player start, or before the first MIDI file is played (the latter "
+#~ "is a better choice if you don't use your player to listen MIDI files "
+#~ "only)."
+#~ msgstr ""
+#~ "* Nahrát SoundFont před prvním MIDI souborem *\n"
+#~ "V závislosti na rychlosti vašeho systému nahrávání SoundFontu do "
+#~ "FluidSynthu může trvat i několik sekund. Jedná se jednorázovou záležitost "
+#~ "(soundfont zůstane nahraný, dokud jej nevyměníte nebo nezrušíte backend), "
+#~ "která může být provedena během spouštění přehrávače nebo před zahájením "
+#~ "produkce prvního MIDI souboru (druhá možnost je výhodnější, jestliže "
+#~ "neplánujete poslouchat jen MIDI soubory)."
+
+#~ msgid ""
+#~ "* Synthesizer gain *\n"
+#~ "From FluidSynth docs: the gain is applied to the final or master output "
+#~ "of the synthesizer; it is set to a low value by default to avoid the "
+#~ "saturation of the output when random MIDI files are played."
+#~ msgstr ""
+#~ "* Zesílení syntetizátoru *\n"
+#~ "Z dokumentace FluidSynth: zesílení je aplikován na konečný nebo hlavní "
+#~ "výstup syntetizátoru. Implicitně je nastaveno na nízkou hodnotu, aby se "
+#~ "zabránilo ořezávání při přehrávání různorodých MIDI souborů."
+
+#~ msgid ""
+#~ "* Synthesizer polyphony *\n"
+#~ "From FluidSynth docs: the polyphony defines how many voices can be played "
+#~ "in parallel; the number of voices is not necessarily equivalent to the "
+#~ "number of notes played simultaneously; indeed, when a note is struck on a "
+#~ "specific MIDI channel, the preset on that channel may create several "
+#~ "voices, for example, one for the left audio channel and one for the right "
+#~ "audio channels; the number of voices activated depends on the number of "
+#~ "instrument zones that fall in the correspond to the velocity and key of "
+#~ "the played note."
+#~ msgstr ""
+#~ "* Vícehlas syntetizátoru *\n"
+#~ "Z dokumentace FluidSynth: vícehlas určuje, kolik hlasů může hrát "
+#~ "najednou. Počet hlasů není nezbytně shodný s počtem not hraných současně. "
+#~ "Ve skutečnosti když je nota vyslána na určitém MIDI kanálu, předvolba na "
+#~ "takovém kanálu může vytvořit více hlasů, na příklad jeden pro levý "
+#~ "zvukový kanál a jeden pro pravý zvukový kanál. Počet aktivovaných hlasů "
+#~ "závisí na počtu nástrojových zón, které spadají do odpovídající rychlosti "
+#~ "a klíči hrané noty."
+
+#~ msgid ""
+#~ "* Synthesizer reverb *\n"
+#~ "From FluidSynth docs: when set to \"yes\" the reverb effects module is "
+#~ "activated; note that when the reverb module is active, the amount of "
+#~ "signal sent to the reverb module depends on the \"reverb send\" generator "
+#~ "defined in the SoundFont."
+#~ msgstr ""
+#~ "* Dozvuk syntetizátoru *\n"
+#~ "Z dokumentace FluidSynth: je-li nastaveno na „ano“, modul efektu dozvuku "
+#~ "je aktivován. Pamatujte, že při aktivovaném modulu dozvuku je množství "
+#~ "signálu zasílaného tomuto modulu závislé na generátoru „zasílání "
+#~ "dozvuku“, který je definován v SoundFontu."
+
+#~ msgid ""
+#~ "* Synthesizer chorus *\n"
+#~ "From FluidSynth docs: when set to \"yes\" the chorus effects module is "
+#~ "activated; note that when the chorus module is active, the amount of "
+#~ "signal sent to the chorus module depends on the \"chorus send\" generator "
+#~ "defined in the SoundFont."
+#~ msgstr ""
+#~ "* Sbor syntetizátoru *\n"
+#~ "Z dokumentace FluidSynth: je-li nastaveno na „ano“, modul efektu sboru je "
+#~ "aktivován. Pamatujte, že při aktivovaném modulu sboru je množství signálu "
+#~ "zasílaného tomuto modulu závislé na generátoru „zasílání sboru“, který je "
+#~ "definován v SoundFontu."
+
+#~ msgid ""
+#~ "* Synthesizer samplerate *\n"
+#~ "The sample rate of the audio generated by the synthesizer. You can also "
+#~ "specify a custom value in the interval 22050Hz-96000Hz."
+#~ msgstr ""
+#~ "* Vzorkovací frekvence syntetizátoru *\n"
+#~ "Vzorkovací frekvence zvuku generovaného syntetizátorem. Lze zadat vlastní "
+#~ "hodnotu z intervalu 22050 Hz–96000 Hz."
+
+#~ msgid ""
+#~ "If enabled, the extension from the original filename will not be stripped "
+#~ "before adding the new file extension to the end."
+#~ msgstr ""
+#~ "Je-li zapnuto, přípona ze jména původního souboru nebude před přidáním "
+#~ "nové přípony odstraněna."
+
+#~ msgid ""
+#~ "best/slowest:0;\n"
+#~ "worst/fastest:9;\n"
+#~ "recommended:2;\n"
+#~ "default:5;"
+#~ msgstr ""
+#~ "nejlepší/nejpomalejší:0;\n"
+#~ "nejhorší/nejrychlejší:9;\n"
+#~ "doporučená:2;\n"
+#~ "výchozí:5;"
+
+#~ msgid "Adds 16 bit checksum to every frame"
+#~ msgstr "Ke každému rámci přidat 16b kontrolní součet"
+
+#~ msgid "Variable bitrate"
+#~ msgstr "Proměnný datový tok"
+
+#~ msgid "Average bitrate"
+#~ msgstr "Průměrný datový tok"
+
+#~ msgid ""
+#~ "For use with players that do not support low bitrate mp3 (Apex AD600-A "
+#~ "DVD/mp3 player)"
+#~ msgstr ""
+#~ "Pro použití v přehrávačích, které nepodporují úzkopásmové MP3 (přehrávač "
+#~ "Apex AD600-A DVD/MP3)"
+
+#~ msgid ""
+#~ "highest:0;\n"
+#~ "lowest:9;\n"
+#~ "default:4;"
+#~ msgstr ""
+#~ "nejvyšší:0;\n"
+#~ "nejnižší:9;\n"
+#~ "výchozí:4;"
+
+#~ msgid "Show playlists"
+#~ msgstr "Zobrazit seznamy skladeb"
+
+#~ msgid "Show/hide playlists"
+#~ msgstr "Zobrazit/skrýt seznamy skladeb"
+
+#~ msgid "About the Sun Driver"
+#~ msgstr "O ovladači pro Sun"
+
+#~ msgid ""
+#~ "XMMS BSD Sun Driver\n"
+#~ "\n"
+#~ "Copyright (c) 2001 CubeSoft Communications, Inc.\n"
+#~ "Maintainer: <vedge at csoft.org>.\n"
+#~ msgstr ""
+#~ "BSD ovladač pro Sun programu XMMS\n"
+#~ "\n"
+#~ "Copyright © 2001 CubeSoft Communications, Inc.\n"
+#~ "Správce: <vedge na csoft.org>.\n"
+
+#~ msgid "Audio control device:"
+#~ msgstr "Zařízení ovládání zvuku:"
+
+#~ msgid "Buffer size (ms):"
+#~ msgstr "Velikost vyrovnávací paměti (ms):"
+
+#~ msgid "Volume controls device:"
+#~ msgstr "Zařízení ovládání hlasitosti:"
+
+#~ msgid "XMMS uses mixer exclusively."
+#~ msgstr "XMMS používá výlučný přístup k mixéru"
+
+#~ msgid "Sun driver configuration"
+#~ msgstr "Nastavení ovladače pro Sun"
 
 #~ msgid "Queue"
 #~ msgstr "Fronta"
@@ -7517,9 +7584,6 @@ msgstr ""
 #~ msgid "Musepack Tag"
 #~ msgstr "Popis musepacku"
 
-#~ msgid "Track:"
-#~ msgstr "Stopa:"
-
 #~ msgid "Musepack Info"
 #~ msgstr "Informace o musepacku"
 
@@ -8466,9 +8530,6 @@ msgstr ""
 #~ msgid "Bit rate:"
 #~ msgstr "Datový tok:"
 
-#~ msgid "Length:"
-#~ msgstr "Délka:"
-
 #~ msgid "File size:"
 #~ msgstr "Velikost souboru:"
 
@@ -9309,9 +9370,6 @@ msgstr ""
 #~ msgid "Genre"
 #~ msgstr "Žánr"
 
-#~ msgid "Filepath"
-#~ msgstr "Cesta k souboru"
-
 #~ msgid "Date"
 #~ msgstr "Datum"
 
@@ -9363,9 +9421,6 @@ msgstr ""
 
 #~ msgid "File extension"
 #~ msgstr "Přípona souboru"
-
-#~ msgid "Track number"
-#~ msgstr "Číslo stopy"
 
 #~ msgid "%{n:...%}: Display \"...\" only if element %n is present"
 #~ msgstr "%{n:…%}: Zobraz „…“ pouze pokud %n nechybí"
@@ -10350,9 +10405,6 @@ msgstr ""
 
 #~ msgid "Visualization Plugins"
 #~ msgstr "Vizualizační moduly"
-
-#~ msgid "Enable/Disable"
-#~ msgstr "Povolit/zakázat"
 
 #~ msgid "Fullscreen"
 #~ msgstr "Na celou obrazovku"
