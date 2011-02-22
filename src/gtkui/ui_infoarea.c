@@ -271,7 +271,7 @@ static void draw_visualizer (UIInfoArea * area, cairo_t * cr)
         cairo_fill (cr);
 
         /* draw new (downward) reflection */
-        cairo_set_source_rgb (cr, r * 0.5, g * 0.5, b * 0.5);
+        cairo_set_source_rgb (cr, r * 0.3, g * 0.3, b * 0.3);
         cairo_rectangle (cr, x, 50, 6, m - 50);
         cairo_fill (cr);
     }
