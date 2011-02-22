@@ -45,9 +45,10 @@
  *
  */
 
+#include <assert.h>
 #include <inttypes.h>
 #include <stdarg.h>
-#include <assert.h>
+#include <string.h>
 
 #include "adl.h"
 #include "debug.h"
@@ -833,7 +834,7 @@ AdlibDriver::executePrograms ()
 {
   // Each channel runs its own program. There are ten channels: One for
   // each Adlib channel (0-8), plus one "control channel" (9) which is
-  // the one that tells the other channels what to do. 
+  // the one that tells the other channels what to do.
 
   for (_curChannel = 9; _curChannel >= 0; --_curChannel)
   {
@@ -922,7 +923,7 @@ AdlibDriver::executePrograms ()
   }
 }
 
-// 
+//
 
 void
 AdlibDriver::resetAdlibState ()

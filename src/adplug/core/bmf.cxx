@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2003, 2006 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -39,6 +39,8 @@
    player : ver.1.2 by ?
   comment : inaccurate replaying, because constant outport; in original player it can be 380 or 382.
 */
+
+#include <string.h>
 
 #include "bmf.h"
 #include "debug.h"
@@ -540,7 +542,7 @@ CxadbmfPlayer::__bmf_convert_stream (unsigned char *stream, int channel)
 
       if ((0x20 <= *stream) && (*stream <= 0x3F))
       {
-        // 0x20 or higher; 0x3F or lower: Set Instrument 
+        // 0x20 or higher; 0x3F or lower: Set Instrument
         bmf.streams[channel][pos].instrument = *stream - 0x20 + 1;
 
         stream++;

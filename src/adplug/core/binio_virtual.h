@@ -7,127 +7,139 @@
 #define __BINIO_VIRTUAL__
 
 #include <binio.h>
-#include <binstr.h>
-
-#include <string>
-
-#include <glib.h>
 
 extern "C" {
-#include <audacious/plugin.h>
+#include <libaudcore/vfs.h>
 };
 
-class vfsistream : public binistream, virtual public binio {
+class vfsistream : public binistream {
 private:
 	VFSFile *fd;
 
 public:
-	vfsistream() {};
-	~vfsistream() {};
+	vfsistream() {
+		this->fd = 0;
+	};
+
+	~vfsistream() {
+		if (this->fd) {
+			vfs_fclose(this->fd);
+			this->fd = 0;
+		}
+	};
 
 	vfsistream(VFSFile *fd) {
 		this->fd = fd;
 	};
 
 	vfsistream(const char *file) {
-		this->fd = vfs_fopen(file, "rb");
+		this->fd = vfs_fopen(file, "r");
+		if (!this->fd)
+			err |= NotFound;
 	};
 
 	vfsistream(std::string &file) {
-		this->fd = vfs_fopen(file.c_str(), "rb");
+		this->fd = vfs_fopen(file.c_str(), "r");
+		if (!this->fd)
+			err |= NotFound;
 	};
 
 	void open(const char *file) {
-		this->fd = vfs_fopen(file, "rb");
+		g_return_if_fail(!this->fd);
+		this->fd = vfs_fopen(file, "r");
+		if (!this->fd)
+			err |= NotFound;
 	};
 
 	void open(std::string &file) {
-		this->fd = vfs_fopen(file.c_str(), "rb");
+		g_return_if_fail(!this->fd);
+		this->fd = vfs_fopen(file.c_str(), "r");
+		if (!this->fd)
+			err |= NotFound;
 	};
 
-	// XXX: this sucks because binio won't let us do sanity checking
 	Byte getByte(void) {
+		g_return_val_if_fail(this->fd, EOF);
 		int c = vfs_getc(this->fd);
-
-		if (c == EOF) err |= Eof;
-
+		if (c < 0)
+			err |= Eof;
 		return (Byte) c;
 	};
 
 	void seek(long pos, Offset offs = Set) {
-		switch (offs)
-		{
-			case Add:
-				vfs_fseek(this->fd, pos, SEEK_CUR);
-				break;
-			case End:
-				vfs_fseek(this->fd, pos, SEEK_END);
-				break;
-			case Set:
-			default:
-				vfs_fseek(this->fd, pos, SEEK_SET);
-				break;
-		}
-
+		g_return_if_fail(this->fd);
+		int wh = (offs == Add) ? SEEK_CUR : (offs == End) ? SEEK_END : SEEK_SET;
+		if (vfs_fseek(this->fd, pos, wh))
+			err |= Eof;
 	}
 
 	long pos(void) {
+		g_return_val_if_fail(this->fd, -1);
 		return vfs_ftell(this->fd);
 	}
 };
 
-// XXX: binio sucks and doesn't let us just combine the two.
-class vfsostream : public binostream, virtual public binio {
+class vfsostream : public binostream {
 private:
 	VFSFile *fd;
 
 public:
-	vfsostream() {};
-	~vfsostream() {};
+	vfsostream() {
+		this->fd = 0;
+	};
+
+	~vfsostream() {
+		if (this->fd) {
+			vfs_fclose(this->fd);
+			this->fd = 0;
+		}
+	};
 
 	vfsostream(VFSFile *fd) {
 		this->fd = fd;
 	};
 
 	vfsostream(const char *file) {
-		this->fd = vfs_fopen(file, "wb");
+		this->fd = vfs_fopen(file, "w");
+		if (!this->fd)
+			err |= Denied;
 	};
 
 	vfsostream(std::string &file) {
-		this->fd = vfs_fopen(file.c_str(), "wb");
+		this->fd = vfs_fopen(file.c_str(), "w");
+		if (!this->fd)
+			err |= Denied;
 	};
 
 	void open(const char *file) {
-		this->fd = vfs_fopen(file, "wb");
+		g_return_if_fail(!this->fd);
+		this->fd = vfs_fopen(file, "w");
+		if (!this->fd)
+			err |= Denied;
 	};
 
 	void open(std::string &file) {
-		this->fd = vfs_fopen(file.c_str(), "wb");
+		g_return_if_fail(!this->fd);
+		this->fd = vfs_fopen(file.c_str(), "w");
+		if (!this->fd)
+			err |= Denied;
 	};
 
-	// XXX: this sucks because binio won't let us do sanity checking
 	void putByte(Byte b) {
-		vfs_fwrite(&b, 1, 1, this->fd);
+		g_return_if_fail(this->fd);
+		if (vfs_fwrite(&b, 1, 1, this->fd) != 1)
+			err |= Fatal;
 	};
 
 	void seek(long pos, Offset offs = Set) {
-		switch (offs)
-		{
-			case Add:
-				vfs_fseek(this->fd, pos, SEEK_CUR);
-				break;
-			case End:
-				vfs_fseek(this->fd, pos, SEEK_END);
-				break;
-			case Set:
-			default:
-				vfs_fseek(this->fd, pos, SEEK_SET);
-				break;
-		}
-
+		g_return_if_fail(this->fd);
+		int wh = (offs == Add) ? SEEK_CUR : (offs == End) ? SEEK_END : SEEK_SET;
+		if (vfs_fseek(this->fd, pos, wh))
+			err |= Fatal;
 	}
 
 	long pos(void) {
+		g_return_val_if_fail(this->fd, -1);
 		return vfs_ftell(this->fd);
 	}
 };
