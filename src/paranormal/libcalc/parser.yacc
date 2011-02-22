@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
 /* suppress conflict warnings */
@@ -48,8 +48,6 @@ static gboolean expr_add_compile (expression_t *expr, symbol_dict_t *dict,
                    YYABORT;
 %}
 
-%pure_parser
-     
 /* Data types. */
 %union {
 char *s_value;
@@ -58,17 +56,24 @@ double d_value;
 int i_value;
 }
 
-/* Terminal symbols. */     
+%{
+int yyerror (char * s);
+int yylex (YYSTYPE * yylval, void * yyparam);
+%}
+
+%pure_parser
+
+/* Terminal symbols. */
 %token <s_value> NAME
 %token <d_value> NUMBER
 
-/* Precedence rules. */     
+/* Precedence rules. */
 %right '='
 %left '-' '+'
 %left '*' '/'
 %left NEG
 %right '^'
-     
+
 /* Grammar follows */
 %%
 
@@ -80,9 +85,9 @@ input:			/* empty */
 /* expression_list is a ';' separated list of expressions. */
 expression_list:	/* empty */
     			| expression
-			    { } 
+			    { }
                         | expression_list ';'
-    			| error ';'	
+    			| error ';'
 			    { yyerrok; }
 
 /* argument list is a comma separated list od expressions */
@@ -93,30 +98,30 @@ argument_list:
                         | argument_list ',' expression
                             {
                             }
-     
+
 /* expression is a C-like expression. */
 expression:		NUMBER
-			    { 
+			    {
                               char *buf = g_strdup_printf ("c%f:", $1);
-                              GENERATE (buf); 
+                              GENERATE (buf);
                               g_free (buf);
                             }
 		        | NAME
-			    { 
+			    {
                               char *buf = g_strdup_printf ("l%s:", $1);
-                              GENERATE (buf); 
+                              GENERATE (buf);
                               g_free (buf);
                             }
     			| NAME '=' expression
-			    { 
+			    {
                               char *buf = g_strdup_printf ("s%s:", $1);
-                              GENERATE (buf); 
+                              GENERATE (buf);
                               g_free (buf);
                             }
                         | NAME '(' argument_list ')'
                             {
                               char *buf = g_strdup_printf ("f%s:", $1);
-                              GENERATE (buf); 
+                              GENERATE (buf);
                               g_free (buf);
                             }
 
@@ -154,57 +159,63 @@ int yyerror (char *s) {
 int yylex (YYSTYPE *yylval, void *yyparam) {
   int c;
   parser_control *pc = (parser_control *) yyparam;
-  
+
   /* Ignore whitespace, get first nonwhite character. */
   while ((c = vfs_getc (pc->input)) == ' ' || c == '\t' || c == '\n');
-  
+
   /* End of input ? */
   if (c == EOF)
     return 0;
 
   /* Char starts a number => parse the number. */
   if (isdigit (c)) {
-    vfs_fseek (pc->input, -1, SEEK_CUR); /* Put the char back. */
+    if (vfs_ungetc (c, pc->input) == EOF)
+      return 0;
+
     {
       char *old_locale, *saved_locale;
 
       old_locale = setlocale (LC_ALL, NULL);
       saved_locale = g_strdup (old_locale);
       setlocale (LC_ALL, "C");
-      sscanf (((VFSBuffer *)(pc->input->handle))->iter, "%lf", &yylval->d_value);
+      sscanf ((gchar *) ((VFSBuffer *)(pc->input->handle))->iter, "%lf", & yylval->d_value);
 
       while (isdigit(c) || c == '.')
       {
         c = vfs_getc(pc->input);
       }
 
-      vfs_fseek(pc->input, -1, SEEK_CUR);
+      if (c != EOF && vfs_ungetc (c, pc->input) == EOF)
+        return 0;
 
       setlocale (LC_ALL, saved_locale);
       g_free (saved_locale);
     }
     return NUMBER;
   }
-     
+
   /* Char starts an identifier => read the name. */
   if (isalpha (c)) {
     GString *sym_name;
 
     sym_name = g_string_new (NULL);
-    
+
     do {
       sym_name = g_string_append_c (sym_name, c);
 
       /* Get another character. */
       c = vfs_getc (pc->input);
     } while (c != EOF && isalnum (c));
-    
-    vfs_fseek (pc->input, -1, SEEK_CUR);
+
+    if (c != EOF && vfs_ungetc (c, pc->input) == EOF) {
+      g_string_free (sym_name, FALSE);
+      return 0;
+    }
 
     yylval->s_value = sym_name->str;
-    
+
     g_string_free (sym_name, FALSE);
-    
+
     return NAME;
   }
 
@@ -227,7 +238,7 @@ static int load_name (char *str, char **name) {
   return count;
 }
 
-static gboolean expr_add_compile (expression_t *expr, symbol_dict_t *dict, 
+static gboolean expr_add_compile (expression_t *expr, symbol_dict_t *dict,
 				  char *str) {
   char op;
   double dval;
@@ -272,7 +283,7 @@ static gboolean expr_add_compile (expression_t *expr, symbol_dict_t *dict,
 
   return TRUE;
 }
-     
+
 expression_t *expr_compile_string (const char* str, symbol_dict_t *dict)
 {
   parser_control pc;
