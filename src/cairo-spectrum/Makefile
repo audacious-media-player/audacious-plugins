@@ -1,0 +1,12 @@
+PLUGIN = cairo-spectrum${PLUGIN_SUFFIX}
+
+SRCS = cairo-spectrum.c
+
+include ../../buildsys.mk
+include ../../extra.mk
+
+plugindir := ${plugindir}/${VISUALIZATION_PLUGIN_DIR}
+
+CFLAGS += -std=gnu99 ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${CAIRO_CFLAGS} ${PANGOCAIRO_CFLAGS} ${XRENDER_CFLAGS} ${XCOMPOSITE_CFLAGS} -I../..
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${CAIRO_LIBS} ${PANGOCAIRO_LIBS} ${XRENDER_LIBS} ${XCOMPOSITE_LIBS} ${MOWGLI_LIBS} -laudgui -lm
