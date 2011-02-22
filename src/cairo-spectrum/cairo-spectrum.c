@@ -33,8 +33,8 @@
 #include <math.h>
 
 #define MAX_BANDS	(256)
-#define VIS_DELAY 0 /* delay before falloff in frames */
-#define VIS_FALLOFF 1 /* falloff in pixels per frame */
+#define VIS_DELAY 2 /* delay before falloff in frames */
+#define VIS_FALLOFF 2 /* falloff in pixels per frame */
 
 static gfloat xscale[MAX_BANDS + 1];
 static gint width, height, bands;
@@ -197,9 +197,9 @@ static void draw_grid (GtkWidget * area, cairo_t * cr)
 	GtkAllocation alloc;
 	gtk_widget_get_allocation (area, & alloc);
 	gint i;
-	gfloat base_s = (height / 20);
+	gfloat base_s = (height / 40);
 
-	for (i = 1; i < 21; i++)
+	for (i = 1; i < 41; i++)
 	{
 		gdk_cairo_set_source_color(cr, c);
 		cairo_move_to(cr, 0.0, i * base_s);
@@ -210,7 +210,7 @@ static void draw_grid (GtkWidget * area, cairo_t * cr)
 
 static void draw_visualizer (GtkWidget *widget, cairo_t *cr)
 {
-	gfloat base_s = (height / 20);
+	gfloat base_s = (height / 40);
 
 	for (gint i = 0; i <= bands; i++)
 	{
