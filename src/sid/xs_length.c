@@ -1,8 +1,8 @@
-/*  
+/*
    XMMS-SID - SIDPlay input plugin for X MultiMedia System (XMMS)
 
    Get song length from SLDB for PSID/RSID files
-   
+
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
    (C) Copyright 1999-2009 Tecnic Software productions (TNSP)
 
@@ -121,7 +121,7 @@ sldb_node_t * xs_sldb_read_entry(gchar *inLine)
         sscanf(&inLine[linePos], "%2x", &tmpu);
         tmnode->md5Hash[i] = tmpu;
     }
-        
+
     /* Get playtimes */
     if (inLine[linePos] != 0) {
         if (inLine[linePos] != '=') {
@@ -130,12 +130,12 @@ sldb_node_t * xs_sldb_read_entry(gchar *inLine)
             return NULL;
         } else {
             size_t tmpLen, savePos;
-            
+
             /* First playtime is after '=' */
             savePos = ++linePos;
             tmpLen = strlen(inLine);
-                        
-            /* Get number of sub-tune lengths */                        
+
+            /* Get number of sub-tune lengths */
             isOK = TRUE;
             while ((linePos < tmpLen) && isOK) {
                 xs_findnext(inLine, &linePos);
@@ -145,7 +145,7 @@ sldb_node_t * xs_sldb_read_entry(gchar *inLine)
                 else
                     isOK = FALSE;
             }
-            
+
             /* Allocate memory for lengths */
             if (tmnode->nlengths > 0) {
                 tmnode->lengths = (gint *) g_malloc0(tmnode->nlengths * sizeof(gint));
@@ -158,14 +158,14 @@ sldb_node_t * xs_sldb_read_entry(gchar *inLine)
                 xs_sldb_node_free(tmnode);
                 return NULL;
             }
-            
+
             /* Read lengths in */
             i = 0;
             linePos = savePos;
             isOK = TRUE;
             while ((linePos < tmpLen) && (i < tmnode->nlengths) && isOK) {
                 gint l;
-                
+
                 xs_findnext(inLine, &linePos);
 
                 l = xs_sldb_gettime(inLine, &linePos);
@@ -211,7 +211,7 @@ gint xs_sldb_read(xs_sldb_t *db, const gchar *dbFilename)
     while (fgets(inLine, XS_BUF_SIZE, inFile) != NULL) {
         size_t linePos = 0;
         lineNum++;
-        
+
         xs_findnext(inLine, &linePos);
 
         /* Check if it is datafield */
@@ -390,7 +390,11 @@ static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
         return -1;
 
     /* Read PSID header in */
-    xs_fread(psidH.magicID, sizeof(psidH.magicID), 1, inFile);
+    if (xs_fread(psidH.magicID, 1, sizeof psidH.magicID, inFile) < sizeof psidH.magicID) {
+        xs_fclose(inFile);
+        return -1;
+    }
+
     if (strncmp(psidH.magicID, "PSID", 4) && strncmp(psidH.magicID, "RSID", 4)) {
         xs_fclose(inFile);
         xs_error("Not a PSID or RSID file '%s'\n", filename);
@@ -406,19 +410,17 @@ static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
     psidH.startSong = xs_fread_be16(inFile);
     psidH.speed = xs_fread_be32(inFile);
 
-    xs_fread(psidH.sidName, sizeof(gchar), sizeof(psidH.sidName), inFile);
-    xs_fread(psidH.sidAuthor, sizeof(gchar), sizeof(psidH.sidAuthor), inFile);
-    xs_fread(psidH.sidCopyright, sizeof(gchar), sizeof(psidH.sidCopyright), inFile);
-    
-    if (xs_feof(inFile) || xs_ferror(inFile)) {
+    if (xs_fread(psidH.sidName, 1, sizeof psidH.sidName, inFile) < sizeof psidH.sidName
+     || xs_fread(psidH.sidAuthor, 1, sizeof psidH.sidAuthor, inFile) < sizeof psidH.sidAuthor
+     || xs_fread(psidH.sidCopyright, 1, sizeof psidH.sidCopyright, inFile) < sizeof psidH.sidCopyright) {
         xs_fclose(inFile);
         xs_error("Error reading SID file header from '%s'\n", filename);
         return -4;
     }
-    
+
     /* Check if we need to load PSIDv2NG header ... */
     psidH2.flags = 0;    /* Just silence a stupid gcc warning */
-    
+
     if (psidH.version == 2) {
         /* Yes, we need to */
         psidH2.flags = xs_fread_be16(inFile);
@@ -507,7 +509,7 @@ sldb_node_t *xs_sldb_get(xs_sldb_t *db, const gchar *filename)
         key = &keyItem;
         item = bsearch(&key, db->pindex, db->n,
             sizeof(db->pindex[0]), xs_sldb_cmp);
-        
+
         if (item)
             return *item;
         else

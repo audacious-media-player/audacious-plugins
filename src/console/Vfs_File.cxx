@@ -38,11 +38,7 @@ Vfs_File_Reader::error_t Vfs_File_Reader::open( const char* path )
 
 long Vfs_File_Reader::size() const
 {
-	long pos = tell();
-	vfs_fseek (p->file, 0, SEEK_END);
-	long result = tell();
-	vfs_fseek (p->file, pos, SEEK_SET);
-	return result;
+	return vfs_fsize (p->file);
 }
 
 long Vfs_File_Reader::read_avail (void * buf, long size)

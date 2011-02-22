@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2006 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -21,6 +21,7 @@
  * Visit:  http://tenacity.hispeed.com/aomit/oplx/
  */
 #include <algorithm>
+#include <string.h>
 
 #include "rol.h"
 #include "debug.h"
@@ -40,8 +41,8 @@ float const CrolPlayer::kPitchFactor         = 400.0f;
 
 static const unsigned char drum_table[4] = {0x14, 0x12, 0x15, 0x11};
 
-CrolPlayer::uint16 const CrolPlayer::kNoteTable[12] = 
-{ 
+CrolPlayer::uint16 const CrolPlayer::kNoteTable[12] =
+{
     340, // C
     363, // C#
     385, // D
@@ -79,7 +80,7 @@ CrolPlayer::CrolPlayer(Copl *newopl)
     memset(freqCache,   0, sizeof(freqCache) );
 
     for(n=0; n<11; n++)
-      pitchCache[n]=1.0f;    
+      pitchCache[n]=1.0f;
 }
 //---------------------------------------------------------
 CrolPlayer::~CrolPlayer()
@@ -293,7 +294,7 @@ void CrolPlayer::UpdateVoice( int const voice, CVoiceData &voiceData )
         else
         {
             voiceData.mEventStatus |= CVoiceData::kES_VolumeEnd;
-        }        
+        }
     }
 
     if( voiceData.mForceNote || voiceData.current_note_duration > voiceData.mNoteDuration-1 )
@@ -409,7 +410,7 @@ void CrolPlayer::SetVolume( int const voice, int const volume )
 {
     volumeCache[voice] = (volumeCache[voice] &0xc0) | volume;
 
-    int const op_offset = ( voice < kSnareDrumChannel || rol_header->mode ) ? 
+    int const op_offset = ( voice < kSnareDrumChannel || rol_header->mode ) ?
                           op_table[voice]+3 : drum_table[voice-kSnareDrumChannel];
 
     opl->write( 0x40+op_offset, volumeCache[voice] );
@@ -668,9 +669,9 @@ int CrolPlayer::load_rol_instrument( binistream *f, SBnkHeader const &header, st
     typedef TInstrumentNames::const_iterator TInsIter;
     typedef std::pair<TInsIter, TInsIter>    TInsIterPair;
 
-    TInsIterPair range = std::equal_range( ins_name_list.begin(), 
-                                           ins_name_list.end(), 
-                                           name, 
+    TInsIterPair range = std::equal_range( ins_name_list.begin(),
+                                           ins_name_list.end(),
+                                           name,
                                            StringCompare() );
 
     if( range.first != range.second )

@@ -1,8 +1,8 @@
-/*  
+/*
    XMMS-SID - SIDPlay input plugin for X MultiMedia System (XMMS)
 
    Miscellaneous support functions
-   
+
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
    (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
 
@@ -23,6 +23,7 @@
 #include "xs_support.h"
 #include <ctype.h>
 
+#define __AUDACIOUS_NEWVFS__
 
 guint16 xs_fread_be16(xs_file_t *f)
 {
@@ -45,7 +46,7 @@ gint xs_fload_buffer(const gchar *filename, guint8 **buf, size_t *bufSize)
 {
     xs_file_t *f;
     glong seekPos;
-    
+
     /* Open file, get file size */
     if ((f = xs_fopen(filename, "rb")) == NULL)
         return -1;
@@ -56,7 +57,7 @@ gint xs_fload_buffer(const gchar *filename, guint8 **buf, size_t *bufSize)
     xs_fseek(f, 0L, SEEK_END);
     seekPos = xs_ftell(f);
 #endif
-    
+
     if (seekPos > 0) {
         size_t readSize = seekPos;
         if (readSize >= *bufSize || *buf == NULL) {
@@ -65,21 +66,24 @@ gint xs_fload_buffer(const gchar *filename, guint8 **buf, size_t *bufSize)
                 g_free(*buf);
                 *buf = NULL;
             }
-    
+
             *bufSize = seekPos;
-            
+
             *buf = (guint8 *) g_malloc(*bufSize * sizeof(guint8));
             if (*buf == NULL) {
                 xs_fclose(f);
                 return -2;
             }
         }
-        
-        /* Read data */    
-        xs_fseek(f, 0, SEEK_SET);
-        readSize = xs_fread(*buf, sizeof(guint8), *bufSize, f);
+
+        /* Read data */
+        if (xs_fseek(f, 0, SEEK_SET))
+            readSize = 0;
+        else
+            readSize = xs_fread(*buf, 1, *bufSize, f);
+
         xs_fclose(f);
-        
+
         if (readSize != *bufSize)
             return -3;
         else

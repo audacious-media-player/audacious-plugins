@@ -251,7 +251,8 @@ void psf2_pause(InputPlayback *playback, gboolean pause)
 int psf2_is_our_fd(const gchar *filename, VFSFile *file)
 {
 	uint8 magic[4];
-	vfs_fread(magic, 1, 4, file);
+	if (vfs_fread(magic, 1, 4, file) < 4)
+		return FALSE;
 
 	return (psf_probe(magic) != ENG_NONE);
 }

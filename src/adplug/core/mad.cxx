@@ -19,6 +19,8 @@
   mad.cpp - MAD loader by Riven the Mage <riven@ok.ru>
 */
 
+#include <string.h>
+
 #include "mad.h"
 
 /* -------- Public Methods -------------------------------- */
