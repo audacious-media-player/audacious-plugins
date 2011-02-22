@@ -79,7 +79,7 @@ static struct
   CPlayers players;
 } conf =
 {
-44100l, true, false, false, CAdPlug::players};
+44100l, true, false, false, CAdPlug::getPlayers()};
 
 // Player variables
 static struct
@@ -390,7 +390,7 @@ adplug_config (void)
       gtk_clist_set_selection_mode (fl, GTK_SELECTION_MULTIPLE);
 
       // Build list
-      for (i = CAdPlug::players.begin (); i != CAdPlug::players.end (); i++)
+      for (i = CAdPlug::getPlayers().begin (); i != CAdPlug::getPlayers().end (); i++)
       {
         gint rownum;
 
@@ -1012,8 +1012,8 @@ adplug_quit (void)
 
   dbg_printf ("exclude, ");
   std::string exclude;
-  for (CPlayers::const_iterator i = CAdPlug::players.begin ();
-       i != CAdPlug::players.end (); i++)
+  for (CPlayers::const_iterator i = CAdPlug::getPlayers().begin ();
+       i != CAdPlug::getPlayers().end (); i++)
     if (find (conf.players.begin (), conf.players.end (), *i) ==
         conf.players.end ())
     {

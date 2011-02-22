@@ -76,7 +76,7 @@
 /***** CAdPlug *****/
 
 // List of all players that come with the standard AdPlug distribution
-const CPlayerDesc
+/*const CPlayerDesc
   CAdPlug::allplayers[] = {
   CPlayerDesc (ChscPlayer::factory, "HSC-Tracker", ".hsc\0"),
   CPlayerDesc (CsngPlayer::factory, "SNGPlay", ".sng\0"),
@@ -121,7 +121,7 @@ const CPlayerDesc
   CPlayerDesc (CjbmPlayer::factory, "Johannes Bjerregaard", ".jbm\0"),
   CPlayerDesc ()
 };
-
+*/
 const
   CPlayers &
 CAdPlug::init_players (const CPlayerDesc pd[])
@@ -135,8 +135,56 @@ CAdPlug::init_players (const CPlayerDesc pd[])
   return initplayers;
 }
 
-const CPlayers
-  CAdPlug::players = CAdPlug::init_players (CAdPlug::allplayers);
+const CPlayers& CAdPlug::getPlayers() {
+  static const CPlayerDesc
+  _allplayers[] = {
+  CPlayerDesc (ChscPlayer::factory, "HSC-Tracker", ".hsc\0"),
+  CPlayerDesc (CsngPlayer::factory, "SNGPlay", ".sng\0"),
+  CPlayerDesc (CimfPlayer::factory, "Apogee IMF", ".imf\0.wlf\0.adlib\0"),
+  CPlayerDesc (Ca2mLoader::factory, "Adlib Tracker 2", ".a2m\0"),
+  CPlayerDesc (CadtrackLoader::factory, "Adlib Tracker", ".sng\0"),
+  CPlayerDesc (CamdLoader::factory, "AMUSIC", ".amd\0"),
+  CPlayerDesc (CbamPlayer::factory, "Bob's Adlib Music", ".bam\0"),
+  CPlayerDesc (CcmfPlayer::factory, "Creative Music File", ".cmf\0"),
+  CPlayerDesc (Cd00Player::factory, "Packed EdLib", ".d00\0"),
+  CPlayerDesc (CdfmLoader::factory, "Digital-FM", ".dfm\0"),
+  CPlayerDesc (ChspLoader::factory, "HSC Packed", ".hsp\0"),
+  CPlayerDesc (CksmPlayer::factory, "Ken Silverman Music", ".ksm\0"),
+  CPlayerDesc (CmadLoader::factory, "Mlat Adlib Tracker", ".mad\0"),
+  CPlayerDesc (CmidPlayer::factory, "MIDI", ".sci\0.laa\0"),
+  CPlayerDesc (CmkjPlayer::factory, "MKJamz", ".mkj\0"),
+  CPlayerDesc (CcffLoader::factory, "Boomtracker", ".cff\0"),
+  CPlayerDesc (CdmoLoader::factory, "TwinTeam", ".dmo\0"),
+  CPlayerDesc (Cs3mPlayer::factory, "Scream Tracker 3", ".s3m\0"),
+  CPlayerDesc (CdtmLoader::factory, "DeFy Adlib Tracker", ".dtm\0"),
+  CPlayerDesc (CfmcLoader::factory, "Faust Music Creator", ".sng\0"),
+  CPlayerDesc (CmtkLoader::factory, "MPU-401 Trakker", ".mtk\0"),
+  CPlayerDesc (CradLoader::factory, "Reality Adlib Tracker", ".rad\0"),
+  CPlayerDesc (CrawPlayer::factory, "RdosPlay RAW", ".raw\0"),
+  CPlayerDesc (Csa2Loader::factory, "Surprise! Adlib Tracker",
+               ".sat\0.sa2\0"),
+  CPlayerDesc (CxadbmfPlayer::factory, "BMF Adlib Tracker", ".xad\0"),
+  CPlayerDesc (CxadflashPlayer::factory, "Flash", ".xad\0"),
+  CPlayerDesc (CxadhybridPlayer::factory, "Hybrid", ".xad\0"),
+  CPlayerDesc (CxadhypPlayer::factory, "Hypnosis", ".xad\0"),
+  CPlayerDesc (CxadpsiPlayer::factory, "PSI", ".xad\0"),
+  CPlayerDesc (CxadratPlayer::factory, "rat", ".xad\0"),
+  CPlayerDesc (CldsPlayer::factory, "LOUDNESS Sound System", ".lds\0"),
+  CPlayerDesc (Cu6mPlayer::factory, "Ultima 6 Music", ".m\0"),
+  CPlayerDesc (CrolPlayer::factory, "Adlib Visual Composer", ".rol\0"),
+  CPlayerDesc (CxsmPlayer::factory, "eXtra Simple Music", ".xsm\0"),
+  CPlayerDesc (CdroPlayer::factory, "DOSBox Raw OPL v0.1", ".dro\0"),
+  CPlayerDesc (Cdro2Player::factory, "DOSBox Raw OPL v2.0", ".dro\0"),
+  CPlayerDesc (CmscPlayer::factory, "Adlib MSC Player", ".msc\0"),
+  CPlayerDesc (CrixPlayer::factory, "Softstar RIX OPL Music", ".rix\0"),
+  CPlayerDesc (CadlPlayer::factory, "Westwood ADL", ".adl\0"),
+  CPlayerDesc (CjbmPlayer::factory, "Johannes Bjerregaard", ".jbm\0"),
+  CPlayerDesc ()
+  };
+  static CPlayers players = CAdPlug::init_players(_allplayers);
+  return players;
+}
+
 CAdPlugDatabase *
   CAdPlug::database = 0;
 

@@ -35,10 +35,10 @@ class CAdPlug
   friend CPlayer::CPlayer(Copl *newopl);
 
 public:
-  static const CPlayers players;
+  static const CPlayers& getPlayers();
 
   static CPlayer *factory(VFSFile *fd, Copl *opl,
-			  const CPlayers &pl = players,
+                          const CPlayers &pl = getPlayers(),
 			  const CFileProvider &fp = CProvider_Filesystem());
 
   static void set_database(CAdPlugDatabase *db);
@@ -47,7 +47,6 @@ public:
 
 private:
   static CAdPlugDatabase *database;
-  static const CPlayerDesc allplayers[];
 
   static const CPlayers &init_players(const CPlayerDesc pd[]);
 };
