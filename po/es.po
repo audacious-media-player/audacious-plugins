@@ -2,14 +2,15 @@
 # Spanish translation for Audacious
 # This file is distributed under the same license as the Audacious package.
 # Cosme Domínguez Díaz <cosme.ddiaz@gmail.com>, 2010
+# Jorge Andrés <winninglero@gmail.com>, 2011
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-02-21 21:34-0500\n"
+"POT-Creation-Date: 2011-02-21 21:35-0500\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Cosme Domínguez Díaz <cosme.ddiaz@gmail.com>\n"
+"Last-Translator: Jorge Andrés <winninglero@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -133,7 +134,7 @@ msgstr "Reproducción"
 
 #: src/adplug/adplug-xmms.cc:358
 msgid "Detect songend"
-msgstr ""
+msgstr "Detectar canción final"
 
 #: src/adplug/adplug-xmms.cc:362
 msgid ""
@@ -187,7 +188,7 @@ msgstr "Tipo de archivo: "
 
 #: src/adplug/adplug-xmms.cc:540
 msgid "Subsongs: "
-msgstr ""
+msgstr "Subcanciones:"
 
 #: src/adplug/adplug-xmms.cc:541
 msgid "Instruments: "
@@ -195,7 +196,7 @@ msgstr "Instrumentos: "
 
 #: src/adplug/adplug-xmms.cc:546
 msgid "Orders: "
-msgstr ""
+msgstr "Órdenes:"
 
 #: src/adplug/adplug-xmms.cc:547
 msgid "Patterns: "
@@ -211,31 +212,31 @@ msgstr "Nombre del instrumento"
 
 #: src/adplug/adplug-xmms.cc:619
 msgid "Song message"
-msgstr ""
+msgstr "Mensaje de canción"
 
 #: src/adplug/adplug-xmms.cc:642
 msgid "Subsong selection"
-msgstr ""
+msgstr "Selección de subcanción"
 
 #: src/adplug/adplug-xmms.cc:696
 msgid "Order: "
-msgstr ""
+msgstr "Orden:"
 
 #: src/adplug/adplug-xmms.cc:697
 msgid "Pattern: "
-msgstr ""
+msgstr "Patrón:"
 
 #: src/adplug/adplug-xmms.cc:699
 msgid "Row: "
-msgstr ""
+msgstr "Fila:"
 
 #: src/adplug/adplug-xmms.cc:700
 msgid "Speed: "
-msgstr ""
+msgstr "Velocidad:"
 
 #: src/adplug/adplug-xmms.cc:701
 msgid "Timer: "
-msgstr ""
+msgstr "Temporizador:"
 
 #: src/adplug/adplug-xmms.cc:702 src/console/configure.c:235
 #: src/sid/xs_interface.c:354
@@ -282,7 +283,7 @@ msgstr "Alarma"
 
 #: src/alarm/interface.c:109
 msgid "This is your wakeup call."
-msgstr ""
+msgstr "Este es su llamada para despertar."
 
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389
 #: src/modplug/gui/interface.cxx:703 src/sid/xs_config.c:322
@@ -291,7 +292,7 @@ msgstr "OK"
 
 #: src/alarm/interface.c:152
 msgid "Select Playlist"
-msgstr ""
+msgstr "Seleccione Lista de Reproducción"
 
 #: src/alarm/interface.c:196
 msgid "Sorry"
@@ -316,7 +317,7 @@ msgstr ""
 
 #: src/alarm/interface.c:229
 msgid "Oh Well"
-msgstr ""
+msgstr "Oh Bien"
 
 #: src/alarm/interface.c:388
 msgid "Alarm Settings"
@@ -325,7 +326,7 @@ msgstr "Opciones de la alarma"
 #: src/alarm/interface.c:404 src/alarm/interface.c:576
 #: src/alarm/interface.c:948
 msgid "Time"
-msgstr ""
+msgstr "Tiempo"
 
 #: src/alarm/interface.c:445
 msgid "hours"
@@ -341,15 +342,15 @@ msgstr "minutos"
 
 #: src/alarm/interface.c:554
 msgid "Quiet after:"
-msgstr ""
+msgstr "Silencio después de:"
 
 #: src/alarm/interface.c:564
 msgid "Alarm at (default):"
-msgstr ""
+msgstr "Alarma a las (predeterminado):"
 
 #: src/alarm/interface.c:584
 msgid "Choose the days for the alarm to come on"
-msgstr ""
+msgstr "Escoge los días para iniciarse la alarma"
 
 #: src/alarm/interface.c:612 src/alarm/interface.c:660
 #: src/alarm/interface.c:708 src/alarm/interface.c:756
@@ -357,7 +358,7 @@ msgstr ""
 #: src/alarm/interface.c:900 src/OSS/configure.c:162
 #: src/skins/ui_manager.c:445 src/skins/ui_manager.c:466
 msgid "Default"
-msgstr ""
+msgstr "Predeterminado"
 
 #: src/alarm/interface.c:938
 msgid "Day"
@@ -397,12 +398,12 @@ msgstr "Días"
 
 #: src/alarm/interface.c:1050
 msgid "Fading"
-msgstr ""
+msgstr "Desvanecimiento"
 
 #: src/alarm/interface.c:1087 src/sid/xs_interface.c:921
 #: src/sid/xs_interface.c:975 src/sid/xs_interface.c:1155
 msgid "seconds"
-msgstr ""
+msgstr "segundos"
 
 #: src/alarm/interface.c:1095 src/alarm/interface.c:1211
 #: src/modplug/gui/interface.cxx:550
@@ -415,11 +416,11 @@ msgstr "Actual"
 
 #: src/alarm/interface.c:1128
 msgid "reset to current output volume"
-msgstr ""
+msgstr "reiniciar a volumen de salida actual"
 
 #: src/alarm/interface.c:1130
 msgid "Start at"
-msgstr ""
+msgstr "Iniciar a las"
 
 #: src/alarm/interface.c:1158 src/alarm/interface.c:1202
 msgid "%"
@@ -431,7 +432,7 @@ msgstr "Final"
 
 #: src/alarm/interface.c:1227
 msgid "Additional Command"
-msgstr ""
+msgstr "Comandos Adicionales"
 
 #: src/alarm/interface.c:1253
 msgid "enable"
@@ -439,7 +440,7 @@ msgstr "habilitar"
 
 #: src/alarm/interface.c:1261
 msgid "Playlist (optional)"
-msgstr ""
+msgstr "Lista de reproducción (opcional)"
 
 #: src/alarm/interface.c:1287
 msgid "Browse..."
@@ -447,11 +448,11 @@ msgstr "Examinar..."
 
 #: src/alarm/interface.c:1295 src/alarm/interface.c:1460
 msgid "Reminder"
-msgstr ""
+msgstr "Recordatorio"
 
 #: src/alarm/interface.c:1312
 msgid "Use reminder"
-msgstr ""
+msgstr "Usar recordatorio"
 
 #: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:366
 msgid "Options"
@@ -459,7 +460,7 @@ msgstr "Opciones"
 
 #: src/alarm/interface.c:1336
 msgid "What do these options mean?"
-msgstr ""
+msgstr "¿Que significan estas opciones?"
 
 #: src/alarm/interface.c:1364
 msgid ""
@@ -523,47 +524,47 @@ msgstr "Ayuda"
 
 #: src/alarm/interface.c:1468
 msgid "Your reminder for today is.."
-msgstr ""
+msgstr "Su recordatorio para hoy es..."
 
 #: src/alarm/interface.c:1493
 msgid "Thankyou"
-msgstr ""
+msgstr "Gracias"
 
 #: src/alsa/config.c:212
 msgid "Default PCM device"
-msgstr ""
+msgstr "Dispositivo PCM predeterminado"
 
 #: src/alsa/config.c:237
 msgid "Default mixer device"
-msgstr ""
+msgstr "Dispositivo mezclador predeterminado"
 
 #: src/alsa/config.c:441
 msgid "ALSA Output Plugin Preferences"
-msgstr ""
+msgstr "Preferencias de complemento de salida ALSA"
 
 #: src/alsa/config.c:448
 msgid "PCM device:"
-msgstr ""
+msgstr "Dispositivo PCM:"
 
 #: src/alsa/config.c:450 src/OSS/configure.c:246
 msgid "Mixer device:"
-msgstr ""
+msgstr "Dispositivo mexclador"
 
 #: src/alsa/config.c:452
 msgid "Mixer element:"
-msgstr ""
+msgstr "Elemento mezclador:"
 
 #: src/alsa/config.c:455
 msgid "Work around drain hangup"
-msgstr ""
+msgstr "Trabajar por la fuga de colgado"
 
 #: src/alsa/plugin.c:63
 msgid "About ALSA Output Plugin"
-msgstr ""
+msgstr "Acerca del complemento de salida ALSA"
 
 #: src/alsa/plugin.c:85
 msgid "ALSA error"
-msgstr ""
+msgstr "Error de ALSA"
 
 #: src/amidi-plug/amidi-plug.c:338
 msgid ""
@@ -573,7 +574,7 @@ msgstr ""
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
-msgstr ""
+msgstr "Motor ALSA"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
@@ -589,7 +590,7 @@ msgstr ""
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
-msgstr ""
+msgstr "Motor FluidSynth "
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
@@ -603,103 +604,107 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-alsa.c:228
 msgid "ALSA BACKEND CONFIGURATION"
-msgstr ""
+msgstr "CONFIGURACIÓN DE MOTOR ALSA"
 
 #: src/amidi-plug/i_configure-alsa.c:331
 msgid "Port"
-msgstr ""
+msgstr "Puerto"
 
 #: src/amidi-plug/i_configure-alsa.c:333
 msgid "Client name"
-msgstr ""
+msgstr "Nombre del cliente"
 
 #: src/amidi-plug/i_configure-alsa.c:335
 msgid "Port name"
-msgstr ""
+msgstr "Nombre del puerto"
 
 #: src/amidi-plug/i_configure-alsa.c:346
 msgid "ALSA output ports"
-msgstr ""
+msgstr "Puertos de salida ALSA"
 
 #: src/amidi-plug/i_configure-alsa.c:399
 msgid "Soundcard: "
-msgstr ""
+msgstr "Tarjeta de sonido:"
 
 #: src/amidi-plug/i_configure-alsa.c:401
 msgid "Mixer control: "
-msgstr ""
+msgstr "Control mezclador:"
 
 #: src/amidi-plug/i_configure-alsa.c:413
 msgid "Mixer settings"
-msgstr ""
+msgstr "Preferencias de mezclador"
 
 #: src/amidi-plug/i_configure-alsa.c:429
 msgid "ALSA Backend not loaded or not available"
-msgstr ""
+msgstr "Motor ALSA no cargado o no disponible"
 
 #: src/amidi-plug/i_configure-alsa.c:448
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
 msgstr ""
+"<span size=\"smaller\">motor\n"
+"ALSA</span>"
 
 #: src/amidi-plug/i_configure-ap.c:59
 msgid "AMIDI-Plug - backend information"
-msgstr ""
+msgstr "AMIDI-Plug - información de motor"
 
 #: src/amidi-plug/i_configure-ap.c:196
 msgid "AMIDI-PLUG PREFERENCES"
-msgstr ""
+msgstr "AMIDI-PREFERENCIAS DEL PLUG"
 
 #: src/amidi-plug/i_configure-ap.c:223
 msgid "Backend selection"
-msgstr ""
+msgstr "Selección de motor"
 
 #: src/amidi-plug/i_configure-ap.c:227
 msgid "Available backends"
-msgstr ""
+msgstr "Motores disponibles"
 
 #: src/amidi-plug/i_configure-ap.c:257
 msgid "Playback settings"
-msgstr ""
+msgstr "Preferencias de reproducción"
 
 #: src/amidi-plug/i_configure-ap.c:262
 msgid "Transpose: "
-msgstr ""
+msgstr "Transponer"
 
 #: src/amidi-plug/i_configure-ap.c:271
 msgid "Drum shift: "
-msgstr ""
+msgstr "Tambor de cambio:"
 
 #: src/amidi-plug/i_configure-ap.c:289
 msgid "Advanced settings"
-msgstr ""
+msgstr "Configuración avanzada"
 
 #: src/amidi-plug/i_configure-ap.c:293
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr ""
+msgstr "pre-calcular longitud de archivos MIDI en lista de reproducción"
 
 #: src/amidi-plug/i_configure-ap.c:298
 msgid "extract comments from MIDI file (if available)"
-msgstr ""
+msgstr "extraer comentarios desde archivo MIDI (si está disponible)"
 
 #: src/amidi-plug/i_configure-ap.c:303
 msgid "extract lyrics from MIDI file (if available)"
-msgstr ""
+msgstr "extraer letras desde archivo MIDI (si está disponible)"
 
 #: src/amidi-plug/i_configure-ap.c:333
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 msgstr ""
+"<span size=\"smaller\">AMIDI\n"
+"Plug</span>"
 
 #: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug - select file"
-msgstr ""
+msgstr "AMIDI-Conector - seleccione archivo"
 
 #: src/amidi-plug/i_configure.c:129
 msgid "AMIDI-Plug - configuration"
-msgstr ""
+msgstr "AMIDI-Conectar - configuración"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -731,27 +736,27 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:428
 msgid "gain"
-msgstr ""
+msgstr "Ganancia"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:434
 #: src/amidi-plug/i_configure-fluidsynth.c:462
 #: src/amidi-plug/i_configure-fluidsynth.c:490
 #: src/amidi-plug/i_configure-fluidsynth.c:521
 msgid "use default"
-msgstr ""
+msgstr "usar predeterminado"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:437
 #: src/amidi-plug/i_configure-fluidsynth.c:465
 msgid "value:"
-msgstr ""
+msgstr "valor:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:456
 msgid "poliphony"
-msgstr ""
+msgstr "polifonía"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:484
 msgid "reverb"
-msgstr ""
+msgstr "Reverberación"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:493
 #: src/amidi-plug/i_configure-fluidsynth.c:524
@@ -765,11 +770,11 @@ msgstr "no"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:515
 msgid "chorus"
-msgstr ""
+msgstr "coro"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:546
 msgid "sample rate"
-msgstr ""
+msgstr "frecuencia de muestro"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:552
 msgid "22050 Hz "
@@ -785,7 +790,7 @@ msgstr "96000 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:561
 msgid "custom "
-msgstr ""
+msgstr "personalizado"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:570
 msgid "Hz "
@@ -938,11 +943,11 @@ msgstr ""
 
 #: src/aosd/aosd_style.c:87
 msgid "None"
-msgstr ""
+msgstr "Ninguno"
 
 #: src/aosd/aosd_trigger.c:77
 msgid "Playback Start"
-msgstr ""
+msgstr "Iniciar reproducción"
 
 #: src/aosd/aosd_trigger.c:78
 msgid "Triggers OSD when a playlist entry is played."
@@ -950,7 +955,7 @@ msgstr ""
 
 #: src/aosd/aosd_trigger.c:82
 msgid "Title Change"
-msgstr ""
+msgstr "Cambiar título"
 
 #: src/aosd/aosd_trigger.c:83
 msgid ""
@@ -961,7 +966,7 @@ msgstr ""
 
 #: src/aosd/aosd_trigger.c:89
 msgid "Volume Change"
-msgstr ""
+msgstr "Cambiar volumen"
 
 #: src/aosd/aosd_trigger.c:90
 msgid "Triggers OSD when volume is changed."
@@ -969,7 +974,7 @@ msgstr ""
 
 #: src/aosd/aosd_trigger.c:94
 msgid "Pause On"
-msgstr ""
+msgstr "Pausa encendida"
 
 #: src/aosd/aosd_trigger.c:95
 msgid "Triggers OSD when playback is paused."
@@ -1043,7 +1048,7 @@ msgstr "Fuente %i:"
 
 #: src/aosd/aosd_ui.c:416
 msgid "Shadow"
-msgstr ""
+msgstr "Sombra"
 
 #: src/aosd/aosd_ui.c:451
 msgid "Internationalization"
@@ -1076,24 +1081,24 @@ msgstr ""
 
 #: src/aosd/aosd_ui.c:641
 msgid "Skin file:"
-msgstr ""
+msgstr "Archivo de piel:"
 
 #: src/aosd/aosd_ui.c:644 src/sid/xs_interface.c:1044
 #: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
 msgid "Browse"
-msgstr ""
+msgstr "Examinar"
 
 #: src/aosd/aosd_ui.c:746
 msgid "Enable trigger"
-msgstr ""
+msgstr "Habilitar disparador"
 
 #: src/aosd/aosd_ui.c:773
 msgid "Event"
-msgstr ""
+msgstr "Evento"
 
 #: src/aosd/aosd_ui.c:801
 msgid "Composite manager detected"
-msgstr ""
+msgstr "Administrador composite detectado"
 
 #: src/aosd/aosd_ui.c:808
 msgid ""
@@ -1108,28 +1113,28 @@ msgstr ""
 
 #: src/aosd/aosd_ui.c:854
 msgid "Transparency"
-msgstr ""
+msgstr "Transparencia"
 
 #: src/aosd/aosd_ui.c:860
 msgid "Fake transparency"
-msgstr ""
+msgstr "Transparencia falsa"
 
 #: src/aosd/aosd_ui.c:862
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr ""
+msgstr "Transparencia real (requiere extensión Composite X)"
 
 #: src/aosd/aosd_ui.c:904
 msgid "Composite extension not loaded"
-msgstr ""
+msgstr "Extensión composite no cargada"
 
 #: src/aosd/aosd_ui.c:912
 msgid "Composite extension not available"
-msgstr ""
+msgstr "Extensión composite no disponible"
 
 #: src/aosd/aosd_ui.c:931
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr ""
+msgstr "<span font_desc='%s'>OSD de Audacious</span>"
 
 #: src/aosd/aosd_ui.c:1012
 msgid "Audacious OSD - configuration"
@@ -1137,27 +1142,27 @@ msgstr "Audacious OSD - configuración"
 
 #: src/aosd/aosd_ui.c:1033
 msgid "Test"
-msgstr ""
+msgstr "Probar"
 
 #: src/aosd/aosd_ui.c:1048
 msgid "Position"
-msgstr ""
+msgstr "Posición"
 
 #: src/aosd/aosd_ui.c:1053
 msgid "Animation"
-msgstr ""
+msgstr "Animación"
 
 #: src/aosd/aosd_ui.c:1058
 msgid "Text"
-msgstr ""
+msgstr "Texto"
 
 #: src/aosd/aosd_ui.c:1063
 msgid "Decoration"
-msgstr ""
+msgstr "Decoración"
 
 #: src/aosd/aosd_ui.c:1068
 msgid "Trigger"
-msgstr ""
+msgstr "Disparador"
 
 #: src/aosd/aosd_ui.c:1073 src/cdaudio-ng/configure.c:171
 #: src/modplug/gui/interface.cxx:689 src/sid/xs_interface.c:1302
@@ -2279,8 +2284,9 @@ msgid "Track"
 msgstr ""
 
 #: src/gtkui/columns.c:37
+#, fuzzy
 msgid "Queue position"
-msgstr ""
+msgstr "Posición"
 
 #: src/gtkui/columns.c:38
 msgid "Length"
@@ -2297,16 +2303,18 @@ msgid "File name"
 msgstr "Nombre de archivo"
 
 #: src/gtkui/columns.c:38
+#, fuzzy
 msgid "Custom title"
-msgstr ""
+msgstr "personalizado"
 
 #: src/gtkui/columns.c:284
 msgid "Choose Columns"
 msgstr ""
 
 #: src/gtkui/columns.c:298
+#, fuzzy
 msgid "Available:"
-msgstr ""
+msgstr "Motores disponibles"
 
 #: src/gtkui/columns.c:332
 msgid "Chosen:"
@@ -3560,11 +3568,12 @@ msgstr ""
 #: src/sdlout/plugin.c:62
 #, fuzzy
 msgid "About SDL Output Plugin"
-msgstr "Acerca del plugin Status Icon"
+msgstr "Acerca del complemento de salida ALSA"
 
 #: src/sdlout/plugin.c:82
+#, fuzzy
 msgid "SDL error"
-msgstr ""
+msgstr "Error de ALSA"
 
 #: src/sid/xs_about.c:84
 #, c-format
