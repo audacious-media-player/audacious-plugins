@@ -73,6 +73,21 @@ ffaudio_cleanup(void)
     g_cond_free(ctrl_cond);
 }
 
+/* For file formats that FFMPEG doesn't detect well, just guess it from the file
+ * extension. --jlindgren */
+static AVInputFormat * override_format (const gchar * filename)
+{
+    AVInputFormat * format = NULL;
+
+    if (g_str_has_suffix (filename, ".shn"))
+        format = av_find_input_format ("shn");
+
+    if (format)
+        AUDDBG ("Overriding FFMPEG's format detection for %s.\n", filename);
+
+    return format;
+}
+
 static gboolean
 ffaudio_codec_is_seekable(AVCodec *codec)
 {
@@ -103,7 +118,9 @@ ffaudio_probe(const gchar *filename, VFSFile *file)
     AUDDBG("probing for %s, filehandle %p\n", filename, file);
 
     g_snprintf(uribuf, sizeof(uribuf), "audvfsptr:%p", (void *) file);
-    if ((ret = av_open_input_file(&ic, uribuf, NULL, 0, NULL)) < 0) {
+    if ((ret = av_open_input_file (& ic, uribuf, override_format (filename), 0,
+     NULL)) < 0)
+    {
         AUDDBG("ic is NULL, ret %d/%s\n", ret, strerror(-ret));
         return 0;
     }
@@ -238,7 +255,8 @@ static Tuple * read_tuple (const gchar * filename, VFSFile * file)
     gchar uribuf[64];
     snprintf (uribuf, sizeof uribuf, "audvfsptr:%p", (void *) file);
 
-    if (av_open_input_file(&ic, uribuf, NULL, 0, NULL) < 0)
+    if (av_open_input_file (& ic, uribuf, override_format (filename), 0, NULL) <
+     0)
         return NULL;
 
     for (i = 0; i < ic->nb_streams; i++)
@@ -295,8 +313,8 @@ static gboolean ffaudio_write_tag (const Tuple * tuple, VFSFile * file)
 static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
  VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
-    if (file == NULL)
-        return FALSE;
+    AUDDBG ("Playing %s.\n", filename);
+    g_return_val_if_fail (file, FALSE);
 
     AVCodec *codec = NULL;
     AVCodecContext *c = NULL;
@@ -314,8 +332,15 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
     gchar uribuf[64];
     snprintf (uribuf, sizeof uribuf, "audvfsptr:%p", (void *) file);
-    if (av_open_input_file(&ic, uribuf, NULL, 0, NULL) < 0)
-       return FALSE;
+
+    gint ret;
+    if ((ret = av_open_input_file (& ic, uribuf, override_format (filename), 0,
+     NULL)) < 0)
+    {
+        fprintf (stderr, "ffaudio: av_open_input_file() failed for %s: %s.\n",
+         filename, strerror (AVUNERROR (ret)));
+        return FALSE;
+    }
 
     for (i = 0; i < ic->nb_streams; i++)
     {
@@ -332,7 +357,10 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     }
 
     if (codec == NULL)
+    {
+        fprintf (stderr, "ffaudio: No codec found for %s.\n", filename);
         goto error_exit;
+    }
 
     AUDDBG("got codec %s for stream index %d, opening\n", codec->name, stream_id);
 
