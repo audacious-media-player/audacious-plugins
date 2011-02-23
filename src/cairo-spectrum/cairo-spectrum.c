@@ -191,6 +191,7 @@ static void draw_background (GtkWidget * area, cairo_t * cr)
 	cairo_fill (cr);
 }
 
+#if 0
 static void draw_grid (GtkWidget * area, cairo_t * cr)
 {
 	GdkColor * c = (gtk_widget_get_style (area))->bg;
@@ -207,6 +208,7 @@ static void draw_grid (GtkWidget * area, cairo_t * cr)
 		cairo_stroke(cr);
 	}
 }
+#endif
 
 static void draw_visualizer (GtkWidget *widget, cairo_t *cr)
 {
