@@ -54,6 +54,7 @@ static struct {
     HWAVEOUT    hWaveOut;
     UINT        uiBufferSize;
     BOOL        bIsRunning;
+    BOOL        bIsPaused;
     UINT        CurrentBlock;
     UINT        FreeSize;
     LPBYTE      OutData;
@@ -139,6 +140,9 @@ static int winmm_open(gint fmt, int rate, int nch)
 
     // Engine is running
     wave.bIsRunning = TRUE;
+
+    // Engine is not paused
+    wave.bIsPaused  = FALSE;
 
     // First buffer is surely free
     wave.CurrentBlock = 0;
@@ -237,10 +241,11 @@ static void winmm_close(void)
             if (wave.WaveHeader[i].dwFlags & WHDR_PREPARED)
                 waveOutUnprepareHeader(wave.hWaveOut, &wave.WaveHeader[i], sizeof(WAVEHDR));
 
-            free(wave.pSoundBuffer[i]);
+            HeapFree(GetProcessHeap(), 0, wave.pSoundBuffer[i]);
 
             // Free the handle associated to each block
             CloseHandle(wave.hBlockBusy[i]);
+            wave.hBlockBusy[i] = INVALID_HANDLE_VALUE;
         }
     }
 }
@@ -256,10 +261,13 @@ static void winmm_flush(int timing)
 static void winmm_pause (gboolean paused)
 {
     if (wave.bIsRunning) {
-        if (paused)
+        if (paused) {
+            wave.bIsPaused = TRUE;
             waveOutPause(wave.hWaveOut);
-        else
+        } else {
+            wave.bIsPaused = FALSE;
             waveOutRestart(wave.hWaveOut);
+        }
     }
 }
 
@@ -272,9 +280,33 @@ static int winmm_buffer_free(void)
     return 0;
 }
 
-static int winmm_get_written_time(void)
+static int winmm_written_time(void)
 {
     return (wave.PlayingSize * 1000UL) / wave.wfx.nAvgBytesPerSec;
+}
+
+static void winmm_set_written_time(int timing)
+{
+    if (wave.bIsRunning) {
+        waveOutReset(wave.hWaveOut);
+        wave.BaseTime = timing;
+    }
+}
+
+void winmm_drain (void)
+{
+    unsigned int i;
+
+    if (wave.bIsRunning && !wave.bIsPaused)
+    {
+        for (i=0; i<_WINMM_NUM_OF_BUF; i++)
+        {
+            if (i == wave.CurrentBlock)
+                continue;
+
+            WaitForSingleObject(wave.hBlockBusy[i], INFINITE);
+        }
+    }
 }
 
 static int winmm_get_output_time(void)
@@ -360,21 +392,23 @@ static void winmm_set_volume(gint r, gint l)
 
 static OutputPlugin winmm_op =
 {
-    .description = "Windows Waveout Plugin",
-    .probe_priority = 0,
-    .init           = winmm_init,
-    .about          = winmm_about,
-    .configure      = winmm_configure,
-    .open_audio     = winmm_open,
-    .write_audio    = winmm_write,
-    .close_audio    = winmm_close,
-    .flush          = winmm_flush,
-    .pause          = winmm_pause,
-    .buffer_free    = winmm_buffer_free,
-    .output_time    = winmm_get_output_time,
-    .written_time   = winmm_get_written_time,
-    .get_volume     = winmm_get_volume,
-    .set_volume     = winmm_set_volume
+    .description      = "Windows Waveout Plugin",
+    .probe_priority   = 0,
+    .init             = winmm_init,
+    .about            = winmm_about,
+    .configure        = winmm_configure,
+    .open_audio       = winmm_open,
+    .write_audio      = winmm_write,
+    .close_audio      = winmm_close,
+    .flush            = winmm_flush,
+    .pause            = winmm_pause,
+    .buffer_free      = winmm_buffer_free,
+    .output_time      = winmm_get_output_time,
+    .written_time     = winmm_written_time,
+    .get_volume       = winmm_get_volume,
+    .set_volume       = winmm_set_volume,
+    .drain            = winmm_drain,
+    .set_written_time = winmm_set_written_time
 };
 
 OutputPlugin *winmm_oplist[] = { &winmm_op, NULL };
