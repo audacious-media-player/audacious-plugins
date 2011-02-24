@@ -14,48 +14,28 @@ extern "C" {
 
 class vfsistream : public binistream {
 private:
-	VFSFile *fd;
+	VFSFile *fd; bool own;
 
 public:
-	vfsistream() {
-		this->fd = 0;
-	};
-
-	~vfsistream() {
-		if (this->fd) {
-			vfs_fclose(this->fd);
-			this->fd = 0;
-		}
-	};
-
-	vfsistream(VFSFile *fd) {
-		this->fd = fd;
-	};
-
-	vfsistream(const char *file) {
-		this->fd = vfs_fopen(file, "r");
-		if (!this->fd)
-			err |= NotFound;
-	};
-
-	vfsistream(std::string &file) {
-		this->fd = vfs_fopen(file.c_str(), "r");
-		if (!this->fd)
-			err |= NotFound;
-	};
+	vfsistream(VFSFile *fd = 0) { this->fd = fd; this->own = false; };
 
 	void open(const char *file) {
 		g_return_if_fail(!this->fd);
-		this->fd = vfs_fopen(file, "r");
-		if (!this->fd)
+		if ((this->fd = vfs_fopen(file, "r")))
+			this->own = true;
+		else
 			err |= NotFound;
 	};
 
-	void open(std::string &file) {
-		g_return_if_fail(!this->fd);
-		this->fd = vfs_fopen(file.c_str(), "r");
-		if (!this->fd)
-			err |= NotFound;
+	void open(std::string &file) { open(file.c_str()); };
+
+	vfsistream(const char *file) { this->fd = 0; this->own = false; open(file); };
+	vfsistream(std::string &file) {	this->fd = 0; this->own = false; open(file); };
+
+	~vfsistream() {
+		if (this->own)
+			vfs_fclose(this->fd);
+		this->fd = 0; this->own = false;
 	};
 
 	Byte getByte(void) {
@@ -81,48 +61,28 @@ public:
 
 class vfsostream : public binostream {
 private:
-	VFSFile *fd;
+	VFSFile *fd; bool own;
 
 public:
-	vfsostream() {
-		this->fd = 0;
-	};
-
-	~vfsostream() {
-		if (this->fd) {
-			vfs_fclose(this->fd);
-			this->fd = 0;
-		}
-	};
-
-	vfsostream(VFSFile *fd) {
-		this->fd = fd;
-	};
-
-	vfsostream(const char *file) {
-		this->fd = vfs_fopen(file, "w");
-		if (!this->fd)
-			err |= Denied;
-	};
-
-	vfsostream(std::string &file) {
-		this->fd = vfs_fopen(file.c_str(), "w");
-		if (!this->fd)
-			err |= Denied;
-	};
+	vfsostream(VFSFile *fd = 0) { this->fd = fd; this->own = false; };
 
 	void open(const char *file) {
 		g_return_if_fail(!this->fd);
-		this->fd = vfs_fopen(file, "w");
-		if (!this->fd)
+		if ((this->fd = vfs_fopen(file, "w")))
+			this->own = true;
+		else
 			err |= Denied;
 	};
 
-	void open(std::string &file) {
-		g_return_if_fail(!this->fd);
-		this->fd = vfs_fopen(file.c_str(), "w");
-		if (!this->fd)
-			err |= Denied;
+	void open(std::string &file) { open(file.c_str()); };
+
+	vfsostream(const char *file) { this->fd = 0; this->own = false; open(file); };
+	vfsostream(std::string &file) {	this->fd = 0; this->own = false; open(file); };
+
+	~vfsostream() {
+		if (this->own)
+			vfs_fclose(this->fd);
+		this->fd = 0; this->own = false;
 	};
 
 	void putByte(Byte b) {
