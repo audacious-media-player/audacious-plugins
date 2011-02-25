@@ -693,7 +693,7 @@ void CSoundFile::ResetTimestamps()
 //--------------------------------
 {
 	int n;
-	
+
 	for (n = 1; n < MAX_SAMPLES; n++) {
 		Ins[n].played = 0;
 	}
@@ -1154,8 +1154,8 @@ UINT CSoundFile::ReadSample(MODINSTRUMENT *pIns, UINT nFlags, LPCSTR lpMemFile, 
 			WORD *pSampleW = (WORD *)pIns->pSample;
 			for (UINT j=0; j<len; j+=2)   // swaparoni!
 			{
-			        *pSampleW = bswapLE16(*pSampleW);
-				*pSampleW++;
+				*pSampleW = bswapLE16(*pSampleW);
+				pSampleW++;
 			}
 		}
 		break;

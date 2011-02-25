@@ -396,7 +396,10 @@ CcffLoader::cff_unpacker::unpack (unsigned char *ibuf, unsigned char *obuf)
       }
 
       for (unsigned int i = 0; i < repeat_counter * repeat_length; i++)
-        output[output_length++] = output[output_length - repeat_length];
+      {
+        output[output_length] = output[output_length - repeat_length];
+        output_length++;
+      }
 
       code_length = old_code_length;
 
