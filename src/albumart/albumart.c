@@ -92,7 +92,6 @@ static /* GtkWidget * */ gpointer get_widget (void)
     g_signal_connect(area, "expose-event", (GCallback) expose_event, NULL);
 #endif
     g_signal_connect(area, "configure-event", (GCallback) configure_event, NULL);
-    g_signal_connect(area, "destroy", (GCallback) gtk_widget_destroyed, &area);
 
     hook_associate("playback begin", (HookFunction) playback_start, area);
 
@@ -101,8 +100,14 @@ static /* GtkWidget * */ gpointer get_widget (void)
     return area;
 }
 
+static void cleanup(void)
+{
+    hook_dissociate("playback begin", (HookFunction) playback_start);
+}
+
 GeneralPlugin albumart_gp = {
     .description = "Album Art",
+    .cleanup = cleanup,
     .get_widget = get_widget
 };
 
