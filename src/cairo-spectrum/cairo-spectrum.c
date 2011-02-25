@@ -261,10 +261,9 @@ static gboolean expose_event (GtkWidget * widget, GdkEventExpose * event, GtkWid
 	return TRUE;
 }
 
-static gboolean destroy_event (GtkObject *parent, GtkWidget *area)
+static gboolean destroy_event (void)
 {
 	aud_vis_runner_remove_hook ((VisHookFunc) vis_update_cb);
-
 	return TRUE;
 }
 
@@ -278,7 +277,7 @@ static /* GtkWidget * */ gpointer get_widget(void)
 	g_signal_connect(area, "expose-event", (GCallback) expose_event, NULL);
 #endif
 	g_signal_connect(area, "configure-event", (GCallback) configure_event, NULL);
-	g_signal_connect(area, "destroy", (GCallback) destroy_event, area);
+	g_signal_connect(area, "destroy", (GCallback) destroy_event, NULL);
 
 	aud_vis_runner_add_hook ((VisHookFunc) vis_update_cb, area);
 
