@@ -287,9 +287,9 @@ fi
 
 dnl *** OpenAL
 
-AC_ARG_ENABLE(openal,
- [  --disable-openal        disable OpenAL output plugin],
- [enable_openal=$enableval], [enable_openal="yes"])
+AC_ARG_ENABLE(openal, AS_HELP_STRING(--enable-openal,
+ enable OpenAL output plugin (experimental)), enable_openal=$enableval,
+ enable_openal=no)
 
 if test $enable_openal = yes ; then
     PKG_CHECK_MODULES(OPENAL, [openal],
@@ -297,9 +297,6 @@ if test $enable_openal = yes ; then
           OUTPUT_PLUGINS="$OUTPUT_PLUGINS openal"],
          [enable_openal=no]
     )
-else
-    AC_MSG_RESULT([*** OpenAL output plugin disabled per user request ***])
-    enable_openal=no
 fi
 
 dnl *** CoreAudio
@@ -1764,8 +1761,8 @@ echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
 echo "    -> FileWriter FLAC output part:       $have_writer_flac"
 echo "  Null Audio output (null):               yes"
-echo "  Windows waveOut output:                 $have_winmm"
-echo "  OpenAL:                                 $enable_openal"
+echo "  Windows waveOut (experimental):         $have_winmm"
+echo "  OpenAL (experimental):                  $enable_openal"
 echo
 echo "  Input Plugins"
 echo "  -------------"
