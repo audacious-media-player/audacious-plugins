@@ -147,7 +147,7 @@ dnl Check for GTK/GLib/GThread/Pango
 
 AC_ARG_ENABLE([gtk3],
  [AS_HELP_STRING([--enable-gtk3], [Use GTK3 instead of GTK2])],
- [use_gtk3=yes], [use_gtk3=no])
+ [use_gtk3=$enableval], [use_gtk3=no])
 
 AUD_COMMON_PROGS
 
@@ -320,13 +320,11 @@ else
 	have_coreaudio=no
 fi
 
-dnl *** Windows Wavemapper audio
+dnl *** Windows waveOut output plugin
 
-AC_ARG_ENABLE(winmm,
-    [  --disable-winmm         disable Windows Wavemapper output plugin (default=enabled)],
-    [have_winmm=$enableval],
-    [have_winmm="yes"]
-)
+AC_ARG_ENABLE(waveout, AS_HELP_STRING(--enable-waveout,
+ enable Windows waveOut output plugin (experimental)),
+ have_winmm=$enableval, have_winmm=no)
 
 if test "x$have_winmm" = "xyes"; then
 	AC_MSG_CHECKING([Windows Wavemapper Audio is supported])
@@ -341,9 +339,6 @@ if test "x$have_winmm" = "xyes"; then
 		AC_MSG_RESULT([no])
 		;;
 	esac
-else
-	AC_MSG_RESULT([*** Windows Wavemapper Audio plugin disabled per user request ***])
-	have_winmm=no
 fi
 
 dnl *** Dock Album Art (MacOS)
@@ -1769,7 +1764,7 @@ echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
 echo "    -> FileWriter FLAC output part:       $have_writer_flac"
 echo "  Null Audio output (null):               yes"
-echo "  Windows Wavemapper Audio output:        $have_winmm"
+echo "  Windows waveOut output:                 $have_winmm"
 echo "  OpenAL:                                 $enable_openal"
 echo
 echo "  Input Plugins"
