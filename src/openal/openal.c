@@ -145,8 +145,6 @@ openal_write(void *ptr, int length)
 	{
 		ALint st;
 
-		printf("preroll bufid %d\n", state.bufid);
-
 		alSourceUnqueueBuffers(state.source, 1, &state.buffers[state.bufid]);
 
 		alBufferData(state.buffers[state.bufid], state.format, ptr, length, state.rate);
@@ -156,8 +154,6 @@ openal_write(void *ptr, int length)
 
 		if (state.bufid >= (NUM_BUFFERS - 1))
 		{
-			printf("done preroll proc %d?\n", st);
-
 			alSourcePlay(state.source);
 			state.preroll = FALSE;
 		}
@@ -169,7 +165,6 @@ openal_write(void *ptr, int length)
 
 	ALint processed = 0;
 	alGetSourcei(state.source, AL_BUFFERS_PROCESSED, &processed);
-	g_print("lol:%d\n", processed);
 
 	if(processed < (NUM_BUFFERS / 2))
 	{
@@ -206,7 +201,7 @@ openal_written_time(void)
 int
 openal_buffer_size(void)
 {
-	return 19000;	
+	return 19000;
 }
 
 void
