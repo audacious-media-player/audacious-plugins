@@ -28,6 +28,7 @@
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudgui/list.h>
+#include <libaudgui/libaudgui.h>
 
 #include "gtkui_cfg.h"
 #include "ui_manager.h"
@@ -87,6 +88,12 @@ static gboolean tab_button_press_cb(GtkWidget *widget, GdkEventButton *event, gp
 {
     if (event->type == GDK_2BUTTON_PRESS && event->button == 1)
         ui_playlist_notebook_edit_tab_title(widget);
+
+    if (event->type == GDK_BUTTON_PRESS && event->button == 2)
+    {
+        GtkWidget *page = g_object_get_data(G_OBJECT(widget), "page");
+        audgui_confirm_playlist_delete(gtk_notebook_page_num(UI_PLAYLIST_NOTEBOOK, page));
+    }
 
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
     {
