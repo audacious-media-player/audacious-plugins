@@ -211,9 +211,9 @@ do_command(char *cmd, const char *current_file, int pos)
 
 		const char *title = tuple_get_string(tuple, FIELD_TITLE, NULL);
 		if (title)
-			formatter_associate(formatter, 'r', title);
+			formatter_associate(formatter, 'T', title);
 		else
-			formatter_associate(formatter, 'r', "");
+			formatter_associate(formatter, 'T', "");
 
 		shstring = formatter_format(formatter, cmd);
 		formatter_destroy(formatter);
@@ -489,7 +489,7 @@ static PreferencesWidget elements[] = {
                       "%p: Currently playing (1 or 0)\n"
                       "%a: Artist\n"
                       "%b: Album\n"
-                      "%r: Track title"), NULL, NULL, NULL, FALSE},
+                      "%T: Track title"), NULL, NULL, NULL, FALSE},
 };
 
 /* static GtkWidget * custom_warning (void) */
