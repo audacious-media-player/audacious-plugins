@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the audacious-plugins
 # package.
 # Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004.
-# Petr Pisar <petr.pisar@atlas.cz>, 2007, 2008, 2009, 2010.
+# Petr Pisar <petr.pisar@atlas.cz>, 2007, 2008, 2009, 2010, 2011.
 #
 # clicks (sound) → praskání, praskot 
 # crossfade → přechod
@@ -19,10 +19,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious-plugins 35d2fd1fde82\n"
+"Project-Id-Version: audacious-plugins 20d1d0181353\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-02 23:37-0500\n"
-"PO-Revision-Date: 2010-11-14 22:31+0100\n"
+"POT-Creation-Date: 2011-03-02 23:39-0500\n"
+"PO-Revision-Date: 2011-03-01 21:51+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs\n"
@@ -1480,11 +1480,11 @@ msgstr "Zvukové CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:916
 msgid "Drive is empty."
-msgstr ""
+msgstr "Mechanika je prázdná"
 
 #: src/cdaudio-ng/cdaudio-ng.c:918
 msgid "Unsupported disk type."
-msgstr ""
+msgstr "Nepodporovaný druh disku."
 
 #: src/cdaudio-ng/configure.c:148
 msgid "CD Audio Plugin Configuration"
@@ -1674,7 +1674,7 @@ msgstr "Použít"
 
 #: src/daemon/daemon.c:58
 msgid "Daemon Interface (like old headless mode)"
-msgstr ""
+msgstr "Rozhraní démona (jako starý bezhlavý režim)"
 
 #: src/echo_plugin/gui.c:15
 msgid ""
@@ -2184,9 +2184,8 @@ msgid "Auto"
 msgstr "Auto"
 
 #: src/filewriter/mp3.c:38
-#, fuzzy
 msgid "Joint Stereo"
-msgstr "Joint-Stereo"
+msgstr "Joint-stereo"
 
 #: src/filewriter/mp3.c:724
 msgid "MP3 Configuration"
@@ -2412,9 +2411,8 @@ msgid "Import Playlist"
 msgstr "Importovat seznam skladeb"
 
 #: src/gtkui/columns.c:36
-#, fuzzy
 msgid "Entry number"
-msgstr "Číslo stopy"
+msgstr "Číslo položky"
 
 #: src/gtkui/columns.c:36 src/sid/xs_interface.c:1103
 msgid "Title"
@@ -2433,73 +2431,64 @@ msgid "Album"
 msgstr "Album"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Track"
-msgstr "Stopa:"
+msgstr "Stopa"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Queue position"
-msgstr "Umístění"
+msgstr "Umístění ve frontě"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "Length"
-msgstr "Délka:"
+msgstr "Délka"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "File path"
 msgstr "Cesta k souboru"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "File name"
-msgstr "Jméno souboru"
+msgstr "Název souboru"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "Custom title"
-msgstr "Vlastní skin:"
+msgstr "Vlastní název"
 
 #: src/gtkui/columns.c:284
-#, fuzzy
 msgid "Choose Columns"
-msgstr "Zobrazit přehrávač"
+msgstr "Vybrat sloupce"
 
 #: src/gtkui/columns.c:298
-#, fuzzy
 msgid "Available:"
-msgstr "proměnlivé"
+msgstr "Dostupné:"
 
 #: src/gtkui/columns.c:332
 msgid "Chosen:"
-msgstr ""
+msgstr "Vybráno:"
 
 #: src/gtkui/layout.c:122
 msgid "Dock at Left"
-msgstr ""
+msgstr "Umístit vlevo"
 
 #: src/gtkui/layout.c:122
 msgid "Dock at Right"
-msgstr ""
+msgstr "Umístit vpravo"
 
 #: src/gtkui/layout.c:123
 msgid "Dock at Top"
-msgstr ""
+msgstr "Umístit nahoru"
 
 #: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
-msgstr ""
+msgstr "Umístit dolů"
 
 #: src/gtkui/layout.c:123
 msgid "Undock"
-msgstr ""
+msgstr "Neumisťovat"
 
 #: src/gtkui/layout.c:123
-#, fuzzy
 msgid "Disable"
-msgstr "Povolit/zakázat"
+msgstr "Zakázat"
 
 #: src/gtkui/ui_gtk.c:79
 msgid "GTK Interface"
@@ -2559,9 +2548,8 @@ msgid "Show/hide statusbar"
 msgstr "Zobrazit/skrýt stavový panel"
 
 #: src/gtkui/ui_manager.c:58
-#, fuzzy
 msgid "Show Column Headers"
-msgstr "Zobrazit přehrávač"
+msgstr "Zobrazit záhlaví sloupců"
 
 #: src/gtkui/ui_manager.c:70 src/gtkui/ui_manager.c:71
 #: src/skins/ui_manager.c:172 src/skins/ui_manager.c:173
@@ -2634,14 +2622,12 @@ msgid "Refreshes metadata associated with a playlist entry."
 msgstr "Obnovuje metadata náležící skladbě ze seznamu."
 
 #: src/gtkui/ui_manager.c:108
-#, fuzzy
 msgid "Refresh Selected"
-msgstr "Odebrat označené"
+msgstr "Obnovit označené"
 
 #: src/gtkui/ui_manager.c:109
-#, fuzzy
 msgid "Refreshes metadata associated with selected entries."
-msgstr "Obnovuje metadata náležící skladbě ze seznamu."
+msgstr "Obnovuje metadata náležící vybraným položkám."
 
 #: src/gtkui/ui_manager.c:113
 msgid "Playlist Manager"
@@ -2701,7 +2687,7 @@ msgstr "Upraví název seznamu skladeb."
 
 #: src/gtkui/ui_manager.c:141
 msgid "Choose Columns ..."
-msgstr ""
+msgstr "Vybrat sloupce…"
 
 #: src/gtkui/ui_manager.c:144
 msgid "Sort"
@@ -2728,9 +2714,8 @@ msgid "By Album"
 msgstr "Podle alba"
 
 #: src/gtkui/ui_manager.c:153
-#, fuzzy
 msgid "By Release Date"
-msgstr "Podle data"
+msgstr "Podle data vydání"
 
 #: src/gtkui/ui_manager.c:155
 msgid "By File Path"
@@ -3742,14 +3727,12 @@ msgid "About Scrobbler Plugin"
 msgstr "O modulu Scrobbler"
 
 #: src/sdlout/plugin.c:62
-#, fuzzy
 msgid "About SDL Output Plugin"
-msgstr "O výstupním modulu ALSA"
+msgstr "O výstupním modulu SDL"
 
 #: src/sdlout/plugin.c:82
-#, fuzzy
 msgid "SDL error"
-msgstr "Chyba ALSY"
+msgstr "Chyba SDL"
 
 #: src/sid/xs_about.c:84
 #, c-format
@@ -5314,8 +5297,7 @@ msgstr ""
 "%n nebo %s: Název skladby\n"
 "%r: Datový tok (v bitech za sekundu)\n"
 "%t: Pozice v seznamu skladeb (%02d)\n"
-"%p: Právě se hraje (1, nebo 0)\n"
-"%a: Umělec\n"
+"%p: Právě se hraje (1, nebo 0)%a: Umělec\n"
 "%b: Album\n"
 "%r: Název stopy"
 
@@ -5845,6 +5827,9 @@ msgstr ""
 #~ "Vzorkovací frekvence zvuku generovaného syntetizátorem. Lze zadat vlastní "
 #~ "hodnotu z intervalu 22050 Hz–96000 Hz."
 
+#~ msgid "Target volume:"
+#~ msgstr "Cílová hlasitost:"
+
 #~ msgid ""
 #~ "If enabled, the extension from the original filename will not be stripped "
 #~ "before adding the new file extension to the end."
@@ -5888,11 +5873,23 @@ msgstr ""
 #~ "nejnižší:9;\n"
 #~ "výchozí:4;"
 
+#~ msgid "FLAC Audio Plugin "
+#~ msgstr "Zvukový modul FLAC"
+
 #~ msgid "Show playlists"
 #~ msgstr "Zobrazit seznamy skladeb"
 
 #~ msgid "Show/hide playlists"
 #~ msgstr "Zobrazit/skrýt seznamy skladeb"
+
+#~ msgid "LyricWiki"
+#~ msgstr "LyricWiki"
+
+#~ msgid "Stream browser"
+#~ msgstr "Prohlížeč proudů"
+
+#~ msgid "Streambrowser"
+#~ msgstr "Prohlížeč proudů"
 
 #~ msgid "About the Sun Driver"
 #~ msgstr "O ovladači pro Sun"
@@ -5926,23 +5923,8 @@ msgstr ""
 #~ msgid "Queue"
 #~ msgstr "Fronta"
 
-#~ msgid "LyricWiki"
-#~ msgstr "LyricWiki"
-
-#~ msgid "Stream browser"
-#~ msgstr "Prohlížeč proudů"
-
-#~ msgid "Streambrowser"
-#~ msgstr "Prohlížeč proudů"
-
-#~ msgid "Target volume:"
-#~ msgstr "Cílová hlasitost:"
-
 #~ msgid "Effect strength:"
 #~ msgstr "Síla efektu:"
-
-#~ msgid "FLAC Audio Plugin "
-#~ msgstr "Zvukový modul FLAC"
 
 #~ msgid "PREAMP"
 #~ msgstr "PREAMP"
