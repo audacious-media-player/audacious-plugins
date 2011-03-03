@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-02-21 21:34-0500\n"
+"POT-Creation-Date: 2011-03-02 22:58-0500\n"
 "PO-Revision-Date: 2010-08-22 22:00+0400\n"
 "Last-Translator: Sergey V. Mironov <sergo@bk.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: src/aac/libmp4.c:281
+#: src/aac/libmp4.c:268
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -37,7 +37,7 @@ msgstr ""
 "Декодер FAAD2 AAC/HE-AAC/HE-AACv2/DRM (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 команда разработчиков Audacious"
 
-#: src/aac/libmp4.c:286
+#: src/aac/libmp4.c:273
 msgid "About MP4 AAC decoder plugin"
 msgstr "О модуле MP4 AAC"
 
@@ -2075,7 +2075,7 @@ msgstr ""
 "< james@develia.org >\n"
 "\n"
 
-#: src/ffaudio/ffaudio-core.c:668
+#: src/ffaudio/ffaudio-core.c:696
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2098,7 +2098,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:681
+#: src/ffaudio/ffaudio-core.c:709
 msgid "About FFaudio Plugin"
 msgstr "О модуле FFaudio"
 

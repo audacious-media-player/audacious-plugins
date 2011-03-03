@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious-plugins 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-02-21 21:34-0500\n"
+"POT-Creation-Date: 2011-03-02 22:58-0500\n"
 "PO-Revision-Date: 2010-08-18 13:51+0100\n"
 "Last-Translator: StrassBoy <StrassBoy@gmail.com>\n"
 "Language-Team: \n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-Country: BELGIUM\n"
 
-#: src/aac/libmp4.c:281
+#: src/aac/libmp4.c:268
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -33,7 +33,7 @@ msgstr ""
 "\n"
 "Droit d'utilisation 2005-2006 : Équipe de développement Audacious"
 
-#: src/aac/libmp4.c:286
+#: src/aac/libmp4.c:273
 msgid "About MP4 AAC decoder plugin"
 msgstr "À propos du décodeur « MP4 AAC »"
 
@@ -2136,7 +2136,7 @@ msgstr ""
 "Écrit par Giacomo Lozito < james@develia.org >\n"
 "\n"
 
-#: src/ffaudio/ffaudio-core.c:668
+#: src/ffaudio/ffaudio-core.c:696
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2162,7 +2162,7 @@ msgstr ""
 "William Pitcock      <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:681
+#: src/ffaudio/ffaudio-core.c:709
 msgid "About FFaudio Plugin"
 msgstr "À propos du module « FFaudio »"
 

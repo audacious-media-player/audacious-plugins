@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 35d2fd1fde82\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-02-21 21:34-0500\n"
+"POT-Creation-Date: 2011-03-02 22:58-0500\n"
 "PO-Revision-Date: 2010-11-14 22:31+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/aac/libmp4.c:281
+#: src/aac/libmp4.c:268
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -41,7 +41,7 @@ msgstr ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM dekodér © Nero AG, www.nero.com\n"
 "Copyright © 2005–2006 tým Audacious"
 
-#: src/aac/libmp4.c:286
+#: src/aac/libmp4.c:273
 msgid "About MP4 AAC decoder plugin"
 msgstr "O modulu dekodéru MP4 AAC"
 
@@ -2066,7 +2066,7 @@ msgstr ""
 "\n"
 "napsal Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:668
+#: src/ffaudio/ffaudio-core.c:696
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2089,7 +2089,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:681
+#: src/ffaudio/ffaudio-core.c:709
 msgid "About FFaudio Plugin"
 msgstr "O modulu FFaudio"
 

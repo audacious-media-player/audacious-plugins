@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-02-21 21:34-0500\n"
+"POT-Creation-Date: 2011-03-02 22:58-0500\n"
 "PO-Revision-Date: 2010-08-23 12:00+0100\n"
 "Last-Translator: Peter Polonkai <polesz@nedudu.hu>\n"
 "Language-Team: Nedudu Team <nedudu@nedudu.hu>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-Language: Hungarian\n"
 "X-Poedit-Country: HUNGARY\n"
 
-#: src/aac/libmp4.c:281
+#: src/aac/libmp4.c:268
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -29,7 +29,7 @@ msgstr ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Audacious team"
 
-#: src/aac/libmp4.c:286
+#: src/aac/libmp4.c:273
 msgid "About MP4 AAC decoder plugin"
 msgstr "MP4 AAC dekóder bővítmény névjegye"
 
@@ -1894,7 +1894,7 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:668
+#: src/ffaudio/ffaudio-core.c:696
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1908,7 +1908,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:681
+#: src/ffaudio/ffaudio-core.c:709
 msgid "About FFaudio Plugin"
 msgstr "FFaudio bővítmény névjegye"
 

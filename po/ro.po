@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.4.0\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-02-21 21:34-0500\n"
+"POT-Creation-Date: 2011-03-02 22:58-0500\n"
 "PO-Revision-Date: 2007-08-28 20:44+0200\n"
 "Last-Translator: Daniel Patriche <m4st3rth0r@gmail.com>\n"
 "Language-Team: Romanian <audacious@atheme.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/aac/libmp4.c:281
+#: src/aac/libmp4.c:268
 #, fuzzy, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -31,7 +31,7 @@ msgstr ""
 "decoder-ul este ·(C)·Nero·AG,·www.nero.com\n"
 "Copyright·(c)·2005-2006·Echipa de dezvoltare Audacious"
 
-#: src/aac/libmp4.c:286
+#: src/aac/libmp4.c:273
 #, fuzzy
 msgid "About MP4 AAC decoder plugin"
 msgstr "Despre plugin-ul decodor MP4·AAC"
@@ -2051,7 +2051,7 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:668
+#: src/ffaudio/ffaudio-core.c:696
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2065,7 +2065,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:681
+#: src/ffaudio/ffaudio-core.c:709
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "Despre plugin-ul·Apple·Lossless·Audio"

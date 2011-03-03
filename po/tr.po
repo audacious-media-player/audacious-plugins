@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-02-21 21:34-0500\n"
+"POT-Creation-Date: 2011-03-02 22:58-0500\n"
 "PO-Revision-Date: 2007-12-22 23:09+0200\n"
 "Last-Translator: Onur Küçük <onur@pardus.org.tr>\n"
 "Language-Team: Turkish\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/aac/libmp4.c:281
+#: src/aac/libmp4.c:268
 #, fuzzy, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -36,7 +36,7 @@ msgstr ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM çözücüsü (c) Nero AG, www.nero.com\n"
 "Telif Hakkı (c) 2005-2006 Audacious ekibi"
 
-#: src/aac/libmp4.c:286
+#: src/aac/libmp4.c:273
 #, fuzzy
 msgid "About MP4 AAC decoder plugin"
 msgstr "MP4 AAC oynatıcı eklentisi hakkında"
@@ -2077,7 +2077,7 @@ msgstr ""
 "\n"
 "Giacomo Lozito tarafından yazılmıştır\n"
 
-#: src/ffaudio/ffaudio-core.c:668
+#: src/ffaudio/ffaudio-core.c:696
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2091,7 +2091,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:681
+#: src/ffaudio/ffaudio-core.c:709
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "FLAC Ses Eklentisi Hakkında"

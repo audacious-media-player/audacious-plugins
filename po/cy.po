@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-02-21 21:34-0500\n"
+"POT-Creation-Date: 2011-03-02 22:58-0500\n"
 "PO-Revision-Date: 2007-02-12 03:37-0600\n"
 "Last-Translator: William Pitcock <nenolod@sacredspiral.co.uk>\n"
 "Language-Team: Welsh <i18n+cy@sacredspiral.co.uk>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Poedit-Language: Welsh\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: src/aac/libmp4.c:281
+#: src/aac/libmp4.c:268
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -24,7 +24,7 @@ msgid ""
 "Copyright (c) 2005-2006 Audacious team"
 msgstr ""
 
-#: src/aac/libmp4.c:286
+#: src/aac/libmp4.c:273
 #, fuzzy
 msgid "About MP4 AAC decoder plugin"
 msgstr "Ynghylch Ategyn Sain MPEG"
@@ -1943,7 +1943,7 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:668
+#: src/ffaudio/ffaudio-core.c:696
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1957,7 +1957,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:681
+#: src/ffaudio/ffaudio-core.c:709
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "Ategynnau Sain FLAC"

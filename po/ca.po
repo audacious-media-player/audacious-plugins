@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5.1\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-02-21 21:34-0500\n"
+"POT-Creation-Date: 2011-03-02 22:58-0500\n"
 "PO-Revision-Date: 2009-04-11 16:07+0200\n"
 "Last-Translator: Ernest Adrogué <eadrogue@gmx.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/aac/libmp4.c:281
+#: src/aac/libmp4.c:268
 #, fuzzy, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Descodificador FAAD2 AAC/HE-AAC/HE-AACv2/DRM (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Equip de l'Audacious"
 
-#: src/aac/libmp4.c:286
+#: src/aac/libmp4.c:273
 #, fuzzy
 msgid "About MP4 AAC decoder plugin"
 msgstr "Quant al connector per a àudio MPEG"
@@ -2073,7 +2073,7 @@ msgstr ""
 "\n"
 "escrit per Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:668
+#: src/ffaudio/ffaudio-core.c:696
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2087,7 +2087,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:681
+#: src/ffaudio/ffaudio-core.c:709
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "Quant al connector d'àudio FLAC"
