@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins-2.4-alpha2\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-02 23:37-0500\n"
+"POT-Creation-Date: 2011-03-06 14:40-0500\n"
 "PO-Revision-Date: 2010-06-25 16:31+0200\n"
 "Last-Translator: Andrej Herceg <herceg.andrej@zoznam.sk>\n"
 "Language-Team: Slovak <Slovak <sk-i18n@lists.linux.sk>>\n"
@@ -2458,41 +2458,46 @@ msgstr "Názov súboru"
 msgid "Custom title"
 msgstr "Používateľský vzhľad"
 
-#: src/gtkui/columns.c:284
+#: src/gtkui/columns.c:39
+#, fuzzy
+msgid "Bitrate"
+msgstr "Dátový tok (kb/s):"
+
+#: src/gtkui/columns.c:286
 #, fuzzy
 msgid "Choose Columns"
 msgstr "Zobraziť prehrávač"
 
-#: src/gtkui/columns.c:298
+#: src/gtkui/columns.c:300
 #, fuzzy
 msgid "Available:"
 msgstr "premenlivé"
 
-#: src/gtkui/columns.c:332
+#: src/gtkui/columns.c:334
 msgid "Chosen:"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Left"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Right"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Dock at Top"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Dock at Bottom"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 #, fuzzy
 msgid "Disable"
 msgstr "premenlivé"
@@ -2895,23 +2900,18 @@ msgstr "Zrušiť výber"
 msgid "Deselects all of the playlist entries."
 msgstr "Zruší výber skladieb zoznamu."
 
-#: src/gtkui/ui_statusbar.c:91 src/skins/ui_main.c:611
+#: src/gtkui/ui_statusbar.c:100 src/skins/ui_main.c:611
 msgid "mono"
 msgstr "mono"
 
-#: src/gtkui/ui_statusbar.c:94 src/skins/ui_main.c:610
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:610
 msgid "stereo"
 msgstr "stereo"
 
-#: src/gtkui/ui_statusbar.c:97
+#: src/gtkui/ui_statusbar.c:104
 #, fuzzy, c-format
 msgid "%d channels"
 msgstr "Počet kanálov"
-
-#: src/gtkui/ui_statusbar.c:101
-#, c-format
-msgid "%s: %d kbps, %d Hz, %s"
-msgstr ""
 
 #: src/hotkey/gui.c:71
 msgid "Previous Track"
@@ -5208,11 +5208,11 @@ msgstr "Nezabalený vzhľad pre WinAMP 2.x"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Nepodarilo sa vytvoriť adresár (%s): %s\n"
 
-#: src/sndfile/plugin.c:454
+#: src/sndfile/plugin.c:452
 msgid "About sndfile plugin"
 msgstr "Modul sndfile (WAV)"
 
-#: src/sndfile/plugin.c:455
+#: src/sndfile/plugin.c:453
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"

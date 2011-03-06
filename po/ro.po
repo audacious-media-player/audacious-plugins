@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.4.0\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-02 23:37-0500\n"
+"POT-Creation-Date: 2011-03-06 14:40-0500\n"
 "PO-Revision-Date: 2007-08-28 20:44+0200\n"
 "Last-Translator: Daniel Patriche <m4st3rth0r@gmail.com>\n"
 "Language-Team: Romanian <audacious@atheme.org>\n"
@@ -2464,40 +2464,45 @@ msgstr "Numele Fișierului:"
 msgid "Custom title"
 msgstr "Skin-ul implicit:"
 
-#: src/gtkui/columns.c:284
+#: src/gtkui/columns.c:39
+#, fuzzy
+msgid "Bitrate"
+msgstr "Rata de Reîmprospătare"
+
+#: src/gtkui/columns.c:286
 msgid "Choose Columns"
 msgstr ""
 
-#: src/gtkui/columns.c:298
+#: src/gtkui/columns.c:300
 #, fuzzy
 msgid "Available:"
 msgstr "variabil"
 
-#: src/gtkui/columns.c:332
+#: src/gtkui/columns.c:334
 msgid "Chosen:"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Left"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Right"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Dock at Top"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Dock at Bottom"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 #, fuzzy
 msgid "Disable"
 msgstr "variabil"
@@ -2919,25 +2924,20 @@ msgstr "AdPlug·::·Informații despre fișier"
 msgid "Deselects all of the playlist entries."
 msgstr ""
 
-#: src/gtkui/ui_statusbar.c:91 src/skins/ui_main.c:611
+#: src/gtkui/ui_statusbar.c:100 src/skins/ui_main.c:611
 #, fuzzy
 msgid "mono"
 msgstr "Mono"
 
-#: src/gtkui/ui_statusbar.c:94 src/skins/ui_main.c:610
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:610
 #, fuzzy
 msgid "stereo"
 msgstr "Stereo"
 
-#: src/gtkui/ui_statusbar.c:97
+#: src/gtkui/ui_statusbar.c:104
 #, fuzzy, c-format
 msgid "%d channels"
 msgstr "Canale"
-
-#: src/gtkui/ui_statusbar.c:101
-#, c-format
-msgid "%s: %d kbps, %d Hz, %s"
-msgstr ""
 
 #: src/hotkey/gui.c:71
 msgid "Previous Track"
@@ -5187,12 +5187,12 @@ msgstr ""
 msgid "Could not create directory (%s): %s\n"
 msgstr "Nu s-a putut crea directorul (%s): %s\n"
 
-#: src/sndfile/plugin.c:454
+#: src/sndfile/plugin.c:452
 #, fuzzy
 msgid "About sndfile plugin"
 msgstr "Lista plugin-urilor _Generale"
 
-#: src/sndfile/plugin.c:455
+#: src/sndfile/plugin.c:453
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -6858,10 +6858,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Album peak:"
 #~ msgstr "<span size=\"small\">Album</span>"
-
-#, fuzzy
-#~ msgid "Bit rate:"
-#~ msgstr "Rata de Reîmprospătare"
 
 #, fuzzy
 #~ msgid "File size:"

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-02 23:37-0500\n"
+"POT-Creation-Date: 2011-03-06 14:40-0500\n"
 "PO-Revision-Date: 2007-02-12 03:37-0600\n"
 "Last-Translator: William Pitcock <nenolod@sacredspiral.co.uk>\n"
 "Language-Team: Welsh <i18n+cy@sacredspiral.co.uk>\n"
@@ -2352,39 +2352,44 @@ msgstr "Enw ffeil"
 msgid "Custom title"
 msgstr "Ynghylch"
 
-#: src/gtkui/columns.c:284
+#: src/gtkui/columns.c:39
+#, fuzzy
+msgid "Bitrate"
+msgstr "Didradd:"
+
+#: src/gtkui/columns.c:286
 msgid "Choose Columns"
 msgstr ""
 
-#: src/gtkui/columns.c:298
+#: src/gtkui/columns.c:300
 msgid "Available:"
 msgstr ""
 
-#: src/gtkui/columns.c:332
+#: src/gtkui/columns.c:334
 msgid "Chosen:"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Left"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Right"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Dock at Top"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Dock at Bottom"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 #, fuzzy
 msgid "Disable"
 msgstr "Cyffredinol"
@@ -2794,25 +2799,20 @@ msgstr ""
 msgid "Deselects all of the playlist entries."
 msgstr ""
 
-#: src/gtkui/ui_statusbar.c:91 src/skins/ui_main.c:611
+#: src/gtkui/ui_statusbar.c:100 src/skins/ui_main.c:611
 #, fuzzy
 msgid "mono"
 msgstr "Mono"
 
-#: src/gtkui/ui_statusbar.c:94 src/skins/ui_main.c:610
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:610
 #, fuzzy
 msgid "stereo"
 msgstr "Stereo"
 
-#: src/gtkui/ui_statusbar.c:97
+#: src/gtkui/ui_statusbar.c:104
 #, fuzzy, c-format
 msgid "%d channels"
 msgstr "Sianeli:"
-
-#: src/gtkui/ui_statusbar.c:101
-#, c-format
-msgid "%s: %d kbps, %d Hz, %s"
-msgstr ""
 
 #: src/hotkey/gui.c:71
 msgid "Previous Track"
@@ -5071,12 +5071,12 @@ msgstr ""
 "Methu gwirio'r cyfeiradur %s\n"
 "Gwall: %s"
 
-#: src/sndfile/plugin.c:454
+#: src/sndfile/plugin.c:452
 #, fuzzy
 msgid "About sndfile plugin"
 msgstr "Ategyn Sain WAV (sndfile)"
 
-#: src/sndfile/plugin.c:455
+#: src/sndfile/plugin.c:453
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -6781,9 +6781,6 @@ msgstr ""
 
 #~ msgid " Ogg Vorbis Info "
 #~ msgstr "Gwybodaeth am Ogg Vorbis"
-
-#~ msgid "Bit rate:"
-#~ msgstr "Didradd:"
 
 #~ msgid "File size:"
 #~ msgstr "Maint ffeil:"

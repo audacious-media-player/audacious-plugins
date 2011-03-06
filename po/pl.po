@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-02 23:37-0500\n"
+"POT-Creation-Date: 2011-03-06 14:40-0500\n"
 "PO-Revision-Date: 2010-08-16 11:48+0200\n"
 "Last-Translator: Szymon Weihs <sz.weihs@gmail.com>\n"
 "Language-Team: \n"
@@ -2403,41 +2403,46 @@ msgstr "Nazwa pliku"
 msgid "Custom title"
 msgstr "Własna skórka"
 
-#: src/gtkui/columns.c:284
+#: src/gtkui/columns.c:39
+#, fuzzy
+msgid "Bitrate"
+msgstr "Bitrate (kbps):"
+
+#: src/gtkui/columns.c:286
 #, fuzzy
 msgid "Choose Columns"
 msgstr "Pokaż odtwarzacz"
 
-#: src/gtkui/columns.c:298
+#: src/gtkui/columns.c:300
 #, fuzzy
 msgid "Available:"
 msgstr "Dostępne słuchawki"
 
-#: src/gtkui/columns.c:332
+#: src/gtkui/columns.c:334
 msgid "Chosen:"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Left"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Right"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Dock at Top"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Dock at Bottom"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 #, fuzzy
 msgid "Disable"
 msgstr "włącz"
@@ -2826,23 +2831,18 @@ msgstr "Wyczyść zaznaczenie"
 msgid "Deselects all of the playlist entries."
 msgstr "Odznacza wszystkie wpisy na playliście"
 
-#: src/gtkui/ui_statusbar.c:91 src/skins/ui_main.c:611
+#: src/gtkui/ui_statusbar.c:100 src/skins/ui_main.c:611
 msgid "mono"
 msgstr "mono"
 
-#: src/gtkui/ui_statusbar.c:94 src/skins/ui_main.c:610
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:610
 msgid "stereo"
 msgstr "stereo"
 
-#: src/gtkui/ui_statusbar.c:97
+#: src/gtkui/ui_statusbar.c:104
 #, c-format
 msgid "%d channels"
 msgstr "%d kanały"
-
-#: src/gtkui/ui_statusbar.c:101
-#, c-format
-msgid "%s: %d kbps, %d Hz, %s"
-msgstr "%s: %d kbps, %d Hz, %s"
 
 #: src/hotkey/gui.c:71
 msgid "Previous Track"
@@ -4960,11 +4960,11 @@ msgstr "Skórka Winamp 2.x"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Nie można utworzyć katalogu (%s): %s\n"
 
-#: src/sndfile/plugin.c:454
+#: src/sndfile/plugin.c:452
 msgid "About sndfile plugin"
 msgstr ""
 
-#: src/sndfile/plugin.c:455
+#: src/sndfile/plugin.c:453
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -5278,6 +5278,9 @@ msgid ""
 "Some of the plugin code was by Miles Egan\n"
 "Visit the Wavpack site at http://www.wavpack.com/\n"
 msgstr ""
+
+#~ msgid "%s: %d kbps, %d Hz, %s"
+#~ msgstr "%s: %d kbps, %d Hz, %s"
 
 #~ msgid ""
 #~ "If enabled, the extension from the original filename will not be stripped "

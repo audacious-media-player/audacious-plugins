@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious-plugins 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-02 23:37-0500\n"
+"POT-Creation-Date: 2011-03-06 14:40-0500\n"
 "PO-Revision-Date: 2010-08-18 13:51+0100\n"
 "Last-Translator: StrassBoy <StrassBoy@gmail.com>\n"
 "Language-Team: \n"
@@ -2552,41 +2552,46 @@ msgstr "Nom du fichier"
 msgid "Custom title"
 msgstr "Thème personnalisé"
 
-#: src/gtkui/columns.c:284
+#: src/gtkui/columns.c:39
+#, fuzzy
+msgid "Bitrate"
+msgstr "Débit binaire (kbps)"
+
+#: src/gtkui/columns.c:286
 #, fuzzy
 msgid "Choose Columns"
 msgstr "Montrer le lecteur"
 
-#: src/gtkui/columns.c:298
+#: src/gtkui/columns.c:300
 #, fuzzy
 msgid "Available:"
 msgstr "variable"
 
-#: src/gtkui/columns.c:332
+#: src/gtkui/columns.c:334
 msgid "Chosen:"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Left"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Right"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Dock at Top"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Dock at Bottom"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:124
 #, fuzzy
 msgid "Disable"
 msgstr "variable"
@@ -2975,23 +2980,18 @@ msgstr "Ne rien sélectionner"
 msgid "Deselects all of the playlist entries."
 msgstr "Annule la sélection de toutes les entrées de la liste."
 
-#: src/gtkui/ui_statusbar.c:91 src/skins/ui_main.c:611
+#: src/gtkui/ui_statusbar.c:100 src/skins/ui_main.c:611
 msgid "mono"
 msgstr "mono"
 
-#: src/gtkui/ui_statusbar.c:94 src/skins/ui_main.c:610
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:610
 msgid "stereo"
 msgstr "stereo"
 
-#: src/gtkui/ui_statusbar.c:97
+#: src/gtkui/ui_statusbar.c:104
 #, c-format
 msgid "%d channels"
 msgstr "%d voies"
-
-#: src/gtkui/ui_statusbar.c:101
-#, c-format
-msgid "%s: %d kbps, %d Hz, %s"
-msgstr "%s: %d kbps, %d Hz, %s"
 
 #: src/hotkey/gui.c:71
 msgid "Previous Track"
@@ -5383,11 +5383,11 @@ msgstr "Thème « Winamp 2.x » non archivé"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Impossible de créer le répertoire (%s) : %s\n"
 
-#: src/sndfile/plugin.c:454
+#: src/sndfile/plugin.c:452
 msgid "About sndfile plugin"
 msgstr "À propos du module « sndfile »"
 
-#: src/sndfile/plugin.c:455
+#: src/sndfile/plugin.c:453
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -5814,6 +5814,9 @@ msgstr ""
 "\n"
 "Vous pouvez visiter le site « Wavpack » à l'adresse suivante :\n"
 "http://www.wavpack.com/\n"
+
+#~ msgid "%s: %d kbps, %d Hz, %s"
+#~ msgstr "%s: %d kbps, %d Hz, %s"
 
 #~ msgid ""
 #~ "* Select ALSA output ports *\n"
