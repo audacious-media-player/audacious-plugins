@@ -135,7 +135,7 @@ static GtkActionEntry action_entries_playlist[] = {
      G_CALLBACK(action_playlist_remove_selected)},
 
     {"playlist title edit", GTK_STOCK_EDIT, N_("Edit title"), "F2",
-     N_("Edites the playlist title."),
+     N_("Edit the playlist title."),
      G_CALLBACK(ui_playlist_notebook_edit_tab_title)},
 
  {"playlist choose columns", NULL, N_("Choose Columns ..."), NULL, NULL,
