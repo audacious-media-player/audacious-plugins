@@ -22,6 +22,7 @@
 #include <limits.h>
 #include <string.h>
 
+#include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
 #include <audacious/gtk-compat.h>
@@ -243,6 +244,17 @@ static gboolean delete_cb (GtkWidget * widget)
     return TRUE;
 }
 
+static gboolean escape_cb (GtkWidget * widget, GdkEventKey * event)
+{
+    if (event->keyval == GDK_Escape)
+    {
+        layout_disable (widget);
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
 static GtkWidget * dock_get_parent (gint dock)
 {
     g_return_val_if_fail (dock >= 0 && dock < DOCKS, NULL);
@@ -323,6 +335,8 @@ static void item_add (Item * item)
         gtk_container_set_border_width ((GtkContainer *) item->window, 3);
         g_signal_connect_swapped (item->window, "delete-event", (GCallback)
          delete_cb, item->widget);
+        g_signal_connect_swapped (item->window, "key-press-event", (GCallback)
+         escape_cb, item->widget);
 
         if (item->x >= 0 && item->y >= 0)
             gtk_window_move ((GtkWindow *) item->window, item->x, item->y);
