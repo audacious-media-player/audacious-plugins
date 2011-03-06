@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2010 Audacious development team
+ *  Copyright (C) 2010-2011 Audacious development team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,6 +32,9 @@
 #include <libaudcore/hook.h>
 
 #include "ui_statusbar.h"
+
+#define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), \
+ __VA_ARGS__)
 
 static void
 ui_statusbar_update_playlist_length(gpointer unused, GtkWidget *label)
@@ -68,41 +71,53 @@ ui_statusbar_update_playlist_length(gpointer unused, GtkWidget *label)
 static void
 ui_statusbar_info_change(gpointer unused, GtkWidget *label)
 {
-    gint bitrate, samplerate, channels;
-    gchar *text, *ch_text;
-    const Tuple *tuple;
-    gint playlist, entry;
-    const gchar *codec;
-
     /* may be called asynchronously */
     if (!aud_drct_get_playing())
         return;
 
-    playlist = aud_playlist_get_active();
-    entry = aud_playlist_get_position(playlist);
-    tuple = aud_playlist_entry_get_tuple (playlist, entry, FALSE);
-    codec = tuple != NULL ? tuple_get_string(tuple, FIELD_CODEC, NULL) : "???";
+    gint playlist = aud_playlist_get_playing ();
+    const Tuple * tuple = aud_playlist_entry_get_tuple (playlist,
+     aud_playlist_get_position (playlist), FALSE);
+    const gchar * codec = tuple ? tuple_get_string (tuple, FIELD_CODEC, NULL) :
+     NULL;
 
+    gint bitrate, samplerate, channels;
     aud_drct_get_info(&bitrate, &samplerate, &channels);
 
-    switch (channels)
+    gchar buf[256];
+    buf[0] = 0;
+
+    if (codec)
     {
-    case 1:
-        ch_text = g_strdup(_("mono"));
-        break;
-    case 2:
-        ch_text = g_strdup(_("stereo"));
-        break;
-    default:
-        ch_text = g_strdup_printf(_("%d channels"), channels);
-        break;
+        APPEND (buf, "%s", codec);
+        if (channels > 0 || samplerate > 0 || bitrate > 0)
+            APPEND (buf, ", ");
     }
 
-    text = g_strdup_printf(_("%s: %d kbps, %d Hz, %s"), codec, bitrate / 1000, samplerate, ch_text);
-    gtk_label_set_text(GTK_LABEL(label), text);
+    if (channels > 0)
+    {
+        if (channels == 1)
+            APPEND (buf, _("mono"));
+        else if (channels == 2)
+            APPEND (buf, _("stereo"));
+        else
+            APPEND (buf, _("%d channels"), channels);
 
-    g_free(text);
-    g_free(ch_text);
+        if (samplerate > 0 || bitrate > 0)
+            APPEND (buf, ", ");
+    }
+
+    if (samplerate > 0)
+    {
+        APPEND (buf, "%d kHz", samplerate / 1000);
+        if (bitrate > 0)
+            APPEND (buf, ", ");
+    }
+
+    if (bitrate > 0)
+        APPEND (buf, "%d kbps", bitrate / 1000);
+
+    gtk_label_set_text ((GtkLabel *) label, buf);
 }
 
 static void
