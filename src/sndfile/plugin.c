@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2010 Audacious development team
+ *  Copyright (C) 2005-2011 Audacious development team
  *
  *  Based on the xmms_sndfile input plugin:
  *  Copyright (C) 2000, 2002 Erik de Castro Lopo
@@ -299,11 +299,9 @@ static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
     else
         codec = g_strdup_printf("%s", format);
 
-    tuple_associate_string(ti, FIELD_CODEC, NULL, codec);
-    g_free(codec);
+    tuple_set_format (ti, codec, sfinfo.channels, sfinfo.samplerate, 0);
 
-    tuple_associate_string(ti, FIELD_QUALITY, NULL, lossy ? "lossy" : "lossless");
-
+    g_free (codec);
     return ti;
 }
 
