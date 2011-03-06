@@ -35,13 +35,15 @@
 
 const gchar * const pw_col_names[PW_COLS] = {N_("Entry number"), N_("Title"),
  N_("Artist"), N_("Year"), N_("Album"), N_("Track"), N_("Queue position"),
- N_("Length"), N_("File path"), N_("File name"), N_("Custom title")};
+ N_("Length"), N_("File path"), N_("File name"), N_("Custom title"),
+ N_("Bitrate")};
 
 gint pw_num_cols;
 gint pw_cols[PW_COLS];
 
 static const gchar * const pw_col_keys[PW_COLS] = {"number", "title", "artist",
- "year", "album", "track", "queued", "length", "path", "filename", "custom"};
+ "year", "album", "track", "queued", "length", "path", "filename", "custom",
+ "bitrate"};
 
 void pw_col_init (void)
 {

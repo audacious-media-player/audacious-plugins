@@ -36,11 +36,11 @@
 
 static const GType pw_col_types[PW_COLS] = {G_TYPE_INT, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
- G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING};
+ G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING};
 static const gboolean pw_col_expand[PW_COLS] = {FALSE, TRUE, TRUE, FALSE, TRUE,
- FALSE, FALSE, FALSE, TRUE, TRUE, TRUE};
+ FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE};
 static const gboolean pw_col_label[PW_COLS] = {FALSE, TRUE, TRUE, TRUE, TRUE,
- FALSE, FALSE, FALSE, TRUE, TRUE, TRUE};
+ FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE};
 
 typedef struct {
     gint list;
@@ -109,7 +109,7 @@ static void get_value (void * user, gint row, gint column, GValue * value)
         aud_playlist_entry_describe (data->list, row, & title, & artist,
          & album, TRUE);
     else if (column == PW_COL_YEAR || column == PW_COL_TRACK || column ==
-     PW_COL_FILENAME || column == PW_COL_PATH)
+     PW_COL_FILENAME || column == PW_COL_PATH || column == PW_COL_BITRATE)
         tuple = aud_playlist_entry_get_tuple (data->list, row, TRUE);
 
     switch (column)
@@ -147,6 +147,9 @@ static void get_value (void * user, gint row, gint column, GValue * value)
     case PW_COL_CUSTOM:
         g_value_set_string (value, aud_playlist_entry_get_title (data->list,
          row, TRUE));
+        break;
+    case PW_COL_BITRATE:
+        set_int_from_tuple (value, tuple, FIELD_BITRATE);
         break;
     }
 }
