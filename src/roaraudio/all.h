@@ -45,7 +45,7 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-OutputPluginInitStatus aud_roar_init(void);
+gboolean aud_roar_init(void);
 
 void aud_roar_get_volume(int *l, int *r);
 void aud_roar_set_volume(int l, int r);
@@ -62,7 +62,6 @@ int aud_roar_get_output_time(void);
 int aud_roar_get_written_time(void);
 gint aud_roar_buffer_get_size(void);
 void aud_roar_period_wait(void);
-void aud_roar_drain (void);
 
 int aud_roar_update_metadata(void);
 int aud_roar_chk_metadata(void);
