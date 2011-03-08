@@ -1,6 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([audacious-plugins], [2.5-alpha2], [bugs+audacious-plugins@atheme.org])
+AC_INIT([audacious-plugins], [2.5-beta1])
+AC_COPYRIGHT([(C) 2005-2011 Audacious Team])
 AC_PREREQ([2.59])
 
 AC_CANONICAL_HOST
