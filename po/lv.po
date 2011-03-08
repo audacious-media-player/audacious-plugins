@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins2_22062009\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-06 14:42-0500\n"
+"POT-Creation-Date: 2011-03-08 11:07-0500\n"
 "PO-Revision-Date: 2011-03-02 01:41+0200\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -2674,7 +2674,8 @@ msgid "Edit title"
 msgstr "Rediģēt nosaukumu"
 
 #: src/gtkui/ui_manager.c:138
-msgid "Edites the playlist title."
+#, fuzzy
+msgid "Edit the playlist title."
 msgstr "Rediģē repertuāra nosaukumu."
 
 #: src/gtkui/ui_manager.c:141

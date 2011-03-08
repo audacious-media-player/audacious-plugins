@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-06 14:40-0500\n"
+"POT-Creation-Date: 2011-03-08 11:07-0500\n"
 "PO-Revision-Date: 2008-07-08 13:10+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -2721,7 +2721,7 @@ msgstr ""
 
 #: src/gtkui/ui_manager.c:138
 #, fuzzy
-msgid "Edites the playlist title."
+msgid "Edit the playlist title."
 msgstr "プレイリストの順序をランダムにします."
 
 #: src/gtkui/ui_manager.c:141

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.4.0\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-06 14:40-0500\n"
+"POT-Creation-Date: 2011-03-08 11:07-0500\n"
 "PO-Revision-Date: 2007-08-28 20:44+0200\n"
 "Last-Translator: Daniel Patriche <m4st3rth0r@gmail.com>\n"
 "Language-Team: Romanian <audacious@atheme.org>\n"
@@ -2716,8 +2716,9 @@ msgid "Edit title"
 msgstr ""
 
 #: src/gtkui/ui_manager.c:138
-msgid "Edites the playlist title."
-msgstr ""
+#, fuzzy
+msgid "Edit the playlist title."
+msgstr "Selectați Playlist-ul"
 
 #: src/gtkui/ui_manager.c:141
 msgid "Choose Columns ..."

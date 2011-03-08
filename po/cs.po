@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 20d1d0181353\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-06 14:40-0500\n"
+"POT-Creation-Date: 2011-03-08 11:07-0500\n"
 "PO-Revision-Date: 2011-03-01 21:51+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -2687,7 +2687,8 @@ msgid "Edit title"
 msgstr "Upravit název"
 
 #: src/gtkui/ui_manager.c:138
-msgid "Edites the playlist title."
+#, fuzzy
+msgid "Edit the playlist title."
 msgstr "Upraví název seznamu skladeb."
 
 #: src/gtkui/ui_manager.c:141

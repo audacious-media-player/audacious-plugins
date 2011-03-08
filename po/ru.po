@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-06 14:40-0500\n"
+"POT-Creation-Date: 2011-03-08 11:07-0500\n"
 "PO-Revision-Date: 2010-08-22 22:00+0400\n"
 "Last-Translator: Sergey V. Mironov <sergo@bk.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -2720,7 +2720,7 @@ msgstr ""
 
 #: src/gtkui/ui_manager.c:138
 #, fuzzy
-msgid "Edites the playlist title."
+msgid "Edit the playlist title."
 msgstr "Сортировать записи в списке воспроизведения в случайном порядке."
 
 #: src/gtkui/ui_manager.c:141

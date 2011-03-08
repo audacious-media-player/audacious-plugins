@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-06 14:40-0500\n"
+"POT-Creation-Date: 2011-03-08 11:07-0500\n"
 "PO-Revision-Date: 2010-08-16 11:48+0200\n"
 "Last-Translator: Szymon Weihs <sz.weihs@gmail.com>\n"
 "Language-Team: \n"
@@ -2643,7 +2643,7 @@ msgstr ""
 
 #: src/gtkui/ui_manager.c:138
 #, fuzzy
-msgid "Edites the playlist title."
+msgid "Edit the playlist title."
 msgstr "Porządkuje listę na podstawie tytułu."
 
 #: src/gtkui/ui_manager.c:141
