@@ -140,6 +140,9 @@ static gboolean file_init (void)
         g_return_val_if_fail (file_path != NULL, FALSE);
     }
 
+    /* ensure preloading of file transport */
+    vfs_prepare("file");
+
     set_plugin();
     if (plugin->init)
         plugin->init(&file_write_output);
