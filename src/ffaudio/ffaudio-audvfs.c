@@ -67,9 +67,7 @@ static int64_t audvfs_seek(URLContext *h, int64_t pos, int whence)
 
 static int audvfs_close(URLContext *h)
 {
-    VFSFile *file;
-    file = h->priv_data;
-    return vfs_fclose(file);
+    return 0;
 }
 
 static int audvfsptr_open(URLContext *h, const char *filename, int flags)
@@ -79,8 +77,7 @@ static int audvfsptr_open(URLContext *h, const char *filename, int flags)
     av_strstart(filename, "audvfsptr:", &filename);
 
     p = (VFSFile *) strtoul(filename, NULL, 16);
-    h->priv_data = vfs_dup(p);
-    vfs_rewind(p);
+    h->priv_data = p;
 
     return 0;
 }
