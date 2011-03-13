@@ -2,6 +2,7 @@
  * Audacious FFaudio Plugin
  * Copyright © 2009 William Pitcock <nenolod@dereferenced.org>
  *                  Matti Hämäläinen <ccr@tnsp.org>
+ * Copyright © 2011 John Lindgren <john.lindgren@tds.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +43,8 @@ static GCond *ctrl_cond = NULL;
 static gint64 seek_value = -1;
 static gboolean stop_flag = FALSE;
 
+static mowgli_patricia_t * extension_dict = NULL;
+
 static gboolean ffaudio_init (void)
 {
     avcodec_init();
@@ -71,21 +74,146 @@ ffaudio_cleanup(void)
     AUDDBG("cleaning up\n");
     g_mutex_free(ctrl_mutex);
     g_cond_free(ctrl_cond);
+    
+    if (extension_dict)
+        mowgli_patricia_destroy (extension_dict, NULL, NULL);
 }
 
-/* For file formats that FFMPEG doesn't detect well, just guess it from the file
- * extension. --jlindgren */
-static AVInputFormat * override_format (const gchar * filename)
+static const gchar * ffaudio_strerror (gint error)
 {
-    AVInputFormat * format = NULL;
+    static gchar buf[256];
+    return (! av_strerror (error, buf, sizeof buf)) ? buf : "unknown error";
+}
 
-    if (g_str_has_suffix (filename, ".shn"))
-        format = av_find_input_format ("shn");
+static mowgli_patricia_t * create_extension_dict (void)
+{
+    mowgli_patricia_t * dict = mowgli_patricia_create (NULL);
+    
+    AVInputFormat * f;
+    for (f = av_iformat_next (NULL); f; f = av_iformat_next (f))
+    {
+        if (! f->extensions)
+            continue;
+        
+        gchar * exts = g_ascii_strdown (f->extensions, -1);
 
-    if (format)
-        AUDDBG ("Overriding FFMPEG's format detection for %s.\n", filename);
+        gchar * parse, * next;
+        for (parse = exts; parse; parse = next)
+        {
+            next = strchr (parse, ',');
+            if (next)
+            {
+                * next = 0;
+                next ++;
+            }
+            
+            mowgli_patricia_add (dict, parse, f);
+        }
+        
+        g_free (exts);
+    }
+    
+    return dict;
+}
 
-    return format;
+static AVInputFormat * get_format_by_extension (const gchar * name)
+{
+    gchar * ext = uri_get_extension (name);
+    if (! ext)
+        return NULL;
+
+    AUDDBG ("Get format by extension: %s\n", name);
+
+    if (! extension_dict)
+        extension_dict = create_extension_dict ();
+
+    AVInputFormat * f = mowgli_patricia_retrieve (extension_dict, ext);
+    
+    if (f)
+        AUDDBG ("Format %s.\n", f->name);
+    else
+        AUDDBG ("Format unknown.\n");
+
+    g_free (ext);
+    return f;
+}
+
+static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file)
+{
+    AUDDBG ("Get format by content: %s\n", name);
+
+    AVInputFormat * f = NULL;
+    
+    guchar buf[16384 + AVPROBE_PADDING_SIZE];
+    gint size = 16;
+    gint filled = 0;
+    gint target = 100;
+    gint score = 0;
+
+    while (1)
+    {
+        if (filled < size)
+            filled += vfs_fread (buf + filled, 1, size - filled, file);
+        if (filled < size)
+            break;
+
+        memset (buf + size, 0, AVPROBE_PADDING_SIZE);
+        AVProbeData d = {name, buf, size};
+        score = target;
+
+        f = av_probe_input_format2 (& d, TRUE, & score);
+        if (f)
+            break;
+            
+        if (size < 16384)
+            size *= 4;
+        else if (target > 10)
+            target = 10;
+        else
+            break;
+    }
+
+    if (f)
+        AUDDBG ("Format %s, buffer size %d, score %d.\n", f->name, size, score);
+    else
+        AUDDBG ("Format unknown.\n");
+    
+    if (vfs_fseek (file, 0, SEEK_SET) < 0)
+        ; /* ignore errors here */
+        
+    return f;
+}
+
+static AVInputFormat * get_format (const gchar * name, VFSFile * file)
+{
+    AVInputFormat * f = get_format_by_extension (name);
+    return f ? f : get_format_by_content (name, file);
+}
+
+static AVFormatContext * open_input_file (const gchar * name, VFSFile * file)
+{
+    AVInputFormat * f = get_format (file->uri, file);
+
+    if (! f)
+    {
+        fprintf (stderr, "ffaudio: Unknown format for %s.\n", name);
+        return NULL;
+    }
+
+    AVFormatContext * c = NULL;
+    gchar buf[64];
+    snprintf (buf, sizeof buf, "audvfsptr:%p", file);
+
+    gint ret = av_open_input_file (& c, buf, f, 0, NULL);
+
+    if (ret < 0)
+    {
+        fprintf (stderr, "ffaudio: av_open_input_file failed for %s: %s.\n",
+         name, ffaudio_strerror (ret));
+        return NULL;
+    }
+
+    return c;
 }
 
 static gboolean
@@ -106,63 +234,9 @@ ffaudio_codec_is_seekable(AVCodec *codec)
     }
 }
 
-static gint
-ffaudio_probe(const gchar *filename, VFSFile *file)
+static gboolean ffaudio_probe (const gchar * filename, VFSFile * file)
 {
-    AVCodec *codec = NULL;
-    AVCodecContext *c = NULL;
-    AVFormatContext *ic = NULL;
-    gint i, ret;
-    gchar uribuf[64];
-
-    AUDDBG("probing for %s, filehandle %p\n", filename, file);
-
-    g_snprintf(uribuf, sizeof(uribuf), "audvfsptr:%p", (void *) file);
-    if ((ret = av_open_input_file (& ic, uribuf, override_format (filename), 0,
-     NULL)) < 0)
-    {
-        AUDDBG("ic is NULL, ret %d/%s\n", ret, strerror(-ret));
-        return 0;
-    }
-
-    AUDDBG("file opened, %p\n", ic);
-
-    for (i = 0; i < ic->nb_streams; i++)
-    {
-        c = ic->streams[i]->codec;
-        if (c->codec_type == CODEC_TYPE_AUDIO)
-        {
-            av_find_stream_info(ic);
-            codec = avcodec_find_decoder(c->codec_id);
-            if (codec != NULL)
-                break;
-        }
-    }
-
-    if (codec == NULL)
-    {
-        av_close_input_file(ic);
-        return 0;
-    }
-
-#ifdef FFAUDIO_DOUBLECHECK
-    AUDDBG("got codec %s, doublechecking\n", codec->name);
-
-    av_find_stream_info(ic);
-
-    codec = avcodec_find_decoder(c->codec_id);
-
-    if (codec == NULL)
-    {
-        av_close_input_file(ic);
-        return 0;
-    }
-#endif
-
-    AUDDBG("probe success for %s\n", codec->name);
-    av_close_input_file(ic);
-
-    return 1;
+    return get_format (filename, file) ? TRUE : FALSE;
 }
 
 typedef struct {
@@ -248,15 +322,11 @@ static Tuple * read_tuple (const gchar * filename, VFSFile * file)
 {
     AVCodec *codec = NULL;
     AVCodecContext *c = NULL;
-    AVFormatContext *ic = NULL;
     AVStream *s = NULL;
     gint i;
 
-    gchar uribuf[64];
-    snprintf (uribuf, sizeof uribuf, "audvfsptr:%p", (void *) file);
-
-    if (av_open_input_file (& ic, uribuf, override_format (filename), 0, NULL) <
-     0)
+    AVFormatContext * ic = open_input_file (filename, file);
+    if (! ic)
         return NULL;
 
     for (i = 0; i < ic->nb_streams; i++)
@@ -318,7 +388,6 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
     AVCodec *codec = NULL;
     AVCodecContext *c = NULL;
-    AVFormatContext *ic = NULL;
     AVStream *s = NULL;
     AVPacket pkt = {.data = NULL};
     guint8 *outbuf = NULL, *resbuf = NULL;
@@ -330,17 +399,9 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     gboolean seekable;
     gboolean error = FALSE;
 
-    gchar uribuf[64];
-    snprintf (uribuf, sizeof uribuf, "audvfsptr:%p", (void *) file);
-
-    gint ret;
-    if ((ret = av_open_input_file (& ic, uribuf, override_format (filename), 0,
-     NULL)) < 0)
-    {
-        fprintf (stderr, "ffaudio: av_open_input_file() failed for %s: %s.\n",
-         filename, strerror (AVUNERROR (ret)));
+    AVFormatContext * ic = open_input_file (filename, file);
+    if (! ic)
         return FALSE;
-    }
 
     for (i = 0; i < ic->nb_streams; i++)
     {
