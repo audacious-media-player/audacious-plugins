@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-13 17:08-0400\n"
-"PO-Revision-Date: 2010-08-04 14:51+0100\n"
+"POT-Creation-Date: 2011-03-13 17:11-0400\n"
+"PO-Revision-Date: 2011-03-10 14:43+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
 "Language: \n"
@@ -710,7 +710,7 @@ msgstr "Backend-Auswahl"
 
 #: src/amidi-plug/i_configure-ap.c:227
 msgid "Available backends"
-msgstr "Verfügbare backends"
+msgstr "Verfügbare Backends"
 
 #: src/amidi-plug/i_configure-ap.c:257
 msgid "Playback settings"
@@ -730,7 +730,7 @@ msgstr "Erweiterte Einstellungen"
 
 #: src/amidi-plug/i_configure-ap.c:293
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr "Länge von MIDI-Dateien in der Wiedergabeliste ausrechnen"
+msgstr "Länge von MIDI-Dateien in der Wiedergabeliste berechnen"
 
 #: src/amidi-plug/i_configure-ap.c:298
 msgid "extract comments from MIDI file (if available)"
@@ -770,7 +770,7 @@ msgstr "SoundFont-Einstellungen"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:351
 msgid "Size (bytes)"
-msgstr "Größe (Byte)"
+msgstr "Größe (Bytes)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:400
 msgid "Load SF on player start"
@@ -885,7 +885,7 @@ msgstr "Format:"
 
 #: src/amidi-plug/i_fileinfo.c:208
 msgid "Length (msec):"
-msgstr "Länge (Ms):"
+msgstr "Länge (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "Num of Tracks:"
@@ -909,7 +909,7 @@ msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> MIDI Kommentare und Liedtexte </span>"
 
 #: src/amidi-plug/i_fileinfo.c:288
 msgid "* no comments available in this MIDI file *"
@@ -1243,50 +1243,50 @@ msgstr ""
 #: src/bluetooth/agent.c:356 src/bluetooth/agent.c:397
 #, c-format
 msgid "Pairing request for '%s'"
-msgstr ""
+msgstr "Pairing-Anfrage für '%s'"
 
 #: src/bluetooth/agent.c:544
 #, c-format
 msgid "Authorization request for %s"
-msgstr ""
+msgstr "Autorisierungs-Anfrage für %s"
 
 #: src/bluetooth/agent.c:728
 #, c-format
 msgid "Created bonding with %s"
-msgstr ""
+msgstr "Bonding mit %s erstellt"
 
 #: src/bluetooth/agent.c:756
 #, c-format
 msgid "Removed bonding with %s"
-msgstr ""
+msgstr "Bonding mit %s entfernt"
 
 #: src/bluetooth/agent.c:808
 msgid "Device has been switched off"
-msgstr ""
+msgstr "Gerät wurde ausgeschalten"
 
 #: src/bluetooth/agent.c:811
 msgid "Device has been made non-discoverable"
-msgstr ""
+msgstr "Gerät wurde nicht-erkennbar gemacht"
 
 #: src/bluetooth/agent.c:813
 msgid "Device has been made connectable"
-msgstr ""
+msgstr "Gerät wurde anschließbar gemacht"
 
 #: src/bluetooth/agent.c:815
 msgid "Device has been made discoverable"
-msgstr ""
+msgstr "Gerät wurde erkennbar gemacht"
 
 #: src/bluetooth/agent.c:817
 msgid "Device has been made limited discoverable"
-msgstr ""
+msgstr "Gerät wurde eingeschränkt erkennbar gemacht"
 
 #: src/bluetooth/agent.c:819
 msgid "Device has been switched into pairing mode"
-msgstr ""
+msgstr "Gerät wurde in Pairing-Modus geschalten"
 
 #: src/bluetooth/bluetooth.c:117
 msgid "Bluetooth headset support plugin"
-msgstr ""
+msgstr "Bluetooth Headset Support Plugin"
 
 #: src/bluetooth/bluetooth.c:118
 msgid ""
@@ -1399,17 +1399,16 @@ msgstr ""
 "Copyright 2009 John Lindgren"
 
 #: src/cdaudio-ng/cdaudio-ng.c:561
-#, fuzzy
 msgid "Audio CD"
-msgstr "Audio"
+msgstr "Audio CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:916
 msgid "Drive is empty."
-msgstr ""
+msgstr "Laufwerk ist leer."
 
 #: src/cdaudio-ng/cdaudio-ng.c:918
 msgid "Unsupported disk type."
-msgstr ""
+msgstr "Nicht unterstützter Disk-Typ."
 
 #: src/cdaudio-ng/configure.c:148
 msgid "CD Audio Plugin Configuration"
@@ -1465,20 +1464,19 @@ msgstr "CD hinzufügen"
 
 #: src/compressor/plugin.c:67
 msgid "About Dynamic Range Compression Plugin"
-msgstr ""
+msgstr "Über Dynamic Range Compression Plugin"
 
 #: src/compressor/plugin.c:99
 msgid "Dynamic Range Compressor Preferences"
-msgstr ""
+msgstr "Dynamic Range Compressor Einstellungen"
 
 #: src/compressor/plugin.c:111
-#, fuzzy
 msgid "Center volume:"
-msgstr "Lautstärke ändern"
+msgstr "Center Lautstärke:"
 
 #: src/compressor/plugin.c:124
 msgid "Dynamic range:"
-msgstr ""
+msgstr "Dynamischer Bereich:"
 
 #: src/console/configure.c:138
 msgid "Game Console Music Decoder"
@@ -1570,6 +1568,8 @@ msgstr "Crossfade Fehler"
 msgid ""
 "Crossfading failed because the songs had a different number of channels."
 msgstr ""
+"Crossfaiding fehlgeschlagen, weil die Lieder eine andere Anzahl an Kanälen "
+"hatten."
 
 #: src/crossfade/plugin.c:148
 msgid ""
@@ -1578,6 +1578,10 @@ msgid ""
 "You can use the Sample Rate Converter effect to resample the songs to the "
 "same rate."
 msgstr ""
+"Crossfading fehlgeschlagen, weil die Lieder eine andere Sample-Rate hatten.\n"
+"\n"
+"Sie können den Sample-Rate-Converter benutzen, um die Lieder auf die selbe "
+"Rate zu resamplen."
 
 #: src/crystalizer/crystalizer.c:112
 msgid "Configure Crystalizer"
@@ -1594,7 +1598,7 @@ msgstr "Übernehmen"
 
 #: src/daemon/daemon.c:58
 msgid "Daemon Interface (like old headless mode)"
-msgstr ""
+msgstr "Daemon Interface (ähnlich dem alten Headlessmodus)"
 
 #: src/echo_plugin/gui.c:15
 msgid ""
@@ -1842,7 +1846,7 @@ msgstr "Gerätedatei:"
 
 #: src/evdev-plug/ed_ui.c:404
 msgid "(custom)"
-msgstr ""
+msgstr "(benutzerdefiniert)"
 
 #: src/evdev-plug/ed_ui.c:412
 msgid ""
@@ -2026,7 +2030,6 @@ msgid "Auto"
 msgstr "Automatisch"
 
 #: src/filewriter/mp3.c:38
-#, fuzzy
 msgid "Joint Stereo"
 msgstr "Joint-Stereo"
 
@@ -2254,102 +2257,88 @@ msgid "Import Playlist"
 msgstr "Wiedergabeliste importieren"
 
 #: src/gtkui/columns.c:36
-#, fuzzy
 msgid "Entry number"
-msgstr "Titelnummer:"
+msgstr "Titelnummer"
 
 #: src/gtkui/columns.c:36 src/sid/xs_interface.c:1103
 msgid "Title"
 msgstr "Titel"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Artist"
-msgstr "Künstler:"
+msgstr "Künstler"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Year"
-msgstr "Jahr:"
+msgstr "Jahr"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Album"
-msgstr "Album:"
+msgstr "Album"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Track"
-msgstr "Nächster Titel"
+msgstr "Titel"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Queue position"
-msgstr "Position"
+msgstr "Warteschlangen-Position"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "Length"
-msgstr "Länge (ms):"
+msgstr "Länge"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "File path"
-msgstr "Nach Dateipfad"
+msgstr "Dateipfad"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "File name"
 msgstr "Dateiname"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "Custom title"
-msgstr "Eigener Skin"
+msgstr "Benutzerdefinierter Titel"
 
 #: src/gtkui/columns.c:39
-#, fuzzy
 msgid "Bitrate"
-msgstr "Bitrate (kbps):"
+msgstr "Bitrate"
 
 #: src/gtkui/columns.c:286
-#, fuzzy
 msgid "Choose Columns"
-msgstr "Hauptfenster anzeigen"
+msgstr "Spalten auswählen"
 
 #: src/gtkui/columns.c:300
-#, fuzzy
 msgid "Available:"
-msgstr "variabel"
+msgstr "Verfügbar:"
 
 #: src/gtkui/columns.c:334
 msgid "Chosen:"
-msgstr ""
+msgstr "Ausgewählt:"
 
 #: src/gtkui/layout.c:123
 msgid "Dock at Left"
-msgstr ""
+msgstr "Links andocken"
 
 #: src/gtkui/layout.c:123
 msgid "Dock at Right"
-msgstr ""
+msgstr "Rechts andocken"
 
 #: src/gtkui/layout.c:124
 msgid "Dock at Top"
-msgstr ""
+msgstr "Oben andocken"
 
 #: src/gtkui/layout.c:124
 msgid "Dock at Bottom"
-msgstr ""
+msgstr "Unten andocken"
 
 #: src/gtkui/layout.c:124
 msgid "Undock"
-msgstr ""
+msgstr "Abdocken"
 
 #: src/gtkui/layout.c:124
-#, fuzzy
 msgid "Disable"
-msgstr "variabel"
+msgstr "Deaktivieren"
 
 #: src/gtkui/ui_gtk.c:79
 msgid "GTK Interface"
@@ -2409,9 +2398,8 @@ msgid "Show/hide statusbar"
 msgstr "Statusleiste anzeigen/verstecken"
 
 #: src/gtkui/ui_manager.c:58
-#, fuzzy
 msgid "Show Column Headers"
-msgstr "Hauptfenster anzeigen"
+msgstr "Spaltenüberschriften anzeigen"
 
 #: src/gtkui/ui_manager.c:70 src/gtkui/ui_manager.c:71
 #: src/skins/ui_manager.c:172 src/skins/ui_manager.c:173
@@ -2484,14 +2472,12 @@ msgid "Refreshes metadata associated with a playlist entry."
 msgstr "Metadaten aktualisieren."
 
 #: src/gtkui/ui_manager.c:108
-#, fuzzy
 msgid "Refresh Selected"
-msgstr "Auswahl entfernen"
+msgstr "Ausgewählte aktualisieren"
 
 #: src/gtkui/ui_manager.c:109
-#, fuzzy
 msgid "Refreshes metadata associated with selected entries."
-msgstr "Metadaten aktualisieren."
+msgstr "Metadaten mit dazugehörigen Einträgen aktualisieren."
 
 #: src/gtkui/ui_manager.c:113
 msgid "Playlist Manager"
@@ -2543,16 +2529,15 @@ msgstr "Ausgewählte Wiedergabelisteneinträge entfernen."
 
 #: src/gtkui/ui_manager.c:137
 msgid "Edit title"
-msgstr ""
+msgstr "Titel bearbeiten"
 
 #: src/gtkui/ui_manager.c:138
-#, fuzzy
 msgid "Edit the playlist title."
-msgstr "Ordnet Liste zufällig an."
+msgstr "Titel der Wiedergabeliste bearbeiten"
 
 #: src/gtkui/ui_manager.c:141
 msgid "Choose Columns ..."
-msgstr ""
+msgstr "Spalten auswählen ..."
 
 #: src/gtkui/ui_manager.c:144
 msgid "Sort"
@@ -2579,18 +2564,16 @@ msgid "By Album"
 msgstr "Nach Album"
 
 #: src/gtkui/ui_manager.c:153
-#, fuzzy
 msgid "By Release Date"
-msgstr "Nach Datum"
+msgstr "Nach Erscheinungsdatum"
 
 #: src/gtkui/ui_manager.c:155
 msgid "By File Path"
 msgstr "Nach Dateipfad"
 
 #: src/gtkui/ui_manager.c:157
-#, fuzzy
 msgid "By Formatted Title"
-msgstr "Nach Titel"
+msgstr "Nach formatiertem Titel"
 
 #: src/gtkui/ui_manager.c:159
 msgid "Reverse Order"
@@ -2598,7 +2581,7 @@ msgstr "Vertausche Anordnung"
 
 #: src/gtkui/ui_manager.c:161
 msgid "Random Order"
-msgstr ""
+msgstr "Zufällige Anordnung"
 
 #: src/gtkui/ui_manager.c:166
 msgid "Output"
@@ -2610,7 +2593,7 @@ msgstr "Effekte"
 
 #: src/gtkui/ui_manager.c:170
 msgid "Equalizer"
-msgstr ""
+msgstr "Equalizer"
 
 #: src/gtkui/ui_manager.c:175 src/skins/ui_manager.c:234
 msgid "View"
@@ -2657,7 +2640,7 @@ msgstr "URL öffnen ..."
 
 #: src/gtkui/ui_manager.c:201 src/skins/ui_manager.c:394
 msgid "Play media from the selected location"
-msgstr "Medien aus bestimmter Adresse abspielen"
+msgstr "Medien von bestimmter Adresse abspielen"
 
 #: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:396
 msgid "Plugin services"
@@ -2705,7 +2688,7 @@ msgstr "In/Aus Warteschlange"
 
 #: src/gtkui/ui_manager.c:227 src/skins/ui_manager.c:420
 msgid "Enables/disables the entry in the playlist's queue."
-msgstr "Eintrag in der Wiedergabenwarteschleife aktivieren/deaktivieren."
+msgstr "Eintrag in der Wiedergabewarteschleife aktivieren/deaktivieren."
 
 #: src/gtkui/ui_manager.c:230 src/skins/ui_manager.c:423
 msgid "Copy"
@@ -2799,7 +2782,7 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"Es ist nicht empfohlen die primären Maustasten hierfür zu benutzen.\n"
+"Es wird nicht empfohlen die primären Maustasten hierfür zu benutzen.\n"
 "\n"
 "Trotzdem fortfahren?"
 
@@ -3254,7 +3237,6 @@ msgid "Modplug Input Plugin for Audacious ver"
 msgstr "Modplug-Input-Plugin für Audacious Version"
 
 #: src/modplug/gui/main.cxx:52
-#, fuzzy
 msgid ""
 "\n"
 "Modplug sound engine written by Olivier Lapicque.\n"
@@ -3282,7 +3264,7 @@ msgstr "Konnte Pixmap-Datei nicht finden: %s"
 
 #: src/mtp_up/mtp.c:35
 msgid "Upload selected track(s)"
-msgstr "Ausgewählte Titel uploaden"
+msgstr "Ausgewählte(n) Titel uploaden"
 
 #: src/mtp_up/mtp.c:292
 msgid "Upload in progress..."
@@ -3349,7 +3331,6 @@ msgid "About OSS4 Plugin"
 msgstr "Über OSS4-Plugin"
 
 #: src/oss4/plugin.c:55
-#, fuzzy
 msgid ""
 "OSS4 Output Plugin for Audacious\n"
 "Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
@@ -3370,25 +3351,6 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>.\n"
 msgstr ""
-"An Audacious angepasst von Tony Vroon <chainsaw@gentoo.org>\n"
-"vom xmms_sndfile-Plugin:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"This program is free software ; you can redistribute it and/or modify \n"
-"it under the terms of the GNU General Public License as published by \n"
-"the Free Software Foundation ; either version 2 of the License, or \n"
-"(at your option) any later version. \n"
-" \n"
-"This program is distributed in the hope that it will be useful, \n"
-"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-"See the GNU General Public License for more details. \n"
-"\n"
-"You should have received a copy of the GNU General Public \n"
-"License along with this program ; if not, write to \n"
-"the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
 
 #: src/oss4/utils.c:204
 msgid "OSS4 error"
@@ -3540,14 +3502,12 @@ msgid "About Scrobbler Plugin"
 msgstr "Über Scrobbler-Plugin"
 
 #: src/sdlout/plugin.c:62
-#, fuzzy
 msgid "About SDL Output Plugin"
-msgstr "Über ALSA Output Plugin"
+msgstr "Über SDL Output Plugin"
 
 #: src/sdlout/plugin.c:82
-#, fuzzy
 msgid "SDL error"
-msgstr "ALSA Fehler"
+msgstr "SDL Fehler"
 
 #: src/sid/xs_about.c:84
 #, c-format
@@ -3658,7 +3618,7 @@ msgstr "Taktfrequenz:"
 
 #: src/sid/xs_interface.c:484
 msgid "Force model"
-msgstr "Modell erzwingen"
+msgstr "Model erzwingen"
 
 #: src/sid/xs_interface.c:488
 msgid ""
@@ -4158,7 +4118,7 @@ msgstr "Oberfläche"
 
 #: src/skins/skins_cfg.c:316
 msgid "_Player:"
-msgstr "Hauptfenster"
+msgstr "Hauptfenster:"
 
 #: src/skins/skins_cfg.c:316
 msgid "Select main player window font:"
@@ -4166,11 +4126,11 @@ msgstr "Hauptfenster-Schrift auswählen:"
 
 #: src/skins/skins_cfg.c:317
 msgid "_Playlist:"
-msgstr "Wiedergabeliste"
+msgstr "Wiedergabeliste:"
 
 #: src/skins/skins_cfg.c:317
 msgid "Select playlist font:"
-msgstr "Playlist-Schrift auswählen"
+msgstr "Playlist-Schrift auswählen:"
 
 #: src/skins/skins_cfg.c:321
 msgid "<b>_Fonts</b>"
@@ -4391,7 +4351,7 @@ msgstr "Visualisierungs-Menü"
 
 #: src/skins/ui_main.c:2354
 msgid "Single mode."
-msgstr ""
+msgstr "Single-Modus."
 
 #: src/skins/ui_main.c:2356
 msgid "Playlist mode."
@@ -4831,22 +4791,27 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
+"Wählen Sie Einträge in der Wiedergabeliste durch Ausfüllen eines oder "
+"mehrerer Eingabefelder aus. Diese nutzen reguläre Ausdrücke und "
+"unterscheiden Groß- und Kleinschreibung nicht. Falls Sie nicht wissen, wie "
+"reguläre Ausdrücke funktionieren, geben Sie einfach nur einen Teilbegriff "
+"für Ihre Suche ein."
 
 #: src/skins/ui_playlist.c:397
 msgid "Album: "
-msgstr "Album:"
+msgstr "Album: "
 
 #: src/skins/ui_playlist.c:404
 msgid "Artist: "
-msgstr "Künstler:"
+msgstr "Künstler: "
 
 #: src/skins/ui_playlist.c:411
 msgid "Filename: "
-msgstr "Dateiname:"
+msgstr "Dateiname: "
 
 #: src/skins/ui_playlist.c:419
 msgid "Clear previous selection before searching"
-msgstr "Vorherige Auswahl vorm Suchen löschen"
+msgstr "Vorherige Auswahl vor dem Suchen löschen"
 
 #: src/skins/ui_playlist.c:422
 msgid "Automatically toggle queue for matching entries"
@@ -5029,7 +4994,6 @@ msgstr ""
 "Netzwerk-Streams)"
 
 #: src/song_change/song_change.c:479
-#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -5059,7 +5023,9 @@ msgstr ""
 "%%n oder %%s: Titel\n"
 "%%r: Bitrate (in Bits pro Sekunde)\n"
 "%%t: Wiedergabelisten-Position (%%02d)\n"
-"%%p: Ist die Wiedergabe momentan aktiv? (1 oder 0)"
+"%%p: Ist die Wiedergabe momentan aktiv? (1 oder 0)%a: Künstler\n"
+"%b: Album\n"
+"%T: Titelname"
 
 #: src/song_change/song_change.c:506
 msgid ""
@@ -5086,7 +5052,6 @@ msgid "About Status Icon Plugin"
 msgstr "Über Status-Icon-Plugin"
 
 #: src/statusicon/statusicon.c:378
-#, fuzzy
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -5096,11 +5061,13 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager.\n"
 msgstr ""
+"Status Icon Plugin\n"
 "\n"
-"geschrieben von Giacomo Lozito < james@develia.org >\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
 "\n"
-"Dieses Plugin stellt ein Status-Icon bereit, im\n"
-"System-Tray des Fenstermanagers.\n"
+"Dieses Plugin stellt ein Status-Icon bereit, welches\n"
+"im System-Tray des Fenstermanagers angezeigt wird.\n"
 
 #: src/statusicon/statusicon.c:446
 msgid "Status Icon Plugin - Preferences"
@@ -5131,17 +5098,16 @@ msgid "Change playing song"
 msgstr "Aktiven Titel ändern"
 
 #: src/statusicon/statusicon.c:499
-#, fuzzy
 msgid "Other settings"
-msgstr "Mixer-Einstellungen"
+msgstr "Andere Einstellungen"
 
 #: src/statusicon/statusicon.c:504
 msgid "Disable the popup window"
-msgstr ""
+msgstr "PopUp-Fenster deaktivieren"
 
 #: src/statusicon/statusicon.c:511
 msgid "Close to the notification area (system tray)"
-msgstr ""
+msgstr "In den Informationsbereich beenden (system tray)"
 
 #: src/stereo_plugin/stereo.c:41
 msgid ""
