@@ -28,7 +28,6 @@
 
 #include <glib.h>
 
-#include <audacious/debug.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
@@ -40,8 +39,6 @@ static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
     gboolean update;
     mode_t mode_flag;
     gint handle;
-
-    AUDDBG ("fopen %s, mode = %s\n", uri, mode);
 
     update = (strchr (mode, '+') != NULL);
 
@@ -78,8 +75,6 @@ static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
     else
         handle = open (filename, mode_flag);
 
-    AUDDBG (" = %d.\n", handle);
-
     if (handle < 0)
     {
         error ("Cannot open %s: %s.\n", filename, strerror (errno));
@@ -102,8 +97,6 @@ static gint unix_fclose (VFSFile * file)
 {
     gint handle = GPOINTER_TO_INT (file->handle);
     gint result = 0;
-
-    AUDDBG ("[%d] fclose\n", handle);
 
 #ifdef HAVE_FSYNC
     if (fsync (handle) < 0)
@@ -128,8 +121,6 @@ static gint64 unix_fread (void * ptr, gint64 size, gint64 nitems, VFSFile * file
     gint64 goal = size * nitems;
     gint64 total = 0;
 
-/*    AUDDBG ("[%d] fread %d x %d\n", handle, (gint) size, (gint) nitems); */
-
     while (total < goal)
     {
         gint64 readed = read (handle, (gchar *) ptr + total, goal - total);
@@ -146,8 +137,6 @@ static gint64 unix_fread (void * ptr, gint64 size, gint64 nitems, VFSFile * file
         total += readed;
     }
 
-/*    AUDDBG (" = %d\n", (gint) total); */
-
     return (size > 0) ? total / size : 0;
 }
 
@@ -157,8 +146,6 @@ static gint64 unix_fwrite (const void * ptr, gint64 size, gint64 nitems,
     gint handle = GPOINTER_TO_INT (file->handle);
     gint64 goal = size * nitems;
     gint64 total = 0;
-
-    AUDDBG ("[%d] fwrite %d x %d\n", handle, (gint) size, (gint) nitems);
 
     while (total < goal)
     {
@@ -173,16 +160,12 @@ static gint64 unix_fwrite (const void * ptr, gint64 size, gint64 nitems,
         total += written;
     }
 
-    AUDDBG (" = %d\n", (gint) total);
-
     return (size > 0) ? total / size : 0;
 }
 
 static gint unix_fseek (VFSFile * file, gint64 offset, gint whence)
 {
     gint handle = GPOINTER_TO_INT (file->handle);
-
-    AUDDBG ("[%d] fseek %d, whence = %d\n", handle, (gint) offset, whence);
 
     if (lseek (handle, offset, whence) < 0)
     {
@@ -235,8 +218,6 @@ static gboolean unix_feof (VFSFile * file)
 static gint unix_ftruncate (VFSFile * file, gint64 length)
 {
     gint handle = GPOINTER_TO_INT (file->handle);
-
-    AUDDBG ("[%d] ftruncate %d\n", handle, (gint) length);
 
     gint result = ftruncate (handle, length);
 
