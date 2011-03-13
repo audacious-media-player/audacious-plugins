@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins_eu\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-08 11:07-0500\n"
+"POT-Creation-Date: 2011-03-13 17:08-0400\n"
 "PO-Revision-Date: 2009-04-23 18:56+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -106,12 +106,12 @@ msgid "Channels"
 msgstr "Kanalak"
 
 #: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:180 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:186 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Monoa"
 
 #: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:180
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:186
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Estereoa"
@@ -2075,7 +2075,7 @@ msgstr ""
 "\n"
 "garatzailea: Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:696
+#: src/ffaudio/ffaudio-core.c:757
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2089,16 +2089,16 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:709
+#: src/ffaudio/ffaudio-core.c:770
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "FLAC audioaren pluginari buruz"
 
-#: src/filewriter/filewriter.c:155
+#: src/filewriter/filewriter.c:158
 msgid "About FileWriter-Plugin"
 msgstr "FileWriter-pluginari buruz"
 
-#: src/filewriter/filewriter.c:156
+#: src/filewriter/filewriter.c:159
 #, fuzzy
 msgid ""
 "FileWriter-Plugin\n"
@@ -2135,51 +2135,51 @@ msgstr ""
 "02110-1301,\n"
 "USA."
 
-#: src/filewriter/filewriter.c:444
+#: src/filewriter/filewriter.c:447
 msgid "File Writer Configuration"
 msgstr "FileWriter konfigurazioa"
 
-#: src/filewriter/filewriter.c:456
+#: src/filewriter/filewriter.c:459
 msgid "Output file format:"
 msgstr "Irteerako fitxategi-formatua:"
 
-#: src/filewriter/filewriter.c:474 src/ladspa/ladspa.c:1078
+#: src/filewriter/filewriter.c:477 src/ladspa/ladspa.c:1078
 msgid "Configure"
 msgstr "Konfiguratu"
 
-#: src/filewriter/filewriter.c:489
+#: src/filewriter/filewriter.c:492
 msgid "Save into original directory"
 msgstr "Gorde jatorrizko direktorioan"
 
-#: src/filewriter/filewriter.c:494
+#: src/filewriter/filewriter.c:497
 msgid "Save into custom directory"
 msgstr "Gorde direktorio pertsonalizatuan"
 
-#: src/filewriter/filewriter.c:504
+#: src/filewriter/filewriter.c:507
 msgid "Output file folder:"
 msgstr "Irteerako fitxategiaren karpeta:"
 
-#: src/filewriter/filewriter.c:508
+#: src/filewriter/filewriter.c:511
 msgid "Pick a folder"
 msgstr "Hautatu karpeta"
 
-#: src/filewriter/filewriter.c:527
+#: src/filewriter/filewriter.c:530
 msgid "Get filename from:"
 msgstr "Lortu fitxategi-izena hemendik:"
 
-#: src/filewriter/filewriter.c:530
+#: src/filewriter/filewriter.c:533
 msgid "original file tags"
 msgstr "jatorrizko fitxategi-etiketak"
 
-#: src/filewriter/filewriter.c:536
+#: src/filewriter/filewriter.c:539
 msgid "original filename"
 msgstr "jatorrizko fitxategi-izena"
 
-#: src/filewriter/filewriter.c:546
+#: src/filewriter/filewriter.c:549
 msgid "Don't strip file name extension"
 msgstr "Ez kendu fitxategi-izenaren luzapena"
 
-#: src/filewriter/filewriter.c:561
+#: src/filewriter/filewriter.c:564
 msgid "Prepend track number to filename"
 msgstr "Jarri pistaren zenbakia fitxategi-izenaren aurretik"
 
@@ -3339,7 +3339,7 @@ msgstr "Barrutia"
 msgid "Bass Boost"
 msgstr "Baxuen bultzada"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:180
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:186
 msgid "Surround"
 msgstr "Surround"
 

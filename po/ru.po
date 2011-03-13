@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-08 11:07-0500\n"
+"POT-Creation-Date: 2011-03-13 17:08-0400\n"
 "PO-Revision-Date: 2010-08-22 22:00+0400\n"
 "Last-Translator: Sergey V. Mironov <sergo@bk.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -112,12 +112,12 @@ msgid "Channels"
 msgstr "Каналы"
 
 #: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:180 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:186 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Моно"
 
 #: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:180
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:186
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Стерео"
@@ -2075,7 +2075,7 @@ msgstr ""
 "< james@develia.org >\n"
 "\n"
 
-#: src/ffaudio/ffaudio-core.c:696
+#: src/ffaudio/ffaudio-core.c:757
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2098,15 +2098,15 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:709
+#: src/ffaudio/ffaudio-core.c:770
 msgid "About FFaudio Plugin"
 msgstr "О модуле FFaudio"
 
-#: src/filewriter/filewriter.c:155
+#: src/filewriter/filewriter.c:158
 msgid "About FileWriter-Plugin"
 msgstr "О модуле Запись в файл"
 
-#: src/filewriter/filewriter.c:156
+#: src/filewriter/filewriter.c:159
 msgid ""
 "FileWriter-Plugin\n"
 "\n"
@@ -2144,51 +2144,51 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02111-1307, "
 "USA."
 
-#: src/filewriter/filewriter.c:444
+#: src/filewriter/filewriter.c:447
 msgid "File Writer Configuration"
 msgstr "Параметры записи в файл"
 
-#: src/filewriter/filewriter.c:456
+#: src/filewriter/filewriter.c:459
 msgid "Output file format:"
 msgstr "Формат записываемого файла:"
 
-#: src/filewriter/filewriter.c:474 src/ladspa/ladspa.c:1078
+#: src/filewriter/filewriter.c:477 src/ladspa/ladspa.c:1078
 msgid "Configure"
 msgstr "Настройка"
 
-#: src/filewriter/filewriter.c:489
+#: src/filewriter/filewriter.c:492
 msgid "Save into original directory"
 msgstr "Сохранить в тот же каталог"
 
-#: src/filewriter/filewriter.c:494
+#: src/filewriter/filewriter.c:497
 msgid "Save into custom directory"
 msgstr "Сохранить в другой каталог"
 
-#: src/filewriter/filewriter.c:504
+#: src/filewriter/filewriter.c:507
 msgid "Output file folder:"
 msgstr "Каталог для записываемых файлов:"
 
-#: src/filewriter/filewriter.c:508
+#: src/filewriter/filewriter.c:511
 msgid "Pick a folder"
 msgstr "Поиск каталога"
 
-#: src/filewriter/filewriter.c:527
+#: src/filewriter/filewriter.c:530
 msgid "Get filename from:"
 msgstr "Создать название файла из:"
 
-#: src/filewriter/filewriter.c:530
+#: src/filewriter/filewriter.c:533
 msgid "original file tags"
 msgstr "имеющихся тегов файла"
 
-#: src/filewriter/filewriter.c:536
+#: src/filewriter/filewriter.c:539
 msgid "original filename"
 msgstr "имеющегося имени файла"
 
-#: src/filewriter/filewriter.c:546
+#: src/filewriter/filewriter.c:549
 msgid "Don't strip file name extension"
 msgstr "Не удалять расширение имени файла"
 
-#: src/filewriter/filewriter.c:561
+#: src/filewriter/filewriter.c:564
 msgid "Prepend track number to filename"
 msgstr "Вписать до названия файла номер дорожки"
 
@@ -3327,7 +3327,7 @@ msgstr "Диапазон"
 msgid "Bass Boost"
 msgstr "Усиление баса"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:180
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:186
 msgid "Surround"
 msgstr "Объёмное звучание"
 

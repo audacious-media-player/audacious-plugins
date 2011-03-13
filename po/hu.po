@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-08 11:07-0500\n"
+"POT-Creation-Date: 2011-03-13 17:08-0400\n"
 "PO-Revision-Date: 2010-08-23 12:00+0100\n"
 "Last-Translator: Peter Polonkai <polesz@nedudu.hu>\n"
 "Language-Team: Nedudu Team <nedudu@nedudu.hu>\n"
@@ -95,12 +95,12 @@ msgid "Channels"
 msgstr "Csatornák"
 
 #: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:180 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:186 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Monó"
 
 #: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:180
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:186
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Sztereó"
@@ -1894,7 +1894,7 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:696
+#: src/ffaudio/ffaudio-core.c:757
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1908,15 +1908,15 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:709
+#: src/ffaudio/ffaudio-core.c:770
 msgid "About FFaudio Plugin"
 msgstr "FFaudio bővítmény névjegye"
 
-#: src/filewriter/filewriter.c:155
+#: src/filewriter/filewriter.c:158
 msgid "About FileWriter-Plugin"
 msgstr "Fájlíró bővítmény névjegye"
 
-#: src/filewriter/filewriter.c:156
+#: src/filewriter/filewriter.c:159
 msgid ""
 "FileWriter-Plugin\n"
 "\n"
@@ -1936,51 +1936,51 @@ msgid ""
 "USA."
 msgstr ""
 
-#: src/filewriter/filewriter.c:444
+#: src/filewriter/filewriter.c:447
 msgid "File Writer Configuration"
 msgstr "Fájl Író beállítások"
 
-#: src/filewriter/filewriter.c:456
+#: src/filewriter/filewriter.c:459
 msgid "Output file format:"
 msgstr "Kimeneti fájl formátum:"
 
-#: src/filewriter/filewriter.c:474 src/ladspa/ladspa.c:1078
+#: src/filewriter/filewriter.c:477 src/ladspa/ladspa.c:1078
 msgid "Configure"
 msgstr "Beállítás"
 
-#: src/filewriter/filewriter.c:489
+#: src/filewriter/filewriter.c:492
 msgid "Save into original directory"
 msgstr "Mentés az eredeti könyvtárba"
 
-#: src/filewriter/filewriter.c:494
+#: src/filewriter/filewriter.c:497
 msgid "Save into custom directory"
 msgstr "Mentés egyéb könyvtárba"
 
-#: src/filewriter/filewriter.c:504
+#: src/filewriter/filewriter.c:507
 msgid "Output file folder:"
 msgstr "Kimeneti fájl könyvtára:"
 
-#: src/filewriter/filewriter.c:508
+#: src/filewriter/filewriter.c:511
 msgid "Pick a folder"
 msgstr "Válasszon egy mappát"
 
-#: src/filewriter/filewriter.c:527
+#: src/filewriter/filewriter.c:530
 msgid "Get filename from:"
 msgstr "Legyen a fájlnévből:"
 
-#: src/filewriter/filewriter.c:530
+#: src/filewriter/filewriter.c:533
 msgid "original file tags"
 msgstr "eredeti fájl kiterjesztések"
 
-#: src/filewriter/filewriter.c:536
+#: src/filewriter/filewriter.c:539
 msgid "original filename"
 msgstr "eredeti fájlnév"
 
-#: src/filewriter/filewriter.c:546
+#: src/filewriter/filewriter.c:549
 msgid "Don't strip file name extension"
 msgstr "Ne vágja le a fájl kiterjesztést"
 
-#: src/filewriter/filewriter.c:561
+#: src/filewriter/filewriter.c:564
 msgid "Prepend track number to filename"
 msgstr ""
 
@@ -3062,7 +3062,7 @@ msgstr "Tartomány"
 msgid "Bass Boost"
 msgstr "Basszus kiemelés"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:180
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:186
 msgid "Surround"
 msgstr "Térhatású"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-08 11:07-0500\n"
+"POT-Creation-Date: 2011-03-13 17:08-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jorge Andrés <winninglero@gmail.com>\n"
 "Language-Team: \n"
@@ -106,12 +106,12 @@ msgid "Channels"
 msgstr "Canales"
 
 #: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:180 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:186 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Mono"
 
 #: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:180
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:186
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Estereo"
@@ -1945,7 +1945,7 @@ msgstr ""
 "\n"
 "written by Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:696
+#: src/ffaudio/ffaudio-core.c:757
 #, fuzzy, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1970,15 +1970,15 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:709
+#: src/ffaudio/ffaudio-core.c:770
 msgid "About FFaudio Plugin"
 msgstr "Acerca del complemento FFaudio"
 
-#: src/filewriter/filewriter.c:155
+#: src/filewriter/filewriter.c:158
 msgid "About FileWriter-Plugin"
 msgstr "Acerca del Escritor-de-Archivo-Complemento"
 
-#: src/filewriter/filewriter.c:156
+#: src/filewriter/filewriter.c:159
 msgid ""
 "FileWriter-Plugin\n"
 "\n"
@@ -2014,51 +2014,51 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
-#: src/filewriter/filewriter.c:444
+#: src/filewriter/filewriter.c:447
 msgid "File Writer Configuration"
 msgstr "Configuración de Escritor de  Archivo"
 
-#: src/filewriter/filewriter.c:456
+#: src/filewriter/filewriter.c:459
 msgid "Output file format:"
 msgstr "Formato de archivo de salida:"
 
-#: src/filewriter/filewriter.c:474 src/ladspa/ladspa.c:1078
+#: src/filewriter/filewriter.c:477 src/ladspa/ladspa.c:1078
 msgid "Configure"
 msgstr "Configurar"
 
-#: src/filewriter/filewriter.c:489
+#: src/filewriter/filewriter.c:492
 msgid "Save into original directory"
 msgstr "Guardar dentro del directorio original"
 
-#: src/filewriter/filewriter.c:494
+#: src/filewriter/filewriter.c:497
 msgid "Save into custom directory"
 msgstr "Guardar dentro de directorio personalizado"
 
-#: src/filewriter/filewriter.c:504
+#: src/filewriter/filewriter.c:507
 msgid "Output file folder:"
 msgstr "Carpeta de archivo de salida:"
 
-#: src/filewriter/filewriter.c:508
+#: src/filewriter/filewriter.c:511
 msgid "Pick a folder"
 msgstr "Elige una carpeta"
 
-#: src/filewriter/filewriter.c:527
+#: src/filewriter/filewriter.c:530
 msgid "Get filename from:"
 msgstr "Obtener nombre de archivo desde:"
 
-#: src/filewriter/filewriter.c:530
+#: src/filewriter/filewriter.c:533
 msgid "original file tags"
 msgstr "Etiquetas de archivo originales"
 
-#: src/filewriter/filewriter.c:536
+#: src/filewriter/filewriter.c:539
 msgid "original filename"
 msgstr "Nombre de archivo original"
 
-#: src/filewriter/filewriter.c:546
+#: src/filewriter/filewriter.c:549
 msgid "Don't strip file name extension"
 msgstr "No mostar extesión del nombre del archivo"
 
-#: src/filewriter/filewriter.c:561
+#: src/filewriter/filewriter.c:564
 msgid "Prepend track number to filename"
 msgstr "Anteponer el número de pista al nombre de archivo"
 
@@ -3169,7 +3169,7 @@ msgstr ""
 msgid "Bass Boost"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:180
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:186
 msgid "Surround"
 msgstr ""
 

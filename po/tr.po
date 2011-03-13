@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-08 11:07-0500\n"
+"POT-Creation-Date: 2011-03-13 17:08-0400\n"
 "PO-Revision-Date: 2007-12-22 23:09+0200\n"
 "Last-Translator: Onur Küçük <onur@pardus.org.tr>\n"
 "Language-Team: Turkish\n"
@@ -113,12 +113,12 @@ msgid "Channels"
 msgstr "Kanallar"
 
 #: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:180 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:186 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Mono"
 
 #: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:180
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:186
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Stereo"
@@ -2077,7 +2077,7 @@ msgstr ""
 "\n"
 "Giacomo Lozito tarafından yazılmıştır\n"
 
-#: src/ffaudio/ffaudio-core.c:696
+#: src/ffaudio/ffaudio-core.c:757
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2091,16 +2091,16 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:709
+#: src/ffaudio/ffaudio-core.c:770
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "FLAC Ses Eklentisi Hakkında"
 
-#: src/filewriter/filewriter.c:155
+#: src/filewriter/filewriter.c:158
 msgid "About FileWriter-Plugin"
 msgstr "FileWriter Eklentisi Hakkında"
 
-#: src/filewriter/filewriter.c:156
+#: src/filewriter/filewriter.c:159
 #, fuzzy
 msgid ""
 "FileWriter-Plugin\n"
@@ -2139,51 +2139,51 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
-#: src/filewriter/filewriter.c:444
+#: src/filewriter/filewriter.c:447
 msgid "File Writer Configuration"
 msgstr "File Writer Ayarları"
 
-#: src/filewriter/filewriter.c:456
+#: src/filewriter/filewriter.c:459
 msgid "Output file format:"
 msgstr "Çıktı dosya biçimi:"
 
-#: src/filewriter/filewriter.c:474 src/ladspa/ladspa.c:1078
+#: src/filewriter/filewriter.c:477 src/ladspa/ladspa.c:1078
 msgid "Configure"
 msgstr "Yapılandır"
 
-#: src/filewriter/filewriter.c:489
+#: src/filewriter/filewriter.c:492
 msgid "Save into original directory"
 msgstr "Orjinal dizine kaydet"
 
-#: src/filewriter/filewriter.c:494
+#: src/filewriter/filewriter.c:497
 msgid "Save into custom directory"
 msgstr "Özel dizine kaydet"
 
-#: src/filewriter/filewriter.c:504
+#: src/filewriter/filewriter.c:507
 msgid "Output file folder:"
 msgstr "Çıktı dosya klasörü:"
 
-#: src/filewriter/filewriter.c:508
+#: src/filewriter/filewriter.c:511
 msgid "Pick a folder"
 msgstr "Dizin seçimi"
 
-#: src/filewriter/filewriter.c:527
+#: src/filewriter/filewriter.c:530
 msgid "Get filename from:"
 msgstr "Dosya adı kaynağı:"
 
-#: src/filewriter/filewriter.c:530
+#: src/filewriter/filewriter.c:533
 msgid "original file tags"
 msgstr "orijinal dosya işaretleri"
 
-#: src/filewriter/filewriter.c:536
+#: src/filewriter/filewriter.c:539
 msgid "original filename"
 msgstr "özgün dosya adı"
 
-#: src/filewriter/filewriter.c:546
+#: src/filewriter/filewriter.c:549
 msgid "Don't strip file name extension"
 msgstr "Dosya ismi uzantılarını daraltma"
 
-#: src/filewriter/filewriter.c:561
+#: src/filewriter/filewriter.c:564
 msgid "Prepend track number to filename"
 msgstr "Parça numarısını dosya adına ekle"
 
@@ -3368,7 +3368,7 @@ msgstr "Aralık"
 msgid "Bass Boost"
 msgstr "Bass Güçlendirme"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:180
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:186
 msgid "Surround"
 msgstr "Surround"
 

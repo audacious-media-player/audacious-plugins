@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-08 11:07-0500\n"
+"POT-Creation-Date: 2011-03-13 17:08-0400\n"
 "PO-Revision-Date: 2007-02-12 03:37-0600\n"
 "Last-Translator: William Pitcock <nenolod@sacredspiral.co.uk>\n"
 "Language-Team: Welsh <i18n+cy@sacredspiral.co.uk>\n"
@@ -105,12 +105,12 @@ msgid "Channels"
 msgstr "Sianeli:"
 
 #: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:180 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:186 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Mono"
 
 #: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:180
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:186
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Stereo"
@@ -1943,7 +1943,7 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:696
+#: src/ffaudio/ffaudio-core.c:757
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1957,17 +1957,17 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:709
+#: src/ffaudio/ffaudio-core.c:770
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "Ategynnau Sain FLAC"
 
-#: src/filewriter/filewriter.c:155
+#: src/filewriter/filewriter.c:158
 #, fuzzy
 msgid "About FileWriter-Plugin"
 msgstr "Ynghylch Ategyn Echo"
 
-#: src/filewriter/filewriter.c:156
+#: src/filewriter/filewriter.c:159
 #, fuzzy
 msgid ""
 "FileWriter-Plugin\n"
@@ -2004,54 +2004,54 @@ msgstr ""
 " MA 02111-1307,\n"
 "USA."
 
-#: src/filewriter/filewriter.c:444
+#: src/filewriter/filewriter.c:447
 #, fuzzy
 msgid "File Writer Configuration"
 msgstr "Ffurfweddiad Disk Writer"
 
-#: src/filewriter/filewriter.c:456
+#: src/filewriter/filewriter.c:459
 #, fuzzy
 msgid "Output file format:"
 msgstr "Ffeil cyfeiriadur allbwn:"
 
-#: src/filewriter/filewriter.c:474 src/ladspa/ladspa.c:1078
+#: src/filewriter/filewriter.c:477 src/ladspa/ladspa.c:1078
 #, fuzzy
 msgid "Configure"
 msgstr "Ffurfweddu Echo"
 
-#: src/filewriter/filewriter.c:489
+#: src/filewriter/filewriter.c:492
 msgid "Save into original directory"
 msgstr ""
 
-#: src/filewriter/filewriter.c:494
+#: src/filewriter/filewriter.c:497
 msgid "Save into custom directory"
 msgstr ""
 
-#: src/filewriter/filewriter.c:504
+#: src/filewriter/filewriter.c:507
 msgid "Output file folder:"
 msgstr "Ffeil cyfeiriadur allbwn:"
 
-#: src/filewriter/filewriter.c:508
+#: src/filewriter/filewriter.c:511
 msgid "Pick a folder"
 msgstr "Dewis cyfeiriadur"
 
-#: src/filewriter/filewriter.c:527
+#: src/filewriter/filewriter.c:530
 msgid "Get filename from:"
 msgstr ""
 
-#: src/filewriter/filewriter.c:530
+#: src/filewriter/filewriter.c:533
 msgid "original file tags"
 msgstr ""
 
-#: src/filewriter/filewriter.c:536
+#: src/filewriter/filewriter.c:539
 msgid "original filename"
 msgstr ""
 
-#: src/filewriter/filewriter.c:546
+#: src/filewriter/filewriter.c:549
 msgid "Don't strip file name extension"
 msgstr "Cadw enw ffeil estyniad"
 
-#: src/filewriter/filewriter.c:561
+#: src/filewriter/filewriter.c:564
 msgid "Prepend track number to filename"
 msgstr ""
 
@@ -3207,7 +3207,7 @@ msgstr "Cyfongl"
 msgid "Bass Boost"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:180
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:186
 #, fuzzy
 msgid "Surround"
 msgstr "Adlais o amgylch"
