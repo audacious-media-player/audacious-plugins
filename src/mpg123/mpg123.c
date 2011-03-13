@@ -111,6 +111,12 @@ static void make_format_string (const struct mpg123_frameinfo * info, gchar *
 
 static gboolean mpg123_probe_for_fd (const gchar * fname, VFSFile * file)
 {
+	/* MPG123 likes to grab WMA streams, so blacklist anything that starts with
+	 * mms://.  If there are mms:// streams out there carrying MP3, they will
+	 * just have to play in ffaudio.  --jlindgren */
+	if (! strncmp (fname, "mms://", 6))
+		return FALSE;
+
 	mpg123_handle * dec = mpg123_new (NULL, NULL);
 	g_return_val_if_fail (dec, FALSE);
 	mpg123_param (dec, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
