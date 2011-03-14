@@ -1637,7 +1637,8 @@ AC_ARG_ENABLE(lyricwiki,
  [enable_lyricwiki=$enableval], [enable_lyricwiki=yes])
 
 if test "x$enable_lyricwiki" = "xyes"; then
-    PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.14], [enable_lyricwiki=yes], [enable_lyricwiki=no])
+    PKG_CHECK_MODULES(GLIB214, [glib-2.0 >= 2.14], [enable_lyricwiki=yes],
+     [enable_lyricwiki=no])
 fi
 
 if test "x$enable_lyricwiki" = "xyes"; then
