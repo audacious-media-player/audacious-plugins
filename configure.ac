@@ -593,7 +593,7 @@ AC_ARG_ENABLE(statusicon,
 
 if test $have_statusicon = yes ; then
     if test $use_gtk3 != yes ; then
-        PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.16.0], [have_statusicon=yes],
+        PKG_CHECK_MODULES(GTK216, [gtk+-2.0 >= 2.16.0], [have_statusicon=yes],
          [have_statusicon=no])
     fi
 else
@@ -1494,7 +1494,8 @@ AC_ARG_ENABLE(moodbar,
  [enable_moodbar=$enableval], [enable_moodbar=yes])
 
 if test "x$enable_moodbar" = "xyes"; then
-    PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.18], [enable_moodbar=yes], [enable_moodbar=no])
+    PKG_CHECK_MODULES(GTK218, [gtk+-2.0 >= 2.18], [enable_moodbar=yes],
+     [enable_moodbar=no])
 fi
 
 if test "x$enable_moodbar" = "xyes"; then
