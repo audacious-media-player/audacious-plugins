@@ -56,7 +56,7 @@ static gboolean init (void)
 	if (! db)
 		return TRUE;
 
-	if (!aud_cfg_db_get_double(db, "extra_stereo", "intensity", &value))
+	aud_cfg_db_get_double(db, "extra_stereo", "intensity", &value);
 	aud_cfg_db_close(db);
 	return TRUE;
 }
