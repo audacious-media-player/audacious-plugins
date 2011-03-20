@@ -81,8 +81,12 @@ ffaudio_cleanup(void)
 
 static const gchar * ffaudio_strerror (gint error)
 {
+#if CHECK_LIBAVUTIL_VERSION (50, 13, 0)
     static gchar buf[256];
     return (! av_strerror (error, buf, sizeof buf)) ? buf : "unknown error";
+#else
+    return strerror (AVUNERROR (error));
+#endif
 }
 
 static mowgli_patricia_t * create_extension_dict (void)
@@ -137,6 +141,10 @@ static AVInputFormat * get_format_by_extension (const gchar * name)
     g_free (ext);
     return f;
 }
+
+#if ! CHECK_LIBAVFORMAT_VERSION (52, 62, 0)
+#define av_probe_input_format2(p, i, s) av_probe_input_format(p, i)
+#endif
 
 static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file)
 {

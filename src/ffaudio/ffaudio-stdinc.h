@@ -27,13 +27,9 @@
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>
 
-#define VERSION_INT(maj, min, mic) ((maj) * 1000000 + (min) * 1000 + (mic))
-#define CHECK_LIBAVCODEC_VERSION(maj, min, mic) (VERSION_INT \
- (LIBAVCODEC_VERSION_MAJOR, LIBAVCODEC_VERSION_MINOR, LIBAVCODEC_VERSION_MICRO) \
- >= VERSION_INT (maj, min, mic))
-#define CHECK_LIBAVFORMAT_VERSION(maj, min, mic) (VERSION_INT \
- (LIBAVFORMAT_VERSION_MAJOR, LIBAVFORMAT_VERSION_MINOR, \
- LIBAVFORMAT_VERSION_MICRO) >= VERSION_INT (maj, min, mic))
+#define CHECK_LIBAVCODEC_VERSION(a, b, c) (LIBAVCODEC_VERSION_INT >= AV_VERSION_INT (a, b, c))
+#define CHECK_LIBAVFORMAT_VERSION(a, b, c) (LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT (a, b, c))
+#define CHECK_LIBAVUTIL_VERSION(a, b, c) (LIBAVUTIL_VERSION_INT >= AV_VERSION_INT (a, b, c))
 
 URLProtocol audvfsptr_protocol;
 
