@@ -629,7 +629,7 @@ static void open_cd (void)
         }
         else
         {
-            cdaudio_error ("No audio capable CD drive found.\n");
+            cdaudio_error ("No audio capable CD drive found.");
             return;
         }
 
