@@ -1,6 +1,6 @@
 /*
  * UNIX Transport Plugin for Audacious
- * Copyright 2009 John Lindgren
+ * Copyright 2009-2011 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,9 @@
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
-#define error(...) fprintf (stderr, "unix-io: " __VA_ARGS__)
+/* in gtk.c */
+void unix_error (const gchar * format, ...);
+void unix_about (void);
 
 static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
 {
@@ -77,7 +79,7 @@ static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
 
     if (handle < 0)
     {
-        error ("Cannot open %s: %s.\n", filename, strerror (errno));
+        unix_error ("Cannot open %s: %s.", filename, strerror (errno));
         goto DONE;
     }
 
@@ -101,14 +103,14 @@ static gint unix_fclose (VFSFile * file)
 #ifdef HAVE_FSYNC
     if (fsync (handle) < 0)
     {
-        error ("fsync failed: %s.\n", strerror (errno));
+        unix_error ("fsync failed: %s.", strerror (errno));
         result = -1;
     }
 #endif
 
     if (close (handle) < 0)
     {
-        error ("close failed: %s.\n", strerror (errno));
+        unix_error ("close failed: %s.", strerror (errno));
         result = -1;
     }
 
@@ -127,7 +129,7 @@ static gint64 unix_fread (void * ptr, gint64 size, gint64 nitems, VFSFile * file
 
         if (readed < 0)
         {
-            error ("read failed: %s.\n", strerror (errno));
+            unix_error ("read failed: %s.", strerror (errno));
             break;
         }
 
@@ -153,7 +155,7 @@ static gint64 unix_fwrite (const void * ptr, gint64 size, gint64 nitems,
 
         if (written < 0)
         {
-            error ("write failed: %s.\n", strerror (errno));
+            unix_error ("write failed: %s.", strerror (errno));
             break;
         }
 
@@ -169,7 +171,7 @@ static gint unix_fseek (VFSFile * file, gint64 offset, gint whence)
 
     if (lseek (handle, offset, whence) < 0)
     {
-        error ("lseek failed: %s.\n", strerror (errno));
+        unix_error ("lseek failed: %s.", strerror (errno));
         return -1;
     }
 
@@ -182,7 +184,7 @@ static gint64 unix_ftell (VFSFile * file)
     gint64 result = lseek (handle, 0, SEEK_CUR);
 
     if (result < 0)
-        error ("lseek failed: %s.\n", strerror (errno));
+        unix_error ("lseek failed: %s.", strerror (errno));
 
     return result;
 }
@@ -222,7 +224,7 @@ static gint unix_ftruncate (VFSFile * file, gint64 length)
     gint result = ftruncate (handle, length);
 
     if (result < 0)
-        error ("ftruncate failed: %s.\n", strerror (errno));
+        unix_error ("ftruncate failed: %s.", strerror (errno));
 
     return result;
 }
@@ -265,7 +267,8 @@ static VFSConstructor constructor = {
 };
 
 static TransportPlugin unix_plugin = {
- .description = "UNIX File I/O",
+ .description = "File I/O",
+ .about = unix_about,
  .schemes = unix_schemes,
  .vtable = & constructor
 };
