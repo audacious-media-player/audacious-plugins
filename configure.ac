@@ -866,12 +866,13 @@ AC_ARG_ENABLE(ffaudio,
 
 dnl In 2010, some libavcodec functions were moved into a new library called
 dnl libavcore, making our checks here a bit complex.
+dnl Later, in Feb, 2011 they got merged back into libavcodec.
 
 if test $enable_ffaudio = yes ; then
-    PKG_CHECK_MODULES([NEED_AVCORE], [libavcodec >= 52.94.3],
-     [have_new_ffmpeg=yes], [have_new_ffmpeg=no])
+    PKG_CHECK_MODULES([NEED_AVCORE], [libavcodec >= 52.94.3 libavcodec <= 52.113.1],
+     [have_split_ffmpeg=yes], [have_split_ffmpeg=no])
 
-    if test $have_new_ffmpeg = yes ; then
+    if test $have_split_ffmpeg = yes ; then
         PKG_CHECK_MODULES([FFMPEG],
          [libavcodec >= 52.20.0 libavcore >= 0.12.0 libavformat >= 52.31.0 libavutil >= 49.15.0],
          [have_ffaudio=yes], [have_ffaudio=no])
