@@ -92,6 +92,7 @@ extern gboolean stop_flag;
 
 static void do_iopmod(uint8 *start, uint32 offset)
 {
+	#if DEBUG_LOADER
 	uint32 nameoffs, saddr, heap, tsize, dsize, bsize, vers2;
 
 	nameoffs = start[offset] | start[offset+1]<<8 | start[offset+2]<<16 | start[offset+3]<<24;
@@ -104,15 +105,15 @@ static void do_iopmod(uint8 *start, uint32 offset)
 	vers2 = start[offset+24] | start[offset+25]<<8;
 
 //	printf("nameoffs %08x saddr %08x heap %08x tsize %08x dsize %08x bsize %08x\n", nameoffs, saddr, heap, tsize, dsize, bsize);
-	#if DEBUG_LOADER
 	printf("vers: %04x name [%s]\n", vers2, &start[offset+26]);
 	#endif
 }
 
 uint32 psf2_load_elf(uint8 *start, uint32 len)
 {
-	uint32 entry, phoff, shoff, phentsize, shentsize, phnum, shnum, shstrndx;
-	uint32 name, type, flags, addr, offset, size, shent;
+	uint32 entry, shoff, shentsize, shnum;
+	uint32 type, addr, offset, size, shent;
+//	uint32 phoff, phentsize, phnum, shstrndx, name, flags;
 	uint32 totallen;
 	int i, rec;
 //	FILE *f;
@@ -134,16 +135,16 @@ uint32 psf2_load_elf(uint8 *start, uint32 len)
 	}
 
 	entry = start[24] | start[25]<<8 | start[26]<<16 | start[27]<<24;	// 0x18
-	phoff = start[28] | start[29]<<8 | start[30]<<16 | start[31]<<24; 	// 0x1c
+//	phoff = start[28] | start[29]<<8 | start[30]<<16 | start[31]<<24; 	// 0x1c
 	shoff = start[32] | start[33]<<8 | start[34]<<16 | start[35]<<24; 	// 0x20
 
 //	printf("Entry: %08x phoff %08x shoff %08x\n", entry, phoff, shoff);
 
-	phentsize = start[42] | start[43]<<8;			// 0x2a
-	phnum = start[44] | start[45]<<8;			// 0x2c
+//	phentsize = start[42] | start[43]<<8;			// 0x2a
+//	phnum = start[44] | start[45]<<8;			// 0x2c
 	shentsize = start[46] | start[47]<<8;			// 0x2e
 	shnum = start[48] | start[49]<<8;			// 0x30
-	shstrndx = start[50] | start[51]<<8;			// 0x32
+//	shstrndx = start[50] | start[51]<<8;			// 0x32
 
 //	printf("phentsize %08x phnum %d shentsize %08x shnum %d shstrndx %d\n", phentsize, phnum, shentsize, shnum, shstrndx);
 
@@ -152,9 +153,9 @@ uint32 psf2_load_elf(uint8 *start, uint32 len)
 	totallen = 0;
 	for (i = 0; i < shnum; i++)
 	{
-		name = start[shent] | start[shent+1]<<8 | start[shent+2]<<16 | start[shent+3]<<24;
+//		name = start[shent] | start[shent+1]<<8 | start[shent+2]<<16 | start[shent+3]<<24;
 		type = start[shent+4] | start[shent+5]<<8 | start[shent+6]<<16 | start[shent+7]<<24;
-		flags = start[shent+8] | start[shent+9]<<8 | start[shent+10]<<16 | start[shent+11]<<24;
+//		flags = start[shent+8] | start[shent+9]<<8 | start[shent+10]<<16 | start[shent+11]<<24;
 		addr = start[shent+12] | start[shent+13]<<8 | start[shent+14]<<16 | start[shent+15]<<24;
 		offset = start[shent+16] | start[shent+17]<<8 | start[shent+18]<<16 | start[shent+19]<<24;
 		size = start[shent+20] | start[shent+21]<<8 | start[shent+22]<<16 | start[shent+23]<<24;

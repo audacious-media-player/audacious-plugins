@@ -3271,10 +3271,9 @@ void psx_iop_call(uint32 pc, uint32 callnum)
 					if (start != 0xffffffff)
 					{
 						uint32 args[20], numargs = 1, argofs;
-						uint8 *argwalk = (uint8 *)psx_ram, *argbase;
+						uint8 *argwalk = (uint8 *)psx_ram;
 						
 						argwalk += (a2 & 0x1fffff);
-						argbase = argwalk;
 
 						args[0] = a0;	// program name is argc[0]
 

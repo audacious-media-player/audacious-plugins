@@ -177,13 +177,12 @@ int corlett_decode(uint8 *input, uint32 input_len, uint8 **output, uint64 *size,
 	tag_dec = input + (comp_length + res_area + 16);
 	if ((tag_dec[0] == '[') && (tag_dec[1] == 'T') && (tag_dec[2] == 'A') && (tag_dec[3] == 'G') && (tag_dec[4] == ']'))
 	{
-		int tag, l, num_tags, data;
+		int l, num_tags, data;
 		
 		// Tags found!
 		tag_dec += 5;
 		input_len -= 5;
 
-		tag = 0;
 		data = false;
 		num_tags = 0;
 		l = 0;
