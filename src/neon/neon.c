@@ -145,7 +145,6 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, gsize len) {
 
     gchar* p;
     gchar* tstart;
-    gchar* tend;
     gchar name[NEON_ICY_BUFSIZE];
     gchar value[NEON_ICY_BUFSIZE];
     gint state;
@@ -157,7 +156,6 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, gsize len) {
     name[0] = '\0';
     value[0] = '\0';
     tstart = metadata;
-    tend = metadata;
     while ((pos < len) && (*p != '\0')) {
         switch (state) {
             case 1:
@@ -172,9 +170,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, gsize len) {
                     g_strlcpy(name, tstart, NEON_ICY_BUFSIZE);
                     _DEBUG("Found tag name: %s", name);
                     state = 2;
-                } else {
-                    tend = p;
-                };
+                }
                 break;
             case 2:
                 /*
@@ -184,7 +180,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, gsize len) {
                     /*
                      * Leading ' of value
                      */
-                    tend = tstart = p + 1;
+                    tstart = p + 1;
                     state = 3;
                     value[0] = '\0';
                 }
@@ -202,8 +198,6 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, gsize len) {
                     _DEBUG("Found tag value: %s", value);
                     add_icy(m, name, value);
                     state = 4;
-                } else {
-                    tend = p;
                 }
                 break;
             case 4:
@@ -214,7 +208,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, gsize len) {
                     /*
                      * Next tag name starts after this char
                      */
-                    tend = tstart = p + 1;
+                    tstart = p + 1;
                     state = 1;
                     name[0] = '\0';
                     value[0] = '\0';
