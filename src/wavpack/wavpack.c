@@ -125,7 +125,7 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
     gint32 *input = NULL;
     void *output = NULL;
     gint sample_rate, num_channels, bits_per_sample;
-    guint num_samples, length;
+    guint num_samples;
     WavpackContext *ctx = NULL;
     VFSFile *wvc_input = NULL;
     gboolean error = FALSE;
@@ -142,7 +142,6 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
     num_channels = WavpackGetNumChannels(ctx);
     bits_per_sample = WavpackGetBitsPerSample(ctx);
     num_samples = WavpackGetNumSamples(ctx);
-    length = num_samples / sample_rate;
 
     if (!playback->output->open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
     {

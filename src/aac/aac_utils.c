@@ -56,7 +56,7 @@ void checkADTSForSeeking (FILE * fd,
     unsigned long originPosition;
     unsigned long position;
     unsigned int frameCount, frameLength, frameInsec;
-    unsigned int id = 0, seconds = 0;
+    unsigned int /* id = 0, */ seconds = 0;
     char header[ADTS_HEADER_SIZE];
 
     originPosition = ftell (fd);
@@ -74,7 +74,7 @@ void checkADTSForSeeking (FILE * fd,
         }
         if (!frameCount)
         {
-            id = header[1] & 0x08;
+            /* id = header[1] & 0x08; */
             if (((*seekTable) =
              malloc (SEEK_TABLE_CHUNK * sizeof (unsigned long))) == 0)
             {

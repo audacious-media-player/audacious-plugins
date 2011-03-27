@@ -115,7 +115,6 @@ static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
 {
     SNDFILE *sndfile;
     SF_INFO sfinfo;
-    gboolean lossy = FALSE;
     gchar *codec, *format, *subformat;
     Tuple * ti;
 
@@ -234,55 +233,42 @@ static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
             break;
         case SF_FORMAT_ULAW:
             subformat = "U-Law";
-            lossy = TRUE;
             break;
         case SF_FORMAT_ALAW:
             subformat = "A-Law";
-            lossy = TRUE;
             break;
         case SF_FORMAT_IMA_ADPCM:
             subformat = "IMA ADPCM";
-            lossy = TRUE;
             break;
         case SF_FORMAT_MS_ADPCM:
             subformat = "MS ADPCM";
-            lossy = TRUE;
             break;
         case SF_FORMAT_GSM610:
             subformat = "GSM 6.10";
-            lossy = TRUE;
             break;
         case SF_FORMAT_VOX_ADPCM:
             subformat = "Oki Dialogic ADPCM";
-            lossy = TRUE;
             break;
         case SF_FORMAT_G721_32:
             subformat = "32kbs G721 ADPCM";
-            lossy = TRUE;
             break;
         case SF_FORMAT_G723_24:
             subformat = "24kbs G723 ADPCM";
-            lossy = TRUE;
             break;
         case SF_FORMAT_G723_40:
             subformat = "40kbs G723 ADPCM";
-            lossy = TRUE;
             break;
         case SF_FORMAT_DWVW_12:
             subformat = "12 bit Delta Width Variable Word";
-            lossy = TRUE;
             break;
         case SF_FORMAT_DWVW_16:
             subformat = "16 bit Delta Width Variable Word";
-            lossy = TRUE;
             break;
         case SF_FORMAT_DWVW_24:
             subformat = "24 bit Delta Width Variable Word";
-            lossy = TRUE;
             break;
         case SF_FORMAT_DWVW_N:
             subformat = "N bit Delta Width Variable Word";
-            lossy = TRUE;
             break;
         case SF_FORMAT_DPCM_8:
             subformat = "8 bit differential PCM";
