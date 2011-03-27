@@ -1,4 +1,4 @@
-/*  
+/*
    XMMS-SID - SIDPlay input plugin for X MultiMedia System (XMMS)
 
    XSCurve, a custom Gtk+ spline widget for representing SIDPlay2/reSID
@@ -122,7 +122,7 @@ static void xs_curve_class_init(XSCurveClass *class)
             -G_MAXFLOAT, G_MAXFLOAT, 1.0,
             GTK_PARAM_READWRITE)
         );
-    
+
     g_object_class_install_property(gobject_class, PROP_MIN_Y,
         g_param_spec_float("min-y",
             "Minimum Y",
@@ -130,7 +130,7 @@ static void xs_curve_class_init(XSCurveClass *class)
             -G_MAXFLOAT, G_MAXFLOAT, 0.0,
             GTK_PARAM_READWRITE)
         );
-    
+
     g_object_class_install_property(gobject_class, PROP_MAX_Y,
         g_param_spec_float("max-y",
             "Maximum Y",
@@ -271,7 +271,7 @@ static void xs_curve_draw(XSCurve *curve, gint width, gint height)
         width + RADIUS2,
         height + RADIUS2);
 
-    
+
     /* Draw the grid */
     for (i = 0; i < 5; i++) {
         gdk_draw_line(curve->pixmap, style->dark_gc[state],
@@ -295,7 +295,7 @@ static void xs_curve_draw(XSCurve *curve, gint width, gint height)
     for (i = 0; i < curve->nctlpoints; i++, ++p0, ++p1, ++p2, ++p3) {
         gint n;
         gfloat k1, k2, a, b, c, d, x;
-        
+
         if (p1->x == p2->x)
             continue;
 
@@ -319,7 +319,7 @@ static void xs_curve_draw(XSCurve *curve, gint width, gint height)
             gint qx, qy;
             qx = RADIUS + xs_project(x, curve->min_x, curve->max_x, width);
             qy = RADIUS + xs_project(y, curve->min_y, curve->max_y, height);
-            
+
             if (ox != -1) {
                 gdk_draw_line(curve->pixmap, style->fg_gc[state],
                     ox, oy, qx, qy);
@@ -341,7 +341,7 @@ static void xs_curve_draw(XSCurve *curve, gint width, gint height)
 
         x = xs_project(GET_X(i), curve->min_x, curve->max_x, width);
         y = xs_project(GET_Y(i), curve->min_y, curve->max_y, height);
-        
+
         if (i == curve->grab_point) {
             cstate = GTK_STATE_SELECTED;
             gdk_draw_line(curve->pixmap, style->fg_gc[cstate],
@@ -350,11 +350,11 @@ static void xs_curve_draw(XSCurve *curve, gint width, gint height)
                 RADIUS, y + RADIUS, width + RADIUS, y + RADIUS);
         } else
             cstate = state;
-        
+
         gdk_draw_arc(curve->pixmap, style->fg_gc[cstate], TRUE,
             x, y, RADIUS2, RADIUS2, 0, 360 * 64);
     }
-    
+
     /* Draw pixmap in the widget */
     gdk_draw_pixmap(GTK_WIDGET(curve)->window,
             style->fg_gc[state], curve->pixmap,
@@ -367,7 +367,6 @@ static void xs_curve_draw(XSCurve *curve, gint width, gint height)
 static gint xs_curve_graph_events(GtkWidget *widget, GdkEvent *event, XSCurve *curve)
 {
     GdkCursorType new_type = curve->cursor_type;
-    GdkEventButton *bevent;
     GtkWidget *w;
     gint i, width, height, x, y, tx, ty, cx, closest_point = 0, min_x;
     guint distance;
@@ -393,7 +392,7 @@ static gint xs_curve_graph_events(GtkWidget *widget, GdkEvent *event, XSCurve *c
             closest_point = i;
         }
     }
-    
+
     /* Act based on event type */
     switch (event->type) {
     case GDK_CONFIGURE:
@@ -414,7 +413,6 @@ static gint xs_curve_graph_events(GtkWidget *widget, GdkEvent *event, XSCurve *c
     case GDK_BUTTON_PRESS:
         gtk_grab_add(widget);
 
-        bevent = (GdkEventButton *) event;
         new_type = GDK_TCROSS;
 
         if (distance > MIN_DISTANCE) {
@@ -423,19 +421,19 @@ static gint xs_curve_graph_events(GtkWidget *widget, GdkEvent *event, XSCurve *c
                 cx = xs_project(GET_X(closest_point), min_x, curve->max_x, width);
                 if (x > cx) closest_point++;
             }
-            
+
             curve->nctlpoints++;
-            
+
             curve->ctlpoints = g_realloc(curve->ctlpoints,
                 curve->nctlpoints * sizeof(*curve->ctlpoints));
-            
+
             for (i = curve->nctlpoints - 1; i > closest_point; --i) {
                 memcpy(curve->ctlpoints + i,
                     curve->ctlpoints + i - 1,
                     sizeof(*curve->ctlpoints));
             }
         }
-        
+
         curve->grab_point = closest_point;
         GET_X(curve->grab_point) = xs_unproject(x, min_x, curve->max_x, width);
         GET_Y(curve->grab_point) = xs_unproject(y, curve->min_y, curve->max_y, height);
@@ -446,7 +444,7 @@ static gint xs_curve_graph_events(GtkWidget *widget, GdkEvent *event, XSCurve *c
     case GDK_BUTTON_RELEASE:
         {
         gint src, dst;
-        
+
         gtk_grab_remove(widget);
 
         /* delete inactive points: */
@@ -486,10 +484,10 @@ static gint xs_curve_graph_events(GtkWidget *widget, GdkEvent *event, XSCurve *c
                 new_type = GDK_TCROSS;
         } else {
             gint leftbound, rightbound;
-            
+
             /* drag the grabbed point  */
             new_type = GDK_TCROSS;
-            
+
             leftbound = -MIN_DISTANCE;
             if (curve->grab_point > 0) {
                 leftbound = xs_project(
@@ -513,10 +511,10 @@ static gint xs_curve_graph_events(GtkWidget *widget, GdkEvent *event, XSCurve *c
                 GET_Y(curve->grab_point) =
                     xs_unproject(y, curve->min_y, curve->max_y, height);
             }
-            
+
             xs_curve_draw(curve, width, height);
         }
-        
+
         /* See if cursor type was changed and update accordingly */
         if (new_type != (GdkCursorType) curve->cursor_type) {
             GdkCursor *cursor;
@@ -530,7 +528,7 @@ static gint xs_curve_graph_events(GtkWidget *widget, GdkEvent *event, XSCurve *c
     default:
         break;
     }
-    
+
     return FALSE;
 }
 
@@ -589,7 +587,7 @@ void xs_curve_reset(XSCurve *curve)
     GET_Y(2) = curve->max_y;
     GET_X(3) = curve->max_x;
     GET_Y(3) = curve->max_y;
-    
+
     xs_curve_update(curve);
 }
 
@@ -630,7 +628,7 @@ gboolean xs_curve_realloc_data(XSCurve *curve, gint npoints)
         if (curve->ctlpoints == NULL)
             return FALSE;
     }
-    
+
     return TRUE;
 }
 
@@ -648,7 +646,7 @@ gboolean xs_curve_set_points(XSCurve *curve, xs_int_point_t *points, gint npoint
 
     if (!xs_curve_realloc_data(curve, npoints + 4))
         return FALSE;
-    
+
     GET_X(0) = curve->min_x;
     GET_Y(0) = curve->min_y;
     GET_X(1) = curve->min_x;
@@ -663,7 +661,7 @@ gboolean xs_curve_set_points(XSCurve *curve, xs_int_point_t *points, gint npoint
     GET_Y(npoints+2) = curve->max_y;
     GET_X(npoints+3) = curve->max_x;
     GET_Y(npoints+3) = curve->max_y;
-    
+
     xs_curve_update(curve);
     return TRUE;
 }
@@ -672,13 +670,13 @@ gboolean xs_curve_set_points(XSCurve *curve, xs_int_point_t *points, gint npoint
 gboolean xs_curve_get_points(XSCurve *curve, xs_int_point_t **points, gint *npoints)
 {
     gint i, n;
-    
+
     n = curve->nctlpoints - 4;
-    
+
     *points = g_malloc(n * sizeof(xs_int_point_t));
     if (*points == NULL)
         return FALSE;
-    
+
     *npoints = n;
     for (i = 2; i < curve->nctlpoints - 2; i++) {
         (*points)[i].x = GET_X(i);

@@ -266,7 +266,7 @@ TimeValDifference(struct timeval *start, struct timeval *end)
    trying to trace mutexes it's more important to know *who* called us than just that
    we were called.  This uses from pre-processor trickery so that the fprintf is actually
    placed in the function making the getDriver call.  Thus, the __FUNCTION__ and __LINE__
-   macros will actually reference our caller, rather than getDriver.  The reason the 
+   macros will actually reference our caller, rather than getDriver.  The reason the
    fprintf call is passes as a parameter is because this macro has to still return a
    jack_driver_t* and we want to log both before *and* after the getDriver call for
    easier detection of blocked calls.
@@ -1455,7 +1455,7 @@ JACK_Reset(int deviceID)
  * deviceID is set to the opened device
  * if client is non-zero and in_use is FALSE then just set in_use to TRUE
  *
- * return value is zero upon success, non-zero upon failure 
+ * return value is zero upon success, non-zero upon failure
  *
  * if ERR_RATE_MISMATCH (*rate) will be updated with the jack servers rate
  */
@@ -1571,7 +1571,7 @@ JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
   drv->jack_output_port_flags = jack_port_flags | JackPortIsInput;      /* port must be input(ie we can put data into it), so mask this in */
   drv->jack_input_port_flags = jack_port_flags | JackPortIsOutput;      /* port must be output(ie we can get data from it), so mask this in */
 
-  /* check that we have the correct number of port names 
+  /* check that we have the correct number of port names
      FIXME?: not sure how we should handle output ports vs input ports....
    */
   if((jack_port_name_count > 1)
@@ -1810,7 +1810,7 @@ JACK_Write(int deviceID, unsigned char *data, unsigned long bytes)
   TRACE("frames free == %ld, bytes = %lu\n", frames_free, bytes);
 
   TRACE("state = '%s'\n", DEBUGSTATE(drv->state));
-  /* if we are currently STOPPED we should start playing now... 
+  /* if we are currently STOPPED we should start playing now...
      do this before the check for bytes == 0 since some clients like
      to write 0 bytes the first time out */
   if(drv->state == STOPPED)
@@ -2311,7 +2311,9 @@ JACK_GetPositionFromDriver(jack_driver_t * drv, enum pos_enum position,
   long elapsedMS;
   double sec2msFactor = 1000;
 
+#if TRACE_ENABLE
   char *type_str = "UNKNOWN type";
+#endif
 
   /* if we are reset we should return a position of 0 */
   if(drv->state == RESET)
@@ -2322,15 +2324,21 @@ JACK_GetPositionFromDriver(jack_driver_t * drv, enum pos_enum position,
 
   if(type == WRITTEN)
   {
+#if TRACE_ENABLE
     type_str = "WRITTEN";
+#endif
     return_val = drv->client_bytes;
   } else if(type == WRITTEN_TO_JACK)
   {
+#if TRACE_ENABLE
     type_str = "WRITTEN_TO_JACK";
+#endif
     return_val = drv->written_client_bytes;
   } else if(type == PLAYED)       /* account for the elapsed time for the played_bytes */
   {
+#if TRACE_ENABLE
     type_str = "PLAYED";
+#endif
     return_val = drv->played_client_bytes;
     gettimeofday(&now, 0);
 

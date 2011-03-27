@@ -466,7 +466,7 @@ static gboolean xs_fgetitem(gchar *inLine, size_t *linePos, gchar sep, gchar *tm
 {
     size_t i;
 
-    for (i = 0; i < tmpMax && inLine[*linePos] &&
+    for (i = 0; i < tmpMax - 1 && inLine[*linePos] &&
         inLine[*linePos] != sep; i++, (*linePos)++)
         tmpStr[i] = inLine[*linePos];
 

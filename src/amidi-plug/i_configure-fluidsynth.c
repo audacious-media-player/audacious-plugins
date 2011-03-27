@@ -264,7 +264,6 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
   GtkWidget *content_vbox; /* this vbox will contain the various frames for config sections */
   GSList * backend_list = backend_list_p;
   gboolean fsyn_module_ok = FALSE;
-  gchar * fsyn_module_pathfilename;
 
   fsyn_page_vbox = gtk_vbox_new( FALSE , 0 );
 
@@ -280,7 +279,6 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     if ( !strcmp( mn->name , "fluidsynth" ) )
     {
       fsyn_module_ok = TRUE;
-      fsyn_module_pathfilename = mn->filename;
       break;
     }
     backend_list = backend_list->next;
