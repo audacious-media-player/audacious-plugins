@@ -7,4 +7,5 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${TRANSPORT_PLUGIN_DIR}
 
-CFLAGS += ${PLUGIN_CFLAGS} -I../..
+CPPFLAGS += -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
