@@ -45,6 +45,7 @@ typedef struct
     gchar * playlist_fg;
     gchar * playlist_font;
     gboolean always_on_top;
+    gboolean autoscroll;
 } gtkui_cfg_t;
 
 extern gtkui_cfg_t config;

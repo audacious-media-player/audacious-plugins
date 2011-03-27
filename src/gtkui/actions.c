@@ -772,3 +772,8 @@ void playlist_randomize (void)
 {
     aud_playlist_randomize (aud_playlist_get_active ());
 }
+
+void playlist_toggle_autoscroll (GtkToggleAction * act)
+{
+    config.autoscroll = gtk_toggle_action_get_active (act);
+}

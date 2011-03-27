@@ -67,4 +67,6 @@ void playlist_sort_formatted_title (void);
 void playlist_reverse (void);
 void playlist_randomize (void);
 
+void playlist_toggle_autoscroll (GtkToggleAction * act);
+
 #endif /* AUDACIOUS_ACTIONS_PLAYLIST_H */

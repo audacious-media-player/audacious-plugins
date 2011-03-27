@@ -41,6 +41,7 @@ gtkui_cfg_t gtkui_default_config = {
     .playlist_fg = NULL,
     .playlist_bg = NULL,
     .playlist_font = NULL,
+    .autoscroll = TRUE,
 };
 
 typedef struct gtkui_cfg_boolent_t
@@ -60,6 +61,7 @@ static gtkui_cfg_boolent gtkui_boolents[] = {
     {"playlist_headers", &config.playlist_headers, TRUE},
     {"custom_playlist_colors", &config.custom_playlist_colors, TRUE},
     {"always_on_top", &config.always_on_top, TRUE},
+    {"autoscroll", &config.autoscroll, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(gtkui_boolents);

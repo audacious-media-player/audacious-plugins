@@ -323,7 +323,9 @@ static void do_follow (void)
         GtkWidget * widget = playlist_get_treeview (list);
         if (row == aud_playlist_get_position (list))
             audgui_list_set_highlight (widget, row);
-        audgui_list_set_focus (widget, row);
+
+        if (config.autoscroll)
+            audgui_list_set_focus (widget, row);
     }
 }
 
@@ -369,9 +371,12 @@ void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
 
 void playlist_follow (gint list, gint row)
 {
-    aud_playlist_select_all (list, FALSE);
-    if (row >= 0)
-        aud_playlist_entry_set_selected (list, row, TRUE);
+    if (config.autoscroll)
+    {
+        aud_playlist_select_all (list, FALSE);
+        if (row >= 0)
+            aud_playlist_entry_set_selected (list, row, TRUE);
+    }
 
     g_queue_push_tail (& follow_queue, GINT_TO_POINTER (list));
     g_queue_push_tail (& follow_queue, GINT_TO_POINTER (row));

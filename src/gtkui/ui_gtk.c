@@ -845,6 +845,8 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
     check_set (toggleaction_group_others, "playlist show headers",
      config.playlist_headers);
+    check_set (toggleaction_group_others, "playlist autoscroll",
+     config.autoscroll);
 
     update_toggles (NULL, NULL);
 

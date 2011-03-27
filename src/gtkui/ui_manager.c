@@ -56,7 +56,9 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
      N_("Show/hide statusbar"), G_CALLBACK(action_view_statusbar), FALSE},
 
  {"playlist show headers", NULL, N_("Show Column Headers"), NULL, NULL,
-  (GCallback) playlist_show_headers, FALSE}};
+  (GCallback) playlist_show_headers, FALSE},
+ {"playlist autoscroll", NULL, N_("Scroll on Song Change"), NULL, NULL,
+  (GCallback) playlist_toggle_autoscroll, FALSE}};
 
 /* normal actions */
 
