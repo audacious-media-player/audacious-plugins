@@ -99,7 +99,7 @@ apply_xform (struct xform_vector *vfield)
       /* exactly on the pixel */
       if (v->w == 0)
 	  *destptr = *srcptr;
-      
+
       /* gotta blend the points */
       else
 	{
@@ -143,7 +143,7 @@ xform_spin_cleanup (gpointer data)
 {
   struct xform_spin_data *d = (struct xform_spin_data *) data;
 
-  
+
   if (d)
     {
       if (d->vfield)
@@ -183,7 +183,7 @@ xform_spin_exec (const struct pn_actuator_option *opts,
 	    if (i < 0)
 	      t = M_PI - t;
 
-	    t += opts[0].val.fval * M_PI/180.0; 
+	    t += opts[0].val.fval * M_PI/180.0;
 	    r += opts[1].val.fval;
 	    r *= opts[2].val.fval;
 
@@ -202,7 +202,7 @@ xform_spin_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_xform_spin =
 {
-  "xform_spin", "Spin Transform", 
+  "xform_spin", "Spin Transform",
   "Rotates and radially scales the image",
   0, xform_spin_opts,
   xform_spin_init, xform_spin_cleanup, xform_spin_exec
@@ -277,7 +277,7 @@ xform_ripple_exec (const struct pn_actuator_option *opts,
 	    if (i < 0)
 	      t = M_PI - t;
 
-	    t += opts[0].val.fval * M_PI/180.0; 
+	    t += opts[0].val.fval * M_PI/180.0;
 
 	    if (r > 4)//(pn_image_data->width/(2*opts[1].val.fval)))
 	      r -=  opts[2].val.fval + (opts[3].val.fval/2) *
@@ -398,7 +398,7 @@ xform_bump_spin_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_xform_bump_spin =
 {
-  "xform_bump_spin", "Bump Transform", 
+  "xform_bump_spin", "Bump Transform",
   "Rotate the image at a varying speed to create "
   "the illusion of bumps",
   0, xform_bump_spin_opts,
@@ -408,7 +408,7 @@ struct pn_actuator_desc builtin_xform_bump_spin =
 /* **************** xform_halfrender **************** */
 struct pn_actuator_option_desc xform_halfrender_opts[] =
 {
-  { "direction", "Negative is horizontal, positive is vertical.", 
+  { "direction", "Negative is horizontal, positive is vertical.",
     OPT_TYPE_INT, { ival: 1 } },
   { "render_twice", "Render the second image.",
     OPT_TYPE_BOOLEAN, { bval: TRUE } },
@@ -569,14 +569,13 @@ xform_movement_exec (const struct pn_actuator_option *opts,
 		 gpointer odata)
 {
   PnMovementData *d = (PnMovementData *) odata;
-  void (*transform_func)(struct xform_vector *, gint, gint, expression_t *, symbol_dict_t *) = 
+  void (*transform_func)(struct xform_vector *, gint, gint, expression_t *, symbol_dict_t *) =
         opts[1].val.bval == TRUE ? xform_trans_polar : xform_trans_literal;
 
   if (d->width != pn_image_data->width
       || d->height != pn_image_data->height)
     {
       gint i, j;
-      gdouble *rf, *df;
       expression_t *expr;
       symbol_dict_t *dict;
 
@@ -599,9 +598,6 @@ xform_movement_exec (const struct pn_actuator_option *opts,
            dict_free(dict);
            return;
         }
-
-      rf = dict_variable(dict, "r");
-      df = dict_variable(dict, "d");
 
       d->vfield = g_malloc (sizeof(struct xform_vector)
 			    * d->width * d->height);
@@ -687,8 +683,7 @@ xform_dynmovement_exec (const struct pn_actuator_option *opts,
 {
   PnDynMovementData *d = (PnDynMovementData *) odata;
   gint i, j;
-  gdouble *rf, *df;
-  void (*transform_func)(struct xform_vector *, gint, gint, expression_t *, symbol_dict_t *) = 
+  void (*transform_func)(struct xform_vector *, gint, gint, expression_t *, symbol_dict_t *) =
         opts[4].val.bval == TRUE ? xform_trans_polar : xform_trans_literal;
   gboolean make_table = FALSE;
 
@@ -738,9 +733,6 @@ xform_dynmovement_exec (const struct pn_actuator_option *opts,
 
       make_table = TRUE;
    }
-
-   rf = dict_variable(d->dict, "r");
-   df = dict_variable(d->dict, "d");
 
    if (*opts[2].val.sval != '\0' || pn_new_beat)
        make_table = TRUE;

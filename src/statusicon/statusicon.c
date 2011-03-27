@@ -303,7 +303,7 @@ static void si_enable(gboolean enable)
 {
     static GtkStatusIcon *si_applet = NULL;
 
-    if (enable == TRUE && si_applet == NULL)
+    if (enable && ! si_applet)
     {
         GtkWidget *si_smenu;
 
@@ -333,11 +333,12 @@ static void si_enable(gboolean enable)
         hook_associate("title change", si_popup_reshow, si_applet);
         hook_associate("window close", si_window_close, NULL);
     }
-    else if (si_applet != NULL)
+
+    if (! enable && si_applet)
     {
         GtkWidget *si_smenu = g_object_get_data(G_OBJECT(si_applet), "smenu");
         si_popup_timer_stop(si_applet);   /* just in case the timer is active */
-        si_smenu = NULL;
+        gtk_widget_destroy(si_smenu);
         g_object_unref(si_applet);
         si_applet = NULL;
 

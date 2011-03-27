@@ -489,12 +489,11 @@ static GStaticMutex submit_mutex = G_STATIC_MUTEX_INIT;
 
 gpointer sc_curl_perform_thread(gpointer data)
 {
-    int status;
     CURL *curl = (CURL *) data;
 
     g_static_mutex_lock(&submit_mutex);
 
-    status = curl_easy_perform(curl);
+    curl_easy_perform(curl);
     curl_easy_cleanup(curl);
 
     if (sc_parse_sb_res()) {
