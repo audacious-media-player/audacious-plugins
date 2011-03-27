@@ -794,8 +794,8 @@ static void decode_psg(SChannel *ch, s32 *out, int length)
 	if(ch->id < 14)
 	{
 		// NOTE: square wave.
-		double pos, inc, len;
-		pos = ch->pos; inc = ch->inc; len = ch->length;
+		double pos, inc;
+		pos = ch->pos; inc = ch->inc;
 		for(oi = 0; oi < length; oi++)
 		{
 			ch->output = (s16)g_psg_duty[ch->psg_duty][(int)pos & 0x00000007];

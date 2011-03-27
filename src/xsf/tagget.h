@@ -8,14 +8,14 @@ static int xsf_tagsearchraw(const unsigned char *pData, int dwSize)
 	int dwPos;
 	int dwReservedAreaSize;
 	int dwProgramLength;
-	int dwProgramCRC;
+/*	int dwProgramCRC; */
 	if (dwSize < 16 + 5 + 1) return 0;
 	if (pData[0] != 'P') return 0;
 	if (pData[1] != 'S') return 0;
 	if (pData[2] != 'F') return 0;
 	dwReservedAreaSize = getdwordle(pData + 4);
 	dwProgramLength = getdwordle(pData + 8);
-	dwProgramCRC = getdwordle(pData + 12);
+/*	dwProgramCRC = getdwordle(pData + 12); */
 	dwPos = 16 + dwReservedAreaSize + dwProgramLength;
 	if (dwPos >= dwSize) return 0;
 	return dwPos;
