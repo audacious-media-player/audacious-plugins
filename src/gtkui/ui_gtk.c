@@ -668,7 +668,6 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     GtkWidget *tophbox;         /* box to contain toolbar and shbox */
     GtkWidget *buttonbox;       /* contains buttons like "open", "next" */
     GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
-    GtkWidget *button_open, *button_add, *button_previous, *button_next;
     GtkWidget *evbox;
     GtkAccelGroup *accel;
 
@@ -709,13 +708,13 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     gtk_box_pack_start(GTK_BOX(vbox), tophbox, FALSE, TRUE, 0);
 
     buttonbox = gtk_hbox_new(FALSE, 0);
-    button_open = gtk_toolbar_button_add(buttonbox, button_open_pressed, GTK_STOCK_OPEN);
-    button_add = gtk_toolbar_button_add(buttonbox, button_add_pressed, GTK_STOCK_ADD);
+    gtk_toolbar_button_add(buttonbox, button_open_pressed, GTK_STOCK_OPEN);
+    gtk_toolbar_button_add(buttonbox, button_add_pressed, GTK_STOCK_ADD);
     button_play = gtk_toolbar_button_add(buttonbox, button_play_pressed, GTK_STOCK_MEDIA_PLAY);
     button_pause = gtk_toolbar_button_add(buttonbox, button_pause_pressed, GTK_STOCK_MEDIA_PAUSE);
     button_stop = gtk_toolbar_button_add(buttonbox, button_stop_pressed, GTK_STOCK_MEDIA_STOP);
-    button_previous = gtk_toolbar_button_add(buttonbox, button_previous_pressed, GTK_STOCK_MEDIA_PREVIOUS);
-    button_next = gtk_toolbar_button_add(buttonbox, button_next_pressed, GTK_STOCK_MEDIA_NEXT);
+    gtk_toolbar_button_add(buttonbox, button_previous_pressed, GTK_STOCK_MEDIA_PREVIOUS);
+    gtk_toolbar_button_add(buttonbox, button_next_pressed, GTK_STOCK_MEDIA_NEXT);
 
     /* Workaround: Show the play and pause buttons and then hide them again in
      * order to coax GTK into loading icons for them. -jlindgren */
