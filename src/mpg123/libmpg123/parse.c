@@ -66,7 +66,12 @@
 	11111111 11111110 00001100 00000000
 */
 #define HDRCMPMASK 0xfffe0c00
-#define HDRSAMPMASK 0xc00 /* 1100 00000000, FF bits (sample rate) */
+/*
+	This needs cleanup ... The parser is not as strict as documented above.
+	Here comes a mask that checks for anything that can change sampling rate.
+	This includes change of MPEG version and frequency bits.
+	00011000 00001100 00000000, BB and FF bits */
+#define HDRSAMPMASK 0x180c00
 
 /* bitrates for [mpeg1/2][layer] */
 static const int tabsel_123[2][3][16] =
@@ -88,6 +93,7 @@ static const long freqs[9] = { 44100, 48000, 32000, 22050, 24000, 16000 , 11025 
 static int decode_header(mpg123_handle *fr,unsigned long newhead);
 
 /* These two are to be replaced by one function that gives all the frame parameters (for outsiders).*/
+/* Those functions are unsafe regarding bad arguments (inside the mpg123_handle), but just returning anything would also be unsafe, the caller code has to be trusted. */
 
 int frame_bitrate(mpg123_handle *fr)
 {

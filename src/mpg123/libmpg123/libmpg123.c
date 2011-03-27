@@ -133,15 +133,6 @@ mpg123_handle attribute_align_arg *mpg123_parnew(mpg123_pars *mp, const char* de
 		}
 		else
 		{
-			/* I smell cleanup here... with get_next_frame() */
-/*			if(decode_update(fr) != 0)
-			{
-				err = fr->err != MPG123_OK ? fr->err : MPG123_BAD_DECODER;
-				frame_exit(fr);
-				free(fr);
-				fr = NULL;
-			}
-			else */
 			fr->decoder_change = 1;
 		}
 	}
@@ -181,8 +172,7 @@ int attribute_align_arg mpg123_decoder(mpg123_handle *mh, const char* decoder)
 		frame_exit(mh);
 		return MPG123_ERR;
 	}
-	/* I smell cleanup here... with get_next_frame() */
-	decode_update(mh);
+	/* Do _not_ call decode_update here! That is only allowed after a first MPEG frame has been met. */
 	mh->decoder_change = 1;
 	return MPG123_OK;
 }
@@ -507,10 +497,22 @@ int attribute_align_arg mpg123_replace_reader_handle( mpg123_handle *mh,
 	return MPG123_OK;
 }
 
+/* Update decoding engine for
+   a) a new choice of decoder
+   b) a changed native format of the MPEG stream
+   ... calls are only valid after parsing some MPEG frame! */
 int decode_update(mpg123_handle *mh)
 {
 	long native_rate;
 	int b;
+
+	if(mh->num < 0)
+	{
+		if(!(mh->p.flags & MPG123_QUIET)) error("decode_update() has been called before reading the first MPEG frame! Internal programming error.");
+
+		mh->err = MPG123_BAD_DECODER_SETUP;
+		return MPG123_ERR;
+	}
 
 	native_rate = frame_freq(mh);
 
@@ -578,8 +580,13 @@ size_t attribute_align_arg mpg123_outblock(mpg123_handle *mh)
 	else return mpg123_safe_buffer();
 }
 
+/* Read in the next frame we actually want for decoding.
+   This includes skipping/ignoring frames, in additon to skipping junk in the parser. */
 static int get_next_frame(mpg123_handle *mh)
 {
+	/* We have some decoder ready, if the desired decoder has changed,
+	   it is OK to use the old one for ignoring frames and activating
+	   the new one for real (decode_update()) after getting the frame. */
 	int change = mh->decoder_change;
 	do
 	{
@@ -635,6 +642,8 @@ static int get_next_frame(mpg123_handle *mh)
 		else break;
 	} while(1);
 
+	/* If we reach this point, we got a new frame ready to be decoded.
+	   All other situations resulted in returns from the loop. */
 	if(change)
 	{
 		if(decode_update(mh) < 0)  /* dito... */

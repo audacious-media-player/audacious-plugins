@@ -434,7 +434,7 @@ static void chop_fourth_byte(struct outbuffer *buf)
 	unsigned char *wpos = buf->data;
 	unsigned char *rpos = buf->data;
 #ifdef WORDS_BIGENDIAN
-	while(rpos-buf->data+4 <= buf->fill)
+	while((size_t) (rpos - buf->data + 4) <= buf->fill)
 	{
 		/* Really stupid: Copy, increment. Byte per byte. */
 		*wpos = *rpos;
@@ -446,7 +446,7 @@ static void chop_fourth_byte(struct outbuffer *buf)
 		rpos++; /* Skip the lowest byte (last). */
 	}
 #else
-	while(rpos-buf->data+4 <= buf->fill)
+	while((size_t) (rpos - buf->data + 4) <= buf->fill)
 	{
 		/* Really stupid: Copy, increment. Byte per byte. */
 		rpos++; /* Skip the lowest byte (first). */

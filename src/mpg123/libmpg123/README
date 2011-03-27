@@ -26,6 +26,9 @@ John Lindgren, February 6, 2011:
 
 John Lindgren, February 16, 2011:
  * Imported upstream revision 2843 (fixes an unused variable warning).
+ 
+John Lindgren, March 27, 2011:
+ * Updated to libmpg123 1.13.2.
 
  ======
 
