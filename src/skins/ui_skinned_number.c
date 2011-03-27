@@ -125,12 +125,8 @@ GtkWidget* ui_skinned_number_new(GtkWidget *fixed, gint x, gint y, SkinPixmapId 
 }
 
 static void ui_skinned_number_destroy(GtkObject *object) {
-    UiSkinnedNumber *number;
-
     g_return_if_fail (object != NULL);
     g_return_if_fail (UI_SKINNED_IS_NUMBER (object));
-
-    number = UI_SKINNED_NUMBER (object);
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);

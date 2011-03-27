@@ -173,12 +173,8 @@ GtkWidget* ui_skinned_horizontal_slider_new(GtkWidget *fixed, gint x, gint y, gi
 }
 
 static void ui_skinned_horizontal_slider_destroy(GtkObject *object) {
-    UiSkinnedHorizontalSlider *horizontal_slider;
-
     g_return_if_fail (object != NULL);
     g_return_if_fail (UI_SKINNED_IS_HORIZONTAL_SLIDER (object));
-
-    horizontal_slider = UI_SKINNED_HORIZONTAL_SLIDER (object);
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);

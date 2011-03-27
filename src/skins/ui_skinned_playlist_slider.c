@@ -130,19 +130,14 @@ GtkWidget * ui_skinned_playlist_slider_new (GtkWidget * fixed, gint x, gint y,
 }
 
 static void ui_skinned_playlist_slider_destroy(GtkObject *object) {
-    UiSkinnedPlaylistSlider *playlist_slider;
-
     g_return_if_fail (object != NULL);
     g_return_if_fail (UI_SKINNED_IS_PLAYLIST_SLIDER (object));
-
-    playlist_slider = UI_SKINNED_PLAYLIST_SLIDER (object);
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
 
 static void ui_skinned_playlist_slider_realize(GtkWidget *widget) {
-    UiSkinnedPlaylistSlider *playlist_slider;
     GdkWindowAttr attributes;
     gint attributes_mask;
 
@@ -150,7 +145,6 @@ static void ui_skinned_playlist_slider_realize(GtkWidget *widget) {
     g_return_if_fail (UI_SKINNED_IS_PLAYLIST_SLIDER(widget));
 
     GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
-    playlist_slider = UI_SKINNED_PLAYLIST_SLIDER(widget);
 
     attributes.x = widget->allocation.x;
     attributes.y = widget->allocation.y;

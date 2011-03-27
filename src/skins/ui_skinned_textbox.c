@@ -550,7 +550,7 @@ void ui_skinned_textbox_set_text(GtkWidget *widget, const gchar *text) {
 
 static void textbox_generate_xfont_pixmap(UiSkinnedTextbox *textbox, const gchar *pixmaptext) {
     /* FIXME: should operate directly on priv->pixbuf, it shouldn't use pixmap */
-    gint length, i;
+    gint i;
     GdkGC *gc, *maskgc;
     GdkColor *c, pattern;
     GdkBitmap *mask;
@@ -563,8 +563,6 @@ static void textbox_generate_xfont_pixmap(UiSkinnedTextbox *textbox, const gchar
     g_return_if_fail(textbox->height > 0);
 
     UiSkinnedTextboxPrivate *priv = UI_SKINNED_TEXTBOX_GET_PRIVATE(textbox);
-
-    length = g_utf8_strlen(pixmaptext, -1);
 
     text_get_extents(priv->fontname, pixmaptext, &width, NULL, NULL, NULL);
 

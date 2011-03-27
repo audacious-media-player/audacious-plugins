@@ -67,11 +67,9 @@ GType ui_skinned_monostereo_get_type() {
 }
 
 static void ui_skinned_monostereo_class_init(UiSkinnedMonoStereoClass *klass) {
-    GObjectClass *gobject_class;
     GtkObjectClass *object_class;
     GtkWidgetClass *widget_class;
 
-    gobject_class = G_OBJECT_CLASS(klass);
     object_class = (GtkObjectClass*) klass;
     widget_class = (GtkWidgetClass*) klass;
     parent_class = g_type_class_peek_parent(klass);
@@ -112,12 +110,8 @@ GtkWidget* ui_skinned_monostereo_new(GtkWidget *fixed, gint x, gint y, SkinPixma
 }
 
 static void ui_skinned_monostereo_destroy(GtkObject *object) {
-    UiSkinnedMonoStereo *monostereo;
-
     g_return_if_fail (object != NULL);
     g_return_if_fail (UI_SKINNED_IS_MONOSTEREO (object));
-
-    monostereo = UI_SKINNED_MONOSTEREO (object);
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);

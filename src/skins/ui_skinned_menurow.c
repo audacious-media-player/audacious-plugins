@@ -76,11 +76,9 @@ GType ui_skinned_menurow_get_type() {
 }
 
 static void ui_skinned_menurow_class_init(UiSkinnedMenurowClass *klass) {
-    GObjectClass *gobject_class;
     GtkObjectClass *object_class;
     GtkWidgetClass *widget_class;
 
-    gobject_class = G_OBJECT_CLASS(klass);
     object_class = (GtkObjectClass*) klass;
     widget_class = (GtkWidgetClass*) klass;
     parent_class = g_type_class_peek_parent(klass);
@@ -151,12 +149,8 @@ GtkWidget* ui_skinned_menurow_new(GtkWidget *fixed, gint x, gint y, gint nx, gin
 }
 
 static void ui_skinned_menurow_destroy(GtkObject *object) {
-    UiSkinnedMenurow *menurow;
-
     g_return_if_fail (object != NULL);
     g_return_if_fail (UI_SKINNED_IS_MENUROW (object));
-
-    menurow = UI_SKINNED_MENUROW (object);
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);

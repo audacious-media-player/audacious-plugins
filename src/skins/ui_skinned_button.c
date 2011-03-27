@@ -164,12 +164,8 @@ static void ui_skinned_button_init (UiSkinnedButton *button) {
 }
 
 static void ui_skinned_button_destroy (GtkObject *object) {
-    UiSkinnedButton *button;
-
     g_return_if_fail (object != NULL);
     g_return_if_fail (UI_SKINNED_IS_BUTTON (object));
-
-    button = UI_SKINNED_BUTTON(object);
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);

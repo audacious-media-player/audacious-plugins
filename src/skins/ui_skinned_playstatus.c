@@ -69,11 +69,9 @@ GType ui_skinned_playstatus_get_type() {
 }
 
 static void ui_skinned_playstatus_class_init(UiSkinnedPlaystatusClass *klass) {
-    GObjectClass *gobject_class;
     GtkObjectClass *object_class;
     GtkWidgetClass *widget_class;
 
-    gobject_class = G_OBJECT_CLASS(klass);
     object_class = (GtkObjectClass*) klass;
     widget_class = (GtkWidgetClass*) klass;
     parent_class = g_type_class_peek_parent(klass);
@@ -114,12 +112,8 @@ GtkWidget* ui_skinned_playstatus_new(GtkWidget *fixed, gint x, gint y) {
 }
 
 static void ui_skinned_playstatus_destroy(GtkObject *object) {
-    UiSkinnedPlaystatus *playstatus;
-
     g_return_if_fail (object != NULL);
     g_return_if_fail (UI_SKINNED_IS_PLAYSTATUS (object));
-
-    playstatus = UI_SKINNED_PLAYSTATUS (object);
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);

@@ -208,7 +208,6 @@ static void ui_skinned_playlist_destroy(GtkObject *object) {
 }
 
 static void ui_skinned_playlist_realize(GtkWidget *widget) {
-    UiSkinnedPlaylist *playlist;
     GdkWindowAttr attributes;
     gint attributes_mask;
 
@@ -216,7 +215,6 @@ static void ui_skinned_playlist_realize(GtkWidget *widget) {
     g_return_if_fail (UI_SKINNED_IS_PLAYLIST(widget));
 
     GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
-    playlist = UI_SKINNED_PLAYLIST(widget);
 
     attributes.x = widget->allocation.x;
     attributes.y = widget->allocation.y;
@@ -376,8 +374,6 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
     gchar **frags;
     gchar *frag0;
 
-    gint plw_w, plw_h;
-
     cairo_t *cr;
 
     g_return_val_if_fail (widget != NULL, FALSE);
@@ -388,9 +384,6 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
 
     width = priv->width;
     height = priv->height;
-
-    plw_w = playlistwin_get_width();
-    plw_h = playlistwin_get_height();
 
     gdk_cairo_set_source_color(cr, skin_get_color(aud_active_skin, SKIN_PLEDIT_NORMALBG));
 

@@ -151,12 +151,8 @@ GtkWidget *ui_svis_new (GtkWidget * fixed, gint x, gint y)
 
 static void ui_svis_destroy (GtkObject * object)
 {
-    UiSVis *svis;
-
     g_return_if_fail (object != NULL);
     g_return_if_fail (UI_IS_SVIS (object));
-
-    svis = UI_SVIS (object);
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
