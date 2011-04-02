@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <math.h>
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>

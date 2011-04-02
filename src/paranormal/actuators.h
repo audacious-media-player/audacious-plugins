@@ -24,7 +24,7 @@
 #define _ACTUATORS_H
 
 #include <glib.h>
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 /* Helper macros for actuator functions */
 #define PN_ACTUATOR_INIT_FUNC(f) ((void (*) (gpointer *data))f)

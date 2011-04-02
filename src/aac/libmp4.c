@@ -40,7 +40,7 @@ static gboolean stop_flag;
 
 typedef struct _mp4cfg
 {
-#define FILE_UNKNOWN    0
+#define FILE_OTHER      0
 #define FILE_MP4        1
 #define FILE_AAC        2
     gshort file_type;
@@ -69,7 +69,7 @@ static guint32 mp4_seek_callback (void *data, guint64 pos)
 
 static gboolean mp4_init (void)
 {
-    mp4cfg.file_type = FILE_UNKNOWN;
+    mp4cfg.file_type = FILE_OTHER;
 
     seek_mutex = g_mutex_new ();
     seek_cond = g_cond_new ();

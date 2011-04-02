@@ -25,8 +25,8 @@
 #include <sys/time.h>
 
 #include <glib.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_audio.h>
+#include <SDL.h>
+#include <SDL_audio.h>
 
 #include <audacious/audconfig.h>
 #include <audacious/debug.h>
