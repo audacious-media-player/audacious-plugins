@@ -67,6 +67,7 @@ static GtkWidget * error_win = NULL;
 static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
 static gint slider_position;
+static guint delayed_title_change_source = 0;
 static guint update_song_timeout_source = 0;
 
 extern GtkWidget *ui_playlist_notebook_tab_title_editing;
@@ -167,8 +168,14 @@ static void button_next_pressed()
     action_playback_next ();
 }
 
-static void title_change_cb (void)
+static gboolean title_change_cb (void)
 {
+    if (delayed_title_change_source)
+    {
+        g_source_remove (delayed_title_change_source);
+        delayed_title_change_source = 0;
+    }
+
     if (aud_drct_get_playing () && config.show_song_titles)
     {
         gchar * title = aud_drct_get_title ();
@@ -179,6 +186,8 @@ static void title_change_cb (void)
     }
     else
         gtk_window_set_title ((GtkWindow *) window, _("Audacious"));
+
+    return FALSE;
 }
 
 static void ui_mainwin_show()
@@ -407,7 +416,14 @@ static void ui_playback_begin(gpointer hook_data, gpointer user_data)
     pause_cb ();
     gtk_widget_set_sensitive (button_stop, TRUE);
 
-    title_change_cb ();
+    if (delayed_title_change_source)
+        g_source_remove (delayed_title_change_source);
+
+    /* If "title change" is not called by 1/4 second after starting playback,
+     * show "Buffering ..." as the window title. */
+    delayed_title_change_source = g_timeout_add (250, (GSourceFunc)
+     title_change_cb, NULL);
+
     set_slider_length (aud_drct_get_length ());
     time_counter_cb ();
 
@@ -427,7 +443,13 @@ static void ui_playback_stop(gpointer hook_data, gpointer user_data)
         update_song_timeout_source = 0;
     }
 
-    title_change_cb ();
+    if (delayed_title_change_source)
+        g_source_remove (delayed_title_change_source);
+
+    /* Don't update the window title immediately; we may be about to start
+     * another song. */
+    delayed_title_change_source = g_idle_add ((GSourceFunc) title_change_cb,
+     NULL);
 
     gtk_widget_show (button_play);
     gtk_widget_hide (button_pause);
@@ -885,6 +907,12 @@ static gboolean _ui_finalize(void)
         update_volume_timeout_source = 0;
     }
 #endif
+
+    if (delayed_title_change_source)
+    {
+        g_source_remove (delayed_title_change_source);
+        delayed_title_change_source = 0;
+    }
 
     gtkui_cfg_free();
     ui_hooks_disassociate();
