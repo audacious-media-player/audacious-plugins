@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-13 17:08-0400\n"
+"POT-Creation-Date: 2011-04-03 18:03-0400\n"
 "PO-Revision-Date: 2010-08-16 11:48+0200\n"
 "Last-Translator: Szymon Weihs <sz.weihs@gmail.com>\n"
 "Language-Team: \n"
@@ -126,7 +126,7 @@ msgid "Frequency"
 msgstr "Częstotliwość"
 
 #: src/adplug/adplug-xmms.cc:354 src/adplug/adplug-xmms.cc:560
-#: src/console/configure.c:157 src/gtkui/ui_manager.c:65
+#: src/console/configure.c:157 src/gtkui/ui_manager.c:67
 #: src/skins/ui_manager.c:167
 msgid "Playback"
 msgstr "Odtwarzanie"
@@ -175,7 +175,7 @@ msgstr ""
 msgid "AdPlug :: File Info"
 msgstr "AdPlug :: Informacja o pliku"
 
-#: src/adplug/adplug-xmms.cc:533 src/amidi-plug/i_configure-fluidsynth.c:347
+#: src/adplug/adplug-xmms.cc:533 src/amidi-plug/i_configure-fluidsynth.c:345
 msgid "Filename"
 msgstr "Nazwa pliku"
 
@@ -580,7 +580,7 @@ msgstr ""
 "    Wpisz w podane pole treść komunkatu i zaznacz odpowiednią\n"
 "    opcję, jeśli chcesz, aby było ono pokazywane..\n"
 
-#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:184
+#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:186
 #: src/skins/ui_manager.c:377
 msgid "Help"
 msgstr "Pomoc"
@@ -771,97 +771,97 @@ msgstr ""
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:271
+#: src/amidi-plug/i_configure-fluidsynth.c:270
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:315
+#: src/amidi-plug/i_configure-fluidsynth.c:313
 msgid "SoundFont settings"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:351
+#: src/amidi-plug/i_configure-fluidsynth.c:349
 msgid "Size (bytes)"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:400
+#: src/amidi-plug/i_configure-fluidsynth.c:398
 msgid "Load SF on player start"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:404
+#: src/amidi-plug/i_configure-fluidsynth.c:402
 msgid "Load SF on first midifile play"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:419
+#: src/amidi-plug/i_configure-fluidsynth.c:417
 msgid "Synthesizer settings"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:428
+#: src/amidi-plug/i_configure-fluidsynth.c:426
 msgid "gain"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:434
-#: src/amidi-plug/i_configure-fluidsynth.c:462
-#: src/amidi-plug/i_configure-fluidsynth.c:490
-#: src/amidi-plug/i_configure-fluidsynth.c:521
+#: src/amidi-plug/i_configure-fluidsynth.c:432
+#: src/amidi-plug/i_configure-fluidsynth.c:460
+#: src/amidi-plug/i_configure-fluidsynth.c:488
+#: src/amidi-plug/i_configure-fluidsynth.c:519
 msgid "use default"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:437
-#: src/amidi-plug/i_configure-fluidsynth.c:465
+#: src/amidi-plug/i_configure-fluidsynth.c:435
+#: src/amidi-plug/i_configure-fluidsynth.c:463
 msgid "value:"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:456
+#: src/amidi-plug/i_configure-fluidsynth.c:454
 msgid "poliphony"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:484
+#: src/amidi-plug/i_configure-fluidsynth.c:482
 msgid "reverb"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:491
+#: src/amidi-plug/i_configure-fluidsynth.c:522
+msgid "yes"
 msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:493
 #: src/amidi-plug/i_configure-fluidsynth.c:524
-msgid "yes"
-msgstr ""
-
-#: src/amidi-plug/i_configure-fluidsynth.c:495
-#: src/amidi-plug/i_configure-fluidsynth.c:526
 msgid "no"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:515
+#: src/amidi-plug/i_configure-fluidsynth.c:513
 msgid "chorus"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:546
+#: src/amidi-plug/i_configure-fluidsynth.c:544
 msgid "sample rate"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:552
+#: src/amidi-plug/i_configure-fluidsynth.c:550
 msgid "22050 Hz "
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:555
+#: src/amidi-plug/i_configure-fluidsynth.c:553
 msgid "44100 Hz "
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:558
+#: src/amidi-plug/i_configure-fluidsynth.c:556
 msgid "96000 Hz "
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:561
+#: src/amidi-plug/i_configure-fluidsynth.c:559
 msgid "custom "
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:570
+#: src/amidi-plug/i_configure-fluidsynth.c:568
 msgid "Hz "
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:623
+#: src/amidi-plug/i_configure-fluidsynth.c:621
 msgid "FluidSynth Backend not loaded or not available"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:642
+#: src/amidi-plug/i_configure-fluidsynth.c:640
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
@@ -1371,8 +1371,8 @@ msgstr "Uwierzytelnianie..."
 msgid "Rescan"
 msgstr "Szukaj ponownie"
 
-#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:67
-#: src/gtkui/ui_manager.c:68 src/hotkey/gui.c:72 src/skins/ui_manager.c:169
+#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:69
+#: src/gtkui/ui_manager.c:70 src/hotkey/gui.c:72 src/skins/ui_manager.c:169
 #: src/skins/ui_manager.c:170
 msgid "Play"
 msgstr "Odtwarzaj"
@@ -1862,7 +1862,7 @@ msgstr ""
 "Nie można otworzyć okna dowiązań dla nie-wykrytego urządzenia.\n"
 "Upewnij się, że urządzenie zostało poprawnie podłączone."
 
-#: src/evdev-plug/ed_ui.c:319 src/gtkui/ui_gtk.c:225
+#: src/evdev-plug/ed_ui.c:319 src/gtkui/ui_gtk.c:234
 msgid "Error"
 msgstr "Błąd"
 
@@ -2005,7 +2005,7 @@ msgstr ""
 "\n"
 "Autor: Giacomo Lozito\n"
 
-#: src/ffaudio/ffaudio-core.c:757
+#: src/ffaudio/ffaudio-core.c:765
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -2028,7 +2028,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:770
+#: src/ffaudio/ffaudio-core.c:778
 msgid "About FFaudio Plugin"
 msgstr "O wtyczce FFaudio"
 
@@ -2320,8 +2320,8 @@ msgstr "interfejs gnt"
 msgid "Can't jump to time when no track is being played.\n"
 msgstr "Nie można przeskoczyć do czasu, gdy żaden utwór nie jest odtwarzany.\n"
 
-#: src/gtkui/actions.c:269 src/gtkui/ui_manager.c:223
-#: src/gtkui/ui_manager.c:224 src/skins/ui_main.c:835
+#: src/gtkui/actions.c:269 src/gtkui/ui_manager.c:225
+#: src/gtkui/ui_manager.c:226 src/skins/ui_main.c:835
 #: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Jump to Time"
 msgstr "Przeskocz do czasu"
@@ -2447,16 +2447,16 @@ msgstr ""
 msgid "Disable"
 msgstr "włącz"
 
-#: src/gtkui/ui_gtk.c:79
+#: src/gtkui/ui_gtk.c:80
 msgid "GTK Interface"
 msgstr "Interfejs GTK"
 
-#: src/gtkui/ui_gtk.c:175 src/skins/ui_main.c:390
+#: src/gtkui/ui_gtk.c:182 src/skins/ui_main.c:390
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:181 src/skins/ui_main.c:392 src/skins/ui_main.c:2172
+#: src/gtkui/ui_gtk.c:188 src/skins/ui_main.c:392 src/skins/ui_main.c:2172
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -2509,61 +2509,66 @@ msgstr "Pokaż/ukryj pasek stanu"
 msgid "Show Column Headers"
 msgstr "Pokaż odtwarzacz"
 
-#: src/gtkui/ui_manager.c:70 src/gtkui/ui_manager.c:71
+#: src/gtkui/ui_manager.c:60
+#, fuzzy
+msgid "Scroll on Song Change"
+msgstr "Auto-przewijanie nazwy piosenki"
+
+#: src/gtkui/ui_manager.c:72 src/gtkui/ui_manager.c:73
 #: src/skins/ui_manager.c:172 src/skins/ui_manager.c:173
 msgid "Pause"
 msgstr "Pauza"
 
-#: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74 src/hotkey/gui.c:74
+#: src/gtkui/ui_manager.c:75 src/gtkui/ui_manager.c:76 src/hotkey/gui.c:74
 #: src/skins/ui_manager.c:175 src/skins/ui_manager.c:176
 msgid "Stop"
 msgstr "Stop"
 
-#: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77
+#: src/gtkui/ui_manager.c:78 src/gtkui/ui_manager.c:79
 #: src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
 msgid "Previous"
 msgstr "Poprzedni"
 
-#: src/gtkui/ui_manager.c:79 src/gtkui/ui_manager.c:80
+#: src/gtkui/ui_manager.c:81 src/gtkui/ui_manager.c:82
 #: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
 msgid "Next"
 msgstr "Następny"
 
-#: src/gtkui/ui_manager.c:85 src/skins/ui_manager.c:199
+#: src/gtkui/ui_manager.c:87 src/skins/ui_manager.c:199
 msgid "Playlist"
 msgstr "Playlista"
 
-#: src/gtkui/ui_manager.c:87 src/gtkui/ui_manager.c:88
+#: src/gtkui/ui_manager.c:89 src/gtkui/ui_manager.c:90
 #: src/skins/ui_manager.c:201 src/skins/ui_manager.c:202
 msgid "New Playlist"
 msgstr "Nowa playlista"
 
-#: src/gtkui/ui_manager.c:90 src/gtkui/ui_manager.c:91
+#: src/gtkui/ui_manager.c:92 src/gtkui/ui_manager.c:93
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 msgid "Delete Playlist"
 msgstr "Usuń playlistę"
 
-#: src/gtkui/ui_manager.c:93
+#: src/gtkui/ui_manager.c:95
 msgid "Import Playlist ..."
 msgstr "Importuj playlistę ..."
 
-#: src/gtkui/ui_manager.c:94 src/skins/ui_manager.c:214
+#: src/gtkui/ui_manager.c:96 src/skins/ui_manager.c:214
 msgid "Loads a playlist file into the selected playlist."
 msgstr "Ładuje playlistę z pliku do obecnej listy"
 
-#: src/gtkui/ui_manager.c:96
+#: src/gtkui/ui_manager.c:98
 msgid "Export Playlist ..."
 msgstr "Eksportuj playlistę ..."
 
-#: src/gtkui/ui_manager.c:97 src/skins/ui_manager.c:217
+#: src/gtkui/ui_manager.c:99 src/skins/ui_manager.c:217
 msgid "Saves the selected playlist."
 msgstr "Zapisuje wybrane listy odtwarzania"
 
-#: src/gtkui/ui_manager.c:99 src/skins/ui_manager.c:219
+#: src/gtkui/ui_manager.c:101 src/skins/ui_manager.c:219
 msgid "Save All Playlists"
 msgstr "Zapisz wszystkie playlisty"
 
-#: src/gtkui/ui_manager.c:100 src/skins/ui_manager.c:220
+#: src/gtkui/ui_manager.c:102 src/skins/ui_manager.c:220
 msgid ""
 "Saves all the playlists that are open. Note that this is done automatically "
 "when Audacious quits."
@@ -2571,263 +2576,263 @@ msgstr ""
 "Zapisuje wszystkie otwarte listy odtwarzania. Akcja ta jest również "
 "wykonywana automatycznie przy zamykaniu programu."
 
-#: src/gtkui/ui_manager.c:104
+#: src/gtkui/ui_manager.c:106
 msgid "Refresh"
 msgstr "Odśwież"
 
-#: src/gtkui/ui_manager.c:105 src/skins/ui_manager.c:225
+#: src/gtkui/ui_manager.c:107 src/skins/ui_manager.c:225
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr "Odświeża metadane związane z wpisem na liście."
 
-#: src/gtkui/ui_manager.c:108
+#: src/gtkui/ui_manager.c:110
 #, fuzzy
 msgid "Refresh Selected"
 msgstr "Usuń zaznaczone"
 
-#: src/gtkui/ui_manager.c:109
+#: src/gtkui/ui_manager.c:111
 #, fuzzy
 msgid "Refreshes metadata associated with selected entries."
 msgstr "Odświeża metadane związane z wpisem na liście."
 
-#: src/gtkui/ui_manager.c:113
+#: src/gtkui/ui_manager.c:115
 msgid "Playlist Manager"
 msgstr "Menedżer playlist"
 
-#: src/gtkui/ui_manager.c:114 src/skins/ui_manager.c:229
+#: src/gtkui/ui_manager.c:116 src/skins/ui_manager.c:229
 msgid "Opens the playlist manager."
 msgstr "Otwiera menedżera list odtwarzania"
 
-#: src/gtkui/ui_manager.c:117
+#: src/gtkui/ui_manager.c:119
 msgid "Add URL ..."
 msgstr "Dodaj URL ..."
 
-#: src/gtkui/ui_manager.c:118 src/skins/ui_manager.c:239
+#: src/gtkui/ui_manager.c:120 src/skins/ui_manager.c:239
 msgid "Adds a remote track to the playlist."
 msgstr "Dodaje zdalny utwór do playlisty."
 
-#: src/gtkui/ui_manager.c:121
+#: src/gtkui/ui_manager.c:123
 msgid "Add Files ..."
 msgstr "Dodaj pliki ..."
 
-#: src/gtkui/ui_manager.c:122 src/skins/ui_manager.c:243
+#: src/gtkui/ui_manager.c:124 src/skins/ui_manager.c:243
 msgid "Adds files to the playlist."
 msgstr "Dodaje pliki do playlisty."
 
-#: src/gtkui/ui_manager.c:125 src/skins/ui_manager.c:266
+#: src/gtkui/ui_manager.c:127 src/skins/ui_manager.c:266
 msgid "Remove All"
 msgstr "Usuń wszystkie"
 
-#: src/gtkui/ui_manager.c:126 src/skins/ui_manager.c:267
+#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:267
 msgid "Removes all entries from the playlist."
 msgstr "Usuwa wszystkie wpisy z playlisty."
 
-#: src/gtkui/ui_manager.c:129 src/skins/ui_manager.c:292
+#: src/gtkui/ui_manager.c:131 src/skins/ui_manager.c:292
 msgid "Remove Unselected"
 msgstr "Usuń niezaznaczone"
 
-#: src/gtkui/ui_manager.c:130 src/skins/ui_manager.c:293
+#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:293
 msgid "Remove unselected entries from the playlist."
 msgstr "Usuwa niezaznaczone wpisy z playlisty."
 
-#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:296
+#: src/gtkui/ui_manager.c:135 src/skins/ui_manager.c:296
 msgid "Remove Selected"
 msgstr "Usuń zaznaczone"
 
-#: src/gtkui/ui_manager.c:134 src/skins/ui_manager.c:297
+#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:297
 msgid "Remove selected entries from the playlist."
 msgstr "Usuwa zaznaczone wpisy z playlisty"
 
-#: src/gtkui/ui_manager.c:137
+#: src/gtkui/ui_manager.c:139
 msgid "Edit title"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:138
+#: src/gtkui/ui_manager.c:140
 #, fuzzy
 msgid "Edit the playlist title."
 msgstr "Porządkuje listę na podstawie tytułu."
 
-#: src/gtkui/ui_manager.c:141
+#: src/gtkui/ui_manager.c:143
 msgid "Choose Columns ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:144
+#: src/gtkui/ui_manager.c:146
 msgid "Sort"
 msgstr "Sortuj"
 
-#: src/gtkui/ui_manager.c:145 src/skins/ui_manager.c:336
+#: src/gtkui/ui_manager.c:147 src/skins/ui_manager.c:336
 #: src/skins/ui_manager.c:366
 msgid "By Track Number"
 msgstr "Numer utworu"
 
-#: src/gtkui/ui_manager.c:147 src/skins/ui_manager.c:280
+#: src/gtkui/ui_manager.c:149 src/skins/ui_manager.c:280
 #: src/skins/ui_manager.c:312 src/skins/ui_manager.c:342
 msgid "By Title"
 msgstr "Tytuł"
 
-#: src/gtkui/ui_manager.c:149 src/skins/ui_manager.c:320
+#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:320
 #: src/skins/ui_manager.c:350
 msgid "By Artist"
 msgstr "Artysta"
 
-#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:316
+#: src/gtkui/ui_manager.c:153 src/skins/ui_manager.c:316
 #: src/skins/ui_manager.c:346
 msgid "By Album"
 msgstr "Album"
 
-#: src/gtkui/ui_manager.c:153
+#: src/gtkui/ui_manager.c:155
 #, fuzzy
 msgid "By Release Date"
 msgstr "Data"
 
-#: src/gtkui/ui_manager.c:155
+#: src/gtkui/ui_manager.c:157
 msgid "By File Path"
 msgstr "Położenie pliku"
 
-#: src/gtkui/ui_manager.c:157
+#: src/gtkui/ui_manager.c:159
 #, fuzzy
 msgid "By Formatted Title"
 msgstr "Tytuł"
 
-#: src/gtkui/ui_manager.c:159
+#: src/gtkui/ui_manager.c:161
 msgid "Reverse Order"
 msgstr "Odwróć kolejność"
 
-#: src/gtkui/ui_manager.c:161
+#: src/gtkui/ui_manager.c:163
 msgid "Random Order"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:166
+#: src/gtkui/ui_manager.c:168
 msgid "Output"
 msgstr "Wyjście"
 
-#: src/gtkui/ui_manager.c:168 src/modplug/gui/interface.cxx:572
+#: src/gtkui/ui_manager.c:170 src/modplug/gui/interface.cxx:572
 msgid "Effects"
 msgstr "Efekty"
 
-#: src/gtkui/ui_manager.c:170
+#: src/gtkui/ui_manager.c:172
 msgid "Equalizer"
 msgstr "Korektor graficzny"
 
-#: src/gtkui/ui_manager.c:175 src/skins/ui_manager.c:234
+#: src/gtkui/ui_manager.c:177 src/skins/ui_manager.c:234
 msgid "View"
 msgstr "Widok"
 
-#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:235
+#: src/gtkui/ui_manager.c:178 src/skins/ui_manager.c:235
 msgid "Interface"
 msgstr "Interfejs"
 
-#: src/gtkui/ui_manager.c:183 src/skins/ui_manager.c:376
+#: src/gtkui/ui_manager.c:185 src/skins/ui_manager.c:376
 msgid "File"
 msgstr "Plik"
 
-#: src/gtkui/ui_manager.c:186
+#: src/gtkui/ui_manager.c:188
 msgid "Components"
 msgstr "Komponenty"
 
-#: src/gtkui/ui_manager.c:188 src/gtkui/ui_manager.c:191
+#: src/gtkui/ui_manager.c:190 src/gtkui/ui_manager.c:193
 #: src/skins/ui_manager.c:381 src/skins/ui_manager.c:384
 msgid "View Track Details"
 msgstr "Pokaż szczegóły utworu"
 
-#: src/gtkui/ui_manager.c:189 src/gtkui/ui_manager.c:192
+#: src/gtkui/ui_manager.c:191 src/gtkui/ui_manager.c:194
 #: src/skins/ui_manager.c:382 src/skins/ui_manager.c:385
 msgid "View track details"
 msgstr "Pokaż szczegóły utworu"
 
-#: src/gtkui/ui_manager.c:194 src/gtkui/ui_manager.c:195
+#: src/gtkui/ui_manager.c:196 src/gtkui/ui_manager.c:197
 #: src/skins/ui_manager.c:387 src/skins/ui_manager.c:388
 msgid "About Audacious"
 msgstr "O Audacious"
 
-#: src/gtkui/ui_manager.c:197
+#: src/gtkui/ui_manager.c:199
 msgid "Open Files ..."
 msgstr "Otwórz pliki ..."
 
-#: src/gtkui/ui_manager.c:198 src/skins/ui_manager.c:391
+#: src/gtkui/ui_manager.c:200 src/skins/ui_manager.c:391
 msgid "Load and play a file"
 msgstr "Ładuje i odtwarza wybrany plik"
 
-#: src/gtkui/ui_manager.c:200
+#: src/gtkui/ui_manager.c:202
 msgid "Open URL ..."
 msgstr "Otwórz URL ..."
 
-#: src/gtkui/ui_manager.c:201 src/skins/ui_manager.c:394
+#: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:394
 msgid "Play media from the selected location"
 msgstr "Odtwarza utwór z wybranej lokalizacji"
 
-#: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:396
+#: src/gtkui/ui_manager.c:205 src/skins/ui_manager.c:396
 msgid "Plugin services"
 msgstr "Wtyczki"
 
-#: src/gtkui/ui_manager.c:205 src/skins/ui_manager.c:398
+#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:398
 msgid "Preferences"
 msgstr "Ustawienia"
 
-#: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:399
+#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:399
 msgid "Open preferences window"
 msgstr "Otwiera okno preferencji"
 
-#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:401
+#: src/gtkui/ui_manager.c:210 src/skins/ui_manager.c:401
 msgid "_Quit"
 msgstr "_Zamknij"
 
-#: src/gtkui/ui_manager.c:209 src/skins/ui_manager.c:402
+#: src/gtkui/ui_manager.c:211 src/skins/ui_manager.c:402
 msgid "Quit Audacious"
 msgstr "Zamyka Audacious"
 
-#: src/gtkui/ui_manager.c:211 src/gtkui/ui_manager.c:212
+#: src/gtkui/ui_manager.c:213 src/gtkui/ui_manager.c:214
 #: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
 msgid "Set A-B"
 msgstr "Ustaw A-B"
 
-#: src/gtkui/ui_manager.c:214 src/gtkui/ui_manager.c:215
+#: src/gtkui/ui_manager.c:216 src/gtkui/ui_manager.c:217
 #: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
 msgid "Clear A-B"
 msgstr "Wyczyść A-B"
 
-#: src/gtkui/ui_manager.c:217 src/gtkui/ui_manager.c:218
+#: src/gtkui/ui_manager.c:219 src/gtkui/ui_manager.c:220
 #: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
 msgid "Jump to Playlist Start"
 msgstr "Przeskocz do początku playlisty"
 
-#: src/gtkui/ui_manager.c:220 src/gtkui/ui_manager.c:221 src/hotkey/gui.c:81
+#: src/gtkui/ui_manager.c:222 src/gtkui/ui_manager.c:223 src/hotkey/gui.c:81
 #: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
 msgid "Jump to File"
 msgstr "Przeskocz do pliku"
 
-#: src/gtkui/ui_manager.c:226 src/skins/ui_manager.c:419
+#: src/gtkui/ui_manager.c:228 src/skins/ui_manager.c:419
 msgid "Queue Toggle"
 msgstr "Przełącz kolejkę"
 
-#: src/gtkui/ui_manager.c:227 src/skins/ui_manager.c:420
+#: src/gtkui/ui_manager.c:229 src/skins/ui_manager.c:420
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Dodaje/usuwa wpis z kolejki listy odtwarzania"
 
-#: src/gtkui/ui_manager.c:230 src/skins/ui_manager.c:423
+#: src/gtkui/ui_manager.c:232 src/skins/ui_manager.c:423
 msgid "Copy"
 msgstr "Kopiuj"
 
-#: src/gtkui/ui_manager.c:233 src/skins/ui_manager.c:425
+#: src/gtkui/ui_manager.c:235 src/skins/ui_manager.c:425
 msgid "Cut"
 msgstr "Wytnij"
 
-#: src/gtkui/ui_manager.c:236 src/skins/ui_manager.c:427
+#: src/gtkui/ui_manager.c:238 src/skins/ui_manager.c:427
 msgid "Paste"
 msgstr "Wklej"
 
-#: src/gtkui/ui_manager.c:239 src/skins/ui_manager.c:256
+#: src/gtkui/ui_manager.c:241 src/skins/ui_manager.c:256
 msgid "Select All"
 msgstr "Zaznacz wszystko"
 
-#: src/gtkui/ui_manager.c:240 src/skins/ui_manager.c:257
+#: src/gtkui/ui_manager.c:242 src/skins/ui_manager.c:257
 msgid "Selects all of the playlist entries."
 msgstr "Zaznacza wszystkie wpisy na playliście"
 
-#: src/gtkui/ui_manager.c:243 src/skins/ui_manager.c:260
+#: src/gtkui/ui_manager.c:245 src/skins/ui_manager.c:260
 msgid "Select None"
 msgstr "Wyczyść zaznaczenie"
 
-#: src/gtkui/ui_manager.c:244 src/skins/ui_manager.c:261
+#: src/gtkui/ui_manager.c:246 src/skins/ui_manager.c:261
 msgid "Deselects all of the playlist entries."
 msgstr "Odznacza wszystkie wpisy na playliście"
 
@@ -3232,7 +3237,7 @@ msgid ""
 msgstr ""
 
 #: src/modplug/gui/interface.cxx:567
-#: src/skins/ui_skinned_equalizer_slider.c:435
+#: src/skins/ui_skinned_equalizer_slider.c:431
 msgid "Preamp"
 msgstr ""
 
@@ -4907,43 +4912,43 @@ msgstr "Edytor playlisty Audacious"
 msgid "%s (%d of %d)"
 msgstr "%s (%d z %d)"
 
-#: src/skins/ui_skinned_equalizer_slider.c:435
+#: src/skins/ui_skinned_equalizer_slider.c:431
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_skinned_equalizer_slider.c:435
+#: src/skins/ui_skinned_equalizer_slider.c:431
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_skinned_equalizer_slider.c:436
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_skinned_equalizer_slider.c:436
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_skinned_equalizer_slider.c:436
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_skinned_equalizer_slider.c:436
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_skinned_equalizer_slider.c:436
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_skinned_equalizer_slider.c:437
+#: src/skins/ui_skinned_equalizer_slider.c:433
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_skinned_equalizer_slider.c:437
+#: src/skins/ui_skinned_equalizer_slider.c:433
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_skinned_equalizer_slider.c:437
+#: src/skins/ui_skinned_equalizer_slider.c:433
 msgid "16 kHz"
 msgstr "16 kHz"
 
@@ -4960,11 +4965,11 @@ msgstr "Skórka Winamp 2.x"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Nie można utworzyć katalogu (%s): %s\n"
 
-#: src/sndfile/plugin.c:452
+#: src/sndfile/plugin.c:438
 msgid "About sndfile plugin"
 msgstr ""
 
-#: src/sndfile/plugin.c:453
+#: src/sndfile/plugin.c:439
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -5070,11 +5075,11 @@ msgstr ""
 msgid "Spectrum Analyzer"
 msgstr ""
 
-#: src/statusicon/statusicon.c:377
+#: src/statusicon/statusicon.c:378
 msgid "About Status Icon Plugin"
 msgstr "O wtyczce Status Icon"
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.c:379
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -5092,44 +5097,44 @@ msgstr ""
 "Ta wtyczka dostarcza ikonę stanu, umieszczoną\n"
 "w zasobniku systemowym menedżera okien.\n"
 
-#: src/statusicon/statusicon.c:446
+#: src/statusicon/statusicon.c:447
 msgid "Status Icon Plugin - Preferences"
 msgstr "Wtyczka Status Icon - Preferencje"
 
-#: src/statusicon/statusicon.c:456
+#: src/statusicon/statusicon.c:457
 msgid "Right-Click Menu"
 msgstr "Menu PPM"
 
-#: src/statusicon/statusicon.c:461
+#: src/statusicon/statusicon.c:462
 msgid "Small playback menu #1"
 msgstr "Małe menu odtwarzania #1"
 
-#: src/statusicon/statusicon.c:464
+#: src/statusicon/statusicon.c:465
 msgid "Small playback menu #2"
 msgstr "Małe menu odtwarzania #2"
 
-#: src/statusicon/statusicon.c:480
+#: src/statusicon/statusicon.c:481
 msgid "Mouse Scroll Action"
 msgstr "Akcja rolki myszy"
 
-#: src/statusicon/statusicon.c:484
+#: src/statusicon/statusicon.c:485
 msgid "Change volume"
 msgstr "Zmiana głośności"
 
-#: src/statusicon/statusicon.c:486
+#: src/statusicon/statusicon.c:487
 msgid "Change playing song"
 msgstr "Zmiana odtwarzanego utworu"
 
-#: src/statusicon/statusicon.c:499
+#: src/statusicon/statusicon.c:500
 #, fuzzy
 msgid "Other settings"
 msgstr "Ustawienia budzika"
 
-#: src/statusicon/statusicon.c:504
+#: src/statusicon/statusicon.c:505
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:511
+#: src/statusicon/statusicon.c:512
 msgid "Close to the notification area (system tray)"
 msgstr ""
 
@@ -5266,12 +5271,12 @@ msgid ""
 "Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
 
-#: src/wavpack/wavpack.c:354
+#: src/wavpack/wavpack.c:353
 #, c-format
 msgid "Wavpack Decoder Plugin %s"
 msgstr ""
 
-#: src/wavpack/wavpack.c:355
+#: src/wavpack/wavpack.c:354
 msgid ""
 "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
 "\n"

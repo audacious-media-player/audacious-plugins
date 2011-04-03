@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious-plugins 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-03-13 17:08-0400\n"
+"POT-Creation-Date: 2011-04-03 18:03-0400\n"
 "PO-Revision-Date: 2010-07-18 01:47+0800\n"
 "Last-Translator: Chasye <chasye@gmail.com>\n"
 "Language-Team: Chinese (simplified)\n"
@@ -117,7 +117,7 @@ msgid "Frequency"
 msgstr "频率"
 
 #: src/adplug/adplug-xmms.cc:354 src/adplug/adplug-xmms.cc:560
-#: src/console/configure.c:157 src/gtkui/ui_manager.c:65
+#: src/console/configure.c:157 src/gtkui/ui_manager.c:67
 #: src/skins/ui_manager.c:167
 msgid "Playback"
 msgstr "回放"
@@ -165,7 +165,7 @@ msgstr ""
 msgid "AdPlug :: File Info"
 msgstr "AdPlug :: 文件信息"
 
-#: src/adplug/adplug-xmms.cc:533 src/amidi-plug/i_configure-fluidsynth.c:347
+#: src/adplug/adplug-xmms.cc:533 src/amidi-plug/i_configure-fluidsynth.c:345
 msgid "Filename"
 msgstr "文件名"
 
@@ -555,7 +555,7 @@ msgstr ""
 "    当闹钟停止后显示提醒器，\n"
 "    如果你想显示提醒器，输出要用的提醒器并打开相应的开关按钮\n"
 
-#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:184
+#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:186
 #: src/skins/ui_manager.c:377
 msgid "Help"
 msgstr "帮助"
@@ -744,97 +744,97 @@ msgstr "AMIDI-Plug - 设置"
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - 选择SoundFont文件"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:271
+#: src/amidi-plug/i_configure-fluidsynth.c:270
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
 msgstr "FLUIDSYNTH后端设置"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:315
+#: src/amidi-plug/i_configure-fluidsynth.c:313
 msgid "SoundFont settings"
 msgstr "SoundFont设置"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:351
+#: src/amidi-plug/i_configure-fluidsynth.c:349
 msgid "Size (bytes)"
 msgstr "大小(bytes)"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:400
+#: src/amidi-plug/i_configure-fluidsynth.c:398
 msgid "Load SF on player start"
 msgstr "播放器启动时加载SF"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:404
+#: src/amidi-plug/i_configure-fluidsynth.c:402
 msgid "Load SF on first midifile play"
 msgstr "在播放第一个midi文件时加载"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:419
+#: src/amidi-plug/i_configure-fluidsynth.c:417
 msgid "Synthesizer settings"
 msgstr "合成器设置"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:428
+#: src/amidi-plug/i_configure-fluidsynth.c:426
 msgid "gain"
 msgstr "增益"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:434
-#: src/amidi-plug/i_configure-fluidsynth.c:462
-#: src/amidi-plug/i_configure-fluidsynth.c:490
-#: src/amidi-plug/i_configure-fluidsynth.c:521
+#: src/amidi-plug/i_configure-fluidsynth.c:432
+#: src/amidi-plug/i_configure-fluidsynth.c:460
+#: src/amidi-plug/i_configure-fluidsynth.c:488
+#: src/amidi-plug/i_configure-fluidsynth.c:519
 msgid "use default"
 msgstr "使用默认设置"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:437
-#: src/amidi-plug/i_configure-fluidsynth.c:465
+#: src/amidi-plug/i_configure-fluidsynth.c:435
+#: src/amidi-plug/i_configure-fluidsynth.c:463
 msgid "value:"
 msgstr "值："
 
-#: src/amidi-plug/i_configure-fluidsynth.c:456
+#: src/amidi-plug/i_configure-fluidsynth.c:454
 msgid "poliphony"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:484
+#: src/amidi-plug/i_configure-fluidsynth.c:482
 msgid "reverb"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:493
-#: src/amidi-plug/i_configure-fluidsynth.c:524
+#: src/amidi-plug/i_configure-fluidsynth.c:491
+#: src/amidi-plug/i_configure-fluidsynth.c:522
 msgid "yes"
 msgstr "是"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:495
-#: src/amidi-plug/i_configure-fluidsynth.c:526
+#: src/amidi-plug/i_configure-fluidsynth.c:493
+#: src/amidi-plug/i_configure-fluidsynth.c:524
 msgid "no"
 msgstr "否"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:515
+#: src/amidi-plug/i_configure-fluidsynth.c:513
 msgid "chorus"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:546
+#: src/amidi-plug/i_configure-fluidsynth.c:544
 msgid "sample rate"
 msgstr "取样率"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:552
+#: src/amidi-plug/i_configure-fluidsynth.c:550
 msgid "22050 Hz "
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:555
+#: src/amidi-plug/i_configure-fluidsynth.c:553
 msgid "44100 Hz "
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:558
+#: src/amidi-plug/i_configure-fluidsynth.c:556
 msgid "96000 Hz "
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:561
+#: src/amidi-plug/i_configure-fluidsynth.c:559
 msgid "custom "
 msgstr "定制"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:570
+#: src/amidi-plug/i_configure-fluidsynth.c:568
 msgid "Hz "
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:623
+#: src/amidi-plug/i_configure-fluidsynth.c:621
 msgid "FluidSynth Backend not loaded or not available"
 msgstr "FluidSynth后端未能加载或者不可用"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:642
+#: src/amidi-plug/i_configure-fluidsynth.c:640
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
@@ -1322,8 +1322,8 @@ msgstr "正在配对..."
 msgid "Rescan"
 msgstr "重新扫描"
 
-#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:67
-#: src/gtkui/ui_manager.c:68 src/hotkey/gui.c:72 src/skins/ui_manager.c:169
+#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:69
+#: src/gtkui/ui_manager.c:70 src/hotkey/gui.c:72 src/skins/ui_manager.c:169
 #: src/skins/ui_manager.c:170
 msgid "Play"
 msgstr "播放"
@@ -1767,7 +1767,7 @@ msgid ""
 "Ensure that the device has been correctly plugged in."
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:319 src/gtkui/ui_gtk.c:225
+#: src/evdev-plug/ed_ui.c:319 src/gtkui/ui_gtk.c:234
 msgid "Error"
 msgstr ""
 
@@ -1889,7 +1889,7 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:757
+#: src/ffaudio/ffaudio-core.c:765
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1903,7 +1903,7 @@ msgid ""
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:770
+#: src/ffaudio/ffaudio-core.c:778
 msgid "About FFaudio Plugin"
 msgstr ""
 
@@ -2178,8 +2178,8 @@ msgstr "gnt界面"
 msgid "Can't jump to time when no track is being played.\n"
 msgstr "未开始插放时无法跳到时间。\n"
 
-#: src/gtkui/actions.c:269 src/gtkui/ui_manager.c:223
-#: src/gtkui/ui_manager.c:224 src/skins/ui_main.c:835
+#: src/gtkui/actions.c:269 src/gtkui/ui_manager.c:225
+#: src/gtkui/ui_manager.c:226 src/skins/ui_main.c:835
 #: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Jump to Time"
 msgstr "跳到时间"
@@ -2305,17 +2305,17 @@ msgstr ""
 msgid "Disable"
 msgstr "变体"
 
-#: src/gtkui/ui_gtk.c:79
+#: src/gtkui/ui_gtk.c:80
 #, fuzzy
 msgid "GTK Interface"
 msgstr "gnt界面"
 
-#: src/gtkui/ui_gtk.c:175 src/skins/ui_main.c:390
+#: src/gtkui/ui_gtk.c:182 src/skins/ui_main.c:390
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:181 src/skins/ui_main.c:392 src/skins/ui_main.c:2172
+#: src/gtkui/ui_gtk.c:188 src/skins/ui_main.c:392 src/skins/ui_main.c:2172
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -2369,334 +2369,339 @@ msgstr "显示/隐藏播放列表"
 msgid "Show Column Headers"
 msgstr "显示播放器"
 
-#: src/gtkui/ui_manager.c:70 src/gtkui/ui_manager.c:71
+#: src/gtkui/ui_manager.c:60
+#, fuzzy
+msgid "Scroll on Song Change"
+msgstr "歌曲改变"
+
+#: src/gtkui/ui_manager.c:72 src/gtkui/ui_manager.c:73
 #: src/skins/ui_manager.c:172 src/skins/ui_manager.c:173
 msgid "Pause"
 msgstr "暂停"
 
-#: src/gtkui/ui_manager.c:73 src/gtkui/ui_manager.c:74 src/hotkey/gui.c:74
+#: src/gtkui/ui_manager.c:75 src/gtkui/ui_manager.c:76 src/hotkey/gui.c:74
 #: src/skins/ui_manager.c:175 src/skins/ui_manager.c:176
 msgid "Stop"
 msgstr "停止"
 
-#: src/gtkui/ui_manager.c:76 src/gtkui/ui_manager.c:77
+#: src/gtkui/ui_manager.c:78 src/gtkui/ui_manager.c:79
 #: src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
 msgid "Previous"
 msgstr "前一首"
 
-#: src/gtkui/ui_manager.c:79 src/gtkui/ui_manager.c:80
+#: src/gtkui/ui_manager.c:81 src/gtkui/ui_manager.c:82
 #: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
 msgid "Next"
 msgstr "下一首"
 
-#: src/gtkui/ui_manager.c:85 src/skins/ui_manager.c:199
+#: src/gtkui/ui_manager.c:87 src/skins/ui_manager.c:199
 msgid "Playlist"
 msgstr "播放列表"
 
-#: src/gtkui/ui_manager.c:87 src/gtkui/ui_manager.c:88
+#: src/gtkui/ui_manager.c:89 src/gtkui/ui_manager.c:90
 #: src/skins/ui_manager.c:201 src/skins/ui_manager.c:202
 msgid "New Playlist"
 msgstr "创建播放列表"
 
-#: src/gtkui/ui_manager.c:90 src/gtkui/ui_manager.c:91
+#: src/gtkui/ui_manager.c:92 src/gtkui/ui_manager.c:93
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 msgid "Delete Playlist"
 msgstr "删除播放列表"
 
-#: src/gtkui/ui_manager.c:93
+#: src/gtkui/ui_manager.c:95
 #, fuzzy
 msgid "Import Playlist ..."
 msgstr "导入播放列表"
 
-#: src/gtkui/ui_manager.c:94 src/skins/ui_manager.c:214
+#: src/gtkui/ui_manager.c:96 src/skins/ui_manager.c:214
 msgid "Loads a playlist file into the selected playlist."
 msgstr "把列表加载到被选中的播放列表。"
 
-#: src/gtkui/ui_manager.c:96
+#: src/gtkui/ui_manager.c:98
 #, fuzzy
 msgid "Export Playlist ..."
 msgstr "列出播放列表"
 
-#: src/gtkui/ui_manager.c:97 src/skins/ui_manager.c:217
+#: src/gtkui/ui_manager.c:99 src/skins/ui_manager.c:217
 msgid "Saves the selected playlist."
 msgstr "保存被选中的播放列表"
 
-#: src/gtkui/ui_manager.c:99 src/skins/ui_manager.c:219
+#: src/gtkui/ui_manager.c:101 src/skins/ui_manager.c:219
 msgid "Save All Playlists"
 msgstr "保存所有播放列表"
 
-#: src/gtkui/ui_manager.c:100 src/skins/ui_manager.c:220
+#: src/gtkui/ui_manager.c:102 src/skins/ui_manager.c:220
 msgid ""
 "Saves all the playlists that are open. Note that this is done automatically "
 "when Audacious quits."
 msgstr "保存所有已打开的播放列表（其实Audacious退出时是会自动保存的）。"
 
-#: src/gtkui/ui_manager.c:104
+#: src/gtkui/ui_manager.c:106
 #, fuzzy
 msgid "Refresh"
 msgstr "刷新(_R)"
 
-#: src/gtkui/ui_manager.c:105 src/skins/ui_manager.c:225
+#: src/gtkui/ui_manager.c:107 src/skins/ui_manager.c:225
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr "刷新播放列表的歌曲信息"
 
-#: src/gtkui/ui_manager.c:108
+#: src/gtkui/ui_manager.c:110
 #, fuzzy
 msgid "Refresh Selected"
 msgstr "删除被选中的"
 
-#: src/gtkui/ui_manager.c:109
+#: src/gtkui/ui_manager.c:111
 #, fuzzy
 msgid "Refreshes metadata associated with selected entries."
 msgstr "刷新播放列表的歌曲信息"
 
-#: src/gtkui/ui_manager.c:113
+#: src/gtkui/ui_manager.c:115
 #, fuzzy
 msgid "Playlist Manager"
 msgstr "列表管理器"
 
-#: src/gtkui/ui_manager.c:114 src/skins/ui_manager.c:229
+#: src/gtkui/ui_manager.c:116 src/skins/ui_manager.c:229
 msgid "Opens the playlist manager."
 msgstr "打开播放列表管理器"
 
-#: src/gtkui/ui_manager.c:117
+#: src/gtkui/ui_manager.c:119
 #, fuzzy
 msgid "Add URL ..."
 msgstr "添加文件..."
 
-#: src/gtkui/ui_manager.c:118 src/skins/ui_manager.c:239
+#: src/gtkui/ui_manager.c:120 src/skins/ui_manager.c:239
 msgid "Adds a remote track to the playlist."
 msgstr "添加远程文件到播放列表"
 
-#: src/gtkui/ui_manager.c:121
+#: src/gtkui/ui_manager.c:123
 #, fuzzy
 msgid "Add Files ..."
 msgstr "添加文件..."
 
-#: src/gtkui/ui_manager.c:122 src/skins/ui_manager.c:243
+#: src/gtkui/ui_manager.c:124 src/skins/ui_manager.c:243
 msgid "Adds files to the playlist."
 msgstr "添加文件到播放列表。"
 
-#: src/gtkui/ui_manager.c:125 src/skins/ui_manager.c:266
+#: src/gtkui/ui_manager.c:127 src/skins/ui_manager.c:266
 msgid "Remove All"
 msgstr "删除全部"
 
-#: src/gtkui/ui_manager.c:126 src/skins/ui_manager.c:267
+#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:267
 msgid "Removes all entries from the playlist."
 msgstr "从播放列表中删除所有条目。"
 
-#: src/gtkui/ui_manager.c:129 src/skins/ui_manager.c:292
+#: src/gtkui/ui_manager.c:131 src/skins/ui_manager.c:292
 msgid "Remove Unselected"
 msgstr "删除未被选中的"
 
-#: src/gtkui/ui_manager.c:130 src/skins/ui_manager.c:293
+#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:293
 msgid "Remove unselected entries from the playlist."
 msgstr "从播放列表中删除未被选中的条目。"
 
-#: src/gtkui/ui_manager.c:133 src/skins/ui_manager.c:296
+#: src/gtkui/ui_manager.c:135 src/skins/ui_manager.c:296
 msgid "Remove Selected"
 msgstr "删除被选中的"
 
-#: src/gtkui/ui_manager.c:134 src/skins/ui_manager.c:297
+#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:297
 msgid "Remove selected entries from the playlist."
 msgstr "从播放列表中删除被选中的条目。"
 
-#: src/gtkui/ui_manager.c:137
+#: src/gtkui/ui_manager.c:139
 msgid "Edit title"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:138
+#: src/gtkui/ui_manager.c:140
 #, fuzzy
 msgid "Edit the playlist title."
 msgstr "打乱播放列表"
 
-#: src/gtkui/ui_manager.c:141
+#: src/gtkui/ui_manager.c:143
 msgid "Choose Columns ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:144
+#: src/gtkui/ui_manager.c:146
 #, fuzzy
 msgid "Sort"
 msgstr "端口"
 
-#: src/gtkui/ui_manager.c:145 src/skins/ui_manager.c:336
+#: src/gtkui/ui_manager.c:147 src/skins/ui_manager.c:336
 #: src/skins/ui_manager.c:366
 msgid "By Track Number"
 msgstr "根据音轨号码"
 
-#: src/gtkui/ui_manager.c:147 src/skins/ui_manager.c:280
+#: src/gtkui/ui_manager.c:149 src/skins/ui_manager.c:280
 #: src/skins/ui_manager.c:312 src/skins/ui_manager.c:342
 msgid "By Title"
 msgstr "根据标题"
 
-#: src/gtkui/ui_manager.c:149 src/skins/ui_manager.c:320
+#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:320
 #: src/skins/ui_manager.c:350
 msgid "By Artist"
 msgstr "根据艺术家"
 
-#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:316
+#: src/gtkui/ui_manager.c:153 src/skins/ui_manager.c:316
 #: src/skins/ui_manager.c:346
 msgid "By Album"
 msgstr "根据专辑"
 
-#: src/gtkui/ui_manager.c:153
+#: src/gtkui/ui_manager.c:155
 #, fuzzy
 msgid "By Release Date"
 msgstr "根据日期"
 
-#: src/gtkui/ui_manager.c:155
+#: src/gtkui/ui_manager.c:157
 #, fuzzy
 msgid "By File Path"
 msgstr "根据文件名"
 
-#: src/gtkui/ui_manager.c:157
+#: src/gtkui/ui_manager.c:159
 #, fuzzy
 msgid "By Formatted Title"
 msgstr "根据标题"
 
-#: src/gtkui/ui_manager.c:159
+#: src/gtkui/ui_manager.c:161
 #, fuzzy
 msgid "Reverse Order"
 msgstr "反转列表"
 
-#: src/gtkui/ui_manager.c:161
+#: src/gtkui/ui_manager.c:163
 msgid "Random Order"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:166
+#: src/gtkui/ui_manager.c:168
 msgid "Output"
 msgstr "输出"
 
-#: src/gtkui/ui_manager.c:168 src/modplug/gui/interface.cxx:572
+#: src/gtkui/ui_manager.c:170 src/modplug/gui/interface.cxx:572
 msgid "Effects"
 msgstr "音效"
 
-#: src/gtkui/ui_manager.c:170
+#: src/gtkui/ui_manager.c:172
 msgid "Equalizer"
 msgstr "均衡器"
 
-#: src/gtkui/ui_manager.c:175 src/skins/ui_manager.c:234
+#: src/gtkui/ui_manager.c:177 src/skins/ui_manager.c:234
 msgid "View"
 msgstr "外观"
 
-#: src/gtkui/ui_manager.c:176 src/skins/ui_manager.c:235
+#: src/gtkui/ui_manager.c:178 src/skins/ui_manager.c:235
 #, fuzzy
 msgid "Interface"
 msgstr "gnt界面"
 
-#: src/gtkui/ui_manager.c:183 src/skins/ui_manager.c:376
+#: src/gtkui/ui_manager.c:185 src/skins/ui_manager.c:376
 msgid "File"
 msgstr "文件"
 
-#: src/gtkui/ui_manager.c:186
+#: src/gtkui/ui_manager.c:188
 msgid "Components"
 msgstr "组件"
 
-#: src/gtkui/ui_manager.c:188 src/gtkui/ui_manager.c:191
+#: src/gtkui/ui_manager.c:190 src/gtkui/ui_manager.c:193
 #: src/skins/ui_manager.c:381 src/skins/ui_manager.c:384
 msgid "View Track Details"
 msgstr "查看音轨信息"
 
-#: src/gtkui/ui_manager.c:189 src/gtkui/ui_manager.c:192
+#: src/gtkui/ui_manager.c:191 src/gtkui/ui_manager.c:194
 #: src/skins/ui_manager.c:382 src/skins/ui_manager.c:385
 msgid "View track details"
 msgstr "查看音轨信息"
 
-#: src/gtkui/ui_manager.c:194 src/gtkui/ui_manager.c:195
+#: src/gtkui/ui_manager.c:196 src/gtkui/ui_manager.c:197
 #: src/skins/ui_manager.c:387 src/skins/ui_manager.c:388
 msgid "About Audacious"
 msgstr "关于Audacious"
 
-#: src/gtkui/ui_manager.c:197
+#: src/gtkui/ui_manager.c:199
 #, fuzzy
 msgid "Open Files ..."
 msgstr "打开文件"
 
-#: src/gtkui/ui_manager.c:198 src/skins/ui_manager.c:391
+#: src/gtkui/ui_manager.c:200 src/skins/ui_manager.c:391
 msgid "Load and play a file"
 msgstr "加载并播放文件"
 
-#: src/gtkui/ui_manager.c:200
+#: src/gtkui/ui_manager.c:202
 msgid "Open URL ..."
 msgstr ""
 
-#: src/gtkui/ui_manager.c:201 src/skins/ui_manager.c:394
+#: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:394
 msgid "Play media from the selected location"
 msgstr "播放被选中位置的文件"
 
-#: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:396
+#: src/gtkui/ui_manager.c:205 src/skins/ui_manager.c:396
 msgid "Plugin services"
 msgstr "插件服务"
 
-#: src/gtkui/ui_manager.c:205 src/skins/ui_manager.c:398
+#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:398
 msgid "Preferences"
 msgstr "首选项"
 
-#: src/gtkui/ui_manager.c:206 src/skins/ui_manager.c:399
+#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:399
 msgid "Open preferences window"
 msgstr "打开首选项窗口"
 
-#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:401
+#: src/gtkui/ui_manager.c:210 src/skins/ui_manager.c:401
 msgid "_Quit"
 msgstr "退出(_Q)"
 
-#: src/gtkui/ui_manager.c:209 src/skins/ui_manager.c:402
+#: src/gtkui/ui_manager.c:211 src/skins/ui_manager.c:402
 msgid "Quit Audacious"
 msgstr "退出Audacious"
 
-#: src/gtkui/ui_manager.c:211 src/gtkui/ui_manager.c:212
+#: src/gtkui/ui_manager.c:213 src/gtkui/ui_manager.c:214
 #: src/skins/ui_manager.c:404 src/skins/ui_manager.c:405
 msgid "Set A-B"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:214 src/gtkui/ui_manager.c:215
+#: src/gtkui/ui_manager.c:216 src/gtkui/ui_manager.c:217
 #: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
 msgid "Clear A-B"
 msgstr ""
 
-#: src/gtkui/ui_manager.c:217 src/gtkui/ui_manager.c:218
+#: src/gtkui/ui_manager.c:219 src/gtkui/ui_manager.c:220
 #: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
 msgid "Jump to Playlist Start"
 msgstr "跳到被选中列表并播放"
 
-#: src/gtkui/ui_manager.c:220 src/gtkui/ui_manager.c:221 src/hotkey/gui.c:81
+#: src/gtkui/ui_manager.c:222 src/gtkui/ui_manager.c:223 src/hotkey/gui.c:81
 #: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
 msgid "Jump to File"
 msgstr "跳到文件"
 
-#: src/gtkui/ui_manager.c:226 src/skins/ui_manager.c:419
+#: src/gtkui/ui_manager.c:228 src/skins/ui_manager.c:419
 msgid "Queue Toggle"
 msgstr "队列切换"
 
-#: src/gtkui/ui_manager.c:227 src/skins/ui_manager.c:420
+#: src/gtkui/ui_manager.c:229 src/skins/ui_manager.c:420
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "启用/禁用播放队列的条目"
 
-#: src/gtkui/ui_manager.c:230 src/skins/ui_manager.c:423
+#: src/gtkui/ui_manager.c:232 src/skins/ui_manager.c:423
 msgid "Copy"
 msgstr "复制"
 
-#: src/gtkui/ui_manager.c:233 src/skins/ui_manager.c:425
+#: src/gtkui/ui_manager.c:235 src/skins/ui_manager.c:425
 msgid "Cut"
 msgstr "剪切"
 
-#: src/gtkui/ui_manager.c:236 src/skins/ui_manager.c:427
+#: src/gtkui/ui_manager.c:238 src/skins/ui_manager.c:427
 msgid "Paste"
 msgstr "粘贴"
 
-#: src/gtkui/ui_manager.c:239 src/skins/ui_manager.c:256
+#: src/gtkui/ui_manager.c:241 src/skins/ui_manager.c:256
 msgid "Select All"
 msgstr "选中全部"
 
-#: src/gtkui/ui_manager.c:240 src/skins/ui_manager.c:257
+#: src/gtkui/ui_manager.c:242 src/skins/ui_manager.c:257
 msgid "Selects all of the playlist entries."
 msgstr "选中播放列表中的所有条目。"
 
-#: src/gtkui/ui_manager.c:243 src/skins/ui_manager.c:260
+#: src/gtkui/ui_manager.c:245 src/skins/ui_manager.c:260
 msgid "Select None"
 msgstr "取消选中"
 
-#: src/gtkui/ui_manager.c:244 src/skins/ui_manager.c:261
+#: src/gtkui/ui_manager.c:246 src/skins/ui_manager.c:261
 msgid "Deselects all of the playlist entries."
 msgstr "取消对播放列表的选择"
 
@@ -3111,7 +3116,7 @@ msgid ""
 msgstr ""
 
 #: src/modplug/gui/interface.cxx:567
-#: src/skins/ui_skinned_equalizer_slider.c:435
+#: src/skins/ui_skinned_equalizer_slider.c:431
 msgid "Preamp"
 msgstr "前置放大"
 
@@ -4768,43 +4773,43 @@ msgstr "Audacious播放列表编辑器"
 msgid "%s (%d of %d)"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:435
+#: src/skins/ui_skinned_equalizer_slider.c:431
 msgid "31 Hz"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:435
+#: src/skins/ui_skinned_equalizer_slider.c:431
 msgid "63 Hz"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:436
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "125 Hz"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:436
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "250 Hz"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:436
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "500 Hz"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:436
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "1 kHz"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:436
+#: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "2 kHz"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:437
+#: src/skins/ui_skinned_equalizer_slider.c:433
 msgid "4 kHz"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:437
+#: src/skins/ui_skinned_equalizer_slider.c:433
 msgid "8 kHz"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:437
+#: src/skins/ui_skinned_equalizer_slider.c:433
 msgid "16 kHz"
 msgstr ""
 
@@ -4821,11 +4826,11 @@ msgstr "未打包的Winamp 2.x主题"
 msgid "Could not create directory (%s): %s\n"
 msgstr "无法创建目录(%s): %s\n"
 
-#: src/sndfile/plugin.c:452
+#: src/sndfile/plugin.c:438
 msgid "About sndfile plugin"
 msgstr "关于sndfile插件"
 
-#: src/sndfile/plugin.c:453
+#: src/sndfile/plugin.c:439
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -4933,11 +4938,11 @@ msgstr "歌曲改变"
 msgid "Spectrum Analyzer"
 msgstr "光谱分析器"
 
-#: src/statusicon/statusicon.c:377
+#: src/statusicon/statusicon.c:378
 msgid "About Status Icon Plugin"
 msgstr "关于状态图标插件"
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.c:379
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -4954,44 +4959,44 @@ msgstr ""
 "\n"
 "此插件会在系统托盘上生成状态图标。\n"
 
-#: src/statusicon/statusicon.c:446
+#: src/statusicon/statusicon.c:447
 msgid "Status Icon Plugin - Preferences"
 msgstr "状态图标插件 - 首选项"
 
-#: src/statusicon/statusicon.c:456
+#: src/statusicon/statusicon.c:457
 msgid "Right-Click Menu"
 msgstr "右键菜单"
 
-#: src/statusicon/statusicon.c:461
+#: src/statusicon/statusicon.c:462
 msgid "Small playback menu #1"
 msgstr "迷你播放菜单#1"
 
-#: src/statusicon/statusicon.c:464
+#: src/statusicon/statusicon.c:465
 msgid "Small playback menu #2"
 msgstr "迷你播放菜单#2"
 
-#: src/statusicon/statusicon.c:480
+#: src/statusicon/statusicon.c:481
 msgid "Mouse Scroll Action"
 msgstr "鼠标滚轮动作"
 
-#: src/statusicon/statusicon.c:484
+#: src/statusicon/statusicon.c:485
 msgid "Change volume"
 msgstr "改变音量"
 
-#: src/statusicon/statusicon.c:486
+#: src/statusicon/statusicon.c:487
 msgid "Change playing song"
 msgstr "改变播放中歌曲"
 
-#: src/statusicon/statusicon.c:499
+#: src/statusicon/statusicon.c:500
 #, fuzzy
 msgid "Other settings"
 msgstr "混音器设置"
 
-#: src/statusicon/statusicon.c:504
+#: src/statusicon/statusicon.c:505
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:511
+#: src/statusicon/statusicon.c:512
 msgid "Close to the notification area (system tray)"
 msgstr ""
 
@@ -5147,12 +5152,12 @@ msgstr ""
 "vtx音乐文件可在http://vtx.microfor.ru/music.htm或者其它AY/YM音乐网站上找到\n"
 "Audacious上的实现由Pavel Vymetalek <pvymetalek@seznam.cz>完成"
 
-#: src/wavpack/wavpack.c:354
+#: src/wavpack/wavpack.c:353
 #, c-format
 msgid "Wavpack Decoder Plugin %s"
 msgstr "Wavpack解码插件 %s"
 
-#: src/wavpack/wavpack.c:355
+#: src/wavpack/wavpack.c:354
 msgid ""
 "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
 "\n"
