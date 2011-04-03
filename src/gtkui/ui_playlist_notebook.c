@@ -299,7 +299,6 @@ void ui_playlist_notebook_empty (void)
 
 static void do_follow (void)
 {
-    gint lists = aud_playlist_count ();
     gint playing = aud_playlist_get_playing ();
 
     if (bolded_playlist != playing)
@@ -314,11 +313,14 @@ static void do_follow (void)
 
     while (! g_queue_is_empty (& follow_queue))
     {
-        gint list = GPOINTER_TO_INT (g_queue_pop_head (& follow_queue));
+        gint list = aud_playlist_by_unique_id (GPOINTER_TO_INT (g_queue_pop_head
+         (& follow_queue)));
         gint row = GPOINTER_TO_INT (g_queue_pop_head (& follow_queue));
 
-        if (list >= lists)
+        if (list < 0)
             continue;
+        if (row < 0)
+            row = aud_playlist_get_position (list);
 
         GtkWidget * widget = playlist_get_treeview (list);
         if (row == aud_playlist_get_position (list))
@@ -336,7 +338,6 @@ void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
 
     if (type == PLAYLIST_UPDATE_STRUCTURE)
     {
-        AUDDBG("playlist order update\n");
         gint i, n_pages;
 
         n_pages = gtk_notebook_get_n_pages(UI_PLAYLIST_NOTEBOOK);
@@ -369,17 +370,24 @@ void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
     do_follow ();
 }
 
+/* set row == -1 for current position */
 void playlist_follow (gint list, gint row)
 {
+    /* push -1 to the queue unchanged */
+    g_queue_push_tail (& follow_queue, GINT_TO_POINTER
+     (aud_playlist_get_unique_id (list)));
+    g_queue_push_tail (& follow_queue, GINT_TO_POINTER (row));
+
+    /* now we need the actual row */
+    if (row < 0)
+        row = aud_playlist_get_position (list);
+
     if (config.autoscroll)
     {
         aud_playlist_select_all (list, FALSE);
         if (row >= 0)
             aud_playlist_entry_set_selected (list, row, TRUE);
     }
-
-    g_queue_push_tail (& follow_queue, GINT_TO_POINTER (list));
-    g_queue_push_tail (& follow_queue, GINT_TO_POINTER (row));
 
     if (! aud_playlist_update_pending ())
         do_follow ();
@@ -388,7 +396,7 @@ void playlist_follow (gint list, gint row)
 void ui_playlist_notebook_position (void * data, void * user)
 {
     gint list = GPOINTER_TO_INT (data);
-    playlist_follow (list, aud_playlist_get_position (list));
+    playlist_follow (list, -1);
 }
 
 static void destroy_cb (void)
