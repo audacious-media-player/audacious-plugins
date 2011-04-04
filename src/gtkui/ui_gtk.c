@@ -854,6 +854,8 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     else
         ui_playback_stop (NULL, NULL);
 
+    title_change_cb ();
+
     gtk_widget_show_all (vbox);
 
     if (config.player_visible)
