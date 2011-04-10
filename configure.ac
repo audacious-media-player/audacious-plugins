@@ -1333,9 +1333,14 @@ AC_SUBST([NEON_CFLAGS])
 dnl WinINet HTTP plugin
 dnl ===================
 
+enable_wininet=yes
+if test $have_neon = yes ; then
+    enable_wininet=no
+fi
+
 AC_ARG_ENABLE(wininet,
- [  --disable-wininet       disable WinINet HTTP support],
- [enable_wininet=$enableval], [enable_wininet=yes])
+ [  --enable-wininet        enable WinINet HTTP support],
+ enable_wininet=$enableval, enable_wininet=$enable_wininet)
 
 if test $enable_wininet = yes ; then
     AC_CHECK_HEADERS([wininet.h],
