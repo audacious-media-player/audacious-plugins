@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
 "POT-Creation-Date: 2011-04-03 18:03-0400\n"
-"PO-Revision-Date: 2011-03-10 14:43+0100\n"
+"PO-Revision-Date: 2011-04-09 21:40+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
 "Language: \n"
@@ -189,7 +189,7 @@ msgstr "Dateityp: "
 
 #: src/adplug/adplug-xmms.cc:540
 msgid "Subsongs: "
-msgstr "Untertitel"
+msgstr "Untertitel: "
 
 #: src/adplug/adplug-xmms.cc:541
 msgid "Instruments: "
@@ -454,7 +454,7 @@ msgstr "Erinnern"
 
 #: src/alarm/interface.c:1312
 msgid "Use reminder"
-msgstr "Erinnerung benützen"
+msgstr "Erinnerung benutzen"
 
 #: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:366
 msgid "Options"
@@ -621,6 +621,8 @@ msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
 msgstr ""
+"Sie haben keinen einzigen Sequenz-Port für die MIDI-Wiedergabe angegeben. Dies kann "
+"in den MIDI-Plugin-Einstellungen getan werden."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -855,6 +857,8 @@ msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
 msgstr ""
+"<span size=\"smaller\">FluidSynth-\n"
+"Backend</span>"
 
 #: src/amidi-plug/i_configure-timidity.c:39
 msgid "TIMIDITY BACKEND CONFIGURATION"
@@ -869,6 +873,8 @@ msgid ""
 "<span size=\"smaller\">TiMidity\n"
 "backend</span>"
 msgstr ""
+"<span size=\"smaller\">TiMidity-\n"
+"Backend</span>"
 
 #: src/amidi-plug/i_fileinfo.c:169 src/bluetooth/gui.c:271
 #: src/sid/xs_interface.c:1769
@@ -877,7 +883,7 @@ msgstr "Name:"
 
 #: src/amidi-plug/i_fileinfo.c:193
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> MIDI Info </span>"
 
 #: src/amidi-plug/i_fileinfo.c:205
 msgid "Format:"
@@ -901,11 +907,11 @@ msgstr "BPM:"
 
 #: src/amidi-plug/i_fileinfo.c:223
 msgid "BPM (wavg):"
-msgstr ""
+msgstr "BPM (Wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:226
 msgid "Time Div:"
-msgstr ""
+msgstr "Zeitmultiplex:"
 
 #: src/amidi-plug/i_fileinfo.c:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
@@ -982,7 +988,7 @@ msgstr "Wiedergabebeginn"
 
 #: src/aosd/aosd_trigger.c:78
 msgid "Triggers OSD when a playlist entry is played."
-msgstr "Löst OSD beim Abspielen eines Wiedergabelisteneintrags aus"
+msgstr "Löst OSD beim Abspielen eines Wiedergabelisteneintrags aus."
 
 #: src/aosd/aosd_trigger.c:82
 msgid "Title Change"
@@ -1004,7 +1010,7 @@ msgstr "Lautstärkeänderung"
 
 #: src/aosd/aosd_trigger.c:90
 msgid "Triggers OSD when volume is changed."
-msgstr "Löst OSD bei Lautstärkeänderung aus"
+msgstr "Löst OSD bei Lautstärkeänderung aus."
 
 #: src/aosd/aosd_trigger.c:94
 msgid "Pause On"
@@ -1012,7 +1018,7 @@ msgstr "Pause An"
 
 #: src/aosd/aosd_trigger.c:95
 msgid "Triggers OSD when playback is paused."
-msgstr "Löst OSD beim Pausieren der Wiedergabe aus"
+msgstr "Löst OSD beim Pausieren der Wiedergabe aus."
 
 #: src/aosd/aosd_trigger.c:99
 msgid "Pause Off"
@@ -1020,7 +1026,7 @@ msgstr "Pause Aus"
 
 #: src/aosd/aosd_trigger.c:100
 msgid "Triggers OSD when playback is unpaused."
-msgstr "Löst OSD beim Fortsetzen der Wiedergabe aus"
+msgstr "Löst OSD beim Fortsetzen der Wiedergabe aus."
 
 #: src/aosd/aosd_ui.c:168
 msgid "Placement"
@@ -1028,11 +1034,11 @@ msgstr "Platzierung"
 
 #: src/aosd/aosd_ui.c:202
 msgid "Relative X offset:"
-msgstr "Relative X-Verschiebung"
+msgstr "Relative X-Verschiebung:"
 
 #: src/aosd/aosd_ui.c:211
 msgid "Relative Y offset:"
-msgstr "Relative Y-Verschiebung"
+msgstr "Relative Y-Verschiebung:"
 
 #: src/aosd/aosd_ui.c:220
 msgid "Max OSD width:"
@@ -1142,7 +1148,7 @@ msgid ""
 msgstr ""
 "Composite-Manager nicht erkannt;\n"
 "sofern ein solcher nicht doch aktiv ist, bitte einen solchen aktivieren, "
-"sonst wird der OSD nicht funktionieren"
+"sonst wird das OSD nicht funktionieren"
 
 #: src/aosd/aosd_ui.c:816
 msgid "Composite manager not required for fake transparency"
@@ -1315,15 +1321,15 @@ msgstr "Derzeitiges Headset"
 
 #: src/bluetooth/gui.c:227
 msgid "_Refresh"
-msgstr "Aktualisieren"
+msgstr "_Aktualisieren"
 
 #: src/bluetooth/gui.c:231
 msgid "_Connect"
-msgstr "Verbinden"
+msgstr "_Verbinden"
 
 #: src/bluetooth/gui.c:237
 msgid "_Close"
-msgstr "Schließen"
+msgstr "_Schließen"
 
 #: src/bluetooth/gui.c:274
 msgid "Class"
@@ -1424,7 +1430,7 @@ msgstr "Titelinformation"
 
 #: src/cdaudio-ng/configure.c:176
 msgid "Disc speed:"
-msgstr "Diskgeschwindigkeit"
+msgstr "Diskgeschwindigkeit:"
 
 #: src/cdaudio-ng/configure.c:184
 msgid "Use cd-text if available"
@@ -1530,7 +1536,7 @@ msgid ""
 "provide length information (i.e. looping tracks)."
 msgstr ""
 "Die standardmäßige Liedlänge (in Sekunden) wird für Lieder benutzt, die "
-"keine Längeninformation beinhalten (z.B. Lieder in der Endlosschleife)."
+"keine Längeninformation beinhalten (z.B. Lieder in einer Endlosschleife)."
 
 #: src/console/plugin.c:33
 msgid "About the Game Console Music Decoder"
@@ -1581,7 +1587,7 @@ msgstr ""
 "Crossfading fehlgeschlagen, weil die Lieder eine andere Sample-Rate hatten.\n"
 "\n"
 "Sie können den Sample-Rate-Converter benutzen, um die Lieder auf die selbe "
-"Rate zu resamplen."
+"Bitrate zu resamplen."
 
 #: src/crystalizer/crystalizer.c:112
 msgid "Configure Crystalizer"
@@ -1702,6 +1708,8 @@ msgid ""
 "event-device-plugin: unable to open device file %s , skipping this device; "
 "check that the file exists and that you have read permission for it\n"
 msgstr ""
+"Event-Device-Plugin: Konnte Datei %s nicht öffnen, überspringe; "
+"Überprüfen Sie, ob die Datei existiert und Sie Leserechte darauf haben\n"
 
 #: src/evdev-plug/ed_internals.c:103
 #, c-format
@@ -1709,29 +1717,37 @@ msgid ""
 "event-device-plugin: unable to create a io_channel for device file %s ,"
 "skipping this device\n"
 msgstr ""
+"Event-Device-Plugin: Konnte IO-Channel für Datei %s nicht erstellen, "
+"überspringe\n"
 
 #: src/evdev-plug/ed_internals.c:342
 msgid ""
 "event-device-plugin: unable to open /proc/bus/input/devices , automatic "
 "detection of event devices won't work.\n"
 msgstr ""
+"Event-Device-Plugin: Konnte /proc/bus/input/devices nicht öffnen, automatisches "
+"Erkennen von Event-Devices wird nicht funktionieren.\n"
 
 #: src/evdev-plug/ed_internals.c:351
 msgid ""
 "event-device-plugin: unable to open a io_channel for /proc/bus/input/"
 "devices , automatic detection of event devices won't work.\n"
 msgstr ""
+"Event-Device-Plugin: Konnte einen IO-Channel für /proc/bus/input/"
+"devices nicht öffnen, automatisches Erkennen von Event-Devices wird nicht funktionieren.\n"
 
 #: src/evdev-plug/ed_internals.c:361
 msgid ""
 "event-device-plugin: an error occurred while reading /proc/bus/input/"
 "devices , automatic detection of event devices won't work.\n"
 msgstr ""
+"Event-Device-Plugin: Beim Lesen von /proc/bus/input/devices trat ein Fehler auf, "
+"automatisches Erkennen von Event-Devices wird nicht funktionieren.\n"
 
 #: src/evdev-plug/ed_internals.c:424
 #, c-format
 msgid "event-device-plugin: device %s not found in /dev/input , skipping.\n"
-msgstr ""
+msgstr "Event-Device-Plugin: Gerät %s in /dev/input nicht gefunden, überspringe.\n"
 
 #: src/evdev-plug/ed_internals.c:489 src/evdev-plug/ed_internals.c:583
 #, c-format
@@ -1739,6 +1755,8 @@ msgid ""
 "event-device-plugin: unable to load config file %s , default settings will "
 "be used.\n"
 msgstr ""
+"Event-Device-Plugin: Konnte Konfigurationsdatei %s nicht laden, Standardeinstellungen "
+"werden genutzt.\n"
 
 #: src/evdev-plug/ed_internals.c:535
 #, c-format
@@ -1746,6 +1764,8 @@ msgid ""
 "event-device-plugin: incomplete information in config file for device \"%s"
 "\" , skipping.\n"
 msgstr ""
+"Event-Device-Plugin: unvollständige Information in Konfigurationsdatei für Gerät "
+"\"%s\", überspringe.\n"
 
 #: src/evdev-plug/ed_internals.c:604 src/evdev-plug/ed_internals.c:936
 #, c-format
@@ -1753,6 +1773,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get is_active value for device "
 "\"%s\", skipping it.\n"
 msgstr ""
+"Event-Device-Plugin: Konnte \"is_active\"-Wert für Gerät \"%s\" "
+"nicht bekommen, überspringe.\n"
 
 #: src/evdev-plug/ed_internals.c:840
 #, c-format
@@ -1760,6 +1782,8 @@ msgid ""
 "event-device-plugin: unable to access local directory %s , settings will not "
 "be saved.\n"
 msgstr ""
+"Event-Device-Plugin: Konnte auf lokalen Ordner %s nicht zugreifen, Einstellungen "
+"werden nicht gespeichert.\n"
 
 #: src/evdev-plug/ed_internals.c:890
 #, c-format
@@ -1767,6 +1791,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get filename value for device "
 "\"%s\", skipping it.\n"
 msgstr ""
+"Event-Device-Plugin: Konnte Dateinamen-Wert für Gerät \"%s\" nicht bekommen, "
+"überspringe.\n"
 
 #: src/evdev-plug/ed_internals.c:906
 #, c-format
@@ -1774,6 +1800,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get phys value for device \"%s"
 "\", skipping it.\n"
 msgstr ""
+"Event-Device-Plugin: Konnte \"Phys\"-Wert für Gerät \"%s\" "
+"nicht bekommen, überspringe.\n"
 
 #: src/evdev-plug/ed_internals.c:922
 #, c-format
@@ -1781,6 +1809,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get is_custom value for device "
 "\"%s\", skipping it.\n"
 msgstr ""
+"Event-Device-Plugin: Konnte \"Is_Custom\"-Wert für Gerät \"%s\" "
+"nicht bekommen, überspringe.\n"
 
 #: src/evdev-plug/ed_internals.c:946
 #, c-format
@@ -1788,6 +1818,8 @@ msgid ""
 "event-device-plugin: configuration, unexpected value for device \"%s\", "
 "skipping it.\n"
 msgstr ""
+"Event-Device-Plugin: Unerwarteter Wert für Gerät \"%s\", "
+"überspringe.\n"
 
 #: src/evdev-plug/ed_ui.c:212
 msgid "Detected"
@@ -1811,6 +1843,8 @@ msgid ""
 "Cannot open bindings window for a not-detected device.\n"
 "Ensure that the device has been correctly plugged in."
 msgstr ""
+"Konnte Binding-Fenster für ein nicht erkanntes Gerät nicht öffnen.\n"
+"Stellen Sie sicher, dass das Gerät korrekt angeschlossen wurde."
 
 #: src/evdev-plug/ed_ui.c:319 src/gtkui/ui_gtk.c:234
 msgid "Error"
@@ -1821,6 +1855,8 @@ msgid ""
 "Unable to open selected device.\n"
 "Please check read permissions on device file."
 msgstr ""
+"Konnte ausgewähltes Gerät nicht öffnen.\n"
+"Bitte überprüfen Sie die Leserechte."
 
 #: src/evdev-plug/ed_ui.c:341
 msgid "EvDev-Plug - Add custom device"
@@ -1835,6 +1871,12 @@ msgid ""
 "/dev/input/ ), you may want to add a custom device, explicitly specifying\n"
 "name and device file."
 msgstr ""
+"EvDev-Plug versucht automatisch Informationen über verfügbare Geräte des\n"
+"Systems zu erkennen und zu aktualisieren.\n"
+"Falls jedoch die automatische Erkennung auf Ihrem System nicht funktioniert\n"
+"oder Sie die Geräte nicht über den Standardpfad nutzen (momentan werden sie nur\n"
+"in /dev/input/ gesucht), können Sie ein benutzerdefiniertes Gerät hinzufügen, bei dem Sie\n"
+"explizit den Gerätenamen und die Datei angeben."
 
 #: src/evdev-plug/ed_ui.c:361
 msgid "Device name:"
@@ -1853,11 +1895,12 @@ msgid ""
 "Please specify both name and filename.\n"
 "Filename must be specified with absolute path."
 msgstr ""
+"Bitte geben Sie Name und Dateiname an.\n"
+"Dateinamen müssen mit absolutem Pfad angegeben werden."
 
 #: src/evdev-plug/ed_ui.c:447
 msgid "Do you want to remove the existing configuration for selected device?\n"
-msgstr ""
-"Wollen Sie die existierende Konfiguration des ausgewählten Gerätes löschen?\n"
+msgstr "Wollen Sie die existierende Konfiguration des ausgewählten Gerätes löschen?\n"
 
 #: src/evdev-plug/ed_ui.c:466
 msgid "Do you want to remove the selected custom device?\n"
@@ -1889,7 +1932,7 @@ msgstr "Geräteadresse"
 
 #: src/evdev-plug/ed_ui.c:689
 msgid "_Bindings"
-msgstr ""
+msgstr "_Bindings"
 
 #: src/evdev-plug/ed_ui.c:838
 msgid ""
@@ -1897,6 +1940,9 @@ msgid ""
 "if no key is pressed in five seconds, this window\n"
 "will close without binding changes."
 msgstr ""
+"Drücken Sie eine Taste um sie zu binden.\n"
+"Falls in den nächsten fünf Sekunden keine gedrückt wird,\n"
+"schließt sich dieses Fenster ohne Änderungen der Bindings vorzunehmen."
 
 #: src/evdev-plug/ed_ui.c:875
 msgid ""
@@ -1905,6 +1951,10 @@ msgid ""
 "It's not possible to assign multiple actions to the same input event "
 "(although it's possible to assign the same action to multiple events)."
 msgstr ""
+"Diese Eingabe wurde schon zugewiesen.\n"
+"\n"
+"Es ist nicht möglich, mehrere Aktionen auf die selbe Eingabe zuzuweisen "
+"(obwohl es möglich ist, die selbe Aktion auf verschiedene Eingaben zuzuweisen)."
 
 #: src/evdev-plug/ed_ui.c:1323
 msgid "EvDev-Plug - Bindings Configuration"
@@ -2222,13 +2272,13 @@ msgstr "GNT Interface"
 
 #: src/gtkui/actions.c:254 src/skins/ui_main.c:820
 msgid "Can't jump to time when no track is being played.\n"
-msgstr "Kann nicht zu Zeit springen, wenn kein Titel gespielt wird.\n"
+msgstr "Kann nicht zu Zeitangabe springen, wenn kein Titel gespielt wird.\n"
 
 #: src/gtkui/actions.c:269 src/gtkui/ui_manager.c:225
 #: src/gtkui/ui_manager.c:226 src/skins/ui_main.c:835
 #: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Jump to Time"
-msgstr "Zu Zeit springen"
+msgstr "Zu Zeitangabe springen"
 
 #: src/gtkui/actions.c:286 src/skins/ui_main.c:856
 msgid "minutes:seconds"
@@ -2402,9 +2452,8 @@ msgid "Show Column Headers"
 msgstr "Spaltenüberschriften anzeigen"
 
 #: src/gtkui/ui_manager.c:60
-#, fuzzy
 msgid "Scroll on Song Change"
-msgstr "Songwechsel"
+msgstr "Mit Songwechsel scrollen"
 
 #: src/gtkui/ui_manager.c:72 src/gtkui/ui_manager.c:73
 #: src/skins/ui_manager.c:172 src/skins/ui_manager.c:173
@@ -2446,7 +2495,7 @@ msgstr "Wiedergabeliste importieren ..."
 
 #: src/gtkui/ui_manager.c:96 src/skins/ui_manager.c:214
 msgid "Loads a playlist file into the selected playlist."
-msgstr "Lade Wiedergabeliste in ausgewählte Wiedergabeliste"
+msgstr "Lade Wiedergabeliste in ausgewählte Wiedergabeliste."
 
 #: src/gtkui/ui_manager.c:98
 msgid "Export Playlist ..."
@@ -2538,7 +2587,7 @@ msgstr "Titel bearbeiten"
 
 #: src/gtkui/ui_manager.c:140
 msgid "Edit the playlist title."
-msgstr "Titel der Wiedergabeliste bearbeiten"
+msgstr "Titel der Wiedergabeliste bearbeiten."
 
 #: src/gtkui/ui_manager.c:143
 msgid "Choose Columns ..."
@@ -2813,7 +2862,7 @@ msgstr "Tastaturkürzel:"
 
 #: src/hotkey/gui.c:422
 msgid "<b>Action:</b>"
-msgstr "<b>Aktion: </b>"
+msgstr "<b>Aktion:</b>"
 
 #: src/hotkey/gui.c:430
 msgid "<b>Key Binding:</b>"
@@ -2870,7 +2919,7 @@ msgstr "jack-Plugin-Konfiguration"
 
 #: src/jack/configure.c:121
 msgid "Connection mode:"
-msgstr "Verbindungs-Modus"
+msgstr "Verbindungs-Modus:"
 
 #: src/jack/configure.c:133
 msgid "Enable debug printing"
@@ -2893,7 +2942,7 @@ msgstr "Über JACK Output Plugin 0.17"
 
 #: src/ladspa/ladspa.c:844
 msgid "This LADSPA plugin has no user controls"
-msgstr "Dieses LADSPA-Plugin hat keine Benutzeroberfläche."
+msgstr "Dieses LADSPA-Plugin hat keine Benutzeroberfläche"
 
 #: src/ladspa/ladspa.c:885 src/ladspa/ladspa.c:972
 msgid "Name"
@@ -3062,7 +3111,7 @@ msgstr "8 bit"
 
 #: src/modplug/gui/interface.cxx:212
 msgid "Mono (downmix)"
-msgstr "Mono (downmix)"
+msgstr "Mono (Downmix)"
 
 #: src/modplug/gui/interface.cxx:241
 msgid "Nearest (fastest)"
@@ -3380,7 +3429,7 @@ msgstr "Zwischenspeichern:"
 
 #: src/OSS/configure.c:305
 msgid "Pre-buffer (percent):"
-msgstr "Vorpuffer (Prozent)"
+msgstr "Vorpuffer (Prozent):"
 
 #: src/OSS/configure.c:316
 msgid "Buffering"
@@ -3456,11 +3505,11 @@ msgstr "Sample-Rate-Konverter Einstellungen"
 
 #: src/resample/plugin.c:158
 msgid "Rate mappings:"
-msgstr ""
+msgstr "Rate-Mappings:"
 
 #: src/resample/plugin.c:181
 msgid "All others:"
-msgstr "Alle Anderen"
+msgstr "Alle anderen:"
 
 #: src/resample/plugin.c:193
 msgid "Method:"
@@ -3488,11 +3537,11 @@ msgstr "Scrobbler-URL:"
 
 #: src/scrobbler/configure.c:219
 msgid "<b>Last.FM</b>"
-msgstr ""
+msgstr "<b>Last.FM</b>"
 
 #: src/scrobbler/configure.c:262
 msgid "Scrobbler"
-msgstr ""
+msgstr "Scrobbler"
 
 #: src/scrobbler/plugin.c:214
 msgid ""
@@ -3562,7 +3611,7 @@ msgstr "Abtastfrequenz:"
 
 #: src/sid/xs_interface.c:383
 msgid "Use oversampling"
-msgstr "Oversampling benützen"
+msgstr "Oversampling benutzen"
 
 #: src/sid/xs_interface.c:394
 msgid "Factor:"
@@ -3590,6 +3639,9 @@ msgid ""
 "clock speed/frequency. Otherwise the speed is determined from played file "
 "itself."
 msgstr ""
+"Falls aktiviert, \"zwingt\" diese Option die Emulations-Engine, die ausgewählte "
+"Geschwindigkeit/Frequenz zu nutzen. Ansonsten wird die Geschwindigkeit aus der Datei selbst "
+"bestimmt."
 
 #: src/sid/xs_interface.c:451
 msgid "PAL (50 Hz)"
@@ -3654,7 +3706,7 @@ msgstr "SID-Modell:"
 
 #: src/sid/xs_interface.c:522
 msgid "SIDPlay 1 (frame-based)"
-msgstr ""
+msgstr "SIDPlay 1 (frame-basiert)"
 
 #: src/sid/xs_interface.c:526
 msgid ""
@@ -3773,7 +3825,7 @@ msgstr "reSID-Sampling-Optionen:"
 
 #: src/sid/xs_interface.c:685
 msgid "Emu#2"
-msgstr ""
+msgstr "Emu#2"
 
 #: src/sid/xs_interface.c:697
 msgid "Emulate filters"
@@ -3789,15 +3841,15 @@ msgstr ""
 
 #: src/sid/xs_interface.c:726
 msgid "FS"
-msgstr ""
+msgstr "FS"
 
 #: src/sid/xs_interface.c:743
 msgid "FM"
-msgstr ""
+msgstr "FM"
 
 #: src/sid/xs_interface.c:760
 msgid "FT"
-msgstr ""
+msgstr "FT"
 
 #: src/sid/xs_interface.c:771
 msgid "Reset values"
@@ -3870,7 +3922,7 @@ msgid ""
 "playtime)."
 msgstr ""
 "Falls aktiviert, wird der Titel gespielt bis ein bestimmter Wert erreicht "
-"wird (z.B. Maximale Spielzeit)."
+"wird (z.B. maximale Spielzeit)."
 
 #: src/sid/xs_interface.c:951
 msgid "Only when song length is unknown"
@@ -3881,7 +3933,7 @@ msgid ""
 "If enabled, the maximum playtime is applied only if song/tune length is not "
 "known."
 msgstr ""
-"Falls aktiviert, wird die Maximale Spielzeit nur benutzt, wenn Titellänge "
+"Falls aktiviert, wird die maximale Spielzeit nur benutzt, wenn Titellänge "
 "unbekannt ist."
 
 #: src/sid/xs_interface.c:982
@@ -3890,7 +3942,7 @@ msgstr "Maximale Spielzeit:"
 
 #: src/sid/xs_interface.c:999
 msgid "Use XSIDPLAY-compatible database"
-msgstr "XSIDPLAY-kompatible Datenbank benützen"
+msgstr "XSIDPLAY-kompatible Datenbank benutzen"
 
 #: src/sid/xs_interface.c:1003
 msgid ""
@@ -3974,8 +4026,7 @@ msgstr "Nur mit spezifizierter Minimumdauer abstimmen"
 
 #: src/sid/xs_interface.c:1135
 msgid "Only add sub-tunes that have a duration of at least specified time."
-msgstr ""
-"Nur Sub-Tunes hinzufügen, die mindestens eine bestimmte Mindestdauer haben."
+msgstr "Nur Sub-Tunes hinzufügen, die mindestens eine bestimmte Mindestdauer haben."
 
 #: src/sid/xs_interface.c:1162
 msgid "Sub-tune handling:"
@@ -4243,7 +4294,7 @@ msgstr "Standard"
 
 #: src/skins/ui_main.c:595
 msgid "kbps"
-msgstr ""
+msgstr "kbps"
 
 #: src/skins/ui_main.c:603
 msgid "kHz"
@@ -4297,6 +4348,16 @@ msgid ""
 "\n"
 "To use these features, please consider using a different GTK theme engine."
 msgstr ""
+"<big><b>Defekte GTK-Engine in Benutzung</b></big>\n"
+"\n"
+"Audacious hat festgestellt, dass Sie eine defekte GTK-Engine benutzen.\n"
+"\n"
+"Die Theme-Engine <i>%s</i>, welche Sie benutzen, ist mit manchen Features, "
+"die moderne Skins nutzen, inkompatibel."
+"Die inkompatiblen Features wurden für diese "
+"Session deaktiviert.\n"
+"\n"
+"Um diese nutzen zu können, sollten Sie erwägen, eine andere GTK-Engine zu nutzen."
 
 #: src/skins/ui_main.c:1063
 msgid "Do not display this warning again"
@@ -4424,15 +4485,15 @@ msgstr "Leichtes Bewegen"
 
 #: src/skins/ui_manager.c:106
 msgid "Analyzer"
-msgstr ""
+msgstr "Analyzer"
 
 #: src/skins/ui_manager.c:107
 msgid "Scope"
-msgstr ""
+msgstr "Scope"
 
 #: src/skins/ui_manager.c:108
 msgid "Voiceprint"
-msgstr ""
+msgstr "Voiceprint"
 
 #: src/skins/ui_manager.c:109
 msgid "Off"
@@ -4629,7 +4690,7 @@ msgstr "Liste zufällig anordnen"
 
 #: src/skins/ui_manager.c:303
 msgid "Randomizes the playlist."
-msgstr "Ordnet Liste zufällig an."
+msgstr "Ordne Liste zufällig an."
 
 #: src/skins/ui_manager.c:306
 msgid "Reverse List"
@@ -4669,11 +4730,11 @@ msgstr "Nach Datum"
 
 #: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "Sorts the list by modification time."
-msgstr "Sortiert die Liste nach Modifizierungszeitpunkt"
+msgstr "Sortiere die Liste nach Modifizierungszeitpunkt."
 
 #: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
 msgid "Sorts the list by track number."
-msgstr "Sortiert die Liste nach Titelnummer"
+msgstr "Sortiere die Liste nach Titelnummer."
 
 #: src/skins/ui_manager.c:340
 msgid "Sort Selected"
@@ -4797,9 +4858,9 @@ msgid ""
 "for."
 msgstr ""
 "Wählen Sie Einträge in der Wiedergabeliste durch Ausfüllen eines oder "
-"mehrerer Eingabefelder aus. Diese nutzen reguläre Ausdrücke und "
-"unterscheiden Groß- und Kleinschreibung nicht. Falls Sie nicht wissen, wie "
-"reguläre Ausdrücke funktionieren, geben Sie einfach nur einen Teilbegriff "
+"mehrerer Eingabefelder aus. Diese nutzen reguläre Ausdrücke, "
+"unterscheiden Groß- und Kleinschreibung aber nicht. Falls Sie nicht wissen, "
+"wie reguläre Ausdrücke funktionieren, geben Sie einfach nur einen Teilbegriff "
 "für Ihre Suche ein."
 
 #: src/skins/ui_playlist.c:397
@@ -4853,15 +4914,15 @@ msgstr "%s (%d von %d)"
 
 #: src/skins/ui_skinned_equalizer_slider.c:431
 msgid "31 Hz"
-msgstr ""
+msgstr "31 Hz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:431
 msgid "63 Hz"
-msgstr ""
+msgstr "63 Hz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "125 Hz"
-msgstr ""
+msgstr "125 Hz"
 
 #: src/skins/ui_skinned_equalizer_slider.c:432
 msgid "250 Hz"
@@ -4976,7 +5037,7 @@ msgstr "SndStretch - Konfiguration"
 
 #: src/song_change/song_change.c:463
 msgid "Command to run when Audacious starts a new song."
-msgstr "Auszuführender Befehl, wenn Audacious ein neues Lied startet"
+msgstr "Auszuführender Befehl, wenn Audacious ein neues Lied startet."
 
 #: src/song_change/song_change.c:464 src/song_change/song_change.c:468
 #: src/song_change/song_change.c:472 src/song_change/song_change.c:476
@@ -4985,18 +5046,18 @@ msgstr "Befehl:"
 
 #: src/song_change/song_change.c:467
 msgid "Command to run toward the end of a song."
-msgstr "Auszuführender Befehl am Ende eines Lieds"
+msgstr "Auszuführender Befehl am Ende eines Lieds."
 
 #: src/song_change/song_change.c:471
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr "Auszuführender Befehl am Ende der Wiedergabeliste"
+msgstr "Auszuführender Befehl am Ende der Wiedergabeliste."
 
 #: src/song_change/song_change.c:475
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "Auszuführender Befehl, wenn sich der Titel eines Lieds ändert (z.B. bei "
-"Netzwerk-Streams)"
+"Netzwerk-Streams)."
 
 #: src/song_change/song_change.c:479
 msgid ""
@@ -5021,14 +5082,15 @@ msgstr ""
 "(es sind jedoch nicht alle nützlich für den Ende-der-Wiedergabeliste-"
 "Befehl)\n"
 "\n"
-"%%F: Frequenz (in Hertz)\n"
-"%%c: Anzahl der Kanäle\n"
-"%%f: Dateiname (absoluter Pfad)\n"
-"%%l: Länge (in Millisekunden)\n"
-"%%n oder %%s: Titel\n"
-"%%r: Bitrate (in Bits pro Sekunde)\n"
-"%%t: Wiedergabelisten-Position (%%02d)\n"
-"%%p: Ist die Wiedergabe momentan aktiv? (1 oder 0)%a: Künstler\n"
+"%F: Frequenz (in Hertz)\n"
+"%c: Anzahl der Kanäle\n"
+"%f: Dateiname (absoluter Pfad)\n"
+"%l: Länge (in Millisekunden)\n"
+"%n oder %s: Titel\n"
+"%r: Bitrate (in Bits pro Sekunde)\n"
+"%t: Wiedergabelisten-Position (%02d)\n"
+"%p: Wiedergabe momentan aktiv? (1 oder 0)\n"
+"%a: Künstler\n"
 "%b: Album\n"
 "%T: Titelname"
 
@@ -5112,7 +5174,7 @@ msgstr "PopUp-Fenster deaktivieren"
 
 #: src/statusicon/statusicon.c:512
 msgid "Close to the notification area (system tray)"
-msgstr "In den Informationsbereich beenden (system tray)"
+msgstr "In den Informationsbereich beenden (System-Tray)"
 
 #: src/stereo_plugin/stereo.c:41
 msgid ""
@@ -5188,7 +5250,7 @@ msgstr ""
 "Sinuston-Generator von Haavard Kvaalen <havardk@xmms.org>\n"
 "Verändert von Daniel J. Peng <danielpeng@bigfoot.com>\n"
 "\n"
-"Um ihn zu benützen, eine URL hinzufügen: tone://frequency1;frequency2;"
+"Um ihn zu benutzen, eine URL hinzufügen: tone://frequency1;frequency2;"
 "frequency3;...\n"
 "z.B. tone://2000;2005 für einen Ton mit 2000Hz und einen mit 2005Hz"
 
@@ -5296,622 +5358,3 @@ msgstr ""
 "\n"
 "Ein Teil des Plugin-Codes war von Miles Egan\n"
 "Die Wavpack-Seite befindet sich auf http://www.wavpack.com/\n"
-
-#~ msgid "%s: %d kbps, %d Hz, %s"
-#~ msgstr "%s: %d Kbps, %d Hz, %s"
-
-#~ msgid ""
-#~ "* Select SoundFont files *\n"
-#~ "In order to play MIDI with FluidSynth, you need to specify at least one "
-#~ "valid SoundFont file here (use absolute paths). The loading order is from "
-#~ "the top (first) to the bottom (last)."
-#~ msgstr ""
-#~ "* SoundFont-Dateien auswählen *\n"
-#~ "Um MIDI-Dateien mit FluidSynth abzuspielen, muss hier mindestens eine "
-#~ "gültige SoundFont-Datei angegeben werden (absolute Pfade verwenden). Die "
-#~ "Lade-Reihenfolge ist von der Spitze (erstes) bis zum  The loading order "
-#~ "is from the top (first) to the bottom (last)."
-
-#~ msgid ""
-#~ "If enabled, the extension from the original filename will not be stripped "
-#~ "before adding the new file extension to the end."
-#~ msgstr ""
-#~ "Wenn aktiviert, wird die Erweiterung des ursprünglichen Dateinamens nicht "
-#~ "entfernt, bevor die neue Dateierweiterung am Ende angefügt wird."
-
-#~ msgid ""
-#~ "best/slowest:0;\n"
-#~ "worst/fastest:9;\n"
-#~ "recommended:2;\n"
-#~ "default:5;"
-#~ msgstr ""
-#~ "beste/langsamste:0;\n"
-#~ "schlechteste/schnellste:9;\n"
-#~ "empfohlen:2;\n"
-#~ "voreingestellt:5;"
-
-#~ msgid "Adds 16 bit checksum to every frame"
-#~ msgstr "16-Bit-Prüfsumme zu jedem Frame hinzufügen"
-
-#~ msgid "Variable bitrate"
-#~ msgstr "Variable Bitrate"
-
-#~ msgid "Average bitrate"
-#~ msgstr "Durchschnittliche Bitrate"
-
-#~ msgid ""
-#~ "For use with players that do not support low bitrate mp3 (Apex AD600-A "
-#~ "DVD/mp3 player)"
-#~ msgstr ""
-#~ "Zur Benutzung mit Playern, die kein MP3 mit niedriger Bitrate "
-#~ "unterstützen (Apex AD600-A DVD/MP3 player)"
-
-#~ msgid ""
-#~ "highest:0;\n"
-#~ "lowest:9;\n"
-#~ "default:4;"
-#~ msgstr ""
-#~ "höchste:0;\n"
-#~ "niedrigste:9;\n"
-#~ "voreingestellt:4;"
-
-#~ msgid "Show playlists"
-#~ msgstr "Wiedergabeliste anzeigen"
-
-#~ msgid "Show/hide playlists"
-#~ msgstr "Wiedergabeliste anzeigen/verstecken"
-
-#~ msgid "About the Sun Driver"
-#~ msgstr "Über den Sun-Treiber"
-
-#~ msgid ""
-#~ "XMMS BSD Sun Driver\n"
-#~ "\n"
-#~ "Copyright (c) 2001 CubeSoft Communications, Inc.\n"
-#~ "Maintainer: <vedge at csoft.org>.\n"
-#~ msgstr ""
-#~ "XMMS BSD Sun Driver\n"
-#~ "\n"
-#~ "Copyright (c) 2001 CubeSoft Communications, Inc.\n"
-#~ "Betreuer: <vedge at csoft.org>.\n"
-
-#~ msgid "Audio control device:"
-#~ msgstr "Audio-Kontroll-Gerät:"
-
-#~ msgid "Buffer size (ms):"
-#~ msgstr "Puffergröße (ms):"
-
-#~ msgid "Volume controls device:"
-#~ msgstr "Lautstärke-Kontroll-Gerät:"
-
-#~ msgid "XMMS uses mixer exclusively."
-#~ msgstr "XMMS benützt den Mixer exklusiv."
-
-#~ msgid "Sun driver configuration"
-#~ msgstr "Sun-Treiber-Konfiguration"
-
-#~ msgid "Target volume:"
-#~ msgstr "Zielvolumen:"
-
-#~ msgid "Effect strength:"
-#~ msgstr "Effektstärke:"
-
-#~ msgid "FLAC Audio Plugin "
-#~ msgstr "FLAC-Audio-Plugin "
-
-#~ msgid "Stream browser"
-#~ msgstr "Streambrowser"
-
-#~ msgid "Streambrowser"
-#~ msgstr "Streambrowser"
-
-#~ msgid "Audacious standard menu"
-#~ msgstr "Audacious-Standard-Menü"
-
-#~ msgid "Surround echo"
-#~ msgstr "Surround-Echo"
-
-#~ msgid "About ESounD Plugin"
-#~ msgstr "Über das ESounD-Plugin"
-
-#~ msgid "ESD Output Plugin configuration"
-#~ msgstr "ESD-Ausgabe-Plugin-Konfiguration"
-
-#~ msgid "Host:"
-#~ msgstr "Host:"
-
-#~ msgid "Use remote host"
-#~ msgstr "Nutze Remote-Host"
-
-#~ msgid "Volume controls OSS mixer"
-#~ msgstr "Lautstärke steuert OSS-Mixer"
-
-#~ msgid "Port:"
-#~ msgstr "Port:"
-
-#~ msgid "Server"
-#~ msgstr "Server"
-
-#~ msgid "Load List"
-#~ msgstr "Lade Liste"
-
-#~ msgid "Save List"
-#~ msgstr "Liste speichern"
-
-#~ msgid "About RoarAudio Plugin"
-#~ msgstr "Über RoarAudio Plugin"
-
-#~ msgid "RoarAudio Plugin - Configuration"
-#~ msgstr "RoarAudio Plugin - Konfiguration"
-
-#~ msgid "Server Type:"
-#~ msgstr "Servervariante:"
-
-#~ msgid "Host or Path:"
-#~ msgstr "Host oder Pfad:"
-
-#~ msgid "<b>Host:</b>"
-#~ msgstr "<b>Host:</b>"
-
-#~ msgid "Server & Network"
-#~ msgstr "Server & Netzwerk"
-
-#~ msgid "Proxy Address"
-#~ msgstr "Proxyadresse"
-
-#~ msgid "<b>Proxy</b>"
-#~ msgstr "<b>Proxy</b>"
-
-#, fuzzy
-#~ msgid "Player Name:"
-#~ msgstr "Hauptfenster"
-
-#, fuzzy
-#~ msgid "<b>Player</b>"
-#~ msgstr "<b>Name: </b>"
-
-#, fuzzy
-#~ msgid "<b>Current Song</b>"
-#~ msgstr "<b>Aktion: </b>"
-
-#~ msgid "Meta Data"
-#~ msgstr "Meta-Daten"
-
-#~ msgid "Start of playback"
-#~ msgstr "Starte Wiedergabe"
-
-#~ msgid "Automatic songchange"
-#~ msgstr "Automatischer Titelwechsel"
-
-#~ msgid "Manual songchange"
-#~ msgstr "Manueller Titelwechsel"
-
-#~ msgid "Manual stop"
-#~ msgstr "Manueller Stop"
-
-#~ msgid "End of playlist"
-#~ msgstr "Ende der Wiedergabeliste"
-
-#~ msgid "Seeking"
-#~ msgstr "Suchen"
-
-#~ msgid "Reopen output device"
-#~ msgstr "Ausgabegerät erneut öffnen"
-
-#~ msgid "Flush output device"
-#~ msgstr "Ausgabegerät leeren"
-
-#~ msgid "None (gapless/off)"
-#~ msgstr "Nichts (Gapless/aus)"
-
-#~ msgid "Simple crossfade"
-#~ msgstr "Einfaches Überblenden"
-
-#~ msgid "Advanced crossfade"
-#~ msgstr "Erweitertes Überblenden"
-
-#~ msgid "Fadein"
-#~ msgstr "Einblenden:"
-
-#~ msgid "Fadeout"
-#~ msgstr "Ausblenden:"
-
-#~ msgid "Fadeout/Fadein"
-#~ msgstr "Aus/Einblenden:"
-
-#~ msgid "About"
-#~ msgstr "Über"
-
-#~ msgid "Output plugin"
-#~ msgstr "Ausgabe-Plugin"
-
-#~ msgid "Throttle Output"
-#~ msgstr "Ausgabe drosseln"
-
-#~ msgid "Max block size (bytes):"
-#~ msgstr "Maximale Blockgröße (Bytes):"
-
-#~ msgid "Plugin compatibility options"
-#~ msgstr "Plugin Kompatibilitätsoptionen"
-
-#~ msgid ""
-#~ "When modifying the Output Options or the Mixing buffer size, you need to "
-#~ "stop/restart playback for the settings to take effect."
-#~ msgstr ""
-#~ "Nach Modifizieren der Ausgabeeinstellungen oder der Buffergröße muss die "
-#~ "Wiedergabe gestoppt/neugestartet werden."
-
-#~ msgid "Mixing buffer size (ms):"
-#~ msgstr "Puffergröße (ms):"
-
-#~ msgid "auto"
-#~ msgstr "Automatisch"
-
-#~ msgid ""
-#~ "Automatically calculate an optimal buffer size.\n"
-#~ "Default: On"
-#~ msgstr ""
-#~ "Optimale Buffergröße automatisch berechnen.\n"
-#~ "Standard: An"
-
-#~ msgid "Set parameters for:"
-#~ msgstr "Setze Parameter für:"
-
-#~ msgid "Reopen"
-#~ msgstr "Wieder öffnen"
-
-#~ msgid "Start volume (%):"
-#~ msgstr "Anfangslautstärke: (%)"
-
-#~ msgid "Fade in"
-#~ msgstr "Einblenden:"
-
-#~ msgid "End volume (%):"
-#~ msgstr "Endlautstärke: (%)"
-
-#~ msgid "Custom (ms):"
-#~ msgstr "Benutzerdefiniert (ms):"
-
-#~ msgid ""
-#~ "Don't overlap the two songs. The next song will start immediatelly after "
-#~ "the previous has ended."
-#~ msgstr ""
-#~ "Titel nicht überlappen. Der nächste Titel wird sofort gestartet, nachdem "
-#~ "der vorige geendet hat."
-
-#~ msgid " Enable"
-#~ msgstr "Aktivieren"
-
-#~ msgid "Advanced"
-#~ msgstr "Erweiterte Einstellungen"
-
-#~ msgid "Write debug output to <stderr>"
-#~ msgstr "Schreibe Debug-Ausgabe in <stderr>"
-
-#~ msgid "Debug options"
-#~ msgstr "Debug-Optionen"
-
-#~ msgid "Enable volume control"
-#~ msgstr "Lautstärkeregelung aktivieren"
-
-#~ msgid "Volume control options"
-#~ msgstr "Lautstärkeeinstellungen"
-
-#~ msgid "Don't  crossfade"
-#~ msgstr "Nicht überblenden"
-
-#~ msgid "successive tracks"
-#~ msgstr "fortlaufende Titel"
-
-#~ msgid "same file"
-#~ msgstr "selbe Datei"
-
-#~ msgid "Enable HTTP buffer underrun workaround"
-#~ msgstr "HTTP Bufferunderrun-Workaround aktivieren"
-
-#~ msgid "Use Quantaudio timing comments"
-#~ msgstr "Quantaudio timing comments nutzen"
-
-#~ msgid "Keep output opened"
-#~ msgstr "Ausgabe offen lassen"
-
-#~ msgid "Advanced options"
-#~ msgstr "Erweiterte Einstellungen"
-
-#~ msgid "New"
-#~ msgstr "Neu"
-
-#~ msgid "Save Default List"
-#~ msgstr "Speichere Standard Liste"
-
-#~ msgid "Saves the selected playlist to the default location."
-#~ msgstr "Speichere ausgewählte Wiedergabeliste."
-
-#~ msgid "Entries"
-#~ msgstr "Einträge"
-
-#~ msgid "_Rename"
-#~ msgstr "Umbenennen"
-
-#~ msgid "About Icecast-Plugin"
-#~ msgstr "Über Icecast-Plugin"
-
-#~ msgid "Error setting hostname: %s\n"
-#~ msgstr "Fehler beim Setzen des Hostnamens: %s\n"
-
-#~ msgid "Error setting protocol: %s\n"
-#~ msgstr "Fehler beim Setzen des Protokolls: %s\n"
-
-#~ msgid "Error setting port: %s\n"
-#~ msgstr "Fehler beim Setzen des Ports: %s\n"
-
-#~ msgid "Error setting password: %s\n"
-#~ msgstr "Fehler beim Setzen des Passworts: %s\n"
-
-#~ msgid "Error setting mount: %s\n"
-#~ msgstr "Fehler beim Setzen des Mounts: %s\n"
-
-#~ msgid "Error setting stream %s: %s\n"
-#~ msgstr "Fehler beim Setzen des Streams %s: %s\n"
-
-#~ msgid "public"
-#~ msgstr "öffentlich"
-
-#~ msgid "private"
-#~ msgstr "privat"
-
-#~ msgid "Error setting stream name: %s\n"
-#~ msgstr "Fehler beim Setzen des Streamnamens: %s\n"
-
-#~ msgid "Error setting stream genre: %s\n"
-#~ msgstr "Fehler beim Setzen des Streamgenres: %s\n"
-
-#~ msgid "Error setting stream URL: %s\n"
-#~ msgstr "Fehler beim Setzen des Stream-URL's: %s\n"
-
-#~ msgid "Error setting stream description: %s\n"
-#~ msgstr "Fehler beim Setzen der Streambeschreibung: %s\n"
-
-#~ msgid "Error setting user: %s\n"
-#~ msgstr "Fehler beim Setzen des Nutzers: %s\n"
-
-#~ msgid "Error connecting to server: %s\n"
-#~ msgstr "Fehler bei der Serververbindung: %s\n"
-
-#~ msgid "Icecast Configuration"
-#~ msgstr "Icecast Konfiguraion"
-
-#~ msgid "Output stream format:"
-#~ msgstr "Ausgabe-Stream-Format"
-
-#~ msgid "Server address:"
-#~ msgstr "Serveradresse:"
-
-#~ msgid "Server hostname or IP address"
-#~ msgstr "Server Hostname oder IP-Adresse"
-
-#~ msgid "Server port number"
-#~ msgstr "Server Portnummer"
-
-#~ msgid "Mount point:"
-#~ msgstr "Einhängepunkt:"
-
-#~ msgid "Mount point for the stream"
-#~ msgstr "Einhängepunkt für die Streams"
-
-#~ msgid ""
-#~ "Icecast source user name for the stream; depends on your server "
-#~ "settings.\n"
-#~ "The default value is \"source\""
-#~ msgstr ""
-#~ "Icecast source Benutzername für den Stream; abhängig von "
-#~ "Servereinstellung.\n"
-#~ "Der Standardwert ist \"source\""
-
-#~ msgid "Icecast source user password"
-#~ msgstr "Icecast source Benutzerpasswort"
-
-#~ msgid "Connection timeout (seconds):"
-#~ msgstr "Zeitüberschreitung (Sekunden):"
-
-#~ msgid ""
-#~ "Amount of time before plugin closes connection to server when no audio "
-#~ "data available"
-#~ msgstr ""
-#~ "Länge der Zeit bevor das Plugin die Verbindung trennt, wenn keine "
-#~ "Audiodateien verfügbar sind"
-
-#~ msgid "Buffer size (bytes):"
-#~ msgstr "Puffergröße (Ms):"
-
-#~ msgid ""
-#~ "Internal buffer size\n"
-#~ "Try to increase this if you are experiencing audio skipping on client side"
-#~ msgstr ""
-#~ "Interne Buffergröße\n"
-#~ "Erhöhen falls man Audio-Springen auf Client-Seite wahrnimmt."
-
-#~ msgid "Flush buffer if "
-#~ msgstr "Puffer leeren wenn "
-
-#~ msgid "Determines when to flush internal buffer to prevent its overflow"
-#~ msgstr ""
-#~ "Entscheiden wann interner Puffer geleert wird um Overflow zu vermeiden"
-
-#~ msgid "percents are filled"
-#~ msgstr "Prozent belegt"
-
-#~ msgid "Stream is public"
-#~ msgstr "Stream ist öffentlich"
-
-#~ msgid ""
-#~ "Setting this asks the server to list the stream in any directories it "
-#~ "knows about"
-#~ msgstr ""
-#~ "Server fragen ob Stream in jedem bekannten Verzeichnis gelistet wird"
-
-#~ msgid "Stream name:"
-#~ msgstr "Stream-Name:"
-
-#~ msgid "The URL of a site about this stream"
-#~ msgstr "URL einer Seite dieses Streams"
-
-#~ msgid "Stream genre:"
-#~ msgstr "Stream-Genre:"
-
-#~ msgid ""
-#~ "The genre (or genres) of the stream. This is usually a keyword list, eg "
-#~ "\"pop rock rap\""
-#~ msgstr ""
-#~ "Genre des Streams. Normalerweise eine Stichwortliste, Bsp. \"Pop Rock Rap"
-#~ "\""
-
-#~ msgid "Stream description:"
-#~ msgstr "Streambeschreibung:"
-
-#~ msgid "Enable fast play-length calculation"
-#~ msgstr "Schnelle Spieldauer-Berechnung aktivieren"
-
-#~ msgid "Parse XING headers"
-#~ msgstr "XING-Header parsen"
-
-#~ msgid "Use SJIS to write ID3 tags (not recommended)"
-#~ msgstr "SJIS zum Schreiben von ID3-Tags benutzen (nicht Empfohlen)"
-
-#~ msgid "Metadata Settings"
-#~ msgstr "Metadaten-Einstellungen:"
-
-#~ msgid "MPEG Audio Plugin Configuration"
-#~ msgstr "MPEG-Audio-Plugin-Konfiguration"
-
-#~ msgid ""
-#~ "Audacious MPEG Audio Plugin\n"
-#~ "\n"
-#~ "Compiled against libMAD version: %d.%d.%d%s\n"
-#~ "\n"
-#~ "Written by:\n"
-#~ "    William Pitcock <nenolod@sacredspiral.co.uk>\n"
-#~ "    Yoshiki Yazawa <yaz@cc.rim.or.jp>\n"
-#~ "\n"
-#~ "Portions derived from XMMS-MAD by:\n"
-#~ "    Sam Clegg\n"
-#~ "\n"
-#~ "ReplayGain support by:\n"
-#~ "    Samuel Krempp"
-#~ msgstr ""
-#~ "Audacious MPEG Audio Plugin\n"
-#~ "\n"
-#~ "Kompiliert gegen libMAD Version: %d.%d.%d%s\n"
-#~ "\n"
-#~ "Geschrieben von:\n"
-#~ "    William Pitcock <nenolod@sacredspiral.co.uk>\n"
-#~ "    Yoshiki Yazawa <yaz@cc.rim.or.jp>\n"
-#~ "\n"
-#~ "Teile abgeleitet von XMMS-MAD durch:\n"
-#~ "    Sam Clegg\n"
-#~ "\n"
-#~ "ReplayGain-Unterstützung von:\n"
-#~ "    Samuel Krempp"
-
-#~ msgid "About MPEG Audio Plugin"
-#~ msgstr "Über MPEG-Audio-Plugin"
-
-#~ msgid "About OSSv4 Driver"
-#~ msgstr "Über den OSSv4-Treiber"
-
-#~ msgid "VBR"
-#~ msgstr "VBR"
-
-#~ msgid ""
-#~ "Are you sure you want to close %s?  If you do, any changes made since the "
-#~ "playlist was exported will be lost."
-#~ msgstr ""
-#~ "Wirklich schließen %s?  Alle seit dem letzten Export gemachten "
-#~ "Einstellungen gehen verloren."
-
-#~ msgid "Ape2 Tag"
-#~ msgstr "Ape2-Tag"
-
-#~ msgid "Title:"
-#~ msgstr "Titel:"
-
-#~ msgid "Comment:"
-#~ msgstr "Kommentar:"
-
-#~ msgid "Genre:"
-#~ msgstr "Genre:"
-
-#~ msgid "Remove Tag"
-#~ msgstr "Tag entfernen"
-
-#~ msgid "Wavpack Info:"
-#~ msgstr "Wavpack-Information:"
-
-#~ msgid "version %d"
-#~ msgstr "Version %d"
-
-#~ msgid "average bitrate: %6.1f kbps"
-#~ msgstr "Durchschnittliche Bitrate: %6.1f kbps"
-
-#~ msgid "samplerate: %d Hz"
-#~ msgstr "Abtastfrequenz: %d Hz"
-
-#~ msgid "bits per sample: %d"
-#~ msgstr "Bits pro Sample: %d"
-
-#~ msgid "channels: %d"
-#~ msgstr "Kanäle: %d"
-
-#~ msgid "length: %d:%.2d"
-#~ msgstr "Länge: %d:%.2d"
-
-#~ msgid "file size: %d Bytes"
-#~ msgstr "Dateigröße: %d Byte"
-
-#~ msgid "Title Peak: ?"
-#~ msgstr "Titel-Höchstwert: ?"
-
-#~ msgid "Album Peak: ?"
-#~ msgstr "Album-Höchstwert: ?"
-
-#~ msgid "Title Gain: ?"
-#~ msgstr "Titel-Verstärkung: ?"
-
-#~ msgid "Album Gain: ?"
-#~ msgstr "Album-Verstärkung: ?"
-
-#~ msgid "File Info - %s"
-#~ msgstr "Dateiinformationen - %s"
-
-#~ msgid "Enable Dynamic Bitrate Display"
-#~ msgstr "Dynamische-Bitraten-Anzeige aktivieren"
-
-#~ msgid "General Plugin Settings"
-#~ msgstr "Allgemeine Plugin-Einstellungen:"
-
-#~ msgid "use Track Gain/Peak"
-#~ msgstr "Benutze Titel Gain/Peak"
-
-#~ msgid "use Album Gain/Peak"
-#~ msgstr "Benutze Album Gain/Peak"
-
-#~ msgid "Enable Clipping Prevention"
-#~ msgstr "Clipping-Verhinderung aktivieren"
-
-#~ msgid "Enable ReplayGain"
-#~ msgstr "ReplayGain aktivieren"
-
-#~ msgid "ReplayGain Type"
-#~ msgstr "ReplayGain-Typ"
-
-#~ msgid "ReplayGain Settings"
-#~ msgstr "ReplayGain-Einstellungen"
-
-#~ msgid "Plugin"
-#~ msgstr "Plugin"
-
-#~ msgid "ReplayGain"
-#~ msgstr "ReplayGain"
-
-#~ msgid "Wavpack Configuration"
-#~ msgstr "Wavpack-Konfiguration"
