@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-04-10 00:55-0400\n"
+"POT-Creation-Date: 2011-04-16 01:46-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,12 +91,12 @@ msgid "Channels"
 msgstr ""
 
 #: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:186 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:162 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr ""
 
 #: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:186
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:162
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr ""
@@ -2956,7 +2956,7 @@ msgstr ""
 msgid "Bass Boost"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:186
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:162
 msgid "Surround"
 msgstr ""
 

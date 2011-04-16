@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-04-03 18:03-0400\n"
+"POT-Creation-Date: 2011-04-16 01:46-0400\n"
 "PO-Revision-Date: 2010-08-22 22:00+0400\n"
 "Last-Translator: Sergey V. Mironov <sergo@bk.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -112,12 +112,12 @@ msgid "Channels"
 msgstr "Каналы"
 
 #: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:186 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:162 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Моно"
 
 #: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:186
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:162
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Стерео"
@@ -3332,7 +3332,7 @@ msgstr "Диапазон"
 msgid "Bass Boost"
 msgstr "Усиление баса"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:186
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:162
 msgid "Surround"
 msgstr "Объёмное звучание"
 

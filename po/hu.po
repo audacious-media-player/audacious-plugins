@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-04-03 18:03-0400\n"
+"POT-Creation-Date: 2011-04-16 01:46-0400\n"
 "PO-Revision-Date: 2010-08-23 12:00+0100\n"
 "Last-Translator: Peter Polonkai <polesz@nedudu.hu>\n"
 "Language-Team: Nedudu Team <nedudu@nedudu.hu>\n"
@@ -95,12 +95,12 @@ msgid "Channels"
 msgstr "Csatornák"
 
 #: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:186 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:162 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Monó"
 
 #: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:186
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:162
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Sztereó"
@@ -3067,7 +3067,7 @@ msgstr "Tartomány"
 msgid "Bass Boost"
 msgstr "Basszus kiemelés"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:186
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:162
 msgid "Surround"
 msgstr "Térhatású"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-04-03 18:03-0400\n"
+"POT-Creation-Date: 2011-04-16 01:46-0400\n"
 "PO-Revision-Date: 2011-04-09 21:40+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
@@ -99,12 +99,12 @@ msgid "Channels"
 msgstr "Kanäle"
 
 #: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:186 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:162 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Mono"
 
 #: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:186
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:162
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Stereo"
@@ -621,8 +621,8 @@ msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
 msgstr ""
-"Sie haben keinen einzigen Sequenz-Port für die MIDI-Wiedergabe angegeben. Dies kann "
-"in den MIDI-Plugin-Einstellungen getan werden."
+"Sie haben keinen einzigen Sequenz-Port für die MIDI-Wiedergabe angegeben. "
+"Dies kann in den MIDI-Plugin-Einstellungen getan werden."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -1708,8 +1708,8 @@ msgid ""
 "event-device-plugin: unable to open device file %s , skipping this device; "
 "check that the file exists and that you have read permission for it\n"
 msgstr ""
-"Event-Device-Plugin: Konnte Datei %s nicht öffnen, überspringe; "
-"Überprüfen Sie, ob die Datei existiert und Sie Leserechte darauf haben\n"
+"Event-Device-Plugin: Konnte Datei %s nicht öffnen, überspringe; Überprüfen "
+"Sie, ob die Datei existiert und Sie Leserechte darauf haben\n"
 
 #: src/evdev-plug/ed_internals.c:103
 #, c-format
@@ -1725,29 +1725,31 @@ msgid ""
 "event-device-plugin: unable to open /proc/bus/input/devices , automatic "
 "detection of event devices won't work.\n"
 msgstr ""
-"Event-Device-Plugin: Konnte /proc/bus/input/devices nicht öffnen, automatisches "
-"Erkennen von Event-Devices wird nicht funktionieren.\n"
+"Event-Device-Plugin: Konnte /proc/bus/input/devices nicht öffnen, "
+"automatisches Erkennen von Event-Devices wird nicht funktionieren.\n"
 
 #: src/evdev-plug/ed_internals.c:351
 msgid ""
 "event-device-plugin: unable to open a io_channel for /proc/bus/input/"
 "devices , automatic detection of event devices won't work.\n"
 msgstr ""
-"Event-Device-Plugin: Konnte einen IO-Channel für /proc/bus/input/"
-"devices nicht öffnen, automatisches Erkennen von Event-Devices wird nicht funktionieren.\n"
+"Event-Device-Plugin: Konnte einen IO-Channel für /proc/bus/input/devices "
+"nicht öffnen, automatisches Erkennen von Event-Devices wird nicht "
+"funktionieren.\n"
 
 #: src/evdev-plug/ed_internals.c:361
 msgid ""
 "event-device-plugin: an error occurred while reading /proc/bus/input/"
 "devices , automatic detection of event devices won't work.\n"
 msgstr ""
-"Event-Device-Plugin: Beim Lesen von /proc/bus/input/devices trat ein Fehler auf, "
-"automatisches Erkennen von Event-Devices wird nicht funktionieren.\n"
+"Event-Device-Plugin: Beim Lesen von /proc/bus/input/devices trat ein Fehler "
+"auf, automatisches Erkennen von Event-Devices wird nicht funktionieren.\n"
 
 #: src/evdev-plug/ed_internals.c:424
 #, c-format
 msgid "event-device-plugin: device %s not found in /dev/input , skipping.\n"
-msgstr "Event-Device-Plugin: Gerät %s in /dev/input nicht gefunden, überspringe.\n"
+msgstr ""
+"Event-Device-Plugin: Gerät %s in /dev/input nicht gefunden, überspringe.\n"
 
 #: src/evdev-plug/ed_internals.c:489 src/evdev-plug/ed_internals.c:583
 #, c-format
@@ -1755,8 +1757,8 @@ msgid ""
 "event-device-plugin: unable to load config file %s , default settings will "
 "be used.\n"
 msgstr ""
-"Event-Device-Plugin: Konnte Konfigurationsdatei %s nicht laden, Standardeinstellungen "
-"werden genutzt.\n"
+"Event-Device-Plugin: Konnte Konfigurationsdatei %s nicht laden, "
+"Standardeinstellungen werden genutzt.\n"
 
 #: src/evdev-plug/ed_internals.c:535
 #, c-format
@@ -1764,8 +1766,8 @@ msgid ""
 "event-device-plugin: incomplete information in config file for device \"%s"
 "\" , skipping.\n"
 msgstr ""
-"Event-Device-Plugin: unvollständige Information in Konfigurationsdatei für Gerät "
-"\"%s\", überspringe.\n"
+"Event-Device-Plugin: unvollständige Information in Konfigurationsdatei für "
+"Gerät \"%s\", überspringe.\n"
 
 #: src/evdev-plug/ed_internals.c:604 src/evdev-plug/ed_internals.c:936
 #, c-format
@@ -1773,8 +1775,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get is_active value for device "
 "\"%s\", skipping it.\n"
 msgstr ""
-"Event-Device-Plugin: Konnte \"is_active\"-Wert für Gerät \"%s\" "
-"nicht bekommen, überspringe.\n"
+"Event-Device-Plugin: Konnte \"is_active\"-Wert für Gerät \"%s\" nicht "
+"bekommen, überspringe.\n"
 
 #: src/evdev-plug/ed_internals.c:840
 #, c-format
@@ -1782,8 +1784,8 @@ msgid ""
 "event-device-plugin: unable to access local directory %s , settings will not "
 "be saved.\n"
 msgstr ""
-"Event-Device-Plugin: Konnte auf lokalen Ordner %s nicht zugreifen, Einstellungen "
-"werden nicht gespeichert.\n"
+"Event-Device-Plugin: Konnte auf lokalen Ordner %s nicht zugreifen, "
+"Einstellungen werden nicht gespeichert.\n"
 
 #: src/evdev-plug/ed_internals.c:890
 #, c-format
@@ -1800,8 +1802,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get phys value for device \"%s"
 "\", skipping it.\n"
 msgstr ""
-"Event-Device-Plugin: Konnte \"Phys\"-Wert für Gerät \"%s\" "
-"nicht bekommen, überspringe.\n"
+"Event-Device-Plugin: Konnte \"Phys\"-Wert für Gerät \"%s\" nicht bekommen, "
+"überspringe.\n"
 
 #: src/evdev-plug/ed_internals.c:922
 #, c-format
@@ -1809,8 +1811,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get is_custom value for device "
 "\"%s\", skipping it.\n"
 msgstr ""
-"Event-Device-Plugin: Konnte \"Is_Custom\"-Wert für Gerät \"%s\" "
-"nicht bekommen, überspringe.\n"
+"Event-Device-Plugin: Konnte \"Is_Custom\"-Wert für Gerät \"%s\" nicht "
+"bekommen, überspringe.\n"
 
 #: src/evdev-plug/ed_internals.c:946
 #, c-format
@@ -1818,8 +1820,7 @@ msgid ""
 "event-device-plugin: configuration, unexpected value for device \"%s\", "
 "skipping it.\n"
 msgstr ""
-"Event-Device-Plugin: Unerwarteter Wert für Gerät \"%s\", "
-"überspringe.\n"
+"Event-Device-Plugin: Unerwarteter Wert für Gerät \"%s\", überspringe.\n"
 
 #: src/evdev-plug/ed_ui.c:212
 msgid "Detected"
@@ -1874,8 +1875,10 @@ msgstr ""
 "EvDev-Plug versucht automatisch Informationen über verfügbare Geräte des\n"
 "Systems zu erkennen und zu aktualisieren.\n"
 "Falls jedoch die automatische Erkennung auf Ihrem System nicht funktioniert\n"
-"oder Sie die Geräte nicht über den Standardpfad nutzen (momentan werden sie nur\n"
-"in /dev/input/ gesucht), können Sie ein benutzerdefiniertes Gerät hinzufügen, bei dem Sie\n"
+"oder Sie die Geräte nicht über den Standardpfad nutzen (momentan werden sie "
+"nur\n"
+"in /dev/input/ gesucht), können Sie ein benutzerdefiniertes Gerät "
+"hinzufügen, bei dem Sie\n"
 "explizit den Gerätenamen und die Datei angeben."
 
 #: src/evdev-plug/ed_ui.c:361
@@ -1900,7 +1903,8 @@ msgstr ""
 
 #: src/evdev-plug/ed_ui.c:447
 msgid "Do you want to remove the existing configuration for selected device?\n"
-msgstr "Wollen Sie die existierende Konfiguration des ausgewählten Gerätes löschen?\n"
+msgstr ""
+"Wollen Sie die existierende Konfiguration des ausgewählten Gerätes löschen?\n"
 
 #: src/evdev-plug/ed_ui.c:466
 msgid "Do you want to remove the selected custom device?\n"
@@ -1954,7 +1958,8 @@ msgstr ""
 "Diese Eingabe wurde schon zugewiesen.\n"
 "\n"
 "Es ist nicht möglich, mehrere Aktionen auf die selbe Eingabe zuzuweisen "
-"(obwohl es möglich ist, die selbe Aktion auf verschiedene Eingaben zuzuweisen)."
+"(obwohl es möglich ist, die selbe Aktion auf verschiedene Eingaben "
+"zuzuweisen)."
 
 #: src/evdev-plug/ed_ui.c:1323
 msgid "EvDev-Plug - Bindings Configuration"
@@ -3178,7 +3183,7 @@ msgstr "Bereich"
 msgid "Bass Boost"
 msgstr "Bassverstärkung"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:186
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:162
 msgid "Surround"
 msgstr "Surround"
 
@@ -3639,9 +3644,9 @@ msgid ""
 "clock speed/frequency. Otherwise the speed is determined from played file "
 "itself."
 msgstr ""
-"Falls aktiviert, \"zwingt\" diese Option die Emulations-Engine, die ausgewählte "
-"Geschwindigkeit/Frequenz zu nutzen. Ansonsten wird die Geschwindigkeit aus der Datei selbst "
-"bestimmt."
+"Falls aktiviert, \"zwingt\" diese Option die Emulations-Engine, die "
+"ausgewählte Geschwindigkeit/Frequenz zu nutzen. Ansonsten wird die "
+"Geschwindigkeit aus der Datei selbst bestimmt."
 
 #: src/sid/xs_interface.c:451
 msgid "PAL (50 Hz)"
@@ -4026,7 +4031,8 @@ msgstr "Nur mit spezifizierter Minimumdauer abstimmen"
 
 #: src/sid/xs_interface.c:1135
 msgid "Only add sub-tunes that have a duration of at least specified time."
-msgstr "Nur Sub-Tunes hinzufügen, die mindestens eine bestimmte Mindestdauer haben."
+msgstr ""
+"Nur Sub-Tunes hinzufügen, die mindestens eine bestimmte Mindestdauer haben."
 
 #: src/sid/xs_interface.c:1162
 msgid "Sub-tune handling:"
@@ -4353,11 +4359,11 @@ msgstr ""
 "Audacious hat festgestellt, dass Sie eine defekte GTK-Engine benutzen.\n"
 "\n"
 "Die Theme-Engine <i>%s</i>, welche Sie benutzen, ist mit manchen Features, "
-"die moderne Skins nutzen, inkompatibel."
-"Die inkompatiblen Features wurden für diese "
-"Session deaktiviert.\n"
+"die moderne Skins nutzen, inkompatibel.Die inkompatiblen Features wurden für "
+"diese Session deaktiviert.\n"
 "\n"
-"Um diese nutzen zu können, sollten Sie erwägen, eine andere GTK-Engine zu nutzen."
+"Um diese nutzen zu können, sollten Sie erwägen, eine andere GTK-Engine zu "
+"nutzen."
 
 #: src/skins/ui_main.c:1063
 msgid "Do not display this warning again"
@@ -4858,10 +4864,10 @@ msgid ""
 "for."
 msgstr ""
 "Wählen Sie Einträge in der Wiedergabeliste durch Ausfüllen eines oder "
-"mehrerer Eingabefelder aus. Diese nutzen reguläre Ausdrücke, "
-"unterscheiden Groß- und Kleinschreibung aber nicht. Falls Sie nicht wissen, "
-"wie reguläre Ausdrücke funktionieren, geben Sie einfach nur einen Teilbegriff "
-"für Ihre Suche ein."
+"mehrerer Eingabefelder aus. Diese nutzen reguläre Ausdrücke, unterscheiden "
+"Groß- und Kleinschreibung aber nicht. Falls Sie nicht wissen, wie reguläre "
+"Ausdrücke funktionieren, geben Sie einfach nur einen Teilbegriff für Ihre "
+"Suche ein."
 
 #: src/skins/ui_playlist.c:397
 msgid "Album: "

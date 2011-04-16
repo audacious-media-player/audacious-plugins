@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5.1\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-04-03 18:03-0400\n"
+"POT-Creation-Date: 2011-04-16 01:46-0400\n"
 "PO-Revision-Date: 2009-04-11 16:07+0200\n"
 "Last-Translator: Ernest Adrogué <eadrogue@gmx.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -104,12 +104,12 @@ msgid "Channels"
 msgstr "Canals"
 
 #: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:186 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:162 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "Mono"
 
 #: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:186
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:162
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "Estèreo"
@@ -3336,7 +3336,7 @@ msgstr "Amplitud"
 msgid "Bass Boost"
 msgstr "Amplificació de baixos"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:186
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:162
 msgid "Surround"
 msgstr "So envolvent"
 
