@@ -205,16 +205,7 @@ static void * pump (void * unused)
 
         if (slept > 4)
         {
-            static gboolean warned = FALSE;
-            if (! warned)
-            {
-                fprintf (stderr, "\n** WARNING **\nAudacious has detected that "
-                 "your ALSA device has a broken timer.  A workaround\nis being "
-                 "used to prevent CPU overload.  Please report this problem to "
-                 "your\nLinux distributor or to the ALSA developers.\n\n");
-                warned = TRUE;
-            }
-
+            AUDDBG ("Activating timer workaround.\n");
             workaround = TRUE;
         }
 
