@@ -1,6 +1,6 @@
 /*
  * ALSA Output Plugin for Audacious
- * Copyright 2009-2010 John Lindgren
+ * Copyright 2009-2011 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -83,7 +83,7 @@ static int alsa_period; /* milliseconds */
 
 static int64_t alsa_written; /* frames */
 static char alsa_prebuffer, alsa_paused;
-static int alsa_paused_time; /* milliseconds */
+static int alsa_paused_delay; /* frames */
 
 static int poll_pipe[2];
 static int poll_count;
@@ -277,12 +277,6 @@ FAILED:
     return delay;
 }
 
-static int get_output_time (void)
-{
-    return (int64_t) (alsa_written - snd_pcm_bytes_to_frames (alsa_handle,
-     alsa_buffer_data_length) - get_delay ()) * 1000 / alsa_rate;
-}
-
 int alsa_init (void)
 {
     alsa_handle = NULL;
@@ -404,7 +398,7 @@ int alsa_open_audio (int aud_format, int rate, int channels)
     alsa_written = 0;
     alsa_prebuffer = 1;
     alsa_paused = 0;
-    alsa_paused_time = 0;
+    alsa_paused_delay = 0;
 
     if (! poll_setup ())
         goto FAILED;
@@ -568,8 +562,17 @@ int alsa_written_time (void)
 int alsa_output_time (void)
 {
     pthread_mutex_lock (& alsa_mutex);
-    int time = (alsa_prebuffer || alsa_paused) ? alsa_paused_time :
-     get_output_time ();
+
+    int64_t frames = alsa_written - snd_pcm_bytes_to_frames (alsa_handle,
+     alsa_buffer_data_length);
+
+    if (alsa_prebuffer || alsa_paused)
+        frames -= alsa_paused_delay;
+    else
+        frames -= get_delay ();
+        
+    int time = frames * 1000 / alsa_rate;
+    
     pthread_mutex_unlock (& alsa_mutex);
     return time;
 }
@@ -588,7 +591,7 @@ FAILED:
 
     alsa_written = (int64_t) time * alsa_rate / 1000;
     alsa_prebuffer = 1;
-    alsa_paused_time = time;
+    alsa_paused_delay = 0;
 
     pthread_cond_broadcast (& alsa_cond); /* interrupt period wait */
 
@@ -607,7 +610,7 @@ void alsa_pause (int pause)
     if (! alsa_prebuffer)
     {
         if (pause)
-            alsa_paused_time = get_output_time ();
+            alsa_paused_delay = get_delay ();
 
         CHECK (snd_pcm_pause, alsa_handle, pause);
     }
