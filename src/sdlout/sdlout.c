@@ -18,6 +18,7 @@
  */
 
 #include <assert.h>
+#include <math.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -34,8 +35,12 @@
 
 #include "sdlout.h"
 
+#define VOLUME_RANGE 40 /* decibels */
+
 static pthread_mutex_t sdlout_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t sdlout_cond = PTHREAD_COND_INITIALIZER;
+
+static volatile int vol_left = 100, vol_right = 100;
 
 static int sdlout_chan, sdlout_rate;
 
@@ -66,12 +71,49 @@ void sdlout_cleanup (void)
 
 void sdlout_get_volume (int * left, int * right)
 {
-    /* SDL has no volume control that I know of. --jlindgren */
-    * left = * right = 100;
+    * left = vol_left;
+    * right = vol_right;
 }
 
 void sdlout_set_volume (int left, int right)
 {
+    vol_left = left;
+    vol_right = right;
+}
+
+static void apply_mono_volume (unsigned char * data, int len)
+{
+    int vol = MAX (vol_left, vol_right);
+    int factor = (vol == 0) ? 0 : powf (10, (float) VOLUME_RANGE * (vol - 100)
+     / 100 / 20) * 65536;
+
+    int16_t * i = (int16_t *) data;
+    int16_t * end = (int16_t *) (data + len);
+    
+    while (i < end)
+    {
+        * i = ((int) * i * factor) >> 16;
+        i ++;
+    }
+}
+
+static void apply_stereo_volume (unsigned char * data, int len)
+{
+    int factor_left = (vol_left == 0) ? 0 : powf (10, (float) VOLUME_RANGE *
+     (vol_left - 100) / 100 / 20) * 65536;
+    int factor_right = (vol_right == 0) ? 0 : powf (10, (float) VOLUME_RANGE *
+     (vol_right - 100) / 100 / 20) * 65536;
+
+    int16_t * i = (int16_t *) data;
+    int16_t * end = (int16_t *) (data + len);
+    
+    while (i < end)
+    {
+        * i = ((int) * i * factor_left) >> 16;
+        i ++;
+        * i = ((int) * i * factor_right) >> 16;
+        i ++;
+    }
 }
 
 static void callback (void * user, unsigned char * buf, int len)
@@ -94,6 +136,11 @@ static void callback (void * user, unsigned char * buf, int len)
     }
 
     buffer_data_len -= copy;
+
+    if (sdlout_chan == 2)
+        apply_stereo_volume (buf, copy);
+    else
+        apply_mono_volume (buf, copy);
 
     if (copy < len)
         memset (buf + copy, 0, len - copy);
