@@ -25,6 +25,7 @@
 #ifdef AUDACIOUS_PLUGIN
 
 #include <audacious/configdb.h>
+#include <audacious/drct.h>
 #include <audacious/plugin.h>
 
 #define XS_CONFIG_FILE          mcs_handle_t
@@ -810,7 +811,8 @@ void xs_cfg_ok(void)
     gint tmpInt;
     const gchar *tmpStr;
 
-    xs_stop(NULL);
+    if (aud_drct_get_playing ())
+        aud_drct_stop ();
 
     /* Get lock on configuration */
     XS_MUTEX_LOCK(xs_cfg);
