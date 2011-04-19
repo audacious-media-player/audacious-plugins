@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-04-16 01:46-0400\n"
+"POT-Creation-Date: 2011-04-19 08:44-0400\n"
 "PO-Revision-Date: 2011-04-09 21:40+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
@@ -3325,15 +3325,15 @@ msgstr "Konnte Pixmap-Datei nicht finden: %s"
 msgid "Upload selected track(s)"
 msgstr "Ausgewählte(n) Titel uploaden"
 
-#: src/mtp_up/mtp.c:292
+#: src/mtp_up/mtp.c:290
 msgid "Upload in progress..."
 msgstr "Upload läuft..."
 
-#: src/mtp_up/mtp.c:301
+#: src/mtp_up/mtp.c:299
 msgid "MTP device handler"
 msgstr "MTP Geräte-Steuerung"
 
-#: src/mtp_up/mtp.c:305
+#: src/mtp_up/mtp.c:303
 msgid "Disconnect the device"
 msgstr "Gerät trennen"
 

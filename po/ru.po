@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-04-16 01:46-0400\n"
+"POT-Creation-Date: 2011-04-19 08:44-0400\n"
 "PO-Revision-Date: 2010-08-22 22:00+0400\n"
 "Last-Translator: Sergey V. Mironov <sergo@bk.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -3485,15 +3485,15 @@ msgstr "Не удалось найти файл изображения: %s"
 msgid "Upload selected track(s)"
 msgstr "Выгрузка выбранных дорожек"
 
-#: src/mtp_up/mtp.c:292
+#: src/mtp_up/mtp.c:290
 msgid "Upload in progress..."
 msgstr "Проводится выгрузка..."
 
-#: src/mtp_up/mtp.c:301
+#: src/mtp_up/mtp.c:299
 msgid "MTP device handler"
 msgstr "Оператор устройства MTP"
 
-#: src/mtp_up/mtp.c:305
+#: src/mtp_up/mtp.c:303
 msgid "Disconnect the device"
 msgstr "Отключить устройство"
 

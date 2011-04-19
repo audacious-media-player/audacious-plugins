@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-04-16 01:46-0400\n"
+"POT-Creation-Date: 2011-04-19 08:44-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jorge Andrés <winninglero@gmail.com>\n"
 "Language-Team: \n"
@@ -3313,15 +3313,15 @@ msgstr ""
 msgid "Upload selected track(s)"
 msgstr ""
 
-#: src/mtp_up/mtp.c:292
+#: src/mtp_up/mtp.c:290
 msgid "Upload in progress..."
 msgstr ""
 
-#: src/mtp_up/mtp.c:301
+#: src/mtp_up/mtp.c:299
 msgid "MTP device handler"
 msgstr ""
 
-#: src/mtp_up/mtp.c:305
+#: src/mtp_up/mtp.c:303
 msgid "Disconnect the device"
 msgstr ""
 

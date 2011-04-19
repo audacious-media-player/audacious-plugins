@@ -5,20 +5,23 @@
 #        | audacious-plugins |
 #        |                   |
 #        +------------------*/
+# Jean-Alexandre Anglès d'Auriac <jagw40k@free.fr>, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious-plugins 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-04-16 01:46-0400\n"
-"PO-Revision-Date: 2010-08-18 13:51+0100\n"
-"Last-Translator: StrassBoy <StrassBoy@gmail.com>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2011-04-19 08:44-0400\n"
+"PO-Revision-Date: 2011-04-18 19:16+0200\n"
+"Last-Translator: Jean-Alexandre Anglès d'Auriac <jagw40k@free.fr>\n"
+"Language-Team: français <>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: utf-8\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-Country: BELGIUM\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
 
 #: src/aac/libmp4.c:268
 #, c-format
@@ -1525,17 +1528,16 @@ msgstr ""
 "Droits d'utilisation (2009) : John Lindgren"
 
 #: src/cdaudio-ng/cdaudio-ng.c:561
-#, fuzzy
 msgid "Audio CD"
-msgstr "Audio"
+msgstr "CD audio"
 
 #: src/cdaudio-ng/cdaudio-ng.c:916
 msgid "Drive is empty."
-msgstr ""
+msgstr "Le lecteur est vide"
 
 #: src/cdaudio-ng/cdaudio-ng.c:918
 msgid "Unsupported disk type."
-msgstr ""
+msgstr "Type de disque non supporté"
 
 #: src/cdaudio-ng/configure.c:148
 msgid "CD Audio Plugin Configuration"
@@ -1598,9 +1600,8 @@ msgid "Dynamic Range Compressor Preferences"
 msgstr "Préférences du module « Dynamic Range Compressor »"
 
 #: src/compressor/plugin.c:111
-#, fuzzy
 msgid "Center volume:"
-msgstr "Changement du volume"
+msgstr ""
 
 #: src/compressor/plugin.c:124
 msgid "Dynamic range:"
@@ -2502,99 +2503,87 @@ msgstr "Importer une liste de lecture"
 
 #: src/gtkui/columns.c:36
 msgid "Entry number"
-msgstr ""
+msgstr "Place dans la liste"
 
 #: src/gtkui/columns.c:36 src/sid/xs_interface.c:1103
 msgid "Title"
 msgstr "Titre"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Artist"
-msgstr "Nom de l'artiste : "
+msgstr "Artiste"
 
 #: src/gtkui/columns.c:37
 msgid "Year"
-msgstr ""
+msgstr "Année"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Album"
-msgstr "Titre de l'album : "
+msgstr "Album"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Track"
-msgstr "Piste suivante"
+msgstr "Numéro de piste"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Queue position"
-msgstr "Arrangement"
+msgstr "Position dans la queue"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "Length"
 msgstr "Durée"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "File path"
-msgstr "Par emplacement de fichier"
+msgstr "Emplacement du fichier"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "File name"
 msgstr "Nom du fichier"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "Custom title"
-msgstr "Thème personnalisé"
+msgstr "Titre formaté"
 
 #: src/gtkui/columns.c:39
-#, fuzzy
 msgid "Bitrate"
 msgstr "Débit binaire (kbps)"
 
 #: src/gtkui/columns.c:286
-#, fuzzy
 msgid "Choose Columns"
-msgstr "Montrer le lecteur"
+msgstr "Choisir les colonnes"
 
 #: src/gtkui/columns.c:300
-#, fuzzy
 msgid "Available:"
-msgstr "variable"
+msgstr "Disponibles :"
 
 #: src/gtkui/columns.c:334
 msgid "Chosen:"
-msgstr ""
+msgstr "Sélectionnées :"
 
 #: src/gtkui/layout.c:123
 msgid "Dock at Left"
-msgstr ""
+msgstr "Intégrer à gauche"
 
 #: src/gtkui/layout.c:123
 msgid "Dock at Right"
-msgstr ""
+msgstr "Intégrer à droite"
 
 #: src/gtkui/layout.c:124
 msgid "Dock at Top"
-msgstr ""
+msgstr "Intégrer en haut"
 
 #: src/gtkui/layout.c:124
 msgid "Dock at Bottom"
-msgstr ""
+msgstr "Intégrer en bas"
 
 #: src/gtkui/layout.c:124
 msgid "Undock"
-msgstr ""
+msgstr "Séparer"
 
 #: src/gtkui/layout.c:124
-#, fuzzy
 msgid "Disable"
-msgstr "variable"
+msgstr "Désactiver"
 
 #: src/gtkui/ui_gtk.c:80
 msgid "GTK Interface"
@@ -2654,14 +2643,12 @@ msgid "Show/hide statusbar"
 msgstr "Afficher/cacher la barre d'état"
 
 #: src/gtkui/ui_manager.c:58
-#, fuzzy
 msgid "Show Column Headers"
-msgstr "Montrer le lecteur"
+msgstr "Afficher le titre des colonnes"
 
 #: src/gtkui/ui_manager.c:60
-#, fuzzy
 msgid "Scroll on Song Change"
-msgstr "Song Change"
+msgstr "Afficher le morceau courant au changement de pistes"
 
 #: src/gtkui/ui_manager.c:72 src/gtkui/ui_manager.c:73
 #: src/skins/ui_manager.c:172 src/skins/ui_manager.c:173
@@ -2734,14 +2721,13 @@ msgid "Refreshes metadata associated with a playlist entry."
 msgstr "Actualise les métadonnées associées à une entrée de la liste."
 
 #: src/gtkui/ui_manager.c:110
-#, fuzzy
 msgid "Refresh Selected"
-msgstr "Effacer la sélection"
+msgstr "Réactualiser la sélection"
 
 #: src/gtkui/ui_manager.c:111
-#, fuzzy
 msgid "Refreshes metadata associated with selected entries."
-msgstr "Actualise les métadonnées associées à une entrée de la liste."
+msgstr ""
+"Actualise les métadonnées associées aux entrées de la liste.sélectionnées"
 
 #: src/gtkui/ui_manager.c:115
 msgid "Playlist Manager"
@@ -2793,16 +2779,15 @@ msgstr "Efface les entrées sélectionnées de la liste de lecture."
 
 #: src/gtkui/ui_manager.c:139
 msgid "Edit title"
-msgstr ""
+msgstr "Modifier le titre"
 
 #: src/gtkui/ui_manager.c:140
-#, fuzzy
 msgid "Edit the playlist title."
-msgstr "Trie la liste, en fonction du titre des entrées."
+msgstr "Modifie le titre de la liste de lecture."
 
 #: src/gtkui/ui_manager.c:143
 msgid "Choose Columns ..."
-msgstr ""
+msgstr "Choisir les colonnes à afficher"
 
 #: src/gtkui/ui_manager.c:146
 msgid "Sort"
@@ -2829,7 +2814,6 @@ msgid "By Album"
 msgstr "Par album"
 
 #: src/gtkui/ui_manager.c:155
-#, fuzzy
 msgid "By Release Date"
 msgstr "Par date"
 
@@ -2838,9 +2822,8 @@ msgid "By File Path"
 msgstr "Par emplacement de fichier"
 
 #: src/gtkui/ui_manager.c:159
-#, fuzzy
 msgid "By Formatted Title"
-msgstr "Par titre"
+msgstr "Par titre formaté"
 
 #: src/gtkui/ui_manager.c:161
 msgid "Reverse Order"
@@ -2848,7 +2831,7 @@ msgstr "Inverser l'ordre"
 
 #: src/gtkui/ui_manager.c:163
 msgid "Random Order"
-msgstr ""
+msgstr "Mélanger aléatoirement"
 
 #: src/gtkui/ui_manager.c:168
 msgid "Output"
@@ -3576,15 +3559,15 @@ msgstr "Impossible d'ouvrir l'image : %s"
 msgid "Upload selected track(s)"
 msgstr "Transférer la sélection"
 
-#: src/mtp_up/mtp.c:292
+#: src/mtp_up/mtp.c:290
 msgid "Upload in progress..."
 msgstr "Transfert en cours..."
 
-#: src/mtp_up/mtp.c:301
+#: src/mtp_up/mtp.c:299
 msgid "MTP device handler"
 msgstr "Support MTP"
 
-#: src/mtp_up/mtp.c:305
+#: src/mtp_up/mtp.c:303
 msgid "Disconnect the device"
 msgstr "Déconnecter le périphérique"
 
@@ -3898,14 +3881,12 @@ msgid "About Scrobbler Plugin"
 msgstr "À propos du module « Scrobbler »"
 
 #: src/sdlout/plugin.c:62
-#, fuzzy
 msgid "About SDL Output Plugin"
-msgstr "À propos du module de sortie « ALSA »"
+msgstr "À propos du module de sortie SDL"
 
 #: src/sdlout/plugin.c:82
-#, fuzzy
 msgid "SDL error"
-msgstr "Erreur ALSA"
+msgstr "Erreur SDL"
 
 #: src/sid/xs_about.c:84
 #, c-format
@@ -5105,12 +5086,11 @@ msgstr "Efface les entrées redondantes, en fonction de leur chemin complet."
 
 #: src/skins/ui_manager.c:302
 msgid "Randomize List"
-msgstr ""
+msgstr "Mélanger aléatoirement la liste"
 
 #: src/skins/ui_manager.c:303
-#, fuzzy
 msgid "Randomizes the playlist."
-msgstr "Inverse l'ordre de la liste de lecture."
+msgstr "Mélange aléatoirement la liste de lecture."
 
 #: src/skins/ui_manager.c:306
 msgid "Reverse List"
@@ -5494,7 +5474,6 @@ msgstr ""
 "distant, par exemple) :"
 
 #: src/song_change/song_change.c:479
-#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -5512,19 +5491,22 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
-"Vous pouvez utiliser les chaînes de la liste ci-dessous.\n"
+"Vous pouvez utiliser les variables de la liste ci-dessous.\n"
 "\n"
 "Elles seront remplacées avant l'appel de la commande à exécuter (toutes ne "
 "sont pas utiles pour la fonction « fin de liste ») :\n"
 "\n"
-"%F: Fréquence (en Hertz)\n"
-"%c: Nombre de voies\n"
-"%f: Nom du fichier (chemin complet)\n"
-"%l: Durée (en millisecondes)\n"
-"%n ou %s: Titre du morceau\n"
-"%r: Taux d'encodage (en « bits » par seconde)\n"
-"%t: Position dans la liste de lecture (%02d)\n"
-"%p: État de la lecture (1 ou 0)"
+"%F : Fréquence (en Hertz)\n"
+"%c : Nombre de canaux\n"
+"%f : Nom du fichier (chemin complet)\n"
+"%l : Durée (en millisecondes)\n"
+"%n ou %s : Nom de la chanson\n"
+"%r : Taux d'encodage (en « bits » par seconde)\n"
+"%t : Position dans la liste de lecture (%02d)\n"
+"%p : 1 si la lecture continue, 0 si elle est arrêtée\n"
+"%a : Artiste du morceau\n"
+"%b : Album du morceau\n"
+"%T : Titre du morceau"
 
 #: src/song_change/song_change.c:506
 msgid ""
@@ -5598,17 +5580,16 @@ msgid "Change playing song"
 msgstr "Changement du titre en cours de lecture"
 
 #: src/statusicon/statusicon.c:500
-#, fuzzy
 msgid "Other settings"
-msgstr "Paramètres du mélangeur"
+msgstr "Autres paramètres"
 
 #: src/statusicon/statusicon.c:505
 msgid "Disable the popup window"
-msgstr ""
+msgstr "Désactiver l'affichage d'information au survol"
 
 #: src/statusicon/statusicon.c:512
 msgid "Close to the notification area (system tray)"
-msgstr ""
+msgstr "Réduire dans la zone de notification à la fermeture"
 
 #: src/stereo_plugin/stereo.c:41
 msgid ""

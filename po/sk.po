@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-04-16 01:46-0400\n"
+"POT-Creation-Date: 2011-04-19 08:44-0400\n"
 "PO-Revision-Date: 2011-03-13 20:35+0100\n"
 "Last-Translator: Andrej Herceg <herceg.andrej@zoznam.sk>\n"
 "Language-Team: Slovak <Slovak <sk-i18n@lists.linux.sk>>\n"
@@ -3435,15 +3435,15 @@ msgstr "Nepodarilo sa nájsť súbor s obrázkom: %s"
 msgid "Upload selected track(s)"
 msgstr "Nahrať vybrané stopy"
 
-#: src/mtp_up/mtp.c:292
+#: src/mtp_up/mtp.c:290
 msgid "Upload in progress..."
 msgstr "Prebieha nahrávanie…"
 
-#: src/mtp_up/mtp.c:301
+#: src/mtp_up/mtp.c:299
 msgid "MTP device handler"
 msgstr "Obsluha MTP zariadenia"
 
-#: src/mtp_up/mtp.c:305
+#: src/mtp_up/mtp.c:303
 msgid "Disconnect the device"
 msgstr "Odpojiť zariadenie"
 

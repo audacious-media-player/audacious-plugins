@@ -19,10 +19,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious-plugins 20d1d0181353\n"
+"Project-Id-Version: audacious-plugins 2d9fa6901b3c\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-04-16 01:46-0400\n"
-"PO-Revision-Date: 2011-03-01 21:51+0100\n"
+"POT-Creation-Date: 2011-04-19 08:44-0400\n"
+"PO-Revision-Date: 2011-04-18 22:05+0200\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs\n"
@@ -2455,9 +2455,8 @@ msgid "Custom title"
 msgstr "Vlastní název"
 
 #: src/gtkui/columns.c:39
-#, fuzzy
 msgid "Bitrate"
-msgstr "Datový tok:"
+msgstr "Datový tok"
 
 #: src/gtkui/columns.c:286
 msgid "Choose Columns"
@@ -2557,9 +2556,8 @@ msgid "Show Column Headers"
 msgstr "Zobrazit záhlaví sloupců"
 
 #: src/gtkui/ui_manager.c:60
-#, fuzzy
 msgid "Scroll on Song Change"
-msgstr "Změna skladby"
+msgstr "Odrolovat na změněnou skladbu"
 
 #: src/gtkui/ui_manager.c:72 src/gtkui/ui_manager.c:73
 #: src/skins/ui_manager.c:172 src/skins/ui_manager.c:173
@@ -2692,9 +2690,8 @@ msgid "Edit title"
 msgstr "Upravit název"
 
 #: src/gtkui/ui_manager.c:140
-#, fuzzy
 msgid "Edit the playlist title."
-msgstr "Upraví název seznamu skladeb."
+msgstr "Upravit název seznamu skladeb."
 
 #: src/gtkui/ui_manager.c:143
 msgid "Choose Columns ..."
@@ -3448,15 +3445,15 @@ msgstr "Nebylo možné nalézt soubor s pixmapou: %s"
 msgid "Upload selected track(s)"
 msgstr "Nahrát vybranou stopu(y)"
 
-#: src/mtp_up/mtp.c:292
+#: src/mtp_up/mtp.c:290
 msgid "Upload in progress..."
 msgstr "Nahrávám…"
 
-#: src/mtp_up/mtp.c:301
+#: src/mtp_up/mtp.c:299
 msgid "MTP device handler"
 msgstr "Deskriptor MTP zařízení"
 
-#: src/mtp_up/mtp.c:305
+#: src/mtp_up/mtp.c:303
 msgid "Disconnect the device"
 msgstr "Odpojit zařízení"
 
@@ -5274,7 +5271,6 @@ msgstr ""
 "proudech)."
 
 #: src/song_change/song_change.c:479
-#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -5303,9 +5299,10 @@ msgstr ""
 "%n nebo %s: Název skladby\n"
 "%r: Datový tok (v bitech za sekundu)\n"
 "%t: Pozice v seznamu skladeb (%02d)\n"
-"%p: Právě se hraje (1, nebo 0)%a: Umělec\n"
+"%p: Právě se hraje (1, nebo 0)\n"
+"%a: Umělec\n"
 "%b: Album\n"
-"%r: Název stopy"
+"%T: Název stopy"
 
 #: src/song_change/song_change.c:506
 msgid ""
