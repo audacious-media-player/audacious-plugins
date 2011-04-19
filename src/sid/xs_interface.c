@@ -397,7 +397,7 @@ create_xs_configwin (void)
   gtk_box_pack_start (GTK_BOX (cfg_oversample_box), cfg_oversample_label1, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (cfg_oversample_label1), GTK_JUSTIFY_CENTER);
 
-  cfg_oversample_factor_adj = gtk_adjustment_new (2, 2, 8, 1, 1, 1);
+  cfg_oversample_factor_adj = gtk_adjustment_new (2, 2, 8, 1, 1, 0);
   cfg_oversample_factor = gtk_spin_button_new (GTK_ADJUSTMENT (cfg_oversample_factor_adj), 1, 0);
   gtk_widget_set_name (cfg_oversample_factor, "cfg_oversample_factor");
   gtk_widget_show (cfg_oversample_factor);
@@ -912,7 +912,7 @@ create_xs_configwin (void)
   gtk_label_set_justify (GTK_LABEL (cfg_mintime_label1), GTK_JUSTIFY_CENTER);
   gtk_misc_set_alignment (GTK_MISC (cfg_mintime_label1), 0, 0.5);
 
-  cfg_mintime_adj = gtk_adjustment_new (15, 1, 32767, 1, 60, 60);
+  cfg_mintime_adj = gtk_adjustment_new (15, 1, 32767, 1, 60, 0);
   cfg_mintime = gtk_spin_button_new (GTK_ADJUSTMENT (cfg_mintime_adj), 1, 0);
   gtk_widget_set_name (cfg_mintime, "cfg_mintime");
   gtk_widget_show (cfg_mintime);
@@ -966,7 +966,7 @@ create_xs_configwin (void)
   gtk_label_set_justify (GTK_LABEL (cfg_maxtime_label1), GTK_JUSTIFY_CENTER);
   gtk_misc_set_alignment (GTK_MISC (cfg_maxtime_label1), 0, 0.5);
 
-  cfg_maxtime_adj = gtk_adjustment_new (150, 1, 32767, 1, 60, 60);
+  cfg_maxtime_adj = gtk_adjustment_new (150, 1, 32767, 1, 60, 0);
   cfg_maxtime = gtk_spin_button_new (GTK_ADJUSTMENT (cfg_maxtime_adj), 1, 0);
   gtk_widget_set_name (cfg_maxtime, "cfg_maxtime");
   gtk_widget_show (cfg_maxtime);
@@ -1146,7 +1146,7 @@ create_xs_configwin (void)
   gtk_label_set_justify (GTK_LABEL (w_label52), GTK_JUSTIFY_CENTER);
   gtk_misc_set_alignment (GTK_MISC (w_label52), 0, 0.5);
 
-  cfg_subauto_mintime_adj = gtk_adjustment_new (15, 1, 32767, 1, 60, 60);
+  cfg_subauto_mintime_adj = gtk_adjustment_new (15, 1, 32767, 1, 60, 0);
   cfg_subauto_mintime = gtk_spin_button_new (GTK_ADJUSTMENT (cfg_subauto_mintime_adj), 1, 0);
   gtk_widget_set_name (cfg_subauto_mintime, "cfg_subauto_mintime");
   gtk_widget_show (cfg_subauto_mintime);
