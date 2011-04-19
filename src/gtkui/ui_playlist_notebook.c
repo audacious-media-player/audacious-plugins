@@ -269,6 +269,8 @@ void ui_playlist_notebook_populate(void)
         ui_playlist_notebook_create_tab(count);
 
     gtk_notebook_set_current_page (UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active ());
+    gtk_widget_grab_focus (gtk_bin_get_child ((GtkBin *)
+     gtk_notebook_get_nth_page (UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active ())));
     bolded_playlist = aud_playlist_get_playing ();
 
     if (! switch_handler)
