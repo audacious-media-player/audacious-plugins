@@ -125,7 +125,6 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
     gchar *filename, *uri_path;
     VFSFile *f;
     uint64_t filesize;
-    uint32_t parent_id = 0;
     struct stat sb;
 
     uri_path = g_strdup_printf("%s/%s", tuple_get_string(from_tuple, FIELD_FILE_PATH, NULL), tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
@@ -160,7 +159,6 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
         return NULL;
     }
     filesize = (uint64_t) sb.st_size;
-    parent_id = mtp_device->default_music_folder;
 
     /* track metadata*/
     tr = LIBMTP_new_track_t();
