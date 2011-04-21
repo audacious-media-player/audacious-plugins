@@ -323,7 +323,7 @@ static int winmm_get_output_time(void)
 
     ZeroMemory(&mmt, sizeof(MMTIME));
     mmt.wType = TIME_MS;
-    
+
     mmr = waveOutGetPosition(wave.hWaveOut, &mmt, sizeof(MMTIME));
     if (mmr == MMSYSERR_NOERROR) {
 
@@ -390,9 +390,9 @@ static void winmm_set_volume(gint r, gint l)
     waveOutSetVolume(wave.hWaveOut, wave.LastVolume);
 }
 
-static OutputPlugin winmm_op =
-{
-    .description      = "Windows Waveout Plugin",
+AUD_OUTPUT_PLUGIN
+(
+    .description      = "Windows WaveOut",
     .probe_priority   = 0,
     .init             = winmm_init,
     .about            = winmm_about,
@@ -409,8 +409,4 @@ static OutputPlugin winmm_op =
     .set_volume       = winmm_set_volume,
     .drain            = winmm_drain,
     .set_written_time = winmm_set_written_time
-};
-
-OutputPlugin *winmm_oplist[] = { &winmm_op, NULL };
-
-DECLARE_PLUGIN(null, NULL, NULL, NULL, winmm_oplist, NULL, NULL, NULL, NULL);
+)

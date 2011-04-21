@@ -80,9 +80,9 @@ static void pn_xmms_configure (void);
 static void pn_xmms_render_pcm (gint16 data[2][512]);
 static void pn_xmms_render_freq (gint16 data[2][256]);
 
-static VisPlugin pn_vp =
-{
-  .description = "Paranormal Visualization Studio",
+AUD_VIS_PLUGIN
+(
+  .name = "Paranormal Visualization Studio",
   .num_pcm_chs_wanted = 2,
   .num_freq_chs_wanted = 2,
   .init = pn_xmms_init,
@@ -91,11 +91,7 @@ static VisPlugin pn_vp =
   .configure = pn_xmms_configure,
   .render_pcm = pn_xmms_render_pcm,
   .render_freq = pn_xmms_render_freq
-};
-
-VisPlugin *pn_vplist[] = { &pn_vp, NULL };
-
-DECLARE_PLUGIN(paranormal, NULL, NULL, NULL, NULL, NULL, NULL, pn_vplist,NULL);
+)
 
 static void
 load_pn_rc (void)
@@ -207,7 +203,7 @@ quit_timeout_fn (gpointer data)
 {
   if (pn_done)
     {
-      aud_plugin_enable (aud_plugin_by_header (& pn_vp), FALSE);
+      aud_plugin_enable (aud_plugin_by_header (& _aud_plugin_self), FALSE);
       return FALSE;
     }
 
@@ -473,7 +469,7 @@ pn_quit (void)
       /* We're not in the draw thread, so don't sweat it...
 	 addendum: looks like we have to bend over backwards (forwards?)
 	 for xmms here too */
-      aud_plugin_enable (aud_plugin_by_header (& pn_vp), FALSE);
+      aud_plugin_enable (aud_plugin_by_header (& _aud_plugin_self), FALSE);
       while (1)
 	gtk_main_iteration ();
     }

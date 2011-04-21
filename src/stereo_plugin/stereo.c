@@ -23,12 +23,12 @@ static void stereo_finish (gfloat * * data, gint * samples);
 static gint stereo_decoder_to_output_time (gint time);
 static gint stereo_output_to_decoder_time (gint time);
 
-EffectPlugin stereo_ep =
-{
-	.description = "Extra Stereo Plugin", /* Description */
-	.init = init,
-	.about = about,
-	.configure = configure,
+AUD_EFFECT_PLUGIN
+(
+    .name = "Extra Stereo",
+    .init = init,
+    .about = about,
+    .configure = configure,
     .start = stereo_start,
     .process = stereo_process,
     .flush = stereo_flush,
@@ -36,17 +36,13 @@ EffectPlugin stereo_ep =
     .decoder_to_output_time = stereo_decoder_to_output_time,
     .output_to_decoder_time = stereo_output_to_decoder_time,
     .preserves_format = TRUE,
-};
+)
 
 static const char *about_text = N_("Extra Stereo Plugin\n\n"
                                    "By Johan Levin 1999.");
 
 static GtkWidget *conf_dialog = NULL;
 static gdouble value;
-
-EffectPlugin *stereo_eplist[] = { &stereo_ep, NULL };
-
-DECLARE_PLUGIN(stereo, NULL, NULL, NULL, NULL, stereo_eplist, NULL, NULL, NULL);
 
 static gboolean init (void)
 {

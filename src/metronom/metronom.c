@@ -76,14 +76,7 @@ gdouble tact_form[TACT_ID_MAX][TACT_FORM_MAX] = {
     {1.0, 0.5, 0.5, 0.6, 0.5, 0.5, 0.0, 0.0}
 };
 
-static InputPlugin metronom_ip;
 static gboolean stop_flag = FALSE;
-
-static gboolean metronom_init (void)
-{
-    aud_uri_set_plugin("tact://", &metronom_ip);
-    return TRUE;
-}
 
 static void metronom_about (void)
 {
@@ -266,17 +259,16 @@ static Tuple *metronom_probe_for_tuple(const gchar * filename, VFSFile *fd)
     return tuple;
 }
 
-static InputPlugin metronom_ip = {
-    .description = "Tact Generator",
-    .init = metronom_init,
+static const gchar * const schemes[] = {"tact", NULL};
+
+AUD_INPUT_PLUGIN
+(
+    .name = "Tact Generator",
+    .schemes = schemes,
     .about = metronom_about,
     .is_our_file_from_vfs = metronom_is_our_fd,
     .play = metronom_play,
     .stop = metronom_stop,
     .pause = metronom_pause,
     .probe_for_tuple = metronom_probe_for_tuple,
-};
-
-static InputPlugin *metronom_iplist[] = { &metronom_ip, NULL };
-
-DECLARE_PLUGIN(metronom, NULL, NULL, metronom_iplist, NULL, NULL, NULL, NULL, NULL);
+)

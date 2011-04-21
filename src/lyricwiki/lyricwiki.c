@@ -384,13 +384,10 @@ get_widget(void)
 	return vbox;
 }
 
-GeneralPlugin lyricwiki =
-{
-	.description = "LyricWiki",
+AUD_GENERAL_PLUGIN
+(
+	.name = "LyricWiki",
 	.init = init,
 	.cleanup = cleanup,
 	.get_widget = get_widget,
-};
-
-GeneralPlugin *lyricwiki_gplist[] = { &lyricwiki, NULL };
-SIMPLE_GENERAL_PLUGIN(lyricwiki, lyricwiki_gplist);
+)

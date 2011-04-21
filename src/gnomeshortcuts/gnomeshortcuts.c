@@ -43,16 +43,13 @@ void gnome_remote_uninit();
 static gboolean loaded = FALSE;
 static DBusGProxy *media_player_keys_proxy = NULL;
 
-static GeneralPlugin audaciousgnomeshortcuts =
-{
-	.description = "Gnome Shortcuts",
+AUD_GENERAL_PLUGIN
+(
+	.name = "Gnome Shortcuts",
 	.init = init,
 	.about = about,
 	.cleanup = cleanup
-};
-
-GeneralPlugin *gnomeshortcuts_gplist[] = { &audaciousgnomeshortcuts, NULL };
-SIMPLE_GENERAL_PLUGIN(gnomeshortcuts, gnomeshortcuts_gplist);
+)
 
 #define g_marshal_value_peek_string(v)   (char*) g_value_get_string (v)
 

@@ -100,8 +100,9 @@ static void oss_cleanup(void)
     }
 }
 
-static OutputPlugin oss_op = {
-    .description = "OSS Output Plugin",
+AUD_OUTPUT_PLUGIN
+(
+    .name = "OSS 3",
     .probe_priority = 3,
     .init = oss_init,
     .cleanup = oss_cleanup,
@@ -117,8 +118,4 @@ static OutputPlugin oss_op = {
     .buffer_free = oss_free,
     .output_time = oss_get_output_time,
     .written_time = oss_get_written_time,
-};
-
-static OutputPlugin *oss_oplist[] = { &oss_op, NULL };
-
-DECLARE_PLUGIN(OSS, NULL, NULL, NULL, oss_oplist, NULL, NULL, NULL, NULL);
+)

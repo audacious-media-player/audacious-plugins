@@ -61,21 +61,14 @@ static void cleanup (void);
 static PluginConfig plugin_cfg;
 static gboolean loaded = FALSE;
 
-
-
-static GeneralPlugin audacioushotkey =
-{
-	.description = "Global Hotkey",
+AUD_GENERAL_PLUGIN
+(
+	.name = "Global Hotkey",
 	.init = init,
 	.about = show_about,
 	.configure = show_configure,
 	.cleanup = cleanup
-};
-
-GeneralPlugin *hotkey_gplist[] = { &audacioushotkey, NULL };
-SIMPLE_GENERAL_PLUGIN(hotkey, hotkey_gplist);
-
-
+)
 
 PluginConfig* get_config(void)
 {

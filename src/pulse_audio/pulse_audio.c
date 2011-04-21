@@ -714,8 +714,9 @@ static void pulse_about(void) {
             "USA."));
 }
 
-static OutputPlugin pulse_op = {
-        .description = "PulseAudio Output Plugin",
+AUD_OUTPUT_PLUGIN
+(
+        .name = "PulseAudio",
         .probe_priority = 8,
         .init = pulse_init,
         .about = pulse_about,
@@ -731,8 +732,4 @@ static OutputPlugin pulse_op = {
         .output_time = pulse_get_output_time,
         .written_time = pulse_get_written_time,
         .set_written_time = pulse_set_written_time,
-};
-
-OutputPlugin *pulse_oplist[] = { &pulse_op, NULL };
-
-SIMPLE_OUTPUT_PLUGIN(pulser, pulse_oplist);
+)

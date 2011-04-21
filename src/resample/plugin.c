@@ -213,9 +213,9 @@ static void resample_configure (void)
     gtk_window_present ((GtkWindow *) config_window);
 }
 
-EffectPlugin resample_plugin =
-{
-    .description = "Sample Rate Converter",
+AUD_EFFECT_PLUGIN
+(
+    .name = "Sample Rate Converter",
     .init = resample_init,
     .cleanup = resample_cleanup,
     .about = resample_about,
@@ -228,8 +228,4 @@ EffectPlugin resample_plugin =
     .output_to_decoder_time = resample_output_to_decoder_time,
 
     .order = 2, /* must be before crossfade */
-};
-
-EffectPlugin * resample_list[] = {& resample_plugin, NULL};
-
-SIMPLE_EFFECT_PLUGIN (resample, resample_list)
+)

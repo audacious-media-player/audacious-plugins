@@ -40,23 +40,25 @@
 
 gchar * skins_paths[SKINS_PATH_COUNT];
 
-Iface skins_interface =
-{
-    .id = "skinned",
-    .desc = "Winamp Classic Interface",
-    .init = skins_init,
-    .fini = skins_cleanup
-};
+static gboolean skins_init (void);
+static void skins_cleanup (void);
+static void ui_show (gboolean show);
+static void show_error_message (const gchar * markup);
 
-SIMPLE_IFACE_PLUGIN (skinned, & skins_interface)
+AUD_IFACE_PLUGIN
+(
+    .name = "Winamp Classic Interface",
+    .init = skins_init,
+    .cleanup = skins_cleanup,
+    .show = ui_show,
+    .show_error = show_error_message,
+    .show_filebrowser = audgui_run_filebrowser,
+    .show_jump_to_track = audgui_jump_to_track,
+)
+
 gboolean plugin_is_active = FALSE;
 
 static gint update_source;
-
-static void toggle_visibility(void);
-static void toggle_shuffle(void);
-static void toggle_repeat(void);
-static void show_error_message(const gchar * markup);
 
 static void skins_free_paths(void) {
     int i;
@@ -93,7 +95,7 @@ static gboolean update_cb (void * unused)
     return TRUE;
 }
 
-gboolean skins_init (IfaceCbs * cbs)
+static gboolean skins_init (void)
 {
     plugin_is_active = TRUE;
     g_log_set_handler(NULL, G_LOG_LEVEL_WARNING, g_log_default_handler, NULL);
@@ -129,26 +131,13 @@ gboolean skins_init (IfaceCbs * cbs)
     if (config.playlist_visible)
        playlistwin_show (1);
 
-    /* Register interface callbacks */
-    cbs->show_prefs_window = show_preferences_window;
-    cbs->run_filebrowser = audgui_run_filebrowser;
-    cbs->hide_filebrowser = audgui_hide_filebrowser;
-    cbs->toggle_visibility = toggle_visibility;
-    cbs->show_error = show_error_message;
-    cbs->show_jump_to_track = audgui_jump_to_track;
-    cbs->hide_jump_to_track = audgui_jump_to_track_hide;
-    cbs->show_about_window = audgui_show_about_window;
-    cbs->hide_about_window = audgui_hide_about_window;
-    cbs->toggle_shuffle = toggle_shuffle;
-    cbs->toggle_repeat = toggle_repeat;
-
     eq_init_hooks ();
     update_source = g_timeout_add (250, update_cb, NULL);
 
     return TRUE;
 }
 
-gboolean skins_cleanup (void)
+static void skins_cleanup (void)
 {
     if (plugin_is_active)
     {
@@ -168,8 +157,6 @@ gboolean skins_cleanup (void)
         ui_manager_destroy();
         plugin_is_active = FALSE;
     }
-
-    return TRUE;
 }
 
 void skins_about (void)
@@ -181,6 +168,7 @@ void skins_about (void)
      _("Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n\n"));
 }
 
+#if 0
 void show_preferences_window(gboolean show) {
     /* static GtkWidget * * prefswin = NULL; */
     static void * * prefswin = NULL;
@@ -208,14 +196,11 @@ void show_preferences_window(gboolean show) {
         }
     }
 }
+#endif
 
-static void toggle_visibility(void)
+static void ui_show (gboolean show)
 {
-    /* use the window visibility status to toggle show/hide
-       (if at least one is visible, hide) */
-    if ((config.player_visible == TRUE ) ||
-        (config.equalizer_visible == TRUE) ||
-        (config.playlist_visible == TRUE))
+    if (! show)
     {
         /* remember the visibility status of the player windows */
         config.player_visible_prev = config.player_visible;
@@ -241,16 +226,6 @@ static void toggle_visibility(void)
     }
 }
 
-static void toggle_shuffle(void)
-{
-    mainwin_shuffle_pushed(aud_cfg->shuffle);
-}
-
-static void toggle_repeat(void)
-{
-    mainwin_repeat_pushed(aud_cfg->repeat);
-}
-
 static void show_error_message(const gchar * markup)
 {
     GtkWidget *dialog =
@@ -267,4 +242,3 @@ static void show_error_message(const gchar * markup)
                              G_CALLBACK(gtk_widget_destroy),
                              dialog);
 }
-

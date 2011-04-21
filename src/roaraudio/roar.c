@@ -29,8 +29,9 @@
 
 #include "all.h"
 
-OutputPlugin roar_op = {
-	.description = "RoarAudio Output Plugin",
+AUD_OUTPUT_PLUGIN
+(
+	.name = "RoarAudio Output",
 	.init = aud_roar_init,
 	.cleanup = NULL,
 	.get_volume = aud_roar_get_volume,
@@ -45,11 +46,8 @@ OutputPlugin roar_op = {
 	.drain = aud_roar_drain,
 	.buffer_free = aud_roar_buffer_get_size,
 //	.period_wait = aud_roar_period_wait,
-};
+)
 
-OutputPlugin *roar_oplist[] = { &roar_op, NULL };
-
-SIMPLE_OUTPUT_PLUGIN(roaraudio, roar_oplist);
 gboolean aud_roar_init(void)
 {
 	mcs_handle_t *cfgfile;

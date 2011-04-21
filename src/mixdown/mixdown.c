@@ -72,18 +72,13 @@ static gint mixdown_output_to_decoder_time (gint time)
 	return time;
 }
 
-EffectPlugin mixdown_ep =
-{
-	.description = "Mixdown Plugin",
+AUD_EFFECT_PLUGIN
+(
+	.name = "Mixdown",
 	.start = mixdown_start,
 	.process = mixdown_process,
 	.finish = mixdown_finish,
 	.flush = mixdown_flush,
 	.decoder_to_output_time = mixdown_decoder_to_output_time,
 	.output_to_decoder_time = mixdown_output_to_decoder_time,
-};
-
-EffectPlugin *mixdown_eplist[] = { &mixdown_ep, NULL };
-
-SIMPLE_EFFECT_PLUGIN(mixdown, mixdown_eplist);
-
+)

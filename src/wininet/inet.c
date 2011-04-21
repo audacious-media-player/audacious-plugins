@@ -350,13 +350,10 @@ static VFSConstructor constructor = {
  .vfs_fsize_impl = inet_fsize
 };
 
-static TransportPlugin inet_plugin = {
- .description = "WinINet-based HTTP/HTTPS support",
+AUD_TRANSPORT_PLUGIN
+(
+ .name = "WinINet-based HTTP/HTTPS support",
  .cleanup = inet_cleanup,
  .schemes = inet_schemes,
  .vtable = & constructor,
-};
-
-static TransportPlugin * const inet_plugins[] = {& inet_plugin, NULL};
-
-SIMPLE_TRANSPORT_PLUGIN (inet, inet_plugins)
+)

@@ -385,8 +385,9 @@ static void flac_aboutbox(void)
 
 static const gchar *flac_fmts[] = { "flac", "fla", NULL };
 
-InputPlugin flac_ip = {
-    .description = "FLACng Audio Plugin",
+AUD_INPUT_PLUGIN
+(
+    .name = "FLAC",
     .init = flac_init,
     .cleanup = flac_cleanup,
     .about = flac_aboutbox,
@@ -396,12 +397,8 @@ InputPlugin flac_ip = {
     .mseek = flac_seek,
     .probe_for_tuple = flac_probe_for_tuple,
     .is_our_file_from_vfs = flac_is_our_fd,
-    .vfs_extensions = flac_fmts,
+    .extensions = flac_fmts,
     .update_song_tuple = flac_update_song_tuple,
     .get_song_image = flac_get_image,
     .priority = 1
-};
-
-InputPlugin *flac_iplist[] = { &flac_ip, NULL };
-
-SIMPLE_INPUT_PLUGIN (flacng, flac_iplist)
+)

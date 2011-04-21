@@ -33,8 +33,9 @@ static void amidiplug_mseek (InputPlayback * playback, gint time);
 static Tuple * amidiplug_get_song_tuple (const gchar * filename_uri, VFSFile *
  file);
 
-static InputPlugin amidiplug_ip = {
-    .description = "AMIDI-Plug " AMIDIPLUG_VERSION " (MIDI Player)",
+AUD_INPUT_PLUGIN
+(
+    .name = "AMIDI-Plug (MIDI Player)",
     .init = amidiplug_init,
     .about = amidiplug_aboutbox,
     .configure = amidiplug_configure,
@@ -49,12 +50,8 @@ static InputPlugin amidiplug_ip = {
     .probe_for_tuple = amidiplug_get_song_tuple,
     .file_info_box = amidiplug_file_info_box,
     .is_our_file_from_vfs = amidiplug_is_our_file_from_vfs,
-    .vfs_extensions = amidiplug_vfs_extensions,
-};
-
-InputPlugin *amidiplug_iplist[] = { &amidiplug_ip, NULL };
-
-SIMPLE_INPUT_PLUGIN (amidi-plug, amidiplug_iplist)
+    .extensions = amidiplug_vfs_extensions,
+)
 
 static GMutex * init_mutex;
 static gboolean initted;

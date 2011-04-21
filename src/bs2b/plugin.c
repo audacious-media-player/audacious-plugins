@@ -85,8 +85,9 @@ static gint bs2b_output_to_decoder_time (gint time)
     return time;
 }
 
-static EffectPlugin audaciousBs2b = {
-    .description = "Bauer stereophonic-to-binaural 1.1",
+AUD_EFFECT_PLUGIN
+(
+    .name = "Bauer stereophonic-to-binaural",
     .init = init,
     .cleanup = cleanup,
     .start = bs2b_start,
@@ -96,7 +97,4 @@ static EffectPlugin audaciousBs2b = {
     .decoder_to_output_time = bs2b_decoder_to_output_time,
     .output_to_decoder_time = bs2b_output_to_decoder_time,
     .preserves_format = TRUE,
-};
-
-static EffectPlugin * plugins[] = { &audaciousBs2b, NULL };
-SIMPLE_EFFECT_PLUGIN(audaciousBs2b, plugins);
+)

@@ -533,14 +533,11 @@ void si_config(void)
     gtk_widget_show_all(prefs_win);
 }
 
-static GeneralPlugin si_gp = {
-    .description = "Status Icon",
+AUD_GENERAL_PLUGIN
+(
+    .name = "Status Icon",
     .init = si_init,
     .cleanup = si_cleanup,
     .about = si_about,
     .configure = si_config
-};
-
-static GeneralPlugin *statusicon_gplist[] = { &si_gp, NULL };
-
-SIMPLE_GENERAL_PLUGIN(statusicon, statusicon_gplist);
+)

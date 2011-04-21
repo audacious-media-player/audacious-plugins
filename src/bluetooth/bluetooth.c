@@ -2,7 +2,7 @@
  * Audacious Bluetooth headset suport plugin
  *
  * Copyright (c) 2008 Paula Stanciu paula.stanciu@gmail.com
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; under version 3 of the License.
@@ -48,16 +48,15 @@ void discover_devices(void);
 void disconnect_dbus_signals(void);
 /*static void show_restart_dialog(void); */
 static void remove_bonding(gchar* device);
-GeneralPlugin bluetooth_gp =
-{
-    .description = "Bluetooth audio support",
+
+AUD_GENERAL_PLUGIN
+(
+    .name = "Bluetooth audio support",
     .init = bluetooth_init,
     .about = bt_about,
     .configure = bt_cfg,
     .cleanup = bluetooth_cleanup
-};
-GeneralPlugin *bluetooth_gplist[] = { &bluetooth_gp, NULL };
-DECLARE_PLUGIN(bluetooth_gp, NULL, NULL, NULL, NULL, NULL, bluetooth_gplist, NULL, NULL)
+)
 
 void bluetooth_init ( void )
 {
@@ -126,7 +125,7 @@ void bt_about( void )
 }
 
 void bt_cfg(void)
-{   
+{
     printf("bt_cfg\n");
     config =1;
     if(discover_finish == 2){
@@ -134,10 +133,10 @@ void bt_cfg(void)
             printf("no devs!\n");
             show_scan(0);
             show_no_devices();
-        }else 
+        }else
             results_ui();
     }
-    else show_scan(0);    
+    else show_scan(0);
     printf("end of bt_cfg\n");
 }
 
@@ -162,7 +161,7 @@ static void remove_bonding(gchar *device)
 {
     printf("remove_bonding call\n");
     dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
-    dbus_g_proxy_call(obj,"RemoveBonding",NULL,G_TYPE_STRING,device,G_TYPE_INVALID,G_TYPE_INVALID); 
+    dbus_g_proxy_call(obj,"RemoveBonding",NULL,G_TYPE_STRING,device,G_TYPE_INVALID,G_TYPE_INVALID);
 
 }
 void refresh_call(void)
@@ -177,27 +176,27 @@ void refresh_call(void)
         close_window();
         show_scan(0);
     }
-    else 
+    else
         printf("Scanning please wait!\n");
 }
 
 gpointer connect_call_th(void)
 {
-    //I will have to enable the audio service if necessary 
+    //I will have to enable the audio service if necessary
     run_agents();
     dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
-    dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,current_address,G_TYPE_INVALID,G_TYPE_INVALID); 
+    dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,current_address,G_TYPE_INVALID,G_TYPE_INVALID);
 
 return NULL;
 }
 
 void connect_call(void)
-{ 
+{
     close_call();
     close_window();
     show_scan(1);
     current_address = g_strdup(((DeviceData*)(selected_dev->data))->address);
-    connect_th = g_thread_create((GThreadFunc)connect_call_th,NULL,TRUE,NULL) ; 
+    connect_th = g_thread_create((GThreadFunc)connect_call_th,NULL,TRUE,NULL) ;
 }
 
 
@@ -229,7 +228,7 @@ void play_call()
                 fgets ( line, sizeof line, file ); /* device MAC */
                 fputs(device_line,temp_file);
                 prev = 1;
-            } else 
+            } else
                 fputs(line,temp_file);
         }
 
@@ -278,22 +277,22 @@ void play_call()
 */
 static void remote_device_found(DBusGProxy *object, char *address, const unsigned int class, const int rssi, gpointer user_data)
 {
-    int found_in_list=FALSE; 
+    int found_in_list=FALSE;
     g_static_mutex_lock(&mutex);
     current_device = audio_devices;
     if((class & 0x200404)==0x200404)
     {
         while(current_device != NULL)
         {
-            if(g_str_equal(address,((DeviceData*)(current_device->data))->address)) 
+            if(g_str_equal(address,((DeviceData*)(current_device->data))->address))
             {
                 found_in_list = TRUE;
                 break;
             }
             current_device=g_list_next(current_device);
         }
-        if(!found_in_list) 
-        {        
+        if(!found_in_list)
+        {
             DeviceData *dev= g_new0(DeviceData, 1);
             dev->class = class;
             dev->address = g_strdup(address);
@@ -316,7 +315,7 @@ static void remote_name_updated(DBusGProxy *object, const char *address,  char *
     current_device=audio_devices;
     while(current_device != NULL)
     {
-        if(g_str_equal(address,((DeviceData*)(current_device->data))->address)) 
+        if(g_str_equal(address,((DeviceData*)(current_device->data))->address))
         {
             ((DeviceData*)(current_device->data))->name=g_strdup(name);
             break;
@@ -333,7 +332,7 @@ static void print_results()
     devices_no = g_list_length(audio_devices);
     g_print("Number of audio devices: %d \n",devices_no);
     if(devices_no==0 ) {
-        if(config ==1) show_no_devices();        
+        if(config ==1) show_no_devices();
     } else {
         current_device=audio_devices;
         while(current_device != NULL)
@@ -401,4 +400,4 @@ void discover_devices(void)
         g_error_free(error);
     }
 
-}   
+}

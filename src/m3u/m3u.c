@@ -76,7 +76,8 @@ static gchar * convert_path (gchar * path, const gchar * base)
     return aud_construct_uri (path, base);
 }
 
-static gboolean playlist_load_m3u (const gchar * path, gint list, gint at)
+static gboolean playlist_load_m3u (const gchar * path, struct index * filenames,
+ struct index * tuples)
 {
     gchar * text = read_win_text (path);
 
@@ -84,7 +85,6 @@ static gboolean playlist_load_m3u (const gchar * path, gint list, gint at)
         return FALSE;
 
     gchar * parse = text;
-    struct index * add = index_new ();
 
     while (1)
     {
@@ -102,20 +102,20 @@ static gboolean playlist_load_m3u (const gchar * path, gint list, gint at)
         gchar * s = convert_path (parse, path);
 
         if (s != NULL)
-            index_append (add, s);
+            index_append (filenames, s);
 
 NEXT:
         parse = next;
     }
 
-    aud_playlist_entry_insert_batch (list, at, add, NULL);
     g_free (text);
     return TRUE;
 }
 
-static gboolean playlist_save_m3u (const gchar * filename, gint playlist)
+static gboolean playlist_save_m3u (const gchar * filename,
+ struct index * filenames, struct index * tuples)
 {
-    gint entries = aud_playlist_entry_count (playlist);
+    gint entries = index_count (filenames);
     gchar *outstr = NULL;
     VFSFile *file;
     gchar *fn = NULL;
@@ -130,12 +130,10 @@ static gboolean playlist_save_m3u (const gchar * filename, gint playlist)
 
     for (count = 0; count < entries; count ++)
     {
-        const gchar * filename = aud_playlist_entry_get_filename (playlist,
-         count);
-        const gchar * title = aud_playlist_entry_get_title (playlist, count,
-         FALSE);
-        gint seconds = aud_playlist_entry_get_length (playlist, count, FALSE) /
-         1000;
+        const gchar * filename = index_get (filenames, count);
+        const Tuple * tuple = index_get (tuples, count);
+        const gchar * title = tuple_get_string (tuple, FIELD_TITLE, NULL);
+        gint seconds = tuple_get_int (tuple, FIELD_LENGTH, NULL) / 1000;
 
         if (title != NULL)
         {
@@ -161,13 +159,10 @@ static gboolean playlist_save_m3u (const gchar * filename, gint playlist)
 
 static const gchar * const m3u_exts[] = {"m3u", NULL};
 
-static PlaylistPlugin m3u_plugin = {
- .description = "M3U Playlist Format",
+AUD_PLAYLIST_PLUGIN
+(
+ .name = "M3U Playlist Format",
  .extensions = m3u_exts,
  .load = playlist_load_m3u,
  .save = playlist_save_m3u
-};
-
-static PlaylistPlugin * const m3u_plugins[] = {& m3u_plugin, NULL};
-
-SIMPLE_PLAYLIST_PLUGIN (m3u, m3u_plugins)
+)

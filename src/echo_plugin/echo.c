@@ -116,9 +116,9 @@ static void echo_finish(gfloat **d, gint *samples)
 	echo_process(d, samples);
 }
 
-EffectPlugin echo_ep =
-{
-	.description = "Echo Plugin", /* Description */
+AUD_EFFECT_PLUGIN
+(
+	.name = "Echo",
 	.init = init,
 	.cleanup = cleanup,
 	.about = echo_about,
@@ -129,8 +129,4 @@ EffectPlugin echo_ep =
 	.finish = echo_finish,
 	.decoder_to_output_time = echo_decoder_to_output_time,
 	.output_to_decoder_time = echo_output_to_decoder_time
-};
-
-EffectPlugin *echo_eplist[] = { &echo_ep, NULL };
-
-SIMPLE_EFFECT_PLUGIN(echo, echo_eplist);
+)

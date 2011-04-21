@@ -221,15 +221,11 @@ static void about_show(void)
 
 extern PluginPreferences preferences;
 
-static GeneralPlugin scrobbler_gp =
-{
-	.description = "Scrobbler Plugin",
+AUD_GENERAL_PLUGIN
+(
+	.name = "Scrobbler",
 	.init = init,
 	.about = about_show,
 	.cleanup = cleanup,
 	.settings = &preferences,
-};
-
-GeneralPlugin *scrobbler_gplist[] = { &scrobbler_gp, NULL };
-
-DECLARE_PLUGIN(scrobbler, NULL, NULL, NULL, NULL, NULL, scrobbler_gplist, NULL, NULL);
+)

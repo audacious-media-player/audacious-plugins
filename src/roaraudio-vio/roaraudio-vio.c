@@ -225,11 +225,9 @@ static VFSConstructor constructor =
 
 static const gchar * const roar_schemes[] = {"tantalos", "gopher", NULL};
 
-static TransportPlugin roar_plugin = {
- .description = "RoarAudio Virtual I/O (VIO/DSTR)",
+AUD_TRANSPORT_PLUGIN
+(
+ .name = "RoarAudio Virtual I/O (VIO/DSTR)",
  .schemes = roar_schemes,
  .vtable = & constructor
-};
-
-static TransportPlugin * const roar_plugins[] = {& roar_plugin, NULL};
-SIMPLE_TRANSPORT_PLUGIN (roaraudio_vio, roar_plugins)
+)

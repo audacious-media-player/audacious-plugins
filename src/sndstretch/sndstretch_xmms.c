@@ -52,8 +52,9 @@ static void sndstretch_finish (gfloat * * data, gint * samples);
 static gint sndstretch_decoder_to_output_time (gint time);
 static gint sndstretch_output_to_decoder_time (gint time);
 
-EffectPlugin sndstretch_ep = {
-	.description = "SndStretch",
+AUD_EFFECT_PLUGIN
+(
+	.name = "SndStretch",
 	.init = sndstretch_init,
 	.about = sndstretch_about,
 	.configure = sndstretch_config,
@@ -64,11 +65,7 @@ EffectPlugin sndstretch_ep = {
     .decoder_to_output_time = sndstretch_decoder_to_output_time,
     .output_to_decoder_time = sndstretch_output_to_decoder_time,
     .preserves_format = TRUE,
-};
-
-EffectPlugin *sndstretch_eplist[] = { &sndstretch_ep, NULL };
-
-DECLARE_PLUGIN(sndstretch, NULL, NULL, NULL, NULL, sndstretch_eplist, NULL, NULL, NULL);
+)
 
 struct sndstretch_settings
 {

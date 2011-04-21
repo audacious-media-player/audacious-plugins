@@ -379,8 +379,9 @@ static const gchar *wv_fmts[] = { "wv", NULL };
 
 extern PluginPreferences preferences;
 
-static InputPlugin wvpack = {
-    .description = "WavPack decoder",
+AUD_INPUT_PLUGIN
+(
+    .name = "WavPack decoder",
     .init = wv_init,
     .cleanup = wv_cleanup,
     .about = wv_about_box,
@@ -388,11 +389,7 @@ static InputPlugin wvpack = {
     .stop = wv_stop,
     .pause = wv_pause,
     .mseek = wv_seek,
-    .vfs_extensions = wv_fmts,
+    .extensions = wv_fmts,
     .probe_for_tuple = wv_probe_for_tuple,
     .update_song_tuple = wv_write_tag,
-};
-
-InputPlugin *wv_iplist[] = { &wvpack, NULL };
-
-SIMPLE_INPUT_PLUGIN(wavpack, wv_iplist);
+)

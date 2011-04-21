@@ -29,8 +29,14 @@
 #include <audacious/i18n.h>
 #include <libaudcore/hook.h>
 
-GeneralPlugin *evdevplug_gplist[] = { &ed_gp, NULL };
-SIMPLE_GENERAL_PLUGIN(evdev-plug, evdevplug_gplist);
+AUD_GENERAL_PLUGIN
+(
+    .name = "EvDev-Plug",
+    .init = ed_init,
+    .about = ed_about,
+    .configure = ed_config,
+    .cleanup = ed_cleanup
+)
 
 GList *ed_device_listening_list = NULL;
 gboolean plugin_is_active = FALSE;

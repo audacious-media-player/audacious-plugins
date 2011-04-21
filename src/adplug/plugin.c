@@ -9,8 +9,9 @@ static const gchar *fmts[] =
       "sng", "wlf", "xad", "xsm",
       NULL };
 
-InputPlugin adplug_ip = {
-  .description = "AdPlug (AdLib Sound Player)",
+AUD_INPUT_PLUGIN
+(
+  .name = "AdPlug (AdLib Sound Player)",
   .init = adplug_init,
   .cleanup = adplug_quit,
   .about = adplug_about,
@@ -22,9 +23,5 @@ InputPlugin adplug_ip = {
   .file_info_box = adplug_info_box,
   .probe_for_tuple = adplug_get_tuple,
   .is_our_file_from_vfs = adplug_is_our_fd,
-  .vfs_extensions = fmts,
-};
-
-InputPlugin *adplug_iplist[] = { &adplug_ip, NULL };
-
-DECLARE_PLUGIN(adplug, NULL, NULL, adplug_iplist, NULL, NULL, NULL, NULL,NULL);
+  .extensions = fmts,
+)

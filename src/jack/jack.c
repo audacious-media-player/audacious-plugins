@@ -446,9 +446,9 @@ static void jack_about(void)
     }
 }
 
-OutputPlugin jack_op =
-{
-    .description = "JACK Output Plugin 0.17",
+AUD_OUTPUT_PLUGIN
+(
+    .name = "JACK",
     .init = jack_init,
     .cleanup = jack_cleanup,
     .about = jack_about,
@@ -463,8 +463,4 @@ OutputPlugin jack_op =
     .buffer_free = audacious_jack_free,
     .output_time = jack_get_output_time,
     .written_time = jack_get_written_time,
-};
-
-OutputPlugin *jack_oplist[] = { &jack_op, NULL };
-
-SIMPLE_OUTPUT_PLUGIN(jack, jack_oplist);
+)

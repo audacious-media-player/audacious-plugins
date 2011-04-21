@@ -150,9 +150,9 @@ void crossfade_show_rate_message (void)
      "the same rate."));
 }
 
-EffectPlugin crossfade_plugin =
-{
-    .description = "Crossfade",
+AUD_EFFECT_PLUGIN
+(
+    .name = "Crossfade",
     .init = crossfade_init,
     .cleanup = crossfade_cleanup,
     .about = crossfade_about,
@@ -165,8 +165,4 @@ EffectPlugin crossfade_plugin =
     .output_to_decoder_time = crossfade_output_to_decoder_time,
 
     .order = 5, /* must be after resample */
-};
-
-EffectPlugin * crossfade_list[] = {& crossfade_plugin, NULL};
-
-SIMPLE_EFFECT_PLUGIN (crossfade, crossfade_list)
+)

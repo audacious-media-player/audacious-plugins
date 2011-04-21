@@ -266,13 +266,10 @@ static VFSConstructor constructor = {
  .vfs_fsize_impl = unix_fsize
 };
 
-static TransportPlugin unix_plugin = {
- .description = "File I/O",
+AUD_TRANSPORT_PLUGIN
+(
+ .name = "File I/O",
  .about = unix_about,
  .schemes = unix_schemes,
  .vtable = & constructor
-};
-
-static TransportPlugin * const unix_plugins[] = {& unix_plugin, NULL};
-
-SIMPLE_TRANSPORT_PLUGIN (unix, unix_plugins)
+)

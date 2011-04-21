@@ -40,20 +40,18 @@
 
 #include "util.h"
 
-static gboolean playlist_load_asx (const gchar * filename, gint list, gint pos)
+static gboolean playlist_load_asx (const gchar * filename,
+ struct index * filenames, struct index * tuples)
 {
     gint i;
     gchar line_key[16];
     gchar * line;
     gchar *uri = NULL;
-    struct index * add;
 
     uri = g_filename_to_uri(filename, NULL, NULL);
 
     INIFile *inifile = open_ini_file(uri ? uri : filename);
     g_free(uri); uri = NULL;
-
-    add = index_new ();
 
     for (i = 1; ; i++) {
         g_snprintf(line_key, sizeof(line_key), "Ref%d", i);
@@ -68,21 +66,20 @@ static gboolean playlist_load_asx (const gchar * filename, gint list, gint pos)
                 uri = str_replace_fragment(uri, strlen(uri), "http://", "mms://");
 
             if (uri != NULL)
-                index_append (add, uri);
+                index_append (filenames, uri);
         }
         else
             break;
     }
 
     close_ini_file(inifile);
-
-    aud_playlist_entry_insert_batch (list, pos, add, NULL);
     return TRUE;
 }
 
-static gboolean playlist_save_asx (const gchar * filename, gint playlist)
+static gboolean playlist_save_asx (const gchar * filename,
+ struct index * filenames, struct index * tuples)
 {
-    gint entries = aud_playlist_entry_count (playlist);
+    gint entries = index_count (filenames);
     gchar *uri = g_filename_to_uri(filename, NULL, NULL);
     VFSFile *file = vfs_fopen(uri, "wb");
     gint count;
@@ -97,8 +94,7 @@ static gboolean playlist_save_asx (const gchar * filename, gint playlist)
 
     for (count = 0; count < entries; count ++)
     {
-        const gchar * filename = aud_playlist_entry_get_filename (playlist,
-         count);
+        const gchar * filename = index_get (filenames, count);
         gchar *fn;
 
         if (vfs_is_remote (filename))
@@ -116,13 +112,10 @@ static gboolean playlist_save_asx (const gchar * filename, gint playlist)
 
 static const gchar * const asx_exts[] = {"asx", NULL};
 
-static PlaylistPlugin asx_plugin = {
- .description = "ASXv1/ASXv2 Playlist Format",
+AUD_PLAYLIST_PLUGIN
+(
+ .name = "ASXv1/ASXv2 Playlist Format",
  .extensions = asx_exts,
  .load = playlist_load_asx,
  .save = playlist_save_asx
-};
-
-static PlaylistPlugin * const asx_plugins[] = {& asx_plugin, NULL};
-
-SIMPLE_PLAYLIST_PLUGIN (asx, asx_plugins)
+)

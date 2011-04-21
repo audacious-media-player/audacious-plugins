@@ -51,16 +51,13 @@ static char *cmd_line_ttc = NULL;
 
 static GtkWidget *cmd_warn_label, *cmd_warn_img;
 
-GeneralPlugin sc_gp =
-{
-	.description = "Song Change " PACKAGE_VERSION,
+AUD_GENERAL_PLUGIN
+(
+	.name = "Song Change",
 	.init = init,
 	.cleanup = cleanup,
 	.settings = &preferences,
-};
-
-GeneralPlugin *songchange_gplist[] = { &sc_gp, NULL };
-SIMPLE_GENERAL_PLUGIN(songchange, songchange_gplist);
+)
 
 /**
  * Escapes characters that are special to the shell inside double quotes.

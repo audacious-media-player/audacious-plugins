@@ -284,12 +284,8 @@ static /* GtkWidget * */ gpointer get_widget(void)
 	return area;
 }
 
-VisPlugin spectrum_gp = {
-    .description = "Cairo Spectrum",
+AUD_VIS_PLUGIN
+(
+    .name = "Cairo Spectrum",
     .get_widget = get_widget
-};
-
-VisPlugin *spectrum_gplist[] = { &spectrum_gp, NULL };
-
-SIMPLE_VIS_PLUGIN(spectrum, spectrum_gplist);
-
+)

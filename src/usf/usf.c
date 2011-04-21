@@ -176,7 +176,7 @@ int LoadUSF(const gchar * fn, VFSFile *fil)
 			else //no path
 				pathlength = 7;
 
-			strcpy(title, &fn[pathlength]);			
+			strcpy(title, &fn[pathlength]);
 
 		}
 
@@ -190,7 +190,7 @@ int LoadUSF(const gchar * fn, VFSFile *fil)
 
 	vfs_fseek(fil, reservestart, SEEK_SET);
 	vfs_fread(&temp, 4, 1, fil);
-		
+
 	if(temp == 0x34365253) { //there is a rom section
 		int len = 0, start = 0;
 		vfs_fread(&len, 4, 1, fil);
@@ -218,7 +218,7 @@ int LoadUSF(const gchar * fn, VFSFile *fil)
 
 	}
 
-	
+
 
 	vfs_fread(&temp, 4, 1, fil);
 	if(temp == 0x34365253) {
@@ -234,8 +234,8 @@ int LoadUSF(const gchar * fn, VFSFile *fil)
 		}
 	}
 
-    // Detect the Ramsize before the memory allocation 
-	
+    // Detect the Ramsize before the memory allocation
+
 	if(*(uint32_t*)(savestatespace + 4) == 0x400000) {
 		RdramSize = 0x400000;
 		savestatespace = realloc(savestatespace, 0x40275c);
@@ -270,22 +270,22 @@ void usf_mseek(InputPlayback * context, gulong millisecond)
 {
 	if(millisecond < play_time) {
 		is_paused = 0;
-				
+
 		fake_seek_stopping = 1;
 		CloseCpu();
-					
+
 		while(!cpu_stopped)
 			usleep(1);
-		
+
 		is_seeking = 1;
 		seek_time = (double)millisecond;
-		
-		fake_seek_stopping = 2;	
+
+		fake_seek_stopping = 2;
 	} else {
 		is_seeking = 1;
-		seek_time = (double)millisecond;		
+		seek_time = (double)millisecond;
 	}
-				
+
 	context->output->flush(millisecond/1000);
 }
 
@@ -313,9 +313,9 @@ void usf_play(InputPlayback * context, const gchar * filename,
 
 
 	pcontext = context;
-    	
+
     // Allocate main memory after usf loads  (to determine ram size)
-	
+
 	PreAllocate_Memory();
 
     if(!LoadUSF(filename, file)) {
@@ -323,17 +323,17 @@ void usf_play(InputPlayback * context, const gchar * filename,
 	vfs_fclose(file);
     	return;
     }
-	
+
 	context->set_pb_ready(context);
 
 	Allocate_Memory();
 
-	usf_playing = TRUE;	
-	while(usf_playing) {		
+	usf_playing = TRUE;
+	while(usf_playing) {
 		is_fading = 0;
 		play_time = 0;
 
-		StartEmulationFromSave(savestatespace);		
+		StartEmulationFromSave(savestatespace);
 		if(!fake_seek_stopping) break;
 		while(fake_seek_stopping != 2)
 			usleep(1);
@@ -468,7 +468,7 @@ Tuple * usf_get_song_tuple(const gchar * fn, VFSFile *fil)
 
 		tuple_associate_string(tuple, FIELD_CODEC, NULL, "Nintendo 64 Audio");
 		tuple_associate_string(tuple, -1, "console", "Nintendo 64");
-		
+
 		free(tagbuffer);
 		free(buffer2);
 	}
@@ -490,24 +490,18 @@ Tuple * usf_get_song_tuple(const gchar * fn, VFSFile *fil)
 		tuple_associate_int(tuple, FIELD_LENGTH, NULL, (180 * 1000));
 		tuple_associate_string(tuple, FIELD_TITLE, NULL, title);
 	}
-	
+
 	return tuple;
 }
 
-InputPlugin usf_ip = {
-  .description = "USF Plugin",
+AUD_INPUT_PLUGIN
+(
+  .name = "USF Audio",
   .init = usf_init,
   .play = usf_play,
   .stop = usf_stop,
   .pause = usf_pause,
   .mseek = usf_mseek,
-  .vfs_extensions = (gchar **)usf_exts,
+  .extensions = usf_exts,
   .probe_for_tuple = usf_get_song_tuple,
-};
-
-
-
-static InputPlugin *usf_iplist[] = { &usf_ip, NULL };
-
-DECLARE_PLUGIN(usf_iplist, NULL, NULL, usf_iplist, NULL, NULL, NULL, NULL, NULL);
-
+)

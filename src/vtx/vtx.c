@@ -272,8 +272,9 @@ void vtx_pause(InputPlayback * playback, gboolean pause)
     g_mutex_unlock(seek_mutex);
 }
 
-InputPlugin vtx_ip = {
-    .description = "VTX Audio Plugin",
+AUD_INPUT_PLUGIN
+(
+    .name = "VTX Audio",
     .init = vtx_init,
     .cleanup = vtx_cleanup,
     .about = vtx_about,
@@ -284,9 +285,5 @@ InputPlugin vtx_ip = {
     .file_info_box = vtx_file_info,
     .probe_for_tuple = vtx_probe_for_tuple,
     .is_our_file_from_vfs = vtx_is_our_fd,
-    .vfs_extensions = vtx_fmts
-};
-
-InputPlugin *vtx_iplist[] = { &vtx_ip, NULL };
-
-SIMPLE_INPUT_PLUGIN(vtx, vtx_iplist);
+    .extensions = vtx_fmts
+)

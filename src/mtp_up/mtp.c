@@ -45,17 +45,14 @@ static gboolean plugin_active = FALSE,exiting=FALSE;
 static gboolean mtp_init (void);
 void mtp_cleanup ( void );
 
-GeneralPlugin mtp_gp =
-{
-    .description = "MTP Upload",
+AUD_GENERAL_PLUGIN
+(
+    .name = "MTP Upload",
     .init = mtp_init,
     .cleanup = mtp_cleanup
-};
+)
+
 GtkWidget *mtp_root_menuitem,*mtp_submenu_item_up,*mtp_submenu_item_free,*mtp_submenu;
-
-GeneralPlugin *mtp_gplist[] = { &mtp_gp, NULL };
-DECLARE_PLUGIN(mtp_gp, NULL, NULL, NULL, NULL, NULL, mtp_gplist, NULL, NULL)
-
 
 void show_dialog(const gchar* message)
 {

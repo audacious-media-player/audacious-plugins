@@ -330,12 +330,9 @@ static VFSConstructor constructor = {
  .vfs_fsize_impl = gio_vfs_fsize_impl
 };
 
-static TransportPlugin gio_plugin = {
- .description = "GIO Support",
+AUD_TRANSPORT_PLUGIN
+(
+ .name = "GIO Support",
  .schemes = gio_schemes,
  .vtable = & constructor
-};
-
-static TransportPlugin * const gio_plugins[] = {& gio_plugin, NULL};
-
-SIMPLE_TRANSPORT_PLUGIN (gio, gio_plugins)
+)

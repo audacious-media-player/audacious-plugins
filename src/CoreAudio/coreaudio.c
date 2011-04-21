@@ -22,9 +22,9 @@
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
-OutputPlugin osx_op =
-{
-	.description = "CoreAudio Output Plugin", /* Description */
+AUD_OUTPUT_PLUGIN
+(
+	.name = "CoreAudio Output",
 	.init = osx_init,
 	.about = osx_about,
 	.configure = osx_configure,
@@ -40,8 +40,4 @@ OutputPlugin osx_op =
 	.output_time = osx_get_output_time,
 	.written_time = osx_get_written_time,
 	.probe_priority = 1,
-};
-
-OutputPlugin *coreaudio_oplist[] = { &osx_op, NULL };
-
-DECLARE_PLUGIN(coreaudio, NULL, NULL, NULL, coreaudio_oplist, NULL, NULL, NULL, NULL);
+)

@@ -135,8 +135,9 @@ static void rocklight_render_freq(gint16 data[2][256]) {
 	}
 }
 
-static VisPlugin rocklight_vp = {
-	.description = "RockLight",
+AUD_VIS_PLUGIN
+(
+	.name = "RockLight",
 
 	.num_pcm_chs_wanted = 0,
 	.num_freq_chs_wanted = 2,
@@ -146,8 +147,4 @@ static VisPlugin rocklight_vp = {
 	.playback_start = rocklight_playback_start,
 	.playback_stop = rocklight_playback_stop,
 	.render_freq = rocklight_render_freq
-};
-
-VisPlugin *rocklight_vplist[] = { &rocklight_vp, NULL };
-
-DECLARE_PLUGIN(rocklight, NULL, NULL, NULL, NULL, NULL, NULL, rocklight_vplist,NULL);
+)

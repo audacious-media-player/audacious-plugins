@@ -9,12 +9,11 @@ extern "C" {
 #include <audacious/debug.h>
 #include <audacious/plugin.h>
 
-
-extern InputPlugin gModPlug;
+extern InputPlugin _aud_plugin_self;
 
 gboolean Init (void)
 {
-    gModplugXMMS.SetInputPlugin(gModPlug);
+    gModplugXMMS.SetInputPlugin (_aud_plugin_self);
     gModplugXMMS.Init();
     return TRUE;
 }

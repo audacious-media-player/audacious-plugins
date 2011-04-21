@@ -140,9 +140,6 @@ static gboolean file_init (void)
         g_return_val_if_fail (file_path != NULL, FALSE);
     }
 
-    /* ensure preloading of file transport */
-    vfs_prepare("file");
-
     set_plugin();
     if (plugin->init)
         plugin->init(&file_write_output);
@@ -589,8 +586,9 @@ static void file_configure(void)
     }
 }
 
-static OutputPlugin file_op = {
- .description = "FileWriter Plugin",
+AUD_OUTPUT_PLUGIN
+(
+ .name = "FileWriter",
  .init = file_init,
  .about = file_about,
  .configure = file_configure,
@@ -603,8 +601,5 @@ static OutputPlugin file_op = {
  .output_time = file_get_time,
  .pause = file_pause,
  .flush = file_flush,
- .set_written_time = file_set_written_time};
-
-static OutputPlugin * file_oplist[] = {& file_op, NULL};
-
-SIMPLE_OUTPUT_PLUGIN (filewriter, file_oplist)
+ .set_written_time = file_set_written_time,
+)

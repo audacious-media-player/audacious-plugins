@@ -370,7 +370,7 @@ void action_playback_stop(void)
 
 void action_preferences(void)
 {
-    show_preferences_window(TRUE);
+    aud_show_prefs_window ();
 }
 
 void action_quit(void)

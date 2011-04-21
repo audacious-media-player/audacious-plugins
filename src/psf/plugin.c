@@ -264,19 +264,14 @@ static void psf2_Seek(InputPlayback *playback, gint time)
 
 static const gchar *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", NULL };
 
-InputPlugin psf2_ip =
-{
-	.description = "OpenPSF PSF1/PSF2 Audio Plugin",
+AUD_INPUT_PLUGIN
+(
+	.name = "OpenPSF PSF1/PSF2",
 	.play = psf2_play,
 	.stop = psf2_Stop,
 	.pause = psf2_pause,
 	.mseek = psf2_Seek,
 	.probe_for_tuple = psf2_tuple,
 	.is_our_file_from_vfs = psf2_is_our_fd,
-	.vfs_extensions = psf2_fmts,
-};
-
-InputPlugin *psf2_iplist[] = { &psf2_ip, NULL };
-
-DECLARE_PLUGIN(psf2, NULL, NULL, psf2_iplist, NULL, NULL, NULL, NULL, NULL);
-
+	.extensions = psf2_fmts,
+)

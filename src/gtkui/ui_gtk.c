@@ -24,7 +24,6 @@
 #include <audacious/debug.h>
 #include <audacious/drct.h>
 #include <audacious/gtk-compat.h>
-#include <audacious/interface.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <audacious/misc.h>
@@ -72,17 +71,23 @@ static guint update_song_timeout_source = 0;
 
 extern GtkWidget *ui_playlist_notebook_tab_title_editing;
 
-static gboolean _ui_initialize (IfaceCbs * cbs);
-static gboolean _ui_finalize(void);
+static gboolean init (void);
+static void cleanup (void);
+static void ui_show (gboolean show);
+static void ui_show_error (const gchar * text);
 
-Iface gtkui_interface = {
-    .id = "gtkui",
-    .desc = N_("GTK Interface"),
-    .init = _ui_initialize,
-    .fini = _ui_finalize,
-};
-
-SIMPLE_IFACE_PLUGIN ("gtkui", & gtkui_interface)
+AUD_IFACE_PLUGIN
+(
+    .name = N_("GTK Interface"),
+    .init = init,
+    .cleanup = cleanup,
+    .show = ui_show,
+    .show_error = ui_show_error,
+    .show_filebrowser = audgui_run_filebrowser,
+    .show_jump_to_track = audgui_jump_to_track,
+    .run_gtk_plugin = (void *) layout_add,
+    .stop_gtk_plugin = (void *) layout_remove,
+)
 
 static void save_window_size (void)
 {
@@ -105,32 +110,6 @@ static gboolean window_delete()
 
     aud_drct_quit ();
     return TRUE;
-}
-
-void show_preferences_window(gboolean show)
-{
-    /* static GtkWidget * * prefswin = NULL; */
-    static void * * prefswin = NULL;
-
-    if (show)
-    {
-        if ((prefswin != NULL) && (*prefswin != NULL))
-        {
-            gtk_window_present(GTK_WINDOW(*prefswin));
-            return;
-        }
-
-        prefswin = gtkui_interface.ops->create_prefs_window();
-
-        gtk_widget_show_all(*prefswin);
-    }
-    else
-    {
-        if ((prefswin != NULL) && (*prefswin != NULL))
-        {
-            gtkui_interface.ops->destroy_prefs_window();
-        }
-    }
 }
 
 static void button_open_pressed()
@@ -190,43 +169,23 @@ static gboolean title_change_cb (void)
     return FALSE;
 }
 
-static void ui_mainwin_show()
+static void ui_show (gboolean show)
 {
-    if (config.save_window_position)
-        gtk_window_move(GTK_WINDOW(window), config.player_x, config.player_y);
-
-    gtk_widget_show(window);
-    gtk_window_present(GTK_WINDOW(window));
-}
-
-static void ui_mainwin_hide()
-{
-    if (config.save_window_position)
-        gtk_window_get_position(GTK_WINDOW(window), &config.player_x, &config.player_y);
-
-    gtk_widget_hide(window);
-}
-
-static void ui_mainwin_toggle_visibility(gpointer hook_data, gpointer user_data)
-{
-    gboolean show = GPOINTER_TO_INT(hook_data);
-
-    config.player_visible = show;
-    aud_cfg->player_visible = show;
-
     if (show)
     {
-        ui_mainwin_show();
+        if (config.save_window_position)
+            gtk_window_move(GTK_WINDOW(window), config.player_x, config.player_y);
+
+        gtk_widget_show(window);
+        gtk_window_present(GTK_WINDOW(window));
     }
     else
     {
-        ui_mainwin_hide();
-    }
-}
+        if (config.save_window_position)
+            gtk_window_get_position(GTK_WINDOW(window), &config.player_x, &config.player_y);
 
-static void ui_toggle_visibility(void)
-{
-    ui_mainwin_toggle_visibility(GINT_TO_POINTER(!config.player_visible), NULL);
+        gtk_widget_hide(window);
+    }
 }
 
 static void ui_show_error (const gchar * text)
@@ -659,7 +618,6 @@ static void ui_hooks_associate(void)
     hook_associate ("playback pause", (HookFunction) pause_cb, NULL);
     hook_associate ("playback unpause", (HookFunction) pause_cb, NULL);
     hook_associate("playback stop", ui_playback_stop, NULL);
-    hook_associate("mainwin show", ui_mainwin_toggle_visibility, NULL);
     hook_associate("playlist update", ui_playlist_notebook_update, NULL);
     hook_associate ("playlist position", ui_playlist_notebook_position, NULL);
     hook_associate ("toggle stop after song", update_toggles, NULL);
@@ -676,7 +634,6 @@ static void ui_hooks_disassociate(void)
     hook_dissociate ("playback pause", (HookFunction) pause_cb);
     hook_dissociate ("playback unpause", (HookFunction) pause_cb);
     hook_dissociate("playback stop", ui_playback_stop);
-    hook_dissociate("mainwin show", ui_mainwin_toggle_visibility);
     hook_dissociate("playlist update", ui_playlist_notebook_update);
     hook_dissociate ("playlist position", ui_playlist_notebook_position);
     hook_dissociate ("toggle stop after song", update_toggles);
@@ -685,7 +642,7 @@ static void ui_hooks_disassociate(void)
     hook_dissociate ("config save", (HookFunction) config_save);
 }
 
-static gboolean _ui_initialize(IfaceCbs * cbs)
+static gboolean init (void)
 {
     GtkWidget *tophbox;         /* box to contain toolbar and shbox */
     GtkWidget *buttonbox;       /* contains buttons like "open", "next" */
@@ -859,7 +816,7 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
     gtk_widget_show_all (vbox);
 
     if (config.player_visible)
-        ui_mainwin_toggle_visibility(GINT_TO_POINTER(config.player_visible), NULL);
+        ui_show (TRUE);
 
     AUDDBG("check menu settings\n");
     check_set(toggleaction_group_others, "view menu", config.menu_visible);
@@ -873,25 +830,10 @@ static gboolean _ui_initialize(IfaceCbs * cbs)
 
     update_toggles (NULL, NULL);
 
-    AUDDBG("callback setup\n");
-
-    /* Register interface callbacks */
-    cbs->show_prefs_window = show_preferences_window;
-    cbs->run_filebrowser = audgui_run_filebrowser;
-    cbs->hide_filebrowser = audgui_hide_filebrowser;
-    cbs->toggle_visibility = ui_toggle_visibility;
-    cbs->show_error = ui_show_error;
-    cbs->show_jump_to_track = audgui_jump_to_track;
-    cbs->hide_jump_to_track = audgui_jump_to_track_hide;
-    cbs->show_about_window = audgui_show_about_window;
-    cbs->hide_about_window = audgui_hide_about_window;
-    cbs->run_gtk_plugin = (void *) layout_add;
-    cbs->stop_gtk_plugin = (void *) layout_remove;
-
     return TRUE;
 }
 
-static gboolean _ui_finalize(void)
+static void cleanup (void)
 {
     if (error_win)
         gtk_widget_destroy (error_win);
@@ -928,6 +870,4 @@ static gboolean _ui_finalize(void)
     gtk_widget_destroy (window);
 
     layout_cleanup ();
-
-    return TRUE;
 }

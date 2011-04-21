@@ -79,9 +79,9 @@ kanashi_get_widget(void)
   return kanashi_win;
 }
 
-static VisPlugin kanashi_vp = 
-{
-  .description = "Kanashi",
+AUD_VIS_PLUGIN
+(
+  .name = "Kanashi",
   .num_pcm_chs_wanted = 2,
   .num_freq_chs_wanted = 2,
   .init = kanashi_xmms_init,
@@ -91,11 +91,7 @@ static VisPlugin kanashi_vp =
   .render_pcm = kanashi_xmms_render_pcm,
   .render_freq = kanashi_xmms_render_freq,
   .get_widget = kanashi_get_widget,
-};
-
-VisPlugin *kanashi_vplist[] = { &kanashi_vp, NULL };
-
-DECLARE_PLUGIN(kanashi, NULL, NULL, NULL, NULL, NULL, NULL, kanashi_vplist,NULL);
+)
 
 static gpointer
 draw_thread_fn (gpointer data)
@@ -156,7 +152,7 @@ kanashi_xmms_about (void)
 {
   static GtkWidget *window = NULL;
 
-  audgui_simple_message(&window, GTK_MESSAGE_INFO, "About Kanashi", 
+  audgui_simple_message(&window, GTK_MESSAGE_INFO, "About Kanashi",
 
 "Kanashi " KANASHI_VERSION "\n\n\
 Copyright (C) 2009, William Pitcock <nenolod -at- dereferenced.org>\n\

@@ -1286,14 +1286,11 @@ static VFSConstructor constructor = {
  .vfs_get_metadata_impl = neon_vfs_metadata_impl
 };
 
-static TransportPlugin neon_plugin = {
- .description = "Neon HTTP/HTTPS Support",
+AUD_TRANSPORT_PLUGIN
+(
+ .name = "Neon HTTP/HTTPS Support",
  .schemes = neon_schemes,
  .init = neon_plugin_init,
  .cleanup = neon_plugin_fini,
  .vtable = & constructor
-};
-
-static TransportPlugin * const neon_plugins[] = {& neon_plugin, NULL};
-
-SIMPLE_TRANSPORT_PLUGIN (neon, neon_plugins)
+)

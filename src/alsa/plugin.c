@@ -29,9 +29,9 @@
 #include "alsa.h"
 #include "config.h"
 
-static OutputPlugin plugin =
-{
-    .description = "ALSA Output Plugin",
+AUD_OUTPUT_PLUGIN
+(
+    .name = "ALSA",
     .probe_priority = 5,
     .init = alsa_init,
     .cleanup = alsa_cleanup,
@@ -50,11 +50,7 @@ static OutputPlugin plugin =
     .get_volume = alsa_get_volume,
     .about = alsa_about,
     .configure = alsa_configure,
-};
-
-static OutputPlugin * list[] = {& plugin, NULL};
-
-SIMPLE_OUTPUT_PLUGIN (alsa, list)
+)
 
 void alsa_about (void)
 {

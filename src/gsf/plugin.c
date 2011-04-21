@@ -126,15 +126,15 @@ static Tuple *gsf_get_song_tuple(const gchar *filename, VFSFile *fd)
 	if (!psftag_getvar(tag, "title", tmp_str, sizeof(tmp_str)-1)) {
 		tuple_associate_string(ti, FIELD_TITLE, NULL, tmp_str);
 	}
-		
+
 	if (!psftag_getvar(tag, "artist", tmp_str, sizeof(tmp_str)-1)) {
 		tuple_associate_string(ti, FIELD_ARTIST, NULL, tmp_str);
 	}
-		
+
 	if (!psftag_getvar(tag, "game", tmp_str, sizeof(tmp_str)-1)) {
 		tuple_associate_string(ti, FIELD_ALBUM, NULL, tmp_str);
 	}
-		
+
 	if (!psftag_getvar(tag, "year", tmp_str, sizeof(tmp_str)-1)) {
 		tuple_associate_string(ti, FIELD_DATE, NULL, tmp_str);
 	}
@@ -142,15 +142,15 @@ static Tuple *gsf_get_song_tuple(const gchar *filename, VFSFile *fd)
 	if (!psftag_getvar(tag, "copyright", tmp_str, sizeof(tmp_str)-1)) {
 		tuple_associate_string(ti, FIELD_COPYRIGHT, NULL, tmp_str);
 	}
-		
+
 	if (!psftag_getvar(tag, "gsfby", tmp_str, sizeof(tmp_str)-1)) {
 		tuple_associate_string(ti, -1, "gsfby", tmp_str);
 	}
-		
+
 	if (!psftag_getvar(tag, "tagger", tmp_str, sizeof(tmp_str)-1)) {
 		tuple_associate_string(ti, -1, "tagger", tmp_str);
 	}
-		
+
 	if (!psftag_raw_getvar(tag, "length", tmp_str, sizeof(tmp_str)-1)) {
 		tuple_associate_int(ti, FIELD_LENGTH, NULL, LengthFromString(tmp_str) + FadeLength);
 	}
@@ -190,18 +190,18 @@ static void gsf_about(void)
 
 static const gchar *gsf_fmts[] = { "gsf", "minigsf", NULL };
 
-InputPlugin gsf_ip =
-{
-        .description = "Highly Advanced for Audacious",
-        .about = gsf_about,
-        .play = gsf_play,
-        .stop = gsf_stop,
-        .pause = gsf_pause,
-        .mseek = gsf_mseek,
-        .probe_for_tuple = gsf_get_song_tuple,
-        .is_our_file_from_vfs = gsf_is_our_fd,
-	.vfs_extensions = gsf_fmts,
-};
+AUD_INPUT_PLUGIN
+(
+	.description = "Highly Advanced for Audacious",
+	.about = gsf_about,
+	.play = gsf_play,
+	.stop = gsf_stop,
+	.pause = gsf_pause,
+	.mseek = gsf_mseek,
+	.probe_for_tuple = gsf_get_song_tuple,
+	.is_our_file_from_vfs = gsf_is_our_fd,
+	.extensions = gsf_fmts,
+)
 
 static InputPlayback *_playback = NULL;
 
@@ -209,7 +209,7 @@ void end_of_track(void)
 {
 	stop_flag = TRUE;
 }
-	
+
 void writeSound(void)
 {
 	int tmp;
@@ -258,7 +258,7 @@ static gboolean gsf_play(InputPlayback *playback, const gchar * filename,
 	soundQuality = 0;
 
 	DetectSilence=1;
-	silencelength=5;	
+	silencelength=5;
 	IgnoreTrackLength=0;
 	DefaultLength=150000;
 	TrailingSilence=1000;
@@ -274,7 +274,7 @@ static gboolean gsf_play(InputPlayback *playback, const gchar * filename,
 	fn = f ? f : filename;
 
 	Tuple *ti = gsf_get_song_tuple(fn, file);
-	
+
 	r = GSFRun(fn);
 	if (!r)
 		return FALSE;
@@ -308,11 +308,3 @@ static gboolean gsf_play(InputPlayback *playback, const gchar * filename,
 
 	return TRUE;
 }
-
-InputPlugin *get_iplugin_info(void)
-{
-	return &gsf_ip;
-}
-
-InputPlugin *gsf_iplist[] = { &gsf_ip, NULL };
-SIMPLE_INPUT_PLUGIN(gsf, gsf_iplist);

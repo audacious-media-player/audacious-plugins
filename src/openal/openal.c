@@ -214,8 +214,9 @@ openal_flush(gint time)
 	alSourcei(state.source, AL_BUFFER, 0);
 }
 
-OutputPlugin openal_op = {
-        .description = "OpenAL Output Plugin",
+AUD_OUTPUT_PLUGIN
+(
+	.name = "OpenAL",
 	.probe_priority = 3,
 	.init = openal_init,
 	.open_audio = openal_open,
@@ -225,8 +226,4 @@ OutputPlugin openal_op = {
 	.written_time = openal_written_time,
 	.buffer_free = openal_buffer_size,
 	.flush = openal_flush,
-};
-
-OutputPlugin *openal_oplist[] = { &openal_op, NULL };
-
-SIMPLE_OUTPUT_PLUGIN(openal, openal_oplist);
+)

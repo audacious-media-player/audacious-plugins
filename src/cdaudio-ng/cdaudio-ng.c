@@ -95,9 +95,11 @@ static void refresh_trackinfo (gboolean warning);
 static gint calculate_track_length (gint startlsn, gint endlsn);
 static gint find_trackno_from_filename (const gchar * filename);
 
+static const gchar * const schemes[] = {"cdda", NULL};
 
-static InputPlugin inputplugin = {
-    .description = "Audio CD Plugin",
+AUD_INPUT_PLUGIN
+(
+    .name = "Audio CD Playback",
     .init = cdaudio_init,
     .about = cdaudio_about,
     .configure = cdaudio_configure,
@@ -108,13 +110,9 @@ static InputPlugin inputplugin = {
     .mseek = cdaudio_mseek,
     .cleanup = cdaudio_cleanup,
     .probe_for_tuple = make_tuple,
+    .schemes = schemes,
     .have_subtune = TRUE,
-};
-
-InputPlugin *cdaudio_iplist[] = { &inputplugin, NULL };
-
-SIMPLE_INPUT_PLUGIN (cdaudio, cdaudio_iplist)
-
+)
 
 static void cdaudio_error (const gchar * message_format, ...)
 {
@@ -254,7 +252,6 @@ static gboolean cdaudio_init (void)
 
     libcddb_init ();
 
-    aud_uri_set_plugin ("cdda://", &inputplugin);
     return TRUE;
 }
 

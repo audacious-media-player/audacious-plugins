@@ -22,8 +22,9 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-static OutputPlugin plugin = {
-    .description = "OSS4 Output Plugin",
+AUD_OUTPUT_PLUGIN
+(
+    .name = "OSS 4",
     .probe_priority = 5,
     .init = oss_init,
     .cleanup = oss_cleanup,
@@ -41,11 +42,7 @@ static OutputPlugin plugin = {
     .get_volume = oss_get_volume,
     .about = oss_about,
     .configure = oss_configure,
-};
-
-static OutputPlugin *list[] = {&plugin, NULL};
-
-SIMPLE_OUTPUT_PLUGIN(oss4, list);
+)
 
 void oss_about(void)
 {

@@ -69,16 +69,13 @@ static gint voice_output_to_decoder_time(gint time)
 	return time;
 }
 
-static EffectPlugin voice = {
-	.description = "Voice Removal Plugin",
+AUD_EFFECT_PLUGIN
+(
+	.name = "Voice Removal",
 	.start = voice_start,
 	.process = voice_process,
 	.finish = voice_finish,
 	.flush = voice_flush,
 	.decoder_to_output_time = voice_decoder_to_output_time,
 	.output_to_decoder_time = voice_output_to_decoder_time
-};
-
-EffectPlugin *voice_eplist[] = { &voice, NULL };
-
-SIMPLE_EFFECT_PLUGIN(voice_removal, voice_eplist);
+)

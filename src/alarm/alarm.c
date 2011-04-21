@@ -1017,14 +1017,11 @@ static void alarm_cleanup(void)
    cmdstr = NULL;
 }
 
-static GeneralPlugin alarm_plugin =
-{
-     .description = "Alarm "VERSION,
+AUD_GENERAL_PLUGIN
+(
+     .name = "Alarm",
      .init = alarm_init,
      .about = alarm_about,
      .configure = alarm_configure,
      .cleanup = alarm_cleanup,
-};
-
-GeneralPlugin *alarm_gplist[] = { &alarm_plugin, NULL };
-SIMPLE_GENERAL_PLUGIN(alarm, alarm_gplist);
+)

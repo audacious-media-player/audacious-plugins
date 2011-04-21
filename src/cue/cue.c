@@ -69,8 +69,8 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, gint tuple_type, gint pti)
     tuple_associate_string(tuple, tuple_type, NULL, text);
 }
 
-static gboolean playlist_load_cue (const gchar * cue_filename, gint list, gint
- at)
+static gboolean playlist_load_cue (const gchar * cue_filename,
+ struct index * filenames, struct index * tuples)
 {
     void * buffer;
     gint64 size;
@@ -89,9 +89,6 @@ static gboolean playlist_load_cue (const gchar * cue_filename, gint list, gint
     gint tracks = cd_get_ntrack (cd);
     if (tracks == 0)
         return FALSE;
-
-    struct index * filenames = index_new ();
-    struct index * tuples = index_new ();
 
     Track * current = cd_get_track (cd, 1);
     g_return_val_if_fail (current != NULL, FALSE);
@@ -157,18 +154,14 @@ static gboolean playlist_load_cue (const gchar * cue_filename, gint list, gint
         }
     }
 
-    aud_playlist_entry_insert_batch (list, at, filenames, tuples);
     return TRUE;
 }
 
 static const gchar * const cue_exts[] = {"cue", NULL};
 
-static PlaylistPlugin cue_plugin = {
- .description = "Cue Sheet Support",
+AUD_PLAYLIST_PLUGIN
+(
+ .name = "Cue Sheet Support",
  .extensions = cue_exts,
  .load = playlist_load_cue
-};
-
-static PlaylistPlugin * const cue_plugins[] = {& cue_plugin, NULL};
-
-SIMPLE_PLAYLIST_PLUGIN (cue, cue_plugins)
+)

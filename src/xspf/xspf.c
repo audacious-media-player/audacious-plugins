@@ -212,7 +212,8 @@ static gint close_cb (void * file)
     return vfs_fclose (file);
 }
 
-static gboolean xspf_playlist_load (const gchar * filename, gint list, gint pos)
+static gboolean xspf_playlist_load (const gchar * filename,
+ struct index * filenames, struct index * tuples)
 {
     VFSFile * file = vfs_fopen (filename, "r");
     if (! file)
@@ -231,10 +232,6 @@ static gboolean xspf_playlist_load (const gchar * filename, gint list, gint pos)
 #endif
 
     xmlNode *nptr, *nptr2;
-    struct index * filenames, * tuples;
-
-    filenames = index_new ();
-    tuples = index_new ();
 
     // find trackList
     for (nptr = doc->children; nptr != NULL; nptr = nptr->next) {
@@ -246,15 +243,6 @@ static gboolean xspf_playlist_load (const gchar * filename, gint list, gint pos)
 
             for (nptr2 = nptr->children; nptr2 != NULL; nptr2 = nptr2->next) {
                 if (nptr2->type == XML_ELEMENT_NODE &&
-                    !xmlStrcmp(nptr2->name, (xmlChar *)"title")) {
-                    xmlChar *title = xmlNodeGetContent(nptr2);
-
-                    if (title && title[0] && ! aud_playlist_entry_count (list))
-                        aud_playlist_set_title (list, (const gchar *) title);
-
-                    xmlFree(title);
-                } else
-                if (nptr2->type == XML_ELEMENT_NODE &&
                     !xmlStrcmp(nptr2->name, (xmlChar *)"trackList")) {
                     xspf_find_track (nptr2, filename, base, filenames, tuples);
                 }
@@ -263,9 +251,8 @@ static gboolean xspf_playlist_load (const gchar * filename, gint list, gint pos)
             xmlFree (base);
         }
     }
-    xmlFreeDoc(doc);
 
-    aud_playlist_entry_insert_batch (list, pos, filenames, tuples);
+    xmlFreeDoc(doc);
     return TRUE;
 }
 
@@ -301,10 +288,10 @@ static void xspf_add_node(xmlNodePtr node, TupleValueType type,
 }
 
 
-static gboolean xspf_playlist_save (const gchar * filename, gint playlist)
+static gboolean xspf_playlist_save (const gchar * filename,
+ struct index * filenames, struct index * tuples)
 {
-    const gchar * title = aud_playlist_get_title (playlist);
-    gint entries = aud_playlist_entry_count (playlist);
+    gint entries = index_count (filenames);
     xmlDocPtr doc;
     xmlNodePtr rootnode, tracklist;
     gint count;
@@ -321,18 +308,13 @@ static gboolean xspf_playlist_save (const gchar * filename, gint playlist)
     xmlDocSetRootElement(doc, rootnode);
     xspf_add_node(rootnode, TUPLE_STRING, FALSE, "creator", PACKAGE "-" VERSION, 0);
 
-    if (title != NULL)
-        xspf_add_node (rootnode, TUPLE_STRING, FALSE, "title", title, 0);
-
     tracklist = xmlNewNode(NULL, (xmlChar *)"trackList");
     xmlAddChild(rootnode, tracklist);
 
     for (count = 0; count < entries; count ++)
     {
-        const gchar * filename = aud_playlist_entry_get_filename (playlist,
-         count);
-        const Tuple * tuple = aud_playlist_entry_get_tuple (playlist, count,
-         FALSE);
+        const gchar * filename = index_get (filenames, count);
+        const Tuple * tuple = index_get (tuples, count);
         xmlNodePtr track, location;
         const gchar *scratch = NULL;
         gint scratchi = 0;
@@ -391,13 +373,10 @@ ERR:
 
 static const gchar * const xspf_exts[] = {"xspf", NULL};
 
-static PlaylistPlugin xspf_plugin = {
- .description = "XML Shareable Playlist Format",
+AUD_PLAYLIST_PLUGIN
+(
+ .name = "XML Shareable Playlist Format",
  .extensions = xspf_exts,
  .load = xspf_playlist_load,
  .save = xspf_playlist_save
-};
-
-static PlaylistPlugin * const xspf_plugins[] = {& xspf_plugin, NULL};
-
-SIMPLE_PLAYLIST_PLUGIN (xspf, xspf_plugins)
+)

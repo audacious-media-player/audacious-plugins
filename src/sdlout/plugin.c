@@ -29,9 +29,9 @@
 #include "config.h"
 #include "sdlout.h"
 
-static OutputPlugin plugin =
-{
-    .description = "SDL Output Plugin",
+AUD_OUTPUT_PLUGIN
+(
+    .name = "SDL",
     .init = sdlout_init,
     .cleanup = sdlout_cleanup,
     .about = sdlout_about,
@@ -49,11 +49,7 @@ static OutputPlugin plugin =
     .pause = sdlout_pause,
     .flush = sdlout_flush,
     .set_written_time = sdlout_set_written_time,
-};
-
-static OutputPlugin * list[] = {& plugin, NULL};
-
-SIMPLE_OUTPUT_PLUGIN (sdlout, list)
+)
 
 void sdlout_about (void)
 {

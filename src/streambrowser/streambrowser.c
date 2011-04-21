@@ -80,23 +80,15 @@ static gpointer sb_widget ()
 	return sb_gui_widget;
 }
 
-static GeneralPlugin sb_plugin =
-{
-    .description = "Stream Browser",
+AUD_GENERAL_PLUGIN
+(
+    .name = "Stream Browser",
     .init = sb_init,
     .about = sb_about,
     .configure = sb_configure,
     .cleanup = sb_cleanup,
     .get_widget = sb_widget,
-};
-
-GeneralPlugin *sb_gplist[] =
-{
-    &sb_plugin,
-    NULL
-};
-
-SIMPLE_GENERAL_PLUGIN (streambrowser, sb_gplist);
+)
 
 void failure (const char *fmt, ...)
 {
@@ -323,9 +315,6 @@ gboolean mystrcasestr (const char *haystack, const char *needle)
 
 static gboolean sb_init (void)
 {
-    /* Preload http:// transport for access from secondary thread */
-    vfs_prepare ("http");
-
     AUDDBG("sb_init()\n");
     config_load ();
     gui_init ();

@@ -236,13 +236,10 @@ static void moodbar_done(void)
 	g_object_unref(area);
 }
 
-VisPlugin moodbar_vp = {
-	.description = "Moodbar",
+AUD_VIS_PLUGIN
+(
+	.name = "Moodbar",
 	.init = moodbar_init,
 	.cleanup = moodbar_done,
 	.get_widget = moodbar_widget,
-};
-
-VisPlugin *moodbar_vplist[] = { &moodbar_vp, NULL };
-
-SIMPLE_VISUAL_PLUGIN(moodbar, moodbar_vplist);
+)

@@ -509,11 +509,12 @@ static gboolean mpg123_get_image (const gchar * filename, VFSFile * handle,
 /** plugin description header **/
 static const gchar *mpg123_fmts[] = { "mp3", "mp2", "mp1", "bmu", NULL };
 
-static InputPlugin mpg123_ip = {
+AUD_INPUT_PLUGIN
+(
 	.init = aud_mpg123_init,
 	.cleanup = aud_mpg123_deinit,
-	.description = "MPG123",
-	.vfs_extensions = mpg123_fmts,
+	.name = "MPG123",
+	.extensions = mpg123_fmts,
 	.is_our_file_from_vfs = mpg123_probe_for_fd,
 	.probe_for_tuple = mpg123_probe_for_tuple,
 	.play = mpg123_playback_worker,
@@ -522,8 +523,4 @@ static InputPlugin mpg123_ip = {
 	.pause = mpg123_pause_playback_worker,
 	.update_song_tuple = mpg123_write_tag,
 	.get_song_image = mpg123_get_image,
-};
-
-static InputPlugin *mpg123_iplist[] = { &mpg123_ip, NULL };
-
-SIMPLE_INPUT_PLUGIN(mpg123, mpg123_iplist);
+)

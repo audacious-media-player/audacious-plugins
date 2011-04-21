@@ -26,25 +26,21 @@
 
 static const gchar *xs_sid_fmts[] = { "sid", "psid", NULL };
 
-
-InputPlugin xs_plugin_ip = {
-    .description = XS_PACKAGE_STRING,   /* Plugin description */
+AUD_INPUT_PLUGIN
+(
+    .name = XS_PACKAGE_STRING,          /* Plugin description */
     .init = xs_init,                    /* Initialization */
     .cleanup = xs_close,                /* Cleanup */
     .about = xs_about,                  /* Show aboutbox */
     .configure = xs_configure,          /* Show/edit configuration */
 
-    .play = xs_play_file,          /* Play given file */
+    .play = xs_play_file,               /* Play given file */
     .stop = xs_stop,                    /* Stop playing */
     .pause = xs_pause,                  /* Pause playing */
 
     .file_info_box = xs_fileinfo,       /* Show file-information dialog */
     .probe_for_tuple = xs_probe_for_tuple,
 
-    .vfs_extensions = xs_sid_fmts,      /* File ext assist */
+    .extensions = xs_sid_fmts,          /* File ext assist */
     .have_subtune = TRUE
-};
-
-static InputPlugin *sid_iplist[] = { &xs_plugin_ip, NULL };
-
-SIMPLE_INPUT_PLUGIN(sid, sid_iplist);
+)

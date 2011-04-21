@@ -36,14 +36,10 @@ projectM_render_pcm(gint16 pcm_data[2][512])
     gtk_projectm_add_pcm_data(projectm, pcm_data);
 }
 
-VisPlugin projectM_vtable = {
-    .description = "projectM",
+AUD_VIS_PLUGIN
+(
+    .name = "projectM",
     .num_pcm_chs_wanted = 2,
     .render_pcm = projectM_render_pcm,
     .get_widget = projectM_get_widget,
-};
-
-VisPlugin *projectM_vplist[] = { &projectM_vtable, NULL };
-
-DECLARE_PLUGIN(projectm, NULL, NULL, NULL, NULL, NULL, NULL,
-        projectM_vplist, NULL);
+)

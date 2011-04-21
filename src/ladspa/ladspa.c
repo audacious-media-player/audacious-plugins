@@ -1117,8 +1117,9 @@ gint ladspa_output_to_decoder_time (gint time)
     return time;
 }
 
-static EffectPlugin header = {
- .description = PLUGIN_NAME,
+AUD_EFFECT_PLUGIN
+(
+ .name = PLUGIN_NAME,
  .init = start,
  .cleanup = stop,
  .configure = configure,
@@ -1129,7 +1130,4 @@ static EffectPlugin header = {
  .decoder_to_output_time = ladspa_decoder_to_output_time,
  .output_to_decoder_time = ladspa_output_to_decoder_time,
  .preserves_format = TRUE,
-};
-
-EffectPlugin * header_list[] = {& header, NULL};
-SIMPLE_EFFECT_PLUGIN (ladspa, header_list)
+)

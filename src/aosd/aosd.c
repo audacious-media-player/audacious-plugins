@@ -25,9 +25,14 @@
 #include "aosd_trigger.h"
 #include <audacious/i18n.h>
 
-
-GeneralPlugin *aosd_gplist[] = { &aosd_gp, NULL };
-SIMPLE_GENERAL_PLUGIN(aosd, aosd_gplist);
+AUD_GENERAL_PLUGIN
+(
+    .name = "Audacious OSD",
+    .init = aosd_init,
+    .about = aosd_about,
+    .configure = aosd_configure,
+    .cleanup = aosd_cleanup
+)
 
 aosd_cfg_t * global_config = NULL;
 gboolean plugin_is_active = FALSE;

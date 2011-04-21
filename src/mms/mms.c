@@ -143,13 +143,13 @@ static gint64 mms_vfs_fread_impl (void * buf, gint64 size, gint64 count,
         }
 
         gint copy = MIN (h->len - h->used, goal - total);
-        
+
         memcpy (buf, h->buf + h->used, copy);
         h->used += copy;
         buf += copy;
         total += copy;
     }
-    
+
     return (size > 0) ? total / size : 0;
 }
 
@@ -169,7 +169,7 @@ static gint mms_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
         whence = SEEK_CUR;
         offset -= h->offset + h->used;
     }
-    
+
     if (whence != SEEK_CUR || offset < -h->used || offset > h->len - h->used)
     {
         fprintf (stderr, "mms: Attempt to seek outside buffered region.\n");
@@ -247,12 +247,9 @@ static VFSConstructor constructor = {
  .vfs_fsize_impl = mms_vfs_fsize_impl
 };
 
-static TransportPlugin mms_plugin = {
- .description = "MMS Support",
+AUD_TRANSPORT_PLUGIN
+(
+ .name = "MMS Support",
  .schemes = mms_schemes,
  .vtable = & constructor
-};
-
-static TransportPlugin * const mms_plugins[] = {& mms_plugin, NULL};
-
-SIMPLE_TRANSPORT_PLUGIN (mms, mms_plugins)
+)

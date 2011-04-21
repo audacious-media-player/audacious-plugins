@@ -74,7 +74,7 @@ ffaudio_cleanup(void)
     AUDDBG("cleaning up\n");
     g_mutex_free(ctrl_mutex);
     g_cond_free(ctrl_cond);
-    
+
     if (extension_dict)
         mowgli_patricia_destroy (extension_dict, NULL, NULL);
 }
@@ -92,13 +92,13 @@ static const gchar * ffaudio_strerror (gint error)
 static mowgli_patricia_t * create_extension_dict (void)
 {
     mowgli_patricia_t * dict = mowgli_patricia_create (NULL);
-    
+
     AVInputFormat * f;
     for (f = av_iformat_next (NULL); f; f = av_iformat_next (f))
     {
         if (! f->extensions)
             continue;
-        
+
         gchar * exts = g_ascii_strdown (f->extensions, -1);
 
         gchar * parse, * next;
@@ -110,13 +110,13 @@ static mowgli_patricia_t * create_extension_dict (void)
                 * next = 0;
                 next ++;
             }
-            
+
             mowgli_patricia_add (dict, parse, f);
         }
-        
+
         g_free (exts);
     }
-    
+
     return dict;
 }
 
@@ -132,7 +132,7 @@ static AVInputFormat * get_format_by_extension (const gchar * name)
         extension_dict = create_extension_dict ();
 
     AVInputFormat * f = mowgli_patricia_retrieve (extension_dict, ext);
-    
+
     if (f)
         AUDDBG ("Format %s.\n", f->name);
     else
@@ -151,7 +151,7 @@ static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file
     AUDDBG ("Get format by content: %s\n", name);
 
     AVInputFormat * f = NULL;
-    
+
     guchar buf[16384 + AVPROBE_PADDING_SIZE];
     gint size = 16;
     gint filled = 0;
@@ -172,7 +172,7 @@ static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file
         f = av_probe_input_format2 (& d, TRUE, & score);
         if (f)
             break;
-            
+
         if (size < 16384)
             size *= 4;
         else if (target > 10)
@@ -185,10 +185,10 @@ static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file
         AUDDBG ("Format %s, buffer size %d, score %d.\n", f->name, size, score);
     else
         AUDDBG ("Format unknown.\n");
-    
+
     if (vfs_fseek (file, 0, SEEK_SET) < 0)
         ; /* ignore errors here */
-        
+
     return f;
 }
 
@@ -781,7 +781,8 @@ ffaudio_about(void)
     }
 }
 
-InputPlugin ffaudio_ip = {
+AUD_INPUT_PLUGIN
+(
     .init = ffaudio_init,
     .cleanup = ffaudio_cleanup,
     .is_our_file_from_vfs = ffaudio_probe,
@@ -791,8 +792,8 @@ InputPlugin ffaudio_ip = {
     .pause = ffaudio_pause,
     .mseek = ffaudio_seek,
     .about = ffaudio_about,
-    .description = "FFaudio Plugin",
-    .vfs_extensions = ffaudio_fmts,
+    .name = "FFmpeg Support",
+    .extensions = ffaudio_fmts,
 #ifdef FFAUDIO_USE_AUDTAG
     .update_song_tuple = ffaudio_write_tag,
 #endif
@@ -800,8 +801,4 @@ InputPlugin ffaudio_ip = {
     /* FFMPEG probing takes forever on network files, so try everything else
      * first. -jlindgren */
     .priority = 10,
-};
-
-static InputPlugin *ffaudio_iplist[] = { &ffaudio_ip, NULL };
-
-SIMPLE_INPUT_PLUGIN (ffaudio, ffaudio_iplist)
+)

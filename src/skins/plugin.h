@@ -23,9 +23,6 @@
 
 #include <glib.h>
 
-#include <audacious/interface.h>
-#include <audacious/plugin.h>
-
 #include "skins_cfg.h"
 #include "ui_main.h"
 #include "ui_equalizer.h"
@@ -42,10 +39,7 @@ enum {
 };
 
 extern gchar *skins_paths[];
-extern Iface skins_interface;
 
-gboolean skins_init (IfaceCbs * cbs);
-gboolean skins_cleanup(void);
 void skins_about(void);
 void show_preferences_window(gboolean show);
 

@@ -40,14 +40,6 @@
 
 static gboolean stop_flag = FALSE;
 
-static InputPlugin tone_ip;
-
-static gboolean tone_init (void)
-{
-    aud_uri_set_plugin("tone://", &tone_ip);
-    return TRUE;
-}
-
 static void tone_about (void)
 {
     static GtkWidget * aboutbox = NULL;
@@ -218,17 +210,16 @@ static Tuple *tone_probe_for_tuple(const gchar *filename, VFSFile *fd)
     return tuple;
 }
 
-static InputPlugin tone_ip = {
-    .description = "Tone Generator",
-    .init = tone_init,
+static const gchar * const schemes[] = {"tone", NULL};
+
+AUD_INPUT_PLUGIN
+(
+    .name = "Tone Generator",
+    .schemes = schemes,
     .about = tone_about,
     .is_our_file_from_vfs = tone_is_our_fd,
     .play = tone_play,
     .stop = tone_stop,
     .pause = tone_pause,
     .probe_for_tuple = tone_probe_for_tuple
-};
-
-static InputPlugin *tonegen_iplist[] = { &tone_ip, NULL };
-
-DECLARE_PLUGIN(tonegen, NULL, NULL, tonegen_iplist, NULL, NULL, NULL, NULL, NULL);
+)

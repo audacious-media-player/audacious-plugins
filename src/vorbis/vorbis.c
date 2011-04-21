@@ -593,8 +593,6 @@ static gboolean vorbis_init (void)
     seek_mutex = g_mutex_new();
     seek_cond = g_cond_new();
 
-    aud_mime_set_plugin("application/ogg", &vorbis_ip);
-
     return TRUE;
 }
 
@@ -639,9 +637,11 @@ vorbis_cleanup(void)
 extern PluginPreferences preferences;
 
 static const gchar *vorbis_fmts[] = { "ogg", "ogm", "oga", NULL };
+static const gchar * const mimes[] = {"application/ogg", NULL};
 
-static InputPlugin vorbis_ip = {
-    .description = "Ogg Vorbis Audio Plugin",
+AUD_INPUT_PLUGIN
+(
+    .name = "Ogg Vorbis",
     .init = vorbis_init,
     .about = vorbis_aboutbox,
     .settings = &preferences,
@@ -651,14 +651,11 @@ static InputPlugin vorbis_ip = {
     .mseek = vorbis_mseek,
     .cleanup = vorbis_cleanup,
     .probe_for_tuple = get_song_tuple,
-    .is_our_file_from_vfs = vorbis_check_fd,
-    .vfs_extensions = vorbis_fmts,
     .update_song_tuple = vorbis_update_song_tuple,
+    .is_our_file_from_vfs = vorbis_check_fd,
+    .extensions = vorbis_fmts,
+    .mimes = mimes,
 
     /* Vorbis probing is a bit slow; check for MP3 and AAC first. -jlindgren */
     .priority = 2,
-};
-
-static InputPlugin *vorbis_iplist[] = { &vorbis_ip, NULL };
-
-SIMPLE_INPUT_PLUGIN (vorbis, vorbis_iplist)
+)

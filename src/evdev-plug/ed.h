@@ -30,13 +30,4 @@ void ed_cleanup ( void );
 void ed_config ( void );
 void ed_about ( void );
 
-GeneralPlugin ed_gp =
-{
-    .description = "EvDev-Plug " ED_VERSION_PLUGIN,
-    .init = ed_init,
-    .about = ed_about,
-    .configure = ed_config,
-    .cleanup = ed_cleanup
-};
-
 #endif /* !_I_ED_H */

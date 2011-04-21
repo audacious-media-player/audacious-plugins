@@ -44,9 +44,9 @@ static const gchar *gme_fmts[] = {
     "vgm", "vgz", NULL
 };
 
-static InputPlugin console_ip =
-{
-    .description = "Game Console Music Decoder",
+AUD_INPUT_PLUGIN
+(
+    .name = "Game Console Music Decoder",
     .init = console_init,
     .cleanup = console_cleanup,
     .about = console_aboutbox,
@@ -55,11 +55,7 @@ static InputPlugin console_ip =
     .stop = console_stop,
     .pause = console_pause,
     .mseek = console_seek,
-    .vfs_extensions = gme_fmts,
+    .extensions = gme_fmts,
     .probe_for_tuple = console_probe_for_tuple,
     .have_subtune = TRUE
-};
-
-static InputPlugin *console_iplist[] = { &console_ip, NULL };
-
-SIMPLE_INPUT_PLUGIN(console, console_iplist);
+)

@@ -33,13 +33,4 @@ void aosd_cleanup ( void );
 void aosd_configure ( void );
 void aosd_about ( void );
 
-GeneralPlugin aosd_gp =
-{
-    .description= "Audacious OSD " AOSD_VERSION_PLUGIN,
-    .init = aosd_init,
-    .about = aosd_about,
-    .configure = aosd_configure,
-    .cleanup = aosd_cleanup
-};
-
 #endif /* !_I_AOSD_H */

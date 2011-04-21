@@ -49,16 +49,14 @@
 
 const char *plugin_name="LIRC Plugin";
 
-GeneralPlugin lirc_plugin = {
-    .description = "LIRC Plugin",
+AUD_GENERAL_PLUGIN
+(
+    .name = "LIRC Support",
     .init = init,
     .about = about,
     .configure = configure,
     .cleanup = cleanup
-};
-
-GeneralPlugin *lirc_gplist[] = { &lirc_plugin, NULL };
-DECLARE_PLUGIN(lirc, NULL, NULL, NULL, NULL, NULL, lirc_gplist, NULL, NULL);
+)
 
 int lirc_fd=-1;
 struct lirc_config *config=NULL;

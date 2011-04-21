@@ -15,7 +15,7 @@
  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE. 
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <audacious/plugin.h>
@@ -105,12 +105,9 @@ static void cleanup(void)
     hook_dissociate("playback begin", (HookFunction) playback_start);
 }
 
-GeneralPlugin albumart_gp = {
-    .description = "Album Art",
+AUD_GENERAL_PLUGIN
+(
+    .name = "Album Art",
     .cleanup = cleanup,
     .get_widget = get_widget
-};
-
-GeneralPlugin *albumart_gplist[] = { &albumart_gp, NULL };
-
-SIMPLE_GENERAL_PLUGIN(albumart, albumart_gplist);
+)

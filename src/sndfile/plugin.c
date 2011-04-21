@@ -454,11 +454,11 @@ static void plugin_about (void)
      "Boston, MA  02110-1301  USA"));
 }
 
-
 static const gchar *sndfile_fmts[] = { "aiff", "au", "raw", "wav", NULL };
 
-static InputPlugin sndfile_ip = {
-    .description = "sndfile plugin",
+AUD_INPUT_PLUGIN
+(
+    .name = "libsndfile Support",
     .init = plugin_init,
     .about = plugin_about,
     .play = play_start,
@@ -467,10 +467,6 @@ static InputPlugin sndfile_ip = {
     .cleanup = plugin_cleanup,
     .probe_for_tuple = get_song_tuple,
     .is_our_file_from_vfs = is_our_file_from_vfs,
-    .vfs_extensions = sndfile_fmts,
+    .extensions = sndfile_fmts,
     .mseek = file_mseek,
-};
-
-static InputPlugin *sndfile_iplist[] = { &sndfile_ip, NULL };
-
-SIMPLE_INPUT_PLUGIN(sndfile, sndfile_iplist)
+)

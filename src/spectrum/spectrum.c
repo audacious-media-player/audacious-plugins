@@ -61,8 +61,9 @@ static void fsanalyzer_playback_start(void);
 static void fsanalyzer_playback_stop(void);
 static void fsanalyzer_render_freq(gint16 data[2][256]);
 
-VisPlugin fsanalyzer_vp = {
-	.description = "Spectrum Analyzer",
+AUD_VIS_PLUGIN
+(
+	.name = "Spectrum Analyzer",
 	.num_pcm_chs_wanted = 0,
 	.num_freq_chs_wanted = 1,
 	.init = fsanalyzer_init, /* init */
@@ -70,15 +71,11 @@ VisPlugin fsanalyzer_vp = {
 	.playback_start = fsanalyzer_playback_start, /* playback_start */
 	.playback_stop = fsanalyzer_playback_stop, /* playback_stop */
 	.render_freq = fsanalyzer_render_freq  /* render_freq */
-};
-
-VisPlugin *spectrum_vplist[] = { &fsanalyzer_vp, NULL };
-
-DECLARE_PLUGIN(spectrum, NULL, NULL, NULL, NULL, NULL, NULL, spectrum_vplist,NULL);
+)
 
 static void fsanalyzer_destroy_cb (void)
 {
-	aud_plugin_enable (aud_plugin_by_header (& fsanalyzer_vp), FALSE);
+	aud_plugin_enable (aud_plugin_by_header (& _aud_plugin_self), FALSE);
 }
 
 static gboolean fsanalyzer_init (void)

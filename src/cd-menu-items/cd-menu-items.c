@@ -50,7 +50,7 @@ static void cd_add (void)
 
 static void (* funcs[N_ITEMS]) (void) = {cd_play, cd_add};
 
-static void cd_init (void)
+static gboolean cd_init (void)
 {
     gint mcount, icount;
     GtkWidget * menu, * item;
@@ -70,6 +70,8 @@ static void cd_init (void)
             g_signal_connect (item, "activate", (GCallback) funcs[icount], NULL);
         }
     }
+
+    return TRUE;
 }
 
 void cd_cleanup (void)
@@ -80,4 +82,10 @@ void cd_cleanup (void)
         gtk_widget_destroy (items[count]);
 }
 
-DECLARE_PLUGIN (cd-menu-items, cd_init, cd_cleanup)
+AUD_GENERAL_PLUGIN
+(
+    .name = "Menu Items for Audio CD Playback",
+    .enabled_by_default = TRUE,
+    .init = cd_init,
+    .cleanup = cd_cleanup,
+)

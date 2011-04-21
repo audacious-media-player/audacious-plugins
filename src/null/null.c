@@ -231,9 +231,9 @@ static int null_get_output_time(void)
 	return ELAPSED_TIME;
 }
 
-OutputPlugin null_op =
-{
-	.description = "Null Output Plugin",
+AUD_OUTPUT_PLUGIN
+(
+	.name = "No Output",
 	.probe_priority = 0,
 	.init = null_init,
 	.about = null_about,
@@ -246,8 +246,4 @@ OutputPlugin null_op =
 	.buffer_free = null_buffer_free,
 	.output_time = null_get_output_time,
 	.written_time = null_get_written_time,
-};
-
-OutputPlugin *null_oplist[] = { &null_op, NULL };
-
-DECLARE_PLUGIN(null, NULL, NULL, NULL, null_oplist, NULL, NULL, NULL, NULL);
+)

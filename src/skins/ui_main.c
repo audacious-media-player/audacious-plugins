@@ -41,6 +41,7 @@
 #include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
@@ -2625,7 +2626,7 @@ action_playback_stop( void )
 void
 action_preferences( void )
 {
-    show_preferences_window(TRUE);
+    aud_show_prefs_window ();
 }
 
 void

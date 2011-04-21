@@ -36,11 +36,11 @@ static void cryst_finish (gfloat * * data, gint * samples);
 static gint cryst_decoder_to_output_time (gint time);
 static gint cryst_output_to_decoder_time (gint time);
 
-EffectPlugin crystalizer_ep =
-{
-	.description = "Crystalizer", /* Description */
-	.init = init,
-	.configure = configure,
+AUD_EFFECT_PLUGIN
+(
+    .name = "Crystalizer", /* Description */
+    .init = init,
+    .configure = configure,
     .start = cryst_start,
     .process = cryst_process,
     .flush = cryst_flush,
@@ -48,16 +48,12 @@ EffectPlugin crystalizer_ep =
     .decoder_to_output_time = cryst_decoder_to_output_time,
     .output_to_decoder_time = cryst_output_to_decoder_time,
     .preserves_format = TRUE,
-};
+)
 
 static GtkWidget *conf_dialog = NULL;
 static gdouble value;
 static gint cryst_channels;
 static gfloat * cryst_prev;
-
-EffectPlugin *crystalizer_eplist[] = { &crystalizer_ep, NULL };
-
-DECLARE_PLUGIN(crystalizer, NULL, NULL, NULL, NULL, crystalizer_eplist, NULL, NULL, NULL);
 
 static gboolean init (void)
 {

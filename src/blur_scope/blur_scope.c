@@ -41,8 +41,9 @@ static void bscope_playback_stop(void);
 static void bscope_render_pcm(gint16 data[2][512]);
 static void /* GtkWidget */ * bscope_get_widget (void);
 
-static VisPlugin bscope_vp = {
-    .description = "Blur Scope",                       /* description */
+AUD_VIS_PLUGIN
+(
+    .name = "Blur Scope",                       /* description */
     .num_pcm_chs_wanted = 1, /* Number of PCM channels wanted */
     .num_freq_chs_wanted = 0, /* Number of freq channels wanted */
     .init = bscope_init,                /* init */
@@ -51,11 +52,7 @@ static VisPlugin bscope_vp = {
     .playback_stop = bscope_playback_stop,       /* playback_stop */
     .render_pcm = bscope_render_pcm,          /* render_pcm */
     .get_widget = bscope_get_widget,
-};
-
-static VisPlugin * bscope_vplist[] = {& bscope_vp, NULL};
-
-SIMPLE_VISUAL_PLUGIN (bscope, bscope_vplist)
+)
 
 gint color = 0xFF3F7F;
 

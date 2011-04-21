@@ -149,9 +149,9 @@ static void compressor_configure (void)
     gtk_window_present ((GtkWindow *) config_window);
 }
 
-EffectPlugin compressor_plugin =
-{
-    .description = "Dynamic Range Compressor",
+AUD_EFFECT_PLUGIN
+(
+    .name = "Dynamic Range Compressor",
     .init = compressor_init,
     .cleanup = compressor_cleanup,
     .about = compressor_about,
@@ -163,8 +163,4 @@ EffectPlugin compressor_plugin =
     .decoder_to_output_time = compressor_decoder_to_output_time,
     .output_to_decoder_time = compressor_output_to_decoder_time,
     .preserves_format = TRUE,
-};
-
-EffectPlugin * compressor_list[] = {& compressor_plugin, NULL};
-
-SIMPLE_EFFECT_PLUGIN (compressor, compressor_list)
+)
