@@ -351,7 +351,7 @@ static void copy_selected_to_new (gint playlist)
              (playlist, entry)));
     }
 
-    aud_playlist_entry_insert_batch (new, 0, copy, NULL);
+    aud_playlist_entry_insert_batch (new, 0, copy, NULL, FALSE);
     aud_playlist_set_active (new);
 }
 
@@ -697,7 +697,8 @@ playlistwin_load_playlist(const gchar * filename)
 
     aud_playlist_entry_delete (active_playlist, 0, aud_playlist_entry_count
      (active_playlist));
-    aud_playlist_insert_playlist (active_playlist, 0, filename);
+    aud_playlist_entry_insert (active_playlist, 0, g_strdup (filename), NULL,
+     FALSE);
     aud_playlist_set_filename (active_playlist, filename);
 
     if (aud_playlist_get_title (active_playlist) == NULL)
@@ -1129,7 +1130,7 @@ selection_received(GtkWidget * widget,
     if (selection_data->type == GDK_SELECTION_TYPE_STRING &&
         selection_data->length > 0)
         aud_playlist_entry_insert (active_playlist, -1, g_strdup ((gchar *)
-         selection_data->data), NULL);
+         selection_data->data), NULL, FALSE);
 }
 
 static void size_allocate (GtkWidget * widget, GtkAllocation * allocation)

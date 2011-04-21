@@ -711,14 +711,15 @@ static void streaminfo_add_to_playlist (streaminfo_t * streaminfo)
         AUDDBG("stream playlist '%s' successfuly downloaded to '%s'\n",
          streaminfo->playlist_url, uri_name);
 
-        aud_playlist_insert_playlist (playlist, -1, uri_name);
+        aud_playlist_entry_insert (playlist, -1, g_strdup (uri_name), NULL,
+         FALSE);
         AUDDBG("stream playlist '%s' added\n", streaminfo->playlist_url);
     }
 
     if (strlen (streaminfo->url) > 0)
     {
         aud_playlist_entry_insert (playlist, -1, g_strdup (streaminfo->url),
-         NULL);
+         NULL, FALSE);
         AUDDBG("stream '%s' added\n", streaminfo->url);
     }
 

@@ -612,7 +612,7 @@ static void playlistwin_load_playlist(const gchar * filename)
     str_replace_in(&aud_cfg->playlist_path, g_path_get_dirname(filename));
 
     aud_playlist_entry_delete(playlist, 0, aud_playlist_entry_count(playlist));
-    aud_playlist_insert_playlist(playlist, 0, filename);
+    aud_playlist_entry_insert(playlist, 0, g_strdup (filename), NULL, FALSE);
     aud_playlist_set_filename(playlist, filename);
 
     if (aud_playlist_get_title(playlist) == NULL)
