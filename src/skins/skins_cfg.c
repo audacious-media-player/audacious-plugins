@@ -18,11 +18,13 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include <glib.h>
 #include <stdlib.h>
+
+#include <gtk/gtk.h>
 
 #include <audacious/configdb.h>
 #include <audacious/debug.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/preferences.h>
@@ -616,6 +618,15 @@ void skins_configure (void)
     g_signal_connect_after(G_OBJECT(skin_view), "realize",
                            G_CALLBACK(on_skin_view_realize),
                            NULL);
+
+    GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
+    gtk_box_pack_start ((GtkBox *) appearance_page_vbox, hbox, FALSE, FALSE, 0);
+
+    GtkWidget * button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
+    g_signal_connect (button, "clicked", (GCallback) skins_configure_cleanup,
+     NULL);
+    gtk_widget_set_can_default (button, TRUE);
+    gtk_box_pack_end ((GtkBox *) hbox, button, FALSE, FALSE, 0);
 
     config_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     g_signal_connect (config_window, "destroy", (GCallback)
