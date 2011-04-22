@@ -36,6 +36,7 @@
 #include "sync-menu.h"
 #endif
 #include "plugin.h"
+#include "skins_cfg.h"
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -232,7 +233,9 @@ static GtkActionEntry action_entries_playlist[] = {
 
 static GtkActionEntry action_entries_view[] = {
  {"view", NULL, N_("View")},
- {"iface menu", NULL, N_("Interface")}};
+ {"iface menu", NULL, N_("Interface")},
+ {"iface prefs", GTK_STOCK_PREFERENCES, N_("Interface Preferences ..."), NULL,
+  NULL, (GCallback) skins_configure}};
 
 static GtkActionEntry action_entries_playlist_add[] = {
         { "playlist add url", GTK_STOCK_NETWORK, N_("Add Internet Address..."), "<Ctrl>H",

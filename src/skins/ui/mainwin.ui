@@ -97,11 +97,10 @@
 				<menuitem action="playlist manager" />
 				<separator />
 				<menuitem action="playlist refresh" />
-				<separator />
-<!--				<menuitem action="playlist delete" /> -->
 			</menu>
 			<menu action="view">
 				<menuitem action="iface menu" />
+				<menuitem action="iface prefs" />
 				<separator />
 				<menuitem action="show player" />
 				<menuitem action="show playlist editor" />
