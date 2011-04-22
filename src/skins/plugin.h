@@ -41,6 +41,5 @@ enum {
 extern gchar *skins_paths[];
 
 void skins_about(void);
-void show_preferences_window(gboolean show);
 
 #endif

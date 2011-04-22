@@ -50,6 +50,8 @@ AUD_IFACE_PLUGIN
     .name = "Winamp Classic Interface",
     .init = skins_init,
     .cleanup = skins_cleanup,
+    .about = skins_about,
+    .configure = skins_configure,
     .show = ui_show,
     .show_error = show_error_message,
     .show_filebrowser = audgui_run_filebrowser,
@@ -141,6 +143,8 @@ static void skins_cleanup (void)
 {
     if (plugin_is_active)
     {
+        skins_configure_cleanup ();
+
         mainwin_unhook ();
         playlistwin_unhook ();
         eq_end_hooks ();
@@ -167,36 +171,6 @@ void skins_about (void)
      _("About Skinned GUI"),
      _("Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n\n"));
 }
-
-#if 0
-void show_preferences_window(gboolean show) {
-    /* static GtkWidget * * prefswin = NULL; */
-    static void * * prefswin = NULL;
-
-    if (show) {
-        if ((prefswin != NULL) && (*prefswin != NULL)) {
-            gtk_window_present(GTK_WINDOW(*prefswin));
-            return;
-        }
-        GtkWidget *cfgdlg;
-
-        prefswin = skins_interface.ops->create_prefs_window();
-        cfgdlg = skins_configure();
-
-        gchar * path = g_strdup_printf ("%s/images/appearance.png",
-         aud_get_path (AUD_PATH_DATA_DIR));
-        skins_interface.ops->prefswin_page_new (cfgdlg, _("Skinned Interface"),
-         path);
-        g_free (path);
-
-        gtk_widget_show_all(*prefswin);
-    } else {
-        if ((prefswin != NULL) && (*prefswin != NULL)) {
-            skins_interface.ops->destroy_prefs_window();
-        }
-    }
-}
-#endif
 
 static void ui_show (gboolean show)
 {

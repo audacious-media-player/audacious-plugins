@@ -536,7 +536,16 @@ on_skin_view_drag_data_received(GtkWidget * widget,
     }
 }
 
-GtkWidget* skins_configure(void) {
+static GtkWidget * config_window = NULL;
+
+void skins_configure (void)
+{
+    if (config_window)
+    {
+        gtk_window_present ((GtkWindow *) config_window);
+        return;
+    }
+
     GtkWidget *appearance_page_vbox;
     GtkWidget *vbox37;
     GtkWidget *vbox38;
@@ -591,8 +600,6 @@ GtkWidget* skins_configure(void) {
     gtk_widget_set_size_request (skin_view, -1, 100);
 
     aud_create_widgets(GTK_BOX(vbox37), appearance_misc_widgets, G_N_ELEMENTS(appearance_misc_widgets));
-    gtk_widget_show_all(appearance_page_vbox);
-
 
     g_signal_connect(G_OBJECT(colorspace_button), "clicked",
                      G_CALLBACK(on_colorize_button_clicked),
@@ -610,5 +617,22 @@ GtkWidget* skins_configure(void) {
                            G_CALLBACK(on_skin_view_realize),
                            NULL);
 
-    return appearance_page_vbox;
+    config_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    g_signal_connect (config_window, "destroy", (GCallback)
+     gtk_widget_destroyed, & config_window);
+
+    gtk_window_set_type_hint ((GtkWindow *) config_window,
+     GDK_WINDOW_TYPE_HINT_DIALOG);
+    gtk_window_set_title ((GtkWindow *) config_window, _("Interface Preferences"));
+    gtk_window_set_resizable ((GtkWindow *) config_window, FALSE);
+    gtk_container_set_border_width ((GtkContainer *) config_window, 6);
+
+    gtk_container_add ((GtkContainer *) config_window, appearance_page_vbox);
+    gtk_widget_show_all (config_window);
+}
+
+void skins_configure_cleanup (void)
+{
+    if (config_window)
+        gtk_widget_destroy (config_window);
 }

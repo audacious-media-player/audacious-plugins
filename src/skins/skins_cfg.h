@@ -83,7 +83,9 @@ void skins_cfg_free();
 void skins_cfg_load();
 void skins_cfg_save();
 
-GtkWidget* skins_configure(void);
+void skins_configure (void);
+void skins_configure_cleanup (void);
+
 void on_skin_view_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
                                 gint x, gint y,
