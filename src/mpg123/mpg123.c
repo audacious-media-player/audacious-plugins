@@ -107,6 +107,11 @@ ERR:
 		return FALSE;
 	}
 
+#ifdef FULL_SCAN
+	if (mpg123_scan (dec) < 0)
+		goto ERR;
+#endif
+
 RETRY:;
 	glong rate;
 	gint chan, enc;
@@ -149,6 +154,12 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 
 	if ((result = mpg123_open_handle (decoder, file)) < 0)
 		goto ERR;
+
+#ifdef FULL_SCAN
+	if (mpg123_scan (decoder) < 0)
+		goto ERR;
+#endif
+
 	if ((result = mpg123_getformat (decoder, & rate, & channels, & encoding)) <
 	 0)
 		goto ERR;
@@ -298,6 +309,11 @@ OPEN_ERROR:
 
 	gint16 outbuf[8192];
 	size_t outbuf_size = 0;
+
+#ifdef FULL_SCAN
+	if (mpg123_scan (ctx.decoder) < 0)
+		goto OPEN_ERROR;
+#endif
 
 GET_FORMAT:
 	if (mpg123_getformat (ctx.decoder, & ctx.rate, & ctx.channels,
