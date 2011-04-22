@@ -313,8 +313,9 @@ int frame_buffers(mpg123_handle *fr)
 #endif
 #endif
 #if defined(OPT_ALTIVEC) || defined(OPT_ARM) 
-		if(decwin_size < (512+32)*4) decwin_size = (512+32)*4;
-		decwin_size += 512*4;
+		/* sizeof(real) >= 4 ... yes, it could be 8, for example.
+		   We got it intialized to at least (512+32)*sizeof(real).*/
+		decwin_size += 512*sizeof(real);
 #endif
 		/* Hm, that's basically realloc() ... */
 		if(fr->rawdecwin != NULL && fr->rawdecwins != decwin_size)

@@ -288,14 +288,14 @@ static int check_lame_tag(mpg123_handle *fr)
 					unsigned char lame_vbr;
 					float replay_gain[2] = {0,0};
 					float peak = 0;
-					float gain_offset = 0; /* going to be +6 for old lame that used 83dB */
+					/* float gain_offset = 0; */ /* going to be +6 for old lame that used 83dB */
 					char nb[10];
 					memcpy(nb, fr->bsbuf+lame_offset, 9);
 					nb[9] = 0;
 					if(VERBOSE3) fprintf(stderr, "Note: Info: Encoder: %s\n", nb);
 					if(!strncmp("LAME", nb, 4))
 					{
-						gain_offset = 6;
+						/* gain_offset = 6; */
 						debug("TODO: finish lame detetcion...");
 					}
 					lame_offset += 9;
@@ -594,8 +594,21 @@ init_resync:
 		}
 	}
 
-	/* why has this head check been avoided here before? */
-	if(!head_check(newhead))
+	/*
+		Why has this head check been avoided here before? And apart from that:
+		Tricky business: Bug 3267863 triggers endless loop because an invalid free format header does not trigger head_check(), hence does not trigger resync.
+		This whole logic is going to be reworked, code untangled, but 1.13.3 needs some minimal patching.
+		So we try to fully decode the header (which includes free format size checking), not just check.
+	*/
+	/* Check in advance to avoid premature error message in decode_header() */
+	ret = head_check(newhead);
+	if(ret)
+	{
+		ret = decode_header(fr, newhead);
+		if(ret < 0) goto read_frame_bad;
+	}
+
+	if(!ret)
 	{
 		/* and those ugly ID3 tags */
 		if((newhead & 0xffffff00) == ('T'<<24)+('A'<<16)+('G'<<8))
@@ -626,6 +639,9 @@ init_resync:
 			fprintf(stderr,"Note: Illegal Audio-MPEG-Header 0x%08lx at offset %"OFF_P".\n",
 				newhead, (off_p)fr->rd->tell(fr)-4);
 		}
+
+		/* We reach this point only for invalid headers.
+		   And: All paths lead to a jump out of this block! So there is no "after". */
 
 		if(NOQUIET && (newhead & 0xffffff00) == ('b'<<24)+('m'<<16)+('p'<<8)) fprintf(stderr,"Note: Could be a BMP album art.\n");
 		/* Do resync if not forbidden by flag.
@@ -699,31 +715,9 @@ init_resync:
 			return READER_ERROR;
 		}
 	}
+	/* There used to be code here ... and turned out to be totally redundant. */
 
-	/* Man, that code looks awfully redundant...
-	   I need to untangle the spaghetti here in a future version. */
-	if(!fr->firsthead)
-	{
-		ret=decode_header(fr,newhead);
-		if(ret == 0)
-		{
-			if(NOQUIET) error("decode header failed before first valid one, going to read again");
-
-			goto read_again;
-		}
-		else if(ret < 0){ debug("need more?"); goto read_frame_bad; }
-	}
-	else
-	{
-		ret=decode_header(fr,newhead);
-		if(ret == 0)
-		{
-			if(NOQUIET) error("decode header failed - goto resync");
-			/* return 0; */
-			goto init_resync;
-		}
-		else if(ret < 0){ debug("need more?"); goto read_frame_bad; }
-	}
+	/* Past this point we know the header is good and we can start reading in the actual frame. */
 
 	/* if filepos is invalid, so is framepos */
 	framepos = fr->rd->tell(fr) - 4;
