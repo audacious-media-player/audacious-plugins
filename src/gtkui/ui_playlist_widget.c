@@ -101,8 +101,8 @@ static void get_value (void * user, gint row, gint column, GValue * value)
 
     column = pw_cols[column];
 
-    const gchar * title = NULL, * artist = NULL, * album = NULL;
-    const Tuple * tuple = NULL;
+    gchar * title = NULL, * artist = NULL, * album = NULL;
+    Tuple * tuple = NULL;
 
     if (column == PW_COL_TITLE || column == PW_COL_ARTIST || column ==
      PW_COL_ALBUM)
@@ -118,16 +118,19 @@ static void get_value (void * user, gint row, gint column, GValue * value)
         g_value_set_int (value, 1 + row);
         break;
     case PW_COL_TITLE:
-        g_value_set_string (value, title);
+        g_value_take_string (value, title);
+        title = NULL;
         break;
     case PW_COL_ARTIST:
-        g_value_set_string (value, artist);
+        g_value_take_string (value, artist);
+        artist = NULL;
         break;
     case PW_COL_YEAR:
         set_int_from_tuple (value, tuple, FIELD_YEAR);
         break;
     case PW_COL_ALBUM:
-        g_value_set_string (value, album);
+        g_value_take_string (value, album);
+        album = NULL;
         break;
     case PW_COL_TRACK:
         set_int_from_tuple (value, tuple, FIELD_TRACK_NUMBER);
@@ -145,13 +148,19 @@ static void get_value (void * user, gint row, gint column, GValue * value)
         set_string_from_tuple (value, tuple, FIELD_FILE_PATH);
         break;
     case PW_COL_CUSTOM:
-        g_value_set_string (value, aud_playlist_entry_get_title (data->list,
+        g_value_take_string (value, aud_playlist_entry_get_title (data->list,
          row, TRUE));
         break;
     case PW_COL_BITRATE:
         set_int_from_tuple (value, tuple, FIELD_BITRATE);
         break;
     }
+
+    g_free (title);
+    g_free (artist);
+    g_free (album);
+    if (tuple)
+        tuple_free (tuple);
 }
 
 static gboolean get_selected (void * user, gint row)
@@ -236,7 +245,7 @@ static gboolean search_cb (GtkTreeModel * model, gint column, const gchar * key,
     g_return_val_if_fail (path, TRUE);
     gint row = gtk_tree_path_get_indices (path)[0];
     g_return_val_if_fail (row >= 0, TRUE);
-    const gchar * s[3] = {NULL, NULL, NULL};
+    gchar * s[3] = {NULL, NULL, NULL};
     aud_playlist_entry_describe (((PlaylistWidgetData *) user)->list, row,
      & s[0], & s[1], & s[2], FALSE);
     gtk_tree_path_free (path);
@@ -268,6 +277,7 @@ static gboolean search_cb (GtkTreeModel * model, gint column, const gchar * key,
             }
         }
         g_free (temp);
+        g_free (s[i]);
     }
 
     g_strfreev (keys);

@@ -245,10 +245,8 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
     aosd_pb_titlechange_prevs_t *prevs = prevs_gp;
     gint playlist = aud_playlist_get_playing();
     gint pl_entry = aud_playlist_get_position(playlist);
-    const gchar * pl_entry_filename = aud_playlist_entry_get_filename (playlist,
-     pl_entry);
-    const gchar * pl_entry_title = aud_playlist_entry_get_title (playlist,
-     pl_entry, FALSE);
+    gchar * pl_entry_filename = aud_playlist_entry_get_filename (playlist, pl_entry);
+    gchar * pl_entry_title = aud_playlist_entry_get_title (playlist, pl_entry, FALSE);
 
     /* same filename but title changed, useful to detect http stream song changes */
 
@@ -291,6 +289,9 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
         g_free(prevs->filename);
       prevs->filename = g_strdup(pl_entry_filename);
     }
+
+    g_free (pl_entry_filename);
+    g_free (pl_entry_title);
   }
 }
 
@@ -387,7 +388,6 @@ aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
 {
   gint active = aud_playlist_get_active();
   gint pos = aud_playlist_get_position(active);
-  const gchar * title;
   gchar *utf8_title, *utf8_title_markup;
   gint time_cur, time_tot;
   gint time_cur_m, time_cur_s, time_tot_m, time_tot_s;
@@ -399,8 +399,7 @@ aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
   time_tot_s = time_tot % 60;
   time_tot_m = (time_tot - time_tot_s) / 60;
 
-  title = aud_playlist_entry_get_title (active, pos, FALSE);
-  utf8_title = aosd_trigger_utf8convert( title );
+  utf8_title = aud_playlist_entry_get_title (active, pos, FALSE);
   utf8_title_markup = g_markup_printf_escaped(
     "<span font_desc='%s'>%s (%i:%02i/%i:%02i)</span>" ,
     global_config->osd->text.fonts_name[0] , utf8_title , time_cur_m , time_cur_s , time_tot_m , time_tot_s );

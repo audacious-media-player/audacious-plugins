@@ -45,19 +45,23 @@ static void update (void)
     gint list = aud_playlist_get_playing ();
     gint entry = aud_playlist_get_position (list);
 
-    const gchar * title, * artist, * album;
+    gchar * title, * artist, * album;
     aud_playlist_entry_describe (list, entry, & title, & artist, & album, FALSE);
 
     gchar * message;
     if (artist)
     {
         if (album)
+        {
             message = g_strdup_printf ("%s\n%s", artist, album);
+            g_free (artist);
+            g_free (album);
+        }
         else
-            message = g_strdup (artist);
+            message = artist;
     }
     else if (album)
-        message = g_strdup (album);
+        message = album;
     else
         message = g_strdup ("");
 
@@ -78,7 +82,7 @@ static void update (void)
         g_object_unref (pb);
 
     clear ();
-    last_title = g_strdup (title);
+    last_title = title;
     last_message = message;
 }
 

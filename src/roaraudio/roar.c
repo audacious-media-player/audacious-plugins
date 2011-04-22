@@ -283,7 +283,6 @@ int aud_roar_update_metadata(void)
 	char empty = 0;
 	const gchar *info = NULL;
 	gint pos, playlist;
-	const Tuple *songtuple;
 	gint i;
 	static struct { int ac_metatype, ra_metatype; } metamap[] = {
 		{FIELD_ARTIST,		ROAR_META_TYPE_ARTIST},
@@ -305,21 +304,21 @@ int aud_roar_update_metadata(void)
 
 	roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_CLEAR, &meta);
 
-	info = aud_playlist_entry_get_filename(playlist, pos);
-	if (info)
+	gchar * filename = aud_playlist_entry_get_filename (playlist, pos);
+	if (filename)
 	{
-		if (strncmp(info, "http://", 7) == 0)
+		if (! strncmp (filename, "http://", 7))
 			meta.type = ROAR_META_TYPE_FILEURL;
 		else
 			meta.type = ROAR_META_TYPE_FILENAME;
 
-		meta.value = g_strdup(info);
+		meta.value = filename;
 		roar_stream_meta_set(&(g_inst.con), &(g_inst.stream), ROAR_META_MODE_SET, &meta);
 
-		free(meta.value);
+		g_free (filename);
 	}
 
-	songtuple = aud_playlist_entry_get_tuple(playlist, pos, TRUE);
+	Tuple * songtuple = aud_playlist_entry_get_tuple (playlist, pos, TRUE);
 	if (songtuple)
 	{
 		for (i = 0; i < sizeof(metamap)/sizeof(*metamap); i++)
@@ -334,6 +333,8 @@ int aud_roar_update_metadata(void)
 				free(meta.value);
 			}
 		}
+
+		tuple_free (songtuple);
 	}
 
 	meta.value = &empty;

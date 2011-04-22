@@ -398,20 +398,25 @@ void ui_infoarea_set_title (void * data, UIInfoArea * area)
     gint playlist = aud_playlist_get_playing ();
     gint entry = aud_playlist_get_position (playlist);
 
-    const gchar * title, * artist, * album;
+    gchar * title, * artist, * album;
     aud_playlist_entry_describe (playlist, entry, & title, & artist, & album,
      FALSE);
 
     if (! strcmp_null (title, area->title) && ! strcmp_null (artist,
      area->artist) && ! strcmp_null (album, area->album))
+    {
+        g_free (title);
+        g_free (artist);
+        g_free (album);
         return;
+    }
 
     g_free (area->title);
     g_free (area->artist);
     g_free (area->album);
-    area->title = title ? g_strdup (title) : NULL;
-    area->artist = artist ? g_strdup (artist) : NULL;
-    area->album = album ? g_strdup (album) : NULL;
+    area->title = title;
+    area->artist = artist;
+    area->album = album;
 
     gtk_widget_queue_draw ((GtkWidget *) area->parent);
 }

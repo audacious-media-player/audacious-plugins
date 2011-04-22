@@ -54,7 +54,6 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 {
 	gint playlist = aud_playlist_get_active();
 	gint pos = aud_playlist_get_position(playlist);
-	const Tuple *tuple;
 
 	if (aud_playlist_entry_get_length (playlist, pos, FALSE) < 30)
 	{
@@ -62,22 +61,23 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 		return;
 	}
 
-	if (ishttp(aud_playlist_entry_get_filename(playlist, pos)))
+	gchar * filename = aud_playlist_entry_get_filename (playlist, pos);
+	if (ishttp (filename))
 	{
 		AUDDBG(" *** not submitting due to HTTP source");
+		g_free (filename);
 		return;
 	}
+	g_free (filename);
 
 	sc_idle(m_scrobbler);
 
-	tuple = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
-	if (tuple == NULL)
+	if (submit_tuple)
+		tuple_free (submit_tuple);
+	submit_tuple = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
+	if (! submit_tuple)
 		return;
 
-	if (submit_tuple != NULL)
-		mowgli_object_unref(submit_tuple);
-
-	submit_tuple = tuple_copy(tuple);
 	sc_addentry(m_scrobbler, submit_tuple, tuple_get_int(submit_tuple, FIELD_LENGTH, NULL) / 1000);
 
 	if (!track_timeout)

@@ -429,8 +429,7 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
 
     for (i = priv->first; i < priv->first + priv->rows && i < active_length; i ++)
     {
-        const gchar * title = aud_playlist_entry_get_title (active_playlist, i,
-         TRUE);
+        gchar * title = aud_playlist_entry_get_title (active_playlist, i, TRUE);
         gint i_length = aud_playlist_entry_get_length (active_playlist, i, TRUE);
         gint pos = aud_playlist_queue_find_entry (active_playlist, i);
 
@@ -535,6 +534,7 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
         }
 
         cairo_stroke(cr);
+        g_free (title);
     }
 
     if (priv->focused >= priv->first && priv->focused <= priv->first +

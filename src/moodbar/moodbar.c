@@ -130,7 +130,7 @@ static gboolean expose_event(GtkWidget * widget)
 
 	playlist = aud_playlist_get_playing();
 	pos = aud_playlist_get_position(playlist);
-	file = g_strdup(aud_playlist_entry_get_filename(playlist, pos));
+	file = aud_playlist_entry_get_filename(playlist, pos);
 
 	ext = strrchr(file, '.');
 	if (ext != NULL)

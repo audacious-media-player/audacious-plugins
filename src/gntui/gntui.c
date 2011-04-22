@@ -68,9 +68,11 @@ static void fill_playlist()
         gint length = aud_playlist_entry_get_length(playlist, i) / 1000;
         gchar * len = g_strdup_printf("%02i:%02i", length / 60, length % 60);
 
+        gchar * title = aud_playlist_entry_get_title (playlist, i);
         row = gnt_tree_create_row(GNT_TREE(playlist_widget),
-                                  aud_playlist_entry_get_title(playlist, i),
-                                  len, NULL);
+                                  title, len, NULL);
+        g_free (title);
+
         gnt_tree_add_row_after(GNT_TREE(playlist_widget),
                                GINT_TO_POINTER(i+1),
                                row,
@@ -106,12 +108,9 @@ static void update_playback_title()
 {
     gint playlist = aud_playlist_get_active();
     gint pos = aud_playlist_get_position(playlist);
-    const gchar *title = aud_playlist_entry_get_title(playlist, pos);
-
-    if (title == NULL)
-        title = "";
-
+    gchar * title = aud_playlist_entry_get_title (playlist, pos);
     gnt_label_set_text(GNT_LABEL(title_widget), title);
+    g_free (title);
 }
 
 static void set_song_info(gpointer hook_data, gpointer user_data)

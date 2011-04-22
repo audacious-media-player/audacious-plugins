@@ -90,7 +90,7 @@ static gboolean prependnumber = FALSE;
 static gchar *file_path = NULL;
 
 VFSFile *output_file = NULL;
-const Tuple *tuple = NULL;
+Tuple *tuple = NULL;
 
 static gint64 samples_written;
 
@@ -226,11 +226,11 @@ static gint file_open(gint fmt, gint rate, gint nch)
     }
     else
     {
-        const gchar * original = strrchr (aud_playlist_entry_get_filename
-         (playlist, pos), '/');
-
+        temp = aud_playlist_entry_get_filename (playlist, pos);
+        gchar * original = strrchr (temp, '/');
         g_return_val_if_fail (original != NULL, 0);
         filename = g_strdup (original + 1);
+        g_free (temp);
 
         if (!use_suffix)
             if ((temp = strrchr(filename, '.')) != NULL)
@@ -250,7 +250,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
 
     if (save_original)
     {
-        directory = g_strdup (aud_playlist_entry_get_filename (playlist, pos));
+        directory = aud_playlist_entry_get_filename (playlist, pos);
         temp = strrchr (directory, '/');
         g_return_val_if_fail (temp != NULL, 0);
         temp[1] = 0;
@@ -305,6 +305,12 @@ static void file_close(void)
     if (output_file != NULL)
         vfs_fclose(output_file);
     output_file = NULL;
+
+    if (tuple)
+    {
+        tuple_free (tuple);
+        tuple = NULL;
+    }
 }
 
 static void file_flush(gint time)

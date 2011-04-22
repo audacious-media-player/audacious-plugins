@@ -138,7 +138,7 @@ static GtkLabel *get_tab_label(gint playlist)
 
 static void set_tab_label (gint list, GtkLabel * label)
 {
-    const gchar * title = aud_playlist_get_title (list);
+    gchar * title = aud_playlist_get_title (list);
 
     if (list == aud_playlist_get_playing ())
     {
@@ -148,6 +148,8 @@ static void set_tab_label (gint list, GtkLabel * label)
     }
     else
         gtk_label_set_text (label, title);
+
+    g_free (title);
 }
 
 void ui_playlist_notebook_edit_tab_title(GtkWidget *ebox)
@@ -165,7 +167,9 @@ void ui_playlist_notebook_edit_tab_title(GtkWidget *ebox)
     GtkWidget *entry = g_object_get_data(G_OBJECT(ebox), "entry");
     gtk_widget_hide(label);
 
-    gtk_entry_set_text(GTK_ENTRY(entry), aud_playlist_get_title(aud_playlist_get_active()));
+    gchar * title = aud_playlist_get_title (aud_playlist_get_active ());
+    gtk_entry_set_text ((GtkEntry *) entry, title);
+    g_free (title);
     gtk_widget_grab_focus(entry);
     gtk_editable_select_region(GTK_EDITABLE(entry), 0, -1);
     gtk_widget_show(entry);

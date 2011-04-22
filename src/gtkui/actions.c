@@ -569,11 +569,14 @@ static void playlistwin_save_playlist(const gchar * filename)
 
 void action_playlist_save_list(void)
 {
-    const gchar *default_filename = aud_playlist_get_filename(aud_playlist_get_active());
+    gchar * default_filename = aud_playlist_get_filename
+     (aud_playlist_get_active ());
 
     gchar *dot = NULL, *basename = NULL;
     gchar * filename = playlist_file_selection_save (_("Export Playlist"),
      default_filename);
+
+    g_free (default_filename);
 
     if (filename)
     {
@@ -614,9 +617,6 @@ static void playlistwin_load_playlist(const gchar * filename)
     aud_playlist_entry_delete(playlist, 0, aud_playlist_entry_count(playlist));
     aud_playlist_entry_insert(playlist, 0, g_strdup (filename), NULL, FALSE);
     aud_playlist_set_filename(playlist, filename);
-
-    if (aud_playlist_get_title(playlist) == NULL)
-        aud_playlist_set_title(playlist, filename);
 }
 
 static gchar *playlist_file_selection_load(const gchar * title, const gchar * default_filename)
@@ -643,9 +643,11 @@ static gchar *playlist_file_selection_load(const gchar * title, const gchar * de
 
 void action_playlist_load_list(void)
 {
-    const gchar *default_filename = aud_playlist_get_filename(aud_playlist_get_active());
+    gchar * default_filename = aud_playlist_get_filename
+     (aud_playlist_get_active ());
     gchar * filename = playlist_file_selection_load (_("Import Playlist"),
      default_filename);
+    g_free (default_filename);
 
     if (filename)
     {

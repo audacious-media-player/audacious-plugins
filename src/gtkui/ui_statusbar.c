@@ -76,10 +76,12 @@ ui_statusbar_info_change(gpointer unused, GtkWidget *label)
         return;
 
     gint playlist = aud_playlist_get_playing ();
-    const Tuple * tuple = aud_playlist_entry_get_tuple (playlist,
+    Tuple * tuple = aud_playlist_entry_get_tuple (playlist,
      aud_playlist_get_position (playlist), FALSE);
     const gchar * codec = tuple ? tuple_get_string (tuple, FIELD_CODEC, NULL) :
      NULL;
+    if (tuple)
+        tuple_free (tuple);
 
     gint bitrate, samplerate, channels;
     aud_drct_get_info(&bitrate, &samplerate, &channels);

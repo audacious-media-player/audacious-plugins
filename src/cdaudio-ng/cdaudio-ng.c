@@ -130,12 +130,10 @@ static void cdaudio_error (const gchar * message_format, ...)
 static void purge_playlist (gint playlist)
 {
     gint length = aud_playlist_entry_count (playlist);
-    gint count;
-    const gchar *filename;
 
-    for (count = 0; count < length; count++)
+    for (gint count = 0; count < length; count ++)
     {
-        filename = aud_playlist_entry_get_filename (playlist, count);
+        gchar * filename = aud_playlist_entry_get_filename (playlist, count);
 
         if (cdaudio_is_our_file (filename, NULL))
         {
@@ -143,6 +141,8 @@ static void purge_playlist (gint playlist)
             count--;
             length--;
         }
+
+        g_free (filename);
     }
 }
 

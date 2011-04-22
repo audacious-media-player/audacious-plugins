@@ -344,16 +344,18 @@ void
 lyricwiki_playback_began(void)
 {
 	gint playlist, pos;
-	const Tuple *tu;
 
 	if (!aud_drct_get_playing())
 		return;
 
 	playlist = aud_playlist_get_playing();
 	pos = aud_playlist_get_position(playlist);
-	tu = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
+	Tuple * tu = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
 
 	get_lyrics_step_1(tu);
+
+	if (tu)
+		tuple_free (tu);
 }
 
 static gboolean init (void)

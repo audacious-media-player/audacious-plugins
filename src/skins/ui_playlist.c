@@ -177,8 +177,10 @@ static void update_rollup_text (void)
         if (aud_cfg->show_numbers_in_pl)
             snprintf (scratch, sizeof scratch, "%d. ", 1 + entry);
 
+        gchar * title = aud_playlist_entry_get_title (playlist, entry, FALSE);
         snprintf (scratch + strlen (scratch), sizeof scratch - strlen (scratch),
-         "%s", aud_playlist_entry_get_title (playlist, entry, FALSE));
+         "%s", title);
+        g_free (title);
 
         if (length > 0)
             snprintf (scratch + strlen (scratch), sizeof scratch - strlen
@@ -347,8 +349,7 @@ static void copy_selected_to_new (gint playlist)
     for (entry = 0; entry < entries; entry ++)
     {
         if (aud_playlist_entry_get_selected (playlist, entry))
-            index_append (copy, g_strdup (aud_playlist_entry_get_filename
-             (playlist, entry)));
+            index_append (copy, aud_playlist_entry_get_filename (playlist, entry));
     }
 
     aud_playlist_entry_insert_batch (new, 0, copy, NULL, FALSE);
@@ -700,9 +701,6 @@ playlistwin_load_playlist(const gchar * filename)
     aud_playlist_entry_insert (active_playlist, 0, g_strdup (filename), NULL,
      FALSE);
     aud_playlist_set_filename (active_playlist, filename);
-
-    if (aud_playlist_get_title (active_playlist) == NULL)
-        aud_playlist_set_title (active_playlist, filename);
 }
 
 static gchar *
@@ -1204,9 +1202,12 @@ static void get_title (void)
     g_free (active_title);
 
     if (playlists > 1)
-        active_title = g_strdup_printf (_("%s (%d of %d)"),
-         aud_playlist_get_title (active_playlist), 1 + active_playlist,
-         playlists);
+    {
+        gchar * title = aud_playlist_get_title (active_playlist);
+        active_title = g_strdup_printf (_("%s (%d of %d)"), title, 1 +
+         active_playlist, playlists);
+        g_free (title);
+    }
     else
         active_title = NULL;
 }
@@ -1549,8 +1550,9 @@ void action_playlist_delete (void)
 
 void action_playlist_save_list (void)
 {
-    playlistwin_select_playlist_to_save (aud_playlist_get_filename
-     (active_playlist));
+    gchar * filename = aud_playlist_get_filename (active_playlist);
+    playlistwin_select_playlist_to_save (filename);
+    g_free (filename);
 }
 
 void action_playlist_save_all_playlists (void)
@@ -1560,8 +1562,9 @@ void action_playlist_save_all_playlists (void)
 
 void action_playlist_load_list (void)
 {
-    playlistwin_select_playlist_to_load (aud_playlist_get_filename
-     (active_playlist));
+    gchar * filename = aud_playlist_get_filename (active_playlist);
+    playlistwin_select_playlist_to_load (filename);
+    g_free (filename);
 }
 
 void

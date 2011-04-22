@@ -98,7 +98,6 @@ gboolean free_device(void)
 GList *
 get_upload_list(void)
 {
-    const Tuple * tuple;
     GList *up_list=NULL;
     gint current_play = aud_playlist_get_active();
     gint i = (aud_playlist_entry_count(current_play) - 1);
@@ -107,9 +106,12 @@ get_upload_list(void)
     {
         if (aud_playlist_entry_get_selected(current_play, i))
         {
-            tuple = aud_playlist_entry_get_tuple (current_play, i, FALSE);
+            Tuple * tuple = aud_playlist_entry_get_tuple (current_play, i, FALSE);
             aud_playlist_entry_set_selected(current_play, i, FALSE);
             up_list = g_list_prepend (up_list, (void *) tuple);
+
+            if (tuple)
+                tuple_free (tuple);
         }
     }
 

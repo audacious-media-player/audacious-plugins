@@ -1371,7 +1371,9 @@ static void position_cb (void * data, void * user_data)
      || position == -1)
         return;
 
-    load_auto_preset (aud_playlist_entry_get_filename (playlist, position));
+    gchar * filename = aud_playlist_entry_get_filename (playlist, position);
+    load_auto_preset (filename);
+    g_free (filename);
 }
 
 void eq_init_hooks (void)

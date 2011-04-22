@@ -192,7 +192,8 @@ do_command(char *cmd, const char *current_file, int pos)
 			formatter_associate (formatter, 'c', numbuf);
 		}
 
-		const void *tuple = aud_playlist_entry_get_tuple(aud_playlist_get_active(), pos, 0);
+		Tuple * tuple = aud_playlist_entry_get_tuple
+		 (aud_playlist_get_active (), pos, 0);
 
 		const char *artist = tuple_get_string(tuple, FIELD_ARTIST, NULL);
 		if (artist)
@@ -211,6 +212,9 @@ do_command(char *cmd, const char *current_file, int pos)
 			formatter_associate(formatter, 'T', title);
 		else
 			formatter_associate(formatter, 'T', "");
+
+		if (tuple)
+			tuple_free (tuple);
 
 		shstring = formatter_format(formatter, cmd);
 		formatter_destroy(formatter);
