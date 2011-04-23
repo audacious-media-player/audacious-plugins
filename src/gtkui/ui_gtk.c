@@ -74,6 +74,7 @@ extern GtkWidget *ui_playlist_notebook_tab_title_editing;
 static gboolean init (void);
 static void cleanup (void);
 static void ui_show (gboolean show);
+static gboolean ui_is_shown (void);
 static void ui_show_error (const gchar * text);
 
 AUD_IFACE_PLUGIN
@@ -82,6 +83,7 @@ AUD_IFACE_PLUGIN
     .init = init,
     .cleanup = cleanup,
     .show = ui_show,
+    .is_shown = ui_is_shown,
     .show_error = ui_show_error,
     .show_filebrowser = audgui_run_filebrowser,
     .show_jump_to_track = audgui_jump_to_track,
@@ -171,21 +173,29 @@ static gboolean title_change_cb (void)
 
 static void ui_show (gboolean show)
 {
+    config.player_visible = show;
+
     if (show)
     {
-        if (config.save_window_position)
-            gtk_window_move(GTK_WINDOW(window), config.player_x, config.player_y);
+        if (config.save_window_position && ! gtk_widget_get_visible (window))
+            gtk_window_move ((GtkWindow *) window, config.player_x,
+             config.player_y);
 
-        gtk_widget_show(window);
-        gtk_window_present(GTK_WINDOW(window));
+        gtk_window_present ((GtkWindow *) window);
     }
-    else
+    else if (gtk_widget_get_visible (window))
     {
         if (config.save_window_position)
-            gtk_window_get_position(GTK_WINDOW(window), &config.player_x, &config.player_y);
+            gtk_window_get_position ((GtkWindow *) window, & config.player_x,
+             & config.player_y);
 
-        gtk_widget_hide(window);
+        gtk_widget_hide (window);
     }
+}
+
+static gboolean ui_is_shown (void)
+{
+    return config.player_visible;
 }
 
 static void ui_show_error (const gchar * text)
