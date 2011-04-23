@@ -86,7 +86,7 @@ static gboolean playlist_load_m3u (const gchar * path, struct index * filenames,
 
     gchar * parse = text;
 
-    while (1)
+    while (parse)
     {
         gchar * next = split_line (parse);
 
