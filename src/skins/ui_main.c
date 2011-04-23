@@ -1001,7 +1001,7 @@ static gboolean seek_timeout (void * rewind)
 static gboolean seek_press (GtkWidget * widget, GdkEventButton * event,
  void * rewind)
 {
-    if (event->button != 1 || seek_source || ! aud_drct_get_playing ())
+    if (event->button != 1 || seek_source)
         return FALSE;
 
     seek_start = ui_skinned_horizontal_slider_get_position (mainwin_position);
