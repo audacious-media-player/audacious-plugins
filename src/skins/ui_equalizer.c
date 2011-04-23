@@ -508,48 +508,38 @@ equalizerwin_create(void)
     gtk_widget_show_all (((SkinnedWindow *) equalizerwin)->shaded);
 }
 
-static void equalizerwin_real_show (void)
+static void equalizerwin_real_show (gboolean show)
 {
-    if (config.scaled && config.eq_scaled_linked)
-        gtk_widget_set_size_request(equalizerwin, 275 * config.scale_factor,
-                                    ((config.equalizer_shaded ? 14 : 116) * config.scale_factor));
+    if (show)
+    {
+        if (config.scaled && config.eq_scaled_linked)
+            gtk_widget_set_size_request (equalizerwin, 275 *
+             config.scale_factor, (config.equalizer_shaded ? 14 : 116) *
+             config.scale_factor);
+        else
+            gtk_widget_set_size_request (equalizerwin, 275,
+             (config.equalizer_shaded ? 14 : 116));
+
+        gtk_window_present ((GtkWindow *) equalizerwin);
+    }
     else
-        gtk_widget_set_size_request(equalizerwin, 275,
-                                    (config.equalizer_shaded ? 14 : 116));
-    ui_skinned_button_set_inside(mainwin_eq, TRUE);
-
-    gtk_window_present(GTK_WINDOW(equalizerwin));
+        gtk_widget_hide (equalizerwin);
 }
 
-static void equalizerwin_real_hide (void)
+void equalizerwin_show (gboolean show)
 {
-    gtk_widget_hide(equalizerwin);
-    ui_skinned_button_set_inside(mainwin_eq, FALSE);
-}
-
-void
-equalizerwin_show(gboolean show)
-{
-    GtkAction * a;
-
-    a = gtk_action_group_get_action (toggleaction_group_others, "show equalizer");
+    GtkAction * a = gtk_action_group_get_action (toggleaction_group_others,
+     "show equalizer");
 
     if (a && gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (a)) != show)
         gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
     else
     {
-        if (show != config.equalizer_visible) {
-            config.equalizer_visible = show;
-            config.equalizer_visible_prev = !show;
-            aud_cfg->equalizer_visible = show;
-        }
-
-        if (show)
-           equalizerwin_real_show ();
-        else
-           equalizerwin_real_hide ();
+        config.equalizer_visible = show;
+        ui_skinned_button_set_inside (mainwin_eq, show);
+        equalizerwin_real_show (config.player_visible && show);
     }
- }
+}
 
 static EqualizerPreset *
 equalizerwin_find_preset(GList * list, const gchar * name)

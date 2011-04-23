@@ -953,130 +953,6 @@ mainwin_drag_data_received(GtkWidget * widget,
     audgui_urilist_open ((const gchar *) selection_data->data);
 }
 
-static void
-on_visibility_warning_toggle(GtkToggleButton *tbt, gpointer unused)
-{
-    config.warn_about_win_visibility = !gtk_toggle_button_get_active(tbt);
-}
-
-static void
-on_visibility_warning_response(GtkDialog *dlg, gint r_id, gpointer unused)
-{
-    switch (r_id)
-    {
-        case GTK_RESPONSE_OK:
-            mainwin_show(TRUE);
-            break;
-        case GTK_RESPONSE_CANCEL:
-        default:
-            break;
-    }
-    gtk_widget_destroy(GTK_WIDGET(dlg));
-}
-
-void
-mainwin_show_visibility_warning(void)
-{
-    if (config.warn_about_win_visibility)
-    {
-        GtkWidget *label, *checkbt, *vbox;
-        GtkWidget *warning_dlg =
-            gtk_dialog_new_with_buttons( _("Audacious - visibility warning") ,
-                                         GTK_WINDOW(mainwin) ,
-                                         GTK_DIALOG_DESTROY_WITH_PARENT ,
-                                         _("Show main player window") ,
-                                         GTK_RESPONSE_OK , _("Ignore") ,
-                                         GTK_RESPONSE_CANCEL , NULL );
-
-        vbox = gtk_vbox_new( FALSE , 4 );
-        gtk_container_set_border_width( GTK_CONTAINER(vbox) , 4 );
-        gtk_box_pack_start( GTK_BOX(GTK_DIALOG(warning_dlg)->vbox) , vbox , TRUE , TRUE , 0 );
-        label = gtk_label_new( _("Audacious has been started with all of its windows hidden.\n"
-                                 "You may want to show the player window again to control Audacious; "
-                                 "otherwise, you'll have to control it remotely via audtool or "
-                                 "enabled plugins (such as the statusicon plugin).") );
-        gtk_label_set_line_wrap( GTK_LABEL(label) , TRUE );
-        gtk_misc_set_alignment( GTK_MISC(label) , 0.0 , 0.0 );
-        checkbt = gtk_check_button_new_with_label( _("Always ignore, show/hide is controlled remotely") );
-        gtk_box_pack_start( GTK_BOX(vbox) , label , TRUE , TRUE , 0 );
-        gtk_box_pack_start( GTK_BOX(vbox) , checkbt , TRUE , TRUE , 0 );
-        g_signal_connect( G_OBJECT(checkbt) , "toggled" ,
-                          G_CALLBACK(on_visibility_warning_toggle) , NULL );
-        g_signal_connect( G_OBJECT(warning_dlg) , "response" ,
-                          G_CALLBACK(on_visibility_warning_response) , NULL );
-        gtk_widget_show_all(warning_dlg);
-    }
-}
-
-static void
-on_broken_gtk_engine_warning_toggle(GtkToggleButton *tbt, gpointer unused)
-{
-    config.warn_about_broken_gtk_engines = !gtk_toggle_button_get_active(tbt);
-}
-
-void
-ui_main_check_theme_engine(void)
-{
-    GtkSettings *settings;
-    GtkWidget *widget;
-    gchar *theme = NULL;
-
-    widget = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_widget_ensure_style(widget);
-
-    settings = gtk_settings_get_default();
-    g_object_get(G_OBJECT(settings), "gtk-theme-name", &theme, NULL);
-    gtk_widget_destroy(widget);
-
-    if (theme == NULL)
-        return;
-
-    if (g_ascii_strcasecmp(theme, "Qt"))
-    {
-        g_free(theme);
-        return;
-    }
-
-    if (config.warn_about_broken_gtk_engines)
-    {
-        gchar *msg;
-        GtkWidget *label, *checkbt, *vbox;
-        GtkWidget *warning_dlg =
-            gtk_dialog_new_with_buttons( _("Audacious - broken GTK engine usage warning") ,
-                                         GTK_WINDOW(mainwin) , GTK_DIALOG_DESTROY_WITH_PARENT ,
-                                         GTK_STOCK_CLOSE, GTK_RESPONSE_OK, NULL );
-        vbox = gtk_vbox_new( FALSE , 4 );
-        gtk_container_set_border_width( GTK_CONTAINER(vbox) , 4 );
-        gtk_box_pack_start( GTK_BOX(GTK_DIALOG(warning_dlg)->vbox) , vbox ,
-                            TRUE , TRUE , 0 );
-
-        msg = g_strdup_printf(_("<big><b>Broken GTK engine in use</b></big>\n\n"
-                                "Audacious has detected that you are using a broken GTK engine.\n\n"
-                                "The theme engine you are using, <i>%s</i>, is incompatible with some of the features "
-                                "used by modern skins. The incompatible features have been disabled for this session.\n\n"
-                                "To use these features, please consider using a different GTK theme engine."), theme);
-        label = gtk_label_new(msg);
-        gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-        g_free(msg);
-
-        gtk_label_set_line_wrap( GTK_LABEL(label) , TRUE );
-        gtk_misc_set_alignment( GTK_MISC(label) , 0.0 , 0.0 );
-        checkbt = gtk_check_button_new_with_label( _("Do not display this warning again") );
-        gtk_box_pack_start( GTK_BOX(vbox) , label , TRUE , TRUE , 0 );
-        gtk_box_pack_start( GTK_BOX(vbox) , checkbt , TRUE , TRUE , 0 );
-        g_signal_connect( G_OBJECT(checkbt) , "toggled" ,
-                          G_CALLBACK(on_broken_gtk_engine_warning_toggle) , NULL );
-        g_signal_connect( G_OBJECT(warning_dlg) , "response" ,
-                          G_CALLBACK(gtk_widget_destroy) , NULL );
-        gtk_widget_show_all(warning_dlg);
-        gtk_window_stick(GTK_WINDOW(warning_dlg));
-    }
-
-    config.disable_inline_gtk = TRUE;
-
-    g_free(theme);
-}
-
 void
 mainwin_eject_pushed(void)
 {
@@ -1417,16 +1293,14 @@ mainwin_set_balance_diff(gint diff)
     equalizerwin_set_balance_slider(b);
 }
 
-static void mainwin_real_show (void)
+static void mainwin_real_show (gboolean show)
 {
     start_stop_visual (FALSE);
-    gtk_window_present(GTK_WINDOW(mainwin));
-}
 
-static void mainwin_real_hide (void)
-{
-    gtk_widget_hide(mainwin);
-    start_stop_visual (FALSE);
+    if (show)
+        gtk_window_present ((GtkWindow *) mainwin);
+    else
+        gtk_widget_hide (mainwin);
 }
 
 void mainwin_show (gboolean show)
@@ -1439,16 +1313,10 @@ void mainwin_show (gboolean show)
         gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
     else
     {
-        if (show != config.player_visible) {
-            config.player_visible = show;
-            config.player_visible_prev = !show;
-            aud_cfg->player_visible = show;
-        }
-
-        if (show)
-           mainwin_real_show ();
-        else
-           mainwin_real_hide ();
+        config.player_visible = show;
+        playlistwin_show (config.playlist_visible);
+        equalizerwin_show (config.equalizer_visible);
+        mainwin_real_show (show);
    }
 }
 
@@ -1497,124 +1365,6 @@ set_scaled(gboolean scaled)
 
     if (config.eq_scaled_linked)
         equalizerwin_set_scaled(scaled);
-}
-
-
-
-void
-mainwin_general_menu_callback(gpointer data,
-                              guint action,
-                              GtkWidget * item)
-{
-    switch (action) {
-        case MAINWIN_GENERAL_PREFS:
-            action_preferences();
-            break;
-        case MAINWIN_GENERAL_ABOUT:
-            action_about_audacious();
-            break;
-        case MAINWIN_GENERAL_PLAYFILE: {
-            audgui_run_filebrowser(FALSE); /* FALSE = NO_PLAY_BUTTON */
-            break;
-        }
-        case MAINWIN_GENERAL_PLAYLOCATION:
-            action_play_location();
-            break;
-        case MAINWIN_GENERAL_FILEINFO:
-            audgui_infowin_show_current ();
-            break;
-        case MAINWIN_GENERAL_FOCUSPLWIN:
-            gtk_window_present(GTK_WINDOW(playlistwin));
-            break;
-        case MAINWIN_GENERAL_SHOWMWIN:
-            mainwin_show(GTK_CHECK_MENU_ITEM(item)->active);
-            break;
-        case MAINWIN_GENERAL_SHOWPLWIN:
-            playlistwin_show (GTK_CHECK_MENU_ITEM(item) ->active);
-            break;
-        case MAINWIN_GENERAL_SHOWEQWIN:
-            equalizerwin_show (GTK_CHECK_MENU_ITEM (item)->active);
-            break;
-        case MAINWIN_GENERAL_PREV:
-            aud_drct_pl_prev ();
-            break;
-        case MAINWIN_GENERAL_PLAY:
-            mainwin_play_pushed();
-            break;
-        case MAINWIN_GENERAL_PAUSE:
-            aud_drct_pause();
-            break;
-        case MAINWIN_GENERAL_STOP:
-            mainwin_stop_pushed();
-            break;
-        case MAINWIN_GENERAL_NEXT:
-            aud_drct_pl_next ();
-            break;
-#if 0
-        case MAINWIN_GENERAL_BACK5SEC:
-            if (aud_drct_get_playing()
-                && aud_playlist_get_current_length(playlist) != -1)
-                playback_seek_relative(-5);
-            break;
-        case MAINWIN_GENERAL_FWD5SEC:
-            if (aud_drct_get_playing()
-                && aud_playlist_get_current_length(playlist) != -1)
-                playback_seek_relative(5);
-            break;
-#endif
-        case MAINWIN_GENERAL_START:
-            aud_drct_pl_set_pos (0);
-            break;
-        case MAINWIN_GENERAL_JTT:
-            mainwin_jump_to_time();
-            break;
-        case MAINWIN_GENERAL_JTF:
-            action_jump_to_file();
-            break;
-        case MAINWIN_GENERAL_EXIT:
-            aud_drct_quit ();
-            break;
-        case MAINWIN_GENERAL_SETAB:
-            if (aud_drct_get_length () > 0)
-            {
-                if (ab_position_a == -1) {
-                    ab_position_a = aud_drct_get_time();
-                    ab_position_b = -1;
-                    mainwin_lock_info_text("'Loop-Point A Position' set.");
-                } else if (ab_position_b == -1) {
-                    int time = aud_drct_get_time();
-                    if (time > ab_position_a)
-                        ab_position_b = time;
-                    mainwin_release_info_text();
-                } else {
-                    ab_position_a = aud_drct_get_time();
-                    ab_position_b = -1;
-                    mainwin_lock_info_text("'Loop-Point A Position' reset.");
-                }
-            }
-            break;
-        case MAINWIN_GENERAL_CLEARAB:
-            if (aud_drct_get_length () > 0)
-            {
-                ab_position_a = ab_position_b = -1;
-                mainwin_release_info_text();
-            }
-            break;
-        case MAINWIN_GENERAL_NEW_PL:
-            {
-                gint playlist = aud_playlist_count ();
-
-                aud_playlist_insert (playlist);
-                aud_playlist_set_active (playlist);
-            }
-            break;
-        case MAINWIN_GENERAL_PREV_PL:
-            aud_playlist_set_active (aud_playlist_get_active () - 1);
-            break;
-        case MAINWIN_GENERAL_NEXT_PL:
-            aud_playlist_set_active (aud_playlist_get_active () + 1);
-            break;
-    }
 }
 
 static void

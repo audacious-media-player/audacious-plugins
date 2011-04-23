@@ -57,7 +57,6 @@
 #include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_manager.h"
-#include "ui_playlist_evlisteners.h"
 #include "util.h"
 #include "ui_skinned_window.h"
 #include "ui_skinned_button.h"
@@ -1117,8 +1116,6 @@ playlistwin_create_widgets(void)
                                   playlistwin_get_width() - 14,
                                   config.playlist_height - 30, 8, 5);
     g_signal_connect(playlistwin_sscroll_down, "clicked", playlistwin_scroll_down_pushed, NULL);
-
-    ui_playlist_evlistener_init();
 }
 
 static void
@@ -1285,29 +1282,18 @@ void playlistwin_unhook (void)
 {
     hook_dissociate ("playlist position", follow_cb);
     hook_dissociate ("playlist update", update_cb);
-    ui_playlist_evlistener_dissociate ();
     g_free (active_title);
     active_title = NULL;
     g_mutex_free (resize_mutex);
     resize_mutex = NULL;
 }
 
-static void playlistwin_real_show (void)
+static void playlistwin_real_show (gboolean show)
 {
-    ui_skinned_button_set_inside(mainwin_pl, TRUE);
-    gtk_window_present(GTK_WINDOW(playlistwin));
-}
-
-static void playlistwin_real_hide (void)
-{
-    gtk_widget_hide(playlistwin);
-    ui_skinned_button_set_inside(mainwin_pl, FALSE);
-
-    if ( config.player_visible )
-    {
-      gtk_window_present(GTK_WINDOW(mainwin));
-      gtk_widget_grab_focus(mainwin);
-    }
+    if (show)
+        gtk_window_present ((GtkWindow *) playlistwin);
+    else
+        gtk_widget_hide (playlistwin);
 }
 
 void playlistwin_show (char show)
@@ -1320,17 +1306,10 @@ void playlistwin_show (char show)
         gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
     else
     {
-        if (show != config.playlist_visible) {
-            config.playlist_visible = show;
-            config.playlist_visible_prev = !show;
-            aud_cfg->playlist_visible = show;
-        }
-
-        if (show)
-           playlistwin_real_show ();
-        else
-           playlistwin_real_hide ();
-   }
+        config.playlist_visible = show;
+        ui_skinned_button_set_inside (mainwin_pl, show);
+        playlistwin_real_show (config.player_visible && show);
+    }
 }
 
 void action_playlist_track_info(void)

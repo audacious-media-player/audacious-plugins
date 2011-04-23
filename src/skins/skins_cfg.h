@@ -49,7 +49,6 @@ typedef struct {
     gchar *filesel_path;
     gboolean player_visible, equalizer_visible, playlist_visible;
     gboolean player_shaded, equalizer_shaded, playlist_shaded;
-    gboolean player_visible_prev, equalizer_visible_prev, playlist_visible_prev;
     gboolean dim_titlebar;
     gboolean show_wm_decorations;
     gboolean easy_move;

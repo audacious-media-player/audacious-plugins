@@ -47,49 +47,6 @@ typedef enum {
     TIMER_REMAINING
 } TimerMode;
 
-enum {
-    MAINWIN_GENERAL_ABOUT,
-
-    MAINWIN_GENERAL_PLAYFILE,
-    MAINWIN_GENERAL_PLAYLOCATION,
-
-    MAINWIN_GENERAL_FILEINFO,
-    MAINWIN_GENERAL_PREFS,
-
-    MAINWIN_GENERAL_SHOWMWIN,
-    MAINWIN_GENERAL_SHOWPLWIN,
-
-    MAINWIN_GENERAL_FOCUSMWIN,
-    MAINWIN_GENERAL_FOCUSPLWIN,
-
-    MAINWIN_GENERAL_SHOWEQWIN,
-    MAINWIN_GENERAL_EXIT,
-
-    MAINWIN_GENERAL_PREV,
-    MAINWIN_GENERAL_PLAY,
-    MAINWIN_GENERAL_PAUSE,
-    MAINWIN_GENERAL_STOP,
-    MAINWIN_GENERAL_NEXT,
-    MAINWIN_GENERAL_STOPFADE,
-    MAINWIN_GENERAL_BACK5SEC,
-    MAINWIN_GENERAL_FWD5SEC,
-    MAINWIN_GENERAL_START,
-    MAINWIN_GENERAL_BACK10,
-    MAINWIN_GENERAL_FWD10,
-    MAINWIN_GENERAL_JTT,
-    MAINWIN_GENERAL_JTF,
-    MAINWIN_GENERAL_QUEUE,
-    MAINWIN_GENERAL_CQUEUE,
-    MAINWIN_GENERAL_VOLUP,
-    MAINWIN_GENERAL_VOLDOWN,
-    MAINWIN_GENERAL_SETAB,
-    MAINWIN_GENERAL_CLEARAB,
-
-    MAINWIN_GENERAL_NEXT_PL,
-    MAINWIN_GENERAL_PREV_PL,
-    MAINWIN_GENERAL_NEW_PL
-};
-
 extern GtkWidget *mainwin;
 extern GtkWidget *err;
 
@@ -154,9 +111,6 @@ void mainwin_repeat_pushed(gboolean toggled);
 void mainwin_disable_seekbar(void);
 void mainwin_set_title(const gchar * text);
 void mainwin_minimize_cb(void);
-void mainwin_general_menu_callback(gpointer cb_data,
-                                   guint action,
-                                   GtkWidget * widget);
 
 void mainwin_update_song_info (void);
 void mainwin_enable_status_message (gboolean enable);
@@ -176,14 +130,8 @@ gboolean change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event);
 void mainwin_jump_to_file(void);
 void mainwin_jump_to_time(void);
 
-void mainwin_ewmh_activate(void);
-
-void mainwin_show_visibility_warning(void);
-
 /* widget should be null if called manually. */
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
  void * unused);
-
-void ui_main_check_theme_engine(void);
 
 #endif /* AUDACIOUS_UI_MAIN_H */

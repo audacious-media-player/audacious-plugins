@@ -27,7 +27,6 @@
 #include "ui_skin.h"
 #include "ui_manager.h"
 #include "ui_main_evlisteners.h"
-#include "ui_playlist_evlisteners.h"
 
 #include <audacious/audconfig.h>
 #include <audacious/drct.h>
@@ -42,7 +41,7 @@ gchar * skins_paths[SKINS_PATH_COUNT];
 
 static gboolean skins_init (void);
 static void skins_cleanup (void);
-static void ui_show (gboolean show);
+static gboolean ui_is_shown (void);
 static void show_error_message (const gchar * markup);
 
 AUD_IFACE_PLUGIN
@@ -52,7 +51,8 @@ AUD_IFACE_PLUGIN
     .cleanup = skins_cleanup,
     .about = skins_about,
     .configure = skins_configure,
-    .show = ui_show,
+    .show = mainwin_show,
+    .is_shown = ui_is_shown,
     .show_error = show_error_message,
     .show_filebrowser = audgui_run_filebrowser,
     .show_jump_to_track = audgui_jump_to_track,
@@ -105,8 +105,6 @@ static gboolean skins_init (void)
     skins_init_paths();
     skins_cfg_load();
 
-    ui_main_check_theme_engine();
-
     audgui_set_default_icon();
     audgui_register_stock_icons();
 
@@ -127,11 +125,7 @@ static gboolean skins_init (void)
     else
         mainwin_update_song_info ();
 
-    if (config.player_visible)
-       mainwin_show (1);
-    if (config.equalizer_visible) equalizerwin_show(TRUE);
-    if (config.playlist_visible)
-       playlistwin_show (1);
+    mainwin_show (config.player_visible);
 
     eq_init_hooks ();
     update_source = g_timeout_add (250, update_cb, NULL);
@@ -172,32 +166,9 @@ void skins_about (void)
      _("Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n\n"));
 }
 
-static void ui_show (gboolean show)
+static gboolean ui_is_shown (void)
 {
-    if (! show)
-    {
-        /* remember the visibility status of the player windows */
-        config.player_visible_prev = config.player_visible;
-        config.equalizer_visible_prev = config.equalizer_visible;
-        config.playlist_visible_prev = config.playlist_visible;
-        /* now hide all of them */
-        if (config.player_visible_prev == TRUE)
-            mainwin_show(FALSE);
-        if (config.equalizer_visible_prev == TRUE)
-            equalizerwin_show(FALSE);
-        if (config.playlist_visible_prev == TRUE)
-            playlistwin_show(FALSE);
-    }
-    else
-    {
-        /* show the windows that were visible before */
-        if (config.player_visible_prev == TRUE)
-            mainwin_show(TRUE);
-        if (config.equalizer_visible_prev == TRUE)
-            equalizerwin_show(TRUE);
-        if (config.playlist_visible_prev == TRUE)
-            playlistwin_show(TRUE);
-    }
+    return config.player_visible;
 }
 
 static void show_error_message(const gchar * markup)
