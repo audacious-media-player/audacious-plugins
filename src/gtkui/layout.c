@@ -60,7 +60,6 @@ GtkWidget * layout_new (void)
 {
     g_return_val_if_fail (! layout, NULL);
     layout = gtk_alignment_new (0, 0, 1, 1);
-    gtk_alignment_set_padding ((GtkAlignment *) layout, 3, 3, 3, 3);
     NULL_ON_DESTROY (layout);
     return layout;
 }
@@ -332,7 +331,6 @@ static void item_add (Item * item)
         NULL_ON_DESTROY (item->window);
 
         gtk_window_set_title ((GtkWindow *) item->window, item->name);
-        gtk_container_set_border_width ((GtkContainer *) item->window, 3);
         g_signal_connect_swapped (item->window, "delete-event", (GCallback)
          delete_cb, item->widget);
         g_signal_connect_swapped (item->window, "key-press-event", (GCallback)

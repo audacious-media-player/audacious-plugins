@@ -204,7 +204,6 @@ void ui_playlist_notebook_create_tab(gint playlist)
     gint position = aud_playlist_get_position (playlist);
 
     scrollwin = gtk_scrolled_window_new(NULL, NULL);
-    gtk_container_set_border_width ((GtkContainer *) scrollwin, 0);
     index_insert(pages, playlist, scrollwin);
 
     treeview = ui_playlist_widget_new(playlist);
@@ -212,7 +211,6 @@ void ui_playlist_notebook_create_tab(gint playlist)
 
     gtk_container_add(GTK_CONTAINER(scrollwin), treeview);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollwin), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-    gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrollwin), GTK_SHADOW_IN);
     gtk_widget_show_all(scrollwin);
 
     ebox = gtk_event_box_new();
