@@ -298,84 +298,53 @@ static void set_gain_info(Tuple *tuple, gint field, gint unit_field, const gchar
     tuple_associate_int(tuple, field, NULL, value);
 }
 
-void parse_comment(Tuple *tuple, gchar *key, gchar *value)
+static void add_text (Tuple * tuple, gint field, const gchar * value)
 {
-    if (strcasecmp(key, "ARTIST") == 0)
+    const gchar * cur = tuple_get_string (tuple, field, NULL);
+    if (cur)
     {
-        AUDDBG("Found key ARTIST <%s>\n", value);
-        tuple_associate_string(tuple, FIELD_ARTIST, NULL, value);
-        return;
+        gchar * both = g_strconcat (cur, ", ", value, NULL);
+        tuple_associate_string_rel (tuple, field, NULL, both);
+    }
+    else
+        tuple_associate_string (tuple, field, NULL, value);
+}
+
+static void parse_comment (Tuple * tuple, const gchar * key, const gchar * value)
+{
+    AUDDBG ("Found key %s <%s>\n", key, value);
+
+    const struct {
+        const gchar * key;
+        int field;
+    } tfields[] = {
+     {"ARTIST", FIELD_ARTIST},
+     {"ALBUM", FIELD_ALBUM},
+     {"TITLE", FIELD_TITLE},
+     {"COMMENT", FIELD_COMMENT},
+     {"GENRE", FIELD_GENRE}};
+
+    for (gint i = 0; i < G_N_ELEMENTS (tfields); i ++)
+    {
+        if (! strcasecmp (key, tfields[i].key))
+        {
+            add_text (tuple, tfields[i].field, value);
+            return;
+        }
     }
 
-    if (strcasecmp(key, "ALBUM") == 0)
-    {
-        AUDDBG("Found key ALBUM <%s>\n", value);
-        tuple_associate_string(tuple, FIELD_ALBUM, NULL, value);
-        return;
-    }
-
-    if (strcasecmp(key, "TITLE") == 0)
-    {
-        AUDDBG("Found key TITLE <%s>\n", value);
-        tuple_associate_string(tuple, FIELD_TITLE, NULL, value);
-        return;
-    }
-
-    if (strcasecmp(key, "TRACKNUMBER") == 0)
-    {
-        AUDDBG("Found key TRACKNUMBER <%s>\n", value);
+    if (! strcasecmp (key, "TRACKNUMBER"))
         tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(value));
-        return;
-    }
-
-    if (strcasecmp(key, "COMMENT") == 0)
-    {
-        AUDDBG("Found key COMMENT <%s>\n", value);
-        tuple_associate_string(tuple, FIELD_COMMENT, NULL, value);
-        return;
-    }
-
-    if (strcasecmp(key, "DATE") == 0)
-    {
-        AUDDBG("Found key DATE <%s>\n", value);
+    else if (! strcasecmp (key, "DATE"))
         tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(value));
-        return;
-    }
-
-    if (strcasecmp(key, "GENRE") == 0)
-    {
-        AUDDBG("Found key GENRE <%s>\n", value);
-        tuple_associate_string(tuple, FIELD_GENRE, NULL, value);
-        return;
-    }
-
-    if (strcasecmp(key, "REPLAYGAIN_TRACK_GAIN") == 0)
-    {
-        AUDDBG("Found key REPLAYGAIN_TRACK_GAIN <%s>\n", value);
+    else if (! strcasecmp (key, "REPLAYGAIN_TRACK_GAIN"))
         set_gain_info(tuple, FIELD_GAIN_TRACK_GAIN, FIELD_GAIN_GAIN_UNIT, value);
-        return;
-    }
-
-    if (strcasecmp(key, "REPLAYGAIN_TRACK_PEAK") == 0)
-    {
-        AUDDBG("Found key REPLAYGAIN_TRACK_PEAK <%s>\n", value);
+    else if (! strcasecmp (key, "REPLAYGAIN_TRACK_PEAK"))
         set_gain_info(tuple, FIELD_GAIN_TRACK_PEAK, FIELD_GAIN_PEAK_UNIT, value);
-        return;
-    }
-
-    if (strcasecmp(key, "REPLAYGAIN_ALBUM_GAIN") == 0)
-    {
-        AUDDBG("Found key REPLAYGAIN_ALBUM_GAIN <%s>\n", value);
+    else if (! strcasecmp (key, "REPLAYGAIN_ALBUM_GAIN"))
         set_gain_info(tuple, FIELD_GAIN_ALBUM_GAIN, FIELD_GAIN_GAIN_UNIT, value);
-        return;
-    }
-
-    if (strcasecmp(key, "REPLAYGAIN_ALBUM_PEAK") == 0)
-    {
-        AUDDBG("Found key REPLAYGAIN_ALBUM_PEAK <%s>\n", value);
+    else if (! strcasecmp (key, "REPLAYGAIN_ALBUM_PEAK"))
         set_gain_info(tuple, FIELD_GAIN_ALBUM_PEAK, FIELD_GAIN_PEAK_UNIT, value);
-        return;
-    }
 }
 
 Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
