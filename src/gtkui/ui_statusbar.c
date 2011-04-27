@@ -103,7 +103,8 @@ ui_statusbar_info_change(gpointer unused, GtkWidget *label)
         else if (channels == 2)
             APPEND (buf, _("stereo"));
         else
-            APPEND (buf, _("%d channels"), channels);
+            APPEND (buf, ngettext ("%d channel", "%d channels", channels),
+             channels);
 
         if (samplerate > 0 || bitrate > 0)
             APPEND (buf, ", ");
@@ -117,7 +118,7 @@ ui_statusbar_info_change(gpointer unused, GtkWidget *label)
     }
 
     if (bitrate > 0)
-        APPEND (buf, "%d kbps", bitrate / 1000);
+        APPEND (buf, _("%d kbps"), bitrate / 1000);
 
     gtk_label_set_text ((GtkLabel *) label, buf);
 }
