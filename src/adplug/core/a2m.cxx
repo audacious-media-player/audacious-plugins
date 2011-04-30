@@ -73,7 +73,7 @@ Ca2mLoader::load (VFSFile * fd, const CFileProvider & fp)
   int i, j, k, t;
   unsigned int l;
   unsigned char *org = NULL, *orgptr, flags = 0, numpats, version;
-  unsigned long crc, alength;
+  unsigned long alength;
   unsigned short len[9], *secdata, *secptr;
   const unsigned char convfx[16] =
     { 0, 1, 2, 23, 24, 3, 5, 4, 6, 9, 17, 13, 11, 19, 7, 14 };
@@ -87,7 +87,7 @@ Ca2mLoader::load (VFSFile * fd, const CFileProvider & fp)
 
   // read header
   f->readString (id, 10);
-  crc = f->readInt (4);
+  f->readInt (4);
   version = f->readInt (1);
   numpats = f->readInt (1);
 
