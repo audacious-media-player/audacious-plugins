@@ -80,7 +80,6 @@ BOOL CSoundFile::ReadPSM(LPCBYTE lpStream, DWORD dwMemLength)
 {
 	PSMCHUNK *pfh = (PSMCHUNK *)lpStream;
 	DWORD dwMemPos, dwSongPos;
-	DWORD smpnames[MAX_SAMPLES];
 	DWORD patptrs[MAX_PATTERNS];
 	BYTE samplemap[MAX_SAMPLES];
 	UINT nPatterns;
@@ -146,7 +145,6 @@ BOOL CSoundFile::ReadPSM(LPCBYTE lpStream, DWORD dwMemLength)
 				m_nSamples++;
 				MODINSTRUMENT *pins = &Ins[m_nSamples];
 				PSMSAMPLE *psmp = (PSMSAMPLE *)pdata;
-				smpnames[m_nSamples] = bswapLE32(psmp->smpid);
 				memcpy(m_szNames[m_nSamples], psmp->samplename, 31);
 				m_szNames[m_nSamples][31] = 0;
 				samplemap[m_nSamples-1] = (BYTE)m_nSamples;
