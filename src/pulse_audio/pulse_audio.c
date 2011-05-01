@@ -367,26 +367,17 @@ static int pulse_get_output_time (void)
 
     gettimeofday (& now, NULL);
 
-    time = (int) ((written - (timing->write_index - timing->read_index)) *
-     (int64_t) 1000 / bytes_per_second) - (int) (timing->transport_usec / 1000)
-     - (int) (timing->sink_usec / 1000) + (int) ((now.tv_sec -
-     timing->timestamp.tv_sec) * 1000) + (int) ((now.tv_usec -
-     timing->timestamp.tv_usec) / 1000);
-
-#ifdef PA_CHECK_VERSION
-#if PA_CHECK_VERSION (0, 9, 11)
-    if (pa_stream_is_corked(stream))
+    if ( timing->playing )
     {
-	int delta = time - cached_time;
-	if (delta > 0 && delta < 2000)
-             time = cached_time;
-        else
-             cached_time = time;
-    }
-    else
-#endif
-#endif
+        time = (int) ((written - (timing->write_index - timing->read_index)) *
+        (int64_t) 1000 / bytes_per_second) - (int) (timing->transport_usec / 1000)
+        - (int) (timing->sink_usec / 1000) + (int) ((now.tv_sec -
+        timing->timestamp.tv_sec) * 1000) + (int) ((now.tv_usec -
+        timing->timestamp.tv_usec) / 1000);
         cached_time = time;
+    } else {
+        time = cached_time;
+    }
 
 fail:
     pa_threaded_mainloop_unlock(mainloop);
