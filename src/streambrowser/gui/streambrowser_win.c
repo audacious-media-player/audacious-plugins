@@ -343,9 +343,6 @@ static GtkWidget* gtk_streamdir_table_new(GtkWidget *tree_view)
 
 static gboolean on_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *page, guint page_num, gpointer data)
 {
-	if (page_num < 0)
-		return FALSE;
-
 	/* only enable searching in the current tree (tab) */
 
 	streamdir_gui_t *streamdir_gui;
