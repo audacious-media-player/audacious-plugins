@@ -26,7 +26,7 @@
 void
 pn_draw_dot (guint x, guint y, guchar value)
 {
-  if (x > pn_image_data->width || x < 0 || y > pn_image_data->height || y < 0)
+  if (x > pn_image_data->width || y > pn_image_data->height)
     return;
 
   pn_image_data->surface[0][PN_IMG_INDEX(x, y)] = value;

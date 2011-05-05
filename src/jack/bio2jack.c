@@ -2264,8 +2264,6 @@ JACK_GetBytesFreeSpace(int deviceID)
   return_val = JACK_GetBytesFreeSpaceFromDriver(drv);
   releaseDriver(drv);
 
-  if(return_val < 0) return_val = 0;
-
   TRACE("deviceID(%d), retval == %ld\n", deviceID, return_val);
 
   return return_val;
