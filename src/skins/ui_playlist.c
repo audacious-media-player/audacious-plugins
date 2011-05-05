@@ -663,12 +663,8 @@ show_playlist_overwrite_prompt(GtkWindow * parent,
     g_return_val_if_fail(GTK_IS_WINDOW(parent), FALSE);
     g_return_val_if_fail(filename != NULL, FALSE);
 
-    dialog = gtk_message_dialog_new(GTK_WINDOW(parent),
-                                    GTK_DIALOG_DESTROY_WITH_PARENT,
-                                    GTK_MESSAGE_QUESTION,
-                                    GTK_BUTTONS_YES_NO,
-                                    _("%s already exist. Continue?"),
-                                    filename);
+    dialog = gtk_message_dialog_new (parent, GTK_DIALOG_DESTROY_WITH_PARENT,
+     GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, _("Overwrite %s?"), filename);
 
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER); /* centering */
     result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -682,7 +678,7 @@ playlistwin_save_playlist(const gchar * filename)
 {
     str_replace_in(&aud_cfg->playlist_path, g_path_get_dirname(filename));
 
-    if (g_file_test(filename, G_FILE_TEST_IS_REGULAR))
+    if (vfs_file_test (filename, G_FILE_TEST_EXISTS))
         if (!show_playlist_overwrite_prompt(GTK_WINDOW(playlistwin), filename))
             return;
 
@@ -712,7 +708,10 @@ playlist_file_selection_load(const gchar * title,
     g_return_val_if_fail(title != NULL, NULL);
 
     dialog = make_filebrowser(title, FALSE);
-    gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), aud_cfg->playlist_path);
+
+    if (aud_cfg->playlist_path)
+        gtk_file_chooser_set_current_folder_uri ((GtkFileChooser *) dialog,
+         aud_cfg->playlist_path);
     if (default_filename)
         gtk_file_chooser_set_uri (GTK_FILE_CHOOSER(dialog), default_filename);
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER); /* centering */
@@ -760,8 +759,13 @@ playlist_file_selection_save(const gchar * title,
     g_return_val_if_fail(title != NULL, NULL);
 
     dialog = make_filebrowser(title, TRUE);
-    gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), aud_cfg->playlist_path);
-    gtk_file_chooser_set_uri (GTK_FILE_CHOOSER(dialog), default_filename);
+    
+    if (aud_cfg->playlist_path)
+        gtk_file_chooser_set_current_folder_uri ((GtkFileChooser *) dialog,
+         aud_cfg->playlist_path);
+
+    if (default_filename)
+        gtk_file_chooser_set_uri ((GtkFileChooser *) dialog, default_filename);
 
 #if 0
     hbox = gtk_hbox_new(FALSE, 5);

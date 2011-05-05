@@ -632,7 +632,11 @@ static gchar *playlist_file_selection_load(const gchar * title, const gchar * de
     g_return_val_if_fail(title != NULL, NULL);
 
     dialog = make_filebrowser(title, FALSE);
-    gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), aud_cfg->playlist_path);
+
+    if (aud_cfg->playlist_path)
+        gtk_file_chooser_set_current_folder ((GtkFileChooser *) dialog,
+         aud_cfg->playlist_path);
+
     if (default_filename)
         gtk_file_chooser_set_uri(GTK_FILE_CHOOSER(dialog), default_filename);
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);    /* centering */
