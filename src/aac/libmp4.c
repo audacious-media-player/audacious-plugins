@@ -848,6 +848,8 @@ static gboolean my_decode_aac (InputPlayback * playback, const char * filename,
         buflen += vfs_fread (buf + buflen, 1, sizeof buf - buflen, file);
     }
 
+    /* == CHECK FOR METADATA == */
+
     if (tuple && aac_title_changed (filename, file, tuple))
     {
         mowgli_object_ref (tuple);
@@ -904,6 +906,14 @@ static gboolean my_decode_aac (InputPlayback * playback, const char * filename,
                 g_usleep (20000);
 
             break;
+        }
+
+        /* == CHECK FOR METADATA == */
+
+        if (tuple && aac_title_changed (filename, file, tuple))
+        {
+            mowgli_object_ref (tuple);
+            playback->set_tuple (playback, tuple);
         }
 
         /* == DECODE A FRAME == */
