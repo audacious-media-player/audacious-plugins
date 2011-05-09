@@ -1238,16 +1238,14 @@ gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar* field) {
 
     _DEBUG("<%p> Field name: %s", h, field);
 
-    if (strcmp (field, "track-name"))
+    if (! strcmp (field, "track-name"))
         return str_to_utf8 (h->icy_metadata.stream_title);
-    if (strcmp (field, "stream-name"))
+    if (! strcmp (field, "stream-name"))
         return str_to_utf8 (h->icy_metadata.stream_name);
-    if (strcmp (field, "content-type"))
+    if (! strcmp (field, "content-type"))
         return str_to_utf8 (h->icy_metadata.stream_contenttype);
-
-    if (neon_strcmp(field, "content-bitrate")) {
-        return g_strdup_printf("%d", h->icy_metadata.stream_bitrate * 1000);
-    }
+    if (! strcmp (field, "content-bitrate"))
+        return g_strdup_printf ("%d", h->icy_metadata.stream_bitrate * 1000);
 
     return NULL;
 }
