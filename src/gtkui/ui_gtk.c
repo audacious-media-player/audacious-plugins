@@ -493,6 +493,10 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                     playlist_delete_selected ();
                     break;
 
+                case GDK_Menu:
+                    popup_menu_rclick (0, event->time);
+                    break;
+
                 default:
                     return FALSE;
             }
