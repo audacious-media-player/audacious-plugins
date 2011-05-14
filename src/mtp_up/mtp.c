@@ -32,8 +32,6 @@
 
 #define DEBUG 1
 
-#define UP_DEFAULT_LABEL  _("Upload selected track(s)")
-
 GMutex * mutex = NULL;
 gboolean mtp_initialised = FALSE;
 LIBMTP_mtpdevice_t *mtp_device = NULL;
@@ -52,8 +50,6 @@ AUD_GENERAL_PLUGIN
     .cleanup = mtp_cleanup
 )
 
-GtkWidget *mtp_root_menuitem,*mtp_submenu_item_up,*mtp_submenu_item_free,*mtp_submenu;
-
 void show_dialog(const gchar* message)
 {
     GDK_THREADS_ENTER();
@@ -70,7 +66,7 @@ void show_dialog(const gchar* message)
 
 }
 
-gboolean free_device(void)
+static void free_device (void)
 {
 #if DEBUG
     if(mtp_initialised)
@@ -82,17 +78,19 @@ gboolean free_device(void)
                 "Waiting for the MTP mutex to unlock...\n");
 #endif
     if(!mutex)
-        return TRUE;
+        return;
     g_mutex_lock(mutex);
     if(mtp_device!= NULL)
     {
         LIBMTP_Release_Device(mtp_device);
         mtp_device = NULL;
         mtp_initialised = FALSE;
+#if 0
         gtk_widget_hide(mtp_submenu_item_free);
+#endif
     }
     g_mutex_unlock(mutex);
-    return TRUE;
+    return;
 }
 
 GList *
@@ -210,18 +208,24 @@ gint upload_file(Tuple *from_tuple)
 
 gpointer upload(gpointer arg)
 {
+#if 0
     gtk_widget_hide(mtp_submenu_item_free);
+#endif
     if(!mutex)
     {
+#if 0
         gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))),UP_DEFAULT_LABEL);
         gtk_widget_set_sensitive(mtp_submenu_item_up, TRUE);
+#endif
         return NULL;
     }
     g_mutex_lock(mutex);
     if(!mtp_device)
     {
+#if 0
         gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))),UP_DEFAULT_LABEL);
         gtk_widget_set_sensitive(mtp_submenu_item_up, TRUE);
+#endif
         g_mutex_unlock(mutex);
         return NULL;
     }
@@ -248,21 +252,25 @@ gpointer upload(gpointer arg)
         node = g_list_next(node);
     }
     g_list_free(up_list);
+#if 0
     gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))),UP_DEFAULT_LABEL);
     gtk_widget_set_sensitive(mtp_submenu_item_up, TRUE);
+#endif
     g_mutex_unlock(mutex);
 #if DEBUG
     g_print("MTP upload process finished\n");
 #endif
+#if 0
     gtk_widget_show(mtp_submenu_item_free);
+#endif
     g_thread_exit(NULL);
     return NULL;
 }
 
-gboolean mtp_press()
+static void mtp_press (void)
 {
     if(!mutex)
-        return TRUE;
+        return;
     g_mutex_lock(mutex);
     if(!mtp_initialised)
     {
@@ -272,8 +280,9 @@ gboolean mtp_press()
         LIBMTP_Init();
         mtp_device = LIBMTP_Get_First_Device();
         mtp_initialised = TRUE;
+#if 0
         gtk_widget_show(mtp_submenu_item_free);
-
+#endif
     }
     g_mutex_unlock(mutex);
     if(mtp_device == NULL)
@@ -283,43 +292,24 @@ gboolean mtp_press()
 #endif
         /* show_dialog("No MTP devices have been found !!!"); */
         mtp_initialised = FALSE;
-        return TRUE;
-
+        return;
     }
+#if 0
     gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))), _("Upload in progress..."));
     gtk_widget_set_sensitive(mtp_submenu_item_up, FALSE);
+#endif
     g_thread_create(upload,NULL,FALSE,NULL);
-    return TRUE;
-
 }
 
 static gboolean mtp_init (void)
 {
-    mtp_root_menuitem=gtk_menu_item_new_with_label(_("MTP device handler"));
-    mtp_submenu=gtk_menu_new();
-
-    mtp_submenu_item_up=gtk_menu_item_new_with_label(UP_DEFAULT_LABEL);
-    mtp_submenu_item_free=gtk_menu_item_new_with_label(_("Disconnect the device"));
-
-
-    gtk_menu_shell_append (GTK_MENU_SHELL (mtp_submenu), mtp_submenu_item_up);
-    gtk_widget_show (mtp_submenu_item_up);
-
-    gtk_menu_shell_append (GTK_MENU_SHELL (mtp_submenu), mtp_submenu_item_free);
-
-    gtk_menu_item_set_submenu(GTK_MENU_ITEM(mtp_root_menuitem),mtp_submenu);
-    gtk_widget_show (mtp_submenu);
-    gtk_widget_show (mtp_root_menuitem);
-
-
-    aud_menu_plugin_item_add(AUDACIOUS_MENU_MAIN, mtp_root_menuitem);
-
-    g_signal_connect (G_OBJECT (mtp_submenu_item_up), "button_press_event",G_CALLBACK (mtp_press), NULL);
-    g_signal_connect (G_OBJECT (mtp_submenu_item_free), "button_press_event",G_CALLBACK (free_device), NULL);
-
     mutex = g_mutex_new();
     plugin_active = TRUE;
     exiting=FALSE;
+
+    aud_plugin_menu_add (AUD_MENU_MAIN, mtp_press, _("Upload to MTP Device"), NULL);
+    aud_plugin_menu_add (AUD_MENU_MAIN, free_device, _("Disconnect MTP Device"), NULL);
+
     return TRUE;
 }
 
@@ -327,6 +317,8 @@ void mtp_cleanup(void)
 {
     if (plugin_active)
     {
+        aud_plugin_menu_remove (AUD_MENU_MAIN, mtp_press);
+        aud_plugin_menu_remove (AUD_MENU_MAIN, free_device);
 
 #if DEBUG
         if(mtp_initialised)
@@ -352,14 +344,6 @@ void mtp_cleanup(void)
         if(mtp_initialised)
             g_print("The MTP mutex has been unlocked\n");
 #endif
-        aud_menu_plugin_item_remove(AUDACIOUS_MENU_MAIN, mtp_root_menuitem);
-
-        gtk_widget_destroy(mtp_submenu_item_up);
-        gtk_widget_destroy(mtp_submenu_item_free);
-
-        gtk_widget_destroy(mtp_submenu);
-
-        gtk_widget_destroy(mtp_root_menuitem);
 
         g_mutex_free (mutex);
         mutex = NULL;
