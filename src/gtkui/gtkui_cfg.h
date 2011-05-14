@@ -21,7 +21,6 @@
 #define UI_CFG_H
 
 #include <glib.h>
-#include "util.h"
 
 #define MAINWIN_DEFAULT_WIDTH     600
 #define MAINWIN_DEFAULT_HEIGHT    400

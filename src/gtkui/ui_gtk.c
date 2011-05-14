@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2010  Audacious development team
+ *  Copyright (C) 2005-2011  Audacious development team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include <audacious/debug.h>
 #include <audacious/drct.h>
 #include <audacious/gtk-compat.h>
+#include <audacious/i18n.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <audacious/misc.h>
@@ -32,17 +33,14 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "config.h"
+#include "gtkui.h"
 #include "gtkui_cfg.h"
 #include "layout.h"
-#include "ui_gtk.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
-#include "ui_manager.h"
 #include "ui_infoarea.h"
 #include "ui_statusbar.h"
 #include "playlist_util.h"
-#include "actions-mainwin.h"
-#include "actions-playlist.h"
 
 #if GTK_CHECK_VERSION (2, 12, 0)
 #define HAVE_VOLUME
@@ -54,12 +52,9 @@ static gulong volume_change_handler_id;
 
 static GtkWidget * button_play, * button_pause, * button_stop, * slider,
  * label_time, * button_shuffle, * button_repeat;
-GtkWidget *playlist_box;
-GtkWidget *window;       /* the main window */
-GtkWidget *vbox;         /* the main vertical box */
-GtkWidget *menu;
-GtkWidget *infoarea = NULL;
-GtkWidget *statusbar = NULL;
+static GtkWidget * playlist_box, * window, * vbox, * menu, * infoarea,
+ * statusbar;
+static GtkWidget * menu_rclick, * menu_tab;
 
 static GtkWidget * error_win = NULL;
 
@@ -122,31 +117,6 @@ static void button_open_pressed()
 static void button_add_pressed()
 {
     audgui_run_filebrowser(FALSE);
-}
-
-static void button_play_pressed()
-{
-    action_playback_play ();
-}
-
-static void button_pause_pressed()
-{
-    action_playback_pause ();
-}
-
-static void button_stop_pressed()
-{
-    action_playback_stop ();
-}
-
-static void button_previous_pressed()
-{
-    action_playback_previous ();
-}
-
-static void button_next_pressed()
-{
-    action_playback_next ();
 }
 
 static gboolean title_change_cb (void)
@@ -523,10 +493,6 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                     aud_drct_pl_next();
                     break;
 
-                case GDK_KP_Insert:
-                    action_jump_to_file();
-                    break;
-
                 case GDK_space:
                     if (aud_drct_get_playing())
                         aud_drct_pause();
@@ -539,17 +505,8 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
                      (aud_playlist_get_active ()), NULL);
                     break;
 
-                default:
-                    return FALSE;
-            }
-            break;
-
-	case GDK_CONTROL_MASK:
-            switch (event->keyval)
-            {
-                case GDK_ISO_Left_Tab:
-                case GDK_Tab:
-                    action_playlist_next();
+                case GDK_Delete:
+                    playlist_delete_selected ();
                     break;
 
                 default:
@@ -557,21 +514,32 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
             }
             break;
 
-        case (GDK_CONTROL_MASK | GDK_SHIFT_MASK):
-            switch (event->keyval)
-            {
-                case GDK_ISO_Left_Tab:
-                case GDK_Tab:
-                    action_playlist_prev();
-                    break;
-
-                default:
-                    return FALSE;
-            }
+      case GDK_CONTROL_MASK:
+        switch (event->keyval)
+        {
+          case GDK_ISO_Left_Tab:
+          case GDK_Tab:
+            aud_playlist_set_active ((aud_playlist_get_active () + 1) %
+             aud_playlist_count ());
             break;
-
-        default:
+          default:
             return FALSE;
+        }
+        break;
+      case (GDK_CONTROL_MASK | GDK_SHIFT_MASK):
+        switch (event->keyval)
+        {
+          case GDK_ISO_Left_Tab:
+          case GDK_Tab:
+            aud_playlist_set_active (aud_playlist_get_active () ?
+             aud_playlist_get_active () - 1 : aud_playlist_count () - 1);
+            break;
+          default:
+            return FALSE;
+        }
+        break;
+      default:
+        return FALSE;
     }
 
     return TRUE;
@@ -579,19 +547,10 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
 
 static void update_toggles (void * data, void * user)
 {
-    check_set (toggleaction_group_others, "playback repeat", aud_cfg->repeat);
-    check_set (toggleaction_group_others, "playback shuffle", aud_cfg->shuffle);
-    check_set (toggleaction_group_others, "stop after current song",
-     aud_cfg->stopaftersong);
-
-    if (gtk_toggle_button_get_active ((GtkToggleButton *) button_repeat) !=
-     aud_cfg->repeat)
-        gtk_toggle_button_set_active ((GtkToggleButton *) button_repeat,
-         aud_cfg->repeat);
-    if (gtk_toggle_button_get_active ((GtkToggleButton *) button_shuffle) !=
-     aud_cfg->shuffle)
-        gtk_toggle_button_set_active ((GtkToggleButton *) button_shuffle,
-         aud_cfg->shuffle);
+    if (gtk_toggle_button_get_active ((GtkToggleButton *) button_repeat) != aud_cfg->repeat)
+        gtk_toggle_button_set_active ((GtkToggleButton *) button_repeat, aud_cfg->repeat);
+    if (gtk_toggle_button_get_active ((GtkToggleButton *) button_shuffle) != aud_cfg->shuffle)
+        gtk_toggle_button_set_active ((GtkToggleButton *) button_shuffle, aud_cfg->shuffle);
 }
 
 static void toggle_repeat (GtkToggleButton * button, void * unused)
@@ -658,15 +617,11 @@ static gboolean init (void)
     GtkWidget *buttonbox;       /* contains buttons like "open", "next" */
     GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
     GtkWidget *evbox;
-    GtkAccelGroup *accel;
 
     gtkui_cfg_load();
 
     audgui_set_default_icon();
     audgui_register_stock_icons();
-
-    ui_manager_init();
-    ui_manager_create_menus();
 
     pw_col_init ();
 
@@ -687,11 +642,11 @@ static gboolean init (void)
     vbox = gtk_vbox_new(FALSE, 0);
     gtk_container_add(GTK_CONTAINER(window), vbox);
 
-    menu = ui_manager_get_menus();
-    gtk_box_pack_start(GTK_BOX(vbox), menu, FALSE, TRUE, 0);
+    GtkAccelGroup * accel = gtk_accel_group_new ();
+    gtk_window_add_accel_group ((GtkWindow *) window, accel);
 
-    accel = ui_manager_get_accel_group();
-    gtk_window_add_accel_group(GTK_WINDOW(window), accel);
+    menu = make_menu_bar (accel);
+    gtk_box_pack_start(GTK_BOX(vbox), menu, FALSE, TRUE, 0);
 
     tophbox = gtk_hbox_new(FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), tophbox, FALSE, TRUE, 0);
@@ -699,11 +654,11 @@ static gboolean init (void)
     buttonbox = gtk_hbox_new(FALSE, 0);
     gtk_toolbar_button_add(buttonbox, button_open_pressed, GTK_STOCK_OPEN);
     gtk_toolbar_button_add(buttonbox, button_add_pressed, GTK_STOCK_ADD);
-    button_play = gtk_toolbar_button_add(buttonbox, button_play_pressed, GTK_STOCK_MEDIA_PLAY);
-    button_pause = gtk_toolbar_button_add(buttonbox, button_pause_pressed, GTK_STOCK_MEDIA_PAUSE);
-    button_stop = gtk_toolbar_button_add(buttonbox, button_stop_pressed, GTK_STOCK_MEDIA_STOP);
-    gtk_toolbar_button_add(buttonbox, button_previous_pressed, GTK_STOCK_MEDIA_PREVIOUS);
-    gtk_toolbar_button_add(buttonbox, button_next_pressed, GTK_STOCK_MEDIA_NEXT);
+    button_play = gtk_toolbar_button_add (buttonbox, aud_drct_play, GTK_STOCK_MEDIA_PLAY);
+    button_pause = gtk_toolbar_button_add (buttonbox, aud_drct_pause, GTK_STOCK_MEDIA_PAUSE);
+    button_stop = gtk_toolbar_button_add (buttonbox, aud_drct_stop, GTK_STOCK_MEDIA_STOP);
+    gtk_toolbar_button_add (buttonbox, aud_drct_pl_prev, GTK_STOCK_MEDIA_PREVIOUS);
+    gtk_toolbar_button_add (buttonbox, aud_drct_pl_next, GTK_STOCK_MEDIA_NEXT);
 
     /* Workaround: Show the play and pause buttons and then hide them again in
      * order to coax GTK into loading icons for them. -jlindgren */
@@ -828,17 +783,10 @@ static gboolean init (void)
     if (config.player_visible)
         ui_show (TRUE);
 
-    AUDDBG("check menu settings\n");
-    check_set(toggleaction_group_others, "view menu", config.menu_visible);
-    check_set(toggleaction_group_others, "view infoarea", config.infoarea_visible);
-    check_set(toggleaction_group_others, "view statusbar", config.statusbar_visible);
-    check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
-    check_set (toggleaction_group_others, "playlist show headers",
-     config.playlist_headers);
-    check_set (toggleaction_group_others, "playlist autoscroll",
-     config.autoscroll);
-
     update_toggles (NULL, NULL);
+
+    menu_rclick = make_menu_rclick (accel);
+    menu_tab = make_menu_tab (accel);
 
     return TRUE;
 }
@@ -847,6 +795,9 @@ static void cleanup (void)
 {
     if (error_win)
         gtk_widget_destroy (error_win);
+
+    gtk_widget_destroy (menu_rclick);
+    gtk_widget_destroy (menu_tab);
 
     if (update_song_timeout_source)
     {
@@ -871,13 +822,72 @@ static void cleanup (void)
     gtkui_cfg_free();
     ui_hooks_disassociate();
 
-    /* ui_manager_destroy() must be called to detach plugin services menus
-     * before any widgets are destroyed. -jlindgren */
-    ui_manager_destroy ();
     pw_col_cleanup ();
 
     g_object_unref ((GObject *) UI_PLAYLIST_NOTEBOOK);
     gtk_widget_destroy (window);
 
     layout_cleanup ();
+}
+
+void show_menu (gboolean show)
+{
+    config.menu_visible = show;
+
+    if (config.menu_visible)
+        gtk_widget_show (menu);
+    else
+        gtk_widget_hide (menu);
+}
+
+void show_infoarea (gboolean show)
+{
+    config.infoarea_visible = show;
+
+    if (config.infoarea_visible && ! infoarea)
+    {
+        infoarea = ui_infoarea_new ();
+        gtk_box_pack_end ((GtkBox *) vbox, infoarea, FALSE, FALSE, 0);
+        gtk_box_reorder_child ((GtkBox *) vbox, infoarea, -1);
+        gtk_widget_show (infoarea);
+    }
+
+    if (! config.infoarea_visible && infoarea)
+    {
+        gtk_widget_destroy (infoarea);
+        infoarea = NULL;
+    }
+}
+
+void show_statusbar (gboolean show)
+{
+    config.statusbar_visible = show;
+
+    if (config.statusbar_visible && ! statusbar)
+    {
+        statusbar = ui_statusbar_new ();
+        gtk_box_pack_end ((GtkBox *) vbox, statusbar, FALSE, FALSE, 3);
+
+        if (infoarea)
+            gtk_box_reorder_child ((GtkBox *) vbox, infoarea, -1);
+
+        gtk_widget_show_all (statusbar);
+    }
+
+    if (! config.statusbar_visible && statusbar)
+    {
+        gtk_widget_destroy (statusbar);
+        statusbar = NULL;
+    }
+}
+
+void popup_menu_rclick (guint button, guint32 time)
+{
+    gtk_menu_popup ((GtkMenu *) menu_rclick, NULL, NULL, NULL, NULL, button,
+     time);
+}
+
+void popup_menu_tab (guint button, guint32 time)
+{
+    gtk_menu_popup ((GtkMenu *) menu_tab, NULL, NULL, NULL, NULL, button, time);
 }

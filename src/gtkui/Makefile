@@ -3,22 +3,16 @@ PLUGIN = gtkui${PLUGIN_SUFFIX}
 SRCS = columns.c \
        gtkui_cfg.c \
        layout.c \
+       menus.c \
        ui_infoarea.c \
        ui_gtk.c \
-       ui_manager.c \
        ui_playlist_widget.c \
        ui_playlist_notebook.c \
        ui_statusbar.c \
-       util.c \
-       playlist_util.c \
-       actions.c
+       playlist_util.c
 
 include ../../buildsys.mk
 include ../../extra.mk
-
-# These override variables in buildsys.mk and so must come after it.
-PACKAGE = audacious
-DATA = ui/player.ui
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 

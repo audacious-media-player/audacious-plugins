@@ -25,13 +25,15 @@
 
 #include <audacious/audconfig.h>
 #include <audacious/drct.h>
+#include <audacious/i18n.h>
 #include <audacious/playlist.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/list.h>
 
+#include "config.h"
+#include "gtkui.h"
 #include "gtkui_cfg.h"
 #include "playlist_util.h"
-#include "ui_manager.h"
 #include "ui_playlist_widget.h"
 
 static const GType pw_col_types[PW_COLS] = {G_TYPE_INT, G_TYPE_STRING,
@@ -190,8 +192,7 @@ static void activate_row (void * user, gint row)
 
 static void right_click (void * user, GdkEventButton * event)
 {
-    ui_manager_popup_menu_show ((GtkMenu *) playlistwin_popup_menu,
-     event->x_root, event->y_root, event->button, event->time);
+    popup_menu_rclick (event->button, event->time);
 }
 
 static void shift_rows (void * user, gint row, gint before)

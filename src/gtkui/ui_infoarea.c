@@ -33,9 +33,7 @@
 #include <math.h>
 
 #include "gtkui_cfg.h"
-#include "ui_gtk.h"
 #include "ui_playlist_widget.h"
-#include "ui_manager.h"
 #include "ui_infoarea.h"
 
 #define ICON_SIZE 64

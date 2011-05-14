@@ -34,6 +34,6 @@ void ui_playlist_notebook_empty (void);
 void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data);
 void ui_playlist_notebook_position (void * data, void * user);
 
-void playlist_show_headers (GtkToggleAction * a);
+void playlist_show_headers (gboolean show);
 
 #endif

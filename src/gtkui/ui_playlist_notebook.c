@@ -30,8 +30,8 @@
 #include <libaudgui/list.h>
 #include <libaudgui/libaudgui.h>
 
+#include "gtkui.h"
 #include "gtkui_cfg.h"
-#include "ui_manager.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 #include "playlist_util.h"
@@ -100,7 +100,7 @@ static gboolean tab_button_press_cb(GtkWidget *widget, GdkEventButton *event, gp
         GtkWidget *page = g_object_get_data(G_OBJECT(widget), "page");
 
         gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, gtk_notebook_page_num(UI_PLAYLIST_NOTEBOOK, page));
-        ui_manager_popup_menu_show(GTK_MENU(playlist_tab_menu), event->x_root, event->y_root + 2, 3, event->time);
+        popup_menu_tab (event->button, event->time);
     }
 
     return FALSE;
@@ -426,11 +426,11 @@ GtkWidget *ui_playlist_notebook_new()
     return notebook;
 }
 
-void playlist_show_headers (GtkToggleAction * a)
+void playlist_show_headers (gboolean show)
 {
-    if (config.playlist_headers == gtk_toggle_action_get_active (a))
+    if (config.playlist_headers == show)
         return;
-    config.playlist_headers = gtk_toggle_action_get_active (a);
+    config.playlist_headers = show;
     ui_playlist_notebook_empty ();
     ui_playlist_notebook_populate ();
 }
