@@ -20,11 +20,8 @@
 #ifndef AUDACIOUS_ACTIONS_PLAYLIST_H
 #define AUDACIOUS_ACTIONS_PLAYLIST_H
 
-void action_playlist_load_list(void);
-void action_playlist_save_list(void);
 void action_playlist_save_all_playlists (void);
 void action_playlist_refresh_list(void);
-void action_open_list_manager(void);
 
 void action_playlist_prev(void);
 void action_playlist_new(void);

@@ -128,7 +128,6 @@ void mainwin_setup_menus(void);
 gboolean change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event);
 
 void mainwin_jump_to_file(void);
-void mainwin_jump_to_time(void);
 
 /* widget should be null if called manually. */
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,

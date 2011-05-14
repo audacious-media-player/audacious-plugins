@@ -212,10 +212,11 @@ static GtkActionEntry action_entries_playlist[] = {
       N_("Delete Playlist"), G_CALLBACK(action_playlist_delete) },
 
         {"playlist load", GTK_STOCK_OPEN, N_("Import Playlist"), "O",
-          N_("Loads a playlist file into the selected playlist."), G_CALLBACK(action_playlist_load_list) },
+          N_("Loads a playlist file into the selected playlist."), (GCallback)
+          audgui_import_playlist},
 
         {"playlist save", GTK_STOCK_SAVE, N_("Export Playlist"), "<Shift>S",
-          N_("Saves the selected playlist."), G_CALLBACK(action_playlist_save_list) },
+          N_("Saves the selected playlist."), (GCallback) audgui_export_playlist},
 
         { "playlist save all", GTK_STOCK_SAVE, N_("Save All Playlists"),
          "<Alt>S", N_("Saves all the playlists that are open. Note that this "
@@ -227,8 +228,7 @@ static GtkActionEntry action_entries_playlist[] = {
           G_CALLBACK(action_playlist_refresh_list) },
 
         { "playlist manager", AUD_STOCK_PLAYLIST , N_("List Manager"), "P",
-          N_("Opens the playlist manager."),
-          G_CALLBACK(action_open_list_manager) }
+          N_("Opens the playlist manager."), (GCallback) audgui_playlist_manager}
 };
 
 static GtkActionEntry action_entries_view[] = {
@@ -417,7 +417,7 @@ static GtkActionEntry action_entries_others[] = {
       N_("Jump to File"), G_CALLBACK(action_jump_to_file) },
 
     { "jump to time", GTK_STOCK_JUMP_TO , N_("Jump to Time"), "<Ctrl>J",
-      N_("Jump to Time"), G_CALLBACK(action_jump_to_time) },
+      N_("Jump to Time"), (GCallback) audgui_jump_to_time},
 
     { "queue toggle", AUD_STOCK_QUEUETOGGLE , N_("Queue Toggle"), "Q",
       N_("Enables/disables the entry in the playlist's queue."),

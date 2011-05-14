@@ -90,8 +90,6 @@ GtkWidget *mainwin = NULL;
 static gint balance;
 static gint seek_source = 0, seek_start, seek_time;
 
-static GtkWidget *mainwin_jtt = NULL;
-
 static GtkWidget *mainwin_menubtn, *mainwin_minimize, *mainwin_shade, *mainwin_close;
 static GtkWidget *mainwin_shaded_menubtn, *mainwin_shaded_minimize, *mainwin_shaded_shade, *mainwin_shaded_close;
 
@@ -780,127 +778,6 @@ gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
     }
 
     return TRUE;
-}
-
-static void
-mainwin_jump_to_time_cb(GtkWidget * widget,
-                        GtkWidget * entry)
-{
-    guint min = 0, sec = 0, params;
-    gint time;
-
-    params = sscanf(gtk_entry_get_text(GTK_ENTRY(entry)), "%u:%u",
-                    &min, &sec);
-    if (params == 2)
-        time = (min * 60) + sec;
-    else if (params == 1)
-        time = min;
-    else
-        return;
-
-    aud_drct_seek (time*1000);
-    gtk_widget_destroy (mainwin_jtt);
-}
-
-
-void
-mainwin_jump_to_time(void)
-{
-    GtkWidget *vbox, *hbox_new, *hbox_total;
-    GtkWidget *time_entry, *label, *bbox, *jump, *cancel;
-    GtkWidget *dialog;
-    guint tindex;
-    gchar time_str[10];
-
-    if (!aud_drct_get_playing()) {
-        dialog =
-            gtk_message_dialog_new (GTK_WINDOW (mainwin),
-                                    GTK_DIALOG_DESTROY_WITH_PARENT,
-                                    GTK_MESSAGE_ERROR,
-                                    GTK_BUTTONS_CLOSE,
-                                    _("Can't jump to time when no track is being played.\n"));
-        gtk_dialog_run (GTK_DIALOG (dialog));
-        gtk_widget_destroy (dialog);
-        return;
-    }
-
-    if (mainwin_jtt) {
-        gtk_window_present(GTK_WINDOW(mainwin_jtt));
-        return;
-    }
-
-    mainwin_jtt = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_type_hint(GTK_WINDOW(mainwin_jtt),
-                             GDK_WINDOW_TYPE_HINT_DIALOG);
-
-    gtk_window_set_title(GTK_WINDOW(mainwin_jtt), _("Jump to Time"));
-    gtk_window_set_position(GTK_WINDOW(mainwin_jtt), GTK_WIN_POS_CENTER);
-    gtk_window_set_transient_for(GTK_WINDOW(mainwin_jtt),
-                                 GTK_WINDOW(mainwin));
-
-    g_signal_connect(mainwin_jtt, "destroy",
-                     G_CALLBACK(gtk_widget_destroyed), &mainwin_jtt);
-    gtk_container_set_border_width(GTK_CONTAINER(mainwin_jtt), 10);
-
-    vbox = gtk_vbox_new(FALSE, 5);
-    gtk_container_add(GTK_CONTAINER(mainwin_jtt), vbox);
-
-    hbox_new = gtk_hbox_new(FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(vbox), hbox_new, TRUE, TRUE, 5);
-
-    time_entry = gtk_entry_new();
-    gtk_box_pack_start(GTK_BOX(hbox_new), time_entry, FALSE, FALSE, 5);
-    g_signal_connect(time_entry, "activate",
-                     G_CALLBACK(mainwin_jump_to_time_cb), time_entry);
-
-    gtk_widget_set_size_request(time_entry, 70, -1);
-    label = gtk_label_new(_("minutes:seconds"));
-    gtk_box_pack_start(GTK_BOX(hbox_new), label, FALSE, FALSE, 5);
-
-    hbox_total = gtk_hbox_new(FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(vbox), hbox_total, TRUE, TRUE, 5);
-    gtk_widget_show(hbox_total);
-
-    /* FIXME: Disable display of current track length. It's not
-       updated when track changes */
-
-    label = gtk_label_new(_("Track length:"));
-    gtk_box_pack_start(GTK_BOX(hbox_total), label, FALSE, FALSE, 5);
-
-    gint len = aud_drct_get_length () / 1000;
-    g_snprintf(time_str, sizeof(time_str), "%u:%2.2u", len / 60, len % 60);
-    label = gtk_label_new(time_str);
-
-    gtk_box_pack_start(GTK_BOX(hbox_total), label, FALSE, FALSE, 10);
-
-    bbox = gtk_hbutton_box_new();
-    gtk_box_pack_start(GTK_BOX(vbox), bbox, TRUE, TRUE, 0);
-    gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-    gtk_box_set_spacing(GTK_BOX(bbox), 5);
-
-    cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-    GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
-    gtk_container_add(GTK_CONTAINER(bbox), cancel);
-    g_signal_connect_swapped(cancel, "clicked",
-                             G_CALLBACK(gtk_widget_destroy), mainwin_jtt);
-
-    jump = gtk_button_new_from_stock(GTK_STOCK_JUMP_TO);
-    GTK_WIDGET_SET_FLAGS(jump, GTK_CAN_DEFAULT);
-    gtk_container_add(GTK_CONTAINER(bbox), jump);
-    g_signal_connect(jump, "clicked",
-                     G_CALLBACK(mainwin_jump_to_time_cb), time_entry);
-
-    tindex = aud_drct_get_time() / 1000;
-    g_snprintf(time_str, sizeof(time_str), "%u:%2.2u", tindex / 60,
-               tindex % 60);
-    gtk_entry_set_text(GTK_ENTRY(time_entry), time_str);
-
-    gtk_editable_select_region(GTK_EDITABLE(time_entry), 0, strlen(time_str));
-
-    gtk_widget_show_all(mainwin_jtt);
-
-    gtk_widget_grab_focus(time_entry);
-    gtk_widget_grab_default(jump);
 }
 
 /*
@@ -2335,12 +2212,6 @@ void
 action_jump_to_playlist_start( void )
 {
     aud_drct_pl_set_pos (0);
-}
-
-void
-action_jump_to_time( void )
-{
-    mainwin_jump_to_time();
 }
 
 void

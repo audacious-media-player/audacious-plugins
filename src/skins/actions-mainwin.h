@@ -61,7 +61,6 @@ void action_ab_clear(void);
 void action_ab_set(void);
 void action_jump_to_file(void);
 void action_jump_to_playlist_start(void);
-void action_jump_to_time(void);
 void action_play_file(void);
 void action_play_location(void);
 void action_playback_next(void);
