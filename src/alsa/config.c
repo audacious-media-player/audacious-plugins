@@ -278,21 +278,33 @@ static void mixer_element_list_fill (void)
     get_mixer_elements (alsa_config_mixer, mixer_element_found);
 }
 
-static void guess_mixer_element (void)
+static void fill_lists (void)
 {
-    static const char * guesses[] = {"PCM", "Wave", "Master"};
-    int count;
-
-    if (alsa_config_mixer_element != NULL)
+    if (! pcm_list)
     {
-        if (list_has_member (mixer_element_list, alsa_config_mixer_element))
-            return;
-
-        free (alsa_config_mixer_element);
-        alsa_config_mixer_element = NULL;
+        pcm_list = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+        pcm_list_fill ();
     }
 
-    for (count = 0; count < G_N_ELEMENTS (guesses); count ++)
+    if (! mixer_list)
+    {
+        mixer_list = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+        mixer_list_fill ();
+    }
+
+    if (! mixer_element_list)
+    {
+        mixer_element_list = gtk_list_store_new (1, G_TYPE_STRING);
+        mixer_element_list_fill ();
+    }
+}
+
+static void guess_mixer_element (void)
+{
+    fill_lists ();
+
+    static const char * guesses[] = {"PCM", "Wave", "Master"};
+    for (int count = 0; count < G_N_ELEMENTS (guesses); count ++)
     {
         if (list_has_member (mixer_element_list, guesses[count]))
         {
@@ -308,39 +320,18 @@ void alsa_config_load (void)
 {
     mcs_handle_t * database = aud_cfg_db_open ();
 
-    pcm_list = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
-    mixer_list = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
-    mixer_element_list = gtk_list_store_new (1, G_TYPE_STRING);
-
-    pcm_list_fill ();
     aud_cfg_db_get_string (database, "alsa", "pcm", & alsa_config_pcm);
-
-    if (alsa_config_pcm == NULL)
+    if (! alsa_config_pcm)
         alsa_config_pcm = strdup ("default");
-    else if (strcmp (alsa_config_pcm, "default") && ! list_has_member (pcm_list,
-     alsa_config_pcm))
-    {
-        free (alsa_config_pcm);
-        alsa_config_pcm = strdup ("default");
-    }
 
-    mixer_list_fill ();
-    aud_cfg_db_get_string (database, "alsa", "mixer",
-     & alsa_config_mixer);
-
-    if (alsa_config_mixer == NULL)
+    aud_cfg_db_get_string (database, "alsa", "mixer", & alsa_config_mixer);
+    if (! alsa_config_mixer)
         alsa_config_mixer = strdup ("default");
-    else if (strcmp (alsa_config_mixer, "default") && ! list_has_member
-     (mixer_list, alsa_config_mixer))
-    {
-        free (alsa_config_mixer);
-        alsa_config_mixer = strdup ("default");
-    }
 
-    mixer_element_list_fill ();
     aud_cfg_db_get_string (database, "alsa", "mixer-element",
      & alsa_config_mixer_element);
-    guess_mixer_element ();
+    if (! alsa_config_mixer_element)
+        guess_mixer_element ();
 
     aud_cfg_db_get_bool (database, "alsa", "drain-workaround", &
      alsa_config_drain_workaround);
@@ -352,9 +343,23 @@ void alsa_config_save (void)
 {
     mcs_handle_t * database = aud_cfg_db_open ();
 
-    g_object_unref (pcm_list);
-    g_object_unref (mixer_list);
-    g_object_unref (mixer_element_list);
+    if (pcm_list)
+    {
+        g_object_unref (pcm_list);
+        pcm_list = NULL;
+    }
+    
+    if (mixer_list)
+    {
+        g_object_unref (mixer_list);
+        mixer_list = NULL;
+    }
+    
+    if (mixer_element_list)
+    {
+        g_object_unref (mixer_element_list);
+        mixer_element_list = NULL;
+    }
 
     aud_cfg_db_set_string (database, "alsa", "pcm", alsa_config_pcm);
     aud_cfg_db_set_string (database, "alsa", "mixer", alsa_config_mixer);
@@ -364,8 +369,11 @@ void alsa_config_save (void)
      alsa_config_drain_workaround);
 
     free (alsa_config_pcm);
+    alsa_config_pcm = NULL;
     free (alsa_config_mixer);
+    alsa_config_mixer = NULL;
     free (alsa_config_mixer_element);
+    alsa_config_mixer_element = NULL;
 
     aud_cfg_db_close (database);
 }
@@ -547,6 +555,7 @@ void alsa_configure (void)
         return;
     }
 
+    fill_lists ();
     create_window ();
     combo_select_by_text (pcm_combo, pcm_list, alsa_config_pcm);
     combo_select_by_text (mixer_combo, mixer_list, alsa_config_mixer);
