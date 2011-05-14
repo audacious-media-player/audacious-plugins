@@ -311,12 +311,6 @@ static gboolean ui_volume_slider_update(gpointer data)
 
     return TRUE;
 }
-
-void set_volume_diff(gint diff)
-{
-    gint vol = gtk_scale_button_get_value(GTK_SCALE_BUTTON(volume));
-    gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), CLAMP(vol + diff, 0, 100));
-}
 #endif
 
 static void set_slider_length (gint length)
@@ -461,16 +455,6 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
         case 0:
             switch (event->keyval)
             {
-#ifdef HAVE_VOLUME
-                case GDK_minus: //FIXME
-                    set_volume_diff(-5);
-                    break;
-
-                case GDK_plus: //FIXME
-                    set_volume_diff(5);
-                    break;
-#endif
-
                 case GDK_Left:
                 case GDK_KP_Left:
                 case GDK_KP_7:

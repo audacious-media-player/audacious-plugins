@@ -107,6 +107,20 @@ static void pl_rename (void) {ui_playlist_notebook_edit_tab_title (NULL); }
 static GtkWidget * get_services_main (void) {return aud_get_plugin_menu (AUD_MENU_MAIN); }
 static GtkWidget * get_services_pl (void) {return aud_get_plugin_menu (AUD_MENU_PLAYLIST_RCLICK); }
 
+static void volume_up (void)
+{
+    int vol = 0;
+    aud_drct_get_volume_main (& vol);
+    aud_drct_set_volume_main (vol + 5);
+}
+
+static void volume_down (void)
+{
+    int vol = 0;
+    aud_drct_get_volume_main (& vol);
+    aud_drct_set_volume_main (vol - 5);
+}
+
 static gboolean menu_bar_get (void) {return config.menu_visible; }
 static gboolean info_bar_get (void) {return config.infoarea_visible; }
 static gboolean status_bar_get (void) {return config.statusbar_visible; }
@@ -166,9 +180,12 @@ static const struct MenuItem playlist_items[] = {
  {N_("_Playlist Manager ..."), AUD_STOCK_PLAYLIST, 'p', .func = audgui_playlist_manager}};
 
 static const struct MenuItem output_items[] = {
- {N_("_Effects"), .get_sub = audgui_create_effects_menu},
+ {N_("Volume _Up"), GTK_STOCK_GO_UP, '+', .func = volume_up},
+ {N_("Volume _Down"), GTK_STOCK_GO_DOWN, '-', .func = volume_down},
  {.sep = TRUE},
- {N_("E_qualizer"), NULL, 'e', CTRL, .func = audgui_show_equalizer_window}};
+ {N_("_Equalizer"), GTK_STOCK_PREFERENCES, 'e', CTRL, .func = audgui_show_equalizer_window},
+ {.sep = TRUE},
+ {N_("E_ffects"), .get_sub = audgui_create_effects_menu}};
 
 static const struct MenuItem view_items[] = {
  {N_("_Interface"), .get_sub = audgui_create_iface_menu},
