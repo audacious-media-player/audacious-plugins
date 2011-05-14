@@ -99,7 +99,7 @@ static const gchar * const schemes[] = {"cdda", NULL};
 
 AUD_INPUT_PLUGIN
 (
-    .name = "Audio CD Playback",
+    .name = "Audio CD Support",
     .init = cdaudio_init,
     .about = cdaudio_about,
     .configure = cdaudio_configure,
