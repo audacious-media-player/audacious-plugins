@@ -759,7 +759,7 @@ playlist_file_selection_save(const gchar * title,
     g_return_val_if_fail(title != NULL, NULL);
 
     dialog = make_filebrowser(title, TRUE);
-    
+
     if (aud_cfg->playlist_path)
         gtk_file_chooser_set_current_folder_uri ((GtkFileChooser *) dialog,
          aud_cfg->playlist_path);
@@ -1559,7 +1559,7 @@ action_playlist_refresh_list(void)
 void
 action_open_list_manager(void)
 {
-    audgui_playlist_manager_ui_show(mainwin);
+    audgui_playlist_manager ();
 }
 
 void

@@ -699,24 +699,24 @@ static GtkWidget * create_menu (gint id)
     templates[UI_MENUS] =
     {
         {"/mainwin-menus/main-menu", "/mainwin-menus/main-menu/plugins-menu",
-         AUDACIOUS_MENU_MAIN},
+         AUD_MENU_MAIN},
         {"/mainwin-menus/main-menu/playback", NULL, 0},
         {"/mainwin-menus/main-menu/playlist", NULL, 0},
         {"/mainwin-menus/songname-menu", NULL, 0},
         {"/mainwin-menus/main-menu/view", NULL, 0},
         {"/mainwin-menus/main-menu/visualization", NULL, 0},
         {"/playlist-menus/add-menu", "/playlist-menus/add-menu/plugins-menu",
-         AUDACIOUS_MENU_PLAYLIST_ADD},
+         AUD_MENU_PLAYLIST_ADD},
         {"/playlist-menus/del-menu", "/playlist-menus/del-menu/plugins-menu",
-         AUDACIOUS_MENU_PLAYLIST_REMOVE},
+         AUD_MENU_PLAYLIST_REMOVE},
         {"/playlist-menus/select-menu", "/playlist-menus/select-menu/"
-         "plugins-menu", AUDACIOUS_MENU_PLAYLIST_SELECT},
+         "plugins-menu", AUD_MENU_PLAYLIST_SELECT},
         {"/playlist-menus/misc-menu", "/playlist-menus/misc-menu/plugins-menu",
-         AUDACIOUS_MENU_PLAYLIST_MISC},
+         AUD_MENU_PLAYLIST_MISC},
         {"/playlist-menus/playlist-menu", "/playlist-menus/playlist-menu/"
-         "plugins-menu", AUDACIOUS_MENU_PLAYLIST},
+         "plugins-menu", AUD_MENU_PLAYLIST},
         {"/playlist-menus/playlist-rightclick-menu", "/playlist-menus/"
-         "playlist-rightclick-menu/plugins-menu", AUDACIOUS_MENU_PLAYLIST_RCLICK},
+         "playlist-rightclick-menu/plugins-menu", AUD_MENU_PLAYLIST_RCLICK},
         {"/equalizer-menus/preset-menu", NULL, 0},
     };
 

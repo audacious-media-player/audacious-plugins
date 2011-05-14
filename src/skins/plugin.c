@@ -146,8 +146,6 @@ static void skins_cleanup (void)
 
         skins_cfg_save();
 
-        audgui_playlist_manager_destroy();
-
         cleanup_skins();
         clear_dock_window_list ();
         skins_free_paths();
