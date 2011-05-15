@@ -277,13 +277,6 @@ static void draw_visualizer (UIInfoArea * area, cairo_t * cr)
 
 static void draw_album_art (UIInfoArea * area, cairo_t * cr)
 {
-    if (aud_drct_get_playing () && area->pb == NULL)
-    {
-        area->pb = audgui_pixbuf_for_current ();
-        g_return_if_fail (area->pb);
-        audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
-    }
-
     if (area->pb != NULL)
     {
         gdk_cairo_set_source_pixbuf (cr, area->pb, 10.0, 10.0);
@@ -419,6 +412,16 @@ void ui_infoarea_set_title (void * data, UIInfoArea * area)
     gtk_widget_queue_draw ((GtkWidget *) area->parent);
 }
 
+static void set_album_art (UIInfoArea * area)
+{
+    if (area->pb)
+        g_object_unref (area->pb);
+
+    area->pb = audgui_pixbuf_for_current ();
+    if (area->pb)
+        audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
+}
+
 static void infoarea_next (UIInfoArea * area)
 {
     if (area->last_pb)
@@ -451,6 +454,7 @@ static void ui_infoarea_playback_start (void * data, UIInfoArea * area)
     area->stopped = FALSE;
 
     ui_infoarea_set_title (NULL, area);
+    set_album_art (area);
 
     if (! area->fade_timeout)
         area->fade_timeout = g_timeout_add (30, (GSourceFunc)
