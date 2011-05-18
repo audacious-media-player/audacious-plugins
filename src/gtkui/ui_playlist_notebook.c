@@ -182,22 +182,7 @@ void ui_playlist_notebook_edit_tab_title(GtkWidget *ebox)
 
 static void change_view (void)
 {
-    gint count = index_count (pages);
-    if (! count)
-        return;
-
-    if (count > 1)
-    {
-        gtk_notebook_set_show_tabs (UI_PLAYLIST_NOTEBOOK, TRUE);
-
-        for (gint i = 0; i < count; i ++)
-            gtk_container_set_border_width (index_get (pages, i), 0);
-    }
-    else
-    {
-        gtk_notebook_set_show_tabs (UI_PLAYLIST_NOTEBOOK, FALSE);
-        gtk_container_set_border_width (index_get (pages, 0), 0);
-    }
+    gtk_notebook_set_show_tabs (UI_PLAYLIST_NOTEBOOK, (index_count (pages) > 1));
 }
 
 void ui_playlist_notebook_create_tab(gint playlist)
