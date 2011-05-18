@@ -1074,13 +1074,15 @@ playlistwin_create(void)
 
     song_changed = FALSE;
 
-    hook_associate ("playlist position", follow_cb, 0);
-    hook_associate ("playlist update", update_cb, 0);
+    hook_associate ("playlist position", follow_cb, NULL);
+    hook_associate ("playlist activate", update_cb, NULL);
+    hook_associate ("playlist update", update_cb, NULL);
 }
 
 void playlistwin_unhook (void)
 {
     hook_dissociate ("playlist position", follow_cb);
+    hook_dissociate ("playlist activate", update_cb);
     hook_dissociate ("playlist update", update_cb);
     g_free (active_title);
     active_title = NULL;
