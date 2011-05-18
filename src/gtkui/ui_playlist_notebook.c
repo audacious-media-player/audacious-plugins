@@ -36,8 +36,11 @@
 #include "ui_playlist_widget.h"
 #include "playlist_util.h"
 
+#define CURRENT_POS (-2)
+
 static GtkWidget * notebook = NULL;
 static GQueue follow_queue = G_QUEUE_INIT;
+static gboolean playlist_activated = FALSE;
 static gint bolded_playlist = -1;
 
 static struct index *pages;
@@ -323,76 +326,91 @@ static void do_follow (void)
 
         if (list < 0)
             continue;
-        if (row < 0)
-            row = aud_playlist_get_position (list);
 
         GtkWidget * widget = playlist_get_treeview (list);
-        if (row == aud_playlist_get_position (list))
+
+        if (row == CURRENT_POS)
+        {
+            row = aud_playlist_get_position (list);
             audgui_list_set_highlight (widget, row);
 
-        if (config.autoscroll)
-            audgui_list_set_focus (widget, row);
+            if (! config.autoscroll)
+                continue;
+        }
+
+        audgui_list_set_focus (widget, row);
     }
 }
 
-void ui_playlist_notebook_update(gpointer hook_data, gpointer user_data)
+static void update_list (gint list, gint type, gint at, gint count)
 {
-    gint type = GPOINTER_TO_INT(hook_data);
+    if (type >= PLAYLIST_UPDATE_METADATA)
+        set_tab_label (list, get_tab_label (list));
+
+    ui_playlist_widget_update (playlist_get_treeview (list), type, at, count);
+}
+
+void ui_playlist_notebook_update (void * data, void * user)
+{
+    gint type = GPOINTER_TO_INT (data);
     gint lists = aud_playlist_count ();
 
-    if (type == PLAYLIST_UPDATE_STRUCTURE)
-    {
-        gint i, n_pages;
+    gint list, at, count;
+    gboolean limited = aud_playlist_update_range (& list, & at, & count);
 
-        n_pages = gtk_notebook_get_n_pages(UI_PLAYLIST_NOTEBOOK);
+    if (type == PLAYLIST_UPDATE_STRUCTURE && ! limited)
+    {
+        gint n_pages = gtk_notebook_get_n_pages (UI_PLAYLIST_NOTEBOOK);
 
         while (n_pages < lists)
             ui_playlist_notebook_create_tab (n_pages ++);
         while (n_pages > lists)
             ui_playlist_notebook_destroy_tab (-- n_pages);
 
-        for (i = 0; i < n_pages; i++)
-        {
-            set_tab_label (i, get_tab_label (i));
+        for (gint i = 0; i < n_pages; i ++)
             ui_playlist_widget_set_playlist (playlist_get_treeview (i), i);
-        }
 
-        gtk_notebook_set_current_page(UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active());
-        bolded_playlist = aud_playlist_get_playing ();
+        playlist_activated = TRUE;
     }
 
-    gint list, at, count;
-    if (aud_playlist_update_range (& list, & at, & count))
-        ui_playlist_widget_update (playlist_get_treeview (list), type, at, count);
+    if (playlist_activated)
+    {
+        gtk_notebook_set_current_page (UI_PLAYLIST_NOTEBOOK,
+         aud_playlist_get_active ());
+        playlist_activated = FALSE;
+    }
+
+    if (limited)
+        update_list (list, type, at, count);
     else
     {
         for (list = 0; list < lists; list ++)
-            ui_playlist_widget_update (playlist_get_treeview (list), type, 0,
-             aud_playlist_entry_count (list));
+            update_list (list, type, 0, aud_playlist_entry_count (list));
     }
 
     do_follow ();
 }
 
-/* set row == -1 for current position */
 void playlist_follow (gint list, gint row)
 {
-    /* push -1 to the queue unchanged */
     g_queue_push_tail (& follow_queue, GINT_TO_POINTER
      (aud_playlist_get_unique_id (list)));
     g_queue_push_tail (& follow_queue, GINT_TO_POINTER (row));
 
-    /* now we need the actual row */
-    if (row < 0)
-        row = aud_playlist_get_position (list);
-
-    if (config.autoscroll)
+    if (row == CURRENT_POS)
     {
-        aud_playlist_select_all (list, FALSE);
-        if (row >= 0)
-            aud_playlist_entry_set_selected (list, row, TRUE);
+        if (config.autoscroll)
+            row = aud_playlist_get_position (list);
+        else
+            goto SKIP;
     }
 
+    aud_playlist_select_all (list, FALSE);
+
+    if (row >= 0)
+        aud_playlist_entry_set_selected (list, row, TRUE);
+
+SKIP:
     if (! aud_playlist_update_pending ())
         do_follow ();
 }
@@ -400,7 +418,16 @@ void playlist_follow (gint list, gint row)
 void ui_playlist_notebook_position (void * data, void * user)
 {
     gint list = GPOINTER_TO_INT (data);
-    playlist_follow (list, -1);
+    playlist_follow (list, CURRENT_POS);
+}
+
+void ui_playlist_notebook_activate (void * data, void * user)
+{
+    if (aud_playlist_update_pending ())
+        playlist_activated = TRUE;
+    else
+        gtk_notebook_set_current_page (UI_PLAYLIST_NOTEBOOK,
+         aud_playlist_get_active ());
 }
 
 static void destroy_cb (void)

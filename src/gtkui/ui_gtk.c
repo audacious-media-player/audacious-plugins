@@ -576,6 +576,7 @@ static void ui_hooks_associate(void)
     hook_associate ("playback unpause", (HookFunction) pause_cb, NULL);
     hook_associate("playback stop", ui_playback_stop, NULL);
     hook_associate("playlist update", ui_playlist_notebook_update, NULL);
+    hook_associate ("playlist activate", ui_playlist_notebook_activate, NULL);
     hook_associate ("playlist position", ui_playlist_notebook_position, NULL);
     hook_associate ("toggle stop after song", update_toggles, NULL);
     hook_associate ("toggle shuffle", update_toggles, NULL);
@@ -592,6 +593,7 @@ static void ui_hooks_disassociate(void)
     hook_dissociate ("playback unpause", (HookFunction) pause_cb);
     hook_dissociate("playback stop", ui_playback_stop);
     hook_dissociate("playlist update", ui_playlist_notebook_update);
+    hook_dissociate ("playlist activate", ui_playlist_notebook_activate);
     hook_dissociate ("playlist position", ui_playlist_notebook_position);
     hook_dissociate ("toggle stop after song", update_toggles);
     hook_dissociate ("toggle shuffle", update_toggles);
