@@ -50,11 +50,13 @@ static guint update_volume_timeout_source = 0;
 static gulong volume_change_handler_id;
 #endif
 
+static GtkAccelGroup * accel;
+
 static GtkWidget * button_play, * button_pause, * button_stop, * slider,
  * label_time, * button_shuffle, * button_repeat;
-static GtkWidget * playlist_box, * window, * vbox, * menu, * infoarea,
- * statusbar;
-static GtkWidget * menu_rclick, * menu_tab;
+static GtkWidget * window, * vbox, * menu_box, * menu, * playlist_box,
+ * infoarea, * statusbar;
+static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
 static GtkWidget * error_win = NULL;
 
@@ -391,6 +393,18 @@ static void ui_playback_stop(gpointer hook_data, gpointer user_data)
     gtk_widget_hide (label_time);
 }
 
+static gboolean rclick_cb (GtkWidget * widget, GdkEventButton * event)
+{
+    if (event->button != 3)
+        return FALSE;
+
+    if (event->type == GDK_BUTTON_PRESS && menu_main)
+        gtk_menu_popup ((GtkMenu *) menu_main, NULL, NULL, NULL, NULL,
+         event->button, event->time);
+
+    return TRUE;
+}
+
 static GtkWidget *gtk_toolbar_button_add(GtkWidget * toolbar, void (*callback) (), const gchar * stock_id)
 {
     GtkWidget *icon;
@@ -404,6 +418,7 @@ static GtkWidget *gtk_toolbar_button_add(GtkWidget * toolbar, void (*callback) (
 
     gtk_box_pack_start(GTK_BOX(toolbar), button, FALSE, FALSE, 0);
     g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(callback), NULL);
+    g_signal_connect (button, "button-press-event", (GCallback) rclick_cb, NULL);
 
     return button;
 }
@@ -632,11 +647,12 @@ static gboolean init (void)
     vbox = gtk_vbox_new(FALSE, 0);
     gtk_container_add(GTK_CONTAINER(window), vbox);
 
-    GtkAccelGroup * accel = gtk_accel_group_new ();
+    accel = gtk_accel_group_new ();
     gtk_window_add_accel_group ((GtkWindow *) window, accel);
 
-    menu = make_menu_bar (accel);
-    gtk_box_pack_start(GTK_BOX(vbox), menu, FALSE, TRUE, 0);
+    menu_box = gtk_hbox_new (FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) vbox, menu_box, FALSE, FALSE, 0);
+    show_menu (config.menu_visible);
 
     tophbox = gtk_hbox_new(FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), tophbox, FALSE, TRUE, 0);
@@ -758,9 +774,6 @@ static gboolean init (void)
 
     g_signal_connect(window, "key-press-event", G_CALLBACK(ui_key_press_cb), NULL);
 
-    if (!config.menu_visible)
-        gtk_widget_hide(menu);
-
     if (aud_drct_get_playing())
         ui_playback_begin(NULL, NULL);
     else
@@ -785,6 +798,9 @@ static void cleanup (void)
 {
     if (error_win)
         gtk_widget_destroy (error_win);
+
+    if (menu_main)
+        gtk_widget_destroy (menu_main);
 
     gtk_widget_destroy (menu_rclick);
     gtk_widget_destroy (menu_tab);
@@ -825,9 +841,31 @@ void show_menu (gboolean show)
     config.menu_visible = show;
 
     if (config.menu_visible)
-        gtk_widget_show (menu);
+    {
+        if (menu_main)
+            gtk_widget_destroy (menu_main);
+
+        if (! menu)
+        {
+            menu = make_menu_bar (accel);
+            g_signal_connect (menu, "destroy", (GCallback) gtk_widget_destroyed,
+             & menu);
+            gtk_widget_show (menu);
+            gtk_container_add ((GtkContainer *) menu_box, menu);
+        }
+    }
     else
-        gtk_widget_hide (menu);
+    {
+        if (menu)
+            gtk_widget_destroy (menu);
+
+        if (! menu_main)
+        {
+            menu_main = make_menu_main (accel);
+            g_signal_connect (menu_main, "destroy", (GCallback)
+             gtk_widget_destroyed, & menu_main);
+        }
+    }
 }
 
 void show_infoarea (gboolean show)

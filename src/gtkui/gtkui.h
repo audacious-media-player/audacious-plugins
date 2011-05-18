@@ -26,6 +26,7 @@
 
 /* menus.c */
 GtkWidget * make_menu_bar (GtkAccelGroup * accel);
+GtkWidget * make_menu_main (GtkAccelGroup * accel);
 GtkWidget * make_menu_rclick (GtkAccelGroup * accel);
 GtkWidget * make_menu_tab (GtkAccelGroup * accel);
 

@@ -322,6 +322,13 @@ GtkWidget * make_menu_bar (GtkAccelGroup * accel)
     return bar;
 }
 
+GtkWidget * make_menu_main (GtkAccelGroup * accel)
+{
+    GtkWidget * shell = gtk_menu_new ();
+    populate_menu (shell, main_items, G_N_ELEMENTS (main_items), accel);
+    return shell;
+}
+
 GtkWidget * make_menu_rclick (GtkAccelGroup * accel)
 {
     GtkWidget * shell = gtk_menu_new ();
