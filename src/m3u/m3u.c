@@ -115,45 +115,16 @@ NEXT:
 static gboolean playlist_save_m3u (const gchar * filename,
  struct index * filenames, struct index * tuples)
 {
-    gint entries = index_count (filenames);
-    gchar *outstr = NULL;
-    VFSFile *file;
-    gchar *fn = NULL;
-    gint count;
-
-    fn = g_filename_to_uri(filename, NULL, NULL);
-    file = vfs_fopen(fn ? fn : filename, "wb");
-    g_free(fn);
-
+    VFSFile * file = vfs_fopen (filename, "w");
     if (! file)
         return FALSE;
 
-    for (count = 0; count < entries; count ++)
-    {
-        const gchar * filename = index_get (filenames, count);
-        const Tuple * tuple = index_get (tuples, count);
-        const gchar * title = tuple_get_string (tuple, FIELD_TITLE, NULL);
-        gint seconds = tuple_get_int (tuple, FIELD_LENGTH, NULL) / 1000;
+    gint count = index_count (filenames);
 
-        if (title != NULL)
-        {
-            outstr = g_locale_from_utf8 (title, -1, NULL, NULL, NULL);
+    for (gint i = 0; i < count; i ++)
+        vfs_fprintf (file, "%s\n", (const gchar *) index_get (filenames, i));
 
-            if(outstr) {
-                vfs_fprintf(file, "#EXTINF:%d,%s\n", seconds, outstr);
-                g_free(outstr);
-                outstr = NULL;
-            }
-            else
-                vfs_fprintf (file, "#EXTINF:%d,%s\n", seconds, title);
-        }
-
-        fn = g_filename_from_uri (filename, NULL, NULL);
-        vfs_fprintf (file, "%s\n", fn != NULL ? fn : filename);
-        g_free(fn);
-    }
-
-    vfs_fclose(file);
+    vfs_fclose (file);
     return TRUE;
 }
 
