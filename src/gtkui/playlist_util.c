@@ -23,6 +23,7 @@
 #include <audacious/drct.h>
 #include <audacious/playlist.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/list.h>
 
 #include "playlist_util.h"
 #include "ui_playlist_notebook.h"
@@ -56,17 +57,7 @@ gint playlist_get_focus (gint list)
     GtkWidget * tree = playlist_get_treeview (list);
     g_return_val_if_fail (tree, -1);
 
-    GtkTreePath * path = NULL;
-    gint focus = -1;
-
-    gtk_tree_view_get_cursor ((GtkTreeView *) tree, & path, NULL);
-    if (path)
-    {
-        focus = gtk_tree_path_get_indices (path)[0];
-        gtk_tree_path_free (path);
-    }
-
-    return focus;
+    return audgui_list_get_focus (tree);
 }
 
 void playlist_song_info (void)
