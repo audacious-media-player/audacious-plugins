@@ -357,56 +357,6 @@ else
 	have_dockalbumart=no
 fi
 
-dnl *** AltiVec
-
-AC_ARG_ENABLE(altivec,
-    [  --disable-altivec       disable AltiVec support. (default=enabled) ],
-    [enable_altivec=$enableval],
-    [enable_altivec=yes]
-)
-if test "x$enable_altivec" = "xyes"; then
-  AC_CHECK_HEADERS(altivec.h,
-      [AC_DEFINE(HAVE_ALTIVEC, 1, [Define to 1 if your system has AltiVec.])
-       AC_DEFINE(HAVE_ALTIVEC_H, 1, [Define to 1 if your system has an altivec.h file.])
-       AC_DEFINE(ARCH_POWERPC, 1, [Define to 1 if your system is a PowerPC.])
-       DCT64=dct64_altivec.c
-       SIMD_CFLAGS=-maltivec
-       AC_SUBST(SIMD_CFLAGS)],
-      [DCT64=dct64.c]
-  )
-fi
-AC_SUBST(DCT64)
-
-dnl *** SSE2
-
-AC_ARG_ENABLE(sse2,
-    [  --disable-sse2          disable SSE2 support. (default=enabled) ],
-    [enable_sse2=$enableval],
-    [enable_sse2=yes]
-)
-if test "x$enable_sse2" = "xyes"; then
-  AC_MSG_CHECKING(SSE2)
-  ac_save_CFLAGS="$CFLAGS"
-  CFLAGS="-msse2"
-  AC_TRY_RUN([
-  #include <emmintrin.h>
-  int main()
-  {
-    _mm_setzero_pd();
-    asm volatile("xorpd %xmm0,%xmm0\n\t");
-    return 0;
-  }
-  ],
-  [AC_MSG_RESULT(SSE2 yes)
-  AC_DEFINE(HAVE_SSE2, 1, [Define to 1 if your system has SSE2])
-  SIMD_CFLAGS=-msse2],
-  [AC_MSG_RESULT(SSE2 no)],
-  )
-fi
-AC_SUBST(SIMD_CFLAGS)
-CFLAGS="$ac_save_CFLAGS"
-
-
 dnl PSF
 dnl ===
 
