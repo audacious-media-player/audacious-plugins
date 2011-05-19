@@ -76,13 +76,15 @@ static gchar * convert_path (gchar * path, const gchar * base)
     return aud_construct_uri (path, base);
 }
 
-static gboolean playlist_load_m3u (const gchar * path, struct index * filenames,
- struct index * tuples)
+static gboolean playlist_load_m3u (const gchar * path, gchar * * title,
+ struct index * filenames, struct index * tuples)
 {
     gchar * text = read_win_text (path);
 
     if (text == NULL)
         return FALSE;
+
+    * title = NULL;
 
     gchar * parse = text;
 
@@ -112,7 +114,7 @@ NEXT:
     return TRUE;
 }
 
-static gboolean playlist_save_m3u (const gchar * filename,
+static gboolean playlist_save_m3u (const gchar * filename, const gchar * title,
  struct index * filenames, struct index * tuples)
 {
     VFSFile * file = vfs_fopen (filename, "w");

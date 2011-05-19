@@ -40,7 +40,7 @@
 
 #include "util.h"
 
-static gboolean playlist_load_pls (const gchar * filename,
+static gboolean playlist_load_pls (const gchar * filename, gchar * * title,
  struct index * filenames, struct index * tuples)
 {
     gint i, count;
@@ -52,6 +52,8 @@ static gboolean playlist_load_pls (const gchar * filename,
 
     INIFile *inifile = open_ini_file(uri ? uri : filename);
     g_free(uri); uri = NULL;
+
+    * title = NULL;
 
     if (!(line = read_ini_string(inifile, "playlist", "NumberOfEntries")))
     {
@@ -78,7 +80,7 @@ static gboolean playlist_load_pls (const gchar * filename,
     return TRUE;
 }
 
-static gboolean playlist_save_pls (const gchar * filename,
+static gboolean playlist_save_pls (const gchar * filename, const gchar * title,
  struct index * filenames, struct index * tuples)
 {
     gint entries = index_count (filenames);

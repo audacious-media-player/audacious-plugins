@@ -212,7 +212,7 @@ static gint close_cb (void * file)
     return vfs_fclose (file);
 }
 
-static gboolean xspf_playlist_load (const gchar * filename,
+static gboolean xspf_playlist_load (const gchar * filename, gchar * * title,
  struct index * filenames, struct index * tuples)
 {
     VFSFile * file = vfs_fopen (filename, "r");
@@ -231,6 +231,8 @@ static gboolean xspf_playlist_load (const gchar * filename,
         xmlMemGet (& xmlFree, & xmlMalloc, & xmlRealloc, NULL);
 #endif
 
+    * title = NULL;
+
     xmlNode *nptr, *nptr2;
 
     // find trackList
@@ -241,11 +243,23 @@ static gboolean xspf_playlist_load (const gchar * filename,
 
             base = (gchar *)xmlNodeGetBase(doc, nptr);
 
-            for (nptr2 = nptr->children; nptr2 != NULL; nptr2 = nptr2->next) {
-                if (nptr2->type == XML_ELEMENT_NODE &&
-                    !xmlStrcmp(nptr2->name, (xmlChar *)"trackList")) {
-                    xspf_find_track (nptr2, filename, base, filenames, tuples);
+            for (nptr2 = nptr->children; nptr2; nptr2 = nptr2->next)
+            {
+                if (nptr2->type != XML_ELEMENT_NODE)
+                    continue;
+
+                if (! xmlStrcmp (nptr2->name, (xmlChar *) "title"))
+                {
+                    xmlChar * xml_title = xmlNodeGetContent (nptr2);
+                    if (xml_title && xml_title[0])
+                    {
+                        g_free (* title);
+                        * title = g_strdup ((gchar *) xml_title);
+                    }
+                    xmlFree (xml_title);
                 }
+                else if (! xmlStrcmp (nptr2->name, (xmlChar *) "trackList"))
+                    xspf_find_track (nptr2, filename, base, filenames, tuples);
             }
 
             xmlFree (base);
@@ -288,7 +302,7 @@ static void xspf_add_node(xmlNodePtr node, TupleValueType type,
 }
 
 
-static gboolean xspf_playlist_save (const gchar * filename,
+static gboolean xspf_playlist_save (const gchar * filename, const gchar * title,
  struct index * filenames, struct index * tuples)
 {
     gint entries = index_count (filenames);
@@ -307,6 +321,9 @@ static gboolean xspf_playlist_save (const gchar * filename,
     /* common */
     xmlDocSetRootElement(doc, rootnode);
     xspf_add_node(rootnode, TUPLE_STRING, FALSE, "creator", PACKAGE "-" VERSION, 0);
+
+    if (title)
+        xspf_add_node (rootnode, TUPLE_STRING, FALSE, "title", title, 0);
 
     tracklist = xmlNewNode(NULL, (xmlChar *)"trackList");
     xmlAddChild(rootnode, tracklist);

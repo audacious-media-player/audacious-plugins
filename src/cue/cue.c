@@ -69,7 +69,7 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, gint tuple_type, gint pti)
     tuple_associate_string(tuple, tuple_type, NULL, text);
 }
 
-static gboolean playlist_load_cue (const gchar * cue_filename,
+static gboolean playlist_load_cue (const gchar * cue_filename, gchar * * title,
  struct index * filenames, struct index * tuples)
 {
     void * buffer;
@@ -80,6 +80,8 @@ static gboolean playlist_load_cue (const gchar * cue_filename,
 
     buffer = g_realloc (buffer, size + 1);
     ((gchar *) buffer)[size] = 0;
+
+    * title = NULL;
 
     Cd * cd = cue_parse_string (buffer);
     g_free (buffer);

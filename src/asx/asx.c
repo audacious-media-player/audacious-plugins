@@ -40,7 +40,7 @@
 
 #include "util.h"
 
-static gboolean playlist_load_asx (const gchar * filename,
+static gboolean playlist_load_asx (const gchar * filename, gchar * * title,
  struct index * filenames, struct index * tuples)
 {
     gint i;
@@ -52,6 +52,8 @@ static gboolean playlist_load_asx (const gchar * filename,
 
     INIFile *inifile = open_ini_file(uri ? uri : filename);
     g_free(uri); uri = NULL;
+
+    * title = NULL;
 
     for (i = 1; ; i++) {
         g_snprintf(line_key, sizeof(line_key), "Ref%d", i);
@@ -76,7 +78,7 @@ static gboolean playlist_load_asx (const gchar * filename,
     return TRUE;
 }
 
-static gboolean playlist_save_asx (const gchar * filename,
+static gboolean playlist_save_asx (const gchar * filename, const gchar * title,
  struct index * filenames, struct index * tuples)
 {
     gint entries = index_count (filenames);
