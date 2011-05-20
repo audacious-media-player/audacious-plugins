@@ -178,7 +178,7 @@ static void ui_show_error (const gchar * text)
 static void set_time_label (gint time, gint len)
 {
     gchar s[128];
-    snprintf (s, sizeof s, "<tt><b>");
+    snprintf (s, sizeof s, "<b>");
 
     time /= 1000;
 
@@ -195,14 +195,14 @@ static void set_time_label (gint time, gint len)
 
         if (len < 3600)
             snprintf (s + strlen (s), sizeof s - strlen (s),
-             aud_cfg->leading_zero ? "/%02d:%02d" : "/%d:%02d", len / 60, len %
-             60);
+             aud_cfg->leading_zero ? " / %02d:%02d" : " / %d:%02d", len / 60,
+             len % 60);
         else
-            snprintf (s + strlen (s), sizeof s - strlen (s), "/%d:%02d:%02d",
+            snprintf (s + strlen (s), sizeof s - strlen (s), " / %d:%02d:%02d",
              len / 3600, (len / 60) % 60, len % 60);
     }
 
-    snprintf (s + strlen (s), sizeof s - strlen (s), "</b></tt>");
+    snprintf (s + strlen (s), sizeof s - strlen (s), "</b>");
     gtk_label_set_markup ((GtkLabel *) label_time, s);
 }
 
