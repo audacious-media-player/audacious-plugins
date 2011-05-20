@@ -1,7 +1,5 @@
 aclocal.m4
 autom4te.cache
-audacious.pc
-audclient.pc
 buildsys.mk
 config.h
 config.h.in
@@ -9,10 +7,6 @@ config.log
 config.status
 configure
 extra.mk
-po/Makefile
-po/Makefile.in
-po/POTFILES
-po/stamp-po
 .deps
 *.a
 *.mo
