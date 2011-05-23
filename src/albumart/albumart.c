@@ -49,7 +49,9 @@ static void draw_albumart(GtkWidget *widget, cairo_t *cr)
         cairo_paint_with_alpha(cr, 1.0);
     }
 
+#if ! GTK_CHECK_VERSION (3, 0, 0)
     cairo_destroy(cr);
+#endif
 
     if (album != NULL)
         g_object_unref(album);
