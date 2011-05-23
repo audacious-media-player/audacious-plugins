@@ -70,11 +70,10 @@ src/flacng/plugin.c
 src/gnomeshortcuts/gnomeshortcuts.c
 src/gntui/fileselector.c
 src/gntui/gntui.c
-src/gtkui/actions.c
 src/gtkui/columns.c
 src/gtkui/layout.c
+src/gtkui/menus.c
 src/gtkui/ui_gtk.c
-src/gtkui/ui_manager.c
 src/gtkui/ui_playlist_widget.c
 src/gtkui/ui_statusbar.c
 src/hotkey/gui.c
@@ -130,6 +129,7 @@ src/stereo_plugin/stereo.c
 src/streambrowser/gui/streambrowser_win.c
 src/streambrowser/streambrowser.c
 src/tonegen/tonegen.c
+src/unix-io/gtk.c
 src/usf/recompiler_cpu.c
 src/usf/rsp_recompiler_cpu.c
 src/vorbis/configure.c

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-04-22 11:40-0400\n"
+"POT-Creation-Date: 2011-05-23 08:17-0400\n"
 "PO-Revision-Date: 2008-07-08 13:10+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -109,12 +109,12 @@ msgid "Channels"
 msgstr "チャンネル数"
 
 #: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:162 src/sid/xs_interface.c:301
+#: src/mpg123/mpg123.c:173 src/sid/xs_interface.c:301
 msgid "Mono"
 msgstr "モノラル"
 
 #: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:162
+#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:173
 #: src/sid/xs_interface.c:308
 msgid "Stereo"
 msgstr "ステレオ"
@@ -132,8 +132,7 @@ msgid "Frequency"
 msgstr "周波数"
 
 #: src/adplug/adplug-xmms.cc:354 src/adplug/adplug-xmms.cc:560
-#: src/console/configure.c:157 src/gtkui/ui_manager.c:67
-#: src/skins/ui_manager.c:168
+#: src/console/configure.c:157 src/skins/ui_manager.c:168
 msgid "Playback"
 msgstr "演奏"
 
@@ -184,7 +183,7 @@ msgstr "AdPlug :: ファイル情報"
 msgid "Filename"
 msgstr "ファイル名"
 
-#: src/adplug/adplug-xmms.cc:537 src/skins/ui_playlist.c:391
+#: src/adplug/adplug-xmms.cc:537 src/skins/ui_playlist.c:390
 msgid "Title: "
 msgstr "タイトル: "
 
@@ -586,8 +585,7 @@ msgstr ""
 "    これを利用するにはボックス内にリマインダを書き\n"
 "    トグルボタンを有効にします.\n"
 
-#: src/alarm/interface.c:1366 src/gtkui/ui_manager.c:186
-#: src/skins/ui_manager.c:380
+#: src/alarm/interface.c:1366 src/skins/ui_manager.c:380
 msgid "Help"
 msgstr "ヘルプ"
 
@@ -609,26 +607,26 @@ msgstr "デフォルト PCM デバイス (%s)"
 msgid "Default mixer device"
 msgstr "デフォルト PCM デバイス (%s)"
 
-#: src/alsa/config.c:441
+#: src/alsa/config.c:449
 #, fuzzy
 msgid "ALSA Output Plugin Preferences"
 msgstr "ステータスアイコンプラグイン - 設定"
 
-#: src/alsa/config.c:448
+#: src/alsa/config.c:456
 #, fuzzy
 msgid "PCM device:"
 msgstr "ミキサデバイス:"
 
-#: src/alsa/config.c:450 src/OSS/configure.c:246
+#: src/alsa/config.c:458 src/OSS/configure.c:246
 msgid "Mixer device:"
 msgstr "ミキサデバイス:"
 
-#: src/alsa/config.c:452
+#: src/alsa/config.c:460
 #, fuzzy
 msgid "Mixer element:"
 msgstr "ミキサデバイス:"
 
-#: src/alsa/config.c:455
+#: src/alsa/config.c:463
 msgid "Work around drain hangup"
 msgstr ""
 
@@ -1380,7 +1378,7 @@ msgstr "有効なバックエンド"
 msgid "Current Headset"
 msgstr "現在の値"
 
-#: src/bluetooth/gui.c:227
+#: src/bluetooth/gui.c:227 src/gtkui/menus.c:170 src/gtkui/menus.c:212
 #, fuzzy
 msgid "_Refresh"
 msgstr "リフレッシュレート"
@@ -1390,7 +1388,7 @@ msgstr "リフレッシュレート"
 msgid "_Connect"
 msgstr "接続"
 
-#: src/bluetooth/gui.c:237
+#: src/bluetooth/gui.c:237 src/gtkui/menus.c:175
 #, fuzzy
 msgid "_Close"
 msgstr "閉じる"
@@ -1426,8 +1424,7 @@ msgstr ""
 msgid "Rescan"
 msgstr "CD を再スキャン"
 
-#: src/bluetooth/scan_gui.c:142 src/gtkui/ui_manager.c:69
-#: src/gtkui/ui_manager.c:70 src/hotkey/gui.c:72 src/skins/ui_manager.c:170
+#: src/bluetooth/scan_gui.c:142 src/hotkey/gui.c:72 src/skins/ui_manager.c:170
 #: src/skins/ui_manager.c:171
 msgid "Play"
 msgstr "演奏"
@@ -1528,12 +1525,12 @@ msgstr "CDDBP の代わりに HTTP を使う"
 msgid "Override default device: "
 msgstr "デフォルトデバイスを上書きする: "
 
-#: src/cd-menu-items/cd-menu-items.c:35
+#: src/cd-menu-items/cd-menu-items.c:34
 #, fuzzy
 msgid "Play CD"
 msgstr "演奏"
 
-#: src/cd-menu-items/cd-menu-items.c:35
+#: src/cd-menu-items/cd-menu-items.c:34
 msgid "Add CD"
 msgstr "CD を追加"
 
@@ -1930,7 +1927,7 @@ msgstr ""
 "デバイスが検出されていないため, バインディングウィンドウが開けません.\n"
 "デバイスが正しく接続されていることを確認してください."
 
-#: src/evdev-plug/ed_ui.c:319 src/gtkui/ui_gtk.c:193
+#: src/evdev-plug/ed_ui.c:319 src/gtkui/ui_gtk.c:175
 msgid "Error"
 msgstr "エラー"
 
@@ -2381,44 +2378,6 @@ msgstr "Audacious"
 msgid "gnt interface"
 msgstr ""
 
-#: src/gtkui/actions.c:254 src/skins/ui_main.c:821
-msgid "Can't jump to time when no track is being played.\n"
-msgstr "再生されるトラックがない時間へは移動できません.\n"
-
-#: src/gtkui/actions.c:269 src/gtkui/ui_manager.c:225
-#: src/gtkui/ui_manager.c:226 src/skins/ui_main.c:836
-#: src/skins/ui_manager.c:419 src/skins/ui_manager.c:420
-msgid "Jump to Time"
-msgstr "指定した時間へ移動"
-
-#: src/gtkui/actions.c:286 src/skins/ui_main.c:857
-msgid "minutes:seconds"
-msgstr "分:秒"
-
-#: src/gtkui/actions.c:296 src/skins/ui_main.c:867
-msgid "Track length:"
-msgstr "トラックの合計時間:"
-
-#: src/gtkui/actions.c:534 src/skins/ui_playlist.c:649
-#, c-format
-msgid "Error writing playlist \"%s\": %s"
-msgstr "プレイリスト \"%s\" を書き込む際にエラー: %s"
-
-#: src/gtkui/actions.c:549 src/skins/ui_playlist.c:671
-#, c-format
-msgid "%s already exist. Continue?"
-msgstr "%s は既に存在しています. 続行しますか？"
-
-#: src/gtkui/actions.c:576 src/skins/ui_manager.c:217
-#, fuzzy
-msgid "Export Playlist"
-msgstr "プレイリストの読み込み"
-
-#: src/gtkui/actions.c:648 src/skins/ui_manager.c:214
-#, fuzzy
-msgid "Import Playlist"
-msgstr "プレイリストの読み込み"
-
 #: src/gtkui/columns.c:36
 #, fuzzy
 msgid "Entry number"
@@ -2492,450 +2451,333 @@ msgstr "可変"
 msgid "Chosen:"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:122
 msgid "Dock at Left"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:122
 msgid "Dock at Right"
 msgstr ""
 
-#: src/gtkui/layout.c:124
+#: src/gtkui/layout.c:123
 msgid "Dock at Top"
 msgstr ""
 
-#: src/gtkui/layout.c:124
+#: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
 msgstr ""
 
-#: src/gtkui/layout.c:124
+#: src/gtkui/layout.c:123
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:124
+#: src/gtkui/layout.c:123
 #, fuzzy
 msgid "Disable"
 msgstr "可変"
 
-#: src/gtkui/ui_gtk.c:81
+#: src/gtkui/menus.c:132
+#, fuzzy
+msgid "_Open Files ..."
+msgstr "ファイルの追加..."
+
+#: src/gtkui/menus.c:133
+#, fuzzy
+msgid "Open _URL ..."
+msgstr "ファイルの追加..."
+
+#: src/gtkui/menus.c:134
+#, fuzzy
+msgid "_Add File ..."
+msgstr "ファイルの追加..."
+
+#: src/gtkui/menus.c:135
+#, fuzzy
+msgid "Add U_RL ..."
+msgstr "ファイルの追加..."
+
+#: src/gtkui/menus.c:137
+#, fuzzy
+msgid "A_bout ..."
+msgstr "プラグインについて"
+
+#: src/gtkui/menus.c:138
+#, fuzzy
+msgid "_Preferences ..."
+msgstr "設定"
+
+#: src/gtkui/menus.c:139 src/skins/ui_manager.c:404
+msgid "_Quit"
+msgstr "終了(_Q)"
+
+#: src/gtkui/menus.c:142
+#, fuzzy
+msgid "_Play"
+msgstr "演奏"
+
+#: src/gtkui/menus.c:143
+#, fuzzy
+msgid "Paus_e"
+msgstr "一時停止"
+
+#: src/gtkui/menus.c:144
+#, fuzzy
+msgid "_Stop"
+msgstr "停止"
+
+#: src/gtkui/menus.c:145
+#, fuzzy
+msgid "Pre_vious"
+msgstr "前の曲"
+
+#: src/gtkui/menus.c:146
+#, fuzzy
+msgid "_Next"
+msgstr "次の曲"
+
+#: src/gtkui/menus.c:148
+#, fuzzy
+msgid "_Repeat"
+msgstr "リピート"
+
+#: src/gtkui/menus.c:149
+#, fuzzy
+msgid "S_huffle"
+msgstr "シャッフル"
+
+#: src/gtkui/menus.c:150
+#, fuzzy
+msgid "N_o Playlist Advance"
+msgstr "次の曲に進まない"
+
+#: src/gtkui/menus.c:151
+#, fuzzy
+msgid "Stop _After This Song"
+msgstr "現在の曲の後に停止する"
+
+#: src/gtkui/menus.c:153 src/gtkui/menus.c:210
+msgid "Song _Info ..."
+msgstr ""
+
+#: src/gtkui/menus.c:154
+#, fuzzy
+msgid "Jump to _Time ..."
+msgstr "指定した時間へ移動"
+
+#: src/gtkui/menus.c:155
+msgid "_Jump to Song ..."
+msgstr ""
+
+#: src/gtkui/menus.c:158
+#, fuzzy
+msgid "By Track _Number"
+msgstr "トラック番号"
+
+#: src/gtkui/menus.c:159
+#, fuzzy
+msgid "By _Title"
+msgstr "タイトル"
+
+#: src/gtkui/menus.c:160
+#, fuzzy
+msgid "By _Artist"
+msgstr "アーティスト"
+
+#: src/gtkui/menus.c:161
+#, fuzzy
+msgid "By A_lbum"
+msgstr "アルバム名:"
+
+#: src/gtkui/menus.c:162
+#, fuzzy
+msgid "By Release _Date"
+msgstr "日付"
+
+#: src/gtkui/menus.c:163
+#, fuzzy
+msgid "By _File Path"
+msgstr "ファイル名"
+
+#: src/gtkui/menus.c:164
+#, fuzzy
+msgid "By _Custom Title"
+msgstr "カスタムスキン"
+
+#: src/gtkui/menus.c:166
+#, fuzzy
+msgid "R_everse Order"
+msgstr "プレイリストを逆順にする"
+
+#: src/gtkui/menus.c:167
+#, fuzzy
+msgid "_Random Order"
+msgstr "ランダム(R_)"
+
+#: src/gtkui/menus.c:172
+#, fuzzy
+msgid "_Sort"
+msgstr "ポート"
+
+#: src/gtkui/menus.c:174
+msgid "_New"
+msgstr ""
+
+#: src/gtkui/menus.c:177
+#, fuzzy
+msgid "_Import ..."
+msgstr "インポート"
+
+#: src/gtkui/menus.c:178
+#, fuzzy
+msgid "_Export ..."
+msgstr "エクスポート"
+
+#: src/gtkui/menus.c:180
+#, fuzzy
+msgid "_Playlist Manager ..."
+msgstr "プレイリストマネージャ"
+
+#: src/gtkui/menus.c:183
+#, fuzzy
+msgid "Volume _Up"
+msgstr "音量を上げる"
+
+#: src/gtkui/menus.c:184
+#, fuzzy
+msgid "Volume _Down"
+msgstr "音量を下げる"
+
+#: src/gtkui/menus.c:186
+#, fuzzy
+msgid "_Equalizer"
+msgstr "イコライザを表示する"
+
+#: src/gtkui/menus.c:188
+#, fuzzy
+msgid "E_ffects"
+msgstr "エフェクト"
+
+#: src/gtkui/menus.c:191
+msgid "_Interface"
+msgstr ""
+
+#: src/gtkui/menus.c:193
+msgid "Show _Menu Bar"
+msgstr ""
+
+#: src/gtkui/menus.c:194
+msgid "Show I_nfo Bar"
+msgstr ""
+
+#: src/gtkui/menus.c:195
+#, fuzzy
+msgid "Show _Status Bar"
+msgstr "状態"
+
+#: src/gtkui/menus.c:197
+#, fuzzy
+msgid "Show Column _Headers"
+msgstr "プレイヤを表示する"
+
+#: src/gtkui/menus.c:198
+#, fuzzy
+msgid "Choose _Columns ..."
+msgstr "プレイヤを表示する"
+
+#: src/gtkui/menus.c:199
+#, fuzzy
+msgid "Scrol_l on Song Change"
+msgstr "曲メッセージ"
+
+#: src/gtkui/menus.c:202
+#, fuzzy
+msgid "_File"
+msgstr "ファイル"
+
+#: src/gtkui/menus.c:203
+#, fuzzy
+msgid "_Playback"
+msgstr "演奏"
+
+#: src/gtkui/menus.c:204
+#, fuzzy
+msgid "P_laylist"
+msgstr "プレイリスト"
+
+#: src/gtkui/menus.c:205 src/gtkui/menus.c:223
+#, fuzzy
+msgid "_Services"
+msgstr "デバイス"
+
+#: src/gtkui/menus.c:206
+#, fuzzy
+msgid "_Output"
+msgstr "出力プラグインエラー\n"
+
+#: src/gtkui/menus.c:207
+#, fuzzy
+msgid "_View"
+msgstr "表示"
+
+#: src/gtkui/menus.c:211
+msgid "_Queue/Unqueue"
+msgstr ""
+
+#: src/gtkui/menus.c:214
+msgid "Cu_t"
+msgstr ""
+
+#: src/gtkui/menus.c:215
+msgid "_Copy"
+msgstr ""
+
+#: src/gtkui/menus.c:216
+#, fuzzy
+msgid "_Paste"
+msgstr "最も早い"
+
+#: src/gtkui/menus.c:218 src/gtkui/menus.c:220
+#, fuzzy
+msgid "Select _All"
+msgstr "全て選択"
+
+#: src/gtkui/menus.c:226
+#, fuzzy
+msgid "_Rename"
+msgstr "ファイル名"
+
+#: src/gtkui/ui_gtk.c:79
 msgid "GTK Interface"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:161 src/skins/ui_main.c:391
+#: src/gtkui/ui_gtk.c:135 src/skins/ui_main.c:389
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:167 src/skins/ui_main.c:393 src/skins/ui_main.c:2173
+#: src/gtkui/ui_gtk.c:141 src/skins/ui_main.c:391 src/skins/ui_main.c:1800
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_manager.c:37 src/gtkui/ui_manager.c:38
-#: src/skins/ui_manager.c:56 src/skins/ui_manager.c:57
-msgid "Stop after Current Song"
-msgstr "現在の曲の後に停止する"
-
-#: src/gtkui/ui_manager.c:40 src/gtkui/ui_manager.c:41
-#: src/skins/ui_manager.c:62 src/skins/ui_manager.c:63
-msgid "Repeat"
-msgstr "リピート"
-
-#: src/gtkui/ui_manager.c:43 src/gtkui/ui_manager.c:44
-#: src/skins/ui_manager.c:65 src/skins/ui_manager.c:66
-msgid "Shuffle"
-msgstr "シャッフル"
-
-#: src/gtkui/ui_manager.c:46 src/gtkui/ui_manager.c:47
-#: src/skins/ui_manager.c:68 src/skins/ui_manager.c:69
-msgid "No Playlist Advance"
-msgstr "次の曲に進まない"
-
-#: src/gtkui/ui_manager.c:49
-msgid "Show infoarea"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:50
-msgid "Show/hide infoarea"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:52
-#, fuzzy
-msgid "Show main menu"
-msgstr "メインウィンドウを表示する"
-
-#: src/gtkui/ui_manager.c:53
-msgid "Show/hide main menu"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:55
-#, fuzzy
-msgid "Show statusbar"
-msgstr "状態"
-
-#: src/gtkui/ui_manager.c:56
-#, fuzzy
-msgid "Show/hide statusbar"
-msgstr "プレイリストの保存"
-
-#: src/gtkui/ui_manager.c:58
-#, fuzzy
-msgid "Show Column Headers"
-msgstr "プレイヤを表示する"
-
-#: src/gtkui/ui_manager.c:60
-#, fuzzy
-msgid "Scroll on Song Change"
-msgstr "曲メッセージ"
-
-#: src/gtkui/ui_manager.c:72 src/gtkui/ui_manager.c:73
-#: src/skins/ui_manager.c:173 src/skins/ui_manager.c:174
-msgid "Pause"
-msgstr "一時停止"
-
-#: src/gtkui/ui_manager.c:75 src/gtkui/ui_manager.c:76 src/hotkey/gui.c:74
-#: src/skins/ui_manager.c:176 src/skins/ui_manager.c:177
-msgid "Stop"
-msgstr "停止"
-
-#: src/gtkui/ui_manager.c:78 src/gtkui/ui_manager.c:79
-#: src/skins/ui_manager.c:179 src/skins/ui_manager.c:180
-msgid "Previous"
-msgstr "前の曲"
-
-#: src/gtkui/ui_manager.c:81 src/gtkui/ui_manager.c:82
-#: src/skins/ui_manager.c:182 src/skins/ui_manager.c:183
-msgid "Next"
-msgstr "次の曲"
-
-#: src/gtkui/ui_manager.c:87 src/skins/ui_manager.c:200
-msgid "Playlist"
-msgstr "プレイリスト"
-
-#: src/gtkui/ui_manager.c:89 src/gtkui/ui_manager.c:90
-#: src/skins/ui_manager.c:202 src/skins/ui_manager.c:203
-msgid "New Playlist"
-msgstr "新しいプレイリスト"
-
-#: src/gtkui/ui_manager.c:92 src/gtkui/ui_manager.c:93
-#: src/skins/ui_manager.c:211 src/skins/ui_manager.c:212
-msgid "Delete Playlist"
-msgstr "プレイリストの削除"
-
-#: src/gtkui/ui_manager.c:95
-#, fuzzy
-msgid "Import Playlist ..."
-msgstr "プレイリストの読み込み"
-
-#: src/gtkui/ui_manager.c:96 src/skins/ui_manager.c:215
-msgid "Loads a playlist file into the selected playlist."
-msgstr "選択したプレイリストにプレイリストファイルを読み込みます."
-
-#: src/gtkui/ui_manager.c:98
-#, fuzzy
-msgid "Export Playlist ..."
-msgstr "プレイリストの読み込み"
-
-#: src/gtkui/ui_manager.c:99 src/skins/ui_manager.c:218
-msgid "Saves the selected playlist."
-msgstr "選択したプレイリストを保存します."
-
-#: src/gtkui/ui_manager.c:101 src/skins/ui_manager.c:220
-#, fuzzy
-msgid "Save All Playlists"
-msgstr "プレイリストの保存"
-
-#: src/gtkui/ui_manager.c:102 src/skins/ui_manager.c:221
-msgid ""
-"Saves all the playlists that are open. Note that this is done automatically "
-"when Audacious quits."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:106
-#, fuzzy
-msgid "Refresh"
-msgstr "リフレッシュレート"
-
-#: src/gtkui/ui_manager.c:107 src/skins/ui_manager.c:226
-msgid "Refreshes metadata associated with a playlist entry."
-msgstr "プレイリストのエントリに関連付けられたメタデータを更新します."
-
-#: src/gtkui/ui_manager.c:110
-#, fuzzy
-msgid "Refresh Selected"
-msgstr "選択したエントリの削除"
-
-#: src/gtkui/ui_manager.c:111
-#, fuzzy
-msgid "Refreshes metadata associated with selected entries."
-msgstr "プレイリストのエントリに関連付けられたメタデータを更新します."
-
-#: src/gtkui/ui_manager.c:115
-#, fuzzy
-msgid "Playlist Manager"
-msgstr "プレイリストマネージャ"
-
-#: src/gtkui/ui_manager.c:116 src/skins/ui_manager.c:230
-msgid "Opens the playlist manager."
-msgstr "プレイリストマネージャを開きます."
-
-#: src/gtkui/ui_manager.c:119
-#, fuzzy
-msgid "Add URL ..."
-msgstr "ファイルの追加..."
-
-#: src/gtkui/ui_manager.c:120 src/skins/ui_manager.c:242
-msgid "Adds a remote track to the playlist."
-msgstr "リモートトラックをプレイリストに追加します."
-
-#: src/gtkui/ui_manager.c:123
-#, fuzzy
-msgid "Add Files ..."
-msgstr "ファイルの追加..."
-
-#: src/gtkui/ui_manager.c:124 src/skins/ui_manager.c:246
-msgid "Adds files to the playlist."
-msgstr "ファイルをプレイリストに追加します."
-
-#: src/gtkui/ui_manager.c:127 src/skins/ui_manager.c:269
-msgid "Remove All"
-msgstr "全て削除"
-
-#: src/gtkui/ui_manager.c:128 src/skins/ui_manager.c:270
-msgid "Removes all entries from the playlist."
-msgstr "全てのエントリをプレイリストから削除します."
-
-#: src/gtkui/ui_manager.c:131 src/skins/ui_manager.c:295
-msgid "Remove Unselected"
-msgstr "選択していないエントリの削除"
-
-#: src/gtkui/ui_manager.c:132 src/skins/ui_manager.c:296
-msgid "Remove unselected entries from the playlist."
-msgstr "選択していないエントリをプレイリストから削除します."
-
-#: src/gtkui/ui_manager.c:135 src/skins/ui_manager.c:299
-msgid "Remove Selected"
-msgstr "選択したエントリの削除"
-
-#: src/gtkui/ui_manager.c:136 src/skins/ui_manager.c:300
-msgid "Remove selected entries from the playlist."
-msgstr "選択したエントリをプレイリストから削除します."
-
-#: src/gtkui/ui_manager.c:139
-msgid "Edit title"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:140
-#, fuzzy
-msgid "Edit the playlist title."
-msgstr "プレイリストの順序をランダムにします."
-
-#: src/gtkui/ui_manager.c:143
-msgid "Choose Columns ..."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:146
-#, fuzzy
-msgid "Sort"
-msgstr "ポート"
-
-#: src/gtkui/ui_manager.c:147 src/skins/ui_manager.c:339
-#: src/skins/ui_manager.c:369
-msgid "By Track Number"
-msgstr "トラック番号"
-
-#: src/gtkui/ui_manager.c:149 src/skins/ui_manager.c:283
-#: src/skins/ui_manager.c:315 src/skins/ui_manager.c:345
-msgid "By Title"
-msgstr "タイトル"
-
-#: src/gtkui/ui_manager.c:151 src/skins/ui_manager.c:323
-#: src/skins/ui_manager.c:353
-msgid "By Artist"
-msgstr "アーティスト"
-
-#: src/gtkui/ui_manager.c:153 src/skins/ui_manager.c:319
-#: src/skins/ui_manager.c:349
-#, fuzzy
-msgid "By Album"
-msgstr "アルバム名:"
-
-#: src/gtkui/ui_manager.c:155
-#, fuzzy
-msgid "By Release Date"
-msgstr "日付"
-
-#: src/gtkui/ui_manager.c:157
-#, fuzzy
-msgid "By File Path"
-msgstr "ファイル名"
-
-#: src/gtkui/ui_manager.c:159
-#, fuzzy
-msgid "By Formatted Title"
-msgstr "タイトル"
-
-#: src/gtkui/ui_manager.c:161
-#, fuzzy
-msgid "Reverse Order"
-msgstr "プレイリストを逆順にする"
-
-#: src/gtkui/ui_manager.c:163
-#, fuzzy
-msgid "Random Order"
-msgstr "ランダム(R_)"
-
-#: src/gtkui/ui_manager.c:168
-msgid "Output"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:170 src/modplug/gui/interface.cxx:572
-msgid "Effects"
-msgstr "エフェクト"
-
-#: src/gtkui/ui_manager.c:172
-#, fuzzy
-msgid "Equalizer"
-msgstr "イコライザを表示する"
-
-#: src/gtkui/ui_manager.c:177 src/skins/ui_manager.c:235
-msgid "View"
-msgstr "表示"
-
-#: src/gtkui/ui_manager.c:178 src/skins/ui_manager.c:236
-msgid "Interface"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:185 src/skins/ui_manager.c:379
-msgid "File"
-msgstr "ファイル"
-
-#: src/gtkui/ui_manager.c:188
-#, fuzzy
-msgid "Components"
-msgstr "コメント:"
-
-#: src/gtkui/ui_manager.c:190 src/gtkui/ui_manager.c:193
-#: src/skins/ui_manager.c:384 src/skins/ui_manager.c:387
-msgid "View Track Details"
-msgstr "トラックの詳細"
-
-#: src/gtkui/ui_manager.c:191 src/gtkui/ui_manager.c:194
-#: src/skins/ui_manager.c:385 src/skins/ui_manager.c:388
-msgid "View track details"
-msgstr "トラックの詳細"
-
-#: src/gtkui/ui_manager.c:196 src/gtkui/ui_manager.c:197
-#: src/skins/ui_manager.c:390 src/skins/ui_manager.c:391
-msgid "About Audacious"
-msgstr "Audacious について"
-
-#: src/gtkui/ui_manager.c:199
-#, fuzzy
-msgid "Open Files ..."
-msgstr "ファイルの追加..."
-
-#: src/gtkui/ui_manager.c:200 src/skins/ui_manager.c:394
-msgid "Load and play a file"
-msgstr "ファイルを読み込んで演奏"
-
-#: src/gtkui/ui_manager.c:202
-msgid "Open URL ..."
-msgstr ""
-
-#: src/gtkui/ui_manager.c:203 src/skins/ui_manager.c:397
-msgid "Play media from the selected location"
-msgstr "選択した場所からメディアを演奏"
-
-#: src/gtkui/ui_manager.c:205 src/skins/ui_manager.c:399
-msgid "Plugin services"
-msgstr "プラグインサービス"
-
-#: src/gtkui/ui_manager.c:207 src/skins/ui_manager.c:401
-msgid "Preferences"
-msgstr "設定"
-
-#: src/gtkui/ui_manager.c:208 src/skins/ui_manager.c:402
-msgid "Open preferences window"
-msgstr "設定ウィンドウを開く"
-
-#: src/gtkui/ui_manager.c:210 src/skins/ui_manager.c:404
-msgid "_Quit"
-msgstr "終了(_Q)"
-
-#: src/gtkui/ui_manager.c:211 src/skins/ui_manager.c:405
-msgid "Quit Audacious"
-msgstr "Audacious を終了する"
-
-#: src/gtkui/ui_manager.c:213 src/gtkui/ui_manager.c:214
-#: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
-msgid "Set A-B"
-msgstr "A-B をセット"
-
-#: src/gtkui/ui_manager.c:216 src/gtkui/ui_manager.c:217
-#: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
-msgid "Clear A-B"
-msgstr "A-B をクリア"
-
-#: src/gtkui/ui_manager.c:219 src/gtkui/ui_manager.c:220
-#: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
-msgid "Jump to Playlist Start"
-msgstr "最初の曲へ移動"
-
-#: src/gtkui/ui_manager.c:222 src/gtkui/ui_manager.c:223 src/hotkey/gui.c:81
-#: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
-msgid "Jump to File"
-msgstr "指定したファイルへ移動"
-
-#: src/gtkui/ui_manager.c:228 src/skins/ui_manager.c:422
-msgid "Queue Toggle"
-msgstr "キューを切り替える"
-
-#: src/gtkui/ui_manager.c:229 src/skins/ui_manager.c:423
-msgid "Enables/disables the entry in the playlist's queue."
-msgstr "プレイリストのキューに入っているエントリの有効/無効を切り替えます."
-
-#: src/gtkui/ui_manager.c:232 src/skins/ui_manager.c:426
-msgid "Copy"
-msgstr ""
-
-#: src/gtkui/ui_manager.c:235 src/skins/ui_manager.c:428
-#, fuzzy
-msgid "Cut"
-msgstr "カスタム "
-
-#: src/gtkui/ui_manager.c:238 src/skins/ui_manager.c:430
-#, fuzzy
-msgid "Paste"
-msgstr "最も早い"
-
-#: src/gtkui/ui_manager.c:241 src/skins/ui_manager.c:259
-msgid "Select All"
-msgstr "全て選択"
-
-#: src/gtkui/ui_manager.c:242 src/skins/ui_manager.c:260
-msgid "Selects all of the playlist entries."
-msgstr "プレイリストの全てのエントリを選択します."
-
-#: src/gtkui/ui_manager.c:245 src/skins/ui_manager.c:263
-msgid "Select None"
-msgstr "未選択にする"
-
-#: src/gtkui/ui_manager.c:246 src/skins/ui_manager.c:264
-msgid "Deselects all of the playlist entries."
-msgstr "プレイリストの全てのエントリを未選択にします."
-
-#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:612
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:610
 msgid "mono"
 msgstr "モノラル"
 
-#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:611
+#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:609
 msgid "stereo"
 msgstr "ステレオ"
 
 #: src/gtkui/ui_statusbar.c:106
 #, fuzzy, c-format
-msgid "%d channels"
-msgstr "チャンネル数"
+msgid "%d channel"
+msgid_plural "%d channels"
+msgstr[0] "チャンネル数"
+msgstr[1] "チャンネル数"
+
+#: src/gtkui/ui_statusbar.c:121
+#, c-format
+msgid "%d kbps"
+msgstr ""
 
 #: src/hotkey/gui.c:71
 msgid "Previous Track"
@@ -2944,6 +2786,10 @@ msgstr "前のトラック"
 #: src/hotkey/gui.c:73
 msgid "Pause/Resume"
 msgstr "一時停止/再開"
+
+#: src/hotkey/gui.c:74 src/skins/ui_manager.c:176 src/skins/ui_manager.c:177
+msgid "Stop"
+msgstr "停止"
 
 #: src/hotkey/gui.c:75
 msgid "Next Track"
@@ -2968,6 +2814,10 @@ msgstr "音量を上げる"
 #: src/hotkey/gui.c:80
 msgid "Volume Down"
 msgstr "音量を下げる"
+
+#: src/hotkey/gui.c:81 src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
+msgid "Jump to File"
+msgstr "指定したファイルへ移動"
 
 #: src/hotkey/gui.c:82
 msgid "Toggle Player Windows"
@@ -3336,7 +3186,7 @@ msgstr "範囲"
 msgid "Bass Boost"
 msgstr "ベース増加"
 
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:162
+#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:173
 msgid "Surround"
 msgstr "サラウンド"
 
@@ -3354,6 +3204,10 @@ msgstr ""
 #: src/skins/ui_skinned_equalizer_slider.c:431
 msgid "Preamp"
 msgstr "プリアンプ"
+
+#: src/modplug/gui/interface.cxx:572
+msgid "Effects"
+msgstr "エフェクト"
 
 #: src/modplug/gui/interface.cxx:601
 msgid "Use Filename as Song Title"
@@ -3486,20 +3340,17 @@ msgstr "Modplug について"
 msgid "Couldn't find pixmap file: %s"
 msgstr "pixmap ファイルが見つかりませんでした: %s"
 
-#: src/mtp_up/mtp.c:35
-msgid "Upload selected track(s)"
-msgstr "選択されたトラックをアップロード"
-
-#: src/mtp_up/mtp.c:289
+#: src/mtp_up/mtp.c:298
 msgid "Upload in progress..."
 msgstr "アップロード進行中..."
 
-#: src/mtp_up/mtp.c:298
-msgid "MTP device handler"
-msgstr "MTP デバイスハンドラ"
+#: src/mtp_up/mtp.c:310
+msgid "Upload to MTP Device"
+msgstr ""
 
-#: src/mtp_up/mtp.c:302
-msgid "Disconnect the device"
+#: src/mtp_up/mtp.c:311
+#, fuzzy
+msgid "Disconnect MTP Device"
 msgstr "デバイスを切断"
 
 #: src/null/null.c:64
@@ -3679,11 +3530,11 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA. へ手紙を書いて下さい."
 
-#: src/pulse_audio/pulse_audio.c:699
+#: src/pulse_audio/pulse_audio.c:690
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "Audacious PulseAudio 出力プラグインについて"
 
-#: src/pulse_audio/pulse_audio.c:700
+#: src/pulse_audio/pulse_audio.c:691
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -4422,11 +4273,11 @@ msgstr "はい"
 msgid "No"
 msgstr "いいえ"
 
-#: src/skins/plugin.c:171
+#: src/skins/plugin.c:163
 msgid "About Skinned GUI"
 msgstr "スキン GUI について"
 
-#: src/skins/plugin.c:172
+#: src/skins/plugin.c:164
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -4434,31 +4285,31 @@ msgstr ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 
-#: src/skins/skins_cfg.c:318
+#: src/skins/skins_cfg.c:312
 msgid "_Player:"
 msgstr "プレイヤ(_P):"
 
-#: src/skins/skins_cfg.c:318
+#: src/skins/skins_cfg.c:312
 msgid "Select main player window font:"
 msgstr "メインウィンドウで使用するフォントの選択"
 
-#: src/skins/skins_cfg.c:319
+#: src/skins/skins_cfg.c:313
 msgid "_Playlist:"
 msgstr "プレイリスト(_P):"
 
-#: src/skins/skins_cfg.c:319
+#: src/skins/skins_cfg.c:313
 msgid "Select playlist font:"
 msgstr "プレイリストで使用するフォントの選択"
 
-#: src/skins/skins_cfg.c:323
+#: src/skins/skins_cfg.c:317
 msgid "<b>_Fonts</b>"
 msgstr "<b>フォント(_F)</b>"
 
-#: src/skins/skins_cfg.c:325
+#: src/skins/skins_cfg.c:319
 msgid "Use Bitmap fonts if available"
 msgstr "可能ならばビットマップフォントを使用"
 
-#: src/skins/skins_cfg.c:325
+#: src/skins/skins_cfg.c:319
 msgid ""
 "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
 "strings."
@@ -4466,27 +4317,27 @@ msgstr ""
 "可能ならばビットマップフォントを使用します. ビットマップフォントは Unicode 文"
 "字列をサポートしていません."
 
-#: src/skins/skins_cfg.c:326
+#: src/skins/skins_cfg.c:320
 msgid "<b>_Miscellaneous</b>"
 msgstr "<b>その他(_M)</b>"
 
-#: src/skins/skins_cfg.c:327
+#: src/skins/skins_cfg.c:321
 msgid "Show separators in playlist"
 msgstr "プレイリストの区切り線を表示する"
 
-#: src/skins/skins_cfg.c:329
+#: src/skins/skins_cfg.c:323
 msgid "Show window manager decoration"
 msgstr "ウィンドウマネージャ装飾を表示する"
 
-#: src/skins/skins_cfg.c:330
+#: src/skins/skins_cfg.c:324
 msgid "This enables the window manager to show decorations for windows."
 msgstr "ウィンドウマネージャによるウィンドウ装飾を有効にします."
 
-#: src/skins/skins_cfg.c:331
+#: src/skins/skins_cfg.c:325
 msgid "Use two-way text scroller"
 msgstr "双方向テキストスクロールを使う"
 
-#: src/skins/skins_cfg.c:332
+#: src/skins/skins_cfg.c:326
 msgid ""
 "If selected, the file information text in the main window will scroll back "
 "and forth. If not selected, the text will only scroll in one direction."
@@ -4494,20 +4345,20 @@ msgstr ""
 "これを使うと，メインウィンドウのファイル情報テキストが前後にスクロールしま"
 "す．そうでなければ，テキストは一方向のみにスクロールします．"
 
-#: src/skins/skins_cfg.c:333
+#: src/skins/skins_cfg.c:327
 msgid "Disable inline gtk theme"
 msgstr "インライン GTK テーマを無効にする"
 
-#: src/skins/skins_cfg.c:335
+#: src/skins/skins_cfg.c:329
 #, fuzzy
 msgid "Random skin on play"
 msgstr "プレイリストの順序をランダムにします."
 
-#: src/skins/skins_cfg.c:336
+#: src/skins/skins_cfg.c:330
 msgid "Allow loading incomplete skins"
 msgstr "不完全なスキンの読み込みを許可する"
 
-#: src/skins/skins_cfg.c:337
+#: src/skins/skins_cfg.c:331
 msgid ""
 "If selected, audacious won't refuse loading broken skins. Use only if your "
 "favourite skin doesn't work"
@@ -4515,38 +4366,38 @@ msgstr ""
 "これを使うと，audacious は壊れたスキンの読み込みを拒絶しません．お気に入りの"
 "スキンが動かないときだけ使用してください．"
 
-#: src/skins/skins_cfg.c:403
+#: src/skins/skins_cfg.c:397
 msgid "Color Adjustment"
 msgstr "色補正"
 
-#: src/skins/skins_cfg.c:409
+#: src/skins/skins_cfg.c:403
 msgid ""
 "Audacious allows you to alter the color balance of the skinned UI. The "
 "sliders below will allow you to do this."
 msgstr "以下のスライダを用いてスキン UI の色合いの変更ができます."
 
-#: src/skins/skins_cfg.c:419
+#: src/skins/skins_cfg.c:413
 msgid "Blue"
 msgstr "青"
 
-#: src/skins/skins_cfg.c:426
+#: src/skins/skins_cfg.c:420
 msgid "Green"
 msgstr "緑"
 
-#: src/skins/skins_cfg.c:433
+#: src/skins/skins_cfg.c:427
 msgid "Red"
 msgstr "赤"
 
-#: src/skins/skins_cfg.c:580
+#: src/skins/skins_cfg.c:574
 msgid "<b>_Skin</b>"
 msgstr "<b>スキン(_S)</b>"
 
-#: src/skins/skins_cfg.c:585
+#: src/skins/skins_cfg.c:579
 #, fuzzy
 msgid "Color adjustment ..."
 msgstr "色補正"
 
-#: src/skins/skins_cfg.c:637
+#: src/skins/skins_cfg.c:631
 #, fuzzy
 msgid "Interface Preferences"
 msgstr "設定"
@@ -4555,150 +4406,91 @@ msgstr "設定"
 msgid "Audacious Equalizer"
 msgstr "Audacious イコライザ"
 
-#: src/skins/ui_equalizer.c:1000
+#: src/skins/ui_equalizer.c:990
 msgid "Presets"
 msgstr "プリセット"
 
-#: src/skins/ui_main.c:596
+#: src/skins/ui_main.c:594
 msgid "kbps"
 msgstr ""
 
-#: src/skins/ui_main.c:604
+#: src/skins/ui_main.c:602
 #, fuzzy
 msgid "kHz"
 msgstr "Hz"
 
-#: src/skins/ui_main.c:611
+#: src/skins/ui_main.c:609
 #, fuzzy
 msgid "surround"
 msgstr "サラウンド"
 
-#: src/skins/ui_main.c:984
-msgid "Audacious - visibility warning"
-msgstr "Audacious - 可視警告"
-
-#: src/skins/ui_main.c:987
-msgid "Show main player window"
-msgstr "メインウィンドウを表示する"
-
-#: src/skins/ui_main.c:988
-msgid "Ignore"
-msgstr "無視"
-
-#: src/skins/ui_main.c:994
-msgid ""
-"Audacious has been started with all of its windows hidden.\n"
-"You may want to show the player window again to control Audacious; "
-"otherwise, you'll have to control it remotely via audtool or enabled plugins "
-"(such as the statusicon plugin)."
-msgstr ""
-"Audacious はすべてのウィンドウが隠された状態で開始されました．\n"
-"再度プレイヤウィンドウを表示するか，そのまま Audacious を操作するためには，"
-"audtool を用いるか statusicon のようなプラグインを有効にすることで遠隔操作し"
-"てください．"
-
-#: src/skins/ui_main.c:1000
-msgid "Always ignore, show/hide is controlled remotely"
-msgstr "常に無視し，表示する/隠す は遠隔操作する"
-
-#: src/skins/ui_main.c:1045
-msgid "Audacious - broken GTK engine usage warning"
-msgstr "Audacious - 壊れた GTK エンジンの使用警告"
-
-#: src/skins/ui_main.c:1053
-#, c-format
-msgid ""
-"<big><b>Broken GTK engine in use</b></big>\n"
-"\n"
-"Audacious has detected that you are using a broken GTK engine.\n"
-"\n"
-"The theme engine you are using, <i>%s</i>, is incompatible with some of the "
-"features used by modern skins. The incompatible features have been disabled "
-"for this session.\n"
-"\n"
-"To use these features, please consider using a different GTK theme engine."
-msgstr ""
-"<big><b>壊れた GTK エンジンが使われています</b></big>\n"
-"\n"
-"Audacious は GTK エンジンが使われていることを検出しました.\n"
-"\n"
-"テーマエンジン <i>%s</i> は最近のスキンで用いられている特徴と非互換です.非互"
-"換な特徴はこのセッションでは無効にされました.\n"
-"\n"
-"これらの特徴を用いるには, 他の GTK テーマエンジンを使うことを考慮してくださ"
-"い."
-
-#: src/skins/ui_main.c:1064
-msgid "Do not display this warning again"
-msgstr "次回からこの警告を表示しない"
-
-#: src/skins/ui_main.c:1276
+#: src/skins/ui_main.c:1029
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
 msgstr "移動先: %d:%-2.2d/%d:%-2.2d (%d%%)"
 
-#: src/skins/ui_main.c:1306
+#: src/skins/ui_main.c:1059
 #, c-format
 msgid "Volume: %d%%"
 msgstr "音量: %d%%"
 
-#: src/skins/ui_main.c:1329
+#: src/skins/ui_main.c:1082
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "バランス: %d%% 左"
 
-#: src/skins/ui_main.c:1331
+#: src/skins/ui_main.c:1084
 msgid "Balance: center"
 msgstr "バランス: 中央"
 
-#: src/skins/ui_main.c:1333
+#: src/skins/ui_main.c:1086
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "バランス: %d%% 右"
 
-#: src/skins/ui_main.c:1625
+#: src/skins/ui_main.c:1252
 msgid "Options Menu"
 msgstr "オプションメニュー"
 
-#: src/skins/ui_main.c:1629
+#: src/skins/ui_main.c:1256
 msgid "Disable 'Always On Top'"
 msgstr "「常に最前面に配置」無効"
 
-#: src/skins/ui_main.c:1631
+#: src/skins/ui_main.c:1258
 msgid "Enable 'Always On Top'"
 msgstr "「常に最前面に配置」有効"
 
-#: src/skins/ui_main.c:1634
+#: src/skins/ui_main.c:1261
 msgid "File Info Box"
 msgstr "ファイル情報ボックス"
 
-#: src/skins/ui_main.c:1638
+#: src/skins/ui_main.c:1265
 msgid "Disable 'GUI Scaling'"
 msgstr "「GUI スケーリング」無効"
 
-#: src/skins/ui_main.c:1640
+#: src/skins/ui_main.c:1267
 msgid "Enable 'GUI Scaling'"
 msgstr "「GUI スケーリング」有効"
 
-#: src/skins/ui_main.c:1643
+#: src/skins/ui_main.c:1270
 msgid "Visualization Menu"
 msgstr "視覚化メニュー"
 
-#: src/skins/ui_main.c:2355
+#: src/skins/ui_main.c:1982
 msgid "Single mode."
 msgstr ""
 
-#: src/skins/ui_main.c:2357
+#: src/skins/ui_main.c:1984
 #, fuzzy
 msgid "Playlist mode."
 msgstr "プレイリスト"
 
-#: src/skins/ui_main.c:2381
+#: src/skins/ui_main.c:2008
 #, fuzzy
 msgid "Stopping after song."
 msgstr "現在の曲の後に停止する"
 
-#: src/skins/ui_main.c:2383
+#: src/skins/ui_main.c:2010
 msgid "Not stopping after song."
 msgstr ""
 
@@ -4706,9 +4498,25 @@ msgstr ""
 msgid "Autoscroll Songname"
 msgstr "曲名の自動スクロール"
 
+#: src/skins/ui_manager.c:56 src/skins/ui_manager.c:57
+msgid "Stop after Current Song"
+msgstr "現在の曲の後に停止する"
+
 #: src/skins/ui_manager.c:59 src/skins/ui_manager.c:60
 msgid "Peaks"
 msgstr "ピーク"
+
+#: src/skins/ui_manager.c:62 src/skins/ui_manager.c:63
+msgid "Repeat"
+msgstr "リピート"
+
+#: src/skins/ui_manager.c:65 src/skins/ui_manager.c:66
+msgid "Shuffle"
+msgstr "シャッフル"
+
+#: src/skins/ui_manager.c:68 src/skins/ui_manager.c:69
+msgid "No Playlist Advance"
+msgstr "次の曲に進まない"
 
 #: src/skins/ui_manager.c:71 src/skins/ui_manager.c:72
 msgid "Show Player"
@@ -4839,6 +4647,18 @@ msgstr "経過時間を表示する"
 msgid "Time Remaining"
 msgstr "残り時間を表示する"
 
+#: src/skins/ui_manager.c:173 src/skins/ui_manager.c:174
+msgid "Pause"
+msgstr "一時停止"
+
+#: src/skins/ui_manager.c:179 src/skins/ui_manager.c:180
+msgid "Previous"
+msgstr "前の曲"
+
+#: src/skins/ui_manager.c:182 src/skins/ui_manager.c:183
+msgid "Next"
+msgstr "次の曲"
+
 #: src/skins/ui_manager.c:188
 msgid "Visualization"
 msgstr "視覚化"
@@ -4871,6 +4691,14 @@ msgstr "アナライザ フォールオフ"
 msgid "Peaks Falloff"
 msgstr "ピーク フォールオフ"
 
+#: src/skins/ui_manager.c:200
+msgid "Playlist"
+msgstr "プレイリスト"
+
+#: src/skins/ui_manager.c:202 src/skins/ui_manager.c:203
+msgid "New Playlist"
+msgstr "新しいプレイリスト"
+
 #: src/skins/ui_manager.c:205 src/skins/ui_manager.c:206
 msgid "Select Next Playlist"
 msgstr "次のプレイリストを選択"
@@ -4879,13 +4707,62 @@ msgstr "次のプレイリストを選択"
 msgid "Select Previous Playlist"
 msgstr "前のプレイリストを選択"
 
-#: src/skins/ui_manager.c:225
+#: src/skins/ui_manager.c:211 src/skins/ui_manager.c:212
+msgid "Delete Playlist"
+msgstr "プレイリストの削除"
+
+#: src/skins/ui_manager.c:214
+#, fuzzy
+msgid "Import Playlist"
+msgstr "プレイリストの読み込み"
+
+#: src/skins/ui_manager.c:215
+msgid "Loads a playlist file into the selected playlist."
+msgstr "選択したプレイリストにプレイリストファイルを読み込みます."
+
+#: src/skins/ui_manager.c:218
+#, fuzzy
+msgid "Export Playlist"
+msgstr "プレイリストの読み込み"
+
+#: src/skins/ui_manager.c:219
+msgid "Saves the selected playlist."
+msgstr "選択したプレイリストを保存します."
+
+#: src/skins/ui_manager.c:221
+#, fuzzy
+msgid "Save All Playlists"
+msgstr "プレイリストの保存"
+
+#: src/skins/ui_manager.c:222
+msgid ""
+"Saves all the playlists that are open. Note that this is done automatically "
+"when Audacious quits."
+msgstr ""
+
+#: src/skins/ui_manager.c:226
 msgid "Refresh List"
 msgstr "プレイリストの更新"
 
-#: src/skins/ui_manager.c:229
+#: src/skins/ui_manager.c:227
+msgid "Refreshes metadata associated with a playlist entry."
+msgstr "プレイリストのエントリに関連付けられたメタデータを更新します."
+
+#: src/skins/ui_manager.c:230
 msgid "List Manager"
 msgstr "プレイリストマネージャ"
+
+#: src/skins/ui_manager.c:231
+msgid "Opens the playlist manager."
+msgstr "プレイリストマネージャを開きます."
+
+#: src/skins/ui_manager.c:235
+msgid "View"
+msgstr "表示"
+
+#: src/skins/ui_manager.c:236
+msgid "Interface"
+msgstr ""
 
 #: src/skins/ui_manager.c:237
 #, fuzzy
@@ -4896,9 +4773,17 @@ msgstr "設定"
 msgid "Add Internet Address..."
 msgstr "インターネットアドレスの追加..."
 
+#: src/skins/ui_manager.c:242
+msgid "Adds a remote track to the playlist."
+msgstr "リモートトラックをプレイリストに追加します."
+
 #: src/skins/ui_manager.c:245
 msgid "Add Files..."
 msgstr "ファイルの追加..."
+
+#: src/skins/ui_manager.c:246
+msgid "Adds files to the playlist."
+msgstr "ファイルをプレイリストに追加します."
 
 #: src/skins/ui_manager.c:251
 msgid "Search and Select"
@@ -4917,6 +4802,30 @@ msgstr "選択範囲の反転"
 #: src/skins/ui_manager.c:256
 msgid "Inverts the selected and unselected entries."
 msgstr "エントリの選択と未選択を反転します."
+
+#: src/skins/ui_manager.c:259
+msgid "Select All"
+msgstr "全て選択"
+
+#: src/skins/ui_manager.c:260
+msgid "Selects all of the playlist entries."
+msgstr "プレイリストの全てのエントリを選択します."
+
+#: src/skins/ui_manager.c:263
+msgid "Select None"
+msgstr "未選択にする"
+
+#: src/skins/ui_manager.c:264
+msgid "Deselects all of the playlist entries."
+msgstr "プレイリストの全てのエントリを未選択にします."
+
+#: src/skins/ui_manager.c:269
+msgid "Remove All"
+msgstr "全て削除"
+
+#: src/skins/ui_manager.c:270
+msgid "Removes all entries from the playlist."
+msgstr "全てのエントリをプレイリストから削除します."
 
 #: src/skins/ui_manager.c:273
 msgid "Clear Queue"
@@ -4937,6 +4846,11 @@ msgstr "利用不可ファイルをプレイリストから削除します."
 #: src/skins/ui_manager.c:281
 msgid "Remove Duplicates"
 msgstr "重複エントリの削除"
+
+#: src/skins/ui_manager.c:283 src/skins/ui_manager.c:315
+#: src/skins/ui_manager.c:345
+msgid "By Title"
+msgstr "タイトル"
 
 #: src/skins/ui_manager.c:284
 msgid "Removes duplicate entries from the playlist by title."
@@ -4959,6 +4873,22 @@ msgstr "パス名とファイル名"
 #: src/skins/ui_manager.c:292
 msgid "Removes duplicate entries from the playlist by their full path."
 msgstr "重複するパス名とファイル名のエントリをプレイリストから削除します."
+
+#: src/skins/ui_manager.c:295
+msgid "Remove Unselected"
+msgstr "選択していないエントリの削除"
+
+#: src/skins/ui_manager.c:296
+msgid "Remove unselected entries from the playlist."
+msgstr "選択していないエントリをプレイリストから削除します."
+
+#: src/skins/ui_manager.c:299
+msgid "Remove Selected"
+msgstr "選択したエントリの削除"
+
+#: src/skins/ui_manager.c:300
+msgid "Remove selected entries from the playlist."
+msgstr "選択したエントリをプレイリストから削除します."
 
 #: src/skins/ui_manager.c:305
 msgid "Randomize List"
@@ -4984,10 +4914,19 @@ msgstr "プレイリストのソート"
 msgid "Sorts the list by title."
 msgstr "タイトル順でプレイリストをソートします."
 
+#: src/skins/ui_manager.c:319 src/skins/ui_manager.c:349
+#, fuzzy
+msgid "By Album"
+msgstr "アルバム名:"
+
 #: src/skins/ui_manager.c:320 src/skins/ui_manager.c:350
 #, fuzzy
 msgid "Sorts the list by album."
 msgstr "タイトル順でプレイリストをソートします."
+
+#: src/skins/ui_manager.c:323 src/skins/ui_manager.c:353
+msgid "By Artist"
+msgstr "アーティスト"
 
 #: src/skins/ui_manager.c:324 src/skins/ui_manager.c:354
 msgid "Sorts the list by artist."
@@ -5009,6 +4948,10 @@ msgstr "日付"
 msgid "Sorts the list by modification time."
 msgstr "変更時間でプレイリストをソートします."
 
+#: src/skins/ui_manager.c:339 src/skins/ui_manager.c:369
+msgid "By Track Number"
+msgstr "トラック番号"
+
 #: src/skins/ui_manager.c:340 src/skins/ui_manager.c:370
 msgid "Sorts the list by track number."
 msgstr "トラック番号順でプレイリストをソートします."
@@ -5017,17 +4960,95 @@ msgstr "トラック番号順でプレイリストをソートします."
 msgid "Sort Selected"
 msgstr "選択範囲のソート"
 
+#: src/skins/ui_manager.c:379
+msgid "File"
+msgstr "ファイル"
+
 #: src/skins/ui_manager.c:382
 msgid "Plugin Services"
 msgstr "プラグインサービス"
+
+#: src/skins/ui_manager.c:384 src/skins/ui_manager.c:387
+msgid "View Track Details"
+msgstr "トラックの詳細"
+
+#: src/skins/ui_manager.c:385 src/skins/ui_manager.c:388
+msgid "View track details"
+msgstr "トラックの詳細"
+
+#: src/skins/ui_manager.c:390 src/skins/ui_manager.c:391
+msgid "About Audacious"
+msgstr "Audacious について"
 
 #: src/skins/ui_manager.c:393
 msgid "Play File"
 msgstr "ファイルを演奏"
 
+#: src/skins/ui_manager.c:394
+msgid "Load and play a file"
+msgstr "ファイルを読み込んで演奏"
+
 #: src/skins/ui_manager.c:396
 msgid "Play Location"
 msgstr "場所を演奏"
+
+#: src/skins/ui_manager.c:397
+msgid "Play media from the selected location"
+msgstr "選択した場所からメディアを演奏"
+
+#: src/skins/ui_manager.c:399
+msgid "Plugin services"
+msgstr "プラグインサービス"
+
+#: src/skins/ui_manager.c:401
+msgid "Preferences"
+msgstr "設定"
+
+#: src/skins/ui_manager.c:402
+msgid "Open preferences window"
+msgstr "設定ウィンドウを開く"
+
+#: src/skins/ui_manager.c:405
+msgid "Quit Audacious"
+msgstr "Audacious を終了する"
+
+#: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
+msgid "Set A-B"
+msgstr "A-B をセット"
+
+#: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
+msgid "Clear A-B"
+msgstr "A-B をクリア"
+
+#: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
+msgid "Jump to Playlist Start"
+msgstr "最初の曲へ移動"
+
+#: src/skins/ui_manager.c:419 src/skins/ui_manager.c:420
+msgid "Jump to Time"
+msgstr "指定した時間へ移動"
+
+#: src/skins/ui_manager.c:422
+msgid "Queue Toggle"
+msgstr "キューを切り替える"
+
+#: src/skins/ui_manager.c:423
+msgid "Enables/disables the entry in the playlist's queue."
+msgstr "プレイリストのキューに入っているエントリの有効/無効を切り替えます."
+
+#: src/skins/ui_manager.c:426
+msgid "Copy"
+msgstr ""
+
+#: src/skins/ui_manager.c:428
+#, fuzzy
+msgid "Cut"
+msgstr "カスタム "
+
+#: src/skins/ui_manager.c:430
+#, fuzzy
+msgid "Paste"
+msgstr "最も早い"
 
 #: src/skins/ui_manager.c:437
 msgid "Load"
@@ -5123,11 +5144,11 @@ msgstr "プリセットの削除"
 msgid "Delete auto-load preset"
 msgstr "自動読み込みのプリセットの削除"
 
-#: src/skins/ui_playlist.c:375
+#: src/skins/ui_playlist.c:374
 msgid "Search entries in active playlist"
 msgstr "有効になっているプレイリストのエントリを検索"
 
-#: src/skins/ui_playlist.c:383
+#: src/skins/ui_playlist.c:382
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -5138,51 +5159,35 @@ msgstr ""
 "正規表現が使え, 大文字と小文字を区別しません. 正規表現がどのように動作するか"
 "わからない場合は, 単純に検索しようとしているものの文字を入力します."
 
-#: src/skins/ui_playlist.c:398
+#: src/skins/ui_playlist.c:397
 msgid "Album: "
 msgstr "アルバム名: "
 
-#: src/skins/ui_playlist.c:405
+#: src/skins/ui_playlist.c:404
 msgid "Artist: "
 msgstr "アーティスト: "
 
-#: src/skins/ui_playlist.c:412
+#: src/skins/ui_playlist.c:411
 msgid "Filename: "
 msgstr "ファイル名: "
 
-#: src/skins/ui_playlist.c:420
+#: src/skins/ui_playlist.c:419
 msgid "Clear previous selection before searching"
 msgstr "検索前に以前の選択をクリア"
 
-#: src/skins/ui_playlist.c:423
+#: src/skins/ui_playlist.c:422
 msgid "Automatically toggle queue for matching entries"
 msgstr "マッチしたエントリのキューを自動的にトグル"
 
-#: src/skins/ui_playlist.c:426
+#: src/skins/ui_playlist.c:425
 msgid "Create a new playlist with matching entries"
 msgstr "マッチしたエントリで新しいプレイリストを作成"
 
-#: src/skins/ui_playlist.c:771
-msgid "Save as Static Playlist"
-msgstr "スタティックプレイリストとして保存"
-
-#: src/skins/ui_playlist.c:778
-msgid "Use Relative Path"
-msgstr "相対パスを使う"
-
-#: src/skins/ui_playlist.c:801
-msgid "Load Playlist"
-msgstr "プレイリストの読み込み"
-
-#: src/skins/ui_playlist.c:814
-msgid "Save Playlist"
-msgstr "プレイリストの保存"
-
-#: src/skins/ui_playlist.c:1145
+#: src/skins/ui_playlist.c:942
 msgid "Audacious Playlist Editor"
 msgstr "Audacious プレイリストエディタ"
 
-#: src/skins/ui_playlist.c:1207
+#: src/skins/ui_playlist.c:1004
 #, c-format
 msgid "%s (%d of %d)"
 msgstr ""
@@ -5479,7 +5484,7 @@ msgid "Search:"
 msgstr "年:"
 
 #: src/streambrowser/gui/streambrowser_win.c:93
-#: src/streambrowser/gui/streambrowser_win.c:371
+#: src/streambrowser/gui/streambrowser_win.c:368
 msgid "Add Bookmark"
 msgstr ""
 
@@ -5493,7 +5498,7 @@ msgstr "楽器名"
 msgid "Now playing"
 msgstr "新しいプレイリスト"
 
-#: src/streambrowser/gui/streambrowser_win.c:368
+#: src/streambrowser/gui/streambrowser_win.c:365
 #, fuzzy
 msgid "Remove Bookmark"
 msgstr "タグの削除"
@@ -5555,6 +5560,11 @@ msgstr "%s %.1f Hz"
 #: src/tonegen/tonegen.c:100
 msgid "Tone Generator: "
 msgstr "トーンジェネレータ: "
+
+#: src/unix-io/gtk.c:34
+#, fuzzy
+msgid "About File I/O Plugin"
+msgstr "ESounD プラグインについて"
 
 #: src/vorbis/configure.c:31
 msgid "Override generic titles"
@@ -5651,6 +5661,129 @@ msgstr ""
 "\n"
 "プラグインコードの一部は Miles Egan による\n"
 "Wavpack のサイト http://www.wavpack.com/ をご覧ください\n"
+
+#~ msgid "Can't jump to time when no track is being played.\n"
+#~ msgstr "再生されるトラックがない時間へは移動できません.\n"
+
+#~ msgid "minutes:seconds"
+#~ msgstr "分:秒"
+
+#~ msgid "Track length:"
+#~ msgstr "トラックの合計時間:"
+
+#~ msgid "Error writing playlist \"%s\": %s"
+#~ msgstr "プレイリスト \"%s\" を書き込む際にエラー: %s"
+
+#~ msgid "%s already exist. Continue?"
+#~ msgstr "%s は既に存在しています. 続行しますか？"
+
+#, fuzzy
+#~ msgid "Show main menu"
+#~ msgstr "メインウィンドウを表示する"
+
+#, fuzzy
+#~ msgid "Show/hide statusbar"
+#~ msgstr "プレイリストの保存"
+
+#, fuzzy
+#~ msgid "Import Playlist ..."
+#~ msgstr "プレイリストの読み込み"
+
+#, fuzzy
+#~ msgid "Export Playlist ..."
+#~ msgstr "プレイリストの読み込み"
+
+#, fuzzy
+#~ msgid "Refresh"
+#~ msgstr "リフレッシュレート"
+
+#, fuzzy
+#~ msgid "Refresh Selected"
+#~ msgstr "選択したエントリの削除"
+
+#, fuzzy
+#~ msgid "Refreshes metadata associated with selected entries."
+#~ msgstr "プレイリストのエントリに関連付けられたメタデータを更新します."
+
+#, fuzzy
+#~ msgid "Edit the playlist title."
+#~ msgstr "プレイリストの順序をランダムにします."
+
+#, fuzzy
+#~ msgid "By Formatted Title"
+#~ msgstr "タイトル"
+
+#, fuzzy
+#~ msgid "Components"
+#~ msgstr "コメント:"
+
+#~ msgid "Upload selected track(s)"
+#~ msgstr "選択されたトラックをアップロード"
+
+#~ msgid "MTP device handler"
+#~ msgstr "MTP デバイスハンドラ"
+
+#~ msgid "Audacious - visibility warning"
+#~ msgstr "Audacious - 可視警告"
+
+#~ msgid "Show main player window"
+#~ msgstr "メインウィンドウを表示する"
+
+#~ msgid "Ignore"
+#~ msgstr "無視"
+
+#~ msgid ""
+#~ "Audacious has been started with all of its windows hidden.\n"
+#~ "You may want to show the player window again to control Audacious; "
+#~ "otherwise, you'll have to control it remotely via audtool or enabled "
+#~ "plugins (such as the statusicon plugin)."
+#~ msgstr ""
+#~ "Audacious はすべてのウィンドウが隠された状態で開始されました．\n"
+#~ "再度プレイヤウィンドウを表示するか，そのまま Audacious を操作するために"
+#~ "は，audtool を用いるか statusicon のようなプラグインを有効にすることで遠隔"
+#~ "操作してください．"
+
+#~ msgid "Always ignore, show/hide is controlled remotely"
+#~ msgstr "常に無視し，表示する/隠す は遠隔操作する"
+
+#~ msgid "Audacious - broken GTK engine usage warning"
+#~ msgstr "Audacious - 壊れた GTK エンジンの使用警告"
+
+#~ msgid ""
+#~ "<big><b>Broken GTK engine in use</b></big>\n"
+#~ "\n"
+#~ "Audacious has detected that you are using a broken GTK engine.\n"
+#~ "\n"
+#~ "The theme engine you are using, <i>%s</i>, is incompatible with some of "
+#~ "the features used by modern skins. The incompatible features have been "
+#~ "disabled for this session.\n"
+#~ "\n"
+#~ "To use these features, please consider using a different GTK theme engine."
+#~ msgstr ""
+#~ "<big><b>壊れた GTK エンジンが使われています</b></big>\n"
+#~ "\n"
+#~ "Audacious は GTK エンジンが使われていることを検出しました.\n"
+#~ "\n"
+#~ "テーマエンジン <i>%s</i> は最近のスキンで用いられている特徴と非互換です.非"
+#~ "互換な特徴はこのセッションでは無効にされました.\n"
+#~ "\n"
+#~ "これらの特徴を用いるには, 他の GTK テーマエンジンを使うことを考慮してくだ"
+#~ "さい."
+
+#~ msgid "Do not display this warning again"
+#~ msgstr "次回からこの警告を表示しない"
+
+#~ msgid "Save as Static Playlist"
+#~ msgstr "スタティックプレイリストとして保存"
+
+#~ msgid "Use Relative Path"
+#~ msgstr "相対パスを使う"
+
+#~ msgid "Load Playlist"
+#~ msgstr "プレイリストの読み込み"
+
+#~ msgid "Save Playlist"
+#~ msgstr "プレイリストの保存"
 
 #~ msgid ""
 #~ "* Select ALSA output ports *\n"
@@ -6451,10 +6584,6 @@ msgstr ""
 #~ msgstr "プラグインについて"
 
 #, fuzzy
-#~ msgid "Output plugin"
-#~ msgstr "出力プラグインエラー\n"
-
-#, fuzzy
 #~ msgid "Throttle Output"
 #~ msgstr "aRts 出力プラグインについて"
 
@@ -6559,10 +6688,6 @@ msgstr ""
 
 #~ msgid "Saves the selected playlist to the default location."
 #~ msgstr "選択したプレイリストをデフォルト位置に保存します."
-
-#, fuzzy
-#~ msgid "_Rename"
-#~ msgstr "ファイル名"
 
 #, fuzzy
 #~ msgid "About Icecast-Plugin"
