@@ -2,6 +2,7 @@
  * Audacious: A cross-platform multimedia player
  * Copyright (c) 2006 William Pitcock, Tony Vroon, George Averill,
  *                    Giacomo Lozito, Derek Pomery and Yoshiki Yazawa.
+ * Copyright (c) 2011 John Lindgren
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,18 +41,14 @@
 
 #include "util.h"
 
-static gboolean playlist_load_pls (const gchar * filename, gchar * * title,
- struct index * filenames, struct index * tuples)
+static gboolean playlist_load_pls (const gchar * filename, VFSFile * file,
+ gchar * * title, struct index * filenames, struct index * tuples)
 {
     gint i, count;
     gchar line_key[16];
     gchar * line;
-    gchar *uri = NULL;
 
-    uri = g_filename_to_uri(filename, NULL, NULL);
-
-    INIFile *inifile = open_ini_file(uri ? uri : filename);
-    g_free(uri); uri = NULL;
+    INIFile * inifile = open_ini_file (file);
 
     * title = NULL;
 
@@ -80,19 +77,11 @@ static gboolean playlist_load_pls (const gchar * filename, gchar * * title,
     return TRUE;
 }
 
-static gboolean playlist_save_pls (const gchar * filename, const gchar * title,
- struct index * filenames, struct index * tuples)
+static gboolean playlist_save_pls (const gchar * filename, VFSFile * file,
+ const gchar * title, struct index * filenames, struct index * tuples)
 {
     gint entries = index_count (filenames);
-    gchar *uri = g_filename_to_uri(filename, NULL, NULL);
-    VFSFile *file = vfs_fopen(uri, "wb");
     gint count;
-
-    AUDDBG("filename=%s\n", filename);
-    AUDDBG("uri=%s\n", uri);
-
-    if (! file)
-        return FALSE;
 
     vfs_fprintf(file, "[playlist]\n");
     vfs_fprintf(file, "NumberOfEntries=%d\n", entries);
@@ -111,7 +100,6 @@ static gboolean playlist_save_pls (const gchar * filename, const gchar * title,
         g_free(fn);
     }
 
-    vfs_fclose(file);
     return TRUE;
 }
 

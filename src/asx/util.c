@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2009  Audacious development team
+ *  Copyright (C) 2005-2011  Audacious development team
  *
  *  Based on BMP:
  *  Copyright (C) 2003-2004  BMP development team.
@@ -26,7 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <audacious/plugin.h>
+#include <libaudcore/vfs.h>
 
 #include "util.h"
 
@@ -59,64 +59,20 @@ static void close_ini_file_free_section(gpointer section)
     g_hash_table_destroy((GHashTable *)section);
 }
 
-INIFile *open_ini_file(const gchar *filename)
+INIFile * open_ini_file (VFSFile * file)
 {
     GHashTable *ini_file = NULL;
     GHashTable *section = NULL;
     GString *section_name, *key_name, *value;
     gpointer section_hash, key_hash;
-    guchar * buffer = NULL;
     gsize off = 0;
-    gint64 filesize = 0;
 
-    unsigned char x[] = { 0xff, 0xfe, 0x00 };
-
-    g_return_val_if_fail(filename, NULL);
-
-    void * vbuf = NULL;
-    vfs_file_get_contents (filename, & vbuf, & filesize);
-    if (! vbuf)
+    gint64 filesize = vfs_fsize (file);
+    if (filesize < 1)
         return NULL;
-    buffer = vbuf;
 
-    /*
-     * Convert UTF-16 into something useful. Original implementation
-     * by incomp@#audacious. Cleanups \nenolod
-     * FIXME: can't we use a GLib function for that? -- 01mf02
-     */
-    if (filesize > 2 && !memcmp(&buffer[0], &x, 2))
-    {
-        guchar *outbuf = g_malloc (filesize); /* it's safe to waste memory. */
-        guint counter;
-
-        for (counter = 2; counter < filesize; counter += 2)
-        {
-            if (!memcmp(&buffer[counter + 1], &x[2], 1))
-            {
-                outbuf[(counter - 2) / 2] = buffer[counter];
-            }
-            else
-            {
-                g_free(buffer);
-                g_free(outbuf);
-                return NULL;
-            }
-        }
-
-        outbuf[(counter - 2) / 2] = '\0';
-
-        if ((filesize - 2) / 2 == (counter - 2) / 2)
-        {
-            g_free(buffer);
-            buffer = outbuf;
-        }
-        else
-        {
-            g_free(buffer);
-            g_free(outbuf);
-            return NULL;        /* XXX wrong encoding */
-        }
-    }
+    gchar * buffer = g_malloc (filesize);
+    filesize = vfs_fread (buffer, 1, filesize, file);
 
     section_name = g_string_new("");
     key_name = g_string_new(NULL);

@@ -33,55 +33,42 @@ static void strip_char (gchar * text, gchar c)
     gchar a;
 
     while ((a = * text ++))
-    {
         if (a != c)
             * set ++ = a;
-    }
 
     * set = 0;
 }
 
-static gchar * read_win_text (const gchar * path)
+static gchar * read_win_text (VFSFile * file)
 {
-    void * raw;
-    gint64 size;
-
-    vfs_file_get_contents (path, & raw, & size);
-
-    if (raw == NULL)
+    gint64 size = vfs_fsize (file);
+    if (size < 1)
         return NULL;
 
+    gchar * raw = g_malloc (size);
+    size = vfs_fread (raw, 1, size, file);
+
+    strip_char (raw, '\r');
     gchar * text = g_convert (raw, size, "UTF-8", "ISO-8859-1", NULL, NULL, NULL);
     g_free (raw);
-    strip_char (text, '\r');
     return text;
 }
 
 static gchar * split_line (gchar * line)
 {
     gchar * feed = strchr (line, '\n');
-
-    if (feed == NULL)
+    if (! feed)
         return NULL;
 
     * feed = 0;
     return feed + 1;
 }
 
-static gchar * convert_path (gchar * path, const gchar * base)
+static gboolean playlist_load_m3u (const gchar * path, VFSFile * file,
+ gchar * * title, struct index * filenames, struct index * tuples)
 {
-    if (strstr (path, "://") != NULL)
-        return g_strdup (path);
-
-    return aud_construct_uri (path, base);
-}
-
-static gboolean playlist_load_m3u (const gchar * path, gchar * * title,
- struct index * filenames, struct index * tuples)
-{
-    gchar * text = read_win_text (path);
-
-    if (text == NULL)
+    gchar * text = read_win_text (file);
+    if (! text)
         return FALSE;
 
     * title = NULL;
@@ -101,9 +88,8 @@ static gboolean playlist_load_m3u (const gchar * path, gchar * * title,
         if (* parse == '#')
             goto NEXT;
 
-        gchar * s = convert_path (parse, path);
-
-        if (s != NULL)
+        gchar * s = aud_construct_uri (parse, path);
+        if (s)
             index_append (filenames, s);
 
 NEXT:
@@ -114,19 +100,14 @@ NEXT:
     return TRUE;
 }
 
-static gboolean playlist_save_m3u (const gchar * filename, const gchar * title,
- struct index * filenames, struct index * tuples)
+static gboolean playlist_save_m3u (const gchar * path, VFSFile * file,
+ const gchar * title, struct index * filenames, struct index * tuples)
 {
-    VFSFile * file = vfs_fopen (filename, "w");
-    if (! file)
-        return FALSE;
-
     gint count = index_count (filenames);
 
     for (gint i = 0; i < count; i ++)
         vfs_fprintf (file, "%s\n", (const gchar *) index_get (filenames, i));
 
-    vfs_fclose (file);
     return TRUE;
 }
 

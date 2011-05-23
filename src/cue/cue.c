@@ -1,7 +1,7 @@
 /*
  * Audacious: A cross-platform multimedia player
  * Copyright (c) 2009 William Pitcock <nenolod@dereferenced.org>
- * Copyright (c) 2010 John Lindgren <john.lindgren@tds.net>
+ * Copyright (c) 2010-2011 John Lindgren <john.lindgren@tds.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-/* #define AUD_DEBUG 1 */
-
-#include <glib.h>
-#include <string.h>
-#include <glib.h>
-#include <glib/gprintf.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
-#include <audacious/debug.h>
 #include <audacious/misc.h>
-#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 
 #include <libcue/libcue.h>
@@ -69,17 +53,13 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, gint tuple_type, gint pti)
     tuple_associate_string(tuple, tuple_type, NULL, text);
 }
 
-static gboolean playlist_load_cue (const gchar * cue_filename, gchar * * title,
- struct index * filenames, struct index * tuples)
+static gboolean playlist_load_cue (const gchar * cue_filename, VFSFile * file,
+ gchar * * title, struct index * filenames, struct index * tuples)
 {
-    void * buffer;
-    gint64 size;
-    vfs_file_get_contents (cue_filename, & buffer, & size);
-    if (buffer == NULL)
-        return FALSE;
-
-    buffer = g_realloc (buffer, size + 1);
-    ((gchar *) buffer)[size] = 0;
+    gint64 size = vfs_fsize (file);
+    gchar * buffer = g_malloc (size + 1);
+    size = vfs_fread (buffer, 1, size, file);
+    buffer[size] = 0;
 
     * title = NULL;
 

@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2009  Audacious development team
+ *  Copyright (C) 2005-2011  Audacious development team
  *
  *  Based on BMP:
  *  Copyright (C) 2003-2004  BMP development team
@@ -26,11 +26,11 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <glib.h>
+#include <libaudcore/vfs.h>
 
 typedef GHashTable INIFile;
 
-INIFile *open_ini_file(const gchar *filename);
+INIFile * open_ini_file (VFSFile * file);
 void close_ini_file(INIFile *key_file);
 gchar *read_ini_string(INIFile *key_file, const gchar *section,
                        const gchar *key);

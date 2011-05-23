@@ -2,6 +2,7 @@
  * Audacious: A cross-platform multimedia player
  * Copyright (c) 2006 William Pitcock, Tony Vroon, George Averill,
  *                    Giacomo Lozito, Derek Pomery and Yoshiki Yazawa.
+ * Copyright (c) 2011 John Lindgren
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,40 +19,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-/* #define AUD_DEBUG 1 */
-
-#include <glib.h>
-#include <string.h>
-#include <glib.h>
-#include <glib/gprintf.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
-#include <audacious/debug.h>
 #include <audacious/misc.h>
-#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
 #include "util.h"
 
-static gboolean playlist_load_asx (const gchar * filename, gchar * * title,
- struct index * filenames, struct index * tuples)
+static gboolean playlist_load_asx (const gchar * filename, VFSFile * file,
+ gchar * * title, struct index * filenames, struct index * tuples)
 {
     gint i;
     gchar line_key[16];
     gchar * line;
-    gchar *uri = NULL;
 
-    uri = g_filename_to_uri(filename, NULL, NULL);
-
-    INIFile *inifile = open_ini_file(uri ? uri : filename);
-    g_free(uri); uri = NULL;
+    INIFile * inifile = open_ini_file (file);
 
     * title = NULL;
 
@@ -78,19 +59,11 @@ static gboolean playlist_load_asx (const gchar * filename, gchar * * title,
     return TRUE;
 }
 
-static gboolean playlist_save_asx (const gchar * filename, const gchar * title,
- struct index * filenames, struct index * tuples)
+static gboolean playlist_save_asx (const gchar * filename, VFSFile * file,
+ const gchar * title, struct index * filenames, struct index * tuples)
 {
     gint entries = index_count (filenames);
-    gchar *uri = g_filename_to_uri(filename, NULL, NULL);
-    VFSFile *file = vfs_fopen(uri, "wb");
     gint count;
-
-    AUDDBG("filename=%s\n", filename);
-    AUDDBG("uri=%s\n", uri);
-
-    if (! file)
-        return FALSE;
 
     vfs_fprintf(file, "[Reference]\r\n");
 
@@ -108,7 +81,6 @@ static gboolean playlist_save_asx (const gchar * filename, const gchar * title,
         g_free(fn);
     }
 
-    vfs_fclose(file);
     return TRUE;
 }
 

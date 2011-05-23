@@ -3,6 +3,7 @@
  * Copyright (c) 2006 William Pitcock, Tony Vroon, George Averill,
  *                    Giacomo Lozito, Derek Pomery, Yoshiki Yazawa
  *                    and Matti Hämäläinen.
+ * Copyright (c) 2011 John Lindgren
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,19 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-/* #define AUD_DEBUG 1 */
-
-#include <config.h>
-
-#include <glib.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
-
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/xmlreader.h>
@@ -40,9 +28,6 @@
 #include <libxml/xpathInternals.h>
 #include <libxml/uri.h>
 
-#include <audacious/debug.h>
-#include <audacious/misc.h>
-#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 
 #define XSPF_ROOT_NODE_NAME "playlist"
@@ -181,13 +166,6 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
 static void xspf_find_track (xmlNode * tracklist, const gchar * filename, const
  gchar * base, struct index * filenames, struct index * tuples)
 {
-    /* Preallocate space to avoid reallocs. */
-#if 0 /* Fix me: Find out what version of libxml2 this was added in. */
-    gint count = xmlChildElementCount (tracklist);
-    index_allocate (filenames, count);
-    index_allocate (tuples, count);
-#endif
-
     xmlNode *nptr;
 
     for (nptr = tracklist->children; nptr != NULL; nptr = nptr->next) {
@@ -209,16 +187,12 @@ static gint write_cb (void * file, const gchar * buf, gint len)
 
 static gint close_cb (void * file)
 {
-    return vfs_fclose (file);
+    return 0;
 }
 
-static gboolean xspf_playlist_load (const gchar * filename, gchar * * title,
- struct index * filenames, struct index * tuples)
+static gboolean xspf_playlist_load (const gchar * filename, VFSFile * file,
+ gchar * * title, struct index * filenames, struct index * tuples)
 {
-    VFSFile * file = vfs_fopen (filename, "r");
-    if (! file)
-        return FALSE;
-
     xmlDoc * doc = xmlReadIO (read_cb, close_cb, file, filename, NULL,
      XML_PARSE_RECOVER);
     if (! doc)
@@ -302,8 +276,8 @@ static void xspf_add_node(xmlNodePtr node, TupleValueType type,
 }
 
 
-static gboolean xspf_playlist_save (const gchar * filename, const gchar * title,
- struct index * filenames, struct index * tuples)
+static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
+ const gchar * title, struct index * filenames, struct index * tuples)
 {
     gint entries = index_count (filenames);
     xmlDocPtr doc;
@@ -320,7 +294,6 @@ static gboolean xspf_playlist_save (const gchar * filename, const gchar * title,
 
     /* common */
     xmlDocSetRootElement(doc, rootnode);
-    xspf_add_node(rootnode, TUPLE_STRING, FALSE, "creator", PACKAGE "-" VERSION, 0);
 
     if (title)
         xspf_add_node (rootnode, TUPLE_STRING, FALSE, "title", title, 0);
@@ -367,10 +340,6 @@ static gboolean xspf_playlist_save (const gchar * filename, const gchar * title,
             }
         }
     }
-
-    VFSFile * file = vfs_fopen (filename, "w");
-    if (! file)
-        goto ERR;
 
     xmlSaveCtxt * save = xmlSaveToIO (write_cb, close_cb, file, NULL,
      XML_SAVE_FORMAT);
