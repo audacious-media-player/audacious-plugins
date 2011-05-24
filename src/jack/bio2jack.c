@@ -1012,11 +1012,11 @@ JACK_OpenDevice(jack_driver_t * drv)
 
   /* try to become a client of the JACK server */
   TRACE("client name '%s'\n", our_client_name);
-  if((drv->client = jack_client_new(our_client_name)) == 0)
+  if((drv->client = jack_client_open(our_client_name, JackNullOption | JackNoStartServer, NULL)) == 0)
   {
     /* try once more */
     TRACE("trying once more to jack_client_new");
-    if((drv->client = jack_client_new(our_client_name)) == 0)
+    if((drv->client = jack_client_open(our_client_name, JackNullOption | JackNoStartServer, NULL)) == 0)
     {
       ERR("jack server not running?\n");
       free(our_client_name);
