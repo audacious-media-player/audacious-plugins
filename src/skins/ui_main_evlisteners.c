@@ -18,7 +18,6 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include <glib.h>
 #include <math.h>
 
 #include <audacious/audconfig.h>
@@ -27,13 +26,13 @@
 #include <libaudcore/hook.h>
 
 #include "skins_cfg.h"
-#include "ui_equalizer.h"
 #include "ui_main.h"
+#include "ui_main_evlisteners.h"
 #include "ui_manager.h"
-#include "ui_playlist.h"
+#include "ui_skin.h"
 #include "ui_skinned_playstatus.h"
-#include "ui_skinned_textbox.h"
-#include "ui_skinned_window.h"
+#include "ui_svis.h"
+#include "ui_vis.h"
 #include "util.h"
 
 static void ui_main_evlistener_title_change (void * data, void * user_data)

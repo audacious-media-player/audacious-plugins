@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -28,9 +29,9 @@
 
 #include <libaudcore/audstrings.h>
 
-#include "ui_skinned_textbox.h"
 #include "skins_cfg.h"
-#include "plugin.h"
+#include "ui_main.h"
+#include "ui_skinned_textbox.h"
 #include "util.h"
 
 #define UI_SKINNED_TEXTBOX_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_textbox_get_type(), UiSkinnedTextboxPrivate))
@@ -370,12 +371,12 @@ static gboolean ui_skinned_textbox_expose(GtkWidget *widget, GdkEventExpose *eve
             }
         }
 
-        ui_skinned_widget_draw_with_coordinates(widget, obj, textbox->width, textbox->height,
-                                                widget->allocation.x,
-                                                widget->allocation.y,
-                                                priv->scaled);
+        cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
+        pixbuf_draw (cr, obj, widget->allocation.x, widget->allocation.y,
+         priv->scaled);
+        cairo_destroy (cr);
 
-        g_object_unref(obj);
+        g_object_unref (obj);
     }
 
     return FALSE;

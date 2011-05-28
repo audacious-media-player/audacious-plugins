@@ -30,10 +30,6 @@
 #include <gtk/gtk.h>
 #include "ui_skin.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define UI_SKINNED_HORIZONTAL_SLIDER(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_horizontal_slider_get_type (), UiSkinnedHorizontalSlider)
 #define UI_SKINNED_HORIZONTAL_SLIDER_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_horizontal_slider_get_type (), UiSkinnedHorizontalSliderClass)
 #define UI_SKINNED_IS_HORIZONTAL_SLIDER(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_horizontal_slider_get_type ())
@@ -61,9 +57,5 @@ GtkWidget* ui_skinned_horizontal_slider_new(GtkWidget *fixed, gint x, gint y, gi
 GType ui_skinned_horizontal_slider_get_type(void);
 void ui_skinned_horizontal_slider_set_position(GtkWidget *widget, gint pos);
 gint ui_skinned_horizontal_slider_get_position(GtkWidget *widget);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* AUDACIOUS_UI_SKINNED_HORIZONTAL_SLIDER_H */

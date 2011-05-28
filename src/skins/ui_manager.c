@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2007  Audacious development team.
+ *  Copyright (C) 2005-2011  Audacious development team.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,31 +17,18 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#include <limits.h>
-
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
-
-#include "ui_manager.h"
-#include "actions-mainwin.h"
-#include "actions-playlist.h"
-#include "actions-equalizer.h"
-
-/* TODO ui_main.h is only included because ui_manager.c needs the values of
-   TimerMode enum; move that enum elsewhere so we can get rid of this include */
-#include "ui_main.h"
-
-#if 0
-#include "sync-menu.h"
-#endif
-#include "plugin.h"
-#include "skins_cfg.h"
-
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
+
+#include "actions-equalizer.h"
+#include "actions-mainwin.h"
+#include "actions-playlist.h"
+#include "config.h"
+#include "skins_cfg.h"
+#include "ui_main.h"
+#include "ui_manager.h"
 
 static GtkUIManager *ui_manager = NULL;
 static GList * attached_menus = NULL;
@@ -491,7 +478,7 @@ static GtkActionGroup *
 ui_manager_new_action_group( const gchar * group_name )
 {
   GtkActionGroup *group = gtk_action_group_new( group_name );
-  gtk_action_group_set_translation_domain( group , PACKAGE_NAME );
+  gtk_action_group_set_translation_domain (group, PACKAGE);
   return group;
 }
 

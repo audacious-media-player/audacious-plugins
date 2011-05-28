@@ -21,7 +21,6 @@
 #ifndef SKINS_CFG_H
 #define SKINS_CFG_H
 
-#include <glib.h>
 #include <gtk/gtk.h>
 
 #define MAINWIN_DEFAULT_POS_X    20

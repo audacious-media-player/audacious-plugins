@@ -23,46 +23,30 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-/* #define AUD_DEBUG 1 */
-
-#include "ui_playlist.h"
-
-#include <glib.h>
-#include <gdk/gdk.h>
-#include <gdk/gdkkeysyms.h>
-#include <gtk/gtk.h>
-#include <string.h>
-
-#include "platform/smartinclude.h"
-
 #include <inttypes.h>
-#include <unistd.h>
-#include <errno.h>
 
-#include <audacious/audconfig.h>
+#include <gdk/gdkkeysyms.h>
+
 #include <audacious/debug.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
-#include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
-#include "actions-playlist.h"
+#include "config.h"
 #include "dnd.h"
-#include "plugin.h"
+#include "skins_cfg.h"
 #include "ui_dock.h"
-#include "ui_equalizer.h"
-#include "ui_main.h"
 #include "ui_manager.h"
-#include "util.h"
-#include "ui_skinned_window.h"
+#include "ui_playlist.h"
 #include "ui_skinned_button.h"
-#include "ui_skinned_textbox.h"
-#include "ui_skinned_playlist_slider.h"
 #include "ui_skinned_playlist.h"
+#include "ui_skinned_playlist_slider.h"
+#include "ui_skinned_textbox.h"
+#include "ui_skinned_window.h"
+#include "util.h"
 
 #include "images/audacious_playlist.xpm"
 

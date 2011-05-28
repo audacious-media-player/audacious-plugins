@@ -23,10 +23,6 @@
 
 #include <gtk/gtk.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define UI_SVIS(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_svis_get_type (), UiSVis)
 #define UI_SVIS_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_svis_get_type (), UiSVisClass)
 #define UI_IS_SVIS(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_svis_get_type ())
@@ -55,9 +51,5 @@ GtkWidget* ui_svis_new (GtkWidget *fixed, gint x, gint y);
 GType ui_svis_get_type(void);
 void ui_svis_clear_data(GtkWidget *widget);
 void ui_svis_timeout_func(GtkWidget *widget, guchar * data);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

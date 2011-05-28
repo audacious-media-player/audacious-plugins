@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -29,10 +30,6 @@
 
 #include <gtk/gtk.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define UI_SKINNED_PLAYLIST_SLIDER(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_playlist_slider_get_type (), UiSkinnedPlaylistSlider)
 #define UI_SKINNED_PLAYLIST_SLIDER_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_playlist_slider_get_type (), UiSkinnedPlaylistSliderClass)
 #define UI_SKINNED_IS_PLAYLIST_SLIDER(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_playlist_slider_get_type ())
@@ -56,9 +53,5 @@ GType ui_skinned_playlist_slider_get_type(void);
 void ui_skinned_playlist_slider_move_relative(GtkWidget *widget, gint x);
 void ui_skinned_playlist_slider_resize_relative(GtkWidget *widget, gint h);
 void ui_skinned_playlist_slider_update (GtkWidget * widget);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* AUDACIOUS_UI_SKINNED_PLAYLIST_SLIDER_H */

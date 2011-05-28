@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -24,11 +25,11 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "ui_skinned_horizontal_slider.h"
-#include "skins_cfg.h"
-#include "util.h"
-
 #include <math.h>
+
+#include "skins_cfg.h"
+#include "ui_skinned_horizontal_slider.h"
+#include "util.h"
 
 #define UI_SKINNED_HORIZONTAL_SLIDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_horizontal_slider_get_type(), UiSkinnedHorizontalSliderPrivate))
 typedef struct _UiSkinnedHorizontalSliderPrivate UiSkinnedHorizontalSliderPrivate;
@@ -301,13 +302,12 @@ static gboolean ui_skinned_horizontal_slider_expose(GtkWidget *widget, GdkEventE
                          ((priv->height - priv->knob_height) / 2),
                          priv->knob_width, priv->knob_height);
 
-    ui_skinned_widget_draw_with_coordinates(widget, obj, priv->width, priv->height,
-                                            widget->allocation.x,
-                                            widget->allocation.y,
-                                            priv->scaled);
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
+    pixbuf_draw (cr, obj, widget->allocation.x, widget->allocation.y,
+     priv->scaled);
+    cairo_destroy (cr);
 
-    g_object_unref(obj);
-
+    g_object_unref (obj);
     return FALSE;
 }
 

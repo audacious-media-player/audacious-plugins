@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2008 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,30 +19,26 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include <stdlib.h>
-
-#include <gtk/gtk.h>
-
 #include <audacious/configdb.h>
 #include <audacious/debug.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/preferences.h>
 #include <libaudcore/audstrings.h>
 
+#include "config.h"
+#include "dnd.h"
 #include "skins_cfg.h"
 #include "ui_dock.h"
-#include "ui_skin.h"
-#include "ui_vis.h"
+#include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_playlist.h"
-#include "ui_skinned_window.h"
-#include "ui_skinned_textbox.h"
+#include "ui_skin.h"
 #include "ui_skinned_playlist.h"
+#include "ui_skinned_textbox.h"
+#include "ui_skinned_window.h"
 #include "ui_skinselector.h"
-#include "plugin.h"
-#include "dnd.h"
+#include "ui_vis.h"
 #include "util.h"
 
 skins_cfg_t config;
@@ -459,7 +456,7 @@ create_colorize_settings(void)
 
     colorize_close = gtk_button_new_from_stock("gtk-close");
     gtk_container_add(GTK_CONTAINER(hbuttonbox), colorize_close);
-    GTK_WIDGET_SET_FLAGS(colorize_close, GTK_CAN_DEFAULT);
+    gtk_widget_set_can_default (colorize_close, TRUE);
 
     g_signal_connect((gpointer) red_scale, "value_changed",
                      G_CALLBACK(on_red_scale_value_changed),
@@ -502,12 +499,13 @@ on_skin_view_drag_data_received(GtkWidget * widget,
     mcs_handle_t *db;
     gchar *path;
 
-    if (!selection_data->data) {
+    if (! gtk_selection_data_get_data (selection_data))
+    {
         g_warning("DND data string is NULL");
         return;
     }
 
-    path = (gchar *) selection_data->data;
+    path = (gchar *) gtk_selection_data_get_data (selection_data);
 
     /* FIXME: use a real URL validator/parser */
 

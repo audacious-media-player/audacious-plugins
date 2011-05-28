@@ -1,5 +1,5 @@
 /*  Audacious
- *  Copyright (C) 2005-2007  Audacious development team.
+ *  Copyright (C) 2005-2011  Audacious development team.
  *
  *  BMP - Cross-platform multimedia player
  *  Copyright (C) 2003-2004  BMP development team.
@@ -23,43 +23,23 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-/*#define AUD_DEBUG*/
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
-
-/* TODO: enforce default sizes! */
-
-#include <glib.h>
-
-#include <ctype.h>
-#include <libgen.h>
-#include <limits.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #include <audacious/debug.h>
 #include <audacious/misc.h>
-#include <audacious/plugin.h>
 
-#include "plugin.h"
-#include "ui_skin.h"
-#include "util.h"
-#include "ui_main.h"
-#include "ui_equalizer.h"
-#include "ui_playlist.h"
-#include "ui_skinselector.h"
 #include "debug.h"
-
-#include "platform/smartinclude.h"
-
-#include "ui_skinned_window.h"
-#include "ui_skinned_button.h"
+#include "plugin.h"
+#include "ui_equalizer.h"
+#include "ui_main.h"
+#include "ui_playlist.h"
+#include "ui_skin.h"
 #include "ui_skinned_number.h"
-#include "ui_skinned_horizontal_slider.h"
 #include "ui_skinned_playstatus.h"
+#include "ui_skinned_window.h"
+#include "ui_skinselector.h"
+#include "util.h"
 
 #define EXTENSION_TARGETS 7
 
@@ -149,11 +129,13 @@ static const guchar skin_default_viscolor[24][3] = {
 
 static gchar *original_gtk_theme = NULL;
 
+#ifdef SKIN_HAVE_MASKS
 static GdkBitmap *skin_create_transparent_mask(const gchar *,
                                                const gchar *,
                                                const gchar *,
                                                GdkWindow *,
                                                gint, gint, gboolean);
+#endif
 
 static void skin_set_default_vis_color(Skin * skin);
 
@@ -235,6 +217,7 @@ skin_free(Skin * skin)
     for (i = 0; i < SKIN_PIXMAP_COUNT; i++)
         skin_pixmap_free(&skin->pixmaps[i]);
 
+#ifdef SKIN_HAVE_MASKS
     for (i = 0; i < SKIN_MASK_COUNT; i++) {
         if (skin->masks[i])
             g_object_unref(skin->masks[i]);
@@ -244,6 +227,7 @@ skin_free(Skin * skin)
         skin->masks[i] = NULL;
         skin->scaled_masks[i] = NULL;
     }
+#endif
 
     for (i = 0; i < SKIN_COLOR_COUNT; i++) {
         if (skin->colors[i])
@@ -431,11 +415,9 @@ skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const gchar * path_p)
     return TRUE;
 }
 
-void
-skin_mask_create(Skin * skin,
-                 const gchar * path,
-                 gint id,
-                 GdkWindow * window)
+#ifdef SKIN_HAVE_MASKS
+static void skin_mask_create (Skin * skin, const gchar * path, gint id,
+ GdkWindow * window)
 {
     skin->masks[id] =
         skin_create_transparent_mask(path, "region.txt",
@@ -466,21 +448,20 @@ create_default_mask(GdkWindow * parent, gint w, gint h)
 
     return ret;
 }
-
-static void
-skin_query_color(GdkColormap * cm, GdkColor * c)
-{
-#ifdef GDK_WINDOWING_X11
-    XColor xc = { 0,0,0,0,0,0 };
-
-    xc.pixel = c->pixel;
-    XQueryColor(GDK_COLORMAP_XDISPLAY(cm), GDK_COLORMAP_XCOLORMAP(cm), &xc);
-    c->red = xc.red;
-    c->green = xc.green;
-    c->blue = xc.blue;
-#else
-    /* do nothing. see what breaks? */
 #endif
+
+static void pixbuf_get_pixel_color (GdkPixbuf * p, gint x, gint y, GdkColor * c)
+{
+    g_return_if_fail (p);
+    g_return_if_fail (x >= 0 && x < gdk_pixbuf_get_width (p));
+    g_return_if_fail (y >= 0 && y < gdk_pixbuf_get_height (p));
+
+    guchar * b = gdk_pixbuf_get_pixels (p) + gdk_pixbuf_get_rowstride (p) * y +
+     gdk_pixbuf_get_n_channels (p) * x;
+
+    c->red = ((guint16) b[0]) << 8;
+    c->green = ((guint16) b[1]) << 8;
+    c->blue = ((guint16) b[2]) << 8;
 }
 
 static glong
@@ -489,50 +470,32 @@ skin_calc_luminance(GdkColor * c)
     return (0.212671 * c->red + 0.715160 * c->green + 0.072169 * c->blue);
 }
 
-static void
-skin_get_textcolors(GdkPixbuf * pix, GdkColor * bgc, GdkColor * fgc)
+static void skin_get_textcolors (GdkPixbuf * p, GdkColor * bgc, GdkColor * fgc)
 {
     /*
      * Try to extract reasonable background and foreground colors
      * from the font pixmap
      */
+    g_return_if_fail (p);
 
-    GdkImage *gi;
-    GdkColormap *cm;
-    gint i;
-
-    g_return_if_fail(pix != NULL);
-
-    GdkPixmap *text = gdk_pixmap_new(NULL, gdk_pixbuf_get_width(pix), gdk_pixbuf_get_height(pix), gdk_rgb_get_visual()->depth);
-    gdk_draw_pixbuf(text, NULL, pix, 0, 0, 0, 0, gdk_pixbuf_get_width(pix), gdk_pixbuf_get_height(pix),
-                    GDK_RGB_DITHER_NONE, 0, 0);
-    /* Get the first line of text */
-    gi = gdk_drawable_get_image(text, 0, 0, 152, 6);
-    cm = gdk_colormap_get_system();
-
-    for (i = 0; i < 6; i++) {
-        GdkColor c;
-        gint x;
-        glong d, max_d;
-
+    for (gint i = 0; i < 6; i ++)
+    {
         /* Get a pixel from the middle of the space character */
-        bgc[i].pixel = gdk_image_get_pixel(gi, 151, i);
-        skin_query_color(cm, &bgc[i]);
+        pixbuf_get_pixel_color (p, 151, i, & bgc[i]);
 
-        max_d = 0;
-        for (x = 1; x < 150; x++) {
-            c.pixel = gdk_image_get_pixel(gi, x, i);
-            skin_query_color(cm, &c);
+        gint max_d = 0;
+        for (gint x = 1; x < 150; x ++)
+        {
+            GdkColor c;
+            pixbuf_get_pixel_color (p, x, i, & c);
 
-            d = labs(skin_calc_luminance(&c) - skin_calc_luminance(&bgc[i]));
+            gint d = labs(skin_calc_luminance(&c) - skin_calc_luminance(&bgc[i]));
             if (d > max_d) {
                 memcpy(&fgc[i], &c, sizeof(GdkColor));
                 max_d = d;
             }
         }
     }
-    g_object_unref(gi);
-    g_object_unref(text);
 }
 
 gboolean
@@ -1268,8 +1231,7 @@ skin_load_color(INIFile *inifile,
     return color;
 }
 
-
-
+#ifdef SKIN_HAVE_MASKS
 GdkBitmap *
 skin_create_transparent_mask(const gchar * path,
                              const gchar * file,
@@ -1352,6 +1314,7 @@ skin_create_transparent_mask(const gchar * path,
 
     return mask;
 }
+#endif
 
 static void skin_load_viscolor (Skin * skin, const gchar * path, const gchar *
  basename)
@@ -1461,11 +1424,12 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
     if (filename)
         g_free(filename);
 
+#ifdef SKIN_HAVE_MASKS
     skin_mask_create(skin, path, SKIN_MASK_MAIN, mainwin->window);
     skin_mask_create(skin, path, SKIN_MASK_MAIN_SHADE, mainwin->window);
-
     skin_mask_create(skin, path, SKIN_MASK_EQ, equalizerwin->window);
     skin_mask_create(skin, path, SKIN_MASK_EQ_SHADE, equalizerwin->window);
+#endif
 
     skin_load_viscolor(skin, path, "viscolor.txt");
 
@@ -1686,6 +1650,7 @@ skin_reload(Skin * skin)
     skin_load_nolock(skin, skin->path, TRUE);
 }
 
+#ifdef SKIN_HAVE_MASKS
 GdkBitmap *
 skin_get_mask(Skin * skin, SkinMaskId mi)
 {
@@ -1697,6 +1662,7 @@ skin_get_mask(Skin * skin, SkinMaskId mi)
     masks = config.scaled ? skin->scaled_masks : skin->masks;
     return masks[mi];
 }
+#endif
 
 GdkColor *
 skin_get_color(Skin * skin, SkinColorId color_id)
@@ -2041,19 +2007,21 @@ skin_set_random_skin(void)
     aud_active_skin_load(node->path);
 }
 
-void ui_skinned_widget_draw_with_coordinates(GtkWidget *widget, GdkPixbuf *obj, gint width, gint height, gint destx, gint desty, gboolean scale) {
-    g_return_if_fail(widget != NULL);
-    g_return_if_fail(obj != NULL);
+void pixbuf_draw (cairo_t * cr, GdkPixbuf * p, gint x, gint y, gboolean scale)
+{
+    g_return_if_fail (cr && p);
 
-    if (scale) {
-        GdkPixbuf *image = gdk_pixbuf_scale_simple(obj, width * config.scale_factor, height* config.scale_factor, GDK_INTERP_NEAREST);
-        gdk_draw_pixbuf(widget->window, NULL, image, 0, 0, destx, desty, width * config.scale_factor , height * config.scale_factor, GDK_RGB_DITHER_NONE, 0, 0);
-        g_object_unref(image);
-    } else {
-        gdk_draw_pixbuf(widget->window, NULL, obj, 0, 0, destx, desty, width, height, GDK_RGB_DITHER_NONE, 0, 0);
+    if (scale)
+    {
+        GdkPixbuf * p2 = gdk_pixbuf_scale_simple (p, gdk_pixbuf_get_width (p) *
+         2, gdk_pixbuf_get_height (p) * 2, GDK_INTERP_NEAREST);
+        gdk_cairo_set_source_pixbuf (cr, p2, x, y);
+        cairo_paint (cr);
+        g_object_unref (p2);
     }
-}
-
-void ui_skinned_widget_draw(GtkWidget *widget, GdkPixbuf *obj, gint width, gint height, gboolean scale) {
-    ui_skinned_widget_draw_with_coordinates(widget, obj, width, height, 0, 0, scale);
+    else
+    {
+        gdk_cairo_set_source_pixbuf (cr, p, x, y);
+        cairo_paint (cr);
+    }
 }

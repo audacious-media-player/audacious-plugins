@@ -30,10 +30,6 @@
 #include <gtk/gtk.h>
 #include "ui_skin.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define UI_SKINNED_MONOSTEREO(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_monostereo_get_type (), UiSkinnedMonoStereo)
 #define UI_SKINNED_MONOSTEREO_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_monostereo_get_type (), UiSkinnedMonoStereoClass)
 #define UI_SKINNED_IS_MONOSTEREO(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_monostereo_get_type ())
@@ -58,9 +54,5 @@ struct _UiSkinnedMonoStereoClass {
 GtkWidget* ui_skinned_monostereo_new (GtkWidget *fixed, gint x, gint y, SkinPixmapId si);
 GType ui_skinned_monostereo_get_type(void);
 void ui_skinned_monostereo_set_num_channels(GtkWidget *widget, gint nch);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* AUDACIOUS_UI_SKINNED_MONOSTEREO_H */

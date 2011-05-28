@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -25,11 +26,6 @@
 #define AUDACIOUS_UI_SKINNED_EQUALIZER_SLIDER_H
 
 #include <gtk/gtk.h>
-#include "ui_skin.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #define UI_SKINNED_EQUALIZER_SLIDER(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_equalizer_slider_get_type (), UiSkinnedEqualizerSlider)
 #define UI_SKINNED_EQUALIZER_SLIDER_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_equalizer_slider_get_type (),  UiSkinnedEqualizerSliderClass)
@@ -53,9 +49,5 @@ GtkWidget* ui_skinned_equalizer_slider_new(GtkWidget *fixed, gint x, gint y);
 GType ui_skinned_equalizer_slider_get_type(void);
 void ui_skinned_equalizer_slider_set_position(GtkWidget *widget, gfloat pos);
 gfloat ui_skinned_equalizer_slider_get_position(GtkWidget *widget);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* AUDACIOUS_UI_SKINNED_EQUALIZER_SLIDER_H */

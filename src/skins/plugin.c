@@ -18,24 +18,22 @@
  * Audacious or using our public API to be a derived work.
  */
 
+#include <audacious/drct.h>
+#include <audacious/i18n.h>
+#include <audacious/plugin.h>
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
+#include "config.h"
 #include "plugin.h"
 #include "skins_cfg.h"
 #include "ui_dock.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
-#include "ui_skin.h"
-#include "ui_manager.h"
 #include "ui_main_evlisteners.h"
-
-#include <audacious/audconfig.h>
-#include <audacious/drct.h>
-#include <audacious/i18n.h>
-#include <audacious/misc.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
-
-#include <libintl.h>
+#include "ui_manager.h"
+#include "ui_playlist.h"
+#include "ui_skin.h"
 
 gchar * skins_paths[SKINS_PATH_COUNT];
 

@@ -26,7 +26,6 @@
 #include <gtk/gtk.h>
 
 #include "ui_vis.h"
-#include "ui_svis.h"
 
 /* yes, main window size is fixed */
 #define MAINWIN_WIDTH            (gint)275

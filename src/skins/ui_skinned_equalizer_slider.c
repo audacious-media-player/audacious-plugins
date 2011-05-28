@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -21,14 +22,14 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses>.
  */
 
-#include "config.h"
-
 #include <audacious/i18n.h>
+#include <audacious/types.h>
 
-#include "ui_skin.h"
+#include "config.h"
+#include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
-#include "skins_cfg.h"
+#include "ui_skin.h"
 #include "ui_skinned_equalizer_slider.h"
 #include "util.h"
 
@@ -262,13 +263,12 @@ static gboolean ui_skinned_equalizer_slider_expose(GtkWidget *widget, GdkEventEx
     else
         skin_draw_pixbuf(widget, aud_active_skin, obj, priv->skin_index, 0, 164, 1, priv->position, 11, 11);
 
-    ui_skinned_widget_draw_with_coordinates(widget, obj, priv->width, priv->height,
-                                            widget->allocation.x,
-                                            widget->allocation.y,
-                                            priv->scaled);
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
+    pixbuf_draw (cr, obj, widget->allocation.x, widget->allocation.y,
+     priv->scaled);
+    cairo_destroy (cr);
 
-    g_object_unref(obj);
-
+    g_object_unref (obj);
     return FALSE;
 }
 

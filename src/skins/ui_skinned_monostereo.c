@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -24,9 +25,8 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "ui_skin.h"
-#include "ui_skinned_monostereo.h"
 #include "skins_cfg.h"
+#include "ui_skinned_monostereo.h"
 #include "util.h"
 
 enum {
@@ -163,13 +163,12 @@ static gboolean ui_skinned_monostereo_expose(GtkWidget *widget, GdkEventExpose *
         break;
     }
 
-    ui_skinned_widget_draw_with_coordinates(widget, obj, monostereo->width, monostereo->height,
-                                            widget->allocation.x,
-                                            widget->allocation.y,
-                                            monostereo->scaled);
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
+    pixbuf_draw (cr, obj, widget->allocation.x, widget->allocation.y,
+     monostereo->scaled);
+    cairo_destroy (cr);
 
-    g_object_unref(obj);
-
+    g_object_unref (obj);
     return FALSE;
 }
 

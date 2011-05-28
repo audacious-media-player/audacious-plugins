@@ -30,10 +30,6 @@
 #include <gtk/gtk.h>
 #include "ui_skin.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define UI_SKINNED_EQUALIZER_GRAPH(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_equalizer_graph_get_type (), UiSkinnedEqualizerGraph)
 #define UI_SKINNED_EQUALIZER_GRAPH_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_equalizer_graph_get_type (), UiSkinnedEqualizerGraphClass)
 #define UI_SKINNED_IS_EQUALIZER_GRAPH(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_equalizer_graph_get_type ())
@@ -56,9 +52,5 @@ struct _UiSkinnedEqualizerGraphClass {
 
 GtkWidget* ui_skinned_equalizer_graph_new(GtkWidget *fixed, gint x, gint y);
 void ui_skinned_equalizer_graph_update (GtkWidget * graph);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* AUDACIOUS_UI_SKINNED_EQUALIZER_GRAPH_H */

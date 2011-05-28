@@ -20,7 +20,6 @@
 #ifndef AUDACIOUS_ACTIONS_MAINWIN_H
 #define AUDACIOUS_ACTIONS_MAINWIN_H
 
-#include <glib.h>
 #include <gtk/gtk.h>
 
 /* actions below are handled in mainwin.c */

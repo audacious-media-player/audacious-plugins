@@ -20,25 +20,16 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
-
-#include "ui_skinselector.h"
-
-#include <glib.h>
-#include <gtk/gtk.h>
-
-#include "platform/smartinclude.h"
-
 #include <stdlib.h>
 #include <string.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 
+#include "config.h"
 #include "plugin.h"
 #include "ui_skin.h"
+#include "ui_skinselector.h"
 #include "util.h"
 
 #define EXTENSION_TARGETS 7

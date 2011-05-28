@@ -1,6 +1,7 @@
 /*
  * Audacious: A cross-platform multimedia player
  * Copyright (c) 2007 William Pitcock <nenolod -at- sacredspiral.co.uk>
+ * Copyright (c) 2011 John Lindgren
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +19,13 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include <gtk/gtkmain.h>
-#include <glib-object.h>
-#include <glib/gmacros.h>
-#include <gtk/gtkmarshal.h>
-#include <gtk/gtkwindow.h>
 #include <string.h>
-#include <audacious/plugin.h>
-#include "platform/smartinclude.h"
-#include "ui_skin.h"
+
 #include "skins_cfg.h"
 #include "ui_dock.h"
-#include "ui_skinned_window.h"
-#include "ui_main.h"
 #include "ui_playlist.h"
+#include "ui_skin.h"
+#include "ui_skinned_window.h"
 
 static void ui_skinned_window_class_init(SkinnedWindowClass *klass);
 static void ui_skinned_window_init(GtkWidget *widget);
@@ -70,7 +64,6 @@ ui_skinned_window_get_type(void)
 static void
 ui_skinned_window_map(GtkWidget *widget)
 {
-    gdk_window_set_back_pixmap (widget->window, 0, 0);
     (* GTK_WIDGET_CLASS (parent)->map) (widget);
     gtk_window_set_keep_above(GTK_WINDOW(widget), config.always_on_top);
 }
@@ -170,11 +163,11 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
             break;
     }
 
-    ui_skinned_widget_draw(widget, obj, width, height,
-                           window->type != WINDOW_PLAYLIST && config.scaled);
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
+    pixbuf_draw (cr, obj, 0, 0, config.scaled && window->type != WINDOW_PLAYLIST);
+    cairo_destroy (cr);
 
-    g_object_unref(obj);
-
+    g_object_unref (obj);
     return FALSE;
 }
 

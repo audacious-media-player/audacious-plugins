@@ -24,20 +24,17 @@
  * Audacious or using our public API to be a derived work.
  */
 
+#include <string.h>
+
+#include <gtk/gtk.h>
+
+#include <audacious/drct.h>
+
+#include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_svis.h"
 #include "ui_vis.h"
 #include "util.h"
-#include "skins_cfg.h"
-
-#include <string.h>
-#include <ctype.h>
-#include <gtk/gtkmain.h>
-#include <gtk/gtkmarshal.h>
-#include <gtk/gtkimage.h>
-
-#include <audacious/drct.h>
-#include <audacious/plugin.h>
 
 #define UI_TYPE_SVIS           (ui_svis_get_type())
 

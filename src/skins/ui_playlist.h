@@ -23,11 +23,9 @@
 #ifndef AUDACIOUS_UI_PLAYLIST_H
 #define AUDACIOUS_UI_PLAYLIST_H
 
-#include <glib.h>
+#include <gtk/gtk.h>
 
 #include "ui_main.h"
-#include <audacious/plugin.h>
-#include "skins_cfg.h"
 
 #define PLAYLISTWIN_FRAME_TOP_HEIGHT    20
 #define PLAYLISTWIN_FRAME_BOTTOM_HEIGHT 38

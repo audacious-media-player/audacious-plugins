@@ -23,7 +23,6 @@
 #ifndef AUDACIOUS_UI_SKINSELECTOR_H
 #define AUDACIOUS_UI_SKINSELECTOR_H
 
-#include <glib.h>
 #include <gtk/gtk.h>
 
 #define SKIN_NODE(x)  ((SkinNode *)(x))

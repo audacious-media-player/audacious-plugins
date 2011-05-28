@@ -30,10 +30,6 @@
 #include <gtk/gtk.h>
 #include "ui_skin.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define UI_SKINNED_TEXTBOX(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_textbox_get_type (), UiSkinnedTextbox)
 #define UI_SKINNED_TEXTBOX_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_textbox_get_type (), UiSkinnedTextboxClass)
 #define UI_SKINNED_IS_TEXTBOX(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_textbox_get_type ())
@@ -63,9 +59,5 @@ void ui_skinned_textbox_set_xfont(GtkWidget *widget, gboolean use_xfont, const g
 void ui_skinned_textbox_set_text(GtkWidget *widget, const gchar *text);
 void ui_skinned_textbox_set_scroll(GtkWidget *widget, gboolean scroll);
 void ui_skinned_textbox_move_relative(GtkWidget *widget, gint x, gint y);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* AUDACIOUS_UI_SKINNED_TEXTBOX_H */

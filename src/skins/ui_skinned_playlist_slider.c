@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -24,10 +25,10 @@
  * Audacious or using our public API to be a derived work.
  */
 
+#include "ui_playlist.h"
 #include "ui_skin.h"
 #include "ui_skinned_playlist.h"
 #include "ui_skinned_playlist_slider.h"
-#include "ui_playlist.h"
 #include "util.h"
 
 #define UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_playlist_slider_get_type(), UiSkinnedPlaylistSliderPrivate))
@@ -225,10 +226,11 @@ static gboolean ui_skinned_playlist_slider_expose(GtkWidget *widget, GdkEventExp
     /* drawing knob */
     skin_draw_pixbuf(widget, aud_active_skin, obj, priv->skin_index, ps->pressed ? 61 : 52, 53, 0, y, priv->width, 18);
 
-    ui_skinned_widget_draw(widget, obj, priv->width, priv->height, FALSE);
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
+    pixbuf_draw (cr, obj, 0, 0, FALSE);
+    cairo_destroy (cr);
 
-    g_object_unref(obj);
-
+    g_object_unref (obj);
     return FALSE;
 }
 

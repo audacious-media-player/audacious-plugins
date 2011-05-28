@@ -23,31 +23,14 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-/*#define AUD_DEBUG*/
-
-#include "config.h"
-
-#include "util.h"
-
-#include <dirent.h>
-#include <gdk/gdkkeysyms.h>
-#include <glib.h>
-#include <gtk/gtk.h>
-#include <stdlib.h>
-#include <string.h>
-
-#ifdef HAVE_FTS_H
-#  include <sys/types.h>
-#  include <sys/stat.h>
-#  include <fts.h>
-#endif
-
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 
-#include "plugin.h"
+#include "config.h"
+#include "ui_main.h"
+#include "util.h"
 
 typedef struct
 {

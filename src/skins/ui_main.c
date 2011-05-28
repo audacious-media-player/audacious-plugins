@@ -23,62 +23,40 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
-
-#include <glib.h>
-#include <glib/gprintf.h>
-#include <gtk/gtk.h>
-#include <gtk/gtkmessagedialog.h>
-
 #include <math.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/time.h>
-#include <sys/types.h>
+
+#include <gdk/gdkkeysyms.h>
 
 #include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
-#include <audacious/playlist.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 
-/* GDK including */
-#include "platform/smartinclude.h"
-
-#if defined(USE_REGEX_ONIGURUMA)
-#include <onigposix.h>
-#elif defined(USE_REGEX_PCRE)
-#include <pcreposix.h>
-#else
-#include <regex.h>
-#endif
-
-#include "actions-playlist.h"
-#include "ui_main.h"
-#include "ui_dock.h"
 #include "actions-mainwin.h"
-#include "ui_manager.h"
-#include "ui_equalizer.h"
-#include "ui_playlist.h"
-#include "ui_hints.h"
+#include "actions-playlist.h"
+#include "config.h"
 #include "dnd.h"
-#include "plugin.h"
-#include "ui_skinned_window.h"
+#include "skins_cfg.h"
+#include "ui_dock.h"
+#include "ui_equalizer.h"
+#include "ui_hints.h"
+#include "ui_main.h"
+#include "ui_main_evlisteners.h"
+#include "ui_manager.h"
+#include "ui_playlist.h"
 #include "ui_skinned_button.h"
-#include "ui_skinned_textbox.h"
-#include "ui_skinned_number.h"
 #include "ui_skinned_horizontal_slider.h"
 #include "ui_skinned_menurow.h"
-#include "ui_skinned_playstatus.h"
 #include "ui_skinned_monostereo.h"
+#include "ui_skinned_number.h"
 #include "ui_skinned_playlist.h"
-#include "ui_main_evlisteners.h"
-#include "skins_cfg.h"
+#include "ui_skinned_playstatus.h"
+#include "ui_skinned_textbox.h"
+#include "ui_skinned_window.h"
+#include "ui_svis.h"
 #include "util.h"
 
 #define SEEK_THRESHOLD 200 /* milliseconds */

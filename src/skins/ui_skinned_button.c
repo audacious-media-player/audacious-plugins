@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +19,11 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "ui_skinned_button.h"
-#include "skins_cfg.h"
-#include "util.h"
-
 #include <math.h>
+
+#include "skins_cfg.h"
+#include "ui_skinned_button.h"
+#include "util.h"
 
 #define UI_SKINNED_BUTTON_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_button_get_type(), UiSkinnedButtonPrivate))
 typedef struct _UiSkinnedButtonPrivate UiSkinnedButtonPrivate;
@@ -303,12 +304,12 @@ static gboolean ui_skinned_button_expose(GtkWidget *widget, GdkEventExpose *even
             break;
     }
 
-    ui_skinned_widget_draw_with_coordinates(widget, obj, priv->w, priv->h,
-                                            widget->allocation.x,
-                                            widget->allocation.y,
-                                            priv->scaled);
-    g_object_unref(obj);
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
+    pixbuf_draw (cr, obj, widget->allocation.x, widget->allocation.y,
+     priv->scaled);
+    cairo_destroy (cr);
 
+    g_object_unref (obj);
     return FALSE;
 }
 

@@ -1,5 +1,5 @@
 /*  Audacious
- *  Copyright (C) 2005-2007  Audacious development team.
+ *  Copyright (C) 2005-2011  Audacious development team.
  *
  *  BMP - Cross-platform multimedia player
  *  Copyright (C) 2003-2004  BMP development team.
@@ -26,9 +26,11 @@
 #ifndef SKIN_H
 #define SKIN_H
 
-#include <glib.h>
-#include <gdk/gdk.h>
 #include <gtk/gtk.h>
+
+#if ! GTK_CHECK_VERSION (3, 0, 0)
+#define SKIN_HAVE_MASKS
+#endif
 
 typedef enum {
     SKIN_MAIN = 0,
@@ -189,8 +191,10 @@ typedef struct _Skin {
     GdkColor textfg[6], def_textfg[6];
     GdkColor *colors[SKIN_COLOR_COUNT];
     guchar vis_color[24][3];
+#ifdef SKIN_HAVE_MASKS
     GdkBitmap *masks[SKIN_MASK_COUNT];
     GdkBitmap *scaled_masks[SKIN_MASK_COUNT];
+#endif
     SkinProperties properties;
 } Skin;
 
@@ -209,7 +213,9 @@ void skin_reload(Skin * skin);
 void skin_free(Skin * skin);
 void skin_destroy(Skin * skin);
 
+#ifdef SKIN_HAVE_MASKS
 GdkBitmap *skin_get_mask(Skin * skin, SkinMaskId mi);
+#endif
 GdkColor *skin_get_color(Skin * skin, SkinColorId color_id);
 
 void skin_get_viscolor(Skin * skin, guchar vis_color[24][3]);
@@ -236,7 +242,6 @@ void skin_parse_hints(Skin * skin, gchar *path_p);
 
 void skin_set_random_skin(void);
 
-void ui_skinned_widget_draw_with_coordinates(GtkWidget *widget, GdkPixbuf *obj, gint width, gint height, gint destx, gint desty, gboolean scale);
-void ui_skinned_widget_draw(GtkWidget *widget, GdkPixbuf *obj, gint width, gint height, gboolean scale);
+void pixbuf_draw (cairo_t * cr, GdkPixbuf * p, gint x, gint y, gboolean scale);
 
 #endif

@@ -30,10 +30,6 @@
 #include <gtk/gtk.h>
 #include "ui_skin.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define UI_SKINNED_MENUROW(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_menurow_get_type (), UiSkinnedMenurow)
 #define UI_SKINNED_MENUROW_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_menurow_get_type (), UiSkinnedMenurowClass)
 #define UI_SKINNED_IS_MENUROW(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_menurow_get_type ())
@@ -71,9 +67,5 @@ struct _UiSkinnedMenurowClass {
 GtkWidget* ui_skinned_menurow_new (GtkWidget *fixed, gint x, gint y, gint nx, gint ny, gint sx, gint sy, SkinPixmapId si);
 GType ui_skinned_menurow_get_type(void);
 void ui_skinned_menurow_update (GtkWidget * row);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* AUDACIOUS_UI_SKINNED_MENUROW_H */

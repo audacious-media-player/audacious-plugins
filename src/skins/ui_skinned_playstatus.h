@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -28,10 +29,6 @@
 #define AUDACIOUS_UI_SKINNED_PLAYSTATUS_H
 
 #include <gtk/gtk.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #define UI_SKINNED_PLAYSTATUS(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_playstatus_get_type (), UiSkinnedPlaystatus)
 #define UI_SKINNED_PLAYSTATUS_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_playstatus_get_type (), UiSkinnedPlaystatusClass)
@@ -63,9 +60,5 @@ GType ui_skinned_playstatus_get_type(void);
 void ui_skinned_playstatus_set_status(GtkWidget *widget, PStatus status);
 void ui_skinned_playstatus_set_buffering(GtkWidget *widget, gboolean status);
 void ui_skinned_playstatus_set_size(GtkWidget *widget, gint width, gint height);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* AUDACIOUS_UI_SKINNED_PLAYSTATUS_H */

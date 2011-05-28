@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -24,14 +25,9 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "ui_skinned_number.h"
 #include "skins_cfg.h"
+#include "ui_skinned_number.h"
 #include "util.h"
-
-#include <string.h>
-#include <ctype.h>
-#include <gtk/gtkmain.h>
-#include <gtk/gtkmarshal.h>
 
 #define UI_TYPE_SKINNED_NUMBER           (ui_skinned_number_get_type())
 
@@ -230,13 +226,12 @@ static gboolean ui_skinned_number_expose(GtkWidget *widget, GdkEventExpose *even
                      number->skin_index, number->num * 9, 0,
                      0, 0, number->width, number->height);
 
-    ui_skinned_widget_draw_with_coordinates(widget, obj, number->width, number->height,
-                                            widget->allocation.x,
-                                            widget->allocation.y,
-                                            number->scaled);
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
+    pixbuf_draw (cr, obj, widget->allocation.x, widget->allocation.y,
+     number->scaled);
+    cairo_destroy (cr);
 
-    g_object_unref(obj);
-
+    g_object_unref (obj);
     return FALSE;
 }
 
