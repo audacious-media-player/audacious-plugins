@@ -259,6 +259,7 @@ static PreferencesWidget settings[] = {
 };
 
 PluginPreferences preferences = {
+    .domain = PACKAGE,
     .title = N_("Scrobbler"),
     .prefs = settings,
     .n_prefs = G_N_ELEMENTS(settings),

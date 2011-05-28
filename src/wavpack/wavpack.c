@@ -377,8 +377,6 @@ static gboolean wv_write_tag (const Tuple * tuple, VFSFile * handle)
 
 static const gchar *wv_fmts[] = { "wv", NULL };
 
-extern PluginPreferences preferences;
-
 AUD_INPUT_PLUGIN
 (
     .name = "WavPack decoder",

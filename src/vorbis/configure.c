@@ -65,6 +65,7 @@ configure_cleanup(void)
 }
 
 PluginPreferences preferences = {
+    .domain = PACKAGE,
     .title = N_("Ogg Vorbis Audio Plugin Configuration"),
     .prefs = prefs,
     .n_prefs = G_N_ELEMENTS(prefs),
