@@ -185,7 +185,7 @@ static void ui_skinned_playstatus_toggle_scaled(UiSkinnedPlaystatus *playstatus)
     playstatus->scaled = !playstatus->scaled;
     gtk_widget_set_size_request(widget, playstatus->width*(playstatus->scaled ? config.scale_factor : 1), playstatus->height*(playstatus->scaled ? config.scale_factor : 1));
 
-    if (widget_really_drawable (widget))
+    if (gtk_widget_is_drawable (widget))
         ui_skinned_playstatus_expose (widget, 0);
 }
 
@@ -195,7 +195,7 @@ void ui_skinned_playstatus_set_status(GtkWidget *widget, PStatus status) {
 
     playstatus->status = status;
 
-    if (widget_really_drawable (widget))
+    if (gtk_widget_is_drawable (widget))
         ui_skinned_playstatus_expose (widget, 0);
 }
 
@@ -205,7 +205,7 @@ void ui_skinned_playstatus_set_buffering(GtkWidget *widget, gboolean status) {
 
     playstatus->buffering = status;
 
-    if (widget_really_drawable (widget))
+    if (gtk_widget_is_drawable (widget))
         ui_skinned_playstatus_expose (widget, 0);
 }
 

@@ -1,6 +1,6 @@
 /*
  * Audacious - a cross-platform multimedia player
- * Copyright (c) 2007  Audacious development team.
+ * Copyright (c) 2007-2011  Audacious development team.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,10 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#ifndef UIVIS_H
-#define UIVIS_H
+#ifndef SKINS_UI_VIS_H
+#define SKINS_UI_VIS_H
 
 #include <gtk/gtk.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#define UI_VIS(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_vis_get_type (), UiVis)
-#define UI_VIS_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_vis_get_type (), UiVisClass)
-#define UI_IS_VIS(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_vis_get_type ())
 
 typedef enum {
     VIS_ANALYZER, VIS_SCOPE, VIS_VOICEPRINT, VIS_OFF
@@ -46,51 +38,22 @@ typedef enum {
 typedef enum {
     SCOPE_DOT, SCOPE_LINE, SCOPE_SOLID
 } ScopeMode;
-typedef enum {
-  VOICEPRINT_NORMAL, VOICEPRINT_FIRE, VOICEPRINT_ICE
-} VoiceprintMode;
 
+typedef enum {
+    VOICEPRINT_NORMAL, VOICEPRINT_FIRE, VOICEPRINT_ICE
+} VoiceprintMode;
 
 typedef enum {
     VU_NORMAL, VU_SMOOTH
 } VUMode;
 
 typedef enum {
-    REFRESH_FULL, REFRESH_HALF, REFRESH_QUARTER, REFRESH_EIGTH
-} RefreshRate;
-
-typedef enum {
-    FALLOFF_SLOWEST, FALLOFF_SLOW, FALLOFF_MEDIUM, FALLOFF_FAST,
-    FALLOFF_FASTEST
+    FALLOFF_SLOWEST, FALLOFF_SLOW, FALLOFF_MEDIUM, FALLOFF_FAST, FALLOFF_FASTEST
 } FalloffSpeed;
 
-typedef struct _UiVis        UiVis;
-typedef struct _UiVisClass   UiVisClass;
-
-struct _UiVis {
-    GtkWidget        widget;
-
-    gint             x, y, width, height;
-    gfloat           data[75], peak[75], peak_speed[75];
-    gboolean         scaled;
-    GtkWidget        *fixed;
-    gboolean         visible_window;
-    GdkWindow        *event_window;
-};
-
-struct _UiVisClass {
-    GtkWidgetClass          parent_class;
-    void (* doubled)        (UiVis *vis);
-};
-
-GtkWidget* ui_vis_new (GtkWidget *fixed, gint x, gint y, gint width);
-GType ui_vis_get_type(void);
+GtkWidget * ui_vis_new (void);
 void ui_vis_set_colors (void);
-void ui_vis_clear_data(GtkWidget *widget);
-void ui_vis_timeout_func(GtkWidget *widget, guchar * data);
-
-#ifdef __cplusplus
-}
-#endif
+void ui_vis_clear_data (GtkWidget * widget);
+void ui_vis_timeout_func (GtkWidget * widget, guchar * data);
 
 #endif

@@ -569,7 +569,6 @@ skin_parse_hints(Skin * skin, gchar *path_p)
     skin->properties.mainwin_othertext = FALSE;
     skin->properties.mainwin_vis_x = 24;
     skin->properties.mainwin_vis_y = 43;
-    skin->properties.mainwin_vis_width = 76;
     skin->properties.mainwin_text_x = 112;
     skin->properties.mainwin_text_y = 27;
     skin->properties.mainwin_text_width = 153;
@@ -666,14 +665,6 @@ skin_parse_hints(Skin * skin, gchar *path_p)
     if (tmp != NULL)
     {
         skin->properties.mainwin_vis_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinVisWidth");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_vis_width = atoi(tmp);
         g_free(tmp);
     }
 

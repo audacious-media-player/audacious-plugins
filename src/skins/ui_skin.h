@@ -75,7 +75,6 @@ typedef struct _SkinProperties {
 	/* Vis properties */
 	gint mainwin_vis_x;
 	gint mainwin_vis_y;
-	gint mainwin_vis_width;
 	gboolean mainwin_vis_visible;
 
 	/* Text properties */

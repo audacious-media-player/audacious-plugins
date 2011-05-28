@@ -835,7 +835,7 @@ GtkWidget *make_filebrowser(const gchar *title, gboolean save)
                               GTK_RESPONSE_REJECT);
 
     gtk_button_set_use_stock(GTK_BUTTON(button), TRUE);
-    GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+    gtk_widget_set_can_default (button, TRUE);
 
     button =
         gtk_dialog_add_button(GTK_DIALOG(dialog),
@@ -877,12 +877,6 @@ void resize_window(GtkWidget *window, gint width, gint height)
     }
 
     gtk_window_resize((GtkWindow *)window, width, height);
-}
-
-gboolean widget_really_drawable (GtkWidget * widget)
-{
-    return GTK_WIDGET_DRAWABLE (widget) && widget->allocation.x >= 0 &&
-     widget->allocation.y >= 0;
 }
 
 void check_set (GtkActionGroup * action_group, const gchar * action_name,

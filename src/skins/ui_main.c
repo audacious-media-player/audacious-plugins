@@ -416,10 +416,6 @@ mainwin_refresh_hints(void)
         gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_vis), aud_active_skin->properties.mainwin_vis_x,
                        aud_active_skin->properties.mainwin_vis_y);
 
-    if (aud_active_skin->properties.mainwin_vis_width)
-        gtk_widget_set_size_request(mainwin_vis, aud_active_skin->properties.mainwin_vis_width * MAINWIN_SCALE_FACTOR,
-                                    UI_VIS(mainwin_vis)->height* MAINWIN_SCALE_FACTOR);
-
     if (aud_active_skin->properties.mainwin_text_x && aud_active_skin->properties.mainwin_text_y)
         gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_info), aud_active_skin->properties.mainwin_text_x,
                        aud_active_skin->properties.mainwin_text_y);
@@ -1648,7 +1644,9 @@ mainwin_create_widgets(void)
     ui_skinned_small_button_setup(mainwin_about, SKINNED_WINDOW(mainwin)->normal, 247, 83, 20, 25);
     g_signal_connect(mainwin_about, "clicked", G_CALLBACK(action_about_audacious), NULL);
 
-    mainwin_vis = ui_vis_new(SKINNED_WINDOW(mainwin)->normal, 24, 43, 76);
+    mainwin_vis = ui_vis_new ();
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal,
+     mainwin_vis, 24, 43);
     g_signal_connect(mainwin_vis, "button-press-event", G_CALLBACK(mainwin_vis_cb), NULL);
 
     mainwin_position = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->normal, 16, 72, 248,

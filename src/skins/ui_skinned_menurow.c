@@ -281,7 +281,7 @@ static gboolean ui_skinned_menurow_expose(GtkWidget *widget, GdkEventExpose *eve
 
 void ui_skinned_menurow_update (GtkWidget * row)
 {
-    if (widget_really_drawable (row))
+    if (gtk_widget_is_drawable (row))
         ui_skinned_menurow_expose (row, 0);
 }
 

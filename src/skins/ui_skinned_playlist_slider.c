@@ -236,7 +236,7 @@ static gboolean ui_skinned_playlist_slider_expose(GtkWidget *widget, GdkEventExp
 
 void ui_skinned_playlist_slider_update (GtkWidget * widget)
 {
-    if (widget_really_drawable (widget))
+    if (gtk_widget_is_drawable (widget))
         ui_skinned_playlist_slider_expose (widget, 0);
 }
 

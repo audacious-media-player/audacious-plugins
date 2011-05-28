@@ -28,12 +28,6 @@
 #define SKINNED_CHECK_WINDOW(obj)    G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_window_get_type ())
 #define SKINNED_TYPE_WINDOW          (ui_skinned_window_get_type())
 
-#ifdef GDK_WINDOWING_QUARTZ
-# define SKINNED_WINDOW_TYPE		GTK_WINDOW_POPUP
-#else
-# define SKINNED_WINDOW_TYPE		GTK_WINDOW_TOPLEVEL
-#endif
-
 enum {
     WINDOW_MAIN,
     WINDOW_EQ,

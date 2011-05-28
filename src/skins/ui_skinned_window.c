@@ -231,9 +231,6 @@ GtkWidget *
 ui_skinned_window_new(const gchar *wmclass_name, gint *x, gint *y)
 {
     GtkWidget *widget = g_object_new(ui_skinned_window_get_type(), NULL);
-    GtkWindow *window = GTK_WINDOW(widget);
-
-    window->type = SKINNED_WINDOW_TYPE;
 
     if (wmclass_name)
         gtk_window_set_wmclass(GTK_WINDOW(widget), wmclass_name, "Audacious");
