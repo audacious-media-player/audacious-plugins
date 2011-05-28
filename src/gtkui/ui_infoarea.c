@@ -1,6 +1,6 @@
 /*
  *  Copyright (C) 2010 William Pitcock <nenolod@atheme.org>.
- *  Copyright (C) 2010 John Lindgren <john.lindgren@tds.net>.
+ *  Copyright (C) 2010-2011 John Lindgren <john.lindgren@tds.net>.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,32 +18,32 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#include <glib/gi18n.h>
+#include <math.h>
+#include <string.h>
+
 #include <gtk/gtk.h>
 
-#include <audacious/debug.h>
 #include <audacious/drct.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
-#include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include <math.h>
-
-#include "gtkui_cfg.h"
-#include "ui_playlist_widget.h"
 #include "ui_infoarea.h"
 
+#define SPACING 8
 #define ICON_SIZE 64
+#define HEIGHT (ICON_SIZE + 2 * SPACING)
+
 #define VIS_BANDS 12
-#define VIS_OFFSET (10 + 8 * VIS_BANDS + 8)
+#define VIS_WIDTH (8 * VIS_BANDS - 2)
+#define VIS_CENTER (ICON_SIZE * 5 / 8 + SPACING)
 #define VIS_DELAY 2 /* delay before falloff in frames */
 #define VIS_FALLOFF 2 /* falloff in pixels per frame */
 
 typedef struct {
-    GtkWidget *parent;
+    GtkWidget * box, * main, * vis;
 
     gchar * title, * artist, * album;
     gchar * last_title, * last_artist, * last_album;
@@ -56,10 +56,6 @@ typedef struct {
 
     GdkPixbuf * pb, * last_pb;
 } UIInfoArea;
-
-static const gfloat alpha_step = 0.10;
-
-static void draw_visualizer (UIInfoArea * area, cairo_t * cr);
 
 /****************************************************************************/
 
@@ -106,38 +102,39 @@ static void vis_update_cb (const VisNode * vis, UIInfoArea * area)
         }
     }
 
-    if (gtk_widget_is_drawable (area->parent))
-    {
-        cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (area->parent));
-        draw_visualizer (area, cr);
-        cairo_destroy (cr);
-    }
+    gtk_widget_queue_draw (area->vis);
 }
 
 static void vis_clear_cb (void * hook_data, UIInfoArea * area)
 {
     memset (area->bars, 0, sizeof area->bars);
     memset (area->delay, 0, sizeof area->delay);
+
+    gtk_widget_queue_draw (area->vis);
 }
 
 /****************************************************************************/
 
-static void draw_text (UIInfoArea * area, cairo_t * cr, gint x, gint y, gint
+static void clear (GtkWidget * widget, cairo_t * cr)
+{
+    GtkAllocation alloc;
+    gtk_widget_get_allocation (widget, & alloc);
+    cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
+    cairo_fill (cr);
+}
+
+static void draw_text (GtkWidget * widget, cairo_t * cr, gint x, gint y, gint
  width, gfloat r, gfloat g, gfloat b, gfloat a, const gchar * font,
  const gchar * text)
 {
-    PangoLayout *pl;
-    PangoFontDescription *desc;
-    gchar *str;
-
-    str = g_markup_escape_text(text, -1);
+    gchar * str = g_markup_escape_text (text, -1);
 
     cairo_move_to(cr, x, y);
     cairo_set_operator(cr, CAIRO_OPERATOR_ATOP);
     cairo_set_source_rgba(cr, r, g, b, a);
 
-    desc = pango_font_description_from_string(font);
-    pl = gtk_widget_create_pango_layout(area->parent, NULL);
+    PangoFontDescription * desc = pango_font_description_from_string (font);
+    PangoLayout * pl = gtk_widget_create_pango_layout (widget, NULL);
     pango_layout_set_markup(pl, str, -1);
     pango_layout_set_font_description(pl, desc);
     pango_font_description_free(desc);
@@ -239,53 +236,53 @@ static void get_color (GtkWidget * widget, gint i, gfloat * r, gfloat * g,
     hsv_to_rgb (h, s, v, r, g, b);
 }
 
-static void draw_visualizer (UIInfoArea * area, cairo_t * cr)
+#if GTK_CHECK_VERSION (3, 0, 0)
+static gboolean draw_vis_cb (GtkWidget * vis, cairo_t * cr, UIInfoArea * area)
 {
-    GtkAllocation alloc;
-    gtk_widget_get_allocation(GTK_WIDGET(area->parent), &alloc);
+#else
+static gboolean expose_vis_cb (GtkWidget * vis, GdkEventExpose * event,
+ UIInfoArea * area)
+{
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (vis));
+#endif
+
+    clear (vis, cr);
 
     for (auto gint i = 0; i < VIS_BANDS; i++)
     {
-        gint x = alloc.width - VIS_OFFSET + 10 + 8 * i;
-        gint t = 50 - area->bars[i];
-        gint m = MIN (50 + area->bars[i], 84);
-
-        /* erase old (upward) bars */
-        cairo_set_source_rgb (cr, 0, 0, 0);
-        cairo_rectangle (cr, x, 10, 6, t - 10);
-        cairo_fill (cr);
-
-        /* erase old (downward) reflection */
-        cairo_set_source_rgb (cr, 0, 0, 0);
-        cairo_rectangle (cr, x, m, 6, 84 - m);
-        cairo_fill (cr);
+        gint x = SPACING + 8 * i;
+        gint t = VIS_CENTER - area->bars[i];
+        gint m = MIN (VIS_CENTER + area->bars[i], HEIGHT);
 
         gfloat r, g, b;
-        get_color (area->parent, i, & r, & g, & b);
+        get_color (vis, i, & r, & g, & b);
 
-        /* draw new (upward) bars */
         cairo_set_source_rgb (cr, r, g, b);
-        cairo_rectangle (cr, x, t, 6, 50 - t);
+        cairo_rectangle (cr, x, t, 6, VIS_CENTER - t);
         cairo_fill (cr);
 
-        /* draw new (downward) reflection */
         cairo_set_source_rgb (cr, r * 0.3, g * 0.3, b * 0.3);
-        cairo_rectangle (cr, x, 50, 6, m - 50);
+        cairo_rectangle (cr, x, VIS_CENTER, 6, m - VIS_CENTER);
         cairo_fill (cr);
     }
+
+#if ! GTK_CHECK_VERSION (3, 0, 0)
+    cairo_destroy (cr);
+#endif
+    return TRUE;
 }
 
 static void draw_album_art (UIInfoArea * area, cairo_t * cr)
 {
     if (area->pb != NULL)
     {
-        gdk_cairo_set_source_pixbuf (cr, area->pb, 10.0, 10.0);
+        gdk_cairo_set_source_pixbuf (cr, area->pb, SPACING, SPACING);
         cairo_paint_with_alpha (cr, area->alpha);
     }
 
     if (area->last_pb != NULL)
     {
-        gdk_cairo_set_source_pixbuf (cr, area->last_pb, 10.0, 10.0);
+        gdk_cairo_set_source_pixbuf (cr, area->last_pb, SPACING, SPACING);
         cairo_paint_with_alpha (cr, area->last_alpha);
     }
 }
@@ -293,38 +290,29 @@ static void draw_album_art (UIInfoArea * area, cairo_t * cr)
 static void draw_title (UIInfoArea * area, cairo_t * cr)
 {
     GtkAllocation alloc;
-    gint width;
+    gtk_widget_get_allocation (area->main, & alloc);
 
-    gtk_widget_get_allocation (area->parent, & alloc);
-    width = alloc.width - (86 + VIS_OFFSET + 6);
+    gint x = ICON_SIZE + SPACING * 2;
+    gint width = alloc.width - x;
 
     if (area->title != NULL)
-        draw_text (area, cr, 86, 8, width, 1, 1, 1, area->alpha, "Sans 18",
-         area->title);
+        draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, area->alpha,
+         "Sans 18", area->title);
     if (area->last_title != NULL)
-        draw_text (area, cr, 86, 8, width, 1, 1, 1, area->last_alpha, "Sans 18",
-         area->last_title);
+        draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, area->last_alpha,
+         "Sans 18", area->last_title);
     if (area->artist != NULL)
-        draw_text (area, cr, 86, 42, width, 1, 1, 1, area->alpha, "Sans 9",
-         area->artist);
+        draw_text (area->main, cr, x, SPACING + ICON_SIZE / 2, width, 1, 1, 1,
+         area->alpha, "Sans 9", area->artist);
     if (area->last_artist != NULL)
-        draw_text (area, cr, 86, 42, width, 1, 1, 1, area->last_alpha, "Sans 9",
-         area->last_artist);
+        draw_text (area->main, cr, x, SPACING + ICON_SIZE / 2, width, 1, 1, 1,
+         area->last_alpha, "Sans 9", area->last_artist);
     if (area->album != NULL)
-        draw_text (area, cr, 86, 58, width, 0.7, 0.7, 0.7, area->alpha,
-         "Sans 9", area->album);
+        draw_text (area->main, cr, x, SPACING + ICON_SIZE * 3 / 4, width, 0.7,
+         0.7, 0.7, area->alpha, "Sans 9", area->album);
     if (area->last_album != NULL)
-        draw_text (area, cr, 86, 58, width, 0.7, 0.7, 0.7, area->last_alpha,
-         "Sans 9", area->last_album);
-}
-
-static void draw_background (UIInfoArea * area, cairo_t * cr)
-{
-    GtkAllocation alloc;
-    gtk_widget_get_allocation (area->parent, & alloc);
-
-    cairo_rectangle(cr, 0, 0, alloc.width, alloc.height);
-    cairo_fill (cr);
+        draw_text (area->main, cr, x, SPACING + ICON_SIZE * 3 / 4, width, 0.7,
+         0.7, 0.7, area->last_alpha, "Sans 9", area->last_album);
 }
 
 #if GTK_CHECK_VERSION (3, 0, 0)
@@ -334,13 +322,13 @@ static gboolean draw_cb (GtkWidget * widget, cairo_t * cr, UIInfoArea * area)
 static gboolean expose_cb (GtkWidget * widget, GdkEventExpose * event,
  UIInfoArea * area)
 {
-    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (area->parent));
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
 #endif
 
-    draw_background (area, cr);
+    clear (widget, cr);
+
     draw_album_art (area, cr);
     draw_title (area, cr);
-    draw_visualizer (area, cr);
 
 #if ! GTK_CHECK_VERSION (3, 0, 0)
     cairo_destroy (cr);
@@ -354,17 +342,17 @@ static gboolean ui_infoarea_do_fade (UIInfoArea * area)
 
     if (aud_drct_get_playing () && area->alpha < 1)
     {
-        area->alpha += alpha_step;
+        area->alpha += 0.1;
         ret = TRUE;
     }
 
     if (area->last_alpha > 0)
     {
-        area->last_alpha -= alpha_step;
+        area->last_alpha -= 0.1;
         ret = TRUE;
     }
 
-    gtk_widget_queue_draw ((GtkWidget *) area->parent);
+    gtk_widget_queue_draw (area->main);
 
     if (! ret)
         area->fade_timeout = 0;
@@ -409,7 +397,7 @@ void ui_infoarea_set_title (void * data, UIInfoArea * area)
     area->artist = artist;
     area->album = album;
 
-    gtk_widget_queue_draw ((GtkWidget *) area->parent);
+    gtk_widget_queue_draw (area->main);
 }
 
 static void set_album_art (UIInfoArea * area)
@@ -444,7 +432,7 @@ static void infoarea_next (UIInfoArea * area)
     area->last_alpha = area->alpha;
     area->alpha = 0;
 
-    gtk_widget_queue_draw ((GtkWidget *) area->parent);
+    gtk_widget_queue_draw (area->main);
 }
 
 static void ui_infoarea_playback_start (void * data, UIInfoArea * area)
@@ -471,7 +459,7 @@ static void ui_infoarea_playback_stop (void * data, UIInfoArea * area)
          ui_infoarea_do_fade, area);
 }
 
-static void destroy_cb (GtkWidget * parent, UIInfoArea * area)
+static void destroy_cb (GtkWidget * widget, UIInfoArea * area)
 {
     hook_dissociate ("playlist update", (HookFunction) ui_infoarea_set_title);
     hook_dissociate ("playback begin", (HookFunction)
@@ -498,32 +486,47 @@ static void destroy_cb (GtkWidget * parent, UIInfoArea * area)
 
 GtkWidget * ui_infoarea_new (void)
 {
-    UIInfoArea *area;
-    GtkWidget *evbox;
+    UIInfoArea * area = g_slice_new0 (UIInfoArea);
 
-    area = g_slice_new0(UIInfoArea);
+    area->box = gtk_hbox_new (FALSE, 0);
 
-    evbox = gtk_event_box_new();
-    area->parent = evbox;
+    area->main = gtk_drawing_area_new ();
+    gtk_widget_set_size_request (area->main, ICON_SIZE + 2 * SPACING, HEIGHT);
+    gtk_box_pack_start ((GtkBox *) area->box, area->main, TRUE, TRUE, 0);
 
-    gtk_widget_set_size_request(GTK_WIDGET(evbox), -1, 84);
+    area->vis = gtk_drawing_area_new ();
+    gtk_widget_set_size_request (area->vis, VIS_WIDTH + 2 * SPACING, HEIGHT);
+    gtk_box_pack_start ((GtkBox *) area->box, area->vis, FALSE, FALSE, 0);
 
 #if GTK_CHECK_VERSION (3, 0, 0)
-    g_signal_connect (area->parent, "draw", (GCallback) draw_cb, area);
+    g_signal_connect (area->main, "draw", (GCallback) draw_cb, area);
+    g_signal_connect (area->vis, "draw", (GCallback) draw_vis_cb, area);
 #else
-    g_signal_connect (area->parent, "expose-event", (GCallback) expose_cb, area);
+    g_signal_connect (area->main, "expose-event", (GCallback) expose_cb, area);
+    g_signal_connect (area->vis, "expose-event", (GCallback) expose_vis_cb, area);
 #endif
 
     hook_associate ("playlist update", (HookFunction) ui_infoarea_set_title, area);
-    hook_associate("playback begin", (HookFunction) ui_infoarea_playback_start, area);
-    hook_associate("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
-    hook_associate("visualization clear", (HookFunction) vis_clear_cb, area);
+    hook_associate ("playback begin", (HookFunction) ui_infoarea_playback_start, area);
+    hook_associate ("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
+    hook_associate ("visualization clear", (HookFunction) vis_clear_cb, area);
     aud_vis_runner_add_hook ((VisHookFunc) vis_update_cb, area);
 
-    g_signal_connect (area->parent, "destroy", (GCallback) destroy_cb, area);
+    g_signal_connect (area->box, "destroy", (GCallback) destroy_cb, area);
 
     if (aud_drct_get_playing ())
+    {
         ui_infoarea_playback_start (NULL, area);
 
-    return area->parent;
+        /* skip fade-in */
+        area->alpha = 1;
+
+        if (area->fade_timeout)
+        {
+            g_source_remove (area->fade_timeout);
+            area->fade_timeout = 0;
+        }
+    }
+
+    return area->box;
 }
