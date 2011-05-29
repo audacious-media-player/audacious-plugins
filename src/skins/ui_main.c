@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2006  Audacious development team.
+ *  Copyright (C) 2005-2011  Audacious development team.
  *
  *  BMP - Cross-platform multimedia player
  *  Copyright (C) 2003-2004  BMP development team.
@@ -1218,15 +1218,14 @@ set_scaled(gboolean scaled)
         equalizerwin_set_scaled(scaled);
 }
 
-static void
-mainwin_mr_change(GtkWidget *widget, MenuRowItem i)
+void mainwin_mr_change (MenuRowItem i)
 {
     switch (i) {
         case MENUROW_OPTIONS:
             mainwin_lock_info_text(_("Options Menu"));
             break;
         case MENUROW_ALWAYS:
-            if (UI_SKINNED_MENUROW(mainwin_menurow)->always_selected)
+            if (config.always_on_top)
                 mainwin_lock_info_text(_("Disable 'Always On Top'"));
             else
                 mainwin_lock_info_text(_("Enable 'Always On Top'"));
@@ -1235,7 +1234,7 @@ mainwin_mr_change(GtkWidget *widget, MenuRowItem i)
             mainwin_lock_info_text(_("File Info Box"));
             break;
         case MENUROW_SCALE:
-            if (UI_SKINNED_MENUROW(mainwin_menurow)->scale_selected)
+            if (config.scaled)
                 mainwin_lock_info_text(_("Disable 'GUI Scaling'"));
             else
                 mainwin_lock_info_text(_("Enable 'GUI Scaling'"));
@@ -1248,8 +1247,7 @@ mainwin_mr_change(GtkWidget *widget, MenuRowItem i)
     }
 }
 
-static void
-mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
+void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
 {
     switch (i) {
         case MENUROW_OPTIONS:
@@ -1257,19 +1255,17 @@ mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
              FALSE, FALSE, 1, event->time);
             break;
         case MENUROW_ALWAYS:
-            gtk_toggle_action_set_active(
-                                         GTK_TOGGLE_ACTION(gtk_action_group_get_action(
-                                                                                       toggleaction_group_others , "view always on top" )) ,
-                                         UI_SKINNED_MENUROW(mainwin_menurow)->always_selected );
+            gtk_toggle_action_set_active ((GtkToggleAction *)
+             gtk_action_group_get_action (toggleaction_group_others,
+             "view always on top"), config.always_on_top);
             break;
         case MENUROW_FILEINFOBOX:
             audgui_infowin_show_current ();
             break;
         case MENUROW_SCALE:
-            gtk_toggle_action_set_active(
-                                         GTK_TOGGLE_ACTION(gtk_action_group_get_action(
-                                                                                       toggleaction_group_others , "view scaled" )) ,
-                                         UI_SKINNED_MENUROW(mainwin_menurow)->scale_selected );
+            gtk_toggle_action_set_active ((GtkToggleAction *)
+             gtk_action_group_get_action (toggleaction_group_others,
+             "view scaled"), config.scaled);
             break;
         case MENUROW_VISUALIZATION:
             ui_popup_menu_show(UI_MENU_VISUALIZATION, event->x_root,
@@ -1605,9 +1601,9 @@ mainwin_create_widgets(void)
 
     mainwin_freq_text = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->normal, 156, 43, 10, 0, SKIN_TEXT);
 
-    mainwin_menurow = ui_skinned_menurow_new(SKINNED_WINDOW(mainwin)->normal, 10, 22, 304, 0, 304, 44,  SKIN_TITLEBAR);
-    g_signal_connect(mainwin_menurow, "change", G_CALLBACK(mainwin_mr_change), NULL);
-    g_signal_connect(mainwin_menurow, "release", G_CALLBACK(mainwin_mr_release), NULL);
+    mainwin_menurow = ui_skinned_menurow_new ();
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal,
+     mainwin_menurow, 10, 22);
 
     mainwin_volume = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->normal, 107, 57, 68,
                                                       13, 15, 422, 0, 422, 14, 11, 15, 0, 0, 51,
@@ -1992,22 +1988,17 @@ void action_stop_after_current_song (GtkToggleAction * action)
     }
 }
 
-void
-action_view_always_on_top( GtkToggleAction * action )
+void action_view_always_on_top (GtkToggleAction * action)
 {
-    UI_SKINNED_MENUROW(mainwin_menurow)->always_selected = gtk_toggle_action_get_active( action );
+    config.always_on_top = gtk_toggle_action_get_active (action);
     ui_skinned_menurow_update (mainwin_menurow);
-    config.always_on_top = UI_SKINNED_MENUROW(mainwin_menurow)->always_selected;
-    hint_set_always(config.always_on_top);
+    hint_set_always (config.always_on_top);
 }
 
-void
-action_view_scaled( GtkToggleAction * action )
+void action_view_scaled (GtkToggleAction * action)
 {
-    UI_SKINNED_MENUROW(mainwin_menurow)->scale_selected = gtk_toggle_action_get_active( action );
+    set_scaled (gtk_toggle_action_get_active (action));
     ui_skinned_menurow_update (mainwin_menurow);
-    set_scaled(UI_SKINNED_MENUROW(mainwin_menurow)->scale_selected);
-    gdk_flush();
 }
 
 void

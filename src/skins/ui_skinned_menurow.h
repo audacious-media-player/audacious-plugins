@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -24,48 +25,21 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_SKINNED_MENUROW_H
-#define AUDACIOUS_UI_SKINNED_MENUROW_H
+#ifndef SKINS_UI_SKINNED_MENUROW_H
+#define SKINS_UI_SKINNED_MENUROW_H
 
 #include <gtk/gtk.h>
-#include "ui_skin.h"
-
-#define UI_SKINNED_MENUROW(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_menurow_get_type (), UiSkinnedMenurow)
-#define UI_SKINNED_MENUROW_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_menurow_get_type (), UiSkinnedMenurowClass)
-#define UI_SKINNED_IS_MENUROW(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_menurow_get_type ())
-
-typedef struct _UiSkinnedMenurow        UiSkinnedMenurow;
-typedef struct _UiSkinnedMenurowClass   UiSkinnedMenurowClass;
 
 typedef enum {
     MENUROW_NONE, MENUROW_OPTIONS, MENUROW_ALWAYS, MENUROW_FILEINFOBOX,
     MENUROW_SCALE, MENUROW_VISUALIZATION
 } MenuRowItem;
 
-struct _UiSkinnedMenurow {
-    GtkWidget        widget;
+GtkWidget * ui_skinned_menurow_new (void);
+void ui_skinned_menurow_update (GtkWidget * menurow);
 
-    GdkWindow        *event_window;
-    gint             x, y, width, height;
-    gboolean         scaled;
-    gint             nx, ny;
-    gint             sx, sy;
-    MenuRowItem      selected;
-    gboolean         always_selected;
-    gboolean         scale_selected;
-    gboolean         pushed;
-    SkinPixmapId     skin_index;
-};
+/* callbacks in ui_main.c */
+void mainwin_mr_change (MenuRowItem i);
+void mainwin_mr_release (MenuRowItem i, GdkEventButton * event);
 
-struct _UiSkinnedMenurowClass {
-    GtkWidgetClass          parent_class;
-    void (* scaled)         (UiSkinnedMenurow *menurow);
-    void (* change)         (UiSkinnedMenurow *menurow);
-    void (* release)        (UiSkinnedMenurow *menurow);
-};
-
-GtkWidget* ui_skinned_menurow_new (GtkWidget *fixed, gint x, gint y, gint nx, gint ny, gint sx, gint sy, SkinPixmapId si);
-GType ui_skinned_menurow_get_type(void);
-void ui_skinned_menurow_update (GtkWidget * row);
-
-#endif /* AUDACIOUS_UI_SKINNED_MENUROW_H */
+#endif
