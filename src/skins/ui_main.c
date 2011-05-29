@@ -56,7 +56,7 @@
 #include "ui_skinned_playstatus.h"
 #include "ui_skinned_textbox.h"
 #include "ui_skinned_window.h"
-#include "ui_svis.h"
+#include "ui_vis.h"
 #include "util.h"
 
 #define SEEK_THRESHOLD 200 /* milliseconds */
@@ -1702,7 +1702,9 @@ mainwin_create_widgets(void)
     ui_skinned_small_button_setup(mainwin_seject, SKINNED_WINDOW(mainwin)->shaded, 216, 4, 9, 7);
     g_signal_connect(mainwin_seject, "clicked", mainwin_eject_pushed, NULL);
 
-    mainwin_svis = ui_svis_new(SKINNED_WINDOW(mainwin)->shaded, 79, 5);
+    mainwin_svis = ui_svis_new ();
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded,
+     mainwin_svis, 79, 5);
     g_signal_connect(mainwin_svis, "button-press-event", G_CALLBACK(mainwin_vis_cb), NULL);
 
     mainwin_sposition = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->shaded, 226, 4, 17,

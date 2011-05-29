@@ -217,7 +217,6 @@ GdkBitmap *skin_get_mask(Skin * skin, SkinMaskId mi);
 #endif
 GdkColor *skin_get_color(Skin * skin, SkinColorId color_id);
 
-void skin_get_viscolor(Skin * skin, guchar vis_color[24][3]);
 gint skin_get_id(void);
 void skin_draw_pixbuf(GtkWidget *widget, Skin * skin, GdkPixbuf * pix,
                  SkinPixmapId pixmap_id,

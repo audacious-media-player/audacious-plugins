@@ -27,9 +27,9 @@
 #include <string.h>
 
 #include "draw-compat.h"
+#include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_vis.h"
-#include "skins_cfg.h"
 
 static const gfloat vis_afalloff_speeds[] = {0.34, 0.5, 1.0, 1.3, 1.6};
 static const gfloat vis_pfalloff_speeds[] = {1.2, 1.3, 1.4, 1.5, 1.6};
@@ -242,6 +242,7 @@ GtkWidget * ui_vis_new (void)
 {
     GtkWidget * wid = gtk_drawing_area_new ();
     gtk_widget_set_size_request (wid, 76, 16);
+    gtk_widget_add_events (wid, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
     g_signal_connect (wid, DRAW_SIGNAL, (GCallback) ui_vis_draw, NULL);
     return wid;
 }

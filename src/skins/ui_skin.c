@@ -171,6 +171,7 @@ aud_active_skin_load(const gchar * path)
 
     mainwin_refresh_hints ();
     ui_vis_set_colors ();
+    ui_svis_set_colors ();
     ui_skinned_window_draw_all(mainwin);
     ui_skinned_window_draw_all(equalizerwin);
     ui_skinned_window_draw_all(playlistwin);
@@ -1681,20 +1682,6 @@ skin_get_color(Skin * skin, SkinColorId color_id)
         break;
     }
     return ret;
-}
-
-void
-skin_get_viscolor(Skin * skin, guchar vis_color[24][3])
-{
-    gint i;
-
-    g_return_if_fail(skin != NULL);
-
-    for (i = 0; i < 24; i++) {
-        vis_color[i][0] = skin->vis_color[i][0];
-        vis_color[i][1] = skin->vis_color[i][1];
-        vis_color[i][2] = skin->vis_color[i][2];
-    }
 }
 
 gint

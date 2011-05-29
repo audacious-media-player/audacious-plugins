@@ -31,7 +31,6 @@
 #include "ui_manager.h"
 #include "ui_skin.h"
 #include "ui_skinned_playstatus.h"
-#include "ui_svis.h"
 #include "ui_vis.h"
 #include "util.h"
 
@@ -236,9 +235,9 @@ static void ui_main_evlistener_visualization_timeout (const VisNode * vis,
                 if (val > vu)
                     vu = val;
             }
-            intern_vis_data[0] = (vu * 37) >> 15;
-            if (intern_vis_data[0] > 37)
-                intern_vis_data[0] = 37;
+            intern_vis_data[0] = (vu * 38) >> 15;
+            if (intern_vis_data[0] > 38)
+                intern_vis_data[0] = 38;
             if (vis->nch == 2) {
                 vu = 0;
                 for (i = 0; i < 512; i++) {
@@ -246,9 +245,9 @@ static void ui_main_evlistener_visualization_timeout (const VisNode * vis,
                     if (val > vu)
                         vu = val;
                 }
-                intern_vis_data[1] = (vu * 37) >> 15;
-                if (intern_vis_data[1] > 37)
-                    intern_vis_data[1] = 37;
+                intern_vis_data[1] = (vu * 38) >> 15;
+                if (intern_vis_data[1] > 38)
+                    intern_vis_data[1] = 38;
             }
             else
                 intern_vis_data[1] = intern_vis_data[0];
