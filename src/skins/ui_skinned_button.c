@@ -136,6 +136,11 @@ static gboolean leave_notify (GtkWidget * button, GdkEventCrossing * event)
     return TRUE;
 }
 
+static void button_destroy (GtkWidget * button)
+{
+    g_free (g_object_get_data ((GObject *) button, "buttondata"));
+}
+
 static GtkWidget * button_new_base (gint type, gint w, gint h)
 {
     GtkWidget * button;
@@ -163,6 +168,7 @@ static GtkWidget * button_new_base (gint type, gint w, gint h)
      NULL);
     g_signal_connect (button, "leave-notify-event", (GCallback) leave_notify,
      NULL);
+    g_signal_connect (button, "destroy", (GCallback) button_destroy, NULL);
 
     ButtonData * data = g_malloc0 (sizeof (ButtonData));
     data->type = type;
