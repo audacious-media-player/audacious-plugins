@@ -35,6 +35,7 @@
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 
+#include "actions-mainwin.h"
 #include "config.h"
 #include "dnd.h"
 #include "skins_cfg.h"
@@ -243,26 +244,6 @@ playlistwin_set_sinfo_scroll(gboolean scroll)
         ui_skinned_textbox_set_scroll(playlistwin_sinfo, config.autoscroll);
     else
         ui_skinned_textbox_set_scroll(playlistwin_sinfo, FALSE);
-}
-
-void
-playlistwin_set_shade(gboolean shaded)
-{
-    config.playlist_shaded = shaded;
-    ui_skinned_window_set_shade(playlistwin, shaded);
-
-    if (shaded) {
-        playlistwin_set_sinfo_font(config.playlist_font);
-        playlistwin_set_sinfo_scroll(config.autoscroll);
-    }
-    else {
-        playlistwin_set_sinfo_scroll(FALSE);
-    }
-
-    playlistwin_set_geometry_hints(config.playlist_shaded);
-
-    dock_shade(get_dock_window_list(), GTK_WINDOW(playlistwin),
-               playlistwin_get_height());
 }
 
 static void
@@ -562,21 +543,23 @@ playlistwin_resize(gint width, gint height)
     ui_skinned_playlist_slider_move_relative(playlistwin_slider, dx);
     ui_skinned_playlist_slider_resize_relative(playlistwin_slider, dy);
 
-    ui_skinned_button_move_relative(playlistwin_shade, dx, 0);
-    ui_skinned_button_move_relative(playlistwin_close, dx, 0);
-    ui_skinned_button_move_relative(playlistwin_shaded_shade, dx, 0);
-    ui_skinned_button_move_relative(playlistwin_shaded_close, dx, 0);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->shaded, playlistwin_shaded_shade, config.playlist_width - 21, 3);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->shaded, playlistwin_shaded_close, config.playlist_width - 11, 3);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_shade, config.playlist_width - 21, 3);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_close, config.playlist_width - 11, 3);
+
     ui_skinned_textbox_move_relative(playlistwin_time_min, dx, dy);
     ui_skinned_textbox_move_relative(playlistwin_time_sec, dx, dy);
     ui_skinned_textbox_move_relative(playlistwin_info, dx, dy);
-    ui_skinned_button_move_relative(playlistwin_srew, dx, dy);
-    ui_skinned_button_move_relative(playlistwin_splay, dx, dy);
-    ui_skinned_button_move_relative(playlistwin_spause, dx, dy);
-    ui_skinned_button_move_relative(playlistwin_sstop, dx, dy);
-    ui_skinned_button_move_relative(playlistwin_sfwd, dx, dy);
-    ui_skinned_button_move_relative(playlistwin_seject, dx, dy);
-    ui_skinned_button_move_relative(playlistwin_sscroll_up, dx, dy);
-    ui_skinned_button_move_relative(playlistwin_sscroll_down, dx, dy);
+
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_srew, config.playlist_width - 144, config.playlist_height - 16);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_splay, config.playlist_width - 138, config.playlist_height - 16);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_spause, config.playlist_width - 128, config.playlist_height - 16);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_sstop, config.playlist_width - 118, config.playlist_height - 16);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_sfwd, config.playlist_width - 109, config.playlist_height - 16);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_seject, config.playlist_width - 100, config.playlist_height - 16);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_sscroll_up, config.playlist_width - 14, config.playlist_height - 35);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_sscroll_down, config.playlist_width - 14, config.playlist_height - 30);
 
     gtk_widget_set_size_request(playlistwin_sinfo, playlistwin_get_width() - 35,
                                 aud_active_skin->properties.textbox_bitmap_font_height);
@@ -767,18 +750,6 @@ static void drag_data_received (GtkWidget * widget, GdkDragContext * context,
     drop_position = -1;
 }
 
-static void
-local_playlist_prev(void)
-{
-    aud_drct_pl_prev ();
-}
-
-static void
-local_playlist_next(void)
-{
-    aud_drct_pl_next ();
-}
-
 static void playlistwin_hide (void)
 {
     playlistwin_show (0);
@@ -795,28 +766,21 @@ playlistwin_create_widgets(void)
 
     playlistwin_set_sinfo_font(config.playlist_font);
 
+    playlistwin_shaded_shade = button_new (9, 9, 128, 45, 150, 42, SKIN_PLEDIT, SKIN_PLEDIT);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->shaded, playlistwin_shaded_shade, config.playlist_width - 21, 3);
+    button_on_release (playlistwin_shaded_shade, (ButtonCB) playlistwin_shade_toggle);
 
-    playlistwin_shaded_shade = ui_skinned_button_new();
-    ui_skinned_push_button_setup(playlistwin_shaded_shade, SKINNED_WINDOW(playlistwin)->shaded,
-                                 playlistwin_get_width() - 21, 3,
-                                 9, 9, 128, 45, 150, 42, SKIN_PLEDIT);
-    g_signal_connect(playlistwin_shaded_shade, "clicked", playlistwin_shade_toggle, NULL );
+    playlistwin_shaded_close = button_new (9, 9, 138, 45, 52, 42, SKIN_PLEDIT, SKIN_PLEDIT);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->shaded, playlistwin_shaded_close, config.playlist_width - 11, 3);
+    button_on_release (playlistwin_shaded_close, (ButtonCB) playlistwin_hide);
 
-    playlistwin_shaded_close = ui_skinned_button_new();
-    ui_skinned_push_button_setup(playlistwin_shaded_close, SKINNED_WINDOW(playlistwin)->shaded,
-                                 playlistwin_get_width() - 11, 3, 9, 9, 138, 45, 52, 42, SKIN_PLEDIT);
-    g_signal_connect(playlistwin_shaded_close, "clicked", playlistwin_hide, NULL );
+    playlistwin_shade = button_new (9, 9, 157, 3, 62, 42, SKIN_PLEDIT, SKIN_PLEDIT);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_shade, config.playlist_width - 21, 3);
+    button_on_release (playlistwin_shade, (ButtonCB) playlistwin_shade_toggle);
 
-    playlistwin_shade = ui_skinned_button_new();
-    ui_skinned_push_button_setup(playlistwin_shade, SKINNED_WINDOW(playlistwin)->normal,
-                                 playlistwin_get_width() - 21, 3,
-                                 9, 9, 157, 3, 62, 42, SKIN_PLEDIT);
-    g_signal_connect(playlistwin_shade, "clicked", playlistwin_shade_toggle, NULL );
-
-    playlistwin_close = ui_skinned_button_new();
-    ui_skinned_push_button_setup(playlistwin_close, SKINNED_WINDOW(playlistwin)->normal,
-                                 playlistwin_get_width() - 11, 3, 9, 9, 167, 3, 52, 42, SKIN_PLEDIT);
-    g_signal_connect(playlistwin_close, "clicked", playlistwin_hide, NULL );
+    playlistwin_close = button_new (9, 9, 167, 3, 52, 42, SKIN_PLEDIT, SKIN_PLEDIT);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_close, config.playlist_width - 11, 3);
+    button_on_release (playlistwin_close, (ButtonCB) playlistwin_hide);
 
     /* playlist list box */
     playlistwin_list = ui_skinned_playlist_new(SKINNED_WINDOW(playlistwin)->normal, 12, 20,
@@ -847,59 +811,37 @@ playlistwin_create_widgets(void)
 
     /* mini play control buttons at right bottom corner */
 
-    /* rewind button */
-    playlistwin_srew = ui_skinned_button_new();
-    ui_skinned_small_button_setup(playlistwin_srew, SKINNED_WINDOW(playlistwin)->normal,
-                                  playlistwin_get_width() - 144,
-                                  config.playlist_height - 16, 8, 7);
-    g_signal_connect(playlistwin_srew, "clicked", local_playlist_prev, NULL);
+    playlistwin_srew = button_new_small (8, 7);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_srew, config.playlist_width - 144, config.playlist_height - 16);
+    button_on_release (playlistwin_srew, (ButtonCB) aud_drct_pl_prev);
 
-    /* play button */
-    playlistwin_splay = ui_skinned_button_new();
-    ui_skinned_small_button_setup(playlistwin_splay, SKINNED_WINDOW(playlistwin)->normal,
-                                  playlistwin_get_width() - 138,
-                                  config.playlist_height - 16, 10, 7);
-    g_signal_connect(playlistwin_splay, "clicked", mainwin_play_pushed, NULL);
+    playlistwin_splay = button_new_small (10, 7);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_splay, config.playlist_width - 138, config.playlist_height - 16);
+    button_on_release (playlistwin_splay, (ButtonCB) mainwin_play_pushed);
 
-    /* pause button */
-    playlistwin_spause = ui_skinned_button_new();
-    ui_skinned_small_button_setup(playlistwin_spause, SKINNED_WINDOW(playlistwin)->normal,
-                                  playlistwin_get_width() - 128,
-                                  config.playlist_height - 16, 10, 7);
-    g_signal_connect(playlistwin_spause, "clicked", aud_drct_pause, NULL);
+    playlistwin_spause = button_new_small (10, 7);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_spause, config.playlist_width - 128, config.playlist_height - 16);
+    button_on_release (playlistwin_spause, (ButtonCB) aud_drct_pause);
 
-    /* stop button */
-    playlistwin_sstop = ui_skinned_button_new();
-    ui_skinned_small_button_setup(playlistwin_sstop, SKINNED_WINDOW(playlistwin)->normal,
-                                  playlistwin_get_width() - 118,
-                                  config.playlist_height - 16, 9, 7);
-    g_signal_connect(playlistwin_sstop, "clicked", mainwin_stop_pushed, NULL);
+    playlistwin_sstop = button_new_small (9, 7);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_sstop, config.playlist_width - 118, config.playlist_height - 16);
+    button_on_release (playlistwin_sstop, (ButtonCB) aud_drct_stop);
 
-    /* forward button */
-    playlistwin_sfwd = ui_skinned_button_new();
-    ui_skinned_small_button_setup(playlistwin_sfwd, SKINNED_WINDOW(playlistwin)->normal,
-                                  playlistwin_get_width() - 109,
-                                  config.playlist_height - 16, 8, 7);
-    g_signal_connect(playlistwin_sfwd, "clicked", local_playlist_next, NULL);
+    playlistwin_sfwd = button_new_small (8, 7);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_sfwd, config.playlist_width - 109, config.playlist_height - 16);
+    button_on_release (playlistwin_sfwd, (ButtonCB) aud_drct_pl_next);
 
-    /* eject button */
-    playlistwin_seject = ui_skinned_button_new();
-    ui_skinned_small_button_setup(playlistwin_seject, SKINNED_WINDOW(playlistwin)->normal,
-                                  playlistwin_get_width() - 100,
-                                  config.playlist_height - 16, 9, 7);
-    g_signal_connect(playlistwin_seject, "clicked", mainwin_eject_pushed, NULL);
+    playlistwin_seject = button_new_small (9, 7);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_seject, config.playlist_width - 100, config.playlist_height - 16);
+    button_on_release (playlistwin_seject, (ButtonCB) action_play_file);
 
-    playlistwin_sscroll_up = ui_skinned_button_new();
-    ui_skinned_small_button_setup(playlistwin_sscroll_up, SKINNED_WINDOW(playlistwin)->normal,
-                                  playlistwin_get_width() - 14,
-                                  config.playlist_height - 35, 8, 5);
-    g_signal_connect(playlistwin_sscroll_up, "clicked", playlistwin_scroll_up_pushed, NULL);
+    playlistwin_sscroll_up = button_new_small (8, 5);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_sscroll_up, config.playlist_width - 14, config.playlist_height - 35);
+    button_on_release (playlistwin_sscroll_up, (ButtonCB) playlistwin_scroll_up_pushed);
 
-    playlistwin_sscroll_down = ui_skinned_button_new();
-    ui_skinned_small_button_setup(playlistwin_sscroll_down, SKINNED_WINDOW(playlistwin)->normal,
-                                  playlistwin_get_width() - 14,
-                                  config.playlist_height - 30, 8, 5);
-    g_signal_connect(playlistwin_sscroll_down, "clicked", playlistwin_scroll_down_pushed, NULL);
+    playlistwin_sscroll_down = button_new_small (8, 5);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_sscroll_down, config.playlist_width - 14, config.playlist_height - 30);
+    button_on_release (playlistwin_sscroll_down, (ButtonCB) playlistwin_scroll_down_pushed);
 }
 
 static void
@@ -1093,7 +1035,7 @@ void playlistwin_show (char show)
     else
     {
         config.playlist_visible = show;
-        ui_skinned_button_set_inside (mainwin_pl, show);
+        button_set_active (mainwin_pl, show);
         playlistwin_real_show (config.player_visible && show);
     }
 }
@@ -1115,6 +1057,11 @@ void action_queue_toggle (void)
         aud_playlist_queue_insert_selected (active_playlist, -1);
     else
         aud_playlist_queue_delete (active_playlist, at, 1);
+}
+
+void action_jump_to_playlist_start (void)
+{
+    aud_drct_pl_set_pos (0);
 }
 
 void action_playlist_sort_by_track_number (void)
@@ -1374,4 +1321,26 @@ playlistwin_select_search_kp_cb(GtkWidget *entry, GdkEventKey *event,
         default:
             return FALSE;
     }
+}
+
+void action_show_playlist_editor (GtkToggleAction * action)
+{
+    playlistwin_show (gtk_toggle_action_get_active (action));
+}
+
+void action_roll_up_playlist_editor (GtkToggleAction * action)
+{
+    config.playlist_shaded = gtk_toggle_action_get_active (action);
+
+    if (config.playlist_shaded)
+    {
+        playlistwin_set_sinfo_font (config.playlist_font);
+        playlistwin_set_sinfo_scroll (config.autoscroll);
+    }
+    else
+        playlistwin_set_sinfo_scroll (FALSE);
+
+    playlistwin_set_geometry_hints (config.playlist_shaded);
+    dock_shade (get_dock_window_list (), (GtkWindow *) playlistwin,
+     playlistwin_get_height ());
 }

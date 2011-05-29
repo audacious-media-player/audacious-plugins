@@ -47,7 +47,6 @@ void eq_end_hooks (void);
 
 void equalizerwin_set_shape (void);
 void equalizerwin_set_scaled(gboolean ds);
-void equalizerwin_set_shade_menu_cb(gboolean shaded);
 void draw_equalizer_window(gboolean force);
 void equalizerwin_create(void);
 void equalizerwin_show(gboolean show);

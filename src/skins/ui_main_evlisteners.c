@@ -126,13 +126,6 @@ void info_change (void)
     mainwin_set_song_info (bitrate, samplerate, channels);
 }
 
-static void
-ui_main_evlistener_mainwin_set_always_on_top(gpointer hook_data, gpointer user_data)
-{
-    gboolean *ontop = (gboolean*)hook_data;
-    mainwin_set_always_on_top(*ontop);
-}
-
 static void ui_main_evlistener_visualization_timeout (const VisNode * vis,
  void * user)
 {
@@ -312,7 +305,6 @@ ui_main_evlistener_init(void)
     hook_associate("playback play file", ui_main_evlistener_playback_play_file, NULL);
     hook_associate ("visualization clear", vis_clear_cb, NULL);
     hook_associate ("info change", (HookFunction) info_change, NULL);
-    hook_associate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top, NULL);
 
     hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
     hook_associate ("toggle stop after song", stop_after_song_toggled, NULL);
@@ -330,7 +322,6 @@ ui_main_evlistener_dissociate(void)
     hook_dissociate("playback play file", ui_main_evlistener_playback_play_file);
     hook_dissociate ("visualization clear", vis_clear_cb);
     hook_dissociate ("info change", (HookFunction) info_change);
-    hook_dissociate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top);
 
     hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
     hook_dissociate ("toggle stop after song", stop_after_song_toggled);

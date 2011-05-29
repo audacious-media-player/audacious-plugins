@@ -107,40 +107,10 @@ static guint mainwin_volume_release_timeout = 0;
 static int ab_position_a = -1;
 static int ab_position_b = -1;
 
-static void mainwin_refresh_visible(void);
-
-static void set_timer_mode_menu_cb(TimerMode mode);
-static void set_timer_mode(TimerMode mode);
 static void change_timer_mode(void);
-
 static void mainwin_position_motion_cb(GtkWidget *widget, gint pos);
 static void mainwin_position_release_cb(GtkWidget *widget, gint pos);
-
-static void set_scaled(gboolean scaled);
-static void mainwin_eq_pushed(gboolean toggled);
-static void mainwin_pl_pushed(gboolean toggled);
-
-static void
-mainwin_set_title_scroll(gboolean scroll)
-{
-    config.autoscroll = scroll;
-    ui_skinned_textbox_set_scroll(mainwin_info, config.autoscroll);
-}
-
-void mainwin_set_sticky (gboolean sticky)
-{
-    gtk_toggle_action_set_active ((GtkToggleAction *)
-     gtk_action_group_get_action (toggleaction_group_others,
-     "view put on all workspaces"), sticky);
-}
-
-void
-mainwin_set_always_on_top(gboolean always)
-{
-    GtkAction *action = gtk_action_group_get_action(toggleaction_group_others,
-                                                    "view always on top");
-    gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , always );
-}
+static void mainwin_set_volume_diff (gint diff);
 
 static void
 mainwin_set_shade(gboolean shaded)
@@ -159,53 +129,7 @@ void mainwin_set_shape (void)
          config.player_shaded ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN), 0, 0);
 }
 
-static void
-mainwin_set_shade_menu_cb(gboolean shaded)
-{
-    config.player_shaded = shaded;
-    ui_skinned_window_set_shade(mainwin, shaded);
-
-    if (shaded) {
-        dock_shade(get_dock_window_list(), GTK_WINDOW(mainwin),
-                   MAINWIN_SHADED_HEIGHT * MAINWIN_SCALE_FACTOR);
-    } else {
-        gint height = !aud_active_skin->properties.mainwin_height ? MAINWIN_HEIGHT :
-            aud_active_skin->properties.mainwin_height;
-
-        dock_shade(get_dock_window_list(), GTK_WINDOW(mainwin), height * MAINWIN_SCALE_FACTOR);
-    }
-
-    mainwin_set_shape ();
-}
-
-static void
-mainwin_vis_set_afalloff(FalloffSpeed speed)
-{
-    config.analyzer_falloff = speed;
-}
-
-static void
-mainwin_vis_set_pfalloff(FalloffSpeed speed)
-{
-    config.peaks_falloff = speed;
-}
-
-static void
-mainwin_vis_set_analyzer_mode(AnalyzerMode mode)
-{
-    config.analyzer_mode = mode;
-}
-
-static void
-mainwin_vis_set_analyzer_type(AnalyzerType mode)
-{
-    config.analyzer_type = mode;
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
-}
-
-void
-mainwin_vis_set_type(VisType mode)
+static void mainwin_vis_set_type (VisType mode)
 {
     GtkAction *action;
 
@@ -234,16 +158,6 @@ mainwin_vis_set_type(VisType mode)
 }
 
 static void
-mainwin_vis_set_type_menu_cb(VisType mode)
-{
-    config.vis_type = mode;
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
-
-    start_stop_visual (FALSE);
-}
-
-static void
 mainwin_menubtn_cb(void)
 {
     gint x, y;
@@ -253,8 +167,7 @@ mainwin_menubtn_cb(void)
      GDK_CURRENT_TIME);
 }
 
-void
-mainwin_minimize_cb(void)
+static void mainwin_minimize_cb (void)
 {
     if (!mainwin)
         return;
@@ -268,8 +181,7 @@ mainwin_shade_toggle(void)
     mainwin_set_shade(!config.player_shaded);
 }
 
-gboolean
-mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
+static gboolean mainwin_vis_cb (GtkWidget * widget, GdkEventButton * event)
 {
     if (event->button == 1) {
         config.vis_type++;
@@ -630,9 +542,8 @@ mainwin_disable_seekbar(void)
     gtk_widget_hide(mainwin_sposition);
 }
 
-void
-mainwin_scrolled(GtkWidget *widget, GdkEventScroll *event,
-                 gpointer callback_data)
+static void mainwin_scrolled (GtkWidget * widget, GdkEventScroll * event, void *
+ unused)
 {
     switch (event->direction) {
         case GDK_SCROLL_UP:
@@ -732,7 +643,7 @@ gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
             aud_drct_pl_next ();
             break;
         case GDK_KP_Insert:
-            action_jump_to_file();
+            audgui_jump_to_track ();
             break;
         case GDK_space:
             aud_drct_pause();
@@ -804,12 +715,6 @@ mainwin_drag_data_received(GtkWidget * widget,
     audgui_urilist_open ((const gchar *) selection_data->data);
 }
 
-void
-mainwin_eject_pushed(void)
-{
-    action_play_file();
-}
-
 static gint time_now (void)
 {
     struct timeval tv;
@@ -850,19 +755,20 @@ static gboolean seek_timeout (void * rewind)
 }
 
 static gboolean seek_press (GtkWidget * widget, GdkEventButton * event,
- void * rewind)
+ gboolean rewind)
 {
     if (event->button != 1 || seek_source)
         return FALSE;
 
     seek_start = ui_skinned_horizontal_slider_get_position (mainwin_position);
     seek_time = time_now ();
-    seek_source = g_timeout_add (SEEK_TIMEOUT, seek_timeout, rewind);
+    seek_source = g_timeout_add (SEEK_TIMEOUT, seek_timeout, GINT_TO_POINTER
+     (rewind));
     return FALSE;
 }
 
 static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
- void * rewind)
+ gboolean rewind)
 {
     if (event->button != 1 || ! seek_source)
         return FALSE;
@@ -870,7 +776,7 @@ static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
     if (! aud_drct_get_playing () || time_diff (seek_time, time_now ()) <
      SEEK_THRESHOLD)
     {
-        if (GPOINTER_TO_INT (rewind))
+        if (rewind)
             aud_drct_pl_prev ();
         else
             aud_drct_pl_next ();
@@ -884,6 +790,15 @@ static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
     return FALSE;
 }
 
+static void mainwin_rew_press (GtkWidget * button, GdkEventButton * event)
+ {seek_press (button, event, TRUE); }
+static void mainwin_rew_release (GtkWidget * button, GdkEventButton * event)
+ {seek_release (button, event, TRUE); }
+static void mainwin_fwd_press (GtkWidget * button, GdkEventButton * event)
+ {seek_press (button, event, FALSE); }
+static void mainwin_fwd_release (GtkWidget * button, GdkEventButton * event)
+ {seek_release (button, event, FALSE); }
+
 void
 mainwin_play_pushed(void)
 {
@@ -893,56 +808,16 @@ mainwin_play_pushed(void)
     aud_drct_play ();
 }
 
-void
-mainwin_stop_pushed(void)
-{
-    aud_drct_stop();
-    mainwin_clear_song_info();
-    ab_position_a = ab_position_b = -1;
-}
+static void mainwin_shuffle_cb (GtkWidget * button, GdkEventButton * event)
+ {check_set (toggleaction_group_others, "playback shuffle", button_get_active (button)); }
+static void mainwin_repeat_cb (GtkWidget * button, GdkEventButton * event)
+ {check_set (toggleaction_group_others, "playback repeat", button_get_active (button)); }
+static void mainwin_eq_cb (GtkWidget * button, GdkEventButton * event)
+ {equalizerwin_show (button_get_active (button)); }
+static void mainwin_pl_cb (GtkWidget * button, GdkEventButton * event)
+ {playlistwin_show (button_get_active (button)); }
 
-void
-mainwin_shuffle_pushed(gboolean toggled)
-{
-    check_set( toggleaction_group_others , "playback shuffle" , toggled );
-}
-
-void mainwin_shuffle_pushed_cb(void) {
-    mainwin_shuffle_pushed(UI_SKINNED_BUTTON(mainwin_shuffle)->inside);
-}
-
-void
-mainwin_repeat_pushed(gboolean toggled)
-{
-    check_set( toggleaction_group_others , "playback repeat" , toggled );
-}
-
-void mainwin_repeat_pushed_cb(void) {
-    mainwin_repeat_pushed(UI_SKINNED_BUTTON(mainwin_repeat)->inside);
-}
-
-void mainwin_equalizer_pushed_cb(void) {
-    mainwin_eq_pushed(UI_SKINNED_BUTTON(mainwin_eq)->inside);
-}
-
-void mainwin_playlist_pushed_cb(void) {
-    mainwin_pl_pushed(UI_SKINNED_BUTTON(mainwin_pl)->inside);
-}
-
-void
-mainwin_eq_pushed(gboolean toggled)
-{
-    equalizerwin_show(toggled);
-}
-
-void
-mainwin_pl_pushed(gboolean toggled)
-{
-    playlistwin_show (toggled);
-}
-
-gint
-mainwin_spos_frame_cb(gint pos)
+static gint mainwin_spos_frame_cb (gint pos)
 {
     if (mainwin_sposition) {
         gint x = 0;
@@ -959,8 +834,7 @@ mainwin_spos_frame_cb(gint pos)
     return 1;
 }
 
-void
-mainwin_spos_motion_cb(GtkWidget *widget, gint pos)
+static void mainwin_spos_motion_cb (GtkWidget * widget, gint pos)
 {
     gint time;
     gchar *time_msg;
@@ -986,14 +860,12 @@ mainwin_spos_motion_cb(GtkWidget *widget, gint pos)
     g_free(time_msg);
 }
 
-void
-mainwin_spos_release_cb(GtkWidget *widget, gint pos)
+static void mainwin_spos_release_cb (GtkWidget * widget, gint pos)
 {
     aud_drct_seek (aud_drct_get_length () * (pos - 1) / 12);
 }
 
-void
-mainwin_position_motion_cb(GtkWidget *widget, gint pos)
+static void mainwin_position_motion_cb (GtkWidget * widget, gint pos)
 {
     gint length, time;
     gchar *seek_msg;
@@ -1008,8 +880,7 @@ mainwin_position_motion_cb(GtkWidget *widget, gint pos)
     g_free(seek_msg);
 }
 
-void
-mainwin_position_release_cb(GtkWidget *widget, gint pos)
+static void mainwin_position_release_cb (GtkWidget * widget, gint pos)
 {
     gint length, time;
 
@@ -1019,8 +890,7 @@ mainwin_position_release_cb(GtkWidget *widget, gint pos)
     mainwin_release_info_text();
 }
 
-gint
-mainwin_volume_frame_cb(gint pos)
+static gint mainwin_volume_frame_cb (gint pos)
 {
     return (gint) rint((pos / 52.0) * 28);
 }
@@ -1081,44 +951,37 @@ mainwin_set_balance_slider(gint percent)
     ui_skinned_horizontal_slider_set_position(mainwin_balance, (gint) rint(((percent * 12) / 100.0) + 12));
 }
 
-void
-mainwin_volume_motion_cb(GtkWidget *widget, gint pos)
+static void mainwin_volume_motion_cb (GtkWidget * widget, gint pos)
 {
-
     gint vol = (pos * 100) / 51;
     mainwin_adjust_volume_motion(vol);
     equalizerwin_set_volume_slider(vol);
 }
 
-gboolean
-mainwin_volume_release_cb(GtkWidget *widget, gint pos)
+static gboolean mainwin_volume_release_cb (GtkWidget * widget, gint pos)
 {
     mainwin_adjust_volume_release();
     return FALSE;
 }
 
-gint
-mainwin_balance_frame_cb(gint pos)
+static gint mainwin_balance_frame_cb (gint pos)
 {
     return ((abs(pos - 12) * 28) / 13);
 }
 
-void
-mainwin_balance_motion_cb(GtkWidget *widget, gint pos)
+static void mainwin_balance_motion_cb (GtkWidget * widget, gint pos)
 {
     gint bal = ((pos - 12) * 100) / 12;
     mainwin_adjust_balance_motion(bal);
     equalizerwin_set_balance_slider(bal);
 }
 
-void
-mainwin_balance_release_cb(GtkWidget *widget, gint pos)
+static void mainwin_balance_release_cb (GtkWidget * widget, gint pos)
 {
     mainwin_adjust_volume_release();
 }
 
-void
-mainwin_set_volume_diff(gint diff)
+static void mainwin_set_volume_diff (gint diff)
 {
     gint vol;
 
@@ -1132,16 +995,6 @@ mainwin_set_volume_diff(gint diff)
         g_source_remove(mainwin_volume_release_timeout);
     mainwin_volume_release_timeout =
         g_timeout_add(700, (GSourceFunc)(mainwin_volume_release_cb), NULL);
-}
-
-void
-mainwin_set_balance_diff(gint diff)
-{
-    gint b;
-    b = CLAMP(balance + diff, -100, 100);
-    mainwin_adjust_balance_motion(b);
-    mainwin_set_balance_slider(b);
-    equalizerwin_set_balance_slider(b);
 }
 
 static void mainwin_real_show (gboolean show)
@@ -1169,53 +1022,6 @@ void mainwin_show (gboolean show)
         equalizerwin_show (config.equalizer_visible);
         mainwin_real_show (show);
    }
-}
-
-void
-mainwin_set_noplaylistadvance(gboolean no_advance)
-{
-    aud_cfg->no_playlist_advance = no_advance;
-    check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
-}
-
-static void
-mainwin_set_scaled(gboolean scaled)
-{
-    GList * list;
-    SkinnedWindow * skinned;
-    GtkFixed * fixed;
-    GtkFixedChild * child;
-
-    skinned = (SkinnedWindow *) mainwin;
-    fixed = (GtkFixed *) skinned->normal;
-
-    for (list = fixed->children; list; list = list->next)
-    {
-        child = (GtkFixedChild *) list->data;
-        g_signal_emit_by_name ((GObject *) child->widget, "toggle-scaled");
-    }
-
-    fixed = (GtkFixed *) skinned->shaded;
-
-    for (list = fixed->children; list; list = list->next)
-    {
-        child = (GtkFixedChild *) list->data;
-        g_signal_emit_by_name ((GObject *) child->widget, "toggle-scaled");
-    }
-
-    mainwin_refresh_hints();
-    mainwin_set_shape ();
-}
-
-void
-set_scaled(gboolean scaled)
-{
-    config.scaled = scaled;
-
-    mainwin_set_scaled(scaled);
-
-    if (config.eq_scaled_linked)
-        equalizerwin_set_scaled(scaled);
 }
 
 void mainwin_mr_change (MenuRowItem i)
@@ -1263,9 +1069,6 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
             audgui_infowin_show_current ();
             break;
         case MENUROW_SCALE:
-            gtk_toggle_action_set_active ((GtkToggleAction *)
-             gtk_action_group_get_action (toggleaction_group_others,
-             "view scaled"), config.scaled);
             break;
         case MENUROW_VISUALIZATION:
             ui_popup_menu_show(UI_MENU_VISUALIZATION, event->x_root,
@@ -1278,20 +1081,6 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
     mainwin_release_info_text();
 }
 
-void
-ui_main_set_initial_volume(void)
-{
-    gint b, v;
-
-    aud_drct_get_volume_main (& v);
-    aud_drct_get_volume_balance (& b);
-
-    mainwin_set_volume_slider(v);
-    equalizerwin_set_volume_slider(v);
-    mainwin_set_balance_slider(b);
-    equalizerwin_set_balance_slider(b);
-}
-
 static void
 set_timer_mode(TimerMode mode)
 {
@@ -1299,12 +1088,6 @@ set_timer_mode(TimerMode mode)
         check_set(radioaction_group_viewtime, "view time elapsed", TRUE);
     else
         check_set(radioaction_group_viewtime, "view time remaining", TRUE);
-}
-
-static void
-set_timer_mode_menu_cb(TimerMode mode)
-{
-    config.timer_mode = mode;
 }
 
 gboolean
@@ -1327,18 +1110,6 @@ static void change_timer_mode(void) {
         mainwin_update_song_info();
 }
 
-static void
-mainwin_aud_playlist_prev(void)
-{
-    aud_drct_pl_prev ();
-}
-
-static void
-mainwin_aud_playlist_next(void)
-{
-    aud_drct_pl_next ();
-}
-
 void
 mainwin_setup_menus(void)
 {
@@ -1352,7 +1123,6 @@ mainwin_setup_menus(void)
     check_set(toggleaction_group_others, "roll up playlist editor", config.playlist_shaded);
     check_set(toggleaction_group_others, "roll up equalizer", config.equalizer_shaded);
     check_set(toggleaction_group_others, "view easy move", config.easy_move);
-    check_set(toggleaction_group_others, "view scaled", config.scaled);
 
     mainwin_enable_status_message (FALSE);
 
@@ -1495,11 +1265,6 @@ mainwin_setup_menus(void)
     }
 }
 
-static void mainwin_info_double_clicked_cb (void)
-{
-    audgui_infowin_show_current ();
-}
-
 static void mainwin_info_right_clicked_cb(GtkWidget *widget, GdkEventButton
  *event)
 {
@@ -1510,89 +1275,68 @@ static void mainwin_info_right_clicked_cb(GtkWidget *widget, GdkEventButton
 static void
 mainwin_create_widgets(void)
 {
-    mainwin_menubtn = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_menubtn, SKINNED_WINDOW(mainwin)->normal,
-                                 6, 3, 9, 9, 0, 0, 0, 9, SKIN_TITLEBAR);
-    g_signal_connect(mainwin_menubtn, "clicked", mainwin_menubtn_cb, NULL );
+    mainwin_menubtn = button_new (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_menubtn, 6, 3);
+    button_on_release (mainwin_menubtn, (ButtonCB) mainwin_menubtn_cb);
 
-    mainwin_minimize = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_minimize, SKINNED_WINDOW(mainwin)->normal,
-                                 244, 3, 9, 9, 9, 0, 9, 9, SKIN_TITLEBAR);
-    g_signal_connect(mainwin_minimize, "clicked", mainwin_minimize_cb, NULL );
+    mainwin_minimize = button_new (9, 9, 9, 0, 9, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_minimize, 244, 3);
+    button_on_release (mainwin_minimize, (ButtonCB) mainwin_minimize_cb);
 
-    mainwin_shade = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_shade, SKINNED_WINDOW(mainwin)->normal,
-                                 254, 3, 9, 9, 0, 18, 9, 18, SKIN_TITLEBAR);
-    g_signal_connect(mainwin_shade, "clicked", mainwin_shade_toggle, NULL );
+    mainwin_shade = button_new (9, 9, 0, 18, 9, 18, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_shade, 254, 3);
+    button_on_release (mainwin_shade, (ButtonCB) mainwin_shade_toggle);
 
-    mainwin_close = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_close, SKINNED_WINDOW(mainwin)->normal,
-                                 264, 3, 9, 9, 18, 0, 18, 9, SKIN_TITLEBAR);
-    g_signal_connect ((GObject *) mainwin_close, "clicked", aud_drct_quit,
-     0);
+    mainwin_close = button_new (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_close, 264, 3);
+    button_on_release (mainwin_close, (ButtonCB) aud_drct_quit);
 
-    mainwin_rew = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_rew, SKINNED_WINDOW(mainwin)->normal,
-                                 16, 88, 23, 18, 0, 0, 0, 18, SKIN_CBUTTONS);
-    g_signal_connect (mainwin_rew, "button-press-event", (GCallback)
-     seek_press, GINT_TO_POINTER (TRUE));
-    g_signal_connect (mainwin_rew, "button-release-event", (GCallback)
-     seek_release, GINT_TO_POINTER (TRUE));
+    mainwin_rew = button_new (23, 18, 0, 0, 0, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_rew, 16, 88);
+    button_on_press (mainwin_rew, mainwin_rew_press);
+    button_on_release (mainwin_rew, mainwin_rew_release);
 
-    mainwin_fwd = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_fwd, SKINNED_WINDOW(mainwin)->normal,
-                                 108, 88, 22, 18, 92, 0, 92, 18, SKIN_CBUTTONS);
-    g_signal_connect (mainwin_fwd, "button-press-event", (GCallback)
-     seek_press, GINT_TO_POINTER (FALSE));
-    g_signal_connect (mainwin_fwd, "button-release-event", (GCallback)
-     seek_release, GINT_TO_POINTER (FALSE));
+    mainwin_fwd = button_new (22, 18, 92, 0, 92, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_fwd, 108, 88);
+    button_on_press (mainwin_fwd, mainwin_fwd_press);
+    button_on_release (mainwin_fwd, mainwin_fwd_release);
 
-    mainwin_play = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_play, SKINNED_WINDOW(mainwin)->normal,
-                                 39, 88, 23, 18, 23, 0, 23, 18, SKIN_CBUTTONS);
-    g_signal_connect(mainwin_play, "clicked", mainwin_play_pushed, NULL );
+    mainwin_play = button_new (23, 18, 23, 0, 23, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_play, 39, 88);
+    button_on_release (mainwin_play, (ButtonCB) mainwin_play_pushed);
 
-    mainwin_pause = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_pause, SKINNED_WINDOW(mainwin)->normal,
-                                 62, 88, 23, 18, 46, 0, 46, 18, SKIN_CBUTTONS);
-    g_signal_connect(mainwin_pause, "clicked", aud_drct_pause, NULL );
+    mainwin_pause = button_new (23, 18, 46, 0, 46, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_pause, 62, 88);
+    button_on_release (mainwin_pause, (ButtonCB) aud_drct_pause);
 
-    mainwin_stop = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_stop, SKINNED_WINDOW(mainwin)->normal,
-                                 85, 88, 23, 18, 69, 0, 69, 18, SKIN_CBUTTONS);
-    g_signal_connect(mainwin_stop, "clicked", mainwin_stop_pushed, NULL );
+    mainwin_stop = button_new (23, 18, 69, 0, 69, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_stop, 85, 88);
+    button_on_release (mainwin_stop, (ButtonCB) aud_drct_stop);
 
-    mainwin_eject = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_eject, SKINNED_WINDOW(mainwin)->normal,
-                                 136, 89, 22, 16, 114, 0, 114, 16, SKIN_CBUTTONS);
-    g_signal_connect(mainwin_eject, "clicked", mainwin_eject_pushed, NULL);
+    mainwin_eject = button_new (22, 16, 114, 0, 114, 16, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_eject, 136, 89);
+    button_on_release (mainwin_eject, (ButtonCB) action_play_file);
 
-    mainwin_shuffle = ui_skinned_button_new();
-    ui_skinned_toggle_button_setup(mainwin_shuffle, SKINNED_WINDOW(mainwin)->normal,
-                                   164, 89, 46, 15, 28, 0, 28, 15, 28, 30, 28, 45, SKIN_SHUFREP);
-    g_signal_connect(mainwin_shuffle, "clicked", mainwin_shuffle_pushed_cb, NULL);
+    mainwin_shuffle = button_new_toggle (46, 15, 28, 0, 28, 15, 28, 30, 28, 45, SKIN_SHUFREP, SKIN_SHUFREP);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_shuffle, 164, 89);
+    button_on_release (mainwin_shuffle, mainwin_shuffle_cb);
 
-    mainwin_repeat = ui_skinned_button_new();
-    ui_skinned_toggle_button_setup(mainwin_repeat, SKINNED_WINDOW(mainwin)->normal,
-                                   210, 89, 28, 15, 0, 0, 0, 15, 0, 30, 0, 45, SKIN_SHUFREP);
-    g_signal_connect(mainwin_repeat, "clicked", mainwin_repeat_pushed_cb, NULL);
+    mainwin_repeat = button_new_toggle (28, 15, 0, 0, 0, 15, 0, 30, 0, 45, SKIN_SHUFREP, SKIN_SHUFREP);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_repeat, 210, 89);
+    button_on_release (mainwin_repeat, mainwin_repeat_cb);
 
-    mainwin_eq = ui_skinned_button_new();
-    ui_skinned_toggle_button_setup(mainwin_eq, SKINNED_WINDOW(mainwin)->normal,
-                                   219, 58, 23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP);
-    g_signal_connect(mainwin_eq, "clicked", mainwin_equalizer_pushed_cb, NULL);
-    ui_skinned_button_set_inside(mainwin_eq, config.equalizer_visible);
+    mainwin_eq = button_new_toggle (23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP, SKIN_SHUFREP);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_eq, 219, 58);
+    button_on_release (mainwin_eq, mainwin_eq_cb);
 
-    mainwin_pl = ui_skinned_button_new();
-    ui_skinned_toggle_button_setup(mainwin_pl, SKINNED_WINDOW(mainwin)->normal,
-                                   242, 58, 23, 12, 23, 61, 69, 61, 23, 73, 69, 73, SKIN_SHUFREP);
-    g_signal_connect(mainwin_pl, "clicked", mainwin_playlist_pushed_cb, NULL);
-    ui_skinned_button_set_inside(mainwin_pl, config.playlist_visible);
+    mainwin_pl = button_new_toggle (23, 12, 23, 61, 69, 61, 23, 73, 69, 73, SKIN_SHUFREP, SKIN_SHUFREP);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_pl, 242, 58);
+    button_on_release (mainwin_pl, mainwin_pl_cb);
 
     mainwin_info = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->normal, 112, 27, 153, 1, SKIN_TEXT);
     ui_skinned_textbox_set_scroll(mainwin_info, config.autoscroll);
     ui_skinned_textbox_set_xfont(mainwin_info, !config.mainwin_use_bitmapfont, config.mainwin_font);
-    g_signal_connect(mainwin_info, "double-clicked", mainwin_info_double_clicked_cb, NULL);
+    g_signal_connect (mainwin_info, "double-clicked", audgui_infowin_show_current, NULL);
     g_signal_connect(mainwin_info, "right-clicked", G_CALLBACK(mainwin_info_right_clicked_cb), NULL);
 
     mainwin_othertext = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->normal, 112, 43, 153, 1, SKIN_TEXT);
@@ -1636,9 +1380,9 @@ mainwin_create_widgets(void)
     mainwin_sec_num = ui_skinned_number_new(SKINNED_WINDOW(mainwin)->normal, 90, 26, SKIN_NUMBERS);
     g_signal_connect(mainwin_sec_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
 
-    mainwin_about = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_about, SKINNED_WINDOW(mainwin)->normal, 247, 83, 20, 25);
-    g_signal_connect(mainwin_about, "clicked", G_CALLBACK(action_about_audacious), NULL);
+    mainwin_about = button_new_small (20, 25);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_about, 247, 83);
+    button_on_release (mainwin_about, (ButtonCB) audgui_show_about_window);
 
     mainwin_vis = ui_vis_new ();
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal,
@@ -1653,50 +1397,45 @@ mainwin_create_widgets(void)
 
     /* shaded */
 
-    mainwin_shaded_menubtn = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_shaded_menubtn, SKINNED_WINDOW(mainwin)->shaded,
-                                 6, 3, 9, 9, 0, 0, 0, 9, SKIN_TITLEBAR);
-    g_signal_connect(mainwin_shaded_menubtn, "clicked", mainwin_menubtn_cb, NULL );
+    mainwin_shaded_menubtn = button_new (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_shaded_menubtn, 6, 3);
+    button_on_release (mainwin_shaded_menubtn, (ButtonCB) mainwin_menubtn_cb);
 
-    mainwin_shaded_minimize = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_shaded_minimize, SKINNED_WINDOW(mainwin)->shaded,
-                                 244, 3, 9, 9, 9, 0, 9, 9, SKIN_TITLEBAR);
-    g_signal_connect(mainwin_shaded_minimize, "clicked", mainwin_minimize_cb, NULL );
+    mainwin_shaded_minimize = button_new (9, 9, 9, 0, 9, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_shaded_minimize, 244, 3);
+    button_on_release (mainwin_shaded_minimize, (ButtonCB) mainwin_minimize_cb);
 
-    mainwin_shaded_shade = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_shaded_shade, SKINNED_WINDOW(mainwin)->shaded,
-                                 254, 3, 9, 9, 0, 27, 9, 27, SKIN_TITLEBAR);
-    g_signal_connect(mainwin_shaded_shade, "clicked", mainwin_shade_toggle, NULL );
+    mainwin_shaded_shade = button_new (9, 9, 0, 27, 9, 27, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_shaded_shade, 254, 3);
+    button_on_release (mainwin_shaded_shade, (ButtonCB) mainwin_shade_toggle);
 
-    mainwin_shaded_close = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_shaded_close, SKINNED_WINDOW(mainwin)->shaded,
-                                 264, 3, 9, 9, 18, 0, 18, 9, SKIN_TITLEBAR);
-    g_signal_connect ((GObject *) mainwin_shaded_close, "clicked",
-     aud_drct_quit, 0);
+    mainwin_shaded_close = button_new (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_shaded_close, 264, 3);
+    button_on_release (mainwin_shaded_close, (ButtonCB) aud_drct_quit);
 
-    mainwin_srew = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_srew, SKINNED_WINDOW(mainwin)->shaded, 169, 4, 8, 7);
-    g_signal_connect(mainwin_srew, "clicked", mainwin_aud_playlist_prev, NULL);
+    mainwin_srew = button_new_small (8, 7);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_srew, 169, 4);
+    button_on_release (mainwin_srew, (ButtonCB) aud_drct_pl_prev);
 
-    mainwin_splay = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_splay, SKINNED_WINDOW(mainwin)->shaded, 177, 4, 10, 7);
-    g_signal_connect(mainwin_splay, "clicked", mainwin_play_pushed, NULL);
+    mainwin_splay = button_new_small (10, 7);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_splay, 177, 4);
+    button_on_release (mainwin_splay, (ButtonCB) mainwin_play_pushed);
 
-    mainwin_spause = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_spause, SKINNED_WINDOW(mainwin)->shaded, 187, 4, 10, 7);
-    g_signal_connect(mainwin_spause, "clicked", aud_drct_pause, NULL);
+    mainwin_spause = button_new_small (10, 7);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_spause, 187, 4);
+    button_on_release (mainwin_spause, (ButtonCB) aud_drct_pause);
 
-    mainwin_sstop = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_sstop, SKINNED_WINDOW(mainwin)->shaded, 197, 4, 9, 7);
-    g_signal_connect(mainwin_sstop, "clicked", mainwin_stop_pushed, NULL);
+    mainwin_sstop = button_new_small (9, 7);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_sstop, 197, 4);
+    button_on_release (mainwin_sstop, (ButtonCB) aud_drct_stop);
 
-    mainwin_sfwd = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_sfwd, SKINNED_WINDOW(mainwin)->shaded, 206, 4, 8, 7);
-    g_signal_connect(mainwin_sfwd, "clicked", mainwin_aud_playlist_next, NULL);
+    mainwin_sfwd = button_new_small (8, 7);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_sfwd, 206, 4);
+    button_on_release (mainwin_sfwd, (ButtonCB) aud_drct_pl_next);
 
-    mainwin_seject = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_seject, SKINNED_WINDOW(mainwin)->shaded, 216, 4, 9, 7);
-    g_signal_connect(mainwin_seject, "clicked", mainwin_eject_pushed, NULL);
+    mainwin_seject = button_new_small (9, 7);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_seject, 216, 4);
+    button_on_release (mainwin_seject, (ButtonCB) action_play_file);
 
     mainwin_svis = ui_svis_new ();
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded,
@@ -1742,22 +1481,29 @@ static void show_widgets (void)
     ui_skinned_window_set_shade (mainwin, config.player_shaded);
 }
 
-#if 0 /* This can be enabled when at least two window managers send the event
- correctly.  Currently, I don't know of any that do (see Debian #567607,
- #567608, and #567609.  -jlindgren */
 static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
  void * unused)
 {
     if (event->changed_mask & GDK_WINDOW_STATE_STICKY)
-        mainwin_set_sticky (event->new_window_state & GDK_WINDOW_STATE_STICKY);
+    {
+        gboolean sticky = (event->new_window_state & GDK_WINDOW_STATE_STICKY);
+        GtkToggleAction * action = (GtkToggleAction *)
+         gtk_action_group_get_action (toggleaction_group_others,
+         "view put on all workspaces");
+        gtk_toggle_action_set_active (action, sticky);
+    }
 
     if (event->changed_mask & GDK_WINDOW_STATE_ABOVE)
-        mainwin_set_always_on_top (event->new_window_state &
-         GDK_WINDOW_STATE_ABOVE);
+    {
+        gboolean above = (event->new_window_state & GDK_WINDOW_STATE_ABOVE);
+        GtkToggleAction * action = (GtkToggleAction *)
+         gtk_action_group_get_action (toggleaction_group_others,
+         "view always on top");
+        gtk_toggle_action_set_active (action, above);
+    }
 
     return TRUE;
 }
-#endif
 
 static gboolean delete_cb (GtkWidget * widget, GdkEvent * event, void * unused)
 {
@@ -1799,10 +1545,8 @@ mainwin_create_window(void)
 
     ui_main_evlistener_init();
 
-#if 0
     g_signal_connect ((GObject *) mainwin, "window-state-event", (GCallback)
      state_cb, NULL);
-#endif
     g_signal_connect ((GObject *) mainwin, "delete-event", (GCallback)
      delete_cb, NULL);
 }
@@ -1934,21 +1678,21 @@ void mainwin_update_song_info (void)
 
 /* toggleactionentries actions */
 
-void
-action_anamode_peaks( GtkToggleAction * action )
+void action_anamode_peaks (GtkToggleAction * action)
 {
-    config.analyzer_peaks = gtk_toggle_action_get_active( action );
+    config.analyzer_peaks = gtk_toggle_action_get_active (action);
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
 }
 
-void
-action_autoscroll_songname( GtkToggleAction * action )
+void action_autoscroll_songname (GtkToggleAction * action)
 {
-    mainwin_set_title_scroll(gtk_toggle_action_get_active(action));
-    playlistwin_set_sinfo_scroll(config.autoscroll); /* propagate scroll setting to playlistwin_sinfo */
+    config.autoscroll = gtk_toggle_action_get_active (action);
+    ui_skinned_textbox_set_scroll (mainwin_info, config.autoscroll);
+    playlistwin_set_sinfo_scroll (config.autoscroll);
 }
 
-void
-action_playback_noplaylistadvance( GtkToggleAction * action )
+void action_playback_noplaylistadvance (GtkToggleAction * action)
 {
     aud_cfg->no_playlist_advance = gtk_toggle_action_get_active( action );
 
@@ -1958,18 +1702,16 @@ action_playback_noplaylistadvance( GtkToggleAction * action )
         show_status_message (_("Playlist mode."));
 }
 
-void
-action_playback_repeat( GtkToggleAction * action )
+void action_playback_repeat (GtkToggleAction * action)
 {
     aud_cfg->repeat = gtk_toggle_action_get_active( action );
-    ui_skinned_button_set_inside(mainwin_repeat, aud_cfg->repeat);
+    button_set_active (mainwin_repeat, aud_cfg->repeat);
 }
 
-void
-action_playback_shuffle( GtkToggleAction * action )
+void action_playback_shuffle (GtkToggleAction * action)
 {
     aud_cfg->shuffle = gtk_toggle_action_get_active( action );
-    ui_skinned_button_set_inside(mainwin_shuffle, aud_cfg->shuffle);
+    button_set_active (mainwin_shuffle, aud_cfg->shuffle);
 }
 
 void action_stop_after_current_song (GtkToggleAction * action)
@@ -1995,57 +1737,36 @@ void action_view_always_on_top (GtkToggleAction * action)
     hint_set_always (config.always_on_top);
 }
 
-void action_view_scaled (GtkToggleAction * action)
-{
-    set_scaled (gtk_toggle_action_get_active (action));
-    ui_skinned_menurow_update (mainwin_menurow);
-}
-
-void
-action_view_easymove( GtkToggleAction * action )
+void action_view_easymove (GtkToggleAction * action)
 {
     config.easy_move = gtk_toggle_action_get_active( action );
 }
 
-void
-action_view_on_all_workspaces( GtkToggleAction * action )
+void action_view_on_all_workspaces (GtkToggleAction * action)
 {
     config.sticky = gtk_toggle_action_get_active( action );
     hint_set_sticky(config.sticky);
 }
 
-void
-action_roll_up_equalizer( GtkToggleAction * action )
+void action_roll_up_player (GtkToggleAction * action)
 {
-    equalizerwin_set_shade_menu_cb(gtk_toggle_action_get_active(action));
+    config.player_shaded = gtk_toggle_action_get_active (action);
+
+    ui_skinned_window_set_shade (mainwin, config.player_shaded);
+    mainwin_set_shape ();
+
+    gint height;
+    if (config.player_shaded)
+        height = MAINWIN_SHADED_HEIGHT;
+    else if (aud_active_skin->properties.mainwin_height)
+        height = aud_active_skin->properties.mainwin_height;
+    else
+        height = MAINWIN_HEIGHT;
+
+    dock_shade (get_dock_window_list (), (GtkWindow *) mainwin, height);
 }
 
-void
-action_roll_up_player( GtkToggleAction * action )
-{
-    mainwin_set_shade_menu_cb(gtk_toggle_action_get_active(action));
-}
-
-void
-action_roll_up_playlist_editor( GtkToggleAction * action )
-{
-    playlistwin_set_shade(gtk_toggle_action_get_active(action));
-}
-
-void
-action_show_equalizer( GtkToggleAction * action )
-{
-    equalizerwin_show (gtk_toggle_action_get_active (action));
-}
-
-void
-action_show_playlist_editor( GtkToggleAction * action )
-{
-    playlistwin_show (gtk_toggle_action_get_active (action));
-}
-
-void
-action_show_player( GtkToggleAction * action )
+void action_show_player (GtkToggleAction * action)
 {
     mainwin_show(gtk_toggle_action_get_active(action));
 }
@@ -2053,83 +1774,83 @@ action_show_player( GtkToggleAction * action )
 
 /* radioactionentries actions (one callback for each radio group) */
 
-void
-action_anafoff( GtkAction *action, GtkRadioAction *current )
+void action_anafoff (GtkAction * action, GtkRadioAction * current)
 {
-    mainwin_vis_set_afalloff(gtk_radio_action_get_current_value(current));
+    config.analyzer_falloff = gtk_radio_action_get_current_value (current);
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
 }
 
-void
-action_anamode( GtkAction *action, GtkRadioAction *current )
+void action_anamode (GtkAction * action, GtkRadioAction * current)
 {
-    mainwin_vis_set_analyzer_mode(gtk_radio_action_get_current_value(current));
+    config.analyzer_mode = gtk_radio_action_get_current_value (current);
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
 }
 
-void
-action_anatype( GtkAction *action, GtkRadioAction *current )
+void action_anatype (GtkAction * action, GtkRadioAction * current)
 {
-    mainwin_vis_set_analyzer_type(gtk_radio_action_get_current_value(current));
+    config.analyzer_type = gtk_radio_action_get_current_value (current);
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
 }
 
-void
-action_peafoff( GtkAction *action, GtkRadioAction *current )
+void action_peafoff (GtkAction * action, GtkRadioAction * current)
 {
-    mainwin_vis_set_pfalloff(gtk_radio_action_get_current_value(current));
+    config.peaks_falloff = gtk_radio_action_get_current_value (current);
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
 }
 
-void
-action_scomode( GtkAction *action, GtkRadioAction *current )
+void action_scomode (GtkAction * action, GtkRadioAction * current)
 {
-    config.scope_mode = gtk_radio_action_get_current_value(current);
+    config.scope_mode = gtk_radio_action_get_current_value (current);
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
 }
 
-void
-action_vismode( GtkAction *action, GtkRadioAction *current )
+void action_vismode (GtkAction * action, GtkRadioAction * current)
 {
-    mainwin_vis_set_type_menu_cb(gtk_radio_action_get_current_value(current));
+    config.vis_type = gtk_radio_action_get_current_value (current);
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
+
+    start_stop_visual (FALSE);
 }
 
-void
-action_vprmode( GtkAction *action, GtkRadioAction *current )
+void action_vprmode (GtkAction * action, GtkRadioAction * current)
 {
     config.voiceprint_mode = gtk_radio_action_get_current_value(current);
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
 }
 
-void
-action_wshmode( GtkAction *action, GtkRadioAction *current )
+void action_wshmode (GtkAction * action, GtkRadioAction * current)
 {
     config.vu_mode = gtk_radio_action_get_current_value(current);
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
 }
 
-void
-action_viewtime( GtkAction *action, GtkRadioAction *current )
+void action_viewtime (GtkAction * action, GtkRadioAction * current)
 {
-    set_timer_mode_menu_cb(gtk_radio_action_get_current_value(current));
+    config.timer_mode = gtk_radio_action_get_current_value (current);
 }
 
 
 /* actionentries actions */
 
-void
-action_about_audacious( void )
-{
-    audgui_show_about_window();
-}
-
-void
-action_play_file( void )
+void action_play_file (void)
 {
     audgui_run_filebrowser(TRUE); /* TRUE = PLAY_BUTTON */
 }
 
-void
-action_play_location( void )
+void action_play_location (void)
 {
     audgui_show_add_url_window (TRUE);
 }
 
-void
-action_ab_set( void )
+void action_ab_set (void)
 {
     if (aud_drct_get_length () > 0)
     {
@@ -2155,72 +1876,11 @@ action_ab_set( void )
     }
 }
 
-void
-action_ab_clear( void )
+void action_ab_clear (void)
 {
     if (aud_drct_get_length () > 0)
     {
         ab_position_a = ab_position_b = -1;
         mainwin_release_info_text();
     }
-}
-
-void
-action_current_track_info( void )
-{
-    audgui_infowin_show_current ();
-}
-
-void
-action_jump_to_file( void )
-{
-    audgui_jump_to_track();
-}
-
-void
-action_jump_to_playlist_start( void )
-{
-    aud_drct_pl_set_pos (0);
-}
-
-void
-action_playback_next( void )
-{
-    aud_drct_pl_next ();
-}
-
-void
-action_playback_previous( void )
-{
-    aud_drct_pl_prev ();
-}
-
-void
-action_playback_play( void )
-{
-    mainwin_play_pushed();
-}
-
-void
-action_playback_pause( void )
-{
-    aud_drct_pause();
-}
-
-void
-action_playback_stop( void )
-{
-    mainwin_stop_pushed();
-}
-
-void
-action_preferences( void )
-{
-    aud_show_prefs_window ();
-}
-
-void
-action_quit( void )
-{
-    aud_drct_quit ();
 }

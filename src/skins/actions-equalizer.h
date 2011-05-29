@@ -35,4 +35,7 @@ void action_equ_save_preset_eqf(void);
 void action_equ_delete_preset(void);
 void action_equ_delete_auto_preset(void);
 
+void action_show_equalizer(GtkToggleAction*);
+void action_roll_up_equalizer(GtkToggleAction*);
+
 #endif /* AUDACIOUS_ACTIONS_EQUALIZER_H */

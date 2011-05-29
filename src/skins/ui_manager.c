@@ -17,6 +17,7 @@
  *  Audacious or using our public API to be a derived work.
  */
 
+#include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <libaudgui/libaudgui.h>
@@ -78,9 +79,6 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
 
     { "roll up equalizer", NULL , N_("Roll up Equalizer"), "<Ctrl><Alt>W",
       N_("Roll up Equalizer"), G_CALLBACK(action_roll_up_equalizer) , FALSE },
-
-    { "view scaled", NULL , N_("Scale"), "<Ctrl>D",
-      N_("DoubleSize"), G_CALLBACK(action_view_scaled) , FALSE },
 
     { "view easy move", NULL , N_("Easy Move"), "<Ctrl>E",
       N_("Easy Move"), G_CALLBACK(action_view_easymove) , FALSE }
@@ -155,19 +153,19 @@ static GtkActionEntry action_entries_playback[] = {
     { "playback", NULL, N_("Playback") },
 
     { "playback play", GTK_STOCK_MEDIA_PLAY , N_("Play"), "X",
-      N_("Play"), G_CALLBACK(action_playback_play) },
+      N_("Play"), G_CALLBACK(aud_drct_play) },
 
     { "playback pause", GTK_STOCK_MEDIA_PAUSE , N_("Pause"), "C",
-      N_("Pause"), G_CALLBACK(action_playback_pause) },
+      N_("Pause"), G_CALLBACK(aud_drct_pause) },
 
     { "playback stop", GTK_STOCK_MEDIA_STOP , N_("Stop"), "V",
-      N_("Stop"), G_CALLBACK(action_playback_stop) },
+      N_("Stop"), G_CALLBACK(aud_drct_stop) },
 
     { "playback previous", GTK_STOCK_MEDIA_PREVIOUS , N_("Previous"), "Z",
-      N_("Previous"), G_CALLBACK(action_playback_previous) },
+      N_("Previous"), G_CALLBACK(aud_drct_pl_prev) },
 
     { "playback next", GTK_STOCK_MEDIA_NEXT , N_("Next"), "B",
-      N_("Next"), G_CALLBACK(action_playback_next) }
+      N_("Next"), G_CALLBACK(aud_drct_pl_next) }
 };
 
 
@@ -369,13 +367,13 @@ static GtkActionEntry action_entries_others[] = {
     { "plugins-menu", AUD_STOCK_PLUGIN, N_("Plugin Services") },
 
     { "current track info", GTK_STOCK_INFO , N_("View Track Details"), "I",
-      N_("View track details"), G_CALLBACK(action_current_track_info) },
+      N_("View track details"), G_CALLBACK(audgui_infowin_show_current) },
 
     { "playlist track info", GTK_STOCK_INFO , N_("View Track Details"), "<Alt>I",
       N_("View track details"), G_CALLBACK(action_playlist_track_info) },
 
     { "about audacious", GTK_STOCK_DIALOG_INFO , N_("About Audacious"), NULL,
-      N_("About Audacious"), G_CALLBACK(action_about_audacious) },
+      N_("About Audacious"), G_CALLBACK(audgui_show_about_window) },
 
     { "play file", GTK_STOCK_OPEN , N_("Play File"), "L",
       N_("Load and play a file"), G_CALLBACK(action_play_file) },
@@ -386,10 +384,10 @@ static GtkActionEntry action_entries_others[] = {
     { "plugins", NULL , N_("Plugin services") },
 
     { "preferences", GTK_STOCK_PREFERENCES , N_("Preferences"), "<Ctrl>P",
-      N_("Open preferences window"), G_CALLBACK(action_preferences) },
+      N_("Open preferences window"), G_CALLBACK(aud_show_prefs_window) },
 
     { "quit", GTK_STOCK_QUIT , N_("_Quit"), NULL,
-      N_("Quit Audacious"), G_CALLBACK(action_quit) },
+      N_("Quit Audacious"), G_CALLBACK(aud_drct_quit) },
 
     { "ab set", NULL , N_("Set A-B"), "A",
       N_("Set A-B"), G_CALLBACK(action_ab_set) },
@@ -401,7 +399,7 @@ static GtkActionEntry action_entries_others[] = {
       N_("Jump to Playlist Start"), G_CALLBACK(action_jump_to_playlist_start) },
 
     { "jump to file", GTK_STOCK_JUMP_TO , N_("Jump to File"), "J",
-      N_("Jump to File"), G_CALLBACK(action_jump_to_file) },
+      N_("Jump to File"), G_CALLBACK(audgui_jump_to_track) },
 
     { "jump to time", GTK_STOCK_JUMP_TO , N_("Jump to Time"), "<Ctrl>J",
       N_("Jump to Time"), (GCallback) audgui_jump_to_time},

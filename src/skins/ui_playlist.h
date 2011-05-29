@@ -53,8 +53,6 @@ gint playlistwin_get_width(void);
 gint playlistwin_get_height(void);
 void playlistwin_update (void);
 void playlistwin_set_toprow(gint top);
-void playlistwin_set_shade_menu_cb(gboolean shaded);
-void playlistwin_set_shade(gboolean shaded);
 void playlistwin_shade_toggle(void);
 void playlistwin_create(void);
 void playlistwin_unhook (void);

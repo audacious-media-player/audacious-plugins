@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,54 +19,27 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_SKINNED_BUTTON_H
-#define AUDACIOUS_UI_SKINNED_BUTTON_H
+#ifndef SKINS_UI_SKINNED_BUTTON_H
+#define SKINS_UI_SKINNED_BUTTON_H
 
 #include <gtk/gtk.h>
+
 #include "ui_skin.h"
 
-#define UI_SKINNED_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), ui_skinned_button_get_type(), UiSkinnedButton))
-#define UI_SKINNED_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  ui_skinned_button_get_type(), UiSkinnedButtonClass))
-#define UI_SKINNED_IS_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ui_skinned_button_get_type()))
+typedef void (* ButtonCB) (GtkWidget * button, GdkEventButton * event);
 
-typedef struct _UiSkinnedButton		UiSkinnedButton;
-typedef struct _UiSkinnedButtonClass	UiSkinnedButtonClass;
+GtkWidget * button_new (gint w, gint h, gint nx, gint ny, gint px,
+ gint py, SkinPixmapId si1, SkinPixmapId si2);
+GtkWidget * button_new_toggle (gint w, gint h, gint nx, gint ny,
+ gint px, gint py, gint pnx, gint pny, gint ppx, gint ppy, SkinPixmapId si1,
+ SkinPixmapId si2);
+GtkWidget * button_new_small (gint w, gint h);
 
-enum {
-    TYPE_NOT_SET,
-    TYPE_PUSH,
-    TYPE_TOGGLE,
-    TYPE_SMALL
-};
+void button_on_press (GtkWidget * button, ButtonCB callback);
+void button_on_release (GtkWidget * button, ButtonCB callback);
+void button_on_rclick (GtkWidget * button, ButtonCB callback);
 
-struct _UiSkinnedButton {
-    GtkWidget widget;
+gboolean button_get_active (GtkWidget * button);
+void button_set_active (GtkWidget * button, gboolean active);
 
-    GdkWindow *event_window;
-    gboolean button_down;
-    gboolean pressed;
-    gboolean hover;
-    gboolean inside;
-    gint type;
-    gint x, y;
-};
-
-struct _UiSkinnedButtonClass {
-    GtkWidgetClass          parent_class;
-    void (* pressed)       (UiSkinnedButton *button);
-    void (* released)      (UiSkinnedButton *button);
-    void (* clicked)       (UiSkinnedButton *button);
-    void (* right_clicked) (UiSkinnedButton *button);
-    void (* scaled)        (UiSkinnedButton *button);
-};
-
-GType ui_skinned_button_get_type(void) G_GNUC_CONST;
-GtkWidget* ui_skinned_button_new();
-void ui_skinned_push_button_setup(GtkWidget *button, GtkWidget *fixed, gint x, gint y, gint w, gint h, gint nx, gint ny, gint px, gint py, SkinPixmapId si);
-void ui_skinned_toggle_button_setup(GtkWidget *button, GtkWidget *fixed, gint x, gint y, gint w, gint h, gint nx, gint ny, gint px, gint py, gint pnx, gint pny, gint ppx, gint ppy, SkinPixmapId si);
-void ui_skinned_small_button_setup(GtkWidget *button, GtkWidget *fixed, gint x, gint y, gint w, gint h);
-void ui_skinned_button_set_skin_index2(GtkWidget *button, SkinPixmapId si);
-void ui_skinned_button_move_relative(GtkWidget *button, gint x, gint y);
-void ui_skinned_button_set_inside(GtkWidget *widget, gboolean inside);
-
-#endif /* AUDACIOUS_UI_SKINNED_BUTTON_H */
+#endif

@@ -33,15 +33,10 @@ void action_playback_repeat(GtkToggleAction*);
 void action_playback_shuffle(GtkToggleAction*);
 void action_stop_after_current_song(GtkToggleAction*);
 void action_view_always_on_top(GtkToggleAction*);
-void action_view_scaled(GtkToggleAction*);
 void action_view_easymove(GtkToggleAction*);
 void action_view_on_all_workspaces(GtkToggleAction*);
-void action_roll_up_equalizer(GtkToggleAction*);
 void action_roll_up_player(GtkToggleAction*);
-void action_roll_up_playlist_editor(GtkToggleAction*);
-void action_show_equalizer(GtkToggleAction*);
 void action_show_player(GtkToggleAction*);
-void action_show_playlist_editor(GtkToggleAction*);
 
 /* radio actions (one for each radio action group) */
 void action_anafoff(GtkAction*,GtkRadioAction*);
@@ -55,19 +50,9 @@ void action_wshmode(GtkAction*,GtkRadioAction*);
 void action_viewtime(GtkAction*,GtkRadioAction*);
 
 /* normal actions */
-void action_about_audacious(void);
 void action_ab_clear(void);
 void action_ab_set(void);
-void action_jump_to_file(void);
-void action_jump_to_playlist_start(void);
 void action_play_file(void);
 void action_play_location(void);
-void action_playback_next(void);
-void action_playback_pause(void);
-void action_playback_play(void);
-void action_playback_previous(void);
-void action_playback_stop(void);
-void action_preferences(void);
-void action_quit(void);
-void action_current_track_info(void);
+
 #endif /* AUDACIOUS_ACTIONS_MAINWIN_H */

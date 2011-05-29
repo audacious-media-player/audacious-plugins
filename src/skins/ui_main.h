@@ -47,10 +47,6 @@ typedef enum {
 } TimerMode;
 
 extern GtkWidget *mainwin;
-extern GtkWidget *err;
-
-extern gboolean mainwin_moving;
-extern gboolean mainwin_focus;
 
 extern GtkWidget *mainwin_eq, *mainwin_pl;
 extern GtkWidget *mainwin_info;
@@ -69,18 +65,10 @@ extern GtkWidget *mainwin_position, *mainwin_sposition;
 
 void mainwin_create(void);
 void mainwin_unhook (void);
-void ui_main_set_initial_volume(void);
 
 void mainwin_lock_info_text(const gchar * text);
 void mainwin_release_info_text(void);
 void mainwin_play_pushed(void);
-void mainwin_stop_pushed(void);
-void mainwin_eject_pushed(void);
-
-void mainwin_rev_pushed(void);
-void mainwin_rev_release(void);
-void mainwin_fwd_pushed(void);
-void mainwin_fwd_release(void);
 
 void mainwin_adjust_volume_motion(gint v);
 void mainwin_adjust_volume_release(void);
@@ -89,27 +77,15 @@ void mainwin_adjust_balance_release(void);
 void mainwin_set_volume_slider(gint percent);
 void mainwin_set_balance_slider(gint percent);
 
-void mainwin_vis_set_type(VisType mode);
-
 void mainwin_refresh_hints(void);
 void mainwin_set_song_title (const gchar * title);
 void mainwin_set_song_info(gint rate, gint freq, gint nch);
 void mainwin_clear_song_info(void);
-void mainwin_set_noplaylistadvance(gboolean no_advance);
 
-void mainwin_set_sticky (gboolean sticky);
-void mainwin_set_always_on_top(gboolean always);
 void mainwin_set_shape (void);
-void mainwin_set_volume_diff(gint diff);
-void mainwin_set_balance_diff(gint diff);
 
 void mainwin_show(gboolean);
-void mainwin_move(gint x, gint y);
-void mainwin_shuffle_pushed(gboolean toggled);
-void mainwin_repeat_pushed(gboolean toggled);
 void mainwin_disable_seekbar(void);
-void mainwin_set_title(const gchar * text);
-void mainwin_minimize_cb(void);
 
 void mainwin_update_song_info (void);
 void mainwin_enable_status_message (gboolean enable);
@@ -125,8 +101,6 @@ void mainwin_drag_data_received(GtkWidget * widget,
 
 void mainwin_setup_menus(void);
 gboolean change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event);
-
-void mainwin_jump_to_file(void);
 
 /* widget should be null if called manually. */
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,

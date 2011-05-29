@@ -70,5 +70,9 @@ void action_playlist_sort_selected_by_track_number(void);
 
 void action_playlist_track_info(void);
 void action_queue_toggle(void);
+void action_jump_to_playlist_start(void);
+
+void action_show_playlist_editor(GtkToggleAction*);
+void action_roll_up_playlist_editor(GtkToggleAction*);
 
 #endif /* AUDACIOUS_ACTIONS_PLAYLIST_H */
