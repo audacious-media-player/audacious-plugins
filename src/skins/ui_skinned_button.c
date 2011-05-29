@@ -34,7 +34,6 @@ typedef struct {
     gboolean hover, pressed, active;
     ButtonCB on_press;
     ButtonCB on_release;
-    ButtonCB on_rclick;
 } ButtonData;
 
 DRAW_FUNC_BEGIN (button_draw)
@@ -93,12 +92,6 @@ static gboolean button_release (GtkWidget * button, GdkEventButton * event)
 {
     ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
     g_return_val_if_fail (data, FALSE);
-
-    if (event->button == 3 && data->on_rclick)
-    {
-        data->on_rclick (button, event);
-        return TRUE;
-    }
 
     if (event->button != 1)
         return FALSE;
@@ -237,14 +230,6 @@ void button_on_release (GtkWidget * button, ButtonCB callback)
     g_return_if_fail (data);
 
     data->on_release = callback;
-}
-
-void button_on_rclick (GtkWidget * button, ButtonCB callback)
-{
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
-    g_return_if_fail (data);
-
-    data->on_rclick = callback;
 }
 
 gboolean button_get_active (GtkWidget * button)
