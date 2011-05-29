@@ -459,9 +459,9 @@ static void pixbuf_get_pixel_color (GdkPixbuf * p, gint x, gint y, GdkColor * c)
     guchar * b = gdk_pixbuf_get_pixels (p) + gdk_pixbuf_get_rowstride (p) * y +
      gdk_pixbuf_get_n_channels (p) * x;
 
-    c->red = ((guint16) b[0]) << 8;
-    c->green = ((guint16) b[1]) << 8;
-    c->blue = ((guint16) b[2]) << 8;
+    c->red = ((gint) b[0]) * 65535 / 255;
+    c->green = ((gint) b[1]) * 65535 / 255;
+    c->blue = ((gint) b[2]) * 65535 / 255;
 }
 
 static glong
