@@ -1375,7 +1375,8 @@ mainwin_create_widgets(void)
     g_signal_connect(mainwin_balance, "motion", G_CALLBACK(mainwin_balance_motion_cb), NULL);
     g_signal_connect(mainwin_balance, "release", G_CALLBACK(mainwin_balance_release_cb), NULL);
 
-    mainwin_monostereo = ui_skinned_monostereo_new(SKINNED_WINDOW(mainwin)->normal, 212, 41, SKIN_MONOSTEREO);
+    mainwin_monostereo = ui_skinned_monostereo_new ();
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_monostereo, 212, 41);
 
     mainwin_playstatus = ui_skinned_playstatus_new ();
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_playstatus, 24, 28);

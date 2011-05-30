@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -24,35 +25,12 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_SKINNED_MONOSTEREO_H
-#define AUDACIOUS_UI_SKINNED_MONOSTEREO_H
+#ifndef SKINS_UI_SKINNED_MONOSTEREO_H
+#define SKINS_UI_SKINNED_MONOSTEREO_H
 
 #include <gtk/gtk.h>
-#include "ui_skin.h"
 
-#define UI_SKINNED_MONOSTEREO(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_monostereo_get_type (), UiSkinnedMonoStereo)
-#define UI_SKINNED_MONOSTEREO_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_monostereo_get_type (), UiSkinnedMonoStereoClass)
-#define UI_SKINNED_IS_MONOSTEREO(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_monostereo_get_type ())
-
-typedef struct _UiSkinnedMonoStereo        UiSkinnedMonoStereo;
-typedef struct _UiSkinnedMonoStereoClass   UiSkinnedMonoStereoClass;
-
-struct _UiSkinnedMonoStereo {
-    GtkWidget        widget;
-
-    gint             x, y, width, height;
-    gint             num_channels;
-    SkinPixmapId     skin_index;
-    gboolean         scaled;
-};
-
-struct _UiSkinnedMonoStereoClass {
-    GtkWidgetClass          parent_class;
-    void (* scaled)        (UiSkinnedMonoStereo *menurow);
-};
-
-GtkWidget* ui_skinned_monostereo_new (GtkWidget *fixed, gint x, gint y, SkinPixmapId si);
-GType ui_skinned_monostereo_get_type(void);
+GtkWidget * ui_skinned_monostereo_new (void);
 void ui_skinned_monostereo_set_num_channels(GtkWidget *widget, gint nch);
 
-#endif /* AUDACIOUS_UI_SKINNED_MONOSTEREO_H */
+#endif

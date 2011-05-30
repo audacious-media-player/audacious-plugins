@@ -38,4 +38,4 @@ GtkWidget * ui_skinned_playstatus_new (void);
 void ui_skinned_playstatus_set_status(GtkWidget *widget, PStatus status);
 void ui_skinned_playstatus_set_size(GtkWidget *widget, gint width, gint height);
 
-#endif /* AUDACIOUS_UI_SKINNED_PLAYSTATUS_H */
+#endif
