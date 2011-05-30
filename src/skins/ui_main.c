@@ -1264,11 +1264,23 @@ mainwin_setup_menus(void)
     }
 }
 
-static void mainwin_info_right_clicked_cb(GtkWidget *widget, GdkEventButton
- *event)
+static gboolean mainwin_info_button_press (GtkWidget * widget, GdkEventButton *
+ event)
 {
-    ui_popup_menu_show(UI_MENU_SONGNAME, event->x_root, event->y_root, FALSE,
-     FALSE, 3, event->time);
+    if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+    {
+        ui_popup_menu_show (UI_MENU_SONGNAME, event->x_root, event->y_root,
+         FALSE, FALSE, event->button, event->time);
+        return TRUE;
+    }
+
+    if (event->type == GDK_2BUTTON_PRESS && event->button == 1)
+    {
+        audgui_infowin_show_current ();
+        return TRUE;
+    }
+
+    return FALSE;
 }
 
 static void
@@ -1336,11 +1348,8 @@ mainwin_create_widgets(void)
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_info, 112, 27);
     textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL : config.mainwin_font);
     textbox_set_scroll (mainwin_info, config.autoscroll);
-
-#if 0
-    g_signal_connect (mainwin_info, "double-clicked", audgui_infowin_show_current, NULL);
-    g_signal_connect(mainwin_info, "right-clicked", G_CALLBACK(mainwin_info_right_clicked_cb), NULL);
-#endif
+    g_signal_connect (mainwin_info, "button-press-event", (GCallback)
+     mainwin_info_button_press, NULL);
 
     mainwin_othertext = textbox_new (153);
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_othertext, 112, 43);
@@ -1348,7 +1357,7 @@ mainwin_create_widgets(void)
     mainwin_rate_text = textbox_new (15);
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_rate_text, 111, 43);
 
-    mainwin_freq_text = textbox_new (153);
+    mainwin_freq_text = textbox_new (10);
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_freq_text, 156, 43);
 
     mainwin_menurow = ui_skinned_menurow_new ();
@@ -1459,10 +1468,8 @@ mainwin_create_widgets(void)
     mainwin_stime_sec = textbox_new (10);
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_stime_sec, 147, 4);
 
-#if 0
     g_signal_connect(mainwin_stime_min, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
     g_signal_connect(mainwin_stime_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
-#endif
 }
 
 static void show_widgets (void)

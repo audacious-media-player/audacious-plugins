@@ -798,10 +798,8 @@ playlistwin_create_widgets(void)
     playlistwin_time_sec = textbox_new (10);
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_time_sec, config.playlist_width - 64, config.playlist_height - 15);
 
-#if 0
     g_signal_connect(playlistwin_time_min, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
     g_signal_connect(playlistwin_time_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
-#endif
 
     playlistwin_info = textbox_new (90);
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_info, config.playlist_width - 143, config.playlist_height - 28);
