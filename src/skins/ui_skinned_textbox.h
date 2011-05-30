@@ -37,4 +37,6 @@ void textbox_set_text (GtkWidget * textbox, const gchar * text);
 void textbox_set_font (GtkWidget * textbox, const gchar * name);
 void textbox_set_scroll (GtkWidget * textbox, gboolean scroll);
 
+void textbox_update_all (void);
+
 #endif

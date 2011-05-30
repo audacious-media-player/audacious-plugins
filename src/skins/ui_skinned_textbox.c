@@ -25,8 +25,6 @@
  * Audacious or using our public API to be a derived work.
  */
 
-/* To do: Regenerate textboxes when the skin or scroll pattern is changed. */
-
 #include <string.h>
 
 #include "draw-compat.h"
@@ -47,6 +45,8 @@ typedef struct {
     gint scroll_source;
     gint offset, delay;
 } TextboxData;
+
+static GList * textboxes;
 
 DRAW_FUNC_BEGIN (textbox_draw)
     TextboxData * data = g_object_get_data ((GObject *) wid, "textboxdata");
@@ -379,6 +379,8 @@ static void textbox_destroy (GtkWidget * textbox)
         cairo_surface_destroy (data->buf);
     if (data->scroll_source)
         g_source_remove (data->scroll_source);
+
+    textboxes = g_list_remove (textboxes, textbox);
 }
 
 GtkWidget * textbox_new (gint width)
@@ -396,6 +398,22 @@ GtkWidget * textbox_new (gint width)
     data->text = g_strdup ("");
     g_object_set_data ((GObject *) textbox, "textboxdata", data);
 
+    textboxes = g_list_prepend (textboxes, textbox);
+
     textbox_render (textbox, data);
     return textbox;
+}
+
+void textbox_update_all (void)
+{
+    for (GList * node = textboxes; node; node = node->next)
+    {
+        GtkWidget * textbox = node->data;
+        g_return_if_fail (textbox);
+        TextboxData * data = g_object_get_data ((GObject *) textbox,
+         "textboxdata");
+        g_return_if_fail (data);
+
+        textbox_render (textbox, data);
+    }
 }

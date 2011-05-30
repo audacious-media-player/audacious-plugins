@@ -37,6 +37,7 @@
 #include "ui_skin.h"
 #include "ui_skinned_number.h"
 #include "ui_skinned_playstatus.h"
+#include "ui_skinned_textbox.h"
 #include "ui_skinned_window.h"
 #include "ui_skinselector.h"
 #include "util.h"
@@ -170,6 +171,7 @@ aud_active_skin_load(const gchar * path)
     }
 
     mainwin_refresh_hints ();
+    textbox_update_all ();
     ui_vis_set_colors ();
     ui_svis_set_colors ();
     ui_skinned_window_draw_all(mainwin);
