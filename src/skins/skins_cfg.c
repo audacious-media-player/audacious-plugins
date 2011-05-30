@@ -271,7 +271,8 @@ void skins_cfg_save() {
 static void
 mainwin_font_set_cb()
 {
-    ui_skinned_textbox_set_xfont(mainwin_info, !config.mainwin_use_bitmapfont, config.mainwin_font);
+    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL :
+     config.mainwin_font);
 }
 
 static void
@@ -286,7 +287,8 @@ playlist_font_set_cb()
 static void
 bitmap_fonts_cb()
 {
-    ui_skinned_textbox_set_xfont(mainwin_info, !config.mainwin_use_bitmapfont, config.mainwin_font);
+    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL :
+     config.mainwin_font);
     playlistwin_set_sinfo_font(config.playlist_font);
 
     if (config.playlist_shaded) {

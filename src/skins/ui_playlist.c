@@ -140,7 +140,7 @@ static void playlistwin_update_info (void)
         total / 60, total % 60);
 
     text = g_strconcat(sel_text, "/", tot_text, NULL);
-    ui_skinned_textbox_set_text (playlistwin_info, text);
+    textbox_set_text (playlistwin_info, text);
     g_free(text);
     g_free(tot_text);
     g_free(sel_text);
@@ -171,7 +171,7 @@ static void update_rollup_text (void)
              (scratch), " (%d:%02d)", length / 60000, length / 1000 % 60);
     }
 
-    ui_skinned_textbox_set_text (playlistwin_sinfo, scratch);
+    textbox_set_text (playlistwin_sinfo, scratch);
 }
 
 static void real_update (void)
@@ -226,12 +226,13 @@ playlistwin_set_sinfo_font(gchar *font)
 
     tmp3 = strrchr(tmp, ' ');
     if (tmp3 != NULL)
-        tmp3 = '\0';
+        * tmp3 = '\0';
 
-    tmp2 = g_strdup_printf("%s 8", tmp);
+    tmp2 = g_strdup_printf("%s 5", tmp);
     g_return_if_fail(tmp2);
 
-    ui_skinned_textbox_set_xfont(playlistwin_sinfo, !config.mainwin_use_bitmapfont, tmp2);
+    textbox_set_font (playlistwin_sinfo, config.mainwin_use_bitmapfont ? NULL :
+     tmp2);
 
     g_free(tmp);
     g_free(tmp2);
@@ -241,9 +242,9 @@ void
 playlistwin_set_sinfo_scroll(gboolean scroll)
 {
     if(playlistwin_is_shaded())
-        ui_skinned_textbox_set_scroll(playlistwin_sinfo, config.autoscroll);
+        textbox_set_scroll (playlistwin_sinfo, config.autoscroll);
     else
-        ui_skinned_textbox_set_scroll(playlistwin_sinfo, FALSE);
+        textbox_set_scroll (playlistwin_sinfo, FALSE);
 }
 
 static void
@@ -548,9 +549,9 @@ playlistwin_resize(gint width, gint height)
     gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_shade, config.playlist_width - 21, 3);
     gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_close, config.playlist_width - 11, 3);
 
-    ui_skinned_textbox_move_relative(playlistwin_time_min, dx, dy);
-    ui_skinned_textbox_move_relative(playlistwin_time_sec, dx, dy);
-    ui_skinned_textbox_move_relative(playlistwin_info, dx, dy);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_time_min, config.playlist_width - 82, config.playlist_height - 15);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_time_sec, config.playlist_width - 64, config.playlist_height - 15);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_info, config.playlist_width - 143, config.playlist_height - 28);
 
     gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_srew, config.playlist_width - 144, config.playlist_height - 16);
     gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_splay, config.playlist_width - 138, config.playlist_height - 16);
@@ -561,8 +562,8 @@ playlistwin_resize(gint width, gint height)
     gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_sscroll_up, config.playlist_width - 14, config.playlist_height - 35);
     gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_sscroll_down, config.playlist_width - 14, config.playlist_height - 30);
 
-    gtk_widget_set_size_request(playlistwin_sinfo, playlistwin_get_width() - 35,
-                                aud_active_skin->properties.textbox_bitmap_font_height);
+    textbox_set_width (playlistwin_sinfo, config.playlist_width - 35);
+
     g_mutex_unlock(resize_mutex);
 }
 
@@ -706,14 +707,14 @@ static gboolean playlistwin_delete(GtkWidget *widget, void *data)
 void
 playlistwin_hide_timer(void)
 {
-    ui_skinned_textbox_set_text(playlistwin_time_min, "   ");
-    ui_skinned_textbox_set_text(playlistwin_time_sec, "  ");
+    textbox_set_text (playlistwin_time_min, "   ");
+    textbox_set_text (playlistwin_time_sec, "  ");
 }
 
 void playlistwin_set_time (const gchar * minutes, const gchar * seconds)
 {
-    ui_skinned_textbox_set_text (playlistwin_time_min, minutes);
-    ui_skinned_textbox_set_text (playlistwin_time_sec, seconds);
+    textbox_set_text (playlistwin_time_min, minutes);
+    textbox_set_text (playlistwin_time_sec, seconds);
 }
 
 static void drag_motion (GtkWidget * widget, GdkDragContext * context, gint x,
@@ -760,11 +761,10 @@ playlistwin_create_widgets(void)
 {
     /* This function creates the custom widgets used by the playlist editor */
 
-    /* text box for displaying song title in shaded mode */
-    playlistwin_sinfo = ui_skinned_textbox_new(SKINNED_WINDOW(playlistwin)->shaded,
-                                               4, 4, playlistwin_get_width() - 35, TRUE, SKIN_TEXT);
-
-    playlistwin_set_sinfo_font(config.playlist_font);
+    playlistwin_sinfo = textbox_new (config.playlist_width - 35);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->shaded, playlistwin_sinfo, 4, 4);
+    playlistwin_set_sinfo_font (config.playlist_font);
+    playlistwin_set_sinfo_scroll (config.autoscroll);
 
     playlistwin_shaded_shade = button_new (9, 9, 128, 45, 150, 42, SKIN_PLEDIT, SKIN_PLEDIT);
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->shaded, playlistwin_shaded_shade, config.playlist_width - 21, 3);
@@ -792,22 +792,19 @@ playlistwin_create_widgets(void)
      20, config.playlist_height - 58, playlistwin_list);
     ui_skinned_playlist_set_slider (playlistwin_list, playlistwin_slider);
 
-    /* track time (minute) */
-    playlistwin_time_min = ui_skinned_textbox_new(SKINNED_WINDOW(playlistwin)->normal,
-                       playlistwin_get_width() - 82,
-                       config.playlist_height - 15, 15, FALSE, SKIN_TEXT);
+    playlistwin_time_min = textbox_new (15);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_time_min, config.playlist_width - 82, config.playlist_height - 15);
+
+    playlistwin_time_sec = textbox_new (10);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_time_sec, config.playlist_width - 64, config.playlist_height - 15);
+
+#if 0
     g_signal_connect(playlistwin_time_min, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
-
-    /* track time (second) */
-    playlistwin_time_sec = ui_skinned_textbox_new(SKINNED_WINDOW(playlistwin)->normal,
-                       playlistwin_get_width() - 64,
-                       config.playlist_height - 15, 10, FALSE, SKIN_TEXT);
     g_signal_connect(playlistwin_time_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
+#endif
 
-    /* playlist information (current track length / total track length) */
-    playlistwin_info = ui_skinned_textbox_new(SKINNED_WINDOW(playlistwin)->normal,
-                       playlistwin_get_width() - 143,
-                       config.playlist_height - 28, 90, FALSE, SKIN_TEXT);
+    playlistwin_info = textbox_new (90);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_info, config.playlist_width - 143, config.playlist_height - 28);
 
     /* mini play control buttons at right bottom corner */
 
@@ -1331,6 +1328,7 @@ void action_show_playlist_editor (GtkToggleAction * action)
 void action_roll_up_playlist_editor (GtkToggleAction * action)
 {
     config.playlist_shaded = gtk_toggle_action_get_active (action);
+    ui_skinned_window_set_shade (playlistwin, config.playlist_shaded);
 
     if (config.playlist_shaded)
     {

@@ -20,7 +20,6 @@
  */
 
 #include "draw-compat.h"
-#include "skins_cfg.h"
 #include "ui_skinned_button.h"
 
 enum {BUTTON_TYPE_NORMAL, BUTTON_TYPE_TOGGLE, BUTTON_TYPE_SMALL};

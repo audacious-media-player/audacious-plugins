@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -24,40 +25,16 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_SKINNED_TEXTBOX_H
-#define AUDACIOUS_UI_SKINNED_TEXTBOX_H
+#ifndef SKINS_UI_SKINNED_TEXTBOX_H
+#define SKINS_UI_SKINNED_TEXTBOX_H
 
 #include <gtk/gtk.h>
-#include "ui_skin.h"
 
-#define UI_SKINNED_TEXTBOX(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_textbox_get_type (), UiSkinnedTextbox)
-#define UI_SKINNED_TEXTBOX_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_textbox_get_type (), UiSkinnedTextboxClass)
-#define UI_SKINNED_IS_TEXTBOX(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_textbox_get_type ())
+GtkWidget * textbox_new (gint width);
+void textbox_set_width (GtkWidget * textbox, gint width);
+const gchar * textbox_get_text (GtkWidget * textbox);
+void textbox_set_text (GtkWidget * textbox, const gchar * text);
+void textbox_set_font (GtkWidget * textbox, const gchar * name);
+void textbox_set_scroll (GtkWidget * textbox, gboolean scroll);
 
-typedef struct _UiSkinnedTextbox        UiSkinnedTextbox;
-typedef struct _UiSkinnedTextboxClass   UiSkinnedTextboxClass;
-
-struct _UiSkinnedTextbox {
-    GtkWidget        widget;
-
-    GdkWindow        *event_window;
-    gint             x, y, width, height;
-    gchar            *text;
-};
-
-struct _UiSkinnedTextboxClass {
-    GtkWidgetClass          parent_class;
-    void (* clicked)        (UiSkinnedTextbox *textbox);
-    void (* double_clicked) (UiSkinnedTextbox *textbox);
-    void (* right_clicked)  (UiSkinnedTextbox *textbox);
-    void (* scaled)         (UiSkinnedTextbox *textbox);
-};
-
-GtkWidget* ui_skinned_textbox_new (GtkWidget *fixed, gint x, gint y, gint w, gboolean allow_scroll, SkinPixmapId si);
-GType ui_skinned_textbox_get_type(void);
-void ui_skinned_textbox_set_xfont(GtkWidget *widget, gboolean use_xfont, const gchar * fontname);
-void ui_skinned_textbox_set_text(GtkWidget *widget, const gchar *text);
-void ui_skinned_textbox_set_scroll(GtkWidget *widget, gboolean scroll);
-void ui_skinned_textbox_move_relative(GtkWidget *widget, gint x, gint y);
-
-#endif /* AUDACIOUS_UI_SKINNED_TEXTBOX_H */
+#endif
