@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,45 +19,13 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_SKINNED_NUMBER_H
-#define AUDACIOUS_UI_SKINNED_NUMBER_H
+#ifndef SKINS_UI_SKINNED_NUMBER_H
+#define SKINS_UI_SKINNED_NUMBER_H
 
 #include <gtk/gtk.h>
-#include "ui_skin.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#define UI_SKINNED_NUMBER(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_number_get_type (), UiSkinnedNumber)
-#define UI_SKINNED_NUMBER_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_number_get_type (), UiSkinnedNumberClass)
-#define UI_SKINNED_IS_NUMBER(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_number_get_type ())
-
-typedef struct _UiSkinnedNumber        UiSkinnedNumber;
-typedef struct _UiSkinnedNumberClass   UiSkinnedNumberClass;
-
-struct _UiSkinnedNumber {
-    GtkWidget        widget;
-
-    GdkWindow        *event_window;
-    gint             x, y, width, height;
-    gint             num;
-    gboolean         scaled;
-    SkinPixmapId     skin_index;
-};
-
-struct _UiSkinnedNumberClass {
-    GtkWidgetClass          parent_class;
-    void (* scaled)        (UiSkinnedNumber *textbox);
-};
-
-GtkWidget* ui_skinned_number_new (GtkWidget *fixed, gint x, gint y, SkinPixmapId si);
-GType ui_skinned_number_get_type(void);
+GtkWidget * ui_skinned_number_new ();
 void ui_skinned_number_set (GtkWidget * widget, gchar c);
 void ui_skinned_number_set_size(GtkWidget *widget, gint width, gint height);
 
-#ifdef __cplusplus
-}
 #endif
-
-#endif /* AUDACIOUS_UI_SKINNED_NUMBER_H */
