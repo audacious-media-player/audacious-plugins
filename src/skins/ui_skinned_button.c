@@ -97,11 +97,14 @@ static gboolean button_release (GtkWidget * button, GdkEventButton * event)
 
     data->pressed = FALSE;
 
-    if (data->type == BUTTON_TYPE_TOGGLE)
-        data->active = ! data->active;
+    if (data->hover)
+    {
+        if (data->type == BUTTON_TYPE_TOGGLE)
+            data->active = ! data->active;
 
-    if (data->on_release)
-        data->on_release (button, event);
+        if (data->on_release)
+            data->on_release (button, event);
+    }
 
     if (data->type != BUTTON_TYPE_SMALL)
         gtk_widget_queue_draw (button);
