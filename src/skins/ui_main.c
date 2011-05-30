@@ -1377,7 +1377,8 @@ mainwin_create_widgets(void)
 
     mainwin_monostereo = ui_skinned_monostereo_new(SKINNED_WINDOW(mainwin)->normal, 212, 41, SKIN_MONOSTEREO);
 
-    mainwin_playstatus = ui_skinned_playstatus_new(SKINNED_WINDOW(mainwin)->normal, 24, 28);
+    mainwin_playstatus = ui_skinned_playstatus_new ();
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_playstatus, 24, 28);
 
     mainwin_minus_num = ui_skinned_number_new(SKINNED_WINDOW(mainwin)->normal, 36, 26, SKIN_NUMBERS);
     g_signal_connect(mainwin_minus_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);

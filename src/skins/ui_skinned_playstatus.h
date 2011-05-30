@@ -25,40 +25,17 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_SKINNED_PLAYSTATUS_H
-#define AUDACIOUS_UI_SKINNED_PLAYSTATUS_H
+#ifndef SKINS_UI_SKINNED_PLAYSTATUS_H
+#define SKINS_UI_SKINNED_PLAYSTATUS_H
 
 #include <gtk/gtk.h>
-
-#define UI_SKINNED_PLAYSTATUS(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_playstatus_get_type (), UiSkinnedPlaystatus)
-#define UI_SKINNED_PLAYSTATUS_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_playstatus_get_type (), UiSkinnedPlaystatusClass)
-#define UI_SKINNED_IS_PLAYSTATUS(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_playstatus_get_type ())
-
-typedef struct _UiSkinnedPlaystatus        UiSkinnedPlaystatus;
-typedef struct _UiSkinnedPlaystatusClass   UiSkinnedPlaystatusClass;
 
 typedef enum {
     STATUS_STOP, STATUS_PAUSE, STATUS_PLAY
 } PStatus;
 
-struct _UiSkinnedPlaystatus {
-    GtkWidget        widget;
-
-    gint             x, y, width, height;
-    gboolean         scaled;
-    PStatus          status;
-    gboolean         buffering;
-};
-
-struct _UiSkinnedPlaystatusClass {
-    GtkWidgetClass          parent_class;
-    void (* scaled)        (UiSkinnedPlaystatus *menurow);
-};
-
-GtkWidget* ui_skinned_playstatus_new (GtkWidget *fixed, gint x, gint y);
-GType ui_skinned_playstatus_get_type(void);
+GtkWidget * ui_skinned_playstatus_new (void);
 void ui_skinned_playstatus_set_status(GtkWidget *widget, PStatus status);
-void ui_skinned_playstatus_set_buffering(GtkWidget *widget, gboolean status);
 void ui_skinned_playstatus_set_size(GtkWidget *widget, gint width, gint height);
 
 #endif /* AUDACIOUS_UI_SKINNED_PLAYSTATUS_H */
