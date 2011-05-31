@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -24,33 +25,12 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_SKINNED_EQUALIZER_GRAPH_H
-#define AUDACIOUS_UI_SKINNED_EQUALIZER_GRAPH_H
+#ifndef SKINS_UI_SKINNED_EQUALIZER_GRAPH_H
+#define SKINS_UI_SKINNED_EQUALIZER_GRAPH_H
 
 #include <gtk/gtk.h>
-#include "ui_skin.h"
 
-#define UI_SKINNED_EQUALIZER_GRAPH(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_equalizer_graph_get_type (), UiSkinnedEqualizerGraph)
-#define UI_SKINNED_EQUALIZER_GRAPH_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_equalizer_graph_get_type (), UiSkinnedEqualizerGraphClass)
-#define UI_SKINNED_IS_EQUALIZER_GRAPH(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_equalizer_graph_get_type ())
+GtkWidget * eq_graph_new ();
+void eq_graph_update (GtkWidget * graph);
 
-typedef struct _UiSkinnedEqualizerGraph        UiSkinnedEqualizerGraph;
-typedef struct _UiSkinnedEqualizerGraphClass   UiSkinnedEqualizerGraphClass;
-
-struct _UiSkinnedEqualizerGraph {
-    GtkWidget        widget;
-
-    gint             x, y, width, height;
-    SkinPixmapId     skin_index;
-    gboolean         scaled;
-};
-
-struct _UiSkinnedEqualizerGraphClass {
-    GtkWidgetClass          parent_class;
-    void (* scaled)        (UiSkinnedEqualizerGraph *eq_graph);
-};
-
-GtkWidget* ui_skinned_equalizer_graph_new(GtkWidget *fixed, gint x, gint y);
-void ui_skinned_equalizer_graph_update (GtkWidget * graph);
-
-#endif /* AUDACIOUS_UI_SKINNED_EQUALIZER_GRAPH_H */
+#endif

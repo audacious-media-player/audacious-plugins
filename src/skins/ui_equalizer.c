@@ -209,7 +209,7 @@ update_from_config(void *unused1, void *unused2)
     ui_skinned_equalizer_slider_set_position(equalizerwin_preamp, aud_cfg->equalizer_preamp);
     for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
         ui_skinned_equalizer_slider_set_position(equalizerwin_bands[i], aud_cfg->equalizer_bands[i]);
-    ui_skinned_equalizer_graph_update(equalizerwin_graph);
+    eq_graph_update (equalizerwin_graph);
 }
 
 static void
@@ -390,7 +390,8 @@ equalizerwin_create_widgets(void)
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->shaded, equalizerwin_shaded_shade, 254, 3);
     button_on_release (equalizerwin_shaded_shade, (ButtonCB) equalizerwin_shade_toggle);
 
-    equalizerwin_graph = ui_skinned_equalizer_graph_new(SKINNED_WINDOW(equalizerwin)->normal, 86, 17);
+    equalizerwin_graph = eq_graph_new ();
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal, equalizerwin_graph, 86, 17);
 
     equalizerwin_preamp = ui_skinned_equalizer_slider_new(SKINNED_WINDOW(equalizerwin)->normal, 21, 38);
     ui_skinned_equalizer_slider_set_position (equalizerwin_preamp,
