@@ -108,8 +108,8 @@ static int ab_position_a = -1;
 static int ab_position_b = -1;
 
 static void change_timer_mode(void);
-static void mainwin_position_motion_cb(GtkWidget *widget, gint pos);
-static void mainwin_position_release_cb(GtkWidget *widget, gint pos);
+static void mainwin_position_motion_cb (void);
+static void mainwin_position_release_cb (void);
 static void mainwin_set_volume_diff (gint diff);
 
 static void
@@ -516,8 +516,8 @@ mainwin_clear_song_info(void)
     gtk_widget_hide (mainwin_position);
     gtk_widget_hide (mainwin_sposition);
 
-    UI_SKINNED_HORIZONTAL_SLIDER(mainwin_position)->pressed = FALSE;
-    UI_SKINNED_HORIZONTAL_SLIDER(mainwin_sposition)->pressed = FALSE;
+    hslider_set_pressed (mainwin_position, FALSE);
+    hslider_set_pressed (mainwin_sposition, FALSE);
 
     /* clear sampling parameter displays */
     textbox_set_text (mainwin_rate_text, "   ");
@@ -747,8 +747,8 @@ static gboolean seek_timeout (void * rewind)
         position = seek_start + held / SEEK_SPEED;
 
     position = CLAMP (position, 0, 219);
-    ui_skinned_horizontal_slider_set_position (mainwin_position, position);
-    mainwin_position_motion_cb (mainwin_position, position);
+    hslider_set_pos (mainwin_position, position);
+    mainwin_position_motion_cb ();
 
     return TRUE;
 }
@@ -759,7 +759,7 @@ static gboolean seek_press (GtkWidget * widget, GdkEventButton * event,
     if (event->button != 1 || seek_source)
         return FALSE;
 
-    seek_start = ui_skinned_horizontal_slider_get_position (mainwin_position);
+    seek_start = hslider_get_pos (mainwin_position);
     seek_time = time_now ();
     seek_source = g_timeout_add (SEEK_TIMEOUT, seek_timeout, GINT_TO_POINTER
      (rewind));
@@ -781,8 +781,7 @@ static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
             aud_drct_pl_next ();
     }
     else
-        mainwin_position_release_cb (mainwin_position,
-         ui_skinned_horizontal_slider_get_position (mainwin_position));
+        mainwin_position_release_cb ();
 
     g_source_remove (seek_source);
     seek_source = 0;
@@ -816,31 +815,29 @@ static void mainwin_eq_cb (GtkWidget * button, GdkEventButton * event)
 static void mainwin_pl_cb (GtkWidget * button, GdkEventButton * event)
  {playlistwin_show (button_get_active (button)); }
 
-static gint mainwin_spos_frame_cb (gint pos)
+static void mainwin_spos_set_knob (void)
 {
-    if (mainwin_sposition) {
-        gint x = 0;
-        if (pos < 6)
-            x = 17;
-        else if (pos < 9)
-            x = 20;
-        else
-            x = 23;
+    gint pos = hslider_get_pos (mainwin_sposition);
 
-        UI_SKINNED_HORIZONTAL_SLIDER(mainwin_sposition)->knob_nx = x;
-        UI_SKINNED_HORIZONTAL_SLIDER(mainwin_sposition)->knob_px = x;
-    }
-    return 1;
+    gint x;
+    if (pos < 6)
+        x = 17;
+    else if (pos < 9)
+        x = 20;
+    else
+        x = 23;
+
+    hslider_set_knob (mainwin_sposition, x, 36, x, 36);
 }
 
-static void mainwin_spos_motion_cb (GtkWidget * widget, gint pos)
+static void mainwin_spos_motion_cb (void)
 {
-    gint time;
+    mainwin_spos_set_knob ();
+
+    gint pos = hslider_get_pos (mainwin_sposition);
+    gint time = aud_drct_get_length () / 1000 * (pos - 1) / 12;
+
     gchar *time_msg;
-
-    pos--;
-
-    time = aud_drct_get_length () / 1000 * pos / 12;
 
     if (config.timer_mode == TIMER_REMAINING) {
         time = aud_drct_get_length () / 1000 - time;
@@ -859,39 +856,34 @@ static void mainwin_spos_motion_cb (GtkWidget * widget, gint pos)
     g_free(time_msg);
 }
 
-static void mainwin_spos_release_cb (GtkWidget * widget, gint pos)
+static void mainwin_spos_release_cb (void)
 {
+    mainwin_spos_set_knob ();
+
+    gint pos = hslider_get_pos (mainwin_sposition);
     aud_drct_seek (aud_drct_get_length () * (pos - 1) / 12);
 }
 
-static void mainwin_position_motion_cb (GtkWidget * widget, gint pos)
+static void mainwin_position_motion_cb (void)
 {
-    gint length, time;
-    gchar *seek_msg;
+    gint length = aud_drct_get_length () / 1000;
+    gint pos = hslider_get_pos (mainwin_position);
+    gint time = pos * length / 219;
 
-    length = aud_drct_get_length () / 1000;
-    time = (length * pos) / 219;
-    seek_msg = g_strdup_printf(_("Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"),
-                               time / 60, time % 60,
-                               length / 60, length % 60,
-                               (length != 0) ? (time * 100) / length : 0);
+    gchar * seek_msg = g_strdup_printf (_("Seek to %d:%-2.2d / %d:%-2.2d"), time
+     / 60, time % 60, length / 60, length % 60);
     mainwin_lock_info_text(seek_msg);
     g_free(seek_msg);
 }
 
-static void mainwin_position_release_cb (GtkWidget * widget, gint pos)
+static void mainwin_position_release_cb (void)
 {
-    gint length, time;
+    gint length = aud_drct_get_length ();
+    gint pos = hslider_get_pos (mainwin_position);
+    gint time = (gint64) pos * length / 219;
 
-    length = aud_drct_get_length();
-    time = (gint64) length * pos / 219;
     aud_drct_seek(time);
     mainwin_release_info_text();
-}
-
-static gint mainwin_volume_frame_cb (gint pos)
-{
-    return (gint) rint((pos / 52.0) * 28);
 }
 
 void
@@ -938,45 +930,70 @@ mainwin_adjust_balance_release(void)
     mainwin_release_info_text();
 }
 
-void
-mainwin_set_volume_slider(gint percent)
+static void mainwin_volume_set_frame (void)
 {
-    ui_skinned_horizontal_slider_set_position(mainwin_volume, (gint) rint((percent * 51) / 100.0));
+    gint pos = hslider_get_pos (mainwin_volume);
+    gint frame = (pos * 27 + 25) / 51;
+    hslider_set_frame (mainwin_volume, 0, 15 * frame);
 }
 
-void
-mainwin_set_balance_slider(gint percent)
+void mainwin_set_volume_slider (gint percent)
 {
-    ui_skinned_horizontal_slider_set_position(mainwin_balance, (gint) rint(((percent * 12) / 100.0) + 12));
+    hslider_set_pos (mainwin_volume, (percent * 51 + 50) / 100);
+    mainwin_volume_set_frame ();
 }
 
-static void mainwin_volume_motion_cb (GtkWidget * widget, gint pos)
+static void mainwin_volume_motion_cb (void)
 {
-    gint vol = (pos * 100) / 51;
+    mainwin_volume_set_frame ();
+    gint pos = hslider_get_pos (mainwin_volume);
+    gint vol = (pos * 100 + 25) / 51;
+
     mainwin_adjust_volume_motion(vol);
     equalizerwin_set_volume_slider(vol);
 }
 
-static gboolean mainwin_volume_release_cb (GtkWidget * widget, gint pos)
+static void mainwin_volume_release_cb (void)
 {
+    mainwin_volume_set_frame ();
     mainwin_adjust_volume_release();
-    return FALSE;
 }
 
-static gint mainwin_balance_frame_cb (gint pos)
+static void mainwin_balance_set_frame (void)
 {
-    return ((abs(pos - 12) * 28) / 13);
+    gint pos = hslider_get_pos (mainwin_balance);
+    gint frame = (abs (pos - 12) * 27 + 6) / 12;
+    hslider_set_frame (mainwin_balance, 9, 15 * frame);
 }
 
-static void mainwin_balance_motion_cb (GtkWidget * widget, gint pos)
+void mainwin_set_balance_slider (gint percent)
 {
-    gint bal = ((pos - 12) * 100) / 12;
+    if (percent > 0)
+        hslider_set_pos (mainwin_balance, 12 + (percent * 12 + 50) / 100);
+    else
+        hslider_set_pos (mainwin_balance, 12 + (percent * 12 - 50) / 100);
+
+    mainwin_balance_set_frame ();
+}
+
+static void mainwin_balance_motion_cb (void)
+{
+    mainwin_balance_set_frame ();
+    gint pos = hslider_get_pos (mainwin_balance);
+
+    gint bal;
+    if (pos > 12)
+        bal = ((pos - 12) * 100 + 6) / 12;
+    else
+        bal = ((pos - 12) * 100 - 6) / 12;
+
     mainwin_adjust_balance_motion(bal);
     equalizerwin_set_balance_slider(bal);
 }
 
-static void mainwin_balance_release_cb (GtkWidget * widget, gint pos)
+static void mainwin_balance_release_cb (void)
 {
+    mainwin_balance_set_frame ();
     mainwin_adjust_volume_release();
 }
 
@@ -1363,17 +1380,15 @@ mainwin_create_widgets(void)
     mainwin_menurow = ui_skinned_menurow_new ();
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_menurow, 10, 22);
 
-    mainwin_volume = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->normal, 107, 57, 68,
-                                                      13, 15, 422, 0, 422, 14, 11, 15, 0, 0, 51,
-                                                      mainwin_volume_frame_cb, SKIN_VOLUME);
-    g_signal_connect(mainwin_volume, "motion", G_CALLBACK(mainwin_volume_motion_cb), NULL);
-    g_signal_connect(mainwin_volume, "release", G_CALLBACK(mainwin_volume_release_cb), NULL);
+    mainwin_volume = hslider_new (0, 51, SKIN_VOLUME, 68, 13, 0, 0, 14, 11, 15, 422, 0, 422);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_volume, 107, 57);
+    hslider_on_motion (mainwin_volume, mainwin_volume_motion_cb);
+    hslider_on_release (mainwin_volume, mainwin_volume_release_cb);
 
-    mainwin_balance = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->normal, 177, 57, 38,
-                                                       13, 15, 422, 0, 422, 14, 11, 15, 9, 0, 24,
-                                                       mainwin_balance_frame_cb, SKIN_BALANCE);
-    g_signal_connect(mainwin_balance, "motion", G_CALLBACK(mainwin_balance_motion_cb), NULL);
-    g_signal_connect(mainwin_balance, "release", G_CALLBACK(mainwin_balance_release_cb), NULL);
+    mainwin_balance = hslider_new (0, 24, SKIN_BALANCE, 38, 13, 9, 0, 14, 11, 15, 422, 0, 422);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_balance, 177, 57);
+    hslider_on_motion (mainwin_balance, mainwin_balance_motion_cb);
+    hslider_on_release (mainwin_balance, mainwin_balance_release_cb);
 
     mainwin_monostereo = ui_skinned_monostereo_new ();
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_monostereo, 212, 41);
@@ -1406,15 +1421,13 @@ mainwin_create_widgets(void)
     button_on_release (mainwin_about, (ButtonCB) audgui_show_about_window);
 
     mainwin_vis = ui_vis_new ();
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal,
-     mainwin_vis, 24, 43);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_vis, 24, 43);
     g_signal_connect(mainwin_vis, "button-press-event", G_CALLBACK(mainwin_vis_cb), NULL);
 
-    mainwin_position = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->normal, 16, 72, 248,
-                                                        10, 248, 0, 278, 0, 29, 10, 10, 0, 0, 219,
-                                                        NULL, SKIN_POSBAR);
-    g_signal_connect(mainwin_position, "motion", G_CALLBACK(mainwin_position_motion_cb), NULL);
-    g_signal_connect(mainwin_position, "release", G_CALLBACK(mainwin_position_release_cb), NULL);
+    mainwin_position = hslider_new (0, 219, SKIN_POSBAR, 248, 10, 0, 0, 29, 10, 248, 0, 278, 0);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->normal, mainwin_position, 16, 72);
+    hslider_on_motion (mainwin_position, mainwin_position_motion_cb);
+    hslider_on_release (mainwin_position, mainwin_position_release_cb);
 
     /* shaded */
 
@@ -1459,15 +1472,13 @@ mainwin_create_widgets(void)
     button_on_release (mainwin_seject, (ButtonCB) action_play_file);
 
     mainwin_svis = ui_svis_new ();
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded,
-     mainwin_svis, 79, 5);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_svis, 79, 5);
     g_signal_connect(mainwin_svis, "button-press-event", G_CALLBACK(mainwin_vis_cb), NULL);
 
-    mainwin_sposition = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->shaded, 226, 4, 17,
-                                                         7, 17, 36, 17, 36, 3, 7, 36, 0, 1, 13,
-                                                         mainwin_spos_frame_cb, SKIN_TITLEBAR);
-    g_signal_connect(mainwin_sposition, "motion", G_CALLBACK(mainwin_spos_motion_cb), NULL);
-    g_signal_connect(mainwin_sposition, "release", G_CALLBACK(mainwin_spos_release_cb), NULL);
+    mainwin_sposition = hslider_new (1, 13, SKIN_TITLEBAR, 17, 7, 0, 36, 3, 7, 17, 36, 17, 36);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_sposition, 226, 4);
+    hslider_on_motion (mainwin_sposition, mainwin_spos_motion_cb);
+    hslider_on_release (mainwin_sposition, mainwin_spos_release_cb);
 
     mainwin_stime_min = textbox_new (15);
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) mainwin)->shaded, mainwin_stime_min, 130, 4);
@@ -1646,7 +1657,7 @@ static void mainwin_update_time_display (gint time, gint length)
     ui_skinned_number_set (mainwin_10sec_num, scratch[4]);
     ui_skinned_number_set (mainwin_sec_num, scratch[5]);
 
-    if (! ((UiSkinnedHorizontalSlider *) mainwin_sposition)->pressed)
+    if (! hslider_get_pressed (mainwin_sposition))
     {
         textbox_set_text (mainwin_stime_min, scratch);
         textbox_set_text (mainwin_stime_sec, scratch + 4);
@@ -1664,16 +1675,16 @@ static void mainwin_update_time_slider (gint time, gint length)
     {
         if (time < length)
         {
-            ui_skinned_horizontal_slider_set_position (mainwin_position, time *
-             (gint64) 219 / length);
-            ui_skinned_horizontal_slider_set_position (mainwin_sposition, 1 +
-             time * (gint64) 12 / length);
+            hslider_set_pos (mainwin_position, time * (gint64) 219 / length);
+            hslider_set_pos (mainwin_sposition, 1 + time * (gint64) 12 / length);
         }
         else
         {
-            ui_skinned_horizontal_slider_set_position (mainwin_position, 219);
-            ui_skinned_horizontal_slider_set_position (mainwin_sposition, 13);
+            hslider_set_pos (mainwin_position, 219);
+            hslider_set_pos (mainwin_sposition, 13);
         }
+
+        mainwin_spos_set_knob ();
     }
 }
 

@@ -1,6 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
+ * Copyright (c) 2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -24,38 +25,21 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_SKINNED_HORIZONTAL_SLIDER_H
-#define AUDACIOUS_UI_SKINNED_HORIZONTAL_SLIDER_H
+#ifndef SKINS_UI_SKINNED_HORIZONTAL_SLIDER_H
+#define SKINS_UI_SKINNED_HORIZONTAL_SLIDER_H
 
 #include <gtk/gtk.h>
-#include "ui_skin.h"
 
-#define UI_SKINNED_HORIZONTAL_SLIDER(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_horizontal_slider_get_type (), UiSkinnedHorizontalSlider)
-#define UI_SKINNED_HORIZONTAL_SLIDER_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_horizontal_slider_get_type (), UiSkinnedHorizontalSliderClass)
-#define UI_SKINNED_IS_HORIZONTAL_SLIDER(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_horizontal_slider_get_type ())
+GtkWidget * hslider_new (gint min, gint max, SkinPixmapId si, gint w, gint h,
+ gint fx, gint fy, gint kw, gint kh, gint knx, gint kny, gint kpx, gint kpy);
+void hslider_set_frame (GtkWidget * hslider, gint fx, gint fy);
+void hslider_set_knob (GtkWidget * hslider, gint knx, gint kny, gint kpx, gint
+ kpy);
+gint hslider_get_pos (GtkWidget * hslider);
+void hslider_set_pos (GtkWidget * hslider, gint pos);
+gboolean hslider_get_pressed (GtkWidget * hslider);
+void hslider_set_pressed (GtkWidget * hslider, gboolean pressed);
+void hslider_on_motion (GtkWidget * hslider, void (* callback) (void));
+void hslider_on_release (GtkWidget * hslider, void (* callback) (void));
 
-typedef struct _UiSkinnedHorizontalSlider        UiSkinnedHorizontalSlider;
-typedef struct _UiSkinnedHorizontalSliderClass   UiSkinnedHorizontalSliderClass;
-
-struct _UiSkinnedHorizontalSlider {
-    GtkWidget   widget;
-    GdkWindow   *event_window;
-    gboolean    pressed;
-    gint        x, y;
-    gint        knob_nx, knob_ny, knob_px, knob_py;
-};
-
-struct _UiSkinnedHorizontalSliderClass {
-    GtkWidgetClass    parent_class;
-    void (* motion)   (UiSkinnedHorizontalSlider *horizontal_slider);
-    void (* release)  (UiSkinnedHorizontalSlider *horizontal_slider);
-    void (* scaled)  (UiSkinnedHorizontalSlider *horizontal_slider);
-};
-GtkWidget* ui_skinned_horizontal_slider_new(GtkWidget *fixed, gint x, gint y, gint w, gint h, gint knx, gint kny,
-                                            gint kpx, gint kpy, gint kw, gint kh, gint fh,
-                                            gint fo, gint min, gint max, gint(*fcb) (gint), SkinPixmapId si);
-GType ui_skinned_horizontal_slider_get_type(void);
-void ui_skinned_horizontal_slider_set_position(GtkWidget *widget, gint pos);
-gint ui_skinned_horizontal_slider_get_position(GtkWidget *widget);
-
-#endif /* AUDACIOUS_UI_SKINNED_HORIZONTAL_SLIDER_H */
+#endif

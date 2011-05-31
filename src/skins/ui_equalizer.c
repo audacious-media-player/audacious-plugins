@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2007  Audacious development team.
+ *  Copyright (C) 2005-2011  Audacious development team.
  *
  *  Based on BMP:
  *  Copyright (C) 2003-2004  BMP development team.
@@ -271,86 +271,88 @@ static gboolean equalizerwin_delete(GtkWidget *widget, void *data)
     return TRUE;
 }
 
-gint
-equalizerwin_volume_frame_cb(gint pos)
+static void eqwin_volume_set_knob (void)
 {
-    if (equalizerwin_volume) {
-        gint x;
-        if (pos < 32)
-            x = 1;
-        else if (pos < 63)
-            x = 4;
-        else
-            x = 7;
+    gint pos = hslider_get_pos (equalizerwin_volume);
 
-        UI_SKINNED_HORIZONTAL_SLIDER(equalizerwin_volume)->knob_nx = x;
-        UI_SKINNED_HORIZONTAL_SLIDER(equalizerwin_volume)->knob_px = x;
-    }
-    return 1;
+    gint x;
+    if (pos < 32)
+        x = 1;
+    else if (pos < 63)
+        x = 4;
+    else
+        x = 7;
+
+    hslider_set_knob (equalizerwin_volume, x, 30, x, 30);
 }
 
-static void
-equalizerwin_volume_motion_cb(GtkWidget *widget, gint pos)
+void equalizerwin_set_volume_slider (gint percent)
 {
-    gint v = (gint) rint(pos * 100 / 94.0);
+    hslider_set_pos (equalizerwin_volume, (percent * 94 + 50) / 100);
+    eqwin_volume_set_knob ();
+}
+
+static void eqwin_volume_motion_cb (void)
+{
+    eqwin_volume_set_knob ();
+    gint pos = hslider_get_pos (equalizerwin_volume);
+    gint v = (pos * 100 + 47) / 94;
+
     mainwin_adjust_volume_motion(v);
     mainwin_set_volume_slider(v);
 }
 
-static void
-equalizerwin_volume_release_cb(GtkWidget *widget, gint pos)
+static void eqwin_volume_release_cb (void)
 {
+    eqwin_volume_set_knob ();
     mainwin_adjust_volume_release();
 }
 
-static gint
-equalizerwin_balance_frame_cb(gint pos)
+static void eqwin_balance_set_knob (void)
 {
-    if (equalizerwin_balance) {
-        gint x;
-        if (pos < 13)
-            x = 11;
-        else if (pos < 26)
-            x = 14;
-        else
-            x = 17;
+    gint pos = hslider_get_pos (equalizerwin_balance);
 
-        UI_SKINNED_HORIZONTAL_SLIDER(equalizerwin_balance)->knob_nx = x;
-        UI_SKINNED_HORIZONTAL_SLIDER(equalizerwin_balance)->knob_px = x;
-    }
+    gint x;
+    if (pos < 13)
+        x = 11;
+    else if (pos < 26)
+        x = 14;
+    else
+        x = 17;
 
-    return 1;
+    hslider_set_knob (equalizerwin_balance, x, 30, x, 30);
 }
 
-static void
-equalizerwin_balance_motion_cb(GtkWidget *widget, gint pos)
+void equalizerwin_set_balance_slider (gint percent)
 {
-    gint b;
+    if (percent > 0)
+        hslider_set_pos (equalizerwin_balance, 19 + (percent * 19 + 50) / 100);
+    else
+        hslider_set_pos (equalizerwin_balance, 19 + (percent * 19 - 50) / 100);
+
+    eqwin_balance_set_knob ();
+}
+
+static void eqwin_balance_motion_cb (void)
+{
+    eqwin_balance_set_knob ();
+    gint pos = hslider_get_pos (equalizerwin_balance);
     pos = MIN(pos, 38);         /* The skin uses a even number of pixels
                                    for the balance-slider *sigh* */
-    b = (gint) rint((pos - 19) * 100 / 19.0);
+    gint b;
+    if (pos > 19)
+        b = ((pos - 19) * 100 + 9) / 19;
+    else
+        b = ((pos - 19) * 100 - 9) / 19;
+
     mainwin_adjust_balance_motion(b);
     mainwin_set_balance_slider(b);
 }
 
-static void
-equalizerwin_balance_release_cb(GtkWidget *widget, gint pos)
+static void eqwin_balance_release_cb (void)
 {
+    eqwin_balance_set_knob ();
     mainwin_adjust_balance_release();
-}
-
-void
-equalizerwin_set_balance_slider(gint percent)
-{
-    ui_skinned_horizontal_slider_set_position(equalizerwin_balance,
-                         (gint) rint((percent * 19 / 100.0) + 19));
-}
-
-void
-equalizerwin_set_volume_slider(gint percent)
-{
-    ui_skinned_horizontal_slider_set_position(equalizerwin_volume,
-                         (gint) rint(percent * 94 / 100.0));
 }
 
 static void
@@ -401,20 +403,15 @@ equalizerwin_create_widgets(void)
          aud_cfg->equalizer_bands [i]);
     }
 
-    equalizerwin_volume =
-        ui_skinned_horizontal_slider_new(SKINNED_WINDOW(equalizerwin)->shaded,
-                                         61, 4, 97, 8, 1, 30, 1, 30, 3, 7, 4, 61, 0, 94,
-                                         equalizerwin_volume_frame_cb, SKIN_EQ_EX);
-    g_signal_connect(equalizerwin_volume, "motion", G_CALLBACK(equalizerwin_volume_motion_cb), NULL);
-    g_signal_connect(equalizerwin_volume, "release", G_CALLBACK(equalizerwin_volume_release_cb), NULL);
+    equalizerwin_volume = hslider_new (0, 94, SKIN_EQ_EX, 97, 8, 61, 4, 3, 7, 1, 30, 1, 30);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->shaded, equalizerwin_volume, 61, 4);
+    hslider_on_motion (equalizerwin_volume, eqwin_volume_motion_cb);
+    hslider_on_release (equalizerwin_volume, eqwin_volume_release_cb);
 
-
-    equalizerwin_balance =
-        ui_skinned_horizontal_slider_new(SKINNED_WINDOW(equalizerwin)->shaded,
-                       164, 4, 42, 8, 11, 30, 11, 30, 3, 7, 4, 164, 0, 39,
-                       equalizerwin_balance_frame_cb, SKIN_EQ_EX);
-    g_signal_connect(equalizerwin_balance, "motion", G_CALLBACK(equalizerwin_balance_motion_cb), NULL);
-    g_signal_connect(equalizerwin_balance, "release", G_CALLBACK(equalizerwin_balance_release_cb), NULL);
+    equalizerwin_balance = hslider_new (0, 39, SKIN_EQ_EX, 42, 8, 164, 4, 3, 7, 11, 30, 11, 30);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->shaded, equalizerwin_balance, 164, 4);
+    hslider_on_motion (equalizerwin_balance, eqwin_balance_motion_cb);
+    hslider_on_release (equalizerwin_balance, eqwin_balance_release_cb);
 }
 
 
