@@ -97,7 +97,6 @@ skins_cfg_t skins_default_config = {
     .twoway_scroll = TRUE,             /* use back and forth scroll */
     .mainwin_use_bitmapfont = TRUE,
     .eq_scaled_linked = TRUE,
-    .show_separator_in_pl = TRUE,
     .playlist_font = NULL,
     .mainwin_font = NULL,
     .random_skin_on_play = FALSE,
@@ -133,7 +132,6 @@ static skins_cfg_boolent skins_boolents[] = {
     {"warn_about_broken_gtk_engines", &config.warn_about_broken_gtk_engines, TRUE},
     {"mainwin_use_bitmapfont", &config.mainwin_use_bitmapfont, TRUE},
     {"eq_scaled_linked", &config.eq_scaled_linked, TRUE},
-    {"show_separator_in_pl", &config.show_separator_in_pl, TRUE},
     {"random_skin_on_play", &config.random_skin_on_play, TRUE},
 };
 
@@ -317,8 +315,6 @@ static PreferencesWidget appearance_misc_widgets[] = {
     {WIDGET_TABLE, NULL, NULL, NULL, NULL, TRUE, {.table = {font_table_elements, G_N_ELEMENTS(font_table_elements)}}},
     {WIDGET_CHK_BTN, N_("Use Bitmap fonts if available"), &config.mainwin_use_bitmapfont, G_CALLBACK(bitmap_fonts_cb), N_("Use bitmap fonts if they are available. Bitmap fonts do not support Unicode strings."), FALSE},
     {WIDGET_LABEL, N_("<b>_Miscellaneous</b>"), NULL, NULL, NULL, FALSE},
-    {WIDGET_CHK_BTN, N_("Show separators in playlist"), &config.show_separator_in_pl,
-     (GCallback) playlistwin_update, NULL, FALSE},
     {WIDGET_CHK_BTN, N_("Show window manager decoration"), &config.show_wm_decorations, G_CALLBACK(show_wm_decorations_cb),
         N_("This enables the window manager to show decorations for windows."), FALSE},
     {WIDGET_CHK_BTN, N_("Use two-way text scroller"), &config.twoway_scroll,

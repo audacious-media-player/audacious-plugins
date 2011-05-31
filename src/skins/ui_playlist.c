@@ -539,8 +539,8 @@ playlistwin_resize(gint width, gint height)
     config.playlist_height = height = ty;
 
     g_mutex_lock(resize_mutex);
-    ui_skinned_playlist_resize_relative(playlistwin_list, dx, dy);
-
+    ui_skinned_playlist_resize (playlistwin_list, config.playlist_width - 31,
+     config.playlist_height - 58);
     ui_skinned_playlist_slider_move_relative(playlistwin_slider, dx);
     ui_skinned_playlist_slider_resize_relative(playlistwin_slider, dy);
 
@@ -782,10 +782,8 @@ playlistwin_create_widgets(void)
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_close, config.playlist_width - 11, 3);
     button_on_release (playlistwin_close, (ButtonCB) playlistwin_hide);
 
-    /* playlist list box */
-    playlistwin_list = ui_skinned_playlist_new(SKINNED_WINDOW(playlistwin)->normal, 12, 20,
-                             playlistwin_get_width() - 31,
-     config.playlist_height - 58, config.playlist_font);
+    playlistwin_list = ui_skinned_playlist_new (config.playlist_width - 31, config.playlist_height - 58, config.playlist_font);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_list, 12, 20);
 
     /* playlist list box slider */
     playlistwin_slider = ui_skinned_playlist_slider_new(SKINNED_WINDOW(playlistwin)->normal, playlistwin_get_width() - 15,

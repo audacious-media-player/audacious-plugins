@@ -1,7 +1,7 @@
 /*
  * Audacious - a cross-platform multimedia player
  * Copyright (c) 2007 Tomasz Moń
- * Copyright (c) 2009 John Lindgren
+ * Copyright (c) 2009-2011 John Lindgren
  *
  * Based on:
  * BMP - Cross-platform multimedia player
@@ -25,52 +25,22 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_SKINNED_PLAYLIST_H
-#define AUDACIOUS_UI_SKINNED_PLAYLIST_H
+#ifndef SKINS_UI_SKINNED_PLAYLIST_H
+#define SKINS_UI_SKINNED_PLAYLIST_H
 
 #include <gtk/gtk.h>
 
-#include <cairo.h>
-#include <pango/pangocairo.h>
-
-#include "ui_skin.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#define UI_SKINNED_PLAYLIST(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_playlist_get_type (), UiSkinnedPlaylist)
-#define UI_SKINNED_PLAYLIST_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_playlist_get_type (), UiSkinnedPlaylistClass)
-#define UI_SKINNED_IS_PLAYLIST(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_playlist_get_type ())
-
-typedef struct _UiSkinnedPlaylist        UiSkinnedPlaylist;
-typedef struct _UiSkinnedPlaylistClass   UiSkinnedPlaylistClass;
-
-struct _UiSkinnedPlaylist {
-    GtkWidget   widget;
-};
-
-struct _UiSkinnedPlaylistClass {
-    GtkWidgetClass    parent_class;
-};
-
-GtkWidget * ui_skinned_playlist_new (GtkWidget * fixed, gint x, gint y, gint
- width, gint height, const gchar * font);
+GtkWidget * ui_skinned_playlist_new (gint width, gint height, const gchar * font);
 void ui_skinned_playlist_set_slider (GtkWidget * list, GtkWidget * slider);
-GType ui_skinned_playlist_get_type(void);
-void ui_skinned_playlist_resize_relative(GtkWidget *widget, gint w, gint h);
+void ui_skinned_playlist_resize (GtkWidget * list, gint w, gint h);
 void ui_skinned_playlist_set_font (GtkWidget * list, const gchar * font);
-void ui_skinned_playlist_update (GtkWidget * widget);
-gboolean ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event);
-void ui_skinned_playlist_row_info (GtkWidget * widget, gint * rows, gint *
- first, gint * focused);
-void ui_skinned_playlist_scroll_to (GtkWidget * widget, gint row);
-void ui_skinned_playlist_set_focused (GtkWidget * widget, gint row);
-void ui_skinned_playlist_hover (GtkWidget * widget, gint x, gint y);
-int ui_skinned_playlist_hover_end (GtkWidget * widget);
+void ui_skinned_playlist_update (GtkWidget * list);
+gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event);
+void ui_skinned_playlist_row_info (GtkWidget * list, gint * rows, gint * first,
+ gint * focused);
+void ui_skinned_playlist_scroll_to (GtkWidget * list, gint row);
+void ui_skinned_playlist_set_focused (GtkWidget * list, gint row);
+void ui_skinned_playlist_hover (GtkWidget * list, gint x, gint y);
+gint ui_skinned_playlist_hover_end (GtkWidget * list);
 
-#ifdef __cplusplus
-}
 #endif
-
-#endif /* AUDACIOUS_UI_SKINNED_PLAYLIST_H */
