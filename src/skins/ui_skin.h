@@ -186,8 +186,7 @@ typedef struct _Skin {
     gchar *path;
     gchar *def_path;
     SkinPixmap pixmaps[SKIN_PIXMAP_COUNT];
-    GdkColor textbg[6], def_textbg[6];
-    GdkColor textfg[6], def_textfg[6];
+    GdkColor textbg, textfg;
     GdkColor *colors[SKIN_COLOR_COUNT];
     guchar vis_color[24][3];
 #ifdef SKIN_HAVE_MASKS

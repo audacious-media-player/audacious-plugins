@@ -481,20 +481,20 @@ static void skin_get_textcolors (GdkPixbuf * p, GdkColor * bgc, GdkColor * fgc)
      */
     g_return_if_fail (p);
 
+    /* Get a pixel from the middle of the space character */
+    pixbuf_get_pixel_color (p, 152, 3, bgc);
+
+    gint max_d = 0;
     for (gint i = 0; i < 6; i ++)
     {
-        /* Get a pixel from the middle of the space character */
-        pixbuf_get_pixel_color (p, 151, i, & bgc[i]);
-
-        gint max_d = 0;
         for (gint x = 1; x < 150; x ++)
         {
             GdkColor c;
             pixbuf_get_pixel_color (p, x, i, & c);
 
-            gint d = labs(skin_calc_luminance(&c) - skin_calc_luminance(&bgc[i]));
+            gint d = labs(skin_calc_luminance(&c) - skin_calc_luminance(bgc));
             if (d > max_d) {
-                memcpy(&fgc[i], &c, sizeof(GdkColor));
+                memcpy (fgc, & c, sizeof (GdkColor));
                 max_d = d;
             }
         }
@@ -1394,7 +1394,7 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
     text_pb = skin->pixmaps[SKIN_TEXT].pixbuf;
 
     if (text_pb)
-        skin_get_textcolors(text_pb, skin->textbg, skin->textfg);
+        skin_get_textcolors (text_pb, & skin->textbg, & skin->textfg);
 
     if (skin->pixmaps[SKIN_NUMBERS].pixbuf &&
         skin->pixmaps[SKIN_NUMBERS].width < 108 )
@@ -1667,16 +1667,10 @@ skin_get_color(Skin * skin, SkinColorId color_id)
 
     switch (color_id) {
     case SKIN_TEXTBG:
-        if (skin->pixmaps[SKIN_TEXT].pixbuf)
-            ret = skin->textbg;
-        else
-            ret = skin->def_textbg;
+        ret = & skin->textbg;
         break;
     case SKIN_TEXTFG:
-        if (skin->pixmaps[SKIN_TEXT].pixbuf)
-            ret = skin->textfg;
-        else
-            ret = skin->def_textfg;
+        ret = & skin->textfg;
         break;
     default:
         if (color_id < SKIN_COLOR_COUNT)
