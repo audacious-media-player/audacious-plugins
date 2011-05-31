@@ -66,8 +66,6 @@ extern GtkWidget *mainwin_position, *mainwin_sposition;
 void mainwin_create(void);
 void mainwin_unhook (void);
 
-void mainwin_lock_info_text(const gchar * text);
-void mainwin_release_info_text(void);
 void mainwin_play_pushed(void);
 
 void mainwin_adjust_volume_motion(gint v);
@@ -88,6 +86,7 @@ void mainwin_show(gboolean);
 void mainwin_disable_seekbar(void);
 
 void mainwin_update_song_info (void);
+void mainwin_show_status_message (const gchar * message);
 void mainwin_enable_status_message (gboolean enable);
 
 void mainwin_drag_data_received(GtkWidget * widget,

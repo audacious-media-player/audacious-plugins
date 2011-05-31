@@ -22,32 +22,13 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses>.
  */
 
-#ifndef AUDACIOUS_UI_SKINNED_EQUALIZER_SLIDER_H
-#define AUDACIOUS_UI_SKINNED_EQUALIZER_SLIDER_H
+#ifndef SKINS_UI_SKINNED_EQUALIZER_SLIDER_H
+#define SKINS_UI_SKINNED_EQUALIZER_SLIDER_H
 
 #include <gtk/gtk.h>
 
-#define UI_SKINNED_EQUALIZER_SLIDER(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_equalizer_slider_get_type (), UiSkinnedEqualizerSlider)
-#define UI_SKINNED_EQUALIZER_SLIDER_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_equalizer_slider_get_type (),  UiSkinnedEqualizerSliderClass)
-#define UI_SKINNED_IS_EQUALIZER_SLIDER(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_equalizer_slider_get_type ())
+GtkWidget * eq_slider_new (const gchar * name);
+void eq_slider_set_val (GtkWidget * widget, gfloat val);
+gfloat eq_slider_get_val (GtkWidget * widget);
 
-typedef struct _UiSkinnedEqualizerSlider        UiSkinnedEqualizerSlider;
-typedef struct _UiSkinnedEqualizerSliderClass   UiSkinnedEqualizerSliderClass;
-
-struct _UiSkinnedEqualizerSlider {
-    GtkWidget   widget;
-    GdkWindow   *event_window;
-    gint        x, y;
-};
-
-struct _UiSkinnedEqualizerSliderClass {
-    GtkWidgetClass    parent_class;
-    void (* scaled)  (UiSkinnedEqualizerSlider *equalizer_slider);
-};
-
-GtkWidget* ui_skinned_equalizer_slider_new(GtkWidget *fixed, gint x, gint y);
-GType ui_skinned_equalizer_slider_get_type(void);
-void ui_skinned_equalizer_slider_set_position(GtkWidget *widget, gfloat pos);
-gfloat ui_skinned_equalizer_slider_get_position(GtkWidget *widget);
-
-#endif /* AUDACIOUS_UI_SKINNED_EQUALIZER_SLIDER_H */
+#endif

@@ -206,9 +206,9 @@ update_from_config(void *unused1, void *unused2)
     gint i;
 
     button_set_active (equalizerwin_on, aud_cfg->equalizer_active);
-    ui_skinned_equalizer_slider_set_position(equalizerwin_preamp, aud_cfg->equalizer_preamp);
+    eq_slider_set_val (equalizerwin_preamp, aud_cfg->equalizer_preamp);
     for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
-        ui_skinned_equalizer_slider_set_position(equalizerwin_bands[i], aud_cfg->equalizer_bands[i]);
+        eq_slider_set_val (equalizerwin_bands[i], aud_cfg->equalizer_bands[i]);
     eq_graph_update (equalizerwin_graph);
 }
 
@@ -358,8 +358,6 @@ static void eqwin_balance_release_cb (void)
 static void
 equalizerwin_create_widgets(void)
 {
-    gint i;
-
     equalizerwin_on = button_new_toggle (25, 12, 10, 119, 128, 119, 69, 119, 187, 119, SKIN_EQMAIN, SKIN_EQMAIN);
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal, equalizerwin_on, 14, 18);
     button_set_active (equalizerwin_on, aud_cfg->equalizer_active);
@@ -393,15 +391,20 @@ equalizerwin_create_widgets(void)
     equalizerwin_graph = eq_graph_new ();
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal, equalizerwin_graph, 86, 17);
 
-    equalizerwin_preamp = ui_skinned_equalizer_slider_new(SKINNED_WINDOW(equalizerwin)->normal, 21, 38);
-    ui_skinned_equalizer_slider_set_position (equalizerwin_preamp,
-     aud_cfg->equalizer_preamp);
+    equalizerwin_preamp = eq_slider_new (_("Preamp"));
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal, equalizerwin_preamp, 21, 38);
+    eq_slider_set_val (equalizerwin_preamp, aud_cfg->equalizer_preamp);
 
-    for (i = 0; i < AUD_EQUALIZER_NBANDS; i++) {
-        equalizerwin_bands[i] =
-            ui_skinned_equalizer_slider_new(SKINNED_WINDOW(equalizerwin)->normal, 78 + (i * 18), 38);
-        ui_skinned_equalizer_slider_set_position (equalizerwin_bands [i],
-         aud_cfg->equalizer_bands [i]);
+    const gchar * const bandnames[AUD_EQUALIZER_NBANDS] = {N_("31 Hz"),
+     N_("63 Hz"), N_("125 Hz"), N_("250 Hz"), N_("500 Hz"), N_("1 kHz"),
+     N_("2 kHz"), N_("4 kHz"), N_("8 kHz"), N_("16 kHz")};
+
+    for (gint i = 0; i < AUD_EQUALIZER_NBANDS; i ++)
+    {
+        equalizerwin_bands[i] = eq_slider_new (_(bandnames[i]));
+        gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal,
+         equalizerwin_bands[i], 78 + 18 * i, 38);
+        eq_slider_set_val (equalizerwin_bands[i], aud_cfg->equalizer_bands[i]);
     }
 
     equalizerwin_volume = hslider_new (0, 94, SKIN_EQ_EX, 97, 8, 61, 4, 3, 7, 1, 30, 1, 30);
@@ -1005,7 +1008,7 @@ equalizerwin_create_list_window(GList *preset_list,
 void
 equalizerwin_set_preamp(gfloat preamp)
 {
-    ui_skinned_equalizer_slider_set_position(equalizerwin_preamp, preamp);
+    eq_slider_set_val (equalizerwin_preamp, preamp);
     equalizerwin_eq_changed();
 }
 
@@ -1013,21 +1016,21 @@ void
 equalizerwin_set_band(gint band, gfloat value)
 {
     g_return_if_fail(band >= 0 && band < AUD_EQUALIZER_NBANDS);
-    ui_skinned_equalizer_slider_set_position(equalizerwin_bands[band], value);
+    eq_slider_set_val (equalizerwin_bands[band], value);
     equalizerwin_eq_changed();
 }
 
 gfloat
 equalizerwin_get_preamp(void)
 {
-    return ui_skinned_equalizer_slider_get_position(equalizerwin_preamp);
+    return eq_slider_get_val (equalizerwin_preamp);
 }
 
 gfloat
 equalizerwin_get_band(gint band)
 {
     g_return_val_if_fail(band >= 0 && band < AUD_EQUALIZER_NBANDS, 0.0);
-    return ui_skinned_equalizer_slider_get_position(equalizerwin_bands[band]);
+    return eq_slider_get_val (equalizerwin_bands[band]);
 }
 
 void

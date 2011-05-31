@@ -214,8 +214,7 @@ static void show_main_menu (GdkEventButton * event, void * unused)
 
 static gchar *mainwin_tb_old_text = NULL;
 
-void
-mainwin_lock_info_text(const gchar * text)
+static void mainwin_lock_info_text (const gchar * text)
 {
     if (mainwin_info_text_locked != TRUE)
         mainwin_tb_old_text = g_strdup
@@ -229,8 +228,7 @@ mainwin_lock_info_text(const gchar * text)
         textbox_set_text (mainwin_info, text);
 }
 
-void
-mainwin_release_info_text(void)
+static void mainwin_release_info_text (void)
 {
     mainwin_info_text_locked = FALSE;
 
@@ -261,7 +259,7 @@ static gboolean clear_status_message (void * unused)
     return FALSE;
 }
 
-static void show_status_message (const gchar * message)
+void mainwin_show_status_message (const gchar * message)
 {
     if (! status_message_enabled)
         return;
@@ -1732,9 +1730,9 @@ void action_playback_noplaylistadvance (GtkToggleAction * action)
     aud_cfg->no_playlist_advance = gtk_toggle_action_get_active( action );
 
     if (aud_cfg->no_playlist_advance)
-        show_status_message (_("Single mode."));
+        mainwin_show_status_message (_("Single mode."));
     else
-        show_status_message (_("Playlist mode."));
+        mainwin_show_status_message (_("Playlist mode."));
 }
 
 void action_playback_repeat (GtkToggleAction * action)
@@ -1756,9 +1754,9 @@ void action_stop_after_current_song (GtkToggleAction * action)
     if (active != aud_cfg->stopaftersong)
     {
         if (active)
-            show_status_message (_("Stopping after song."));
+            mainwin_show_status_message (_("Stopping after song."));
         else
-            show_status_message (_("Not stopping after song."));
+            mainwin_show_status_message (_("Not stopping after song."));
 
         aud_cfg->stopaftersong = active;
         hook_call ("toggle stop after song", NULL);

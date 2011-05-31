@@ -134,9 +134,7 @@ static void hslider_destroy (GtkWidget * hslider)
 GtkWidget * hslider_new (gint min, gint max, SkinPixmapId si, gint w, gint h,
  gint fx, gint fy, gint kw, gint kh, gint knx, gint kny, gint kpx, gint kpy)
 {
-    GtkWidget * hslider;
-
-    hslider = gtk_drawing_area_new ();
+    GtkWidget * hslider = gtk_drawing_area_new ();
     gtk_widget_set_size_request (hslider, w, h);
     gtk_widget_add_events (hslider, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
