@@ -202,7 +202,6 @@ void window_show_all (GtkWidget * window)
     WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
     g_return_if_fail (data);
 
-    gtk_widget_show (window);
     gtk_widget_show_all (data->normal);
     gtk_widget_show_all (data->shaded);
 }
