@@ -26,9 +26,11 @@
 #include <inttypes.h>
 
 #include <gdk/gdkkeysyms.h>
+#include <gtk/gtk.h>
 
 #include <audacious/debug.h>
 #include <audacious/drct.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
@@ -425,7 +427,8 @@ playlistwin_select_search(void)
       0 , 2 , 7 , 8 , GTK_FILL | GTK_EXPAND , GTK_FILL | GTK_EXPAND , 0 , 1 );
 
     gtk_container_set_border_width( GTK_CONTAINER(searchdlg_table) , 5 );
-    gtk_container_add( GTK_CONTAINER(GTK_DIALOG(searchdlg_win)->vbox) , searchdlg_table );
+    gtk_container_add ((GtkContainer *) gtk_dialog_get_content_area
+     ((GtkDialog *) searchdlg_win), searchdlg_table);
     gtk_widget_show_all( searchdlg_win );
     result = gtk_dialog_run( GTK_DIALOG(searchdlg_win) );
 
@@ -745,7 +748,7 @@ static void drag_data_received (GtkWidget * widget, GdkDragContext * context,
  gint x, gint y, GtkSelectionData * data, guint info, guint time, void * unused)
 {
     audgui_urilist_insert (active_playlist, drop_position, (const gchar *)
-     data->data);
+     gtk_selection_data_get_data (data));
     drop_position = -1;
 }
 
@@ -835,16 +838,6 @@ playlistwin_create_widgets(void)
     button_on_release (playlistwin_sscroll_down, (ButtonCB) playlistwin_scroll_down_pushed);
 }
 
-static void
-selection_received(GtkWidget * widget,
-                   GtkSelectionData * selection_data, gpointer data)
-{
-    if (selection_data->type == GDK_SELECTION_TYPE_STRING &&
-        selection_data->length > 0)
-        aud_playlist_entry_insert (active_playlist, -1, g_strdup ((gchar *)
-         selection_data->data), NULL, FALSE);
-}
-
 static void size_allocate (GtkWidget * widget, GtkAllocation * allocation)
 {
     playlistwin_resize (allocation->width, allocation->height);
@@ -902,8 +895,6 @@ playlistwin_create_window(void)
 
     g_signal_connect ((GObject *) playlistwin, "key-press-event", (GCallback)
      mainwin_keypress, 0);
-    g_signal_connect(playlistwin, "selection_received",
-                     G_CALLBACK(selection_received), NULL);
 
     g_signal_connect (playlistwin, "size-allocate", G_CALLBACK (size_allocate),
      0);
@@ -1302,13 +1293,8 @@ playlistwin_select_search_kp_cb(GtkWidget *entry, GdkEventKey *event,
     switch (event->keyval)
     {
         case GDK_Return:
-            if (gtk_im_context_filter_keypress (GTK_ENTRY (entry)->im_context, event)) {
-                GTK_ENTRY (entry)->need_im_reset = TRUE;
-                return TRUE;
-            } else {
-                gtk_dialog_response(GTK_DIALOG(searchdlg_win), GTK_RESPONSE_ACCEPT);
-                return TRUE;
-            }
+            gtk_dialog_response(GTK_DIALOG(searchdlg_win), GTK_RESPONSE_ACCEPT);
+            return TRUE;
         default:
             return FALSE;
     }

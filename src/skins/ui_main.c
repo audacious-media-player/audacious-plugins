@@ -26,9 +26,11 @@
 #include <math.h>
 
 #include <gdk/gdkkeysyms.h>
+#include <gtk/gtk.h>
 
 #include <audacious/audconfig.h>
 #include <audacious/drct.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <libaudcore/audstrings.h>
@@ -122,11 +124,13 @@ mainwin_set_shade(gboolean shaded)
 
 void mainwin_set_shape (void)
 {
+#ifdef SKIN_HAVE_MASKS
     if (config.show_wm_decorations)
         gtk_widget_shape_combine_mask (mainwin, 0, 0, 0);
     else
         gtk_widget_shape_combine_mask (mainwin, skin_get_mask (aud_active_skin,
          config.player_shaded ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN), 0, 0);
+#endif
 }
 
 static void mainwin_vis_set_type (VisType mode)
@@ -682,11 +686,14 @@ mainwin_drag_data_received(GtkWidget * widget,
                            gpointer user_data)
 {
     g_return_if_fail(selection_data != NULL);
-    g_return_if_fail(selection_data->data != NULL);
 
-    if (str_has_prefix_nocase((gchar *) selection_data->data, "fonts:///"))
+    const gchar * data = (const gchar *) gtk_selection_data_get_data
+     (selection_data);
+    g_return_if_fail (data);
+
+    if (str_has_prefix_nocase (data, "fonts:///"))
     {
-        gchar *path = (gchar *) selection_data->data;
+        const gchar * path = data;
         gchar *decoded = g_filename_from_uri(path, NULL, NULL);
 
         if (decoded == NULL)
@@ -700,16 +707,17 @@ mainwin_drag_data_received(GtkWidget * widget,
         return;
     }
 
-    /* perhaps make suffix check case-insensitive -- desowin */
-    if (str_has_prefix_nocase((char*)selection_data->data, "file:///")) {
-        if (str_has_suffix_nocase((char*)selection_data->data, ".wsz\r\n") ||
-            str_has_suffix_nocase((char*)selection_data->data, ".zip\r\n")) {
+    if (str_has_prefix_nocase (data, "file:///"))
+    {
+        if (str_has_suffix_nocase (data, ".wsz\r\n") || str_has_suffix_nocase
+         (data, ".zip\r\n"))
+        {
             on_skin_view_drag_data_received(GTK_WIDGET(user_data), context, x, y, selection_data, info, time, NULL);
             return;
         }
     }
 
-    audgui_urilist_open ((const gchar *) selection_data->data);
+    audgui_urilist_open (data);
 }
 
 static gint time_now (void)

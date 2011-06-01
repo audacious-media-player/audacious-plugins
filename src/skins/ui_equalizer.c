@@ -108,52 +108,14 @@ equalizer_preset_free(EqualizerPreset * preset)
 
 void equalizerwin_set_shape (void)
 {
+#ifdef SKIN_HAVE_MASKS
     if (config.show_wm_decorations)
         gtk_widget_shape_combine_mask (equalizerwin, 0, 0, 0);
     else
         gtk_widget_shape_combine_mask (equalizerwin, skin_get_mask
          (aud_active_skin, config.equalizer_shaded ? SKIN_MASK_EQ_SHADE :
          SKIN_MASK_EQ), 0, 0);
-}
-
-void
-equalizerwin_set_scaled(gboolean ds)
-{
-    gint height;
-    GList * list;
-    SkinnedWindow * skinned;
-    GtkFixed * fixed;
-    GtkFixedChild * child;
-
-    if (config.equalizer_shaded)
-        height = 14;
-    else
-        height = 116;
-
-    if (config.scaled)
-        resize_window(equalizerwin, 275 * config.scale_factor, height *
-         config.scale_factor);
-    else
-        resize_window(equalizerwin, 275, height);
-
-    skinned = (SkinnedWindow *) equalizerwin;
-    fixed = (GtkFixed *) skinned->normal;
-
-    for (list = fixed->children; list; list = list->next)
-    {
-        child = (GtkFixedChild *) list->data;
-        g_signal_emit_by_name ((GObject *) child->widget, "toggle-scaled");
-    }
-
-    fixed = (GtkFixed *) skinned->shaded;
-
-    for (list = fixed->children; list; list = list->next)
-    {
-        child = (GtkFixedChild *) list->data;
-        g_signal_emit_by_name ((GObject *) child->widget, "toggle-scaled");
-    }
-
-    equalizerwin_set_shape ();
+#endif
 }
 
 static void
@@ -982,14 +944,13 @@ equalizerwin_create_list_window(GList *preset_list,
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
     button_cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-    g_signal_connect_swapped(button_cancel, "clicked",
-                             G_CALLBACK(gtk_widget_destroy),
-                             GTK_OBJECT(*window));
+    g_signal_connect_swapped (button_cancel, "clicked", (GCallback)
+     gtk_widget_destroy, * window);
     gtk_box_pack_start(GTK_BOX(bbox), button_cancel, TRUE, TRUE, 0);
 
     button_action = gtk_button_new_from_stock(action_name);
     g_signal_connect(button_action, "clicked", G_CALLBACK(action_func), view);
-    GTK_WIDGET_SET_FLAGS(button_action, GTK_CAN_DEFAULT);
+    gtk_widget_set_can_default (button_action, TRUE);
 
     if (select_row_func)
         g_signal_connect(view, "row-activated", G_CALLBACK(select_row_func), NULL);
@@ -1249,7 +1210,7 @@ action_equ_delete_preset(void)
     equalizerwin_create_list_window(equalizer_presets,
                                     Q_("Delete preset"),
                                     &equalizerwin_delete_window,
-                                    GTK_SELECTION_EXTENDED, NULL,
+                                    GTK_SELECTION_MULTIPLE, NULL,
                                     GTK_STOCK_DELETE,
                                     G_CALLBACK(equalizerwin_delete_delete),
                                     NULL);
@@ -1266,7 +1227,7 @@ action_equ_delete_auto_preset(void)
     equalizerwin_create_list_window(equalizer_auto_presets,
                                     Q_("Delete auto-preset"),
                                     &equalizerwin_delete_auto_window,
-                                    GTK_SELECTION_EXTENDED, NULL,
+                                    GTK_SELECTION_MULTIPLE, NULL,
                                     GTK_STOCK_DELETE,
                                     G_CALLBACK(equalizerwin_delete_auto_delete),
                                     NULL);
