@@ -21,6 +21,7 @@
 
 #include <string.h>
 
+#include "draw-compat.h"
 #include "skins_cfg.h"
 #include "ui_dock.h"
 #include "ui_playlist.h"
@@ -107,8 +108,8 @@ static gboolean ui_skinned_window_button_release(GtkWidget *widget, GdkEventButt
     return TRUE;
 }
 
-static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *event) {
-    SkinnedWindow *window = SKINNED_WINDOW(gtk_widget_get_parent(widget));
+DRAW_FUNC_BEGIN (ui_skinned_window_expose)
+    SkinnedWindow *window = SKINNED_WINDOW(gtk_widget_get_parent(wid));
 
     GdkPixbuf *obj = NULL;
 
@@ -136,21 +137,21 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
 
     switch (window->type) {
         case WINDOW_MAIN:
-            skin_draw_pixbuf(widget, aud_active_skin, obj,SKIN_MAIN, 0, 0, 0, 0, width, height);
+            skin_draw_pixbuf(wid, aud_active_skin, obj,SKIN_MAIN, 0, 0, 0, 0, width, height);
             skin_draw_mainwin_titlebar(aud_active_skin, obj, config.player_shaded, focus || !config.dim_titlebar);
             break;
         case WINDOW_EQ:
-            skin_draw_pixbuf(widget, aud_active_skin, obj, SKIN_EQMAIN, 0, 0, 0, 0, width, height);
+            skin_draw_pixbuf(wid, aud_active_skin, obj, SKIN_EQMAIN, 0, 0, 0, 0, width, height);
             if (focus || !config.dim_titlebar) {
                 if (!config.equalizer_shaded)
-                    skin_draw_pixbuf(widget, aud_active_skin, obj, SKIN_EQMAIN, 0, 134, 0, 0, width, 14);
+                    skin_draw_pixbuf(wid, aud_active_skin, obj, SKIN_EQMAIN, 0, 134, 0, 0, width, 14);
                 else
-                    skin_draw_pixbuf(widget, aud_active_skin, obj, SKIN_EQ_EX, 0, 0, 0, 0, width, 14);
+                    skin_draw_pixbuf(wid, aud_active_skin, obj, SKIN_EQ_EX, 0, 0, 0, 0, width, 14);
             } else {
                 if (!config.equalizer_shaded)
-                    skin_draw_pixbuf(widget, aud_active_skin, obj, SKIN_EQMAIN, 0, 149, 0, 0, width, 14);
+                    skin_draw_pixbuf(wid, aud_active_skin, obj, SKIN_EQMAIN, 0, 149, 0, 0, width, 14);
                 else
-                    skin_draw_pixbuf(widget, aud_active_skin, obj, SKIN_EQ_EX, 0, 15, 0, 0, width, 14);
+                    skin_draw_pixbuf(wid, aud_active_skin, obj, SKIN_EQ_EX, 0, 15, 0, 0, width, 14);
             }
             break;
         case WINDOW_PLAYLIST:
@@ -163,13 +164,10 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
             break;
     }
 
-    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
     pixbuf_draw (cr, obj, 0, 0, config.scaled && window->type != WINDOW_PLAYLIST);
-    cairo_destroy (cr);
 
     g_object_unref (obj);
-    return FALSE;
-}
+DRAW_FUNC_END
 
 static void
 ui_skinned_window_class_init(SkinnedWindowClass *klass)
@@ -260,8 +258,8 @@ ui_skinned_window_new(const gchar *wmclass_name, gint *x, gint *y)
 
     gtk_container_add(GTK_CONTAINER(widget), GTK_WIDGET(SKINNED_WINDOW(widget)->normal));
 
-    g_signal_connect(SKINNED_WINDOW(widget)->normal, "expose-event", G_CALLBACK(ui_skinned_window_expose), NULL);
-    g_signal_connect(SKINNED_WINDOW(widget)->shaded, "expose-event", G_CALLBACK(ui_skinned_window_expose), NULL);
+    g_signal_connect(SKINNED_WINDOW(widget)->normal, DRAW_SIGNAL, G_CALLBACK(ui_skinned_window_expose), NULL);
+    g_signal_connect(SKINNED_WINDOW(widget)->shaded, DRAW_SIGNAL, G_CALLBACK(ui_skinned_window_expose), NULL);
 
     return widget;
 }
