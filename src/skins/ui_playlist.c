@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2009  Audacious development team.
+ *  Copyright (C) 2005-2011  Audacious development team.
  *
  *  BMP - Cross-platform multimedia player
  *  Copyright (C) 2003-2004  BMP development team.
@@ -40,6 +40,7 @@
 #include "actions-mainwin.h"
 #include "config.h"
 #include "dnd.h"
+#include "drag-handle.h"
 #include "skins_cfg.h"
 #include "ui_manager.h"
 #include "ui_playlist.h"
@@ -69,6 +70,7 @@ static GtkWidget *playlistwin_srew, *playlistwin_splay;
 static GtkWidget *playlistwin_spause, *playlistwin_sstop;
 static GtkWidget *playlistwin_sfwd, *playlistwin_seject;
 static GtkWidget *playlistwin_sscroll_up, *playlistwin_sscroll_down;
+static GtkWidget * resize_handle, * sresize_handle;
 
 static void playlistwin_select_search_cbt_cb(GtkWidget *called_cbt,
                                              gpointer other_cbt);
@@ -76,8 +78,7 @@ static gboolean playlistwin_select_search_kp_cb(GtkWidget *entry,
                                                 GdkEventKey *event,
                                                 gpointer searchdlg_win);
 
-static gboolean playlistwin_resizing = FALSE;
-static gint playlistwin_resize_x, playlistwin_resize_y;
+static gint resize_base_width, resize_base_height;
 static int drop_position;
 static gboolean song_changed;
 
@@ -198,15 +199,6 @@ void
 playlistwin_shade_toggle(void)
 {
     playlistwin_set_shade_menu(!config.playlist_shaded);
-}
-
-static gboolean
-playlistwin_release(GtkWidget * widget,
-                    GdkEventButton * event,
-                    gpointer callback_data)
-{
-    playlistwin_resizing = FALSE;
-    return FALSE;
 }
 
 static void playlistwin_scroll (gboolean up)
@@ -444,6 +436,7 @@ static void playlistwin_inverse_selection (void)
          ! aud_playlist_entry_get_selected (active_playlist, entry));
 }
 
+/* note: height is ignored if the window is shaded */
 static void
 playlistwin_resize(gint width, gint height)
 {
@@ -496,33 +489,12 @@ playlistwin_resize(gint width, gint height)
     window_move_widget (playlistwin, FALSE, playlistwin_sscroll_up, width - 14, height - 35);
     window_move_widget (playlistwin, FALSE, playlistwin_sscroll_down, width - 14, height - 30);
 
+    window_move_widget (playlistwin, FALSE, resize_handle, width - 20, height - 20);
+    window_move_widget (playlistwin, TRUE, sresize_handle, width - 31, 0);
+
     textbox_set_width (playlistwin_sinfo, width - 35);
 
     g_mutex_unlock(resize_mutex);
-}
-
-static void
-playlistwin_motion(GtkWidget * widget,
-                   GdkEventMotion * event,
-                   gpointer callback_data)
-{
-    /*
-     * GDK2's resize is broken and doesn't really play nice, so we have
-     * to do all of this stuff by hand.
-     */
-    if (playlistwin_resizing == TRUE)
-    {
-        if (event->x + playlistwin_resize_x != config.playlist_width ||
-         (! config.playlist_shaded && event->y + playlistwin_resize_y !=
-         config.playlist_height))
-        {
-            playlistwin_resize(event->x + playlistwin_resize_x,
-                               event->y + playlistwin_resize_y);
-            window_set_size (playlistwin, config.playlist_width,
-             config.playlist_shaded ? PLAYLISTWIN_SHADED_HEIGHT :
-             config.playlist_height);
-        }
-    }
 }
 
 static void
@@ -572,22 +544,7 @@ playlistwin_press(GtkWidget * widget,
 
     gtk_window_get_position(GTK_WINDOW(playlistwin), &xpos, &ypos);
 
-    if (event->button == 1 &&
-        ((!config.playlist_shaded &&
-          event->x > config.playlist_width - 20 &&
-          event->y > config.playlist_height - 20) ||
-         (config.playlist_shaded &&
-          event->x >= config.playlist_width - 31 &&
-          event->x < config.playlist_width - 22))) {
-
-        if (event->type != GDK_2BUTTON_PRESS &&
-            event->type != GDK_3BUTTON_PRESS) {
-            playlistwin_resizing = TRUE;
-            playlistwin_resize_x = config.playlist_width - event->x;
-            playlistwin_resize_y = config.playlist_height - event->y;
-        }
-    }
-    else if (event->button == 1 && REGION_L(12, 37, 29, 11))
+    if (event->button == 1 && REGION_L(12, 37, 29, 11))
         /* ADD button menu */
         ui_popup_menu_show(UI_MENU_PLAYLIST_ADD, xpos + 12, ypos +
          config.playlist_height - 8, FALSE, TRUE, event->button, event->time);
@@ -681,6 +638,22 @@ static void playlistwin_hide (void)
     playlistwin_show (0);
 }
 
+static void resize_press (void)
+{
+    resize_base_width = config.playlist_width;
+    resize_base_height = config.playlist_height;
+}
+
+static void resize_drag (gint x_offset, gint y_offset)
+{
+    /* compromise between rounding and truncating; this has no real
+     * justification at all other than it "looks about right". */
+    playlistwin_resize (resize_base_width + x_offset + PLAYLISTWIN_WIDTH_SNAP /
+     3, resize_base_height + y_offset + PLAYLISTWIN_HEIGHT_SNAP / 3);
+    window_set_size (playlistwin, config.playlist_width, config.playlist_shaded
+     ? PLAYLISTWIN_SHADED_HEIGHT : config.playlist_height);
+}
+
 static void
 playlistwin_create_widgets(void)
 {
@@ -760,6 +733,12 @@ playlistwin_create_widgets(void)
     playlistwin_sscroll_down = button_new_small (8, 5);
     window_put_widget (playlistwin, FALSE, playlistwin_sscroll_down, config.playlist_width - 14, config.playlist_height - 30);
     button_on_release (playlistwin_sscroll_down, (ButtonCB) playlistwin_scroll_down_pushed);
+
+    resize_handle = drag_handle_new (20, 20, resize_press, resize_drag);
+    window_put_widget (playlistwin, FALSE, resize_handle, config.playlist_width - 20, config.playlist_height - 20);
+
+    sresize_handle = drag_handle_new (9, PLAYLISTWIN_SHADED_HEIGHT, resize_press, resize_drag);
+    window_put_widget (playlistwin, TRUE, sresize_handle, config.playlist_width - 31, 0);
 }
 
 static void pl_win_draw (GtkWidget * window, cairo_t * cr)
@@ -807,12 +786,8 @@ playlistwin_create_window(void)
                      G_CALLBACK(playlistwin_delete), NULL);
     g_signal_connect(playlistwin, "button_press_event",
                      G_CALLBACK(playlistwin_press), NULL);
-    g_signal_connect(playlistwin, "button_release_event",
-                     G_CALLBACK(playlistwin_release), NULL);
     g_signal_connect(playlistwin, "scroll_event",
                      G_CALLBACK(playlistwin_scrolled), NULL);
-    g_signal_connect(playlistwin, "motion_notify_event",
-                     G_CALLBACK(playlistwin_motion), NULL);
 
     aud_drag_dest_set(playlistwin);
 

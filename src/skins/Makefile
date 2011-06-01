@@ -1,6 +1,7 @@
 PLUGIN = skins${PLUGIN_SUFFIX}
 
-SRCS = plugin.c \
+SRCS = drag-handle.c \
+       plugin.c \
        skins_cfg.c \
        pixbuf_effects.c \
        dnd.c \
