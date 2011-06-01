@@ -56,9 +56,11 @@ DRAW_FUNC_BEGIN (menurow_draw)
         if (config.always_on_top)
             skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_TITLEBAR, 312, 54,
              0, 10, 8, 8);
+#if 0
         if (config.scaled)
             skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_TITLEBAR, 328, 70,
              0, 26, 8, 8);
+#endif
     }
 
     pixbuf_draw (cr, p, 0, 0, FALSE);
@@ -109,8 +111,10 @@ static gboolean menurow_button_release (GtkWidget * widget, GdkEventButton *
 
     if (mr.selected == MENUROW_ALWAYS)
         config.always_on_top = ! config.always_on_top;
+#if 0
     else if (mr.selected == MENUROW_SCALE)
         config.scaled = ! config.scaled;
+#endif
 
     mainwin_mr_release (mr.selected, event);
 

@@ -174,9 +174,9 @@ aud_active_skin_load(const gchar * path)
     textbox_update_all ();
     ui_vis_set_colors ();
     ui_svis_set_colors ();
-    ui_skinned_window_draw_all(mainwin);
-    ui_skinned_window_draw_all(equalizerwin);
-    ui_skinned_window_draw_all(playlistwin);
+    gtk_widget_queue_draw (mainwin);
+    gtk_widget_queue_draw (equalizerwin);
+    gtk_widget_queue_draw (playlistwin);
 
     SkinPixmap *pixmap;
     pixmap = &aud_active_skin->pixmaps[SKIN_POSBAR];
@@ -224,11 +224,8 @@ skin_free(Skin * skin)
     for (i = 0; i < SKIN_MASK_COUNT; i++) {
         if (skin->masks[i])
             g_object_unref(skin->masks[i]);
-        if (skin->scaled_masks[i])
-            g_object_unref(skin->scaled_masks[i]);
 
         skin->masks[i] = NULL;
-        skin->scaled_masks[i] = NULL;
     }
 #endif
 
@@ -427,12 +424,6 @@ static void skin_mask_create (Skin * skin, const gchar * path, gint id,
                                      skin_mask_info[id].inistr, window,
                                      skin_mask_info[id].width,
                                      skin_mask_info[id].height, FALSE);
-
-    skin->scaled_masks[id] =
-        skin_create_transparent_mask(path, "region.txt",
-                                     skin_mask_info[id].inistr, window,
-                                     skin_mask_info[id].width * 2,
-                                     skin_mask_info[id].height * 2, TRUE);
 }
 
 static GdkBitmap *
@@ -1286,10 +1277,10 @@ skin_create_transparent_mask(const gchar * path,
             gpoints = g_new(GdkPoint, g_array_index(num, gint, i));
             for (k = 0; k < g_array_index(num, gint, i); k++) {
                 gpoints[k].x =
-                    g_array_index(point, gint, j + k * 2) * (scale ? config.scale_factor : 1 );
+                    g_array_index(point, gint, j + k * 2);
                 gpoints[k].y =
                     g_array_index(point, gint,
-                                  j + k * 2 + 1) * (scale ? config.scale_factor : 1);
+                                  j + k * 2 + 1);
             }
             j += k * 2;
             gdk_draw_polygon(mask, gc, TRUE, gpoints,
@@ -1653,7 +1644,7 @@ skin_get_mask(Skin * skin, SkinMaskId mi)
     g_return_val_if_fail(skin != NULL, NULL);
     g_return_val_if_fail(mi < SKIN_MASK_COUNT, NULL);
 
-    masks = config.scaled ? skin->scaled_masks : skin->masks;
+    masks = skin->masks;
     return masks[mi];
 }
 #endif
@@ -1719,6 +1710,7 @@ skin_draw_pixbuf(GtkWidget *widget, Skin * skin, GdkPixbuf * pix,
             if (pixmap_id == SKIN_MONOSTEREO)
                 height = pixmap->height/2;
 
+#if 0 /* What is this for? -- jlindgren */
             if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(equalizerwin)->normal) {
                 if (!(pixmap_id == SKIN_EQMAIN && ysrc == 314)) /* equalizer preamp on equalizer graph */
                     gtk_widget_hide(widget);
@@ -1728,6 +1720,7 @@ skin_draw_pixbuf(GtkWidget *widget, Skin * skin, GdkPixbuf * pix,
                 /* I haven't seen any skin with substandard playlist */
                 gtk_widget_hide(widget);
             }
+#endif
         } else
             return;
     }
@@ -1985,17 +1978,6 @@ void pixbuf_draw (cairo_t * cr, GdkPixbuf * p, gint x, gint y, gboolean scale)
 {
     g_return_if_fail (cr && p);
 
-    if (scale)
-    {
-        GdkPixbuf * p2 = gdk_pixbuf_scale_simple (p, gdk_pixbuf_get_width (p) *
-         2, gdk_pixbuf_get_height (p) * 2, GDK_INTERP_NEAREST);
-        gdk_cairo_set_source_pixbuf (cr, p2, x, y);
-        cairo_paint (cr);
-        g_object_unref (p2);
-    }
-    else
-    {
-        gdk_cairo_set_source_pixbuf (cr, p, x, y);
-        cairo_paint (cr);
-    }
+    gdk_cairo_set_source_pixbuf (cr, p, x, y);
+    cairo_paint (cr);
 }

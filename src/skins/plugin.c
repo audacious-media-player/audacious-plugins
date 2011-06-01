@@ -27,7 +27,6 @@
 #include "config.h"
 #include "plugin.h"
 #include "skins_cfg.h"
-#include "ui_dock.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_main_evlisteners.h"
@@ -145,7 +144,6 @@ static void skins_cleanup (void)
         skins_cfg_save();
 
         cleanup_skins();
-        clear_dock_window_list ();
         skins_free_paths();
         skins_cfg_free();
         ui_manager_destroy();

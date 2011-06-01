@@ -71,7 +71,6 @@ GtkWidget *make_filebrowser(const gchar *title, gboolean save);
 GdkPixbuf *audacious_create_colorized_pixbuf(GdkPixbuf *src, gint red,
                                              gint green, gint blue);
 
-void resize_window(GtkWidget *window, gint width, gint height);
 void widget_destroy_on_escape (GtkWidget * widget);
 
 void check_set (GtkActionGroup * action_group, const gchar * action_name,

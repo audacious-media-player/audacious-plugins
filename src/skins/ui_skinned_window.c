@@ -19,274 +19,190 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include <string.h>
-
 #include "draw-compat.h"
-#include "skins_cfg.h"
 #include "ui_dock.h"
-#include "ui_playlist.h"
-#include "ui_skin.h"
 #include "ui_skinned_window.h"
 
-static void ui_skinned_window_class_init(SkinnedWindowClass *klass);
-static void ui_skinned_window_init(GtkWidget *widget);
-static void ui_skinned_window_show(GtkWidget *widget);
-static void ui_skinned_window_hide(GtkWidget *widget);
-static GtkWindowClass *parent = NULL;
+typedef struct {
+    void (* draw) (GtkWidget * window, cairo_t * cr);
+    GtkWidget * normal, * shaded;
+    gboolean is_shaded, is_moving;
+} WindowData;
 
-GType
-ui_skinned_window_get_type(void)
-{
-  static GType window_type = 0;
+DRAW_FUNC_BEGIN (window_draw)
+    WindowData * data = g_object_get_data ((GObject *) wid, "windowdata");
+    g_return_val_if_fail (data, FALSE);
 
-  if (!window_type)
-    {
-      static const GTypeInfo window_info =
-      {
-        sizeof (SkinnedWindowClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) ui_skinned_window_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (SkinnedWindow),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) ui_skinned_window_init
-      };
-
-      window_type =
-        g_type_register_static (GTK_TYPE_WINDOW, "SkinnedWindow",
-                                &window_info, 0);
-    }
-
-  return window_type;
-}
-
-static void
-ui_skinned_window_map(GtkWidget *widget)
-{
-    (* GTK_WIDGET_CLASS (parent)->map) (widget);
-    gtk_window_set_keep_above(GTK_WINDOW(widget), config.always_on_top);
-}
-
-static gboolean
-ui_skinned_window_motion_notify_event(GtkWidget *widget,
-                                      GdkEventMotion *event)
-{
-    if (dock_is_moving(GTK_WINDOW(widget)))
-        dock_move_motion(GTK_WINDOW(widget), event);
-
-    return FALSE;
-}
-
-static gboolean ui_skinned_window_focus_in(GtkWidget *widget, GdkEventFocus *focus) {
-    gboolean val = GTK_WIDGET_CLASS (parent)->focus_in_event (widget, focus);
-    gtk_widget_queue_draw(widget);
-    return val;
-}
-
-static gboolean ui_skinned_window_focus_out(GtkWidget *widget, GdkEventFocus *focus) {
-    gboolean val = GTK_WIDGET_CLASS (parent)->focus_out_event (widget, focus);
-    gtk_widget_queue_draw(widget);
-    return val;
-}
-
-static gboolean ui_skinned_window_button_press(GtkWidget *widget, GdkEventButton *event) {
-    if (event->button == 1 && event->type == GDK_BUTTON_PRESS &&
-        (config.easy_move || config.equalizer_shaded || (event->y / config.scale_factor) < 14)) {
-         dock_move_press(get_dock_window_list(), GTK_WINDOW(widget),
-                         event, SKINNED_WINDOW(widget)->type == WINDOW_MAIN ? TRUE : FALSE);
-    }
-
-    return TRUE;
-}
-
-static gboolean ui_skinned_window_button_release(GtkWidget *widget, GdkEventButton *event) {
-    if (dock_is_moving(GTK_WINDOW(widget)))
-       dock_move_release(GTK_WINDOW(widget));
-
-    return TRUE;
-}
-
-DRAW_FUNC_BEGIN (ui_skinned_window_expose)
-    SkinnedWindow *window = SKINNED_WINDOW(gtk_widget_get_parent(wid));
-
-    GdkPixbuf *obj = NULL;
-
-    gint width = 0, height = 0;
-
-    switch (window->type) {
-        case WINDOW_MAIN:
-            width = aud_active_skin->properties.mainwin_width;
-            height = aud_active_skin->properties.mainwin_height;
-            break;
-        case WINDOW_EQ:
-            width = 275 * (config.scaled ? config.scale_factor : 1);
-            height = 116 * (config.scaled ? config.scale_factor : 1) ;
-            break;
-        case WINDOW_PLAYLIST:
-            width = playlistwin_get_width();
-            height = config.playlist_height;
-            break;
-        default:
-            return FALSE;
-    }
-    obj = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, width, height);
-
-    gboolean focus = gtk_window_has_toplevel_focus(GTK_WINDOW(window));
-
-    switch (window->type) {
-        case WINDOW_MAIN:
-            skin_draw_pixbuf(wid, aud_active_skin, obj,SKIN_MAIN, 0, 0, 0, 0, width, height);
-            skin_draw_mainwin_titlebar(aud_active_skin, obj, config.player_shaded, focus || !config.dim_titlebar);
-            break;
-        case WINDOW_EQ:
-            skin_draw_pixbuf(wid, aud_active_skin, obj, SKIN_EQMAIN, 0, 0, 0, 0, width, height);
-            if (focus || !config.dim_titlebar) {
-                if (!config.equalizer_shaded)
-                    skin_draw_pixbuf(wid, aud_active_skin, obj, SKIN_EQMAIN, 0, 134, 0, 0, width, 14);
-                else
-                    skin_draw_pixbuf(wid, aud_active_skin, obj, SKIN_EQ_EX, 0, 0, 0, 0, width, 14);
-            } else {
-                if (!config.equalizer_shaded)
-                    skin_draw_pixbuf(wid, aud_active_skin, obj, SKIN_EQMAIN, 0, 149, 0, 0, width, 14);
-                else
-                    skin_draw_pixbuf(wid, aud_active_skin, obj, SKIN_EQ_EX, 0, 15, 0, 0, width, 14);
-            }
-            break;
-        case WINDOW_PLAYLIST:
-            focus |= !config.dim_titlebar;
-            if (config.playlist_shaded) {
-                skin_draw_playlistwin_shaded(aud_active_skin, obj, width, focus);
-            } else {
-                skin_draw_playlistwin_frame(aud_active_skin, obj, width, config.playlist_height, focus);
-            }
-            break;
-    }
-
-    pixbuf_draw (cr, obj, 0, 0, config.scaled && window->type != WINDOW_PLAYLIST);
-
-    g_object_unref (obj);
+    if (data->draw)
+        data->draw (wid, cr);
 DRAW_FUNC_END
 
-static void
-ui_skinned_window_class_init(SkinnedWindowClass *klass)
+static gboolean window_button_press (GtkWidget * window, GdkEventButton * event)
 {
-    GtkWidgetClass *widget_class;
+    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    g_return_val_if_fail (data, FALSE);
 
-    widget_class = (GtkWidgetClass*) klass;
+    /* pass double clicks through; they are handled elsewhere */
+    if (event->button != 1 || event->type == GDK_2BUTTON_PRESS)
+        return FALSE;
 
-    parent = g_type_class_peek_parent(klass);
+    if (data->is_moving)
+        return TRUE;
 
-    widget_class->show = ui_skinned_window_show;
-    widget_class->hide = ui_skinned_window_hide;
-    widget_class->motion_notify_event = ui_skinned_window_motion_notify_event;
-    widget_class->focus_in_event = ui_skinned_window_focus_in;
-    widget_class->focus_out_event = ui_skinned_window_focus_out;
-    widget_class->button_press_event = ui_skinned_window_button_press;
-    widget_class->button_release_event = ui_skinned_window_button_release;
-    widget_class->map = ui_skinned_window_map;
+    dock_move_start (window, event->x, event->y);
+    data->is_moving = TRUE;
+    return TRUE;
 }
 
-static void
-ui_skinned_window_hide(GtkWidget *widget)
+static gboolean window_button_release (GtkWidget * window, GdkEventButton *
+ event)
 {
-    SkinnedWindow *window;
+    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    g_return_val_if_fail (data, FALSE);
 
-    g_return_if_fail(SKINNED_CHECK_WINDOW(widget));
+    if (event->button != 1)
+        return FALSE;
 
-    window = SKINNED_WINDOW(widget);
+    if (! data->is_moving)
+        return TRUE;
 
-    if (window->x != NULL && window->y != NULL)
-        gtk_window_get_position(GTK_WINDOW(window), window->x, window->y);
-    GTK_WIDGET_CLASS(parent)->hide(widget);
+    dock_move_end ();
+    data->is_moving = FALSE;
+    return TRUE;
 }
 
-static void
-ui_skinned_window_show(GtkWidget *widget)
+static gboolean window_motion (GtkWidget * window, GdkEventMotion * event)
 {
-    SkinnedWindow *window;
+    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    g_return_val_if_fail (data, FALSE);
 
-    g_return_if_fail(SKINNED_CHECK_WINDOW(widget));
+    if (! data->is_moving)
+        return TRUE;
 
-    window = SKINNED_WINDOW(widget);
-
-    if (window->x != NULL && window->y != NULL)
-        gtk_window_move(GTK_WINDOW(window), *(window->x), *(window->y));
-    GTK_WIDGET_CLASS(parent)->show(widget);
+    dock_move (event->x, event->y);
+    return TRUE;
 }
 
-static void
-ui_skinned_window_init(GtkWidget *widget)
+static void window_destroy (GtkWidget * window)
 {
-    SkinnedWindow *window;
-    window = SKINNED_WINDOW(widget);
-    window->x = NULL;
-    window->y = NULL;
+    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    g_return_if_fail (data);
+
+    dock_remove_window (window);
+
+    if (data->is_shaded)
+        gtk_container_remove ((GtkContainer *) window, data->shaded);
+    else
+        gtk_container_remove ((GtkContainer *) window, data->normal);
+
+    g_object_unref (data->normal);
+    g_object_unref (data->shaded);
+    g_free (data);
 }
 
-GtkWidget *
-ui_skinned_window_new(const gchar *wmclass_name, gint *x, gint *y)
+static void window_set_size_real (GtkWidget * window, gint w, gint h)
 {
-    GtkWidget *widget = g_object_new(ui_skinned_window_get_type(), NULL);
+    GdkGeometry hints = {.min_width = w, .min_height = h, .max_width = w,
+     .max_height = h};
+    gtk_window_set_geometry_hints ((GtkWindow *) window, NULL, & hints,
+     GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
 
-    if (wmclass_name)
-        gtk_window_set_wmclass(GTK_WINDOW(widget), wmclass_name, "Audacious");
-
-    gtk_widget_add_events(GTK_WIDGET(widget),
-                          GDK_FOCUS_CHANGE_MASK | GDK_BUTTON_MOTION_MASK |
-                          GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-                          GDK_SCROLL_MASK | GDK_KEY_PRESS_MASK |
-                          GDK_VISIBILITY_NOTIFY_MASK | GDK_EXPOSURE_MASK);
-
-    dock_window_set_decorated (widget);
-    gtk_widget_set_app_paintable(GTK_WIDGET(widget), TRUE);
-
-    if (!strcmp(wmclass_name, "player"))
-        SKINNED_WINDOW(widget)->type = WINDOW_MAIN;
-    if (!strcmp(wmclass_name, "equalizer"))
-        SKINNED_WINDOW(widget)->type = WINDOW_EQ;
-    if (!strcmp(wmclass_name, "playlist"))
-        SKINNED_WINDOW(widget)->type = WINDOW_PLAYLIST;
-
-    SKINNED_WINDOW(widget)->x = x;
-    SKINNED_WINDOW(widget)->y = y;
-    SKINNED_WINDOW(widget)->normal = gtk_fixed_new();
-    SKINNED_WINDOW(widget)->shaded = gtk_fixed_new();
-    g_object_ref(SKINNED_WINDOW(widget)->normal);
-    g_object_ref(SKINNED_WINDOW(widget)->shaded);
-
-    gtk_container_add(GTK_CONTAINER(widget), GTK_WIDGET(SKINNED_WINDOW(widget)->normal));
-
-    g_signal_connect(SKINNED_WINDOW(widget)->normal, DRAW_SIGNAL, G_CALLBACK(ui_skinned_window_expose), NULL);
-    g_signal_connect(SKINNED_WINDOW(widget)->shaded, DRAW_SIGNAL, G_CALLBACK(ui_skinned_window_expose), NULL);
-
-    return widget;
+    gtk_window_resize ((GtkWindow *) window, w, h);
 }
 
-void ui_skinned_window_draw_all(GtkWidget *widget) {
-    gtk_widget_queue_draw (widget);
+GtkWidget * window_new (gint * x, gint * y, gint w, gint h, gboolean main,
+ gboolean shaded, void (* draw) (GtkWidget * window, cairo_t * cr))
+{
+    GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_decorated ((GtkWindow *) window, FALSE);
+    gtk_window_move ((GtkWindow *) window, * x, * y);
+
+    window_set_size_real (window, w, h);
+
+    gtk_widget_add_events (window, GDK_BUTTON_PRESS_MASK |
+     GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
+
+    g_signal_connect (window, DRAW_SIGNAL, (GCallback) window_draw, NULL);
+    g_signal_connect (window, "button-press-event", (GCallback) window_button_press, NULL);
+    g_signal_connect (window, "button-release-event", (GCallback) window_button_release, NULL);
+    g_signal_connect (window, "motion-notify-event", (GCallback) window_motion, NULL);
+    g_signal_connect (window, "destroy", (GCallback) window_destroy, NULL);
+
+    WindowData * data = g_malloc0 (sizeof (WindowData));
+    g_object_set_data ((GObject *) window, "windowdata", data);
+
+    data->normal = gtk_fixed_new ();
+    g_object_ref (data->normal);
+
+    data->shaded = gtk_fixed_new ();
+    g_object_ref (data->shaded);
+
+    if (shaded)
+        gtk_container_add ((GtkContainer *) window, data->shaded);
+    else
+        gtk_container_add ((GtkContainer *) window, data->normal);
+
+    data->is_shaded = shaded;
+    data->draw = draw;
+
+    dock_add_window (window, x, y, w, h, main);
+    return window;
 }
 
-void ui_skinned_window_set_shade (GtkWidget * widget, gboolean shaded)
+void window_set_size (GtkWidget * window, gint w, gint h)
 {
-    SkinnedWindow * skinned = (SkinnedWindow *) widget;
-    GtkWidget * old, * new;
+    window_set_size_real (window, w, h);
+    dock_set_size (window, w, h);
+}
+
+void window_set_shaded (GtkWidget * window, gboolean shaded)
+{
+    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    g_return_if_fail (data);
+
+    if (data->is_shaded == shaded)
+        return;
 
     if (shaded)
     {
-        old = skinned->normal;
-        new = skinned->shaded;
+        gtk_container_remove ((GtkContainer *) window, data->normal);
+        gtk_container_add ((GtkContainer *) window, data->shaded);
     }
     else
     {
-        old = skinned->shaded;
-        new = skinned->normal;
+        gtk_container_remove ((GtkContainer *) window, data->shaded);
+        gtk_container_add ((GtkContainer *) window, data->normal);
     }
 
-    if (gtk_widget_get_parent (old) == NULL)
-        return;
+    data->is_shaded = shaded;
+}
 
-    gtk_container_remove ((GtkContainer *) skinned, old);
-    gtk_container_add ((GtkContainer *) skinned, new);
+void window_put_widget (GtkWidget * window, gboolean shaded, GtkWidget * widget,
+ gint x, gint y)
+{
+    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    g_return_if_fail (data);
+
+    GtkWidget * fixed = shaded ? data->shaded : data->normal;
+    gtk_fixed_put ((GtkFixed *) fixed, widget, x, y);
+}
+
+void window_move_widget (GtkWidget * window, gboolean shaded, GtkWidget *
+ widget, gint x, gint y)
+{
+    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    g_return_if_fail (data);
+
+    GtkWidget * fixed = shaded ? data->shaded : data->normal;
+    gtk_fixed_move ((GtkFixed *) fixed, widget, x, y);
+}
+
+void window_show_all (GtkWidget * window)
+{
+    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    g_return_if_fail (data);
+
+    gtk_widget_show (window);
+    gtk_widget_show_all (data->normal);
+    gtk_widget_show_all (data->shaded);
 }

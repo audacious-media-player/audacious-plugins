@@ -860,25 +860,6 @@ static void make_directory(const gchar *path, mode_t mode)
 }
 #endif
 
-void resize_window(GtkWidget *window, gint width, gint height)
-{
-    /* As of GTK+ 2.16, gtk_window_resize is broken on fixed size windows and
-     * needs this workaround. */
-    if (!gtk_window_get_resizable((GtkWindow *)window))
-    {
-        GdkGeometry hints;
-
-        hints.min_width = width;
-        hints.min_height = height;
-        hints.max_width = width;
-        hints.max_height = height;
-        gtk_window_set_geometry_hints((GtkWindow *)window, NULL, &hints,
-                                      GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
-    }
-
-    gtk_window_resize((GtkWindow *)window, width, height);
-}
-
 void check_set (GtkActionGroup * action_group, const gchar * action_name,
  gboolean is_on)
 {

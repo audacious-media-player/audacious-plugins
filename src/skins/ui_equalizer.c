@@ -53,7 +53,6 @@
 
 #include "images/audacious_eq.xpm"
 
-#include "ui_dock.h"
 #include "ui_skinned_window.h"
 #include "ui_skinned_button.h"
 #include "ui_skinned_horizontal_slider.h"
@@ -109,12 +108,8 @@ equalizer_preset_free(EqualizerPreset * preset)
 void equalizerwin_set_shape (void)
 {
 #ifdef SKIN_HAVE_MASKS
-    if (config.show_wm_decorations)
-        gtk_widget_shape_combine_mask (equalizerwin, 0, 0, 0);
-    else
-        gtk_widget_shape_combine_mask (equalizerwin, skin_get_mask
-         (aud_active_skin, config.equalizer_shaded ? SKIN_MASK_EQ_SHADE :
-         SKIN_MASK_EQ), 0, 0);
+    gtk_widget_shape_combine_mask (equalizerwin, skin_get_mask (aud_active_skin,
+     config.equalizer_shaded ? SKIN_MASK_EQ_SHADE : SKIN_MASK_EQ), 0, 0);
 #endif
 }
 
@@ -202,8 +197,6 @@ equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
     if (event->button == 1 && event->type == GDK_2BUTTON_PRESS
              && event->y < 14) {
         equalizerwin_set_shade(!config.equalizer_shaded);
-        if (dock_is_moving(GTK_WINDOW(equalizerwin)))
-            dock_move_release(GTK_WINDOW(equalizerwin));
         return TRUE;
     }
 
@@ -225,11 +218,7 @@ equalizerwin_close_cb(void)
 
 static gboolean equalizerwin_delete(GtkWidget *widget, void *data)
 {
-    if (config.show_wm_decorations)
-        equalizerwin_show(FALSE);
-    else
-        aud_drct_quit();
-
+    aud_drct_quit ();
     return TRUE;
 }
 
@@ -321,40 +310,40 @@ static void
 equalizerwin_create_widgets(void)
 {
     equalizerwin_on = button_new_toggle (25, 12, 10, 119, 128, 119, 69, 119, 187, 119, SKIN_EQMAIN, SKIN_EQMAIN);
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal, equalizerwin_on, 14, 18);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_on, 14, 18);
     button_set_active (equalizerwin_on, aud_cfg->equalizer_active);
     button_on_release (equalizerwin_on, eq_on_cb);
 
     equalizerwin_auto = button_new_toggle (33, 12, 35, 119, 153, 119, 94, 119, 212, 119, SKIN_EQMAIN, SKIN_EQMAIN);
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal, equalizerwin_auto, 39, 18);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_auto, 39, 18);
     button_set_active (equalizerwin_auto, aud_cfg->equalizer_autoload);
     button_on_release (equalizerwin_auto, eq_auto_cb);
 
     equalizerwin_presets = button_new (44, 12, 224, 164, 224, 176, SKIN_EQMAIN, SKIN_EQMAIN);
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal, equalizerwin_presets, 217, 18);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_presets, 217, 18);
     button_on_release (equalizerwin_presets, (ButtonCB) equalizerwin_presets_pushed);
 
     equalizerwin_close = button_new (9, 9, 0, 116, 0, 125, SKIN_EQMAIN, SKIN_EQMAIN);
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal, equalizerwin_close, 264, 3);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_close, 264, 3);
     button_on_release (equalizerwin_close, (ButtonCB) equalizerwin_close_cb);
 
     equalizerwin_shade = button_new (9, 9, 254, 137, 1, 38, SKIN_EQMAIN, SKIN_EQ_EX);
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal, equalizerwin_shade, 254, 3);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_shade, 254, 3);
     button_on_release (equalizerwin_shade, (ButtonCB) equalizerwin_shade_toggle);
 
     equalizerwin_shaded_close = button_new (9, 9, 11, 38, 11, 47, SKIN_EQ_EX, SKIN_EQ_EX);
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->shaded, equalizerwin_shaded_close, 264, 3);
+    window_put_widget (equalizerwin, TRUE, equalizerwin_shaded_close, 264, 3);
     button_on_release (equalizerwin_shaded_close, (ButtonCB) equalizerwin_close_cb);
 
     equalizerwin_shaded_shade = button_new (9, 9, 254, 3, 1, 47, SKIN_EQ_EX, SKIN_EQ_EX);
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->shaded, equalizerwin_shaded_shade, 254, 3);
+    window_put_widget (equalizerwin, TRUE, equalizerwin_shaded_shade, 254, 3);
     button_on_release (equalizerwin_shaded_shade, (ButtonCB) equalizerwin_shade_toggle);
 
     equalizerwin_graph = eq_graph_new ();
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal, equalizerwin_graph, 86, 17);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_graph, 86, 17);
 
     equalizerwin_preamp = eq_slider_new (_("Preamp"));
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal, equalizerwin_preamp, 21, 38);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_preamp, 21, 38);
     eq_slider_set_val (equalizerwin_preamp, aud_cfg->equalizer_preamp);
 
     const gchar * const bandnames[AUD_EQUALIZER_NBANDS] = {N_("31 Hz"),
@@ -364,43 +353,48 @@ equalizerwin_create_widgets(void)
     for (gint i = 0; i < AUD_EQUALIZER_NBANDS; i ++)
     {
         equalizerwin_bands[i] = eq_slider_new (_(bandnames[i]));
-        gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->normal,
+        window_put_widget (equalizerwin, FALSE,
          equalizerwin_bands[i], 78 + 18 * i, 38);
         eq_slider_set_val (equalizerwin_bands[i], aud_cfg->equalizer_bands[i]);
     }
 
     equalizerwin_volume = hslider_new (0, 94, SKIN_EQ_EX, 97, 8, 61, 4, 3, 7, 1, 30, 1, 30);
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->shaded, equalizerwin_volume, 61, 4);
+    window_put_widget (equalizerwin, TRUE, equalizerwin_volume, 61, 4);
     hslider_on_motion (equalizerwin_volume, eqwin_volume_motion_cb);
     hslider_on_release (equalizerwin_volume, eqwin_volume_release_cb);
 
     equalizerwin_balance = hslider_new (0, 39, SKIN_EQ_EX, 42, 8, 164, 4, 3, 7, 11, 30, 11, 30);
-    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) equalizerwin)->shaded, equalizerwin_balance, 164, 4);
+    window_put_widget (equalizerwin, TRUE, equalizerwin_balance, 164, 4);
     hslider_on_motion (equalizerwin_balance, eqwin_balance_motion_cb);
     hslider_on_release (equalizerwin_balance, eqwin_balance_release_cb);
 }
 
+static void eq_win_draw (GtkWidget * window, cairo_t * cr)
+{
+    gint height = config.equalizer_shaded ? 14 : 116;
+    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 275, height);
+
+    skin_draw_pixbuf (window, aud_active_skin, p, SKIN_EQMAIN, 0, 0, 0, 0, 275, height);
+
+    if (config.equalizer_shaded)
+        skin_draw_pixbuf (window, aud_active_skin, p, SKIN_EQ_EX, 0, 0, 0, 0, 275, 14);
+    else
+        skin_draw_pixbuf (window, aud_active_skin, p, SKIN_EQMAIN, 0, 134, 0, 0, 275, 14);
+
+    pixbuf_draw (cr, p, 0, 0, FALSE);
+    g_object_unref (p);
+}
 
 static void
 equalizerwin_create_window(void)
 {
     GdkPixbuf *icon;
-    gint width, height;
 
-    width = 275;
-    height = config.equalizer_shaded ? 14 : 116;
+    equalizerwin = window_new (& config.equalizer_x, & config.equalizer_y, 275,
+     config.equalizer_shaded ? 14 : 116, FALSE, config.equalizer_shaded,
+     eq_win_draw);
 
-    equalizerwin = ui_skinned_window_new("equalizer", &config.equalizer_x, &config.equalizer_y);
     gtk_window_set_title(GTK_WINDOW(equalizerwin), _("Audacious Equalizer"));
-    gtk_window_set_role(GTK_WINDOW(equalizerwin), "equalizer");
-    gtk_window_set_resizable(GTK_WINDOW(equalizerwin), FALSE);
-
-    if (config.scaled && config.eq_scaled_linked) {
-        width *= config.scale_factor;
-        height *= config.scale_factor;
-    }
-
-    gtk_widget_set_size_request(equalizerwin, width, height);
 
     /* this will hide only mainwin. it's annoying! yaz */
     gtk_window_set_transient_for(GTK_WINDOW(equalizerwin),
@@ -432,27 +426,15 @@ equalizerwin_create(void)
     gtk_window_add_accel_group( GTK_WINDOW(equalizerwin) , ui_manager_get_accel_group() );
 
     equalizerwin_create_widgets();
+    window_show_all (equalizerwin);
 
     hook_associate("equalizer changed", (HookFunction) update_from_config, NULL);
-
-    gtk_widget_show_all (((SkinnedWindow *) equalizerwin)->normal);
-    gtk_widget_show_all (((SkinnedWindow *) equalizerwin)->shaded);
 }
 
 static void equalizerwin_real_show (gboolean show)
 {
     if (show)
-    {
-        if (config.scaled && config.eq_scaled_linked)
-            gtk_widget_set_size_request (equalizerwin, 275 *
-             config.scale_factor, (config.equalizer_shaded ? 14 : 116) *
-             config.scale_factor);
-        else
-            gtk_widget_set_size_request (equalizerwin, 275,
-             (config.equalizer_shaded ? 14 : 116));
-
         gtk_window_present ((GtkWindow *) equalizerwin);
-    }
     else
         gtk_widget_hide (equalizerwin);
 }
@@ -1323,9 +1305,7 @@ void action_roll_up_equalizer (GtkToggleAction * action)
 {
     config.equalizer_shaded = gtk_toggle_action_get_active (action);
 
-    ui_skinned_window_set_shade (equalizerwin, config.equalizer_shaded);
+    window_set_shaded (equalizerwin, config.equalizer_shaded);
+    window_set_size (equalizerwin, 275, config.equalizer_shaded ? 14 : 116);
     equalizerwin_set_shape ();
-
-    gint height = config.equalizer_shaded ? 14 : 116;
-    dock_shade (get_dock_window_list (), (GtkWindow *) equalizerwin, height);
 }

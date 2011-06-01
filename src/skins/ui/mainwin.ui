@@ -116,8 +116,6 @@
 				<menuitem action="roll up player" />
 				<menuitem action="roll up playlist editor" />
 				<menuitem action="roll up equalizer" />
-				<separator />
-				<menuitem action="view easy move" />
 			</menu>
 			<separator />
 			<menuitem action="plugins-menu" />

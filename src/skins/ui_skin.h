@@ -191,7 +191,6 @@ typedef struct _Skin {
     guchar vis_color[24][3];
 #ifdef SKIN_HAVE_MASKS
     GdkBitmap *masks[SKIN_MASK_COUNT];
-    GdkBitmap *scaled_masks[SKIN_MASK_COUNT];
 #endif
     SkinProperties properties;
 } Skin;

@@ -38,9 +38,8 @@ typedef struct {
     gint equalizer_x, equalizer_y;
     gint playlist_x, playlist_y;
     gint playlist_width, playlist_height;
-    gboolean scaled, autoscroll;
+    gboolean autoscroll;
     gboolean always_on_top, sticky;
-    gfloat scale_factor;
     gboolean always_show_cb;
     gboolean close_dialog_open;
     gboolean close_dialog_add;
@@ -48,9 +47,6 @@ typedef struct {
     gchar *filesel_path;
     gboolean player_visible, equalizer_visible, playlist_visible;
     gboolean player_shaded, equalizer_shaded, playlist_shaded;
-    gboolean dim_titlebar;
-    gboolean show_wm_decorations;
-    gboolean easy_move;
     gboolean allow_broken_skins;
     gboolean disable_inline_gtk;
     gboolean analyzer_peaks;
@@ -67,7 +63,6 @@ typedef struct {
     gboolean warn_about_win_visibility;
     gboolean warn_about_broken_gtk_engines;
     gboolean mainwin_use_bitmapfont;
-    gboolean eq_scaled_linked;
     gchar *playlist_font, *mainwin_font;
     gboolean random_skin_on_play;
     gboolean no_confirm_playlist_delete;

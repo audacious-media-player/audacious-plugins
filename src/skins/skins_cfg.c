@@ -29,7 +29,6 @@
 #include "config.h"
 #include "dnd.h"
 #include "skins_cfg.h"
-#include "ui_dock.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_playlist.h"
@@ -51,11 +50,9 @@ GtkWidget *blue_scale;
 
 
 skins_cfg_t skins_default_config = {
-    .scaled = FALSE,
     .autoscroll = TRUE,
     .always_on_top = FALSE,
     .sticky = FALSE,
-    .scale_factor = 2.0,
     .always_show_cb = TRUE,
     .close_dialog_open = TRUE,
     .close_dialog_add = TRUE,
@@ -67,9 +64,6 @@ skins_cfg_t skins_default_config = {
     .player_shaded = FALSE,
     .equalizer_shaded = FALSE,
     .playlist_shaded = FALSE,
-    .dim_titlebar = TRUE,
-    .show_wm_decorations = FALSE,
-    .easy_move = TRUE,
     .allow_broken_skins = FALSE,
     .warn_about_broken_gtk_engines = TRUE,
     .warn_about_win_visibility = TRUE,
@@ -96,7 +90,6 @@ skins_cfg_t skins_default_config = {
     .analyzer_peaks = TRUE,
     .twoway_scroll = TRUE,             /* use back and forth scroll */
     .mainwin_use_bitmapfont = TRUE,
-    .eq_scaled_linked = TRUE,
     .playlist_font = NULL,
     .mainwin_font = NULL,
     .random_skin_on_play = FALSE,
@@ -113,7 +106,6 @@ static skins_cfg_boolent skins_boolents[] = {
     {"always_on_top", &config.always_on_top, TRUE},
     {"sticky", &config.sticky, TRUE},
     {"always_show_cb", &config.always_show_cb, TRUE},
-    {"scaled", &config.scaled, TRUE},
     {"autoscroll_songname", &config.autoscroll, TRUE},
     {"equalizer_visible", &config.equalizer_visible, TRUE},
     {"playlist_visible", &config.playlist_visible, TRUE},
@@ -121,9 +113,6 @@ static skins_cfg_boolent skins_boolents[] = {
     {"player_shaded", &config.player_shaded, TRUE},
     {"equalizer_shaded", &config.equalizer_shaded, TRUE},
     {"playlist_shaded", &config.playlist_shaded, TRUE},
-    {"dim_titlebar", &config.dim_titlebar, TRUE},
-    {"show_wm_decorations", &config.show_wm_decorations, TRUE},
-    {"easy_move", &config.easy_move, TRUE},
     {"allow_broken_skins", &config.allow_broken_skins, TRUE},
     {"disable_inline_gtk", &config.disable_inline_gtk, TRUE},
     {"analyzer_peaks", &config.analyzer_peaks, TRUE},
@@ -131,7 +120,6 @@ static skins_cfg_boolent skins_boolents[] = {
     {"warn_about_win_visibility", &config.warn_about_win_visibility, TRUE},
     {"warn_about_broken_gtk_engines", &config.warn_about_broken_gtk_engines, TRUE},
     {"mainwin_use_bitmapfont", &config.mainwin_use_bitmapfont, TRUE},
-    {"eq_scaled_linked", &config.eq_scaled_linked, TRUE},
     {"random_skin_on_play", &config.random_skin_on_play, TRUE},
 };
 
@@ -225,9 +213,6 @@ void skins_cfg_load() {
     if (!config.playlist_font)
         config.playlist_font = g_strdup(PLAYLISTWIN_DEFAULT_FONT);
 
-    if (!aud_cfg_db_get_float(cfgfile, "skins", "scale_factor", &(config.scale_factor)))
-        config.scale_factor = 2.0;
-
     aud_cfg_db_close(cfgfile);
 }
 
@@ -288,21 +273,6 @@ bitmap_fonts_cb()
     textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL :
      config.mainwin_font);
     playlistwin_set_sinfo_font(config.playlist_font);
-
-    if (config.playlist_shaded) {
-        playlistwin_update ();
-        ui_skinned_window_draw_all(playlistwin);
-    }
-}
-
-static void
-show_wm_decorations_cb()
-{
-    dock_window_set_decorated (mainwin);
-    dock_window_set_decorated (playlistwin);
-    dock_window_set_decorated (equalizerwin);
-    mainwin_set_shape ();
-    equalizerwin_set_shape ();
 }
 
 static PreferencesWidget font_table_elements[] = {
@@ -315,8 +285,6 @@ static PreferencesWidget appearance_misc_widgets[] = {
     {WIDGET_TABLE, NULL, NULL, NULL, NULL, TRUE, {.table = {font_table_elements, G_N_ELEMENTS(font_table_elements)}}},
     {WIDGET_CHK_BTN, N_("Use Bitmap fonts if available"), &config.mainwin_use_bitmapfont, G_CALLBACK(bitmap_fonts_cb), N_("Use bitmap fonts if they are available. Bitmap fonts do not support Unicode strings."), FALSE},
     {WIDGET_LABEL, N_("<b>_Miscellaneous</b>"), NULL, NULL, NULL, FALSE},
-    {WIDGET_CHK_BTN, N_("Show window manager decoration"), &config.show_wm_decorations, G_CALLBACK(show_wm_decorations_cb),
-        N_("This enables the window manager to show decorations for windows."), FALSE},
     {WIDGET_CHK_BTN, N_("Use two-way text scroller"), &config.twoway_scroll,
      (GCallback) (GCallback) textbox_update_all, NULL, FALSE},
     {WIDGET_CHK_BTN, N_("Disable inline gtk theme"), &config.disable_inline_gtk,
@@ -341,9 +309,6 @@ reload_skin()
 {
     /* reload the skin to apply the change */
     skin_reload_forced();
-    ui_skinned_window_draw_all(mainwin);
-    ui_skinned_window_draw_all(equalizerwin);
-    ui_skinned_window_draw_all(playlistwin);
 }
 
 static void
