@@ -83,6 +83,16 @@ static gboolean window_motion (GtkWidget * window, GdkEventMotion * event)
     return TRUE;
 }
 
+static void window_realize (GtkWidget * window)
+{
+    GdkWindow * gdk_window = gtk_widget_get_window (window);
+#if GTK_CHECK_VERSION (3, 0, 0)
+    gdk_window_set_background_pattern (gdk_window, NULL);
+#else
+    gdk_window_set_back_pixmap (gdk_window, NULL);
+#endif
+}
+
 static void window_destroy (GtkWidget * window)
 {
     WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
@@ -116,12 +126,12 @@ GtkWidget * window_new (gint * x, gint * y, gint w, gint h, gboolean main,
     GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_decorated ((GtkWindow *) window, FALSE);
     gtk_window_move ((GtkWindow *) window, * x, * y);
-
     window_set_size_real (window, w, h);
 
     gtk_widget_add_events (window, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
 
+    g_signal_connect (window, "realize", (GCallback) window_realize, NULL);
     g_signal_connect (window, DRAW_SIGNAL, (GCallback) window_draw, NULL);
     g_signal_connect (window, "button-press-event", (GCallback) window_button_press, NULL);
     g_signal_connect (window, "button-release-event", (GCallback) window_button_release, NULL);
