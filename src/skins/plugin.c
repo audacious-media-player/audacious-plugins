@@ -39,7 +39,7 @@ gchar * skins_paths[SKINS_PATH_COUNT];
 static gboolean skins_init (void);
 static void skins_cleanup (void);
 static gboolean ui_is_shown (void);
-static void show_error_message (const gchar * markup);
+static void show_error_message (const gchar * text);
 
 AUD_IFACE_PLUGIN
 (
@@ -58,6 +58,7 @@ AUD_IFACE_PLUGIN
 gboolean plugin_is_active = FALSE;
 
 static gint update_source;
+static GtkWidget * error_win;
 
 static void skins_free_paths(void) {
     int i;
@@ -147,6 +148,10 @@ static void skins_cleanup (void)
         skins_free_paths();
         skins_cfg_free();
         ui_manager_destroy();
+
+        if (error_win)
+            gtk_widget_destroy (error_win);
+
         plugin_is_active = FALSE;
     }
 }
@@ -165,19 +170,7 @@ static gboolean ui_is_shown (void)
     return config.player_visible;
 }
 
-static void show_error_message(const gchar * markup)
+static void show_error_message (const gchar * text)
 {
-    GtkWidget *dialog =
-        gtk_message_dialog_new_with_markup(GTK_WINDOW(mainwin),
-                                           GTK_DIALOG_DESTROY_WITH_PARENT,
-                                           GTK_MESSAGE_ERROR,
-                                           GTK_BUTTONS_OK,
-                                           "%s",_(markup));
-
-    gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
-    gtk_widget_show(GTK_WIDGET(dialog));
-
-    g_signal_connect_swapped(dialog, "response",
-                             G_CALLBACK(gtk_widget_destroy),
-                             dialog);
+    audgui_simple_message (& error_win, GTK_MESSAGE_ERROR, _("Error"), _(text));
 }
