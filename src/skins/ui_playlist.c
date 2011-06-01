@@ -509,7 +509,6 @@ static void
 playlistwin_resize(gint width, gint height)
 {
     gint tx, ty;
-    gint dx, dy;
 
     g_return_if_fail(width > 0 && height > 0);
 
@@ -531,18 +530,17 @@ playlistwin_resize(gint width, gint height)
     if (tx == config.playlist_width && ty == config.playlist_height)
         return;
 
-    /* difference between previous size and new size */
-    dx = tx - config.playlist_width;
-    dy = ty - config.playlist_height;
-
     config.playlist_width = width = tx;
     config.playlist_height = height = ty;
 
     g_mutex_lock(resize_mutex);
+
     ui_skinned_playlist_resize (playlistwin_list, config.playlist_width - 31,
      config.playlist_height - 58);
-    ui_skinned_playlist_slider_move_relative(playlistwin_slider, dx);
-    ui_skinned_playlist_slider_resize_relative(playlistwin_slider, dy);
+    gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal,
+     playlistwin_slider, config.playlist_width - 15, 20);
+    ui_skinned_playlist_slider_resize (playlistwin_slider,
+     config.playlist_height - 58);
 
     gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->shaded, playlistwin_shaded_shade, config.playlist_width - 21, 3);
     gtk_fixed_move ((GtkFixed *) ((SkinnedWindow *) playlistwin)->shaded, playlistwin_shaded_close, config.playlist_width - 11, 3);
@@ -786,8 +784,8 @@ playlistwin_create_widgets(void)
     gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_list, 12, 20);
 
     /* playlist list box slider */
-    playlistwin_slider = ui_skinned_playlist_slider_new(SKINNED_WINDOW(playlistwin)->normal, playlistwin_get_width() - 15,
-     20, config.playlist_height - 58, playlistwin_list);
+    playlistwin_slider = ui_skinned_playlist_slider_new (playlistwin_list, config.playlist_height - 58);
+    gtk_fixed_put ((GtkFixed *) ((SkinnedWindow *) playlistwin)->normal, playlistwin_slider, config.playlist_width - 15, 20);
     ui_skinned_playlist_set_slider (playlistwin_list, playlistwin_slider);
 
     playlistwin_time_min = textbox_new (15);
