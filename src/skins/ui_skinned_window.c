@@ -89,7 +89,7 @@ static void window_realize (GtkWidget * window)
 #if GTK_CHECK_VERSION (3, 0, 0)
     gdk_window_set_background_pattern (gdk_window, NULL);
 #else
-    gdk_window_set_back_pixmap (gdk_window, NULL);
+    gdk_window_set_back_pixmap (gdk_window, NULL, FALSE);
 #endif
 }
 
