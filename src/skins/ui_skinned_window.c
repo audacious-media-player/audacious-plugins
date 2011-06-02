@@ -106,23 +106,13 @@ static void window_destroy (GtkWidget * window)
     g_free (data);
 }
 
-static void window_set_size_real (GtkWidget * window, gint w, gint h)
-{
-    GdkGeometry hints = {.min_width = w, .min_height = h, .max_width = w,
-     .max_height = h};
-    gtk_window_set_geometry_hints ((GtkWindow *) window, NULL, & hints,
-     GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
-
-    gtk_window_resize ((GtkWindow *) window, w, h);
-}
-
 GtkWidget * window_new (gint * x, gint * y, gint w, gint h, gboolean main,
  gboolean shaded, void (* draw) (GtkWidget * window, cairo_t * cr))
 {
     GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_decorated ((GtkWindow *) window, FALSE);
     gtk_window_move ((GtkWindow *) window, * x, * y);
-    window_set_size_real (window, w, h);
+    gtk_window_resize ((GtkWindow *) window, w, h);
 
     gtk_widget_add_events (window, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
@@ -157,7 +147,7 @@ GtkWidget * window_new (gint * x, gint * y, gint w, gint h, gboolean main,
 
 void window_set_size (GtkWidget * window, gint w, gint h)
 {
-    window_set_size_real (window, w, h);
+    gtk_window_resize ((GtkWindow *) window, w, h);
     dock_set_size (window, w, h);
 }
 
