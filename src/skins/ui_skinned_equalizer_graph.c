@@ -87,7 +87,8 @@ DRAW_FUNC_BEGIN (eq_graph_draw)
     skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_EQMAIN, 0, 294, 0, 0, 113,
      19);
     skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_EQMAIN, 0, 314, 0, 9 +
-     aud_cfg->equalizer_preamp * 9 / EQUALIZER_MAX_GAIN, 113, 1);
+     (aud_cfg->equalizer_preamp * 9 + EQUALIZER_MAX_GAIN / 2) /
+     EQUALIZER_MAX_GAIN, 113, 1);
 
     guint32 cols[19];
     skin_get_eq_spline_colors(aud_active_skin, cols);
@@ -98,7 +99,7 @@ DRAW_FUNC_BEGIN (eq_graph_draw)
     gint py = 0;
     for (gint i = 0; i < 109; i ++)
     {
-        gint y = 9 - eval_spline (x, aud_cfg->equalizer_bands, yf, 10, i) * 9 /
+        gint y = 9.5 - eval_spline (x, aud_cfg->equalizer_bands, yf, 10, i) * 9 /
          EQUALIZER_MAX_GAIN;
         y = CLAMP (y, 0, 18);
 
