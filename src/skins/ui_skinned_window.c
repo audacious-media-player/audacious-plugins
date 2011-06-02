@@ -49,7 +49,7 @@ static gboolean window_button_press (GtkWidget * window, GdkEventButton * event)
     if (data->is_moving)
         return TRUE;
 
-    dock_move_start (window, event->x, event->y);
+    dock_move_start (window, event->x_root, event->y_root);
     data->is_moving = TRUE;
     return TRUE;
 }
@@ -63,10 +63,6 @@ static gboolean window_button_release (GtkWidget * window, GdkEventButton *
     if (event->button != 1)
         return FALSE;
 
-    if (! data->is_moving)
-        return TRUE;
-
-    dock_move_end ();
     data->is_moving = FALSE;
     return TRUE;
 }
@@ -79,7 +75,7 @@ static gboolean window_motion (GtkWidget * window, GdkEventMotion * event)
     if (! data->is_moving)
         return TRUE;
 
-    dock_move (event->x, event->y);
+    dock_move (event->x_root, event->y_root);
     return TRUE;
 }
 

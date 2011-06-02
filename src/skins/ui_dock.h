@@ -36,6 +36,5 @@ void dock_set_size (GtkWidget * window, gint w, gint h);
 
 void dock_move_start (GtkWidget * window, gint x, gint y);
 void dock_move (gint x, gint y);
-void dock_move_end (void);
 
 #endif
