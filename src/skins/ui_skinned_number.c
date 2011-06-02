@@ -38,19 +38,7 @@ DRAW_FUNC_BEGIN (number_draw)
     NumberData * data = g_object_get_data ((GObject *) wid, "numberdata");
     g_return_val_if_fail (data, FALSE);
 
-    if (! data->w || ! data->h)
-        goto DONE;
-
-    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, data->w,
-     data->h);
-
-    skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_NUMBERS, data->num * 9, 0,
-     0, 0, data->w, data->h);
-    pixbuf_draw (cr, p, 0, 0, FALSE);
-
-    g_object_unref (p);
-
-DONE:
+    skin_draw_pixbuf (cr, SKIN_NUMBERS, data->num * 9, 0, 0, 0, data->w, data->h);
 DRAW_FUNC_END
 
 static void number_destroy (GtkWidget * number)

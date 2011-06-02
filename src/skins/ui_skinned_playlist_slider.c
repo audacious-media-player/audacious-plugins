@@ -36,9 +36,6 @@ static gint pl_slider_height;
 static gboolean pl_slider_pressed;
 
 DRAW_FUNC_BEGIN (pl_slider_draw)
-    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 8,
-     pl_slider_height);
-
     gint rows, first, focused;
     ui_skinned_playlist_row_info (pl_slider_list, & rows, & first, & focused);
 
@@ -51,15 +48,10 @@ DRAW_FUNC_BEGIN (pl_slider_draw)
         y = 0;
 
     for (gint i = 0; i < pl_slider_height / 29; i ++)
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_PLEDIT, 36, 42, 0, 29 *
-         i, 8, 29);
+        skin_draw_pixbuf (cr, SKIN_PLEDIT, 36, 42, 0, 29 * i, 8, 29);
 
-    skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_PLEDIT, pl_slider_pressed ?
-     61 : 52, 53, 0, y, 8, 18);
-
-    pixbuf_draw (cr, p, 0, 0, FALSE);
-
-    g_object_unref (p);
+    skin_draw_pixbuf (cr, SKIN_PLEDIT, pl_slider_pressed ? 61 : 52, 53, 0, y, 8,
+     18);
 DRAW_FUNC_END
 
 static void pl_slider_set_pos (gint y)

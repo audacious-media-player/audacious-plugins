@@ -372,17 +372,13 @@ equalizerwin_create_widgets(void)
 static void eq_win_draw (GtkWidget * window, cairo_t * cr)
 {
     gint height = config.equalizer_shaded ? 14 : 116;
-    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 275, height);
 
-    skin_draw_pixbuf (window, aud_active_skin, p, SKIN_EQMAIN, 0, 0, 0, 0, 275, height);
+    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 0, 0, 0, 275, height);
 
     if (config.equalizer_shaded)
-        skin_draw_pixbuf (window, aud_active_skin, p, SKIN_EQ_EX, 0, 0, 0, 0, 275, 14);
+        skin_draw_pixbuf (cr, SKIN_EQ_EX, 0, 0, 0, 0, 275, 14);
     else
-        skin_draw_pixbuf (window, aud_active_skin, p, SKIN_EQMAIN, 0, 134, 0, 0, 275, 14);
-
-    pixbuf_draw (cr, p, 0, 0, FALSE);
-    g_object_unref (p);
+        skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 134, 0, 0, 275, 14);
 }
 
 static void

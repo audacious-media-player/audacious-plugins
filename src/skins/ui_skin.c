@@ -1354,9 +1354,9 @@ skin_numbers_generate_dash(Skin * skin)
     pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8,
                             108, numbers->current_height);
 
-    skin_draw_pixbuf(NULL, skin, pixbuf, SKIN_NUMBERS, 0, 0, 0, 0, 99, numbers->current_height);
-    skin_draw_pixbuf(NULL, skin, pixbuf, SKIN_NUMBERS, 90, 0, 99, 0, 9, numbers->current_height);
-    skin_draw_pixbuf(NULL, skin, pixbuf, SKIN_NUMBERS, 20, 6, 101, 6, 5, 1);
+    gdk_pixbuf_copy_area (numbers->pixbuf, 0, 0, 99, numbers->current_height, pixbuf, 0, 0);
+    gdk_pixbuf_copy_area (numbers->pixbuf, 90, 0, 9, numbers->current_height, pixbuf, 99, 0);
+    gdk_pixbuf_copy_area (numbers->pixbuf, 20, 6, 5, 1, pixbuf, 101, 6);
 
     g_object_unref(numbers->pixbuf);
 
@@ -1677,58 +1677,19 @@ skin_get_id(void)
     return skin_current_num;
 }
 
-void
-skin_draw_pixbuf(GtkWidget *widget, Skin * skin, GdkPixbuf * pix,
-                 SkinPixmapId pixmap_id,
-                 gint xsrc, gint ysrc, gint xdest, gint ydest,
-                 gint width, gint height)
+void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, gint xsrc, gint ysrc, gint
+ xdest, gint ydest, gint width, gint height)
 {
-    SkinPixmap *pixmap;
-
-    g_return_if_fail(skin != NULL);
-
-    pixmap = skin_get_pixmap(skin, pixmap_id);
+    SkinPixmap * pixmap = skin_get_pixmap (aud_active_skin, id);
     g_return_if_fail(pixmap != NULL);
     g_return_if_fail(pixmap->pixbuf != NULL);
 
-    /* perhaps we should use transparency or resize widget? */
-    if (xsrc+width > pixmap->width || ysrc+height > pixmap->height) {
-        if (widget) {
-            /* it's better to hide widget using SKIN_PLAYPAUSE/SKIN_POSBAR than display mess */
-            if ((pixmap_id == SKIN_PLAYPAUSE && pixmap->width != 42) || pixmap_id == SKIN_POSBAR) {
-                gtk_widget_hide(widget);
-                return;
-            }
-
-            /* Some skins include SKIN_VOLUME and/or SKIN_BALANCE without knobs */
-            if (pixmap_id == SKIN_VOLUME || pixmap_id == SKIN_BALANCE) {
-                if (ysrc+height > 421 && xsrc+width <= pixmap->width)
-                    return;
-            }
-
-            /* XMMS skins seems to have SKIN_MONOSTEREO with size 58x20 instead of 58x24 */
-            if (pixmap_id == SKIN_MONOSTEREO)
-                height = pixmap->height/2;
-
-#if 0 /* What is this for? -- jlindgren */
-            if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(equalizerwin)->normal) {
-                if (!(pixmap_id == SKIN_EQMAIN && ysrc == 314)) /* equalizer preamp on equalizer graph */
-                    gtk_widget_hide(widget);
-            }
-
-            if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(playlistwin)->normal) {
-                /* I haven't seen any skin with substandard playlist */
-                gtk_widget_hide(widget);
-            }
-#endif
-        } else
-            return;
-    }
-
-    width = MIN(width, pixmap->width - xsrc);
-    height = MIN(height, pixmap->height - ysrc);
-    gdk_pixbuf_copy_area(pixmap->pixbuf, xsrc, ysrc, width, height,
-                         pix, xdest, ydest);
+    cairo_save (cr);
+    cairo_rectangle (cr, xdest, ydest, width, height);
+    cairo_clip (cr);
+    gdk_cairo_set_source_pixbuf (cr, pixmap->pixbuf, xdest - xsrc, ydest - ysrc);
+    cairo_paint (cr);
+    cairo_restore (cr);
 }
 
 void
@@ -1764,10 +1725,8 @@ skin_get_eq_spline_colors(Skin * skin, guint32 colors[19])
     }
 }
 
-
-static void
-skin_draw_playlistwin_frame_top(Skin * skin, GdkPixbuf * pix,
-                                gint width, gint height, gboolean focus)
+static void skin_draw_playlistwin_frame_top (cairo_t * cr, gint width, gint
+ height, gboolean focus)
 {
     /* The title bar skin consists of 2 sets of 4 images, 1 set
      * for focused state and the other for unfocused. The 4 images
@@ -1790,15 +1749,13 @@ skin_draw_playlistwin_frame_top(Skin * skin, GdkPixbuf * pix,
         y = 21;
 
     /* left corner */
-    skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 0, y, 0, 0, 25, 20);
+    skin_draw_pixbuf (cr, SKIN_PLEDIT, 0, y, 0, 0, 25, 20);
 
     /* titlebar title */
-    skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 26, y,
-                     (width - 100) / 2, 0, 100, 20);
+    skin_draw_pixbuf (cr, SKIN_PLEDIT, 26, y, (width - 100) / 2, 0, 100, 20);
 
     /* titlebar right corner  */
-    skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 153, y,
-                     width - 25, 0, 25, 20);
+    skin_draw_pixbuf (cr, SKIN_PLEDIT, 153, y, width - 25, 0, 25, 20);
 
     /* tile draw the remaining frame */
 
@@ -1807,27 +1764,25 @@ skin_draw_playlistwin_frame_top(Skin * skin, GdkPixbuf * pix,
 
     for (i = 0; i < c / 2; i++) {
         /* left of title */
-        skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 127, y,
-                         25 + i * 25, 0, 25, 20);
+        skin_draw_pixbuf (cr, SKIN_PLEDIT, 127, y, 25 + i * 25, 0, 25, 20);
 
         /* right of title */
-        skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 127, y,
-                         (width + 100) / 2 + i * 25, 0, 25, 20);
+        skin_draw_pixbuf (cr, SKIN_PLEDIT, 127, y, (width + 100) / 2 + i * 25,
+         0, 25, 20);
     }
 
     if (c & 1) {
         /* Odd tile count, so one remaining to draw. Here we split
          * it into two and draw half on either side of the title */
-        skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 127, y,
-                         ((c / 2) * 25) + 25, 0, 12, 20);
-        skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 127, y,
-                         (width / 2) + ((c / 2) * 25) + 50, 0, 13, 20);
+        skin_draw_pixbuf (cr, SKIN_PLEDIT, 127, y, ((c / 2) * 25) + 25, 0, 12,
+         20);
+        skin_draw_pixbuf (cr, SKIN_PLEDIT, 127, y, (width / 2) + ((c / 2) * 25)
+         + 50, 0, 13, 20);
     }
 }
 
-static void
-skin_draw_playlistwin_frame_bottom(Skin * skin, GdkPixbuf * pix,
-                                   gint width, gint height, gboolean focus)
+static void skin_draw_playlistwin_frame_bottom (cairo_t * cr, gint width, gint
+ height, gboolean focus)
 {
     /* The bottom frame skin consists of 1 set of 4 images. The 4
      * images are:
@@ -1843,31 +1798,29 @@ skin_draw_playlistwin_frame_bottom(Skin * skin, GdkPixbuf * pix,
     gint i, c;
 
     /* bottom left corner (menu buttons) */
-    skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 0, 72,
-                     0, height - 38, 125, 38);
+    skin_draw_pixbuf (cr, SKIN_PLEDIT, 0, 72, 0, height - 38, 125, 38);
 
     c = (width - 275) / 25;
 
     /* draw visualization window, if width allows */
     if (c >= 3) {
         c -= 3;
-        skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 205, 0,
-                         width - (150 + 75), height - 38, 75, 38);
+        skin_draw_pixbuf (cr, SKIN_PLEDIT, 205, 0, width - (150 + 75), height -
+         38, 75, 38);
     }
 
     /* Bottom right corner (playbuttons etc) */
-    skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT,
-                     126, 72, width - 150, height - 38, 150, 38);
+    skin_draw_pixbuf (cr, SKIN_PLEDIT, 126, 72, width - 150, height - 38, 150,
+     38);
 
     /* Tile draw the remaining undrawn portions */
     for (i = 0; i < c; i++)
-        skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 179, 0,
-                         125 + i * 25, height - 38, 25, 38);
+        skin_draw_pixbuf (cr, SKIN_PLEDIT, 179, 0, 125 + i * 25, height - 38,
+         25, 38);
 }
 
-static void
-skin_draw_playlistwin_frame_sides(Skin * skin, GdkPixbuf * pix,
-                                  gint width, gint height, gboolean focus)
+static void skin_draw_playlistwin_frame_sides (cairo_t * cr, gint width, gint
+ height, gboolean focus)
 {
     /* The side frames consist of 2 tile images. 1 for the left, 1 for
      * the right.
@@ -1880,29 +1833,23 @@ skin_draw_playlistwin_frame_sides(Skin * skin, GdkPixbuf * pix,
     /* frame sides */
     for (i = 0; i < (height - (20 + 38)) / 29; i++) {
         /* left */
-        skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 0, 42,
-                         0, 20 + i * 29, 12, 29);
+        skin_draw_pixbuf (cr, SKIN_PLEDIT, 0, 42, 0, 20 + i * 29, 12, 29);
 
         /* right */
-        skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 32, 42,
-                         width - 19, 20 + i * 29, 19, 29);
+        skin_draw_pixbuf (cr, SKIN_PLEDIT, 32, 42, width - 19, 20 + i * 29, 19,
+         29);
     }
 }
 
-
-void
-skin_draw_playlistwin_frame(Skin * skin, GdkPixbuf * pix,
-                            gint width, gint height, gboolean focus)
+void skin_draw_playlistwin_frame (cairo_t * cr, gint width, gint height,
+ gboolean focus)
 {
-    skin_draw_playlistwin_frame_top(skin, pix, width, height, focus);
-    skin_draw_playlistwin_frame_bottom(skin, pix, width, height, focus);
-    skin_draw_playlistwin_frame_sides(skin, pix, width, height, focus);
+    skin_draw_playlistwin_frame_top (cr, width, height, focus);
+    skin_draw_playlistwin_frame_bottom (cr, width, height, focus);
+    skin_draw_playlistwin_frame_sides (cr, width, height, focus);
 }
 
-
-void
-skin_draw_playlistwin_shaded(Skin * skin, GdkPixbuf * pix,
-                             gint width, gboolean focus)
+void skin_draw_playlistwin_shaded (cairo_t * cr, gint width, gboolean focus)
 {
     /* The shade mode titlebar skin consists of 4 images:
      * a) left corner               offset (72,42) size (25,14)
@@ -1914,22 +1861,18 @@ skin_draw_playlistwin_shaded(Skin * skin, GdkPixbuf * pix,
     gint i;
 
     /* left corner */
-    skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 72, 42, 0, 0, 25, 14);
+    skin_draw_pixbuf (cr, SKIN_PLEDIT, 72, 42, 0, 0, 25, 14);
 
     /* bar tile */
     for (i = 0; i < (width - 75) / 25; i++)
-        skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 72, 57,
-                         (i * 25) + 25, 0, 25, 14);
+        skin_draw_pixbuf (cr, SKIN_PLEDIT, 72, 57, (i * 25) + 25, 0, 25, 14);
 
     /* right corner */
-    skin_draw_pixbuf(NULL, skin, pix, SKIN_PLEDIT, 99, focus ? 42 : 57,
-                     width - 50, 0, 50, 14);
+    skin_draw_pixbuf (cr, SKIN_PLEDIT, 99, focus ? 42 : 57, width - 50, 0, 50,
+     14);
 }
 
-
-void
-skin_draw_mainwin_titlebar(Skin * skin, GdkPixbuf * pix,
-                           gboolean shaded, gboolean focus)
+void skin_draw_mainwin_titlebar (cairo_t * cr, gboolean shaded, gboolean focus)
 {
     /* The titlebar skin consists of 2 sets of 2 images, one for for
      * shaded and the other for unshaded mode, giving a total of 4.
@@ -1957,8 +1900,8 @@ skin_draw_mainwin_titlebar(Skin * skin, GdkPixbuf * pix,
             y_offset = 15;
     }
 
-    skin_draw_pixbuf(NULL, skin, pix, SKIN_TITLEBAR, 27, y_offset,
-                     0, 0, aud_active_skin->properties.mainwin_width, MAINWIN_TITLEBAR_HEIGHT);
+    skin_draw_pixbuf (cr, SKIN_TITLEBAR, 27, y_offset, 0, 0,
+     aud_active_skin->properties.mainwin_width, MAINWIN_TITLEBAR_HEIGHT);
 }
 
 

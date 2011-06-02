@@ -39,33 +39,23 @@ DRAW_FUNC_BEGIN (button_draw)
     ButtonData * data = g_object_get_data ((GObject *) wid, "buttondata");
     g_return_val_if_fail (data, FALSE);
 
-    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, data->w,
-     data->h);
-
     gboolean down = data->hover && data->pressed;
 
     switch (data->type)
     {
     case BUTTON_TYPE_NORMAL:
-        skin_draw_pixbuf (wid, aud_active_skin, p, down ? data->si2 :
-         data->si1, down ? data->px : data->nx, down ? data->py : data->ny, 0,
-         0, data->w, data->h);
+        skin_draw_pixbuf (cr, down ? data->si2 : data->si1, down ? data->px :
+         data->nx, down ? data->py : data->ny, 0, 0, data->w, data->h);
         break;
     case BUTTON_TYPE_TOGGLE:
         if (data->active)
-            skin_draw_pixbuf (wid, aud_active_skin, p, down ? data->si2 :
-             data->si1, down ? data->ppx : data->pnx, down ? data->ppy :
-             data->pny, 0, 0, data->w, data->h);
+            skin_draw_pixbuf (cr, down ? data->si2 : data->si1, down ? data->ppx
+             : data->pnx, down ? data->ppy : data->pny, 0, 0, data->w, data->h);
         else
-            skin_draw_pixbuf (wid, aud_active_skin, p, down ? data->si2 :
-             data->si1, down ? data->px : data->nx, down ? data->py : data->ny,
-             0, 0, data->w, data->h);
+            skin_draw_pixbuf (cr, down ? data->si2 : data->si1, down ? data->px
+             : data->nx, down ? data->py : data->ny, 0, 0, data->w, data->h);
         break;
     }
-
-    pixbuf_draw (cr, p, 0, 0, FALSE);
-
-    g_object_unref (p);
 DRAW_FUNC_END
 
 static gboolean button_press (GtkWidget * button, GdkEventButton * event)

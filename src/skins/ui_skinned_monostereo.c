@@ -32,28 +32,22 @@
 static gint monostereo_num_channels;
 
 DRAW_FUNC_BEGIN (monostereo_draw)
-    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 56, 12);
-
     switch (monostereo_num_channels)
     {
     case -1:
     case 0:
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_MONOSTEREO, 29, 12, 0, 0, 27, 12);
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_MONOSTEREO, 0, 12, 27, 0, 29, 12);
+        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 29, 12, 0, 0, 27, 12);
+        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 0, 12, 27, 0, 29, 12);
         break;
     case 1:
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_MONOSTEREO, 29, 0, 0, 0, 27, 12);
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_MONOSTEREO, 0, 12, 27, 0, 29, 12);
+        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 29, 0, 0, 0, 27, 12);
+        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 0, 12, 27, 0, 29, 12);
         break;
     default:
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_MONOSTEREO, 29, 12, 0, 0, 27, 12);
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_MONOSTEREO, 0, 0, 27, 0, 29, 12);
+        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 29, 12, 0, 0, 27, 12);
+        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 0, 0, 27, 0, 29, 12);
         break;
     }
-
-    pixbuf_draw (cr, p, 0, 0, FALSE);
-
-    g_object_unref (p);
 DRAW_FUNC_END
 
 GtkWidget * ui_skinned_monostereo_new (void)

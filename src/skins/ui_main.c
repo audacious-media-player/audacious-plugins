@@ -1484,13 +1484,9 @@ static void mainwin_draw (GtkWidget * window, cairo_t * cr)
 {
     gint width = config.player_shaded ? MAINWIN_SHADED_WIDTH : aud_active_skin->properties.mainwin_width;
     gint height = config.player_shaded ? MAINWIN_SHADED_HEIGHT : aud_active_skin->properties.mainwin_height;
-    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, width, height);
 
-    skin_draw_pixbuf (window, aud_active_skin, p, SKIN_MAIN, 0, 0, 0, 0, width, height);
-    skin_draw_mainwin_titlebar (aud_active_skin, p, config.player_shaded, TRUE);
-
-    pixbuf_draw (cr, p, 0, 0, FALSE);
-    g_object_unref (p);
+    skin_draw_pixbuf (cr, SKIN_MAIN, 0, 0, 0, 0, width, height);
+    skin_draw_mainwin_titlebar (cr, config.player_shaded, TRUE);
 }
 
 static void

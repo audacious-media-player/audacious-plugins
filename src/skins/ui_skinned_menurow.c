@@ -36,35 +36,26 @@ static struct {
 } mr;
 
 DRAW_FUNC_BEGIN (menurow_draw)
-    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 8, 43);
-
     if (mr.selected == MENUROW_NONE)
     {
         if (config.always_show_cb || mr.pushed)
-            skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_TITLEBAR, 304, 0, 0,
-             0, 8, 43);
+            skin_draw_pixbuf (cr, SKIN_TITLEBAR, 304, 0, 0, 0, 8, 43);
         else
-            skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_TITLEBAR, 312, 0, 0,
-             0, 8, 43);
+            skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 0, 0, 0, 8, 43);
     }
     else
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_TITLEBAR, 304 + 8 *
-         (mr.selected - 1), 44, 0, 0, 8, 43);
+        skin_draw_pixbuf (cr, SKIN_TITLEBAR, 304 + 8 * (mr.selected - 1), 44, 0,
+         0, 8, 43);
 
     if (config.always_show_cb || mr.pushed)
     {
         if (config.always_on_top)
-            skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_TITLEBAR, 312, 54,
-             0, 10, 8, 8);
+            skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 54, 0, 10, 8, 8);
 #if 0
         if (config.scaled)
-            skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_TITLEBAR, 328, 70,
-             0, 26, 8, 8);
+            skin_draw_pixbuf (cr, SKIN_TITLEBAR, 328, 70, 0, 26, 8, 8);
 #endif
     }
-
-    pixbuf_draw (cr, p, 0, 0, FALSE);
-    g_object_unref (p);
 DRAW_FUNC_END
 
 static MenuRowItem menurow_find_selected (gint x, gint y)

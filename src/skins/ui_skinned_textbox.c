@@ -206,9 +206,6 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
 
     if (cw * len > 0 && ch > 0)
     {
-        GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, cw * len,
-         ch);
-
         gchar * c = upper;
         for (gint i = 0; i < len; i ++)
         {
@@ -224,16 +221,10 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
             else
                 lookup_char (* c, & x, & y);
 
-            skin_draw_pixbuf (NULL, aud_active_skin, p, SKIN_TEXT, x, y, cw * i,
-             0, cw, ch);
+            skin_draw_pixbuf (cr, SKIN_TEXT, x, y, cw * i, 0, cw, ch);
 
             c = g_utf8_next_char (c);
         }
-
-        gdk_cairo_set_source_pixbuf (cr, p, 0, 0);
-        cairo_paint (cr);
-
-        g_object_unref (p);
     }
 
     cairo_destroy (cr);

@@ -216,22 +216,17 @@ GdkBitmap *skin_get_mask(Skin * skin, SkinMaskId mi);
 GdkColor *skin_get_color(Skin * skin, SkinColorId color_id);
 
 gint skin_get_id(void);
-void skin_draw_pixbuf(GtkWidget *widget, Skin * skin, GdkPixbuf * pix,
-                 SkinPixmapId pixmap_id,
-                 gint xsrc, gint ysrc, gint xdest, gint ydest,
-                 gint width, gint height);
+
+void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, gint xsrc, gint ysrc,
+ gint xdest, gint ydest, gint width, gint height);
 
 void skin_get_eq_spline_colors(Skin * skin, guint32 colors[19]);
 void skin_install_skin(const gchar * path);
 
-void skin_draw_playlistwin_shaded(Skin * skin, GdkPixbuf * pix,
-                                  gint width, gboolean focus);
-void skin_draw_playlistwin_frame(Skin * skin, GdkPixbuf * pix,
-                                 gint width, gint height, gboolean focus);
-
-void skin_draw_mainwin_titlebar(Skin * skin, GdkPixbuf * pix,
-                                gboolean shaded, gboolean focus);
-
+void skin_draw_playlistwin_shaded (cairo_t * cr, gint width, gboolean focus);
+void skin_draw_playlistwin_frame (cairo_t * cr, gint width, gint height,
+ gboolean focus);
+void skin_draw_mainwin_titlebar (cairo_t * cr, gboolean shaded, gboolean focus);
 
 void skin_parse_hints(Skin * skin, gchar *path_p);
 

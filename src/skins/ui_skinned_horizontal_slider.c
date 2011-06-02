@@ -45,22 +45,14 @@ DRAW_FUNC_BEGIN (hslider_draw)
     HSliderData * data = g_object_get_data ((GObject *) wid, "hsliderdata");
     g_return_val_if_fail (data, FALSE);
 
-    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, data->w,
-     data->h);
-
-    skin_draw_pixbuf (wid, aud_active_skin, p, data->si, data->fx, data->fy,
-     0, 0, data->w, data->h);
+    skin_draw_pixbuf (cr, data->si, data->fx, data->fy, 0, 0, data->w, data->h);
 
     if (data->pressed)
-        skin_draw_pixbuf (wid, aud_active_skin, p, data->si, data->kpx,
-         data->kpy, data->pos, (data->h - data->kh) / 2, data->kw, data->kh);
+        skin_draw_pixbuf (cr, data->si, data->kpx, data->kpy, data->pos,
+         (data->h - data->kh) / 2, data->kw, data->kh);
     else
-        skin_draw_pixbuf (wid, aud_active_skin, p, data->si, data->knx,
-         data->kny, data->pos, (data->h - data->kh) / 2, data->kw, data->kh);
-
-    pixbuf_draw (cr, p, 0, 0, FALSE);
-
-    g_object_unref (p);
+        skin_draw_pixbuf (cr, data->si, data->knx, data->kny, data->pos,
+         (data->h - data->kh) / 2, data->kw, data->kh);
 DRAW_FUNC_END
 
 static gboolean hslider_button_press (GtkWidget * hslider, GdkEventButton *

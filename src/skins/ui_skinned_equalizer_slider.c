@@ -43,24 +43,17 @@ DRAW_FUNC_BEGIN (eq_slider_draw)
     EqSliderData * data = g_object_get_data ((GObject *) wid, "eqsliderdata");
     g_return_val_if_fail (data, FALSE);
 
-    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 14, 63);
-
     gint frame = 27 - data->pos * 27 / 50;
     if (frame < 14)
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_EQMAIN, 13 + 15 * frame,
-         164, 0, 0, 14, 63);
+        skin_draw_pixbuf (cr, SKIN_EQMAIN, 13 + 15 * frame, 164, 0, 0, 14, 63);
     else
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_EQMAIN, 13 + 15 * (frame
-         - 14), 229, 0, 0, 14, 63);
+        skin_draw_pixbuf (cr, SKIN_EQMAIN, 13 + 15 * (frame - 14), 229, 0, 0,
+         14, 63);
 
     if (data->pressed)
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_EQMAIN, 0, 176, 1, data->pos, 11, 11);
+        skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 176, 1, data->pos, 11, 11);
     else
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_EQMAIN, 0, 164, 1, data->pos, 11, 11);
-
-    pixbuf_draw (cr, p, 0, 0, FALSE);
-
-    g_object_unref (p);
+        skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 164, 1, data->pos, 11, 11);
 DRAW_FUNC_END
 
 static void eq_slider_moved (EqSliderData * data, gint pos)

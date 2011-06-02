@@ -80,15 +80,9 @@ gfloat eval_spline (const gfloat * xa, const gfloat * ya, const gfloat * y2a,
 DRAW_FUNC_BEGIN (eq_graph_draw)
     static const gfloat x[10] = {0, 11, 23, 35, 47, 59, 71, 83, 97, 109};
 
-    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 113, 19);
-    guchar * pixels = gdk_pixbuf_get_pixels (p);
-    gint rowstride = gdk_pixbuf_get_rowstride (p);
-
-    skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_EQMAIN, 0, 294, 0, 0, 113,
-     19);
-    skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_EQMAIN, 0, 314, 0, 9 +
-     (aud_cfg->equalizer_preamp * 9 + EQUALIZER_MAX_GAIN / 2) /
-     EQUALIZER_MAX_GAIN, 113, 1);
+    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 294, 0, 0, 113, 19);
+    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 314, 0, 9 + (aud_cfg->equalizer_preamp
+     * 9 + EQUALIZER_MAX_GAIN / 2) / EQUALIZER_MAX_GAIN, 113, 1);
 
     guint32 cols[19];
     skin_get_eq_spline_colors(aud_active_skin, cols);
@@ -96,6 +90,7 @@ DRAW_FUNC_BEGIN (eq_graph_draw)
     gfloat yf[10];
     init_spline(x, aud_cfg->equalizer_bands, 10, yf);
 
+    /* now draw a pixelated line with vector graphics ... -- jlindgren */
     gint py = 0;
     for (gint i = 0; i < 109; i ++)
     {
@@ -125,16 +120,12 @@ DRAW_FUNC_BEGIN (eq_graph_draw)
 
         for (y = ymin; y <= ymax; y++)
         {
-            guchar * p = pixels + rowstride * y + 4 * (i + 2);
-            p[0] = (cols[y] & 0xff0000) >> 16;
-            p[1] = (cols[y] & 0x00ff00) >> 8;
-            p[2] = cols[y] & 0x0000ff;
+            cairo_rectangle (cr, i + 2, y, 1, 1);
+            cairo_set_source_rgb (cr, ((cols[y] & 0xff0000) >> 16) / 255.0,
+             ((cols[y] & 0x00ff00) >> 8) / 255.0, (cols[y] & 0x0000ff) / 255.0);
+            cairo_fill (cr);
         }
     }
-
-    pixbuf_draw (cr, p, 0, 0, FALSE);
-
-    g_object_unref (p);
 DRAW_FUNC_END
 
 GtkWidget * eq_graph_new (void)

@@ -36,35 +36,23 @@ DRAW_FUNC_BEGIN (playstatus_draw)
     if (! playstatus_width || ! playstatus_height)
         goto DONE;
 
-    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
-     playstatus_width, playstatus_height);
-
     if (playstatus_status == STATUS_PLAY)
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_PLAYPAUSE, 36, 0, 0, 0,
-         3, playstatus_height);
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 36, 0, 0, 0, 3, playstatus_height);
     else
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_PLAYPAUSE, 27, 0, 0, 0,
-         2, playstatus_height);
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 27, 0, 0, 0, 2, playstatus_height);
 
     switch (playstatus_status)
     {
     case STATUS_STOP:
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_PLAYPAUSE, 18, 0, 2, 0,
-         9, playstatus_height);
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 18, 0, 2, 0, 9, playstatus_height);
         break;
     case STATUS_PAUSE:
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_PLAYPAUSE, 9, 0, 2, 0,
-         9, playstatus_height);
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 9, 0, 2, 0, 9, playstatus_height);
         break;
     case STATUS_PLAY:
-        skin_draw_pixbuf (wid, aud_active_skin, p, SKIN_PLAYPAUSE, 1, 0, 3, 0,
-         8, playstatus_height);
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 1, 0, 3, 0, 8, playstatus_height);
         break;
     }
-
-    pixbuf_draw (cr, p, 0, 0, FALSE);
-
-    g_object_unref (p);
 
 DONE:
 DRAW_FUNC_END

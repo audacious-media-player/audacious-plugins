@@ -773,19 +773,11 @@ playlistwin_create_widgets(void)
 
 static void pl_win_draw (GtkWidget * window, cairo_t * cr)
 {
-    GdkPixbuf * p = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
-     config.playlist_width, config.playlist_shaded ? PLAYLISTWIN_SHADED_HEIGHT :
-     config.playlist_height);
-
     if (config.playlist_shaded)
-        skin_draw_playlistwin_shaded (aud_active_skin, p, config.playlist_width,
-         TRUE);
+        skin_draw_playlistwin_shaded (cr, config.playlist_width, TRUE);
     else
-        skin_draw_playlistwin_frame (aud_active_skin, p, config.playlist_width,
+        skin_draw_playlistwin_frame (cr, config.playlist_width,
          config.playlist_height, TRUE);
-
-    pixbuf_draw (cr, p, 0, 0, FALSE);
-    g_object_unref (p);
 }
 
 static void
