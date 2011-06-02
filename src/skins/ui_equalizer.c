@@ -169,15 +169,10 @@ update_from_config(void *unused1, void *unused2)
     eq_graph_update (equalizerwin_graph);
 }
 
-static void
-equalizerwin_presets_pushed(void)
+static void eq_presets_cb (GtkWidget * button, GdkEventButton * event)
 {
-    GdkModifierType modmask;
-    gint x, y;
-
-    gdk_window_get_pointer(NULL, &x, &y, &modmask);
-    ui_popup_menu_show(UI_MENU_EQUALIZER_PRESET, x, y, FALSE, FALSE, 1,
-     GDK_CURRENT_TIME);
+    ui_popup_menu_show (UI_MENU_EQUALIZER_PRESET, event->x_root, event->y_root,
+     FALSE, FALSE, event->button, event->time);
 }
 
 static GtkWidget * get_eq_effects_menu (void)
@@ -321,7 +316,7 @@ equalizerwin_create_widgets(void)
 
     equalizerwin_presets = button_new (44, 12, 224, 164, 224, 176, SKIN_EQMAIN, SKIN_EQMAIN);
     window_put_widget (equalizerwin, FALSE, equalizerwin_presets, 217, 18);
-    button_on_release (equalizerwin_presets, (ButtonCB) equalizerwin_presets_pushed);
+    button_on_release (equalizerwin_presets, eq_presets_cb);
 
     equalizerwin_close = button_new (9, 9, 0, 116, 0, 125, SKIN_EQMAIN, SKIN_EQMAIN);
     window_put_widget (equalizerwin, FALSE, equalizerwin_close, 264, 3);
