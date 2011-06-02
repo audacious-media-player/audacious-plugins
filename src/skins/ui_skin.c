@@ -130,12 +130,12 @@ static const guchar skin_default_viscolor[24][3] = {
 
 static gchar *original_gtk_theme = NULL;
 
-#ifdef SKIN_HAVE_MASKS
-static GdkBitmap *skin_create_transparent_mask(const gchar *,
-                                               const gchar *,
-                                               const gchar *,
-                                               GdkWindow *,
-                                               gint, gint, gboolean);
+#ifdef MASK_IS_REGION
+cairo_region_t * skin_create_transparent_mask (const gchar * path, const gchar *
+ file, const gchar * section, GdkWindow * window, gint width, gint height);
+#else
+GdkBitmap * skin_create_transparent_mask (const gchar * path, const gchar *
+ file, const gchar * section, GdkWindow * window, gint width, gint height);
 #endif
 
 static void skin_set_default_vis_color(Skin * skin);
@@ -220,14 +220,16 @@ skin_free(Skin * skin)
     for (i = 0; i < SKIN_PIXMAP_COUNT; i++)
         skin_pixmap_free(&skin->pixmaps[i]);
 
-#ifdef SKIN_HAVE_MASKS
     for (i = 0; i < SKIN_MASK_COUNT; i++) {
         if (skin->masks[i])
-            g_object_unref(skin->masks[i]);
+#ifdef MASK_IS_REGION
+            cairo_region_destroy (skin->masks[i]);
+#else
+            g_object_unref (skin->masks[i]);
+#endif
 
         skin->masks[i] = NULL;
     }
-#endif
 
     for (i = 0; i < SKIN_COLOR_COUNT; i++) {
         if (skin->colors[i])
@@ -415,19 +417,22 @@ skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const gchar * path_p)
     return TRUE;
 }
 
-#ifdef SKIN_HAVE_MASKS
 static void skin_mask_create (Skin * skin, const gchar * path, gint id,
  GdkWindow * window)
 {
-    skin->masks[id] =
-        skin_create_transparent_mask(path, "region.txt",
-                                     skin_mask_info[id].inistr, window,
-                                     skin_mask_info[id].width,
-                                     skin_mask_info[id].height, FALSE);
+    skin->masks[id] = skin_create_transparent_mask (path, "region.txt",
+     skin_mask_info[id].inistr, window, skin_mask_info[id].width,
+     skin_mask_info[id].height);
 }
 
-static GdkBitmap *
-create_default_mask(GdkWindow * parent, gint w, gint h)
+#ifdef MASK_IS_REGION
+static cairo_region_t * create_default_mask (GdkWindow * parent, gint w, gint h)
+{
+    cairo_rectangle_int_t rect = {0, 0, w, h};
+    return cairo_region_create_rectangle (& rect);
+}
+#else
+static GdkBitmap * create_default_mask (GdkWindow * parent, gint w, gint h)
 {
     GdkBitmap *ret;
     GdkGC *gc;
@@ -1216,20 +1221,14 @@ skin_load_color(INIFile *inifile,
     return color;
 }
 
-#ifdef SKIN_HAVE_MASKS
-GdkBitmap *
-skin_create_transparent_mask(const gchar * path,
-                             const gchar * file,
-                             const gchar * section,
-                             GdkWindow * window,
-                             gint width,
-                             gint height, gboolean scale)
+#ifdef MASK_IS_REGION
+cairo_region_t * skin_create_transparent_mask (const gchar * path, const gchar *
+ file, const gchar * section, GdkWindow * window, gint width, gint height)
+#else
+GdkBitmap * skin_create_transparent_mask (const gchar * path, const gchar *
+ file, const gchar * section, GdkWindow * window, gint width, gint height)
+#endif
 {
-    GdkBitmap *mask = NULL;
-    GdkGC *gc = NULL;
-    GdkColor pattern;
-    GdkPoint *gpoints;
-
     gchar *filename = NULL;
     INIFile *inifile = NULL;
     gboolean created_mask = FALSE;
@@ -1261,45 +1260,77 @@ skin_create_transparent_mask(const gchar * path,
 
     close_ini_file(inifile);
 
-    mask = gdk_pixmap_new(window, width, height, 1);
-    gc = gdk_gc_new(mask);
+#ifdef MASK_IS_REGION
+    cairo_region_t * mask = cairo_region_create ();
+#else
+    GdkBitmap * mask = gdk_pixmap_new (window, width, height, 1);
+    GdkGC * gc = gdk_gc_new (mask);
 
+    GdkColor pattern;
     pattern.pixel = 0;
     gdk_gc_set_foreground(gc, &pattern);
     gdk_draw_rectangle(mask, gc, TRUE, 0, 0, width, height);
     pattern.pixel = 1;
     gdk_gc_set_foreground(gc, &pattern);
+#endif
 
     j = 0;
-    for (i = 0; i < num->len; i++) {
-        if ((int)(point->len - j) >= (g_array_index(num, gint, i) * 2)) {
-            created_mask = TRUE;
-            gpoints = g_new(GdkPoint, g_array_index(num, gint, i));
-            for (k = 0; k < g_array_index(num, gint, i); k++) {
-                gpoints[k].x =
-                    g_array_index(point, gint, j + k * 2);
-                gpoints[k].y =
-                    g_array_index(point, gint,
-                                  j + k * 2 + 1);
-            }
-            j += k * 2;
-            gdk_draw_polygon(mask, gc, TRUE, gpoints,
-                             g_array_index(num, gint, i));
-            g_free(gpoints);
+    for (i = 0; i < num->len; i ++)
+    {
+        gint n_points = g_array_index (num, gint, i);
+        if (n_points <= 0 || j + 2 * n_points > point->len)
+            break;
+
+        GdkPoint gpoints[n_points];
+        for (k = 0; k < n_points; k ++)
+        {
+            gpoints[k].x = g_array_index (point, gint, j + k * 2);
+            gpoints[k].y = g_array_index (point, gint, j + k * 2 + 1);
         }
+
+#ifdef MASK_IS_REGION
+        gint xmin = width, ymin = height, xmax = 0, ymax = 0;
+        for (k = 0; k < n_points; k ++)
+        {
+            xmin = MIN (xmin, gpoints[k].x);
+            ymin = MIN (ymin, gpoints[k].y);
+            xmax = MAX (xmax, gpoints[k].x);
+            ymax = MAX (ymax, gpoints[k].y);
+        }
+
+        if (xmax > xmin && ymax > ymin)
+        {
+            cairo_rectangle_int_t rect = {xmin, ymin, xmax - xmin, ymax - ymin};
+            cairo_region_union_rectangle (mask, & rect);
+        }
+#else
+        gdk_draw_polygon (mask, gc, TRUE, gpoints, n_points);
+#endif
+
+        created_mask = TRUE;
+        j += n_points * 2;
     }
+
     g_array_free(num, TRUE);
     g_array_free(point, TRUE);
     g_free(filename);
 
     if (!created_mask)
+    {
+#ifdef MASK_IS_REGION
+        cairo_rectangle_int_t rect = {0, 0, width, height};
+        cairo_region_union_rectangle (mask, & rect);
+#else
         gdk_draw_rectangle(mask, gc, TRUE, 0, 0, width, height);
+#endif
+    }
 
+#ifndef MASK_IS_REGION
     g_object_unref(gc);
+#endif
 
     return mask;
 }
-#endif
 
 static void skin_load_viscolor (Skin * skin, const gchar * path, const gchar *
  basename)
@@ -1409,12 +1440,10 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
     if (filename)
         g_free(filename);
 
-#ifdef SKIN_HAVE_MASKS
-    skin_mask_create(skin, path, SKIN_MASK_MAIN, mainwin->window);
-    skin_mask_create(skin, path, SKIN_MASK_MAIN_SHADE, mainwin->window);
-    skin_mask_create(skin, path, SKIN_MASK_EQ, equalizerwin->window);
-    skin_mask_create(skin, path, SKIN_MASK_EQ_SHADE, equalizerwin->window);
-#endif
+    skin_mask_create (skin, path, SKIN_MASK_MAIN, gtk_widget_get_window (mainwin));
+    skin_mask_create (skin, path, SKIN_MASK_MAIN_SHADE, gtk_widget_get_window (mainwin));
+    skin_mask_create (skin, path, SKIN_MASK_EQ, gtk_widget_get_window (equalizerwin));
+    skin_mask_create (skin, path, SKIN_MASK_EQ_SHADE, gtk_widget_get_window (equalizerwin));
 
     skin_load_viscolor(skin, path, "viscolor.txt");
 
@@ -1635,19 +1664,17 @@ skin_reload(Skin * skin)
     skin_load_nolock(skin, skin->path, TRUE);
 }
 
-#ifdef SKIN_HAVE_MASKS
-GdkBitmap *
-skin_get_mask(Skin * skin, SkinMaskId mi)
+#ifdef MASK_IS_REGION
+cairo_region_t * skin_get_mask (Skin * skin, SkinMaskId mi)
+#else
+GdkBitmap * skin_get_mask (Skin * skin, SkinMaskId mi)
+#endif
 {
-    GdkBitmap **masks;
-
     g_return_val_if_fail(skin != NULL, NULL);
     g_return_val_if_fail(mi < SKIN_MASK_COUNT, NULL);
 
-    masks = skin->masks;
-    return masks[mi];
+    return skin->masks[mi];
 }
-#endif
 
 GdkColor *
 skin_get_color(Skin * skin, SkinColorId color_id)

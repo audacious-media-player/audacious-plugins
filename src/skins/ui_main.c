@@ -123,7 +123,10 @@ mainwin_set_shade(gboolean shaded)
 
 void mainwin_set_shape (void)
 {
-#ifdef SKIN_HAVE_MASKS
+#ifdef MASK_IS_REGION
+    gtk_widget_shape_combine_region (mainwin, skin_get_mask (aud_active_skin,
+     config.player_shaded ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN));
+#else
     gtk_widget_shape_combine_mask (mainwin, skin_get_mask (aud_active_skin,
      config.player_shaded ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN), 0, 0);
 #endif

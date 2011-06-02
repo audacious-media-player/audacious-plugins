@@ -693,7 +693,8 @@ GArray *read_ini_array(INIFile *inifile, const gchar *section, const gchar *key)
     gchar *temp;
     GArray *a;
 
-    g_return_val_if_fail((temp = read_ini_string(inifile, section, key)), NULL);
+    if (! (temp = read_ini_string (inifile, section, key)))
+        return NULL;
 
     a = string_to_garray(temp);
     g_free(temp);

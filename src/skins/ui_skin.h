@@ -28,8 +28,8 @@
 
 #include <gtk/gtk.h>
 
-#if ! GTK_CHECK_VERSION (3, 0, 0)
-#define SKIN_HAVE_MASKS
+#if GTK_CHECK_VERSION (3, 0, 0)
+#define MASK_IS_REGION
 #endif
 
 typedef enum {
@@ -189,8 +189,10 @@ typedef struct _Skin {
     GdkColor textbg, textfg;
     GdkColor *colors[SKIN_COLOR_COUNT];
     guchar vis_color[24][3];
-#ifdef SKIN_HAVE_MASKS
-    GdkBitmap *masks[SKIN_MASK_COUNT];
+#ifdef MASK_IS_REGION
+    cairo_region_t * masks[SKIN_MASK_COUNT];
+#else
+    GdkBitmap * masks[SKIN_MASK_COUNT];
 #endif
     SkinProperties properties;
 } Skin;
@@ -210,9 +212,12 @@ void skin_reload(Skin * skin);
 void skin_free(Skin * skin);
 void skin_destroy(Skin * skin);
 
-#ifdef SKIN_HAVE_MASKS
-GdkBitmap *skin_get_mask(Skin * skin, SkinMaskId mi);
+#ifdef MASK_IS_REGION
+cairo_region_t * skin_get_mask (Skin * skin, SkinMaskId mi);
+#else
+GdkBitmap * skin_get_mask (Skin * skin, SkinMaskId mi);
 #endif
+
 GdkColor *skin_get_color(Skin * skin, SkinColorId color_id);
 
 gint skin_get_id(void);

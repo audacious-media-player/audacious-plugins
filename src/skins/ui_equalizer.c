@@ -107,7 +107,10 @@ equalizer_preset_free(EqualizerPreset * preset)
 
 void equalizerwin_set_shape (void)
 {
-#ifdef SKIN_HAVE_MASKS
+#ifdef MASK_IS_REGION
+    gtk_widget_shape_combine_region (equalizerwin, skin_get_mask (aud_active_skin,
+     config.equalizer_shaded ? SKIN_MASK_EQ_SHADE : SKIN_MASK_EQ));
+#else
     gtk_widget_shape_combine_mask (equalizerwin, skin_get_mask (aud_active_skin,
      config.equalizer_shaded ? SKIN_MASK_EQ_SHADE : SKIN_MASK_EQ), 0, 0);
 #endif
