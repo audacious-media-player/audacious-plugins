@@ -111,7 +111,9 @@ GtkWidget * window_new (gint * x, gint * y, gint w, gint h, gboolean main,
 {
     GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_decorated ((GtkWindow *) window, FALSE);
+    gtk_window_set_resizable ((GtkWindow *) window, FALSE);
     gtk_window_move ((GtkWindow *) window, * x, * y);
+    gtk_widget_set_size_request (window, w, h);
     gtk_window_resize ((GtkWindow *) window, w, h);
 
     gtk_widget_add_events (window, GDK_BUTTON_PRESS_MASK |
@@ -147,6 +149,7 @@ GtkWidget * window_new (gint * x, gint * y, gint w, gint h, gboolean main,
 
 void window_set_size (GtkWidget * window, gint w, gint h)
 {
+    gtk_widget_set_size_request (window, w, h);
     gtk_window_resize ((GtkWindow *) window, w, h);
     dock_set_size (window, w, h);
 }
