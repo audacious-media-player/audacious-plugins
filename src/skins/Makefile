@@ -3,7 +3,6 @@ PLUGIN = skins${PLUGIN_SUFFIX}
 SRCS = drag-handle.c \
        plugin.c \
        skins_cfg.c \
-       pixbuf_effects.c \
        dnd.c \
        ui_skin.c \
        ui_skinned_window.c \

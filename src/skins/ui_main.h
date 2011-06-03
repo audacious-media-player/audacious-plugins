@@ -25,21 +25,12 @@
 
 #include <gtk/gtk.h>
 
-#include "ui_vis.h"
-
 /* yes, main window size is fixed */
 #define MAINWIN_WIDTH            (gint)275
 #define MAINWIN_HEIGHT           (gint)116
 #define MAINWIN_TITLEBAR_HEIGHT  (gint)14
 #define MAINWIN_SHADED_WIDTH     MAINWIN_WIDTH
 #define MAINWIN_SHADED_HEIGHT    MAINWIN_TITLEBAR_HEIGHT
-#define MAINWIN_SCALE_FACTOR     (config.scaled ? config.scale_factor : 1)
-
-#define MAINWIN_DEFAULT_POS_X    20
-#define MAINWIN_DEFAULT_POS_Y    20
-
-#define MAINWIN_DEFAULT_FONT     "Sans Bold 9"
-
 
 typedef enum {
     TIMER_ELAPSED,

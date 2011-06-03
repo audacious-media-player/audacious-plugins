@@ -29,8 +29,8 @@
 #include <audacious/debug.h>
 #include <audacious/misc.h>
 
-#include "debug.h"
 #include "plugin.h"
+#include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_playlist.h"
@@ -40,6 +40,7 @@
 #include "ui_skinned_textbox.h"
 #include "ui_skinned_window.h"
 #include "ui_skinselector.h"
+#include "ui_vis.h"
 #include "util.h"
 
 #define EXTENSION_TARGETS 7
@@ -70,6 +71,8 @@ typedef struct {
 typedef struct _SkinPixmapIdMapping SkinPixmapIdMapping;
 typedef struct _SkinMaskInfo SkinMaskInfo;
 
+static gboolean skin_load (Skin * skin, const gchar * path);
+static void skin_parse_hints (Skin * skin, const gchar * path_p);
 
 Skin *aud_active_skin = NULL;
 
@@ -140,27 +143,7 @@ GdkBitmap * skin_create_transparent_mask (const gchar * path, const gchar *
 
 static void skin_set_default_vis_color(Skin * skin);
 
-void
-skin_lock(Skin * skin)
-{
-    g_mutex_lock(skin->lock);
-}
-
-void
-skin_unlock(Skin * skin)
-{
-    g_mutex_unlock(skin->lock);
-}
-
-gboolean
-aud_active_skin_reload(void)
-{
-    AUDDBG("\n");
-    return aud_active_skin_load(aud_active_skin->path);
-}
-
-gboolean
-aud_active_skin_load(const gchar * path)
+gboolean active_skin_load (const gchar * path)
 {
     AUDDBG("%s\n", path);
     g_return_val_if_fail(aud_active_skin != NULL, FALSE);
@@ -178,21 +161,15 @@ aud_active_skin_load(const gchar * path)
     gtk_widget_queue_draw (equalizerwin);
     gtk_widget_queue_draw (playlistwin);
 
-    SkinPixmap *pixmap;
-    pixmap = &aud_active_skin->pixmaps[SKIN_POSBAR];
+    GdkPixbuf * p = aud_active_skin->pixmaps[SKIN_POSBAR];
     /* last 59 pixels of SKIN_POSBAR are knobs (normal and selected) */
-    gtk_widget_set_size_request(mainwin_position, pixmap->width - 59, pixmap->height);
+    gtk_widget_set_size_request (mainwin_position, gdk_pixbuf_get_width (p) -
+     59, gdk_pixbuf_get_height (p));
+
+    g_free (config.skin);
+    config.skin = g_strdup (path);
 
     return TRUE;
-}
-
-static void skin_pixmap_free (SkinPixmap * pixmap)
-{
-    if (pixmap->pixbuf != NULL)
-    {
-        g_object_unref (pixmap->pixbuf);
-        pixmap->pixbuf = NULL;
-    }
 }
 
 Skin *
@@ -200,7 +177,6 @@ skin_new(void)
 {
     Skin *skin;
     skin = g_new0(Skin, 1);
-    skin->lock = g_mutex_new();
     return skin;
 }
 
@@ -218,7 +194,13 @@ skin_free(Skin * skin)
     g_return_if_fail(skin != NULL);
 
     for (i = 0; i < SKIN_PIXMAP_COUNT; i++)
-        skin_pixmap_free(&skin->pixmaps[i]);
+    {
+        if (skin->pixmaps[i])
+        {
+            g_object_unref (skin->pixmaps[i]);
+            skin->pixmaps[i] = NULL;
+        }
+    }
 
     for (i = 0; i < SKIN_MASK_COUNT; i++) {
         if (skin->masks[i])
@@ -257,7 +239,6 @@ skin_destroy(Skin * skin)
 {
     g_return_if_fail(skin != NULL);
     skin_free(skin);
-    g_mutex_free(skin->lock);
     g_free(skin);
 }
 
@@ -376,10 +357,10 @@ skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const gchar * path_p)
 {
     const SkinPixmapIdMapping *pixmap_id_mapping;
     gchar *filename;
-    SkinPixmap *pm = NULL;
 
     g_return_val_if_fail(skin != NULL, FALSE);
     g_return_val_if_fail(id < SKIN_PIXMAP_COUNT, FALSE);
+    g_return_val_if_fail(! skin->pixmaps[id], FALSE);
 
     pixmap_id_mapping = skin_pixmap_id_lookup(id);
     g_return_val_if_fail(pixmap_id_mapping != NULL, FALSE);
@@ -389,32 +370,9 @@ skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const gchar * path_p)
     if (filename == NULL)
         return FALSE;
 
-    AUDDBG("loaded %s\n", filename);
-
-    pm = &skin->pixmaps[id];
-    GdkPixbuf *pix = gdk_pixbuf_new_from_file(filename, NULL);
-
-    if (pix == NULL)
-        return FALSE;
-
-    if (config.colorize_r == 255 && config.colorize_g == 255 &&
-     config.colorize_b == 255)
-        pm->pixbuf = pix;
-    else
-    {
-        pm->pixbuf = audacious_create_colorized_pixbuf(pix, config.colorize_r,
-         config.colorize_g, config.colorize_b);
-        g_object_unref(pix);
-    }
-
-    pm->width = gdk_pixbuf_get_width(pm->pixbuf);
-    pm->height = gdk_pixbuf_get_height(pm->pixbuf);
-    pm->current_width = pm->width;
-    pm->current_height = pm->height;
-
-    g_free(filename);
-
-    return TRUE;
+    skin->pixmaps[id] = gdk_pixbuf_new_from_file (filename, NULL);
+    g_free (filename);
+    return skin->pixmaps[id] ? TRUE : FALSE;
 }
 
 static void skin_mask_create (Skin * skin, const gchar * path, gint id,
@@ -512,7 +470,8 @@ init_skins(const gchar * path)
         playlistwin_create();
     }
 
-    if (!aud_active_skin_load(path)) {
+    if (! active_skin_load (path))
+    {
         if (path != NULL)
             AUDDBG("Unable to load skin (%s), trying default...\n", path);
         else
@@ -522,7 +481,7 @@ init_skins(const gchar * path)
         gchar * def = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "Skins"
          G_DIR_SEPARATOR_S "Default", aud_get_path (AUD_PATH_DATA_DIR));
 
-        if (! aud_active_skin_load (def))
+        if (! active_skin_load (def))
         {
             AUDDBG ("Unable to load default skin (%s)! Giving up.\n", def);
             g_free (def);
@@ -531,9 +490,6 @@ init_skins(const gchar * path)
 
         g_free (def);
     }
-
-    if (config.random_skin_on_play)
-        skinlist_update();
 
     return TRUE;
 }
@@ -557,15 +513,13 @@ void cleanup_skins()
  * Hints files are somewhat like "scripts" in Winamp3/5.
  * We'll probably add scripts to it next.
  */
-void
-skin_parse_hints(Skin * skin, gchar *path_p)
+static void skin_parse_hints (Skin * skin, const gchar * path_p)
 {
     gchar *filename, *tmp;
     INIFile *inifile;
 
     path_p = path_p ? path_p : skin->path;
 
-    skin->properties.mainwin_othertext = FALSE;
     skin->properties.mainwin_vis_x = 24;
     skin->properties.mainwin_vis_y = 43;
     skin->properties.mainwin_text_x = 112;
@@ -593,7 +547,7 @@ skin_parse_hints(Skin * skin, gchar *path_p)
     skin->properties.mainwin_position_x = 16;
     skin->properties.mainwin_position_y = 72;
     skin->properties.mainwin_othertext_is_status = FALSE;
-    skin->properties.mainwin_othertext_visible = skin->properties.mainwin_othertext;
+    skin->properties.mainwin_othertext_visible = FALSE;
     skin->properties.mainwin_text_visible = TRUE;
     skin->properties.mainwin_vis_visible = TRUE;
     skin->properties.mainwin_previous_x = 16;
@@ -642,14 +596,6 @@ skin_parse_hints(Skin * skin, gchar *path_p)
     inifile = open_ini_file(filename);
     if (!inifile)
         return;
-
-    tmp = read_ini_string(inifile, "skin", "mainwinOthertext");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_othertext = atoi(tmp);
-        g_free(tmp);
-    }
 
     tmp = read_ini_string(inifile, "skin", "mainwinVisX");
 
@@ -1373,27 +1319,21 @@ static void skin_load_viscolor (Skin * skin, const gchar * path, const gchar *
 static void
 skin_numbers_generate_dash(Skin * skin)
 {
-    GdkPixbuf *pixbuf;
-    SkinPixmap *numbers;
-
     g_return_if_fail(skin != NULL);
 
-    numbers = &skin->pixmaps[SKIN_NUMBERS];
-    if (!numbers->pixbuf || numbers->current_width < 99)
+    GdkPixbuf * old = skin->pixmaps[SKIN_NUMBERS];
+    if (! old || gdk_pixbuf_get_width (old) < 99)
         return;
 
-    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8,
-                            108, numbers->current_height);
+    gint h = gdk_pixbuf_get_height (old);
+    GdkPixbuf * new = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 108, h);
 
-    gdk_pixbuf_copy_area (numbers->pixbuf, 0, 0, 99, numbers->current_height, pixbuf, 0, 0);
-    gdk_pixbuf_copy_area (numbers->pixbuf, 90, 0, 9, numbers->current_height, pixbuf, 99, 0);
-    gdk_pixbuf_copy_area (numbers->pixbuf, 20, 6, 5, 1, pixbuf, 101, 6);
+    gdk_pixbuf_copy_area (old, 0, 0, 99, h, new, 0, 0);
+    gdk_pixbuf_copy_area (old, 90, 0, 9, h, new, 99, 0);
+    gdk_pixbuf_copy_area (old, 20, 6, 5, 1, new, 101, 6);
 
-    g_object_unref(numbers->pixbuf);
-
-    numbers->pixbuf = pixbuf;
-    numbers->current_width = 108;
-    numbers->width = 108;
+    g_object_unref (old);
+    skin->pixmaps[SKIN_NUMBERS] = new;
 }
 
 static gboolean
@@ -1410,17 +1350,17 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
     AUDDBG("Loading pixmaps in %s\n", path);
 
     for (i = 0; i < SKIN_PIXMAP_COUNT; i++)
-        if (!skin_load_pixmap_id(skin, i, path) && !config.allow_broken_skins)
+        if (! skin_load_pixmap_id (skin, i, path))
             return FALSE;
 
-    text_pb = skin->pixmaps[SKIN_TEXT].pixbuf;
+    text_pb = skin->pixmaps[SKIN_TEXT];
 
     if (text_pb)
         skin_get_textcolors (text_pb, & skin->textbg, & skin->textfg);
 
-    if (skin->pixmaps[SKIN_NUMBERS].pixbuf &&
-        skin->pixmaps[SKIN_NUMBERS].width < 108 )
-        skin_numbers_generate_dash(skin);
+    if (skin->pixmaps[SKIN_NUMBERS] && gdk_pixbuf_get_width
+     (skin->pixmaps[SKIN_NUMBERS]) < 108)
+        skin_numbers_generate_dash (skin);
 
     filename = find_file_case_uri (path, "pledit.txt");
     inifile = (filename != NULL) ? open_ini_file (filename) : NULL;
@@ -1449,30 +1389,6 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
 
     return TRUE;
 }
-
-#ifndef _WIN32
-static void
-skin_set_gtk_theme(GtkSettings * settings, Skin * skin)
-{
-    if (original_gtk_theme == NULL)
-         g_object_get(settings, "gtk-theme-name", &original_gtk_theme, NULL);
-
-    /* the way GTK does things can be very broken. --nenolod */
-
-    gchar path[PATH_MAX];
-
-    snprintf (path, sizeof path, "%s/.themes", g_get_home_dir ());
-    g_mkdir_with_parents (path, 0755);
-
-    snprintf (path, sizeof path, "%s/.themes/aud-%s", g_get_home_dir (), basename
-     (skin->path));
-    if (! g_file_test (path, G_FILE_TEST_EXISTS) && symlink (skin->path, path))
-        fprintf (stderr, "Failed to create symlink %s.\n", path);
-
-    gtk_settings_set_string_property (settings, "gtk-theme-name", basename
-     (path), "audacious");
-}
-#endif
 
 /**
  * Checks if all pixmap files exist that skin needs.
@@ -1503,7 +1419,6 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
 
     g_return_val_if_fail(skin != NULL, FALSE);
     g_return_val_if_fail(path != NULL, FALSE);
-    REQUIRE_LOCK(skin->lock);
 
     if (! g_file_test (path, G_FILE_TEST_EXISTS))
         return FALSE;
@@ -1526,7 +1441,7 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     }
 
     // Check if skin path has all necessary files.
-    if (!config.allow_broken_skins && !skin_check_pixmaps(skin, skin_path)) {
+    if (!skin_check_pixmaps(skin, skin_path)) {
         if(archive) del_directory(skin_path);
         g_free(skin_path);
         AUDDBG("Skin path (%s) doesn't have all wanted pixmaps\n", skin_path);
@@ -1553,18 +1468,6 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
         return FALSE;
     }
 
-#ifndef _WIN32
-    if (! config.disable_inline_gtk && ! archive)
-    {
-        gchar * gtkrcpath = g_strdup_printf ("%s/gtk-2.0/gtkrc", skin->path);
-
-        if (g_file_test (gtkrcpath, G_FILE_TEST_IS_REGULAR))
-            skin_set_gtk_theme (gtk_settings_get_default (), skin);
-
-        g_free (gtkrcpath);
-    }
-#endif
-
     if(archive) del_directory(skin_path);
     g_free(skin_path);
 
@@ -1590,17 +1493,7 @@ skin_install_skin(const gchar * path)
     g_free(command);
 }
 
-static SkinPixmap *
-skin_get_pixmap(Skin * skin, SkinPixmapId map_id)
-{
-    g_return_val_if_fail(skin != NULL, NULL);
-    g_return_val_if_fail(map_id < SKIN_PIXMAP_COUNT, NULL);
-
-    return &skin->pixmaps[map_id];
-}
-
-gboolean
-skin_load(Skin * skin, const gchar * path)
+static gboolean skin_load (Skin * skin, const gchar * path)
 {
     gboolean ret;
 
@@ -1609,36 +1502,26 @@ skin_load(Skin * skin, const gchar * path)
     if (!path)
         return FALSE;
 
-    skin_lock(skin);
     ret = skin_load_nolock(skin, path, FALSE);
-    skin_unlock(skin);
 
     if(!ret) {
         AUDDBG("loading failed\n");
         return FALSE; /* don't try to update anything if loading failed --asphyx */
     }
 
-    SkinPixmap *pixmap = NULL;
-    pixmap = skin_get_pixmap(skin, SKIN_NUMBERS);
-    if (pixmap) {
-        ui_skinned_number_set_size(mainwin_minus_num, 9, pixmap->height);
-        ui_skinned_number_set_size(mainwin_10min_num, 9, pixmap->height);
-        ui_skinned_number_set_size(mainwin_min_num, 9, pixmap->height);
-        ui_skinned_number_set_size(mainwin_10sec_num, 9, pixmap->height);
-        ui_skinned_number_set_size(mainwin_sec_num, 9, pixmap->height);
+    if (skin->pixmaps[SKIN_NUMBERS])
+    {
+        gint h = gdk_pixbuf_get_height (skin->pixmaps[SKIN_NUMBERS]);
+        ui_skinned_number_set_size (mainwin_minus_num, 9, h);
+        ui_skinned_number_set_size (mainwin_10min_num, 9, h);
+        ui_skinned_number_set_size (mainwin_min_num, 9, h);
+        ui_skinned_number_set_size (mainwin_10sec_num, 9, h);
+        ui_skinned_number_set_size (mainwin_sec_num, 9, h);
     }
 
-    pixmap = skin_get_pixmap(skin, SKIN_MAIN);
-    if (pixmap && skin->properties.mainwin_height > pixmap->height)
-        skin->properties.mainwin_height = pixmap->height;
-
-    pixmap = skin_get_pixmap(skin, SKIN_PLAYPAUSE);
-    if (pixmap)
-        ui_skinned_playstatus_set_size(mainwin_playstatus, 11, pixmap->height);
-
-    pixmap = skin_get_pixmap(skin, SKIN_EQMAIN);
-    if (pixmap->height >= 313)
-        gtk_widget_show(equalizerwin_graph);
+    if (skin->pixmaps[SKIN_PLAYPAUSE])
+        ui_skinned_playstatus_set_size (mainwin_playstatus, 11,
+         gdk_pixbuf_get_height (skin->pixmaps[SKIN_PLAYPAUSE]));
 
     return TRUE;
 }
@@ -1649,9 +1532,7 @@ skin_reload_forced(void)
    gboolean error;
    AUDDBG("\n");
 
-   skin_lock(aud_active_skin);
    error = skin_load_nolock(aud_active_skin, aud_active_skin->path, TRUE);
-   skin_unlock(aud_active_skin);
 
    return error;
 }
@@ -1707,14 +1588,13 @@ skin_get_id(void)
 void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, gint xsrc, gint ysrc, gint
  xdest, gint ydest, gint width, gint height)
 {
-    SkinPixmap * pixmap = skin_get_pixmap (aud_active_skin, id);
-    g_return_if_fail(pixmap != NULL);
-    g_return_if_fail(pixmap->pixbuf != NULL);
+    GdkPixbuf * p = aud_active_skin->pixmaps[id];
+    g_return_if_fail (p);
 
     cairo_save (cr);
     cairo_rectangle (cr, xdest, ydest, width, height);
     cairo_clip (cr);
-    gdk_cairo_set_source_pixbuf (cr, pixmap->pixbuf, xdest - xsrc, ydest - ysrc);
+    gdk_cairo_set_source_pixbuf (cr, p, xdest - xsrc, ydest - ysrc);
     cairo_paint (cr);
     cairo_restore (cr);
 }
@@ -1723,20 +1603,15 @@ void
 skin_get_eq_spline_colors(Skin * skin, guint32 colors[19])
 {
     gint i;
-    GdkPixbuf *pixbuf;
-    SkinPixmap *eqmainpm;
     guchar* pixels,*p;
     guint rowstride, n_channels;
     g_return_if_fail(skin != NULL);
 
-    eqmainpm = &skin->pixmaps[SKIN_EQMAIN];
-    if (eqmainpm->pixbuf &&
-            eqmainpm->current_width >= 116 && eqmainpm->current_height >= 313)
-        pixbuf = eqmainpm->pixbuf;
-    else
-        return;
+    memset (colors, 0, sizeof colors);
 
-    if (!GDK_IS_PIXBUF(pixbuf))
+    GdkPixbuf * pixbuf = skin->pixmaps[SKIN_EQMAIN];
+    if (! pixbuf || gdk_pixbuf_get_width (pixbuf) < 116 || gdk_pixbuf_get_height
+     (pixbuf) < 313)
         return;
 
     pixels = gdk_pixbuf_get_pixels (pixbuf);
@@ -1746,9 +1621,6 @@ skin_get_eq_spline_colors(Skin * skin, guint32 colors[19])
     {
         p = pixels + rowstride * (i + 294) + 115 * n_channels;
         colors[i] = (p[0] << 16) | (p[1] << 8) | p[2];
-        /* should we really treat the Alpha channel? */
-        /*if (n_channels == 4)
-            colors[i] = (colors[i] << 8) | p[3];*/
     }
 }
 
@@ -1929,25 +1801,4 @@ void skin_draw_mainwin_titlebar (cairo_t * cr, gboolean shaded, gboolean focus)
 
     skin_draw_pixbuf (cr, SKIN_TITLEBAR, 27, y_offset, 0, 0,
      aud_active_skin->properties.mainwin_width, MAINWIN_TITLEBAR_HEIGHT);
-}
-
-
-void
-skin_set_random_skin(void)
-{
-    SkinNode *node;
-    guint32 randval;
-
-    /* Get a random value to select the skin to use */
-    randval = g_random_int_range(0, g_list_length(skinlist));
-    node = g_list_nth(skinlist, randval)->data;
-    aud_active_skin_load(node->path);
-}
-
-void pixbuf_draw (cairo_t * cr, GdkPixbuf * p, gint x, gint y, gboolean scale)
-{
-    g_return_if_fail (cr && p);
-
-    gdk_cairo_set_source_pixbuf (cr, p, x, y);
-    cairo_paint (cr);
 }

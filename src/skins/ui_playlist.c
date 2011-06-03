@@ -42,6 +42,7 @@
 #include "dnd.h"
 #include "drag-handle.h"
 #include "skins_cfg.h"
+#include "ui_main.h"
 #include "ui_manager.h"
 #include "ui_playlist.h"
 #include "ui_skinned_button.h"
@@ -52,6 +53,12 @@
 #include "util.h"
 
 #include "images/audacious_playlist.xpm"
+
+#define PLAYLISTWIN_MIN_WIDTH           MAINWIN_WIDTH
+#define PLAYLISTWIN_MIN_HEIGHT          MAINWIN_HEIGHT
+#define PLAYLISTWIN_WIDTH_SNAP          25
+#define PLAYLISTWIN_HEIGHT_SNAP         29
+#define PLAYLISTWIN_SHADED_HEIGHT       MAINWIN_SHADED_HEIGHT
 
 gint active_playlist;
 gchar * active_title;
@@ -811,7 +818,7 @@ playlistwin_create_window(void)
     g_signal_connect(playlistwin, "scroll_event",
                      G_CALLBACK(playlistwin_scrolled), NULL);
 
-    aud_drag_dest_set(playlistwin);
+    drag_dest_set(playlistwin);
 
     drop_position = -1;
     g_signal_connect ((GObject *) playlistwin, "drag-motion", (GCallback)

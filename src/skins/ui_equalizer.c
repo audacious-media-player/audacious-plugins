@@ -65,6 +65,12 @@ enum PresetViewCols {
     PRESET_VIEW_N_COLS
 };
 
+static void equalizerwin_activate (gboolean active);
+static gfloat equalizerwin_get_preamp (void);
+static gfloat equalizerwin_get_band (gint band);
+static void equalizerwin_set_preamp (gfloat preamp);
+static void equalizerwin_set_band (gint band, gfloat value);
+
 GtkWidget *equalizerwin;
 GtkWidget *equalizerwin_graph;
 
@@ -942,29 +948,25 @@ equalizerwin_create_list_window(GList *preset_list,
     return *window;
 }
 
-void
-equalizerwin_set_preamp(gfloat preamp)
+static void equalizerwin_set_preamp (gfloat preamp)
 {
     eq_slider_set_val (equalizerwin_preamp, preamp);
     equalizerwin_eq_changed();
 }
 
-void
-equalizerwin_set_band(gint band, gfloat value)
+static void equalizerwin_set_band (gint band, gfloat value)
 {
     g_return_if_fail(band >= 0 && band < AUD_EQUALIZER_NBANDS);
     eq_slider_set_val (equalizerwin_bands[band], value);
     equalizerwin_eq_changed();
 }
 
-gfloat
-equalizerwin_get_preamp(void)
+static gfloat equalizerwin_get_preamp (void)
 {
     return eq_slider_get_val (equalizerwin_preamp);
 }
 
-gfloat
-equalizerwin_get_band(gint band)
+static gfloat equalizerwin_get_band (gint band)
 {
     g_return_val_if_fail(band >= 0 && band < AUD_EQUALIZER_NBANDS, 0.0);
     return eq_slider_get_val (equalizerwin_bands[band]);
@@ -1209,8 +1211,7 @@ action_equ_delete_auto_preset(void)
                                     NULL);
 }
 
-void
-equalizerwin_activate(gboolean active)
+static void equalizerwin_activate (gboolean active)
 {
     aud_cfg->equalizer_active = active;
     button_set_active (equalizerwin_on, active);

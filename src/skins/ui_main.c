@@ -311,13 +311,12 @@ mainwin_refresh_visible(void)
     show_hide_widget (mainwin_menurow,
      aud_active_skin->properties.mainwin_menurow_visible);
     show_hide_widget (mainwin_rate_text,
-     ! aud_active_skin->properties.mainwin_othertext);
+     ! aud_active_skin->properties.mainwin_othertext_visible);
     show_hide_widget (mainwin_freq_text,
-     ! aud_active_skin->properties.mainwin_othertext);
+     ! aud_active_skin->properties.mainwin_othertext_visible);
     show_hide_widget (mainwin_monostereo,
-     ! aud_active_skin->properties.mainwin_othertext);
+     ! aud_active_skin->properties.mainwin_othertext_visible);
     show_hide_widget (mainwin_othertext,
-     aud_active_skin->properties.mainwin_othertext &&
      aud_active_skin->properties.mainwin_othertext_visible);
 }
 
@@ -1508,7 +1507,7 @@ mainwin_create_window(void)
     g_signal_connect(mainwin, "scroll_event",
                      G_CALLBACK(mainwin_scrolled), NULL);
 
-    aud_drag_dest_set(mainwin);
+    drag_dest_set(mainwin);
     g_signal_connect ((GObject *) mainwin, "drag-data-received", (GCallback)
      mainwin_drag_data_received, 0);
 

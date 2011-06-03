@@ -30,22 +30,22 @@
 
 /* Designate dropped data types that we know and care about */
 enum {
-    BMP_DROP_STRING,
-    BMP_DROP_PLAINTEXT,
-    BMP_DROP_URLENCODED,
-    BMP_DROP_SKIN,
-    BMP_DROP_FONT
+    DROP_STRING,
+    DROP_PLAINTEXT,
+    DROP_URLENCODED,
+    DROP_SKIN,
+    DROP_FONT
 };
 
 /* Drag data format listing for gtk_drag_dest_set() */
 static const GtkTargetEntry aud_drop_types[] = {
-    {"text/plain", 0, BMP_DROP_PLAINTEXT},
-    {"text/uri-list", 0, BMP_DROP_URLENCODED},
-    {"STRING", 0, BMP_DROP_STRING},
-    {"interface/x-winamp-skin", 0, BMP_DROP_SKIN},
-    {"application/x-font-ttf", 0, BMP_DROP_FONT},
+    {"text/plain", 0, DROP_PLAINTEXT},
+    {"text/uri-list", 0, DROP_URLENCODED},
+    {"STRING", 0, DROP_STRING},
+    {"interface/x-winamp-skin", 0, DROP_SKIN},
+    {"application/x-font-ttf", 0, DROP_FONT},
 };
 
-void aud_drag_dest_set(GtkWidget*);
+void drag_dest_set(GtkWidget*);
 
 #endif /* AUDACIOUS_DND_H */

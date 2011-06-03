@@ -30,6 +30,32 @@
 #include "skins_cfg.h"
 #include "ui_main.h"
 #include "ui_manager.h"
+#include "ui_vis.h"
+
+static GtkWidget * ui_manager_get_popup_menu (GtkUIManager * self, const gchar *
+ path);
+
+GtkActionGroup *toggleaction_group_others;
+GtkActionGroup *radioaction_group_anamode; /* Analyzer mode */
+GtkActionGroup *radioaction_group_anatype; /* Analyzer type */
+GtkActionGroup *radioaction_group_scomode; /* Scope mode */
+GtkActionGroup *radioaction_group_vprmode; /* Voiceprint mode */
+GtkActionGroup *radioaction_group_wshmode; /* WindowShade VU mode */
+GtkActionGroup *radioaction_group_anafoff; /* Analyzer Falloff */
+GtkActionGroup *radioaction_group_peafoff; /* Peak Falloff */
+GtkActionGroup *radioaction_group_vismode; /* Visualization mode */
+GtkActionGroup *radioaction_group_viewtime; /* View time (remaining/elapsed) */
+
+static GtkActionGroup *action_group_playback;
+static GtkActionGroup *action_group_visualization;
+static GtkActionGroup *action_group_view;
+static GtkActionGroup *action_group_others;
+static GtkActionGroup *action_group_playlist;
+static GtkActionGroup *action_group_playlist_add;
+static GtkActionGroup *action_group_playlist_select;
+static GtkActionGroup *action_group_playlist_delete;
+static GtkActionGroup *action_group_playlist_sort;
+static GtkActionGroup *action_group_equalizer;
 
 static GtkUIManager *ui_manager = NULL;
 static GList * attached_menus = NULL;
@@ -743,9 +769,8 @@ ui_manager_get_accel_group ( void )
   return gtk_ui_manager_get_accel_group( ui_manager );
 }
 
-
-GtkWidget *
-ui_manager_get_popup_menu ( GtkUIManager * self , const gchar * path )
+static GtkWidget * ui_manager_get_popup_menu (GtkUIManager * self, const gchar *
+ path)
 {
   GtkWidget *menu_item = gtk_ui_manager_get_widget( self , path );
 

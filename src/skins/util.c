@@ -23,10 +23,16 @@
  *  Audacious or using our public API to be a derived work.
  */
 
+#include <ctype.h>
+#include <errno.h>
+#include <dirent.h>
+#include <string.h>
+
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/vfs.h>
 
 #include "config.h"
 #include "ui_main.h"
@@ -722,69 +728,6 @@ GArray *string_to_garray(const gchar *str)
             break;
     }
     return (array);
-}
-
-/* text_get_extents() taken from The GIMP (C) Spencer Kimball, Peter
- * Mattis et al */
-gboolean text_get_extents(const gchar *fontname, const gchar *text, gint *width,
-                          gint *height, gint *ascent, gint *descent)
-{
-    PangoFontDescription *font_desc;
-    PangoLayout *layout;
-    PangoRectangle rect;
-
-    g_return_val_if_fail(fontname != NULL, FALSE);
-    g_return_val_if_fail(text != NULL, FALSE);
-
-    /* FIXME: resolution */
-    layout = gtk_widget_create_pango_layout(GTK_WIDGET(mainwin), text);
-
-    font_desc = pango_font_description_from_string(fontname);
-    pango_layout_set_font_description(layout, font_desc);
-    pango_font_description_free(font_desc);
-    pango_layout_get_pixel_extents(layout, NULL, &rect);
-
-    if (width)
-        *width = rect.width;
-    if (height)
-        *height = rect.height;
-
-    if (ascent || descent)
-    {
-        PangoLayoutIter *iter;
-        PangoLayoutLine *line;
-
-        iter = pango_layout_get_iter(layout);
-        line = pango_layout_iter_get_line(iter);
-        pango_layout_iter_free(iter);
-
-        pango_layout_line_get_pixel_extents(line, NULL, &rect);
-
-        if (ascent)
-            *ascent = PANGO_ASCENT(rect);
-        if (descent)
-            *descent = -PANGO_DESCENT(rect);
-    }
-
-    g_object_unref(layout);
-
-    return TRUE;
-}
-
-/* counts number of digits in a gint */
-guint gint_count_digits(gint n)
-{
-    guint count = 0;
-
-    n = ABS(n);
-    do
-    {
-        count++;
-        n /= 10;
-    }
-    while (n > 0);
-
-    return count;
 }
 
 gboolean dir_foreach(const gchar *path, DirForeachFunc function,

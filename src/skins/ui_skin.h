@@ -68,10 +68,7 @@ typedef enum {
     SKIN_COLOR_COUNT
 } SkinColorId;
 
-typedef struct _SkinProperties {
-	/* this enables the othertext engine, not it's visibility -nenolod */
-	gboolean mainwin_othertext;
-
+typedef struct {
 	/* Vis properties */
 	gint mainwin_vis_x;
 	gint mainwin_vis_y;
@@ -167,25 +164,9 @@ typedef struct _SkinProperties {
 	gint textbox_bitmap_font_height;
 } SkinProperties;
 
-#define SKIN_PIXMAP(x)  ((SkinPixmap *)(x))
-typedef struct _SkinPixmap {
-    GdkPixbuf *pixbuf;
-
-    /* The real size of the pixmap */
-    gint width, height;
-
-    /* The size of the pixmap from the current skin,
-       which might be smaller */
-    gint current_width, current_height;
-} SkinPixmap;
-
-
-#define SKIN(x)  ((Skin *)(x))
-typedef struct _Skin {
-    GMutex *lock;
+typedef struct {
     gchar *path;
-    gchar *def_path;
-    SkinPixmap pixmaps[SKIN_PIXMAP_COUNT];
+    GdkPixbuf * pixmaps[SKIN_PIXMAP_COUNT];
     GdkColor textbg, textfg;
     GdkColor *colors[SKIN_COLOR_COUNT];
     guchar vis_color[24][3];
@@ -202,15 +183,7 @@ extern Skin *aud_active_skin;
 gboolean init_skins(const gchar * path);
 void cleanup_skins(void);
 
-gboolean aud_active_skin_load(const gchar * path);
-gboolean aud_active_skin_reload(void);
-
-Skin *skin_new(void);
-gboolean skin_load(Skin * skin, const gchar * path);
-gboolean skin_reload_forced(void);
-void skin_reload(Skin * skin);
-void skin_free(Skin * skin);
-void skin_destroy(Skin * skin);
+gboolean active_skin_load(const gchar * path);
 
 #ifdef MASK_IS_REGION
 cairo_region_t * skin_get_mask (Skin * skin, SkinMaskId mi);
@@ -219,8 +192,6 @@ GdkBitmap * skin_get_mask (Skin * skin, SkinMaskId mi);
 #endif
 
 GdkColor *skin_get_color(Skin * skin, SkinColorId color_id);
-
-gint skin_get_id(void);
 
 void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, gint xsrc, gint ysrc,
  gint xdest, gint ydest, gint width, gint height);
@@ -232,12 +203,5 @@ void skin_draw_playlistwin_shaded (cairo_t * cr, gint width, gboolean focus);
 void skin_draw_playlistwin_frame (cairo_t * cr, gint width, gint height,
  gboolean focus);
 void skin_draw_mainwin_titlebar (cairo_t * cr, gboolean shaded, gboolean focus);
-
-void skin_parse_hints(Skin * skin, gchar *path_p);
-
-
-void skin_set_random_skin(void);
-
-void pixbuf_draw (cairo_t * cr, GdkPixbuf * p, gint x, gint y, gboolean scale);
 
 #endif

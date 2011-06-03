@@ -38,6 +38,7 @@ gchar * skins_paths[SKINS_PATH_COUNT];
 
 static gboolean skins_init (void);
 static void skins_cleanup (void);
+static void skins_about (void);
 static gboolean ui_is_shown (void);
 static void show_error_message (const gchar * text);
 
@@ -156,7 +157,7 @@ static void skins_cleanup (void)
     }
 }
 
-void skins_about (void)
+static void skins_about (void)
 {
     static GtkWidget * about_window = NULL;
 
