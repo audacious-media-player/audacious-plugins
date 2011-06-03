@@ -244,7 +244,7 @@ skinlist_clear(void)
     skinlist = NULL;
 }
 
-void
+static void
 skinlist_update(void)
 {
     gchar *skinsdir;

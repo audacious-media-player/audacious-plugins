@@ -50,7 +50,6 @@
 #include "ui_skinned_playlist_slider.h"
 #include "ui_skinned_textbox.h"
 #include "ui_skinned_window.h"
-#include "util.h"
 
 #include "images/audacious_playlist.xpm"
 
@@ -204,7 +203,7 @@ playlistwin_set_shade_menu(gboolean shaded)
     playlistwin_update ();
 }
 
-void
+static void
 playlistwin_shade_toggle(void)
 {
     playlistwin_set_shade_menu(!config.playlist_shaded);

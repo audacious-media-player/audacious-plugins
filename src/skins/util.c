@@ -381,38 +381,6 @@ gchar *archive_decompress(const gchar *filename)
     return tmpdir;
 }
 
-
-#ifdef HAVE_FTS_H
-
-void del_directory(const gchar *dirname)
-{
-    gchar *const argv[2] = { (gchar *)dirname, NULL };
-    FTS *fts;
-    FTSENT *p;
-
-    fts = fts_open(argv, FTS_PHYSICAL, (gint (*)())NULL);
-    while ((p = fts_read(fts)))
-    {
-        switch (p->fts_info)
-        {
-        case FTS_D:
-            break;
-        case FTS_DNR:
-        case FTS_ERR:
-            break;
-        case FTS_DP:
-            rmdir(p->fts_accpath);
-            break;
-        default:
-            unlink(p->fts_accpath);
-            break;
-        }
-    }
-    fts_close(fts);
-}
-
-#else /* !HAVE_FTS */
-
 static gboolean del_directory_func(const gchar *path, const gchar *basename,
                                    void *params)
 {
@@ -436,8 +404,6 @@ void del_directory(const gchar *path)
     dir_foreach(path, del_directory_func, NULL, NULL);
     rmdir(path);
 }
-
-#endif /* ifdef HAVE_FTS */
 
 static void strip_string(GString *string)
 {

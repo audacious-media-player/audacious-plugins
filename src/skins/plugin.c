@@ -56,7 +56,7 @@ AUD_IFACE_PLUGIN
     .show_jump_to_track = audgui_jump_to_track,
 )
 
-gboolean plugin_is_active = FALSE;
+static gboolean plugin_is_active = FALSE;
 
 static gint update_source;
 static GtkWidget * error_win;

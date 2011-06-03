@@ -250,8 +250,7 @@ DATA = Skins/Classic/balance.png	\
        Skins/Refugee/volume.png \
        ui/equalizer.ui \
        ui/mainwin.ui \
-       ui/playlist.ui \
-       ui/carbon-menubar.ui
+       ui/playlist.ui
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 

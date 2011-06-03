@@ -35,7 +35,6 @@
 #include "ui_skin.h"
 #include "ui_skinned_playlist.h"
 #include "ui_skinned_textbox.h"
-#include "ui_skinned_window.h"
 #include "ui_skinselector.h"
 #include "ui_vis.h"
 #include "util.h"
@@ -53,9 +52,10 @@
 #define PLAYLISTWIN_DEFAULT_FONT "Sans Bold 8"
 
 skins_cfg_t config;
-GtkWidget *skin_view;
 
-skins_cfg_t skins_default_config = {
+static GtkWidget * skin_view;
+
+static skins_cfg_t skins_default_config = {
     .autoscroll = TRUE,
     .always_on_top = FALSE,
     .sticky = FALSE,

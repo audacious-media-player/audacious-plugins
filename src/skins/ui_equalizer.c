@@ -23,25 +23,7 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-/*#define AUD_DEBUG*/
-
-#include "config.h"
-
-#include "ui_equalizer.h"
-
-#include <glib.h>
 #include <gtk/gtk.h>
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-
-#include "platform/smartinclude.h"
-#include "ui_skin.h"
-#include "ui_manager.h"
-#include "actions-equalizer.h"
-#include "util.h"
-#include "ui_main.h"
-#include "ui_playlist.h"
 
 #include <audacious/audconfig.h>
 #include <audacious/drct.h>
@@ -51,14 +33,20 @@
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "images/audacious_eq.xpm"
-
-#include "ui_skinned_window.h"
-#include "ui_skinned_button.h"
-#include "ui_skinned_horizontal_slider.h"
-#include "ui_skinned_equalizer_slider.h"
-#include "ui_skinned_equalizer_graph.h"
+#include "actions-equalizer.h"
+#include "config.h"
 #include "skins_cfg.h"
+#include "ui_equalizer.h"
+#include "ui_main.h"
+#include "ui_manager.h"
+#include "ui_skinned_button.h"
+#include "ui_skinned_equalizer_graph.h"
+#include "ui_skinned_equalizer_slider.h"
+#include "ui_skinned_horizontal_slider.h"
+#include "ui_skinned_window.h"
+#include "util.h"
+
+#include "images/audacious_eq.xpm"
 
 enum PresetViewCols {
     PRESET_VIEW_COL_NAME,
@@ -72,7 +60,7 @@ static void equalizerwin_set_preamp (gfloat preamp);
 static void equalizerwin_set_band (gint band, gfloat value);
 
 GtkWidget *equalizerwin;
-GtkWidget *equalizerwin_graph;
+static GtkWidget *equalizerwin_graph;
 
 static GtkWidget *equalizerwin_load_window = NULL;
 static GtkWidget *equalizerwin_load_auto_window = NULL;
@@ -93,15 +81,7 @@ static GtkWidget *equalizerwin_volume, *equalizerwin_balance;
 
 static GList *equalizer_presets = NULL, *equalizer_auto_presets = NULL;
 
-EqualizerPreset *
-equalizer_preset_new(const gchar * name)
-{
-    EqualizerPreset *preset = g_new0(EqualizerPreset, 1);
-    preset->name = g_strdup(name);
-    return preset;
-}
-
-void
+static void
 equalizer_preset_free(EqualizerPreset * preset)
 {
     if (!preset)
@@ -194,7 +174,7 @@ static GtkWidget * get_eq_effects_menu (void)
     return menu;
 }
 
-gboolean
+static gboolean
 equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
                    gpointer callback_data)
 {

@@ -635,10 +635,6 @@ ui_manager_init ( void )
   return;
 }
 
-#ifdef GDK_WINDOWING_QUARTZ
-static GtkWidget *carbon_menubar;
-#endif
-
 void
 ui_manager_create_menus ( void )
 {
@@ -656,21 +652,6 @@ ui_manager_create_menus ( void )
     g_error_free( gerr );
     return;
   }
-
-#ifdef GDK_WINDOWING_QUARTZ
-  snprintf (path, sizeof path, "%s/ui/carbon-menubar.ui", data);
-  gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
-
-  if ( gerr != NULL )
-  {
-    g_critical( "Error creating UI<ui/carbon-menubar.ui>: %s" , gerr->message );
-    g_error_free( gerr );
-    return;
-  }
-
-  carbon_menubar = ui_manager_get_popup_menu( ui_manager , "/carbon-menubar/main-menu" );
-  sync_menu_takeover_menu(GTK_MENU_SHELL(carbon_menubar));
-#endif
 
   snprintf (path, sizeof path, "%s/ui/playlist.ui", data);
   gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
@@ -868,4 +849,3 @@ ui_manager_destroy( void )
     g_object_unref(G_OBJECT(action_group_equalizer));
     g_object_unref(G_OBJECT(ui_manager));
 }
-

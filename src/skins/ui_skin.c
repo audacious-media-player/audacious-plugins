@@ -59,14 +59,6 @@ struct _SkinMaskInfo {
     gint width, height;
     gchar *inistr;
 };
-/* I know, it's not nice to copy'n'paste stuff, but I wanted it to
-   be atleast parially working, before dealing with such things */
-
-typedef struct {
-    const gchar *to_match;
-    gchar *match;
-    gboolean found;
-} FindFileContext;
 
 typedef struct _SkinPixmapIdMapping SkinPixmapIdMapping;
 typedef struct _SkinMaskInfo SkinMaskInfo;
@@ -134,11 +126,13 @@ static const guchar skin_default_viscolor[24][3] = {
 static gchar *original_gtk_theme = NULL;
 
 #ifdef MASK_IS_REGION
-cairo_region_t * skin_create_transparent_mask (const gchar * path, const gchar *
- file, const gchar * section, GdkWindow * window, gint width, gint height);
+static cairo_region_t * skin_create_transparent_mask (const gchar * path, const
+ gchar * file, const gchar * section, GdkWindow * window, gint width, gint
+ height);
 #else
-GdkBitmap * skin_create_transparent_mask (const gchar * path, const gchar *
- file, const gchar * section, GdkWindow * window, gint width, gint height);
+static GdkBitmap * skin_create_transparent_mask (const gchar * path, const
+ gchar * file, const gchar * section, GdkWindow * window, gint width, gint
+ height);
 #endif
 
 static void skin_set_default_vis_color(Skin * skin);
@@ -172,7 +166,7 @@ gboolean active_skin_load (const gchar * path)
     return TRUE;
 }
 
-Skin *
+static Skin *
 skin_new(void)
 {
     Skin *skin;
@@ -186,7 +180,7 @@ skin_new(void)
  * Does not free skin itself or lock variable so that the skin can immediately
  * populated with new skin data if needed.
  */
-void
+static void
 skin_free(Skin * skin)
 {
     gint i;
@@ -234,7 +228,7 @@ skin_free(Skin * skin)
     }
 }
 
-void
+static void
 skin_destroy(Skin * skin)
 {
     g_return_if_fail(skin != NULL);
@@ -242,7 +236,7 @@ skin_destroy(Skin * skin)
     g_free(skin);
 }
 
-const SkinPixmapIdMapping *
+static const SkinPixmapIdMapping *
 skin_pixmap_id_lookup(guint id)
 {
     guint i;
@@ -256,18 +250,6 @@ skin_pixmap_id_lookup(guint id)
     return NULL;
 }
 
-const gchar *
-skin_pixmap_id_to_name(SkinPixmapId id)
-{
-    guint i;
-
-    for (i = 0; i < skin_pixmap_id_map_size; i++) {
-        if (id == skin_pixmap_id_map[i].id)
-            return skin_pixmap_id_map[i].name;
-    }
-    return NULL;
-}
-
 static void
 skin_set_default_vis_color(Skin * skin)
 {
@@ -275,7 +257,7 @@ skin_set_default_vis_color(Skin * skin)
            sizeof(skin_default_viscolor));
 }
 
-gchar * skin_pixmap_locate (const gchar * dirname, gchar * * basenames)
+static gchar * skin_pixmap_locate (const gchar * dirname, gchar * * basenames)
 {
     gchar * filename = NULL;
     gint i;
@@ -1168,11 +1150,13 @@ skin_load_color(INIFile *inifile,
 }
 
 #ifdef MASK_IS_REGION
-cairo_region_t * skin_create_transparent_mask (const gchar * path, const gchar *
- file, const gchar * section, GdkWindow * window, gint width, gint height)
+static cairo_region_t * skin_create_transparent_mask (const gchar * path, const
+ gchar * file, const gchar * section, GdkWindow * window, gint width, gint
+ height)
 #else
-GdkBitmap * skin_create_transparent_mask (const gchar * path, const gchar *
- file, const gchar * section, GdkWindow * window, gint width, gint height)
+static GdkBitmap * skin_create_transparent_mask (const gchar * path, const
+ gchar * file, const gchar * section, GdkWindow * window, gint width, gint
+ height)
 #endif
 {
     gchar *filename = NULL;
@@ -1526,25 +1510,6 @@ static gboolean skin_load (Skin * skin, const gchar * path)
     return TRUE;
 }
 
-gboolean
-skin_reload_forced(void)
-{
-   gboolean error;
-   AUDDBG("\n");
-
-   error = skin_load_nolock(aud_active_skin, aud_active_skin->path, TRUE);
-
-   return error;
-}
-
-void
-skin_reload(Skin * skin)
-{
-    AUDDBG("\n");
-    g_return_if_fail(skin != NULL);
-    skin_load_nolock(skin, skin->path, TRUE);
-}
-
 #ifdef MASK_IS_REGION
 cairo_region_t * skin_get_mask (Skin * skin, SkinMaskId mi)
 #else
@@ -1577,12 +1542,6 @@ skin_get_color(Skin * skin, SkinColorId color_id)
         break;
     }
     return ret;
-}
-
-gint
-skin_get_id(void)
-{
-    return skin_current_num;
 }
 
 void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, gint xsrc, gint ysrc, gint
