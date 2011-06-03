@@ -101,13 +101,6 @@ ui_main_evlistener_playback_unpause(gpointer hook_data, gpointer user_data)
     ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
 }
 
-static void
-ui_main_evlistener_playback_play_file(gpointer hook_data, gpointer user_data)
-{
-    if (config.random_skin_on_play)
-        skin_set_random_skin();
-}
-
 static void vis_clear_cb (void * unused, void * another)
 {
     ui_vis_clear_data (mainwin_vis);
@@ -302,7 +295,6 @@ ui_main_evlistener_init(void)
     hook_associate("playback stop", ui_main_evlistener_playback_stop, NULL);
     hook_associate("playback pause", ui_main_evlistener_playback_pause, NULL);
     hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
-    hook_associate("playback play file", ui_main_evlistener_playback_play_file, NULL);
     hook_associate ("visualization clear", vis_clear_cb, NULL);
     hook_associate ("info change", (HookFunction) info_change, NULL);
 
@@ -319,7 +311,6 @@ ui_main_evlistener_dissociate(void)
     hook_dissociate("playback stop", ui_main_evlistener_playback_stop);
     hook_dissociate("playback pause", ui_main_evlistener_playback_pause);
     hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
-    hook_dissociate("playback play file", ui_main_evlistener_playback_play_file);
     hook_dissociate ("visualization clear", vis_clear_cb);
     hook_dissociate ("info change", (HookFunction) info_change);
 

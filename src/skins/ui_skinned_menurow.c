@@ -38,7 +38,7 @@ static struct {
 DRAW_FUNC_BEGIN (menurow_draw)
     if (mr.selected == MENUROW_NONE)
     {
-        if (config.always_show_cb || mr.pushed)
+        if (mr.pushed)
             skin_draw_pixbuf (cr, SKIN_TITLEBAR, 304, 0, 0, 0, 8, 43);
         else
             skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 0, 0, 0, 8, 43);
@@ -47,7 +47,7 @@ DRAW_FUNC_BEGIN (menurow_draw)
         skin_draw_pixbuf (cr, SKIN_TITLEBAR, 304 + 8 * (mr.selected - 1), 44, 0,
          0, 8, 43);
 
-    if (config.always_show_cb || mr.pushed)
+    if (mr.pushed)
     {
         if (config.always_on_top)
             skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 54, 0, 10, 8, 8);

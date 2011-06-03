@@ -26,11 +26,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <glib.h>
 #include <gtk/gtk.h>
 
-G_BEGIN_DECLS
-#include "audacious/plugin.h"
 typedef gboolean(*DirForeachFunc) (const gchar *path, const gchar *basename,
                                    gpointer user_data);
 
@@ -56,26 +53,13 @@ GArray *read_ini_array(INIFile *key_file, const gchar *section,
 
 GArray *string_to_garray(const gchar *str);
 
-gboolean text_get_extents(const gchar *fontname, const gchar *text, gint *width,
-                          gint *height, gint *ascent, gint *descent);
-
 gboolean file_is_archive(const gchar *filename);
 gchar *archive_decompress(const gchar *path);
 gchar *archive_basename(const gchar *path);
 
-guint gint_count_digits(gint n);
-
-
 GtkWidget *make_filebrowser(const gchar *title, gboolean save);
-
-GdkPixbuf *audacious_create_colorized_pixbuf(GdkPixbuf *src, gint red,
-                                             gint green, gint blue);
-
-void widget_destroy_on_escape (GtkWidget * widget);
 
 void check_set (GtkActionGroup * action_group, const gchar * action_name,
  gboolean is_on);
-void check_button_toggled (GtkToggleButton * button, void * data);
 
-G_END_DECLS
 #endif

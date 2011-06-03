@@ -26,7 +26,6 @@
 #ifndef AUDACIOUS_UI_HINTS_H
 #define AUDACIOUS_UI_HINTS_H
 
-#include <glib.h>
 #include <gtk/gtk.h>
 
 void hint_set_always(gboolean always);

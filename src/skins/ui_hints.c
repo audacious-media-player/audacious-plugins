@@ -23,16 +23,12 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#include "ui_hints.h"
-
-#include <glib.h>
 #include <gtk/gtk.h>
 
 #include "ui_equalizer.h"
+#include "ui_hints.h"
 #include "ui_main.h"
 #include "ui_playlist.h"
-
-#include "platform/smartinclude.h"
 
 void
 hint_set_always(gboolean always)
@@ -56,4 +52,3 @@ hint_set_sticky(gboolean sticky)
         gtk_window_unstick(GTK_WINDOW(playlistwin));
     }
 }
-

@@ -48,10 +48,14 @@ enum SkinViewCols {
     SKIN_VIEW_N_COLS
 };
 
+typedef struct {
+    gchar *name;
+    gchar *desc;
+    gchar *path;
+    GTime *time;
+} SkinNode;
 
-GList *skinlist = NULL;
-
-
+static GList *skinlist = NULL;
 
 static gchar *
 get_thumbnail_filename(const gchar * path)
@@ -211,20 +215,20 @@ scan_skindir(const gchar * path)
     }
 }
 
-static gint
-skinlist_compare_func(gconstpointer a, gconstpointer b)
+static gint skinlist_compare_func (const void * _a, const void * _b)
 {
-    g_return_val_if_fail(a != NULL && SKIN_NODE(a)->name != NULL, 1);
-    g_return_val_if_fail(b != NULL && SKIN_NODE(b)->name != NULL, 1);
-    return strcasecmp(SKIN_NODE(a)->name, SKIN_NODE(b)->name);
+    const SkinNode * a = _a, * b = _b;
+    g_return_val_if_fail (a && a->name, 1);
+    g_return_val_if_fail (b && b->name, 1);
+    return strcasecmp (a->name, b->name);
 }
 
-static void
-skin_free_func(gpointer data)
+static void skin_free_func (void * _data)
 {
+    SkinNode * data = _data;
     g_return_if_fail(data != NULL);
-    g_free(SKIN_NODE(data)->name);
-    g_free(SKIN_NODE(data)->path);
+    g_free (data->name);
+    g_free (data->path);
     g_slice_free(SkinNode, data);
 }
 
@@ -240,7 +244,7 @@ skinlist_clear(void)
     skinlist = NULL;
 }
 
-void
+static void
 skinlist_update(void)
 {
     gchar *skinsdir;
@@ -289,12 +293,14 @@ void skin_view_update (GtkTreeView * treeview)
 
     skinlist_update();
 
-    for (entry = skinlist; entry; entry = g_list_next(entry)) {
-        thumbnail = skin_get_thumbnail(SKIN_NODE(entry->data)->path);
+    for (entry = skinlist; entry; entry = entry->next)
+    {
+        SkinNode * node = entry->data;
 
-        formattedname = g_strdup_printf("<big><b>%s</b></big>\n<i>%s</i>",
-		SKIN_NODE(entry->data)->name, SKIN_NODE(entry->data)->desc);
-        name = SKIN_NODE(entry->data)->name;
+        thumbnail = skin_get_thumbnail (node->path);
+        formattedname = g_strdup_printf ("<big><b>%s</b></big>\n<i>%s</i>",
+         node->name, node->desc);
+        name = node->name;
 
         gtk_list_store_append(store, &iter);
         gtk_list_store_set(store, &iter,
@@ -345,14 +351,14 @@ skin_view_on_cursor_changed(GtkTreeView * treeview,
     gtk_tree_model_get(model, &iter, SKIN_VIEW_COL_NAME, &name, -1);
 
     for (node = skinlist; node; node = g_list_next(node)) {
-        comp = SKIN_NODE(node->data)->path;
+        comp = ((SkinNode *) node->data)->path;
         if (g_strrstr(comp, name))
             break;
     }
 
     g_free(name);
 
-    aud_active_skin_load(comp);
+    active_skin_load (comp);
 }
 
 

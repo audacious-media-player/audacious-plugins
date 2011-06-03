@@ -30,6 +30,32 @@
 #include "skins_cfg.h"
 #include "ui_main.h"
 #include "ui_manager.h"
+#include "ui_vis.h"
+
+static GtkWidget * ui_manager_get_popup_menu (GtkUIManager * self, const gchar *
+ path);
+
+GtkActionGroup *toggleaction_group_others;
+GtkActionGroup *radioaction_group_anamode; /* Analyzer mode */
+GtkActionGroup *radioaction_group_anatype; /* Analyzer type */
+GtkActionGroup *radioaction_group_scomode; /* Scope mode */
+GtkActionGroup *radioaction_group_vprmode; /* Voiceprint mode */
+GtkActionGroup *radioaction_group_wshmode; /* WindowShade VU mode */
+GtkActionGroup *radioaction_group_anafoff; /* Analyzer Falloff */
+GtkActionGroup *radioaction_group_peafoff; /* Peak Falloff */
+GtkActionGroup *radioaction_group_vismode; /* Visualization mode */
+GtkActionGroup *radioaction_group_viewtime; /* View time (remaining/elapsed) */
+
+static GtkActionGroup *action_group_playback;
+static GtkActionGroup *action_group_visualization;
+static GtkActionGroup *action_group_view;
+static GtkActionGroup *action_group_others;
+static GtkActionGroup *action_group_playlist;
+static GtkActionGroup *action_group_playlist_add;
+static GtkActionGroup *action_group_playlist_select;
+static GtkActionGroup *action_group_playlist_delete;
+static GtkActionGroup *action_group_playlist_sort;
+static GtkActionGroup *action_group_equalizer;
 
 static GtkUIManager *ui_manager = NULL;
 static GList * attached_menus = NULL;
@@ -609,10 +635,6 @@ ui_manager_init ( void )
   return;
 }
 
-#ifdef GDK_WINDOWING_QUARTZ
-static GtkWidget *carbon_menubar;
-#endif
-
 void
 ui_manager_create_menus ( void )
 {
@@ -630,21 +652,6 @@ ui_manager_create_menus ( void )
     g_error_free( gerr );
     return;
   }
-
-#ifdef GDK_WINDOWING_QUARTZ
-  snprintf (path, sizeof path, "%s/ui/carbon-menubar.ui", data);
-  gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
-
-  if ( gerr != NULL )
-  {
-    g_critical( "Error creating UI<ui/carbon-menubar.ui>: %s" , gerr->message );
-    g_error_free( gerr );
-    return;
-  }
-
-  carbon_menubar = ui_manager_get_popup_menu( ui_manager , "/carbon-menubar/main-menu" );
-  sync_menu_takeover_menu(GTK_MENU_SHELL(carbon_menubar));
-#endif
 
   snprintf (path, sizeof path, "%s/ui/playlist.ui", data);
   gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
@@ -743,9 +750,8 @@ ui_manager_get_accel_group ( void )
   return gtk_ui_manager_get_accel_group( ui_manager );
 }
 
-
-GtkWidget *
-ui_manager_get_popup_menu ( GtkUIManager * self , const gchar * path )
+static GtkWidget * ui_manager_get_popup_menu (GtkUIManager * self, const gchar *
+ path)
 {
   GtkWidget *menu_item = gtk_ui_manager_get_widget( self , path );
 
@@ -843,4 +849,3 @@ ui_manager_destroy( void )
     g_object_unref(G_OBJECT(action_group_equalizer));
     g_object_unref(G_OBJECT(ui_manager));
 }
-

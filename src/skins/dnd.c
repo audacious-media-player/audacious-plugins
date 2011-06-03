@@ -25,8 +25,7 @@
 
 #include "dnd.h"
 
-void
-aud_drag_dest_set(GtkWidget *widget)
+void drag_dest_set (GtkWidget * widget)
 {
     gtk_drag_dest_set(widget, GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
 					  aud_drop_types, 5,

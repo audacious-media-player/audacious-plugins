@@ -38,6 +38,7 @@ gchar * skins_paths[SKINS_PATH_COUNT];
 
 static gboolean skins_init (void);
 static void skins_cleanup (void);
+static void skins_about (void);
 static gboolean ui_is_shown (void);
 static void show_error_message (const gchar * text);
 
@@ -55,7 +56,7 @@ AUD_IFACE_PLUGIN
     .show_jump_to_track = audgui_jump_to_track,
 )
 
-gboolean plugin_is_active = FALSE;
+static gboolean plugin_is_active = FALSE;
 
 static gint update_source;
 static GtkWidget * error_win;
@@ -156,7 +157,7 @@ static void skins_cleanup (void)
     }
 }
 
-void skins_about (void)
+static void skins_about (void)
 {
     static GtkWidget * about_window = NULL;
 

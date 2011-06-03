@@ -29,7 +29,6 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#include "debug.h"
 #include "draw-compat.h"
 #include "skins_cfg.h"
 #include "ui_playlist.h"

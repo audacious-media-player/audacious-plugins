@@ -23,16 +23,6 @@
 
 #include <gtk/gtk.h>
 
-#define MAINWIN_DEFAULT_POS_X    20
-#define MAINWIN_DEFAULT_POS_Y    20
-#define EQUALIZER_DEFAULT_POS_X  20
-#define EQUALIZER_DEFAULT_POS_Y  136
-#define PLAYLISTWIN_DEFAULT_WIDTH       275
-#define PLAYLISTWIN_DEFAULT_HEIGHT      232
-#define PLAYLISTWIN_DEFAULT_POS_X       295
-#define PLAYLISTWIN_DEFAULT_POS_Y       20
-
-
 typedef struct {
     gint player_x, player_y;
     gint equalizer_x, equalizer_y;
@@ -40,15 +30,9 @@ typedef struct {
     gint playlist_width, playlist_height;
     gboolean autoscroll;
     gboolean always_on_top, sticky;
-    gboolean always_show_cb;
-    gboolean close_dialog_open;
-    gboolean close_dialog_add;
     gchar *skin;
-    gchar *filesel_path;
     gboolean player_visible, equalizer_visible, playlist_visible;
     gboolean player_shaded, equalizer_shaded, playlist_shaded;
-    gboolean allow_broken_skins;
-    gboolean disable_inline_gtk;
     gboolean analyzer_peaks;
     gboolean twoway_scroll;
     gint timer_mode;
@@ -58,14 +42,8 @@ typedef struct {
     gint voiceprint_mode;
     gint vu_mode;
     gint analyzer_falloff, peaks_falloff;
-    gint playlist_position;
-    gint colorize_r; gint colorize_g; gint colorize_b;
-    gboolean warn_about_win_visibility;
-    gboolean warn_about_broken_gtk_engines;
     gboolean mainwin_use_bitmapfont;
     gchar *playlist_font, *mainwin_font;
-    gboolean random_skin_on_play;
-    gboolean no_confirm_playlist_delete;
 } skins_cfg_t;
 
 extern skins_cfg_t config;

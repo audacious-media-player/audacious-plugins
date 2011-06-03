@@ -25,19 +25,6 @@
 
 #include <gtk/gtk.h>
 
-#define SKIN_NODE(x)  ((SkinNode *)(x))
-struct _SkinNode {
-    gchar *name;
-    gchar *desc;
-    gchar *path;
-    GTime *time;
-};
-
-typedef struct _SkinNode SkinNode;
-
-extern GList *skinlist;
-
-void skinlist_update();
 void skin_view_realize(GtkTreeView * treeview);
 void skin_view_update (GtkTreeView * treeview);
 
