@@ -195,30 +195,23 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
 
     cairo_t * cr = cairo_create (data->buf);
 
-    set_cairo_color (cr, active_skin->colors[SKIN_TEXTBG]);
-    cairo_paint (cr);
-
-    if (cw * len > 0 && ch > 0)
+    gchar * s = upper;
+    for (gint x = 0; x < data->buf_width; x += cw)
     {
-        gchar * c = upper;
-        for (gint i = 0; i < len; i ++)
+        gchar c = * s ? * s ++ : ' ';
+        gint cx = 0, cy = 0;
+
+        if (c >= 'A' && c <= 'Z')
+            cx = cw * (c - 'A');
+        else if (c >= '0' && c <= '9')
         {
-            gint x = 0, y = 0;
-
-            if (* c >= 'A' && * c <= 'Z')
-                x = cw * (* c - 'A');
-            else if (* c >= '0' && * c <= '9')
-            {
-                x = cw * (* c - '0');
-                y = ch;
-            }
-            else
-                lookup_char (* c, & x, & y);
-
-            skin_draw_pixbuf (cr, SKIN_TEXT, x, y, cw * i, 0, cw, ch);
-
-            c = g_utf8_next_char (c);
+            cx = cw * (c - '0');
+            cy = ch;
         }
+        else
+            lookup_char (c, & cx, & cy);
+
+        skin_draw_pixbuf (cr, SKIN_TEXT, cx, cy, x, 0, cw, ch);
     }
 
     cairo_destroy (cr);
