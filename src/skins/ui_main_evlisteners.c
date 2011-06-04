@@ -119,6 +119,17 @@ void info_change (void)
     mainwin_set_song_info (bitrate, samplerate, channels);
 }
 
+/* calculate dB level, treating full PCM range as 40 dB */
+static gfloat calc_level (gint16 pcm[512])
+{
+    gint peak = 0;
+    for (gint i = 0; i < 512; i ++)
+        peak = MAX (peak, pcm[i]);
+
+    /* 0.00305 = 100 / 32767 */
+    return 20 * log10 (peak * 0.00305);
+}
+
 static void ui_main_evlistener_visualization_timeout (const VisNode * vis,
  void * user)
 {
@@ -211,29 +222,17 @@ static void ui_main_evlistener_visualization_timeout (const VisNode * vis,
     else if(config.vis_type == VIS_VOICEPRINT){
         if (config.player_shaded) {
             /* VU */
-            gint vu, val;
 
             if (!stereo_pcm_calced)
                 aud_calc_stereo_pcm(stereo_pcm, vis->data, vis->nch);
-            vu = 0;
-            for (i = 0; i < 512; i++) {
-                val = abs(stereo_pcm[0][i]);
-                if (val > vu)
-                    vu = val;
-            }
-            intern_vis_data[0] = (vu * 38) >> 15;
-            if (intern_vis_data[0] > 38)
-                intern_vis_data[0] = 38;
-            if (vis->nch == 2) {
-                vu = 0;
-                for (i = 0; i < 512; i++) {
-                    val = abs(stereo_pcm[1][i]);
-                    if (val > vu)
-                        vu = val;
-                }
-                intern_vis_data[1] = (vu * 38) >> 15;
-                if (intern_vis_data[1] > 38)
-                    intern_vis_data[1] = 38;
+
+            gint level = calc_level (stereo_pcm[0]);
+            intern_vis_data[0] = CLAMP (level, 0, 38);
+
+            if (vis->nch == 2)
+            {
+                level = calc_level (stereo_pcm[1]);
+                intern_vis_data[1] = CLAMP (level, 0, 38);
             }
             else
                 intern_vis_data[1] = intern_vis_data[0];
