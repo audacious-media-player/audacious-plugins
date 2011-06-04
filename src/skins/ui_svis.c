@@ -32,8 +32,9 @@
 #include "ui_skin.h"
 #include "ui_vis.h"
 
+static gint svis_analyzer_colors[] = {14, 11, 8, 5, 2};
 static gint svis_scope_colors[] = {20, 19, 18, 19, 20};
-static gint svis_vu_normal_colors[] = {17, 17, 17, 12, 12, 12, 2, 2};
+static gint svis_vu_normal_colors[] = {16, 14, 12, 10, 8, 6, 4, 2};
 
 static struct {
     gboolean active;
@@ -69,7 +70,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
             RGB_SEEK (x, 5 - h);
 
             for (gint y = 0; y < h; y ++)
-                RGB_SET_INDEX_Y (23);
+                RGB_SET_INDEX_Y (svis_analyzer_colors[h - 1 - y]);
         }
 
         break;

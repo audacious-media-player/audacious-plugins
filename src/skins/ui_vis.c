@@ -34,7 +34,7 @@
 
 static const gfloat vis_afalloff_speeds[] = {0.34, 0.5, 1.0, 1.3, 1.6};
 static const gfloat vis_pfalloff_speeds[] = {1.2, 1.3, 1.4, 1.5, 1.6};
-static const gint vis_scope_colors[16] = {22, 21, 21, 20, 20, 19, 19, 18, 18,
+static const gint vis_scope_colors[16] = {22, 22, 21, 21, 20, 10, 19, 19, 18,
  19, 19, 20, 20, 21, 21, 22};
 
 static guint32 vis_voice_color[256];
