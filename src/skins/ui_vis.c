@@ -43,6 +43,7 @@ static guint32 vis_voice_color_ice[256];
 static guint32 pattern_fill[76 * 2];
 
 static struct {
+    gboolean active;
     gfloat data[75], peak[75], peak_speed[75];
     guchar voiceprint_data[76 * 16];
     gboolean voiceprint_advance;
@@ -177,6 +178,9 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
             RGB_SET (colors[* get ++]);
         break;
     case VIS_SCOPE:
+        if (! vis.active)
+            goto DRAW;
+
         switch (config.scope_mode)
         {
         case SCOPE_DOT:
@@ -225,6 +229,7 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
         break;
     }
 
+DRAW:;
     cairo_surface_t * surf = cairo_image_surface_create_for_data ((void *) rgb,
      CAIRO_FORMAT_RGB24, 76, 16, 4 * 76);
     cairo_set_source_surface (cr, surf, 0, 0);
@@ -310,5 +315,6 @@ void ui_vis_timeout_func (GtkWidget * widget, guchar * data)
             vis.data[i] = data[i];
     }
 
+    vis.active = TRUE;
     gtk_widget_queue_draw (widget);
 }
