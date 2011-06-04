@@ -4,7 +4,7 @@
  * This source code is public domain.
  */
 
-#include "gui/main.h"
+#include "modplugbmp.h"
 extern "C" {
 #include <audacious/debug.h>
 #include <audacious/plugin.h>
@@ -49,21 +49,6 @@ void mseek (InputPlayback * playback, gint time)
 Tuple* GetSongTuple(const gchar* aFilename, VFSFile *fd)
 {
     return gModplugXMMS.GetSongTuple(aFilename);
-}
-
-void ShowAboutBox(void)
-{
-    ShowAboutWindow();
-}
-
-void ShowConfigureBox(void)
-{
-    ShowConfigureWindow(gModplugXMMS.GetModProps());
-}
-
-void ShowFileInfoBox(const gchar* aFilename)
-{
-    ShowInfoWindow(aFilename);
 }
 
 }

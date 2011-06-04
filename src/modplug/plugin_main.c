@@ -20,13 +20,10 @@ AUD_INPUT_PLUGIN
 (
     .name = "ModPlug",
     .init = Init,
-    .about = ShowAboutBox,
-    .configure = ShowConfigureBox,
     .play = PlayFile,
     .stop = Stop,
     .pause = Pause,
     .mseek = mseek,
-    .file_info_box = ShowFileInfoBox,
     .probe_for_tuple = GetSongTuple,
     .is_our_file_from_vfs = CanPlayFileFromVFS,
     .extensions = fmts,
