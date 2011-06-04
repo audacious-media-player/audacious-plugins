@@ -1,6 +1,5 @@
 [skin]
 skinDescription=Osmosis
-mainwinOthertext=1
 mainwinVisX=335
 mainwinVisY=53
 mainwinTextX=93
@@ -31,6 +30,7 @@ mainwinTextVisible=1
 mainwinOthertextVisible=1
 mainwinVisVisible=1
 mainwinMenurowVisible=0
+mainwinStreaminfoVisible=0
 mainwinWidth=425
 mainwinHeight=100
 mainwinPreviousX=5

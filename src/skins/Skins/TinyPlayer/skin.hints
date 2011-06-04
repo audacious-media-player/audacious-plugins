@@ -1,6 +1,5 @@
 [skin]
 skinDescription=TinyPlayer skin
-mainwinOthertext=1
 mainwinVisX=189
 mainwinVisY=36
 mainwinTextX=1
@@ -31,6 +30,7 @@ mainwinTextVisible=1
 mainwinOthertextVisible=0
 mainwinVisVisible=0
 mainwinMenurowVisible=0
+mainwinStreaminfoVisible=0
 mainwinWidth=275
 mainwinHeight=87
 mainwinPreviousX=16

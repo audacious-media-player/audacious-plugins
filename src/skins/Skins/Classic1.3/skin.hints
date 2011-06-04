@@ -1,6 +1,5 @@
 [skin]
 skinDescription=The default skin for Audacious.
-mainwinOthertext=1
 mainwinVisX=19
 mainwinVisY=39
 mainwinTextX=19
@@ -21,6 +20,7 @@ mainwinNumber4Y=56
 mainwinPlayStatusX=19
 mainwinPlayStatusY=58
 mainwinMenurowVisible=1
+mainwinStreaminfoVisible=0
 mainwinOthertextIsStatus=1
 mainwinOthertextVisible=1
 mainwinTextVisible=1

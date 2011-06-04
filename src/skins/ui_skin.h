@@ -163,6 +163,7 @@ typedef struct {
     gint mainwin_height;
 
     gboolean mainwin_menurow_visible;
+    gboolean mainwin_streaminfo_visible;
     gboolean mainwin_othertext_is_status;
 
     gint textbox_bitmap_font_width;

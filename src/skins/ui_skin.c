@@ -477,6 +477,7 @@ static void skin_parse_hints (Skin * skin, const gchar * path_p)
     skin->properties.mainwin_playstatus_x = 24;
     skin->properties.mainwin_playstatus_y = 28;
     skin->properties.mainwin_menurow_visible = TRUE;
+    skin->properties.mainwin_streaminfo_visible = TRUE;
     skin->properties.mainwin_volume_x = 107;
     skin->properties.mainwin_volume_y = 57;
     skin->properties.mainwin_balance_x = 177;
@@ -558,6 +559,7 @@ static void skin_parse_hints (Skin * skin, const gchar * path_p)
      {"mainwinPlayStatusX", & skin->properties.mainwin_playstatus_x},
      {"mainwinPlayStatusY", & skin->properties.mainwin_playstatus_y},
      {"mainwinMenurowVisible", & skin->properties.mainwin_menurow_visible},
+     {"mainwinStreaminfoVisible", & skin->properties.mainwin_streaminfo_visible},
      {"mainwinVolumeX", & skin->properties.mainwin_volume_x},
      {"mainwinVolumeY", & skin->properties.mainwin_volume_y},
      {"mainwinBalanceX", & skin->properties.mainwin_balance_x},

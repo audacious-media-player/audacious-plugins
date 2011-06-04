@@ -312,11 +312,11 @@ mainwin_refresh_visible(void)
     show_hide_widget (mainwin_menurow,
      active_skin->properties.mainwin_menurow_visible);
     show_hide_widget (mainwin_rate_text,
-     ! active_skin->properties.mainwin_othertext_visible);
+     active_skin->properties.mainwin_streaminfo_visible);
     show_hide_widget (mainwin_freq_text,
-     ! active_skin->properties.mainwin_othertext_visible);
+     active_skin->properties.mainwin_streaminfo_visible);
     show_hide_widget (mainwin_monostereo,
-     ! active_skin->properties.mainwin_othertext_visible);
+     active_skin->properties.mainwin_streaminfo_visible);
     show_hide_widget (mainwin_othertext,
      active_skin->properties.mainwin_othertext_visible);
 }
