@@ -22,7 +22,10 @@
 #ifndef SKINS_DRAW_COMPAT_H
 #define SKINS_DRAW_COMPAT_H
 
+#include <gdk/gdk.h>
 #include <gtk/gtk.h>
+
+#include <audacious/gtk-compat.h>
 
 #if GTK_CHECK_VERSION (3, 0, 0)
 

@@ -26,7 +26,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <gtk/gtk.h>
+
 #include <audacious/debug.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 
 #include "plugin.h"

@@ -27,8 +27,12 @@
 #include <errno.h>
 #include <dirent.h>
 #include <string.h>
+#include <unistd.h>
+
+#include <gtk/gtk.h>
 
 #include <audacious/debug.h>
+#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
