@@ -712,6 +712,8 @@ static GtkWidget * create_menu (gint id)
     if (menus[id] == NULL)
     {
         menus[id] = ui_manager_get_popup_menu(ui_manager, templates[id].name);
+        g_signal_connect (menus[id], "destroy", (GCallback)
+         gtk_widget_destroyed, & menus[id]);
 
         if (templates[id].plug_name != NULL)
         {
