@@ -37,6 +37,8 @@ GtkWidget * button_new_small (gint w, gint h);
 
 void button_on_press (GtkWidget * button, ButtonCB callback);
 void button_on_release (GtkWidget * button, ButtonCB callback);
+void button_on_rpress (GtkWidget * button, ButtonCB callback);
+void button_on_rrelease (GtkWidget * button, ButtonCB callback);
 
 gboolean button_get_active (GtkWidget * button);
 void button_set_active (GtkWidget * button, gboolean active);

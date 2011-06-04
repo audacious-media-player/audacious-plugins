@@ -30,30 +30,37 @@ typedef struct {
     gint nx, ny, px, py;
     gint pnx, pny, ppx, ppy;
     SkinPixmapId si1, si2;
-    gboolean hover, pressed, active;
-    ButtonCB on_press;
-    ButtonCB on_release;
+    gboolean pressed, rpressed, active;
+    ButtonCB on_press, on_release, on_rpress, on_rrelease;
 } ButtonData;
 
 DRAW_FUNC_BEGIN (button_draw)
     ButtonData * data = g_object_get_data ((GObject *) wid, "buttondata");
     g_return_val_if_fail (data, FALSE);
 
-    gboolean down = data->hover && data->pressed;
-
     switch (data->type)
     {
     case BUTTON_TYPE_NORMAL:
-        skin_draw_pixbuf (cr, down ? data->si2 : data->si1, down ? data->px :
-         data->nx, down ? data->py : data->ny, 0, 0, data->w, data->h);
+        if (data->pressed)
+            skin_draw_pixbuf (cr, data->si2, data->px, data->py, 0, 0, data->w, data->h);
+        else
+            skin_draw_pixbuf (cr, data->si1, data->nx, data->ny, 0, 0, data->w, data->h);
         break;
     case BUTTON_TYPE_TOGGLE:
         if (data->active)
-            skin_draw_pixbuf (cr, down ? data->si2 : data->si1, down ? data->ppx
-             : data->pnx, down ? data->ppy : data->pny, 0, 0, data->w, data->h);
+        {
+            if (data->pressed)
+                skin_draw_pixbuf (cr, data->si2, data->ppx, data->ppy, 0, 0, data->w, data->h);
+            else
+                skin_draw_pixbuf (cr, data->si1, data->pnx, data->pny, 0, 0, data->w, data->h);
+        }
         else
-            skin_draw_pixbuf (cr, down ? data->si2 : data->si1, down ? data->px
-             : data->nx, down ? data->py : data->ny, 0, 0, data->w, data->h);
+        {
+            if (data->pressed)
+                skin_draw_pixbuf (cr, data->si2, data->px, data->py, 0, 0, data->w, data->h);
+            else
+                skin_draw_pixbuf (cr, data->si1, data->nx, data->ny, 0, 0, data->w, data->h);
+        }
         break;
     }
 DRAW_FUNC_END
@@ -63,13 +70,20 @@ static gboolean button_press (GtkWidget * button, GdkEventButton * event)
     ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
     g_return_val_if_fail (data, FALSE);
 
-    if (event->button != 1)
+    if (event->button == 1)
+    {
+        data->pressed = TRUE;
+        if (data->on_press)
+            data->on_press (button, event);
+    }
+    else if (event->button == 3)
+    {
+        data->rpressed = TRUE;
+        if (data->on_rpress)
+            data->on_rpress (button, event);
+    }
+    else
         return FALSE;
-
-    data->pressed = TRUE;
-
-    if (data->on_press)
-        data->on_press (button, event);
 
     if (data->type != BUTTON_TYPE_SMALL)
         gtk_widget_queue_draw (button);
@@ -82,34 +96,28 @@ static gboolean button_release (GtkWidget * button, GdkEventButton * event)
     ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
     g_return_val_if_fail (data, FALSE);
 
-    if (event->button != 1)
-        return FALSE;
-
-    data->pressed = FALSE;
-
-    if (data->hover)
+    if (event->button == 1)
     {
+        if (! data->pressed)
+            return TRUE;
+
+        data->pressed = FALSE;
         if (data->type == BUTTON_TYPE_TOGGLE)
             data->active = ! data->active;
-
         if (data->on_release)
             data->on_release (button, event);
     }
+    else if (event->button == 3)
+    {
+        if (! data->rpressed)
+            return TRUE;
+
+        data->rpressed = FALSE;
+        if (data->on_rrelease)
+            data->on_rrelease (button, event);
+    }
 
     if (data->type != BUTTON_TYPE_SMALL)
-        gtk_widget_queue_draw (button);
-
-    return TRUE;
-}
-
-static gboolean enter_notify (GtkWidget * button, GdkEventCrossing * event)
-{
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
-    g_return_val_if_fail (data, FALSE);
-
-    data->hover = TRUE;
-
-    if (data->pressed && data->type != BUTTON_TYPE_SMALL)
         gtk_widget_queue_draw (button);
 
     return TRUE;
@@ -120,10 +128,14 @@ static gboolean leave_notify (GtkWidget * button, GdkEventCrossing * event)
     ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
     g_return_val_if_fail (data, FALSE);
 
-    data->hover = FALSE;
+    if (data->pressed || data->rpressed)
+    {
+        data->pressed = FALSE;
+        data->rpressed = FALSE;
 
-    if (data->pressed && data->type != BUTTON_TYPE_SMALL)
-        gtk_widget_queue_draw (button);
+        if (data->type != BUTTON_TYPE_SMALL)
+            gtk_widget_queue_draw (button);
+    }
 
     return TRUE;
 }
@@ -147,7 +159,7 @@ static GtkWidget * button_new_base (gint type, gint w, gint h)
 
     gtk_widget_set_size_request (button, w, h);
     gtk_widget_add_events (button, GDK_BUTTON_PRESS_MASK |
-     GDK_BUTTON_RELEASE_MASK | GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK);
+     GDK_BUTTON_RELEASE_MASK | GDK_LEAVE_NOTIFY_MASK);
 
     if (type != BUTTON_TYPE_SMALL)
         g_signal_connect (button, DRAW_SIGNAL, (GCallback) button_draw, NULL);
@@ -156,8 +168,6 @@ static GtkWidget * button_new_base (gint type, gint w, gint h)
      NULL);
     g_signal_connect (button, "button-release-event", (GCallback)
      button_release, NULL);
-    g_signal_connect (button, "enter-notify-event", (GCallback) enter_notify,
-     NULL);
     g_signal_connect (button, "leave-notify-event", (GCallback) leave_notify,
      NULL);
     g_signal_connect (button, "destroy", (GCallback) button_destroy, NULL);
@@ -228,6 +238,22 @@ void button_on_release (GtkWidget * button, ButtonCB callback)
     g_return_if_fail (data);
 
     data->on_release = callback;
+}
+
+void button_on_rpress (GtkWidget * button, ButtonCB callback)
+{
+    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
+    g_return_if_fail (data);
+
+    data->on_rpress = callback;
+}
+
+void button_on_rrelease (GtkWidget * button, ButtonCB callback)
+{
+    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
+    g_return_if_fail (data);
+
+    data->on_rrelease = callback;
 }
 
 gboolean button_get_active (GtkWidget * button)

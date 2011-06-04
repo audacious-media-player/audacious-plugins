@@ -504,15 +504,6 @@ static void mainwin_scrolled (GtkWidget * widget, GdkEventScroll * event, void *
 }
 
 static gboolean
-mainwin_widget_contained(GdkEventButton *event, int x, int y, int w, int h)
-{
-    gint ex = event->x;
-    gint ey = event->y;
-
-    return (ex > x && ey > y && ex < x + w && ey < y + h);
-}
-
-static gboolean
 mainwin_mouse_button_press(GtkWidget * widget,
                            GdkEventButton * event,
                            gpointer callback_data)
@@ -523,32 +514,20 @@ mainwin_mouse_button_press(GtkWidget * widget,
         return TRUE;
     }
 
-    if (event->button == 3) {
-        /* Pop up playback menu if right clicked over playback-control widgets,
-         * otherwise popup general menu
-         */
-        if (mainwin_widget_contained(event, active_skin->properties.mainwin_position_x,
-                                     active_skin->properties.mainwin_position_y, 248, 10) ||
-            mainwin_widget_contained(event, active_skin->properties.mainwin_previous_x,
-                                     active_skin->properties.mainwin_previous_y, 23, 18) ||
-            mainwin_widget_contained(event, active_skin->properties.mainwin_play_x,
-                                     active_skin->properties.mainwin_play_y, 23, 18) ||
-            mainwin_widget_contained(event, active_skin->properties.mainwin_pause_x,
-                                     active_skin->properties.mainwin_pause_y, 23, 18) ||
-            mainwin_widget_contained(event, active_skin->properties.mainwin_stop_x,
-                                     active_skin->properties.mainwin_stop_y, 23, 18) ||
-            mainwin_widget_contained(event, active_skin->properties.mainwin_next_x,
-                                     active_skin->properties.mainwin_next_y, 23, 18))
-            ui_popup_menu_show(UI_MENU_PLAYBACK, event->x_root, event->y_root,
-             FALSE, FALSE, 3, event->time);
-        else
-            ui_popup_menu_show(UI_MENU_MAIN, event->x_root, event->y_root,
-             FALSE, FALSE, 3, event->time);
-
+    if (event->button == 3)
+    {
+        ui_popup_menu_show (UI_MENU_MAIN, event->x_root, event->y_root, FALSE,
+         FALSE, event->button, event->time);
         return TRUE;
     }
 
     return FALSE;
+}
+
+static void mainwin_playback_rpress (GtkWidget * button, GdkEventButton * event)
+{
+    ui_popup_menu_show (UI_MENU_PLAYBACK, event->x_root, event->y_root,
+     FALSE, FALSE, event->button, event->time);
 }
 
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
@@ -1262,23 +1241,28 @@ mainwin_create_widgets(void)
     window_put_widget (mainwin, FALSE, mainwin_rew, 16, 88);
     button_on_press (mainwin_rew, mainwin_rew_press);
     button_on_release (mainwin_rew, mainwin_rew_release);
+    button_on_rpress (mainwin_rew, mainwin_playback_rpress);
 
     mainwin_fwd = button_new (22, 18, 92, 0, 92, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
     window_put_widget (mainwin, FALSE, mainwin_fwd, 108, 88);
     button_on_press (mainwin_fwd, mainwin_fwd_press);
     button_on_release (mainwin_fwd, mainwin_fwd_release);
+    button_on_rpress (mainwin_fwd, mainwin_playback_rpress);
 
     mainwin_play = button_new (23, 18, 23, 0, 23, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
     window_put_widget (mainwin, FALSE, mainwin_play, 39, 88);
     button_on_release (mainwin_play, (ButtonCB) mainwin_play_pushed);
+    button_on_rpress (mainwin_play, mainwin_playback_rpress);
 
     mainwin_pause = button_new (23, 18, 46, 0, 46, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
     window_put_widget (mainwin, FALSE, mainwin_pause, 62, 88);
     button_on_release (mainwin_pause, (ButtonCB) aud_drct_pause);
+    button_on_rpress (mainwin_pause, mainwin_playback_rpress);
 
     mainwin_stop = button_new (23, 18, 69, 0, 69, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
     window_put_widget (mainwin, FALSE, mainwin_stop, 85, 88);
     button_on_release (mainwin_stop, (ButtonCB) aud_drct_stop);
+    button_on_rpress (mainwin_stop, mainwin_playback_rpress);
 
     mainwin_eject = button_new (22, 16, 114, 0, 114, 16, SKIN_CBUTTONS, SKIN_CBUTTONS);
     window_put_widget (mainwin, FALSE, mainwin_eject, 136, 89);
