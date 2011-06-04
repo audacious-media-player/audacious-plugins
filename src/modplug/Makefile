@@ -36,10 +36,6 @@ SRCS = plugin.cxx		\
        archive/archive.cxx	\
        archive/open.cxx		\
        archive/arch_raw.cxx	\
-       gui/main.cxx		\
-       gui/support.cxx		\
-       gui/interface.cxx	\
-       gui/callbacks.cxx	\
        plugin_main.c
 
 include ../../buildsys.mk
