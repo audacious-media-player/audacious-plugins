@@ -1553,6 +1553,8 @@ static void mainwin_update_volume (void)
     aud_drct_get_volume_balance (& balance);
     mainwin_set_volume_slider (volume);
     mainwin_set_balance_slider (balance);
+    equalizerwin_set_volume_slider (volume);
+    equalizerwin_set_balance_slider (balance);
 }
 
 static void mainwin_update_time_display (gint time, gint length)
