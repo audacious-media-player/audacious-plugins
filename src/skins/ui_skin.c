@@ -452,7 +452,7 @@ void cleanup_skins()
  */
 static void skin_parse_hints (Skin * skin, const gchar * path_p)
 {
-    gchar *filename, *tmp;
+    gchar *filename;
     INIFile *inifile;
 
     path_p = path_p ? path_p : skin->path;
@@ -534,505 +534,85 @@ static void skin_parse_hints (Skin * skin, const gchar * path_p)
     if (!inifile)
         return;
 
-    tmp = read_ini_string(inifile, "skin", "mainwinVisX");
+    struct {
+        const gchar * name;
+        gint * value;
+    } pairs[] = {
+     {"mainwinVisX", & skin->properties.mainwin_vis_x},
+     {"mainwinVisY", & skin->properties.mainwin_vis_y},
+     {"mainwinTextX", & skin->properties.mainwin_text_x},
+     {"mainwinTextY", & skin->properties.mainwin_text_y},
+     {"mainwinTextWidth", & skin->properties.mainwin_text_width},
+     {"mainwinInfoBarX", & skin->properties.mainwin_infobar_x},
+     {"mainwinInfoBarY", & skin->properties.mainwin_infobar_y},
+     {"mainwinNumber0X", & skin->properties.mainwin_number_0_x},
+     {"mainwinNumber0Y", & skin->properties.mainwin_number_0_y},
+     {"mainwinNumber1X", & skin->properties.mainwin_number_1_x},
+     {"mainwinNumber1Y", & skin->properties.mainwin_number_1_y},
+     {"mainwinNumber2X", & skin->properties.mainwin_number_2_x},
+     {"mainwinNumber2Y", & skin->properties.mainwin_number_2_y},
+     {"mainwinNumber3X", & skin->properties.mainwin_number_3_x},
+     {"mainwinNumber3Y", & skin->properties.mainwin_number_3_y},
+     {"mainwinNumber4X", & skin->properties.mainwin_number_4_x},
+     {"mainwinNumber4Y", & skin->properties.mainwin_number_4_y},
+     {"mainwinPlayStatusX", & skin->properties.mainwin_playstatus_x},
+     {"mainwinPlayStatusY", & skin->properties.mainwin_playstatus_y},
+     {"mainwinMenurowVisible", & skin->properties.mainwin_menurow_visible},
+     {"mainwinVolumeX", & skin->properties.mainwin_volume_x},
+     {"mainwinVolumeY", & skin->properties.mainwin_volume_y},
+     {"mainwinBalanceX", & skin->properties.mainwin_balance_x},
+     {"mainwinBalanceY", & skin->properties.mainwin_balance_y},
+     {"mainwinPositionX", & skin->properties.mainwin_position_x},
+     {"mainwinPositionY", & skin->properties.mainwin_position_y},
+     {"mainwinOthertextIsStatus", & skin->properties.mainwin_othertext_is_status},
+     {"mainwinOthertextVisible", & skin->properties.mainwin_othertext_visible},
+     {"mainwinTextVisible", & skin->properties.mainwin_text_visible},
+     {"mainwinVisVisible", & skin->properties.mainwin_vis_visible},
+     {"mainwinPreviousX", & skin->properties.mainwin_previous_x},
+     {"mainwinPreviousY", & skin->properties.mainwin_previous_y},
+     {"mainwinPlayX", & skin->properties.mainwin_play_x},
+     {"mainwinPlayY", & skin->properties.mainwin_play_y},
+     {"mainwinPauseX", & skin->properties.mainwin_pause_x},
+     {"mainwinPauseY", & skin->properties.mainwin_pause_y},
+     {"mainwinStopX", & skin->properties.mainwin_stop_x},
+     {"mainwinStopY", & skin->properties.mainwin_stop_y},
+     {"mainwinNextX", & skin->properties.mainwin_next_x},
+     {"mainwinNextY", & skin->properties.mainwin_next_y},
+     {"mainwinEjectX", & skin->properties.mainwin_eject_x},
+     {"mainwinEjectY", & skin->properties.mainwin_eject_y},
+     {"mainwinWidth", & skin->properties.mainwin_width},
+     {"mainwinHeight", & skin->properties.mainwin_height},
+     {"mainwinAboutX", & skin->properties.mainwin_about_x},
+     {"mainwinAboutY", & skin->properties.mainwin_about_y},
+     {"mainwinShuffleX", & skin->properties.mainwin_shuffle_x},
+     {"mainwinShuffleY", & skin->properties.mainwin_shuffle_y},
+     {"mainwinRepeatX", & skin->properties.mainwin_repeat_x},
+     {"mainwinRepeatY", & skin->properties.mainwin_repeat_y},
+     {"mainwinEQButtonX", & skin->properties.mainwin_eqbutton_x},
+     {"mainwinEQButtonY", & skin->properties.mainwin_eqbutton_y},
+     {"mainwinPLButtonX", & skin->properties.mainwin_plbutton_x},
+     {"mainwinPLButtonY", & skin->properties.mainwin_plbutton_y},
+     {"textboxBitmapFontWidth", & skin->properties.textbox_bitmap_font_width},
+     {"textboxBitmapFontHeight", & skin->properties.textbox_bitmap_font_height},
+     {"mainwinMinimizeX", & skin->properties.mainwin_minimize_x},
+     {"mainwinMinimizeY", & skin->properties.mainwin_minimize_y},
+     {"mainwinShadeX", & skin->properties.mainwin_shade_x},
+     {"mainwinShadeY", & skin->properties.mainwin_shade_y},
+     {"mainwinCloseX", & skin->properties.mainwin_close_x},
+     {"mainwinCloseY", & skin->properties.mainwin_close_y}};
 
-    if (tmp != NULL)
+    for (gint i = 0; i < G_N_ELEMENTS (pairs); i ++)
     {
-        skin->properties.mainwin_vis_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinVisY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_vis_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinTextX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_text_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinTextY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_text_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinTextWidth");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_text_width = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinInfoBarX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_infobar_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinInfoBarY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_infobar_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinNumber0X");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_number_0_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinNumber0Y");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_number_0_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinNumber1X");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_number_1_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinNumber1Y");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_number_1_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinNumber2X");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_number_2_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinNumber2Y");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_number_2_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinNumber3X");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_number_3_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinNumber3Y");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_number_3_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinNumber4X");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_number_4_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinNumber4Y");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_number_4_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinPlayStatusX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_playstatus_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinPlayStatusY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_playstatus_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinMenurowVisible");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_menurow_visible = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinVolumeX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_volume_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinVolumeY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_volume_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinBalanceX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_balance_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinBalanceY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_balance_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinPositionX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_position_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinPositionY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_position_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinOthertextIsStatus");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_othertext_is_status = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinOthertextVisible");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_othertext_visible = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinTextVisible");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_text_visible = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinVisVisible");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_vis_visible = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinPreviousX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_previous_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinPreviousY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_previous_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinPlayX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_play_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinPlayY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_play_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinPauseX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_pause_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinPauseY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_pause_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinStopX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_stop_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinStopY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_stop_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinNextX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_next_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinNextY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_next_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinEjectX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_eject_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinEjectY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_eject_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinWidth");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_width = atoi(tmp);
-        g_free(tmp);
-    }
-
-    skin_mask_info[0].width = skin->properties.mainwin_width;
-
-    tmp = read_ini_string(inifile, "skin", "mainwinHeight");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_height = atoi(tmp);
-        g_free(tmp);
+        gchar * s = read_ini_string (inifile, "skin", pairs[i].name);
+        if (s)
+        {
+            * pairs[i].value = atoi (s);
+            g_free (s);
+        }
     }
 
     skin_mask_info[0].height = skin->properties.mainwin_height;
-
-    tmp = read_ini_string(inifile, "skin", "mainwinAboutX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_about_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinAboutY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_about_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinShuffleX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_shuffle_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinShuffleY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_shuffle_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinRepeatX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_repeat_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinRepeatY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_repeat_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinEQButtonX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_eqbutton_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinEQButtonY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_eqbutton_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinPLButtonX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_plbutton_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinPLButtonY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_plbutton_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "textboxBitmapFontWidth");
-
-    if (tmp != NULL)
-    {
-        skin->properties.textbox_bitmap_font_width = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "textboxBitmapFontHeight");
-
-    if (tmp != NULL)
-    {
-        skin->properties.textbox_bitmap_font_height = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinMinimizeX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_minimize_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinMinimizeY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_minimize_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinShadeX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_shade_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinShadeY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_shade_y = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinCloseX");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_close_x = atoi(tmp);
-        g_free(tmp);
-    }
-
-    tmp = read_ini_string(inifile, "skin", "mainwinCloseY");
-
-    if (tmp != NULL)
-    {
-        skin->properties.mainwin_close_y = atoi(tmp);
-        g_free(tmp);
-    }
+    skin_mask_info[0].width = skin->properties.mainwin_width;
 
     if (filename != NULL)
         g_free(filename);
