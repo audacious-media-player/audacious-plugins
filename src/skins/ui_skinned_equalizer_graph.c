@@ -85,7 +85,7 @@ DRAW_FUNC_BEGIN (eq_graph_draw)
      * 9 + EQUALIZER_MAX_GAIN / 2) / EQUALIZER_MAX_GAIN, 113, 1);
 
     guint32 cols[19];
-    skin_get_eq_spline_colors(aud_active_skin, cols);
+    skin_get_eq_spline_colors(active_skin, cols);
 
     gfloat yf[10];
     init_spline(x, aud_cfg->equalizer_bands, 10, yf);
@@ -121,8 +121,7 @@ DRAW_FUNC_BEGIN (eq_graph_draw)
         for (y = ymin; y <= ymax; y++)
         {
             cairo_rectangle (cr, i + 2, y, 1, 1);
-            cairo_set_source_rgb (cr, ((cols[y] & 0xff0000) >> 16) / 255.0,
-             ((cols[y] & 0x00ff00) >> 8) / 255.0, (cols[y] & 0x0000ff) / 255.0);
+            set_cairo_color (cr, cols[y]);
             cairo_fill (cr);
         }
     }

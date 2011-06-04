@@ -28,6 +28,7 @@
 
 #include "draw-compat.h"
 #include "skins_cfg.h"
+#include "surface.h"
 #include "ui_skin.h"
 #include "ui_vis.h"
 
@@ -36,7 +37,6 @@ static const gfloat vis_pfalloff_speeds[] = {1.2, 1.3, 1.4, 1.5, 1.6};
 static const gint vis_scope_colors[16] = {22, 21, 21, 20, 20, 19, 19, 18, 18,
  19, 19, 20, 20, 21, 21, 22};
 
-static guint32 vis_color[24];
 static guint32 vis_voice_color[256];
 static guint32 vis_voice_color_fire[256];
 static guint32 vis_voice_color_ice[256];
@@ -48,33 +48,27 @@ static struct {
     gboolean voiceprint_advance;
 } vis;
 
-#define MAKE_RGB(r,g,b) (((r) << 16) | ((g) << 8) | (b))
 #define RGB_SEEK(x,y) (set = rgb + 76 * (y) + (x))
 #define RGB_SET(c) (* set ++ = (c))
 #define RGB_SET_Y(c) do {* set = (c); set += 76;} while (0)
-#define RGB_SET_INDEX(c) RGB_SET (vis_color[c])
-#define RGB_SET_INDEX_Y(c) RGB_SET_Y (vis_color[c])
+#define RGB_SET_INDEX(c) RGB_SET (active_skin->vis_colors[c])
+#define RGB_SET_INDEX_Y(c) RGB_SET_Y (active_skin->vis_colors[c])
 
 void ui_vis_set_colors (void)
 {
-    g_return_if_fail (aud_active_skin != NULL);
+    g_return_if_fail (active_skin != NULL);
 
-    for (gint i = 0; i < 24; i ++)
-        vis_color[i] = (aud_active_skin->vis_color[i][0] << 16) |
-         (aud_active_skin->vis_color[i][1] << 8) |
-         aud_active_skin->vis_color[i][2];
-
-    GdkColor * fgc = skin_get_color (aud_active_skin, SKIN_TEXTFG);
-    GdkColor * bgc = skin_get_color (aud_active_skin, SKIN_TEXTBG);
-    gint fg[3] = {fgc->red >> 8, fgc->green >> 8, fgc->blue >> 8};
-    gint bg[3] = {bgc->red >> 8, bgc->green >> 8, bgc->blue >> 8};
+    guint32 fgc = active_skin->colors[SKIN_TEXTFG];
+    guint32 bgc = active_skin->colors[SKIN_TEXTBG];
+    gint fg[3] = {COLOR_R (fgc), COLOR_G (fgc), COLOR_B (fgc)};
+    gint bg[3] = {COLOR_R (bgc), COLOR_G (bgc), COLOR_B (bgc)};
 
     for (gint x = 0; x < 256; x ++)
     {
         guchar c[3];
         for (gint n = 0; n < 3; n ++)
             c[n] = bg[n] + (fg[n] - bg[n]) * x / 255;
-        vis_voice_color[x] = MAKE_RGB (c[0], c[1], c[2]);
+        vis_voice_color[x] = COLOR (c[0], c[1], c[2]);
     }
 
     for (gint x = 0; x < 256; x ++)
@@ -82,14 +76,14 @@ void ui_vis_set_colors (void)
         guchar r = MIN (x, 127) * 2;
         guchar g = CLAMP (x - 64, 0, 127) * 2;
         guchar b = MAX (x - 128, 0) * 2;
-        vis_voice_color_fire[x] = MAKE_RGB (r, g, b);
+        vis_voice_color_fire[x] = COLOR (r, g, b);
     }
 
     for (gint x = 0; x < 256; x ++)
     {
         guchar g = MIN (x, 127) * 2;
         guchar b = MIN (x, 63) * 4;
-        vis_voice_color_ice[x] = MAKE_RGB (x, g, b);
+        vis_voice_color_ice[x] = COLOR (x, g, b);
     }
 
     guint32 * set = pattern_fill;

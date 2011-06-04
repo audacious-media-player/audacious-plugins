@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2007  Audacious development team
+ *  Copyright (C) 2005-2011  Audacious development team
  *
  *  Based on BMP:
  *  Copyright (C) 2003-2004  BMP development team
@@ -23,8 +23,8 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_DND_H
-#define AUDACIOUS_DND_H
+#ifndef SKINS_DND_H
+#define SKINS_DND_H
 
 #include <gtk/gtk.h>
 
@@ -38,7 +38,7 @@ enum {
 };
 
 /* Drag data format listing for gtk_drag_dest_set() */
-static const GtkTargetEntry aud_drop_types[] = {
+static const GtkTargetEntry drop_types[] = {
     {"text/plain", 0, DROP_PLAINTEXT},
     {"text/uri-list", 0, DROP_URLENCODED},
     {"STRING", 0, DROP_STRING},
@@ -46,6 +46,10 @@ static const GtkTargetEntry aud_drop_types[] = {
     {"application/x-font-ttf", 0, DROP_FONT},
 };
 
-void drag_dest_set(GtkWidget*);
+static inline void drag_dest_set (GtkWidget * widget)
+{
+    gtk_drag_dest_set (widget, GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
+     drop_types, G_N_ELEMENTS (drop_types), GDK_ACTION_COPY | GDK_ACTION_MOVE);
+}
 
-#endif /* AUDACIOUS_DND_H */
+#endif /* SKINS_DND_H */

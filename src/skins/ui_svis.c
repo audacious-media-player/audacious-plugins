@@ -28,31 +28,20 @@
 
 #include "draw-compat.h"
 #include "skins_cfg.h"
+#include "surface.h"
 #include "ui_skin.h"
 #include "ui_vis.h"
 
 static gint svis_scope_colors[] = {20, 19, 18, 19, 20};
 static gint svis_vu_normal_colors[] = {17, 17, 17, 12, 12, 12, 2, 2};
 
-static guint32 svis_color[24];
-
 static gint svis_data[75];
-
-void ui_svis_set_colors (void)
-{
-    g_return_if_fail (aud_active_skin != NULL);
-
-    for (gint i = 0; i < 24; i ++)
-        svis_color[i] = (aud_active_skin->vis_color[i][0] << 16) |
-         (aud_active_skin->vis_color[i][1] << 8) |
-         aud_active_skin->vis_color[i][2];
-}
 
 #define RGB_SEEK(x,y) (set = rgb + 38 * (y) + (x))
 #define RGB_SET(c) (* set ++ = (c))
 #define RGB_SET_Y(c) do {* set = (c); set += 38;} while (0)
-#define RGB_SET_INDEX(c) RGB_SET (svis_color[c])
-#define RGB_SET_INDEX_Y(c) RGB_SET_Y (svis_color[c])
+#define RGB_SET_INDEX(c) RGB_SET (active_skin->vis_colors[c])
+#define RGB_SET_INDEX_Y(c) RGB_SET_Y (active_skin->vis_colors[c])
 
 DRAW_FUNC_BEGIN (ui_svis_draw)
     guint32 rgb[38 * 5];

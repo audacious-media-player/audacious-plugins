@@ -17,8 +17,8 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_MANAGER_H
-#define AUDACIOUS_UI_MANAGER_H
+#ifndef SKINS_UI_MANAGER_H
+#define SKINS_UI_MANAGER_H
 
 #include <gtk/gtk.h>
 
@@ -58,4 +58,4 @@ void ui_popup_menu_show(gint id, gint x, gint y, gboolean leftward, gboolean
  upward, gint button, gint time);
 void ui_manager_destroy( void );
 
-#endif /* AUDACIOUS_UI_MANAGER_H */
+#endif /* SKINS_UI_MANAGER_H */

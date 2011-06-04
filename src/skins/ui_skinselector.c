@@ -311,8 +311,8 @@ void skin_view_update (GtkTreeView * treeview)
             g_object_unref(thumbnail);
         g_free(formattedname);
 
-        if (g_strstr_len(aud_active_skin->path,
-                         strlen(aud_active_skin->path), name) ) {
+        if (g_strstr_len(active_skin->path,
+                         strlen(active_skin->path), name) ) {
             iter_current_skin = iter;
             have_current_skin = TRUE;
         }

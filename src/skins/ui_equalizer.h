@@ -23,8 +23,8 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_EQUALIZER_H
-#define AUDACIOUS_UI_EQUALIZER_H
+#ifndef SKINS_UI_EQUALIZER_H
+#define SKINS_UI_EQUALIZER_H
 
 #include <gtk/gtk.h>
 
@@ -40,4 +40,4 @@ void equalizerwin_eq_changed(void);
 
 extern GtkWidget *equalizerwin;
 
-#endif /* AUDACIOUS_UI_EQUALIZER_H */
+#endif /* SKINS_UI_EQUALIZER_H */

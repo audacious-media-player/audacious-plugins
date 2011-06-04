@@ -123,12 +123,13 @@ mainwin_set_shade(gboolean shaded)
 
 void mainwin_set_shape (void)
 {
+    gint id = config.player_shaded ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN;
+    g_return_if_fail (active_skin->masks[id]);
+
 #ifdef MASK_IS_REGION
-    gtk_widget_shape_combine_region (mainwin, skin_get_mask (aud_active_skin,
-     config.player_shaded ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN));
+    gtk_widget_shape_combine_region (mainwin, active_skin->masks[id]);
 #else
-    gtk_widget_shape_combine_mask (mainwin, skin_get_mask (aud_active_skin,
-     config.player_shaded ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN), 0, 0);
+    gtk_widget_shape_combine_mask (mainwin, active_skin->masks[id], 0, 0);
 #endif
 }
 
@@ -220,11 +221,11 @@ static void mainwin_lock_info_text (const gchar * text)
 {
     if (mainwin_info_text_locked != TRUE)
         mainwin_tb_old_text = g_strdup
-         (aud_active_skin->properties.mainwin_othertext_is_status ?
+         (active_skin->properties.mainwin_othertext_is_status ?
          textbox_get_text (mainwin_othertext) : textbox_get_text (mainwin_info));
 
     mainwin_info_text_locked = TRUE;
-    if (aud_active_skin->properties.mainwin_othertext_is_status)
+    if (active_skin->properties.mainwin_othertext_is_status)
         textbox_set_text (mainwin_othertext, text);
     else
         textbox_set_text (mainwin_info, text);
@@ -236,7 +237,7 @@ static void mainwin_release_info_text (void)
 
     if (mainwin_tb_old_text != NULL)
     {
-        if (aud_active_skin->properties.mainwin_othertext_is_status)
+        if (active_skin->properties.mainwin_othertext_is_status)
             textbox_set_text (mainwin_othertext, mainwin_tb_old_text);
         else
             textbox_set_text (mainwin_info, mainwin_tb_old_text);
@@ -305,25 +306,25 @@ static void
 mainwin_refresh_visible(void)
 {
     show_hide_widget (mainwin_info,
-     aud_active_skin->properties.mainwin_text_visible);
+     active_skin->properties.mainwin_text_visible);
     show_hide_widget (mainwin_vis,
-     aud_active_skin->properties.mainwin_vis_visible);
+     active_skin->properties.mainwin_vis_visible);
     show_hide_widget (mainwin_menurow,
-     aud_active_skin->properties.mainwin_menurow_visible);
+     active_skin->properties.mainwin_menurow_visible);
     show_hide_widget (mainwin_rate_text,
-     ! aud_active_skin->properties.mainwin_othertext_visible);
+     ! active_skin->properties.mainwin_othertext_visible);
     show_hide_widget (mainwin_freq_text,
-     ! aud_active_skin->properties.mainwin_othertext_visible);
+     ! active_skin->properties.mainwin_othertext_visible);
     show_hide_widget (mainwin_monostereo,
-     ! aud_active_skin->properties.mainwin_othertext_visible);
+     ! active_skin->properties.mainwin_othertext_visible);
     show_hide_widget (mainwin_othertext,
-     aud_active_skin->properties.mainwin_othertext_visible);
+     active_skin->properties.mainwin_othertext_visible);
 }
 
 void
 mainwin_refresh_hints(void)
 {
-    SkinProperties * p = & aud_active_skin->properties;
+    SkinProperties * p = & active_skin->properties;
 
     if (p->mainwin_vis_x && p->mainwin_vis_y)
         window_move_widget (mainwin, FALSE, mainwin_vis, p->mainwin_vis_x, p->mainwin_vis_y);
@@ -526,18 +527,18 @@ mainwin_mouse_button_press(GtkWidget * widget,
         /* Pop up playback menu if right clicked over playback-control widgets,
          * otherwise popup general menu
          */
-        if (mainwin_widget_contained(event, aud_active_skin->properties.mainwin_position_x,
-                                     aud_active_skin->properties.mainwin_position_y, 248, 10) ||
-            mainwin_widget_contained(event, aud_active_skin->properties.mainwin_previous_x,
-                                     aud_active_skin->properties.mainwin_previous_y, 23, 18) ||
-            mainwin_widget_contained(event, aud_active_skin->properties.mainwin_play_x,
-                                     aud_active_skin->properties.mainwin_play_y, 23, 18) ||
-            mainwin_widget_contained(event, aud_active_skin->properties.mainwin_pause_x,
-                                     aud_active_skin->properties.mainwin_pause_y, 23, 18) ||
-            mainwin_widget_contained(event, aud_active_skin->properties.mainwin_stop_x,
-                                     aud_active_skin->properties.mainwin_stop_y, 23, 18) ||
-            mainwin_widget_contained(event, aud_active_skin->properties.mainwin_next_x,
-                                     aud_active_skin->properties.mainwin_next_y, 23, 18))
+        if (mainwin_widget_contained(event, active_skin->properties.mainwin_position_x,
+                                     active_skin->properties.mainwin_position_y, 248, 10) ||
+            mainwin_widget_contained(event, active_skin->properties.mainwin_previous_x,
+                                     active_skin->properties.mainwin_previous_y, 23, 18) ||
+            mainwin_widget_contained(event, active_skin->properties.mainwin_play_x,
+                                     active_skin->properties.mainwin_play_y, 23, 18) ||
+            mainwin_widget_contained(event, active_skin->properties.mainwin_pause_x,
+                                     active_skin->properties.mainwin_pause_y, 23, 18) ||
+            mainwin_widget_contained(event, active_skin->properties.mainwin_stop_x,
+                                     active_skin->properties.mainwin_stop_y, 23, 18) ||
+            mainwin_widget_contained(event, active_skin->properties.mainwin_next_x,
+                                     active_skin->properties.mainwin_next_y, 23, 18))
             ui_popup_menu_show(UI_MENU_PLAYBACK, event->x_root, event->y_root,
              FALSE, FALSE, 3, event->time);
         else
@@ -1484,8 +1485,8 @@ static gboolean delete_cb (GtkWidget * widget, GdkEvent * event, void * unused)
 
 static void mainwin_draw (GtkWidget * window, cairo_t * cr)
 {
-    gint width = config.player_shaded ? MAINWIN_SHADED_WIDTH : aud_active_skin->properties.mainwin_width;
-    gint height = config.player_shaded ? MAINWIN_SHADED_HEIGHT : aud_active_skin->properties.mainwin_height;
+    gint width = config.player_shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
+    gint height = config.player_shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
 
     skin_draw_pixbuf (cr, SKIN_MAIN, 0, 0, 0, 0, width, height);
     skin_draw_mainwin_titlebar (cr, config.player_shaded, TRUE);
@@ -1494,8 +1495,8 @@ static void mainwin_draw (GtkWidget * window, cairo_t * cr)
 static void
 mainwin_create_window(void)
 {
-    gint width = config.player_shaded ? MAINWIN_SHADED_WIDTH : aud_active_skin->properties.mainwin_width;
-    gint height = config.player_shaded ? MAINWIN_SHADED_HEIGHT : aud_active_skin->properties.mainwin_height;
+    gint width = config.player_shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
+    gint height = config.player_shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
 
     mainwin = window_new (& config.player_x, & config.player_y, width, height,
      TRUE, config.player_shaded, mainwin_draw);
@@ -1719,8 +1720,8 @@ void action_roll_up_player (GtkToggleAction * action)
     config.player_shaded = gtk_toggle_action_get_active (action);
     window_set_shaded (mainwin, config.player_shaded);
 
-    gint width = config.player_shaded ? MAINWIN_SHADED_WIDTH : aud_active_skin->properties.mainwin_width;
-    gint height = config.player_shaded ? MAINWIN_SHADED_HEIGHT : aud_active_skin->properties.mainwin_height;
+    gint width = config.player_shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
+    gint height = config.player_shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
     window_set_size (mainwin, width, height);
     mainwin_set_shape ();
 }

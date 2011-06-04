@@ -17,8 +17,8 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_ACTIONS_MAINWIN_H
-#define AUDACIOUS_ACTIONS_MAINWIN_H
+#ifndef SKINS_ACTIONS_MAINWIN_H
+#define SKINS_ACTIONS_MAINWIN_H
 
 #include <gtk/gtk.h>
 
@@ -54,4 +54,4 @@ void action_ab_set(void);
 void action_play_file(void);
 void action_play_location(void);
 
-#endif /* AUDACIOUS_ACTIONS_MAINWIN_H */
+#endif /* SKINS_ACTIONS_MAINWIN_H */

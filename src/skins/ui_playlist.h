@@ -20,8 +20,8 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_PLAYLIST_H
-#define AUDACIOUS_UI_PLAYLIST_H
+#ifndef SKINS_UI_PLAYLIST_H
+#define SKINS_UI_PLAYLIST_H
 
 #include <gtk/gtk.h>
 
@@ -39,4 +39,4 @@ extern gchar * active_title;
 extern glong active_length;
 extern GtkWidget * playlistwin, * playlistwin_list;
 
-#endif /* AUDACIOUS_UI_PLAYLIST_H */
+#endif /* SKINS_UI_PLAYLIST_H */

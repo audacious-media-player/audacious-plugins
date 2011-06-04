@@ -20,12 +20,12 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_SKINSELECTOR_H
-#define AUDACIOUS_UI_SKINSELECTOR_H
+#ifndef SKINS_UI_SKINSELECTOR_H
+#define SKINS_UI_SKINSELECTOR_H
 
 #include <gtk/gtk.h>
 
 void skin_view_realize(GtkTreeView * treeview);
 void skin_view_update (GtkTreeView * treeview);
 
-#endif /* AUDACIOUS_UI_SKINSELECTOR_H */
+#endif /* SKINS_UI_SKINSELECTOR_H */

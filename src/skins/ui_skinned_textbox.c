@@ -121,15 +121,11 @@ static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
 
     cairo_t * cr = cairo_create (data->buf);
 
-    GdkColor * bg = skin_get_color (aud_active_skin, SKIN_TEXTBG);
-    cairo_set_source_rgba (cr, ((gfloat) bg->red) / 65535, ((gfloat) bg->green)
-     / 65535, ((gfloat) bg->blue) / 65535, 1);
+    set_cairo_color (cr, active_skin->colors[SKIN_TEXTBG]);
     cairo_paint (cr);
 
-    GdkColor * fg = skin_get_color (aud_active_skin, SKIN_TEXTFG);
-    cairo_set_source_rgba (cr, ((gfloat) fg->red) / 65535, ((gfloat) fg->green)
-     / 65535, ((gfloat) fg->blue) / 65535, 1);
     cairo_move_to (cr, 0, -crop);
+    set_cairo_color (cr, active_skin->colors[SKIN_TEXTFG]);
     pango_cairo_show_layout (cr, layout);
 
     cairo_destroy (cr);
@@ -176,8 +172,8 @@ static void lookup_char (const gchar c, gint * x, gint * y)
     default: tx = 29; ty = 0; break;
     }
 
-    * x = tx * aud_active_skin->properties.textbox_bitmap_font_width;
-    * y = ty * aud_active_skin->properties.textbox_bitmap_font_height;
+    * x = tx * active_skin->properties.textbox_bitmap_font_width;
+    * y = ty * active_skin->properties.textbox_bitmap_font_height;
 }
 
 static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
@@ -185,8 +181,8 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
 {
     g_return_if_fail (! data->font && ! data->buf && text);
 
-    gint cw = aud_active_skin->properties.textbox_bitmap_font_width;
-    gint ch = aud_active_skin->properties.textbox_bitmap_font_height;
+    gint cw = active_skin->properties.textbox_bitmap_font_width;
+    gint ch = active_skin->properties.textbox_bitmap_font_height;
 
     gtk_widget_set_size_request (textbox, data->width, ch);
 
@@ -199,9 +195,7 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
 
     cairo_t * cr = cairo_create (data->buf);
 
-    GdkColor * bg = skin_get_color (aud_active_skin, SKIN_TEXTBG);
-    cairo_set_source_rgba (cr, ((gfloat) bg->red) / 65535, ((gfloat) bg->green)
-     / 65535, ((gfloat) bg->blue) / 65535, 1);
+    set_cairo_color (cr, active_skin->colors[SKIN_TEXTBG]);
     cairo_paint (cr);
 
     if (cw * len > 0 && ch > 0)

@@ -20,8 +20,8 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_MAIN_H
-#define AUDACIOUS_UI_MAIN_H
+#ifndef SKINS_UI_MAIN_H
+#define SKINS_UI_MAIN_H
 
 #include <gtk/gtk.h>
 
@@ -96,4 +96,4 @@ gboolean change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event);
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
  void * unused);
 
-#endif /* AUDACIOUS_UI_MAIN_H */
+#endif /* SKINS_UI_MAIN_H */

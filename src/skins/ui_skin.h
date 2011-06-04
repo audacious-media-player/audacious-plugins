@@ -32,6 +32,11 @@
 #define MASK_IS_REGION
 #endif
 
+#define COLOR(r,g,b) (((guint32) (r) << 16) | ((guint32) (g) << 8) | (guint32) (b))
+#define COLOR_R(c) ((gint) (((c) & 0xff0000) >> 16))
+#define COLOR_G(c) ((gint) (((c) & 0xff00) >> 8))
+#define COLOR_B(c) ((gint) ((c) & 0xff))
+
 typedef enum {
     SKIN_MAIN = 0,
     SKIN_CBUTTONS,
@@ -69,107 +74,106 @@ typedef enum {
 } SkinColorId;
 
 typedef struct {
-	/* Vis properties */
-	gint mainwin_vis_x;
-	gint mainwin_vis_y;
-	gboolean mainwin_vis_visible;
+    /* Vis properties */
+    gint mainwin_vis_x;
+    gint mainwin_vis_y;
+    gboolean mainwin_vis_visible;
 
-	/* Text properties */
-	gint mainwin_text_x;
-	gint mainwin_text_y;
-	gint mainwin_text_width;
-	gboolean mainwin_text_visible;
+    /* Text properties */
+    gint mainwin_text_x;
+    gint mainwin_text_y;
+    gint mainwin_text_width;
+    gboolean mainwin_text_visible;
 
-	/* Infobar properties */
-	gint mainwin_infobar_x;
-	gint mainwin_infobar_y;
-	gboolean mainwin_othertext_visible;
+    /* Infobar properties */
+    gint mainwin_infobar_x;
+    gint mainwin_infobar_y;
+    gboolean mainwin_othertext_visible;
 
-	gint mainwin_number_0_x;
-	gint mainwin_number_0_y;
+    gint mainwin_number_0_x;
+    gint mainwin_number_0_y;
 
-	gint mainwin_number_1_x;
-	gint mainwin_number_1_y;
+    gint mainwin_number_1_x;
+    gint mainwin_number_1_y;
 
-	gint mainwin_number_2_x;
-	gint mainwin_number_2_y;
+    gint mainwin_number_2_x;
+    gint mainwin_number_2_y;
 
-	gint mainwin_number_3_x;
-	gint mainwin_number_3_y;
+    gint mainwin_number_3_x;
+    gint mainwin_number_3_y;
 
-	gint mainwin_number_4_x;
-	gint mainwin_number_4_y;
+    gint mainwin_number_4_x;
+    gint mainwin_number_4_y;
 
-	gint mainwin_playstatus_x;
-	gint mainwin_playstatus_y;
+    gint mainwin_playstatus_x;
+    gint mainwin_playstatus_y;
 
-	gint mainwin_volume_x;
-	gint mainwin_volume_y;
+    gint mainwin_volume_x;
+    gint mainwin_volume_y;
 
-	gint mainwin_balance_x;
-	gint mainwin_balance_y;
+    gint mainwin_balance_x;
+    gint mainwin_balance_y;
 
-	gint mainwin_position_x;
-	gint mainwin_position_y;
+    gint mainwin_position_x;
+    gint mainwin_position_y;
 
-	gint mainwin_previous_x;
-	gint mainwin_previous_y;
+    gint mainwin_previous_x;
+    gint mainwin_previous_y;
 
-	gint mainwin_play_x;
-	gint mainwin_play_y;
+    gint mainwin_play_x;
+    gint mainwin_play_y;
 
-	gint mainwin_pause_x;
-	gint mainwin_pause_y;
+    gint mainwin_pause_x;
+    gint mainwin_pause_y;
 
-	gint mainwin_stop_x;
-	gint mainwin_stop_y;
+    gint mainwin_stop_x;
+    gint mainwin_stop_y;
 
-	gint mainwin_next_x;
-	gint mainwin_next_y;
+    gint mainwin_next_x;
+    gint mainwin_next_y;
 
-	gint mainwin_eject_x;
-	gint mainwin_eject_y;
+    gint mainwin_eject_x;
+    gint mainwin_eject_y;
 
-	gint mainwin_eqbutton_x;
-	gint mainwin_eqbutton_y;
+    gint mainwin_eqbutton_x;
+    gint mainwin_eqbutton_y;
 
-	gint mainwin_plbutton_x;
-	gint mainwin_plbutton_y;
+    gint mainwin_plbutton_x;
+    gint mainwin_plbutton_y;
 
-	gint mainwin_shuffle_x;
-	gint mainwin_shuffle_y;
+    gint mainwin_shuffle_x;
+    gint mainwin_shuffle_y;
 
-	gint mainwin_repeat_x;
-	gint mainwin_repeat_y;
+    gint mainwin_repeat_x;
+    gint mainwin_repeat_y;
 
-	gint mainwin_about_x;
-	gint mainwin_about_y;
+    gint mainwin_about_x;
+    gint mainwin_about_y;
 
-	gint mainwin_minimize_x;
-	gint mainwin_minimize_y;
+    gint mainwin_minimize_x;
+    gint mainwin_minimize_y;
 
-	gint mainwin_shade_x;
-	gint mainwin_shade_y;
+    gint mainwin_shade_x;
+    gint mainwin_shade_y;
 
-	gint mainwin_close_x;
-	gint mainwin_close_y;
+    gint mainwin_close_x;
+    gint mainwin_close_y;
 
-	gint mainwin_width;
-	gint mainwin_height;
+    gint mainwin_width;
+    gint mainwin_height;
 
-	gboolean mainwin_menurow_visible;
-	gboolean mainwin_othertext_is_status;
+    gboolean mainwin_menurow_visible;
+    gboolean mainwin_othertext_is_status;
 
-	gint textbox_bitmap_font_width;
-	gint textbox_bitmap_font_height;
+    gint textbox_bitmap_font_width;
+    gint textbox_bitmap_font_height;
 } SkinProperties;
 
 typedef struct {
     gchar *path;
-    GdkPixbuf * pixmaps[SKIN_PIXMAP_COUNT];
-    GdkColor textbg, textfg;
-    GdkColor *colors[SKIN_COLOR_COUNT];
-    guchar vis_color[24][3];
+    cairo_surface_t * pixmaps[SKIN_PIXMAP_COUNT];
+    guint32 colors[SKIN_COLOR_COUNT];
+    guint32 vis_colors[24];
 #ifdef MASK_IS_REGION
     cairo_region_t * masks[SKIN_MASK_COUNT];
 #else
@@ -178,20 +182,12 @@ typedef struct {
     SkinProperties properties;
 } Skin;
 
-extern Skin *aud_active_skin;
+extern Skin * active_skin;
 
 gboolean init_skins(const gchar * path);
 void cleanup_skins(void);
 
 gboolean active_skin_load(const gchar * path);
-
-#ifdef MASK_IS_REGION
-cairo_region_t * skin_get_mask (Skin * skin, SkinMaskId mi);
-#else
-GdkBitmap * skin_get_mask (Skin * skin, SkinMaskId mi);
-#endif
-
-GdkColor *skin_get_color(Skin * skin, SkinColorId color_id);
 
 void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, gint xsrc, gint ysrc,
  gint xdest, gint ydest, gint width, gint height);
@@ -203,5 +199,11 @@ void skin_draw_playlistwin_shaded (cairo_t * cr, gint width, gboolean focus);
 void skin_draw_playlistwin_frame (cairo_t * cr, gint width, gint height,
  gboolean focus);
 void skin_draw_mainwin_titlebar (cairo_t * cr, gboolean shaded, gboolean focus);
+
+static inline void set_cairo_color (cairo_t * cr, guint32 c)
+{
+    cairo_set_source_rgb (cr, COLOR_R(c) / 255.0, COLOR_G(c) / 255.0, COLOR_B(c)
+     / 255.0);
+}
 
 #endif

@@ -23,12 +23,12 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#ifndef AUDACIOUS_UI_HINTS_H
-#define AUDACIOUS_UI_HINTS_H
+#ifndef SKINS_UI_HINTS_H
+#define SKINS_UI_HINTS_H
 
 #include <gtk/gtk.h>
 
 void hint_set_always(gboolean always);
 void hint_set_sticky(gboolean sticky);
 
-#endif /* AUDACIOUS_UI_HINTS_H */
+#endif /* SKINS_UI_HINTS_H */
