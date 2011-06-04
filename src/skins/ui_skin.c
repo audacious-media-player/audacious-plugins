@@ -377,7 +377,7 @@ static void skin_get_textcolors (Skin * skin, cairo_surface_t * s)
     skin->colors[SKIN_TEXTBG] = surface_get_pixel (s, 152, 3);
 
     gint max_d = -1;
-    for (gint y = 0; y < 5; y ++)
+    for (gint y = 0; y < 6; y ++)
     {
         for (gint x = 1; x < 150; x ++)
         {
