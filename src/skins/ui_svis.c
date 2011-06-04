@@ -35,7 +35,10 @@
 static gint svis_scope_colors[] = {20, 19, 18, 19, 20};
 static gint svis_vu_normal_colors[] = {17, 17, 17, 12, 12, 12, 2, 2};
 
-static gint svis_data[75];
+static struct {
+    gboolean active;
+    gint data[75];
+} svis;
 
 #define RGB_SEEK(x,y) (set = rgb + 38 * (y) + (x))
 #define RGB_SET(c) (* set ++ = (c))
@@ -61,7 +64,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
             if (bars && (x % 3) == 2)
                 continue;
 
-            gint h = svis_data[bars ? (x / 3) : x] / 2;
+            gint h = svis.data[bars ? (x / 3) : x] / 2;
             h = CLAMP (h, 0, 5);
             RGB_SEEK (x, 5 - h);
 
@@ -79,7 +82,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
                 if (y == 2)
                     continue;
 
-                gint h = (svis_data[y / 3] * 8 + 19) / 38;
+                gint h = (svis.data[y / 3] * 8 + 19) / 38;
                 h = CLAMP (h, 0, 8);
                 RGB_SEEK (0, y);
 
@@ -98,7 +101,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
                 if (y == 2)
                     continue;
 
-                gint h = svis_data[y / 3];
+                gint h = svis.data[y / 3];
                 h = CLAMP (h, 0, 38);
                 RGB_SEEK (0, y);
 
@@ -108,17 +111,59 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
             break;
         }
         break;
-    case VIS_SCOPE:
-        for (gint x = 0; x < 38; x ++)
+    case VIS_SCOPE:;
+        static const gint scale[17] = {0, 0, 0, 0, 0, 0, 1, 1, 2, 3, 3, 4,
+         4, 4, 4, 4, 4};
+
+        if (! svis.active)
+            goto DRAW;
+
+        switch (config.scope_mode)
         {
-            gint h = svis_data[x << 1] / 3;
-            h = CLAMP (h, 0, 4);
-            RGB_SEEK (x, 4 - h);
+        case SCOPE_DOT:
+            for (gint x = 0; x < 38; x ++)
+            {
+                gint h = scale[CLAMP (svis.data[2 * x], 0, 16)];
+                RGB_SEEK (x, h);
+                RGB_SET_INDEX (svis_scope_colors[h]);
+            }
+        case SCOPE_LINE:
+            for (gint x = 0; x < 37; x++)
+            {
+                gint h = scale[CLAMP (svis.data[2 * x], 0, 16)];
+                gint h2 = scale[CLAMP (svis.data[2 * (x + 1)], 0, 16)];
+
+                if (h < h2) h2 --;
+                else if (h > h2) {gint temp = h; h = h2 + 1; h2 = temp;}
+
+                RGB_SEEK (x, h);
+                for (gint y = h; y <= h2; y ++)
+                    RGB_SET_INDEX_Y (svis_scope_colors[y]);
+            }
+
+            gint h = scale[CLAMP (svis.data[74], 0, 16)];
+            RGB_SEEK (37, h);
             RGB_SET_INDEX (svis_scope_colors[h]);
+            break;
+        default: /* SCOPE_SOLID */
+            for (gint x = 0; x < 38; x++)
+            {
+                gint h = scale[CLAMP (svis.data[2 * x], 0, 16)];
+                gint h2;
+
+                if (h < 2) h2 = 2;
+                else {h2 = h; h = 2;}
+
+                RGB_SEEK (x, h);
+                for (gint y = h; y <= h2; y ++)
+                    RGB_SET_INDEX_Y (svis_scope_colors[y]);
+            }
+            break;
         }
         break;
     }
 
+DRAW:;
     cairo_surface_t * surf = cairo_image_surface_create_for_data ((void *) rgb,
      CAIRO_FORMAT_RGB24, 38, 5, 4 * 38);
     cairo_set_source_surface (cr, surf, 0, 0);
@@ -137,7 +182,7 @@ GtkWidget * ui_svis_new (void)
 
 void ui_svis_clear_data (GtkWidget * widget)
 {
-    memset (svis_data, 0, sizeof svis_data);
+    memset (& svis, 0, sizeof svis);
     gtk_widget_queue_draw (widget);
 }
 
@@ -146,13 +191,14 @@ void ui_svis_timeout_func (GtkWidget * widget, guchar * data)
     if (config.vis_type == VIS_VOICEPRINT)
     {
         for (gint i = 0; i < 2; i ++)
-            svis_data[i] = data[i];
+            svis.data[i] = data[i];
     }
     else
     {
         for (gint i = 0; i < 75; i ++)
-            svis_data[i] = data[i];
+            svis.data[i] = data[i];
     }
 
+    svis.active = TRUE;
     gtk_widget_queue_draw (widget);
 }

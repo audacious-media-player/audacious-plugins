@@ -262,21 +262,17 @@ static void ui_main_evlistener_visualization_timeout (const VisNode * vis,
     else { /* (config.vis_type == VIS_SCOPE) */
 
         /* Oscilloscope */
-        gint pos, step;
 
         if (!mono_pcm_calced)
             aud_calc_mono_pcm(mono_pcm, vis->data, vis->nch);
 
-        step = (vis->length << 8) / 74;
-        for (i = 0, pos = 0; i < 75; i++, pos += step) {
-            intern_vis_data[i] = ((mono_pcm[0][pos >> 8]) >> 12) + 7;
-            if (intern_vis_data[i] == 255)
-                intern_vis_data[i] = 0;
-            else if (intern_vis_data[i] > 12)
-                intern_vis_data[i] = 12;
-            /* Do not see the point of that? (comparison always false) -larne.
-               if (intern_vis_data[i] < 0)
-               intern_vis_data[i] = 0; */
+        for (i = 0; i < 75; i ++)
+        {
+            /* the signal is amplified by 2x */
+            /* output values are in the range 0 to 16 */
+            gint val = 16384 + mono_pcm[0][i * vis->length / 75];
+            val = CLAMP (val, 0, 32768);
+            intern_vis_data[i] = (val + 1024) / 2048;
         }
     }
 

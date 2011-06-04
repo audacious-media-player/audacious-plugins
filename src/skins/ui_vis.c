@@ -186,7 +186,7 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
         case SCOPE_DOT:
             for (gint x = 0; x < 75; x ++)
             {
-                gint h = CLAMP (1 + vis.data[x], 0, 15);
+                gint h = CLAMP (vis.data[x], 0, 15);
                 RGB_SEEK (x, h);
                 RGB_SET_INDEX (vis_scope_colors[h]);
             }
@@ -194,8 +194,8 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
         case SCOPE_LINE:
             for (gint x = 0; x < 74; x++)
             {
-                gint h = CLAMP (1 + vis.data[x], 0, 15);
-                gint h2 = CLAMP (1 + vis.data[x + 1], 0, 15);
+                gint h = CLAMP (vis.data[x], 0, 15);
+                gint h2 = CLAMP (vis.data[x + 1], 0, 15);
 
                 if (h < h2) h2 --;
                 else if (h > h2) {gint temp = h; h = h2 + 1; h2 = temp;}
@@ -206,17 +206,17 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
                     RGB_SET_INDEX_Y (vis_scope_colors[y]);
             }
 
-            gint h = CLAMP (1 + vis.data[74], 0, 15);
+            gint h = CLAMP (vis.data[74], 0, 15);
             RGB_SEEK (74, h);
             RGB_SET_INDEX (vis_scope_colors[h]);
             break;
         default: /* SCOPE_SOLID */
             for (gint x = 0; x < 75; x++)
             {
-                gint h = CLAMP (1 + vis.data[x], 0, 15);
+                gint h = CLAMP (vis.data[x], 0, 15);
                 gint h2;
 
-                if (h < 8) h2 = 7;
+                if (h < 8) h2 = 8;
                 else {h2 = h; h = 8;}
 
                 RGB_SEEK (x, h);
