@@ -113,6 +113,28 @@ static void mainwin_position_motion_cb (void);
 static void mainwin_position_release_cb (void);
 static void mainwin_set_volume_diff (gint diff);
 
+static void format_time (gchar buf[7], gint time, gint length)
+{
+    if (config.timer_mode == TIMER_REMAINING && length > 0)
+    {
+        if (length - time < 60000)         /* " -0:SS" */
+            snprintf (buf, 7, " -0:%02d", (length - time) / 1000);
+        else if (length - time < 6000000)  /* "-MM:SS" */
+            snprintf (buf, 7, "%3d:%02d", (time - length) / 60000, (length - time) / 1000 % 60);
+        else                               /* "-HH:MM" */
+            snprintf (buf, 7, "%3d:%02d", (time - length) / 3600000, (length - time) / 60000 % 60);
+    }
+    else
+    {
+        if (time < 60000000)  /* MMM:SS */
+            snprintf (buf, 7, "%3d:%02d", time / 60000, time / 1000 % 60);
+        else                  /* HHH:MM */
+            snprintf (buf, 7, "%3d:%02d", time / 3600000, time / 60000 % 60);
+    }
+
+    buf[3] = 0;
+}
+
 static void
 mainwin_set_shade(gboolean shaded)
 {
@@ -758,25 +780,14 @@ static void mainwin_spos_motion_cb (void)
     mainwin_spos_set_knob ();
 
     gint pos = hslider_get_pos (mainwin_sposition);
-    gint time = aud_drct_get_length () / 1000 * (pos - 1) / 12;
+    gint length = aud_drct_get_length ();
+    gint time = (pos - 1) * length / 12;
 
-    gchar *time_msg;
+    gchar buf[7];
+    format_time (buf, time, length);
 
-    if (config.timer_mode == TIMER_REMAINING) {
-        time = aud_drct_get_length () / 1000 - time;
-        time_msg = g_strdup_printf("-%2.2d", time / 60);
-        textbox_set_text (mainwin_stime_min, time_msg);
-        g_free(time_msg);
-    }
-    else {
-        time_msg = g_strdup_printf(" %2.2d", time / 60);
-        textbox_set_text (mainwin_stime_min, time_msg);
-        g_free(time_msg);
-    }
-
-    time_msg = g_strdup_printf("%2.2d", time % 60);
-    textbox_set_text (mainwin_stime_sec, time_msg);
-    g_free(time_msg);
+    textbox_set_text (mainwin_stime_min, buf);
+    textbox_set_text (mainwin_stime_sec, buf + 4);
 }
 
 static void mainwin_spos_release_cb (void)
@@ -1547,30 +1558,7 @@ static void mainwin_update_volume (void)
 static void mainwin_update_time_display (gint time, gint length)
 {
     gchar scratch[7];
-
-    if (config.timer_mode == TIMER_REMAINING && length > 0)
-    {
-        if (length - time < 60000)         /* " -0:SS" */
-            snprintf (scratch, sizeof scratch, " -0:%02d", (length - time) /
-             1000);
-        else if (length - time < 6000000)  /* "-MM:SS" */
-            snprintf (scratch, sizeof scratch, "%3d:%02d", (time - length) /
-             60000, (length - time) / 1000 % 60);
-        else                               /* "-HH:MM" */
-            snprintf (scratch, sizeof scratch, "%3d:%02d", (time - length) /
-             3600000, (length - time) / 60000 % 60);
-    }
-    else
-    {
-        if (time < 60000000)  /* MMM:SS */
-            snprintf (scratch, sizeof scratch, "%3d:%02d", time / 60000, time /
-             1000 % 60);
-        else                  /* HHH:MM */
-            snprintf (scratch, sizeof scratch, "%3d:%02d", time / 3600000, time
-             / 60000 % 60);
-    }
-
-    scratch[3] = 0;
+    format_time (scratch, time, length);
 
     ui_skinned_number_set (mainwin_minus_num, scratch[0]);
     ui_skinned_number_set (mainwin_10min_num, scratch[1]);
