@@ -1,23 +1,24 @@
-/*  BMP - Cross-platform multimedia player
- *  Copyright (C) 2003-2004  BMP development team.
+/*
+ * ui_skinselector.c
+ * Copyright 1998-2003 XMMS Development Team
+ * Copyright 2003-2004 BMP Development Team
+ * Copyright 2011 John Lindgren
  *
- *  Based on XMMS:
- *  Copyright (C) 1998-2003  XMMS development team.
+ * This file is part of Audacious.
  *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; under version 3 of the License.
+ * Audacious is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, version 2 or version 3 of the License.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * Audacious is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses>.
+ * You should have received a copy of the GNU General Public License along with
+ * Audacious. If not, see <http://www.gnu.org/licenses/>.
  *
- *  The Audacious team does not consider modular code linking to
- *  Audacious or using our public API to be a derived work.
+ * The Audacious team does not consider modular code linking to Audacious or
+ * using our public API to be a derived work.
  */
 
 #include <stdlib.h>
@@ -25,6 +26,7 @@
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "config.h"
 #include "plugin.h"
@@ -36,10 +38,6 @@
 
 static gchar *ext_targets[EXTENSION_TARGETS] = { "bmp", "xpm", "png", "svg",
         "gif", "jpg", "jpeg" };
-
-#define THUMBNAIL_WIDTH  90
-#define THUMBNAIL_HEIGHT 40
-
 
 enum SkinViewCols {
     SKIN_VIEW_COL_PREVIEW,
@@ -120,41 +118,30 @@ skin_get_preview(const gchar * path)
     return preview;
 }
 
-
-static GdkPixbuf *
-skin_get_thumbnail(const gchar * path)
+static GdkPixbuf * skin_get_thumbnail (const gchar * path)
 {
-    GdkPixbuf *scaled = NULL;
-    GdkPixbuf *preview;
-    gchar *thumbname;
+    gchar * thumbname = get_thumbnail_filename (path);
+    GdkPixbuf * thumb = NULL;
 
-    g_return_val_if_fail(path != NULL, NULL);
-
-    if (g_str_has_suffix(path, "thumbs"))
-        return NULL;
-
-    thumbname = get_thumbnail_filename(path);
-
-    if (g_file_test(thumbname, G_FILE_TEST_EXISTS)) {
-        scaled = gdk_pixbuf_new_from_file(thumbname, NULL);
-        g_free(thumbname);
-        return scaled;
+    if (g_file_test (thumbname, G_FILE_TEST_EXISTS))
+    {
+        thumb = gdk_pixbuf_new_from_file (thumbname, NULL);
+        if (thumb)
+            goto DONE;
     }
 
-    if (!(preview = skin_get_preview(path))) {
-        g_free(thumbname);
-        return NULL;
-    }
+    thumb = skin_get_preview (path);
+    if (! thumb)
+        goto DONE;
 
-    scaled = gdk_pixbuf_scale_simple(preview,
-                                     THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT,
-                                     GDK_INTERP_BILINEAR);
-    g_object_unref(preview);
+    audgui_pixbuf_scale_within (& thumb, 128);
 
-    gdk_pixbuf_save(scaled, thumbname, "png", NULL, NULL);
-    g_free(thumbname);
+    if (thumb)
+        gdk_pixbuf_save (thumb, thumbname, "png", NULL, NULL);
 
-    return scaled;
+DONE:
+    g_free (thumbname);
+    return thumb;
 }
 
 static void
