@@ -70,13 +70,16 @@ static gboolean button_press (GtkWidget * button, GdkEventButton * event)
     ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
     g_return_val_if_fail (data, FALSE);
 
-    if (event->button == 1)
+    /* pass events through to the parent widget only if neither the press nor
+     * release signals are connected; sending one and not the other causes
+     * problems (in particular with dragging windows around) */
+    if (event->button == 1 && (data->on_press || data->on_release))
     {
         data->pressed = TRUE;
         if (data->on_press)
             data->on_press (button, event);
     }
-    else if (event->button == 3)
+    else if (event->button == 3 && (data->on_rpress || data->on_rrelease))
     {
         data->rpressed = TRUE;
         if (data->on_rpress)
@@ -96,7 +99,7 @@ static gboolean button_release (GtkWidget * button, GdkEventButton * event)
     ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
     g_return_val_if_fail (data, FALSE);
 
-    if (event->button == 1)
+    if (event->button == 1 && (data->on_press || data->on_release))
     {
         if (! data->pressed)
             return TRUE;
@@ -107,7 +110,7 @@ static gboolean button_release (GtkWidget * button, GdkEventButton * event)
         if (data->on_release)
             data->on_release (button, event);
     }
-    else if (event->button == 3)
+    else if (event->button == 3 && (data->on_rpress || data->on_rrelease))
     {
         if (! data->rpressed)
             return TRUE;
@@ -116,6 +119,8 @@ static gboolean button_release (GtkWidget * button, GdkEventButton * event)
         if (data->on_rrelease)
             data->on_rrelease (button, event);
     }
+    else
+        return FALSE;
 
     if (data->type != BUTTON_TYPE_SMALL)
         gtk_widget_queue_draw (button);
