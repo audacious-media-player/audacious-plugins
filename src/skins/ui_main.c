@@ -146,7 +146,6 @@ mainwin_set_shade(gboolean shaded)
 void mainwin_set_shape (void)
 {
     gint id = config.player_shaded ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN;
-    g_return_if_fail (active_skin->masks[id]);
 
 #ifdef MASK_IS_REGION
     gtk_widget_shape_combine_region (mainwin, active_skin->masks[id]);
