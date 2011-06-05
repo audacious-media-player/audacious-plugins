@@ -75,7 +75,7 @@ gchar * find_file_case (const gchar * folder, const gchar * basename)
         while ((entry = readdir (handle)) != NULL)
             list = g_list_prepend (list, g_strdup (entry->d_name));
 
-        g_hash_table_insert (cache, (char *) folder, list);
+        g_hash_table_insert (cache, g_strdup (folder), list);
         closedir (handle);
     }
 
