@@ -349,14 +349,15 @@ static void textbox_destroy (GtkWidget * textbox)
     TextboxData * data = g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
 
-    g_free (data->text);
-
     if (data->font)
         pango_font_description_free (data->font);
     if (data->buf)
         cairo_surface_destroy (data->buf);
     if (data->scroll_source)
         g_source_remove (data->scroll_source);
+
+    g_free (data->text);
+    g_free (data);
 
     textboxes = g_list_remove (textboxes, textbox);
 }
