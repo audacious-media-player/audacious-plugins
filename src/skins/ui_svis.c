@@ -65,7 +65,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
             if (bars && (x % 3) == 2)
                 continue;
 
-            gint h = svis.data[bars ? (x / 3) : x] / 2;
+            gint h = svis.data[bars ? (x / 3) : x];
             h = CLAMP (h, 0, 5);
             RGB_SEEK (x, 5 - h);
 
