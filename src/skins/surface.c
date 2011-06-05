@@ -45,6 +45,7 @@ cairo_surface_t * surface_new_from_file (const gchar * name)
     cairo_paint (cr);
 
     cairo_destroy (cr);
+    g_object_unref (p);
     return surface;
 }
 
