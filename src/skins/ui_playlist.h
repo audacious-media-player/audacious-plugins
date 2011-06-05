@@ -31,12 +31,10 @@ void playlistwin_unhook (void);
 void playlistwin_hide_timer(void);
 void playlistwin_set_time (const gchar * minutes, const gchar * seconds);
 void playlistwin_show (char show);
-void playlistwin_set_sinfo_font(gchar *font);
-void playlistwin_set_sinfo_scroll(gboolean scroll);
 
 extern gint active_playlist;
 extern gchar * active_title;
 extern glong active_length;
-extern GtkWidget * playlistwin, * playlistwin_list;
+extern GtkWidget * playlistwin, * playlistwin_list, * playlistwin_sinfo;
 
 #endif /* SKINS_UI_PLAYLIST_H */

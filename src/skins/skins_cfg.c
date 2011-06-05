@@ -241,8 +241,6 @@ playlist_font_set_cb()
 {
     AUDDBG("Attempt to set font \"%s\"\n", config.playlist_font);
     ui_skinned_playlist_set_font (playlistwin_list, config.playlist_font);
-    playlistwin_set_sinfo_font(config.playlist_font);  /* propagate font setting to playlistwin_sinfo */
-    playlistwin_update ();
 }
 
 static void
@@ -250,7 +248,6 @@ bitmap_fonts_cb()
 {
     textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL :
      config.mainwin_font);
-    playlistwin_set_sinfo_font(config.playlist_font);
 }
 
 static PreferencesWidget font_table_elements[] = {

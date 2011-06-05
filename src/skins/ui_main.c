@@ -1294,20 +1294,19 @@ mainwin_create_widgets(void)
     window_put_widget (mainwin, FALSE, mainwin_pl, 242, 58);
     button_on_release (mainwin_pl, mainwin_pl_cb);
 
-    mainwin_info = textbox_new (153);
+    mainwin_info = textbox_new (153, "", config.mainwin_use_bitmapfont ? NULL :
+     config.mainwin_font, config.autoscroll);
     window_put_widget (mainwin, FALSE, mainwin_info, 112, 27);
-    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL : config.mainwin_font);
-    textbox_set_scroll (mainwin_info, config.autoscroll);
     g_signal_connect (mainwin_info, "button-press-event", (GCallback)
      mainwin_info_button_press, NULL);
 
-    mainwin_othertext = textbox_new (153);
+    mainwin_othertext = textbox_new (153, "", NULL, FALSE);
     window_put_widget (mainwin, FALSE, mainwin_othertext, 112, 43);
 
-    mainwin_rate_text = textbox_new (15);
+    mainwin_rate_text = textbox_new (15, "", NULL, FALSE);
     window_put_widget (mainwin, FALSE, mainwin_rate_text, 111, 43);
 
-    mainwin_freq_text = textbox_new (10);
+    mainwin_freq_text = textbox_new (10, "", NULL, FALSE);
     window_put_widget (mainwin, FALSE, mainwin_freq_text, 156, 43);
 
     mainwin_menurow = ui_skinned_menurow_new ();
@@ -1413,10 +1412,10 @@ mainwin_create_widgets(void)
     hslider_on_motion (mainwin_sposition, mainwin_spos_motion_cb);
     hslider_on_release (mainwin_sposition, mainwin_spos_release_cb);
 
-    mainwin_stime_min = textbox_new (15);
+    mainwin_stime_min = textbox_new (15, "", NULL, FALSE);
     window_put_widget (mainwin, TRUE, mainwin_stime_min, 130, 4);
 
-    mainwin_stime_sec = textbox_new (10);
+    mainwin_stime_sec = textbox_new (10, "", NULL, FALSE);
     window_put_widget (mainwin, TRUE, mainwin_stime_sec, 147, 4);
 
     g_signal_connect(mainwin_stime_min, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
@@ -1634,7 +1633,7 @@ void action_autoscroll_songname (GtkToggleAction * action)
 {
     config.autoscroll = gtk_toggle_action_get_active (action);
     textbox_set_scroll (mainwin_info, config.autoscroll);
-    playlistwin_set_sinfo_scroll (config.autoscroll);
+    textbox_set_scroll (playlistwin_sinfo, config.autoscroll);
 }
 
 void action_playback_noplaylistadvance (GtkToggleAction * action)

@@ -62,7 +62,7 @@
 gint active_playlist;
 gchar * active_title;
 glong active_length;
-GtkWidget * playlistwin, * playlistwin_list;
+GtkWidget * playlistwin, * playlistwin_list, * playlistwin_sinfo;
 
 static GMutex *resize_mutex = NULL;
 
@@ -71,7 +71,7 @@ static GtkWidget *playlistwin_shaded_shade, *playlistwin_shaded_close;
 
 static GtkWidget *playlistwin_slider;
 static GtkWidget *playlistwin_time_min, *playlistwin_time_sec;
-static GtkWidget *playlistwin_info, *playlistwin_sinfo;
+static GtkWidget *playlistwin_info;
 static GtkWidget *playlistwin_srew, *playlistwin_splay;
 static GtkWidget *playlistwin_spause, *playlistwin_sstop;
 static GtkWidget *playlistwin_sfwd, *playlistwin_seject;
@@ -158,40 +158,6 @@ void playlistwin_update (void)
 {
     if (! aud_playlist_update_pending ())
         real_update ();
-}
-
-void
-playlistwin_set_sinfo_font(gchar *font)
-{
-    gchar *tmp = NULL, *tmp2 = NULL, *tmp3 = NULL;
-
-    g_return_if_fail(font);
-    AUDDBG("Attempt to set font \"%s\"\n", font);
-
-    tmp = g_strdup(font);
-    g_return_if_fail(tmp);
-
-    tmp3 = strrchr(tmp, ' ');
-    if (tmp3 != NULL)
-        * tmp3 = '\0';
-
-    tmp2 = g_strdup_printf("%s 5", tmp);
-    g_return_if_fail(tmp2);
-
-    textbox_set_font (playlistwin_sinfo, config.mainwin_use_bitmapfont ? NULL :
-     tmp2);
-
-    g_free(tmp);
-    g_free(tmp2);
-}
-
-void
-playlistwin_set_sinfo_scroll(gboolean scroll)
-{
-    if (config.playlist_shaded)
-        textbox_set_scroll (playlistwin_sinfo, config.autoscroll);
-    else
-        textbox_set_scroll (playlistwin_sinfo, FALSE);
 }
 
 static void
@@ -671,10 +637,8 @@ playlistwin_create_widgets(void)
 {
     gint w = config.playlist_width, h = config.playlist_height;
 
-    playlistwin_sinfo = textbox_new (w - 35);
+    playlistwin_sinfo = textbox_new (w - 35, "", NULL, config.autoscroll);
     window_put_widget (playlistwin, TRUE, playlistwin_sinfo, 4, 4);
-    playlistwin_set_sinfo_font (config.playlist_font);
-    playlistwin_set_sinfo_scroll (config.autoscroll);
 
     playlistwin_shaded_shade = button_new (9, 9, 128, 45, 150, 42, SKIN_PLEDIT, SKIN_PLEDIT);
     window_put_widget (playlistwin, TRUE, playlistwin_shaded_shade, w - 21, 3);
@@ -700,16 +664,16 @@ playlistwin_create_widgets(void)
     window_put_widget (playlistwin, FALSE, playlistwin_slider, w - 15, 20);
     ui_skinned_playlist_set_slider (playlistwin_list, playlistwin_slider);
 
-    playlistwin_time_min = textbox_new (15);
+    playlistwin_time_min = textbox_new (15, "", NULL, FALSE);
     window_put_widget (playlistwin, FALSE, playlistwin_time_min, w - 82, h - 15);
 
-    playlistwin_time_sec = textbox_new (10);
+    playlistwin_time_sec = textbox_new (10, "", NULL, FALSE);
     window_put_widget (playlistwin, FALSE, playlistwin_time_sec, w - 64, h - 15);
 
     g_signal_connect(playlistwin_time_min, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
     g_signal_connect(playlistwin_time_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
 
-    playlistwin_info = textbox_new (90);
+    playlistwin_info = textbox_new (90, "", NULL, FALSE);
     window_put_widget (playlistwin, FALSE, playlistwin_info, w - 143, h - 28);
 
     /* mini play control buttons at right bottom corner */
@@ -1242,12 +1206,4 @@ void action_roll_up_playlist_editor (GtkToggleAction * action)
     window_set_shaded (playlistwin, config.playlist_shaded);
     window_set_size (playlistwin, config.playlist_width, config.playlist_shaded
      ? PLAYLISTWIN_SHADED_HEIGHT : config.playlist_height);
-
-    if (config.playlist_shaded)
-    {
-        playlistwin_set_sinfo_font (config.playlist_font);
-        playlistwin_set_sinfo_scroll (config.autoscroll);
-    }
-    else
-        playlistwin_set_sinfo_scroll (FALSE);
 }

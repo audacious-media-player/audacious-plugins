@@ -315,7 +315,7 @@ void textbox_set_text (GtkWidget * textbox, const gchar * text)
     textbox_render (textbox, data);
 }
 
-void textbox_set_font (GtkWidget * textbox, const gchar * name)
+void textbox_set_font (GtkWidget * textbox, const gchar * font)
 {
     TextboxData * data = g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
@@ -326,8 +326,8 @@ void textbox_set_font (GtkWidget * textbox, const gchar * name)
         data->font = NULL;
     }
 
-    if (name)
-        data->font = pango_font_description_from_string (name);
+    if (font)
+        data->font = pango_font_description_from_string (font);
 
     textbox_render (textbox, data);
 }
@@ -361,7 +361,8 @@ static void textbox_destroy (GtkWidget * textbox)
     textboxes = g_list_remove (textboxes, textbox);
 }
 
-GtkWidget * textbox_new (gint width)
+GtkWidget * textbox_new (gint width, const gchar * text, const gchar * font,
+ gboolean scroll)
 {
     GtkWidget * textbox = gtk_drawing_area_new ();
     gtk_widget_set_size_request (textbox, width, 0);
@@ -373,8 +374,12 @@ GtkWidget * textbox_new (gint width)
 
     TextboxData * data = g_malloc0 (sizeof (TextboxData));
     data->width = width;
-    data->text = g_strdup ("");
+    data->text = g_strdup (text);
+    data->may_scroll = scroll;
     g_object_set_data ((GObject *) textbox, "textboxdata", data);
+
+    if (font)
+        data->font = pango_font_description_from_string (font);
 
     textboxes = g_list_prepend (textboxes, textbox);
 
