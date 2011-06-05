@@ -264,16 +264,6 @@ static PreferencesWidget appearance_misc_widgets[] = {
      (GCallback) (GCallback) textbox_update_all, NULL, FALSE},
 };
 
-static gboolean
-on_skin_view_realize(GtkTreeView * treeview,
-                     gpointer data)
-{
-    skin_view_realize(treeview);
-    skin_view_update ((GtkTreeView *) skin_view);
-
-    return TRUE;
-}
-
 void
 on_skin_view_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
@@ -370,6 +360,8 @@ void skins_configure (void)
     gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (skin_view_scrolled_window), GTK_SHADOW_IN);
 
     skin_view = gtk_tree_view_new ();
+    skin_view_realize ((GtkTreeView *) skin_view);
+    skin_view_update ((GtkTreeView *) skin_view);
     gtk_container_add (GTK_CONTAINER (skin_view_scrolled_window), skin_view);
     gtk_widget_set_size_request (skin_view, -1, 100);
 
@@ -383,9 +375,6 @@ void skins_configure (void)
     g_signal_connect(mainwin, "drag-data-received",
                      G_CALLBACK(mainwin_drag_data_received),
                      skin_view);
-    g_signal_connect_after(G_OBJECT(skin_view), "realize",
-                           G_CALLBACK(on_skin_view_realize),
-                           NULL);
 
     GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) appearance_page_vbox, hbox, FALSE, FALSE, 0);
