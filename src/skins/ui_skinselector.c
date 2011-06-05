@@ -238,7 +238,8 @@ skinlist_update(void)
 
     skinlist_clear();
 
-    scan_skindir(skins_paths[SKINS_PATH_USER_SKIN_DIR]);
+    if (g_file_test (skins_paths[SKINS_PATH_USER_SKIN_DIR], G_FILE_TEST_EXISTS))
+        scan_skindir (skins_paths[SKINS_PATH_USER_SKIN_DIR]);
 
     gchar * path = g_strdup_printf ("%s/Skins", aud_get_path (AUD_PATH_DATA_DIR));
     scan_skindir (path);
