@@ -365,6 +365,7 @@ skin_view_realize(GtkTreeView * treeview)
     store = gtk_list_store_new(SKIN_VIEW_N_COLS, GDK_TYPE_PIXBUF,
                                G_TYPE_STRING , G_TYPE_STRING);
     gtk_tree_view_set_model(treeview, GTK_TREE_MODEL(store));
+    g_object_unref (store);
 
     column = gtk_tree_view_column_new();
     gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
