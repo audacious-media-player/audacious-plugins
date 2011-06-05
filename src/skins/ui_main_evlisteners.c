@@ -133,10 +133,18 @@ static gfloat calc_peak_level (gint16 pcm[512])
 static void make_log_graph (gint16 freq[256], gint bands, gint db_range, gint
  int_range, guchar * graph)
 {
+    static gint last_bands = 0;
+    static gfloat * xscale = NULL;
+
     /* conversion table for the x-axis */
-    gfloat xscale[bands + 1];
-    for (gint i = 0; i <= bands; i ++)
-        xscale[i] = powf (257, (gfloat) i / bands) - 1;
+    if (bands != last_bands)
+    {
+        xscale = g_realloc (xscale, sizeof (gfloat) * (bands + 1));
+        for (gint i = 0; i <= bands; i ++)
+            xscale[i] = powf (257, (gfloat) i / bands) - 1;
+
+        last_bands = bands;
+    }
 
     for (gint i = 0; i < bands; i ++)
     {
