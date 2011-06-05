@@ -154,8 +154,12 @@ gboolean active_skin_load (const gchar * path)
     gtk_widget_queue_draw (equalizerwin);
     gtk_widget_queue_draw (playlistwin);
 
-    g_free (config.skin);
-    config.skin = g_strdup (path);
+    /* path may in fact be the same string as config.skin */
+    if (strcmp (path, config.skin))
+    {
+        g_free (config.skin);
+        config.skin = g_strdup (path);
+    }
 
     return TRUE;
 }
