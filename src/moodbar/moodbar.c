@@ -24,6 +24,8 @@
 #include <audacious/drct.h>
 #include <libaudcore/hook.h>
 
+#include "draw-compat.h"
+
 static GdkColor *parse_mood_file(const gchar *filename)
 {
 	gchar *data, *it;
@@ -52,22 +54,22 @@ static GdkColor *parse_mood_file(const gchar *filename)
 	return ret;
 }
 
-static void render_text(GtkWidget * area, gint x, gint y, gint width, gfloat r, gfloat g, gfloat b, gfloat a, const gchar *font, const gchar *text)
+static void render_text (GtkWidget * widget, cairo_t * cr, gint x, gint y, gint
+ width, gfloat r, gfloat g, gfloat b, gfloat a, const gchar * font, const
+ gchar * text)
 {
-	cairo_t *cr;
 	PangoLayout *pl;
 	PangoFontDescription *desc;
 	gchar *str;
 
 	str = g_markup_escape_text(text, -1);
 
-	cr = gdk_cairo_create(area->window);
 	cairo_move_to(cr, x, y);
 	cairo_set_operator(cr, CAIRO_OPERATOR_ATOP);
 	cairo_set_source_rgba(cr, r, g, b, a);
 
 	desc = pango_font_description_from_string(font);
-	pl = gtk_widget_create_pango_layout(area->parent, NULL);
+	pl = gtk_widget_create_pango_layout (widget, NULL);
 	pango_layout_set_markup(pl, str, -1);
 	pango_layout_set_font_description(pl, desc);
 	pango_font_description_free(desc);
@@ -76,24 +78,20 @@ static void render_text(GtkWidget * area, gint x, gint y, gint width, gfloat r, 
 
 	pango_cairo_show_layout(cr, pl);
 
-	cairo_destroy(cr);
 	g_object_unref(pl);
 	g_free(str);
 }
 
-static void render_mood(GtkWidget *widget, const gchar *filename)
+static void render_mood (GtkWidget * widget, cairo_t * cr, const gchar * filename)
 {
 	gint i;
 	GdkColor *mbdata;
-	cairo_t *cr;
 	GtkAllocation a;
 
 	gint time = aud_drct_get_time () / 1000;
 	gint length = aud_drct_get_length () / 1000;
 
 	mbdata = parse_mood_file(filename);
-
-	cr = gdk_cairo_create(widget->window);
 
 	gtk_widget_get_allocation(widget, &a);
 
@@ -114,16 +112,14 @@ static void render_mood(GtkWidget *widget, const gchar *filename)
 				     time / 60, time % 60,
 				     length / 60, length % 60);
 
-		render_text(widget, (a.width / 2) - 20, (a.height / 2) - 10, a.width, 1.0, 1.0, 1.0, 1.0, "Sans 9", buf);
+		render_text (widget, cr, (a.width / 2) - 20, (a.height / 2) - 10,
+		 a.width, 1.0, 1.0, 1.0, 1.0, "Sans 9", buf);
 
 		g_free(buf);
 	}
-
-	cairo_destroy(cr);
 }
 
-static gboolean expose_event(GtkWidget * widget)
-{
+DRAW_FUNC_BEGIN (expose_event)
 	gint playlist, pos;
 	gchar *file, *ext;
 	gchar *moodfile;
@@ -138,13 +134,11 @@ static gboolean expose_event(GtkWidget * widget)
 
 	moodfile = g_strconcat(file, ".mood", NULL);
 
-	render_mood(widget, moodfile);
+	render_mood (wid, cr, moodfile);
 
 	g_free(file);
 	g_free(moodfile);
-
-	return TRUE;
-}
+DRAW_FUNC_END
 
 static gint update_song_timeout_source = 0;
 
@@ -212,7 +206,7 @@ static gboolean moodbar_init(void)
 	hook_associate("playback begin", (HookFunction) playback_begin, area);
 	hook_associate("playback end", (HookFunction) playback_end, area);
 
-	g_signal_connect(area, "expose-event", (GCallback) expose_event, NULL);
+	g_signal_connect(area, DRAW_SIGNAL, (GCallback) expose_event, NULL);
 
 	return TRUE;
 }
