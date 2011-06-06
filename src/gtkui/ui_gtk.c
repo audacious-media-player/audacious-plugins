@@ -877,7 +877,7 @@ void show_infoarea (gboolean show)
         infoarea = ui_infoarea_new ();
         gtk_box_pack_end ((GtkBox *) vbox, infoarea, FALSE, FALSE, 0);
         gtk_box_reorder_child ((GtkBox *) vbox, infoarea, -1);
-        gtk_widget_show (infoarea);
+        gtk_widget_show_all (infoarea);
     }
 
     if (! config.infoarea_visible && infoarea)
