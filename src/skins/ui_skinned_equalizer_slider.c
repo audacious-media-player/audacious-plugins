@@ -172,7 +172,7 @@ GtkWidget * eq_slider_new (const gchar * name)
     gtk_widget_add_events (slider, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
 
-    g_signal_connect (slider, DRAW_SIGNAL, (GCallback) eq_slider_draw, NULL);
+    DRAW_CONNECT (slider, eq_slider_draw);
 
     g_signal_connect (slider, "button-press-event", (GCallback)
      eq_slider_button_press, NULL);

@@ -131,7 +131,7 @@ GtkWidget * hslider_new (gint min, gint max, SkinPixmapId si, gint w, gint h,
     gtk_widget_add_events (hslider, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
 
-    g_signal_connect (hslider, DRAW_SIGNAL, (GCallback) hslider_draw, NULL);
+    DRAW_CONNECT (hslider, hslider_draw);
 
     g_signal_connect (hslider, "button-press-event", (GCallback)
      hslider_button_press, NULL);

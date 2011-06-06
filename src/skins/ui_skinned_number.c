@@ -54,7 +54,7 @@ GtkWidget * ui_skinned_number_new (void)
     gtk_widget_add_events (number, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK);
 
-    g_signal_connect (number, DRAW_SIGNAL, (GCallback) number_draw, NULL);
+    DRAW_CONNECT (number, number_draw);
     g_signal_connect (number, "destroy", (GCallback) number_destroy, NULL);
 
     NumberData * data = g_malloc0 (sizeof (NumberData));

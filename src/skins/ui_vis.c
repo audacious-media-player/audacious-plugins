@@ -242,7 +242,7 @@ GtkWidget * ui_vis_new (void)
     GtkWidget * wid = gtk_drawing_area_new ();
     gtk_widget_set_size_request (wid, 76, 16);
     gtk_widget_add_events (wid, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
-    g_signal_connect (wid, DRAW_SIGNAL, (GCallback) ui_vis_draw, NULL);
+    DRAW_CONNECT (wid, ui_vis_draw);
     return wid;
 }
 

@@ -177,7 +177,7 @@ GtkWidget * ui_svis_new (void)
     GtkWidget * wid = gtk_drawing_area_new ();
     gtk_widget_set_size_request (wid, 38, 5);
     gtk_widget_add_events (wid, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
-    g_signal_connect (wid, DRAW_SIGNAL, (GCallback) ui_svis_draw, NULL);
+    DRAW_CONNECT (wid, ui_svis_draw);
     return wid;
 }
 

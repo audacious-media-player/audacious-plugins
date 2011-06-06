@@ -117,7 +117,7 @@ GtkWidget * ui_skinned_playlist_slider_new (GtkWidget * list, gint height)
     pl_slider_list = list;
     pl_slider_height = height;
 
-    g_signal_connect (slider, DRAW_SIGNAL, (GCallback) pl_slider_draw, NULL);
+    DRAW_CONNECT (slider, pl_slider_draw);
     g_signal_connect (slider, "button-press-event", (GCallback)
      pl_slider_button_press, NULL);
     g_signal_connect (slider, "button-release-event", (GCallback)

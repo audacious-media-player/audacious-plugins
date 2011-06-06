@@ -137,7 +137,7 @@ GtkWidget * ui_skinned_menurow_new (void)
     gtk_widget_add_events (wid, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
      | GDK_POINTER_MOTION_MASK);
 
-    g_signal_connect (wid, DRAW_SIGNAL, (GCallback) menurow_draw, NULL);
+    DRAW_CONNECT (wid, menurow_draw);
     g_signal_connect (wid, "button-press-event", (GCallback)
      menurow_button_press, NULL);
     g_signal_connect (wid, "button-release-event", (GCallback)

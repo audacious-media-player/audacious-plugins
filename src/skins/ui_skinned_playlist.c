@@ -345,7 +345,7 @@ GtkWidget * ui_skinned_playlist_new (gint width, gint height, const gchar * font
     gtk_widget_add_events (list, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
      | GDK_LEAVE_NOTIFY_MASK | GDK_POINTER_MOTION_MASK);
 
-    g_signal_connect (list, DRAW_SIGNAL, (GCallback) playlist_draw, NULL);
+    DRAW_CONNECT (list, playlist_draw);
     g_signal_connect (list, "button-press-event", (GCallback)
      playlist_button_press, NULL);
     g_signal_connect (list, "button-release-event", (GCallback)

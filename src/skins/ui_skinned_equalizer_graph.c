@@ -131,7 +131,7 @@ GtkWidget * eq_graph_new (void)
 {
     GtkWidget * graph = gtk_drawing_area_new ();
     gtk_widget_set_size_request (graph, 113, 19);
-    g_signal_connect (graph, DRAW_SIGNAL, (GCallback) eq_graph_draw, NULL);
+    DRAW_CONNECT (graph, eq_graph_draw);
     return graph;
 }
 

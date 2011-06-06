@@ -60,7 +60,7 @@ DRAW_FUNC_END
 GtkWidget * ui_skinned_playstatus_new (void)
 {
     GtkWidget * playstatus = gtk_drawing_area_new ();
-    g_signal_connect (playstatus, DRAW_SIGNAL, (GCallback) playstatus_draw, NULL);
+    DRAW_CONNECT (playstatus, playstatus_draw);
     return playstatus;
 }
 

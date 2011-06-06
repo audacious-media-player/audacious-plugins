@@ -167,7 +167,7 @@ static GtkWidget * button_new_base (gint type, gint w, gint h)
      GDK_BUTTON_RELEASE_MASK | GDK_LEAVE_NOTIFY_MASK);
 
     if (type != BUTTON_TYPE_SMALL)
-        g_signal_connect (button, DRAW_SIGNAL, (GCallback) button_draw, NULL);
+        DRAW_CONNECT (button, button_draw);
 
     g_signal_connect (button, "button-press-event", (GCallback) button_press,
      NULL);

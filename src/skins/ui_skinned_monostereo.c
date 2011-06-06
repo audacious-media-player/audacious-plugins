@@ -54,7 +54,7 @@ GtkWidget * ui_skinned_monostereo_new (void)
 {
     GtkWidget * monostereo = gtk_drawing_area_new ();
     gtk_widget_set_size_request (monostereo, 56, 12);
-    g_signal_connect (monostereo, DRAW_SIGNAL, (GCallback) monostereo_draw, NULL);
+    DRAW_CONNECT (monostereo, monostereo_draw);
     return monostereo;
 }
 

@@ -370,7 +370,7 @@ GtkWidget * textbox_new (gint width, const gchar * text, const gchar * font,
     gtk_widget_add_events (textbox, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK);
 
-    g_signal_connect (textbox, DRAW_SIGNAL, (GCallback) textbox_draw, NULL);
+    DRAW_CONNECT (textbox, textbox_draw);
     g_signal_connect (textbox, "destroy", (GCallback) textbox_destroy, NULL);
 
     TextboxData * data = g_malloc0 (sizeof (TextboxData));
