@@ -129,7 +129,7 @@ INPUT_PLUGINS="tonegen metronom vtx"
 OUTPUT_PLUGINS="null"
 EFFECT_PLUGINS="compressor crossfade crystalizer mixdown sndstretch stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS="albumart"
-VISUALIZATION_PLUGINS="blur_scope spectrum cairo-spectrum"
+VISUALIZATION_PLUGINS="blur_scope cairo-spectrum"
 CONTAINER_PLUGINS="m3u pls asx"
 TRANSPORT_PLUGINS="unix-io"
 
@@ -1449,7 +1449,7 @@ dnl GTK3 overrides
 dnl ==============
 
 if test $use_gtk3 = yes ; then
-    for name in spectrum streambrowser
+    for name in streambrowser
     do
         echo " *** Disabling plugin because not GTK3-compatible: $name"
         CONTAINER_PLUGINS=`sed s/$name// << EOF
@@ -1623,7 +1623,6 @@ echo
 echo "  Visualization"
 echo "  -------------"
 echo "  Blur Scope:                             yes"
-echo "  Spectrum Analyzer:                      yes"
 echo "  Cairo Spectrum Analyzer:                yes"
 echo "  Moodbar data renderer:                  $enable_moodbar"
 echo
