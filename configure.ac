@@ -415,7 +415,7 @@ fi
 dnl *** MP3
 
 AC_ARG_ENABLE(mp3,
- AS_HELPSTRING([--disable-mp3], [disable MP3 plugin (default=enabled)]),
+ AS_HELP_STRING([--disable-mp3], [disable MP3 plugin (default=enabled)]),
  [enable_mp3=$enableval], [enable_mp3=yes])
 
 if test $enable_mp3 = yes ; then
