@@ -127,7 +127,7 @@ dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen metronom vtx"
 OUTPUT_PLUGINS="null"
-EFFECT_PLUGINS="compressor crossfade crystalizer mixdown ladspa sndstretch stereo_plugin voice_removal echo_plugin"
+EFFECT_PLUGINS="compressor crossfade crystalizer mixdown sndstretch stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS="albumart"
 VISUALIZATION_PLUGINS="blur_scope spectrum cairo-spectrum"
 CONTAINER_PLUGINS="m3u pls asx"
@@ -1503,7 +1503,7 @@ dnl GTK3 overrides
 dnl ==============
 
 if test $use_gtk3 = yes ; then
-    for name in ladspa moodbar paranormal projectm-1.0 sid spectrum streambrowser
+    for name in moodbar paranormal projectm-1.0 sid spectrum streambrowser
     do
         echo " *** Disabling plugin because not GTK3-compatible: $name"
         CONTAINER_PLUGINS=`sed s/$name// << EOF
@@ -1665,7 +1665,6 @@ echo
 echo "  Effect"
 echo "  ------"
 echo "  Dynamic Range Compressor:               yes"
-echo "  LADSPA effects host (ladspa):           yes"
 echo "  Voice Removal:                          yes"
 echo "  Extra Stereo:                           yes"
 echo "  Echo/Surround:                          yes"
