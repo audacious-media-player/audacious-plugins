@@ -1258,29 +1258,6 @@ fi
 AC_SUBST(BLUEZ_LIBS)
 AC_SUBST(BLUEZ_CFLAGS)
 
-dnl *** libparanormal checks
-
-AC_ARG_ENABLE(paranormal,
-[  --disable-paranormal    disable paranormal vis plugin. (default=enabled)],
-[have_paranormal=$enableval],
-[have_paranormal=yes])
-
-if test "x$have_paranormal" = "xyes"; then
-    have_paranormal=yes
-    AM_PATH_SDL(1.2.5, , [
-	AC_MSG_WARN([*** SDL is not installed. Paranormal will not be built. ***])
-	have_paranormal="no"
-    ])
-else
-    have_paranormal=no
-    AC_MSG_RESULT([*** paranormal plugin disabled by request ***])
-fi
-
-if test "x$have_paranormal" = "xyes"; then
-	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS paranormal"
-fi
-
-
 dnl XSPF
 dnl ----
 
@@ -1503,7 +1480,7 @@ dnl GTK3 overrides
 dnl ==============
 
 if test $use_gtk3 = yes ; then
-    for name in paranormal projectm-1.0 sid spectrum streambrowser
+    for name in projectm-1.0 sid spectrum streambrowser
     do
         echo " *** Disabling plugin because not GTK3-compatible: $name"
         CONTAINER_PLUGINS=`sed s/$name// << EOF
@@ -1680,7 +1657,6 @@ echo "  Blur Scope:                             yes"
 echo "  Spectrum Analyzer:                      yes"
 echo "  Cairo Spectrum Analyzer:                yes"
 echo "  Moodbar data renderer:                  $enable_moodbar"
-echo "  Paranormal Visualization Library:       $have_paranormal"
 echo "  projectM 1.x (GL milkdrop):             $have_projectm1"
 echo
 echo "  Transport"
