@@ -1449,7 +1449,7 @@ dnl GTK3 overrides
 dnl ==============
 
 if test $use_gtk3 = yes ; then
-    for name in sid spectrum streambrowser
+    for name in spectrum streambrowser
     do
         echo " *** Disabling plugin because not GTK3-compatible: $name"
         CONTAINER_PLUGINS=`sed s/$name// << EOF

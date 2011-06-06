@@ -1,22 +1,22 @@
 PLUGIN = sid${PLUGIN_SUFFIX}
 
 SRCS = xs_init.c	\
-       xs_about.c	\
        xs_support.c	\
        xs_config.c	\
        xs_length.c	\
        xs_genui.c	\
-       xs_glade.c	\
-       xs_interface.c	\
        xs_stil.c	\
-       xs_fileinfo.c	\
        xs_filter.c	\
        xs_sidplay1.cc	\
        xs_sidplay2.cc	\
-       xs_curve.c	\
        xs_slsup.c	\
        xs_player.c	\
        xmms-sid.c
+#       xs_about.c	\
+#       xs_curve.c	\
+#       xs_fileinfo.c	\
+#       xs_glade.c	\
+#       xs_interface.c	\
 
 include ../../buildsys.mk
 include ../../extra.mk

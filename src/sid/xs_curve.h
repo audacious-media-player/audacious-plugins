@@ -29,6 +29,7 @@ typedef struct {
     gint x, y;
 } xs_int_point_t;
 
+#if 0
 struct _XSCurve {
     GtkDrawingArea graph;
 
@@ -60,6 +61,7 @@ gboolean    xs_curve_realloc_data    (XSCurve *curve, gint npoints);
 void        xs_curve_get_data    (XSCurve *curve, xs_point_t ***points, gint **npoints);
 gboolean    xs_curve_set_points    (XSCurve *curve, xs_int_point_t *points, gint npoints);
 gboolean    xs_curve_get_points    (XSCurve *curve, xs_int_point_t **points, gint *npoints);
+#endif
 
 G_END_DECLS
 

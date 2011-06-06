@@ -65,12 +65,14 @@
 /*
  * Global widgets
  */
+#if 0
 static GtkWidget *xs_configwin = NULL,
     *xs_sldb_fileselector = NULL,
     *xs_stil_fileselector = NULL,
     *xs_hvsc_selector = NULL,
     *xs_filt_importselector = NULL,
     *xs_filt_exportselector = NULL;
+#endif
 
 #define LUW(x)    lookup_widget(xs_configwin, x)
 
@@ -306,6 +308,7 @@ void xs_init_configuration(void)
 
 /* Filter configuration handling
  */
+#if 0
 static void xs_filters_error(const gchar *fmt, ...)
 {
     va_list ap;
@@ -324,6 +327,7 @@ static void xs_filters_error(const gchar *fmt, ...)
     g_free(msg);
 #endif
 }
+#endif
 
 
 static void xs_filter_free(xs_sid_filter_t *filter)
@@ -457,7 +461,6 @@ static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, xs_sid_filter_t *pFilter, gi
     g_free(tmpValue);
     return TRUE;
 }
-#endif
 
 
 /* Filter exporting and importing. These functions export/import
@@ -671,6 +674,7 @@ static gboolean xs_filters_export(const gchar *filename, xs_sid_filter_t **filte
 
     return result;
 }
+#endif
 
 
 /* Get the configuration (from file or default)
@@ -797,6 +801,7 @@ gint xs_write_configuration(void)
 }
 
 
+#if 0
 /* Configuration panel was canceled
  */
 XS_DEF_WINDOW_CLOSE(cfg_cancel, configwin)
@@ -1552,3 +1557,4 @@ void xs_configure(void)
     /* Show the widget */
     gtk_widget_show(xs_configwin);
 }
+#endif

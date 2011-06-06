@@ -31,14 +31,18 @@ AUD_INPUT_PLUGIN
     .name = XS_PACKAGE_STRING,          /* Plugin description */
     .init = xs_init,                    /* Initialization */
     .cleanup = xs_close,                /* Cleanup */
+#if 0
     .about = xs_about,                  /* Show aboutbox */
     .configure = xs_configure,          /* Show/edit configuration */
+#endif
 
     .play = xs_play_file,               /* Play given file */
     .stop = xs_stop,                    /* Stop playing */
     .pause = xs_pause,                  /* Pause playing */
 
+#if 0
     .file_info_box = xs_fileinfo,       /* Show file-information dialog */
+#endif
     .probe_for_tuple = xs_probe_for_tuple,
 
     .extensions = xs_sid_fmts,          /* File ext assist */
