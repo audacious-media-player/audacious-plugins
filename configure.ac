@@ -415,13 +415,18 @@ fi
 dnl *** MP3
 
 AC_ARG_ENABLE(mp3,
-    [  --disable-mp3           disable mp3 plugin. (default=enabled) ],
-    [enable_mp3=$enableval],
-    [enable_mp3=yes]
-)
+ AS_HELPSTRING([--disable-mp3], [disable MP3 plugin (default=enabled)]),
+ [enable_mp3=$enableval], [enable_mp3=yes])
 
-if test "x$enable_mp3" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS mpg123"
+if test $enable_mp3 = yes ; then
+    PKG_CHECK_MODULES(MPG123, [libmpg123 >= 1.0],
+     [enable_mp3=yes], [enable_mp3=no])
+
+    if test $enable_mp3 = yes ; then
+        INPUT_PLUGINS="$INPUT_PLUGINS mpg123"
+    else
+        AC_MSG_RESULT([*** libmpg123 not found; MP3 plugin disabled])
+    fi
 fi
 
 dnl *** Rocklight

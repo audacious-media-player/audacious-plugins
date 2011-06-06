@@ -19,7 +19,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#undef DEBUG
+#include <mpg123.h>
 
 #ifdef DEBUG_MPG123_IO
 # define MPG123_IODBG(...)	AUDDBG(__VA_ARGS__)
@@ -32,8 +32,6 @@
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <audacious/audtag.h>
-
-#include "libmpg123/mpg123.h"
 
 /* Define to read all frame headers when calculating file length */
 /* #define FULL_SCAN */
@@ -78,6 +76,17 @@ aud_mpg123_deinit(void)
 	g_cond_free(ctrl_cond);
 }
 
+static void set_format (mpg123_handle * dec)
+{
+	static const gint rates[] = {8000, 11025, 12000, 16000, 22050, 24000, 32000,
+	 44100, 48000};
+
+	mpg123_format_none (dec);
+	for (gint i = 0; i < G_N_ELEMENTS (rates); i ++)
+		mpg123_format (dec, rates[i], MPG123_MONO | MPG123_STEREO,
+		 MPG123_ENC_FLOAT_32);
+}
+
 static void make_format_string (const struct mpg123_frameinfo * info, gchar *
  buf, gint bsize)
 {
@@ -97,6 +106,7 @@ static gboolean mpg123_probe_for_fd (const gchar * fname, VFSFile * file)
 	g_return_val_if_fail (dec, FALSE);
 	mpg123_param (dec, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
 	mpg123_replace_reader_handle (dec, replace_read, replace_lseek, NULL);
+	set_format (dec);
 
 	gint res;
 	if ((res = mpg123_open_handle (dec, file)) < 0)
@@ -122,7 +132,7 @@ RETRY:;
 	if ((res = mpg123_info (dec, & info)) < 0)
 		goto ERR;
 
-	gint16 out[chan * (rate / 10)];
+	gfloat out[chan * (rate / 10)];
 	size_t done;
 	while ((res = mpg123_read (dec, (void *) out, sizeof out, & done)) < 0)
 	{
@@ -297,6 +307,7 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, MPG123_GAPLESS, 0);
 	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, MPG123_SEEKBUFFER, 0);
 	mpg123_replace_reader_handle (ctx.decoder, replace_read, replace_lseek, NULL);
+	set_format (ctx.decoder);
 
 	if (mpg123_open_handle (ctx.decoder, file) < 0)
 	{
@@ -307,7 +318,7 @@ OPEN_ERROR:
 		goto cleanup;
 	}
 
-	gint16 outbuf[8192];
+	gfloat outbuf[8192];
 	size_t outbuf_size = 0;
 
 #ifdef FULL_SCAN
@@ -332,7 +343,7 @@ GET_FORMAT:
 		ctx.rate, ctx.channels, ctx.encoding);
 
 	AUDDBG("opening audio\n");
-	if (! data->output->open_audio (FMT_S16_NE, ctx.rate, ctx.channels))
+	if (! data->output->open_audio (FMT_FLOAT, ctx.rate, ctx.channels))
 	{
 		error = TRUE;
 		goto cleanup;
