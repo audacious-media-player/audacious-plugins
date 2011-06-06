@@ -441,29 +441,6 @@ if test "x$enable_rocklight" = "xyes"; then
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS rocklight"
 fi
 
-dnl *** LIRC client libraries
-
-AC_ARG_ENABLE(lirc,
-    [  --disable-lirc          disable LIRC plugin (default=enabled)],
-    [enable_lirc=$enableval],
-    [enable_lirc="yes"]
-)
-
-if test "x$enable_lirc" = "xyes"; then
-    AC_CHECK_LIB([lirc_client],[lirc_init],[have_lirc=yes],[have_lirc=no])
-else
-    AC_MSG_RESULT([*** LIRC plugin disabled per user request ***])
-    have_lirc="no"
-fi
-
-if test "x$have_lirc" = "xyes"; then
-	AC_CHECK_HEADER(lirc/lirc_client.h,[],[have_lirc=no])
-fi
-
-if test "x$have_lirc" = "xyes"; then
-	GENERAL_PLUGINS="$GENERAL_PLUGINS lirc"
-fi
-
 dnl *** Global Hotkey general plugin (only built on X11)
 
 AC_ARG_ENABLE(hotkey,
@@ -1526,7 +1503,7 @@ dnl GTK3 overrides
 dnl ==============
 
 if test $use_gtk3 = yes ; then
-    for name in jack ladspa lirc moodbar paranormal projectm-1.0 sid spectrum streambrowser
+    for name in jack ladspa moodbar paranormal projectm-1.0 sid spectrum streambrowser
     do
         echo " *** Disabling plugin because not GTK3-compatible: $name"
         CONTAINER_PLUGINS=`sed s/$name// << EOF
@@ -1677,7 +1654,6 @@ echo "  Status Icon:                            $have_statusicon"
 echo "  libnotify OSD:                          $have_notify"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
-echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $have_scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
 echo "  Bluetooth audio support:                $have_bluetooth"
