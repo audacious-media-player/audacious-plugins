@@ -1286,37 +1286,6 @@ else
     AC_MSG_RESULT([*** cue plugin disabled by request ***])
 fi
 
-dnl *** projectM (GL Milkdrop port)
-
-AC_ARG_ENABLE(projectm-1.0,
-[  --disable-projectm-1.0      disable projectM 1.0+ vis plugin. (default=enabled)],
-[have_projectm1=$enableval],
-[have_projectm1=yes])
-
-if test "$have_projectm1" = "yes"; then
-	PKG_CHECK_MODULES(LIBPROJECTM1, [libprojectM >= 1.1], [have_projectm1="yes"], [have_projectm1="no"])
-fi
-
-if test "$have_projectm1" = "yes"; then
-	PKG_CHECK_MODULES(GTKGLEXT, [gtkglext-1.0], [have_projectm1="yes"], [have_projectm1="no"])
-fi
-
-if test "$have_projectm1" = "yes"; then
-	LIBPROJECTM1_datadir=`pkg-config --variable=pkgdatadir libprojectM`;
-	LIBPROJECTM1_sysconfdir=`pkg-config --variable=sysconfdir libprojectM`;
-        LIBPROJECTM1_prefix=`pkg-config --variable=prefix libprojectM`;
-	LIBPROJECTM1_CFLAGS="$LIBPROJECTM1_CFLAGS -DPROJECTM_DATADIR=\\\"$LIBPROJECTM1_datadir\\\" -DPROJECTM_SYSCONFDIR=\\\"$LIBPROJECTM1_sysconfdir\\\" -DPROJECTM_PREFIX=\\\"$LIBPROJECTM1_prefix\\\"";
-fi
-
-AC_SUBST(LIBPROJECTM1_LIBS)
-AC_SUBST(LIBPROJECTM1_CFLAGS)
-AC_SUBST(GTKGLEXT_LIBS)
-AC_SUBST(GTKGLEXT_CFLAGS)
-
-if test "x$have_projectm1" = "xyes"; then
-	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS projectm-1.0"
-fi
-
 dnl Moodbar
 dnl =========
 
@@ -1480,7 +1449,7 @@ dnl GTK3 overrides
 dnl ==============
 
 if test $use_gtk3 = yes ; then
-    for name in projectm-1.0 sid spectrum streambrowser
+    for name in sid spectrum streambrowser
     do
         echo " *** Disabling plugin because not GTK3-compatible: $name"
         CONTAINER_PLUGINS=`sed s/$name// << EOF
@@ -1657,7 +1626,6 @@ echo "  Blur Scope:                             yes"
 echo "  Spectrum Analyzer:                      yes"
 echo "  Cairo Spectrum Analyzer:                yes"
 echo "  Moodbar data renderer:                  $enable_moodbar"
-echo "  projectM 1.x (GL milkdrop):             $have_projectm1"
 echo
 echo "  Transport"
 echo "  ---------"
