@@ -464,33 +464,6 @@ if test "x$have_lirc" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS lirc"
 fi
 
-dnl *** EvDev-Plug general plugin (only built on Linux)
-
-AC_ARG_ENABLE(evdevplug,
-    [  --disable-evdevplug     disable Linux evdev plugin (default=enabled)],
-    [enable_evdevplug=$enableval],
-    [enable_evdevplug="yes"]
-)
-
-if test "x$enable_evdevplug" = "xyes"; then
-    case "$target" in
-        *-*-linux*)
-            have_evdevplug="yes"
-        ;;
-        *)
-            AC_MSG_RESULT([*** Linux evdev plugin disabled (host does not run linux) ***])
-            have_evdevplug="no"
-        ;;
-    esac
-else
-    AC_MSG_RESULT([*** Linux evdev plugin disabled per user request ***])
-    have_evdevplug="no"
-fi
-
-if test "x$have_evdevplug" = "xyes"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS evdev-plug"
-fi
-
 dnl *** Global Hotkey general plugin (only built on X11)
 
 AC_ARG_ENABLE(hotkey,
@@ -1553,7 +1526,7 @@ dnl GTK3 overrides
 dnl ==============
 
 if test $use_gtk3 = yes ; then
-    for name in evdev-plug jack ladspa lirc moodbar paranormal projectm-1.0 sid spectrum streambrowser
+    for name in jack ladspa lirc moodbar paranormal projectm-1.0 sid spectrum streambrowser
     do
         echo " *** Disabling plugin because not GTK3-compatible: $name"
         CONTAINER_PLUGINS=`sed s/$name// << EOF
