@@ -1503,7 +1503,7 @@ dnl GTK3 overrides
 dnl ==============
 
 if test $use_gtk3 = yes ; then
-    for name in jack ladspa moodbar paranormal projectm-1.0 sid spectrum streambrowser
+    for name in ladspa moodbar paranormal projectm-1.0 sid spectrum streambrowser
     do
         echo " *** Disabling plugin because not GTK3-compatible: $name"
         CONTAINER_PLUGINS=`sed s/$name// << EOF

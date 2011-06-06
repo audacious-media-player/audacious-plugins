@@ -452,7 +452,9 @@ AUD_OUTPUT_PLUGIN
     .init = jack_init,
     .cleanup = jack_cleanup,
     .about = jack_about,
+#if 0
     .configure = jack_configure,
+#endif
     .get_volume = jack_get_volume,
     .set_volume = jack_set_volume,
     .open_audio = jack_open,
