@@ -164,8 +164,9 @@ AC_SUBST([GTK_CFLAGS])
 
 AUD_COMMON_PROGS
 
-AC_ARG_ENABLE(gio, [  --disable-gio           disable GIO support (default=enabled if GIO present)],
- enable_gio=$enableval, enable_gio=yes)
+AC_ARG_ENABLE(gio,
+ AS_HELP_STRING([--enable-gio], [enable GIO support (default=disabled)]),
+ enable_gio=$enableval, enable_gio=no)
 
 if test "x$enable_gio" = "xyes"; then
     PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0], [ADD_PC_REQUIRES([gio-2.0 >= 2.0])], [enable_gio=no])
@@ -1583,7 +1584,7 @@ echo "  Moodbar data renderer:                  $enable_moodbar"
 echo
 echo "  Transport"
 echo "  ---------"
-echo "  gio transport:                          $enable_gio"
+echo "  gio transport (experimental):           $enable_gio"
 echo "  neon-based http/https:                  $have_neon"
 echo "  WinINet-based http/https:               $enable_wininet"
 echo "  libmms-based mms:                       $have_mms"
