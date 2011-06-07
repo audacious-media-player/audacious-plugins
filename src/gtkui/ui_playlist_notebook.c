@@ -376,26 +376,12 @@ void ui_playlist_notebook_update (void * data, void * user)
     do_follow ();
 }
 
-void playlist_follow (gint list, gint row)
+void playlist_set_focus (gint list, gint row)
 {
     g_queue_push_tail (& follow_queue, GINT_TO_POINTER
      (aud_playlist_get_unique_id (list)));
     g_queue_push_tail (& follow_queue, GINT_TO_POINTER (row));
 
-    if (row == CURRENT_POS)
-    {
-        if (config.autoscroll)
-            row = aud_playlist_get_position (list);
-        else
-            goto SKIP;
-    }
-
-    aud_playlist_select_all (list, FALSE);
-
-    if (row >= 0)
-        aud_playlist_entry_set_selected (list, row, TRUE);
-
-SKIP:
     if (! aud_playlist_update_pending ())
         do_follow ();
 }
@@ -403,7 +389,16 @@ SKIP:
 void ui_playlist_notebook_position (void * data, void * user)
 {
     gint list = GPOINTER_TO_INT (data);
-    playlist_follow (list, CURRENT_POS);
+
+    if (config.autoscroll)
+    {
+        aud_playlist_select_all (list, FALSE);
+
+        if (aud_playlist_get_position (list) >= 0)
+            aud_playlist_entry_set_selected (list, aud_playlist_get_position (list), TRUE);
+    }
+
+    playlist_set_focus (list, CURRENT_POS);
 }
 
 void ui_playlist_notebook_activate (void * data, void * user)

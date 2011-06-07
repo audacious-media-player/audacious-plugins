@@ -541,6 +541,18 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
             return FALSE;
         }
         break;
+      case GDK_MOD1_MASK:
+        switch (event->keyval)
+        {
+          case GDK_Up:
+            playlist_shift (-1);
+            break;
+          case GDK_Down:
+            playlist_shift (1);
+            break;
+          default:
+            return FALSE;
+        }
       default:
         return FALSE;
     }

@@ -101,7 +101,10 @@ void playlist_delete_selected (void)
     if (focus == aud_playlist_entry_count (list))
         focus --;
     if (focus >= 0)
-        playlist_follow (list, focus);
+    {
+        aud_playlist_entry_set_selected (list, focus, TRUE);
+        playlist_set_focus (list, focus);
+    }
 }
 
 void playlist_copy (void)
@@ -130,4 +133,16 @@ void playlist_paste (void)
     gint list = aud_playlist_get_active ();
     audgui_urilist_insert (list, playlist_get_focus (list), text);
     g_free (text);
+}
+
+void playlist_shift (gint offset)
+{
+    gint list = aud_playlist_get_active ();
+    gint focus = playlist_get_focus (list);
+
+    if (focus < 0 || ! aud_playlist_entry_get_selected (list, focus))
+        return;
+
+    focus += aud_playlist_shift (list, focus, offset);
+    playlist_set_focus (list, focus);
 }

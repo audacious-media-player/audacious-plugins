@@ -31,8 +31,9 @@ void playlist_delete_selected (void);
 void playlist_copy (void);
 void playlist_cut (void);
 void playlist_paste (void);
+void playlist_shift (gint offset);
 
 /* ui_playlist_notebook.c */
-void playlist_follow (gint list, gint row);
+void playlist_set_focus (gint list, gint row);
 
 #endif
