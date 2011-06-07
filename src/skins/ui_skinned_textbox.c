@@ -169,7 +169,7 @@ static void lookup_char (const gchar c, gint * x, gint * y)
     case '#': tx = 30; ty = 1; break;
     case '?': tx = 3; ty = 2; break;
     case '*': tx = 4; ty = 2; break;
-    default: tx = 29; ty = 0; break;
+    default: tx = 3; ty = 2; break; /* '?' */
     }
 
     * x = tx * active_skin->properties.textbox_bitmap_font_width;
@@ -186,8 +186,9 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
 
     gtk_widget_set_size_request (textbox, data->width, ch);
 
-    gchar * upper = g_utf8_strup (text, -1);
-    gint len = g_utf8_strlen (upper, -1);
+    glong len;
+    gunichar * utf32 = g_utf8_to_ucs4 (text, -1, NULL, & len, NULL);
+    g_return_if_fail (utf32);
 
     data->buf_width = MAX (cw * len, data->width);
     data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
@@ -195,14 +196,16 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
 
     cairo_t * cr = cairo_create (data->buf);
 
-    gchar * s = upper;
+    gunichar * s = utf32;
     for (gint x = 0; x < data->buf_width; x += cw)
     {
-        gchar c = * s ? * s ++ : ' ';
+        gunichar c = * s ? * s ++ : ' ';
         gint cx = 0, cy = 0;
 
         if (c >= 'A' && c <= 'Z')
             cx = cw * (c - 'A');
+        else if (c >= 'a' && c <= 'z')
+            cx = cw * (c - 'a');
         else if (c >= '0' && c <= '9')
         {
             cx = cw * (c - '0');
@@ -215,7 +218,7 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
     }
 
     cairo_destroy (cr);
-    g_free (upper);
+    g_free (utf32);
 }
 
 static void textbox_render (GtkWidget * textbox, TextboxData * data)
