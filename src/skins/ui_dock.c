@@ -102,6 +102,15 @@ void dock_remove_window (GtkWidget * window)
     g_slice_free (DockWindow, dw);
 }
 
+static void dock_sync (void)
+{
+    for (GSList * node = windows; node; node = node->next)
+    {
+        DockWindow * dw = node->data;
+        gtk_window_get_position ((GtkWindow *) dw->window, dw->x, dw->y);
+    }
+}
+
 static void clear_docked (void)
 {
     for (GSList * node = windows; node; node = node->next)
@@ -152,6 +161,8 @@ void dock_set_size (GtkWidget * window, gint w, gint h)
 {
     DockWindow * base = find_window (windows, window);
     g_return_if_fail (base);
+
+    dock_sync ();
 
     if (h != base->h)
     {
@@ -243,6 +254,8 @@ void dock_move_start (GtkWidget * window, gint x, gint y)
 {
     DockWindow * dw = find_window (windows, window);
     g_return_if_fail (dw);
+
+    dock_sync ();
 
     last_x = x;
     last_y = y;
