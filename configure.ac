@@ -1182,6 +1182,22 @@ else
     AC_MSG_RESULT([*** mms plugin disabled by request ***])
 fi
 
+dnl SMB
+dnl ===
+
+AC_ARG_ENABLE(smb,
+ AS_HELP_STRING([--disable-smb], [disable SMB transport (default=enabled)]),
+ [enable_smb=$enableval], [enable_smb=yes])
+
+if test $enable_smb = yes ; then
+    AC_CHECK_HEADERS([libsmbclient.h], [enable_smb=yes], [enable_smb=no])
+
+    if test $enable_smb = yes ; then
+        TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS smb"
+    else
+        AC_MSG_RESULT([*** libsmbclient not found; SMB client disabled])
+    fi
+fi
 
 dnl *** MTP Upload
 
@@ -1547,6 +1563,7 @@ echo "  ---------"
 echo "  gio transport (experimental):           $enable_gio"
 echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
+echo "  SMB transport:                          $enable_smb"
 echo
 echo "  Container"
 echo "  ---------"
