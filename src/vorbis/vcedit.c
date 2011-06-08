@@ -145,7 +145,7 @@ _fetch_next_packet(vcedit_state * s, ogg_packet * p, ogg_page * page)
 {
     int result;
     char *buffer;
-    int bytes;
+    gint64 bytes;
 
     result = ogg_stream_packetout(s->os, p);
 
@@ -189,7 +189,7 @@ vcedit_open_callbacks(vcedit_state * state, void *in,
                       vcedit_write_func write_func)
 {
     char *buffer;
-    int bytes, i;
+    gint64 bytes, i;
     ogg_packet *header;
     ogg_packet header_main;
     ogg_packet header_comments;
@@ -317,7 +317,7 @@ vcedit_write(vcedit_state * state, void *out)
     ogg_int64_t granpos = 0;
     int result;
     char *buffer;
-    int bytes;
+    gint64 bytes;
     int needflush = 0, needout = 0;
 
     state->eosin = 0;

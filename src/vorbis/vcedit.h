@@ -19,8 +19,8 @@ extern "C" {
 #include <vorbis/codec.h>
 #include <audacious/plugin.h>
 
-typedef size_t (*vcedit_read_func)(void *, size_t, size_t, void *);
-typedef size_t (*vcedit_write_func)(const void *, size_t, size_t, void *);
+typedef gint64 (*vcedit_read_func)(void *, gint64, gint64, void *);
+typedef gint64 (*vcedit_write_func)(const void *, gint64, gint64, void *);
 
 typedef struct {
 	ogg_sync_state	 *oy;
