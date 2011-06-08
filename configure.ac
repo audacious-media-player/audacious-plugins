@@ -1207,28 +1207,6 @@ fi
 AC_SUBST(MTP_LIBS)
 AC_SUBST(MTP_CFLAGS)
 
-dnl *** Bluetooth audio support
-
-AC_ARG_ENABLE(bluetooth,
-[  --disable-bluetooth           disable bluetooth audio support. (default=enabled)],
-[have_bluetooth=$enableval],
-[have_bluetooth=yes])
-
-dnl This has been broken by the output plugin on-demand work
-have_bluetooth=no
-if test "x$have_bluetooth" = "xyes" -a "x$have_alsa" = "xyes"; then
-    have_bluetooth=yes
-    PKG_CHECK_MODULES(BLUEZ, [bluez >= 2.22],
-    [GENERAL_PLUGINS="$GENERAL_PLUGINS bluetooth" ], [have_bluetooth="no"])
-    BLUEZ_LIBS=`pkg-config --libs bluez`
-    BLUEZ_CFLAGS=`pkg-config --cflags bluez`
-else
-    have_bluetooth=no
-    AC_MSG_RESULT([*** bluetooth audio support plugin disabled by request ***])
-fi
-AC_SUBST(BLUEZ_LIBS)
-AC_SUBST(BLUEZ_CFLAGS)
-
 dnl XSPF
 dnl ----
 
@@ -1542,7 +1520,6 @@ echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  AudioScrobbler Client:                  $have_scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
-echo "  Bluetooth audio support:                $have_bluetooth"
 echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
 echo "  LyricWiki viewer:                       $enable_lyricwiki"
 echo "  Album Art widget:                       yes"
