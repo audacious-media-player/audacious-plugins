@@ -1,5 +1,6 @@
 /*  Audacious
  *  Copyright (c) 2007 Daniel Bradshaw
+ *  Copyright (c) 2011 John Lindgren
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -37,7 +38,7 @@ static void smb_auth_fn(const char *srv,
 
 typedef struct _SMBFile {
 	int fd;
-	long length;
+	gint64 length;
 } SMBFile;
 
 /* TODO: make writing work. */
@@ -53,7 +54,7 @@ VFSFile *smb_vfs_fopen_impl(const gchar * path, const gchar * mode)
   file = g_new0(VFSFile, 1);
   handle = g_new0(SMBFile, 1);
   handle->fd = smbc_open(path, O_RDONLY, 0);
-		
+
   if (handle->fd < 0) {
     g_free(file);
     file = NULL;
@@ -62,7 +63,7 @@ VFSFile *smb_vfs_fopen_impl(const gchar * path, const gchar * mode)
     handle->length = st.st_size;
     file->handle = (void *)handle;
   }
-		
+
   return file;
 }
 
@@ -73,7 +74,7 @@ gint smb_vfs_fclose_impl(VFSFile * file)
 
   if (file == NULL)
     return -1;
-	
+
   if (file->handle)
   {
     handle = (SMBFile *)file->handle;
@@ -85,7 +86,7 @@ gint smb_vfs_fclose_impl(VFSFile * file)
   return ret;
 }
 
-size_t smb_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
+static gint64 smb_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile * file)
 {
   SMBFile *handle;
   if (file == NULL)
@@ -94,7 +95,7 @@ size_t smb_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * fil
   return smbc_read(handle->fd, ptr, size * nmemb);
 }
 
-size_t smb_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file)
+static gint64 smb_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb, VFSFile * file)
 {
   return 0;
 }
@@ -108,16 +109,16 @@ gint smb_vfs_getc_impl(VFSFile *file)
   return (gint) temp;
 }
 
-gint smb_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
+static gint smb_vfs_fseek_impl(VFSFile * file, gint64 offset, gint whence)
 {
   SMBFile *handle;
-  glong roffset = offset;
+  gint64 roffset = offset;
   gint ret = 0;
   if (file == NULL)
      return 0;
-	
+
   handle = (SMBFile *)file->handle;
-	
+
   if (whence == SEEK_END)
   {
     roffset = handle->length + offset;
@@ -134,7 +135,7 @@ gint smb_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
     ret = smbc_lseek(handle->fd, roffset, whence);
     //printf("%ld %d = %d\n",roffset, whence, ret);
   }
-	
+
   return ret;
 }
 
@@ -149,8 +150,7 @@ void smb_vfs_rewind_impl(VFSFile * file)
   smb_vfs_fseek_impl(file, 0, SEEK_SET);
 }
 
-glong
-smb_vfs_ftell_impl(VFSFile * file)
+static gint64 smb_vfs_ftell_impl(VFSFile * file)
 {
   SMBFile *handle;
   handle = (SMBFile *)file->handle;
@@ -160,23 +160,20 @@ smb_vfs_ftell_impl(VFSFile * file)
 gboolean
 smb_vfs_feof_impl(VFSFile * file)
 {
-  SMBFile *handle;
-  off_t at;
+  SMBFile * handle = file->handle;
+  gint64 at;
 
   at = smb_vfs_ftell_impl(file);
 
-  //printf("%d %d %ld %ld\n",sizeof(int), sizeof(off_t), at, handle->length);
   return (gboolean) (at == handle->length) ? TRUE : FALSE;
 }
 
-gint
-smb_vfs_truncate_impl(VFSFile * file, glong size)
+static gint smb_vfs_truncate_impl (VFSFile * file, gint64 size)
 {
   return -1;
 }
 
-off_t
-smb_vfs_fsize_impl(VFSFile * file)
+static gint64 smb_vfs_fsize_impl (VFSFile * file)
 {
     SMBFile *handle = (SMBFile *)file->handle;
 
@@ -184,7 +181,6 @@ smb_vfs_fsize_impl(VFSFile * file)
 }
 
 VFSConstructor smb_const = {
-	"smb://",
 	smb_vfs_fopen_impl,
 	smb_vfs_fclose_impl,
 	smb_vfs_fread_impl,
@@ -199,7 +195,7 @@ VFSConstructor smb_const = {
 	smb_vfs_fsize_impl
 };
 
-static void init(void)
+static gboolean init (void)
 {
 	int err;
 
@@ -207,29 +203,18 @@ static void init(void)
 	if (err < 0)
 	{
 		g_message("[smb] not starting samba support due to error code %d", err);
-		return;
+		return FALSE;
 	}
 
-	vfs_register_transport(&smb_const);
+	return TRUE;
 }
 
-static void cleanup(void)
-{
-#if 0
-	vfs_unregister_transport(&smb_const);
-#endif
-}
+static const gchar * const smb_schemes[] = {"smb", NULL};
 
-LowlevelPlugin llp_smb = {
-	NULL,
-	NULL,
-	"smb:// URI Transport",
-	init,
-	cleanup,
-};
-
-LowlevelPlugin *get_lplugin_info(void)
-{
-        return &llp_smb;
-}
-
+AUD_TRANSPORT_PLUGIN
+(
+ .name = "SMB transport",
+ .init = init,
+ .schemes = smb_schemes,
+ .vtable = & smb_const
+)
