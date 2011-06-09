@@ -88,10 +88,12 @@ aosd_cb_configure_position_expose ( GtkWidget * darea ,
                                     GdkEventExpose * event ,
                                     gpointer coord_gp )
 {
+#if ! GTK_CHECK_VERSION (3, 0, 0)
   gint coord = GPOINTER_TO_INT(coord_gp);
   gdk_draw_rectangle( GDK_DRAWABLE(darea->window) ,
                       darea->style->black_gc , TRUE ,
                       (coord % 3) * 10 , (coord / 3) * 16 , 20 , 8 );
+#endif
   return FALSE;
 }
 
@@ -235,14 +237,25 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_container_set_border_width( GTK_CONTAINER(pos_multimon_hbox) , 6 );
   gtk_container_add( GTK_CONTAINER(pos_multimon_frame), pos_multimon_hbox );
   pos_multimon_label = gtk_label_new( _("Display OSD using:") );
-  pos_multimon_combobox = gtk_combo_box_new_text();
-  gtk_combo_box_append_text( GTK_COMBO_BOX(pos_multimon_combobox) , _("all monitors") );
+#if GTK_CHECK_VERSION (3, 0, 0)
+  #define CBT_NEW gtk_combo_box_text_new
+  #define CBT_ADD(widget, text) \
+    gtk_combo_box_text_append( GTK_COMBO_BOX_TEXT(widget) , NULL , text )
+#else
+  #define CBT_NEW gtk_combo_box_new_text
+  #define CBT_ADD(widget, text) \
+    gtk_combo_box_append_text( GTK_COMBO_BOX(widget) , text )
+#endif
+  pos_multimon_combobox = CBT_NEW();
+  CBT_ADD( pos_multimon_combobox , _("all monitors") );
   for ( i = 0 ; i < monitors_num ; i++ )
   {
     gchar *mon_str = g_strdup_printf( _("monitor %i") , i + 1 );
-    gtk_combo_box_append_text( GTK_COMBO_BOX(pos_multimon_combobox) , mon_str );
+    CBT_ADD( pos_multimon_combobox , mon_str );
     g_free( mon_str );
   }
+#undef CBT_NEW
+#undef CBT_ADD
   gtk_combo_box_set_active( GTK_COMBO_BOX(pos_multimon_combobox) , (cfg->osd->position.multimon_id + 1) );
   aosd_callback_list_add( cb_list , pos_multimon_combobox , aosd_cb_configure_position_multimon_commit );
   gtk_box_pack_start( GTK_BOX(pos_multimon_hbox) , pos_multimon_label , FALSE , FALSE , 0 );
