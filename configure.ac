@@ -522,6 +522,75 @@ if test "x$have_statusicon" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS statusicon"
 fi
 
+dnl *** Audacious OSD plugin (pangocairo-based)
+
+AC_ARG_ENABLE(aosd,
+    [  --disable-aosd          disable Audacious OSD plugin (default=enabled)],
+    [enable_aosd=$enableval],
+    [enable_aosd="guess"]
+)
+
+AC_ARG_ENABLE(aosd_xcomp,
+    [  --disable-aosd-xcomp    disable Audacious OSD X Composite Support (default=enabled)],
+    [enable_aosd_xcomp=$enableval],
+    [enable_aosd_xcomp="yes"]
+)
+
+if test "x$enable_aosd" = "xguess"; then
+    have_aosd="yes"
+    PKG_CHECK_MODULES(PANGO,[pango >= 1.14.7],,
+        [have_aosd="no"
+        AC_MSG_RESULT([*** pango >= 1.14.7 is required for Audacious OSD plugin ***])]
+    )
+    PKG_CHECK_MODULES(CAIRO,[cairo >= 1.2.4],,
+        [have_aosd="no"
+        AC_MSG_RESULT([*** cairo >= 1.2.4 is required for Audacious OSD plugin ***])]
+    )
+    PKG_CHECK_MODULES(PANGOCAIRO,[pangocairo >= 1.14.7],,
+        [have_aosd="no"
+        AC_MSG_RESULT([*** pangocairo >= 1.14.7 is required for Audacious OSD plugin ***])]
+    )
+    PKG_CHECK_MODULES(XRENDER, xrender,,
+        [have_aosd="no"
+        AC_MSG_RESULT([*** X Render extension is required for Audacious OSD plugin ***])]
+    )
+    if test "x$enable_aosd_xcomp" = "xyes"; then
+        have_aosd_xcomp="yes"
+        PKG_CHECK_MODULES(XCOMPOSITE, xcomposite,
+            [AC_DEFINE([HAVE_XCOMPOSITE],[],[X Composite extension available])],
+            [have_aosd_xcomp="no"
+            AC_MSG_RESULT([*** X Composite extension not found, composite support for Audacious OSD will not be compiled ***])]
+        )
+    else
+        AC_MSG_RESULT([*** X Composite support for Audacious OSD plugin disabled per user request ***])
+        have_aosd_xcomp="no"
+    fi
+else
+    if test "x$enable_aosd" = "xyes"; then
+        AC_MSG_RESULT([*** Audacious OSD plugin has been forcefully enabled ***])
+        have_aosd="yes"
+        if test "x$enable_aosd_xcomp" = "xyes"; then
+            have_aosd_xcomp="yes"
+            PKG_CHECK_MODULES(XCOMPOSITE, xcomposite,
+                [AC_DEFINE([HAVE_XCOMPOSITE],[],[X Composite extension available])],
+                [have_aosd_xcomp="no"
+                AC_MSG_RESULT([*** X Composite extension not found, composite support for Audacious OSD will not be compiled ***])]
+            )
+        else
+            AC_MSG_RESULT([*** X Composite support for Audacious OSD plugin disabled per user request ***])
+            have_aosd_xcomp="no"
+        fi
+    else
+        AC_MSG_RESULT([*** Audacious OSD plugin disabled per user request ***])
+        have_aosd="no"
+    fi
+fi
+
+if test "x$have_aosd" = "xyes"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS aosd"
+fi
+
+
 dnl notify: libnotify-based OSD
 dnl ===========================
 
@@ -1531,6 +1600,8 @@ echo "  General"
 echo "  -------"
 echo "  Song Change:                            $enable_songchange"
 echo "  Status Icon:                            $have_statusicon"
+echo "  Audacious OSD:                          $have_aosd"
+echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  libnotify OSD:                          $have_notify"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
