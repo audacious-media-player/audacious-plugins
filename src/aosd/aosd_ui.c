@@ -85,15 +85,25 @@ aosd_callback_list_free ( GList * list )
 
 static gboolean
 aosd_cb_configure_position_expose ( GtkWidget * darea ,
+#if GTK_CHECK_VERSION (3, 0, 0)
+                                    cairo_t * cr ,
+#else
                                     GdkEventExpose * event ,
+#endif
                                     gpointer coord_gp )
 {
-#if ! GTK_CHECK_VERSION (3, 0, 0)
   gint coord = GPOINTER_TO_INT(coord_gp);
+
+#if GTK_CHECK_VERSION (3, 0, 0)
+  cairo_set_source_rgb ( cr , 0 , 0 , 0 );
+  cairo_rectangle ( cr , (coord % 3) * 10 , (coord / 3) * 16 , 20 , 8 );
+  cairo_fill ( cr );
+#else
   gdk_draw_rectangle( GDK_DRAWABLE(darea->window) ,
                       darea->style->black_gc , TRUE ,
                       (coord % 3) * 10 , (coord / 3) * 16 , 20 , 8 );
 #endif
+
   return FALSE;
 }
 
@@ -184,8 +194,13 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
     pos_placement_bt_darea[i] = gtk_drawing_area_new();
     gtk_widget_set_size_request( pos_placement_bt_darea[i] , 40 , 40 );
     gtk_container_add( GTK_CONTAINER(pos_placement_bt[i]) , pos_placement_bt_darea[i] );
+#if GTK_CHECK_VERSION (3, 0, 0)
+    g_signal_connect( G_OBJECT(pos_placement_bt_darea[i]) , "draw" ,
+                      G_CALLBACK(aosd_cb_configure_position_expose) , GINT_TO_POINTER(i) );
+#else
     g_signal_connect( G_OBJECT(pos_placement_bt_darea[i]) , "expose-event" ,
                       G_CALLBACK(aosd_cb_configure_position_expose) , GINT_TO_POINTER(i) );
+#endif
     gtk_table_attach( GTK_TABLE(pos_placement_table) , pos_placement_bt[i] ,
                       (i % 3) , (i % 3) + 1 , (i / 3) , (i / 3) + 1 ,
                       GTK_FILL , GTK_FILL , 0 , 0 );
