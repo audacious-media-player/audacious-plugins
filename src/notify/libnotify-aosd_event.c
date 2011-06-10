@@ -21,10 +21,12 @@
 #include <glib.h>
 
 #include <audacious/drct.h>
+#include <audacious/i18n.h>
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui-gtk.h>
 
+#include "config.h"
 #include "libnotify-aosd_common.h"
 
 static gchar * last_title = NULL, * last_message = NULL;
@@ -37,10 +39,15 @@ static void clear (void)
     last_message = NULL;
 }
 
-static void update (void)
+static void update (void * unused, void * explicit)
 {
     if (! aud_drct_get_playing () || ! aud_drct_get_ready ())
+    {
+        if (GPOINTER_TO_INT (explicit))
+            osd_show (_("Stopped"), _("Audacious is not playing."), NULL, NULL);
+
         return;
+    }
 
     gint list = aud_playlist_get_playing ();
     gint entry = aud_playlist_get_position (list);
@@ -65,8 +72,8 @@ static void update (void)
     else
         message = g_strdup ("");
 
-    if (last_title && last_message && ! strcmp (title, last_title) && ! strcmp
-     (message, last_message))
+    if (! GPOINTER_TO_INT (explicit) && last_title && last_message && ! strcmp
+     (title, last_title) && ! strcmp (message, last_message))
     {
         g_free (message);
         return;
@@ -88,13 +95,15 @@ static void update (void)
 
 void event_init (void)
 {
-    hook_associate ("playback ready", (HookFunction) update, NULL);
-    hook_associate ("playlist update", (HookFunction) update, NULL);
+    hook_associate ("aosd toggle", (HookFunction) update, GINT_TO_POINTER (TRUE));
+    hook_associate ("playback ready", (HookFunction) update, GINT_TO_POINTER (FALSE));
+    hook_associate ("playlist update", (HookFunction) update, GINT_TO_POINTER (FALSE));
     hook_associate ("playback stop", (HookFunction) clear, NULL);
 }
 
 void event_uninit (void)
 {
+    hook_dissociate ("aosd toggle", (HookFunction) update);
     hook_dissociate ("playback ready", (HookFunction) update);
     hook_dissociate ("playlist update", (HookFunction) update);
     hook_dissociate ("playback stop", (HookFunction) clear);
