@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.4.0\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-05-23 08:17-0400\n"
+"POT-Creation-Date: 2011-06-10 18:30+0200\n"
 "PO-Revision-Date: 2007-08-28 20:44+0200\n"
 "Last-Translator: Daniel Patriche <m4st3rth0r@gmail.com>\n"
 "Language-Team: Romanian <audacious@atheme.org>\n"
@@ -35,578 +35,6 @@ msgstr ""
 #, fuzzy
 msgid "About MP4 AAC decoder plugin"
 msgstr "Despre plugin-ul decodor MP4·AAC"
-
-#: src/adplug/adplug-xmms.cc:151
-msgid "About "
-msgstr "Despre "
-
-#: src/adplug/adplug-xmms.cc:155
-msgid ""
-"\n"
-"Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
-"\n"
-"This plugin is released under the terms and conditions of the GNU LGPL.\n"
-"See http://www.gnu.org/licenses/lgpl.html for details.\n"
-"\n"
-"This plugin uses the AdPlug library, which is copyright (C) Simon Peter, et "
-"al.\n"
-"Linked AdPlug library version: "
-msgstr ""
-"\n"
-"Copyright·(C)·2002,·2003·Simon·Peter·<dn.tlp@gmx.net>\n"
-"\n"
-"Acest plugin este distribuit conform termenilor și condițiilor licenței GNU "
-"LGPL.\n"
-"Vedeți·http://www.gnu.org/licenses/lgpl.html·tentru detalii.\n"
-"\n"
-"Plugin-ul folosește biblioteca AdPlug,·Copyright·(C)·Simon·Peter·și alții.\n"
-"Versiunea AdPlug pentru care a fost link-editat:·"
-
-#: src/adplug/adplug-xmms.cc:232
-msgid "AdPlug :: Configuration"
-msgstr "AdPlug·::·Configurare"
-
-#: src/adplug/adplug-xmms.cc:241 src/adplug/adplug-xmms.cc:504
-#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:131
-#: src/echo_plugin/gui.c:123 src/jack/configure.c:146 src/null/null.c:112
-#: src/stereo_plugin/stereo.c:125
-msgid "Ok"
-msgstr "Ok"
-
-#: src/adplug/adplug-xmms.cc:251 src/alarm/interface.c:1398
-#: src/cdaudio-ng/configure.c:249 src/crystalizer/crystalizer.c:138
-#: src/echo_plugin/gui.c:130 src/jack/configure.c:153
-#: src/modplug/gui/interface.cxx:715 src/null/null.c:113
-#: src/stereo_plugin/stereo.c:132
-msgid "Cancel"
-msgstr "Anulează"
-
-#: src/adplug/adplug-xmms.cc:267 src/console/configure.c:155
-#: src/modplug/gui/interface.cxx:629 src/modplug/gui/interface.cxx:888
-msgid "General"
-msgstr "General"
-
-#: src/adplug/adplug-xmms.cc:279
-msgid "Sound quality"
-msgstr "Calitatea sunetului"
-
-#: src/adplug/adplug-xmms.cc:284 src/modplug/gui/interface.cxx:188
-msgid "Resolution"
-msgstr "Rezoluție"
-
-#: src/adplug/adplug-xmms.cc:286
-msgid "8bit"
-msgstr "8 biți"
-
-#: src/adplug/adplug-xmms.cc:291
-msgid "16bit"
-msgstr "16 biți"
-
-#: src/adplug/adplug-xmms.cc:299 src/modplug/gui/interface.cxx:219
-msgid "Channels"
-msgstr "Canale"
-
-#: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:173 src/sid/xs_interface.c:301
-msgid "Mono"
-msgstr "Mono"
-
-#: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:173
-#: src/sid/xs_interface.c:308
-msgid "Stereo"
-msgstr "Stereo"
-
-#: src/adplug/adplug-xmms.cc:310
-msgid ""
-"Setting stereo is not recommended, unless you need to. This won't add any "
-"stereo effects to the sound - OPL2 is just mono - but eats up more CPU power!"
-msgstr ""
-"Nu este recomandată setarea forțată Stereo, decât dacă este neapărată "
-"nevoieAceastă setare nu va adăuga efecte stereo, deoarece OPL2 suportă doar "
-"MonoVa consuma însă mai multe resurse de calcul!"
-
-#: src/adplug/adplug-xmms.cc:318
-msgid "Frequency"
-msgstr "Frecvența"
-
-#: src/adplug/adplug-xmms.cc:354 src/adplug/adplug-xmms.cc:560
-#: src/console/configure.c:157 src/skins/ui_manager.c:168
-msgid "Playback"
-msgstr "Redare"
-
-#: src/adplug/adplug-xmms.cc:358
-msgid "Detect songend"
-msgstr "Detectează sfârșitul melodiei"
-
-#: src/adplug/adplug-xmms.cc:362
-msgid ""
-"If enabled, XMMS will detect a song's ending, stop it and advance in the "
-"playlist. If disabled, XMMS won't take notice of a song's ending and loop it "
-"all over again and again."
-msgstr ""
-"Dacă este activat, Audacious va detecta·sfârșitul melodiei, va opri redarea "
-"și va avansa la melodia următoare. Dacă este dezactivat, nu se va ști când s-"
-"a terminat melodia și va fi redată din nou, la infinit. "
-
-#: src/adplug/adplug-xmms.cc:373
-msgid "Formats"
-msgstr "Formate"
-
-#: src/adplug/adplug-xmms.cc:380
-msgid "Format selection"
-msgstr "Selecția formatelor"
-
-#: src/adplug/adplug-xmms.cc:383
-msgid "Format"
-msgstr "Format"
-
-#: src/adplug/adplug-xmms.cc:383
-msgid "Extension"
-msgstr "Extensie"
-
-#: src/adplug/adplug-xmms.cc:423
-msgid ""
-"Selected file types will be recognized and played back by this plugin. "
-"Deselected types will be ignored to make room for other plugins to play "
-"these files."
-msgstr ""
-"Tipurile de fișiere selectate vor fi recunoscute și redate de acest plugin. "
-"Cele deselectate vor fi ignorate, dar pot fi redate de alte pluginuri."
-
-#: src/adplug/adplug-xmms.cc:511
-msgid "AdPlug :: File Info"
-msgstr "AdPlug·::·Informații despre fișier"
-
-#: src/adplug/adplug-xmms.cc:533 src/amidi-plug/i_configure-fluidsynth.c:345
-msgid "Filename"
-msgstr "Numele Fișierului:"
-
-#: src/adplug/adplug-xmms.cc:537 src/skins/ui_playlist.c:390
-msgid "Title: "
-msgstr "Titlu: "
-
-#: src/adplug/adplug-xmms.cc:538
-msgid "Author: "
-msgstr "Autor: "
-
-#: src/adplug/adplug-xmms.cc:539
-msgid "File Type: "
-msgstr "Tipul Fișierului: "
-
-#: src/adplug/adplug-xmms.cc:540
-msgid "Subsongs: "
-msgstr "Sub-melodii: "
-
-#: src/adplug/adplug-xmms.cc:541
-msgid "Instruments: "
-msgstr "Instrumente: "
-
-#: src/adplug/adplug-xmms.cc:546
-msgid "Orders: "
-msgstr "Ordine: "
-
-#: src/adplug/adplug-xmms.cc:547
-msgid "Patterns: "
-msgstr "Șabloane: "
-
-#: src/adplug/adplug-xmms.cc:551
-msgid "Song"
-msgstr "Melodia"
-
-#: src/adplug/adplug-xmms.cc:577
-msgid "Instrument name"
-msgstr "Numele Instrumentului"
-
-#: src/adplug/adplug-xmms.cc:619
-msgid "Song message"
-msgstr "Mesajul melodiei"
-
-#: src/adplug/adplug-xmms.cc:642
-msgid "Subsong selection"
-msgstr "Selecția sub-melodiei"
-
-#: src/adplug/adplug-xmms.cc:696
-msgid "Order: "
-msgstr "Ordine: "
-
-#: src/adplug/adplug-xmms.cc:697
-msgid "Pattern: "
-msgstr "Șablon: "
-
-#: src/adplug/adplug-xmms.cc:699
-msgid "Row: "
-msgstr "Linie: "
-
-#: src/adplug/adplug-xmms.cc:700
-msgid "Speed: "
-msgstr "Viteză: "
-
-#: src/adplug/adplug-xmms.cc:701
-msgid "Timer: "
-msgstr "Cronometru: "
-
-#: src/adplug/adplug-xmms.cc:702 src/console/configure.c:235
-#: src/sid/xs_interface.c:354
-msgid "Hz"
-msgstr "Hz"
-
-#: src/alarm/interface.c:34
-msgid "About XMMS Alarm"
-msgstr "Despre plugin-ul·pentru Alarmă"
-
-#: src/alarm/interface.c:47
-msgid "XMMS Alarm"
-msgstr "XMMS·Alarm"
-
-#: src/alarm/interface.c:56
-msgid ""
-"An XMMS plugin which can be used\n"
-"to start playing at a certain time.\n"
-"\n"
-"Send all complaints to:\n"
-"Adam Feakin <adamf@snika.uklinux.net>\n"
-"Daniel Stodden <stodden@in.tum.de>\n"
-"\n"
-"http://www.snika.uklinux.net/xmms-alarm/"
-msgstr ""
-"Acest plugin poate fi folosit pentru\n"
-"a orni redarea la un anumit timp.\n"
-"\n"
-"Trimiteți eventualele reclamații la:\n"
-"Adam·Feakin·<adamf@snika.uklinux.net>\n"
-"Daniel·Stodden·<stodden@in.tum.de>\n"
-"\n"
-"http://www.snika.uklinux.net/xmms-alarm/"
-
-#: src/alarm/interface.c:71 src/bluetooth/scan_gui.c:149 src/lirc/about.c:115
-#: src/modplug/gui/interface.cxx:972 src/sid/xs_about.c:214
-#: src/sid/xs_interface.c:1825
-msgid "Close"
-msgstr "Închide"
-
-#: src/alarm/interface.c:101
-msgid "Alarm"
-msgstr "Alarmă"
-
-#: src/alarm/interface.c:109
-msgid "This is your wakeup call."
-msgstr "Acesta este semnalul de deșteptare."
-
-#: src/alarm/interface.c:124 src/alarm/interface.c:1389
-#: src/modplug/gui/interface.cxx:703 src/sid/xs_config.c:323
-msgid "OK"
-msgstr "Ok"
-
-#: src/alarm/interface.c:152
-msgid "Select Playlist"
-msgstr "Selectați Playlist-ul"
-
-#: src/alarm/interface.c:196
-msgid "Sorry"
-msgstr "Ne pare rău"
-
-#: src/alarm/interface.c:204
-msgid "Warning"
-msgstr "Avertizare"
-
-#: src/alarm/interface.c:213
-msgid ""
-"For safety reasons the \"quiet\" time must be at least 65 seconds longer "
-"than the fading time, it must also be more than 10 seconds.  This basically "
-"means that there is a bug in the code and until I find a way of really "
-"fixing it this message will appear :)\n"
-"\n"
-"Your fading settings have NOT been saved\n"
-"\n"
-"--\n"
-"Adam"
-msgstr ""
-"Din motive de siguranță, timpul de \"liniște\" trebuie să fie de minim 65 "
-"secunde.For·safety·reasons·the·\"quiet"
-"\"·time·must·be·at·least·65·seconds·longer·than·the·fading·time,"
-"·it·must·also·be·more·than·10·seconds."
-"··This·basically·means·that·there·is·a·bug·in·the·code·and·until·I·find·a·way·of·really·fixing·it·this·message·will·appear·:)\n"
-"\n"
-"Your·fading·settings·have·NOT·been·saved\n"
-"\n"
-"--\n"
-"Adam"
-
-#: src/alarm/interface.c:229
-msgid "Oh Well"
-msgstr "Ok"
-
-#: src/alarm/interface.c:388
-msgid "Alarm Settings"
-msgstr "Opțiuni ale plugin-ului Alarm"
-
-#: src/alarm/interface.c:404 src/alarm/interface.c:576
-#: src/alarm/interface.c:948
-msgid "Time"
-msgstr "Timp"
-
-#: src/alarm/interface.c:445
-msgid "hours"
-msgstr "ore"
-
-#: src/alarm/interface.c:506
-msgid "h"
-msgstr "h"
-
-#: src/alarm/interface.c:536
-msgid "minutes"
-msgstr ""
-
-#: src/alarm/interface.c:554
-msgid "Quiet after:"
-msgstr "Oprește după:"
-
-#: src/alarm/interface.c:564
-msgid "Alarm at (default):"
-msgstr "Alarmă la (implicit):"
-
-#: src/alarm/interface.c:584
-msgid "Choose the days for the alarm to come on"
-msgstr "Alegeți zilele în care să pornească alarma"
-
-#: src/alarm/interface.c:612 src/alarm/interface.c:660
-#: src/alarm/interface.c:708 src/alarm/interface.c:756
-#: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/OSS/configure.c:162
-#: src/skins/ui_manager.c:448 src/skins/ui_manager.c:469
-#, fuzzy
-msgid "Default"
-msgstr "Implicit"
-
-#: src/alarm/interface.c:938
-msgid "Day"
-msgstr "Ziua"
-
-#: src/alarm/interface.c:958
-msgid "Tuesday"
-msgstr "Marți"
-
-#: src/alarm/interface.c:969
-msgid "Wednesday"
-msgstr "Miercuri"
-
-#: src/alarm/interface.c:980
-msgid "Thursday"
-msgstr "Joi"
-
-#: src/alarm/interface.c:991
-msgid "Friday"
-msgstr "Vineri"
-
-#: src/alarm/interface.c:1002
-msgid "Saturday"
-msgstr "Sâmbătă"
-
-#: src/alarm/interface.c:1013
-msgid "Sunday"
-msgstr "Duminică"
-
-#: src/alarm/interface.c:1023
-msgid "Monday"
-msgstr "Luni"
-
-#: src/alarm/interface.c:1034
-msgid "Days"
-msgstr "Zile"
-
-#: src/alarm/interface.c:1050
-msgid "Fading"
-msgstr "Tranziție"
-
-#: src/alarm/interface.c:1087 src/sid/xs_interface.c:921
-#: src/sid/xs_interface.c:975 src/sid/xs_interface.c:1155
-#, fuzzy
-msgid "seconds"
-msgstr "secunde"
-
-#: src/alarm/interface.c:1095 src/alarm/interface.c:1211
-#: src/modplug/gui/interface.cxx:550
-#, fuzzy
-msgid "Volume"
-msgstr "Volum: %d%%"
-
-#: src/alarm/interface.c:1121
-#, fuzzy
-msgid "Current"
-msgstr "Plugin-ul de ieșire curent"
-
-#: src/alarm/interface.c:1128
-msgid "reset to current output volume"
-msgstr "resetează la volumul curent"
-
-#: src/alarm/interface.c:1130
-#, fuzzy
-msgid "Start at"
-msgstr "Începe redarea playlist-ului curent"
-
-#: src/alarm/interface.c:1158 src/alarm/interface.c:1202
-msgid "%"
-msgstr "%"
-
-#: src/alarm/interface.c:1174
-msgid "Final"
-msgstr "Final"
-
-#: src/alarm/interface.c:1227
-msgid "Additional Command"
-msgstr "Comandă adițională"
-
-#: src/alarm/interface.c:1253
-#, fuzzy
-msgid "enable"
-msgstr "Activează modul 'Mărime Dublă'"
-
-#: src/alarm/interface.c:1261
-#, fuzzy
-msgid "Playlist (optional)"
-msgstr "Selectați Playlist-ul"
-
-#: src/alarm/interface.c:1287
-msgid "Browse..."
-msgstr "Răsfoiește"
-
-#: src/alarm/interface.c:1295 src/alarm/interface.c:1460
-#, fuzzy
-msgid "Reminder"
-msgstr "Reminder"
-
-#: src/alarm/interface.c:1312
-#, fuzzy
-msgid "Use reminder"
-msgstr "Folosește cursoare de mouse personalizate (oferite de skin)"
-
-#: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:363
-#, fuzzy
-msgid "Options"
-msgstr "Meniu de Opțiuni"
-
-#: src/alarm/interface.c:1336
-msgid "What do these options mean?"
-msgstr "Ce înseamnă opțiunile acestea?"
-
-#: src/alarm/interface.c:1364
-msgid ""
-"\n"
-"Time\n"
-"  Alarm at: \n"
-"    The time for the alarm to come on.\n"
-"\n"
-"  Quiet After: \n"
-"    Stop alarm after this amount of time.\n"
-"       (if the wakeup dialog is not closed)\n"
-"\n"
-"\n"
-"Days\n"
-"  Day:\n"
-"    Select the days for the alarm to activate.\n"
-"\n"
-"  Time:\n"
-"    Choose the time for the alarm on each day,\n"
-"    or select the toggle button to use the default\n"
-"    time.\n"
-"\n"
-"\n"
-"Volume\n"
-"  Fading: \n"
-"    Fade the volume up to the chosen volume \n"
-"    for this amount of time.\n"
-"\n"
-"  Start at: \n"
-"    Start fading from this volume.\n"
-"\n"
-"  Final: \n"
-"    The volume to stop fading at.  If the fading\n"
-"    time is 0 then set volume to this and start\n"
-"    playing.\n"
-"\n"
-"\n"
-"Options:\n"
-"  Additional Command:\n"
-"    Run this command at the alarm time.\n"
-"\n"
-"  Playlist: \n"
-"    Load this playlist for playing songs from \n"
-"    (must have .m3u extension).  If no playlist\n"
-"    is given then the songs which are currently\n"
-"    in the list will be used.\n"
-"    The URL of an mp3/ogg stream can also be\n"
-"    entered here, but loading of playlists from\n"
-"    URLs is not currently supported by xmms.\n"
-"\n"
-"  Reminder:\n"
-"    Display a reminder when the alarm goes off,\n"
-"    type the reminder in the box and turn on the\n"
-"    toggle button if you want it to be shown.\n"
-msgstr ""
-"\n"
-"Timp\n"
-"  Alarmă la: \n"
-"    Ora la care se va declanșa alarma.\n"
-"\n"
-"  Oprește după: \n"
-"    Oprește alarma după atât timp.\n"
-"       (dacă dialogul de trezire nu este închis)\n"
-"\n"
-"\n"
-"Zile\n"
-"  Ziua:\n"
-"    Selectați zilele în care să se activeze alarma.\n"
-"\n"
-"  Timp:\n"
-"    Alegeți timpul la care va porni alarma în fiecare zi.\n"
-"    sau selectați valoarea implicită folosind butonul\n"
-"\n"
-"\n"
-"Volum\n"
-"  Tranziție: \n"
-"    Va face volumul să crească lent până la valoarea \n"
-"    maximă, iar aceasta este durata perioadei de\n"
-"    tranziție.\n"
-"\n"
-"\n"
-"  Volum inițial: \n"
-"    Începe tranziția de la această valoare inițială a \n"
-"    volumului.\n"
-"\n"
-"  Volum final: \n"
-"    Volumul maxim la care se va ajunge în timpul \n"
-"    tranziției.\n"
-"\n"
-"\n"
-"Opțiuni:\n"
-"  Comandă adițională:\n"
-"    Comandă ce va fi rulată la momentul declanșării \n"
-"    alarmei.\n"
-"\n"
-"  Playlist: \n"
-"    Încarcă un playlist a cărui melodii vor fi redate\n"
-"    la declanșarea alarmei. (cu extensie .m3u), sau \n"
-"    un link spre un fișier sau stream audio.\n"
-"     Dacă nu este dat nimic vor fi folosite melodiile\n"
-"    existente în playlist.\n"
-"\n"
-"  Reminder:\n"
-"    Afișează un mesaj de reamintire când alarma se \n"
-"    oprește. Editați mesajul și activați-l dacă doriți \n"
-"    ca acesta să fie afișat.\n"
-
-#: src/alarm/interface.c:1366 src/skins/ui_manager.c:380
-msgid "Help"
-msgstr "Ajutor"
-
-#: src/alarm/interface.c:1468
-msgid "Your reminder for today is.."
-msgstr "Mesajul de reamintire pentru ziua de azi este..."
-
-#: src/alarm/interface.c:1493
-msgid "Thankyou"
-msgstr "Mulțumesc"
 
 #: src/alsa/config.c:212
 #, fuzzy
@@ -822,6 +250,10 @@ msgstr ""
 msgid "SoundFont settings"
 msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
+#: src/amidi-plug/i_configure-fluidsynth.c:345
+msgid "Filename"
+msgstr "Numele Fișierului:"
+
 #: src/amidi-plug/i_configure-fluidsynth.c:349
 #, fuzzy
 msgid "Size (bytes)"
@@ -934,8 +366,7 @@ msgid ""
 "backend</span>"
 msgstr ""
 
-#: src/amidi-plug/i_fileinfo.c:169 src/bluetooth/gui.c:271
-#: src/sid/xs_interface.c:1769
+#: src/amidi-plug/i_fileinfo.c:169 src/sid/xs_interface.c:1769
 #, fuzzy
 msgid "Name:"
 msgstr "Numele Instrumentului"
@@ -1095,212 +526,212 @@ msgstr "Pauză pentru"
 msgid "Triggers OSD when playback is unpaused."
 msgstr ""
 
-#: src/aosd/aosd_ui.c:168
+#: src/aosd/aosd_ui.c:170
 msgid "Placement"
 msgstr "Pozitionare"
 
-#: src/aosd/aosd_ui.c:202
+#: src/aosd/aosd_ui.c:204
 #, fuzzy
 msgid "Relative X offset:"
 msgstr "Folosește cale relativă"
 
-#: src/aosd/aosd_ui.c:211
+#: src/aosd/aosd_ui.c:213
 #, fuzzy
 msgid "Relative Y offset:"
 msgstr "Folosește cale relativă"
 
-#: src/aosd/aosd_ui.c:220
+#: src/aosd/aosd_ui.c:222
 msgid "Max OSD width:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:233
+#: src/aosd/aosd_ui.c:235
 msgid "Multi-Monitor options"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:237
+#: src/aosd/aosd_ui.c:239
 #, fuzzy
 msgid "Display OSD using:"
 msgstr "Arată fereastra principală"
 
-#: src/aosd/aosd_ui.c:239
+#: src/aosd/aosd_ui.c:250
 #, fuzzy
 msgid "all monitors"
 msgstr "Selectează Tot"
 
-#: src/aosd/aosd_ui.c:242
+#: src/aosd/aosd_ui.c:253
 #, c-format
 msgid "monitor %i"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:295
+#: src/aosd/aosd_ui.c:308
 msgid "Timing (ms)"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:300
+#: src/aosd/aosd_ui.c:313
 #, fuzzy
 msgid "Display:"
 msgstr "La afișare"
 
-#: src/aosd/aosd_ui.c:305
+#: src/aosd/aosd_ui.c:318
 #, fuzzy
 msgid "Fade in:"
 msgstr "Pornește"
 
-#: src/aosd/aosd_ui.c:310
+#: src/aosd/aosd_ui.c:323
 msgid "Fade out:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:391
+#: src/aosd/aosd_ui.c:404
 #, fuzzy
 msgid "Fonts"
 msgstr "<b>_Fonturi</b>"
 
-#: src/aosd/aosd_ui.c:399
+#: src/aosd/aosd_ui.c:412
 #, fuzzy, c-format
 msgid "Font %i:"
 msgstr "Alege fontul playlist-ului"
 
-#: src/aosd/aosd_ui.c:416
+#: src/aosd/aosd_ui.c:429
 msgid "Shadow"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:451
+#: src/aosd/aosd_ui.c:464
 msgid "Internationalization"
 msgstr "Internaţionalizare"
 
-#: src/aosd/aosd_ui.c:457
+#: src/aosd/aosd_ui.c:470
 msgid "Disable UTF-8 conversion of text (in aosd)"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:475
+#: src/aosd/aosd_ui.c:488
 #, fuzzy
 msgid "Select Skin File"
 msgstr "AdPlug·::·Informații despre fișier"
 
-#: src/aosd/aosd_ui.c:586
+#: src/aosd/aosd_ui.c:599
 msgid "Render Style"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:602
+#: src/aosd/aosd_ui.c:615
 msgid "Colors"
 msgstr "Culori"
 
-#: src/aosd/aosd_ui.c:615
+#: src/aosd/aosd_ui.c:628
 #, fuzzy, c-format
 msgid "Color %i:"
 msgstr "Ajustarea culorii"
 
-#: src/aosd/aosd_ui.c:635
+#: src/aosd/aosd_ui.c:648
 #, fuzzy
 msgid "Custom Skin"
 msgstr "Skin-ul implicit:"
 
-#: src/aosd/aosd_ui.c:641
+#: src/aosd/aosd_ui.c:654
 #, fuzzy
 msgid "Skin file:"
 msgstr "Tipul Fișierului: "
 
-#: src/aosd/aosd_ui.c:644 src/sid/xs_interface.c:1044
+#: src/aosd/aosd_ui.c:657 src/sid/xs_interface.c:1044
 #: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
 msgid "Browse"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:746
+#: src/aosd/aosd_ui.c:759
 #, fuzzy
 msgid "Enable trigger"
 msgstr "Activează modul 'Mărime Dublă'"
 
-#: src/aosd/aosd_ui.c:773
+#: src/aosd/aosd_ui.c:786
 msgid "Event"
 msgstr "Eveniment"
 
-#: src/aosd/aosd_ui.c:801
+#: src/aosd/aosd_ui.c:814
 #, fuzzy
 msgid "Composite manager detected"
 msgstr "Deschide Managerul de Playlist-uri"
 
-#: src/aosd/aosd_ui.c:808
+#: src/aosd/aosd_ui.c:821
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:816
+#: src/aosd/aosd_ui.c:829
 msgid "Composite manager not required for fake transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:854
+#: src/aosd/aosd_ui.c:867
 msgid "Transparency"
 msgstr "Transparenţă"
 
-#: src/aosd/aosd_ui.c:860
+#: src/aosd/aosd_ui.c:873
 msgid "Fake transparency"
 msgstr "Transparenţă falsă"
 
-#: src/aosd/aosd_ui.c:862
+#: src/aosd/aosd_ui.c:875
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr "Transparenţă reală (necesita Extensia X Composite)"
 
-#: src/aosd/aosd_ui.c:904
+#: src/aosd/aosd_ui.c:917
 msgid "Composite extension not loaded"
 msgstr "Extensia composită nu a fost încărcată"
 
-#: src/aosd/aosd_ui.c:912
+#: src/aosd/aosd_ui.c:925
 msgid "Composite extension not available"
 msgstr "Extensia composită nu este disponibilă"
 
-#: src/aosd/aosd_ui.c:931
+#: src/aosd/aosd_ui.c:944
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1012
+#: src/aosd/aosd_ui.c:1025
 #, fuzzy
 msgid "Audacious OSD - configuration"
 msgstr "Developerii Audacious:"
 
-#: src/aosd/aosd_ui.c:1033
+#: src/aosd/aosd_ui.c:1046
 msgid "Test"
 msgstr "Test"
 
-#: src/aosd/aosd_ui.c:1048
+#: src/aosd/aosd_ui.c:1061
 msgid "Position"
 msgstr "Poziţie"
 
-#: src/aosd/aosd_ui.c:1053
+#: src/aosd/aosd_ui.c:1066
 msgid "Animation"
 msgstr "Animaţie"
 
-#: src/aosd/aosd_ui.c:1058
+#: src/aosd/aosd_ui.c:1071
 msgid "Text"
 msgstr "Text"
 
-#: src/aosd/aosd_ui.c:1063
+#: src/aosd/aosd_ui.c:1076
 msgid "Decoration"
 msgstr "Decoraţii"
 
-#: src/aosd/aosd_ui.c:1068
+#: src/aosd/aosd_ui.c:1081
 msgid "Trigger"
 msgstr "Declanşator"
 
-#: src/aosd/aosd_ui.c:1073 src/cdaudio-ng/configure.c:171
-#: src/modplug/gui/interface.cxx:689 src/sid/xs_interface.c:1302
+#: src/aosd/aosd_ui.c:1086 src/cdaudio-ng/configure.c:171
+#: src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1110
+#: src/aosd/aosd_ui.c:1123
 #, fuzzy
 msgid "Audacious OSD - about"
 msgstr "Despre plugin-ul·pentru Alarmă"
 
-#: src/aosd/aosd_ui.c:1140
+#: src/aosd/aosd_ui.c:1153
 msgid ""
 "\n"
 "Audacious OSD "
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1141
+#: src/aosd/aosd_ui.c:1154
 msgid ""
 "\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
@@ -1312,132 +743,6 @@ msgid ""
 "http://neugierig.org/software/ghosd/\n"
 "\n"
 msgstr ""
-
-#: src/bluetooth/agent.c:356 src/bluetooth/agent.c:397
-#, c-format
-msgid "Pairing request for '%s'"
-msgstr ""
-
-#: src/bluetooth/agent.c:544
-#, c-format
-msgid "Authorization request for %s"
-msgstr ""
-
-#: src/bluetooth/agent.c:728
-#, c-format
-msgid "Created bonding with %s"
-msgstr ""
-
-#: src/bluetooth/agent.c:756
-#, c-format
-msgid "Removed bonding with %s"
-msgstr ""
-
-#: src/bluetooth/agent.c:808
-msgid "Device has been switched off"
-msgstr ""
-
-#: src/bluetooth/agent.c:811
-msgid "Device has been made non-discoverable"
-msgstr ""
-
-#: src/bluetooth/agent.c:813
-msgid "Device has been made connectable"
-msgstr ""
-
-#: src/bluetooth/agent.c:815
-msgid "Device has been made discoverable"
-msgstr ""
-
-#: src/bluetooth/agent.c:817
-msgid "Device has been made limited discoverable"
-msgstr ""
-
-#: src/bluetooth/agent.c:819
-msgid "Device has been switched into pairing mode"
-msgstr ""
-
-#: src/bluetooth/bluetooth.c:116
-msgid "Bluetooth headset support plugin"
-msgstr ""
-
-#: src/bluetooth/bluetooth.c:117
-msgid ""
-"Bluetooth headset support\n"
-"Copyright (c) 2008 Paula Stanciu paula.stanciu@gmail.com\n"
-"This was a GSoC 2008 Project - Many thanks to my mentor Tony Vroon and the "
-"Audacious team\n"
-" \n"
-"In order to use the AVRCP you need the uinput module loaded into the kernel\n"
-"The headset keys will be recognized as normal mutimedia keys and \n"
-"can be configured using the Audacious Global Hotkey plugin or ohter tools \n"
-"provided by your window manager\n"
-msgstr ""
-
-#: src/bluetooth/gui.c:148
-msgid "Producer"
-msgstr ""
-
-#: src/bluetooth/gui.c:221
-#, fuzzy
-msgid "Available Headsets"
-msgstr "_Preset-uri disponibile:"
-
-#: src/bluetooth/gui.c:224
-#, fuzzy
-msgid "Current Headset"
-msgstr "Plugin-ul de ieșire curent"
-
-#: src/bluetooth/gui.c:227 src/gtkui/menus.c:170 src/gtkui/menus.c:212
-msgid "_Refresh"
-msgstr ""
-
-#: src/bluetooth/gui.c:231
-#, fuzzy
-msgid "_Connect"
-msgstr "Mod de Vizualizare"
-
-#: src/bluetooth/gui.c:237 src/gtkui/menus.c:175
-#, fuzzy
-msgid "_Close"
-msgstr "Închide"
-
-#: src/bluetooth/gui.c:274
-#, fuzzy
-msgid "Class"
-msgstr "Classical"
-
-#: src/bluetooth/gui.c:278
-#, fuzzy
-msgid "Address:"
-msgstr "Adaugă Adresa Internet..."
-
-#: src/bluetooth/scan_gui.c:69
-msgid "Bonding finish!"
-msgstr ""
-
-#: src/bluetooth/scan_gui.c:76
-msgid "No devices found!"
-msgstr ""
-
-#: src/bluetooth/scan_gui.c:119
-msgid "Scanning..."
-msgstr ""
-
-#: src/bluetooth/scan_gui.c:122
-msgid "Pairing..."
-msgstr ""
-
-#: src/bluetooth/scan_gui.c:138
-#, fuzzy
-msgid "Rescan"
-msgstr "Dreptunghi"
-
-#: src/bluetooth/scan_gui.c:142 src/hotkey/gui.c:72 src/skins/ui_manager.c:170
-#: src/skins/ui_manager.c:171
-#, fuzzy
-msgid "Play"
-msgstr "Pauză pentru"
 
 #: src/blur_scope/config.c:73
 msgid "Blur Scope: Color selection"
@@ -1533,6 +838,18 @@ msgstr ""
 msgid "Override default device: "
 msgstr "Salvează Lista Implicită"
 
+#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:131
+#: src/echo_plugin/gui.c:123 src/jack/configure.c:146 src/null/null.c:112
+#: src/stereo_plugin/stereo.c:125
+msgid "Ok"
+msgstr "Ok"
+
+#: src/cdaudio-ng/configure.c:249 src/crystalizer/crystalizer.c:138
+#: src/echo_plugin/gui.c:130 src/jack/configure.c:153 src/null/null.c:113
+#: src/stereo_plugin/stereo.c:132
+msgid "Cancel"
+msgstr "Anulează"
+
 #: src/cd-menu-items/cd-menu-items.c:34
 #, fuzzy
 msgid "Play CD"
@@ -1566,6 +883,14 @@ msgstr ""
 msgid "Game Console Music Decoder"
 msgstr ""
 
+#: src/console/configure.c:155
+msgid "General"
+msgstr "General"
+
+#: src/console/configure.c:157 src/skins/ui_manager.c:176
+msgid "Playback"
+msgstr "Redare"
+
 #: src/console/configure.c:172
 msgid "Bass:"
 msgstr "Bass:"
@@ -1584,8 +909,7 @@ msgstr "Inalte:"
 msgid "Default song length:"
 msgstr "Pauză"
 
-#: src/console/configure.c:210 src/modplug/gui/interface.cxx:269
-#: src/sid/xs_interface.c:666
+#: src/console/configure.c:210 src/sid/xs_interface.c:666
 msgid "Resampling"
 msgstr ""
 
@@ -1598,6 +922,10 @@ msgstr "Activează proxy"
 #, fuzzy
 msgid "Resampling rate:"
 msgstr "Rata de Reîmprospătare"
+
+#: src/console/configure.c:235 src/sid/xs_interface.c:354
+msgid "Hz"
+msgstr "Hz"
 
 #: src/console/configure.c:246
 msgid "SPC"
@@ -1672,7 +1000,7 @@ msgid "Effect intensity:"
 msgstr "Lista plugin-urilor de _Efecte"
 
 #: src/crystalizer/crystalizer.c:144 src/echo_plugin/gui.c:136
-#: src/modplug/gui/interface.cxx:709 src/stereo_plugin/stereo.c:138
+#: src/stereo_plugin/stereo.c:138
 msgid "Apply"
 msgstr ""
 
@@ -1709,344 +1037,6 @@ msgstr ""
 #, fuzzy
 msgid "Volume: (%)"
 msgstr "Volum: %d%%"
-
-#: src/evdev-plug/ed.c:66
-#, fuzzy
-msgid "Playback->Play"
-msgstr "Redă fișiere"
-
-#: src/evdev-plug/ed.c:67
-#, fuzzy
-msgid "Playback->Stop"
-msgstr "Oprește melodia curentă"
-
-#: src/evdev-plug/ed.c:68
-#, fuzzy
-msgid "Playback->Pause"
-msgstr "Pauză pentru"
-
-#: src/evdev-plug/ed.c:69
-#, fuzzy
-msgid "Playback->Prev"
-msgstr "Continuă redarea la pornire"
-
-#: src/evdev-plug/ed.c:70
-#, fuzzy
-msgid "Playback->Next"
-msgstr "Selectează Playlist-ul Următor"
-
-#: src/evdev-plug/ed.c:71
-#, fuzzy
-msgid "Playback->Eject"
-msgstr "Continuă redarea la pornire"
-
-#: src/evdev-plug/ed.c:73
-#, fuzzy
-msgid "Playlist->Repeat"
-msgstr "Selectați Playlist-ul"
-
-#: src/evdev-plug/ed.c:74
-#, fuzzy
-msgid "Playlist->Shuffle"
-msgstr "Selectați Playlist-ul"
-
-#: src/evdev-plug/ed.c:76
-#, fuzzy
-msgid "Volume->Up_5"
-msgstr "Restrânge player-ul"
-
-#: src/evdev-plug/ed.c:77
-#, fuzzy
-msgid "Volume->Down_5"
-msgstr "Schimbă volumul cu"
-
-#: src/evdev-plug/ed.c:78
-#, fuzzy
-msgid "Volume->Up_10"
-msgstr "Restrânge player-ul"
-
-#: src/evdev-plug/ed.c:79
-#, fuzzy
-msgid "Volume->Down_10"
-msgstr "Schimbă volumul cu"
-
-#: src/evdev-plug/ed.c:80
-#, fuzzy
-msgid "Volume->Mute"
-msgstr "Schimbă volumul cu"
-
-#: src/evdev-plug/ed.c:82
-#, fuzzy
-msgid "Window->Main"
-msgstr "Arată fereastra principală"
-
-#: src/evdev-plug/ed.c:83
-#, fuzzy
-msgid "Window->Playlist"
-msgstr "Selectați Playlist-ul"
-
-#: src/evdev-plug/ed.c:84
-#, fuzzy
-msgid "Window->Equalizer"
-msgstr "Egalizator Audacious"
-
-#: src/evdev-plug/ed.c:85
-#, fuzzy
-msgid "Window->JumpToFile"
-msgstr "Fereastra de Preferințe"
-
-#: src/evdev-plug/ed_internals.c:94
-#, c-format
-msgid ""
-"event-device-plugin: unable to open device file %s , skipping this device; "
-"check that the file exists and that you have read permission for it\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:103
-#, c-format
-msgid ""
-"event-device-plugin: unable to create a io_channel for device file %s ,"
-"skipping this device\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:342
-msgid ""
-"event-device-plugin: unable to open /proc/bus/input/devices , automatic "
-"detection of event devices won't work.\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:351
-msgid ""
-"event-device-plugin: unable to open a io_channel for /proc/bus/input/"
-"devices , automatic detection of event devices won't work.\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:361
-msgid ""
-"event-device-plugin: an error occurred while reading /proc/bus/input/"
-"devices , automatic detection of event devices won't work.\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:424
-#, c-format
-msgid "event-device-plugin: device %s not found in /dev/input , skipping.\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:489 src/evdev-plug/ed_internals.c:583
-#, c-format
-msgid ""
-"event-device-plugin: unable to load config file %s , default settings will "
-"be used.\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:535
-#, c-format
-msgid ""
-"event-device-plugin: incomplete information in config file for device \"%s"
-"\" , skipping.\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:604 src/evdev-plug/ed_internals.c:936
-#, c-format
-msgid ""
-"event-device-plugin: configuration, unable to get is_active value for device "
-"\"%s\", skipping it.\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:840
-#, c-format
-msgid ""
-"event-device-plugin: unable to access local directory %s , settings will not "
-"be saved.\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:890
-#, c-format
-msgid ""
-"event-device-plugin: configuration, unable to get filename value for device "
-"\"%s\", skipping it.\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:906
-#, c-format
-msgid ""
-"event-device-plugin: configuration, unable to get phys value for device \"%s"
-"\", skipping it.\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:922
-#, c-format
-msgid ""
-"event-device-plugin: configuration, unable to get is_custom value for device "
-"\"%s\", skipping it.\n"
-msgstr ""
-
-#: src/evdev-plug/ed_internals.c:946
-#, c-format
-msgid ""
-"event-device-plugin: configuration, unexpected value for device \"%s\", "
-"skipping it.\n"
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:212
-#, fuzzy
-msgid "Detected"
-msgstr "Detectează sfârșitul melodiei"
-
-#: src/evdev-plug/ed_ui.c:217
-#, fuzzy
-msgid "Custom"
-msgstr "Format specificat:"
-
-#: src/evdev-plug/ed_ui.c:223
-#, fuzzy
-msgid "Not Detected"
-msgstr "Selecția formatelor"
-
-#: src/evdev-plug/ed_ui.c:275 src/evdev-plug/ed_ui.c:411
-#: src/evdev-plug/ed_ui.c:874
-#, fuzzy
-msgid "Information"
-msgstr "Informații despre Track"
-
-#: src/evdev-plug/ed_ui.c:276
-msgid ""
-"Cannot open bindings window for a not-detected device.\n"
-"Ensure that the device has been correctly plugged in."
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:319 src/gtkui/ui_gtk.c:175
-#, fuzzy
-msgid "Error"
-msgstr "Eroare în Audacious"
-
-#: src/evdev-plug/ed_ui.c:320
-msgid ""
-"Unable to open selected device.\n"
-"Please check read permissions on device file."
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:341
-msgid "EvDev-Plug - Add custom device"
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:353
-msgid ""
-"EvDev-Plug tries to automatically detect and update information about\n"
-"event devices available on the system.\n"
-"However, if auto-detect doesn't work for your system, or you have event\n"
-"devices in a non-standard location (currently they're only searched in\n"
-"/dev/input/ ), you may want to add a custom device, explicitly specifying\n"
-"name and device file."
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:361
-#, fuzzy
-msgid "Device name:"
-msgstr "Numele Instrumentului"
-
-#: src/evdev-plug/ed_ui.c:365
-#, fuzzy
-msgid "Device file:"
-msgstr "Tipul Fișierului: "
-
-#: src/evdev-plug/ed_ui.c:404
-#, fuzzy
-msgid "(custom)"
-msgstr "Format specificat:"
-
-#: src/evdev-plug/ed_ui.c:412
-msgid ""
-"Please specify both name and filename.\n"
-"Filename must be specified with absolute path."
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:447
-msgid "Do you want to remove the existing configuration for selected device?\n"
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:466
-msgid "Do you want to remove the selected custom device?\n"
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:612
-msgid "EvDev-Plug - Configuration"
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:651
-msgid "Active"
-msgstr "Activ"
-
-#: src/evdev-plug/ed_ui.c:655
-msgid "Status"
-msgstr "Statut"
-
-#: src/evdev-plug/ed_ui.c:664
-#, fuzzy
-msgid "Device Name"
-msgstr "Numele Instrumentului"
-
-#: src/evdev-plug/ed_ui.c:668
-#, fuzzy
-msgid "Device File"
-msgstr "Tipul Fișierului: "
-
-#: src/evdev-plug/ed_ui.c:672
-#, fuzzy
-msgid "Device Address"
-msgstr "Adaugă Adresa Internet..."
-
-#: src/evdev-plug/ed_ui.c:689
-msgid "_Bindings"
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:838
-msgid ""
-"Press a key of your device to bind it;\n"
-"if no key is pressed in five seconds, this window\n"
-"will close without binding changes."
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:875
-msgid ""
-"This input event has been already assigned.\n"
-"\n"
-"It's not possible to assign multiple actions to the same input event "
-"(although it's possible to assign the same action to multiple events)."
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:1323
-msgid "EvDev-Plug - Bindings Configuration"
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:1363
-#, fuzzy
-msgid "<b>Name: </b>"
-msgstr "Numele Instrumentului"
-
-#: src/evdev-plug/ed_ui.c:1372
-#, fuzzy
-msgid "<b>Filename: </b>"
-msgstr "Numele Fișierului:"
-
-#: src/evdev-plug/ed_ui.c:1381
-#, fuzzy
-msgid "<b>Phys.Address: </b>"
-msgstr "Adaugă Adresa Internet..."
-
-#: src/evdev-plug/ed_ui.c:1460
-#, fuzzy
-msgid "EvDev-Plug - about"
-msgstr "Despre plugin-ul·pentru Alarmă"
-
-#: src/evdev-plug/ed_ui.c:1491
-msgid ""
-"\n"
-"player remote control via event devices\n"
-"http://www.develia.org/projects.php?p=audacious#evdevplug\n"
-"\n"
-"written by Giacomo Lozito\n"
-msgstr ""
 
 #: src/ffaudio/ffaudio-core.c:765
 #, c-format
@@ -2118,7 +1108,7 @@ msgstr "AdPlug·::·Informații despre fișier"
 msgid "Output file format:"
 msgstr "AdPlug·::·Informații despre fișier"
 
-#: src/filewriter/filewriter.c:480 src/ladspa/ladspa.c:1078
+#: src/filewriter/filewriter.c:480
 msgid "Configure"
 msgstr "Configurează"
 
@@ -2172,6 +1162,14 @@ msgstr "Auto-Încarcă Preset-ul"
 msgid "Joint Stereo"
 msgstr "Stereo"
 
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:308
+msgid "Stereo"
+msgstr "Stereo"
+
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:301
+msgid "Mono"
+msgstr "Mono"
+
 #: src/filewriter/mp3.c:724
 #, fuzzy
 msgid "MP3 Configuration"
@@ -2223,7 +1221,6 @@ msgid "Error protection"
 msgstr "Eroare în Audacious"
 
 #: src/filewriter/mp3.c:947 src/filewriter/vorbis.c:245
-#: src/modplug/gui/interface.cxx:320
 #, fuzzy
 msgid "Quality"
 msgstr "Calitatea sunetului"
@@ -2492,7 +1489,7 @@ msgstr "Despre "
 msgid "_Preferences ..."
 msgstr "Preferințe Audacious"
 
-#: src/gtkui/menus.c:139 src/skins/ui_manager.c:404
+#: src/gtkui/menus.c:139 src/skins/ui_manager.c:412
 #, fuzzy
 msgid "_Quit"
 msgstr "Calitatea sunetului"
@@ -2596,6 +1593,10 @@ msgstr ""
 msgid "_Random Order"
 msgstr ""
 
+#: src/gtkui/menus.c:170 src/gtkui/menus.c:212
+msgid "_Refresh"
+msgstr ""
+
 #: src/gtkui/menus.c:172
 #, fuzzy
 msgid "_Sort"
@@ -2604,6 +1605,11 @@ msgstr "Port-ul:"
 #: src/gtkui/menus.c:174
 msgid "_New"
 msgstr ""
+
+#: src/gtkui/menus.c:175
+#, fuzzy
+msgid "_Close"
+msgstr "Închide"
 
 #: src/gtkui/menus.c:177
 #, fuzzy
@@ -2729,22 +1735,27 @@ msgstr "Numele Fișierului:"
 msgid "GTK Interface"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:135 src/skins/ui_main.c:389
+#: src/gtkui/ui_gtk.c:135 src/skins/ui_main.c:302
 #, fuzzy, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:141 src/skins/ui_main.c:391 src/skins/ui_main.c:1800
+#: src/gtkui/ui_gtk.c:141 src/skins/ui_main.c:304 src/skins/ui_main.c:1497
 #, fuzzy
 msgid "Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:610
+#: src/gtkui/ui_gtk.c:175 src/skins/plugin.c:176
+#, fuzzy
+msgid "Error"
+msgstr "Eroare în Audacious"
+
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:459
 #, fuzzy
 msgid "mono"
 msgstr "Mono"
 
-#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:609
+#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:458
 #, fuzzy
 msgid "stereo"
 msgstr "Stereo"
@@ -2765,12 +1776,17 @@ msgstr ""
 msgid "Previous Track"
 msgstr ""
 
+#: src/hotkey/gui.c:72 src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
+#, fuzzy
+msgid "Play"
+msgstr "Pauză pentru"
+
 #: src/hotkey/gui.c:73
 #, fuzzy
 msgid "Pause/Resume"
 msgstr "La încărcare"
 
-#: src/hotkey/gui.c:74 src/skins/ui_manager.c:176 src/skins/ui_manager.c:177
+#: src/hotkey/gui.c:74 src/skins/ui_manager.c:184 src/skins/ui_manager.c:185
 #, fuzzy
 msgid "Stop"
 msgstr "Synthpop"
@@ -2803,7 +1819,7 @@ msgstr "Volum: %d%%"
 msgid "Volume Down"
 msgstr "Schimbă volumul cu"
 
-#: src/hotkey/gui.c:81 src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
+#: src/hotkey/gui.c:81 src/skins/ui_manager.c:424 src/skins/ui_manager.c:425
 #, fuzzy
 msgid "Jump to File"
 msgstr "Fereastra de Preferințe"
@@ -2921,124 +1937,6 @@ msgstr ""
 msgid "About JACK Output Plugin 0.17"
 msgstr ""
 
-#: src/ladspa/ladspa.c:844
-msgid "This LADSPA plugin has no user controls"
-msgstr ""
-
-#: src/ladspa/ladspa.c:885 src/ladspa/ladspa.c:972
-#, fuzzy
-msgid "Name"
-msgstr "Numele Instrumentului"
-
-#: src/ladspa/ladspa.c:972
-msgid "UID"
-msgstr ""
-
-#: src/ladspa/ladspa.c:1049
-#, fuzzy
-msgid "Installed plugins"
-msgstr "Reîncarcă Plugin-urile"
-
-#: src/ladspa/ladspa.c:1057
-#, fuzzy
-msgid "Running plugins"
-msgstr "Reîncarcă Plugin-urile"
-
-#: src/ladspa/ladspa.c:1072
-#, fuzzy
-msgid "Add"
-msgstr "Adaugă Fișiere"
-
-#: src/ladspa/ladspa.c:1075
-#, fuzzy
-msgid "Remove"
-msgstr "Șterge Duplicatele"
-
-#: src/ladspa/ladspa.c:1086
-#, fuzzy
-msgid "LADSPA Plugin Catalog"
-msgstr "Lista plugin-urilor _Generale"
-
-#: src/lirc/about.c:63
-#, fuzzy
-msgid "About LIRC Audacious Plugin"
-msgstr "Despre plugin-ul decodor MP4·AAC"
-
-#: src/lirc/about.c:90
-#, fuzzy
-msgid "LIRC Plugin "
-msgstr "Plugin de intrare: %s"
-
-#: src/lirc/about.c:92
-msgid ""
-"\n"
-"A simple plugin that lets you control\n"
-"Audacious using the LIRC remote control daemon\n"
-"\n"
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the XMMS LIRC plugin by:\n"
-"Carl van Schaik <carl@leg.uct.ac.za>\n"
-"Christoph Bartelmus <xmms@bartelmus.de>\n"
-"Andrew O. Shadoura <bugzilla@tut.by>\n"
-"You can get LIRC information at:\n"
-"http://lirc.org"
-msgstr ""
-
-#: src/lirc/interface.c:37
-#, fuzzy
-msgid "LIRC plugin settings"
-msgstr "Plugin de intrare: %s"
-
-#: src/lirc/interface.c:61
-msgid "Reconnect to LIRC server"
-msgstr ""
-
-#: src/lirc/interface.c:68
-msgid "Timeout before reconnecting (seconds): "
-msgstr ""
-
-#: src/lirc/interface.c:75
-msgid "Reconnect"
-msgstr ""
-
-#: src/lirc/interface.c:79
-#, fuzzy
-msgid "Connection"
-msgstr "Mod de Vizualizare"
-
-#: src/lirc/lirc.c:80
-#, c-format
-msgid "%s: could not init LIRC support\n"
-msgstr ""
-
-#: src/lirc/lirc.c:88
-#, c-format
-msgid ""
-"%s: could not read LIRC config file\n"
-"%s: please read the documentation of LIRC\n"
-"%s: how to create a proper config file\n"
-msgstr ""
-
-#: src/lirc/lirc.c:116
-#, c-format
-msgid "%s: trying to reconnect...\n"
-msgstr ""
-
-#: src/lirc/lirc.c:331
-#, c-format
-msgid "%s: unknown command \"%s\"\n"
-msgstr ""
-
-#: src/lirc/lirc.c:341
-#, fuzzy, c-format
-msgid "%s: disconnected from LIRC\n"
-msgstr "Încarcă preset din fișier"
-
-#: src/lirc/lirc.c:345
-#, c-format
-msgid "%s: will try reconnect every %d seconds...\n"
-msgstr ""
-
 #: src/lyricwiki/lyricwiki.c:335
 msgid ""
 "\n"
@@ -3069,224 +1967,8 @@ msgstr ""
 msgid "Tact generator: %d bpm %d/%d"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:137
-#, fuzzy
-msgid "ModPlug Configuration"
-msgstr "AdPlug·::·Configurare"
-
-#: src/modplug/gui/interface.cxx:174
-msgid "16 bit"
-msgstr "16 bit"
-
-#: src/modplug/gui/interface.cxx:181
-msgid "8 bit"
-msgstr "8 bit"
-
-#: src/modplug/gui/interface.cxx:212
-msgid "Mono (downmix)"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:241
-msgid "Nearest (fastest)"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:248
-msgid "Linear (fast)"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:255
-msgid "Spline (good quality)"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:262
-msgid "8-tap Fir (extremely high quality)"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:286
-#, fuzzy
-msgid "96 kHz"
-msgstr "48 kHz"
-
-#: src/modplug/gui/interface.cxx:293
-msgid "48 kHz"
-msgstr "48 kHz"
-
-#: src/modplug/gui/interface.cxx:300
-msgid "44 kHz"
-msgstr "44 kHz"
-
-#: src/modplug/gui/interface.cxx:307
-msgid "22 kHz"
-msgstr "22 kHz"
-
-#: src/modplug/gui/interface.cxx:315
-#, fuzzy
-msgid "Sampling Rate"
-msgstr "<b>Convertor pentru rata de eșantionare</b>"
-
-#: src/modplug/gui/interface.cxx:349 src/modplug/gui/interface.cxx:411
-#: src/modplug/gui/interface.cxx:477 src/modplug/gui/interface.cxx:539
-#, fuzzy
-msgid "Enable"
-msgstr "Activează modul 'Mărime Dublă'"
-
-#: src/modplug/gui/interface.cxx:378 src/modplug/gui/interface.cxx:506
-#, fuzzy
-msgid "Depth"
-msgstr "Adancimea cautarii"
-
-#: src/modplug/gui/interface.cxx:386 src/modplug/gui/interface.cxx:514
-msgid "Delay"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:394
-msgid "Reverb"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:440
-msgid "Amount"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:448
-msgid "Range"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:456
-msgid "Bass Boost"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:173
+#: src/mpg123/mpg123.c:183
 msgid "Surround"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:561
-msgid ""
-"Note:  Setting the preamp\n"
-"too high may cause clipping\n"
-"(annoying clicks and pops)!"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:567
-#: src/skins/ui_skinned_equalizer_slider.c:431
-#, fuzzy
-msgid "Preamp"
-msgstr "PREAMP"
-
-#: src/modplug/gui/interface.cxx:572
-#, fuzzy
-msgid "Effects"
-msgstr "<b>Efecte</b>"
-
-#: src/modplug/gui/interface.cxx:601
-msgid "Use Filename as Song Title"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:606
-#, fuzzy
-msgid "Fast Playlist Info"
-msgstr "AdPlug·::·Informații despre fișier"
-
-#: src/modplug/gui/interface.cxx:617
-msgid "Noise Reduction"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:623
-#, fuzzy
-msgid "Play Amiga MOD"
-msgstr "- redă fișierele multimedia"
-
-#: src/modplug/gui/interface.cxx:646
-#, fuzzy
-msgid "Don't loop"
-msgstr "Nu curăța playlist-ul"
-
-#: src/modplug/gui/interface.cxx:658
-msgid "Loop"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:671
-#, fuzzy
-msgid "time(s)"
-msgstr "Timp Scurs"
-
-#: src/modplug/gui/interface.cxx:677
-msgid "Loop forever"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:684
-msgid "Looping"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:859
-#, fuzzy
-msgid "MOD Info"
-msgstr "AdPlug·::·Informații despre fișier"
-
-#: src/modplug/gui/interface.cxx:878
-msgid ""
-"Filename:\n"
-"Title:\n"
-"Type:\n"
-"Length:\n"
-"Speed:\n"
-"Tempo:\n"
-"Samples:\n"
-"Instruments:\n"
-"Patterns:\n"
-"Channels:"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:883
-msgid ""
-"---\n"
-"---\n"
-"---\n"
-"---\n"
-"---\n"
-"---\n"
-"---\n"
-"---\n"
-"---\n"
-"---"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:913
-msgid "Samples"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:938
-#, fuzzy
-msgid "Instruments"
-msgstr "Instrumente: "
-
-#: src/modplug/gui/interface.cxx:959
-#, fuzzy
-msgid "Message"
-msgstr "Mesajul melodiei"
-
-#: src/modplug/gui/main.cxx:51
-msgid "Modplug Input Plugin for Audacious ver"
-msgstr ""
-
-#: src/modplug/gui/main.cxx:52
-msgid ""
-"\n"
-"Modplug sound engine written by Olivier Lapicque.\n"
-"XMMS interface for Modplug by Kenton Varda.\n"
-"(c)2000 Olivier Lapicque and Kenton Varda.\n"
-"Updates and maintenance by Konstanty Bialkowski.\n"
-"Ported to BMP by Theofilos Intzoglou."
-msgstr ""
-
-#: src/modplug/gui/main.cxx:55
-#, fuzzy
-msgid "About Modplug"
-msgstr "Despre Audacious"
-
-#: src/modplug/gui/support.cxx:90 src/modplug/gui/support.cxx:114
-#: src/sid/xs_glade.c:90 src/sid/xs_glade.c:114
-#, c-format
-msgid "Couldn't find pixmap file: %s"
 msgstr ""
 
 #: src/mtp_up/mtp.c:298
@@ -3405,6 +2087,12 @@ msgstr "Terror"
 #: src/OSS/configure.c:146
 #, fuzzy, c-format
 msgid "Default (%s)"
+msgstr "Implicit"
+
+#: src/OSS/configure.c:162 src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:477
+#, fuzzy
+msgid "Default"
 msgstr "Implicit"
 
 #: src/OSS/configure.c:187
@@ -3556,7 +2244,7 @@ msgstr "Eroare în Audacious"
 msgid "<b>Last.FM</b>"
 msgstr "Radio Last.fm"
 
-#: src/scrobbler/configure.c:262
+#: src/scrobbler/configure.c:263
 #, fuzzy
 msgid "Scrobbler"
 msgstr "Eroare în Audacious"
@@ -3589,10 +2277,18 @@ msgstr "Terror"
 msgid "About %s"
 msgstr "Despre %s"
 
-#: src/sid/xs_config.c:323
+#: src/sid/xs_about.c:214 src/sid/xs_interface.c:1825
+msgid "Close"
+msgstr "Închide"
+
+#: src/sid/xs_config.c:326
 #, fuzzy
 msgid " Error"
 msgstr "Eroare în Audacious"
+
+#: src/sid/xs_config.c:326
+msgid "OK"
+msgstr "Ok"
 
 #: src/sid/xs_fileinfo.c:151
 #, fuzzy
@@ -3603,6 +2299,11 @@ msgstr "AdPlug·::·Informații despre fișier"
 #, fuzzy, c-format
 msgid "Tune #%i: "
 msgstr "Pornește"
+
+#: src/sid/xs_glade.c:90 src/sid/xs_glade.c:114
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr ""
 
 #: src/sid/xs_interface.c:234
 #, fuzzy
@@ -3890,17 +2591,17 @@ msgstr ""
 msgid "Use"
 msgstr ""
 
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:439
+#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:447
 #, fuzzy
 msgid "Save"
 msgstr "Salvează"
 
-#: src/sid/xs_interface.c:841 src/skins/ui_manager.c:438
+#: src/sid/xs_interface.c:841 src/skins/ui_manager.c:446
 #, fuzzy
 msgid "Import"
 msgstr "Importă"
 
-#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:440
+#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:448
 #, fuzzy
 msgid "Delete"
 msgstr "Implicit"
@@ -3931,6 +2632,12 @@ msgstr ""
 #: src/sid/xs_interface.c:1142
 msgid "Playtime:"
 msgstr ""
+
+#: src/sid/xs_interface.c:921 src/sid/xs_interface.c:975
+#: src/sid/xs_interface.c:1155
+#, fuzzy
+msgid "seconds"
+msgstr "secunde"
 
 #: src/sid/xs_interface.c:928
 msgid "Minimum playtime:"
@@ -4178,934 +2885,906 @@ msgstr "da"
 msgid "No"
 msgstr "Deselectează tot"
 
-#: src/skins/plugin.c:163
+#: src/skins/plugin.c:165
 msgid "About Skinned GUI"
 msgstr ""
 
-#: src/skins/plugin.c:164
+#: src/skins/plugin.c:166
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 msgstr ""
 
-#: src/skins/skins_cfg.c:312
+#: src/skins/skins_cfg.c:254
 #, fuzzy
 msgid "_Player:"
 msgstr "Pauză pentru"
 
-#: src/skins/skins_cfg.c:312
+#: src/skins/skins_cfg.c:254
 msgid "Select main player window font:"
 msgstr ""
 
-#: src/skins/skins_cfg.c:313
+#: src/skins/skins_cfg.c:255
 #, fuzzy
 msgid "_Playlist:"
 msgstr "Selectați Playlist-ul"
 
-#: src/skins/skins_cfg.c:313
+#: src/skins/skins_cfg.c:255
 #, fuzzy
 msgid "Select playlist font:"
 msgstr "Selectați Playlist-ul"
 
-#: src/skins/skins_cfg.c:317
+#: src/skins/skins_cfg.c:259
 #, fuzzy
 msgid "<b>_Fonts</b>"
 msgstr "Numele Fișierului:"
 
-#: src/skins/skins_cfg.c:319
+#: src/skins/skins_cfg.c:261
 #, fuzzy
 msgid "Use Bitmap fonts if available"
 msgstr "Folosește fonturi Bitmap dacă sunt disponibile"
 
-#: src/skins/skins_cfg.c:319
+#: src/skins/skins_cfg.c:261
 msgid ""
 "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
 "strings."
 msgstr ""
 
-#: src/skins/skins_cfg.c:320
+#: src/skins/skins_cfg.c:262
 #, fuzzy
 msgid "<b>_Miscellaneous</b>"
 msgstr "Meniu de Opțiuni"
 
-#: src/skins/skins_cfg.c:321
-msgid "Show separators in playlist"
-msgstr ""
-
-#: src/skins/skins_cfg.c:323
-msgid "Show window manager decoration"
-msgstr ""
-
-#: src/skins/skins_cfg.c:324
-msgid "This enables the window manager to show decorations for windows."
-msgstr ""
-
-#: src/skins/skins_cfg.c:325
+#: src/skins/skins_cfg.c:263
 msgid "Use two-way text scroller"
 msgstr ""
 
-#: src/skins/skins_cfg.c:326
-msgid ""
-"If selected, the file information text in the main window will scroll back "
-"and forth. If not selected, the text will only scroll in one direction."
-msgstr ""
-
-#: src/skins/skins_cfg.c:327
-msgid "Disable inline gtk theme"
-msgstr ""
-
-#: src/skins/skins_cfg.c:329
-msgid "Random skin on play"
-msgstr ""
-
-#: src/skins/skins_cfg.c:330
-msgid "Allow loading incomplete skins"
-msgstr ""
-
-#: src/skins/skins_cfg.c:331
-msgid ""
-"If selected, audacious won't refuse loading broken skins. Use only if your "
-"favourite skin doesn't work"
-msgstr ""
-
-#: src/skins/skins_cfg.c:397
-msgid "Color Adjustment"
-msgstr ""
-
-#: src/skins/skins_cfg.c:403
-msgid ""
-"Audacious allows you to alter the color balance of the skinned UI. The "
-"sliders below will allow you to do this."
-msgstr ""
-
-#: src/skins/skins_cfg.c:413
-#, fuzzy
-msgid "Blue"
-msgstr "Blues"
-
-#: src/skins/skins_cfg.c:420
-msgid "Green"
-msgstr ""
-
-#: src/skins/skins_cfg.c:427
-msgid "Red"
-msgstr ""
-
-#: src/skins/skins_cfg.c:574
+#: src/skins/skins_cfg.c:347
 #, fuzzy
 msgid "<b>_Skin</b>"
 msgstr "Numele Fișierului:"
 
-#: src/skins/skins_cfg.c:579
-msgid "Color adjustment ..."
-msgstr ""
-
-#: src/skins/skins_cfg.c:631
+#: src/skins/skins_cfg.c:394
 #, fuzzy
 msgid "Interface Preferences"
 msgstr "Preferințe Audacious"
 
-#: src/skins/ui_equalizer.c:463
+#: src/skins/ui_equalizer.c:330
+#, fuzzy
+msgid "Preamp"
+msgstr "PREAMP"
+
+#: src/skins/ui_equalizer.c:334
+msgid "31 Hz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:335
+msgid "63 Hz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:335
+msgid "125 Hz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:335
+#, fuzzy
+msgid "250 Hz"
+msgstr "Rata de eșantionare [Hz]:"
+
+#: src/skins/ui_equalizer.c:335
+#, fuzzy
+msgid "500 Hz"
+msgstr "11000 Hz"
+
+#: src/skins/ui_equalizer.c:335
+#, fuzzy
+msgid "1 kHz"
+msgstr "11 kHz"
+
+#: src/skins/ui_equalizer.c:336
+#, fuzzy
+msgid "2 kHz"
+msgstr "22 kHz"
+
+#: src/skins/ui_equalizer.c:336
+#, fuzzy
+msgid "4 kHz"
+msgstr "44 kHz"
+
+#: src/skins/ui_equalizer.c:336
+#, fuzzy
+msgid "8 kHz"
+msgstr "48 kHz"
+
+#: src/skins/ui_equalizer.c:336
+#, fuzzy
+msgid "16 kHz"
+msgstr "48 kHz"
+
+#: src/skins/ui_equalizer.c:378
 #, fuzzy
 msgid "Audacious Equalizer"
 msgstr "Egalizator Audacious"
 
-#: src/skins/ui_equalizer.c:990
+#: src/skins/ui_equalizer.c:884
 msgid "Presets"
 msgstr ""
 
-#: src/skins/ui_main.c:594
+#: src/skins/ui_main.c:443
 msgid "kbps"
 msgstr ""
 
-#: src/skins/ui_main.c:602
+#: src/skins/ui_main.c:451
 #, fuzzy
 msgid "kHz"
 msgstr "Hz"
 
-#: src/skins/ui_main.c:609
+#: src/skins/ui_main.c:458
 msgid "surround"
 msgstr ""
 
-#: src/skins/ui_main.c:1029
+#: src/skins/ui_main.c:806
 #, c-format
-msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
+msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr ""
 
-#: src/skins/ui_main.c:1059
+#: src/skins/ui_main.c:827
 #, fuzzy, c-format
 msgid "Volume: %d%%"
 msgstr "Volum: %d%%"
 
-#: src/skins/ui_main.c:1082
+#: src/skins/ui_main.c:850
 #, c-format
 msgid "Balance: %d%% left"
 msgstr ""
 
-#: src/skins/ui_main.c:1084
+#: src/skins/ui_main.c:852
 msgid "Balance: center"
 msgstr ""
 
-#: src/skins/ui_main.c:1086
+#: src/skins/ui_main.c:854
 #, c-format
 msgid "Balance: %d%% right"
 msgstr ""
 
-#: src/skins/ui_main.c:1252
+#: src/skins/ui_main.c:980
 #, fuzzy
 msgid "Options Menu"
 msgstr "Meniu de Opțiuni"
 
-#: src/skins/ui_main.c:1256
+#: src/skins/ui_main.c:984
 msgid "Disable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:1258
+#: src/skins/ui_main.c:986
 msgid "Enable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:1261
+#: src/skins/ui_main.c:989
 #, fuzzy
 msgid "File Info Box"
 msgstr "AdPlug·::·Informații despre fișier"
 
-#: src/skins/ui_main.c:1265
-msgid "Disable 'GUI Scaling'"
-msgstr ""
-
-#: src/skins/ui_main.c:1267
-#, fuzzy
-msgid "Enable 'GUI Scaling'"
-msgstr "Activează proxy"
-
-#: src/skins/ui_main.c:1270
+#: src/skins/ui_main.c:994
 msgid "Visualization Menu"
 msgstr ""
 
-#: src/skins/ui_main.c:1982
+#: src/skins/ui_main.c:1644
 msgid "Single mode."
 msgstr ""
 
-#: src/skins/ui_main.c:1984
+#: src/skins/ui_main.c:1646
 #, fuzzy
 msgid "Playlist mode."
 msgstr "Selectați Playlist-ul"
 
-#: src/skins/ui_main.c:2008
+#: src/skins/ui_main.c:1668
 msgid "Stopping after song."
 msgstr ""
 
-#: src/skins/ui_main.c:2010
+#: src/skins/ui_main.c:1670
 msgid "Not stopping after song."
 msgstr ""
 
-#: src/skins/ui_manager.c:53 src/skins/ui_manager.c:54
+#: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
 msgid "Autoscroll Songname"
 msgstr ""
 
-#: src/skins/ui_manager.c:56 src/skins/ui_manager.c:57
+#: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
 msgstr ""
 
-#: src/skins/ui_manager.c:59 src/skins/ui_manager.c:60
+#: src/skins/ui_manager.c:73 src/skins/ui_manager.c:74
 #, fuzzy
 msgid "Peaks"
 msgstr "Pranks"
 
-#: src/skins/ui_manager.c:62 src/skins/ui_manager.c:63
+#: src/skins/ui_manager.c:76 src/skins/ui_manager.c:77
 #, fuzzy
 msgid "Repeat"
 msgstr "Beat"
 
-#: src/skins/ui_manager.c:65 src/skins/ui_manager.c:66
+#: src/skins/ui_manager.c:79 src/skins/ui_manager.c:80
 msgid "Shuffle"
 msgstr ""
 
-#: src/skins/ui_manager.c:68 src/skins/ui_manager.c:69
+#: src/skins/ui_manager.c:82 src/skins/ui_manager.c:83
 msgid "No Playlist Advance"
 msgstr ""
 
-#: src/skins/ui_manager.c:71 src/skins/ui_manager.c:72
+#: src/skins/ui_manager.c:85 src/skins/ui_manager.c:86
 msgid "Show Player"
 msgstr ""
 
-#: src/skins/ui_manager.c:74 src/skins/ui_manager.c:75
+#: src/skins/ui_manager.c:88 src/skins/ui_manager.c:89
 msgid "Show Playlist Editor"
 msgstr ""
 
-#: src/skins/ui_manager.c:77 src/skins/ui_manager.c:78
+#: src/skins/ui_manager.c:91 src/skins/ui_manager.c:92
 #, fuzzy
 msgid "Show Equalizer"
 msgstr "Egalizator Audacious"
 
-#: src/skins/ui_manager.c:80 src/skins/ui_manager.c:81
+#: src/skins/ui_manager.c:94 src/skins/ui_manager.c:95
 msgid "Always on Top"
 msgstr ""
 
-#: src/skins/ui_manager.c:83 src/skins/ui_manager.c:84
+#: src/skins/ui_manager.c:97 src/skins/ui_manager.c:98
 msgid "Put on All Workspaces"
 msgstr ""
 
-#: src/skins/ui_manager.c:86 src/skins/ui_manager.c:87
+#: src/skins/ui_manager.c:100 src/skins/ui_manager.c:101
 msgid "Roll up Player"
 msgstr ""
 
-#: src/skins/ui_manager.c:89 src/skins/ui_manager.c:90
+#: src/skins/ui_manager.c:103 src/skins/ui_manager.c:104
 msgid "Roll up Playlist Editor"
 msgstr ""
 
-#: src/skins/ui_manager.c:92 src/skins/ui_manager.c:93
+#: src/skins/ui_manager.c:106 src/skins/ui_manager.c:107
 msgid "Roll up Equalizer"
 msgstr ""
 
-#: src/skins/ui_manager.c:95 src/sndstretch/sndstretch_xmms.c:362
-msgid "Scale"
-msgstr ""
-
-#: src/skins/ui_manager.c:96
-msgid "DoubleSize"
-msgstr ""
-
-#: src/skins/ui_manager.c:98 src/skins/ui_manager.c:99
-msgid "Easy Move"
-msgstr ""
-
-#: src/skins/ui_manager.c:107
+#: src/skins/ui_manager.c:115
 #, fuzzy
 msgid "Analyzer"
 msgstr "Modul Analizatorului"
 
-#: src/skins/ui_manager.c:108
+#: src/skins/ui_manager.c:116
 #, fuzzy
 msgid "Scope"
 msgstr "Synthpop"
 
-#: src/skins/ui_manager.c:109
+#: src/skins/ui_manager.c:117
 msgid "Voiceprint"
 msgstr ""
 
-#: src/skins/ui_manager.c:110
+#: src/skins/ui_manager.c:118
 msgid "Off"
 msgstr ""
 
-#: src/skins/ui_manager.c:114 src/skins/ui_manager.c:131
-#: src/skins/ui_manager.c:137
+#: src/skins/ui_manager.c:122 src/skins/ui_manager.c:139
+#: src/skins/ui_manager.c:145
 #, fuzzy
 msgid "Normal"
 msgstr "Format"
 
-#: src/skins/ui_manager.c:115 src/skins/ui_manager.c:132
+#: src/skins/ui_manager.c:123 src/skins/ui_manager.c:140
 #, fuzzy
 msgid "Fire"
 msgstr "Satire"
 
-#: src/skins/ui_manager.c:116
+#: src/skins/ui_manager.c:124
 msgid "Vertical Lines"
 msgstr ""
 
-#: src/skins/ui_manager.c:120
+#: src/skins/ui_manager.c:128
 #, fuzzy
 msgid "Lines"
 msgstr "Latin"
 
-#: src/skins/ui_manager.c:121
+#: src/skins/ui_manager.c:129
 #, fuzzy
 msgid "Bars"
 msgstr "Bass"
 
-#: src/skins/ui_manager.c:125
+#: src/skins/ui_manager.c:133
 #, fuzzy
 msgid "Dot Scope"
 msgstr "Nu curăța playlist-ul"
 
-#: src/skins/ui_manager.c:126
+#: src/skins/ui_manager.c:134
 msgid "Line Scope"
 msgstr ""
 
-#: src/skins/ui_manager.c:127
+#: src/skins/ui_manager.c:135
 msgid "Solid Scope"
 msgstr ""
 
-#: src/skins/ui_manager.c:133
+#: src/skins/ui_manager.c:141
 msgid "Ice"
 msgstr ""
 
-#: src/skins/ui_manager.c:138
+#: src/skins/ui_manager.c:146
 msgid "Smooth"
 msgstr ""
 
-#: src/skins/ui_manager.c:142 src/skins/ui_manager.c:150
+#: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
 #, fuzzy
 msgid "Slowest"
 msgstr "Showtunes"
 
-#: src/skins/ui_manager.c:143 src/skins/ui_manager.c:151
+#: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
 #, fuzzy
 msgid "Slow"
 msgstr "Slow Jam"
 
-#: src/skins/ui_manager.c:144 src/skins/ui_manager.c:152
+#: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
 msgid "Medium"
 msgstr ""
 
-#: src/skins/ui_manager.c:145 src/skins/ui_manager.c:153
+#: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
 #, fuzzy
 msgid "Fast"
 msgstr "Format"
 
-#: src/skins/ui_manager.c:146 src/skins/ui_manager.c:154
+#: src/skins/ui_manager.c:154 src/skins/ui_manager.c:162
 msgid "Fastest"
 msgstr ""
 
-#: src/skins/ui_manager.c:158
+#: src/skins/ui_manager.c:166
 msgid "Time Elapsed"
 msgstr ""
 
-#: src/skins/ui_manager.c:159
+#: src/skins/ui_manager.c:167
 msgid "Time Remaining"
 msgstr ""
 
-#: src/skins/ui_manager.c:173 src/skins/ui_manager.c:174
+#: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
 #, fuzzy
 msgid "Pause"
 msgstr "La încărcare"
 
-#: src/skins/ui_manager.c:179 src/skins/ui_manager.c:180
+#: src/skins/ui_manager.c:187 src/skins/ui_manager.c:188
 #, fuzzy
 msgid "Previous"
 msgstr "Primus"
 
-#: src/skins/ui_manager.c:182 src/skins/ui_manager.c:183
+#: src/skins/ui_manager.c:190 src/skins/ui_manager.c:191
 #, fuzzy
 msgid "Next"
 msgstr "Text"
 
-#: src/skins/ui_manager.c:188
+#: src/skins/ui_manager.c:196
 #, fuzzy
 msgid "Visualization"
 msgstr "Internaţionalizare"
 
-#: src/skins/ui_manager.c:189
+#: src/skins/ui_manager.c:197
 msgid "Visualization Mode"
 msgstr ""
 
-#: src/skins/ui_manager.c:190
+#: src/skins/ui_manager.c:198
 msgid "Analyzer Mode"
 msgstr ""
 
-#: src/skins/ui_manager.c:191
+#: src/skins/ui_manager.c:199
 msgid "Scope Mode"
 msgstr ""
 
-#: src/skins/ui_manager.c:192
+#: src/skins/ui_manager.c:200
 msgid "Voiceprint Mode"
 msgstr ""
 
-#: src/skins/ui_manager.c:193
+#: src/skins/ui_manager.c:201
 msgid "WindowShade VU Mode"
 msgstr ""
 
-#: src/skins/ui_manager.c:194
+#: src/skins/ui_manager.c:202
 msgid "Analyzer Falloff"
 msgstr ""
 
-#: src/skins/ui_manager.c:195
+#: src/skins/ui_manager.c:203
 msgid "Peaks Falloff"
 msgstr ""
 
-#: src/skins/ui_manager.c:200
+#: src/skins/ui_manager.c:208
 #, fuzzy
 msgid "Playlist"
 msgstr "Selectați Playlist-ul"
 
-#: src/skins/ui_manager.c:202 src/skins/ui_manager.c:203
+#: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 #, fuzzy
 msgid "New Playlist"
 msgstr "Selectați Playlist-ul"
 
-#: src/skins/ui_manager.c:205 src/skins/ui_manager.c:206
+#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 #, fuzzy
 msgid "Select Next Playlist"
 msgstr "Selectați Playlist-ul"
 
-#: src/skins/ui_manager.c:208 src/skins/ui_manager.c:209
+#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
 #, fuzzy
 msgid "Select Previous Playlist"
 msgstr "Selectați Playlist-ul"
 
-#: src/skins/ui_manager.c:211 src/skins/ui_manager.c:212
+#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
 #, fuzzy
 msgid "Delete Playlist"
 msgstr "Selectați Playlist-ul"
 
-#: src/skins/ui_manager.c:214
+#: src/skins/ui_manager.c:222
 #, fuzzy
 msgid "Import Playlist"
 msgstr "AdPlug·::·Informații despre fișier"
 
-#: src/skins/ui_manager.c:215
+#: src/skins/ui_manager.c:223
 msgid "Loads a playlist file into the selected playlist."
 msgstr ""
 
-#: src/skins/ui_manager.c:218
+#: src/skins/ui_manager.c:226
 #, fuzzy
 msgid "Export Playlist"
 msgstr "AdPlug·::·Informații despre fișier"
 
-#: src/skins/ui_manager.c:219
+#: src/skins/ui_manager.c:227
 #, fuzzy
 msgid "Saves the selected playlist."
 msgstr "Selectați Playlist-ul"
 
-#: src/skins/ui_manager.c:221
+#: src/skins/ui_manager.c:229
 #, fuzzy
 msgid "Save All Playlists"
 msgstr "Selectați Playlist-ul"
 
-#: src/skins/ui_manager.c:222
+#: src/skins/ui_manager.c:230
 msgid ""
 "Saves all the playlists that are open. Note that this is done automatically "
 "when Audacious quits."
 msgstr ""
 
-#: src/skins/ui_manager.c:226
+#: src/skins/ui_manager.c:234
 msgid "Refresh List"
 msgstr ""
 
-#: src/skins/ui_manager.c:227
+#: src/skins/ui_manager.c:235
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr ""
 
-#: src/skins/ui_manager.c:230
+#: src/skins/ui_manager.c:238
 msgid "List Manager"
 msgstr ""
 
-#: src/skins/ui_manager.c:231
+#: src/skins/ui_manager.c:239
 msgid "Opens the playlist manager."
 msgstr ""
 
-#: src/skins/ui_manager.c:235
+#: src/skins/ui_manager.c:243
 msgid "View"
 msgstr ""
 
-#: src/skins/ui_manager.c:236
+#: src/skins/ui_manager.c:244
 msgid "Interface"
 msgstr ""
 
-#: src/skins/ui_manager.c:237
+#: src/skins/ui_manager.c:245
 #, fuzzy
 msgid "Interface Preferences ..."
 msgstr "Preferințe Audacious"
 
-#: src/skins/ui_manager.c:241
+#: src/skins/ui_manager.c:249
 msgid "Add Internet Address..."
 msgstr ""
 
-#: src/skins/ui_manager.c:242
+#: src/skins/ui_manager.c:250
 msgid "Adds a remote track to the playlist."
 msgstr ""
 
-#: src/skins/ui_manager.c:245
+#: src/skins/ui_manager.c:253
 msgid "Add Files..."
 msgstr ""
 
-#: src/skins/ui_manager.c:246
+#: src/skins/ui_manager.c:254
 msgid "Adds files to the playlist."
 msgstr ""
 
-#: src/skins/ui_manager.c:251
+#: src/skins/ui_manager.c:259
 msgid "Search and Select"
 msgstr ""
 
-#: src/skins/ui_manager.c:252
+#: src/skins/ui_manager.c:260
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
 msgstr ""
 
-#: src/skins/ui_manager.c:255
+#: src/skins/ui_manager.c:263
 #, fuzzy
 msgid "Invert Selection"
 msgstr "Selecția formatelor"
 
-#: src/skins/ui_manager.c:256
+#: src/skins/ui_manager.c:264
 msgid "Inverts the selected and unselected entries."
 msgstr ""
 
-#: src/skins/ui_manager.c:259
+#: src/skins/ui_manager.c:267
 #, fuzzy
 msgid "Select All"
 msgstr "Selectați Playlist-ul"
 
-#: src/skins/ui_manager.c:260
+#: src/skins/ui_manager.c:268
 msgid "Selects all of the playlist entries."
 msgstr ""
 
-#: src/skins/ui_manager.c:263
+#: src/skins/ui_manager.c:271
 #, fuzzy
 msgid "Select None"
 msgstr "AdPlug·::·Informații despre fișier"
 
-#: src/skins/ui_manager.c:264
+#: src/skins/ui_manager.c:272
 msgid "Deselects all of the playlist entries."
 msgstr ""
 
-#: src/skins/ui_manager.c:269
+#: src/skins/ui_manager.c:277
 #, fuzzy
 msgid "Remove All"
 msgstr "Șterge Duplicatele"
 
-#: src/skins/ui_manager.c:270
+#: src/skins/ui_manager.c:278
 msgid "Removes all entries from the playlist."
 msgstr ""
 
-#: src/skins/ui_manager.c:273
+#: src/skins/ui_manager.c:281
 msgid "Clear Queue"
 msgstr ""
 
-#: src/skins/ui_manager.c:274
+#: src/skins/ui_manager.c:282
 msgid "Clears the queue associated with this playlist."
 msgstr ""
 
-#: src/skins/ui_manager.c:277
+#: src/skins/ui_manager.c:285
 msgid "Remove Unavailable Files"
 msgstr ""
 
-#: src/skins/ui_manager.c:278
+#: src/skins/ui_manager.c:286
 msgid "Removes unavailable files from the playlist."
 msgstr ""
 
-#: src/skins/ui_manager.c:281
+#: src/skins/ui_manager.c:289
 msgid "Remove Duplicates"
 msgstr ""
 
-#: src/skins/ui_manager.c:283 src/skins/ui_manager.c:315
-#: src/skins/ui_manager.c:345
+#: src/skins/ui_manager.c:291 src/skins/ui_manager.c:323
+#: src/skins/ui_manager.c:353
 #, fuzzy
 msgid "By Title"
 msgstr "Titlu"
 
-#: src/skins/ui_manager.c:284
+#: src/skins/ui_manager.c:292
 msgid "Removes duplicate entries from the playlist by title."
 msgstr ""
 
-#: src/skins/ui_manager.c:287 src/skins/ui_manager.c:327
-#: src/skins/ui_manager.c:357
+#: src/skins/ui_manager.c:295 src/skins/ui_manager.c:335
+#: src/skins/ui_manager.c:365
 #, fuzzy
 msgid "By Filename"
 msgstr "Numele Fișierului:"
 
-#: src/skins/ui_manager.c:288
+#: src/skins/ui_manager.c:296
 msgid "Removes duplicate entries from the playlist by filename."
 msgstr ""
 
-#: src/skins/ui_manager.c:291 src/skins/ui_manager.c:331
-#: src/skins/ui_manager.c:361
+#: src/skins/ui_manager.c:299 src/skins/ui_manager.c:339
+#: src/skins/ui_manager.c:369
 #, fuzzy
 msgid "By Path + Filename"
 msgstr "Numele Fișierului:"
 
-#: src/skins/ui_manager.c:292
+#: src/skins/ui_manager.c:300
 msgid "Removes duplicate entries from the playlist by their full path."
 msgstr ""
 
-#: src/skins/ui_manager.c:295
+#: src/skins/ui_manager.c:303
 msgid "Remove Unselected"
 msgstr ""
 
-#: src/skins/ui_manager.c:296
+#: src/skins/ui_manager.c:304
 msgid "Remove unselected entries from the playlist."
 msgstr ""
 
-#: src/skins/ui_manager.c:299
+#: src/skins/ui_manager.c:307
 msgid "Remove Selected"
 msgstr ""
 
-#: src/skins/ui_manager.c:300
+#: src/skins/ui_manager.c:308
 msgid "Remove selected entries from the playlist."
-msgstr ""
-
-#: src/skins/ui_manager.c:305
-#, fuzzy
-msgid "Randomize List"
-msgstr "Salvează"
-
-#: src/skins/ui_manager.c:306
-#, fuzzy
-msgid "Randomizes the playlist."
-msgstr "Selectați Playlist-ul"
-
-#: src/skins/ui_manager.c:309
-msgid "Reverse List"
-msgstr ""
-
-#: src/skins/ui_manager.c:310
-msgid "Reverses the playlist."
 msgstr ""
 
 #: src/skins/ui_manager.c:313
 #, fuzzy
+msgid "Randomize List"
+msgstr "Salvează"
+
+#: src/skins/ui_manager.c:314
+#, fuzzy
+msgid "Randomizes the playlist."
+msgstr "Selectați Playlist-ul"
+
+#: src/skins/ui_manager.c:317
+msgid "Reverse List"
+msgstr ""
+
+#: src/skins/ui_manager.c:318
+msgid "Reverses the playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:321
+#, fuzzy
 msgid "Sort List"
 msgstr "Artist"
 
-#: src/skins/ui_manager.c:316 src/skins/ui_manager.c:346
+#: src/skins/ui_manager.c:324 src/skins/ui_manager.c:354
 msgid "Sorts the list by title."
 msgstr ""
 
-#: src/skins/ui_manager.c:319 src/skins/ui_manager.c:349
+#: src/skins/ui_manager.c:327 src/skins/ui_manager.c:357
 #, fuzzy
 msgid "By Album"
 msgstr "Album"
 
-#: src/skins/ui_manager.c:320 src/skins/ui_manager.c:350
+#: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
 msgid "Sorts the list by album."
 msgstr ""
 
-#: src/skins/ui_manager.c:323 src/skins/ui_manager.c:353
+#: src/skins/ui_manager.c:331 src/skins/ui_manager.c:361
 #, fuzzy
 msgid "By Artist"
 msgstr "Artist"
 
-#: src/skins/ui_manager.c:324 src/skins/ui_manager.c:354
+#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
 msgid "Sorts the list by artist."
 msgstr ""
 
-#: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
+#: src/skins/ui_manager.c:336 src/skins/ui_manager.c:366
 msgid "Sorts the list by filename."
 msgstr ""
 
-#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
+#: src/skins/ui_manager.c:340 src/skins/ui_manager.c:370
 msgid "Sorts the list by full pathname."
 msgstr ""
 
-#: src/skins/ui_manager.c:335 src/skins/ui_manager.c:365
+#: src/skins/ui_manager.c:343 src/skins/ui_manager.c:373
 #, fuzzy
 msgid "By Date"
 msgstr "Data:"
 
-#: src/skins/ui_manager.c:336 src/skins/ui_manager.c:366
+#: src/skins/ui_manager.c:344 src/skins/ui_manager.c:374
 msgid "Sorts the list by modification time."
 msgstr ""
 
-#: src/skins/ui_manager.c:339 src/skins/ui_manager.c:369
+#: src/skins/ui_manager.c:347 src/skins/ui_manager.c:377
 #, fuzzy
 msgid "By Track Number"
 msgstr "Numărul Trackului"
 
-#: src/skins/ui_manager.c:340 src/skins/ui_manager.c:370
+#: src/skins/ui_manager.c:348 src/skins/ui_manager.c:378
 msgid "Sorts the list by track number."
 msgstr ""
 
-#: src/skins/ui_manager.c:343
+#: src/skins/ui_manager.c:351
 #, fuzzy
 msgid "Sort Selected"
 msgstr "Selecția formatelor"
 
-#: src/skins/ui_manager.c:379
+#: src/skins/ui_manager.c:387
 #, fuzzy
 msgid "File"
 msgstr "Numele Fișierului:"
 
-#: src/skins/ui_manager.c:382
+#: src/skins/ui_manager.c:388
+msgid "Help"
+msgstr "Ajutor"
+
+#: src/skins/ui_manager.c:390
 msgid "Plugin Services"
 msgstr ""
 
-#: src/skins/ui_manager.c:384 src/skins/ui_manager.c:387
+#: src/skins/ui_manager.c:392 src/skins/ui_manager.c:395
 #, fuzzy
 msgid "View Track Details"
 msgstr "Fereastra cu informații despre Track"
 
-#: src/skins/ui_manager.c:385 src/skins/ui_manager.c:388
+#: src/skins/ui_manager.c:393 src/skins/ui_manager.c:396
 msgid "View track details"
 msgstr ""
 
-#: src/skins/ui_manager.c:390 src/skins/ui_manager.c:391
+#: src/skins/ui_manager.c:398 src/skins/ui_manager.c:399
 #, fuzzy
 msgid "About Audacious"
 msgstr "Despre plugin-ul decodor MP4·AAC"
 
-#: src/skins/ui_manager.c:393
+#: src/skins/ui_manager.c:401
 #, fuzzy
 msgid "Play File"
 msgstr "Pauză pentru"
 
-#: src/skins/ui_manager.c:394
+#: src/skins/ui_manager.c:402
 #, fuzzy
 msgid "Load and play a file"
 msgstr "Încarcă SF la pornirea playerului"
 
-#: src/skins/ui_manager.c:396
+#: src/skins/ui_manager.c:404
 #, fuzzy
 msgid "Play Location"
 msgstr "Locaţie:"
 
-#: src/skins/ui_manager.c:397
+#: src/skins/ui_manager.c:405
 #, fuzzy
 msgid "Play media from the selected location"
 msgstr "Selecția formatelor"
 
-#: src/skins/ui_manager.c:399
+#: src/skins/ui_manager.c:407
 msgid "Plugin services"
 msgstr ""
 
-#: src/skins/ui_manager.c:401
+#: src/skins/ui_manager.c:409
 msgid "Preferences"
 msgstr ""
 
-#: src/skins/ui_manager.c:402
+#: src/skins/ui_manager.c:410
 msgid "Open preferences window"
 msgstr ""
 
-#: src/skins/ui_manager.c:405
+#: src/skins/ui_manager.c:413
 #, fuzzy
 msgid "Quit Audacious"
 msgstr "%s - Audacious"
 
-#: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
+#: src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
 msgid "Set A-B"
 msgstr ""
 
-#: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
+#: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
 msgid "Clear A-B"
 msgstr ""
 
-#: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
+#: src/skins/ui_manager.c:421 src/skins/ui_manager.c:422
 msgid "Jump to Playlist Start"
 msgstr ""
 
-#: src/skins/ui_manager.c:419 src/skins/ui_manager.c:420
+#: src/skins/ui_manager.c:427 src/skins/ui_manager.c:428
 #, fuzzy
 msgid "Jump to Time"
 msgstr "Fereastra de Preferințe"
 
-#: src/skins/ui_manager.c:422
+#: src/skins/ui_manager.c:430
 msgid "Queue Toggle"
 msgstr ""
 
-#: src/skins/ui_manager.c:423
+#: src/skins/ui_manager.c:431
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr ""
 
-#: src/skins/ui_manager.c:426
+#: src/skins/ui_manager.c:434
 msgid "Copy"
 msgstr ""
 
-#: src/skins/ui_manager.c:428
+#: src/skins/ui_manager.c:436
 #, fuzzy
 msgid "Cut"
 msgstr "Cult"
 
-#: src/skins/ui_manager.c:430
+#: src/skins/ui_manager.c:438
 msgid "Paste"
 msgstr ""
 
-#: src/skins/ui_manager.c:437
+#: src/skins/ui_manager.c:445
 #, fuzzy
 msgid "Load"
 msgstr "Încarcă"
 
-#: src/skins/ui_manager.c:442 src/skins/ui_manager.c:463
-#: src/skins/ui_manager.c:478
+#: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
+#: src/skins/ui_manager.c:486
 #, fuzzy
 msgid "Preset"
 msgstr "Port-ul:"
 
-#: src/skins/ui_manager.c:443
+#: src/skins/ui_manager.c:451
 msgid "Load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:445 src/skins/ui_manager.c:466
-#: src/skins/ui_manager.c:481
+#: src/skins/ui_manager.c:453 src/skins/ui_manager.c:474
+#: src/skins/ui_manager.c:489
 msgid "Auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:446
+#: src/skins/ui_manager.c:454
 msgid "Load auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:449
+#: src/skins/ui_manager.c:457
 #, fuzzy
 msgid "Load default preset into equalizer"
 msgstr "Încarcă presetarea implicită a egalizatorului"
 
-#: src/skins/ui_manager.c:451
+#: src/skins/ui_manager.c:459
 #, fuzzy
 msgid "Zero"
 msgstr "Retro"
 
-#: src/skins/ui_manager.c:452
+#: src/skins/ui_manager.c:460
 msgid "Set equalizer preset levels to zero"
 msgstr ""
 
-#: src/skins/ui_manager.c:454
+#: src/skins/ui_manager.c:462
 msgid "From file"
 msgstr ""
 
-#: src/skins/ui_manager.c:455
+#: src/skins/ui_manager.c:463
 #, fuzzy
 msgid "Load preset from file"
 msgstr "Încarcă preset din fișier"
 
-#: src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:465
 msgid "From WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:458
+#: src/skins/ui_manager.c:466
 msgid "Load preset from WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:460
+#: src/skins/ui_manager.c:468
 msgid "WinAMP Presets"
 msgstr ""
 
-#: src/skins/ui_manager.c:461
+#: src/skins/ui_manager.c:469
 msgid "Import WinAMP presets"
 msgstr ""
 
-#: src/skins/ui_manager.c:464
+#: src/skins/ui_manager.c:472
 msgid "Save preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:467
+#: src/skins/ui_manager.c:475
 msgid "Save auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:470
+#: src/skins/ui_manager.c:478
 #, fuzzy
 msgid "Save default preset"
 msgstr "Încarcă presetarea implicită a egalizatorului"
 
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:480
 #, fuzzy
 msgid "To file"
 msgstr "Fisierul STIL:"
 
-#: src/skins/ui_manager.c:473
+#: src/skins/ui_manager.c:481
 msgid "Save preset to file"
 msgstr ""
 
-#: src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:483
 msgid "To WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:476
+#: src/skins/ui_manager.c:484
 msgid "Save preset to WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:479
+#: src/skins/ui_manager.c:487
 #, fuzzy
 msgid "Delete preset"
 msgstr "Implicit"
 
-#: src/skins/ui_manager.c:482
+#: src/skins/ui_manager.c:490
 msgid "Delete auto-load preset"
 msgstr ""
 
-#: src/skins/ui_playlist.c:374
+#: src/skins/ui_playlist.c:244
 msgid "Search entries in active playlist"
 msgstr ""
 
-#: src/skins/ui_playlist.c:382
+#: src/skins/ui_playlist.c:252
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -5113,99 +3792,56 @@ msgid ""
 "for."
 msgstr ""
 
-#: src/skins/ui_playlist.c:397
+#: src/skins/ui_playlist.c:260
+msgid "Title: "
+msgstr "Titlu: "
+
+#: src/skins/ui_playlist.c:267
 #, fuzzy
 msgid "Album: "
 msgstr "Album"
 
-#: src/skins/ui_playlist.c:404
+#: src/skins/ui_playlist.c:274
 #, fuzzy
 msgid "Artist: "
 msgstr "Artist"
 
-#: src/skins/ui_playlist.c:411
+#: src/skins/ui_playlist.c:281
 #, fuzzy
 msgid "Filename: "
 msgstr "Fișier:"
 
-#: src/skins/ui_playlist.c:419
+#: src/skins/ui_playlist.c:289
 msgid "Clear previous selection before searching"
 msgstr ""
 
-#: src/skins/ui_playlist.c:422
+#: src/skins/ui_playlist.c:292
 msgid "Automatically toggle queue for matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:425
+#: src/skins/ui_playlist.c:295
 msgid "Create a new playlist with matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:942
+#: src/skins/ui_playlist.c:762
 #, fuzzy
 msgid "Audacious Playlist Editor"
 msgstr "AdPlug·::·Informații despre fișier"
 
-#: src/skins/ui_playlist.c:1004
+#: src/skins/ui_playlist.c:809
 #, c-format
 msgid "%s (%d of %d)"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:431
-msgid "31 Hz"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:431
-msgid "63 Hz"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:432
-msgid "125 Hz"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:432
-#, fuzzy
-msgid "250 Hz"
-msgstr "Rata de eșantionare [Hz]:"
-
-#: src/skins/ui_skinned_equalizer_slider.c:432
-#, fuzzy
-msgid "500 Hz"
-msgstr "11000 Hz"
-
-#: src/skins/ui_skinned_equalizer_slider.c:432
-#, fuzzy
-msgid "1 kHz"
-msgstr "11 kHz"
-
-#: src/skins/ui_skinned_equalizer_slider.c:432
-#, fuzzy
-msgid "2 kHz"
-msgstr "22 kHz"
-
-#: src/skins/ui_skinned_equalizer_slider.c:433
-#, fuzzy
-msgid "4 kHz"
-msgstr "44 kHz"
-
-#: src/skins/ui_skinned_equalizer_slider.c:433
-#, fuzzy
-msgid "8 kHz"
-msgstr "48 kHz"
-
-#: src/skins/ui_skinned_equalizer_slider.c:433
-#, fuzzy
-msgid "16 kHz"
-msgstr "48 kHz"
-
-#: src/skins/ui_skinselector.c:180
+#: src/skins/ui_skinselector.c:162
 msgid "Archived Winamp 2.x skin"
 msgstr ""
 
-#: src/skins/ui_skinselector.c:185
+#: src/skins/ui_skinselector.c:167
 msgid "Unarchived Winamp 2.x skin"
 msgstr ""
 
-#: src/skins/util.c:875
+#: src/skins/util.c:772
 #, fuzzy, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "Nu s-a putut crea directorul (%s): %s\n"
@@ -5260,6 +3896,15 @@ msgstr "Viteză: "
 #: src/sndstretch/sndstretch_xmms.c:361
 msgid "Pitch"
 msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:362
+msgid "Scale"
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:363
+#, fuzzy
+msgid "Options"
+msgstr "Meniu de Opțiuni"
 
 #: src/sndstretch/sndstretch_xmms.c:382
 #, fuzzy
@@ -5317,15 +3962,10 @@ msgstr ""
 msgid "Commands"
 msgstr ""
 
-#: src/song_change/song_change.c:554
+#: src/song_change/song_change.c:555
 #, fuzzy
 msgid "Song Change"
 msgstr "Mesajul melodiei"
-
-#: src/spectrum/spectrum.c:87
-#, fuzzy
-msgid "Spectrum Analyzer"
-msgstr "Modul Analizatorului"
 
 #: src/statusicon/statusicon.c:378
 #, fuzzy
@@ -5404,52 +4044,6 @@ msgstr "Despre plugin-ul decodor MP4·AAC"
 msgid "Configure Extra Stereo"
 msgstr ""
 
-#: src/streambrowser/gui/streambrowser_win.c:74
-#, fuzzy
-msgid "Search:"
-msgstr "Anul"
-
-#: src/streambrowser/gui/streambrowser_win.c:93
-#: src/streambrowser/gui/streambrowser_win.c:368
-msgid "Add Bookmark"
-msgstr ""
-
-#: src/streambrowser/gui/streambrowser_win.c:320
-#, fuzzy
-msgid "Stream name"
-msgstr "Numele Instrumentului"
-
-#: src/streambrowser/gui/streambrowser_win.c:327
-#, fuzzy
-msgid "Now playing"
-msgstr "Selectați Playlist-ul"
-
-#: src/streambrowser/gui/streambrowser_win.c:365
-#, fuzzy
-msgid "Remove Bookmark"
-msgstr "Șterge Duplicatele"
-
-#: src/streambrowser/streambrowser.c:329
-#, fuzzy
-msgid "About Stream Browser"
-msgstr "Despre plugin-ul·pentru Alarmă"
-
-#: src/streambrowser/streambrowser.c:330
-msgid ""
-"Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
-"Team.\n"
-"\n"
-"This is a simple stream browser that includes the most popular streaming "
-"directories.\n"
-"Many thanks to the Streamtuner developers <http://www.nongnu.org/"
-"streamtuner>,\n"
-"\tand of course to the whole Audacious community.\n"
-"\n"
-"Also thank you Tony Vroon for mentoring & guiding me, again.\n"
-"\n"
-"This was a Google Summer of Code 2008 project."
-msgstr ""
-
 #: src/tonegen/tonegen.c:48
 #, fuzzy
 msgid "About Tone Generator"
@@ -5492,7 +4086,7 @@ msgstr "Formatul titlului:"
 msgid "Ogg Vorbis Tags"
 msgstr "AdPlug·::·Informații despre fișier"
 
-#: src/vorbis/configure.c:68
+#: src/vorbis/configure.c:69
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr ""
 
@@ -5549,6 +4143,716 @@ msgid ""
 "Some of the plugin code was by Miles Egan\n"
 "Visit the Wavpack site at http://www.wavpack.com/\n"
 msgstr ""
+
+#~ msgid "About "
+#~ msgstr "Despre "
+
+#~ msgid ""
+#~ "\n"
+#~ "Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
+#~ "\n"
+#~ "This plugin is released under the terms and conditions of the GNU LGPL.\n"
+#~ "See http://www.gnu.org/licenses/lgpl.html for details.\n"
+#~ "\n"
+#~ "This plugin uses the AdPlug library, which is copyright (C) Simon Peter, "
+#~ "et al.\n"
+#~ "Linked AdPlug library version: "
+#~ msgstr ""
+#~ "\n"
+#~ "Copyright·(C)·2002,·2003·Simon·Peter·<dn.tlp@gmx.net>\n"
+#~ "\n"
+#~ "Acest plugin este distribuit conform termenilor și condițiilor licenței "
+#~ "GNU LGPL.\n"
+#~ "Vedeți·http://www.gnu.org/licenses/lgpl.html·tentru detalii.\n"
+#~ "\n"
+#~ "Plugin-ul folosește biblioteca AdPlug,·Copyright·(C)·Simon·Peter·și "
+#~ "alții.\n"
+#~ "Versiunea AdPlug pentru care a fost link-editat:·"
+
+#~ msgid "AdPlug :: Configuration"
+#~ msgstr "AdPlug·::·Configurare"
+
+#~ msgid "Sound quality"
+#~ msgstr "Calitatea sunetului"
+
+#~ msgid "Resolution"
+#~ msgstr "Rezoluție"
+
+#~ msgid "8bit"
+#~ msgstr "8 biți"
+
+#~ msgid "16bit"
+#~ msgstr "16 biți"
+
+#~ msgid "Channels"
+#~ msgstr "Canale"
+
+#~ msgid ""
+#~ "Setting stereo is not recommended, unless you need to. This won't add any "
+#~ "stereo effects to the sound - OPL2 is just mono - but eats up more CPU "
+#~ "power!"
+#~ msgstr ""
+#~ "Nu este recomandată setarea forțată Stereo, decât dacă este neapărată "
+#~ "nevoieAceastă setare nu va adăuga efecte stereo, deoarece OPL2 suportă "
+#~ "doar MonoVa consuma însă mai multe resurse de calcul!"
+
+#~ msgid "Frequency"
+#~ msgstr "Frecvența"
+
+#~ msgid "Detect songend"
+#~ msgstr "Detectează sfârșitul melodiei"
+
+#~ msgid ""
+#~ "If enabled, XMMS will detect a song's ending, stop it and advance in the "
+#~ "playlist. If disabled, XMMS won't take notice of a song's ending and loop "
+#~ "it all over again and again."
+#~ msgstr ""
+#~ "Dacă este activat, Audacious va detecta·sfârșitul melodiei, va opri "
+#~ "redarea și va avansa la melodia următoare. Dacă este dezactivat, nu se va "
+#~ "ști când s-a terminat melodia și va fi redată din nou, la infinit. "
+
+#~ msgid "Formats"
+#~ msgstr "Formate"
+
+#~ msgid "Format selection"
+#~ msgstr "Selecția formatelor"
+
+#~ msgid "Format"
+#~ msgstr "Format"
+
+#~ msgid "Extension"
+#~ msgstr "Extensie"
+
+#~ msgid ""
+#~ "Selected file types will be recognized and played back by this plugin. "
+#~ "Deselected types will be ignored to make room for other plugins to play "
+#~ "these files."
+#~ msgstr ""
+#~ "Tipurile de fișiere selectate vor fi recunoscute și redate de acest "
+#~ "plugin. Cele deselectate vor fi ignorate, dar pot fi redate de alte "
+#~ "pluginuri."
+
+#~ msgid "AdPlug :: File Info"
+#~ msgstr "AdPlug·::·Informații despre fișier"
+
+#~ msgid "Author: "
+#~ msgstr "Autor: "
+
+#~ msgid "File Type: "
+#~ msgstr "Tipul Fișierului: "
+
+#~ msgid "Subsongs: "
+#~ msgstr "Sub-melodii: "
+
+#~ msgid "Instruments: "
+#~ msgstr "Instrumente: "
+
+#~ msgid "Orders: "
+#~ msgstr "Ordine: "
+
+#~ msgid "Patterns: "
+#~ msgstr "Șabloane: "
+
+#~ msgid "Song"
+#~ msgstr "Melodia"
+
+#~ msgid "Instrument name"
+#~ msgstr "Numele Instrumentului"
+
+#~ msgid "Song message"
+#~ msgstr "Mesajul melodiei"
+
+#~ msgid "Subsong selection"
+#~ msgstr "Selecția sub-melodiei"
+
+#~ msgid "Order: "
+#~ msgstr "Ordine: "
+
+#~ msgid "Pattern: "
+#~ msgstr "Șablon: "
+
+#~ msgid "Row: "
+#~ msgstr "Linie: "
+
+#~ msgid "Speed: "
+#~ msgstr "Viteză: "
+
+#~ msgid "Timer: "
+#~ msgstr "Cronometru: "
+
+#~ msgid "About XMMS Alarm"
+#~ msgstr "Despre plugin-ul·pentru Alarmă"
+
+#~ msgid "XMMS Alarm"
+#~ msgstr "XMMS·Alarm"
+
+#~ msgid ""
+#~ "An XMMS plugin which can be used\n"
+#~ "to start playing at a certain time.\n"
+#~ "\n"
+#~ "Send all complaints to:\n"
+#~ "Adam Feakin <adamf@snika.uklinux.net>\n"
+#~ "Daniel Stodden <stodden@in.tum.de>\n"
+#~ "\n"
+#~ "http://www.snika.uklinux.net/xmms-alarm/"
+#~ msgstr ""
+#~ "Acest plugin poate fi folosit pentru\n"
+#~ "a orni redarea la un anumit timp.\n"
+#~ "\n"
+#~ "Trimiteți eventualele reclamații la:\n"
+#~ "Adam·Feakin·<adamf@snika.uklinux.net>\n"
+#~ "Daniel·Stodden·<stodden@in.tum.de>\n"
+#~ "\n"
+#~ "http://www.snika.uklinux.net/xmms-alarm/"
+
+#~ msgid "Alarm"
+#~ msgstr "Alarmă"
+
+#~ msgid "This is your wakeup call."
+#~ msgstr "Acesta este semnalul de deșteptare."
+
+#~ msgid "Select Playlist"
+#~ msgstr "Selectați Playlist-ul"
+
+#~ msgid "Sorry"
+#~ msgstr "Ne pare rău"
+
+#~ msgid "Warning"
+#~ msgstr "Avertizare"
+
+#~ msgid ""
+#~ "For safety reasons the \"quiet\" time must be at least 65 seconds longer "
+#~ "than the fading time, it must also be more than 10 seconds.  This "
+#~ "basically means that there is a bug in the code and until I find a way of "
+#~ "really fixing it this message will appear :)\n"
+#~ "\n"
+#~ "Your fading settings have NOT been saved\n"
+#~ "\n"
+#~ "--\n"
+#~ "Adam"
+#~ msgstr ""
+#~ "Din motive de siguranță, timpul de \"liniște\" trebuie să fie de minim 65 "
+#~ "secunde.For·safety·reasons·the·\"quiet"
+#~ "\"·time·must·be·at·least·65·seconds·longer·than·the·fading·time,"
+#~ "·it·must·also·be·more·than·10·seconds."
+#~ "··This·basically·means·that·there·is·a·bug·in·the·code·and·until·I·find·a·way·of·really·fixing·it·this·message·will·appear·:)\n"
+#~ "\n"
+#~ "Your·fading·settings·have·NOT·been·saved\n"
+#~ "\n"
+#~ "--\n"
+#~ "Adam"
+
+#~ msgid "Oh Well"
+#~ msgstr "Ok"
+
+#~ msgid "Alarm Settings"
+#~ msgstr "Opțiuni ale plugin-ului Alarm"
+
+#~ msgid "Time"
+#~ msgstr "Timp"
+
+#~ msgid "hours"
+#~ msgstr "ore"
+
+#~ msgid "h"
+#~ msgstr "h"
+
+#~ msgid "Quiet after:"
+#~ msgstr "Oprește după:"
+
+#~ msgid "Alarm at (default):"
+#~ msgstr "Alarmă la (implicit):"
+
+#~ msgid "Choose the days for the alarm to come on"
+#~ msgstr "Alegeți zilele în care să pornească alarma"
+
+#~ msgid "Day"
+#~ msgstr "Ziua"
+
+#~ msgid "Tuesday"
+#~ msgstr "Marți"
+
+#~ msgid "Wednesday"
+#~ msgstr "Miercuri"
+
+#~ msgid "Thursday"
+#~ msgstr "Joi"
+
+#~ msgid "Friday"
+#~ msgstr "Vineri"
+
+#~ msgid "Saturday"
+#~ msgstr "Sâmbătă"
+
+#~ msgid "Sunday"
+#~ msgstr "Duminică"
+
+#~ msgid "Monday"
+#~ msgstr "Luni"
+
+#~ msgid "Days"
+#~ msgstr "Zile"
+
+#~ msgid "Fading"
+#~ msgstr "Tranziție"
+
+#, fuzzy
+#~ msgid "Volume"
+#~ msgstr "Volum: %d%%"
+
+#, fuzzy
+#~ msgid "Current"
+#~ msgstr "Plugin-ul de ieșire curent"
+
+#~ msgid "reset to current output volume"
+#~ msgstr "resetează la volumul curent"
+
+#, fuzzy
+#~ msgid "Start at"
+#~ msgstr "Începe redarea playlist-ului curent"
+
+#~ msgid "%"
+#~ msgstr "%"
+
+#~ msgid "Final"
+#~ msgstr "Final"
+
+#~ msgid "Additional Command"
+#~ msgstr "Comandă adițională"
+
+#, fuzzy
+#~ msgid "enable"
+#~ msgstr "Activează modul 'Mărime Dublă'"
+
+#, fuzzy
+#~ msgid "Playlist (optional)"
+#~ msgstr "Selectați Playlist-ul"
+
+#~ msgid "Browse..."
+#~ msgstr "Răsfoiește"
+
+#, fuzzy
+#~ msgid "Reminder"
+#~ msgstr "Reminder"
+
+#, fuzzy
+#~ msgid "Use reminder"
+#~ msgstr "Folosește cursoare de mouse personalizate (oferite de skin)"
+
+#~ msgid "What do these options mean?"
+#~ msgstr "Ce înseamnă opțiunile acestea?"
+
+#~ msgid ""
+#~ "\n"
+#~ "Time\n"
+#~ "  Alarm at: \n"
+#~ "    The time for the alarm to come on.\n"
+#~ "\n"
+#~ "  Quiet After: \n"
+#~ "    Stop alarm after this amount of time.\n"
+#~ "       (if the wakeup dialog is not closed)\n"
+#~ "\n"
+#~ "\n"
+#~ "Days\n"
+#~ "  Day:\n"
+#~ "    Select the days for the alarm to activate.\n"
+#~ "\n"
+#~ "  Time:\n"
+#~ "    Choose the time for the alarm on each day,\n"
+#~ "    or select the toggle button to use the default\n"
+#~ "    time.\n"
+#~ "\n"
+#~ "\n"
+#~ "Volume\n"
+#~ "  Fading: \n"
+#~ "    Fade the volume up to the chosen volume \n"
+#~ "    for this amount of time.\n"
+#~ "\n"
+#~ "  Start at: \n"
+#~ "    Start fading from this volume.\n"
+#~ "\n"
+#~ "  Final: \n"
+#~ "    The volume to stop fading at.  If the fading\n"
+#~ "    time is 0 then set volume to this and start\n"
+#~ "    playing.\n"
+#~ "\n"
+#~ "\n"
+#~ "Options:\n"
+#~ "  Additional Command:\n"
+#~ "    Run this command at the alarm time.\n"
+#~ "\n"
+#~ "  Playlist: \n"
+#~ "    Load this playlist for playing songs from \n"
+#~ "    (must have .m3u extension).  If no playlist\n"
+#~ "    is given then the songs which are currently\n"
+#~ "    in the list will be used.\n"
+#~ "    The URL of an mp3/ogg stream can also be\n"
+#~ "    entered here, but loading of playlists from\n"
+#~ "    URLs is not currently supported by xmms.\n"
+#~ "\n"
+#~ "  Reminder:\n"
+#~ "    Display a reminder when the alarm goes off,\n"
+#~ "    type the reminder in the box and turn on the\n"
+#~ "    toggle button if you want it to be shown.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Timp\n"
+#~ "  Alarmă la: \n"
+#~ "    Ora la care se va declanșa alarma.\n"
+#~ "\n"
+#~ "  Oprește după: \n"
+#~ "    Oprește alarma după atât timp.\n"
+#~ "       (dacă dialogul de trezire nu este închis)\n"
+#~ "\n"
+#~ "\n"
+#~ "Zile\n"
+#~ "  Ziua:\n"
+#~ "    Selectați zilele în care să se activeze alarma.\n"
+#~ "\n"
+#~ "  Timp:\n"
+#~ "    Alegeți timpul la care va porni alarma în fiecare zi.\n"
+#~ "    sau selectați valoarea implicită folosind butonul\n"
+#~ "\n"
+#~ "\n"
+#~ "Volum\n"
+#~ "  Tranziție: \n"
+#~ "    Va face volumul să crească lent până la valoarea \n"
+#~ "    maximă, iar aceasta este durata perioadei de\n"
+#~ "    tranziție.\n"
+#~ "\n"
+#~ "\n"
+#~ "  Volum inițial: \n"
+#~ "    Începe tranziția de la această valoare inițială a \n"
+#~ "    volumului.\n"
+#~ "\n"
+#~ "  Volum final: \n"
+#~ "    Volumul maxim la care se va ajunge în timpul \n"
+#~ "    tranziției.\n"
+#~ "\n"
+#~ "\n"
+#~ "Opțiuni:\n"
+#~ "  Comandă adițională:\n"
+#~ "    Comandă ce va fi rulată la momentul declanșării \n"
+#~ "    alarmei.\n"
+#~ "\n"
+#~ "  Playlist: \n"
+#~ "    Încarcă un playlist a cărui melodii vor fi redate\n"
+#~ "    la declanșarea alarmei. (cu extensie .m3u), sau \n"
+#~ "    un link spre un fișier sau stream audio.\n"
+#~ "     Dacă nu este dat nimic vor fi folosite melodiile\n"
+#~ "    existente în playlist.\n"
+#~ "\n"
+#~ "  Reminder:\n"
+#~ "    Afișează un mesaj de reamintire când alarma se \n"
+#~ "    oprește. Editați mesajul și activați-l dacă doriți \n"
+#~ "    ca acesta să fie afișat.\n"
+
+#~ msgid "Your reminder for today is.."
+#~ msgstr "Mesajul de reamintire pentru ziua de azi este..."
+
+#~ msgid "Thankyou"
+#~ msgstr "Mulțumesc"
+
+#, fuzzy
+#~ msgid "Available Headsets"
+#~ msgstr "_Preset-uri disponibile:"
+
+#, fuzzy
+#~ msgid "Current Headset"
+#~ msgstr "Plugin-ul de ieșire curent"
+
+#, fuzzy
+#~ msgid "_Connect"
+#~ msgstr "Mod de Vizualizare"
+
+#, fuzzy
+#~ msgid "Class"
+#~ msgstr "Classical"
+
+#, fuzzy
+#~ msgid "Address:"
+#~ msgstr "Adaugă Adresa Internet..."
+
+#, fuzzy
+#~ msgid "Rescan"
+#~ msgstr "Dreptunghi"
+
+#, fuzzy
+#~ msgid "Playback->Play"
+#~ msgstr "Redă fișiere"
+
+#, fuzzy
+#~ msgid "Playback->Stop"
+#~ msgstr "Oprește melodia curentă"
+
+#, fuzzy
+#~ msgid "Playback->Pause"
+#~ msgstr "Pauză pentru"
+
+#, fuzzy
+#~ msgid "Playback->Prev"
+#~ msgstr "Continuă redarea la pornire"
+
+#, fuzzy
+#~ msgid "Playback->Next"
+#~ msgstr "Selectează Playlist-ul Următor"
+
+#, fuzzy
+#~ msgid "Playback->Eject"
+#~ msgstr "Continuă redarea la pornire"
+
+#, fuzzy
+#~ msgid "Playlist->Repeat"
+#~ msgstr "Selectați Playlist-ul"
+
+#, fuzzy
+#~ msgid "Playlist->Shuffle"
+#~ msgstr "Selectați Playlist-ul"
+
+#, fuzzy
+#~ msgid "Volume->Up_5"
+#~ msgstr "Restrânge player-ul"
+
+#, fuzzy
+#~ msgid "Volume->Down_5"
+#~ msgstr "Schimbă volumul cu"
+
+#, fuzzy
+#~ msgid "Volume->Up_10"
+#~ msgstr "Restrânge player-ul"
+
+#, fuzzy
+#~ msgid "Volume->Down_10"
+#~ msgstr "Schimbă volumul cu"
+
+#, fuzzy
+#~ msgid "Volume->Mute"
+#~ msgstr "Schimbă volumul cu"
+
+#, fuzzy
+#~ msgid "Window->Main"
+#~ msgstr "Arată fereastra principală"
+
+#, fuzzy
+#~ msgid "Window->Playlist"
+#~ msgstr "Selectați Playlist-ul"
+
+#, fuzzy
+#~ msgid "Window->Equalizer"
+#~ msgstr "Egalizator Audacious"
+
+#, fuzzy
+#~ msgid "Window->JumpToFile"
+#~ msgstr "Fereastra de Preferințe"
+
+#, fuzzy
+#~ msgid "Detected"
+#~ msgstr "Detectează sfârșitul melodiei"
+
+#, fuzzy
+#~ msgid "Custom"
+#~ msgstr "Format specificat:"
+
+#, fuzzy
+#~ msgid "Not Detected"
+#~ msgstr "Selecția formatelor"
+
+#, fuzzy
+#~ msgid "Information"
+#~ msgstr "Informații despre Track"
+
+#, fuzzy
+#~ msgid "Device name:"
+#~ msgstr "Numele Instrumentului"
+
+#, fuzzy
+#~ msgid "Device file:"
+#~ msgstr "Tipul Fișierului: "
+
+#, fuzzy
+#~ msgid "(custom)"
+#~ msgstr "Format specificat:"
+
+#~ msgid "Active"
+#~ msgstr "Activ"
+
+#~ msgid "Status"
+#~ msgstr "Statut"
+
+#, fuzzy
+#~ msgid "Device Name"
+#~ msgstr "Numele Instrumentului"
+
+#, fuzzy
+#~ msgid "Device File"
+#~ msgstr "Tipul Fișierului: "
+
+#, fuzzy
+#~ msgid "Device Address"
+#~ msgstr "Adaugă Adresa Internet..."
+
+#, fuzzy
+#~ msgid "<b>Name: </b>"
+#~ msgstr "Numele Instrumentului"
+
+#, fuzzy
+#~ msgid "<b>Filename: </b>"
+#~ msgstr "Numele Fișierului:"
+
+#, fuzzy
+#~ msgid "<b>Phys.Address: </b>"
+#~ msgstr "Adaugă Adresa Internet..."
+
+#, fuzzy
+#~ msgid "EvDev-Plug - about"
+#~ msgstr "Despre plugin-ul·pentru Alarmă"
+
+#, fuzzy
+#~ msgid "Name"
+#~ msgstr "Numele Instrumentului"
+
+#, fuzzy
+#~ msgid "Installed plugins"
+#~ msgstr "Reîncarcă Plugin-urile"
+
+#, fuzzy
+#~ msgid "Running plugins"
+#~ msgstr "Reîncarcă Plugin-urile"
+
+#, fuzzy
+#~ msgid "Add"
+#~ msgstr "Adaugă Fișiere"
+
+#, fuzzy
+#~ msgid "Remove"
+#~ msgstr "Șterge Duplicatele"
+
+#, fuzzy
+#~ msgid "LADSPA Plugin Catalog"
+#~ msgstr "Lista plugin-urilor _Generale"
+
+#, fuzzy
+#~ msgid "About LIRC Audacious Plugin"
+#~ msgstr "Despre plugin-ul decodor MP4·AAC"
+
+#, fuzzy
+#~ msgid "LIRC Plugin "
+#~ msgstr "Plugin de intrare: %s"
+
+#, fuzzy
+#~ msgid "LIRC plugin settings"
+#~ msgstr "Plugin de intrare: %s"
+
+#, fuzzy
+#~ msgid "Connection"
+#~ msgstr "Mod de Vizualizare"
+
+#, fuzzy
+#~ msgid "%s: disconnected from LIRC\n"
+#~ msgstr "Încarcă preset din fișier"
+
+#, fuzzy
+#~ msgid "ModPlug Configuration"
+#~ msgstr "AdPlug·::·Configurare"
+
+#~ msgid "16 bit"
+#~ msgstr "16 bit"
+
+#~ msgid "8 bit"
+#~ msgstr "8 bit"
+
+#, fuzzy
+#~ msgid "96 kHz"
+#~ msgstr "48 kHz"
+
+#~ msgid "48 kHz"
+#~ msgstr "48 kHz"
+
+#~ msgid "44 kHz"
+#~ msgstr "44 kHz"
+
+#~ msgid "22 kHz"
+#~ msgstr "22 kHz"
+
+#, fuzzy
+#~ msgid "Sampling Rate"
+#~ msgstr "<b>Convertor pentru rata de eșantionare</b>"
+
+#, fuzzy
+#~ msgid "Enable"
+#~ msgstr "Activează modul 'Mărime Dublă'"
+
+#, fuzzy
+#~ msgid "Depth"
+#~ msgstr "Adancimea cautarii"
+
+#, fuzzy
+#~ msgid "Effects"
+#~ msgstr "<b>Efecte</b>"
+
+#, fuzzy
+#~ msgid "Fast Playlist Info"
+#~ msgstr "AdPlug·::·Informații despre fișier"
+
+#, fuzzy
+#~ msgid "Play Amiga MOD"
+#~ msgstr "- redă fișierele multimedia"
+
+#, fuzzy
+#~ msgid "Don't loop"
+#~ msgstr "Nu curăța playlist-ul"
+
+#, fuzzy
+#~ msgid "time(s)"
+#~ msgstr "Timp Scurs"
+
+#, fuzzy
+#~ msgid "MOD Info"
+#~ msgstr "AdPlug·::·Informații despre fișier"
+
+#, fuzzy
+#~ msgid "Instruments"
+#~ msgstr "Instrumente: "
+
+#, fuzzy
+#~ msgid "Message"
+#~ msgstr "Mesajul melodiei"
+
+#, fuzzy
+#~ msgid "About Modplug"
+#~ msgstr "Despre Audacious"
+
+#, fuzzy
+#~ msgid "Blue"
+#~ msgstr "Blues"
+
+#, fuzzy
+#~ msgid "Enable 'GUI Scaling'"
+#~ msgstr "Activează proxy"
+
+#, fuzzy
+#~ msgid "Spectrum Analyzer"
+#~ msgstr "Modul Analizatorului"
+
+#, fuzzy
+#~ msgid "Search:"
+#~ msgstr "Anul"
+
+#, fuzzy
+#~ msgid "Stream name"
+#~ msgstr "Numele Instrumentului"
+
+#, fuzzy
+#~ msgid "Now playing"
+#~ msgstr "Selectați Playlist-ul"
+
+#, fuzzy
+#~ msgid "Remove Bookmark"
+#~ msgstr "Șterge Duplicatele"
+
+#, fuzzy
+#~ msgid "About Stream Browser"
+#~ msgstr "Despre plugin-ul·pentru Alarmă"
 
 #, fuzzy
 #~ msgid "minutes:seconds"
