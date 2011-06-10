@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
 "POT-Creation-Date: 2011-06-10 18:30+0200\n"
-"PO-Revision-Date: 2011-04-09 21:40+0100\n"
+"PO-Revision-Date: 2011-06-10 21:30+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
 "Language: \n"
@@ -1365,285 +1365,236 @@ msgid "Disable"
 msgstr "Deaktivieren"
 
 #: src/gtkui/menus.c:132
-#, fuzzy
 msgid "_Open Files ..."
-msgstr "Dateien öffnen ..."
+msgstr "_Dateien öffnen ..."
 
 #: src/gtkui/menus.c:133
-#, fuzzy
 msgid "Open _URL ..."
-msgstr "URL öffnen ..."
+msgstr "_URL öffnen ..."
 
 #: src/gtkui/menus.c:134
-#, fuzzy
 msgid "_Add File ..."
-msgstr "Dateien hinzufügen ..."
+msgstr "Dateien _hinzufügen ..."
 
 #: src/gtkui/menus.c:135
-#, fuzzy
 msgid "Add U_RL ..."
-msgstr "URL hinzufügen ..."
+msgstr "U_RL hinzufügen ..."
 
 #: src/gtkui/menus.c:137
-#, fuzzy
 msgid "A_bout ..."
-msgstr "Über"
+msgstr "_Info ..."
 
 #: src/gtkui/menus.c:138
-#, fuzzy
 msgid "_Preferences ..."
-msgstr "Einstellungen"
+msgstr "_Einstellungen ..."
 
 #: src/gtkui/menus.c:139 src/skins/ui_manager.c:412
 msgid "_Quit"
-msgstr "Beenden"
+msgstr "_Beenden"
 
 #: src/gtkui/menus.c:142
-#, fuzzy
 msgid "_Play"
-msgstr "Wiedergeben"
+msgstr "_Wiedergeben"
 
 #: src/gtkui/menus.c:143
-#, fuzzy
 msgid "Paus_e"
-msgstr "Pause"
+msgstr "_Pause"
 
 #: src/gtkui/menus.c:144
-#, fuzzy
 msgid "_Stop"
-msgstr "Stopp"
+msgstr "_Stopp"
 
 #: src/gtkui/menus.c:145
-#, fuzzy
 msgid "Pre_vious"
-msgstr "Vorheriger"
+msgstr "_Vorheriger"
 
 #: src/gtkui/menus.c:146
-#, fuzzy
 msgid "_Next"
-msgstr "Nächster"
+msgstr "_Nächster"
 
 #: src/gtkui/menus.c:148
-#, fuzzy
 msgid "_Repeat"
-msgstr "Wiederholen"
+msgstr "Wieder_holen"
 
 #: src/gtkui/menus.c:149
-#, fuzzy
 msgid "S_huffle"
-msgstr "Zufällige Wiedergabe"
+msgstr "_Zufällige Wiedergabe"
 
 #: src/gtkui/menus.c:150
-#, fuzzy
 msgid "N_o Playlist Advance"
-msgstr "Wiedergabeliste nicht weiterspielen"
+msgstr "Wiedergabeliste nicht _weiterspielen"
 
 #: src/gtkui/menus.c:151
-#, fuzzy
 msgid "Stop _After This Song"
-msgstr "Nach Titel stoppen."
+msgstr "Nach Titel _stoppen"
 
 #: src/gtkui/menus.c:153 src/gtkui/menus.c:210
 msgid "Song _Info ..."
-msgstr ""
+msgstr "Titel-_Info ..."
 
 #: src/gtkui/menus.c:154
-#, fuzzy
 msgid "Jump to _Time ..."
-msgstr "Zu Zeitangabe springen"
+msgstr "Zu _Zeitangabe springen ..."
 
 #: src/gtkui/menus.c:155
 msgid "_Jump to Song ..."
-msgstr ""
+msgstr "Zu _Titel springen ..."
 
 #: src/gtkui/menus.c:158
-#, fuzzy
 msgid "By Track _Number"
-msgstr "Nach Titelnummer"
+msgstr "Nach Titel_nummer"
 
 #: src/gtkui/menus.c:159
-#, fuzzy
 msgid "By _Title"
-msgstr "Nach Titel"
+msgstr "Nach _Titel"
 
 #: src/gtkui/menus.c:160
-#, fuzzy
 msgid "By _Artist"
-msgstr "Nach Künstler"
+msgstr "Nach _Künstler"
 
 #: src/gtkui/menus.c:161
-#, fuzzy
 msgid "By A_lbum"
-msgstr "Nach Album"
+msgstr "Nach _Album"
 
 #: src/gtkui/menus.c:162
-#, fuzzy
 msgid "By Release _Date"
-msgstr "Nach Erscheinungsdatum"
+msgstr "Nach _Erscheinungsdatum"
 
 #: src/gtkui/menus.c:163
-#, fuzzy
 msgid "By _File Path"
-msgstr "Nach Dateipfad"
+msgstr "Nach _Dateipfad"
 
 #: src/gtkui/menus.c:164
-#, fuzzy
 msgid "By _Custom Title"
-msgstr "Benutzerdefinierter Titel"
+msgstr "Nach benutzerdefiniertem Titel"
 
 #: src/gtkui/menus.c:166
-#, fuzzy
 msgid "R_everse Order"
-msgstr "Vertausche Anordnung"
+msgstr "V_ertausche Anordnung"
 
 #: src/gtkui/menus.c:167
-#, fuzzy
 msgid "_Random Order"
-msgstr "Zufällige Anordnung"
+msgstr "Zufällige Ano_rdnung"
 
 #: src/gtkui/menus.c:170 src/gtkui/menus.c:212
 msgid "_Refresh"
 msgstr "_Aktualisieren"
 
 #: src/gtkui/menus.c:172
-#, fuzzy
 msgid "_Sort"
-msgstr "Sortieren"
+msgstr "_Sortieren"
 
 #: src/gtkui/menus.c:174
 msgid "_New"
-msgstr ""
+msgstr "_Neu"
 
 #: src/gtkui/menus.c:175
 msgid "_Close"
 msgstr "_Schließen"
 
 #: src/gtkui/menus.c:177
-#, fuzzy
 msgid "_Import ..."
-msgstr "Importieren"
+msgstr "_Importieren ..."
 
 #: src/gtkui/menus.c:178
-#, fuzzy
 msgid "_Export ..."
-msgstr "Exportieren"
+msgstr "_Exportieren ..."
 
 #: src/gtkui/menus.c:180
-#, fuzzy
 msgid "_Playlist Manager ..."
-msgstr "Wiedergabelisten-Manager"
+msgstr "Wiedergabelisten-Manager ..."
 
 #: src/gtkui/menus.c:183
-#, fuzzy
 msgid "Volume _Up"
-msgstr "Lautstärke erhöhen"
+msgstr "Lautstärke _erhöhen"
 
 #: src/gtkui/menus.c:184
-#, fuzzy
 msgid "Volume _Down"
-msgstr "Lautstärke verringern"
+msgstr "Lautstärke _verringern"
 
 #: src/gtkui/menus.c:186
-#, fuzzy
 msgid "_Equalizer"
-msgstr "Equalizer"
+msgstr "_Equalizer"
 
 #: src/gtkui/menus.c:188
-#, fuzzy
 msgid "E_ffects"
-msgstr "Effekte"
+msgstr "E_ffekte"
 
 #: src/gtkui/menus.c:191
-#, fuzzy
 msgid "_Interface"
-msgstr "Interface"
+msgstr "_Interface"
 
 #: src/gtkui/menus.c:193
 msgid "Show _Menu Bar"
-msgstr ""
+msgstr "_Menüleiste anzeigen"
 
 #: src/gtkui/menus.c:194
-#, fuzzy
 msgid "Show I_nfo Bar"
-msgstr "Infobereich anzeigen"
+msgstr "I_nfobereich anzeigen"
 
 #: src/gtkui/menus.c:195
-#, fuzzy
 msgid "Show _Status Bar"
-msgstr "Statusleiste anzeigen"
+msgstr "_Statusleiste anzeigen"
 
 #: src/gtkui/menus.c:197
-#, fuzzy
 msgid "Show Column _Headers"
-msgstr "Spaltenüberschriften anzeigen"
+msgstr "Spaltenüberschriften _anzeigen"
 
 #: src/gtkui/menus.c:198
-#, fuzzy
 msgid "Choose _Columns ..."
-msgstr "Spalten auswählen ..."
+msgstr "Spalten aus_wählen ..."
 
 #: src/gtkui/menus.c:199
-#, fuzzy
 msgid "Scrol_l on Song Change"
-msgstr "Mit Songwechsel scrollen"
+msgstr "Mit Titelwechsel scrol_len"
 
 #: src/gtkui/menus.c:202
-#, fuzzy
 msgid "_File"
-msgstr "Datei"
+msgstr "_Datei"
 
 #: src/gtkui/menus.c:203
-#, fuzzy
 msgid "_Playback"
-msgstr "Wiedergabe"
+msgstr "_Wiedergabe"
 
 #: src/gtkui/menus.c:204
-#, fuzzy
 msgid "P_laylist"
-msgstr "Wiedergabeliste"
+msgstr "W_iedergabeliste"
 
 #: src/gtkui/menus.c:205 src/gtkui/menus.c:223
-#, fuzzy
 msgid "_Services"
-msgstr "Geräte"
+msgstr "_Dienste"
 
 #: src/gtkui/menus.c:206
-#, fuzzy
 msgid "_Output"
-msgstr "Ausgabe"
+msgstr "_Ausgabe"
 
 #: src/gtkui/menus.c:207
-#, fuzzy
 msgid "_View"
-msgstr "Ansicht"
+msgstr "An_sicht"
 
 #: src/gtkui/menus.c:211
 msgid "_Queue/Unqueue"
-msgstr ""
+msgstr "In/Aus _Warteschlange"
 
 #: src/gtkui/menus.c:214
 msgid "Cu_t"
-msgstr ""
+msgstr "Aus_schneiden"
 
 #: src/gtkui/menus.c:215
-#, fuzzy
 msgid "_Copy"
-msgstr "Kopieren"
+msgstr "_Kopieren"
 
 #: src/gtkui/menus.c:216
-#, fuzzy
 msgid "_Paste"
-msgstr "Einfügen"
+msgstr "_Einfügen"
 
 #: src/gtkui/menus.c:218 src/gtkui/menus.c:220
-#, fuzzy
 msgid "Select _All"
-msgstr "Alles auswählen"
+msgstr "_Alles auswählen"
 
 #: src/gtkui/menus.c:226
-#, fuzzy
 msgid "_Rename"
-msgstr "Dateiname"
+msgstr "_Umbenennen"
 
 #: src/gtkui/ui_gtk.c:79
 msgid "GTK Interface"
@@ -1671,16 +1622,14 @@ msgid "stereo"
 msgstr "Stereo"
 
 #: src/gtkui/ui_statusbar.c:106
-#, fuzzy, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "%d Kanäle"
+msgstr[0] "%d Kanal"
 msgstr[1] "%d Kanäle"
 
 #: src/gtkui/ui_statusbar.c:121
-#, fuzzy, c-format
 msgid "%d kbps"
-msgstr "kbps"
+msgstr "%d kbps"
 
 #: src/hotkey/gui.c:71
 msgid "Previous Track"
@@ -1895,12 +1844,11 @@ msgstr "Upload läuft..."
 
 #: src/mtp_up/mtp.c:310
 msgid "Upload to MTP Device"
-msgstr ""
+msgstr "Auf MTP Gerät hochladen"
 
 #: src/mtp_up/mtp.c:311
-#, fuzzy
 msgid "Disconnect MTP Device"
-msgstr "Gerät trennen"
+msgstr "MTP Gerät trennen"
 
 #: src/null/null.c:64
 msgid "Null output plugin "
@@ -2807,9 +2755,8 @@ msgid "<b>_Skin</b>"
 msgstr "<b>_Skin</b>"
 
 #: src/skins/skins_cfg.c:394
-#, fuzzy
 msgid "Interface Preferences"
-msgstr "Crossfade Einstellungen"
+msgstr "Interface-Einstellungen"
 
 #: src/skins/ui_equalizer.c:330
 msgid "Preamp"
@@ -3193,9 +3140,8 @@ msgid "Interface"
 msgstr "Interface"
 
 #: src/skins/ui_manager.c:245
-#, fuzzy
 msgid "Interface Preferences ..."
-msgstr "Crossfade Einstellungen"
+msgstr "Interface-Einstellungen ..."
 
 #: src/skins/ui_manager.c:249
 msgid "Add Internet Address..."
@@ -3233,7 +3179,7 @@ msgstr "Invertiere alle Einträge."
 
 #: src/skins/ui_manager.c:267
 msgid "Select All"
-msgstr "Alles auswählen"
+msgstr "Alle auswählen"
 
 #: src/skins/ui_manager.c:268
 msgid "Selects all of the playlist entries."
@@ -3241,7 +3187,7 @@ msgstr "Wähle alle Einträge aus."
 
 #: src/skins/ui_manager.c:271
 msgid "Select None"
-msgstr "Nichts auswählen"
+msgstr "Keine auswählen"
 
 #: src/skins/ui_manager.c:272
 msgid "Deselects all of the playlist entries."
@@ -4000,1183 +3946,3 @@ msgstr ""
 "\n"
 "Ein Teil des Plugin-Codes war von Miles Egan\n"
 "Die Wavpack-Seite befindet sich auf http://www.wavpack.com/\n"
-
-#~ msgid "About "
-#~ msgstr "Über"
-
-#~ msgid ""
-#~ "\n"
-#~ "Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
-#~ "\n"
-#~ "This plugin is released under the terms and conditions of the GNU LGPL.\n"
-#~ "See http://www.gnu.org/licenses/lgpl.html for details.\n"
-#~ "\n"
-#~ "This plugin uses the AdPlug library, which is copyright (C) Simon Peter, "
-#~ "et al.\n"
-#~ "Linked AdPlug library version: "
-#~ msgstr ""
-#~ "\n"
-#~ "Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
-#~ "\n"
-#~ "Dieses Plugin wurde veröffentlicht unter den Bedingungen und Auflagen der "
-#~ "GNU LGPL.\n"
-#~ "http://www.gnu.org/licenses/lgpl.html für Details.\n"
-#~ "\n"
-#~ "Dieses Plugin benützt die AdPlug-Bibliothek; diese ist Copyright (C) "
-#~ "Simon Peter, et al.\n"
-#~ "Gelinkte AdPlug-Bibliotheks-Version: "
-
-#~ msgid "AdPlug :: Configuration"
-#~ msgstr "AdPlug :: Konfiguration"
-
-#~ msgid "Sound quality"
-#~ msgstr "Sound-Qualität"
-
-#~ msgid "Resolution"
-#~ msgstr "Auflösung"
-
-#~ msgid "8bit"
-#~ msgstr "8 Bit"
-
-#~ msgid "16bit"
-#~ msgstr "16 Bit"
-
-#~ msgid "Channels"
-#~ msgstr "Kanäle"
-
-#~ msgid ""
-#~ "Setting stereo is not recommended, unless you need to. This won't add any "
-#~ "stereo effects to the sound - OPL2 is just mono - but eats up more CPU "
-#~ "power!"
-#~ msgstr ""
-#~ "Vom Gebrauch von Stereo wird abgeraten, da es dem Klang keine Stereo-"
-#~ "Effekte hinzufügt - OPL2 ist nur Mono - aber mehr Rechenleistung wird "
-#~ "benötigt!"
-
-#~ msgid "Frequency"
-#~ msgstr "Frequenz"
-
-#~ msgid "Detect songend"
-#~ msgstr "Liedende ermitteln"
-
-#~ msgid ""
-#~ "If enabled, XMMS will detect a song's ending, stop it and advance in the "
-#~ "playlist. If disabled, XMMS won't take notice of a song's ending and loop "
-#~ "it all over again and again."
-#~ msgstr ""
-#~ "Falls aktiviert, wird XMMS das Ende eines Titels erkennen, ihn stoppen "
-#~ "und in der Wiedergabeliste fortfahren. Falls deaktiviert, erkennt XMMS "
-#~ "dies nicht und spielt einfach weiter."
-
-#~ msgid "Formats"
-#~ msgstr "Formate"
-
-#~ msgid "Format selection"
-#~ msgstr "Format-Auswahl"
-
-#~ msgid "Format"
-#~ msgstr "Format"
-
-#~ msgid "Extension"
-#~ msgstr "Erweiterung"
-
-#~ msgid ""
-#~ "Selected file types will be recognized and played back by this plugin. "
-#~ "Deselected types will be ignored to make room for other plugins to play "
-#~ "these files."
-#~ msgstr ""
-#~ "Ausgewählte Dateitypen werden von diesem Plugin erkannt und abgespielt. "
-#~ "Deaktivierte Typen werden ignoriert, dass andere Plugins diese Dateien "
-#~ "abspielen können."
-
-#~ msgid "AdPlug :: File Info"
-#~ msgstr "AdPlug :: Dateiinformation"
-
-#~ msgid "Author: "
-#~ msgstr "Autor: "
-
-#~ msgid "File Type: "
-#~ msgstr "Dateityp: "
-
-#~ msgid "Subsongs: "
-#~ msgstr "Untertitel: "
-
-#~ msgid "Instruments: "
-#~ msgstr "Instrumente: "
-
-#~ msgid "Song"
-#~ msgstr "Titel"
-
-#~ msgid "Instrument name"
-#~ msgstr "Instrumentenname"
-
-#~ msgid "Song message"
-#~ msgstr "Titel-Meldung"
-
-#~ msgid "Subsong selection"
-#~ msgstr "Untertitel-Auswahl"
-
-#~ msgid "Order: "
-#~ msgstr "Reihenfolge: "
-
-#~ msgid "Pattern: "
-#~ msgstr "Pattern: "
-
-#~ msgid "Row: "
-#~ msgstr "Row: "
-
-#~ msgid "Speed: "
-#~ msgstr "Geschwindigkeit: "
-
-#~ msgid "Timer: "
-#~ msgstr "Timer: "
-
-#~ msgid "About XMMS Alarm"
-#~ msgstr "Über XMMS-Alarm"
-
-#~ msgid "XMMS Alarm"
-#~ msgstr "XMMS-Alarm"
-
-#~ msgid ""
-#~ "An XMMS plugin which can be used\n"
-#~ "to start playing at a certain time.\n"
-#~ "\n"
-#~ "Send all complaints to:\n"
-#~ "Adam Feakin <adamf@snika.uklinux.net>\n"
-#~ "Daniel Stodden <stodden@in.tum.de>\n"
-#~ "\n"
-#~ "http://www.snika.uklinux.net/xmms-alarm/"
-#~ msgstr ""
-#~ "Ein XMMS-Plugin, das verwendet werden kann,\n"
-#~ "um zu einem bestimmten Zeitpunkt die\n"
-#~ "Wiedergabe zu starten.\n"
-#~ "\n"
-#~ "Alle Beschwerden senden an:\n"
-#~ "Adam Feakin <adamf@snika.uklinux.net>\n"
-#~ "Daniel Stodden <stodden@in.tum.de>\n"
-#~ "\n"
-#~ "http://www.snika.uklinux.net/xmms-alarm/"
-
-#~ msgid "Alarm"
-#~ msgstr "Alarm"
-
-#~ msgid "This is your wakeup call."
-#~ msgstr "Dies ist dein Aufwach-Signal."
-
-#~ msgid "Select Playlist"
-#~ msgstr "Wiedergabeliste wählen"
-
-#~ msgid "Sorry"
-#~ msgstr "Entschuldigung"
-
-#~ msgid "Warning"
-#~ msgstr "Warnung"
-
-#~ msgid "Oh Well"
-#~ msgstr "Jo mei"
-
-#~ msgid "Alarm Settings"
-#~ msgstr "Alarm-Einstellungen"
-
-#~ msgid "Time"
-#~ msgstr "Zeit"
-
-#~ msgid "hours"
-#~ msgstr "Stunden"
-
-#~ msgid "h"
-#~ msgstr "Uhr"
-
-#~ msgid "minutes"
-#~ msgstr "Minuten"
-
-#~ msgid "Quiet after:"
-#~ msgstr "Still nach:"
-
-#~ msgid "Alarm at (default):"
-#~ msgstr "Alarm um (standardmäßig):"
-
-#~ msgid "Choose the days for the alarm to come on"
-#~ msgstr "Tage wählen, an denen der Alarm ausgelöst werden soll"
-
-#~ msgid "Day"
-#~ msgstr "Tag"
-
-#~ msgid "Tuesday"
-#~ msgstr "Dienstag"
-
-#~ msgid "Wednesday"
-#~ msgstr "Mittwoch"
-
-#~ msgid "Thursday"
-#~ msgstr "Donnerstag"
-
-#~ msgid "Friday"
-#~ msgstr "Freitag"
-
-#~ msgid "Saturday"
-#~ msgstr "Samstag"
-
-#~ msgid "Sunday"
-#~ msgstr "Sonntag"
-
-#~ msgid "Monday"
-#~ msgstr "Montag"
-
-#~ msgid "Days"
-#~ msgstr "Tage"
-
-#~ msgid "Fading"
-#~ msgstr "Übergang"
-
-#~ msgid "Volume"
-#~ msgstr "Lautstärke"
-
-#~ msgid "Current"
-#~ msgstr "Momentan"
-
-#~ msgid "reset to current output volume"
-#~ msgstr "Zur momentanen Lautstärke zurücksetzen"
-
-#~ msgid "Start at"
-#~ msgstr "Beginnen bei"
-
-#~ msgid "%"
-#~ msgstr "%"
-
-#~ msgid "Final"
-#~ msgstr "Schluss"
-
-#~ msgid "Additional Command"
-#~ msgstr "Zusätzlicher Befehl"
-
-#~ msgid "enable"
-#~ msgstr "aktivieren"
-
-#~ msgid "Playlist (optional)"
-#~ msgstr "Wiedergabeliste (optional)"
-
-#~ msgid "Browse..."
-#~ msgstr "Suchen..."
-
-#~ msgid "Reminder"
-#~ msgstr "Erinnern"
-
-#~ msgid "Use reminder"
-#~ msgstr "Erinnerung benutzen"
-
-#~ msgid "What do these options mean?"
-#~ msgstr "Was bedeuten diese Einstellungen?"
-
-#~ msgid ""
-#~ "\n"
-#~ "Time\n"
-#~ "  Alarm at: \n"
-#~ "    The time for the alarm to come on.\n"
-#~ "\n"
-#~ "  Quiet After: \n"
-#~ "    Stop alarm after this amount of time.\n"
-#~ "       (if the wakeup dialog is not closed)\n"
-#~ "\n"
-#~ "\n"
-#~ "Days\n"
-#~ "  Day:\n"
-#~ "    Select the days for the alarm to activate.\n"
-#~ "\n"
-#~ "  Time:\n"
-#~ "    Choose the time for the alarm on each day,\n"
-#~ "    or select the toggle button to use the default\n"
-#~ "    time.\n"
-#~ "\n"
-#~ "\n"
-#~ "Volume\n"
-#~ "  Fading: \n"
-#~ "    Fade the volume up to the chosen volume \n"
-#~ "    for this amount of time.\n"
-#~ "\n"
-#~ "  Start at: \n"
-#~ "    Start fading from this volume.\n"
-#~ "\n"
-#~ "  Final: \n"
-#~ "    The volume to stop fading at.  If the fading\n"
-#~ "    time is 0 then set volume to this and start\n"
-#~ "    playing.\n"
-#~ "\n"
-#~ "\n"
-#~ "Options:\n"
-#~ "  Additional Command:\n"
-#~ "    Run this command at the alarm time.\n"
-#~ "\n"
-#~ "  Playlist: \n"
-#~ "    Load this playlist for playing songs from \n"
-#~ "    (must have .m3u extension).  If no playlist\n"
-#~ "    is given then the songs which are currently\n"
-#~ "    in the list will be used.\n"
-#~ "    The URL of an mp3/ogg stream can also be\n"
-#~ "    entered here, but loading of playlists from\n"
-#~ "    URLs is not currently supported by xmms.\n"
-#~ "\n"
-#~ "  Reminder:\n"
-#~ "    Display a reminder when the alarm goes off,\n"
-#~ "    type the reminder in the box and turn on the\n"
-#~ "    toggle button if you want it to be shown.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Zeit\n"
-#~ "  Alarm um: \n"
-#~ "    Die Zeit, um die der Alarm ausgelöst wird.\n"
-#~ "\n"
-#~ "  Still nach: \n"
-#~ "    Der Alarm wird nach dieser Zeit gestoppt.\n"
-#~ "       (sofern der Aufweck-Dialog nicht geschlossen wird)\n"
-#~ "\n"
-#~ "\n"
-#~ "Tage\n"
-#~ "  Tag:\n"
-#~ "    Die Tage wählen, an denen der Alarm aktiviert wird.\n"
-#~ "\n"
-#~ "  Zeit:\n"
-#~ "    Für jeden Tag einzeln die Zeit für den Alarm wählen,\n"
-#~ "    oder den Alarm zur Standard-Zeit aktivieren.\n"
-#~ "\n"
-#~ "\n"
-#~ "Lautstärke\n"
-#~ "  Übergang: \n"
-#~ "    Passt die Lautstärke an die gewählte Lautstärke\n"
-#~ "    in diesem Zeitraum an.\n"
-#~ "\n"
-#~ "  Beginnen bei: \n"
-#~ "    Starte den Übergang bei dieser Lautstärke.\n"
-#~ "\n"
-#~ "  Schluss: \n"
-#~ "    Die Lautstärke, bei der der Übergang stoppt.\n"
-#~ "    Falls die Übergangszeit 0 beträgt, wird die\n"
-#~ "    Wiedergabe schon mit dieser Lautstärke gestartet.\n"
-#~ "\n"
-#~ "\n"
-#~ "Optionen:\n"
-#~ "  Zusätzlicher Befehl:\n"
-#~ "    Führe diesen Befehl bei Auslösung des Alarms aus.\n"
-#~ "\n"
-#~ "  Wiedergabeliste: \n"
-#~ "    Lade diese Wiedergabeliste zu Wiedergabe\n"
-#~ "    (muss die Erweiterung .m3u haben). Wenn keine Wiedergabeliste\n"
-#~ "    gegeben ist, werden die momentan in der\n"
-#~ "    Wiedergabeliste befindlichen Stücke verwendet.\n"
-#~ "    Die URL eines MP3/OGG-Streams kann auch hier\n"
-#~ "    angegeben werden, aber das Laden von Wiedergabelisten\n"
-#~ "    von URLs wird momentan noch nicht unterstützt.\n"
-#~ "\n"
-#~ "  Erinnerung:\n"
-#~ "    Zeige eine Erinnerung an, wenn der Alarm ausgelöst wird.\n"
-
-#~ msgid "Your reminder for today is.."
-#~ msgstr "Die Erinnerung für heute lautet.."
-
-#~ msgid "Thankyou"
-#~ msgstr "Danke"
-
-#~ msgid "Pairing request for '%s'"
-#~ msgstr "Pairing-Anfrage für '%s'"
-
-#~ msgid "Authorization request for %s"
-#~ msgstr "Autorisierungs-Anfrage für %s"
-
-#~ msgid "Created bonding with %s"
-#~ msgstr "Bonding mit %s erstellt"
-
-#~ msgid "Removed bonding with %s"
-#~ msgstr "Bonding mit %s entfernt"
-
-#~ msgid "Device has been switched off"
-#~ msgstr "Gerät wurde ausgeschalten"
-
-#~ msgid "Device has been made non-discoverable"
-#~ msgstr "Gerät wurde nicht-erkennbar gemacht"
-
-#~ msgid "Device has been made connectable"
-#~ msgstr "Gerät wurde anschließbar gemacht"
-
-#~ msgid "Device has been made discoverable"
-#~ msgstr "Gerät wurde erkennbar gemacht"
-
-#~ msgid "Device has been made limited discoverable"
-#~ msgstr "Gerät wurde eingeschränkt erkennbar gemacht"
-
-#~ msgid "Device has been switched into pairing mode"
-#~ msgstr "Gerät wurde in Pairing-Modus geschalten"
-
-#~ msgid "Bluetooth headset support plugin"
-#~ msgstr "Bluetooth Headset Support Plugin"
-
-#~ msgid "Producer"
-#~ msgstr "Hersteller"
-
-#~ msgid "Available Headsets"
-#~ msgstr "Verfügbare Headsets"
-
-#~ msgid "Current Headset"
-#~ msgstr "Derzeitiges Headset"
-
-#~ msgid "_Connect"
-#~ msgstr "_Verbinden"
-
-#~ msgid "Class"
-#~ msgstr "Klasse"
-
-#~ msgid "Address:"
-#~ msgstr "Adresse:"
-
-#~ msgid "Bonding finish!"
-#~ msgstr "Einbinden abschließen!"
-
-#~ msgid "No devices found!"
-#~ msgstr "Keine Geräte gefunden!"
-
-#~ msgid "Scanning..."
-#~ msgstr "Suche..."
-
-#~ msgid "Pairing..."
-#~ msgstr "Zusammenführen..."
-
-#~ msgid "Rescan"
-#~ msgstr "Abtasten"
-
-#~ msgid "Playback->Play"
-#~ msgstr "Wiedergabe->Abspielen"
-
-#~ msgid "Playback->Stop"
-#~ msgstr "Wiedergabe->Stopp"
-
-#~ msgid "Playback->Pause"
-#~ msgstr "Wiedergabe->Pause"
-
-#~ msgid "Playback->Prev"
-#~ msgstr "Wiedergabe->Zurück"
-
-#~ msgid "Playback->Next"
-#~ msgstr "Wiedergabe->Nächstes"
-
-#~ msgid "Playback->Eject"
-#~ msgstr "Wiedergabe->Auswerfen"
-
-#~ msgid "Playlist->Repeat"
-#~ msgstr "Wiedergabe->Wiederholen"
-
-#~ msgid "Playlist->Shuffle"
-#~ msgstr "Wiedergabe->Zufällige Wiedergabe"
-
-#~ msgid "Volume->Up_5"
-#~ msgstr "Lautstärke->Um 5 erhöhen"
-
-#~ msgid "Volume->Down_5"
-#~ msgstr "Lautstärke->Um 5 verringern"
-
-#~ msgid "Volume->Up_10"
-#~ msgstr "Lautstärke->Um 10 erhöhen"
-
-#~ msgid "Volume->Down_10"
-#~ msgstr "Lautstärke->Um 10 verringern"
-
-#~ msgid "Volume->Mute"
-#~ msgstr "Lautstärke->Lautlos"
-
-#~ msgid "Window->Main"
-#~ msgstr "Fenster->Hauptfenster"
-
-#~ msgid "Window->Playlist"
-#~ msgstr "Fenster->Wiedergabeliste"
-
-#~ msgid "Window->Equalizer"
-#~ msgstr "Fenster->Equalizer"
-
-#~ msgid "Window->JumpToFile"
-#~ msgstr "Fenster->Zu Titel springen"
-
-#~ msgid ""
-#~ "event-device-plugin: unable to open device file %s , skipping this "
-#~ "device; check that the file exists and that you have read permission for "
-#~ "it\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Konnte Datei %s nicht öffnen, überspringe; "
-#~ "Überprüfen Sie, ob die Datei existiert und Sie Leserechte darauf haben\n"
-
-#~ msgid ""
-#~ "event-device-plugin: unable to create a io_channel for device file %s ,"
-#~ "skipping this device\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Konnte IO-Channel für Datei %s nicht erstellen, "
-#~ "überspringe\n"
-
-#~ msgid ""
-#~ "event-device-plugin: unable to open /proc/bus/input/devices , automatic "
-#~ "detection of event devices won't work.\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Konnte /proc/bus/input/devices nicht öffnen, "
-#~ "automatisches Erkennen von Event-Devices wird nicht funktionieren.\n"
-
-#~ msgid ""
-#~ "event-device-plugin: unable to open a io_channel for /proc/bus/input/"
-#~ "devices , automatic detection of event devices won't work.\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Konnte einen IO-Channel für /proc/bus/input/devices "
-#~ "nicht öffnen, automatisches Erkennen von Event-Devices wird nicht "
-#~ "funktionieren.\n"
-
-#~ msgid ""
-#~ "event-device-plugin: an error occurred while reading /proc/bus/input/"
-#~ "devices , automatic detection of event devices won't work.\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Beim Lesen von /proc/bus/input/devices trat ein "
-#~ "Fehler auf, automatisches Erkennen von Event-Devices wird nicht "
-#~ "funktionieren.\n"
-
-#~ msgid "event-device-plugin: device %s not found in /dev/input , skipping.\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Gerät %s in /dev/input nicht gefunden, überspringe.\n"
-
-#~ msgid ""
-#~ "event-device-plugin: unable to load config file %s , default settings "
-#~ "will be used.\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Konnte Konfigurationsdatei %s nicht laden, "
-#~ "Standardeinstellungen werden genutzt.\n"
-
-#~ msgid ""
-#~ "event-device-plugin: incomplete information in config file for device \"%s"
-#~ "\" , skipping.\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: unvollständige Information in Konfigurationsdatei "
-#~ "für Gerät \"%s\", überspringe.\n"
-
-#~ msgid ""
-#~ "event-device-plugin: configuration, unable to get is_active value for "
-#~ "device \"%s\", skipping it.\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Konnte \"is_active\"-Wert für Gerät \"%s\" nicht "
-#~ "bekommen, überspringe.\n"
-
-#~ msgid ""
-#~ "event-device-plugin: unable to access local directory %s , settings will "
-#~ "not be saved.\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Konnte auf lokalen Ordner %s nicht zugreifen, "
-#~ "Einstellungen werden nicht gespeichert.\n"
-
-#~ msgid ""
-#~ "event-device-plugin: configuration, unable to get filename value for "
-#~ "device \"%s\", skipping it.\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Konnte Dateinamen-Wert für Gerät \"%s\" nicht "
-#~ "bekommen, überspringe.\n"
-
-#~ msgid ""
-#~ "event-device-plugin: configuration, unable to get phys value for device "
-#~ "\"%s\", skipping it.\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Konnte \"Phys\"-Wert für Gerät \"%s\" nicht "
-#~ "bekommen, überspringe.\n"
-
-#~ msgid ""
-#~ "event-device-plugin: configuration, unable to get is_custom value for "
-#~ "device \"%s\", skipping it.\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Konnte \"Is_Custom\"-Wert für Gerät \"%s\" nicht "
-#~ "bekommen, überspringe.\n"
-
-#~ msgid ""
-#~ "event-device-plugin: configuration, unexpected value for device \"%s\", "
-#~ "skipping it.\n"
-#~ msgstr ""
-#~ "Event-Device-Plugin: Unerwarteter Wert für Gerät \"%s\", überspringe.\n"
-
-#~ msgid "Detected"
-#~ msgstr "Erkannt"
-
-#~ msgid "Custom"
-#~ msgstr "Individuell"
-
-#~ msgid "Not Detected"
-#~ msgstr "Nicht erkannt"
-
-#~ msgid "Information"
-#~ msgstr "Information"
-
-#~ msgid ""
-#~ "Cannot open bindings window for a not-detected device.\n"
-#~ "Ensure that the device has been correctly plugged in."
-#~ msgstr ""
-#~ "Konnte Binding-Fenster für ein nicht erkanntes Gerät nicht öffnen.\n"
-#~ "Stellen Sie sicher, dass das Gerät korrekt angeschlossen wurde."
-
-#~ msgid ""
-#~ "Unable to open selected device.\n"
-#~ "Please check read permissions on device file."
-#~ msgstr ""
-#~ "Konnte ausgewähltes Gerät nicht öffnen.\n"
-#~ "Bitte überprüfen Sie die Leserechte."
-
-#~ msgid "EvDev-Plug - Add custom device"
-#~ msgstr "EvDev-Plug - Spezielles Gerät hinzufügen"
-
-#~ msgid ""
-#~ "EvDev-Plug tries to automatically detect and update information about\n"
-#~ "event devices available on the system.\n"
-#~ "However, if auto-detect doesn't work for your system, or you have event\n"
-#~ "devices in a non-standard location (currently they're only searched in\n"
-#~ "/dev/input/ ), you may want to add a custom device, explicitly "
-#~ "specifying\n"
-#~ "name and device file."
-#~ msgstr ""
-#~ "EvDev-Plug versucht automatisch Informationen über verfügbare Geräte des\n"
-#~ "Systems zu erkennen und zu aktualisieren.\n"
-#~ "Falls jedoch die automatische Erkennung auf Ihrem System nicht "
-#~ "funktioniert\n"
-#~ "oder Sie die Geräte nicht über den Standardpfad nutzen (momentan werden "
-#~ "sie nur\n"
-#~ "in /dev/input/ gesucht), können Sie ein benutzerdefiniertes Gerät "
-#~ "hinzufügen, bei dem Sie\n"
-#~ "explizit den Gerätenamen und die Datei angeben."
-
-#~ msgid "Device name:"
-#~ msgstr "Gerätename:"
-
-#~ msgid "Device file:"
-#~ msgstr "Gerätedatei:"
-
-#~ msgid "(custom)"
-#~ msgstr "(benutzerdefiniert)"
-
-#~ msgid ""
-#~ "Please specify both name and filename.\n"
-#~ "Filename must be specified with absolute path."
-#~ msgstr ""
-#~ "Bitte geben Sie Name und Dateiname an.\n"
-#~ "Dateinamen müssen mit absolutem Pfad angegeben werden."
-
-#~ msgid ""
-#~ "Do you want to remove the existing configuration for selected device?\n"
-#~ msgstr ""
-#~ "Wollen Sie die existierende Konfiguration des ausgewählten Gerätes "
-#~ "löschen?\n"
-
-#~ msgid "Do you want to remove the selected custom device?\n"
-#~ msgstr "Wollen Sie das ausgewählte Custom-Gerät entfernen?\n"
-
-#~ msgid "EvDev-Plug - Configuration"
-#~ msgstr "EvDev-Plug - Konfiguration"
-
-#~ msgid "Active"
-#~ msgstr "Aktiv"
-
-#~ msgid "Status"
-#~ msgstr "Status"
-
-#~ msgid "Device Name"
-#~ msgstr "Gerätename"
-
-#~ msgid "Device File"
-#~ msgstr "Gerätedatei"
-
-#~ msgid "Device Address"
-#~ msgstr "Geräteadresse"
-
-#~ msgid "_Bindings"
-#~ msgstr "_Bindings"
-
-#~ msgid ""
-#~ "Press a key of your device to bind it;\n"
-#~ "if no key is pressed in five seconds, this window\n"
-#~ "will close without binding changes."
-#~ msgstr ""
-#~ "Drücken Sie eine Taste um sie zu binden.\n"
-#~ "Falls in den nächsten fünf Sekunden keine gedrückt wird,\n"
-#~ "schließt sich dieses Fenster ohne Änderungen der Bindings vorzunehmen."
-
-#~ msgid ""
-#~ "This input event has been already assigned.\n"
-#~ "\n"
-#~ "It's not possible to assign multiple actions to the same input event "
-#~ "(although it's possible to assign the same action to multiple events)."
-#~ msgstr ""
-#~ "Diese Eingabe wurde schon zugewiesen.\n"
-#~ "\n"
-#~ "Es ist nicht möglich, mehrere Aktionen auf die selbe Eingabe zuzuweisen "
-#~ "(obwohl es möglich ist, die selbe Aktion auf verschiedene Eingaben "
-#~ "zuzuweisen)."
-
-#~ msgid "EvDev-Plug - Bindings Configuration"
-#~ msgstr "EvDev-Plug - Bindungskonfiguration"
-
-#~ msgid "<b>Name: </b>"
-#~ msgstr "<b>Name: </b>"
-
-#~ msgid "<b>Filename: </b>"
-#~ msgstr "<b>Dateiname: </b>"
-
-#~ msgid "<b>Phys.Address: </b>"
-#~ msgstr "<b>Phys. Adresse: </b>"
-
-#~ msgid "EvDev-Plug - about"
-#~ msgstr "Über EvDev-Plug"
-
-#~ msgid "This LADSPA plugin has no user controls"
-#~ msgstr "Dieses LADSPA-Plugin hat keine Benutzeroberfläche"
-
-#~ msgid "Name"
-#~ msgstr "Name"
-
-#~ msgid "UID"
-#~ msgstr "UID"
-
-#~ msgid "Installed plugins"
-#~ msgstr "Installierte Plugins"
-
-#~ msgid "Running plugins"
-#~ msgstr "Aktive Plugins"
-
-#~ msgid "Add"
-#~ msgstr "Hinzufügen"
-
-#~ msgid "Remove"
-#~ msgstr "Entfernen"
-
-#~ msgid "LADSPA Plugin Catalog"
-#~ msgstr "LADSPA-Plugin-Liste"
-
-#~ msgid "About LIRC Audacious Plugin"
-#~ msgstr "Über LIRC-Audacious-Plugin"
-
-#~ msgid "LIRC Plugin "
-#~ msgstr "LIRC-Plugin "
-
-#~ msgid ""
-#~ "\n"
-#~ "A simple plugin that lets you control\n"
-#~ "Audacious using the LIRC remote control daemon\n"
-#~ "\n"
-#~ "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-#~ "from the XMMS LIRC plugin by:\n"
-#~ "Carl van Schaik <carl@leg.uct.ac.za>\n"
-#~ "Christoph Bartelmus <xmms@bartelmus.de>\n"
-#~ "Andrew O. Shadoura <bugzilla@tut.by>\n"
-#~ "You can get LIRC information at:\n"
-#~ "http://lirc.org"
-#~ msgstr ""
-#~ "\n"
-#~ "Ein einfaches Plugin, das Audacious mithilfe des\n"
-#~ "LIRC-Daemons kontrollieren lässt\n"
-#~ "\n"
-#~ "Für Audacious angepasst von Tony Vroon <chainsaw@gentoo.org>\n"
-#~ "vom XMMS-LIRC-Plugin von:\n"
-#~ "Carl van Schaik <carl@leg.uct.ac.za>\n"
-#~ "Christoph Bartelmus <xmms@bartelmus.de>\n"
-#~ "Informationen zu LIRC sind verfügbar unter:\n"
-#~ "http://lirc.org"
-
-#~ msgid "LIRC plugin settings"
-#~ msgstr "LIRC-Plugin-Einstellungen"
-
-#~ msgid "Reconnect to LIRC server"
-#~ msgstr "Zu LIRC Server wiederverbinden"
-
-#~ msgid "Timeout before reconnecting (seconds): "
-#~ msgstr "Zeitüberschreitung vor Wiederverbindung (Sekunden): "
-
-#~ msgid "Reconnect"
-#~ msgstr "Wiederverbinden"
-
-#~ msgid "Connection"
-#~ msgstr "Verbindung"
-
-#~ msgid "%s: could not init LIRC support\n"
-#~ msgstr "%s: Konnte LIRC-Unterstützung nicht initialisieren\n"
-
-#~ msgid ""
-#~ "%s: could not read LIRC config file\n"
-#~ "%s: please read the documentation of LIRC\n"
-#~ "%s: how to create a proper config file\n"
-#~ msgstr ""
-#~ "%s: Konnte LIRC Konfigurationsdatei nicht lesen\n"
-#~ "%s: Bitte in der Dokumentation von LIRC lesen\n"
-#~ "%s: wie man eine funktionierende erstellt\n"
-
-#~ msgid "%s: trying to reconnect...\n"
-#~ msgstr "%s: versuche wiederzuverbinden...\n"
-
-#~ msgid "%s: unknown command \"%s\"\n"
-#~ msgstr "%s: Ungültiger Befehl \"%s\"\n"
-
-#~ msgid "%s: disconnected from LIRC\n"
-#~ msgstr "%s: von LIRC Verbindung trennen\n"
-
-#~ msgid "%s: will try reconnect every %d seconds...\n"
-#~ msgstr "%s: versuche jede %d Sekunden wiederzuverbinden...\n"
-
-#~ msgid "ModPlug Configuration"
-#~ msgstr "ModPlug-Konfiguration"
-
-#~ msgid "16 bit"
-#~ msgstr "16 bit"
-
-#~ msgid "8 bit"
-#~ msgstr "8 bit"
-
-#~ msgid "Mono (downmix)"
-#~ msgstr "Mono (Downmix)"
-
-#~ msgid "Nearest (fastest)"
-#~ msgstr "Am nächsten (schnellstes)"
-
-#~ msgid "Linear (fast)"
-#~ msgstr "Linear (schnell)"
-
-#~ msgid "Spline (good quality)"
-#~ msgstr "Spline (gute Qualität)"
-
-#~ msgid "8-tap Fir (extremely high quality)"
-#~ msgstr "8-tap Fir (extrem hohe Qualität)"
-
-#~ msgid "96 kHz"
-#~ msgstr "96 kHz "
-
-#~ msgid "48 kHz"
-#~ msgstr "48 kHz"
-
-#~ msgid "44 kHz"
-#~ msgstr "44 kHz"
-
-#~ msgid "22 kHz"
-#~ msgstr "22 kHz"
-
-#~ msgid "Sampling Rate"
-#~ msgstr "Abtastfrequenz"
-
-#~ msgid "Enable"
-#~ msgstr "Aktiv"
-
-#~ msgid "Depth"
-#~ msgstr "Tiefe"
-
-#~ msgid "Delay"
-#~ msgstr "Verzögerung"
-
-#~ msgid "Reverb"
-#~ msgstr "Hall"
-
-#~ msgid "Amount"
-#~ msgstr "Menge"
-
-#~ msgid "Range"
-#~ msgstr "Bereich"
-
-#~ msgid "Bass Boost"
-#~ msgstr "Bassverstärkung"
-
-#~ msgid ""
-#~ "Note:  Setting the preamp\n"
-#~ "too high may cause clipping\n"
-#~ "(annoying clicks and pops)!"
-#~ msgstr ""
-#~ "Bemerkung: Eine zu hohe Vorverstärkung kann\n"
-#~ "Clipping verursachen (störende Geräusche)!"
-
-#~ msgid "Effects"
-#~ msgstr "Effekte"
-
-#~ msgid "Use Filename as Song Title"
-#~ msgstr "Dateinamen als Liedtitel verwenden"
-
-#~ msgid "Fast Playlist Info"
-#~ msgstr "Schnelle Wiedergabeliste-Information"
-
-#~ msgid "Noise Reduction"
-#~ msgstr "Geräuschreduktion"
-
-#~ msgid "Play Amiga MOD"
-#~ msgstr "Amiga MOD abspielen"
-
-#~ msgid "Don't loop"
-#~ msgstr "Nicht loopen"
-
-#~ msgid "Loop"
-#~ msgstr "Loope"
-
-#~ msgid "time(s)"
-#~ msgstr "Mal"
-
-#~ msgid "Loop forever"
-#~ msgstr "Für immer loopen"
-
-#~ msgid "Looping"
-#~ msgstr "Loopen"
-
-#~ msgid "MOD Info"
-#~ msgstr "MOD-Information"
-
-#~ msgid ""
-#~ "Filename:\n"
-#~ "Title:\n"
-#~ "Type:\n"
-#~ "Length:\n"
-#~ "Speed:\n"
-#~ "Tempo:\n"
-#~ "Samples:\n"
-#~ "Instruments:\n"
-#~ "Patterns:\n"
-#~ "Channels:"
-#~ msgstr ""
-#~ "Dateiname:\n"
-#~ "Titel:\n"
-#~ "Typ:\n"
-#~ "Länge:\n"
-#~ "Geschwindigkeit:\n"
-#~ "Tempo:\n"
-#~ "Samples:\n"
-#~ "Instrumente:\n"
-#~ "Patterns:\n"
-#~ "Kanäle:"
-
-#~ msgid "Samples"
-#~ msgstr "Samples"
-
-#~ msgid "Instruments"
-#~ msgstr "Instrumente"
-
-#~ msgid "Message"
-#~ msgstr "Meldung"
-
-#~ msgid "Modplug Input Plugin for Audacious ver"
-#~ msgstr "Modplug-Input-Plugin für Audacious Version"
-
-#~ msgid ""
-#~ "\n"
-#~ "Modplug sound engine written by Olivier Lapicque.\n"
-#~ "XMMS interface for Modplug by Kenton Varda.\n"
-#~ "(c)2000 Olivier Lapicque and Kenton Varda.\n"
-#~ "Updates and maintenance by Konstanty Bialkowski.\n"
-#~ "Ported to BMP by Theofilos Intzoglou."
-#~ msgstr ""
-#~ "\n"
-#~ "Modplug sound engine geschrieben von Olivier Lapicque.\n"
-#~ "XMMS interface für Modplug von Kenton Varda.\n"
-#~ "(c)2000 Olivier Lapicque und Kenton Varda.\n"
-#~ "Updates und Betreunung von Konstanty Bialkowski.\n"
-#~ "Portiert für BMP von Theofilos Intzoglou."
-
-#~ msgid "About Modplug"
-#~ msgstr "Über Modplug"
-
-#~ msgid "Show separators in playlist"
-#~ msgstr "Trennstriche in Wiedergabeliste anzeigen"
-
-#~ msgid "Show window manager decoration"
-#~ msgstr "Fenstermanager-Dekorationen anzeigen"
-
-#~ msgid "This enables the window manager to show decorations for windows."
-#~ msgstr "Dies aktiviert die Anzeige der Fenstermanager-Dekorationen."
-
-#~ msgid ""
-#~ "If selected, the file information text in the main window will scroll "
-#~ "back and forth. If not selected, the text will only scroll in one "
-#~ "direction."
-#~ msgstr ""
-#~ "Wenn ausgewählt, bewegt sich der Text der Dateiinformation abwechselnd "
-#~ "von Links nach Rechts. Ansonsten bewegt er sich nur in eine Richtung."
-
-#~ msgid "Disable inline gtk theme"
-#~ msgstr "Schalte Inline-GTK-Theme aus"
-
-#~ msgid "Random skin on play"
-#~ msgstr "Zufälliger Skin beim Abspielen"
-
-#~ msgid "Allow loading incomplete skins"
-#~ msgstr "Erlaube Laden unvollständiger Skins"
-
-#~ msgid ""
-#~ "If selected, audacious won't refuse loading broken skins. Use only if "
-#~ "your favourite skin doesn't work"
-#~ msgstr ""
-#~ "Wenn aktiviert, lädt Audacious auch Skins, die nicht vollständig sind. "
-#~ "Nur wenn nötig aktivieren."
-
-#~ msgid "Color Adjustment"
-#~ msgstr "Farbkorrektur"
-
-#~ msgid ""
-#~ "Audacious allows you to alter the color balance of the skinned UI. The "
-#~ "sliders below will allow you to do this."
-#~ msgstr ""
-#~ "Farbverläufe der Benutzeroberfläche sind durch die Schieberegler unten "
-#~ "anpassbar:"
-
-#~ msgid "Blue"
-#~ msgstr "Blau"
-
-#~ msgid "Green"
-#~ msgstr "Rot"
-
-#~ msgid "Red"
-#~ msgstr "Grün"
-
-#~ msgid "Color adjustment ..."
-#~ msgstr "Farbkorrektur ..."
-
-#~ msgid "Disable 'GUI Scaling'"
-#~ msgstr "'GUI-Skalierung' aus"
-
-#~ msgid "Enable 'GUI Scaling'"
-#~ msgstr "'GUI-Skalierung' an"
-
-#~ msgid "DoubleSize"
-#~ msgstr "Doppelte Größe"
-
-#~ msgid "Easy Move"
-#~ msgstr "Leichtes Bewegen"
-
-#~ msgid "Spectrum Analyzer"
-#~ msgstr "Analyzer-Spektrum"
-
-#~ msgid "Search:"
-#~ msgstr "Suchen:"
-
-#~ msgid "Add Bookmark"
-#~ msgstr "Lesezeichen setzen"
-
-#~ msgid "Stream name"
-#~ msgstr "Streamname"
-
-#~ msgid "Now playing"
-#~ msgstr "Aktueller Song"
-
-#~ msgid "Remove Bookmark"
-#~ msgstr "Lesezeichen entfernen"
-
-#~ msgid "About Stream Browser"
-#~ msgstr "Über Streambrowser"
-
-#~ msgid "Can't jump to time when no track is being played.\n"
-#~ msgstr "Kann nicht zu Zeitangabe springen, wenn kein Titel gespielt wird.\n"
-
-#~ msgid "minutes:seconds"
-#~ msgstr "Minuten:Sekunden"
-
-#~ msgid "Track length:"
-#~ msgstr "Titellänge:"
-
-#~ msgid "Error writing playlist \"%s\": %s"
-#~ msgstr "Fehler beim Schreiben der Liste \"%s\": %s"
-
-#~ msgid "%s already exist. Continue?"
-#~ msgstr "%s existiert schon. Trotzdem fortfahren?"
-
-#~ msgid "Show/hide infoarea"
-#~ msgstr "Infobereich anzeigen/verstecken"
-
-#~ msgid "Show main menu"
-#~ msgstr "Hauptfenster anzeigen"
-
-#~ msgid "Show/hide main menu"
-#~ msgstr "Hauptfenster anzeigen/verstecken"
-
-#~ msgid "Show/hide statusbar"
-#~ msgstr "Statusleiste anzeigen/verstecken"
-
-#~ msgid "Import Playlist ..."
-#~ msgstr "Wiedergabeliste importieren ..."
-
-#~ msgid "Export Playlist ..."
-#~ msgstr "Wiedergabeliste exportieren ..."
-
-#~ msgid "Refresh"
-#~ msgstr "Aktualisieren"
-
-#~ msgid "Refresh Selected"
-#~ msgstr "Ausgewählte aktualisieren"
-
-#~ msgid "Refreshes metadata associated with selected entries."
-#~ msgstr "Metadaten mit dazugehörigen Einträgen aktualisieren."
-
-#~ msgid "Edit title"
-#~ msgstr "Titel bearbeiten"
-
-#~ msgid "Edit the playlist title."
-#~ msgstr "Titel der Wiedergabeliste bearbeiten."
-
-#~ msgid "By Formatted Title"
-#~ msgstr "Nach formatiertem Titel"
-
-#~ msgid "Components"
-#~ msgstr "Komponenten"
-
-#~ msgid "Upload selected track(s)"
-#~ msgstr "Ausgewählte(n) Titel uploaden"
-
-#~ msgid "MTP device handler"
-#~ msgstr "MTP Geräte-Steuerung"
-
-#~ msgid "Audacious - visibility warning"
-#~ msgstr "Audacious - Visibility-Warnung"
-
-#~ msgid "Show main player window"
-#~ msgstr "Hauptfenster anzeigen"
-
-#~ msgid "Ignore"
-#~ msgstr "Ignoriere"
-
-#~ msgid ""
-#~ "Audacious has been started with all of its windows hidden.\n"
-#~ "You may want to show the player window again to control Audacious; "
-#~ "otherwise, you'll have to control it remotely via audtool or enabled "
-#~ "plugins (such as the statusicon plugin)."
-#~ msgstr ""
-#~ "Audacious wurde mit allen Fenstern versteckt gestartet.\n"
-#~ "Das Hauptfenster zum Steuern von Audacious sollte aktiviert sein, "
-#~ "ansonsten muss Audacious via audtool oder aktivierten Plugins "
-#~ "ferngesteuert werden."
-
-#~ msgid "Always ignore, show/hide is controlled remotely"
-#~ msgstr "Immer ignorieren, anzeigen/verstecken wird ferngesteuert"
-
-#~ msgid "Audacious - broken GTK engine usage warning"
-#~ msgstr "Audacious - Warnung: defekte GTK-Engine"
-
-#~ msgid ""
-#~ "<big><b>Broken GTK engine in use</b></big>\n"
-#~ "\n"
-#~ "Audacious has detected that you are using a broken GTK engine.\n"
-#~ "\n"
-#~ "The theme engine you are using, <i>%s</i>, is incompatible with some of "
-#~ "the features used by modern skins. The incompatible features have been "
-#~ "disabled for this session.\n"
-#~ "\n"
-#~ "To use these features, please consider using a different GTK theme engine."
-#~ msgstr ""
-#~ "<big><b>Defekte GTK-Engine in Benutzung</b></big>\n"
-#~ "\n"
-#~ "Audacious hat festgestellt, dass Sie eine defekte GTK-Engine benutzen.\n"
-#~ "\n"
-#~ "Die Theme-Engine <i>%s</i>, welche Sie benutzen, ist mit manchen "
-#~ "Features, die moderne Skins nutzen, inkompatibel.Die inkompatiblen "
-#~ "Features wurden für diese Session deaktiviert.\n"
-#~ "\n"
-#~ "Um diese nutzen zu können, sollten Sie erwägen, eine andere GTK-Engine zu "
-#~ "nutzen."
-
-#~ msgid "Do not display this warning again"
-#~ msgstr "Diese Warnung nicht mehr anzeigen"
-
-#~ msgid "Save as Static Playlist"
-#~ msgstr "Als statische Wiedergabeliste speichern"
-
-#~ msgid "Use Relative Path"
-#~ msgstr "Relativen Pfad verwenden"
-
-#~ msgid "Load Playlist"
-#~ msgstr "Wiedergabenliste laden"
-
-#~ msgid "Save Playlist"
-#~ msgstr "Wiedergabeliste speichern"
-
-#~ msgid "Skinned Interface"
-#~ msgstr "Oberfläche"
