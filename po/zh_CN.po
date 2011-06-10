@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious-plugins 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-05-23 08:17-0400\n"
+"POT-Creation-Date: 2011-06-10 18:30+0200\n"
 "PO-Revision-Date: 2011-04-11 21:58+0800\n"
 "Last-Translator: Chasye <chasye@gmail.com>\n"
 "Language-Team: Chinese (simplified)\n"
@@ -31,555 +31,6 @@ msgstr ""
 #: src/aac/libmp4.c:273
 msgid "About MP4 AAC decoder plugin"
 msgstr "关于MP4 ACC解码插件"
-
-#: src/adplug/adplug-xmms.cc:151
-msgid "About "
-msgstr "关于"
-
-#: src/adplug/adplug-xmms.cc:155
-msgid ""
-"\n"
-"Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
-"\n"
-"This plugin is released under the terms and conditions of the GNU LGPL.\n"
-"See http://www.gnu.org/licenses/lgpl.html for details.\n"
-"\n"
-"This plugin uses the AdPlug library, which is copyright (C) Simon Peter, et "
-"al.\n"
-"Linked AdPlug library version: "
-msgstr ""
-"\n"
-"版权所有 (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
-"\n"
-"This plugin is released under the terms and conditions of the GNU LGPL.\n"
-"详情请登录http://www.gnu.org/licenses/lgpl.html.\n"
-"\n"
-"此插件基于AdPlug库, 版权所有 (C) Simon Peter, et al.\n"
-"当前AdPlug版本: "
-
-#: src/adplug/adplug-xmms.cc:232
-msgid "AdPlug :: Configuration"
-msgstr "AdPlug :: 设置"
-
-#: src/adplug/adplug-xmms.cc:241 src/adplug/adplug-xmms.cc:504
-#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:131
-#: src/echo_plugin/gui.c:123 src/jack/configure.c:146 src/null/null.c:112
-#: src/stereo_plugin/stereo.c:125
-msgid "Ok"
-msgstr "确定"
-
-#: src/adplug/adplug-xmms.cc:251 src/alarm/interface.c:1398
-#: src/cdaudio-ng/configure.c:249 src/crystalizer/crystalizer.c:138
-#: src/echo_plugin/gui.c:130 src/jack/configure.c:153
-#: src/modplug/gui/interface.cxx:715 src/null/null.c:113
-#: src/stereo_plugin/stereo.c:132
-msgid "Cancel"
-msgstr "取消"
-
-#: src/adplug/adplug-xmms.cc:267 src/console/configure.c:155
-#: src/modplug/gui/interface.cxx:629 src/modplug/gui/interface.cxx:888
-msgid "General"
-msgstr "常规"
-
-#: src/adplug/adplug-xmms.cc:279
-msgid "Sound quality"
-msgstr "音质"
-
-#: src/adplug/adplug-xmms.cc:284 src/modplug/gui/interface.cxx:188
-msgid "Resolution"
-msgstr "分辨率"
-
-#: src/adplug/adplug-xmms.cc:286
-msgid "8bit"
-msgstr ""
-
-#: src/adplug/adplug-xmms.cc:291
-msgid "16bit"
-msgstr ""
-
-#: src/adplug/adplug-xmms.cc:299 src/modplug/gui/interface.cxx:219
-msgid "Channels"
-msgstr "声道"
-
-#: src/adplug/adplug-xmms.cc:301 src/filewriter/mp3.c:39
-#: src/mpg123/mpg123.c:173 src/sid/xs_interface.c:301
-msgid "Mono"
-msgstr "单声道"
-
-#: src/adplug/adplug-xmms.cc:306 src/filewriter/mp3.c:39
-#: src/modplug/gui/interface.cxx:205 src/mpg123/mpg123.c:173
-#: src/sid/xs_interface.c:308
-msgid "Stereo"
-msgstr "立体音"
-
-#: src/adplug/adplug-xmms.cc:310
-msgid ""
-"Setting stereo is not recommended, unless you need to. This won't add any "
-"stereo effects to the sound - OPL2 is just mono - but eats up more CPU power!"
-msgstr ""
-"设置为立体音是不推荐的做法，除非你知道自己在做什么。此选项不会带来任何立体音"
-"效果（OPL2只能是单声道的），相反只会占用更多的CPU!"
-
-#: src/adplug/adplug-xmms.cc:318
-msgid "Frequency"
-msgstr "频率"
-
-#: src/adplug/adplug-xmms.cc:354 src/adplug/adplug-xmms.cc:560
-#: src/console/configure.c:157 src/skins/ui_manager.c:168
-msgid "Playback"
-msgstr "回放"
-
-#: src/adplug/adplug-xmms.cc:358
-msgid "Detect songend"
-msgstr "检测歌曲结尾"
-
-#: src/adplug/adplug-xmms.cc:362
-msgid ""
-"If enabled, XMMS will detect a song's ending, stop it and advance in the "
-"playlist. If disabled, XMMS won't take notice of a song's ending and loop it "
-"all over again and again."
-msgstr ""
-"如果启用，XMMS将尝试测试歌曲的结尾，并在结束时，自动播放列表中的下一首歌"
-"曲。\n"
-"如果禁用，XMMS将因无法得知歌曲的结尾而不断重复播放同一首歌曲。"
-
-#: src/adplug/adplug-xmms.cc:373
-msgid "Formats"
-msgstr "格式"
-
-#: src/adplug/adplug-xmms.cc:380
-msgid "Format selection"
-msgstr "格式选择"
-
-#: src/adplug/adplug-xmms.cc:383
-msgid "Format"
-msgstr "格式"
-
-#: src/adplug/adplug-xmms.cc:383
-msgid "Extension"
-msgstr "后缀"
-
-#: src/adplug/adplug-xmms.cc:423
-msgid ""
-"Selected file types will be recognized and played back by this plugin. "
-"Deselected types will be ignored to make room for other plugins to play "
-"these files."
-msgstr ""
-"被选中文件类型会被识别并被此插件播放。\n"
-"未选中的，则会被忽略并由其它插件播放"
-
-#: src/adplug/adplug-xmms.cc:511
-msgid "AdPlug :: File Info"
-msgstr "AdPlug :: 文件信息"
-
-#: src/adplug/adplug-xmms.cc:533 src/amidi-plug/i_configure-fluidsynth.c:345
-msgid "Filename"
-msgstr "文件名"
-
-#: src/adplug/adplug-xmms.cc:537 src/skins/ui_playlist.c:390
-msgid "Title: "
-msgstr "标题："
-
-#: src/adplug/adplug-xmms.cc:538
-msgid "Author: "
-msgstr "作者："
-
-#: src/adplug/adplug-xmms.cc:539
-msgid "File Type: "
-msgstr "文件类型："
-
-#: src/adplug/adplug-xmms.cc:540
-msgid "Subsongs: "
-msgstr "子歌曲："
-
-#: src/adplug/adplug-xmms.cc:541
-msgid "Instruments: "
-msgstr "乐器："
-
-#: src/adplug/adplug-xmms.cc:546
-msgid "Orders: "
-msgstr "顺序："
-
-#: src/adplug/adplug-xmms.cc:547
-msgid "Patterns: "
-msgstr "格调："
-
-#: src/adplug/adplug-xmms.cc:551
-msgid "Song"
-msgstr "歌曲"
-
-#: src/adplug/adplug-xmms.cc:577
-msgid "Instrument name"
-msgstr "乐器名"
-
-#: src/adplug/adplug-xmms.cc:619
-msgid "Song message"
-msgstr "歌曲信息"
-
-#: src/adplug/adplug-xmms.cc:642
-msgid "Subsong selection"
-msgstr "子歌曲选项"
-
-#: src/adplug/adplug-xmms.cc:696
-msgid "Order: "
-msgstr "顺序："
-
-#: src/adplug/adplug-xmms.cc:697
-msgid "Pattern: "
-msgstr "格调："
-
-#: src/adplug/adplug-xmms.cc:699
-msgid "Row: "
-msgstr "行："
-
-#: src/adplug/adplug-xmms.cc:700
-msgid "Speed: "
-msgstr "速度："
-
-#: src/adplug/adplug-xmms.cc:701
-msgid "Timer: "
-msgstr "计时："
-
-#: src/adplug/adplug-xmms.cc:702 src/console/configure.c:235
-#: src/sid/xs_interface.c:354
-msgid "Hz"
-msgstr ""
-
-#: src/alarm/interface.c:34
-msgid "About XMMS Alarm"
-msgstr "关于XMMS闹钟"
-
-#: src/alarm/interface.c:47
-msgid "XMMS Alarm"
-msgstr "XMMS闹钟"
-
-#: src/alarm/interface.c:56
-msgid ""
-"An XMMS plugin which can be used\n"
-"to start playing at a certain time.\n"
-"\n"
-"Send all complaints to:\n"
-"Adam Feakin <adamf@snika.uklinux.net>\n"
-"Daniel Stodden <stodden@in.tum.de>\n"
-"\n"
-"http://www.snika.uklinux.net/xmms-alarm/"
-msgstr ""
-"用于在设定时间启动播放的XMMS插件\n"
-"\n"
-"问题反馈:\n"
-"Adam Feakin <adamf@snika.uklinux.net>\n"
-"Daniel Stodden <stodden@in.tum.de>\n"
-"\n"
-"http://www.snika.uklinux.net/xmms-alarm/"
-
-#: src/alarm/interface.c:71 src/bluetooth/scan_gui.c:149 src/lirc/about.c:115
-#: src/modplug/gui/interface.cxx:972 src/sid/xs_about.c:214
-#: src/sid/xs_interface.c:1825
-msgid "Close"
-msgstr "关闭"
-
-#: src/alarm/interface.c:101
-msgid "Alarm"
-msgstr "闹钟"
-
-#: src/alarm/interface.c:109
-msgid "This is your wakeup call."
-msgstr "此为起床闹钟"
-
-#: src/alarm/interface.c:124 src/alarm/interface.c:1389
-#: src/modplug/gui/interface.cxx:703 src/sid/xs_config.c:323
-msgid "OK"
-msgstr "确定"
-
-#: src/alarm/interface.c:152
-msgid "Select Playlist"
-msgstr "选择播放列表"
-
-#: src/alarm/interface.c:196
-msgid "Sorry"
-msgstr "抱歉"
-
-#: src/alarm/interface.c:204
-msgid "Warning"
-msgstr "警告"
-
-#: src/alarm/interface.c:213
-msgid ""
-"For safety reasons the \"quiet\" time must be at least 65 seconds longer "
-"than the fading time, it must also be more than 10 seconds.  This basically "
-"means that there is a bug in the code and until I find a way of really "
-"fixing it this message will appear :)\n"
-"\n"
-"Your fading settings have NOT been saved\n"
-"\n"
-"--\n"
-"Adam"
-msgstr ""
-"鉴于安全理由，\"静音\"时间至少要比渐退时间长65秒，其本身亦至少大于10秒。\n"
-"这基本上是代码的问题，同时在我找到解决方法前此信息还会出现的 :)\n"
-"\n"
-"你的渐退设置未保存\n"
-"\n"
-"--\n"
-"Adam"
-
-#: src/alarm/interface.c:229
-msgid "Oh Well"
-msgstr "不错嘛"
-
-#: src/alarm/interface.c:388
-msgid "Alarm Settings"
-msgstr "闹钟设置"
-
-#: src/alarm/interface.c:404 src/alarm/interface.c:576
-#: src/alarm/interface.c:948
-msgid "Time"
-msgstr "时间"
-
-#: src/alarm/interface.c:445
-msgid "hours"
-msgstr "小时"
-
-#: src/alarm/interface.c:506
-msgid "h"
-msgstr "点"
-
-#: src/alarm/interface.c:536
-msgid "minutes"
-msgstr "分"
-
-#: src/alarm/interface.c:554
-msgid "Quiet after:"
-msgstr "静音时间："
-
-#: src/alarm/interface.c:564
-msgid "Alarm at (default):"
-msgstr "响闹钟(默认)："
-
-#: src/alarm/interface.c:584
-msgid "Choose the days for the alarm to come on"
-msgstr "选择响闹钟的日期"
-
-#: src/alarm/interface.c:612 src/alarm/interface.c:660
-#: src/alarm/interface.c:708 src/alarm/interface.c:756
-#: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/OSS/configure.c:162
-#: src/skins/ui_manager.c:448 src/skins/ui_manager.c:469
-msgid "Default"
-msgstr "默认"
-
-#: src/alarm/interface.c:938
-msgid "Day"
-msgstr "日期"
-
-#: src/alarm/interface.c:958
-msgid "Tuesday"
-msgstr "週二"
-
-#: src/alarm/interface.c:969
-msgid "Wednesday"
-msgstr "週三"
-
-#: src/alarm/interface.c:980
-msgid "Thursday"
-msgstr "週四"
-
-#: src/alarm/interface.c:991
-msgid "Friday"
-msgstr "週五"
-
-#: src/alarm/interface.c:1002
-msgid "Saturday"
-msgstr "週末"
-
-#: src/alarm/interface.c:1013
-msgid "Sunday"
-msgstr "週日"
-
-#: src/alarm/interface.c:1023
-msgid "Monday"
-msgstr "週一"
-
-#: src/alarm/interface.c:1034
-msgid "Days"
-msgstr "日期"
-
-#: src/alarm/interface.c:1050
-msgid "Fading"
-msgstr "渐退"
-
-#: src/alarm/interface.c:1087 src/sid/xs_interface.c:921
-#: src/sid/xs_interface.c:975 src/sid/xs_interface.c:1155
-msgid "seconds"
-msgstr "秒"
-
-#: src/alarm/interface.c:1095 src/alarm/interface.c:1211
-#: src/modplug/gui/interface.cxx:550
-msgid "Volume"
-msgstr "音量"
-
-#: src/alarm/interface.c:1121
-msgid "Current"
-msgstr "当前"
-
-#: src/alarm/interface.c:1128
-msgid "reset to current output volume"
-msgstr "重置当前输出音量"
-
-#: src/alarm/interface.c:1130
-msgid "Start at"
-msgstr "开始于"
-
-#: src/alarm/interface.c:1158 src/alarm/interface.c:1202
-msgid "%"
-msgstr "%"
-
-#: src/alarm/interface.c:1174
-msgid "Final"
-msgstr "完成于"
-
-#: src/alarm/interface.c:1227
-msgid "Additional Command"
-msgstr "附加指令"
-
-#: src/alarm/interface.c:1253
-msgid "enable"
-msgstr "启用"
-
-#: src/alarm/interface.c:1261
-msgid "Playlist (optional)"
-msgstr "播放列表(可选)"
-
-#: src/alarm/interface.c:1287
-msgid "Browse..."
-msgstr "浏览..."
-
-#: src/alarm/interface.c:1295 src/alarm/interface.c:1460
-msgid "Reminder"
-msgstr "提醒器"
-
-#: src/alarm/interface.c:1312
-msgid "Use reminder"
-msgstr "使用提醒器"
-
-#: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:363
-msgid "Options"
-msgstr "选项"
-
-#: src/alarm/interface.c:1336
-msgid "What do these options mean?"
-msgstr "这些选项有什么用？"
-
-#: src/alarm/interface.c:1364
-msgid ""
-"\n"
-"Time\n"
-"  Alarm at: \n"
-"    The time for the alarm to come on.\n"
-"\n"
-"  Quiet After: \n"
-"    Stop alarm after this amount of time.\n"
-"       (if the wakeup dialog is not closed)\n"
-"\n"
-"\n"
-"Days\n"
-"  Day:\n"
-"    Select the days for the alarm to activate.\n"
-"\n"
-"  Time:\n"
-"    Choose the time for the alarm on each day,\n"
-"    or select the toggle button to use the default\n"
-"    time.\n"
-"\n"
-"\n"
-"Volume\n"
-"  Fading: \n"
-"    Fade the volume up to the chosen volume \n"
-"    for this amount of time.\n"
-"\n"
-"  Start at: \n"
-"    Start fading from this volume.\n"
-"\n"
-"  Final: \n"
-"    The volume to stop fading at.  If the fading\n"
-"    time is 0 then set volume to this and start\n"
-"    playing.\n"
-"\n"
-"\n"
-"Options:\n"
-"  Additional Command:\n"
-"    Run this command at the alarm time.\n"
-"\n"
-"  Playlist: \n"
-"    Load this playlist for playing songs from \n"
-"    (must have .m3u extension).  If no playlist\n"
-"    is given then the songs which are currently\n"
-"    in the list will be used.\n"
-"    The URL of an mp3/ogg stream can also be\n"
-"    entered here, but loading of playlists from\n"
-"    URLs is not currently supported by xmms.\n"
-"\n"
-"  Reminder:\n"
-"    Display a reminder when the alarm goes off,\n"
-"    type the reminder in the box and turn on the\n"
-"    toggle button if you want it to be shown.\n"
-msgstr ""
-"\n"
-"时间\n"
-"  响闹钟: \n"
-"    闹钟启动时间。\n"
-"\n"
-"  静音时间: \n"
-"    在此时间之后停止播放。\n"
-"       (如果起床对话框未关闭)\n"
-"\n"
-"\n"
-"日期\n"
-"  日期:\n"
-"    选择启用闹钟的日期\n"
-"\n"
-"  时间:\n"
-"    选择每天闹钟响的时间,\n"
-"    或者点击开关按钮使用默认时间\n"
-"\n"
-"\n"
-"音量\n"
-"  渐退: \n"
-"    在指定时间要把音量消退到指定音量。\n"
-"\n"
-"  开始于: \n"
-"    从此音量开始消退\n"
-"\n"
-"  完成于: \n"
-"    到达此音量时停止。\n"
-"    如果渐退时间为0，则直接设置为此音量后开始播放。\n"
-"\n"
-"\n"
-"选项:\n"
-"  附加指令:\n"
-"    在闹钟时间执行此指令。\n"
-"\n"
-"  播放列表:\n"
-"    从播放列表加载要播放的文件(仅支持.m3u文件) \n"
-"    如果未指定播放列表则使用当前的列表。\n"
-"    此处亦可使用远程的mp3/ogg流URL地址，\n"
-"    但现时暂未支持从播放列表中加载URL地址\n"
-"\n"
-"  提醒器:\n"
-"    当闹钟停止后显示提醒器，\n"
-"    如果你想显示提醒器，输出要用的提醒器并打开相应的开关按钮\n"
-
-#: src/alarm/interface.c:1366 src/skins/ui_manager.c:380
-msgid "Help"
-msgstr "帮助"
-
-#: src/alarm/interface.c:1468
-msgid "Your reminder for today is.."
-msgstr "你今天的提醒器是.."
-
-#: src/alarm/interface.c:1493
-msgid "Thankyou"
-msgstr "谢谢"
 
 #: src/alsa/config.c:212
 msgid "Default PCM device"
@@ -777,6 +228,10 @@ msgstr "FLUIDSYNTH后端设置"
 msgid "SoundFont settings"
 msgstr "SoundFont设置"
 
+#: src/amidi-plug/i_configure-fluidsynth.c:345
+msgid "Filename"
+msgstr "文件名"
+
 #: src/amidi-plug/i_configure-fluidsynth.c:349
 msgid "Size (bytes)"
 msgstr "大小(bytes)"
@@ -879,8 +334,7 @@ msgid ""
 "backend</span>"
 msgstr "<span size=\"smaller\">TiMidity后端</span>"
 
-#: src/amidi-plug/i_fileinfo.c:169 src/bluetooth/gui.c:271
-#: src/sid/xs_interface.c:1769
+#: src/amidi-plug/i_fileinfo.c:169 src/sid/xs_interface.c:1769
 msgid "Name:"
 msgstr "名称："
 
@@ -1051,119 +505,119 @@ msgstr "恢复播放"
 msgid "Triggers OSD when playback is unpaused."
 msgstr "恢复播放时触发OSD"
 
-#: src/aosd/aosd_ui.c:168
+#: src/aosd/aosd_ui.c:170
 msgid "Placement"
 msgstr "位置"
 
-#: src/aosd/aosd_ui.c:202
+#: src/aosd/aosd_ui.c:204
 msgid "Relative X offset:"
 msgstr "X相对位移："
 
-#: src/aosd/aosd_ui.c:211
+#: src/aosd/aosd_ui.c:213
 msgid "Relative Y offset:"
 msgstr "Y相对位移："
 
-#: src/aosd/aosd_ui.c:220
+#: src/aosd/aosd_ui.c:222
 msgid "Max OSD width:"
 msgstr "最大OSD宽度："
 
-#: src/aosd/aosd_ui.c:233
+#: src/aosd/aosd_ui.c:235
 msgid "Multi-Monitor options"
 msgstr "多屏选项"
 
-#: src/aosd/aosd_ui.c:237
+#: src/aosd/aosd_ui.c:239
 msgid "Display OSD using:"
 msgstr "OSD显示于："
 
-#: src/aosd/aosd_ui.c:239
+#: src/aosd/aosd_ui.c:250
 msgid "all monitors"
 msgstr "所有显示器"
 
-#: src/aosd/aosd_ui.c:242
+#: src/aosd/aosd_ui.c:253
 #, c-format
 msgid "monitor %i"
 msgstr "显示器%i"
 
-#: src/aosd/aosd_ui.c:295
+#: src/aosd/aosd_ui.c:308
 msgid "Timing (ms)"
 msgstr "延时(ms)"
 
-#: src/aosd/aosd_ui.c:300
+#: src/aosd/aosd_ui.c:313
 msgid "Display:"
 msgstr "显示："
 
-#: src/aosd/aosd_ui.c:305
+#: src/aosd/aosd_ui.c:318
 msgid "Fade in:"
 msgstr "淡入："
 
-#: src/aosd/aosd_ui.c:310
+#: src/aosd/aosd_ui.c:323
 msgid "Fade out:"
 msgstr "淡出："
 
-#: src/aosd/aosd_ui.c:391
+#: src/aosd/aosd_ui.c:404
 msgid "Fonts"
 msgstr "字体"
 
-#: src/aosd/aosd_ui.c:399
+#: src/aosd/aosd_ui.c:412
 #, c-format
 msgid "Font %i:"
 msgstr "字体 %i："
 
-#: src/aosd/aosd_ui.c:416
+#: src/aosd/aosd_ui.c:429
 msgid "Shadow"
 msgstr "阴影"
 
-#: src/aosd/aosd_ui.c:451
+#: src/aosd/aosd_ui.c:464
 msgid "Internationalization"
 msgstr "国际化"
 
-#: src/aosd/aosd_ui.c:457
+#: src/aosd/aosd_ui.c:470
 msgid "Disable UTF-8 conversion of text (in aosd)"
 msgstr "禁用UTF-8转换(在aosd中)"
 
-#: src/aosd/aosd_ui.c:475
+#: src/aosd/aosd_ui.c:488
 msgid "Select Skin File"
 msgstr "选择主题文件"
 
-#: src/aosd/aosd_ui.c:586
+#: src/aosd/aosd_ui.c:599
 msgid "Render Style"
 msgstr "渲染风格"
 
-#: src/aosd/aosd_ui.c:602
+#: src/aosd/aosd_ui.c:615
 msgid "Colors"
 msgstr "颜色"
 
-#: src/aosd/aosd_ui.c:615
+#: src/aosd/aosd_ui.c:628
 #, c-format
 msgid "Color %i:"
 msgstr "颜色  %i："
 
-#: src/aosd/aosd_ui.c:635
+#: src/aosd/aosd_ui.c:648
 msgid "Custom Skin"
 msgstr "自定义主题"
 
-#: src/aosd/aosd_ui.c:641
+#: src/aosd/aosd_ui.c:654
 msgid "Skin file:"
 msgstr "主题文件："
 
-#: src/aosd/aosd_ui.c:644 src/sid/xs_interface.c:1044
+#: src/aosd/aosd_ui.c:657 src/sid/xs_interface.c:1044
 #: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
 msgid "Browse"
 msgstr "浏览"
 
-#: src/aosd/aosd_ui.c:746
+#: src/aosd/aosd_ui.c:759
 msgid "Enable trigger"
 msgstr "启用触发器"
 
-#: src/aosd/aosd_ui.c:773
+#: src/aosd/aosd_ui.c:786
 msgid "Event"
 msgstr "事件"
 
-#: src/aosd/aosd_ui.c:801
+#: src/aosd/aosd_ui.c:814
 msgid "Composite manager detected"
 msgstr "检测到混合管理器"
 
-#: src/aosd/aosd_ui.c:808
+#: src/aosd/aosd_ui.c:821
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
@@ -1172,73 +626,73 @@ msgstr ""
 "未检测到混合管理器；\n"
 "OSD无法正常工作，除非你激活混合管理器。"
 
-#: src/aosd/aosd_ui.c:816
+#: src/aosd/aosd_ui.c:829
 msgid "Composite manager not required for fake transparency"
 msgstr "假透明无需混合管理支持"
 
-#: src/aosd/aosd_ui.c:854
+#: src/aosd/aosd_ui.c:867
 msgid "Transparency"
 msgstr "透明"
 
-#: src/aosd/aosd_ui.c:860
+#: src/aosd/aosd_ui.c:873
 msgid "Fake transparency"
 msgstr "假透明"
 
-#: src/aosd/aosd_ui.c:862
+#: src/aosd/aosd_ui.c:875
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr "真透明(需要X Composite扩展)"
 
-#: src/aosd/aosd_ui.c:904
+#: src/aosd/aosd_ui.c:917
 msgid "Composite extension not loaded"
 msgstr "X Composite扩展未加载"
 
-#: src/aosd/aosd_ui.c:912
+#: src/aosd/aosd_ui.c:925
 msgid "Composite extension not available"
 msgstr "X Composite扩展不可用"
 
-#: src/aosd/aosd_ui.c:931
+#: src/aosd/aosd_ui.c:944
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
-#: src/aosd/aosd_ui.c:1012
+#: src/aosd/aosd_ui.c:1025
 msgid "Audacious OSD - configuration"
 msgstr "Audacious OSD - 设置"
 
-#: src/aosd/aosd_ui.c:1033
+#: src/aosd/aosd_ui.c:1046
 msgid "Test"
 msgstr "测试"
 
-#: src/aosd/aosd_ui.c:1048
+#: src/aosd/aosd_ui.c:1061
 msgid "Position"
 msgstr "位置"
 
-#: src/aosd/aosd_ui.c:1053
+#: src/aosd/aosd_ui.c:1066
 msgid "Animation"
 msgstr "动画"
 
-#: src/aosd/aosd_ui.c:1058
+#: src/aosd/aosd_ui.c:1071
 msgid "Text"
 msgstr "字体"
 
-#: src/aosd/aosd_ui.c:1063
+#: src/aosd/aosd_ui.c:1076
 msgid "Decoration"
 msgstr "装饰器"
 
-#: src/aosd/aosd_ui.c:1068
+#: src/aosd/aosd_ui.c:1081
 msgid "Trigger"
 msgstr "触发器"
 
-#: src/aosd/aosd_ui.c:1073 src/cdaudio-ng/configure.c:171
-#: src/modplug/gui/interface.cxx:689 src/sid/xs_interface.c:1302
+#: src/aosd/aosd_ui.c:1086 src/cdaudio-ng/configure.c:171
+#: src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr "其它"
 
-#: src/aosd/aosd_ui.c:1110
+#: src/aosd/aosd_ui.c:1123
 msgid "Audacious OSD - about"
 msgstr "Audacious OSD - 关于"
 
-#: src/aosd/aosd_ui.c:1140
+#: src/aosd/aosd_ui.c:1153
 msgid ""
 "\n"
 "Audacious OSD "
@@ -1246,7 +700,7 @@ msgstr ""
 "\n"
 "Audacious OSD "
 
-#: src/aosd/aosd_ui.c:1141
+#: src/aosd/aosd_ui.c:1154
 msgid ""
 "\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
@@ -1266,131 +720,6 @@ msgstr ""
 "On-Screen-Display基于Ghosd库\n"
 "作者：Evan Martin\n"
 "http://neugierig.org/software/ghosd/\n"
-
-#: src/bluetooth/agent.c:356 src/bluetooth/agent.c:397
-#, c-format
-msgid "Pairing request for '%s'"
-msgstr "正在为'%s'配对请求"
-
-#: src/bluetooth/agent.c:544
-#, c-format
-msgid "Authorization request for %s"
-msgstr "'%s'要求认证"
-
-#: src/bluetooth/agent.c:728
-#, c-format
-msgid "Created bonding with %s"
-msgstr "正在绑定%s"
-
-#: src/bluetooth/agent.c:756
-#, c-format
-msgid "Removed bonding with %s"
-msgstr "正在解除%s"
-
-#: src/bluetooth/agent.c:808
-msgid "Device has been switched off"
-msgstr "设备已关闭"
-
-#: src/bluetooth/agent.c:811
-msgid "Device has been made non-discoverable"
-msgstr "设备不可连接"
-
-#: src/bluetooth/agent.c:813
-msgid "Device has been made connectable"
-msgstr "设备可连接"
-
-#: src/bluetooth/agent.c:815
-msgid "Device has been made discoverable"
-msgstr "设备无法恢复"
-
-#: src/bluetooth/agent.c:817
-msgid "Device has been made limited discoverable"
-msgstr "设备部分可恢复"
-
-#: src/bluetooth/agent.c:819
-msgid "Device has been switched into pairing mode"
-msgstr "设备已切转配对模式"
-
-#: src/bluetooth/bluetooth.c:116
-msgid "Bluetooth headset support plugin"
-msgstr "蓝牙耳机支持插件"
-
-#: src/bluetooth/bluetooth.c:117
-msgid ""
-"Bluetooth headset support\n"
-"Copyright (c) 2008 Paula Stanciu paula.stanciu@gmail.com\n"
-"This was a GSoC 2008 Project - Many thanks to my mentor Tony Vroon and the "
-"Audacious team\n"
-" \n"
-"In order to use the AVRCP you need the uinput module loaded into the kernel\n"
-"The headset keys will be recognized as normal mutimedia keys and \n"
-"can be configured using the Audacious Global Hotkey plugin or ohter tools \n"
-"provided by your window manager\n"
-msgstr ""
-"Bluetooth耳机支持\n"
-"版权所有 (c) 2008 Paula Stanciu paula.stanciu@gmail.com\n"
-"GSoC 2008 Project - 非常感谢我的导师Tony Vroon及Audacious开发小组\n"
-" \n"
-"要使用AVRCP，你必需为内核加载uinput模块。\n"
-"耳机上的键将会被识别为一般的多媒体键，\n"
-"你可以通过Audacious全局热键插件或窗口管理器提供的工具进行配置。\n"
-
-#: src/bluetooth/gui.c:148
-msgid "Producer"
-msgstr "生产商"
-
-#: src/bluetooth/gui.c:221
-msgid "Available Headsets"
-msgstr "可用耳机"
-
-#: src/bluetooth/gui.c:224
-msgid "Current Headset"
-msgstr "当前耳机"
-
-#: src/bluetooth/gui.c:227 src/gtkui/menus.c:170 src/gtkui/menus.c:212
-msgid "_Refresh"
-msgstr "刷新(_R)"
-
-#: src/bluetooth/gui.c:231
-msgid "_Connect"
-msgstr "连接(_C)"
-
-#: src/bluetooth/gui.c:237 src/gtkui/menus.c:175
-msgid "_Close"
-msgstr "关闭(_C)"
-
-#: src/bluetooth/gui.c:274
-msgid "Class"
-msgstr "类型"
-
-#: src/bluetooth/gui.c:278
-msgid "Address:"
-msgstr "地址："
-
-#: src/bluetooth/scan_gui.c:69
-msgid "Bonding finish!"
-msgstr "绑定完成！"
-
-#: src/bluetooth/scan_gui.c:76
-msgid "No devices found!"
-msgstr "未找到设备！"
-
-#: src/bluetooth/scan_gui.c:119
-msgid "Scanning..."
-msgstr "正在扫描..."
-
-#: src/bluetooth/scan_gui.c:122
-msgid "Pairing..."
-msgstr "正在配对..."
-
-#: src/bluetooth/scan_gui.c:138
-msgid "Rescan"
-msgstr "重新扫描"
-
-#: src/bluetooth/scan_gui.c:142 src/hotkey/gui.c:72 src/skins/ui_manager.c:170
-#: src/skins/ui_manager.c:171
-msgid "Play"
-msgstr "播放"
 
 #: src/blur_scope/config.c:73
 msgid "Blur Scope: Color selection"
@@ -1484,6 +813,18 @@ msgstr "使用HTTP代替CDDBP"
 msgid "Override default device: "
 msgstr "覆蓋默设备："
 
+#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:131
+#: src/echo_plugin/gui.c:123 src/jack/configure.c:146 src/null/null.c:112
+#: src/stereo_plugin/stereo.c:125
+msgid "Ok"
+msgstr "确定"
+
+#: src/cdaudio-ng/configure.c:249 src/crystalizer/crystalizer.c:138
+#: src/echo_plugin/gui.c:130 src/jack/configure.c:153 src/null/null.c:113
+#: src/stereo_plugin/stereo.c:132
+msgid "Cancel"
+msgstr "取消"
+
 #: src/cd-menu-items/cd-menu-items.c:34
 msgid "Play CD"
 msgstr "播放CD"
@@ -1512,6 +853,14 @@ msgstr "动态范围："
 msgid "Game Console Music Decoder"
 msgstr "游戏机音乐解码器"
 
+#: src/console/configure.c:155
+msgid "General"
+msgstr "常规"
+
+#: src/console/configure.c:157 src/skins/ui_manager.c:176
+msgid "Playback"
+msgstr "回放"
+
 #: src/console/configure.c:172
 msgid "Bass:"
 msgstr "低音："
@@ -1529,8 +878,7 @@ msgstr "高音："
 msgid "Default song length:"
 msgstr "默认歌曲长度："
 
-#: src/console/configure.c:210 src/modplug/gui/interface.cxx:269
-#: src/sid/xs_interface.c:666
+#: src/console/configure.c:210 src/sid/xs_interface.c:666
 msgid "Resampling"
 msgstr "重采样"
 
@@ -1541,6 +889,10 @@ msgstr "启用音频重采样"
 #: src/console/configure.c:231
 msgid "Resampling rate:"
 msgstr "采样率："
+
+#: src/console/configure.c:235 src/sid/xs_interface.c:354
+msgid "Hz"
+msgstr ""
 
 #: src/console/configure.c:246
 msgid "SPC"
@@ -1619,7 +971,7 @@ msgid "Effect intensity:"
 msgstr "效果强度："
 
 #: src/crystalizer/crystalizer.c:144 src/echo_plugin/gui.c:136
-#: src/modplug/gui/interface.cxx:709 src/stereo_plugin/stereo.c:138
+#: src/stereo_plugin/stereo.c:138
 msgid "Apply"
 msgstr "应用"
 
@@ -1659,338 +1011,6 @@ msgstr "反馈：(%)"
 #: src/echo_plugin/gui.c:98
 msgid "Volume: (%)"
 msgstr "音量：(%)"
-
-#: src/evdev-plug/ed.c:66
-msgid "Playback->Play"
-msgstr "回放->播放"
-
-#: src/evdev-plug/ed.c:67
-msgid "Playback->Stop"
-msgstr "回放->停止"
-
-#: src/evdev-plug/ed.c:68
-msgid "Playback->Pause"
-msgstr "回放->暂停"
-
-#: src/evdev-plug/ed.c:69
-msgid "Playback->Prev"
-msgstr "回放->前一首"
-
-#: src/evdev-plug/ed.c:70
-msgid "Playback->Next"
-msgstr "回放->下一首"
-
-#: src/evdev-plug/ed.c:71
-msgid "Playback->Eject"
-msgstr "回放->弹出"
-
-#: src/evdev-plug/ed.c:73
-msgid "Playlist->Repeat"
-msgstr "列表->重复"
-
-#: src/evdev-plug/ed.c:74
-msgid "Playlist->Shuffle"
-msgstr "列表->随机"
-
-#: src/evdev-plug/ed.c:76
-msgid "Volume->Up_5"
-msgstr "音量->+5"
-
-#: src/evdev-plug/ed.c:77
-msgid "Volume->Down_5"
-msgstr "音量->-5"
-
-#: src/evdev-plug/ed.c:78
-msgid "Volume->Up_10"
-msgstr "音量->+10"
-
-#: src/evdev-plug/ed.c:79
-msgid "Volume->Down_10"
-msgstr "音量->-10"
-
-#: src/evdev-plug/ed.c:80
-msgid "Volume->Mute"
-msgstr "音量->静音"
-
-#: src/evdev-plug/ed.c:82
-msgid "Window->Main"
-msgstr "窗口->主界面"
-
-#: src/evdev-plug/ed.c:83
-msgid "Window->Playlist"
-msgstr "窗口->播放列表"
-
-#: src/evdev-plug/ed.c:84
-msgid "Window->Equalizer"
-msgstr "窗口->均衡器"
-
-#: src/evdev-plug/ed.c:85
-msgid "Window->JumpToFile"
-msgstr "窗口->跳到文件"
-
-#: src/evdev-plug/ed_internals.c:94
-#, c-format
-msgid ""
-"event-device-plugin: unable to open device file %s , skipping this device; "
-"check that the file exists and that you have read permission for it\n"
-msgstr ""
-"event-device-plugin: 无法打开设备文件 %s，忽略此设备；请检查文件是否存在及你"
-"是否对其有读取权限\n"
-
-#: src/evdev-plug/ed_internals.c:103
-#, c-format
-msgid ""
-"event-device-plugin: unable to create a io_channel for device file %s ,"
-"skipping this device\n"
-msgstr "event-device-plugin: 无法为设备文件 %s 创建io_channel，忽略此设备\n"
-
-#: src/evdev-plug/ed_internals.c:342
-msgid ""
-"event-device-plugin: unable to open /proc/bus/input/devices , automatic "
-"detection of event devices won't work.\n"
-msgstr ""
-"event-device-plugin: 无法打开/proc/bus/input/devices, 自动检测event设备无法工"
-"作。\n"
-
-#: src/evdev-plug/ed_internals.c:351
-msgid ""
-"event-device-plugin: unable to open a io_channel for /proc/bus/input/"
-"devices , automatic detection of event devices won't work.\n"
-msgstr ""
-"event-device-plugin: 无法为/proc/bus/input/devices打开io_channel，自动检测"
-"event设备无法工作。\n"
-
-#: src/evdev-plug/ed_internals.c:361
-msgid ""
-"event-device-plugin: an error occurred while reading /proc/bus/input/"
-"devices , automatic detection of event devices won't work.\n"
-msgstr ""
-"event-device-plugin: 读取/proc/bus/input/devices时发生错误，自动检测event设备"
-"无法工作。\n"
-
-#: src/evdev-plug/ed_internals.c:424
-#, c-format
-msgid "event-device-plugin: device %s not found in /dev/input , skipping.\n"
-msgstr "event-device-plugin: /dev/input中不存在设备%s，已忽略。\n"
-
-#: src/evdev-plug/ed_internals.c:489 src/evdev-plug/ed_internals.c:583
-#, c-format
-msgid ""
-"event-device-plugin: unable to load config file %s , default settings will "
-"be used.\n"
-msgstr "event-device-plugin: 无法加载配置文件 %s , 将使用默认设置。\n"
-
-#: src/evdev-plug/ed_internals.c:535
-#, c-format
-msgid ""
-"event-device-plugin: incomplete information in config file for device \"%s"
-"\" , skipping.\n"
-msgstr "event-device-plugin: 设备\"%s\"在配置文件中的信息不完整，已忽略。\n"
-
-#: src/evdev-plug/ed_internals.c:604 src/evdev-plug/ed_internals.c:936
-#, c-format
-msgid ""
-"event-device-plugin: configuration, unable to get is_active value for device "
-"\"%s\", skipping it.\n"
-msgstr ""
-"event-device-plugin: 配置文件，无法取得设备\"%s\" is_active的值, 已忽略.\n"
-
-#: src/evdev-plug/ed_internals.c:840
-#, c-format
-msgid ""
-"event-device-plugin: unable to access local directory %s , settings will not "
-"be saved.\n"
-msgstr "event-device-plugin: 无法访问目录 %s , 设置无法保存。\n"
-
-#: src/evdev-plug/ed_internals.c:890
-#, c-format
-msgid ""
-"event-device-plugin: configuration, unable to get filename value for device "
-"\"%s\", skipping it.\n"
-msgstr "event-device-plugin: 配置文件，无法取得设备\"%s\"的文件名, 已忽略。\n"
-
-#: src/evdev-plug/ed_internals.c:906
-#, c-format
-msgid ""
-"event-device-plugin: configuration, unable to get phys value for device \"%s"
-"\", skipping it.\n"
-msgstr "event-device-plugin: 配置文件, 无法取得设备\"%s\"的phys值，已忽略。\n"
-
-#: src/evdev-plug/ed_internals.c:922
-#, c-format
-msgid ""
-"event-device-plugin: configuration, unable to get is_custom value for device "
-"\"%s\", skipping it.\n"
-msgstr ""
-"event-device-plugin: 配置文件，无法取得设备\"%s\" is_custon的值, 已忽略。\n"
-
-#: src/evdev-plug/ed_internals.c:946
-#, c-format
-msgid ""
-"event-device-plugin: configuration, unexpected value for device \"%s\", "
-"skipping it.\n"
-msgstr "event-device-plugin: 配置文件, 设备\"%s\"的值非法, 已忽略。\n"
-
-#: src/evdev-plug/ed_ui.c:212
-msgid "Detected"
-msgstr "检测到"
-
-#: src/evdev-plug/ed_ui.c:217
-msgid "Custom"
-msgstr "定制"
-
-#: src/evdev-plug/ed_ui.c:223
-msgid "Not Detected"
-msgstr "未检测到"
-
-#: src/evdev-plug/ed_ui.c:275 src/evdev-plug/ed_ui.c:411
-#: src/evdev-plug/ed_ui.c:874
-msgid "Information"
-msgstr "信息"
-
-#: src/evdev-plug/ed_ui.c:276
-msgid ""
-"Cannot open bindings window for a not-detected device.\n"
-"Ensure that the device has been correctly plugged in."
-msgstr ""
-"无法为未检测到的设备打开绑定窗口。\n"
-"请重新确认设备已正确连接。"
-
-#: src/evdev-plug/ed_ui.c:319 src/gtkui/ui_gtk.c:175
-msgid "Error"
-msgstr "错误"
-
-#: src/evdev-plug/ed_ui.c:320
-msgid ""
-"Unable to open selected device.\n"
-"Please check read permissions on device file."
-msgstr ""
-"无法打开选中的设备。\n"
-"请检查设备文件的权限。"
-
-#: src/evdev-plug/ed_ui.c:341
-msgid "EvDev-Plug - Add custom device"
-msgstr "EvDev-Plug - 添加自定义设备"
-
-#: src/evdev-plug/ed_ui.c:353
-msgid ""
-"EvDev-Plug tries to automatically detect and update information about\n"
-"event devices available on the system.\n"
-"However, if auto-detect doesn't work for your system, or you have event\n"
-"devices in a non-standard location (currently they're only searched in\n"
-"/dev/input/ ), you may want to add a custom device, explicitly specifying\n"
-"name and device file."
-msgstr ""
-"EvDev-Plug正在尝试自动检测和更新系统上可用的event设备信息\n"
-"如果自动检测失败，或者你的event设备不在标准位置（现在只在/dev/input/中搜"
-"索，\n"
-"你就要手动添加设备，并明确指定名称及设备文件。"
-
-#: src/evdev-plug/ed_ui.c:361
-msgid "Device name:"
-msgstr "设备名："
-
-#: src/evdev-plug/ed_ui.c:365
-msgid "Device file:"
-msgstr "设备文件："
-
-#: src/evdev-plug/ed_ui.c:404
-msgid "(custom)"
-msgstr "(定制)"
-
-#: src/evdev-plug/ed_ui.c:412
-msgid ""
-"Please specify both name and filename.\n"
-"Filename must be specified with absolute path."
-msgstr ""
-"请指定名称及文件名。\n"
-"文件名必需为绝对路径。"
-
-#: src/evdev-plug/ed_ui.c:447
-msgid "Do you want to remove the existing configuration for selected device?\n"
-msgstr "你要删除选中设备现有的配置文件吗？\n"
-
-#: src/evdev-plug/ed_ui.c:466
-msgid "Do you want to remove the selected custom device?\n"
-msgstr "你要删除选中的自定义设备吗？\n"
-
-#: src/evdev-plug/ed_ui.c:612
-msgid "EvDev-Plug - Configuration"
-msgstr "EvDev-Plug - 设置"
-
-#: src/evdev-plug/ed_ui.c:651
-msgid "Active"
-msgstr "已激活"
-
-#: src/evdev-plug/ed_ui.c:655
-msgid "Status"
-msgstr "状态"
-
-#: src/evdev-plug/ed_ui.c:664
-msgid "Device Name"
-msgstr "设备名"
-
-#: src/evdev-plug/ed_ui.c:668
-msgid "Device File"
-msgstr "设备文件"
-
-#: src/evdev-plug/ed_ui.c:672
-msgid "Device Address"
-msgstr "设备地址"
-
-#: src/evdev-plug/ed_ui.c:689
-msgid "_Bindings"
-msgstr "绑定(_B)"
-
-#: src/evdev-plug/ed_ui.c:838
-msgid ""
-"Press a key of your device to bind it;\n"
-"if no key is pressed in five seconds, this window\n"
-"will close without binding changes."
-msgstr ""
-"请在设备上按下你要绑定的键；如果5秒内未无操作，窗口将自动关闭并取消绑定。"
-
-#: src/evdev-plug/ed_ui.c:875
-msgid ""
-"This input event has been already assigned.\n"
-"\n"
-"It's not possible to assign multiple actions to the same input event "
-"(although it's possible to assign the same action to multiple events)."
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:1323
-msgid "EvDev-Plug - Bindings Configuration"
-msgstr "EvDev-Plug - 绑定设置"
-
-#: src/evdev-plug/ed_ui.c:1363
-msgid "<b>Name: </b>"
-msgstr "<b>名称：</b>"
-
-#: src/evdev-plug/ed_ui.c:1372
-msgid "<b>Filename: </b>"
-msgstr "<b>文件名：</b>"
-
-#: src/evdev-plug/ed_ui.c:1381
-msgid "<b>Phys.Address: </b>"
-msgstr "<b>物理地址：</b>"
-
-#: src/evdev-plug/ed_ui.c:1460
-msgid "EvDev-Plug - about"
-msgstr "EvDev-Plug - 关于"
-
-#: src/evdev-plug/ed_ui.c:1491
-msgid ""
-"\n"
-"player remote control via event devices\n"
-"http://www.develia.org/projects.php?p=audacious#evdevplug\n"
-"\n"
-"written by Giacomo Lozito\n"
-msgstr ""
-"\n"
-"event设备远程控制播放器\n"
-"http://www.develia.org/projects.php?p=audacious#evdevplug\n"
-"\n"
-"作者： Giacomo Lozito\n"
 
 #: src/ffaudio/ffaudio-core.c:765
 #, c-format
@@ -2051,7 +1071,7 @@ msgstr "FileWriter设置"
 msgid "Output file format:"
 msgstr "输出文件格式："
 
-#: src/filewriter/filewriter.c:480 src/ladspa/ladspa.c:1078
+#: src/filewriter/filewriter.c:480
 msgid "Configure"
 msgstr "设置"
 
@@ -2099,6 +1119,14 @@ msgstr "自动"
 msgid "Joint Stereo"
 msgstr "联合立体声"
 
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:308
+msgid "Stereo"
+msgstr "立体音"
+
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:301
+msgid "Mono"
+msgstr "单声道"
+
 #: src/filewriter/mp3.c:724
 msgid "MP3 Configuration"
 msgstr "MP3设置"
@@ -2144,7 +1172,6 @@ msgid "Error protection"
 msgstr "错误保护"
 
 #: src/filewriter/mp3.c:947 src/filewriter/vorbis.c:245
-#: src/modplug/gui/interface.cxx:320
 msgid "Quality"
 msgstr "质量"
 
@@ -2399,7 +1426,7 @@ msgstr "关于"
 msgid "_Preferences ..."
 msgstr "首选项"
 
-#: src/gtkui/menus.c:139 src/skins/ui_manager.c:404
+#: src/gtkui/menus.c:139 src/skins/ui_manager.c:412
 msgid "_Quit"
 msgstr "退出(_Q)"
 
@@ -2506,6 +1533,10 @@ msgstr "反转"
 msgid "_Random Order"
 msgstr "随机"
 
+#: src/gtkui/menus.c:170 src/gtkui/menus.c:212
+msgid "_Refresh"
+msgstr "刷新(_R)"
+
 #: src/gtkui/menus.c:172
 #, fuzzy
 msgid "_Sort"
@@ -2514,6 +1545,10 @@ msgstr "排序"
 #: src/gtkui/menus.c:174
 msgid "_New"
 msgstr ""
+
+#: src/gtkui/menus.c:175
+msgid "_Close"
+msgstr "关闭(_C)"
 
 #: src/gtkui/menus.c:177
 #, fuzzy
@@ -2646,20 +1681,24 @@ msgstr "文件名"
 msgid "GTK Interface"
 msgstr "GTK界面"
 
-#: src/gtkui/ui_gtk.c:135 src/skins/ui_main.c:389
+#: src/gtkui/ui_gtk.c:135 src/skins/ui_main.c:302
 #, c-format
 msgid "%s - Audacious"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:141 src/skins/ui_main.c:391 src/skins/ui_main.c:1800
+#: src/gtkui/ui_gtk.c:141 src/skins/ui_main.c:304 src/skins/ui_main.c:1497
 msgid "Audacious"
 msgstr ""
 
-#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:610
+#: src/gtkui/ui_gtk.c:175 src/skins/plugin.c:176
+msgid "Error"
+msgstr "错误"
+
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:459
 msgid "mono"
 msgstr "单声道"
 
-#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:609
+#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:458
 msgid "stereo"
 msgstr "单体声"
 
@@ -2679,11 +1718,15 @@ msgstr ""
 msgid "Previous Track"
 msgstr "上一首"
 
+#: src/hotkey/gui.c:72 src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
+msgid "Play"
+msgstr "播放"
+
 #: src/hotkey/gui.c:73
 msgid "Pause/Resume"
 msgstr "暂停/继续"
 
-#: src/hotkey/gui.c:74 src/skins/ui_manager.c:176 src/skins/ui_manager.c:177
+#: src/hotkey/gui.c:74 src/skins/ui_manager.c:184 src/skins/ui_manager.c:185
 msgid "Stop"
 msgstr "停止"
 
@@ -2711,7 +1754,7 @@ msgstr "调高音量"
 msgid "Volume Down"
 msgstr "调低音量"
 
-#: src/hotkey/gui.c:81 src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
+#: src/hotkey/gui.c:81 src/skins/ui_manager.c:424 src/skins/ui_manager.c:425
 msgid "Jump to File"
 msgstr "跳到文件"
 
@@ -2837,125 +1880,6 @@ msgstr ""
 msgid "About JACK Output Plugin 0.17"
 msgstr "关于JACK输出插件0.17"
 
-#: src/ladspa/ladspa.c:844
-msgid "This LADSPA plugin has no user controls"
-msgstr "LADSPA插件未被其它人所用"
-
-#: src/ladspa/ladspa.c:885 src/ladspa/ladspa.c:972
-msgid "Name"
-msgstr "名字"
-
-#: src/ladspa/ladspa.c:972
-msgid "UID"
-msgstr "UID"
-
-#: src/ladspa/ladspa.c:1049
-msgid "Installed plugins"
-msgstr "已安装插件"
-
-#: src/ladspa/ladspa.c:1057
-msgid "Running plugins"
-msgstr "运行中的插件"
-
-#: src/ladspa/ladspa.c:1072
-msgid "Add"
-msgstr "添加"
-
-#: src/ladspa/ladspa.c:1075
-msgid "Remove"
-msgstr "删除"
-
-#: src/ladspa/ladspa.c:1086
-msgid "LADSPA Plugin Catalog"
-msgstr "LDASPA插件分类"
-
-#: src/lirc/about.c:63
-msgid "About LIRC Audacious Plugin"
-msgstr "关于LIRC Audacious插件"
-
-#: src/lirc/about.c:90
-msgid "LIRC Plugin "
-msgstr "LIRC插件"
-
-#: src/lirc/about.c:92
-msgid ""
-"\n"
-"A simple plugin that lets you control\n"
-"Audacious using the LIRC remote control daemon\n"
-"\n"
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the XMMS LIRC plugin by:\n"
-"Carl van Schaik <carl@leg.uct.ac.za>\n"
-"Christoph Bartelmus <xmms@bartelmus.de>\n"
-"Andrew O. Shadoura <bugzilla@tut.by>\n"
-"You can get LIRC information at:\n"
-"http://lirc.org"
-msgstr ""
-"\n"
-"让你能够通过LIRC控制Audacious的小插件。\n"
-"由Tony Vroon <chainsaw@gentoo.org>用XMMS LIRC插件为Audacious进行移植。\n"
-"XMMS LIRC插件作者:\n"
-"Carl van Schaik <carl@leg.uct.ac.za>\n"
-"Christoph Bartelmus <xmms@bartelmus.de>\n"
-"Andrew O. Shadoura <bugzilla@tut.by>\n"
-"你可以在http://lirc.org上找到更多关于LIRC的信息"
-
-#: src/lirc/interface.c:37
-msgid "LIRC plugin settings"
-msgstr "LIRC插件设置"
-
-#: src/lirc/interface.c:61
-msgid "Reconnect to LIRC server"
-msgstr "重新连接到LIRC服务器"
-
-#: src/lirc/interface.c:68
-msgid "Timeout before reconnecting (seconds): "
-msgstr "超时后尝试重新连接(秒):"
-
-#: src/lirc/interface.c:75
-msgid "Reconnect"
-msgstr "重新连接"
-
-#: src/lirc/interface.c:79
-msgid "Connection"
-msgstr "连接"
-
-#: src/lirc/lirc.c:80
-#, c-format
-msgid "%s: could not init LIRC support\n"
-msgstr "%s: 无法初始化LIRC服务\n"
-
-#: src/lirc/lirc.c:88
-#, c-format
-msgid ""
-"%s: could not read LIRC config file\n"
-"%s: please read the documentation of LIRC\n"
-"%s: how to create a proper config file\n"
-msgstr ""
-"%s: 未能读取LIRC的设置文件\n"
-"%s: 请阅读LIRC相关文档\n"
-"%s: 并创建正确的设置文件\n"
-
-#: src/lirc/lirc.c:116
-#, c-format
-msgid "%s: trying to reconnect...\n"
-msgstr "%s: 正尝试重新连接...\n"
-
-#: src/lirc/lirc.c:331
-#, c-format
-msgid "%s: unknown command \"%s\"\n"
-msgstr "%s: 未知指令 \"%s\"\n"
-
-#: src/lirc/lirc.c:341
-#, c-format
-msgid "%s: disconnected from LIRC\n"
-msgstr "%s: 已从LIRC上断开连接\n"
-
-#: src/lirc/lirc.c:345
-#, c-format
-msgid "%s: will try reconnect every %d seconds...\n"
-msgstr "%s: 尝试每%d秒重新连接一次...\n"
-
 #: src/lyricwiki/lyricwiki.c:335
 msgid ""
 "\n"
@@ -2987,226 +1911,9 @@ msgstr ""
 msgid "Tact generator: %d bpm %d/%d"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:137
-msgid "ModPlug Configuration"
-msgstr "ModPlug设置"
-
-#: src/modplug/gui/interface.cxx:174
-msgid "16 bit"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:181
-msgid "8 bit"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:212
-msgid "Mono (downmix)"
-msgstr "单音道(downmix)"
-
-#: src/modplug/gui/interface.cxx:241
-msgid "Nearest (fastest)"
-msgstr "最接近(最快)"
-
-#: src/modplug/gui/interface.cxx:248
-msgid "Linear (fast)"
-msgstr "线性(快速)"
-
-#: src/modplug/gui/interface.cxx:255
-msgid "Spline (good quality)"
-msgstr "Spline(高质量)"
-
-#: src/modplug/gui/interface.cxx:262
-msgid "8-tap Fir (extremely high quality)"
-msgstr "8-tap Fir(最高质量)"
-
-#: src/modplug/gui/interface.cxx:286
-msgid "96 kHz"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:293
-msgid "48 kHz"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:300
-msgid "44 kHz"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:307
-msgid "22 kHz"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:315
-msgid "Sampling Rate"
-msgstr "取样率"
-
-#: src/modplug/gui/interface.cxx:349 src/modplug/gui/interface.cxx:411
-#: src/modplug/gui/interface.cxx:477 src/modplug/gui/interface.cxx:539
-msgid "Enable"
-msgstr "启用"
-
-#: src/modplug/gui/interface.cxx:378 src/modplug/gui/interface.cxx:506
-msgid "Depth"
-msgstr "深度"
-
-#: src/modplug/gui/interface.cxx:386 src/modplug/gui/interface.cxx:514
-msgid "Delay"
-msgstr "延时"
-
-#: src/modplug/gui/interface.cxx:394
-msgid "Reverb"
-msgstr "余响"
-
-#: src/modplug/gui/interface.cxx:440
-msgid "Amount"
-msgstr "总量"
-
-#: src/modplug/gui/interface.cxx:448
-msgid "Range"
-msgstr "范围"
-
-#: src/modplug/gui/interface.cxx:456
-msgid "Bass Boost"
-msgstr "低音增强"
-
-#: src/modplug/gui/interface.cxx:522 src/mpg123/mpg123.c:173
+#: src/mpg123/mpg123.c:183
 msgid "Surround"
 msgstr "围绕音"
-
-#: src/modplug/gui/interface.cxx:561
-msgid ""
-"Note:  Setting the preamp\n"
-"too high may cause clipping\n"
-"(annoying clicks and pops)!"
-msgstr "注意： 前置放大器的值太高会导致削波!"
-
-#: src/modplug/gui/interface.cxx:567
-#: src/skins/ui_skinned_equalizer_slider.c:431
-msgid "Preamp"
-msgstr "前置放大"
-
-#: src/modplug/gui/interface.cxx:572
-msgid "Effects"
-msgstr "音效"
-
-#: src/modplug/gui/interface.cxx:601
-msgid "Use Filename as Song Title"
-msgstr "用文件名作为歌曲标题"
-
-#: src/modplug/gui/interface.cxx:606
-msgid "Fast Playlist Info"
-msgstr "快速播放列表信息"
-
-#: src/modplug/gui/interface.cxx:617
-msgid "Noise Reduction"
-msgstr "降噪"
-
-#: src/modplug/gui/interface.cxx:623
-msgid "Play Amiga MOD"
-msgstr "播放Amiga MOD"
-
-#: src/modplug/gui/interface.cxx:646
-msgid "Don't loop"
-msgstr "不要循环"
-
-#: src/modplug/gui/interface.cxx:658
-msgid "Loop"
-msgstr "循环"
-
-#: src/modplug/gui/interface.cxx:671
-msgid "time(s)"
-msgstr "时间(s)"
-
-#: src/modplug/gui/interface.cxx:677
-msgid "Loop forever"
-msgstr "无限循环"
-
-#: src/modplug/gui/interface.cxx:684
-msgid "Looping"
-msgstr "循环"
-
-#: src/modplug/gui/interface.cxx:859
-msgid "MOD Info"
-msgstr "MOD信息"
-
-#: src/modplug/gui/interface.cxx:878
-msgid ""
-"Filename:\n"
-"Title:\n"
-"Type:\n"
-"Length:\n"
-"Speed:\n"
-"Tempo:\n"
-"Samples:\n"
-"Instruments:\n"
-"Patterns:\n"
-"Channels:"
-msgstr ""
-"文件名:\n"
-"标题:\n"
-"类型:\n"
-"长度:\n"
-"速度:\n"
-"节奏:\n"
-"取样:\n"
-"乐器:\n"
-"格调:\n"
-"声道:"
-
-#: src/modplug/gui/interface.cxx:883
-msgid ""
-"---\n"
-"---\n"
-"---\n"
-"---\n"
-"---\n"
-"---\n"
-"---\n"
-"---\n"
-"---\n"
-"---"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:913
-msgid "Samples"
-msgstr "取样"
-
-#: src/modplug/gui/interface.cxx:938
-msgid "Instruments"
-msgstr "乐器"
-
-#: src/modplug/gui/interface.cxx:959
-msgid "Message"
-msgstr "信息"
-
-#: src/modplug/gui/main.cxx:51
-msgid "Modplug Input Plugin for Audacious ver"
-msgstr "Audacious的Modplug输入插件"
-
-#: src/modplug/gui/main.cxx:52
-msgid ""
-"\n"
-"Modplug sound engine written by Olivier Lapicque.\n"
-"XMMS interface for Modplug by Kenton Varda.\n"
-"(c)2000 Olivier Lapicque and Kenton Varda.\n"
-"Updates and maintenance by Konstanty Bialkowski.\n"
-"Ported to BMP by Theofilos Intzoglou."
-msgstr ""
-"\n"
-"Modplug声音引擎作者：Olivier Lapicque。\n"
-"Modplug的XMMS接口作者是：Kenton Varda.\n"
-"版权所有 (c) 2000 Olivier Lapicque及Kenton Varda.\n"
-"更新及维护：Konstanty Bialkowski.\n"
-"BMP的移植：Theofilos Intzoglou."
-
-#: src/modplug/gui/main.cxx:55
-msgid "About Modplug"
-msgstr "关于Modplug"
-
-#: src/modplug/gui/support.cxx:90 src/modplug/gui/support.cxx:114
-#: src/sid/xs_glade.c:90 src/sid/xs_glade.c:114
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr "无法找到pixmap文件: %s"
 
 #: src/mtp_up/mtp.c:298
 msgid "Upload in progress..."
@@ -3303,6 +2010,11 @@ msgstr "OSS4错误"
 #, c-format
 msgid "Default (%s)"
 msgstr "默认(%s)"
+
+#: src/OSS/configure.c:162 src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:477
+msgid "Default"
+msgstr "默认"
 
 #: src/OSS/configure.c:187
 msgid "OSS Driver configuration"
@@ -3428,7 +2140,7 @@ msgstr ""
 msgid "<b>Last.FM</b>"
 msgstr ""
 
-#: src/scrobbler/configure.c:262
+#: src/scrobbler/configure.c:263
 msgid "Scrobbler"
 msgstr ""
 
@@ -3460,9 +2172,17 @@ msgstr "SDL错误"
 msgid "About %s"
 msgstr "关于 %s"
 
-#: src/sid/xs_config.c:323
+#: src/sid/xs_about.c:214 src/sid/xs_interface.c:1825
+msgid "Close"
+msgstr "关闭"
+
+#: src/sid/xs_config.c:326
 msgid " Error"
 msgstr "错误"
+
+#: src/sid/xs_config.c:326
+msgid "OK"
+msgstr "确定"
 
 #: src/sid/xs_fileinfo.c:151
 msgid "General info"
@@ -3472,6 +2192,11 @@ msgstr "一般信息"
 #, c-format
 msgid "Tune #%i: "
 msgstr ""
+
+#: src/sid/xs_glade.c:90 src/sid/xs_glade.c:114
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "无法找到pixmap文件: %s"
 
 #: src/sid/xs_interface.c:234
 msgid "Audacious-SID configuration"
@@ -3751,15 +2476,15 @@ msgstr "导出"
 msgid "Use"
 msgstr "使用"
 
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:439
+#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:447
 msgid "Save"
 msgstr "保存"
 
-#: src/sid/xs_interface.c:841 src/skins/ui_manager.c:438
+#: src/sid/xs_interface.c:841 src/skins/ui_manager.c:446
 msgid "Import"
 msgstr "导入"
 
-#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:440
+#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:448
 msgid "Delete"
 msgstr "删除"
 
@@ -3789,6 +2514,11 @@ msgstr ""
 #: src/sid/xs_interface.c:1142
 msgid "Playtime:"
 msgstr "播放时间:"
+
+#: src/sid/xs_interface.c:921 src/sid/xs_interface.c:975
+#: src/sid/xs_interface.c:1155
+msgid "seconds"
+msgstr "秒"
 
 #: src/sid/xs_interface.c:928
 msgid "Minimum playtime:"
@@ -4022,11 +2752,11 @@ msgstr "是"
 msgid "No"
 msgstr "否"
 
-#: src/skins/plugin.c:163
+#: src/skins/plugin.c:165
 msgid "About Skinned GUI"
 msgstr "关于主题化界面"
 
-#: src/skins/plugin.c:164
+#: src/skins/plugin.c:166
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -4034,853 +2764,817 @@ msgstr ""
 "版权所有 (c) 2008, Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 
-#: src/skins/skins_cfg.c:312
+#: src/skins/skins_cfg.c:254
 msgid "_Player:"
 msgstr "播放器(_P):"
 
-#: src/skins/skins_cfg.c:312
+#: src/skins/skins_cfg.c:254
 msgid "Select main player window font:"
 msgstr "选择主界面字体"
 
-#: src/skins/skins_cfg.c:313
+#: src/skins/skins_cfg.c:255
 msgid "_Playlist:"
 msgstr "播放列表(_P)："
 
-#: src/skins/skins_cfg.c:313
+#: src/skins/skins_cfg.c:255
 msgid "Select playlist font:"
 msgstr "选择播放列表字体："
 
-#: src/skins/skins_cfg.c:317
+#: src/skins/skins_cfg.c:259
 msgid "<b>_Fonts</b>"
 msgstr "<b>字体(_F)</b>"
 
-#: src/skins/skins_cfg.c:319
+#: src/skins/skins_cfg.c:261
 msgid "Use Bitmap fonts if available"
 msgstr "尽可能使用点阵字体"
 
-#: src/skins/skins_cfg.c:319
+#: src/skins/skins_cfg.c:261
 msgid ""
 "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
 "strings."
 msgstr "尽可能使用点阵字体，点阵字体不支持Unicode设置"
 
-#: src/skins/skins_cfg.c:320
+#: src/skins/skins_cfg.c:262
 msgid "<b>_Miscellaneous</b>"
 msgstr "<b>其它(_M)</b>"
 
-#: src/skins/skins_cfg.c:321
-msgid "Show separators in playlist"
-msgstr "在播放列表中显示分隔符"
-
-#: src/skins/skins_cfg.c:323
-msgid "Show window manager decoration"
-msgstr "显示窗口管理器的装饰"
-
-#: src/skins/skins_cfg.c:324
-msgid "This enables the window manager to show decorations for windows."
-msgstr "此选项将允许显示窗口管理器的装饰"
-
-#: src/skins/skins_cfg.c:325
+#: src/skins/skins_cfg.c:263
 msgid "Use two-way text scroller"
 msgstr "使用双向字符滚动"
 
-#: src/skins/skins_cfg.c:326
-msgid ""
-"If selected, the file information text in the main window will scroll back "
-"and forth. If not selected, the text will only scroll in one direction."
-msgstr "如果启用，主界面上的文件信息将来回滚动，否则只能向一个方向滚动。"
-
-#: src/skins/skins_cfg.c:327
-msgid "Disable inline gtk theme"
-msgstr "禁用内部gtk主题"
-
-#: src/skins/skins_cfg.c:329
-msgid "Random skin on play"
-msgstr "启动时随机选择主题"
-
-#: src/skins/skins_cfg.c:330
-msgid "Allow loading incomplete skins"
-msgstr "允许加载不完整的主题"
-
-#: src/skins/skins_cfg.c:331
-msgid ""
-"If selected, audacious won't refuse loading broken skins. Use only if your "
-"favourite skin doesn't work"
-msgstr ""
-"如果启用，audacious将允许加载破损的主题。如果你喜欢的主题无法使用，可试试启用"
-"此选项"
-
-#: src/skins/skins_cfg.c:397
-msgid "Color Adjustment"
-msgstr "颜色调整"
-
-#: src/skins/skins_cfg.c:403
-msgid ""
-"Audacious allows you to alter the color balance of the skinned UI. The "
-"sliders below will allow you to do this."
-msgstr "Audacious允许你修改主题界面的颜色平衡。调整滑动条即可"
-
-#: src/skins/skins_cfg.c:413
-msgid "Blue"
-msgstr "蓝"
-
-#: src/skins/skins_cfg.c:420
-msgid "Green"
-msgstr "绿"
-
-#: src/skins/skins_cfg.c:427
-msgid "Red"
-msgstr "红"
-
-#: src/skins/skins_cfg.c:574
+#: src/skins/skins_cfg.c:347
 msgid "<b>_Skin</b>"
 msgstr "<b>主题(_S)</b>"
 
-#: src/skins/skins_cfg.c:579
-msgid "Color adjustment ..."
-msgstr "颜色调整..."
-
-#: src/skins/skins_cfg.c:631
+#: src/skins/skins_cfg.c:394
 #, fuzzy
 msgid "Interface Preferences"
 msgstr "淡出设置"
 
-#: src/skins/ui_equalizer.c:463
+#: src/skins/ui_equalizer.c:330
+msgid "Preamp"
+msgstr "前置放大"
+
+#: src/skins/ui_equalizer.c:334
+msgid "31 Hz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:335
+msgid "63 Hz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:335
+msgid "125 Hz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:335
+msgid "250 Hz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:335
+msgid "500 Hz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:335
+msgid "1 kHz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:336
+msgid "2 kHz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:336
+msgid "4 kHz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:336
+msgid "8 kHz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:336
+msgid "16 kHz"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:378
 msgid "Audacious Equalizer"
 msgstr "Audacious均衡器"
 
-#: src/skins/ui_equalizer.c:990
+#: src/skins/ui_equalizer.c:884
 msgid "Presets"
 msgstr "预设"
 
-#: src/skins/ui_main.c:594
+#: src/skins/ui_main.c:443
 msgid "kbps"
 msgstr ""
 
-#: src/skins/ui_main.c:602
+#: src/skins/ui_main.c:451
 msgid "kHz"
 msgstr ""
 
-#: src/skins/ui_main.c:609
+#: src/skins/ui_main.c:458
 msgid "surround"
 msgstr "环绕声"
 
-#: src/skins/ui_main.c:1029
-#, c-format
-msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
+#: src/skins/ui_main.c:806
+#, fuzzy, c-format
+msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "查找： %d:%-2.2d/%d:%-2.2d (%d%%)"
 
-#: src/skins/ui_main.c:1059
+#: src/skins/ui_main.c:827
 #, c-format
 msgid "Volume: %d%%"
 msgstr "音量: %d%%"
 
-#: src/skins/ui_main.c:1082
+#: src/skins/ui_main.c:850
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "平衡: %d%% 左"
 
-#: src/skins/ui_main.c:1084
+#: src/skins/ui_main.c:852
 msgid "Balance: center"
 msgstr "平衡: 中间"
 
-#: src/skins/ui_main.c:1086
+#: src/skins/ui_main.c:854
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "平衡: %d%% 右"
 
-#: src/skins/ui_main.c:1252
+#: src/skins/ui_main.c:980
 msgid "Options Menu"
 msgstr "选项菜单"
 
-#: src/skins/ui_main.c:1256
+#: src/skins/ui_main.c:984
 msgid "Disable 'Always On Top'"
 msgstr "禁用“顶置窗口”"
 
-#: src/skins/ui_main.c:1258
+#: src/skins/ui_main.c:986
 msgid "Enable 'Always On Top'"
 msgstr "启用“顶置窗口”"
 
-#: src/skins/ui_main.c:1261
+#: src/skins/ui_main.c:989
 msgid "File Info Box"
 msgstr "文件信息"
 
-#: src/skins/ui_main.c:1265
-msgid "Disable 'GUI Scaling'"
-msgstr "禁用“界面缩放”"
-
-#: src/skins/ui_main.c:1267
-msgid "Enable 'GUI Scaling'"
-msgstr "启用“界面缩放”"
-
-#: src/skins/ui_main.c:1270
+#: src/skins/ui_main.c:994
 msgid "Visualization Menu"
 msgstr "可视化菜单"
 
-#: src/skins/ui_main.c:1982
+#: src/skins/ui_main.c:1644
 msgid "Single mode."
 msgstr "单一窗口模式"
 
-#: src/skins/ui_main.c:1984
+#: src/skins/ui_main.c:1646
 msgid "Playlist mode."
 msgstr "播放列表模式"
 
-#: src/skins/ui_main.c:2008
+#: src/skins/ui_main.c:1668
 msgid "Stopping after song."
 msgstr "完成后停止"
 
-#: src/skins/ui_main.c:2010
+#: src/skins/ui_main.c:1670
 msgid "Not stopping after song."
 msgstr "完成后不停止"
 
-#: src/skins/ui_manager.c:53 src/skins/ui_manager.c:54
+#: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
 msgid "Autoscroll Songname"
 msgstr "自动滚动歌曲名"
 
-#: src/skins/ui_manager.c:56 src/skins/ui_manager.c:57
+#: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
 msgstr "完成当前歌曲后停止"
 
-#: src/skins/ui_manager.c:59 src/skins/ui_manager.c:60
+#: src/skins/ui_manager.c:73 src/skins/ui_manager.c:74
 msgid "Peaks"
 msgstr "峰值"
 
-#: src/skins/ui_manager.c:62 src/skins/ui_manager.c:63
+#: src/skins/ui_manager.c:76 src/skins/ui_manager.c:77
 msgid "Repeat"
 msgstr "重复"
 
-#: src/skins/ui_manager.c:65 src/skins/ui_manager.c:66
+#: src/skins/ui_manager.c:79 src/skins/ui_manager.c:80
 msgid "Shuffle"
 msgstr "随机"
 
-#: src/skins/ui_manager.c:68 src/skins/ui_manager.c:69
+#: src/skins/ui_manager.c:82 src/skins/ui_manager.c:83
 msgid "No Playlist Advance"
 msgstr "禁止自动播放下一首"
 
-#: src/skins/ui_manager.c:71 src/skins/ui_manager.c:72
+#: src/skins/ui_manager.c:85 src/skins/ui_manager.c:86
 msgid "Show Player"
 msgstr "显示播放器"
 
-#: src/skins/ui_manager.c:74 src/skins/ui_manager.c:75
+#: src/skins/ui_manager.c:88 src/skins/ui_manager.c:89
 msgid "Show Playlist Editor"
 msgstr "显示播放列表编辑器"
 
-#: src/skins/ui_manager.c:77 src/skins/ui_manager.c:78
+#: src/skins/ui_manager.c:91 src/skins/ui_manager.c:92
 msgid "Show Equalizer"
 msgstr "显示均衡器"
 
-#: src/skins/ui_manager.c:80 src/skins/ui_manager.c:81
+#: src/skins/ui_manager.c:94 src/skins/ui_manager.c:95
 msgid "Always on Top"
 msgstr "顶置窗口"
 
-#: src/skins/ui_manager.c:83 src/skins/ui_manager.c:84
+#: src/skins/ui_manager.c:97 src/skins/ui_manager.c:98
 msgid "Put on All Workspaces"
 msgstr "所有工作区可见"
 
-#: src/skins/ui_manager.c:86 src/skins/ui_manager.c:87
+#: src/skins/ui_manager.c:100 src/skins/ui_manager.c:101
 msgid "Roll up Player"
 msgstr "收起播放器"
 
-#: src/skins/ui_manager.c:89 src/skins/ui_manager.c:90
+#: src/skins/ui_manager.c:103 src/skins/ui_manager.c:104
 msgid "Roll up Playlist Editor"
 msgstr "收起播放列表编辑器"
 
-#: src/skins/ui_manager.c:92 src/skins/ui_manager.c:93
+#: src/skins/ui_manager.c:106 src/skins/ui_manager.c:107
 msgid "Roll up Equalizer"
 msgstr "收起均衡器"
 
-#: src/skins/ui_manager.c:95 src/sndstretch/sndstretch_xmms.c:362
-msgid "Scale"
-msgstr "缩放"
-
-#: src/skins/ui_manager.c:96
-msgid "DoubleSize"
-msgstr "双倍大小"
-
-#: src/skins/ui_manager.c:98 src/skins/ui_manager.c:99
-msgid "Easy Move"
-msgstr "简易移动"
-
-#: src/skins/ui_manager.c:107
+#: src/skins/ui_manager.c:115
 msgid "Analyzer"
 msgstr "分析器"
 
-#: src/skins/ui_manager.c:108
+#: src/skins/ui_manager.c:116
 msgid "Scope"
 msgstr "范围"
 
-#: src/skins/ui_manager.c:109
+#: src/skins/ui_manager.c:117
 msgid "Voiceprint"
 msgstr "声纹"
 
-#: src/skins/ui_manager.c:110
+#: src/skins/ui_manager.c:118
 msgid "Off"
 msgstr "关闭"
 
-#: src/skins/ui_manager.c:114 src/skins/ui_manager.c:131
-#: src/skins/ui_manager.c:137
+#: src/skins/ui_manager.c:122 src/skins/ui_manager.c:139
+#: src/skins/ui_manager.c:145
 msgid "Normal"
 msgstr "一般"
 
-#: src/skins/ui_manager.c:115 src/skins/ui_manager.c:132
+#: src/skins/ui_manager.c:123 src/skins/ui_manager.c:140
 msgid "Fire"
 msgstr "火炎"
 
-#: src/skins/ui_manager.c:116
+#: src/skins/ui_manager.c:124
 msgid "Vertical Lines"
 msgstr "垂线"
 
-#: src/skins/ui_manager.c:120
+#: src/skins/ui_manager.c:128
 msgid "Lines"
 msgstr "细线"
 
-#: src/skins/ui_manager.c:121
+#: src/skins/ui_manager.c:129
 msgid "Bars"
 msgstr "柱状"
 
-#: src/skins/ui_manager.c:125
+#: src/skins/ui_manager.c:133
 msgid "Dot Scope"
 msgstr ""
 
-#: src/skins/ui_manager.c:126
+#: src/skins/ui_manager.c:134
 msgid "Line Scope"
 msgstr ""
 
-#: src/skins/ui_manager.c:127
+#: src/skins/ui_manager.c:135
 msgid "Solid Scope"
 msgstr ""
 
-#: src/skins/ui_manager.c:133
+#: src/skins/ui_manager.c:141
 msgid "Ice"
 msgstr "冷蓝"
 
-#: src/skins/ui_manager.c:138
+#: src/skins/ui_manager.c:146
 msgid "Smooth"
 msgstr "平滑"
 
-#: src/skins/ui_manager.c:142 src/skins/ui_manager.c:150
+#: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
 msgid "Slowest"
 msgstr "最慢"
 
-#: src/skins/ui_manager.c:143 src/skins/ui_manager.c:151
+#: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
 msgid "Slow"
 msgstr "慢"
 
-#: src/skins/ui_manager.c:144 src/skins/ui_manager.c:152
+#: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
 msgid "Medium"
 msgstr "中速"
 
-#: src/skins/ui_manager.c:145 src/skins/ui_manager.c:153
+#: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
 msgid "Fast"
 msgstr "快"
 
-#: src/skins/ui_manager.c:146 src/skins/ui_manager.c:154
+#: src/skins/ui_manager.c:154 src/skins/ui_manager.c:162
 msgid "Fastest"
 msgstr "最快"
 
-#: src/skins/ui_manager.c:158
+#: src/skins/ui_manager.c:166
 msgid "Time Elapsed"
 msgstr "已用时间"
 
-#: src/skins/ui_manager.c:159
+#: src/skins/ui_manager.c:167
 msgid "Time Remaining"
 msgstr "剩余时间"
 
-#: src/skins/ui_manager.c:173 src/skins/ui_manager.c:174
+#: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
 msgid "Pause"
 msgstr "暂停"
 
-#: src/skins/ui_manager.c:179 src/skins/ui_manager.c:180
+#: src/skins/ui_manager.c:187 src/skins/ui_manager.c:188
 msgid "Previous"
 msgstr "上一首"
 
-#: src/skins/ui_manager.c:182 src/skins/ui_manager.c:183
+#: src/skins/ui_manager.c:190 src/skins/ui_manager.c:191
 msgid "Next"
 msgstr "下一首"
 
-#: src/skins/ui_manager.c:188
+#: src/skins/ui_manager.c:196
 msgid "Visualization"
 msgstr "可视化效果"
 
-#: src/skins/ui_manager.c:189
+#: src/skins/ui_manager.c:197
 msgid "Visualization Mode"
 msgstr "可视化模式"
 
-#: src/skins/ui_manager.c:190
+#: src/skins/ui_manager.c:198
 msgid "Analyzer Mode"
 msgstr "分析器模式"
 
-#: src/skins/ui_manager.c:191
+#: src/skins/ui_manager.c:199
 msgid "Scope Mode"
 msgstr "范围模式"
 
-#: src/skins/ui_manager.c:192
+#: src/skins/ui_manager.c:200
 msgid "Voiceprint Mode"
 msgstr "声纹模式"
 
-#: src/skins/ui_manager.c:193
+#: src/skins/ui_manager.c:201
 msgid "WindowShade VU Mode"
 msgstr "窗口渲染VU模式"
 
-#: src/skins/ui_manager.c:194
+#: src/skins/ui_manager.c:202
 msgid "Analyzer Falloff"
 msgstr "分析器减退速度"
 
-#: src/skins/ui_manager.c:195
+#: src/skins/ui_manager.c:203
 msgid "Peaks Falloff"
 msgstr "峰值减退速度"
 
-#: src/skins/ui_manager.c:200
+#: src/skins/ui_manager.c:208
 msgid "Playlist"
 msgstr "播放列表"
 
-#: src/skins/ui_manager.c:202 src/skins/ui_manager.c:203
+#: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 msgid "New Playlist"
 msgstr "新建播放列表"
 
-#: src/skins/ui_manager.c:205 src/skins/ui_manager.c:206
+#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "Select Next Playlist"
 msgstr "前一个播放列表"
 
-#: src/skins/ui_manager.c:208 src/skins/ui_manager.c:209
+#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
 msgid "Select Previous Playlist"
 msgstr "下一下播放列表"
 
-#: src/skins/ui_manager.c:211 src/skins/ui_manager.c:212
+#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
 msgid "Delete Playlist"
 msgstr "删除播放列表"
 
-#: src/skins/ui_manager.c:214
+#: src/skins/ui_manager.c:222
 msgid "Import Playlist"
 msgstr "导入播放列表"
 
-#: src/skins/ui_manager.c:215
+#: src/skins/ui_manager.c:223
 msgid "Loads a playlist file into the selected playlist."
 msgstr "把列表加载到被选中的播放列表。"
 
-#: src/skins/ui_manager.c:218
+#: src/skins/ui_manager.c:226
 msgid "Export Playlist"
 msgstr "导出播放列表"
 
-#: src/skins/ui_manager.c:219
+#: src/skins/ui_manager.c:227
 msgid "Saves the selected playlist."
 msgstr "保存被选中的播放列表"
 
-#: src/skins/ui_manager.c:221
+#: src/skins/ui_manager.c:229
 msgid "Save All Playlists"
 msgstr "保存所有播放列表"
 
-#: src/skins/ui_manager.c:222
+#: src/skins/ui_manager.c:230
 msgid ""
 "Saves all the playlists that are open. Note that this is done automatically "
 "when Audacious quits."
 msgstr "保存所有已打开的播放列表（其实Audacious退出时是会自动保存的）。"
 
-#: src/skins/ui_manager.c:226
+#: src/skins/ui_manager.c:234
 msgid "Refresh List"
 msgstr "刷新列表"
 
-#: src/skins/ui_manager.c:227
+#: src/skins/ui_manager.c:235
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr "刷新播放列表的歌曲信息"
 
-#: src/skins/ui_manager.c:230
+#: src/skins/ui_manager.c:238
 msgid "List Manager"
 msgstr "列表管理器"
 
-#: src/skins/ui_manager.c:231
+#: src/skins/ui_manager.c:239
 msgid "Opens the playlist manager."
 msgstr "打开播放列表管理器"
 
-#: src/skins/ui_manager.c:235
+#: src/skins/ui_manager.c:243
 msgid "View"
 msgstr "外观"
 
-#: src/skins/ui_manager.c:236
+#: src/skins/ui_manager.c:244
 msgid "Interface"
 msgstr "界面"
 
-#: src/skins/ui_manager.c:237
+#: src/skins/ui_manager.c:245
 #, fuzzy
 msgid "Interface Preferences ..."
 msgstr "淡出设置"
 
-#: src/skins/ui_manager.c:241
+#: src/skins/ui_manager.c:249
 msgid "Add Internet Address..."
 msgstr "添加网络地址..."
 
-#: src/skins/ui_manager.c:242
+#: src/skins/ui_manager.c:250
 msgid "Adds a remote track to the playlist."
 msgstr "添加远程文件到播放列表"
 
-#: src/skins/ui_manager.c:245
+#: src/skins/ui_manager.c:253
 msgid "Add Files..."
 msgstr "添加文件..."
 
-#: src/skins/ui_manager.c:246
+#: src/skins/ui_manager.c:254
 msgid "Adds files to the playlist."
 msgstr "添加文件到播放列表。"
 
-#: src/skins/ui_manager.c:251
+#: src/skins/ui_manager.c:259
 msgid "Search and Select"
 msgstr "搜索/选择"
 
-#: src/skins/ui_manager.c:252
+#: src/skins/ui_manager.c:260
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
 msgstr "在列表中搜索并选择符合条件的条目"
 
-#: src/skins/ui_manager.c:255
+#: src/skins/ui_manager.c:263
 msgid "Invert Selection"
 msgstr "反选"
 
-#: src/skins/ui_manager.c:256
+#: src/skins/ui_manager.c:264
 msgid "Inverts the selected and unselected entries."
 msgstr "反转被选中与未被选中的条目"
 
-#: src/skins/ui_manager.c:259
+#: src/skins/ui_manager.c:267
 msgid "Select All"
 msgstr "选中全部"
 
-#: src/skins/ui_manager.c:260
+#: src/skins/ui_manager.c:268
 msgid "Selects all of the playlist entries."
 msgstr "选中播放列表中的所有条目。"
 
-#: src/skins/ui_manager.c:263
+#: src/skins/ui_manager.c:271
 msgid "Select None"
 msgstr "取消选中"
 
-#: src/skins/ui_manager.c:264
+#: src/skins/ui_manager.c:272
 msgid "Deselects all of the playlist entries."
 msgstr "取消对播放列表的选择"
 
-#: src/skins/ui_manager.c:269
+#: src/skins/ui_manager.c:277
 msgid "Remove All"
 msgstr "清空"
 
-#: src/skins/ui_manager.c:270
+#: src/skins/ui_manager.c:278
 msgid "Removes all entries from the playlist."
 msgstr "清空播放列表中的所有条目。"
 
-#: src/skins/ui_manager.c:273
+#: src/skins/ui_manager.c:281
 msgid "Clear Queue"
 msgstr "清空队列"
 
-#: src/skins/ui_manager.c:274
+#: src/skins/ui_manager.c:282
 msgid "Clears the queue associated with this playlist."
 msgstr "清空此列表中的队列"
 
-#: src/skins/ui_manager.c:277
+#: src/skins/ui_manager.c:285
 msgid "Remove Unavailable Files"
 msgstr "删除不可用文件"
 
-#: src/skins/ui_manager.c:278
+#: src/skins/ui_manager.c:286
 msgid "Removes unavailable files from the playlist."
 msgstr "从播放列表中删除不可用文件"
 
-#: src/skins/ui_manager.c:281
+#: src/skins/ui_manager.c:289
 msgid "Remove Duplicates"
 msgstr "删除重复的条目"
 
-#: src/skins/ui_manager.c:283 src/skins/ui_manager.c:315
-#: src/skins/ui_manager.c:345
+#: src/skins/ui_manager.c:291 src/skins/ui_manager.c:323
+#: src/skins/ui_manager.c:353
 msgid "By Title"
 msgstr "按标题"
 
-#: src/skins/ui_manager.c:284
+#: src/skins/ui_manager.c:292
 msgid "Removes duplicate entries from the playlist by title."
 msgstr "根据标题删除重复的条目"
 
-#: src/skins/ui_manager.c:287 src/skins/ui_manager.c:327
-#: src/skins/ui_manager.c:357
+#: src/skins/ui_manager.c:295 src/skins/ui_manager.c:335
+#: src/skins/ui_manager.c:365
 msgid "By Filename"
 msgstr "根据文件名"
 
-#: src/skins/ui_manager.c:288
+#: src/skins/ui_manager.c:296
 msgid "Removes duplicate entries from the playlist by filename."
 msgstr "根据文件名删除重复的条目"
 
-#: src/skins/ui_manager.c:291 src/skins/ui_manager.c:331
-#: src/skins/ui_manager.c:361
+#: src/skins/ui_manager.c:299 src/skins/ui_manager.c:339
+#: src/skins/ui_manager.c:369
 msgid "By Path + Filename"
 msgstr "根据路径和文件名"
 
-#: src/skins/ui_manager.c:292
+#: src/skins/ui_manager.c:300
 msgid "Removes duplicate entries from the playlist by their full path."
 msgstr "根据文件的完整路径删除重复条目"
 
-#: src/skins/ui_manager.c:295
+#: src/skins/ui_manager.c:303
 msgid "Remove Unselected"
 msgstr "删除未被选中的"
 
-#: src/skins/ui_manager.c:296
+#: src/skins/ui_manager.c:304
 msgid "Remove unselected entries from the playlist."
 msgstr "删除播放列表中未被选中的条目。"
 
-#: src/skins/ui_manager.c:299
+#: src/skins/ui_manager.c:307
 msgid "Remove Selected"
 msgstr "删除已选中的"
 
-#: src/skins/ui_manager.c:300
+#: src/skins/ui_manager.c:308
 msgid "Remove selected entries from the playlist."
 msgstr "删除播放列表中已选中的条目。"
 
-#: src/skins/ui_manager.c:305
+#: src/skins/ui_manager.c:313
 msgid "Randomize List"
 msgstr "打乱列表"
 
-#: src/skins/ui_manager.c:306
+#: src/skins/ui_manager.c:314
 msgid "Randomizes the playlist."
 msgstr "播放列表随机"
 
-#: src/skins/ui_manager.c:309
+#: src/skins/ui_manager.c:317
 msgid "Reverse List"
 msgstr "反转列表"
 
-#: src/skins/ui_manager.c:310
+#: src/skins/ui_manager.c:318
 msgid "Reverses the playlist."
 msgstr "反转播放列表"
 
-#: src/skins/ui_manager.c:313
+#: src/skins/ui_manager.c:321
 msgid "Sort List"
 msgstr "排序列表"
 
-#: src/skins/ui_manager.c:316 src/skins/ui_manager.c:346
+#: src/skins/ui_manager.c:324 src/skins/ui_manager.c:354
 msgid "Sorts the list by title."
 msgstr "按标题"
 
-#: src/skins/ui_manager.c:319 src/skins/ui_manager.c:349
+#: src/skins/ui_manager.c:327 src/skins/ui_manager.c:357
 msgid "By Album"
 msgstr "按专辑"
 
-#: src/skins/ui_manager.c:320 src/skins/ui_manager.c:350
+#: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
 msgid "Sorts the list by album."
 msgstr "按专辑"
 
-#: src/skins/ui_manager.c:323 src/skins/ui_manager.c:353
+#: src/skins/ui_manager.c:331 src/skins/ui_manager.c:361
 msgid "By Artist"
 msgstr "按艺术家"
 
-#: src/skins/ui_manager.c:324 src/skins/ui_manager.c:354
+#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
 msgid "Sorts the list by artist."
 msgstr "按艺术家"
 
-#: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
+#: src/skins/ui_manager.c:336 src/skins/ui_manager.c:366
 msgid "Sorts the list by filename."
 msgstr "按文件名"
 
-#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
+#: src/skins/ui_manager.c:340 src/skins/ui_manager.c:370
 msgid "Sorts the list by full pathname."
 msgstr "按完整路径"
 
-#: src/skins/ui_manager.c:335 src/skins/ui_manager.c:365
+#: src/skins/ui_manager.c:343 src/skins/ui_manager.c:373
 msgid "By Date"
 msgstr "按日期"
 
-#: src/skins/ui_manager.c:336 src/skins/ui_manager.c:366
+#: src/skins/ui_manager.c:344 src/skins/ui_manager.c:374
 msgid "Sorts the list by modification time."
 msgstr "按修改时间"
 
-#: src/skins/ui_manager.c:339 src/skins/ui_manager.c:369
+#: src/skins/ui_manager.c:347 src/skins/ui_manager.c:377
 msgid "By Track Number"
 msgstr "按音轨号码"
 
-#: src/skins/ui_manager.c:340 src/skins/ui_manager.c:370
+#: src/skins/ui_manager.c:348 src/skins/ui_manager.c:378
 msgid "Sorts the list by track number."
 msgstr "按音轨序号"
 
-#: src/skins/ui_manager.c:343
+#: src/skins/ui_manager.c:351
 msgid "Sort Selected"
 msgstr "排序已选中的"
 
-#: src/skins/ui_manager.c:379
+#: src/skins/ui_manager.c:387
 msgid "File"
 msgstr "文件"
 
-#: src/skins/ui_manager.c:382
+#: src/skins/ui_manager.c:388
+msgid "Help"
+msgstr "帮助"
+
+#: src/skins/ui_manager.c:390
 msgid "Plugin Services"
 msgstr "插件服务"
 
-#: src/skins/ui_manager.c:384 src/skins/ui_manager.c:387
+#: src/skins/ui_manager.c:392 src/skins/ui_manager.c:395
 msgid "View Track Details"
 msgstr "查看音轨信息"
 
-#: src/skins/ui_manager.c:385 src/skins/ui_manager.c:388
+#: src/skins/ui_manager.c:393 src/skins/ui_manager.c:396
 msgid "View track details"
 msgstr "查看音轨信息"
 
-#: src/skins/ui_manager.c:390 src/skins/ui_manager.c:391
+#: src/skins/ui_manager.c:398 src/skins/ui_manager.c:399
 msgid "About Audacious"
 msgstr "关于Audacious"
 
-#: src/skins/ui_manager.c:393
+#: src/skins/ui_manager.c:401
 msgid "Play File"
 msgstr "播放文件"
 
-#: src/skins/ui_manager.c:394
+#: src/skins/ui_manager.c:402
 msgid "Load and play a file"
 msgstr "加载并播放文件"
 
-#: src/skins/ui_manager.c:396
+#: src/skins/ui_manager.c:404
 msgid "Play Location"
 msgstr "播放位置"
 
-#: src/skins/ui_manager.c:397
+#: src/skins/ui_manager.c:405
 msgid "Play media from the selected location"
 msgstr "播放被选中位置的文件"
 
-#: src/skins/ui_manager.c:399
+#: src/skins/ui_manager.c:407
 msgid "Plugin services"
 msgstr "插件服务"
 
-#: src/skins/ui_manager.c:401
+#: src/skins/ui_manager.c:409
 msgid "Preferences"
 msgstr "首选项"
 
-#: src/skins/ui_manager.c:402
+#: src/skins/ui_manager.c:410
 msgid "Open preferences window"
 msgstr "打开首选项窗口"
 
-#: src/skins/ui_manager.c:405
+#: src/skins/ui_manager.c:413
 msgid "Quit Audacious"
 msgstr "退出Audacious"
 
-#: src/skins/ui_manager.c:407 src/skins/ui_manager.c:408
+#: src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
 msgid "Set A-B"
 msgstr "设置A-B"
 
-#: src/skins/ui_manager.c:410 src/skins/ui_manager.c:411
+#: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
 msgid "Clear A-B"
 msgstr "清空A-B"
 
-#: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
+#: src/skins/ui_manager.c:421 src/skins/ui_manager.c:422
 msgid "Jump to Playlist Start"
 msgstr "跳到被选中列表并播放"
 
-#: src/skins/ui_manager.c:419 src/skins/ui_manager.c:420
+#: src/skins/ui_manager.c:427 src/skins/ui_manager.c:428
 msgid "Jump to Time"
 msgstr "跳到时间"
 
-#: src/skins/ui_manager.c:422
+#: src/skins/ui_manager.c:430
 msgid "Queue Toggle"
 msgstr "队列切换"
 
-#: src/skins/ui_manager.c:423
+#: src/skins/ui_manager.c:431
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "启用/禁用播放队列的条目"
 
-#: src/skins/ui_manager.c:426
+#: src/skins/ui_manager.c:434
 msgid "Copy"
 msgstr "复制"
 
-#: src/skins/ui_manager.c:428
+#: src/skins/ui_manager.c:436
 msgid "Cut"
 msgstr "剪切"
 
-#: src/skins/ui_manager.c:430
+#: src/skins/ui_manager.c:438
 msgid "Paste"
 msgstr "粘贴"
 
-#: src/skins/ui_manager.c:437
+#: src/skins/ui_manager.c:445
 msgid "Load"
 msgstr "载入"
 
-#: src/skins/ui_manager.c:442 src/skins/ui_manager.c:463
-#: src/skins/ui_manager.c:478
+#: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
+#: src/skins/ui_manager.c:486
 msgid "Preset"
 msgstr "预设"
 
-#: src/skins/ui_manager.c:443
+#: src/skins/ui_manager.c:451
 msgid "Load preset"
 msgstr "载入预设"
 
-#: src/skins/ui_manager.c:445 src/skins/ui_manager.c:466
-#: src/skins/ui_manager.c:481
+#: src/skins/ui_manager.c:453 src/skins/ui_manager.c:474
+#: src/skins/ui_manager.c:489
 msgid "Auto-load preset"
 msgstr "自动载入预设"
 
-#: src/skins/ui_manager.c:446
+#: src/skins/ui_manager.c:454
 msgid "Load auto-load preset"
 msgstr "载入自动载入预设"
 
-#: src/skins/ui_manager.c:449
+#: src/skins/ui_manager.c:457
 msgid "Load default preset into equalizer"
 msgstr "将默认预设载入到均衡器"
 
-#: src/skins/ui_manager.c:451
+#: src/skins/ui_manager.c:459
 msgid "Zero"
 msgstr "零"
 
-#: src/skins/ui_manager.c:452
+#: src/skins/ui_manager.c:460
 msgid "Set equalizer preset levels to zero"
 msgstr "将均衡器的预设等级设置为零"
 
-#: src/skins/ui_manager.c:454
+#: src/skins/ui_manager.c:462
 msgid "From file"
 msgstr "从文件加载"
 
-#: src/skins/ui_manager.c:455
+#: src/skins/ui_manager.c:463
 msgid "Load preset from file"
 msgstr "从文件加载预设"
 
-#: src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:465
 msgid "From WinAMP EQF file"
 msgstr "从WinAMP EQF文件加载"
 
-#: src/skins/ui_manager.c:458
+#: src/skins/ui_manager.c:466
 msgid "Load preset from WinAMP EQF file"
 msgstr "从WinAMP EQF文件加载预设"
 
-#: src/skins/ui_manager.c:460
+#: src/skins/ui_manager.c:468
 msgid "WinAMP Presets"
 msgstr "WinAMP 预设"
 
-#: src/skins/ui_manager.c:461
+#: src/skins/ui_manager.c:469
 msgid "Import WinAMP presets"
 msgstr "导入WinAMP预设"
 
-#: src/skins/ui_manager.c:464
+#: src/skins/ui_manager.c:472
 msgid "Save preset"
 msgstr "保存预设"
 
-#: src/skins/ui_manager.c:467
+#: src/skins/ui_manager.c:475
 msgid "Save auto-load preset"
 msgstr "保存自动加载预设"
 
-#: src/skins/ui_manager.c:470
+#: src/skins/ui_manager.c:478
 msgid "Save default preset"
 msgstr "保存默认预设"
 
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:480
 msgid "To file"
 msgstr "保存到文件"
 
-#: src/skins/ui_manager.c:473
+#: src/skins/ui_manager.c:481
 msgid "Save preset to file"
 msgstr "保存预设到文件"
 
-#: src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:483
 msgid "To WinAMP EQF file"
 msgstr "保存到WinAMP EQF文件"
 
-#: src/skins/ui_manager.c:476
+#: src/skins/ui_manager.c:484
 msgid "Save preset to WinAMP EQF file"
 msgstr "保存预设到WinAMP EQF文件"
 
-#: src/skins/ui_manager.c:479
+#: src/skins/ui_manager.c:487
 msgid "Delete preset"
 msgstr "删除预设"
 
-#: src/skins/ui_manager.c:482
+#: src/skins/ui_manager.c:490
 msgid "Delete auto-load preset"
 msgstr "删除自动加载预设"
 
-#: src/skins/ui_playlist.c:374
+#: src/skins/ui_playlist.c:244
 msgid "Search entries in active playlist"
 msgstr "从当前播放列表中搜索条目"
 
-#: src/skins/ui_playlist.c:382
+#: src/skins/ui_playlist.c:252
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -4890,88 +3584,52 @@ msgstr ""
 "按部分字段搜索播放列表中的条目。各个字段都可以使用正则表达式，而且是不分大小"
 "字的。如果你不知道何为正则表达式，简单的输入部分你想搜索的文字亦可。"
 
-#: src/skins/ui_playlist.c:397
+#: src/skins/ui_playlist.c:260
+msgid "Title: "
+msgstr "标题："
+
+#: src/skins/ui_playlist.c:267
 msgid "Album: "
 msgstr "专辑："
 
-#: src/skins/ui_playlist.c:404
+#: src/skins/ui_playlist.c:274
 msgid "Artist: "
 msgstr "艺术家："
 
-#: src/skins/ui_playlist.c:411
+#: src/skins/ui_playlist.c:281
 msgid "Filename: "
 msgstr "文件名"
 
-#: src/skins/ui_playlist.c:419
+#: src/skins/ui_playlist.c:289
 msgid "Clear previous selection before searching"
 msgstr "搜索前清空之前的结果"
 
-#: src/skins/ui_playlist.c:422
+#: src/skins/ui_playlist.c:292
 msgid "Automatically toggle queue for matching entries"
 msgstr "自动为区配条目切换队列"
 
-#: src/skins/ui_playlist.c:425
+#: src/skins/ui_playlist.c:295
 msgid "Create a new playlist with matching entries"
 msgstr "用匹配的条目创建新的播放列表"
 
-#: src/skins/ui_playlist.c:942
+#: src/skins/ui_playlist.c:762
 msgid "Audacious Playlist Editor"
 msgstr "Audacious播放列表编辑器"
 
-#: src/skins/ui_playlist.c:1004
+#: src/skins/ui_playlist.c:809
 #, c-format
 msgid "%s (%d of %d)"
 msgstr ""
 
-#: src/skins/ui_skinned_equalizer_slider.c:431
-msgid "31 Hz"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:431
-msgid "63 Hz"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:432
-msgid "125 Hz"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:432
-msgid "250 Hz"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:432
-msgid "500 Hz"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:432
-msgid "1 kHz"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:432
-msgid "2 kHz"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:433
-msgid "4 kHz"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:433
-msgid "8 kHz"
-msgstr ""
-
-#: src/skins/ui_skinned_equalizer_slider.c:433
-msgid "16 kHz"
-msgstr ""
-
-#: src/skins/ui_skinselector.c:180
+#: src/skins/ui_skinselector.c:162
 msgid "Archived Winamp 2.x skin"
 msgstr "已打包的Winamp 2.x主题"
 
-#: src/skins/ui_skinselector.c:185
+#: src/skins/ui_skinselector.c:167
 msgid "Unarchived Winamp 2.x skin"
 msgstr "未打包的Winamp 2.x主题"
 
-#: src/skins/util.c:875
+#: src/skins/util.c:772
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "无法创建目录(%s): %s\n"
@@ -5022,6 +3680,14 @@ msgstr "速度"
 #: src/sndstretch/sndstretch_xmms.c:361
 msgid "Pitch"
 msgstr "音调"
+
+#: src/sndstretch/sndstretch_xmms.c:362
+msgid "Scale"
+msgstr "缩放"
+
+#: src/sndstretch/sndstretch_xmms.c:363
+msgid "Options"
+msgstr "选项"
 
 #: src/sndstretch/sndstretch_xmms.c:382
 msgid "SndStretch - Configuration"
@@ -5095,13 +3761,9 @@ msgstr ""
 msgid "Commands"
 msgstr "指令"
 
-#: src/song_change/song_change.c:554
+#: src/song_change/song_change.c:555
 msgid "Song Change"
 msgstr "歌曲改变"
-
-#: src/spectrum/spectrum.c:87
-msgid "Spectrum Analyzer"
-msgstr "光谱分析器"
 
 #: src/statusicon/statusicon.c:378
 msgid "About Status Icon Plugin"
@@ -5182,57 +3844,6 @@ msgstr "About Extra Stereo插件"
 msgid "Configure Extra Stereo"
 msgstr "设置Extra Stereo"
 
-#: src/streambrowser/gui/streambrowser_win.c:74
-msgid "Search:"
-msgstr "搜索："
-
-#: src/streambrowser/gui/streambrowser_win.c:93
-#: src/streambrowser/gui/streambrowser_win.c:368
-msgid "Add Bookmark"
-msgstr "添加书签"
-
-#: src/streambrowser/gui/streambrowser_win.c:320
-msgid "Stream name"
-msgstr "流名称"
-
-#: src/streambrowser/gui/streambrowser_win.c:327
-msgid "Now playing"
-msgstr "正在播放"
-
-#: src/streambrowser/gui/streambrowser_win.c:365
-msgid "Remove Bookmark"
-msgstr "删除书签"
-
-#: src/streambrowser/streambrowser.c:329
-msgid "About Stream Browser"
-msgstr "关于流查看器"
-
-#: src/streambrowser/streambrowser.c:330
-msgid ""
-"Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
-"Team.\n"
-"\n"
-"This is a simple stream browser that includes the most popular streaming "
-"directories.\n"
-"Many thanks to the Streamtuner developers <http://www.nongnu.org/"
-"streamtuner>,\n"
-"\tand of course to the whole Audacious community.\n"
-"\n"
-"Also thank you Tony Vroon for mentoring & guiding me, again.\n"
-"\n"
-"This was a Google Summer of Code 2008 project."
-msgstr ""
-"版权所有 (c) 2008, Calin Crisan <ccrisan@gmail.com>及Audacious开发小组。\n"
-"\n"
-"This is a simple stream browser that includes the most popular streaming "
-"directories.\n"
-"非常感谢Streamtuner的开发者<http://www.nongnu.org/streamtuner>,\n"
-"还Audacious社区全体\n"
-"\n"
-"同时亦非常感谢Tony Vroon对我的帮助和指导。\n"
-"\n"
-"Google Summer of Code 2008 project."
-
 #: src/tonegen/tonegen.c:48
 msgid "About Tone Generator"
 msgstr "关于Tone Generator"
@@ -5272,7 +3883,7 @@ msgstr "标题格式"
 msgid "Ogg Vorbis Tags"
 msgstr "Ogg Vorbis标签"
 
-#: src/vorbis/configure.c:68
+#: src/vorbis/configure.c:69
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ogg Vorbis音频播放设置"
 
@@ -5351,6 +3962,1066 @@ msgstr ""
 "\n"
 "插件部分代码来自Miles Egan\n"
 "登录Wavpack网站http://www.wavpack.com/\n"
+
+#~ msgid "About "
+#~ msgstr "关于"
+
+#~ msgid ""
+#~ "\n"
+#~ "Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
+#~ "\n"
+#~ "This plugin is released under the terms and conditions of the GNU LGPL.\n"
+#~ "See http://www.gnu.org/licenses/lgpl.html for details.\n"
+#~ "\n"
+#~ "This plugin uses the AdPlug library, which is copyright (C) Simon Peter, "
+#~ "et al.\n"
+#~ "Linked AdPlug library version: "
+#~ msgstr ""
+#~ "\n"
+#~ "版权所有 (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
+#~ "\n"
+#~ "This plugin is released under the terms and conditions of the GNU LGPL.\n"
+#~ "详情请登录http://www.gnu.org/licenses/lgpl.html.\n"
+#~ "\n"
+#~ "此插件基于AdPlug库, 版权所有 (C) Simon Peter, et al.\n"
+#~ "当前AdPlug版本: "
+
+#~ msgid "AdPlug :: Configuration"
+#~ msgstr "AdPlug :: 设置"
+
+#~ msgid "Sound quality"
+#~ msgstr "音质"
+
+#~ msgid "Resolution"
+#~ msgstr "分辨率"
+
+#~ msgid "Channels"
+#~ msgstr "声道"
+
+#~ msgid ""
+#~ "Setting stereo is not recommended, unless you need to. This won't add any "
+#~ "stereo effects to the sound - OPL2 is just mono - but eats up more CPU "
+#~ "power!"
+#~ msgstr ""
+#~ "设置为立体音是不推荐的做法，除非你知道自己在做什么。此选项不会带来任何立体"
+#~ "音效果（OPL2只能是单声道的），相反只会占用更多的CPU!"
+
+#~ msgid "Frequency"
+#~ msgstr "频率"
+
+#~ msgid "Detect songend"
+#~ msgstr "检测歌曲结尾"
+
+#~ msgid ""
+#~ "If enabled, XMMS will detect a song's ending, stop it and advance in the "
+#~ "playlist. If disabled, XMMS won't take notice of a song's ending and loop "
+#~ "it all over again and again."
+#~ msgstr ""
+#~ "如果启用，XMMS将尝试测试歌曲的结尾，并在结束时，自动播放列表中的下一首歌"
+#~ "曲。\n"
+#~ "如果禁用，XMMS将因无法得知歌曲的结尾而不断重复播放同一首歌曲。"
+
+#~ msgid "Formats"
+#~ msgstr "格式"
+
+#~ msgid "Format selection"
+#~ msgstr "格式选择"
+
+#~ msgid "Format"
+#~ msgstr "格式"
+
+#~ msgid "Extension"
+#~ msgstr "后缀"
+
+#~ msgid ""
+#~ "Selected file types will be recognized and played back by this plugin. "
+#~ "Deselected types will be ignored to make room for other plugins to play "
+#~ "these files."
+#~ msgstr ""
+#~ "被选中文件类型会被识别并被此插件播放。\n"
+#~ "未选中的，则会被忽略并由其它插件播放"
+
+#~ msgid "AdPlug :: File Info"
+#~ msgstr "AdPlug :: 文件信息"
+
+#~ msgid "Author: "
+#~ msgstr "作者："
+
+#~ msgid "File Type: "
+#~ msgstr "文件类型："
+
+#~ msgid "Subsongs: "
+#~ msgstr "子歌曲："
+
+#~ msgid "Instruments: "
+#~ msgstr "乐器："
+
+#~ msgid "Orders: "
+#~ msgstr "顺序："
+
+#~ msgid "Patterns: "
+#~ msgstr "格调："
+
+#~ msgid "Song"
+#~ msgstr "歌曲"
+
+#~ msgid "Instrument name"
+#~ msgstr "乐器名"
+
+#~ msgid "Song message"
+#~ msgstr "歌曲信息"
+
+#~ msgid "Subsong selection"
+#~ msgstr "子歌曲选项"
+
+#~ msgid "Order: "
+#~ msgstr "顺序："
+
+#~ msgid "Pattern: "
+#~ msgstr "格调："
+
+#~ msgid "Row: "
+#~ msgstr "行："
+
+#~ msgid "Speed: "
+#~ msgstr "速度："
+
+#~ msgid "Timer: "
+#~ msgstr "计时："
+
+#~ msgid "About XMMS Alarm"
+#~ msgstr "关于XMMS闹钟"
+
+#~ msgid "XMMS Alarm"
+#~ msgstr "XMMS闹钟"
+
+#~ msgid ""
+#~ "An XMMS plugin which can be used\n"
+#~ "to start playing at a certain time.\n"
+#~ "\n"
+#~ "Send all complaints to:\n"
+#~ "Adam Feakin <adamf@snika.uklinux.net>\n"
+#~ "Daniel Stodden <stodden@in.tum.de>\n"
+#~ "\n"
+#~ "http://www.snika.uklinux.net/xmms-alarm/"
+#~ msgstr ""
+#~ "用于在设定时间启动播放的XMMS插件\n"
+#~ "\n"
+#~ "问题反馈:\n"
+#~ "Adam Feakin <adamf@snika.uklinux.net>\n"
+#~ "Daniel Stodden <stodden@in.tum.de>\n"
+#~ "\n"
+#~ "http://www.snika.uklinux.net/xmms-alarm/"
+
+#~ msgid "Alarm"
+#~ msgstr "闹钟"
+
+#~ msgid "This is your wakeup call."
+#~ msgstr "此为起床闹钟"
+
+#~ msgid "Select Playlist"
+#~ msgstr "选择播放列表"
+
+#~ msgid "Sorry"
+#~ msgstr "抱歉"
+
+#~ msgid "Warning"
+#~ msgstr "警告"
+
+#~ msgid ""
+#~ "For safety reasons the \"quiet\" time must be at least 65 seconds longer "
+#~ "than the fading time, it must also be more than 10 seconds.  This "
+#~ "basically means that there is a bug in the code and until I find a way of "
+#~ "really fixing it this message will appear :)\n"
+#~ "\n"
+#~ "Your fading settings have NOT been saved\n"
+#~ "\n"
+#~ "--\n"
+#~ "Adam"
+#~ msgstr ""
+#~ "鉴于安全理由，\"静音\"时间至少要比渐退时间长65秒，其本身亦至少大于10秒。\n"
+#~ "这基本上是代码的问题，同时在我找到解决方法前此信息还会出现的 :)\n"
+#~ "\n"
+#~ "你的渐退设置未保存\n"
+#~ "\n"
+#~ "--\n"
+#~ "Adam"
+
+#~ msgid "Oh Well"
+#~ msgstr "不错嘛"
+
+#~ msgid "Alarm Settings"
+#~ msgstr "闹钟设置"
+
+#~ msgid "Time"
+#~ msgstr "时间"
+
+#~ msgid "hours"
+#~ msgstr "小时"
+
+#~ msgid "h"
+#~ msgstr "点"
+
+#~ msgid "minutes"
+#~ msgstr "分"
+
+#~ msgid "Quiet after:"
+#~ msgstr "静音时间："
+
+#~ msgid "Alarm at (default):"
+#~ msgstr "响闹钟(默认)："
+
+#~ msgid "Choose the days for the alarm to come on"
+#~ msgstr "选择响闹钟的日期"
+
+#~ msgid "Day"
+#~ msgstr "日期"
+
+#~ msgid "Tuesday"
+#~ msgstr "週二"
+
+#~ msgid "Wednesday"
+#~ msgstr "週三"
+
+#~ msgid "Thursday"
+#~ msgstr "週四"
+
+#~ msgid "Friday"
+#~ msgstr "週五"
+
+#~ msgid "Saturday"
+#~ msgstr "週末"
+
+#~ msgid "Sunday"
+#~ msgstr "週日"
+
+#~ msgid "Monday"
+#~ msgstr "週一"
+
+#~ msgid "Days"
+#~ msgstr "日期"
+
+#~ msgid "Fading"
+#~ msgstr "渐退"
+
+#~ msgid "Volume"
+#~ msgstr "音量"
+
+#~ msgid "Current"
+#~ msgstr "当前"
+
+#~ msgid "reset to current output volume"
+#~ msgstr "重置当前输出音量"
+
+#~ msgid "Start at"
+#~ msgstr "开始于"
+
+#~ msgid "%"
+#~ msgstr "%"
+
+#~ msgid "Final"
+#~ msgstr "完成于"
+
+#~ msgid "Additional Command"
+#~ msgstr "附加指令"
+
+#~ msgid "enable"
+#~ msgstr "启用"
+
+#~ msgid "Playlist (optional)"
+#~ msgstr "播放列表(可选)"
+
+#~ msgid "Browse..."
+#~ msgstr "浏览..."
+
+#~ msgid "Reminder"
+#~ msgstr "提醒器"
+
+#~ msgid "Use reminder"
+#~ msgstr "使用提醒器"
+
+#~ msgid "What do these options mean?"
+#~ msgstr "这些选项有什么用？"
+
+#~ msgid ""
+#~ "\n"
+#~ "Time\n"
+#~ "  Alarm at: \n"
+#~ "    The time for the alarm to come on.\n"
+#~ "\n"
+#~ "  Quiet After: \n"
+#~ "    Stop alarm after this amount of time.\n"
+#~ "       (if the wakeup dialog is not closed)\n"
+#~ "\n"
+#~ "\n"
+#~ "Days\n"
+#~ "  Day:\n"
+#~ "    Select the days for the alarm to activate.\n"
+#~ "\n"
+#~ "  Time:\n"
+#~ "    Choose the time for the alarm on each day,\n"
+#~ "    or select the toggle button to use the default\n"
+#~ "    time.\n"
+#~ "\n"
+#~ "\n"
+#~ "Volume\n"
+#~ "  Fading: \n"
+#~ "    Fade the volume up to the chosen volume \n"
+#~ "    for this amount of time.\n"
+#~ "\n"
+#~ "  Start at: \n"
+#~ "    Start fading from this volume.\n"
+#~ "\n"
+#~ "  Final: \n"
+#~ "    The volume to stop fading at.  If the fading\n"
+#~ "    time is 0 then set volume to this and start\n"
+#~ "    playing.\n"
+#~ "\n"
+#~ "\n"
+#~ "Options:\n"
+#~ "  Additional Command:\n"
+#~ "    Run this command at the alarm time.\n"
+#~ "\n"
+#~ "  Playlist: \n"
+#~ "    Load this playlist for playing songs from \n"
+#~ "    (must have .m3u extension).  If no playlist\n"
+#~ "    is given then the songs which are currently\n"
+#~ "    in the list will be used.\n"
+#~ "    The URL of an mp3/ogg stream can also be\n"
+#~ "    entered here, but loading of playlists from\n"
+#~ "    URLs is not currently supported by xmms.\n"
+#~ "\n"
+#~ "  Reminder:\n"
+#~ "    Display a reminder when the alarm goes off,\n"
+#~ "    type the reminder in the box and turn on the\n"
+#~ "    toggle button if you want it to be shown.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "时间\n"
+#~ "  响闹钟: \n"
+#~ "    闹钟启动时间。\n"
+#~ "\n"
+#~ "  静音时间: \n"
+#~ "    在此时间之后停止播放。\n"
+#~ "       (如果起床对话框未关闭)\n"
+#~ "\n"
+#~ "\n"
+#~ "日期\n"
+#~ "  日期:\n"
+#~ "    选择启用闹钟的日期\n"
+#~ "\n"
+#~ "  时间:\n"
+#~ "    选择每天闹钟响的时间,\n"
+#~ "    或者点击开关按钮使用默认时间\n"
+#~ "\n"
+#~ "\n"
+#~ "音量\n"
+#~ "  渐退: \n"
+#~ "    在指定时间要把音量消退到指定音量。\n"
+#~ "\n"
+#~ "  开始于: \n"
+#~ "    从此音量开始消退\n"
+#~ "\n"
+#~ "  完成于: \n"
+#~ "    到达此音量时停止。\n"
+#~ "    如果渐退时间为0，则直接设置为此音量后开始播放。\n"
+#~ "\n"
+#~ "\n"
+#~ "选项:\n"
+#~ "  附加指令:\n"
+#~ "    在闹钟时间执行此指令。\n"
+#~ "\n"
+#~ "  播放列表:\n"
+#~ "    从播放列表加载要播放的文件(仅支持.m3u文件) \n"
+#~ "    如果未指定播放列表则使用当前的列表。\n"
+#~ "    此处亦可使用远程的mp3/ogg流URL地址，\n"
+#~ "    但现时暂未支持从播放列表中加载URL地址\n"
+#~ "\n"
+#~ "  提醒器:\n"
+#~ "    当闹钟停止后显示提醒器，\n"
+#~ "    如果你想显示提醒器，输出要用的提醒器并打开相应的开关按钮\n"
+
+#~ msgid "Your reminder for today is.."
+#~ msgstr "你今天的提醒器是.."
+
+#~ msgid "Thankyou"
+#~ msgstr "谢谢"
+
+#~ msgid "Pairing request for '%s'"
+#~ msgstr "正在为'%s'配对请求"
+
+#~ msgid "Authorization request for %s"
+#~ msgstr "'%s'要求认证"
+
+#~ msgid "Created bonding with %s"
+#~ msgstr "正在绑定%s"
+
+#~ msgid "Removed bonding with %s"
+#~ msgstr "正在解除%s"
+
+#~ msgid "Device has been switched off"
+#~ msgstr "设备已关闭"
+
+#~ msgid "Device has been made non-discoverable"
+#~ msgstr "设备不可连接"
+
+#~ msgid "Device has been made connectable"
+#~ msgstr "设备可连接"
+
+#~ msgid "Device has been made discoverable"
+#~ msgstr "设备无法恢复"
+
+#~ msgid "Device has been made limited discoverable"
+#~ msgstr "设备部分可恢复"
+
+#~ msgid "Device has been switched into pairing mode"
+#~ msgstr "设备已切转配对模式"
+
+#~ msgid "Bluetooth headset support plugin"
+#~ msgstr "蓝牙耳机支持插件"
+
+#~ msgid ""
+#~ "Bluetooth headset support\n"
+#~ "Copyright (c) 2008 Paula Stanciu paula.stanciu@gmail.com\n"
+#~ "This was a GSoC 2008 Project - Many thanks to my mentor Tony Vroon and "
+#~ "the Audacious team\n"
+#~ " \n"
+#~ "In order to use the AVRCP you need the uinput module loaded into the "
+#~ "kernel\n"
+#~ "The headset keys will be recognized as normal mutimedia keys and \n"
+#~ "can be configured using the Audacious Global Hotkey plugin or ohter "
+#~ "tools \n"
+#~ "provided by your window manager\n"
+#~ msgstr ""
+#~ "Bluetooth耳机支持\n"
+#~ "版权所有 (c) 2008 Paula Stanciu paula.stanciu@gmail.com\n"
+#~ "GSoC 2008 Project - 非常感谢我的导师Tony Vroon及Audacious开发小组\n"
+#~ " \n"
+#~ "要使用AVRCP，你必需为内核加载uinput模块。\n"
+#~ "耳机上的键将会被识别为一般的多媒体键，\n"
+#~ "你可以通过Audacious全局热键插件或窗口管理器提供的工具进行配置。\n"
+
+#~ msgid "Producer"
+#~ msgstr "生产商"
+
+#~ msgid "Available Headsets"
+#~ msgstr "可用耳机"
+
+#~ msgid "Current Headset"
+#~ msgstr "当前耳机"
+
+#~ msgid "_Connect"
+#~ msgstr "连接(_C)"
+
+#~ msgid "Class"
+#~ msgstr "类型"
+
+#~ msgid "Address:"
+#~ msgstr "地址："
+
+#~ msgid "Bonding finish!"
+#~ msgstr "绑定完成！"
+
+#~ msgid "No devices found!"
+#~ msgstr "未找到设备！"
+
+#~ msgid "Scanning..."
+#~ msgstr "正在扫描..."
+
+#~ msgid "Pairing..."
+#~ msgstr "正在配对..."
+
+#~ msgid "Rescan"
+#~ msgstr "重新扫描"
+
+#~ msgid "Playback->Play"
+#~ msgstr "回放->播放"
+
+#~ msgid "Playback->Stop"
+#~ msgstr "回放->停止"
+
+#~ msgid "Playback->Pause"
+#~ msgstr "回放->暂停"
+
+#~ msgid "Playback->Prev"
+#~ msgstr "回放->前一首"
+
+#~ msgid "Playback->Next"
+#~ msgstr "回放->下一首"
+
+#~ msgid "Playback->Eject"
+#~ msgstr "回放->弹出"
+
+#~ msgid "Playlist->Repeat"
+#~ msgstr "列表->重复"
+
+#~ msgid "Playlist->Shuffle"
+#~ msgstr "列表->随机"
+
+#~ msgid "Volume->Up_5"
+#~ msgstr "音量->+5"
+
+#~ msgid "Volume->Down_5"
+#~ msgstr "音量->-5"
+
+#~ msgid "Volume->Up_10"
+#~ msgstr "音量->+10"
+
+#~ msgid "Volume->Down_10"
+#~ msgstr "音量->-10"
+
+#~ msgid "Volume->Mute"
+#~ msgstr "音量->静音"
+
+#~ msgid "Window->Main"
+#~ msgstr "窗口->主界面"
+
+#~ msgid "Window->Playlist"
+#~ msgstr "窗口->播放列表"
+
+#~ msgid "Window->Equalizer"
+#~ msgstr "窗口->均衡器"
+
+#~ msgid "Window->JumpToFile"
+#~ msgstr "窗口->跳到文件"
+
+#~ msgid ""
+#~ "event-device-plugin: unable to open device file %s , skipping this "
+#~ "device; check that the file exists and that you have read permission for "
+#~ "it\n"
+#~ msgstr ""
+#~ "event-device-plugin: 无法打开设备文件 %s，忽略此设备；请检查文件是否存在及"
+#~ "你是否对其有读取权限\n"
+
+#~ msgid ""
+#~ "event-device-plugin: unable to create a io_channel for device file %s ,"
+#~ "skipping this device\n"
+#~ msgstr "event-device-plugin: 无法为设备文件 %s 创建io_channel，忽略此设备\n"
+
+#~ msgid ""
+#~ "event-device-plugin: unable to open /proc/bus/input/devices , automatic "
+#~ "detection of event devices won't work.\n"
+#~ msgstr ""
+#~ "event-device-plugin: 无法打开/proc/bus/input/devices, 自动检测event设备无"
+#~ "法工作。\n"
+
+#~ msgid ""
+#~ "event-device-plugin: unable to open a io_channel for /proc/bus/input/"
+#~ "devices , automatic detection of event devices won't work.\n"
+#~ msgstr ""
+#~ "event-device-plugin: 无法为/proc/bus/input/devices打开io_channel，自动检测"
+#~ "event设备无法工作。\n"
+
+#~ msgid ""
+#~ "event-device-plugin: an error occurred while reading /proc/bus/input/"
+#~ "devices , automatic detection of event devices won't work.\n"
+#~ msgstr ""
+#~ "event-device-plugin: 读取/proc/bus/input/devices时发生错误，自动检测event"
+#~ "设备无法工作。\n"
+
+#~ msgid "event-device-plugin: device %s not found in /dev/input , skipping.\n"
+#~ msgstr "event-device-plugin: /dev/input中不存在设备%s，已忽略。\n"
+
+#~ msgid ""
+#~ "event-device-plugin: unable to load config file %s , default settings "
+#~ "will be used.\n"
+#~ msgstr "event-device-plugin: 无法加载配置文件 %s , 将使用默认设置。\n"
+
+#~ msgid ""
+#~ "event-device-plugin: incomplete information in config file for device \"%s"
+#~ "\" , skipping.\n"
+#~ msgstr "event-device-plugin: 设备\"%s\"在配置文件中的信息不完整，已忽略。\n"
+
+#~ msgid ""
+#~ "event-device-plugin: configuration, unable to get is_active value for "
+#~ "device \"%s\", skipping it.\n"
+#~ msgstr ""
+#~ "event-device-plugin: 配置文件，无法取得设备\"%s\" is_active的值, 已忽略.\n"
+
+#~ msgid ""
+#~ "event-device-plugin: unable to access local directory %s , settings will "
+#~ "not be saved.\n"
+#~ msgstr "event-device-plugin: 无法访问目录 %s , 设置无法保存。\n"
+
+#~ msgid ""
+#~ "event-device-plugin: configuration, unable to get filename value for "
+#~ "device \"%s\", skipping it.\n"
+#~ msgstr ""
+#~ "event-device-plugin: 配置文件，无法取得设备\"%s\"的文件名, 已忽略。\n"
+
+#~ msgid ""
+#~ "event-device-plugin: configuration, unable to get phys value for device "
+#~ "\"%s\", skipping it.\n"
+#~ msgstr ""
+#~ "event-device-plugin: 配置文件, 无法取得设备\"%s\"的phys值，已忽略。\n"
+
+#~ msgid ""
+#~ "event-device-plugin: configuration, unable to get is_custom value for "
+#~ "device \"%s\", skipping it.\n"
+#~ msgstr ""
+#~ "event-device-plugin: 配置文件，无法取得设备\"%s\" is_custon的值, 已忽"
+#~ "略。\n"
+
+#~ msgid ""
+#~ "event-device-plugin: configuration, unexpected value for device \"%s\", "
+#~ "skipping it.\n"
+#~ msgstr "event-device-plugin: 配置文件, 设备\"%s\"的值非法, 已忽略。\n"
+
+#~ msgid "Detected"
+#~ msgstr "检测到"
+
+#~ msgid "Custom"
+#~ msgstr "定制"
+
+#~ msgid "Not Detected"
+#~ msgstr "未检测到"
+
+#~ msgid "Information"
+#~ msgstr "信息"
+
+#~ msgid ""
+#~ "Cannot open bindings window for a not-detected device.\n"
+#~ "Ensure that the device has been correctly plugged in."
+#~ msgstr ""
+#~ "无法为未检测到的设备打开绑定窗口。\n"
+#~ "请重新确认设备已正确连接。"
+
+#~ msgid ""
+#~ "Unable to open selected device.\n"
+#~ "Please check read permissions on device file."
+#~ msgstr ""
+#~ "无法打开选中的设备。\n"
+#~ "请检查设备文件的权限。"
+
+#~ msgid "EvDev-Plug - Add custom device"
+#~ msgstr "EvDev-Plug - 添加自定义设备"
+
+#~ msgid ""
+#~ "EvDev-Plug tries to automatically detect and update information about\n"
+#~ "event devices available on the system.\n"
+#~ "However, if auto-detect doesn't work for your system, or you have event\n"
+#~ "devices in a non-standard location (currently they're only searched in\n"
+#~ "/dev/input/ ), you may want to add a custom device, explicitly "
+#~ "specifying\n"
+#~ "name and device file."
+#~ msgstr ""
+#~ "EvDev-Plug正在尝试自动检测和更新系统上可用的event设备信息\n"
+#~ "如果自动检测失败，或者你的event设备不在标准位置（现在只在/dev/input/中搜"
+#~ "索，\n"
+#~ "你就要手动添加设备，并明确指定名称及设备文件。"
+
+#~ msgid "Device name:"
+#~ msgstr "设备名："
+
+#~ msgid "Device file:"
+#~ msgstr "设备文件："
+
+#~ msgid "(custom)"
+#~ msgstr "(定制)"
+
+#~ msgid ""
+#~ "Please specify both name and filename.\n"
+#~ "Filename must be specified with absolute path."
+#~ msgstr ""
+#~ "请指定名称及文件名。\n"
+#~ "文件名必需为绝对路径。"
+
+#~ msgid ""
+#~ "Do you want to remove the existing configuration for selected device?\n"
+#~ msgstr "你要删除选中设备现有的配置文件吗？\n"
+
+#~ msgid "Do you want to remove the selected custom device?\n"
+#~ msgstr "你要删除选中的自定义设备吗？\n"
+
+#~ msgid "EvDev-Plug - Configuration"
+#~ msgstr "EvDev-Plug - 设置"
+
+#~ msgid "Active"
+#~ msgstr "已激活"
+
+#~ msgid "Status"
+#~ msgstr "状态"
+
+#~ msgid "Device Name"
+#~ msgstr "设备名"
+
+#~ msgid "Device File"
+#~ msgstr "设备文件"
+
+#~ msgid "Device Address"
+#~ msgstr "设备地址"
+
+#~ msgid "_Bindings"
+#~ msgstr "绑定(_B)"
+
+#~ msgid ""
+#~ "Press a key of your device to bind it;\n"
+#~ "if no key is pressed in five seconds, this window\n"
+#~ "will close without binding changes."
+#~ msgstr ""
+#~ "请在设备上按下你要绑定的键；如果5秒内未无操作，窗口将自动关闭并取消绑定。"
+
+#~ msgid "EvDev-Plug - Bindings Configuration"
+#~ msgstr "EvDev-Plug - 绑定设置"
+
+#~ msgid "<b>Name: </b>"
+#~ msgstr "<b>名称：</b>"
+
+#~ msgid "<b>Filename: </b>"
+#~ msgstr "<b>文件名：</b>"
+
+#~ msgid "<b>Phys.Address: </b>"
+#~ msgstr "<b>物理地址：</b>"
+
+#~ msgid "EvDev-Plug - about"
+#~ msgstr "EvDev-Plug - 关于"
+
+#~ msgid ""
+#~ "\n"
+#~ "player remote control via event devices\n"
+#~ "http://www.develia.org/projects.php?p=audacious#evdevplug\n"
+#~ "\n"
+#~ "written by Giacomo Lozito\n"
+#~ msgstr ""
+#~ "\n"
+#~ "event设备远程控制播放器\n"
+#~ "http://www.develia.org/projects.php?p=audacious#evdevplug\n"
+#~ "\n"
+#~ "作者： Giacomo Lozito\n"
+
+#~ msgid "This LADSPA plugin has no user controls"
+#~ msgstr "LADSPA插件未被其它人所用"
+
+#~ msgid "Name"
+#~ msgstr "名字"
+
+#~ msgid "UID"
+#~ msgstr "UID"
+
+#~ msgid "Installed plugins"
+#~ msgstr "已安装插件"
+
+#~ msgid "Running plugins"
+#~ msgstr "运行中的插件"
+
+#~ msgid "Add"
+#~ msgstr "添加"
+
+#~ msgid "Remove"
+#~ msgstr "删除"
+
+#~ msgid "LADSPA Plugin Catalog"
+#~ msgstr "LDASPA插件分类"
+
+#~ msgid "About LIRC Audacious Plugin"
+#~ msgstr "关于LIRC Audacious插件"
+
+#~ msgid "LIRC Plugin "
+#~ msgstr "LIRC插件"
+
+#~ msgid ""
+#~ "\n"
+#~ "A simple plugin that lets you control\n"
+#~ "Audacious using the LIRC remote control daemon\n"
+#~ "\n"
+#~ "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+#~ "from the XMMS LIRC plugin by:\n"
+#~ "Carl van Schaik <carl@leg.uct.ac.za>\n"
+#~ "Christoph Bartelmus <xmms@bartelmus.de>\n"
+#~ "Andrew O. Shadoura <bugzilla@tut.by>\n"
+#~ "You can get LIRC information at:\n"
+#~ "http://lirc.org"
+#~ msgstr ""
+#~ "\n"
+#~ "让你能够通过LIRC控制Audacious的小插件。\n"
+#~ "由Tony Vroon <chainsaw@gentoo.org>用XMMS LIRC插件为Audacious进行移植。\n"
+#~ "XMMS LIRC插件作者:\n"
+#~ "Carl van Schaik <carl@leg.uct.ac.za>\n"
+#~ "Christoph Bartelmus <xmms@bartelmus.de>\n"
+#~ "Andrew O. Shadoura <bugzilla@tut.by>\n"
+#~ "你可以在http://lirc.org上找到更多关于LIRC的信息"
+
+#~ msgid "LIRC plugin settings"
+#~ msgstr "LIRC插件设置"
+
+#~ msgid "Reconnect to LIRC server"
+#~ msgstr "重新连接到LIRC服务器"
+
+#~ msgid "Timeout before reconnecting (seconds): "
+#~ msgstr "超时后尝试重新连接(秒):"
+
+#~ msgid "Reconnect"
+#~ msgstr "重新连接"
+
+#~ msgid "Connection"
+#~ msgstr "连接"
+
+#~ msgid "%s: could not init LIRC support\n"
+#~ msgstr "%s: 无法初始化LIRC服务\n"
+
+#~ msgid ""
+#~ "%s: could not read LIRC config file\n"
+#~ "%s: please read the documentation of LIRC\n"
+#~ "%s: how to create a proper config file\n"
+#~ msgstr ""
+#~ "%s: 未能读取LIRC的设置文件\n"
+#~ "%s: 请阅读LIRC相关文档\n"
+#~ "%s: 并创建正确的设置文件\n"
+
+#~ msgid "%s: trying to reconnect...\n"
+#~ msgstr "%s: 正尝试重新连接...\n"
+
+#~ msgid "%s: unknown command \"%s\"\n"
+#~ msgstr "%s: 未知指令 \"%s\"\n"
+
+#~ msgid "%s: disconnected from LIRC\n"
+#~ msgstr "%s: 已从LIRC上断开连接\n"
+
+#~ msgid "%s: will try reconnect every %d seconds...\n"
+#~ msgstr "%s: 尝试每%d秒重新连接一次...\n"
+
+#~ msgid "ModPlug Configuration"
+#~ msgstr "ModPlug设置"
+
+#~ msgid "Mono (downmix)"
+#~ msgstr "单音道(downmix)"
+
+#~ msgid "Nearest (fastest)"
+#~ msgstr "最接近(最快)"
+
+#~ msgid "Linear (fast)"
+#~ msgstr "线性(快速)"
+
+#~ msgid "Spline (good quality)"
+#~ msgstr "Spline(高质量)"
+
+#~ msgid "8-tap Fir (extremely high quality)"
+#~ msgstr "8-tap Fir(最高质量)"
+
+#~ msgid "Sampling Rate"
+#~ msgstr "取样率"
+
+#~ msgid "Enable"
+#~ msgstr "启用"
+
+#~ msgid "Depth"
+#~ msgstr "深度"
+
+#~ msgid "Delay"
+#~ msgstr "延时"
+
+#~ msgid "Reverb"
+#~ msgstr "余响"
+
+#~ msgid "Amount"
+#~ msgstr "总量"
+
+#~ msgid "Range"
+#~ msgstr "范围"
+
+#~ msgid "Bass Boost"
+#~ msgstr "低音增强"
+
+#~ msgid ""
+#~ "Note:  Setting the preamp\n"
+#~ "too high may cause clipping\n"
+#~ "(annoying clicks and pops)!"
+#~ msgstr "注意： 前置放大器的值太高会导致削波!"
+
+#~ msgid "Effects"
+#~ msgstr "音效"
+
+#~ msgid "Use Filename as Song Title"
+#~ msgstr "用文件名作为歌曲标题"
+
+#~ msgid "Fast Playlist Info"
+#~ msgstr "快速播放列表信息"
+
+#~ msgid "Noise Reduction"
+#~ msgstr "降噪"
+
+#~ msgid "Play Amiga MOD"
+#~ msgstr "播放Amiga MOD"
+
+#~ msgid "Don't loop"
+#~ msgstr "不要循环"
+
+#~ msgid "Loop"
+#~ msgstr "循环"
+
+#~ msgid "time(s)"
+#~ msgstr "时间(s)"
+
+#~ msgid "Loop forever"
+#~ msgstr "无限循环"
+
+#~ msgid "Looping"
+#~ msgstr "循环"
+
+#~ msgid "MOD Info"
+#~ msgstr "MOD信息"
+
+#~ msgid ""
+#~ "Filename:\n"
+#~ "Title:\n"
+#~ "Type:\n"
+#~ "Length:\n"
+#~ "Speed:\n"
+#~ "Tempo:\n"
+#~ "Samples:\n"
+#~ "Instruments:\n"
+#~ "Patterns:\n"
+#~ "Channels:"
+#~ msgstr ""
+#~ "文件名:\n"
+#~ "标题:\n"
+#~ "类型:\n"
+#~ "长度:\n"
+#~ "速度:\n"
+#~ "节奏:\n"
+#~ "取样:\n"
+#~ "乐器:\n"
+#~ "格调:\n"
+#~ "声道:"
+
+#~ msgid "Samples"
+#~ msgstr "取样"
+
+#~ msgid "Instruments"
+#~ msgstr "乐器"
+
+#~ msgid "Message"
+#~ msgstr "信息"
+
+#~ msgid "Modplug Input Plugin for Audacious ver"
+#~ msgstr "Audacious的Modplug输入插件"
+
+#~ msgid ""
+#~ "\n"
+#~ "Modplug sound engine written by Olivier Lapicque.\n"
+#~ "XMMS interface for Modplug by Kenton Varda.\n"
+#~ "(c)2000 Olivier Lapicque and Kenton Varda.\n"
+#~ "Updates and maintenance by Konstanty Bialkowski.\n"
+#~ "Ported to BMP by Theofilos Intzoglou."
+#~ msgstr ""
+#~ "\n"
+#~ "Modplug声音引擎作者：Olivier Lapicque。\n"
+#~ "Modplug的XMMS接口作者是：Kenton Varda.\n"
+#~ "版权所有 (c) 2000 Olivier Lapicque及Kenton Varda.\n"
+#~ "更新及维护：Konstanty Bialkowski.\n"
+#~ "BMP的移植：Theofilos Intzoglou."
+
+#~ msgid "About Modplug"
+#~ msgstr "关于Modplug"
+
+#~ msgid "Show separators in playlist"
+#~ msgstr "在播放列表中显示分隔符"
+
+#~ msgid "Show window manager decoration"
+#~ msgstr "显示窗口管理器的装饰"
+
+#~ msgid "This enables the window manager to show decorations for windows."
+#~ msgstr "此选项将允许显示窗口管理器的装饰"
+
+#~ msgid ""
+#~ "If selected, the file information text in the main window will scroll "
+#~ "back and forth. If not selected, the text will only scroll in one "
+#~ "direction."
+#~ msgstr "如果启用，主界面上的文件信息将来回滚动，否则只能向一个方向滚动。"
+
+#~ msgid "Disable inline gtk theme"
+#~ msgstr "禁用内部gtk主题"
+
+#~ msgid "Random skin on play"
+#~ msgstr "启动时随机选择主题"
+
+#~ msgid "Allow loading incomplete skins"
+#~ msgstr "允许加载不完整的主题"
+
+#~ msgid ""
+#~ "If selected, audacious won't refuse loading broken skins. Use only if "
+#~ "your favourite skin doesn't work"
+#~ msgstr ""
+#~ "如果启用，audacious将允许加载破损的主题。如果你喜欢的主题无法使用，可试试"
+#~ "启用此选项"
+
+#~ msgid "Color Adjustment"
+#~ msgstr "颜色调整"
+
+#~ msgid ""
+#~ "Audacious allows you to alter the color balance of the skinned UI. The "
+#~ "sliders below will allow you to do this."
+#~ msgstr "Audacious允许你修改主题界面的颜色平衡。调整滑动条即可"
+
+#~ msgid "Blue"
+#~ msgstr "蓝"
+
+#~ msgid "Green"
+#~ msgstr "绿"
+
+#~ msgid "Red"
+#~ msgstr "红"
+
+#~ msgid "Color adjustment ..."
+#~ msgstr "颜色调整..."
+
+#~ msgid "Disable 'GUI Scaling'"
+#~ msgstr "禁用“界面缩放”"
+
+#~ msgid "Enable 'GUI Scaling'"
+#~ msgstr "启用“界面缩放”"
+
+#~ msgid "DoubleSize"
+#~ msgstr "双倍大小"
+
+#~ msgid "Easy Move"
+#~ msgstr "简易移动"
+
+#~ msgid "Spectrum Analyzer"
+#~ msgstr "光谱分析器"
+
+#~ msgid "Search:"
+#~ msgstr "搜索："
+
+#~ msgid "Add Bookmark"
+#~ msgstr "添加书签"
+
+#~ msgid "Stream name"
+#~ msgstr "流名称"
+
+#~ msgid "Now playing"
+#~ msgstr "正在播放"
+
+#~ msgid "Remove Bookmark"
+#~ msgstr "删除书签"
+
+#~ msgid "About Stream Browser"
+#~ msgstr "关于流查看器"
+
+#~ msgid ""
+#~ "Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
+#~ "Team.\n"
+#~ "\n"
+#~ "This is a simple stream browser that includes the most popular streaming "
+#~ "directories.\n"
+#~ "Many thanks to the Streamtuner developers <http://www.nongnu.org/"
+#~ "streamtuner>,\n"
+#~ "\tand of course to the whole Audacious community.\n"
+#~ "\n"
+#~ "Also thank you Tony Vroon for mentoring & guiding me, again.\n"
+#~ "\n"
+#~ "This was a Google Summer of Code 2008 project."
+#~ msgstr ""
+#~ "版权所有 (c) 2008, Calin Crisan <ccrisan@gmail.com>及Audacious开发小组。\n"
+#~ "\n"
+#~ "This is a simple stream browser that includes the most popular streaming "
+#~ "directories.\n"
+#~ "非常感谢Streamtuner的开发者<http://www.nongnu.org/streamtuner>,\n"
+#~ "还Audacious社区全体\n"
+#~ "\n"
+#~ "同时亦非常感谢Tony Vroon对我的帮助和指导。\n"
+#~ "\n"
+#~ "Google Summer of Code 2008 project."
 
 #~ msgid "Can't jump to time when no track is being played.\n"
 #~ msgstr "未开始插放时无法跳到时间。\n"
