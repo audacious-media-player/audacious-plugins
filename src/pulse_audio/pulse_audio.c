@@ -197,10 +197,10 @@ static void pulse_get_volume(int *l, int *r) {
 
     if (b) {
         if (v.channels == 2) {
-            *l = (int) ((v.values[0]*100)/PA_VOLUME_NORM);
-            *r = (int) ((v.values[1]*100)/PA_VOLUME_NORM);
+            * l = (v.values[0] * 100 + PA_VOLUME_NORM / 2) / PA_VOLUME_NORM;
+            * r = (v.values[1] * 100 + PA_VOLUME_NORM / 2) / PA_VOLUME_NORM;
         } else
-            *l = *r = (int) ((pa_cvolume_avg(&v)*100)/PA_VOLUME_NORM);
+            * l = * r = (pa_cvolume_avg (& v) * 100 + PA_VOLUME_NORM / 2) / PA_VOLUME_NORM;
     }
 }
 
@@ -230,11 +230,11 @@ static void pulse_set_volume(int l, int r) {
     r = CLAMP(r, 0, 100);
 
     if (!volume_valid || volume.channels !=  1) {
-        volume.values[0] = ((pa_volume_t) l * PA_VOLUME_NORM)/100;
-        volume.values[1] = ((pa_volume_t) r * PA_VOLUME_NORM)/100;
+        volume.values[0] = ((pa_volume_t) l * PA_VOLUME_NORM + 50) / 100;
+        volume.values[1] = ((pa_volume_t) r * PA_VOLUME_NORM + 50) / 100;
         volume.channels = 2;
     } else {
-        volume.values[0] = ((pa_volume_t) l * PA_VOLUME_NORM)/100;
+        volume.values[0] = ((pa_volume_t) MAX (l, r) * PA_VOLUME_NORM + 50) / 100;
         volume.channels = 1;
     }
 
