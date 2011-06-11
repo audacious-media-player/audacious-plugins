@@ -47,10 +47,10 @@ static int volume_valid = 0;
 
 static int do_trigger = 0;
 static int64_t written;
+static int flush_time;
 static int bytes_per_second;
 
 static int connected = 0;
-static int cached_time = 0;
 
 static pa_time_event *volume_time_event = NULL;
 
@@ -347,6 +347,8 @@ static void pulse_set_written_time (int time)
     pa_threaded_mainloop_lock (mainloop);
 
     written = time * (int64_t) bytes_per_second / 1000;
+    flush_time = time;
+
     pa_stream_set_name (stream, get_song_name (), stream_success_cb, NULL);
 
     pa_threaded_mainloop_unlock (mainloop);
@@ -355,31 +357,24 @@ static void pulse_set_written_time (int time)
 static int pulse_get_output_time (void)
 {
     int time = 0;
-    const pa_timing_info * timing;
-    struct timeval now;
 
     CHECK_CONNECTED(0);
 
     pa_threaded_mainloop_lock(mainloop);
 
-    if ((timing = pa_stream_get_timing_info (stream)) == NULL)
-        goto fail;
+    time = written * (int64_t) 1000 / bytes_per_second;
 
-    gettimeofday (& now, NULL);
+    pa_usec_t usec;
+    int neg;
+    if (pa_stream_get_latency (stream, & usec, & neg) == PA_OK)
+        time -= usec / 1000;
 
-    if ( timing->playing )
-    {
-        time = (int) ((written - (timing->write_index - timing->read_index)) *
-        (int64_t) 1000 / bytes_per_second) - (int) (timing->transport_usec / 1000)
-        - (int) (timing->sink_usec / 1000) + (int) ((now.tv_sec -
-        timing->timestamp.tv_sec) * 1000) + (int) ((now.tv_usec -
-        timing->timestamp.tv_usec) / 1000);
-        cached_time = time;
-    } else {
-        time = cached_time;
-    }
+    /* fix for AUDPLUG-308: pa_stream_get_latency() still returns positive even
+     * immediately after a flush; fix the result so that we don't return less
+     * than the flush time */
+    if (time < flush_time)
+        time = flush_time;
 
-fail:
     pa_threaded_mainloop_unlock(mainloop);
 
     return time;
@@ -424,6 +419,7 @@ static void pulse_flush(int time) {
     CHECK_DEAD_GOTO(fail, 1);
 
     written = time * (int64_t) bytes_per_second / 1000;
+    flush_time = time;
 
     if (!(o = pa_stream_flush(stream, stream_success_cb, &success))) {
         AUDDBG("pa_stream_flush() failed: %s", pa_strerror(pa_context_errno(context)));
@@ -653,6 +649,7 @@ static int pulse_open(gint fmt, int rate, int nch) {
 
     do_trigger = 0;
     written = 0;
+    flush_time = 0;
     bytes_per_second = FMT_SIZEOF (fmt) * nch * rate;
     connected = 1;
     volume_time_event = NULL;
