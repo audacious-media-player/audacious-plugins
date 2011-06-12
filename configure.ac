@@ -42,7 +42,7 @@ dnl LDFLAGS="$LDFLAGS -z defs"
 
 dnl Large file support
 dnl ==================
-CPPFLAGS="$CPPFLAGS -D_FILE_OFFSET_BITS=64"
+AC_SYS_LARGEFILE
 
 dnl Locate a program and check that its version is acceptable.
 dnl AC_PROG_CHECK_VER(var, namelist, version-switch,
