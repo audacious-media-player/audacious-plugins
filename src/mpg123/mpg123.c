@@ -19,6 +19,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* must come before <mpg123.h> to get _FILE_OFFSET_BITS */
+#include "config.h"
+
 #include <mpg123.h>
 
 #ifdef DEBUG_MPG123_IO
