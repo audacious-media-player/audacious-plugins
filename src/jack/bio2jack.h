@@ -81,7 +81,6 @@ void JACK_SetPosition(int deviceID, enum pos_enum position, long value);
 
 long JACK_GetJackLatency(int deviceID); /* deprectated, you probably want JACK_GetJackOutputLatency */
 long JACK_GetJackOutputLatency(int deviceID); /* return the output latency in frames */
-long JACK_GetJackInputLatency(int deviceID); /* return the input latency in frames */
 
 int JACK_SetState(int deviceID, enum status_enum state); /* playing, paused, stopped */
 enum status_enum JACK_GetState(int deviceID);
@@ -136,7 +135,7 @@ enum JACK_PORT_CONNECTION_MODE
 };
 
 /* set the mode for port connections */
-/* defaults to CONNECT_ALL */ 
+/* defaults to CONNECT_ALL */
 void JACK_SetPortConnectionMode(enum JACK_PORT_CONNECTION_MODE mode);
 
 #ifdef __cplusplus

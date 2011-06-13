@@ -138,8 +138,6 @@ typedef struct jack_driver_s
   unsigned long bytes_per_jack_output_frame;    /* (num_output_channels * bits_per_channel) / 8 */
   unsigned long bytes_per_jack_input_frame;     /* (num_input_channels * bits_per_channel) / 8 */
 
-  unsigned long latencyMS;      /* latency in ms between writing and actual audio output of the written data */
-
   long clientBytesInJack;       /* number of INPUT bytes(from the client of bio2jack) we wrote to jack(not necessary the number of bytes we wrote to jack) */
   long jack_buffer_size;        /* size of the buffer jack will pass in to the process callback */
 
@@ -1701,29 +1699,6 @@ JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
 
   DEBUG("sizeof(sample_t) == %d\n", sizeof(sample_t));
 
-  int periodSize = jack_get_buffer_size(drv->client);
-  int periods = 0;
-  /* FIXME: maybe we should keep different latency values for input vs output? */
-  if(drv->num_output_channels > 0)
-  {
-    periods = jack_port_get_total_latency(drv->client,
-                                          drv->output_port[0]) / periodSize;
-    drv->latencyMS = periodSize * periods * 1000 / (drv->jack_sample_rate *
-                                                    (drv->bits_per_channel / 8 *
-                                                     drv->num_output_channels));
-  }
-  else if(drv->num_input_channels > 0)
-  {
-    periods = jack_port_get_total_latency(drv->client,
-                                          drv->input_port[0]) / periodSize;
-    drv->latencyMS =
-      periodSize * periods * 1000 / (drv->jack_sample_rate *
-                                     (drv->bits_per_channel / 8 *
-                                      drv->num_input_channels));
-  }
-
-  TRACE("drv->latencyMS == %ldms\n", drv->latencyMS);
-
   *deviceID = drv->deviceID;    /* set the deviceID for the caller */
   releaseDriver(drv);
   pthread_mutex_unlock(&device_mutex);
@@ -2613,23 +2588,13 @@ JACK_GetJackOutputLatency(int deviceID)
   long return_val = 0;
 
   if(drv->client && drv->num_output_channels)
-    return_val = jack_port_get_total_latency(drv->client, drv->output_port[0]);
-
-  TRACE("got latency of %ld frames\n", return_val);
-
-  releaseDriver(drv);
-  return return_val;
-}
-
-/* Get the latency, in frames, of jack */
-long
-JACK_GetJackInputLatency(int deviceID)
-{
-  jack_driver_t *drv = getDriver(deviceID);
-  long return_val = 0;
-
-  if(drv->client && drv->num_input_channels)
-    return_val = jack_port_get_total_latency(drv->client, drv->input_port[0]);
+  {
+    /* Disclaimer: I have no experience with JACK and don't know if this is
+     * correct. -jlindgren */
+    jack_latency_range_t range;
+    jack_port_get_latency_range(drv->output_port[0], JackPlaybackLatency, & range);
+    return_val = (range.min + range.max) / 2;
+  }
 
   TRACE("got latency of %ld frames\n", return_val);
 
