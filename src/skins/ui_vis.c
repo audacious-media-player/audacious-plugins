@@ -81,11 +81,7 @@ void ui_vis_set_colors (void)
     }
 
     for (gint x = 0; x < 256; x ++)
-    {
-        guchar g = MIN (x, 127) * 2;
-        guchar b = MIN (x, 63) * 4;
-        vis_voice_color_ice[x] = COLOR (x, g, b);
-    }
+        vis_voice_color_ice[x] = COLOR (x / 2, x, MIN (x * 2, 255));
 
     guint32 * set = pattern_fill;
     guint32 * end = set + 76;
