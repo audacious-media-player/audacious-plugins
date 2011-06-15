@@ -23,7 +23,6 @@
 #include <gtk/gtk.h>
 
 #include <audacious/debug.h>
-#include <audacious/glib-compat.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
@@ -47,11 +46,7 @@ static struct index *pages;
 GtkWidget *ui_playlist_notebook_tab_title_editing = NULL;
 
 static gint switch_handler = 0;
-
-#if GTK_CHECK_VERSION (2, 10, 0)
-#define HAVE_REORDER
 static gint reorder_handler = 0;
-#endif
 
 GtkNotebook *ui_playlist_get_notebook(void)
 {
@@ -123,14 +118,12 @@ static void tab_changed (GtkNotebook * notebook, GtkWidget * page, gint
     }
 }
 
-#ifdef HAVE_REORDER
 static void tab_reordered(GtkNotebook *notebook, GtkWidget *child, guint page_num, gpointer user_data)
 {
     GtkWidget * widget = g_object_get_data ((GObject *) child, "treeview");
     g_return_if_fail (widget);
     aud_playlist_reorder (ui_playlist_widget_get_playlist (widget), page_num, 1);
 }
-#endif
 
 static GtkLabel *get_tab_label(gint playlist)
 {
@@ -221,9 +214,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
     g_object_set_data(G_OBJECT(ebox), "page", scrollwin);
 
     gtk_notebook_append_page(UI_PLAYLIST_NOTEBOOK, scrollwin, ebox);
-#ifdef HAVE_REORDER
     gtk_notebook_set_tab_reorderable(UI_PLAYLIST_NOTEBOOK, scrollwin, TRUE);
-#endif
     change_view ();
 
     if (position >= 0)
@@ -266,11 +257,9 @@ void ui_playlist_notebook_populate(void)
     if (! switch_handler)
         switch_handler = g_signal_connect (notebook, "switch-page", (GCallback)
          tab_changed, NULL);
-#ifdef HAVE_REORDER
     if (! reorder_handler)
         reorder_handler = g_signal_connect (notebook, "page-reordered",
          (GCallback) tab_reordered, NULL);
-#endif
 }
 
 void ui_playlist_notebook_empty (void)
@@ -278,11 +267,9 @@ void ui_playlist_notebook_empty (void)
     if (switch_handler)
         g_signal_handler_disconnect (notebook, switch_handler);
     switch_handler = 0;
-#ifdef HAVE_REORDER
     if (reorder_handler)
         g_signal_handler_disconnect (notebook, reorder_handler);
     reorder_handler = 0;
-#endif
 
     gint n_pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
     while (n_pages)
@@ -416,9 +403,7 @@ static void destroy_cb (void)
     g_queue_clear (& follow_queue);
     index_free (pages);
     switch_handler = 0;
-#ifdef HAVE_REORDER
     reorder_handler = 0;
-#endif
 }
 
 GtkWidget *ui_playlist_notebook_new()

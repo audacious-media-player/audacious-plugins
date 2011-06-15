@@ -8,7 +8,6 @@
 
 #include <audacious/configdb.h>
 #include <audacious/debug.h>
-#include <audacious/glib-compat.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>

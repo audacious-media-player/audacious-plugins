@@ -42,13 +42,10 @@
 #include "ui_statusbar.h"
 #include "playlist_util.h"
 
-#if GTK_CHECK_VERSION (2, 12, 0)
-#define HAVE_VOLUME
 static GtkWidget *volume;
 static gboolean volume_slider_is_moving = FALSE;
 static guint update_volume_timeout_source = 0;
 static gulong volume_change_handler_id;
-#endif
 
 static GtkAccelGroup * accel;
 
@@ -271,7 +268,6 @@ static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton *
     return FALSE;
 }
 
-#ifdef HAVE_VOLUME
 static gboolean ui_volume_value_changed_cb(GtkButton * button, gdouble volume, gpointer user_data)
 {
     aud_drct_set_volume((gint) volume, (gint) volume);
@@ -313,7 +309,6 @@ static gboolean ui_volume_slider_update(gpointer data)
 
     return TRUE;
 }
-#endif
 
 static void set_slider_length (gint length)
 {
@@ -717,7 +712,6 @@ static gboolean init (void)
     mowgli_global_storage_put("gtkui.slider", slider);
     mowgli_global_storage_put("gtkui.label_time", label_time);
 
-#ifdef HAVE_VOLUME
     volume = gtk_volume_button_new();
     gtk_button_set_relief(GTK_BUTTON(volume), GTK_RELIEF_NONE);
     gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
@@ -729,7 +723,6 @@ static gboolean init (void)
     gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), (lvol + rvol) / 2);
 
     gtk_box_pack_end ((GtkBox *) tophbox, volume, FALSE, FALSE, 0);
-#endif
 
     button_shuffle = toggle_button_new ("media-playlist-shuffle", "SHUF",
      toggle_shuffle, NULL);
@@ -777,12 +770,10 @@ static gboolean init (void)
     g_signal_connect(slider, "button-press-event", G_CALLBACK(ui_slider_button_press_cb), NULL);
     g_signal_connect(slider, "button-release-event", G_CALLBACK(ui_slider_button_release_cb), NULL);
 
-#ifdef HAVE_VOLUME
     volume_change_handler_id = g_signal_connect(volume, "value-changed", G_CALLBACK(ui_volume_value_changed_cb), NULL);
     g_signal_connect(volume, "pressed", G_CALLBACK(ui_volume_pressed_cb), NULL);
     g_signal_connect(volume, "released", G_CALLBACK(ui_volume_released_cb), NULL);
     update_volume_timeout_source = g_timeout_add(250, (GSourceFunc) ui_volume_slider_update, volume);
-#endif
 
     g_signal_connect(window, "key-press-event", G_CALLBACK(ui_key_press_cb), NULL);
 
@@ -823,13 +814,11 @@ static void cleanup (void)
         update_song_timeout_source = 0;
     }
 
-#ifdef HAVE_VOLUME
     if (update_volume_timeout_source)
     {
         g_source_remove(update_volume_timeout_source);
         update_volume_timeout_source = 0;
     }
-#endif
 
     if (delayed_title_change_source)
     {

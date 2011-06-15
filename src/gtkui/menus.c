@@ -214,11 +214,7 @@ static const struct MenuItem rclick_items[] = {
  {N_("Cu_t"), GTK_STOCK_CUT, 'x', CTRL, .func = playlist_cut},
  {N_("_Copy"), GTK_STOCK_COPY, 'c', CTRL, .func = playlist_copy},
  {N_("_Paste"), GTK_STOCK_PASTE, 'v', CTRL, .func = playlist_paste},
-#if GTK_CHECK_VERSION (2, 10, 0)
  {N_("Select _All"), GTK_STOCK_SELECT_ALL, 'a', CTRL, .func = pl_select_all},
-#else
- {N_("Select _All"), NULL, 'a', CTRL, .func = pl_select_all},
-#endif
  {.sep = TRUE},
  {N_("_Services"), .get_sub = get_services_pl}};
 
