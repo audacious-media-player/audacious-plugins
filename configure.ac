@@ -806,19 +806,22 @@ if test "x$have_ffaudio" = "xyes"; then
 fi
 
 dnl *** jack output plugin
-AC_ARG_ENABLE( jack,
-[  --disable-jack          disable jack output plugin (default=enabled)], [enable_jack=$enableval],
-                [enable_jack="yes"])
 
-if test "x$enable_jack" = "xyes"; then
-        AM_PATH_JACK(have_jack=yes, have_jack=no)
-else
-        AC_MSG_RESULT([*** jack plugin disabled per user request ***])
-        have_jack=no
-fi
+AC_ARG_ENABLE(jack,
+ AS_HELP_STRING([--disable-jack], [disable JACK output plugin (default=enabled)]),
+ [enable_jack=$enableval], [enable_jack=yes])
 
-if test "x$have_jack" = "xyes"; then
-	OUTPUT_PLUGINS="$OUTPUT_PLUGINS jack"
+if test $enable_jack = yes ; then
+    PKG_CHECK_MODULES(JACK, [jack >= 1.9.7],
+     [enable_jack=$enable_jack], [enable_jack=no])
+    AC_CHECK_LIB([samplerate], [src_process],
+     [enable_jack=$enable_jack], [enable_jack=no])
+
+    if test $enable_jack = yes ; then
+        OUTPUT_PLUGINS="$OUTPUT_PLUGINS jack"
+    else
+        AC_MSG_RESULT([*** JACK or libsamplerate not found; JACK output plugin disabled])
+    fi
 fi
 
 dnl *** sid
@@ -1557,7 +1560,7 @@ echo "  Open Sound System v4 (oss4):            $have_oss4"
 echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  PulseAudio (pulse):                     $have_pulse"
 echo "  RoarAudio (roaraudio):                  $have_roar"
-echo "  Jack Audio Connection Kit (jack):       $have_jack"
+echo "  Jack Audio Connection Kit (jack):       $enable_jack"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
 echo "  Simple DirectMedia Layer (sdlout):      $enable_sdlout"
 echo "  FileWriter:                             $enable_filewriter"
