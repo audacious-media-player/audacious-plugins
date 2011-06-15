@@ -70,7 +70,6 @@ static int list_has_member (GtkListStore * list, const char * text)
 static void get_defined_devices (const char * type, int capture, void (* found)
  (const char * name, const char * description))
 {
-#ifdef HAVE_SND_DEVICE_NAME_HINT
     void * * hints = NULL;
     int count;
 
@@ -96,7 +95,6 @@ static void get_defined_devices (const char * type, int capture, void (* found)
 FAILED:
     if (hints != NULL)
         snd_device_name_free_hint (hints);
-#endif
 }
 
 static char * get_card_description (int card)
@@ -348,13 +346,13 @@ void alsa_config_save (void)
         g_object_unref (pcm_list);
         pcm_list = NULL;
     }
-    
+
     if (mixer_list)
     {
         g_object_unref (mixer_list);
         mixer_list = NULL;
     }
-    
+
     if (mixer_element_list)
     {
         g_object_unref (mixer_element_list);

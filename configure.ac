@@ -985,9 +985,7 @@ AC_ARG_ENABLE(alsa,
 )
 
 if test "x$enable_alsa" = "xyes"; then
-    PKG_CHECK_MODULES([ALSA], [alsa >= 1.0], [have_alsa=yes], [have_alsa=no])
-    AC_CHECK_LIB([asound], [snd_device_name_hint],
-     AC_DEFINE(HAVE_SND_DEVICE_NAME_HINT, 1, Define if you have snd_device_name_hint))
+    PKG_CHECK_MODULES([ALSA], [alsa >= 1.0.16], [have_alsa=yes], [have_alsa=no])
 else
     AC_MSG_RESULT([*** ALSA output plugin disabled per user request ***])
     have_alsa=no
