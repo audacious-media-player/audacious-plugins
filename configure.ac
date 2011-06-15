@@ -420,7 +420,7 @@ AC_ARG_ENABLE(mp3,
  [enable_mp3=$enableval], [enable_mp3=yes])
 
 if test $enable_mp3 = yes ; then
-    PKG_CHECK_MODULES(MPG123, [libmpg123 >= 1.0],
+    PKG_CHECK_MODULES(MPG123, [libmpg123 >= 1.12.2],
      [enable_mp3=yes], [enable_mp3=no])
 
     if test $enable_mp3 = yes ; then
