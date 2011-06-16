@@ -469,6 +469,12 @@ static void destroy_cb (GtkWidget * widget, UIInfoArea * area)
     hook_dissociate ("visualization clear", (HookFunction) vis_clear_cb);
     aud_vis_runner_remove_hook ((VisHookFunc) vis_update_cb);
 
+    if (area->fade_timeout)
+    {
+        g_source_remove (area->fade_timeout);
+        area->fade_timeout = 0;
+    }
+
     g_free (area->title);
     g_free (area->artist);
     g_free (area->album);
