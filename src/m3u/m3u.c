@@ -45,11 +45,12 @@ static gchar * read_win_text (VFSFile * file)
     if (size < 1)
         return NULL;
 
-    gchar * raw = g_malloc (size);
+    gchar * raw = g_malloc (size + 1);
     size = vfs_fread (raw, 1, size, file);
+    raw[size] = 0;
 
     strip_char (raw, '\r');
-    gchar * text = g_convert (raw, size, "UTF-8", "ISO-8859-1", NULL, NULL, NULL);
+    gchar * text = str_to_utf8 (raw);
     g_free (raw);
     return text;
 }
