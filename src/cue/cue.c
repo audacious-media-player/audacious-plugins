@@ -61,9 +61,13 @@ static gboolean playlist_load_cue (const gchar * cue_filename, VFSFile * file,
     size = vfs_fread (buffer, 1, size, file);
     buffer[size] = 0;
 
+    gchar * text = str_to_utf8 (buffer);
+    g_free (buffer);
+    g_return_if_fail (text, NULL);
+
     * title = NULL;
 
-    Cd * cd = cue_parse_string (buffer);
+    Cd * cd = cue_parse_string (text);
     g_free (buffer);
     if (cd == NULL)
         return FALSE;
