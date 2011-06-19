@@ -135,9 +135,9 @@ TRANSPORT_PLUGINS="unix-io"
 
 dnl Check for Audacious
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 2.5],
-    [ADD_PC_REQUIRES([audacious >= 2.5])],
-    [AC_MSG_ERROR([Cannot find Audacious 2.5 or later, have you installed audacious yet?])]
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.0],
+    [ADD_PC_REQUIRES([audacious >= 3.0])],
+    [AC_MSG_ERROR([Cannot find Audacious 3.0 or later, have you installed audacious yet?])]
 )
 
 CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS"
