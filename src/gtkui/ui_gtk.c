@@ -57,9 +57,7 @@ static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
 static GtkWidget * error_win = NULL;
 
-static gulong slider_change_handler_id;
 static gboolean slider_is_moving = FALSE;
-static gint slider_position;
 static guint delayed_title_change_source = 0;
 static guint update_song_timeout_source = 0;
 
@@ -205,13 +203,7 @@ static void set_time_label (gint time, gint len)
 
 static void set_slider (gint time)
 {
-    if (g_signal_handler_is_connected (slider, slider_change_handler_id))
-        g_signal_handler_block (slider, slider_change_handler_id);
-
     gtk_range_set_value ((GtkRange *) slider, time);
-
-    if (g_signal_handler_is_connected (slider, slider_change_handler_id))
-        g_signal_handler_unblock (slider, slider_change_handler_id);
 }
 
 static gboolean time_counter_cb (void)
@@ -230,23 +222,20 @@ static gboolean time_counter_cb (void)
     return TRUE;
 }
 
-static gboolean ui_slider_value_changed_cb(GtkRange * range, gpointer user_data)
-{
-    aud_drct_seek (gtk_range_get_value (range));
-    slider_is_moving = FALSE;
-    return TRUE;
-}
-
 static gboolean ui_slider_change_value_cb(GtkRange * range, GtkScrollType scroll)
 {
-    set_time_label (gtk_range_get_value (range), aud_drct_get_length ());
+    gint value = gtk_range_get_value (range);
+    set_time_label (value, aud_drct_get_length ());
+
+    if (!slider_is_moving)
+        aud_drct_seek (gtk_range_get_value (range));
+
     return FALSE;
 }
 
 static gboolean ui_slider_button_press_cb(GtkWidget * widget, GdkEventButton * event, gpointer user_data)
 {
     slider_is_moving = TRUE;
-    slider_position = gtk_range_get_value(GTK_RANGE(widget));
 
     /* HACK: clicking with the left mouse button moves the slider
        to the location of the click. */
@@ -262,8 +251,7 @@ static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton *
     if (event->button == 1)
         event->button = 2;
 
-    if (slider_position == (gint) gtk_range_get_value(GTK_RANGE(widget)))
-        slider_is_moving = FALSE;
+    slider_is_moving = FALSE;
 
     return FALSE;
 }
@@ -312,9 +300,6 @@ static gboolean ui_volume_slider_update(gpointer data)
 
 static void set_slider_length (gint length)
 {
-    if (g_signal_handler_is_connected (slider, slider_change_handler_id))
-        g_signal_handler_block (slider, slider_change_handler_id);
-
     if (length > 0)
     {
         gtk_range_set_range ((GtkRange *) slider, 0, length);
@@ -322,9 +307,6 @@ static void set_slider_length (gint length)
     }
     else
         gtk_widget_hide (slider);
-
-    if (g_signal_handler_is_connected (slider, slider_change_handler_id))
-        g_signal_handler_unblock (slider, slider_change_handler_id);
 }
 
 static void pause_cb (void)
@@ -695,7 +677,6 @@ static gboolean init (void)
 
     slider = gtk_hscale_new(NULL);
     gtk_scale_set_draw_value(GTK_SCALE(slider), FALSE);
-    gtk_range_set_update_policy(GTK_RANGE(slider), GTK_UPDATE_DISCONTINUOUS);
     gtk_widget_set_size_request(slider, 120, -1);
     gtk_widget_set_can_focus(slider, FALSE);
     gtk_box_pack_start ((GtkBox *) shbox, slider, TRUE, TRUE, 6);
@@ -763,8 +744,6 @@ static gboolean init (void)
 
     AUDDBG("playlist associate\n");
     ui_playlist_notebook_populate();
-
-    slider_change_handler_id = g_signal_connect(slider, "value-changed", G_CALLBACK(ui_slider_value_changed_cb), NULL);
 
     g_signal_connect(slider, "change-value", G_CALLBACK(ui_slider_change_value_cb), NULL);
     g_signal_connect(slider, "button-press-event", G_CALLBACK(ui_slider_button_press_cb), NULL);
