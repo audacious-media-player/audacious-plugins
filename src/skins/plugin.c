@@ -40,6 +40,7 @@ static gboolean skins_init (void);
 static void skins_cleanup (void);
 static void skins_about (void);
 static gboolean ui_is_shown (void);
+static gboolean ui_is_focused (void);
 static void show_error_message (const gchar * text);
 
 AUD_IFACE_PLUGIN
@@ -51,6 +52,7 @@ AUD_IFACE_PLUGIN
     .configure = skins_configure,
     .show = mainwin_show,
     .is_shown = ui_is_shown,
+    .is_focused = ui_is_focused,
     .show_error = show_error_message,
     .show_filebrowser = audgui_run_filebrowser,
     .show_jump_to_track = audgui_jump_to_track,
@@ -169,6 +171,13 @@ static void skins_about (void)
 static gboolean ui_is_shown (void)
 {
     return config.player_visible;
+}
+
+static gboolean ui_is_focused (void)
+{
+    return gtk_window_is_active ((GtkWindow *) mainwin) || gtk_window_is_active
+     ((GtkWindow *) equalizerwin) || gtk_window_is_active ((GtkWindow *)
+     playlistwin);
 }
 
 static void show_error_message (const gchar * text)
