@@ -67,6 +67,7 @@ static gboolean init (void);
 static void cleanup (void);
 static void ui_show (gboolean show);
 static gboolean ui_is_shown (void);
+static gboolean ui_is_focused (void);
 static void ui_show_error (const gchar * text);
 
 AUD_IFACE_PLUGIN
@@ -76,6 +77,7 @@ AUD_IFACE_PLUGIN
     .cleanup = cleanup,
     .show = ui_show,
     .is_shown = ui_is_shown,
+    .is_focused = ui_is_focused,
     .show_error = ui_show_error,
     .show_filebrowser = audgui_run_filebrowser,
     .show_jump_to_track = audgui_jump_to_track,
@@ -163,6 +165,11 @@ static void ui_show (gboolean show)
 static gboolean ui_is_shown (void)
 {
     return config.player_visible;
+}
+
+static gboolean ui_is_focused (void)
+{
+    return gtk_window_is_active ((GtkWindow *) window);
 }
 
 static void ui_show_error (const gchar * text)
