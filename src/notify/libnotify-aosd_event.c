@@ -95,6 +95,7 @@ static void update (void * unused, void * explicit)
 
 void event_init (void)
 {
+    update (NULL, GINT_TO_POINTER (FALSE));
     hook_associate ("aosd toggle", (HookFunction) update, GINT_TO_POINTER (TRUE));
     hook_associate ("playback ready", (HookFunction) update, GINT_TO_POINTER (FALSE));
     hook_associate ("playlist update", (HookFunction) update, GINT_TO_POINTER (FALSE));
