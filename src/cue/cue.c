@@ -20,6 +20,7 @@
 
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 
 #include <libcue/libcue.h>
 
@@ -63,7 +64,7 @@ static gboolean playlist_load_cue (const gchar * cue_filename, VFSFile * file,
 
     gchar * text = str_to_utf8 (buffer);
     g_free (buffer);
-    g_return_if_fail (text, NULL);
+    g_return_val_if_fail (text, FALSE);
 
     * title = NULL;
 
