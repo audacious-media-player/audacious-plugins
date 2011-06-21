@@ -223,6 +223,7 @@ get_lyrics_step_2(gchar *buf, gint64 len, Tuple *tu)
 		return FALSE;
 	}
 
+	update_lyrics_window(tu, _("\nLooking for lyrics..."));
 	vfs_async_file_get_contents(uri, (VFSConsumer) get_lyrics_step_3, tu);
 
 	g_free(buf);
@@ -245,6 +246,7 @@ get_lyrics_step_1(const Tuple *tu)
 	g_free(artist);
 	g_free(title);
 
+	update_lyrics_window(tu, _("\nConnecting to lyrics.wikia.com..."));
 	vfs_async_file_get_contents(uri, (VFSConsumer) get_lyrics_step_2, tuple);
 
 	g_free(uri);
