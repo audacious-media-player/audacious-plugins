@@ -22,7 +22,10 @@ typedef enum {
 	EVENT_TOGGLE_WIN,
 	EVENT_SHOW_AOSD,
 
-	EVENT_MAX 
+	EVENT_TOGGLE_REPEAT,
+	EVENT_TOGGLE_SHUFFLE,
+
+	EVENT_MAX
 } EVENT;
 
 
@@ -36,7 +39,7 @@ typedef struct _HotkeyConfiguration {
 typedef struct {
 	gint vol_increment;
 	gint vol_decrement;
-	
+
 	/* keyboard */
 	HotkeyConfiguration first;
 } PluginConfig;

@@ -80,7 +80,9 @@ static gchar* event_desc[EVENT_MAX] = {
 	[EVENT_VOL_DOWN] = N_("Volume Down"),
 	[EVENT_JUMP_TO_FILE] = N_("Jump to File"),
 	[EVENT_TOGGLE_WIN] = N_("Toggle Player Windows"),
-	[EVENT_SHOW_AOSD] = N_("Show On-Screen-Display")
+	[EVENT_SHOW_AOSD] = N_("Show On-Screen-Display"),
+	[EVENT_TOGGLE_REPEAT] = N_("Toggle Repeat"),
+	[EVENT_TOGGLE_SHUFFLE] = N_("Toggle Shuffle"),
 };
 
 

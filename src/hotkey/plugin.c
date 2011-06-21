@@ -41,6 +41,7 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/configdb.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
@@ -247,6 +248,16 @@ gboolean handle_keyevent (EVENT event)
 	{
 		hook_call("aosd toggle", NULL);
 		return TRUE;
+	}
+	else if (event == EVENT_TOGGLE_REPEAT)
+	{
+		aud_cfg->repeat = ! aud_cfg->repeat;
+		hook_call ("toggle repeat", NULL);
+	}
+	else if (event == EVENT_TOGGLE_SHUFFLE)
+	{
+		aud_cfg->shuffle = ! aud_cfg->shuffle;
+		hook_call ("toggle shuffle", NULL);
 	}
 
 	return FALSE;
