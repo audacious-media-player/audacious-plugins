@@ -913,71 +913,59 @@ AC_SUBST(OSS_LIBS)
 dnl *** OSS4 output
 
 AC_ARG_ENABLE(oss4,
-    [  --enable-oss4           enable the OSS4 output plugin (default=disabled)],
+    [  --disable-oss4          disable the OSS4 output plugin],
     [enable_oss4=$enableval],
-    [enable_oss4=no]
+    [enable_oss4=yes]
 )
 
-have_oss4=no
 if test "x$enable_oss4" = "xyes"; then
     AC_MSG_CHECKING(for OSS4 include dir)
-    OSS4_CFLAGS=""
-    if test -f "/etc/oss.conf" ; then
-        for i in `cat /etc/oss.conf`; do
-            t=`echo $i | sed -e 's/OSSLIBDIR=//'`
-            if test "x$i" != "x$t" ; then
-                if test -f "$t/include/sys/soundcard.h" -o -f "$i/include/soundcard.h" ; then
-                    OSS4_CFLAGS="-I$t/include"
-                fi
-            fi
-        done
+
+    if test -f "/etc/oss.conf"; then
+        . "/etc/oss.conf"
+    else
+        OSSLIBDIR="/usr/lib/oss"
     fi
-    if test -n "$OSS4_CFLAGS" ; then
-        AC_MSG_RESULT([$OSS4_CFLAGS])
+
+    if test -f "$OSSLIBDIR/include/sys/soundcard.h"; then
+        OSS4_CPPFLAGS="-I$OSSLIBDIR/include/sys"
+    elif test -f "$OSSLIBDIR/include/soundcard.h"; then
+        OSS4_CPPFLAGS="-I$OSSLIBDIR/include"
+    fi
+
+    if test -n "$OSS4_CPPFLAGS"; then
+        AC_MSG_RESULT([$OSS4_CPPFLAGS])
+        have_oss4=yes
     else
         AC_MSG_RESULT([not found])
-    fi
-    CFLAGS_save=$CFLAGS
-    CFLAGS="$CFLAGS $OSS4_CFLAGS"
-    AC_CHECK_HEADERS(soundcard.h)
-    AC_CHECK_HEADERS(sys/soundcard.h)
-    AC_CHECK_HEADERS(machine/soundcard.h)
-    CFLAGS=$CFLAGS_save
-
-    if test "x${ac_cv_header_soundcard_h}" = "xyes" || test "x${ac_cv_header_sys_soundcard_h}" = "xyes" || test "x${ac_cv_header_machine_soundcard_h}" = "xyes"; then
-        have_oss4=yes
+        have_oss4=no
     fi
 
-    if test "x${have_oss4}" = "xyes"; then
-	AC_MSG_CHECKING(whether we need -lossaudio)
-        AC_TRY_LINK([
-		#include <sys/ioctl.h>
-		#ifdef HAVE_SYS_SOUNDCARD_H
-		#include <sys/soundcard.h>
-		#else
-		#include <soundcard.h>
-		#endif
-        ], [
-		int fd, value;
-		ioctl(fd, SOUND_MIXER_READ_VOLUME, &value);
-	], AC_MSG_RESULT(no), [
-		OSS_LIBS="-lossaudio"
-		AC_MSG_RESULT(yes)
-        ])
-   fi
-fi
-
-if test "x$have_oss4" = "xyes"; then
-    AC_DEFINE(HAVE_OSS4, 1, [Define if the OSS4 output plugin should be built])
+    if test "x$have_oss4" = "xyes"; then
+        CPPFLAGS_save=$CPPFLAGS
+        CPPFLAGS=$OSS4_CPPFLAGS
+        AC_MSG_CHECKING(for OSS4)
+        AC_EGREP_CPP(yes,
+            [#include <soundcard.h>
+             #if OSS_VERSION >= 0x040000
+                 yes
+             #endif
+            ],
+            [have_oss4=yes],
+            [have_oss4=no]
+        )
+        AC_MSG_RESULT([$have_oss4])
+        CPPFLAGS=$CPPFLAGS_save
+    fi
 else
+    AC_MSG_RESULT([*** OSS4 output plugin disabled per user request ***])
     have_oss4=no
 fi
 
 if test "x$have_oss4" = "xyes"; then
-	OUTPUT_PLUGINS="$OUTPUT_PLUGINS oss4"
+    OUTPUT_PLUGINS="$OUTPUT_PLUGINS oss4"
+    AC_SUBST(OSS4_CPPFLAGS)
 fi
-
-AC_SUBST(OSS_LIBS)
 
 dnl *** ALSA output plugin
 
