@@ -81,7 +81,7 @@ static void update (void * unused, void * explicit)
 
     GdkPixbuf * pb = audgui_pixbuf_for_current ();
     if (pb)
-        audgui_pixbuf_scale_within (& pb, 128);
+        audgui_pixbuf_scale_within (& pb, 96);
 
     osd_show (title, message, "audio-x-generic", pb);
 
