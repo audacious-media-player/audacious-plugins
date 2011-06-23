@@ -258,11 +258,10 @@ static PreferencesWidget font_table_elements[] = {
 static PreferencesWidget appearance_misc_widgets[] = {
     {WIDGET_LABEL, N_("<b>_Fonts</b>"), NULL, NULL, NULL, FALSE},
     {WIDGET_TABLE, NULL, NULL, NULL, NULL, TRUE, {.table = {font_table_elements, G_N_ELEMENTS(font_table_elements)}}},
-    {WIDGET_CHK_BTN, N_("Use Bitmap fonts if available"), &config.mainwin_use_bitmapfont, G_CALLBACK(bitmap_fonts_cb), N_("Use bitmap fonts if they are available. Bitmap fonts do not support Unicode strings."), FALSE},
-    {WIDGET_LABEL, N_("<b>_Miscellaneous</b>"), NULL, NULL, NULL, FALSE},
-    {WIDGET_CHK_BTN, N_("Use two-way text scroller"), &config.twoway_scroll,
-     (GCallback) (GCallback) textbox_update_all, NULL, FALSE},
-};
+    {WIDGET_CHK_BTN, N_("Use bitmap fonts (supports ASCII only)"),
+     .cfg_type = VALUE_BOOLEAN, .cfg = & config.mainwin_use_bitmapfont, .callback = bitmap_fonts_cb},
+    {WIDGET_CHK_BTN, N_("Scroll song title in both directions"),
+     .cfg_type = VALUE_BOOLEAN, .cfg = & config.twoway_scroll, .callback = textbox_update_all}};
 
 void
 on_skin_view_drag_data_received(GtkWidget * widget,
