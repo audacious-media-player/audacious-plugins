@@ -1,7 +1,6 @@
 PLUGIN = madplug${PLUGIN_SUFFIX}
 
-SRCS = mpg123.c \
-       id3skip.c
+SRCS = mpg123.c
 
 include ../../buildsys.mk
 include ../../extra.mk
