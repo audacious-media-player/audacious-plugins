@@ -24,9 +24,6 @@
  */
 #define BUFFER_SIZE (FAAD_MIN_STREAMSIZE * 16)
 
-static const guchar M4A_MAGIC[11] = {0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79,
- 0x70, 0x4D, 0x34, 0x41};
-
 static void mp4_about (void);
 static void mp4_cleanup (void);
 static gint mp4_is_our_fd (const char *, VFSFile *);
@@ -241,15 +238,6 @@ static gboolean is_mp4_aac_file (VFSFile * handle)
 
 static gboolean mp4_is_our_fd (const gchar * filename, VFSFile * file)
 {
-    gchar magic[sizeof M4A_MAGIC];
-
-    if (vfs_fread (magic, 1, sizeof magic, file) != sizeof magic)
-        return FALSE;
-    if (! memcmp (magic, M4A_MAGIC, sizeof magic))
-        return TRUE;
-
-    if (vfs_fseek (file, 0, SEEK_SET))
-        return FALSE;
     if (parse_aac_stream (file))
         return TRUE;
 
