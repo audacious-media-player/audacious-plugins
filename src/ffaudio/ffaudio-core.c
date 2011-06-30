@@ -274,15 +274,15 @@ static const gint n_metaentries = sizeof(metaentries) / sizeof(metaentries[0]);
 static void
 ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
 {
-    AVMetadataTag *tag = NULL;
+    AVDictionaryEntry *tag = NULL;
 
     if (ic->metadata != NULL)
     {
-        tag = av_metadata_get(ic->metadata, m->prim_key, NULL, AV_METADATA_IGNORE_SUFFIX);
+        tag = av_dict_get(ic->metadata, m->prim_key, NULL, AV_METADATA_IGNORE_SUFFIX);
         if (tag == NULL) {
             gint i;
             for (i = 0; tag == NULL && m->alt_keys[i] != NULL; i++)
-                tag = av_metadata_get(ic->metadata, m->alt_keys[i], NULL, 0);
+                tag = av_dict_get(ic->metadata, m->alt_keys[i], NULL, 0);
         }
     }
 
