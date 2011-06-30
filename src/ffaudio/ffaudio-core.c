@@ -737,6 +737,14 @@ static const gchar *ffaudio_fmts[] = {
     NULL
 };
 
+static gchar * version_string (gint version)
+{
+    gint major = version >> 16;
+    gint minor = (version >> 8) & 0xff;
+    gint micro = version & 0xff;
+    return g_strdup_printf ("%d.%d.%d", major, minor, micro);
+}
+
 static void
 ffaudio_about(void)
 {
@@ -744,23 +752,37 @@ ffaudio_about(void)
 
     if (aboutbox == NULL)
     {
+        gchar * avcodec_local = version_string (avcodec_version ());
+        gchar * avcodec_build = version_string (LIBAVCODEC_VERSION_INT);
+        gchar * avformat_local = version_string (avformat_version ());
+        gchar * avformat_build = version_string (LIBAVFORMAT_VERSION_INT);
+        gchar * avutil_local = version_string (avutil_version ());
+        gchar * avutil_build = version_string (LIBAVUTIL_VERSION_INT);
+
         gchar *description = g_strdup_printf(
         _("Multi-format audio decoding plugin for Audacious based on\n"
         "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
         "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
         "\n"
-        "FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
-        "\n"
         "Audacious plugin by:\n"
         "            William Pitcock <nenolod@nenolod.net>,\n"
-        "            Matti Hämäläinen <ccr@tnsp.org>\n"),
-        LIBAVFORMAT_VERSION_MAJOR, LIBAVFORMAT_VERSION_MINOR, LIBAVFORMAT_VERSION_MICRO,
-        LIBAVCODEC_VERSION_MAJOR, LIBAVCODEC_VERSION_MINOR, LIBAVCODEC_VERSION_MICRO);
+        "            Matti Hämäläinen <ccr@tnsp.org>\n"
+        "\n"
+        "libavcodec %s (%s)\n"
+        "libavformat %s (%s)\n"
+        "libavutil %s (%s)\n"),
+         avcodec_local, avcodec_build, avformat_local, avformat_build, avutil_local, avutil_build);
 
         audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
          _("About FFaudio Plugin"), description);
 
         g_free(description);
+        g_free (avcodec_local);
+        g_free (avcodec_build);
+        g_free (avformat_local);
+        g_free (avformat_build);
+        g_free (avutil_local);
+        g_free (avutil_build);
     }
 }
 
