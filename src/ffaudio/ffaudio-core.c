@@ -448,13 +448,8 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     codec_opened = TRUE;
 
     /* Determine if audio conversion or resampling is needed */
-#if CHECK_LIBAVCODEC_VERSION (52, 94, 3)
-    in_sample_size = av_get_bits_per_sample_fmt (c->sample_fmt) / 8;
-    out_sample_size = av_get_bits_per_sample_fmt (SAMPLE_FMT_S16) / 8;
-#else
-    in_sample_size = av_get_bits_per_sample_format (c->sample_fmt) / 8;
-    out_sample_size = av_get_bits_per_sample_format (SAMPLE_FMT_S16) / 8;
-#endif
+    in_sample_size = av_get_bytes_per_sample (c->sample_fmt);
+    out_sample_size = av_get_bytes_per_sample (SAMPLE_FMT_S16);
 
     chunk_size = out_sample_size * c->channels * (c->sample_rate / 50);
 
