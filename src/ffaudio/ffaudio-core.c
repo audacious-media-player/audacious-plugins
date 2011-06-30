@@ -50,13 +50,6 @@ static gboolean ffaudio_init (void)
     avcodec_init();
     av_register_all();
 
-    AUDDBG("registering audvfsptr protocol\n");
-#if CHECK_LIBAVFORMAT_VERSION (52, 69, 0)
-    av_register_protocol2 (& audvfsptr_protocol, sizeof audvfsptr_protocol);
-#else
-    av_register_protocol (& audvfsptr_protocol);
-#endif
-
     AUDDBG("creating seek mutex/cond\n");
     ctrl_mutex = g_mutex_new();
     ctrl_cond = g_cond_new();
@@ -208,20 +201,28 @@ static AVFormatContext * open_input_file (const gchar * name, VFSFile * file)
         return NULL;
     }
 
-    AVFormatContext * c = NULL;
-    gchar buf[64];
-    snprintf (buf, sizeof buf, "audvfsptr:%p", file);
+    AVFormatContext * c = avformat_alloc_context ();
+    c->pb = io_context_new (file);
 
-    gint ret = av_open_input_file (& c, buf, f, 0, NULL);
+    gint ret = avformat_open_input (& c, name, f, NULL);
 
     if (ret < 0)
     {
-        fprintf (stderr, "ffaudio: av_open_input_file failed for %s: %s.\n",
-         name, ffaudio_strerror (ret));
+        fprintf (stderr, "ffaudio: avformat_open_input failed for %s: %s.\n", name, ffaudio_strerror (ret));
+        io_context_free (c->pb);
+        c->pb = NULL;
+        avformat_free_context (c);
         return NULL;
     }
 
     return c;
+}
+
+static void close_input_file (AVFormatContext * c)
+{
+    io_context_free (c->pb);
+    c->pb = NULL;
+    av_close_input_file (c);
 }
 
 static gboolean
@@ -356,7 +357,7 @@ static Tuple * read_tuple (const gchar * filename, VFSFile * file)
 
     Tuple *tuple = tuple_new_from_filename(filename);
     ffaudio_get_tuple_data(tuple, ic, c, codec);
-    av_close_input_file (ic);
+    close_input_file (ic);
 
     return tuple;
 }
@@ -679,7 +680,7 @@ error_exit:
     if (codec_opened)
         avcodec_close(c);
     if (ic != NULL)
-        av_close_input_file(ic);
+        close_input_file(ic);
 
     AUDDBG("exiting thread\n");
     return ! error;

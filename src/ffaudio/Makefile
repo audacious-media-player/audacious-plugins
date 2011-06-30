@@ -1,7 +1,6 @@
 PLUGIN = ffaudio${PLUGIN_SUFFIX}
 
-SRCS = ffaudio-audvfs.c \
-       ffaudio-core.c
+SRCS = ffaudio-core.c ffaudio-io.c
 
 include ../../buildsys.mk
 include ../../extra.mk

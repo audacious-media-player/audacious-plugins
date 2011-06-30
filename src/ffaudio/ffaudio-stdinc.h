@@ -31,6 +31,7 @@
 #define CHECK_LIBAVFORMAT_VERSION(a, b, c) (LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT (a, b, c))
 #define CHECK_LIBAVUTIL_VERSION(a, b, c) (LIBAVUTIL_VERSION_INT >= AV_VERSION_INT (a, b, c))
 
-URLProtocol audvfsptr_protocol;
+AVIOContext * io_context_new (VFSFile * file);
+void io_context_free (AVIOContext * context);
 
 #endif
