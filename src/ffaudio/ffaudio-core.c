@@ -74,12 +74,8 @@ ffaudio_cleanup(void)
 
 static const gchar * ffaudio_strerror (gint error)
 {
-#if CHECK_LIBAVUTIL_VERSION (50, 13, 0)
     static gchar buf[256];
     return (! av_strerror (error, buf, sizeof buf)) ? buf : "unknown error";
-#else
-    return strerror (AVUNERROR (error));
-#endif
 }
 
 static mowgli_patricia_t * create_extension_dict (void)
@@ -134,10 +130,6 @@ static AVInputFormat * get_format_by_extension (const gchar * name)
     g_free (ext);
     return f;
 }
-
-#if ! CHECK_LIBAVFORMAT_VERSION (52, 62, 0)
-#define av_probe_input_format2(p, i, s) av_probe_input_format(p, i)
-#endif
 
 static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file)
 {
@@ -341,11 +333,7 @@ static Tuple * read_tuple (const gchar * filename, VFSFile * file)
     {
         s = ic->streams[i];
         c = s->codec;
-#if CHECK_LIBAVCODEC_VERSION (52, 64, 0)
         if (c->codec_type == AVMEDIA_TYPE_AUDIO)
-#else
-        if (c->codec_type == CODEC_TYPE_AUDIO)
-#endif
         {
             av_find_stream_info(ic);
             codec = avcodec_find_decoder(c->codec_id);
@@ -419,11 +407,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     {
         s = ic->streams[i];
         c = s->codec;
-#if CHECK_LIBAVCODEC_VERSION (52, 64, 0)
         if (c->codec_type == AVMEDIA_TYPE_AUDIO)
-#else
-        if (c->codec_type == CODEC_TYPE_AUDIO)
-#endif
         {
             av_find_stream_info(ic);
             codec = avcodec_find_decoder(c->codec_id);
@@ -587,11 +571,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
             g_mutex_unlock(ctrl_mutex);
 
             /* Decode whatever we can of the frame data */
-#if (LIBAVCODEC_VERSION_MAJOR <= 52) && (LIBAVCODEC_VERSION_MINOR <= 25)
-            len = avcodec_decode_audio2(c, (gint16 *)outbuf, &out_size, tmp.data, tmp.size);
-#else
             len = avcodec_decode_audio3(c, (gint16 *)outbuf, &out_size, &tmp);
-#endif
             if (len < 0)
             {
                 AUDDBG("codec failure, breaking out of loop\n");
