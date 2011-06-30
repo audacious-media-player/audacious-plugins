@@ -1049,7 +1049,7 @@ void skin_get_eq_spline_colors (Skin * skin, guint32 colors[19])
 {
     if (! skin->pixmaps[SKIN_EQMAIN])
     {
-        memset (colors, 0, sizeof colors);
+        memset (colors, 0, sizeof (guint32) * 19);
         return;
     }
 
