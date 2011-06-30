@@ -202,16 +202,15 @@ static AVFormatContext * open_input_file (const gchar * name, VFSFile * file)
     }
 
     AVFormatContext * c = avformat_alloc_context ();
-    c->pb = io_context_new (file);
+    AVIOContext * io = io_context_new (file);
+    c->pb = io;
 
     gint ret = avformat_open_input (& c, name, f, NULL);
 
     if (ret < 0)
     {
         fprintf (stderr, "ffaudio: avformat_open_input failed for %s: %s.\n", name, ffaudio_strerror (ret));
-        io_context_free (c->pb);
-        c->pb = NULL;
-        avformat_free_context (c);
+        io_context_free (io);
         return NULL;
     }
 
