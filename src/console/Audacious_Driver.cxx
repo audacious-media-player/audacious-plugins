@@ -162,7 +162,7 @@ static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const g
         tuple_associate_string(ti, FIELD_ARTIST, NULL, info->author);
         tuple_associate_string(ti, FIELD_ALBUM, NULL, info->game);
         tuple_associate_string(ti, -1, "game", info->game);
-        tuple_associate_string(ti, FIELD_TITLE, NULL, info->song ? info->song : g_path_get_basename(path));
+        tuple_associate_string(ti, FIELD_TITLE, NULL, (info->song && info->song[0]) ? info->song : g_path_get_basename(path));
         tuple_associate_string(ti, FIELD_COPYRIGHT, NULL, info->copyright);
         tuple_associate_string(ti, -1, "console", info->system);
         tuple_associate_string(ti, FIELD_CODEC, NULL, info->system);
