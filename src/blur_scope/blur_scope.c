@@ -32,8 +32,8 @@
 
 #include "blur_scope.h"
 
-#define D_WIDTH 256
-#define D_HEIGHT 128
+#define D_WIDTH 64
+#define D_HEIGHT 32
 
 static gboolean bscope_init (void);
 static void bscope_cleanup(void);
