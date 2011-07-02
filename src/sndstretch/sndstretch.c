@@ -178,7 +178,7 @@ void ringload_IIR_1_div_e_echo_i_vc( s16 * ringbuff, int ring_size, int pos, s16
 /*void ringget ( s16 * ringbuff, int ring_size, int pos, s16 *buffer, int size )
 {
     int i;
-    
+
     if( pos+size > ring_size ){
         for( i=pos; i<ring_size;          i++ ) buffer[i]=ringbuff[i];
         for( i=0;   i<size-ring_size+pos; i++ ) buffer[i]=ringbuff[i];
@@ -215,7 +215,7 @@ int sndstretch_not_optimized(
 
     int            snr;
     double         snr_d;
-    
+
     int            i,p1,p2;
     double         fade_in, fade_out;
     double         outd;
@@ -225,25 +225,25 @@ int sndstretch_not_optimized(
     /* reset */
     if( !is_initialized || initialize ||
         snr_i!=snr_i_act || snr_o!=snr_o_act ){
-        
+
         snr_rest   = 0.0;
         snr_o_prod = 0;
         snr_i_act  = snr_i;
         snr_o_act  = snr_o;
         dsnr       = snr_o_act-snr_i_act;
         pos_act    = pos_init;
-        
+
         is_initialized = 1;
 
     }
-    
+
 /*    fprintf(stderr,"pos_act=%d\n",pos_act);
 */
     snr_d      = (double)snr_proc*(double)snr_o_act/(double)snr_i_act
                  + snr_rest;
     snr        = (int) (snr_d) / 2 * 2;
     snr_rest   = snr_d - (double)snr;
-    
+
 /*    fprintf(stderr,"snr=%d\n",snr);
 */
 /*    outbuff=malloc(snr*sizeof(s16));
@@ -329,23 +329,23 @@ int sndstretch( // optimized
     /* reset */
     if( !is_initialized || initialize ||
         snr_i!=snr_i_act || snr_o!=snr_o_act ){
-        
+
         snr_rest   = 0.0;
         snr_o_prod = 0;
         snr_i_act  = snr_i;
         snr_o_act  = snr_o;
         dsnr       = snr_o_act-snr_i_act;
         pos_act    = pos_init;
-        
+
         is_initialized = 1;
 
     }
-    
+
     snr_d      = (double)snr_proc*(double)snr_o_act/(double)snr_i_act
                  + snr_rest;
     snr        = (int) (snr_d) / 2 * 2;
     snr_rest   = snr_d - (double)snr;
-    
+
     /* produce snr samples */
     i=0;
     do {
@@ -431,23 +431,23 @@ int sndstretch_job( // optimized
     /* reset */
     if( !is_initialized || initialize ||
         snr_i!=snr_i_act || snr_o!=snr_o_act ){
-        
+
         snr_rest   = 0.0;
         snr_o_prod = 0;
         snr_i_act  = snr_i;
         snr_o_act  = snr_o;
         dsnr       = snr_o_act-snr_i_act;
         pos_act    = pos_init;
-        
+
         is_initialized = 1;
 
     }
-    
+
     snr_d      = (double)snr_proc*(double)snr_o_act/(double)snr_i_act
                  + snr_rest;
     snr        = (int) (snr_d) / 2 * 2;
     snr_rest   = snr_d - (double)snr;
-    
+
     /* produce snr samples */
     i=0;
     do {
@@ -514,7 +514,7 @@ int sndscale_not_optimized(
 {
     static s16     last_samp[10];        /* 10 channels maximum ;) */
     static double  pos_d     = 0.0;
-    
+
     int            snr;
     int            pos1, pos2;
     s16            samp1, samp2;
@@ -523,7 +523,7 @@ int sndscale_not_optimized(
     double         ds;
     double         ratio1, ratio2, outd;
 
-    
+
     if ( initialize ){
         for( ch=0; ch<chnr; ch++ ){
             last_samp[ch] = 0;
@@ -535,15 +535,15 @@ int sndscale_not_optimized(
 
 /*    fprintf(stderr,"ds=%f\n",ds); */
 /*    fprintf(stderr,"pos_d    =%f\n",pos_d);*/
-    
+
     /* produce proper amount of samples */
     for( snr=0 ; pos_d < snr_proc/chnr-1 ; pos_d+=ds ){
-        
+
         pos1  = (int)floor(pos_d);
         pos2  = pos1+1;
         ratio1 = 1-pos_d+floor(pos_d);
         ratio2 = pos_d-floor(pos_d);
-        
+
         for( ch=0; ch<chnr; ch++ ){
 
             index1    = pos1*chnr+ch;
@@ -562,19 +562,19 @@ int sndscale_not_optimized(
         snr+=chnr;
 
     }
-    
+
     pos_d -= (double)(snr_proc/chnr);
-    
+
     for( ch=0; ch<chnr; ch++ ){
         last_samp[ch] = buffer[snr_proc-chnr+ch];
     }
-    
+
     *out_prod = snr;
-    
+
 /*    fprintf(stderr,"snr = %d\n",snr);*/
-    
+
 /*    last_samp = buffer[snr_proc-1]; */
-    
+
     return( snr );
 }
 
@@ -596,7 +596,7 @@ int sndscale( //optimized
 {
     static s16     last_samp[10];        /* 10 channels maximum ;) */
     static int            pos_rest;
-    
+
     static int            snr;
     static int            pos1, pos2;
     static int            ch;
@@ -604,7 +604,7 @@ int sndscale( //optimized
     static int            ds_li, ds_li_c, ds_rest;
     static int            snr_proc_m_chnr;
 
-    
+
     if ( initialize ){
         for( ch=0; ch<chnr; ch++ ){
             last_samp[ch] = 0;
@@ -615,13 +615,13 @@ int sndscale( //optimized
     ds_li      = snr_i/snr_o;
     ds_li_c    = ds_li*chnr;
     ds_rest    = snr_i%snr_o;
-    
+
     snr_proc_m_chnr = snr_proc-chnr;
     for( snr=0 ; pos1 < snr_proc_m_chnr ; pos1+=ds_li_c ){
-        
+
         pos2  = pos1+chnr;
         ratio1_i = snr_o-pos_rest;
-        
+
         if (pos1<0){
             for( ch=0; ch<chnr; ch++ ){
                 outbuff[snr+ch] = (s16)
@@ -643,11 +643,11 @@ int sndscale( //optimized
     }
 
     pos1 -= snr_proc;
-    
+
     for( ch=0; ch<chnr; ch++ ){
         last_samp[ch] = buffer[snr_proc-chnr+ch];
     }
-    
+
     *out_prod = snr;
 
     return( snr );
@@ -672,7 +672,7 @@ int sndscale_job( //optimized
 {
 /*    static s16  *         last_samp;
     static int            pos_rest;
-    
+
     static int            snr;
     static int            pos1, pos2;
     static int            ch;
@@ -702,13 +702,13 @@ int sndscale_job( //optimized
     ds_li      = snr_i/snr_o;
     ds_li_c    = ds_li*chnr;
     ds_rest    = snr_i%snr_o;
-    
+
     snr_proc_m_chnr = snr_proc-chnr;
     for( snr=0 ; pos1 < snr_proc_m_chnr ; pos1+=ds_li_c ){
-        
+
         pos2  = pos1+chnr;
         ratio1_i = snr_o-pos_rest;
-        
+
         if (pos1<0){
             for( ch=0; ch<chnr; ch++ ){
                 outbuff[snr+ch] = (s16)
@@ -730,25 +730,25 @@ int sndscale_job( //optimized
     }
 
     pos1 -= snr_proc;
-    
+
     for( ch=0; ch<chnr; ch++ ){
         last_samp[ch] = buffer[snr_proc-chnr+ch];
     }
-    
+
     *out_prod = snr;
 
     return( snr );
 
-#undef    last_samp      
-#undef    pos_rest       
-#undef    snr            
-#undef    pos1           
-#undef    pos2           
-#undef    ch             
-#undef    ratio1_i       
-#undef    ds_li          
-#undef    ds_li_c        
-#undef    ds_rest        
+#undef    last_samp
+#undef    pos_rest
+#undef    snr
+#undef    pos1
+#undef    pos2
+#undef    ch
+#undef    ratio1_i
+#undef    ds_li
+#undef    ds_li_c
+#undef    ds_rest
 #undef    snr_proc_m_chnr
 }
 
@@ -781,7 +781,7 @@ int snd_pitch_speed(
     static double speed_act = 0;
     static double pitch_act = 0;
     static double fade_shift_act = 0;
-    
+
     int       snr_prod;
     double    speed_eff;
     double    pitch_eff;
@@ -797,16 +797,16 @@ int snd_pitch_speed(
 
     scaling_first=0;
 //    if( pitch > 1.0 ) scaling_first=0; else scaling_first=1;
-    
+
     if ( !is_init || initialize || speed!=speed_act || pitch!=pitch_act ||
          fade_shift!=fade_shift_act ){
 
         if( !is_init || initialize ) init_me=1; else init_me=0;
-        
+
 #ifdef DEBUG
         fprintf(stderr,"snd_stretch_scale - init - pitch:%f, speed:%f\n",pitch,speed);
 #endif
-        
+
         speed_act = speed;
         pitch_act = pitch;
         fade_shift_act = fade_shift;
@@ -815,7 +815,7 @@ int snd_pitch_speed(
 //        if (buff_help!=0) free(buff_help);
 
         if (initialize != -1){
-            
+
             dsnr       = fade_shift;
 //            dsnr       = 1764; // 25Hz
 //            dsnr       = 1536; // 30Hz
@@ -877,7 +877,7 @@ int snd_pitch_speed(
             ring_pos_w = (ring_pos_w+(channels-1))/channels*channels;
 
             ring_size_old = ring_size;
-            
+
             is_init = 1;
 
         } else {  /* initialize == -1 */
@@ -886,9 +886,9 @@ int snd_pitch_speed(
             /* buffers are released -> leave the function */
             return 0;                            /* !!! sloppy */
         }
-        
+
     }
-    
+
     if ( fabs(speed_eff-1.0)>0.001 ){ /*
                                      0.001 ?!
                                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -925,20 +925,20 @@ int snd_pitch_speed(
     }
 
     if( 0/*scaling_first*/ ){
-        
+
         snr_proc_scale = snr_proc;
         sndscale ( buff_i,
                    snr_scale_i, snr_scale_o, channels,
                    buff_help, &snr_prod, snr_proc_scale, init_me );
 /*                   buff_o, &snr_prod, snr_proc_scale, 0 ); */
-        
+
         if( speed_eff!=1.0 ){   /* add echo only when really stretching */
             ringload_IIR_1_div_e_echo_i( ring_buff, ring_size, ring_pos_w, buff_help, snr_prod, dsnr*channels );
         } else {
             ringload( ring_buff, ring_size, ring_pos_w, buff_help, snr_prod );
         }
         ring_pos_w = ringpos( ring_pos_w+snr_prod, ring_size );
-        
+
         snr_proc_stretch = snr_prod;
         sndstretch ( ring_buff, ring_size, ring_pos_r,
                      snr_stretch_i*channels, snr_stretch_o*channels, channels,
@@ -957,12 +957,12 @@ int snd_pitch_speed(
             ringload( ring_buff, ring_size, ring_pos_w, buff_i, snr_proc );
         }
         ring_pos_w = ringpos( ring_pos_w+snr_proc, ring_size );
-        
+
         snr_proc_stretch = snr_proc;
         sndstretch ( ring_buff, ring_size, ring_pos_r,
                      snr_stretch_i*channels, snr_stretch_o*channels, channels,
                      buff_help, &snr_prod, snr_proc_stretch, init_me );
-        
+
         ring_pos_r = ringpos( ring_pos_r+snr_prod, ring_size );
 
         snr_proc_scale = snr_prod;
@@ -972,9 +972,9 @@ int snd_pitch_speed(
                    buff_o, &snr_prod, snr_proc_scale, init_me );
 
     }
-    
+
     *snr_produced = snr_prod;
-    
+
     return snr_prod;
 }
 
@@ -1035,34 +1035,36 @@ int snd_pitch_speed_job(
 #define    speed_act         job->speed_act
 #define    pitch_act         job->pitch_act
 #define    fade_shift_act    job->fade_shift_act
-    
+
     speed_eff = speed/pitch;
     pitch_eff = pitch;
 
     scaling_first=0;
 //    if( pitch > 1.0 ) scaling_first=0; else scaling_first=1;
-    
+
     if ( !is_init || initialize || speed!=speed_act || pitch!=pitch_act ||
          fade_shift != fade_shift_act ){
 
         if( !is_init || initialize ) init_me=1; else init_me=0;
-        
+
 #ifdef DEBUG
         fprintf(stderr,"snd_stretch_scale - init - pitch:%f, speed:%f\n",pitch,speed);
 #endif
-        
+
         speed_act = speed;
         pitch_act = pitch;
+#ifdef DEBUG
         if ( fade_shift != fade_shift_act ){
             fprintf(stderr,"changed fade_shift_act\n");
         }
+#endif
         fade_shift_act = fade_shift;
 
 //        if (ring_buff!=0) free(ring_buff);
 //        if (buff_help!=0) free(buff_help);
 
         if (initialize != -1){
-            
+
             dsnr       = fade_shift;
 //            dsnr       = 1764; // 25Hz
 //            dsnr       = 1536; // 30Hz
@@ -1124,7 +1126,7 @@ int snd_pitch_speed_job(
             ring_pos_w = (ring_pos_w+(channels-1))/channels*channels;
 
             ring_size_old = ring_size;
-            
+
             is_init = 1;
 
         } else {  /* initialize == -1 */
@@ -1133,9 +1135,9 @@ int snd_pitch_speed_job(
             /* buffers are released -> leave the function */
             return 0;                            /* !!! sloppy */
         }
-        
+
     }
-    
+
     if ( fabs(speed_eff-1.0)>0.001 ){ /*
                                      0.001 ?!
                                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1172,14 +1174,14 @@ int snd_pitch_speed_job(
     }
 
     if( 0/*scaling_first*/ ){
-        
+
         snr_proc_scale = snr_proc;
         sndscale_job ( buff_i,
                        snr_scale_i, snr_scale_o, channels,
                        buff_help, &snr_prod, snr_proc_scale, init_me,
                        &(job->scale_job) );
 /*                   buff_o, &snr_prod, snr_proc_scale, 0 ); */
-        
+
         if( speed_eff!=1.0 ){   /* add echo only when really stretching */
             if( !vol_corr ){
                 ringload_IIR_1_div_e_echo_i( ring_buff, ring_size, ring_pos_w, buff_help, snr_prod, dsnr*channels );
@@ -1190,7 +1192,7 @@ int snd_pitch_speed_job(
             ringload( ring_buff, ring_size, ring_pos_w, buff_help, snr_prod );
         }
         ring_pos_w = ringpos( ring_pos_w+snr_prod, ring_size );
-        
+
         snr_proc_stretch = snr_prod;
         sndstretch_job ( ring_buff, ring_size, ring_pos_r,
                          snr_stretch_i*channels, snr_stretch_o*channels, channels,
@@ -1215,14 +1217,14 @@ int snd_pitch_speed_job(
             ringload( ring_buff, ring_size, ring_pos_w, buff_i, snr_proc );
         }
         ring_pos_w = ringpos( ring_pos_w+snr_proc, ring_size );
-        
+
         snr_proc_stretch = snr_proc;
         sndstretch_job ( ring_buff, ring_size, ring_pos_r,
                          snr_stretch_i*channels, snr_stretch_o*channels, channels,
                          buff_help, &snr_prod, snr_proc_stretch, init_me,
                          &(job->stretch_job)
                        );
-        
+
         ring_pos_r = ringpos( ring_pos_r+snr_prod, ring_size );
 
         snr_proc_scale = snr_prod;
@@ -1234,9 +1236,9 @@ int snd_pitch_speed_job(
                      );
 
     }
-    
+
     *snr_produced = snr_prod;
-    
+
     return snr_prod;
 #undef    ring_buff
 #undef    ring_buff_old
