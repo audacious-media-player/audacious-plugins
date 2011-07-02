@@ -23,13 +23,13 @@ long const base_scanline_period = 114;
 Sap_Emu::Sap_Emu()
 {
 	set_type( gme_sap_type );
-	
+
 	static const char* const names [Sap_Apu::osc_count * 2] = {
 		"Wave 1", "Wave 2", "Wave 3", "Wave 4",
 		"Wave 5", "Wave 6", "Wave 7", "Wave 8",
 	};
 	set_voice_names( names );
-	
+
 	static int const types [Sap_Apu::osc_count * 2] = {
 		wave_type | 1, wave_type | 2, wave_type | 3, wave_type | 0,
 		wave_type | 5, wave_type | 6, wave_type | 7, wave_type | 4,
@@ -68,7 +68,7 @@ static int from_dec( byte const* in, byte const* end )
 {
 	if ( in >= end )
 		return -1;
-	
+
 	int n = 0;
 	while ( in < end )
 	{
@@ -104,10 +104,10 @@ static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out 
 	out->author    [0] = 0;
 	out->name      [0] = 0;
 	out->copyright [0] = 0;
-	
+
 	if ( size < 16 || memcmp( in, "SAP\x0D\x0A", 5 ) )
 		return gme_wrong_file_type;
-	
+
 	byte const* file_end = in + size - 5;
 	in += 5;
 	while ( in < file_end && (in [0] != 0xFF || in [1] != 0xFF) )
@@ -115,14 +115,14 @@ static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out 
 		byte const* line_end = in;
 		while ( line_end < file_end && *line_end != 0x0D )
 			line_end++;
-		
+
 		char const* tag = (char const*) in;
 		while ( in < line_end && *in > ' ' )
 			in++;
 		int tag_len = (char const*) in - tag;
-		
+
 		while ( in < line_end && *in <= ' ' ) in++;
-		
+
 		if ( tag_len <= 0 )
 		{
 			// skip line
@@ -158,10 +158,10 @@ static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out 
 			case 'C':
 			case 'B':
 				break;
-			
+
 			case 'D':
 				return "Digimusic not supported";
-			
+
 			default:
 				return "Unsupported player type";
 			}
@@ -188,20 +188,20 @@ static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out 
 		{
 			parse_string( in, line_end, sizeof out->copyright, out->copyright );
 		}
-		
+
 		in = line_end + 2;
 	}
-	
+
 	if ( in [0] != 0xFF || in [1] != 0xFF )
 		return "ROM data missing";
 	out->rom_data = in + 2;
-	
+
 	return 0;
 }
 
 static void copy_sap_fields( Sap_Emu::info_t const& in, track_info_t* out )
 {
-	Gme_File::copy_field_( out->game,      in.name );
+	Gme_File::copy_field_( out->song,      in.name );
 	Gme_File::copy_field_( out->author,    in.author );
 	Gme_File::copy_field_( out->copyright, in.copyright );
 }
@@ -215,16 +215,16 @@ blargg_err_t Sap_Emu::track_info_( track_info_t* out, int ) const
 struct Sap_File : Gme_Info_
 {
 	Sap_Emu::info_t info;
-	
+
 	Sap_File() { set_type( gme_sap_type ); }
-	
+
 	blargg_err_t load_mem_( byte const* begin, long size )
 	{
 		RETURN_ERR( parse_info( begin, size, &info ) );
 		set_track_count( info.track_count );
 		return 0;
 	}
-	
+
 	blargg_err_t track_info_( track_info_t* out, int ) const
 	{
 		copy_sap_fields( info, out );
@@ -244,7 +244,7 @@ gme_type_t const gme_sap_type = &gme_sap_type_;
 blargg_err_t Sap_Emu::load_mem_( byte const* in, long size )
 {
 	file_end = in + size;
-	
+
 	info.warning    = 0;
 	info.type       = 'B';
 	info.stereo     = false;
@@ -253,12 +253,12 @@ blargg_err_t Sap_Emu::load_mem_( byte const* in, long size )
 	info.music_addr = -1;
 	info.fastplay   = 312;
 	RETURN_ERR( parse_info( in, size, &info ) );
-	
+
 	set_warning( info.warning );
 	set_track_count( info.track_count );
 	set_voice_count( Sap_Apu::osc_count << info.stereo );
 	apu_impl.volume( gain() );
-	
+
 	return setup_buffer( 1773447 );
 }
 
@@ -312,7 +312,7 @@ inline void Sap_Emu::call_init( int track )
 		r.a = track;
 		run_routine( info.init_addr );
 		break;
-	
+
 	case 'C':
 		r.a = 0x70;
 		r.x = info.music_addr&0xFF;
@@ -328,7 +328,7 @@ inline void Sap_Emu::call_init( int track )
 blargg_err_t Sap_Emu::start_track_( int track )
 {
 	RETURN_ERR( Classic_Emu::start_track_( track ) );
-	
+
 	memset( &mem, 0, sizeof mem );
 
 	byte const* in = info.rom_data;
@@ -349,22 +349,22 @@ blargg_err_t Sap_Emu::start_track_( int track )
 			set_warning( "Invalid file data block" );
 			break;
 		}
-		
+
 		memcpy( mem.ram + start, in, len );
 		in += len;
 		if ( file_end - in >= 2 && in [0] == 0xFF && in [1] == 0xFF )
 			in += 2;
 	}
-	
+
 	apu.reset( &apu_impl );
 	apu2.reset( &apu_impl );
 	cpu::reset( mem.ram );
 	time_mask = 0; // disables sound during init
 	call_init( track );
 	time_mask = -1;
-	
+
 	next_play = play_period();
-	
+
 	return 0;
 }
 
@@ -380,7 +380,7 @@ void Sap_Emu::cpu_write_( sap_addr_t addr, int data )
 		apu.write_data( time() & time_mask, addr, data );
 		return;
 	}
-	
+
 	if ( (addr ^ (Sap_Apu::start_addr + 0x10)) <= (Sap_Apu::end_addr - Sap_Apu::start_addr) &&
 			info.stereo )
 	{
@@ -400,7 +400,7 @@ inline void Sap_Emu::call_play()
 	case 'B':
 		cpu_jsr( info.play_addr );
 		break;
-	
+
 	case 'C':
 		cpu_jsr( info.play_addr + 6 );
 		break;
@@ -414,7 +414,7 @@ blargg_err_t Sap_Emu::run_clocks( blip_time_t& duration, int )
 	{
 		if ( cpu::run( duration ) || r.pc > idle_addr )
 			return "Emulation error (illegal instruction)";
-		
+
 		if ( r.pc == idle_addr )
 		{
 			if ( next_play <= duration )
@@ -430,7 +430,7 @@ blargg_err_t Sap_Emu::run_clocks( blip_time_t& duration, int )
 			}
 		}
 	}
-	
+
 	duration = time();
 	next_play -= duration;
 	check( next_play >= 0 );
@@ -439,6 +439,6 @@ blargg_err_t Sap_Emu::run_clocks( blip_time_t& duration, int )
 	apu.end_frame( duration );
 	if ( info.stereo )
 		apu2.end_frame( duration );
-	
+
 	return 0;
 }
