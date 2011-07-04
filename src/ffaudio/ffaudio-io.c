@@ -31,7 +31,7 @@ static gint read_cb (void * file, guchar * buf, gint size)
 static gint64 seek_cb (void * file, gint64 offset, gint whence)
 {
     if (whence == AVSEEK_SIZE)
-        return vfs_ftell (file);
+        return vfs_fsize (file);
     if (vfs_fseek (file, offset, whence & ~(gint) AVSEEK_FORCE))
         return -1;
     return vfs_ftell (file);
