@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-06-10 18:30+0200\n"
+"POT-Creation-Date: 2011-07-05 22:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: src/aac/libmp4.c:268
+#: src/aac/libmp4.c:256
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -26,35 +26,35 @@ msgid ""
 "Copyright (c) 2005-2006 Audacious team"
 msgstr ""
 
-#: src/aac/libmp4.c:273
+#: src/aac/libmp4.c:261
 msgid "About MP4 AAC decoder plugin"
 msgstr ""
 
-#: src/alsa/config.c:212
+#: src/alsa/config.c:210
 msgid "Default PCM device"
 msgstr ""
 
-#: src/alsa/config.c:237
+#: src/alsa/config.c:235
 msgid "Default mixer device"
 msgstr ""
 
-#: src/alsa/config.c:449
+#: src/alsa/config.c:447
 msgid "ALSA Output Plugin Preferences"
 msgstr ""
 
-#: src/alsa/config.c:456
+#: src/alsa/config.c:454
 msgid "PCM device:"
 msgstr ""
 
-#: src/alsa/config.c:458 src/OSS/configure.c:246
+#: src/alsa/config.c:456 src/OSS/configure.c:246
 msgid "Mixer device:"
 msgstr ""
 
-#: src/alsa/config.c:460
+#: src/alsa/config.c:458
 msgid "Mixer element:"
 msgstr ""
 
-#: src/alsa/config.c:463
+#: src/alsa/config.c:461
 msgid "Work around drain hangup"
 msgstr ""
 
@@ -466,198 +466,198 @@ msgstr ""
 msgid "Triggers OSD when playback is unpaused."
 msgstr ""
 
-#: src/aosd/aosd_ui.c:170
+#: src/aosd/aosd_ui.c:180
 msgid "Placement"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:204
+#: src/aosd/aosd_ui.c:219
 msgid "Relative X offset:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:213
+#: src/aosd/aosd_ui.c:228
 msgid "Relative Y offset:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:222
+#: src/aosd/aosd_ui.c:237
 msgid "Max OSD width:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:235
+#: src/aosd/aosd_ui.c:250
 msgid "Multi-Monitor options"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:239
+#: src/aosd/aosd_ui.c:254
 msgid "Display OSD using:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:250
+#: src/aosd/aosd_ui.c:265
 msgid "all monitors"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:253
+#: src/aosd/aosd_ui.c:268
 #, c-format
 msgid "monitor %i"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:308
+#: src/aosd/aosd_ui.c:323
 msgid "Timing (ms)"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:313
+#: src/aosd/aosd_ui.c:328
 msgid "Display:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:318
+#: src/aosd/aosd_ui.c:333
 msgid "Fade in:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:323
+#: src/aosd/aosd_ui.c:338
 msgid "Fade out:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:404
+#: src/aosd/aosd_ui.c:419
 msgid "Fonts"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:412
+#: src/aosd/aosd_ui.c:427
 #, c-format
 msgid "Font %i:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:429
+#: src/aosd/aosd_ui.c:444
 msgid "Shadow"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:464
+#: src/aosd/aosd_ui.c:479
 msgid "Internationalization"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:470
+#: src/aosd/aosd_ui.c:485
 msgid "Disable UTF-8 conversion of text (in aosd)"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:488
+#: src/aosd/aosd_ui.c:503
 msgid "Select Skin File"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:599
+#: src/aosd/aosd_ui.c:614
 msgid "Render Style"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:615
+#: src/aosd/aosd_ui.c:630
 msgid "Colors"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:628
+#: src/aosd/aosd_ui.c:643
 #, c-format
 msgid "Color %i:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:648
+#: src/aosd/aosd_ui.c:663
 msgid "Custom Skin"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:654
+#: src/aosd/aosd_ui.c:669
 msgid "Skin file:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:657 src/sid/xs_interface.c:1044
+#: src/aosd/aosd_ui.c:672 src/sid/xs_interface.c:1044
 #: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
 msgid "Browse"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:759
+#: src/aosd/aosd_ui.c:774
 msgid "Enable trigger"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:786
+#: src/aosd/aosd_ui.c:801
 msgid "Event"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:814
+#: src/aosd/aosd_ui.c:829
 msgid "Composite manager detected"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:821
+#: src/aosd/aosd_ui.c:836
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:829
+#: src/aosd/aosd_ui.c:844
 msgid "Composite manager not required for fake transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:867
+#: src/aosd/aosd_ui.c:882
 msgid "Transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:873
+#: src/aosd/aosd_ui.c:888
 msgid "Fake transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:875
+#: src/aosd/aosd_ui.c:890
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:917
+#: src/aosd/aosd_ui.c:932
 msgid "Composite extension not loaded"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:925
+#: src/aosd/aosd_ui.c:940
 msgid "Composite extension not available"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:944
+#: src/aosd/aosd_ui.c:959
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1025
+#: src/aosd/aosd_ui.c:1040
 msgid "Audacious OSD - configuration"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1046
+#: src/aosd/aosd_ui.c:1061
 msgid "Test"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1061
+#: src/aosd/aosd_ui.c:1076
 msgid "Position"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1066
+#: src/aosd/aosd_ui.c:1081
 msgid "Animation"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1071
+#: src/aosd/aosd_ui.c:1086
 msgid "Text"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1076
+#: src/aosd/aosd_ui.c:1091
 msgid "Decoration"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1081
+#: src/aosd/aosd_ui.c:1096
 msgid "Trigger"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1086 src/cdaudio-ng/configure.c:171
+#: src/aosd/aosd_ui.c:1101 src/cdaudio-ng/configure.c:171
 #: src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1123
+#: src/aosd/aosd_ui.c:1138
 msgid "Audacious OSD - about"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1153
+#: src/aosd/aosd_ui.c:1168
 msgid ""
 "\n"
 "Audacious OSD "
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1154
+#: src/aosd/aosd_ui.c:1169
 msgid ""
 "\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
@@ -938,21 +938,23 @@ msgstr ""
 msgid "Volume: (%)"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:765
+#: src/ffaudio/ffaudio-core.c:763
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
 "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
 "\n"
-"FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
-"\n"
 "Audacious plugin by:\n"
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
+"\n"
+"libavcodec %s (%s)\n"
+"libavformat %s (%s)\n"
+"libavutil %s (%s)\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:778
+#: src/ffaudio/ffaudio-core.c:777
 msgid "About FFaudio Plugin"
 msgstr ""
 
@@ -1499,7 +1501,7 @@ msgstr ""
 msgid "P_laylist"
 msgstr ""
 
-#: src/gtkui/menus.c:205 src/gtkui/menus.c:223
+#: src/gtkui/menus.c:205 src/gtkui/menus.c:219
 msgid "_Services"
 msgstr ""
 
@@ -1527,36 +1529,36 @@ msgstr ""
 msgid "_Paste"
 msgstr ""
 
-#: src/gtkui/menus.c:218 src/gtkui/menus.c:220
+#: src/gtkui/menus.c:217
 msgid "Select _All"
 msgstr ""
 
-#: src/gtkui/menus.c:226
+#: src/gtkui/menus.c:222
 msgid "_Rename"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:79
+#: src/gtkui/ui_gtk.c:75
 msgid "GTK Interface"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:135 src/skins/ui_main.c:302
+#: src/gtkui/ui_gtk.c:132 src/skins/ui_main.c:303
 #, c-format
 msgid "%s - Audacious"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:141 src/skins/ui_main.c:304 src/skins/ui_main.c:1497
+#: src/gtkui/ui_gtk.c:138 src/skins/ui_main.c:305 src/skins/ui_main.c:1498
 msgid "Audacious"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:175 src/skins/plugin.c:176
+#: src/gtkui/ui_gtk.c:177 src/skins/plugin.c:185
 msgid "Error"
 msgstr ""
 
-#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:459
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:460
 msgid "mono"
 msgstr ""
 
-#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:458
+#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:459
 msgid "stereo"
 msgstr ""
 
@@ -1624,11 +1626,19 @@ msgstr ""
 msgid "Show On-Screen-Display"
 msgstr ""
 
-#: src/hotkey/gui.c:93
+#: src/hotkey/gui.c:84
+msgid "Toggle Repeat"
+msgstr ""
+
+#: src/hotkey/gui.c:85
+msgid "Toggle Shuffle"
+msgstr ""
+
+#: src/hotkey/gui.c:95
 msgid "(none)"
 msgstr ""
 
-#: src/hotkey/gui.c:230
+#: src/hotkey/gui.c:232
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -1636,37 +1646,37 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: src/hotkey/gui.c:232
+#: src/hotkey/gui.c:234
 msgid "Binding mouse buttons"
 msgstr ""
 
-#: src/hotkey/gui.c:382
+#: src/hotkey/gui.c:384
 msgid "Global Hotkey Plugin Configuration"
 msgstr ""
 
-#: src/hotkey/gui.c:398
+#: src/hotkey/gui.c:400
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
 
-#: src/hotkey/gui.c:403
+#: src/hotkey/gui.c:405
 msgid "Hotkeys:"
 msgstr ""
 
-#: src/hotkey/gui.c:422
+#: src/hotkey/gui.c:424
 msgid "<b>Action:</b>"
 msgstr ""
 
-#: src/hotkey/gui.c:430
+#: src/hotkey/gui.c:432
 msgid "<b>Key Binding:</b>"
 msgstr ""
 
-#: src/hotkey/gui.c:661
+#: src/hotkey/gui.c:663
 msgid "About Global Hotkey Plugin"
 msgstr ""
 
-#: src/hotkey/gui.c:662
+#: src/hotkey/gui.c:664
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -1721,7 +1731,19 @@ msgstr ""
 msgid "About JACK Output Plugin 0.17"
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:335
+#: src/lyricwiki/lyricwiki.c:226
+msgid ""
+"\n"
+"Looking for lyrics..."
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:249
+msgid ""
+"\n"
+"Connecting to lyrics.wikia.com..."
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:337
 msgid ""
 "\n"
 "No lyrics were found."
@@ -1908,11 +1930,11 @@ msgid ""
 "USA."
 msgstr ""
 
-#: src/pulse_audio/pulse_audio.c:690
+#: src/pulse_audio/pulse_audio.c:687
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr ""
 
-#: src/pulse_audio/pulse_audio.c:691
+#: src/pulse_audio/pulse_audio.c:688
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -1952,35 +1974,35 @@ msgstr ""
 msgid "Method:"
 msgstr ""
 
-#: src/scrobbler/configure.c:129 src/scrobbler/configure.c:205
+#: src/scrobbler/configure.c:128 src/scrobbler/configure.c:204
 msgid "Change password"
 msgstr ""
 
-#: src/scrobbler/configure.c:151
+#: src/scrobbler/configure.c:150
 msgid "<b>Services</b>"
 msgstr ""
 
-#: src/scrobbler/configure.c:173
+#: src/scrobbler/configure.c:172
 msgid "Username:"
 msgstr ""
 
-#: src/scrobbler/configure.c:179
+#: src/scrobbler/configure.c:178
 msgid "Password:"
 msgstr ""
 
-#: src/scrobbler/configure.c:187
+#: src/scrobbler/configure.c:186
 msgid "Scrobbler URL:"
 msgstr ""
 
-#: src/scrobbler/configure.c:219
+#: src/scrobbler/configure.c:218
 msgid "<b>Last.FM</b>"
 msgstr ""
 
-#: src/scrobbler/configure.c:263
+#: src/scrobbler/configure.c:262
 msgid "Scrobbler"
 msgstr ""
 
-#: src/scrobbler/plugin.c:214
+#: src/scrobbler/plugin.c:213
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -1988,7 +2010,7 @@ msgid ""
 "com>\n"
 msgstr ""
 
-#: src/scrobbler/plugin.c:216
+#: src/scrobbler/plugin.c:215
 msgid "About Scrobbler Plugin"
 msgstr ""
 
@@ -2580,11 +2602,11 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/skins/plugin.c:165
+#: src/skins/plugin.c:167
 msgid "About Skinned GUI"
 msgstr ""
 
-#: src/skins/plugin.c:166
+#: src/skins/plugin.c:168
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -2611,28 +2633,18 @@ msgid "<b>_Fonts</b>"
 msgstr ""
 
 #: src/skins/skins_cfg.c:261
-msgid "Use Bitmap fonts if available"
-msgstr ""
-
-#: src/skins/skins_cfg.c:261
-msgid ""
-"Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
-"strings."
-msgstr ""
-
-#: src/skins/skins_cfg.c:262
-msgid "<b>_Miscellaneous</b>"
+msgid "Use bitmap fonts (supports ASCII only)"
 msgstr ""
 
 #: src/skins/skins_cfg.c:263
-msgid "Use two-way text scroller"
+msgid "Scroll song title in both directions"
 msgstr ""
 
-#: src/skins/skins_cfg.c:347
+#: src/skins/skins_cfg.c:346
 msgid "<b>_Skin</b>"
 msgstr ""
 
-#: src/skins/skins_cfg.c:394
+#: src/skins/skins_cfg.c:393
 msgid "Interface Preferences"
 msgstr ""
 
@@ -2688,75 +2700,75 @@ msgstr ""
 msgid "Presets"
 msgstr ""
 
-#: src/skins/ui_main.c:443
+#: src/skins/ui_main.c:444
 msgid "kbps"
 msgstr ""
 
-#: src/skins/ui_main.c:451
+#: src/skins/ui_main.c:452
 msgid "kHz"
 msgstr ""
 
-#: src/skins/ui_main.c:458
+#: src/skins/ui_main.c:459
 msgid "surround"
 msgstr ""
 
-#: src/skins/ui_main.c:806
+#: src/skins/ui_main.c:807
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr ""
 
-#: src/skins/ui_main.c:827
+#: src/skins/ui_main.c:828
 #, c-format
 msgid "Volume: %d%%"
 msgstr ""
 
-#: src/skins/ui_main.c:850
+#: src/skins/ui_main.c:851
 #, c-format
 msgid "Balance: %d%% left"
 msgstr ""
 
-#: src/skins/ui_main.c:852
+#: src/skins/ui_main.c:853
 msgid "Balance: center"
 msgstr ""
 
-#: src/skins/ui_main.c:854
+#: src/skins/ui_main.c:855
 #, c-format
 msgid "Balance: %d%% right"
 msgstr ""
 
-#: src/skins/ui_main.c:980
+#: src/skins/ui_main.c:981
 msgid "Options Menu"
 msgstr ""
 
-#: src/skins/ui_main.c:984
+#: src/skins/ui_main.c:985
 msgid "Disable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:986
+#: src/skins/ui_main.c:987
 msgid "Enable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:989
+#: src/skins/ui_main.c:990
 msgid "File Info Box"
 msgstr ""
 
-#: src/skins/ui_main.c:994
+#: src/skins/ui_main.c:995
 msgid "Visualization Menu"
 msgstr ""
 
-#: src/skins/ui_main.c:1644
+#: src/skins/ui_main.c:1645
 msgid "Single mode."
 msgstr ""
 
-#: src/skins/ui_main.c:1646
+#: src/skins/ui_main.c:1647
 msgid "Playlist mode."
 msgstr ""
 
-#: src/skins/ui_main.c:1668
+#: src/skins/ui_main.c:1669
 msgid "Stopping after song."
 msgstr ""
 
-#: src/skins/ui_main.c:1670
+#: src/skins/ui_main.c:1671
 msgid "Not stopping after song."
 msgstr ""
 
@@ -3451,7 +3463,7 @@ msgstr ""
 msgid "Unarchived Winamp 2.x skin"
 msgstr ""
 
-#: src/skins/util.c:772
+#: src/skins/util.c:773
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr ""
