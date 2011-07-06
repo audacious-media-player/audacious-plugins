@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
 "POT-Creation-Date: 2011-07-05 22:47+0200\n"
-"PO-Revision-Date: 2011-06-10 21:30+0100\n"
+"PO-Revision-Date: 2011-07-05 23:56+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
 "Language: \n"
@@ -790,7 +790,7 @@ msgstr "HTTP anstatt CDDBP benutzen"
 
 #: src/cdaudio-ng/configure.c:230
 msgid "Override default device: "
-msgstr "Anderes Device verwenden: "
+msgstr "Anderes Gerät verwenden: "
 
 #: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:131
 #: src/echo_plugin/gui.c:123 src/jack/configure.c:146 src/null/null.c:112
@@ -968,6 +968,10 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik 1999"
 msgstr ""
+"Echo Plugin\n"
+"Von Johan Levin 1999.\n"
+"\n"
+"Surround Echo von Carl van Schaik 1999"
 
 #: src/echo_plugin/gui.c:27
 msgid "About Echo Plugin"
@@ -1425,11 +1429,11 @@ msgstr "_Zufällige Wiedergabe"
 
 #: src/gtkui/menus.c:150
 msgid "N_o Playlist Advance"
-msgstr "Wiedergabeliste nicht _weiterspielen"
+msgstr "Wiedergabeliste ni_cht weiterspielen"
 
 #: src/gtkui/menus.c:151
 msgid "Stop _After This Song"
-msgstr "Nach Titel _stoppen"
+msgstr "N_ach Titel stoppen"
 
 #: src/gtkui/menus.c:153 src/gtkui/menus.c:210
 msgid "Song _Info ..."
@@ -1437,11 +1441,11 @@ msgstr "Titel-_Info ..."
 
 #: src/gtkui/menus.c:154
 msgid "Jump to _Time ..."
-msgstr "Zu _Zeitangabe springen ..."
+msgstr "Zu Zeitangabe springen ..."
 
 #: src/gtkui/menus.c:155
 msgid "_Jump to Song ..."
-msgstr "Zu _Titel springen ..."
+msgstr "Zu _Titel sp_ringen ..."
 
 #: src/gtkui/menus.c:158
 msgid "By Track _Number"
@@ -1493,7 +1497,7 @@ msgstr "_Neu"
 
 #: src/gtkui/menus.c:175
 msgid "_Close"
-msgstr "_Schließen"
+msgstr "S_chließen"
 
 #: src/gtkui/menus.c:177
 msgid "_Import ..."
@@ -1509,7 +1513,7 @@ msgstr "Wiedergabelisten-Manager ..."
 
 #: src/gtkui/menus.c:183
 msgid "Volume _Up"
-msgstr "Lautstärke _erhöhen"
+msgstr "Lautstärke er_höhen"
 
 #: src/gtkui/menus.c:184
 msgid "Volume _Down"
@@ -1565,7 +1569,7 @@ msgstr "W_iedergabeliste"
 
 #: src/gtkui/menus.c:205 src/gtkui/menus.c:219
 msgid "_Services"
-msgstr "_Dienste"
+msgstr "Di_enste"
 
 #: src/gtkui/menus.c:206
 msgid "_Output"
@@ -1689,14 +1693,12 @@ msgid "Show On-Screen-Display"
 msgstr "On-Screen-Display anzeigen"
 
 #: src/hotkey/gui.c:84
-#, fuzzy
 msgid "Toggle Repeat"
-msgstr "Wiederholen"
+msgstr "Wiederholen ein-/ausschalten"
 
 #: src/hotkey/gui.c:85
-#, fuzzy
 msgid "Toggle Shuffle"
-msgstr "Zufällige Wiedergabe"
+msgstr "Zufällige Wiedergabe ein-/ausschalten"
 
 #: src/hotkey/gui.c:95
 msgid "(none)"
@@ -1818,12 +1820,16 @@ msgid ""
 "\n"
 "Looking for lyrics..."
 msgstr ""
+"\n"
+"Suche nach Liedtexten..."
 
 #: src/lyricwiki/lyricwiki.c:249
 msgid ""
 "\n"
 "Connecting to lyrics.wikia.com..."
 msgstr ""
+"\n"
+"Verbinde zu lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.c:337
 msgid ""
@@ -2100,6 +2106,10 @@ msgid ""
 "Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
 "com>\n"
 msgstr ""
+"Audacious AudioScrobbler Plugin\n"
+"\n"
+"Ursprünglich geschrieben von Audun Hove <audun@nlc.no> und Pipian <pipian@pipian."
+"com>\n"
 
 #: src/scrobbler/plugin.c:215
 msgid "About Scrobbler Plugin"
@@ -2137,7 +2147,7 @@ msgstr "Allgemeine Info"
 #: src/sid/xs_fileinfo.c:164
 #, c-format
 msgid "Tune #%i: "
-msgstr ""
+msgstr "#%i abgleichen: "
 
 #: src/sid/xs_glade.c:90 src/sid/xs_glade.c:114
 #, c-format
@@ -2246,6 +2256,9 @@ msgid ""
 "SID-chip model. Otherwise the preferred SID model is determined from the "
 "file (if PSIDv2NG type) or if not available, this setting is used."
 msgstr ""
+"Falls aktiviert, \"zwingt\" diese Option die Emulationsengine das ausgewählte "
+"SID-Chip-Model zu nutzen. Anderenfalls wird das bevorzugte SID-Model aus der "
+"Datei (wenn vom Typ PSIDv2NG) oder dieser Einstellung bestimmt."
 
 #: src/sid/xs_interface.c:490
 msgid "MOS 6581"
@@ -2317,7 +2330,7 @@ msgstr "Speichermodus:"
 
 #: src/sid/xs_interface.c:588
 msgid "Emu#1"
-msgstr ""
+msgstr "Emu#1"
 
 #: src/sid/xs_interface.c:611
 msgid "Optimization mode (faster, inaccurate)"
@@ -2736,6 +2749,8 @@ msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 msgstr ""
+"Copyright (c) 2008, von Tomasz Moń <desowin@gmail.com>\n"
+"\n"
 
 #: src/skins/skins_cfg.c:254
 msgid "_Player:"
@@ -2759,11 +2774,11 @@ msgstr "<b>Schriftarten</b>"
 
 #: src/skins/skins_cfg.c:261
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr ""
+msgstr "Benutze Bitmap-Schriftarten (nur ASCII-Unterstützung)"
 
 #: src/skins/skins_cfg.c:263
 msgid "Scroll song title in both directions"
-msgstr ""
+msgstr "Titel in beide Richtungen scrollen"
 
 #: src/skins/skins_cfg.c:346
 msgid "<b>_Skin</b>"
@@ -2838,9 +2853,8 @@ msgid "surround"
 msgstr "Surround"
 
 #: src/skins/ui_main.c:807
-#, fuzzy, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "Suche nach: %d:%-2.2d/%d:%-2.2d (%d%%)"
+msgstr "Suche nach %d:%-2.2d / %d:%-2.2d"
 
 #: src/skins/ui_main.c:828
 #, c-format
@@ -3862,9 +3876,8 @@ msgid "Tone Generator: "
 msgstr "Ton-Generator: "
 
 #: src/unix-io/gtk.c:34
-#, fuzzy
 msgid "About File I/O Plugin"
-msgstr "Über OSS4-Plugin"
+msgstr "Über File I/O Plugin"
 
 #: src/vorbis/configure.c:31
 msgid "Override generic titles"
@@ -3961,19 +3974,3 @@ msgstr ""
 "\n"
 "Ein Teil des Plugin-Codes war von Miles Egan\n"
 "Die Wavpack-Seite befindet sich auf http://www.wavpack.com/\n"
-
-#~ msgid "Use Bitmap fonts if available"
-#~ msgstr "Bitmap-Schriften verwenden, falls verfügbar"
-
-#~ msgid ""
-#~ "Use bitmap fonts if they are available. Bitmap fonts do not support "
-#~ "Unicode strings."
-#~ msgstr ""
-#~ "Bitmap-Schriften verwenden, falls verfügbar (keine Unicode-Strings "
-#~ "Unterstützung)"
-
-#~ msgid "<b>_Miscellaneous</b>"
-#~ msgstr "<b>Verschiedenes</b>"
-
-#~ msgid "Use two-way text scroller"
-#~ msgstr "Text hin und her scrollen"
