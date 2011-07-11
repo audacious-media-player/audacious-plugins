@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious-plugins 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-06-10 18:30+0200\n"
+"POT-Creation-Date: 2011-07-05 22:47+0200\n"
 "PO-Revision-Date: 2011-04-11 21:58+0800\n"
 "Last-Translator: Chasye <chasye@gmail.com>\n"
 "Language-Team: Chinese (simplified)\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/aac/libmp4.c:268
+#: src/aac/libmp4.c:256
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -28,35 +28,35 @@ msgstr ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM解码器 (c) Nero AG, www.nero.com\n"
 "版权所有 (c) 2005-2006 Audacious小组"
 
-#: src/aac/libmp4.c:273
+#: src/aac/libmp4.c:261
 msgid "About MP4 AAC decoder plugin"
 msgstr "关于MP4 ACC解码插件"
 
-#: src/alsa/config.c:212
+#: src/alsa/config.c:210
 msgid "Default PCM device"
 msgstr "默认PCM设备"
 
-#: src/alsa/config.c:237
+#: src/alsa/config.c:235
 msgid "Default mixer device"
 msgstr "默认混音设备"
 
-#: src/alsa/config.c:449
+#: src/alsa/config.c:447
 msgid "ALSA Output Plugin Preferences"
 msgstr "ALSA输出插件首选项"
 
-#: src/alsa/config.c:456
+#: src/alsa/config.c:454
 msgid "PCM device:"
 msgstr "PCM设备："
 
-#: src/alsa/config.c:458 src/OSS/configure.c:246
+#: src/alsa/config.c:456 src/OSS/configure.c:246
 msgid "Mixer device:"
 msgstr "混音设备"
 
-#: src/alsa/config.c:460
+#: src/alsa/config.c:458
 msgid "Mixer element:"
 msgstr "混音单元："
 
-#: src/alsa/config.c:463
+#: src/alsa/config.c:461
 msgid "Work around drain hangup"
 msgstr ""
 
@@ -505,119 +505,119 @@ msgstr "恢复播放"
 msgid "Triggers OSD when playback is unpaused."
 msgstr "恢复播放时触发OSD"
 
-#: src/aosd/aosd_ui.c:170
+#: src/aosd/aosd_ui.c:180
 msgid "Placement"
 msgstr "位置"
 
-#: src/aosd/aosd_ui.c:204
+#: src/aosd/aosd_ui.c:219
 msgid "Relative X offset:"
 msgstr "X相对位移："
 
-#: src/aosd/aosd_ui.c:213
+#: src/aosd/aosd_ui.c:228
 msgid "Relative Y offset:"
 msgstr "Y相对位移："
 
-#: src/aosd/aosd_ui.c:222
+#: src/aosd/aosd_ui.c:237
 msgid "Max OSD width:"
 msgstr "最大OSD宽度："
 
-#: src/aosd/aosd_ui.c:235
+#: src/aosd/aosd_ui.c:250
 msgid "Multi-Monitor options"
 msgstr "多屏选项"
 
-#: src/aosd/aosd_ui.c:239
+#: src/aosd/aosd_ui.c:254
 msgid "Display OSD using:"
 msgstr "OSD显示于："
 
-#: src/aosd/aosd_ui.c:250
+#: src/aosd/aosd_ui.c:265
 msgid "all monitors"
 msgstr "所有显示器"
 
-#: src/aosd/aosd_ui.c:253
+#: src/aosd/aosd_ui.c:268
 #, c-format
 msgid "monitor %i"
 msgstr "显示器%i"
 
-#: src/aosd/aosd_ui.c:308
+#: src/aosd/aosd_ui.c:323
 msgid "Timing (ms)"
 msgstr "延时(ms)"
 
-#: src/aosd/aosd_ui.c:313
+#: src/aosd/aosd_ui.c:328
 msgid "Display:"
 msgstr "显示："
 
-#: src/aosd/aosd_ui.c:318
+#: src/aosd/aosd_ui.c:333
 msgid "Fade in:"
 msgstr "淡入："
 
-#: src/aosd/aosd_ui.c:323
+#: src/aosd/aosd_ui.c:338
 msgid "Fade out:"
 msgstr "淡出："
 
-#: src/aosd/aosd_ui.c:404
+#: src/aosd/aosd_ui.c:419
 msgid "Fonts"
 msgstr "字体"
 
-#: src/aosd/aosd_ui.c:412
+#: src/aosd/aosd_ui.c:427
 #, c-format
 msgid "Font %i:"
 msgstr "字体 %i："
 
-#: src/aosd/aosd_ui.c:429
+#: src/aosd/aosd_ui.c:444
 msgid "Shadow"
 msgstr "阴影"
 
-#: src/aosd/aosd_ui.c:464
+#: src/aosd/aosd_ui.c:479
 msgid "Internationalization"
 msgstr "国际化"
 
-#: src/aosd/aosd_ui.c:470
+#: src/aosd/aosd_ui.c:485
 msgid "Disable UTF-8 conversion of text (in aosd)"
 msgstr "禁用UTF-8转换(在aosd中)"
 
-#: src/aosd/aosd_ui.c:488
+#: src/aosd/aosd_ui.c:503
 msgid "Select Skin File"
 msgstr "选择主题文件"
 
-#: src/aosd/aosd_ui.c:599
+#: src/aosd/aosd_ui.c:614
 msgid "Render Style"
 msgstr "渲染风格"
 
-#: src/aosd/aosd_ui.c:615
+#: src/aosd/aosd_ui.c:630
 msgid "Colors"
 msgstr "颜色"
 
-#: src/aosd/aosd_ui.c:628
+#: src/aosd/aosd_ui.c:643
 #, c-format
 msgid "Color %i:"
 msgstr "颜色  %i："
 
-#: src/aosd/aosd_ui.c:648
+#: src/aosd/aosd_ui.c:663
 msgid "Custom Skin"
 msgstr "自定义主题"
 
-#: src/aosd/aosd_ui.c:654
+#: src/aosd/aosd_ui.c:669
 msgid "Skin file:"
 msgstr "主题文件："
 
-#: src/aosd/aosd_ui.c:657 src/sid/xs_interface.c:1044
+#: src/aosd/aosd_ui.c:672 src/sid/xs_interface.c:1044
 #: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
 msgid "Browse"
 msgstr "浏览"
 
-#: src/aosd/aosd_ui.c:759
+#: src/aosd/aosd_ui.c:774
 msgid "Enable trigger"
 msgstr "启用触发器"
 
-#: src/aosd/aosd_ui.c:786
+#: src/aosd/aosd_ui.c:801
 msgid "Event"
 msgstr "事件"
 
-#: src/aosd/aosd_ui.c:814
+#: src/aosd/aosd_ui.c:829
 msgid "Composite manager detected"
 msgstr "检测到混合管理器"
 
-#: src/aosd/aosd_ui.c:821
+#: src/aosd/aosd_ui.c:836
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
@@ -626,73 +626,73 @@ msgstr ""
 "未检测到混合管理器；\n"
 "OSD无法正常工作，除非你激活混合管理器。"
 
-#: src/aosd/aosd_ui.c:829
+#: src/aosd/aosd_ui.c:844
 msgid "Composite manager not required for fake transparency"
 msgstr "假透明无需混合管理支持"
 
-#: src/aosd/aosd_ui.c:867
+#: src/aosd/aosd_ui.c:882
 msgid "Transparency"
 msgstr "透明"
 
-#: src/aosd/aosd_ui.c:873
+#: src/aosd/aosd_ui.c:888
 msgid "Fake transparency"
 msgstr "假透明"
 
-#: src/aosd/aosd_ui.c:875
+#: src/aosd/aosd_ui.c:890
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr "真透明(需要X Composite扩展)"
 
-#: src/aosd/aosd_ui.c:917
+#: src/aosd/aosd_ui.c:932
 msgid "Composite extension not loaded"
 msgstr "X Composite扩展未加载"
 
-#: src/aosd/aosd_ui.c:925
+#: src/aosd/aosd_ui.c:940
 msgid "Composite extension not available"
 msgstr "X Composite扩展不可用"
 
-#: src/aosd/aosd_ui.c:944
+#: src/aosd/aosd_ui.c:959
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
-#: src/aosd/aosd_ui.c:1025
+#: src/aosd/aosd_ui.c:1040
 msgid "Audacious OSD - configuration"
 msgstr "Audacious OSD - 设置"
 
-#: src/aosd/aosd_ui.c:1046
+#: src/aosd/aosd_ui.c:1061
 msgid "Test"
 msgstr "测试"
 
-#: src/aosd/aosd_ui.c:1061
+#: src/aosd/aosd_ui.c:1076
 msgid "Position"
 msgstr "位置"
 
-#: src/aosd/aosd_ui.c:1066
+#: src/aosd/aosd_ui.c:1081
 msgid "Animation"
 msgstr "动画"
 
-#: src/aosd/aosd_ui.c:1071
+#: src/aosd/aosd_ui.c:1086
 msgid "Text"
 msgstr "字体"
 
-#: src/aosd/aosd_ui.c:1076
+#: src/aosd/aosd_ui.c:1091
 msgid "Decoration"
 msgstr "装饰器"
 
-#: src/aosd/aosd_ui.c:1081
+#: src/aosd/aosd_ui.c:1096
 msgid "Trigger"
 msgstr "触发器"
 
-#: src/aosd/aosd_ui.c:1086 src/cdaudio-ng/configure.c:171
+#: src/aosd/aosd_ui.c:1101 src/cdaudio-ng/configure.c:171
 #: src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr "其它"
 
-#: src/aosd/aosd_ui.c:1123
+#: src/aosd/aosd_ui.c:1138
 msgid "Audacious OSD - about"
 msgstr "Audacious OSD - 关于"
 
-#: src/aosd/aosd_ui.c:1153
+#: src/aosd/aosd_ui.c:1168
 msgid ""
 "\n"
 "Audacious OSD "
@@ -700,7 +700,7 @@ msgstr ""
 "\n"
 "Audacious OSD "
 
-#: src/aosd/aosd_ui.c:1154
+#: src/aosd/aosd_ui.c:1169
 msgid ""
 "\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
@@ -1012,18 +1012,20 @@ msgstr "反馈：(%)"
 msgid "Volume: (%)"
 msgstr "音量：(%)"
 
-#: src/ffaudio/ffaudio-core.c:765
-#, c-format
+#: src/ffaudio/ffaudio-core.c:763
+#, fuzzy, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
 "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
 "\n"
-"FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
-"\n"
 "Audacious plugin by:\n"
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
+"\n"
+"libavcodec %s (%s)\n"
+"libavformat %s (%s)\n"
+"libavutil %s (%s)\n"
 msgstr ""
 "基于FFmepg多媒体框架(http://www.ffmpeg.org/)\n"
 "的Audacious音频解码插件\n"
@@ -1035,7 +1037,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:778
+#: src/ffaudio/ffaudio-core.c:777
 msgid "About FFaudio Plugin"
 msgstr "关于FFaudio插件"
 
@@ -1634,7 +1636,7 @@ msgstr "回放"
 msgid "P_laylist"
 msgstr "播放列表"
 
-#: src/gtkui/menus.c:205 src/gtkui/menus.c:223
+#: src/gtkui/menus.c:205 src/gtkui/menus.c:219
 #, fuzzy
 msgid "_Services"
 msgstr "设备"
@@ -1667,38 +1669,38 @@ msgstr "复制"
 msgid "_Paste"
 msgstr "粘贴"
 
-#: src/gtkui/menus.c:218 src/gtkui/menus.c:220
+#: src/gtkui/menus.c:217
 #, fuzzy
 msgid "Select _All"
 msgstr "选中全部"
 
-#: src/gtkui/menus.c:226
+#: src/gtkui/menus.c:222
 #, fuzzy
 msgid "_Rename"
 msgstr "文件名"
 
-#: src/gtkui/ui_gtk.c:79
+#: src/gtkui/ui_gtk.c:75
 msgid "GTK Interface"
 msgstr "GTK界面"
 
-#: src/gtkui/ui_gtk.c:135 src/skins/ui_main.c:302
+#: src/gtkui/ui_gtk.c:132 src/skins/ui_main.c:303
 #, c-format
 msgid "%s - Audacious"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:141 src/skins/ui_main.c:304 src/skins/ui_main.c:1497
+#: src/gtkui/ui_gtk.c:138 src/skins/ui_main.c:305 src/skins/ui_main.c:1498
 msgid "Audacious"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:175 src/skins/plugin.c:176
+#: src/gtkui/ui_gtk.c:177 src/skins/plugin.c:185
 msgid "Error"
 msgstr "错误"
 
-#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:459
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:460
 msgid "mono"
 msgstr "单声道"
 
-#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:458
+#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:459
 msgid "stereo"
 msgstr "单体声"
 
@@ -1766,11 +1768,21 @@ msgstr "播放窗口切换"
 msgid "Show On-Screen-Display"
 msgstr "显示On-Screen-Display"
 
-#: src/hotkey/gui.c:93
+#: src/hotkey/gui.c:84
+#, fuzzy
+msgid "Toggle Repeat"
+msgstr "重复"
+
+#: src/hotkey/gui.c:85
+#, fuzzy
+msgid "Toggle Shuffle"
+msgstr "随机"
+
+#: src/hotkey/gui.c:95
 msgid "(none)"
 msgstr "(无)"
 
-#: src/hotkey/gui.c:230
+#: src/hotkey/gui.c:232
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -1778,37 +1790,37 @@ msgid ""
 "Do you want to continue?"
 msgstr "并不建议绑定鼠标主键。要继续吗？"
 
-#: src/hotkey/gui.c:232
+#: src/hotkey/gui.c:234
 msgid "Binding mouse buttons"
 msgstr "绑定鼠标按键"
 
-#: src/hotkey/gui.c:382
+#: src/hotkey/gui.c:384
 msgid "Global Hotkey Plugin Configuration"
 msgstr "全局热键插件设置"
 
-#: src/hotkey/gui.c:398
+#: src/hotkey/gui.c:400
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr "请在文本区按下要绑定的组合键，你亦可以绑定鼠标键"
 
-#: src/hotkey/gui.c:403
+#: src/hotkey/gui.c:405
 msgid "Hotkeys:"
 msgstr "热键："
 
-#: src/hotkey/gui.c:422
+#: src/hotkey/gui.c:424
 msgid "<b>Action:</b>"
 msgstr "<b>动作：</b>"
 
-#: src/hotkey/gui.c:430
+#: src/hotkey/gui.c:432
 msgid "<b>Key Binding:</b>"
 msgstr "<b>键位绑定:</b>"
 
-#: src/hotkey/gui.c:661
+#: src/hotkey/gui.c:663
 msgid "About Global Hotkey Plugin"
 msgstr "关于全局热键插件"
 
-#: src/hotkey/gui.c:662
+#: src/hotkey/gui.c:664
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -1880,7 +1892,19 @@ msgstr ""
 msgid "About JACK Output Plugin 0.17"
 msgstr "关于JACK输出插件0.17"
 
-#: src/lyricwiki/lyricwiki.c:335
+#: src/lyricwiki/lyricwiki.c:226
+msgid ""
+"\n"
+"Looking for lyrics..."
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:249
+msgid ""
+"\n"
+"Connecting to lyrics.wikia.com..."
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:337
 msgid ""
 "\n"
 "No lyrics were found."
@@ -2072,11 +2096,11 @@ msgid ""
 "USA."
 msgstr ""
 
-#: src/pulse_audio/pulse_audio.c:690
+#: src/pulse_audio/pulse_audio.c:687
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "关于Audacious PulseAudio输出插件"
 
-#: src/pulse_audio/pulse_audio.c:691
+#: src/pulse_audio/pulse_audio.c:688
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -2116,35 +2140,35 @@ msgstr "其它："
 msgid "Method:"
 msgstr "方法："
 
-#: src/scrobbler/configure.c:129 src/scrobbler/configure.c:205
+#: src/scrobbler/configure.c:128 src/scrobbler/configure.c:204
 msgid "Change password"
 msgstr "修改密码"
 
-#: src/scrobbler/configure.c:151
+#: src/scrobbler/configure.c:150
 msgid "<b>Services</b>"
 msgstr "<b>服务</b>"
 
-#: src/scrobbler/configure.c:173
+#: src/scrobbler/configure.c:172
 msgid "Username:"
 msgstr "用户名："
 
-#: src/scrobbler/configure.c:179
+#: src/scrobbler/configure.c:178
 msgid "Password:"
 msgstr "密码："
 
-#: src/scrobbler/configure.c:187
+#: src/scrobbler/configure.c:186
 msgid "Scrobbler URL:"
 msgstr ""
 
-#: src/scrobbler/configure.c:219
+#: src/scrobbler/configure.c:218
 msgid "<b>Last.FM</b>"
 msgstr ""
 
-#: src/scrobbler/configure.c:263
+#: src/scrobbler/configure.c:262
 msgid "Scrobbler"
 msgstr ""
 
-#: src/scrobbler/plugin.c:214
+#: src/scrobbler/plugin.c:213
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -2155,7 +2179,7 @@ msgstr ""
 "\n"
 "原作者：Audun Hove <audun@nlc.no>和Pipian <pipian@pipian.com>。\n"
 
-#: src/scrobbler/plugin.c:216
+#: src/scrobbler/plugin.c:215
 msgid "About Scrobbler Plugin"
 msgstr "关于Scorbbler插件"
 
@@ -2752,11 +2776,11 @@ msgstr "是"
 msgid "No"
 msgstr "否"
 
-#: src/skins/plugin.c:165
+#: src/skins/plugin.c:167
 msgid "About Skinned GUI"
 msgstr "关于主题化界面"
 
-#: src/skins/plugin.c:166
+#: src/skins/plugin.c:168
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -2785,28 +2809,18 @@ msgid "<b>_Fonts</b>"
 msgstr "<b>字体(_F)</b>"
 
 #: src/skins/skins_cfg.c:261
-msgid "Use Bitmap fonts if available"
-msgstr "尽可能使用点阵字体"
-
-#: src/skins/skins_cfg.c:261
-msgid ""
-"Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
-"strings."
-msgstr "尽可能使用点阵字体，点阵字体不支持Unicode设置"
-
-#: src/skins/skins_cfg.c:262
-msgid "<b>_Miscellaneous</b>"
-msgstr "<b>其它(_M)</b>"
+msgid "Use bitmap fonts (supports ASCII only)"
+msgstr ""
 
 #: src/skins/skins_cfg.c:263
-msgid "Use two-way text scroller"
-msgstr "使用双向字符滚动"
+msgid "Scroll song title in both directions"
+msgstr ""
 
-#: src/skins/skins_cfg.c:347
+#: src/skins/skins_cfg.c:346
 msgid "<b>_Skin</b>"
 msgstr "<b>主题(_S)</b>"
 
-#: src/skins/skins_cfg.c:394
+#: src/skins/skins_cfg.c:393
 #, fuzzy
 msgid "Interface Preferences"
 msgstr "淡出设置"
@@ -2863,75 +2877,75 @@ msgstr "Audacious均衡器"
 msgid "Presets"
 msgstr "预设"
 
-#: src/skins/ui_main.c:443
+#: src/skins/ui_main.c:444
 msgid "kbps"
 msgstr ""
 
-#: src/skins/ui_main.c:451
+#: src/skins/ui_main.c:452
 msgid "kHz"
 msgstr ""
 
-#: src/skins/ui_main.c:458
+#: src/skins/ui_main.c:459
 msgid "surround"
 msgstr "环绕声"
 
-#: src/skins/ui_main.c:806
+#: src/skins/ui_main.c:807
 #, fuzzy, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "查找： %d:%-2.2d/%d:%-2.2d (%d%%)"
 
-#: src/skins/ui_main.c:827
+#: src/skins/ui_main.c:828
 #, c-format
 msgid "Volume: %d%%"
 msgstr "音量: %d%%"
 
-#: src/skins/ui_main.c:850
+#: src/skins/ui_main.c:851
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "平衡: %d%% 左"
 
-#: src/skins/ui_main.c:852
+#: src/skins/ui_main.c:853
 msgid "Balance: center"
 msgstr "平衡: 中间"
 
-#: src/skins/ui_main.c:854
+#: src/skins/ui_main.c:855
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "平衡: %d%% 右"
 
-#: src/skins/ui_main.c:980
+#: src/skins/ui_main.c:981
 msgid "Options Menu"
 msgstr "选项菜单"
 
-#: src/skins/ui_main.c:984
+#: src/skins/ui_main.c:985
 msgid "Disable 'Always On Top'"
 msgstr "禁用“顶置窗口”"
 
-#: src/skins/ui_main.c:986
+#: src/skins/ui_main.c:987
 msgid "Enable 'Always On Top'"
 msgstr "启用“顶置窗口”"
 
-#: src/skins/ui_main.c:989
+#: src/skins/ui_main.c:990
 msgid "File Info Box"
 msgstr "文件信息"
 
-#: src/skins/ui_main.c:994
+#: src/skins/ui_main.c:995
 msgid "Visualization Menu"
 msgstr "可视化菜单"
 
-#: src/skins/ui_main.c:1644
+#: src/skins/ui_main.c:1645
 msgid "Single mode."
 msgstr "单一窗口模式"
 
-#: src/skins/ui_main.c:1646
+#: src/skins/ui_main.c:1647
 msgid "Playlist mode."
 msgstr "播放列表模式"
 
-#: src/skins/ui_main.c:1668
+#: src/skins/ui_main.c:1669
 msgid "Stopping after song."
 msgstr "完成后停止"
 
-#: src/skins/ui_main.c:1670
+#: src/skins/ui_main.c:1671
 msgid "Not stopping after song."
 msgstr "完成后不停止"
 
@@ -3629,7 +3643,7 @@ msgstr "已打包的Winamp 2.x主题"
 msgid "Unarchived Winamp 2.x skin"
 msgstr "未打包的Winamp 2.x主题"
 
-#: src/skins/util.c:772
+#: src/skins/util.c:773
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "无法创建目录(%s): %s\n"
@@ -3962,6 +3976,20 @@ msgstr ""
 "\n"
 "插件部分代码来自Miles Egan\n"
 "登录Wavpack网站http://www.wavpack.com/\n"
+
+#~ msgid "Use Bitmap fonts if available"
+#~ msgstr "尽可能使用点阵字体"
+
+#~ msgid ""
+#~ "Use bitmap fonts if they are available. Bitmap fonts do not support "
+#~ "Unicode strings."
+#~ msgstr "尽可能使用点阵字体，点阵字体不支持Unicode设置"
+
+#~ msgid "<b>_Miscellaneous</b>"
+#~ msgstr "<b>其它(_M)</b>"
+
+#~ msgid "Use two-way text scroller"
+#~ msgstr "使用双向字符滚动"
 
 #~ msgid "About "
 #~ msgstr "关于"

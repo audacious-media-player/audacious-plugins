@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-06-10 18:30+0200\n"
+"POT-Creation-Date: 2011-07-05 22:47+0200\n"
 "PO-Revision-Date: 2010-08-22 22:00+0400\n"
 "Last-Translator: Sergey V. Mironov <sergo@bk.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: src/aac/libmp4.c:268
+#: src/aac/libmp4.c:256
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -37,35 +37,35 @@ msgstr ""
 "Декодер FAAD2 AAC/HE-AAC/HE-AACv2/DRM (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 команда разработчиков Audacious"
 
-#: src/aac/libmp4.c:273
+#: src/aac/libmp4.c:261
 msgid "About MP4 AAC decoder plugin"
 msgstr "О модуле MP4 AAC"
 
-#: src/alsa/config.c:212
+#: src/alsa/config.c:210
 msgid "Default PCM device"
 msgstr "Устройство PCM по умолчанию"
 
-#: src/alsa/config.c:237
+#: src/alsa/config.c:235
 msgid "Default mixer device"
 msgstr "Микшер по умолчанию"
 
-#: src/alsa/config.c:449
+#: src/alsa/config.c:447
 msgid "ALSA Output Plugin Preferences"
 msgstr "Параметры модуля вывода ALSA"
 
-#: src/alsa/config.c:456
+#: src/alsa/config.c:454
 msgid "PCM device:"
 msgstr "Устройство PCM:"
 
-#: src/alsa/config.c:458 src/OSS/configure.c:246
+#: src/alsa/config.c:456 src/OSS/configure.c:246
 msgid "Mixer device:"
 msgstr "Микшер:"
 
-#: src/alsa/config.c:460
+#: src/alsa/config.c:458
 msgid "Mixer element:"
 msgstr "Компонент микшера:"
 
-#: src/alsa/config.c:463
+#: src/alsa/config.c:461
 msgid "Work around drain hangup"
 msgstr ""
 
@@ -527,119 +527,119 @@ msgstr "Пауза выкл."
 msgid "Triggers OSD when playback is unpaused."
 msgstr "Показать OSD, когда воспроизведение возобновляется."
 
-#: src/aosd/aosd_ui.c:170
+#: src/aosd/aosd_ui.c:180
 msgid "Placement"
 msgstr "Расположение"
 
-#: src/aosd/aosd_ui.c:204
+#: src/aosd/aosd_ui.c:219
 msgid "Relative X offset:"
 msgstr "Смещение по оси X:"
 
-#: src/aosd/aosd_ui.c:213
+#: src/aosd/aosd_ui.c:228
 msgid "Relative Y offset:"
 msgstr "Смещение по оси Y:"
 
-#: src/aosd/aosd_ui.c:222
+#: src/aosd/aosd_ui.c:237
 msgid "Max OSD width:"
 msgstr "Максимальная ширина OSD:"
 
-#: src/aosd/aosd_ui.c:235
+#: src/aosd/aosd_ui.c:250
 msgid "Multi-Monitor options"
 msgstr "Параметры для систем с несколькими мониторами"
 
-#: src/aosd/aosd_ui.c:239
+#: src/aosd/aosd_ui.c:254
 msgid "Display OSD using:"
 msgstr "Показать OSD:"
 
-#: src/aosd/aosd_ui.c:250
+#: src/aosd/aosd_ui.c:265
 msgid "all monitors"
 msgstr "на всех мониторах"
 
-#: src/aosd/aosd_ui.c:253
+#: src/aosd/aosd_ui.c:268
 #, c-format
 msgid "monitor %i"
 msgstr "на мониторе %i"
 
-#: src/aosd/aosd_ui.c:308
+#: src/aosd/aosd_ui.c:323
 msgid "Timing (ms)"
 msgstr "Время (мс)"
 
-#: src/aosd/aosd_ui.c:313
+#: src/aosd/aosd_ui.c:328
 msgid "Display:"
 msgstr "отображения:"
 
-#: src/aosd/aosd_ui.c:318
+#: src/aosd/aosd_ui.c:333
 msgid "Fade in:"
 msgstr "появления:"
 
-#: src/aosd/aosd_ui.c:323
+#: src/aosd/aosd_ui.c:338
 msgid "Fade out:"
 msgstr "затухания:"
 
-#: src/aosd/aosd_ui.c:404
+#: src/aosd/aosd_ui.c:419
 msgid "Fonts"
 msgstr "Шрифты"
 
-#: src/aosd/aosd_ui.c:412
+#: src/aosd/aosd_ui.c:427
 #, c-format
 msgid "Font %i:"
 msgstr "Шрифт %i:"
 
-#: src/aosd/aosd_ui.c:429
+#: src/aosd/aosd_ui.c:444
 msgid "Shadow"
 msgstr "Тень"
 
-#: src/aosd/aosd_ui.c:464
+#: src/aosd/aosd_ui.c:479
 msgid "Internationalization"
 msgstr "Поддержка местных языков"
 
-#: src/aosd/aosd_ui.c:470
+#: src/aosd/aosd_ui.c:485
 msgid "Disable UTF-8 conversion of text (in aosd)"
 msgstr "Отключить преобразование текста в UTF-8"
 
-#: src/aosd/aosd_ui.c:488
+#: src/aosd/aosd_ui.c:503
 msgid "Select Skin File"
 msgstr "Выберите файл стиля"
 
-#: src/aosd/aosd_ui.c:599
+#: src/aosd/aosd_ui.c:614
 msgid "Render Style"
 msgstr "Стиль отображения"
 
-#: src/aosd/aosd_ui.c:615
+#: src/aosd/aosd_ui.c:630
 msgid "Colors"
 msgstr "Цвета"
 
-#: src/aosd/aosd_ui.c:628
+#: src/aosd/aosd_ui.c:643
 #, c-format
 msgid "Color %i:"
 msgstr "Цвет %i:"
 
-#: src/aosd/aosd_ui.c:648
+#: src/aosd/aosd_ui.c:663
 msgid "Custom Skin"
 msgstr "Другой стиль"
 
-#: src/aosd/aosd_ui.c:654
+#: src/aosd/aosd_ui.c:669
 msgid "Skin file:"
 msgstr "Файл стиля:"
 
-#: src/aosd/aosd_ui.c:657 src/sid/xs_interface.c:1044
+#: src/aosd/aosd_ui.c:672 src/sid/xs_interface.c:1044
 #: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
 msgid "Browse"
 msgstr "Обзор"
 
-#: src/aosd/aosd_ui.c:759
+#: src/aosd/aosd_ui.c:774
 msgid "Enable trigger"
 msgstr "Включить событие"
 
-#: src/aosd/aosd_ui.c:786
+#: src/aosd/aosd_ui.c:801
 msgid "Event"
 msgstr "Событие"
 
-#: src/aosd/aosd_ui.c:814
+#: src/aosd/aosd_ui.c:829
 msgid "Composite manager detected"
 msgstr "Найден композитный менеджер"
 
-#: src/aosd/aosd_ui.c:821
+#: src/aosd/aosd_ui.c:836
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
@@ -649,74 +649,74 @@ msgstr ""
 "Пожалуйста, запустите композитный менеджер; в противном случае\n"
 "OSD не будет работать корректно."
 
-#: src/aosd/aosd_ui.c:829
+#: src/aosd/aosd_ui.c:844
 msgid "Composite manager not required for fake transparency"
 msgstr ""
 "Для режима \"Имитированная прозрачность\" композитный менеджер не требуется."
 
-#: src/aosd/aosd_ui.c:867
+#: src/aosd/aosd_ui.c:882
 msgid "Transparency"
 msgstr "Прозрачность"
 
-#: src/aosd/aosd_ui.c:873
+#: src/aosd/aosd_ui.c:888
 msgid "Fake transparency"
 msgstr "Имитированная прозрачность"
 
-#: src/aosd/aosd_ui.c:875
+#: src/aosd/aosd_ui.c:890
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr "Настоящая прозрачность (требуется расширение X Composite)"
 
-#: src/aosd/aosd_ui.c:917
+#: src/aosd/aosd_ui.c:932
 msgid "Composite extension not loaded"
 msgstr "Расширение X Composite не загружено"
 
-#: src/aosd/aosd_ui.c:925
+#: src/aosd/aosd_ui.c:940
 msgid "Composite extension not available"
 msgstr "Расширение X Composite недоступно"
 
-#: src/aosd/aosd_ui.c:944
+#: src/aosd/aosd_ui.c:959
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
-#: src/aosd/aosd_ui.c:1025
+#: src/aosd/aosd_ui.c:1040
 msgid "Audacious OSD - configuration"
 msgstr "Параметры модуля Audacious OSD"
 
-#: src/aosd/aosd_ui.c:1046
+#: src/aosd/aosd_ui.c:1061
 msgid "Test"
 msgstr "Проверить"
 
-#: src/aosd/aosd_ui.c:1061
+#: src/aosd/aosd_ui.c:1076
 msgid "Position"
 msgstr "Положение"
 
-#: src/aosd/aosd_ui.c:1066
+#: src/aosd/aosd_ui.c:1081
 msgid "Animation"
 msgstr "Анимация"
 
-#: src/aosd/aosd_ui.c:1071
+#: src/aosd/aosd_ui.c:1086
 msgid "Text"
 msgstr "Текст"
 
-#: src/aosd/aosd_ui.c:1076
+#: src/aosd/aosd_ui.c:1091
 msgid "Decoration"
 msgstr "Стиль"
 
-#: src/aosd/aosd_ui.c:1081
+#: src/aosd/aosd_ui.c:1096
 msgid "Trigger"
 msgstr "События"
 
-#: src/aosd/aosd_ui.c:1086 src/cdaudio-ng/configure.c:171
+#: src/aosd/aosd_ui.c:1101 src/cdaudio-ng/configure.c:171
 #: src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr "Прочее"
 
-#: src/aosd/aosd_ui.c:1123
+#: src/aosd/aosd_ui.c:1138
 msgid "Audacious OSD - about"
 msgstr "О модуле Audacious OSD"
 
-#: src/aosd/aosd_ui.c:1153
+#: src/aosd/aosd_ui.c:1168
 msgid ""
 "\n"
 "Audacious OSD "
@@ -724,7 +724,7 @@ msgstr ""
 "\n"
 "Audacious OSD "
 
-#: src/aosd/aosd_ui.c:1154
+#: src/aosd/aosd_ui.c:1169
 msgid ""
 "\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
@@ -1047,18 +1047,20 @@ msgstr "Обратная связь (%):"
 msgid "Volume: (%)"
 msgstr "Громкость (%):"
 
-#: src/ffaudio/ffaudio-core.c:765
-#, c-format
+#: src/ffaudio/ffaudio-core.c:763
+#, fuzzy, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
 "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
 "\n"
-"FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
-"\n"
 "Audacious plugin by:\n"
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
+"\n"
+"libavcodec %s (%s)\n"
+"libavformat %s (%s)\n"
+"libavutil %s (%s)\n"
 msgstr ""
 "Многоформатный модуль декодирования звука для Audacious,\n"
 "основан на FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1070,7 +1072,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:778
+#: src/ffaudio/ffaudio-core.c:777
 msgid "About FFaudio Plugin"
 msgstr "О модуле FFaudio"
 
@@ -1703,7 +1705,7 @@ msgstr "Воспроизведение"
 msgid "P_laylist"
 msgstr "Список воспроизведения"
 
-#: src/gtkui/menus.c:205 src/gtkui/menus.c:223
+#: src/gtkui/menus.c:205 src/gtkui/menus.c:219
 #, fuzzy
 msgid "_Services"
 msgstr "Устройства"
@@ -1736,37 +1738,37 @@ msgstr "Копировать"
 msgid "_Paste"
 msgstr "Вставить"
 
-#: src/gtkui/menus.c:218 src/gtkui/menus.c:220
+#: src/gtkui/menus.c:217
 #, fuzzy
 msgid "Select _All"
 msgstr "Выбрать все"
 
-#: src/gtkui/menus.c:226
+#: src/gtkui/menus.c:222
 msgid "_Rename"
 msgstr "_Переименовать"
 
-#: src/gtkui/ui_gtk.c:79
+#: src/gtkui/ui_gtk.c:75
 msgid "GTK Interface"
 msgstr "Интерфейс GTK"
 
-#: src/gtkui/ui_gtk.c:135 src/skins/ui_main.c:302
+#: src/gtkui/ui_gtk.c:132 src/skins/ui_main.c:303
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:141 src/skins/ui_main.c:304 src/skins/ui_main.c:1497
+#: src/gtkui/ui_gtk.c:138 src/skins/ui_main.c:305 src/skins/ui_main.c:1498
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:175 src/skins/plugin.c:176
+#: src/gtkui/ui_gtk.c:177 src/skins/plugin.c:185
 msgid "Error"
 msgstr "Ошибка"
 
-#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:459
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:460
 msgid "mono"
 msgstr "моно"
 
-#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:458
+#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:459
 msgid "stereo"
 msgstr "стерео"
 
@@ -1835,11 +1837,21 @@ msgstr "Показать/скрыть окна проигрывателя"
 msgid "Show On-Screen-Display"
 msgstr "Отобразить экранное сообщение (OSD)"
 
-#: src/hotkey/gui.c:93
+#: src/hotkey/gui.c:84
+#, fuzzy
+msgid "Toggle Repeat"
+msgstr "Повтор"
+
+#: src/hotkey/gui.c:85
+#, fuzzy
+msgid "Toggle Shuffle"
+msgstr "Случайно"
+
+#: src/hotkey/gui.c:95
 msgid "(none)"
 msgstr "(нет)"
 
-#: src/hotkey/gui.c:230
+#: src/hotkey/gui.c:232
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -1851,15 +1863,15 @@ msgstr ""
 "\n"
 "Продолжить?"
 
-#: src/hotkey/gui.c:232
+#: src/hotkey/gui.c:234
 msgid "Binding mouse buttons"
 msgstr "Привязки к кнопкам мыши"
 
-#: src/hotkey/gui.c:382
+#: src/hotkey/gui.c:384
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Параметры модуля Глобальные \"горячие клавиши\""
 
-#: src/hotkey/gui.c:398
+#: src/hotkey/gui.c:400
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -1867,23 +1879,23 @@ msgstr ""
 "Нажмите комбинацию клавиш в текстовом поле.\n"
 "Можно также сделать привязки к кнопкам мыши."
 
-#: src/hotkey/gui.c:403
+#: src/hotkey/gui.c:405
 msgid "Hotkeys:"
 msgstr "Горячие клавиши:"
 
-#: src/hotkey/gui.c:422
+#: src/hotkey/gui.c:424
 msgid "<b>Action:</b>"
 msgstr "<b>Действие:</b>"
 
-#: src/hotkey/gui.c:430
+#: src/hotkey/gui.c:432
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Привязка клавиш:</b>"
 
-#: src/hotkey/gui.c:661
+#: src/hotkey/gui.c:663
 msgid "About Global Hotkey Plugin"
 msgstr "О модуле Глобальные \"горячие клавиши\""
 
-#: src/hotkey/gui.c:662
+#: src/hotkey/gui.c:664
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -1958,7 +1970,19 @@ msgstr ""
 msgid "About JACK Output Plugin 0.17"
 msgstr "О модуле вывода JACK 0.17"
 
-#: src/lyricwiki/lyricwiki.c:335
+#: src/lyricwiki/lyricwiki.c:226
+msgid ""
+"\n"
+"Looking for lyrics..."
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:249
+msgid ""
+"\n"
+"Connecting to lyrics.wikia.com..."
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:337
 msgid ""
 "\n"
 "No lyrics were found."
@@ -2195,11 +2219,11 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02111-1307, "
 "USA."
 
-#: src/pulse_audio/pulse_audio.c:690
+#: src/pulse_audio/pulse_audio.c:687
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "О модуле вывода PulseAudio"
 
-#: src/pulse_audio/pulse_audio.c:691
+#: src/pulse_audio/pulse_audio.c:688
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -2257,35 +2281,35 @@ msgstr "Все остальные:"
 msgid "Method:"
 msgstr "Метод:"
 
-#: src/scrobbler/configure.c:129 src/scrobbler/configure.c:205
+#: src/scrobbler/configure.c:128 src/scrobbler/configure.c:204
 msgid "Change password"
 msgstr "Сменить пароль"
 
-#: src/scrobbler/configure.c:151
+#: src/scrobbler/configure.c:150
 msgid "<b>Services</b>"
 msgstr "<b>Службы</b>"
 
-#: src/scrobbler/configure.c:173
+#: src/scrobbler/configure.c:172
 msgid "Username:"
 msgstr "Имя пользователя:"
 
-#: src/scrobbler/configure.c:179
+#: src/scrobbler/configure.c:178
 msgid "Password:"
 msgstr "Пароль:"
 
-#: src/scrobbler/configure.c:187
+#: src/scrobbler/configure.c:186
 msgid "Scrobbler URL:"
 msgstr "Scrobbler URL:"
 
-#: src/scrobbler/configure.c:219
+#: src/scrobbler/configure.c:218
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:263
+#: src/scrobbler/configure.c:262
 msgid "Scrobbler"
 msgstr "Scrobbler"
 
-#: src/scrobbler/plugin.c:214
+#: src/scrobbler/plugin.c:213
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -2297,7 +2321,7 @@ msgstr ""
 "Первоначально был разработан Audun Hove <audun@nlc.no> и Pipian "
 "<pipian@pipian.com>\n"
 
-#: src/scrobbler/plugin.c:216
+#: src/scrobbler/plugin.c:215
 msgid "About Scrobbler Plugin"
 msgstr "О модуле Scrobbler"
 
@@ -2967,11 +2991,11 @@ msgstr "Да"
 msgid "No"
 msgstr "No"
 
-#: src/skins/plugin.c:165
+#: src/skins/plugin.c:167
 msgid "About Skinned GUI"
 msgstr "О графическом интерфейсе, использующем стили"
 
-#: src/skins/plugin.c:166
+#: src/skins/plugin.c:168
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -3000,30 +3024,18 @@ msgid "<b>_Fonts</b>"
 msgstr "<b>Шрифты</b>"
 
 #: src/skins/skins_cfg.c:261
-msgid "Use Bitmap fonts if available"
-msgstr "Использовать растровые шрифты, если возможно"
-
-#: src/skins/skins_cfg.c:261
-msgid ""
-"Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
-"strings."
+msgid "Use bitmap fonts (supports ASCII only)"
 msgstr ""
-"Использовать растровые шрифты, если они доступны. Растровые шрифты не "
-"поддерживают кодировку Юникод."
-
-#: src/skins/skins_cfg.c:262
-msgid "<b>_Miscellaneous</b>"
-msgstr "<b>Разное</b>"
 
 #: src/skins/skins_cfg.c:263
-msgid "Use two-way text scroller"
-msgstr "Прокрутка названия в обоих направлениях"
+msgid "Scroll song title in both directions"
+msgstr ""
 
-#: src/skins/skins_cfg.c:347
+#: src/skins/skins_cfg.c:346
 msgid "<b>_Skin</b>"
 msgstr "<b>Стиль</b>"
 
-#: src/skins/skins_cfg.c:394
+#: src/skins/skins_cfg.c:393
 #, fuzzy
 msgid "Interface Preferences"
 msgstr "Параметры модуля Перекрёстное затухание"
@@ -3080,75 +3092,75 @@ msgstr "Эквалайзер Audacious"
 msgid "Presets"
 msgstr "Предустановки"
 
-#: src/skins/ui_main.c:443
+#: src/skins/ui_main.c:444
 msgid "kbps"
 msgstr "кбит/с"
 
-#: src/skins/ui_main.c:451
+#: src/skins/ui_main.c:452
 msgid "kHz"
 msgstr "кГц"
 
-#: src/skins/ui_main.c:458
+#: src/skins/ui_main.c:459
 msgid "surround"
 msgstr "объёмное звучание"
 
-#: src/skins/ui_main.c:806
+#: src/skins/ui_main.c:807
 #, fuzzy, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Поиск: %d:%-2.2d/%d:%-2.2d (%d%%)"
 
-#: src/skins/ui_main.c:827
+#: src/skins/ui_main.c:828
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Громкость: %d%%"
 
-#: src/skins/ui_main.c:850
+#: src/skins/ui_main.c:851
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Баланс: %d%% влево"
 
-#: src/skins/ui_main.c:852
+#: src/skins/ui_main.c:853
 msgid "Balance: center"
 msgstr "Баланс: по центру"
 
-#: src/skins/ui_main.c:854
+#: src/skins/ui_main.c:855
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Баланс: %d%% вправо"
 
-#: src/skins/ui_main.c:980
+#: src/skins/ui_main.c:981
 msgid "Options Menu"
 msgstr "Меню параметров"
 
-#: src/skins/ui_main.c:984
+#: src/skins/ui_main.c:985
 msgid "Disable 'Always On Top'"
 msgstr "Отключить \"Видимый всегда\""
 
-#: src/skins/ui_main.c:986
+#: src/skins/ui_main.c:987
 msgid "Enable 'Always On Top'"
 msgstr "Включить \"Видимый всегда\""
 
-#: src/skins/ui_main.c:989
+#: src/skins/ui_main.c:990
 msgid "File Info Box"
 msgstr "Информация о файле"
 
-#: src/skins/ui_main.c:994
+#: src/skins/ui_main.c:995
 msgid "Visualization Menu"
 msgstr "Меню визуализации"
 
-#: src/skins/ui_main.c:1644
+#: src/skins/ui_main.c:1645
 msgid "Single mode."
 msgstr "Одиночный режим."
 
-#: src/skins/ui_main.c:1646
+#: src/skins/ui_main.c:1647
 msgid "Playlist mode."
 msgstr "Режим списка воспроизведения."
 
-#: src/skins/ui_main.c:1668
+#: src/skins/ui_main.c:1669
 msgid "Stopping after song."
 msgstr "Остановить после дорожки."
 
-#: src/skins/ui_main.c:1670
+#: src/skins/ui_main.c:1671
 msgid "Not stopping after song."
 msgstr "Не останавливать после дорожки."
 
@@ -3858,7 +3870,7 @@ msgstr "Архивированная тема Winamp 2.x"
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Не архивированная тема Winamp 2.x"
 
-#: src/skins/util.c:772
+#: src/skins/util.c:773
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "Невозможно создать каталог (%s): %s\n"
@@ -4221,6 +4233,22 @@ msgstr ""
 "\n"
 "Часть кода этого модуля написал Miles Egan\n"
 "Посетите сайт Wavpack по адресу http://www.wavpack.com/\n"
+
+#~ msgid "Use Bitmap fonts if available"
+#~ msgstr "Использовать растровые шрифты, если возможно"
+
+#~ msgid ""
+#~ "Use bitmap fonts if they are available. Bitmap fonts do not support "
+#~ "Unicode strings."
+#~ msgstr ""
+#~ "Использовать растровые шрифты, если они доступны. Растровые шрифты не "
+#~ "поддерживают кодировку Юникод."
+
+#~ msgid "<b>_Miscellaneous</b>"
+#~ msgstr "<b>Разное</b>"
+
+#~ msgid "Use two-way text scroller"
+#~ msgstr "Прокрутка названия в обоих направлениях"
 
 #~ msgid "About "
 #~ msgstr "О "

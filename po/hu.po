@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-06-10 18:30+0200\n"
+"POT-Creation-Date: 2011-07-05 22:47+0200\n"
 "PO-Revision-Date: 2010-08-23 12:00+0100\n"
 "Last-Translator: Peter Polonkai <polesz@nedudu.hu>\n"
 "Language-Team: Nedudu Team <nedudu@nedudu.hu>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-Language: Hungarian\n"
 "X-Poedit-Country: HUNGARY\n"
 
-#: src/aac/libmp4.c:268
+#: src/aac/libmp4.c:256
 #, c-format
 msgid ""
 "Using libfaad2-%s for decoding.\n"
@@ -29,35 +29,35 @@ msgstr ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Audacious team"
 
-#: src/aac/libmp4.c:273
+#: src/aac/libmp4.c:261
 msgid "About MP4 AAC decoder plugin"
 msgstr "MP4 AAC dekóder bővítmény névjegye"
 
-#: src/alsa/config.c:212
+#: src/alsa/config.c:210
 msgid "Default PCM device"
 msgstr "Alapértelmezett PCM eszköz"
 
-#: src/alsa/config.c:237
+#: src/alsa/config.c:235
 msgid "Default mixer device"
 msgstr "Alapértelmezett keverő eszköz"
 
-#: src/alsa/config.c:449
+#: src/alsa/config.c:447
 msgid "ALSA Output Plugin Preferences"
 msgstr "ALSA Kimeneti bővítmény beállítások"
 
-#: src/alsa/config.c:456
+#: src/alsa/config.c:454
 msgid "PCM device:"
 msgstr "PCM eszköz:"
 
-#: src/alsa/config.c:458 src/OSS/configure.c:246
+#: src/alsa/config.c:456 src/OSS/configure.c:246
 msgid "Mixer device:"
 msgstr "Keverő eszköz:"
 
-#: src/alsa/config.c:460
+#: src/alsa/config.c:458
 msgid "Mixer element:"
 msgstr "Mixer elem:"
 
-#: src/alsa/config.c:463
+#: src/alsa/config.c:461
 msgid "Work around drain hangup"
 msgstr ""
 
@@ -475,119 +475,119 @@ msgstr "Szünet Ki"
 msgid "Triggers OSD when playback is unpaused."
 msgstr "OSD használata ha elindítják a lejátszást."
 
-#: src/aosd/aosd_ui.c:170
+#: src/aosd/aosd_ui.c:180
 msgid "Placement"
 msgstr "Elhelyezés"
 
-#: src/aosd/aosd_ui.c:204
+#: src/aosd/aosd_ui.c:219
 msgid "Relative X offset:"
 msgstr "Relatív X pozíció:"
 
-#: src/aosd/aosd_ui.c:213
+#: src/aosd/aosd_ui.c:228
 msgid "Relative Y offset:"
 msgstr "Relatív Y pozíció:"
 
-#: src/aosd/aosd_ui.c:222
+#: src/aosd/aosd_ui.c:237
 msgid "Max OSD width:"
 msgstr "Max OSD szélesség:"
 
-#: src/aosd/aosd_ui.c:235
+#: src/aosd/aosd_ui.c:250
 msgid "Multi-Monitor options"
 msgstr "Több monitoros opciók"
 
-#: src/aosd/aosd_ui.c:239
+#: src/aosd/aosd_ui.c:254
 msgid "Display OSD using:"
 msgstr "OSD képernyők használata:"
 
-#: src/aosd/aosd_ui.c:250
+#: src/aosd/aosd_ui.c:265
 msgid "all monitors"
 msgstr "minden monitoron"
 
-#: src/aosd/aosd_ui.c:253
+#: src/aosd/aosd_ui.c:268
 #, c-format
 msgid "monitor %i"
 msgstr "monitor %i"
 
-#: src/aosd/aosd_ui.c:308
+#: src/aosd/aosd_ui.c:323
 msgid "Timing (ms)"
 msgstr "Időtartam (mp)"
 
-#: src/aosd/aosd_ui.c:313
+#: src/aosd/aosd_ui.c:328
 msgid "Display:"
 msgstr "Képernyő:"
 
-#: src/aosd/aosd_ui.c:318
+#: src/aosd/aosd_ui.c:333
 msgid "Fade in:"
 msgstr "Áttűnés be:"
 
-#: src/aosd/aosd_ui.c:323
+#: src/aosd/aosd_ui.c:338
 msgid "Fade out:"
 msgstr "Áttűnés ki:"
 
-#: src/aosd/aosd_ui.c:404
+#: src/aosd/aosd_ui.c:419
 msgid "Fonts"
 msgstr "Betűkészletek"
 
-#: src/aosd/aosd_ui.c:412
+#: src/aosd/aosd_ui.c:427
 #, c-format
 msgid "Font %i:"
 msgstr "Betűkészlet %i:"
 
-#: src/aosd/aosd_ui.c:429
+#: src/aosd/aosd_ui.c:444
 msgid "Shadow"
 msgstr "Árnyék"
 
-#: src/aosd/aosd_ui.c:464
+#: src/aosd/aosd_ui.c:479
 msgid "Internationalization"
 msgstr "Nemzetközi"
 
-#: src/aosd/aosd_ui.c:470
+#: src/aosd/aosd_ui.c:485
 msgid "Disable UTF-8 conversion of text (in aosd)"
 msgstr "UTF-8 karakter konverzió letiltása (aosd-ben)"
 
-#: src/aosd/aosd_ui.c:488
+#: src/aosd/aosd_ui.c:503
 msgid "Select Skin File"
 msgstr "Téma fájl választás"
 
-#: src/aosd/aosd_ui.c:599
+#: src/aosd/aosd_ui.c:614
 msgid "Render Style"
 msgstr "Renderelési stílus"
 
-#: src/aosd/aosd_ui.c:615
+#: src/aosd/aosd_ui.c:630
 msgid "Colors"
 msgstr "Színek"
 
-#: src/aosd/aosd_ui.c:628
+#: src/aosd/aosd_ui.c:643
 #, c-format
 msgid "Color %i:"
 msgstr "Szín %i:"
 
-#: src/aosd/aosd_ui.c:648
+#: src/aosd/aosd_ui.c:663
 msgid "Custom Skin"
 msgstr "Egyedi téma"
 
-#: src/aosd/aosd_ui.c:654
+#: src/aosd/aosd_ui.c:669
 msgid "Skin file:"
 msgstr "Téma fájl:"
 
-#: src/aosd/aosd_ui.c:657 src/sid/xs_interface.c:1044
+#: src/aosd/aosd_ui.c:672 src/sid/xs_interface.c:1044
 #: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
 msgid "Browse"
 msgstr "Böngészés"
 
-#: src/aosd/aosd_ui.c:759
+#: src/aosd/aosd_ui.c:774
 msgid "Enable trigger"
 msgstr "Esemény engedélyezése"
 
-#: src/aosd/aosd_ui.c:786
+#: src/aosd/aosd_ui.c:801
 msgid "Event"
 msgstr "Esemény"
 
-#: src/aosd/aosd_ui.c:814
+#: src/aosd/aosd_ui.c:829
 msgid "Composite manager detected"
 msgstr "Kompozit kezelő detektálva"
 
-#: src/aosd/aosd_ui.c:821
+#: src/aosd/aosd_ui.c:836
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
@@ -597,73 +597,73 @@ msgstr ""
 "ha tudja, hogy van egy futó kompozít kezelő, kérjük aktiválja, egyébként az "
 "OSD nem fog megfelelően működni"
 
-#: src/aosd/aosd_ui.c:829
+#: src/aosd/aosd_ui.c:844
 msgid "Composite manager not required for fake transparency"
 msgstr "Kompozít kezelő nem szükséges a nem valódi átlátszósághoz"
 
-#: src/aosd/aosd_ui.c:867
+#: src/aosd/aosd_ui.c:882
 msgid "Transparency"
 msgstr "Átlátszóság"
 
-#: src/aosd/aosd_ui.c:873
+#: src/aosd/aosd_ui.c:888
 msgid "Fake transparency"
 msgstr "Nem valódi átlátszóság"
 
-#: src/aosd/aosd_ui.c:875
+#: src/aosd/aosd_ui.c:890
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr "Valódi átlászóság (szükséges X Composite Ext.)"
 
-#: src/aosd/aosd_ui.c:917
+#: src/aosd/aosd_ui.c:932
 msgid "Composite extension not loaded"
 msgstr "Kompozit kiterjesztés nem tölthető be"
 
-#: src/aosd/aosd_ui.c:925
+#: src/aosd/aosd_ui.c:940
 msgid "Composite extension not available"
 msgstr "Kompozit kiterjesztés nem érhető el"
 
-#: src/aosd/aosd_ui.c:944
+#: src/aosd/aosd_ui.c:959
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
-#: src/aosd/aosd_ui.c:1025
+#: src/aosd/aosd_ui.c:1040
 msgid "Audacious OSD - configuration"
 msgstr "Audacious OSD - beállítás"
 
-#: src/aosd/aosd_ui.c:1046
+#: src/aosd/aosd_ui.c:1061
 msgid "Test"
 msgstr "Teszt"
 
-#: src/aosd/aosd_ui.c:1061
+#: src/aosd/aosd_ui.c:1076
 msgid "Position"
 msgstr "Pozíció"
 
-#: src/aosd/aosd_ui.c:1066
+#: src/aosd/aosd_ui.c:1081
 msgid "Animation"
 msgstr "Animáció"
 
-#: src/aosd/aosd_ui.c:1071
+#: src/aosd/aosd_ui.c:1086
 msgid "Text"
 msgstr "Szöveg"
 
-#: src/aosd/aosd_ui.c:1076
+#: src/aosd/aosd_ui.c:1091
 msgid "Decoration"
 msgstr "Dekoráció"
 
-#: src/aosd/aosd_ui.c:1081
+#: src/aosd/aosd_ui.c:1096
 msgid "Trigger"
 msgstr "Esemény"
 
-#: src/aosd/aosd_ui.c:1086 src/cdaudio-ng/configure.c:171
+#: src/aosd/aosd_ui.c:1101 src/cdaudio-ng/configure.c:171
 #: src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr "Egyéb"
 
-#: src/aosd/aosd_ui.c:1123
+#: src/aosd/aosd_ui.c:1138
 msgid "Audacious OSD - about"
 msgstr "Audacious OSD - névjegy"
 
-#: src/aosd/aosd_ui.c:1153
+#: src/aosd/aosd_ui.c:1168
 msgid ""
 "\n"
 "Audacious OSD "
@@ -671,7 +671,7 @@ msgstr ""
 "\n"
 "Audacious OSD"
 
-#: src/aosd/aosd_ui.c:1154
+#: src/aosd/aosd_ui.c:1169
 msgid ""
 "\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
@@ -967,21 +967,23 @@ msgstr "Visszacsatolás: (%)"
 msgid "Volume: (%)"
 msgstr "Hangerő: (%)"
 
-#: src/ffaudio/ffaudio-core.c:765
+#: src/ffaudio/ffaudio-core.c:763
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
 "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
 "\n"
-"FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
-"\n"
 "Audacious plugin by:\n"
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
+"\n"
+"libavcodec %s (%s)\n"
+"libavformat %s (%s)\n"
+"libavutil %s (%s)\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:778
+#: src/ffaudio/ffaudio-core.c:777
 msgid "About FFaudio Plugin"
 msgstr "FFaudio bővítmény névjegye"
 
@@ -1582,7 +1584,7 @@ msgstr "Lejátszás"
 msgid "P_laylist"
 msgstr "Lejátszólista"
 
-#: src/gtkui/menus.c:205 src/gtkui/menus.c:223
+#: src/gtkui/menus.c:205 src/gtkui/menus.c:219
 #, fuzzy
 msgid "_Services"
 msgstr "Eszközök"
@@ -1615,38 +1617,38 @@ msgstr "Másolás"
 msgid "_Paste"
 msgstr "Beillesztés"
 
-#: src/gtkui/menus.c:218 src/gtkui/menus.c:220
+#: src/gtkui/menus.c:217
 #, fuzzy
 msgid "Select _All"
 msgstr "Mindet kijelöl"
 
-#: src/gtkui/menus.c:226
+#: src/gtkui/menus.c:222
 #, fuzzy
 msgid "_Rename"
 msgstr "Fájlnév"
 
-#: src/gtkui/ui_gtk.c:79
+#: src/gtkui/ui_gtk.c:75
 msgid "GTK Interface"
 msgstr "GTK+ felület"
 
-#: src/gtkui/ui_gtk.c:135 src/skins/ui_main.c:302
+#: src/gtkui/ui_gtk.c:132 src/skins/ui_main.c:303
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:141 src/skins/ui_main.c:304 src/skins/ui_main.c:1497
+#: src/gtkui/ui_gtk.c:138 src/skins/ui_main.c:305 src/skins/ui_main.c:1498
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:175 src/skins/plugin.c:176
+#: src/gtkui/ui_gtk.c:177 src/skins/plugin.c:185
 msgid "Error"
 msgstr "Hiba"
 
-#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:459
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:460
 msgid "mono"
 msgstr "mono"
 
-#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:458
+#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:459
 msgid "stereo"
 msgstr "sztereó"
 
@@ -1714,11 +1716,21 @@ msgstr "Lejátszó ablakok váltása"
 msgid "Show On-Screen-Display"
 msgstr "On-Screen-Display mutatása"
 
-#: src/hotkey/gui.c:93
+#: src/hotkey/gui.c:84
+#, fuzzy
+msgid "Toggle Repeat"
+msgstr "Ismétlés"
+
+#: src/hotkey/gui.c:85
+#, fuzzy
+msgid "Toggle Shuffle"
+msgstr "Véletlenszerű"
+
+#: src/hotkey/gui.c:95
 msgid "(none)"
 msgstr "(nincs)"
 
-#: src/hotkey/gui.c:230
+#: src/hotkey/gui.c:232
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -1726,37 +1738,37 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: src/hotkey/gui.c:232
+#: src/hotkey/gui.c:234
 msgid "Binding mouse buttons"
 msgstr "Egér gombok hozzárendelése"
 
-#: src/hotkey/gui.c:382
+#: src/hotkey/gui.c:384
 msgid "Global Hotkey Plugin Configuration"
 msgstr ""
 
-#: src/hotkey/gui.c:398
+#: src/hotkey/gui.c:400
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
 
-#: src/hotkey/gui.c:403
+#: src/hotkey/gui.c:405
 msgid "Hotkeys:"
 msgstr "Gyorsbillentyűk:"
 
-#: src/hotkey/gui.c:422
+#: src/hotkey/gui.c:424
 msgid "<b>Action:</b>"
 msgstr "<b>Művelet:</b>"
 
-#: src/hotkey/gui.c:430
+#: src/hotkey/gui.c:432
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Billentyű kötések:</b>"
 
-#: src/hotkey/gui.c:661
+#: src/hotkey/gui.c:663
 msgid "About Global Hotkey Plugin"
 msgstr ""
 
-#: src/hotkey/gui.c:662
+#: src/hotkey/gui.c:664
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -1818,7 +1830,19 @@ msgstr ""
 msgid "About JACK Output Plugin 0.17"
 msgstr "JACK kimenet bővítmény névjegye 0.17"
 
-#: src/lyricwiki/lyricwiki.c:335
+#: src/lyricwiki/lyricwiki.c:226
+msgid ""
+"\n"
+"Looking for lyrics..."
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:249
+msgid ""
+"\n"
+"Connecting to lyrics.wikia.com..."
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:337
 msgid ""
 "\n"
 "No lyrics were found."
@@ -2008,11 +2032,11 @@ msgid ""
 "USA."
 msgstr ""
 
-#: src/pulse_audio/pulse_audio.c:690
+#: src/pulse_audio/pulse_audio.c:687
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "Audacious PulseAudio kimeneti bővítmény névjegye"
 
-#: src/pulse_audio/pulse_audio.c:691
+#: src/pulse_audio/pulse_audio.c:688
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -2052,35 +2076,35 @@ msgstr "Minden egyéb:"
 msgid "Method:"
 msgstr "Módszer: "
 
-#: src/scrobbler/configure.c:129 src/scrobbler/configure.c:205
+#: src/scrobbler/configure.c:128 src/scrobbler/configure.c:204
 msgid "Change password"
 msgstr "Jelszó megváltoztatása"
 
-#: src/scrobbler/configure.c:151
+#: src/scrobbler/configure.c:150
 msgid "<b>Services</b>"
 msgstr "<b>Szolgáltatások</b>"
 
-#: src/scrobbler/configure.c:173
+#: src/scrobbler/configure.c:172
 msgid "Username:"
 msgstr "Felhasználónév:"
 
-#: src/scrobbler/configure.c:179
+#: src/scrobbler/configure.c:178
 msgid "Password:"
 msgstr "Jelszó:"
 
-#: src/scrobbler/configure.c:187
+#: src/scrobbler/configure.c:186
 msgid "Scrobbler URL:"
 msgstr "Scrobbler URL:"
 
-#: src/scrobbler/configure.c:219
+#: src/scrobbler/configure.c:218
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last FM</b>"
 
-#: src/scrobbler/configure.c:263
+#: src/scrobbler/configure.c:262
 msgid "Scrobbler"
 msgstr ""
 
-#: src/scrobbler/plugin.c:214
+#: src/scrobbler/plugin.c:213
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -2088,7 +2112,7 @@ msgid ""
 "com>\n"
 msgstr ""
 
-#: src/scrobbler/plugin.c:216
+#: src/scrobbler/plugin.c:215
 msgid "About Scrobbler Plugin"
 msgstr "Scrobbler bővítmény névjegye"
 
@@ -2682,11 +2706,11 @@ msgstr "Igen"
 msgid "No"
 msgstr "Nem"
 
-#: src/skins/plugin.c:165
+#: src/skins/plugin.c:167
 msgid "About Skinned GUI"
 msgstr "Felhasználói GUI névjegye"
 
-#: src/skins/plugin.c:166
+#: src/skins/plugin.c:168
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -2713,30 +2737,18 @@ msgid "<b>_Fonts</b>"
 msgstr "<b>_Betűkészletek</b>"
 
 #: src/skins/skins_cfg.c:261
-msgid "Use Bitmap fonts if available"
-msgstr "Bitmap betűtípus használata ha elérhető"
-
-#: src/skins/skins_cfg.c:261
-msgid ""
-"Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
-"strings."
+msgid "Use bitmap fonts (supports ASCII only)"
 msgstr ""
-"Bitmap betűtípus használata ha elérhető. A Bitmap betűtípusok nem támogatják "
-"az Unicode szövegeket."
-
-#: src/skins/skins_cfg.c:262
-msgid "<b>_Miscellaneous</b>"
-msgstr "<b>_Egyebek</b>"
 
 #: src/skins/skins_cfg.c:263
-msgid "Use two-way text scroller"
+msgid "Scroll song title in both directions"
 msgstr ""
 
-#: src/skins/skins_cfg.c:347
+#: src/skins/skins_cfg.c:346
 msgid "<b>_Skin</b>"
 msgstr "<b>_Bőr</b>"
 
-#: src/skins/skins_cfg.c:394
+#: src/skins/skins_cfg.c:393
 #, fuzzy
 msgid "Interface Preferences"
 msgstr "Átfedés beállítások"
@@ -2793,75 +2805,75 @@ msgstr "Audacious Equalizer"
 msgid "Presets"
 msgstr "Profilok"
 
-#: src/skins/ui_main.c:443
+#: src/skins/ui_main.c:444
 msgid "kbps"
 msgstr "kbps"
 
-#: src/skins/ui_main.c:451
+#: src/skins/ui_main.c:452
 msgid "kHz"
 msgstr "kHz"
 
-#: src/skins/ui_main.c:458
+#: src/skins/ui_main.c:459
 msgid "surround"
 msgstr "térhatású"
 
-#: src/skins/ui_main.c:806
+#: src/skins/ui_main.c:807
 #, fuzzy, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Pozicionálás: %d:%-2.2d/%d:%-2.2d (%d%%)"
 
-#: src/skins/ui_main.c:827
+#: src/skins/ui_main.c:828
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Hangerő: %d%%"
 
-#: src/skins/ui_main.c:850
+#: src/skins/ui_main.c:851
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Balansz: %d%% bal"
 
-#: src/skins/ui_main.c:852
+#: src/skins/ui_main.c:853
 msgid "Balance: center"
 msgstr "Balansz: közép"
 
-#: src/skins/ui_main.c:854
+#: src/skins/ui_main.c:855
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Balansz: %d%% jobb"
 
-#: src/skins/ui_main.c:980
+#: src/skins/ui_main.c:981
 msgid "Options Menu"
 msgstr "Beállítások menü"
 
-#: src/skins/ui_main.c:984
+#: src/skins/ui_main.c:985
 msgid "Disable 'Always On Top'"
 msgstr "Tiltja a 'Mindig felül' opciót"
 
-#: src/skins/ui_main.c:986
+#: src/skins/ui_main.c:987
 msgid "Enable 'Always On Top'"
 msgstr "Engedélyezi a 'Mindig felül' opciót"
 
-#: src/skins/ui_main.c:989
+#: src/skins/ui_main.c:990
 msgid "File Info Box"
 msgstr "Fájl Információs doboz"
 
-#: src/skins/ui_main.c:994
+#: src/skins/ui_main.c:995
 msgid "Visualization Menu"
 msgstr "Megjelenítési menü"
 
-#: src/skins/ui_main.c:1644
+#: src/skins/ui_main.c:1645
 msgid "Single mode."
 msgstr "Egyszerű mód."
 
-#: src/skins/ui_main.c:1646
+#: src/skins/ui_main.c:1647
 msgid "Playlist mode."
 msgstr "Lejátszólista mód."
 
-#: src/skins/ui_main.c:1668
+#: src/skins/ui_main.c:1669
 msgid "Stopping after song."
 msgstr "Leállítás az aktuális dal után."
 
-#: src/skins/ui_main.c:1670
+#: src/skins/ui_main.c:1671
 msgid "Not stopping after song."
 msgstr "Nincs leállítás az aktuális dal után."
 
@@ -3563,7 +3575,7 @@ msgstr "Régi Winamp 2.x bőr"
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Nem régi Winamp 2.x bőr"
 
-#: src/skins/util.c:772
+#: src/skins/util.c:773
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "Nem lehet létrehozni a könyvtárat (%s): %s\n"
@@ -3861,6 +3873,19 @@ msgstr ""
 "\n"
 "Egyéb plugin kódokat írta Miles Egan\n"
 "Nézze meg a Wavpack honlapját: http://www.wavpack.com/\n"
+
+#~ msgid "Use Bitmap fonts if available"
+#~ msgstr "Bitmap betűtípus használata ha elérhető"
+
+#~ msgid ""
+#~ "Use bitmap fonts if they are available. Bitmap fonts do not support "
+#~ "Unicode strings."
+#~ msgstr ""
+#~ "Bitmap betűtípus használata ha elérhető. A Bitmap betűtípusok nem "
+#~ "támogatják az Unicode szövegeket."
+
+#~ msgid "<b>_Miscellaneous</b>"
+#~ msgstr "<b>_Egyebek</b>"
 
 #~ msgid "About "
 #~ msgstr "Névjegy"
