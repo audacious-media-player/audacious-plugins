@@ -51,7 +51,7 @@ static gboolean ishttp(const char *a)
 
 static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 {
-	gint playlist = aud_playlist_get_active();
+	gint playlist = aud_playlist_get_playing();
 	gint pos = aud_playlist_get_position(playlist);
 
 	if (aud_playlist_entry_get_length (playlist, pos, FALSE) < 30)
