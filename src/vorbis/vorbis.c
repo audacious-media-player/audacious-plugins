@@ -4,7 +4,7 @@
  * Copyright (C) 2007 William Pitcock <nenolod@sacredspiral.co.uk>
  * Copyright (C) 2008 Cristi Măgherușan <majeru@gentoo.ro>
  * Copyright (C) 2008 Eugene Zagidullin <e.asphyx@gmail.com>
- * Copyright (C) 2009 Audacious Developers
+ * Copyright (C) 2009-2011 Audacious Developers
  *
  * ReplayGain processing Copyright (C) 2002 Gian-Carlo Pascutto <gcp@sjeng.org>
  *
@@ -47,6 +47,8 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "vorbis.h"
+
+extern gboolean base64_decode (const gchar * text, void * * data, gint * length);
 
 static size_t ovcb_read (void * buffer, size_t size, size_t count, void * file)
 {
@@ -518,6 +520,59 @@ static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
     return tuple;
 }
 
+static gboolean get_song_image (const gchar * filename, VFSFile * file,
+ void * * data, gint * size)
+{
+    OggVorbis_File vfile;
+
+    if (ov_open_callbacks (file, & vfile, NULL, 0, vfs_is_streaming (file) ?
+     vorbis_callbacks_stream : vorbis_callbacks) < 0)
+        return FALSE;
+
+    vorbis_comment * comment = ov_comment (& vfile, -1);
+    if (! comment)
+        goto ERR;
+
+    const gchar * s = vorbis_comment_query (comment, "METADATA_BLOCK_PICTURE", 0);
+    if (! s)
+        goto ERR;
+
+    void * data2;
+    gint length2;
+    if (! base64_decode (s, & data2, & length2))
+        goto ERR;
+
+    if (length2 < 8)
+        goto PARSE_ERR;
+
+    gint mime_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 4));
+    if (length2 < 8 + mime_length + 4)
+        goto PARSE_ERR;
+
+    gint desc_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 8 + mime_length));
+    if (length2 < 8 + mime_length + 4 + desc_length + 20)
+        goto PARSE_ERR;
+
+    * size = GUINT32_FROM_BE (* (guint32 *) (data2 + 8 + mime_length + 4 + desc_length + 16));
+    if (length2 < 8 + mime_length + 4 + desc_length + 20 + * size)
+        goto PARSE_ERR;
+
+    * data = g_malloc (* size);
+    memcpy (* data, data2 + 8 + mime_length + 4 + desc_length + 20, * size);
+
+    g_free (data2);
+    ov_clear (& vfile);
+    return TRUE;
+
+PARSE_ERR:
+    fprintf (stderr, "vorbis: Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
+    g_free (data2);
+
+ERR:
+    ov_clear (& vfile);
+    return FALSE;
+}
+
 static void vorbis_aboutbox (void)
 {
     static GtkWidget * about_window = NULL;
@@ -651,6 +706,7 @@ AUD_INPUT_PLUGIN
     .mseek = vorbis_mseek,
     .cleanup = vorbis_cleanup,
     .probe_for_tuple = get_song_tuple,
+    .get_song_image = get_song_image,
     .update_song_tuple = vorbis_update_song_tuple,
     .is_our_file_from_vfs = vorbis_check_fd,
     .extensions = vorbis_fmts,
