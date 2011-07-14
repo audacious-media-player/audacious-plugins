@@ -238,12 +238,12 @@ static gboolean is_mp4_aac_file (VFSFile * handle)
 
 static gboolean mp4_is_our_fd (const gchar * filename, VFSFile * file)
 {
-    if (parse_aac_stream (file))
+    if (is_mp4_aac_file (file))
         return TRUE;
 
     if (vfs_fseek (file, 0, SEEK_SET))
         return FALSE;
-    return is_mp4_aac_file (file);
+    return parse_aac_stream (file);
 }
 
 static void mp4_about (void)
