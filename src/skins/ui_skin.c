@@ -411,7 +411,7 @@ init_skins(const gchar * path)
         playlistwin_create();
     }
 
-    if (! active_skin_load (path))
+    if (! path || ! active_skin_load (path))
     {
         if (path != NULL)
             AUDDBG("Unable to load skin (%s), trying default...\n", path);
