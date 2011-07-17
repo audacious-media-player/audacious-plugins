@@ -222,10 +222,7 @@ static gboolean moodbar_init(void)
 static gpointer moodbar_widget(void)
 {
 	if (mowgli_global_storage_get("gtkui.shbox"))
-	{
-		g_print("shbox found\n");
 		return NULL;
-	}
 
 	return area;
 }
