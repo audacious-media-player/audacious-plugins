@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.4.0\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-05 22:47+0200\n"
+"POT-Creation-Date: 2011-07-17 18:49-0400\n"
 "PO-Revision-Date: 2007-08-28 20:44+0200\n"
 "Last-Translator: Daniel Patriche <m4st3rth0r@gmail.com>\n"
 "Language-Team: Romanian <audacious@atheme.org>\n"
@@ -2005,6 +2005,16 @@ msgstr ""
 #: src/mtp_up/mtp.c:311
 msgid "Disconnect MTP Device"
 msgstr ""
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Stopped"
+msgstr "Synthpop"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Audacious is not playing."
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/null/null.c:64
 #, fuzzy
@@ -4101,12 +4111,12 @@ msgstr "AdPlug·::·Informații despre fișier"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr ""
 
-#: src/vorbis/vorbis.c:526
+#: src/vorbis/vorbis.c:581
 #, fuzzy
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
-#: src/vorbis/vorbis.c:531
+#: src/vorbis/vorbis.c:586
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"

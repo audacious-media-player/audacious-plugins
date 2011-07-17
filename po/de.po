@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-05 22:47+0200\n"
+"POT-Creation-Date: 2011-07-17 18:49-0400\n"
 "PO-Revision-Date: 2011-07-05 23:56+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: german\n"
@@ -1883,6 +1883,16 @@ msgstr "Auf MTP Gerät hochladen"
 msgid "Disconnect MTP Device"
 msgstr "MTP Gerät trennen"
 
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Stopped"
+msgstr "Stopp"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Audacious is not playing."
+msgstr "Fügt Dateien in Wiedergabeliste ein."
+
 #: src/null/null.c:64
 msgid "Null output plugin "
 msgstr "Null-Ausgabe-Plugin"
@@ -2108,8 +2118,8 @@ msgid ""
 msgstr ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
-"Ursprünglich geschrieben von Audun Hove <audun@nlc.no> und Pipian <pipian@pipian."
-"com>\n"
+"Ursprünglich geschrieben von Audun Hove <audun@nlc.no> und Pipian "
+"<pipian@pipian.com>\n"
 
 #: src/scrobbler/plugin.c:215
 msgid "About Scrobbler Plugin"
@@ -2256,9 +2266,9 @@ msgid ""
 "SID-chip model. Otherwise the preferred SID model is determined from the "
 "file (if PSIDv2NG type) or if not available, this setting is used."
 msgstr ""
-"Falls aktiviert, \"zwingt\" diese Option die Emulationsengine das ausgewählte "
-"SID-Chip-Model zu nutzen. Anderenfalls wird das bevorzugte SID-Model aus der "
-"Datei (wenn vom Typ PSIDv2NG) oder dieser Einstellung bestimmt."
+"Falls aktiviert, \"zwingt\" diese Option die Emulationsengine das "
+"ausgewählte SID-Chip-Model zu nutzen. Anderenfalls wird das bevorzugte SID-"
+"Model aus der Datei (wenn vom Typ PSIDv2NG) oder dieser Einstellung bestimmt."
 
 #: src/sid/xs_interface.c:490
 msgid "MOS 6581"
@@ -2853,6 +2863,7 @@ msgid "surround"
 msgstr "Surround"
 
 #: src/skins/ui_main.c:807
+#, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Suche nach %d:%-2.2d / %d:%-2.2d"
 
@@ -3895,11 +3906,11 @@ msgstr "Ogg-Vorbis-Tags"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ogg-Vorbis-Audio-Plugin-Konfiguration"
 
-#: src/vorbis/vorbis.c:526
+#: src/vorbis/vorbis.c:581
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Über Ogg-Vorbis-Audio-Plugin"
 
-#: src/vorbis/vorbis.c:531
+#: src/vorbis/vorbis.c:586
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"

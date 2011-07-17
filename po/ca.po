@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5.1\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-05 22:47+0200\n"
+"POT-Creation-Date: 2011-07-17 18:49-0400\n"
 "PO-Revision-Date: 2009-04-11 16:07+0200\n"
 "Last-Translator: Ernest Adrogué <eadrogue@gmx.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -2023,6 +2023,16 @@ msgstr ""
 #, fuzzy
 msgid "Disconnect MTP Device"
 msgstr "Desconnecta el dispositiu"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Stopped"
+msgstr "Para"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Audacious is not playing."
+msgstr "Audacious - avís de visibilitat"
 
 #: src/null/null.c:64
 msgid "Null output plugin "
@@ -4157,11 +4167,11 @@ msgstr "Etiquetes Ogg Vorbis:"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Configuració del connector d'àudio Ogg Vorbis"
 
-#: src/vorbis/vorbis.c:526
+#: src/vorbis/vorbis.c:581
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Quant al connector d'àudio Ogg Vorbis"
 
-#: src/vorbis/vorbis.c:531
+#: src/vorbis/vorbis.c:586
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5427,9 +5437,6 @@ msgstr ""
 
 #~ msgid "MTP device handler"
 #~ msgstr "Gestor de dispositius MTP"
-
-#~ msgid "Audacious - visibility warning"
-#~ msgstr "Audacious - avís de visibilitat"
 
 #~ msgid "Show main player window"
 #~ msgstr "Mostra la finestra principal"

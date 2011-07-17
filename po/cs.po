@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins audacious-plugins-3.0-beta1\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-04 19:50+0200\n"
+"POT-Creation-Date: 2011-07-17 18:49-0400\n"
 "PO-Revision-Date: 2011-07-04 19:58+0200\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -1969,6 +1969,16 @@ msgstr "Nahrát do zařízení MTP"
 #: src/mtp_up/mtp.c:311
 msgid "Disconnect MTP Device"
 msgstr "Odpojit zařízení MTP"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Stopped"
+msgstr "Zastavit"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Audacious is not playing."
+msgstr "Audacious – varování o viditelnosti"
 
 #: src/null/null.c:64
 msgid "Null output plugin "
@@ -4056,11 +4066,11 @@ msgstr "Popisky Ogg Vorbis"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Nastavení modulu Ogg Vorbis Audio"
 
-#: src/vorbis/vorbis.c:526
+#: src/vorbis/vorbis.c:581
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "O modulu Ogg Vorbis Audio"
 
-#: src/vorbis/vorbis.c:531
+#: src/vorbis/vorbis.c:586
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5376,9 +5386,6 @@ msgstr ""
 
 #~ msgid "Skinned Interface"
 #~ msgstr "Témata rozhraní"
-
-#~ msgid "Audacious - visibility warning"
-#~ msgstr "Audacious – varování o viditelnosti"
 
 #~ msgid "Show main player window"
 #~ msgstr "Zobrazit hlavním okno přehrávače"

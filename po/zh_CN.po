@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious-plugins 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-05 22:47+0200\n"
+"POT-Creation-Date: 2011-07-17 18:49-0400\n"
 "PO-Revision-Date: 2011-04-11 21:58+0800\n"
 "Last-Translator: Chasye <chasye@gmail.com>\n"
 "Language-Team: Chinese (simplified)\n"
@@ -1951,6 +1951,16 @@ msgstr ""
 #, fuzzy
 msgid "Disconnect MTP Device"
 msgstr "断开与设备的连接"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Stopped"
+msgstr "停止"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Audacious is not playing."
+msgstr "Audacious - 可见性警告"
 
 #: src/null/null.c:64
 msgid "Null output plugin "
@@ -3901,11 +3911,11 @@ msgstr "Ogg Vorbis标签"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ogg Vorbis音频播放设置"
 
-#: src/vorbis/vorbis.c:526
+#: src/vorbis/vorbis.c:581
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "关于Ogg Vorbis音频插件"
 
-#: src/vorbis/vorbis.c:531
+#: src/vorbis/vorbis.c:586
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5110,9 +5120,6 @@ msgstr ""
 
 #~ msgid "MTP device handler"
 #~ msgstr "MTP设备句柄"
-
-#~ msgid "Audacious - visibility warning"
-#~ msgstr "Audacious - 可见性警告"
 
 #~ msgid "Show main player window"
 #~ msgstr "显示主界面"

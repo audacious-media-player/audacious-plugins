@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-05 22:47+0200\n"
+"POT-Creation-Date: 2011-07-17 18:49-0400\n"
 "PO-Revision-Date: 2007-02-12 03:37-0600\n"
 "Last-Translator: William Pitcock <nenolod@sacredspiral.co.uk>\n"
 "Language-Team: Welsh <i18n+cy@sacredspiral.co.uk>\n"
@@ -1964,6 +1964,15 @@ msgstr ""
 
 #: src/mtp_up/mtp.c:311
 msgid "Disconnect MTP Device"
+msgstr ""
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Stopped"
+msgstr "Synthpop"
+
+#: src/notify/libnotify-aosd_event.c:47
+msgid "Audacious is not playing."
 msgstr ""
 
 #: src/null/null.c:64
@@ -4084,11 +4093,11 @@ msgstr "Tagiau Ogg Vorbis:"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ffurfweddiad Ogg Vorbis"
 
-#: src/vorbis/vorbis.c:526
+#: src/vorbis/vorbis.c:581
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Ynghylch Ategyn Ogg Vorbis"
 
-#: src/vorbis/vorbis.c:531
+#: src/vorbis/vorbis.c:586
 #, fuzzy
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"

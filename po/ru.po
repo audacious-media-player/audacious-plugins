@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-05 22:47+0200\n"
+"POT-Creation-Date: 2011-07-17 18:49-0400\n"
 "PO-Revision-Date: 2010-08-22 22:00+0400\n"
 "Last-Translator: Sergey V. Mironov <sergo@bk.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -2036,6 +2036,16 @@ msgstr ""
 #, fuzzy
 msgid "Disconnect MTP Device"
 msgstr "Отключить устройство"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Stopped"
+msgstr "Остановить"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Audacious is not playing."
+msgstr "Audacious - предупреждение о неразличимости"
 
 #: src/null/null.c:64
 msgid "Null output plugin "
@@ -4156,11 +4166,11 @@ msgstr "Теги Ogg Vorbis"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Параметры модуля Ogg Vorbis"
 
-#: src/vorbis/vorbis.c:526
+#: src/vorbis/vorbis.c:581
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "О модуле Ogg Vorbis"
 
-#: src/vorbis/vorbis.c:531
+#: src/vorbis/vorbis.c:586
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5484,9 +5494,6 @@ msgstr ""
 
 #~ msgid "MTP device handler"
 #~ msgstr "Оператор устройства MTP"
-
-#~ msgid "Audacious - visibility warning"
-#~ msgstr "Audacious - предупреждение о неразличимости"
 
 #~ msgid "Show main player window"
 #~ msgstr "Отобразить основное окно проигрывателя"

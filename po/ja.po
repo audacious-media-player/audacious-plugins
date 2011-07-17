@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-05 22:47+0200\n"
+"POT-Creation-Date: 2011-07-17 18:49-0400\n"
 "PO-Revision-Date: 2008-07-08 13:10+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -2025,6 +2025,16 @@ msgstr ""
 #, fuzzy
 msgid "Disconnect MTP Device"
 msgstr "デバイスを切断"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Stopped"
+msgstr "停止"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Audacious is not playing."
+msgstr "Audacious - 可視警告"
 
 #: src/null/null.c:64
 msgid "Null output plugin "
@@ -4139,11 +4149,11 @@ msgstr "Ogg Vorbis タグ:"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ogg Vorbis オーディオプラグインの設定"
 
-#: src/vorbis/vorbis.c:526
+#: src/vorbis/vorbis.c:581
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Ogg Vorbis オーディオ プラグインについて"
 
-#: src/vorbis/vorbis.c:531
+#: src/vorbis/vorbis.c:586
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5400,9 +5410,6 @@ msgstr ""
 
 #~ msgid "MTP device handler"
 #~ msgstr "MTP デバイスハンドラ"
-
-#~ msgid "Audacious - visibility warning"
-#~ msgstr "Audacious - 可視警告"
 
 #~ msgid "Show main player window"
 #~ msgstr "メインウィンドウを表示する"

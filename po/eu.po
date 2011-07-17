@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins_eu\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-05 22:47+0200\n"
+"POT-Creation-Date: 2011-07-17 18:49-0400\n"
 "PO-Revision-Date: 2009-04-23 18:56+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -2023,6 +2023,16 @@ msgstr ""
 #, fuzzy
 msgid "Disconnect MTP Device"
 msgstr "Deskonektatu gailua"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Stopped"
+msgstr "Gelditu"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Audacious is not playing."
+msgstr "Audacious - ikusgaitasunaren abisua"
 
 #: src/null/null.c:64
 msgid "Null output plugin "
@@ -4164,11 +4174,11 @@ msgstr "Ogg Vorbis etiketak:"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ogg Vorbis audioaren pluginaren konfigurazioa"
 
-#: src/vorbis/vorbis.c:526
+#: src/vorbis/vorbis.c:581
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Ogg Vorbis audioaren pluginari buruz"
 
-#: src/vorbis/vorbis.c:531
+#: src/vorbis/vorbis.c:586
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5425,9 +5435,6 @@ msgstr ""
 
 #~ msgid "MTP device handler"
 #~ msgstr "MTP gailuaren kudeatzailea"
-
-#~ msgid "Audacious - visibility warning"
-#~ msgstr "Audacious - ikusgaitasunaren abisua"
 
 #~ msgid "Show main player window"
 #~ msgstr "Erakutsi erreproduzitzaile nagusiaren leihoa"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins2_22062009\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-05 22:47+0200\n"
+"POT-Creation-Date: 2011-07-17 18:49-0400\n"
 "PO-Revision-Date: 2011-06-27 04:01+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -1947,6 +1947,16 @@ msgstr "Augšupielādēt uz MTP ierīci"
 #: src/mtp_up/mtp.c:311
 msgid "Disconnect MTP Device"
 msgstr "Atvienot MTP ierīci"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Stopped"
+msgstr "Stop"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Audacious is not playing."
+msgstr "Audacious - redzamības brīdinājums"
 
 #: src/null/null.c:64
 msgid "Null output plugin "
@@ -4030,11 +4040,11 @@ msgstr "Ogg Vorbis tagi"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ogg Vorbis Audio spraudņa konfigurācija"
 
-#: src/vorbis/vorbis.c:526
+#: src/vorbis/vorbis.c:581
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Par Ogg Vorbis Audio spraudni"
 
-#: src/vorbis/vorbis.c:531
+#: src/vorbis/vorbis.c:586
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5355,9 +5365,6 @@ msgstr ""
 
 #~ msgid "MTP device handler"
 #~ msgstr "MTP ierīces apstrādātājs"
-
-#~ msgid "Audacious - visibility warning"
-#~ msgstr "Audacious - redzamības brīdinājums"
 
 #~ msgid "Show main player window"
 #~ msgstr "Rādīt galveno atskaņotāja logu"

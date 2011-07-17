@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-05 22:47+0200\n"
+"POT-Creation-Date: 2011-07-17 18:49-0400\n"
 "PO-Revision-Date: 2011-05-22 12:08+0200\n"
 "Last-Translator: Szymon Weihs <sz.weihs@gmail.com>\n"
 "Language-Team: \n"
@@ -1998,6 +1998,16 @@ msgstr ""
 #, fuzzy
 msgid "Disconnect MTP Device"
 msgstr "Rozłącz urządzenie"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Stopped"
+msgstr "Stop"
+
+#: src/notify/libnotify-aosd_event.c:47
+#, fuzzy
+msgid "Audacious is not playing."
+msgstr "Audacious - ostrzeżenie o widoczności"
 
 #: src/null/null.c:64
 msgid "Null output plugin "
@@ -4099,11 +4109,11 @@ msgstr "Tagi Ogg Vorbis"
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Konfiguracja wtyczki Ogg Vorbis"
 
-#: src/vorbis/vorbis.c:526
+#: src/vorbis/vorbis.c:581
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "O wtyczce dźwięku Ogg Vorbis"
 
-#: src/vorbis/vorbis.c:531
+#: src/vorbis/vorbis.c:586
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5422,9 +5432,6 @@ msgstr ""
 
 #~ msgid "Skinned Interface"
 #~ msgstr "Skórkowy Interfejs"
-
-#~ msgid "Audacious - visibility warning"
-#~ msgstr "Audacious - ostrzeżenie o widoczności"
 
 #~ msgid "Show main player window"
 #~ msgstr "Pokaż głowne okno odtwarzacza"
