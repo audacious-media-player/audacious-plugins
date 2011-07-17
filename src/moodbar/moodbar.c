@@ -35,7 +35,13 @@ static GdkColor *parse_mood_file(const gchar *filename)
 	g_return_val_if_fail(filename != NULL, NULL);
 
 	ret = g_new0(GdkColor, 1000);
+
+	if (! vfs_file_test (filename, G_FILE_TEST_EXISTS))
+		return ret;
+
 	vfs_file_get_contents(filename, (void **) &data, &size);
+	if (! data)
+		return ret;
 
 	for (it = data, col = ret; (it - data) < size; it += 3, col++)
 	{
@@ -127,6 +133,7 @@ DRAW_FUNC_BEGIN (expose_event)
 	playlist = aud_playlist_get_playing();
 	pos = aud_playlist_get_position(playlist);
 	file = aud_playlist_entry_get_filename(playlist, pos);
+	g_return_val_if_fail (file, FALSE);
 
 	ext = strrchr(file, '.');
 	if (ext != NULL)
@@ -201,6 +208,7 @@ extern VisPlugin moodbar_vp;
 static gboolean moodbar_init(void)
 {
 	area = gtk_drawing_area_new();
+	g_object_ref (area);
 	gtk_widget_show(area);
 
 	hook_associate("playback begin", (HookFunction) playback_begin, area);
