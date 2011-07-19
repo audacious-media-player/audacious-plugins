@@ -14,10 +14,6 @@ alarm_stop_cancel                      (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-alarm_store_playlistname               (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
 on_mon_def_toggled                     (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
 

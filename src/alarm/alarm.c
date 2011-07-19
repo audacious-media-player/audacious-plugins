@@ -130,24 +130,10 @@ static GtkWidget *alarm_dialog = NULL;
 
 static GtkWidget *lookup_widget(GtkWidget *w, const gchar *name)
 {
-   GtkWidget *widget;
-
-   widget = (GtkWidget*) gtk_object_get_data(GTK_OBJECT(w),
-					     name);
+   GtkWidget * widget = g_object_get_data ((GObject *) w, name);
    g_return_val_if_fail(widget != NULL, NULL);
 
    return widget;
-}
-
-static void dialog_destroyed(GtkWidget *dialog, gpointer data)
-{
-   AUDDBG("dialog destroyed\n");
-   *(GtkObject**)data = NULL;
-}
-
-static inline gboolean dialog_visible(GtkWidget *dialog)
-{
-   return(((dialog != NULL) && GTK_WIDGET_VISIBLE(dialog)));
 }
 
 /*
@@ -158,13 +144,13 @@ static void alarm_warning(void)
 
    static GtkWidget *warning_dialog = NULL;
 
-   if(dialog_visible(warning_dialog))
+   if (warning_dialog)
      return;
 
    warning_dialog = create_warning_dialog();
 
-   gtk_signal_connect(GTK_OBJECT(warning_dialog), "destroy",
-		      GTK_SIGNAL_FUNC(dialog_destroyed), &warning_dialog);
+   g_signal_connect (warning_dialog, "destroy", (GCallback)
+    gtk_widget_destroyed, & warning_dialog);
 
    gtk_widget_show_all(warning_dialog);
 
@@ -228,12 +214,10 @@ void alarm_save(GtkButton *w, gpointer data)
 
    /* END: days of week */
 
-   volume =
-     gtk_range_get_adjustment(alarm_conf.volume)->value;
+   volume = gtk_range_get_value (alarm_conf.volume);
    aud_cfg_db_set_int(conf, "alarm", "volume", volume);
 
-   quietvol =
-     gtk_range_get_adjustment(alarm_conf.quietvol)->value;
+   quietvol = gtk_range_get_value (alarm_conf.quietvol);
    aud_cfg_db_set_int(conf, "alarm", "quietvol", quietvol);
 
    fading =
@@ -244,9 +228,9 @@ void alarm_save(GtkButton *w, gpointer data)
    if((stop_on == TRUE) &&
       ((((stop_h * 60) + stop_m) * 60) < (fading + 65)))
    {
-	   AUDDBG("Displaying bug warning, stop %dh %dm, fade %d\n",
-	         stop_h, stop_m, fading);
-	   alarm_warning();
+       AUDDBG("Displaying bug warning, stop %dh %dm, fade %d\n",
+             stop_h, stop_m, fading);
+       alarm_warning();
    }
    else if((stop_on == TRUE) && (fading < 10))
    {
@@ -256,17 +240,17 @@ void alarm_save(GtkButton *w, gpointer data)
    }
    else
    {
-	   /* write the new values */
-	   aud_cfg_db_set_int(conf, "alarm", "stop_h", stop_h);
-	   aud_cfg_db_set_int(conf, "alarm", "stop_m", stop_m);
-	   aud_cfg_db_set_int(conf, "alarm", "fading", fading);
-	   aud_cfg_db_set_bool(conf, "alarm", "stop_on", stop_on);
+       /* write the new values */
+       aud_cfg_db_set_int(conf, "alarm", "stop_h", stop_h);
+       aud_cfg_db_set_int(conf, "alarm", "stop_m", stop_m);
+       aud_cfg_db_set_int(conf, "alarm", "fading", fading);
+       aud_cfg_db_set_bool(conf, "alarm", "stop_on", stop_on);
    }
 
 
    g_free(cmdstr);
    cmdstr = gtk_editable_get_chars(GTK_EDITABLE(alarm_conf.cmdstr),
-				   0, -1);
+                   0, -1);
    aud_cfg_db_set_string(conf, "alarm", "cmdstr", cmdstr);
 
    cmd_on =
@@ -275,7 +259,7 @@ void alarm_save(GtkButton *w, gpointer data)
 
    g_free(playlist);
    playlist = gtk_editable_get_chars(GTK_EDITABLE(alarm_conf.playlist),
-				     0, -1);
+                     0, -1);
    aud_cfg_db_set_string(conf, "alarm", "playlist", playlist);
 
    /* reminder */
@@ -374,57 +358,17 @@ static void alarm_about(void)
 {
    static GtkWidget *about_dialog = NULL;
 
-   AUDDBG("alarm_about\n");
-
-   if(dialog_visible(about_dialog))
+   if (about_dialog)
      return;
 
    about_dialog = create_about_dialog();
 
-   gtk_signal_connect(GTK_OBJECT(about_dialog), "destroy",
-		      GTK_SIGNAL_FUNC(dialog_destroyed), &about_dialog);
+   g_signal_connect (about_dialog, "destroy", (GCallback) gtk_widget_destroyed,
+    & about_dialog);
 
    gtk_widget_show_all(about_dialog);
 
    return;
-}
-
-/*
- * create a playlist file selection dialog
- */
-static void alarm_playlist_browse(GtkButton *button, gpointer data)
-{
-   GtkWidget *fs;
-   gchar *dirname, *path;
-
-   dirname = g_dirname(playlist);
-   AUDDBG("dirname = %s\n", dirname);
-   path = g_strdup_printf("%s/", dirname);
-   AUDDBG("path = %s\n", path);
-   g_free(dirname);
-
-   fs = create_playlist_fileselection();
-
-   gtk_file_selection_set_filename(GTK_FILE_SELECTION(fs), path);
-   g_free(path);
-
-   gtk_widget_show_all(fs);
-}
-
-/*
- * save selected playlist to the corresponding text entry
- */
-void alarm_store_playlistname(GtkButton *button, gpointer data)
-{
-   GtkFileSelection *fs = GTK_FILE_SELECTION(data);
-   gchar *plist;
-
-   AUDDBG("alarm_store_playlistname\n");
-
-   plist = g_strdup(gtk_file_selection_get_filename(fs));
-
-   gtk_entry_set_text(alarm_conf.playlist, plist);
-   g_free(plist);
 }
 
 /*
@@ -435,12 +379,7 @@ static void alarm_configure(void)
    int daynum = 0;  // used to loop days
    GtkWidget *w;
 
-   AUDDBG("alarm_configure\n");
-
-   /*
-    * dont want to show more than one config window
-    */
-   if(dialog_visible(config_dialog))
+   if (config_dialog)
      return;
 
    alarm_read_config();
@@ -473,18 +412,18 @@ static void alarm_configure(void)
    w = lookup_widget(config_dialog, "vol_scale");
    alarm_conf.volume = GTK_RANGE(w);
    gtk_range_set_adjustment(alarm_conf.volume,
-			    GTK_ADJUSTMENT(gtk_adjustment_new(volume,
-							      0,
-							      100, 1,
-							      5, 0)));
+                GTK_ADJUSTMENT(gtk_adjustment_new(volume,
+                                  0,
+                                  100, 1,
+                                  5, 0)));
 
    w = lookup_widget(config_dialog, "quiet_vol_scale");
    alarm_conf.quietvol = GTK_RANGE(w);
    gtk_range_set_adjustment(alarm_conf.quietvol,
-			    GTK_ADJUSTMENT(gtk_adjustment_new(quietvol,
-							      0,
-							      100, 1,
-							      5, 0)));
+                GTK_ADJUSTMENT(gtk_adjustment_new(quietvol,
+                                  0,
+                                  100, 1,
+                                  5, 0)));
 
    /* days of week */
    for(; daynum < 7; daynum++)
@@ -492,7 +431,7 @@ static void alarm_configure(void)
      w = lookup_widget(config_dialog, day_cb[daynum]);
      alarm_conf.day[daynum].cb = GTK_CHECK_BUTTON(w);
      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(alarm_conf.day[daynum].cb),
-				!(alarm_conf.day[daynum].flags & ALARM_OFF));
+                !(alarm_conf.day[daynum].flags & ALARM_OFF));
 
      w = lookup_widget(config_dialog, day_def[daynum]);
      alarm_conf.day[daynum].cb_def = GTK_CHECK_BUTTON(w);
@@ -565,12 +504,8 @@ static void alarm_configure(void)
    alarm_conf.reminder_cb = GTK_TOGGLE_BUTTON(w);
    gtk_toggle_button_set_active(alarm_conf.reminder_cb, alarm_conf.reminder_on);
 
-   w = lookup_widget(config_dialog, "playlist_browse_button");
-   gtk_signal_connect(GTK_OBJECT(w), "clicked",
-		      GTK_SIGNAL_FUNC(alarm_playlist_browse), NULL);
-
-   gtk_signal_connect(GTK_OBJECT(config_dialog), "destroy",
-		      GTK_SIGNAL_FUNC(dialog_destroyed), &config_dialog);
+   g_signal_connect (config_dialog, "destroy", (GCallback) gtk_widget_destroyed,
+    & config_dialog);
 
    gtk_widget_show_all(config_dialog);
 
@@ -758,7 +693,7 @@ static void *alarm_stop_thread( void *args )
 
    AUDDBG("alarm_stop triggered\n");
 
-   if (dialog_visible(alarm_dialog))
+   if (alarm_dialog)
      gtk_widget_destroy(alarm_dialog);
 
    aud_drct_get_volume_main(&currvol),
@@ -910,12 +845,10 @@ static void *alarm_start_thread(void *args)
        GtkWidget *reminder_dialog;
        AUDDBG("Showing reminder '%s'\n", alarm_conf.reminder_msg);
 
-       GDK_THREADS_ENTER();
        reminder_dialog = (GtkWidget*) create_reminder_dialog(alarm_conf.reminder_msg);
-       gtk_signal_connect(GTK_OBJECT(reminder_dialog), "destroy",
-       GTK_SIGNAL_FUNC(dialog_destroyed), &reminder_dialog);
+       g_signal_connect (reminder_dialog, "destroy", (GCallback)
+        gtk_widget_destroyed, & reminder_dialog);
        gtk_widget_show_all(reminder_dialog);
-       GDK_THREADS_LEAVE();
      }
 
      /* bring up the wakeup call dialog if stop_on is set TRUE, this
@@ -927,28 +860,15 @@ static void *alarm_start_thread(void *args)
       */
       if(stop_on == TRUE)
       {
-         /* ok, so when we want to open dialogs in threaded programs
-          * we use this do we?
-          * anyone?
-          */
-          GDK_THREADS_ENTER();
-          {
-            AUDDBG("stop_on is true\n");
             alarm_dialog = create_alarm_dialog();
-            AUDDBG("created alarm dialog, %p\n", alarm_dialog);
+            g_signal_connect (alarm_dialog, "destroy", (GCallback)
+             gtk_widget_destroyed, & alarm_dialog);
 
-            gtk_signal_connect(GTK_OBJECT(alarm_dialog), "destroy",
-            GTK_SIGNAL_FUNC(dialog_destroyed), &alarm_dialog);
-            AUDDBG("attached destroy signal to alarm dialog, %p\n", alarm_dialog);
             gtk_widget_show_all(alarm_dialog);
-            AUDDBG("dialog now showing\n");
 
             AUDDBG("now starting stop thread\n");
             stop = alarm_thread_create(alarm_stop_thread, NULL, 0);
             AUDDBG("Created wakeup dialog and started stop thread\n");
-
-	        }
-	        GDK_THREADS_LEAVE();
 
           /* now wait for the stop thread */
           AUDDBG("Waiting for stop to stop.... ");
@@ -1017,14 +937,11 @@ static void alarm_cleanup(void)
    cmdstr = NULL;
 }
 
-static GeneralPlugin alarm_plugin =
-{
-     .description = "Alarm "VERSION,
+AUD_GENERAL_PLUGIN
+(
+     .name = "Alarm",
      .init = alarm_init,
      .about = alarm_about,
      .configure = alarm_configure,
      .cleanup = alarm_cleanup,
-};
-
-GeneralPlugin *alarm_gplist[] = { &alarm_plugin, NULL };
-SIMPLE_GENERAL_PLUGIN(alarm, alarm_gplist);
+)
