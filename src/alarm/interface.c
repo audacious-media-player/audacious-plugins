@@ -14,7 +14,6 @@
 
 #include "callbacks.h"
 #include "interface.h"
-#include "support.h"
 
 #include <audacious/i18n.h>
 
