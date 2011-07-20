@@ -380,7 +380,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  stop_h_spin_adj = gtk_adjustment_new (0, 0, 100, 1, 10, 0);
+  stop_h_spin_adj = (GtkAdjustment *) gtk_adjustment_new (0, 0, 100, 1, 10, 0);
   stop_h_spin = gtk_spin_button_new (GTK_ADJUSTMENT (stop_h_spin_adj), 1, 0);
   gtk_widget_set_name (stop_h_spin, "stop_h_spin");
   g_object_ref (stop_h_spin);
@@ -409,7 +409,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  alarm_h_spin_adj = gtk_adjustment_new (6, 0, 23, 1, 10, 0);
+  alarm_h_spin_adj = (GtkAdjustment *) gtk_adjustment_new (6, 0, 23, 1, 10, 0);
   alarm_h_spin = gtk_spin_button_new (GTK_ADJUSTMENT (alarm_h_spin_adj), 1, 0);
   gtk_widget_set_name (alarm_h_spin, "alarm_h_spin");
   g_object_ref (alarm_h_spin);
@@ -440,7 +440,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL), 0, 0);
 
-  alarm_m_spin_adj = gtk_adjustment_new (30, 0, 59, 1, 10, 0);
+  alarm_m_spin_adj = (GtkAdjustment *) gtk_adjustment_new (30, 0, 59, 1, 10, 0);
   alarm_m_spin = gtk_spin_button_new (GTK_ADJUSTMENT (alarm_m_spin_adj), 1, 0);
   gtk_widget_set_name (alarm_m_spin, "alarm_m_spin");
   g_object_ref (alarm_m_spin);
@@ -470,7 +470,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL), 0, 0);
 
-  stop_m_spin_adj = gtk_adjustment_new (0, 0, 59, 1, 10, 0);
+  stop_m_spin_adj = (GtkAdjustment *) gtk_adjustment_new (0, 0, 59, 1, 10, 0);
   stop_m_spin = gtk_spin_button_new (GTK_ADJUSTMENT (stop_m_spin_adj), 1, 0);
   gtk_widget_set_name (stop_m_spin, "stop_m_spin");
   g_object_ref (stop_m_spin);
@@ -567,7 +567,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox31), mon_def, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mon_def), TRUE);
 
-  mon_h_adj = gtk_adjustment_new (6, 0, 23, 1, 10, 0);
+  mon_h_adj = (GtkAdjustment *) gtk_adjustment_new (6, 0, 23, 1, 10, 0);
   mon_h = gtk_spin_button_new (GTK_ADJUSTMENT (mon_h_adj), 1, 0);
   gtk_widget_set_name (mon_h, "mon_h");
   g_object_ref (mon_h);
@@ -585,7 +585,7 @@ create_config_dialog (void)
   gtk_widget_show (label89);
   gtk_box_pack_start (GTK_BOX (hbox31), label89, FALSE, FALSE, 0);
 
-  mon_m_adj = gtk_adjustment_new (30, 0, 59, 1, 10, 0);
+  mon_m_adj = (GtkAdjustment *) gtk_adjustment_new (30, 0, 59, 1, 10, 0);
   mon_m = gtk_spin_button_new (GTK_ADJUSTMENT (mon_m_adj), 1, 0);
   gtk_widget_set_name (mon_m, "mon_m");
   g_object_ref (mon_m);
@@ -615,7 +615,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox32), tue_def, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tue_def), TRUE);
 
-  tue_h_adj = gtk_adjustment_new (6, 0, 23, 1, 10, 0);
+  tue_h_adj = (GtkAdjustment *) gtk_adjustment_new (6, 0, 23, 1, 10, 0);
   tue_h = gtk_spin_button_new (GTK_ADJUSTMENT (tue_h_adj), 1, 0);
   gtk_widget_set_name (tue_h, "tue_h");
   g_object_ref (tue_h);
@@ -633,7 +633,7 @@ create_config_dialog (void)
   gtk_widget_show (label90);
   gtk_box_pack_start (GTK_BOX (hbox32), label90, FALSE, FALSE, 0);
 
-  tue_m_adj = gtk_adjustment_new (30, 0, 59, 1, 10, 0);
+  tue_m_adj = (GtkAdjustment *) gtk_adjustment_new (30, 0, 59, 1, 10, 0);
   tue_m = gtk_spin_button_new (GTK_ADJUSTMENT (tue_m_adj), 1, 0);
   gtk_widget_set_name (tue_m, "tue_m");
   g_object_ref (tue_m);
@@ -663,7 +663,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox33), wed_def, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wed_def), TRUE);
 
-  wed_h_adj = gtk_adjustment_new (6, 0, 23, 1, 10, 0);
+  wed_h_adj = (GtkAdjustment *) gtk_adjustment_new (6, 0, 23, 1, 10, 0);
   wed_h = gtk_spin_button_new (GTK_ADJUSTMENT (wed_h_adj), 1, 0);
   gtk_widget_set_name (wed_h, "wed_h");
   g_object_ref (wed_h);
@@ -681,7 +681,7 @@ create_config_dialog (void)
   gtk_widget_show (label91);
   gtk_box_pack_start (GTK_BOX (hbox33), label91, FALSE, FALSE, 0);
 
-  wed_m_adj = gtk_adjustment_new (30, 0, 59, 1, 10, 0);
+  wed_m_adj = (GtkAdjustment *) gtk_adjustment_new (30, 0, 59, 1, 10, 0);
   wed_m = gtk_spin_button_new (GTK_ADJUSTMENT (wed_m_adj), 1, 0);
   gtk_widget_set_name (wed_m, "wed_m");
   g_object_ref (wed_m);
@@ -711,7 +711,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox34), thu_def, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (thu_def), TRUE);
 
-  thu_h_adj = gtk_adjustment_new (6, 0, 23, 1, 10, 0);
+  thu_h_adj = (GtkAdjustment *) gtk_adjustment_new (6, 0, 23, 1, 10, 0);
   thu_h = gtk_spin_button_new (GTK_ADJUSTMENT (thu_h_adj), 1, 0);
   gtk_widget_set_name (thu_h, "thu_h");
   g_object_ref (thu_h);
@@ -729,7 +729,7 @@ create_config_dialog (void)
   gtk_widget_show (label92);
   gtk_box_pack_start (GTK_BOX (hbox34), label92, FALSE, FALSE, 0);
 
-  thu_m_adj = gtk_adjustment_new (30, 0, 59, 1, 10, 0);
+  thu_m_adj = (GtkAdjustment *) gtk_adjustment_new (30, 0, 59, 1, 10, 0);
   thu_m = gtk_spin_button_new (GTK_ADJUSTMENT (thu_m_adj), 1, 0);
   gtk_widget_set_name (thu_m, "thu_m");
   g_object_ref (thu_m);
@@ -759,7 +759,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox35), fri_def, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (fri_def), TRUE);
 
-  fri_h_adj = gtk_adjustment_new (6, 0, 23, 1, 10, 0);
+  fri_h_adj = (GtkAdjustment *) gtk_adjustment_new (6, 0, 23, 1, 10, 0);
   fri_h = gtk_spin_button_new (GTK_ADJUSTMENT (fri_h_adj), 1, 0);
   gtk_widget_set_name (fri_h, "fri_h");
   g_object_ref (fri_h);
@@ -777,7 +777,7 @@ create_config_dialog (void)
   gtk_widget_show (label93);
   gtk_box_pack_start (GTK_BOX (hbox35), label93, FALSE, FALSE, 0);
 
-  fri_m_adj = gtk_adjustment_new (30, 0, 59, 1, 10, 0);
+  fri_m_adj = (GtkAdjustment *) gtk_adjustment_new (30, 0, 59, 1, 10, 0);
   fri_m = gtk_spin_button_new (GTK_ADJUSTMENT (fri_m_adj), 1, 0);
   gtk_widget_set_name (fri_m, "fri_m");
   g_object_ref (fri_m);
@@ -807,7 +807,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox36), sat_def, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (sat_def), TRUE);
 
-  sat_h_adj = gtk_adjustment_new (6, 0, 23, 1, 10, 0);
+  sat_h_adj = (GtkAdjustment *) gtk_adjustment_new (6, 0, 23, 1, 10, 0);
   sat_h = gtk_spin_button_new (GTK_ADJUSTMENT (sat_h_adj), 1, 0);
   gtk_widget_set_name (sat_h, "sat_h");
   g_object_ref (sat_h);
@@ -825,7 +825,7 @@ create_config_dialog (void)
   gtk_widget_show (label94);
   gtk_box_pack_start (GTK_BOX (hbox36), label94, FALSE, FALSE, 0);
 
-  sat_m_adj = gtk_adjustment_new (30, 0, 59, 1, 10, 0);
+  sat_m_adj = (GtkAdjustment *) gtk_adjustment_new (30, 0, 59, 1, 10, 0);
   sat_m = gtk_spin_button_new (GTK_ADJUSTMENT (sat_m_adj), 1, 0);
   gtk_widget_set_name (sat_m, "sat_m");
   g_object_ref (sat_m);
@@ -855,7 +855,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox37), sun_def, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (sun_def), TRUE);
 
-  sun_h_adj = gtk_adjustment_new (6, 0, 23, 1, 10, 0);
+  sun_h_adj = (GtkAdjustment *) gtk_adjustment_new (6, 0, 23, 1, 10, 0);
   sun_h = gtk_spin_button_new (GTK_ADJUSTMENT (sun_h_adj), 1, 0);
   gtk_widget_set_name (sun_h, "sun_h");
   g_object_ref (sun_h);
@@ -873,7 +873,7 @@ create_config_dialog (void)
   gtk_widget_show (label95);
   gtk_box_pack_start (GTK_BOX (hbox37), label95, FALSE, FALSE, 0);
 
-  sun_m_adj = gtk_adjustment_new (30, 0, 59, 1, 10, 0);
+  sun_m_adj = (GtkAdjustment *) gtk_adjustment_new (30, 0, 59, 1, 10, 0);
   sun_m = gtk_spin_button_new (GTK_ADJUSTMENT (sun_m_adj), 1, 0);
   gtk_widget_set_name (sun_m, "sun_m");
   g_object_ref (sun_m);
@@ -1022,7 +1022,7 @@ create_config_dialog (void)
   gtk_widget_show (hbox25);
   gtk_container_add (GTK_CONTAINER (alignment10), hbox25);
 
-  fading_spin_adj = gtk_adjustment_new (120, 0, 3600, 1, 10, 10);
+  fading_spin_adj = (GtkAdjustment *) gtk_adjustment_new (120, 0, 3600, 1, 10, 10);
   fading_spin = gtk_spin_button_new (GTK_ADJUSTMENT (fading_spin_adj), 1, 0);
   gtk_widget_set_name (fading_spin, "fading_spin");
   g_object_ref (fading_spin);
