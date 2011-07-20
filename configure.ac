@@ -451,8 +451,11 @@ AC_ARG_ENABLE(hotkey,
 )
 
 if test "x$enable_hotkey" = "xyes"; then
-    have_hotkey="yes"
-    PKG_CHECK_MODULES(GDKX11,[gdk-x11-2.0 >= 2.6.0],,[have_hotkey="no"])
+    if test $enable_gtk3 = yes ; then
+        PKG_CHECK_MODULES(GDKX11, [gdk-x11-3.0], [have_hotkey="yes"], [have_hotkey="no"])
+    else
+        PKG_CHECK_MODULES(GDKX11, [gdk-x11-2.0], [have_hotkey="yes"], [have_hotkey="no"])
+    fi
 else
     AC_MSG_RESULT([*** X11 Global Hotkey plugin disabled per user request ***])
     have_hotkey="no"
