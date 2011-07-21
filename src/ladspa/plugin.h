@@ -6,11 +6,16 @@
 #include "ladspa.h"
 
 typedef struct {
+    int port;
+    char * name;
+    float min, max, def;
+} ControlData;
+
+typedef struct {
     char * path;
     const LADSPA_Descriptor * desc;
+    struct index * controls; /* (ControlData *) */
     char selected;
-
-    /* TODO: port info */
 } PluginData;
 
 typedef struct {

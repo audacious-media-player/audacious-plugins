@@ -2,6 +2,7 @@
 #include <dlfcn.h>
 #include <errno.h>
 #include <limits.h>
+#include <math.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
@@ -26,6 +27,65 @@ static GtkWidget * config_win;
 static GtkWidget * plugin_list;
 static GtkWidget * loaded_list;
 
+static ControlData * parse_control (const LADSPA_Descriptor * desc, int port)
+{
+    g_return_val_if_fail (desc->PortNames[port], NULL);
+    const LADSPA_PortRangeHint * hint = & desc->PortRangeHints[port];
+
+    ControlData * control = g_slice_new (ControlData);
+    control->port = port;
+    control->name = g_strdup (desc->PortNames[port]);
+    control->min = LADSPA_IS_HINT_BOUNDED_BELOW (hint->HintDescriptor) ? hint->LowerBound :
+     LADSPA_IS_HINT_BOUNDED_ABOVE (hint->HintDescriptor) ? hint->UpperBound - 100 : -100;
+    control->max = LADSPA_IS_HINT_BOUNDED_ABOVE (hint->HintDescriptor) ? hint->UpperBound :
+     LADSPA_IS_HINT_BOUNDED_BELOW (hint->HintDescriptor) ? hint->LowerBound + 100 : 100;
+
+    if (LADSPA_IS_HINT_SAMPLE_RATE (hint->HintDescriptor))
+    {
+        control->min *= 96000;
+        control->max *= 96000;
+    }
+
+    if (LADSPA_IS_HINT_DEFAULT_0 (hint->HintDescriptor))
+        control->def = 0;
+    else if (LADSPA_IS_HINT_DEFAULT_1 (hint->HintDescriptor))
+        control->def = 1;
+    else if (LADSPA_IS_HINT_DEFAULT_100 (hint->HintDescriptor))
+        control->def = 100;
+    else if (LADSPA_IS_HINT_DEFAULT_440 (hint->HintDescriptor))
+        control->def = 440;
+    else if (LADSPA_IS_HINT_DEFAULT_MINIMUM (hint->HintDescriptor))
+        control->def = control->min;
+    else if (LADSPA_IS_HINT_DEFAULT_MAXIMUM (hint->HintDescriptor))
+        control->def = control->max;
+    else if (LADSPA_IS_HINT_DEFAULT_LOW (hint->HintDescriptor))
+    {
+        if (LADSPA_IS_HINT_LOGARITHMIC (hint->HintDescriptor))
+            control->def = expf (0.75 * logf (control->min) + 0.25 * logf (control->max));
+        else
+            control->def = 0.75 * control->min + 0.25 * control->max;
+    }
+    else if (LADSPA_IS_HINT_DEFAULT_HIGH (hint->HintDescriptor))
+    {
+        if (LADSPA_IS_HINT_LOGARITHMIC (hint->HintDescriptor))
+            control->def = expf (0.25 * logf (control->min) + 0.75 * logf (control->max));
+        else
+            control->def = 0.25 * control->min + 0.75 * control->max;
+    }
+    else
+    {
+        if (LADSPA_IS_HINT_LOGARITHMIC (hint->HintDescriptor))
+            control->def = expf (0.5 * logf (control->min) + 0.5 * logf (control->max));
+        else
+            control->def = 0.5 * control->min + 0.5 * control->max;
+    }
+
+    printf ("Parsed control %s: min = %.3f, max = %.3f, def = %.3f\n",
+     control->name, control->min, control->max, control->def);
+
+    return control;
+}
+
 static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * desc)
 {
     const char * slash = strrchr (path, G_DIR_SEPARATOR);
@@ -37,15 +97,16 @@ static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * de
     PluginData * plugin = g_slice_new (PluginData);
     plugin->path = g_strdup (slash + 1);
     plugin->desc = desc;
+    plugin->controls = index_new ();
     plugin->selected = 0;
 
     for (int i = 0; i < desc->PortCount; i ++)
     {
         if (LADSPA_IS_PORT_CONTROL (desc->PortDescriptors[i]))
         {
-            printf ("Port %d is control: %s\n", i, desc->PortNames[i]);
-
-            /* TODO: handle control ports */
+            ControlData * control = parse_control (desc, i);
+            if (control)
+                index_append (plugin->controls, control);
         }
         else if (LADSPA_IS_PORT_AUDIO (desc->PortDescriptors[i]) &&
          LADSPA_IS_PORT_INPUT (desc->PortDescriptors[i]))
@@ -68,7 +129,16 @@ static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * de
 
 static void close_plugin (PluginData * plugin)
 {
+    int count = index_count (plugin->controls);
+    for (int i = 0; i < count; i ++)
+    {
+        ControlData * control = index_get (plugin->controls, i);
+        g_free (control->name);
+        g_slice_free (ControlData, control);
+    }
+
     g_free (plugin->path);
+    index_free (plugin->controls);
     g_slice_free (PluginData, plugin);
 }
 
@@ -161,6 +231,7 @@ void disable_plugin_locked (int i)
     g_return_if_fail (i >= 0 && i < index_count (loadeds));
     LoadedPlugin * loaded = index_get (loadeds, i);
 
+    /* TODO: close settings window */
     /* TODO: shut down plugin if running */
 
     g_slice_free (LoadedPlugin, loaded);

@@ -11,3 +11,4 @@ plugindir := ${plugindir}/${EFFECT_PLUGIN_DIR}
 
 CPPFLAGS += -I../..
 CFLAGS += -std=gnu99 ${PLUGIN_CFLAGS}
+LIBS += -lm
