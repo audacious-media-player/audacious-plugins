@@ -11,6 +11,7 @@
 typedef struct {
     int port;
     char * name;
+    char is_toggle;
     float min, max, def;
 } ControlData;
 
@@ -29,6 +30,7 @@ typedef struct {
     char active;
     struct index * instances; /* (LADSPA_Handle) */
     float * * in_bufs, * * out_bufs; /* (float *) */
+    GtkWidget * settings_win;
 } LoadedPlugin;
 
 /* plugin.c */

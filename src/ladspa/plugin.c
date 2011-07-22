@@ -33,6 +33,8 @@ static ControlData * parse_control (const LADSPA_Descriptor * desc, int port)
     ControlData * control = g_slice_new (ControlData);
     control->port = port;
     control->name = g_strdup (desc->PortNames[port]);
+    control->is_toggle = LADSPA_IS_HINT_TOGGLED (hint->HintDescriptor) ? 1 : 0;
+
     control->min = LADSPA_IS_HINT_BOUNDED_BELOW (hint->HintDescriptor) ? hint->LowerBound :
      LADSPA_IS_HINT_BOUNDED_ABOVE (hint->HintDescriptor) ? hint->UpperBound - 100 : -100;
     control->max = LADSPA_IS_HINT_BOUNDED_ABOVE (hint->HintDescriptor) ? hint->UpperBound :
@@ -238,6 +240,8 @@ LoadedPlugin * enable_plugin_locked (PluginData * plugin)
     loaded->in_bufs = NULL;
     loaded->out_bufs = NULL;
 
+    loaded->settings_win = NULL;
+
     index_append (loadeds, loaded);
     return loaded;
 }
@@ -247,7 +251,8 @@ void disable_plugin_locked (int i)
     g_return_if_fail (i >= 0 && i < index_count (loadeds));
     LoadedPlugin * loaded = index_get (loadeds, i);
 
-    /* TODO: close settings window */
+    if (loaded->settings_win)
+        gtk_widget_destroy (loaded->settings_win);
 
     shutdown_plugin_locked (loaded);
 
@@ -411,12 +416,6 @@ static void set_module_path (GtkFileChooserButton * chooser)
         update_loaded_list (loaded_list);
 }
 
-static void configure_close (void)
-{
-    if (config_win)
-        gtk_widget_destroy (config_win);
-}
-
 static void enable_selected (void)
 {
     pthread_mutex_lock (& mutex);
@@ -455,6 +454,91 @@ static void disable_selected (void)
 
     if (loaded_list)
         update_loaded_list (loaded_list);
+}
+
+static void control_toggled (GtkToggleButton * toggle, float * value)
+{
+    pthread_mutex_lock (& mutex);
+    * value = gtk_toggle_button_get_active (toggle) ? 1 : 0;
+    pthread_mutex_unlock (& mutex);
+}
+
+static void control_changed (GtkSpinButton * spin, float * value)
+{
+    pthread_mutex_lock (& mutex);
+    * value = gtk_spin_button_get_value (spin);
+    pthread_mutex_unlock (& mutex);
+}
+
+static void configure_plugin (LoadedPlugin * loaded)
+{
+    if (loaded->settings_win)
+    {
+        gtk_window_present ((GtkWindow *) loaded->settings_win);
+        return;
+    }
+
+    PluginData * plugin = loaded->plugin;
+    char buf[200];
+
+    snprintf (buf, sizeof buf, _("%s Settings"), plugin->desc->Name);
+    loaded->settings_win = gtk_dialog_new_with_buttons (buf, (GtkWindow *)
+     config_win, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_CLOSE,
+     GTK_RESPONSE_CLOSE, NULL);
+    gtk_window_set_resizable ((GtkWindow *) loaded->settings_win, 0);
+
+    GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) loaded->settings_win);
+
+    int count = index_count (plugin->controls);
+    for (int i = 0; i < count; i ++)
+    {
+        ControlData * control = index_get (plugin->controls, i);
+
+        GtkWidget * hbox = gtk_hbox_new (0, 6);
+        gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
+
+        if (control->is_toggle)
+        {
+            GtkWidget * toggle = gtk_check_button_new_with_label (control->name);
+            gtk_toggle_button_set_active ((GtkToggleButton *) toggle, (loaded->values[i] > 0) ? 1 : 0);
+            gtk_box_pack_start ((GtkBox *) hbox, toggle, 0, 0, 0);
+
+            g_signal_connect (toggle, "toggled", (GCallback) control_toggled, & loaded->values[i]);
+        }
+        else
+        {
+            snprintf (buf, sizeof buf, "%s:", control->name);
+            GtkWidget * label = gtk_label_new (buf);
+            gtk_box_pack_start ((GtkBox *) hbox, label, 0, 0, 0);
+
+            GtkWidget * spin = gtk_spin_button_new_with_range (control->min, control->max, 0.01);
+            gtk_spin_button_set_value ((GtkSpinButton *) spin, loaded->values[i]);
+            gtk_box_pack_start ((GtkBox *) hbox, spin, 0, 0, 0);
+
+            g_signal_connect (spin, "value-changed", (GCallback) control_changed, & loaded->values[i]);
+        }
+    }
+
+    g_signal_connect (loaded->settings_win, "response", (GCallback) gtk_widget_destroy, NULL);
+    g_signal_connect (loaded->settings_win, "destroy", (GCallback)
+     gtk_widget_destroyed, & loaded->settings_win);
+
+    gtk_widget_show_all (loaded->settings_win);
+}
+
+static void configure_selected (void)
+{
+    pthread_mutex_lock (& mutex);
+
+    int count = index_count (loadeds);
+    for (int i = 0; i < count; i ++)
+    {
+        LoadedPlugin * loaded = index_get (loadeds, i);
+        if (loaded->selected)
+            configure_plugin (loaded);
+    }
+
+    pthread_mutex_unlock (& mutex);
 }
 
 static void configure (void)
@@ -519,18 +603,20 @@ static void configure (void)
     GtkWidget * disable_button = gtk_button_new_with_label (_("Disable"));
     gtk_box_pack_end ((GtkBox *) hbox2, disable_button, 0, 0, 0);
 
-    /* TODO: settings button */
+    GtkWidget * settings_button = gtk_button_new_with_label (_("Settings"));
+    gtk_box_pack_end ((GtkBox *) hbox2, settings_button, 0, 0, 0);
 
     if (module_path)
         gtk_file_chooser_set_filename ((GtkFileChooser *) chooser, module_path);
 
-    g_signal_connect (config_win, "response", (GCallback) configure_close, NULL);
+    g_signal_connect (config_win, "response", (GCallback) gtk_widget_destroy, NULL);
     g_signal_connect (config_win, "destroy", (GCallback) gtk_widget_destroyed, & config_win);
     g_signal_connect (chooser, "file-set", (GCallback) set_module_path, NULL);
     g_signal_connect (plugin_list, "destroy", (GCallback) gtk_widget_destroyed, & plugin_list);
     g_signal_connect (enable_button, "clicked", (GCallback) enable_selected, NULL);
     g_signal_connect (loaded_list, "destroy", (GCallback) gtk_widget_destroyed, & loaded_list);
     g_signal_connect (disable_button, "clicked", (GCallback) disable_selected, NULL);
+    g_signal_connect (settings_button, "clicked", (GCallback) configure_selected, NULL);
 
     gtk_widget_show_all (config_win);
 }
