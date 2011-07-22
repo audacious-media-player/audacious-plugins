@@ -21,9 +21,9 @@ struct index * modules; /* (void *) */
 struct index * plugins; /* (PluginData *) */
 struct index * loadeds; /* (LoadedPlugin *) */
 
-static GtkWidget * config_win;
-static GtkWidget * plugin_list;
-static GtkWidget * loaded_list;
+GtkWidget * config_win;
+GtkWidget * plugin_list;
+GtkWidget * loaded_list;
 
 static ControlData * parse_control (const LADSPA_Descriptor * desc, int port)
 {

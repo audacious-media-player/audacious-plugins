@@ -45,6 +45,10 @@ extern struct index * modules; /* (void *) returned by dlopen() */
 extern struct index * plugins; /* (PluginData *) */
 extern struct index * loadeds; /* (LoadedPlugin *) */
 
+extern GtkWidget * config_win;
+extern GtkWidget * plugin_list;
+extern GtkWidget * loaded_list;
+
 LoadedPlugin * enable_plugin_locked (PluginData * plugin);
 void disable_plugin_locked (int i);
 

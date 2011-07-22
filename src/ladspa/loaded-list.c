@@ -1,8 +1,8 @@
 #include <libaudgui/list.h>
 
 #include "plugin.h"
+#include "pthread.h"
 
-/* TODO: reorder */
 /* TODO: configure plugin on double-click */
 
 static void get_value (void * user, int row, int column, GValue * value)
@@ -41,11 +41,69 @@ static void select_all (void * user, int selected)
     }
 }
 
+static void shift_rows (void * user, int row, int before)
+{
+    pthread_mutex_lock (& mutex);
+
+    int rows = index_count (loadeds);
+    g_return_if_fail (row >= 0 && row < rows);
+    g_return_if_fail (before >= 0 && before <= rows);
+
+    if (before == row)
+        return;
+
+    struct index * move = index_new ();
+    struct index * others = index_new ();
+
+    int begin, end;
+    if (before < row)
+    {
+        begin = before;
+        end = row + 1;
+        while (end < rows && ((LoadedPlugin *) index_get (loadeds, end))->selected)
+            end ++;
+    }
+    else
+    {
+        begin = row;
+        while (begin > 0 && ((LoadedPlugin *) index_get (loadeds, begin - 1))->selected)
+            begin --;
+        end = before;
+    }
+
+    for (gint i = begin; i < end; i ++)
+    {
+        LoadedPlugin * loaded = index_get (loadeds, i);
+        index_append (loaded->selected ? move : others, loaded);
+    }
+
+    if (before < row)
+    {
+        index_merge_append (move, others);
+        index_free (others);
+    }
+    else
+    {
+        index_merge_append (others, move);
+        index_free (move);
+        move = others;
+    }
+
+    index_copy_set (move, 0, loadeds, begin, end - begin);
+    index_free (move);
+
+    pthread_mutex_unlock (& mutex);
+
+    if (loaded_list)
+        update_loaded_list (loaded_list);
+}
+
 static const AudguiListCallbacks callbacks = {
  .get_value = get_value,
  .get_selected = get_selected,
  .set_selected = set_selected,
- .select_all = select_all};
+ .select_all = select_all,
+ .shift_rows = shift_rows};
 
 GtkWidget * create_loaded_list (void)
 {
