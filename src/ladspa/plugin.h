@@ -20,9 +20,8 @@ typedef struct {
 
 typedef struct {
     PluginData * plugin;
+    float * values;
     char selected;
-
-    /* TODO: plugin settings */
 } LoadedPlugin;
 
 /* plugin.c */
@@ -37,7 +36,7 @@ extern struct index * modules; /* (void *) returned by dlopen() */
 extern struct index * plugins; /* (PluginData *) */
 extern struct index * loadeds; /* (LoadedPlugin *) */
 
-void enable_plugin_locked (PluginData * plugin);
+LoadedPlugin * enable_plugin_locked (PluginData * plugin);
 void disable_plugin_locked (int i);
 
 /* plugin-list.c */

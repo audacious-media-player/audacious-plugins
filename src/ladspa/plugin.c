@@ -218,12 +218,23 @@ static void close_modules (void)
     index_delete (modules, 0, count);
 }
 
-void enable_plugin_locked (PluginData * plugin)
+LoadedPlugin * enable_plugin_locked (PluginData * plugin)
 {
     LoadedPlugin * loaded = g_slice_new (LoadedPlugin);
     loaded->plugin = plugin;
     loaded->selected = 0;
+
+    int count = index_count (plugin->controls);
+    loaded->values = g_malloc (sizeof (float) * count);
+
+    for (int i = 0; i < count; i ++)
+    {
+        ControlData * control = index_get (plugin->controls, i);
+        loaded->values[i] = control->def;
+    }
+
     index_append (loadeds, loaded);
+    return loaded;
 }
 
 void disable_plugin_locked (int i)
@@ -234,6 +245,7 @@ void disable_plugin_locked (int i)
     /* TODO: close settings window */
     /* TODO: shut down plugin if running */
 
+    g_free (loaded->values);
     g_slice_free (LoadedPlugin, loaded);
     index_delete (loadeds, i, 1);
 }
@@ -269,7 +281,12 @@ static void save_enabled_to_config (void)
         snprintf (key, sizeof key, "plugin%d_label", i);
         aud_cfg_db_set_string (database, "ladspa", key, loaded->plugin->desc->Label);
 
-        /* TODO: plugin settings */
+        int ccount = index_count (loaded->plugin->controls);
+        for (int ci = 0; ci < ccount; ci ++)
+        {
+            snprintf (key, sizeof key, "plugin%d_control%d", i, ci);
+            aud_cfg_db_set_float (database, "ladspa", key, loaded->values[ci]);
+        }
 
         disable_plugin_locked (0);
     }
@@ -297,9 +314,16 @@ static void load_enabled_from_config (void)
 
         PluginData * plugin = find_plugin (path, label);
         if (plugin)
-            enable_plugin_locked (plugin);
+        {
+            LoadedPlugin * loaded = enable_plugin_locked (plugin);
 
-        /* TODO: plugin settings */
+            int ccount = index_count (loaded->plugin->controls);
+            for (int ci = 0; ci < ccount; ci ++)
+            {
+                snprintf (key, sizeof key, "plugin%d_control%d", i, ci);
+                aud_cfg_db_get_float (database, "ladspa", key, & loaded->values[ci]);
+            }
+        }
 
         g_free (path);
         g_free (label);
