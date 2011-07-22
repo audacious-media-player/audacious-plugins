@@ -48,8 +48,6 @@
 
 #include "vorbis.h"
 
-extern gboolean base64_decode (const gchar * text, void * * data, gint * length);
-
 static size_t ovcb_read (void * buffer, size_t size, size_t count, void * file)
 {
     return vfs_fread (buffer, size, count, file);
@@ -537,12 +535,9 @@ static gboolean get_song_image (const gchar * filename, VFSFile * file,
     if (! s)
         goto ERR;
 
-    void * data2;
-    gint length2;
-    if (! base64_decode (s, & data2, & length2))
-        goto ERR;
-
-    if (length2 < 8)
+    gsize length2;
+    void * data2 = g_base64_decode (s, & length2);
+    if (! data2 || length2 < 8)
         goto PARSE_ERR;
 
     gint mime_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 4));
