@@ -37,10 +37,17 @@ static void start_plugin (LoadedPlugin * loaded)
     const LADSPA_Descriptor * desc = plugin->desc;
 
     int ports = plugin->in_ports->len;
-    if (! ports || ports != plugin->out_ports->len || ladspa_channels % ports)
+
+    if (ports == 0 || ports != plugin->out_ports->len)
+    {
+        fprintf (stderr, "Plugin has unusable port configuration: %s\n", desc->Name);
+        return;
+    }
+
+    if (ladspa_channels % ports != 0)
     {
         fprintf (stderr, "Plugin cannot be used with %d channels: %s\n",
-         ladspa_channels, plugin->desc->Name);
+         ladspa_channels, desc->Name);
         return;
     }
 
@@ -94,7 +101,7 @@ static void run_plugin (LoadedPlugin * loaded, float * data, int samples)
     int instances = index_count (loaded->instances);
     assert (ports * instances == ladspa_channels);
 
-    while (samples)
+    while (samples / ladspa_channels > 0)
     {
         int frames = MIN (samples / ladspa_channels, LADSPA_BUFLEN);
 
@@ -146,10 +153,7 @@ static void flush_plugin (LoadedPlugin * loaded)
     PluginData * plugin = loaded->plugin;
     const LADSPA_Descriptor * desc = plugin->desc;
 
-    int ports = plugin->in_ports->len;
     int instances = index_count (loaded->instances);
-    assert (ports * instances == ladspa_channels);
-
     for (int i = 0; i < instances; i ++)
     {
         LADSPA_Handle * handle = index_get (loaded->instances, i);
@@ -188,7 +192,6 @@ void shutdown_plugin_locked (LoadedPlugin * loaded)
         g_free (loaded->out_bufs[channel]);
     }
 
-    loaded->active = 0;
     index_free (loaded->instances);
     loaded->instances = NULL;
     g_free (loaded->in_bufs);
@@ -197,7 +200,7 @@ void shutdown_plugin_locked (LoadedPlugin * loaded)
     loaded->out_bufs = NULL;
 }
 
-void ladspa_start (gint * channels, gint * rate)
+void ladspa_start (int * channels, int * rate)
 {
     pthread_mutex_lock (& mutex);
 
@@ -214,7 +217,7 @@ void ladspa_start (gint * channels, gint * rate)
     pthread_mutex_unlock (& mutex);
 }
 
-void ladspa_process (gfloat * * data, gint * samples)
+void ladspa_process (float * * data, int * samples)
 {
     pthread_mutex_lock (& mutex);
 
@@ -243,7 +246,7 @@ void ladspa_flush (void)
     pthread_mutex_unlock (& mutex);
 }
 
-void ladspa_finish (gfloat * * data, gint * samples)
+void ladspa_finish (float * * data, int * samples)
 {
     pthread_mutex_lock (& mutex);
 

@@ -101,9 +101,6 @@ static ControlData * parse_control (const LADSPA_Descriptor * desc, int port)
             control->def = 0.5 * control->min + 0.5 * control->max;
     }
 
-    printf ("Parsed control %s: min = %.3f, max = %.3f, def = %.3f\n",
-     control->name, control->min, control->max, control->def);
-
     return control;
 }
 
@@ -112,8 +109,6 @@ static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * de
     const char * slash = strrchr (path, G_DIR_SEPARATOR);
     g_return_val_if_fail (slash && slash[1], NULL);
     g_return_val_if_fail (desc->Label && desc->Name, NULL);
-
-    printf ("Found plugin %s: %s\n", desc->Label, desc->Name);
 
     PluginData * plugin = g_slice_new (PluginData);
     plugin->path = g_strdup (slash + 1);
@@ -133,16 +128,10 @@ static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * de
         }
         else if (LADSPA_IS_PORT_AUDIO (desc->PortDescriptors[i]) &&
          LADSPA_IS_PORT_INPUT (desc->PortDescriptors[i]))
-        {
-            printf ("Port %d is input: %s\n", i, desc->PortNames[i]);
             g_array_append_val (plugin->in_ports, i);
-        }
         else if (LADSPA_IS_PORT_AUDIO (desc->PortDescriptors[i]) &&
          LADSPA_IS_PORT_OUTPUT (desc->PortDescriptors[i]))
-        {
-            printf ("Port %d is output: %s\n", i, desc->PortNames[i]);
             g_array_append_val (plugin->out_ports, i);
-        }
     }
 
     return plugin;
@@ -181,8 +170,6 @@ static void * open_module (const char * path)
         dlclose (handle);
         return NULL;
     }
-
-    printf ("Found ladspa_descriptor in %s\n", path);
 
     const LADSPA_Descriptor * desc;
     for (int i = 0; (desc = descfun (i)); i ++)
@@ -380,7 +367,6 @@ static int init (void)
     load_enabled_from_config ();
 
     pthread_mutex_unlock (& mutex);
-
     return 1;
 }
 

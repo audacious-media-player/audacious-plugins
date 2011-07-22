@@ -22,8 +22,6 @@
 #include "plugin.h"
 #include "pthread.h"
 
-/* TODO: configure plugin on double-click */
-
 static void get_value (void * user, int row, int column, GValue * value)
 {
     g_return_if_fail (row >= 0 && row < index_count (loadeds));
@@ -31,7 +29,6 @@ static void get_value (void * user, int row, int column, GValue * value)
 
     LoadedPlugin * loaded = index_get (loadeds, row);
     g_value_set_string (value, loaded->plugin->desc->Name);
-
 }
 
 static int get_selected (void * user, int row)
