@@ -20,7 +20,6 @@
 #include <libaudgui/list.h>
 
 #include "plugin.h"
-#include "pthread.h"
 
 static void get_value (void * user, int row, int column, GValue * value)
 {

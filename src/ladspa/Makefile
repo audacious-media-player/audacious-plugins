@@ -10,6 +10,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${EFFECT_PLUGIN_DIR}
 
-CPPFLAGS += -I../..
+CPPFLAGS += -I../.. ${PTHREAD_CFLAGS}
 CFLAGS += -std=gnu99 ${PLUGIN_CFLAGS}
-LIBS += -lm
+LIBS += -lm ${PTHREAD_LIBS}

@@ -20,6 +20,7 @@
 #ifndef AUD_LADSPA_PLUGIN_H
 #define AUD_LADSPA_PLUGIN_H
 
+#include <pthread.h>
 #include <gtk/gtk.h>
 #include <libaudcore/index.h>
 
@@ -60,7 +61,7 @@ typedef struct {
 
 extern pthread_mutex_t mutex;
 extern char * module_path;
-extern struct index * modules; /* (void *) returned by dlopen() */
+extern struct index * modules; /* (GModule *) */
 extern struct index * plugins; /* (PluginData *) */
 extern struct index * loadeds; /* (LoadedPlugin *) */
 

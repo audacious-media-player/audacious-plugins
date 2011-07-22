@@ -18,13 +18,13 @@
  */
 
 #include <dirent.h>
-#include <dlfcn.h>
 #include <errno.h>
 #include <limits.h>
 #include <math.h>
-#include <pthread.h>
 #include <stdio.h>
 #include <string.h>
+
+#include <gmodule.h>
 
 #include <audacious/configdb.h>
 #include <audacious/i18n.h>
@@ -156,18 +156,18 @@ static void close_plugin (PluginData * plugin)
 
 static void * open_module (const char * path)
 {
-    void * handle = dlopen (path, RTLD_NOW | RTLD_LOCAL);
+    GModule * handle = g_module_open (path, G_MODULE_BIND_LOCAL);
     if (! handle)
     {
-        fprintf (stderr, "ladspa: Failed to open module %s: %s\n", path, dlerror ());
+        fprintf (stderr, "ladspa: Failed to open module %s: %s\n", path, g_module_error ());
         return NULL;
     }
 
-    LADSPA_Descriptor_Function descfun = dlsym (handle, "ladspa_descriptor");
-    if (! descfun)
+    LADSPA_Descriptor_Function descfun;
+    if (! g_module_symbol (handle, "ladspa_descriptor", (void * *) & descfun))
     {
         fprintf (stderr, "ladspa: Not a valid LADSPA module: %s\n", path);
-        dlclose (handle);
+        g_module_close (handle);
         return NULL;
     }
 
@@ -223,7 +223,7 @@ static void close_modules (void)
 
     count = index_count (modules);
     for (int i = 0; i < count; i ++)
-        dlclose (index_get (modules, i));
+        g_module_close (index_get (modules, i));
 
     index_delete (modules, 0, count);
 }
