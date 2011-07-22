@@ -1,6 +1,7 @@
 PLUGIN = ladspa${PLUGIN_SUFFIX}
 
-SRCS = loaded-list.c \
+SRCS = effect.c \
+       loaded-list.c \
        plugin.c \
        plugin-list.c
 

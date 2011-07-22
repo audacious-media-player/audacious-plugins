@@ -7,8 +7,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
-
 #include <audacious/configdb.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
@@ -98,6 +96,8 @@ static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * de
     plugin->path = g_strdup (slash + 1);
     plugin->desc = desc;
     plugin->controls = index_new ();
+    plugin->in_ports = g_array_new (0, 0, sizeof (int));
+    plugin->out_ports = g_array_new (0, 0, sizeof (int));
     plugin->selected = 0;
 
     for (int i = 0; i < desc->PortCount; i ++)
@@ -112,15 +112,13 @@ static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * de
          LADSPA_IS_PORT_INPUT (desc->PortDescriptors[i]))
         {
             printf ("Port %d is input: %s\n", i, desc->PortNames[i]);
-
-            /* TODO: handle input ports */
+            g_array_append_val (plugin->in_ports, i);
         }
         else if (LADSPA_IS_PORT_AUDIO (desc->PortDescriptors[i]) &&
          LADSPA_IS_PORT_OUTPUT (desc->PortDescriptors[i]))
         {
             printf ("Port %d is output: %s\n", i, desc->PortNames[i]);
-
-            /* TODO: handle output ports */
+            g_array_append_val (plugin->out_ports, i);
         }
     }
 
@@ -139,6 +137,8 @@ static void close_plugin (PluginData * plugin)
 
     g_free (plugin->path);
     index_free (plugin->controls);
+    g_array_free (plugin->in_ports, 1);
+    g_array_free (plugin->out_ports, 1);
     g_slice_free (PluginData, plugin);
 }
 
@@ -233,6 +233,11 @@ LoadedPlugin * enable_plugin_locked (PluginData * plugin)
         loaded->values[i] = control->def;
     }
 
+    loaded->active = 0;
+    loaded->instances = NULL;
+    loaded->in_bufs = NULL;
+    loaded->out_bufs = NULL;
+
     index_append (loadeds, loaded);
     return loaded;
 }
@@ -243,7 +248,8 @@ void disable_plugin_locked (int i)
     LoadedPlugin * loaded = index_get (loadeds, i);
 
     /* TODO: close settings window */
-    /* TODO: shut down plugin if running */
+
+    shutdown_plugin_locked (loaded);
 
     g_free (loaded->values);
     g_slice_free (LoadedPlugin, loaded);
@@ -529,13 +535,16 @@ static void configure (void)
     gtk_widget_show_all (config_win);
 }
 
-/* TODO: effect plugin */
-
-AUD_GENERAL_PLUGIN
+AUD_EFFECT_PLUGIN
 (
     .name = "LADSPA Host",
     .init = init,
     .cleanup = cleanup,
     .about = about,
     .configure = configure,
+    .start = ladspa_start,
+    .process = ladspa_process,
+    .flush = ladspa_flush,
+    .finish = ladspa_finish,
+    .preserves_format = 1,
 )

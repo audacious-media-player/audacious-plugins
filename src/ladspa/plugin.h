@@ -1,9 +1,12 @@
 #ifndef AUD_LADSPA_PLUGIN_H
 #define AUD_LADSPA_PLUGIN_H
 
+#include <gtk/gtk.h>
 #include <libaudcore/index.h>
 
 #include "ladspa.h"
+
+#define LADSPA_BUFLEN 1024
 
 typedef struct {
     int port;
@@ -15,6 +18,7 @@ typedef struct {
     char * path;
     const LADSPA_Descriptor * desc;
     struct index * controls; /* (ControlData *) */
+    GArray * in_ports, * out_ports; /* (int) */
     char selected;
 } PluginData;
 
@@ -22,6 +26,9 @@ typedef struct {
     PluginData * plugin;
     float * values;
     char selected;
+    char active;
+    struct index * instances; /* (LADSPA_Handle) */
+    float * * in_bufs, * * out_bufs; /* (float *) */
 } LoadedPlugin;
 
 /* plugin.c */
@@ -38,6 +45,15 @@ extern struct index * loadeds; /* (LoadedPlugin *) */
 
 LoadedPlugin * enable_plugin_locked (PluginData * plugin);
 void disable_plugin_locked (int i);
+
+/* effect.c */
+
+void shutdown_plugin_locked (LoadedPlugin * loaded);
+
+void ladspa_start (gint * channels, gint * rate);
+void ladspa_process (gfloat * * data, gint * samples);
+void ladspa_flush (void);
+void ladspa_finish (gfloat * * data, gint * samples);
 
 /* plugin-list.c */
 
