@@ -93,6 +93,7 @@
             <menuitem action="playlist save all" />
             <separator />
             <menuitem action="playlist manager" />
+            <menuitem action="queue manager" />
             <separator />
             <menuitem action="playlist refresh" />
         </menu>

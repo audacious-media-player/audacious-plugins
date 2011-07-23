@@ -235,9 +235,8 @@ static GtkActionEntry action_entries_playlist[] = {
           N_("Refreshes metadata associated with a playlist entry."),
           G_CALLBACK(action_playlist_refresh_list) },
 
-        { "playlist manager", AUD_STOCK_PLAYLIST , N_("List Manager"), "P",
-          N_("Opens the playlist manager."), (GCallback) audgui_playlist_manager}
-};
+ {"playlist manager", AUD_STOCK_PLAYLIST, N_("Playlist Manager"), "P", NULL, (GCallback) audgui_playlist_manager},
+ {"queue manager", AUD_STOCK_QUEUETOGGLE, N_("Queue Manager"), "<Ctrl>U", NULL, (GCallback) audgui_queue_manager_show}};
 
 static GtkActionEntry action_entries_view[] = {
  {"view", NULL, N_("View")},
