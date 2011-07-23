@@ -177,7 +177,8 @@ static const struct MenuItem playlist_items[] = {
  {N_("_Import ..."), GTK_STOCK_OPEN, 'o', .func = audgui_import_playlist},
  {N_("_Export ..."), GTK_STOCK_SAVE, 's', SHIFT, .func = audgui_export_playlist},
  {.sep = TRUE},
- {N_("_Playlist Manager ..."), AUD_STOCK_PLAYLIST, 'p', .func = audgui_playlist_manager}};
+ {N_("_Playlist Manager ..."), AUD_STOCK_PLAYLIST, 'p', .func = audgui_playlist_manager},
+ {N_("_Queue Manager ..."), AUD_STOCK_QUEUETOGGLE, 'u', CTRL, .func = audgui_queue_manager_show}};
 
 static const struct MenuItem output_items[] = {
  {N_("Volume _Up"), GTK_STOCK_GO_UP, '+', .func = volume_up},
