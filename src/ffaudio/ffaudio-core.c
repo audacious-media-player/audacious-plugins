@@ -19,6 +19,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+/*
+ * NOTE: Using libav with this code is entirely unsupported.  Do so at your own
+ * risk.  Any bugs filed against this plugin on systems using libav will be rejected
+ * by us.
+ */
+
 #undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
 #define FFAUDIO_USE_AUDTAG  /* Use Audacious tagging library */
