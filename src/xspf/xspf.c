@@ -245,6 +245,71 @@ static gboolean xspf_playlist_load (const gchar * filename, VFSFile * file,
 }
 
 
+#define IS_VALID_CHAR(c) (((c) >= 0x20 && (c) <= 0xd7ff) || \
+                          ((c) == 0x9) || \
+                          ((c) == 0xa) || \
+                          ((c) == 0xd) || \
+                          ((c) >= 0xe000 && (c) <= 0xfffd) || \
+                          ((c) >= 0x10000 && (c) <= 0x10ffff))
+
+/* check for characters that are invalid in XML */
+static gboolean is_valid_string (const gchar * s, gchar * * subst)
+{
+    if (! g_utf8_validate (s, -1, NULL))
+        goto NOT_VALID;
+
+    const gchar * p = s;
+    while (* p)
+    {
+        gunichar c = g_utf8_get_char (p);
+
+        if (IS_VALID_CHAR (c))
+            p = g_utf8_next_char (p);
+        else
+            goto NOT_VALID;
+    }
+
+    return TRUE;
+
+NOT_VALID:;
+    gint len = 0;
+
+    p = s;
+    while (* p)
+    {
+        gunichar c = g_utf8_get_char_validated (p, -1);
+
+        if (IS_VALID_CHAR (c))
+        {
+            len += g_unichar_to_utf8 (c, NULL);
+            p = g_utf8_next_char (p);
+        }
+        else
+            p ++;
+    }
+
+    * subst = g_malloc (len + 1);
+    gchar * w = * subst;
+
+    p = s;
+    while (* p)
+    {
+        gunichar c = g_utf8_get_char_validated (p, -1);
+
+        if (IS_VALID_CHAR (c))
+        {
+            w += g_unichar_to_utf8 (c, w);
+            p = g_utf8_next_char (p);
+        }
+        else
+            p ++;
+    }
+
+    * w = 0;
+    return FALSE;
+}
+
+
 static void xspf_add_node(xmlNodePtr node, TupleValueType type,
         gboolean isMeta, const gchar *xspfName, const gchar *strVal,
         const gint intVal)
@@ -259,8 +324,15 @@ static void xspf_add_node(xmlNodePtr node, TupleValueType type,
         tmp = xmlNewNode(NULL, (xmlChar *) xspfName);
 
     switch (type) {
-        case TUPLE_STRING:
-            xmlAddChild(tmp, xmlNewText((xmlChar *) strVal));
+        case TUPLE_STRING:;
+            gchar * subst;
+            if (is_valid_string (strVal, & subst))
+                xmlAddChild (tmp, xmlNewText ((xmlChar *) strVal));
+            else
+            {
+                xmlAddChild (tmp, xmlNewText ((xmlChar *) subst));
+                g_free (subst);
+            }
             break;
 
         case TUPLE_INT:
