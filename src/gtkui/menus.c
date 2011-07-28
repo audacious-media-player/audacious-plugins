@@ -220,7 +220,8 @@ static const struct MenuItem rclick_items[] = {
  {N_("_Services"), .get_sub = get_services_pl}};
 
 static const struct MenuItem tab_items[] = {
- {N_("_Rename"), GTK_STOCK_EDIT, GDK_F2, .func = pl_rename}};
+ {N_("_Rename"), GTK_STOCK_EDIT, GDK_F2, .func = pl_rename},
+ {N_("_Close"), GTK_STOCK_CLOSE, .func = pl_close}};
 
 static void toggled_cb (GtkCheckMenuItem * check, const struct MenuItem * item)
 {
