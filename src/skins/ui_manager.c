@@ -638,12 +638,13 @@ void
 ui_manager_create_menus ( void )
 {
   const gchar * data = aud_get_path (AUD_PATH_DATA_DIR);
-  gchar path[PATH_MAX];
+  gchar * path;
   GError *gerr = NULL;
 
   /* attach xml menu definitions */
-  snprintf (path, sizeof path, "%s/ui/mainwin.ui", data);
+  path = g_strdup_printf ("%s/ui/mainwin.ui", data);
   gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
+  g_free (path);
 
   if ( gerr != NULL )
   {
@@ -652,8 +653,9 @@ ui_manager_create_menus ( void )
     return;
   }
 
-  snprintf (path, sizeof path, "%s/ui/playlist.ui", data);
+  path = g_strdup_printf ("%s/ui/playlist.ui", data);
   gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
+  g_free (path);
 
   if ( gerr != NULL )
   {
@@ -662,8 +664,9 @@ ui_manager_create_menus ( void )
     return;
   }
 
-  snprintf (path, sizeof path, "%s/ui/equalizer.ui", data);
+  path = g_strdup_printf ("%s/ui/equalizer.ui", data);
   gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
+  g_free (path);
 
   if ( gerr != NULL )
   {

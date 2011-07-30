@@ -19,7 +19,6 @@
  * using our public API to be a derived work.
  */
 
-#include <limits.h>
 #include <string.h>
 
 #include <gdk/gdkkeysyms.h>
@@ -516,12 +515,9 @@ void layout_remove (GtkWidget * widget)
 
 void layout_save (void)
 {
-    gchar scratch[PATH_MAX];
-    FILE * handle;
-
-    snprintf (scratch, sizeof scratch, "%s/" LAYOUT_FILE,
-     aud_get_path (AUD_PATH_USER_DIR));
-    handle = fopen (scratch, "w");
+    gchar * path = g_strdup_printf ("%s/" LAYOUT_FILE, aud_get_path (AUD_PATH_USER_DIR));
+    FILE * handle = fopen (path, "w");
+    g_free (path);
     g_return_if_fail (handle);
 
     for (GList * node = items; node; node = node->next)
@@ -576,12 +572,10 @@ void layout_load (void)
 {
     g_return_if_fail (! items);
 
-    gchar scratch[PATH_MAX];
-    FILE * handle;
+    gchar * path = g_strdup_printf ("%s/" LAYOUT_FILE, aud_get_path (AUD_PATH_USER_DIR));
+    FILE * handle = fopen (path, "r");
+    g_free (path);
 
-    snprintf (scratch, sizeof scratch, "%s/" LAYOUT_FILE,
-     aud_get_path (AUD_PATH_USER_DIR));
-    handle = fopen (scratch, "r");
     if (! handle)
         return;
 

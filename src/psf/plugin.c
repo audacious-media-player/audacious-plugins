@@ -83,13 +83,12 @@ int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 {
 	void *filebuf;
 	gint64 size;
-	char buf[PATH_MAX];
-	gchar path2[PATH_MAX];
 
-	g_strlcpy(path2, path, PATH_MAX);
-	snprintf(buf, PATH_MAX, "%s/%s", dirname(path2), filename);
-
-	vfs_file_get_contents (buf, & filebuf, & size);
+	gchar * path2 = g_strdup (path);
+	gchar * path3 = g_strdup_printf ("%s/%s", dirname (path2), filename);
+	vfs_file_get_contents (path3, & filebuf, & size);
+	g_free (path3);
+	g_free (path2);
 
 	*buffer = filebuf;
 	*length = (uint64)size;

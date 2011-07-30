@@ -1,5 +1,4 @@
 #include <pthread.h>
-#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
@@ -914,26 +913,24 @@ static void sc_handlequeue(GMutex *mutex)
 
 static void read_cache(void)
 {
-    FILE *fd;
-    char buf[PATH_MAX];
     int i=0;
     item_t *item;
-    gchar* config_datadir;
 
-    config_datadir = aud_util_get_localdir();
-    g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", config_datadir);
-    g_free(config_datadir);
+    gchar * config_datadir = aud_util_get_localdir ();
+    gchar * path = g_strdup_printf ("%s/scrobblerqueue.txt", config_datadir);
+    g_free (config_datadir);
 
-    if (!(fd = fopen(buf, "r")))
+    if (! g_file_test (path, G_FILE_TEST_EXISTS))
         return;
-    AUDDBG("Opening %s\n", buf);
-    fclose(fd);
+
+    AUDDBG ("Opening %s\n", path);
 
     gchar* cache;
     gchar** values;
     gchar** entry;
-    g_file_get_contents(buf, &cache, NULL, NULL);
+    g_file_get_contents (path, & cache, NULL, NULL);
     values = g_strsplit(cache, "\n", 0);
+    g_free (path);
 
     int x;
     for (x=0; values[x] && strlen(values[x]); x++) {
@@ -992,28 +989,29 @@ static void dump_queue(void)
 {
     FILE *fd;
     item_t *item;
-    char *home, buf[PATH_MAX];
-    gchar* config_datadir;
 
     /*AUDDBG("Entering dump_queue();");*/
 
+    gchar * home;
     if (!(home = getenv("HOME")))
     {
         AUDDBG("No HOME directory found. Cannot dump queue.\n");
         return;
     }
 
-    config_datadir = aud_util_get_localdir();
-    g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", config_datadir);
-    g_free(config_datadir);
+    gchar * config_datadir = aud_util_get_localdir ();
+    gchar * path = g_strdup_printf ("%s/scrobblerqueue.txt", config_datadir);
+    g_free (config_datadir);
 
-    if (!(fd = fopen(buf, "w")))
+    if (! (fd = fopen (path, "w")))
     {
-        AUDDBG("Failure opening %s\n", buf);
+        AUDDBG("Failure opening %s\n", path);
+        g_free (path);
         return;
     }
 
-    AUDDBG("Opening %s\n", buf);
+    AUDDBG("Opening %s\n", path);
+    g_free (path);
 
     q_peekall(1);
 

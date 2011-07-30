@@ -88,10 +88,10 @@ static struct
   CAdPlugDatabase *db;
   unsigned int subsong, songlength;
   int seek;
-  char filename[PATH_MAX];
+  char * filename;
   GtkLabel *infobox;
   GtkDialog *infodlg;
-} plr = {0, 0, 0, 0, -1, "", NULL, NULL};
+} plr = {0, 0, 0, 0, -1, NULL, NULL, NULL};
 
 static InputPlayback *playback;
 
@@ -198,9 +198,10 @@ static gboolean play_loop (InputPlayback * playback, const gchar * filename,
 
   // reset to first subsong on new file
   dbg_printf ("subsong, ");
-  if (strcmp (filename, plr.filename))
+  if (! plr.filename || strcmp (filename, plr.filename))
   {
-    strcpy (plr.filename, filename);
+    g_free (plr.filename);
+    plr.filename = g_strdup (filename);
     plr.subsong = 0;
   }
 
@@ -331,7 +332,7 @@ adplug_play (InputPlayback * data, const gchar * filename, VFSFile * file, gint 
 
   // On new song, re-open "Song info" dialog, if open
   dbg_printf ("dialog, ");
-  if (plr.infobox && strcmp (filename, plr.filename))
+  if (plr.infobox && (! plr.filename || strcmp (filename, plr.filename)))
     gtk_widget_destroy (GTK_WIDGET (plr.infodlg));
 
   // open output plugin
@@ -460,6 +461,9 @@ adplug_quit (void)
   dbg_printf ("db, ");
   if (plr.db)
     delete plr.db;
+
+  g_free (plr.filename);
+  plr.filename = NULL;
 
   // Write configuration
   dbg_printf ("write, ");

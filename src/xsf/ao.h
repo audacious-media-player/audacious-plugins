@@ -79,10 +79,6 @@ typedef unsigned char ao_bool;
 
 #endif
 
-#ifndef PATH_MAX
-#define PATH_MAX	2048
-#endif
-
 typedef unsigned char		uint8;
 typedef unsigned char		UINT8;
 typedef signed char			int8;

@@ -19,7 +19,6 @@
 
 #include <dirent.h>
 #include <errno.h>
-#include <limits.h>
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
@@ -194,16 +193,14 @@ static void open_modules (void)
         return;
     }
 
-    char path[PATH_MAX];
-    int len = snprintf (path, sizeof path, "%s" G_DIR_SEPARATOR_S, module_path);
-
     struct dirent * entry;
     while ((entry = readdir (folder)))
     {
         if (entry->d_name[0] == '.' || ! str_has_suffix_nocase (entry->d_name, G_MODULE_SUFFIX))
             continue;
 
-        snprintf (path + len, sizeof path - len, "%s", entry->d_name);
+        char path[strlen (module_path) + strlen (entry->d_name) + 2];
+        snprintf (path, sizeof path, "%s" G_DIR_SEPARATOR_S "%s", module_path, entry->d_name);
 
         void * handle = open_module (path);
         if (handle)

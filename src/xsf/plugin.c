@@ -62,11 +62,10 @@ int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 {
 	void *filebuf;
 	gint64 size;
-	char buf[PATH_MAX];
 
-	snprintf(buf, PATH_MAX, "%s/%s", dirname(path), filename);
-
-	vfs_file_get_contents (buf, & filebuf, & size);
+	gchar * path2 = g_strdup_printf ("%s/%s", dirname (path), filename);
+	vfs_file_get_contents (path2, & filebuf, & size);
+	g_free (path2);
 
 	*buffer = filebuf;
 	*length = (uint64)size;
