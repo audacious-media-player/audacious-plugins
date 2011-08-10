@@ -451,7 +451,7 @@ AC_ARG_ENABLE(hotkey,
 )
 
 if test "x$enable_hotkey" = "xyes"; then
-    if test $enable_gtk3 = yes ; then
+    if test $use_gtk3 = yes ; then
         PKG_CHECK_MODULES(GDKX11, [gdk-x11-3.0], [have_hotkey="yes"], [have_hotkey="no"])
     else
         PKG_CHECK_MODULES(GDKX11, [gdk-x11-2.0], [have_hotkey="yes"], [have_hotkey="no"])
