@@ -399,6 +399,8 @@ static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
                 switch (xs->type) {
                     case TUPLE_STRING:
                         scratch = tuple_get_string (tuple, xs->tupleField, NULL);
+                        if (! scratch)
+                            isOK = FALSE;
                         break;
                     case TUPLE_INT:
                         scratchi = tuple_get_int (tuple, xs->tupleField, NULL);
