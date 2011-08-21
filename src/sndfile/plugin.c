@@ -111,6 +111,20 @@ static void plugin_cleanup (void)
     g_mutex_free (control_mutex);
 }
 
+static void copy_string (SNDFILE * sf, gint sf_id, Tuple * tup, gint tup_id)
+{
+    const gchar * str = sf_get_string (sf, sf_id);
+    if (str)
+        tuple_associate_string (tup, tup_id, NULL, str);
+}
+
+static void copy_int (SNDFILE * sf, gint sf_id, Tuple * tup, gint tup_id)
+{
+    const gchar * str = sf_get_string (sf, sf_id);
+    if (str && atoi (str))
+        tuple_associate_int (tup, tup_id, NULL, atoi (str));
+}
+
 static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
 {
     SNDFILE *sndfile;
@@ -125,13 +139,13 @@ static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
 
     ti = tuple_new_from_filename (filename);
 
-    if (sf_get_string(sndfile, SF_STR_TITLE) != NULL)
-        tuple_associate_string(ti, FIELD_TITLE, NULL, sf_get_string(sndfile, SF_STR_TITLE));
-
-    tuple_associate_string(ti, FIELD_ARTIST, NULL, sf_get_string(sndfile, SF_STR_ARTIST));
-    tuple_associate_string(ti, FIELD_COMMENT, NULL, sf_get_string(sndfile, SF_STR_COMMENT));
-    tuple_associate_string(ti, FIELD_DATE, NULL, sf_get_string(sndfile, SF_STR_DATE));
-    tuple_associate_string(ti, -1, "software", sf_get_string(sndfile, SF_STR_SOFTWARE));
+    copy_string (sndfile, SF_STR_TITLE, ti, FIELD_TITLE);
+    copy_string (sndfile, SF_STR_ARTIST, ti, FIELD_ARTIST);
+    copy_string (sndfile, SF_STR_ALBUM, ti, FIELD_ALBUM);
+    copy_string (sndfile, SF_STR_COMMENT, ti, FIELD_COMMENT);
+    copy_string (sndfile, SF_STR_GENRE, ti, FIELD_GENRE);
+    copy_int (sndfile, SF_STR_DATE, ti, FIELD_YEAR);
+    copy_int (sndfile, SF_STR_TRACKNUMBER, ti, FIELD_TRACK_NUMBER);
 
     sf_close (sndfile);
 
