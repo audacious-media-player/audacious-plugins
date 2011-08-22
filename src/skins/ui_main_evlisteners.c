@@ -20,7 +20,6 @@
 
 #include <math.h>
 
-#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/misc.h>
 #include <libaudcore/hook.h>
@@ -86,7 +85,7 @@ static void stop_after_song_toggled (void * hook_data, void * user_data)
 {
     mainwin_enable_status_message (FALSE);
     check_set (toggleaction_group_others, "stop after current song",
-     aud_cfg->stopaftersong);
+     aud_get_bool (NULL, "stop_after_current_song"));
     mainwin_enable_status_message (TRUE);
 }
 
@@ -268,7 +267,7 @@ ui_main_evlistener_init(void)
     hook_associate ("info change", (HookFunction) info_change, NULL);
 
     hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
-    hook_associate ("toggle stop after song", stop_after_song_toggled, NULL);
+    hook_associate ("set stop_after_current_song", stop_after_song_toggled, NULL);
 }
 
 void
@@ -284,7 +283,7 @@ ui_main_evlistener_dissociate(void)
     hook_dissociate ("info change", (HookFunction) info_change);
 
     hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
-    hook_dissociate ("toggle stop after song", stop_after_song_toggled);
+    hook_dissociate ("set stop_after_current_song", stop_after_song_toggled);
 }
 
 void start_stop_visual (gboolean exiting)

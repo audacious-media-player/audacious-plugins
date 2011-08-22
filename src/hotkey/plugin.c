@@ -41,10 +41,10 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 
-#include <audacious/audconfig.h>
 #include <audacious/configdb.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/hook.h>
 
@@ -250,15 +250,9 @@ gboolean handle_keyevent (EVENT event)
 		return TRUE;
 	}
 	else if (event == EVENT_TOGGLE_REPEAT)
-	{
-		aud_cfg->repeat = ! aud_cfg->repeat;
-		hook_call ("toggle repeat", NULL);
-	}
+		aud_set_bool (NULL, "repeat", ! aud_get_bool (NULL, "repeat"));
 	else if (event == EVENT_TOGGLE_SHUFFLE)
-	{
-		aud_cfg->shuffle = ! aud_cfg->shuffle;
-		hook_call ("toggle shuffle", NULL);
-	}
+		aud_set_bool (NULL, "shuffle", ! aud_get_bool (NULL, "shuffle"));
 
 	return FALSE;
 }

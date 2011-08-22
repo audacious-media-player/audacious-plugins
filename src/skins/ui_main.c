@@ -1074,13 +1074,15 @@ mainwin_setup_menus(void)
     /* Songname menu */
 
     check_set(toggleaction_group_others, "autoscroll songname", config.autoscroll);
-    check_set(toggleaction_group_others, "stop after current song", aud_cfg->stopaftersong);
+    check_set (toggleaction_group_others, "stop after current song",
+     aud_get_bool (NULL, "stop_after_current_song"));
 
     /* Playback menu */
 
-    check_set(toggleaction_group_others, "playback repeat", aud_cfg->repeat);
-    check_set(toggleaction_group_others, "playback shuffle", aud_cfg->shuffle);
-    check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
+    check_set (toggleaction_group_others, "playback repeat", aud_get_bool (NULL, "repeat"));
+    check_set (toggleaction_group_others, "playback shuffle", aud_get_bool (NULL, "shuffle"));
+    check_set (toggleaction_group_others, "playback no playlist advance",
+     aud_get_bool (NULL, "no_playlist_advance"));
 
     mainwin_enable_status_message (TRUE);
 
@@ -1639,9 +1641,9 @@ void action_autoscroll_songname (GtkToggleAction * action)
 
 void action_playback_noplaylistadvance (GtkToggleAction * action)
 {
-    aud_cfg->no_playlist_advance = gtk_toggle_action_get_active( action );
+    aud_set_bool (NULL, "no_playlist_advance", gtk_toggle_action_get_active (action));
 
-    if (aud_cfg->no_playlist_advance)
+    if (gtk_toggle_action_get_active (action))
         mainwin_show_status_message (_("Single mode."));
     else
         mainwin_show_status_message (_("Playlist mode."));
@@ -1649,29 +1651,28 @@ void action_playback_noplaylistadvance (GtkToggleAction * action)
 
 void action_playback_repeat (GtkToggleAction * action)
 {
-    aud_cfg->repeat = gtk_toggle_action_get_active( action );
-    button_set_active (mainwin_repeat, aud_cfg->repeat);
+    aud_set_bool (NULL, "repeat", gtk_toggle_action_get_active (action));
+    button_set_active (mainwin_repeat, gtk_toggle_action_get_active (action));
 }
 
 void action_playback_shuffle (GtkToggleAction * action)
 {
-    aud_cfg->shuffle = gtk_toggle_action_get_active( action );
-    button_set_active (mainwin_shuffle, aud_cfg->shuffle);
+    aud_set_bool (NULL, "shuffle", gtk_toggle_action_get_active (action));
+    button_set_active (mainwin_shuffle, gtk_toggle_action_get_active (action));
 }
 
 void action_stop_after_current_song (GtkToggleAction * action)
 {
     gboolean active = gtk_toggle_action_get_active (action);
 
-    if (active != aud_cfg->stopaftersong)
+    if (active != aud_get_bool (NULL, "stop_after_current_song"))
     {
         if (active)
             mainwin_show_status_message (_("Stopping after song."));
         else
             mainwin_show_status_message (_("Not stopping after song."));
 
-        aud_cfg->stopaftersong = active;
-        hook_call ("toggle stop after song", NULL);
+        aud_set_bool (NULL, "stop_after_current_song", active);
     }
 }
 

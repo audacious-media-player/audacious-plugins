@@ -546,28 +546,18 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
 
 static void update_toggles (void * data, void * user)
 {
-    if (gtk_toggle_button_get_active ((GtkToggleButton *) button_repeat) != aud_cfg->repeat)
-        gtk_toggle_button_set_active ((GtkToggleButton *) button_repeat, aud_cfg->repeat);
-    if (gtk_toggle_button_get_active ((GtkToggleButton *) button_shuffle) != aud_cfg->shuffle)
-        gtk_toggle_button_set_active ((GtkToggleButton *) button_shuffle, aud_cfg->shuffle);
+    gtk_toggle_button_set_active ((GtkToggleButton *) button_repeat, aud_get_bool (NULL, "repeat"));
+    gtk_toggle_button_set_active ((GtkToggleButton *) button_shuffle, aud_get_bool (NULL, "shuffle"));
 }
 
 static void toggle_repeat (GtkToggleButton * button, void * unused)
 {
-    if (aud_cfg->repeat != gtk_toggle_button_get_active (button))
-    {
-        aud_cfg->repeat = gtk_toggle_button_get_active (button);
-        hook_call ("toggle repeat", NULL);
-    }
+    aud_set_bool (NULL, "repeat", gtk_toggle_button_get_active (button));
 }
 
 static void toggle_shuffle (GtkToggleButton * button, void * unused)
 {
-    if (aud_cfg->shuffle != gtk_toggle_button_get_active (button))
-    {
-        aud_cfg->shuffle = gtk_toggle_button_get_active (button);
-        hook_call ("toggle shuffle", NULL);
-    }
+    aud_set_bool (NULL, "shuffle", gtk_toggle_button_get_active (button));
 }
 
 static void config_save (void)
@@ -589,9 +579,8 @@ static void ui_hooks_associate(void)
     hook_associate("playlist update", ui_playlist_notebook_update, NULL);
     hook_associate ("playlist activate", ui_playlist_notebook_activate, NULL);
     hook_associate ("playlist position", ui_playlist_notebook_position, NULL);
-    hook_associate ("toggle stop after song", update_toggles, NULL);
-    hook_associate ("toggle shuffle", update_toggles, NULL);
-    hook_associate ("toggle repeat", update_toggles, NULL);
+    hook_associate ("set shuffle", update_toggles, NULL);
+    hook_associate ("set repeat", update_toggles, NULL);
     hook_associate ("config save", (HookFunction) config_save, NULL);
 }
 
@@ -606,9 +595,8 @@ static void ui_hooks_disassociate(void)
     hook_dissociate("playlist update", ui_playlist_notebook_update);
     hook_dissociate ("playlist activate", ui_playlist_notebook_activate);
     hook_dissociate ("playlist position", ui_playlist_notebook_position);
-    hook_dissociate ("toggle stop after song", update_toggles);
-    hook_dissociate ("toggle shuffle", update_toggles);
-    hook_dissociate ("toggle repeat", update_toggles);
+    hook_dissociate ("set shuffle", update_toggles);
+    hook_dissociate ("set repeat", update_toggles);
     hook_dissociate ("config save", (HookFunction) config_save);
 }
 

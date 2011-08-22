@@ -22,7 +22,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
@@ -73,14 +72,14 @@ static void open_url (void) {audgui_show_add_url_window (TRUE); }
 static void add_files (void) {audgui_run_filebrowser (FALSE); }
 static void add_url (void) {audgui_show_add_url_window (FALSE); }
 
-static gboolean repeat_get (void) {return aud_cfg->repeat; }
-static void repeat_set (gboolean on) {aud_cfg->repeat = on; }
-static gboolean shuffle_get (void) {return aud_cfg->shuffle; }
-static void shuffle_set (gboolean on) {aud_cfg->shuffle = on; }
-static gboolean no_advance_get (void) {return aud_cfg->no_playlist_advance; }
-static void no_advance_set (gboolean on) {aud_cfg->no_playlist_advance = on; }
-static gboolean stop_after_get (void) {return aud_cfg->stopaftersong; }
-static void stop_after_set (gboolean on) {aud_cfg->stopaftersong = on; }
+static gboolean repeat_get (void) {return aud_get_bool (NULL, "repeat"); }
+static void repeat_set (gboolean on) {aud_set_bool (NULL, "repeat", on); }
+static gboolean shuffle_get (void) {return aud_get_bool (NULL, "shuffle"); }
+static void shuffle_set (gboolean on) {aud_set_bool (NULL, "shuffle", on); }
+static gboolean no_advance_get (void) {return aud_get_bool (NULL, "no_playlist_advance"); }
+static void no_advance_set (gboolean on) {aud_set_bool (NULL, "no_playlist_advance", on); }
+static gboolean stop_after_get (void) {return aud_get_bool (NULL, "stop_after_current_song"); }
+static void stop_after_set (gboolean on) {aud_set_bool (NULL, "stop_after_current_song", on); }
 
 static void pl_sort_track (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TRACK); }
 static void pl_sort_title (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
@@ -145,10 +144,10 @@ static const struct MenuItem playback_items[] = {
  {N_("Pre_vious"), GTK_STOCK_MEDIA_PREVIOUS, 'z', .func = aud_drct_pl_prev},
  {N_("_Next"), GTK_STOCK_MEDIA_NEXT, 'b', .func = aud_drct_pl_next},
  {.sep = TRUE},
- {N_("_Repeat"), NULL, 'r', .get = repeat_get, repeat_set, "toggle repeat"},
- {N_("S_huffle"), NULL, 's', .get = shuffle_get, shuffle_set, "toggle shuffle"},
- {N_("N_o Playlist Advance"), NULL, 'n', CTRL, .get = no_advance_get, no_advance_set, "toggle no playlist advance"},
- {N_("Stop _After This Song"), NULL, 'm', CTRL, .get = stop_after_get, stop_after_set, "toggle stop after song"},
+ {N_("_Repeat"), NULL, 'r', .get = repeat_get, repeat_set, "set repeat"},
+ {N_("S_huffle"), NULL, 's', .get = shuffle_get, shuffle_set, "set shuffle"},
+ {N_("N_o Playlist Advance"), NULL, 'n', CTRL, .get = no_advance_get, no_advance_set, "set no_playlist_advance"},
+ {N_("Stop _After This Song"), NULL, 'm', CTRL, .get = stop_after_get, stop_after_set, "set stop_after_current_song"},
  {.sep = TRUE},
  {N_("Song _Info ..."), GTK_STOCK_INFO, 'i', .func = audgui_infowin_show_current},
  {N_("Jump to _Time ..."), GTK_STOCK_JUMP_TO, 'j', CTRL, .func = audgui_jump_to_time},
@@ -229,9 +228,6 @@ static void toggled_cb (GtkCheckMenuItem * check, const struct MenuItem * item)
         return;
 
     item->set (gtk_check_menu_item_get_active (check));
-
-    if (item->hook)
-        hook_call (item->hook, NULL);
 }
 
 static void hook_cb (void * data, GtkWidget * check)
