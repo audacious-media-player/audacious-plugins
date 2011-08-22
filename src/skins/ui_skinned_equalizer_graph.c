@@ -22,28 +22,28 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses>.
  */
 
-#include <audacious/audconfig.h>
+#include <audacious/misc.h>
 
 #include "draw-compat.h"
 #include "ui_skin.h"
 #include "ui_skinned_equalizer_graph.h"
 
-static void init_spline (const gfloat * x, const gfloat * y, gint n, gfloat * y2)
+static void init_spline (const gdouble * x, const gdouble * y, gint n, gdouble * y2)
 {
     gint i, k;
-    gfloat p, qn, sig, un, *u;
+    gdouble p, qn, sig, un, *u;
 
-    u = (gfloat *) g_malloc(n * sizeof(gfloat));
+    u = (gdouble *) g_malloc(n * sizeof(gdouble));
 
     y2[0] = u[0] = 0.0;
 
     for (i = 1; i < n - 1; i++) {
-        sig = ((gfloat) x[i] - x[i - 1]) / ((gfloat) x[i + 1] - x[i - 1]);
+        sig = ((gdouble) x[i] - x[i - 1]) / ((gdouble) x[i + 1] - x[i - 1]);
         p = sig * y2[i - 1] + 2.0;
         y2[i] = (sig - 1.0) / p;
         u[i] =
-            (((gfloat) y[i + 1] - y[i]) / (x[i + 1] - x[i])) -
-            (((gfloat) y[i] - y[i - 1]) / (x[i] - x[i - 1]));
+            (((gdouble) y[i + 1] - y[i]) / (x[i + 1] - x[i])) -
+            (((gdouble) y[i] - y[i - 1]) / (x[i] - x[i - 1]));
         u[i] = (6.0 * u[i] / (x[i + 1] - x[i - 1]) - sig * u[i - 1]) / p;
     }
     qn = un = 0.0;
@@ -54,11 +54,11 @@ static void init_spline (const gfloat * x, const gfloat * y, gint n, gfloat * y2
     g_free(u);
 }
 
-gfloat eval_spline (const gfloat * xa, const gfloat * ya, const gfloat * y2a,
- gint n, gfloat x)
+gdouble eval_spline (const gdouble * xa, const gdouble * ya, const gdouble * y2a,
+ gint n, gdouble x)
 {
     gint klo, khi, k;
-    gfloat h, b, a;
+    gdouble h, b, a;
 
     klo = 0;
     khi = n - 1;
@@ -78,24 +78,26 @@ gfloat eval_spline (const gfloat * xa, const gfloat * ya, const gfloat * y2a,
 }
 
 DRAW_FUNC_BEGIN (eq_graph_draw)
-    static const gfloat x[10] = {0, 11, 23, 35, 47, 59, 71, 83, 97, 109};
+    static const gdouble x[10] = {0, 11, 23, 35, 47, 59, 71, 83, 97, 109};
 
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 294, 0, 0, 113, 19);
-    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 314, 0, 9 + (aud_cfg->equalizer_preamp
-     * 9 + EQUALIZER_MAX_GAIN / 2) / EQUALIZER_MAX_GAIN, 113, 1);
+    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 314, 0, 9 + (aud_get_double (NULL,
+     "equalizer_preamp") * 9 + EQUALIZER_MAX_GAIN / 2) / EQUALIZER_MAX_GAIN, 113, 1);
 
     guint32 cols[19];
     skin_get_eq_spline_colors(active_skin, cols);
 
-    gfloat yf[10];
-    init_spline(x, aud_cfg->equalizer_bands, 10, yf);
+    gdouble bands[AUD_EQUALIZER_NBANDS];
+    aud_eq_get_bands (bands);
+
+    gdouble yf[10];
+    init_spline (x, bands, 10, yf);
 
     /* now draw a pixelated line with vector graphics ... -- jlindgren */
     gint py = 0;
     for (gint i = 0; i < 109; i ++)
     {
-        gint y = 9.5 - eval_spline (x, aud_cfg->equalizer_bands, yf, 10, i) * 9 /
-         EQUALIZER_MAX_GAIN;
+        gint y = 9.5 - eval_spline (x, bands, yf, 10, i) * 9 / EQUALIZER_MAX_GAIN;
         y = CLAMP (y, 0, 18);
 
         if (!i)

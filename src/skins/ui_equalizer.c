@@ -25,7 +25,6 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
@@ -54,7 +53,6 @@ enum PresetViewCols {
     PRESET_VIEW_N_COLS
 };
 
-static void equalizerwin_activate (gboolean active);
 static gfloat equalizerwin_get_preamp (void);
 static gfloat equalizerwin_get_band (gint band);
 static void equalizerwin_set_preamp (gfloat preamp);
@@ -120,13 +118,13 @@ equalizerwin_shade_toggle(void)
 void
 equalizerwin_eq_changed(void)
 {
-    gint i;
+    aud_set_double (NULL, "equalizer_preamp", equalizerwin_get_preamp ());
 
-    aud_cfg->equalizer_preamp = equalizerwin_get_preamp();
-    for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
-        aud_cfg->equalizer_bands[i] = equalizerwin_get_band(i);
+    double bands[AUD_EQUALIZER_NBANDS];
+    for (gint i = 0; i < AUD_EQUALIZER_NBANDS; i ++)
+        bands[i] = equalizerwin_get_band (i);
 
-    hook_call("equalizer changed", NULL);
+    aud_eq_set_bands (bands);
 }
 
 static void
@@ -143,19 +141,21 @@ equalizerwin_apply_preset(EqualizerPreset *preset)
 }
 
 static void eq_on_cb (GtkWidget * button, GdkEventButton * event)
- {equalizerwin_activate (button_get_active (button)); }
+ {aud_set_bool (NULL, "equalizer_active", button_get_active (button)); }
 static void eq_auto_cb (GtkWidget * button, GdkEventButton * event)
- {aud_cfg->equalizer_autoload = button_get_active (equalizerwin_auto); }
+ {aud_set_bool (NULL, "equalizer_autoload", button_get_active (equalizerwin_auto)); }
 
-static void
-update_from_config(void *unused1, void *unused2)
+static void update_from_config (void * unused1, void * unused2)
 {
-    gint i;
+    button_set_active (equalizerwin_on, aud_get_bool (NULL, "equalizer_active"));
+    eq_slider_set_val (equalizerwin_preamp, aud_get_double (NULL, "equalizer_preamp"));
 
-    button_set_active (equalizerwin_on, aud_cfg->equalizer_active);
-    eq_slider_set_val (equalizerwin_preamp, aud_cfg->equalizer_preamp);
-    for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
-        eq_slider_set_val (equalizerwin_bands[i], aud_cfg->equalizer_bands[i]);
+    gdouble bands[AUD_EQUALIZER_NBANDS];
+    aud_eq_get_bands (bands);
+
+    for (gint i = 0; i < AUD_EQUALIZER_NBANDS; i ++)
+        eq_slider_set_val (equalizerwin_bands[i], bands[i]);
+
     eq_graph_update (equalizerwin_graph);
 }
 
@@ -296,12 +296,12 @@ equalizerwin_create_widgets(void)
 {
     equalizerwin_on = button_new_toggle (25, 12, 10, 119, 128, 119, 69, 119, 187, 119, SKIN_EQMAIN, SKIN_EQMAIN);
     window_put_widget (equalizerwin, FALSE, equalizerwin_on, 14, 18);
-    button_set_active (equalizerwin_on, aud_cfg->equalizer_active);
+    button_set_active (equalizerwin_on, aud_get_bool (NULL, "equalizer_active"));
     button_on_release (equalizerwin_on, eq_on_cb);
 
     equalizerwin_auto = button_new_toggle (33, 12, 35, 119, 153, 119, 94, 119, 212, 119, SKIN_EQMAIN, SKIN_EQMAIN);
     window_put_widget (equalizerwin, FALSE, equalizerwin_auto, 39, 18);
-    button_set_active (equalizerwin_auto, aud_cfg->equalizer_autoload);
+    button_set_active (equalizerwin_auto, aud_get_bool (NULL, "equalizer_autoload"));
     button_on_release (equalizerwin_auto, eq_auto_cb);
 
     equalizerwin_presets = button_new (44, 12, 224, 164, 224, 176, SKIN_EQMAIN, SKIN_EQMAIN);
@@ -329,18 +329,19 @@ equalizerwin_create_widgets(void)
 
     equalizerwin_preamp = eq_slider_new (_("Preamp"));
     window_put_widget (equalizerwin, FALSE, equalizerwin_preamp, 21, 38);
-    eq_slider_set_val (equalizerwin_preamp, aud_cfg->equalizer_preamp);
+    eq_slider_set_val (equalizerwin_preamp, aud_get_double (NULL, "equalizer_preamp"));
 
     const gchar * const bandnames[AUD_EQUALIZER_NBANDS] = {N_("31 Hz"),
      N_("63 Hz"), N_("125 Hz"), N_("250 Hz"), N_("500 Hz"), N_("1 kHz"),
      N_("2 kHz"), N_("4 kHz"), N_("8 kHz"), N_("16 kHz")};
+    gdouble bands[AUD_EQUALIZER_NBANDS];
+    aud_eq_get_bands (bands);
 
     for (gint i = 0; i < AUD_EQUALIZER_NBANDS; i ++)
     {
         equalizerwin_bands[i] = eq_slider_new (_(bandnames[i]));
-        window_put_widget (equalizerwin, FALSE,
-         equalizerwin_bands[i], 78 + 18 * i, 38);
-        eq_slider_set_val (equalizerwin_bands[i], aud_cfg->equalizer_bands[i]);
+        window_put_widget (equalizerwin, FALSE, equalizerwin_bands[i], 78 + 18 * i, 38);
+        eq_slider_set_val (equalizerwin_bands[i], bands[i]);
     }
 
     equalizerwin_volume = hslider_new (0, 94, SKIN_EQ_EX, 97, 8, 61, 4, 3, 7, 1, 30, 1, 30);
@@ -396,6 +397,13 @@ equalizerwin_create_window(void)
      mainwin_keypress, 0);
 }
 
+static void equalizerwin_destroyed (void)
+{
+    hook_dissociate ("set equalizer_active", (HookFunction) update_from_config);
+    hook_dissociate ("set equalizer_bands", (HookFunction) update_from_config);
+    hook_dissociate ("set equalizer_preamp", (HookFunction) update_from_config);
+}
+
 void
 equalizerwin_create(void)
 {
@@ -409,7 +417,11 @@ equalizerwin_create(void)
     equalizerwin_create_widgets();
     window_show_all (equalizerwin);
 
-    hook_associate("equalizer changed", (HookFunction) update_from_config, NULL);
+    g_signal_connect (equalizerwin, "destroy", (GCallback) equalizerwin_destroyed, NULL);
+
+    hook_associate ("set equalizer_active", (HookFunction) update_from_config, NULL);
+    hook_associate ("set equalizer_bands", (HookFunction) update_from_config, NULL);
+    hook_associate ("set equalizer_preamp", (HookFunction) update_from_config, NULL);
 }
 
 static void equalizerwin_real_show (gboolean show)
@@ -1131,12 +1143,13 @@ action_equ_save_preset_file(void)
 
     if (songname != NULL)
     {
-        gchar *eqname = g_strdup_printf("%s.%s", songname,
-                                        aud_cfg->eqpreset_extension);
-        g_free(songname);
+        gchar * ext = aud_get_string (NULL, "eqpreset_extension");
+        gchar * eqname = g_strdup_printf ("%s.%s", songname, ext);
         gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog),
                                       eqname);
-        g_free(eqname);
+        g_free (eqname);
+        g_free (ext);
+        g_free (songname);
     }
 
     gtk_widget_destroy(dialog);
@@ -1192,44 +1205,41 @@ action_equ_delete_auto_preset(void)
                                     NULL);
 }
 
-static void equalizerwin_activate (gboolean active)
-{
-    aud_cfg->equalizer_active = active;
-    button_set_active (equalizerwin_on, active);
-    equalizerwin_eq_changed();
-}
-
 static void load_auto_preset (const gchar * filename)
 {
-    gchar * base;
-
-    if (aud_cfg->eqpreset_extension != NULL)
+    gchar * ext = aud_get_string (NULL, "eqpreset_extension");
+    if (ext[0])
     {
-        gchar * eq_file = g_strconcat (filename, ".",
-         aud_cfg->eqpreset_extension, NULL);
+        gchar * eq_file = g_strconcat (filename, ".", ext, NULL);
         gboolean success = equalizerwin_read_aud_preset (eq_file);
-
         g_free (eq_file);
 
         if (success)
+        {
+            g_free (ext);
             return;
+        }
     }
+    g_free (ext);
 
-    if (aud_cfg->eqpreset_default_file != NULL)
+    gchar * deffile = aud_get_string (NULL, "eqpreset_default_file");
+    if (deffile[0])
     {
         gchar * folder = g_path_get_dirname (filename);
-        gchar * eq_file = g_build_filename (folder,
-         aud_cfg->eqpreset_default_file, NULL);
+        gchar * eq_file = g_build_filename (folder, deffile, NULL);
         gboolean success = equalizerwin_read_aud_preset (eq_file);
-
         g_free (folder);
         g_free (eq_file);
 
         if (success)
+        {
+            g_free (deffile);
             return;
+        }
     }
+    g_free (deffile);
 
-    base = g_path_get_basename (filename);
+    gchar * base = g_path_get_basename (filename);
 
     if (! equalizerwin_load_preset (equalizer_auto_presets, base))
     {
@@ -1245,8 +1255,8 @@ static void position_cb (void * data, void * user_data)
     gint playlist = GPOINTER_TO_INT (data);
     gint position = aud_playlist_get_position (playlist);
 
-    if (! aud_cfg->equalizer_autoload || playlist != aud_playlist_get_playing ()
-     || position == -1)
+    if (! aud_get_bool (NULL, "equalizer_autoload") || playlist !=
+     aud_playlist_get_playing () || position == -1)
         return;
 
     gchar * filename = aud_playlist_entry_get_filename (playlist, position);
