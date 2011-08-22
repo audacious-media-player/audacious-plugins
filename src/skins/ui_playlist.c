@@ -28,6 +28,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
+#include <audacious/audconfig.h>
 #include <audacious/debug.h>
 #include <audacious/drct.h>
 #include <audacious/gtk-compat.h>
