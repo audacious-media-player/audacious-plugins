@@ -254,8 +254,7 @@ create_cfgdlg(void)
 
 /* TODO: don't use WIDGET_CUSTOM there */
 static PreferencesWidget settings[] = {
-    {WIDGET_CUSTOM, NULL, NULL, NULL, NULL, FALSE, {.populate = create_cfgdlg}},
-};
+ {WIDGET_CUSTOM, .data = {.populate = create_cfgdlg}}};
 
 PluginPreferences preferences = {
     .domain = PACKAGE,

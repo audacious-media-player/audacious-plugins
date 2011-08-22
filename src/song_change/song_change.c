@@ -461,21 +461,29 @@ static void configure_ok_cb()
 }
 
 static PreferencesWidget elements[] = {
-    {WIDGET_LABEL, N_("Command to run when Audacious starts a new song."), NULL, NULL, NULL, FALSE, {.label = {.single_line = TRUE}}},
-    {WIDGET_ENTRY, N_("Command:"), &config.cmd, configure_ok_cb, NULL, FALSE, {.entry = {FALSE}}, VALUE_STRING},
-    {WIDGET_SEPARATOR, NULL, NULL, NULL, NULL, FALSE, {.separator = {TRUE}}},
+    {WIDGET_LABEL, N_("Command to run when Audacious starts a new song."),
+     .data = {.label = {.single_line = TRUE}}},
+    {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
+     .cfg = & config.cmd, .callback = configure_ok_cb},
+    {WIDGET_SEPARATOR, .data = {.separator = {TRUE}}},
 
-    {WIDGET_LABEL, N_("Command to run toward the end of a song."), NULL, NULL, NULL, FALSE, {.label = {.single_line = TRUE}}},
-    {WIDGET_ENTRY, N_("Command:"), &config.cmd_after, configure_ok_cb, NULL, FALSE, {.entry = {FALSE}}, VALUE_STRING},
-    {WIDGET_SEPARATOR, NULL, NULL, NULL, NULL, FALSE, {.separator = {TRUE}}},
+    {WIDGET_LABEL, N_("Command to run toward the end of a song."),
+     .data = {.label = {.single_line = TRUE}}},
+    {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
+     .cfg = & config.cmd_after, .callback = configure_ok_cb},
+    {WIDGET_SEPARATOR, .data = {.separator = {TRUE}}},
 
-    {WIDGET_LABEL, N_("Command to run when Audacious reaches the end of the playlist."), NULL, NULL, NULL, FALSE, {.label = {.single_line = TRUE}}},
-    {WIDGET_ENTRY, N_("Command:"), &config.cmd_end, configure_ok_cb, NULL, FALSE, {.entry = {FALSE}}, VALUE_STRING},
-    {WIDGET_SEPARATOR, NULL, NULL, NULL, NULL, FALSE, {.separator = {TRUE}}},
+    {WIDGET_LABEL, N_("Command to run when Audacious reaches the end of the "
+     "playlist."), .data = {.label = {.single_line = TRUE}}},
+    {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
+     .cfg = & config.cmd_end, .callback = configure_ok_cb},
+    {WIDGET_SEPARATOR, .data = {.separator = {TRUE}}},
 
-    {WIDGET_LABEL, N_("Command to run when title changes for a song (i.e. network streams titles)."), NULL, NULL, NULL, FALSE, {.label = {.single_line = TRUE}}},
-    {WIDGET_ENTRY, N_("Command:"), &config.cmd_ttc, configure_ok_cb, NULL, FALSE, {.entry = {FALSE}}, VALUE_STRING},
-    {WIDGET_SEPARATOR, NULL, NULL, NULL, NULL, FALSE, {.separator = {TRUE}}},
+    {WIDGET_LABEL, N_("Command to run when title changes for a song (i.e. "
+     "network streams titles)."), .data = {.label = {.single_line = TRUE}}},
+    {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
+     .cfg = & config.cmd_ttc, .callback = configure_ok_cb},
+    {WIDGET_SEPARATOR, .data = {.separator = {TRUE}}},
 
     {WIDGET_LABEL, N_("You can use the following format strings which\n"
                       "will be substituted before calling the command\n"
@@ -490,7 +498,7 @@ static PreferencesWidget elements[] = {
                       "%p: Currently playing (1 or 0)\n"
                       "%a: Artist\n"
                       "%b: Album\n"
-                      "%T: Track title"), NULL, NULL, NULL, FALSE},
+                      "%T: Track title")},
 };
 
 /* static GtkWidget * custom_warning (void) */
@@ -515,13 +523,8 @@ static void * custom_warning (void)
 }
 
 static PreferencesWidget settings[] = {
-    {WIDGET_BOX, N_("Commands"), NULL, NULL, NULL, FALSE,
-        {.box = {elements, G_N_ELEMENTS(elements),
-                 FALSE, TRUE}}},
-    {WIDGET_CUSTOM, NULL, NULL, NULL, NULL, FALSE, {.populate = custom_warning}},
-/*    {WIDGET_LABEL, N_("<span size='small'>Parameters passed to the shell should be encapsulated in quotes. Doing otherwise is a security risk.</span>"),
-        NULL, NULL, NULL, FALSE, {.label = {"gtk-dialog-warning"}}},*/
-};
+ {WIDGET_BOX, N_("Commands"), .data = {.box = {elements, G_N_ELEMENTS (elements), .frame = TRUE}}},
+ {WIDGET_CUSTOM, .data = {.populate = custom_warning}}};
 
 static void
 configure_init(void)

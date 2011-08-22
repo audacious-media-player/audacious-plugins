@@ -29,15 +29,12 @@ vorbis_config_t config; /* temporary config */
 
 static PreferencesWidget settings_elements[] = {
     {WIDGET_CHK_BTN, N_("Override generic titles"), &config.tag_override, NULL, NULL, FALSE},
-    {WIDGET_ENTRY, N_("Title format:"), &config.tag_format, NULL, NULL, TRUE, {.entry = {FALSE}}, VALUE_STRING},
+    {WIDGET_ENTRY, N_("Title format:"), .cfg_type = VALUE_STRING, .cfg = & config.tag_format}
 };
 
 static PreferencesWidget prefs[] = {
-    {WIDGET_BOX, N_("Ogg Vorbis Tags"), NULL, NULL, NULL, FALSE,
-        {.box = {settings_elements,
-                 G_N_ELEMENTS(settings_elements),
-                 FALSE /* vertical */, TRUE /* frame */}}},
-};
+ {WIDGET_BOX, N_("Ogg Vorbis Tags"), .data = {.box = {settings_elements,
+  G_N_ELEMENTS (settings_elements), .frame = TRUE}}}};
 
 static void
 configure_apply()

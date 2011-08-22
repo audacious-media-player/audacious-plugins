@@ -251,13 +251,17 @@ bitmap_fonts_cb()
 }
 
 static PreferencesWidget font_table_elements[] = {
-    {WIDGET_FONT_BTN, N_("_Player:"), &config.mainwin_font, G_CALLBACK(mainwin_font_set_cb), NULL, FALSE, {.font_btn = {N_("Select main player window font:")}}},
-    {WIDGET_FONT_BTN, N_("_Playlist:"), &config.playlist_font, G_CALLBACK(playlist_font_set_cb), NULL, FALSE, {.font_btn = {N_("Select playlist font:")}}},
-};
+ {WIDGET_FONT_BTN, N_("_Player:"), .cfg = & config.mainwin_font,
+  .callback = mainwin_font_set_cb, .data = {.font_btn = {N_("Select main "
+  "player window font:")}}},
+ {WIDGET_FONT_BTN, N_("_Playlist:"), .cfg = & config.playlist_font,
+  .callback = playlist_font_set_cb, .data = {.font_btn = {N_("Select playlist "
+  "font:")}}}};
 
 static PreferencesWidget appearance_misc_widgets[] = {
     {WIDGET_LABEL, N_("<b>_Fonts</b>"), NULL, NULL, NULL, FALSE},
-    {WIDGET_TABLE, NULL, NULL, NULL, NULL, TRUE, {.table = {font_table_elements, G_N_ELEMENTS(font_table_elements)}}},
+    {WIDGET_TABLE, .child = TRUE, .data = {.table = {font_table_elements,
+     G_N_ELEMENTS (font_table_elements)}}},
     {WIDGET_CHK_BTN, N_("Use bitmap fonts (supports ASCII only)"),
      .cfg_type = VALUE_BOOLEAN, .cfg = & config.mainwin_use_bitmapfont, .callback = bitmap_fonts_cb},
     {WIDGET_CHK_BTN, N_("Scroll song title in both directions"),
