@@ -40,6 +40,7 @@
 #include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/gtk-compat.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudgui/libaudgui.h>
 
@@ -908,8 +909,7 @@ static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event)
     {
         if (position == -1 || position == active_length)
             cancel_all (list, data);
-        else if (aud_cfg->show_filepopup_for_tuple && data->popup_pos !=
-         position)
+        else if (aud_get_bool (NULL, "show_filepopup_for_tuple") && data->popup_pos != position)
         {
             cancel_all (list, data);
             popup_trigger (list, data, position);
@@ -948,8 +948,8 @@ static void popup_trigger (GtkWidget * list, PlaylistData * data, gint pos)
     popup_hide (list, data);
 
     data->popup_pos = pos;
-    data->popup_source = g_timeout_add (aud_cfg->filepopup_delay * 100,
-     (GSourceFunc) popup_show, list);
+    data->popup_source = g_timeout_add (aud_get_int (NULL, "filepopup_delay") *
+     100, (GSourceFunc) popup_show, list);
 }
 
 static void popup_hide (GtkWidget * list, PlaylistData * data)
