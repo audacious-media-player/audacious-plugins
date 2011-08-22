@@ -190,10 +190,12 @@ AC_PATH_PROG([CP], [cp])
 AC_PATH_PROG([AR], [ar])
 AC_PATH_PROG([TR], [tr])
 AC_PATH_PROG([RANLIB], [ranlib])
+AC_PATH_PROG([WINDRES], [windres])
 
 dnl Check for Gtk+/GLib and pals
 dnl ============================
 AUD_CHECK_MODULE([GLIB], [glib-2.0], [>= 2.16], [Glib2])
+AUD_CHECK_MODULE([GTHREAD], [gthread-2.0], [>= 2.16], [GThread])
 AUD_CHECK_MODULE([PANGO], [pango], [>= 1.20], [Pango])
 AUD_CHECK_MODULE([CAIRO], [cairo], [>= 1.6], [Cairo])
 
@@ -202,12 +204,6 @@ dnl Check for libmowgli
 dnl ===================
 AUD_CHECK_MODULE([MOWGLI], [libmowgli], [>= 0.9], [libmowgli],
     [http://www.atheme.org/projects/mowgli.shtml])
-
-
-dnl Check for libmcs
-dnl ================
-AUD_CHECK_MODULE([LIBMCS], [libmcs], [>= 0.7], [libmcs],
-    [http://www.atheme.org/projects/mcs.shtml])
 
 
 dnl SSE2 support
