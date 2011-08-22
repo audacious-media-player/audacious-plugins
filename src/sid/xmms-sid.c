@@ -158,8 +158,12 @@ void xs_close(void)
 
     xs_tuneinfo_free(xs_status.tuneInfo);
     xs_status.tuneInfo = NULL;
-    xs_status.sidPlayer->plrDeleteSID(&xs_status);
-    xs_status.sidPlayer->plrClose(&xs_status);
+
+    if (xs_status.sidPlayer)
+    {
+        xs_status.sidPlayer->plrDeleteSID (& xs_status);
+        xs_status.sidPlayer->plrClose (& xs_status);
+    }
 
     xs_songlen_close();
     xs_stil_close();
