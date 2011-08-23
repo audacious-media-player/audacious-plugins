@@ -20,27 +20,27 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "config.h"
 #include "mixer.h"
 
-int mixer_channels = 2;
+static const gchar * const mixer_defaults[] = {
+ "channels", "2",
+  NULL};
+
+int mixer_channels;
 float * mixer_buf;
 
 static GtkWidget * about_win, * config_win;
 
 static int mixer_init (void)
 {
-    mcs_handle_t * database = aud_cfg_db_open ();
-    if (! database)
-        return 1;
-
-    aud_cfg_db_get_int (database, "mixer", "channels", & mixer_channels);
-    aud_cfg_db_close (database);
+    aud_config_set_defaults ("mixer", mixer_defaults);
+    mixer_channels = aud_get_int ("mixer", "channels");
     return 1;
 }
 
@@ -51,12 +51,7 @@ static void mixer_cleanup (void)
     if (config_win)
         gtk_widget_destroy (config_win);
 
-    mcs_handle_t * database = aud_cfg_db_open ();
-    if (! database)
-        return;
-
-    aud_cfg_db_set_int (database, "mixer", "channels", mixer_channels);
-    aud_cfg_db_close (database);
+    aud_set_int ("mixer", "channels", mixer_channels);
 
     free (mixer_buf);
     mixer_buf = 0;
