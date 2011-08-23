@@ -38,7 +38,6 @@
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
@@ -86,9 +85,6 @@ static gint seek_value;
 static gboolean stop_flag = FALSE;
 static GMutex * seek_mutex = NULL;
 static GCond * seek_cond = NULL;
-
-gchar **vorbis_tag_encoding_list = NULL;
-
 
 static gint
 vorbis_check_fd(const gchar *filename, VFSFile *stream)
@@ -593,98 +589,19 @@ static void vorbis_aboutbox (void)
      "Visit the Xiph.org Foundation at http://www.xiph.org/\n"));
 }
 
-static InputPlugin vorbis_ip;
-
 static gboolean vorbis_init (void)
 {
-    mcs_handle_t *db;
-    gchar *tmp = NULL;
-
-    memset(&vorbis_cfg, 0, sizeof(vorbis_config_t));
-    vorbis_cfg.http_buffer_size = 128;
-    vorbis_cfg.http_prebuffer = 25;
-    vorbis_cfg.proxy_port = 8080;
-    vorbis_cfg.proxy_use_auth = FALSE;
-    vorbis_cfg.proxy_user = NULL;
-    vorbis_cfg.proxy_pass = NULL;
-    vorbis_cfg.tag_override = FALSE;
-    vorbis_cfg.tag_format = NULL;
-
-    db = aud_cfg_db_open();
-    aud_cfg_db_get_int(db, "vorbis", "http_buffer_size",
-                       &vorbis_cfg.http_buffer_size);
-    aud_cfg_db_get_int(db, "vorbis", "http_prebuffer",
-                       &vorbis_cfg.http_prebuffer);
-    aud_cfg_db_get_bool(db, "vorbis", "save_http_stream",
-                        &vorbis_cfg.save_http_stream);
-    if (!aud_cfg_db_get_string(db, "vorbis", "save_http_path",
-                               &vorbis_cfg.save_http_path))
-        vorbis_cfg.save_http_path = g_strdup(g_get_home_dir());
-
-    aud_cfg_db_get_bool(db, "vorbis", "tag_override",
-                        &vorbis_cfg.tag_override);
-    if (!aud_cfg_db_get_string(db, "vorbis", "tag_format",
-                               &vorbis_cfg.tag_format))
-        vorbis_cfg.tag_format = g_strdup("%p - %t");
-
-    aud_cfg_db_get_bool(db, NULL, "use_proxy", &vorbis_cfg.use_proxy);
-    aud_cfg_db_get_string(db, NULL, "proxy_host", &vorbis_cfg.proxy_host);
-    aud_cfg_db_get_string(db, NULL, "proxy_port", &tmp);
-
-    if (tmp != NULL)
-        vorbis_cfg.proxy_port = atoi(tmp);
-
-    aud_cfg_db_get_bool(db, NULL, "proxy_use_auth", &vorbis_cfg.proxy_use_auth);
-    aud_cfg_db_get_string(db, NULL, "proxy_user", &vorbis_cfg.proxy_user);
-    aud_cfg_db_get_string(db, NULL, "proxy_pass", &vorbis_cfg.proxy_pass);
-
-    aud_cfg_db_close(db);
-
     seek_mutex = g_mutex_new();
     seek_cond = g_cond_new();
-
     return TRUE;
 }
 
 static void
 vorbis_cleanup(void)
 {
-    if (vorbis_cfg.save_http_path) {
-        g_free(vorbis_cfg.save_http_path);
-        vorbis_cfg.save_http_path = NULL;
-    }
-
-    if (vorbis_cfg.proxy_host) {
-        g_free(vorbis_cfg.proxy_host);
-        vorbis_cfg.proxy_host = NULL;
-    }
-
-    if (vorbis_cfg.proxy_user) {
-        g_free(vorbis_cfg.proxy_user);
-        vorbis_cfg.proxy_user = NULL;
-    }
-
-    if (vorbis_cfg.proxy_pass) {
-        g_free(vorbis_cfg.proxy_pass);
-        vorbis_cfg.proxy_pass = NULL;
-    }
-
-    if (vorbis_cfg.tag_format) {
-        g_free(vorbis_cfg.tag_format);
-        vorbis_cfg.tag_format = NULL;
-    }
-
-    if (vorbis_cfg.title_encoding) {
-        g_free(vorbis_cfg.title_encoding);
-        vorbis_cfg.title_encoding = NULL;
-    }
-
-    g_strfreev(vorbis_tag_encoding_list);
     g_mutex_free(seek_mutex);
     g_cond_free(seek_cond);
 }
-
-extern PluginPreferences preferences;
 
 static const gchar *vorbis_fmts[] = { "ogg", "ogm", "oga", NULL };
 static const gchar * const mimes[] = {"application/ogg", NULL};
@@ -694,7 +611,6 @@ AUD_INPUT_PLUGIN
     .name = "Ogg Vorbis",
     .init = vorbis_init,
     .about = vorbis_aboutbox,
-    .settings = &preferences,
     .play = vorbis_play,
     .stop = vorbis_stop,
     .pause = vorbis_pause,

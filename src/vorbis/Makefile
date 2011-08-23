@@ -1,7 +1,6 @@
 PLUGIN = vorbis${PLUGIN_SUFFIX}
 
-SRCS = configure.c \
-       vcupdate.c	\
+SRCS = vcupdate.c \
        vcedit.c		\
        vorbis.c
 
