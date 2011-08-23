@@ -21,28 +21,30 @@
 
 #include "config.h"
 
-#include <audacious/configdb.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "compressor.h"
 
+/* What is a "normal" volume?  Replay Gain stuff claims to use 89 dB, but what
+ * does that translate to in our PCM range?  Does anybody even know? */
+static const gchar * const compressor_defaults[] = {
+ "center", "0.5",
+ "range", "0.5",
+ NULL};
+
 static GtkWidget * about_window = NULL;
 static GtkWidget * config_window = NULL;
 
 void compressor_config_load (void)
 {
-    mcs_handle_t * database = aud_cfg_db_open ();
-    if (! database)
-        return;
-
-    aud_cfg_db_get_float (database, "compressor", "center", & compressor_center);
-    aud_cfg_db_get_float (database, "compressor", "range", & compressor_range);
-
-    aud_cfg_db_close (database);
+    aud_config_set_defaults ("compressor", compressor_defaults);
+    compressor_center = aud_get_double ("compressor", "center");
+    compressor_range = aud_get_double ("compressor", "range");
 }
 
 void compressor_config_save (void)
@@ -52,14 +54,8 @@ void compressor_config_save (void)
     if (config_window != NULL)
         gtk_widget_destroy (config_window);
 
-    mcs_handle_t * database = aud_cfg_db_open ();
-    if (! database)
-        return;
-
-    aud_cfg_db_set_float (database, "compressor", "center", compressor_center);
-    aud_cfg_db_set_float (database, "compressor", "range", compressor_range);
-
-    aud_cfg_db_close (database);
+    aud_set_double ("compressor", "center", compressor_center);
+    aud_set_double ("compressor", "range", compressor_range);
 }
 
 static void compressor_about (void)

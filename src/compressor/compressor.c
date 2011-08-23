@@ -25,9 +25,7 @@
 
 #include "compressor.h"
 
-/* What is a "normal" volume?  Replay Gain stuff claims to use 89 dB, but what
- * does that translate to in our PCM range?  Does anybody even know? */
-float compressor_center = 0.5, compressor_range = 0.5;
+double compressor_center, compressor_range;
 
 /* Response time adjustments.  Maybe this should be adjustable.  Or maybe that
  * would just be confusing.  I don't know. */
