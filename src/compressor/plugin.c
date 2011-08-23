@@ -79,7 +79,7 @@ static void compressor_about (void)
 
 static void value_changed (GtkRange * range, void * data)
 {
-    * (float *) data = gtk_range_get_value (range);
+    * (double *) data = gtk_range_get_value (range);
 }
 
 static void compressor_configure (void)
