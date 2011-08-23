@@ -136,6 +136,7 @@ static void window_create(void)
         *alt_dev_text, *option_box, *vol_check, *cookedmode_check, *button_box, *button_ok;
     GtkTreeModel *dev_list_model;
     GtkCellRenderer *cell;
+    gchar *device;
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), _("OSS4 Output Plugin Preferences"));
@@ -169,7 +170,9 @@ static void window_create(void)
 
     g_object_unref(G_OBJECT(dev_list_model));
 
-    select_combo_item(GTK_COMBO_BOX(dev_list_combo), aud_get_string("oss4", "device"));
+    device = aud_get_string("oss4", "device");
+    select_combo_item(GTK_COMBO_BOX(dev_list_combo), device);
+    g_free(device);
 
     gtk_box_pack_start(GTK_BOX(dev_list_box), dev_list_combo, TRUE, TRUE, 5);
 
@@ -182,9 +185,11 @@ static void window_create(void)
     gtk_box_pack_start(GTK_BOX(alt_dev_box), alt_dev_check, FALSE, FALSE, 5);
 
     alt_dev_text = gtk_entry_new();
-    gtk_entry_set_text(GTK_ENTRY(alt_dev_text), aud_get_string("oss4", "alt_device"));
+    device = aud_get_string("oss4", "alt_device");
+    gtk_entry_set_text(GTK_ENTRY(alt_dev_text), device);
     gtk_widget_set_sensitive(alt_dev_text, aud_get_bool("oss4", "use_alt_device"));
     gtk_box_pack_start(GTK_BOX(alt_dev_box), alt_dev_text, TRUE, TRUE, 5);
+    g_free(device);
 
     option_box = gtk_vbox_new(FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), option_box, FALSE, FALSE, 0);

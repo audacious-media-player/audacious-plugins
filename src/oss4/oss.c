@@ -119,20 +119,33 @@ static gboolean set_format(gint format, gint rate, gint channels)
         return FALSE;
 }
 
+static gint open_audio(void)
+{
+    gint res = -1;
+    gchar *device = aud_get_string("oss4", "device");
+    gchar *alt_device = aud_get_string("oss4", "alt_device");
+
+    if (aud_get_bool("oss4", "use_alt_device") && alt_device != NULL)
+        res = open(alt_device, O_WRONLY);
+    else if (device != NULL)
+        res = open(device, O_WRONLY);
+    else
+        res = open(DEFAULT_DSP, O_WRONLY);
+
+    g_free(device);
+    g_free(alt_device);
+
+    return res;
+}
+
 gint oss_open_audio(gint aud_format, gint rate, gint channels)
 {
     AUDDBG("Opening audio.\n");
 
     gint format;
     gint vol_left, vol_right;
-    gchar *device = DEFAULT_DSP;
 
-    if (aud_get_bool("oss4", "use_alt_device") && aud_get_string("oss4", "alt_device") != NULL)
-        device = aud_get_string("oss4", "alt_device");
-    else if (aud_get_string("oss4", "device") != NULL)
-        device = aud_get_string("oss4", "device");
-
-    oss_data->fd = open(device, O_WRONLY);
+    oss_data->fd = open_audio();
 
     if (oss_data->fd == -1)
     {
