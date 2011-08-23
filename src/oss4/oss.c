@@ -1,6 +1,6 @@
 /*
  * OSS4 Output Plugin for Audacious
- * Copyright 2010 Michał Lipski <tallica@o2.pl>
+ * Copyright 2010-2011 Michał Lipski <tallica@o2.pl>
  *
  * I would like to thank people on #audacious, especially Tony Vroon and
  * John Lindgren and of course the authors of the previous OSS plugin.
@@ -24,8 +24,16 @@
 
 #define HARD_DEBUG 0
 
+static const gchar * const oss_defaults[] = {
+ "device", DEFAULT_DSP,
+ "use_alt_device", "FALSE",
+ "alt_device", DEFAULT_DSP,
+ "save_volume", "TRUE",
+ "volume", "0x3232",
+ "cookedmode", "TRUE",
+ NULL};
+
 oss_data_t *oss_data;
-oss_cfg_t *oss_cfg;
 gchar *oss_message = NULL;
 static gint64 oss_time; /* microseconds */
 static gboolean oss_paused;
@@ -38,17 +46,9 @@ gboolean oss_init(void)
 {
     AUDDBG("Init.\n");
 
+    aud_config_set_defaults("oss4", oss_defaults);
     oss_data = g_new0(oss_data_t, 1);
-    oss_cfg = g_new0(oss_cfg_t, 1);
     oss_data->fd = -1;
-    oss_cfg->device = DEFAULT_DSP;
-    oss_cfg->use_alt_device = FALSE;
-    oss_cfg->alt_device = DEFAULT_DSP;
-    oss_cfg->save_volume = TRUE;
-    oss_cfg->volume = 0x3232;
-    oss_cfg->cookedmode = TRUE;
-
-    oss_config_load();
 
     if (oss_hardware_present())
         return TRUE;
@@ -60,10 +60,7 @@ void oss_cleanup(void)
 {
     AUDDBG("Cleanup.\n");
 
-    oss_config_save();
-
     g_free(oss_data);
-    g_free(oss_cfg);
 }
 
 static gboolean set_format(gint format, gint rate, gint channels)
@@ -73,7 +70,8 @@ static gboolean set_format(gint format, gint rate, gint channels)
     AUDDBG("Audio format: %s, sample rate: %dHz, number of channels: %d.\n", oss_format_to_text(format), rate, channels);
 
     /* Enable/disable format conversions made by the OSS software */
-    if (ioctl(oss_data->fd, SNDCTL_DSP_COOKEDMODE, &oss_cfg->cookedmode) == -1)
+    param = aud_get_bool("oss4", "cookedmode");
+    if (ioctl(oss_data->fd, SNDCTL_DSP_COOKEDMODE, &param) == -1)
         DEBUG_MSG;
 
     param = format;
@@ -129,10 +127,10 @@ gint oss_open_audio(gint aud_format, gint rate, gint channels)
     gint vol_left, vol_right;
     gchar *device = DEFAULT_DSP;
 
-    if (oss_cfg->use_alt_device && oss_cfg->alt_device != NULL)
-        device = oss_cfg->alt_device;
-    else if (oss_cfg->device != NULL)
-        device = oss_cfg->device;
+    if (aud_get_bool("oss4", "use_alt_device") && aud_get_string("oss4", "alt_device") != NULL)
+        device = aud_get_string("oss4", "alt_device");
+    else if (aud_get_string("oss4", "device") != NULL)
+        device = aud_get_string("oss4", "device");
 
     oss_data->fd = open(device, O_WRONLY);
 
@@ -166,10 +164,10 @@ gint oss_open_audio(gint aud_format, gint rate, gint channels)
 
     AUDDBG("Internal OSS buffer size: %dms.\n", oss_delay);
 
-    if (oss_cfg->save_volume)
+    if (aud_get_bool("oss4", "save_volume"))
     {
-        vol_right = (oss_cfg->volume & 0xFF00) >> 8;
-        vol_left  = (oss_cfg->volume & 0x00FF);
+        vol_right = (aud_get_int("oss4", "volume") & 0xFF00) >> 8;
+        vol_left  = (aud_get_int("oss4", "volume") & 0x00FF);
 
         oss_set_volume(vol_left, vol_right);
     }
@@ -333,10 +331,10 @@ void oss_get_volume(gint *left, gint *right)
 
     if (oss_data->fd == -1 || !oss_ioctl_vol)
     {
-        if (oss_cfg->save_volume)
+        if (aud_get_int("oss4", "save_volume"))
         {
-            *right = (oss_cfg->volume & 0xFF00) >> 8;
-            *left  = (oss_cfg->volume & 0x00FF);
+            *right = (aud_get_int("oss4", "volume") & 0xFF00) >> 8;
+            *left  = (aud_get_int("oss4", "volume") & 0x00FF);
         }
         return;
     }
@@ -352,7 +350,7 @@ void oss_get_volume(gint *left, gint *right)
     {
         *right = (vol & 0xFF00) >> 8;
         *left  = (vol & 0x00FF);
-        oss_cfg->volume = vol;
+        aud_set_int("oss4", "volume", vol);
     }
 }
 
@@ -362,8 +360,8 @@ void oss_set_volume(gint left, gint right)
 
     vol = (right << 8) | left;
 
-    if (oss_cfg->save_volume)
-        oss_cfg->volume = vol;
+    if (aud_get_int("oss4", "save_volume"))
+        aud_set_int("oss4", "volume", vol);
 
     if (oss_data->fd == -1 || !oss_ioctl_vol)
         return;

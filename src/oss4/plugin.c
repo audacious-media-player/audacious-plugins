@@ -1,6 +1,6 @@
 /*
  * OSS4 Output Plugin for Audacious
- * Copyright 2010 Michał Lipski <tallica@o2.pl>
+ * Copyright 2010-2011 Michał Lipski <tallica@o2.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ void oss_about(void)
     static GtkWidget *dialog;
 
     audgui_simple_message(&dialog, GTK_MESSAGE_INFO, _("About OSS4 Plugin"),
-    _("OSS4 Output Plugin for Audacious\n"
+    "OSS4 Output Plugin for Audacious\n"
     "Copyright 2010 Michał Lipski <tallica@o2.pl>\n\n"
     "I would like to thank people on #audacious, especially Tony Vroon and "
     "John Lindgren and of course the authors of the previous OSS plugin.\n\n"
@@ -62,5 +62,5 @@ void oss_about(void)
     "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
     "GNU General Public License for more details.\n\n"
     "You should have received a copy of the GNU General Public License "
-    "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n"));
+    "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n");
 }

@@ -1,6 +1,6 @@
 /*
  * OSS4 Output Plugin for Audacious
- * Copyright 2010 Michał Lipski <tallica@o2.pl>
+ * Copyright 2010-2011 Michał Lipski <tallica@o2.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <audacious/debug.h>
+#include <audacious/misc.h>
 
 #define ERROR(...) fprintf(stderr, "OSS4: " __VA_ARGS__)
 
@@ -72,18 +73,7 @@ typedef struct
     gint bits_per_sample;
 } oss_data_t;
 
-typedef struct
-{
-    gchar *device;
-    gboolean use_alt_device;
-    gchar *alt_device;
-    gint volume;
-    gboolean save_volume;
-    gboolean cookedmode;
-} oss_cfg_t;
-
 extern oss_data_t *oss_data;
-extern oss_cfg_t *oss_cfg;
 extern gchar *oss_message;
 
 /* oss.c */
@@ -103,8 +93,6 @@ void oss_get_volume(gint *left, gint *right);
 void oss_set_volume(gint left, gint right);
 
 /* configure.c */
-void oss_config_load(void);
-void oss_config_save(void);
 void oss_configure(void);
 
 /* plugin.c */
