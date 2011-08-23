@@ -36,7 +36,6 @@
 
 #include <glib.h>
 
-#include <audacious/audconfig.h>
 #include <audacious/configdb.h>
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
@@ -358,8 +357,8 @@ ERR:
 
     g_mutex_unlock (mutex);
 
-    gint sectors = CLAMP (aud_cfg->output_buffer_size / 2, 50, 250) *
-     cdng_cfg.disc_speed * 75 / 1000;
+    gint buffer_size = aud_get_int (NULL, "output_buffer_size");
+    gint sectors = CLAMP (buffer_size / 2, 50, 250) * cdng_cfg.disc_speed * 75 / 1000;
     guchar buffer[2352 * sectors];
     gint currlsn = startlsn;
     gint retry_count = 0, skip_count = 0;

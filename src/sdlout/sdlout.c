@@ -29,8 +29,8 @@
 #include <SDL.h>
 #include <SDL_audio.h>
 
-#include <audacious/audconfig.h>
 #include <audacious/debug.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 #include "sdlout.h"
@@ -89,7 +89,7 @@ static void apply_mono_volume (unsigned char * data, int len)
 
     int16_t * i = (int16_t *) data;
     int16_t * end = (int16_t *) (data + len);
-    
+
     while (i < end)
     {
         * i = ((int) * i * factor) >> 16;
@@ -106,7 +106,7 @@ static void apply_stereo_volume (unsigned char * data, int len)
 
     int16_t * i = (int16_t *) data;
     int16_t * end = (int16_t *) (data + len);
-    
+
     while (i < end)
     {
         * i = ((int) * i * factor_left) >> 16;
@@ -168,7 +168,7 @@ int sdlout_open_audio (int format, int rate, int chan)
     sdlout_chan = chan;
     sdlout_rate = rate;
 
-    buffer_size = 2 * chan * (aud_cfg->output_buffer_size * rate / 1000);
+    buffer_size = 2 * chan * (aud_get_int (NULL, "output_buffer_size") * rate / 1000);
     buffer = malloc (buffer_size);
     buffer_data_start = 0;
     buffer_data_len = 0;

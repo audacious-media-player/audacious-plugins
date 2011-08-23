@@ -30,7 +30,7 @@ extern void close_mixer_device();
 #include <sys/ioctl.h>
 #include <sys/time.h>
 
-#include <audacious/audconfig.h>
+#include <audacious/misc.h>
 
 #include "OSS.h"
 
@@ -426,7 +426,7 @@ oss_open(gint fmt, gint rate, gint nch)
 
     oss_setup_format(fmt, rate, nch);
 
-    buffer_size = aud_cfg->output_buffer_size * input.bps / 1000;
+    buffer_size = aud_get_int (NULL, "output_buffer_size") * input.bps / 1000;
 
     if (buffer_size < 8192)
         buffer_size = 8192;

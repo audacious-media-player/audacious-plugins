@@ -48,8 +48,8 @@
 #include <alsa/asoundlib.h>
 #include <glib.h>
 
-#include <audacious/audconfig.h>
 #include <audacious/debug.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 #include "alsa.h"
@@ -361,7 +361,8 @@ int alsa_open_audio (int aud_format, int rate, int channels)
     alsa_channels = channels;
     alsa_rate = rate;
 
-    unsigned int useconds = 1000 * MIN (1000, aud_cfg->output_buffer_size / 2);
+    int total_buffer = aud_get_int (NULL, "output_buffer_size");
+    unsigned int useconds = 1000 * MIN (1000, total_buffer / 2);
     int direction = 0;
     CHECK_NOISY (snd_pcm_hw_params_set_buffer_time_near, alsa_handle, params,
      & useconds, & direction);
@@ -375,8 +376,7 @@ int alsa_open_audio (int aud_format, int rate, int channels)
 
     CHECK_NOISY (snd_pcm_hw_params, alsa_handle, params);
 
-    int soft_buffer = MAX (aud_cfg->output_buffer_size / 2,
-     aud_cfg->output_buffer_size - hard_buffer);
+    int soft_buffer = MAX (total_buffer / 2, total_buffer - hard_buffer);
     AUDDBG ("Buffer: hardware %d ms, software %d ms, period %d ms.\n",
      hard_buffer, soft_buffer, alsa_period);
 
@@ -561,9 +561,9 @@ int alsa_output_time (void)
         frames -= alsa_paused_delay;
     else
         frames -= get_delay ();
-        
+
     int time = frames * 1000 / alsa_rate;
-    
+
     pthread_mutex_unlock (& alsa_mutex);
     return time;
 }
