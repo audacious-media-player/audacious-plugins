@@ -23,7 +23,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
+#include <audacious/misc.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
@@ -33,7 +33,6 @@
 static GTimer *timer;
 static gulong offset_time, written;
 static gint bps;
-static gboolean real_time = TRUE;
 static gboolean paused, started;
 static GtkWidget *configurewin;
 static struct {
@@ -42,14 +41,15 @@ static struct {
     gint channels;
 } input_format;
 
+static const gchar * const null_defaults[] = {
+ "real_time", "TRUE",
+ NULL};
+
 #define ELAPSED_TIME (offset_time + g_timer_elapsed(timer, NULL) * 1000)
 
 static gboolean null_init (void)
 {
-    mcs_handle_t *db;
-    db = aud_cfg_db_open();
-    aud_cfg_db_get_bool(db, "null", "real_time", &real_time);
-    aud_cfg_db_close(db);
+    aud_config_set_defaults("null", null_defaults);
     return TRUE;
 }
 
@@ -73,12 +73,7 @@ static void null_about(void)
 
 static void null_configure_ok_cb(GtkButton *w, gpointer data)
 {
-    mcs_handle_t *db;
-
-    db = aud_cfg_db_open();
-    real_time = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(data));
-    aud_cfg_db_set_bool(db, "null", "real_time", real_time);
-    aud_cfg_db_close(db);
+    aud_set_bool("null", "real_time", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(data)));
     gtk_widget_destroy(configurewin);
 }
 
@@ -103,7 +98,7 @@ static void null_configure(void)
     gtk_container_add(GTK_CONTAINER(configurewin), vbox);
 
     rt_btn = gtk_check_button_new_with_label(_("Run in real time"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rt_btn), real_time);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rt_btn), aud_get_bool("null", "real_time"));
     gtk_box_pack_start(GTK_BOX(vbox), rt_btn, FALSE, FALSE, 0);
     bbox = gtk_hbutton_box_new();
     gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
@@ -143,7 +138,7 @@ static int null_open(gint fmt, int rate, int nch)
             bps <<= 1;
             break;
     }
-    if (real_time)
+    if (aud_get_bool("null", "real_time"))
         timer = g_timer_new();
     return 1;
 }
