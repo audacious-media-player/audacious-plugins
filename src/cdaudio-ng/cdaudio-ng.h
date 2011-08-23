@@ -20,13 +20,8 @@
 #define CDAUDIO_NG_H
 
 #define DEF_STRING_LEN			256
-#define CDDA_DUMMYPATH			"cdda://"
-#define CDDA_DEFAULT_CDDB_SERVER	"freedb.org"
-#define CDDA_DEFAULT_CDDB_PORT		8880
-#define CDDA_DEFAULT_PROXY_PORT		8080
 
 #define MIN_DISC_SPEED 2
-#define DEFAULT_DISC_SPEED 2
 #define MAX_DISC_SPEED 24
 
 #endif // CDAUDIO_NG_H

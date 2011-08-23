@@ -36,7 +36,6 @@
 
 #include <glib.h>
 
-#include <audacious/configdb.h>
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -189,59 +188,37 @@ static void trigger_monitor (void)
 #endif
 }
 
+static const gchar * const cdaudio_defaults[] = {
+ "use_cdtext", "TRUE",
+ "use_cddb", "TRUE",
+ "cddbserver", "freedb.org",
+ "cddbport", "8880",
+ "cddbhttp", "FALSE",
+ "disc_speed", "2",
+ NULL};
+
 /* main thread only */
 static gboolean cdaudio_init (void)
 {
-    mcs_handle_t *db;
-
     mutex = g_mutex_new ();
 
-    cdng_cfg.use_cdtext = TRUE;
-    cdng_cfg.use_cddb = TRUE;
-    cdng_cfg.cddb_port = CDDA_DEFAULT_CDDB_PORT;
-    cdng_cfg.cddb_http = FALSE;
-    cdng_cfg.disc_speed = DEFAULT_DISC_SPEED;
-    cdng_cfg.use_proxy = FALSE;
-    cdng_cfg.proxy_port = CDDA_DEFAULT_PROXY_PORT;
+    aud_config_set_defaults ("CDDA", cdaudio_defaults);
 
-    if ((db = aud_cfg_db_open ()) == NULL)
-    {
-        cdaudio_error ("Failed to read configuration.");
-        return FALSE;
-    }
+    cdng_cfg.use_cdtext = aud_get_bool ("CDDA", "use_cdtext");
+    cdng_cfg.use_cddb = aud_get_bool ("CDDA", "use_cddb");
+    cdng_cfg.device = aud_get_string ("CDDA", "device");
+    cdng_cfg.cddb_server = aud_get_string ("CDDA", "cddbserver");
+    cdng_cfg.cddb_path = aud_get_string ("CDDA", "cddbpath");
+    cdng_cfg.cddb_port = aud_get_int ("CDDA", "cddbport");
+    cdng_cfg.cddb_http = aud_get_bool ("CDDA", "cddbhttp");
+    cdng_cfg.disc_speed = aud_get_int ("CDDA", "disc_speed");
+    cdng_cfg.disc_speed = CLAMP (cdng_cfg.disc_speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
 
-    aud_cfg_db_get_bool (db, "CDDA", "use_cdtext", &cdng_cfg.use_cdtext);
-    aud_cfg_db_get_bool (db, "CDDA", "use_cddb", &cdng_cfg.use_cddb);
-    aud_cfg_db_get_string (db, "CDDA", "device", &cdng_cfg.device);
-    aud_cfg_db_get_string (db, "CDDA", "cddbserver", &cdng_cfg.cddb_server);
-    aud_cfg_db_get_string (db, "CDDA", "cddbpath", &cdng_cfg.cddb_path);
-    aud_cfg_db_get_int (db, "CDDA", "cddbport", &cdng_cfg.cddb_port);
-    aud_cfg_db_get_bool (db, "CDDA", "cddbhttp", &cdng_cfg.cddb_http);
-    aud_cfg_db_get_int (db, "CDDA", "disc_speed", & cdng_cfg.disc_speed);
-    cdng_cfg.disc_speed = CLAMP (cdng_cfg.disc_speed, MIN_DISC_SPEED,
-     MAX_DISC_SPEED);
-    aud_cfg_db_get_bool (db, "audacious", "use_proxy", &cdng_cfg.use_proxy);
-    aud_cfg_db_get_string (db, "audacious", "proxy_host", &cdng_cfg.proxy_host);
-    aud_cfg_db_get_int (db, "audacious", "proxy_port", &cdng_cfg.proxy_port);
-    aud_cfg_db_get_string (db, "audacious", "proxy_user",
-                           &cdng_cfg.proxy_username);
-    aud_cfg_db_get_string (db, "audacious", "proxy_pass",
-                           &cdng_cfg.proxy_password);
-
-    if (cdng_cfg.device == NULL)
-        cdng_cfg.device = g_strdup ("");
-    if (cdng_cfg.cddb_server == NULL)
-        cdng_cfg.cddb_server = g_strdup (CDDA_DEFAULT_CDDB_SERVER);
-    if (cdng_cfg.cddb_path == NULL)
-        cdng_cfg.cddb_path = g_strdup ("");
-    if (cdng_cfg.proxy_host == NULL)
-        cdng_cfg.proxy_host = g_strdup ("");
-    if (cdng_cfg.proxy_username == NULL)
-        cdng_cfg.proxy_username = g_strdup ("");
-    if (cdng_cfg.proxy_password == NULL)
-        cdng_cfg.proxy_password = g_strdup ("");
-
-    aud_cfg_db_close (db);
+    cdng_cfg.use_proxy = aud_get_bool ("audacious", "use_proxy");
+    cdng_cfg.proxy_host = aud_get_string ("audacious", "proxy_host");
+    cdng_cfg.proxy_port = aud_get_int ("audacious", "proxy_port");
+    cdng_cfg.proxy_username = aud_get_string ("audacious", "proxy_user");
+    cdng_cfg.proxy_password = aud_get_string ("audacious", "proxy_pass");
 
     if (!cdio_init ())
     {
@@ -498,16 +475,14 @@ static void cdaudio_cleanup (void)
 
     // todo: destroy the gui
 
-    mcs_handle_t *db = aud_cfg_db_open ();
-    aud_cfg_db_set_int (db, "CDDA", "disc_speed", cdng_cfg.disc_speed);
-    aud_cfg_db_set_bool (db, "CDDA", "use_cdtext", cdng_cfg.use_cdtext);
-    aud_cfg_db_set_bool (db, "CDDA", "use_cddb", cdng_cfg.use_cddb);
-    aud_cfg_db_set_string (db, "CDDA", "cddbserver", cdng_cfg.cddb_server);
-    aud_cfg_db_set_string (db, "CDDA", "cddbpath", cdng_cfg.cddb_path);
-    aud_cfg_db_set_int (db, "CDDA", "cddbport", cdng_cfg.cddb_port);
-    aud_cfg_db_set_bool (db, "CDDA", "cddbhttp", cdng_cfg.cddb_http);
-    aud_cfg_db_set_string (db, "CDDA", "device", cdng_cfg.device);
-    aud_cfg_db_close (db);
+    aud_set_bool ("CDDA", "use_cdtext", cdng_cfg.use_cdtext);
+    aud_set_bool ("CDDA", "use_cddb", cdng_cfg.use_cddb);
+    aud_set_string ("CDDA", "device", cdng_cfg.device);
+    aud_set_string ("CDDA", "cddbserver", cdng_cfg.cddb_server);
+    aud_set_string ("CDDA", "cddbpath", cdng_cfg.cddb_path);
+    aud_set_int ("CDDA", "cddbport", cdng_cfg.cddb_port);
+    aud_set_bool ("CDDA", "cddbhttp", cdng_cfg.cddb_http);
+    aud_set_int ("CDDA", "disc_speed", cdng_cfg.disc_speed);
 
     g_free (cdng_cfg.device);
     g_free (cdng_cfg.cddb_server);
