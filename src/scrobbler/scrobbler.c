@@ -916,9 +916,7 @@ static void read_cache(void)
     int i=0;
     item_t *item;
 
-    gchar * config_datadir = aud_util_get_localdir ();
-    gchar * path = g_strdup_printf ("%s/scrobblerqueue.txt", config_datadir);
-    g_free (config_datadir);
+    gchar * path = g_strconcat (aud_get_path (AUD_PATH_USER_DIR), "/scrobblerqueue.txt", NULL);
 
     if (! g_file_test (path, G_FILE_TEST_EXISTS))
         return;
@@ -999,9 +997,7 @@ static void dump_queue(void)
         return;
     }
 
-    gchar * config_datadir = aud_util_get_localdir ();
-    gchar * path = g_strdup_printf ("%s/scrobblerqueue.txt", config_datadir);
-    g_free (config_datadir);
+    gchar * path = g_strconcat (aud_get_path (AUD_PATH_USER_DIR), "/scrobblerqueue.txt", NULL);
 
     if (! (fd = fopen (path, "w")))
     {

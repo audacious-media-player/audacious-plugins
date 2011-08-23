@@ -381,8 +381,5 @@ void i_configure_cfg_ap_save( void )
 
 gchar * i_configure_cfg_get_file( void )
 {
-  gchar * config_datadir = (gchar*)aud_util_get_localdir();
-  gchar * config_pathfilename = g_build_filename( config_datadir , "amidi-plug.conf" , NULL );
-  g_free( config_datadir );
-  return config_pathfilename;
+  return g_build_filename (aud_get_path (AUD_PATH_USER_DIR), "amidi-plug.conf", NULL);
 }
