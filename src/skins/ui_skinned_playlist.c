@@ -37,7 +37,6 @@
 #include "ui_skinned_playlist.h"
 #include "ui_skinned_playlist_slider.h"
 
-#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
@@ -183,7 +182,7 @@ DRAW_FUNC_BEGIN (playlist_draw)
 
     /* entry numbers */
 
-    if (aud_cfg->show_numbers_in_pl)
+    if (aud_get_bool (NULL, "show_numbers_in_pl"))
     {
         width = 0;
 

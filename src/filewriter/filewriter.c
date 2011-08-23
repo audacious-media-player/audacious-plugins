@@ -218,8 +218,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
 
     if (filenamefromtags)
     {
-        gchar *utf8 = tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
-
+        gchar * utf8 = aud_playlist_entry_get_title (playlist, pos, FALSE);
         string_replace_char (utf8, '/', ' ');
         filename = string_encode_percent (utf8, FALSE);
         g_free (utf8);

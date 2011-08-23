@@ -28,7 +28,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include <audacious/audconfig.h>
 #include <audacious/debug.h>
 #include <audacious/drct.h>
 #include <audacious/gtk-compat.h>
@@ -132,7 +131,7 @@ static void update_rollup_text (void)
     {
         gint length = aud_playlist_entry_get_length (playlist, entry, FALSE);
 
-        if (aud_cfg->show_numbers_in_pl)
+        if (aud_get_bool (NULL, "show_numbers_in_pl"))
             snprintf (scratch, sizeof scratch, "%d. ", 1 + entry);
 
         gchar * title = aud_playlist_entry_get_title (playlist, entry, FALSE);

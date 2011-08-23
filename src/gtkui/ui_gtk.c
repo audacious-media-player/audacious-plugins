@@ -20,7 +20,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include <audacious/audconfig.h>
 #include <audacious/debug.h>
 #include <audacious/drct.h>
 #include <audacious/gtk-compat.h>
@@ -185,8 +184,8 @@ static void set_time_label (gint time, gint len)
     time /= 1000;
 
     if (time < 3600)
-        snprintf (s + strlen (s), sizeof s - strlen (s), aud_cfg->leading_zero ?
-         "%02d:%02d" : "%d:%02d", time / 60, time % 60);
+        snprintf (s + strlen (s), sizeof s - strlen (s), aud_get_bool (NULL,
+         "leading_zero") ? "%02d:%02d" : "%d:%02d", time / 60, time % 60);
     else
         snprintf (s + strlen (s), sizeof s - strlen (s), "%d:%02d:%02d", time /
          3600, (time / 60) % 60, time % 60);
@@ -196,9 +195,8 @@ static void set_time_label (gint time, gint len)
         len /= 1000;
 
         if (len < 3600)
-            snprintf (s + strlen (s), sizeof s - strlen (s),
-             aud_cfg->leading_zero ? " / %02d:%02d" : " / %d:%02d", len / 60,
-             len % 60);
+            snprintf (s + strlen (s), sizeof s - strlen (s), aud_get_bool (NULL,
+             "leading_zero") ? " / %02d:%02d" : " / %d:%02d", len / 60, len % 60);
         else
             snprintf (s + strlen (s), sizeof s - strlen (s), " / %d:%02d:%02d",
              len / 3600, (len / 60) % 60, len % 60);

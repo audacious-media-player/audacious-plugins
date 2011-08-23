@@ -23,9 +23,9 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/audconfig.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/list.h>
@@ -83,8 +83,8 @@ static void set_length (GValue * value, gint list, gint row)
 
         gchar s[16];
         if (len < 3600)
-            snprintf (s, sizeof s, aud_cfg->leading_zero ? "%02d:%02d" :
-             "%d:%02d", len / 60, len % 60);
+            snprintf (s, sizeof s, aud_get_bool (NULL, "leading_zero") ?
+             "%02d:%02d" : "%d:%02d", len / 60, len % 60);
         else
             snprintf (s, sizeof s, "%d:%02d:%02d", len / 3600, (len / 60) % 60,
              len % 60);
