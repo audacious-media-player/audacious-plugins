@@ -33,7 +33,6 @@
 
 #include "config.h"
 #include "gtkui.h"
-#include "gtkui_cfg.h"
 #include "playlist_util.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
@@ -120,12 +119,12 @@ static void volume_down (void)
     aud_drct_set_volume_main (vol - 5);
 }
 
-static gboolean menu_bar_get (void) {return config.menu_visible; }
-static gboolean info_bar_get (void) {return config.infoarea_visible; }
-static gboolean status_bar_get (void) {return config.statusbar_visible; }
-static gboolean column_headers_get (void) {return config.playlist_headers; }
-static gboolean autoscroll_get (void) {return config.autoscroll; }
-static void autoscroll_set (gboolean on) {config.autoscroll = on; };
+static gboolean menu_bar_get (void) {return aud_get_bool ("gtkui", "menu_visible"); }
+static gboolean info_bar_get (void) {return aud_get_bool ("gtkui", "infoarea_visible"); }
+static gboolean status_bar_get (void) {return aud_get_bool ("gtkui", "statusbar_visible"); }
+static gboolean column_headers_get (void) {return aud_get_bool ("gtkui", "playlist_headers"); }
+static gboolean autoscroll_get (void) {return aud_get_bool ("gtkui", "autoscroll"); }
+static void autoscroll_set (gboolean on) {aud_set_bool ("gtkui", "autoscroll", on); }
 
 static const struct MenuItem file_items[] = {
  {N_("_Open Files ..."), GTK_STOCK_OPEN, 'l', .func = open_files},

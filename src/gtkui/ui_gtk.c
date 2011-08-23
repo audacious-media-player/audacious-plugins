@@ -33,13 +33,34 @@
 
 #include "config.h"
 #include "gtkui.h"
-#include "gtkui_cfg.h"
 #include "layout.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 #include "ui_infoarea.h"
 #include "ui_statusbar.h"
 #include "playlist_util.h"
+
+static const gchar * const gtkui_defaults[] = {
+ "infoarea_visible", "TRUE",
+ "menu_visible", "TRUE",
+ "player_visible", "TRUE",
+ "statusbar_visible", "TRUE",
+
+ "autoscroll", "TRUE",
+ "playlist_columns", "number title artist album queued length",
+ "playlist_headers", "TRUE",
+
+ "player_x", "-1",
+ "player_y", "-1",
+ "player_width", "600",
+ "player_height", "400",
+
+ /* hidden settings */
+ "always_on_top", "FALSE",
+ "save_window_position", "TRUE",
+ "show_song_titles", "TRUE",
+ "custom_playlist_colors", "FALSE",
+ NULL};
 
 static GtkWidget *volume;
 static gboolean volume_slider_is_moving = FALSE;
@@ -86,12 +107,14 @@ AUD_IFACE_PLUGIN
 
 static void save_window_size (void)
 {
-    gtk_window_get_position ((GtkWindow *) window, & config.player_x,
-     & config.player_y);
+    gint x, y, w, h;
+    gtk_window_get_position ((GtkWindow *) window, & x, & y);
+    gtk_window_get_size ((GtkWindow *) window, & w, & h);
 
-    if (gtk_window_get_resizable ((GtkWindow *) window))
-        gtk_window_get_size ((GtkWindow *) window, & config.player_width,
-         & config.player_height);
+    aud_set_int ("gtkui", "player_x", x);
+    aud_set_int ("gtkui", "player_y", y);
+    aud_set_int ("gtkui", "player_width", w);
+    aud_set_int ("gtkui", "player_height", h);
 }
 
 static gboolean window_delete()
@@ -125,7 +148,7 @@ static gboolean title_change_cb (void)
         delayed_title_change_source = 0;
     }
 
-    if (aud_drct_get_playing () && config.show_song_titles)
+    if (aud_drct_get_playing () && aud_get_bool ("gtkui", "show_song_titles"))
     {
         gchar * title = aud_drct_get_title ();
         gchar * title_s = g_strdup_printf (_("%s - Audacious"), title);
@@ -141,21 +164,28 @@ static gboolean title_change_cb (void)
 
 static void ui_show (gboolean show)
 {
-    config.player_visible = show;
+    aud_set_bool ("gtkui", "player_visible", show);
 
     if (show)
     {
-        if (config.save_window_position && ! gtk_widget_get_visible (window))
-            gtk_window_move ((GtkWindow *) window, config.player_x,
-             config.player_y);
+        if (aud_get_bool ("gtkui", "save_window_position") && ! gtk_widget_get_visible (window))
+        {
+            gint x = aud_get_int ("gtkui", "player_x");
+            gint y = aud_get_int ("gtkui", "player_y");
+            gtk_window_move ((GtkWindow *) window, x, y);
+        }
 
         gtk_window_present ((GtkWindow *) window);
     }
     else if (gtk_widget_get_visible (window))
     {
-        if (config.save_window_position)
-            gtk_window_get_position ((GtkWindow *) window, & config.player_x,
-             & config.player_y);
+        if (aud_get_bool ("gtkui", "save_window_position"))
+        {
+            gint x, y;
+            gtk_window_get_position ((GtkWindow *) window, & x, & y);
+            aud_set_int ("gtkui", "player_x", x);
+            aud_set_int ("gtkui", "player_y", y);
+        }
 
         gtk_widget_hide (window);
     }
@@ -163,7 +193,7 @@ static void ui_show (gboolean show)
 
 static gboolean ui_is_shown (void)
 {
-    return config.player_visible;
+    return aud_get_bool ("gtkui", "player_visible");
 }
 
 static gboolean ui_is_focused (void)
@@ -563,7 +593,6 @@ static void config_save (void)
     save_window_size ();
     layout_save ();
     pw_col_save ();
-    gtkui_cfg_save ();
 }
 
 static void ui_hooks_associate(void)
@@ -605,24 +634,24 @@ static gboolean init (void)
     GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
     GtkWidget *evbox;
 
-    gtkui_cfg_load();
+    aud_config_set_defaults ("gtkui", gtkui_defaults);
 
     audgui_set_default_icon();
     audgui_register_stock_icons();
 
     pw_col_init ();
 
+    gint x = aud_get_int ("gtkui", "player_x");
+    gint y = aud_get_int ("gtkui", "player_y");
+    gint w = aud_get_int ("gtkui", "player_width");
+    gint h = aud_get_int ("gtkui", "player_height");
+
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size(GTK_WINDOW(window), MAINWIN_DEFAULT_WIDTH, MAINWIN_DEFAULT_HEIGHT);
-    gtk_window_set_keep_above(GTK_WINDOW(window), config.always_on_top);
+    gtk_window_set_default_size ((GtkWindow *) window, w, h);
+    gtk_window_set_keep_above ((GtkWindow *) window, aud_get_bool ("gtkui", "always_on_top"));
 
-    if (config.save_window_position && config.player_width && config.player_height)
-        gtk_window_resize(GTK_WINDOW(window), config.player_width, config.player_height);
-
-    if (config.save_window_position && config.player_x != -1)
-        gtk_window_move(GTK_WINDOW(window), config.player_x, config.player_y);
-    else
-        gtk_window_move(GTK_WINDOW(window), MAINWIN_DEFAULT_POS_X, MAINWIN_DEFAULT_POS_Y);
+    if (aud_get_bool ("gtkui", "save_window_position") && (x != -1 || y != -1))
+        gtk_window_move ((GtkWindow *) window, x, y);
 
     g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), NULL);
 
@@ -634,7 +663,7 @@ static gboolean init (void)
 
     menu_box = gtk_hbox_new (FALSE, 0);
     gtk_box_pack_start ((GtkBox *) vbox, menu_box, FALSE, FALSE, 0);
-    show_menu (config.menu_visible);
+    show_menu (aud_get_bool ("gtkui", "menu_visible"));
 
     tophbox = gtk_hbox_new(FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), tophbox, FALSE, TRUE, 0);
@@ -712,9 +741,8 @@ static gboolean init (void)
     ui_playlist_notebook_new ();
     g_object_ref (G_OBJECT(UI_PLAYLIST_NOTEBOOK));
 
-    if (config.statusbar_visible)
+    if (aud_get_bool ("gtkui", "statusbar_visible"))
     {
-        AUDDBG("statusbar setup\n");
         statusbar = ui_statusbar_new();
         gtk_box_pack_end(GTK_BOX(vbox), statusbar, FALSE, FALSE, 3);
     }
@@ -725,9 +753,8 @@ static gboolean init (void)
     gtk_box_pack_start ((GtkBox *) playlist_box, layout, TRUE, TRUE, 0);
     layout_add_center ((GtkWidget *) UI_PLAYLIST_NOTEBOOK);
 
-    if (config.infoarea_visible)
+    if (aud_get_bool ("gtkui", "infoarea_visible"))
     {
-        AUDDBG ("infoarea setup\n");
         infoarea = ui_infoarea_new ();
         gtk_box_pack_end (GTK_BOX(vbox), infoarea, FALSE, FALSE, 0);
     }
@@ -758,7 +785,7 @@ static gboolean init (void)
 
     gtk_widget_show_all (vbox);
 
-    if (config.player_visible)
+    if (aud_get_bool ("gtkui", "player_visible"))
         ui_show (TRUE);
 
     update_toggles (NULL, NULL);
@@ -798,7 +825,6 @@ static void cleanup (void)
         delayed_title_change_source = 0;
     }
 
-    gtkui_cfg_free();
     ui_hooks_disassociate();
 
     pw_col_cleanup ();
@@ -811,9 +837,9 @@ static void cleanup (void)
 
 void show_menu (gboolean show)
 {
-    config.menu_visible = show;
+    aud_set_bool ("gtkui", "menu_visible", show);
 
-    if (config.menu_visible)
+    if (show)
     {
         if (menu_main)
             gtk_widget_destroy (menu_main);
@@ -843,9 +869,9 @@ void show_menu (gboolean show)
 
 void show_infoarea (gboolean show)
 {
-    config.infoarea_visible = show;
+    aud_set_bool ("gtkui", "infoarea_visible", show);
 
-    if (config.infoarea_visible && ! infoarea)
+    if (show && ! infoarea)
     {
         infoarea = ui_infoarea_new ();
         gtk_box_pack_end ((GtkBox *) vbox, infoarea, FALSE, FALSE, 0);
@@ -853,7 +879,7 @@ void show_infoarea (gboolean show)
         gtk_widget_show_all (infoarea);
     }
 
-    if (! config.infoarea_visible && infoarea)
+    if (! show && infoarea)
     {
         gtk_widget_destroy (infoarea);
         infoarea = NULL;
@@ -862,9 +888,9 @@ void show_infoarea (gboolean show)
 
 void show_statusbar (gboolean show)
 {
-    config.statusbar_visible = show;
+    aud_set_bool ("gtkui", "statusbar_visible", show);
 
-    if (config.statusbar_visible && ! statusbar)
+    if (show && ! statusbar)
     {
         statusbar = ui_statusbar_new ();
         gtk_box_pack_end ((GtkBox *) vbox, statusbar, FALSE, FALSE, 3);
@@ -875,7 +901,7 @@ void show_statusbar (gboolean show)
         gtk_widget_show_all (statusbar);
     }
 
-    if (! config.statusbar_visible && statusbar)
+    if (! show && statusbar)
     {
         gtk_widget_destroy (statusbar);
         statusbar = NULL;

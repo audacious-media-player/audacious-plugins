@@ -24,13 +24,13 @@
 
 #include <audacious/debug.h>
 #include <audacious/gtk-compat.h>
+#include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudgui/list.h>
 #include <libaudgui/libaudgui.h>
 
 #include "gtkui.h"
-#include "gtkui_cfg.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 #include "playlist_util.h"
@@ -306,7 +306,7 @@ static void do_follow (void)
             row = aud_playlist_get_position (list);
             audgui_list_set_highlight (widget, row);
 
-            if (! config.autoscroll)
+            if (! aud_get_bool ("gtkui", "autoscroll"))
                 continue;
         }
 
@@ -377,7 +377,7 @@ void ui_playlist_notebook_position (void * data, void * user)
 {
     gint list = GPOINTER_TO_INT (data);
 
-    if (config.autoscroll)
+    if (aud_get_bool ("gtkui", "autoscroll"))
     {
         aud_playlist_select_all (list, FALSE);
 
@@ -420,9 +420,11 @@ GtkWidget *ui_playlist_notebook_new()
 
 void playlist_show_headers (gboolean show)
 {
-    if (config.playlist_headers == show)
+    gboolean old = aud_get_bool ("gtkui", "playlist_headers");
+    if (old == show)
         return;
-    config.playlist_headers = show;
+
+    aud_set_bool ("gtkui", "playlist_headers", show);
     ui_playlist_notebook_empty ();
     ui_playlist_notebook_populate ();
 }

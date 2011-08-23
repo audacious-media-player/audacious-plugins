@@ -32,7 +32,6 @@
 
 #include "config.h"
 #include "gtkui.h"
-#include "gtkui_cfg.h"
 #include "playlist_util.h"
 #include "ui_playlist_widget.h"
 
@@ -300,29 +299,34 @@ GtkWidget * ui_playlist_widget_new (gint playlist)
     GtkWidget * list = audgui_list_new (& callbacks, data,
      aud_playlist_entry_count (playlist));
 
-    if (config.custom_playlist_colors)
+    if (aud_get_bool ("gtkui", "custom_playlist_colors"))
     {
         GdkColor c;
+        gchar * tmp;
 
-        gdk_color_parse(config.playlist_bg, &c);
+        tmp = aud_get_string ("gtkui", "playlist_bg");
+        gdk_color_parse (tmp, & c);
         gtk_widget_modify_base(list, GTK_STATE_NORMAL, &c);
 
-        gdk_color_parse(config.playlist_fg, &c);
+        tmp = aud_get_string ("gtkui", "playlist_fg");
+        gdk_color_parse (tmp, & c);
         gtk_widget_modify_text(list, GTK_STATE_NORMAL, &c);
     }
 
-    if (config.playlist_font != NULL)
+    gchar * font = aud_get_string ("gtkui", "playlist_font");
+    if (font[0])
     {
         PangoFontDescription *desc;
 
-        desc = pango_font_description_from_string(config.playlist_font);
+        desc = pango_font_description_from_string (font);
         gtk_widget_modify_font(list, desc);
 
         pango_font_description_free(desc);
     }
+    g_free (font);
 
     gtk_tree_view_set_headers_visible ((GtkTreeView *) list,
-     config.playlist_headers);
+     aud_get_bool ("gtkui", "playlist_headers"));
     gtk_tree_view_set_search_equal_func ((GtkTreeView *) list, search_cb, data,
      NULL);
     g_signal_connect_swapped (list, "destroy", (GCallback) destroy_cb, data);

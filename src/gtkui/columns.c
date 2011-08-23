@@ -25,11 +25,11 @@
 
 #include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <libaudcore/index.h>
 #include <libaudgui/list.h>
 
 #include "config.h"
-#include "gtkui_cfg.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 
@@ -47,33 +47,25 @@ static const gchar * const pw_col_keys[PW_COLS] = {"number", "title", "artist",
 
 void pw_col_init (void)
 {
-    if (! config.playlist_columns || ! config.playlist_columns[0])
-    {
-        g_free (config.playlist_columns);
-        config.playlist_columns = g_strdup ("number title artist album queued "
-         "length");
-    }
-
     pw_num_cols = 0;
-    const gchar * c = config.playlist_columns;
-    while (pw_num_cols < PW_COLS)
-    {
-        while (* c == ' ' || * c == ',')
-            c ++;
-        if (! * c)
-            break;
 
+    gchar * columns = aud_get_string ("gtkui", "playlist_columns");
+    gchar * * split = g_strsplit (columns, " ", -1);
+
+    for (gchar * * elem = split; * elem && pw_num_cols < PW_COLS; elem ++)
+    {
         gint i = 0;
-        while (i < PW_COLS && strncasecmp (c, pw_col_keys[i], strlen
-         (pw_col_keys[i])))
+        while (i < PW_COLS && strcmp (* elem, pw_col_keys[i]))
             i ++;
 
         if (i == PW_COLS)
             break;
 
         pw_cols[pw_num_cols ++] = i;
-        c += strlen (pw_col_keys[i]);
     }
+
+    g_strfreev (split);
+    g_free (columns);
 }
 
 typedef struct {
@@ -362,9 +354,8 @@ void pw_col_save (void)
             break;
     }
 
-    g_free (config.playlist_columns);
-    config.playlist_columns = s->str;
-    g_string_free (s, FALSE);
+    aud_set_string ("gtkui", "playlist_columns", s->str);
+    g_string_free (s, TRUE);
 }
 
 void pw_col_cleanup (void)
