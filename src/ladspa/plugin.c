@@ -25,8 +25,8 @@
 
 #include <gmodule.h>
 
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -281,52 +281,44 @@ static PluginData * find_plugin (const char * path, const char * label)
 
 static void save_enabled_to_config (void)
 {
-    mcs_handle_t * database = aud_cfg_db_open ();
-    char key[32];
-
     int count = index_count (loadeds);
-    aud_cfg_db_set_int (database, "ladspa", "plugin_count", count);
+    aud_set_int ("ladspa", "plugin_count", count);
 
     for (int i = 0; i < count; i ++)
     {
         LoadedPlugin * loaded = index_get (loadeds, 0);
+        char key[32];
 
         snprintf (key, sizeof key, "plugin%d_path", i);
-        aud_cfg_db_set_string (database, "ladspa", key, loaded->plugin->path);
+        aud_set_string ("ladspa", key, loaded->plugin->path);
 
         snprintf (key, sizeof key, "plugin%d_label", i);
-        aud_cfg_db_set_string (database, "ladspa", key, loaded->plugin->desc->Label);
+        aud_set_string ("ladspa", key, loaded->plugin->desc->Label);
 
         int ccount = index_count (loaded->plugin->controls);
         for (int ci = 0; ci < ccount; ci ++)
         {
             snprintf (key, sizeof key, "plugin%d_control%d", i, ci);
-            aud_cfg_db_set_float (database, "ladspa", key, loaded->values[ci]);
+            aud_set_double ("ladspa", key, loaded->values[ci]);
         }
 
         disable_plugin_locked (0);
     }
-
-    aud_cfg_db_close (database);
 }
 
 static void load_enabled_from_config (void)
 {
-    mcs_handle_t * database = aud_cfg_db_open ();
-    char key[32];
-
-    int count = 0;
-    aud_cfg_db_get_int (database, "ladspa", "plugin_count", & count);
+    int count = aud_get_int ("ladspa", "plugin_count");
 
     for (int i = 0; i < count; i ++)
     {
-        char * path = NULL;
-        snprintf (key, sizeof key, "plugin%d_path", i);
-        aud_cfg_db_get_string (database, "ladspa", key, & path);
+        char key[32];
 
-        char * label = NULL;
+        snprintf (key, sizeof key, "plugin%d_path", i);
+        char * path = aud_get_string ("ladspa", key);
+
         snprintf (key, sizeof key, "plugin%d_label", i);
-        aud_cfg_db_get_string (database, "ladspa", key, & label);
+        char * label = aud_get_string ("ladspa", key);
 
         PluginData * plugin = find_plugin (path, label);
         if (plugin)
@@ -337,15 +329,13 @@ static void load_enabled_from_config (void)
             for (int ci = 0; ci < ccount; ci ++)
             {
                 snprintf (key, sizeof key, "plugin%d_control%d", i, ci);
-                aud_cfg_db_get_float (database, "ladspa", key, & loaded->values[ci]);
+                loaded->values[ci] = aud_get_double ("ladspa", key);
             }
         }
 
         g_free (path);
         g_free (label);
     }
-
-    aud_cfg_db_close (database);
 }
 
 static int init (void)
@@ -356,10 +346,7 @@ static int init (void)
     plugins = index_new ();
     loadeds = index_new ();
 
-    mcs_handle_t * database = aud_cfg_db_open ();
-    aud_cfg_db_get_string (database, "ladspa", "module_path", & module_path);
-    aud_cfg_db_close (database);
-
+    module_path = aud_get_string ("ladspa", "module_path");
     open_modules ();
     load_enabled_from_config ();
 
@@ -376,10 +363,8 @@ static void cleanup (void)
 
     pthread_mutex_lock (& mutex);
 
-    mcs_handle_t * database = aud_cfg_db_open ();
-    aud_cfg_db_set_string (database, "ladspa", "module_path", module_path);
-    aud_cfg_db_close (database);
-
+    aud_config_clear_section ("ladspa");
+    aud_set_string ("ladspa", "module_path", module_path);
     save_enabled_to_config ();
     close_modules ();
 
