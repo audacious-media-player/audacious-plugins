@@ -183,7 +183,7 @@ static void * open_module (const char * path)
 
 static void open_modules (void)
 {
-    if (! module_path)
+    if (! module_path || ! module_path[0])
         return;
 
     DIR * folder = opendir (module_path);
