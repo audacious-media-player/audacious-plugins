@@ -214,11 +214,11 @@ static gboolean cdaudio_init (void)
     cdng_cfg.disc_speed = aud_get_int ("CDDA", "disc_speed");
     cdng_cfg.disc_speed = CLAMP (cdng_cfg.disc_speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
 
-    cdng_cfg.use_proxy = aud_get_bool ("audacious", "use_proxy");
-    cdng_cfg.proxy_host = aud_get_string ("audacious", "proxy_host");
-    cdng_cfg.proxy_port = aud_get_int ("audacious", "proxy_port");
-    cdng_cfg.proxy_username = aud_get_string ("audacious", "proxy_user");
-    cdng_cfg.proxy_password = aud_get_string ("audacious", "proxy_pass");
+    cdng_cfg.use_proxy = aud_get_bool (NULL, "use_proxy");
+    cdng_cfg.proxy_host = aud_get_string (NULL, "proxy_host");
+    cdng_cfg.proxy_port = aud_get_int (NULL, "proxy_port");
+    cdng_cfg.proxy_username = aud_get_string (NULL, "proxy_user");
+    cdng_cfg.proxy_password = aud_get_string (NULL, "proxy_pass");
 
     if (!cdio_init ())
     {

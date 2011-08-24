@@ -34,7 +34,7 @@ enum
     STATE_STOPPING,
 };
 
-int crossfade_length = 3; /* seconds */
+int crossfade_length; /* seconds */
 
 static char state = STATE_OFF;
 static int current_channels = 0, current_rate = 0;
