@@ -25,7 +25,7 @@
 
 #include "neon.h"
 
-#include <audacious/configdb.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
@@ -396,35 +396,17 @@ static void handle_headers(struct neon_handle* h) {
  * -----
  */
 
-static int neon_proxy_auth_cb(void *userdata, const char *realm, int attempt, char *username, char *password) {
+static int neon_proxy_auth_cb (void * userdata, const char * realm, int attempt,
+ char * username, char * password)
+{
+    gchar * value = aud_get_string (NULL, "proxy_user");
+    g_strlcpy (username, value, NE_ABUFSIZ);
+    g_free (value);
 
-    mcs_handle_t *db;
-    gchar *value = NULL;
+    value = aud_get_string (NULL, "proxy_pass");
+    g_strlcpy (password, value, NE_ABUFSIZ);
+    g_free (value);
 
-    if ((db = aud_cfg_db_open()) == NULL) {
-        _DEBUG("<%p> configdb failed to open!", userdata);
-        return -1;
-    }
-
-    aud_cfg_db_get_string(db, NULL, "proxy_user", &value);
-    if (!value) {
-        _DEBUG("<%p> proxy_auth requested but no proxy_user", userdata);
-        aud_cfg_db_close(db);
-        return -1;
-    }
-    g_strlcpy(username, value, NE_ABUFSIZ);
-    value = NULL;
-
-    aud_cfg_db_get_string(db, NULL, "proxy_pass", &value);
-    if (!value) {
-        _DEBUG("<%p> proxy_auth requested but no proxy_pass", userdata);
-        aud_cfg_db_close(db);
-        return -1;
-    }
-    g_strlcpy(password, value, NE_ABUFSIZ);
-    value = NULL;
-
-    aud_cfg_db_close(db);
     return attempt;
 }
 
@@ -541,44 +523,17 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
 static gint open_handle(struct neon_handle* handle, gulong startbyte) {
 
     gint ret;
-    mcs_handle_t* db;
     gchar* proxy_host = NULL;
-    gchar* proxy_port_s = NULL;
-    gchar* endptr;
     guint proxy_port = 0;
-    gboolean use_proxy, proxy_use_auth;
 
-    db = aud_cfg_db_open();
-    if (FALSE == aud_cfg_db_get_bool(db, NULL, "use_proxy", &use_proxy)) {
-        use_proxy = FALSE;
-    }
+    gboolean use_proxy = aud_get_bool (NULL, "use_proxy");
+    gboolean proxy_use_auth = aud_get_bool (NULL, "proxy_use_auth");
 
-    if (FALSE == aud_cfg_db_get_bool(db, NULL, "proxy_use_auth", &proxy_use_auth)) {
-        proxy_use_auth = FALSE;
+    if (use_proxy)
+    {
+        proxy_host = aud_get_string (NULL, "proxy_host");
+        proxy_port = aud_get_int (NULL, "proxy_port");
     }
-
-    if (use_proxy) {
-        if (FALSE == aud_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host)) {
-            _ERROR ("<%p> Could not read proxy host, disabling proxy use",
-             (void *) handle);
-            use_proxy = FALSE;
-        }
-        if (FALSE == aud_cfg_db_get_string(db, NULL, "proxy_port", &proxy_port_s)) {
-            _ERROR ("<%p> Could not read proxy port, disabling proxy use",
-             (void *) handle);
-            use_proxy = FALSE;
-        }
-        proxy_port = strtoul(proxy_port_s, &endptr, 10);
-        if (!((*proxy_port_s != '\0') && (*endptr == '\0') && (proxy_port < 65536))) {
-            /*
-             * Invalid data
-             */
-            _ERROR ("<%p> Invalid proxy port, disabling proxy use", (void *)
-             handle);
-            use_proxy = FALSE;
-        }
-    }
-    aud_cfg_db_close(db);
 
     handle->redircount = 0;
 
@@ -626,11 +581,16 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
         _DEBUG("<%p> Creating request", handle);
         ret = open_request(handle, startbyte);
 
-        if (0 == ret) {
+        if (ret == 0)
+        {
+            g_free (proxy_host);
             return 0;
-        } else if (-1 == ret) {
+        }
+        else if (ret == -1)
+        {
             ne_session_destroy(handle->session);
             handle->session = NULL;
+            g_free (proxy_host);
             return -1;
         }
 
@@ -646,6 +606,7 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
     _ERROR ("<%p> Redirect count exceeded for URL %s", (void *) handle,
      handle->url);
 
+    g_free (proxy_host);
     return 1;
 }
 
