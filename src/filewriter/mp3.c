@@ -28,8 +28,8 @@
 
 #include <lame/lame.h>
 
-#include <audacious/configdb.h>
 #include <audacious/debug.h>
+#include <audacious/misc.h>
 #include <audacious/gtk-compat.h>
 
 #define MODES 4
@@ -89,28 +89,6 @@ static GtkWidget *enc_quality_vbox, *hbox1, *hbox2;
 static unsigned long numsamples = 0;
 static int inside;
 
-static gint vbr_on = 0;
-static gint vbr_type = 0;
-static gint vbr_min_val = 32;
-static gint vbr_max_val = 320;
-static gint enforce_min_val = 0;
-static gint vbr_quality_val = 4;
-static gint abr_val = 128;
-static gint toggle_xing_val = 1;
-static gint mark_original_val = 1;
-static gint mark_copyright_val = 0;
-static gint force_v2_val = 0;
-static gint only_v1_val = 0;
-static gint only_v2_val = 0;
-static gint algo_quality_val = 5;
-static gint out_samplerate_val = 0;
-static gint bitrate_val = 128;
-static gfloat compression_val = 11;
-static gint enc_toggle_val = 0;
-static gint audio_mode_val = MODE_AUTO;
-static gint enforce_iso_val = 0;
-static gint error_protect_val = 0;
-
 static gint available_samplerates[] =
 { 8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000 } ;
 
@@ -157,41 +135,63 @@ static void lame_debugf(const char *format, va_list ap)
     (void) vfprintf(stdout, format, ap);
 }
 
+static const gchar * const mp3_defaults[] = {
+ "vbr_on", "0",
+ "vbr_type", "0",
+ "vbr_min_val", "32",
+ "vbr_max_val", "320",
+ "enforce_min_val", "0",
+ "vbr_quality_val", "4",
+ "abr_val", "128",
+ "toggle_xing_val", "1",
+ "mark_original_val", "1",
+ "mark_copyright_val", "0",
+ "force_v2_val", "0",
+ "only_v1_val", "0",
+ "only_v2_val", "0",
+ "algo_quality_val", "5",
+ "out_samplerate_val", "0",
+ "bitrate_val", "128",
+ "compression_val", "11",
+ "enc_toggle_val", "0",
+ "audio_mode_val", "4", /* MODE_AUTO */
+ "enforce_iso_val", "0",
+ "error_protect_val", "0",
+ NULL};
+
+static gint vbr_on, vbr_type, vbr_min_val, vbr_max_val, enforce_min_val,
+ vbr_quality_val, abr_val, toggle_xing_val, mark_original_val,
+ mark_copyright_val, force_v2_val, only_v1_val, only_v2_val, algo_quality_val,
+ out_samplerate_val, bitrate_val;
+static gfloat compression_val;
+static gint enc_toggle_val, audio_mode_val, enforce_iso_val, error_protect_val;
+
 static void mp3_init(write_output_callback write_output_func)
 {
-    mcs_handle_t *db = aud_cfg_db_open();
-    aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_on", &vbr_on);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_type", &vbr_type);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_min_val", &vbr_min_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_max_val", &vbr_max_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "enforce_min_val",
-                       &enforce_min_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_quality_val",
-                       &vbr_quality_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "abr_val", &abr_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "toggle_xing_val",
-                       &toggle_xing_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "mark_original_val",
-                       &mark_original_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "mark_copyright_val",
-                       &mark_copyright_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "force_v2_val", &force_v2_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "only_v1_val", &only_v1_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "only_v2_val", &only_v2_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "algo_quality_val",
-                       &algo_quality_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "out_samplerate_val",
-                       &out_samplerate_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "bitrate_val", &bitrate_val);
-    aud_cfg_db_get_float(db, "filewriter_mp3", "compression_val",
-                         &compression_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "enc_toggle_val", &enc_toggle_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "audio_mode_val", &audio_mode_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "enforce_iso_val",
-                       &enforce_iso_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "error_protect_val",
-                       &error_protect_val);
-    aud_cfg_db_close(db);
+    aud_config_set_defaults ("filewriter_mp3", mp3_defaults);
+
+    vbr_on = aud_get_int ("filewriter_mp3", "vbr_on");
+    vbr_type = aud_get_int ("filewriter_mp3", "vbr_type");
+    vbr_min_val = aud_get_int ("filewriter_mp3", "vbr_min_val");
+    vbr_max_val = aud_get_int ("filewriter_mp3", "vbr_max_val");
+    enforce_min_val = aud_get_int ("filewriter_mp3", "enforce_min_val");
+    vbr_quality_val = aud_get_int ("filewriter_mp3", "vbr_quality_val");
+    abr_val = aud_get_int ("filewriter_mp3", "abr_val");
+    toggle_xing_val = aud_get_int ("filewriter_mp3", "toggle_xing_val");
+    mark_original_val = aud_get_int ("filewriter_mp3", "mark_original_val");
+    mark_copyright_val = aud_get_int ("filewriter_mp3", "mark_copyright_val");
+    force_v2_val = aud_get_int ("filewriter_mp3", "force_v2_val");
+    only_v1_val = aud_get_int ("filewriter_mp3", "only_v1_val");
+    only_v2_val = aud_get_int ("filewriter_mp3", "only_v2_val");
+    algo_quality_val = aud_get_int ("filewriter_mp3", "algo_quality_val");
+    out_samplerate_val = aud_get_int ("filewriter_mp3", "out_samplerate_val");
+    bitrate_val = aud_get_int ("filewriter_mp3", "bitrate_val");
+    compression_val = aud_get_double ("filewriter_mp3", "compression_val");
+    enc_toggle_val = aud_get_int ("filewriter_mp3", "enc_toggle_val");
+    audio_mode_val = aud_get_int ("filewriter_mp3", "audio_mode_val");
+    enforce_iso_val = aud_get_int ("filewriter_mp3", "enforce_iso_val");
+    error_protect_val = aud_get_int ("filewriter_mp3", "error_protect_val");
+
     if (write_output_func)
         write_output=write_output_func;
 }
@@ -410,7 +410,7 @@ static void algo_qual(GtkAdjustment * adjustment, gpointer user_data)
 static void samplerate_changed (GtkComboBox * combo)
 {
     gint i = gtk_combo_box_get_active (combo) - 1;
-    
+
     if (i >= 0 && i < G_N_ELEMENTS (available_samplerates))
         out_samplerate_val = available_samplerates[i];
     else
@@ -420,7 +420,7 @@ static void samplerate_changed (GtkComboBox * combo)
 static void bitrate_changed (GtkComboBox * combo)
 {
     gint i = gtk_combo_box_get_active (combo);
-    
+
     if (i >= 0 && i < G_N_ELEMENTS (available_bitrates))
         bitrate_val = available_bitrates[i];
     else
@@ -445,7 +445,7 @@ static void encoding_toggle(GtkToggleButton * togglebutton,
 static void mode_changed (GtkComboBox * combo)
 {
     gint i = gtk_combo_box_get_active (combo);
-    
+
     if (i >= 0 && i < MODES)
         audio_mode_val = modes[i];
     else
@@ -523,7 +523,7 @@ static void vbr_abr_toggle(GtkToggleButton * togglebutton,
 static void vbr_min_changed (GtkComboBox * combo)
 {
     gint i = gtk_combo_box_get_active (combo);
-    
+
     if (i >= 0 && i < G_N_ELEMENTS (available_bitrates))
         vbr_min_val = available_bitrates[i];
     else
@@ -533,7 +533,7 @@ static void vbr_min_changed (GtkComboBox * combo)
 static void vbr_max_changed (GtkComboBox * combo)
 {
     gint i = gtk_combo_box_get_active (combo);
-    
+
     if (i >= 0 && i < G_N_ELEMENTS (available_bitrates))
         vbr_max_val = available_bitrates[i];
     else
@@ -564,7 +564,7 @@ static void vbr_qual(GtkAdjustment * adjustment, gpointer user_data)
 static void abr_changed (GtkComboBox * combo)
 {
     gint i = gtk_combo_box_get_active (combo);
-    
+
     if (i >= 0 && i < G_N_ELEMENTS (available_bitrates))
         abr_val = available_bitrates[i];
     else
@@ -664,42 +664,30 @@ static void id3_only_version(GtkToggleButton * togglebutton,
 
 static void configure_ok_cb(gpointer data)
 {
-    mcs_handle_t *db;
-
     if (vbr_min_val > vbr_max_val)
         vbr_max_val = vbr_min_val;
 
-    db = aud_cfg_db_open();
-
-    aud_cfg_db_set_int(db, "filewriter_mp3", "vbr_on", vbr_on);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "vbr_type", vbr_type);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "vbr_min_val", vbr_min_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "vbr_max_val", vbr_max_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "enforce_min_val", enforce_min_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "vbr_quality_val", vbr_quality_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "abr_val", abr_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "toggle_xing_val", toggle_xing_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "mark_original_val",
-                       mark_original_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "mark_copyright_val",
-                       mark_copyright_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "force_v2_val", force_v2_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "only_v1_val", only_v1_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "only_v2_val", only_v2_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "algo_quality_val",
-                       algo_quality_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "out_samplerate_val",
-                       out_samplerate_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "bitrate_val", bitrate_val);
-    aud_cfg_db_set_float(db, "filewriter_mp3", "compression_val",
-                         compression_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "enc_toggle_val", enc_toggle_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "audio_mode_val", audio_mode_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "enforce_iso_val", enforce_iso_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "error_protect_val",
-                       error_protect_val);
-    aud_cfg_db_close(db);
-
+    aud_set_int ("filewriter_mp3", "vbr_on", vbr_on);
+    aud_set_int ("filewriter_mp3", "vbr_type", vbr_type);
+    aud_set_int ("filewriter_mp3", "vbr_min_val", vbr_min_val);
+    aud_set_int ("filewriter_mp3", "vbr_max_val", vbr_max_val);
+    aud_set_int ("filewriter_mp3", "enforce_min_val", enforce_min_val);
+    aud_set_int ("filewriter_mp3", "vbr_quality_val", vbr_quality_val);
+    aud_set_int ("filewriter_mp3", "abr_val", abr_val);
+    aud_set_int ("filewriter_mp3", "toggle_xing_val", toggle_xing_val);
+    aud_set_int ("filewriter_mp3", "mark_original_val", mark_original_val);
+    aud_set_int ("filewriter_mp3", "mark_copyright_val", mark_copyright_val);
+    aud_set_int ("filewriter_mp3", "force_v2_val", force_v2_val);
+    aud_set_int ("filewriter_mp3", "only_v1_val", only_v1_val);
+    aud_set_int ("filewriter_mp3", "only_v2_val", only_v2_val);
+    aud_set_int ("filewriter_mp3", "algo_quality_val", algo_quality_val);
+    aud_set_int ("filewriter_mp3", "out_samplerate_val", out_samplerate_val);
+    aud_set_int ("filewriter_mp3", "bitrate_val", bitrate_val);
+    aud_set_double ("filewriter_mp3", "compression_val", compression_val);
+    aud_set_int ("filewriter_mp3", "enc_toggle_val", enc_toggle_val);
+    aud_set_int ("filewriter_mp3", "audio_mode_val", audio_mode_val);
+    aud_set_int ("filewriter_mp3", "enforce_iso_val", enforce_iso_val);
+    aud_set_int ("filewriter_mp3", "error_protect_val", error_protect_val);
 
     gtk_widget_destroy(configure_win);
 }
@@ -789,7 +777,7 @@ static void mp3_configure(void)
             gchar buf[10];
             snprintf (buf, sizeof buf, "%d", available_samplerates[i]);
             gtk_combo_box_text_append_text ((GtkComboBoxText *) combo, buf);
-            
+
             if (out_samplerate_val == available_samplerates[i])
                 gtk_combo_box_set_active ((GtkComboBox *) combo, 1 + i);
         }
@@ -840,7 +828,7 @@ static void mp3_configure(void)
             gchar buf[10];
             snprintf (buf, sizeof buf, "%d", available_bitrates[i]);
             gtk_combo_box_text_append_text ((GtkComboBoxText *) combo, buf);
-            
+
             if (bitrate_val == available_bitrates[i])
                 gtk_combo_box_set_active ((GtkComboBox *) combo, i);
         }
@@ -900,7 +888,7 @@ static void mp3_configure(void)
         {
             gtk_combo_box_text_append_text ((GtkComboBoxText *) combo,
              _(mode_names[i]));
-            
+
             if (audio_mode_val == modes[i])
                 gtk_combo_box_set_active ((GtkComboBox *) combo, i);
         }
@@ -1025,7 +1013,7 @@ static void mp3_configure(void)
             gchar buf[10];
             snprintf (buf, sizeof buf, "%d", available_bitrates[i]);
             gtk_combo_box_text_append_text ((GtkComboBoxText *) combo, buf);
-            
+
             if (vbr_min_val == available_bitrates[i])
                 gtk_combo_box_set_active ((GtkComboBox *) combo, i);
         }
@@ -1052,7 +1040,7 @@ static void mp3_configure(void)
             gchar buf[10];
             snprintf (buf, sizeof buf, "%d", available_bitrates[i]);
             gtk_combo_box_text_append_text ((GtkComboBoxText *) combo, buf);
-            
+
             if (vbr_max_val == available_bitrates[i])
                 gtk_combo_box_set_active ((GtkComboBox *) combo, i);
         }
@@ -1096,7 +1084,7 @@ static void mp3_configure(void)
             gchar buf[10];
             snprintf (buf, sizeof buf, "%d", available_bitrates[i]);
             gtk_combo_box_text_append_text ((GtkComboBoxText *) combo, buf);
-            
+
             if (abr_val == available_bitrates[i])
                 gtk_combo_box_set_active ((GtkComboBox *) combo, i);
         }
