@@ -34,6 +34,13 @@
 #include "config.h"
 #include "plugin.h"
 
+static const gchar * const ladspa_defaults[] = {
+#ifndef _WIN32
+ "module_path", "/usr/lib/ladspa",
+#endif
+ "plugin_count", "0",
+ NULL};
+
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 char * module_path;
 struct index * modules; /* (void *) */
@@ -345,6 +352,8 @@ static int init (void)
     modules = index_new ();
     plugins = index_new ();
     loadeds = index_new ();
+
+    aud_config_set_defaults ("ladspa", ladspa_defaults);
 
     module_path = aud_get_string ("ladspa", "module_path");
     open_modules ();
