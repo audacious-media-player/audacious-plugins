@@ -21,7 +21,6 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
 #include <audacious/debug.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
@@ -42,191 +41,145 @@
 #include "ui_vis.h"
 #include "util.h"
 
-#define MAINWIN_DEFAULT_POS_X    20
-#define MAINWIN_DEFAULT_POS_Y    20
-#define EQUALIZER_DEFAULT_POS_X  20
-#define EQUALIZER_DEFAULT_POS_Y  136
-#define PLAYLISTWIN_DEFAULT_WIDTH       275
-#define PLAYLISTWIN_DEFAULT_HEIGHT      232
-#define PLAYLISTWIN_DEFAULT_POS_X       295
-#define PLAYLISTWIN_DEFAULT_POS_Y       20
+static const gchar * const skins_defaults[] = {
+ /* general */
+ "autoscroll_songname", "TRUE",
+ "mainwin_font", "Sans Bold 9",
+ "mainwin_use_bitmapfont", "TRUE",
+ "playlist_font", "Sans Bold 8",
+ "timer_mode", "0", /* TIMER_ELAPSED */
+ "twoway_scroll", "TRUE",
 
-#define MAINWIN_DEFAULT_FONT     "Sans Bold 9"
-#define PLAYLISTWIN_DEFAULT_FONT "Sans Bold 8"
+ /* visualizer */
+ "analyzer_falloff", "3", /* FALLOFF_FAST */
+ "analyzer_mode", "0", /* ANALYZER_NORMAL */
+ "analyzer_peaks", "TRUE",
+ "analyzer_type", "1", /* ANALYZER_BARS */
+ "peaks_falloff", "1", /* FALLOFF_SLOW */
+ "scope_mode", "0", /* SCOPE_DOT */
+ "vis_type", "0", /* VIS_ANALYZER */
+ "voiceprint_mode", "0", /* VOICEPRINT_NORMAL */
+ "vu_mode", "1", /* VU_SMOOTH */
+
+ /* windows */
+ "always_on_top", "FALSE",
+ "equalizer_shaded", "FALSE",
+ "equalizer_visible", "FALSE",
+ "equalizer_x", "20",
+ "equalizer_y", "136",
+ "player_shaded", "FALSE",
+ "player_visible", "TRUE",
+ "player_x", "20",
+ "player_y", "20",
+ "playlist_shaded", "FALSE",
+ "playlist_visible", "FALSE",
+ "playlist_x", "295",
+ "playlist_y", "20",
+ "playlist_width", "275",
+ "playlist_height", "232",
+ "sticky", "FALSE",
+ NULL};
 
 skins_cfg_t config;
 
 static GtkWidget * skin_view;
 
-static skins_cfg_t skins_default_config = {
-    .autoscroll = TRUE,
-    .always_on_top = FALSE,
-    .sticky = FALSE,
-    .skin = NULL,
-    .playlist_visible = FALSE,
-    .equalizer_visible = FALSE,
-    .player_visible = TRUE,
-    .player_shaded = FALSE,
-    .equalizer_shaded = FALSE,
-    .playlist_shaded = FALSE,
-    .timer_mode = 0,
-    .vis_type = VIS_ANALYZER,
-    .analyzer_mode = ANALYZER_NORMAL,
-    .analyzer_type = ANALYZER_BARS,
-    .scope_mode = SCOPE_DOT,
-    .voiceprint_mode = VOICEPRINT_NORMAL,
-    .vu_mode = VU_SMOOTH,
-    .analyzer_falloff = FALLOFF_FAST,
-    .peaks_falloff = FALLOFF_SLOW,
-    .player_x = MAINWIN_DEFAULT_POS_X,
-    .player_y = MAINWIN_DEFAULT_POS_Y,
-    .equalizer_x = EQUALIZER_DEFAULT_POS_X,
-    .equalizer_y = EQUALIZER_DEFAULT_POS_Y,
-    .playlist_x = PLAYLISTWIN_DEFAULT_POS_X,
-    .playlist_y = PLAYLISTWIN_DEFAULT_POS_Y,
-    .playlist_width = PLAYLISTWIN_DEFAULT_WIDTH,
-    .playlist_height = PLAYLISTWIN_DEFAULT_HEIGHT,
-    .analyzer_peaks = TRUE,
-    .twoway_scroll = TRUE,             /* use back and forth scroll */
-    .mainwin_use_bitmapfont = TRUE,
-    .playlist_font = NULL,
-    .mainwin_font = NULL,
-};
-
 typedef struct skins_cfg_boolent_t {
-    char const *be_vname;
-    gboolean *be_vloc;
-    gboolean be_wrt;
+    const gchar * name;
+    gboolean * ptr;
 } skins_cfg_boolent;
 
-static skins_cfg_boolent skins_boolents[] = {
-    {"always_on_top", &config.always_on_top, TRUE},
-    {"sticky", &config.sticky, TRUE},
-    {"autoscroll_songname", &config.autoscroll, TRUE},
-    {"equalizer_visible", &config.equalizer_visible, TRUE},
-    {"playlist_visible", &config.playlist_visible, TRUE},
-    {"player_visible", &config.player_visible, TRUE},
-    {"player_shaded", &config.player_shaded, TRUE},
-    {"equalizer_shaded", &config.equalizer_shaded, TRUE},
-    {"playlist_shaded", &config.playlist_shaded, TRUE},
-    {"analyzer_peaks", &config.analyzer_peaks, TRUE},
-    {"twoway_scroll", &config.twoway_scroll, TRUE},
-    {"mainwin_use_bitmapfont", &config.mainwin_use_bitmapfont, TRUE},
-};
+static const skins_cfg_boolent skins_boolents[] = {
+ /* general */
+ {"autoscroll_songname", & config.autoscroll},
+ {"mainwin_use_bitmapfont", & config.mainwin_use_bitmapfont},
+ {"twoway_scroll", & config.twoway_scroll},
 
-static gint ncfgbent = G_N_ELEMENTS(skins_boolents);
+ /* visualizer */
+ {"analyzer_peaks", & config.analyzer_peaks},
+
+ /* windows */
+ {"always_on_top", & config.always_on_top},
+ {"equalizer_shaded", & config.equalizer_shaded},
+ {"equalizer_visible", & config.equalizer_visible},
+ {"player_visible", & config.player_visible},
+ {"player_shaded", & config.player_shaded},
+ {"playlist_shaded", & config.playlist_shaded},
+ {"playlist_visible", & config.playlist_visible},
+ {"sticky", & config.sticky}};
 
 typedef struct skins_cfg_nument_t {
-    char const *ie_vname;
-    gint *ie_vloc;
-    gboolean ie_wrt;
+    const gchar * name;
+    gint * ptr;
 } skins_cfg_nument;
 
-static skins_cfg_nument skins_numents[] = {
-    {"player_x", &config.player_x, TRUE},
-    {"player_y", &config.player_y, TRUE},
-    {"timer_mode", &config.timer_mode, TRUE},
-    {"vis_type", &config.vis_type, TRUE},
-    {"analyzer_mode", &config.analyzer_mode, TRUE},
-    {"analyzer_type", &config.analyzer_type, TRUE},
-    {"scope_mode", &config.scope_mode, TRUE},
-    {"vu_mode", &config.vu_mode, TRUE},
-    {"voiceprint_mode", &config.voiceprint_mode, TRUE},
-    {"analyzer_falloff", &config.analyzer_falloff, TRUE},
-    {"peaks_falloff", &config.peaks_falloff, TRUE},
-    {"playlist_x", &config.playlist_x, TRUE},
-    {"playlist_y", &config.playlist_y, TRUE},
-    {"playlist_width", &config.playlist_width, TRUE},
-    {"playlist_height", &config.playlist_height, TRUE},
-    {"equalizer_x", &config.equalizer_x, TRUE},
-    {"equalizer_y", &config.equalizer_y, TRUE},
-};
+static const skins_cfg_nument skins_numents[] = {
+ /* general */
+ {"timer_mode", & config.timer_mode},
 
-static gint ncfgient = G_N_ELEMENTS(skins_numents);
+ /* visualizer */
+ {"analyzer_falloff", & config.analyzer_falloff},
+ {"analyzer_mode", & config.analyzer_mode},
+ {"analyzer_type", & config.analyzer_type},
+ {"peaks_falloff", & config.peaks_falloff},
+ {"scope_mode", & config.scope_mode},
+ {"vis_type", & config.vis_type},
+ {"voiceprint_mode", & config.voiceprint_mode},
+ {"vu_mode", & config.vu_mode},
+
+ /* windows */
+ {"equalizer_x", & config.equalizer_x},
+ {"equalizer_y", & config.equalizer_y},
+ {"player_x", & config.player_x},
+ {"player_y", & config.player_y},
+ {"playlist_x", & config.playlist_x},
+ {"playlist_y", & config.playlist_y},
+ {"playlist_width", & config.playlist_width},
+ {"playlist_height", & config.playlist_height}};
 
 typedef struct skins_cfg_strent_t {
-    char const *se_vname;
-    char **se_vloc;
-    gboolean se_wrt;
+    const gchar * name;
+    gchar * * ptr;
 } skins_cfg_strent;
 
-static skins_cfg_strent skins_strents[] = {
-    {"playlist_font", &config.playlist_font, TRUE},
-    {"mainwin_font", &config.mainwin_font, TRUE},
-    {"skin", &config.skin, TRUE},
-};
+static const skins_cfg_strent skins_strents[] = {
+ {"skin", & config.skin},
+ {"mainwin_font", & config.mainwin_font},
+ {"playlist_font", & config.playlist_font}};
 
-static gint ncfgsent = G_N_ELEMENTS(skins_strents);
-
-void skins_cfg_free() {
-    gint i;
-    for (i = 0; i < ncfgsent; ++i) {
-        if (*(skins_strents[i].se_vloc) != NULL) {
-            g_free( *(skins_strents[i].se_vloc) );
-            *(skins_strents[i].se_vloc) = NULL;
-        }
+void skins_cfg_free (void)
+{
+    for (gint i = 0; i < G_N_ELEMENTS (skins_strents); i ++)
+    {
+        g_free (* skins_strents[i].ptr);
+        * skins_strents[i].ptr = NULL;
     }
 }
 
-void skins_cfg_load() {
-    mcs_handle_t *cfgfile = aud_cfg_db_open();
+void skins_cfg_load (void)
+{
+    aud_config_set_defaults ("skins", skins_defaults);
 
-    memcpy(&config, &skins_default_config, sizeof(skins_cfg_t));
-    int i;
+    for (gint i = 0; i < G_N_ELEMENTS (skins_boolents); i ++)
+        * skins_boolents[i].ptr = aud_get_bool ("skins", skins_boolents[i].name);
 
-    for (i = 0; i < ncfgbent; ++i) {
-        aud_cfg_db_get_bool(cfgfile, "skins",
-                            skins_boolents[i].be_vname,
-                            skins_boolents[i].be_vloc);
-    }
+    for (gint i = 0; i < G_N_ELEMENTS (skins_numents); i ++)
+        * skins_numents[i].ptr = aud_get_int ("skins", skins_numents[i].name);
 
-    for (i = 0; i < ncfgient; ++i) {
-        aud_cfg_db_get_int(cfgfile, "skins",
-                           skins_numents[i].ie_vname,
-                           skins_numents[i].ie_vloc);
-    }
-
-    for (i = 0; i < ncfgsent; ++i) {
-        aud_cfg_db_get_string(cfgfile, "skins",
-                              skins_strents[i].se_vname,
-                              skins_strents[i].se_vloc);
-    }
-
-    if (!config.mainwin_font)
-        config.mainwin_font = g_strdup(MAINWIN_DEFAULT_FONT);
-
-    if (!config.playlist_font)
-        config.playlist_font = g_strdup(PLAYLISTWIN_DEFAULT_FONT);
-
-    aud_cfg_db_close(cfgfile);
+    for (gint i = 0; i < G_N_ELEMENTS (skins_strents); i ++)
+        * skins_strents[i].ptr = aud_get_string ("skins", skins_strents[i].name);
 }
 
+void skins_cfg_save (void)
+{
+    for (gint i = 0; i < G_N_ELEMENTS (skins_boolents); i ++)
+        aud_set_bool ("skins", skins_boolents[i].name, * skins_boolents[i].ptr);
 
-void skins_cfg_save() {
-    mcs_handle_t *cfgfile = aud_cfg_db_open();
+    for (gint i = 0; i < G_N_ELEMENTS (skins_numents); i ++)
+        aud_set_int ("skins", skins_numents[i].name, * skins_numents[i].ptr);
 
-    int i;
-
-    for (i = 0; i < ncfgsent; ++i) {
-        if (skins_strents[i].se_wrt)
-            aud_cfg_db_set_string(cfgfile, "skins",
-                                  skins_strents[i].se_vname,
-                                  *skins_strents[i].se_vloc);
-    }
-
-    for (i = 0; i < ncfgbent; ++i)
-        if (skins_boolents[i].be_wrt)
-            aud_cfg_db_set_bool(cfgfile, "skins",
-                                skins_boolents[i].be_vname,
-                                *skins_boolents[i].be_vloc);
-
-    for (i = 0; i < ncfgient; ++i)
-        if (skins_numents[i].ie_wrt)
-            aud_cfg_db_set_int(cfgfile, "skins",
-                               skins_numents[i].ie_vname,
-                               *skins_numents[i].ie_vloc);
-
-    aud_cfg_db_close(cfgfile);
+    for (gint i = 0; i < G_N_ELEMENTS (skins_strents); i ++)
+        aud_set_string ("skins", skins_strents[i].name, * skins_strents[i].ptr);
 }
 
 static void
@@ -251,10 +204,10 @@ bitmap_fonts_cb()
 }
 
 static PreferencesWidget font_table_elements[] = {
- {WIDGET_FONT_BTN, N_("_Player:"), .cfg = & config.mainwin_font,
+ {WIDGET_FONT_BTN, N_("_Player:"), .cfg_type = VALUE_STRING, .cfg = & config.mainwin_font,
   .callback = mainwin_font_set_cb, .data = {.font_btn = {N_("Select main "
   "player window font:")}}},
- {WIDGET_FONT_BTN, N_("_Playlist:"), .cfg = & config.playlist_font,
+ {WIDGET_FONT_BTN, N_("_Playlist:"), .cfg_type = VALUE_STRING, .cfg = & config.playlist_font,
   .callback = playlist_font_set_cb, .data = {.font_btn = {N_("Select playlist "
   "font:")}}}};
 
@@ -275,7 +228,6 @@ on_skin_view_drag_data_received(GtkWidget * widget,
                                 guint info, guint time,
                                 gpointer user_data)
 {
-    mcs_handle_t *db;
     gchar *path;
 
     if (! gtk_selection_data_get_data (selection_data))
@@ -301,11 +253,6 @@ on_skin_view_drag_data_received(GtkWidget * widget,
             return;
         skin_install_skin(path);
         skin_view_update ((GtkTreeView *) widget);
-
-        /* Change skin name in the config file */
-        db = aud_cfg_db_open();
-        aud_cfg_db_set_string(db, "skins", "skin", path);
-        aud_cfg_db_close(db);
     }
 }
 
