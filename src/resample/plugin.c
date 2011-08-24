@@ -19,9 +19,9 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -29,35 +29,41 @@
 #include "config.h"
 #include "resample.h"
 
-int common_rates[] = {8000, 16000, 22050, 44100, 48000, 96000, 192000};
-int n_common_rates = sizeof common_rates / sizeof common_rates[0];
-int converted_rates[] = {48000, 48000, 44100, 44100, 48000, 96000, 96000};
-int fallback_rate = 44100;
-int method = SRC_LINEAR;
+const int common_rates[] = {8000, 16000, 22050, 44100, 48000, 96000, 192000};
+const int n_common_rates = G_N_ELEMENTS (common_rates);
+
+int converted_rates[G_N_ELEMENTS (common_rates)];
+int fallback_rate;
+int method;
 
 static GtkWidget * about_window = NULL;
 static GtkWidget * config_window = NULL;
 
+static const gchar * const resample_defaults[] = {
+ "8000", "48000",
+ "16000", "48000",
+ "22050", "44100",
+ "44100", "44100",
+ "48000", "48000",
+ "96000", "96000",
+ "192000", "96000",
+ "fallback_rate", "44100",
+ "method", "4", /* SRC_LINEAR */
+ NULL};
+
 void resample_config_load (void)
 {
-    mcs_handle_t * database = aud_cfg_db_open ();
-    if (! database)
-        return;
+    aud_config_set_defaults ("resample", resample_defaults);
 
-    char scratch[16];
-    int count;
-
-    for (count = 0; count < n_common_rates; count ++)
+    for (int count = 0; count < n_common_rates; count ++)
     {
+        char scratch[16];
         snprintf (scratch, sizeof scratch, "%d", common_rates[count]);
-        aud_cfg_db_get_int (database, "resample", scratch,
-         & converted_rates[count]);
+        converted_rates[count] = aud_get_int ("resample", scratch);
     }
 
-    aud_cfg_db_get_int (database, "resample", "method", & method);
-    aud_cfg_db_get_int (database, "resample", "fallback_rate", & fallback_rate);
-
-    aud_cfg_db_close (database);
+    fallback_rate = aud_get_int ("resample", "fallback_rate");
+    method = aud_get_int ("resample", "method");
 }
 
 void resample_config_save (void)
@@ -67,23 +73,15 @@ void resample_config_save (void)
     if (config_window != NULL)
         gtk_widget_destroy (config_window);
 
-    mcs_handle_t * database = aud_cfg_db_open ();
-    if (! database)
-        return;
-
-    char scratch[16];
-    int count;
-
-    for (count = 0; count < n_common_rates; count ++)
+    for (int count = 0; count < n_common_rates; count ++)
     {
+        char scratch[16];
         snprintf (scratch, sizeof scratch, "%d", common_rates[count]);
-        aud_cfg_db_set_int (database, "resample", scratch, converted_rates[count]);
+        aud_set_int ("resample", scratch, converted_rates[count]);
     }
 
-    aud_cfg_db_set_int (database, "resample", "method", method);
-    aud_cfg_db_set_int (database, "resample", "fallback_rate", fallback_rate);
-
-    aud_cfg_db_close (database);
+    aud_set_int ("resample", "fallback_rate", fallback_rate);
+    aud_set_int ("resample", "method", method);
 }
 
 static void resample_about (void)

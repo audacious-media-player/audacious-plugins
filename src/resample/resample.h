@@ -23,8 +23,9 @@
 
 #define RESAMPLE_ERROR(e) fprintf (stderr, "resample: %s\n", src_strerror (e))
 
-extern int common_rates[];
-extern int n_common_rates;
+extern const int common_rates[];
+extern const int n_common_rates;
+
 extern int converted_rates[];
 extern int fallback_rate;
 extern int method;
