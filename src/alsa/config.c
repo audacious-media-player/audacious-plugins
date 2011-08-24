@@ -20,8 +20,8 @@
 #include <alsa/asoundlib.h>
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -306,6 +306,7 @@ static void guess_mixer_element (void)
     {
         if (list_has_member (mixer_element_list, guesses[count]))
         {
+            free (alsa_config_mixer_element);
             alsa_config_mixer_element = strdup (guesses[count]);
             return;
         }
@@ -314,33 +315,27 @@ static void guess_mixer_element (void)
     ERROR_NOISY ("No suitable mixer element found.\n");
 }
 
+static const gchar * const alsa_defaults[] = {
+ "pcm", "default",
+ "mixer", "default",
+ "drain-workaround", "TRUE",
+ NULL};
+
 void alsa_config_load (void)
 {
-    mcs_handle_t * database = aud_cfg_db_open ();
+    aud_config_set_defaults ("alsa", alsa_defaults);
 
-    aud_cfg_db_get_string (database, "alsa", "pcm", & alsa_config_pcm);
-    if (! alsa_config_pcm)
-        alsa_config_pcm = strdup ("default");
+    alsa_config_pcm = aud_get_string ("alsa", "pcm");
+    alsa_config_mixer = aud_get_string ("alsa", "mixer");
+    alsa_config_mixer_element = aud_get_string ("alsa", "mixer-element");
+    alsa_config_drain_workaround = aud_get_bool ("alsa", "drain-workaround");
 
-    aud_cfg_db_get_string (database, "alsa", "mixer", & alsa_config_mixer);
-    if (! alsa_config_mixer)
-        alsa_config_mixer = strdup ("default");
-
-    aud_cfg_db_get_string (database, "alsa", "mixer-element",
-     & alsa_config_mixer_element);
-    if (! alsa_config_mixer_element)
+    if (! alsa_config_mixer_element[0])
         guess_mixer_element ();
-
-    aud_cfg_db_get_bool (database, "alsa", "drain-workaround", &
-     alsa_config_drain_workaround);
-
-    aud_cfg_db_close (database);
 }
 
 void alsa_config_save (void)
 {
-    mcs_handle_t * database = aud_cfg_db_open ();
-
     if (pcm_list)
     {
         g_object_unref (pcm_list);
@@ -359,12 +354,10 @@ void alsa_config_save (void)
         mixer_element_list = NULL;
     }
 
-    aud_cfg_db_set_string (database, "alsa", "pcm", alsa_config_pcm);
-    aud_cfg_db_set_string (database, "alsa", "mixer", alsa_config_mixer);
-    aud_cfg_db_set_string (database, "alsa", "mixer-element",
-     alsa_config_mixer_element);
-    aud_cfg_db_set_bool (database, "alsa", "drain-workaround",
-     alsa_config_drain_workaround);
+    aud_set_string ("alsa", "pcm", alsa_config_pcm);
+    aud_set_string ("alsa", "mixer", alsa_config_mixer);
+    aud_set_string ("alsa", "mixer-element", alsa_config_mixer_element);
+    aud_set_bool ("alsa", "drain-workaround", alsa_config_drain_workaround);
 
     free (alsa_config_pcm);
     alsa_config_pcm = NULL;
@@ -372,8 +365,6 @@ void alsa_config_save (void)
     alsa_config_mixer = NULL;
     free (alsa_config_mixer_element);
     alsa_config_mixer_element = NULL;
-
-    aud_cfg_db_close (database);
 }
 
 static GtkWidget * combo_new (const char * title, GtkListStore * list,
