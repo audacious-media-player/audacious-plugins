@@ -515,10 +515,7 @@ void layout_remove (GtkWidget * widget)
 
 void layout_save (void)
 {
-    gchar * path = g_strdup_printf ("%s/" LAYOUT_FILE, aud_get_path (AUD_PATH_USER_DIR));
-    FILE * handle = fopen (path, "w");
-    g_free (path);
-    g_return_if_fail (handle);
+    gint i = 0;
 
     for (GList * node = items; node; node = node->next)
     {
@@ -528,84 +525,41 @@ void layout_save (void)
         if (item->widget)
             item_save_size (item);
 
-        fprintf (handle, "item %s\npane %d\nx %d\ny %d\nw %d\nh %d\n",
-         item->name, item->dock, item->x, item->y, item->w, item->h);
+        gchar key[16], value[64];
+
+        snprintf (key, sizeof key, "item%d_name", i);
+        aud_set_string ("gtkui-layout", key, item->name);
+
+        snprintf (key, sizeof key, "item%d_pos", i);
+        snprintf (value, sizeof value, "%d,%d,%d,%d,%d", item->dock, item->x,
+         item->y, item->w, item->h);
+        aud_set_string ("gtkui-layout", key, value);
+
+        i ++;
     }
 
-    fclose (handle);
-}
-
-static gchar parse_key[512];
-static gchar * parse_value;
-
-static void parse_next (FILE * handle)
-{
-    parse_value = NULL;
-
-    if (fgets (parse_key, sizeof parse_key, handle) == NULL)
-        return;
-
-    gchar * space = strchr (parse_key, ' ');
-    if (space == NULL)
-        return;
-
-    * space = 0;
-    parse_value = space + 1;
-
-    gchar * newline = strchr (parse_value, '\n');
-    if (newline != NULL)
-        * newline = 0;
-}
-
-static gboolean parse_integer (const gchar * key, gint * value)
-{
-    return (parse_value != NULL && ! strcmp (parse_key, key) && sscanf
-     (parse_value, "%d", value) == 1);
-}
-
-static const gchar * parse_string (const gchar * key)
-{
-    return (parse_value != NULL && ! strcmp (parse_key, key)) ? parse_value : NULL;
+    aud_set_int ("gtkui-layout", "item_count", i);
 }
 
 void layout_load (void)
 {
     g_return_if_fail (! items);
 
-    gchar * path = g_strdup_printf ("%s/" LAYOUT_FILE, aud_get_path (AUD_PATH_USER_DIR));
-    FILE * handle = fopen (path, "r");
-    g_free (path);
+    gint count = aud_get_int ("gtkui-layout", "item_count");
 
-    if (! handle)
-        return;
-
-    while (1)
+    for (gint i = 0; i < count; i ++)
     {
-        parse_next (handle);
-        const gchar * name = parse_string ("item");
-        if (! name)
-            break;
+        gchar key[16];
 
+        snprintf (key, sizeof key, "item%d_name", i);
+        gchar * name = aud_get_string ("gtkui-layout", key);
         Item * item = item_new (name);
+        g_free (name);
 
-        parse_next (handle);
-        if (! parse_integer ("pane", & item->dock))
-            break;
-        parse_next (handle);
-        if (! parse_integer ("x", & item->x))
-            break;
-        parse_next (handle);
-        if (! parse_integer ("y", & item->y))
-            break;
-        parse_next (handle);
-        if (! parse_integer ("w", & item->w))
-            break;
-        parse_next (handle);
-        if (! parse_integer ("h", & item->h))
-            break;
+        snprintf (key, sizeof key, "item%d_pos", i);
+        gchar * pos = aud_get_string ("gtkui-layout", key);
+        sscanf (pos, "%d,%d,%d,%d,%d", & item->dock, & item->x, & item->y, & item->w, & item->h);
     }
-
-    fclose (handle);
 }
 
 void layout_cleanup (void)
