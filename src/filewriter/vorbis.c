@@ -27,8 +27,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include <audacious/configdb.h>
 #include <audacious/gtk-compat.h>
+#include <audacious/misc.h>
 
 static void vorbis_init(write_output_callback write_output_func);
 static void vorbis_configure(void);
@@ -47,8 +47,6 @@ FileWriter vorbis_plugin =
     .format_required = FMT_FLOAT,
 };
 
-static float v_base_quality = 0.5;
-
 static ogg_stream_state os;
 static ogg_page og;
 static ogg_packet op;
@@ -58,13 +56,17 @@ static vorbis_block vb;
 static vorbis_info vi;
 static vorbis_comment vc;
 
+static const gchar * const vorbis_defaults[] = {
+ "base_quality", "0.5",
+ NULL};
+
+static gdouble v_base_quality;
+
 static void vorbis_init(write_output_callback write_output_func)
 {
-    mcs_handle_t *db = aud_cfg_db_open();
+    aud_config_set_defaults ("filewriter_vorbis", vorbis_defaults);
 
-    aud_cfg_db_get_float(db, "filewriter_vorbis", "base_quality", &v_base_quality);
-
-    aud_cfg_db_close(db);
+    v_base_quality = aud_get_double ("filewriter_vorbis", "base_quality");
 
     if (write_output_func)
         write_output=write_output_func;
@@ -215,11 +217,7 @@ static void quality_change(GtkAdjustment *adjustment, gpointer user_data)
 
 static void configure_ok_cb(gpointer data)
 {
-    mcs_handle_t *db = aud_cfg_db_open();
-
-    aud_cfg_db_set_float(db, "filewrite_vorbis", "base_quality", v_base_quality);
-
-    aud_cfg_db_close(db);
+    aud_set_double ("filewrite_vorbis", "base_quality", v_base_quality);
 
     gtk_widget_hide(configure_win);
 }

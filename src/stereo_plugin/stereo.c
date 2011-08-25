@@ -1,13 +1,13 @@
 /* Extra Stereo Plugin for Audacious
  * Written by Johan Levin, 1999
- * Ported to new effect API by John Lindgren, 2009 */
+ * Modified by John Lindgren, 2009-2011 */
 
 #include "config.h"
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -38,6 +38,10 @@ AUD_EFFECT_PLUGIN
     .preserves_format = TRUE,
 )
 
+static const gchar * const stereo_defaults[] = {
+ "intensity", "2.5",
+ NULL};
+
 static const char *about_text = N_("Extra Stereo Plugin\n\n"
                                    "By Johan Levin 1999.");
 
@@ -46,14 +50,9 @@ static gdouble value;
 
 static gboolean init (void)
 {
-	value = 2.5;
+	aud_config_set_defaults ("extra_stereo", stereo_defaults);
+	value = aud_get_double ("extra_stereo", "intensity");
 
-	mcs_handle_t * db = aud_cfg_db_open ();
-	if (! db)
-		return TRUE;
-
-	aud_cfg_db_get_double(db, "extra_stereo", "intensity", &value);
-	aud_cfg_db_close(db);
 	return TRUE;
 }
 
@@ -68,13 +67,7 @@ static void about (void)
 static void conf_ok_cb (GtkButton * button, GtkAdjustment * adj)
 {
 	value = gtk_adjustment_get_value (adj);
-
-	mcs_handle_t * db = aud_cfg_db_open ();
-	if (db)
-	{
-		aud_cfg_db_set_double (db, "extra_stereo", "intensity", value);
-		aud_cfg_db_close (db);
-	}
+	aud_set_double ("extra_stereo", "intensity", value);
 
 	gtk_widget_destroy(conf_dialog);
 }

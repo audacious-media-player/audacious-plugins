@@ -22,9 +22,9 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 static gboolean init (void);
@@ -55,16 +55,14 @@ static gdouble value;
 static gint cryst_channels;
 static gfloat * cryst_prev;
 
+static const gchar * const cryst_defaults[] = {
+ "intensity", "1",
+ NULL};
+
 static gboolean init (void)
 {
-	value = 1.0;
-
-	mcs_handle_t * db = aud_cfg_db_open ();
-	if (db)
-	{
-		aud_cfg_db_get_double (db, "crystalizer", "intensity", & value);
-		aud_cfg_db_close (db);
-	}
+	aud_config_set_defaults ("crystalizer", cryst_defaults);
+	value = aud_get_double ("crystalizer", "intensity");
 
 	return TRUE;
 }
@@ -73,13 +71,7 @@ static gboolean init (void)
 static void conf_ok_cb (GtkButton * button, GtkAdjustment * adj)
 {
 	value = gtk_adjustment_get_value (adj);
-
-	mcs_handle_t * db = aud_cfg_db_open ();
-	if (db)
-	{
-		aud_cfg_db_set_double (db, "crystalizer", "intensity", value);
-		aud_cfg_db_close (db);
-	}
+	aud_set_double ("crystalizer", "intensity", value);
 
 	gtk_widget_destroy(conf_dialog);
 }

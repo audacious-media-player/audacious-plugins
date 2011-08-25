@@ -22,7 +22,6 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
@@ -58,7 +57,7 @@ enum fileext_t
     FILEEXT_MAX
 };
 
-static gint fileext = WAV;
+static gint fileext;
 static const gchar *fileext_str[FILEEXT_MAX] =
 {
     "wav",
@@ -76,18 +75,18 @@ static const gchar *fileext_str[FILEEXT_MAX] =
 static FileWriter *plugin;
 
 static GtkWidget *saveplace_hbox, *saveplace;
-static gboolean save_original = TRUE;
+static gboolean save_original;
 
 static GtkWidget *filenamefrom_hbox, *filenamefrom_label, *filenamefrom_toggle;
-static gboolean filenamefromtags = TRUE;
+static gboolean filenamefromtags;
 
 static GtkWidget *use_suffix_toggle = NULL;
-static gboolean use_suffix = FALSE;
+static gboolean use_suffix;
 
 static GtkWidget *prependnumber_toggle;
-static gboolean prependnumber = FALSE;
+static gboolean prependnumber;
 
-static gchar *file_path = NULL;
+static gchar *file_path;
 
 VFSFile *output_file = NULL;
 Tuple *tuple = NULL;
@@ -120,20 +119,26 @@ static gint file_write_output (void * data, gint length)
     return vfs_fwrite (data, 1, length, output_file);
 }
 
+static const gchar * const filewriter_defaults[] = {
+ "fileext", "0", /* WAV */
+ "filenamefromtags", "TRUE",
+ "prependnumber", "FALSE",
+ "save_original", "TRUE",
+ "use_suffix", "FALSE",
+ NULL};
+
 static gboolean file_init (void)
 {
-    mcs_handle_t *db;
+    aud_config_set_defaults ("filewriter", filewriter_defaults);
 
-    db = aud_cfg_db_open();
-    aud_cfg_db_get_int(db, "filewriter", "fileext", &fileext);
-    aud_cfg_db_get_string(db, "filewriter", "file_path", &file_path);
-    aud_cfg_db_get_bool(db, "filewriter", "save_original", &save_original);
-    aud_cfg_db_get_bool(db, "filewriter", "use_suffix", &use_suffix);
-    aud_cfg_db_get_bool(db, "filewriter", "filenamefromtags", &filenamefromtags);
-    aud_cfg_db_get_bool(db, "filewriter", "prependnumber", &prependnumber);
-    aud_cfg_db_close(db);
+    fileext = aud_get_int ("filewriter", "fileext");
+    filenamefromtags = aud_get_bool ("filewriter", "filenamefromtags");
+    file_path = aud_get_string ("filewriter", "file_path");
+    prependnumber = aud_get_bool ("filewriter", "prependnumber");
+    save_original = aud_get_bool ("filewriter", "save_original");
+    use_suffix = aud_get_bool ("filewriter", "use_suffix");
 
-    if (file_path == NULL)
+    if (! file_path[0])
     {
         g_return_val_if_fail (getenv ("HOME") != NULL, FALSE);
         file_path = g_filename_to_uri (getenv ("HOME"), NULL, NULL);
@@ -145,6 +150,12 @@ static gboolean file_init (void)
         plugin->init(&file_write_output);
 
     return TRUE;
+}
+
+static void file_cleanup (void)
+{
+    g_free (file_path);
+    file_path = NULL;
 }
 
 void file_about (void)
@@ -343,8 +354,6 @@ static gint file_get_time (void)
 
 static void configure_ok_cb(gpointer data)
 {
-    mcs_handle_t *db;
-
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
 
     g_free (file_path);
@@ -356,15 +365,12 @@ static void configure_ok_cb(gpointer data)
     prependnumber =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prependnumber_toggle));
 
-    db = aud_cfg_db_open();
-    aud_cfg_db_set_int(db, "filewriter", "fileext", fileext);
-    aud_cfg_db_set_string(db, "filewriter", "file_path", file_path);
-    aud_cfg_db_set_bool(db, "filewriter", "save_original", save_original);
-    aud_cfg_db_set_bool(db, "filewriter", "filenamefromtags", filenamefromtags);
-    aud_cfg_db_set_bool(db, "filewriter", "use_suffix", use_suffix);
-    aud_cfg_db_set_bool(db, "filewriter", "prependnumber", prependnumber);
-
-    aud_cfg_db_close(db);
+    aud_set_int ("filewriter", "fileext", fileext);
+    aud_set_bool ("filewriter", "filenamefromtags", filenamefromtags);
+    aud_set_string ("filewriter", "file_path", file_path);
+    aud_set_bool ("filewriter", "prependnumber", prependnumber);
+    aud_set_bool ("filewriter", "save_original", save_original);
+    aud_set_bool ("filewriter", "use_suffix", use_suffix);
 
     gtk_widget_destroy(configure_win);
     if (path_dirbrowser)
@@ -595,6 +601,7 @@ AUD_OUTPUT_PLUGIN
 (
  .name = "FileWriter",
  .init = file_init,
+ .cleanup = file_cleanup,
  .about = file_about,
  .configure = file_configure,
  .probe_priority = 0,

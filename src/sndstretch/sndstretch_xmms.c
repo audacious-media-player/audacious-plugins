@@ -5,7 +5,7 @@
 //    Copyright (C) 2001  Florian Berger
 //    Email: florian.berger@jk.uni-linz.ac.at
 //
-//    Ported to new Audacious effect API by John Lindgren, 2009
+//    Copyright (C) 2009-2011 John Lindgren
 //
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License Version 2 as
@@ -33,9 +33,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <audacious/configdb.h>
 #include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audio.h>
 
@@ -256,15 +256,10 @@ static void sndstretch_config_logobutton_cb(GtkButton * button, gpointer data)
 
 static gint sndstretch_config_destroy_cb(GtkWidget * w, GdkEventAny * e, gpointer data)
 {
-	mcs_handle_t *db = aud_cfg_db_open();
-	if (db)
-	{
-		aud_cfg_db_set_double (db, "sndstretch", "pitch", SS.pitch);
-		aud_cfg_db_set_double (db, "sndstretch", "speed", SS.speed);
-		aud_cfg_db_set_bool (db, "sndstretch", "short_overlap", SS.short_overlap);
-		aud_cfg_db_set_bool (db, "sndstretch", "volume_corr", SS.volume_corr);
-		aud_cfg_db_close (db);
-	}
+	aud_set_double ("sndstretch", "pitch", SS.pitch);
+	aud_set_double ("sndstretch", "speed", SS.speed);
+	aud_set_bool ("sndstretch", "short_overlap", SS.short_overlap);
+	aud_set_bool ("sndstretch", "volume_corr", SS.volume_corr);
 
 	gtk_widget_destroy(sndstretch_config_dialog);
 	sndstretch_config_dialog = NULL;
@@ -386,6 +381,13 @@ void sndstretch_config(void)
 	gtk_widget_show_all(sndstretch_config_dialog);
 }
 
+static const gchar * const sndstretch_defaults[] = {
+ "pitch", "1",
+ "speed", "1",
+ "short_overlap", "FALSE",
+ "volume_corr", "FALSE",
+ NULL};
+
 gboolean sndstretch_init (void)
 {
 	SS.fragsize=0;
@@ -399,22 +401,14 @@ gboolean sndstretch_init (void)
 	SS.bpsec=176400;
 	SS.vol_r=50;
 	SS.vol_l=50;
-	SS.pitch=1.0;
-	SS.speed=1.0;
 	SS.scale=1.0;
 
-	mcs_handle_t * db = aud_cfg_db_open ();
-	if (! db)
-		return TRUE;
+	aud_config_set_defaults ("sndstretch", sndstretch_defaults);
 
-	gboolean b;
-	aud_cfg_db_get_double(db, "sndstretch", "pitch", &SS.pitch);
-	aud_cfg_db_get_double(db, "sndstretch", "speed", &SS.speed);
-	if (aud_cfg_db_get_bool(db, "sndstretch", "short_overlap", &b))
-		SS.short_overlap = b;
-	if (aud_cfg_db_get_bool(db, "sndstretch", "volume_corr", &b))
-		SS.volume_corr = b;
-	aud_cfg_db_close(db);
+	SS.pitch = aud_get_double ("sndstretch", "pitch");
+	SS.speed = aud_get_double ("sndstretch", "speed");
+	SS.short_overlap = aud_get_bool ("sndstretch", "short_overlap");
+	SS.volume_corr = aud_get_bool ("sndstretch", "volume_corr");
 
 	return TRUE;
 }
