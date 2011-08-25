@@ -31,7 +31,6 @@
 #include "players.h"
 
 extern "C" {
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
@@ -396,35 +395,29 @@ extern "C" void adplug_mseek (InputPlayback * p, gint time)
 
 extern "C" gboolean adplug_init (void)
 {
-  dbg_printf ("adplug_init(): open, ");
-  mcs_handle_t *db = aud_cfg_db_open ();
-
-  // Read configuration
-  dbg_printf ("read, ");
-  aud_cfg_db_get_bool (db, CFG_VERSION, "16bit", (gboolean *) & conf.bit16);
-  aud_cfg_db_get_bool (db, CFG_VERSION, "Stereo", (gboolean *) & conf.stereo);
-  aud_cfg_db_get_int (db, CFG_VERSION, "Frequency", (gint *) & conf.freq);
-  aud_cfg_db_get_bool (db, CFG_VERSION, "Endless",
-                       (gboolean *) & conf.endless);
+  conf.bit16 = aud_get_bool (CFG_VERSION, "16bit");
+  conf.stereo = aud_get_bool (CFG_VERSION, "Stereo");
+  conf.freq = aud_get_int (CFG_VERSION, "Frequency");
+  conf.endless = aud_get_bool (CFG_VERSION, "Endless");
 
   // Read file type exclusion list
   dbg_printf ("exclusion, ");
   {
-    gchar *cfgstr = NULL, *exclude = NULL;
-    gboolean cfgread;
+    gchar * cfgstr = aud_get_string (CFG_VERSION, "Exclude");
 
-    cfgread = aud_cfg_db_get_string (db, CFG_VERSION, "Exclude", &cfgstr);
-    if (cfgread) {
-        exclude = (char *) malloc (strlen (cfgstr) + 2);
+    if (cfgstr[0])
+    {
+        gchar * exclude = (gchar *) malloc (strlen (cfgstr) + 2);
         strcpy (exclude, cfgstr);
         exclude[strlen (exclude) + 1] = '\0';
         g_strdelimit (exclude, ":", '\0');
         for (gchar * p = exclude; *p; p += strlen (p) + 1)
             conf.players.remove (conf.players.lookup_filetype (p));
-        free (exclude); free (cfgstr);
+        free (exclude);
     }
+
+    g_free (cfgstr);
   }
-  aud_cfg_db_close (db);
 
   // Load database from disk and hand it to AdPlug
   dbg_printf ("database");
@@ -454,9 +447,6 @@ extern "C" gboolean adplug_init (void)
 extern "C" void
 adplug_quit (void)
 {
-  dbg_printf ("adplug_quit(): open, ");
-  mcs_handle_t *db = aud_cfg_db_open ();
-
   // Close database
   dbg_printf ("db, ");
   if (plr.db)
@@ -465,12 +455,10 @@ adplug_quit (void)
   g_free (plr.filename);
   plr.filename = NULL;
 
-  // Write configuration
-  dbg_printf ("write, ");
-  aud_cfg_db_set_bool (db, CFG_VERSION, "16bit", conf.bit16);
-  aud_cfg_db_set_bool (db, CFG_VERSION, "Stereo", conf.stereo);
-  aud_cfg_db_set_int (db, CFG_VERSION, "Frequency", conf.freq);
-  aud_cfg_db_set_bool (db, CFG_VERSION, "Endless", conf.endless);
+  aud_set_bool (CFG_VERSION, "16bit", conf.bit16);
+  aud_set_bool (CFG_VERSION, "Stereo", conf.stereo);
+  aud_set_int (CFG_VERSION, "Frequency", conf.freq);
+  aud_set_bool (CFG_VERSION, "Endless", conf.endless);
 
   dbg_printf ("exclude, ");
   std::string exclude;
@@ -483,13 +471,8 @@ adplug_quit (void)
         exclude += ":";
       exclude += (*i)->filetype;
     }
-  gchar *cfgval = g_strdup (exclude.c_str ());
-  aud_cfg_db_set_string (db, CFG_VERSION, "Exclude", cfgval);
-  free (cfgval);
 
-  dbg_printf ("close");
-  aud_cfg_db_close (db);
-  dbg_printf (".\n");
+  aud_set_string (CFG_VERSION, "Exclude", exclude.c_str ());
 
   g_mutex_free (control_mutex);
   g_cond_free (control_cond);
