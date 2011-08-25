@@ -15,7 +15,7 @@
 
 #include <string.h>
 
-#include <audacious/configdb.h>
+#include <audacious/misc.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
@@ -228,18 +228,10 @@ static void do_command(char *cmd, const char *current_file, int pos)
 
 static void read_config(void)
 {
-    mcs_handle_t *db;
-
-    db = aud_cfg_db_open();
-    if ( !aud_cfg_db_get_string(db, "song_change", "cmd_line", &cmd_line) )
-        cmd_line = g_strdup("");
-    if ( !aud_cfg_db_get_string(db, "song_change", "cmd_line_after", &cmd_line_after) )
-        cmd_line_after = g_strdup("");
-    if ( !aud_cfg_db_get_string(db, "song_change", "cmd_line_end", &cmd_line_end) )
-        cmd_line_end = g_strdup("");
-    if ( !aud_cfg_db_get_string(db, "song_change", "cmd_line_ttc", &cmd_line_ttc) )
-        cmd_line_ttc = g_strdup("");
-    aud_cfg_db_close(db);
+    cmd_line = aud_get_string("song_change", "cmd_line");
+    cmd_line_after = aud_get_string("song_change", "cmd_line_after");
+    cmd_line_end = aud_get_string("song_change", "cmd_line_end");
+    cmd_line_ttc = aud_get_string("song_change", "cmd_line_ttc");
 }
 
 static void cleanup(void)
@@ -247,7 +239,7 @@ static void cleanup(void)
     hook_dissociate("playback begin", songchange_playback_begin);
     hook_dissociate("playback end", songchange_playback_end);
     hook_dissociate("playlist end reached", songchange_playlist_eof);
-    //      hook_dissociate( "playlist set info" , songchange_playback_ttc);
+    // hook_dissociate( "playlist set info" , songchange_playback_ttc);
 
     if ( ttc_prevs != NULL )
     {
@@ -270,14 +262,10 @@ static void cleanup(void)
 
 static void save_and_close(gchar * cmd, gchar * cmd_after, gchar * cmd_end, gchar * cmd_ttc)
 {
-    mcs_handle_t *db;
-
-    db = aud_cfg_db_open();
-    aud_cfg_db_set_string(db, "song_change", "cmd_line", cmd);
-    aud_cfg_db_set_string(db, "song_change", "cmd_line_after", cmd_after);
-    aud_cfg_db_set_string(db, "song_change", "cmd_line_end", cmd_end);
-    aud_cfg_db_set_string(db, "song_change", "cmd_line_ttc", cmd_ttc);
-    aud_cfg_db_close(db);
+    aud_set_string("song_change", "cmd_line", cmd);
+    aud_set_string("song_change", "cmd_line_after", cmd_after);
+    aud_set_string("song_change", "cmd_line_end", cmd_end);
+    aud_set_string("song_change", "cmd_line_ttc", cmd_ttc);
 
     if (cmd_line != NULL)
         g_free(cmd_line);
@@ -327,7 +315,7 @@ static gboolean init (void)
     ttc_prevs = g_malloc0(sizeof(songchange_playback_ttc_prevs_t));
     ttc_prevs->title = NULL;
     ttc_prevs->filename = NULL;
-    //	hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
+    // hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
 
     return TRUE;
 }
