@@ -10,8 +10,8 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/preferences.h>
 #include <libaudcore/md5.h>
 
@@ -43,36 +43,30 @@ static char *pwd = NULL;
 
 static void saveconfig(void)
 {
-    mcs_handle_t *cfgfile;
-
     const char *uid = gtk_entry_get_text(GTK_ENTRY(entry1));
     const char *url = gtk_entry_get_text(GTK_ENTRY(entry3));
 
-    if ((cfgfile = aud_cfg_db_open())) {
-        aud_md5state_t md5state;
-        unsigned char md5pword[16];
+    aud_md5state_t md5state;
+    unsigned char md5pword[16];
 
-        if (pwd != NULL && pwd[0] != '\0') {
-            aud_md5_init(&md5state);
-            aud_md5_append(&md5state, (guchar *)pwd, strlen(pwd));
-            aud_md5_finish(&md5state, md5pword);
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "password",
-                                 hexify((gchar*)md5pword, sizeof(md5pword)));
-        }
-        if (uid != NULL && uid[0] != '\0') {
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "username", (gchar *)uid);
-        } else {
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "username", "");
-            aud_cfg_db_set_string(cfgfile, "audioscrobbler", "password", "");
-        }
-
-        if (url != NULL && url[0] != '\0')
-        	aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", (gchar *)url);
-       	else
-       		aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", LASTFM_HS_URL);
-
-        aud_cfg_db_close(cfgfile);
+    if (pwd != NULL && pwd[0] != '\0') {
+        aud_md5_init(&md5state);
+        aud_md5_append(&md5state, (guchar *)pwd, strlen(pwd));
+        aud_md5_finish(&md5state, md5pword);
+        aud_set_string ("audioscrobbler", "password",
+         hexify ((gchar *) md5pword, sizeof md5pword));
     }
+    if (uid != NULL && uid[0] != '\0') {
+        aud_set_string ("audioscrobbler", "username", uid);
+    } else {
+        aud_set_string ("audioscrobbler", "username", "");
+        aud_set_string ("audioscrobbler", "password", "");
+    }
+
+    if (url != NULL && url[0] != '\0')
+        aud_set_string ("audioscrobbler", "sc_url", url);
+    else
+        aud_set_string ("audioscrobbler", "sc_url", LASTFM_HS_URL);
 }
 
 static gboolean apply_config_changes(gpointer data) {
@@ -134,7 +128,6 @@ static void entry_focus_out(GtkWidget *widget, gpointer data)
 static void *
 create_cfgdlg(void)
 {
-  mcs_handle_t *db;
   GtkWidget *vbox2;
   GtkWidget *table1;
   GtkWidget *label3;
@@ -222,29 +215,13 @@ create_cfgdlg(void)
   // common
   gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 6);
 
-	gtk_entry_set_text(GTK_ENTRY(entry1), "");
+  gchar * username = aud_get_string ("audioscrobbler", "username");
+  gtk_entry_set_text ((GtkEntry *) entry1, username);
+  g_free (username);
 
-        if ((db = aud_cfg_db_open())) {
-                gchar *username = NULL;
-                gchar *sc_url = NULL;
-		// last fm
-                aud_cfg_db_get_string(db, "audioscrobbler", "username",
-                        &username);
-                if (username) {
-                        gtk_entry_set_text(GTK_ENTRY(entry1), username);
-                        g_free(username);
-			username = NULL;
-                }
-
-		aud_cfg_db_get_string(db, "audioscrobbler", "sc_url", &sc_url);
-		if (sc_url) {
-               		gtk_entry_set_text(GTK_ENTRY(entry3), sc_url);
-               		g_free(sc_url);
-	             	sc_url = NULL;
-		}
-
-                aud_cfg_db_close(db);
-        }
+  gchar * sc_url = aud_get_string ("audioscrobbler", "sc_url");
+  gtk_entry_set_text ((GtkEntry *) entry3, sc_url);
+  g_free (sc_url);
 
   g_signal_connect(entry1, "changed", G_CALLBACK(entry_changed), NULL);
   g_signal_connect(entry3, "changed", G_CALLBACK(entry_changed), NULL);
