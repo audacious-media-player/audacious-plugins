@@ -4,8 +4,8 @@
 #include <string.h>
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 #include "echo.h"
@@ -21,21 +21,23 @@ static void cleanup(void);
 #define BUFFER_SHORTS (BUFFER_SAMPLES * MAX_CHANNELS)
 #define BUFFER_BYTES (BUFFER_SHORTS * BYTES_PS)
 
+static const gchar * const echo_defaults[] = {
+ "delay", "500",
+ "feedback", "50",
+ "volume", "50",
+ NULL};
+
 static gfloat *buffer = NULL;
-gint echo_delay = 500, echo_feedback = 50, echo_volume = 50;
+gint echo_delay, echo_feedback, echo_volume;
 static int w_ofs;
 
 static gboolean init (void)
 {
-	mcs_handle_t *cfg;
+	aud_config_set_defaults ("echo_plugin", echo_defaults);
 
-	cfg = aud_cfg_db_open();
-	if (! cfg)
-		return TRUE;
-	aud_cfg_db_get_int(cfg, "echo_plugin", "delay", &echo_delay);
-	aud_cfg_db_get_int(cfg, "echo_plugin", "feedback", &echo_feedback);
-	aud_cfg_db_get_int(cfg, "echo_plugin", "volume", &echo_volume);
-	aud_cfg_db_close(cfg);
+	echo_delay = aud_get_int ("echo_plugin", "delay");
+	echo_feedback = aud_get_int ("echo_plugin", "feedback");
+	echo_volume = aud_get_int ("echo_plugin", "volume");
 
 	return TRUE;
 }

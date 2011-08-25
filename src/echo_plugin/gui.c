@@ -2,8 +2,8 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
 #include <audacious/gtk-compat.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
@@ -29,18 +29,13 @@ void echo_about (void)
 
 static void apply_changes(void)
 {
-	mcs_handle_t *cfg;
 	echo_delay = gtk_adjustment_get_value (echo_delay_adj);
 	echo_feedback = gtk_adjustment_get_value (echo_feedback_adj);
 	echo_volume = gtk_adjustment_get_value (echo_volume_adj);
 
-	cfg = aud_cfg_db_open();
-	if (! cfg)
-		return;
-	aud_cfg_db_set_int(cfg, "echo_plugin", "delay", echo_delay);
-	aud_cfg_db_set_int(cfg, "echo_plugin", "feedback", echo_feedback);
-	aud_cfg_db_set_int(cfg, "echo_plugin", "volume", echo_volume);
-	aud_cfg_db_close(cfg);
+	aud_set_int ("echo_plugin", "delay", echo_delay);
+	aud_set_int ("echo_plugin", "feedback", echo_feedback);
+	aud_set_int ("echo_plugin", "volume", echo_volume);
 }
 
 static void conf_ok_cb(GtkButton * button, gpointer data)
