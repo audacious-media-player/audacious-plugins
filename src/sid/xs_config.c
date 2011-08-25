@@ -22,39 +22,6 @@
 */
 #include "xs_config.h"
 
-#ifdef AUDACIOUS_PLUGIN
-
-#include <audacious/configdb.h>
-#include <audacious/drct.h>
-#include <audacious/plugin.h>
-
-#define XS_CONFIG_FILE          mcs_handle_t
-#define XS_CONFIG_OPEN          aud_cfg_db_open
-#define XS_CONFIG_FREE          aud_cfg_db_close
-
-#define XS_CFG_SET_STRING(q,z)  aud_cfg_db_set_string(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_SET_FLOAT(q,z)   aud_cfg_db_set_float(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_SET_INT(q,z)     aud_cfg_db_set_int(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_SET_BOOL(q,z)    aud_cfg_db_set_bool(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_GET_STRING(q,z)  aud_cfg_db_get_string(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_GET_FLOAT(q,z)   aud_cfg_db_get_float(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_GET_INT(q,z)     aud_cfg_db_get_int(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_GET_BOOL(q,z)    aud_cfg_db_get_bool(cfg, XS_CONFIG_IDENT, q, z)
-#else
-#include <xmms/configfile.h>
-#define XS_CONFIG_FILE          ConfigFile
-#define XS_CONFIG_OPEN          xmms_cfg_open_default_file
-#define XS_CONFIG_FREE          xmms_cfg_free
-
-#define XS_CFG_SET_STRING(q,z)  xmms_cfg_write_string(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_SET_FLOAT(q,z)   xmms_cfg_write_float(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_SET_INT(q,z)     xmms_cfg_write_int(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_SET_BOOL(q,z)    xmms_cfg_write_boolean(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_GET_STRING(q,z)  xmms_cfg_read_string(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_GET_FLOAT(q,z)   xmms_cfg_read_float(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_GET_INT(q,z)     xmms_cfg_read_int(cfg, XS_CONFIG_IDENT, q, z)
-#define XS_CFG_GET_BOOL(q,z)    xmms_cfg_read_boolean(cfg, XS_CONFIG_IDENT, q, z)
-#endif
 #include <stdio.h>
 #include <ctype.h>
 #include "xs_glade.h"
@@ -327,7 +294,6 @@ static void xs_filters_error(const gchar *fmt, ...)
     g_free(msg);
 #endif
 }
-#endif
 
 
 static void xs_filter_free(xs_sid_filter_t *filter)
@@ -430,7 +396,6 @@ static xs_sid_filter_t * xs_filter_load(XS_CONFIG_FILE *cfg, gint nFilter)
 }
 
 
-#if 0
 static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, xs_sid_filter_t *pFilter, gint nFilter)
 {
     gchar *tmpValue, tmpKey[64];
@@ -674,7 +639,6 @@ static gboolean xs_filters_export(const gchar *filename, xs_sid_filter_t **filte
 
     return result;
 }
-#endif
 
 
 /* Get the configuration (from file or default)
@@ -801,7 +765,6 @@ gint xs_write_configuration(void)
 }
 
 
-#if 0
 /* Configuration panel was canceled
  */
 XS_DEF_WINDOW_CLOSE(cfg_cancel, configwin)

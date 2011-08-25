@@ -140,7 +140,9 @@ gboolean xs_init (void)
 
     /* Initialize and get configuration */
     xs_init_configuration();
+#if 0
     xs_read_configuration();
+#endif
 
     /* Initialize subsystems */
     xs_reinit();

@@ -70,22 +70,22 @@ enum XS_SIDMODEL {
 typedef struct {
     gchar           *name;
     gint            type;
-    
+
     /* Filter type 0 for SIDPlay 1 */
     gfloat          fs, fm, ft;
-    
+
     /* Filter type 1-2 points */
     xs_int_point_t  points[XS_SIDPLAY2_NFPOINTS];
     gint            npoints;
-    
+
     /* Distortion patch tunables */
     gfloat          rate, point, voice_nonlinearity,
                     cf_treshold;
-    
+
     /* Filter Type 3 tunables */
     gfloat          baseresistance, offset, steepness,
                     minimumfetresistance;
-    
+
     /* Filter Type 4 tunables */
     gfloat          k, b;
 } xs_sid_filter_t;
@@ -117,8 +117,8 @@ extern struct xs_cfg_t {
     xs_sid_filter_t    sid2Filter;  /* Current SIDPlay2 filter */
     xs_sid_filter_t    **sid2FilterPresets;
     gint        sid2NFilterPresets;
-    
-    
+
+
     /* Playing settings */
     gboolean    playMaxTimeEnable,
                 playMaxTimeUnknown; /* Use max-time only when song-length is unknown */
@@ -188,9 +188,11 @@ typedef struct {
 /* Functions
  */
 void    xs_init_configuration(void);
+#if 0
 void    xs_configure(void);
 void    xs_read_configuration(void);
 gint    xs_write_configuration(void);
+#endif
 
 #ifdef __cplusplus
 }
