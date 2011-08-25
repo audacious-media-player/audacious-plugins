@@ -23,8 +23,8 @@
 
 #include <glib.h>
 
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -55,34 +55,29 @@ static void oss_about (void)
      "USA."));
 }
 
+static const gchar * const oss_defaults[] = {
+ "audio_device", "0",
+ "mixer_device", "0",
+ "prebuffer", "50",
+ "use_master", "FALSE",
+ "use_alt_audio_device", "FALSE",
+ "use_alt_mixer_device", "FALSE",
+ NULL};
+
 static gboolean oss_init (void)
 {
-    mcs_handle_t *db;
+    aud_config_set_defaults ("OSS", oss_defaults);
 
     memset(&oss_cfg, 0, sizeof(OSSConfig));
 
-    oss_cfg.audio_device = 0;
-    oss_cfg.mixer_device = 0;
-    oss_cfg.prebuffer = 50;
-    oss_cfg.use_alt_audio_device = FALSE;
-    oss_cfg.alt_audio_device = NULL;
-    oss_cfg.use_master = 0;
-
-    if ((db = aud_cfg_db_open())) {
-        aud_cfg_db_get_int(db, "OSS", "audio_device", &oss_cfg.audio_device);
-        aud_cfg_db_get_int(db, "OSS", "mixer_device", &oss_cfg.mixer_device);
-        aud_cfg_db_get_int(db, "OSS", "prebuffer", &oss_cfg.prebuffer);
-        aud_cfg_db_get_bool(db, "OSS", "use_master", &oss_cfg.use_master);
-        aud_cfg_db_get_bool(db, "OSS", "use_alt_audio_device",
-                            &oss_cfg.use_alt_audio_device);
-        aud_cfg_db_get_string(db, "OSS", "alt_audio_device",
-                              &oss_cfg.alt_audio_device);
-        aud_cfg_db_get_bool(db, "OSS", "use_alt_mixer_device",
-                            &oss_cfg.use_alt_mixer_device);
-        aud_cfg_db_get_string(db, "OSS", "alt_mixer_device",
-                              &oss_cfg.alt_mixer_device);
-        aud_cfg_db_close(db);
-    }
+    oss_cfg.audio_device = aud_get_int ("OSS", "audio_device");
+    oss_cfg.mixer_device = aud_get_int ("OSS", "mixer_device");
+    oss_cfg.prebuffer = aud_get_int ("OSS", "prebuffer");
+    oss_cfg.use_master = aud_get_bool ("OSS", "use_master");
+    oss_cfg.use_alt_audio_device = aud_get_bool ("OSS", "use_alt_audio_device");
+    oss_cfg.alt_audio_device = aud_get_string ("OSS", "alt_audio_device");
+    oss_cfg.use_alt_mixer_device = aud_get_bool ("OSS", "use_alt_mixer_device");
+    oss_cfg.alt_mixer_device = aud_get_string ("OSS", "alt_mixer_device");
 
     return TRUE;
 }

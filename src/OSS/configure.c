@@ -26,9 +26,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <audacious/configdb.h>
-#include <audacious/i18n.h>
 #include <audacious/gtk-compat.h>
+#include <audacious/i18n.h>
+#include <audacious/misc.h>
 
 static GtkWidget *configure_win = NULL;
 static GtkWidget *mixer_usemaster_check, *buffer_pre_spin;
@@ -39,8 +39,6 @@ static gint audio_device, mixer_device;
 static void
 configure_win_ok_cb(GtkWidget * w, gpointer data)
 {
-    mcs_handle_t *db;
-
     oss_cfg.audio_device = audio_device;
     oss_cfg.mixer_device = mixer_device;
     oss_cfg.prebuffer =
@@ -72,21 +70,14 @@ configure_win_ok_cb(GtkWidget * w, gpointer data)
             oss_cfg.use_alt_mixer_device = FALSE;
 
     /* Save configuration */
-    db = aud_cfg_db_open();
-
-    aud_cfg_db_set_int(db, "OSS", "audio_device", oss_cfg.audio_device);
-    aud_cfg_db_set_int(db, "OSS", "mixer_device", oss_cfg.mixer_device);
-    aud_cfg_db_set_int(db, "OSS", "prebuffer", oss_cfg.prebuffer);
-    aud_cfg_db_set_bool(db, "OSS", "use_master", oss_cfg.use_master);
-    aud_cfg_db_set_bool(db, "OSS", "use_alt_audio_device",
-                        oss_cfg.use_alt_audio_device);
-    aud_cfg_db_set_string(db, "OSS", "alt_audio_device",
-                          oss_cfg.alt_audio_device);
-    aud_cfg_db_set_bool(db, "OSS", "use_alt_mixer_device",
-                        oss_cfg.use_alt_mixer_device);
-    aud_cfg_db_set_string(db, "OSS", "alt_mixer_device",
-                          oss_cfg.alt_mixer_device);
-    aud_cfg_db_close(db);
+    aud_set_int ("OSS", "audio_device", oss_cfg.audio_device);
+    aud_set_int ("OSS", "mixer_device", oss_cfg.mixer_device);
+    aud_set_int ("OSS", "prebuffer", oss_cfg.prebuffer);
+    aud_set_bool ("OSS", "use_master", oss_cfg.use_master);
+    aud_set_bool ("OSS", "use_alt_audio_device", oss_cfg.use_alt_audio_device);
+    aud_set_string ("OSS", "alt_audio_device", oss_cfg.alt_audio_device);
+    aud_set_bool ("OSS", "use_alt_mixer_device", oss_cfg.use_alt_mixer_device);
+    aud_set_string ("OSS", "alt_mixer_device", oss_cfg.alt_mixer_device);
 }
 
 static void
