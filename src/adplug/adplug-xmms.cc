@@ -63,7 +63,6 @@ extern "C" {
 
 /***** Global variables *****/
 
-extern "C" InputPlugin adplug_ip;
 static gboolean audio_error = FALSE;
 GtkWidget *about_win = NULL;
 static GMutex * control_mutex;
@@ -393,8 +392,17 @@ extern "C" void adplug_mseek (InputPlayback * p, gint time)
 
 #define CFG_VERSION "AdPlug"
 
+static const gchar * const adplug_defaults[] = {
+ "16bit", "TRUE",
+ "Stereo", "FALSE",
+ "Frequency", "44100",
+ "Endless", "FALSE",
+ NULL};
+
 extern "C" gboolean adplug_init (void)
 {
+  aud_config_set_defaults (CFG_VERSION, adplug_defaults);
+
   conf.bit16 = aud_get_bool (CFG_VERSION, "16bit");
   conf.stereo = aud_get_bool (CFG_VERSION, "Stereo");
   conf.freq = aud_get_int (CFG_VERSION, "Frequency");
