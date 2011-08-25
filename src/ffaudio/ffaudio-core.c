@@ -46,12 +46,33 @@ static gboolean stop_flag = FALSE;
 static GStaticMutex data_mutex = G_STATIC_MUTEX_INIT;
 static mowgli_patricia_t * extension_dict = NULL;
 
+static gint lockmgr (void * * mutexp, enum AVLockOp op)
+{
+    switch (op)
+    {
+    case AV_LOCK_CREATE:
+        * mutexp = g_mutex_new ();
+        break;
+    case AV_LOCK_OBTAIN:
+        g_mutex_lock (* mutexp);
+        break;
+    case AV_LOCK_RELEASE:
+        g_mutex_unlock (* mutexp);
+        break;
+    case AV_LOCK_DESTROY:
+        g_mutex_free (* mutexp);
+        break;
+    }
+
+    return 0;
+}
+
 static gboolean ffaudio_init (void)
 {
     avcodec_init();
     av_register_all();
+    av_lockmgr_register (lockmgr);
 
-    AUDDBG("creating seek mutex/cond\n");
     ctrl_mutex = g_mutex_new();
     ctrl_cond = g_cond_new();
 
@@ -71,6 +92,8 @@ ffaudio_cleanup(void)
 
     if (extension_dict)
         mowgli_patricia_destroy (extension_dict, NULL, NULL);
+
+    av_lockmgr_register (NULL);
 }
 
 static const gchar * ffaudio_strerror (gint error)
