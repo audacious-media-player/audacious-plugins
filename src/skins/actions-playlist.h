@@ -20,7 +20,6 @@
 #ifndef SKINS_ACTIONS_PLAYLIST_H
 #define SKINS_ACTIONS_PLAYLIST_H
 
-void action_playlist_save_all_playlists (void);
 void action_playlist_refresh_list(void);
 
 void action_playlist_prev(void);

@@ -1137,11 +1137,6 @@ void action_playlist_delete (void)
     audgui_confirm_playlist_delete (active_playlist);
 }
 
-void action_playlist_save_all_playlists (void)
-{
-    aud_save_playlists ();
-}
-
 void
 action_playlist_refresh_list(void)
 {

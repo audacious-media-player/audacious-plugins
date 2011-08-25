@@ -226,11 +226,6 @@ static GtkActionEntry action_entries_playlist[] = {
         {"playlist save", GTK_STOCK_SAVE, N_("Export Playlist"), "<Shift>S",
           N_("Saves the selected playlist."), (GCallback) audgui_export_playlist},
 
-        { "playlist save all", GTK_STOCK_SAVE, N_("Save All Playlists"),
-         "<Alt>S", N_("Saves all the playlists that are open. Note that this "
-         "is done automatically when Audacious quits."),
-         action_playlist_save_all_playlists},
-
         { "playlist refresh", GTK_STOCK_REFRESH, N_("Refresh List"), "F5",
           N_("Refreshes metadata associated with a playlist entry."),
           G_CALLBACK(action_playlist_refresh_list) },
