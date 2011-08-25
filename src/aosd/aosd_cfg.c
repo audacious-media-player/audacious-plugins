@@ -23,7 +23,7 @@
 #include <glib.h>
 #include <stdlib.h>
 
-#include <audacious/configdb.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 static gint
@@ -218,84 +218,77 @@ aosd_cfg_debug ( aosd_cfg_t * cfg )
 }
 #endif
 
+static const gchar * const aosd_defaults[] = {
+ "position_placement", "1", /* AOSD_POSITION_PLACEMENT_TOPLEFT */
+ "position_offset_x", "0",
+ "position_offset_y", "0",
+ "position_maxsize_width", "0",
+ "position_multimon_id", "-1",
+ "animation_timing_display", "3000",
+ "animation_timing_fadein", "300",
+ "animation_timing_fadeout", "300",
+ "text_fonts_name_0", "Sans 26",
+ "text_fonts_color_0", "65535,65535,65535,65535",
+ "text_fonts_draw_shadow_0", "TRUE",
+ "text_fonts_shadow_color_0", "0,0,0,32767",
+ "text_utf8conv_disable", "FALSE",
+ "decoration_code", "0",
+ "decoration_color_0", "0,0,65535,32767",
+ "decoration_color_1", "65535,65535,65535,65535",
+ "trigger_active", "0",
+ "transparency_mode", "0",
+ NULL};
 
 gint
 aosd_cfg_load ( aosd_cfg_t * cfg )
 {
-  mcs_handle_t *cfgfile = aud_cfg_db_open();
   gint i = 0;
   gint max_numcol;
   gchar *trig_active_str;
 
   /* position */
-  if ( !aud_cfg_db_get_int( cfgfile , "aosd" ,
-       "position_placement" , &(cfg->osd->position.placement) ) )
-    cfg->osd->position.placement = AOSD_POSITION_PLACEMENT_TOPLEFT;
-
-  if ( !aud_cfg_db_get_int( cfgfile , "aosd" ,
-       "position_offset_x" , &(cfg->osd->position.offset_x) ) )
-    cfg->osd->position.offset_x = 0;
-
-  if ( !aud_cfg_db_get_int( cfgfile , "aosd" ,
-       "position_offset_y" , &(cfg->osd->position.offset_y) ) )
-    cfg->osd->position.offset_y = 0;
-
-  if ( !aud_cfg_db_get_int( cfgfile , "aosd" ,
-       "position_maxsize_width" , &(cfg->osd->position.maxsize_width) ) )
-    cfg->osd->position.maxsize_width = 0;
-
-  if ( !aud_cfg_db_get_int( cfgfile , "aosd" ,
-       "position_multimon_id" , &(cfg->osd->position.multimon_id) ) )
-    cfg->osd->position.multimon_id = -1;
+  cfg->osd->position.placement = aud_get_int ("aosd", "position_placement");
+  cfg->osd->position.offset_x = aud_get_int ("aosd", "position_offset_x");
+  cfg->osd->position.offset_y = aud_get_int ("aosd", "position_offset_y");
+  cfg->osd->position.maxsize_width = aud_get_int ("aosd", "position_maxsize_width");
+  cfg->osd->position.multimon_id = aud_get_int ("aosd", "position_multimon_id");
 
   /* animation */
-  if ( !aud_cfg_db_get_int( cfgfile , "aosd" ,
-       "animation_timing_display" , &(cfg->osd->animation.timing_display) ) )
-    cfg->osd->animation.timing_display = 3000;
-
-  if ( !aud_cfg_db_get_int( cfgfile , "aosd" ,
-       "animation_timing_fadein" , &(cfg->osd->animation.timing_fadein) ) )
-    cfg->osd->animation.timing_fadein = 300;
-
-  if ( !aud_cfg_db_get_int( cfgfile , "aosd" ,
-       "animation_timing_fadeout" , &(cfg->osd->animation.timing_fadeout) ) )
-    cfg->osd->animation.timing_fadeout = 300;
+  cfg->osd->animation.timing_display = aud_get_int ("aosd", "animation_timing_display");
+  cfg->osd->animation.timing_fadein = aud_get_int ("aosd", "animation_timing_fadein");
+  cfg->osd->animation.timing_fadeout = aud_get_int ("aosd", "animation_timing_fadeout");
 
   /* text */
   for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
   {
     gchar *color_str = NULL;
     gchar *key_str = NULL;
+
     key_str = g_strdup_printf( "text_fonts_name_%i" , i );
-    if ( !aud_cfg_db_get_string( cfgfile , "aosd" , key_str , &(cfg->osd->text.fonts_name[i]) ) )
-      cfg->osd->text.fonts_name[i] = g_strdup( "Sans 26" );
+    cfg->osd->text.fonts_name[i] = aud_get_string ("aosd", key_str);
     g_free( key_str );
+
     key_str = g_strdup_printf( "text_fonts_color_%i" , i );
-    if ( !aud_cfg_db_get_string( cfgfile , "aosd" , key_str , &color_str ) )
-      color_str = g_strdup( "65535,65535,65535,65535" ); /* white , alpha 100% */
+    color_str = aud_get_string ("aosd", key_str);
     aosd_cfg_util_str_to_color( color_str , &(cfg->osd->text.fonts_color[i]) );
     g_free( key_str );
     g_free( color_str );
+
     key_str = g_strdup_printf( "text_fonts_draw_shadow_%i" , i );
-    if ( !aud_cfg_db_get_bool( cfgfile , "aosd" , key_str , &(cfg->osd->text.fonts_draw_shadow[i]) ) )
-      cfg->osd->text.fonts_draw_shadow[i] = TRUE;
+    cfg->osd->text.fonts_draw_shadow[i] = aud_get_bool ("aosd", key_str);
     g_free( key_str );
+
     key_str = g_strdup_printf( "text_fonts_shadow_color_%i" , i );
-    if ( !aud_cfg_db_get_string( cfgfile , "aosd" , key_str , &color_str ) )
-      color_str = g_strdup( "0,0,0,32767" ); /* black , alpha 50% */
+    color_str = aud_get_string ("aosd", key_str);
     aosd_cfg_util_str_to_color( color_str , &(cfg->osd->text.fonts_shadow_color[i]) );
     g_free( key_str );
     g_free( color_str );
   }
 
-  if ( !aud_cfg_db_get_bool( cfgfile , "aosd" ,
-       "text_utf8conv_disable" , &(cfg->osd->text.utf8conv_disable) ) )
-    cfg->osd->text.utf8conv_disable = FALSE;
+  cfg->osd->text.utf8conv_disable = aud_get_bool ("aosd", "text_utf8conv_disable");
 
   /* decoration */
-  if ( !aud_cfg_db_get_int( cfgfile , "aosd" ,
-       "decoration_code" , &(cfg->osd->decoration.code) ) )
-    cfg->osd->decoration.code = aosd_deco_style_get_first_code();
+  cfg->osd->decoration.code = aud_get_int ("aosd", "decoration_code");
 
   /* TODO not implemented yet
   if ( !aud_cfg_db_get_string( cfgfile , "aosd" ,
@@ -311,36 +304,15 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
     gchar *color_str = NULL;
     aosd_color_t color;
     key_str = g_strdup_printf( "decoration_color_%i" , i );
-    if ( !aud_cfg_db_get_string( cfgfile , "aosd" , key_str , &color_str ) )
-    {
-      /* we have different default values for the decoration colors */
-      switch ( i )
-      {
-        case 0:
-          color_str = g_strdup( "0,0,65535,32767" ); /* blue , alpha 50% */
-          break;
-        case 1:
-          color_str = g_strdup( "65535,65535,65535,65535" ); /* white , alpha 100% */
-          break;
-        case 2:
-          color_str = g_strdup( "51400,51400,51400,65535" ); /* gray , alpha 100% */
-          break;
-        default:
-          color_str = g_strdup( "51400,51400,51400,65535" ); /* gray , alpha 100% */
-          break;
-      }
-    }
+    color_str = aud_get_string ("aosd", key_str);
     aosd_cfg_util_str_to_color( color_str , &color );
     g_array_insert_val( cfg->osd->decoration.colors , i , color );
   }
 
   /* trigger */
-  if ( !aud_cfg_db_get_string( cfgfile , "aosd" , "trigger_active" , &trig_active_str ) )
-  {
-    gint trig_active_defval = 0;
-    g_array_append_val( cfg->osd->trigger.active , trig_active_defval );
-  }
-  else if ( strcmp("x",trig_active_str) )
+  trig_active_str = aud_get_string ("aosd", "trigger_active");
+
+  if (strcmp (trig_active_str, "x"))
   {
     gchar **trig_active_strv = g_strsplit( trig_active_str , "," , 0 );
     gint j = 0;
@@ -353,12 +325,10 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
     g_strfreev( trig_active_strv );
   }
 
-  /* miscellanous */
-  if ( !aud_cfg_db_get_int( cfgfile , "aosd" ,
-       "transparency_mode" , &(cfg->osd->misc.transparency_mode) ) )
-    cfg->osd->misc.transparency_mode = AOSD_MISC_TRANSPARENCY_FAKE;
+  g_free (trig_active_str);
 
-  aud_cfg_db_close( cfgfile );
+  /* miscellanous */
+  cfg->osd->misc.transparency_mode = aud_get_int ("aosd", "transparency_mode");
 
   /* the config object has been filled with information */
   cfg->set = TRUE;
@@ -370,7 +340,6 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
 gint
 aosd_cfg_save ( aosd_cfg_t * cfg )
 {
-  mcs_handle_t *cfgfile = aud_cfg_db_open();
   gint i = 0;
   gint max_numcol;
   GString *string = g_string_new( "" );
@@ -379,67 +348,52 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
     return -1;
 
   /* position */
-  aud_cfg_db_set_int( cfgfile , "aosd" ,
-    "position_placement" , cfg->osd->position.placement );
-
-  aud_cfg_db_set_int( cfgfile , "aosd" ,
-    "position_offset_x" , cfg->osd->position.offset_x );
-
-  aud_cfg_db_set_int( cfgfile , "aosd" ,
-    "position_offset_y" , cfg->osd->position.offset_y );
-
-  aud_cfg_db_set_int( cfgfile , "aosd" ,
-    "position_maxsize_width" , cfg->osd->position.maxsize_width );
-
-  aud_cfg_db_set_int( cfgfile , "aosd" ,
-    "position_multimon_id" , cfg->osd->position.multimon_id );
+  aud_set_int ("aosd", "position_placement", cfg->osd->position.placement);
+  aud_set_int ("aosd", "position_offset_x", cfg->osd->position.offset_x);
+  aud_set_int ("aosd", "position_offset_y", cfg->osd->position.offset_y);
+  aud_set_int ("aosd", "position_maxsize_width", cfg->osd->position.maxsize_width);
+  aud_set_int ("aosd", "position_multimon_id", cfg->osd->position.multimon_id);
 
   /* animation */
-  aud_cfg_db_set_int( cfgfile , "aosd" ,
-    "animation_timing_display" , cfg->osd->animation.timing_display );
-
-  aud_cfg_db_set_int( cfgfile , "aosd" ,
-    "animation_timing_fadein" , cfg->osd->animation.timing_fadein );
-
-  aud_cfg_db_set_int( cfgfile , "aosd" ,
-    "animation_timing_fadeout" , cfg->osd->animation.timing_fadeout );
+  aud_set_int ("aosd", "animation_timing_display", cfg->osd->animation.timing_display);
+  aud_set_int ("aosd", "animation_timing_fadein", cfg->osd->animation.timing_fadein);
+  aud_set_int ("aosd", "animation_timing_fadeout", cfg->osd->animation.timing_fadeout);
 
   /* text */
   for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
   {
     gchar *color_str = NULL;
     gchar *key_str = NULL;
+
     key_str = g_strdup_printf( "text_fonts_name_%i" , i );
-    aud_cfg_db_set_string( cfgfile , "aosd" ,
-      key_str , cfg->osd->text.fonts_name[i] );
+    aud_set_string ("aosd", key_str, cfg->osd->text.fonts_name[i]);
     g_free( key_str );
+
     key_str = g_strdup_printf( "text_fonts_color_%i" , i );
     aosd_cfg_util_color_to_str( cfg->osd->text.fonts_color[i] , &color_str );
-    aud_cfg_db_set_string( cfgfile , "aosd" ,
-      key_str , color_str );
+    aud_set_string ("aosd", key_str, color_str);
     g_free( key_str );
     g_free( color_str );
+
     key_str = g_strdup_printf( "text_fonts_draw_shadow_%i" , i );
-    aud_cfg_db_set_bool( cfgfile , "aosd" ,
-      key_str , cfg->osd->text.fonts_draw_shadow[i] );
+    aud_set_bool ("aosd", key_str, cfg->osd->text.fonts_draw_shadow[i]);
     g_free( key_str );
+
     key_str = g_strdup_printf( "text_fonts_shadow_color_%i" , i );
     aosd_cfg_util_color_to_str( cfg->osd->text.fonts_shadow_color[i] , &color_str );
-    aud_cfg_db_set_string( cfgfile , "aosd" ,
-      key_str , color_str );
+    aud_set_string ("aosd", key_str, color_str);
     g_free( key_str );
     g_free( color_str );
   }
 
-  aud_cfg_db_set_bool( cfgfile , "aosd" ,
-    "text_utf8conv_disable" , cfg->osd->text.utf8conv_disable );
+  aud_set_bool ("aosd", "text_utf8conv_disable", cfg->osd->text.utf8conv_disable);
 
   /* decoration */
-  aud_cfg_db_set_int( cfgfile , "aosd" ,
+  aud_set_int ("aosd" ,
     "decoration_code" , cfg->osd->decoration.code );
 
   /* TODO skip this since it's not implemented yet
-  aud_cfg_db_set_string( cfgfile , "aosd" ,
+  aud_set_string ("aosd" ,
     "decoration_skin_file" , cfg->osd->decoration.skin_file ); */
 
   /* decoration - colors */
@@ -451,8 +405,7 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
     aosd_color_t color = g_array_index( cfg->osd->decoration.colors , aosd_color_t , i );
     key_str = g_strdup_printf( "decoration_color_%i" , i );
     aosd_cfg_util_color_to_str( color , &color_str );
-    aud_cfg_db_set_string( cfgfile , "aosd" ,
-      key_str , color_str );
+    aud_set_string ("aosd", key_str, color_str);
     g_free( key_str );
     g_free( color_str );
   }
@@ -464,14 +417,11 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
     g_string_truncate( string , string->len - 1 );
   else
     g_string_assign( string , "x" );
-  aud_cfg_db_set_string( cfgfile , "aosd" , "trigger_active" , string->str );
+  aud_set_string ("aosd", "trigger_active", string->str);
   g_string_free( string , TRUE );
 
   /* miscellaneous */
-  aud_cfg_db_set_int( cfgfile , "aosd" ,
-    "transparency_mode" , cfg->osd->misc.transparency_mode );
-
-  aud_cfg_db_close( cfgfile );
+  aud_set_int ("aosd", "transparency_mode", cfg->osd->misc.transparency_mode);
 
   return 0;
 }
