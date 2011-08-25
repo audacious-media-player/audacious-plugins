@@ -747,8 +747,6 @@ static gboolean init (void)
         gtk_box_pack_end(GTK_BOX(vbox), statusbar, FALSE, FALSE, 3);
     }
 
-    layout_load ();
-
     GtkWidget * layout = layout_new ();
     gtk_box_pack_start ((GtkBox *) playlist_box, layout, TRUE, TRUE, 0);
     layout_add_center ((GtkWidget *) UI_PLAYLIST_NOTEBOOK);

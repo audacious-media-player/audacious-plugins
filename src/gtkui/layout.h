@@ -24,7 +24,6 @@
 
 #include <gtk/gtk.h>
 
-void layout_load (void);
 void layout_save (void);
 void layout_cleanup (void);
 
