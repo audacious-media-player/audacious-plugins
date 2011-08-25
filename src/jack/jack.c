@@ -13,8 +13,8 @@
 #include "jack.h"
 #include <string.h>
 
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -193,32 +193,22 @@ void jack_set_port_connection_mode()
   JACK_SetPortConnectionMode(mode);
 }
 
+static const gchar * const jack_defaults[] = {
+ "isTraceEnabled", "FALSE",
+ "port_connection_mode", "CONNECT_ALL",
+ "volume_left", "25",
+ "volume_right", "25",
+ NULL};
+
 /* Initialize necessary things */
 static gboolean jack_init (void)
 {
-  /* read the isTraceEnabled setting from the config file */
-  mcs_handle_t *cfgfile;
+  aud_config_set_defaults ("jack", jack_defaults);
 
-  cfgfile = aud_cfg_db_open();
-  if (!cfgfile)
-  {
-      jack_cfg.isTraceEnabled = FALSE;
-      jack_cfg.port_connection_mode = "CONNECT_ALL"; /* default to connect all */
-      jack_cfg.volume_left = 25; /* set default volume to 25 % */
-      jack_cfg.volume_right = 25;
-  } else
-  {
-      aud_cfg_db_get_bool(cfgfile, "jack", "isTraceEnabled", &jack_cfg.isTraceEnabled);
-      if(!aud_cfg_db_get_string(cfgfile, "jack", "port_connection_mode", &jack_cfg.port_connection_mode))
-          jack_cfg.port_connection_mode = "CONNECT_ALL";
-      if(!aud_cfg_db_get_int(cfgfile, "jack", "volume_left", &jack_cfg.volume_left))
-          jack_cfg.volume_left = 25;
-      if(!aud_cfg_db_get_int(cfgfile, "jack", "volume_right", &jack_cfg.volume_right))
-          jack_cfg.volume_right = 25;
-  }
-
-  aud_cfg_db_close(cfgfile);
-
+  jack_cfg.isTraceEnabled = aud_get_bool ("jack", "isTraceEnabled");
+  jack_cfg.port_connection_mode = aud_get_string ("jack", "port_connection_mode");
+  jack_cfg.volume_left = aud_get_int ("jack", "volume_left");
+  jack_cfg.volume_right = aud_get_int ("jack", "volume_right");
 
   TRACE("initializing\n");
   JACK_Init(); /* initialize the driver */
@@ -269,14 +259,8 @@ static gint audacious_jack_free(void)
 /* Close the device */
 static void jack_close(void)
 {
-  mcs_handle_t *cfgfile;
-
-  cfgfile = aud_cfg_db_open();
-  aud_cfg_db_set_int(cfgfile, "jack", "volume_left", jack_cfg.volume_left); /* stores the volume setting */
-  aud_cfg_db_set_int(cfgfile, "jack", "volume_right", jack_cfg.volume_right);
-  aud_cfg_db_close(cfgfile);
-
-  TRACE("\n");
+  aud_set_int ("jack", "volume_left", jack_cfg.volume_left);
+  aud_set_int ("jack", "volume_right", jack_cfg.volume_right);
 
   JACK_Reset(driver); /* flush buffers, reset position and set state to STOPPED */
   TRACE("resetting driver, not closing now, destructor will close for us\n");

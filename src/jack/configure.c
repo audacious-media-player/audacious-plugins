@@ -24,9 +24,9 @@
 
 #include "jack.h"
 
-#include <audacious/configdb.h>
-#include <audacious/plugin.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
+#include <audacious/plugin.h>
 
 #include "config.h"
 
@@ -47,18 +47,13 @@ static GtkWidget *port_connection_mode_combo;
 
 static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 {
-    mcs_handle_t *cfgfile;
-
     jack_cfg.isTraceEnabled = (gint) GTK_CHECK_BUTTON(GTK_isTraceEnabled)->toggle_button.active;
     jack_cfg.port_connection_mode = GET_CHARS(GTK_COMBO(port_connection_mode_combo)->entry);
 
     jack_set_port_connection_mode(); /* update the connection mode */
 
-    cfgfile = aud_cfg_db_open();
-
-    aud_cfg_db_set_bool(cfgfile, "jack", "isTraceEnabled", jack_cfg.isTraceEnabled);
-    aud_cfg_db_set_string(cfgfile, "jack", "port_connection_mode", jack_cfg.port_connection_mode);
-    aud_cfg_db_close(cfgfile);
+    aud_set_bool ("jack", "isTraceEnabled", jack_cfg.isTraceEnabled);
+    aud_set_string ("jack", "port_connection_mode", jack_cfg.port_connection_mode);
 
     gtk_widget_destroy(configure_win);
 }
