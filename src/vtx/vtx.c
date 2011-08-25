@@ -18,7 +18,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
@@ -46,18 +45,6 @@ static const gchar *vtx_fmts[] = { "vtx", NULL };
 
 static gboolean vtx_init(void)
 {
-    mcs_handle_t *db;
-    db = aud_cfg_db_open();
-
-    if (db)
-    {
-        aud_cfg_db_get_int (db, NULL, "src_rate", & freq);
-        if (freq < 4000 || freq > 192000)
-            freq = 44100;
-
-        aud_cfg_db_close (db);
-    }
-
     seek_mutex = g_mutex_new();
     seek_cond = g_cond_new();
 
