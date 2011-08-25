@@ -62,6 +62,8 @@ static const gchar * const bscope_defaults[] = {
  "color", "16727935", /* 0xFF3F7F */
  NULL};
 
+gint color;
+
 static gboolean bscope_init (void)
 {
     aud_config_set_defaults ("BlurScope", bscope_defaults);
