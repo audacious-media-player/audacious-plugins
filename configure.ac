@@ -38,7 +38,7 @@ if test "x$GCC" = "xyes"; then
 fi
 
 dnl Chainsaw says this is broken.
-dnl LDFLAGS="$LDFLAGS -z defs"
+LDFLAGS="$LDFLAGS -z defs"
 
 dnl Large file support
 dnl ==================

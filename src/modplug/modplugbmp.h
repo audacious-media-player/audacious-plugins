@@ -73,8 +73,6 @@ public:
 		gint       mSurroundDelay;
 		gfloat     mPreampLevel;
 		gint       mLoopCount;
-
-		Settings();
 	};
 
 	ModplugXMMS();
