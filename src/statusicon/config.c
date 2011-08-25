@@ -20,42 +20,37 @@
 *
 */
 
-#include <audacious/configdb.h>
+#include <audacious/misc.h>
 
 #include "statusicon.h"
 
+static const gchar * const si_defaults[] = {
+ "rclick_menu", "0", /* SI_CFG_RCLICK_MENU_SMALL1 */
+ "scroll_action", "0", /* SI_CFG_SCROLL_ACTION_VOLUME */
+ "volume_delta", "5",
+ "disable_popup", "FALSE",
+ "close_to_tray", "FALSE",
+ NULL};
+
 si_cfg_t si_cfg;
 
-void si_cfg_load(void)
+void si_cfg_load (void)
 {
-    mcs_handle_t *cfgfile = aud_cfg_db_open();
+    aud_config_set_defaults ("statusicon", si_defaults);
 
-    if (!aud_cfg_db_get_int(cfgfile, "statusicon", "rclick_menu", &(si_cfg.rclick_menu)))
-        si_cfg.rclick_menu = SI_CFG_RCLICK_MENU_SMALL1;
-
-    if (!aud_cfg_db_get_int(cfgfile, "statusicon", "scroll_action", &(si_cfg.scroll_action)))
-        si_cfg.scroll_action = SI_CFG_SCROLL_ACTION_VOLUME;
-
-    if (!aud_cfg_db_get_int(cfgfile, "audacious", "mouse_wheel_change", &(si_cfg.volume_delta)))
-        si_cfg.volume_delta = 5;
-
-    if (!aud_cfg_db_get_bool(cfgfile, "statusicon", "disable_popup", &(si_cfg.disable_popup)))
-        si_cfg.disable_popup = FALSE;
-
-    if (!aud_cfg_db_get_bool(cfgfile, "statusicon", "close_to_tray", &(si_cfg.close_to_tray)))
-        si_cfg.close_to_tray = FALSE;
-
-    aud_cfg_db_close(cfgfile);
+    si_cfg.rclick_menu = aud_get_int ("statusicon", "rclick_menu");
+    si_cfg.scroll_action = aud_get_int ("statusicon", "scroll_action");
+    si_cfg.volume_delta = aud_get_int ("statusicon", "volume_delta");
+    si_cfg.disable_popup = aud_get_bool ("statusicon", "disable_popup");
+    si_cfg.close_to_tray = aud_get_bool ("statusicon", "close_to_tray");
 }
 
 
-void si_cfg_save(void)
+void si_cfg_save (void)
 {
-    mcs_handle_t *cfgfile = aud_cfg_db_open();
-
-    aud_cfg_db_set_int(cfgfile, "statusicon", "rclick_menu", si_cfg.rclick_menu);
-    aud_cfg_db_set_int(cfgfile, "statusicon", "scroll_action", si_cfg.scroll_action);
-    aud_cfg_db_set_bool(cfgfile, "statusicon", "disable_popup", si_cfg.disable_popup);
-    aud_cfg_db_set_bool(cfgfile, "statusicon", "close_to_tray", si_cfg.close_to_tray);
-    aud_cfg_db_close(cfgfile);
+    aud_set_int ("statusicon", "rclick_menu", si_cfg.rclick_menu);
+    aud_set_int ("statusicon", "scroll_action", si_cfg.scroll_action);
+    aud_set_int ("statusicon", "volume_delta", si_cfg.volume_delta);
+    aud_set_bool ("statusicon", "disable_popup", si_cfg.disable_popup);
+    aud_set_bool ("statusicon", "close_to_tray", si_cfg.close_to_tray);
 }
