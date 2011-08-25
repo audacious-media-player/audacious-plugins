@@ -37,7 +37,8 @@ if test "x$GCC" = "xyes"; then
 	CXXFLAGS="$CXXFLAGS -pipe -Wall"
 fi
 
-dnl Chainsaw says this is broken.
+dnl There are rumors that "-z defs" is broken on some architectures.
+dnl It may need to be disabled conditionally.
 LDFLAGS="$LDFLAGS -z defs"
 
 dnl Large file support
