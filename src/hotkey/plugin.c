@@ -41,7 +41,6 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 
-#include <audacious/configdb.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -305,7 +304,6 @@ void load_defaults (void)
 /* load plugin configuration */
 void load_config (void)
 {
-	mcs_handle_t *cfdb;
 	HotkeyConfiguration *hotkey;
 	int i,max;
 
@@ -313,22 +311,20 @@ void load_config (void)
 	plugin_cfg.vol_increment = 4;
 	plugin_cfg.vol_decrement = 4;
 
-	/* open configuration database */
-	cfdb = aud_cfg_db_open ( );
 	hotkey = &(plugin_cfg.first);
 	hotkey->next = NULL;
 	hotkey->key = 0;
 	hotkey->mask = 0;
 	hotkey->event = 0;
 	hotkey->type = TYPE_KEY;
-	max = 0;
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "NumHotkeys", &max);
+
+	max = aud_get_int ("globalHotkey", "NumHotkeys");
 	if (max == 0)
 		load_defaults();
 	else for (i=0; i<max; i++)
 	{
 		gchar *text = NULL;
-		gint value;
+
 		if (hotkey->key) {
 			hotkey->next = (HotkeyConfiguration*)
 				malloc(sizeof (HotkeyConfiguration));
@@ -340,64 +336,56 @@ void load_config (void)
 			hotkey->type = TYPE_KEY;
 		}
 		text = g_strdup_printf("Hotkey_%d_key", i);
-		aud_cfg_db_get_int (cfdb, "globalHotkey", text, &(hotkey->key));
+		hotkey->key = aud_get_int ("globalHotkey", text);
 		g_free(text);
 
 		text = g_strdup_printf("Hotkey_%d_mask", i);
-		aud_cfg_db_get_int (cfdb, "globalHotkey", text, &(hotkey->mask));
+		hotkey->mask = aud_get_int ("globalHotkey", text);
 		g_free(text);
 
 		text = g_strdup_printf("Hotkey_%d_type", i);
-		aud_cfg_db_get_int (cfdb, "globalHotkey", text, &(hotkey->type));
+		hotkey->type = aud_get_int ("globalHotkey", text);
 		g_free(text);
 
 		text = g_strdup_printf("Hotkey_%d_event", i);
-		value = (gint)hotkey->event;
-		aud_cfg_db_get_int (cfdb, "globalHotkey", text, &value);
-		hotkey->event = (EVENT) value;
+		hotkey->event = aud_get_int ("globalHotkey", text);
 		g_free(text);
 	}
-
-	aud_cfg_db_close (cfdb);
 }
 
 /* save plugin configuration */
 void save_config (void)
 {
-	mcs_handle_t *cfdb;
 	int max;
 	HotkeyConfiguration *hotkey;
 
-	/* open configuration database */
-	cfdb = aud_cfg_db_open ( );
 	hotkey = &(plugin_cfg.first);
 	max = 0;
 	while (hotkey) {
 		gchar *text = NULL;
 		if (hotkey->key) {
 			text = g_strdup_printf("Hotkey_%d_key", max);
-			aud_cfg_db_set_int (cfdb, "globalHotkey", text, hotkey->key);
+			aud_set_int ("globalHotkey", text, hotkey->key);
 			g_free(text);
 
 			text = g_strdup_printf("Hotkey_%d_mask", max);
-			aud_cfg_db_set_int (cfdb, "globalHotkey", text, hotkey->mask);
+			aud_set_int ("globalHotkey", text, hotkey->mask);
 			g_free(text);
 
 			text = g_strdup_printf("Hotkey_%d_type", max);
-			aud_cfg_db_set_int (cfdb, "globalHotkey", text, hotkey->type);
+			aud_set_int ("globalHotkey", text, hotkey->type);
 			g_free(text);
 
 			text = g_strdup_printf("Hotkey_%d_event", max);
-			aud_cfg_db_set_int (cfdb, "globalHotkey", text, hotkey->event);
+			aud_set_int ("globalHotkey", text, hotkey->event);
 			g_free(text);
 			max++;
 		}
 
 		hotkey = hotkey->next;
 	}
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "NumHotkeys", max);
 
-	aud_cfg_db_close (cfdb);
+	aud_set_int ("globalHotkey", "NumHotkeys", max);
 }
 
 static void cleanup (void)
