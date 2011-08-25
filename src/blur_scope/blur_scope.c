@@ -26,8 +26,8 @@
 #include <gtk/gtk.h>
 #include <string.h>
 
-#include <audacious/configdb.h>
 #include <audacious/gtk-compat.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 #include "blur_scope.h"
@@ -54,25 +54,25 @@ AUD_VIS_PLUGIN
     .get_widget = bscope_get_widget,
 )
 
-gint color = 0xFF3F7F;
-
 static GtkWidget * area = NULL;
 static gint width, height, stride, image_size;
 static guint32 * image = NULL, * corner = NULL;
 
+static const gchar * const bscope_defaults[] = {
+ "color", "16727935", /* 0xFF3F7F */
+ NULL};
+
 static gboolean bscope_init (void)
 {
-    mcs_handle_t * db = aud_cfg_db_open ();
-    aud_cfg_db_get_int (db, "BlurScope", "color", & color);
-    aud_cfg_db_close (db);
+    aud_config_set_defaults ("BlurScope", bscope_defaults);
+    color = aud_get_int ("BlurScope", "color");
+
     return TRUE;
 }
 
 static void bscope_cleanup (void)
 {
-    mcs_handle_t * db = aud_cfg_db_open ();
-    aud_cfg_db_set_int (db, "BlurScope", "color", color);
-    aud_cfg_db_close (db);
+    aud_set_int ("BlurScope", "color", color);
 
     g_free (image);
     image = NULL;
