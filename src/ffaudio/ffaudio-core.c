@@ -43,6 +43,7 @@ static GCond *ctrl_cond = NULL;
 static gint64 seek_value = -1;
 static gboolean stop_flag = FALSE;
 
+static GStaticMutex data_mutex = G_STATIC_MUTEX_INIT;
 static mowgli_patricia_t * extension_dict = NULL;
 
 static gboolean ffaudio_init (void)
@@ -116,11 +117,13 @@ static AVInputFormat * get_format_by_extension (const gchar * name)
         return NULL;
 
     AUDDBG ("Get format by extension: %s\n", name);
+    g_static_mutex_lock (& data_mutex);
 
     if (! extension_dict)
         extension_dict = create_extension_dict ();
 
     AVInputFormat * f = mowgli_patricia_retrieve (extension_dict, ext);
+    g_static_mutex_unlock (& data_mutex);
 
     if (f)
         AUDDBG ("Format %s.\n", f->name);
