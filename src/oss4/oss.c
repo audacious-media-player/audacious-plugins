@@ -29,7 +29,7 @@ static const gchar * const oss_defaults[] = {
  "use_alt_device", "FALSE",
  "alt_device", DEFAULT_DSP,
  "save_volume", "TRUE",
- "volume", "0x3232",
+ "volume", "12850", /* 0x3232 */
  "cookedmode", "TRUE",
  NULL};
 
