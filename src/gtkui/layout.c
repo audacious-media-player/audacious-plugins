@@ -304,22 +304,6 @@ static GtkWidget * item_get_parent (Item * item)
      g_object_get_data ((GObject *) docks[item->dock], "mine");
 }
 
-static void item_save_size (Item * item)
-{
-    g_return_if_fail (item->widget && item->vbox);
-
-    GtkAllocation rect;
-    gtk_widget_get_allocation (item->vbox, & rect);
-    item->w = rect.width;
-    item->h = rect.height;
-
-    if (item->dock < 0)
-    {
-        g_return_if_fail (item->window);
-        gtk_window_get_position ((GtkWindow *) item->window, & item->x, & item->y);
-    }
-}
-
 static void item_add (Item * item)
 {
     g_return_if_fail (item->name && item->widget && item->vbox && ! item->paned
@@ -360,7 +344,6 @@ static void item_add (Item * item)
                 swap = TRUE;
                 where = item_get_prev (item);
                 g_return_if_fail (where && ! where->paned);
-                item_save_size (where);
             }
 
             parent = item_get_parent (where);
@@ -399,8 +382,6 @@ static void item_add (Item * item)
 static void item_remove (Item * item)
 {
     g_return_if_fail (item->widget && item->vbox);
-
-    item_save_size (item);
 
     if (item->dock < 0)
     {
@@ -453,6 +434,12 @@ static void item_remove (Item * item)
     }
 }
 
+static void size_changed_cb (GtkWidget * widget, GdkRectangle * rect, Item * item)
+{
+    item->w = rect->width;
+    item->h = rect->height;
+}
+
 void layout_add (GtkWidget * widget, const gchar * name)
 {
     g_return_if_fail (layout && center && widget && name && strlen (name) <= 256
@@ -474,6 +461,8 @@ void layout_add (GtkWidget * widget, const gchar * name)
     NULL_ON_DESTROY (item->widget);
     item->vbox = vbox_new (widget, name);
     NULL_ON_DESTROY (item->vbox);
+
+    g_signal_connect (item->vbox, "size-allocate", (GCallback) size_changed_cb, item);
 
     item_add (item);
 }
@@ -528,9 +517,6 @@ void layout_save (void)
     {
         Item * item = node->data;
         g_return_if_fail (item && item->name);
-
-        if (item->widget)
-            item_save_size (item);
 
         fprintf (handle, "item %s\npane %d\nx %d\ny %d\nw %d\nh %d\n",
          item->name, item->dock, item->x, item->y, item->w, item->h);
