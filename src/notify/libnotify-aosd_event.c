@@ -75,6 +75,7 @@ static void update (void * unused, void * explicit)
     if (! GPOINTER_TO_INT (explicit) && last_title && last_message && ! strcmp
      (title, last_title) && ! strcmp (message, last_message))
     {
+        g_free (title);
         g_free (message);
         return;
     }
