@@ -450,7 +450,7 @@ GET_FORMAT:
 			}
 
 			data->output->write_audio (outbuf, outbuf_size);
-			frames_played += outbuf_size / (2 * ctx.channels);
+			frames_played += outbuf_size / (sizeof outbuf[0] * ctx.channels);
 			outbuf_size = 0;
 
 			if (stop)
