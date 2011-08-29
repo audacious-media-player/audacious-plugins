@@ -32,7 +32,8 @@
 #include "config.h"
 #include "layout.h"
 
-#define LAYOUT_FILE "gtkui-layout"
+#define DEFAULT_WIDTH 300
+#define DEFAULT_HEIGHT 200
 
 enum {DOCK_LEFT, DOCK_RIGHT, DOCK_TOP, DOCK_BOTTOM, DOCKS};
 
@@ -221,7 +222,8 @@ static Item * item_new (const gchar * name)
     item->name = g_strdup (name);
     item->widget = item->vbox = item->paned = item->window = NULL;
     item->dock = item->x = item->y = -1;
-    item->w = item->h = 0;
+    item->w = DEFAULT_WIDTH;
+    item->h = DEFAULT_HEIGHT;
     items = g_list_append (items, item);
     return item;
 }
