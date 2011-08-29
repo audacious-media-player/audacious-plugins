@@ -437,6 +437,12 @@ static void size_changed_cb (GtkWidget * widget, GdkRectangle * rect, Item * ite
 {
     item->w = rect->width;
     item->h = rect->height;
+
+    if (item->dock < 0)
+    {
+        g_return_if_fail (item->window);
+        gtk_window_get_position ((GtkWindow *) item->window, & item->x, & item->y);
+    }
 }
 
 void layout_add (GtkWidget * widget, const gchar * name)
