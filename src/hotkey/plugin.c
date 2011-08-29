@@ -47,6 +47,7 @@
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/eventqueue.h>
 
 #include "plugin.h"
 #include "gui.h"
@@ -239,7 +240,11 @@ gboolean handle_keyevent (EVENT event)
 	/* Toggle Windows */
 	if (event == EVENT_TOGGLE_WIN)
 	{
-		hook_call ("interface toggle visibility", NULL);
+		/* Workaround for AUD-369:
+		 * When a hotkey is pressed, the interface temporarily loses keyboard
+		 * focus.  This causes "interface toggle visibility" to raise the window
+		 * when it ought to hide it.  The 1/10 second delay prevents this. */
+		event_queue_timed (100, "interface toggle visibility", NULL);
 		return TRUE;
 	}
 
