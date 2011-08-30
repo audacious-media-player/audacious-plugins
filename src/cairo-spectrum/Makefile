@@ -9,3 +9,4 @@ plugindir := ${plugindir}/${VISUALIZATION_PLUGIN_DIR}
 
 CFLAGS += -std=gnu99 ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../..
+LIBS += -lm
