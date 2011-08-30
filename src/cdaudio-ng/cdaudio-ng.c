@@ -71,7 +71,8 @@ static gboolean stop_flag;
 cdng_cfg_t cdng_cfg;
 static gint firsttrackno = -1;
 static gint lasttrackno = -1;
-static CdIo_t *pcdio = NULL;
+static gint n_audio_tracks;
+static cdrom_drive_t *pcdrom_drive = NULL;
 static trackinfo_t *trackinfo = NULL;
 static gint monitor_source = 0;
 
@@ -311,6 +312,13 @@ ERR:
         goto ERR;
     }
 
+    /* don't play any data tracks */
+    if (!cdda_track_audiop (pcdrom_drive, trackno))
+    {
+        cdaudio_error ("Track %d is a data track.\n", trackno);
+        goto ERR;
+    }
+
     gint startlsn = trackinfo[trackno].startlsn;
     gint endlsn = trackinfo[trackno].endlsn;
 
@@ -363,7 +371,7 @@ ERR:
         if (sectors < 1)
             break;
 
-        if (cdio_read_audio_sectors (pcdio, buffer, currlsn, sectors) ==
+        if (cdio_read_audio_sectors (pcdrom_drive->p_cdio, buffer, currlsn, sectors) ==
          DRIVER_OP_SUCCESS)
         {
             retry_count = 0;
@@ -460,10 +468,10 @@ static void cdaudio_cleanup (void)
         monitor_source = 0;
     }
 
-    if (pcdio != NULL)
+    if (pcdrom_drive != NULL)
     {
-        cdio_destroy (pcdio);
-        pcdio = NULL;
+        cdda_close (pcdrom_drive);
+        pcdrom_drive = NULL;
     }
     if (trackinfo != NULL)
     {
@@ -510,12 +518,16 @@ static Tuple * make_tuple (const gchar * filename, VFSFile * file)
 
     if (!strcmp (filename, "cdda://"))
     {
+        gint i = 0;
+
         tuple = tuple_new_from_filename (filename);
-        tuple->nsubtunes = 1 + lasttrackno - firsttrackno;
+        tuple->nsubtunes = n_audio_tracks;
         tuple->subtunes = g_malloc (sizeof *tuple->subtunes * tuple->nsubtunes);
 
+        /* only add the audio tracks to the playlist */
         for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
-            tuple->subtunes[trackno - firsttrackno] = trackno;
+            if (cdda_track_audiop (pcdrom_drive, trackno))
+                tuple->subtunes[i++] = trackno;
 
         goto DONE;
     }
@@ -525,6 +537,12 @@ static Tuple * make_tuple (const gchar * filename, VFSFile * file)
     if (trackno < firsttrackno || trackno > lasttrackno)
     {
         warn ("Track %d not found.\n", trackno);
+        goto DONE;
+    }
+
+    if (!cdda_track_audiop (pcdrom_drive, trackno))
+    {
+        warn ("Track %d is a data track.\n", trackno);
         goto DONE;
     }
 
@@ -570,13 +588,13 @@ static Tuple * make_tuple (const gchar * filename, VFSFile * file)
 static void open_cd (void)
 {
     AUDDBG ("Opening CD drive.\n");
-    g_return_if_fail (pcdio == NULL);
+    g_return_if_fail (pcdrom_drive == NULL);
 
     /* find an available, audio capable, cd drive  */
     if (cdng_cfg.device != NULL && strlen (cdng_cfg.device) > 0)
     {
-        pcdio = cdio_open (cdng_cfg.device, DRIVER_UNKNOWN);
-        if (pcdio == NULL)
+        pcdrom_drive = cdda_identify (cdng_cfg.device, 1, NULL);
+        if (pcdrom_drive == NULL)
         {
             cdaudio_error ("Failed to open CD device \"%s\".", cdng_cfg.device);
             return;
@@ -589,8 +607,8 @@ static void open_cd (void)
 
         if (ppcd_drives != NULL && *ppcd_drives != NULL)
         {                       /* we have at least one audio capable cd drive */
-            pcdio = cdio_open (*ppcd_drives, DRIVER_UNKNOWN);
-            if (pcdio == NULL)
+            pcdrom_drive = cdda_identify (*ppcd_drives, 1, NULL);
+            if (pcdrom_drive == NULL)
             {
                 cdaudio_error ("Failed to open CD.");
                 return;
@@ -613,16 +631,27 @@ static void open_cd (void)
 static void scan_cd (void)
 {
     AUDDBG ("Scanning CD drive.\n");
-    g_return_if_fail (pcdio != NULL);
+    g_return_if_fail (pcdrom_drive != NULL);
     g_return_if_fail (trackinfo == NULL);
 
     gint trackno;
 
-    if (cdio_set_speed (pcdio, cdng_cfg.disc_speed) != DRIVER_OP_SUCCESS)
+    /* general track initialization */
+
+    /* skip endianness detection (because it only affects cdda_read, and we use
+     * cdio_read_audio_sectors instead) */
+    pcdrom_drive->bigendianp = 0;
+
+    /* finish initialization of drive/disc (performs disc TOC sanitization) */
+    if (cdda_open (pcdrom_drive) != 0)
+    {
+        cdaudio_error ("Failed to finish initializing opened CD drive.");
+        goto ERR;
+    }
+
+    if (cdda_speed_set (pcdrom_drive, cdng_cfg.disc_speed) != DRIVER_OP_SUCCESS)
         warn ("Cannot set drive speed.\n");
 
-    /* general track initialization */
-    cdrom_drive_t *pcdrom_drive = cdio_cddap_identify_cdio (pcdio, 1, NULL);    // todo : check return / NULL
     firsttrackno = cdio_get_first_track_num (pcdrom_drive->p_cdio);
     lasttrackno = cdio_get_last_track_num (pcdrom_drive->p_cdio);
     if (firsttrackno == CDIO_INVALID_TRACK || lasttrackno == CDIO_INVALID_TRACK)
@@ -636,18 +665,18 @@ static void scan_cd (void)
     trackinfo = (trackinfo_t *) g_new (trackinfo_t, (lasttrackno + 1));
 
     cdaudio_set_fullinfo (&trackinfo[0],
-                          cdio_get_track_lsn (pcdrom_drive->p_cdio, 0),
-                          cdio_get_track_last_lsn (pcdrom_drive->p_cdio,
-                                                   CDIO_CDROM_LEADOUT_TRACK),
+                          cdda_track_firstsector (pcdrom_drive, 0),
+                          cdda_track_lastsector (pcdrom_drive, lasttrackno),
                           "", "", "");
+
+    n_audio_tracks = 0;
 
     for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
     {
         cdaudio_set_fullinfo (&trackinfo[trackno],
-                              cdio_get_track_lsn (pcdrom_drive->p_cdio,
-                                                  trackno),
-                              cdio_get_track_last_lsn (pcdrom_drive->p_cdio,
-                                                       trackno), "", "", "");
+                              cdda_track_firstsector (pcdrom_drive, trackno),
+                              cdda_track_lastsector (pcdrom_drive, trackno),
+                              "", "", "");
 
         if (trackinfo[trackno].startlsn == CDIO_INVALID_LSN
             || trackinfo[trackno].endlsn == CDIO_INVALID_LSN)
@@ -655,6 +684,10 @@ static void scan_cd (void)
             cdaudio_error ("Cannot read start/end LSN for track %d.", trackno);
             goto ERR;
         }
+
+        /* count how many tracks are audio tracks */
+        if (cdda_track_audiop (pcdrom_drive, trackno))
+            n_audio_tracks++;
     }
 
     /* get trackinfo[0] cdtext information (the disc) */
@@ -762,15 +795,17 @@ static void scan_cd (void)
 
                 pcddb_disc = cddb_disc_new ();
 
-                lba = cdio_get_track_lba (pcdio, CDIO_CDROM_LEADOUT_TRACK);
+                lba = cdio_get_track_lba (pcdrom_drive->p_cdio,
+                                          CDIO_CDROM_LEADOUT_TRACK);
                 cddb_disc_set_length (pcddb_disc, FRAMES_TO_SECONDS (lba));
 
                 for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
                 {
                     pcddb_track = cddb_track_new ();
                     cddb_track_set_frame_offset (pcddb_track,
-                                                 cdio_get_track_lba (pcdio,
-                                                                     trackno));
+                                                 cdio_get_track_lba (
+                                                     pcdrom_drive->p_cdio,
+                                                     trackno));
                     cddb_disc_add_track (pcddb_disc, pcddb_track);
                 }
 
@@ -867,14 +902,14 @@ static void refresh_trackinfo (gboolean warning)
 {
     trigger_monitor ();
 
-    if (pcdio == NULL)
+    if (pcdrom_drive == NULL)
     {
         open_cd ();
-        if (pcdio == NULL)
+        if (pcdrom_drive == NULL)
             return;
     }
 
-    int mode = cdio_get_discmode (pcdio);
+    int mode = cdio_get_discmode (pcdrom_drive->p_cdio);
 #ifdef _WIN32 /* cdio_get_discmode reports the wrong disk type sometimes */
     if (mode == CDIO_DISC_MODE_NO_INFO || mode == CDIO_DISC_MODE_ERROR)
 #else
@@ -894,7 +929,7 @@ static void refresh_trackinfo (gboolean warning)
         return;
     }
 
-    if (trackinfo == NULL || cdio_get_media_changed (pcdio))
+    if (trackinfo == NULL || cdio_get_media_changed (pcdrom_drive->p_cdio))
     {
         g_free (trackinfo);
         trackinfo = NULL;
