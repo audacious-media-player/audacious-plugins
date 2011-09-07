@@ -763,7 +763,9 @@ AC_ARG_ENABLE(modplug,
 )
 
 if test $enable_modplug = yes ; then
-    PKG_CHECK_MODULES(MODPLUG, libmodplug, have_modplug=yes,
+    PKG_CHECK_MODULES(MODPLUG, libmodplug,
+     [INPUT_PLUGINS="$INPUT_PLUGINS modplug"
+      have_modplug=yes],
      [AC_MSG_WARN([*** Cannot find libmodplug; modplug plugin disabled ***])
       have_modplug=no])
 fi
