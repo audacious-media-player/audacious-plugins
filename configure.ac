@@ -764,17 +764,9 @@ AC_ARG_ENABLE(modplug,
 )
 
 if test $enable_modplug = yes ; then
-    AC_CHECK_HEADERS([sys/mman.h], [enable_modplug=yes],
-     [AC_MSG_WARN([Cannot find sys/mman.h; disabling ModPlug plugin])
-      enable_modplug=no])
-fi
-
-if test "x$enable_modplug" = "xyes"; then
-    INPUT_PLUGINS="$INPUT_PLUGINS modplug"
-    have_modplug="yes"
-else
-    AC_MSG_RESULT([*** ModPlug plugin disabled per user request ***])
-    have_modplug="no"
+    PKG_CHECK_MODULES(MODPLUG, libmodplug, have_modplug=yes,
+     [AC_MSG_WARN([*** Cannot find libmodplug; modplug plugin disabled ***])
+      have_modplug=no])
 fi
 
 dnl *** FFaudio
