@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([audacious-plugins], [3.1-devel])
+AC_INIT([audacious-plugins], [3.1-alpha1])
 AC_COPYRIGHT([(C) 2005-2011 Audacious Team])
 AC_PREREQ([2.59])
 
