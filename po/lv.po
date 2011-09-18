@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins2_22062009\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-17 18:49-0400\n"
+"POT-Creation-Date: 2011-09-18 14:13-0400\n"
 "PO-Revision-Date: 2011-06-27 04:01+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -1029,7 +1029,7 @@ msgstr "Atbilde: (%)"
 msgid "Volume: (%)"
 msgstr "Skaļums: (%)"
 
-#: src/ffaudio/ffaudio-core.c:763
+#: src/ffaudio/ffaudio-core.c:789
 #, fuzzy, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1054,7 +1054,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:777
+#: src/ffaudio/ffaudio-core.c:803
 msgid "About FFaudio Plugin"
 msgstr "Par FFaudio spraudni"
 
@@ -3700,11 +3700,11 @@ msgstr "Dzēst sākumuzstādījumu"
 msgid "Delete auto-load preset"
 msgstr "Dzēst auto-ielādes sākumuzstādījumu"
 
-#: src/skins/ui_playlist.c:244
+#: src/skins/ui_playlist.c:245
 msgid "Search entries in active playlist"
 msgstr "Meklēt ierakstus aktīvajā repertuārā"
 
-#: src/skins/ui_playlist.c:252
+#: src/skins/ui_playlist.c:253
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3715,39 +3715,39 @@ msgstr ""
 "jāizmanto regulāro izteiksmju sintakse, reģistrnejutīga. Ja neziniet, kā "
 "regulārās izteiksmes darbojas, vienkārši nosaukuma daļu tam, ko meklējat."
 
-#: src/skins/ui_playlist.c:260
+#: src/skins/ui_playlist.c:261
 msgid "Title: "
 msgstr "Nosaukums: "
 
-#: src/skins/ui_playlist.c:267
+#: src/skins/ui_playlist.c:268
 msgid "Album: "
 msgstr "Albums: "
 
-#: src/skins/ui_playlist.c:274
+#: src/skins/ui_playlist.c:275
 msgid "Artist: "
 msgstr "Izpildītājs: "
 
-#: src/skins/ui_playlist.c:281
+#: src/skins/ui_playlist.c:282
 msgid "Filename: "
 msgstr "Faila nosaukums: "
 
-#: src/skins/ui_playlist.c:289
+#: src/skins/ui_playlist.c:290
 msgid "Clear previous selection before searching"
 msgstr "Notīrīt iepriekšējo iezīmējumu pirms meklēšanas"
 
-#: src/skins/ui_playlist.c:292
+#: src/skins/ui_playlist.c:293
 msgid "Automatically toggle queue for matching entries"
 msgstr "Automātiski pārslēgt ierindošanu atbilstošajiem ierakstiem"
 
-#: src/skins/ui_playlist.c:295
+#: src/skins/ui_playlist.c:296
 msgid "Create a new playlist with matching entries"
 msgstr "Izveidot jaunu repertuāru no atbilstošajiem ierakstiem"
 
-#: src/skins/ui_playlist.c:762
+#: src/skins/ui_playlist.c:763
 msgid "Audacious Playlist Editor"
 msgstr "Audacious repertuāra redaktors"
 
-#: src/skins/ui_playlist.c:809
+#: src/skins/ui_playlist.c:810
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d of %d)"
@@ -3765,11 +3765,11 @@ msgstr "Atarhivēta Winamp 2.x apdare"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Neizdevās izveidot mapi (%s): %s\n"
 
-#: src/sndfile/plugin.c:438
+#: src/sndfile/plugin.c:454
 msgid "About sndfile plugin"
 msgstr "Par sndfile spraudni"
 
-#: src/sndfile/plugin.c:439
+#: src/sndfile/plugin.c:455
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"

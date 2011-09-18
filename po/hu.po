@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-17 18:49-0400\n"
+"POT-Creation-Date: 2011-09-18 14:13-0400\n"
 "PO-Revision-Date: 2010-08-23 12:00+0100\n"
 "Last-Translator: Peter Polonkai <polesz@nedudu.hu>\n"
 "Language-Team: Nedudu Team <nedudu@nedudu.hu>\n"
@@ -967,7 +967,7 @@ msgstr "Visszacsatolás: (%)"
 msgid "Volume: (%)"
 msgstr "Hangerő: (%)"
 
-#: src/ffaudio/ffaudio-core.c:763
+#: src/ffaudio/ffaudio-core.c:789
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -983,7 +983,7 @@ msgid ""
 "libavutil %s (%s)\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:777
+#: src/ffaudio/ffaudio-core.c:803
 msgid "About FFaudio Plugin"
 msgstr "FFaudio bővítmény névjegye"
 
@@ -3528,11 +3528,11 @@ msgstr ""
 msgid "Delete auto-load preset"
 msgstr ""
 
-#: src/skins/ui_playlist.c:244
+#: src/skins/ui_playlist.c:245
 msgid "Search entries in active playlist"
 msgstr "Elemek keresése az aktív lejátszólistában"
 
-#: src/skins/ui_playlist.c:252
+#: src/skins/ui_playlist.c:253
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3540,39 +3540,39 @@ msgid ""
 "for."
 msgstr ""
 
-#: src/skins/ui_playlist.c:260
+#: src/skins/ui_playlist.c:261
 msgid "Title: "
 msgstr "Cím:"
 
-#: src/skins/ui_playlist.c:267
+#: src/skins/ui_playlist.c:268
 msgid "Album: "
 msgstr "Album:"
 
-#: src/skins/ui_playlist.c:274
+#: src/skins/ui_playlist.c:275
 msgid "Artist: "
 msgstr "Előadó:"
 
-#: src/skins/ui_playlist.c:281
+#: src/skins/ui_playlist.c:282
 msgid "Filename: "
 msgstr "Fájlnév:"
 
-#: src/skins/ui_playlist.c:289
+#: src/skins/ui_playlist.c:290
 msgid "Clear previous selection before searching"
 msgstr "Az előző kiválasztások törlése keresés előtt"
 
-#: src/skins/ui_playlist.c:292
+#: src/skins/ui_playlist.c:293
 msgid "Automatically toggle queue for matching entries"
 msgstr "Automatikusan várólistára kerülnek a talált elemek"
 
-#: src/skins/ui_playlist.c:295
+#: src/skins/ui_playlist.c:296
 msgid "Create a new playlist with matching entries"
 msgstr "Hozzon létre új lejátszólistát az egyező elemekből"
 
-#: src/skins/ui_playlist.c:762
+#: src/skins/ui_playlist.c:763
 msgid "Audacious Playlist Editor"
 msgstr "Audacious lejátszólista szerkesztő"
 
-#: src/skins/ui_playlist.c:809
+#: src/skins/ui_playlist.c:810
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d / %d)"
@@ -3590,11 +3590,11 @@ msgstr "Nem régi Winamp 2.x bőr"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Nem lehet létrehozni a könyvtárat (%s): %s\n"
 
-#: src/sndfile/plugin.c:438
+#: src/sndfile/plugin.c:454
 msgid "About sndfile plugin"
 msgstr "sndfile bővítmény névjegye"
 
-#: src/sndfile/plugin.c:439
+#: src/sndfile/plugin.c:455
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"

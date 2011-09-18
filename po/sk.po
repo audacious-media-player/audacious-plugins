@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-17 18:49-0400\n"
+"POT-Creation-Date: 2011-09-18 14:13-0400\n"
 "PO-Revision-Date: 2011-03-13 20:35+0100\n"
 "Last-Translator: Andrej Herceg <herceg.andrej@zoznam.sk>\n"
 "Language-Team: Slovak <Slovak <sk-i18n@lists.linux.sk>>\n"
@@ -1034,7 +1034,7 @@ msgstr "Spätná väzba: (%)"
 msgid "Volume: (%)"
 msgstr "Hlasitosť: (%)"
 
-#: src/ffaudio/ffaudio-core.c:763
+#: src/ffaudio/ffaudio-core.c:789
 #, fuzzy, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1059,7 +1059,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:777
+#: src/ffaudio/ffaudio-core.c:803
 msgid "About FFaudio Plugin"
 msgstr "O module FFaudio"
 
@@ -3757,11 +3757,11 @@ msgstr "Vymaže prednastavenia"
 msgid "Delete auto-load preset"
 msgstr "Vymaže automaticky načítavané prednastavenia"
 
-#: src/skins/ui_playlist.c:244
+#: src/skins/ui_playlist.c:245
 msgid "Search entries in active playlist"
 msgstr "Vyhľadať skladby v aktívnom zozname skladieb"
 
-#: src/skins/ui_playlist.c:252
+#: src/skins/ui_playlist.c:253
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3773,39 +3773,39 @@ msgstr ""
 "regulárnym výrazom nerozumiete, jednoducho zadajte časť textu, ktorý chcete "
 "vyhľadať."
 
-#: src/skins/ui_playlist.c:260
+#: src/skins/ui_playlist.c:261
 msgid "Title: "
 msgstr "Názov: "
 
-#: src/skins/ui_playlist.c:267
+#: src/skins/ui_playlist.c:268
 msgid "Album: "
 msgstr "Album: "
 
-#: src/skins/ui_playlist.c:274
+#: src/skins/ui_playlist.c:275
 msgid "Artist: "
 msgstr "Umelec: "
 
-#: src/skins/ui_playlist.c:281
+#: src/skins/ui_playlist.c:282
 msgid "Filename: "
 msgstr "Názov súboru: "
 
-#: src/skins/ui_playlist.c:289
+#: src/skins/ui_playlist.c:290
 msgid "Clear previous selection before searching"
 msgstr "Pred hľadaním vymazať predchádzajúci výber"
 
-#: src/skins/ui_playlist.c:292
+#: src/skins/ui_playlist.c:293
 msgid "Automatically toggle queue for matching entries"
 msgstr "Zhodujúce sa položky pridať do (odstrániť z) frontu"
 
-#: src/skins/ui_playlist.c:295
+#: src/skins/ui_playlist.c:296
 msgid "Create a new playlist with matching entries"
 msgstr "Zo zhodujúcich sa položiek vytvoriť nový zoznam skladieb"
 
-#: src/skins/ui_playlist.c:762
+#: src/skins/ui_playlist.c:763
 msgid "Audacious Playlist Editor"
 msgstr "Editor zoznamu skladieb"
 
-#: src/skins/ui_playlist.c:809
+#: src/skins/ui_playlist.c:810
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d z %d)"
@@ -3823,11 +3823,11 @@ msgstr "Nezabalený vzhľad pre WinAMP 2.x"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Nepodarilo sa vytvoriť adresár (%s): %s\n"
 
-#: src/sndfile/plugin.c:438
+#: src/sndfile/plugin.c:454
 msgid "About sndfile plugin"
 msgstr "Modul sndfile (WAV)"
 
-#: src/sndfile/plugin.c:439
+#: src/sndfile/plugin.c:455
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"

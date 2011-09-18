@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious-plugins 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-17 18:49-0400\n"
+"POT-Creation-Date: 2011-09-18 14:13-0400\n"
 "PO-Revision-Date: 2011-04-11 21:58+0800\n"
 "Last-Translator: Chasye <chasye@gmail.com>\n"
 "Language-Team: Chinese (simplified)\n"
@@ -1012,7 +1012,7 @@ msgstr "反馈：(%)"
 msgid "Volume: (%)"
 msgstr "音量：(%)"
 
-#: src/ffaudio/ffaudio-core.c:763
+#: src/ffaudio/ffaudio-core.c:789
 #, fuzzy, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1037,7 +1037,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:777
+#: src/ffaudio/ffaudio-core.c:803
 msgid "About FFaudio Plugin"
 msgstr "关于FFaudio插件"
 
@@ -3594,11 +3594,11 @@ msgstr "删除预设"
 msgid "Delete auto-load preset"
 msgstr "删除自动加载预设"
 
-#: src/skins/ui_playlist.c:244
+#: src/skins/ui_playlist.c:245
 msgid "Search entries in active playlist"
 msgstr "从当前播放列表中搜索条目"
 
-#: src/skins/ui_playlist.c:252
+#: src/skins/ui_playlist.c:253
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3608,39 +3608,39 @@ msgstr ""
 "按部分字段搜索播放列表中的条目。各个字段都可以使用正则表达式，而且是不分大小"
 "字的。如果你不知道何为正则表达式，简单的输入部分你想搜索的文字亦可。"
 
-#: src/skins/ui_playlist.c:260
+#: src/skins/ui_playlist.c:261
 msgid "Title: "
 msgstr "标题："
 
-#: src/skins/ui_playlist.c:267
+#: src/skins/ui_playlist.c:268
 msgid "Album: "
 msgstr "专辑："
 
-#: src/skins/ui_playlist.c:274
+#: src/skins/ui_playlist.c:275
 msgid "Artist: "
 msgstr "艺术家："
 
-#: src/skins/ui_playlist.c:281
+#: src/skins/ui_playlist.c:282
 msgid "Filename: "
 msgstr "文件名"
 
-#: src/skins/ui_playlist.c:289
+#: src/skins/ui_playlist.c:290
 msgid "Clear previous selection before searching"
 msgstr "搜索前清空之前的结果"
 
-#: src/skins/ui_playlist.c:292
+#: src/skins/ui_playlist.c:293
 msgid "Automatically toggle queue for matching entries"
 msgstr "自动为区配条目切换队列"
 
-#: src/skins/ui_playlist.c:295
+#: src/skins/ui_playlist.c:296
 msgid "Create a new playlist with matching entries"
 msgstr "用匹配的条目创建新的播放列表"
 
-#: src/skins/ui_playlist.c:762
+#: src/skins/ui_playlist.c:763
 msgid "Audacious Playlist Editor"
 msgstr "Audacious播放列表编辑器"
 
-#: src/skins/ui_playlist.c:809
+#: src/skins/ui_playlist.c:810
 #, c-format
 msgid "%s (%d of %d)"
 msgstr ""
@@ -3658,11 +3658,11 @@ msgstr "未打包的Winamp 2.x主题"
 msgid "Could not create directory (%s): %s\n"
 msgstr "无法创建目录(%s): %s\n"
 
-#: src/sndfile/plugin.c:438
+#: src/sndfile/plugin.c:454
 msgid "About sndfile plugin"
 msgstr "关于sndfile插件"
 
-#: src/sndfile/plugin.c:439
+#: src/sndfile/plugin.c:455
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"

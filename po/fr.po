@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious-plugins 2.4\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-17 18:49-0400\n"
+"POT-Creation-Date: 2011-09-18 14:13-0400\n"
 "PO-Revision-Date: 2011-04-18 19:16+0200\n"
 "Last-Translator: Jean-Alexandre Anglès d'Auriac <jagw40k@free.fr>\n"
 "Language-Team: français <>\n"
@@ -1066,7 +1066,7 @@ msgstr "Retour : (%)"
 msgid "Volume: (%)"
 msgstr "Volume : (%)"
 
-#: src/ffaudio/ffaudio-core.c:763
+#: src/ffaudio/ffaudio-core.c:789
 #, fuzzy, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1094,7 +1094,7 @@ msgstr ""
 "William Pitcock      <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:777
+#: src/ffaudio/ffaudio-core.c:803
 msgid "About FFaudio Plugin"
 msgstr "À propos du module « FFaudio »"
 
@@ -3884,11 +3884,11 @@ msgstr "Efface un préréglage."
 msgid "Delete auto-load preset"
 msgstr "Efface un préréglage spécifique."
 
-#: src/skins/ui_playlist.c:244
+#: src/skins/ui_playlist.c:245
 msgid "Search entries in active playlist"
 msgstr "Chercher des entrées dans la liste active"
 
-#: src/skins/ui_playlist.c:252
+#: src/skins/ui_playlist.c:253
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3904,39 +3904,39 @@ msgstr ""
 "Si vous ne savez pas comment fonctionnent les expressions rationnelles, vous "
 "pouvez simplement indiquer une expression littérale de ce que vous cherchez."
 
-#: src/skins/ui_playlist.c:260
+#: src/skins/ui_playlist.c:261
 msgid "Title: "
 msgstr "Titre : "
 
-#: src/skins/ui_playlist.c:267
+#: src/skins/ui_playlist.c:268
 msgid "Album: "
 msgstr "Titre de l'album : "
 
-#: src/skins/ui_playlist.c:274
+#: src/skins/ui_playlist.c:275
 msgid "Artist: "
 msgstr "Nom de l'artiste : "
 
-#: src/skins/ui_playlist.c:281
+#: src/skins/ui_playlist.c:282
 msgid "Filename: "
 msgstr "Nom du fichier : "
 
-#: src/skins/ui_playlist.c:289
+#: src/skins/ui_playlist.c:290
 msgid "Clear previous selection before searching"
 msgstr "Effacer la sélection précédente avant d'effectuer la recherche"
 
-#: src/skins/ui_playlist.c:292
+#: src/skins/ui_playlist.c:293
 msgid "Automatically toggle queue for matching entries"
 msgstr "Mettre automatiquement dans la file d'attente les entrées trouvées"
 
-#: src/skins/ui_playlist.c:295
+#: src/skins/ui_playlist.c:296
 msgid "Create a new playlist with matching entries"
 msgstr "Créer une nouvelle liste comportant les entrées trouvées"
 
-#: src/skins/ui_playlist.c:762
+#: src/skins/ui_playlist.c:763
 msgid "Audacious Playlist Editor"
 msgstr "Éditeur de la liste de lecture d'Audacious"
 
-#: src/skins/ui_playlist.c:809
+#: src/skins/ui_playlist.c:810
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d sur %d)"
@@ -3954,11 +3954,11 @@ msgstr "Thème « Winamp 2.x » non archivé"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Impossible de créer le répertoire (%s) : %s\n"
 
-#: src/sndfile/plugin.c:438
+#: src/sndfile/plugin.c:454
 msgid "About sndfile plugin"
 msgstr "À propos du module « sndfile »"
 
-#: src/sndfile/plugin.c:439
+#: src/sndfile/plugin.c:455
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.4.0\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-17 18:49-0400\n"
+"POT-Creation-Date: 2011-09-18 14:13-0400\n"
 "PO-Revision-Date: 2007-08-28 20:44+0200\n"
 "Last-Translator: Daniel Patriche <m4st3rth0r@gmail.com>\n"
 "Language-Team: Romanian <audacious@atheme.org>\n"
@@ -1038,7 +1038,7 @@ msgstr ""
 msgid "Volume: (%)"
 msgstr "Volum: %d%%"
 
-#: src/ffaudio/ffaudio-core.c:763
+#: src/ffaudio/ffaudio-core.c:789
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1054,7 +1054,7 @@ msgid ""
 "libavutil %s (%s)\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:777
+#: src/ffaudio/ffaudio-core.c:803
 #, fuzzy
 msgid "About FFaudio Plugin"
 msgstr "Despre plugin-ul·Apple·Lossless·Audio"
@@ -3801,11 +3801,11 @@ msgstr "Implicit"
 msgid "Delete auto-load preset"
 msgstr ""
 
-#: src/skins/ui_playlist.c:244
+#: src/skins/ui_playlist.c:245
 msgid "Search entries in active playlist"
 msgstr ""
 
-#: src/skins/ui_playlist.c:252
+#: src/skins/ui_playlist.c:253
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3813,43 +3813,43 @@ msgid ""
 "for."
 msgstr ""
 
-#: src/skins/ui_playlist.c:260
+#: src/skins/ui_playlist.c:261
 msgid "Title: "
 msgstr "Titlu: "
 
-#: src/skins/ui_playlist.c:267
+#: src/skins/ui_playlist.c:268
 #, fuzzy
 msgid "Album: "
 msgstr "Album"
 
-#: src/skins/ui_playlist.c:274
+#: src/skins/ui_playlist.c:275
 #, fuzzy
 msgid "Artist: "
 msgstr "Artist"
 
-#: src/skins/ui_playlist.c:281
+#: src/skins/ui_playlist.c:282
 #, fuzzy
 msgid "Filename: "
 msgstr "Fișier:"
 
-#: src/skins/ui_playlist.c:289
+#: src/skins/ui_playlist.c:290
 msgid "Clear previous selection before searching"
 msgstr ""
 
-#: src/skins/ui_playlist.c:292
+#: src/skins/ui_playlist.c:293
 msgid "Automatically toggle queue for matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:295
+#: src/skins/ui_playlist.c:296
 msgid "Create a new playlist with matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:762
+#: src/skins/ui_playlist.c:763
 #, fuzzy
 msgid "Audacious Playlist Editor"
 msgstr "AdPlug·::·Informații despre fișier"
 
-#: src/skins/ui_playlist.c:809
+#: src/skins/ui_playlist.c:810
 #, c-format
 msgid "%s (%d of %d)"
 msgstr ""
@@ -3867,12 +3867,12 @@ msgstr ""
 msgid "Could not create directory (%s): %s\n"
 msgstr "Nu s-a putut crea directorul (%s): %s\n"
 
-#: src/sndfile/plugin.c:438
+#: src/sndfile/plugin.c:454
 #, fuzzy
 msgid "About sndfile plugin"
 msgstr "Lista plugin-urilor _Generale"
 
-#: src/sndfile/plugin.c:439
+#: src/sndfile/plugin.c:455
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"

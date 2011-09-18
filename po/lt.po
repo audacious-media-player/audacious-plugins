@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious plugins 3.0\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-17 18:49-0400\n"
+"POT-Creation-Date: 2011-09-18 14:13-0400\n"
 "PO-Revision-Date: 2011-07-24 19:20+0300\n"
 "Last-Translator: gymka <gymka@mail.ru>\n"
 "Language-Team: Lietuvių <>\n"
@@ -314,7 +314,8 @@ msgid "custom "
 msgstr "derinta"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:568
-msgid " Hz "
+#, fuzzy
+msgid "Hz "
 msgstr " Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:621
@@ -882,8 +883,9 @@ msgid "Resampling rate:"
 msgstr ""
 
 #: src/console/configure.c:235 src/sid/xs_interface.c:354
-msgid " Hz"
-msgstr ""
+#, fuzzy
+msgid "Hz"
+msgstr " Hz "
 
 #: src/console/configure.c:246
 msgid "SPC"
@@ -989,7 +991,7 @@ msgstr ""
 msgid "Volume: (%)"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:763
+#: src/ffaudio/ffaudio-core.c:789
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1005,7 +1007,7 @@ msgid ""
 "libavutil %s (%s)\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:777
+#: src/ffaudio/ffaudio-core.c:803
 msgid "About FFaudio Plugin"
 msgstr ""
 
@@ -1110,8 +1112,8 @@ msgid "Output Samplerate:"
 msgstr "Išvesties samplerate:"
 
 #: src/filewriter/mp3.c:800
-msgid "( Hz)"
-msgstr "( Hz)"
+msgid "(Hz)"
+msgstr ""
 
 #: src/filewriter/mp3.c:807
 msgid "Bitrate / Compression ratio:"
@@ -1931,6 +1933,7 @@ msgid "OSS4 error"
 msgstr ""
 
 #: src/OSS/configure.c:146
+#, c-format
 msgid "Default (%s)"
 msgstr ""
 
@@ -2088,6 +2091,7 @@ msgid "SDL error"
 msgstr ""
 
 #: src/sid/xs_about.c:84
+#, c-format
 msgid "About %s"
 msgstr ""
 
@@ -2125,7 +2129,7 @@ msgstr ""
 msgid "8-bit"
 msgstr ""
 
-#: src/sid/xs_interface.c:270
+#: src/sid/xs_interface.c:277
 msgid "16-bit"
 msgstr "16-bitų"
 
@@ -2182,8 +2186,8 @@ msgstr ""
 
 #: src/sid/xs_interface.c:455
 msgid ""
-"PAL is the european TV standard, which uses 50 Hz vertical refresh "
-"frequency. Most of SID-tunes have been made for PAL computers."
+"PAL is the european TV standard, which uses 50Hz vertical refresh frequency. "
+"Most of SID-tunes have been made for PAL computers."
 msgstr ""
 
 #: src/sid/xs_interface.c:459
@@ -2192,7 +2196,7 @@ msgstr ""
 
 #: src/sid/xs_interface.c:463
 msgid ""
-"NTSC is the TV standard with 60 Hz vertical refresh rate (and other features "
+"NTSC is the TV standard with 60Hz vertical refresh rate (and other features "
 "that differ from PAL). It is mainly used in United States, Japan and certain "
 "other countries."
 msgstr ""
@@ -2814,7 +2818,8 @@ msgid "kbps"
 msgstr "kbps"
 
 #: src/skins/ui_main.c:452
-msgid " kHz"
+#, fuzzy
+msgid "kHz"
 msgstr " kHz"
 
 #: src/skins/ui_main.c:459
@@ -3519,11 +3524,11 @@ msgstr "Ištrinti šabloną"
 msgid "Delete auto-load preset"
 msgstr "Ištrinti savaime įsikraunantį šabloną"
 
-#: src/skins/ui_playlist.c:244
+#: src/skins/ui_playlist.c:245
 msgid "Search entries in active playlist"
 msgstr "Ieškoti įrašų aktyviame grojaraštyje"
 
-#: src/skins/ui_playlist.c:252
+#: src/skins/ui_playlist.c:253
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3535,39 +3540,39 @@ msgstr ""
 "nežinai kaip veikia regular expressions, paprasčiausiai įrašyk paraidžiui "
 "tai ko ieškai."
 
-#: src/skins/ui_playlist.c:260
+#: src/skins/ui_playlist.c:261
 msgid "Title: "
 msgstr "Pavadinimas:"
 
-#: src/skins/ui_playlist.c:267
+#: src/skins/ui_playlist.c:268
 msgid "Album: "
 msgstr "Albumas:"
 
-#: src/skins/ui_playlist.c:274
+#: src/skins/ui_playlist.c:275
 msgid "Artist: "
 msgstr "Atlikėjas:"
 
-#: src/skins/ui_playlist.c:281
+#: src/skins/ui_playlist.c:282
 msgid "Filename: "
 msgstr "Failo vardas:"
 
-#: src/skins/ui_playlist.c:289
+#: src/skins/ui_playlist.c:290
 msgid "Clear previous selection before searching"
 msgstr "Išvalyti buvusius pasirinkimus prieš ieškant"
 
-#: src/skins/ui_playlist.c:292
+#: src/skins/ui_playlist.c:293
 msgid "Automatically toggle queue for matching entries"
 msgstr "Automatiškai perjungti eilę atitinkantiem įrašam"
 
-#: src/skins/ui_playlist.c:295
+#: src/skins/ui_playlist.c:296
 msgid "Create a new playlist with matching entries"
 msgstr "Sukuria naują grojaraštį iš surastų įrašų"
 
-#: src/skins/ui_playlist.c:762
+#: src/skins/ui_playlist.c:763
 msgid "Audacious Playlist Editor"
 msgstr "Audacious grojaraščio redaktorius"
 
-#: src/skins/ui_playlist.c:809
+#: src/skins/ui_playlist.c:810
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d of %d)"
@@ -3585,11 +3590,11 @@ msgstr "Išarchyvuotas Winamp 2.x skin"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Negaliu sukurt aplanko (%s): %s\n"
 
-#: src/sndfile/plugin.c:438
+#: src/sndfile/plugin.c:454
 msgid "About sndfile plugin"
 msgstr "Apie sndfile įsiepį"
 
-#: src/sndfile/plugin.c:439
+#: src/sndfile/plugin.c:455
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -3821,12 +3826,13 @@ msgid "About Tone Generator"
 msgstr "Apie Tonų Generatorių"
 
 #: src/tonegen/tonegen.c:50
+#, fuzzy
 msgid ""
 "Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
 "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
 "\n"
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
-"e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
+"e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
 msgstr ""
 "Sinus tono generatorius, sukūrė Haavard Kvaalen <havardk@xmms.org>\n"
 "Patobulino Daniel J. Peng <danielpeng@bigfoot.com>\n"
@@ -3941,3 +3947,6 @@ msgstr ""
 "\n"
 "Dalį įskiepio sukūrė Miles Egan\n"
 "Aplankykite Wavpack puslapį http://www.wavpack.com/\n"
+
+#~ msgid "( Hz)"
+#~ msgstr "( Hz)"

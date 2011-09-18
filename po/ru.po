@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-17 18:49-0400\n"
+"POT-Creation-Date: 2011-09-18 14:13-0400\n"
 "PO-Revision-Date: 2010-08-22 22:00+0400\n"
 "Last-Translator: Sergey V. Mironov <sergo@bk.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -1047,7 +1047,7 @@ msgstr "Обратная связь (%):"
 msgid "Volume: (%)"
 msgstr "Громкость (%):"
 
-#: src/ffaudio/ffaudio-core.c:763
+#: src/ffaudio/ffaudio-core.c:789
 #, fuzzy, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1072,7 +1072,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
 
-#: src/ffaudio/ffaudio-core.c:777
+#: src/ffaudio/ffaudio-core.c:803
 msgid "About FFaudio Plugin"
 msgstr "О модуле FFaudio"
 
@@ -3819,11 +3819,11 @@ msgstr "Удалить предустановку"
 msgid "Delete auto-load preset"
 msgstr "Удалить автозагружаемую предустановку"
 
-#: src/skins/ui_playlist.c:244
+#: src/skins/ui_playlist.c:245
 msgid "Search entries in active playlist"
 msgstr "Поиск записей в активном списке воспроизведения"
 
-#: src/skins/ui_playlist.c:252
+#: src/skins/ui_playlist.c:253
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3835,39 +3835,39 @@ msgstr ""
 "чувствительное к регистру. Если вы не знаете, как работают регулярные "
 "выражения, просто вставьте часть букв из слова, которые хотите найти."
 
-#: src/skins/ui_playlist.c:260
+#: src/skins/ui_playlist.c:261
 msgid "Title: "
 msgstr "Название: "
 
-#: src/skins/ui_playlist.c:267
+#: src/skins/ui_playlist.c:268
 msgid "Album: "
 msgstr "Альбом: "
 
-#: src/skins/ui_playlist.c:274
+#: src/skins/ui_playlist.c:275
 msgid "Artist: "
 msgstr "Исполнитель: "
 
-#: src/skins/ui_playlist.c:281
+#: src/skins/ui_playlist.c:282
 msgid "Filename: "
 msgstr "Имя файла: "
 
-#: src/skins/ui_playlist.c:289
+#: src/skins/ui_playlist.c:290
 msgid "Clear previous selection before searching"
 msgstr "Очистить предыдущий выбор до начала поиска"
 
-#: src/skins/ui_playlist.c:292
+#: src/skins/ui_playlist.c:293
 msgid "Automatically toggle queue for matching entries"
 msgstr "Автоматически переключать поочерёдно на соответствующим записям"
 
-#: src/skins/ui_playlist.c:295
+#: src/skins/ui_playlist.c:296
 msgid "Create a new playlist with matching entries"
 msgstr "Создать новый список воспроизведения с соответствующими записями"
 
-#: src/skins/ui_playlist.c:762
+#: src/skins/ui_playlist.c:763
 msgid "Audacious Playlist Editor"
 msgstr "Редактор списков воспроизведения Audacious"
 
-#: src/skins/ui_playlist.c:809
+#: src/skins/ui_playlist.c:810
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d из %d)"
@@ -3885,11 +3885,11 @@ msgstr "Не архивированная тема Winamp 2.x"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Невозможно создать каталог (%s): %s\n"
 
-#: src/sndfile/plugin.c:438
+#: src/sndfile/plugin.c:454
 msgid "About sndfile plugin"
 msgstr "О модуле sndfile"
 
-#: src/sndfile/plugin.c:439
+#: src/sndfile/plugin.c:455
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
