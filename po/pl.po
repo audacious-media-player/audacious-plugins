@@ -9,13 +9,14 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
 "POT-Creation-Date: 2011-07-17 18:49-0400\n"
-"PO-Revision-Date: 2011-05-22 12:08+0200\n"
+"PO-Revision-Date: 2011-09-20 00:54+0200\n"
 "Last-Translator: Szymon Weihs <sz.weihs@gmail.com>\n"
 "Language-Team: \n"
-"Language: \n"
+"Language: Polish/Polski\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: src/aac/libmp4.c:256
 #, c-format
@@ -1029,7 +1030,7 @@ msgid "Volume: (%)"
 msgstr "Głośność: (%)"
 
 #: src/ffaudio/ffaudio-core.c:763
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1047,11 +1048,13 @@ msgstr ""
 "Oparta na framework'u multimedialnym FFmpeg (http://www.ffmpeg.org/)\n"
 "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
 "\n"
-"FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
-"\n"
 "Wtyczka dla Audacious napisana prez:\n"
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
+"\n"
+"libavcodec %s (%s)\n"
+"libavformat %s (%s)\n"
+"libavutil %s (%s)\n"
 
 #: src/ffaudio/ffaudio-core.c:777
 msgid "About FFaudio Plugin"
@@ -1432,285 +1435,236 @@ msgid "Disable"
 msgstr "Wyłącz"
 
 #: src/gtkui/menus.c:132
-#, fuzzy
 msgid "_Open Files ..."
-msgstr "Otwórz pliki ..."
+msgstr "_Otwórz pliki ..."
 
 #: src/gtkui/menus.c:133
-#, fuzzy
 msgid "Open _URL ..."
-msgstr "Otwórz URL ..."
+msgstr "Otwórz _URL ..."
 
 #: src/gtkui/menus.c:134
-#, fuzzy
 msgid "_Add File ..."
-msgstr "Dodaj pliki ..."
+msgstr "_Dodaj pliki ..."
 
 #: src/gtkui/menus.c:135
-#, fuzzy
 msgid "Add U_RL ..."
-msgstr "Dodaj URL ..."
+msgstr "Dodaj U_RL ..."
 
 #: src/gtkui/menus.c:137
-#, fuzzy
 msgid "A_bout ..."
-msgstr "O programie"
+msgstr "O _programie ..."
 
 #: src/gtkui/menus.c:138
-#, fuzzy
 msgid "_Preferences ..."
-msgstr "Ustawienia"
+msgstr "U_stawienia ..."
 
 #: src/gtkui/menus.c:139 src/skins/ui_manager.c:412
 msgid "_Quit"
 msgstr "_Zamknij"
 
 #: src/gtkui/menus.c:142
-#, fuzzy
 msgid "_Play"
-msgstr "Odtwarzaj"
+msgstr "_Odtwarzaj"
 
 #: src/gtkui/menus.c:143
-#, fuzzy
 msgid "Paus_e"
-msgstr "Pauza"
+msgstr "_Pauza"
 
 #: src/gtkui/menus.c:144
-#, fuzzy
 msgid "_Stop"
-msgstr "Stop"
+msgstr "_Stop"
 
 #: src/gtkui/menus.c:145
-#, fuzzy
 msgid "Pre_vious"
-msgstr "Poprzedni"
+msgstr "Pop_rzedni"
 
 #: src/gtkui/menus.c:146
-#, fuzzy
 msgid "_Next"
-msgstr "Następny"
+msgstr "_Następny"
 
 #: src/gtkui/menus.c:148
-#, fuzzy
 msgid "_Repeat"
-msgstr "Powtarzaj"
+msgstr "Po_wtarzaj"
 
 #: src/gtkui/menus.c:149
-#, fuzzy
 msgid "S_huffle"
-msgstr "Losuj"
+msgstr "_Losuj"
 
 #: src/gtkui/menus.c:150
-#, fuzzy
 msgid "N_o Playlist Advance"
-msgstr "Odtwarzaj pojedynczo"
+msgstr "O_dtwarzaj pojedynczo"
 
 #: src/gtkui/menus.c:151
-#, fuzzy
 msgid "Stop _After This Song"
-msgstr "Zatrzymaj po tym utworze."
+msgstr "_Zatrzymaj po tym utworze."
 
 #: src/gtkui/menus.c:153 src/gtkui/menus.c:210
 msgid "Song _Info ..."
-msgstr ""
+msgstr "_Info o utworze ..."
 
 #: src/gtkui/menus.c:154
-#, fuzzy
 msgid "Jump to _Time ..."
-msgstr "Przeskocz do czasu"
+msgstr "Przeskocz do _czasu ..."
 
 #: src/gtkui/menus.c:155
 msgid "_Jump to Song ..."
-msgstr ""
+msgstr "Przeskocz do _utworu ..."
 
 #: src/gtkui/menus.c:158
-#, fuzzy
 msgid "By Track _Number"
-msgstr "Numer utworu"
+msgstr "_Numer utworu"
 
 #: src/gtkui/menus.c:159
-#, fuzzy
 msgid "By _Title"
-msgstr "Tytuł"
+msgstr "_Tytuł"
 
 #: src/gtkui/menus.c:160
-#, fuzzy
 msgid "By _Artist"
-msgstr "Wykonawca"
+msgstr "_Wykonawca"
 
 #: src/gtkui/menus.c:161
-#, fuzzy
 msgid "By A_lbum"
-msgstr "Album"
+msgstr "_Album"
 
 #: src/gtkui/menus.c:162
-#, fuzzy
 msgid "By Release _Date"
-msgstr "Data premiery"
+msgstr "_Data premiery"
 
 #: src/gtkui/menus.c:163
-#, fuzzy
 msgid "By _File Path"
-msgstr "Położenie pliku"
+msgstr "_Położenie pliku"
 
 #: src/gtkui/menus.c:164
-#, fuzzy
 msgid "By _Custom Title"
-msgstr "Własny tytuł (z ustawień)"
+msgstr "Wła_sny tytuł"
 
 #: src/gtkui/menus.c:166
-#, fuzzy
 msgid "R_everse Order"
-msgstr "Odwróć kolejność"
+msgstr "_Odwróć kolejność"
 
 #: src/gtkui/menus.c:167
-#, fuzzy
 msgid "_Random Order"
-msgstr "Losowa kolejność"
+msgstr "_Losowa kolejność"
 
 #: src/gtkui/menus.c:170 src/gtkui/menus.c:212
 msgid "_Refresh"
 msgstr "_Odśwież"
 
 #: src/gtkui/menus.c:172
-#, fuzzy
 msgid "_Sort"
-msgstr "Sortuj"
+msgstr "_Sortuj"
 
 #: src/gtkui/menus.c:174
 msgid "_New"
-msgstr ""
+msgstr "_Nowa"
 
 #: src/gtkui/menus.c:175
 msgid "_Close"
 msgstr "_Zamknij"
 
 #: src/gtkui/menus.c:177
-#, fuzzy
 msgid "_Import ..."
-msgstr "Importuj"
+msgstr "_Importuj"
 
 #: src/gtkui/menus.c:178
-#, fuzzy
 msgid "_Export ..."
-msgstr "Eksportuj"
+msgstr "_Eksportuj"
 
 #: src/gtkui/menus.c:180
-#, fuzzy
 msgid "_Playlist Manager ..."
-msgstr "Menedżer playlist"
+msgstr "_Menedżer playlist ..."
 
 #: src/gtkui/menus.c:183
-#, fuzzy
 msgid "Volume _Up"
-msgstr "Zwiększ głośność"
+msgstr "_Zwiększ głośność"
 
 #: src/gtkui/menus.c:184
-#, fuzzy
 msgid "Volume _Down"
-msgstr "Zmniejsz głośność"
+msgstr "Z_mniejsz głośność"
 
 #: src/gtkui/menus.c:186
-#, fuzzy
 msgid "_Equalizer"
-msgstr "Korektor graficzny"
+msgstr "_Korektor graficzny"
 
 #: src/gtkui/menus.c:188
-#, fuzzy
 msgid "E_ffects"
-msgstr "Efekty"
+msgstr "_Efekty"
 
 #: src/gtkui/menus.c:191
-#, fuzzy
 msgid "_Interface"
-msgstr "Interfejs"
+msgstr "_Interfejs"
 
 #: src/gtkui/menus.c:193
 msgid "Show _Menu Bar"
-msgstr ""
+msgstr "Pokaż pasek _menu"
 
 #: src/gtkui/menus.c:194
-#, fuzzy
 msgid "Show I_nfo Bar"
-msgstr "Pokaż obszar informacji"
+msgstr "Pokaż _obszar informacji"
 
 #: src/gtkui/menus.c:195
-#, fuzzy
 msgid "Show _Status Bar"
-msgstr "Pokaż pasek stanu"
+msgstr "Pokaż pasek _stanu"
 
 #: src/gtkui/menus.c:197
-#, fuzzy
 msgid "Show Column _Headers"
-msgstr "Pokaż nagłówki kolumn"
+msgstr "Pokaż _nagłówki kolumn"
 
 #: src/gtkui/menus.c:198
-#, fuzzy
 msgid "Choose _Columns ..."
-msgstr "Wybierz kolumny ..."
+msgstr "Wybierz _kolumny ..."
 
 #: src/gtkui/menus.c:199
-#, fuzzy
 msgid "Scrol_l on Song Change"
-msgstr "Przewijaj przy zmianie utworu"
+msgstr "_Przewijaj przy zmianie utworu"
 
 #: src/gtkui/menus.c:202
-#, fuzzy
 msgid "_File"
-msgstr "Plik"
+msgstr "_Plik"
 
 #: src/gtkui/menus.c:203
-#, fuzzy
 msgid "_Playback"
-msgstr "Odtwarzanie"
+msgstr "_Odtwarzanie"
 
 #: src/gtkui/menus.c:204
-#, fuzzy
 msgid "P_laylist"
-msgstr "Playlista"
+msgstr "P_laylista"
 
 #: src/gtkui/menus.c:205 src/gtkui/menus.c:219
-#, fuzzy
 msgid "_Services"
-msgstr "Urządzenia"
+msgstr "W_tyczki"
 
 #: src/gtkui/menus.c:206
-#, fuzzy
 msgid "_Output"
-msgstr "Dźwięk"
+msgstr "_Dźwięk"
 
 #: src/gtkui/menus.c:207
-#, fuzzy
 msgid "_View"
-msgstr "Widok"
+msgstr "_Widok"
 
 #: src/gtkui/menus.c:211
 msgid "_Queue/Unqueue"
-msgstr ""
+msgstr "_Przełącz kolejkę"
 
 #: src/gtkui/menus.c:214
 msgid "Cu_t"
-msgstr ""
+msgstr "_Wytnij"
 
 #: src/gtkui/menus.c:215
-#, fuzzy
 msgid "_Copy"
-msgstr "Kopiuj"
+msgstr "_Kopiuj"
 
 #: src/gtkui/menus.c:216
-#, fuzzy
 msgid "_Paste"
-msgstr "Wklej"
+msgstr "Wk_lej"
 
 #: src/gtkui/menus.c:217
-#, fuzzy
 msgid "Select _All"
-msgstr "Zaznacz wszystko"
+msgstr "_Zaznacz wszystko"
 
 #: src/gtkui/menus.c:222
-#, fuzzy
 msgid "_Rename"
-msgstr "Nazwa pliku"
+msgstr "_Zmień nazwę"
 
 #: src/gtkui/ui_gtk.c:75
 msgid "GTK Interface"
@@ -1738,16 +1692,17 @@ msgid "stereo"
 msgstr "stereo"
 
 #: src/gtkui/ui_statusbar.c:106
-#, fuzzy, c-format
+#, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "%d kanały"
+msgstr[0] "%d kanał"
 msgstr[1] "%d kanały"
+msgstr[2] "%d kanałów"
 
 #: src/gtkui/ui_statusbar.c:121
-#, fuzzy, c-format
+#, c-format
 msgid "%d kbps"
-msgstr "kbps"
+msgstr "%d kbps"
 
 #: src/hotkey/gui.c:71
 msgid "Previous Track"
@@ -1802,14 +1757,12 @@ msgid "Show On-Screen-Display"
 msgstr "Pokaż OSD"
 
 #: src/hotkey/gui.c:84
-#, fuzzy
 msgid "Toggle Repeat"
-msgstr "Powtarzaj"
+msgstr "Przełącz powtarzanie"
 
 #: src/hotkey/gui.c:85
-#, fuzzy
 msgid "Toggle Shuffle"
-msgstr "Losuj"
+msgstr "Przełącz losowanie"
 
 #: src/hotkey/gui.c:95
 msgid "(none)"
@@ -1939,12 +1892,16 @@ msgid ""
 "\n"
 "Looking for lyrics..."
 msgstr ""
+"\n"
+"Szukanie tekstu..."
 
 #: src/lyricwiki/lyricwiki.c:249
 msgid ""
 "\n"
 "Connecting to lyrics.wikia.com..."
 msgstr ""
+"\n"
+"Łączenie z lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.c:337
 msgid ""
@@ -1992,22 +1949,19 @@ msgstr "Trwa wgrywanie..."
 
 #: src/mtp_up/mtp.c:310
 msgid "Upload to MTP Device"
-msgstr ""
+msgstr "Wgraj do urządzenia MTP"
 
 #: src/mtp_up/mtp.c:311
-#, fuzzy
 msgid "Disconnect MTP Device"
-msgstr "Rozłącz urządzenie"
+msgstr "Rozłącz urządzenie MTP"
 
 #: src/notify/libnotify-aosd_event.c:47
-#, fuzzy
 msgid "Stopped"
-msgstr "Stop"
+msgstr "Zatrzymany"
 
 #: src/notify/libnotify-aosd_event.c:47
-#, fuzzy
 msgid "Audacious is not playing."
-msgstr "Audacious - ostrzeżenie o widoczności"
+msgstr "Audacious nie odtwarza."
 
 #: src/null/null.c:64
 msgid "Null output plugin "
@@ -2985,20 +2939,19 @@ msgstr "<b>_Czcionki</b>"
 
 #: src/skins/skins_cfg.c:261
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr ""
+msgstr "Użyj bitmapowych czcionek (tylko dla ASCII)"
 
 #: src/skins/skins_cfg.c:263
 msgid "Scroll song title in both directions"
-msgstr ""
+msgstr "Przewijaj tytuł piosenki w obydwu kierunkach"
 
 #: src/skins/skins_cfg.c:346
 msgid "<b>_Skin</b>"
 msgstr "<b>_Skórka</b>"
 
 #: src/skins/skins_cfg.c:393
-#, fuzzy
 msgid "Interface Preferences"
-msgstr "Konfiguracja Crossfade"
+msgstr "Preferencje interfejsu"
 
 #: src/skins/ui_equalizer.c:330
 msgid "Preamp"
@@ -3065,9 +3018,9 @@ msgid "surround"
 msgstr "surround"
 
 #: src/skins/ui_main.c:807
-#, fuzzy, c-format
+#, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "Skocz do: %d:%-2.2d/%d:%-2.2d (%d%%)"
+msgstr "Skocz do: %d:%-2.2d / %d:%-2.2d"
 
 #: src/skins/ui_main.c:828
 #, c-format
@@ -3382,9 +3335,8 @@ msgid "Interface"
 msgstr "Interfejs"
 
 #: src/skins/ui_manager.c:245
-#, fuzzy
 msgid "Interface Preferences ..."
-msgstr "Konfiguracja Crossfade"
+msgstr "Preferencje interfejsu ..."
 
 #: src/skins/ui_manager.c:249
 msgid "Add Internet Address..."
@@ -4089,9 +4041,8 @@ msgid "Tone Generator: "
 msgstr "Generator sygnałów: "
 
 #: src/unix-io/gtk.c:34
-#, fuzzy
 msgid "About File I/O Plugin"
-msgstr "O wtyczce OSS4"
+msgstr "O wtyczce File I/O"
 
 #: src/vorbis/configure.c:31
 msgid "Override generic titles"
