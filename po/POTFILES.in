@@ -1,5 +1,6 @@
 # Please don't update this file manually - use ./update-potfiles.sh instead!
 src/aac/libmp4.c
+src/alarm/interface.c
 src/alsa/config.c
 src/alsa/plugin.c
 src/amidi-plug/amidi-plug.c
@@ -71,8 +72,10 @@ src/hotkey/gui.c
 src/jack/bio2jack.c
 src/jack/configure.c
 src/jack/jack.c
+src/ladspa/plugin.c
 src/lyricwiki/lyricwiki.c
 src/metronom/metronom.c
+src/mixer/plugin.c
 src/mpg123/mpg123.c
 src/mtp_up/mtp.c
 src/notify/libnotify-aosd_event.c
@@ -107,11 +110,12 @@ src/sndstretch/sndstretch_xmms.c
 src/song_change/song_change.c
 src/statusicon/statusicon.c
 src/stereo_plugin/stereo.c
+src/streambrowser/gui/streambrowser_win.c
+src/streambrowser/streambrowser.c
 src/tonegen/tonegen.c
 src/unix-io/gtk.c
 src/usf/recompiler_cpu.c
 src/usf/rsp_recompiler_cpu.c
-src/vorbis/configure.c
 src/vorbis/vorbis.c
 src/vtx/about.c
 src/wavpack/wavpack.c
