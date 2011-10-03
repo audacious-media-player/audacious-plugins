@@ -272,24 +272,24 @@ on_skin_view_drag_data_received(GtkWidget * widget,
                                 gpointer user_data)
 {
     mcs_handle_t *db;
-    gchar *path;
 
-    if (! gtk_selection_data_get_data (selection_data))
+    const gchar * data = (const gchar *) gtk_selection_data_get_data (selection_data);
+    g_return_if_fail (data);
+
+    const gchar * end = strchr (data, '\r');
+    if (! end) end = strchr (data, '\n');
+    if (! end) end = data + strlen (data);
+
+    gchar * path = g_strndup (data, end - data);
+
+    if (strstr (path, "://"))
     {
-        g_warning("DND data string is NULL");
-        return;
-    }
-
-    path = (gchar *) gtk_selection_data_get_data (selection_data);
-
-    /* FIXME: use a real URL validator/parser */
-
-    if (str_has_prefix_nocase(path, "file:///")) {
-        path[strlen(path) - 2] = 0; /* Why the hell a CR&LF? */
-        path += 7;
-    }
-    else if (str_has_prefix_nocase(path, "file:")) {
-        path += 5;
+        gchar * path2 = uri_to_filename (path);
+        if (path2)
+        {
+            g_free (path);
+            path = path2;
+        }
     }
 
     if (file_is_archive(path)) {
