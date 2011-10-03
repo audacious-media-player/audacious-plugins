@@ -984,20 +984,48 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     return TRUE;
 }
 
-void
-skin_install_skin(const gchar * path)
+void skin_install_skin (const gchar * path)
 {
-    gchar *command;
+#ifdef S_IRGRP
+    const mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+#else
+    const mode_t mode = S_IRWXU;
+#endif
 
-    g_return_if_fail(path != NULL);
-
-    command = g_strdup_printf("cp %s %s",
-                              path, skins_paths[SKINS_PATH_USER_SKIN_DIR]);
-    if (system(command)) {
-        AUDDBG("Unable to install skin (%s) into user directory (%s)\n",
-                  path, skins_paths[SKINS_PATH_USER_SKIN_DIR]);
+    if (g_mkdir_with_parents (skins_paths[SKINS_PATH_USER_SKIN_DIR], mode) < 0)
+    {
+        fprintf (stderr, "Failed to create %s: %s\n",
+         skins_paths[SKINS_PATH_USER_SKIN_DIR], strerror (errno));
+        return;
     }
-    g_free(command);
+
+    GError * err = 0;
+    gchar * data;
+    gsize len;
+
+    if (! g_file_get_contents (path, & data, & len, & err))
+    {
+        fprintf (stderr, "Failed to read %s: %s\n", path, err->message);
+        g_error_free (err);
+        return;
+    }
+
+    gchar * base = g_path_get_basename (path);
+    gchar * target = g_build_filename (skins_paths[SKINS_PATH_USER_SKIN_DIR], base, NULL);
+
+    if (! g_file_set_contents (target, data, len, & err))
+    {
+        fprintf (stderr, "Failed to write %s: %s\n", path, err->message);
+        g_error_free (err);
+        g_free (data);
+        g_free (base);
+        g_free (target);
+        return;
+    }
+
+    g_free (data);
+    g_free (base);
+    g_free (target);
 }
 
 static gboolean skin_load (Skin * skin, const gchar * path)
