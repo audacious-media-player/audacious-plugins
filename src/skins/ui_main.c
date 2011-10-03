@@ -650,7 +650,7 @@ mainwin_drag_data_received(GtkWidget * widget,
         if (str_has_suffix_nocase (data, ".wsz\r\n") || str_has_suffix_nocase
          (data, ".zip\r\n"))
         {
-            on_skin_view_drag_data_received(GTK_WIDGET(user_data), context, x, y, selection_data, info, time, NULL);
+            on_skin_view_drag_data_received (0, context, x, y, selection_data, info, time, 0);
             return;
         }
     }
