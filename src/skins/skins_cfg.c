@@ -296,7 +296,9 @@ on_skin_view_drag_data_received(GtkWidget * widget,
         if (! active_skin_load (path))
             return;
         skin_install_skin(path);
-        skin_view_update ((GtkTreeView *) widget);
+
+        if (skin_view)
+            skin_view_update ((GtkTreeView *) skin_view);
 
         /* Change skin name in the config file */
         db = aud_cfg_db_open();
