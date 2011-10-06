@@ -35,9 +35,6 @@
 #include "plugin.h"
 
 static const gchar * const ladspa_defaults[] = {
-#ifndef _WIN32
- "module_path", "/usr/lib/ladspa",
-#endif
  "plugin_count", "0",
  NULL};
 
@@ -188,15 +185,12 @@ static void * open_module (const char * path)
     return handle;
 }
 
-static void open_modules (void)
+static void open_modules_for_path (const char * path)
 {
-    if (! module_path || ! module_path[0])
-        return;
-
-    DIR * folder = opendir (module_path);
+    DIR * folder = opendir (path);
     if (! folder)
     {
-        fprintf (stderr, "ladspa: Failed to read folder %s: %s\n", module_path, strerror (errno));
+        fprintf (stderr, "ladspa: Failed to read folder %s: %s\n", path, strerror (errno));
         return;
     }
 
@@ -206,15 +200,34 @@ static void open_modules (void)
         if (entry->d_name[0] == '.' || ! str_has_suffix_nocase (entry->d_name, G_MODULE_SUFFIX))
             continue;
 
-        char path[strlen (module_path) + strlen (entry->d_name) + 2];
-        snprintf (path, sizeof path, "%s" G_DIR_SEPARATOR_S "%s", module_path, entry->d_name);
+        char filename[strlen (path) + strlen (entry->d_name) + 2];
+        snprintf (filename, sizeof filename, "%s" G_DIR_SEPARATOR_S "%s", path, entry->d_name);
 
-        void * handle = open_module (path);
+        void * handle = open_module (filename);
         if (handle)
             index_append (modules, handle);
     }
 
     closedir (folder);
+}
+
+static void open_modules_for_paths (const char * paths)
+{
+    if (! paths || ! paths[0])
+        return;
+
+    char * * split = g_strsplit (paths, ":", -1);
+
+    for (int i = 0; split[i]; i ++)
+        open_modules_for_path (split[i]);
+
+    g_strfreev (split);
+}
+
+static void open_modules (void)
+{
+    open_modules_for_paths (getenv ("LADSPA_PATH"));
+    open_modules_for_paths (module_path);
 }
 
 static void close_modules (void)
@@ -356,6 +369,7 @@ static int init (void)
     aud_config_set_defaults ("ladspa", ladspa_defaults);
 
     module_path = aud_get_string ("ladspa", "module_path");
+
     open_modules ();
     load_enabled_from_config ();
 
@@ -408,7 +422,7 @@ static void about (void)
      "from the use of this software.");
 }
 
-static void set_module_path (GtkFileChooserButton * chooser)
+static void set_module_path (GtkEntry * entry)
 {
     pthread_mutex_lock (& mutex);
 
@@ -416,7 +430,7 @@ static void set_module_path (GtkFileChooserButton * chooser)
     close_modules ();
 
     g_free (module_path);
-    module_path = gtk_file_chooser_get_filename ((GtkFileChooser *) chooser);
+    module_path = g_strdup (gtk_entry_get_text (entry));
 
     open_modules ();
     load_enabled_from_config ();
@@ -571,11 +585,20 @@ static void configure (void)
     GtkWidget * hbox = gtk_hbox_new (0, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
 
-    GtkWidget * label = gtk_label_new (_("Module path:"));
+    GtkWidget * label = gtk_label_new (_("Module paths:"));
     gtk_box_pack_start ((GtkBox *) hbox, label, 0, 0, 0);
 
-    GtkWidget * chooser = gtk_file_chooser_button_new (NULL, GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-    gtk_box_pack_start ((GtkBox *) hbox, chooser, 0, 0, 0);
+    label = gtk_label_new (0);
+    gtk_label_set_markup ((GtkLabel *) label,
+     _("<small>Separate multiple paths with a colon.\n"
+     "These paths are searched in addition to LADSPA_PATH.\n"
+     "After adding new paths, press Enter to scan for new plugins.</small>"));
+    gtk_misc_set_padding ((GtkMisc *) label, 12, 6);
+    gtk_misc_set_alignment ((GtkMisc *) label, 0, 0);
+    gtk_box_pack_start ((GtkBox *) vbox, label, 0, 0, 0);
+
+    GtkWidget * entry = gtk_entry_new ();
+    gtk_box_pack_start ((GtkBox *) hbox, entry, 1, 1, 0);
 
     hbox = gtk_hbox_new (0, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 1, 1, 0);
@@ -620,11 +643,11 @@ static void configure (void)
     gtk_box_pack_end ((GtkBox *) hbox2, settings_button, 0, 0, 0);
 
     if (module_path)
-        gtk_file_chooser_set_filename ((GtkFileChooser *) chooser, module_path);
+        gtk_entry_set_text ((GtkEntry *) entry, module_path);
 
     g_signal_connect (config_win, "response", (GCallback) gtk_widget_destroy, NULL);
     g_signal_connect (config_win, "destroy", (GCallback) gtk_widget_destroyed, & config_win);
-    g_signal_connect (chooser, "file-set", (GCallback) set_module_path, NULL);
+    g_signal_connect (entry, "activate", (GCallback) set_module_path, NULL);
     g_signal_connect (plugin_list, "destroy", (GCallback) gtk_widget_destroyed, & plugin_list);
     g_signal_connect (enable_button, "clicked", (GCallback) enable_selected, NULL);
     g_signal_connect (loaded_list, "destroy", (GCallback) gtk_widget_destroyed, & loaded_list);
