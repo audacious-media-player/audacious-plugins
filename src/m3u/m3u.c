@@ -112,7 +112,7 @@ static gboolean playlist_save_m3u (const gchar * path, VFSFile * file,
     return TRUE;
 }
 
-static const gchar * const m3u_exts[] = {"m3u", NULL};
+static const gchar * const m3u_exts[] = {"m3u", "m3u8", NULL};
 
 AUD_PLAYLIST_PLUGIN
 (
