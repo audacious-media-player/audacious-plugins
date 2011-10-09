@@ -59,45 +59,45 @@ typedef struct {
 
 /****************************************************************************/
 
-static void vis_update_cb (const VisNode * vis, UIInfoArea * area)
+static UIInfoArea * area = NULL;
+
+static void vis_render_cb (const gfloat * freq)
 {
+    g_return_if_fail (area);
+
     const gfloat xscale[VIS_BANDS + 1] = {0.00, 0.59, 1.52, 3.00, 5.36, 9.10,
      15.0, 24.5, 39.4, 63.2, 101, 161, 256}; /* logarithmic scale - 1 */
-
-    gint16 fft[2][256];
-    aud_calc_mono_freq (fft, vis->data, vis->nch);
 
     for (gint i = 0; i < VIS_BANDS; i ++)
     {
         gint a = ceil (xscale[i]);
         gint b = floor (xscale[i + 1]);
-        gint n = 0;
+        gfloat n = 0;
 
         if (b < a)
-            n += fft[0][b] * (xscale[i + 1] - xscale[i]);
+            n += freq[b] * (xscale[i + 1] - xscale[i]);
         else
         {
             if (a > 0)
-                n += fft[0][a - 1] * (a - xscale[i]);
+                n += freq[a - 1] * (a - xscale[i]);
             for (; a < b; a ++)
-                n += fft[0][a];
+                n += freq[a];
             if (b < 256)
-                n += fft[0][b] * (xscale[i + 1] - b);
+                n += freq[b] * (xscale[i + 1] - b);
         }
 
         /* 40 dB range */
-        /* 0.00305 == 1 / 32767 * 10^(40/20) */
-        n = 20 * log10 (n * 0.00305);
-        n = CLAMP (n, 0, 40);
+        int x = 20 * log10 (n * 100);
+        x = CLAMP (x, 0, 40);
 
         area->bars[i] -= MAX (0, VIS_FALLOFF - area->delay[i]);
 
         if (area->delay[i])
             area->delay[i] --;
 
-        if (n > area->bars[i])
+        if (x > area->bars[i])
         {
-            area->bars[i] = n;
+            area->bars[i] = x;
             area->delay[i] = VIS_DELAY;
         }
     }
@@ -105,8 +105,10 @@ static void vis_update_cb (const VisNode * vis, UIInfoArea * area)
     gtk_widget_queue_draw (area->vis);
 }
 
-static void vis_clear_cb (void * hook_data, UIInfoArea * area)
+static void vis_clear_cb (void)
 {
+    g_return_if_fail (area);
+
     memset (area->bars, 0, sizeof area->bars);
     memset (area->delay, 0, sizeof area->delay);
 
@@ -237,18 +239,18 @@ static void get_color (GtkWidget * widget, gint i, gfloat * r, gfloat * g,
 }
 
 #if GTK_CHECK_VERSION (3, 0, 0)
-static gboolean draw_vis_cb (GtkWidget * vis, cairo_t * cr, UIInfoArea * area)
+static gboolean draw_vis_cb (GtkWidget * vis, cairo_t * cr)
 {
 #else
-static gboolean expose_vis_cb (GtkWidget * vis, GdkEventExpose * event,
- UIInfoArea * area)
+static gboolean expose_vis_cb (GtkWidget * vis, GdkEventExpose * event)
 {
     cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (vis));
 #endif
+    g_return_val_if_fail (area, FALSE);
 
     clear (vis, cr);
 
-    for (auto gint i = 0; i < VIS_BANDS; i++)
+    for (gint i = 0; i < VIS_BANDS; i++)
     {
         gint x = SPACING + 8 * i;
         gint t = VIS_CENTER - area->bars[i];
@@ -272,8 +274,10 @@ static gboolean expose_vis_cb (GtkWidget * vis, GdkEventExpose * event,
     return TRUE;
 }
 
-static void draw_album_art (UIInfoArea * area, cairo_t * cr)
+static void draw_album_art (cairo_t * cr)
 {
+    g_return_if_fail (area);
+
     if (area->pb != NULL)
     {
         gdk_cairo_set_source_pixbuf (cr, area->pb, SPACING, SPACING);
@@ -287,8 +291,10 @@ static void draw_album_art (UIInfoArea * area, cairo_t * cr)
     }
 }
 
-static void draw_title (UIInfoArea * area, cairo_t * cr)
+static void draw_title (cairo_t * cr)
 {
+    g_return_if_fail (area);
+
     GtkAllocation alloc;
     gtk_widget_get_allocation (area->main, & alloc);
 
@@ -316,19 +322,19 @@ static void draw_title (UIInfoArea * area, cairo_t * cr)
 }
 
 #if GTK_CHECK_VERSION (3, 0, 0)
-static gboolean draw_cb (GtkWidget * widget, cairo_t * cr, UIInfoArea * area)
+static gboolean draw_cb (GtkWidget * widget, cairo_t * cr)
 {
 #else
-static gboolean expose_cb (GtkWidget * widget, GdkEventExpose * event,
- UIInfoArea * area)
+static gboolean expose_cb (GtkWidget * widget, GdkEventExpose * event)
 {
     cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
 #endif
+    g_return_val_if_fail (area, FALSE);
 
     clear (widget, cr);
 
-    draw_album_art (area, cr);
-    draw_title (area, cr);
+    draw_album_art (cr);
+    draw_title (cr);
 
 #if ! GTK_CHECK_VERSION (3, 0, 0)
     cairo_destroy (cr);
@@ -336,8 +342,9 @@ static gboolean expose_cb (GtkWidget * widget, GdkEventExpose * event,
     return TRUE;
 }
 
-static gboolean ui_infoarea_do_fade (UIInfoArea * area)
+static gboolean ui_infoarea_do_fade (void)
 {
+    g_return_val_if_fail (area, FALSE);
     gboolean ret = FALSE;
 
     if (aud_drct_get_playing () && area->alpha < 1)
@@ -369,8 +376,10 @@ static gint strcmp_null (const gchar * a, const gchar * b)
     return strcmp (a, b);
 }
 
-void ui_infoarea_set_title (void * data, UIInfoArea * area)
+void ui_infoarea_set_title (void)
 {
+    g_return_if_fail (area);
+
     if (! aud_drct_get_playing ())
         return;
 
@@ -400,8 +409,10 @@ void ui_infoarea_set_title (void * data, UIInfoArea * area)
     gtk_widget_queue_draw (area->main);
 }
 
-static void set_album_art (UIInfoArea * area)
+static void set_album_art (void)
 {
+    g_return_if_fail (area);
+
     if (area->pb)
         g_object_unref (area->pb);
 
@@ -410,8 +421,10 @@ static void set_album_art (UIInfoArea * area)
         audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
 }
 
-static void infoarea_next (UIInfoArea * area)
+static void infoarea_next (void)
 {
+    g_return_if_fail (area);
+
     if (area->last_pb)
         g_object_unref (area->last_pb);
     area->last_pb = area->pb;
@@ -435,23 +448,27 @@ static void infoarea_next (UIInfoArea * area)
     gtk_widget_queue_draw (area->main);
 }
 
-static void ui_infoarea_playback_start (void * data, UIInfoArea * area)
+static void ui_infoarea_playback_start (void)
 {
+    g_return_if_fail (area);
+
     if (! area->stopped) /* moved to the next song without stopping? */
-        infoarea_next (area);
+        infoarea_next ();
     area->stopped = FALSE;
 
-    ui_infoarea_set_title (NULL, area);
-    set_album_art (area);
+    ui_infoarea_set_title ();
+    set_album_art ();
 
     if (! area->fade_timeout)
         area->fade_timeout = g_timeout_add (30, (GSourceFunc)
          ui_infoarea_do_fade, area);
 }
 
-static void ui_infoarea_playback_stop (void * data, UIInfoArea * area)
+static void ui_infoarea_playback_stop (void)
 {
-    infoarea_next (area);
+    g_return_if_fail (area);
+
+    infoarea_next ();
     area->stopped = TRUE;
 
     if (! area->fade_timeout)
@@ -459,15 +476,18 @@ static void ui_infoarea_playback_stop (void * data, UIInfoArea * area)
          ui_infoarea_do_fade, area);
 }
 
-static void destroy_cb (GtkWidget * widget, UIInfoArea * area)
+static void destroy_cb (GtkWidget * widget)
 {
+    g_return_if_fail (area);
+
     hook_dissociate ("playlist update", (HookFunction) ui_infoarea_set_title);
     hook_dissociate ("playback begin", (HookFunction)
      ui_infoarea_playback_start);
     hook_dissociate ("playback stop", (HookFunction)
      ui_infoarea_playback_stop);
-    hook_dissociate ("visualization clear", (HookFunction) vis_clear_cb);
-    aud_vis_runner_remove_hook ((VisHookFunc) vis_update_cb);
+
+    aud_vis_func_remove ((VisFunc) vis_clear_cb);
+    aud_vis_func_remove ((VisFunc) vis_render_cb);
 
     if (area->fade_timeout)
     {
@@ -488,11 +508,13 @@ static void destroy_cb (GtkWidget * widget, UIInfoArea * area)
         g_object_unref (area->last_pb);
 
     g_slice_free (UIInfoArea, area);
+    area = NULL;
 }
 
 GtkWidget * ui_infoarea_new (void)
 {
-    UIInfoArea * area = g_slice_new0 (UIInfoArea);
+    g_return_val_if_fail (! area, NULL);
+    area = g_slice_new0 (UIInfoArea);
 
     area->box = gtk_hbox_new (FALSE, 0);
 
@@ -505,24 +527,25 @@ GtkWidget * ui_infoarea_new (void)
     gtk_box_pack_start ((GtkBox *) area->box, area->vis, FALSE, FALSE, 0);
 
 #if GTK_CHECK_VERSION (3, 0, 0)
-    g_signal_connect (area->main, "draw", (GCallback) draw_cb, area);
-    g_signal_connect (area->vis, "draw", (GCallback) draw_vis_cb, area);
+    g_signal_connect (area->main, "draw", (GCallback) draw_cb, NULL);
+    g_signal_connect (area->vis, "draw", (GCallback) draw_vis_cb, NULL);
 #else
-    g_signal_connect (area->main, "expose-event", (GCallback) expose_cb, area);
-    g_signal_connect (area->vis, "expose-event", (GCallback) expose_vis_cb, area);
+    g_signal_connect (area->main, "expose-event", (GCallback) expose_cb, NULL);
+    g_signal_connect (area->vis, "expose-event", (GCallback) expose_vis_cb, NULL);
 #endif
 
-    hook_associate ("playlist update", (HookFunction) ui_infoarea_set_title, area);
-    hook_associate ("playback begin", (HookFunction) ui_infoarea_playback_start, area);
-    hook_associate ("playback stop", (HookFunction) ui_infoarea_playback_stop, area);
-    hook_associate ("visualization clear", (HookFunction) vis_clear_cb, area);
-    aud_vis_runner_add_hook ((VisHookFunc) vis_update_cb, area);
+    hook_associate ("playlist update", (HookFunction) ui_infoarea_set_title, NULL);
+    hook_associate ("playback begin", (HookFunction) ui_infoarea_playback_start, NULL);
+    hook_associate ("playback stop", (HookFunction) ui_infoarea_playback_stop, NULL);
 
-    g_signal_connect (area->box, "destroy", (GCallback) destroy_cb, area);
+    aud_vis_func_add (AUD_VIS_TYPE_CLEAR, (VisFunc) vis_clear_cb);
+    aud_vis_func_add (AUD_VIS_TYPE_FREQ, (VisFunc) vis_render_cb);
+
+    g_signal_connect (area->box, "destroy", (GCallback) destroy_cb, NULL);
 
     if (aud_drct_get_playing ())
     {
-        ui_infoarea_playback_start (NULL, area);
+        ui_infoarea_playback_start ();
 
         /* skip fade-in */
         area->alpha = 1;
