@@ -37,20 +37,18 @@
 
 static gboolean bscope_init (void);
 static void bscope_cleanup(void);
-static void bscope_playback_stop(void);
-static void bscope_render_pcm(gint16 data[2][512]);
+static void bscope_clear (void);
+static void bscope_render (const gfloat * data);
 static void /* GtkWidget */ * bscope_get_widget (void);
 
 AUD_VIS_PLUGIN
 (
     .name = "Blur Scope",                       /* description */
-    .num_pcm_chs_wanted = 1, /* Number of PCM channels wanted */
-    .num_freq_chs_wanted = 0, /* Number of freq channels wanted */
     .init = bscope_init,                /* init */
     .cleanup = bscope_cleanup,             /* cleanup */
     .configure = bscope_configure,           /* configure */
-    .playback_stop = bscope_playback_stop,       /* playback_stop */
-    .render_pcm = bscope_render_pcm,          /* render_pcm */
+    .clear = bscope_clear,
+    .render_mono_pcm = bscope_render,
     .get_widget = bscope_get_widget,
 )
 
@@ -147,7 +145,7 @@ static void /* GtkWidget */ * bscope_get_widget (void)
     return area;
 }
 
-static void bscope_playback_stop (void)
+static void bscope_clear (void)
 {
     g_return_if_fail (image != NULL);
     memset (image, 0, image_size);
@@ -187,16 +185,16 @@ static inline void draw_vert_line (gint x, guint y1, gint y2)
         * p = color;
 }
 
-static void bscope_render_pcm (gint16 data[2][512])
+static void bscope_render (const gfloat * data)
 {
     bscope_blur ();
 
-    gint prev_y = ((32768 + (gint) data[0][0]) * height) >> 16;
+    gint prev_y = (0.5 + data[0]) * height;
     prev_y = CLAMP (prev_y, 0, height - 1);
 
     for (gint i = 0; i < width; i ++)
     {
-        gint y = ((32768 + (gint) data[0][i * 512 / width]) * height) >> 16;
+        gint y = (0.5 + data[i * 512 / width]) * height;
         y = CLAMP (y, 0, height - 1);
         draw_vert_line (i, prev_y, y);
         prev_y = y;
