@@ -44,14 +44,14 @@
 
 static gboolean write_and_pivot_files(vcedit_state * state);
 
-static mowgli_dictionary_t *
+static mowgli_patricia_t *
 dictionary_from_vorbis_comment(vorbis_comment * vc)
 {
-    mowgli_dictionary_t *dict;
+    mowgli_patricia_t *dict;
     gint i;
     gchar *val;
 
-    dict = mowgli_dictionary_create(g_ascii_strcasecmp);
+    dict = mowgli_patricia_create (NULL);
 
     for (i = 0; i < vc->comments; i++) {
         gchar **frags;
@@ -65,7 +65,7 @@ dictionary_from_vorbis_comment(vorbis_comment * vc)
         /* No RHS? */
         val = frags[1] ? frags[1] : "";
 
-        mowgli_dictionary_add(dict, frags[0], g_strdup(val));
+        mowgli_patricia_add(dict, frags[0], g_strdup(val));
 
         g_strfreev(frags); /* Don't use g_free() for string lists! --eugene */
     }
@@ -73,46 +73,44 @@ dictionary_from_vorbis_comment(vorbis_comment * vc)
     return dict;
 }
 
-static void
-dictionary_to_vorbis_comment(vorbis_comment * vc, mowgli_dictionary_t * dict)
+static gint add_tag_cb (const gchar * key, void * field, void * vc)
 {
-    mowgli_dictionary_iteration_state_t state;
-    gchar *field;
+    vorbis_comment_add_tag (vc, key, field);
+    return 0;
+}
 
+static void
+dictionary_to_vorbis_comment(vorbis_comment * vc, mowgli_patricia_t * dict)
+{
     vorbis_comment_clear(vc);
-
-    MOWGLI_DICTIONARY_FOREACH(field, &state, dict) {
-        vorbis_comment_add_tag(vc, state.cur->key, field);
-    }
+    mowgli_patricia_foreach (dict, add_tag_cb, vc);
 }
 
 static void insert_str_tuple_field_to_dictionary (const Tuple * tuple, int
- fieldn, mowgli_dictionary_t * dict, char * key)
+ fieldn, mowgli_patricia_t * dict, char * key)
 {
-
-    if(mowgli_dictionary_find(dict, key) != NULL) g_free(mowgli_dictionary_delete(dict, key));
+    g_free (mowgli_patricia_delete (dict, key));
 
     gchar *tmp = (gchar*)tuple_get_string(tuple, fieldn, NULL);
-    if(tmp != NULL && strlen(tmp) != 0) mowgli_dictionary_add(dict, key, g_strdup(tmp));
+    if(tmp != NULL && strlen(tmp) != 0) mowgli_patricia_add(dict, key, g_strdup(tmp));
 }
 
 static void insert_int_tuple_field_to_dictionary (const Tuple * tuple, int
- fieldn, mowgli_dictionary_t * dict, char * key)
+ fieldn, mowgli_patricia_t * dict, char * key)
 {
     int val;
 
-    if(mowgli_dictionary_find(dict, key) != NULL) g_free(mowgli_dictionary_delete(dict, key));
+    g_free (mowgli_patricia_delete (dict, key));
 
     if(tuple_get_value_type(tuple, fieldn, NULL) == TUPLE_INT && (val = tuple_get_int(tuple, fieldn, NULL)) >= 0) {
         gchar *tmp = g_strdup_printf("%d", val);
-        mowgli_dictionary_add(dict, key, tmp);
+        mowgli_patricia_add(dict, key, tmp);
     }
 }
 
-static void
-destroy_cb(mowgli_dictionary_elem_t *delem, void *privdata)
+static void destroy_cb (const gchar * key, void * data, void * unused)
 {
-    g_free(delem->data);
+    g_free (data);
 }
 
 gboolean vorbis_update_song_tuple (const Tuple * tuple, VFSFile * fd)
@@ -120,7 +118,7 @@ gboolean vorbis_update_song_tuple (const Tuple * tuple, VFSFile * fd)
 
     vcedit_state *state;
     vorbis_comment *comment;
-    mowgli_dictionary_t *dict;
+    mowgli_patricia_t *dict;
     gboolean ret;
 
     if(!tuple || !fd) return FALSE;
@@ -145,7 +143,7 @@ gboolean vorbis_update_song_tuple (const Tuple * tuple, VFSFile * fd)
     insert_int_tuple_field_to_dictionary(tuple, FIELD_TRACK_NUMBER, dict, "tracknumber");
 
     dictionary_to_vorbis_comment(comment, dict);
-    mowgli_dictionary_destroy(dict, destroy_cb, NULL);
+    mowgli_patricia_destroy(dict, destroy_cb, NULL);
 
     ret = write_and_pivot_files(state);
 
