@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-09-20 08:29-0400\n"
+"POT-Creation-Date: 2011-10-09 12:05-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1568,7 +1568,7 @@ msgstr ""
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:123 src/ladspa/plugin.c:616
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:639
 msgid "Disable"
 msgstr ""
 
@@ -2002,36 +2002,43 @@ msgstr ""
 msgid "About JACK Output Plugin 0.17"
 msgstr ""
 
-#: src/ladspa/plugin.c:396
+#: src/ladspa/plugin.c:410
 msgid "About LADSPA Host"
 msgstr ""
 
-#: src/ladspa/plugin.c:497
+#: src/ladspa/plugin.c:511
 #, c-format
 msgid "%s Settings"
 msgstr ""
 
-#: src/ladspa/plugin.c:565
+#: src/ladspa/plugin.c:579
 msgid "LADSPA Host Settings"
 msgstr ""
 
-#: src/ladspa/plugin.c:574
-msgid "Module path:"
+#: src/ladspa/plugin.c:588
+msgid "Module paths:"
 msgstr ""
 
-#: src/ladspa/plugin.c:586
+#: src/ladspa/plugin.c:593
+msgid ""
+"<small>Separate multiple paths with a colon.\n"
+"These paths are searched in addition to LADSPA_PATH.\n"
+"After adding new paths, press Enter to scan for new plugins.</small>"
+msgstr ""
+
+#: src/ladspa/plugin.c:609
 msgid "Available plugins:"
 msgstr ""
 
-#: src/ladspa/plugin.c:598
+#: src/ladspa/plugin.c:621
 msgid "Enable"
 msgstr ""
 
-#: src/ladspa/plugin.c:604
+#: src/ladspa/plugin.c:627
 msgid "Enabled plugins:"
 msgstr ""
 
-#: src/ladspa/plugin.c:619
+#: src/ladspa/plugin.c:642
 msgid "Settings"
 msgstr ""
 
@@ -2928,11 +2935,11 @@ msgstr ""
 msgid "Scroll song title in both directions"
 msgstr ""
 
-#: src/skins/skins_cfg.c:297
+#: src/skins/skins_cfg.c:298
 msgid "<b>_Skin</b>"
 msgstr ""
 
-#: src/skins/skins_cfg.c:344
+#: src/skins/skins_cfg.c:345
 msgid "Interface Preferences"
 msgstr ""
 
