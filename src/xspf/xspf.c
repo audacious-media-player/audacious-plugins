@@ -83,10 +83,8 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
  * base, struct index * filenames, struct index * tuples)
 {
     xmlNode *nptr;
-    Tuple *tuple;
     gchar *location = NULL;
-
-    tuple = tuple_new();
+    Tuple * tuple = NULL;
 
     for (nptr = track->children; nptr != NULL; nptr = nptr->next) {
         if (nptr->type == XML_ELEMENT_NODE) {
@@ -134,10 +132,14 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
                     xmlChar *str = xmlNodeGetContent(nptr);
                     switch (xspf_entries[i].type) {
                         case TUPLE_STRING:
+                            if (! tuple)
+                                tuple = tuple_new ();
                             tuple_associate_string(tuple, xspf_entries[i].tupleField, NULL, (gchar *)str);
                             break;
 
                         case TUPLE_INT:
+                            if (! tuple)
+                                tuple = tuple_new ();
                             tuple_associate_int(tuple, xspf_entries[i].tupleField, NULL, atol((char *)str));
                             break;
 
@@ -155,11 +157,14 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
 
     if (location != NULL)
     {
-        tuple_set_filename(tuple, location);
+        if (tuple)
+            tuple_set_filename (tuple, location);
 
         index_append(filenames, location);
         index_append(tuples, tuple);
     }
+    else if (tuple)
+        tuple_free (tuple);
 }
 
 
