@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-09-18 14:13-0400\n"
+"POT-Creation-Date: 2011-10-09 12:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2648,11 +2648,11 @@ msgstr ""
 msgid "Scroll song title in both directions"
 msgstr ""
 
-#: src/skins/skins_cfg.c:346
+#: src/skins/skins_cfg.c:348
 msgid "<b>_Skin</b>"
 msgstr ""
 
-#: src/skins/skins_cfg.c:393
+#: src/skins/skins_cfg.c:395
 msgid "Interface Preferences"
 msgstr ""
 
