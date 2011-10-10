@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-10-09 12:05-0400\n"
+"POT-Creation-Date: 2011-10-10 08:53-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,7 +50,7 @@ msgid ""
 "http://www.snika.uklinux.net/xmms-alarm/"
 msgstr ""
 
-#: src/alarm/interface.c:64 src/sid/xs_about.c:214 src/sid/xs_interface.c:1825
+#: src/alarm/interface.c:64
 msgid "Close"
 msgstr ""
 
@@ -63,7 +63,6 @@ msgid "This is your wakeup call."
 msgstr ""
 
 #: src/alarm/interface.c:116 src/alarm/interface.c:1337
-#: src/sid/xs_config.c:293
 msgid "OK"
 msgstr ""
 
@@ -173,8 +172,7 @@ msgstr ""
 msgid "Fading"
 msgstr ""
 
-#: src/alarm/interface.c:1036 src/sid/xs_interface.c:921
-#: src/sid/xs_interface.c:975 src/sid/xs_interface.c:1155
+#: src/alarm/interface.c:1036
 msgid "seconds"
 msgstr ""
 
@@ -593,7 +591,7 @@ msgid ""
 "backend</span>"
 msgstr ""
 
-#: src/amidi-plug/i_fileinfo.c:169 src/sid/xs_interface.c:1769
+#: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
 msgstr ""
 
@@ -834,8 +832,7 @@ msgstr ""
 msgid "Skin file:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:672 src/sid/xs_interface.c:1044
-#: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
+#: src/aosd/aosd_ui.c:672
 msgid "Browse"
 msgstr ""
 
@@ -916,7 +913,6 @@ msgid "Trigger"
 msgstr ""
 
 #: src/aosd/aosd_ui.c:1101 src/cdaudio-ng/configure.c:171
-#: src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr ""
 
@@ -1085,7 +1081,7 @@ msgstr ""
 msgid "Default song length:"
 msgstr ""
 
-#: src/console/configure.c:208 src/sid/xs_interface.c:666
+#: src/console/configure.c:208
 msgid "Resampling"
 msgstr ""
 
@@ -1097,7 +1093,7 @@ msgstr ""
 msgid "Resampling rate:"
 msgstr ""
 
-#: src/console/configure.c:233 src/sid/xs_interface.c:354
+#: src/console/configure.c:233
 msgid "Hz"
 msgstr ""
 
@@ -1171,10 +1167,6 @@ msgstr ""
 #: src/crystalizer/crystalizer.c:136 src/echo_plugin/gui.c:131
 #: src/stereo_plugin/stereo.c:131
 msgid "Apply"
-msgstr ""
-
-#: src/daemon/daemon.c:58
-msgid "Daemon Interface (like old headless mode)"
 msgstr ""
 
 #: src/echo_plugin/gui.c:15
@@ -1305,11 +1297,11 @@ msgstr ""
 msgid "Joint Stereo"
 msgstr ""
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:308
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183
 msgid "Stereo"
 msgstr ""
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:301
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183
 msgid "Mono"
 msgstr ""
 
@@ -1492,7 +1484,7 @@ msgstr ""
 msgid "Entry number"
 msgstr ""
 
-#: src/gtkui/columns.c:36 src/sid/xs_interface.c:1103
+#: src/gtkui/columns.c:36
 msgid "Title"
 msgstr ""
 
@@ -2042,19 +2034,19 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:226
+#: src/lyricwiki/lyricwiki.c:227
 msgid ""
 "\n"
 "Looking for lyrics..."
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:249
+#: src/lyricwiki/lyricwiki.c:250
 msgid ""
 "\n"
 "Connecting to lyrics.wikia.com..."
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:337
+#: src/lyricwiki/lyricwiki.c:338
 msgid ""
 "\n"
 "No lyrics were found."
@@ -2328,573 +2320,6 @@ msgstr ""
 
 #: src/sdlout/plugin.c:78
 msgid "SDL error"
-msgstr ""
-
-#: src/sid/xs_about.c:84
-#, c-format
-msgid "About %s"
-msgstr ""
-
-#: src/sid/xs_config.c:293
-msgid " Error"
-msgstr ""
-
-#: src/sid/xs_fileinfo.c:151
-msgid "General info"
-msgstr ""
-
-#: src/sid/xs_fileinfo.c:164
-#, c-format
-msgid "Tune #%i: "
-msgstr ""
-
-#: src/sid/xs_glade.c:90 src/sid/xs_glade.c:114
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr ""
-
-#: src/sid/xs_interface.c:234
-msgid "Audacious-SID configuration"
-msgstr ""
-
-#: src/sid/xs_interface.c:270
-msgid "8-bit"
-msgstr ""
-
-#: src/sid/xs_interface.c:277
-msgid "16-bit"
-msgstr ""
-
-#: src/sid/xs_interface.c:284
-msgid "Resolution:"
-msgstr ""
-
-#: src/sid/xs_interface.c:315
-msgid "Autopanning"
-msgstr ""
-
-#: src/sid/xs_interface.c:322
-msgid "Channels:"
-msgstr ""
-
-#: src/sid/xs_interface.c:366
-msgid "Samplerate:"
-msgstr ""
-
-#: src/sid/xs_interface.c:383
-msgid "Use oversampling"
-msgstr ""
-
-#: src/sid/xs_interface.c:394
-msgid "Factor:"
-msgstr ""
-
-#: src/sid/xs_interface.c:406
-msgid "Large factors require more CPU-power"
-msgstr ""
-
-#: src/sid/xs_interface.c:412
-msgid "Oversampling:"
-msgstr ""
-
-#: src/sid/xs_interface.c:417
-msgid "Audio"
-msgstr ""
-
-#: src/sid/xs_interface.c:445
-msgid "Force speed"
-msgstr ""
-
-#: src/sid/xs_interface.c:449
-msgid ""
-"If enabled, this option \"forces\" the emulation engine to use the selected "
-"clock speed/frequency. Otherwise the speed is determined from played file "
-"itself."
-msgstr ""
-
-#: src/sid/xs_interface.c:451
-msgid "PAL (50 Hz)"
-msgstr ""
-
-#: src/sid/xs_interface.c:455
-msgid ""
-"PAL is the european TV standard, which uses 50Hz vertical refresh frequency. "
-"Most of SID-tunes have been made for PAL computers."
-msgstr ""
-
-#: src/sid/xs_interface.c:459
-msgid "NTSC (60 Hz)"
-msgstr ""
-
-#: src/sid/xs_interface.c:463
-msgid ""
-"NTSC is the TV standard with 60Hz vertical refresh rate (and other features "
-"that differ from PAL). It is mainly used in United States, Japan and certain "
-"other countries."
-msgstr ""
-
-#: src/sid/xs_interface.c:467
-msgid "Clock speed:"
-msgstr ""
-
-#: src/sid/xs_interface.c:484
-msgid "Force model"
-msgstr ""
-
-#: src/sid/xs_interface.c:488
-msgid ""
-"If enabled, this option \"forces\" the emulation engine to use the selected "
-"SID-chip model. Otherwise the preferred SID model is determined from the "
-"file (if PSIDv2NG type) or if not available, this setting is used."
-msgstr ""
-
-#: src/sid/xs_interface.c:490
-msgid "MOS 6581"
-msgstr ""
-
-#: src/sid/xs_interface.c:494
-msgid ""
-"MOS/CSG 6581 is the earlier major version of SID chip. It differs from 8580 "
-"in few ways, having much fuller filter (which, due to design error, is never "
-"same between two different SID-chips) and has the \"volume adjustment bug\", "
-"which enables playing of digital samples."
-msgstr ""
-
-#: src/sid/xs_interface.c:498
-msgid "MOS 8580"
-msgstr ""
-
-#: src/sid/xs_interface.c:505
-msgid "SID model:"
-msgstr ""
-
-#: src/sid/xs_interface.c:522
-msgid "SIDPlay 1 (frame-based)"
-msgstr ""
-
-#: src/sid/xs_interface.c:526
-msgid ""
-"Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most "
-"cases, though."
-msgstr ""
-
-#: src/sid/xs_interface.c:530
-msgid "SIDPlay 2 (cycle-based)"
-msgstr ""
-
-#: src/sid/xs_interface.c:534
-msgid ""
-"Use libSIDPlay 2.x emulation, which requires powerful CPU due to more exact "
-"emulation."
-msgstr ""
-
-#: src/sid/xs_interface.c:538
-msgid "Emulation library selection:"
-msgstr ""
-
-#: src/sid/xs_interface.c:555
-msgid "Real C64 (SIDPlay 2 only)"
-msgstr ""
-
-#: src/sid/xs_interface.c:562
-msgid "Bank switching"
-msgstr ""
-
-#: src/sid/xs_interface.c:569
-msgid "Transparent ROM"
-msgstr ""
-
-#: src/sid/xs_interface.c:576
-msgid "PlaySID environment"
-msgstr ""
-
-#: src/sid/xs_interface.c:583
-msgid "Memory mode:"
-msgstr ""
-
-#: src/sid/xs_interface.c:588
-msgid "Emu#1"
-msgstr ""
-
-#: src/sid/xs_interface.c:611
-msgid "Optimization mode (faster, inaccurate)"
-msgstr ""
-
-#: src/sid/xs_interface.c:615
-msgid ""
-"This setting can be used to enable libSIDPlay2's \"optimization mode\", "
-"which in downgrades the emulation from cycle-exact to something similar to "
-"frame-exact. The result is lower CPU usage, but worse accuracy."
-msgstr ""
-
-#: src/sid/xs_interface.c:617
-msgid "reSID-emulation"
-msgstr ""
-
-#: src/sid/xs_interface.c:621
-msgid ""
-"reSID is the software SID-chip simulator based on SID reverse-engineering, "
-"created by Dag Lem. It is probably the closest thing to real SID available "
-"as software-only emulation."
-msgstr ""
-
-#: src/sid/xs_interface.c:625
-msgid "HardSID"
-msgstr ""
-
-#: src/sid/xs_interface.c:629
-msgid ""
-"HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a "
-"real SID-chip. Software can be used to control the HardSID and combined with "
-"software emulation of rest of C64 via libSIDPlay2 HardSID can be used to "
-"achieve \"near 100%\" similarity to real C64. For more information, see "
-"http://www.hardsid.com/"
-msgstr ""
-
-#: src/sid/xs_interface.c:633
-msgid "SIDPlay 2 options:"
-msgstr ""
-
-#: src/sid/xs_interface.c:650
-msgid "Fast (nearest neighbour)"
-msgstr ""
-
-#: src/sid/xs_interface.c:654
-msgid ""
-"Fastest and also worst sounding sampling method, simply picks nearest "
-"neighbouring sample."
-msgstr ""
-
-#: src/sid/xs_interface.c:658
-msgid "Linear interpolation"
-msgstr ""
-
-#: src/sid/xs_interface.c:662
-msgid ""
-"Uses linear interpolation between samples, yielding higher audio quality "
-"with less sampling noise."
-msgstr ""
-
-#: src/sid/xs_interface.c:673
-msgid "Resampling (FIR)"
-msgstr ""
-
-#: src/sid/xs_interface.c:680
-msgid "reSID sampling options:"
-msgstr ""
-
-#: src/sid/xs_interface.c:685
-msgid "Emu#2"
-msgstr ""
-
-#: src/sid/xs_interface.c:697
-msgid "Emulate filters"
-msgstr ""
-
-#: src/sid/xs_interface.c:701
-msgid ""
-"This option enables emulation of SID filter. The filter is an essential part "
-"of SID's sound capacity, but accurate emulation of it may require quite much "
-"CPU power. However, if filter emulation is disabled, tunes won't sound "
-"authentic at all if they utilize the filter."
-msgstr ""
-
-#: src/sid/xs_interface.c:726
-msgid "FS"
-msgstr ""
-
-#: src/sid/xs_interface.c:743
-msgid "FM"
-msgstr ""
-
-#: src/sid/xs_interface.c:760
-msgid "FT"
-msgstr ""
-
-#: src/sid/xs_interface.c:771
-msgid "Reset values"
-msgstr ""
-
-#: src/sid/xs_interface.c:776
-msgid "SIDPlay1"
-msgstr ""
-
-#: src/sid/xs_interface.c:817
-msgid "Export"
-msgstr ""
-
-#: src/sid/xs_interface.c:825
-msgid "Use"
-msgstr ""
-
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:441
-msgid "Save"
-msgstr ""
-
-#: src/sid/xs_interface.c:841 src/skins/ui_manager.c:440
-msgid "Import"
-msgstr ""
-
-#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:442
-msgid "Delete"
-msgstr ""
-
-#: src/sid/xs_interface.c:863
-msgid "Filter curve:"
-msgstr ""
-
-#: src/sid/xs_interface.c:868
-msgid "SIDPlay2"
-msgstr ""
-
-#: src/sid/xs_interface.c:874
-msgid "Filters"
-msgstr ""
-
-#: src/sid/xs_interface.c:897
-msgid "Play at least for specified time"
-msgstr ""
-
-#: src/sid/xs_interface.c:901
-msgid ""
-"If enabled, the tune is played at least for the specified time, adding "
-"silence to the end if necessary."
-msgstr ""
-
-#: src/sid/xs_interface.c:908 src/sid/xs_interface.c:962
-#: src/sid/xs_interface.c:1142
-msgid "Playtime:"
-msgstr ""
-
-#: src/sid/xs_interface.c:928
-msgid "Minimum playtime:"
-msgstr ""
-
-#: src/sid/xs_interface.c:945
-msgid "Play for specified time maximum"
-msgstr ""
-
-#: src/sid/xs_interface.c:949
-msgid ""
-"If enabled, tune is played until specified duration is reached (aka maximum "
-"playtime)."
-msgstr ""
-
-#: src/sid/xs_interface.c:951
-msgid "Only when song length is unknown"
-msgstr ""
-
-#: src/sid/xs_interface.c:955
-msgid ""
-"If enabled, the maximum playtime is applied only if song/tune length is not "
-"known."
-msgstr ""
-
-#: src/sid/xs_interface.c:982
-msgid "Maximum playtime:"
-msgstr ""
-
-#: src/sid/xs_interface.c:999
-msgid "Use XSIDPLAY-compatible database"
-msgstr ""
-
-#: src/sid/xs_interface.c:1003
-msgid ""
-"This option enables using of XSIDPLAY compatible song length database. "
-"(Refer to Audacious-SID documentation for more information)"
-msgstr ""
-
-#: src/sid/xs_interface.c:1010
-msgid "DB-file:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1020
-msgid "Database path and filename"
-msgstr ""
-
-#: src/sid/xs_interface.c:1027
-msgid "Browse for song length-database file"
-msgstr ""
-
-#: src/sid/xs_interface.c:1049
-msgid "Song length database:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1054
-msgid "Songlength"
-msgstr ""
-
-#: src/sid/xs_interface.c:1072
-msgid "Override generic Tuplez format string"
-msgstr ""
-
-#: src/sid/xs_interface.c:1076
-msgid ""
-"By enabling this option you can specify a custom Tuplez formatting string "
-"for SID-files. The SID-plugin specific Tuplez tags are described shortly "
-"below."
-msgstr ""
-
-#: src/sid/xs_interface.c:1087
-msgid "Tuplez format string for SID-files"
-msgstr ""
-
-#: src/sid/xs_interface.c:1090
-msgid ""
-"<u>SID-specific Tuplez fields:</u>\n"
-"\n"
-"<b>sid-format</b>\t\t- Specific fileformat\n"
-"<b>sid-model</b>\t\t- 6581 or 8580\n"
-"<b>sid-speed</b>\t\t- Timing or speed: PAL/NTSC/etc.\n"
-"\n"
-"<u>Other \"special\" fields set:</u>\n"
-"\n"
-"<b>subsong-num, subsong-id</b>"
-msgstr ""
-
-#: src/sid/xs_interface.c:1098
-msgid "Song title format:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1125
-msgid "Add sub-tunes to playlist"
-msgstr ""
-
-#: src/sid/xs_interface.c:1129
-msgid ""
-"If enabled, sub-tunes of each file will be added to playlist. If disabled, "
-"only the default sub-tune will be added."
-msgstr ""
-
-#: src/sid/xs_interface.c:1131
-msgid "Only tunes with specified minimum duration"
-msgstr ""
-
-#: src/sid/xs_interface.c:1135
-msgid "Only add sub-tunes that have a duration of at least specified time."
-msgstr ""
-
-#: src/sid/xs_interface.c:1162
-msgid "Sub-tune handling:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1179
-msgid "Use STIL database"
-msgstr ""
-
-#: src/sid/xs_interface.c:1183
-msgid ""
-"If this option is enabled (and the database & HVSC settings below are "
-"correctly set), Audacious-SID will use and display additional information "
-"from STIL database when HVSC SIDs are played."
-msgstr ""
-
-#: src/sid/xs_interface.c:1190
-msgid "STIL file:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1206
-msgid ""
-"Path and filename of STIL database file (STIL.txt), usually found from "
-"HVSC's DOCUMENTS-subdirectory."
-msgstr ""
-
-#: src/sid/xs_interface.c:1219
-msgid "Browse for STIL-database file"
-msgstr ""
-
-#: src/sid/xs_interface.c:1246
-msgid "HVSC path:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1262
-msgid ""
-"Path to base-directory of your High Voltage SID Collection (HVSC), for "
-"example /media/C64Music/"
-msgstr ""
-
-#: src/sid/xs_interface.c:1275
-msgid "Browse for HVSC path"
-msgstr ""
-
-#: src/sid/xs_interface.c:1297
-msgid "SID Tune Information List (STIL) database:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1321
-msgid "Cancel any changes"
-msgstr ""
-
-#: src/sid/xs_interface.c:1328
-msgid "Accept and update changes"
-msgstr ""
-
-#: src/sid/xs_interface.c:1628
-msgid "Audacious-SID Fileinfo"
-msgstr ""
-
-#: src/sid/xs_interface.c:1649
-msgid "Filename:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1657
-msgid "Songname:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1665
-msgid "Composer:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1673
-msgid "Copyright:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1717
-msgid "Song Information:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1752
-msgid "Author:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1786
-msgid "Duration:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1820
-msgid "Sub-tune Information:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1881
-msgid "Select HVSC song length database"
-msgstr ""
-
-#: src/sid/xs_interface.c:1922
-msgid "Select STIL-database"
-msgstr ""
-
-#: src/sid/xs_interface.c:1963
-msgid "Select HVSC location prefix"
-msgstr ""
-
-#: src/sid/xs_interface.c:2004
-msgid "Select SIDPlay2 filters file for importing"
-msgstr ""
-
-#: src/sid/xs_interface.c:2045
-msgid "Select SIDPlay2 filters file for exporting"
-msgstr ""
-
-#: src/sid/xs_interface.c:2093 src/sid/xs_interface.c:2106
-msgid "Confirm selected action"
-msgstr ""
-
-#: src/sid/xs_interface.c:2123
-msgid "Yes"
-msgstr ""
-
-#: src/sid/xs_interface.c:2129
-msgid "No"
 msgstr ""
 
 #: src/skins/plugin.c:167
@@ -3595,6 +3020,18 @@ msgstr ""
 
 #: src/skins/ui_manager.c:439
 msgid "Load"
+msgstr ""
+
+#: src/skins/ui_manager.c:440
+msgid "Import"
+msgstr ""
+
+#: src/skins/ui_manager.c:441
+msgid "Save"
+msgstr ""
+
+#: src/skins/ui_manager.c:442
+msgid "Delete"
 msgstr ""
 
 #: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465

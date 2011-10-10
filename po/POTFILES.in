@@ -52,7 +52,6 @@ src/console/Vgm_Emu.cxx
 src/console/Ym2612_Emu.cxx
 src/crossfade/plugin.c
 src/crystalizer/crystalizer.c
-src/daemon/daemon.c
 src/echo_plugin/gui.c
 src/ffaudio/ffaudio-core.c
 src/filewriter/filewriter.c
@@ -91,12 +90,6 @@ src/scrobbler/configure.c
 src/scrobbler/plugin.c
 src/scrobbler/scrobbler.c
 src/sdlout/plugin.c
-src/sid/xmms-sid.glade
-src/sid/xs_about.c
-src/sid/xs_config.c
-src/sid/xs_fileinfo.c
-src/sid/xs_glade.c
-src/sid/xs_interface.c
 src/skins/plugin.c
 src/skins/skins_cfg.c
 src/skins/ui_equalizer.c
