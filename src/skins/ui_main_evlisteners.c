@@ -100,7 +100,7 @@ ui_main_evlistener_playback_unpause(gpointer hook_data, gpointer user_data)
     ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
 }
 
-static void vis_clear_cb (void * unused, void * another)
+static void vis_clear_cb (void)
 {
     ui_vis_clear_data (mainwin_vis);
     ui_svis_clear_data (mainwin_svis);
@@ -118,18 +118,65 @@ void info_change (void)
     mainwin_set_song_info (bitrate, samplerate, channels);
 }
 
-/* calculate peak dB level, where 32767 (max of 16-bit PCM range) is 0 dB */
-static gfloat calc_peak_level (gint16 pcm[512])
+static void render_mono_pcm (const gfloat * pcm)
 {
-    gint peak = 0;
-    for (gint i = 0; i < 512; i ++)
-        peak = MAX (peak, pcm[i]);
+    guchar data[512];
 
-    return 20 * log10 (peak / 32767.0);
+    if (config.vis_type != VIS_SCOPE)
+        return;
+
+    for (gint i = 0; i < 75; i ++)
+    {
+        /* the signal is amplified by 2x */
+        /* output values are in the range 0 to 16 */
+        gint val = 8 + roundf (16 * pcm[i * 512 / 75]);
+        data[i] = CLAMP (val, 0, 16);
+    }
+
+    if (config.player_shaded)
+        ui_svis_timeout_func (mainwin_svis, data);
+    else
+        ui_vis_timeout_func (mainwin_vis, data);
+}
+
+/* calculate peak dB level, where 1 is 0 dB */
+static gfloat calc_peak_level (const gfloat * pcm, gint step)
+{
+    gfloat peak = 0.0001; /* must be > 0, or level = -inf */
+
+    for (gint i = 0; i < 512; i ++)
+    {
+        peak = MAX (peak, * pcm);
+        pcm += step;
+    }
+
+    return 20 * log10 (peak);
+}
+
+static void render_multi_pcm (const gfloat * pcm, gint channels)
+{
+    /* "VU meter" */
+    if (config.vis_type != VIS_VOICEPRINT || ! config.player_shaded)
+        return;
+
+    guchar data[512];
+
+    gint level = 38 + calc_peak_level (pcm, channels);
+    data[0] = CLAMP (level, 0, 38);
+
+    if (channels >= 2)
+    {
+        level = 38 + calc_peak_level (pcm + 1, channels);
+        data[1] = CLAMP (level, 0, 38);
+    }
+    else
+        data[1] = data[0];
+
+    ui_svis_timeout_func (mainwin_svis, data);
 }
 
 /* convert linear frequency graph to logarithmic one */
-static void make_log_graph (gint16 freq[256], gint bands, gint db_range, gint
+static void make_log_graph (const gfloat * freq, gint bands, gint db_range, gint
  int_range, guchar * graph)
 {
     static gint last_bands = 0;
@@ -151,7 +198,7 @@ static void make_log_graph (gint16 freq[256], gint bands, gint db_range, gint
            including fractional parts */
         gint a = ceilf (xscale[i]);
         gint b = floorf (xscale[i + 1]);
-        gint sum = 0;
+        gfloat sum = 0;
 
         if (b < a)
             sum += freq[b] * (xscale[i + 1] - xscale[i]);
@@ -169,8 +216,8 @@ static void make_log_graph (gint16 freq[256], gint bands, gint db_range, gint
            12-band one no matter how many bands there are */
         sum = sum * bands / 12;
 
-        /* convert to dB, where 32767 (max of 16-bit PCM range) is 0 dB */
-        gfloat val = 20 * log10 (sum / 32767.0);
+        /* convert to dB */
+        gfloat val = 20 * log10f (sum);
 
         /* scale (-db_range, 0.0) to (0.0, int_range) */
         val = (1.0 + val / db_range) * int_range;
@@ -179,79 +226,36 @@ static void make_log_graph (gint16 freq[256], gint bands, gint db_range, gint
     }
 }
 
-static void ui_main_evlistener_visualization_timeout (const VisNode * vis,
- void * user)
+static void render_freq (const gfloat * freq)
 {
-    guint8 intern_vis_data[512];
-    gint16 mono_freq[2][256];
-    gint16 mono_pcm[2][512], stereo_pcm[2][512];
+    guchar data[512];
 
-    if (! vis || config.vis_type == VIS_OFF)
-        return;
-
-    switch (config.vis_type)
+    if (config.vis_type == VIS_ANALYZER)
     {
-    case VIS_ANALYZER:
-        aud_calc_mono_freq (mono_freq, vis->data, vis->nch);
-
         if (config.analyzer_type == ANALYZER_BARS)
         {
             if (config.player_shaded)
-                make_log_graph (mono_freq[0], 13, 40, 8, intern_vis_data);
+                make_log_graph (freq, 13, 40, 8, data);
             else
-                make_log_graph (mono_freq[0], 19, 40, 16, intern_vis_data);
+                make_log_graph (freq, 19, 40, 16, data);
         }
         else
         {
             if (config.player_shaded)
-                make_log_graph (mono_freq[0], 37, 40, 8, intern_vis_data);
+                make_log_graph (freq, 37, 40, 8, data);
             else
-                make_log_graph (mono_freq[0], 75, 40, 16, intern_vis_data);
+                make_log_graph (freq, 75, 40, 16, data);
         }
-
-        break;
-    case VIS_VOICEPRINT:
-        if (config.player_shaded) /* "VU meter" */
-        {
-            aud_calc_stereo_pcm (stereo_pcm, vis->data, vis->nch);
-
-            gint level = 38 + calc_peak_level (stereo_pcm[0]);
-            intern_vis_data[0] = CLAMP (level, 0, 38);
-
-            if (vis->nch == 2)
-            {
-                level = 38 + calc_peak_level (stereo_pcm[1]);
-                intern_vis_data[1] = CLAMP (level, 0, 38);
-            }
-            else
-                intern_vis_data[1] = intern_vis_data[0];
-        }
-        else
-        {
-            aud_calc_mono_freq (mono_freq, vis->data, vis->nch);
-            make_log_graph (mono_freq[0], 17, 40, 255, intern_vis_data);
-        }
-
-        break;
-    default: /* VIS_SCOPE */
-        aud_calc_mono_pcm (mono_pcm, vis->data, vis->nch);
-
-        for (gint i = 0; i < 75; i ++)
-        {
-            /* the signal is amplified by 2x */
-            /* output values are in the range 0 to 16 */
-            gint val = 16384 + mono_pcm[0][i * vis->length / 75];
-            val = CLAMP (val, 0, 32768);
-            intern_vis_data[i] = (val + 1024) / 2048;
-        }
-
-        break;
     }
+    else if (config.vis_type == VIS_VOICEPRINT && ! config.player_shaded)
+        make_log_graph (freq, 17, 40, 255, data);
+    else
+        return;
 
     if (config.player_shaded)
-        ui_svis_timeout_func(mainwin_svis, intern_vis_data);
+        ui_svis_timeout_func (mainwin_svis, data);
     else
-        ui_vis_timeout_func(mainwin_vis, intern_vis_data);
+        ui_vis_timeout_func (mainwin_vis, data);
 }
 
 void
@@ -263,7 +267,6 @@ ui_main_evlistener_init(void)
     hook_associate("playback stop", ui_main_evlistener_playback_stop, NULL);
     hook_associate("playback pause", ui_main_evlistener_playback_pause, NULL);
     hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
-    hook_associate ("visualization clear", vis_clear_cb, NULL);
     hook_associate ("info change", (HookFunction) info_change, NULL);
 
     hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
@@ -279,7 +282,6 @@ ui_main_evlistener_dissociate(void)
     hook_dissociate("playback stop", ui_main_evlistener_playback_stop);
     hook_dissociate("playback pause", ui_main_evlistener_playback_pause);
     hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
-    hook_dissociate ("visualization clear", vis_clear_cb);
     hook_dissociate ("info change", (HookFunction) info_change);
 
     hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
@@ -294,7 +296,10 @@ void start_stop_visual (gboolean exiting)
     {
         if (! started)
         {
-            aud_vis_runner_add_hook(ui_main_evlistener_visualization_timeout, NULL);
+            aud_vis_func_add (AUD_VIS_TYPE_CLEAR, (VisFunc) vis_clear_cb);
+            aud_vis_func_add (AUD_VIS_TYPE_MONO_PCM, (VisFunc) render_mono_pcm);
+            aud_vis_func_add (AUD_VIS_TYPE_MULTI_PCM, (VisFunc) render_multi_pcm);
+            aud_vis_func_add (AUD_VIS_TYPE_FREQ, (VisFunc) render_freq);
             started = 1;
         }
     }
@@ -302,7 +307,10 @@ void start_stop_visual (gboolean exiting)
     {
         if (started)
         {
-            aud_vis_runner_remove_hook(ui_main_evlistener_visualization_timeout);
+            aud_vis_func_remove ((VisFunc) vis_clear_cb);
+            aud_vis_func_remove ((VisFunc) render_mono_pcm);
+            aud_vis_func_remove ((VisFunc) render_multi_pcm);
+            aud_vis_func_remove ((VisFunc) render_freq);
             started = 0;
         }
     }
