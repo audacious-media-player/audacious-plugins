@@ -431,18 +431,6 @@ if test $enable_mp3 = yes ; then
     fi
 fi
 
-dnl *** Rocklight
-
-AC_ARG_ENABLE(rocklight,
-    AS_HELP_STRING([--disable-rocklight], [disable Rocklight vis plugin (default=enabled)]),
-    [enable_rocklight="$enableval"],
-    [enable_rocklight="yes"]
-)
-
-if test "x$enable_rocklight" = "xyes"; then
-    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS rocklight"
-fi
-
 dnl *** Global Hotkey general plugin (only built on X11)
 
 AC_ARG_ENABLE(hotkey,
