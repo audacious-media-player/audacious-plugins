@@ -86,8 +86,8 @@ static void vis_render_cb (const gfloat * freq)
                 n += freq[b] * (xscale[i + 1] - b);
         }
 
-        /* -40 to -5 dB range */
-        int x = 22.86 * log10 (n * 100);
+        /* 40 dB range */
+        int x = 20 * log10 (n * 100);
         x = CLAMP (x, 0, 40);
 
         area->bars[i] -= MAX (0, VIS_FALLOFF - area->delay[i]);
