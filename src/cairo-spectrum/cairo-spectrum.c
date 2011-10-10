@@ -36,6 +36,7 @@
 #define VIS_DELAY 2 /* delay before falloff in frames */
 #define VIS_FALLOFF 2 /* falloff in pixels per frame */
 
+static GtkWidget * spect_widget = NULL;
 static gfloat xscale[MAX_BANDS + 1];
 static gint width, height, bands;
 static gint bars[MAX_BANDS + 1];
@@ -49,10 +50,9 @@ static void calculate_bands(gint bands_)
 		xscale[i] = powf(257., ((gfloat) i / (gfloat) bands_)) - 1;
 }
 
-static void vis_update_cb (const VisNode * vis, GtkWidget *widget)
+static void render_cb (gfloat * freq)
 {
-	gint16 fft[2][256];
-	aud_calc_mono_freq (fft, vis->data, vis->nch);
+	g_return_if_fail (spect_widget);
 
 	calculate_bands(bands);
 
@@ -60,37 +60,37 @@ static void vis_update_cb (const VisNode * vis, GtkWidget *widget)
 	{
 		gint a = ceil (xscale[i]);
 		gint b = floor (xscale[i + 1]);
-		gint n = 0;
+		gfloat n = 0;
 
 		if (b < a)
-			n += fft[0][b] * (xscale[i + 1] - xscale[i]);
+			n += freq[b] * (xscale[i + 1] - xscale[i]);
 		else
 		{
 			if (a > 0)
-				n += fft[0][a - 1] * (a - xscale[i]);
+				n += freq[a - 1] * (a - xscale[i]);
 			for (; a < b; a ++)
-				n += fft[0][a];
+				n += freq[a];
 			if (b < 256)
-				n += fft[0][b] * (xscale[i + 1] - b);
+				n += freq[b] * (xscale[i + 1] - b);
 		}
 
 		/* 40 dB range */
-		/* 0.00305 == 1 / 32767 * 10^(40/20) */
-		n = 20 * log10 (n * 0.00305);
-		n = CLAMP (n, 0, 40);
+		gint x = 20 * log10 (n * 100);
+		x = CLAMP (x, 0, 40);
+
 		bars[i] -= MAX (0, VIS_FALLOFF - delay[i]);
 
 		if (delay[i])
 			delay[i]--;
 
-		if (n > bars[i])
+		if (x > bars[i])
 		{
-			bars[i] = n;
+			bars[i] = x;
 			delay[i] = VIS_DELAY;
 		}
 	}
 
-	gtk_widget_queue_draw(widget);
+	gtk_widget_queue_draw (spect_widget);
 }
 
 static void rgb_to_hsv (gfloat r, gfloat g, gfloat b, gfloat * h, gfloat * s, gfloat * v)
@@ -263,13 +263,15 @@ static gboolean expose_event (GtkWidget * widget, GdkEventExpose * event, GtkWid
 
 static gboolean destroy_event (void)
 {
-	aud_vis_runner_remove_hook ((VisHookFunc) vis_update_cb);
+	aud_vis_func_remove ((VisFunc) render_cb);
+	spect_widget = NULL;
 	return TRUE;
 }
 
 static /* GtkWidget * */ gpointer get_widget(void)
 {
 	GtkWidget *area = gtk_drawing_area_new();
+	spect_widget = area;
 
 #if GTK_CHECK_VERSION (3, 0, 0)
 	g_signal_connect(area, "draw", (GCallback) draw_event, NULL);
@@ -279,7 +281,7 @@ static /* GtkWidget * */ gpointer get_widget(void)
 	g_signal_connect(area, "configure-event", (GCallback) configure_event, NULL);
 	g_signal_connect(area, "destroy", (GCallback) destroy_event, NULL);
 
-	aud_vis_runner_add_hook ((VisHookFunc) vis_update_cb, area);
+	aud_vis_func_add (AUD_VIS_TYPE_FREQ, (VisFunc) render_cb);
 
 	return area;
 }
