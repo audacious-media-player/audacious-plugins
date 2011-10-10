@@ -4,7 +4,6 @@ SRCS = xs_init.c	\
        xs_support.c	\
        xs_config.c	\
        xs_length.c	\
-       xs_genui.c	\
        xs_stil.c	\
        xs_filter.c	\
        xs_sidplay1.cc	\
@@ -12,11 +11,6 @@ SRCS = xs_init.c	\
        xs_slsup.c	\
        xs_player.c	\
        xmms-sid.c
-#       xs_about.c	\
-#       xs_curve.c	\
-#       xs_fileinfo.c	\
-#       xs_glade.c	\
-#       xs_interface.c	\
 
 include ../../buildsys.mk
 include ../../extra.mk

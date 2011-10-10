@@ -2,7 +2,6 @@
 #define XS_CONFIG_H
 
 #include "xmms-sid.h"
-#include "xs_curve.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -65,6 +64,11 @@ enum XS_SIDMODEL {
     XS_SIDMODEL_8580,
     XS_SIDMODEL_ANY
 };
+
+
+typedef struct {
+    gint x, y;
+} xs_int_point_t;
 
 
 typedef struct {
@@ -188,11 +192,6 @@ typedef struct {
 /* Functions
  */
 void    xs_init_configuration(void);
-#if 0
-void    xs_configure(void);
-void    xs_read_configuration(void);
-gint    xs_write_configuration(void);
-#endif
 
 #ifdef __cplusplus
 }

@@ -31,9 +31,6 @@
 #include "xs_length.h"
 #include "xs_stil.h"
 #include "xs_filter.h"
-#include "xs_fileinfo.h"
-#include "xs_interface.h"
-#include "xs_glade.h"
 #include "xs_player.h"
 #include "xs_slsup.h"
 
@@ -140,9 +137,6 @@ gboolean xs_init (void)
 
     /* Initialize and get configuration */
     xs_init_configuration();
-#if 0
-    xs_read_configuration();
-#endif
 
     /* Initialize subsystems */
     xs_reinit();
