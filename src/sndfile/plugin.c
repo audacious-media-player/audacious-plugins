@@ -452,7 +452,7 @@ static void plugin_about (void)
 
     audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
      _("About sndfile plugin"),
-     _("Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+     "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
      "from the xmms_sndfile plugin which is:\n"
      "Copyright (C) 2000, 2002 Erik de Castro Lopo\n\n"
      "This program is free software ; you can redistribute it and/or modify \n"
@@ -467,7 +467,7 @@ static void plugin_about (void)
      "License along with this program ; if not, write to \n"
      "the Free Software Foundation, Inc., \n"
      "51 Franklin Street, Fifth Floor, \n"
-     "Boston, MA  02110-1301  USA"));
+     "Boston, MA  02110-1301  USA");
 }
 
 static const gchar *sndfile_fmts[] = { "aiff", "au", "raw", "wav", NULL };

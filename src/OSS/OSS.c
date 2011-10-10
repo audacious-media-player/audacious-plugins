@@ -38,7 +38,7 @@ static void oss_about (void)
 
     audgui_simple_message (& about_dialog, GTK_MESSAGE_INFO,
      _("About OSS Driver"),
-     _("Audacious OSS Driver\n\n "
+     "Audacious OSS Driver\n\n "
      "This program is free software; you can redistribute it and/or modify\n"
      "it under the terms of the GNU General Public License as published by\n"
      "the Free Software Foundation; either version 2 of the License, or\n"
@@ -52,7 +52,7 @@ static void oss_about (void)
      "You should have received a copy of the GNU General Public License\n"
      "along with this program; if not, write to the Free Software\n"
      "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-     "USA."));
+     "USA.");
 }
 
 static const gchar * const oss_defaults[] = {

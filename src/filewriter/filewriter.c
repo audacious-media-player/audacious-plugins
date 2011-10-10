@@ -164,7 +164,7 @@ void file_about (void)
 
     audgui_simple_message (& dialog, GTK_MESSAGE_INFO,
      _("About FileWriter-Plugin"),
-     _("FileWriter-Plugin\n\n"
+     "FileWriter-Plugin\n\n"
      "This program is free software; you can redistribute it and/or modify\n"
      "it under the terms of the GNU General Public License as published by\n"
      "the Free Software Foundation; either version 2 of the License, or\n"
@@ -178,7 +178,7 @@ void file_about (void)
      "You should have received a copy of the GNU General Public License\n"
      "along with this program; if not, write to the Free Software\n"
      "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-     "USA."));
+     "USA.");
 }
 
 static VFSFile * safe_create (const gchar * filename)
