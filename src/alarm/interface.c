@@ -16,6 +16,7 @@
 #include "interface.h"
 
 #include <audacious/i18n.h>
+#include <audacious/gtk-compat.h>
 
 GtkWidget*
 create_about_dialog (void)
