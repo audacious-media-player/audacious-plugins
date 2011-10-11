@@ -1125,22 +1125,6 @@ else
     AC_MSG_RESULT([*** cue plugin disabled by request ***])
 fi
 
-dnl Moodbar
-dnl =========
-
-AC_ARG_ENABLE(moodbar,
- [  --disable-moodbar       disable Moodbar data renderer (default=enabled)],
- [enable_moodbar=$enableval], [enable_moodbar=yes])
-
-if test "x$enable_moodbar" = "xyes"; then
-    PKG_CHECK_MODULES(GTK218, [gtk+-2.0 >= 2.18], [enable_moodbar=yes],
-     [enable_moodbar=no])
-fi
-
-if test "x$enable_moodbar" = "xyes"; then
-    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS moodbar"
-fi
-
 dnl FileWriter
 dnl ==========
 
@@ -1419,7 +1403,6 @@ echo "  Visualization"
 echo "  -------------"
 echo "  Blur Scope:                             yes"
 echo "  Cairo Spectrum Analyzer:                yes"
-echo "  Moodbar data renderer:                  $enable_moodbar"
 echo
 echo "  Transport"
 echo "  ---------"

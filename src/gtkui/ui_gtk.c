@@ -709,12 +709,6 @@ static gboolean init (void)
 
     gtk_box_pack_end ((GtkBox *) shbox, label_time, FALSE, FALSE, 6);
 
-    /* XXX: LOL REALLY BAD HACK FOR MOODBAR PLUGIN. Remove once AUD-283 is solved.
-     * Because, I mean, who cares if this stuff is supposed to be final. --nenolod */
-    mowgli_global_storage_put("gtkui.shbox", shbox);
-    mowgli_global_storage_put("gtkui.slider", slider);
-    mowgli_global_storage_put("gtkui.label_time", label_time);
-
     volume = gtk_volume_button_new();
     gtk_button_set_relief(GTK_BUTTON(volume), GTK_RELIEF_NONE);
     gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
