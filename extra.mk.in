@@ -1,5 +1,7 @@
 VERSION ?= @VERSION@
-plugindir ?= @plugindir@
+
+# overrides setting in buildsys.mk
+plugindir = @plugindir@
 
 CONTAINER_PLUGIN_DIR ?= @CONTAINER_PLUGIN_DIR@
 CONTAINER_PLUGINS ?= @CONTAINER_PLUGINS@
