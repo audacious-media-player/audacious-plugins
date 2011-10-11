@@ -1,130 +1,51 @@
-dnl Process this file with autoconf to produce a configure script.
+dnl ***
+dnl *** Process this file with autoconf to produce a configure script.
+dnl ***
 
+dnl Initialize
+dnl ==========
+AC_PREREQ([2.59])
 AC_INIT([audacious-plugins], [3.1-alpha1])
 AC_COPYRIGHT([(C) 2005-2011 Audacious Team])
-AC_PREREQ([2.59])
+
+AC_SUBST([PACKAGE], [AC_PACKAGE_TARNAME])
+AC_SUBST([VERSION], [AC_PACKAGE_VERSION])
+AC_DEFINE_UNQUOTED([PACKAGE], "$PACKAGE", [Name of package])
+AC_DEFINE_UNQUOTED([VERSION], "$VERSION", [Version number of package])
 
 AC_CANONICAL_HOST
 AC_CANONICAL_TARGET
 AC_CONFIG_HEADERS([config.h])
 
-dnl XXX kludge for FreeBSD
-if test -d "/usr/X11R6/include"; then
-	CPPFLAGS="$CPPFLAGS -I/usr/X11R6/include"
-fi
+AUD_COMMON_PROGS
 
-dnl append audacious header path to CPPFLAGS when --prefix is specified.
-if test "x$prefix" != "xNONE" ; then
-   CPPFLAGS="$CPPFLAGS -I${includedir}"
-fi
+BUILDSYS_INIT
+BUILDSYS_SHARED_LIB
 
-dnl OMK bootstrap
-AC_SUBST([PACKAGE], [AC_PACKAGE_TARNAME])
-AC_SUBST([VERSION], [AC_PACKAGE_VERSION])
+dnl Headers and functions
+dnl =====================
+AC_CHECK_FUNCS([fcntl fsync mkdtemp])
 
-AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE", [Name of package])
-AC_DEFINE_UNQUOTED(VERSION, "$VERSION", [Version number of package])
-
-dnl Check for C compiler
-
-AC_PROG_CC
-AC_PROG_CXX
-AC_ISC_POSIX
-AC_C_BIGENDIAN
-
-if test "x$GCC" = "xyes"; then
-	CFLAGS="$CFLAGS -pipe -Wall"
-	CXXFLAGS="$CXXFLAGS -pipe -Wall"
-fi
-
-dnl There are rumors that "-z defs" is broken on some architectures.
-dnl It may need to be disabled conditionally.
-LDFLAGS="$LDFLAGS -z defs"
-
-dnl Large file support
-dnl ==================
-AC_SYS_LARGEFILE
-
-dnl Locate a program and check that its version is acceptable.
-dnl AC_PROG_CHECK_VER(var, namelist, version-switch,
-dnl 		      [version-extract-regexp], version-glob [, do-if-fail])
-AC_DEFUN([AC_CHECK_PROG_VER],
-[AC_CHECK_PROGS([$1], [$2])
-if test -z "[$]$1"; then
-  ac_verc_fail=yes
-else
-  # Found it, now check the version.
-  AC_MSG_CHECKING([version of [$]$1])
-changequote(<<<,>>>)dnl
-  ac_prog_version=`<<<$>>>$1 $3 2>&1 ifelse(<<<$4>>>,,,
-                   <<<| sed -n 's/^.*patsubst(<<<$4>>>,/,\/).*$/\1/p'>>>)`
-  case $ac_prog_version in
-    '') ac_prog_version="v. ?.??, bad"; ac_verc_fail=yes;;
-    <<<$5>>>)
-changequote([,])dnl
-       ac_prog_version="$ac_prog_version, ok"; ac_verc_fail=no;;
-    *) ac_prog_version="$ac_prog_version, bad"; ac_verc_fail=yes;;
-
-  esac
-  AC_MSG_RESULT([$ac_prog_version])
-fi
-ifelse([$6],,,
-[if test $ac_verc_fail = yes; then
-  $6
-fi])
-])
-
-GCC42_CFLAGS="-fgnu89-inline"
-AC_CHECK_PROG_VER(CC, ${ac_tool_prefix}gcc ${ac_tool_prefix}cc, -v,
-  [version \([egcygnustpi-]*[0-9.]*\)], [4.[2-9]* ],
-  GCC42_CFLAGS="")
-
-dnl Check for assembler
-
-AM_PROG_AS
-
-dnl Checks for various programs
-
-AC_PROG_LN_S
-AC_PROG_MAKE_SET
-
-AC_PATH_PROG(RM, rm)
-AC_PATH_PROG(MV, mv)
-AC_PATH_PROG(CP, cp)
-AC_PATH_PROG(AR, ar)
-AC_PATH_PROG(TR, tr)
-AC_PATH_PROG(RANLIB, ranlib)
-
-dnl Gettext -nenolod
+dnl gettext
+dnl =======
 AM_GNU_GETTEXT([external])
+if test "$MSGFMT" = ":" ; then
+    AC_MSG_ERROR([msgfmt was not found; have you installed gettext?])
+fi
 
-dnl Check for common functions
-dnl ==========================
+dnl Check for Audacious
+dnl ===================
 
-AC_CHECK_FUNCS([fcntl fsync mkdtemp strnlen strtoul])
-
-dnl OSS stuff (Why is this here?)
-dnl =============================
-
-AC_ARG_WITH(dev-dsp,
-    [  --with-dev-dsp=path            Path to OSS DSP data pipe, default is /dev/dsp.],
-    [dev_dsp=$withval],
-    [dev_dsp=/dev/dsp]
-)
-AC_DEFINE_UNQUOTED(DEV_DSP, "$dev_dsp",
-    [Path to OSS DSP, really just a data pipe, default is /dev/dsp.]
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.1],
+    [ADD_PC_REQUIRES([audacious >= 3.1])],
+    [AC_MSG_ERROR([Cannot find Audacious 3.1; have you installed Audacious yet?])]
 )
 
-AC_ARG_WITH(dev-mixer,
-    [  --with-dev-mixer=path          Path to OSS sound mixer, default is /dev/mixer.],
-    [dev_mixer=$withval],
-    [dev_mixer=/dev/mixer]
-)
-AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
-    [Path to OSS mixer, default is /dev/mixer.]
-)
+CPPFLAGS="$CPPFLAGS $AUDACIOUS_CFLAGS"
+LIBS="$LIBS $AUDACIOUS_LIBS"
 
-dnl These plugins are always built.
+dnl Default Set of Plugins
+dnl ======================
 
 INPUT_PLUGINS="tonegen metronom vtx"
 OUTPUT_PLUGINS="null"
@@ -134,18 +55,8 @@ VISUALIZATION_PLUGINS="blur_scope cairo-spectrum"
 CONTAINER_PLUGINS="m3u pls asx"
 TRANSPORT_PLUGINS="unix-io"
 
-dnl Check for Audacious
-
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.0],
-    [ADD_PC_REQUIRES([audacious >= 3.0])],
-    [AC_MSG_ERROR([Cannot find Audacious 3.0 or later, have you installed audacious yet?])]
-)
-
-CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS"
-CPPFLAGS="$CPPFLAGS $AUDACIOUS_CPPFLAGS"
-LIBS="$LIBS $AUDACIOUS_LIBS"
-
-dnl Check for GTK/GLib/GThread/Pango
+dnl Check for GTK+
+dnl ==============
 
 AC_ARG_ENABLE([gtk3],
  [AS_HELP_STRING([--disable-gtk3], [Use GTK2 even if GTK3 is present])],
@@ -163,7 +74,8 @@ fi
 AC_SUBST([GTK_LIBS])
 AC_SUBST([GTK_CFLAGS])
 
-AUD_COMMON_PROGS
+dnl Check for GIO
+dnl =============
 
 AC_ARG_ENABLE(gio,
  AS_HELP_STRING([--enable-gio], [enable GIO support (default=disabled)]),
@@ -202,34 +114,6 @@ if test "x$enable_ipv6" = "xyes"; then
 fi
 AM_CONDITIONAL(USE_IPV6,test "x$enable_ipv6" = "xyes")
 AC_SUBST(USE_IPV6)
-
-dnl chardet support
-dnl ========================
-AC_ARG_ENABLE(chardet,
-	[  --enable-chardet	  enable character set detection support (default=no)],
-			enable_chardet=$enableval, enable_chardet=no)
-if test "x$enable_chardet" = "xyes"; then
-    AC_DEFINE(USE_CHARDET, 1, [Define if character set detection enabled] )
-fi
-AM_CONDITIONAL(USE_CHARDET,test "x$enable_chardet" = "xyes")
-AC_SUBST(USE_CHARDET)
-
-dnl plugin stuff
-dnl ========================
-
-BUILDSYS_INIT
-BUILDSYS_SHARED_LIB
-
-AC_MSG_CHECKING([if you are running Apple-GCC])
-case "$target" in
-	*-apple-*)
-		AC_MSG_RESULT([yes, sorry you poor bastard])
-		LDFLAGS="$LDFLAGS -Wl,-framework -Wl,CoreFoundation -Wl,-framework -Wl,CoreServices"
-		;;
-	*)
-		AC_MSG_RESULT([no])
-		;;
-esac
 
 dnl Console
 dnl =======
@@ -882,6 +766,24 @@ fi
 AC_SUBST(OSS_CFLAGS)
 AC_SUBST(OSS_LIBS)
 
+AC_ARG_WITH(dev-dsp,
+    [  --with-dev-dsp=path            Path to OSS DSP data pipe, default is /dev/dsp.],
+    [dev_dsp=$withval],
+    [dev_dsp=/dev/dsp]
+)
+AC_DEFINE_UNQUOTED(DEV_DSP, "$dev_dsp",
+    [Path to OSS DSP, really just a data pipe, default is /dev/dsp.]
+)
+
+AC_ARG_WITH(dev-mixer,
+    [  --with-dev-mixer=path          Path to OSS sound mixer, default is /dev/mixer.],
+    [dev_mixer=$withval],
+    [dev_mixer=/dev/mixer]
+)
+AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
+    [Path to OSS mixer, default is /dev/mixer.]
+)
+
 
 dnl *** OSS4 output
 
@@ -1068,10 +970,8 @@ if test "x$enable_amidiplug" = "xyes"; then
   AC_SUBST(AMIDIPLUG_BACKENDS)
 fi
 
-AC_CHECK_HEADERS(unistd.h)
-AC_CHECK_HEADERS(fts.h)
-
-dnl CD-Audio New Generation
+dnl Audio CD
+dnl ========
 
 AC_ARG_ENABLE(cdaudio,
     [  --disable-cdaudio       disable cdaudio-ng input plugin (default=enabled) ],
@@ -1111,58 +1011,6 @@ if test "$enable_cdaudio_ng" = "yes"; then
 )
 fi
 
-AM_CONDITIONAL(HAVE_CDROM, test "${ac_cv_header_linux_cdrom_h}" = "yes" || test "${ac_cv_header_sys_cdio_h}" = "yes")
-AM_CONDITIONAL(HAVE_LINUX_JOYSTICK,test "${ac_cv_header_linux_joystick_h}" = "yes")
-
-CPPFLAGS="$CPPFLAGS $AUDACIOUS_CFLAGS $DBUS_CFLAGS"
-
-AC_MSG_CHECKING(if __ELF__ is defined)
-AC_EGREP_CPP(yes,
-    [#ifdef __ELF__
-        yes
-     #endif
-    ],
-    [is_elf=yes],
-    [is_elf=no]
-)
-AC_MSG_RESULT([${is_elf}])
-
-
-have_solaris=no
-ARCH_DEFINES=""
-case "$host" in
-    *-*-openbsd* | *-*-netbsd* | *-*-mirbsd*)
-        if test "${is_elf}" = "no"
-        then
-            AC_DEFINE(SYMBOL_PREFIX, "_", [Define to symbol prefix, if any])
-        fi
-    ;;
-    *-*-darwin*)
-        AC_DEFINE(SYMBOL_PREFIX, "_", [Define to symbol prefix, if any])
-    ;;
-    *-hpux-*)
-        ARCH_DEFINES="-DHPUX"
-    ;;
-    *-*-solaris* | *-*-sunos*)
-        have_solaris=yes
-    ;;
-esac
-
-arch_type=other
-x86_asm=no
-case "$host" in
-    i386-*-* | i486-*-* | i586-*-* | i686-*-* | i86pc-*-*)
-        arch_type=ix86
-        case "$host" in
-            *-*-netbsd* | *-*openbsd* | *-*-mirbsd*)
-            ;;
-            *)
-                ARCH_DEFINES="-DI386_ASSEM"
-                x86_asm=yes
-            ;;
-        esac
-    ;;
-esac
 
 dnl *** scrobbler ***
 
@@ -1438,13 +1286,6 @@ fi
 
 dnl *** End of all plugin checks ***
 
-AC_SUBST(ARCH_DEFINES)
-
-dnl XXX delete ASAP -nenolod
-AM_CONDITIONAL(ARCH_X86, test "x$arch_type" = "xix86")
-AM_CONDITIONAL(USE_X86ASM, test "x$x86_asm" = xyes)
-AM_CONDITIONAL(HAVE_SOLARIS, test "x$have_solaris" = xyes)
-
 plugindir=`pkg-config audacious --variable=plugin_dir`
 AC_SUBST(plugindir)
 
@@ -1478,14 +1319,6 @@ fi
 
 localedir="$datadir/locale"
 AC_SUBST(localedir)
-
-CFLAGS="$CFLAGS $EXTRA_CFLAGS"
-
-if test "x$enable_user_plugin_dir" = "xno"; then
-    AC_DEFINE(DISABLE_USER_PLUGIN_DIR,, [Define to disable per user plugin directory])
-fi
-
-AC_SUBST(plugindir)
 
 AC_SUBST(EFFECT_PLUGINS)
 AC_SUBST(GENERAL_PLUGINS)
