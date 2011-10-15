@@ -168,14 +168,16 @@ static void * open_module (const char * path)
         return NULL;
     }
 
-    LADSPA_Descriptor_Function descfun;
-    if (! g_module_symbol (handle, "ladspa_descriptor", (void * *) & descfun))
+    void * sym;
+    if (! g_module_symbol (handle, "ladspa_descriptor", & sym))
     {
         fprintf (stderr, "ladspa: Not a valid LADSPA module: %s\n", path);
         g_module_close (handle);
         return NULL;
     }
 
+    LADSPA_Descriptor_Function descfun = (LADSPA_Descriptor_Function) sym;
+    
     const LADSPA_Descriptor * desc;
     for (int i = 0; (desc = descfun (i)); i ++)
     {
