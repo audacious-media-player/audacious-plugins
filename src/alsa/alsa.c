@@ -156,8 +156,9 @@ static void * pump (void * unused)
     pthread_mutex_lock (& alsa_mutex);
     pthread_cond_broadcast (& alsa_cond); /* signal thread started */
 
-    gboolean workaround = FALSE;
-    gint slept = 0;
+    char failed = 0;
+    char workaround = 0;
+    int slept = 0;
 
     while (! pump_quit)
     {
@@ -185,6 +186,8 @@ static void * pump (void * unused)
         CHECK_VAL_RECOVER (written, snd_pcm_writei, alsa_handle, (char *)
          alsa_buffer + alsa_buffer_data_start, length);
 
+        failed = 0;
+
         written = snd_pcm_frames_to_bytes (alsa_handle, written);
         alsa_buffer_data_start += written;
         alsa_buffer_data_length -= written;
@@ -206,7 +209,7 @@ static void * pump (void * unused)
         if (slept > 4)
         {
             AUDDBG ("Activating timer workaround.\n");
-            workaround = TRUE;
+            workaround = 1;
         }
 
         if (workaround && slept)
@@ -222,9 +225,16 @@ static void * pump (void * unused)
         }
 
         pthread_mutex_lock (& alsa_mutex);
+        continue;
+
+    FAILED:
+        if (failed)
+            break;
+
+        failed = 1;
+        CHECK (snd_pcm_prepare, alsa_handle);
     }
 
-FAILED:
     pthread_mutex_unlock (& alsa_mutex);
     return NULL;
 }
