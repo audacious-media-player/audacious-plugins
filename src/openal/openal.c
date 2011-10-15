@@ -21,7 +21,6 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <audacious/debug.h>
