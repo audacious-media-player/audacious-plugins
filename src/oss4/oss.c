@@ -192,9 +192,6 @@ void oss_close_audio(void)
 {
     AUDDBG ("Closing audio.\n");
 
-    if (ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL) == -1)
-        DEBUG_MSG;
-
     if (oss_data->fd != -1)
         close(oss_data->fd);
     oss_data->fd = -1;
@@ -211,10 +208,6 @@ void oss_write_audio(void *data, gint length)
         if (written < 0)
         {
             ERROR_MSG;
-
-            if (ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL) == -1)
-                DEBUG_MSG;
-
             return;
         }
 
@@ -277,10 +270,7 @@ void oss_flush(gint time)
 {
     AUDDBG("Flush.\n");
 
-    if (ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL) == -1)
-        DEBUG_MSG;
-
-    if (ioctl(oss_data->fd, SNDCTL_DSP_SKIP, NULL) == -1)
+    if (ioctl(oss_data->fd, SNDCTL_DSP_RESET, NULL) == -1)
         DEBUG_MSG;
 
     oss_time = (gint64) time * 1000;
