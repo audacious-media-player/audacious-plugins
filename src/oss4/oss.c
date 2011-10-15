@@ -220,7 +220,7 @@ gint oss_buffer_free(void)
         return 0;
 
     ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
-    return (oss_buffer_info.fragments - 1) * oss_buffer_info.fragsize;
+    return MAX(0, oss_buffer_info.fragments - 1) * oss_buffer_info.fragsize;
 }
 
 void oss_set_written_time(gint time)
