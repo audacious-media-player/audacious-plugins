@@ -990,8 +990,8 @@ dnl SMB
 dnl ===
 
 AC_ARG_ENABLE(smb,
- AS_HELP_STRING([--disable-smb], [disable SMB transport (default=enabled)]),
- [enable_smb=$enableval], [enable_smb=yes])
+ AS_HELP_STRING([--enable-smb], [enable SMB transport (default=disabled)]),
+ [enable_smb="$enableval"], [enable_smb="no"])
 
 if test $enable_smb = yes ; then
     AC_CHECK_HEADERS([libsmbclient.h], [enable_smb=yes], [enable_smb=no])
@@ -1331,10 +1331,10 @@ echo "  Cairo Spectrum Analyzer:                yes"
 echo
 echo "  Transport"
 echo "  ---------"
-echo "  gio transport (experimental):           $enable_gio"
 echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
-echo "  SMB transport:                          $enable_smb"
+echo "  GIO transport (experimental):           $enable_gio"
+echo "  SMB transport (experimental):           $enable_smb"
 echo
 echo "  Container"
 echo "  ---------"
