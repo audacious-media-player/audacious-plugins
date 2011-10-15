@@ -1,3 +1,4 @@
+#include <inttypes.h>
 #include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
@@ -530,15 +531,15 @@ static int sc_handshake(void)
     char *auth_tmp;
     char *auth;
 
-    auth_tmp = g_strdup_printf("%s%ld", sc_password, ts);
+    auth_tmp = g_strdup_printf("%s%"PRId64, sc_password, (gint64) ts);
     auth = (char *)md5_string(auth_tmp, strlen(auth_tmp));
     g_free(auth_tmp);
     hexify(auth, 16);
     auth_tmp = g_strdup(sc_response_hash);
 
-    g_snprintf(buf, sizeof(buf), "%s/?hs=true&p=%s&c=%s&v=%s&u=%s&t=%ld&a=%s",
+    g_snprintf(buf, sizeof(buf), "%s/?hs=true&p=%s&c=%s&v=%s&u=%s&t=%"PRId64"&a=%s",
             sc_hs_url, SCROBBLER_VERSION,
-            SCROBBLER_CLI_ID, SCROBBLER_IMPLEMENTATION, sc_username, ts,
+            SCROBBLER_CLI_ID, SCROBBLER_IMPLEMENTATION, sc_username, (gint64) ts,
             auth_tmp);
     g_free(auth_tmp);
 
