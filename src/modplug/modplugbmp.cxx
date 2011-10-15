@@ -5,8 +5,12 @@
  */
 
 #include <fstream>
+#include <stdint.h>
 #include <unistd.h>
 #include <math.h>
+
+#include <libmodplug/stdafx.h>
+#include <libmodplug/sndfile.h>
 
 extern "C" {
 #include <audacious/configdb.h>
@@ -14,8 +18,6 @@ extern "C" {
 }
 
 #include "modplugbmp.h"
-#include "stdafx.h"
-#include "sndfile.h"
 #include "stddefs.h"
 #include "archive/open.h"
 
