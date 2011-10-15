@@ -210,6 +210,7 @@ static void window_create(void)
     button_ok = gtk_button_new_from_stock(GTK_STOCK_OK);
     gtk_box_pack_start(GTK_BOX(button_box), button_ok, FALSE, FALSE, 5);
 
+    gtk_widget_set_can_default(button_ok, TRUE);
     gtk_widget_grab_default(button_ok);
 
     g_signal_connect(G_OBJECT(dev_list_combo), "changed",
