@@ -103,11 +103,11 @@ int32_t Allocate_Memory ( void ) {
 		DisplayError("Failed to allocate N64MEM");
 		return 0;
 	}
-	
+
 	memset(N64MEM, 0, RdramSize);
 
 	NOMEM = mmap((uintptr_t)N64MEM + RdramSize, 0xD000, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, 0, 0);
-	
+
 	if(RdramSize == 0x400000)
 	{
 	//	munmap(N64MEM + 0x400000, 0x400000);
@@ -157,15 +157,15 @@ int32_t Allocate_Memory ( void ) {
 
 int PreAllocate_Memory(void) {
 	int i = 0;
-	
+
 	// Moved the savestate allocation here :)  (for better management later)
 	savestatespace = malloc(0x80275C);
-	
+
 	if(savestatespace == 0)
 		return 0;
-	
+
 	memset(savestatespace, 0, 0x80275C);
-	
+
 	for (i = 0; i < 0x400; i++) {
 		ROMPages[i] = 0;
 	}
@@ -193,10 +193,10 @@ void Release_Memory ( void ) {
 	if (JumpTable != NULL) {free( JumpTable); JumpTable=NULL;}
 	if (RecompCode != NULL){munmap( RecompCode, NormalCompileBufferSize); RecompCode=NULL;}
 	if (RSPRecompCode != NULL){munmap( RSPRecompCode, RSP_RECOMPMEM_SIZE + RSP_SECRECOMPMEM_SIZE); RSPRecompCode=NULL;}
-	
+
 	if (RSPJumpTables != NULL) {free( RSPJumpTables); RSPJumpTables=NULL;}
 	if (JumpTable != NULL) {free( JumpTable); JumpTable=NULL;}
-	
+
 
 	if(savestatespace)
 		free(savestatespace);
@@ -1674,6 +1674,8 @@ static int32_t CONV_REG64(int32_t dest_reg) {
 
 			 break;
 	}
+
+	return -1; /* ??? */
 }
 
 

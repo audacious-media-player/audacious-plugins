@@ -36,7 +36,7 @@ int32_t RSP_Cpu = 0;
 
 void RSPReInitMemory()
 {
-	
+
 	if(RSPRecompCode == NULL) {
 		printf("enough memory for RSP RSPRecompCode!");
 		return;
@@ -53,7 +53,7 @@ void RSPReInitMemory()
 	memset((uint8_t*)RSPJumpTables, 0, 0x2000 * MaxMaps);
 	memset((uint8_t*)RSPRecompCode, 0, 0x00400000);
 	memset((uint8_t*)RSPRecompCodeSecondary, 0, 0x00200000);
-	
+
 
 	RSPJumpTable = (void **)RSPJumpTables;
 	RSPRecompPos = RSPRecompCode;
@@ -1023,8 +1023,8 @@ int32_t init_rsp(void)
 #else
 	asm volatile("push %%rbx; mov $1, %%eax; cpuid; pop %%rbx" : : "a"(CpuFeatures) : "rdx","rcx");
 #endif
-	
-	
+
+
 	Compiler.mmx2 = CpuFeatures & 0x4000000;
 	Compiler.sse = CpuFeatures & 0x2000000;
 	Compiler.mmx = CpuFeatures & 0x800000;
@@ -1034,6 +1034,7 @@ int32_t init_rsp(void)
 
 	ClearAllx86Code();
 
+	return 0; /* ??? */
 }
 
 void RSPSetJumpTable (void) {

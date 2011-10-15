@@ -23,7 +23,7 @@ extern int SampleRate;
 extern InputPlugin usf_ip;
 InputPlayback * pcontext = 0;
 
-void usf_mseek(InputPlayback * context, gulong millisecond);
+void usf_mseek (InputPlayback * context, gint millisecond);
 int8_t filename[512];
 uint32_t cpu_running = 0, use_interpreter = 0, use_audiohle = 0, is_paused = 0, cpu_stopped = 1, fake_seek_stopping = 0;
 uint32_t is_fading = 0, fade_type = 1, fade_time = 5000, is_seeking = 0, seek_backwards = 0, track_time = 180000;
@@ -266,7 +266,7 @@ void usf_seek(InputPlayback * context, gint time)
 }
 
 
-void usf_mseek(InputPlayback * context, gulong millisecond)
+void usf_mseek (InputPlayback * context, gint millisecond)
 {
 	if(millisecond < play_time) {
 		is_paused = 0;
@@ -291,12 +291,9 @@ void usf_mseek(InputPlayback * context, gulong millisecond)
 
 gboolean usf_playing;
 
-void usf_play(InputPlayback * context, const gchar * filename,
-     VFSFile * file, gint start_time, gint stop_time, gboolean pause)
+gboolean usf_play (InputPlayback * context, const gchar * filename,
+ VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
-	if(!filename)
-		return;
-
 	// Defaults (which would be overriden by Tags / playing
 	savestatespace = NULL;
 	cpu_running = is_paused = fake_seek_stopping = 0;
@@ -321,7 +318,7 @@ void usf_play(InputPlayback * context, const gchar * filename,
     if(!LoadUSF(filename, file)) {
 	Release_Memory();
 	vfs_fclose(file);
-    	return;
+    	return FALSE;
     }
 
 	context->set_pb_ready(context);
@@ -359,9 +356,9 @@ void usf_stop(InputPlayback *context)
 	is_paused = 0;
 }
 
-void usf_pause(InputPlayback *context, gshort paused)
+void usf_pause (InputPlayback * context, gboolean paused)
 {
-	is_paused = paused;//is_paused?0:1;
+	is_paused = paused;
 }
 
 static const gchar *usf_exts [] =

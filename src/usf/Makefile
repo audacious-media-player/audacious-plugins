@@ -40,4 +40,8 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 CFLAGS += ${PLUGIN_CFLAGS} -O0
 CXXFLAGS += ${PLUGIN_CFLAGS} -O0
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS}  -I../.. -Ispu/ -I.
-LIBS += ${GTK_LIBS} ${GLIB_LIBS}  ${MOWGLI_LIBS} -lz
+LIBS += ${GTK_LIBS} ${GLIB_LIBS}  ${MOWGLI_LIBS} -lz -lm
+
+# USF produces tons of warnings; disable the less important ones.
+CFLAGS += -Wno-pointer-sign -Wno-parentheses -Wno-unused-variable \
+ -Wno-unused-but-set-variable -Wno-unused-result -Wno-unused-value

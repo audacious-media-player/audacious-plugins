@@ -3376,7 +3376,7 @@ int32_t RSPCompile_Vector_VGE_MMX(void) {
 }
 
 void RSPCompile_Vector_VGE ( void ) {
-/*	int32_t bWriteToAccum = WriteToAccum(Low16BitAccum, RSPCompilePC);
+/*	int32_t bWriteToAccum = WriteToAccum(Low16BitAccum, RSPCompilePC); */
 
 	/* FIXME: works ok, but needs careful flag analysis */
 /*	#if defined (DLIST)

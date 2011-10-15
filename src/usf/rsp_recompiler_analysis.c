@@ -1424,7 +1424,7 @@ void GetInstructionInfo(uint32_t PC, RSPOPCODE * RspOp, OPCODE_INFO * info) {
 			/*	info->DestReg = RspOp->sa;
 				info->SourceReg0 = RspOp->rt;
 				info->SourceReg1 = -1;
-				info->flags = VEC_Instruction; /* Assume reset? */
+				info->flags = VEC_Instruction; * Assume reset? */
 				break;
 
 			case RSP_VECTOR_VMRG:
@@ -1432,7 +1432,7 @@ void GetInstructionInfo(uint32_t PC, RSPOPCODE * RspOp, OPCODE_INFO * info) {
 			/*	info->DestReg = RspOp->sa;
 				info->SourceReg0 = RspOp->rt;
 				info->SourceReg1 = RspOp->rd;
-				info->flags = VEC_Instruction; /* Assum reset? */
+				info->flags = VEC_Instruction; * Assume reset? */
 				break;
 
 			case RSP_VECTOR_VSAW:
