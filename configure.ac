@@ -701,9 +701,9 @@ dnl OSS output
 dnl ==========
 
 AC_ARG_ENABLE(oss,
- [  --disable-oss           disable OSS3 output plugin],
+ [  --enable-oss            enable OSS3 output plugin],
  [enable_oss="$enableval"],
- [enable_oss="yes"]
+ [enable_oss="no"]
 )
 
 AC_ARG_ENABLE(oss4,
@@ -1253,8 +1253,7 @@ echo "  Install path:                           ${audacious_plugin_root}"
 echo
 echo "  Output Plugins"
 echo "  --------------"
-echo "  Open Sound System v3 (oss):             $enable_oss"
-echo "  Open Sound System v4 (oss4):            $enable_oss4"
+echo "  Open Sound System (oss4):               $enable_oss4"
 echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  PulseAudio (pulse):                     $have_pulse"
 echo "  RoarAudio (roaraudio):                  $have_roar"
@@ -1268,6 +1267,7 @@ echo "    -> FileWriter FLAC output part:       $have_writer_flac"
 echo "  Null Audio output (null):               yes"
 echo "  Windows waveOut (experimental):         $have_winmm"
 echo "  OpenAL (experimental):                  $enable_openal"
+echo "  Open Sound System v3 (deprecated):      $enable_oss"
 echo
 echo "  Input Plugins"
 echo "  -------------"
