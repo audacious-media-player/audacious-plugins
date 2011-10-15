@@ -697,149 +697,74 @@ if test "x$have_sidplay" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS sid"
 fi
 
-dnl *** OSS output
+dnl OSS output
+dnl ==========
 
 AC_ARG_ENABLE(oss,
-    [  --disable-oss           disable the OSS output plugin (default=enabled)],
-    [enable_oss=$enableval],
-    [enable_oss=yes]
+ [  --disable-oss           disable OSS3 output plugin],
+ [enable_oss="$enableval"],
+ [enable_oss="yes"]
 )
-
-have_oss=no
-if test "x$enable_oss" = "xyes"; then
-    AC_MSG_CHECKING(for OSS include dir)
-    OSS_CFLAGS=""
-    if test -f "/etc/oss.conf" ; then
-        for i in `cat /etc/oss.conf`; do
-            t=`echo $i | sed -e 's/OSSLIBDIR=//'`
-            if test "x$i" != "x$t" ; then
-                if test -f "$t/include/sys/soundcard.h" -o -f "$i/include/soundcard.h" ; then
-                    OSS_CFLAGS="-I$t/include"
-                fi
-            fi
-        done
-    fi
-    if test -n "$OSS_CFLAGS" ; then
-        AC_MSG_RESULT([$OSS_CFLAGS])
-    else
-        AC_MSG_RESULT([not found])
-    fi
-    CFLAGS_save=$CFLAGS
-    CFLAGS="$CFLAGS $OSS_CFLAGS"
-    AC_CHECK_HEADERS(soundcard.h)
-    AC_CHECK_HEADERS(sys/soundcard.h)
-    AC_CHECK_HEADERS(machine/soundcard.h)
-    CFLAGS=$CFLAGS_save
-
-    if test "x${ac_cv_header_soundcard_h}" = "xyes" || test "x${ac_cv_header_sys_soundcard_h}" = "xyes" || test "x${ac_cv_header_machine_soundcard_h}" = "xyes"; then
-        have_oss=yes
-    fi
-
-    if test "x${have_oss}" = "xyes"; then
-	AC_MSG_CHECKING(whether we need -lossaudio)
-        AC_TRY_LINK([
-		#include <sys/ioctl.h>
-		#ifdef HAVE_SYS_SOUNDCARD_H
-		#include <sys/soundcard.h>
-		#else
-		#include <soundcard.h>
-		#endif
-        ], [
-		int fd, value;
-		ioctl(fd, SOUND_MIXER_READ_VOLUME, &value);
-	], AC_MSG_RESULT(no), [
-		OSS_LIBS="-lossaudio"
-		AC_MSG_RESULT(yes)
-        ])
-   fi
-fi
-
-if test "x$have_oss" = "xyes"; then
-    AC_DEFINE(HAVE_OSS, 1, [Define if the OSS output plugin should be built])
-else
-    have_oss=no
-fi
-
-if test "x$have_oss" = "xyes"; then
-	OUTPUT_PLUGINS="$OUTPUT_PLUGINS OSS"
-fi
-AC_SUBST(OSS_CFLAGS)
-AC_SUBST(OSS_LIBS)
-
-AC_ARG_WITH(dev-dsp,
-    [  --with-dev-dsp=path            Path to OSS DSP data pipe, default is /dev/dsp.],
-    [dev_dsp=$withval],
-    [dev_dsp=/dev/dsp]
-)
-AC_DEFINE_UNQUOTED(DEV_DSP, "$dev_dsp",
-    [Path to OSS DSP, really just a data pipe, default is /dev/dsp.]
-)
-
-AC_ARG_WITH(dev-mixer,
-    [  --with-dev-mixer=path          Path to OSS sound mixer, default is /dev/mixer.],
-    [dev_mixer=$withval],
-    [dev_mixer=/dev/mixer]
-)
-AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
-    [Path to OSS mixer, default is /dev/mixer.]
-)
-
-
-dnl *** OSS4 output
 
 AC_ARG_ENABLE(oss4,
-    [  --disable-oss4          disable the OSS4 output plugin],
-    [enable_oss4=$enableval],
-    [enable_oss4=yes]
+ [  --disable-oss4          disable OSS4 output plugin],
+ [enable_oss4="$enableval"],
+ [enable_oss4="yes"]
 )
 
-if test "x$enable_oss4" = "xyes"; then
-    AC_MSG_CHECKING(for OSS4 include dir)
+have_oss="no"
+have_oss4="no"
+OSS_CFLAGS=""
 
+if test "$enable_oss" = "yes" || test "$enable_oss4" = "yes" ; then
     if test -f "/etc/oss.conf"; then
         . "/etc/oss.conf"
-    else
-        OSSLIBDIR="/usr/lib/oss"
+        OSS_CFLAGS="-I$OSSLIBDIR/include"
     fi
 
-    if test -f "$OSSLIBDIR/include/sys/soundcard.h"; then
-        OSS4_CPPFLAGS="-I$OSSLIBDIR/include/sys"
-    elif test -f "$OSSLIBDIR/include/soundcard.h"; then
-        OSS4_CPPFLAGS="-I$OSSLIBDIR/include"
-    fi
+    OLD_CPPFLAGS="$CPPFLAGS"
+    CPPFLAGS="$CPPFLAGS $OSS_CFLAGS"
 
-    if test -n "$OSS4_CPPFLAGS"; then
-        AC_MSG_RESULT([$OSS4_CPPFLAGS])
-        have_oss4=yes
-    else
-        AC_MSG_RESULT([not found])
-        have_oss4=no
-    fi
+    AC_CHECK_HEADERS([sys/soundcard.h soundcard.h],
+     [have_oss="yes"], [have_oss="$have_oss"])
 
-    if test "x$have_oss4" = "xyes"; then
-        CPPFLAGS_save=$CPPFLAGS
-        CPPFLAGS=$OSS4_CPPFLAGS
+    if test "$enable_oss4" = "yes" && test "$have_oss" = "yes" ; then
         AC_MSG_CHECKING(for OSS4)
+
         AC_EGREP_CPP(yes,
-            [#include <soundcard.h>
-             #if OSS_VERSION >= 0x040000
-                 yes
+            [#ifdef HAVE_SYS_SOUNDCARD_H
+             #include <sys/soundcard.h>
+             #else
+             #include <soundcard.h>
              #endif
-            ],
-            [have_oss4=yes],
-            [have_oss4=no]
-        )
+             #if OSS_VERSION >= 0x40000 || SOUND_VERSION >= 0x40000
+                 yes
+             #endif],
+            [have_oss4="yes"],
+            [have_oss4="no"])
+
         AC_MSG_RESULT([$have_oss4])
-        CPPFLAGS=$CPPFLAGS_save
     fi
-else
-    AC_MSG_RESULT([*** OSS4 output plugin disabled per user request ***])
-    have_oss4=no
+
+    CPPFLAGS="$OLD_CPPFLAGS"
 fi
 
-if test "x$have_oss4" = "xyes"; then
+AC_SUBST(OSS_CFLAGS)
+
+if test "$enable_oss" = "yes" && test "$have_oss" = "no" ; then
+    enable_oss="no"
+fi
+
+if test "$enable_oss" = "yes"; then
+    OUTPUT_PLUGINS="$OUTPUT_PLUGINS OSS"
+fi
+
+if test "$enable_oss4" = "yes" && test "$have_oss4" = "no" ; then
+    enable_oss4="no"
+fi
+
+if test "$enable_oss4" = "yes"; then
     OUTPUT_PLUGINS="$OUTPUT_PLUGINS oss4"
-    AC_SUBST(OSS4_CPPFLAGS)
 fi
 
 dnl *** ALSA output plugin
@@ -1328,8 +1253,8 @@ echo "  Install path:                           ${audacious_plugin_root}"
 echo
 echo "  Output Plugins"
 echo "  --------------"
-echo "  Open Sound System (oss):                $have_oss"
-echo "  Open Sound System v4 (oss4):            $have_oss4"
+echo "  Open Sound System v3 (oss):             $enable_oss"
+echo "  Open Sound System v4 (oss4):            $enable_oss4"
 echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  PulseAudio (pulse):                     $have_pulse"
 echo "  RoarAudio (roaraudio):                  $have_roar"

@@ -34,6 +34,9 @@
 
 #include <audacious/plugin.h>
 
+#define DEV_MIXER "/dev/mixer"
+#define DEV_DSP "/dev/dsp"
+
 #define IS_BIG_ENDIAN (G_BYTE_ORDER == G_BIG_ENDIAN)
 
 extern OutputPlugin op;

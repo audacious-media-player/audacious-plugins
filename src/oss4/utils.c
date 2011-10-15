@@ -30,7 +30,9 @@ gchar *oss_format_to_text(gint format)
     }
     table[] =
     {
+#ifdef AFMT_FLOAT
         {AFMT_FLOAT,  "AFMT_FLOAT"},
+#endif
         {AFMT_S8,     "AFMT_S8"},
         {AFMT_U8,     "AFMT_U8"},
         {AFMT_S16_LE, "AFMT_S16_LE"},
@@ -65,7 +67,9 @@ gint oss_convert_aud_format(gint aud_format)
     }
     table[] =
     {
+#ifdef AFMT_FLOAT
         {FMT_FLOAT,  AFMT_FLOAT},
+#endif
         {FMT_S8,     AFMT_S8},
         {FMT_U8,     AFMT_U8},
         {FMT_S16_LE, AFMT_S16_LE},
@@ -113,9 +117,11 @@ gint oss_format_to_bits(gint format)
         case AFMT_S32_BE:
             bits = 32;
             break;
+#ifdef AFMT_FLOAT
         case AFMT_FLOAT:
             bits = sizeof(float) * 8;
             break;
+#endif
         default:
             bits = 8;
     }
@@ -130,7 +136,7 @@ gint oss_frames_to_bytes(gint frames)
 
 gint oss_bytes_to_frames(gint bytes)
 {
-	return bytes * 8 / oss_data->channels / oss_data->bits_per_sample;
+    return bytes * 8 / oss_data->channels / oss_data->bits_per_sample;
 }
 
 gint oss_calc_bitrate(void)

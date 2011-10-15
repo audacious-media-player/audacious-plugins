@@ -26,7 +26,12 @@
 #include <glib.h>
 #include <errno.h>
 #include <sys/ioctl.h>
+
+#ifdef HAVE_SYS_SOUNDCARD_H
+#include <sys/soundcard.h>
+#else
 #include <soundcard.h>
+#endif
 
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
