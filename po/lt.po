@@ -1,22 +1,23 @@
-# Copyright (C) gymka 2011
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# gymka <gymka@mail.ru>, 2011.
+# 
+# Translators:
 # Algimantas Margevičius <gymka@mail.ru>, 2011.
-#
+# gymka <gymka@mail.ru>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious plugins 3.0\n"
-"Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-10-09 12:05-0400\n"
-"PO-Revision-Date: 2011-10-09 18:07+0300\n"
-"Last-Translator: Algimantas Margevičius <gymka@mail.ru>\n"
-"Language-Team: Lietuvių <>\n"
-"Language: lt\n"
+"Project-Id-Version: Audacious\n"
+"Report-Msgid-Bugs-To: http://jira.atheme.org/browse/AUD\n"
+"POT-Creation-Date: 2011-10-10 13:39-0400\n"
+"PO-Revision-Date: 2011-10-11 05:29+0000\n"
+"Last-Translator: gymka_ltu <gymka@mail.ru>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bits\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
-"%100<10 || n%100>=20) ? 1 : 2)\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: lt\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: src/aac/libmp4.c:256
 #, c-format
@@ -61,7 +62,7 @@ msgstr ""
 "\n"
 "http://www.snika.uklinux.net/xmms-alarm/"
 
-#: src/alarm/interface.c:64 src/sid/xs_about.c:214 src/sid/xs_interface.c:1825
+#: src/alarm/interface.c:64
 msgid "Close"
 msgstr "Uždaryti"
 
@@ -74,7 +75,6 @@ msgid "This is your wakeup call."
 msgstr "Tai pabudimo skambutis."
 
 #: src/alarm/interface.c:116 src/alarm/interface.c:1337
-#: src/sid/xs_config.c:293
 msgid "OK"
 msgstr "Gerai"
 
@@ -88,22 +88,16 @@ msgstr "Įspėjimas"
 
 #: src/alarm/interface.c:166
 msgid ""
-"For safety reasons the \"quiet\" time must be at least 65 seconds longer "
-"than the fading time, it must also be more than 10 seconds.  This basically "
-"means that there is a bug in the code and until I find a way of really "
-"fixing it this message will appear :)\n"
+"For safety reasons the \"quiet\" time must be at least 65 seconds longer than the fading time, it must also be more than 10 seconds.  This basically means that there is a bug in the code and until I find a way of really fixing it this message will appear :)\n"
 "\n"
 "Your fading settings have NOT been saved\n"
 "\n"
 "--\n"
 "Adam"
 msgstr ""
-"Saugumo sumetimais \"tylu\" laikas turi būt bent 65 sekundėm ilgesnis nei "
-"laukimo laikas, taipogi tai turi būt daugiau nei 10 sekundžių. Iš esmės tai "
-"reiškia jog yra klaida kode ir kol nerasiu būdo tai pataisyt šis pranešimas "
-"galios :)\n"
+"Saugumo sumetimais \"tylu\" laikas turi būt bent 65 sekundėm ilgesnis nei laukimo laikas, taipogi tai turi būt daugiau nei 10 sekundžių. Iš esmės tai reiškia jog yra klaida kode ir kol nerasiu būdo tai pataisyt šis pranešimas galios :)\n"
 "\n"
-"Jūsų nustatymai neišsaugoti\n"
+"Jūsų nustatymai NEišsaugoti\n"
 "\n"
 "--\n"
 "Adam"
@@ -143,7 +137,7 @@ msgstr "Žadinti (numatyta):"
 
 #: src/alarm/interface.c:533
 msgid "Choose the days for the alarm to come on"
-msgstr "Pasirnkite dienas kuriomis žadinti"
+msgstr "Pasirinkite dienas kuriomis žadinti"
 
 #: src/alarm/interface.c:561 src/alarm/interface.c:609
 #: src/alarm/interface.c:657 src/alarm/interface.c:705
@@ -193,8 +187,7 @@ msgstr "Dienos"
 msgid "Fading"
 msgstr "Blukimas"
 
-#: src/alarm/interface.c:1036 src/sid/xs_interface.c:921
-#: src/sid/xs_interface.c:975 src/sid/xs_interface.c:1155
+#: src/alarm/interface.c:1036
 msgid "seconds"
 msgstr "sekundės"
 
@@ -400,7 +393,7 @@ msgstr "Mikserio elementas:"
 
 #: src/alsa/config.c:452
 msgid "Work around drain hangup"
-msgstr "Work around drain hangup"
+msgstr "Apeiti sausą pakibimą"
 
 #: src/alsa/plugin.c:59
 msgid "About ALSA Output Plugin"
@@ -415,7 +408,7 @@ msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
 msgstr ""
-"Nepasrinkti joki MIDI atkūrimo prievadai. Pasirinkt gali MIDI įskiepio "
+"Nepasirinkti jokie MIDI atkūrimo prievadai. Pasirinkt gali MIDI įskiepio "
 "nustatymuose."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
@@ -424,43 +417,27 @@ msgstr "ALSA posistemė"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
-"Backend written by Giacomo Lozito."
+"Ši posistemė siunčia MIDI įvykius naudotojo pasirinktai ALSA eiliškumo prievadų grupei. ALSA sekvencerio sąsaja yra labai universali, ji gali suteikti prievadus audio plokščių sintezatoriams (pvz. emu10k1) beto programiniams sintezatoriams, papildomiems įrenginiams ir t.t.\n"
+"Ši posistemė nekuria garso, MIDI įvykius apdoroja tiesiogiai įrenginiai/programos už ALSA prievadų; pavyzdžiui MIDI įvykiai nusiųsti į sintezatorių bus grojami tiesiogiai.\n"
+"Posistemę sukūrė Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
-msgstr "FluidSynth Backend "
+msgstr "FluidSynth Posistemė"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen ouput plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed by chosen ouput plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen ouput plugin.\n"
-"Backend written by Giacomo Lozito."
+"Ši posistemė atkuria garsą sisųdama MIDI įvykius į FluidSynth, realaus laiko programinį sintezatorių, paremtą SoundFont2 specifika  (www.fluidsynth.org).\n"
+"Atkurtu garsu galima manipuliuoti grotuvo efektų įskiepiais ir jis yra apdorojamas išvesties įskiepiu.\n"
+"Posistemę sukūrė Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:228
 msgid "ALSA BACKEND CONFIGURATION"
@@ -508,7 +485,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-ap.c:59
 msgid "AMIDI-Plug - backend information"
-msgstr "AMIDI-Plug - positemės informacija"
+msgstr "AMIDI-Plug - posistemės informacija"
 
 #: src/amidi-plug/i_configure-ap.c:196
 msgid "AMIDI-PLUG PREFERENCES"
@@ -532,7 +509,7 @@ msgstr "Perkelti:"
 
 #: src/amidi-plug/i_configure-ap.c:271
 msgid "Drum shift: "
-msgstr "Drum shift: "
+msgstr "Būgnų poslinkis: "
 
 #: src/amidi-plug/i_configure-ap.c:289
 msgid "Advanced settings"
@@ -572,7 +549,7 @@ msgstr "AMIDI-Plug - pasirink SoundFont failą"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:270
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
-msgstr "FLUIDSYNTH POSISTEMĖS KONFIGURAVIMAS"
+msgstr "FLUIDSYNTH POSISTEMĖS KONFIGŪRAVIMAS"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:313
 msgid "SoundFont settings"
@@ -638,7 +615,7 @@ msgstr "choras"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:544
 msgid "sample rate"
-msgstr "semplo dažnis"
+msgstr "diskretizacijos dažnis"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:550
 msgid "22050 Hz "
@@ -674,7 +651,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-timidity.c:39
 msgid "TIMIDITY BACKEND CONFIGURATION"
-msgstr "TIMIDITY POSISTEMĖS KONFIGURACIJA"
+msgstr "TIMIDITY POSISTEMĖS KONFIGŪRACIJA"
 
 #: src/amidi-plug/i_configure-timidity.c:64
 msgid "TiMidity Backend not loaded or not available"
@@ -688,7 +665,7 @@ msgstr ""
 "<span size=\"smaller\">TiMidity\n"
 "posistemė</span>"
 
-#: src/amidi-plug/i_fileinfo.c:169 src/sid/xs_interface.c:1769
+#: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
 msgstr "Pavadinimas:"
 
@@ -816,7 +793,7 @@ msgstr "Joks"
 
 #: src/aosd/aosd_trigger.c:77
 msgid "Playback Start"
-msgstr "Akūrimo pradžia"
+msgstr "Atkūrimo pradžia"
 
 #: src/aosd/aosd_trigger.c:78
 msgid "Triggers OSD when a playlist entry is played."
@@ -834,11 +811,11 @@ msgid ""
 msgstr ""
 "Sužadina OSD kai, atkūrimo metu, dainos pavadinimas pasikeičia, bet bylos "
 "vardas lieka tas pats. Šita pasirinktis naudingiausia atvaizduojant "
-"interneto srauto dainos pavadinmo pokyčius. "
+"interneto srauto dainos pavadinimo pokyčius. "
 
 #: src/aosd/aosd_trigger.c:89
 msgid "Volume Change"
-msgstr "Garso kitimas"
+msgstr "Garso keitimas"
 
 #: src/aosd/aosd_trigger.c:90
 msgid "Triggers OSD when volume is changed."
@@ -895,7 +872,7 @@ msgstr "vaizduoklis %i"
 
 #: src/aosd/aosd_ui.c:323
 msgid "Timing (ms)"
-msgstr "Timing (ms)"
+msgstr "Laiko derinimas (ms)"
 
 #: src/aosd/aosd_ui.c:328
 msgid "Display:"
@@ -955,8 +932,7 @@ msgstr "Derintas apipavalidinimas"
 msgid "Skin file:"
 msgstr "Išvaizdos failas:"
 
-#: src/aosd/aosd_ui.c:672 src/sid/xs_interface.c:1044
-#: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
+#: src/aosd/aosd_ui.c:672
 msgid "Browse"
 msgstr "Naršyti"
 
@@ -970,13 +946,12 @@ msgstr "Įvykis"
 
 #: src/aosd/aosd_ui.c:829
 msgid "Composite manager detected"
-msgstr "Composite tvarkytuva"
+msgstr "Composite tvarkytuvas rastas"
 
 #: src/aosd/aosd_ui.c:836
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
 msgstr ""
 "Composite tvarkyklė nerasta;\n"
 "įjunk composite tvarkyklę, nes OSD neveiks taip kaip priklauso"
@@ -1039,7 +1014,6 @@ msgid "Trigger"
 msgstr "Sužadintojas"
 
 #: src/aosd/aosd_ui.c:1101 src/cdaudio-ng/configure.c:171
-#: src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr "Kita"
 
@@ -1091,8 +1065,7 @@ msgstr "Apie Audio CD Plugin"
 
 #: src/cdaudio-ng/cdaudio-ng.c:242
 msgid ""
-"Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
-"Team.\n"
+"Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n"
 "\n"
 "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
 "\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n"
@@ -1103,8 +1076,7 @@ msgid ""
 "\n"
 "Copyright 2009 John Lindgren"
 msgstr ""
-"Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
-"Team.\n"
+"Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n"
 "\n"
 "Didelis dėkui libcdio kūrėjams <http://www.gnu.org/software/libcdio/>\n"
 "\tir libcddb kūrėjams <http://libcddb.sourceforge.net/>.\n"
@@ -1215,7 +1187,7 @@ msgstr "Atkūrimas"
 
 #: src/console/configure.c:170
 msgid "Bass:"
-msgstr "Bass:"
+msgstr "Bosas:"
 
 #: src/console/configure.c:174 src/console/configure.c:185
 #: src/console/configure.c:206
@@ -1230,7 +1202,7 @@ msgstr "Treble:"
 msgid "Default song length:"
 msgstr "Numatyta dainos trukmė:"
 
-#: src/console/configure.c:208 src/sid/xs_interface.c:666
+#: src/console/configure.c:208
 msgid "Resampling"
 msgstr "Resampling"
 
@@ -1240,9 +1212,9 @@ msgstr "Įjungti audio resampling"
 
 #: src/console/configure.c:229
 msgid "Resampling rate:"
-msgstr "Resampling rate:"
+msgstr "Diskretizacijos dažnis:"
 
-#: src/console/configure.c:233 src/sid/xs_interface.c:354
+#: src/console/configure.c:233
 msgid "Hz"
 msgstr "Hz"
 
@@ -1260,8 +1232,8 @@ msgstr "Padidinti reverb"
 
 #: src/console/configure.c:271
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
+"The default song length, expressed in seconds, is used for songs that do not"
+" provide length information (i.e. looping tracks)."
 msgstr ""
 "Numatyta dainos trukmė, išreikšta sekundėmis, naudojama dainom kurios "
 "nesuteikia trukmės informacijos (pvz. looping tracks)"
@@ -1308,14 +1280,11 @@ msgstr ""
 msgid ""
 "Crossfading failed because the songs had different sample rates.\n"
 "\n"
-"You can use the Sample Rate Converter effect to resample the songs to the "
-"same rate."
+"You can use the Sample Rate Converter effect to resample the songs to the same rate."
 msgstr ""
-"Garso perėjimo efektas nepavyko, nes dainos turi skirtingus diskretizavimo "
-"dažnius.\n"
+"Garso perėjimo efektas nepavyko, nes dainos turi skirtingus diskretizavimo dažnius.\n"
 "\n"
-"Gali panaudoti  Sample Rate Converter efektą padaryti diskretizavimo dažnius "
-"tokius pat."
+"Gali panaudoti  Sample Rate Converter efektą padaryti diskretizavimo dažnius tokius pat."
 
 #: src/crystalizer/crystalizer.c:100
 msgid "Configure Crystalizer"
@@ -1329,10 +1298,6 @@ msgstr "Efekto intensyvumas:"
 #: src/stereo_plugin/stereo.c:131
 msgid "Apply"
 msgstr "Pritaikyti"
-
-#: src/daemon/daemon.c:58
-msgid "Daemon Interface (like old headless mode)"
-msgstr "Daemon sąsaja (kaip senas begalvis režimas)"
 
 #: src/echo_plugin/gui.c:15
 msgid ""
@@ -1401,42 +1366,6 @@ msgstr "Apie FFaudio įskiepį"
 msgid "About FileWriter-Plugin"
 msgstr "Apie FileWriter įskiepį"
 
-#: src/filewriter/filewriter.c:167
-msgid ""
-"FileWriter-Plugin\n"
-"\n"
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"FileWriter-Plugin\n"
-"\n"
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-
 #: src/filewriter/filewriter.c:455
 msgid "File Writer Configuration"
 msgstr "File Writer konfigūravimas"
@@ -1447,11 +1376,11 @@ msgstr "Išvesties failo formatas:"
 
 #: src/filewriter/filewriter.c:485
 msgid "Configure"
-msgstr "Konfiguruoti"
+msgstr "Konfigūruoti"
 
 #: src/filewriter/filewriter.c:500
 msgid "Save into original directory"
-msgstr "Išsaugoti orginalo aplanko"
+msgstr "Išsaugoti originalo aplanke"
 
 #: src/filewriter/filewriter.c:505
 msgid "Save into custom directory"
@@ -1471,11 +1400,11 @@ msgstr "Gauti failo vardą iš:"
 
 #: src/filewriter/filewriter.c:541
 msgid "original file tags"
-msgstr "orginalios failo žymės"
+msgstr "originalios failo žymės"
 
 #: src/filewriter/filewriter.c:547
 msgid "original filename"
-msgstr "orginalus failo vardas"
+msgstr "originalus failo vardas"
 
 #: src/filewriter/filewriter.c:557
 msgid "Don't strip file name extension"
@@ -1493,17 +1422,17 @@ msgstr "Auto"
 msgid "Joint Stereo"
 msgstr "Sujungtas stereo"
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:308
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:301
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183
 msgid "Mono"
 msgstr "Mono"
 
 #: src/filewriter/mp3.c:712
 msgid "MP3 Configuration"
-msgstr "MP3 konfiguravimas"
+msgstr "MP3 konfigūravimas"
 
 #: src/filewriter/mp3.c:735
 msgid "Algorithm Quality:"
@@ -1691,7 +1620,7 @@ msgstr "gnt vartotojo sąsaja"
 msgid "Entry number"
 msgstr "Įvesties numeris"
 
-#: src/gtkui/columns.c:36 src/sid/xs_interface.c:1103
+#: src/gtkui/columns.c:36
 msgid "Title"
 msgstr "Pavadinimas"
 
@@ -1785,11 +1714,11 @@ msgstr "_Pridėti failą ..."
 
 #: src/gtkui/menus.c:133
 msgid "Add U_RL ..."
-msgstr "Pridėti _URL ..."
+msgstr "Pridėti U_RL ..."
 
 #: src/gtkui/menus.c:135
 msgid "A_bout ..."
-msgstr "Apie"
+msgstr "A_pie"
 
 #: src/gtkui/menus.c:136
 msgid "_Preferences ..."
@@ -1825,11 +1754,11 @@ msgstr "_Kartoti"
 
 #: src/gtkui/menus.c:147
 msgid "S_huffle"
-msgstr "_Sumaišyti"
+msgstr "S_umaišyti"
 
 #: src/gtkui/menus.c:148
 msgid "N_o Playlist Advance"
-msgstr "_Nesislinkti grojaraščiu"
+msgstr "N_esislinkti grojaraščiu"
 
 #: src/gtkui/menus.c:149
 msgid "Stop _After This Song"
@@ -1857,27 +1786,27 @@ msgstr "Pagal _pavadinimą"
 
 #: src/gtkui/menus.c:158
 msgid "By _Artist"
-msgstr "Pagal atlikėją"
+msgstr "Pagal _atlikėją"
 
 #: src/gtkui/menus.c:159
 msgid "By A_lbum"
-msgstr "Pagal _albumą"
+msgstr "Pagal a_lbumą"
 
 #: src/gtkui/menus.c:160
 msgid "By Release _Date"
-msgstr "Pagal išleidimo datą"
+msgstr "Pagal išleidimo _datą"
 
 #: src/gtkui/menus.c:161
 msgid "By _File Path"
-msgstr "Pagal failo kelią"
+msgstr "Pagal _failo kelią"
 
 #: src/gtkui/menus.c:162
 msgid "By _Custom Title"
-msgstr "Pagal derintą eilutę"
+msgstr "Pagal _derintą eilutę"
 
 #: src/gtkui/menus.c:164
 msgid "R_everse Order"
-msgstr "_Atvirkštine tvarka"
+msgstr "A_tvirkštine tvarka"
 
 #: src/gtkui/menus.c:165
 msgid "_Random Order"
@@ -1901,7 +1830,7 @@ msgstr "_Uždaryti"
 
 #: src/gtkui/menus.c:175
 msgid "_Import ..."
-msgstr "_Įkelti"
+msgstr "_Įkelti ..."
 
 #: src/gtkui/menus.c:176
 msgid "_Export ..."
@@ -1921,7 +1850,7 @@ msgstr "Pagarsi_nti"
 
 #: src/gtkui/menus.c:183
 msgid "Volume _Down"
-msgstr "_Patildyti"
+msgstr "Patil_dyti"
 
 #: src/gtkui/menus.c:185
 msgid "_Equalizer"
@@ -1941,7 +1870,7 @@ msgstr "Rodyti _meniu juostą"
 
 #: src/gtkui/menus.c:193
 msgid "Show I_nfo Bar"
-msgstr "Rodyti info juostą"
+msgstr "Rodyti i_nfo juostą"
 
 #: src/gtkui/menus.c:194
 msgid "Show _Status Bar"
@@ -1953,11 +1882,11 @@ msgstr "Rodyti stulpelio _antraštes"
 
 #: src/gtkui/menus.c:197
 msgid "Choose _Columns ..."
-msgstr "Pasirinkti _stulpelius"
+msgstr "Pasirinkti _stulpelius ..."
 
 #: src/gtkui/menus.c:198
 msgid "Scrol_l on Song Change"
-msgstr "Slinktis keičiantis dainai"
+msgstr "Slinkt_is keičiantis dainai"
 
 #: src/gtkui/menus.c:201
 msgid "_File"
@@ -1981,7 +1910,7 @@ msgstr "_Išvestis"
 
 #: src/gtkui/menus.c:206
 msgid "_View"
-msgstr "_Rodinys"
+msgstr "_Rodymas"
 
 #: src/gtkui/menus.c:210
 msgid "_Queue/Unqueue"
@@ -2020,8 +1949,6 @@ msgstr "%s - Audacious"
 msgid "Audacious"
 msgstr "Audacious"
 
-# msgstr[0] "%lu Baitas"
-# msgstr[1] "%lu Baitai"
 #: src/gtkui/ui_gtk.c:206 src/skins/plugin.c:185
 msgid "Error"
 msgstr "Klaida"
@@ -2040,7 +1967,7 @@ msgid "%d channel"
 msgid_plural "%d channels"
 msgstr[0] "%d kanalas"
 msgstr[1] "%d kanalai"
-msgstr[2] "%d kanalai"
+msgstr[2] "%d kanalų"
 
 #: src/gtkui/ui_statusbar.c:121
 #, c-format
@@ -2113,8 +2040,7 @@ msgstr "(joks)"
 
 #: src/hotkey/gui.c:232
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
@@ -2170,8 +2096,7 @@ msgid ""
 "\n"
 msgstr ""
 "Globalus karštųjų klavišų įskiepis\n"
-"Valdyk grotuvą su globalių klavišų kombinacijomis arba multimedia "
-"klavišais.\n"
+"Valdyk grotuvą su globalių klavišų kombinacijomis arba multimedia klavišais.\n"
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
@@ -2243,7 +2168,6 @@ msgid "LADSPA Host Settings"
 msgstr "LADSPA Host nustatymai"
 
 #: src/ladspa/plugin.c:588
-#, fuzzy
 msgid "Module paths:"
 msgstr "Modulio kelias:"
 
@@ -2253,6 +2177,9 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
+"<small>Atskirk kelis kelius su dvitaškiu.\n"
+"Šie keliai ieškomi neradus ko reikia LADSPA_PATH kelyje.\n"
+"Kai pridedamai nauji keliai, paspausk ENTER naujų įskiepių paieškai.</small>"
 
 #: src/ladspa/plugin.c:609
 msgid "Available plugins:"
@@ -2270,7 +2197,7 @@ msgstr "Įjungti įskiepiai:"
 msgid "Settings"
 msgstr "Nustatymai"
 
-#: src/lyricwiki/lyricwiki.c:226
+#: src/lyricwiki/lyricwiki.c:227
 msgid ""
 "\n"
 "Looking for lyrics..."
@@ -2278,7 +2205,7 @@ msgstr ""
 "\n"
 "Ieškoma dainos žodžių..."
 
-#: src/lyricwiki/lyricwiki.c:249
+#: src/lyricwiki/lyricwiki.c:250
 msgid ""
 "\n"
 "Connecting to lyrics.wikia.com..."
@@ -2286,7 +2213,7 @@ msgstr ""
 "\n"
 "Jungiamasi prie lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.c:337
+#: src/lyricwiki/lyricwiki.c:338
 msgid ""
 "\n"
 "No lyrics were found."
@@ -2459,81 +2386,9 @@ msgstr "Mikseris"
 msgid "About OSS Driver"
 msgstr "Apie OSS Driver"
 
-#: src/OSS/OSS.c:41
-msgid ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-
 #: src/pulse_audio/pulse_audio.c:687
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "Apie Audacious PulseAudio išvesties įskiepį"
-
-#: src/pulse_audio/pulse_audio.c:688
-msgid ""
-"Audacious PulseAudio Output Plugin\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Audacious PulseAudio Output Plugin\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
 
 #: src/resample/plugin.c:89
 msgid "About Sample Rate Converter Plugin"
@@ -2587,8 +2442,7 @@ msgstr "Scrobbler"
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
-"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
-"com>\n"
+"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>\n"
 msgstr ""
 "Audacious AudioScrobbler įskiepis\n"
 "\n"
@@ -2605,637 +2459,6 @@ msgstr "Apie SDL išvesties įskiepį"
 #: src/sdlout/plugin.c:78
 msgid "SDL error"
 msgstr "SDL klaida"
-
-#: src/sid/xs_about.c:84
-#, c-format
-msgid "About %s"
-msgstr "Apie %s"
-
-#: src/sid/xs_config.c:293
-msgid " Error"
-msgstr " Klaida"
-
-#: src/sid/xs_fileinfo.c:151
-msgid "General info"
-msgstr "Pagrindinė informacija"
-
-#: src/sid/xs_fileinfo.c:164
-#, c-format
-msgid "Tune #%i: "
-msgstr "Derinimas #%i:"
-
-#: src/sid/xs_glade.c:90 src/sid/xs_glade.c:114
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr "Nepavyko rasti pixmap failo: %s"
-
-#: src/sid/xs_interface.c:234
-msgid "Audacious-SID configuration"
-msgstr "Audacious-SID konfigūracija"
-
-#: src/sid/xs_interface.c:270
-msgid "8-bit"
-msgstr "8-bit"
-
-#: src/sid/xs_interface.c:277
-msgid "16-bit"
-msgstr "16-bitų"
-
-#: src/sid/xs_interface.c:284
-msgid "Resolution:"
-msgstr "Rezoliucija:"
-
-#: src/sid/xs_interface.c:315
-msgid "Autopanning"
-msgstr "Autopanning"
-
-#: src/sid/xs_interface.c:322
-msgid "Channels:"
-msgstr "Kanalai:"
-
-#: src/sid/xs_interface.c:366
-msgid "Samplerate:"
-msgstr "Diskretizavimo dažnis:"
-
-#: src/sid/xs_interface.c:383
-msgid "Use oversampling"
-msgstr "Naudoti perdengimą"
-
-#: src/sid/xs_interface.c:394
-msgid "Factor:"
-msgstr "Faktorius:"
-
-#: src/sid/xs_interface.c:406
-msgid "Large factors require more CPU-power"
-msgstr "Dideliem faktoriam reikia daugiau CPU-jėgos"
-
-#: src/sid/xs_interface.c:412
-msgid "Oversampling:"
-msgstr "Oversampling:"
-
-#: src/sid/xs_interface.c:417
-msgid "Audio"
-msgstr "Audio"
-
-#: src/sid/xs_interface.c:445
-msgid "Force speed"
-msgstr "Priversti greitį"
-
-#: src/sid/xs_interface.c:449
-msgid ""
-"If enabled, this option \"forces\" the emulation engine to use the selected "
-"clock speed/frequency. Otherwise the speed is determined from played file "
-"itself."
-msgstr ""
-"Jei įjungta, ši pasirinktis priverčia naudoti pasirinktą clock speed/dažnį. "
-"Kitu atveju greitis nustatomas pagal grojančią dainą."
-
-#: src/sid/xs_interface.c:451
-msgid "PAL (50 Hz)"
-msgstr "PAL (50 Hz)"
-
-#: src/sid/xs_interface.c:455
-msgid ""
-"PAL is the european TV standard, which uses 50Hz vertical refresh frequency. "
-"Most of SID-tunes have been made for PAL computers."
-msgstr ""
-"PAL yra Europos TV standartas, kuris naudoja 50Hz vertikalų atnaujinimo "
-"dažnį. Dauguma SID-tunes buvo sukurti PAL kompiuteriam."
-
-#: src/sid/xs_interface.c:459
-msgid "NTSC (60 Hz)"
-msgstr "NTSC (60 Hz)"
-
-#: src/sid/xs_interface.c:463
-msgid ""
-"NTSC is the TV standard with 60Hz vertical refresh rate (and other features "
-"that differ from PAL). It is mainly used in United States, Japan and certain "
-"other countries."
-msgstr ""
-"NTSC yra TV standartas su 60Hz vertikaliu atnaujinimo dažniu (ir kitos "
-"galimybės skiriasi nuo PAL). Pagrinde jis naudojamas Jungtinėse valstijose, "
-"Japonijoje ir dar kai kuriose šalyse."
-
-#: src/sid/xs_interface.c:467
-msgid "Clock speed:"
-msgstr "Laikrodžio greitis:"
-
-#: src/sid/xs_interface.c:484
-msgid "Force model"
-msgstr "Priverstinis modelis"
-
-#: src/sid/xs_interface.c:488
-msgid ""
-"If enabled, this option \"forces\" the emulation engine to use the selected "
-"SID-chip model. Otherwise the preferred SID model is determined from the "
-"file (if PSIDv2NG type) or if not available, this setting is used."
-msgstr ""
-"Jei įjungta, ši pasirinktis priverčia naudoti pasirinktą SID-chip modelį. "
-"Kitu atveju norimas SID modelis yra nustatomas iš failo (jei PSIDv2NG tipo) "
-"arba jei neprieinamas, naudojamas šis nustatymas."
-
-#: src/sid/xs_interface.c:490
-msgid "MOS 6581"
-msgstr "MOS 6581"
-
-#: src/sid/xs_interface.c:494
-msgid ""
-"MOS/CSG 6581 is the earlier major version of SID chip. It differs from 8580 "
-"in few ways, having much fuller filter (which, due to design error, is never "
-"same between two different SID-chips) and has the \"volume adjustment bug\", "
-"which enables playing of digital samples."
-msgstr ""
-"MOS/CSG 6581 yra ankstesnė SID chip didelė versija. Ji skiriasi nuo 8580 "
-"keliais aspektais, turi žymiai talpesnį filtrą (kuris dėl dizaino klaidos "
-"niekad nebūna toks pat tarp skirtingų SID-chips) ir turi garso reguliavimo "
-"klaidą, kuri įgalina groti skaitmeninius pavyzdžius."
-
-#: src/sid/xs_interface.c:498
-msgid "MOS 8580"
-msgstr "MOS 8580"
-
-#: src/sid/xs_interface.c:505
-msgid "SID model:"
-msgstr "SID modelis:"
-
-#: src/sid/xs_interface.c:522
-msgid "SIDPlay 1 (frame-based)"
-msgstr "SIDPlay 1 (paremtas kadrais)"
-
-#: src/sid/xs_interface.c:526
-msgid ""
-"Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most "
-"cases, though."
-msgstr ""
-"Naudoti libSIDPlay 1.x emuliaciją, greitesnė, bet ne tokia tiksli. Daugumoj "
-"atvejų tiks."
-
-#: src/sid/xs_interface.c:530
-msgid "SIDPlay 2 (cycle-based)"
-msgstr "SIDPlay 2 (paremta ciklais)"
-
-#: src/sid/xs_interface.c:534
-msgid ""
-"Use libSIDPlay 2.x emulation, which requires powerful CPU due to more exact "
-"emulation."
-msgstr ""
-"Naudoti libSIDPlay 2.x emuliaciją, kuri reikalauja galingo CPU atlikti "
-"tikslesnę emuliaciją."
-
-#: src/sid/xs_interface.c:538
-msgid "Emulation library selection:"
-msgstr "Emuliacijos bibliotekos pasirinkimas:"
-
-#: src/sid/xs_interface.c:555
-msgid "Real C64 (SIDPlay 2 only)"
-msgstr "Tikras C64 (tik SIDPlay 2)"
-
-#: src/sid/xs_interface.c:562
-msgid "Bank switching"
-msgstr "Bankų perjungimas"
-
-#: src/sid/xs_interface.c:569
-msgid "Transparent ROM"
-msgstr "Permatomas ROM"
-
-#: src/sid/xs_interface.c:576
-msgid "PlaySID environment"
-msgstr "PlaySID aplinka"
-
-#: src/sid/xs_interface.c:583
-msgid "Memory mode:"
-msgstr "Atminties režimas:"
-
-#: src/sid/xs_interface.c:588
-msgid "Emu#1"
-msgstr "Emu#1"
-
-#: src/sid/xs_interface.c:611
-msgid "Optimization mode (faster, inaccurate)"
-msgstr "Optimizacijos režimas (gretesnis, netikslus)"
-
-#: src/sid/xs_interface.c:615
-msgid ""
-"This setting can be used to enable libSIDPlay2's \"optimization mode\", "
-"which in downgrades the emulation from cycle-exact to something similar to "
-"frame-exact. The result is lower CPU usage, but worse accuracy."
-msgstr ""
-"Šis nustatymas gali būti naudojamas įjungti libSIDPlay2 optimizacijos "
-"režimą, kuris sumažina emuliaciją nuo tikslių ciklų iki kažko panašaus į "
-"tikslių kadrų. Rezultatas mažesnė CPU apkrova, bet prastesnis tikslumas."
-
-#: src/sid/xs_interface.c:617
-msgid "reSID-emulation"
-msgstr "reSID-imitacija"
-
-#: src/sid/xs_interface.c:621
-msgid ""
-"reSID is the software SID-chip simulator based on SID reverse-engineering, "
-"created by Dag Lem. It is probably the closest thing to real SID available "
-"as software-only emulation."
-msgstr ""
-"reSID yra programinis SID-chip simuliatorius paremtas SID reverse-"
-"engineering, sukurė Dag Lem. Tai turbūt panašiausias daiktas(naudojant tik "
-"programinį imitavimą) į tikrą SID."
-
-#: src/sid/xs_interface.c:625
-msgid "HardSID"
-msgstr "HardSID"
-
-#: src/sid/xs_interface.c:629
-msgid ""
-"HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a "
-"real SID-chip. Software can be used to control the HardSID and combined with "
-"software emulation of rest of C64 via libSIDPlay2 HardSID can be used to "
-"achieve \"near 100%\" similarity to real C64. For more information, see "
-"http://www.hardsid.com/"
-msgstr ""
-"HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a "
-"real SID-chip. Software can be used to control the HardSID and combined with "
-"software emulation of rest of C64 via libSIDPlay2 HardSID can be used to "
-"achieve \"near 100%\" similarity to real C64. For more information, see "
-"http://www.hardsid.com/"
-
-#: src/sid/xs_interface.c:633
-msgid "SIDPlay 2 options:"
-msgstr "SIDPlay 2 pasirinktys:"
-
-#: src/sid/xs_interface.c:650
-msgid "Fast (nearest neighbour)"
-msgstr "Greitas (arčiausias kaimynas)"
-
-#: src/sid/xs_interface.c:654
-msgid ""
-"Fastest and also worst sounding sampling method, simply picks nearest "
-"neighbouring sample."
-msgstr ""
-"Fastest and also worst sounding sampling method, simply picks nearest "
-"neighbouring sample."
-
-#: src/sid/xs_interface.c:658
-msgid "Linear interpolation"
-msgstr "Linear interpolation"
-
-#: src/sid/xs_interface.c:662
-msgid ""
-"Uses linear interpolation between samples, yielding higher audio quality "
-"with less sampling noise."
-msgstr ""
-"Uses linear interpolation between samples, yielding higher audio quality "
-"with less sampling noise."
-
-#: src/sid/xs_interface.c:673
-msgid "Resampling (FIR)"
-msgstr "Resampling (FIR)"
-
-#: src/sid/xs_interface.c:680
-msgid "reSID sampling options:"
-msgstr "reSID sampling pasirinktys:"
-
-#: src/sid/xs_interface.c:685
-msgid "Emu#2"
-msgstr "Emu#2"
-
-#: src/sid/xs_interface.c:697
-msgid "Emulate filters"
-msgstr "Imituoti filtrus"
-
-#: src/sid/xs_interface.c:701
-msgid ""
-"This option enables emulation of SID filter. The filter is an essential part "
-"of SID's sound capacity, but accurate emulation of it may require quite much "
-"CPU power. However, if filter emulation is disabled, tunes won't sound "
-"authentic at all if they utilize the filter."
-msgstr ""
-"Ši pasirinktis leidžia imituoti SID filtrą. Filtras yra esminė SID garso "
-"talpos dalis, bet atidi jos imitacija reikalauja daug CPU pajėgumų. "
-"Nepaisant visko, jei filtro imitacija yra išjungta, tunes nebus atkuriami "
-"autentiškai."
-
-#: src/sid/xs_interface.c:726
-msgid "FS"
-msgstr "FS"
-
-#: src/sid/xs_interface.c:743
-msgid "FM"
-msgstr "FM"
-
-#: src/sid/xs_interface.c:760
-msgid "FT"
-msgstr "FT"
-
-#: src/sid/xs_interface.c:771
-msgid "Reset values"
-msgstr "Iš naujo nustatyti vertes"
-
-#: src/sid/xs_interface.c:776
-msgid "SIDPlay1"
-msgstr "SIDPlay1"
-
-#: src/sid/xs_interface.c:817
-msgid "Export"
-msgstr "Eksportuoti"
-
-#: src/sid/xs_interface.c:825
-msgid "Use"
-msgstr "Naudoti"
-
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:441
-msgid "Save"
-msgstr "Išsaugoti"
-
-#: src/sid/xs_interface.c:841 src/skins/ui_manager.c:440
-msgid "Import"
-msgstr "Įkelti"
-
-#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:442
-msgid "Delete"
-msgstr "Ištrinti"
-
-#: src/sid/xs_interface.c:863
-msgid "Filter curve:"
-msgstr "Filtro posūkis:"
-
-#: src/sid/xs_interface.c:868
-msgid "SIDPlay2"
-msgstr "SIDPlay2"
-
-#: src/sid/xs_interface.c:874
-msgid "Filters"
-msgstr "Filtrai"
-
-#: src/sid/xs_interface.c:897
-msgid "Play at least for specified time"
-msgstr "Groti bent jau nurodytą laiką"
-
-#: src/sid/xs_interface.c:901
-msgid ""
-"If enabled, the tune is played at least for the specified time, adding "
-"silence to the end if necessary."
-msgstr ""
-"Jei įjungta, tune grojama bent jau nurodytą laiką, jei reikia pridedant tylą "
-"pabaigoje."
-
-#: src/sid/xs_interface.c:908 src/sid/xs_interface.c:962
-#: src/sid/xs_interface.c:1142
-msgid "Playtime:"
-msgstr "Grojimo laikas:"
-
-#: src/sid/xs_interface.c:928
-msgid "Minimum playtime:"
-msgstr "Minimalus grojimo laikas:"
-
-#: src/sid/xs_interface.c:945
-msgid "Play for specified time maximum"
-msgstr "Groti numatytą maksimalų laiką"
-
-#: src/sid/xs_interface.c:949
-msgid ""
-"If enabled, tune is played until specified duration is reached (aka maximum "
-"playtime)."
-msgstr ""
-"Jei įjungta, tune grojama nustatytą laiką(aka maksimalus grojimo laikas)"
-
-#: src/sid/xs_interface.c:951
-msgid "Only when song length is unknown"
-msgstr "Tik kai dainos trukmė nežinoma"
-
-#: src/sid/xs_interface.c:955
-msgid ""
-"If enabled, the maximum playtime is applied only if song/tune length is not "
-"known."
-msgstr ""
-"Jei įjungta, maksimalus grojimo laikas taikomas tik tada jei dainos trukmė "
-"nežinoma."
-
-#: src/sid/xs_interface.c:982
-msgid "Maximum playtime:"
-msgstr "Ilgiausias grojimo laikas:"
-
-#: src/sid/xs_interface.c:999
-msgid "Use XSIDPLAY-compatible database"
-msgstr "Naudoti duomenų bazę suderinamą su XSIDPLAY"
-
-#: src/sid/xs_interface.c:1003
-msgid ""
-"This option enables using of XSIDPLAY compatible song length database. "
-"(Refer to Audacious-SID documentation for more information)"
-msgstr ""
-"Ši pasirinktis leidžia naudoti dainos ilgio duomenų bazę(suderinamą su "
-"XSIDPLAY). (Plačiau žiūrėk Audacious-SID dokumentacijoje)"
-
-#: src/sid/xs_interface.c:1010
-msgid "DB-file:"
-msgstr "DB-failas:"
-
-#: src/sid/xs_interface.c:1020
-msgid "Database path and filename"
-msgstr "Guomenų bazės kelias ir failo vardas"
-
-#: src/sid/xs_interface.c:1027
-msgid "Browse for song length-database file"
-msgstr "Rinktis dainos ilgio duomenų bazės failą"
-
-#: src/sid/xs_interface.c:1049
-msgid "Song length database:"
-msgstr "Dainos ilgio duomenų bzė"
-
-#: src/sid/xs_interface.c:1054
-msgid "Songlength"
-msgstr "Dainos ilgis"
-
-#: src/sid/xs_interface.c:1072
-msgid "Override generic Tuplez format string"
-msgstr "Perrašyt bendrinius Tuplez formato įrašus"
-
-#: src/sid/xs_interface.c:1076
-msgid ""
-"By enabling this option you can specify a custom Tuplez formatting string "
-"for SID-files. The SID-plugin specific Tuplez tags are described shortly "
-"below."
-msgstr ""
-"Įjungiant šią pasirinktį galite nustatyti derintą Tuplez formatavimo eilutę. "
-"Specialūs SID įskiepio Tuplez žymos aprašytos žemiau."
-
-#: src/sid/xs_interface.c:1087
-msgid "Tuplez format string for SID-files"
-msgstr "Tuplez formato eilutė SID failam"
-
-#: src/sid/xs_interface.c:1090
-msgid ""
-"<u>SID-specific Tuplez fields:</u>\n"
-"\n"
-"<b>sid-format</b>\t\t- Specific fileformat\n"
-"<b>sid-model</b>\t\t- 6581 or 8580\n"
-"<b>sid-speed</b>\t\t- Timing or speed: PAL/NTSC/etc.\n"
-"\n"
-"<u>Other \"special\" fields set:</u>\n"
-"\n"
-"<b>subsong-num, subsong-id</b>"
-msgstr ""
-"<u>SID-specifiniai Tuplez laukai:</u>\n"
-"\n"
-"<b>sid-format</b>\t\t- Specifinis formatas\n"
-"<b>sid-model</b>\t\t- 6581 arba 8580\n"
-"<b>sid-speed</b>\t\t- Laikas arba greitis: PAL/NTSC/etc.\n"
-"\n"
-"<u>Kiti \"special\" laukai:</u>\n"
-"\n"
-"<b>subsong-num, subsong-id</b>"
-
-#: src/sid/xs_interface.c:1098
-msgid "Song title format:"
-msgstr "Dainos pavadinimo formatas:"
-
-#: src/sid/xs_interface.c:1125
-msgid "Add sub-tunes to playlist"
-msgstr "Pridėti sub-tunes į grojaraštį"
-
-#: src/sid/xs_interface.c:1129
-msgid ""
-"If enabled, sub-tunes of each file will be added to playlist. If disabled, "
-"only the default sub-tune will be added."
-msgstr ""
-"Jei įjungta, kievieno failo sub-tunes bus pridėti į grojaraštį. Jei "
-"išjungta, tik numtytieji sub-tune bus pridėti."
-
-#: src/sid/xs_interface.c:1131
-msgid "Only tunes with specified minimum duration"
-msgstr "Tik tunes su nurodyta trumpiausia trukme"
-
-#: src/sid/xs_interface.c:1135
-msgid "Only add sub-tunes that have a duration of at least specified time."
-msgstr "Pridėti tik tuos sub-tunes kurių trukmė ilgesnė nei nurodytas laikas."
-
-#: src/sid/xs_interface.c:1162
-msgid "Sub-tune handling:"
-msgstr "Sub-tune valdymas:"
-
-#: src/sid/xs_interface.c:1179
-msgid "Use STIL database"
-msgstr "Naudoi STIL duomenų bazę"
-
-#: src/sid/xs_interface.c:1183
-msgid ""
-"If this option is enabled (and the database & HVSC settings below are "
-"correctly set), Audacious-SID will use and display additional information "
-"from STIL database when HVSC SIDs are played."
-msgstr ""
-"Jei ši pasirinktis aktyvuota (ir duomenų bazės bei HVSC nustatymai yra "
-"teisingi), kai HVSC SID bus grojama Audacious-SID papildomą informaciją "
-"rodys iš STIL duomenų bazės."
-
-#: src/sid/xs_interface.c:1190
-msgid "STIL file:"
-msgstr "STIL failas:"
-
-#: src/sid/xs_interface.c:1206
-msgid ""
-"Path and filename of STIL database file (STIL.txt), usually found from "
-"HVSC's DOCUMENTS-subdirectory."
-msgstr ""
-"STIL duomenų bazės failo (STIL.txt) kelias ir failo vardas, paprastai būna "
-"HVSC DOCUMENTS-poaplankyje."
-
-#: src/sid/xs_interface.c:1219
-msgid "Browse for STIL-database file"
-msgstr "Rinktis STIL-database failą"
-
-#: src/sid/xs_interface.c:1246
-msgid "HVSC path:"
-msgstr "HVSC kelias:"
-
-#: src/sid/xs_interface.c:1262
-msgid ""
-"Path to base-directory of your High Voltage SID Collection (HVSC), for "
-"example /media/C64Music/"
-msgstr ""
-"Kelias iki bazinio aplanko kuriame yra High Voltage SID Collection (HVSC), "
-"pvz. /media/C64Music"
-
-#: src/sid/xs_interface.c:1275
-msgid "Browse for HVSC path"
-msgstr "Naršyti HVSC kelią"
-
-#: src/sid/xs_interface.c:1297
-msgid "SID Tune Information List (STIL) database:"
-msgstr "SID Tune informacijos sąrašas (STILL) duomenų bazė:"
-
-#: src/sid/xs_interface.c:1321
-msgid "Cancel any changes"
-msgstr "Atšaukti visus keitimus"
-
-#: src/sid/xs_interface.c:1328
-msgid "Accept and update changes"
-msgstr "Priimti ir atnaujinti keitimus"
-
-#: src/sid/xs_interface.c:1628
-msgid "Audacious-SID Fileinfo"
-msgstr "Audacious-SID failo informacija"
-
-#: src/sid/xs_interface.c:1649
-msgid "Filename:"
-msgstr "Failo vardas:"
-
-#: src/sid/xs_interface.c:1657
-msgid "Songname:"
-msgstr "Dainos pavadinimas:"
-
-#: src/sid/xs_interface.c:1665
-msgid "Composer:"
-msgstr "Kompozitorius:"
-
-#: src/sid/xs_interface.c:1673
-msgid "Copyright:"
-msgstr "Autorinės teisės:"
-
-#: src/sid/xs_interface.c:1717
-msgid "Song Information:"
-msgstr "Dainos informacija:"
-
-#: src/sid/xs_interface.c:1752
-msgid "Author:"
-msgstr "Autorius:"
-
-#: src/sid/xs_interface.c:1786
-msgid "Duration:"
-msgstr "Trukmė:"
-
-#: src/sid/xs_interface.c:1820
-msgid "Sub-tune Information:"
-msgstr "Sub-tune Informacija:"
-
-#: src/sid/xs_interface.c:1881
-msgid "Select HVSC song length database"
-msgstr "Pasirinkti HVSC dainos ilgio duomenų bazę"
-
-#: src/sid/xs_interface.c:1922
-msgid "Select STIL-database"
-msgstr "Pasirinkti STIL-duomenų bazę"
-
-#: src/sid/xs_interface.c:1963
-msgid "Select HVSC location prefix"
-msgstr "Pasirinkti HVSC vietos priedėlį"
-
-#: src/sid/xs_interface.c:2004
-msgid "Select SIDPlay2 filters file for importing"
-msgstr "Pasirinkti SID2Play filtro failą importavimui"
-
-#: src/sid/xs_interface.c:2045
-msgid "Select SIDPlay2 filters file for exporting"
-msgstr "Pasirinkti SIDPlay2 filtrų failą eksportavimui"
-
-#: src/sid/xs_interface.c:2093 src/sid/xs_interface.c:2106
-msgid "Confirm selected action"
-msgstr "Patvirtinti pasirinktą veiksmą"
-
-#: src/sid/xs_interface.c:2123
-msgid "Yes"
-msgstr "Taip"
-
-#: src/sid/xs_interface.c:2129
-msgid "No"
-msgstr "Ne"
 
 #: src/skins/plugin.c:167
 msgid "About Skinned GUI"
@@ -3379,11 +2602,11 @@ msgstr "Pasirinkčių meniu"
 
 #: src/skins/ui_main.c:984
 msgid "Disable 'Always On Top'"
-msgstr "Išjungti 'Always On Top'"
+msgstr "Išjungti 'Visada viršuje'"
 
 #: src/skins/ui_main.c:986
 msgid "Enable 'Always On Top'"
-msgstr "Įjungti 'Always On Top'"
+msgstr "Įjungti 'Visada viršuje'"
 
 #: src/skins/ui_main.c:989
 msgid "File Info Box"
@@ -3620,7 +2843,7 @@ msgstr "Įkelti grojaraštį"
 
 #: src/skins/ui_manager.c:223
 msgid "Loads a playlist file into the selected playlist."
-msgstr "Įkrauna grojaraštį į pasirnktą grojaraštį."
+msgstr "Įkrauna grojaraštį į pasirinktą grojaraštį."
 
 #: src/skins/ui_manager.c:226
 msgid "Export Playlist"
@@ -3636,7 +2859,7 @@ msgstr "Atnaujinti sąrašą"
 
 #: src/skins/ui_manager.c:230
 msgid "Refreshes metadata associated with a playlist entry."
-msgstr "Atnaujina metaduomenis susietus su grojarščio elementu."
+msgstr "Atnaujina meta duomenis susietus su grojaraščio elementu."
 
 #: src/skins/ui_manager.c:233
 msgid "Playlist Manager"
@@ -3648,7 +2871,7 @@ msgstr "Eilės redaktorius"
 
 #: src/skins/ui_manager.c:237
 msgid "View"
-msgstr "Rodinys"
+msgstr "Rodymas"
 
 #: src/skins/ui_manager.c:238
 msgid "Interface"
@@ -3710,7 +2933,7 @@ msgstr "Atžymi visus grojaraščio įrašus."
 
 #: src/skins/ui_manager.c:271
 msgid "Remove All"
-msgstr "Pašallinti visus"
+msgstr "Pašalinti visus"
 
 #: src/skins/ui_manager.c:272
 msgid "Removes all entries from the playlist."
@@ -3745,8 +2968,6 @@ msgstr "Pagal pavadinimą"
 msgid "Removes duplicate entries from the playlist by title."
 msgstr "Pašalina dubliuotus įrašus iš grojaraščio pagal pavadinimą."
 
-# msgstr[0] "Įtrauktas %d elementas."
-# msgstr[1] "Įtraukti %d elementai."
 #: src/skins/ui_manager.c:289 src/skins/ui_manager.c:329
 #: src/skins/ui_manager.c:359
 msgid "By Filename"
@@ -3941,6 +3162,18 @@ msgstr "Įklijuoti"
 msgid "Load"
 msgstr "Įkrauti"
 
+#: src/skins/ui_manager.c:440
+msgid "Import"
+msgstr "Įkelti"
+
+#: src/skins/ui_manager.c:441
+msgid "Save"
+msgstr "Išsaugoti"
+
+#: src/skins/ui_manager.c:442
+msgid "Delete"
+msgstr "Ištrinti"
+
 #: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
 #: src/skins/ui_manager.c:480
 msgid "Preset"
@@ -3961,7 +3194,7 @@ msgstr "Įkrauti savaime įsikraunantį šabloną"
 
 #: src/skins/ui_manager.c:451
 msgid "Load default preset into equalizer"
-msgstr "Įkrauti numtytąjį šabloną į ekvalaizerį"
+msgstr "Įkrauti numatytąjį šabloną į ekvalaizerį"
 
 #: src/skins/ui_manager.c:453
 msgid "Zero"
@@ -4037,14 +3270,14 @@ msgstr "Ieškoti įrašų aktyviame grojaraštyje"
 
 #: src/skins/ui_playlist.c:252
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
 "Pasirink įrašus grojaraštyje užpildydamas vieną ar kelis langelius. "
-"Langeliai naudoja regular expressions sintaksę, raidžių lygis nesvarbus. Jei "
-"nežinai kaip veikia regular expressions, paprasčiausiai įrašyk paraidžiui "
+"Langeliai naudoja regular expressions sintaksę, raidžių lygis nesvarbus. Jei"
+" nežinai kaip veikia regular expressions, paprasčiausiai įrašyk paraidžiui "
 "tai ko ieškai."
 
 #: src/skins/ui_playlist.c:260
@@ -4069,7 +3302,7 @@ msgstr "Išvalyti buvusius pasirinkimus prieš ieškant"
 
 #: src/skins/ui_playlist.c:292
 msgid "Automatically toggle queue for matching entries"
-msgstr "Automatiškai perjungti eilę atitinkantiem įrašam"
+msgstr "Automatiškai perjungti eilę atitinkantiems įrašam"
 
 #: src/skins/ui_playlist.c:295
 msgid "Create a new playlist with matching entries"
@@ -4100,48 +3333,6 @@ msgstr "Negaliu sukurt aplanko (%s): %s\n"
 #: src/sndfile/plugin.c:454
 msgid "About sndfile plugin"
 msgstr "Apie sndfile įsiepį"
-
-#: src/sndfile/plugin.c:455
-msgid ""
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the xmms_sndfile plugin which is:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"This program is free software ; you can redistribute it and/or modify \n"
-"it under the terms of the GNU General Public License as published by \n"
-"the Free Software Foundation ; either version 2 of the License, or \n"
-"(at your option) any later version. \n"
-" \n"
-"This program is distributed in the hope that it will be useful, \n"
-"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-"See the GNU General Public License for more details. \n"
-"\n"
-"You should have received a copy of the GNU General Public \n"
-"License along with this program ; if not, write to \n"
-"the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
-msgstr ""
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the xmms_sndfile plugin which is:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"This program is free software ; you can redistribute it and/or modify \n"
-"it under the terms of the GNU General Public License as published by \n"
-"the Free Software Foundation ; either version 2 of the License, or \n"
-"(at your option) any later version. \n"
-" \n"
-"This program is distributed in the hope that it will be useful, \n"
-"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-"See the GNU General Public License for more details. \n"
-"\n"
-"You should have received a copy of the GNU General Public \n"
-"License along with this program ; if not, write to \n"
-"the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
 
 #: src/sndstretch/sndstretch_xmms.c:155
 msgid "About SndStretch"
@@ -4234,8 +3425,8 @@ msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
-"<span size='small'>Parametrai pateikti shell'ui turi būt kabutėse. Darant "
-"kitaip rizikuojate savo saugumu.</span>"
+"<span size='small'>Parametrai pateikti komandų interpretatoriui turi būt "
+"kabutėse. Darant kitaip rizikuojate savo saugumu.</span>"
 
 #: src/song_change/song_change.c:509
 msgid "Commands"
@@ -4264,7 +3455,7 @@ msgstr ""
 "Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
 "Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
 "\n"
-"Šis įskiepis system tray'uje sukuria piktogramą.\n"
+"Šis įskiepis sistemos dėkle sukuria piktogramą.\n"
 
 #: src/statusicon/statusicon.c:447
 msgid "Status Icon Plugin - Preferences"
@@ -4304,7 +3495,7 @@ msgstr "Išjungti iššokantį langą"
 
 #: src/statusicon/statusicon.c:512
 msgid "Close to the notification area (system tray)"
-msgstr "Uždaryti į notification area (system tray)"
+msgstr "Uždaryti į pranešimų srity (sistemos dėklą)"
 
 #: src/stereo_plugin/stereo.c:45
 msgid ""
@@ -4322,7 +3513,7 @@ msgstr "Apie Extra Stereo įskiepį"
 
 #: src/stereo_plugin/stereo.c:95
 msgid "Configure Extra Stereo"
-msgstr "Konfiguruoti Extra Stereo"
+msgstr "Konfigūruoti Extra Stereo"
 
 #: src/streambrowser/gui/streambrowser_win.c:78
 msgid "Search:"
@@ -4351,26 +3542,20 @@ msgstr "Apie Stream browser"
 
 #: src/streambrowser/streambrowser.c:331
 msgid ""
-"Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
-"Team.\n"
+"Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n"
 "\n"
-"This is a simple stream browser that includes the most popular streaming "
-"directories.\n"
-"Many thanks to the Streamtuner developers <http://www.nongnu.org/"
-"streamtuner>,\n"
+"This is a simple stream browser that includes the most popular streaming directories.\n"
+"Many thanks to the Streamtuner developers <http://www.nongnu.org/streamtuner>,\n"
 "\tand of course to the whole Audacious community.\n"
 "\n"
 "Also thank you Tony Vroon for mentoring & guiding me, again.\n"
 "\n"
 "This was a Google Summer of Code 2008 project."
 msgstr ""
-"Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
-"Team.\n"
+"Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n"
 "\n"
-"This is a simple stream browser that includes the most popular streaming "
-"directories.\n"
-"Many thanks to the Streamtuner developers <http://www.nongnu.org/"
-"streamtuner>,\n"
+"This is a simple stream browser that includes the most popular streaming directories.\n"
+"Many thanks to the Streamtuner developers <http://www.nongnu.org/streamtuner>,\n"
 "\tand of course to the whole Audacious community.\n"
 "\n"
 "Also thank you Tony Vroon for mentoring & guiding me, again.\n"
@@ -4453,8 +3638,7 @@ msgstr "Apie Vortex Player"
 #: src/vtx/about.c:15
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
-"Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor."
-"ru>\n"
+"Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "\n"
 "Music in vtx format can be found at http://vtx.microfor.ru/music.htm\n"
 "and other AY/YM music sites.\n"
@@ -4462,8 +3646,7 @@ msgid ""
 "Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
 "Vortex formato grotuvą kūrė  Sashnov Alexander <sashnov@ngs.ru>\n"
-"Sukurtas remiantis kodu rastu _vtx.dll kurį kūrė Roman Sherbakov "
-"<v_soft@microfor.ru>\n"
+"Sukurtas remiantis kodu rastu _vtx.dll kurį kūrė Roman Sherbakov <v_soft@microfor.ru>\n"
 "\n"
 "Muzikos vtx formatu galim rast http://vtx.microfor.ru/music.htm\n"
 "ir kitose AY/YM muzikos svetainėse.\n"
@@ -4486,3 +3669,5 @@ msgstr ""
 "\n"
 "Dalį įskiepio sukūrė Miles Egan\n"
 "Aplankykite Wavpack puslapį http://www.wavpack.com/\n"
+
+
