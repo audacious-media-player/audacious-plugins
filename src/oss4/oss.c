@@ -22,8 +22,6 @@
 
 #include "oss.h"
 
-#define HARD_DEBUG 0
-
 oss_data_t *oss_data;
 oss_cfg_t *oss_cfg;
 gchar *oss_message = NULL;
@@ -147,9 +145,6 @@ gint oss_open_audio(gint aud_format, gint rate, gint channels)
     if (!set_format(format, rate, channels))
         goto FAILED;
 
-    /*gint policy = 8;
-    ioctl(oss_data->fd, SNDCTL_DSP_POLICY, &policy);*/
-
     if (ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info) == -1)
         DEBUG_MSG;
 
@@ -198,42 +193,23 @@ void oss_write_audio(void *data, gint length)
 {
     gint written = 0, start = 0;
 
-    if (oss_paused)
-        return;
-
-    while (1)
+    while (length > 0)
     {
-        if (oss_paused)
-            break;
-
         written = write(oss_data->fd, data + start, length);
 
         if (written < 0)
         {
             ERROR_MSG;
 
-            if (ioctl(oss_data->fd, SNDCTL_DSP_SYNC, NULL) == -1)
+            if (ioctl(oss_data->fd, SNDCTL_DSP_HALT_OUTPUT, NULL) == -1)
                 DEBUG_MSG;
 
-            break;
+            return;
         }
 
-        if (length >= written)
-            length -= written;
-
+        length -= written;
         start += written;
         oss_time += (gint64) oss_bytes_to_frames(written) * 1000000 / oss_data->rate;
-
-#if HARD_DEBUG == 1
-        ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
-
-        printf("fragstotal: \t%d\tfragsize: \t%d\tbytes: \t%d\tlength: \t%d\n",
-            oss_buffer_info.fragstotal,
-            oss_buffer_info.fragsize,
-            oss_buffer_info.bytes,
-            length);
-#endif
-        if (length == 0) break;
     }
 }
 
@@ -241,14 +217,8 @@ void oss_drain(void)
 {
     AUDDBG("Drain.\n");
 
-    ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
-
-    while ((oss_buffer_info.fragstotal * oss_buffer_info.fragsize) - oss_buffer_info.bytes > oss_buffer_info.fragsize)
-    {
-        AUDDBG("Buffer left: %d\n", (oss_buffer_info.fragstotal * oss_buffer_info.fragsize) - oss_buffer_info.bytes);
-        ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
-        g_usleep(20000);
-    }
+    if (ioctl(oss_data->fd, SNDCTL_DSP_SYNC, NULL) == -1)
+        DEBUG_MSG;
 }
 
 gint oss_buffer_free(void)
@@ -320,10 +290,10 @@ void oss_pause(gboolean pause)
     }
     else
     {
-        oss_paused = FALSE;
-
         if (ioctl(oss_data->fd, SNDCTL_DSP_SKIP, NULL) == -1)
             DEBUG_MSG;
+
+        oss_paused = FALSE;
     }
 }
 
