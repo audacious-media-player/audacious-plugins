@@ -95,8 +95,8 @@ static void playlistwin_update_info (void)
     gchar *text, *sel_text, *tot_text;
     gint64 selection, total;
 
-    total = aud_playlist_get_total_length (active_playlist, TRUE) / 1000;
-    selection = aud_playlist_get_selected_length (active_playlist, TRUE) / 1000;
+    total = aud_playlist_get_total_length (active_playlist) / 1000;
+    selection = aud_playlist_get_selected_length (active_playlist) / 1000;
 
     if (selection >= 3600)
         sel_text = g_strdup_printf ("%" PRId64 ":%02" PRId64 ":%02" PRId64,
