@@ -35,15 +35,14 @@
 
 static void ui_main_evlistener_title_change (void * data, void * user_data)
 {
-    gchar * title;
-
-    /* may be called asynchronously */
-    if (! aud_drct_get_playing ())
-        return;
-
-    title = aud_drct_get_title ();
-    mainwin_set_song_title (title);
-    g_free (title);
+    if (aud_drct_get_ready ())
+    {
+        gchar * title = aud_drct_get_title ();
+        mainwin_set_song_title (title);
+        g_free (title);
+    }
+    else
+        mainwin_set_song_title ("Buffering ...");
 }
 
 static void
@@ -65,7 +64,7 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
     gtk_widget_show (mainwin_10sec_num);
     gtk_widget_show (mainwin_sec_num);
 
-    if (aud_drct_get_length () > 0)
+    if (aud_drct_get_ready () && aud_drct_get_length () > 0)
     {
         gtk_widget_show (mainwin_position);
         gtk_widget_show (mainwin_sposition);
@@ -264,6 +263,7 @@ ui_main_evlistener_init(void)
     hook_associate("title change", ui_main_evlistener_title_change, NULL);
     hook_associate("hide seekbar", ui_main_evlistener_hide_seekbar, NULL);
     hook_associate("playback begin", ui_main_evlistener_playback_begin, NULL);
+    hook_associate("playback ready", ui_main_evlistener_playback_begin, NULL);
     hook_associate("playback stop", ui_main_evlistener_playback_stop, NULL);
     hook_associate("playback pause", ui_main_evlistener_playback_pause, NULL);
     hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
@@ -279,6 +279,7 @@ ui_main_evlistener_dissociate(void)
     hook_dissociate("title change", ui_main_evlistener_title_change);
     hook_dissociate("hide seekbar", ui_main_evlistener_hide_seekbar);
     hook_dissociate("playback begin", ui_main_evlistener_playback_begin);
+    hook_dissociate("playback ready", ui_main_evlistener_playback_begin);
     hook_dissociate("playback stop", ui_main_evlistener_playback_stop);
     hook_dissociate("playback pause", ui_main_evlistener_playback_pause);
     hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);

@@ -129,12 +129,12 @@ static void update_rollup_text (void)
 
     if (entry > -1)
     {
-        gint length = aud_playlist_entry_get_length (playlist, entry, FALSE);
+        gint length = aud_playlist_entry_get_length (playlist, entry, TRUE);
 
         if (aud_get_bool (NULL, "show_numbers_in_pl"))
             snprintf (scratch, sizeof scratch, "%d. ", 1 + entry);
 
-        gchar * title = aud_playlist_entry_get_title (playlist, entry, FALSE);
+        gchar * title = aud_playlist_entry_get_title (playlist, entry, TRUE);
         snprintf (scratch + strlen (scratch), sizeof scratch - strlen (scratch),
          "%s", title);
         g_free (title);

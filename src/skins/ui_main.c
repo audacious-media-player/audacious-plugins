@@ -1601,15 +1601,20 @@ static void mainwin_update_time_slider (gint time, gint length)
 
 void mainwin_update_song_info (void)
 {
-    gint time, length;
-
     mainwin_update_volume ();
 
     if (! aud_drct_get_playing ())
         return;
 
-    time = aud_drct_get_time ();
-    length = aud_drct_get_length ();
+    gint time = 0, length = 0;
+    if (aud_drct_get_ready ())
+    {
+        time = aud_drct_get_time ();
+        length = aud_drct_get_length ();
+    }
+
+    mainwin_update_time_display (time, length);
+    mainwin_update_time_slider (time, length);
 
     /* Ugh, this does NOT belong here. -jlindgren */
     if (ab_position_a > -1 && ab_position_b > -1 && time >= ab_position_b)
@@ -1617,9 +1622,6 @@ void mainwin_update_song_info (void)
         aud_drct_seek (ab_position_a);
         return;
     }
-
-    mainwin_update_time_display (time, length);
-    mainwin_update_time_slider (time, length);
 }
 
 /* toggleactionentries actions */
