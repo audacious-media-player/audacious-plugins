@@ -2,11 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-09-06 20:49+0200\n"
-"PO-Revision-Date: 2011-09-06 23:54+0100\n"
+"POT-Creation-Date: 2011-10-15 21:44+0200\n"
+"PO-Revision-Date: 2011-10-16 02:43+0100\n"
 "Last-Translator: Thomas Lange\n"
-"Language-Team: german\n"
-"Language: \n"
+"Language-Team: German\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,15 +28,15 @@ msgstr ""
 msgid "About MP4 AAC decoder plugin"
 msgstr "Über MP4-AAC-Player-Plugin"
 
-#: src/alarm/interface.c:33
+#: src/alarm/interface.c:34
 msgid "About XMMS Alarm"
 msgstr "Über XMMS Alarm"
 
-#: src/alarm/interface.c:40
+#: src/alarm/interface.c:41
 msgid "XMMS Alarm"
 msgstr "XMMS-Alarm"
 
-#: src/alarm/interface.c:49
+#: src/alarm/interface.c:50
 msgid ""
 "An XMMS plugin which can be used\n"
 "to start playing at a certain time.\n"
@@ -57,32 +57,31 @@ msgstr ""
 "\n"
 "http://www.snika.uklinux.net/xmms-alarm/"
 
-#: src/alarm/interface.c:64 src/sid/xs_about.c:214 src/sid/xs_interface.c:1825
+#: src/alarm/interface.c:65
 msgid "Close"
 msgstr "Schließen"
 
-#: src/alarm/interface.c:94
+#: src/alarm/interface.c:95
 msgid "Alarm"
 msgstr "Alarm"
 
-#: src/alarm/interface.c:101
+#: src/alarm/interface.c:102
 msgid "This is your wakeup call."
 msgstr "Dies ist dein Aufwach-Signal."
 
-#: src/alarm/interface.c:116 src/alarm/interface.c:1337
-#: src/sid/xs_config.c:293
+#: src/alarm/interface.c:117 src/alarm/interface.c:1338
 msgid "OK"
 msgstr "OK"
 
-#: src/alarm/interface.c:150
+#: src/alarm/interface.c:151
 msgid "Sorry"
 msgstr "Entschuldigung"
 
-#: src/alarm/interface.c:157
+#: src/alarm/interface.c:158
 msgid "Warning"
 msgstr "Warnung"
 
-#: src/alarm/interface.c:166
+#: src/alarm/interface.c:167
 msgid ""
 "For safety reasons the \"quiet\" time must be at least 65 seconds longer "
 "than the fading time, it must also be more than 10 seconds.  This basically "
@@ -94,159 +93,159 @@ msgid ""
 "--\n"
 "Adam"
 msgstr ""
-"Aus Sicherheitsgründen muss die \"ruhig\"-Zeitangabe mindestens 65 Sekunden länger "
-"als die Übergangszeitangabe sein, außerdem muss sie länger als 10 Sekunden sein. "
-"Das bedeutet, dass ein Bug im Code vorhanden ist. Bis ich einen wirklich funktionierenden "
-"Fix gefunden habe, wird diese Meldung erscheinen. :)\n"
+"Aus Sicherheitsgründen muss die \"ruhig\"-Zeitangabe mindestens 65 Sekunden "
+"länger als die Übergangszeitangabe sein, außerdem muss sie länger als 10 "
+"Sekunden sein. Das bedeutet, dass ein Bug im Code vorhanden ist. Bis ich "
+"einen wirklich funktionierenden Fix gefunden habe, wird diese Meldung "
+"erscheinen. :)\n"
 "\n"
 "Deine Einstellungen wurden NICHT gespeichert.\n"
 "\n"
 "--\n"
 "Adam"
 
-#: src/alarm/interface.c:182
+#: src/alarm/interface.c:183
 msgid "Oh Well"
 msgstr "Jo mei"
 
-#: src/alarm/interface.c:338
+#: src/alarm/interface.c:339
 msgid "Alarm Settings"
 msgstr "Alarm-Einstellungen"
 
-#: src/alarm/interface.c:353 src/alarm/interface.c:525
-#: src/alarm/interface.c:897
+#: src/alarm/interface.c:354 src/alarm/interface.c:526
+#: src/alarm/interface.c:898
 msgid "Time"
 msgstr "Zeit"
 
-#: src/alarm/interface.c:394
+#: src/alarm/interface.c:395
 msgid "hours"
 msgstr "Stunden"
 
-#: src/alarm/interface.c:455
+#: src/alarm/interface.c:456
 msgid "h"
 msgstr "Uhr"
 
-#: src/alarm/interface.c:485
+#: src/alarm/interface.c:486
 msgid "minutes"
 msgstr "Minuten"
 
-#: src/alarm/interface.c:503
+#: src/alarm/interface.c:504
 msgid "Quiet after:"
 msgstr "Still nach:"
 
-#: src/alarm/interface.c:513
+#: src/alarm/interface.c:514
 msgid "Alarm at (default):"
 msgstr "Alarm um (standardmäßig):"
 
-#: src/alarm/interface.c:533
+#: src/alarm/interface.c:534
 msgid "Choose the days for the alarm to come on"
 msgstr "Tage wählen, an denen der Alarm ausgelöst werden soll"
 
-#: src/alarm/interface.c:561 src/alarm/interface.c:609
-#: src/alarm/interface.c:657 src/alarm/interface.c:705
-#: src/alarm/interface.c:753 src/alarm/interface.c:801
-#: src/alarm/interface.c:849 src/OSS/configure.c:153
+#: src/alarm/interface.c:562 src/alarm/interface.c:610
+#: src/alarm/interface.c:658 src/alarm/interface.c:706
+#: src/alarm/interface.c:754 src/alarm/interface.c:802
+#: src/alarm/interface.c:850 src/OSS/configure.c:153
 #: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
 msgid "Default"
 msgstr "Standard"
 
-#: src/alarm/interface.c:887
+#: src/alarm/interface.c:888
 msgid "Day"
 msgstr "Tag"
 
-#: src/alarm/interface.c:907
+#: src/alarm/interface.c:908
 msgid "Tuesday"
 msgstr "Dienstag"
 
-#: src/alarm/interface.c:918
+#: src/alarm/interface.c:919
 msgid "Wednesday"
 msgstr "Mittwoch"
 
-#: src/alarm/interface.c:929
+#: src/alarm/interface.c:930
 msgid "Thursday"
 msgstr "Donnerstag"
 
-#: src/alarm/interface.c:940
+#: src/alarm/interface.c:941
 msgid "Friday"
 msgstr "Freitag"
 
-#: src/alarm/interface.c:951
+#: src/alarm/interface.c:952
 msgid "Saturday"
 msgstr "Samstag"
 
-#: src/alarm/interface.c:962
+#: src/alarm/interface.c:963
 msgid "Sunday"
 msgstr "Sonntag"
 
-#: src/alarm/interface.c:972
+#: src/alarm/interface.c:973
 msgid "Monday"
 msgstr "Montag"
 
-#: src/alarm/interface.c:983
+#: src/alarm/interface.c:984
 msgid "Days"
 msgstr "Tage"
 
-#: src/alarm/interface.c:999
+#: src/alarm/interface.c:1000
 msgid "Fading"
 msgstr "Übergang"
 
-#: src/alarm/interface.c:1036 src/sid/xs_interface.c:921
-#: src/sid/xs_interface.c:975 src/sid/xs_interface.c:1155
+#: src/alarm/interface.c:1037
 msgid "seconds"
 msgstr "Sekunden"
 
-#: src/alarm/interface.c:1044 src/alarm/interface.c:1159
+#: src/alarm/interface.c:1045 src/alarm/interface.c:1160
 msgid "Volume"
 msgstr "Lautstärke"
 
-#: src/alarm/interface.c:1070
+#: src/alarm/interface.c:1071
 msgid "Current"
 msgstr "Momentan"
 
-#: src/alarm/interface.c:1078
+#: src/alarm/interface.c:1079
 msgid "Start at"
 msgstr "Beginnen bei"
 
-#: src/alarm/interface.c:1106 src/alarm/interface.c:1150
+#: src/alarm/interface.c:1107 src/alarm/interface.c:1151
 msgid "%"
 msgstr "%"
 
-#: src/alarm/interface.c:1122
+#: src/alarm/interface.c:1123
 msgid "Final"
 msgstr "Schluss"
 
-#: src/alarm/interface.c:1175
+#: src/alarm/interface.c:1176
 msgid "Additional Command"
 msgstr "Zusätzlicher Befehl"
 
-#: src/alarm/interface.c:1201
+#: src/alarm/interface.c:1202
 msgid "enable"
 msgstr "aktivieren"
 
-#: src/alarm/interface.c:1209
+#: src/alarm/interface.c:1210
 msgid "Playlist (optional)"
 msgstr "Wiedergabeliste (optional)"
 
-#: src/alarm/interface.c:1235
+#: src/alarm/interface.c:1236
 msgid "Browse..."
 msgstr "Suchen..."
 
-#: src/alarm/interface.c:1243 src/alarm/interface.c:1407
+#: src/alarm/interface.c:1244 src/alarm/interface.c:1408
 msgid "Reminder"
 msgstr "Erinnern"
 
-#: src/alarm/interface.c:1260
+#: src/alarm/interface.c:1261
 msgid "Use reminder"
 msgstr "Erinnerung benutzen"
 
-#: src/alarm/interface.c:1276 src/sndstretch/sndstretch_xmms.c:358
+#: src/alarm/interface.c:1277 src/sndstretch/sndstretch_xmms.c:358
 msgid "Options"
 msgstr "Optionen"
 
-#: src/alarm/interface.c:1284
+#: src/alarm/interface.c:1285
 msgid "What do these options mean?"
 msgstr "Was bedeuten diese Einstellungen?"
 
-#: src/alarm/interface.c:1312
+#: src/alarm/interface.c:1313
 msgid ""
 "\n"
 "Time\n"
@@ -349,21 +348,21 @@ msgstr ""
 "  Erinnerung:\n"
 "    Zeige eine Erinnerung an, wenn der Alarm ausgelöst wird.\n"
 
-#: src/alarm/interface.c:1314 src/skins/ui_manager.c:382
+#: src/alarm/interface.c:1315 src/skins/ui_manager.c:382
 msgid "Help"
 msgstr "Hilfe"
 
-#: src/alarm/interface.c:1346 src/cdaudio-ng/configure.c:249
+#: src/alarm/interface.c:1347 src/cdaudio-ng/configure.c:249
 #: src/crystalizer/crystalizer.c:130 src/echo_plugin/gui.c:125
 #: src/jack/configure.c:148 src/null/null.c:108 src/stereo_plugin/stereo.c:125
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/alarm/interface.c:1414
+#: src/alarm/interface.c:1415
 msgid "Your reminder for today is.."
 msgstr "Die Erinnerung für heute lautet.."
 
-#: src/alarm/interface.c:1439
+#: src/alarm/interface.c:1440
 msgid "Thankyou"
 msgstr "Danke"
 
@@ -426,6 +425,14 @@ msgid ""
 "hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"Dieses Backend sendet MIDI Events an eine Gruppe von benutzerdefinierten ALSA Sequenzer-"
+"Ports. Das ALSA Sequenzer-Interface ist sehr vielseitig, es kann Ports sowohl "
+"für Hardware-Sequenzer (wie z.B. emu10k1) als auch für Software-Sequenzer "
+"und externe Geräte bereitstellen.\n"
+"Dieses Backend erzeugt kein Audiomaterial, MIDI Events werden direkt von "
+"Geräten/Programmen verarbeitet. Zur Hardware gesendete "
+"MIDI Events werden also z.B. direkt abgespielt.\n"
+"Backend geschrieben von Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
@@ -440,6 +447,12 @@ msgid ""
 "by chosen ouput plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"Diesed Backend erzeugt Audiomaterial durch Senden von MIDI Events an FluidSynth, ein Echtzeit-"
+"Software-Synthesizer basierend auf der SoundFont2 Spezifikation (www."
+"fluidsynth.org).\n"
+"Erzeugtes Audiomaterial kann via Effektplugins beeinflusst werden und wird "
+"vom ausgewähltem Ausgabeplugin weiterverarbeitet.\n"
+"Backend geschrieben von Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:228
 msgid "ALSA BACKEND CONFIGURATION"
@@ -511,7 +524,7 @@ msgstr "Transponieren: "
 
 #: src/amidi-plug/i_configure-ap.c:271
 msgid "Drum shift: "
-msgstr ""
+msgstr "Drum-Shift: "
 
 #: src/amidi-plug/i_configure-ap.c:289
 msgid "Advanced settings"
@@ -667,7 +680,7 @@ msgstr ""
 "<span size=\"smaller\">TiMidity-\n"
 "Backend</span>"
 
-#: src/amidi-plug/i_fileinfo.c:169 src/sid/xs_interface.c:1769
+#: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
 msgstr "Name:"
 
@@ -755,6 +768,27 @@ msgid ""
 "for the good help with alpha testing\n"
 "\n"
 msgstr ""
+"\n"
+"Modularer MIDI Musikspieler\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"geschrieben von Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+"\n"
+"Besonderen Dank an ...\n"
+"\n"
+"Clemens Ladisch und Jaroslav Kysela\n"
+"für ihre coolen Programme aplaymidi und amixer; Diese\n"
+"waren neben den alsa-lib Dokus sehr hilfreich, um mehr\n"
+"über das ALSA API zu lernen\n"
+"\n"
+"Alfredo Spadafina\n"
+"für das schöne Midi-Keyboard-Logo\n"
+"\n"
+"Tony Vroon\n"
+"für die gute Hilfe bei Alphatests\n"
+"\n"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -913,8 +947,7 @@ msgstr "Eigener Skin"
 msgid "Skin file:"
 msgstr "Skin-Datei:"
 
-#: src/aosd/aosd_ui.c:672 src/sid/xs_interface.c:1044
-#: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
+#: src/aosd/aosd_ui.c:672
 msgid "Browse"
 msgstr "Suchen"
 
@@ -998,7 +1031,6 @@ msgid "Trigger"
 msgstr "Auslöser"
 
 #: src/aosd/aosd_ui.c:1101 src/cdaudio-ng/configure.c:171
-#: src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr "Verschiedenes"
 
@@ -1190,7 +1222,7 @@ msgstr "Höhe:"
 msgid "Default song length:"
 msgstr "Standard-Liedlänge:"
 
-#: src/console/configure.c:208 src/sid/xs_interface.c:666
+#: src/console/configure.c:208
 msgid "Resampling"
 msgstr "Resampling"
 
@@ -1202,7 +1234,7 @@ msgstr "Audio-Resampling aktivieren"
 msgid "Resampling rate:"
 msgstr "Resampling-Frequenz:"
 
-#: src/console/configure.c:233 src/sid/xs_interface.c:354
+#: src/console/configure.c:233
 msgid "Hz"
 msgstr "Hz"
 
@@ -1290,10 +1322,6 @@ msgstr "Effektstärke:"
 msgid "Apply"
 msgstr "Übernehmen"
 
-#: src/daemon/daemon.c:58
-msgid "Daemon Interface (like old headless mode)"
-msgstr "Daemon Interface (ähnlich dem alten Headlessmodus)"
-
 #: src/echo_plugin/gui.c:15
 msgid ""
 "Echo Plugin\n"
@@ -1341,6 +1369,17 @@ msgid ""
 "libavformat %s (%s)\n"
 "libavutil %s (%s)\n"
 msgstr ""
+"Multi-Format Audio-Decoding-Plugin für Audacious basierend auf dem\n"
+"FFmpeg Multimedia Framework (http://www.ffmpeg.org/)\n"
+"Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
+"\n"
+"Audacious Plugin von:\n"
+"            William Pitcock <nenolod@nenolod.net>,\n"
+"            Matti Hämäläinen <ccr@tnsp.org>\n"
+"\n"
+"libavcodec %s (%s)\n"
+"libavformat %s (%s)\n"
+"libavutil %s (%s)\n"
 
 #: src/ffaudio/ffaudio-core.c:809
 msgid "About FFaudio Plugin"
@@ -1349,26 +1388,6 @@ msgstr "Über FFaudio Plugin"
 #: src/filewriter/filewriter.c:166
 msgid "About FileWriter-Plugin"
 msgstr "Über FileWriter-Plugin"
-
-#: src/filewriter/filewriter.c:167
-msgid ""
-"FileWriter-Plugin\n"
-"\n"
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
 
 #: src/filewriter/filewriter.c:455
 msgid "File Writer Configuration"
@@ -1426,11 +1445,11 @@ msgstr "Automatisch"
 msgid "Joint Stereo"
 msgstr "Joint-Stereo"
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:308
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:301
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183
 msgid "Mono"
 msgstr "Mono"
 
@@ -1624,7 +1643,7 @@ msgstr "GNT Interface"
 msgid "Entry number"
 msgstr "Titelnummer"
 
-#: src/gtkui/columns.c:36 src/sid/xs_interface.c:1103
+#: src/gtkui/columns.c:36
 msgid "Title"
 msgstr "Titel"
 
@@ -1700,7 +1719,7 @@ msgstr "Unten andocken"
 msgid "Undock"
 msgstr "Abdocken"
 
-#: src/gtkui/layout.c:123 src/ladspa/plugin.c:616
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:643
 msgid "Disable"
 msgstr "Deaktivieren"
 
@@ -2147,44 +2166,62 @@ msgid ""
 "Audacious port by\n"
 "Giacomo Lozito from develia.org"
 msgstr ""
+"XMMS jack Treiber 0.17\n"
+"\n"
+"xmms-jack.sf.net\n"
+"Chris Morgan<cmorgan@alum.wpi.edu>\n"
+"\n"
+"Audacious Portierung durch\n"
+"Giacomo Lozito von develia.org"
 
 #: src/jack/jack.c:427
 msgid "About JACK Output Plugin 0.17"
 msgstr "Über JACK Output Plugin 0.17"
 
-#: src/ladspa/plugin.c:396
+#: src/ladspa/plugin.c:414
 msgid "About LADSPA Host"
 msgstr "Über LADSPA Host"
 
-#: src/ladspa/plugin.c:497
+#: src/ladspa/plugin.c:515
+#, c-format
 msgid "%s Settings"
 msgstr "%s Einstellungen"
 
-#: src/ladspa/plugin.c:565
+#: src/ladspa/plugin.c:583
 msgid "LADSPA Host Settings"
 msgstr "LADSPA Einstellungen"
 
-#: src/ladspa/plugin.c:574
-msgid "Module path:"
-msgstr "Modulpfad:"
+#: src/ladspa/plugin.c:592
+msgid "Module paths:"
+msgstr "Modulpfade:"
 
-#: src/ladspa/plugin.c:586
+#: src/ladspa/plugin.c:597
+msgid ""
+"<small>Separate multiple paths with a colon.\n"
+"These paths are searched in addition to LADSPA_PATH.\n"
+"After adding new paths, press Enter to scan for new plugins.</small>"
+msgstr ""
+"<small>Trenne mehrere Pfade mit einem Doppelpunkt.\n"
+"Diese Pfade werden zusätzlich zum LADSPA_PATH durchsucht.\n"
+"Nach dem Hinzufügen neuer Pfade Enter drücken, um neue Plugins zu suchen.</small>"
+
+#: src/ladspa/plugin.c:613
 msgid "Available plugins:"
 msgstr "Verfügbare Plugins:"
 
-#: src/ladspa/plugin.c:598
+#: src/ladspa/plugin.c:625
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: src/ladspa/plugin.c:604
+#: src/ladspa/plugin.c:631
 msgid "Enabled plugins:"
 msgstr "Aktive Plugins:"
 
-#: src/ladspa/plugin.c:619
+#: src/ladspa/plugin.c:646
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: src/lyricwiki/lyricwiki.c:226
+#: src/lyricwiki/lyricwiki.c:227
 msgid ""
 "\n"
 "Looking for lyrics..."
@@ -2192,7 +2229,7 @@ msgstr ""
 "\n"
 "Suche nach Liedtexten..."
 
-#: src/lyricwiki/lyricwiki.c:249
+#: src/lyricwiki/lyricwiki.c:250
 msgid ""
 "\n"
 "Connecting to lyrics.wikia.com..."
@@ -2200,7 +2237,7 @@ msgstr ""
 "\n"
 "Verbinde zu lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.c:337
+#: src/lyricwiki/lyricwiki.c:338
 msgid ""
 "\n"
 "No lyrics were found."
@@ -2236,19 +2273,19 @@ msgstr "Takt-Generator: %d bpm"
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "Takt-Generator: %d bpm %d/%d"
 
-#: src/mixer/plugin.c:63
+#: src/mixer/plugin.c:64
 msgid "About Channel Mixer"
 msgstr "Über Channel-Mixer"
 
-#: src/mixer/plugin.c:92
+#: src/mixer/plugin.c:93
 msgid "Channel Mixer Settings"
 msgstr "Channel-Mixer-Einstellungen"
 
-#: src/mixer/plugin.c:101
+#: src/mixer/plugin.c:102
 msgid "Output channels:"
 msgstr "Ausgabe-Kanäle:"
 
-#: src/mixer/plugin.c:111
+#: src/mixer/plugin.c:112
 msgid "Changes take effect at the next song change."
 msgstr "Änderungen werden mit dem nächsten Titelwechsel wirksam"
 
@@ -2328,7 +2365,7 @@ msgstr "Formatkonvertierung aktivieren"
 msgid "About OSS4 Plugin"
 msgstr "Über OSS4-Plugin"
 
-#: src/oss4/utils.c:204
+#: src/oss4/utils.c:210
 msgid "OSS4 error"
 msgstr "OSS4 Fehler"
 
@@ -2373,49 +2410,9 @@ msgstr "Mixer"
 msgid "About OSS Driver"
 msgstr "Über OSS-Treiber"
 
-#: src/OSS/OSS.c:41
-msgid ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-
 #: src/pulse_audio/pulse_audio.c:687
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "Über Audacious-PulseAudio-Ausgabe-Plugin"
-
-#: src/pulse_audio/pulse_audio.c:688
-msgid ""
-"Audacious PulseAudio Output Plugin\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
 
 #: src/resample/plugin.c:89
 msgid "About Sample Rate Converter Plugin"
@@ -2489,610 +2486,6 @@ msgstr "Über SDL Output Plugin"
 msgid "SDL error"
 msgstr "SDL Fehler"
 
-#: src/sid/xs_about.c:84
-#, c-format
-msgid "About %s"
-msgstr "Über %s"
-
-#: src/sid/xs_config.c:293
-msgid " Error"
-msgstr " Fehler"
-
-#: src/sid/xs_fileinfo.c:151
-msgid "General info"
-msgstr "Allgemeine Info"
-
-#: src/sid/xs_fileinfo.c:164
-#, c-format
-msgid "Tune #%i: "
-msgstr "#%i abgleichen: "
-
-#: src/sid/xs_glade.c:90 src/sid/xs_glade.c:114
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr "Konnte Pixmap-Datei nicht finden: %s"
-
-#: src/sid/xs_interface.c:234
-msgid "Audacious-SID configuration"
-msgstr "Audacious-SID-Konfiguration"
-
-#: src/sid/xs_interface.c:270
-msgid "8-bit"
-msgstr "8 Bit"
-
-#: src/sid/xs_interface.c:277
-msgid "16-bit"
-msgstr "16 Bit"
-
-#: src/sid/xs_interface.c:284
-msgid "Resolution:"
-msgstr "Auflösung:"
-
-#: src/sid/xs_interface.c:315
-msgid "Autopanning"
-msgstr ""
-
-#: src/sid/xs_interface.c:322
-msgid "Channels:"
-msgstr "Kanäle:"
-
-#: src/sid/xs_interface.c:366
-msgid "Samplerate:"
-msgstr "Abtastfrequenz:"
-
-#: src/sid/xs_interface.c:383
-msgid "Use oversampling"
-msgstr "Oversampling benutzen"
-
-#: src/sid/xs_interface.c:394
-msgid "Factor:"
-msgstr "Faktor:"
-
-#: src/sid/xs_interface.c:406
-msgid "Large factors require more CPU-power"
-msgstr "Große Faktoren benötigen mehr Rechenleistung"
-
-#: src/sid/xs_interface.c:412
-msgid "Oversampling:"
-msgstr "Oversampling:"
-
-#: src/sid/xs_interface.c:417
-msgid "Audio"
-msgstr "Audio"
-
-#: src/sid/xs_interface.c:445
-msgid "Force speed"
-msgstr "Geschwindigkeit erzwingen"
-
-#: src/sid/xs_interface.c:449
-msgid ""
-"If enabled, this option \"forces\" the emulation engine to use the selected "
-"clock speed/frequency. Otherwise the speed is determined from played file "
-"itself."
-msgstr ""
-"Falls aktiviert, \"zwingt\" diese Option die Emulations-Engine, die "
-"ausgewählte Geschwindigkeit/Frequenz zu nutzen. Ansonsten wird die "
-"Geschwindigkeit aus der Datei selbst bestimmt."
-
-#: src/sid/xs_interface.c:451
-msgid "PAL (50 Hz)"
-msgstr "PAL (50 Hz)"
-
-#: src/sid/xs_interface.c:455
-msgid ""
-"PAL is the european TV standard, which uses 50Hz vertical refresh frequency. "
-"Most of SID-tunes have been made for PAL computers."
-msgstr ""
-"PAL ist der europäische TV-Standard, welcher 50 Hz als Bildwiederholfrequenz "
-"benutzt. Die meisten der SID-Tuner sind für den PAL-Standard gebaut."
-
-#: src/sid/xs_interface.c:459
-msgid "NTSC (60 Hz)"
-msgstr "NTSC (60 Hz)"
-
-#: src/sid/xs_interface.c:463
-msgid ""
-"NTSC is the TV standard with 60Hz vertical refresh rate (and other features "
-"that differ from PAL). It is mainly used in United States, Japan and certain "
-"other countries."
-msgstr ""
-"NTSC ist ein TV-Standard mit 60 Hz Bildwiederholfrequenz (und anderen "
-"Abweichungen zu PAL). Er wird vor allem in den USA, Japan und einigen "
-"anderen Ländern benutzt."
-
-#: src/sid/xs_interface.c:467
-msgid "Clock speed:"
-msgstr "Taktfrequenz:"
-
-#: src/sid/xs_interface.c:484
-msgid "Force model"
-msgstr "Model erzwingen"
-
-#: src/sid/xs_interface.c:488
-msgid ""
-"If enabled, this option \"forces\" the emulation engine to use the selected "
-"SID-chip model. Otherwise the preferred SID model is determined from the "
-"file (if PSIDv2NG type) or if not available, this setting is used."
-msgstr ""
-"Falls aktiviert, \"zwingt\" diese Option die Emulationsengine das "
-"ausgewählte SID-Chip-Model zu nutzen. Anderenfalls wird das bevorzugte SID-"
-"Model aus der Datei (wenn vom Typ PSIDv2NG) oder dieser Einstellung bestimmt."
-
-#: src/sid/xs_interface.c:490
-msgid "MOS 6581"
-msgstr "MOS 6581"
-
-#: src/sid/xs_interface.c:494
-msgid ""
-"MOS/CSG 6581 is the earlier major version of SID chip. It differs from 8580 "
-"in few ways, having much fuller filter (which, due to design error, is never "
-"same between two different SID-chips) and has the \"volume adjustment bug\", "
-"which enables playing of digital samples."
-msgstr ""
-
-#: src/sid/xs_interface.c:498
-msgid "MOS 8580"
-msgstr "MOS 8580"
-
-#: src/sid/xs_interface.c:505
-msgid "SID model:"
-msgstr "SID-Modell:"
-
-#: src/sid/xs_interface.c:522
-msgid "SIDPlay 1 (frame-based)"
-msgstr "SIDPlay 1 (Frame-basiert)"
-
-#: src/sid/xs_interface.c:526
-msgid ""
-"Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most "
-"cases, though."
-msgstr ""
-"LibSIDPlay 1.x Emulation benutzen, schneller aber ungenauer. Dennoch in "
-"vielen Fällen gut."
-
-#: src/sid/xs_interface.c:530
-msgid "SIDPlay 2 (cycle-based)"
-msgstr "SIDPlay 2 (zyklus-basiert)"
-
-#: src/sid/xs_interface.c:534
-msgid ""
-"Use libSIDPlay 2.x emulation, which requires powerful CPU due to more exact "
-"emulation."
-msgstr ""
-"libSIDPlay 2.x Emulation benutzen, welche mehr CPU-Leistung für mehr "
-"Genauigkeit benötigt."
-
-#: src/sid/xs_interface.c:538
-msgid "Emulation library selection:"
-msgstr "Auswahl der Emulations-Bibliothek:"
-
-#: src/sid/xs_interface.c:555
-msgid "Real C64 (SIDPlay 2 only)"
-msgstr "Echter C64 (nur SIDPlay 2)"
-
-#: src/sid/xs_interface.c:562
-msgid "Bank switching"
-msgstr ""
-
-#: src/sid/xs_interface.c:569
-msgid "Transparent ROM"
-msgstr ""
-
-#: src/sid/xs_interface.c:576
-msgid "PlaySID environment"
-msgstr "PlaySID-Umgebung"
-
-#: src/sid/xs_interface.c:583
-msgid "Memory mode:"
-msgstr "Speichermodus:"
-
-#: src/sid/xs_interface.c:588
-msgid "Emu#1"
-msgstr "Emu#1"
-
-#: src/sid/xs_interface.c:611
-msgid "Optimization mode (faster, inaccurate)"
-msgstr "Optimierungs-Modus (schneller, ungenau)"
-
-#: src/sid/xs_interface.c:615
-msgid ""
-"This setting can be used to enable libSIDPlay2's \"optimization mode\", "
-"which in downgrades the emulation from cycle-exact to something similar to "
-"frame-exact. The result is lower CPU usage, but worse accuracy."
-msgstr ""
-
-#: src/sid/xs_interface.c:617
-msgid "reSID-emulation"
-msgstr "reSID-Emulation"
-
-#: src/sid/xs_interface.c:621
-msgid ""
-"reSID is the software SID-chip simulator based on SID reverse-engineering, "
-"created by Dag Lem. It is probably the closest thing to real SID available "
-"as software-only emulation."
-msgstr ""
-
-#: src/sid/xs_interface.c:625
-msgid "HardSID"
-msgstr "HardSID"
-
-#: src/sid/xs_interface.c:629
-msgid ""
-"HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a "
-"real SID-chip. Software can be used to control the HardSID and combined with "
-"software emulation of rest of C64 via libSIDPlay2 HardSID can be used to "
-"achieve \"near 100%\" similarity to real C64. For more information, see "
-"http://www.hardsid.com/"
-msgstr ""
-
-#: src/sid/xs_interface.c:633
-msgid "SIDPlay 2 options:"
-msgstr "SIDPlay 2-Optionen:"
-
-#: src/sid/xs_interface.c:650
-msgid "Fast (nearest neighbour)"
-msgstr "Schnell (am nächsten)"
-
-#: src/sid/xs_interface.c:654
-msgid ""
-"Fastest and also worst sounding sampling method, simply picks nearest "
-"neighbouring sample."
-msgstr ""
-
-#: src/sid/xs_interface.c:658
-msgid "Linear interpolation"
-msgstr "Lineare Interpolation"
-
-#: src/sid/xs_interface.c:662
-msgid ""
-"Uses linear interpolation between samples, yielding higher audio quality "
-"with less sampling noise."
-msgstr ""
-
-#: src/sid/xs_interface.c:673
-msgid "Resampling (FIR)"
-msgstr "Resampling (FIR)"
-
-#: src/sid/xs_interface.c:680
-msgid "reSID sampling options:"
-msgstr "reSID-Sampling-Optionen:"
-
-#: src/sid/xs_interface.c:685
-msgid "Emu#2"
-msgstr "Emu#2"
-
-#: src/sid/xs_interface.c:697
-msgid "Emulate filters"
-msgstr "Filter emulieren"
-
-#: src/sid/xs_interface.c:701
-msgid ""
-"This option enables emulation of SID filter. The filter is an essential part "
-"of SID's sound capacity, but accurate emulation of it may require quite much "
-"CPU power. However, if filter emulation is disabled, tunes won't sound "
-"authentic at all if they utilize the filter."
-msgstr ""
-
-#: src/sid/xs_interface.c:726
-msgid "FS"
-msgstr "FS"
-
-#: src/sid/xs_interface.c:743
-msgid "FM"
-msgstr "FM"
-
-#: src/sid/xs_interface.c:760
-msgid "FT"
-msgstr "FT"
-
-#: src/sid/xs_interface.c:771
-msgid "Reset values"
-msgstr "Werte zurücksetzen"
-
-#: src/sid/xs_interface.c:776
-msgid "SIDPlay1"
-msgstr "SIDPlay1"
-
-#: src/sid/xs_interface.c:817
-msgid "Export"
-msgstr "Exportieren"
-
-#: src/sid/xs_interface.c:825
-msgid "Use"
-msgstr "Nutzen"
-
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:441
-msgid "Save"
-msgstr "Speichern"
-
-#: src/sid/xs_interface.c:841 src/skins/ui_manager.c:440
-msgid "Import"
-msgstr "Importieren"
-
-#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:442
-msgid "Delete"
-msgstr "Löschen"
-
-#: src/sid/xs_interface.c:863
-msgid "Filter curve:"
-msgstr "Filterkurve:"
-
-#: src/sid/xs_interface.c:868
-msgid "SIDPlay2"
-msgstr "SIDPlay2"
-
-#: src/sid/xs_interface.c:874
-msgid "Filters"
-msgstr "Filter"
-
-#: src/sid/xs_interface.c:897
-msgid "Play at least for specified time"
-msgstr "Mindestens für die angegebene Zeit spielen"
-
-#: src/sid/xs_interface.c:901
-msgid ""
-"If enabled, the tune is played at least for the specified time, adding "
-"silence to the end if necessary."
-msgstr ""
-"Wenn aktiviert, wird das Stück mindestens für die angegebene Zeit "
-"abgespielt, wobei nötigenfalls Stille zum Ende hinzugefügt wird."
-
-#: src/sid/xs_interface.c:908 src/sid/xs_interface.c:962
-#: src/sid/xs_interface.c:1142
-msgid "Playtime:"
-msgstr "Spielzeit:"
-
-#: src/sid/xs_interface.c:928
-msgid "Minimum playtime:"
-msgstr "Minimale Spielzeit:"
-
-#: src/sid/xs_interface.c:945
-msgid "Play for specified time maximum"
-msgstr "Für bestimmte Maximalzeit spielen"
-
-#: src/sid/xs_interface.c:949
-msgid ""
-"If enabled, tune is played until specified duration is reached (aka maximum "
-"playtime)."
-msgstr ""
-"Falls aktiviert, wird der Titel gespielt bis ein bestimmter Wert erreicht "
-"wird (z.B. maximale Spielzeit)."
-
-#: src/sid/xs_interface.c:951
-msgid "Only when song length is unknown"
-msgstr "Nur wenn Titellänge unbekannt"
-
-#: src/sid/xs_interface.c:955
-msgid ""
-"If enabled, the maximum playtime is applied only if song/tune length is not "
-"known."
-msgstr ""
-"Falls aktiviert, wird die maximale Spielzeit nur benutzt, wenn Titellänge "
-"unbekannt ist."
-
-#: src/sid/xs_interface.c:982
-msgid "Maximum playtime:"
-msgstr "Maximale Spielzeit:"
-
-#: src/sid/xs_interface.c:999
-msgid "Use XSIDPLAY-compatible database"
-msgstr "XSIDPLAY-kompatible Datenbank benutzen"
-
-#: src/sid/xs_interface.c:1003
-msgid ""
-"This option enables using of XSIDPLAY compatible song length database. "
-"(Refer to Audacious-SID documentation for more information)"
-msgstr ""
-"Diese Option aktiviert die Nutzung der XSIDPLAY Datenbank (siehe Audacious-"
-"SID-Dokumentation für weitere Informationen)."
-
-#: src/sid/xs_interface.c:1010
-msgid "DB-file:"
-msgstr "DB-Datei:"
-
-#: src/sid/xs_interface.c:1020
-msgid "Database path and filename"
-msgstr "Datenbankpfad und -dateiname"
-
-#: src/sid/xs_interface.c:1027
-msgid "Browse for song length-database file"
-msgstr "Nach Titellänge-Datei in Datenbank suchen"
-
-#: src/sid/xs_interface.c:1049
-msgid "Song length database:"
-msgstr "Titellänge Datenbank:"
-
-#: src/sid/xs_interface.c:1054
-msgid "Songlength"
-msgstr "Titellänge"
-
-#: src/sid/xs_interface.c:1072
-msgid "Override generic Tuplez format string"
-msgstr "Allgemeinen Tuplez-Format-String überschreiben"
-
-#: src/sid/xs_interface.c:1076
-msgid ""
-"By enabling this option you can specify a custom Tuplez formatting string "
-"for SID-files. The SID-plugin specific Tuplez tags are described shortly "
-"below."
-msgstr ""
-"Mit dem Aktivieren dieser Einstellung kann man einen bestimmten Tuplez-"
-"Formatierungs-String für SID-Dateien festlegen. Spezifische Tags sind unten "
-"kurz erklärt."
-
-#: src/sid/xs_interface.c:1087
-msgid "Tuplez format string for SID-files"
-msgstr "Tuplez-Formatierungs-String für SID-Dateien"
-
-#: src/sid/xs_interface.c:1090
-msgid ""
-"<u>SID-specific Tuplez fields:</u>\n"
-"\n"
-"<b>sid-format</b>\t\t- Specific fileformat\n"
-"<b>sid-model</b>\t\t- 6581 or 8580\n"
-"<b>sid-speed</b>\t\t- Timing or speed: PAL/NTSC/etc.\n"
-"\n"
-"<u>Other \"special\" fields set:</u>\n"
-"\n"
-"<b>subsong-num, subsong-id</b>"
-msgstr ""
-
-#: src/sid/xs_interface.c:1098
-msgid "Song title format:"
-msgstr "Titelformat:"
-
-#: src/sid/xs_interface.c:1125
-msgid "Add sub-tunes to playlist"
-msgstr "Sub-Tune zu Wiedergabeliste hinzufügen"
-
-#: src/sid/xs_interface.c:1129
-msgid ""
-"If enabled, sub-tunes of each file will be added to playlist. If disabled, "
-"only the default sub-tune will be added."
-msgstr ""
-"Falls aktiviert, werden Sub-Tunes jeder Datei zur Wiedergabeliste "
-"hinzugefügt. Falls deaktiiviert, werden nur die Standard-Sub-Tunes "
-"hinzugefügt."
-
-#: src/sid/xs_interface.c:1131
-msgid "Only tunes with specified minimum duration"
-msgstr "Nur mit spezifizierter Minimumdauer abstimmen"
-
-#: src/sid/xs_interface.c:1135
-msgid "Only add sub-tunes that have a duration of at least specified time."
-msgstr ""
-"Nur Sub-Tunes hinzufügen, die mindestens eine bestimmte Mindestdauer haben."
-
-#: src/sid/xs_interface.c:1162
-msgid "Sub-tune handling:"
-msgstr "Sub-Tune Umgang:"
-
-#: src/sid/xs_interface.c:1179
-msgid "Use STIL database"
-msgstr "STIL-Datenbank verwenden"
-
-#: src/sid/xs_interface.c:1183
-msgid ""
-"If this option is enabled (and the database & HVSC settings below are "
-"correctly set), Audacious-SID will use and display additional information "
-"from STIL database when HVSC SIDs are played."
-msgstr ""
-"Falls Option aktiviert (und die Datenback & die HVSC Einstellungen unten "
-"richtig gesetzt sind), wird Audacious-SID zusätzliche Informationen aus der "
-"STIL-Datenbank bei passenden Titeln nutzen und anzeigen."
-
-#: src/sid/xs_interface.c:1190
-msgid "STIL file:"
-msgstr "STIL-Datei:"
-
-#: src/sid/xs_interface.c:1206
-msgid ""
-"Path and filename of STIL database file (STIL.txt), usually found from "
-"HVSC's DOCUMENTS-subdirectory."
-msgstr ""
-"Pfad und Dateiname der STIL-Datenbank-Datei (STIL.txt), üblicherweise im "
-"HVSC-DOCUMENTS-Unterverzeichnis."
-
-#: src/sid/xs_interface.c:1219
-msgid "Browse for STIL-database file"
-msgstr "Nach STIL-Datenbank-Datei suchen"
-
-#: src/sid/xs_interface.c:1246
-msgid "HVSC path:"
-msgstr "HVSC-Pfad:"
-
-#: src/sid/xs_interface.c:1262
-msgid ""
-"Path to base-directory of your High Voltage SID Collection (HVSC), for "
-"example /media/C64Music/"
-msgstr ""
-"Pfad zum Basis-Verzeichnis der High Voltage SID Collection (HVSC), zum "
-"Beispiel /media/C64Music/"
-
-#: src/sid/xs_interface.c:1275
-msgid "Browse for HVSC path"
-msgstr "Nach HVSC-Pfad suchen"
-
-#: src/sid/xs_interface.c:1297
-msgid "SID Tune Information List (STIL) database:"
-msgstr "SID Tune Information List (STIL)-Datenbank:"
-
-#: src/sid/xs_interface.c:1321
-msgid "Cancel any changes"
-msgstr "Alle Änderungen verwerfen"
-
-#: src/sid/xs_interface.c:1328
-msgid "Accept and update changes"
-msgstr "Änderungen akzeptieren und aktualisieren"
-
-#: src/sid/xs_interface.c:1628
-msgid "Audacious-SID Fileinfo"
-msgstr "Audacious-SID-Dateiinformation"
-
-#: src/sid/xs_interface.c:1649
-msgid "Filename:"
-msgstr "Dateiname:"
-
-#: src/sid/xs_interface.c:1657
-msgid "Songname:"
-msgstr "Titel:"
-
-#: src/sid/xs_interface.c:1665
-msgid "Composer:"
-msgstr "Komponist:"
-
-#: src/sid/xs_interface.c:1673
-msgid "Copyright:"
-msgstr "Copyright:"
-
-#: src/sid/xs_interface.c:1717
-msgid "Song Information:"
-msgstr "Titel-Information:"
-
-#: src/sid/xs_interface.c:1752
-msgid "Author:"
-msgstr "Autor:"
-
-#: src/sid/xs_interface.c:1786
-msgid "Duration:"
-msgstr "Länge:"
-
-#: src/sid/xs_interface.c:1820
-msgid "Sub-tune Information:"
-msgstr "Sub-Tune Information:"
-
-#: src/sid/xs_interface.c:1881
-msgid "Select HVSC song length database"
-msgstr "HVSC-Titellängendatenbank auswählen"
-
-#: src/sid/xs_interface.c:1922
-msgid "Select STIL-database"
-msgstr "STIL-Datenbank auswählen"
-
-#: src/sid/xs_interface.c:1963
-msgid "Select HVSC location prefix"
-msgstr "HVSC Ort-Präfix auswählen"
-
-#: src/sid/xs_interface.c:2004
-msgid "Select SIDPlay2 filters file for importing"
-msgstr "SIDPlay2-Filterdatei für Importieren auswählen"
-
-#: src/sid/xs_interface.c:2045
-msgid "Select SIDPlay2 filters file for exporting"
-msgstr "SIDPlay2-Filterdatei für Exportieren auswählen"
-
-#: src/sid/xs_interface.c:2093 src/sid/xs_interface.c:2106
-msgid "Confirm selected action"
-msgstr "Gewählte Aktion bestätigen"
-
-#: src/sid/xs_interface.c:2123
-msgid "Yes"
-msgstr "Ja"
-
-#: src/sid/xs_interface.c:2129
-msgid "No"
-msgstr "Nein"
-
 #: src/skins/plugin.c:167
 msgid "About Skinned GUI"
 msgstr "Über Skinned GUI"
@@ -3133,11 +2526,11 @@ msgstr "Benutze Bitmap-Schriftarten (nur ASCII-Unterstützung)"
 msgid "Scroll song title in both directions"
 msgstr "Titel in beide Richtungen scrollen"
 
-#: src/skins/skins_cfg.c:297
+#: src/skins/skins_cfg.c:298
 msgid "<b>_Skin</b>"
 msgstr "<b>_Skin</b>"
 
-#: src/skins/skins_cfg.c:344
+#: src/skins/skins_cfg.c:345
 msgid "Interface Preferences"
 msgstr "Interface-Einstellungen"
 
@@ -3499,7 +2892,6 @@ msgid "Playlist Manager"
 msgstr "Wiedergabelisten-Manager"
 
 #: src/skins/ui_manager.c:234
-
 msgid "Queue Manager"
 msgstr "Warteschlangen-Manager"
 
@@ -3796,6 +3188,18 @@ msgstr "Einfügen"
 msgid "Load"
 msgstr "Laden"
 
+#: src/skins/ui_manager.c:440
+msgid "Import"
+msgstr "Importieren"
+
+#: src/skins/ui_manager.c:441
+msgid "Save"
+msgstr "Speichern"
+
+#: src/skins/ui_manager.c:442
+msgid "Delete"
+msgstr "Löschen"
+
 #: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
 #: src/skins/ui_manager.c:480
 msgid "Preset"
@@ -3956,48 +3360,6 @@ msgstr "Konnte Ordner nicht erstellen (%s): %s\n"
 #: src/sndfile/plugin.c:454
 msgid "About sndfile plugin"
 msgstr "Über das Sndfile-Plugin"
-
-#: src/sndfile/plugin.c:455
-msgid ""
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the xmms_sndfile plugin which is:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"This program is free software ; you can redistribute it and/or modify \n"
-"it under the terms of the GNU General Public License as published by \n"
-"the Free Software Foundation ; either version 2 of the License, or \n"
-"(at your option) any later version. \n"
-" \n"
-"This program is distributed in the hope that it will be useful, \n"
-"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-"See the GNU General Public License for more details. \n"
-"\n"
-"You should have received a copy of the GNU General Public \n"
-"License along with this program ; if not, write to \n"
-"the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
-msgstr ""
-"An Audacious angepasst von Tony Vroon <chainsaw@gentoo.org>\n"
-"vom xmms_sndfile-Plugin:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"This program is free software ; you can redistribute it and/or modify \n"
-"it under the terms of the GNU General Public License as published by \n"
-"the Free Software Foundation ; either version 2 of the License, or \n"
-"(at your option) any later version. \n"
-" \n"
-"This program is distributed in the hope that it will be useful, \n"
-"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-"See the GNU General Public License for more details. \n"
-"\n"
-"You should have received a copy of the GNU General Public \n"
-"License along with this program ; if not, write to \n"
-"the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
 
 #: src/sndstretch/sndstretch_xmms.c:155
 msgid "About SndStretch"
@@ -4222,6 +3584,18 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2008 project."
 msgstr ""
+"Copyright (c) 2008, von Calin Crisan <ccrisan@gmail.com> und dem Audacious "
+"Team.\n"
+"\n"
+"Dies ist ein simpler Streambrowser, welcher die beliebtesten Streaming-"
+"verzeichnisse beinhaltet.\n"
+"Vielen Dank an die Streamtuner Entwickler <http://www.nongnu.org/"
+"streamtuner>,\n"
+"\tund natürlich an die ganze Audacious Community.\n"
+"\n"
+"Vielen Dank auch nochmal an Tony Vroon für die Beratung und Führung.\n"
+"\n"
+"Dies war ein Google Summer of Code 2008 Projekt."
 
 #: src/tonegen/tonegen.c:48
 msgid "About Tone Generator"
