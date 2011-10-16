@@ -150,11 +150,16 @@ static gboolean title_change_cb (void)
 
     if (aud_drct_get_playing () && aud_get_bool ("gtkui", "show_song_titles"))
     {
-        gchar * title = aud_drct_get_title ();
-        gchar * title_s = g_strdup_printf (_("%s - Audacious"), title);
-        gtk_window_set_title ((GtkWindow *) window, title_s);
-        g_free (title_s);
-        g_free (title);
+        if (aud_drct_get_ready ())
+        {
+            gchar * title = aud_drct_get_title ();
+            gchar * title_s = g_strdup_printf (_("%s - Audacious"), title);
+            gtk_window_set_title ((GtkWindow *) window, title_s);
+            g_free (title_s);
+            g_free (title);
+        }
+        else
+            gtk_window_set_title ((GtkWindow *) window, _("Buffering ..."));
     }
     else
         gtk_window_set_title ((GtkWindow *) window, _("Audacious"));
@@ -358,7 +363,7 @@ static void pause_cb (void)
     }
 }
 
-static void ui_playback_begin(gpointer hook_data, gpointer user_data)
+static void ui_playback_begin (void)
 {
     pause_cb ();
     gtk_widget_set_sensitive (button_stop, TRUE);
@@ -371,6 +376,10 @@ static void ui_playback_begin(gpointer hook_data, gpointer user_data)
     delayed_title_change_source = g_timeout_add (250, (GSourceFunc)
      title_change_cb, NULL);
 
+}
+
+static void ui_playback_ready (void)
+{
     set_slider_length (aud_drct_get_length ());
     time_counter_cb ();
 
@@ -382,7 +391,7 @@ static void ui_playback_begin(gpointer hook_data, gpointer user_data)
     gtk_widget_show (label_time);
 }
 
-static void ui_playback_stop(gpointer hook_data, gpointer user_data)
+static void ui_playback_stop (void)
 {
     if (update_song_timeout_source)
     {
@@ -599,10 +608,11 @@ static void ui_hooks_associate(void)
 {
     hook_associate ("title change", (HookFunction) title_change_cb, NULL);
     hook_associate ("playback seek", (HookFunction) time_counter_cb, NULL);
-    hook_associate("playback begin", ui_playback_begin, NULL);
+    hook_associate ("playback begin", (HookFunction) ui_playback_begin, NULL);
+    hook_associate ("playback ready", (HookFunction) ui_playback_ready, NULL);
     hook_associate ("playback pause", (HookFunction) pause_cb, NULL);
     hook_associate ("playback unpause", (HookFunction) pause_cb, NULL);
-    hook_associate("playback stop", ui_playback_stop, NULL);
+    hook_associate ("playback stop", (HookFunction) ui_playback_stop, NULL);
     hook_associate("playlist update", ui_playlist_notebook_update, NULL);
     hook_associate ("playlist activate", ui_playlist_notebook_activate, NULL);
     hook_associate ("playlist position", ui_playlist_notebook_position, NULL);
@@ -615,10 +625,11 @@ static void ui_hooks_disassociate(void)
 {
     hook_dissociate ("title change", (HookFunction) title_change_cb);
     hook_dissociate ("playback seek", (HookFunction) time_counter_cb);
-    hook_dissociate("playback begin", ui_playback_begin);
+    hook_dissociate ("playback begin", (HookFunction) ui_playback_begin);
+    hook_dissociate ("playback ready", (HookFunction) ui_playback_begin);
     hook_dissociate ("playback pause", (HookFunction) pause_cb);
     hook_dissociate ("playback unpause", (HookFunction) pause_cb);
-    hook_dissociate("playback stop", ui_playback_stop);
+    hook_dissociate ("playback stop", (HookFunction) ui_playback_stop);
     hook_dissociate("playlist update", ui_playlist_notebook_update);
     hook_dissociate ("playlist activate", ui_playlist_notebook_activate);
     hook_dissociate ("playlist position", ui_playlist_notebook_position);
@@ -770,10 +781,14 @@ static gboolean init (void)
 
     g_signal_connect(window, "key-press-event", G_CALLBACK(ui_key_press_cb), NULL);
 
-    if (aud_drct_get_playing())
-        ui_playback_begin(NULL, NULL);
+    if (aud_drct_get_playing ())
+    {
+        ui_playback_begin ();
+        if (aud_drct_get_ready ())
+            ui_playback_ready ();
+    }
     else
-        ui_playback_stop (NULL, NULL);
+        ui_playback_stop ();
 
     title_change_cb ();
 

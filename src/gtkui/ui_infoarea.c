@@ -387,8 +387,7 @@ void ui_infoarea_set_title (void)
     gint entry = aud_playlist_get_position (playlist);
 
     gchar * title, * artist, * album;
-    aud_playlist_entry_describe (playlist, entry, & title, & artist, & album,
-     FALSE);
+    aud_playlist_entry_describe (playlist, entry, & title, & artist, & album, TRUE);
 
     if (! strcmp_null (title, area->title) && ! strcmp_null (artist,
      area->artist) && ! strcmp_null (album, area->album))
