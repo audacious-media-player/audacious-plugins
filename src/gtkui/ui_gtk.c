@@ -380,6 +380,7 @@ static void ui_playback_begin (void)
 
 static void ui_playback_ready (void)
 {
+    title_change_cb ();
     set_slider_length (aud_drct_get_length ());
     time_counter_cb ();
 
@@ -626,7 +627,7 @@ static void ui_hooks_disassociate(void)
     hook_dissociate ("title change", (HookFunction) title_change_cb);
     hook_dissociate ("playback seek", (HookFunction) time_counter_cb);
     hook_dissociate ("playback begin", (HookFunction) ui_playback_begin);
-    hook_dissociate ("playback ready", (HookFunction) ui_playback_begin);
+    hook_dissociate ("playback ready", (HookFunction) ui_playback_ready);
     hook_dissociate ("playback pause", (HookFunction) pause_cb);
     hook_dissociate ("playback unpause", (HookFunction) pause_cb);
     hook_dissociate ("playback stop", (HookFunction) ui_playback_stop);
