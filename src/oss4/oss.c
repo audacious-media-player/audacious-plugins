@@ -36,7 +36,6 @@ gchar *oss_message = NULL;
 static gint64 oss_time; /* microseconds */
 static gboolean oss_paused;
 static gint oss_paused_time;
-static audio_buf_info oss_buffer_info;
 static gint oss_delay; /* miliseconds */
 static gboolean oss_ioctl_vol = FALSE;
 
@@ -142,6 +141,7 @@ gint oss_open_audio(gint aud_format, gint rate, gint channels)
 
     gint format;
     gint vol_left, vol_right;
+    audio_buf_info buf_info;
 
     oss_data->fd = open_audio();
 
@@ -156,18 +156,18 @@ gint oss_open_audio(gint aud_format, gint rate, gint channels)
     if (!set_format(format, rate, channels))
         goto FAILED;
 
-    if (ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info) == -1)
+    if (ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &buf_info) == -1)
         DEBUG_MSG;
 
     AUDDBG("Buffer information, fragstotal: %d, fragsize: %d, bytes: %d.\n",
-        oss_buffer_info.fragstotal,
-        oss_buffer_info.fragsize,
-        oss_buffer_info.bytes);
+        buf_info.fragstotal,
+        buf_info.fragsize,
+        buf_info.bytes);
 
     oss_time = 0;
     oss_paused = FALSE;
     oss_paused_time = 0;
-    oss_delay = oss_bytes_to_frames(oss_buffer_info.fragstotal * oss_buffer_info.fragsize) * 1000 / oss_data->rate;
+    oss_delay = oss_bytes_to_frames(buf_info.fragstotal * buf_info.fragsize) * 1000 / oss_data->rate;
     oss_ioctl_vol = TRUE;
 
     AUDDBG("Internal OSS buffer size: %dms.\n", oss_delay);
@@ -227,11 +227,13 @@ void oss_drain(void)
 
 gint oss_buffer_free(void)
 {
+    audio_buf_info buf_info;
+
     if (oss_paused)
         return 0;
 
-    ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &oss_buffer_info);
-    return MAX(0, oss_buffer_info.fragments - 1) * oss_buffer_info.fragsize;
+    ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &buf_info);
+    return MAX(0, buf_info.fragments - 1) * buf_info.fragsize;
 }
 
 void oss_set_written_time(gint time)
