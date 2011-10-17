@@ -375,7 +375,6 @@ static void ui_playback_begin (void)
      * show "Buffering ..." as the window title. */
     delayed_title_change_source = g_timeout_add (250, (GSourceFunc)
      title_change_cb, NULL);
-
 }
 
 static void ui_playback_ready (void)

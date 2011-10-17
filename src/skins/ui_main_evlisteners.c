@@ -33,7 +33,7 @@
 #include "ui_vis.h"
 #include "util.h"
 
-static void ui_main_evlistener_title_change (void * data, void * user_data)
+static void title_change (void)
 {
     if (aud_drct_get_ready ())
     {
@@ -43,6 +43,16 @@ static void ui_main_evlistener_title_change (void * data, void * user_data)
     }
     else
         mainwin_set_song_title ("Buffering ...");
+}
+
+static void info_change (void)
+{
+    gint bitrate = 0, samplerate = 0, channels = 0;
+
+    if (aud_drct_get_ready ())
+        aud_drct_get_info (& bitrate, & samplerate, & channels);
+
+    mainwin_set_song_info (bitrate, samplerate, channels);
 }
 
 static void
@@ -71,7 +81,9 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
     }
 
     ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
-    ui_main_evlistener_title_change (NULL, NULL);
+
+    title_change ();
+    info_change ();
 }
 
 static void
@@ -103,18 +115,6 @@ static void vis_clear_cb (void)
 {
     ui_vis_clear_data (mainwin_vis);
     ui_svis_clear_data (mainwin_svis);
-}
-
-void info_change (void)
-{
-    gint bitrate, samplerate, channels;
-
-    /* may be called asynchronously */
-    if (! aud_drct_get_playing ())
-        return;
-
-    aud_drct_get_info (& bitrate, & samplerate, & channels);
-    mainwin_set_song_info (bitrate, samplerate, channels);
 }
 
 static void render_mono_pcm (const gfloat * pcm)
@@ -260,13 +260,13 @@ static void render_freq (const gfloat * freq)
 void
 ui_main_evlistener_init(void)
 {
-    hook_associate("title change", ui_main_evlistener_title_change, NULL);
     hook_associate("hide seekbar", ui_main_evlistener_hide_seekbar, NULL);
     hook_associate("playback begin", ui_main_evlistener_playback_begin, NULL);
     hook_associate("playback ready", ui_main_evlistener_playback_begin, NULL);
     hook_associate("playback stop", ui_main_evlistener_playback_stop, NULL);
     hook_associate("playback pause", ui_main_evlistener_playback_pause, NULL);
     hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
+    hook_associate ("title change", (HookFunction) title_change, NULL);
     hook_associate ("info change", (HookFunction) info_change, NULL);
 
     hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
@@ -276,13 +276,13 @@ ui_main_evlistener_init(void)
 void
 ui_main_evlistener_dissociate(void)
 {
-    hook_dissociate("title change", ui_main_evlistener_title_change);
     hook_dissociate("hide seekbar", ui_main_evlistener_hide_seekbar);
     hook_dissociate("playback begin", ui_main_evlistener_playback_begin);
     hook_dissociate("playback ready", ui_main_evlistener_playback_begin);
     hook_dissociate("playback stop", ui_main_evlistener_playback_stop);
     hook_dissociate("playback pause", ui_main_evlistener_playback_pause);
     hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
+    hook_dissociate ("title change", (HookFunction) title_change);
     hook_dissociate ("info change", (HookFunction) info_change);
 
     hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
