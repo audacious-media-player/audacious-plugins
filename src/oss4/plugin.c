@@ -24,7 +24,7 @@
 
 AUD_OUTPUT_PLUGIN
 (
-    .name = "OSS 4",
+    .name = "OSS4",
     .probe_priority = 5,
     .init = oss_init,
     .cleanup = oss_cleanup,

@@ -68,17 +68,9 @@ static GtkTreeModel *get_device_list(void)
 
     list = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
 
-    if ((mixerfd = open(DEFAULT_MIXER, O_RDWR)) == -1)
-        goto FAILED;
-
-    if (ioctl(mixerfd, SNDCTL_SYSINFO, &sysinfo) == -1)
-        goto FAILED;
-
-    if (sysinfo.numaudios < 1)
-    {
-        errno = ENXIO;
-        goto FAILED;
-    }
+    CHECK_NOISY(mixerfd = open, DEFAULT_MIXER, O_RDWR);
+    CHECK(ioctl, mixerfd, SNDCTL_SYSINFO, &sysinfo);
+    CHECK_NOISY(oss_probe_for_adev, &sysinfo);
 
     gtk_list_store_append(list, &iter);
     gtk_list_store_set(list, &iter, 0, _("1. Default device"), 1, DEFAULT_DSP, -1);
@@ -88,8 +80,7 @@ static GtkTreeModel *get_device_list(void)
         oss_audioinfo ainfo;
         ainfo.dev = i;
 
-        if (ioctl(mixerfd, SNDCTL_AUDIOINFO, &ainfo) == -1)
-            goto FAILED;
+        CHECK(ioctl, mixerfd, SNDCTL_AUDIOINFO, &ainfo);
 
         if (ainfo.caps & PCM_CAP_OUTPUT)
         {
@@ -105,7 +96,6 @@ static GtkTreeModel *get_device_list(void)
     return GTK_TREE_MODEL(list);
 
     FAILED:
-        SHOW_ERROR_MSG;
         close(mixerfd);
         return NULL;
 }

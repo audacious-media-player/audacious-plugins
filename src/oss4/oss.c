@@ -32,7 +32,6 @@ static const gchar * const oss_defaults[] = {
  NULL};
 
 oss_data_t *oss_data;
-gchar *oss_message = NULL;
 static gint64 oss_time; /* microseconds */
 static gboolean oss_paused;
 static gint oss_paused_time;
@@ -47,10 +46,7 @@ gboolean oss_init(void)
     oss_data = g_new0(oss_data_t, 1);
     oss_data->fd = -1;
 
-    if (oss_hardware_present())
-        return TRUE;
-    else
-        return FALSE;
+    return oss_hardware_present();
 }
 
 void oss_cleanup(void)
@@ -68,41 +64,21 @@ static gboolean set_format(gint format, gint rate, gint channels)
 
     /* Enable/disable format conversions made by the OSS software */
     param = aud_get_bool("oss4", "cookedmode");
-    if (ioctl(oss_data->fd, SNDCTL_DSP_COOKEDMODE, &param) == -1)
-        DEBUG_MSG;
+    CHECK(ioctl, oss_data->fd, SNDCTL_DSP_COOKEDMODE, &param);
+
+    AUDDBG("%s format conversions made by the OSS software.\n", param ? "Enabled" : "Disabled");
 
     param = format;
-
-    if (ioctl(oss_data->fd, SNDCTL_DSP_SETFMT, &param) == -1)
-        goto FAILED;
-
-    if (param != format)
-    {
-        ERROR("Selected audio format is not supported by the device.\n");
-        return FALSE;
-    }
+    CHECK_NOISY(ioctl, oss_data->fd, SNDCTL_DSP_SETFMT, &param);
+    CHECK_VAL(param == format, ERROR_NOISY, "Selected audio format is not supported by the device.\n");
 
     param = rate;
-
-    if (ioctl(oss_data->fd, SNDCTL_DSP_SPEED, &param) == -1)
-        goto FAILED;
-
-    if (param != rate)
-    {
-        ERROR("Selected sample rate is not supported by the device.\n");
-        return FALSE;
-    }
+    CHECK_NOISY(ioctl, oss_data->fd, SNDCTL_DSP_SPEED, &param);
+    CHECK_VAL(param == rate, ERROR_NOISY, "Selected sample rate is not supported by the device.\n");
 
     param = channels;
-
-    if (ioctl(oss_data->fd, SNDCTL_DSP_CHANNELS, &param) == -1)
-        goto FAILED;
-
-    if (param != channels)
-    {
-        ERROR("Selected number of channels is not supported by the device.\n");
-        return FALSE;
-    }
+    CHECK_NOISY(ioctl, oss_data->fd, SNDCTL_DSP_CHANNELS, &param);
+    CHECK_VAL(param == channels, ERROR_NOISY, "Selected number of channels is not supported by the device.\n");
 
     oss_data->format = format;
     oss_data->rate = rate;
@@ -111,12 +87,11 @@ static gboolean set_format(gint format, gint rate, gint channels)
 
     return TRUE;
 
-    FAILED:
-        ERROR_MSG;
-        return FALSE;
+FAILED:
+    return FALSE;
 }
 
-static gint open_audio(void)
+static gint open_device(void)
 {
     gint res = -1;
     gchar *device = aud_get_string("oss4", "device");
@@ -135,6 +110,12 @@ static gint open_audio(void)
     return res;
 }
 
+static void close_device(void)
+{
+    close(oss_data->fd);
+    oss_data->fd = -1;
+}
+
 gint oss_open_audio(gint aud_format, gint rate, gint channels)
 {
     AUDDBG("Opening audio.\n");
@@ -143,21 +124,14 @@ gint oss_open_audio(gint aud_format, gint rate, gint channels)
     gint vol_left, vol_right;
     audio_buf_info buf_info;
 
-    oss_data->fd = open_audio();
-
-    if (oss_data->fd == -1)
-    {
-        ERROR_MSG;
-        goto FAILED;
-    }
+    CHECK_NOISY(oss_data->fd = open_device);
 
     format = oss_convert_aud_format(aud_format);
 
     if (!set_format(format, rate, channels))
         goto FAILED;
 
-    if (ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &buf_info) == -1)
-        DEBUG_MSG;
+    CHECK_NOISY(ioctl, oss_data->fd, SNDCTL_DSP_GETOSPACE, &buf_info);
 
     AUDDBG("Buffer information, fragstotal: %d, fragsize: %d, bytes: %d.\n",
         buf_info.fragstotal,
@@ -176,25 +150,21 @@ gint oss_open_audio(gint aud_format, gint rate, gint channels)
     {
         vol_right = (aud_get_int("oss4", "volume") & 0xFF00) >> 8;
         vol_left  = (aud_get_int("oss4", "volume") & 0x00FF);
-
         oss_set_volume(vol_left, vol_right);
     }
 
     return 1;
 
-    FAILED:
-        close(oss_data->fd);
-        oss_data->fd = -1;
-        return 0;
+FAILED:
+    close_device();
+    return 0;
 }
 
 void oss_close_audio(void)
 {
     AUDDBG ("Closing audio.\n");
 
-    if (oss_data->fd != -1)
-        close(oss_data->fd);
-    oss_data->fd = -1;
+    close_device();
 }
 
 void oss_write_audio(void *data, gint length)
@@ -207,7 +177,7 @@ void oss_write_audio(void *data, gint length)
 
         if (written < 0)
         {
-            ERROR_MSG;
+            DESCRIBE_ERROR;
             return;
         }
 
@@ -222,7 +192,7 @@ void oss_drain(void)
     AUDDBG("Drain.\n");
 
     if (ioctl(oss_data->fd, SNDCTL_DSP_SYNC, NULL) == -1)
-        DEBUG_MSG;
+        DESCRIBE_ERROR;
 }
 
 gint oss_buffer_free(void)
@@ -232,8 +202,12 @@ gint oss_buffer_free(void)
     if (oss_paused)
         return 0;
 
-    ioctl(oss_data->fd, SNDCTL_DSP_GETOSPACE, &buf_info);
+    CHECK(ioctl, oss_data->fd, SNDCTL_DSP_GETOSPACE, &buf_info);
+
     return MAX(0, buf_info.fragments - 1) * buf_info.fragsize;
+
+FAILED:
+    return 0;
 }
 
 void oss_set_written_time(gint time)
@@ -272,9 +246,9 @@ void oss_flush(gint time)
 {
     AUDDBG("Flush.\n");
 
-    if (ioctl(oss_data->fd, SNDCTL_DSP_RESET, NULL) == -1)
-        DEBUG_MSG;
+    CHECK(ioctl, oss_data->fd, SNDCTL_DSP_RESET, NULL);
 
+FAILED:
     oss_time = (gint64) time * 1000;
     oss_paused_time = time;
 }
@@ -285,19 +259,14 @@ void oss_pause(gboolean pause)
 
     if (pause)
     {
-        oss_paused = TRUE;
         oss_paused_time = real_output_time();
-
-        if (ioctl(oss_data->fd, SNDCTL_DSP_SILENCE, NULL) == -1)
-            DEBUG_MSG;
+        CHECK(ioctl, oss_data->fd, SNDCTL_DSP_SILENCE, NULL);
     }
     else
-    {
-        if (ioctl(oss_data->fd, SNDCTL_DSP_SKIP, NULL) == -1)
-            DEBUG_MSG;
+        CHECK(ioctl, oss_data->fd, SNDCTL_DSP_SKIP, NULL);
 
-        oss_paused = FALSE;
-    }
+FAILED:
+    oss_paused = pause;
 }
 
 void oss_get_volume(gint *left, gint *right)
@@ -314,26 +283,22 @@ void oss_get_volume(gint *left, gint *right)
         return;
     }
 
-    if (ioctl(oss_data->fd, SNDCTL_DSP_GETPLAYVOL, &vol) == -1)
-    {
-        if (errno == EINVAL)
-            oss_ioctl_vol = FALSE;
+    CHECK(ioctl, oss_data->fd, SNDCTL_DSP_GETPLAYVOL, &vol);
 
-        DEBUG_MSG;
-    }
-    else
-    {
-        *right = (vol & 0xFF00) >> 8;
-        *left  = (vol & 0x00FF);
-        aud_set_int("oss4", "volume", vol);
-    }
+    *right = (vol & 0xFF00) >> 8;
+    *left  = (vol & 0x00FF);
+    aud_set_int("oss4", "volume", vol);
+
+    return;
+
+FAILED:
+    if (errno == EINVAL)
+        oss_ioctl_vol = FALSE;
 }
 
 void oss_set_volume(gint left, gint right)
 {
-    gint vol;
-
-    vol = (right << 8) | left;
+    gint vol = (right << 8) | left;
 
     if (aud_get_int("oss4", "save_volume"))
         aud_set_int("oss4", "volume", vol);
@@ -341,11 +306,11 @@ void oss_set_volume(gint left, gint right)
     if (oss_data->fd == -1 || !oss_ioctl_vol)
         return;
 
-    if (ioctl(oss_data->fd, SNDCTL_DSP_SETPLAYVOL, &vol) == -1)
-    {
-        if (errno == EINVAL)
-            oss_ioctl_vol = FALSE;
+    CHECK(ioctl, oss_data->fd, SNDCTL_DSP_SETPLAYVOL, &vol);
 
-        DEBUG_MSG;
-    }
+    return;
+
+FAILED:
+    if (errno == EINVAL)
+        oss_ioctl_vol = FALSE;
 }

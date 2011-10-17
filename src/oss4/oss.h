@@ -38,32 +38,45 @@
 #include <audacious/debug.h>
 #include <audacious/misc.h>
 
-#define ERROR(...) fprintf(stderr, "OSS4: " __VA_ARGS__)
-
-#ifdef DEBUG
-    #define DEBUG_MSG \
-    do { \
-        oss_message = oss_describe_error(); \
-        AUDDBG("%s", oss_message); \
-        g_free(oss_message); \
-    } while (0)
-#else
-    #define DEBUG_MSG do { } while (0)
-#endif
-
-#define ERROR_MSG \
+#define ERROR(...) \
 do { \
-    oss_message = oss_describe_error(); \
-    ERROR("%s", oss_message); \
-    g_free(oss_message); \
+    fprintf(stderr, "OSS4 %s:%d [%s]: ", __FILE__, __LINE__, __FUNCTION__); \
+    fprintf(stderr, __VA_ARGS__); \
 } while (0)
 
-#define SHOW_ERROR_MSG \
+#define ERROR_NOISY(...) \
 do { \
-    oss_message = oss_describe_error(); \
-    oss_show_error(oss_message); \
-    ERROR("%s", oss_message); \
-    g_free(oss_message); \
+    oss_error(__VA_ARGS__); \
+    ERROR(__VA_ARGS__); \
+} while (0) \
+
+#define DESCRIBE_ERROR ERROR("%s\n", oss_describe_error())
+#define DESCRIBE_ERROR_NOISY ERROR_NOISY("%s\n", oss_describe_error())
+
+#define CHECK(function, ...) \
+do { \
+    int error = function(__VA_ARGS__); \
+    if (error < 0) { \
+        DESCRIBE_ERROR; \
+        goto FAILED; \
+    } \
+} while (0)
+
+#define CHECK_NOISY(function, ...) \
+do { \
+    int error = function(__VA_ARGS__); \
+    if (error < 0) { \
+        DESCRIBE_ERROR_NOISY; \
+        goto FAILED; \
+    } \
+} while (0)
+
+#define CHECK_VAL(value, function, ...) \
+do { \
+    if (!(value)) { \
+        function(__VA_ARGS__); \
+        goto FAILED; \
+    } \
 } while (0)
 
 #define DEFAULT_MIXER "/dev/mixer"
@@ -79,7 +92,6 @@ typedef struct
 } oss_data_t;
 
 extern oss_data_t *oss_data;
-extern gchar *oss_message;
 
 /* oss.c */
 gboolean oss_init(void);
@@ -111,7 +123,9 @@ gint oss_frames_to_bytes(gint frames);
 gint oss_bytes_to_frames(gint bytes);
 gint oss_calc_bitrate(void);
 gchar *oss_describe_error(void);
+gint oss_probe_for_adev(oss_sysinfo *sysinfo);
 gboolean oss_hardware_present(void);
-void oss_show_error(const gchar *message);
+gint oss_show_error(gpointer message);
+void oss_error(const gchar *format, ...);
 
 #endif
