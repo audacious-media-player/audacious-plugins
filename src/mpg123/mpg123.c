@@ -339,10 +339,12 @@ GET_FORMAT:
 		goto OPEN_ERROR;
 	}
 
-	AUDDBG("stream identified as MPEG; %ldHz %d channels, encoding %d\n",
-		ctx.rate, ctx.channels, ctx.encoding);
+	if (mpg123_info (ctx.decoder, & fi) < 0)
+		goto OPEN_ERROR;
 
-	AUDDBG("opening audio\n");
+	bitrate = fi.bitrate * 1000;
+	data->set_params (data, bitrate, ctx.rate, ctx.channels);
+
 	if (! data->output->open_audio (FMT_FLOAT, ctx.rate, ctx.channels))
 	{
 		error = TRUE;
