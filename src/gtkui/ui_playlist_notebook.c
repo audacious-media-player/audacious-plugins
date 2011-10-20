@@ -282,7 +282,7 @@ static void do_follow (void)
 
     if (bolded_playlist != playing)
     {
-        if (bolded_playlist >= 0)
+        if (bolded_playlist >= 0 && bolded_playlist < aud_playlist_count ())
             set_tab_label (bolded_playlist, get_tab_label (bolded_playlist));
         if (playing >= 0)
             set_tab_label (playing, get_tab_label (playing));
