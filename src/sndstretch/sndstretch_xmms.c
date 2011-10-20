@@ -299,11 +299,11 @@ void sndstretch_config(void)
 	gtk_box_pack_end(GTK_BOX(logohbox), logobutton, FALSE, TRUE, 4);
 
 	SS.speed_adj = (GtkAdjustment *) gtk_adjustment_new (100 * log (SS.speed) /
-	 log (2), -100, 100 + 10, 2, 10, 10);
+	 log (2), -100, 100 + 10, 2, 10, 0);
 	SS.pitch_adj = (GtkAdjustment *) gtk_adjustment_new (120 * log (SS.pitch) /
-	 log (2), -120, 120 + 10, 2, 10, 10);
+	 log (2), -120, 120 + 10, 2, 10, 0);
 	SS.scale_adj = (GtkAdjustment *) gtk_adjustment_new (100 * log (SS.scale) /
-	 log (2), -100, 100 + 10, 2, 10, 10);
+	 log (2), -100, 100 + 10, 2, 10, 0);
 
 	volume_toggle  = gtk_check_button_new_with_label(_("Volume corr."));
 	overlap_toggle = gtk_check_button_new_with_label(_("Short Overlap"));

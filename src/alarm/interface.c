@@ -1023,7 +1023,7 @@ create_config_dialog (void)
   gtk_widget_show (hbox25);
   gtk_container_add (GTK_CONTAINER (alignment10), hbox25);
 
-  fading_spin_adj = (GtkAdjustment *) gtk_adjustment_new (120, 0, 3600, 1, 10, 10);
+  fading_spin_adj = (GtkAdjustment *) gtk_adjustment_new (120, 0, 3600, 1, 10, 0);
   fading_spin = gtk_spin_button_new (GTK_ADJUSTMENT (fading_spin_adj), 1, 0);
   gtk_widget_set_name (fading_spin, "fading_spin");
   g_object_ref (fading_spin);

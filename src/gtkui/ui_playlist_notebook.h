@@ -33,6 +33,7 @@ void ui_playlist_notebook_populate(void);
 void ui_playlist_notebook_empty (void);
 void ui_playlist_notebook_update (void * data, void * user);
 void ui_playlist_notebook_activate (void * data, void * user);
+void ui_playlist_notebook_set_playing (void * data, void * user);
 void ui_playlist_notebook_position (void * data, void * user);
 
 void playlist_show_headers (gboolean show);
