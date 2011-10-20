@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-10-10 13:39-0400\n"
+"POT-Creation-Date: 2011-10-19 21:37-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,15 +30,15 @@ msgstr ""
 msgid "About MP4 AAC decoder plugin"
 msgstr ""
 
-#: src/alarm/interface.c:33
+#: src/alarm/interface.c:34
 msgid "About XMMS Alarm"
 msgstr ""
 
-#: src/alarm/interface.c:40
+#: src/alarm/interface.c:41
 msgid "XMMS Alarm"
 msgstr ""
 
-#: src/alarm/interface.c:49
+#: src/alarm/interface.c:50
 msgid ""
 "An XMMS plugin which can be used\n"
 "to start playing at a certain time.\n"
@@ -50,31 +50,31 @@ msgid ""
 "http://www.snika.uklinux.net/xmms-alarm/"
 msgstr ""
 
-#: src/alarm/interface.c:64
+#: src/alarm/interface.c:65
 msgid "Close"
 msgstr ""
 
-#: src/alarm/interface.c:94
+#: src/alarm/interface.c:95
 msgid "Alarm"
 msgstr ""
 
-#: src/alarm/interface.c:101
+#: src/alarm/interface.c:102
 msgid "This is your wakeup call."
 msgstr ""
 
-#: src/alarm/interface.c:116 src/alarm/interface.c:1337
+#: src/alarm/interface.c:117 src/alarm/interface.c:1338
 msgid "OK"
 msgstr ""
 
-#: src/alarm/interface.c:150
+#: src/alarm/interface.c:151
 msgid "Sorry"
 msgstr ""
 
-#: src/alarm/interface.c:157
+#: src/alarm/interface.c:158
 msgid "Warning"
 msgstr ""
 
-#: src/alarm/interface.c:166
+#: src/alarm/interface.c:167
 msgid ""
 "For safety reasons the \"quiet\" time must be at least 65 seconds longer "
 "than the fading time, it must also be more than 10 seconds.  This basically "
@@ -87,148 +87,148 @@ msgid ""
 "Adam"
 msgstr ""
 
-#: src/alarm/interface.c:182
+#: src/alarm/interface.c:183
 msgid "Oh Well"
 msgstr ""
 
-#: src/alarm/interface.c:338
+#: src/alarm/interface.c:339
 msgid "Alarm Settings"
 msgstr ""
 
-#: src/alarm/interface.c:353 src/alarm/interface.c:525
-#: src/alarm/interface.c:897
+#: src/alarm/interface.c:354 src/alarm/interface.c:526
+#: src/alarm/interface.c:898
 msgid "Time"
 msgstr ""
 
-#: src/alarm/interface.c:394
+#: src/alarm/interface.c:395
 msgid "hours"
 msgstr ""
 
-#: src/alarm/interface.c:455
+#: src/alarm/interface.c:456
 msgid "h"
 msgstr ""
 
-#: src/alarm/interface.c:485
+#: src/alarm/interface.c:486
 msgid "minutes"
 msgstr ""
 
-#: src/alarm/interface.c:503
+#: src/alarm/interface.c:504
 msgid "Quiet after:"
 msgstr ""
 
-#: src/alarm/interface.c:513
+#: src/alarm/interface.c:514
 msgid "Alarm at (default):"
 msgstr ""
 
-#: src/alarm/interface.c:533
+#: src/alarm/interface.c:534
 msgid "Choose the days for the alarm to come on"
 msgstr ""
 
-#: src/alarm/interface.c:561 src/alarm/interface.c:609
-#: src/alarm/interface.c:657 src/alarm/interface.c:705
-#: src/alarm/interface.c:753 src/alarm/interface.c:801
-#: src/alarm/interface.c:849 src/OSS/configure.c:153
+#: src/alarm/interface.c:562 src/alarm/interface.c:610
+#: src/alarm/interface.c:658 src/alarm/interface.c:706
+#: src/alarm/interface.c:754 src/alarm/interface.c:802
+#: src/alarm/interface.c:850 src/OSS/configure.c:153
 #: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
 msgid "Default"
 msgstr ""
 
-#: src/alarm/interface.c:887
+#: src/alarm/interface.c:888
 msgid "Day"
 msgstr ""
 
-#: src/alarm/interface.c:907
+#: src/alarm/interface.c:908
 msgid "Tuesday"
 msgstr ""
 
-#: src/alarm/interface.c:918
+#: src/alarm/interface.c:919
 msgid "Wednesday"
 msgstr ""
 
-#: src/alarm/interface.c:929
+#: src/alarm/interface.c:930
 msgid "Thursday"
 msgstr ""
 
-#: src/alarm/interface.c:940
+#: src/alarm/interface.c:941
 msgid "Friday"
 msgstr ""
 
-#: src/alarm/interface.c:951
+#: src/alarm/interface.c:952
 msgid "Saturday"
 msgstr ""
 
-#: src/alarm/interface.c:962
+#: src/alarm/interface.c:963
 msgid "Sunday"
 msgstr ""
 
-#: src/alarm/interface.c:972
+#: src/alarm/interface.c:973
 msgid "Monday"
 msgstr ""
 
-#: src/alarm/interface.c:983
+#: src/alarm/interface.c:984
 msgid "Days"
 msgstr ""
 
-#: src/alarm/interface.c:999
+#: src/alarm/interface.c:1000
 msgid "Fading"
 msgstr ""
 
-#: src/alarm/interface.c:1036
+#: src/alarm/interface.c:1037
 msgid "seconds"
 msgstr ""
 
-#: src/alarm/interface.c:1044 src/alarm/interface.c:1159
+#: src/alarm/interface.c:1045 src/alarm/interface.c:1160
 msgid "Volume"
 msgstr ""
 
-#: src/alarm/interface.c:1070
+#: src/alarm/interface.c:1071
 msgid "Current"
 msgstr ""
 
-#: src/alarm/interface.c:1078
+#: src/alarm/interface.c:1079
 msgid "Start at"
 msgstr ""
 
-#: src/alarm/interface.c:1106 src/alarm/interface.c:1150
+#: src/alarm/interface.c:1107 src/alarm/interface.c:1151
 msgid "%"
 msgstr ""
 
-#: src/alarm/interface.c:1122
+#: src/alarm/interface.c:1123
 msgid "Final"
 msgstr ""
 
-#: src/alarm/interface.c:1175
+#: src/alarm/interface.c:1176
 msgid "Additional Command"
 msgstr ""
 
-#: src/alarm/interface.c:1201
+#: src/alarm/interface.c:1202
 msgid "enable"
 msgstr ""
 
-#: src/alarm/interface.c:1209
+#: src/alarm/interface.c:1210
 msgid "Playlist (optional)"
 msgstr ""
 
-#: src/alarm/interface.c:1235
+#: src/alarm/interface.c:1236
 msgid "Browse..."
 msgstr ""
 
-#: src/alarm/interface.c:1243 src/alarm/interface.c:1407
+#: src/alarm/interface.c:1244 src/alarm/interface.c:1408
 msgid "Reminder"
 msgstr ""
 
-#: src/alarm/interface.c:1260
+#: src/alarm/interface.c:1261
 msgid "Use reminder"
 msgstr ""
 
-#: src/alarm/interface.c:1276 src/sndstretch/sndstretch_xmms.c:358
+#: src/alarm/interface.c:1277 src/sndstretch/sndstretch_xmms.c:358
 msgid "Options"
 msgstr ""
 
-#: src/alarm/interface.c:1284
+#: src/alarm/interface.c:1285
 msgid "What do these options mean?"
 msgstr ""
 
-#: src/alarm/interface.c:1312
+#: src/alarm/interface.c:1313
 msgid ""
 "\n"
 "Time\n"
@@ -283,21 +283,21 @@ msgid ""
 "    toggle button if you want it to be shown.\n"
 msgstr ""
 
-#: src/alarm/interface.c:1314 src/skins/ui_manager.c:382
+#: src/alarm/interface.c:1315 src/skins/ui_manager.c:382
 msgid "Help"
 msgstr ""
 
-#: src/alarm/interface.c:1346 src/cdaudio-ng/configure.c:249
+#: src/alarm/interface.c:1347 src/cdaudio-ng/configure.c:249
 #: src/crystalizer/crystalizer.c:130 src/echo_plugin/gui.c:125
 #: src/jack/configure.c:148 src/null/null.c:108 src/stereo_plugin/stereo.c:125
 msgid "Cancel"
 msgstr ""
 
-#: src/alarm/interface.c:1414
+#: src/alarm/interface.c:1415
 msgid "Your reminder for today is.."
 msgstr ""
 
-#: src/alarm/interface.c:1439
+#: src/alarm/interface.c:1440
 msgid "Thankyou"
 msgstr ""
 
@@ -1540,7 +1540,7 @@ msgstr ""
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:123 src/ladspa/plugin.c:639
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:643
 msgid "Disable"
 msgstr ""
 
@@ -1784,16 +1784,20 @@ msgstr ""
 msgid "GTK Interface"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:154 src/skins/ui_main.c:302
+#: src/gtkui/ui_gtk.c:156 src/skins/ui_main.c:302
 #, c-format
 msgid "%s - Audacious"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:160 src/skins/ui_main.c:304 src/skins/ui_main.c:1499
+#: src/gtkui/ui_gtk.c:162
+msgid "Buffering ..."
+msgstr ""
+
+#: src/gtkui/ui_gtk.c:165 src/skins/ui_main.c:304 src/skins/ui_main.c:1499
 msgid "Audacious"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:206 src/skins/plugin.c:185
+#: src/gtkui/ui_gtk.c:211 src/skins/plugin.c:183
 msgid "Error"
 msgstr ""
 
@@ -1974,43 +1978,43 @@ msgstr ""
 msgid "About JACK Output Plugin 0.17"
 msgstr ""
 
-#: src/ladspa/plugin.c:410
+#: src/ladspa/plugin.c:414
 msgid "About LADSPA Host"
 msgstr ""
 
-#: src/ladspa/plugin.c:511
+#: src/ladspa/plugin.c:515
 #, c-format
 msgid "%s Settings"
 msgstr ""
 
-#: src/ladspa/plugin.c:579
+#: src/ladspa/plugin.c:583
 msgid "LADSPA Host Settings"
 msgstr ""
 
-#: src/ladspa/plugin.c:588
+#: src/ladspa/plugin.c:592
 msgid "Module paths:"
 msgstr ""
 
-#: src/ladspa/plugin.c:593
+#: src/ladspa/plugin.c:597
 msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
 
-#: src/ladspa/plugin.c:609
+#: src/ladspa/plugin.c:613
 msgid "Available plugins:"
 msgstr ""
 
-#: src/ladspa/plugin.c:621
+#: src/ladspa/plugin.c:625
 msgid "Enable"
 msgstr ""
 
-#: src/ladspa/plugin.c:627
+#: src/ladspa/plugin.c:631
 msgid "Enabled plugins:"
 msgstr ""
 
-#: src/ladspa/plugin.c:642
+#: src/ladspa/plugin.c:646
 msgid "Settings"
 msgstr ""
 
@@ -2055,19 +2059,19 @@ msgstr ""
 msgid "Tact generator: %d bpm %d/%d"
 msgstr ""
 
-#: src/mixer/plugin.c:63
+#: src/mixer/plugin.c:64
 msgid "About Channel Mixer"
 msgstr ""
 
-#: src/mixer/plugin.c:92
+#: src/mixer/plugin.c:93
 msgid "Channel Mixer Settings"
 msgstr ""
 
-#: src/mixer/plugin.c:101
+#: src/mixer/plugin.c:102
 msgid "Output channels:"
 msgstr ""
 
-#: src/mixer/plugin.c:111
+#: src/mixer/plugin.c:112
 msgid "Changes take effect at the next song change."
 msgstr ""
 
@@ -2117,27 +2121,27 @@ msgstr ""
 msgid "Run in real time"
 msgstr ""
 
-#: src/oss4/configure.c:84
+#: src/oss4/configure.c:76
 msgid "1. Default device"
 msgstr ""
 
-#: src/oss4/configure.c:142
+#: src/oss4/configure.c:132
 msgid "OSS4 Output Plugin Preferences"
 msgstr ""
 
-#: src/oss4/configure.c:154 src/OSS/configure.c:194
+#: src/oss4/configure.c:144 src/OSS/configure.c:194
 msgid "Audio device:"
 msgstr ""
 
-#: src/oss4/configure.c:182 src/OSS/configure.c:217 src/OSS/configure.c:260
+#: src/oss4/configure.c:172 src/OSS/configure.c:217 src/OSS/configure.c:260
 msgid "Use alternate device:"
 msgstr ""
 
-#: src/oss4/configure.c:197
+#: src/oss4/configure.c:187
 msgid "Save volume between sessions"
 msgstr ""
 
-#: src/oss4/configure.c:201
+#: src/oss4/configure.c:191
 msgid "Enable format conversions made by the OSS software."
 msgstr ""
 
@@ -2145,7 +2149,7 @@ msgstr ""
 msgid "About OSS4 Plugin"
 msgstr ""
 
-#: src/oss4/utils.c:204
+#: src/oss4/utils.c:211
 msgid "OSS4 error"
 msgstr ""
 
@@ -2262,11 +2266,11 @@ msgstr ""
 msgid "SDL error"
 msgstr ""
 
-#: src/skins/plugin.c:167
+#: src/skins/plugin.c:165
 msgid "About Skinned GUI"
 msgstr ""
 
-#: src/skins/plugin.c:168
+#: src/skins/plugin.c:166
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -2416,19 +2420,19 @@ msgstr ""
 msgid "Visualization Menu"
 msgstr ""
 
-#: src/skins/ui_main.c:1646
+#: src/skins/ui_main.c:1648
 msgid "Single mode."
 msgstr ""
 
-#: src/skins/ui_main.c:1648
+#: src/skins/ui_main.c:1650
 msgid "Playlist mode."
 msgstr ""
 
-#: src/skins/ui_main.c:1670
+#: src/skins/ui_main.c:1672
 msgid "Stopping after song."
 msgstr ""
 
-#: src/skins/ui_main.c:1672
+#: src/skins/ui_main.c:1674
 msgid "Not stopping after song."
 msgstr ""
 
