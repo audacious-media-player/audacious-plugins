@@ -60,9 +60,53 @@ static void stereo_to_mono (float * * data, int * samples)
     }
 }
 
+static void quadro_to_stereo(float * * data, int * samples)
+{
+    int frames = * samples / 4;
+    float * get = * data;
+    float * set = mixer_buf = realloc (mixer_buf, sizeof (float) * 2 * frames);
+
+    * data = mixer_buf;
+    * samples = 2 * frames;
+
+    while (frames --)
+    {
+        float front_left  = * get ++;
+        float front_right = * get ++;
+        float back_left   = * get ++;
+        float back_right  = * get ++;
+        * set ++ = front_left + (back_left * 0.7);
+        * set ++ = front_right + (back_right * 0.7);
+    }
+}
+
+static void surround_5p1_to_stereo(float * * data, int * samples)
+{
+    int frames = * samples / 6;
+    float * get = * data;
+    float * set = mixer_buf = realloc (mixer_buf, sizeof (float) * 2 * frames);
+
+    * data = mixer_buf;
+    * samples = 2 * frames;
+
+    while (frames --)
+    {
+        float front_left  = * get ++;
+        float front_right = * get ++;
+        float center = * get ++;
+        float lfe    = * get ++;
+        float rear_left   = * get ++;
+        float rear_right  = * get ++;
+        * set ++ = front_left + (center * 0.5) + (lfe * 0.5) + (rear_left * 0.5);
+        * set ++ = front_right + (center * 0.5) + (lfe * 0.5) + (rear_right * 0.5);
+    }
+}
+
 static const Converter converters[MAX_CHANNELS + 1][MAX_CHANNELS + 1] = {
  [1][2] = mono_to_stereo,
- [2][1] = stereo_to_mono};
+ [2][1] = stereo_to_mono,
+ [4][2] = quadro_to_stereo,
+ [6][2] = surround_5p1_to_stereo};
 
 static int input_channels, output_channels;
 
