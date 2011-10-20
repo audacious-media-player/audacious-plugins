@@ -131,10 +131,10 @@ ui_statusbar_playback_stop(gpointer unused, GtkWidget *label)
 
 static void ui_statusbar_destroy_cb(GtkWidget *widget, gpointer user_data)
 {
+    hook_dissociate("playback ready", (HookFunction) ui_statusbar_info_change);
     hook_dissociate("info change", (HookFunction) ui_statusbar_info_change);
     hook_dissociate("playback stop", (HookFunction) ui_statusbar_playback_stop);
     hook_dissociate("playlist update", (HookFunction) ui_statusbar_update_playlist_length);
-    hook_dissociate("info change", (HookFunction) ui_statusbar_update_playlist_length);
 }
 
 GtkWidget *
@@ -149,6 +149,7 @@ ui_statusbar_new(void)
     gtk_label_set_ellipsize ((GtkLabel *) status, PANGO_ELLIPSIZE_END);
     gtk_box_pack_start(GTK_BOX(hbox), status, TRUE, TRUE, 5);
 
+    hook_associate("playback ready", (HookFunction) ui_statusbar_info_change, status);
     hook_associate("info change", (HookFunction) ui_statusbar_info_change, status);
     hook_associate("playback stop", (HookFunction) ui_statusbar_playback_stop, status);
 
@@ -157,14 +158,11 @@ ui_statusbar_new(void)
     ui_statusbar_update_playlist_length(NULL, length);
 
     hook_associate("playlist update", (HookFunction) ui_statusbar_update_playlist_length, length);
-    hook_associate("info change", (HookFunction) ui_statusbar_update_playlist_length, length);
 
     g_signal_connect(G_OBJECT(hbox), "destroy", G_CALLBACK(ui_statusbar_destroy_cb), NULL);
 
-    if (aud_drct_get_playing())
-    {
+    if (aud_drct_get_playing() && aud_drct_get_ready())
         ui_statusbar_info_change(NULL, status);
-    }
 
     return hbox;
 }
