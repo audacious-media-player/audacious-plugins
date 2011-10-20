@@ -282,7 +282,7 @@ static void do_highlight (void)
 
     if (highlighted != playing)
     {
-        if (highlighted >= 0)
+        if (highlighted >= 0 && highlighted < aud_playlist_count ())
             set_tab_label (highlighted, get_tab_label (highlighted));
         if (playing >= 0)
             set_tab_label (playing, get_tab_label (playing));
