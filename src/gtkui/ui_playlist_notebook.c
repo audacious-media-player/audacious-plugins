@@ -40,7 +40,7 @@
 static GtkWidget * notebook = NULL;
 static GQueue follow_queue = G_QUEUE_INIT;
 static gboolean playlist_activated = FALSE;
-static gint bolded_playlist = -1;
+static gint highlighted = -1;
 
 static struct index *pages;
 GtkWidget *ui_playlist_notebook_tab_title_editing = NULL;
@@ -252,7 +252,7 @@ void ui_playlist_notebook_populate(void)
     gtk_notebook_set_current_page (UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active ());
     gtk_widget_grab_focus (gtk_bin_get_child ((GtkBin *)
      gtk_notebook_get_nth_page (UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active ())));
-    bolded_playlist = aud_playlist_get_playing ();
+    highlighted = aud_playlist_get_playing ();
 
     if (! switch_handler)
         switch_handler = g_signal_connect (notebook, "switch-page", (GCallback)
@@ -276,20 +276,23 @@ void ui_playlist_notebook_empty (void)
         ui_playlist_notebook_destroy_tab (-- n_pages);
 }
 
-static void do_follow (void)
+static void do_highlight (void)
 {
     gint playing = aud_playlist_get_playing ();
 
-    if (bolded_playlist != playing)
+    if (highlighted != playing)
     {
-        if (bolded_playlist >= 0)
-            set_tab_label (bolded_playlist, get_tab_label (bolded_playlist));
+        if (highlighted >= 0)
+            set_tab_label (highlighted, get_tab_label (highlighted));
         if (playing >= 0)
             set_tab_label (playing, get_tab_label (playing));
 
-        bolded_playlist = playing;
+        highlighted = playing;
     }
+}
 
+static void do_follow (void)
+{
     while (! g_queue_is_empty (& follow_queue))
     {
         gint list = aud_playlist_by_unique_id (GPOINTER_TO_INT (g_queue_pop_head
@@ -360,6 +363,7 @@ void ui_playlist_notebook_update (void * data, void * user)
             update_list (list, type, 0, aud_playlist_entry_count (list));
     }
 
+    do_highlight ();
     do_follow ();
 }
 
@@ -395,6 +399,12 @@ void ui_playlist_notebook_activate (void * data, void * user)
     else
         gtk_notebook_set_current_page (UI_PLAYLIST_NOTEBOOK,
          aud_playlist_get_active ());
+}
+
+void ui_playlist_notebook_set_playing (void * data, void * user)
+{
+    if (! aud_playlist_update_pending ())
+        do_highlight ();
 }
 
 static void destroy_cb (void)

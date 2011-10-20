@@ -615,6 +615,7 @@ static void ui_hooks_associate(void)
     hook_associate ("playback stop", (HookFunction) ui_playback_stop, NULL);
     hook_associate("playlist update", ui_playlist_notebook_update, NULL);
     hook_associate ("playlist activate", ui_playlist_notebook_activate, NULL);
+    hook_associate ("playlist set playing", ui_playlist_notebook_set_playing, NULL);
     hook_associate ("playlist position", ui_playlist_notebook_position, NULL);
     hook_associate ("set shuffle", update_toggles, NULL);
     hook_associate ("set repeat", update_toggles, NULL);
@@ -632,6 +633,7 @@ static void ui_hooks_disassociate(void)
     hook_dissociate ("playback stop", (HookFunction) ui_playback_stop);
     hook_dissociate("playlist update", ui_playlist_notebook_update);
     hook_dissociate ("playlist activate", ui_playlist_notebook_activate);
+    hook_dissociate ("playlist set playing", ui_playlist_notebook_set_playing);
     hook_dissociate ("playlist position", ui_playlist_notebook_position);
     hook_dissociate ("set shuffle", update_toggles);
     hook_dissociate ("set repeat", update_toggles);
