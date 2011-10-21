@@ -364,6 +364,7 @@ lyricwiki_playback_began(void)
 static gboolean init (void)
 {
 	hook_associate("title change", (HookFunction) lyricwiki_playback_began, NULL);
+	hook_associate("playback ready", (HookFunction) lyricwiki_playback_began, NULL);
 
 	build_widget();
 
@@ -375,6 +376,7 @@ static void
 cleanup(void)
 {
 	hook_dissociate("title change", (HookFunction) lyricwiki_playback_began);
+	hook_dissociate("playback ready", (HookFunction) lyricwiki_playback_began);
 
 	if (vbox)
 		gtk_widget_destroy (vbox);
