@@ -94,6 +94,7 @@
 				<menuitem action="playlist save" />
 				<separator />
 				<menuitem action="playlist manager" />
+				<menuitem action="queue manager" />
 				<separator />
 				<menuitem action="playlist refresh" />
 			</menu>
