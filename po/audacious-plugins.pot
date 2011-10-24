@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-10-19 21:37-0400\n"
+"POT-Creation-Date: 2011-10-24 16:38-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,7 +127,7 @@ msgstr ""
 #: src/alarm/interface.c:562 src/alarm/interface.c:610
 #: src/alarm/interface.c:658 src/alarm/interface.c:706
 #: src/alarm/interface.c:754 src/alarm/interface.c:802
-#: src/alarm/interface.c:850 src/OSS/configure.c:153
+#: src/alarm/interface.c:850 src/bs2b/plugin.c:198 src/OSS/configure.c:153
 #: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
 msgid "Default"
 msgstr ""
@@ -945,6 +945,22 @@ msgstr ""
 
 #: src/blur_scope/config.c:83 src/jack/configure.c:106
 msgid "Options:"
+msgstr ""
+
+#: src/bs2b/plugin.c:157
+msgid "Bauer stereophonic-to-binaural Preferences"
+msgstr ""
+
+#: src/bs2b/plugin.c:168
+msgid "Feed level:"
+msgstr ""
+
+#: src/bs2b/plugin.c:182
+msgid "Cut frequency:"
+msgstr ""
+
+#: src/bs2b/plugin.c:196
+msgid "Presets:"
 msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:241

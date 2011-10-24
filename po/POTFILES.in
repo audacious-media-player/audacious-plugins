@@ -17,6 +17,7 @@ src/aosd/aosd_style.c
 src/aosd/aosd_trigger.c
 src/aosd/aosd_ui.c
 src/blur_scope/config.c
+src/bs2b/plugin.c
 src/cdaudio-ng/cdaudio-ng.c
 src/cdaudio-ng/configure.c
 src/cd-menu-items/cd-menu-items.c
