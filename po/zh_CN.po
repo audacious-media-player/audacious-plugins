@@ -772,7 +772,7 @@ msgstr ""
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
-msgstr "矩形"
+msgstr "方角矩形"
 
 #: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
@@ -1241,8 +1241,8 @@ msgstr ""
 "游戏机音乐解码引擎基本于Game_Music_Emu 0.5.2.\n"
 "支持格式： AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
 "Audacious上的实现由：\n"
-"\tWilliam Pitcock <nenolod@dereferenced.org>, \n"
-"\tShay Green <gblargg@gmail.com>\n"
+"William Pitcock <nenolod@dereferenced.org>, \n"
+"Shay Green <gblargg@gmail.com>\n"
 "完成。\n"
 
 #: src/crossfade/plugin.c:60
@@ -1553,7 +1553,7 @@ msgstr "Vorbis编码器设置"
 
 #: src/filewriter/vorbis.c:256
 msgid "Quality level (0 - 10):"
-msgstr "质量等级(0-10):"
+msgstr "质量等级(0-10)："
 
 #: src/flacng/plugin.c:379
 msgid "About FLAC Audio Plugin"
@@ -1835,7 +1835,7 @@ msgstr "播放列表管理器(_P)..."
 
 #: src/gtkui/menus.c:179
 msgid "_Queue Manager ..."
-msgstr "队列管理器(_P)..."
+msgstr "队列管理器(_Q)..."
 
 #: src/gtkui/menus.c:182
 msgid "Volume _Up"
@@ -2018,12 +2018,10 @@ msgid "Show On-Screen-Display"
 msgstr "显示On-Screen-Display"
 
 #: src/hotkey/gui.c:84
-#, fuzzy
 msgid "Toggle Repeat"
 msgstr "重复"
 
 #: src/hotkey/gui.c:85
-#, fuzzy
 msgid "Toggle Shuffle"
 msgstr "随机"
 
@@ -2063,7 +2061,7 @@ msgstr "<b>动作：</b>"
 
 #: src/hotkey/gui.c:432
 msgid "<b>Key Binding:</b>"
-msgstr "<b>键位绑定:</b>"
+msgstr "<b>键位绑定：</b>"
 
 #: src/hotkey/gui.c:663
 msgid "About Global Hotkey Plugin"
@@ -2087,15 +2085,18 @@ msgstr ""
 "全局热键插件\n"
 "通过组合键或多媒体键控制播放器。\n"
 "版权所有 (C)\n"
-"2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"2007-2008\n"
+"Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 "其它贡献者:\n"
 "版权所有 (C)\n"
-"2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-"2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
-"\tBryn Davies <curious@ihug.com.au>\n"
-"\tJonathan A. Davis <davis@jdhouse.org>\n"
-"\tJeremy Tan <nsx@nsx.homeip.net>\n"
+"2006-2007\n"
+"Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"2000-2002\n"
+"Ville Syrjälä <syrjala@sci.fi>\n"
+"Bryn Davies <curious@ihug.com.au>\n"
+"Jonathan A. Davis <davis@jdhouse.org>\n"
+"Jeremy Tan <nsx@nsx.homeip.net>\n"
 "\n"
 
 #: src/jack/configure.c:66
@@ -2232,12 +2233,11 @@ msgstr ""
 
 #: src/mixer/plugin.c:63
 msgid "About Channel Mixer"
-msgstr ""
+msgstr "关于通道混合器"
 
 #: src/mixer/plugin.c:92
-#, fuzzy
 msgid "Channel Mixer Settings"
-msgstr "混音设置"
+msgstr "通道混合器设置"
 
 #: src/mixer/plugin.c:101
 msgid "Output channels:"
@@ -2374,11 +2374,11 @@ msgstr "关于Audacious PulseAudio输出插件"
 
 #: src/resample/plugin.c:89
 msgid "About Sample Rate Converter Plugin"
-msgstr "关于Sample Rate转换插件"
+msgstr "关于取样率转换插件"
 
 #: src/resample/plugin.c:144
 msgid "Sample Rate Converter Preferences"
-msgstr "Sample Rate转换器首选项"
+msgstr "取样转换设置"
 
 #: src/resample/plugin.c:156
 msgid "Rate mappings:"
@@ -2429,7 +2429,9 @@ msgid ""
 msgstr ""
 "Audacious AudioScrobbler插件\n"
 "\n"
-"原作者：Audun Hove <audun@nlc.no>和Pipian <pipian@pipian.com>。\n"
+"原作者：\n"
+"Audun Hove <audun@nlc.no>\n"
+"Pipian <pipian@pipian.com>\n"
 
 #: src/scrobbler/plugin.c:196
 msgid "About Scrobbler Plugin"
@@ -2458,7 +2460,7 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:207
 msgid "_Player:"
-msgstr "播放器(_P):"
+msgstr "播放器(_P)："
 
 #: src/skins/skins_cfg.c:208
 msgid "Select main player window font:"
@@ -2564,21 +2566,21 @@ msgstr "查找： %d:%-2.2d/%d:%-2.2d"
 #: src/skins/ui_main.c:827
 #, c-format
 msgid "Volume: %d%%"
-msgstr "音量: %d%%"
+msgstr "音量：%d%%"
 
 #: src/skins/ui_main.c:850
 #, c-format
 msgid "Balance: %d%% left"
-msgstr "平衡: %d%% 左"
+msgstr "平衡：%d%% 左"
 
 #: src/skins/ui_main.c:852
 msgid "Balance: center"
-msgstr "平衡: 中间"
+msgstr "平衡：中间"
 
 #: src/skins/ui_main.c:854
 #, c-format
 msgid "Balance: %d%% right"
-msgstr "平衡: %d%% 右"
+msgstr "平衡：%d%% 右"
 
 #: src/skins/ui_main.c:980
 msgid "Options Menu"
@@ -2678,7 +2680,7 @@ msgstr "分析器"
 
 #: src/skins/ui_manager.c:116
 msgid "Scope"
-msgstr "范围"
+msgstr "示波器"
 
 #: src/skins/ui_manager.c:117
 msgid "Voiceprint"
@@ -2711,15 +2713,15 @@ msgstr "柱状"
 
 #: src/skins/ui_manager.c:133
 msgid "Dot Scope"
-msgstr ""
+msgstr "点状"
 
 #: src/skins/ui_manager.c:134
 msgid "Line Scope"
-msgstr ""
+msgstr "线状"
 
 #: src/skins/ui_manager.c:135
 msgid "Solid Scope"
-msgstr ""
+msgstr "块状"
 
 #: src/skins/ui_manager.c:141
 msgid "Ice"
@@ -2783,7 +2785,7 @@ msgstr "分析器模式"
 
 #: src/skins/ui_manager.c:199
 msgid "Scope Mode"
-msgstr "范围模式"
+msgstr "示波器模式"
 
 #: src/skins/ui_manager.c:200
 msgid "Voiceprint Mode"
@@ -3310,7 +3312,7 @@ msgstr "未打包的Winamp 2.x主题"
 #: src/skins/util.c:773
 #, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr "无法创建目录(%s): %s\n"
+msgstr "无法创建目录(%s)：%s\n"
 
 #: src/sndfile/plugin.c:454
 msgid "About sndfile plugin"
@@ -3364,7 +3366,7 @@ msgstr "当Audacious播放到列表结尾时执行指令。"
 #: src/song_change/song_change.c:465
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr "歌曲的标题改变时执行指令(如: 网络媒体的标题)。"
+msgstr "歌曲的标题改变时执行指令(如：网络媒体的标题)。"
 
 #: src/song_change/song_change.c:471
 msgid ""
@@ -3460,11 +3462,11 @@ msgstr "鼠标滚轮动作"
 
 #: src/statusicon/statusicon.c:485
 msgid "Change volume"
-msgstr "改变音量"
+msgstr "调整音量"
 
 #: src/statusicon/statusicon.c:487
 msgid "Change playing song"
-msgstr "改变播放中歌曲"
+msgstr "改变歌曲"
 
 #: src/statusicon/statusicon.c:500
 msgid "Other settings"
