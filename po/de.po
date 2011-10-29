@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-10-15 21:44+0200\n"
-"PO-Revision-Date: 2011-10-16 02:43+0100\n"
+"POT-Creation-Date: 2011-10-25 16:29+0200\n"
+"PO-Revision-Date: 2011-10-29 15:18+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -144,7 +144,7 @@ msgstr "Tage wählen, an denen der Alarm ausgelöst werden soll"
 #: src/alarm/interface.c:562 src/alarm/interface.c:610
 #: src/alarm/interface.c:658 src/alarm/interface.c:706
 #: src/alarm/interface.c:754 src/alarm/interface.c:802
-#: src/alarm/interface.c:850 src/OSS/configure.c:153
+#: src/alarm/interface.c:850 src/bs2b/plugin.c:198 src/OSS/configure.c:153
 #: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
 msgid "Default"
 msgstr "Standard"
@@ -425,13 +425,13 @@ msgid ""
 "hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"Dieses Backend sendet MIDI Events an eine Gruppe von benutzerdefinierten ALSA Sequenzer-"
-"Ports. Das ALSA Sequenzer-Interface ist sehr vielseitig, es kann Ports sowohl "
-"für Hardware-Sequenzer (wie z.B. emu10k1) als auch für Software-Sequenzer "
-"und externe Geräte bereitstellen.\n"
+"Dieses Backend sendet MIDI Events an eine Gruppe von benutzerdefinierten "
+"ALSA Sequenzer-Ports. Das ALSA Sequenzer-Interface ist sehr vielseitig, es "
+"kann Ports sowohl für Hardware-Sequenzer (wie z.B. emu10k1) als auch für "
+"Software-Sequenzer und externe Geräte bereitstellen.\n"
 "Dieses Backend erzeugt kein Audiomaterial, MIDI Events werden direkt von "
-"Geräten/Programmen verarbeitet. Zur Hardware gesendete "
-"MIDI Events werden also z.B. direkt abgespielt.\n"
+"Geräten/Programmen verarbeitet. Zur Hardware gesendete MIDI Events werden "
+"also z.B. direkt abgespielt.\n"
 "Backend geschrieben von Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
@@ -447,9 +447,9 @@ msgid ""
 "by chosen ouput plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"Diesed Backend erzeugt Audiomaterial durch Senden von MIDI Events an FluidSynth, ein Echtzeit-"
-"Software-Synthesizer basierend auf der SoundFont2 Spezifikation (www."
-"fluidsynth.org).\n"
+"Diesed Backend erzeugt Audiomaterial durch Senden von MIDI Events an "
+"FluidSynth, ein Echtzeit-Software-Synthesizer basierend auf der SoundFont2 "
+"Spezifikation (www.fluidsynth.org).\n"
 "Erzeugtes Audiomaterial kann via Effektplugins beeinflusst werden und wird "
 "vom ausgewähltem Ausgabeplugin weiterverarbeitet.\n"
 "Backend geschrieben von Giacomo Lozito."
@@ -781,7 +781,7 @@ msgstr ""
 "Clemens Ladisch und Jaroslav Kysela\n"
 "für ihre coolen Programme aplaymidi und amixer; Diese\n"
 "waren neben den alsa-lib Dokus sehr hilfreich, um mehr\n"
-"über das ALSA API zu lernen\n"
+"über die ALSA API zu lernen\n"
 "\n"
 "Alfredo Spadafina\n"
 "für das schöne Midi-Keyboard-Logo\n"
@@ -1075,6 +1075,22 @@ msgstr "Blur Scope: Farbauswahl"
 #: src/blur_scope/config.c:83 src/jack/configure.c:106
 msgid "Options:"
 msgstr "Optionen:"
+
+#: src/bs2b/plugin.c:157
+msgid "Bauer stereophonic-to-binaural Preferences"
+msgstr "Bauer stereophonic-to-binaural Einstellungen"
+
+#: src/bs2b/plugin.c:168
+msgid "Feed level:"
+msgstr "Eingabepegel:"
+
+#: src/bs2b/plugin.c:182
+msgid "Cut frequency:"
+msgstr "Grenzfrequenz:"
+
+#: src/bs2b/plugin.c:196
+msgid "Presets:"
+msgstr "Voreinstellungen:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:241
 msgid "About Audio CD Plugin"
@@ -1963,16 +1979,20 @@ msgstr "_Umbenennen"
 msgid "GTK Interface"
 msgstr "GTK Interface"
 
-#: src/gtkui/ui_gtk.c:154 src/skins/ui_main.c:302
+#: src/gtkui/ui_gtk.c:156 src/skins/ui_main.c:302
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:160 src/skins/ui_main.c:304 src/skins/ui_main.c:1499
+#: src/gtkui/ui_gtk.c:162
+msgid "Buffering ..."
+msgstr "Puffern ..."
+
+#: src/gtkui/ui_gtk.c:165 src/skins/ui_main.c:304 src/skins/ui_main.c:1499
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:206 src/skins/plugin.c:185
+#: src/gtkui/ui_gtk.c:211 src/skins/plugin.c:183
 msgid "Error"
 msgstr "Fehler"
 
@@ -2203,7 +2223,8 @@ msgid ""
 msgstr ""
 "<small>Trenne mehrere Pfade mit einem Doppelpunkt.\n"
 "Diese Pfade werden zusätzlich zum LADSPA_PATH durchsucht.\n"
-"Nach dem Hinzufügen neuer Pfade Enter drücken, um neue Plugins zu suchen.</small>"
+"Nach dem Hinzufügen neuer Pfade Enter drücken, um neue Plugins zu suchen.</"
+"small>"
 
 #: src/ladspa/plugin.c:613
 msgid "Available plugins:"
@@ -2337,27 +2358,27 @@ msgstr "Null-Ausgabe-Einstellungen"
 msgid "Run in real time"
 msgstr "In Echtzeit ablaufen lassen"
 
-#: src/oss4/configure.c:84
+#: src/oss4/configure.c:76
 msgid "1. Default device"
 msgstr "1. Standardgerät"
 
-#: src/oss4/configure.c:142
+#: src/oss4/configure.c:132
 msgid "OSS4 Output Plugin Preferences"
 msgstr "OSS4-Ausgabeplugin-Einstellungen"
 
-#: src/oss4/configure.c:154 src/OSS/configure.c:194
+#: src/oss4/configure.c:144 src/OSS/configure.c:194
 msgid "Audio device:"
 msgstr "Audiogerät:"
 
-#: src/oss4/configure.c:182 src/OSS/configure.c:217 src/OSS/configure.c:260
+#: src/oss4/configure.c:172 src/OSS/configure.c:217 src/OSS/configure.c:260
 msgid "Use alternate device:"
 msgstr "Alternatives Gerät benutzen:"
 
-#: src/oss4/configure.c:197
+#: src/oss4/configure.c:187
 msgid "Save volume between sessions"
 msgstr "Lautstärke speichern"
 
-#: src/oss4/configure.c:201
+#: src/oss4/configure.c:191
 msgid "Enable format conversions made by the OSS software."
 msgstr "Formatkonvertierung aktivieren"
 
@@ -2365,7 +2386,7 @@ msgstr "Formatkonvertierung aktivieren"
 msgid "About OSS4 Plugin"
 msgstr "Über OSS4-Plugin"
 
-#: src/oss4/utils.c:210
+#: src/oss4/utils.c:211
 msgid "OSS4 error"
 msgstr "OSS4 Fehler"
 
@@ -2486,11 +2507,11 @@ msgstr "Über SDL Output Plugin"
 msgid "SDL error"
 msgstr "SDL Fehler"
 
-#: src/skins/plugin.c:167
+#: src/skins/plugin.c:165
 msgid "About Skinned GUI"
 msgstr "Über Skinned GUI"
 
-#: src/skins/plugin.c:168
+#: src/skins/plugin.c:166
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -2642,19 +2663,19 @@ msgstr "Dateiinformationen"
 msgid "Visualization Menu"
 msgstr "Visualisierungs-Menü"
 
-#: src/skins/ui_main.c:1646
+#: src/skins/ui_main.c:1648
 msgid "Single mode."
 msgstr "Single-Modus."
 
-#: src/skins/ui_main.c:1648
+#: src/skins/ui_main.c:1650
 msgid "Playlist mode."
 msgstr "Wiedergabelistenmodus"
 
-#: src/skins/ui_main.c:1670
+#: src/skins/ui_main.c:1672
 msgid "Stopping after song."
 msgstr "Nach Titel stoppen."
 
-#: src/skins/ui_main.c:1672
+#: src/skins/ui_main.c:1674
 msgid "Not stopping after song."
 msgstr "Nicht nach Titel stoppen."
 
