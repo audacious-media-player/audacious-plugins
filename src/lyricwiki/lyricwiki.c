@@ -116,7 +116,7 @@ give_up:
 				g_regex_match(reg, (gchar *) lyric, G_REGEX_MATCH_NEWLINE_ANY, &match_info);
 
 				ret = g_match_info_fetch(match_info, 2);
-				if (!g_utf8_collate(ret, "\n\n<!-- PUT LYRICS HERE (and delete this entire line) -->\n\n"))
+				if (!g_utf8_collate(ret, "\n<!-- PUT LYRICS HERE (and delete this entire line) -->\n"))
 				{
 					g_free(ret);
 					ret = NULL;
