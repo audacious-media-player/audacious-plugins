@@ -69,18 +69,6 @@ do { \
     if (!connected) return retval; \
 } while (0);
 
-static const gchar * get_song_name (void)
-{
-    if (! aud_drct_get_playing ()) /* just probing? */
-        return "";
-
-    gchar * title = aud_drct_get_title ();
-    static gchar t[512];
-    snprintf (t, sizeof (t), "%s", title);
-    g_free (title);
-    return t;
-}
-
 static void info_cb(struct pa_context *c, const struct pa_sink_input_info *i, int is_last, void *userdata) {
     assert(c);
 
@@ -349,8 +337,6 @@ static void pulse_set_written_time (int time)
     written = time * (int64_t) bytes_per_second / 1000;
     flush_time = time;
 
-    pa_stream_set_name (stream, get_song_name (), stream_success_cb, NULL);
-
     pa_threaded_mainloop_unlock (mainloop);
 }
 
@@ -588,7 +574,7 @@ static int pulse_open(gint fmt, int rate, int nch) {
         goto unlock_and_fail;
     }
 
-    if (!(stream = pa_stream_new(context, get_song_name(), &ss, NULL))) {
+    if (!(stream = pa_stream_new(context, "Audacious", &ss, NULL))) {
         ERROR ("Failed to create stream: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
