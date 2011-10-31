@@ -116,7 +116,7 @@ give_up:
 				g_regex_match(reg, (gchar *) lyric, G_REGEX_MATCH_NEWLINE_ANY, &match_info);
 
 				ret = g_match_info_fetch(match_info, 2);
-				if (!g_utf8_collate(ret, "\n\n<!-- PUT LYRICS HERE (and delete this entire line) -->\n\n"))
+				if (!g_utf8_collate(ret, "\n<!-- PUT LYRICS HERE (and delete this entire line) -->\n"))
 				{
 					g_free(ret);
 					ret = NULL;
@@ -188,6 +188,44 @@ scrape_uri_from_lyricwiki_search_result(const gchar *buf, gsize len)
 	return uri;
 }
 
+gboolean
+check_current_track(Tuple *tu)
+{
+	gboolean ret = TRUE;
+	gint playlist, pos, i;
+	gint fields[] = {FIELD_ARTIST, FIELD_TITLE};
+	Tuple *cu = NULL;
+
+	if (tu == NULL)
+		return FALSE;
+
+	playlist = aud_playlist_get_playing();
+	pos = aud_playlist_get_position(playlist);
+	cu = aud_playlist_entry_get_tuple(playlist, pos, FALSE);
+
+	if (cu == NULL)
+		return FALSE;
+
+	for (i = 0; i < sizeof(fields)/sizeof(gint); i++)
+	{
+		const gchar* string1 = tuple_get_string(tu, fields[i], NULL);
+		const gchar* string2 = tuple_get_string(cu, fields[i], NULL);
+
+		if (string1 == NULL && string2 == NULL)
+			continue;
+
+		if (string1 == NULL || string2 == NULL ||
+			strcmp(string1, string2) != 0)
+		{
+		    ret = FALSE;
+		    break;
+		}
+	}
+
+	tuple_free(cu);
+	return ret;
+}
+
 void update_lyrics_window(const Tuple *tu, const gchar *lyrics);
 
 gboolean
@@ -201,7 +239,8 @@ get_lyrics_step_3(gchar *buf, gint64 len, Tuple *tu)
 		g_free(buf);
 	}
 
-	update_lyrics_window(tu, lyrics);
+	if (check_current_track(tu))
+		update_lyrics_window(tu, lyrics);
 	mowgli_object_unref(tu);
 
 	if (lyrics != NULL)
@@ -218,14 +257,18 @@ get_lyrics_step_2(gchar *buf, gint64 len, Tuple *tu)
 	uri = scrape_uri_from_lyricwiki_search_result(buf, len);
 	if (uri == NULL)
 	{
-		update_lyrics_window(tu, NULL);
+		if (check_current_track(tu))
+			update_lyrics_window(tu, NULL);
 		mowgli_object_unref(tu);
 
 		return FALSE;
 	}
 
-	update_lyrics_window(tu, _("\nLooking for lyrics..."));
-	vfs_async_file_get_contents(uri, (VFSConsumer) get_lyrics_step_3, tu);
+	if (check_current_track(tu))
+	{
+		update_lyrics_window(tu, _("\nLooking for lyrics..."));
+		vfs_async_file_get_contents(uri, (VFSConsumer) get_lyrics_step_3, tu);
+	}
 
 	g_free(buf);
 

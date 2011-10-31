@@ -31,6 +31,7 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 static gint width;
+static gint height;
 
 static void draw_albumart(GtkWidget *widget, cairo_t *cr)
 {
@@ -40,12 +41,15 @@ static void draw_albumart(GtkWidget *widget, cairo_t *cr)
     {
         album = audgui_pixbuf_for_current ();
         g_return_if_fail (album != NULL);
-        audgui_pixbuf_scale_within(&album, width);
+        audgui_pixbuf_scale_within(&album, width < height ? width : height);
     }
 
     if (album != NULL)
     {
-        gdk_cairo_set_source_pixbuf(cr, album, 0.0, 0.0);
+        double x = (width - gdk_pixbuf_get_width(album)) / 2;
+        double y = (height - gdk_pixbuf_get_height(album)) / 2;
+
+        gdk_cairo_set_source_pixbuf(cr, album, x, y);
         cairo_paint_with_alpha(cr, 1.0);
     }
 
@@ -73,7 +77,8 @@ static gboolean expose_event (GtkWidget * widget, GdkEventExpose * event, gpoint
 
 static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
 {
-    width = event->height = event->width;
+    width = event->width;
+    height = event->height;
     gtk_widget_queue_draw(widget);
 
     return TRUE;
