@@ -41,7 +41,9 @@ static void draw_albumart(GtkWidget *widget, cairo_t *cr)
     {
         album = audgui_pixbuf_for_current ();
         g_return_if_fail (album != NULL);
-        audgui_pixbuf_scale_within(&album, width < height ? width : height);
+        if (gdk_pixbuf_get_width(album) > width ||
+            gdk_pixbuf_get_height(album) > height)
+            audgui_pixbuf_scale_within(&album, width < height ? width : height);
     }
 
     if (album != NULL)
