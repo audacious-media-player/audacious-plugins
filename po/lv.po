@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins2_22062009\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
 "POT-Creation-Date: 2011-07-17 18:49-0400\n"
-"PO-Revision-Date: 2011-06-27 04:01+0300\n"
+"PO-Revision-Date: 2011-10-30 16:53+0200\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
@@ -1030,7 +1030,7 @@ msgid "Volume: (%)"
 msgstr "Skaļums: (%)"
 
 #: src/ffaudio/ffaudio-core.c:763
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1048,11 +1048,13 @@ msgstr ""
 "FFmpeg multivides karkasu (http://www.ffmpeg.org/)\n"
 "Autortiesības (c) 2000-2009 Fabrice Bellard, u.c.\n"
 "\n"
-"FFmpeg libavformat %d.%d.%d, libavcodec %d.%d.%d\n"
-"\n"
 "Audacious spraudņa autori:\n"
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>\n"
+"\n"
+"libavcodec %s (%s)\n"
+"libavformat %s (%s)\n"
+"libavutil %s (%s)\n"
 
 #: src/ffaudio/ffaudio-core.c:777
 msgid "About FFaudio Plugin"
@@ -1753,14 +1755,12 @@ msgid "Show On-Screen-Display"
 msgstr "Parādīt uz-ekrāna-attēlu"
 
 #: src/hotkey/gui.c:84
-#, fuzzy
 msgid "Toggle Repeat"
-msgstr "Atkārtot"
+msgstr "Pārslēgt atkārtošanu"
 
 #: src/hotkey/gui.c:85
-#, fuzzy
 msgid "Toggle Shuffle"
-msgstr "Jaukt"
+msgstr "Pārslēgt jaukšanu"
 
 #: src/hotkey/gui.c:95
 msgid "(none)"
@@ -1889,12 +1889,16 @@ msgid ""
 "\n"
 "Looking for lyrics..."
 msgstr ""
+"\n"
+"Meklē dziesmas vārdus..."
 
 #: src/lyricwiki/lyricwiki.c:249
 msgid ""
 "\n"
 "Connecting to lyrics.wikia.com..."
 msgstr ""
+"\n"
+"Pieslēdzas lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.c:337
 msgid ""
@@ -1949,14 +1953,12 @@ msgid "Disconnect MTP Device"
 msgstr "Atvienot MTP ierīci"
 
 #: src/notify/libnotify-aosd_event.c:47
-#, fuzzy
 msgid "Stopped"
-msgstr "Stop"
+msgstr "Apturēts"
 
 #: src/notify/libnotify-aosd_event.c:47
-#, fuzzy
 msgid "Audacious is not playing."
-msgstr "Audacious - redzamības brīdinājums"
+msgstr "Audacious pašreiz neatskaņo."
 
 #: src/null/null.c:64
 msgid "Null output plugin "
@@ -2925,11 +2927,11 @@ msgstr "<b>_Fonti</b>"
 
 #: src/skins/skins_cfg.c:261
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr ""
+msgstr "Lietot bitmap fontus (atbalsta tikai ASCII)"
 
 #: src/skins/skins_cfg.c:263
 msgid "Scroll song title in both directions"
-msgstr ""
+msgstr "Ritināt dziesmas nosaukumu abos virzienos"
 
 #: src/skins/skins_cfg.c:346
 msgid "<b>_Skin</b>"
