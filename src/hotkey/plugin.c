@@ -40,6 +40,7 @@
 
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
+#include <gtk/gtk.h>
 
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
@@ -81,6 +82,12 @@ PluginConfig* get_config(void)
  */
 static gboolean init (void)
 {
+	if (! gtk_init_check (NULL, NULL))
+	{
+		fprintf (stderr, "hotkey: GTK+ initialization failed.\n");
+		return FALSE;
+	}
+
 	setup_filter();
 	load_config ( );
 	grab_keys ( );
