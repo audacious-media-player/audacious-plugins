@@ -268,19 +268,9 @@ static Tuple * amidiplug_get_song_tuple (const gchar * filename_uri, VFSFile *
 {
   /* song title, get it from the filename */
   Tuple *tuple = tuple_new_from_filename(filename_uri);
-  gchar *title, *filename = g_filename_from_uri(filename_uri, NULL, NULL);
   midifile_t mf;
 
   soft_init ();
-
-  if (filename != NULL)
-      title = g_path_get_basename(filename);
-  else
-      title = g_strdup(filename_uri);
-
-  tuple_associate_string(tuple, FIELD_TITLE, NULL, title);
-  g_free(title);
-  g_free(filename);
 
   if ( i_midi_parse_from_filename( filename_uri , &mf ) )
     tuple_associate_int(tuple, FIELD_LENGTH, NULL, mf.length / 1000);
