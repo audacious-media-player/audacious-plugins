@@ -18,7 +18,7 @@
  */
 
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
@@ -31,6 +31,7 @@
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
 
+#include "config.h"
 #include "ui_statusbar.h"
 
 #define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), \
