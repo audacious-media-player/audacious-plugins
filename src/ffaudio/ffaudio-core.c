@@ -273,23 +273,21 @@ static gboolean ffaudio_probe (const gchar * filename, VFSFile * file)
 
 typedef struct {
     TupleValueType ttype;   /* Tuple field value type */
-    gint field;             /* Tuple field constant or if -1, use prim_key as field key */
-    gchar *prim_key;        /* Primary FFmpeg metadata key, matches any with this suffix  */
-    gchar *alt_keys[5];     /* Fallback keys, strict (but case-insensitive) matching */
+    gint field;             /* Tuple field constant */
+    gchar *keys[5];         /* Keys to match (case-insensitive), ended by NULL */
 } ffaudio_meta_t;
 
 static const ffaudio_meta_t metaentries[] = {
-    { TUPLE_STRING, FIELD_ARTIST,       "author",    { "hor", "artist", NULL } },
-    { TUPLE_STRING, FIELD_TITLE,        "title",     { "le", NULL } },
-    { TUPLE_STRING, FIELD_ALBUM,        "album",     { "WM/AlbumTitle", NULL } },
-    { TUPLE_STRING, FIELD_PERFORMER,    "performer", { NULL } },
-    { TUPLE_STRING, FIELD_COPYRIGHT,    "copyright", { NULL } },
-    { TUPLE_STRING, FIELD_GENRE,        "genre",     { "WM/Genre", NULL } },
-    { TUPLE_STRING, FIELD_COMMENT,      "comment",   { NULL } },
-    { TUPLE_STRING, FIELD_COMPOSER,     "composer",  { NULL } },
-    { TUPLE_STRING, -1,                 "lyrics",    { "WM/Lyrics", NULL } },
-    { TUPLE_INT,    FIELD_YEAR,         "year",      { "WM/Year", "date", NULL } },
-    { TUPLE_INT,    FIELD_TRACK_NUMBER, "track",     { "WM/TrackNumber", NULL } },
+ {TUPLE_STRING, FIELD_ARTIST,       {"author", "hor", "artist", NULL}},
+ {TUPLE_STRING, FIELD_TITLE,        {"title", "le", NULL}},
+ {TUPLE_STRING, FIELD_ALBUM,        {"album", "WM/AlbumTitle", NULL}},
+ {TUPLE_STRING, FIELD_PERFORMER,    {"performer", NULL}},
+ {TUPLE_STRING, FIELD_COPYRIGHT,    {"copyright", NULL}},
+ {TUPLE_STRING, FIELD_GENRE,        {"genre", "WM/Genre", NULL}},
+ {TUPLE_STRING, FIELD_COMMENT,      {"comment", NULL}},
+ {TUPLE_STRING, FIELD_COMPOSER,     {"composer", NULL}},
+ {TUPLE_INT,    FIELD_YEAR,         {"year", "WM/Year", "date", NULL}},
+ {TUPLE_INT,    FIELD_TRACK_NUMBER, {"track", "WM/TrackNumber", NULL}},
 };
 
 static const gint n_metaentries = sizeof(metaentries) / sizeof(metaentries[0]);
@@ -297,32 +295,23 @@ static const gint n_metaentries = sizeof(metaentries) / sizeof(metaentries[0]);
 static void
 ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
 {
+    if (! ic->metadata)
+        return;
+
     AVDictionaryEntry *tag = NULL;
 
-    if (ic->metadata != NULL)
-    {
-        tag = av_dict_get(ic->metadata, m->prim_key, NULL, AV_METADATA_IGNORE_SUFFIX);
-        if (tag == NULL) {
-            gint i;
-            for (i = 0; tag == NULL && m->alt_keys[i] != NULL; i++)
-                tag = av_dict_get(ic->metadata, m->alt_keys[i], NULL, 0);
-        }
-    }
+    for (gint i = 0; ! tag && m->keys[i]; i ++)
+        tag = av_dict_get (ic->metadata, m->keys[i], NULL, 0);
 
     if (tag != NULL)
     {
-        const gchar *key_name = (m->field < 0) ? m->prim_key : NULL;
-        gchar *tmp;
-
         switch (m->ttype) {
         case TUPLE_STRING:
-            tmp = str_to_utf8(tag->value);
-            tuple_associate_string(tuple, m->field, key_name, tmp);
-            g_free(tmp);
+            tuple_associate_string (tuple, m->field, NULL, tag->value);
             break;
 
         case TUPLE_INT:
-            tuple_associate_int(tuple, m->field, key_name, atoi(tag->value));
+            tuple_associate_int (tuple, m->field, NULL, atoi(tag->value));
             break;
 
         default:
