@@ -4,7 +4,6 @@
 
 GtkWidget* create_about_dialog (void);
 GtkWidget* create_alarm_dialog (void);
-GtkWidget* create_warning_dialog (void);
 GtkWidget* create_config_dialog (void);
 GtkWidget* create_reminder_dialog (gchar *reminder_msg);
 
