@@ -24,6 +24,7 @@ LOCALES = ca.po \
 	  ru.po \
 	  sk.po \
 	  tr.po \
+	  vi.po \
 	  zh_CN.po \
 	  zh_TW.po
 

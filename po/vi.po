@@ -1,0 +1,3423 @@
+# Vietnamese translation for Audacious Plugins
+# Copyright (C) Audacious Translators
+# This file is distributed under the same license as the Audacious Plugins package.
+#
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: Audacious\n"
+"Report-Msgid-Bugs-To: http://jira.atheme.org/browse/AUD\n"
+"POT-Creation-Date: 2011-10-24 16:38-0400\n"
+"PO-Revision-Date: 2011-11-04 08:14+0000\n"
+"Last-Translator: anix <truongan@linuxmail.org>\n"
+"Language-Team: Vietnamese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+
+#: src/aac/libmp4.c:256
+#, c-format
+msgid ""
+"Using libfaad2-%s for decoding.\n"
+"FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
+"Copyright (c) 2005-2006 Audacious team"
+msgstr ""
+"Sử dụng libfaad2-%s để giải mã.\n"
+"FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
+"Copyright (c) 2005-2006 Audacious team"
+
+#: src/aac/libmp4.c:261
+msgid "About MP4 AAC decoder plugin"
+msgstr ""
+
+#: src/alarm/interface.c:34
+msgid "About XMMS Alarm"
+msgstr ""
+
+#: src/alarm/interface.c:41
+msgid "XMMS Alarm"
+msgstr ""
+
+#: src/alarm/interface.c:50
+msgid ""
+"An XMMS plugin which can be used\n"
+"to start playing at a certain time.\n"
+"\n"
+"Send all complaints to:\n"
+"Adam Feakin <adamf@snika.uklinux.net>\n"
+"Daniel Stodden <stodden@in.tum.de>\n"
+"\n"
+"http://www.snika.uklinux.net/xmms-alarm/"
+msgstr ""
+
+#: src/alarm/interface.c:65
+msgid "Close"
+msgstr "Đóng"
+
+#: src/alarm/interface.c:95
+msgid "Alarm"
+msgstr ""
+
+#: src/alarm/interface.c:102
+msgid "This is your wakeup call."
+msgstr ""
+
+#: src/alarm/interface.c:117 src/alarm/interface.c:1338
+msgid "OK"
+msgstr "OK"
+
+#: src/alarm/interface.c:151
+msgid "Sorry"
+msgstr "Thật tiếc"
+
+#: src/alarm/interface.c:158
+msgid "Warning"
+msgstr "Cảnh báo"
+
+#: src/alarm/interface.c:167
+msgid ""
+"For safety reasons the \"quiet\" time must be at least 65 seconds longer than the fading time, it must also be more than 10 seconds.  This basically means that there is a bug in the code and until I find a way of really fixing it this message will appear :)\n"
+"\n"
+"Your fading settings have NOT been saved\n"
+"\n"
+"--\n"
+"Adam"
+msgstr ""
+
+#: src/alarm/interface.c:183
+msgid "Oh Well"
+msgstr "Tốt lắm"
+
+#: src/alarm/interface.c:339
+msgid "Alarm Settings"
+msgstr ""
+
+#: src/alarm/interface.c:354 src/alarm/interface.c:526
+#: src/alarm/interface.c:898
+msgid "Time"
+msgstr ""
+
+#: src/alarm/interface.c:395
+msgid "hours"
+msgstr "giờ"
+
+#: src/alarm/interface.c:456
+msgid "h"
+msgstr ""
+
+#: src/alarm/interface.c:486
+msgid "minutes"
+msgstr "phút"
+
+#: src/alarm/interface.c:504
+msgid "Quiet after:"
+msgstr ""
+
+#: src/alarm/interface.c:514
+msgid "Alarm at (default):"
+msgstr ""
+
+#: src/alarm/interface.c:534
+msgid "Choose the days for the alarm to come on"
+msgstr "Chọn ngày cho chuông báo hoạt động"
+
+#: src/alarm/interface.c:562 src/alarm/interface.c:610
+#: src/alarm/interface.c:658 src/alarm/interface.c:706
+#: src/alarm/interface.c:754 src/alarm/interface.c:802
+#: src/alarm/interface.c:850 src/bs2b/plugin.c:198 src/OSS/configure.c:153
+#: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
+msgid "Default"
+msgstr "Mặc định"
+
+#: src/alarm/interface.c:888
+msgid "Day"
+msgstr "Ngày"
+
+#: src/alarm/interface.c:908
+msgid "Tuesday"
+msgstr "Thứ ba"
+
+#: src/alarm/interface.c:919
+msgid "Wednesday"
+msgstr "Thứ tư"
+
+#: src/alarm/interface.c:930
+msgid "Thursday"
+msgstr "Thứ năm"
+
+#: src/alarm/interface.c:941
+msgid "Friday"
+msgstr "Thứ sáu"
+
+#: src/alarm/interface.c:952
+msgid "Saturday"
+msgstr "Thứ bảy"
+
+#: src/alarm/interface.c:963
+msgid "Sunday"
+msgstr "Chủ nhật"
+
+#: src/alarm/interface.c:973
+msgid "Monday"
+msgstr "Thứ hai"
+
+#: src/alarm/interface.c:984
+msgid "Days"
+msgstr "Ngày"
+
+#: src/alarm/interface.c:1000
+msgid "Fading"
+msgstr ""
+
+#: src/alarm/interface.c:1037
+msgid "seconds"
+msgstr "giây"
+
+#: src/alarm/interface.c:1045 src/alarm/interface.c:1160
+msgid "Volume"
+msgstr "Âm lượng"
+
+#: src/alarm/interface.c:1071
+msgid "Current"
+msgstr "Hiện tại"
+
+#: src/alarm/interface.c:1079
+msgid "Start at"
+msgstr ""
+
+#: src/alarm/interface.c:1107 src/alarm/interface.c:1151
+msgid "%"
+msgstr "%"
+
+#: src/alarm/interface.c:1123
+msgid "Final"
+msgstr ""
+
+#: src/alarm/interface.c:1176
+msgid "Additional Command"
+msgstr ""
+
+#: src/alarm/interface.c:1202
+msgid "enable"
+msgstr "bật"
+
+#: src/alarm/interface.c:1210
+msgid "Playlist (optional)"
+msgstr "Danh sách (tùy chỉnh)"
+
+#: src/alarm/interface.c:1236
+msgid "Browse..."
+msgstr "Duyệt..."
+
+#: src/alarm/interface.c:1244 src/alarm/interface.c:1408
+msgid "Reminder"
+msgstr ""
+
+#: src/alarm/interface.c:1261
+msgid "Use reminder"
+msgstr ""
+
+#: src/alarm/interface.c:1277 src/sndstretch/sndstretch_xmms.c:358
+msgid "Options"
+msgstr "Tùy chọn"
+
+#: src/alarm/interface.c:1285
+msgid "What do these options mean?"
+msgstr "Những tùy chọn này có nghĩa là gì?"
+
+#: src/alarm/interface.c:1313
+msgid ""
+"\n"
+"Time\n"
+"  Alarm at: \n"
+"    The time for the alarm to come on.\n"
+"\n"
+"  Quiet After: \n"
+"    Stop alarm after this amount of time.\n"
+"       (if the wakeup dialog is not closed)\n"
+"\n"
+"\n"
+"Days\n"
+"  Day:\n"
+"    Select the days for the alarm to activate.\n"
+"\n"
+"  Time:\n"
+"    Choose the time for the alarm on each day,\n"
+"    or select the toggle button to use the default\n"
+"    time.\n"
+"\n"
+"\n"
+"Volume\n"
+"  Fading: \n"
+"    Fade the volume up to the chosen volume \n"
+"    for this amount of time.\n"
+"\n"
+"  Start at: \n"
+"    Start fading from this volume.\n"
+"\n"
+"  Final: \n"
+"    The volume to stop fading at.  If the fading\n"
+"    time is 0 then set volume to this and start\n"
+"    playing.\n"
+"\n"
+"\n"
+"Options:\n"
+"  Additional Command:\n"
+"    Run this command at the alarm time.\n"
+"\n"
+"  Playlist: \n"
+"    Load this playlist for playing songs from \n"
+"    (must have .m3u extension).  If no playlist\n"
+"    is given then the songs which are currently\n"
+"    in the list will be used.\n"
+"    The URL of an mp3/ogg stream can also be\n"
+"    entered here, but loading of playlists from\n"
+"    URLs is not currently supported by xmms.\n"
+"\n"
+"  Reminder:\n"
+"    Display a reminder when the alarm goes off,\n"
+"    type the reminder in the box and turn on the\n"
+"    toggle button if you want it to be shown.\n"
+msgstr ""
+
+#: src/alarm/interface.c:1315 src/skins/ui_manager.c:382
+msgid "Help"
+msgstr "Trợ giúp"
+
+#: src/alarm/interface.c:1347 src/cdaudio-ng/configure.c:249
+#: src/crystalizer/crystalizer.c:130 src/echo_plugin/gui.c:125
+#: src/jack/configure.c:148 src/null/null.c:108 src/stereo_plugin/stereo.c:125
+msgid "Cancel"
+msgstr "Thôi"
+
+#: src/alarm/interface.c:1415
+msgid "Your reminder for today is.."
+msgstr ""
+
+#: src/alarm/interface.c:1440
+msgid "Thankyou"
+msgstr ""
+
+#: src/alsa/config.c:210
+msgid "Default PCM device"
+msgstr ""
+
+#: src/alsa/config.c:235
+msgid "Default mixer device"
+msgstr ""
+
+#: src/alsa/config.c:438
+msgid "ALSA Output Plugin Preferences"
+msgstr ""
+
+#: src/alsa/config.c:445
+msgid "PCM device:"
+msgstr ""
+
+#: src/alsa/config.c:447 src/OSS/configure.c:237
+msgid "Mixer device:"
+msgstr ""
+
+#: src/alsa/config.c:449
+msgid "Mixer element:"
+msgstr ""
+
+#: src/alsa/config.c:452
+msgid "Work around drain hangup"
+msgstr ""
+
+#: src/alsa/plugin.c:59
+msgid "About ALSA Output Plugin"
+msgstr ""
+
+#: src/alsa/plugin.c:81
+msgid "ALSA error"
+msgstr ""
+
+#: src/amidi-plug/amidi-plug.c:335
+msgid ""
+"You have not selected any sequencer ports for MIDI playback.  You can do so "
+"in the MIDI plugin preferences."
+msgstr ""
+
+#: src/amidi-plug/backend-alsa/b-alsa.c:35
+msgid "ALSA Backend "
+msgstr ""
+
+#: src/amidi-plug/backend-alsa/b-alsa.c:37
+msgid ""
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
+"Backend written by Giacomo Lozito."
+msgstr ""
+
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
+msgid "FluidSynth Backend "
+msgstr ""
+
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
+msgid ""
+"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed by chosen ouput plugin.\n"
+"Backend written by Giacomo Lozito."
+msgstr ""
+
+#: src/amidi-plug/i_configure-alsa.c:228
+msgid "ALSA BACKEND CONFIGURATION"
+msgstr ""
+
+#: src/amidi-plug/i_configure-alsa.c:331
+msgid "Port"
+msgstr "Cổng"
+
+#: src/amidi-plug/i_configure-alsa.c:333
+msgid "Client name"
+msgstr ""
+
+#: src/amidi-plug/i_configure-alsa.c:335
+msgid "Port name"
+msgstr "Tên cổng"
+
+#: src/amidi-plug/i_configure-alsa.c:346
+msgid "ALSA output ports"
+msgstr ""
+
+#: src/amidi-plug/i_configure-alsa.c:399
+msgid "Soundcard: "
+msgstr ""
+
+#: src/amidi-plug/i_configure-alsa.c:401
+msgid "Mixer control: "
+msgstr ""
+
+#: src/amidi-plug/i_configure-alsa.c:413
+msgid "Mixer settings"
+msgstr ""
+
+#: src/amidi-plug/i_configure-alsa.c:429
+msgid "ALSA Backend not loaded or not available"
+msgstr ""
+
+#: src/amidi-plug/i_configure-alsa.c:448
+msgid ""
+"<span size=\"smaller\">ALSA\n"
+"backend</span>"
+msgstr ""
+
+#: src/amidi-plug/i_configure-ap.c:59
+msgid "AMIDI-Plug - backend information"
+msgstr ""
+
+#: src/amidi-plug/i_configure-ap.c:196
+msgid "AMIDI-PLUG PREFERENCES"
+msgstr ""
+
+#: src/amidi-plug/i_configure-ap.c:223
+msgid "Backend selection"
+msgstr ""
+
+#: src/amidi-plug/i_configure-ap.c:227
+msgid "Available backends"
+msgstr ""
+
+#: src/amidi-plug/i_configure-ap.c:257
+msgid "Playback settings"
+msgstr ""
+
+#: src/amidi-plug/i_configure-ap.c:262
+msgid "Transpose: "
+msgstr ""
+
+#: src/amidi-plug/i_configure-ap.c:271
+msgid "Drum shift: "
+msgstr ""
+
+#: src/amidi-plug/i_configure-ap.c:289
+msgid "Advanced settings"
+msgstr "Thiết lập nâng cao"
+
+#: src/amidi-plug/i_configure-ap.c:293
+msgid "pre-calculate length of MIDI files in playlist"
+msgstr ""
+
+#: src/amidi-plug/i_configure-ap.c:298
+msgid "extract comments from MIDI file (if available)"
+msgstr ""
+
+#: src/amidi-plug/i_configure-ap.c:303
+msgid "extract lyrics from MIDI file (if available)"
+msgstr "trích xuất lời từ tập tin MIDI (nếu có)"
+
+#: src/amidi-plug/i_configure-ap.c:333
+msgid ""
+"<span size=\"smaller\">AMIDI\n"
+"Plug</span>"
+msgstr ""
+
+#: src/amidi-plug/i_configure.c:76
+msgid "AMIDI-Plug - select file"
+msgstr ""
+
+#: src/amidi-plug/i_configure.c:129
+msgid "AMIDI-Plug - configuration"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:55
+msgid "AMIDI-Plug - select SoundFont file"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:270
+msgid "FLUIDSYNTH BACKEND CONFIGURATION"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:313
+msgid "SoundFont settings"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:345
+msgid "Filename"
+msgstr "Tên tập tin"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:349
+msgid "Size (bytes)"
+msgstr "Dung lượng (byte)"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:398
+msgid "Load SF on player start"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:402
+msgid "Load SF on first midifile play"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:417
+msgid "Synthesizer settings"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:426
+msgid "gain"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:432
+#: src/amidi-plug/i_configure-fluidsynth.c:460
+#: src/amidi-plug/i_configure-fluidsynth.c:488
+#: src/amidi-plug/i_configure-fluidsynth.c:519
+msgid "use default"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:435
+#: src/amidi-plug/i_configure-fluidsynth.c:463
+msgid "value:"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:454
+msgid "poliphony"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:482
+msgid "reverb"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:491
+#: src/amidi-plug/i_configure-fluidsynth.c:522
+msgid "yes"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:493
+#: src/amidi-plug/i_configure-fluidsynth.c:524
+msgid "no"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:513
+msgid "chorus"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:544
+msgid "sample rate"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:550
+msgid "22050 Hz "
+msgstr "22050 Hz "
+
+#: src/amidi-plug/i_configure-fluidsynth.c:553
+msgid "44100 Hz "
+msgstr "44100 Hz "
+
+#: src/amidi-plug/i_configure-fluidsynth.c:556
+msgid "96000 Hz "
+msgstr "96000 Hz "
+
+#: src/amidi-plug/i_configure-fluidsynth.c:559
+msgid "custom "
+msgstr "tùy chọn"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:568
+msgid "Hz "
+msgstr "Hz "
+
+#: src/amidi-plug/i_configure-fluidsynth.c:621
+msgid "FluidSynth Backend not loaded or not available"
+msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:640
+msgid ""
+"<span size=\"smaller\">FluidSynth\n"
+"backend</span>"
+msgstr ""
+
+#: src/amidi-plug/i_configure-timidity.c:39
+msgid "TIMIDITY BACKEND CONFIGURATION"
+msgstr ""
+
+#: src/amidi-plug/i_configure-timidity.c:64
+msgid "TiMidity Backend not loaded or not available"
+msgstr ""
+
+#: src/amidi-plug/i_configure-timidity.c:83
+msgid ""
+"<span size=\"smaller\">TiMidity\n"
+"backend</span>"
+msgstr ""
+
+#: src/amidi-plug/i_fileinfo.c:169
+msgid "Name:"
+msgstr "Tên:"
+
+#: src/amidi-plug/i_fileinfo.c:193
+msgid "<span size=\"smaller\"> MIDI Info </span>"
+msgstr ""
+
+#: src/amidi-plug/i_fileinfo.c:205
+msgid "Format:"
+msgstr "Định dạng:"
+
+#: src/amidi-plug/i_fileinfo.c:208
+msgid "Length (msec):"
+msgstr ""
+
+#: src/amidi-plug/i_fileinfo.c:211
+msgid "Num of Tracks:"
+msgstr ""
+
+#: src/amidi-plug/i_fileinfo.c:216
+msgid "variable"
+msgstr ""
+
+#: src/amidi-plug/i_fileinfo.c:217
+msgid "BPM:"
+msgstr "BPM:"
+
+#: src/amidi-plug/i_fileinfo.c:223
+msgid "BPM (wavg):"
+msgstr "BPM (wavg):"
+
+#: src/amidi-plug/i_fileinfo.c:226
+msgid "Time Div:"
+msgstr ""
+
+#: src/amidi-plug/i_fileinfo.c:237
+msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
+msgstr ""
+
+#: src/amidi-plug/i_fileinfo.c:288
+msgid "* no comments available in this MIDI file *"
+msgstr ""
+
+#: src/amidi-plug/i_fileinfo.c:301
+msgid "* no lyrics available in this MIDI file *"
+msgstr "* không có lời bài hát trong tập tin MIDI này *"
+
+#: src/amidi-plug/i_fileinfo.c:349
+msgid "  (invalid UTF-8)"
+msgstr ""
+
+#: src/amidi-plug/i_utils.c:43
+msgid "AMIDI-Plug - about"
+msgstr ""
+
+#: src/amidi-plug/i_utils.c:68
+msgid ""
+"\n"
+"AMIDI-Plug "
+msgstr ""
+
+#: src/amidi-plug/i_utils.c:69
+msgid ""
+"\n"
+"modular MIDI music player\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"written by Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+"\n"
+"special thanks to...\n"
+"\n"
+"Clemens Ladisch and Jaroslav Kysela\n"
+"for their cool programs aplaymidi and amixer; those\n"
+"were really useful, along with alsa-lib docs, in order\n"
+"to learn more about the ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"for the nice midi keyboard logo\n"
+"\n"
+"Tony Vroon\n"
+"for the good help with alpha testing\n"
+"\n"
+msgstr ""
+
+#: src/aosd/aosd_style.c:75
+msgid "Rectangle"
+msgstr ""
+
+#: src/aosd/aosd_style.c:79
+msgid "Rounded Rectangle"
+msgstr ""
+
+#: src/aosd/aosd_style.c:83
+msgid "Concave Rectangle"
+msgstr ""
+
+#: src/aosd/aosd_style.c:87
+msgid "None"
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:77
+msgid "Playback Start"
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:78
+msgid "Triggers OSD when a playlist entry is played."
+msgstr "Hiện OSD khi một bài hát được phát."
+
+#: src/aosd/aosd_trigger.c:82
+msgid "Title Change"
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:83
+msgid ""
+"Triggers OSD when, during playback, the song title changes but the filename "
+"is the same. This is mostly useful to display title changes in internet "
+"streams."
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:89
+msgid "Volume Change"
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:90
+msgid "Triggers OSD when volume is changed."
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:94
+msgid "Pause On"
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:95
+msgid "Triggers OSD when playback is paused."
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:99
+msgid "Pause Off"
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:100
+msgid "Triggers OSD when playback is unpaused."
+msgstr ""
+
+#: src/aosd/aosd_ui.c:180
+msgid "Placement"
+msgstr "Vị trí"
+
+#: src/aosd/aosd_ui.c:219
+msgid "Relative X offset:"
+msgstr "Dịch theo chiều ngang:"
+
+#: src/aosd/aosd_ui.c:228
+msgid "Relative Y offset:"
+msgstr "Dịch theo chiều dọc:"
+
+#: src/aosd/aosd_ui.c:237
+msgid "Max OSD width:"
+msgstr "Bề ngang tối đa của OSD:"
+
+#: src/aosd/aosd_ui.c:250
+msgid "Multi-Monitor options"
+msgstr "Tùy chọn nhiều màn hình"
+
+#: src/aosd/aosd_ui.c:254
+msgid "Display OSD using:"
+msgstr "Hiện OSD trên:"
+
+#: src/aosd/aosd_ui.c:265
+msgid "all monitors"
+msgstr "tất cả màn hình"
+
+#: src/aosd/aosd_ui.c:268
+#, c-format
+msgid "monitor %i"
+msgstr "màn hình %i"
+
+#: src/aosd/aosd_ui.c:323
+msgid "Timing (ms)"
+msgstr "Thời gian (ms)"
+
+#: src/aosd/aosd_ui.c:328
+msgid "Display:"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:333
+msgid "Fade in:"
+msgstr "Tốc độ hiện:"
+
+#: src/aosd/aosd_ui.c:338
+msgid "Fade out:"
+msgstr "Tốc độ ẩn:"
+
+#: src/aosd/aosd_ui.c:419
+msgid "Fonts"
+msgstr "Phông chữ"
+
+#: src/aosd/aosd_ui.c:427
+#, c-format
+msgid "Font %i:"
+msgstr "Phông %i:"
+
+#: src/aosd/aosd_ui.c:444
+msgid "Shadow"
+msgstr "Bóng mờ"
+
+#: src/aosd/aosd_ui.c:479
+msgid "Internationalization"
+msgstr "Ngôn ngữ quốc tế"
+
+#: src/aosd/aosd_ui.c:485
+msgid "Disable UTF-8 conversion of text (in aosd)"
+msgstr "Không chuyển đổi văn bản sang mã UTF-8 (trong aosd)"
+
+#: src/aosd/aosd_ui.c:503
+msgid "Select Skin File"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:614
+msgid "Render Style"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:630
+msgid "Colors"
+msgstr "Màu sắc"
+
+#: src/aosd/aosd_ui.c:643
+#, c-format
+msgid "Color %i:"
+msgstr "Màu %i:"
+
+#: src/aosd/aosd_ui.c:663
+msgid "Custom Skin"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:669
+msgid "Skin file:"
+msgstr "Tập tin giao diện:"
+
+#: src/aosd/aosd_ui.c:672
+msgid "Browse"
+msgstr "Duyệt"
+
+#: src/aosd/aosd_ui.c:774
+msgid "Enable trigger"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:801
+msgid "Event"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:829
+msgid "Composite manager detected"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:836
+msgid ""
+"Composite manager not detected;\n"
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:844
+msgid "Composite manager not required for fake transparency"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:882
+msgid "Transparency"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:888
+msgid "Fake transparency"
+msgstr "Giả trong suốt"
+
+#: src/aosd/aosd_ui.c:890
+msgid "Real transparency (requires X Composite Ext.)"
+msgstr "Trong suốt thực (yêu cầu X Composite)"
+
+#: src/aosd/aosd_ui.c:932
+msgid "Composite extension not loaded"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:940
+msgid "Composite extension not available"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:959
+#, c-format
+msgid "<span font_desc='%s'>Audacious OSD</span>"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:1040
+msgid "Audacious OSD - configuration"
+msgstr "Audacious OSD - cấu hình"
+
+#: src/aosd/aosd_ui.c:1061
+msgid "Test"
+msgstr "Xem thử"
+
+#: src/aosd/aosd_ui.c:1076
+msgid "Position"
+msgstr "Vị trí"
+
+#: src/aosd/aosd_ui.c:1081
+msgid "Animation"
+msgstr "Hiệu ứng"
+
+#: src/aosd/aosd_ui.c:1086
+msgid "Text"
+msgstr "Văn bản"
+
+#: src/aosd/aosd_ui.c:1091
+msgid "Decoration"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:1096
+msgid "Trigger"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:1101 src/cdaudio-ng/configure.c:171
+msgid "Misc"
+msgstr "Khác"
+
+#: src/aosd/aosd_ui.c:1138
+msgid "Audacious OSD - about"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:1168
+msgid ""
+"\n"
+"Audacious OSD "
+msgstr ""
+"\n"
+"Audacious OSD "
+
+#: src/aosd/aosd_ui.c:1169
+msgid ""
+"\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"written by Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+"On-Screen-Display is based on Ghosd library\n"
+"written by Evan Martin\n"
+"http://neugierig.org/software/ghosd/\n"
+"\n"
+msgstr ""
+
+#: src/blur_scope/config.c:73
+msgid "Blur Scope: Color selection"
+msgstr ""
+
+#: src/blur_scope/config.c:83 src/jack/configure.c:106
+msgid "Options:"
+msgstr ""
+
+#: src/bs2b/plugin.c:157
+msgid "Bauer stereophonic-to-binaural Preferences"
+msgstr ""
+
+#: src/bs2b/plugin.c:168
+msgid "Feed level:"
+msgstr ""
+
+#: src/bs2b/plugin.c:182
+msgid "Cut frequency:"
+msgstr ""
+
+#: src/bs2b/plugin.c:196
+msgid "Presets:"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:241
+msgid "About Audio CD Plugin"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:242
+msgid ""
+"Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n"
+"\n"
+"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+"\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Also thank you Tony Vroon for mentoring & guiding me.\n"
+"\n"
+"This was a Google Summer of Code 2007 project.\n"
+"\n"
+"Copyright 2009 John Lindgren"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:550
+msgid "Audio CD"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:922
+msgid "Drive is empty."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:924
+msgid "Unsupported disk type."
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:148
+msgid "CD Audio Plugin Configuration"
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:160
+msgid "Digital audio extraction"
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:165
+msgid "Title information"
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:176
+msgid "Disc speed:"
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:184
+msgid "Use cd-text if available"
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:191
+msgid "Use CDDB if available"
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:197
+msgid "Server: "
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:201
+msgid "Path: "
+msgstr "Đường dẫn: "
+
+#: src/cdaudio-ng/configure.c:205
+msgid "Port: "
+msgstr "Cổng: "
+
+#: src/cdaudio-ng/configure.c:218
+msgid "Use HTTP instead of CDDBP"
+msgstr "Dùng HTTP thay cho CDDBP"
+
+#: src/cdaudio-ng/configure.c:230
+msgid "Override default device: "
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:123
+#: src/echo_plugin/gui.c:118 src/jack/configure.c:141 src/null/null.c:107
+#: src/stereo_plugin/stereo.c:118
+msgid "Ok"
+msgstr "Ok"
+
+#: src/cd-menu-items/cd-menu-items.c:34
+msgid "Play CD"
+msgstr "Phát đĩa CD"
+
+#: src/cd-menu-items/cd-menu-items.c:34
+msgid "Add CD"
+msgstr "Thêm CD"
+
+#: src/compressor/plugin.c:63
+msgid "About Dynamic Range Compression Plugin"
+msgstr ""
+
+#: src/compressor/plugin.c:95
+msgid "Dynamic Range Compressor Preferences"
+msgstr ""
+
+#: src/compressor/plugin.c:107
+msgid "Center volume:"
+msgstr ""
+
+#: src/compressor/plugin.c:120
+msgid "Dynamic range:"
+msgstr ""
+
+#: src/console/configure.c:136
+msgid "Game Console Music Decoder"
+msgstr ""
+
+#: src/console/configure.c:153
+msgid "General"
+msgstr "Tổng quát"
+
+#: src/console/configure.c:155 src/skins/ui_manager.c:176
+msgid "Playback"
+msgstr ""
+
+#: src/console/configure.c:170
+msgid "Bass:"
+msgstr ""
+
+#: src/console/configure.c:174 src/console/configure.c:185
+#: src/console/configure.c:206
+msgid "secs"
+msgstr "giây"
+
+#: src/console/configure.c:181
+msgid "Treble:"
+msgstr ""
+
+#: src/console/configure.c:202
+msgid "Default song length:"
+msgstr ""
+
+#: src/console/configure.c:208
+msgid "Resampling"
+msgstr ""
+
+#: src/console/configure.c:214
+msgid "Enable audio resampling"
+msgstr ""
+
+#: src/console/configure.c:229
+msgid "Resampling rate:"
+msgstr ""
+
+#: src/console/configure.c:233
+msgid "Hz"
+msgstr "Hz"
+
+#: src/console/configure.c:244
+msgid "SPC"
+msgstr "SPC"
+
+#: src/console/configure.c:245
+msgid "Ignore length from SPC tags"
+msgstr ""
+
+#: src/console/configure.c:246
+msgid "Increase reverb"
+msgstr ""
+
+#: src/console/configure.c:271
+msgid ""
+"The default song length, expressed in seconds, is used for songs that do not"
+" provide length information (i.e. looping tracks)."
+msgstr ""
+
+#: src/console/plugin.c:33
+msgid "About the Game Console Music Decoder"
+msgstr ""
+
+#: src/console/plugin.c:34
+msgid ""
+"Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
+"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"Audacious implementation by: William Pitcock <nenolod@dereferenced.org>, \n"
+"        Shay Green <gblargg@gmail.com>\n"
+msgstr ""
+
+#: src/crossfade/plugin.c:60
+msgid "About Crossfade"
+msgstr ""
+
+#: src/crossfade/plugin.c:92
+msgid "Crossfade Preferences"
+msgstr ""
+
+#: src/crossfade/plugin.c:104
+msgid "Overlap (in seconds):"
+msgstr ""
+
+#: src/crossfade/plugin.c:135 src/crossfade/plugin.c:141
+msgid "Crossfade Error"
+msgstr ""
+
+#: src/crossfade/plugin.c:135
+msgid ""
+"Crossfading failed because the songs had a different number of channels."
+msgstr ""
+
+#: src/crossfade/plugin.c:143
+msgid ""
+"Crossfading failed because the songs had different sample rates.\n"
+"\n"
+"You can use the Sample Rate Converter effect to resample the songs to the same rate."
+msgstr ""
+
+#: src/crystalizer/crystalizer.c:100
+msgid "Configure Crystalizer"
+msgstr ""
+
+#: src/crystalizer/crystalizer.c:102 src/stereo_plugin/stereo.c:97
+msgid "Effect intensity:"
+msgstr ""
+
+#: src/crystalizer/crystalizer.c:136 src/echo_plugin/gui.c:131
+#: src/stereo_plugin/stereo.c:131
+msgid "Apply"
+msgstr "Áp dụng"
+
+#: src/echo_plugin/gui.c:15
+msgid ""
+"Echo Plugin\n"
+"By Johan Levin 1999.\n"
+"\n"
+"Surround echo by Carl van Schaik 1999"
+msgstr ""
+
+#: src/echo_plugin/gui.c:27
+msgid "About Echo Plugin"
+msgstr ""
+
+#: src/echo_plugin/gui.c:67
+msgid "Configure Echo"
+msgstr ""
+
+#: src/echo_plugin/gui.c:83
+msgid "Delay: (ms)"
+msgstr ""
+
+#: src/echo_plugin/gui.c:88
+msgid "Feedback: (%)"
+msgstr ""
+
+#: src/echo_plugin/gui.c:93
+msgid "Volume: (%)"
+msgstr "Âm lượng: (%)"
+
+#: src/ffaudio/ffaudio-core.c:795
+#, c-format
+msgid ""
+"Multi-format audio decoding plugin for Audacious based on\n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+"Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
+"\n"
+"Audacious plugin by:\n"
+"            William Pitcock <nenolod@nenolod.net>,\n"
+"            Matti Hämäläinen <ccr@tnsp.org>\n"
+"\n"
+"libavcodec %s (%s)\n"
+"libavformat %s (%s)\n"
+"libavutil %s (%s)\n"
+msgstr ""
+
+#: src/ffaudio/ffaudio-core.c:809
+msgid "About FFaudio Plugin"
+msgstr ""
+
+#: src/filewriter/filewriter.c:166
+msgid "About FileWriter-Plugin"
+msgstr ""
+
+#: src/filewriter/filewriter.c:455
+msgid "File Writer Configuration"
+msgstr ""
+
+#: src/filewriter/filewriter.c:467
+msgid "Output file format:"
+msgstr ""
+
+#: src/filewriter/filewriter.c:485
+msgid "Configure"
+msgstr "Cấu hình"
+
+#: src/filewriter/filewriter.c:500
+msgid "Save into original directory"
+msgstr ""
+
+#: src/filewriter/filewriter.c:505
+msgid "Save into custom directory"
+msgstr ""
+
+#: src/filewriter/filewriter.c:515
+msgid "Output file folder:"
+msgstr ""
+
+#: src/filewriter/filewriter.c:519
+msgid "Pick a folder"
+msgstr ""
+
+#: src/filewriter/filewriter.c:538
+msgid "Get filename from:"
+msgstr ""
+
+#: src/filewriter/filewriter.c:541
+msgid "original file tags"
+msgstr ""
+
+#: src/filewriter/filewriter.c:547
+msgid "original filename"
+msgstr "tên gốc của tập tin"
+
+#: src/filewriter/filewriter.c:557
+msgid "Don't strip file name extension"
+msgstr ""
+
+#: src/filewriter/filewriter.c:572
+msgid "Prepend track number to filename"
+msgstr ""
+
+#: src/filewriter/mp3.c:38 src/filewriter/mp3.c:771
+msgid "Auto"
+msgstr ""
+
+#: src/filewriter/mp3.c:38
+msgid "Joint Stereo"
+msgstr ""
+
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183
+msgid "Stereo"
+msgstr ""
+
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183
+msgid "Mono"
+msgstr ""
+
+#: src/filewriter/mp3.c:712
+msgid "MP3 Configuration"
+msgstr "Cấu hình MP3"
+
+#: src/filewriter/mp3.c:735
+msgid "Algorithm Quality:"
+msgstr ""
+
+#: src/filewriter/mp3.c:760
+msgid "Output Samplerate:"
+msgstr ""
+
+#: src/filewriter/mp3.c:788
+msgid "(Hz)"
+msgstr "(Hz)"
+
+#: src/filewriter/mp3.c:795
+msgid "Bitrate / Compression ratio:"
+msgstr ""
+
+#: src/filewriter/mp3.c:819
+msgid "Bitrate (kbps):"
+msgstr ""
+
+#: src/filewriter/mp3.c:852
+msgid "Compression ratio:"
+msgstr ""
+
+#: src/filewriter/mp3.c:876
+msgid "Audio Mode:"
+msgstr ""
+
+#: src/filewriter/mp3.c:901
+msgid "Misc:"
+msgstr ""
+
+#: src/filewriter/mp3.c:912
+msgid "Enforce strict ISO complience"
+msgstr ""
+
+#: src/filewriter/mp3.c:923
+msgid "Error protection"
+msgstr ""
+
+#: src/filewriter/mp3.c:935 src/filewriter/vorbis.c:243
+msgid "Quality"
+msgstr "Chất lượng:"
+
+#: src/filewriter/mp3.c:945
+msgid "Enable VBR/ABR"
+msgstr ""
+
+#: src/filewriter/mp3.c:955
+msgid "Type:"
+msgstr ""
+
+#: src/filewriter/mp3.c:988
+msgid "VBR Options:"
+msgstr ""
+
+#: src/filewriter/mp3.c:1004
+msgid "Minimum bitrate (kbps):"
+msgstr ""
+
+#: src/filewriter/mp3.c:1031
+msgid "Maximum bitrate (kbps):"
+msgstr ""
+
+#: src/filewriter/mp3.c:1054
+msgid "Strictly enforce minimum bitrate"
+msgstr ""
+
+#: src/filewriter/mp3.c:1066
+msgid "ABR Options:"
+msgstr ""
+
+#: src/filewriter/mp3.c:1076
+msgid "Average bitrate (kbps):"
+msgstr ""
+
+#: src/filewriter/mp3.c:1104
+msgid "VBR quality level:"
+msgstr ""
+
+#: src/filewriter/mp3.c:1123
+msgid "Don't write Xing VBR header"
+msgstr ""
+
+#: src/filewriter/mp3.c:1137
+msgid "VBR/ABR"
+msgstr "VBR/ABR"
+
+#: src/filewriter/mp3.c:1147
+msgid "Frame params:"
+msgstr ""
+
+#: src/filewriter/mp3.c:1159
+msgid "Mark as copyright"
+msgstr ""
+
+#: src/filewriter/mp3.c:1170
+msgid "Mark as original"
+msgstr ""
+
+#: src/filewriter/mp3.c:1182
+msgid "ID3 params:"
+msgstr ""
+
+#: src/filewriter/mp3.c:1193
+msgid "Force addition of version 2 tag"
+msgstr ""
+
+#: src/filewriter/mp3.c:1203
+msgid "Only add v1 tag"
+msgstr ""
+
+#: src/filewriter/mp3.c:1210
+msgid "Only add v2 tag"
+msgstr ""
+
+#: src/filewriter/mp3.c:1231
+msgid "Tags"
+msgstr ""
+
+#: src/filewriter/vorbis.c:236
+msgid "Vorbis Encoder Configuration"
+msgstr ""
+
+#: src/filewriter/vorbis.c:256
+msgid "Quality level (0 - 10):"
+msgstr ""
+
+#: src/flacng/plugin.c:379
+msgid "About FLAC Audio Plugin"
+msgstr ""
+
+#: src/flacng/plugin.c:380
+msgid ""
+"\n"
+"\n"
+"Original code by\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
+msgstr ""
+
+#: src/gnomeshortcuts/gnomeshortcuts.c:303
+msgid "About Gnome Shortcut Plugin"
+msgstr "Thông tin trình cắm Dùng phím tắt của GNOME"
+
+#: src/gnomeshortcuts/gnomeshortcuts.c:304
+msgid ""
+"Gnome Shortcut Plugin\n"
+"Let's you control the player with Gnome's shortcuts.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+msgstr ""
+"Gnome Shortcut Plugin\n"
+"Cho phép bạn điều khiển Audacious bằng phím tắt của Gnome.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+
+#: src/gntui/fileselector.c:75 src/gntui/gntui.c:272
+msgid "Open Files"
+msgstr "Mở tập tin"
+
+#: src/gntui/fileselector.c:75 src/gntui/gntui.c:271
+msgid "Add Files"
+msgstr "Thêm tập tin"
+
+#: src/gntui/gntui.c:270
+msgid "Audacious2"
+msgstr "Audacious2"
+
+#: src/gntui/gntui.c:311
+msgid "gnt interface"
+msgstr ""
+
+#: src/gtkui/columns.c:36
+msgid "Entry number"
+msgstr ""
+
+#: src/gtkui/columns.c:36
+msgid "Title"
+msgstr "Tựa đề"
+
+#: src/gtkui/columns.c:37
+msgid "Artist"
+msgstr "Nghệ sĩ"
+
+#: src/gtkui/columns.c:37
+msgid "Year"
+msgstr "Năm"
+
+#: src/gtkui/columns.c:37
+msgid "Album"
+msgstr "Album"
+
+#: src/gtkui/columns.c:37
+msgid "Track"
+msgstr ""
+
+#: src/gtkui/columns.c:37
+msgid "Queue position"
+msgstr ""
+
+#: src/gtkui/columns.c:38
+msgid "Length"
+msgstr "Thời lượng"
+
+#: src/gtkui/columns.c:38
+msgid "File path"
+msgstr "Đường dẫn"
+
+#: src/gtkui/columns.c:38
+msgid "File name"
+msgstr "Tên tập tin"
+
+#: src/gtkui/columns.c:38
+msgid "Custom title"
+msgstr ""
+
+#: src/gtkui/columns.c:39
+msgid "Bitrate"
+msgstr ""
+
+#: src/gtkui/columns.c:278
+msgid "Choose Columns"
+msgstr "Chọn cột"
+
+#: src/gtkui/columns.c:292
+msgid "Available:"
+msgstr "Có thể dùng:"
+
+#: src/gtkui/columns.c:326
+msgid "Chosen:"
+msgstr "Đang hiện:"
+
+#: src/gtkui/layout.c:122
+msgid "Dock at Left"
+msgstr ""
+
+#: src/gtkui/layout.c:122
+msgid "Dock at Right"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+msgid "Dock at Top"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+msgid "Dock at Bottom"
+msgstr ""
+
+#: src/gtkui/layout.c:123
+msgid "Undock"
+msgstr ""
+
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:643
+msgid "Disable"
+msgstr ""
+
+#: src/gtkui/menus.c:130
+msgid "_Open Files ..."
+msgstr "Mở tậ_p tin ..."
+
+#: src/gtkui/menus.c:131
+msgid "Open _URL ..."
+msgstr "Mở _URL ..."
+
+#: src/gtkui/menus.c:132
+msgid "_Add File ..."
+msgstr "Thêm tập ti_n ..."
+
+#: src/gtkui/menus.c:133
+msgid "Add U_RL ..."
+msgstr "Thêm U_RL ..."
+
+#: src/gtkui/menus.c:135
+msgid "A_bout ..."
+msgstr "_Giới thiệu ..."
+
+#: src/gtkui/menus.c:136
+msgid "_Preferences ..."
+msgstr "Tù_y chỉnh ..."
+
+#: src/gtkui/menus.c:137 src/skins/ui_manager.c:406
+msgid "_Quit"
+msgstr "_Thoát"
+
+#: src/gtkui/menus.c:140
+msgid "_Play"
+msgstr "_Phát"
+
+#: src/gtkui/menus.c:141
+msgid "Paus_e"
+msgstr "Tạm _dừng"
+
+#: src/gtkui/menus.c:142
+msgid "_Stop"
+msgstr "_Ngưng"
+
+#: src/gtkui/menus.c:143
+msgid "Pre_vious"
+msgstr "_Bài trước"
+
+#: src/gtkui/menus.c:144
+msgid "_Next"
+msgstr "Tiếp the_o"
+
+#: src/gtkui/menus.c:146
+msgid "_Repeat"
+msgstr "_Lặp lại"
+
+#: src/gtkui/menus.c:147
+msgid "S_huffle"
+msgstr "T_rộn bài"
+
+#: src/gtkui/menus.c:148
+msgid "N_o Playlist Advance"
+msgstr "_Không tự động phát bài kế tiếp"
+
+#: src/gtkui/menus.c:149
+msgid "Stop _After This Song"
+msgstr "Dừng lại sa_u bài này"
+
+#: src/gtkui/menus.c:151 src/gtkui/menus.c:209
+msgid "Song _Info ..."
+msgstr "Thông t_in bài hát ..."
+
+#: src/gtkui/menus.c:152
+msgid "Jump to _Time ..."
+msgstr "_Xác định thời gian ..."
+
+#: src/gtkui/menus.c:153
+msgid "_Jump to Song ..."
+msgstr "C_họn bài hát ..."
+
+#: src/gtkui/menus.c:156
+msgid "By Track _Number"
+msgstr ""
+
+#: src/gtkui/menus.c:157
+msgid "By _Title"
+msgstr ""
+
+#: src/gtkui/menus.c:158
+msgid "By _Artist"
+msgstr ""
+
+#: src/gtkui/menus.c:159
+msgid "By A_lbum"
+msgstr ""
+
+#: src/gtkui/menus.c:160
+msgid "By Release _Date"
+msgstr ""
+
+#: src/gtkui/menus.c:161
+msgid "By _File Path"
+msgstr ""
+
+#: src/gtkui/menus.c:162
+msgid "By _Custom Title"
+msgstr ""
+
+#: src/gtkui/menus.c:164
+msgid "R_everse Order"
+msgstr ""
+
+#: src/gtkui/menus.c:165
+msgid "_Random Order"
+msgstr ""
+
+#: src/gtkui/menus.c:168 src/gtkui/menus.c:211
+msgid "_Refresh"
+msgstr ""
+
+#: src/gtkui/menus.c:170
+msgid "_Sort"
+msgstr ""
+
+#: src/gtkui/menus.c:172
+msgid "_New"
+msgstr ""
+
+#: src/gtkui/menus.c:173 src/gtkui/menus.c:222
+msgid "_Close"
+msgstr ""
+
+#: src/gtkui/menus.c:175
+msgid "_Import ..."
+msgstr ""
+
+#: src/gtkui/menus.c:176
+msgid "_Export ..."
+msgstr ""
+
+#: src/gtkui/menus.c:178
+msgid "_Playlist Manager ..."
+msgstr ""
+
+#: src/gtkui/menus.c:179
+msgid "_Queue Manager ..."
+msgstr ""
+
+#: src/gtkui/menus.c:182
+msgid "Volume _Up"
+msgstr ""
+
+#: src/gtkui/menus.c:183
+msgid "Volume _Down"
+msgstr ""
+
+#: src/gtkui/menus.c:185
+msgid "_Equalizer"
+msgstr ""
+
+#: src/gtkui/menus.c:187
+msgid "E_ffects"
+msgstr ""
+
+#: src/gtkui/menus.c:190
+msgid "_Interface"
+msgstr ""
+
+#: src/gtkui/menus.c:192
+msgid "Show _Menu Bar"
+msgstr ""
+
+#: src/gtkui/menus.c:193
+msgid "Show I_nfo Bar"
+msgstr ""
+
+#: src/gtkui/menus.c:194
+msgid "Show _Status Bar"
+msgstr ""
+
+#: src/gtkui/menus.c:196
+msgid "Show Column _Headers"
+msgstr ""
+
+#: src/gtkui/menus.c:197
+msgid "Choose _Columns ..."
+msgstr ""
+
+#: src/gtkui/menus.c:198
+msgid "Scrol_l on Song Change"
+msgstr ""
+
+#: src/gtkui/menus.c:201
+msgid "_File"
+msgstr "_Tập tin"
+
+#: src/gtkui/menus.c:202
+msgid "_Playback"
+msgstr "Điều _khiển"
+
+#: src/gtkui/menus.c:203
+msgid "P_laylist"
+msgstr "_Danh sách"
+
+#: src/gtkui/menus.c:204 src/gtkui/menus.c:218
+msgid "_Services"
+msgstr "Dịch _vụ"
+
+#: src/gtkui/menus.c:205
+msgid "_Output"
+msgstr "Â_m thanh"
+
+#: src/gtkui/menus.c:206
+msgid "_View"
+msgstr "_Hiển thị"
+
+#: src/gtkui/menus.c:210
+msgid "_Queue/Unqueue"
+msgstr ""
+
+#: src/gtkui/menus.c:213
+msgid "Cu_t"
+msgstr ""
+
+#: src/gtkui/menus.c:214
+msgid "_Copy"
+msgstr ""
+
+#: src/gtkui/menus.c:215
+msgid "_Paste"
+msgstr ""
+
+#: src/gtkui/menus.c:216
+msgid "Select _All"
+msgstr ""
+
+#: src/gtkui/menus.c:221
+msgid "_Rename"
+msgstr ""
+
+#: src/gtkui/ui_gtk.c:95
+msgid "GTK Interface"
+msgstr "Giao diện GTK"
+
+#: src/gtkui/ui_gtk.c:156 src/skins/ui_main.c:302
+#, c-format
+msgid "%s - Audacious"
+msgstr ""
+
+#: src/gtkui/ui_gtk.c:162
+msgid "Buffering ..."
+msgstr ""
+
+#: src/gtkui/ui_gtk.c:165 src/skins/ui_main.c:304 src/skins/ui_main.c:1499
+msgid "Audacious"
+msgstr "Audacious"
+
+#: src/gtkui/ui_gtk.c:211 src/skins/plugin.c:183
+msgid "Error"
+msgstr "Lỗi"
+
+#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:459
+msgid "mono"
+msgstr ""
+
+#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:458
+msgid "stereo"
+msgstr ""
+
+#: src/gtkui/ui_statusbar.c:106
+#, c-format
+msgid "%d channel"
+msgid_plural "%d channels"
+msgstr[0] "%d kênh"
+
+#: src/gtkui/ui_statusbar.c:121
+#, c-format
+msgid "%d kbps"
+msgstr "%d kbps"
+
+#: src/hotkey/gui.c:71
+msgid "Previous Track"
+msgstr ""
+
+#: src/hotkey/gui.c:72 src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
+msgid "Play"
+msgstr "Phát"
+
+#: src/hotkey/gui.c:73
+msgid "Pause/Resume"
+msgstr "Tạm dừng/Tiếp tục"
+
+#: src/hotkey/gui.c:74 src/skins/ui_manager.c:184 src/skins/ui_manager.c:185
+msgid "Stop"
+msgstr "Ngưng"
+
+#: src/hotkey/gui.c:75
+msgid "Next Track"
+msgstr ""
+
+#: src/hotkey/gui.c:76
+msgid "Forward 5 Seconds"
+msgstr "Xả tới 5 giây"
+
+#: src/hotkey/gui.c:77
+msgid "Rewind 5 Seconds"
+msgstr "Lùi lại 5 giây"
+
+#: src/hotkey/gui.c:78
+msgid "Mute"
+msgstr "Tắt âm"
+
+#: src/hotkey/gui.c:79
+msgid "Volume Up"
+msgstr "Tăng âm lượng"
+
+#: src/hotkey/gui.c:80
+msgid "Volume Down"
+msgstr "Giảm âm lượng"
+
+#: src/hotkey/gui.c:81 src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
+msgid "Jump to File"
+msgstr "Chọn tập tin"
+
+#: src/hotkey/gui.c:82
+msgid "Toggle Player Windows"
+msgstr ""
+
+#: src/hotkey/gui.c:83
+msgid "Show On-Screen-Display"
+msgstr ""
+
+#: src/hotkey/gui.c:84
+msgid "Toggle Repeat"
+msgstr ""
+
+#: src/hotkey/gui.c:85
+msgid "Toggle Shuffle"
+msgstr ""
+
+#: src/hotkey/gui.c:95
+msgid "(none)"
+msgstr ""
+
+#: src/hotkey/gui.c:232
+msgid ""
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+
+#: src/hotkey/gui.c:234
+msgid "Binding mouse buttons"
+msgstr ""
+
+#: src/hotkey/gui.c:384
+msgid "Global Hotkey Plugin Configuration"
+msgstr "Cấu hình trình cắm phím tắt chung"
+
+#: src/hotkey/gui.c:400
+msgid ""
+"Press a key combination inside a text field.\n"
+"You can also bind mouse buttons."
+msgstr ""
+
+#: src/hotkey/gui.c:405
+msgid "Hotkeys:"
+msgstr "Phím tắt:"
+
+#: src/hotkey/gui.c:424
+msgid "<b>Action:</b>"
+msgstr "<b>Hành động:</b>"
+
+#: src/hotkey/gui.c:432
+msgid "<b>Key Binding:</b>"
+msgstr ""
+
+#: src/hotkey/gui.c:663
+msgid "About Global Hotkey Plugin"
+msgstr "Thông tin trình cắm phím tắt chung"
+
+#: src/hotkey/gui.c:664
+msgid ""
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributers include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
+"\t\t\tBryn Davies <curious@ihug.com.au>\n"
+"\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
+"\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
+"\n"
+msgstr ""
+
+#: src/jack/configure.c:66
+msgid "Connect to all available jack ports"
+msgstr ""
+
+#: src/jack/configure.c:73
+msgid "Connect only the output ports"
+msgstr ""
+
+#: src/jack/configure.c:80
+msgid "Connect to no ports"
+msgstr ""
+
+#: src/jack/configure.c:98
+msgid "jack Plugin configuration"
+msgstr ""
+
+#: src/jack/configure.c:116
+msgid "Connection mode:"
+msgstr ""
+
+#: src/jack/configure.c:128
+msgid "Enable debug printing"
+msgstr ""
+
+#: src/jack/jack.c:422
+msgid ""
+"XMMS jack Driver 0.17\n"
+"\n"
+"xmms-jack.sf.net\n"
+"Chris Morgan<cmorgan@alum.wpi.edu>\n"
+"\n"
+"Audacious port by\n"
+"Giacomo Lozito from develia.org"
+msgstr ""
+
+#: src/jack/jack.c:427
+msgid "About JACK Output Plugin 0.17"
+msgstr ""
+
+#: src/ladspa/plugin.c:414
+msgid "About LADSPA Host"
+msgstr ""
+
+#: src/ladspa/plugin.c:515
+#, c-format
+msgid "%s Settings"
+msgstr ""
+
+#: src/ladspa/plugin.c:583
+msgid "LADSPA Host Settings"
+msgstr ""
+
+#: src/ladspa/plugin.c:592
+msgid "Module paths:"
+msgstr ""
+
+#: src/ladspa/plugin.c:597
+msgid ""
+"<small>Separate multiple paths with a colon.\n"
+"These paths are searched in addition to LADSPA_PATH.\n"
+"After adding new paths, press Enter to scan for new plugins.</small>"
+msgstr ""
+
+#: src/ladspa/plugin.c:613
+msgid "Available plugins:"
+msgstr ""
+
+#: src/ladspa/plugin.c:625
+msgid "Enable"
+msgstr ""
+
+#: src/ladspa/plugin.c:631
+msgid "Enabled plugins:"
+msgstr ""
+
+#: src/ladspa/plugin.c:646
+msgid "Settings"
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:227
+msgid ""
+"\n"
+"Looking for lyrics..."
+msgstr ""
+"\n"
+"Đang tìm lời bài hát..."
+
+#: src/lyricwiki/lyricwiki.c:250
+msgid ""
+"\n"
+"Connecting to lyrics.wikia.com..."
+msgstr ""
+"\n"
+"Đang kết nối đến lyrics.wikia.com..."
+
+#: src/lyricwiki/lyricwiki.c:338
+msgid ""
+"\n"
+"No lyrics were found."
+msgstr ""
+"\n"
+"Không tìm thấy lời bài hát."
+
+#: src/metronom/metronom.c:85
+msgid "About Metronom"
+msgstr ""
+
+#: src/metronom/metronom.c:86
+msgid ""
+"A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"To use it, add a URL: tact://beats*num/den\n"
+"e.g. tact://77 to play 77 beats per minute\n"
+"or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
+msgstr ""
+
+#: src/metronom/metronom.c:143
+#, c-format
+msgid "Tact generator: %d bpm"
+msgstr ""
+
+#: src/metronom/metronom.c:145
+#, c-format
+msgid "Tact generator: %d bpm %d/%d"
+msgstr ""
+
+#: src/mixer/plugin.c:64
+msgid "About Channel Mixer"
+msgstr ""
+
+#: src/mixer/plugin.c:93
+msgid "Channel Mixer Settings"
+msgstr ""
+
+#: src/mixer/plugin.c:102
+msgid "Output channels:"
+msgstr ""
+
+#: src/mixer/plugin.c:112
+msgid "Changes take effect at the next song change."
+msgstr ""
+
+#: src/mpg123/mpg123.c:183
+msgid "Surround"
+msgstr ""
+
+#: src/mtp_up/mtp.c:298
+msgid "Upload in progress..."
+msgstr "Đang tải lên..."
+
+#: src/mtp_up/mtp.c:310
+msgid "Upload to MTP Device"
+msgstr ""
+
+#: src/mtp_up/mtp.c:311
+msgid "Disconnect MTP Device"
+msgstr ""
+
+#: src/notify/libnotify-aosd_event.c:47
+msgid "Stopped"
+msgstr "Đã dừng"
+
+#: src/notify/libnotify-aosd_event.c:47
+msgid "Audacious is not playing."
+msgstr ""
+
+#: src/null/null.c:64
+msgid "Null output plugin "
+msgstr ""
+
+#: src/null/null.c:65
+msgid ""
+" by Christian Birchinger <joker@netswarm.net>\n"
+"based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
+msgstr ""
+
+#: src/null/null.c:68
+msgid "About Null Output"
+msgstr ""
+
+#: src/null/null.c:89
+msgid "Null output preferences"
+msgstr ""
+
+#: src/null/null.c:100
+msgid "Run in real time"
+msgstr ""
+
+#: src/oss4/configure.c:76
+msgid "1. Default device"
+msgstr "1. Thiết bị măc định"
+
+#: src/oss4/configure.c:132
+msgid "OSS4 Output Plugin Preferences"
+msgstr ""
+
+#: src/oss4/configure.c:144 src/OSS/configure.c:194
+msgid "Audio device:"
+msgstr "Thiết bị âm thanh:"
+
+#: src/oss4/configure.c:172 src/OSS/configure.c:217 src/OSS/configure.c:260
+msgid "Use alternate device:"
+msgstr "Dùng thiết bị thay thế:"
+
+#: src/oss4/configure.c:187
+msgid "Save volume between sessions"
+msgstr ""
+
+#: src/oss4/configure.c:191
+msgid "Enable format conversions made by the OSS software."
+msgstr ""
+
+#: src/oss4/plugin.c:51
+msgid "About OSS4 Plugin"
+msgstr ""
+
+#: src/oss4/utils.c:211
+msgid "OSS4 error"
+msgstr ""
+
+#: src/OSS/configure.c:137
+#, c-format
+msgid "Default (%s)"
+msgstr "Mặc định (%s)"
+
+#: src/OSS/configure.c:178
+msgid "OSS Driver configuration"
+msgstr ""
+
+#: src/OSS/configure.c:281
+msgid "Devices"
+msgstr "Thiết bị"
+
+#: src/OSS/configure.c:283
+msgid "Buffering:"
+msgstr ""
+
+#: src/OSS/configure.c:296
+msgid "Pre-buffer (percent):"
+msgstr ""
+
+#: src/OSS/configure.c:307
+msgid "Buffering"
+msgstr ""
+
+#: src/OSS/configure.c:308
+msgid "Mixer Settings:"
+msgstr ""
+
+#: src/OSS/configure.c:314
+msgid "Volume controls Master not PCM"
+msgstr ""
+
+#: src/OSS/configure.c:320
+msgid "Mixer"
+msgstr ""
+
+#: src/OSS/OSS.c:40
+msgid "About OSS Driver"
+msgstr ""
+
+#: src/pulse_audio/pulse_audio.c:687
+msgid "About Audacious PulseAudio Output Plugin"
+msgstr ""
+
+#: src/resample/plugin.c:89
+msgid "About Sample Rate Converter Plugin"
+msgstr ""
+
+#: src/resample/plugin.c:144
+msgid "Sample Rate Converter Preferences"
+msgstr ""
+
+#: src/resample/plugin.c:156
+msgid "Rate mappings:"
+msgstr ""
+
+#: src/resample/plugin.c:179
+msgid "All others:"
+msgstr ""
+
+#: src/resample/plugin.c:191
+msgid "Method:"
+msgstr ""
+
+#: src/scrobbler/configure.c:122 src/scrobbler/configure.c:197
+msgid "Change password"
+msgstr "Đổi mật khẩu"
+
+#: src/scrobbler/configure.c:143
+msgid "<b>Services</b>"
+msgstr "<b>Dịch vụ</b>"
+
+#: src/scrobbler/configure.c:165
+msgid "Username:"
+msgstr "Tên người dùng:"
+
+#: src/scrobbler/configure.c:171
+msgid "Password:"
+msgstr "Mật khẩu:"
+
+#: src/scrobbler/configure.c:179
+msgid "Scrobbler URL:"
+msgstr ""
+
+#: src/scrobbler/configure.c:211
+msgid "<b>Last.FM</b>"
+msgstr "<b>Last.FM</b>"
+
+#: src/scrobbler/configure.c:238
+msgid "Scrobbler"
+msgstr "Scrobbler"
+
+#: src/scrobbler/plugin.c:194
+msgid ""
+"Audacious AudioScrobbler Plugin\n"
+"\n"
+"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>\n"
+msgstr ""
+
+#: src/scrobbler/plugin.c:196
+msgid "About Scrobbler Plugin"
+msgstr ""
+
+#: src/sdlout/plugin.c:58
+msgid "About SDL Output Plugin"
+msgstr ""
+
+#: src/sdlout/plugin.c:78
+msgid "SDL error"
+msgstr ""
+
+#: src/skins/plugin.c:165
+msgid "About Skinned GUI"
+msgstr ""
+
+#: src/skins/plugin.c:166
+msgid ""
+"Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
+"\n"
+msgstr ""
+
+#: src/skins/skins_cfg.c:207
+msgid "_Player:"
+msgstr ""
+
+#: src/skins/skins_cfg.c:208
+msgid "Select main player window font:"
+msgstr ""
+
+#: src/skins/skins_cfg.c:210
+msgid "_Playlist:"
+msgstr ""
+
+#: src/skins/skins_cfg.c:211
+msgid "Select playlist font:"
+msgstr ""
+
+#: src/skins/skins_cfg.c:215
+msgid "<b>_Fonts</b>"
+msgstr ""
+
+#: src/skins/skins_cfg.c:218
+msgid "Use bitmap fonts (supports ASCII only)"
+msgstr ""
+
+#: src/skins/skins_cfg.c:220
+msgid "Scroll song title in both directions"
+msgstr ""
+
+#: src/skins/skins_cfg.c:298
+msgid "<b>_Skin</b>"
+msgstr ""
+
+#: src/skins/skins_cfg.c:345
+msgid "Interface Preferences"
+msgstr "Tùy chỉnh giao diện"
+
+#: src/skins/ui_equalizer.c:330
+msgid "Preamp"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:334
+msgid "31 Hz"
+msgstr "31 Hz"
+
+#: src/skins/ui_equalizer.c:335
+msgid "63 Hz"
+msgstr "63 Hz"
+
+#: src/skins/ui_equalizer.c:335
+msgid "125 Hz"
+msgstr "125 Hz"
+
+#: src/skins/ui_equalizer.c:335
+msgid "250 Hz"
+msgstr "250 Hz"
+
+#: src/skins/ui_equalizer.c:335
+msgid "500 Hz"
+msgstr "500 Hz"
+
+#: src/skins/ui_equalizer.c:335
+msgid "1 kHz"
+msgstr "1 kHz"
+
+#: src/skins/ui_equalizer.c:336
+msgid "2 kHz"
+msgstr "2 kHz"
+
+#: src/skins/ui_equalizer.c:336
+msgid "4 kHz"
+msgstr "4 kHz"
+
+#: src/skins/ui_equalizer.c:336
+msgid "8 kHz"
+msgstr "8 kHz"
+
+#: src/skins/ui_equalizer.c:336
+msgid "16 kHz"
+msgstr "16 kHz"
+
+#: src/skins/ui_equalizer.c:379
+msgid "Audacious Equalizer"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:896
+msgid "Presets"
+msgstr ""
+
+#: src/skins/ui_main.c:443
+msgid "kbps"
+msgstr "kbps"
+
+#: src/skins/ui_main.c:451
+msgid "kHz"
+msgstr "kHz"
+
+#: src/skins/ui_main.c:458
+msgid "surround"
+msgstr ""
+
+#: src/skins/ui_main.c:806
+#, c-format
+msgid "Seek to %d:%-2.2d / %d:%-2.2d"
+msgstr ""
+
+#: src/skins/ui_main.c:827
+#, c-format
+msgid "Volume: %d%%"
+msgstr ""
+
+#: src/skins/ui_main.c:850
+#, c-format
+msgid "Balance: %d%% left"
+msgstr ""
+
+#: src/skins/ui_main.c:852
+msgid "Balance: center"
+msgstr ""
+
+#: src/skins/ui_main.c:854
+#, c-format
+msgid "Balance: %d%% right"
+msgstr ""
+
+#: src/skins/ui_main.c:980
+msgid "Options Menu"
+msgstr ""
+
+#: src/skins/ui_main.c:984
+msgid "Disable 'Always On Top'"
+msgstr ""
+
+#: src/skins/ui_main.c:986
+msgid "Enable 'Always On Top'"
+msgstr ""
+
+#: src/skins/ui_main.c:989
+msgid "File Info Box"
+msgstr ""
+
+#: src/skins/ui_main.c:994
+msgid "Visualization Menu"
+msgstr ""
+
+#: src/skins/ui_main.c:1648
+msgid "Single mode."
+msgstr ""
+
+#: src/skins/ui_main.c:1650
+msgid "Playlist mode."
+msgstr ""
+
+#: src/skins/ui_main.c:1672
+msgid "Stopping after song."
+msgstr ""
+
+#: src/skins/ui_main.c:1674
+msgid "Not stopping after song."
+msgstr ""
+
+#: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
+msgid "Autoscroll Songname"
+msgstr ""
+
+#: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
+msgid "Stop after Current Song"
+msgstr ""
+
+#: src/skins/ui_manager.c:73 src/skins/ui_manager.c:74
+msgid "Peaks"
+msgstr ""
+
+#: src/skins/ui_manager.c:76 src/skins/ui_manager.c:77
+msgid "Repeat"
+msgstr "Lặp lại"
+
+#: src/skins/ui_manager.c:79 src/skins/ui_manager.c:80
+msgid "Shuffle"
+msgstr "Trộn bài"
+
+#: src/skins/ui_manager.c:82 src/skins/ui_manager.c:83
+msgid "No Playlist Advance"
+msgstr ""
+
+#: src/skins/ui_manager.c:85 src/skins/ui_manager.c:86
+msgid "Show Player"
+msgstr ""
+
+#: src/skins/ui_manager.c:88 src/skins/ui_manager.c:89
+msgid "Show Playlist Editor"
+msgstr ""
+
+#: src/skins/ui_manager.c:91 src/skins/ui_manager.c:92
+msgid "Show Equalizer"
+msgstr ""
+
+#: src/skins/ui_manager.c:94 src/skins/ui_manager.c:95
+msgid "Always on Top"
+msgstr ""
+
+#: src/skins/ui_manager.c:97 src/skins/ui_manager.c:98
+msgid "Put on All Workspaces"
+msgstr ""
+
+#: src/skins/ui_manager.c:100 src/skins/ui_manager.c:101
+msgid "Roll up Player"
+msgstr ""
+
+#: src/skins/ui_manager.c:103 src/skins/ui_manager.c:104
+msgid "Roll up Playlist Editor"
+msgstr ""
+
+#: src/skins/ui_manager.c:106 src/skins/ui_manager.c:107
+msgid "Roll up Equalizer"
+msgstr ""
+
+#: src/skins/ui_manager.c:115
+msgid "Analyzer"
+msgstr ""
+
+#: src/skins/ui_manager.c:116
+msgid "Scope"
+msgstr ""
+
+#: src/skins/ui_manager.c:117
+msgid "Voiceprint"
+msgstr ""
+
+#: src/skins/ui_manager.c:118
+msgid "Off"
+msgstr "Tắt"
+
+#: src/skins/ui_manager.c:122 src/skins/ui_manager.c:139
+#: src/skins/ui_manager.c:145
+msgid "Normal"
+msgstr "Bình thường"
+
+#: src/skins/ui_manager.c:123 src/skins/ui_manager.c:140
+msgid "Fire"
+msgstr ""
+
+#: src/skins/ui_manager.c:124
+msgid "Vertical Lines"
+msgstr ""
+
+#: src/skins/ui_manager.c:128
+msgid "Lines"
+msgstr ""
+
+#: src/skins/ui_manager.c:129
+msgid "Bars"
+msgstr ""
+
+#: src/skins/ui_manager.c:133
+msgid "Dot Scope"
+msgstr ""
+
+#: src/skins/ui_manager.c:134
+msgid "Line Scope"
+msgstr ""
+
+#: src/skins/ui_manager.c:135
+msgid "Solid Scope"
+msgstr ""
+
+#: src/skins/ui_manager.c:141
+msgid "Ice"
+msgstr ""
+
+#: src/skins/ui_manager.c:146
+msgid "Smooth"
+msgstr "Mượt"
+
+#: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
+msgid "Slowest"
+msgstr "Rất chậm"
+
+#: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
+msgid "Slow"
+msgstr "Chậm"
+
+#: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
+msgid "Medium"
+msgstr "Vừa phải"
+
+#: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
+msgid "Fast"
+msgstr "Nhanh"
+
+#: src/skins/ui_manager.c:154 src/skins/ui_manager.c:162
+msgid "Fastest"
+msgstr "Rất nhanh"
+
+#: src/skins/ui_manager.c:166
+msgid "Time Elapsed"
+msgstr ""
+
+#: src/skins/ui_manager.c:167
+msgid "Time Remaining"
+msgstr ""
+
+#: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
+msgid "Pause"
+msgstr "Tạm dừng"
+
+#: src/skins/ui_manager.c:187 src/skins/ui_manager.c:188
+msgid "Previous"
+msgstr ""
+
+#: src/skins/ui_manager.c:190 src/skins/ui_manager.c:191
+msgid "Next"
+msgstr ""
+
+#: src/skins/ui_manager.c:196
+msgid "Visualization"
+msgstr ""
+
+#: src/skins/ui_manager.c:197
+msgid "Visualization Mode"
+msgstr ""
+
+#: src/skins/ui_manager.c:198
+msgid "Analyzer Mode"
+msgstr ""
+
+#: src/skins/ui_manager.c:199
+msgid "Scope Mode"
+msgstr ""
+
+#: src/skins/ui_manager.c:200
+msgid "Voiceprint Mode"
+msgstr ""
+
+#: src/skins/ui_manager.c:201
+msgid "WindowShade VU Mode"
+msgstr ""
+
+#: src/skins/ui_manager.c:202
+msgid "Analyzer Falloff"
+msgstr ""
+
+#: src/skins/ui_manager.c:203
+msgid "Peaks Falloff"
+msgstr ""
+
+#: src/skins/ui_manager.c:208
+msgid "Playlist"
+msgstr "Danh sách"
+
+#: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
+msgid "New Playlist"
+msgstr ""
+
+#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
+msgid "Select Next Playlist"
+msgstr ""
+
+#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
+msgid "Select Previous Playlist"
+msgstr ""
+
+#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
+msgid "Delete Playlist"
+msgstr "Xóa danh sách"
+
+#: src/skins/ui_manager.c:222
+msgid "Import Playlist"
+msgstr "Nhập danh sách"
+
+#: src/skins/ui_manager.c:223
+msgid "Loads a playlist file into the selected playlist."
+msgstr "Nạp một tập tin danh sách vào trong danh sách đã chọn."
+
+#: src/skins/ui_manager.c:226
+msgid "Export Playlist"
+msgstr "Xuất danh sách"
+
+#: src/skins/ui_manager.c:227
+msgid "Saves the selected playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:229
+msgid "Refresh List"
+msgstr ""
+
+#: src/skins/ui_manager.c:230
+msgid "Refreshes metadata associated with a playlist entry."
+msgstr ""
+
+#: src/skins/ui_manager.c:233
+msgid "Playlist Manager"
+msgstr ""
+
+#: src/skins/ui_manager.c:234
+msgid "Queue Manager"
+msgstr ""
+
+#: src/skins/ui_manager.c:237
+msgid "View"
+msgstr "Hiển thị"
+
+#: src/skins/ui_manager.c:238
+msgid "Interface"
+msgstr "Giao diện"
+
+#: src/skins/ui_manager.c:239
+msgid "Interface Preferences ..."
+msgstr "Tùy chỉnh giao diện ..."
+
+#: src/skins/ui_manager.c:243
+msgid "Add Internet Address..."
+msgstr "Thêm địa chỉ Internet..."
+
+#: src/skins/ui_manager.c:244
+msgid "Adds a remote track to the playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:247
+msgid "Add Files..."
+msgstr "Thêm tập tin..."
+
+#: src/skins/ui_manager.c:248
+msgid "Adds files to the playlist."
+msgstr "Thêm tập tin vào danh sách."
+
+#: src/skins/ui_manager.c:253
+msgid "Search and Select"
+msgstr "Tìm và lựa chọn"
+
+#: src/skins/ui_manager.c:254
+msgid ""
+"Searches the playlist and selects playlist entries based on specific "
+"criteria."
+msgstr ""
+
+#: src/skins/ui_manager.c:257
+msgid "Invert Selection"
+msgstr ""
+
+#: src/skins/ui_manager.c:258
+msgid "Inverts the selected and unselected entries."
+msgstr ""
+
+#: src/skins/ui_manager.c:261
+msgid "Select All"
+msgstr "Chọn hết"
+
+#: src/skins/ui_manager.c:262
+msgid "Selects all of the playlist entries."
+msgstr ""
+
+#: src/skins/ui_manager.c:265
+msgid "Select None"
+msgstr ""
+
+#: src/skins/ui_manager.c:266
+msgid "Deselects all of the playlist entries."
+msgstr ""
+
+#: src/skins/ui_manager.c:271
+msgid "Remove All"
+msgstr "Loại bỏ hết"
+
+#: src/skins/ui_manager.c:272
+msgid "Removes all entries from the playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:275
+msgid "Clear Queue"
+msgstr ""
+
+#: src/skins/ui_manager.c:276
+msgid "Clears the queue associated with this playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:279
+msgid "Remove Unavailable Files"
+msgstr ""
+
+#: src/skins/ui_manager.c:280
+msgid "Removes unavailable files from the playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:283
+msgid "Remove Duplicates"
+msgstr ""
+
+#: src/skins/ui_manager.c:285 src/skins/ui_manager.c:317
+#: src/skins/ui_manager.c:347
+msgid "By Title"
+msgstr "Theo tựa đề"
+
+#: src/skins/ui_manager.c:286
+msgid "Removes duplicate entries from the playlist by title."
+msgstr ""
+
+#: src/skins/ui_manager.c:289 src/skins/ui_manager.c:329
+#: src/skins/ui_manager.c:359
+msgid "By Filename"
+msgstr "Theo tên tập tin"
+
+#: src/skins/ui_manager.c:290
+msgid "Removes duplicate entries from the playlist by filename."
+msgstr ""
+
+#: src/skins/ui_manager.c:293 src/skins/ui_manager.c:333
+#: src/skins/ui_manager.c:363
+msgid "By Path + Filename"
+msgstr "Theo đường dẫn + Tên"
+
+#: src/skins/ui_manager.c:294
+msgid "Removes duplicate entries from the playlist by their full path."
+msgstr ""
+
+#: src/skins/ui_manager.c:297
+msgid "Remove Unselected"
+msgstr ""
+
+#: src/skins/ui_manager.c:298
+msgid "Remove unselected entries from the playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:301
+msgid "Remove Selected"
+msgstr ""
+
+#: src/skins/ui_manager.c:302
+msgid "Remove selected entries from the playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:307
+msgid "Randomize List"
+msgstr ""
+
+#: src/skins/ui_manager.c:308
+msgid "Randomizes the playlist."
+msgstr ""
+
+#: src/skins/ui_manager.c:311
+msgid "Reverse List"
+msgstr "Đảo danh sách"
+
+#: src/skins/ui_manager.c:312
+msgid "Reverses the playlist."
+msgstr "Đảo ngược danh sách"
+
+#: src/skins/ui_manager.c:315
+msgid "Sort List"
+msgstr "Sắp xếp danh sách"
+
+#: src/skins/ui_manager.c:318 src/skins/ui_manager.c:348
+msgid "Sorts the list by title."
+msgstr ""
+
+#: src/skins/ui_manager.c:321 src/skins/ui_manager.c:351
+msgid "By Album"
+msgstr "Theo album"
+
+#: src/skins/ui_manager.c:322 src/skins/ui_manager.c:352
+msgid "Sorts the list by album."
+msgstr ""
+
+#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
+msgid "By Artist"
+msgstr "Theo nghệ sĩ"
+
+#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
+msgid "Sorts the list by artist."
+msgstr ""
+
+#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
+msgid "Sorts the list by filename."
+msgstr ""
+
+#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
+msgid "Sorts the list by full pathname."
+msgstr ""
+
+#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
+msgid "By Date"
+msgstr "Theo ngày"
+
+#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
+msgid "Sorts the list by modification time."
+msgstr ""
+
+#: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
+msgid "By Track Number"
+msgstr ""
+
+#: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
+msgid "Sorts the list by track number."
+msgstr ""
+
+#: src/skins/ui_manager.c:345
+msgid "Sort Selected"
+msgstr ""
+
+#: src/skins/ui_manager.c:381
+msgid "File"
+msgstr "Tập tin"
+
+#: src/skins/ui_manager.c:384
+msgid "Plugin Services"
+msgstr ""
+
+#: src/skins/ui_manager.c:386 src/skins/ui_manager.c:389
+msgid "View Track Details"
+msgstr ""
+
+#: src/skins/ui_manager.c:387 src/skins/ui_manager.c:390
+msgid "View track details"
+msgstr ""
+
+#: src/skins/ui_manager.c:392 src/skins/ui_manager.c:393
+msgid "About Audacious"
+msgstr ""
+
+#: src/skins/ui_manager.c:395
+msgid "Play File"
+msgstr "Phát tập tin"
+
+#: src/skins/ui_manager.c:396
+msgid "Load and play a file"
+msgstr ""
+
+#: src/skins/ui_manager.c:398
+msgid "Play Location"
+msgstr ""
+
+#: src/skins/ui_manager.c:399
+msgid "Play media from the selected location"
+msgstr ""
+
+#: src/skins/ui_manager.c:401
+msgid "Plugin services"
+msgstr ""
+
+#: src/skins/ui_manager.c:403
+msgid "Preferences"
+msgstr "Tùy chỉnh"
+
+#: src/skins/ui_manager.c:404
+msgid "Open preferences window"
+msgstr ""
+
+#: src/skins/ui_manager.c:407
+msgid "Quit Audacious"
+msgstr ""
+
+#: src/skins/ui_manager.c:409 src/skins/ui_manager.c:410
+msgid "Set A-B"
+msgstr ""
+
+#: src/skins/ui_manager.c:412 src/skins/ui_manager.c:413
+msgid "Clear A-B"
+msgstr ""
+
+#: src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
+msgid "Jump to Playlist Start"
+msgstr ""
+
+#: src/skins/ui_manager.c:421 src/skins/ui_manager.c:422
+msgid "Jump to Time"
+msgstr ""
+
+#: src/skins/ui_manager.c:424
+msgid "Queue Toggle"
+msgstr ""
+
+#: src/skins/ui_manager.c:425
+msgid "Enables/disables the entry in the playlist's queue."
+msgstr ""
+
+#: src/skins/ui_manager.c:428
+msgid "Copy"
+msgstr "Chép"
+
+#: src/skins/ui_manager.c:430
+msgid "Cut"
+msgstr "Cắt"
+
+#: src/skins/ui_manager.c:432
+msgid "Paste"
+msgstr "Dán"
+
+#: src/skins/ui_manager.c:439
+msgid "Load"
+msgstr "Nạp"
+
+#: src/skins/ui_manager.c:440
+msgid "Import"
+msgstr "Nhập"
+
+#: src/skins/ui_manager.c:441
+msgid "Save"
+msgstr "Lưu"
+
+#: src/skins/ui_manager.c:442
+msgid "Delete"
+msgstr "Xóa"
+
+#: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
+#: src/skins/ui_manager.c:480
+msgid "Preset"
+msgstr "Thiết lập"
+
+#: src/skins/ui_manager.c:445
+msgid "Load preset"
+msgstr "Nạp thiết lập"
+
+#: src/skins/ui_manager.c:447 src/skins/ui_manager.c:468
+#: src/skins/ui_manager.c:483
+msgid "Auto-load preset"
+msgstr "Thiết lập tự nạp"
+
+#: src/skins/ui_manager.c:448
+msgid "Load auto-load preset"
+msgstr "Nạp thiết lập tự nạp"
+
+#: src/skins/ui_manager.c:451
+msgid "Load default preset into equalizer"
+msgstr "Nạp thiết lập mặc định cho bộ cân chỉnh âm"
+
+#: src/skins/ui_manager.c:453
+msgid "Zero"
+msgstr "Không"
+
+#: src/skins/ui_manager.c:454
+msgid "Set equalizer preset levels to zero"
+msgstr "Đặt các mức thiết lập của bộ cân chỉnh âm về không"
+
+#: src/skins/ui_manager.c:456
+msgid "From file"
+msgstr "Từ tập tin"
+
+#: src/skins/ui_manager.c:457
+msgid "Load preset from file"
+msgstr "Nạp thiết lập từ tập tin"
+
+#: src/skins/ui_manager.c:459
+msgid "From WinAMP EQF file"
+msgstr "Từ tập tin EQF của WinAMP"
+
+#: src/skins/ui_manager.c:460
+msgid "Load preset from WinAMP EQF file"
+msgstr "Nạp thiết lập từ tập tin EQF của WinAMP"
+
+#: src/skins/ui_manager.c:462
+msgid "WinAMP Presets"
+msgstr "Thiết lập WinAMP"
+
+#: src/skins/ui_manager.c:463
+msgid "Import WinAMP presets"
+msgstr "Nhập thiết lập WinAMP"
+
+#: src/skins/ui_manager.c:466
+msgid "Save preset"
+msgstr "Lưu thiết lập"
+
+#: src/skins/ui_manager.c:469
+msgid "Save auto-load preset"
+msgstr "Lưu thiết lập tự nạp"
+
+#: src/skins/ui_manager.c:472
+msgid "Save default preset"
+msgstr "Lưu thiết lập mặc định"
+
+#: src/skins/ui_manager.c:474
+msgid "To file"
+msgstr "Vào tập tin"
+
+#: src/skins/ui_manager.c:475
+msgid "Save preset to file"
+msgstr "Lưu thiết lập vào tập tin"
+
+#: src/skins/ui_manager.c:477
+msgid "To WinAMP EQF file"
+msgstr "Vào tập tin EQF của WinAMP"
+
+#: src/skins/ui_manager.c:478
+msgid "Save preset to WinAMP EQF file"
+msgstr "Lưu thiết lập vào tập tin EQF của WinAMP"
+
+#: src/skins/ui_manager.c:481
+msgid "Delete preset"
+msgstr "Xóa thiết lập"
+
+#: src/skins/ui_manager.c:484
+msgid "Delete auto-load preset"
+msgstr "Xóa thiết lập tự nạp"
+
+#: src/skins/ui_playlist.c:244
+msgid "Search entries in active playlist"
+msgstr "Tìm trong danh sách đang được kích hoạt"
+
+#: src/skins/ui_playlist.c:252
+msgid ""
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
+"expressions work, simply insert a literal portion of what you're searching "
+"for."
+msgstr ""
+
+#: src/skins/ui_playlist.c:260
+msgid "Title: "
+msgstr "Tựa đề:"
+
+#: src/skins/ui_playlist.c:267
+msgid "Album: "
+msgstr "Album: "
+
+#: src/skins/ui_playlist.c:274
+msgid "Artist: "
+msgstr "Nghệ sĩ:"
+
+#: src/skins/ui_playlist.c:281
+msgid "Filename: "
+msgstr "Tên tập tin:"
+
+#: src/skins/ui_playlist.c:289
+msgid "Clear previous selection before searching"
+msgstr ""
+
+#: src/skins/ui_playlist.c:292
+msgid "Automatically toggle queue for matching entries"
+msgstr ""
+
+#: src/skins/ui_playlist.c:295
+msgid "Create a new playlist with matching entries"
+msgstr ""
+
+#: src/skins/ui_playlist.c:762
+msgid "Audacious Playlist Editor"
+msgstr ""
+
+#: src/skins/ui_playlist.c:809
+#, c-format
+msgid "%s (%d of %d)"
+msgstr "%s (%d trong số %d)"
+
+#: src/skins/ui_skinselector.c:162
+msgid "Archived Winamp 2.x skin"
+msgstr ""
+
+#: src/skins/ui_skinselector.c:167
+msgid "Unarchived Winamp 2.x skin"
+msgstr ""
+
+#: src/skins/util.c:773
+#, c-format
+msgid "Could not create directory (%s): %s\n"
+msgstr ""
+
+#: src/sndfile/plugin.c:454
+msgid "About sndfile plugin"
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:155
+msgid "About SndStretch"
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:308
+msgid "Volume corr."
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:309
+msgid "Short Overlap"
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:355
+msgid "Speed"
+msgstr "Tốc độ"
+
+#: src/sndstretch/sndstretch_xmms.c:356
+msgid "Pitch"
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:357
+msgid "Scale"
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:377
+msgid "SndStretch - Configuration"
+msgstr ""
+
+#: src/song_change/song_change.c:447
+msgid "Command to run when Audacious starts a new song."
+msgstr ""
+
+#: src/song_change/song_change.c:449 src/song_change/song_change.c:455
+#: src/song_change/song_change.c:461 src/song_change/song_change.c:467
+msgid "Command:"
+msgstr ""
+
+#: src/song_change/song_change.c:453
+msgid "Command to run toward the end of a song."
+msgstr ""
+
+#: src/song_change/song_change.c:459
+msgid "Command to run when Audacious reaches the end of the playlist."
+msgstr ""
+
+#: src/song_change/song_change.c:465
+msgid ""
+"Command to run when title changes for a song (i.e. network streams titles)."
+msgstr ""
+
+#: src/song_change/song_change.c:471
+msgid ""
+"You can use the following format strings which\n"
+"will be substituted before calling the command\n"
+"(not all are useful for the end-of-playlist command).\n"
+"\n"
+"%F: Frequency (in hertz)\n"
+"%c: Number of channels\n"
+"%f: filename (full path)\n"
+"%l: length (in milliseconds)\n"
+"%n or %s: Song name\n"
+"%r: Rate (in bits per second)\n"
+"%t: Playlist position (%02d)\n"
+"%p: Currently playing (1 or 0)\n"
+"%a: Artist\n"
+"%b: Album\n"
+"%T: Track title"
+msgstr ""
+
+#: src/song_change/song_change.c:498
+msgid ""
+"<span size='small'>Parameters passed to the shell should be encapsulated in "
+"quotes. Doing otherwise is a security risk.</span>"
+msgstr ""
+
+#: src/song_change/song_change.c:509
+msgid "Commands"
+msgstr "Lệnh"
+
+#: src/song_change/song_change.c:539
+msgid "Song Change"
+msgstr "Song Change"
+
+#: src/statusicon/statusicon.c:378
+msgid "About Status Icon Plugin"
+msgstr ""
+
+#: src/statusicon/statusicon.c:379
+msgid ""
+"Status Icon Plugin\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"This plugin provides a status icon, placed in\n"
+"the system tray area of the window manager.\n"
+msgstr ""
+
+#: src/statusicon/statusicon.c:447
+msgid "Status Icon Plugin - Preferences"
+msgstr ""
+
+#: src/statusicon/statusicon.c:457
+msgid "Right-Click Menu"
+msgstr "Trình đơn chuột phải"
+
+#: src/statusicon/statusicon.c:462
+msgid "Small playback menu #1"
+msgstr ""
+
+#: src/statusicon/statusicon.c:465
+msgid "Small playback menu #2"
+msgstr ""
+
+#: src/statusicon/statusicon.c:481
+msgid "Mouse Scroll Action"
+msgstr ""
+
+#: src/statusicon/statusicon.c:485
+msgid "Change volume"
+msgstr "Thay đổi âm lượng"
+
+#: src/statusicon/statusicon.c:487
+msgid "Change playing song"
+msgstr ""
+
+#: src/statusicon/statusicon.c:500
+msgid "Other settings"
+msgstr "Thiết lập khác"
+
+#: src/statusicon/statusicon.c:505
+msgid "Disable the popup window"
+msgstr ""
+
+#: src/statusicon/statusicon.c:512
+msgid "Close to the notification area (system tray)"
+msgstr ""
+
+#: src/stereo_plugin/stereo.c:45
+msgid ""
+"Extra Stereo Plugin\n"
+"\n"
+"By Johan Levin 1999."
+msgstr ""
+
+#: src/stereo_plugin/stereo.c:64
+msgid "About Extra Stereo Plugin"
+msgstr ""
+
+#: src/stereo_plugin/stereo.c:95
+msgid "Configure Extra Stereo"
+msgstr ""
+
+#: src/streambrowser/gui/streambrowser_win.c:78
+msgid "Search:"
+msgstr "Tìm:"
+
+#: src/streambrowser/gui/streambrowser_win.c:97
+#: src/streambrowser/gui/streambrowser_win.c:372
+msgid "Add Bookmark"
+msgstr ""
+
+#: src/streambrowser/gui/streambrowser_win.c:324
+msgid "Stream name"
+msgstr ""
+
+#: src/streambrowser/gui/streambrowser_win.c:331
+msgid "Now playing"
+msgstr ""
+
+#: src/streambrowser/gui/streambrowser_win.c:369
+msgid "Remove Bookmark"
+msgstr ""
+
+#: src/streambrowser/streambrowser.c:330
+msgid "About Stream Browser"
+msgstr ""
+
+#: src/streambrowser/streambrowser.c:331
+msgid ""
+"Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n"
+"\n"
+"This is a simple stream browser that includes the most popular streaming directories.\n"
+"Many thanks to the Streamtuner developers <http://www.nongnu.org/streamtuner>,\n"
+"\tand of course to the whole Audacious community.\n"
+"\n"
+"Also thank you Tony Vroon for mentoring & guiding me, again.\n"
+"\n"
+"This was a Google Summer of Code 2008 project."
+msgstr ""
+
+#: src/tonegen/tonegen.c:48
+msgid "About Tone Generator"
+msgstr ""
+
+#: src/tonegen/tonegen.c:50
+msgid ""
+"Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
+"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
+msgstr ""
+
+#: src/tonegen/tonegen.c:100
+#, c-format
+msgid "%s %.1f Hz"
+msgstr "%s %.1f Hz"
+
+#: src/tonegen/tonegen.c:100
+msgid "Tone Generator: "
+msgstr ""
+
+#: src/unix-io/gtk.c:34
+msgid "About File I/O Plugin"
+msgstr ""
+
+#: src/vorbis/vorbis.c:572
+msgid "About Ogg Vorbis Audio Plugin"
+msgstr ""
+
+#: src/vorbis/vorbis.c:577
+msgid ""
+"Ogg Vorbis Plugin by the Xiph.org Foundation\n"
+"\n"
+"Original code by\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"Contributions from\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Haavard Kvaalen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>\n"
+"\n"
+"Visit the Xiph.org Foundation at http://www.xiph.org/\n"
+msgstr ""
+
+#: src/vtx/about.c:14
+msgid "About Vortex Player"
+msgstr ""
+
+#: src/vtx/about.c:15
+msgid ""
+"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+"Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
+"\n"
+"Music in vtx format can be found at http://vtx.microfor.ru/music.htm\n"
+"and other AY/YM music sites.\n"
+"\n"
+"Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
+msgstr ""
+
+#: src/wavpack/wavpack.c:353
+#, c-format
+msgid "Wavpack Decoder Plugin %s"
+msgstr ""
+
+#: src/wavpack/wavpack.c:354
+msgid ""
+"Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
+"\n"
+"Some of the plugin code was by Miles Egan\n"
+"Visit the Wavpack site at http://www.wavpack.com/\n"
+msgstr ""
+"Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
+"\n"
+"Một phần mã nguồn trình cắm do Miles Egan viết\n"
+"Xem trang Wavpack tại http://www.wavpack.com/\n"
+
+
