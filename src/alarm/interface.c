@@ -136,69 +136,6 @@ create_alarm_dialog (void)
 }
 
 GtkWidget*
-create_warning_dialog (void)
-{
-  GtkWidget *warning_dialog;
-  GtkWidget *dialog_vbox4;
-  GtkWidget *frame9;
-  GtkWidget *label70;
-  GtkWidget *dialog_action_area4;
-  GtkWidget *button10;
-
-  warning_dialog = gtk_dialog_new ();
-  gtk_widget_set_name (warning_dialog, "warning_dialog");
-  g_object_set_data (G_OBJECT (warning_dialog), "warning_dialog", warning_dialog);
-  gtk_window_set_title (GTK_WINDOW (warning_dialog), _("Sorry"));
-
-  dialog_vbox4 = gtk_dialog_get_content_area ((GtkDialog *) warning_dialog);
-  gtk_widget_set_name (dialog_vbox4, "dialog_vbox4");
-  g_object_set_data (G_OBJECT (warning_dialog), "dialog_vbox4", dialog_vbox4);
-  gtk_widget_show (dialog_vbox4);
-
-  frame9 = gtk_frame_new (_("Warning"));
-  gtk_widget_set_name (frame9, "frame9");
-  g_object_ref (frame9);
-  g_object_set_data_full (G_OBJECT (warning_dialog), "frame9", frame9,
-                            (GDestroyNotify) g_object_unref);
-  gtk_widget_show (frame9);
-  gtk_box_pack_start (GTK_BOX (dialog_vbox4), frame9, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (frame9), 10);
-
-  label70 = gtk_label_new (_("For safety reasons the \"quiet\" time must be at least 65 seconds longer than the fading time, it must also be more than 10 seconds.  This basically means that there is a bug in the code and until I find a way of really fixing it this message will appear :)\n\nYour fading settings have NOT been saved\n\n--\nAdam"));
-  gtk_widget_set_name (label70, "label70");
-  g_object_ref (label70);
-  g_object_set_data_full (G_OBJECT (warning_dialog), "label70", label70,
-                            (GDestroyNotify) g_object_unref);
-  gtk_widget_show (label70);
-  gtk_container_add (GTK_CONTAINER (frame9), label70);
-  gtk_label_set_line_wrap (GTK_LABEL (label70), TRUE);
-  gtk_misc_set_padding (GTK_MISC (label70), 10, 20);
-
-  dialog_action_area4 = gtk_dialog_get_action_area ((GtkDialog *) warning_dialog);
-  gtk_widget_set_name (dialog_action_area4, "dialog_action_area4");
-  g_object_set_data (G_OBJECT (warning_dialog), "dialog_action_area4", dialog_action_area4);
-  gtk_widget_show (dialog_action_area4);
-  gtk_container_set_border_width (GTK_CONTAINER (dialog_action_area4), 10);
-
-  button10 = gtk_button_new_with_label (_("Oh Well"));
-  gtk_widget_set_name (button10, "button10");
-  g_object_ref (button10);
-  g_object_set_data_full (G_OBJECT (warning_dialog), "button10", button10,
-                            (GDestroyNotify) g_object_unref);
-  gtk_widget_show (button10);
-  gtk_box_pack_start (GTK_BOX (dialog_action_area4), button10, FALSE, TRUE, 0);
-  gtk_widget_set_can_default (button10, TRUE);
-
-  g_signal_connect_swapped (G_OBJECT (button10), "clicked",
-                             G_CALLBACK (gtk_widget_destroy),
-                             G_OBJECT (warning_dialog));
-
-  gtk_widget_grab_focus (button10);
-  gtk_widget_grab_default (button10);
-  return warning_dialog;
-}
-
-GtkWidget*
 create_config_dialog (void)
 {
   GtkWidget *config_dialog;

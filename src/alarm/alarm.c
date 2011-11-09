@@ -174,27 +174,6 @@ static GtkWidget *lookup_widget(GtkWidget *w, const gchar *name)
 }
 
 /*
- * tell the user about that bug
- */
-static void alarm_warning(void)
-{
-
-   static GtkWidget *warning_dialog = NULL;
-
-   if (warning_dialog)
-     return;
-
-   warning_dialog = create_warning_dialog();
-
-   g_signal_connect (warning_dialog, "destroy", (GCallback)
-    gtk_widget_destroyed, & warning_dialog);
-
-   gtk_widget_show_all(warning_dialog);
-
-   return;
-}
-
-/*
  * the callback function that is called when the save button is
  * pressed saves configuration to ~/.bmp/alarmconfig
  */
@@ -246,28 +225,11 @@ void alarm_save(GtkButton *w, gpointer data)
 
    fading = gtk_spin_button_get_value_as_int (alarm_conf.fading);
 
-   /* lets check to see if we need to show the bug warning */
-   if((stop_on == TRUE) &&
-      ((((stop_h * 60) + stop_m) * 60) < (fading + 65)))
-   {
-       AUDDBG("Displaying bug warning, stop %dh %dm, fade %d\n",
-             stop_h, stop_m, fading);
-       alarm_warning();
-   }
-   else if((stop_on == TRUE) && (fading < 10))
-   {
-     AUDDBG("Displaying bug warning, stop %dh %dm, fade %d\n",
-           stop_h, stop_m, fading);
-     alarm_warning();
-   }
-   else
-   {
-       /* write the new values */
-       aud_set_int ("alarm", "stop_h", stop_h);
-       aud_set_int ("alarm", "stop_m", stop_m);
-       aud_set_int ("alarm", "fading", fading);
-       aud_set_bool ("alarm", "stop_on", stop_on);
-   }
+   /* write the new values */
+   aud_set_int ("alarm", "stop_h", stop_h);
+   aud_set_int ("alarm", "stop_m", stop_m);
+   aud_set_int ("alarm", "fading", fading);
+   aud_set_bool ("alarm", "stop_on", stop_on);
 
    g_free (cmdstr);
    cmdstr = gtk_editable_get_chars ((GtkEditable *) alarm_conf.cmdstr, 0, -1);
