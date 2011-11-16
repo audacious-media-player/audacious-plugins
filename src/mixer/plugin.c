@@ -91,7 +91,7 @@ static void mixer_configure (void)
     }
 
     config_win = gtk_dialog_new_with_buttons (_("Channel Mixer Settings"), 0, 0,
-     GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, 0);
+     GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
     gtk_window_set_resizable ((GtkWindow *) config_win, 0);
 
     GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) config_win);
