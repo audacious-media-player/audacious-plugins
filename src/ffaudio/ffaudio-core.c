@@ -268,6 +268,9 @@ ffaudio_codec_is_seekable(AVCodec *codec)
 
 static gboolean ffaudio_probe (const gchar * filename, VFSFile * file)
 {
+    if (! file)
+        return FALSE;
+
     return get_format (filename, file) ? TRUE : FALSE;
 }
 
@@ -373,6 +376,9 @@ static Tuple * read_tuple (const gchar * filename, VFSFile * file)
 static Tuple *
 ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
+    if (! fd)
+        return NULL;
+
     Tuple * t = read_tuple (filename, fd);
     if (t == NULL)
         return NULL;
@@ -388,6 +394,9 @@ ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
 #ifdef FFAUDIO_USE_AUDTAG
 static gboolean ffaudio_write_tag (const Tuple * tuple, VFSFile * file)
 {
+    if (! file)
+        return FALSE;
+
     gchar *file_uri = g_ascii_strdown(file->uri, -4);
 
     if (g_str_has_suffix(file_uri, ".ape"))
@@ -405,7 +414,8 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
  VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
     AUDDBG ("Playing %s.\n", filename);
-    g_return_val_if_fail (file, FALSE);
+    if (! file)
+        return FALSE;
 
     AVCodec *codec = NULL;
     AVCodecContext *c = NULL;
