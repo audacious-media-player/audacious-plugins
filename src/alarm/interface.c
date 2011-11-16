@@ -19,68 +19,6 @@
 #include <audacious/gtk-compat.h>
 
 GtkWidget*
-create_about_dialog (void)
-{
-  GtkWidget *about_dialog;
-  GtkWidget *dialog_vbox2;
-  GtkWidget *frame6;
-  GtkWidget *label18;
-  GtkWidget *dialog_action_area2;
-  GtkWidget *close;
-
-  about_dialog = gtk_dialog_new ();
-  gtk_widget_set_name (about_dialog, "about_dialog");
-  g_object_set_data (G_OBJECT (about_dialog), "about_dialog", about_dialog);
-  gtk_window_set_title (GTK_WINDOW (about_dialog), _("About XMMS Alarm"));
-
-  dialog_vbox2 = gtk_dialog_get_content_area ((GtkDialog *) about_dialog);
-  gtk_widget_set_name (dialog_vbox2, "dialog_vbox2");
-  g_object_set_data (G_OBJECT (about_dialog), "dialog_vbox2", dialog_vbox2);
-  gtk_widget_show (dialog_vbox2);
-
-  frame6 = gtk_frame_new (_("XMMS Alarm"));
-  gtk_widget_set_name (frame6, "frame6");
-  g_object_ref (frame6);
-  g_object_set_data_full (G_OBJECT (about_dialog), "frame6", frame6,
-                            (GDestroyNotify) g_object_unref);
-  gtk_widget_show (frame6);
-  gtk_box_pack_start (GTK_BOX (dialog_vbox2), frame6, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (frame6), 10);
-
-  label18 = gtk_label_new (_("An XMMS plugin which can be used\nto start playing at a certain time.\n\nSend all complaints to:\nAdam Feakin <adamf@snika.uklinux.net>\nDaniel Stodden <stodden@in.tum.de>\n\nhttp://www.snika.uklinux.net/xmms-alarm/"));
-  gtk_widget_set_name (label18, "label18");
-  g_object_ref (label18);
-  g_object_set_data_full (G_OBJECT (about_dialog), "label18", label18,
-                            (GDestroyNotify) g_object_unref);
-  gtk_widget_show (label18);
-  gtk_container_add (GTK_CONTAINER (frame6), label18);
-  gtk_misc_set_padding (GTK_MISC (label18), 10, 20);
-
-  dialog_action_area2 = gtk_dialog_get_action_area ((GtkDialog *) about_dialog);
-  gtk_widget_set_name (dialog_action_area2, "dialog_action_area2");
-  g_object_set_data (G_OBJECT (about_dialog), "dialog_action_area2", dialog_action_area2);
-  gtk_widget_show (dialog_action_area2);
-  gtk_container_set_border_width (GTK_CONTAINER (dialog_action_area2), 10);
-
-  close = gtk_button_new_with_label (_("Close"));
-  gtk_widget_set_name (close, "close");
-  g_object_ref (close);
-  g_object_set_data_full (G_OBJECT (about_dialog), "close", close,
-                            (GDestroyNotify) g_object_unref);
-  gtk_widget_show (close);
-  gtk_box_pack_start (GTK_BOX (dialog_action_area2), close, FALSE, TRUE, 0);
-  gtk_widget_set_can_default (close, TRUE);
-
-  g_signal_connect_swapped (G_OBJECT (close), "clicked",
-                             G_CALLBACK (gtk_widget_destroy),
-                             G_OBJECT (about_dialog));
-
-  gtk_widget_grab_focus (close);
-  gtk_widget_grab_default (close);
-  return about_dialog;
-}
-
-GtkWidget*
 create_alarm_dialog (void)
 {
   GtkWidget *alarm_dialog;

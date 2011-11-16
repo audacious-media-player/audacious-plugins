@@ -44,10 +44,13 @@
 
 #include <audacious/debug.h>
 #include <audacious/drct.h>
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "alarm.h"
+#include "config.h"
 #include "interface.h"
 #include "callbacks.h"
 
@@ -306,17 +309,9 @@ static void alarm_about(void)
 {
    static GtkWidget *about_dialog = NULL;
 
-   if (about_dialog)
-     return;
-
-   about_dialog = create_about_dialog();
-
-   g_signal_connect (about_dialog, "destroy", (GCallback) gtk_widget_destroyed,
-    & about_dialog);
-
-   gtk_widget_show_all(about_dialog);
-
-   return;
+   audgui_simple_message (& about_dialog, GTK_MESSAGE_INFO, _("About Alarm"),
+    _("A plugin that can be used to start playing at a certain time.\n\n"
+    "Originally written by Adam Feakin and Daniel Stodden."));
 }
 
 /*
