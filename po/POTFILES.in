@@ -1,5 +1,6 @@
 # Please don't update this file manually - use ./update-potfiles.sh instead!
 src/aac/libmp4.c
+src/alarm/alarm.c
 src/alarm/interface.c
 src/alsa/config.c
 src/alsa/plugin.c
