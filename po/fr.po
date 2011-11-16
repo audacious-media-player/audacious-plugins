@@ -1,16 +1,17 @@
 # French translation for Audacious Plugins
-# Copyright (C) 2011 Audacious Translators
+# Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
+#   <jagw40k@free.fr>, 2011.
 # Jean-Alexandre Anglès d'Auriac <jagw40k@free.fr>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/browse/AUDPLUG\n"
-"POT-Creation-Date: 2011-10-19 21:37-0400\n"
-"PO-Revision-Date: 2011-10-20 01:39+0000\n"
-"Last-Translator: Jean-Alexandre Anglès d'Auriac <jagw40k@free.fr>\n"
+"POT-Creation-Date: 2011-10-24 16:38-0400\n"
+"PO-Revision-Date: 2011-11-09 21:26+0000\n"
+"Last-Translator: Oxayotl <jagw40k@free.fr>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,11 +38,11 @@ msgstr "À propos du décodeur « MP4 AAC »"
 
 #: src/alarm/interface.c:34
 msgid "About XMMS Alarm"
-msgstr ""
+msgstr "À propos d'Alarme"
 
 #: src/alarm/interface.c:41
 msgid "XMMS Alarm"
-msgstr ""
+msgstr "Alarme"
 
 #: src/alarm/interface.c:50
 msgid ""
@@ -54,6 +55,12 @@ msgid ""
 "\n"
 "http://www.snika.uklinux.net/xmms-alarm/"
 msgstr ""
+"est un greffon pour Audacious, basé sur greffon pour XMMS\n"
+"qui lance la lecture à une date choisie à l'avance.\n"
+"\n"
+"Basé sur le plugin du même nom pour XMMS par \n"
+"Adam Feakin <adamf@snika.uklinux.net> et\n"
+"Daniel Stodden <stodden@in.tum.de>"
 
 #: src/alarm/interface.c:65
 msgid "Close"
@@ -61,7 +68,7 @@ msgstr "Fermer"
 
 #: src/alarm/interface.c:95
 msgid "Alarm"
-msgstr ""
+msgstr "Alarme"
 
 #: src/alarm/interface.c:102
 msgid "This is your wakeup call."
@@ -73,11 +80,11 @@ msgstr "OK"
 
 #: src/alarm/interface.c:151
 msgid "Sorry"
-msgstr ""
+msgstr "Désolé"
 
 #: src/alarm/interface.c:158
 msgid "Warning"
-msgstr ""
+msgstr "Attention"
 
 #: src/alarm/interface.c:167
 msgid ""
@@ -88,55 +95,62 @@ msgid ""
 "--\n"
 "Adam"
 msgstr ""
+"Pour des raisons de sécurité, le temps au bout duquel l'alarme s'éteint doit être au mois plus long de 65 secondes que la durée du fondu. Il doit de plus être de plus de 10 secondes.\n"
+"Ceci montre bien qu'il y a un bug dans le code, et tant que je n'aurais pas réussi à trouver un moyen de réellement le résoudre, ce message apparaîtra :).\n"
+"\n"
+"Vos préférences sur le fondu n'ont PAS été sauvegardées.\n"
+"\n"
+"--\n"
+"Adam"
 
 #: src/alarm/interface.c:183
 msgid "Oh Well"
-msgstr ""
+msgstr "Réveillez-vous !"
 
 #: src/alarm/interface.c:339
 msgid "Alarm Settings"
-msgstr ""
+msgstr "Paramètres de l'alarme"
 
 #: src/alarm/interface.c:354 src/alarm/interface.c:526
 #: src/alarm/interface.c:898
 msgid "Time"
-msgstr ""
+msgstr "Heure"
 
 #: src/alarm/interface.c:395
 msgid "hours"
-msgstr ""
+msgstr "heures"
 
 #: src/alarm/interface.c:456
 msgid "h"
-msgstr ""
+msgstr "h"
 
 #: src/alarm/interface.c:486
 msgid "minutes"
-msgstr ""
+msgstr "minutes"
 
 #: src/alarm/interface.c:504
 msgid "Quiet after:"
-msgstr ""
+msgstr "Arrêter au bout de"
 
 #: src/alarm/interface.c:514
 msgid "Alarm at (default):"
-msgstr ""
+msgstr "Se déclencher (par défaut) à :"
 
 #: src/alarm/interface.c:534
 msgid "Choose the days for the alarm to come on"
-msgstr ""
+msgstr "Choisissez les jours où l'alarme se déclenche"
 
 #: src/alarm/interface.c:562 src/alarm/interface.c:610
 #: src/alarm/interface.c:658 src/alarm/interface.c:706
 #: src/alarm/interface.c:754 src/alarm/interface.c:802
-#: src/alarm/interface.c:850 src/OSS/configure.c:153
+#: src/alarm/interface.c:850 src/bs2b/plugin.c:198 src/OSS/configure.c:153
 #: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
 msgid "Default"
 msgstr "Défaut"
 
 #: src/alarm/interface.c:888
 msgid "Day"
-msgstr ""
+msgstr "Jour"
 
 #: src/alarm/interface.c:908
 msgid "Tuesday"
@@ -168,11 +182,11 @@ msgstr "Lundi"
 
 #: src/alarm/interface.c:984
 msgid "Days"
-msgstr ""
+msgstr "Jours"
 
 #: src/alarm/interface.c:1000
 msgid "Fading"
-msgstr ""
+msgstr "Fondu"
 
 #: src/alarm/interface.c:1037
 msgid "seconds"
@@ -180,15 +194,15 @@ msgstr "secondes"
 
 #: src/alarm/interface.c:1045 src/alarm/interface.c:1160
 msgid "Volume"
-msgstr ""
+msgstr "Volume"
 
 #: src/alarm/interface.c:1071
 msgid "Current"
-msgstr ""
+msgstr "Volume actuel"
 
 #: src/alarm/interface.c:1079
 msgid "Start at"
-msgstr ""
+msgstr "Commencer à"
 
 #: src/alarm/interface.c:1107 src/alarm/interface.c:1151
 msgid "%"
@@ -196,31 +210,31 @@ msgstr "%"
 
 #: src/alarm/interface.c:1123
 msgid "Final"
-msgstr ""
+msgstr "Finir à"
 
 #: src/alarm/interface.c:1176
 msgid "Additional Command"
-msgstr ""
+msgstr "Commande additionnelle"
 
 #: src/alarm/interface.c:1202
 msgid "enable"
-msgstr ""
+msgstr "activer"
 
 #: src/alarm/interface.c:1210
 msgid "Playlist (optional)"
-msgstr ""
+msgstr "Lire la liste de lecture suivante (optionnel)"
 
 #: src/alarm/interface.c:1236
 msgid "Browse..."
-msgstr ""
+msgstr "Parcourir"
 
 #: src/alarm/interface.c:1244 src/alarm/interface.c:1408
 msgid "Reminder"
-msgstr ""
+msgstr "Pense-bête"
 
 #: src/alarm/interface.c:1261
 msgid "Use reminder"
-msgstr ""
+msgstr "Afficher le pense-bête suivant"
 
 #: src/alarm/interface.c:1277 src/sndstretch/sndstretch_xmms.c:358
 msgid "Options"
@@ -228,7 +242,7 @@ msgstr "Options"
 
 #: src/alarm/interface.c:1285
 msgid "What do these options mean?"
-msgstr ""
+msgstr "Que signifient ces options ?"
 
 #: src/alarm/interface.c:1313
 msgid ""
@@ -297,11 +311,11 @@ msgstr "Annuler"
 
 #: src/alarm/interface.c:1415
 msgid "Your reminder for today is.."
-msgstr ""
+msgstr "Votre pense-bête pour aujourd'hui est…"
 
 #: src/alarm/interface.c:1440
 msgid "Thankyou"
-msgstr ""
+msgstr "Merci"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
@@ -1007,6 +1021,22 @@ msgstr "Module « Blur Scope » : sélection de la couleur"
 #: src/blur_scope/config.c:83 src/jack/configure.c:106
 msgid "Options:"
 msgstr "Options :"
+
+#: src/bs2b/plugin.c:157
+msgid "Bauer stereophonic-to-binaural Preferences"
+msgstr ""
+
+#: src/bs2b/plugin.c:168
+msgid "Feed level:"
+msgstr ""
+
+#: src/bs2b/plugin.c:182
+msgid "Cut frequency:"
+msgstr ""
+
+#: src/bs2b/plugin.c:196
+msgid "Presets:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:241
 msgid "About Audio CD Plugin"
