@@ -441,7 +441,7 @@ GET_FORMAT:
 
 			if (stop_time >= 0)
 			{
-				gint64 remain = 2 * ctx.channels * (frames_total - frames_played);
+				gint64 remain = sizeof outbuf[0] * ctx.channels * (frames_total - frames_played);
 				remain = MAX (0, remain);
 
 				if (outbuf_size >= remain)
