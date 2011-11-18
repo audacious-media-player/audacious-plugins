@@ -27,7 +27,6 @@
 
 FLAC__StreamDecoder *main_decoder;
 callback_info *main_info;
-gboolean plugin_initialized = FALSE;
 static GMutex *seek_mutex;
 static GCond *seek_cond;
 static gint seek_value;
@@ -72,7 +71,6 @@ static gboolean flac_init (void)
     seek_cond = g_cond_new();
 
     AUDDBG("Plugin initialized.\n");
-    plugin_initialized = TRUE;
     return TRUE;
 }
 
@@ -83,8 +81,6 @@ static void flac_cleanup(void)
 
     FLAC__stream_decoder_delete(main_decoder);
     clean_callback_info(main_info);
-
-    plugin_initialized = FALSE;
 }
 
 gboolean flac_is_our_fd(const gchar *filename, VFSFile *fd)
@@ -142,12 +138,6 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
     gpointer play_buffer = NULL;
     gboolean error = FALSE;
 
-    if (!plugin_initialized)
-    {
-        FLACNG_ERROR("Plugin not initialized!\n");
-        return FALSE;
-    }
-
     main_info->fd = file;
 
     if (read_metadata(main_decoder, main_info) == FALSE)
@@ -187,7 +177,6 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
      (main_info->stream.bits_per_sample), main_info->stream.samplerate,
      main_info->stream.channels))
     {
-        FLACNG_ERROR("Could not open output plugin!\n");
         error = TRUE;
         goto ERR_NO_CLOSE;
     }
