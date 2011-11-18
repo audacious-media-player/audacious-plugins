@@ -178,7 +178,7 @@ static void window_create(void)
     alt_dev_check = gtk_check_button_new_with_label(_("Use alternate device:"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(alt_dev_check), aud_get_bool("oss4", "use_alt_device"));
 
-    gtk_box_pack_start(GTK_BOX(alt_dev_box), alt_dev_check, FALSE, FALSE, 5);
+    gtk_box_pack_start(GTK_BOX(alt_dev_box), alt_dev_check, FALSE, FALSE, 0);
 
     alt_dev_text = gtk_entry_new();
     device = aud_get_string("oss4", "alt_device");
