@@ -29,6 +29,7 @@ static const gchar * const oss_defaults[] = {
  "save_volume", "TRUE",
  "volume", "12850", /* 0x3232 */
  "cookedmode", "TRUE",
+ "exclusive", "FALSE",
  NULL};
 
 oss_data_t *oss_data;
@@ -94,15 +95,22 @@ FAILED:
 static gint open_device(void)
 {
     gint res = -1;
+    gint flags = O_WRONLY;
     gchar *device = aud_get_string("oss4", "device");
     gchar *alt_device = aud_get_string("oss4", "alt_device");
 
+    if (aud_get_bool("oss4", "exclusive"))
+    {
+        AUDDBG("Enabled exclusive mode.\n");
+        flags |= O_EXCL;
+    }
+
     if (aud_get_bool("oss4", "use_alt_device") && alt_device != NULL)
-        res = open(alt_device, O_WRONLY);
+        res = open(alt_device, flags);
     else if (device != NULL)
-        res = open(device, O_WRONLY);
+        res = open(device, flags);
     else
-        res = open(DEFAULT_DSP, O_WRONLY);
+        res = open(DEFAULT_DSP, flags);
 
     g_free(device);
     g_free(alt_device);
