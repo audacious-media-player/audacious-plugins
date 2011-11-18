@@ -153,6 +153,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
     if (read_metadata(main_decoder, main_info) == FALSE)
     {
         FLACNG_ERROR("Could not prepare file for playing!\n");
+        error = TRUE;
         goto ERR_NO_CLOSE;
     }
 
@@ -160,6 +161,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
     {
         FLACNG_ERROR("This number of channels (%d) is currently not supported, stream not handled by this plugin.\n",
             main_info->stream.channels);
+        error = TRUE;
         goto ERR_NO_CLOSE;
     }
 
@@ -170,12 +172,14 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
     {
         FLACNG_ERROR("This number of bits (%d) is currently not supported, stream not handled by this plugin.\n",
             main_info->stream.bits_per_sample);
+        error = TRUE;
         goto ERR_NO_CLOSE;
     }
 
     if ((play_buffer = g_malloc0(BUFFER_SIZE_BYTE)) == NULL)
     {
         FLACNG_ERROR("Could not allocate conversion buffer\n");
+        error = TRUE;
         goto ERR_NO_CLOSE;
     }
 
@@ -184,6 +188,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
      main_info->stream.channels))
     {
         FLACNG_ERROR("Could not open output plugin!\n");
+        error = TRUE;
         goto ERR_NO_CLOSE;
     }
 
@@ -228,6 +233,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
         if (FLAC__stream_decoder_process_single(main_decoder) == FALSE)
         {
             FLACNG_ERROR("Error while decoding!\n");
+            error = TRUE;
             goto CLEANUP;
         }
 
@@ -239,6 +245,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
             {
                 FLACNG_ERROR("Samplerate changed midstream (now: %d, was: %d). This is not supported yet.\n",
                     main_info->stream.samplerate, stream_info.samplerate);
+                error = TRUE;
                 goto CLEANUP;
             }
 
@@ -246,6 +253,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
             {
                 FLACNG_ERROR("Number of channels changed midstream (now: %d, was: %d). This is not supported yet.\n",
                     main_info->stream.channels, stream_info.channels);
+                error = TRUE;
                 goto CLEANUP;
             }
 
@@ -257,6 +265,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
         {
             FLACNG_ERROR("Frame samplerate mismatch (stream: %d, frame: %d)!\n",
                 main_info->stream.samplerate, main_info->frame.samplerate);
+            error = TRUE;
             goto CLEANUP;
         }
 
@@ -264,6 +273,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
         {
             FLACNG_ERROR("Frame channel mismatch (stream: %d, frame: %d)!\n",
                 main_info->stream.channels, main_info->frame.channels);
+            error = TRUE;
             goto CLEANUP;
         }
 
