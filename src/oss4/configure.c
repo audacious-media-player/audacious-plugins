@@ -54,6 +54,11 @@ static void cookedmode_toggled_cb(GtkToggleButton *widget, gpointer data)
     aud_set_bool("oss4", "cookedmode", gtk_toggle_button_get_active(widget));
 }
 
+static void exclusive_toggled_cb(GtkToggleButton *widget, gpointer data)
+{
+    aud_set_bool("oss4", "exclusive", gtk_toggle_button_get_active(widget));
+}
+
 static void vol_toggled_cb(GtkToggleButton *widget, gpointer data)
 {
     aud_set_bool("oss4", "save_volume", gtk_toggle_button_get_active(widget));
@@ -123,7 +128,8 @@ static void select_combo_item(GtkComboBox *combo, gchar *text)
 static void window_create(void)
 {
     GtkWidget *vbox, *dev_list_box, *dev_label, *dev_list_combo, *alt_dev_box, *alt_dev_check,
-        *alt_dev_text, *option_box, *vol_check, *cookedmode_check, *button_box, *button_ok;
+        *alt_dev_text, *option_box, *vol_check, *cookedmode_check, *button_box, *button_ok,
+        *exclusive_check;
     GtkTreeModel *dev_list_model;
     GtkCellRenderer *cell;
     gchar *device;
@@ -192,6 +198,10 @@ static void window_create(void)
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cookedmode_check), aud_get_bool("oss4", "cookedmode"));
     gtk_box_pack_start(GTK_BOX(option_box), cookedmode_check, FALSE, FALSE, 5);
 
+    exclusive_check = gtk_check_button_new_with_label(_("Enable exclusive mode to prevent virtual mixing."));
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(exclusive_check), aud_get_bool("oss4", "exclusive"));
+    gtk_box_pack_start(GTK_BOX(option_box), exclusive_check, FALSE, FALSE, 5);
+
     button_box = gtk_hbutton_box_new();
     gtk_button_box_set_layout(GTK_BUTTON_BOX(button_box), GTK_BUTTONBOX_END);
     gtk_box_set_spacing(GTK_BOX(button_box), 5);
@@ -217,6 +227,9 @@ static void window_create(void)
 
     g_signal_connect(G_OBJECT(cookedmode_check), "toggled",
                      G_CALLBACK(cookedmode_toggled_cb), NULL);
+
+    g_signal_connect(G_OBJECT(exclusive_check), "toggled",
+                     G_CALLBACK(exclusive_toggled_cb), NULL);
 
     g_signal_connect_swapped(G_OBJECT(button_ok), "clicked",
                              G_CALLBACK(gtk_widget_destroy), window);
