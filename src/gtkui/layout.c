@@ -553,6 +553,7 @@ void layout_load (void)
         snprintf (key, sizeof key, "item%d_pos", i);
         gchar * pos = aud_get_string ("gtkui-layout", key);
         sscanf (pos, "%d,%d,%d,%d,%d", & item->dock, & item->x, & item->y, & item->w, & item->h);
+        g_free (pos);
     }
 }
 
