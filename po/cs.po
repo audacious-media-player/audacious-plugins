@@ -19,16 +19,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious-plugins audacious-plugins-3.1-alpha1-1-g41e8449\n"
+"Project-Id-Version: audacious-plugins audacious-plugins-3.1-24-gf8985b0\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-09-19 22:38+0200\n"
-"PO-Revision-Date: 2011-09-19 22:51+0200\n"
+"POT-Creation-Date: 2011-11-20 21:26+0100\n"
+"PO-Revision-Date: 2011-11-20 21:30+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"g41e8449\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: src/aac/libmp4.c:256
@@ -46,224 +47,173 @@ msgstr ""
 msgid "About MP4 AAC decoder plugin"
 msgstr "O modulu dekodéru MP4 AAC"
 
-#: src/alarm/interface.c:33
-msgid "About XMMS Alarm"
-msgstr "O XMMS budíku"
+#: src/alarm/alarm.c:312
+msgid "About Alarm"
+msgstr "O budíku"
 
-#: src/alarm/interface.c:40
-msgid "XMMS Alarm"
-msgstr "XMMS budík"
-
-#: src/alarm/interface.c:49
+#: src/alarm/alarm.c:313
 msgid ""
-"An XMMS plugin which can be used\n"
-"to start playing at a certain time.\n"
+"A plugin that can be used to start playing at a certain time.\n"
 "\n"
-"Send all complaints to:\n"
-"Adam Feakin <adamf@snika.uklinux.net>\n"
-"Daniel Stodden <stodden@in.tum.de>\n"
-"\n"
-"http://www.snika.uklinux.net/xmms-alarm/"
+"Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
-"XMMS modul, který může být použit\n"
-"k načasovanému zahájení přehrávání.\n"
+"Modul, kterým lze začít přehrávání v určitou dobu.\n"
 "\n"
-"Všechny stížnosti zasílejte na:\n"
-"Adam Feakin <adamf@snika.uklinux.net>\n"
-"Daniel Stodden <stodden@in.tum.de>\n"
-"\n"
-"http://www.snika.uklinux.net/xmms-alarm/"
+"Původně napsali Adam Feakin a Daniel Stodden."
 
-#: src/alarm/interface.c:64 src/sid/xs_about.c:214 src/sid/xs_interface.c:1825
-msgid "Close"
-msgstr "Zavřít"
-
-#: src/alarm/interface.c:94
+#: src/alarm/interface.c:33
 msgid "Alarm"
 msgstr "Budík"
 
-#: src/alarm/interface.c:101
+#: src/alarm/interface.c:40
 msgid "This is your wakeup call."
 msgstr "Toto je váš budící signál."
 
-#: src/alarm/interface.c:116 src/alarm/interface.c:1337
-#: src/sid/xs_config.c:293
+#: src/alarm/interface.c:55 src/alarm/interface.c:1213
 msgid "OK"
 msgstr "Budiž"
 
-#: src/alarm/interface.c:150
-msgid "Sorry"
-msgstr "Je mi líto"
-
-#: src/alarm/interface.c:157
-msgid "Warning"
-msgstr "Varování"
-
-#: src/alarm/interface.c:166
-msgid ""
-"For safety reasons the \"quiet\" time must be at least 65 seconds longer "
-"than the fading time, it must also be more than 10 seconds.  This basically "
-"means that there is a bug in the code and until I find a way of really "
-"fixing it this message will appear :)\n"
-"\n"
-"Your fading settings have NOT been saved\n"
-"\n"
-"--\n"
-"Adam"
-msgstr ""
-"Z bezpečnostních důvodů musí být doba „ticha“ alespoň o 65 sekund delší než "
-"doba zesilování, také musí být delší než 10 sekund. Toto v zásadě znamená, "
-"že v kódu je chyba a dokud nezjistím, jak ji opravdu opravit, tato zpráva se "
-"bude zobrazovat :)\n"
-"\n"
-"Vaše nastavení zesilování NEBYLO uloženo.\n"
-"\n"
-"–\n"
-"Adam"
-
-#: src/alarm/interface.c:182
-msgid "Oh Well"
-msgstr "Dobrá"
-
-#: src/alarm/interface.c:338
+#: src/alarm/interface.c:214
 msgid "Alarm Settings"
 msgstr "Nastavení budíku"
 
-#: src/alarm/interface.c:353 src/alarm/interface.c:525
-#: src/alarm/interface.c:897
+#: src/alarm/interface.c:229 src/alarm/interface.c:401
+#: src/alarm/interface.c:773
 msgid "Time"
 msgstr "Čas"
 
-#: src/alarm/interface.c:394
+# TODO: Pluralize
+#: src/alarm/interface.c:270
 msgid "hours"
-msgstr "hodin"
+msgstr "h"
 
-#: src/alarm/interface.c:455
+#: src/alarm/interface.c:331
 msgid "h"
 msgstr "h"
 
-#: src/alarm/interface.c:485
+# TODO: Pluralize
+#: src/alarm/interface.c:361
 msgid "minutes"
-msgstr "minut"
+msgstr "min"
 
-#: src/alarm/interface.c:503
+#: src/alarm/interface.c:379
 msgid "Quiet after:"
 msgstr "Ticho po:"
 
-#: src/alarm/interface.c:513
+#: src/alarm/interface.c:389
 msgid "Alarm at (default):"
 msgstr "Budit v (standardní):"
 
-#: src/alarm/interface.c:533
+#: src/alarm/interface.c:409
 msgid "Choose the days for the alarm to come on"
 msgstr "Vyberte dny, kdy má budík budit"
 
-#: src/alarm/interface.c:561 src/alarm/interface.c:609
-#: src/alarm/interface.c:657 src/alarm/interface.c:705
-#: src/alarm/interface.c:753 src/alarm/interface.c:801
-#: src/alarm/interface.c:849 src/OSS/configure.c:153
+#: src/alarm/interface.c:437 src/alarm/interface.c:485
+#: src/alarm/interface.c:533 src/alarm/interface.c:581
+#: src/alarm/interface.c:629 src/alarm/interface.c:677
+#: src/alarm/interface.c:725 src/bs2b/plugin.c:198 src/OSS/configure.c:153
 #: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
 msgid "Default"
 msgstr "Standardní"
 
-#: src/alarm/interface.c:887
+#: src/alarm/interface.c:763
 msgid "Day"
 msgstr "Den"
 
-#: src/alarm/interface.c:907
+#: src/alarm/interface.c:783
 msgid "Tuesday"
 msgstr "Úterý"
 
-#: src/alarm/interface.c:918
+#: src/alarm/interface.c:794
 msgid "Wednesday"
 msgstr "Středa"
 
-#: src/alarm/interface.c:929
+#: src/alarm/interface.c:805
 msgid "Thursday"
 msgstr "Čtvrtek"
 
-#: src/alarm/interface.c:940
+#: src/alarm/interface.c:816
 msgid "Friday"
 msgstr "Pátek"
 
-#: src/alarm/interface.c:951
+#: src/alarm/interface.c:827
 msgid "Saturday"
 msgstr "Sobota"
 
-#: src/alarm/interface.c:962
+#: src/alarm/interface.c:838
 msgid "Sunday"
 msgstr "Neděle"
 
-#: src/alarm/interface.c:972
+#: src/alarm/interface.c:848
 msgid "Monday"
 msgstr "Pondělí"
 
-#: src/alarm/interface.c:983
+#: src/alarm/interface.c:859
 msgid "Days"
 msgstr "Dny"
 
-#: src/alarm/interface.c:999
+#: src/alarm/interface.c:875
 msgid "Fading"
 msgstr "Zesilování"
 
-#: src/alarm/interface.c:1036 src/sid/xs_interface.c:921
-#: src/sid/xs_interface.c:975 src/sid/xs_interface.c:1155
+# TODO: Pluralize
+#: src/alarm/interface.c:912
 msgid "seconds"
 msgstr "sekund"
 
-#: src/alarm/interface.c:1044 src/alarm/interface.c:1159
+#: src/alarm/interface.c:920 src/alarm/interface.c:1035
 msgid "Volume"
 msgstr "Hlasitost"
 
-#: src/alarm/interface.c:1070
+#: src/alarm/interface.c:946
 msgid "Current"
 msgstr "Současná"
 
-#: src/alarm/interface.c:1078
+#: src/alarm/interface.c:954
 msgid "Start at"
 msgstr "Začít na"
 
-#: src/alarm/interface.c:1106 src/alarm/interface.c:1150
+#: src/alarm/interface.c:982 src/alarm/interface.c:1026
 msgid "%"
 msgstr "%"
 
-#: src/alarm/interface.c:1122
+#: src/alarm/interface.c:998
 msgid "Final"
 msgstr "Skončit na"
 
-#: src/alarm/interface.c:1175
+#: src/alarm/interface.c:1051
 msgid "Additional Command"
 msgstr "Dodatečný příkaz"
 
-#: src/alarm/interface.c:1201
+#: src/alarm/interface.c:1077
 msgid "enable"
 msgstr "zapnout"
 
-#: src/alarm/interface.c:1209
+#: src/alarm/interface.c:1085
 msgid "Playlist (optional)"
 msgstr "Seznam skladeb (volitelné)"
 
-#: src/alarm/interface.c:1235
+#: src/alarm/interface.c:1111
 msgid "Browse..."
 msgstr "Procházet…"
 
-#: src/alarm/interface.c:1243 src/alarm/interface.c:1407
+#: src/alarm/interface.c:1119 src/alarm/interface.c:1283
 msgid "Reminder"
 msgstr "Upomínání"
 
-#: src/alarm/interface.c:1260
+#: src/alarm/interface.c:1136
 msgid "Use reminder"
 msgstr "Upomínat"
 
-#: src/alarm/interface.c:1276 src/sndstretch/sndstretch_xmms.c:358
+#: src/alarm/interface.c:1152 src/sndstretch/sndstretch_xmms.c:358
 msgid "Options"
 msgstr "Nastavení"
 
-#: src/alarm/interface.c:1284
+#: src/alarm/interface.c:1160
 msgid "What do these options mean?"
 msgstr "Co tyto volby znamenají?"
 
-#: src/alarm/interface.c:1312
+#: src/alarm/interface.c:1188
 msgid ""
 "\n"
 "Time\n"
@@ -338,14 +288,14 @@ msgstr ""
 "\n"
 "Hlasitost\n"
 "  Zesilování: \n"
-"    Zesiluje až na vybranou hodnotu\n"
+"    Zesiluje až na určenou úroveň\n"
 "    po vybranou dobu.\n"
 "\n"
 "  Začít na: \n"
-"    Zesilovat začne z této hlasitosti.\n"
+"    Zesilovat začne na této hlasitosti.\n"
 "\n"
 "  Skončit na: \n"
-"    Hlasitost na konci zesílení. Je-li doba zesilování 0,\n"
+"    Hlasitost na konci zesílení. Je-li doba zesilování 0,\n"
 "    pak hlasitost bude tato.\n"
 "\n"
 "\n"
@@ -356,32 +306,32 @@ msgstr ""
 "  Seznam skladeb: \n"
 "    Načte tento seznam skladeb, z kterého bude hrát\n"
 "    (musí mít příponu .m3u). Není-li seznam zadán\n"
-"    bude použity skladby, které budou v aktuálním\n"
+"    budou použity skladby, které budou v aktuálním\n"
 "    seznamu skladeb.\n"
-"    URL MP3/OGG proudu zde také může být zadáno,\n"
+"    URL MP3/OGG proudu zde také může být zadáno,\n"
 "    ale načítání seznamu skladeb z URL není\n"
 "    v současnosti podporováno.\n"
 "\n"
 "  Upomínání:\n"
 "    Při vypnutí budíku zobrazí vzkaz.\n"
-"    Text vzkazu vepište do vstupního pole a zapněte tlačítko,\n"
+"    Text vzkazu vepište do vstupního pole a zapněte přepínač,\n"
 "    přejete-li si zobrazovat vzkaz.\n"
 
-#: src/alarm/interface.c:1314 src/skins/ui_manager.c:382
+#: src/alarm/interface.c:1190 src/skins/ui_manager.c:382
 msgid "Help"
 msgstr "Nápověda"
 
-#: src/alarm/interface.c:1346 src/cdaudio-ng/configure.c:249
+#: src/alarm/interface.c:1222 src/cdaudio-ng/configure.c:249
 #: src/crystalizer/crystalizer.c:130 src/echo_plugin/gui.c:125
 #: src/jack/configure.c:148 src/null/null.c:108 src/stereo_plugin/stereo.c:125
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: src/alarm/interface.c:1414
+#: src/alarm/interface.c:1290
 msgid "Your reminder for today is.."
 msgstr "Váš vzkaz pro dnešek je…"
 
-#: src/alarm/interface.c:1439
+#: src/alarm/interface.c:1315
 msgid "Thankyou"
 msgstr "Děkuji"
 
@@ -421,7 +371,7 @@ msgstr "O výstupním modulu ALSA"
 msgid "ALSA error"
 msgstr "Chyba ALSY"
 
-#: src/amidi-plug/amidi-plug.c:335
+#: src/amidi-plug/amidi-plug.c:325
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
@@ -699,7 +649,7 @@ msgstr ""
 "<span size=\"smaller\">Backend\n"
 "TiMidity</span>"
 
-#: src/amidi-plug/i_fileinfo.c:169 src/sid/xs_interface.c:1769
+#: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
 msgstr "Jméno:"
 
@@ -970,8 +920,7 @@ msgstr "Vlastní skin:"
 msgid "Skin file:"
 msgstr "Soubor se skinem:"
 
-#: src/aosd/aosd_ui.c:672 src/sid/xs_interface.c:1044
-#: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
+#: src/aosd/aosd_ui.c:672
 msgid "Browse"
 msgstr "Procházet"
 
@@ -1055,7 +1004,6 @@ msgid "Trigger"
 msgstr "Spouštěč"
 
 #: src/aosd/aosd_ui.c:1101 src/cdaudio-ng/configure.c:171
-#: src/sid/xs_interface.c:1302
 msgid "Misc"
 msgstr "Různé"
 
@@ -1100,6 +1048,22 @@ msgstr "Blur scope: výběr barvy"
 #: src/blur_scope/config.c:83 src/jack/configure.c:106
 msgid "Options:"
 msgstr "Volby:"
+
+#: src/bs2b/plugin.c:157
+msgid "Bauer stereophonic-to-binaural Preferences"
+msgstr "Nastavení Bauerovy stereofonní-dvojušní transformace"
+
+#: src/bs2b/plugin.c:168
+msgid "Feed level:"
+msgstr "Úroveň přeslechu:"
+
+#: src/bs2b/plugin.c:182
+msgid "Cut frequency:"
+msgstr "Ořezová frekvence:"
+
+#: src/bs2b/plugin.c:196
+msgid "Presets:"
+msgstr "Předvolby:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:241
 msgid "About Audio CD Plugin"
@@ -1244,7 +1208,7 @@ msgstr "Výšky:"
 msgid "Default song length:"
 msgstr "Implicitní délka skladby:"
 
-#: src/console/configure.c:208 src/sid/xs_interface.c:666
+#: src/console/configure.c:208
 msgid "Resampling"
 msgstr "Převzorkování"
 
@@ -1256,7 +1220,7 @@ msgstr "Povolit převzorkování zvuku"
 msgid "Resampling rate:"
 msgstr "Převzorkovat na:"
 
-#: src/console/configure.c:233 src/sid/xs_interface.c:354
+#: src/console/configure.c:233
 msgid "Hz"
 msgstr "Hz"
 
@@ -1344,10 +1308,6 @@ msgstr "Síla efektu:"
 msgid "Apply"
 msgstr "Použít"
 
-#: src/daemon/daemon.c:58
-msgid "Daemon Interface (like old headless mode)"
-msgstr "Rozhraní démona (jako starý bezhlavý režim)"
-
 #: src/echo_plugin/gui.c:15
 msgid ""
 "Echo Plugin\n"
@@ -1380,7 +1340,7 @@ msgstr "Zpětná vazba: (%)"
 msgid "Volume: (%)"
 msgstr "Hlasitost: (%)"
 
-#: src/ffaudio/ffaudio-core.c:795
+#: src/ffaudio/ffaudio-core.c:794
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1407,47 +1367,13 @@ msgstr ""
 "libavformat %s (%s)\n"
 "libavutil %s (%s)\n"
 
-#: src/ffaudio/ffaudio-core.c:809
+#: src/ffaudio/ffaudio-core.c:808
 msgid "About FFaudio Plugin"
 msgstr "O modulu FFaudio"
 
 #: src/filewriter/filewriter.c:166
 msgid "About FileWriter-Plugin"
 msgstr "O modulu FileWriter"
-
-#: src/filewriter/filewriter.c:167
-msgid ""
-"FileWriter-Plugin\n"
-"\n"
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Modul FileWriter\n"
-"\n"
-"Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
-"pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
-"Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
-"libovolné novější.\n"
-"\n"
-"Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
-"ZÁRUKY a to ani odvozené záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
-"JAKÝKOLIV ÚČEL. Více informací naleznete v GNU GPL.\n"
-"\n"
-"S tímto programem byste měli obdržet kopii GNU GPL. Pokud se\n"
-"tak nestalo, obraťte se na Free Software Foundation, Inc.,\n"
-"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/filewriter/filewriter.c:455
 msgid "File Writer Configuration"
@@ -1505,11 +1431,11 @@ msgstr "Auto"
 msgid "Joint Stereo"
 msgstr "Joint-stereo"
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:308
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:301
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183
 msgid "Mono"
 msgstr "Mono"
 
@@ -1645,11 +1571,11 @@ msgstr "Nastavení vorbis kodéru"
 msgid "Quality level (0 - 10):"
 msgstr "Úroveň kvality (0–10):"
 
-#: src/flacng/plugin.c:379
+#: src/flacng/plugin.c:378
 msgid "About FLAC Audio Plugin"
 msgstr "O zvukovém modulu FLAC"
 
-#: src/flacng/plugin.c:380
+#: src/flacng/plugin.c:379
 msgid ""
 "\n"
 "\n"
@@ -1703,7 +1629,7 @@ msgstr "Rozhraní gnt"
 msgid "Entry number"
 msgstr "Číslo položky"
 
-#: src/gtkui/columns.c:36 src/sid/xs_interface.c:1103
+#: src/gtkui/columns.c:36
 msgid "Title"
 msgstr "Název"
 
@@ -1779,7 +1705,7 @@ msgstr "Umístit dolů"
 msgid "Undock"
 msgstr "Neumisťovat"
 
-#: src/gtkui/layout.c:123 src/ladspa/plugin.c:616
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:643
 msgid "Disable"
 msgstr "Zakázat"
 
@@ -2023,28 +1949,32 @@ msgstr "_Přejmenovat"
 msgid "GTK Interface"
 msgstr "Rozhraní GTK"
 
-#: src/gtkui/ui_gtk.c:154 src/skins/ui_main.c:302
+#: src/gtkui/ui_gtk.c:156 src/skins/ui_main.c:302
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s – Audacious"
 
-#: src/gtkui/ui_gtk.c:160 src/skins/ui_main.c:304 src/skins/ui_main.c:1499
+#: src/gtkui/ui_gtk.c:162
+msgid "Buffering ..."
+msgstr "Plnění vyrovnávácí paměti…"
+
+#: src/gtkui/ui_gtk.c:165 src/skins/ui_main.c:304 src/skins/ui_main.c:1499
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:206 src/skins/plugin.c:185
+#: src/gtkui/ui_gtk.c:211 src/skins/plugin.c:183
 msgid "Error"
 msgstr "Chyba"
 
-#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:459
+#: src/gtkui/ui_statusbar.c:103 src/skins/ui_main.c:459
 msgid "mono"
 msgstr "mono"
 
-#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:458
+#: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:458
 msgid "stereo"
 msgstr "stereo"
 
-#: src/gtkui/ui_statusbar.c:106
+#: src/gtkui/ui_statusbar.c:107
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
@@ -2052,7 +1982,7 @@ msgstr[0] "%d kanál"
 msgstr[1] "%d kanály"
 msgstr[2] "%d kanálů"
 
-#: src/gtkui/ui_statusbar.c:121
+#: src/gtkui/ui_statusbar.c:122
 #, c-format
 msgid "%d kbps"
 msgstr "%d kb/s"
@@ -2239,40 +2169,51 @@ msgstr ""
 msgid "About JACK Output Plugin 0.17"
 msgstr "O výstupním modulu JACK 0.17"
 
-#: src/ladspa/plugin.c:396
+#: src/ladspa/plugin.c:414
 msgid "About LADSPA Host"
 msgstr "O hostiteli LADSPA"
 
-#: src/ladspa/plugin.c:497
+#: src/ladspa/plugin.c:515
 #, c-format
 msgid "%s Settings"
 msgstr "Nastavení %s"
 
-#: src/ladspa/plugin.c:565
+#: src/ladspa/plugin.c:583
 msgid "LADSPA Host Settings"
 msgstr "Nastavení hostitele LADSPA"
 
-#: src/ladspa/plugin.c:574
-msgid "Module path:"
-msgstr "Cesta k modulu:"
+#: src/ladspa/plugin.c:592
+msgid "Module paths:"
+msgstr "Cesta k modulům:"
 
-#: src/ladspa/plugin.c:586
+#: src/ladspa/plugin.c:597
+msgid ""
+"<small>Separate multiple paths with a colon.\n"
+"These paths are searched in addition to LADSPA_PATH.\n"
+"After adding new paths, press Enter to scan for new plugins.</small>"
+msgstr ""
+"<small>Cesty se od sebe oddělují dvojtečkou.\n"
+"Tyto cesty se prohledávají spolu s LADSPA_PATH.\n"
+"Po té, co přidáte novou cestu, je třeba stisknout Enter, aby se vyhledaly "
+"nové moduly.</small>"
+
+#: src/ladspa/plugin.c:613
 msgid "Available plugins:"
 msgstr "Dostupné moduly:"
 
-#: src/ladspa/plugin.c:598
+#: src/ladspa/plugin.c:625
 msgid "Enable"
 msgstr "Povolit"
 
-#: src/ladspa/plugin.c:604
+#: src/ladspa/plugin.c:631
 msgid "Enabled plugins:"
 msgstr "Povolené moduly:"
 
-#: src/ladspa/plugin.c:619
+#: src/ladspa/plugin.c:646
 msgid "Settings"
 msgstr "Nastavení"
 
-#: src/lyricwiki/lyricwiki.c:226
+#: src/lyricwiki/lyricwiki.c:269
 msgid ""
 "\n"
 "Looking for lyrics..."
@@ -2280,7 +2221,7 @@ msgstr ""
 "\n"
 "Vyhledává se text…"
 
-#: src/lyricwiki/lyricwiki.c:249
+#: src/lyricwiki/lyricwiki.c:293
 msgid ""
 "\n"
 "Connecting to lyrics.wikia.com..."
@@ -2288,7 +2229,7 @@ msgstr ""
 "\n"
 "Připoje se k lyrics.wikia.com…"
 
-#: src/lyricwiki/lyricwiki.c:337
+#: src/lyricwiki/lyricwiki.c:381
 msgid ""
 "\n"
 "No lyrics were found."
@@ -2324,19 +2265,19 @@ msgstr "Generátor taktu: %d dob/min"
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "Generátor taktu: %d dob/min %d⁄%d"
 
-#: src/mixer/plugin.c:63
+#: src/mixer/plugin.c:64
 msgid "About Channel Mixer"
 msgstr "O směšovači kanálů"
 
-#: src/mixer/plugin.c:92
+#: src/mixer/plugin.c:93
 msgid "Channel Mixer Settings"
 msgstr "Nastavení směšovače kanálů"
 
-#: src/mixer/plugin.c:101
+#: src/mixer/plugin.c:102
 msgid "Output channels:"
 msgstr "Výstupní kanály:"
 
-#: src/mixer/plugin.c:111
+#: src/mixer/plugin.c:112
 msgid "Changes take effect at the next song change."
 msgstr "Změny se projeví při přepnutí na další skladbu."
 
@@ -2388,6 +2329,42 @@ msgstr "Nastavení slepého výstupu"
 msgid "Run in real time"
 msgstr "Běžet v reálném čase"
 
+#: src/oss4/configure.c:81
+msgid "1. Default device"
+msgstr "1. Implicitní zařízení"
+
+#: src/oss4/configure.c:138
+msgid "OSS4 Output Plugin Preferences"
+msgstr "Nastavení výstupního modulu OSS4"
+
+#: src/oss4/configure.c:150 src/OSS/configure.c:194
+msgid "Audio device:"
+msgstr "Zvukové zařízení:"
+
+#: src/oss4/configure.c:178 src/OSS/configure.c:217 src/OSS/configure.c:260
+msgid "Use alternate device:"
+msgstr "Použít jiné zařízení:"
+
+#: src/oss4/configure.c:193
+msgid "Save volume between sessions"
+msgstr "Mezi relacemi ukládat hlasitost"
+
+#: src/oss4/configure.c:197
+msgid "Enable format conversions made by the OSS software."
+msgstr "Zapnout převody formátu prostřednictvím OSS."
+
+#: src/oss4/configure.c:201
+msgid "Enable exclusive mode to prevent virtual mixing."
+msgstr "Zabránit virtuálnímu směšování použitím výlučného režimu."
+
+#: src/oss4/plugin.c:51
+msgid "About OSS4 Plugin"
+msgstr "O modulu OSS4"
+
+#: src/oss4/utils.c:211
+msgid "OSS4 error"
+msgstr "Chyba OSS4"
+
 #: src/OSS/configure.c:137
 #, c-format
 msgid "Default (%s)"
@@ -2396,14 +2373,6 @@ msgstr "Standardně (%s)"
 #: src/OSS/configure.c:178
 msgid "OSS Driver configuration"
 msgstr "Nastavení ovladače OSS"
-
-#: src/OSS/configure.c:194 src/oss4/configure.c:154
-msgid "Audio device:"
-msgstr "Zvukové zařízení:"
-
-#: src/OSS/configure.c:217 src/OSS/configure.c:260 src/oss4/configure.c:182
-msgid "Use alternate device:"
-msgstr "Použít jiné zařízení:"
 
 #: src/OSS/configure.c:281
 msgid "Devices"
@@ -2437,101 +2406,9 @@ msgstr "Mixér"
 msgid "About OSS Driver"
 msgstr "O modulu OSS"
 
-#: src/OSS/OSS.c:41
-msgid ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Ovladač OSS programu Audacious\n"
-"\n"
-"Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
-"pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
-"Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
-"libovolné novější.\n"
-"\n"
-"Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
-"ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
-"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
-"\n"
-"S tímto programem byste měli obdržet kopii GNU GPL. Pokud se tak\n"
-"nestalo, obraťte se na Free Software Foundation, Inc.,\n"
-"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#: src/oss4/configure.c:84
-msgid "1. Default device"
-msgstr "1. Implicitní zařízení"
-
-#: src/oss4/configure.c:142
-msgid "OSS4 Output Plugin Preferences"
-msgstr "Nastavení výstupního modulu OSS4"
-
-#: src/oss4/configure.c:197
-msgid "Save volume between sessions"
-msgstr "Mezi relacemi ukládat hlasitost"
-
-#: src/oss4/configure.c:201
-msgid "Enable format conversions made by the OSS software."
-msgstr "Zapnout převody formátu prostřednictvím OSS."
-
-#: src/oss4/plugin.c:51
-msgid "About OSS4 Plugin"
-msgstr "O modulu OSS4"
-
-#: src/oss4/utils.c:204
-msgid "OSS4 error"
-msgstr "Chyba OSS4"
-
-#: src/pulse_audio/pulse_audio.c:687
+#: src/pulse_audio/pulse_audio.c:673
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "O výstupním modulu PulseAudio pro Audacious"
-
-#: src/pulse_audio/pulse_audio.c:688
-msgid ""
-"Audacious PulseAudio Output Plugin\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Výstupní modul PulseAudio pro Audacious\n"
-"\n"
-"Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
-"pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
-"Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
-"libovolné novější.\n"
-"\n"
-"Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
-"ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
-"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
-"\n"
-"S tímto programem byste měli obdržet kopii GNU GPL. Pokud se\n"
-"tak nestalo, obraťte se na Free Software Foundation, Inc.,\n"
-"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/resample/plugin.c:89
 msgid "About Sample Rate Converter Plugin"
@@ -2605,643 +2482,11 @@ msgstr "O výstupním modulu SDL"
 msgid "SDL error"
 msgstr "Chyba SDL"
 
-#: src/sid/xs_about.c:84
-#, c-format
-msgid "About %s"
-msgstr "O %s"
-
-#: src/sid/xs_config.c:293
-msgid " Error"
-msgstr " Chyba"
-
-#: src/sid/xs_fileinfo.c:151
-msgid "General info"
-msgstr "Obecné informace"
-
-#: src/sid/xs_fileinfo.c:164
-#, c-format
-msgid "Tune #%i: "
-msgstr "Skladba č. %i:"
-
-#: src/sid/xs_glade.c:90 src/sid/xs_glade.c:114
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr "Nebylo možné nalézt soubor s pixmapou: %s"
-
-#: src/sid/xs_interface.c:234
-msgid "Audacious-SID configuration"
-msgstr "Nastavení Audacious-SID"
-
-#: src/sid/xs_interface.c:270
-msgid "8-bit"
-msgstr "8bitový"
-
-#: src/sid/xs_interface.c:277
-msgid "16-bit"
-msgstr "16bitový"
-
-#: src/sid/xs_interface.c:284
-msgid "Resolution:"
-msgstr "Rozlišení:"
-
-#: src/sid/xs_interface.c:315
-msgid "Autopanning"
-msgstr "Automatický posun"
-
-#: src/sid/xs_interface.c:322
-msgid "Channels:"
-msgstr "Kanály:"
-
-#: src/sid/xs_interface.c:366
-msgid "Samplerate:"
-msgstr "Vzorkovací kmitočet:"
-
-#: src/sid/xs_interface.c:383
-msgid "Use oversampling"
-msgstr "Převzorkovat"
-
-#: src/sid/xs_interface.c:394
-msgid "Factor:"
-msgstr "Násobek:"
-
-#: src/sid/xs_interface.c:406
-msgid "Large factors require more CPU-power"
-msgstr "Větší činitel vyžaduje více výkonu CPU"
-
-#: src/sid/xs_interface.c:412
-msgid "Oversampling:"
-msgstr "Převzorkování:"
-
-#: src/sid/xs_interface.c:417
-msgid "Audio"
-msgstr "Zvuk"
-
-#: src/sid/xs_interface.c:445
-msgid "Force speed"
-msgstr "Vnutit rychlost"
-
-#: src/sid/xs_interface.c:449
-msgid ""
-"If enabled, this option \"forces\" the emulation engine to use the selected "
-"clock speed/frequency. Otherwise the speed is determined from played file "
-"itself."
-msgstr ""
-"Je-li zapnuto, bude emulačnímu jádru vnucen vybraná rychlost hodin/"
-"frekvence. V opačném případě bude rychlost určena z přehrávaného souboru "
-"samotného."
-
-#: src/sid/xs_interface.c:451
-msgid "PAL (50 Hz)"
-msgstr "PAL (50 Hz)"
-
-#: src/sid/xs_interface.c:455
-msgid ""
-"PAL is the european TV standard, which uses 50Hz vertical refresh frequency. "
-"Most of SID-tunes have been made for PAL computers."
-msgstr ""
-"PAL je evropský televizní standard, který používá 50Hz vertikální obnovovací "
-"frekvenci. Většina SID skladeb byla určena pro počítače s výstupem PAL."
-
-#: src/sid/xs_interface.c:459
-msgid "NTSC (60 Hz)"
-msgstr "NTSC (60 Hz)"
-
-#: src/sid/xs_interface.c:463
-msgid ""
-"NTSC is the TV standard with 60Hz vertical refresh rate (and other features "
-"that differ from PAL). It is mainly used in United States, Japan and certain "
-"other countries."
-msgstr ""
-"NTSC je televizní standard s 60HZ vertikální obnovovací frekvencí (kromě "
-"jiných rozdílů od PALU). Používá se především ve Spojených státech, "
-"Japonsku, několika dalších zemí."
-
-#: src/sid/xs_interface.c:467
-msgid "Clock speed:"
-msgstr "Rychlost hodin:"
-
-#: src/sid/xs_interface.c:484
-msgid "Force model"
-msgstr "Vnutit model"
-
-#: src/sid/xs_interface.c:488
-msgid ""
-"If enabled, this option \"forces\" the emulation engine to use the selected "
-"SID-chip model. Otherwise the preferred SID model is determined from the "
-"file (if PSIDv2NG type) or if not available, this setting is used."
-msgstr ""
-"Je-li zapnuto, emulačnímu jádru bude vnucen vybraný modelu SID čipu. "
-"V opačném případě bude modul SIDU určen ze souboru (je-li typu PSIDv2NG). "
-"Vybraný model bude také použit, nebude-li jej možno ze souboru určit."
-
-#: src/sid/xs_interface.c:490
-msgid "MOS 6581"
-msgstr "MOS 6581"
-
-#: src/sid/xs_interface.c:494
-msgid ""
-"MOS/CSG 6581 is the earlier major version of SID chip. It differs from 8580 "
-"in few ways, having much fuller filter (which, due to design error, is never "
-"same between two different SID-chips) and has the \"volume adjustment bug\", "
-"which enables playing of digital samples."
-msgstr ""
-"MOS/CSG 6581 je starší verze SID čipu. Od 8580 se odlišuje tím, že má "
-"plnější filtr (který, kvůli chybě v návrhu, není nikdy stejný mezi dvěma "
-"čipy) a „trpí chybou“ při ladění hlasitosti, která umožňuje přehrávání "
-"digitálních vzorků."
-
-#: src/sid/xs_interface.c:498
-msgid "MOS 8580"
-msgstr "MOS 8580"
-
-#: src/sid/xs_interface.c:505
-msgid "SID model:"
-msgstr "Model SIDU:"
-
-#: src/sid/xs_interface.c:522
-msgid "SIDPlay 1 (frame-based)"
-msgstr "SIDPlay 1 (rámcová technika)"
-
-#: src/sid/xs_interface.c:526
-msgid ""
-"Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most "
-"cases, though."
-msgstr ""
-"K emulaci použije libSIDPlay 1.x. Rychlejší, ale ne tak přesné. Ve většině "
-"případů postačuje."
-
-#: src/sid/xs_interface.c:530
-msgid "SIDPlay 2 (cycle-based)"
-msgstr "DISPlay 2 (cyklová technika)"
-
-#: src/sid/xs_interface.c:534
-msgid ""
-"Use libSIDPlay 2.x emulation, which requires powerful CPU due to more exact "
-"emulation."
-msgstr ""
-"K emulaci použijte libSIDPlay 2.x, který kvůli přesnější emulaci vyžaduje "
-"výkonnější CPU."
-
-#: src/sid/xs_interface.c:538
-msgid "Emulation library selection:"
-msgstr "Výběr emulační knihovny"
-
-#: src/sid/xs_interface.c:555
-msgid "Real C64 (SIDPlay 2 only)"
-msgstr "Skutečný C64 (pouze SIDPlay 2)"
-
-#: src/sid/xs_interface.c:562
-msgid "Bank switching"
-msgstr "Přepínání bank"
-
-#: src/sid/xs_interface.c:569
-msgid "Transparent ROM"
-msgstr "Transparentní ROM"
-
-#: src/sid/xs_interface.c:576
-msgid "PlaySID environment"
-msgstr "Prostředí PlaySID"
-
-#: src/sid/xs_interface.c:583
-msgid "Memory mode:"
-msgstr "Režim paměti"
-
-#: src/sid/xs_interface.c:588
-msgid "Emu#1"
-msgstr "Emu#1"
-
-#: src/sid/xs_interface.c:611
-msgid "Optimization mode (faster, inaccurate)"
-msgstr "Optimalizující režim (rychlejší, nepřesný)"
-
-#: src/sid/xs_interface.c:615
-msgid ""
-"This setting can be used to enable libSIDPlay2's \"optimization mode\", "
-"which in downgrades the emulation from cycle-exact to something similar to "
-"frame-exact. The result is lower CPU usage, but worse accuracy."
-msgstr ""
-"Toto nastavení může být použito pro povolení „optimalizující režimu“ "
-"libSIDPlay2, který nezachovává přesnost na cyklus a více se podobá rámcové "
-"technice. Výsledkem je nižší zatížení CPU, ale větší nepřesnost."
-
-#: src/sid/xs_interface.c:617
-msgid "reSID-emulation"
-msgstr "Emulace reSID"
-
-#: src/sid/xs_interface.c:621
-msgid ""
-"reSID is the software SID-chip simulator based on SID reverse-engineering, "
-"created by Dag Lem. It is probably the closest thing to real SID available "
-"as software-only emulation."
-msgstr ""
-"reSID je softwarový emulátor čipu založený na zpětném inženýrství SID čipu. "
-"Autorem je Dag Lem. Jedná se pravděpodobně o nejvěrnější softwarovou emulaci "
-"skutečného čipu."
-
-#: src/sid/xs_interface.c:625
-msgid "HardSID"
-msgstr "HardSID"
-
-#: src/sid/xs_interface.c:629
-msgid ""
-"HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a "
-"real SID-chip. Software can be used to control the HardSID and combined with "
-"software emulation of rest of C64 via libSIDPlay2 HardSID can be used to "
-"achieve \"near 100%\" similarity to real C64. For more information, see "
-"http://www.hardsid.com/"
-msgstr ""
-"HardSID je EISA/PCI karta pro PC kompatibilní počítače, která může nést "
-"skutečný SID čip. Software slouží k ovládání HardSIDu a v kombinaci se "
-"softwarovou emulací zbytku C64 pomocí libSIDPlay2 lze dosáhnout „téměř 100%“ "
-"shody se skutečným C64. Podrobnosti naleznete na http://www.hardsid.com/"
-
-#: src/sid/xs_interface.c:633
-msgid "SIDPlay 2 options:"
-msgstr "Nastavení SIDPlay 2:"
-
-#: src/sid/xs_interface.c:650
-msgid "Fast (nearest neighbour)"
-msgstr "Rychlá (nejbližší sousední)"
-
-#: src/sid/xs_interface.c:654
-msgid ""
-"Fastest and also worst sounding sampling method, simply picks nearest "
-"neighbouring sample."
-msgstr ""
-"Nejrychlejší a také nejhůře znějící vzorkovací metoda. Jednoduše vybírá "
-"nejbližší vzorek."
-
-#: src/sid/xs_interface.c:658
-msgid "Linear interpolation"
-msgstr "Lineární interpolace"
-
-#: src/sid/xs_interface.c:662
-msgid ""
-"Uses linear interpolation between samples, yielding higher audio quality "
-"with less sampling noise."
-msgstr ""
-"Používá lineární interpolaci mezi vzorky. Tím dosahuje vyšší kvality zvuku "
-"s menšími ruchy."
-
-#: src/sid/xs_interface.c:673
-msgid "Resampling (FIR)"
-msgstr "Převzorkování (FIR)"
-
-#: src/sid/xs_interface.c:680
-msgid "reSID sampling options:"
-msgstr "Nastavení převzorkování reSIDu:"
-
-#: src/sid/xs_interface.c:685
-msgid "Emu#2"
-msgstr "Emu#2"
-
-#: src/sid/xs_interface.c:697
-msgid "Emulate filters"
-msgstr "Emulovat filtry"
-
-#: src/sid/xs_interface.c:701
-msgid ""
-"This option enables emulation of SID filter. The filter is an essential part "
-"of SID's sound capacity, but accurate emulation of it may require quite much "
-"CPU power. However, if filter emulation is disabled, tunes won't sound "
-"authentic at all if they utilize the filter."
-msgstr ""
-"Tato volba zapíná emulaci SID filtru. Tento filtr je nepostradatelnou "
-"součástí výbavy SIDU, avšak jeho přesná emulace může vyžadovat hodně výkonu "
-"CPU. Vypnete-li filtr, sklady které jej používají, nebudou vůbec znít "
-"věrohodně."
-
-#: src/sid/xs_interface.c:726
-msgid "FS"
-msgstr "FS"
-
-#: src/sid/xs_interface.c:743
-msgid "FM"
-msgstr "FM"
-
-#: src/sid/xs_interface.c:760
-msgid "FT"
-msgstr "FT"
-
-#: src/sid/xs_interface.c:771
-msgid "Reset values"
-msgstr "Resetovat hodnoty"
-
-#: src/sid/xs_interface.c:776
-msgid "SIDPlay1"
-msgstr "SIDPlay1"
-
-#: src/sid/xs_interface.c:817
-msgid "Export"
-msgstr "Exportovat"
-
-#: src/sid/xs_interface.c:825
-msgid "Use"
-msgstr "Použít"
-
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:441
-msgid "Save"
-msgstr "Uložit"
-
-#: src/sid/xs_interface.c:841 src/skins/ui_manager.c:440
-msgid "Import"
-msgstr "Importovat"
-
-#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:442
-msgid "Delete"
-msgstr "Smazat"
-
-#: src/sid/xs_interface.c:863
-msgid "Filter curve:"
-msgstr "Křivka filtru:"
-
-#: src/sid/xs_interface.c:868
-msgid "SIDPlay2"
-msgstr "SIDPlay2"
-
-#: src/sid/xs_interface.c:874
-msgid "Filters"
-msgstr "Filtry"
-
-#: src/sid/xs_interface.c:897
-msgid "Play at least for specified time"
-msgstr "Hrát alespoň po určenou dobu"
-
-#: src/sid/xs_interface.c:901
-msgid ""
-"If enabled, the tune is played at least for the specified time, adding "
-"silence to the end if necessary."
-msgstr ""
-"Je-li zapnuto, skladba bude hrána alespoň po zadanou dobu, případně na konec "
-"bude přidáno ticho."
-
-#: src/sid/xs_interface.c:908 src/sid/xs_interface.c:962
-#: src/sid/xs_interface.c:1142
-msgid "Playtime:"
-msgstr "Doba přehrávání:"
-
-#: src/sid/xs_interface.c:928
-msgid "Minimum playtime:"
-msgstr "Minimální doba přehrávání:"
-
-#: src/sid/xs_interface.c:945
-msgid "Play for specified time maximum"
-msgstr "Přehrávat do maximální požadované doby"
-
-#: src/sid/xs_interface.c:949
-msgid ""
-"If enabled, tune is played until specified duration is reached (aka maximum "
-"playtime)."
-msgstr ""
-"Je-li zapnuto, skladba bude hrána nejvýše po zadanou dobu (tj. maximální "
-"délku přehrávání)."
-
-#: src/sid/xs_interface.c:951
-msgid "Only when song length is unknown"
-msgstr "Jen není-li délka skladby známa"
-
-#: src/sid/xs_interface.c:955
-msgid ""
-"If enabled, the maximum playtime is applied only if song/tune length is not "
-"known."
-msgstr ""
-"Je-li zapnuto, maximální doba přehrávání bude uplatněna jen tehdy, nebude-li "
-"délka skladby známa."
-
-#: src/sid/xs_interface.c:982
-msgid "Maximum playtime:"
-msgstr "Maximální doba přehrávání:"
-
-#: src/sid/xs_interface.c:999
-msgid "Use XSIDPLAY-compatible database"
-msgstr "Použít databázi kompatibilní s XSIDPLAY"
-
-#: src/sid/xs_interface.c:1003
-msgid ""
-"This option enables using of XSIDPLAY compatible song length database. "
-"(Refer to Audacious-SID documentation for more information)"
-msgstr ""
-"Tato volba zapíná použití databáze délek skladeb kompatibilní "
-"s XSIDPLAY. (Podrobnosti naleznete v dokumentaci k Audacious-SID modulu.)"
-
-#: src/sid/xs_interface.c:1010
-msgid "DB-file:"
-msgstr "Databázový soubor:"
-
-#: src/sid/xs_interface.c:1020
-msgid "Database path and filename"
-msgstr "Cesta k databázi a jméno souboru"
-
-#: src/sid/xs_interface.c:1027
-msgid "Browse for song length-database file"
-msgstr "Ukázat soubor s databází délek"
-
-#: src/sid/xs_interface.c:1049
-msgid "Song length database:"
-msgstr "Databáze s délkou skladeb:"
-
-#: src/sid/xs_interface.c:1054
-msgid "Songlength"
-msgstr "Délka skladby"
-
-#: src/sid/xs_interface.c:1072
-msgid "Override generic Tuplez format string"
-msgstr "Přepsat původní formátovací řetězec Tuplez"
-
-#: src/sid/xs_interface.c:1076
-msgid ""
-"By enabling this option you can specify a custom Tuplez formatting string "
-"for SID-files. The SID-plugin specific Tuplez tags are described shortly "
-"below."
-msgstr ""
-"Po povolením této volby lze uživatelem určit formátovací řetězec Tuplez pro "
-"SID soubory. Tuplez značky modulu SID jsou popsány níže."
-
-#: src/sid/xs_interface.c:1087
-msgid "Tuplez format string for SID-files"
-msgstr "Formátovací řetězec Tuplez pro soubory SID"
-
-#: src/sid/xs_interface.c:1090
-msgid ""
-"<u>SID-specific Tuplez fields:</u>\n"
-"\n"
-"<b>sid-format</b>\t\t- Specific fileformat\n"
-"<b>sid-model</b>\t\t- 6581 or 8580\n"
-"<b>sid-speed</b>\t\t- Timing or speed: PAL/NTSC/etc.\n"
-"\n"
-"<u>Other \"special\" fields set:</u>\n"
-"\n"
-"<b>subsong-num, subsong-id</b>"
-msgstr ""
-"<u>SIDové položky Tuplez:</u>\n"
-"\n"
-"<b>sid-format</b>\t\t– Výslovný formát souboru\n"
-"<b>sid-model</b>\t\t– 6581 nebo 8580\n"
-"<b>sid-speed</b>\t\t– Časování nebo rychlost: PAL/NTSC atd..\n"
-"\n"
-"<u>Další „zvláštní“ sady položek:</u>\n"
-"\n"
-"<b>subsong-num, subsong-id</b>"
-
-#: src/sid/xs_interface.c:1098
-msgid "Song title format:"
-msgstr "Formát názvu skladby:"
-
-#: src/sid/xs_interface.c:1125
-msgid "Add sub-tunes to playlist"
-msgstr "Do seznamu skladeb přidat podskladby"
-
-#: src/sid/xs_interface.c:1129
-msgid ""
-"If enabled, sub-tunes of each file will be added to playlist. If disabled, "
-"only the default sub-tune will be added."
-msgstr ""
-"Je-li zapnuto, podskladby každého souboru budou přidány do seznamu skladeb. "
-"Je-li vypnuto, bude přidána pouze výchozí podskladba."
-
-#: src/sid/xs_interface.c:1131
-msgid "Only tunes with specified minimum duration"
-msgstr "Jen skladby se zadanou minimální délkou"
-
-#: src/sid/xs_interface.c:1135
-msgid "Only add sub-tunes that have a duration of at least specified time."
-msgstr "Přidat pouze podskladby, jejichž délka je větší nebo rovna zadané."
-
-#: src/sid/xs_interface.c:1162
-msgid "Sub-tune handling:"
-msgstr "Zacházení s podskladbami:"
-
-#: src/sid/xs_interface.c:1179
-msgid "Use STIL database"
-msgstr "Používat databázi STIL"
-
-#: src/sid/xs_interface.c:1183
-msgid ""
-"If this option is enabled (and the database & HVSC settings below are "
-"correctly set), Audacious-SID will use and display additional information "
-"from STIL database when HVSC SIDs are played."
-msgstr ""
-"Je-li tato volba povolena (a databáze a HVSC konfigurace níže správně "
-"nastavena), Audacious-SID použije a zobrazí dodatečné informace z databáze "
-"STIL, je-li hrána skladba z HVSC."
-
-#: src/sid/xs_interface.c:1190
-msgid "STIL file:"
-msgstr "Soubor STIL:"
-
-#: src/sid/xs_interface.c:1206
-msgid ""
-"Path and filename of STIL database file (STIL.txt), usually found from "
-"HVSC's DOCUMENTS-subdirectory."
-msgstr ""
-"Cesta a jméno souboru souboru s databází STIL (STIL.txt). Obvykle se nachází "
-"v podadresáři DOCUMENTS od HVSC."
-
-#: src/sid/xs_interface.c:1219
-msgid "Browse for STIL-database file"
-msgstr "Ukázat na soubor s databází STIL"
-
-#: src/sid/xs_interface.c:1246
-msgid "HVSC path:"
-msgstr "Cesta k HVSC"
-
-#: src/sid/xs_interface.c:1262
-msgid ""
-"Path to base-directory of your High Voltage SID Collection (HVSC), for "
-"example /media/C64Music/"
-msgstr ""
-"Cesta ke kořenovému adresáři vaší High Voltage SID sbírce (HVSC). Na příklad "
-"„/media/C64Music/“."
-
-#: src/sid/xs_interface.c:1275
-msgid "Browse for HVSC path"
-msgstr "Ukázat cestu k HSVC"
-
-#: src/sid/xs_interface.c:1297
-msgid "SID Tune Information List (STIL) database:"
-msgstr "Databáze SID Tune Information List (STIL):"
-
-#: src/sid/xs_interface.c:1321
-msgid "Cancel any changes"
-msgstr "Jakékoliv změny zamítnout"
-
-#: src/sid/xs_interface.c:1328
-msgid "Accept and update changes"
-msgstr "Přijmout a provést změny"
-
-#: src/sid/xs_interface.c:1628
-msgid "Audacious-SID Fileinfo"
-msgstr "Audacious – Informace o souboru SID"
-
-#: src/sid/xs_interface.c:1649
-msgid "Filename:"
-msgstr "Jméno souboru:"
-
-#: src/sid/xs_interface.c:1657
-msgid "Songname:"
-msgstr "Název skladby:"
-
-#: src/sid/xs_interface.c:1665
-msgid "Composer:"
-msgstr "Skladatel:"
-
-#: src/sid/xs_interface.c:1673
-msgid "Copyright:"
-msgstr "Autorská práva:"
-
-#: src/sid/xs_interface.c:1717
-msgid "Song Information:"
-msgstr "Informace o skladbě:"
-
-#: src/sid/xs_interface.c:1752
-msgid "Author:"
-msgstr "Autor:"
-
-#: src/sid/xs_interface.c:1786
-msgid "Duration:"
-msgstr "Délka:"
-
-#: src/sid/xs_interface.c:1820
-msgid "Sub-tune Information:"
-msgstr "Informace o podskladbách"
-
-#: src/sid/xs_interface.c:1881
-msgid "Select HVSC song length database"
-msgstr "Vybrat databázi délek skladeb od HVSC"
-
-#: src/sid/xs_interface.c:1922
-msgid "Select STIL-database"
-msgstr "Vybrat databázi STIL"
-
-#: src/sid/xs_interface.c:1963
-msgid "Select HVSC location prefix"
-msgstr "Vybrat cestu k HVSC"
-
-#: src/sid/xs_interface.c:2004
-msgid "Select SIDPlay2 filters file for importing"
-msgstr "Vybrat soubor se SIDPlay2 filtry pro import"
-
-#: src/sid/xs_interface.c:2045
-msgid "Select SIDPlay2 filters file for exporting"
-msgstr "Vybrat soubor se SIDPlay2 filtry pro export"
-
-#: src/sid/xs_interface.c:2093 src/sid/xs_interface.c:2106
-msgid "Confirm selected action"
-msgstr "Potvrdit vybrané akce"
-
-#: src/sid/xs_interface.c:2123
-msgid "Yes"
-msgstr "Ano"
-
-#: src/sid/xs_interface.c:2129
-msgid "No"
-msgstr "Ne"
-
-#: src/skins/plugin.c:167
+#: src/skins/plugin.c:165
 msgid "About Skinned GUI"
 msgstr "O GUI s měnitelným vzhledem"
 
-#: src/skins/plugin.c:168
+#: src/skins/plugin.c:166
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -3277,11 +2522,11 @@ msgstr "Použít bitmapové fonty (podporuje pouze ASCII)"
 msgid "Scroll song title in both directions"
 msgstr "Převíjet název skladby oběma směry"
 
-#: src/skins/skins_cfg.c:297
+#: src/skins/skins_cfg.c:298
 msgid "<b>_Skin</b>"
 msgstr "<b>_Vzhled</b>"
 
-#: src/skins/skins_cfg.c:344
+#: src/skins/skins_cfg.c:345
 msgid "Interface Preferences"
 msgstr "Nastavení rozhraní"
 
@@ -3393,19 +2638,19 @@ msgstr "Informace o souboru"
 msgid "Visualization Menu"
 msgstr "Nabídka znázornění"
 
-#: src/skins/ui_main.c:1646
+#: src/skins/ui_main.c:1648
 msgid "Single mode."
 msgstr "Režim jedné skladby."
 
-#: src/skins/ui_main.c:1648
+#: src/skins/ui_main.c:1650
 msgid "Playlist mode."
 msgstr "Režim seznamu skladeb."
 
-#: src/skins/ui_main.c:1670
+#: src/skins/ui_main.c:1672
 msgid "Stopping after song."
 msgstr "Zastavuje po skladbě."
 
-#: src/skins/ui_main.c:1672
+#: src/skins/ui_main.c:1674
 msgid "Not stopping after song."
 msgstr "Po skladbě nezastavuje."
 
@@ -3940,6 +3185,18 @@ msgstr "Vložit"
 msgid "Load"
 msgstr "Načíst"
 
+#: src/skins/ui_manager.c:440
+msgid "Import"
+msgstr "Importovat"
+
+#: src/skins/ui_manager.c:441
+msgid "Save"
+msgstr "Uložit"
+
+#: src/skins/ui_manager.c:442
+msgid "Delete"
+msgstr "Smazat"
+
 #: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
 #: src/skins/ui_manager.c:480
 msgid "Preset"
@@ -4100,47 +3357,6 @@ msgstr "Adresář („%s“) nebylo možné vytvořit: %s\n"
 #: src/sndfile/plugin.c:454
 msgid "About sndfile plugin"
 msgstr "O modulu sndfile"
-
-#: src/sndfile/plugin.c:455
-msgid ""
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the xmms_sndfile plugin which is:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"This program is free software ; you can redistribute it and/or modify \n"
-"it under the terms of the GNU General Public License as published by \n"
-"the Free Software Foundation ; either version 2 of the License, or \n"
-"(at your option) any later version. \n"
-" \n"
-"This program is distributed in the hope that it will be useful, \n"
-"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-"See the GNU General Public License for more details. \n"
-"\n"
-"You should have received a copy of the GNU General Public \n"
-"License along with this program ; if not, write to \n"
-"the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
-msgstr ""
-"Pro Audacious upravil Tony Vroon <chainsaw@gentoo.org>\n"
-"z původního modulu xmms_sndfile,\n"
-"copyright © 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
-"pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
-"Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
-"libovolné novější.\n"
-"\n"
-"Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
-"ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
-"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
-"\n"
-"S tímto programem byste měli obdržet kopii GNU GPL. Pokud se\n"
-"tak nestalo, obraťte se na\n"
-"Free Software Foundation, Inc.,\n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
 
 #: src/sndstretch/sndstretch_xmms.c:155
 msgid "About SndStretch"
@@ -4489,6 +3705,704 @@ msgstr ""
 "Části kódu modulu napsal Miles Egan\n"
 "Navštivte stránku Wavpacku na http://www.wavpack.com/\n"
 
+#~ msgid "XMMS Alarm"
+#~ msgstr "XMMS budík"
+
+#~ msgid ""
+#~ "An XMMS plugin which can be used\n"
+#~ "to start playing at a certain time.\n"
+#~ "\n"
+#~ "Send all complaints to:\n"
+#~ "Adam Feakin <adamf@snika.uklinux.net>\n"
+#~ "Daniel Stodden <stodden@in.tum.de>\n"
+#~ "\n"
+#~ "http://www.snika.uklinux.net/xmms-alarm/"
+#~ msgstr ""
+#~ "XMMS modul, který může být použit\n"
+#~ "k načasovanému zahájení přehrávání.\n"
+#~ "\n"
+#~ "Všechny stížnosti zasílejte na:\n"
+#~ "Adam Feakin <adamf@snika.uklinux.net>\n"
+#~ "Daniel Stodden <stodden@in.tum.de>\n"
+#~ "\n"
+#~ "http://www.snika.uklinux.net/xmms-alarm/"
+
+#~ msgid "Close"
+#~ msgstr "Zavřít"
+
+#~ msgid "Sorry"
+#~ msgstr "Je mi líto"
+
+#~ msgid "Warning"
+#~ msgstr "Varování"
+
+#~ msgid ""
+#~ "For safety reasons the \"quiet\" time must be at least 65 seconds longer "
+#~ "than the fading time, it must also be more than 10 seconds.  This "
+#~ "basically means that there is a bug in the code and until I find a way of "
+#~ "really fixing it this message will appear :)\n"
+#~ "\n"
+#~ "Your fading settings have NOT been saved\n"
+#~ "\n"
+#~ "--\n"
+#~ "Adam"
+#~ msgstr ""
+#~ "Z bezpečnostních důvodů musí být doba „ticha“ alespoň o 65 sekund delší "
+#~ "než doba zesilování, také musí být delší než 10 sekund. Toto v zásadě "
+#~ "znamená, že v kódu je chyba a dokud nezjistím, jak ji opravdu opravit, "
+#~ "tato zpráva se bude zobrazovat :)\n"
+#~ "\n"
+#~ "Vaše nastavení zesilování NEBYLO uloženo.\n"
+#~ "\n"
+#~ "–\n"
+#~ "Adam"
+
+#~ msgid "Oh Well"
+#~ msgstr "Dobrá"
+
+#~ msgid "Daemon Interface (like old headless mode)"
+#~ msgstr "Rozhraní démona (jako starý bezhlavý režim)"
+
+#~ msgid ""
+#~ "FileWriter-Plugin\n"
+#~ "\n"
+#~ "This program is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as published by\n"
+#~ "the Free Software Foundation; either version 2 of the License, or\n"
+#~ "(at your option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License\n"
+#~ "along with this program; if not, write to the Free Software\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
+#~ "USA."
+#~ msgstr ""
+#~ "Modul FileWriter\n"
+#~ "\n"
+#~ "Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
+#~ "pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
+#~ "Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
+#~ "libovolné novější.\n"
+#~ "\n"
+#~ "Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
+#~ "ZÁRUKY a to ani odvozené záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
+#~ "JAKÝKOLIV ÚČEL. Více informací naleznete v GNU GPL.\n"
+#~ "\n"
+#~ "S tímto programem byste měli obdržet kopii GNU GPL. Pokud se\n"
+#~ "tak nestalo, obraťte se na Free Software Foundation, Inc.,\n"
+#~ "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#~ msgid ""
+#~ "Audacious OSS Driver\n"
+#~ "\n"
+#~ " This program is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as published by\n"
+#~ "the Free Software Foundation; either version 2 of the License, or\n"
+#~ "(at your option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License\n"
+#~ "along with this program; if not, write to the Free Software\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
+#~ "USA."
+#~ msgstr ""
+#~ "Ovladač OSS programu Audacious\n"
+#~ "\n"
+#~ "Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
+#~ "pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
+#~ "Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
+#~ "libovolné novější.\n"
+#~ "\n"
+#~ "Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
+#~ "ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
+#~ "JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
+#~ "\n"
+#~ "S tímto programem byste měli obdržet kopii GNU GPL. Pokud se tak\n"
+#~ "nestalo, obraťte se na Free Software Foundation, Inc.,\n"
+#~ "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#~ msgid ""
+#~ "Audacious PulseAudio Output Plugin\n"
+#~ "\n"
+#~ " This program is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as published by\n"
+#~ "the Free Software Foundation; either version 2 of the License, or\n"
+#~ "(at your option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License\n"
+#~ "along with this program; if not, write to the Free Software\n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
+#~ "02110-1301,\n"
+#~ "USA."
+#~ msgstr ""
+#~ "Výstupní modul PulseAudio pro Audacious\n"
+#~ "\n"
+#~ "Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
+#~ "pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
+#~ "Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
+#~ "libovolné novější.\n"
+#~ "\n"
+#~ "Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
+#~ "ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
+#~ "JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
+#~ "\n"
+#~ "S tímto programem byste měli obdržet kopii GNU GPL. Pokud se\n"
+#~ "tak nestalo, obraťte se na Free Software Foundation, Inc.,\n"
+#~ "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#~ msgid "About %s"
+#~ msgstr "O %s"
+
+#~ msgid " Error"
+#~ msgstr " Chyba"
+
+#~ msgid "General info"
+#~ msgstr "Obecné informace"
+
+#~ msgid "Tune #%i: "
+#~ msgstr "Skladba č. %i:"
+
+#~ msgid "Couldn't find pixmap file: %s"
+#~ msgstr "Nebylo možné nalézt soubor s pixmapou: %s"
+
+#~ msgid "Audacious-SID configuration"
+#~ msgstr "Nastavení Audacious-SID"
+
+#~ msgid "8-bit"
+#~ msgstr "8bitový"
+
+#~ msgid "16-bit"
+#~ msgstr "16bitový"
+
+#~ msgid "Resolution:"
+#~ msgstr "Rozlišení:"
+
+#~ msgid "Autopanning"
+#~ msgstr "Automatický posun"
+
+#~ msgid "Channels:"
+#~ msgstr "Kanály:"
+
+#~ msgid "Samplerate:"
+#~ msgstr "Vzorkovací kmitočet:"
+
+#~ msgid "Use oversampling"
+#~ msgstr "Převzorkovat"
+
+#~ msgid "Factor:"
+#~ msgstr "Násobek:"
+
+#~ msgid "Large factors require more CPU-power"
+#~ msgstr "Větší činitel vyžaduje více výkonu CPU"
+
+#~ msgid "Oversampling:"
+#~ msgstr "Převzorkování:"
+
+#~ msgid "Audio"
+#~ msgstr "Zvuk"
+
+#~ msgid "Force speed"
+#~ msgstr "Vnutit rychlost"
+
+#~ msgid ""
+#~ "If enabled, this option \"forces\" the emulation engine to use the "
+#~ "selected clock speed/frequency. Otherwise the speed is determined from "
+#~ "played file itself."
+#~ msgstr ""
+#~ "Je-li zapnuto, bude emulačnímu jádru vnucen vybraná rychlost hodin/"
+#~ "frekvence. V opačném případě bude rychlost určena z přehrávaného souboru "
+#~ "samotného."
+
+#~ msgid "PAL (50 Hz)"
+#~ msgstr "PAL (50 Hz)"
+
+#~ msgid ""
+#~ "PAL is the european TV standard, which uses 50Hz vertical refresh "
+#~ "frequency. Most of SID-tunes have been made for PAL computers."
+#~ msgstr ""
+#~ "PAL je evropský televizní standard, který používá 50Hz vertikální "
+#~ "obnovovací frekvenci. Většina SID skladeb byla určena pro počítače s "
+#~ "výstupem PAL."
+
+#~ msgid "NTSC (60 Hz)"
+#~ msgstr "NTSC (60 Hz)"
+
+#~ msgid ""
+#~ "NTSC is the TV standard with 60Hz vertical refresh rate (and other "
+#~ "features that differ from PAL). It is mainly used in United States, Japan "
+#~ "and certain other countries."
+#~ msgstr ""
+#~ "NTSC je televizní standard s 60HZ vertikální obnovovací frekvencí (kromě "
+#~ "jiných rozdílů od PALU). Používá se především ve Spojených státech, "
+#~ "Japonsku, několika dalších zemí."
+
+#~ msgid "Clock speed:"
+#~ msgstr "Rychlost hodin:"
+
+#~ msgid "Force model"
+#~ msgstr "Vnutit model"
+
+#~ msgid ""
+#~ "If enabled, this option \"forces\" the emulation engine to use the "
+#~ "selected SID-chip model. Otherwise the preferred SID model is determined "
+#~ "from the file (if PSIDv2NG type) or if not available, this setting is "
+#~ "used."
+#~ msgstr ""
+#~ "Je-li zapnuto, emulačnímu jádru bude vnucen vybraný modelu SID čipu. "
+#~ "V opačném případě bude modul SIDU určen ze souboru (je-li typu PSIDv2NG). "
+#~ "Vybraný model bude také použit, nebude-li jej možno ze souboru určit."
+
+#~ msgid "MOS 6581"
+#~ msgstr "MOS 6581"
+
+#~ msgid ""
+#~ "MOS/CSG 6581 is the earlier major version of SID chip. It differs from "
+#~ "8580 in few ways, having much fuller filter (which, due to design error, "
+#~ "is never same between two different SID-chips) and has the \"volume "
+#~ "adjustment bug\", which enables playing of digital samples."
+#~ msgstr ""
+#~ "MOS/CSG 6581 je starší verze SID čipu. Od 8580 se odlišuje tím, že má "
+#~ "plnější filtr (který, kvůli chybě v návrhu, není nikdy stejný mezi dvěma "
+#~ "čipy) a „trpí chybou“ při ladění hlasitosti, která umožňuje přehrávání "
+#~ "digitálních vzorků."
+
+#~ msgid "MOS 8580"
+#~ msgstr "MOS 8580"
+
+#~ msgid "SID model:"
+#~ msgstr "Model SIDU:"
+
+#~ msgid "SIDPlay 1 (frame-based)"
+#~ msgstr "SIDPlay 1 (rámcová technika)"
+
+#~ msgid ""
+#~ "Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most "
+#~ "cases, though."
+#~ msgstr ""
+#~ "K emulaci použije libSIDPlay 1.x. Rychlejší, ale ne tak přesné. Ve "
+#~ "většině případů postačuje."
+
+#~ msgid "SIDPlay 2 (cycle-based)"
+#~ msgstr "DISPlay 2 (cyklová technika)"
+
+#~ msgid ""
+#~ "Use libSIDPlay 2.x emulation, which requires powerful CPU due to more "
+#~ "exact emulation."
+#~ msgstr ""
+#~ "K emulaci použijte libSIDPlay 2.x, který kvůli přesnější emulaci vyžaduje "
+#~ "výkonnější CPU."
+
+#~ msgid "Emulation library selection:"
+#~ msgstr "Výběr emulační knihovny"
+
+#~ msgid "Real C64 (SIDPlay 2 only)"
+#~ msgstr "Skutečný C64 (pouze SIDPlay 2)"
+
+#~ msgid "Bank switching"
+#~ msgstr "Přepínání bank"
+
+#~ msgid "Transparent ROM"
+#~ msgstr "Transparentní ROM"
+
+#~ msgid "PlaySID environment"
+#~ msgstr "Prostředí PlaySID"
+
+#~ msgid "Memory mode:"
+#~ msgstr "Režim paměti"
+
+#~ msgid "Emu#1"
+#~ msgstr "Emu#1"
+
+#~ msgid "Optimization mode (faster, inaccurate)"
+#~ msgstr "Optimalizující režim (rychlejší, nepřesný)"
+
+#~ msgid ""
+#~ "This setting can be used to enable libSIDPlay2's \"optimization mode\", "
+#~ "which in downgrades the emulation from cycle-exact to something similar "
+#~ "to frame-exact. The result is lower CPU usage, but worse accuracy."
+#~ msgstr ""
+#~ "Toto nastavení může být použito pro povolení „optimalizující režimu“ "
+#~ "libSIDPlay2, který nezachovává přesnost na cyklus a více se podobá "
+#~ "rámcové technice. Výsledkem je nižší zatížení CPU, ale větší nepřesnost."
+
+#~ msgid "reSID-emulation"
+#~ msgstr "Emulace reSID"
+
+#~ msgid ""
+#~ "reSID is the software SID-chip simulator based on SID reverse-"
+#~ "engineering, created by Dag Lem. It is probably the closest thing to real "
+#~ "SID available as software-only emulation."
+#~ msgstr ""
+#~ "reSID je softwarový emulátor čipu založený na zpětném inženýrství SID "
+#~ "čipu. Autorem je Dag Lem. Jedná se pravděpodobně o nejvěrnější "
+#~ "softwarovou emulaci skutečného čipu."
+
+#~ msgid "HardSID"
+#~ msgstr "HardSID"
+
+#~ msgid ""
+#~ "HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a "
+#~ "real SID-chip. Software can be used to control the HardSID and combined "
+#~ "with software emulation of rest of C64 via libSIDPlay2 HardSID can be "
+#~ "used to achieve \"near 100%\" similarity to real C64. For more "
+#~ "information, see http://www.hardsid.com/"
+#~ msgstr ""
+#~ "HardSID je EISA/PCI karta pro PC kompatibilní počítače, která může nést "
+#~ "skutečný SID čip. Software slouží k ovládání HardSIDu a v kombinaci se "
+#~ "softwarovou emulací zbytku C64 pomocí libSIDPlay2 lze dosáhnout „téměř "
+#~ "100%“ shody se skutečným C64. Podrobnosti naleznete na http://www.hardsid."
+#~ "com/"
+
+#~ msgid "SIDPlay 2 options:"
+#~ msgstr "Nastavení SIDPlay 2:"
+
+#~ msgid "Fast (nearest neighbour)"
+#~ msgstr "Rychlá (nejbližší sousední)"
+
+#~ msgid ""
+#~ "Fastest and also worst sounding sampling method, simply picks nearest "
+#~ "neighbouring sample."
+#~ msgstr ""
+#~ "Nejrychlejší a také nejhůře znějící vzorkovací metoda. Jednoduše vybírá "
+#~ "nejbližší vzorek."
+
+#~ msgid "Linear interpolation"
+#~ msgstr "Lineární interpolace"
+
+#~ msgid ""
+#~ "Uses linear interpolation between samples, yielding higher audio quality "
+#~ "with less sampling noise."
+#~ msgstr ""
+#~ "Používá lineární interpolaci mezi vzorky. Tím dosahuje vyšší kvality "
+#~ "zvuku s menšími ruchy."
+
+#~ msgid "Resampling (FIR)"
+#~ msgstr "Převzorkování (FIR)"
+
+#~ msgid "reSID sampling options:"
+#~ msgstr "Nastavení převzorkování reSIDu:"
+
+#~ msgid "Emu#2"
+#~ msgstr "Emu#2"
+
+#~ msgid "Emulate filters"
+#~ msgstr "Emulovat filtry"
+
+#~ msgid ""
+#~ "This option enables emulation of SID filter. The filter is an essential "
+#~ "part of SID's sound capacity, but accurate emulation of it may require "
+#~ "quite much CPU power. However, if filter emulation is disabled, tunes "
+#~ "won't sound authentic at all if they utilize the filter."
+#~ msgstr ""
+#~ "Tato volba zapíná emulaci SID filtru. Tento filtr je nepostradatelnou "
+#~ "součástí výbavy SIDU, avšak jeho přesná emulace může vyžadovat hodně "
+#~ "výkonu CPU. Vypnete-li filtr, sklady které jej používají, nebudou vůbec "
+#~ "znít věrohodně."
+
+#~ msgid "FS"
+#~ msgstr "FS"
+
+#~ msgid "FM"
+#~ msgstr "FM"
+
+#~ msgid "FT"
+#~ msgstr "FT"
+
+#~ msgid "Reset values"
+#~ msgstr "Resetovat hodnoty"
+
+#~ msgid "SIDPlay1"
+#~ msgstr "SIDPlay1"
+
+#~ msgid "Export"
+#~ msgstr "Exportovat"
+
+#~ msgid "Use"
+#~ msgstr "Použít"
+
+#~ msgid "Filter curve:"
+#~ msgstr "Křivka filtru:"
+
+#~ msgid "SIDPlay2"
+#~ msgstr "SIDPlay2"
+
+#~ msgid "Filters"
+#~ msgstr "Filtry"
+
+#~ msgid "Play at least for specified time"
+#~ msgstr "Hrát alespoň po určenou dobu"
+
+#~ msgid ""
+#~ "If enabled, the tune is played at least for the specified time, adding "
+#~ "silence to the end if necessary."
+#~ msgstr ""
+#~ "Je-li zapnuto, skladba bude hrána alespoň po zadanou dobu, případně na "
+#~ "konec bude přidáno ticho."
+
+#~ msgid "Playtime:"
+#~ msgstr "Doba přehrávání:"
+
+#~ msgid "Minimum playtime:"
+#~ msgstr "Minimální doba přehrávání:"
+
+#~ msgid "Play for specified time maximum"
+#~ msgstr "Přehrávat do maximální požadované doby"
+
+#~ msgid ""
+#~ "If enabled, tune is played until specified duration is reached (aka "
+#~ "maximum playtime)."
+#~ msgstr ""
+#~ "Je-li zapnuto, skladba bude hrána nejvýše po zadanou dobu (tj. maximální "
+#~ "délku přehrávání)."
+
+#~ msgid "Only when song length is unknown"
+#~ msgstr "Jen není-li délka skladby známa"
+
+#~ msgid ""
+#~ "If enabled, the maximum playtime is applied only if song/tune length is "
+#~ "not known."
+#~ msgstr ""
+#~ "Je-li zapnuto, maximální doba přehrávání bude uplatněna jen tehdy, nebude-"
+#~ "li délka skladby známa."
+
+#~ msgid "Maximum playtime:"
+#~ msgstr "Maximální doba přehrávání:"
+
+#~ msgid "Use XSIDPLAY-compatible database"
+#~ msgstr "Použít databázi kompatibilní s XSIDPLAY"
+
+#~ msgid ""
+#~ "This option enables using of XSIDPLAY compatible song length database. "
+#~ "(Refer to Audacious-SID documentation for more information)"
+#~ msgstr ""
+#~ "Tato volba zapíná použití databáze délek skladeb kompatibilní "
+#~ "s XSIDPLAY. (Podrobnosti naleznete v dokumentaci k Audacious-SID modulu.)"
+
+#~ msgid "DB-file:"
+#~ msgstr "Databázový soubor:"
+
+#~ msgid "Database path and filename"
+#~ msgstr "Cesta k databázi a jméno souboru"
+
+#~ msgid "Browse for song length-database file"
+#~ msgstr "Ukázat soubor s databází délek"
+
+#~ msgid "Song length database:"
+#~ msgstr "Databáze s délkou skladeb:"
+
+#~ msgid "Songlength"
+#~ msgstr "Délka skladby"
+
+#~ msgid "Override generic Tuplez format string"
+#~ msgstr "Přepsat původní formátovací řetězec Tuplez"
+
+#~ msgid ""
+#~ "By enabling this option you can specify a custom Tuplez formatting string "
+#~ "for SID-files. The SID-plugin specific Tuplez tags are described shortly "
+#~ "below."
+#~ msgstr ""
+#~ "Po povolením této volby lze uživatelem určit formátovací řetězec Tuplez "
+#~ "pro SID soubory. Tuplez značky modulu SID jsou popsány níže."
+
+#~ msgid "Tuplez format string for SID-files"
+#~ msgstr "Formátovací řetězec Tuplez pro soubory SID"
+
+#~ msgid ""
+#~ "<u>SID-specific Tuplez fields:</u>\n"
+#~ "\n"
+#~ "<b>sid-format</b>\t\t- Specific fileformat\n"
+#~ "<b>sid-model</b>\t\t- 6581 or 8580\n"
+#~ "<b>sid-speed</b>\t\t- Timing or speed: PAL/NTSC/etc.\n"
+#~ "\n"
+#~ "<u>Other \"special\" fields set:</u>\n"
+#~ "\n"
+#~ "<b>subsong-num, subsong-id</b>"
+#~ msgstr ""
+#~ "<u>SIDové položky Tuplez:</u>\n"
+#~ "\n"
+#~ "<b>sid-format</b>\t\t– Výslovný formát souboru\n"
+#~ "<b>sid-model</b>\t\t– 6581 nebo 8580\n"
+#~ "<b>sid-speed</b>\t\t– Časování nebo rychlost: PAL/NTSC atd..\n"
+#~ "\n"
+#~ "<u>Další „zvláštní“ sady položek:</u>\n"
+#~ "\n"
+#~ "<b>subsong-num, subsong-id</b>"
+
+#~ msgid "Song title format:"
+#~ msgstr "Formát názvu skladby:"
+
+#~ msgid "Add sub-tunes to playlist"
+#~ msgstr "Do seznamu skladeb přidat podskladby"
+
+#~ msgid ""
+#~ "If enabled, sub-tunes of each file will be added to playlist. If "
+#~ "disabled, only the default sub-tune will be added."
+#~ msgstr ""
+#~ "Je-li zapnuto, podskladby každého souboru budou přidány do seznamu "
+#~ "skladeb. Je-li vypnuto, bude přidána pouze výchozí podskladba."
+
+#~ msgid "Only tunes with specified minimum duration"
+#~ msgstr "Jen skladby se zadanou minimální délkou"
+
+#~ msgid "Only add sub-tunes that have a duration of at least specified time."
+#~ msgstr "Přidat pouze podskladby, jejichž délka je větší nebo rovna zadané."
+
+#~ msgid "Sub-tune handling:"
+#~ msgstr "Zacházení s podskladbami:"
+
+#~ msgid "Use STIL database"
+#~ msgstr "Používat databázi STIL"
+
+#~ msgid ""
+#~ "If this option is enabled (and the database & HVSC settings below are "
+#~ "correctly set), Audacious-SID will use and display additional information "
+#~ "from STIL database when HVSC SIDs are played."
+#~ msgstr ""
+#~ "Je-li tato volba povolena (a databáze a HVSC konfigurace níže správně "
+#~ "nastavena), Audacious-SID použije a zobrazí dodatečné informace "
+#~ "z databáze STIL, je-li hrána skladba z HVSC."
+
+#~ msgid "STIL file:"
+#~ msgstr "Soubor STIL:"
+
+#~ msgid ""
+#~ "Path and filename of STIL database file (STIL.txt), usually found from "
+#~ "HVSC's DOCUMENTS-subdirectory."
+#~ msgstr ""
+#~ "Cesta a jméno souboru souboru s databází STIL (STIL.txt). Obvykle se "
+#~ "nachází v podadresáři DOCUMENTS od HVSC."
+
+#~ msgid "Browse for STIL-database file"
+#~ msgstr "Ukázat na soubor s databází STIL"
+
+#~ msgid "HVSC path:"
+#~ msgstr "Cesta k HVSC"
+
+#~ msgid ""
+#~ "Path to base-directory of your High Voltage SID Collection (HVSC), for "
+#~ "example /media/C64Music/"
+#~ msgstr ""
+#~ "Cesta ke kořenovému adresáři vaší High Voltage SID sbírce (HVSC). Na "
+#~ "příklad „/media/C64Music/“."
+
+#~ msgid "Browse for HVSC path"
+#~ msgstr "Ukázat cestu k HSVC"
+
+#~ msgid "SID Tune Information List (STIL) database:"
+#~ msgstr "Databáze SID Tune Information List (STIL):"
+
+#~ msgid "Cancel any changes"
+#~ msgstr "Jakékoliv změny zamítnout"
+
+#~ msgid "Accept and update changes"
+#~ msgstr "Přijmout a provést změny"
+
+#~ msgid "Audacious-SID Fileinfo"
+#~ msgstr "Audacious – Informace o souboru SID"
+
+#~ msgid "Filename:"
+#~ msgstr "Jméno souboru:"
+
+#~ msgid "Songname:"
+#~ msgstr "Název skladby:"
+
+#~ msgid "Composer:"
+#~ msgstr "Skladatel:"
+
+#~ msgid "Copyright:"
+#~ msgstr "Autorská práva:"
+
+#~ msgid "Song Information:"
+#~ msgstr "Informace o skladbě:"
+
+#~ msgid "Author:"
+#~ msgstr "Autor:"
+
+#~ msgid "Duration:"
+#~ msgstr "Délka:"
+
+#~ msgid "Sub-tune Information:"
+#~ msgstr "Informace o podskladbách"
+
+#~ msgid "Select HVSC song length database"
+#~ msgstr "Vybrat databázi délek skladeb od HVSC"
+
+#~ msgid "Select STIL-database"
+#~ msgstr "Vybrat databázi STIL"
+
+#~ msgid "Select HVSC location prefix"
+#~ msgstr "Vybrat cestu k HVSC"
+
+#~ msgid "Select SIDPlay2 filters file for importing"
+#~ msgstr "Vybrat soubor se SIDPlay2 filtry pro import"
+
+#~ msgid "Select SIDPlay2 filters file for exporting"
+#~ msgstr "Vybrat soubor se SIDPlay2 filtry pro export"
+
+#~ msgid "Confirm selected action"
+#~ msgstr "Potvrdit vybrané akce"
+
+#~ msgid "Yes"
+#~ msgstr "Ano"
+
+#~ msgid "No"
+#~ msgstr "Ne"
+
+#~ msgid ""
+#~ "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+#~ "from the xmms_sndfile plugin which is:\n"
+#~ "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+#~ "\n"
+#~ "This program is free software ; you can redistribute it and/or modify \n"
+#~ "it under the terms of the GNU General Public License as published by \n"
+#~ "the Free Software Foundation ; either version 2 of the License, or \n"
+#~ "(at your option) any later version. \n"
+#~ " \n"
+#~ "This program is distributed in the hope that it will be useful, \n"
+#~ "but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
+#~ "See the GNU General Public License for more details. \n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public \n"
+#~ "License along with this program ; if not, write to \n"
+#~ "the Free Software Foundation, Inc., \n"
+#~ "51 Franklin Street, Fifth Floor, \n"
+#~ "Boston, MA  02110-1301  USA"
+#~ msgstr ""
+#~ "Pro Audacious upravil Tony Vroon <chainsaw@gentoo.org>\n"
+#~ "z původního modulu xmms_sndfile,\n"
+#~ "copyright © 2000, 2002 Erik de Castro Lopo\n"
+#~ "\n"
+#~ "Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
+#~ "pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
+#~ "Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
+#~ "libovolné novější.\n"
+#~ "\n"
+#~ "Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
+#~ "ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
+#~ "JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
+#~ "\n"
+#~ "S tímto programem byste měli obdržet kopii GNU GPL. Pokud se\n"
+#~ "tak nestalo, obraťte se na\n"
+#~ "Free Software Foundation, Inc.,\n"
+#~ "51 Franklin Street, Fifth Floor, \n"
+#~ "Boston, MA  02110-1301  USA"
+
 #~ msgid ""
 #~ "OSS4 Output Plugin for Audacious\n"
 #~ "Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
@@ -4601,9 +4515,6 @@ msgstr ""
 #~ "Nastavení sterea není doporučeno, pokud jej opravdu nepotřebujete. Tato "
 #~ "volba nepřidává do zvuku žádné stereo efekty – OPL2 je prostě mono – ale "
 #~ "spotřebovává více výkonu CPU!"
-
-#~ msgid "Frequency"
-#~ msgstr "Frekvence"
 
 #~ msgid "Detect songend"
 #~ msgstr "Rozpoznat konec skladby"
@@ -7230,9 +7141,6 @@ msgstr ""
 
 #~ msgid " Target & gain"
 #~ msgstr " Cíl a zesílení"
-
-#~ msgid "Target audio level:"
-#~ msgstr "Cílová hladina hlasitosti:"
 
 #~ msgid "Maximum gain:"
 #~ msgstr "Maximální zesílení:"
