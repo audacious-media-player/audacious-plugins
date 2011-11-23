@@ -129,7 +129,7 @@ static void autoscroll_set (gboolean on) {aud_set_bool ("gtkui", "autoscroll", o
 static const struct MenuItem file_items[] = {
  {N_("_Open Files ..."), GTK_STOCK_OPEN, 'l', .func = open_files},
  {N_("Open _URL ..."), GTK_STOCK_NETWORK, 'l', CTRL, .func = open_url},
- {N_("_Add File ..."), GTK_STOCK_ADD, 'f', .func = add_files},
+ {N_("_Add Files ..."), GTK_STOCK_ADD, 'f', .func = add_files},
  {N_("Add U_RL ..."), GTK_STOCK_NETWORK, 'h', CTRL, .func = add_url},
  {.sep = TRUE},
  {N_("A_bout ..."), GTK_STOCK_ABOUT, .func = audgui_show_about_window},
