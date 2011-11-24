@@ -358,7 +358,7 @@ static Tuple * read_tuple (const gchar * filename, VFSFile * file)
         c = s->codec;
         if (c->codec_type == AVMEDIA_TYPE_AUDIO)
         {
-            av_find_stream_info(ic);
+            avformat_find_stream_info (ic, NULL);
             codec = avcodec_find_decoder(c->codec_id);
             if (codec != NULL)
                 break;
@@ -439,7 +439,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
         c = s->codec;
         if (c->codec_type == AVMEDIA_TYPE_AUDIO)
         {
-            av_find_stream_info(ic);
+            avformat_find_stream_info (ic, NULL);
             codec = avcodec_find_decoder(c->codec_id);
             stream_id = i;
             if (codec != NULL)
