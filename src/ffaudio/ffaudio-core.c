@@ -75,7 +75,6 @@ static gint lockmgr (void * * mutexp, enum AVLockOp op)
 
 static gboolean ffaudio_init (void)
 {
-    avcodec_init();
     av_register_all();
     av_lockmgr_register (lockmgr);
 
