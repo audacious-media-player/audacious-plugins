@@ -455,7 +455,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
     AUDDBG("got codec %s for stream index %d, opening\n", codec->name, stream_id);
 
-    if (avcodec_open(c, codec) < 0)
+    if (avcodec_open2 (c, codec, NULL) < 0)
         goto error_exit;
 
     codec_opened = TRUE;
