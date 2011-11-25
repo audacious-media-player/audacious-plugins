@@ -8,20 +8,26 @@
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
-static GHashTable * added_table = NULL;
+enum {GENRE, ARTIST, ALBUM, TITLE, FIELDS};
+
+static const gchar * const field_names[] = {N_("Genres"), N_("Artists"),
+ N_("Albums"), N_("Titles")};
+
 static gint playlist_id;
+static GHashTable * added_table;
+static GHashTable * dicts[FIELDS];
 
 static void find_playlist (void)
 {
     playlist_id = -1;
 
-    for (gint i = 0; i < aud_playlist_count (); i ++)
+    for (gint p = 0; p < aud_playlist_count (); p ++)
     {
-        gchar * title = aud_playlist_get_title (i);
+        gchar * title = aud_playlist_get_title (p);
 
         if (! strcmp (title, _("Library")))
         {
-            playlist_id = aud_playlist_get_unique_id (i);
+            playlist_id = aud_playlist_get_unique_id (p);
             break;
         }
 
@@ -82,6 +88,57 @@ static void create_added_table (gint list)
         g_hash_table_insert (added_table, aud_playlist_entry_get_filename (list, i), NULL);
 }
 
+static void destroy_dicts (void)
+{
+    for (gint f = 0; f < FIELDS; f ++)
+    {
+        if (! dicts[f])
+            continue;
+
+        g_hash_table_destroy (dicts[f]);
+        dicts[f] = NULL;
+    }
+}
+
+static void create_dicts (gint list)
+{
+    destroy_dicts ();
+    for (gint f = 0; f < FIELDS; f ++)
+        dicts[f] = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
+         (GDestroyNotify) g_array_unref);
+
+    gint entries = aud_playlist_entry_count (list);
+    for (gint e = 0; e < entries; e ++)
+    {
+        gchar * fields[FIELDS];
+
+        Tuple * tuple = aud_playlist_entry_get_tuple (list, e, FALSE);
+        const gchar * genre = tuple ? tuple_get_string (tuple, FIELD_GENRE, NULL) : NULL;
+        fields[GENRE] = genre ? g_strdup (genre) : NULL;
+        if (tuple)
+            tuple_free (tuple)
+
+        aud_playlist_entry_describe (list, e, & fields[TITLE], & fields[ARTIST],
+         & fields[ALBUM], FALSE);
+
+        for (gint f = 0; f < FIELDS; f ++)
+        {
+            if (! fields[f])
+                continue;
+
+            GArray * matches = g_hash_table_lookup (dicts[f], fields[f]);
+
+            if (! matches)
+            {
+                matches = g_array_new (FALSE, FALSE, sizeof (gint));
+                g_hash_table_insert (dicts[f], fields[f], matches);
+            }
+
+            g_array_append_val (matches, e);
+        }
+    }
+}
+
 static gboolean filter_cb (const gchar * filename, void * unused)
 {
     return added_table && ! g_hash_table_lookup_extended (added_table, filename, NULL, NULL);
@@ -103,12 +160,24 @@ static void begin_scan (void)
     g_free (path);
 }
 
+void print_cb (void * key, void * value, void * user)
+{
+    printf ("%s (%d)\n", (const gchar *) key, ((GArray *) value)->len);
+}
+
 static gboolean search_init (void)
 {
     find_playlist ();
 
     /* temporary ... */
     begin_scan ();
+    create_dicts (get_playlist ());
+
+    for (gint f = 0; f < FIELDS; f ++)
+    {
+        printf ("\n%d %s:\n", g_hash_table_size (dicts[f]), field_names[f]);
+        g_hash_table_foreach (dicts[f], print_cb, NULL);
+    }
 
     return TRUE;
 }
@@ -116,6 +185,7 @@ static gboolean search_init (void)
 void search_cleanup (void)
 {
     destroy_added_table ();
+    destroy_dicts ();
 }
 
 AUD_GENERAL_PLUGIN
