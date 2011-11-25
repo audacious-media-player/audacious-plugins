@@ -96,6 +96,9 @@ static void make_format_string (const struct mpg123_frameinfo * info, gchar *
 
 static gboolean mpg123_probe_for_fd (const gchar * fname, VFSFile * file)
 {
+	if (! file)
+		return FALSE;
+
 	/* MPG123 likes to grab WMA streams, so blacklist anything that starts with
 	 * mms://.  If there are mms:// streams out there carrying MP3, they will
 	 * just have to play in ffaudio.  --jlindgren */
@@ -151,6 +154,9 @@ RETRY:;
 
 static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 {
+	if (! file)
+		return NULL;
+
 	mpg123_handle * decoder = mpg123_new (NULL, NULL);
 	gint result;
 	glong rate;
@@ -278,6 +284,9 @@ static void update_stream_tuple (InputPlayback * p, VFSFile * file,
 static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
  filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
+	if (! file)
+		return FALSE;
+
 	gboolean error = FALSE;
 	MPG123PlaybackContext ctx;
 	gint ret;
@@ -293,7 +302,6 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 	ctx.fd = file;
 
 	AUDDBG ("Checking for streaming ...\n");
-	g_return_val_if_fail (file, FALSE);
 	ctx.stream = vfs_is_streaming (file);
 	ctx.tu = ctx.stream ? get_stream_tuple (data, filename, file) : NULL;
 
@@ -523,13 +531,16 @@ static void mpg123_seek_time (InputPlayback * data, gint time)
 
 static gboolean mpg123_write_tag (const Tuple * tuple, VFSFile * handle)
 {
+	if (! handle)
+		return FALSE;
+
 	return tag_tuple_write (tuple, handle, TAG_TYPE_APE);
 }
 
 static gboolean mpg123_get_image (const gchar * filename, VFSFile * handle,
  void * * data, gint * length)
 {
-	if (handle == NULL || vfs_is_streaming (handle))
+	if (! handle || vfs_is_streaming (handle))
 		return FALSE;
 
 	return tag_image_read (handle, data, length);
