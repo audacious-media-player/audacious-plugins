@@ -17,6 +17,7 @@
 
 enum {GENRE, ARTIST, ALBUM, TITLE, FIELDS};
 enum {UPDATE_ITEMS = 1, UPDATE_DICTS};
+enum {COLUMN_NAME, COLUMN_MATCHES};
 
 static const gchar * const field_names[] = {N_("Genre"), N_("Artist"),
  N_("Album"), N_("Title")};
@@ -27,9 +28,14 @@ typedef struct {
 } Item;
 
 static gint playlist_id;
+static gchar * * search_terms;
+
 static GHashTable * added_table;
 static GHashTable * dicts[FIELDS];
 static struct index * items;
+
+static GtkWidget * help_label, * wait_label, * scrolled, * results_list;
+static gint update_source, update_type;
 
 static Item * item_new (gint field, const gchar * name)
 {
@@ -71,6 +77,15 @@ static void create_playlist (void)
     aud_playlist_insert (0);
     aud_playlist_set_title (0, _("Library"));
     playlist_id = aud_playlist_get_unique_id (0);
+}
+
+static void set_search_phrase (const gchar * phrase)
+{
+    g_strfreev (search_terms);
+
+    gchar * folded = g_utf8_casefold (phrase, -1);
+    search_terms = g_strsplit (folded, " ", -1);
+    g_free (folded);
 }
 
 static gchar * get_path (void)
@@ -127,6 +142,7 @@ static void create_dicts (gint list)
          (GDestroyNotify) item_free);
 
     gint entries = aud_playlist_entry_count (list);
+
     for (gint e = 0; e < entries; e ++)
     {
         gchar * fields[FIELDS];
@@ -134,11 +150,12 @@ static void create_dicts (gint list)
         Tuple * tuple = aud_playlist_entry_get_tuple (list, e, TRUE);
         const gchar * genre = tuple ? tuple_get_string (tuple, FIELD_GENRE, NULL) : NULL;
         fields[GENRE] = genre ? g_strdup (genre) : NULL;
+
         if (tuple)
             tuple_free (tuple)
 
         aud_playlist_entry_describe (list, e, & fields[TITLE], & fields[ARTIST],
-         & fields[ALBUM], FALSE);
+         & fields[ALBUM], TRUE);
 
         for (gint f = 0; f < FIELDS; f ++)
         {
@@ -157,17 +174,6 @@ static void create_dicts (gint list)
         }
     }
 }
-
-static void destroy_items (void)
-{
-    if (! items)
-        return;
-
-    index_free (items);
-    items = NULL;
-}
-
-static gchar * * search_terms;
 
 static void search_cb (void * key, void * item, void * index)
 {
@@ -188,17 +194,15 @@ static gint item_compare (const void * a, const void * b)
     return string_compare (((const Item *) a)->name, ((const Item *) b)->name);
 }
 
-static void create_items (const gchar * phrase)
+static void do_search (void)
 {
-    destroy_items ();
-    items = index_new ();
-
-    gchar * folded = g_utf8_casefold (phrase, -1);
-    search_terms = g_strsplit (folded, " ", -1);
-    g_free (folded);
+    index_delete (items, 0, index_count (items));
 
     for (gint f = 0; f < FIELDS; f ++)
     {
+        if (! dicts[f])
+            continue;
+
         struct index * index = index_new ();
         g_hash_table_foreach (dicts[f], search_cb, index);
 
@@ -210,9 +214,6 @@ static void create_items (const gchar * phrase)
 
         index_free (index);
     }
-
-    g_strfreev (search_terms);
-    search_terms = NULL;
 }
 
 static gboolean filter_cb (const gchar * filename, void * unused)
@@ -220,7 +221,7 @@ static gboolean filter_cb (const gchar * filename, void * unused)
     return added_table && ! g_hash_table_lookup_extended (added_table, filename, NULL, NULL);
 }
 
-static void begin_scan (void)
+static void begin_scan (const gchar * path)
 {
     gint list = aud_playlist_by_unique_id (playlist_id);
 
@@ -230,21 +231,44 @@ static void begin_scan (void)
         list = aud_playlist_by_unique_id (playlist_id);
     }
 
-    aud_playlist_remove_failed (list);
-    create_added_table (list);
+    gchar * old = aud_get_string ("search-tool", "path");
+    aud_set_string ("search-tool", "path", path);
 
-    gchar * path = aud_get_string ("search-tool", "path");
+    if (! strcmp (old, path))
+        aud_playlist_remove_failed (list);
+    else
+        aud_playlist_entry_delete (list, 0, aud_playlist_entry_count (list));
+
+    g_free (old);
+
+    create_added_table (list);
 
     struct index * add = index_new ();
     index_append (add, filename_to_uri (path));
     aud_playlist_entry_insert_filtered (list, -1, add, NULL, filter_cb, NULL, FALSE);
-
-    g_free (path);
 }
 
-static gchar * search_phrase;
-static GtkWidget * results_list;
-static gint update_source, update_type;
+static void show_hide_widgets (void)
+{
+    if (aud_playlist_by_unique_id (playlist_id) < 0)
+    {
+        gtk_widget_hide (wait_label);
+        gtk_widget_hide (scrolled);
+        gtk_widget_show (help_label);
+    }
+    else if (! gtk_widget_get_visible (scrolled))
+    {
+        gtk_widget_hide (help_label);
+
+        if (update_source)
+            gtk_widget_show (wait_label);
+        else
+        {
+            gtk_widget_hide (wait_label);
+            gtk_widget_show (scrolled);
+        }
+    }
+}
 
 static gint update_timeout (void * unused)
 {
@@ -258,20 +282,21 @@ static gint update_timeout (void * unused)
             destroy_dicts ();
     }
 
-    if (list >= 0)
-        create_items (search_phrase);
-    else
-        destroy_items ();
+    do_search ();
 
     if (results_list)
     {
         audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
-        audgui_list_insert_rows (results_list, 0, items ? index_count (items) : 0);
+        audgui_list_insert_rows (results_list, 0, index_count (items));
     }
 
     g_source_remove (update_source);
     update_source = 0;
     update_type = 0;
+
+    if (help_label)
+        show_hide_widgets ();
+
     return FALSE;
 }
 
@@ -282,6 +307,9 @@ static void schedule_update (gint type)
 
     update_source = g_timeout_add (UPDATE_DELAY, update_timeout, NULL);
     update_type = MAX (update_type, type);
+
+    if (help_label)
+        show_hide_widgets ();
 }
 
 static void playlist_update_cb (void * data, void * unused)
@@ -296,7 +324,9 @@ static void playlist_update_cb (void * data, void * unused)
 static gboolean search_init (void)
 {
     find_playlist ();
-    search_phrase = g_strdup ("");
+
+    set_search_phrase ("");
+    items = index_new ();
 
     schedule_update (UPDATE_DICTS);
     hook_associate ("playlist update", playlist_update_cb, NULL);
@@ -307,15 +337,15 @@ static void search_cleanup (void)
 {
     hook_dissociate ("playlist update", playlist_update_cb);
 
+    g_strfreev (search_terms);
+    search_terms = NULL;
+
+    index_free (items);
+    items = NULL;
+
     destroy_added_table ();
     destroy_dicts ();
-    destroy_items ();
-
-    g_free (search_phrase);
-    search_phrase = NULL;
 }
-
-enum {COLUMN_NAME, COLUMN_MATCHES};
 
 static void list_get_value (void * user, gint row, gint column, GValue * value)
 {
@@ -370,19 +400,19 @@ static const AudguiListCallbacks list_callbacks = {
 
 static void entry_cb (GtkEntry * entry, void * unused)
 {
-    g_free (search_phrase);
-    search_phrase = g_strdup (gtk_entry_get_text ((GtkEntry *) entry));
-
+    set_search_phrase (gtk_entry_get_text ((GtkEntry *) entry));
     schedule_update (UPDATE_ITEMS);
 }
 
 static void refresh_cb (GtkButton * button, GtkWidget * chooser)
 {
     gchar * path = gtk_file_chooser_get_filename ((GtkFileChooser *) chooser);
-    aud_set_string ("search-tool", "path", path);
+    begin_scan (path);
     g_free (path);
 
-    begin_scan ();
+    schedule_update (UPDATE_DICTS);
+    gtk_widget_hide (scrolled);
+    show_hide_widgets ();
 }
 
 static void * search_get_widget (void)
@@ -399,14 +429,28 @@ static void * search_get_widget (void)
 #endif
     gtk_box_pack_start ((GtkBox *) vbox, entry, FALSE, FALSE, 0);
 
-    GtkWidget * scrolled = gtk_scrolled_window_new (NULL, NULL);
+    help_label = gtk_label_new (_("To import your music library into "
+     "Audacious, first choose a folder and then click the \"refresh\" icon."));
+    gtk_label_set_line_wrap ((GtkLabel *) help_label, TRUE);
+    g_signal_connect (help_label, "destroy", (GCallback) gtk_widget_destroyed, & help_label);
+    gtk_widget_set_no_show_all (help_label, TRUE);
+    gtk_box_pack_start ((GtkBox *) vbox, help_label, TRUE, FALSE, 0);
+
+    wait_label = gtk_label_new (_("Please wait ..."));
+    g_signal_connect (wait_label, "destroy", (GCallback) gtk_widget_destroyed, & wait_label);
+    gtk_widget_set_no_show_all (wait_label, TRUE);
+    gtk_box_pack_start ((GtkBox *) vbox, wait_label, TRUE, FALSE, 0);
+
+    scrolled = gtk_scrolled_window_new (NULL, NULL);
+    g_signal_connect (scrolled, "destroy", (GCallback) gtk_widget_destroyed, & scrolled);
+    gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrolled,
      GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+    gtk_widget_set_no_show_all (scrolled, TRUE);
     gtk_box_pack_start ((GtkBox *) vbox, scrolled, TRUE, TRUE, 0);
 
     results_list = audgui_list_new (& list_callbacks, NULL, items ? index_count (items) : 0);
     g_signal_connect (results_list, "destroy", (GCallback) gtk_widget_destroyed, & results_list);
-
     gtk_tree_view_set_headers_visible ((GtkTreeView *) results_list, FALSE);
     audgui_list_add_column (results_list, NULL, COLUMN_NAME, G_TYPE_STRING, TRUE);
     audgui_list_add_column (results_list, NULL, COLUMN_MATCHES, G_TYPE_INT, FALSE);
@@ -415,7 +459,7 @@ static void * search_get_widget (void)
     GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_end ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
-    GtkWidget * chooser = gtk_file_chooser_button_new (_("Select Folder"),
+    GtkWidget * chooser = gtk_file_chooser_button_new (_("Choose Folder"),
      GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
     gtk_box_pack_start ((GtkBox *) hbox, chooser, TRUE, TRUE, 0);
 
@@ -426,12 +470,16 @@ static void * search_get_widget (void)
     GtkWidget * button = gtk_button_new ();
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_stock
      (GTK_STOCK_REFRESH, GTK_ICON_SIZE_BUTTON));
+    gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
     gtk_box_pack_start ((GtkBox *) hbox, button, FALSE, FALSE, 0);
 
     g_signal_connect (entry, "changed", (GCallback) entry_cb, NULL);
     g_signal_connect (button, "clicked", (GCallback) refresh_cb, chooser);
 
     gtk_widget_show_all (vbox);
+    gtk_widget_show (results_list);
+    show_hide_widgets ();
+
     return vbox;
 }
 
