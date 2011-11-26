@@ -476,68 +476,8 @@ static GtkWidget *gtk_markup_label_new(const gchar * str)
 
 static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
-    if (ui_playlist_notebook_tab_title_editing)
-    {
-        if (event->keyval == GDK_KP_Enter || event->keyval == GDK_Escape)
-            return FALSE;
-
-        GtkWidget *entry = g_object_get_data(G_OBJECT(ui_playlist_notebook_tab_title_editing), "entry");
-        gtk_widget_event(entry, (GdkEvent*) event);
-        return TRUE;
-    }
-
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
-        case 0:
-            switch (event->keyval)
-            {
-                case GDK_Left:
-                case GDK_KP_Left:
-                case GDK_KP_7:
-                    if (aud_drct_get_playing ())
-                        aud_drct_seek (aud_drct_get_time () - 5000);
-                    break;
-
-                case GDK_Right:
-                case GDK_KP_Right:
-                case GDK_KP_9:
-                    if (aud_drct_get_playing ())
-                        aud_drct_seek (aud_drct_get_time () + 5000);
-                    break;
-
-                case GDK_KP_4:
-                    aud_drct_pl_prev();
-                    break;
-
-                case GDK_KP_6:
-                    aud_drct_pl_next();
-                    break;
-
-                case GDK_space:
-                    if (aud_drct_get_playing())
-                        aud_drct_pause();
-                    else
-                        aud_drct_play();
-                    break;
-
-                case GDK_Escape:
-                    ui_playlist_notebook_position (GINT_TO_POINTER
-                     (aud_playlist_get_active ()), NULL);
-                    break;
-
-                case GDK_Delete:
-                    playlist_delete_selected ();
-                    break;
-
-                case GDK_Menu:
-                    popup_menu_rclick (0, event->time);
-                    break;
-
-                default:
-                    return FALSE;
-            }
-            break;
-
       case GDK_CONTROL_MASK:
         switch (event->keyval)
         {
@@ -546,6 +486,7 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
             aud_playlist_set_active ((aud_playlist_get_active () + 1) %
              aud_playlist_count ());
             break;
+
           default:
             return FALSE;
         }
@@ -565,6 +506,14 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
       case GDK_MOD1_MASK:
         switch (event->keyval)
         {
+          case GDK_Left:
+            if (aud_drct_get_playing ())
+                aud_drct_seek (aud_drct_get_time () - 5000);
+            break;
+          case GDK_Right:
+            if (aud_drct_get_playing ())
+                aud_drct_seek (aud_drct_get_time () + 5000);
+            break;
           case GDK_Up:
             playlist_shift (-1);
             break;
@@ -575,6 +524,29 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
             return FALSE;
         }
       default:
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+static gboolean playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event, void * unused)
+{
+    if (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
+        return FALSE;
+
+    switch (event->keyval)
+    {
+    case GDK_Escape:
+        ui_playlist_notebook_position (GINT_TO_POINTER (aud_playlist_get_active ()), NULL);
+        break;
+    case GDK_Delete:
+        playlist_delete_selected ();
+        break;
+    case GDK_Menu:
+        popup_menu_rclick (0, event->time);
+        break;
+    default:
         return FALSE;
     }
 
@@ -782,6 +754,7 @@ static gboolean init (void)
     update_volume_timeout_source = g_timeout_add(250, (GSourceFunc) ui_volume_slider_update, volume);
 
     g_signal_connect(window, "key-press-event", G_CALLBACK(ui_key_press_cb), NULL);
+    g_signal_connect (UI_PLAYLIST_NOTEBOOK, "key-press-event", (GCallback) playlist_keypress_cb, NULL);
 
     if (aud_drct_get_playing ())
     {

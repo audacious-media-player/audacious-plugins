@@ -127,30 +127,30 @@ static gboolean autoscroll_get (void) {return aud_get_bool ("gtkui", "autoscroll
 static void autoscroll_set (gboolean on) {aud_set_bool ("gtkui", "autoscroll", on); }
 
 static const struct MenuItem file_items[] = {
- {N_("_Open Files ..."), GTK_STOCK_OPEN, 'l', .func = open_files},
+ {N_("_Open Files ..."), GTK_STOCK_OPEN, 'o', CTRL, .func = open_files},
  {N_("Open _URL ..."), GTK_STOCK_NETWORK, 'l', CTRL, .func = open_url},
- {N_("_Add Files ..."), GTK_STOCK_ADD, 'f', .func = add_files},
- {N_("Add U_RL ..."), GTK_STOCK_NETWORK, 'h', CTRL, .func = add_url},
+ {N_("_Add Files ..."), GTK_STOCK_ADD, 'o', SHIFT | CTRL, .func = add_files},
+ {N_("Add U_RL ..."), GTK_STOCK_NETWORK, 'l', SHIFT | CTRL, .func = add_url},
  {.sep = TRUE},
  {N_("A_bout ..."), GTK_STOCK_ABOUT, .func = audgui_show_about_window},
- {N_("_Preferences ..."), GTK_STOCK_PREFERENCES, 'p', CTRL, .func = aud_show_prefs_window},
+ {N_("_Preferences ..."), GTK_STOCK_PREFERENCES, .func = aud_show_prefs_window},
  {N_("_Quit"), GTK_STOCK_QUIT, 'q', CTRL, .func = aud_drct_quit}};
 
 static const struct MenuItem playback_items[] = {
- {N_("_Play"), GTK_STOCK_MEDIA_PLAY, 'x', .func = aud_drct_play},
- {N_("Paus_e"), GTK_STOCK_MEDIA_PAUSE, 'c', .func = aud_drct_pause},
- {N_("_Stop"), GTK_STOCK_MEDIA_STOP, 'v', .func = aud_drct_stop},
- {N_("Pre_vious"), GTK_STOCK_MEDIA_PREVIOUS, 'z', .func = aud_drct_pl_prev},
- {N_("_Next"), GTK_STOCK_MEDIA_NEXT, 'b', .func = aud_drct_pl_next},
+ {N_("_Play"), GTK_STOCK_MEDIA_PLAY, GDK_Return, CTRL, .func = aud_drct_play},
+ {N_("Paus_e"), GTK_STOCK_MEDIA_PAUSE, ' ', CTRL, .func = aud_drct_pause},
+ {N_("_Stop"), GTK_STOCK_MEDIA_STOP, GDK_BackSpace, CTRL, .func = aud_drct_stop},
+ {N_("Pre_vious"), GTK_STOCK_MEDIA_PREVIOUS, GDK_Up, CTRL, .func = aud_drct_pl_prev},
+ {N_("_Next"), GTK_STOCK_MEDIA_NEXT, GDK_Down, CTRL, .func = aud_drct_pl_next},
  {.sep = TRUE},
- {N_("_Repeat"), NULL, 'r', .get = repeat_get, repeat_set, "set repeat"},
- {N_("S_huffle"), NULL, 's', .get = shuffle_get, shuffle_set, "set shuffle"},
+ {N_("_Repeat"), NULL, 'r', CTRL, .get = repeat_get, repeat_set, "set repeat"},
+ {N_("S_huffle"), NULL, 's', CTRL, .get = shuffle_get, shuffle_set, "set shuffle"},
  {N_("N_o Playlist Advance"), NULL, 'n', CTRL, .get = no_advance_get, no_advance_set, "set no_playlist_advance"},
  {N_("Stop _After This Song"), NULL, 'm', CTRL, .get = stop_after_get, stop_after_set, "set stop_after_current_song"},
  {.sep = TRUE},
- {N_("Song _Info ..."), GTK_STOCK_INFO, 'i', .func = audgui_infowin_show_current},
- {N_("Jump to _Time ..."), GTK_STOCK_JUMP_TO, 'j', CTRL, .func = audgui_jump_to_time},
- {N_("_Jump to Song ..."), GTK_STOCK_JUMP_TO, 'j', .func = audgui_jump_to_track}};
+ {N_("Song _Info ..."), GTK_STOCK_INFO, 'i', CTRL, .func = audgui_infowin_show_current},
+ {N_("Jump to _Time ..."), GTK_STOCK_JUMP_TO, .func = audgui_jump_to_time},
+ {N_("_Jump to Song ..."), GTK_STOCK_JUMP_TO, 'j', CTRL, .func = audgui_jump_to_track}};
 
 static const struct MenuItem sort_items[] = {
  {N_("By Track _Number"), .func = pl_sort_track},
@@ -172,15 +172,15 @@ static const struct MenuItem playlist_items[] = {
  {N_("_New"), GTK_STOCK_NEW, 't', CTRL, .func = pl_new},
  {N_("_Close"), GTK_STOCK_CLOSE, 'w', CTRL, .func = pl_close},
  {.sep = TRUE},
- {N_("_Import ..."), GTK_STOCK_OPEN, 'o', .func = audgui_import_playlist},
- {N_("_Export ..."), GTK_STOCK_SAVE, 's', SHIFT, .func = audgui_export_playlist},
+ {N_("_Import ..."), GTK_STOCK_OPEN, .func = audgui_import_playlist},
+ {N_("_Export ..."), GTK_STOCK_SAVE, .func = audgui_export_playlist},
  {.sep = TRUE},
- {N_("_Playlist Manager ..."), AUD_STOCK_PLAYLIST, 'p', .func = audgui_playlist_manager},
+ {N_("_Playlist Manager ..."), AUD_STOCK_PLAYLIST, 'p', CTRL, .func = audgui_playlist_manager},
  {N_("_Queue Manager ..."), AUD_STOCK_QUEUETOGGLE, 'u', CTRL, .func = audgui_queue_manager_show}};
 
 static const struct MenuItem output_items[] = {
- {N_("Volume _Up"), GTK_STOCK_GO_UP, '+', .func = volume_up},
- {N_("Volume _Down"), GTK_STOCK_GO_DOWN, '-', .func = volume_down},
+ {N_("Volume _Up"), GTK_STOCK_GO_UP, '+', CTRL, .func = volume_up},
+ {N_("Volume _Down"), GTK_STOCK_GO_DOWN, '-', CTRL, .func = volume_down},
  {.sep = TRUE},
  {N_("_Equalizer"), GTK_STOCK_PREFERENCES, 'e', CTRL, .func = audgui_show_equalizer_window},
  {.sep = TRUE},
@@ -207,7 +207,7 @@ static const struct MenuItem main_items[] = {
 
 static const struct MenuItem rclick_items[] = {
  {N_("Song _Info ..."), GTK_STOCK_INFO, 'i', ALT, .func = playlist_song_info},
- {N_("_Queue/Unqueue"), AUD_STOCK_QUEUETOGGLE, 'q', .func = playlist_queue_toggle},
+ {N_("_Queue/Unqueue"), AUD_STOCK_QUEUETOGGLE, 'q', ALT, .func = playlist_queue_toggle},
  {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_F6, .func = pl_refresh_sel},
  {.sep = TRUE},
  {N_("Cu_t"), GTK_STOCK_CUT, 'x', CTRL, .func = playlist_cut},
