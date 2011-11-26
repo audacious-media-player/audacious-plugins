@@ -131,7 +131,7 @@ static void create_dicts (gint list)
     {
         gchar * fields[FIELDS];
 
-        Tuple * tuple = aud_playlist_entry_get_tuple (list, e, FALSE);
+        Tuple * tuple = aud_playlist_entry_get_tuple (list, e, TRUE);
         const gchar * genre = tuple ? tuple_get_string (tuple, FIELD_GENRE, NULL) : NULL;
         fields[GENRE] = genre ? g_strdup (genre) : NULL;
         if (tuple)
@@ -334,8 +334,39 @@ static void list_get_value (void * user, gint row, gint column, GValue * value)
     }
 }
 
+static void list_activate_row (void * user, gint row)
+{
+    g_return_if_fail (items && row >= 0 && row < index_count (items));
+    gint list = aud_playlist_by_unique_id (playlist_id);
+
+    if (list < 0 || update_source)
+        return;
+
+    Item * item = index_get (items, row);
+    struct index * filenames = index_new ();
+    struct index * tuples = index_new ();
+
+    for (gint m = 0; m < item->matches->len; m ++)
+    {
+        gint entry = g_array_index (item->matches, gint, m);
+        index_append (filenames, aud_playlist_entry_get_filename (list, entry));
+        index_append (tuples, aud_playlist_entry_get_tuple (list, entry, TRUE));
+    }
+
+    list = aud_playlist_get_temporary ();
+    aud_playlist_set_active (list);
+
+    if (aud_get_bool (NULL, "clear_playlist"))
+        aud_playlist_entry_delete (list, 0, aud_playlist_entry_count (list));
+    else
+        aud_playlist_queue_delete (list, 0, aud_playlist_queue_count (list));
+
+    aud_playlist_entry_insert_batch (list, -1, filenames, tuples, TRUE);
+}
+
 static const AudguiListCallbacks list_callbacks = {
- .get_value = list_get_value};
+ .get_value = list_get_value,
+ .activate_row = list_activate_row};
 
 static void entry_cb (GtkEntry * entry, void * unused)
 {
