@@ -97,6 +97,7 @@ static void pl_new (void)
 }
 
 static void pl_refresh (void) {aud_playlist_rescan (aud_playlist_get_active ()); }
+static void pl_remove_failed (void) {aud_playlist_remove_failed (aud_playlist_get_active ()); }
 static void pl_close (void) {audgui_confirm_playlist_delete (aud_playlist_get_active ()); }
 static void pl_refresh_sel (void) {aud_playlist_rescan_selected (aud_playlist_get_active ()); }
 static void pl_select_all (void) {aud_playlist_select_all (aud_playlist_get_active (), TRUE); }
@@ -166,6 +167,7 @@ static const struct MenuItem sort_items[] = {
 
 static const struct MenuItem playlist_items[] = {
  {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_F5, .func = pl_refresh},
+ {N_("Remove _Unavailable Files"), GTK_STOCK_REMOVE, .func = pl_remove_failed},
  {.sep = TRUE},
  {N_("_Sort"), GTK_STOCK_SORT_ASCENDING, .items = sort_items, G_N_ELEMENTS (sort_items)},
  {.sep = TRUE},
