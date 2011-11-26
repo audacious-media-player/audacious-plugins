@@ -8,11 +8,12 @@
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
+#include <libaudgui/list.h>
 
 #include "config.h"
 
 #define MAX_RESULTS 12
-#define UPDATE_DELAY 500
+#define UPDATE_DELAY 300
 
 enum {GENRE, ARTIST, ALBUM, TITLE, FIELDS};
 enum {UPDATE_ITEMS = 1, UPDATE_DICTS};
@@ -242,6 +243,7 @@ static void begin_scan (void)
 }
 
 static gchar * search_phrase;
+static GtkWidget * results_list;
 static gint update_source, update_type;
 
 static gint update_timeout (void * unused)
@@ -257,20 +259,15 @@ static gint update_timeout (void * unused)
     }
 
     if (list >= 0)
-    {
         create_items (search_phrase);
-
-        /* temporary ... */
-        for (gint i = 0; i < index_count (items); i ++)
-        {
-            Item * item = index_get (items, i);
-            printf ("%s (%d)\n", item->name, item->matches->len);
-        }
-
-        printf ("\n\n");
-    }
     else
         destroy_items ();
+
+    if (results_list)
+    {
+        audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
+        audgui_list_insert_rows (results_list, 0, items ? index_count (items) : 0);
+    }
 
     g_source_remove (update_source);
     update_source = 0;
@@ -318,6 +315,28 @@ static void search_cleanup (void)
     search_phrase = NULL;
 }
 
+enum {COLUMN_NAME, COLUMN_MATCHES};
+
+static void list_get_value (void * user, gint row, gint column, GValue * value)
+{
+    g_return_if_fail (items && row >= 0 && row < index_count (items));
+
+    Item * item = index_get (items, row);
+
+    switch (column)
+    {
+    case COLUMN_NAME:
+        g_value_set_string (value, item->name);
+        break;
+    case COLUMN_MATCHES:
+        g_value_set_int (value, item->matches->len);
+        break;
+    }
+}
+
+static const AudguiListCallbacks list_callbacks = {
+ .get_value = list_get_value};
+
 static void entry_cb (GtkEntry * entry, void * unused)
 {
     g_free (search_phrase);
@@ -348,6 +367,19 @@ static void * search_get_widget (void)
     gtk_entry_set_placeholder_text ((GtkEntry *) entry, _("Search library"));
 #endif
     gtk_box_pack_start ((GtkBox *) vbox, entry, FALSE, FALSE, 0);
+
+    GtkWidget * scrolled = gtk_scrolled_window_new (NULL, NULL);
+    gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrolled,
+     GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+    gtk_box_pack_start ((GtkBox *) vbox, scrolled, TRUE, TRUE, 0);
+
+    results_list = audgui_list_new (& list_callbacks, NULL, items ? index_count (items) : 0);
+    g_signal_connect (results_list, "destroy", (GCallback) gtk_widget_destroyed, & results_list);
+
+    gtk_tree_view_set_headers_visible ((GtkTreeView *) results_list, FALSE);
+    audgui_list_add_column (results_list, NULL, COLUMN_NAME, G_TYPE_STRING, TRUE);
+    audgui_list_add_column (results_list, NULL, COLUMN_MATCHES, G_TYPE_INT, FALSE);
+    gtk_container_add ((GtkContainer *) scrolled, results_list);
 
     GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_end ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
