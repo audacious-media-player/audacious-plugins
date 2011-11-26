@@ -131,6 +131,11 @@ static gint jack_get_written_time(void)
   return return_val;
 }
 
+static void jack_set_written_time(gint time)
+{
+  JACK_SetPosition(driver, MILLISECONDS, time);
+}
+
 
 /* Return the current number of milliseconds of audio data that has */
 /* been played out of the audio device, not including the buffer */
@@ -449,4 +454,5 @@ AUD_OUTPUT_PLUGIN
     .buffer_free = audacious_jack_free,
     .output_time = jack_get_output_time,
     .written_time = jack_get_written_time,
+    .set_written_time = jack_set_written_time
 )
