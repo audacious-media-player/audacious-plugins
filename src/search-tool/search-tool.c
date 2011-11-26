@@ -1,6 +1,5 @@
-#include "config.h"
-
 #include <glib.h>
+#include <string.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -8,14 +7,41 @@
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
+#include "config.h"
+
+#define MAX_RESULTS 12
+
 enum {GENRE, ARTIST, ALBUM, TITLE, FIELDS};
 
-static const gchar * const field_names[] = {N_("Genres"), N_("Artists"),
- N_("Albums"), N_("Titles")};
+static const gchar * const field_names[] = {N_("Genre"), N_("Artist"),
+ N_("Album"), N_("Title")};
+
+typedef struct {
+    gchar * name, * folded;
+    GArray * matches;
+} Item;
 
 static gint playlist_id;
 static GHashTable * added_table;
 static GHashTable * dicts[FIELDS];
+static struct index * items;
+
+static Item * item_new (gint field, const gchar * name)
+{
+    Item * item = g_slice_new (Item);
+    item->name = g_strdup_printf ("%s: %s", _(field_names[field]), name);
+    item->folded = g_utf8_casefold (name, -1);
+    item->matches = g_array_new (FALSE, FALSE, sizeof (gint));
+    return item;
+}
+
+static void item_free (Item * item)
+{
+    g_free (item->name);
+    g_free (item->folded);
+    g_array_free (item->matches, TRUE);
+    g_slice_free (Item, item);
+}
 
 static void find_playlist (void)
 {
@@ -105,7 +131,7 @@ static void create_dicts (gint list)
     destroy_dicts ();
     for (gint f = 0; f < FIELDS; f ++)
         dicts[f] = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
-         (GDestroyNotify) g_array_unref);
+         (GDestroyNotify) item_free);
 
     gint entries = aud_playlist_entry_count (list);
     for (gint e = 0; e < entries; e ++)
@@ -126,17 +152,74 @@ static void create_dicts (gint list)
             if (! fields[f])
                 continue;
 
-            GArray * matches = g_hash_table_lookup (dicts[f], fields[f]);
+            Item * item = g_hash_table_lookup (dicts[f], fields[f]);
 
-            if (! matches)
+            if (! item)
             {
-                matches = g_array_new (FALSE, FALSE, sizeof (gint));
-                g_hash_table_insert (dicts[f], fields[f], matches);
+                item = item_new (f, fields[f]);
+                g_hash_table_insert (dicts[f], fields[f], item);
             }
 
-            g_array_append_val (matches, e);
+            g_array_append_val (item->matches, e);
         }
     }
+}
+
+static void destroy_items (void)
+{
+    if (! items)
+        return;
+
+    index_free (items);
+    items = NULL;
+}
+
+static gchar * * search_terms;
+
+static void search_cb (void * key, void * item, void * index)
+{
+    if (index_count (index) > MAX_RESULTS)
+        return;
+
+    for (gint t = 0; search_terms[t]; t ++)
+    {
+        if (! strstr (((Item *) item)->folded, search_terms[t]))
+            return;
+    }
+
+    index_append (index, item);
+}
+
+static gint item_compare (const void * a, const void * b)
+{
+    return string_compare (((const Item *) a)->name, ((const Item *) b)->name);
+}
+
+static void create_items (const gchar * phrase)
+{
+    destroy_items ();
+    items = index_new ();
+
+    gchar * folded = g_utf8_casefold (phrase, -1);
+    search_terms = g_strsplit (folded, " ", -1);
+    g_free (folded);
+
+    for (gint f = 0; f < FIELDS; f ++)
+    {
+        struct index * index = index_new ();
+        g_hash_table_foreach (dicts[f], search_cb, index);
+
+        if (index_count (index) <= MAX_RESULTS)
+        {
+            index_sort (index, item_compare);
+            index_merge_append (items, index);
+        }
+
+        index_free (index);
+    }
+
+    g_strfreev (search_terms);
+    search_terms = NULL;
 }
 
 static gboolean filter_cb (const gchar * filename, void * unused)
@@ -160,11 +243,6 @@ static void begin_scan (void)
     g_free (path);
 }
 
-void print_cb (void * key, void * value, void * user)
-{
-    printf ("%s (%d)\n", (const gchar *) key, ((GArray *) value)->len);
-}
-
 static gboolean search_init (void)
 {
     find_playlist ();
@@ -172,11 +250,12 @@ static gboolean search_init (void)
     /* temporary ... */
     begin_scan ();
     create_dicts (get_playlist ());
+    create_items ("jo");
 
-    for (gint f = 0; f < FIELDS; f ++)
+    for (gint i = 0; i < index_count (items); i ++)
     {
-        printf ("\n%d %s:\n", g_hash_table_size (dicts[f]), field_names[f]);
-        g_hash_table_foreach (dicts[f], print_cb, NULL);
+        Item * item = index_get (items, i);
+        printf ("%s (%d)\n", item->name, item->matches->len);
     }
 
     return TRUE;
@@ -186,6 +265,7 @@ void search_cleanup (void)
 {
     destroy_added_table ();
     destroy_dicts ();
+    destroy_items ();
 }
 
 AUD_GENERAL_PLUGIN
