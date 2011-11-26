@@ -1,17 +1,21 @@
-#include <glib.h>
 #include <string.h>
+
+#include <gtk/gtk.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/hook.h>
 
 #include "config.h"
 
 #define MAX_RESULTS 12
+#define UPDATE_DELAY 500
 
 enum {GENRE, ARTIST, ALBUM, TITLE, FIELDS};
+enum {UPDATE_ITEMS = 1, UPDATE_DICTS};
 
 static const gchar * const field_names[] = {N_("Genre"), N_("Artist"),
  N_("Album"), N_("Title")};
@@ -68,31 +72,19 @@ static void create_playlist (void)
     playlist_id = aud_playlist_get_unique_id (0);
 }
 
-static gint get_playlist (void)
-{
-    if (aud_playlist_by_unique_id (playlist_id) < 0)
-        create_playlist ();
-
-    return aud_playlist_by_unique_id (playlist_id);
-}
-
 static gchar * get_path (void)
 {
     gchar * path = aud_get_string ("search-tool", "path");
     if (g_file_test (path, G_FILE_TEST_EXISTS))
-        goto FOUND;
+        return path;
 
     g_free (path);
     path = g_build_filename (g_get_home_dir (), "Music", NULL);
     if (g_file_test (path, G_FILE_TEST_EXISTS))
-        goto FOUND;
+        return path;
 
     g_free (path);
-    path = g_strdup (g_get_home_dir ());
-
-FOUND:
-    aud_set_string ("search-tool", "path", path);
-    return path;
+    return g_strdup (g_get_home_dir ());
 }
 
 static void destroy_added_table (void)
@@ -229,12 +221,18 @@ static gboolean filter_cb (const gchar * filename, void * unused)
 
 static void begin_scan (void)
 {
-    gint list = get_playlist ();
-    gchar * path = get_path ();
+    gint list = aud_playlist_by_unique_id (playlist_id);
+
+    if (list < 0)
+    {
+        create_playlist ();
+        list = aud_playlist_by_unique_id (playlist_id);
+    }
 
     aud_playlist_remove_failed (list);
-
     create_added_table (list);
+
+    gchar * path = aud_get_string ("search-tool", "path");
 
     struct index * add = index_new ();
     index_append (add, filename_to_uri (path));
@@ -243,29 +241,110 @@ static void begin_scan (void)
     g_free (path);
 }
 
+static gint update_source, update_type;
+
+static gint update_timeout (void * unused)
+{
+    gint list = aud_playlist_by_unique_id (playlist_id);
+
+    if (update_type == UPDATE_DICTS)
+    {
+        if (list >= 0)
+            create_dicts (list);
+        else
+            destroy_dicts ();
+    }
+
+    if (list >= 0)
+    {
+        /* temporary ... */
+        create_items ("jo");
+
+        for (gint i = 0; i < index_count (items); i ++)
+        {
+            Item * item = index_get (items, i);
+            printf ("%s (%d)\n", item->name, item->matches->len);
+        }
+
+        printf ("\n\n");
+    }
+    else
+        destroy_items ();
+
+    g_source_remove (update_source);
+    update_source = 0;
+    update_type = 0;
+    return FALSE;
+}
+
+static void schedule_update (gint type)
+{
+    if (update_source)
+        g_source_remove (update_source);
+
+    update_source = g_timeout_add (UPDATE_DELAY, update_timeout, NULL);
+    update_type = MAX (update_type, type);
+}
+
+static void playlist_update_cb (void * data, void * unused)
+{
+    gint list = aud_playlist_by_unique_id (playlist_id);
+    gint at, count;
+
+    if (list < 0 || aud_playlist_updated_range (list, & at, & count) >= PLAYLIST_UPDATE_METADATA)
+        schedule_update (UPDATE_DICTS);
+}
+
 static gboolean search_init (void)
 {
     find_playlist ();
+    schedule_update (UPDATE_DICTS);
 
-    /* temporary ... */
-    begin_scan ();
-    create_dicts (get_playlist ());
-    create_items ("jo");
-
-    for (gint i = 0; i < index_count (items); i ++)
-    {
-        Item * item = index_get (items, i);
-        printf ("%s (%d)\n", item->name, item->matches->len);
-    }
-
+    hook_associate ("playlist update", playlist_update_cb, NULL);
     return TRUE;
 }
 
-void search_cleanup (void)
+static void search_cleanup (void)
 {
+    hook_dissociate ("playlist update", playlist_update_cb);
     destroy_added_table ();
     destroy_dicts ();
     destroy_items ();
+}
+
+static void refresh_cb (GtkButton * button, GtkWidget * chooser)
+{
+    gchar * path = gtk_file_chooser_get_filename ((GtkFileChooser *) chooser);
+    aud_set_string ("search-tool", "path", path);
+    g_free (path);
+
+    begin_scan ();
+}
+
+static void * search_get_widget (void)
+{
+    GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
+
+    GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
+    gtk_box_pack_end ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
+
+    GtkWidget * chooser = gtk_file_chooser_button_new (_("Select Folder"),
+     GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+    gtk_box_pack_start ((GtkBox *) hbox, chooser, TRUE, TRUE, 0);
+
+    gchar * path = get_path ();
+    gtk_file_chooser_set_filename ((GtkFileChooser *) chooser, path);
+    g_free (path);
+
+    GtkWidget * button = gtk_button_new ();
+    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_stock
+     (GTK_STOCK_REFRESH, GTK_ICON_SIZE_BUTTON));
+    gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
+
+    g_signal_connect (button, "clicked", (GCallback) refresh_cb, chooser);
+
+    gtk_widget_show_all (vbox);
+    return vbox;
 }
 
 AUD_GENERAL_PLUGIN
@@ -273,4 +352,5 @@ AUD_GENERAL_PLUGIN
     .name = "Search Tool",
     .init = search_init,
     .cleanup = search_cleanup,
+    .get_widget = search_get_widget
 )
