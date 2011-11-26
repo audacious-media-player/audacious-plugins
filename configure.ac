@@ -670,7 +670,10 @@ AC_ARG_ENABLE(jack,
 
 if test $enable_jack = yes ; then
     PKG_CHECK_MODULES(JACK, [jack >= 1.9.7],
-     [enable_jack=$enable_jack], [enable_jack=no])
+     [enable_jack=$enable_jack], [
+        PKG_CHECK_MODULES(JACK, [jack >= 0.120.1 jack < 1.0],
+         [enable_jack=$enable_jack], [enable_jack=no])
+    ])
     AC_CHECK_LIB([samplerate], [src_process],
      [enable_jack=$enable_jack], [enable_jack=no])
 
