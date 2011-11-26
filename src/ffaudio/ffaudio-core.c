@@ -40,9 +40,13 @@
 #endif
 #include <libaudcore/audstrings.h>
 
-/***********************************************************************************
- * Plugin glue.                                                                    *
- ***********************************************************************************/
+#if ! CHECK_LIBAVFORMAT_VERSION (53, 5, 0)
+#define avformat_find_stream_info(i, o) av_find_stream_info (i)
+#endif
+
+#if ! CHECK_LIBAVCODEC_VERSION (53, 8, 0)
+#define avcodec_open2(a, c, o) avcodec_open (a, c)
+#endif
 
 static GMutex *ctrl_mutex = NULL;
 static GCond *ctrl_cond = NULL;
