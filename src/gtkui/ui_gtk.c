@@ -453,7 +453,10 @@ static GtkWidget * toggle_button_new (const gchar * icon, const gchar * alt,
     gtk_widget_set_can_focus (button, FALSE);
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
 
-    if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), icon))
+    if (! alt)
+        gtk_container_add ((GtkContainer *) button, gtk_image_new_from_stock
+         (icon, GTK_ICON_SIZE_BUTTON));
+    else if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), icon))
         gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
          (icon, GTK_ICON_SIZE_BUTTON));
     else
@@ -673,7 +676,7 @@ static gboolean init (void)
 
     if (search_tool)
     {
-        search_button = toggle_button_new (GTK_STOCK_FIND, "FIND", toggle_search_tool, NULL);
+        search_button = toggle_button_new (GTK_STOCK_FIND, NULL, toggle_search_tool, NULL);
         gtk_box_pack_start ((GtkBox *) tophbox, search_button, FALSE, FALSE, 0);
         gtk_toggle_button_set_active ((GtkToggleButton *) search_button,
          aud_plugin_get_enabled (search_tool));
