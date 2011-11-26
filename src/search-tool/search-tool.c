@@ -80,15 +80,12 @@ static void find_playlist (void)
 {
     playlist_id = -1;
 
-    for (gint p = 0; p < aud_playlist_count (); p ++)
+    for (gint p = 0; playlist_id < 0 && p < aud_playlist_count (); p ++)
     {
         gchar * title = aud_playlist_get_title (p);
 
         if (! strcmp (title, _("Library")))
-        {
             playlist_id = aud_playlist_get_unique_id (p);
-            break;
-        }
 
         g_free (title);
     }
@@ -186,7 +183,9 @@ static void create_dicts (gint list)
 
             Item * item = g_hash_table_lookup (dicts[f], fields[f]);
 
-            if (! item)
+            if (item)
+                g_free (fields[f]);
+            else
             {
                 item = item_new (f, fields[f]);
                 g_hash_table_insert (dicts[f], fields[f], item);
