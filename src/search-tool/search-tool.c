@@ -451,7 +451,7 @@ static void * search_get_widget (void)
     gtk_box_pack_start ((GtkBox *) vbox, entry, FALSE, FALSE, 0);
 
     help_label = gtk_label_new (_("To import your music library into "
-     "Audacious, first choose a folder and then click the \"refresh\" icon."));
+     "Audacious, choose a folder and then click the \"refresh\" icon."));
     gtk_label_set_line_wrap ((GtkLabel *) help_label, TRUE);
     g_signal_connect (help_label, "destroy", (GCallback) gtk_widget_destroyed, & help_label);
     gtk_widget_set_no_show_all (help_label, TRUE);
@@ -509,5 +509,6 @@ AUD_GENERAL_PLUGIN
     .name = "Search Tool",
     .init = search_init,
     .cleanup = search_cleanup,
-    .get_widget = search_get_widget
+    .get_widget = search_get_widget,
+    .enabled_by_default = TRUE
 )
