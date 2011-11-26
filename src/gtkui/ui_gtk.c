@@ -71,8 +71,7 @@ static GtkAccelGroup * accel;
 
 static GtkWidget * button_play, * button_pause, * button_stop, * slider,
  * label_time, * button_shuffle, * button_repeat;
-static GtkWidget * window, * vbox, * menu_box, * menu, * playlist_box,
- * infoarea, * statusbar;
+static GtkWidget * window, * vbox_outer, * vbox, * menu_box, * menu, * infoarea, * statusbar;
 static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
 static GtkWidget * error_win = NULL;
@@ -640,15 +639,23 @@ static gboolean init (void)
 
     g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), NULL);
 
-    vbox = gtk_vbox_new(FALSE, 0);
-    gtk_container_add(GTK_CONTAINER(window), vbox);
-
     accel = gtk_accel_group_new ();
     gtk_window_add_accel_group ((GtkWindow *) window, accel);
 
+    vbox_outer = gtk_vbox_new (FALSE, 0);
+    gtk_container_add ((GtkContainer *) window, vbox_outer);
+
     menu_box = gtk_hbox_new (FALSE, 0);
-    gtk_box_pack_start ((GtkBox *) vbox, menu_box, FALSE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) vbox_outer, menu_box, FALSE, FALSE, 0);
     show_menu (aud_get_bool ("gtkui", "menu_visible"));
+
+    layout_load ();
+
+    GtkWidget * layout = layout_new ();
+    gtk_box_pack_start ((GtkBox *) vbox_outer, layout, TRUE, TRUE, 0);
+
+    vbox = gtk_vbox_new (FALSE, 0);
+    layout_add_center (vbox);
 
     tophbox = gtk_hbox_new(FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), tophbox, FALSE, TRUE, 0);
@@ -698,8 +705,7 @@ static gboolean init (void)
     gtk_button_set_relief(GTK_BUTTON(volume), GTK_RELIEF_NONE);
     gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
     gtk_widget_set_can_focus(volume, FALSE);
-    /* Set the default volume to the balance average.
-       (I'll add balance control later) -Ryan */
+
     gint lvol = 0, rvol = 0;
     aud_drct_get_volume(&lvol, &rvol);
     gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), (lvol + rvol) / 2);
@@ -713,29 +719,20 @@ static gboolean init (void)
      toggle_repeat, NULL);
     gtk_box_pack_end ((GtkBox *) tophbox, button_repeat, FALSE, FALSE, 0);
 
-    playlist_box = gtk_hbox_new(FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(vbox), playlist_box, TRUE, TRUE, 0);
-
     /* Create playlist notebook */
     ui_playlist_notebook_new ();
-    g_object_ref (G_OBJECT(UI_PLAYLIST_NOTEBOOK));
-
-    if (aud_get_bool ("gtkui", "statusbar_visible"))
-    {
-        statusbar = ui_statusbar_new();
-        gtk_box_pack_end(GTK_BOX(vbox), statusbar, FALSE, FALSE, 3);
-    }
-
-    layout_load ();
-
-    GtkWidget * layout = layout_new ();
-    gtk_box_pack_start ((GtkBox *) playlist_box, layout, TRUE, TRUE, 0);
-    layout_add_center ((GtkWidget *) UI_PLAYLIST_NOTEBOOK);
+    gtk_box_pack_start ((GtkBox *) vbox, (GtkWidget *) UI_PLAYLIST_NOTEBOOK, TRUE, TRUE, 0);
 
     if (aud_get_bool ("gtkui", "infoarea_visible"))
     {
         infoarea = ui_infoarea_new ();
         gtk_box_pack_end (GTK_BOX(vbox), infoarea, FALSE, FALSE, 0);
+    }
+
+    if (aud_get_bool ("gtkui", "statusbar_visible"))
+    {
+        statusbar = ui_statusbar_new ();
+        gtk_box_pack_end ((GtkBox *) vbox_outer, statusbar, FALSE, FALSE, 0);
     }
 
     AUDDBG("hooks associate\n");
@@ -767,7 +764,7 @@ static gboolean init (void)
 
     title_change_cb ();
 
-    gtk_widget_show_all (vbox);
+    gtk_widget_show_all (vbox_outer);
 
     if (aud_get_bool ("gtkui", "player_visible"))
         ui_show (TRUE);
@@ -812,10 +809,7 @@ static void cleanup (void)
     ui_hooks_disassociate();
 
     pw_col_cleanup ();
-
-    g_object_unref ((GObject *) UI_PLAYLIST_NOTEBOOK);
     gtk_widget_destroy (window);
-
     layout_cleanup ();
 }
 
@@ -859,7 +853,6 @@ void show_infoarea (gboolean show)
     {
         infoarea = ui_infoarea_new ();
         gtk_box_pack_end ((GtkBox *) vbox, infoarea, FALSE, FALSE, 0);
-        gtk_box_reorder_child ((GtkBox *) vbox, infoarea, -1);
         gtk_widget_show_all (infoarea);
     }
 
@@ -877,11 +870,7 @@ void show_statusbar (gboolean show)
     if (show && ! statusbar)
     {
         statusbar = ui_statusbar_new ();
-        gtk_box_pack_end ((GtkBox *) vbox, statusbar, FALSE, FALSE, 3);
-
-        if (infoarea)
-            gtk_box_reorder_child ((GtkBox *) vbox, infoarea, -1);
-
+        gtk_box_pack_end ((GtkBox *) vbox_outer, statusbar, FALSE, FALSE, 0);
         gtk_widget_show_all (statusbar);
     }
 
