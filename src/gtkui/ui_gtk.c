@@ -52,7 +52,7 @@ static const gchar * const gtkui_defaults[] = {
 
  "player_x", "-1",
  "player_y", "-1",
- "player_width", "600",
+ "player_width", "720",
  "player_height", "400",
 
  /* hidden settings */
@@ -62,6 +62,8 @@ static const gchar * const gtkui_defaults[] = {
  "custom_playlist_colors", "FALSE",
  NULL};
 
+static PluginHandle * search_tool;
+
 static GtkWidget *volume;
 static gboolean volume_slider_is_moving = FALSE;
 static guint update_volume_timeout_source = 0;
@@ -70,7 +72,7 @@ static gulong volume_change_handler_id;
 static GtkAccelGroup * accel;
 
 static GtkWidget * button_play, * button_pause, * button_stop, * slider,
- * label_time, * button_shuffle, * button_repeat;
+ * label_time, * button_shuffle, * button_repeat, * search_button;
 static GtkWidget * window, * vbox_outer, * vbox, * menu_box, * menu, * infoarea, * statusbar;
 static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
@@ -425,7 +427,7 @@ static gboolean rclick_cb (GtkWidget * widget, GdkEventButton * event)
     return TRUE;
 }
 
-static GtkWidget *gtk_toolbar_button_add(GtkWidget * toolbar, void (*callback) (), const gchar * stock_id)
+static GtkWidget *toolbar_button_add(GtkWidget * toolbar, void (*callback) (), const gchar * stock_id)
 {
     GtkWidget *icon;
     GtkWidget *button = gtk_button_new();
@@ -466,7 +468,7 @@ static GtkWidget * toggle_button_new (const gchar * icon, const gchar * alt,
     return button;
 }
 
-static GtkWidget *gtk_markup_label_new(const gchar * str)
+static GtkWidget *markup_label_new(const gchar * str)
 {
     GtkWidget *label = gtk_label_new(str);
     g_object_set(G_OBJECT(label), "use-markup", TRUE, NULL);
@@ -568,6 +570,18 @@ static void toggle_shuffle (GtkToggleButton * button, void * unused)
     aud_set_bool (NULL, "shuffle", gtk_toggle_button_get_active (button));
 }
 
+static void toggle_search_tool (GtkToggleButton * button, void * unused)
+{
+    aud_plugin_enable (search_tool, gtk_toggle_button_get_active (button));
+}
+
+static gboolean search_tool_toggled (PluginHandle * plugin, void * unused)
+{
+    gtk_toggle_button_set_active ((GtkToggleButton *) search_button,
+     aud_plugin_get_enabled (plugin));
+    return TRUE;
+}
+
 static void config_save (void)
 {
     save_window_size ();
@@ -613,6 +627,8 @@ static void ui_hooks_disassociate(void)
 
 static gboolean init (void)
 {
+    search_tool = aud_plugin_lookup_basename ("search-tool");
+
     GtkWidget *tophbox;         /* box to contain toolbar and shbox */
     GtkWidget *buttonbox;       /* contains buttons like "open", "next" */
     GtkWidget *shbox;           /* box for volume control + slider + time combo --nenolod */
@@ -661,13 +677,23 @@ static gboolean init (void)
     gtk_box_pack_start(GTK_BOX(vbox), tophbox, FALSE, TRUE, 0);
 
     buttonbox = gtk_hbox_new(FALSE, 0);
-    gtk_toolbar_button_add(buttonbox, button_open_pressed, GTK_STOCK_OPEN);
-    gtk_toolbar_button_add(buttonbox, button_add_pressed, GTK_STOCK_ADD);
-    button_play = gtk_toolbar_button_add (buttonbox, aud_drct_play, GTK_STOCK_MEDIA_PLAY);
-    button_pause = gtk_toolbar_button_add (buttonbox, aud_drct_pause, GTK_STOCK_MEDIA_PAUSE);
-    button_stop = gtk_toolbar_button_add (buttonbox, aud_drct_stop, GTK_STOCK_MEDIA_STOP);
-    gtk_toolbar_button_add (buttonbox, aud_drct_pl_prev, GTK_STOCK_MEDIA_PREVIOUS);
-    gtk_toolbar_button_add (buttonbox, aud_drct_pl_next, GTK_STOCK_MEDIA_NEXT);
+
+    if (search_tool)
+    {
+        search_button = toggle_button_new (GTK_STOCK_FIND, "FIND", toggle_search_tool, NULL);
+        gtk_box_pack_start ((GtkBox *) tophbox, search_button, FALSE, FALSE, 0);
+        gtk_toggle_button_set_active ((GtkToggleButton *) search_button,
+         aud_plugin_get_enabled (search_tool));
+        aud_plugin_add_watch (search_tool, search_tool_toggled, NULL);
+    }
+
+    toolbar_button_add(buttonbox, button_open_pressed, GTK_STOCK_OPEN);
+    toolbar_button_add(buttonbox, button_add_pressed, GTK_STOCK_ADD);
+    button_play = toolbar_button_add (buttonbox, aud_drct_play, GTK_STOCK_MEDIA_PLAY);
+    button_pause = toolbar_button_add (buttonbox, aud_drct_pause, GTK_STOCK_MEDIA_PAUSE);
+    button_stop = toolbar_button_add (buttonbox, aud_drct_stop, GTK_STOCK_MEDIA_STOP);
+    toolbar_button_add (buttonbox, aud_drct_pl_prev, GTK_STOCK_MEDIA_PREVIOUS);
+    toolbar_button_add (buttonbox, aud_drct_pl_next, GTK_STOCK_MEDIA_NEXT);
 
     /* Workaround: Show the play and pause buttons and then hide them again in
      * order to coax GTK into loading icons for them. -jlindgren */
@@ -696,7 +722,7 @@ static gboolean init (void)
     gtk_box_pack_start ((GtkBox *) shbox, slider, TRUE, TRUE, 6);
     gtk_widget_set_no_show_all (slider, TRUE);
 
-    label_time = gtk_markup_label_new(NULL);
+    label_time = markup_label_new(NULL);
     gtk_widget_set_no_show_all (label_time, TRUE);
 
     gtk_box_pack_end ((GtkBox *) shbox, label_time, FALSE, FALSE, 6);
@@ -807,6 +833,9 @@ static void cleanup (void)
     }
 
     ui_hooks_disassociate();
+
+    if (search_tool)
+        aud_plugin_remove_watch (search_tool, search_tool_toggled, NULL);
 
     pw_col_cleanup ();
     gtk_widget_destroy (window);

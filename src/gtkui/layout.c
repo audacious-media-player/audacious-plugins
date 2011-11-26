@@ -225,6 +225,13 @@ static Item * item_new (const gchar * name)
     item->dock = item->x = item->y = -1;
     item->w = DEFAULT_WIDTH;
     item->h = DEFAULT_HEIGHT;
+
+    if (! strcmp (name, "Search Tool"))
+    {
+        item->dock = DOCK_LEFT;
+        item->w = 200;
+    }
+
     items = g_list_append (items, item);
     return item;
 }
