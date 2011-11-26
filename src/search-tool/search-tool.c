@@ -272,7 +272,9 @@ static void begin_scan (const gchar * path)
 
 static void show_hide_widgets (void)
 {
-    if (aud_playlist_by_unique_id (playlist_id) < 0)
+    gint list = aud_playlist_by_unique_id (playlist_id);
+
+    if (list < 0)
     {
         gtk_widget_hide (wait_label);
         gtk_widget_hide (scrolled);
@@ -282,7 +284,7 @@ static void show_hide_widgets (void)
     {
         gtk_widget_hide (help_label);
 
-        if (update_source)
+        if (update_source || aud_playlist_add_in_progress (list))
             gtk_widget_show (wait_label);
         else
         {
