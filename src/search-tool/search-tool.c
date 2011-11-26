@@ -241,6 +241,7 @@ static void begin_scan (void)
     g_free (path);
 }
 
+static gchar * search_phrase;
 static gint update_source, update_type;
 
 static gint update_timeout (void * unused)
@@ -257,9 +258,9 @@ static gint update_timeout (void * unused)
 
     if (list >= 0)
     {
-        /* temporary ... */
-        create_items ("jo");
+        create_items (search_phrase);
 
+        /* temporary ... */
         for (gint i = 0; i < index_count (items); i ++)
         {
             Item * item = index_get (items, i);
@@ -298,8 +299,9 @@ static void playlist_update_cb (void * data, void * unused)
 static gboolean search_init (void)
 {
     find_playlist ();
-    schedule_update (UPDATE_DICTS);
+    search_phrase = g_strdup ("");
 
+    schedule_update (UPDATE_DICTS);
     hook_associate ("playlist update", playlist_update_cb, NULL);
     return TRUE;
 }
@@ -307,9 +309,21 @@ static gboolean search_init (void)
 static void search_cleanup (void)
 {
     hook_dissociate ("playlist update", playlist_update_cb);
+
     destroy_added_table ();
     destroy_dicts ();
     destroy_items ();
+
+    g_free (search_phrase);
+    search_phrase = NULL;
+}
+
+static void entry_cb (GtkEntry * entry, void * unused)
+{
+    g_free (search_phrase);
+    search_phrase = g_strdup (gtk_entry_get_text ((GtkEntry *) entry));
+
+    schedule_update (UPDATE_ITEMS);
 }
 
 static void refresh_cb (GtkButton * button, GtkWidget * chooser)
@@ -324,6 +338,16 @@ static void refresh_cb (GtkButton * button, GtkWidget * chooser)
 static void * search_get_widget (void)
 {
     GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
+    gtk_container_set_border_width ((GtkContainer *) vbox, 3);
+
+    GtkWidget * entry = gtk_entry_new ();
+#if GTK_CHECK_VERSION (2, 16, 0)
+    gtk_entry_set_icon_from_stock ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, GTK_STOCK_FIND);
+#endif
+#if GTK_CHECK_VERSION (3, 2, 0)
+    gtk_entry_set_placeholder_text ((GtkEntry *) entry, _("Search library"));
+#endif
+    gtk_box_pack_start ((GtkBox *) vbox, entry, FALSE, FALSE, 0);
 
     GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_end ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
@@ -339,8 +363,9 @@ static void * search_get_widget (void)
     GtkWidget * button = gtk_button_new ();
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_stock
      (GTK_STOCK_REFRESH, GTK_ICON_SIZE_BUTTON));
-    gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, button, FALSE, FALSE, 0);
 
+    g_signal_connect (entry, "changed", (GCallback) entry_cb, NULL);
     g_signal_connect (button, "clicked", (GCallback) refresh_cb, chooser);
 
     gtk_widget_show_all (vbox);
