@@ -53,8 +53,8 @@ static const gchar * const gtkui_defaults[] = {
 
  "player_x", "-1",
  "player_y", "-1",
- "player_width", "720",
- "player_height", "400",
+ "player_width", "760",
+ "player_height", "460",
 
  /* hidden settings */
  "always_on_top", "FALSE",
@@ -666,16 +666,8 @@ static gboolean init (void)
     gtk_box_pack_start ((GtkBox *) vbox_outer, menu_box, FALSE, FALSE, 0);
     show_menu (aud_get_bool ("gtkui", "menu_visible"));
 
-    layout_load ();
-
-    GtkWidget * layout = layout_new ();
-    gtk_box_pack_start ((GtkBox *) vbox_outer, layout, TRUE, TRUE, 0);
-
-    vbox = gtk_vbox_new (FALSE, 0);
-    layout_add_center (vbox);
-
     tophbox = gtk_hbox_new(FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(vbox), tophbox, FALSE, TRUE, 0);
+    gtk_box_pack_start ((GtkBox *) vbox_outer, tophbox, FALSE, FALSE, 0);
 
     buttonbox = gtk_hbox_new(FALSE, 0);
 
@@ -745,6 +737,14 @@ static gboolean init (void)
     button_repeat = toggle_button_new ("media-playlist-repeat", "REP",
      toggle_repeat, NULL);
     gtk_box_pack_end ((GtkBox *) tophbox, button_repeat, FALSE, FALSE, 0);
+
+    layout_load ();
+
+    GtkWidget * layout = layout_new ();
+    gtk_box_pack_start ((GtkBox *) vbox_outer, layout, TRUE, TRUE, 0);
+
+    vbox = gtk_vbox_new (FALSE, 0);
+    layout_add_center (vbox);
 
     /* Create playlist notebook */
     ui_playlist_notebook_new ();
