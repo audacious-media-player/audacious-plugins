@@ -150,6 +150,7 @@ static GtkWidget * vbox_new (GtkWidget * widget, const gchar * name)
      widget);
 
     GtkWidget * label = gtk_label_new (NULL);
+    gtk_misc_set_padding ((GtkMisc *) label, 3, 0);
     gchar * markup = g_markup_printf_escaped ("<small><b>%s</b></small>", name);
     gtk_label_set_markup ((GtkLabel *) label, markup);
     g_free (markup);
