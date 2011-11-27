@@ -519,12 +519,6 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
             if (aud_drct_get_playing ())
                 aud_drct_seek (aud_drct_get_time () + 5000);
             break;
-          case GDK_Up:
-            playlist_shift (-1);
-            break;
-          case GDK_Down:
-            playlist_shift (1);
-            break;
           default:
             return FALSE;
         }
