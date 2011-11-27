@@ -432,6 +432,12 @@ static void search_cleanup (void)
     hook_dissociate ("playlist scan complete", scan_complete_cb);
     hook_dissociate ("playlist update", playlist_update_cb);
 
+    if (search_source)
+    {
+        g_source_remove (search_source);
+        search_source = 0;
+    }
+
     g_strfreev (search_terms);
     search_terms = NULL;
 
