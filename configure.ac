@@ -216,27 +216,6 @@ else
 	have_coreaudio=no
 fi
 
-dnl *** Windows waveOut output plugin
-
-AC_ARG_ENABLE(waveout, AS_HELP_STRING(--enable-waveout,
- enable Windows waveOut output plugin (experimental)),
- have_winmm=$enableval, have_winmm=no)
-
-if test "x$have_winmm" = "xyes"; then
-	AC_MSG_CHECKING([Windows Wavemapper Audio is supported])
-	case "$target" in
-	*mingw*)
-		OUTPUT_PLUGINS="$OUTPUT_PLUGINS winmm"
-		have_winmm=yes
-		AC_MSG_RESULT([yes])
-		;;
-	*)
-		have_winmm=no
-		AC_MSG_RESULT([no])
-		;;
-	esac
-fi
-
 dnl *** Dock Album Art (MacOS)
 
 AC_ARG_ENABLE(dockalbumart,
@@ -1268,7 +1247,6 @@ echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
 echo "    -> FileWriter FLAC output part:       $have_writer_flac"
 echo "  Null Audio output (null):               yes"
-echo "  Windows waveOut (experimental):         $have_winmm"
 echo "  OpenAL (experimental):                  $enable_openal"
 echo "  Open Sound System v3 (deprecated):      $enable_oss"
 echo
