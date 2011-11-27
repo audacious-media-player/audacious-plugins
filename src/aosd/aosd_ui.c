@@ -99,8 +99,8 @@ aosd_cb_configure_position_expose ( GtkWidget * darea ,
   cairo_rectangle ( cr , (coord % 3) * 10 , (coord / 3) * 16 , 20 , 8 );
   cairo_fill ( cr );
 #else
-  gdk_draw_rectangle( GDK_DRAWABLE(darea->window) ,
-                      darea->style->black_gc , TRUE ,
+  gdk_draw_rectangle( GDK_DRAWABLE(gtk_widget_get_window (darea)) ,
+                      gtk_widget_get_style (darea)->black_gc , TRUE ,
                       (coord % 3) * 10 , (coord / 3) * 16 , 20 , 8 );
 #endif
 
