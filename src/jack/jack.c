@@ -55,6 +55,7 @@ static format_info_t effect;
 static format_info_t output;
 
 static gboolean output_opened; /* true if we have a connection to jack */
+static gboolean paused;
 
 
 /* Giacomo's note: removed the destructor from the original xmms-jack, cause
@@ -333,6 +334,7 @@ static gint jack_open(gint fmt, gint sample_rate, gint num_channels)
     } else
     {
         TRACE("output_opened is TRUE and no options changed, not reopening\n");
+        paused = FALSE;
         return 1;
     }
   }
@@ -359,6 +361,7 @@ static gint jack_open(gint fmt, gint sample_rate, gint num_channels)
 
   jack_set_volume(jack_cfg.volume_left, jack_cfg.volume_right); /* sets the volume to stored value */
   output_opened = TRUE;
+  paused = FALSE;
 
   return 1;
 }
@@ -399,7 +402,10 @@ static void jack_flush(gint ms_offset_time)
   /* update the internal driver values to correspond to the input time given */
   JACK_SetPosition(driver, MILLISECONDS, ms_offset_time);
 
-  JACK_SetState(driver, PLAYING);
+  if (paused)
+    JACK_SetState(driver, PAUSED);
+  else
+    JACK_SetState(driver, PLAYING);
 }
 
 
@@ -407,6 +413,8 @@ static void jack_flush(gint ms_offset_time)
 static void jack_pause (gboolean p)
 {
   TRACE("p == %d\n", p);
+
+  paused = p;
 
   /* pause the device if p is non-zero, unpause the device if p is zero and */
   /* we are currently paused */
