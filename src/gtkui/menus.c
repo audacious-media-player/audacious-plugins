@@ -139,8 +139,8 @@ static const struct MenuItem file_items[] = {
 
 static const struct MenuItem playback_items[] = {
  {N_("_Play"), GTK_STOCK_MEDIA_PLAY, GDK_Return, CTRL, .func = aud_drct_play},
- {N_("Paus_e"), GTK_STOCK_MEDIA_PAUSE, ' ', CTRL, .func = aud_drct_pause},
- {N_("_Stop"), GTK_STOCK_MEDIA_STOP, GDK_BackSpace, CTRL, .func = aud_drct_stop},
+ {N_("Paus_e"), GTK_STOCK_MEDIA_PAUSE, ',', CTRL, .func = aud_drct_pause},
+ {N_("_Stop"), GTK_STOCK_MEDIA_STOP, '.', CTRL, .func = aud_drct_stop},
  {N_("Pre_vious"), GTK_STOCK_MEDIA_PREVIOUS, GDK_Up, ALT, .func = aud_drct_pl_prev},
  {N_("_Next"), GTK_STOCK_MEDIA_NEXT, GDK_Down, ALT, .func = aud_drct_pl_next},
  {.sep = TRUE},
