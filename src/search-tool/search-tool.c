@@ -35,7 +35,7 @@
 #include "config.h"
 
 #define MAX_RESULTS 12
-#define UPDATE_DELAY 300
+#define SEARCH_DELAY 300
 
 enum {GENRE, ARTIST, ALBUM, TITLE, FIELDS};
 enum {UPDATE_ITEMS = 1, UPDATE_DICTS};
@@ -56,8 +56,10 @@ static GHashTable * added_table;
 static GHashTable * dicts[FIELDS];
 static struct index * items;
 
+static gboolean adding, dicts_valid;
+static gint search_source;
+
 static GtkWidget * help_label, * wait_label, * scrolled, * results_list;
-static gint update_source, update_type;
 
 static Item * item_new (gint field, const gchar * name)
 {
@@ -91,11 +93,33 @@ static void find_playlist (void)
     }
 }
 
-static void create_playlist (void)
+static gint create_playlist (void)
 {
     aud_playlist_insert (0);
     aud_playlist_set_title (0, _("Library"));
     playlist_id = aud_playlist_get_unique_id (0);
+    return 0;
+}
+
+static gint get_playlist (gboolean require_added, gboolean require_scanned)
+{
+    if (playlist_id < 0)
+        return -1;
+
+    gint list = aud_playlist_by_unique_id (playlist_id);
+
+    if (list < 0)
+    {
+        playlist_id = -1;
+        return -1;
+    }
+
+    if (require_added && aud_playlist_add_in_progress (list))
+        return -1;
+    if (require_scanned && aud_playlist_scan_in_progress (list))
+        return -1;
+
+    return list;
 }
 
 static void set_search_phrase (const gchar * phrase)
@@ -143,6 +167,9 @@ static void create_added_table (gint list)
 
 static void destroy_dicts (void)
 {
+    if (items)
+        index_delete (items, 0, index_count (items));
+
     for (gint f = 0; f < FIELDS; f ++)
     {
         if (! dicts[f])
@@ -242,15 +269,12 @@ static gboolean filter_cb (const gchar * filename, void * unused)
     return added_table && ! g_hash_table_lookup_extended (added_table, filename, NULL, NULL);
 }
 
-static void begin_scan (const gchar * path)
+static void begin_add (const gchar * path)
 {
-    gint list = aud_playlist_by_unique_id (playlist_id);
+    gint list = get_playlist (FALSE, FALSE);
 
     if (list < 0)
-    {
-        create_playlist ();
-        list = aud_playlist_by_unique_id (playlist_id);
-    }
+        list = create_playlist ();
 
     gchar * old = aud_get_string ("search-tool", "path");
     aud_set_string ("search-tool", "path", path);
@@ -267,44 +291,40 @@ static void begin_scan (const gchar * path)
     struct index * add = index_new ();
     index_append (add, filename_to_uri (path));
     aud_playlist_entry_insert_filtered (list, -1, add, NULL, filter_cb, NULL, FALSE);
+
+    adding = TRUE;
 }
 
 static void show_hide_widgets (void)
 {
-    gint list = aud_playlist_by_unique_id (playlist_id);
+    if (! help_label || ! wait_label || ! scrolled)
+        return;
 
-    if (list < 0)
+    if (playlist_id < 0)
     {
         gtk_widget_hide (wait_label);
         gtk_widget_hide (scrolled);
         gtk_widget_show (help_label);
     }
-    else if (! gtk_widget_get_visible (scrolled))
+    else
     {
         gtk_widget_hide (help_label);
 
-        if (update_source || aud_playlist_add_in_progress (list))
-            gtk_widget_show (wait_label);
-        else
+        if (dicts_valid)
         {
             gtk_widget_hide (wait_label);
             gtk_widget_show (scrolled);
         }
+        else
+        {
+            gtk_widget_hide (scrolled);
+            gtk_widget_show (wait_label);
+        }
     }
 }
 
-static gint update_timeout (void * unused)
+static gint search_timeout (void * unused)
 {
-    gint list = aud_playlist_by_unique_id (playlist_id);
-
-    if (update_type == UPDATE_DICTS)
-    {
-        if (list >= 0)
-            create_dicts (list);
-        else
-            destroy_dicts ();
-    }
-
     do_search ();
 
     if (results_list)
@@ -313,35 +333,81 @@ static gint update_timeout (void * unused)
         audgui_list_insert_rows (results_list, 0, index_count (items));
     }
 
-    g_source_remove (update_source);
-    update_source = 0;
-    update_type = 0;
-
-    if (help_label)
-        show_hide_widgets ();
+    if (search_source)
+    {
+        g_source_remove (search_source);
+        search_source = 0;
+    }
 
     return FALSE;
 }
 
-static void schedule_update (gint type)
+static void schedule_search (void)
 {
-    if (update_source)
-        g_source_remove (update_source);
+    if (search_source)
+        g_source_remove (search_source);
 
-    update_source = g_timeout_add (UPDATE_DELAY, update_timeout, NULL);
-    update_type = MAX (update_type, type);
+    search_source = g_timeout_add (SEARCH_DELAY, search_timeout, NULL);
+}
 
-    if (help_label)
-        show_hide_widgets ();
+static void update_dicts (void)
+{
+    gint list = get_playlist (TRUE, TRUE);
+
+    if (list >= 0)
+    {
+        create_dicts (list);
+        dicts_valid = TRUE;
+        schedule_search ();
+    }
+    else
+    {
+        destroy_dicts ();
+        dicts_valid = FALSE;
+    }
+
+    if (results_list)
+        audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
+
+    show_hide_widgets ();
+}
+
+static void add_complete_cb (void * unused, void * unused2)
+{
+    if (adding)
+    {
+        gint list = get_playlist (TRUE, FALSE);
+
+        if (list >= 0)
+        {
+            adding = FALSE;
+            aud_playlist_sort_by_scheme (list, PLAYLIST_SORT_PATH);
+        }
+    }
+
+    if (! dicts_valid && ! aud_playlist_update_pending ())
+        update_dicts ();
+}
+
+static void scan_complete_cb (void * unused, void * unused2)
+{
+    if (! dicts_valid && ! aud_playlist_update_pending ())
+        update_dicts ();
 }
 
 static void playlist_update_cb (void * data, void * unused)
 {
-    gint list = aud_playlist_by_unique_id (playlist_id);
-    gint at, count;
+    if (! dicts_valid)
+        update_dicts ();
+    else
+    {
+        gint list = get_playlist (TRUE, TRUE);
+        gint at, count;
 
-    if (list < 0 || aud_playlist_updated_range (list, & at, & count) >= PLAYLIST_UPDATE_METADATA)
-        schedule_update (UPDATE_DICTS);
+        if (list < 0 || aud_playlist_updated_range (list, & at, & count) >=
+         PLAYLIST_UPDATE_METADATA)
+            update_dicts ();
+    }
 }
 
 static gboolean search_init (void)
@@ -351,13 +417,19 @@ static gboolean search_init (void)
     set_search_phrase ("");
     items = index_new ();
 
-    schedule_update (UPDATE_DICTS);
+    update_dicts ();
+
+    hook_associate ("playlist add complete", add_complete_cb, NULL);
+    hook_associate ("playlist scan complete", scan_complete_cb, NULL);
     hook_associate ("playlist update", playlist_update_cb, NULL);
+
     return TRUE;
 }
 
 static void search_cleanup (void)
 {
+    hook_dissociate ("playlist add complete", add_complete_cb);
+    hook_dissociate ("playlist scan complete", scan_complete_cb);
     hook_dissociate ("playlist update", playlist_update_cb);
 
     g_strfreev (search_terms);
@@ -392,9 +464,6 @@ static void list_activate_row (void * user, gint row)
     g_return_if_fail (items && row >= 0 && row < index_count (items));
     gint list = aud_playlist_by_unique_id (playlist_id);
 
-    if (list < 0 || update_source)
-        return;
-
     Item * item = index_get (items, row);
     struct index * filenames = index_new ();
     struct index * tuples = index_new ();
@@ -424,18 +493,16 @@ static const AudguiListCallbacks list_callbacks = {
 static void entry_cb (GtkEntry * entry, void * unused)
 {
     set_search_phrase (gtk_entry_get_text ((GtkEntry *) entry));
-    schedule_update (UPDATE_ITEMS);
+    schedule_search ();
 }
 
 static void refresh_cb (GtkButton * button, GtkWidget * chooser)
 {
     gchar * path = gtk_file_chooser_get_filename ((GtkFileChooser *) chooser);
-    begin_scan (path);
+    begin_add (path);
     g_free (path);
 
-    schedule_update (UPDATE_DICTS);
-    gtk_widget_hide (scrolled);
-    show_hide_widgets ();
+    update_dicts ();
 }
 
 static void * search_get_widget (void)
