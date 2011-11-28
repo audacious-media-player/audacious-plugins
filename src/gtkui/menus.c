@@ -212,10 +212,10 @@ static const struct MenuItem rclick_items[] = {
  {N_("_Queue/Unqueue"), AUD_STOCK_QUEUETOGGLE, 'q', ALT, .func = playlist_queue_toggle},
  {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_F6, .func = pl_refresh_sel},
  {.sep = TRUE},
- {N_("Cu_t"), GTK_STOCK_CUT, 'x', CTRL, .func = playlist_cut},
- {N_("_Copy"), GTK_STOCK_COPY, 'c', CTRL, .func = playlist_copy},
- {N_("_Paste"), GTK_STOCK_PASTE, 'v', CTRL, .func = playlist_paste},
- {N_("Select _All"), GTK_STOCK_SELECT_ALL, 'a', CTRL, .func = pl_select_all},
+ {N_("Cu_t"), GTK_STOCK_CUT, .func = playlist_cut},
+ {N_("_Copy"), GTK_STOCK_COPY, .func = playlist_copy},
+ {N_("_Paste"), GTK_STOCK_PASTE, .func = playlist_paste},
+ {N_("Select _All"), GTK_STOCK_SELECT_ALL, .func = pl_select_all},
  {.sep = TRUE},
  {N_("_Services"), .get_sub = get_services_pl}};
 

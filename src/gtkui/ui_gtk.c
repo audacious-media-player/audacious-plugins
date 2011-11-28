@@ -531,25 +531,44 @@ static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
 
 static gboolean playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event, void * unused)
 {
-    if (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
-        return FALSE;
-
-    switch (event->keyval)
+    switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
-    case GDK_Escape:
-        ui_playlist_notebook_position (GINT_TO_POINTER (aud_playlist_get_active ()), NULL);
+    case 0:
+        switch (event->keyval)
+        {
+        case GDK_Escape:
+            ui_playlist_notebook_position (GINT_TO_POINTER (aud_playlist_get_active ()), NULL);
+            return TRUE;
+        case GDK_Delete:
+            playlist_delete_selected ();
+            return TRUE;
+        case GDK_Menu:
+            popup_menu_rclick (0, event->time);
+            return TRUE;
+        }
+
         break;
-    case GDK_Delete:
-        playlist_delete_selected ();
+    case GDK_CONTROL_MASK:
+        switch (event->keyval)
+        {
+        case 'x':
+            playlist_cut ();
+            return TRUE;
+        case 'c':
+            playlist_copy ();
+            return TRUE;
+        case 'v':
+            playlist_paste ();
+            return TRUE;
+        case 'a':
+            aud_playlist_select_all (aud_playlist_get_active (), TRUE);
+            return TRUE;
+        }
+
         break;
-    case GDK_Menu:
-        popup_menu_rclick (0, event->time);
-        break;
-    default:
-        return FALSE;
     }
 
-    return TRUE;
+    return FALSE;
 }
 
 static void update_toggles (void * data, void * user)
