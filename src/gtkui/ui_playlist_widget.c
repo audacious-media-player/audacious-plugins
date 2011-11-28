@@ -331,6 +331,11 @@ GtkWidget * ui_playlist_widget_new (gint playlist)
      NULL);
     g_signal_connect_swapped (list, "destroy", (GCallback) destroy_cb, data);
 
+    /* Disable type-to-search because it blocks CTRL-V, causing URI's to be
+     * pasted into the search box rather than added to the playlist.  The search
+     * box can still be brought up with CTRL-F. */
+    gtk_tree_view_set_enable_search ((GtkTreeView *) list, FALSE);
+
     for (gint i = 0; i < pw_num_cols; i ++)
     {
         gint n = pw_cols[i];
