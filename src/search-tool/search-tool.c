@@ -155,16 +155,6 @@ static void destroy_added_table (void)
     added_table = NULL;
 }
 
-static void create_added_table (gint list)
-{
-    destroy_added_table ();
-    added_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-
-    gint entries = aud_playlist_entry_count (list);
-    for (gint i = 0; i < entries; i ++)
-        g_hash_table_insert (added_table, aud_playlist_entry_get_filename (list, i), NULL);
-}
-
 static void destroy_dicts (void)
 {
     if (items)
@@ -276,22 +266,42 @@ static void begin_add (const gchar * path)
     if (list < 0)
         list = create_playlist ();
 
-    gchar * old = aud_get_string ("search-tool", "path");
     aud_set_string ("search-tool", "path", path);
 
-    if (! strcmp (old, path))
-        aud_playlist_remove_failed (list);
-    else
-        aud_playlist_entry_delete (list, 0, aud_playlist_entry_count (list));
+    gchar * uri = filename_to_uri (path);
+    g_return_if_fail (uri);
+    gchar * prefix = g_str_has_suffix (uri, "/") ? g_strdup (uri) : g_strconcat (uri, "/", NULL);
 
-    g_free (old);
+    destroy_added_table ();
+    added_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-    create_added_table (list);
+    gint entries = aud_playlist_entry_count (list);
+
+    for (gint entry = 0; entry < entries; entry ++)
+    {
+        gchar * filename = aud_playlist_entry_get_filename (list, entry);
+
+        if (g_str_has_prefix (filename, prefix) && ! g_hash_table_lookup_extended
+         (added_table, filename, NULL, NULL))
+        {
+            aud_playlist_entry_set_selected (list, entry, FALSE);
+            g_hash_table_insert (added_table, filename, NULL);
+        }
+        else
+        {
+            aud_playlist_entry_set_selected (list, entry, TRUE);
+            g_free (filename);
+        }
+    }
+
+    aud_playlist_delete_selected (list);
+    aud_playlist_remove_failed (list);
 
     struct index * add = index_new ();
-    index_append (add, filename_to_uri (path));
+    index_append (add, uri);
     aud_playlist_entry_insert_filtered (list, -1, add, NULL, filter_cb, NULL, FALSE);
 
+    g_free (prefix);
     adding = TRUE;
 }
 
