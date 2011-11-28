@@ -116,7 +116,7 @@ static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, gpo
                 si_volume_change(si_cfg.volume_delta);
                 break;
             case SI_CFG_SCROLL_ACTION_SKIP:
-                si_playback_skip(-1);
+                si_playback_skip (aud_get_bool ("statusicon", "reverse_scroll") ? 1 : -1);
                 break;
           }
           break;
@@ -130,7 +130,7 @@ static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, gpo
                 si_volume_change(-si_cfg.volume_delta);
                 break;
             case SI_CFG_SCROLL_ACTION_SKIP:
-                si_playback_skip(1);
+                si_playback_skip (aud_get_bool ("statusicon", "reverse_scroll") ? -1 : 1);
                 break;
           }
           break;
@@ -385,6 +385,7 @@ void si_about(void)
 
 static GtkWidget *prefs_disable_popup_chkbtn;
 static GtkWidget *prefs_close_to_tray_chkbtn;
+static GtkWidget * reverse_scroll_toggle;
 
 void si_prefs_cb_commit(gpointer prefs_win)
 {
@@ -412,6 +413,8 @@ void si_prefs_cb_commit(gpointer prefs_win)
 
     si_cfg.disable_popup = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prefs_disable_popup_chkbtn));
     si_cfg.close_to_tray = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prefs_close_to_tray_chkbtn));
+    aud_set_bool ("statusicon", "reverse_scroll", gtk_toggle_button_get_active
+     ((GtkToggleButton *) reverse_scroll_toggle));
 
     si_cfg_save();
 
@@ -515,6 +518,12 @@ void si_config(void)
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_close_to_tray_chkbtn), TRUE);
 
     gtk_box_pack_start(GTK_BOX(prefs_other_vbox), prefs_close_to_tray_chkbtn, TRUE, TRUE, 0);
+
+    reverse_scroll_toggle = gtk_check_button_new_with_label
+     (_("Advance in playlist when scrolling upward"));
+    gtk_toggle_button_set_active ((GtkToggleButton *) reverse_scroll_toggle,
+     aud_get_bool ("statusicon", "reverse_scroll"));
+    gtk_box_pack_start ((GtkBox *) prefs_other_vbox, reverse_scroll_toggle, TRUE, TRUE, 0);
 
     gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_other_frame, TRUE, TRUE, 0);
 

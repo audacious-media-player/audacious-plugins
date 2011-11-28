@@ -30,6 +30,7 @@ static const gchar * const si_defaults[] = {
  "volume_delta", "5",
  "disable_popup", "FALSE",
  "close_to_tray", "FALSE",
+ "reverse_scroll", "FALSE",
  NULL};
 
 si_cfg_t si_cfg;
