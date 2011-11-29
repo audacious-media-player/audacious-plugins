@@ -176,9 +176,7 @@ static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const g
             tuple_associate_int(ti, FIELD_SUBSONG_NUM, NULL, info->track_count);
         }
         else
-        {
-            ti->nsubtunes = info->track_count;
-        }
+            tuple_set_subtunes (ti, info->track_count, NULL);
 
         length = info->length;
         if (length <= 0)

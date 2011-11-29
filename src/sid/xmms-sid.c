@@ -486,16 +486,15 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
 static void xs_fill_subtunes(Tuple *tuple, xs_tuneinfo_t *info)
 {
     gint count, found;
-
-    tuple->subtunes = g_new(gint, info->nsubTunes);
+    gint subtunes[info->nsubTunes];
 
     for (found = count = 0; count < info->nsubTunes; count++) {
         if (count + 1 == info->startTune || !xs_cfg.subAutoMinOnly ||
             info->subTunes[count].tuneLength >= xs_cfg.subAutoMinTime)
-            tuple->subtunes[found++] = count + 1;
+            subtunes[found ++] = count + 1;
     }
 
-    tuple->nsubtunes = found;
+    tuple_set_subtunes (tuple, found, subtunes);
 }
 
 Tuple * xs_probe_for_tuple(const gchar *filename, xs_file_t *fd)

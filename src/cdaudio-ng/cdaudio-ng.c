@@ -518,16 +518,17 @@ static Tuple * make_tuple (const gchar * filename, VFSFile * file)
 
     if (!strcmp (filename, "cdda://"))
     {
-        gint i = 0;
-
         tuple = tuple_new_from_filename (filename);
-        tuple->nsubtunes = n_audio_tracks;
-        tuple->subtunes = g_malloc (sizeof *tuple->subtunes * tuple->nsubtunes);
+
+        gint subtunes[n_audio_tracks];
+        gint i = 0;
 
         /* only add the audio tracks to the playlist */
         for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
             if (cdda_track_audiop (pcdrom_drive, trackno))
-                tuple->subtunes[i++] = trackno;
+                subtunes[i ++] = trackno;
+
+        tuple_set_subtunes (tuple, n_audio_tracks, subtunes);
 
         goto DONE;
     }
