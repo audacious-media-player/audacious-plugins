@@ -479,7 +479,12 @@ static GtkWidget *markup_label_new(const gchar * str)
     return label;
 }
 
-static gboolean ui_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
+static void window_mapped_cb (GtkWidget * widget, void * unused)
+{
+    gtk_widget_grab_focus (playlist_get_treeview (aud_playlist_get_active ()));
+}
+
+static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event, void * unused)
 {
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
@@ -793,7 +798,8 @@ static gboolean init (void)
     g_signal_connect(volume, "released", G_CALLBACK(ui_volume_released_cb), NULL);
     update_volume_timeout_source = g_timeout_add(250, (GSourceFunc) ui_volume_slider_update, volume);
 
-    g_signal_connect(window, "key-press-event", G_CALLBACK(ui_key_press_cb), NULL);
+    g_signal_connect (window, "map-event", (GCallback) window_mapped_cb, NULL);
+    g_signal_connect (window, "key-press-event", (GCallback) window_keypress_cb, NULL);
     g_signal_connect (UI_PLAYLIST_NOTEBOOK, "key-press-event", (GCallback) playlist_keypress_cb, NULL);
 
     if (aud_drct_get_playing ())
