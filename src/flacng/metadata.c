@@ -26,7 +26,6 @@
 
 static size_t read_cb(void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handle)
 {
-    AUDDBG("Read callback.\n");
     size_t read;
 
     if (handle == NULL)
@@ -54,15 +53,11 @@ static size_t read_cb(void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handl
 
 static size_t write_cb(const void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handle)
 {
-    AUDDBG("Write callback.\n");
-
     return vfs_fwrite(ptr, size, nmemb, handle);
 }
 
 static int seek_cb(FLAC__IOHandle handle, FLAC__int64 offset, int whence)
 {
-    AUDDBG("Seek callback.\n");
-
     if (vfs_fseek(handle, offset, whence) != 0)
     {
         FLACNG_ERROR("Could not seek to %lld!\n", (long long)offset);
@@ -88,8 +83,6 @@ static FLAC__int64 tell_cb(FLAC__IOHandle handle)
 
 static int eof_cb(FLAC__IOHandle handle)
 {
-    AUDDBG("EOF callback\n");
-
     return vfs_feof(handle);
 }
 
