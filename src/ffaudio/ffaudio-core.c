@@ -39,6 +39,7 @@
 #include <audacious/audtag.h>
 #endif
 #include <libaudcore/audstrings.h>
+#include <libaudcore/strpool.h>
 
 #if ! CHECK_LIBAVFORMAT_VERSION (53, 5, 0)
 #define avformat_find_stream_info(i, o) av_find_stream_info (i)
@@ -109,7 +110,8 @@ static const gchar * ffaudio_strerror (gint error)
 
 static GHashTable * create_extension_dict (void)
 {
-    GHashTable * dict = g_hash_table_new (g_str_hash, g_str_equal);
+    GHashTable * dict = g_hash_table_new_full (g_str_hash, g_str_equal,
+     (GDestroyNotify) str_unref, NULL);
 
     AVInputFormat * f;
     for (f = av_iformat_next (NULL); f; f = av_iformat_next (f))
@@ -129,7 +131,7 @@ static GHashTable * create_extension_dict (void)
                 next ++;
             }
 
-            g_hash_table_insert (dict, parse, f);
+            g_hash_table_insert (dict, str_get(parse), f);
         }
 
         g_free (exts);
