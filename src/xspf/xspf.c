@@ -56,10 +56,9 @@ static const xspf_entry_t xspf_entries[] = {
     { FIELD_QUALITY,      "quality",      TUPLE_STRING,   TRUE},
 
     { FIELD_CODEC,        "codec",        TUPLE_STRING,   TRUE},
-    { FIELD_SONG_ARTIST,  "song-artist",  TUPLE_STRING,   TRUE},
 
-    { FIELD_MTIME,        "mtime",        TUPLE_INT,      TRUE},
-    { FIELD_FORMATTER,    "formatter",    TUPLE_STRING,   TRUE},
+    { FIELD_SONG_ARTIST,  "song-artist",  TUPLE_STRING,   TRUE},
+    { FIELD_COMPOSER,     "composer",     TUPLE_STRING,   TRUE},
     { FIELD_PERFORMER,    "performer",    TUPLE_STRING,   TRUE},
     { FIELD_COPYRIGHT,    "copyright",    TUPLE_STRING,   TRUE},
     { FIELD_DATE,         "date",         TUPLE_STRING,   TRUE},

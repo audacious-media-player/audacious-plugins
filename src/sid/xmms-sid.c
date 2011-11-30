@@ -477,9 +477,6 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
     tuple_associate_int(tuple, FIELD_SUBSONG_NUM, NULL, info->nsubTunes);
     tuple_associate_int(tuple, FIELD_SUBSONG_ID, NULL, subTune);
     tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, subTune);
-
-    if (xs_cfg.titleOverride)
-        tuple_associate_string(tuple, FIELD_FORMATTER, NULL, xs_cfg.titleFormat);
 }
 
 
