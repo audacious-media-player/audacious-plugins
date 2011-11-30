@@ -54,7 +54,7 @@ static gint64 seek_value = -1;
 static gboolean stop_flag = FALSE;
 
 static GStaticMutex data_mutex = G_STATIC_MUTEX_INIT;
-static mowgli_patricia_t * extension_dict = NULL;
+static GHashTable * extension_dict = NULL;
 
 static gint lockmgr (void * * mutexp, enum AVLockOp op)
 {
@@ -100,7 +100,7 @@ ffaudio_cleanup(void)
     g_cond_free(ctrl_cond);
 
     if (extension_dict)
-        mowgli_patricia_destroy (extension_dict, NULL, NULL);
+        g_hash_table_destroy (extension_dict);
 
     av_lockmgr_register (NULL);
 }
@@ -111,9 +111,9 @@ static const gchar * ffaudio_strerror (gint error)
     return (! av_strerror (error, buf, sizeof buf)) ? buf : "unknown error";
 }
 
-static mowgli_patricia_t * create_extension_dict (void)
+static GHashTable * create_extension_dict (void)
 {
-    mowgli_patricia_t * dict = mowgli_patricia_create (NULL);
+    GHashTable * dict = g_hash_table_new (g_str_hash, g_str_equal);
 
     AVInputFormat * f;
     for (f = av_iformat_next (NULL); f; f = av_iformat_next (f))
@@ -133,7 +133,7 @@ static mowgli_patricia_t * create_extension_dict (void)
                 next ++;
             }
 
-            mowgli_patricia_add (dict, parse, f);
+            g_hash_table_insert (dict, parse, f);
         }
 
         g_free (exts);
@@ -154,7 +154,7 @@ static AVInputFormat * get_format_by_extension (const gchar * name)
     if (! extension_dict)
         extension_dict = create_extension_dict ();
 
-    AVInputFormat * f = mowgli_patricia_retrieve (extension_dict, ext);
+    AVInputFormat * f = g_hash_table_lookup (extension_dict, ext);
     g_static_mutex_unlock (& data_mutex);
 
     if (f)
