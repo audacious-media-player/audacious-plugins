@@ -18,6 +18,7 @@
  */
 
 #include <stdint.h>
+#include <string.h>
 
 #ifdef DEBUG
 #define NEON_DEBUG

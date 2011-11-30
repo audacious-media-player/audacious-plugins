@@ -23,6 +23,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/types.h>
 #include <gtk/gtk.h>
 #include "adplug.h"

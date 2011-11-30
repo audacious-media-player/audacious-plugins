@@ -24,9 +24,7 @@
  * the next time I get bored
  */
 
-#if STDC_HEADERS
-# include <stdlib.h>
-#endif
+#include <stdlib.h>
 
 #include <time.h>
 #if TM_IN_SYS_TIME

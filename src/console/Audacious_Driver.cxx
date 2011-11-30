@@ -8,6 +8,7 @@
 
 #include "config.h"
 #include <math.h>
+#include <string.h>
 
 extern "C" {
 #include <libaudcore/audstrings.h>

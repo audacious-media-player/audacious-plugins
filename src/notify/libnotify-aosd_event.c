@@ -19,6 +19,7 @@
  ************************************************************************/
 
 #include <glib.h>
+#include <string.h>
 
 #include <audacious/drct.h>
 #include <audacious/i18n.h>

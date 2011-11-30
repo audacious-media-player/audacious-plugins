@@ -18,6 +18,8 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <string.h>
+
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>

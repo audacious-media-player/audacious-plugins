@@ -80,7 +80,7 @@ static int show_error (void * message)
 
     audgui_simple_message (& window, GTK_MESSAGE_ERROR, _("ALSA error"),
      message);
-    free (message);
+    g_free (message);
     return 0;
 }
 

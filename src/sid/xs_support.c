@@ -22,6 +22,7 @@
 */
 #include "xs_support.h"
 #include <ctype.h>
+#include <string.h>
 
 #define __AUDACIOUS_NEWVFS__
 

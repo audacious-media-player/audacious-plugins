@@ -26,6 +26,7 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include <glib.h>
+#include <string.h>
 
 #define MIN_BPM         1
 #define MAX_BPM         512

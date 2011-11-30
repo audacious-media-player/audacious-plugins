@@ -85,10 +85,6 @@ static gboolean ffaudio_init (void)
     ctrl_mutex = g_mutex_new();
     ctrl_cond = g_cond_new();
 
-#ifdef FFAUDIO_USE_AUDTAG
-    tag_init();
-#endif
-
     return TRUE;
 }
 

@@ -42,6 +42,8 @@
 
 #include <glib.h>
 #include <math.h>
+#include <stdlib.h>
+
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>

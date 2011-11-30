@@ -19,6 +19,7 @@
  *
  */
 
+#include <string.h>
 #include <audacious/debug.h>
 
 #include "flacng.h"

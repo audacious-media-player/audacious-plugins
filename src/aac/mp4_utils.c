@@ -2,6 +2,8 @@
  * some functions for MP4 files
 */
 
+#include <stdlib.h>
+
 #include "mp4ff.h"
 #include "neaacdec.h"
 #include <audacious/plugin.h>

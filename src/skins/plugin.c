@@ -18,6 +18,8 @@
  * Audacious or using our public API to be a derived work.
  */
 
+#include <stdlib.h>
+
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>

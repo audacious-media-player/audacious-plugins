@@ -22,6 +22,7 @@
 #include "aosd_style.h"
 #include <glib.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <audacious/misc.h>
 #include <audacious/plugin.h>

@@ -36,6 +36,8 @@
 #include <config.h>
 
 #include <stdio.h>
+#include <stdlib.h>
+
 #include <X11/XF86keysym.h>
 
 #include <gdk/gdk.h>
