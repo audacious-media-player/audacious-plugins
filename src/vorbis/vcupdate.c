@@ -36,22 +36,19 @@
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
-
-#include <mowgli.h>
+#include <libaudcore/strpool.h>
 
 #include "vorbis.h"
 #include "vcedit.h"
 
 static gboolean write_and_pivot_files(vcedit_state * state);
 
-static mowgli_patricia_t *
-dictionary_from_vorbis_comment(vorbis_comment * vc)
+static GHashTable * dictionary_from_vorbis_comment (vorbis_comment * vc)
 {
-    mowgli_patricia_t *dict;
     gint i;
-    gchar *val;
 
-    dict = mowgli_patricia_create (NULL);
+    GHashTable * dict = g_hash_table_new_full (g_str_hash, g_str_equal,
+     (GDestroyNotify) str_unref, (GDestroyNotify) str_unref);
 
     for (i = 0; i < vc->comments; i++) {
         gchar **frags;
@@ -59,13 +56,8 @@ dictionary_from_vorbis_comment(vorbis_comment * vc)
         AUDDBG("%s\n", vc->user_comments[i]);
         frags = g_strsplit(vc->user_comments[i], "=", 2);
 
-        /* FIXME: need more rigorous checks to guard against
-           borqued comments */
-
-        /* No RHS? */
-        val = frags[1] ? frags[1] : "";
-
-        mowgli_patricia_add(dict, frags[0], g_strdup(val));
+        if (frags[0] && frags[1])
+            g_hash_table_insert (dict, str_get (frags[0]), str_get (frags[1]));
 
         g_strfreev(frags); /* Don't use g_free() for string lists! --eugene */
     }
@@ -73,44 +65,35 @@ dictionary_from_vorbis_comment(vorbis_comment * vc)
     return dict;
 }
 
-static gint add_tag_cb (const gchar * key, void * field, void * vc)
+static void add_tag_cb (void * key, void * field, void * vc)
 {
     vorbis_comment_add_tag (vc, key, field);
-    return 0;
 }
 
-static void
-dictionary_to_vorbis_comment(vorbis_comment * vc, mowgli_patricia_t * dict)
+static void dictionary_to_vorbis_comment (vorbis_comment * vc, GHashTable * dict)
 {
     vorbis_comment_clear(vc);
-    mowgli_patricia_foreach (dict, add_tag_cb, vc);
+    g_hash_table_foreach (dict, add_tag_cb, vc);
 }
 
 static void insert_str_tuple_field_to_dictionary (const Tuple * tuple, int
- fieldn, mowgli_patricia_t * dict, char * key)
+ fieldn, GHashTable * dict, const char * key)
 {
-    g_free (mowgli_patricia_delete (dict, key));
-
     gchar *tmp = (gchar*)tuple_get_string(tuple, fieldn, NULL);
-    if(tmp != NULL && strlen(tmp) != 0) mowgli_patricia_add(dict, key, g_strdup(tmp));
+    if (tmp && tmp[0])
+        g_hash_table_insert (dict, str_get (key), str_get (tmp));
 }
 
 static void insert_int_tuple_field_to_dictionary (const Tuple * tuple, int
- fieldn, mowgli_patricia_t * dict, char * key)
+ fieldn, GHashTable * dict, const char * key)
 {
     int val;
 
-    g_free (mowgli_patricia_delete (dict, key));
-
     if(tuple_get_value_type(tuple, fieldn, NULL) == TUPLE_INT && (val = tuple_get_int(tuple, fieldn, NULL)) >= 0) {
-        gchar *tmp = g_strdup_printf("%d", val);
-        mowgli_patricia_add(dict, key, tmp);
+        char tmp[16];
+        snprintf (tmp, sizeof tmp, "%d", val);
+        g_hash_table_insert (dict, str_get (key), str_get (tmp));
     }
-}
-
-static void destroy_cb (const gchar * key, void * data, void * unused)
-{
-    g_free (data);
 }
 
 gboolean vorbis_update_song_tuple (const Tuple * tuple, VFSFile * fd)
@@ -118,7 +101,6 @@ gboolean vorbis_update_song_tuple (const Tuple * tuple, VFSFile * fd)
 
     vcedit_state *state;
     vorbis_comment *comment;
-    mowgli_patricia_t *dict;
     gboolean ret;
 
     if(!tuple || !fd) return FALSE;
@@ -131,7 +113,7 @@ gboolean vorbis_update_song_tuple (const Tuple * tuple, VFSFile * fd)
     }
 
     comment = vcedit_comments(state);
-    dict = dictionary_from_vorbis_comment(comment);
+    GHashTable * dict = dictionary_from_vorbis_comment (comment);
 
     insert_str_tuple_field_to_dictionary(tuple, FIELD_TITLE, dict, "title");
     insert_str_tuple_field_to_dictionary(tuple, FIELD_ARTIST, dict, "artist");
@@ -143,7 +125,7 @@ gboolean vorbis_update_song_tuple (const Tuple * tuple, VFSFile * fd)
     insert_int_tuple_field_to_dictionary(tuple, FIELD_TRACK_NUMBER, dict, "tracknumber");
 
     dictionary_to_vorbis_comment(comment, dict);
-    mowgli_patricia_destroy(dict, destroy_cb, NULL);
+    g_hash_table_destroy (dict);
 
     ret = write_and_pivot_files(state);
 
