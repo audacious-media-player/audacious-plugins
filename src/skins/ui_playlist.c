@@ -361,11 +361,10 @@ playlistwin_select_search(void)
          /* check if previous selection should be cleared before searching */
          if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(searchdlg_checkbt_clearprevsel)) == TRUE )
              playlistwin_select_none();
-         /* now send this tuple to the real search function */
-         aud_playlist_select_by_patterns (active_playlist, tuple);
 
-         /* we do not need the tuple and its data anymore */
-         mowgli_object_unref(tuple);
+         aud_playlist_select_by_patterns (active_playlist, tuple);
+         tuple_unref (tuple);
+
          /* check if a new playlist should be created after searching */
          if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(searchdlg_checkbt_newplaylist)) == TRUE )
              copy_selected_to_new (active_playlist);

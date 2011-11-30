@@ -264,7 +264,7 @@ static Tuple * get_stream_tuple (InputPlayback * p, const gchar * filename,
 	update_stream_metadata (file, "track-name", tuple, FIELD_TITLE);
 	update_stream_metadata (file, "stream-name", tuple, FIELD_ARTIST);
 
-	mowgli_object_ref (tuple);
+	tuple_ref (tuple);
 	p->set_tuple (p, tuple);
 
 	return tuple;
@@ -276,7 +276,7 @@ static void update_stream_tuple (InputPlayback * p, VFSFile * file,
 	if (update_stream_metadata (file, "track-name", tuple, FIELD_TITLE) ||
 	 update_stream_metadata (file, "stream-name", tuple, FIELD_ARTIST))
 	{
-		mowgli_object_ref (tuple);
+		tuple_ref (tuple);
 		p->set_tuple (p, tuple);
 	}
 }

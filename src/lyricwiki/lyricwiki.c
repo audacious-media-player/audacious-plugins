@@ -241,7 +241,8 @@ get_lyrics_step_3(gchar *buf, gint64 len, Tuple *tu)
 
 	if (check_current_track(tu))
 		update_lyrics_window(tu, lyrics);
-	mowgli_object_unref(tu);
+
+	tuple_unref (tu);
 
 	if (lyrics != NULL)
 		g_free(lyrics);
@@ -259,8 +260,8 @@ get_lyrics_step_2(gchar *buf, gint64 len, Tuple *tu)
 	{
 		if (check_current_track(tu))
 			update_lyrics_window(tu, NULL);
-		mowgli_object_unref(tu);
 
+		tuple_unref (tu);
 		return FALSE;
 	}
 

@@ -95,7 +95,7 @@ static void aud_hook_playback_end(gpointer aud_hook_data, gpointer user_data)
 
 	if (submit_tuple != NULL)
 	{
-		mowgli_object_unref(submit_tuple);
+		tuple_unref (submit_tuple);
 		submit_tuple = NULL;
 	}
 }

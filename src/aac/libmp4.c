@@ -773,7 +773,7 @@ static gboolean my_decode_aac (InputPlayback * playback, const char * filename,
     tuple = aac_get_tuple (filename, file);
     if (tuple != NULL)
     {
-        mowgli_object_ref (tuple);
+        tuple_ref (tuple);
         playback->set_tuple (playback, tuple);
 
         bitrate = tuple_get_int (tuple, FIELD_BITRATE, NULL);
@@ -840,7 +840,7 @@ static gboolean my_decode_aac (InputPlayback * playback, const char * filename,
 
     if (tuple && aac_title_changed (filename, file, tuple))
     {
-        mowgli_object_ref (tuple);
+        tuple_ref (tuple);
         playback->set_tuple (playback, tuple);
     }
 
@@ -900,7 +900,7 @@ static gboolean my_decode_aac (InputPlayback * playback, const char * filename,
 
         if (tuple && aac_title_changed (filename, file, tuple))
         {
-            mowgli_object_ref (tuple);
+            tuple_ref (tuple);
             playback->set_tuple (playback, tuple);
         }
 
@@ -945,15 +945,17 @@ static gboolean my_decode_aac (InputPlayback * playback, const char * filename,
     playback->output->close_audio ();
     NeAACDecClose (decoder);
 
-    if (tuple != NULL)
-        mowgli_object_unref (tuple);
+    if (tuple)
+        tuple_unref (tuple);
 
     return TRUE;
 
 ERR_CLOSE_DECODER:
     NeAACDecClose (decoder);
+
     if (tuple)
-        mowgli_object_unref (tuple);
+        tuple_unref (tuple);
+
     return FALSE;
 }
 
