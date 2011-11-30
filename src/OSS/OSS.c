@@ -29,6 +29,7 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include <stdlib.h>
+#include <string.h>
 
 OSSConfig oss_cfg;
 
