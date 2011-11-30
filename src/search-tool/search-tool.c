@@ -188,7 +188,7 @@ static void create_dicts (gint list)
         fields[GENRE] = genre ? g_strdup (genre) : NULL;
 
         if (tuple)
-            tuple_free (tuple);
+            tuple_unref (tuple);
 
         aud_playlist_entry_describe (list, e, & fields[TITLE], & fields[ARTIST],
          & fields[ALBUM], TRUE);

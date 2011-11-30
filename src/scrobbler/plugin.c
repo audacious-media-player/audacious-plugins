@@ -72,7 +72,7 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 	sc_idle(m_scrobbler);
 
 	if (submit_tuple)
-		tuple_free (submit_tuple);
+		tuple_unref (submit_tuple);
 	submit_tuple = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
 	if (! submit_tuple)
 		return;

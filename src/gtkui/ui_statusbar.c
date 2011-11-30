@@ -82,7 +82,7 @@ ui_statusbar_info_change(gpointer unused, GtkWidget *label)
     const gchar * codec = tuple ? tuple_get_string (tuple, FIELD_CODEC, NULL) :
      NULL;
     if (tuple)
-        tuple_free (tuple);
+        tuple_unref (tuple);
 
     gint bitrate, samplerate, channels;
     aud_drct_get_info(&bitrate, &samplerate, &channels);

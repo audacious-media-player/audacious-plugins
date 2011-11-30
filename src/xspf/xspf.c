@@ -165,7 +165,7 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
         index_append(tuples, tuple);
     }
     else if (tuple)
-        tuple_free (tuple);
+        tuple_unref (tuple);
 }
 
 

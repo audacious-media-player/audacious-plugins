@@ -964,7 +964,7 @@ static void read_cache(void)
                 tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, track);
                 item = q_put(tuple, t, len);
 
-                tuple_free(tuple);
+                tuple_unref(tuple);
 
                 if (item != NULL)
                     AUDDBG ("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d b[%d]=%s\n", i,

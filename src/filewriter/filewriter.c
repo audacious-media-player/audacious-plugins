@@ -318,7 +318,7 @@ static void file_close(void)
 
     if (tuple)
     {
-        tuple_free (tuple);
+        tuple_unref (tuple);
         tuple = NULL;
     }
 }

@@ -110,7 +110,7 @@ get_upload_list(void)
             up_list = g_list_prepend (up_list, (void *) tuple);
 
             if (tuple)
-                tuple_free (tuple);
+                tuple_unref (tuple);
         }
     }
 

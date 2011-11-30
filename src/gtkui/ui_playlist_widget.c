@@ -161,7 +161,7 @@ static void get_value (void * user, gint row, gint column, GValue * value)
     g_free (artist);
     g_free (album);
     if (tuple)
-        tuple_free (tuple);
+        tuple_unref (tuple);
 }
 
 static gboolean get_selected (void * user, gint row)
