@@ -484,7 +484,7 @@ decode_cleanup:
 cleanup:
 	mpg123_delete(ctx.decoder);
 	if (ctx.tu)
-		tuple_free (ctx.tu);
+		tuple_unref (ctx.tu);
 	return ! error;
 }
 

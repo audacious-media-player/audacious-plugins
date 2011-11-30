@@ -334,7 +334,7 @@ int aud_roar_update_metadata(void)
 			}
 		}
 
-		tuple_free (songtuple);
+		tuple_unref (songtuple);
 	}
 
 	meta.value = &empty;

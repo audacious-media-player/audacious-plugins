@@ -212,7 +212,7 @@ static void do_command(char *cmd, const char *current_file, int pos)
             formatter_associate(formatter, 'T', "");
 
         if (tuple)
-            tuple_free (tuple);
+            tuple_unref (tuple);
 
         shstring = formatter_format(formatter, cmd);
         formatter_destroy(formatter);

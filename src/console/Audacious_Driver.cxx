@@ -267,7 +267,7 @@ extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
         if (ti != NULL)
         {
             length = tuple_get_int(ti, FIELD_LENGTH, NULL);
-            tuple_free(ti);
+            tuple_unref(ti);
             playback->set_params(playback, fh.m_emu->voice_count() * 1000, sample_rate, 2);
         }
     }

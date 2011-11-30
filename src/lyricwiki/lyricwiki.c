@@ -221,7 +221,7 @@ check_current_track(Tuple *tu)
 		}
 	}
 
-	tuple_free(cu);
+	tuple_unref(cu);
 	return ret;
 }
 
@@ -401,7 +401,7 @@ lyricwiki_playback_began(void)
 	get_lyrics_step_1(tu);
 
 	if (tu)
-		tuple_free (tu);
+		tuple_unref (tu);
 }
 
 static gboolean init (void)

@@ -138,7 +138,7 @@ static gboolean playlist_load_cue (const gchar * cue_filename, VFSFile * file,
 
         if (last_track && base_tuple != NULL)
         {
-            tuple_free (base_tuple);
+            tuple_unref (base_tuple);
             base_tuple = NULL;
         }
     }
