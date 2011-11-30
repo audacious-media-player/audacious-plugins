@@ -22,9 +22,12 @@
 
 #include "config.h"
 
+#include <unistd.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <glib.h>
 #include <errno.h>
+#include <string.h>
 #include <sys/ioctl.h>
 
 #ifdef HAVE_SYS_SOUNDCARD_H
