@@ -34,7 +34,6 @@
 #include <libxml/tree.h>
 #include <libxml/HTMLparser.h>
 #include <libxml/xpath.h>
-#include <mowgli.h>
 
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
@@ -166,7 +165,7 @@ scrape_uri_from_lyricwiki_search_result(const gchar *buf, gsize len)
 
 		root = xmlDocGetRootElement(doc);
 
-		MOWGLI_ITER_FOREACH(cur, root->xmlChildrenNode)
+		for (cur = root->xmlChildrenNode; cur; cur = cur->next)
 		{
 			if (xmlStrEqual(cur->name, (xmlChar *) "url"))
 			{
