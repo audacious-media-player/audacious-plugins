@@ -424,7 +424,7 @@ static Tuple *aac_get_tuple (const gchar * filename, VFSFile * handle)
 static gboolean aac_title_changed (const gchar * filename, VFSFile * handle,
  Tuple * tuple)
 {
-    const gchar *old = tuple_get_string (tuple, FIELD_TITLE, NULL);
+    const gchar *old = tuple_get_str (tuple, FIELD_TITLE, NULL);
     gchar *new = vfs_get_metadata (handle, "track-name");
     gboolean changed = FALSE;
 

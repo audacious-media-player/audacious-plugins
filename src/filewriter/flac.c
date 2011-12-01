@@ -99,12 +99,12 @@ static gint flac_open(void)
 
         meta = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
-        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, FIELD_TITLE, NULL), "title=%s");
-        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, FIELD_ARTIST, NULL), "artist=%s");
-        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, FIELD_ALBUM, NULL), "album=%s");
-        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, FIELD_GENRE, NULL), "genre=%s");
-        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, FIELD_COMMENT, NULL), "comment=%s");
-        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, FIELD_DATE, NULL), "date=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_str(tuple, FIELD_TITLE, NULL), "title=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_str(tuple, FIELD_ARTIST, NULL), "artist=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_str(tuple, FIELD_ALBUM, NULL), "album=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_str(tuple, FIELD_GENRE, NULL), "genre=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_str(tuple, FIELD_COMMENT, NULL), "comment=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_str(tuple, FIELD_DATE, NULL), "date=%s");
         INSERT_VORBIS_COMMENT(tuple_get_int(tuple, FIELD_YEAR, NULL), "year=%d");
         INSERT_VORBIS_COMMENT(tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL), "tracknumber=%d");
 

@@ -89,17 +89,17 @@ static gint vorbis_open(void)
         gchar tmpstr[32];
         gint scrint;
 
-        if ((scratch = tuple_get_string(tuple, FIELD_TITLE, NULL)))
+        if ((scratch = tuple_get_str(tuple, FIELD_TITLE, NULL)))
             vorbis_comment_add_tag(&vc, "title", (gchar *) scratch);
-        if ((scratch = tuple_get_string(tuple, FIELD_ARTIST, NULL)))
+        if ((scratch = tuple_get_str(tuple, FIELD_ARTIST, NULL)))
             vorbis_comment_add_tag(&vc, "artist", (gchar *) scratch);
-        if ((scratch = tuple_get_string(tuple, FIELD_ALBUM, NULL)))
+        if ((scratch = tuple_get_str(tuple, FIELD_ALBUM, NULL)))
             vorbis_comment_add_tag(&vc, "album", (gchar *) scratch);
-        if ((scratch = tuple_get_string(tuple, FIELD_GENRE, NULL)))
+        if ((scratch = tuple_get_str(tuple, FIELD_GENRE, NULL)))
             vorbis_comment_add_tag(&vc, "genre", (gchar *) scratch);
-        if ((scratch = tuple_get_string(tuple, FIELD_DATE, NULL)))
+        if ((scratch = tuple_get_str(tuple, FIELD_DATE, NULL)))
             vorbis_comment_add_tag(&vc, "date", (gchar *) scratch);
-        if ((scratch = tuple_get_string(tuple, FIELD_COMMENT, NULL)))
+        if ((scratch = tuple_get_str(tuple, FIELD_COMMENT, NULL)))
             vorbis_comment_add_tag(&vc, "comment", (gchar *) scratch);
 
         if ((scrint = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL)))

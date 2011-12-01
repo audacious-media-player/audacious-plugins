@@ -79,7 +79,7 @@ ui_statusbar_info_change(gpointer unused, GtkWidget *label)
     gint playlist = aud_playlist_get_playing ();
     Tuple * tuple = aud_playlist_entry_get_tuple (playlist,
      aud_playlist_get_position (playlist), FALSE);
-    const gchar * codec = tuple ? tuple_get_string (tuple, FIELD_CODEC, NULL) :
+    const gchar * codec = tuple ? tuple_get_str (tuple, FIELD_CODEC, NULL) :
      NULL;
     if (tuple)
         tuple_unref (tuple);

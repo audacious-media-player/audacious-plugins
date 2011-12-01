@@ -145,8 +145,8 @@ static item_t *create_item(Tuple *tuple, int len)
 
     item = malloc(sizeof(item_t));
 
-    item->artist = fmt_escape(tuple_get_string(tuple, FIELD_ARTIST, NULL));
-    item->title = fmt_escape(tuple_get_string(tuple, FIELD_TITLE, NULL));
+    item->artist = fmt_escape(tuple_get_str(tuple, FIELD_ARTIST, NULL));
+    item->title = fmt_escape(tuple_get_str(tuple, FIELD_TITLE, NULL));
 
     if (item->artist == NULL || item->title == NULL)
     {
@@ -159,7 +159,7 @@ static item_t *create_item(Tuple *tuple, int len)
     item->timeplayed = 0;
     item->utctime = time(NULL);
 
-    album = tuple_get_string(tuple, FIELD_ALBUM, NULL);
+    album = tuple_get_str(tuple, FIELD_ALBUM, NULL);
     if (album)
         item->album = fmt_escape((char*) album);
     else
@@ -784,9 +784,9 @@ static int sc_submit_np(Tuple *tuple)
     curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
     /*cfa(&post, &last, "debug", "failed");*/
 
-        char *field_artist = fmt_escape(tuple_get_string(tuple, FIELD_ARTIST, NULL));
-        char *field_title = fmt_escape(tuple_get_string(tuple, FIELD_TITLE, NULL));
-        char *field_album = tuple_get_string(tuple, FIELD_ALBUM, NULL) ? fmt_escape(tuple_get_string(tuple, FIELD_ALBUM, NULL)) : fmt_escape("");
+        char *field_artist = fmt_escape(tuple_get_str(tuple, FIELD_ARTIST, NULL));
+        char *field_title = fmt_escape(tuple_get_str(tuple, FIELD_TITLE, NULL));
+        char *field_album = tuple_get_str(tuple, FIELD_ALBUM, NULL) ? fmt_escape(tuple_get_str(tuple, FIELD_ALBUM, NULL)) : fmt_escape("");
     snprintf(entry, 16384, "s=%s&a=%s&t=%s&b=%s&l=%d&n=%d&m=", sc_session_id,
         field_artist,
         field_title,

@@ -193,19 +193,19 @@ static void do_command(char *cmd, const char *current_file, int pos)
         Tuple * tuple = aud_playlist_entry_get_tuple
             (aud_playlist_get_active (), pos, 0);
 
-        const char *artist = tuple_get_string(tuple, FIELD_ARTIST, NULL);
+        const char *artist = tuple_get_str(tuple, FIELD_ARTIST, NULL);
         if (artist)
             formatter_associate(formatter, 'a', artist);
         else
             formatter_associate(formatter, 'a', "");
 
-        const char *album = tuple_get_string(tuple, FIELD_ALBUM, NULL);
+        const char *album = tuple_get_str(tuple, FIELD_ALBUM, NULL);
         if (album)
             formatter_associate(formatter, 'b', album);
         else
             formatter_associate(formatter, 'b', "");
 
-        const char *title = tuple_get_string(tuple, FIELD_TITLE, NULL);
+        const char *title = tuple_get_str(tuple, FIELD_TITLE, NULL);
         if (title)
             formatter_associate(formatter, 'T', title);
         else

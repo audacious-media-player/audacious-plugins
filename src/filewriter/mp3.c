@@ -210,19 +210,19 @@ static gint mp3_open(void)
     if (tuple) {
         /* XXX write UTF-8 even though libmp3lame does id3v2.3. --yaz */
         lameid3.track_name =
-            g_strdup(tuple_get_string(tuple, FIELD_TITLE, NULL));
+            g_strdup(tuple_get_str(tuple, FIELD_TITLE, NULL));
         id3tag_set_title(gfp, lameid3.track_name);
 
         lameid3.performer =
-            g_strdup(tuple_get_string(tuple, FIELD_ARTIST, NULL));
+            g_strdup(tuple_get_str(tuple, FIELD_ARTIST, NULL));
         id3tag_set_artist(gfp, lameid3.performer);
 
         lameid3.album_name =
-            g_strdup(tuple_get_string(tuple, FIELD_ALBUM, NULL));
+            g_strdup(tuple_get_str(tuple, FIELD_ALBUM, NULL));
         id3tag_set_album(gfp, lameid3.album_name);
 
         lameid3.genre =
-            g_strdup(tuple_get_string(tuple, FIELD_GENRE, NULL));
+            g_strdup(tuple_get_str(tuple, FIELD_GENRE, NULL));
         id3tag_set_genre(gfp, lameid3.genre);
 
         lameid3.year =

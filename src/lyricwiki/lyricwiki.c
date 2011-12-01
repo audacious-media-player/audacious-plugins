@@ -207,8 +207,8 @@ check_current_track(Tuple *tu)
 
 	for (i = 0; i < sizeof(fields)/sizeof(gint); i++)
 	{
-		const gchar* string1 = tuple_get_string(tu, fields[i], NULL);
-		const gchar* string2 = tuple_get_string(cu, fields[i], NULL);
+		const gchar* string1 = tuple_get_str(tu, fields[i], NULL);
+		const gchar* string2 = tuple_get_str(cu, fields[i], NULL);
 
 		if (string1 == NULL && string2 == NULL)
 			continue;
@@ -282,8 +282,8 @@ get_lyrics_step_1(const Tuple *tu)
 	gchar *artist, *title;
 	Tuple *tuple = tuple_copy(tu);
 
-	artist = lyricwiki_url_encode(tuple_get_string(tu, FIELD_ARTIST, NULL));
-	title = lyricwiki_url_encode(tuple_get_string(tu, FIELD_TITLE, NULL));
+	artist = lyricwiki_url_encode(tuple_get_str(tu, FIELD_ARTIST, NULL));
+	title = lyricwiki_url_encode(tuple_get_str(tu, FIELD_TITLE, NULL));
 
 	uri = g_strdup_printf("http://lyrics.wikia.com/api.php?action=lyrics&artist=%s&song=%s&fmt=xml", artist, title);
 
@@ -346,13 +346,13 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
 
-	title = tuple_get_string(tu, FIELD_TITLE, NULL);
-	artist = tuple_get_string(tu, FIELD_ARTIST, NULL);
+	title = tuple_get_str(tu, FIELD_TITLE, NULL);
+	artist = tuple_get_str(tu, FIELD_ARTIST, NULL);
 
 	if (title == NULL)
 	{
-		f_name = (gchar *) tuple_get_string(tu, FIELD_FILE_NAME, NULL);
-		f_ext = (gchar *) tuple_get_string(tu, FIELD_FILE_EXT, NULL);
+		f_name = (gchar *) tuple_get_str(tu, FIELD_FILE_NAME, NULL);
+		f_ext = (gchar *) tuple_get_str(tu, FIELD_FILE_EXT, NULL);
 
 		title = g_strdup(f_name);
 

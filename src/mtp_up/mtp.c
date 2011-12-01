@@ -125,7 +125,7 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
     uint64_t filesize;
     struct stat sb;
 
-    uri_path = g_strdup_printf("%s/%s", tuple_get_string(from_tuple, FIELD_FILE_PATH, NULL), tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
+    uri_path = g_strdup_printf("%s/%s", tuple_get_str(from_tuple, FIELD_FILE_PATH, NULL), tuple_get_str(from_tuple, FIELD_FILE_NAME, NULL));
     gchar *tmp = g_strescape(uri_path,NULL);
     filename=g_filename_from_uri(tmp,NULL,NULL);
     g_free(tmp);
@@ -160,14 +160,14 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
 
     /* track metadata*/
     tr = LIBMTP_new_track_t();
-    tr->title = g_strdup((gchar*) tuple_get_string(from_tuple, FIELD_TITLE, NULL));
-    tr->artist = g_strdup((gchar*) tuple_get_string(from_tuple, FIELD_ARTIST, NULL));
-    tr->album = g_strdup((gchar*)tuple_get_string(from_tuple, FIELD_ALBUM, NULL));
+    tr->title = g_strdup((gchar*) tuple_get_str(from_tuple, FIELD_TITLE, NULL));
+    tr->artist = g_strdup((gchar*) tuple_get_str(from_tuple, FIELD_ARTIST, NULL));
+    tr->album = g_strdup((gchar*)tuple_get_str(from_tuple, FIELD_ALBUM, NULL));
     tr->filesize = filesize;
-    tr->filename = g_strdup(tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
+    tr->filename = g_strdup(tuple_get_str(from_tuple, FIELD_FILE_NAME, NULL));
     tr->duration = (uint32_t)tuple_get_int(from_tuple, FIELD_LENGTH, NULL);
     tr->filetype = find_filetype (filename);
-    tr->genre = g_strdup((gchar*)tuple_get_string(from_tuple, FIELD_GENRE, NULL));
+    tr->genre = g_strdup((gchar*)tuple_get_str(from_tuple, FIELD_GENRE, NULL));
     tr->date = g_strdup_printf("%d",tuple_get_int(from_tuple, FIELD_YEAR, NULL));
     g_free(filename);
     return tr;
@@ -179,7 +179,7 @@ gint upload_file(Tuple *from_tuple)
     gchar *tmp, *from_path = NULL, *filename;
     LIBMTP_track_t *gentrack;
     gentrack = track_metadata(from_tuple);
-    from_path = g_strdup_printf("%s/%s", tuple_get_string(from_tuple, FIELD_FILE_PATH, NULL), tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
+    from_path = g_strdup_printf("%s/%s", tuple_get_str(from_tuple, FIELD_FILE_PATH, NULL), tuple_get_str(from_tuple, FIELD_FILE_NAME, NULL));
     if(gentrack == NULL) return 1;
     tmp = g_strescape(from_path,NULL);
     filename=g_filename_from_uri(tmp,NULL,NULL);

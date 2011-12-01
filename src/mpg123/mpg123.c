@@ -244,7 +244,7 @@ get_stream_metadata(VFSFile *file, const gchar *name)
 static gboolean
 update_stream_metadata(VFSFile *file, const gchar *name, Tuple *tuple, gint item)
 {
-	const gchar *old = tuple_get_string(tuple, item, NULL);
+	const gchar *old = tuple_get_str(tuple, item, NULL);
 	gchar *new = get_stream_metadata(file, name);
 	gboolean changed = (new != NULL && (old == NULL || strcmp(old, new)));
 

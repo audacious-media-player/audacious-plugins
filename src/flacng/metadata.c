@@ -100,7 +100,7 @@ static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     gchar *str;
-    gchar *val = (gchar *) tuple_get_string(tuple, tuple_name, NULL);
+    gchar *val = (gchar *) tuple_get_str(tuple, tuple_name, NULL);
 
     if (val == NULL)
         return;
@@ -294,7 +294,7 @@ static void set_gain_info(Tuple *tuple, gint field, gint unit_field, const gchar
 
 static void add_text (Tuple * tuple, gint field, const gchar * value)
 {
-    const gchar * cur = tuple_get_string (tuple, field, NULL);
+    const gchar * cur = tuple_get_str (tuple, field, NULL);
     if (cur)
     {
         gchar * both = g_strconcat (cur, ", ", value, NULL);

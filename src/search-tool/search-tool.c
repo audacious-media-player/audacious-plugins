@@ -184,7 +184,7 @@ static void create_dicts (gint list)
         gchar * fields[FIELDS];
 
         Tuple * tuple = aud_playlist_entry_get_tuple (list, e, TRUE);
-        const gchar * genre = tuple ? tuple_get_string (tuple, FIELD_GENRE, NULL) : NULL;
+        const gchar * genre = tuple ? tuple_get_str (tuple, FIELD_GENRE, NULL) : NULL;
         fields[GENRE] = genre ? g_strdup (genre) : NULL;
 
         if (tuple)

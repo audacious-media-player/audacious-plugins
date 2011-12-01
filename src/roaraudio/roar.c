@@ -323,7 +323,7 @@ int aud_roar_update_metadata(void)
 	{
 		for (i = 0; i < sizeof(metamap)/sizeof(*metamap); i++)
 		{
-			if ((info = tuple_get_string(songtuple, metamap[i].ac_metatype, NULL)))
+			if ((info = tuple_get_str(songtuple, metamap[i].ac_metatype, NULL)))
 			{
 				meta.type = metamap[i].ra_metatype;
 				meta.value = g_strdup(info);
