@@ -31,6 +31,7 @@
 #include <audacious/debug.h>
 #include <audacious/misc.h>
 #include <audacious/gtk-compat.h>
+#include <libaudcore/strpool.h>
 
 #define MODES 4
 enum {MODE_AUTO = 4, MODE_JOINT = 1, MODE_STEREO = 0, MODE_MONO = 3};
@@ -115,12 +116,12 @@ static gint write_buffer_size;
 
 static void free_lameid3(lameid3_t *p)
 {
-    g_free(p->track_name);
-    g_free(p->album_name);
-    g_free(p->performer);
-    g_free(p->genre);
-    g_free(p->year);
-    g_free(p->track_number);
+    str_unref (p->track_name);
+    str_unref (p->album_name);
+    str_unref (p->performer);
+    str_unref (p->genre);
+    str_unref (p->year);
+    str_unref (p->track_number);
 
     p->track_name = NULL;
     p->album_name = NULL;
@@ -209,28 +210,22 @@ static gint mp3_open(void)
 
     if (tuple) {
         /* XXX write UTF-8 even though libmp3lame does id3v2.3. --yaz */
-        lameid3.track_name =
-            g_strdup(tuple_get_str(tuple, FIELD_TITLE, NULL));
+        lameid3.track_name = tuple_get_str (tuple, FIELD_TITLE, NULL);
         id3tag_set_title(gfp, lameid3.track_name);
 
-        lameid3.performer =
-            g_strdup(tuple_get_str(tuple, FIELD_ARTIST, NULL));
+        lameid3.performer = tuple_get_str (tuple, FIELD_ARTIST, NULL);
         id3tag_set_artist(gfp, lameid3.performer);
 
-        lameid3.album_name =
-            g_strdup(tuple_get_str(tuple, FIELD_ALBUM, NULL));
+        lameid3.album_name = tuple_get_str (tuple, FIELD_ALBUM, NULL);
         id3tag_set_album(gfp, lameid3.album_name);
 
-        lameid3.genre =
-            g_strdup(tuple_get_str(tuple, FIELD_GENRE, NULL));
+        lameid3.genre = tuple_get_str (tuple, FIELD_GENRE, NULL);
         id3tag_set_genre(gfp, lameid3.genre);
 
-        lameid3.year =
-            g_strdup_printf("%d", tuple_get_int(tuple, FIELD_YEAR, NULL));
+        lameid3.year = str_printf ("%d", tuple_get_int (tuple, FIELD_YEAR, NULL));
         id3tag_set_year(gfp, lameid3.year);
 
-        lameid3.track_number =
-            g_strdup_printf("%d", tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
+        lameid3.track_number = str_printf ("%d", tuple_get_int (tuple, FIELD_TRACK_NUMBER, NULL));
         id3tag_set_track(gfp, lameid3.track_number);
 
         if (force_v2_val) {

@@ -26,6 +26,8 @@
 #include <FLAC/all.h>
 #include <stdlib.h>
 
+#include <libaudcore/strpool.h>
+
 static gint flac_open(void);
 static void flac_write(gpointer data, gint length);
 static void flac_close(void);
@@ -72,16 +74,38 @@ static FLAC__StreamEncoderTellStatus flac_tell_cb(const FLAC__StreamEncoder *enc
     return FLAC__STREAM_ENCODER_TELL_STATUS_OK;
 }
 
-#define INSERT_VORBIS_COMMENT(t, keyword) \
-        if (t) \
-        { \
-            gchar *scratch = g_strdup_printf(keyword, t); \
-            comment_entry.length = strlen(scratch); \
-            comment_entry.entry = (guchar *) scratch; \
-            FLAC__metadata_object_vorbiscomment_insert_comment(meta, \
-                meta->data.vorbis_comment.num_comments, comment_entry, TRUE); \
-            g_free(scratch); \
-        }
+static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
+ const char * name, const Tuple * tuple, int field)
+{
+    TupleValueType type = tuple_field_get_type (field);
+    if (tuple_get_value_type (tuple, field, NULL) != type)
+        return;
+
+    char * temp;
+
+    switch (type)
+    {
+    case TUPLE_INT:;
+        int ival = tuple_get_int (tuple, field, NULL);
+        temp = g_strdup_printf ("%s=%d", name, ival);
+        break;
+    case TUPLE_STRING:;
+        char * sval = tuple_get_str (tuple, field, NULL);
+        temp = g_strdup_printf ("%s=%s", name, sval);
+        str_unref (sval);
+    default:
+        return;
+    }
+
+    FLAC__StreamMetadata_VorbisComment_Entry comment;
+    comment.length = strlen (temp);
+    comment.entry = (unsigned char *) temp;
+
+    FLAC__metadata_object_vorbiscomment_insert_comment (meta,
+     meta->data.vorbis_comment.num_comments, comment, TRUE);
+
+    g_free (temp);
+}
 
 static gint flac_open(void)
 {
@@ -95,18 +119,16 @@ static gint flac_open(void)
     if (tuple)
     {
         FLAC__StreamMetadata *meta;
-        FLAC__StreamMetadata_VorbisComment_Entry comment_entry;
-
         meta = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
-        INSERT_VORBIS_COMMENT(tuple_get_str(tuple, FIELD_TITLE, NULL), "title=%s");
-        INSERT_VORBIS_COMMENT(tuple_get_str(tuple, FIELD_ARTIST, NULL), "artist=%s");
-        INSERT_VORBIS_COMMENT(tuple_get_str(tuple, FIELD_ALBUM, NULL), "album=%s");
-        INSERT_VORBIS_COMMENT(tuple_get_str(tuple, FIELD_GENRE, NULL), "genre=%s");
-        INSERT_VORBIS_COMMENT(tuple_get_str(tuple, FIELD_COMMENT, NULL), "comment=%s");
-        INSERT_VORBIS_COMMENT(tuple_get_str(tuple, FIELD_DATE, NULL), "date=%s");
-        INSERT_VORBIS_COMMENT(tuple_get_int(tuple, FIELD_YEAR, NULL), "year=%d");
-        INSERT_VORBIS_COMMENT(tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL), "tracknumber=%d");
+        insert_vorbis_comment (meta, "title", tuple, FIELD_TITLE);
+        insert_vorbis_comment (meta, "artist", tuple, FIELD_ARTIST);
+        insert_vorbis_comment (meta, "album", tuple, FIELD_ALBUM);
+        insert_vorbis_comment (meta, "genre", tuple, FIELD_GENRE);
+        insert_vorbis_comment (meta, "comment", tuple, FIELD_COMMENT);
+        insert_vorbis_comment (meta, "date", tuple, FIELD_DATE);
+        insert_vorbis_comment (meta, "year", tuple, FIELD_YEAR);
+        insert_vorbis_comment (meta, "tracknumber", tuple, FIELD_TRACK_NUMBER);
 
         FLAC__stream_encoder_set_metadata(flac_encoder, &meta, 1);
     }

@@ -29,6 +29,7 @@
 
 #include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
+#include <libaudcore/strpool.h>
 
 static void vorbis_init(write_output_callback write_output_func);
 static void vorbis_configure(void);
@@ -72,6 +73,17 @@ static void vorbis_init(write_output_callback write_output_func)
         write_output=write_output_func;
 }
 
+static void add_string_from_tuple (vorbis_comment * vc, const char * name,
+ const Tuple * tuple, gint field)
+{
+    gchar * val = tuple_get_str (tuple, field, NULL);
+    if (! val)
+        return;
+
+    vorbis_comment_add_tag (vc, name, val);
+    str_unref (val);
+}
+
 static gint vorbis_open(void)
 {
     ogg_packet header;
@@ -85,22 +97,15 @@ static gint vorbis_open(void)
 
     if (tuple)
     {
-        const gchar *scratch;
         gchar tmpstr[32];
         gint scrint;
 
-        if ((scratch = tuple_get_str(tuple, FIELD_TITLE, NULL)))
-            vorbis_comment_add_tag(&vc, "title", (gchar *) scratch);
-        if ((scratch = tuple_get_str(tuple, FIELD_ARTIST, NULL)))
-            vorbis_comment_add_tag(&vc, "artist", (gchar *) scratch);
-        if ((scratch = tuple_get_str(tuple, FIELD_ALBUM, NULL)))
-            vorbis_comment_add_tag(&vc, "album", (gchar *) scratch);
-        if ((scratch = tuple_get_str(tuple, FIELD_GENRE, NULL)))
-            vorbis_comment_add_tag(&vc, "genre", (gchar *) scratch);
-        if ((scratch = tuple_get_str(tuple, FIELD_DATE, NULL)))
-            vorbis_comment_add_tag(&vc, "date", (gchar *) scratch);
-        if ((scratch = tuple_get_str(tuple, FIELD_COMMENT, NULL)))
-            vorbis_comment_add_tag(&vc, "comment", (gchar *) scratch);
+        add_string_from_tuple (& vc, "title", tuple, FIELD_TITLE);
+        add_string_from_tuple (& vc, "artist", tuple, FIELD_ARTIST);
+        add_string_from_tuple (& vc, "album", tuple, FIELD_ALBUM);
+        add_string_from_tuple (& vc, "genre", tuple, FIELD_GENRE);
+        add_string_from_tuple (& vc, "date", tuple, FIELD_DATE);
+        add_string_from_tuple (& vc, "comment", tuple, FIELD_COMMENT);
 
         if ((scrint = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL)))
         {
