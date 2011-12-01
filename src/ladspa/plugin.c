@@ -21,6 +21,7 @@
 #include <errno.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <gmodule.h>
@@ -177,7 +178,7 @@ static void * open_module (const char * path)
     }
 
     LADSPA_Descriptor_Function descfun = (LADSPA_Descriptor_Function) sym;
-    
+
     const LADSPA_Descriptor * desc;
     for (int i = 0; (desc = descfun (i)); i ++)
     {

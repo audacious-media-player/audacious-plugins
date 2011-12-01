@@ -24,6 +24,7 @@
  */
 
 #include <math.h>
+#include <stdlib.h>
 #include <sys/time.h>
 
 #include <gdk/gdkkeysyms.h>
