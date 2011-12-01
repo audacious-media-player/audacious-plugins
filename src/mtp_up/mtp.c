@@ -27,6 +27,7 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <libaudcore/strpool.h>
 
 #include <gtk/gtk.h>
 #include "filetype.h"
@@ -117,6 +118,43 @@ get_upload_list(void)
     return g_list_reverse(up_list);
 }
 
+static char * strdup_tuple_filename (const Tuple * tuple)
+{
+    gchar * fpath = tuple_get_str (tuple, FIELD_FILE_PATH, NULL);
+    gchar * fname = tuple_get_str (tuple, FIELD_FILE_NAME, NULL);
+
+    gchar * filename = g_strdup_printf ("%s/%s", fpath, fname);
+
+    str_unref (fpath);
+    str_unref (fname);
+
+    return filename;
+}
+
+static char * strdup_tuple_field (const Tuple * tuple, int field)
+{
+    char * sval, * dup;
+    int ival;
+
+    switch (tuple_get_value_type (tuple, field, NULL))
+    {
+    case TUPLE_INT:
+        ival = tuple_get_int (tuple, field, NULL);
+        dup = g_strdup_printf ("%d", ival);
+        break;
+    case TUPLE_STRING:
+        sval = tuple_get_str (tuple, field, NULL);
+        dup = g_strdup (sval);
+        str_unref (sval);
+        break;
+    default:
+        dup = NULL;
+        break;
+    }
+
+    return dup;
+}
+
 LIBMTP_track_t *track_metadata(Tuple *from_tuple)
 {
     LIBMTP_track_t *tr;
@@ -125,7 +163,7 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
     uint64_t filesize;
     struct stat sb;
 
-    uri_path = g_strdup_printf("%s/%s", tuple_get_str(from_tuple, FIELD_FILE_PATH, NULL), tuple_get_str(from_tuple, FIELD_FILE_NAME, NULL));
+    uri_path = strdup_tuple_filename (from_tuple);
     gchar *tmp = g_strescape(uri_path,NULL);
     filename=g_filename_from_uri(tmp,NULL,NULL);
     g_free(tmp);
@@ -160,15 +198,15 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
 
     /* track metadata*/
     tr = LIBMTP_new_track_t();
-    tr->title = g_strdup((gchar*) tuple_get_str(from_tuple, FIELD_TITLE, NULL));
-    tr->artist = g_strdup((gchar*) tuple_get_str(from_tuple, FIELD_ARTIST, NULL));
-    tr->album = g_strdup((gchar*)tuple_get_str(from_tuple, FIELD_ALBUM, NULL));
+    tr->title = strdup_tuple_field (from_tuple, FIELD_TITLE);
+    tr->artist = strdup_tuple_field (from_tuple, FIELD_ARTIST);
+    tr->album = strdup_tuple_field (from_tuple, FIELD_ALBUM);
     tr->filesize = filesize;
-    tr->filename = g_strdup(tuple_get_str(from_tuple, FIELD_FILE_NAME, NULL));
+    tr->filename = strdup_tuple_field (from_tuple, FIELD_FILE_NAME);
     tr->duration = (uint32_t)tuple_get_int(from_tuple, FIELD_LENGTH, NULL);
     tr->filetype = find_filetype (filename);
-    tr->genre = g_strdup((gchar*)tuple_get_str(from_tuple, FIELD_GENRE, NULL));
-    tr->date = g_strdup_printf("%d",tuple_get_int(from_tuple, FIELD_YEAR, NULL));
+    tr->genre = strdup_tuple_field (from_tuple, FIELD_GENRE);
+    tr->date = strdup_tuple_field (from_tuple, FIELD_YEAR);
     g_free(filename);
     return tr;
 }
@@ -179,7 +217,7 @@ gint upload_file(Tuple *from_tuple)
     gchar *tmp, *from_path = NULL, *filename;
     LIBMTP_track_t *gentrack;
     gentrack = track_metadata(from_tuple);
-    from_path = g_strdup_printf("%s/%s", tuple_get_str(from_tuple, FIELD_FILE_PATH, NULL), tuple_get_str(from_tuple, FIELD_FILE_NAME, NULL));
+    from_path = strdup_tuple_filename (from_tuple);
     if(gentrack == NULL) return 1;
     tmp = g_strescape(from_path,NULL);
     filename=g_filename_from_uri(tmp,NULL,NULL);
