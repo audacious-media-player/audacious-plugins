@@ -141,7 +141,6 @@ aosd_trigger_start ( aosd_cfg_osd_trigger_t * cfg_trigger )
   }
   /* When called, this hook will display the text of the user pointer
      or the current playing song, if NULL */
-  hook_register("aosd toggle");
   hook_associate( "aosd toggle" , aosd_trigger_func_hook_cb , NULL );
   return;
 }

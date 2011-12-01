@@ -41,7 +41,7 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
-#include <libaudcore/eventqueue.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -122,7 +122,7 @@ static void cdaudio_error (const gchar * message_format, ...)
     msg = g_markup_vprintf_escaped (message_format, args);
     va_end (args);
 
-    event_queue_with_data_free ("interface show error", msg);
+    event_queue_full (0, "interface show error", msg, g_free);
 }
 
 /* main thread only */

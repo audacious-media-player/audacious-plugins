@@ -20,7 +20,7 @@
 
 #include <audacious/drct.h>
 #include <audacious/plugin.h>
-#include <libaudcore/eventqueue.h>
+#include <libaudcore/hook.h>
 
 #include "amidi-plug.h"
 
