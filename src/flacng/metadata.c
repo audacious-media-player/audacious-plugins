@@ -21,6 +21,7 @@
 
 #include <string.h>
 #include <audacious/debug.h>
+#include <libaudcore/strpool.h>
 
 #include "flacng.h"
 
@@ -100,7 +101,7 @@ static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     gchar *str;
-    gchar *val = (gchar *) tuple_get_str(tuple, tuple_name, NULL);
+    gchar *val = tuple_get_str(tuple, tuple_name, NULL);
 
     if (val == NULL)
         return;
@@ -111,6 +112,7 @@ static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
     FLAC__metadata_object_vorbiscomment_insert_comment(vc_block,
         vc_block->data.vorbis_comment.num_comments, entry, true);
     g_free(str);
+    str_unref(val);
 }
 
 static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
@@ -287,21 +289,24 @@ static void set_gain_info(Tuple *tuple, gint field, gint unit_field, const gchar
     if (tuple_get_value_type(tuple, unit_field, NULL) == TUPLE_INT)
         value = value * (gint64) tuple_get_int(tuple, unit_field, NULL) / unit;
     else
-        tuple_associate_int(tuple, unit_field, NULL, unit);
+        tuple_set_int(tuple, unit_field, NULL, unit);
 
-    tuple_associate_int(tuple, field, NULL, value);
+    tuple_set_int(tuple, field, NULL, value);
 }
 
 static void add_text (Tuple * tuple, gint field, const gchar * value)
 {
-    const gchar * cur = tuple_get_str (tuple, field, NULL);
+    gchar * cur = tuple_get_str (tuple, field, NULL);
     if (cur)
     {
         gchar * both = g_strconcat (cur, ", ", value, NULL);
-        tuple_associate_string_rel (tuple, field, NULL, both);
+        tuple_copy_str (tuple, field, NULL, both);
+        g_free(both);
     }
     else
-        tuple_associate_string (tuple, field, NULL, value);
+        tuple_copy_str (tuple, field, NULL, value);
+
+    str_unref(cur);
 }
 
 static void parse_comment (Tuple * tuple, const gchar * key, const gchar * value)
@@ -328,9 +333,9 @@ static void parse_comment (Tuple * tuple, const gchar * key, const gchar * value
     }
 
     if (! strcasecmp (key, "TRACKNUMBER"))
-        tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(value));
+        tuple_set_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(value));
     else if (! strcasecmp (key, "DATE"))
-        tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(value));
+        tuple_set_int(tuple, FIELD_YEAR, NULL, atoi(value));
     else if (! strcasecmp (key, "REPLAYGAIN_TRACK_GAIN"))
         set_gain_info(tuple, FIELD_GAIN_TRACK_GAIN, FIELD_GAIN_GAIN_UNIT, value);
     else if (! strcasecmp (key, "REPLAYGAIN_TRACK_PEAK"))
@@ -356,8 +361,8 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
 
     tuple = tuple_new_from_filename(filename);
 
-    tuple_associate_string(tuple, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
-    tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossless");
+    tuple_copy_str(tuple, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
+    tuple_copy_str(tuple, FIELD_QUALITY, NULL, "lossless");
 
     chain = FLAC__metadata_chain_new();
     g_return_val_if_fail(chain != NULL, FALSE);
@@ -406,11 +411,11 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
                 if (metadata->data.stream_info.sample_rate == 0)
                 {
                     FLACNG_ERROR("Invalid sample rate for stream!\n");
-                    tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
+                    tuple_set_int(tuple, FIELD_LENGTH, NULL, -1);
                 }
                 else
                 {
-                    tuple_associate_int(tuple, FIELD_LENGTH, NULL,
+                    tuple_set_int(tuple, FIELD_LENGTH, NULL,
                         (metadata->data.stream_info.total_samples / metadata->data.stream_info.sample_rate) * 1000);
                     AUDDBG("Stream length: %d seconds\n", tuple_get_int(tuple, FIELD_LENGTH, NULL));
                 }
@@ -418,13 +423,13 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
                 gsize size = vfs_fsize(fd);
 
                 if (size == -1 || metadata->data.stream_info.total_samples == 0)
-                    tuple_associate_int(tuple, FIELD_BITRATE, NULL, 0);
+                    tuple_set_int(tuple, FIELD_BITRATE, NULL, 0);
                 else
                 {
                     gint bitrate = 8 * size *
                         (gint64) metadata->data.stream_info.sample_rate / metadata->data.stream_info.total_samples;
 
-                    tuple_associate_int(tuple, FIELD_BITRATE, NULL, (bitrate + 500) / 1000);
+                    tuple_set_int(tuple, FIELD_BITRATE, NULL, (bitrate + 500) / 1000);
                 }
                 break;
 

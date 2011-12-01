@@ -2,7 +2,7 @@
  * Audacious: A cross-platform multimedia player
  * Copyright (c) 2006 William Pitcock, Tony Vroon, George Averill,
  *                    Giacomo Lozito, Derek Pomery, Yoshiki Yazawa
- *                    and Matti H‰m‰l‰inen.
+ *                    and Matti H√§m√§l√§inen.
  * Copyright (c) 2011 John Lindgren
  *
  * This program is free software; you can redistribute it and/or modify
@@ -31,6 +31,7 @@
 #include <libxml/uri.h>
 
 #include <audacious/plugin.h>
+#include <libaudcore/strpool.h>
 
 #define XSPF_ROOT_NODE_NAME "playlist"
 #define XSPF_XMLNS "http://xspf.org/ns/0/"
@@ -135,13 +136,13 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
                         case TUPLE_STRING:
                             if (! tuple)
                                 tuple = tuple_new ();
-                            tuple_associate_string(tuple, xspf_entries[i].tupleField, NULL, (gchar *)str);
+                            tuple_copy_str(tuple, xspf_entries[i].tupleField, NULL, (gchar *)str);
                             break;
 
                         case TUPLE_INT:
                             if (! tuple)
                                 tuple = tuple_new ();
-                            tuple_associate_int(tuple, xspf_entries[i].tupleField, NULL, atol((char *)str));
+                            tuple_set_int(tuple, xspf_entries[i].tupleField, NULL, atol((char *)str));
                             break;
 
                         default:
@@ -384,7 +385,7 @@ static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
         const gchar * filename = index_get (filenames, count);
         const Tuple * tuple = index_get (tuples, count);
         xmlNodePtr track, location;
-        const gchar *scratch = NULL;
+        gchar *scratch = NULL;
         gint scratchi = 0;
 
         track = xmlNewNode(NULL, (xmlChar *)"track");
@@ -407,6 +408,7 @@ static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
                         scratch = tuple_get_str (tuple, xs->tupleField, NULL);
                         if (! scratch)
                             isOK = FALSE;
+                        str_unref(scratch);
                         break;
                     case TUPLE_INT:
                         scratchi = tuple_get_int (tuple, xs->tupleField, NULL);

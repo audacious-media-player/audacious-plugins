@@ -953,15 +953,15 @@ static void read_cache(void)
                 Tuple *tuple = tuple_new();
                 gchar* string_value;
                 string_value = xmms_urldecode_plain(artist);
-                tuple_associate_string(tuple, FIELD_ARTIST, NULL, string_value);
+                tuple_copy_str(tuple, FIELD_ARTIST, NULL, string_value);
                 g_free(string_value);
                 string_value = xmms_urldecode_plain(title);
-                tuple_associate_string(tuple, FIELD_TITLE, NULL, string_value);
+                tuple_copy_str(tuple, FIELD_TITLE, NULL, string_value);
                 g_free(string_value);
                 string_value = xmms_urldecode_plain(album);
-                tuple_associate_string(tuple, FIELD_ALBUM, NULL, string_value);
+                tuple_copy_str(tuple, FIELD_ALBUM, NULL, string_value);
                 g_free(string_value);
-                tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, track);
+                tuple_set_int(tuple, FIELD_TRACK_NUMBER, NULL, track);
                 item = q_put(tuple, t, len);
 
                 tuple_unref(tuple);

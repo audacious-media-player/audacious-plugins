@@ -23,6 +23,7 @@
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/strpool.h>
 #include <libaudcore/tuple.h>
 
 #include "formatter.h"
@@ -193,21 +194,30 @@ static void do_command(char *cmd, const char *current_file, int pos)
         Tuple * tuple = aud_playlist_entry_get_tuple
             (aud_playlist_get_active (), pos, 0);
 
-        const char *artist = tuple_get_str(tuple, FIELD_ARTIST, NULL);
+        char *artist = tuple_get_str(tuple, FIELD_ARTIST, NULL);
         if (artist)
+        {
             formatter_associate(formatter, 'a', artist);
+            str_unref(artist);
+        }
         else
             formatter_associate(formatter, 'a', "");
 
-        const char *album = tuple_get_str(tuple, FIELD_ALBUM, NULL);
+        char *album = tuple_get_str(tuple, FIELD_ALBUM, NULL);
         if (album)
+        {
             formatter_associate(formatter, 'b', album);
+            str_unref(album);
+        }
         else
             formatter_associate(formatter, 'b', "");
 
-        const char *title = tuple_get_str(tuple, FIELD_TITLE, NULL);
+        char *title = tuple_get_str(tuple, FIELD_TITLE, NULL);
         if (title)
+        {
             formatter_associate(formatter, 'T', title);
+            str_unref(title);
+        }
         else
             formatter_associate(formatter, 'T', "");
 

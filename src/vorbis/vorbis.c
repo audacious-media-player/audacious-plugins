@@ -154,7 +154,7 @@ set_tuple_str(Tuple *tuple, const gint nfield, const gchar *field,
     gchar *str = vorbis_comment_query(comment, key, 0);
     if (str != NULL) {
         gchar *tmp = str_to_utf8(str);
-        tuple_associate_string(tuple, nfield, field, tmp);
+        tuple_copy_str(tuple, nfield, field, tmp);
         g_free(tmp);
     }
 }
@@ -172,7 +172,7 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
      (vorbisfile, -1) * 1000;
 
     /* associate with tuple */
-    tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
+    tuple_set_int(tuple, FIELD_LENGTH, NULL, length);
 
     if ((comment = ov_comment(vorbisfile, -1)) != NULL) {
         gchar *tmps;
@@ -183,17 +183,17 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
         set_tuple_str(tuple, FIELD_COMMENT, NULL, comment, "comment");
 
         if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != NULL)
-            tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(tmps));
+            tuple_set_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(tmps));
 
         if ((tmps = vorbis_comment_query (comment, "date", 0)) != NULL)
-            tuple_associate_int (tuple, FIELD_YEAR, NULL, atoi (tmps));
+            tuple_set_int (tuple, FIELD_YEAR, NULL, atoi (tmps));
     }
 
     vorbis_info * info = ov_info (vorbisfile, -1);
     tuple_set_format (tuple, "Ogg Vorbis", info->channels, info->rate,
      info->bitrate_nominal / 1000);
 
-    tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "application/ogg");
+    tuple_copy_str(tuple, FIELD_MIMETYPE, NULL, "application/ogg");
 
     return tuple;
 }

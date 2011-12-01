@@ -432,11 +432,17 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
 {
     gchar *tmpStr, tmpStr2[64];
 
-    tuple_associate_string_rel(tuple, FIELD_TITLE, NULL, str_to_utf8(info->sidName));
-    tuple_associate_string_rel(tuple, FIELD_ARTIST, NULL, str_to_utf8(info->sidComposer));
-    tuple_associate_string_rel(tuple, FIELD_COPYRIGHT, NULL, str_to_utf8(info->sidCopyright));
-    tuple_associate_string(tuple, -1, "sid-format", info->sidFormat);
-    tuple_associate_string(tuple, FIELD_CODEC, NULL, "Commodore 64 SID PlaySID/RSID");
+    tmpStr = str_to_utf8(info->sidName);
+    tuple_copy_str_FIXME(tuple, FIELD_TITLE, NULL, tmpStr);
+    g_free(tmpStr);
+    tmpStr = str_to_utf8(info->sidComposer);
+    tuple_copy_str_FIXME(tuple, FIELD_ARTIST, NULL, tmpStr);
+    g_free(tmpStr);
+    tmpStr = str_to_utf8(info->sidCopyright);
+    tuple_copy_str_FIXME(tuple, FIELD_COPYRIGHT, NULL, tmpStr);
+    g_free(tmpStr);
+    tuple_copy_str(tuple, -1, "sid-format", info->sidFormat);
+    tuple_copy_str(tuple, FIELD_CODEC, NULL, "Commodore 64 SID PlaySID/RSID");
 
     switch (info->sidModel) {
         case XS_SIDMODEL_6581: tmpStr = "6581"; break;
@@ -444,7 +450,7 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
         case XS_SIDMODEL_ANY: tmpStr = "ANY"; break;
         default: tmpStr = "?"; break;
     }
-    tuple_associate_string(tuple, -1, "sid-model", tmpStr);
+    tuple_copy_str(tuple, -1, "sid-model", tmpStr);
 
     /* Get sub-tune information, if available */
     if (subTune < 0 || info->startTune > info->nsubTunes)
@@ -452,7 +458,7 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
 
     if (subTune > 0 && subTune <= info->nsubTunes) {
         gint tmpInt = info->subTunes[subTune - 1].tuneLength;
-        tuple_associate_int(tuple, FIELD_LENGTH, NULL, (tmpInt < 0) ? -1 : tmpInt * 1000);
+        tuple_set_int(tuple, FIELD_LENGTH, NULL, (tmpInt < 0) ? -1 : tmpInt * 1000);
 
         tmpInt = info->subTunes[subTune - 1].tuneSpeed;
         if (tmpInt > 0) {
@@ -470,13 +476,13 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
         } else
             tmpStr = "?";
 
-        tuple_associate_string(tuple, -1, "sid-speed", tmpStr);
+        tuple_copy_str(tuple, -1, "sid-speed", tmpStr);
     } else
         subTune = 1;
 
-    tuple_associate_int(tuple, FIELD_SUBSONG_NUM, NULL, info->nsubTunes);
-    tuple_associate_int(tuple, FIELD_SUBSONG_ID, NULL, subTune);
-    tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, subTune);
+    tuple_set_int(tuple, FIELD_SUBSONG_NUM, NULL, info->nsubTunes);
+    tuple_set_int(tuple, FIELD_SUBSONG_ID, NULL, subTune);
+    tuple_set_int(tuple, FIELD_TRACK_NUMBER, NULL, subTune);
 }
 
 

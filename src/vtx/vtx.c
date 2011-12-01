@@ -69,20 +69,20 @@ Tuple *vtx_get_song_tuple_from_vtx(const gchar * filename, ayemu_vtx_t * in)
 {
     Tuple *out = tuple_new_from_filename(filename);
 
-    tuple_associate_string(out, FIELD_ARTIST, NULL, in->hdr.author);
-    tuple_associate_string(out, FIELD_TITLE, NULL, in->hdr.title);
+    tuple_copy_str(out, FIELD_ARTIST, NULL, in->hdr.author);
+    tuple_copy_str(out, FIELD_TITLE, NULL, in->hdr.title);
 
-    tuple_associate_int(out, FIELD_LENGTH, NULL, in->hdr.regdata_size / 14 * 1000 / 50);
+    tuple_set_int(out, FIELD_LENGTH, NULL, in->hdr.regdata_size / 14 * 1000 / 50);
 
-    tuple_associate_string(out, FIELD_GENRE, NULL, (in->hdr.chiptype == AYEMU_AY) ? "AY chiptunes" : "YM chiptunes");
-    tuple_associate_string(out, FIELD_ALBUM, NULL, in->hdr.from);
-    tuple_associate_string(out, -1, "game", in->hdr.from);
+    tuple_copy_str(out, FIELD_GENRE, NULL, (in->hdr.chiptype == AYEMU_AY) ? "AY chiptunes" : "YM chiptunes");
+    tuple_copy_str(out, FIELD_ALBUM, NULL, in->hdr.from);
+    tuple_copy_str(out, -1, "game", in->hdr.from);
 
-    tuple_associate_string(out, FIELD_QUALITY, NULL, "sequenced");
-    tuple_associate_string(out, FIELD_CODEC, NULL, in->hdr.tracker);
-    tuple_associate_string(out, -1, "tracker", in->hdr.tracker);
+    tuple_copy_str(out, FIELD_QUALITY, NULL, "sequenced");
+    tuple_copy_str(out, FIELD_CODEC, NULL, in->hdr.tracker);
+    tuple_copy_str(out, -1, "tracker", in->hdr.tracker);
 
-    tuple_associate_int(out, FIELD_YEAR, NULL, in->hdr.year);
+    tuple_set_int(out, FIELD_YEAR, NULL, in->hdr.year);
 
     return out;
 }

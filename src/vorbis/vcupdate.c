@@ -82,6 +82,7 @@ static void insert_str_tuple_field_to_dictionary (const Tuple * tuple, int
     gchar *tmp = (gchar*)tuple_get_str(tuple, fieldn, NULL);
     if (tmp && tmp[0])
         g_hash_table_insert (dict, str_get (key), str_get (tmp));
+    str_unref(tmp);
 }
 
 static void insert_int_tuple_field_to_dictionary (const Tuple * tuple, int

@@ -552,23 +552,23 @@ static Tuple * make_tuple (const gchar * filename, VFSFile * file)
 
     if (strlen (trackinfo[trackno].performer))
     {
-        tuple_associate_string (tuple, FIELD_ARTIST, NULL,
+        tuple_copy_str (tuple, FIELD_ARTIST, NULL,
                                     trackinfo[trackno].performer);
     }
     if (strlen (trackinfo[0].name))
     {
-        tuple_associate_string (tuple, FIELD_ALBUM, NULL,
+        tuple_copy_str (tuple, FIELD_ALBUM, NULL,
                                     trackinfo[0].name);
     }
     if (strlen (trackinfo[trackno].name))
     {
-        tuple_associate_string (tuple, FIELD_TITLE, NULL,
+        tuple_copy_str (tuple, FIELD_TITLE, NULL,
                                     trackinfo[trackno].name);
     }
 
-    tuple_associate_int (tuple, FIELD_TRACK_NUMBER, NULL, trackno);
+    tuple_set_int (tuple, FIELD_TRACK_NUMBER, NULL, trackno);
 
-    tuple_associate_int (tuple, FIELD_LENGTH, NULL,
+    tuple_set_int (tuple, FIELD_LENGTH, NULL,
                              calculate_track_length (trackinfo[trackno].
                                                      startlsn,
                                                      trackinfo[trackno].
@@ -576,7 +576,7 @@ static Tuple * make_tuple (const gchar * filename, VFSFile * file)
 
     if (strlen (trackinfo[trackno].genre))
     {
-        tuple_associate_string (tuple, FIELD_GENRE, NULL,
+        tuple_copy_str (tuple, FIELD_GENRE, NULL,
                                     trackinfo[trackno].genre);
     }
 

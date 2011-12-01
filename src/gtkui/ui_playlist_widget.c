@@ -29,6 +29,7 @@
 #include <audacious/playlist.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/list.h>
+#include <libaudcore/strpool.h>
 
 #include "config.h"
 #include "gtkui.h"
@@ -60,8 +61,9 @@ static void set_int_from_tuple (GValue * value, const Tuple * tuple, gint field)
 static void set_string_from_tuple (GValue * value, const Tuple * tuple,
  gint field)
 {
-    g_value_set_string (value, tuple ? tuple_get_str (tuple, field, NULL) :
-     NULL);
+    gchar *str = tuple ? tuple_get_str (tuple, field, NULL) : NULL;
+    g_value_set_string (value, str);
+    str_unref(str);
 }
 
 static void set_queued (GValue * value, gint list, gint row)

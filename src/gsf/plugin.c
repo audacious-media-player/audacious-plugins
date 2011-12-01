@@ -124,43 +124,43 @@ static Tuple *gsf_get_song_tuple(const gchar *filename, VFSFile *fd)
 	psftag_readfromfile((void*)tag, fn);
 
 	if (!psftag_getvar(tag, "title", tmp_str, sizeof(tmp_str)-1)) {
-		tuple_associate_string(ti, FIELD_TITLE, NULL, tmp_str);
+		tuple_copy_str(ti, FIELD_TITLE, NULL, tmp_str);
 	}
 
 	if (!psftag_getvar(tag, "artist", tmp_str, sizeof(tmp_str)-1)) {
-		tuple_associate_string(ti, FIELD_ARTIST, NULL, tmp_str);
+		tuple_copy_str(ti, FIELD_ARTIST, NULL, tmp_str);
 	}
 
 	if (!psftag_getvar(tag, "game", tmp_str, sizeof(tmp_str)-1)) {
-		tuple_associate_string(ti, FIELD_ALBUM, NULL, tmp_str);
+		tuple_copy_str(ti, FIELD_ALBUM, NULL, tmp_str);
 	}
 
 	if (!psftag_getvar(tag, "year", tmp_str, sizeof(tmp_str)-1)) {
-		tuple_associate_string(ti, FIELD_DATE, NULL, tmp_str);
+		tuple_copy_str(ti, FIELD_DATE, NULL, tmp_str);
 	}
 
 	if (!psftag_getvar(tag, "copyright", tmp_str, sizeof(tmp_str)-1)) {
-		tuple_associate_string(ti, FIELD_COPYRIGHT, NULL, tmp_str);
+		tuple_copy_str(ti, FIELD_COPYRIGHT, NULL, tmp_str);
 	}
 
 	if (!psftag_getvar(tag, "gsfby", tmp_str, sizeof(tmp_str)-1)) {
-		tuple_associate_string(ti, -1, "gsfby", tmp_str);
+		tuple_copy_str(ti, -1, "gsfby", tmp_str);
 	}
 
 	if (!psftag_getvar(tag, "tagger", tmp_str, sizeof(tmp_str)-1)) {
-		tuple_associate_string(ti, -1, "tagger", tmp_str);
+		tuple_copy_str(ti, -1, "tagger", tmp_str);
 	}
 
 	if (!psftag_raw_getvar(tag, "length", tmp_str, sizeof(tmp_str)-1)) {
-		tuple_associate_int(ti, FIELD_LENGTH, NULL, LengthFromString(tmp_str) + FadeLength);
+		tuple_set_int(ti, FIELD_LENGTH, NULL, LengthFromString(tmp_str) + FadeLength);
 	}
 
 	if (!psftag_getvar(tag, "comment", tmp_str, sizeof(tmp_str)-1)) {
-		tuple_associate_string(ti, FIELD_COMMENT, NULL, tmp_str);
+		tuple_copy_str(ti, FIELD_COMMENT, NULL, tmp_str);
 	}
 
-	tuple_associate_string(ti, FIELD_CODEC, NULL, "GameBoy Advanced Audio (GSF)");
-	tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
+	tuple_copy_str(ti, FIELD_CODEC, NULL, "GameBoy Advanced Audio (GSF)");
+	tuple_copy_str(ti, FIELD_QUALITY, NULL, "sequenced");
 
 	g_free(f);
 

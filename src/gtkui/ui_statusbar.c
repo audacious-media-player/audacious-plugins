@@ -30,6 +30,7 @@
 #include <audacious/drct.h>
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/strpool.h>
 
 #include "config.h"
 #include "ui_statusbar.h"
@@ -79,7 +80,7 @@ ui_statusbar_info_change(gpointer unused, GtkWidget *label)
     gint playlist = aud_playlist_get_playing ();
     Tuple * tuple = aud_playlist_entry_get_tuple (playlist,
      aud_playlist_get_position (playlist), FALSE);
-    const gchar * codec = tuple ? tuple_get_str (tuple, FIELD_CODEC, NULL) :
+    gchar * codec = tuple ? tuple_get_str (tuple, FIELD_CODEC, NULL) :
      NULL;
     if (tuple)
         tuple_unref (tuple);
@@ -96,6 +97,8 @@ ui_statusbar_info_change(gpointer unused, GtkWidget *label)
         if (channels > 0 || samplerate > 0 || bitrate > 0)
             APPEND (buf, ", ");
     }
+
+    str_unref(codec);
 
     if (channels > 0)
     {

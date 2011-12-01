@@ -53,7 +53,7 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, gint tuple_type, gint pti)
     if (text == NULL)
         return;
 
-    tuple_associate_string(tuple, tuple_type, NULL, text);
+    tuple_copy_str(tuple, tuple_type, NULL, text);
 }
 
 static gboolean playlist_load_cue (const gchar * cue_filename, VFSFile * file,
@@ -107,23 +107,23 @@ static gboolean playlist_load_cue (const gchar * cue_filename, VFSFile * file,
 
         Tuple * tuple = (base_tuple != NULL) ? tuple_copy (base_tuple) :
          tuple_new_from_filename (filename);
-        tuple_associate_int (tuple, FIELD_TRACK_NUMBER, NULL, track);
+        tuple_set_int (tuple, FIELD_TRACK_NUMBER, NULL, track);
 
         gint begin = (gint64) track_get_start (current) * 1000 / 75;
-        tuple_associate_int (tuple, FIELD_SEGMENT_START, NULL, begin);
+        tuple_set_int (tuple, FIELD_SEGMENT_START, NULL, begin);
 
         if (last_track)
         {
             if (base_tuple != NULL && tuple_get_value_type (base_tuple,
              FIELD_LENGTH, NULL) == TUPLE_INT)
-                tuple_associate_int (tuple, FIELD_LENGTH, NULL, tuple_get_int
+                tuple_set_int (tuple, FIELD_LENGTH, NULL, tuple_get_int
                  (base_tuple, FIELD_LENGTH, NULL) - begin);
         }
         else
         {
             gint length = (gint64) track_get_length (current) * 1000 / 75;
-            tuple_associate_int (tuple, FIELD_LENGTH, NULL, length);
-            tuple_associate_int (tuple, FIELD_SEGMENT_END, NULL, begin + length);
+            tuple_set_int (tuple, FIELD_LENGTH, NULL, length);
+            tuple_set_int (tuple, FIELD_SEGMENT_END, NULL, begin + length);
         }
 
         for (gint i = 0; i < G_N_ELEMENTS (pti_map); i ++)

@@ -311,11 +311,11 @@ ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
     {
         switch (m->ttype) {
         case TUPLE_STRING:
-            tuple_associate_string (tuple, m->field, NULL, tag->value);
+            tuple_copy_str (tuple, m->field, NULL, tag->value);
             break;
 
         case TUPLE_INT:
-            tuple_associate_int (tuple, m->field, NULL, atoi(tag->value));
+            tuple_set_int (tuple, m->field, NULL, atoi(tag->value));
             break;
 
         default:
@@ -333,13 +333,13 @@ ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVC
         for (i = 0; i < n_metaentries; i++)
             ffaudio_get_meta(tuple, ic, &metaentries[i]);
 
-        tuple_associate_int(tuple, FIELD_LENGTH, NULL, ic->duration / 1000);
-        tuple_associate_int(tuple, FIELD_BITRATE, NULL, ic->bit_rate / 1000);
+        tuple_set_int(tuple, FIELD_LENGTH, NULL, ic->duration / 1000);
+        tuple_set_int(tuple, FIELD_BITRATE, NULL, ic->bit_rate / 1000);
     }
 
     if (codec != NULL && codec->long_name != NULL)
     {
-        tuple_associate_string(tuple, FIELD_CODEC, NULL, codec->long_name);
+        tuple_copy_str(tuple, FIELD_CODEC, NULL, codec->long_name);
     }
 }
 

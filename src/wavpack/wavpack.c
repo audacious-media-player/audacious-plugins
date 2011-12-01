@@ -333,10 +333,10 @@ wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
 	vfs_rewind(fd);
 	tag_tuple_read(tu, fd);
 
-	tuple_associate_int(tu, FIELD_LENGTH, NULL,
+	tuple_set_int(tu, FIELD_LENGTH, NULL,
         ((guint64) WavpackGetNumSamples(ctx) * 1000) / (guint64) WavpackGetSampleRate(ctx));
-    tuple_associate_string(tu, FIELD_CODEC, NULL, "WavPack");
-    tuple_associate_string(tu, FIELD_QUALITY, NULL, wv_get_quality(ctx));
+    tuple_copy_str(tu, FIELD_CODEC, NULL, "WavPack");
+    tuple_copy_str(tu, FIELD_QUALITY, NULL, wv_get_quality(ctx));
 
     WavpackCloseFile(ctx);
 

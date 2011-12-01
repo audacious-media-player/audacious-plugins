@@ -32,6 +32,7 @@
 #endif
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/strpool.h>
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
@@ -185,11 +186,11 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 
 	Tuple * tuple = tuple_new_from_filename (filename);
 	make_format_string (& info, scratch, sizeof scratch);
-	tuple_associate_string (tuple, FIELD_CODEC, NULL, scratch);
+	tuple_copy_str (tuple, FIELD_CODEC, NULL, scratch);
 	snprintf (scratch, sizeof scratch, "%s, %d Hz", (channels == 2)
 	 ? _("Stereo") : (channels > 2) ? _("Surround") : _("Mono"), (gint) rate);
-	tuple_associate_string (tuple, FIELD_QUALITY, NULL, scratch);
-	tuple_associate_int (tuple, FIELD_BITRATE, NULL, info.bitrate);
+	tuple_copy_str (tuple, FIELD_QUALITY, NULL, scratch);
+	tuple_set_int (tuple, FIELD_BITRATE, NULL, info.bitrate);
 
 	if (! vfs_is_streaming (file))
 	{
@@ -198,9 +199,9 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 		gint length = (samples > 0) ? samples * 1000 / rate : 0;
 
 		if (length > 0)
-			tuple_associate_int (tuple, FIELD_LENGTH, NULL, length);
+			tuple_set_int (tuple, FIELD_LENGTH, NULL, length);
 		if (size > 0 && length > 0)
-			tuple_associate_int (tuple, FIELD_BITRATE, NULL, 8 * size / length);
+			tuple_set_int (tuple, FIELD_BITRATE, NULL, 8 * size / length);
 	}
 
 	mpg123_delete (decoder);
@@ -244,14 +245,15 @@ get_stream_metadata(VFSFile *file, const gchar *name)
 static gboolean
 update_stream_metadata(VFSFile *file, const gchar *name, Tuple *tuple, gint item)
 {
-	const gchar *old = tuple_get_str(tuple, item, NULL);
+	gchar *old = tuple_get_str(tuple, item, NULL);
 	gchar *new = get_stream_metadata(file, name);
 	gboolean changed = (new != NULL && (old == NULL || strcmp(old, new)));
 
 	if (changed)
-		tuple_associate_string(tuple, item, NULL, new);
+		tuple_copy_str(tuple, item, NULL, new);
 
 	g_free(new);
+	str_unref(old);
 	return changed;
 }
 

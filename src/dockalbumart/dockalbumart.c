@@ -24,6 +24,7 @@
 
 #include <glib.h>
 #include <audacious/i18n.h>
+#include <libaudcore/strpool.h>
 
 #include <Carbon/Carbon.h>
 
@@ -44,24 +45,24 @@ dock_set_icon_from_pixbuf(const GdkPixbuf *in)
     gpointer data;
     gint rowstride, pixbuf_width, pixbuf_height;
     gboolean has_alpha;
-         
+
     pixbuf = gdk_pixbuf_scale_simple(in, 128, 128, GDK_INTERP_BILINEAR);
-    
+
     data = gdk_pixbuf_get_pixels(pixbuf);
     pixbuf_width = gdk_pixbuf_get_width(pixbuf);
     pixbuf_height = gdk_pixbuf_get_height(pixbuf);
     rowstride = gdk_pixbuf_get_rowstride(pixbuf);
     has_alpha = gdk_pixbuf_get_has_alpha(pixbuf);
-        
+
     /* create the colourspace for the CGImage. */
     colorspace = CGColorSpaceCreateDeviceRGB();
     data_provider = CGDataProviderCreateWithData(NULL, data, pixbuf_height * rowstride, NULL);
     image = CGImageCreate(pixbuf_width, pixbuf_height, 8,
         has_alpha ? 32 : 24, rowstride, colorspace,
         has_alpha ? kCGImageAlphaLast : 0,
-        data_provider, NULL, FALSE,   
+        data_provider, NULL, FALSE,
         kCGRenderingIntentDefault);
-    
+
     /* release the colourspace and data provider, we have what we want. */
     CGDataProviderRelease(data_provider);
     CGColorSpaceRelease(colorspace);
@@ -91,7 +92,7 @@ pixbuf_find_and_load(Tuple *tuple)
         {
             GdkPixbuf *new = gdk_pixbuf_new_from_file(tmp, NULL);
             dock_set_icon_from_pixbuf(new);
-            g_object_unref(new);                
+            g_object_unref(new);
         }
         else
         {
@@ -100,6 +101,8 @@ pixbuf_find_and_load(Tuple *tuple)
             g_object_unref(new);
         }
     }
+    str_unref(file_name);
+    str_unref(file_path);
 }
 
 /* trigger functions */

@@ -29,6 +29,7 @@
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/strpool.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/list.h>
 
@@ -184,8 +185,9 @@ static void create_dicts (gint list)
         gchar * fields[FIELDS];
 
         Tuple * tuple = aud_playlist_entry_get_tuple (list, e, TRUE);
-        const gchar * genre = tuple ? tuple_get_str (tuple, FIELD_GENRE, NULL) : NULL;
+        gchar * genre = tuple ? tuple_get_str (tuple, FIELD_GENRE, NULL) : NULL;
         fields[GENRE] = genre ? g_strdup (genre) : NULL;
+        str_unref(genre);
 
         if (tuple)
             tuple_unref (tuple);
