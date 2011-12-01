@@ -15,6 +15,7 @@
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/md5.h>
+#include <libaudcore/strpool.h>
 
 #define SCROBBLER_CLI_ID "aud"
 #define SCROBBLER_HS_WAIT 1800
@@ -141,12 +142,17 @@ static item_t *q_additem(item_t *newitem)
 static item_t *create_item(Tuple *tuple, int len)
 {
     item_t *item;
-    const gchar *album;
+    gchar *album, *artist, *title;
 
     item = malloc(sizeof(item_t));
 
-    item->artist = fmt_escape(tuple_get_str(tuple, FIELD_ARTIST, NULL));
-    item->title = fmt_escape(tuple_get_str(tuple, FIELD_TITLE, NULL));
+    artist = tuple_get_str(tuple, FIELD_ARTIST, NULL);
+    item->artist = fmt_escape(artist);
+    str_unref(artist);
+
+    title = tuple_get_str(tuple, FIELD_TITLE, NULL);
+    item->title = fmt_escape(title);
+    str_unref(title);
 
     if (item->artist == NULL || item->title == NULL)
     {
@@ -161,7 +167,10 @@ static item_t *create_item(Tuple *tuple, int len)
 
     album = tuple_get_str(tuple, FIELD_ALBUM, NULL);
     if (album)
-        item->album = fmt_escape((char*) album);
+    {
+        item->album = fmt_escape(album);
+        str_unref(album);
+    }
     else
         item->album = fmt_escape("");
 
@@ -784,9 +793,18 @@ static int sc_submit_np(Tuple *tuple)
     curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
     /*cfa(&post, &last, "debug", "failed");*/
 
-        char *field_artist = fmt_escape(tuple_get_str(tuple, FIELD_ARTIST, NULL));
-        char *field_title = fmt_escape(tuple_get_str(tuple, FIELD_TITLE, NULL));
-        char *field_album = tuple_get_str(tuple, FIELD_ALBUM, NULL) ? fmt_escape(tuple_get_str(tuple, FIELD_ALBUM, NULL)) : fmt_escape("");
+    char *artist = tuple_get_str(tuple, FIELD_ARTIST, NULL);
+    char *field_artist = fmt_escape(artist);
+    str_unref(artist);
+
+    char *title = tuple_get_str(tuple, FIELD_TITLE, NULL);
+    char *field_title = fmt_escape(title);
+    str_unref(title);
+
+    char *album = tuple_get_str(tuple, FIELD_ALBUM, NULL);
+    char *field_album = album ? fmt_escape(album) : fmt_escape("");
+    str_unref(album);
+
     snprintf(entry, 16384, "s=%s&a=%s&t=%s&b=%s&l=%d&n=%d&m=", sc_session_id,
         field_artist,
         field_title,
