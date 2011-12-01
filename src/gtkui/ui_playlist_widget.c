@@ -29,7 +29,6 @@
 #include <audacious/playlist.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/list.h>
-#include <libaudcore/strpool.h>
 
 #include "config.h"
 #include "gtkui.h"

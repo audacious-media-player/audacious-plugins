@@ -24,7 +24,6 @@
 
 #include <glib.h>
 #include <audacious/i18n.h>
-#include <libaudcore/strpool.h>
 
 #include <Carbon/Carbon.h>
 

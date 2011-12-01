@@ -21,7 +21,6 @@
 
 #include <string.h>
 #include <audacious/debug.h>
-#include <libaudcore/strpool.h>
 
 #include "flacng.h"
 

@@ -31,7 +31,6 @@
 #include <libxml/uri.h>
 
 #include <audacious/plugin.h>
-#include <libaudcore/strpool.h>
 
 #define XSPF_ROOT_NODE_NAME "playlist"
 #define XSPF_XMLNS "http://xspf.org/ns/0/"

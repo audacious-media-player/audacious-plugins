@@ -31,7 +31,6 @@
 #include <audacious/debug.h>
 #include <audacious/misc.h>
 #include <audacious/gtk-compat.h>
-#include <libaudcore/strpool.h>
 
 #define MODES 4
 enum {MODE_AUTO = 4, MODE_JOINT = 1, MODE_STEREO = 0, MODE_MONO = 3};

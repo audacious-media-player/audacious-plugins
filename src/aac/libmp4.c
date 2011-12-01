@@ -11,7 +11,6 @@
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
-#include <libaudcore/strpool.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 

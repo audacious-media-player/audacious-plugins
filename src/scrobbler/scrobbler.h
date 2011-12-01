@@ -1,6 +1,8 @@
 #ifndef NET_H
 #define NET_H 1
 
+#include <glib.h>
+
 #include <libaudcore/tuple.h>
 
 #define SC_CURL_TIMEOUT 60

@@ -30,7 +30,6 @@
 #include <audacious/drct.h>
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
-#include <libaudcore/strpool.h>
 
 #include "config.h"
 #include "ui_statusbar.h"

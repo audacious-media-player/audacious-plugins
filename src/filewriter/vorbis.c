@@ -29,7 +29,6 @@
 
 #include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
-#include <libaudcore/strpool.h>
 
 static void vorbis_init(write_output_callback write_output_func);
 static void vorbis_configure(void);

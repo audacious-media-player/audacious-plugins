@@ -36,7 +36,6 @@
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
-#include <libaudcore/strpool.h>
 
 #include "vorbis.h"
 #include "vcedit.h"

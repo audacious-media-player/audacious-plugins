@@ -27,7 +27,6 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
-#include <libaudcore/strpool.h>
 
 #include <gtk/gtk.h>
 #include "filetype.h"

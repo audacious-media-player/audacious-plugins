@@ -28,7 +28,6 @@
  */
 
 #include "all.h"
-#include <libaudcore/strpool.h>
 
 AUD_OUTPUT_PLUGIN
 (

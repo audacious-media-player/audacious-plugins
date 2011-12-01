@@ -39,7 +39,6 @@
 #include <audacious/audtag.h>
 #endif
 #include <libaudcore/audstrings.h>
-#include <libaudcore/strpool.h>
 
 #if ! CHECK_LIBAVFORMAT_VERSION (53, 5, 0)
 #define avformat_find_stream_info(i, o) av_find_stream_info (i)

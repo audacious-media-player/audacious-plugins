@@ -43,7 +43,6 @@
 #include <audacious/plugins.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
-#include <libaudcore/strpool.h>
 #include <libaudcore/vfs_async.h>
 
 #include "config.h"

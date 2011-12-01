@@ -32,7 +32,6 @@
 #endif
 
 #include <libaudcore/audstrings.h>
-#include <libaudcore/strpool.h>
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>

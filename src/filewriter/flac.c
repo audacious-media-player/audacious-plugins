@@ -26,7 +26,6 @@
 #include <FLAC/all.h>
 #include <stdlib.h>
 
-#include <libaudcore/strpool.h>
 
 static gint flac_open(void);
 static void flac_write(gpointer data, gint length);

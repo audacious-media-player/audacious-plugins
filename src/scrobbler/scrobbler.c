@@ -15,7 +15,6 @@
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/md5.h>
-#include <libaudcore/strpool.h>
 
 #define SCROBBLER_CLI_ID "aud"
 #define SCROBBLER_HS_WAIT 1800

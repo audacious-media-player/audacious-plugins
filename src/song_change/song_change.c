@@ -23,7 +23,6 @@
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/audstrings.h>
-#include <libaudcore/strpool.h>
 #include <libaudcore/tuple.h>
 
 #include "formatter.h"
