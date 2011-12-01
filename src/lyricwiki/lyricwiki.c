@@ -41,7 +41,9 @@
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <audacious/plugins.h>
+#include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/strpool.h>
 #include <libaudcore/vfs_async.h>
 
 #include "config.h"
@@ -207,8 +209,8 @@ check_current_track(Tuple *tu)
 
 	for (i = 0; i < sizeof(fields)/sizeof(gint); i++)
 	{
-		const gchar* string1 = tuple_get_str(tu, fields[i], NULL);
-		const gchar* string2 = tuple_get_str(cu, fields[i], NULL);
+		gchar * string1 = tuple_get_str (tu, fields[i], NULL);
+		gchar * string2 = tuple_get_str (cu, fields[i], NULL);
 
 		if (string1 == NULL && string2 == NULL)
 			continue;
@@ -217,8 +219,13 @@ check_current_track(Tuple *tu)
 			strcmp(string1, string2) != 0)
 		{
 		    ret = FALSE;
+			str_unref (string1);
+			str_unref (string2);
 		    break;
 		}
+
+		str_unref (string1);
+		str_unref (string2);
 	}
 
 	tuple_unref(cu);
@@ -282,8 +289,12 @@ get_lyrics_step_1(const Tuple *tu)
 	gchar *artist, *title;
 	Tuple *tuple = tuple_copy(tu);
 
-	artist = lyricwiki_url_encode(tuple_get_str(tu, FIELD_ARTIST, NULL));
-	title = lyricwiki_url_encode(tuple_get_str(tu, FIELD_TITLE, NULL));
+	gchar * artist0 = tuple_get_str (tu, FIELD_ARTIST, NULL);
+	gchar * title0 = tuple_get_str (tu, FIELD_TITLE, NULL);
+	artist = lyricwiki_url_encode (artist0);
+	title = lyricwiki_url_encode (title0);
+	str_unref (artist0);
+	str_unref (title0);
 
 	uri = g_strdup_printf("http://lyrics.wikia.com/api.php?action=lyrics&artist=%s&song=%s&fmt=xml", artist, title);
 
@@ -335,9 +346,7 @@ void
 update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 {
 	GtkTextIter iter;
-	const gchar *artist, *title;
 	const gchar *real_lyrics;
-	gchar *f_name, *f_ext = NULL;
 
 	if (textbuffer == NULL)
 		return;
@@ -346,27 +355,23 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
 
-	title = tuple_get_str(tu, FIELD_TITLE, NULL);
-	artist = tuple_get_str(tu, FIELD_ARTIST, NULL);
+	gchar * title = tuple_get_str (tu, FIELD_TITLE, NULL);
+	gchar * artist = tuple_get_str (tu, FIELD_ARTIST, NULL);
 
-	if (title == NULL)
+	if (! title)
 	{
-		f_name = (gchar *) tuple_get_str(tu, FIELD_FILE_NAME, NULL);
-		f_ext = (gchar *) tuple_get_str(tu, FIELD_FILE_EXT, NULL);
+		gchar * filename = tuple_get_str (tu, FIELD_FILE_NAME, NULL);
+		gchar * temp = g_strdup (filename);
 
-		title = g_strdup(f_name);
+		string_cut_extension (temp);
+		title = str_get (temp);
 
-		f_name = g_strrstr(title, f_ext);
-		if (f_name != NULL && f_name != title)
-		{
-			f_name--;
-			f_name[0] = '\0';
-		}
+		str_unref (filename);
+		g_free (temp);
 	}
+
 	gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer), &iter,
 			title, strlen(title), "weight_bold", "size_x_large", NULL);
-	if (f_ext != NULL)
-		g_free((gpointer) title);
 
 	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n", 1);
 
@@ -384,6 +389,9 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
 	gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(textview), &iter, 0, TRUE, 0, 0);
+
+	str_unref (title);
+	str_unref (artist);
 }
 
 void
