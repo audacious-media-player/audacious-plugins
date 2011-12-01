@@ -433,13 +433,13 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
     gchar *tmpStr, tmpStr2[64];
 
     tmpStr = str_to_utf8(info->sidName);
-    tuple_copy_str_FIXME(tuple, FIELD_TITLE, NULL, tmpStr);
+    tuple_copy_str(tuple, FIELD_TITLE, NULL, tmpStr);
     g_free(tmpStr);
     tmpStr = str_to_utf8(info->sidComposer);
-    tuple_copy_str_FIXME(tuple, FIELD_ARTIST, NULL, tmpStr);
+    tuple_copy_str(tuple, FIELD_ARTIST, NULL, tmpStr);
     g_free(tmpStr);
     tmpStr = str_to_utf8(info->sidCopyright);
-    tuple_copy_str_FIXME(tuple, FIELD_COPYRIGHT, NULL, tmpStr);
+    tuple_copy_str(tuple, FIELD_COPYRIGHT, NULL, tmpStr);
     g_free(tmpStr);
     tuple_copy_str(tuple, -1, "sid-format", info->sidFormat);
     tuple_copy_str(tuple, FIELD_CODEC, NULL, "Commodore 64 SID PlaySID/RSID");
