@@ -27,7 +27,6 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudcore/audstrings.h>
-#include <libaudcore/tuple_formatter.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
