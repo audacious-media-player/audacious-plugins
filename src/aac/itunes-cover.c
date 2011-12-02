@@ -8,6 +8,7 @@
  * http://atomicparsley.sourceforge.net/mpeg-4files.html
  */
 
+#include <glib.h>
 #include <string.h>
 #include <audacious/debug.h>
 #include <libaudcore/vfs.h>

@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -49,7 +50,7 @@ static int read_word16(VFSFile *fp, int *p)
 }
 
 /* read 32-bit integer from file.
- *  Returns 1 if error occurs 
+ *  Returns 1 if error occurs
  */
 static int read_word32(VFSFile *fp, int32_t *p)
 {
@@ -173,12 +174,12 @@ char *ayemu_vtx_load_data (ayemu_vtx_t *vtx)
     fprintf(stderr, "ayemu_vtx_load_data: tune file not open yet (do you call ayemu_vtx_open first?)\n");
     return NULL;
   }
-  packed_size = 0; 
+  packed_size = 0;
   buf_alloc = 4096;
   packed_data = (char *) malloc (buf_alloc);
   /* read packed AY register data to end of file. */
   while ((c = vfs_getc (vtx->fp)) != EOF) {
-    if (buf_alloc < packed_size) {              
+    if (buf_alloc < packed_size) {
       buf_alloc *= 2;
       packed_data = (char *) realloc (packed_data, buf_alloc);
       if (packed_data == NULL) {
@@ -188,7 +189,7 @@ char *ayemu_vtx_load_data (ayemu_vtx_t *vtx)
       }
     }
     packed_data[packed_size++] = c;
-  }  
+  }
   vfs_fclose (vtx->fp);
   vtx->fp = NULL;
   if ((vtx->regdata = (char *) malloc (vtx->hdr.regdata_size)) == NULL) {

@@ -26,6 +26,7 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <glib.h>
 #include <libaudcore/vfs.h>
 
 typedef GHashTable INIFile;

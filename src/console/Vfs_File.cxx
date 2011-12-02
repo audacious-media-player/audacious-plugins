@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "Vfs_File.h"
 
 extern "C" {
