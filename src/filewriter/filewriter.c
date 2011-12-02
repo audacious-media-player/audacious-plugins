@@ -231,8 +231,12 @@ static gint file_open(gint fmt, gint rate, gint nch)
     {
         gchar * utf8 = aud_playlist_entry_get_title (playlist, pos, FALSE);
         string_replace_char (utf8, '/', ' ');
-        filename = string_encode_percent (utf8, FALSE);
+
+        gchar buf[3 * strlen (utf8) + 1];
+        str_encode_percent (utf8, -1, buf);
         g_free (utf8);
+
+        filename = g_strdup (buf);
     }
     else
     {
