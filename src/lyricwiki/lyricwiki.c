@@ -266,8 +266,7 @@ get_lyrics_step_2(gchar *buf, gint64 len, Tuple *tu)
 		if (check_current_track(tu))
 			update_lyrics_window(tu, NULL);
 
-		tuple_unref (tu);
-		return FALSE;
+		goto CLEANUP;
 	}
 
 	if (check_current_track(tu))
@@ -275,10 +274,20 @@ get_lyrics_step_2(gchar *buf, gint64 len, Tuple *tu)
 		update_lyrics_window(tu, _("\nLooking for lyrics..."));
 		vfs_async_file_get_contents(uri, (VFSConsumer) get_lyrics_step_3, tu);
 	}
+	else
+	{
+		g_free(uri);
+		goto CLEANUP;
+	}
 
 	g_free(buf);
 
 	return TRUE;
+
+CLEANUP:
+	g_free(buf);
+	tuple_unref (tu);
+	return FALSE;
 }
 
 void
@@ -396,9 +405,6 @@ lyricwiki_playback_began(void)
 	Tuple * tu = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
 
 	get_lyrics_step_1(tu);
-
-	if (tu)
-		tuple_unref (tu);
 }
 
 static gboolean init (void)
