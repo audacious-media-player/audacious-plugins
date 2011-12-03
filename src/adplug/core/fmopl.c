@@ -31,7 +31,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#define INLINE		__inline
 #define HAS_YM3812	1
 
 #include <stdio.h>
@@ -244,7 +243,7 @@ static INT32 feedback2;		/* connect for SLOT 2 */
 
 /* --------------------- subroutines  --------------------- */
 
-INLINE int Limit( int val, int max, int min ) {
+static inline int Limit( int val, int max, int min ) {
 	if ( val > max )
 		val = max;
 	else if ( val < min )
@@ -254,7 +253,7 @@ INLINE int Limit( int val, int max, int min ) {
 }
 
 /* status set and IRQ handling */
-INLINE void OPL_STATUS_SET(FM_OPL *OPL,int flag)
+static inline void OPL_STATUS_SET(FM_OPL *OPL,int flag)
 {
 	/* set status flag */
 	OPL->status |= flag;
@@ -270,7 +269,7 @@ INLINE void OPL_STATUS_SET(FM_OPL *OPL,int flag)
 }
 
 /* status reset and IRQ handling */
-INLINE void OPL_STATUS_RESET(FM_OPL *OPL,int flag)
+static inline void OPL_STATUS_RESET(FM_OPL *OPL,int flag)
 {
 	/* reset status flag */
 	OPL->status &=~flag;
@@ -286,7 +285,7 @@ INLINE void OPL_STATUS_RESET(FM_OPL *OPL,int flag)
 }
 
 /* IRQ mask set */
-INLINE void OPL_STATUSMASK_SET(FM_OPL *OPL,int flag)
+static inline void OPL_STATUSMASK_SET(FM_OPL *OPL,int flag)
 {
 	OPL->statusmask = flag;
 	/* IRQ handling check */
@@ -295,7 +294,7 @@ INLINE void OPL_STATUSMASK_SET(FM_OPL *OPL,int flag)
 }
 
 /* ----- key on  ----- */
-INLINE void OPL_KEYON(OPL_SLOT *SLOT)
+static inline void OPL_KEYON(OPL_SLOT *SLOT)
 {
 	/* sin wave restart */
 	SLOT->Cnt = 0;
@@ -306,7 +305,7 @@ INLINE void OPL_KEYON(OPL_SLOT *SLOT)
 	SLOT->eve = EG_AED;
 }
 /* ----- key off ----- */
-INLINE void OPL_KEYOFF(OPL_SLOT *SLOT)
+static inline void OPL_KEYOFF(OPL_SLOT *SLOT)
 {
 	if( SLOT->evm > ENV_MOD_RR)
 	{
@@ -322,7 +321,7 @@ INLINE void OPL_KEYOFF(OPL_SLOT *SLOT)
 
 /* ---------- calcrate Envelope Generator & Phase Generator ---------- */
 /* return : envelope output */
-INLINE UINT32 OPL_CALC_SLOT( OPL_SLOT *SLOT )
+static inline UINT32 OPL_CALC_SLOT( OPL_SLOT *SLOT )
 {
 	/* calcrate envelope generator */
 	if( (SLOT->evc+=SLOT->evs) >= SLOT->eve )
@@ -368,7 +367,7 @@ static void set_algorythm( OPL_CH *CH)
 }
 
 /* ---------- frequency counter for operater update ---------- */
-INLINE void CALC_FCSLOT(OPL_CH *CH,OPL_SLOT *SLOT)
+static inline void CALC_FCSLOT(OPL_CH *CH,OPL_SLOT *SLOT)
 {
 	int ksr;
 
@@ -388,7 +387,7 @@ INLINE void CALC_FCSLOT(OPL_CH *CH,OPL_SLOT *SLOT)
 }
 
 /* set multi,am,vib,EG-TYP,KSR,mul */
-INLINE void set_mul(FM_OPL *OPL,int slot,int v)
+static inline void set_mul(FM_OPL *OPL,int slot,int v)
 {
 	OPL_CH   *CH   = &OPL->P_CH[slot/2];
 	OPL_SLOT *SLOT = &CH->SLOT[slot&1];
@@ -402,7 +401,7 @@ INLINE void set_mul(FM_OPL *OPL,int slot,int v)
 }
 
 /* set ksl & tl */
-INLINE void set_ksl_tl(FM_OPL *OPL,int slot,int v)
+static inline void set_ksl_tl(FM_OPL *OPL,int slot,int v)
 {
 	OPL_CH   *CH   = &OPL->P_CH[slot/2];
 	OPL_SLOT *SLOT = &CH->SLOT[slot&1];
@@ -418,7 +417,7 @@ INLINE void set_ksl_tl(FM_OPL *OPL,int slot,int v)
 }
 
 /* set attack rate & decay rate  */
-INLINE void set_ar_dr(FM_OPL *OPL,int slot,int v)
+static inline void set_ar_dr(FM_OPL *OPL,int slot,int v)
 {
 	OPL_CH   *CH   = &OPL->P_CH[slot/2];
 	OPL_SLOT *SLOT = &CH->SLOT[slot&1];
@@ -435,7 +434,7 @@ INLINE void set_ar_dr(FM_OPL *OPL,int slot,int v)
 }
 
 /* set sustain level & release rate */
-INLINE void set_sl_rr(FM_OPL *OPL,int slot,int v)
+static inline void set_sl_rr(FM_OPL *OPL,int slot,int v)
 {
 	OPL_CH   *CH   = &OPL->P_CH[slot/2];
 	OPL_SLOT *SLOT = &CH->SLOT[slot&1];
@@ -452,7 +451,7 @@ INLINE void set_sl_rr(FM_OPL *OPL,int slot,int v)
 /* operator output calcrator */
 #define OP_OUT(slot,env,con)   slot->wavetable[((slot->Cnt+con)/(0x1000000/SIN_ENT))&(SIN_ENT-1)][env]
 /* ---------- calcrate one of channel ---------- */
-INLINE void OPL_CALC_CH( OPL_CH *CH )
+static inline void OPL_CALC_CH( OPL_CH *CH )
 {
 	UINT32 env_out;
 	OPL_SLOT *SLOT;
@@ -497,7 +496,7 @@ INLINE void OPL_CALC_CH( OPL_CH *CH )
 
 /* ---------- calcrate rythm block ---------- */
 #define WHITE_NOISE_db 6.0
-INLINE void OPL_CALC_RH( OPL_CH *CH )
+static inline void OPL_CALC_RH( OPL_CH *CH )
 {
 	UINT32 env_tam,env_sd,env_top,env_hh;
 	int whitenoise = (rand()&1)*(WHITE_NOISE_db/EG_STEP);
@@ -713,7 +712,7 @@ static void OPLCloseTable( void )
 }
 
 /* CSM Key Controll */
-INLINE void CSMKeyControll(OPL_CH *CH)
+static inline void CSMKeyControll(OPL_CH *CH)
 {
 	OPL_SLOT *slot1 = &CH->SLOT[SLOT1];
 	OPL_SLOT *slot2 = &CH->SLOT[SLOT2];
