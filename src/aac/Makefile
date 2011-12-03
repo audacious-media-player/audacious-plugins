@@ -17,6 +17,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
-CFLAGS += ${PLUGIN_CFLAGS} -std=gnu99
+CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${FAAD_CFLAGS} -I../.. -I. -Imp4ff -DUSE_TAGGING=1
 LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${FAAD_LIBS} -lm

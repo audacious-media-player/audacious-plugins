@@ -15,6 +15,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
-CFLAGS += -std=gnu99 ${PLUGIN_CFLAGS}
+CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../..
 LIBS += -lm

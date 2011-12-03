@@ -10,6 +10,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
-CFLAGS += -std=gnu99 ${PLUGIN_CFLAGS}
+CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${LIBFLAC_CFLAGS}  ${GTK_CFLAGS} ${GLIB_CFLAGS}  -I../..
 LIBS += ${LIBFLAC_LIBS} ${GTK_LIBS} ${GLIB_LIBS}

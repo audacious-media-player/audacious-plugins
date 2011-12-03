@@ -7,6 +7,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${CONTAINER_PLUGIN_DIR}
 
-CPPFLAGS += -std=gnu99 ${PLUGIN_CPPFLAGS} ${CUE_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${CUE_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
 LIBS += ${CUE_LIBS}
