@@ -299,11 +299,11 @@ static void add_text (Tuple * tuple, gint field, const gchar * value)
     if (cur)
     {
         gchar * both = g_strconcat (cur, ", ", value, NULL);
-        tuple_copy_str (tuple, field, NULL, both);
+        tuple_set_str (tuple, field, NULL, both);
         g_free(both);
     }
     else
-        tuple_copy_str (tuple, field, NULL, value);
+        tuple_set_str (tuple, field, NULL, value);
 
     str_unref(cur);
 }
@@ -360,8 +360,8 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
 
     tuple = tuple_new_from_filename(filename);
 
-    tuple_copy_str(tuple, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
-    tuple_copy_str(tuple, FIELD_QUALITY, NULL, "lossless");
+    tuple_set_str(tuple, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
+    tuple_set_str(tuple, FIELD_QUALITY, NULL, "lossless");
 
     chain = FLAC__metadata_chain_new();
     g_return_val_if_fail(chain != NULL, FALSE);

@@ -117,7 +117,7 @@ static void copy_string (SNDFILE * sf, gint sf_id, Tuple * tup, gint tup_id)
 {
     const gchar * str = sf_get_string (sf, sf_id);
     if (str)
-        tuple_copy_str (tup, tup_id, NULL, str);
+        tuple_set_str (tup, tup_id, NULL, str);
 }
 
 static void copy_int (SNDFILE * sf, gint sf_id, Tuple * tup, gint tup_id)

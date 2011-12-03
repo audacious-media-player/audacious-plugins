@@ -185,10 +185,10 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 
 	Tuple * tuple = tuple_new_from_filename (filename);
 	make_format_string (& info, scratch, sizeof scratch);
-	tuple_copy_str (tuple, FIELD_CODEC, NULL, scratch);
+	tuple_set_str (tuple, FIELD_CODEC, NULL, scratch);
 	snprintf (scratch, sizeof scratch, "%s, %d Hz", (channels == 2)
 	 ? _("Stereo") : (channels > 2) ? _("Surround") : _("Mono"), (gint) rate);
-	tuple_copy_str (tuple, FIELD_QUALITY, NULL, scratch);
+	tuple_set_str (tuple, FIELD_QUALITY, NULL, scratch);
 	tuple_set_int (tuple, FIELD_BITRATE, NULL, info.bitrate);
 
 	if (! vfs_is_streaming (file))
@@ -249,7 +249,7 @@ update_stream_metadata(VFSFile *file, const gchar *name, Tuple *tuple, gint item
 	gboolean changed = (new != NULL && (old == NULL || strcmp(old, new)));
 
 	if (changed)
-		tuple_copy_str(tuple, item, NULL, new);
+		tuple_set_str(tuple, item, NULL, new);
 
 	g_free(new);
 	str_unref(old);

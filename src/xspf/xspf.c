@@ -135,7 +135,7 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
                         case TUPLE_STRING:
                             if (! tuple)
                                 tuple = tuple_new ();
-                            tuple_copy_str(tuple, xspf_entries[i].tupleField, NULL, (gchar *)str);
+                            tuple_set_str(tuple, xspf_entries[i].tupleField, NULL, (gchar *)str);
                             break;
 
                         case TUPLE_INT:

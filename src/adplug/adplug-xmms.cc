@@ -150,15 +150,15 @@ extern "C" Tuple * adplug_get_tuple (const gchar * filename, VFSFile * fd)
     ti = tuple_new_from_filename (filename);
 
     if (! p->getauthor().empty())
-      tuple_copy_str(ti, FIELD_ARTIST, NULL, p->getauthor().c_str());
+      tuple_set_str(ti, FIELD_ARTIST, NULL, p->getauthor().c_str());
     if (! p->gettitle().empty())
-      tuple_copy_str(ti, FIELD_TITLE, NULL, p->gettitle().c_str());
+      tuple_set_str(ti, FIELD_TITLE, NULL, p->gettitle().c_str());
     else if (! p->getdesc().empty())
-      tuple_copy_str(ti, FIELD_TITLE, NULL, p->getdesc().c_str());
+      tuple_set_str(ti, FIELD_TITLE, NULL, p->getdesc().c_str());
     else
-      tuple_copy_str(ti, FIELD_TITLE, NULL, g_path_get_basename(filename));
-    tuple_copy_str(ti, FIELD_CODEC, NULL, p->gettype().c_str());
-    tuple_copy_str(ti, FIELD_QUALITY, NULL, "sequenced");
+      tuple_set_str(ti, FIELD_TITLE, NULL, g_path_get_basename(filename));
+    tuple_set_str(ti, FIELD_CODEC, NULL, p->gettype().c_str());
+    tuple_set_str(ti, FIELD_QUALITY, NULL, "sequenced");
     tuple_set_int(ti, FIELD_LENGTH, NULL, p->songlength (plr.subsong));
     delete p;
   }

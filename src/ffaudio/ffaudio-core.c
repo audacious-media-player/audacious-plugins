@@ -314,7 +314,7 @@ ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
     {
         switch (m->ttype) {
         case TUPLE_STRING:
-            tuple_copy_str (tuple, m->field, NULL, tag->value);
+            tuple_set_str (tuple, m->field, NULL, tag->value);
             break;
 
         case TUPLE_INT:
@@ -342,7 +342,7 @@ ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVC
 
     if (codec != NULL && codec->long_name != NULL)
     {
-        tuple_copy_str(tuple, FIELD_CODEC, NULL, codec->long_name);
+        tuple_set_str(tuple, FIELD_CODEC, NULL, codec->long_name);
     }
 }
 

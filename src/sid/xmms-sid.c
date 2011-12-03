@@ -426,15 +426,15 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
     gchar *tmpStr;
 
     tmpStr = str_to_utf8(info->sidName);
-    tuple_copy_str(tuple, FIELD_TITLE, NULL, tmpStr);
+    tuple_set_str(tuple, FIELD_TITLE, NULL, tmpStr);
     g_free(tmpStr);
     tmpStr = str_to_utf8(info->sidComposer);
-    tuple_copy_str(tuple, FIELD_ARTIST, NULL, tmpStr);
+    tuple_set_str(tuple, FIELD_ARTIST, NULL, tmpStr);
     g_free(tmpStr);
     tmpStr = str_to_utf8(info->sidCopyright);
-    tuple_copy_str(tuple, FIELD_COPYRIGHT, NULL, tmpStr);
+    tuple_set_str(tuple, FIELD_COPYRIGHT, NULL, tmpStr);
     g_free(tmpStr);
-    tuple_copy_str(tuple, FIELD_CODEC, NULL, info->sidFormat);
+    tuple_set_str(tuple, FIELD_CODEC, NULL, info->sidFormat);
 
 #if 0
     switch (info->sidModel) {
@@ -443,7 +443,7 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
         case XS_SIDMODEL_ANY: tmpStr = "ANY"; break;
         default: tmpStr = "?"; break;
     }
-    tuple_copy_str(tuple, -1, "sid-model", tmpStr);
+    tuple_set_str(tuple, -1, "sid-model", tmpStr);
 #endif
 
     /* Get sub-tune information, if available */
@@ -471,7 +471,7 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
         } else
             tmpStr = "?";
 
-        tuple_copy_str(tuple, -1, "sid-speed", tmpStr);
+        tuple_set_str(tuple, -1, "sid-speed", tmpStr);
 #endif
     } else
         subTune = 1;

@@ -90,14 +90,14 @@ Tuple *xsf_tuple(const gchar *filename, VFSFile *fd)
 	t = tuple_new_from_filename(filename);
 
 	tuple_set_int(t, FIELD_LENGTH, NULL, c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1);
-	tuple_copy_str(t, FIELD_ARTIST, NULL, c->inf_artist);
-	tuple_copy_str(t, FIELD_ALBUM, NULL, c->inf_game);
-	tuple_copy_str(t, -1, "game", c->inf_game);
-	tuple_copy_str(t, FIELD_TITLE, NULL, c->inf_title);
-	tuple_copy_str(t, FIELD_COPYRIGHT, NULL, c->inf_copy);
-	tuple_copy_str(t, FIELD_QUALITY, NULL, "sequenced");
-	tuple_copy_str(t, FIELD_CODEC, NULL, "GBA/Nintendo DS Audio");
-	tuple_copy_str(t, -1, "console", "GBA/Nintendo DS");
+	tuple_set_str(t, FIELD_ARTIST, NULL, c->inf_artist);
+	tuple_set_str(t, FIELD_ALBUM, NULL, c->inf_game);
+	tuple_set_str(t, -1, "game", c->inf_game);
+	tuple_set_str(t, FIELD_TITLE, NULL, c->inf_title);
+	tuple_set_str(t, FIELD_COPYRIGHT, NULL, c->inf_copy);
+	tuple_set_str(t, FIELD_QUALITY, NULL, "sequenced");
+	tuple_set_str(t, FIELD_CODEC, NULL, "GBA/Nintendo DS Audio");
+	tuple_set_str(t, -1, "console", "GBA/Nintendo DS");
 
 	free(c);
 	g_free(buf);

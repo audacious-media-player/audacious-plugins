@@ -253,7 +253,7 @@ static Tuple *metronom_probe_for_tuple(const gchar * filename, VFSFile *fd)
     gchar *tmp = NULL;
 
     if (metronom_get_cp(filename, &metronom, &tmp))
-        tuple_copy_str(tuple, FIELD_TITLE, NULL, tmp);
+        tuple_set_str(tuple, FIELD_TITLE, NULL, tmp);
 
     g_free(tmp);
 

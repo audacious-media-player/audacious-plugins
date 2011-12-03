@@ -427,7 +427,7 @@ Tuple * usf_get_song_tuple(const gchar * fn, VFSFile *fil)
 
 		psftag_raw_getvar(tagbuffer, "title", buffer2, 50000);
         if(strlen(buffer2))
-			tuple_copy_str(tuple, FIELD_TITLE, NULL, buffer2);
+			tuple_set_str(tuple, FIELD_TITLE, NULL, buffer2);
 		else
 		{
 			char title[512];
@@ -442,29 +442,29 @@ Tuple * usf_get_song_tuple(const gchar * fn, VFSFile *fil)
 
 			strcpy(title, &fn[pathlength]);
 
-			tuple_copy_str(tuple, FIELD_TITLE, NULL, title);
+			tuple_set_str(tuple, FIELD_TITLE, NULL, title);
 
 		}
 
 		psftag_raw_getvar(tagbuffer, "artist", buffer2, 50000);
         if(strlen(buffer2))
-			tuple_copy_str(tuple, FIELD_ARTIST, NULL, buffer2);
+			tuple_set_str(tuple, FIELD_ARTIST, NULL, buffer2);
 
 		psftag_raw_getvar(tagbuffer, "game", buffer2, 50000);
         if(strlen(buffer2)) {
-			tuple_copy_str(tuple, FIELD_ALBUM, NULL, buffer2);
-			tuple_copy_str(tuple, -1, "game", buffer2);
+			tuple_set_str(tuple, FIELD_ALBUM, NULL, buffer2);
+			tuple_set_str(tuple, -1, "game", buffer2);
 		}
 
 		psftag_raw_getvar(tagbuffer, "copyright", buffer2, 50000);
         if(strlen(buffer2))
-			tuple_copy_str(tuple, FIELD_COPYRIGHT, NULL, buffer2);
+			tuple_set_str(tuple, FIELD_COPYRIGHT, NULL, buffer2);
 
 		// This for unknown reasons turns the "Kbps" in the UI to "channels"
-		//tuple_copy_str(tuple, FIELD_QUALITY, NULL, "sequenced");
+		//tuple_set_str(tuple, FIELD_QUALITY, NULL, "sequenced");
 
-		tuple_copy_str(tuple, FIELD_CODEC, NULL, "Nintendo 64 Audio");
-		tuple_copy_str(tuple, -1, "console", "Nintendo 64");
+		tuple_set_str(tuple, FIELD_CODEC, NULL, "Nintendo 64 Audio");
+		tuple_set_str(tuple, -1, "console", "Nintendo 64");
 
 		free(tagbuffer);
 		free(buffer2);
@@ -485,7 +485,7 @@ Tuple * usf_get_song_tuple(const gchar * fn, VFSFile *fil)
 
 
 		tuple_set_int(tuple, FIELD_LENGTH, NULL, (180 * 1000));
-		tuple_copy_str(tuple, FIELD_TITLE, NULL, title);
+		tuple_set_str(tuple, FIELD_TITLE, NULL, title);
 	}
 
 	return tuple;

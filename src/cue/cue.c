@@ -53,7 +53,7 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, gint tuple_type, gint pti)
     if (text == NULL)
         return;
 
-    tuple_copy_str(tuple, tuple_type, NULL, text);
+    tuple_set_str(tuple, tuple_type, NULL, text);
 }
 
 static gboolean playlist_load_cue (const gchar * cue_filename, VFSFile * file,

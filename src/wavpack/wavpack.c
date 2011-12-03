@@ -335,8 +335,8 @@ wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
 
 	tuple_set_int(tu, FIELD_LENGTH, NULL,
         ((guint64) WavpackGetNumSamples(ctx) * 1000) / (guint64) WavpackGetSampleRate(ctx));
-    tuple_copy_str(tu, FIELD_CODEC, NULL, "WavPack");
-    tuple_copy_str(tu, FIELD_QUALITY, NULL, wv_get_quality(ctx));
+    tuple_set_str(tu, FIELD_CODEC, NULL, "WavPack");
+    tuple_set_str(tu, FIELD_QUALITY, NULL, wv_get_quality(ctx));
 
     WavpackCloseFile(ctx);
 

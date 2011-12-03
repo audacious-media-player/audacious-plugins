@@ -154,7 +154,7 @@ set_tuple_str(Tuple *tuple, const gint nfield, const gchar *field,
     gchar *str = vorbis_comment_query(comment, key, 0);
     if (str != NULL) {
         gchar *tmp = str_to_utf8(str);
-        tuple_copy_str(tuple, nfield, field, tmp);
+        tuple_set_str(tuple, nfield, field, tmp);
         g_free(tmp);
     }
 }
@@ -193,7 +193,7 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
     tuple_set_format (tuple, "Ogg Vorbis", info->channels, info->rate,
      info->bitrate_nominal / 1000);
 
-    tuple_copy_str(tuple, FIELD_MIMETYPE, NULL, "application/ogg");
+    tuple_set_str(tuple, FIELD_MIMETYPE, NULL, "application/ogg");
 
     return tuple;
 }

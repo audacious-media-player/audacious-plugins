@@ -160,16 +160,16 @@ static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const g
     if (ti != NULL)
     {
         gint length;
-        tuple_copy_str(ti, FIELD_ARTIST, NULL, info->author);
-        tuple_copy_str(ti, FIELD_ALBUM, NULL, info->game);
-        tuple_copy_str(ti, -1, "game", info->game);
-        tuple_copy_str(ti, FIELD_TITLE, NULL, (info->song && info->song[0]) ? info->song : g_path_get_basename(path));
-        tuple_copy_str(ti, FIELD_COPYRIGHT, NULL, info->copyright);
-        tuple_copy_str(ti, -1, "console", info->system);
-        tuple_copy_str(ti, FIELD_CODEC, NULL, info->system);
-        tuple_copy_str(ti, FIELD_QUALITY, NULL, "sequenced");
-        tuple_copy_str(ti, -1, "dumper", info->dumper);
-        tuple_copy_str(ti, FIELD_COMMENT, NULL, info->comment);
+        tuple_set_str(ti, FIELD_ARTIST, NULL, info->author);
+        tuple_set_str(ti, FIELD_ALBUM, NULL, info->game);
+        tuple_set_str(ti, -1, "game", info->game);
+        tuple_set_str(ti, FIELD_TITLE, NULL, (info->song && info->song[0]) ? info->song : g_path_get_basename(path));
+        tuple_set_str(ti, FIELD_COPYRIGHT, NULL, info->copyright);
+        tuple_set_str(ti, -1, "console", info->system);
+        tuple_set_str(ti, FIELD_CODEC, NULL, info->system);
+        tuple_set_str(ti, FIELD_QUALITY, NULL, "sequenced");
+        tuple_set_str(ti, -1, "dumper", info->dumper);
+        tuple_set_str(ti, FIELD_COMMENT, NULL, info->comment);
         if (track >= 0)
         {
             tuple_set_int(ti, FIELD_TRACK_NUMBER, NULL, track + 1);

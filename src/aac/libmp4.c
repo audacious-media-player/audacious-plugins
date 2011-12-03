@@ -384,7 +384,7 @@ static Tuple *aac_get_tuple (const gchar * filename, VFSFile * handle)
     gchar *temp;
     gint length, bitrate, samplerate, channels;
 
-    tuple_copy_str (tuple, FIELD_CODEC, NULL, "MPEG-2/4 AAC");
+    tuple_set_str (tuple, FIELD_CODEC, NULL, "MPEG-2/4 AAC");
 
     if (!vfs_is_remote (filename))
     {
@@ -400,14 +400,14 @@ static Tuple *aac_get_tuple (const gchar * filename, VFSFile * handle)
     temp = vfs_get_metadata (handle, "track-name");
     if (temp != NULL)
     {
-        tuple_copy_str (tuple, FIELD_TITLE, NULL, temp);
+        tuple_set_str (tuple, FIELD_TITLE, NULL, temp);
         g_free (temp);
     }
 
     temp = vfs_get_metadata (handle, "stream-name");
     if (temp != NULL)
     {
-        tuple_copy_str (tuple, FIELD_ALBUM, NULL, temp);
+        tuple_set_str (tuple, FIELD_ALBUM, NULL, temp);
         g_free (temp);
     }
 
@@ -430,7 +430,7 @@ static gboolean aac_title_changed (const gchar * filename, VFSFile * handle,
 
     changed = (new != NULL && (old == NULL || strcmp (old, new)));
     if (changed)
-        tuple_copy_str (tuple, FIELD_TITLE, NULL, new);
+        tuple_set_str (tuple, FIELD_TITLE, NULL, new);
 
     g_free (new);
     str_unref(old);
@@ -445,7 +445,7 @@ static void read_and_set_string (mp4ff_t * mp4, gint (*func) (const mp4ff_t *
     func (mp4, &string);
 
     if (string != NULL)
-        tuple_copy_str (tuple, field, NULL, string);
+        tuple_set_str (tuple, field, NULL, string);
 
     free (string);
 }
@@ -458,7 +458,7 @@ static Tuple *generate_tuple (const gchar * filename, mp4ff_t * mp4, gint track)
     gchar *year = NULL, *cd_track = NULL;
     gchar scratch[32];
 
-    tuple_copy_str (tuple, FIELD_CODEC, NULL, "MPEG-2/4 AAC");
+    tuple_set_str (tuple, FIELD_CODEC, NULL, "MPEG-2/4 AAC");
 
     length = mp4ff_get_track_duration (mp4, track);
     scale = mp4ff_time_scale (mp4, track);
@@ -473,7 +473,7 @@ static Tuple *generate_tuple (const gchar * filename, mp4ff_t * mp4, gint track)
     {
         snprintf (scratch, sizeof scratch, "%d kHz, %s", rate / 1000, channels
          == 1 ? "mono" : channels == 2 ? "stereo" : "surround");
-        tuple_copy_str (tuple, FIELD_QUALITY, NULL, scratch);
+        tuple_set_str (tuple, FIELD_QUALITY, NULL, scratch);
     }
 
     bitrate = mp4ff_get_avg_bitrate (mp4, track);
