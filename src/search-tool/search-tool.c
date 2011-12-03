@@ -45,6 +45,7 @@ static const gchar * const field_names[] = {N_("Genre"), N_("Artist"),
  N_("Album"), N_("Title")};
 
 typedef struct {
+    gint field;
     gchar * name, * folded;
     GArray * matches;
 } Item;
@@ -64,7 +65,8 @@ static GtkWidget * help_label, * wait_label, * scrolled, * results_list;
 static Item * item_new (gint field, const gchar * name)
 {
     Item * item = g_slice_new (Item);
-    item->name = g_strdup_printf ("%s: %s", _(field_names[field]), name);
+    item->field = field;
+    item->name = g_strdup (name);
     item->folded = g_utf8_casefold (name, -1);
     item->matches = g_array_new (FALSE, FALSE, sizeof (gint));
     return item;
@@ -228,9 +230,14 @@ static void search_cb (void * key, void * item, void * index)
     index_append (index, item);
 }
 
-static gint item_compare (const void * a, const void * b)
+static gint item_compare (const void * _a, const void * _b)
 {
-    return string_compare (((const Item *) a)->name, ((const Item *) b)->name);
+    const Item * a = _a, * b = _b;
+
+    if (a->field != b->field)
+        return (a->field > b->field) ? 1 : -1;
+
+    return string_compare (a->name, b->name);
 }
 
 static void do_search (void)
@@ -468,7 +475,8 @@ static void list_get_value (void * user, gint row, gint column, GValue * value)
     switch (column)
     {
     case COLUMN_NAME:
-        g_value_set_string (value, item->name);
+        g_value_take_string (value, g_strdup_printf ("%s: %s",
+         _(field_names[item->field]), item->name));
         break;
     case COLUMN_MATCHES:
         g_value_set_int (value, item->matches->len);
