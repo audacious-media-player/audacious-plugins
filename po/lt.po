@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/browse/AUDPLUG\n"
-"POT-Creation-Date: 2011-10-24 16:38-0400\n"
-"PO-Revision-Date: 2011-11-08 09:15+0000\n"
+"POT-Creation-Date: 2011-11-15 22:40-0500\n"
+"PO-Revision-Date: 2011-12-02 07:14+0000\n"
 "Last-Translator: gymka_ltu <margevicius.algimantas@gmail.com>\n"
 "Language-Team: Lithuanian\n"
 "MIME-Version: 1.0\n"
@@ -35,216 +35,170 @@ msgstr ""
 msgid "About MP4 AAC decoder plugin"
 msgstr "Apie MP4 AAC decoder plugin"
 
-#: src/alarm/interface.c:34
-msgid "About XMMS Alarm"
-msgstr "Apie XMMS Alarm"
+#: src/alarm/alarm.c:312
+msgid "About Alarm"
+msgstr "Apie Alarm"
 
-#: src/alarm/interface.c:41
-msgid "XMMS Alarm"
-msgstr "XMMS Alarm"
-
-#: src/alarm/interface.c:50
+#: src/alarm/alarm.c:313
 msgid ""
-"An XMMS plugin which can be used\n"
-"to start playing at a certain time.\n"
+"A plugin that can be used to start playing at a certain time.\n"
 "\n"
-"Send all complaints to:\n"
-"Adam Feakin <adamf@snika.uklinux.net>\n"
-"Daniel Stodden <stodden@in.tum.de>\n"
-"\n"
-"http://www.snika.uklinux.net/xmms-alarm/"
+"Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
-"XMMS įskiepis gali būt naudojamas\n"
-"norint priversti groti nuo tam tikros vietos.\n"
+"Įskiepis  kuris suteikia galimybę pradėti groti, nuo tam tikros vietos.\n"
 "\n"
-"Visus skundus siųskit:\n"
-"Adam Feakin <adamf@snika.uklinux.net>\n"
-"Daniel Stodden <stodden@in.tum.de>\n"
-"\n"
-"http://www.snika.uklinux.net/xmms-alarm/"
+"Originaliai sukūrė Adam Feakin ir Daniel Stodden."
 
-#: src/alarm/interface.c:65
-msgid "Close"
-msgstr "Uždaryti"
-
-#: src/alarm/interface.c:95
+#: src/alarm/interface.c:33
 msgid "Alarm"
 msgstr "Žadintuvas"
 
-#: src/alarm/interface.c:102
+#: src/alarm/interface.c:40
 msgid "This is your wakeup call."
 msgstr "Tai pabudimo skambutis."
 
-#: src/alarm/interface.c:117 src/alarm/interface.c:1338
+#: src/alarm/interface.c:55 src/alarm/interface.c:1213
 msgid "OK"
 msgstr "Gerai"
 
-#: src/alarm/interface.c:151
-msgid "Sorry"
-msgstr "Deja"
-
-#: src/alarm/interface.c:158
-msgid "Warning"
-msgstr "Įspėjimas"
-
-#: src/alarm/interface.c:167
-msgid ""
-"For safety reasons the \"quiet\" time must be at least 65 seconds longer than the fading time, it must also be more than 10 seconds.  This basically means that there is a bug in the code and until I find a way of really fixing it this message will appear :)\n"
-"\n"
-"Your fading settings have NOT been saved\n"
-"\n"
-"--\n"
-"Adam"
-msgstr ""
-"Saugumo sumetimais \"tylu\" laikas turi būt bent 65 sekundėm ilgesnis nei laukimo laikas, taipogi tai turi būt daugiau nei 10 sekundžių. Iš esmės tai reiškia jog yra klaida kode ir kol nerasiu būdo tai pataisyt šis pranešimas galios :)\n"
-"\n"
-"Jūsų nustatymai NEišsaugoti\n"
-"\n"
-"--\n"
-"Adam"
-
-#: src/alarm/interface.c:183
-msgid "Oh Well"
-msgstr "Na ką gi"
-
-#: src/alarm/interface.c:339
+#: src/alarm/interface.c:214
 msgid "Alarm Settings"
 msgstr "Žadintuvo nustatymai"
 
-#: src/alarm/interface.c:354 src/alarm/interface.c:526
-#: src/alarm/interface.c:898
+#: src/alarm/interface.c:229 src/alarm/interface.c:401
+#: src/alarm/interface.c:773
 msgid "Time"
 msgstr "Laikas"
 
-#: src/alarm/interface.c:395
+#: src/alarm/interface.c:270
 msgid "hours"
 msgstr "valandos"
 
-#: src/alarm/interface.c:456
+#: src/alarm/interface.c:331
 msgid "h"
 msgstr "v"
 
-#: src/alarm/interface.c:486
+#: src/alarm/interface.c:361
 msgid "minutes"
 msgstr "minutės"
 
-#: src/alarm/interface.c:504
+#: src/alarm/interface.c:379
 msgid "Quiet after:"
 msgstr "Nutilti po:"
 
-#: src/alarm/interface.c:514
+#: src/alarm/interface.c:389
 msgid "Alarm at (default):"
 msgstr "Žadinti (numatyta):"
 
-#: src/alarm/interface.c:534
+#: src/alarm/interface.c:409
 msgid "Choose the days for the alarm to come on"
 msgstr "Pasirinkite dienas kuriomis žadinti"
 
-#: src/alarm/interface.c:562 src/alarm/interface.c:610
-#: src/alarm/interface.c:658 src/alarm/interface.c:706
-#: src/alarm/interface.c:754 src/alarm/interface.c:802
-#: src/alarm/interface.c:850 src/bs2b/plugin.c:198 src/OSS/configure.c:153
+#: src/alarm/interface.c:437 src/alarm/interface.c:485
+#: src/alarm/interface.c:533 src/alarm/interface.c:581
+#: src/alarm/interface.c:629 src/alarm/interface.c:677
+#: src/alarm/interface.c:725 src/bs2b/plugin.c:198 src/OSS/configure.c:153
 #: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
 msgid "Default"
 msgstr "Numatytasis"
 
-#: src/alarm/interface.c:888
+#: src/alarm/interface.c:763
 msgid "Day"
 msgstr "Diena"
 
-#: src/alarm/interface.c:908
+#: src/alarm/interface.c:783
 msgid "Tuesday"
 msgstr "Antradienis"
 
-#: src/alarm/interface.c:919
+#: src/alarm/interface.c:794
 msgid "Wednesday"
 msgstr "Trečiadienis"
 
-#: src/alarm/interface.c:930
+#: src/alarm/interface.c:805
 msgid "Thursday"
 msgstr "Ketvirtadienis"
 
-#: src/alarm/interface.c:941
+#: src/alarm/interface.c:816
 msgid "Friday"
 msgstr "Penktadienis"
 
-#: src/alarm/interface.c:952
+#: src/alarm/interface.c:827
 msgid "Saturday"
 msgstr "Šeštadienis"
 
-#: src/alarm/interface.c:963
+#: src/alarm/interface.c:838
 msgid "Sunday"
 msgstr "Sekmadienis"
 
-#: src/alarm/interface.c:973
+#: src/alarm/interface.c:848
 msgid "Monday"
 msgstr "Pirmadienis"
 
-#: src/alarm/interface.c:984
+#: src/alarm/interface.c:859
 msgid "Days"
 msgstr "Dienos"
 
-#: src/alarm/interface.c:1000
+#: src/alarm/interface.c:875
 msgid "Fading"
 msgstr "Blukimas"
 
-#: src/alarm/interface.c:1037
+#: src/alarm/interface.c:912
 msgid "seconds"
 msgstr "sekundės"
 
-#: src/alarm/interface.c:1045 src/alarm/interface.c:1160
+#: src/alarm/interface.c:920 src/alarm/interface.c:1035
 msgid "Volume"
 msgstr "Garsas"
 
-#: src/alarm/interface.c:1071
+#: src/alarm/interface.c:946
 msgid "Current"
 msgstr "Dabartinis"
 
-#: src/alarm/interface.c:1079
+#: src/alarm/interface.c:954
 msgid "Start at"
 msgstr "Pradėti nuo"
 
-#: src/alarm/interface.c:1107 src/alarm/interface.c:1151
+#: src/alarm/interface.c:982 src/alarm/interface.c:1026
 msgid "%"
 msgstr "%"
 
-#: src/alarm/interface.c:1123
+#: src/alarm/interface.c:998
 msgid "Final"
 msgstr "Baigti"
 
-#: src/alarm/interface.c:1176
+#: src/alarm/interface.c:1051
 msgid "Additional Command"
 msgstr "Papildoma komanda"
 
-#: src/alarm/interface.c:1202
+#: src/alarm/interface.c:1077
 msgid "enable"
 msgstr "Įjungti"
 
-#: src/alarm/interface.c:1210
+#: src/alarm/interface.c:1085
 msgid "Playlist (optional)"
 msgstr "Grojaraštis (nebūtina)"
 
-#: src/alarm/interface.c:1236
+#: src/alarm/interface.c:1111
 msgid "Browse..."
 msgstr "Naršyti..."
 
-#: src/alarm/interface.c:1244 src/alarm/interface.c:1408
+#: src/alarm/interface.c:1119 src/alarm/interface.c:1283
 msgid "Reminder"
 msgstr "Priminimas"
 
-#: src/alarm/interface.c:1261
+#: src/alarm/interface.c:1136
 msgid "Use reminder"
 msgstr "Naudoti priminimą"
 
-#: src/alarm/interface.c:1277 src/sndstretch/sndstretch_xmms.c:358
+#: src/alarm/interface.c:1152 src/sndstretch/sndstretch_xmms.c:358
 msgid "Options"
 msgstr "Pasirinktys"
 
-#: src/alarm/interface.c:1285
+#: src/alarm/interface.c:1160
 msgid "What do these options mean?"
 msgstr "Ką šios pasirinktys reiškia?"
 
-#: src/alarm/interface.c:1313
+#: src/alarm/interface.c:1188
 msgid ""
 "\n"
 "Time\n"
@@ -350,21 +304,21 @@ msgstr ""
 "    įveskit priminimą langelyje ir paspauskite patvirtinimo mygtuką\n"
 "    jei norit jog būtų rodomas.\n"
 
-#: src/alarm/interface.c:1315 src/skins/ui_manager.c:382
+#: src/alarm/interface.c:1190 src/skins/ui_manager.c:382
 msgid "Help"
 msgstr "Pagalba"
 
-#: src/alarm/interface.c:1347 src/cdaudio-ng/configure.c:249
+#: src/alarm/interface.c:1222 src/cdaudio-ng/configure.c:249
 #: src/crystalizer/crystalizer.c:130 src/echo_plugin/gui.c:125
 #: src/jack/configure.c:148 src/null/null.c:108 src/stereo_plugin/stereo.c:125
 msgid "Cancel"
 msgstr "Atšaukti"
 
-#: src/alarm/interface.c:1415
+#: src/alarm/interface.c:1290
 msgid "Your reminder for today is.."
 msgstr "Šiandien tavo priminimas yra.."
 
-#: src/alarm/interface.c:1440
+#: src/alarm/interface.c:1315
 msgid "Thankyou"
 msgstr "Dėkui"
 
@@ -404,7 +358,7 @@ msgstr "Apie ALSA išvesties įskiepį"
 msgid "ALSA error"
 msgstr "ALSA klaida"
 
-#: src/amidi-plug/amidi-plug.c:335
+#: src/amidi-plug/amidi-plug.c:325
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
@@ -1348,7 +1302,7 @@ msgstr "Aidas: (%)"
 msgid "Volume: (%)"
 msgstr "Garsas: (%)"
 
-#: src/ffaudio/ffaudio-core.c:795
+#: src/ffaudio/ffaudio-core.c:784
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1375,7 +1329,7 @@ msgstr ""
 "libavformat %s (%s)\n"
 "libavutil %s (%s)\n"
 
-#: src/ffaudio/ffaudio-core.c:809
+#: src/ffaudio/ffaudio-core.c:798
 msgid "About FFaudio Plugin"
 msgstr "Apie FFaudio įskiepį"
 
@@ -1974,15 +1928,15 @@ msgstr "Audacious"
 msgid "Error"
 msgstr "Klaida"
 
-#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:459
+#: src/gtkui/ui_statusbar.c:103 src/skins/ui_main.c:459
 msgid "mono"
 msgstr "mono"
 
-#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:458
+#: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:458
 msgid "stereo"
 msgstr "stereo"
 
-#: src/gtkui/ui_statusbar.c:106
+#: src/gtkui/ui_statusbar.c:107
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
@@ -1990,7 +1944,7 @@ msgstr[0] "%d kanalas"
 msgstr[1] "%d kanalai"
 msgstr[2] "%d kanalų"
 
-#: src/gtkui/ui_statusbar.c:121
+#: src/gtkui/ui_statusbar.c:122
 #, c-format
 msgid "%d kbps"
 msgstr "%d kbps"
@@ -2218,7 +2172,7 @@ msgstr "Įjungti įskiepiai:"
 msgid "Settings"
 msgstr "Nustatymai"
 
-#: src/lyricwiki/lyricwiki.c:227
+#: src/lyricwiki/lyricwiki.c:269
 msgid ""
 "\n"
 "Looking for lyrics..."
@@ -2226,7 +2180,7 @@ msgstr ""
 "\n"
 "Ieškoma dainos žodžių..."
 
-#: src/lyricwiki/lyricwiki.c:250
+#: src/lyricwiki/lyricwiki.c:293
 msgid ""
 "\n"
 "Connecting to lyrics.wikia.com..."
@@ -2234,7 +2188,7 @@ msgstr ""
 "\n"
 "Jungiamasi prie lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.c:338
+#: src/lyricwiki/lyricwiki.c:381
 msgid ""
 "\n"
 "No lyrics were found."
@@ -2407,7 +2361,7 @@ msgstr "Mikseris"
 msgid "About OSS Driver"
 msgstr "Apie OSS Driver"
 
-#: src/pulse_audio/pulse_audio.c:687
+#: src/pulse_audio/pulse_audio.c:673
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "Apie Audacious PulseAudio išvesties įskiepį"
 
