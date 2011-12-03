@@ -358,16 +358,7 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 	gchar * artist = tuple_get_str (tu, FIELD_ARTIST, NULL);
 
 	if (! title)
-	{
-		gchar * filename = tuple_get_str (tu, FIELD_FILE_NAME, NULL);
-		gchar * temp = g_strdup (filename);
-
-		string_cut_extension (temp);
-		title = str_get (temp);
-
-		str_unref (filename);
-		g_free (temp);
-	}
+		title = tuple_get_str (tu, FIELD_FILE_NAME, NULL);
 
 	gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer), &iter,
 			title, strlen(title), "weight_bold", "size_x_large", NULL);

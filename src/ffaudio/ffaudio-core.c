@@ -141,9 +141,13 @@ static GHashTable * create_extension_dict (void)
 
 static AVInputFormat * get_format_by_extension (const gchar * name)
 {
-    gchar * ext = uri_get_extension (name);
-    if (! ext)
+    const gchar * ext0, * sub;
+    uri_parse (name, NULL, & ext0, & sub, NULL);
+
+    if (ext0 == sub)
         return NULL;
+
+    gchar * ext = g_ascii_strdown (ext0 + 1, sub - ext0 - 1);
 
     AUDDBG ("Get format by extension: %s\n", name);
     g_static_mutex_lock (& data_mutex);

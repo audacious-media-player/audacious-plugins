@@ -65,12 +65,12 @@ extern "C" {
 gboolean xs_sidplay1_probe(xs_file_t *f)
 {
     gchar tmpBuf[4];
-    
+
     if (!f) return FALSE;
-    
+
     if (xs_fread(tmpBuf, sizeof(gchar), 4, f) != 4)
         return FALSE;
-    
+
     if (!strncmp(tmpBuf, "PSID", 4))
         return TRUE;
     else
@@ -220,8 +220,8 @@ gboolean xs_sidplay1_init(xs_status_t * status)
     }
 
     engine->currConfig.forceSongSpeed = xs_cfg.forceSpeed;
-    
-    
+
+
     /* Configure rest of the emulation */
     /* if (xs_cfg.forceModel) */
     engine->currConfig.mos8580 = xs_cfg.mos8580;
@@ -236,14 +236,14 @@ gboolean xs_sidplay1_init(xs_status_t * status)
         xs_error("[SIDPlay1] Emulator engine configuration failed!\n");
         return FALSE;
     }
-    
+
     /* Create sidtune object */
     engine->currTune = new sidTune(0);
     if (!engine->currTune) {
         xs_error("[SIDPlay1] Could not initialize SIDTune object.\n");
         return FALSE;
     }
-    
+
     return TRUE;
 }
 
@@ -269,7 +269,7 @@ void xs_sidplay1_close(xs_status_t * status)
     }
 
     xs_sidplay1_delete(status);
-    
+
     g_free(engine);
     status->sidEngine = NULL;
 }
@@ -319,7 +319,7 @@ guint xs_sidplay1_fillbuffer(xs_status_t * status, gchar * audioBuffer, guint au
 
 /* Load a given SID-tune file
  */
-gboolean xs_sidplay1_load(xs_status_t * status, gchar * filename)
+gboolean xs_sidplay1_load(xs_status_t * status, const gchar * filename)
 {
     xs_sidplay1_t *engine;
     assert(status != NULL);
@@ -330,10 +330,10 @@ gboolean xs_sidplay1_load(xs_status_t * status, gchar * filename)
 
     /* Try to get the tune */
     if (!filename) return FALSE;
-    
+
     if (xs_fload_buffer(filename, &(engine->buf), &(engine->bufSize)) != 0)
         return FALSE;
-    
+
     if (!engine->currTune->load(engine->buf, engine->bufSize))
         return FALSE;
 
@@ -350,7 +350,7 @@ void xs_sidplay1_delete(xs_status_t * status)
 
     engine = (xs_sidplay1_t *) status->sidEngine;
     if (engine == NULL) return;
-    
+
     g_free(engine->buf);
     engine->buf = NULL;
     engine->bufSize = 0;

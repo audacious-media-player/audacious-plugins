@@ -477,7 +477,7 @@ guint xs_sidplay2_fillbuffer(xs_status_t * status, gchar * audioBuffer, guint au
 
 /* Load a given SID-tune file
  */
-gboolean xs_sidplay2_load(xs_status_t * status, gchar * pcFilename)
+gboolean xs_sidplay2_load(xs_status_t * status, const gchar * pcFilename)
 {
     xs_sidplay2_t *engine;
     assert(status != NULL);

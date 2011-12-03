@@ -176,38 +176,31 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
     xs_tuneinfo_t *tmpTune;
     gboolean audioOpen = FALSE;
     gint audioBufSize, bufRemaining, tmpLength, subTune = -1;
-    gchar *tmpFilename, *audioBuffer = NULL, *oversampleBuffer = NULL;
+    gchar *audioBuffer = NULL, *oversampleBuffer = NULL;
     Tuple *tmpTuple;
 
     assert(pb);
     assert(xs_status.sidPlayer != NULL);
 
-    XSDEBUG("play '%s'\n", pb->filename);
-
-    if ((tmpFilename = filename_split_subtune (filename, & subTune)) == NULL)
-        return FALSE;
+    uri_parse (filename, NULL, NULL, NULL, & subTune);
 
     /* Get tune information */
     XS_MUTEX_LOCK(xs_status);
-    if ((xs_status.tuneInfo = xs_status.sidPlayer->plrGetSIDInfo(tmpFilename)) == NULL) {
+
+    if (! (xs_status.tuneInfo = xs_status.sidPlayer->plrGetSIDInfo (filename)))
+    {
         XS_MUTEX_UNLOCK(xs_status);
-        g_free(tmpFilename);
         return FALSE;
     }
 
     /* Initialize the tune */
-    if (!xs_status.sidPlayer->plrLoadSID(&xs_status, tmpFilename)) {
+    if (! xs_status.sidPlayer->plrLoadSID (& xs_status, filename))
+    {
         XS_MUTEX_UNLOCK(xs_status);
-        g_free(tmpFilename);
         xs_tuneinfo_free(xs_status.tuneInfo);
         xs_status.tuneInfo = NULL;
         return FALSE;
     }
-
-    g_free(tmpFilename);
-    tmpFilename = NULL;
-
-    XSDEBUG("load ok\n");
 
     gboolean error = FALSE;
 
@@ -503,7 +496,6 @@ static void xs_fill_subtunes(Tuple *tuple, xs_tuneinfo_t *info)
 Tuple * xs_probe_for_tuple(const gchar *filename, xs_file_t *fd)
 {
     Tuple *tuple;
-    gchar *tmpFilename;
     xs_tuneinfo_t *info;
     gint tune = -1;
 
@@ -518,20 +510,13 @@ Tuple * xs_probe_for_tuple(const gchar *filename, xs_file_t *fd)
     XS_MUTEX_UNLOCK(xs_status);
 
     /* Get information from URL */
-    tmpFilename = filename_split_subtune(filename, &tune);
-    if (tmpFilename == NULL) return NULL;
-
-    tuple = tuple_new_from_filename(tmpFilename);
-    if (tuple == NULL) {
-        g_free(tmpFilename);
-        return NULL;
-    }
+    tuple = tuple_new_from_filename (filename);
+    tune = tuple_get_int (tuple, FIELD_SUBSONG_NUM, NULL);
 
     /* Get tune information from emulation engine */
     XS_MUTEX_LOCK(xs_status);
-    info = xs_status.sidPlayer->plrGetSIDInfo(tmpFilename);
+    info = xs_status.sidPlayer->plrGetSIDInfo (filename);
     XS_MUTEX_UNLOCK(xs_status);
-    g_free(tmpFilename);
 
     if (info == NULL)
         return tuple;

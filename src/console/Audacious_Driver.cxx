@@ -73,9 +73,9 @@ ConsoleFileHandler::ConsoleFileHandler(const gchar *path, VFSFile *fd)
     m_type  = 0;
     m_track = -1;
 
-    m_path = filename_split_subtune(path, &m_track);
-    if (m_path == NULL)
-        return;
+    const gchar * sub;
+    uri_parse (path, NULL, NULL, & sub, & m_track);
+    m_path = g_strndup (path, sub - path);
 
     m_track -= 1;
 

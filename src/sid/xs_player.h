@@ -17,7 +17,7 @@ typedef struct {
     void        (*plrClose)(struct xs_status_t *);
     gboolean    (*plrInitSong)(struct xs_status_t *);
     guint       (*plrFillBuffer)(struct xs_status_t *, gchar *, guint);
-    gboolean    (*plrLoadSID)(struct xs_status_t *, gchar *);
+    gboolean    (*plrLoadSID)(struct xs_status_t *, const gchar *);
     void        (*plrDeleteSID)(struct xs_status_t *);
     xs_tuneinfo_t*    (*plrGetSIDInfo)(const gchar *);
     gboolean    (*plrUpdateSIDInfo)(struct xs_status_t *);
