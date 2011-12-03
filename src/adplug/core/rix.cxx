@@ -89,7 +89,7 @@ CrixPlayer::load (VFSFile * fd, const CFileProvider & fp)
   if (!f)
     return false;
   unsigned long i = 0;
-  std::string filename (fd->uri);
+  std::string filename (vfs_get_filename (fd));
 
   if (stricmp (filename.substr (filename.length () - 4, 4).c_str (), ".mkf")
       == 0)

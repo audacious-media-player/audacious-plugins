@@ -2751,7 +2751,7 @@ bool
 CadlPlayer::load (VFSFile * fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
-  std::string filename (fd->uri);
+  std::string filename (vfs_get_filename (fd));
 
   // file validation section
   if (!f || !fp.extension (filename, ".adl"))

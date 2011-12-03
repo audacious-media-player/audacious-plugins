@@ -55,7 +55,7 @@ CdmoLoader::load (VFSFile * fd, const CFileProvider & fp)
 {
   int i, j;
   binistream *f;
-  std::string filename (fd->uri);
+  std::string filename (vfs_get_filename (fd));
 
   // check header
   dmo_unpacker *unpacker = new dmo_unpacker;

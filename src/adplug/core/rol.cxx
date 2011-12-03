@@ -95,7 +95,7 @@ CrolPlayer::~CrolPlayer()
 bool CrolPlayer::load(VFSFile *fd, const CFileProvider &fp)
 {
     binistream *f = fp.open(fd); if(!f) return false;
-    std::string filename(fd->uri);
+    std::string filename(vfs_get_filename (fd));
 
     char *fn = new char[filename.length()+12];
     int i;

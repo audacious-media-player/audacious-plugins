@@ -190,7 +190,7 @@ Csa2Loader::load (VFSFile * fd, const CFileProvider & fp)
 
   AdPlug_LogWrite ("Csa2Loader::load(\"%s\"): sat_type = %x, nop = %d, "
                    "length = %d, restartpos = %d, activechan = %x, bpm = %d\n",
-                   fd->uri, sat_type, nop, length, restartpos, activechan,
+                   vfs_get_filename (fd), sat_type, nop, length, restartpos, activechan,
                    bpm);
 
   // track data
