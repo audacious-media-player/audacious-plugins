@@ -28,6 +28,7 @@
 //*************************************************************************//
 
 
-INLINE void StartREVERB(int ch);
-INLINE void StoreREVERB(int ch,int ns);
-
+void StartREVERB(int ch);
+void StoreREVERB(int ch,int ns);
+int MixREVERBLeft(int ns,int core);
+int MixREVERBRight(int core);

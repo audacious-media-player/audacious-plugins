@@ -5,7 +5,7 @@
     copyright            : (C) 2002 by Pete Bernert
     email                : BlackDove@addcom.de
  ***************************************************************************/
-                       
+
 /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   additional informations.                                              *
  *                                                                         *
  ***************************************************************************/
-                           
+
 //*************************************************************************//
 // History of changes:
 //
@@ -102,20 +102,20 @@
 #include "../peops2/externals.h"
 #include "../peops2/regs.h"
 #include "../peops2/dma.h"
- 
+
 ////////////////////////////////////////////////////////////////////////
 // globals
 ////////////////////////////////////////////////////////////////////////
 
 // psx buffer / addresses
 
-unsigned short  regArea[32*1024];                        
+unsigned short  regArea[32*1024];
 unsigned short  spuMem[1*1024*1024];
 unsigned char * spuMemC;
 unsigned char * pSpuIrq[2];
 unsigned char * pSpuBuffer;
 
-// user settings          
+// user settings
 
 int             iUseXA=0;
 int             iXAPitch=1;
@@ -125,7 +125,7 @@ int             iDebugMode=0;
 int             iRecordMode=0;
 int             iUseReverb=1;
 int             iUseInterpolation=2;
-                             
+
 // MAIN infos struct for each channel
 
 SPUCHAN         s_chan[MAXCHAN+1];                     // channel + 1 infos (1 is security for fmod handling)
@@ -135,7 +135,7 @@ unsigned long   dwNoiseVal=1;                          // global noise generator
 
 unsigned short  spuCtrl2[2];                           // some vars to store psx reg infos
 unsigned short  spuStat2[2];
-unsigned long   spuIrq2[2];             
+unsigned long   spuIrq2[2];
 unsigned long   spuAddr2[2];                           // address into spu mem
 unsigned long   spuRvbAddr2[2];
 unsigned long   spuRvbAEnd2[2];
@@ -174,7 +174,7 @@ extern void psf2_update(unsigned char *samples, long lBytes, void *data);
 
 // dirty inline func includes
 
-#include "reverb.c"        
+#include "reverb.c"
 #include "adsr.c"
 
 ////////////////////////////////////////////////////////////////////////
@@ -212,15 +212,15 @@ extern void psf2_update(unsigned char *samples, long lBytes, void *data);
 //
 //  - and next delta significant (at least twice) bigger:
 //            /
-//         __- 
-//         
+//         __-
+//
 //  - and next delta is nearly same:
 //           /
 //          /
-//     
+//
 
 
-INLINE void InterpolateUp(int ch)
+static inline void InterpolateUp(int ch)
 {
  if(s_chan[ch].SB[32]==1)                              // flag == 1? calc step and set flag... and don't change the value in this pass
   {
@@ -237,7 +237,7 @@ INLINE void InterpolateUp(int ch)
      if(id2<(id1<<1))
       s_chan[ch].SB[28]=(id1*s_chan[ch].sinc)/0x10000L;
      else
-      s_chan[ch].SB[28]=(id1*s_chan[ch].sinc)/0x20000L; 
+      s_chan[ch].SB[28]=(id1*s_chan[ch].sinc)/0x20000L;
     }
    else                                                // curr delta negative
     {
@@ -247,7 +247,7 @@ INLINE void InterpolateUp(int ch)
      if(id2>(id1<<1))
       s_chan[ch].SB[28]=(id1*s_chan[ch].sinc)/0x10000L;
      else
-      s_chan[ch].SB[28]=(id1*s_chan[ch].sinc)/0x20000L; 
+      s_chan[ch].SB[28]=(id1*s_chan[ch].sinc)/0x20000L;
     }
   }
  else
@@ -268,7 +268,7 @@ INLINE void InterpolateUp(int ch)
 // even easier interpolation on downsampling, also no special filter, again just "Pete's common sense" tm
 //
 
-INLINE void InterpolateDown(int ch)
+static inline void InterpolateDown(int ch)
 {
  if(s_chan[ch].sinc>=0x20000L)                                 // we would skip at least one val?
   {
@@ -294,22 +294,22 @@ INLINE void InterpolateDown(int ch)
 // START SOUND... called by main thread to setup a new sound on a channel
 ////////////////////////////////////////////////////////////////////////
 
-INLINE void StartSound(int ch)
+static inline void StartSound(int ch)
 {
  dwNewChannel2[ch/24]&=~(1<<(ch%24));                  // clear new channel bit
  dwEndChannel2[ch/24]&=~(1<<(ch%24));                  // clear end channel bit
 
  StartADSR(ch);
- StartREVERB(ch);      
-                          
+ StartREVERB(ch);
+
  s_chan[ch].pCurr=s_chan[ch].pStart;                   // set sample start
-                         
+
  s_chan[ch].s_1=0;                                     // init mixing vars
  s_chan[ch].s_2=0;
  s_chan[ch].iSBPos=28;
 
  s_chan[ch].bNew=0;                                    // init channel flags
- s_chan[ch].bStop=0;                                   
+ s_chan[ch].bStop=0;
  s_chan[ch].bOn=1;
 
  s_chan[ch].SB[29]=0;                                  // init our interpolation helpers
@@ -404,12 +404,12 @@ static void *MAINThread(int samp2run, void *data)
 
      if(iUseTimer) return 0;                           // linux no-thread mode? bye
 
-     if(dwNewChannel2[0] || dwNewChannel2[1]) 
+     if(dwNewChannel2[0] || dwNewChannel2[1])
       iSecureStart=1;                                  // if a new channel kicks in (or, of course, sound buffer runs low), we will leave the loop
     }
 #endif
 
-   //--------------------------------------------------// continue from irq handling in timer mode? 
+   //--------------------------------------------------// continue from irq handling in timer mode?
 
    if(lastch>=0)                                       // will be -1 if no continue is pending
     {
@@ -418,7 +418,7 @@ static void *MAINThread(int samp2run, void *data)
     }
 
    //--------------------------------------------------//
-   //- main channel loop                              -// 
+   //- main channel loop                              -//
    //--------------------------------------------------//
     {
      for(ch=0;ch<MAXCHAN;ch++)                         // loop em all... we will collect 1 ms of sound of each playing channel
@@ -462,9 +462,9 @@ static void *MAINThread(int samp2run, void *data)
              predict_nr >>= 4;
              flags=(int)*start;start++;
 
-             // -------------------------------------- // 
+             // -------------------------------------- //
 
-             for (nSample=0;nSample<28;start++)      
+             for (nSample=0;nSample<28;start++)
               {
                d=(int)*start;
                s=((d&0xf)<<12);
@@ -478,12 +478,12 @@ static void *MAINThread(int samp2run, void *data)
                s_chan[ch].SB[nSample++]=fa;
 
                if(s&0x8000) s|=0xffff0000;
-               fa=(s>>shift_factor);              
+               fa=(s>>shift_factor);
                fa=fa + ((s_1 * f[predict_nr][0])>>6) + ((s_2 * f[predict_nr][1])>>6);
                s_2=s_1;s_1=fa;
 
                s_chan[ch].SB[nSample++]=fa;
-              }     
+              }
 
              //////////////////////////////////////////// irq check
 
@@ -491,7 +491,7 @@ static void *MAINThread(int samp2run, void *data)
               {
                if((pSpuIrq[ch/24] >  start-16 &&       // irq address reached?
                    pSpuIrq[ch/24] <= start) ||
-                  ((flags&1) &&                        // special: irq on looping addr, when stop/loop flag is set 
+                  ((flags&1) &&                        // special: irq on looping addr, when stop/loop flag is set
                    (pSpuIrq[ch/24] >  s_chan[ch].pLoop-16 &&
                     pSpuIrq[ch/24] <= s_chan[ch].pLoop)))
                 {
@@ -503,7 +503,7 @@ static void *MAINThread(int samp2run, void *data)
                    if(ch<24) InterruptDMA4();            // -> let's see what is happening if we call our irqs instead ;)
                    else      InterruptDMA7();
                   }
-                  
+
                  if(iSPUIRQWait)                       // -> option: wait after irq for main emu
                   {
                    iSpuAsyncWait=1;
@@ -511,7 +511,7 @@ static void *MAINThread(int samp2run, void *data)
                   }
                 }
               }
-      
+
              //////////////////////////////////////////// flag handler
 
              if((flags&4) && (!s_chan[ch].bIgnoreLoop))
@@ -520,9 +520,9 @@ static void *MAINThread(int samp2run, void *data)
              if(flags&1)                               // 1: stop/loop
               {
                dwEndChannel2[ch/24]|=(1<<(ch%24));
-              
+
                // We play this block out first...
-               //if(!(flags&2)|| s_chan[ch].pLoop==NULL)   
+               //if(!(flags&2)|| s_chan[ch].pLoop==NULL)
                                                        // 1+2: do loop... otherwise: stop
                if(flags!=3 || s_chan[ch].pLoop==NULL)  // PETE: if we don't check exactly for 3, loop hang ups will happen (DQ4, for example)
                 {                                      // and checking if pLoop is set avoids crashes, yeah
@@ -536,7 +536,7 @@ static void *MAINThread(int samp2run, void *data)
 
              s_chan[ch].pCurr=start;                   // store values for next cycle
              s_chan[ch].s_1=s_1;
-             s_chan[ch].s_2=s_2;      
+             s_chan[ch].s_2=s_2;
 
              ////////////////////////////////////////////
 
@@ -544,7 +544,7 @@ static void *MAINThread(int samp2run, void *data)
               {
                bIRQReturn=0;
                 {
-                 lastch=ch; 
+                 lastch=ch;
 //                 lastns=ns;	// changemeback
 
                  return NULL;
@@ -563,20 +563,20 @@ GOON: ;
 //           else                                        // else adjust
             {
              if(fa>32767L)  fa=32767L;
-             if(fa<-32767L) fa=-32767L;              
+             if(fa<-32767L) fa=-32767L;
             }
 
            if(iUseInterpolation>=2)                    // gauss/cubic interpolation
             {
              gpos = s_chan[ch].SB[28];
-             gval0 = fa;          
+             gval0 = fa;
              gpos = (gpos+1) & 3;
              s_chan[ch].SB[28] = gpos;
             }
            else
            if(iUseInterpolation==1)                    // simple interpolation
             {
-             s_chan[ch].SB[28] = 0;                    
+             s_chan[ch].SB[28] = 0;
              s_chan[ch].SB[29] = s_chan[ch].SB[30];    // -> helpers for simple linear interpolation: delay real val for two slots, and calc the two deltas, for a 'look at the future behaviour'
              s_chan[ch].SB[30] = s_chan[ch].SB[31];
              s_chan[ch].SB[31] = fa;
@@ -605,17 +605,17 @@ GOON: ;
            // mmm... depending on the noise freq we allow bigger/smaller changes to the previous val
            fa=s_chan[ch].iOldNoise+((fa-s_chan[ch].iOldNoise)/((0x001f-((spuCtrl2[ch/24]&0x3f00)>>9))+1));
            if(fa>32767L)  fa=32767L;
-           if(fa<-32767L) fa=-32767L;              
+           if(fa<-32767L) fa=-32767L;
            s_chan[ch].iOldNoise=fa;
 
            if(iUseInterpolation<2)                     // no gauss/cubic interpolation?
             s_chan[ch].SB[29] = fa;                    // -> store noise val in "current sample" slot
           }                                            //----------------------------------------
-         else                                          // NO NOISE (NORMAL SAMPLE DATA) HERE 
+         else                                          // NO NOISE (NORMAL SAMPLE DATA) HERE
           {//------------------------------------------//
            if(iUseInterpolation==3)                    // cubic interpolation
             {
-             long xd;  
+             long xd;
              xd = ((s_chan[ch].spos) >> 1)+1;
              gpos = s_chan[ch].SB[28];
 
@@ -674,7 +674,7 @@ GOON: ;
 
            if(NP>0x3fff) NP=0x3fff;
            if(NP<0x1)    NP=0x1;
-           
+
 	   intr = (double)48000.0f / (double)44100.0f * (double)NP;
            NP = (UINT32)intr;
 
@@ -690,13 +690,13 @@ GOON: ;
 // mmmm... set up freq decoding positions?
 //           s_chan[ch+1].iSBPos=28;
 //           s_chan[ch+1].spos=0x10000L;
-          }                    
-         else                   
-          {                                          
+          }
+         else
+          {
            //////////////////////////////////////////////
            // ok, left/right sound volume (psx volume goes from 0 ... 0x3fff)
 
-           if(s_chan[ch].iMute) 
+           if(s_chan[ch].iMute)
             s_chan[ch].sval=0;                         // debug mute
            else
             {
@@ -705,23 +705,23 @@ GOON: ;
              if(s_chan[ch].bVolumeR)
               SSumR[0]+=(s_chan[ch].sval*s_chan[ch].iRightVolume)/0x4000L;
             }
-        
+
            //////////////////////////////////////////////
-           // now let us store sound data for reverb    
-                                                          
+           // now let us store sound data for reverb
+
            if(s_chan[ch].bRVBActive) StoreREVERB(ch,0);
           }
 
          ////////////////////////////////////////////////
          // ok, go on until 1 ms data of this channel is collected
-                                                       
-         s_chan[ch].spos += s_chan[ch].sinc;             
-                                                              
-        }        
-ENDX:   ;                                                      
+
+         s_chan[ch].spos += s_chan[ch].sinc;
+
+        }
+ENDX:   ;
       }
-    }                                                         
-   
+    }
+
   //---------------------------------------------------//
   //- here we have another 1 ms of sound data
   //---------------------------------------------------//
@@ -733,7 +733,7 @@ ENDX:   ;
     SSumL[0]+=MixREVERBLeft(0,1);
     SSumR[0]+=MixREVERBRight(0);
     SSumR[0]+=MixREVERBRight(1);
-                                              
+
     d=SSumL[0];SSumL[0]=0;
     d2=SSumR[0];SSumR[0]=0;
 
@@ -764,7 +764,7 @@ ENDX:   ;
 
     InitREVERB();
 
-  //////////////////////////////////////////////////////                   
+  //////////////////////////////////////////////////////
   // feed the sound
   // wanna have around 1/60 sec (16.666 ms) updates
 	if (seektime != 0 && sampcount < seektime)
@@ -788,7 +788,7 @@ ENDX:   ;
 		if (iSilenceCount < 20)
 		    	psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer, data);
 
-	        pS=(short *)pSpuBuffer;					  
+	        pS=(short *)pSpuBuffer;
 	}
  }
 
@@ -827,7 +827,7 @@ EXPORT_GCC void CALLBACK SPU2async(unsigned long cycle, void *data)
 // SPUINIT: this func will be called first by the main emu
 ////////////////////////////////////////////////////////////////////////
 
-              
+
 EXPORT_GCC long CALLBACK SPU2init(void)
 {
  spuMemC=(unsigned char *)spuMem;                      // just small setup
@@ -852,7 +852,7 @@ static void SetupTimer(void)
  pS=(short *)pSpuBuffer;                               // setup soundbuffer pointer
 
  bEndThread=0;                                         // init thread vars
- bThreadEnded=0; 
+ bThreadEnded=0;
  bSpuInit=1;                                           // flag: we are inited
 }
 
@@ -872,7 +872,7 @@ static void RemoveTimer(void)
 ////////////////////////////////////////////////////////////////////////
 
 static void SetupStreams(void)
-{ 
+{
  int i;
 
  pSpuBuffer=(unsigned char *)malloc(32768);            // alloc mixing buffer
@@ -890,7 +890,7 @@ static void SetupStreams(void)
 
  for(i=0;i<MAXCHAN;i++)                                // loop sound channels
   {
-// we don't use mutex sync... not needed, would only 
+// we don't use mutex sync... not needed, would only
 // slow us down:
 //   s_chan[i].hMutex=CreateMutex(NULL,FALSE,NULL);
    s_chan[i].ADSRX.SustainLevel = 1024;                // -> init sustain
@@ -907,7 +907,7 @@ static void SetupStreams(void)
 ////////////////////////////////////////////////////////////////////////
 
 static void RemoveStreams(void)
-{ 
+{
  free(pSpuBuffer);                                     // free mixing buffer
  pSpuBuffer=NULL;
  free(sRVBStart[0]);                                   // free reverb buffer
@@ -921,7 +921,7 @@ static void RemoveStreams(void)
   {
    WaitForSingleObject(s_chan[i].hMutex,2000);
    ReleaseMutex(s_chan[i].hMutex);
-   if(s_chan[i].hMutex)    
+   if(s_chan[i].hMutex)
     {CloseHandle(s_chan[i].hMutex);s_chan[i].hMutex=0;}
   }
 */
@@ -931,15 +931,15 @@ static void RemoveStreams(void)
 ////////////////////////////////////////////////////////////////////////
 // SPUOPEN: called by main emu after init
 ////////////////////////////////////////////////////////////////////////
-   
-EXPORT_GCC long CALLBACK SPU2open(void *pDsp)                          
+
+EXPORT_GCC long CALLBACK SPU2open(void *pDsp)
 {
  if(bSPUIsOpen) return 0;                              // security for some stupid main emus
 
  iUseXA=0;                                             // just small setup
  bEndThread=0;
  bThreadEnded=0;
- spuMemC=(unsigned char *)spuMem;      
+ spuMemC=(unsigned char *)spuMem;
  memset((void *)s_chan,0,(MAXCHAN+1)*sizeof(SPUCHAN));
  pSpuIrq[0]=0;
  pSpuIrq[1]=0;
@@ -948,21 +948,21 @@ EXPORT_GCC long CALLBACK SPU2open(void *pDsp)
  dwNewChannel2[1]=0;
  dwEndChannel2[0]=0;
  dwEndChannel2[1]=0;
- spuCtrl2[0]=0;              
- spuCtrl2[1]=0;              
+ spuCtrl2[0]=0;
+ spuCtrl2[1]=0;
  spuStat2[0]=0;
  spuStat2[1]=0;
- spuIrq2[0]=0;             
- spuIrq2[1]=0;             
- spuAddr2[0]=0xffffffff;   
- spuAddr2[1]=0xffffffff;   
+ spuIrq2[0]=0;
+ spuIrq2[1]=0;
+ spuAddr2[0]=0xffffffff;
+ spuAddr2[1]=0xffffffff;
  spuRvbAddr2[0]=0;
  spuRvbAddr2[1]=0;
  spuRvbAEnd2[0]=0;
  spuRvbAEnd2[1]=0;
- 
+
 // ReadConfig();                                         // read user stuff
- 
+
 // SetupSound();                                         // setup midas (before init!)
 
  SetupStreams();                                       // prepare streaming
@@ -971,7 +971,7 @@ EXPORT_GCC long CALLBACK SPU2open(void *pDsp)
 
  bSPUIsOpen=1;
 
- return 0;        
+ return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1013,7 +1013,7 @@ EXPORT_GCC long CALLBACK SPU2test(void)
 
 ////////////////////////////////////////////////////////////////////////
 // SETUP CALLBACKS
-// this functions will be called once, 
+// this functions will be called once,
 // passes a callback that should be called on SPU-IRQ/cdda volume change
 ////////////////////////////////////////////////////////////////////////
 
