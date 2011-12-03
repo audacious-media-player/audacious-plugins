@@ -286,7 +286,6 @@ get_lyrics_step_1(const Tuple *tu)
 {
 	gchar *uri;
 	gchar *artist, *title;
-	Tuple *tuple = tuple_copy(tu);
 
 	gchar * artist0 = tuple_get_str (tu, FIELD_ARTIST, NULL);
 	gchar * title0 = tuple_get_str (tu, FIELD_TITLE, NULL);
@@ -301,7 +300,7 @@ get_lyrics_step_1(const Tuple *tu)
 	g_free(title);
 
 	update_lyrics_window(tu, _("\nConnecting to lyrics.wikia.com..."));
-	vfs_async_file_get_contents(uri, (VFSConsumer) get_lyrics_step_2, tuple);
+	vfs_async_file_get_contents(uri, (VFSConsumer) get_lyrics_step_2, (Tuple *) tu);
 
 	g_free(uri);
 }
