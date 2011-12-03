@@ -35,7 +35,6 @@ extern "C" {
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
-#include <libaudcore/vfs_buffered_file.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
