@@ -423,7 +423,7 @@ void xs_pause (InputPlayback * pb, gboolean pauseState)
  */
 static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTune)
 {
-    gchar *tmpStr, tmpStr2[64];
+    gchar *tmpStr;
 
     tmpStr = str_to_utf8(info->sidName);
     tuple_copy_str(tuple, FIELD_TITLE, NULL, tmpStr);
@@ -434,9 +434,9 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
     tmpStr = str_to_utf8(info->sidCopyright);
     tuple_copy_str(tuple, FIELD_COPYRIGHT, NULL, tmpStr);
     g_free(tmpStr);
-    tuple_copy_str(tuple, -1, "sid-format", info->sidFormat);
-    tuple_copy_str(tuple, FIELD_CODEC, NULL, "Commodore 64 SID PlaySID/RSID");
+    tuple_copy_str(tuple, FIELD_CODEC, NULL, info->sidFormat);
 
+#if 0
     switch (info->sidModel) {
         case XS_SIDMODEL_6581: tmpStr = "6581"; break;
         case XS_SIDMODEL_8580: tmpStr = "8580"; break;
@@ -444,6 +444,7 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
         default: tmpStr = "?"; break;
     }
     tuple_copy_str(tuple, -1, "sid-model", tmpStr);
+#endif
 
     /* Get sub-tune information, if available */
     if (subTune < 0 || info->startTune > info->nsubTunes)
@@ -453,6 +454,7 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
         gint tmpInt = info->subTunes[subTune - 1].tuneLength;
         tuple_set_int(tuple, FIELD_LENGTH, NULL, (tmpInt < 0) ? -1 : tmpInt * 1000);
 
+#if 0
         tmpInt = info->subTunes[subTune - 1].tuneSpeed;
         if (tmpInt > 0) {
             switch (tmpInt) {
@@ -470,6 +472,7 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, gint subTu
             tmpStr = "?";
 
         tuple_copy_str(tuple, -1, "sid-speed", tmpStr);
+#endif
     } else
         subTune = 1;
 
