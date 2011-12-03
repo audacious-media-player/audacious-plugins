@@ -120,10 +120,6 @@ dbg_printf (const char *fmt, ...)
 static CPlayer *
 factory (VFSFile * fd, Copl * newopl)
 {
-  CPlayers::const_iterator i;
-
-  dbg_printf ("factory(%p<%s>,opl): ", fd,
-              fd->uri != NULL ? fd->uri : "unknown");
   return CAdPlug::factory (fd, newopl, conf.players);
 }
 

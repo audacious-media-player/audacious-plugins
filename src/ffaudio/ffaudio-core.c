@@ -221,7 +221,7 @@ static AVInputFormat * get_format (const gchar * name, VFSFile * file)
 
 static AVFormatContext * open_input_file (const gchar * name, VFSFile * file)
 {
-    AVInputFormat * f = get_format (file->uri, file);
+    AVInputFormat * f = get_format (name, file);
 
     if (! f)
     {
@@ -401,14 +401,8 @@ static gboolean ffaudio_write_tag (const Tuple * tuple, VFSFile * file)
     if (! file)
         return FALSE;
 
-    gchar *file_uri = g_ascii_strdown(file->uri, -4);
-
-    if (g_str_has_suffix(file_uri, ".ape"))
-    {
-        g_free(file_uri);
+    if (str_has_suffix_nocase (vfs_get_filename (file), ".ape"))
         return tag_tuple_write(tuple, file, TAG_TYPE_APE);
-    }
-    g_free(file_uri);
 
     return tag_tuple_write(tuple, file, TAG_TYPE_NONE);
 }

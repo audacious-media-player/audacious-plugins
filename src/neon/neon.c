@@ -709,45 +709,33 @@ static gpointer reader_thread(void* data) {
     return NULL;
 }
 
+
 /*
  * -----
  */
 
-VFSFile* neon_vfs_fopen_impl(const gchar* path, const gchar* mode) {
-    VFSFile* file;
+void * neon_vfs_fopen_impl (const gchar * path, const gchar * mode)
+{
     struct neon_handle* handle;
 
     _DEBUG("Trying to open '%s' with neon", path);
 
-    if (NULL == (file = g_new0(VFSFile, 1))) {
-        _ERROR("Could not allocate memory for filehandle");
-        return NULL;
-    }
-
     if (NULL == (handle = handle_init())) {
         _ERROR("Could not allocate memory for neon handle");
-        g_free(file);
         return NULL;
     }
 
     _DEBUG("Allocated new handle: %p", handle);
 
-    if (NULL == (handle->url = g_strdup(path))) {
-        _ERROR ("<%p> Could not copy URL string", (void *) handle);
-        handle_free(handle);
-        g_free(file);
-        return NULL;
-    }
+    handle->url = g_strdup (path);
 
     if (0 != open_handle(handle, 0)) {
         _ERROR ("<%p> Could not open URL", (void *) handle);
         handle_free(handle);
-        g_free(file);
         return NULL;
     }
 
-    file->handle = handle;
-    return file;
+    return handle;
 }
 
 /*
@@ -756,7 +744,7 @@ VFSFile* neon_vfs_fopen_impl(const gchar* path, const gchar* mode) {
 
 gint neon_vfs_fclose_impl(VFSFile* file) {
 
-    struct neon_handle* h = (struct neon_handle *)file->handle;
+    struct neon_handle* h = (struct neon_handle *)vfs_get_handle (file);
 
     if (NULL != h->reader) {
         kill_reader(h);
@@ -784,7 +772,7 @@ gint neon_vfs_fclose_impl(VFSFile* file) {
 static gint64 neon_fread_real (void * ptr_, gint64 size, gint64 nmemb,
  VFSFile * file)
 {
-    struct neon_handle* h = (struct neon_handle*)file->handle;
+    struct neon_handle* h = (struct neon_handle*)vfs_get_handle (file);
     gint belem;
     gint relem;
     gint ret;
@@ -1020,7 +1008,7 @@ gint64 neon_vfs_fread_impl (void * buffer, gint64 size, gint64 count,
 gint64 neon_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
  VFSFile * file)
 {
-    _ERROR ("<%p> NOT IMPLEMENTED", (void *) file->handle);
+    _ERROR ("<%p> NOT IMPLEMENTED", (void *) vfs_get_handle (file));
 
     return 0;
 }
@@ -1033,7 +1021,7 @@ gint neon_vfs_getc_impl(VFSFile* file) {
   unsigned char c;
 
     if (1 != neon_vfs_fread_impl(&c, 1, 1, file)) {
-        _ERROR ("<%p> Could not getc()!", (void *) file->handle);
+        _ERROR ("<%p> Could not getc()!", (void *) vfs_get_handle (file));
         return -1;
     }
 
@@ -1045,14 +1033,14 @@ gint neon_vfs_getc_impl(VFSFile* file) {
  */
 
 gint neon_vfs_ungetc_impl(gint c, VFSFile* stream) {
-    _ERROR ("<%p> NOT IMPLEMENTED", (void *) stream->handle);
+    _ERROR ("<%p> NOT IMPLEMENTED", (void *) vfs_get_handle (stream));
 
     return 0;
 }
 
 gint64 neon_vfs_ftell_impl (VFSFile * file)
 {
-    struct neon_handle* h = (struct neon_handle *)file->handle;
+    struct neon_handle* h = (struct neon_handle *)vfs_get_handle (file);
 
     _DEBUG("<%p> Current file position: %ld", h, h->pos);
 
@@ -1065,7 +1053,7 @@ gint64 neon_vfs_ftell_impl (VFSFile * file)
 
 gboolean neon_vfs_feof_impl(VFSFile* file) {
 
-    struct neon_handle* h = (struct neon_handle*)file->handle;
+    struct neon_handle* h = (struct neon_handle*)vfs_get_handle (file);
 
     _DEBUG("<%p> EOF status: %s", h, h->eof?"TRUE":"FALSE");
 
@@ -1078,7 +1066,7 @@ gboolean neon_vfs_feof_impl(VFSFile* file) {
 
 gint neon_vfs_truncate_impl (VFSFile * file, gint64 size)
 {
-    _ERROR ("<%p> NOT IMPLEMENTED", (void *) file->handle);
+    _ERROR ("<%p> NOT IMPLEMENTED", (void *) vfs_get_handle (file));
 
     return 0;
 }
@@ -1089,7 +1077,7 @@ gint neon_vfs_truncate_impl (VFSFile * file, gint64 size)
 
 gint neon_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
 {
-    struct neon_handle* h = (struct neon_handle*)file->handle;
+    struct neon_handle* h = (struct neon_handle*)vfs_get_handle (file);
     glong newpos;
     glong content_length;
 
@@ -1196,7 +1184,7 @@ void neon_vfs_rewind_impl(VFSFile* file) {
 
 gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar* field) {
 
-    struct neon_handle* h = (struct neon_handle*)file->handle;
+    struct neon_handle* h = (struct neon_handle*)vfs_get_handle (file);
 
     _DEBUG("<%p> Field name: %s", h, field);
 
@@ -1218,7 +1206,7 @@ gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar* field) {
 
 gint64 neon_vfs_fsize_impl (VFSFile * file)
 {
-    struct neon_handle* h = (struct neon_handle*)file->handle;
+    struct neon_handle* h = (struct neon_handle*)vfs_get_handle (file);
 
     if (-1 == h->content_length) {
         _DEBUG("<%p> Unknown content length", h);

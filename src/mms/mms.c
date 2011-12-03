@@ -45,26 +45,12 @@ typedef struct {
     gint len, used;
 } MMSHandle;
 
-static VFSFile * mms_vfs_fopen_impl (const gchar * path, const gchar * mode)
+static void * mms_vfs_fopen_impl (const gchar * path, const gchar * mode)
 {
     AUDDBG("Opening %s.\n", path);
 
-    VFSFile *file;
     MMSHandle *handle;
-
-    if (!path || !mode)
-	return NULL;
-
-    file = g_new(VFSFile, 1);
     handle = g_new0(MMSHandle, 1);
-
-    file->handle = handle;
-
-    if (file->handle == NULL) {
-        g_free(file);
-        file = NULL;
-    }
-
     handle->mmsh = mmsh_connect(NULL, NULL, path, 128 * 1024);
 
     if (handle->mmsh == NULL) {
@@ -76,42 +62,32 @@ static VFSFile * mms_vfs_fopen_impl (const gchar * path, const gchar * mode)
     {
         fprintf(stderr, "mms: Failed to open %s.\n", path);
         g_free(handle);
-        g_free(file);
-        file = NULL;
+        return NULL;
     }
 
     handle->buf = g_malloc (BUFSIZE);
-    return file;
+    return handle;
 }
 
 static gint mms_vfs_fclose_impl (VFSFile * file)
 {
-    gint ret = 0;
+    MMSHandle *handle = (MMSHandle *) vfs_get_handle (file);
 
-    if (file == NULL)
-        return -1;
+    if (handle->mms != NULL)
+        mms_close(handle->mms);
+    else /* if (handle->mmsh != NULL) */
+        mmsh_close(handle->mmsh);
 
-    if (file->handle)
-    {
-        MMSHandle *handle = (MMSHandle *) file->handle;
+    g_free (handle->buf);
+    g_free (handle);
 
-        if (handle->mms != NULL)
-            mms_close(handle->mms);
-        else /* if (handle->mmsh != NULL) */
-            mmsh_close(handle->mmsh);
-
-        g_free (handle->buf);
-        g_free (handle);
-        file->handle = NULL;
-    }
-
-    return ret;
+    return 0;
 }
 
 static gint64 mms_vfs_fread_impl (void * buf, gint64 size, gint64 count,
  VFSFile * file)
 {
-    MMSHandle * h = file->handle;
+    MMSHandle * h = vfs_get_handle (file);
     gint64 goal = size * count;
     gint64 total = 0;
 
@@ -162,7 +138,7 @@ static gint64 mms_vfs_fwrite_impl (const void * data, gint64 size, gint64 count,
 
 static gint mms_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
 {
-    MMSHandle * h = file->handle;
+    MMSHandle * h = vfs_get_handle (file);
 
     if (whence == SEEK_SET)
     {
@@ -187,7 +163,7 @@ static void mms_vfs_rewind_impl (VFSFile * file)
 
 static gint64 mms_vfs_ftell_impl (VFSFile * file)
 {
-    MMSHandle * h = file->handle;
+    MMSHandle * h = vfs_get_handle (file);
     return h->offset + h->used;
 }
 
@@ -206,7 +182,7 @@ static gboolean mms_vfs_feof_impl (VFSFile * file)
 {
     return FALSE;
 
-    MMSHandle * h = file->handle;
+    MMSHandle * h = vfs_get_handle (file);
 
     if (h->mms)
         return (h->offset + h->used == mms_get_length (h->mms));
@@ -222,7 +198,7 @@ static gint mms_vfs_truncate_impl (VFSFile * file, gint64 size)
 
 static gint64 mms_vfs_fsize_impl (VFSFile * file)
 {
-    MMSHandle * h = file->handle;
+    MMSHandle * h = vfs_get_handle (file);
 
     if (h->mms)
         return mms_get_length (h->mms);

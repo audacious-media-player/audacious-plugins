@@ -35,9 +35,8 @@
 void unix_error (const gchar * format, ...);
 void unix_about (void);
 
-static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
+static void * unix_fopen (const gchar * uri, const gchar * mode)
 {
-    VFSFile * file = NULL;
     gboolean update;
     mode_t mode_flag;
     gint handle;
@@ -87,17 +86,14 @@ static VFSFile * unix_fopen (const gchar * uri, const gchar * mode)
     fcntl (handle, F_SETFD, FD_CLOEXEC);
 #endif
 
-    file = g_malloc (sizeof * file);
-    file->handle = GINT_TO_POINTER (handle);
-
 DONE:
     g_free (filename);
-    return file;
+    return GINT_TO_POINTER (handle);
 }
 
 static gint unix_fclose (VFSFile * file)
 {
-    gint handle = GPOINTER_TO_INT (file->handle);
+    gint handle = GPOINTER_TO_INT (vfs_get_handle (file));
     gint result = 0;
 
 #ifdef HAVE_FSYNC
@@ -119,7 +115,7 @@ static gint unix_fclose (VFSFile * file)
 
 static gint64 unix_fread (void * ptr, gint64 size, gint64 nitems, VFSFile * file)
 {
-    gint handle = GPOINTER_TO_INT (file->handle);
+    gint handle = GPOINTER_TO_INT (vfs_get_handle (file));
     gint64 goal = size * nitems;
     gint64 total = 0;
 
@@ -145,7 +141,7 @@ static gint64 unix_fread (void * ptr, gint64 size, gint64 nitems, VFSFile * file
 static gint64 unix_fwrite (const void * ptr, gint64 size, gint64 nitems,
  VFSFile * file)
 {
-    gint handle = GPOINTER_TO_INT (file->handle);
+    gint handle = GPOINTER_TO_INT (vfs_get_handle (file));
     gint64 goal = size * nitems;
     gint64 total = 0;
 
@@ -167,7 +163,7 @@ static gint64 unix_fwrite (const void * ptr, gint64 size, gint64 nitems,
 
 static gint unix_fseek (VFSFile * file, gint64 offset, gint whence)
 {
-    gint handle = GPOINTER_TO_INT (file->handle);
+    gint handle = GPOINTER_TO_INT (vfs_get_handle (file));
 
     if (lseek (handle, offset, whence) < 0)
     {
@@ -180,7 +176,7 @@ static gint unix_fseek (VFSFile * file, gint64 offset, gint whence)
 
 static gint64 unix_ftell (VFSFile * file)
 {
-    gint handle = GPOINTER_TO_INT (file->handle);
+    gint handle = GPOINTER_TO_INT (vfs_get_handle (file));
     gint64 result = lseek (handle, 0, SEEK_CUR);
 
     if (result < 0)
@@ -219,7 +215,7 @@ static gboolean unix_feof (VFSFile * file)
 
 static gint unix_ftruncate (VFSFile * file, gint64 length)
 {
-    gint handle = GPOINTER_TO_INT (file->handle);
+    gint handle = GPOINTER_TO_INT (vfs_get_handle (file));
 
     gint result = ftruncate (handle, length);
 
