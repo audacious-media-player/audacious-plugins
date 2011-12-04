@@ -83,8 +83,6 @@ static gboolean slider_is_moving = FALSE;
 static guint delayed_title_change_source = 0;
 static guint update_song_timeout_source = 0;
 
-extern GtkWidget *ui_playlist_notebook_tab_title_editing;
-
 static gboolean init (void);
 static void cleanup (void);
 static void ui_show (gboolean show);

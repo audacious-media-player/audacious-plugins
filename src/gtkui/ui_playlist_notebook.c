@@ -46,7 +46,7 @@ static GQueue follow_queue = G_QUEUE_INIT;
 static gint highlighted = -1;
 
 static struct index *pages;
-GtkWidget *ui_playlist_notebook_tab_title_editing = NULL;
+static GtkWidget *ui_playlist_notebook_tab_title_editing;
 
 static gint switch_handler = 0;
 static gint reorder_handler = 0;
