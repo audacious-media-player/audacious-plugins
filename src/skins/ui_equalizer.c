@@ -974,7 +974,7 @@ action_equ_load_preset(void)
     }
 
     equalizerwin_create_list_window(equalizer_presets,
-                                    Q_("Load preset"),
+                                    _("Load preset"),
                                     &equalizerwin_load_window,
                                     GTK_SELECTION_SINGLE, NULL,
                                     GTK_STOCK_OK,
@@ -991,7 +991,7 @@ action_equ_load_auto_preset(void)
     }
 
     equalizerwin_create_list_window(equalizer_auto_presets,
-                                    Q_("Load auto-preset"),
+                                    _("Load auto-preset"),
                                     &equalizerwin_load_auto_window,
                                     GTK_SELECTION_SINGLE, NULL,
                                     GTK_STOCK_OK,
@@ -1021,7 +1021,7 @@ action_equ_load_preset_file(void)
     GtkWidget *dialog;
     gchar *file_uri;
 
-    dialog = make_filebrowser(Q_("Load equalizer preset"), FALSE);
+    dialog = make_filebrowser(_("Load equalizer preset"), FALSE);
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
     {
         file_uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog));
@@ -1039,7 +1039,7 @@ action_equ_load_preset_eqf(void)
     GtkWidget *dialog;
     gchar *file_uri;
 
-    dialog = make_filebrowser(Q_("Load equalizer preset"), FALSE);
+    dialog = make_filebrowser(_("Load equalizer preset"), FALSE);
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
     {
         file_uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog));
@@ -1055,7 +1055,7 @@ action_equ_import_winamp_presets(void)
     GtkWidget *dialog;
     gchar *file_uri;
 
-    dialog = make_filebrowser(Q_("Load equalizer preset"), FALSE);
+    dialog = make_filebrowser(_("Load equalizer preset"), FALSE);
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
     {
         file_uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog));
@@ -1074,7 +1074,7 @@ action_equ_save_preset(void)
     }
 
     equalizerwin_create_list_window(equalizer_presets,
-                                    Q_("Save preset"),
+                                    _("Save preset"),
                                     &equalizerwin_save_window,
                                     GTK_SELECTION_SINGLE,
                                     &equalizerwin_save_entry,
@@ -1092,7 +1092,7 @@ action_equ_save_auto_preset(void)
         gtk_window_present(GTK_WINDOW(equalizerwin_save_auto_window));
     else
         equalizerwin_create_list_window(equalizer_auto_presets,
-                                        Q_("Save auto-preset"),
+                                        _("Save auto-preset"),
                                         &equalizerwin_save_auto_window,
                                         GTK_SELECTION_SINGLE,
                                         &equalizerwin_save_auto_entry,
@@ -1114,7 +1114,7 @@ void
 action_equ_save_default_preset(void)
 {
     equalizer_presets =
-        equalizerwin_save_preset(equalizer_presets, Q_("Default"), "eq.preset");
+        equalizerwin_save_preset(equalizer_presets, _("Default"), "eq.preset");
 }
 
 void
@@ -1125,7 +1125,7 @@ action_equ_save_preset_file(void)
     gchar *songname;
     gint i;
 
-    dialog = make_filebrowser(Q_("Save equalizer preset"), TRUE);
+    dialog = make_filebrowser(_("Save equalizer preset"), TRUE);
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
     {
         file_uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog));
@@ -1161,7 +1161,7 @@ action_equ_save_preset_eqf(void)
     GtkWidget *dialog;
     gchar *file_uri;
 
-    dialog = make_filebrowser(Q_("Save equalizer preset"), TRUE);
+    dialog = make_filebrowser(_("Save equalizer preset"), TRUE);
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
     {
         file_uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog));
@@ -1180,7 +1180,7 @@ action_equ_delete_preset(void)
     }
 
     equalizerwin_create_list_window(equalizer_presets,
-                                    Q_("Delete preset"),
+                                    _("Delete preset"),
                                     &equalizerwin_delete_window,
                                     GTK_SELECTION_MULTIPLE, NULL,
                                     GTK_STOCK_DELETE,
@@ -1197,7 +1197,7 @@ action_equ_delete_auto_preset(void)
     }
 
     equalizerwin_create_list_window(equalizer_auto_presets,
-                                    Q_("Delete auto-preset"),
+                                    _("Delete auto-preset"),
                                     &equalizerwin_delete_auto_window,
                                     GTK_SELECTION_MULTIPLE, NULL,
                                     GTK_STOCK_DELETE,
