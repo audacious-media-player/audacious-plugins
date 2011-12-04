@@ -96,7 +96,9 @@ typedef struct {
     volatile gboolean  is_valid;
 } alarm_thread_t;
 
-static alarm_thread_t start;    /* thread id of alarm loop */
+static gint timeout_source;
+static time_t play_start;
+
 static alarm_thread_t stop;     /* thread id of stop loop */
 static pthread_mutex_t fader_lock = PTHREAD_MUTEX_INITIALIZER;
 
@@ -670,23 +672,11 @@ void alarm_stop_cancel(GtkButton *w, gpointer data)
 }
 
 /* the main alarm thread */
-static void *alarm_start_thread(void *args)
+static gboolean alarm_timeout (void * unused)
 {
    struct tm *currtime;
    time_t timenow;
-   unsigned int play_start = 0;
    guint today;
-
-   /* give it time to set start_tid to something */
-   threadsleep(1);
-
-   while (start.is_valid)
-   {
-     /* sit around and wait for the faders to not be doing anything */
-     AUDDBG("Waiting for fader to be unlocked..");
-     pthread_mutex_lock(&fader_lock);
-     AUDDBG("Ok\n");
-     pthread_mutex_unlock(&fader_lock);
 
      AUDDBG("Getting time\n");
      timenow = time(NULL);
@@ -694,18 +684,12 @@ static void *alarm_start_thread(void *args)
      today = currtime->tm_wday;
      AUDDBG("Today is %d\n", today);
 
-     /* see if its time to do something */
-     AUDDBG("Checking Day\n");
-
-     /* Had to put something here so I put the hour string.
-     ** Its only debug stuff anyway */
-     AUDDBG("%s",day_h[today]);
+     /* already went off? */
+     if (timenow < play_start + 60)
+       return TRUE;
 
      if(alarm_conf.day[today].flags & ALARM_OFF)
-     {
-       threadsleep(8.5);
-       continue;
-     }
+       return TRUE;
      else
      {
        /* set the alarm_h and alarm_m for today, if not default */
@@ -726,10 +710,7 @@ static void *alarm_start_thread(void *args)
 
      AUDDBG("Checking time (%d:%d)\n", currtime->tm_hour, currtime->tm_min);
      if((currtime->tm_hour != alarm_h) || (currtime->tm_min != alarm_m))
-     {
-       threadsleep(8.5);
-       continue;
-     }
+       return TRUE;
 
      if(cmd_on == TRUE)
      {
@@ -812,30 +793,9 @@ static void *alarm_start_thread(void *args)
             AUDDBG("now starting stop thread\n");
             stop = alarm_thread_create(alarm_stop_thread, NULL, 0);
             AUDDBG("Created wakeup dialog and started stop thread\n");
-
-          /* now wait for the stop thread */
-          AUDDBG("Waiting for stop to stop.... ");
-          if (pthread_join(stop.tid, NULL) == 0)
-             stop.is_valid = FALSE;
-
-          /* loop until we are out of the starting minute */
-          while(time(NULL) < (play_start + 61))
-          {
-            AUDDBG("Waiting until out of starting minute\n");
-            threadsleep(5.0);
-          }
-          AUDDBG("OK\n");
       }
-      /* loop until we are out of the starting minute */
-      while(time(NULL) < (play_start + 61))
-      {
-        threadsleep(5.0);
-      }
-      threadsleep(fading);
-   }
 
-   AUDDBG("Main thread has gone...\n");
-   return NULL;
+   return TRUE;
 }
 
 /*
@@ -850,8 +810,7 @@ static gboolean alarm_init (void)
    alarm_conf.reminder_msg = NULL;
    alarm_read_config();
 
-   /* start the main thread running */
-   start = alarm_thread_create(alarm_start_thread, NULL, 1);
+   timeout_source = g_timeout_add_seconds (10, alarm_timeout, NULL);
 
    return TRUE;
 }
@@ -863,10 +822,12 @@ static void alarm_cleanup(void)
 {
    AUDDBG("alarm_cleanup\n");
 
-   if (start.is_valid) {
-     pthread_cancel(start.tid);
-     start.is_valid = FALSE;
+   if (timeout_source)
+   {
+     g_source_remove (timeout_source);
+     timeout_source = 0;
    }
+
    if (stop.is_valid) {
      pthread_cancel(stop.tid);
      stop.is_valid = FALSE;
