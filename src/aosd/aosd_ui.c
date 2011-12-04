@@ -18,17 +18,16 @@
 *
 */
 
+#include <gtk/gtk.h>
+#include <audacious/gtk-compat.h>
+#include <audacious/i18n.h>
+
 #include "aosd_ui.h"
 #include "aosd_style.h"
 #include "aosd_trigger.h"
 #include "aosd_cfg.h"
 #include "aosd_osd.h"
 #include "aosd_common.h"
-#include <audacious/i18n.h>
-#include <glib.h>
-#include <gdk/gdk.h>
-#include <gtk/gtk.h>
-
 
 extern aosd_cfg_t * global_config;
 extern gboolean plugin_is_active;
