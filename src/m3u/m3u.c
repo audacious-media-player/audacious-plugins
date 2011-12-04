@@ -91,7 +91,9 @@ static gboolean playlist_load_m3u (const gchar * path, VFSFile * file,
 
         gchar * s = aud_construct_uri (parse, path);
         if (s)
-            index_append (filenames, s);
+            index_append (filenames, str_get (s));
+
+        g_free (s);
 
 NEXT:
         parse = next;

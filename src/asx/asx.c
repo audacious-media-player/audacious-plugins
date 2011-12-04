@@ -51,7 +51,9 @@ static gboolean playlist_load_asx (const gchar * filename, VFSFile * file,
                 uri = str_replace_fragment(uri, strlen(uri), "http://", "mms://");
 
             if (uri != NULL)
-                index_append (filenames, uri);
+                index_append (filenames, str_get (uri));
+
+            g_free (uri);
         }
         else
             break;

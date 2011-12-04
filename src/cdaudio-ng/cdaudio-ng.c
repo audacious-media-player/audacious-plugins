@@ -141,7 +141,7 @@ static void purge_playlist (gint playlist)
             length--;
         }
 
-        g_free (filename);
+        str_unref (filename);
     }
 }
 

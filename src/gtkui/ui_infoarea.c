@@ -45,8 +45,8 @@
 typedef struct {
     GtkWidget * box, * main, * vis;
 
-    gchar * title, * artist, * album;
-    gchar * last_title, * last_artist, * last_album;
+    gchar * title, * artist, * album; /* pooled */
+    gchar * last_title, * last_artist, * last_album; /* pooled */
     gfloat alpha, last_alpha;
 
     gboolean stopped;
@@ -392,15 +392,15 @@ void ui_infoarea_set_title (void)
     if (! strcmp_null (title, area->title) && ! strcmp_null (artist,
      area->artist) && ! strcmp_null (album, area->album))
     {
-        g_free (title);
-        g_free (artist);
-        g_free (album);
+        str_unref (title);
+        str_unref (artist);
+        str_unref (album);
         return;
     }
 
-    g_free (area->title);
-    g_free (area->artist);
-    g_free (area->album);
+    str_unref (area->title);
+    str_unref (area->artist);
+    str_unref (area->album);
     area->title = title;
     area->artist = artist;
     area->album = album;
@@ -429,15 +429,15 @@ static void infoarea_next (void)
     area->last_pb = area->pb;
     area->pb = NULL;
 
-    g_free (area->last_title);
+    str_unref (area->last_title);
     area->last_title = area->title;
     area->title = NULL;
 
-    g_free (area->last_artist);
+    str_unref (area->last_artist);
     area->last_artist = area->artist;
     area->artist = NULL;
 
-    g_free (area->last_album);
+    str_unref (area->last_album);
     area->last_album = area->album;
     area->album = NULL;
 
@@ -494,12 +494,12 @@ static void destroy_cb (GtkWidget * widget)
         area->fade_timeout = 0;
     }
 
-    g_free (area->title);
-    g_free (area->artist);
-    g_free (area->album);
-    g_free (area->last_title);
-    g_free (area->last_artist);
-    g_free (area->last_album);
+    str_unref (area->title);
+    str_unref (area->artist);
+    str_unref (area->album);
+    str_unref (area->last_title);
+    str_unref (area->last_artist);
+    str_unref (area->last_album);
 
     if (area->pb)
         g_object_unref (area->pb);

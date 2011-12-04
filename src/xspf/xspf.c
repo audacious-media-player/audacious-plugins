@@ -94,22 +94,22 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
                 gchar *str = (gchar *)xmlNodeGetContent(nptr);
 
                 if (strstr (str, "://") != NULL)
-                    location = g_strdup (str);
+                    location = str_get (str);
                 else if (str[0] == '/' && base != NULL)
                 {
                     const gchar * colon = strstr (base, "://");
 
                     if (colon != NULL)
-                        location = g_strdup_printf ("%.*s%s", (gint) (colon + 3
-                         - base), base, str);
+                        location = str_printf ("%.*s%s", (gint) (colon + 3 -
+                         base), base, str);
                 }
                 else if (base != NULL)
                 {
                     const gchar * slash = strrchr (base, '/');
 
                     if (slash != NULL)
-                        location = g_strdup_printf ("%.*s%s", (gint) (slash + 1
-                         - base), base, str);
+                        location = str_printf ("%.*s%s", (gint) (slash + 1 -
+                         base), base, str);
                 }
 
                 xmlFree(str);
@@ -233,8 +233,8 @@ static gboolean xspf_playlist_load (const gchar * filename, VFSFile * file,
                     xmlChar * xml_title = xmlNodeGetContent (nptr2);
                     if (xml_title && xml_title[0])
                     {
-                        g_free (* title);
-                        * title = g_strdup ((gchar *) xml_title);
+                        str_unref (* title);
+                        * title = str_get ((gchar *) xml_title);
                     }
                     xmlFree (xml_title);
                 }

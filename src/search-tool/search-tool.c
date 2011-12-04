@@ -62,11 +62,11 @@ static gint search_source;
 
 static GtkWidget * help_label, * wait_label, * scrolled, * results_list;
 
-static Item * item_new (gint field, const gchar * name)
+static Item * item_new (gint field, gchar * name)
 {
     Item * item = g_slice_new (Item);
     item->field = field;
-    item->name = g_strdup (name);
+    item->name = name;
     item->folded = g_utf8_casefold (name, -1);
     item->matches = g_array_new (FALSE, FALSE, sizeof (gint));
     return item;
@@ -74,7 +74,7 @@ static Item * item_new (gint field, const gchar * name)
 
 static void item_free (Item * item)
 {
-    g_free (item->name);
+    str_unref (item->name);
     g_free (item->folded);
     g_array_free (item->matches, TRUE);
     g_slice_free (Item, item);
@@ -91,7 +91,7 @@ static void find_playlist (void)
         if (! strcmp (title, _("Library")))
             playlist_id = aud_playlist_get_unique_id (p);
 
-        g_free (title);
+        str_unref (title);
     }
 }
 
@@ -176,7 +176,7 @@ static void create_dicts (gint list)
 {
     destroy_dicts ();
     for (gint f = 0; f < FIELDS; f ++)
-        dicts[f] = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
+        dicts[f] = g_hash_table_new_full (g_str_hash, g_str_equal, str_unref,
          (GDestroyNotify) item_free);
 
     gint entries = aud_playlist_entry_count (list);
@@ -186,10 +186,7 @@ static void create_dicts (gint list)
         gchar * fields[FIELDS];
 
         Tuple * tuple = aud_playlist_entry_get_tuple (list, e, TRUE);
-        gchar * genre = tuple ? tuple_get_str (tuple, FIELD_GENRE, NULL) : NULL;
-        fields[GENRE] = genre ? g_strdup (genre) : NULL;
-        str_unref(genre);
-
+        fields[GENRE] = tuple ? tuple_get_str (tuple, FIELD_GENRE, NULL) : NULL;
         if (tuple)
             tuple_unref (tuple);
 
@@ -204,11 +201,11 @@ static void create_dicts (gint list)
             Item * item = g_hash_table_lookup (dicts[f], fields[f]);
 
             if (item)
-                g_free (fields[f]);
+                str_unref (fields[f]);
             else
             {
                 item = item_new (f, fields[f]);
-                g_hash_table_insert (dicts[f], fields[f], item);
+                g_hash_table_insert (dicts[f], str_ref (item->name), item);
             }
 
             g_array_append_val (item->matches, e);
@@ -281,7 +278,7 @@ static void begin_add (const gchar * path)
     gchar * prefix = g_str_has_suffix (uri, "/") ? g_strdup (uri) : g_strconcat (uri, "/", NULL);
 
     destroy_added_table ();
-    added_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+    added_table = g_hash_table_new_full (g_str_hash, g_str_equal, str_unref, NULL);
 
     gint entries = aud_playlist_entry_count (list);
 
@@ -298,7 +295,7 @@ static void begin_add (const gchar * path)
         else
         {
             aud_playlist_entry_set_selected (list, entry, TRUE);
-            g_free (filename);
+            str_unref (filename);
         }
     }
 
@@ -306,9 +303,10 @@ static void begin_add (const gchar * path)
     aud_playlist_remove_failed (list);
 
     struct index * add = index_new ();
-    index_append (add, uri);
+    index_append (add, str_get (uri));
     aud_playlist_entry_insert_filtered (list, -1, add, NULL, filter_cb, NULL, FALSE);
 
+    g_free (uri);
     g_free (prefix);
     adding = TRUE;
 }
@@ -396,9 +394,10 @@ static void add_complete_cb (void * unused, void * unused2)
     {
         gint list = get_playlist (TRUE, FALSE);
 
-        if (list >= 0)
+        if (list >= 0 && ! aud_playlist_add_in_progress (list))
         {
             adding = FALSE;
+            destroy_added_table ();
             aud_playlist_sort_by_scheme (list, PLAYLIST_SORT_PATH);
         }
     }

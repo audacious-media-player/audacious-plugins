@@ -130,10 +130,11 @@ static gboolean playlist_load_cue (const gchar * cue_filename, VFSFile * file,
             tuple_attach_cdtext (tuple, current, pti_map[i].tuple_type,
              pti_map[i].pti);
 
-        index_append (filenames, filename);
+        index_append (filenames, str_get (filename));
         index_append (tuples, tuple);
 
         current = next;
+        g_free (filename);
         filename = next_filename;
 
         if (last_track && base_tuple != NULL)

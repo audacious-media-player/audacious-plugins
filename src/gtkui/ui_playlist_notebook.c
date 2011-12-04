@@ -144,7 +144,7 @@ static void set_tab_label (gint list, GtkLabel * label)
     else
         gtk_label_set_text (label, title);
 
-    g_free (title);
+    str_unref (title);
 }
 
 void ui_playlist_notebook_edit_tab_title(GtkWidget *ebox)
@@ -164,7 +164,7 @@ void ui_playlist_notebook_edit_tab_title(GtkWidget *ebox)
 
     gchar * title = aud_playlist_get_title (aud_playlist_get_active ());
     gtk_entry_set_text ((GtkEntry *) entry, title);
-    g_free (title);
+    str_unref (title);
     gtk_widget_grab_focus(entry);
     gtk_editable_select_region(GTK_EDITABLE(entry), 0, -1);
     gtk_widget_show(entry);

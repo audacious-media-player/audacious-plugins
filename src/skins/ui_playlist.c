@@ -137,7 +137,7 @@ static void update_rollup_text (void)
         gchar * title = aud_playlist_entry_get_title (playlist, entry, TRUE);
         snprintf (scratch + strlen (scratch), sizeof scratch - strlen (scratch),
          "%s", title);
-        g_free (title);
+        str_unref (title);
 
         if (length > 0)
             snprintf (scratch + strlen (scratch), sizeof scratch - strlen
@@ -210,7 +210,8 @@ static void copy_selected_to_new (gint playlist)
 {
     gint entries = aud_playlist_entry_count (playlist);
     gint new = aud_playlist_count ();
-    struct index * copy = index_new ();
+    struct index * filenames = index_new ();
+    struct index * tuples = index_new ();
     gint entry;
 
     aud_playlist_insert (new);
@@ -218,10 +219,13 @@ static void copy_selected_to_new (gint playlist)
     for (entry = 0; entry < entries; entry ++)
     {
         if (aud_playlist_entry_get_selected (playlist, entry))
-            index_append (copy, aud_playlist_entry_get_filename (playlist, entry));
+        {
+            index_append (filenames, aud_playlist_entry_get_filename (playlist, entry));
+            index_append (tuples, aud_playlist_entry_get_tuple (playlist, entry, TRUE));
+        }
     }
 
-    aud_playlist_entry_insert_batch (new, 0, copy, NULL, FALSE);
+    aud_playlist_entry_insert_batch (new, 0, filenames, tuples, FALSE);
     aud_playlist_set_active (new);
 }
 
@@ -807,7 +811,7 @@ static void get_title (void)
         gchar * title = aud_playlist_get_title (active_playlist);
         active_title = g_strdup_printf (_("%s (%d of %d)"), title, 1 +
          active_playlist, playlists);
-        g_free (title);
+        str_unref (title);
     }
     else
         active_title = NULL;

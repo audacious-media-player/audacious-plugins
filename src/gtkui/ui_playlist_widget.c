@@ -120,19 +120,16 @@ static void get_value (void * user, gint row, gint column, GValue * value)
         g_value_set_int (value, 1 + row);
         break;
     case PW_COL_TITLE:
-        g_value_take_string (value, title);
-        title = NULL;
+        g_value_set_string (value, title);
         break;
     case PW_COL_ARTIST:
-        g_value_take_string (value, artist);
-        artist = NULL;
+        g_value_set_string (value, artist);
         break;
     case PW_COL_YEAR:
         set_int_from_tuple (value, tuple, FIELD_YEAR);
         break;
     case PW_COL_ALBUM:
-        g_value_take_string (value, album);
-        album = NULL;
+        g_value_set_string (value, album);
         break;
     case PW_COL_TRACK:
         set_int_from_tuple (value, tuple, FIELD_TRACK_NUMBER);
@@ -149,18 +146,19 @@ static void get_value (void * user, gint row, gint column, GValue * value)
     case PW_COL_PATH:
         set_string_from_tuple (value, tuple, FIELD_FILE_PATH);
         break;
-    case PW_COL_CUSTOM:
-        g_value_take_string (value, aud_playlist_entry_get_title (data->list,
-         row, TRUE));
+    case PW_COL_CUSTOM:;
+        gchar * custom = aud_playlist_entry_get_title (data->list, row, TRUE);
+        g_value_set_string (value, custom);
+        str_unref (custom);
         break;
     case PW_COL_BITRATE:
         set_int_from_tuple (value, tuple, FIELD_BITRATE);
         break;
     }
 
-    g_free (title);
-    g_free (artist);
-    g_free (album);
+    str_unref (title);
+    str_unref (artist);
+    str_unref (album);
     if (tuple)
         tuple_unref (tuple);
 }
@@ -278,7 +276,7 @@ static gboolean search_cb (GtkTreeModel * model, gint column, const gchar * key,
             }
         }
         g_free (temp);
-        g_free (s[i]);
+        str_unref (s[i]);
     }
 
     g_strfreev (keys);

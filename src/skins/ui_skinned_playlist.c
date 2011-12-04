@@ -289,7 +289,7 @@ DRAW_FUNC_BEGIN (playlist_draw)
          right));
         pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_END);
 
-        g_free (title);
+        str_unref (title);
 
         cairo_move_to (cr, left, data->offset + data->row_height * (i -
          data->first));

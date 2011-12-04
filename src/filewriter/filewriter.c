@@ -234,7 +234,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
 
         gchar buf[3 * strlen (utf8) + 1];
         str_encode_percent (utf8, -1, buf);
-        g_free (utf8);
+        str_unref (utf8);
 
         filename = g_strdup (buf);
     }
@@ -244,7 +244,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
         gchar * original = strrchr (temp, '/');
         g_return_val_if_fail (original != NULL, 0);
         filename = g_strdup (original + 1);
-        g_free (temp);
+        str_unref (temp);
 
         if (!use_suffix)
             if ((temp = strrchr(filename, '.')) != NULL)
@@ -264,7 +264,9 @@ static gint file_open(gint fmt, gint rate, gint nch)
 
     if (save_original)
     {
-        directory = aud_playlist_entry_get_filename (playlist, pos);
+        temp = aud_playlist_entry_get_filename (playlist, pos);
+        directory = g_strdup (temp);
+        str_unref (temp);
         temp = strrchr (directory, '/');
         g_return_val_if_fail (temp != NULL, 0);
         temp[1] = 0;

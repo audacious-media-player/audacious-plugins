@@ -69,7 +69,9 @@ static gboolean playlist_load_pls (const gchar * filename, VFSFile * file,
             g_free(line);
 
             if (uri != NULL)
-                index_append (filenames, uri);
+                index_append (filenames, str_get (uri));
+
+            g_free (uri);
         }
     }
 

@@ -64,10 +64,10 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 	if (ishttp (filename))
 	{
 		AUDDBG(" *** not submitting due to HTTP source");
-		g_free (filename);
+		str_unref (filename);
 		return;
 	}
-	g_free (filename);
+	str_unref (filename);
 
 	sc_idle(m_scrobbler);
 

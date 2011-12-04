@@ -60,26 +60,18 @@ static void update (void * unused, void * explicit)
     if (artist)
     {
         if (album)
-        {
             message = g_strdup_printf ("%s\n%s", artist, album);
-            g_free (artist);
-            g_free (album);
-        }
         else
-            message = artist;
+            message = g_strdup (artist);
     }
     else if (album)
-        message = album;
+        message = g_strdup (album);
     else
         message = g_strdup ("");
 
     if (! GPOINTER_TO_INT (explicit) && last_title && last_message && ! strcmp
      (title, last_title) && ! strcmp (message, last_message))
-    {
-        g_free (title);
-        g_free (message);
-        return;
-    }
+        goto FREE;
 
     GdkPixbuf * pb = audgui_pixbuf_for_current ();
     if (pb)
@@ -91,8 +83,13 @@ static void update (void * unused, void * explicit)
         g_object_unref (pb);
 
     clear ();
-    last_title = title;
+    last_title = g_strdup (title);
     last_message = message;
+
+FREE:
+    str_unref (title);
+    str_unref (artist);
+    str_unref (album);
 }
 
 void event_init (void)

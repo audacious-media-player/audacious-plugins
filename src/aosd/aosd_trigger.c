@@ -290,8 +290,8 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
       prevs->filename = g_strdup(pl_entry_filename);
     }
 
-    g_free (pl_entry_filename);
-    g_free (pl_entry_title);
+    str_unref (pl_entry_filename);
+    str_unref (pl_entry_title);
   }
 }
 
@@ -405,7 +405,7 @@ aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
     global_config->osd->text.fonts_name[0] , utf8_title , time_cur_m , time_cur_s , time_tot_m , time_tot_s );
   aosd_osd_display( utf8_title_markup , global_config->osd , FALSE );
   g_free( utf8_title_markup );
-  g_free( utf8_title );
+  str_unref (utf8_title);
   return;
 }
 
