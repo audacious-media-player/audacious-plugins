@@ -37,6 +37,10 @@
 
 #define CURRENT_POS (-2)
 
+#if GTK_CHECK_VERSION(2, 20, 0)
+#define HAVE_ADD_BUTTON
+#endif
+
 static GtkWidget * notebook = NULL;
 static GQueue follow_queue = G_QUEUE_INIT;
 static gint highlighted = -1;
@@ -46,6 +50,28 @@ GtkWidget *ui_playlist_notebook_tab_title_editing = NULL;
 
 static gint switch_handler = 0;
 static gint reorder_handler = 0;
+
+#ifdef HAVE_ADD_BUTTON
+static void add_button_cb (GtkButton * button, void * unused)
+{
+    aud_playlist_insert (-1);
+    aud_playlist_set_active (aud_playlist_count () - 1);
+}
+
+static void make_add_button (GtkWidget * notebook)
+{
+    GtkWidget * button = gtk_button_new ();
+    gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
+    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_stock
+     (GTK_STOCK_ADD, GTK_ICON_SIZE_BUTTON));
+    gtk_widget_set_can_focus (button, FALSE);
+
+    g_signal_connect (button, "clicked", (GCallback) add_button_cb, NULL);
+    gtk_widget_show_all (button);
+
+    gtk_notebook_set_action_widget ((GtkNotebook *) notebook, button, GTK_PACK_END);
+}
+#endif
 
 GtkNotebook *ui_playlist_get_notebook(void)
 {
@@ -172,11 +198,6 @@ void ui_playlist_notebook_edit_tab_title(GtkWidget *ebox)
     ui_playlist_notebook_tab_title_editing = ebox;
 }
 
-static void change_view (void)
-{
-    gtk_notebook_set_show_tabs (UI_PLAYLIST_NOTEBOOK, (index_count (pages) > 1));
-}
-
 void ui_playlist_notebook_create_tab(gint playlist)
 {
     GtkWidget *scrollwin, *treeview;
@@ -214,7 +235,6 @@ void ui_playlist_notebook_create_tab(gint playlist)
 
     gtk_notebook_insert_page (UI_PLAYLIST_NOTEBOOK, scrollwin, ebox, playlist);
     gtk_notebook_set_tab_reorderable(UI_PLAYLIST_NOTEBOOK, scrollwin, TRUE);
-    change_view ();
 
     g_object_set_data ((GObject *) treeview, "playlist-id",
      GINT_TO_POINTER (aud_playlist_get_unique_id (playlist)));
@@ -238,7 +258,6 @@ void ui_playlist_notebook_destroy_tab(gint playlist)
 
     gtk_notebook_remove_page(UI_PLAYLIST_NOTEBOOK, gtk_notebook_page_num(UI_PLAYLIST_NOTEBOOK, page));
     index_delete(pages, playlist, 1);
-    change_view ();
 }
 
 void ui_playlist_notebook_populate(void)
@@ -466,6 +485,10 @@ GtkWidget *ui_playlist_notebook_new()
     notebook = gtk_notebook_new();
     gtk_notebook_set_scrollable(UI_PLAYLIST_NOTEBOOK, TRUE);
     gtk_notebook_set_show_border(UI_PLAYLIST_NOTEBOOK, FALSE);
+
+#ifdef HAVE_ADD_BUTTON
+    make_add_button (notebook);
+#endif
 
     g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
     return notebook;
