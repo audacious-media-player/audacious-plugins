@@ -111,6 +111,7 @@ BOOL CSoundFile::ReadSTM(const BYTE *lpStream, DWORD dwMemLength)
 	{
 		if (dwMemPos + 64*4*4 > dwMemLength) return TRUE;
 		PatternSize[nPat] = 64;
+		PatternAllocSize[nPat] = 64;
 		if ((Patterns[nPat] = AllocatePattern(64, m_nChannels)) == NULL) return TRUE;
 		MODCOMMAND *m = Patterns[nPat];
 		STMNOTE *p = (STMNOTE *)(lpStream + dwMemPos);

@@ -114,23 +114,6 @@ int ModPlug_GetModuleType(ModPlugFile* file);
 char* ModPlug_GetMessage(ModPlugFile* file);
 
 
-#ifndef MODPLUG_NO_FILESAVE
-/*
- * EXPERIMENTAL Export Functions
- */
-/*Export to a Scream Tracker 3 S3M module. EXPERIMENTAL (only works on Little-Endian platforms)*/
-char ModPlug_ExportS3M(ModPlugFile* file, const char* filepath);
-
-/*Export to a Extended Module (XM). EXPERIMENTAL (only works on Little-Endian platforms)*/
-char ModPlug_ExportXM(ModPlugFile* file, const char* filepath);
-
-/*Export to a Amiga MOD file. EXPERIMENTAL.*/
-char ModPlug_ExportMOD(ModPlugFile* file, const char* filepath);
-
-/*Export to a Impulse Tracker IT file. Should work OK in Little-Endian & Big-Endian platforms :-) */
-char ModPlug_ExportIT(ModPlugFile* file, const char* filepath);
-#endif // MODPLUG_NO_FILESAVE
-
 unsigned int ModPlug_NumInstruments(ModPlugFile* file);
 unsigned int ModPlug_NumSamples(ModPlugFile* file);
 unsigned int ModPlug_NumPatterns(ModPlugFile* file);

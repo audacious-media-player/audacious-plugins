@@ -93,10 +93,10 @@ BOOL CSoundFile::ReadXM(const BYTE *lpStream, DWORD dwMemLength)
 	memcpy(m_szNames[0], lpStream+17, 20);
 	dwHdrSize = bswapLE32(*((DWORD *)(lpStream+60)));
 	norders = bswapLE16(*((WORD *)(lpStream+64)));
-	if ((!norders) || (norders > MAX_ORDERS)) return FALSE;
+	if (norders > MAX_ORDERS) return FALSE;
 	restartpos = bswapLE16(*((WORD *)(lpStream+66)));
 	channels = bswapLE16(*((WORD *)(lpStream+68)));
-	if ((!channels) || (channels > 64)) return FALSE;
+	if (channels > 64) return FALSE;
 	m_nType = MOD_TYPE_XM;
 	m_nMinPeriod = 27;
 	m_nMaxPeriod = 54784;
@@ -107,6 +107,7 @@ BOOL CSoundFile::ReadXM(const BYTE *lpStream, DWORD dwMemLength)
 	instruments = bswapLE16(*((WORD *)(lpStream+72)));
 	if (instruments >= MAX_INSTRUMENTS) instruments = MAX_INSTRUMENTS-1;
 	m_nInstruments = instruments;
+	m_dwSongFlags |= SONG_INSTRUMENTMODE;
 	m_nSamples = 0;
 	memcpy(&xmflags, lpStream+74, 2);
 	xmflags = bswapLE16(xmflags);
@@ -173,6 +174,7 @@ BOOL CSoundFile::ReadXM(const BYTE *lpStream, DWORD dwMemLength)
 		if (ipatmap < MAX_PATTERNS)
 		{
 			PatternSize[ipatmap] = rows;
+			PatternAllocSize[ipatmap] = rows;
 			if ((Patterns[ipatmap] = AllocatePattern(rows, m_nChannels)) == NULL) return TRUE;
 			if (!packsize) continue;
 			p = Patterns[ipatmap];
@@ -386,42 +388,42 @@ BOOL CSoundFile::ReadXM(const BYTE *lpStream, DWORD dwMemLength)
 		if (xmsh.ptype & 4) penv->dwFlags |= ENV_PANLOOP;
 		if (xmsh.vnum > 12) xmsh.vnum = 12;
 		if (xmsh.pnum > 12) xmsh.pnum = 12;
-		penv->nVolEnv = xmsh.vnum;
+		penv->VolEnv.nNodes = xmsh.vnum;
 		if (!xmsh.vnum) penv->dwFlags &= ~ENV_VOLUME;
 		if (!xmsh.pnum) penv->dwFlags &= ~ENV_PANNING;
-		penv->nPanEnv = xmsh.pnum;
-		penv->nVolSustainBegin = penv->nVolSustainEnd = xmsh.vsustain;
+		penv->PanEnv.nNodes = xmsh.pnum;
+		penv->VolEnv.nSustainStart = penv->VolEnv.nSustainEnd = xmsh.vsustain;
 		if (xmsh.vsustain >= 12) penv->dwFlags &= ~ENV_VOLSUSTAIN;
-		penv->nVolLoopStart = xmsh.vloops;
-		penv->nVolLoopEnd = xmsh.vloope;
-		if (penv->nVolLoopEnd >= 12) penv->nVolLoopEnd = 0;
-		if (penv->nVolLoopStart >= penv->nVolLoopEnd) penv->dwFlags &= ~ENV_VOLLOOP;
-		penv->nPanSustainBegin = penv->nPanSustainEnd = xmsh.psustain;
+		penv->VolEnv.nLoopStart = xmsh.vloops;
+		penv->VolEnv.nLoopEnd = xmsh.vloope;
+		if (penv->VolEnv.nLoopEnd >= 12) penv->VolEnv.nLoopEnd = 0;
+		if (penv->VolEnv.nLoopStart >= penv->VolEnv.nLoopEnd) penv->dwFlags &= ~ENV_VOLLOOP;
+		penv->PanEnv.nSustainStart = penv->PanEnv.nSustainEnd = xmsh.psustain;
 		if (xmsh.psustain >= 12) penv->dwFlags &= ~ENV_PANSUSTAIN;
-		penv->nPanLoopStart = xmsh.ploops;
-		penv->nPanLoopEnd = xmsh.ploope;
-		if (penv->nPanLoopEnd >= 12) penv->nPanLoopEnd = 0;
-		if (penv->nPanLoopStart >= penv->nPanLoopEnd) penv->dwFlags &= ~ENV_PANLOOP;
-		penv->nGlobalVol = 64;
+		penv->PanEnv.nLoopStart = xmsh.ploops;
+		penv->PanEnv.nLoopEnd = xmsh.ploope;
+		if (penv->PanEnv.nLoopEnd >= 12) penv->PanEnv.nLoopEnd = 0;
+		if (penv->PanEnv.nLoopStart >= penv->PanEnv.nLoopEnd) penv->dwFlags &= ~ENV_PANLOOP;
+		penv->nGlobalVol = 128;
 		for (UINT ienv=0; ienv<12; ienv++)
 		{
-			penv->VolPoints[ienv] = (WORD)xmsh.venv[ienv*2];
-			penv->VolEnv[ienv] = (BYTE)xmsh.venv[ienv*2+1];
-			penv->PanPoints[ienv] = (WORD)xmsh.penv[ienv*2];
-			penv->PanEnv[ienv] = (BYTE)xmsh.penv[ienv*2+1];
+			penv->VolEnv.Ticks[ienv] = (WORD)xmsh.venv[ienv*2];
+			penv->VolEnv.Values[ienv] = (BYTE)xmsh.venv[ienv*2+1];
+			penv->PanEnv.Ticks[ienv] = (WORD)xmsh.penv[ienv*2];
+			penv->PanEnv.Values[ienv] = (BYTE)xmsh.penv[ienv*2+1];
 			if (ienv)
 			{
-				if (penv->VolPoints[ienv] < penv->VolPoints[ienv-1])
+				if (penv->VolEnv.Ticks[ienv] < penv->VolEnv.Ticks[ienv-1])
 				{
-					penv->VolPoints[ienv] &= 0xFF;
-					penv->VolPoints[ienv] += penv->VolPoints[ienv-1] & 0xFF00;
-					if (penv->VolPoints[ienv] < penv->VolPoints[ienv-1]) penv->VolPoints[ienv] += 0x100;
+					penv->VolEnv.Ticks[ienv] &= 0xFF;
+					penv->VolEnv.Ticks[ienv] += penv->VolEnv.Ticks[ienv-1] & 0xFF00;
+					if (penv->VolEnv.Ticks[ienv] < penv->VolEnv.Ticks[ienv-1]) penv->VolEnv.Ticks[ienv] += 0x100;
 				}
-				if (penv->PanPoints[ienv] < penv->PanPoints[ienv-1])
+				if (penv->PanEnv.Ticks[ienv] < penv->PanEnv.Ticks[ienv-1])
 				{
-					penv->PanPoints[ienv] &= 0xFF;
-					penv->PanPoints[ienv] += penv->PanPoints[ienv-1] & 0xFF00;
-					if (penv->PanPoints[ienv] < penv->PanPoints[ienv-1]) penv->PanPoints[ienv] += 0x100;
+					penv->PanEnv.Ticks[ienv] &= 0xFF;
+					penv->PanEnv.Ticks[ienv] += penv->PanEnv.Ticks[ienv-1] & 0xFF00;
+					if (penv->PanEnv.Ticks[ienv] < penv->PanEnv.Ticks[ienv-1]) penv->PanEnv.Ticks[ienv] += 0x100;
 				}
 			}
 		}
@@ -491,7 +493,7 @@ BOOL CSoundFile::ReadXM(const BYTE *lpStream, DWORD dwMemLength)
 			pins->nVibType = xmsh.vibtype;
 			pins->nVibSweep = xmsh.vibsweep;
 			pins->nVibDepth = xmsh.vibdepth;
-			pins->nVibRate = xmsh.vibrate;
+			pins->nVibRate = xmsh.vibrate/4;
 			memcpy(pins->name, xmss.name, 22);
 			pins->name[21] = 0;
 		}
@@ -511,382 +513,14 @@ BOOL CSoundFile::ReadXM(const BYTE *lpStream, DWORD dwMemLength)
 			if (dwMemPos >= dwMemLength) break;
 		}
 	}
-	// Read song comments: "TEXT"
-	if ((dwMemPos + 8 < dwMemLength) && (bswapLE32(*((DWORD *)(lpStream+dwMemPos))) == 0x74786574))
+	/* set these to default */
+	for (UINT in=0; in<m_nChannels; in++)
 	{
-		UINT len = *((DWORD *)(lpStream+dwMemPos+4));
-		dwMemPos += 8;
-		if ((dwMemPos + len <= dwMemLength) && (len < 16384))
-		{
-			m_lpszSongComments = new char[len+1];
-			if (m_lpszSongComments)
-			{
-				memcpy(m_lpszSongComments, lpStream+dwMemPos, len);
-				m_lpszSongComments[len] = 0;
-			}
-			dwMemPos += len;
-		}
-	}
-	// Read midi config: "MIDI"
-	if ((dwMemPos + 8 < dwMemLength) && (bswapLE32(*((DWORD *)(lpStream+dwMemPos))) == 0x4944494D))
-	{
-		UINT len = *((DWORD *)(lpStream+dwMemPos+4));
-		dwMemPos += 8;
-		if (len == sizeof(MODMIDICFG))
-		{
-			memcpy(&m_MidiCfg, lpStream+dwMemPos, len);
-			m_dwSongFlags |= SONG_EMBEDMIDICFG;
-		}
-	}
-	// Read pattern names: "PNAM"
-	if ((dwMemPos + 8 < dwMemLength) && (bswapLE32(*((DWORD *)(lpStream+dwMemPos))) == 0x4d414e50))
-	{
-		UINT len = *((DWORD *)(lpStream+dwMemPos+4));
-		dwMemPos += 8;
-		if ((dwMemPos + len <= dwMemLength) && (len <= MAX_PATTERNS*MAX_PATTERNNAME) && (len >= MAX_PATTERNNAME))
-		{
-			m_lpszPatternNames = new char[len];
-
-			if (m_lpszPatternNames)
-			{
-				m_nPatternNames = len / MAX_PATTERNNAME;
-				memcpy(m_lpszPatternNames, lpStream+dwMemPos, len);
-			}
-			dwMemPos += len;
-		}
-	}
-	// Read channel names: "CNAM"
-	if ((dwMemPos + 8 < dwMemLength) && (bswapLE32(*((DWORD *)(lpStream+dwMemPos))) == 0x4d414e43))
-	{
-		UINT len = *((DWORD *)(lpStream+dwMemPos+4));
-		dwMemPos += 8;
-		if ((dwMemPos + len <= dwMemLength) && (len <= MAX_BASECHANNELS*MAX_CHANNELNAME))
-		{
-			UINT n = len / MAX_CHANNELNAME;
-			for (UINT i=0; i<n; i++)
-			{
-				memcpy(ChnSettings[i].szName, (lpStream+dwMemPos+i*MAX_CHANNELNAME), MAX_CHANNELNAME);
-				ChnSettings[i].szName[MAX_CHANNELNAME-1] = 0;
-			}
-			dwMemPos += len;
-		}
-	}
-	// Read mix plugins information
-	if (dwMemPos + 8 < dwMemLength)
-	{
-		dwMemPos += LoadMixPlugins(lpStream+dwMemPos, dwMemLength-dwMemPos);
+		ChnSettings[in].nVolume = 64;
+		ChnSettings[in].nPan = 128;
+		ChnSettings[in].dwFlags = 0;
 	}
 	return TRUE;
 }
 
 
-#ifndef MODPLUG_NO_FILESAVE
-
-BOOL CSoundFile::SaveXM(LPCSTR lpszFileName, UINT nPacking)
-//---------------------------------------------------------
-{
-	BYTE s[64*64*5];
-	XMFILEHEADER header;
-	XMINSTRUMENTHEADER xmih;
-	XMSAMPLEHEADER xmsh;
-	XMSAMPLESTRUCT xmss;
-	BYTE smptable[32];
-	BYTE xmph[9];
-	FILE *f;
-	int i;
-
-	if ((!m_nChannels) || (!lpszFileName)) return FALSE;
-	if ((f = fopen(lpszFileName, "wb")) == NULL) return FALSE;
-	fwrite("Extended Module: ", 17, 1, f);
-	fwrite(m_szNames[0], 20, 1, f);
-	s[0] = 0x1A;
-	lstrcpy((LPSTR)&s[1], (nPacking) ? "MOD Plugin packed   " : "FastTracker v2.00   ");
-	s[21] = 0x04;
-	s[22] = 0x01;
-	fwrite(s, 23, 1, f);
-	// Writing song header
-	memset(&header, 0, sizeof(header));
-	header.size = sizeof(XMFILEHEADER);
-	header.norder = 0;
-	header.restartpos = m_nRestartPos;
-	header.channels = m_nChannels;
-	header.patterns = 0;
-	for (i=0; i<MAX_ORDERS; i++)
-	{
-		if (Order[i] == 0xFF) break;
-		header.norder++;
-		if ((Order[i] >= header.patterns) && (Order[i] < MAX_PATTERNS)) header.patterns = Order[i]+1;
-	}
-	header.instruments = m_nInstruments;
-	if (!header.instruments) header.instruments = m_nSamples;
-	header.flags = (m_dwSongFlags & SONG_LINEARSLIDES) ? 0x01 : 0x00;
-	if (m_dwSongFlags & SONG_EXFILTERRANGE) header.flags |= 0x1000;
-	header.tempo = m_nDefaultTempo;
-	header.speed = m_nDefaultSpeed;
-	memcpy(header.order, Order, header.norder);
-	fwrite(&header, 1, sizeof(header), f);
-	// Writing patterns
-	for (i=0; i<header.patterns; i++) if (Patterns[i])
-	{
-		MODCOMMAND *p = Patterns[i];
-		UINT len = 0;
-
-		memset(&xmph, 0, sizeof(xmph));
-		xmph[0] = 9;
-		xmph[5] = (BYTE)(PatternSize[i] & 0xFF);
-		xmph[6] = (BYTE)(PatternSize[i] >> 8);
-		for (UINT j=m_nChannels*PatternSize[i]; j; j--,p++)
-		{
-			UINT note = p->note;
-			UINT param = ModSaveCommand(p, TRUE);
-			UINT command = param >> 8;
-			param &= 0xFF;
-			if (note >= 0xFE) note = 97; else
-			if ((note <= 12) || (note > 96+12)) note = 0; else
-			note -= 12;
-			UINT vol = 0;
-			if (p->volcmd)
-			{
-				UINT volcmd = p->volcmd;
-				switch(volcmd)
-				{
-				case VOLCMD_VOLUME:			vol = 0x10 + p->vol; break;
-				case VOLCMD_VOLSLIDEDOWN:	vol = 0x60 + (p->vol & 0x0F); break;
-				case VOLCMD_VOLSLIDEUP:		vol = 0x70 + (p->vol & 0x0F); break;
-				case VOLCMD_FINEVOLDOWN:	vol = 0x80 + (p->vol & 0x0F); break;
-				case VOLCMD_FINEVOLUP:		vol = 0x90 + (p->vol & 0x0F); break;
-				case VOLCMD_VIBRATOSPEED:	vol = 0xA0 + (p->vol & 0x0F); break;
-				case VOLCMD_VIBRATO:		vol = 0xB0 + (p->vol & 0x0F); break;
-				case VOLCMD_PANNING:		vol = 0xC0 + (p->vol >> 2); if (vol > 0xCF) vol = 0xCF; break;
-				case VOLCMD_PANSLIDELEFT:	vol = 0xD0 + (p->vol & 0x0F); break;
-				case VOLCMD_PANSLIDERIGHT:	vol = 0xE0 + (p->vol & 0x0F); break;
-				case VOLCMD_TONEPORTAMENTO:	vol = 0xF0 + (p->vol & 0x0F); break;
-				}
-			}
-			if ((note) && (p->instr) && (vol > 0x0F) && (command) && (param))
-			{
-				s[len++] = note;
-				s[len++] = p->instr;
-				s[len++] = vol;
-				s[len++] = command;
-				s[len++] = param;
-			} else
-			{
-				BYTE b = 0x80;
-				if (note) b |= 0x01;
-				if (p->instr) b |= 0x02;
-				if (vol >= 0x10) b |= 0x04;
-				if (command) b |= 0x08;
-				if (param) b |= 0x10;
-				s[len++] = b;
-				if (b & 1) s[len++] = note;
-				if (b & 2) s[len++] = p->instr;
-				if (b & 4) s[len++] = vol;
-				if (b & 8) s[len++] = command;
-				if (b & 16) s[len++] = param;
-			}
-			if (len > sizeof(s) - 5) break;
-		}
-		xmph[7] = (BYTE)(len & 0xFF);
-		xmph[8] = (BYTE)(len >> 8);
-		fwrite(xmph, 1, 9, f);
-		fwrite(s, 1, len, f);
-	} else
-	{
-		memset(&xmph, 0, sizeof(xmph));
-		xmph[0] = 9;
-		xmph[5] = (BYTE)(PatternSize[i] & 0xFF);
-		xmph[6] = (BYTE)(PatternSize[i] >> 8);
-		fwrite(xmph, 1, 9, f);
-	}
-	// Writing instruments
-	for (i=1; i<=header.instruments; i++)
-	{
-		MODINSTRUMENT *pins;
-		BYTE flags[32];
-
-		memset(&xmih, 0, sizeof(xmih));
-		memset(&xmsh, 0, sizeof(xmsh));
-		xmih.size = sizeof(xmih) + sizeof(xmsh);
-		memcpy(xmih.name, m_szNames[i], 22);
-		xmih.type = 0;
-		xmih.samples = 0;
-		if (m_nInstruments)
-		{
-			INSTRUMENTHEADER *penv = Headers[i];
-			if (penv)
-			{
-				memcpy(xmih.name, penv->name, 22);
-				xmih.type = penv->nMidiProgram;
-				xmsh.volfade = penv->nFadeOut;
-				xmsh.vnum = (BYTE)penv->nVolEnv;
-				xmsh.pnum = (BYTE)penv->nPanEnv;
-				if (xmsh.vnum > 12) xmsh.vnum = 12;
-				if (xmsh.pnum > 12) xmsh.pnum = 12;
-				for (UINT ienv=0; ienv<12; ienv++)
-				{
-					xmsh.venv[ienv*2] = penv->VolPoints[ienv];
-					xmsh.venv[ienv*2+1] = penv->VolEnv[ienv];
-					xmsh.penv[ienv*2] = penv->PanPoints[ienv];
-					xmsh.penv[ienv*2+1] = penv->PanEnv[ienv];
-				}
-				if (penv->dwFlags & ENV_VOLUME) xmsh.vtype |= 1;
-				if (penv->dwFlags & ENV_VOLSUSTAIN) xmsh.vtype |= 2;
-				if (penv->dwFlags & ENV_VOLLOOP) xmsh.vtype |= 4;
-				if (penv->dwFlags & ENV_PANNING) xmsh.ptype |= 1;
-				if (penv->dwFlags & ENV_PANSUSTAIN) xmsh.ptype |= 2;
-				if (penv->dwFlags & ENV_PANLOOP) xmsh.ptype |= 4;
-				xmsh.vsustain = (BYTE)penv->nVolSustainBegin;
-				xmsh.vloops = (BYTE)penv->nVolLoopStart;
-				xmsh.vloope = (BYTE)penv->nVolLoopEnd;
-				xmsh.psustain = (BYTE)penv->nPanSustainBegin;
-				xmsh.ploops = (BYTE)penv->nPanLoopStart;
-				xmsh.ploope = (BYTE)penv->nPanLoopEnd;
-				for (UINT j=0; j<96; j++) if (penv->Keyboard[j+12])
-				{
-					UINT k;
-					for (k=0; k<xmih.samples; k++)	if (smptable[k] == penv->Keyboard[j+12]) break;
-					if (k == xmih.samples)
-					{
-						smptable[xmih.samples++] = penv->Keyboard[j+12];
-					}
-					if (xmih.samples >= 32) break;
-					xmsh.snum[j] = k;
-				}
-//				xmsh.reserved2 = xmih.samples;
-			}
-		} else
-		{
-			xmih.samples = 1;
-//			xmsh.reserved2 = 1;
-			smptable[0] = i;
-		}
-		xmsh.shsize = (xmih.samples) ? 40 : 0;
-		fwrite(&xmih, 1, sizeof(xmih), f);
-		if (smptable[0])
-		{
-			MODINSTRUMENT *pvib = &Ins[smptable[0]];
-			xmsh.vibtype = pvib->nVibType;
-			xmsh.vibsweep = pvib->nVibSweep;
-			xmsh.vibdepth = pvib->nVibDepth;
-			xmsh.vibrate = pvib->nVibRate;
-		}
-		fwrite(&xmsh, 1, xmih.size - sizeof(xmih), f);
-		if (!xmih.samples) continue;
-		for (UINT ins=0; ins<xmih.samples; ins++)
-		{
-			memset(&xmss, 0, sizeof(xmss));
-			if (smptable[ins]) memcpy(xmss.name, m_szNames[smptable[ins]], 22);
-			pins = &Ins[smptable[ins]];
-			xmss.samplen = pins->nLength;
-			xmss.loopstart = pins->nLoopStart;
-			xmss.looplen = pins->nLoopEnd - pins->nLoopStart;
-			xmss.vol = pins->nVolume / 4;
-			xmss.finetune = (char)pins->nFineTune;
-			xmss.type = 0;
-			if (pins->uFlags & CHN_LOOP) xmss.type = (pins->uFlags & CHN_PINGPONGLOOP) ? 2 : 1;
-			flags[ins] = RS_PCM8D;
-#ifndef NO_PACKING
-			if (nPacking)
-			{
-				if ((!(pins->uFlags & (CHN_16BIT|CHN_STEREO)))
-				 && (CanPackSample((char *)pins->pSample, pins->nLength, nPacking)))
-				{
-					flags[ins] = RS_ADPCM4;
-					xmss.res = 0xAD;
-				}
-			} else
-#endif
-			{
-				if (pins->uFlags & CHN_16BIT)
-				{
-					flags[ins] = RS_PCM16D;
-					xmss.type |= 0x10;
-					xmss.looplen *= 2;
-					xmss.loopstart *= 2;
-					xmss.samplen *= 2;
-				}
-				if (pins->uFlags & CHN_STEREO)
-				{
-					flags[ins] = (pins->uFlags & CHN_16BIT) ? RS_STPCM16D : RS_STPCM8D;
-					xmss.type |= 0x20;
-					xmss.looplen *= 2;
-					xmss.loopstart *= 2;
-					xmss.samplen *= 2;
-				}
-			}
-			xmss.pan = 255;
-			if (pins->nPan < 256) xmss.pan = (BYTE)pins->nPan;
-			xmss.relnote = (signed char)pins->RelativeTone;
-			fwrite(&xmss, 1, xmsh.shsize, f);
-		}
-		for (UINT ismpd=0; ismpd<xmih.samples; ismpd++)
-		{
-			pins = &Ins[smptable[ismpd]];
-			if (pins->pSample)
-			{
-#ifndef NO_PACKING
-				if ((flags[ismpd] == RS_ADPCM4) && (xmih.samples>1)) CanPackSample((char *)pins->pSample, pins->nLength, nPacking);
-#endif // NO_PACKING
-				WriteSample(f, pins, flags[ismpd]);
-			}
-		}
-	}
-	// Writing song comments
-	if ((m_lpszSongComments) && (m_lpszSongComments[0]))
-	{
-		DWORD d = 0x74786574;
-		fwrite(&d, 1, 4, f);
-		d = strlen(m_lpszSongComments);
-		fwrite(&d, 1, 4, f);
-		fwrite(m_lpszSongComments, 1, d, f);
-	}
-	// Writing midi cfg
-	if (m_dwSongFlags & SONG_EMBEDMIDICFG)
-	{
-		DWORD d = 0x4944494D;
-		fwrite(&d, 1, 4, f);
-		d = sizeof(MODMIDICFG);
-		fwrite(&d, 1, 4, f);
-		fwrite(&m_MidiCfg, 1, sizeof(MODMIDICFG), f);
-	}
-	// Writing Pattern Names
-	if ((m_nPatternNames) && (m_lpszPatternNames))
-	{
-		DWORD dwLen = m_nPatternNames * MAX_PATTERNNAME;
-		while ((dwLen >= MAX_PATTERNNAME) && (!m_lpszPatternNames[dwLen-MAX_PATTERNNAME])) dwLen -= MAX_PATTERNNAME;
-		if (dwLen >= MAX_PATTERNNAME)
-		{
-			DWORD d = 0x4d414e50;
-			fwrite(&d, 1, 4, f);
-			fwrite(&dwLen, 1, 4, f);
-			fwrite(m_lpszPatternNames, 1, dwLen, f);
-		}
-	}
-	// Writing Channel Names
-	{
-		UINT nChnNames = 0;
-		for (UINT inam=0; inam<m_nChannels; inam++)
-		{
-			if (ChnSettings[inam].szName[0]) nChnNames = inam+1;
-		}
-		// Do it!
-		if (nChnNames)
-		{
-			DWORD dwLen = nChnNames * MAX_CHANNELNAME;
-			DWORD d = 0x4d414e43;
-			fwrite(&d, 1, 4, f);
-			fwrite(&dwLen, 1, 4, f);
-			for (UINT inam=0; inam<nChnNames; inam++)
-			{
-				fwrite(ChnSettings[inam].szName, 1, MAX_CHANNELNAME, f);
-			}
-		}
-	}
-	// Save mix plugins information
-	SaveMixPlugins(f);
-	fclose(f);
-	return TRUE;
-}
-
-#endif // MODPLUG_NO_FILESAVE

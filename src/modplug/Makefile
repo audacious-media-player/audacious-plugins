@@ -5,6 +5,7 @@ SRCS = plugin.cxx		\
        tables.cxx		\
        sndmix.cxx		\
        sndfile.cxx		\
+       snd_eq.cxx		\
        snd_fx.cxx		\
        snd_flt.cxx		\
        snd_dsp.cxx		\
@@ -21,6 +22,7 @@ SRCS = plugin.cxx		\
        load_mtm.cxx		\
        load_mod.cxx		\
        load_med.cxx		\
+       load_mid.cxx		\
        load_mdl.cxx		\
        load_it.cxx		\
        load_far.cxx		\
@@ -33,7 +35,6 @@ SRCS = plugin.cxx		\
        load_j2b.cxx		\
        load_mt2.cxx		\
        load_psm.cxx		\
-       modplug.cxx		\
        archive/archive.cxx	\
        archive/open.cxx		\
        archive/arch_raw.cxx	\
