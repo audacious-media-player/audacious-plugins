@@ -282,7 +282,8 @@ void alsa_close_audio (void)
     DEBUG ("Closing audio.\n");
     g_mutex_lock (alsa_mutex);
 
-    CHECK (snd_pcm_drop, alsa_handle);
+    if (! alsa_config_drop_workaround)
+        CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
     pump_quit = TRUE;
@@ -400,7 +401,8 @@ void alsa_flush (gint time)
     alsa_paused = TRUE; /* for buffering */
     alsa_paused_time = time;
 
-    CHECK (snd_pcm_drop, alsa_handle);
+    if (! alsa_config_drop_workaround)
+        CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
     while (read_locked)

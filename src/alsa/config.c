@@ -22,9 +22,10 @@
 #include <gtk/gtk.h>
 
 gchar * alsa_config_pcm, * alsa_config_mixer, * alsa_config_mixer_element;
+gboolean alsa_config_drop_workaround;
 static GtkListStore * pcm_list, * mixer_list, * mixer_element_list;
 static GtkWidget * window, * pcm_combo, * mixer_combo, * mixer_element_combo,
- * ok_button;
+ * ok_button, * drop_workaround_check;
 
 static GtkTreeIter * list_lookup_member (GtkListStore * list, const gchar *
  text)
@@ -333,6 +334,9 @@ void alsa_config_load (void)
      & alsa_config_mixer_element);
     guess_mixer_element ();
 
+    aud_cfg_db_get_bool (database, "alsa", "drop-workaround", &
+     alsa_config_drop_workaround);
+
     aud_cfg_db_close (database);
 }
 
@@ -348,6 +352,8 @@ void alsa_config_save (void)
     aud_cfg_db_set_string (database, "alsa", "mixer", alsa_config_mixer);
     aud_cfg_db_set_string (database, "alsa", "mixer-element",
      alsa_config_mixer_element);
+    aud_cfg_db_set_bool (database, "alsa", "drop-workaround",
+     alsa_config_drop_workaround);
 
     g_free (alsa_config_pcm);
     g_free (alsa_config_mixer);
@@ -440,6 +446,12 @@ static void create_window (void)
     gtk_box_pack_start ((GtkBox *) vbox, combo_new (_("Mixer element:"),
      mixer_element_list, & mixer_element_combo, FALSE), FALSE, FALSE, 0);
 
+    drop_workaround_check = gtk_check_button_new_with_label (_("Work around "
+     "snd_pcm_drop hangup"));
+    gtk_toggle_button_set_active ((GtkToggleButton *) drop_workaround_check,
+     alsa_config_drop_workaround);
+    gtk_box_pack_start ((GtkBox *) vbox, drop_workaround_check, FALSE, FALSE, 0);
+
     hbox = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
@@ -496,6 +508,11 @@ static void mixer_element_changed (GtkComboBox * combo, void * unused)
     alsa_open_mixer ();
 }
 
+static void boolean_toggled (GtkToggleButton * button, void * data)
+{
+    * (gboolean *) data = gtk_toggle_button_get_active (button);
+}
+
 static void connect_callbacks (void)
 {
     g_signal_connect ((GObject *) pcm_combo, "changed", (GCallback) pcm_changed,
@@ -504,6 +521,8 @@ static void connect_callbacks (void)
      mixer_changed, NULL);
     g_signal_connect ((GObject *) mixer_element_combo, "changed", (GCallback)
      mixer_element_changed, NULL);
+    g_signal_connect ((GObject *) drop_workaround_check, "toggled", (GCallback)
+     boolean_toggled, & alsa_config_drop_workaround);
     g_signal_connect_swapped ((GObject *) ok_button, "clicked", (GCallback)
      gtk_widget_destroy, window);
     g_signal_connect ((GObject *) window, "destroy", (GCallback)

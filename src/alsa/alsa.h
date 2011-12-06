@@ -68,6 +68,7 @@ void alsa_close_mixer (void);
 
 /* config.c */
 extern gchar * alsa_config_pcm, * alsa_config_mixer, * alsa_config_mixer_element;
+extern gboolean alsa_config_drop_workaround;
 
 void alsa_config_load (void);
 void alsa_config_save (void);
