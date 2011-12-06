@@ -2149,6 +2149,9 @@ static void show_widgets (void)
     ui_skinned_window_set_shade (mainwin, config.player_shaded);
 }
 
+#if 0 /* This can be enabled when at least two window managers send the event
+ correctly.  Currently, I don't know of any that do (see Debian #567607,
+ #567608, and #567609.  -jlindgren */
 static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
  void * unused)
 {
@@ -2161,6 +2164,7 @@ static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
 
     return TRUE;
 }
+#endif
 
 static gboolean delete_cb (GtkWidget * widget, GdkEvent * event, void * unused)
 {
@@ -2202,8 +2206,10 @@ mainwin_create_window(void)
 
     ui_main_evlistener_init();
 
+#if 0
     g_signal_connect ((GObject *) mainwin, "window-state-event", (GCallback)
      state_cb, NULL);
+#endif
     g_signal_connect ((GObject *) mainwin, "delete-event", (GCallback)
      delete_cb, NULL);
 }
