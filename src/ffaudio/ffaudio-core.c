@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#define FFAUDIO_DEBUG
 #include "config.h"
 #include "ffaudio-stdinc.h"
 #include <audacious/i18n.h>
