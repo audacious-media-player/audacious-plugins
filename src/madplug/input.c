@@ -396,7 +396,7 @@ input_read_tag(struct mad_info_t *info)
 static gchar * get_stream_metadata (VFSFile * file, const gchar * name)
 {
     gchar * raw = aud_vfs_get_metadata (file, name);
-    gchar * converted = (raw != NULL) ? aud_str_to_utf8 (raw) : NULL;
+    gchar * converted = (raw != NULL && raw[0]) ? aud_str_to_utf8 (raw) : NULL;
 
     g_free (raw);
     return converted;
