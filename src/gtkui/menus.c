@@ -92,8 +92,8 @@ static void pl_random (void) {aud_playlist_randomize (aud_playlist_get_active ()
 
 static void pl_new (void)
 {
-    aud_playlist_insert (aud_playlist_get_active () + 1);
-    aud_playlist_set_active (aud_playlist_get_active () + 1);
+    aud_playlist_insert (-1);
+    aud_playlist_set_active (aud_playlist_count () - 1);
 }
 
 static void pl_refresh (void) {aud_playlist_rescan (aud_playlist_get_active ()); }
