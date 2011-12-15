@@ -121,15 +121,18 @@ static boolean audpl_load (const char * path, VFSFile * file, char * * title,
 
         while ((readed = read_key (state, & key, & val)) && strcmp (key, "uri"))
         {
+            if (! tuple)
+                tuple = tuple_new_from_filename (uri);
+
+            if (! strcmp (key, "empty"))
+                continue;
+        
             int field = tuple_field_by_name (key);
             TupleValueType type = tuple_field_get_type (field);
             
             if (field < 0)
                 break;
                 
-            if (! tuple)
-                tuple = tuple_new_from_filename (uri);
-            
             if (type == TUPLE_STRING)
                 tuple_set_str (tuple, field, NULL, val);
             else if (type == TUPLE_INT)
@@ -161,6 +164,8 @@ static boolean audpl_save (const char * path, VFSFile * file,
 
         if (tuple)
         {
+            int keys = 0;
+        
             for (int f = 0; f < TUPLE_FIELDS; f ++)
             {
                 if (f == FIELD_FILE_PATH || f == FIELD_FILE_NAME || f == FIELD_FILE_EXT)
@@ -179,6 +184,7 @@ static boolean audpl_save (const char * path, VFSFile * file,
                     }
                     
                     str_unref (str);
+                    keys ++;
                 }
                 else if (type == TUPLE_INT)
                 {
@@ -187,8 +193,14 @@ static boolean audpl_save (const char * path, VFSFile * file,
                     
                     if (! write_key (file, tuple_field_get_name (f), buf))
                         return FALSE;
+
+                    keys ++;
                 }
             }
+            
+            /* distinguish between an empty tuple and no tuple at all */
+            if (! keys && ! write_key (file, "empty", "1"))
+                return FALSE;
         }
     }
     
