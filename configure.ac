@@ -52,7 +52,7 @@ OUTPUT_PLUGINS="null"
 EFFECT_PLUGINS="compressor crossfade crystalizer ladspa mixer sndstretch stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS="alarm albumart search-tool"
 VISUALIZATION_PLUGINS="blur_scope cairo-spectrum"
-CONTAINER_PLUGINS="m3u pls asx"
+CONTAINER_PLUGINS="audpl m3u pls asx"
 TRANSPORT_PLUGINS="unix-io"
 
 dnl Check for GTK+
@@ -1305,6 +1305,7 @@ echo "  SMB transport (experimental):           $enable_smb"
 echo
 echo "  Container"
 echo "  ---------"
+echo "  Audacious playlist format (audpl):      yes"
 echo "  Winamp PLS playlist format (pls):       yes"
 echo "  M3U playlist format (m3u):              yes"
 echo "  XML Sharable Playlist Format (xspf):    yes"
