@@ -472,7 +472,7 @@ static void search_cleanup (void)
     destroy_dicts ();
 }
 
-static void action_play (void)
+static void do_add (gboolean play)
 {
     gint list = aud_playlist_by_unique_id (playlist_id);
     gint n_items = index_count (items);
@@ -495,7 +495,13 @@ static void action_play (void)
         }
     }
 
-    list = aud_playlist_get_temporary ();
+    aud_playlist_entry_insert_batch (aud_playlist_get_active (), -1, filenames,
+     tuples, play);
+}
+
+static void action_play (void)
+{
+    gint list = aud_playlist_get_temporary ();
     aud_playlist_set_active (list);
 
     if (aud_get_bool (NULL, "clear_playlist"))
@@ -503,7 +509,15 @@ static void action_play (void)
     else
         aud_playlist_queue_delete (list, 0, aud_playlist_queue_count (list));
 
-    aud_playlist_entry_insert_batch (list, -1, filenames, tuples, TRUE);
+    do_add (TRUE);
+}
+
+static void action_add_to_playlist (void)
+{
+    if (aud_playlist_by_unique_id (playlist_id) == aud_playlist_get_active ())
+        return;
+
+    do_add (FALSE);
 }
 
 static void list_get_value (void * user, gint row, gint column, GValue * value)
@@ -538,12 +552,32 @@ static void list_activate_row (void * user, gint row)
     action_play ();
 }
 
+static void list_right_click (void * user, GdkEventButton * event)
+{
+    GtkWidget * menu = gtk_menu_new ();
+
+    GtkWidget * item = gtk_image_menu_item_new_from_stock (GTK_STOCK_MEDIA_PLAY, NULL);
+    g_signal_connect (item, "activate", (GCallback) action_play, NULL);
+    gtk_widget_show (item);
+    gtk_menu_shell_append ((GtkMenuShell *) menu, item);
+
+    item = gtk_image_menu_item_new_with_mnemonic (_("_Add to Playlist"));
+    gtk_image_menu_item_set_image ((GtkImageMenuItem *) item,
+     gtk_image_new_from_stock (GTK_STOCK_ADD, GTK_ICON_SIZE_MENU));
+    g_signal_connect (item, "activate", (GCallback) action_add_to_playlist, NULL);
+    gtk_widget_show (item);
+    gtk_menu_shell_append ((GtkMenuShell *) menu, item);
+
+    gtk_menu_popup ((GtkMenu *) menu, NULL, NULL, NULL, NULL, event->button, event->time);
+}
+
 static const AudguiListCallbacks list_callbacks = {
  .get_value = list_get_value,
  .get_selected = list_get_selected,
  .set_selected = list_set_selected,
  .select_all = list_select_all,
- .activate_row = list_activate_row};
+ .activate_row = list_activate_row,
+ .right_click = list_right_click};
 
 static void entry_cb (GtkEntry * entry, void * unused)
 {
