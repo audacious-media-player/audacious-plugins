@@ -38,8 +38,6 @@
 #define SEARCH_DELAY 300
 
 enum {GENRE, ARTIST, ALBUM, TITLE, FIELDS};
-enum {UPDATE_ITEMS = 1, UPDATE_DICTS};
-enum {COLUMN_NAME, COLUMN_MATCHES};
 
 static const gchar * const field_names[] = {N_("Genre"), N_("Artist"),
  N_("Album"), N_("Title")};
@@ -56,6 +54,7 @@ static gchar * * search_terms;
 static GHashTable * added_table;
 static GHashTable * dicts[FIELDS];
 static struct index * items;
+static GArray * selection;
 
 static gboolean adding, dicts_valid;
 static gint search_source;
@@ -257,6 +256,11 @@ static void do_search (void)
 
         index_free (index);
     }
+
+    g_array_set_size (selection, index_count (items));
+    memset (selection->data, 0, selection->len);
+    if (selection->len > 0)
+        selection->data[0] = 1;
 }
 
 static gboolean filter_cb (const gchar * filename, void * unused)
@@ -433,6 +437,7 @@ static gboolean search_init (void)
 
     set_search_phrase ("");
     items = index_new ();
+    selection = g_array_new (FALSE, FALSE, 1);
 
     update_dicts ();
 
@@ -460,43 +465,34 @@ static void search_cleanup (void)
 
     index_free (items);
     items = NULL;
+    g_array_free (selection, TRUE);
+    selection = NULL;
 
     destroy_added_table ();
     destroy_dicts ();
 }
 
-static void list_get_value (void * user, gint row, gint column, GValue * value)
+static void action_play (void)
 {
-    g_return_if_fail (items && row >= 0 && row < index_count (items));
-
-    Item * item = index_get (items, row);
-
-    switch (column)
-    {
-    case COLUMN_NAME:
-        g_value_take_string (value, g_strdup_printf ("%s: %s",
-         _(field_names[item->field]), item->name));
-        break;
-    case COLUMN_MATCHES:
-        g_value_set_int (value, item->matches->len);
-        break;
-    }
-}
-
-static void list_activate_row (void * user, gint row)
-{
-    g_return_if_fail (items && row >= 0 && row < index_count (items));
     gint list = aud_playlist_by_unique_id (playlist_id);
+    gint n_items = index_count (items);
 
-    Item * item = index_get (items, row);
     struct index * filenames = index_new ();
     struct index * tuples = index_new ();
 
-    for (gint m = 0; m < item->matches->len; m ++)
+    for (gint i = 0; i < n_items; i ++)
     {
-        gint entry = g_array_index (item->matches, gint, m);
-        index_append (filenames, aud_playlist_entry_get_filename (list, entry));
-        index_append (tuples, aud_playlist_entry_get_tuple (list, entry, TRUE));
+        if (! selection->data[i])
+            continue;
+
+        Item * item = index_get (items, i);
+
+        for (gint m = 0; m < item->matches->len; m ++)
+        {
+            gint entry = g_array_index (item->matches, gint, m);
+            index_append (filenames, aud_playlist_entry_get_filename (list, entry));
+            index_append (tuples, aud_playlist_entry_get_tuple (list, entry, TRUE));
+        }
     }
 
     list = aud_playlist_get_temporary ();
@@ -510,8 +506,43 @@ static void list_activate_row (void * user, gint row)
     aud_playlist_entry_insert_batch (list, -1, filenames, tuples, TRUE);
 }
 
+static void list_get_value (void * user, gint row, gint column, GValue * value)
+{
+    g_return_if_fail (items && row >= 0 && row < index_count (items));
+
+    Item * item = index_get (items, row);
+    g_value_take_string (value, g_strdup_printf ("%s: %s",
+     _(field_names[item->field]), item->name));
+}
+
+static gboolean list_get_selected (void * user, gint row)
+{
+    g_return_val_if_fail (selection && row >= 0 && row < selection->len, FALSE);
+    return selection->data[row];
+}
+
+static void list_set_selected (void * user, gint row, gboolean selected)
+{
+    g_return_if_fail (selection && row >= 0 && row < selection->len);
+    selection->data[row] = selected;
+}
+
+static void list_select_all (void * user, gboolean selected)
+{
+    g_return_if_fail (selection);
+    memset (selection->data, selected, selection->len);
+}
+
+static void list_activate_row (void * user, gint row)
+{
+    action_play ();
+}
+
 static const AudguiListCallbacks list_callbacks = {
  .get_value = list_get_value,
+ .get_selected = list_get_selected,
+ .set_selected = list_set_selected,
+ .select_all = list_select_all,
  .activate_row = list_activate_row};
 
 static void entry_cb (GtkEntry * entry, void * unused)
@@ -567,8 +598,7 @@ static void * search_get_widget (void)
     results_list = audgui_list_new (& list_callbacks, NULL, items ? index_count (items) : 0);
     g_signal_connect (results_list, "destroy", (GCallback) gtk_widget_destroyed, & results_list);
     gtk_tree_view_set_headers_visible ((GtkTreeView *) results_list, FALSE);
-    audgui_list_add_column (results_list, NULL, COLUMN_NAME, G_TYPE_STRING, -1);
-    audgui_list_add_column (results_list, NULL, COLUMN_MATCHES, G_TYPE_INT, 2);
+    audgui_list_add_column (results_list, NULL, 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scrolled, results_list);
 
     GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
@@ -589,6 +619,7 @@ static void * search_get_widget (void)
     gtk_box_pack_start ((GtkBox *) hbox, button, FALSE, FALSE, 0);
 
     g_signal_connect (entry, "changed", (GCallback) entry_cb, NULL);
+    g_signal_connect (entry, "activate", (GCallback) action_play, NULL);
     g_signal_connect (button, "clicked", (GCallback) refresh_cb, chooser);
 
     gtk_widget_show_all (vbox);
