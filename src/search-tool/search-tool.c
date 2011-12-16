@@ -472,10 +472,11 @@ static void search_cleanup (void)
     destroy_dicts ();
 }
 
-static void do_add (gboolean play)
+static void do_add (gboolean play, gchar * * title)
 {
     gint list = aud_playlist_by_unique_id (playlist_id);
     gint n_items = index_count (items);
+    gint n_selected = 0;
 
     struct index * filenames = index_new ();
     struct index * tuples = index_new ();
@@ -493,7 +494,14 @@ static void do_add (gboolean play)
             index_append (filenames, aud_playlist_entry_get_filename (list, entry));
             index_append (tuples, aud_playlist_entry_get_tuple (list, entry, TRUE));
         }
+
+        n_selected ++;
+        if (title && n_selected == 1)
+            * title = item->name;
     }
+
+    if (title && n_selected != 1)
+        * title = NULL;
 
     aud_playlist_entry_insert_batch (aud_playlist_get_active (), -1, filenames,
      tuples, play);
@@ -509,7 +517,19 @@ static void action_play (void)
     else
         aud_playlist_queue_delete (list, 0, aud_playlist_queue_count (list));
 
-    do_add (TRUE);
+    do_add (TRUE, NULL);
+}
+
+static void action_create_playlist (void)
+{
+    gchar * title;
+
+    aud_playlist_insert (-1);
+    aud_playlist_set_active (aud_playlist_count () - 1);
+    do_add (FALSE, & title);
+
+    if (title)
+        aud_playlist_set_title (aud_playlist_count () - 1, title);
 }
 
 static void action_add_to_playlist (void)
@@ -517,7 +537,7 @@ static void action_add_to_playlist (void)
     if (aud_playlist_by_unique_id (playlist_id) == aud_playlist_get_active ())
         return;
 
-    do_add (FALSE);
+    do_add (FALSE, NULL);
 }
 
 static void list_get_value (void * user, gint row, gint column, GValue * value)
@@ -558,6 +578,13 @@ static void list_right_click (void * user, GdkEventButton * event)
 
     GtkWidget * item = gtk_image_menu_item_new_from_stock (GTK_STOCK_MEDIA_PLAY, NULL);
     g_signal_connect (item, "activate", (GCallback) action_play, NULL);
+    gtk_widget_show (item);
+    gtk_menu_shell_append ((GtkMenuShell *) menu, item);
+
+    item = gtk_image_menu_item_new_with_mnemonic (_("_Create Playlist"));
+    gtk_image_menu_item_set_image ((GtkImageMenuItem *) item,
+     gtk_image_new_from_stock (GTK_STOCK_NEW, GTK_ICON_SIZE_MENU));
+    g_signal_connect (item, "activate", (GCallback) action_create_playlist, NULL);
     gtk_widget_show (item);
     gtk_menu_shell_append ((GtkMenuShell *) menu, item);
 
