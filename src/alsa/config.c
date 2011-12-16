@@ -301,7 +301,7 @@ static void guess_mixer_element (void)
 {
     fill_lists ();
 
-    static const char * guesses[] = {"PCM", "Wave", "Master"};
+    static const char * guesses[] = {"Master", "PCM", "Wave"};
     for (int count = 0; count < G_N_ELEMENTS (guesses); count ++)
     {
         if (list_has_member (mixer_element_list, guesses[count]))
