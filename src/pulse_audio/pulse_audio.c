@@ -163,33 +163,27 @@ static void stream_latency_update_cb(pa_stream *s, void *userdata) {
     pa_threaded_mainloop_signal(mainloop, 0);
 }
 
-static void pulse_get_volume(int *l, int *r) {
-    pa_cvolume v;
-    int b = 0;
+static void pulse_get_volume (int * l, int * r)
+{
+    * l = * r = 0;
 
-    *l = *r = 100;
+    if (! connected || ! volume_valid)
+        return;
 
-    if (connected) {
-        pa_threaded_mainloop_lock(mainloop);
-        CHECK_DEAD_GOTO(fail, 1);
+    pa_threaded_mainloop_lock (mainloop);
+    CHECK_DEAD_GOTO (fail, 1);
 
-        v = volume;
-        b = volume_valid;
-
-    fail:
-        pa_threaded_mainloop_unlock(mainloop);
-    } else {
-        v = volume;
-        b = volume_valid;
+    if (volume.channels == 2)
+    {
+        * l = (volume.values[0] * 100 + PA_VOLUME_NORM / 2) / PA_VOLUME_NORM;
+        * r = (volume.values[1] * 100 + PA_VOLUME_NORM / 2) / PA_VOLUME_NORM;
     }
+    else
+        * l = * r = (pa_cvolume_avg (& volume) * 100 + PA_VOLUME_NORM / 2) /
+         PA_VOLUME_NORM;
 
-    if (b) {
-        if (v.channels == 2) {
-            * l = (v.values[0] * 100 + PA_VOLUME_NORM / 2) / PA_VOLUME_NORM;
-            * r = (v.values[1] * 100 + PA_VOLUME_NORM / 2) / PA_VOLUME_NORM;
-        } else
-            * l = * r = (pa_cvolume_avg (& v) * 100 + PA_VOLUME_NORM / 2) / PA_VOLUME_NORM;
-    }
+fail:
+    pa_threaded_mainloop_unlock (mainloop);
 }
 
 static void volume_time_cb(pa_mainloop_api *api, pa_time_event *e, const struct timeval *tv, void *userdata) {
@@ -208,10 +202,11 @@ static void volume_time_cb(pa_mainloop_api *api, pa_time_event *e, const struct 
 
 static void pulse_set_volume(int l, int r) {
 
-    if (connected) {
-        pa_threaded_mainloop_lock(mainloop);
-        CHECK_DEAD_GOTO(fail, 1);
-    }
+    if (! connected)
+        return;
+
+    pa_threaded_mainloop_lock (mainloop);
+    CHECK_DEAD_GOTO (fail, 1);
 
     /* sanitize output volumes. */
     l = CLAMP(l, 0, 100);
@@ -487,6 +482,7 @@ static void pulse_close(void)
     }
 
     volume_time_event = NULL;
+    volume_valid = 0;
 }
 
 static int pulse_open(gint fmt, int rate, int nch) {
