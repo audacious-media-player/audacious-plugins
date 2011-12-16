@@ -38,8 +38,8 @@
 static const GType pw_col_types[PW_COLS] = {G_TYPE_INT, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING};
-static const gboolean pw_col_widths[PW_COLS] = {64, -1, -1, 40, -1, 24, 32, 64,
- -1, -1, -1, 32};
+static const gboolean pw_col_widths[PW_COLS] = {7, -1, -1, 4, -1, 2, 3, 7, -1,
+ -1, -1, 3};
 static const gboolean pw_col_label[PW_COLS] = {FALSE, TRUE, TRUE, TRUE, TRUE,
  FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE};
 

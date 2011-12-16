@@ -568,7 +568,7 @@ static void * search_get_widget (void)
     g_signal_connect (results_list, "destroy", (GCallback) gtk_widget_destroyed, & results_list);
     gtk_tree_view_set_headers_visible ((GtkTreeView *) results_list, FALSE);
     audgui_list_add_column (results_list, NULL, COLUMN_NAME, G_TYPE_STRING, -1);
-    audgui_list_add_column (results_list, NULL, COLUMN_MATCHES, G_TYPE_INT, 24);
+    audgui_list_add_column (results_list, NULL, COLUMN_MATCHES, G_TYPE_INT, 2);
     gtk_container_add ((GtkContainer *) scrolled, results_list);
 
     GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
