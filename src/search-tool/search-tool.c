@@ -603,6 +603,5 @@ AUD_GENERAL_PLUGIN
     .name = "Search Tool",
     .init = search_init,
     .cleanup = search_cleanup,
-    .get_widget = search_get_widget,
-    .enabled_by_default = TRUE
+    .get_widget = search_get_widget
 )
