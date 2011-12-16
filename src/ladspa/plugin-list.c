@@ -65,7 +65,7 @@ static const AudguiListCallbacks callbacks = {
 GtkWidget * create_plugin_list (void)
 {
     GtkWidget * list = audgui_list_new (& callbacks, NULL, index_count (plugins));
-    audgui_list_add_column (list, NULL, 0, G_TYPE_STRING, 1);
+    audgui_list_add_column (list, NULL, 0, G_TYPE_STRING, -1);
     gtk_tree_view_set_headers_visible ((GtkTreeView *) list, 0);
     return list;
 }

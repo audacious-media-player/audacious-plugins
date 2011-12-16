@@ -302,7 +302,7 @@ void pw_col_choose (void)
 
     avail_list = audgui_list_new (& callbacks, avail, index_count (avail));
     gtk_tree_view_set_headers_visible ((GtkTreeView *) avail_list, FALSE);
-    audgui_list_add_column (avail_list, NULL, 0, G_TYPE_STRING, TRUE);
+    audgui_list_add_column (avail_list, NULL, 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scroll, avail_list);
 
     vbox = gtk_vbox_new (FALSE, 6);
@@ -336,7 +336,7 @@ void pw_col_choose (void)
 
     chosen_list = audgui_list_new (& callbacks, chosen, index_count (chosen));
     gtk_tree_view_set_headers_visible ((GtkTreeView *) chosen_list, FALSE);
-    audgui_list_add_column (chosen_list, NULL, 0, G_TYPE_STRING, TRUE);
+    audgui_list_add_column (chosen_list, NULL, 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scroll, chosen_list);
 
     gtk_widget_show_all (window);

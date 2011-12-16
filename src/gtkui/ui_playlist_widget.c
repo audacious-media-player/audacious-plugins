@@ -38,8 +38,8 @@
 static const GType pw_col_types[PW_COLS] = {G_TYPE_INT, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING};
-static const gboolean pw_col_expand[PW_COLS] = {FALSE, TRUE, TRUE, FALSE, TRUE,
- FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE};
+static const gboolean pw_col_widths[PW_COLS] = {64, -1, -1, 40, -1, 24, 32, 64,
+ -1, -1, -1, 32};
 static const gboolean pw_col_label[PW_COLS] = {FALSE, TRUE, TRUE, TRUE, TRUE,
  FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE};
 
@@ -339,7 +339,7 @@ GtkWidget * ui_playlist_widget_new (gint playlist)
     {
         gint n = pw_cols[i];
         audgui_list_add_column (list, pw_col_label[n] ? _(pw_col_names[n]) :
-         NULL, i, pw_col_types[n], pw_col_expand[n]);
+         NULL, i, pw_col_types[n], pw_col_widths[n]);
     }
 
     return list;
