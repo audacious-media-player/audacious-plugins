@@ -316,17 +316,11 @@ static void ui_volume_released_cb(GtkButton *button, gpointer user_data)
 static gboolean ui_volume_slider_update(gpointer data)
 {
     gint volume;
-    static gint last_volume = -1;
 
     if (volume_slider_is_moving || data == NULL)
         return TRUE;
 
     aud_drct_get_volume_main(&volume);
-
-    if (last_volume == volume)
-        return TRUE;
-
-    last_volume = volume;
 
     if (volume == (gint) gtk_scale_button_get_value(GTK_SCALE_BUTTON(data)))
         return TRUE;
