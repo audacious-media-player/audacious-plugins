@@ -2,18 +2,7 @@
 #define XS_LENGTH_H
 
 #include "xmms-sid.h"
-#ifdef AUDACIOUS_PLUGIN
-#include <libaudcore/md5.h>
-#define XS_MD5HASH_LENGTH   AUD_MD5HASH_LENGTH
-#define XS_MD5HASH_LENGTH_CH   AUD_MD5HASH_LENGTH_CH
-#define xs_md5hash_t        aud_md5hash_t
-#define xs_md5state_t       aud_md5state_t
-#define xs_md5_init         aud_md5_init
-#define xs_md5_append       aud_md5_append
-#define xs_md5_finish       aud_md5_finish
-#else
 #include "xs_md5.h"
-#endif
 
 #ifdef __cplusplus
 extern "C" {
