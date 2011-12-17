@@ -45,7 +45,6 @@ static GtkWidget * notebook = NULL;
 static GQueue follow_queue = G_QUEUE_INIT;
 static gint highlighted = -1;
 
-static struct index *pages;
 static GtkWidget *ui_playlist_notebook_tab_title_editing;
 
 static gint switch_handler = 0;
@@ -224,7 +223,6 @@ void ui_playlist_notebook_create_tab(gint playlist)
     gint position = aud_playlist_get_position (playlist);
 
     scrollwin = gtk_scrolled_window_new(NULL, NULL);
-    index_insert(pages, playlist, scrollwin);
 
     treeview = ui_playlist_widget_new(playlist);
     g_object_set_data(G_OBJECT(scrollwin), "treeview", treeview);
@@ -273,20 +271,10 @@ void ui_playlist_notebook_create_tab(gint playlist)
     g_signal_connect(entry, "activate", G_CALLBACK(tab_title_save), ebox);
 }
 
-void ui_playlist_notebook_destroy_tab(gint playlist)
-{
-    GtkWidget *page = index_get(pages, playlist);
-
-    gtk_notebook_remove_page(UI_PLAYLIST_NOTEBOOK, gtk_notebook_page_num(UI_PLAYLIST_NOTEBOOK, page));
-    index_delete(pages, playlist, 1);
-}
-
 void ui_playlist_notebook_populate(void)
 {
     gint playlists = aud_playlist_count();
     gint count;
-
-    pages = index_new();
 
     for (count = 0; count < playlists; count++)
         ui_playlist_notebook_create_tab(count);
@@ -315,7 +303,7 @@ void ui_playlist_notebook_empty (void)
 
     gint n_pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
     while (n_pages)
-        ui_playlist_notebook_destroy_tab (-- n_pages);
+        gtk_notebook_remove_page ((GtkNotebook *) notebook, -- n_pages);
 }
 
 static void do_follow (void)
@@ -359,7 +347,7 @@ static void add_remove_pages (void)
         /* do we have an orphaned treeview? */
         if (aud_playlist_by_unique_id (tree_id) < 0)
         {
-            ui_playlist_notebook_destroy_tab (i);
+            gtk_notebook_remove_page ((GtkNotebook *) notebook, i);
             pages --;
             continue;
         }
@@ -494,7 +482,6 @@ static void destroy_cb (void)
 {
     notebook = NULL;
     g_queue_clear (& follow_queue);
-    index_free (pages);
     switch_handler = 0;
     reorder_handler = 0;
 }
