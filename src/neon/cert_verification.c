@@ -24,8 +24,6 @@
 #include <ne_ssl.h>
 #include <ne_session.h>
 
-#include <libaudcore/md5.h>
-
 #include "cert_verification.h"
 
 // Certificate validation handling.
@@ -283,12 +281,13 @@ gboolean cert_get_hash(const ne_ssl_certificate* cert, guint32* out_hash) {
     g_return_val_if_fail(ASNTYPE_SEQUENCE == content.type, FALSE);
 
     // Calculate MD5 sum of subject.
-    aud_md5state_t md5state;
-    aud_md5_init(&md5state);
-    aud_md5_append(&md5state, content.start, content.nextStart - content.start);
-    g_free(certDer);
     unsigned char md5pword[16];
-    aud_md5_finish(&md5state, md5pword);
+    gsize md5len = 16;
+
+    GChecksum * state = g_checksum_new (G_CHECKSUM_MD5);
+    g_checksum_update (state, content.start, content.nextStart - content.start);
+    g_checksum_get_digest (state, md5pword, & md5len);
+    g_checksum_free (state);
 
     guint32 hash = 0;
     gint i = 0;
@@ -299,6 +298,8 @@ gboolean cert_get_hash(const ne_ssl_certificate* cert, guint32* out_hash) {
         hash |= md5pword[i];
     }
     *out_hash = hash;
+
+    g_free(certDer);
     return TRUE;
 }
 
