@@ -14,7 +14,6 @@
 #include <audacious/debug.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
-#include <libaudcore/md5.h>
 
 #define SCROBBLER_CLI_ID "aud"
 #define SCROBBLER_HS_WAIT 1800
@@ -465,12 +464,13 @@ static int sc_parse_hs_res(void)
 
 static unsigned char *md5_string(char *pass, int len)
 {
-    aud_md5state_t md5state;
     static unsigned char md5pword[16];
+    gsize md5len = 16;
 
-    aud_md5_init(&md5state);
-    aud_md5_append(&md5state, (unsigned const char *)pass, len);
-    aud_md5_finish(&md5state, md5pword);
+    GChecksum * state = g_checksum_new (G_CHECKSUM_MD5);
+    g_checksum_update (state, (unsigned char *) pass, len);
+    g_checksum_get_digest (state, md5pword, & md5len);
+    g_checksum_free (state);
 
     return md5pword;
 }
@@ -581,17 +581,19 @@ static int sc_handshake(void)
     }
 
     if (sc_challenge_hash != NULL) {
-        aud_md5state_t md5state;
         unsigned char md5pword[16];
+        gsize md5len;
 
-        aud_md5_init(&md5state);
         /*AUDDBG("Pass Hash: %s", sc_password));*/
-        aud_md5_append(&md5state, (unsigned const char *)sc_password,
-                strlen(sc_password));
         /*AUDDBG("Challenge Hash: %s", sc_challenge_hash));*/
-        aud_md5_append(&md5state, (unsigned const char *)sc_challenge_hash,
-                strlen(sc_challenge_hash));
-        aud_md5_finish(&md5state, md5pword);
+
+        GChecksum * state = g_checksum_new (G_CHECKSUM_MD5);
+        g_checksum_update (state, (unsigned char *) sc_password, strlen (sc_password));
+        g_checksum_update (state, (unsigned char *) sc_challenge_hash,
+         strlen (sc_challenge_hash));
+        g_checksum_get_digest (state, md5pword, & md5len);
+        g_checksum_free (state);
+
         hexify((char*)md5pword, sizeof(md5pword));
         /*AUDDBG("Response Hash: %s", sc_response_hash));*/
     }
