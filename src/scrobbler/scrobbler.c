@@ -582,7 +582,7 @@ static int sc_handshake(void)
 
     if (sc_challenge_hash != NULL) {
         unsigned char md5pword[16];
-        gsize md5len;
+        gsize md5len = 16;
 
         /*AUDDBG("Pass Hash: %s", sc_password));*/
         /*AUDDBG("Challenge Hash: %s", sc_challenge_hash));*/

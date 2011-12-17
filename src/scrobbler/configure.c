@@ -13,7 +13,6 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/preferences.h>
-#include <libaudcore/md5.h>
 
 #include "plugin.h"
 
@@ -46,13 +45,15 @@ static void saveconfig(void)
     const char *uid = gtk_entry_get_text(GTK_ENTRY(entry1));
     const char *url = gtk_entry_get_text(GTK_ENTRY(entry3));
 
-    aud_md5state_t md5state;
     unsigned char md5pword[16];
+    gsize md5len = 16;
 
     if (pwd != NULL && pwd[0] != '\0') {
-        aud_md5_init(&md5state);
-        aud_md5_append(&md5state, (guchar *)pwd, strlen(pwd));
-        aud_md5_finish(&md5state, md5pword);
+        GChecksum * state = g_checksum_new (G_CHECKSUM_MD5);
+        g_checksum_update (state, (unsigned char *) pwd, strlen (pwd));
+        g_checksum_get_digest (state, md5pword, & md5len);
+        g_checksum_free (state);
+
         aud_set_string ("audioscrobbler", "password",
          hexify ((gchar *) md5pword, sizeof md5pword));
     }
