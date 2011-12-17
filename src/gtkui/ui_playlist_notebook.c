@@ -347,7 +347,9 @@ static void add_remove_pages (void)
         /* do we have an orphaned treeview? */
         if (aud_playlist_by_unique_id (tree_id) < 0)
         {
+            g_signal_handlers_block_by_func (notebook, tab_changed, NULL);
             gtk_notebook_remove_page ((GtkNotebook *) notebook, i);
+            g_signal_handlers_unblock_by_func (notebook, tab_changed, NULL);
             pages --;
             continue;
         }
