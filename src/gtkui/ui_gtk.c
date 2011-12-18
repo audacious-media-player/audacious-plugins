@@ -203,7 +203,12 @@ static gboolean ui_is_shown (void)
 
 static gboolean ui_is_focused (void)
 {
+/* gtk_window_is_active() is too unreliable, unfortunately. --jlindgren */
+#if 0
     return gtk_window_is_active ((GtkWindow *) window);
+#else
+    return ui_is_shown ();
+#endif
 }
 
 static void ui_show_error (const gchar * text)
