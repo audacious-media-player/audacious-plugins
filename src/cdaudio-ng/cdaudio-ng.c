@@ -122,7 +122,8 @@ static void cdaudio_error (const gchar * message_format, ...)
     msg = g_markup_vprintf_escaped (message_format, args);
     va_end (args);
 
-    event_queue_full (0, "interface show error", msg, g_free);
+    aud_interface_show_error (msg);
+    g_free (msg);
 }
 
 /* main thread only */

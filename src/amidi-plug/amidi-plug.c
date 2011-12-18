@@ -19,6 +19,7 @@
 */
 
 #include <audacious/drct.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/hook.h>
 
@@ -322,9 +323,8 @@ static gboolean amidiplug_play (InputPlayback * playback, const gchar *
   port_count = backend.seq_get_port_count();
   if ( port_count < 1 )
   {
-    event_queue ("interface show error", _("You have not selected any "
-     "sequencer ports for MIDI playback.  You can do so in the MIDI plugin "
-     "preferences."));
+    aud_interface_show_error (_("You have not selected any sequencer ports for "
+     "MIDI playback.  You can do so in the MIDI plugin preferences."));
     amidiplug_playing_status = AMIDIPLUG_ERR;
     return FALSE;
   }

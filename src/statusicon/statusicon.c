@@ -79,7 +79,8 @@ static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpoi
           if (event->state & GDK_SHIFT_MASK)
               aud_drct_pl_next();
           else
-              hook_call ("interface toggle visibility", NULL);
+              aud_interface_show (! (aud_interface_is_shown () &&
+               aud_interface_is_focused ()));
           break;
       }
 
@@ -295,7 +296,7 @@ static void si_window_close(gpointer data, gpointer user_data)
     if (si_cfg.close_to_tray)
     {
         *handle = TRUE;
-        hook_call("interface toggle visibility", NULL);
+        aud_interface_show (FALSE);
     }
 }
 

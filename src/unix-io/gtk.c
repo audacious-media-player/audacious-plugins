@@ -22,7 +22,7 @@
 #include <gtk/gtk.h>
 
 #include <audacious/i18n.h>
-#include <libaudcore/hook.h>
+#include <audacious/misc.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "config.h"
@@ -53,7 +53,9 @@ void unix_error (const gchar * format, ...)
     va_list args;
     va_start (args, format);
 
-    event_queue_full (0, "interface show error", g_strdup_vprintf (format, args), g_free);
+    char * error = g_strdup_vprintf (format, args);
+    aud_interface_show_error (error);
+    g_free (error);
 
     va_end (args);
 }

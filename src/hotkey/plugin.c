@@ -240,14 +240,14 @@ gboolean handle_keyevent (EVENT event)
 	/* Open Jump-To-File dialog */
 	if (event == EVENT_JUMP_TO_FILE)
 	{
-		hook_call ("interface show jump to track", NULL);
+		aud_interface_show_jump_to_track ();
 		return TRUE;
 	}
 
 	/* Toggle Windows */
 	if (event == EVENT_TOGGLE_WIN)
 	{
-		hook_call ("interface toggle visibility", NULL);
+		aud_interface_show (! (aud_interface_is_shown () && aud_interface_is_focused ()));
 		return TRUE;
 	}
 
