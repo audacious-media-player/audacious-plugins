@@ -31,7 +31,7 @@ typedef struct {
     char buf[65536];
 } ReadState;
 
-static boolean read_key_raw (ReadState * state, char * * keyp, char * * valp)
+static bool_t read_key_raw (ReadState * state, char * * keyp, char * * valp)
 {
     char * newline = memchr (state->cur, '\n', state->len);
 
@@ -41,20 +41,20 @@ static boolean read_key_raw (ReadState * state, char * * keyp, char * * valp)
         state->cur = state->buf;
         state->len += vfs_fread (state->buf + state->len, 1,
          sizeof state->buf - state->len, state->file);
-        
+
         newline = memchr (state->cur, '\n', state->len);
 
         if (! newline)
             return FALSE;
     }
-    
+
     * newline = 0;
 
     char * equals = strchr (state->cur, '=');
-    
+
     if (! equals)
         return FALSE;
-        
+
     * equals = 0;
 
     * keyp = state->cur;
@@ -66,25 +66,25 @@ static boolean read_key_raw (ReadState * state, char * * keyp, char * * valp)
     return TRUE;
 }
 
-static boolean read_key (ReadState * state, char * * keyp, char * * valp)
+static bool_t read_key (ReadState * state, char * * keyp, char * * valp)
 {
     if (! read_key_raw (state, keyp, valp))
         return FALSE;
-    
+
     if (strcmp (* keyp, "uri"))
         str_decode_percent (* valp, -1, * valp);
 
     return TRUE;
 }
 
-static boolean write_key_raw (VFSFile * file, const char * key, const char * val)
+static bool_t write_key_raw (VFSFile * file, const char * key, const char * val)
 {
     char buf[strlen (key) + strlen (val) + 3];
     int len = snprintf (buf, sizeof buf, "%s=%s\n", key, val);
     return (vfs_fwrite (buf, 1, len, file) == len);
 }
 
-static boolean write_key (VFSFile * file, const char * key, const char * val)
+static bool_t write_key (VFSFile * file, const char * key, const char * val)
 {
     if (! strcmp (key, "uri"))
         return write_key_raw (file, key, val);
@@ -94,7 +94,7 @@ static boolean write_key (VFSFile * file, const char * key, const char * val)
     return write_key_raw (file, key, buf);
 }
 
-static boolean audpl_load (const char * path, VFSFile * file, char * * title,
+static bool_t audpl_load (const char * path, VFSFile * file, char * * title,
  struct index * filenames, struct index * tuples)
 {
     ReadState * state = malloc (sizeof (ReadState));
@@ -103,16 +103,16 @@ static boolean audpl_load (const char * path, VFSFile * file, char * * title,
     state->len = 0;
 
     char * key, * val;
-    
+
     if (! read_key (state, & key, & val) || strcmp (key, "title"))
     {
         free (state);
         return FALSE;
     }
-    
+
     * title = str_get (val);
-    
-    boolean readed = read_key (state, & key, & val);
+
+    bool_t readed = read_key (state, & key, & val);
 
     while (readed && ! strcmp (key, "uri"))
     {
@@ -126,13 +126,13 @@ static boolean audpl_load (const char * path, VFSFile * file, char * * title,
 
             if (! strcmp (key, "empty"))
                 continue;
-        
+
             int field = tuple_field_by_name (key);
             TupleValueType type = tuple_field_get_type (field);
-            
+
             if (field < 0)
                 break;
-                
+
             if (type == TUPLE_STRING)
                 tuple_set_str (tuple, field, NULL, val);
             else if (type == TUPLE_INT)
@@ -142,30 +142,30 @@ static boolean audpl_load (const char * path, VFSFile * file, char * * title,
         index_append (filenames, uri);
         index_append (tuples, tuple);
     }
-    
+
     free (state);
     return TRUE;
 }
 
-static boolean audpl_save (const char * path, VFSFile * file,
+static bool_t audpl_save (const char * path, VFSFile * file,
  const char * title, struct index * filenames, struct index * tuples)
 {
     if (! write_key (file, "title", title))
         return FALSE;
-    
+
     int count = index_count (filenames);
 
     for (int i = 0; i < count; i ++)
     {
         if (! write_key (file, "uri", index_get (filenames, i)))
             return FALSE;
-        
+
         const Tuple * tuple = tuples ? index_get (tuples, i) : NULL;
 
         if (tuple)
         {
             int keys = 0;
-        
+
             for (int f = 0; f < TUPLE_FIELDS; f ++)
             {
                 if (f == FIELD_FILE_PATH || f == FIELD_FILE_NAME || f == FIELD_FILE_EXT)
@@ -182,7 +182,7 @@ static boolean audpl_save (const char * path, VFSFile * file,
                         str_unref (str);
                         return FALSE;
                     }
-                    
+
                     str_unref (str);
                     keys ++;
                 }
@@ -190,20 +190,20 @@ static boolean audpl_save (const char * path, VFSFile * file,
                 {
                     char buf[32];
                     snprintf (buf, sizeof buf, "%d", tuple_get_int (tuple, f, NULL));
-                    
+
                     if (! write_key (file, tuple_field_get_name (f), buf))
                         return FALSE;
 
                     keys ++;
                 }
             }
-            
+
             /* distinguish between an empty tuple and no tuple at all */
             if (! keys && ! write_key (file, "empty", "1"))
                 return FALSE;
         }
     }
-    
+
     return TRUE;
 }
 
