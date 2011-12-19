@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-11-15 22:40-0500\n"
+"POT-Creation-Date: 2011-12-19 14:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -90,7 +90,8 @@ msgstr ""
 #: src/alarm/interface.c:533 src/alarm/interface.c:581
 #: src/alarm/interface.c:629 src/alarm/interface.c:677
 #: src/alarm/interface.c:725 src/bs2b/plugin.c:198 src/OSS/configure.c:153
-#: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
+#: src/skins/ui_equalizer.c:1117 src/skins/ui_manager.c:450
+#: src/skins/ui_manager.c:471
 msgid "Default"
 msgstr ""
 
@@ -299,7 +300,7 @@ msgstr ""
 msgid "ALSA error"
 msgstr ""
 
-#: src/amidi-plug/amidi-plug.c:325
+#: src/amidi-plug/amidi-plug.c:326
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
@@ -656,239 +657,239 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:77
+#: src/aosd/aosd_trigger.c:78
 msgid "Playback Start"
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:78
+#: src/aosd/aosd_trigger.c:79
 msgid "Triggers OSD when a playlist entry is played."
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:82
+#: src/aosd/aosd_trigger.c:83
 msgid "Title Change"
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:83
+#: src/aosd/aosd_trigger.c:84
 msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:89
+#: src/aosd/aosd_trigger.c:90
 msgid "Volume Change"
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:90
+#: src/aosd/aosd_trigger.c:91
 msgid "Triggers OSD when volume is changed."
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:94
+#: src/aosd/aosd_trigger.c:95
 msgid "Pause On"
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:95
+#: src/aosd/aosd_trigger.c:96
 msgid "Triggers OSD when playback is paused."
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:99
+#: src/aosd/aosd_trigger.c:100
 msgid "Pause Off"
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:100
+#: src/aosd/aosd_trigger.c:101
 msgid "Triggers OSD when playback is unpaused."
 msgstr ""
 
-#: src/aosd/aosd_ui.c:180
+#: src/aosd/aosd_ui.c:179
 msgid "Placement"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:219
+#: src/aosd/aosd_ui.c:218
 msgid "Relative X offset:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:228
+#: src/aosd/aosd_ui.c:227
 msgid "Relative Y offset:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:237
+#: src/aosd/aosd_ui.c:236
 msgid "Max OSD width:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:250
+#: src/aosd/aosd_ui.c:249
 msgid "Multi-Monitor options"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:254
+#: src/aosd/aosd_ui.c:253
 msgid "Display OSD using:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:265
+#: src/aosd/aosd_ui.c:264
 msgid "all monitors"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:268
+#: src/aosd/aosd_ui.c:267
 #, c-format
 msgid "monitor %i"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:323
+#: src/aosd/aosd_ui.c:322
 msgid "Timing (ms)"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:328
+#: src/aosd/aosd_ui.c:327
 msgid "Display:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:333
+#: src/aosd/aosd_ui.c:332
 msgid "Fade in:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:338
+#: src/aosd/aosd_ui.c:337
 msgid "Fade out:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:419
+#: src/aosd/aosd_ui.c:418
 msgid "Fonts"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:427
+#: src/aosd/aosd_ui.c:426
 #, c-format
 msgid "Font %i:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:444
+#: src/aosd/aosd_ui.c:443
 msgid "Shadow"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:479
+#: src/aosd/aosd_ui.c:478
 msgid "Internationalization"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:485
+#: src/aosd/aosd_ui.c:484
 msgid "Disable UTF-8 conversion of text (in aosd)"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:503
+#: src/aosd/aosd_ui.c:502
 msgid "Select Skin File"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:614
+#: src/aosd/aosd_ui.c:613
 msgid "Render Style"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:630
+#: src/aosd/aosd_ui.c:629
 msgid "Colors"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:643
+#: src/aosd/aosd_ui.c:642
 #, c-format
 msgid "Color %i:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:663
+#: src/aosd/aosd_ui.c:662
 msgid "Custom Skin"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:669
+#: src/aosd/aosd_ui.c:668
 msgid "Skin file:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:672
+#: src/aosd/aosd_ui.c:671
 msgid "Browse"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:774
+#: src/aosd/aosd_ui.c:773
 msgid "Enable trigger"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:801
+#: src/aosd/aosd_ui.c:800
 msgid "Event"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:829
+#: src/aosd/aosd_ui.c:828
 msgid "Composite manager detected"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:836
+#: src/aosd/aosd_ui.c:835
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:844
+#: src/aosd/aosd_ui.c:843
 msgid "Composite manager not required for fake transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:882
+#: src/aosd/aosd_ui.c:881
 msgid "Transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:888
+#: src/aosd/aosd_ui.c:887
 msgid "Fake transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:890
+#: src/aosd/aosd_ui.c:889
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:932
+#: src/aosd/aosd_ui.c:931
 msgid "Composite extension not loaded"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:940
+#: src/aosd/aosd_ui.c:939
 msgid "Composite extension not available"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:959
+#: src/aosd/aosd_ui.c:958
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1040
+#: src/aosd/aosd_ui.c:1039
 msgid "Audacious OSD - configuration"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1061
+#: src/aosd/aosd_ui.c:1060
 msgid "Test"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1076
+#: src/aosd/aosd_ui.c:1075
 msgid "Position"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1081
+#: src/aosd/aosd_ui.c:1080
 msgid "Animation"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1086
+#: src/aosd/aosd_ui.c:1085
 msgid "Text"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1091
+#: src/aosd/aosd_ui.c:1090
 msgid "Decoration"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1096
+#: src/aosd/aosd_ui.c:1095
 msgid "Trigger"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1101 src/cdaudio-ng/configure.c:171
+#: src/aosd/aosd_ui.c:1100 src/cdaudio-ng/configure.c:171
 msgid "Misc"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1138
+#: src/aosd/aosd_ui.c:1137
 msgid "Audacious OSD - about"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1168
+#: src/aosd/aosd_ui.c:1167
 msgid ""
 "\n"
 "Audacious OSD "
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1169
+#: src/aosd/aosd_ui.c:1168
 msgid ""
 "\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
@@ -925,11 +926,11 @@ msgstr ""
 msgid "Presets:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:241
+#: src/cdaudio-ng/cdaudio-ng.c:242
 msgid "About Audio CD Plugin"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:242
+#: src/cdaudio-ng/cdaudio-ng.c:243
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -944,15 +945,15 @@ msgid ""
 "Copyright 2009 John Lindgren"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:550
+#: src/cdaudio-ng/cdaudio-ng.c:552
 msgid "Audio CD"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:922
+#: src/cdaudio-ng/cdaudio-ng.c:924
 msgid "Drive is empty."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:924
+#: src/cdaudio-ng/cdaudio-ng.c:926
 msgid "Unsupported disk type."
 msgstr ""
 
@@ -1175,7 +1176,7 @@ msgstr ""
 msgid "Volume: (%)"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:784
+#: src/ffaudio/ffaudio-core.c:792
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1191,7 +1192,7 @@ msgid ""
 "libavutil %s (%s)\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:798
+#: src/ffaudio/ffaudio-core.c:806
 msgid "About FFaudio Plugin"
 msgstr ""
 
@@ -1199,55 +1200,55 @@ msgstr ""
 msgid "About FileWriter-Plugin"
 msgstr ""
 
-#: src/filewriter/filewriter.c:455
+#: src/filewriter/filewriter.c:461
 msgid "File Writer Configuration"
 msgstr ""
 
-#: src/filewriter/filewriter.c:467
+#: src/filewriter/filewriter.c:473
 msgid "Output file format:"
 msgstr ""
 
-#: src/filewriter/filewriter.c:485
+#: src/filewriter/filewriter.c:491
 msgid "Configure"
 msgstr ""
 
-#: src/filewriter/filewriter.c:500
+#: src/filewriter/filewriter.c:506
 msgid "Save into original directory"
 msgstr ""
 
-#: src/filewriter/filewriter.c:505
+#: src/filewriter/filewriter.c:511
 msgid "Save into custom directory"
 msgstr ""
 
-#: src/filewriter/filewriter.c:515
+#: src/filewriter/filewriter.c:521
 msgid "Output file folder:"
 msgstr ""
 
-#: src/filewriter/filewriter.c:519
+#: src/filewriter/filewriter.c:525
 msgid "Pick a folder"
 msgstr ""
 
-#: src/filewriter/filewriter.c:538
+#: src/filewriter/filewriter.c:544
 msgid "Get filename from:"
 msgstr ""
 
-#: src/filewriter/filewriter.c:541
+#: src/filewriter/filewriter.c:547
 msgid "original file tags"
 msgstr ""
 
-#: src/filewriter/filewriter.c:547
+#: src/filewriter/filewriter.c:553
 msgid "original filename"
 msgstr ""
 
-#: src/filewriter/filewriter.c:557
+#: src/filewriter/filewriter.c:563
 msgid "Don't strip file name extension"
 msgstr ""
 
-#: src/filewriter/filewriter.c:572
+#: src/filewriter/filewriter.c:578
 msgid "Prepend track number to filename"
 msgstr ""
 
-#: src/filewriter/mp3.c:38 src/filewriter/mp3.c:771
+#: src/filewriter/mp3.c:38 src/filewriter/mp3.c:765
 msgid "Auto"
 msgstr ""
 
@@ -1255,151 +1256,151 @@ msgstr ""
 msgid "Joint Stereo"
 msgstr ""
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:190
 msgid "Stereo"
 msgstr ""
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:190
 msgid "Mono"
 msgstr ""
 
-#: src/filewriter/mp3.c:712
+#: src/filewriter/mp3.c:706
 msgid "MP3 Configuration"
 msgstr ""
 
-#: src/filewriter/mp3.c:735
+#: src/filewriter/mp3.c:729
 msgid "Algorithm Quality:"
 msgstr ""
 
-#: src/filewriter/mp3.c:760
+#: src/filewriter/mp3.c:754
 msgid "Output Samplerate:"
 msgstr ""
 
-#: src/filewriter/mp3.c:788
+#: src/filewriter/mp3.c:782
 msgid "(Hz)"
 msgstr ""
 
-#: src/filewriter/mp3.c:795
+#: src/filewriter/mp3.c:789
 msgid "Bitrate / Compression ratio:"
 msgstr ""
 
-#: src/filewriter/mp3.c:819
+#: src/filewriter/mp3.c:813
 msgid "Bitrate (kbps):"
 msgstr ""
 
-#: src/filewriter/mp3.c:852
+#: src/filewriter/mp3.c:846
 msgid "Compression ratio:"
 msgstr ""
 
-#: src/filewriter/mp3.c:876
+#: src/filewriter/mp3.c:870
 msgid "Audio Mode:"
 msgstr ""
 
-#: src/filewriter/mp3.c:901
+#: src/filewriter/mp3.c:895
 msgid "Misc:"
 msgstr ""
 
-#: src/filewriter/mp3.c:912
+#: src/filewriter/mp3.c:906
 msgid "Enforce strict ISO complience"
 msgstr ""
 
-#: src/filewriter/mp3.c:923
+#: src/filewriter/mp3.c:917
 msgid "Error protection"
 msgstr ""
 
-#: src/filewriter/mp3.c:935 src/filewriter/vorbis.c:243
+#: src/filewriter/mp3.c:929 src/filewriter/vorbis.c:247
 msgid "Quality"
 msgstr ""
 
-#: src/filewriter/mp3.c:945
+#: src/filewriter/mp3.c:939
 msgid "Enable VBR/ABR"
 msgstr ""
 
-#: src/filewriter/mp3.c:955
+#: src/filewriter/mp3.c:949
 msgid "Type:"
 msgstr ""
 
-#: src/filewriter/mp3.c:988
+#: src/filewriter/mp3.c:982
 msgid "VBR Options:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1004
+#: src/filewriter/mp3.c:998
 msgid "Minimum bitrate (kbps):"
 msgstr ""
 
-#: src/filewriter/mp3.c:1031
+#: src/filewriter/mp3.c:1025
 msgid "Maximum bitrate (kbps):"
 msgstr ""
 
-#: src/filewriter/mp3.c:1054
+#: src/filewriter/mp3.c:1048
 msgid "Strictly enforce minimum bitrate"
 msgstr ""
 
-#: src/filewriter/mp3.c:1066
+#: src/filewriter/mp3.c:1060
 msgid "ABR Options:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1076
+#: src/filewriter/mp3.c:1070
 msgid "Average bitrate (kbps):"
 msgstr ""
 
-#: src/filewriter/mp3.c:1104
+#: src/filewriter/mp3.c:1098
 msgid "VBR quality level:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1123
+#: src/filewriter/mp3.c:1117
 msgid "Don't write Xing VBR header"
 msgstr ""
 
-#: src/filewriter/mp3.c:1137
+#: src/filewriter/mp3.c:1131
 msgid "VBR/ABR"
 msgstr ""
 
-#: src/filewriter/mp3.c:1147
+#: src/filewriter/mp3.c:1141
 msgid "Frame params:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1159
+#: src/filewriter/mp3.c:1153
 msgid "Mark as copyright"
 msgstr ""
 
-#: src/filewriter/mp3.c:1170
+#: src/filewriter/mp3.c:1164
 msgid "Mark as original"
 msgstr ""
 
-#: src/filewriter/mp3.c:1182
+#: src/filewriter/mp3.c:1176
 msgid "ID3 params:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1193
+#: src/filewriter/mp3.c:1187
 msgid "Force addition of version 2 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1203
+#: src/filewriter/mp3.c:1197
 msgid "Only add v1 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1210
+#: src/filewriter/mp3.c:1204
 msgid "Only add v2 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1231
+#: src/filewriter/mp3.c:1225
 msgid "Tags"
 msgstr ""
 
-#: src/filewriter/vorbis.c:236
+#: src/filewriter/vorbis.c:240
 msgid "Vorbis Encoder Configuration"
 msgstr ""
 
-#: src/filewriter/vorbis.c:256
+#: src/filewriter/vorbis.c:260
 msgid "Quality level (0 - 10):"
 msgstr ""
 
-#: src/flacng/plugin.c:379
+#: src/flacng/plugin.c:380
 msgid "About FLAC Audio Plugin"
 msgstr ""
 
-#: src/flacng/plugin.c:380
+#: src/flacng/plugin.c:381
 msgid ""
 "\n"
 "\n"
@@ -1442,11 +1443,11 @@ msgstr ""
 msgid "Entry number"
 msgstr ""
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.c:36 src/search-tool/search-tool.c:43
 msgid "Title"
 msgstr ""
 
-#: src/gtkui/columns.c:37
+#: src/gtkui/columns.c:37 src/search-tool/search-tool.c:42
 msgid "Artist"
 msgstr ""
 
@@ -1454,7 +1455,7 @@ msgstr ""
 msgid "Year"
 msgstr ""
 
-#: src/gtkui/columns.c:37
+#: src/gtkui/columns.c:37 src/search-tool/search-tool.c:43
 msgid "Album"
 msgstr ""
 
@@ -1518,243 +1519,251 @@ msgstr ""
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:123 src/ladspa/plugin.c:643
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:644
 msgid "Disable"
 msgstr ""
 
-#: src/gtkui/menus.c:130
+#: src/gtkui/menus.c:131
 msgid "_Open Files ..."
 msgstr ""
 
-#: src/gtkui/menus.c:131
+#: src/gtkui/menus.c:132
 msgid "Open _URL ..."
 msgstr ""
 
-#: src/gtkui/menus.c:132
-msgid "_Add File ..."
+#: src/gtkui/menus.c:133
+msgid "_Add Files ..."
 msgstr ""
 
-#: src/gtkui/menus.c:133
+#: src/gtkui/menus.c:134
 msgid "Add U_RL ..."
 msgstr ""
 
-#: src/gtkui/menus.c:135
+#: src/gtkui/menus.c:136
 msgid "A_bout ..."
 msgstr ""
 
-#: src/gtkui/menus.c:136
+#: src/gtkui/menus.c:137
 msgid "_Preferences ..."
 msgstr ""
 
-#: src/gtkui/menus.c:137 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:138 src/skins/ui_manager.c:406
 msgid "_Quit"
 msgstr ""
 
-#: src/gtkui/menus.c:140
+#: src/gtkui/menus.c:141
 msgid "_Play"
 msgstr ""
 
-#: src/gtkui/menus.c:141
+#: src/gtkui/menus.c:142
 msgid "Paus_e"
 msgstr ""
 
-#: src/gtkui/menus.c:142
+#: src/gtkui/menus.c:143
 msgid "_Stop"
 msgstr ""
 
-#: src/gtkui/menus.c:143
+#: src/gtkui/menus.c:144
 msgid "Pre_vious"
 msgstr ""
 
-#: src/gtkui/menus.c:144
+#: src/gtkui/menus.c:145
 msgid "_Next"
 msgstr ""
 
-#: src/gtkui/menus.c:146
+#: src/gtkui/menus.c:147
 msgid "_Repeat"
 msgstr ""
 
-#: src/gtkui/menus.c:147
+#: src/gtkui/menus.c:148
 msgid "S_huffle"
 msgstr ""
 
-#: src/gtkui/menus.c:148
+#: src/gtkui/menus.c:149
 msgid "N_o Playlist Advance"
 msgstr ""
 
-#: src/gtkui/menus.c:149
+#: src/gtkui/menus.c:150
 msgid "Stop _After This Song"
 msgstr ""
 
-#: src/gtkui/menus.c:151 src/gtkui/menus.c:209
+#: src/gtkui/menus.c:152 src/gtkui/menus.c:212
 msgid "Song _Info ..."
 msgstr ""
 
-#: src/gtkui/menus.c:152
+#: src/gtkui/menus.c:153
 msgid "Jump to _Time ..."
 msgstr ""
 
-#: src/gtkui/menus.c:153
+#: src/gtkui/menus.c:154
 msgid "_Jump to Song ..."
 msgstr ""
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:157
 msgid "By Track _Number"
 msgstr ""
 
-#: src/gtkui/menus.c:157
+#: src/gtkui/menus.c:158
 msgid "By _Title"
 msgstr ""
 
-#: src/gtkui/menus.c:158
+#: src/gtkui/menus.c:159
 msgid "By _Artist"
 msgstr ""
 
-#: src/gtkui/menus.c:159
+#: src/gtkui/menus.c:160
 msgid "By A_lbum"
 msgstr ""
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:161
 msgid "By Release _Date"
 msgstr ""
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:162
 msgid "By _File Path"
 msgstr ""
 
-#: src/gtkui/menus.c:162
+#: src/gtkui/menus.c:163
 msgid "By _Custom Title"
 msgstr ""
 
-#: src/gtkui/menus.c:164
+#: src/gtkui/menus.c:165
 msgid "R_everse Order"
 msgstr ""
 
-#: src/gtkui/menus.c:165
+#: src/gtkui/menus.c:166
 msgid "_Random Order"
 msgstr ""
 
-#: src/gtkui/menus.c:168 src/gtkui/menus.c:211
+#: src/gtkui/menus.c:169 src/gtkui/menus.c:214
 msgid "_Refresh"
 msgstr ""
 
 #: src/gtkui/menus.c:170
-msgid "_Sort"
+msgid "Remove _Unavailable Files"
 msgstr ""
 
 #: src/gtkui/menus.c:172
+msgid "_Sort"
+msgstr ""
+
+#: src/gtkui/menus.c:174
 msgid "_New"
 msgstr ""
 
-#: src/gtkui/menus.c:173 src/gtkui/menus.c:222
+#: src/gtkui/menus.c:175 src/gtkui/menus.c:225
 msgid "_Close"
 msgstr ""
 
-#: src/gtkui/menus.c:175
+#: src/gtkui/menus.c:177
 msgid "_Import ..."
 msgstr ""
 
-#: src/gtkui/menus.c:176
+#: src/gtkui/menus.c:178
 msgid "_Export ..."
 msgstr ""
 
-#: src/gtkui/menus.c:178
+#: src/gtkui/menus.c:180
 msgid "_Playlist Manager ..."
 msgstr ""
 
-#: src/gtkui/menus.c:179
+#: src/gtkui/menus.c:181
 msgid "_Queue Manager ..."
 msgstr ""
 
-#: src/gtkui/menus.c:182
+#: src/gtkui/menus.c:184
 msgid "Volume _Up"
 msgstr ""
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:185
 msgid "Volume _Down"
 msgstr ""
 
-#: src/gtkui/menus.c:185
+#: src/gtkui/menus.c:187
 msgid "_Equalizer"
 msgstr ""
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:189
 msgid "E_ffects"
 msgstr ""
 
-#: src/gtkui/menus.c:190
+#: src/gtkui/menus.c:192
 msgid "_Interface"
 msgstr ""
 
-#: src/gtkui/menus.c:192
+#: src/gtkui/menus.c:193
+msgid "_Visualizations"
+msgstr ""
+
+#: src/gtkui/menus.c:195
 msgid "Show _Menu Bar"
 msgstr ""
 
-#: src/gtkui/menus.c:193
+#: src/gtkui/menus.c:196
 msgid "Show I_nfo Bar"
 msgstr ""
 
-#: src/gtkui/menus.c:194
+#: src/gtkui/menus.c:197
 msgid "Show _Status Bar"
 msgstr ""
 
-#: src/gtkui/menus.c:196
+#: src/gtkui/menus.c:199
 msgid "Show Column _Headers"
 msgstr ""
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:200
 msgid "Choose _Columns ..."
 msgstr ""
 
-#: src/gtkui/menus.c:198
+#: src/gtkui/menus.c:201
 msgid "Scrol_l on Song Change"
 msgstr ""
 
-#: src/gtkui/menus.c:201
+#: src/gtkui/menus.c:204
 msgid "_File"
 msgstr ""
 
-#: src/gtkui/menus.c:202
+#: src/gtkui/menus.c:205
 msgid "_Playback"
 msgstr ""
 
-#: src/gtkui/menus.c:203
+#: src/gtkui/menus.c:206
 msgid "P_laylist"
 msgstr ""
 
-#: src/gtkui/menus.c:204 src/gtkui/menus.c:218
+#: src/gtkui/menus.c:207 src/gtkui/menus.c:221
 msgid "_Services"
 msgstr ""
 
-#: src/gtkui/menus.c:205
+#: src/gtkui/menus.c:208
 msgid "_Output"
 msgstr ""
 
-#: src/gtkui/menus.c:206
+#: src/gtkui/menus.c:209
 msgid "_View"
 msgstr ""
 
-#: src/gtkui/menus.c:210
+#: src/gtkui/menus.c:213
 msgid "_Queue/Unqueue"
 msgstr ""
 
-#: src/gtkui/menus.c:213
+#: src/gtkui/menus.c:216
 msgid "Cu_t"
 msgstr ""
 
-#: src/gtkui/menus.c:214
+#: src/gtkui/menus.c:217
 msgid "_Copy"
 msgstr ""
 
-#: src/gtkui/menus.c:215
+#: src/gtkui/menus.c:218
 msgid "_Paste"
 msgstr ""
 
-#: src/gtkui/menus.c:216
+#: src/gtkui/menus.c:219
 msgid "Select _All"
 msgstr ""
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:224
 msgid "_Rename"
 msgstr ""
 
@@ -1762,7 +1771,7 @@ msgstr ""
 msgid "GTK Interface"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:156 src/skins/ui_main.c:302
+#: src/gtkui/ui_gtk.c:156 src/skins/ui_main.c:303
 #, c-format
 msgid "%s - Audacious"
 msgstr ""
@@ -1771,30 +1780,30 @@ msgstr ""
 msgid "Buffering ..."
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:165 src/skins/ui_main.c:304 src/skins/ui_main.c:1499
+#: src/gtkui/ui_gtk.c:165 src/skins/ui_main.c:305 src/skins/ui_main.c:1500
 msgid "Audacious"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:211 src/skins/plugin.c:183
+#: src/gtkui/ui_gtk.c:216 src/skins/plugin.c:190
 msgid "Error"
 msgstr ""
 
-#: src/gtkui/ui_statusbar.c:103 src/skins/ui_main.c:459
+#: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:460
 msgid "mono"
 msgstr ""
 
-#: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:458
+#: src/gtkui/ui_statusbar.c:107 src/skins/ui_main.c:459
 msgid "stereo"
 msgstr ""
 
-#: src/gtkui/ui_statusbar.c:107
+#: src/gtkui/ui_statusbar.c:109
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtkui/ui_statusbar.c:122
+#: src/gtkui/ui_statusbar.c:124
 #, c-format
 msgid "%d kbps"
 msgstr ""
@@ -1941,7 +1950,7 @@ msgstr ""
 msgid "Enable debug printing"
 msgstr ""
 
-#: src/jack/jack.c:422
+#: src/jack/jack.c:435
 msgid ""
 "XMMS jack Driver 0.17\n"
 "\n"
@@ -1952,73 +1961,73 @@ msgid ""
 "Giacomo Lozito from develia.org"
 msgstr ""
 
-#: src/jack/jack.c:427
+#: src/jack/jack.c:440
 msgid "About JACK Output Plugin 0.17"
 msgstr ""
 
-#: src/ladspa/plugin.c:414
+#: src/ladspa/plugin.c:415
 msgid "About LADSPA Host"
 msgstr ""
 
-#: src/ladspa/plugin.c:515
+#: src/ladspa/plugin.c:516
 #, c-format
 msgid "%s Settings"
 msgstr ""
 
-#: src/ladspa/plugin.c:583
+#: src/ladspa/plugin.c:584
 msgid "LADSPA Host Settings"
 msgstr ""
 
-#: src/ladspa/plugin.c:592
+#: src/ladspa/plugin.c:593
 msgid "Module paths:"
 msgstr ""
 
-#: src/ladspa/plugin.c:597
+#: src/ladspa/plugin.c:598
 msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
 
-#: src/ladspa/plugin.c:613
+#: src/ladspa/plugin.c:614
 msgid "Available plugins:"
 msgstr ""
 
-#: src/ladspa/plugin.c:625
+#: src/ladspa/plugin.c:626
 msgid "Enable"
 msgstr ""
 
-#: src/ladspa/plugin.c:631
+#: src/ladspa/plugin.c:632
 msgid "Enabled plugins:"
 msgstr ""
 
-#: src/ladspa/plugin.c:646
+#: src/ladspa/plugin.c:647
 msgid "Settings"
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:269
+#: src/lyricwiki/lyricwiki.c:274
 msgid ""
 "\n"
 "Looking for lyrics..."
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:293
+#: src/lyricwiki/lyricwiki.c:311
 msgid ""
 "\n"
 "Connecting to lyrics.wikia.com..."
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:381
+#: src/lyricwiki/lyricwiki.c:384
 msgid ""
 "\n"
 "No lyrics were found."
 msgstr ""
 
-#: src/metronom/metronom.c:85
+#: src/metronom/metronom.c:86
 msgid "About Metronom"
 msgstr ""
 
-#: src/metronom/metronom.c:86
+#: src/metronom/metronom.c:87
 msgid ""
 "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
@@ -2027,12 +2036,12 @@ msgid ""
 "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
 
-#: src/metronom/metronom.c:143
+#: src/metronom/metronom.c:144
 #, c-format
 msgid "Tact generator: %d bpm"
 msgstr ""
 
-#: src/metronom/metronom.c:145
+#: src/metronom/metronom.c:146
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
 msgstr ""
@@ -2053,27 +2062,27 @@ msgstr ""
 msgid "Changes take effect at the next song change."
 msgstr ""
 
-#: src/mpg123/mpg123.c:183
+#: src/mpg123/mpg123.c:190
 msgid "Surround"
 msgstr ""
 
-#: src/mtp_up/mtp.c:298
+#: src/mtp_up/mtp.c:336
 msgid "Upload in progress..."
 msgstr ""
 
-#: src/mtp_up/mtp.c:310
+#: src/mtp_up/mtp.c:348
 msgid "Upload to MTP Device"
 msgstr ""
 
-#: src/mtp_up/mtp.c:311
+#: src/mtp_up/mtp.c:349
 msgid "Disconnect MTP Device"
 msgstr ""
 
-#: src/notify/libnotify-aosd_event.c:47
+#: src/notify/libnotify-aosd_event.c:48
 msgid "Stopped"
 msgstr ""
 
-#: src/notify/libnotify-aosd_event.c:47
+#: src/notify/libnotify-aosd_event.c:48
 msgid "Audacious is not playing."
 msgstr ""
 
@@ -2099,28 +2108,32 @@ msgstr ""
 msgid "Run in real time"
 msgstr ""
 
-#: src/oss4/configure.c:76
+#: src/oss4/configure.c:81
 msgid "1. Default device"
 msgstr ""
 
-#: src/oss4/configure.c:132
+#: src/oss4/configure.c:138
 msgid "OSS4 Output Plugin Preferences"
 msgstr ""
 
-#: src/oss4/configure.c:144 src/OSS/configure.c:194
+#: src/oss4/configure.c:150 src/OSS/configure.c:194
 msgid "Audio device:"
 msgstr ""
 
-#: src/oss4/configure.c:172 src/OSS/configure.c:217 src/OSS/configure.c:260
+#: src/oss4/configure.c:178 src/OSS/configure.c:217 src/OSS/configure.c:260
 msgid "Use alternate device:"
 msgstr ""
 
-#: src/oss4/configure.c:187
+#: src/oss4/configure.c:193
 msgid "Save volume between sessions"
 msgstr ""
 
-#: src/oss4/configure.c:191
+#: src/oss4/configure.c:197
 msgid "Enable format conversions made by the OSS software."
+msgstr ""
+
+#: src/oss4/configure.c:201
+msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr ""
 
 #: src/oss4/plugin.c:51
@@ -2168,11 +2181,11 @@ msgstr ""
 msgid "Mixer"
 msgstr ""
 
-#: src/OSS/OSS.c:40
+#: src/OSS/OSS.c:41
 msgid "About OSS Driver"
 msgstr ""
 
-#: src/pulse_audio/pulse_audio.c:673
+#: src/pulse_audio/pulse_audio.c:669
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr ""
 
@@ -2196,31 +2209,31 @@ msgstr ""
 msgid "Method:"
 msgstr ""
 
-#: src/scrobbler/configure.c:122 src/scrobbler/configure.c:197
+#: src/scrobbler/configure.c:123 src/scrobbler/configure.c:198
 msgid "Change password"
 msgstr ""
 
-#: src/scrobbler/configure.c:143
+#: src/scrobbler/configure.c:144
 msgid "<b>Services</b>"
 msgstr ""
 
-#: src/scrobbler/configure.c:165
+#: src/scrobbler/configure.c:166
 msgid "Username:"
 msgstr ""
 
-#: src/scrobbler/configure.c:171
+#: src/scrobbler/configure.c:172
 msgid "Password:"
 msgstr ""
 
-#: src/scrobbler/configure.c:179
+#: src/scrobbler/configure.c:180
 msgid "Scrobbler URL:"
 msgstr ""
 
-#: src/scrobbler/configure.c:211
+#: src/scrobbler/configure.c:212
 msgid "<b>Last.FM</b>"
 msgstr ""
 
-#: src/scrobbler/configure.c:238
+#: src/scrobbler/configure.c:239
 msgid "Scrobbler"
 msgstr ""
 
@@ -2244,11 +2257,45 @@ msgstr ""
 msgid "SDL error"
 msgstr ""
 
-#: src/skins/plugin.c:165
+#: src/search-tool/search-tool.c:42
+msgid "Genre"
+msgstr ""
+
+#: src/search-tool/search-tool.c:90 src/search-tool/search-tool.c:100
+msgid "Library"
+msgstr ""
+
+#: src/search-tool/search-tool.c:584
+msgid "_Create Playlist"
+msgstr ""
+
+#: src/search-tool/search-tool.c:591
+msgid "_Add to Playlist"
+msgstr ""
+
+#: src/search-tool/search-tool.c:634
+msgid "Search library"
+msgstr ""
+
+#: src/search-tool/search-tool.c:638
+msgid ""
+"To import your music library into Audacious, choose a folder and then click "
+"the \"refresh\" icon."
+msgstr ""
+
+#: src/search-tool/search-tool.c:646
+msgid "Please wait ..."
+msgstr ""
+
+#: src/search-tool/search-tool.c:668
+msgid "Choose Folder"
+msgstr ""
+
+#: src/skins/plugin.c:167
 msgid "About Skinned GUI"
 msgstr ""
 
-#: src/skins/plugin.c:166
+#: src/skins/plugin.c:168
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -2342,75 +2389,108 @@ msgstr ""
 msgid "Presets"
 msgstr ""
 
-#: src/skins/ui_main.c:443
+#: src/skins/ui_equalizer.c:977 src/skins/ui_manager.c:445
+msgid "Load preset"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:994
+msgid "Load auto-preset"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:1024 src/skins/ui_equalizer.c:1042
+#: src/skins/ui_equalizer.c:1058
+msgid "Load equalizer preset"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:1077 src/skins/ui_manager.c:466
+msgid "Save preset"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:1095
+msgid "Save auto-preset"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:1128 src/skins/ui_equalizer.c:1164
+msgid "Save equalizer preset"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:1183 src/skins/ui_manager.c:481
+msgid "Delete preset"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:1200
+msgid "Delete auto-preset"
+msgstr ""
+
+#: src/skins/ui_main.c:444
 msgid "kbps"
 msgstr ""
 
-#: src/skins/ui_main.c:451
+#: src/skins/ui_main.c:452
 msgid "kHz"
 msgstr ""
 
-#: src/skins/ui_main.c:458
+#: src/skins/ui_main.c:459
 msgid "surround"
 msgstr ""
 
-#: src/skins/ui_main.c:806
+#: src/skins/ui_main.c:807
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr ""
 
-#: src/skins/ui_main.c:827
+#: src/skins/ui_main.c:828
 #, c-format
 msgid "Volume: %d%%"
 msgstr ""
 
-#: src/skins/ui_main.c:850
+#: src/skins/ui_main.c:851
 #, c-format
 msgid "Balance: %d%% left"
 msgstr ""
 
-#: src/skins/ui_main.c:852
+#: src/skins/ui_main.c:853
 msgid "Balance: center"
 msgstr ""
 
-#: src/skins/ui_main.c:854
+#: src/skins/ui_main.c:855
 #, c-format
 msgid "Balance: %d%% right"
 msgstr ""
 
-#: src/skins/ui_main.c:980
+#: src/skins/ui_main.c:981
 msgid "Options Menu"
 msgstr ""
 
-#: src/skins/ui_main.c:984
+#: src/skins/ui_main.c:985
 msgid "Disable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:986
+#: src/skins/ui_main.c:987
 msgid "Enable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:989
+#: src/skins/ui_main.c:990
 msgid "File Info Box"
 msgstr ""
 
-#: src/skins/ui_main.c:994
+#: src/skins/ui_main.c:995
 msgid "Visualization Menu"
 msgstr ""
 
-#: src/skins/ui_main.c:1648
+#: src/skins/ui_main.c:1649
 msgid "Single mode."
 msgstr ""
 
-#: src/skins/ui_main.c:1650
+#: src/skins/ui_main.c:1651
 msgid "Playlist mode."
 msgstr ""
 
-#: src/skins/ui_main.c:1672
+#: src/skins/ui_main.c:1673
 msgid "Stopping after song."
 msgstr ""
 
-#: src/skins/ui_main.c:1674
+#: src/skins/ui_main.c:1675
 msgid "Not stopping after song."
 msgstr ""
 
@@ -2961,10 +3041,6 @@ msgstr ""
 msgid "Preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:445
-msgid "Load preset"
-msgstr ""
-
 #: src/skins/ui_manager.c:447 src/skins/ui_manager.c:468
 #: src/skins/ui_manager.c:483
 msgid "Auto-load preset"
@@ -3010,10 +3086,6 @@ msgstr ""
 msgid "Import WinAMP presets"
 msgstr ""
 
-#: src/skins/ui_manager.c:466
-msgid "Save preset"
-msgstr ""
-
 #: src/skins/ui_manager.c:469
 msgid "Save auto-load preset"
 msgstr ""
@@ -3038,19 +3110,15 @@ msgstr ""
 msgid "Save preset to WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:481
-msgid "Delete preset"
-msgstr ""
-
 #: src/skins/ui_manager.c:484
 msgid "Delete auto-load preset"
 msgstr ""
 
-#: src/skins/ui_playlist.c:244
+#: src/skins/ui_playlist.c:248
 msgid "Search entries in active playlist"
 msgstr ""
 
-#: src/skins/ui_playlist.c:252
+#: src/skins/ui_playlist.c:256
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3058,39 +3126,39 @@ msgid ""
 "for."
 msgstr ""
 
-#: src/skins/ui_playlist.c:260
+#: src/skins/ui_playlist.c:264
 msgid "Title: "
 msgstr ""
 
-#: src/skins/ui_playlist.c:267
+#: src/skins/ui_playlist.c:271
 msgid "Album: "
 msgstr ""
 
-#: src/skins/ui_playlist.c:274
+#: src/skins/ui_playlist.c:278
 msgid "Artist: "
 msgstr ""
 
-#: src/skins/ui_playlist.c:281
+#: src/skins/ui_playlist.c:285
 msgid "Filename: "
 msgstr ""
 
-#: src/skins/ui_playlist.c:289
+#: src/skins/ui_playlist.c:293
 msgid "Clear previous selection before searching"
 msgstr ""
 
-#: src/skins/ui_playlist.c:292
+#: src/skins/ui_playlist.c:296
 msgid "Automatically toggle queue for matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:295
+#: src/skins/ui_playlist.c:299
 msgid "Create a new playlist with matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:762
+#: src/skins/ui_playlist.c:765
 msgid "Audacious Playlist Editor"
 msgstr ""
 
-#: src/skins/ui_playlist.c:809
+#: src/skins/ui_playlist.c:812
 #, c-format
 msgid "%s (%d of %d)"
 msgstr ""
@@ -3103,12 +3171,12 @@ msgstr ""
 msgid "Unarchived Winamp 2.x skin"
 msgstr ""
 
-#: src/skins/util.c:773
+#: src/skins/util.c:774
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr ""
 
-#: src/sndfile/plugin.c:454
+#: src/sndfile/plugin.c:456
 msgid "About sndfile plugin"
 msgstr ""
 
@@ -3140,29 +3208,29 @@ msgstr ""
 msgid "SndStretch - Configuration"
 msgstr ""
 
-#: src/song_change/song_change.c:447
+#: src/song_change/song_change.c:456
 msgid "Command to run when Audacious starts a new song."
 msgstr ""
 
-#: src/song_change/song_change.c:449 src/song_change/song_change.c:455
-#: src/song_change/song_change.c:461 src/song_change/song_change.c:467
+#: src/song_change/song_change.c:458 src/song_change/song_change.c:464
+#: src/song_change/song_change.c:470 src/song_change/song_change.c:476
 msgid "Command:"
 msgstr ""
 
-#: src/song_change/song_change.c:453
+#: src/song_change/song_change.c:462
 msgid "Command to run toward the end of a song."
 msgstr ""
 
-#: src/song_change/song_change.c:459
+#: src/song_change/song_change.c:468
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr ""
 
-#: src/song_change/song_change.c:465
+#: src/song_change/song_change.c:474
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 
-#: src/song_change/song_change.c:471
+#: src/song_change/song_change.c:480
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3181,25 +3249,25 @@ msgid ""
 "%T: Track title"
 msgstr ""
 
-#: src/song_change/song_change.c:498
+#: src/song_change/song_change.c:507
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
 
-#: src/song_change/song_change.c:509
+#: src/song_change/song_change.c:518
 msgid "Commands"
 msgstr ""
 
-#: src/song_change/song_change.c:539
+#: src/song_change/song_change.c:548
 msgid "Song Change"
 msgstr ""
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.c:379
 msgid "About Status Icon Plugin"
 msgstr ""
 
-#: src/statusicon/statusicon.c:379
+#: src/statusicon/statusicon.c:380
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3210,44 +3278,48 @@ msgid ""
 "the system tray area of the window manager.\n"
 msgstr ""
 
-#: src/statusicon/statusicon.c:447
+#: src/statusicon/statusicon.c:451
 msgid "Status Icon Plugin - Preferences"
 msgstr ""
 
-#: src/statusicon/statusicon.c:457
+#: src/statusicon/statusicon.c:461
 msgid "Right-Click Menu"
 msgstr ""
 
-#: src/statusicon/statusicon.c:462
+#: src/statusicon/statusicon.c:466
 msgid "Small playback menu #1"
 msgstr ""
 
-#: src/statusicon/statusicon.c:465
+#: src/statusicon/statusicon.c:469
 msgid "Small playback menu #2"
 msgstr ""
 
-#: src/statusicon/statusicon.c:481
+#: src/statusicon/statusicon.c:485
 msgid "Mouse Scroll Action"
 msgstr ""
 
-#: src/statusicon/statusicon.c:485
+#: src/statusicon/statusicon.c:489
 msgid "Change volume"
 msgstr ""
 
-#: src/statusicon/statusicon.c:487
+#: src/statusicon/statusicon.c:491
 msgid "Change playing song"
 msgstr ""
 
-#: src/statusicon/statusicon.c:500
+#: src/statusicon/statusicon.c:504
 msgid "Other settings"
 msgstr ""
 
-#: src/statusicon/statusicon.c:505
+#: src/statusicon/statusicon.c:509
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:512
+#: src/statusicon/statusicon.c:516
 msgid "Close to the notification area (system tray)"
+msgstr ""
+
+#: src/statusicon/statusicon.c:524
+msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
 #: src/stereo_plugin/stereo.c:45
@@ -3306,11 +3378,11 @@ msgid ""
 "This was a Google Summer of Code 2008 project."
 msgstr ""
 
-#: src/tonegen/tonegen.c:48
+#: src/tonegen/tonegen.c:49
 msgid "About Tone Generator"
 msgstr ""
 
-#: src/tonegen/tonegen.c:50
+#: src/tonegen/tonegen.c:51
 msgid ""
 "Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
 "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
@@ -3319,12 +3391,12 @@ msgid ""
 "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
 msgstr ""
 
-#: src/tonegen/tonegen.c:100
+#: src/tonegen/tonegen.c:101
 #, c-format
 msgid "%s %.1f Hz"
 msgstr ""
 
-#: src/tonegen/tonegen.c:100
+#: src/tonegen/tonegen.c:101
 msgid "Tone Generator: "
 msgstr ""
 
@@ -3332,11 +3404,11 @@ msgstr ""
 msgid "About File I/O Plugin"
 msgstr ""
 
-#: src/vorbis/vorbis.c:572
+#: src/vorbis/vorbis.c:573
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr ""
 
-#: src/vorbis/vorbis.c:577
+#: src/vorbis/vorbis.c:578
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"

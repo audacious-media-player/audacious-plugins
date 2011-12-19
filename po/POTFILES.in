@@ -92,6 +92,7 @@ src/scrobbler/configure.c
 src/scrobbler/plugin.c
 src/scrobbler/scrobbler.c
 src/sdlout/plugin.c
+src/search-tool/search-tool.c
 src/skins/plugin.c
 src/skins/skins_cfg.c
 src/skins/ui_equalizer.c
