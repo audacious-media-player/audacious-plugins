@@ -693,6 +693,16 @@ void alsa_get_volume (int * left, int * right)
         CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_MONO, & left_l);
         right_l = left_l;
+
+        if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
+        {
+            int on = 0;
+            CHECK (snd_mixer_selem_get_playback_switch, alsa_mixer_element,
+             SND_MIXER_SCHN_MONO, & on);
+
+            if (! on)
+                left_l = right_l = 0;
+        }
     }
     else
     {
@@ -700,6 +710,20 @@ void alsa_get_volume (int * left, int * right)
          SND_MIXER_SCHN_FRONT_LEFT, & left_l);
         CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_element,
          SND_MIXER_SCHN_FRONT_RIGHT, & right_l);
+
+        if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
+        {
+            int left_on = 0, right_on = 0;
+            CHECK (snd_mixer_selem_get_playback_switch, alsa_mixer_element,
+             SND_MIXER_SCHN_FRONT_LEFT, & left_on);
+            CHECK (snd_mixer_selem_get_playback_switch, alsa_mixer_element,
+             SND_MIXER_SCHN_FRONT_RIGHT, & right_on);
+
+            if (! left_on)
+                left_l = 0;
+            if (! right_on)
+                right_l = 0;
+        }
     }
 
 FAILED:
