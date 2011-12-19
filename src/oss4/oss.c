@@ -271,6 +271,8 @@ FAILED:
 
 void oss_get_volume(gint *left, gint *right)
 {
+    *left = *right = 0;
+
     gint vol;
 
     if (oss_data->fd == -1 || !oss_ioctl_vol)
