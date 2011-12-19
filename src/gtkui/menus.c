@@ -190,6 +190,7 @@ static const struct MenuItem output_items[] = {
 
 static const struct MenuItem view_items[] = {
  {N_("_Interface"), .get_sub = audgui_create_iface_menu},
+ {N_("_Visualizations"), .get_sub = audgui_create_vis_menu},
  {.sep = TRUE},
  {N_("Show _Menu Bar"), NULL, 'm', SHIFT | CTRL, .get = menu_bar_get, show_menu},
  {N_("Show I_nfo Bar"), NULL, 'i', SHIFT | CTRL, .get = info_bar_get, show_infoarea},
