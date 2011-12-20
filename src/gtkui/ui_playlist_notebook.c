@@ -72,23 +72,27 @@ static void make_add_button (GtkWidget * notebook)
 }
 #endif
 
-static void close_button_cb (GtkButton * button, void * id)
+static gboolean close_button_cb (GtkWidget * button, GdkEventButton * event, void * id)
 {
+    if (event->type != GDK_BUTTON_PRESS || event->button != 1)
+        return FALSE;
+
     audgui_confirm_playlist_delete (aud_playlist_by_unique_id (GPOINTER_TO_INT (id)));
+    return TRUE;
 }
 
 static GtkWidget * make_close_button (gint list)
 {
-    GtkWidget * button = gtk_button_new ();
-    gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
-    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_stock
-     (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU));
-    gtk_widget_set_can_focus (button, FALSE);
-
-    g_signal_connect (button, "clicked", (GCallback) close_button_cb,
+    GtkWidget * evbox = gtk_event_box_new ();
+    gtk_event_box_set_visible_window ((GtkEventBox *) evbox, FALSE);
+    g_signal_connect (evbox, "button-press-event", (GCallback) close_button_cb,
      GINT_TO_POINTER (aud_playlist_get_unique_id (list)));
-    gtk_widget_show_all (button);
-    return button;
+
+    GtkWidget * icon = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
+    gtk_container_add ((GtkContainer *) evbox, icon);
+
+    gtk_widget_show_all (evbox);
+    return evbox;
 }
 
 GtkNotebook *ui_playlist_get_notebook(void)
