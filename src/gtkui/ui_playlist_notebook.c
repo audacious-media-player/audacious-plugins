@@ -238,7 +238,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
     ebox = gtk_event_box_new();
     gtk_event_box_set_visible_window ((GtkEventBox *) ebox, FALSE);
 
-    hbox = gtk_hbox_new(FALSE, 2);
+    hbox = gtk_hbox_new (FALSE, 4);
 
     label = gtk_label_new ("");
     set_tab_label (playlist, (GtkLabel *) label);
