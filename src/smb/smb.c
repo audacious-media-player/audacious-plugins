@@ -42,56 +42,44 @@ typedef struct _SMBFile {
 } SMBFile;
 
 /* TODO: make writing work. */
-VFSFile *smb_vfs_fopen_impl(const gchar * path, const gchar * mode)
+void * smb_vfs_fopen_impl (const gchar * path, const gchar * mode)
 {
-  VFSFile *file;
   SMBFile *handle;
   struct stat st;
 
   if (!path || !mode)
     return NULL;
 
-  file = g_new0(VFSFile, 1);
   handle = g_new0(SMBFile, 1);
   handle->fd = smbc_open(path, O_RDONLY, 0);
 
-  if (handle->fd < 0) {
-    g_free(file);
-    file = NULL;
-  } else {
-    smbc_stat(path,&st);
-    handle->length = st.st_size;
-    file->handle = (void *)handle;
+  if (handle->fd < 0)
+  {
+    g_free (handle);
+    return NULL;
   }
 
-  return file;
+  smbc_stat (path, & st);
+  handle->length = st.st_size;
+
+  return handle;
 }
 
 gint smb_vfs_fclose_impl(VFSFile * file)
 {
   gint ret = 0;
-  SMBFile *handle;
+  SMBFile * handle = vfs_get_handle (file);
 
-  if (file == NULL)
-    return -1;
+  if (smbc_close (handle->fd))
+    ret = -1;
 
-  if (file->handle)
-  {
-    handle = (SMBFile *)file->handle;
-    if (smbc_close(handle->fd) != 0)
-      ret = -1;
-    g_free(file->handle);
-  }
-
+  g_free (handle);
   return ret;
 }
 
 static gint64 smb_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile * file)
 {
-  SMBFile *handle;
-  if (file == NULL)
-    return 0;
-  handle = (SMBFile *)file->handle;
+  SMBFile * handle = vfs_get_handle (file);
   return smbc_read(handle->fd, ptr, size * nmemb);
 }
 
@@ -102,22 +90,18 @@ static gint64 smb_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb, 
 
 gint smb_vfs_getc_impl(VFSFile *file)
 {
-  SMBFile *handle;
+  SMBFile * handle = vfs_get_handle (file);
   char temp;
-  handle = (SMBFile *)file->handle;
+
   smbc_read(handle->fd, &temp, 1);
   return (gint) temp;
 }
 
 static gint smb_vfs_fseek_impl(VFSFile * file, gint64 offset, gint whence)
 {
-  SMBFile *handle;
+  SMBFile * handle = vfs_get_handle (file);
   gint64 roffset = offset;
   gint ret = 0;
-  if (file == NULL)
-     return 0;
-
-  handle = (SMBFile *)file->handle;
 
   if (whence == SEEK_END)
   {
@@ -152,15 +136,14 @@ void smb_vfs_rewind_impl(VFSFile * file)
 
 static gint64 smb_vfs_ftell_impl(VFSFile * file)
 {
-  SMBFile *handle;
-  handle = (SMBFile *)file->handle;
+  SMBFile * handle = vfs_get_handle (file);
   return smbc_lseek(handle->fd, 0, SEEK_CUR);
 }
 
 gboolean
 smb_vfs_feof_impl(VFSFile * file)
 {
-  SMBFile * handle = file->handle;
+  SMBFile * handle = vfs_get_handle (file);
   gint64 at;
 
   at = smb_vfs_ftell_impl(file);
@@ -175,8 +158,7 @@ static gint smb_vfs_truncate_impl (VFSFile * file, gint64 size)
 
 static gint64 smb_vfs_fsize_impl (VFSFile * file)
 {
-    SMBFile *handle = (SMBFile *)file->handle;
-
+    SMBFile * handle = vfs_get_handle (file);
     return handle->length;
 }
 
