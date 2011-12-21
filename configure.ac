@@ -164,42 +164,6 @@ else
     have_pulse=no
 fi
 
-dnl *** CoreAudio
-
-AC_ARG_ENABLE(coreaudio,
-    [  --disable-coreaudio     disable CoreAudio output plugin (default=enabled)],
-    [enable_coreaudio=$enableval],
-    [enable_coreaudio="yes"]
-)
-
-if test "x$enable_coreaudio" = "xyes"; then
-	AC_CHECK_HEADERS([CoreServices/CoreServices.h],
-		[have_coreaudio=yes
-		 OUTPUT_PLUGINS="$OUTPUT_PLUGINS CoreAudio"],
-		[have_coreaudio=no])
-else
-	AC_MSG_RESULT([*** CoreAudio output plugin disabled per user request ***])
-	have_coreaudio=no
-fi
-
-dnl *** Dock Album Art (MacOS)
-
-AC_ARG_ENABLE(dockalbumart,
-    [  --disable-dockalbumart  disable MacOS dock albumart plugin (default=guess)],
-    [enable_dockalbumart=$enableval],
-    [enable_dockalbumart="yes"]
-)
-
-if test "x$enable_dockalbumart" = "xyes"; then
-	AC_CHECK_HEADERS([Carbon/Carbon.h],
-		[have_dockalbumart=yes
-		 GENERAL_PLUGINS="$GENERAL_PLUGINS dockalbumart"],
-		[have_dockalbumart=no])
-else
-	AC_MSG_RESULT([*** DockAlbumArt plugin disabled per user request ***])
-	have_dockalbumart=no
-fi
-
 dnl PSF
 dnl ===
 
@@ -1174,7 +1138,6 @@ echo "  Open Sound System (oss4):               $enable_oss4"
 echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  PulseAudio (pulse):                     $have_pulse"
 echo "  Jack Audio Connection Kit (jack):       $enable_jack"
-echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
 echo "  Simple DirectMedia Layer (sdlout):      $enable_sdlout"
 echo "  FileWriter:                             $enable_filewriter"
 echo "    -> FileWriter MP3 output part:        $have_lame"
@@ -1222,7 +1185,6 @@ echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  AudioScrobbler Client:                  $have_scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
-echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
 echo "  LyricWiki viewer:                       $enable_lyricwiki"
 echo
 echo "  Effect"
