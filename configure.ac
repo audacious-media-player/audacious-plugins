@@ -164,26 +164,6 @@ else
     have_pulse=no
 fi
 
-dnl *** RoarAudio
-
-AC_ARG_ENABLE(roar,
-    [  --disable-roar          disable RoarAudio output plugin (default=enabled)],
-    [enable_roar=$enableval],
-    [enable_roar="yes"]
-)
-
-if test "x$enable_roar" = "xyes"; then
-    PKG_CHECK_MODULES(LIBROAR, [libroar],
-         [have_roar=yes
-          OUTPUT_PLUGINS="$OUTPUT_PLUGINS roaraudio"
-          TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS roaraudio-vio"],
-         [have_roar=no]
-    )
-else
-    AC_MSG_RESULT([*** roaraudio output plugin disabled per user request ***])
-    have_roar=no
-fi
-
 dnl *** CoreAudio
 
 AC_ARG_ENABLE(coreaudio,
@@ -1193,7 +1173,6 @@ echo "  --------------"
 echo "  Open Sound System (oss4):               $enable_oss4"
 echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  PulseAudio (pulse):                     $have_pulse"
-echo "  RoarAudio (roaraudio):                  $have_roar"
 echo "  Jack Audio Connection Kit (jack):       $enable_jack"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
 echo "  Simple DirectMedia Layer (sdlout):      $enable_sdlout"

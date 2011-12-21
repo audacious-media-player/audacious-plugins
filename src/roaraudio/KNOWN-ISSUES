@@ -1,2 +1,0 @@
-- volume is not retained across restarts:
-  we could save our preferred volume as a preference.
