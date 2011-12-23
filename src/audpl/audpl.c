@@ -79,9 +79,16 @@ static bool_t read_key (ReadState * state, char * * keyp, char * * valp)
 
 static bool_t write_key_raw (VFSFile * file, const char * key, const char * val)
 {
-    char buf[strlen (key) + strlen (val) + 3];
-    int len = snprintf (buf, sizeof buf, "%s=%s\n", key, val);
-    return (vfs_fwrite (buf, 1, len, file) == len);
+    int keylen = strlen (key);
+    int vallen = strlen (val);
+    char buf[keylen + vallen + 2];
+
+    memcpy (buf, key, keylen);
+    buf[keylen] = '=';
+    memcpy (buf + keylen + 1, val, vallen);
+    buf[keylen + vallen + 1] = '\n';
+
+    return (vfs_fwrite (buf, 1, keylen + vallen + 2, file) == keylen + vallen + 2);
 }
 
 static bool_t write_key (VFSFile * file, const char * key, const char * val)
