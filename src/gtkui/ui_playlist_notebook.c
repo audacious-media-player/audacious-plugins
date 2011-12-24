@@ -250,7 +250,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
     gtk_widget_show_all(ebox);
     gtk_widget_hide(entry);
 
-    gtk_box_pack_start ((GtkBox *) hbox, make_close_button (playlist), FALSE, FALSE, 0);
+    gtk_box_pack_end ((GtkBox *) hbox, make_close_button (playlist), FALSE, FALSE, 0);
 
     g_object_set_data(G_OBJECT(ebox), "label", label);
     g_object_set_data(G_OBJECT(ebox), "entry", entry);
