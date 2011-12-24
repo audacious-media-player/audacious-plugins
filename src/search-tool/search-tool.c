@@ -61,6 +61,12 @@ static gint search_source;
 
 static GtkWidget * help_label, * wait_label, * scrolled, * results_list;
 
+/* str_unref() may be a macro */
+static void str_unref_cb (void * str)
+{
+    str_unref (str);
+}
+
 static Item * item_new (gint field, gchar * name)
 {
     Item * item = g_slice_new (Item);
@@ -175,7 +181,7 @@ static void create_dicts (gint list)
 {
     destroy_dicts ();
     for (gint f = 0; f < FIELDS; f ++)
-        dicts[f] = g_hash_table_new_full (g_str_hash, g_str_equal, str_unref,
+        dicts[f] = g_hash_table_new_full (g_str_hash, g_str_equal, str_unref_cb,
          (GDestroyNotify) item_free);
 
     gint entries = aud_playlist_entry_count (list);
@@ -282,7 +288,7 @@ static void begin_add (const gchar * path)
     gchar * prefix = g_str_has_suffix (uri, "/") ? g_strdup (uri) : g_strconcat (uri, "/", NULL);
 
     destroy_added_table ();
-    added_table = g_hash_table_new_full (g_str_hash, g_str_equal, str_unref, NULL);
+    added_table = g_hash_table_new_full (g_str_hash, g_str_equal, str_unref_cb, NULL);
 
     gint entries = aud_playlist_entry_count (list);
 
