@@ -262,20 +262,27 @@ static gboolean search_cb (GtkTreeModel * model, gint column, const gchar * key,
     if (! remain)
         remain ++; /* force non-match if there are no non-blank keys */
 
-    for (gint i = 0; i < G_N_ELEMENTS (s) && remain; i ++)
+    for (gint i = 0; i < G_N_ELEMENTS (s); i ++)
     {
         if (! s[i])
             continue;
-        temp = g_utf8_strdown (s[i], -1);
-        for (gint j = 0; keys[j] && remain; j ++)
+
+        if (remain)
         {
-            if (keys[j][0] && strstr (temp, keys[j]))
+            temp = g_utf8_strdown (s[i], -1);
+
+            for (gint j = 0; keys[j] && remain; j ++)
             {
-                keys[j][0] = 0; /* don't look for this one again */
-                remain --;
+                if (keys[j][0] && strstr (temp, keys[j]))
+                {
+                    keys[j][0] = 0; /* don't look for this one again */
+                    remain --;
+                }
             }
+
+            g_free (temp);
         }
-        g_free (temp);
+
         str_unref (s[i]);
     }
 
