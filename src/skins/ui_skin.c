@@ -36,6 +36,7 @@
 #include "skins_cfg.h"
 #include "surface.h"
 #include "ui_equalizer.h"
+#include "ui_hints.h"
 #include "ui_main.h"
 #include "ui_playlist.h"
 #include "ui_skin.h"
@@ -409,6 +410,9 @@ init_skins(const gchar * path)
         mainwin_create();
         equalizerwin_create();
         playlistwin_create();
+
+        hint_set_sticky (config.sticky);
+        hint_set_always (config.always_on_top);
     }
 
     if (! path || ! active_skin_load (path))

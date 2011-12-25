@@ -1453,20 +1453,24 @@ static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
 {
     if (event->changed_mask & GDK_WINDOW_STATE_STICKY)
     {
-        gboolean sticky = (event->new_window_state & GDK_WINDOW_STATE_STICKY);
+        config.sticky = (event->new_window_state & GDK_WINDOW_STATE_STICKY) ?
+         TRUE : FALSE;
+
         GtkToggleAction * action = (GtkToggleAction *)
          gtk_action_group_get_action (toggleaction_group_others,
          "view put on all workspaces");
-        gtk_toggle_action_set_active (action, sticky);
+        gtk_toggle_action_set_active (action, config.sticky);
     }
 
     if (event->changed_mask & GDK_WINDOW_STATE_ABOVE)
     {
-        gboolean above = (event->new_window_state & GDK_WINDOW_STATE_ABOVE);
+        config.always_on_top = (event->new_window_state &
+         GDK_WINDOW_STATE_ABOVE) ? TRUE : FALSE;
+
         GtkToggleAction * action = (GtkToggleAction *)
          gtk_action_group_get_action (toggleaction_group_others,
          "view always on top");
-        gtk_toggle_action_set_active (action, above);
+        gtk_toggle_action_set_active (action, config.always_on_top);
     }
 
     return TRUE;
@@ -1679,15 +1683,25 @@ void action_stop_after_current_song (GtkToggleAction * action)
 
 void action_view_always_on_top (GtkToggleAction * action)
 {
-    config.always_on_top = gtk_toggle_action_get_active (action);
-    ui_skinned_menurow_update (mainwin_menurow);
-    hint_set_always (config.always_on_top);
+    gboolean on_top = gtk_toggle_action_get_active (action);
+
+    if (config.always_on_top != on_top)
+    {
+        config.always_on_top = on_top;
+        ui_skinned_menurow_update (mainwin_menurow);
+        hint_set_always (config.always_on_top);
+    }
 }
 
 void action_view_on_all_workspaces (GtkToggleAction * action)
 {
-    config.sticky = gtk_toggle_action_get_active( action );
-    hint_set_sticky(config.sticky);
+    gboolean sticky = gtk_toggle_action_get_active (action);
+
+    if (config.sticky != sticky)
+    {
+        config.sticky = sticky;
+        hint_set_sticky (sticky);
+    }
 }
 
 void action_roll_up_player (GtkToggleAction * action)
