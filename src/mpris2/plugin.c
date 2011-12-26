@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 #include <gtk/gtk.h>
 
@@ -10,6 +9,7 @@
 #include "object-core.h"
 
 static GDBusConnection * bus;
+static GObject * object_core;
 
 static bool_t quit_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation * call,
  void * unused)
@@ -42,7 +42,7 @@ bool_t mpris2_init (void)
     g_bus_own_name_on_connection (bus, "org.mpris.MediaPlayer2.audacious", 0,
      NULL, NULL, NULL, NULL);
 
-    MprisMediaPlayer2 * object_core = mpris_media_player2_skeleton_new ();
+    object_core = (GObject *) mpris_media_player2_skeleton_new ();
 
     g_object_set (object_core,
      "can-quit", TRUE,
@@ -70,6 +70,7 @@ bool_t mpris2_init (void)
 void mpris2_cleanup (void)
 {
     g_dbus_connection_close_sync (bus, NULL, NULL);
+    g_object_unref (object_core);
 }
 
 AUD_GENERAL_PLUGIN
