@@ -1,6 +1,6 @@
 PLUGIN = mpris2${PLUGIN_SUFFIX}
 
-SRCS = object-core.c plugin.c
+SRCS = object-core.c object-player.c plugin.c
 
 include ../../buildsys.mk
 include ../../extra.mk

@@ -1,2 +1,3 @@
 #!/bin/sh
 gdbus-codegen --interface-prefix org.mpris. --c-namespace Mpris --generate-c-code object-core mpris2.xml
+gdbus-codegen --interface-prefix org.mpris. --c-namespace Mpris --generate-c-code object-player mpris2-player.xml
