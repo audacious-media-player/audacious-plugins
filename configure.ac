@@ -36,9 +36,9 @@ fi
 dnl Check for Audacious
 dnl ===================
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.1],
-    [ADD_PC_REQUIRES([audacious >= 3.1])],
-    [AC_MSG_ERROR([Cannot find Audacious 3.1; have you installed Audacious yet?])]
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.2],
+    [ADD_PC_REQUIRES([audacious >= 3.2])],
+    [AC_MSG_ERROR([Cannot find Audacious 3.2; have you installed Audacious yet?])]
 )
 
 CPPFLAGS="$CPPFLAGS $AUDACIOUS_CFLAGS"
