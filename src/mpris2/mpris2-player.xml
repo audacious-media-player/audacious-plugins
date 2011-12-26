@@ -6,6 +6,7 @@
         <property name="CanPause" type="b" access="read"/>
         <property name="CanPlay" type="b" access="read"/>
         <property name="CanSeek" type="b" access="read"/>
+        <property name="Metadata" type="a{sv}" access="read"/>
         <property name="PlaybackStatus" type="s" access="read"/>
         <method name="Next"/>
         <method name="Pause"/>

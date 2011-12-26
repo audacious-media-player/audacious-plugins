@@ -324,6 +324,19 @@ static const _ExtendedGDBusPropertyInfo _mpris_media_player2_player_property_inf
   FALSE
 };
 
+static const _ExtendedGDBusPropertyInfo _mpris_media_player2_player_property_info_metadata =
+{
+  {
+    -1,
+    "Metadata",
+    "a{sv}",
+    G_DBUS_PROPERTY_INFO_FLAGS_READABLE,
+    NULL
+  },
+  "metadata",
+  FALSE
+};
+
 static const _ExtendedGDBusPropertyInfo _mpris_media_player2_player_property_info_playback_status =
 {
   {
@@ -345,6 +358,7 @@ static const _ExtendedGDBusPropertyInfo * const _mpris_media_player2_player_prop
   &_mpris_media_player2_player_property_info_can_pause,
   &_mpris_media_player2_player_property_info_can_play,
   &_mpris_media_player2_player_property_info_can_seek,
+  &_mpris_media_player2_player_property_info_metadata,
   &_mpris_media_player2_player_property_info_playback_status,
   NULL
 };
@@ -395,6 +409,7 @@ mpris_media_player2_player_override_properties (GObjectClass *klass, guint prope
   g_object_class_override_property (klass, property_id_begin++, "can-pause");
   g_object_class_override_property (klass, property_id_begin++, "can-play");
   g_object_class_override_property (klass, property_id_begin++, "can-seek");
+  g_object_class_override_property (klass, property_id_begin++, "metadata");
   g_object_class_override_property (klass, property_id_begin++, "playback-status");
   return property_id_begin - 1;
 }
@@ -422,6 +437,7 @@ mpris_media_player2_player_override_properties (GObjectClass *klass, guint prope
  * @get_can_pause: Getter for the #MprisMediaPlayer2Player:can-pause property.
  * @get_can_play: Getter for the #MprisMediaPlayer2Player:can-play property.
  * @get_can_seek: Getter for the #MprisMediaPlayer2Player:can-seek property.
+ * @get_metadata: Getter for the #MprisMediaPlayer2Player:metadata property.
  * @get_playback_status: Getter for the #MprisMediaPlayer2Player:playback-status property.
  *
  * Virtual table for the D-Bus interface <link linkend="gdbus-interface-org-mpris-MediaPlayer2-Player.top_of_page">org.mpris.MediaPlayer2.Player</link>.
@@ -618,6 +634,15 @@ mpris_media_player2_player_default_init (MprisMediaPlayer2PlayerIface *iface)
    */
   g_object_interface_install_property (iface,
     g_param_spec_boolean ("can-seek", "CanSeek", "CanSeek", FALSE, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  /**
+   * MprisMediaPlayer2Player:metadata:
+   *
+   * Represents the D-Bus property <link linkend="gdbus-property-org-mpris-MediaPlayer2-Player.Metadata">"Metadata"</link>.
+   *
+   * Since the D-Bus property for this #GObject property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
+   */
+  g_object_interface_install_property (iface,
+    g_param_spec_variant ("metadata", "Metadata", "Metadata", G_VARIANT_TYPE ("a{sv}"), NULL, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   /**
    * MprisMediaPlayer2Player:playback-status:
    *
@@ -816,6 +841,57 @@ void
 mpris_media_player2_player_set_can_seek (MprisMediaPlayer2Player *object, gboolean value)
 {
   g_object_set (G_OBJECT (object), "can-seek", value, NULL);
+}
+
+/**
+ * mpris_media_player2_player_get_metadata: (skip)
+ * @object: A #MprisMediaPlayer2Player.
+ *
+ * Gets the value of the <link linkend="gdbus-property-org-mpris-MediaPlayer2-Player.Metadata">"Metadata"</link> D-Bus property.
+ *
+ * Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+ *
+ * <warning>The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where @object was constructed. Use mpris_media_player2_player_dup_metadata() if on another thread.</warning>
+ *
+ * Returns: (transfer none): The property value or %NULL if the property is not set. Do not free the returned value, it belongs to @object.
+ */
+GVariant *
+mpris_media_player2_player_get_metadata (MprisMediaPlayer2Player *object)
+{
+  return MPRIS_MEDIA_PLAYER2_PLAYER_GET_IFACE (object)->get_metadata (object);
+}
+
+/**
+ * mpris_media_player2_player_dup_metadata: (skip)
+ * @object: A #MprisMediaPlayer2Player.
+ *
+ * Gets a copy of the <link linkend="gdbus-property-org-mpris-MediaPlayer2-Player.Metadata">"Metadata"</link> D-Bus property.
+ *
+ * Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+ *
+ * Returns: (transfer full): The property value or %NULL if the property is not set. The returned value should be freed with g_variant_unref().
+ */
+GVariant *
+mpris_media_player2_player_dup_metadata (MprisMediaPlayer2Player *object)
+{
+  GVariant *value;
+  g_object_get (G_OBJECT (object), "metadata", &value, NULL);
+  return value;
+}
+
+/**
+ * mpris_media_player2_player_set_metadata: (skip)
+ * @object: A #MprisMediaPlayer2Player.
+ * @value: The value to set.
+ *
+ * Sets the <link linkend="gdbus-property-org-mpris-MediaPlayer2-Player.Metadata">"Metadata"</link> D-Bus property to @value.
+ *
+ * Since this D-Bus property is not writable, it is only meaningful to use this function on the service-side.
+ */
+void
+mpris_media_player2_player_set_metadata (MprisMediaPlayer2Player *object, GVariant *value)
+{
+  g_object_set (G_OBJECT (object), "metadata", value, NULL);
 }
 
 /**
@@ -1570,7 +1646,7 @@ mpris_media_player2_player_proxy_get_property (GObject      *object,
 {
   const _ExtendedGDBusPropertyInfo *info;
   GVariant *variant;
-  g_assert (prop_id != 0 && prop_id - 1 < 7);
+  g_assert (prop_id != 0 && prop_id - 1 < 8);
   info = _mpris_media_player2_player_property_info_pointers[prop_id - 1];
   variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (object), info->parent_struct.name);
   if (info->use_gvariant)
@@ -1611,7 +1687,7 @@ mpris_media_player2_player_proxy_set_property (GObject      *object,
 {
   const _ExtendedGDBusPropertyInfo *info;
   GVariant *variant;
-  g_assert (prop_id != 0 && prop_id - 1 < 7);
+  g_assert (prop_id != 0 && prop_id - 1 < 8);
   info = _mpris_media_player2_player_property_info_pointers[prop_id - 1];
   variant = g_dbus_gvalue_to_gvariant (value, G_VARIANT_TYPE (info->parent_struct.signature));
   g_dbus_proxy_call (G_DBUS_PROXY (object),
@@ -1783,6 +1859,19 @@ mpris_media_player2_player_proxy_get_can_seek (MprisMediaPlayer2Player *object)
   return value;
 }
 
+static GVariant *
+mpris_media_player2_player_proxy_get_metadata (MprisMediaPlayer2Player *object)
+{
+  MprisMediaPlayer2PlayerProxy *proxy = MPRIS_MEDIA_PLAYER2_PLAYER_PROXY (object);
+  GVariant *variant;
+  GVariant *value = NULL;
+  variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "Metadata");
+  value = variant;
+  if (variant != NULL)
+    g_variant_unref (variant);
+  return value;
+}
+
 static const gchar *
 mpris_media_player2_player_proxy_get_playback_status (MprisMediaPlayer2Player *object)
 {
@@ -1835,6 +1924,7 @@ mpris_media_player2_player_proxy_iface_init (MprisMediaPlayer2PlayerIface *iface
   iface->get_can_pause = mpris_media_player2_player_proxy_get_can_pause;
   iface->get_can_play = mpris_media_player2_player_proxy_get_can_play;
   iface->get_can_seek = mpris_media_player2_player_proxy_get_can_seek;
+  iface->get_metadata = mpris_media_player2_player_proxy_get_metadata;
   iface->get_playback_status = mpris_media_player2_player_proxy_get_playback_status;
 }
 
@@ -2271,7 +2361,7 @@ mpris_media_player2_player_skeleton_get_property (GObject      *object,
   GParamSpec   *pspec)
 {
   MprisMediaPlayer2PlayerSkeleton *skeleton = MPRIS_MEDIA_PLAYER2_PLAYER_SKELETON (object);
-  g_assert (prop_id != 0 && prop_id - 1 < 7);
+  g_assert (prop_id != 0 && prop_id - 1 < 8);
   g_mutex_lock (skeleton->priv->lock);
   g_value_copy (&skeleton->priv->properties->values[prop_id - 1], value);
   g_mutex_unlock (skeleton->priv->lock);
@@ -2379,7 +2469,7 @@ mpris_media_player2_player_skeleton_set_property (GObject      *object,
   GParamSpec   *pspec)
 {
   MprisMediaPlayer2PlayerSkeleton *skeleton = MPRIS_MEDIA_PLAYER2_PLAYER_SKELETON (object);
-  g_assert (prop_id != 0 && prop_id - 1 < 7);
+  g_assert (prop_id != 0 && prop_id - 1 < 8);
   g_mutex_lock (skeleton->priv->lock);
   g_object_freeze_notify (object);
   if (!_g_value_equal (value, &skeleton->priv->properties->values[prop_id - 1]))
@@ -2401,7 +2491,7 @@ mpris_media_player2_player_skeleton_init (MprisMediaPlayer2PlayerSkeleton *skele
   skeleton->priv->context = g_main_context_get_thread_default ();
   if (skeleton->priv->context != NULL)
     g_main_context_ref (skeleton->priv->context);
-  skeleton->priv->properties = g_value_array_new (7);
+  skeleton->priv->properties = g_value_array_new (8);
   g_value_array_append (skeleton->priv->properties, NULL);
   g_value_init (&skeleton->priv->properties->values[0], G_TYPE_BOOLEAN);
   g_value_array_append (skeleton->priv->properties, NULL);
@@ -2415,7 +2505,9 @@ mpris_media_player2_player_skeleton_init (MprisMediaPlayer2PlayerSkeleton *skele
   g_value_array_append (skeleton->priv->properties, NULL);
   g_value_init (&skeleton->priv->properties->values[5], G_TYPE_BOOLEAN);
   g_value_array_append (skeleton->priv->properties, NULL);
-  g_value_init (&skeleton->priv->properties->values[6], G_TYPE_STRING);
+  g_value_init (&skeleton->priv->properties->values[6], G_TYPE_VARIANT);
+  g_value_array_append (skeleton->priv->properties, NULL);
+  g_value_init (&skeleton->priv->properties->values[7], G_TYPE_STRING);
 }
 
 static gboolean 
@@ -2484,13 +2576,24 @@ mpris_media_player2_player_skeleton_get_can_seek (MprisMediaPlayer2Player *objec
   return value;
 }
 
+static GVariant *
+mpris_media_player2_player_skeleton_get_metadata (MprisMediaPlayer2Player *object)
+{
+  MprisMediaPlayer2PlayerSkeleton *skeleton = MPRIS_MEDIA_PLAYER2_PLAYER_SKELETON (object);
+  GVariant *value;
+  g_mutex_lock (skeleton->priv->lock);
+  value = g_value_get_variant (&(skeleton->priv->properties->values[6]));
+  g_mutex_unlock (skeleton->priv->lock);
+  return value;
+}
+
 static const gchar *
 mpris_media_player2_player_skeleton_get_playback_status (MprisMediaPlayer2Player *object)
 {
   MprisMediaPlayer2PlayerSkeleton *skeleton = MPRIS_MEDIA_PLAYER2_PLAYER_SKELETON (object);
   const gchar *value;
   g_mutex_lock (skeleton->priv->lock);
-  value = g_value_get_string (&(skeleton->priv->properties->values[6]));
+  value = g_value_get_string (&(skeleton->priv->properties->values[7]));
   g_mutex_unlock (skeleton->priv->lock);
   return value;
 }
@@ -2528,6 +2631,7 @@ mpris_media_player2_player_skeleton_iface_init (MprisMediaPlayer2PlayerIface *if
   iface->get_can_pause = mpris_media_player2_player_skeleton_get_can_pause;
   iface->get_can_play = mpris_media_player2_player_skeleton_get_can_play;
   iface->get_can_seek = mpris_media_player2_player_skeleton_get_can_seek;
+  iface->get_metadata = mpris_media_player2_player_skeleton_get_metadata;
   iface->get_playback_status = mpris_media_player2_player_skeleton_get_playback_status;
 }
 

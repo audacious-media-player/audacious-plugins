@@ -4,6 +4,7 @@
 
 #include <audacious/drct.h>
 #include <audacious/misc.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/hook.h>
 
@@ -12,6 +13,8 @@
 
 static GDBusConnection * bus;
 static GObject * object_core, * object_player;
+static char * last_title, * last_artist, * last_album;
+static GVariantType * metadata_type;
 
 static bool_t quit_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation * call,
  void * unused)
@@ -27,6 +30,67 @@ static bool_t raise_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation *
     aud_interface_show (TRUE);
     mpris_media_player2_complete_raise (object, call);
     return TRUE;
+}
+
+static void update_metadata (void * data, GObject * object)
+{
+    char * title = NULL, * artist = NULL, * album = NULL;
+
+    if (aud_drct_get_playing ())
+    {
+        int playlist = aud_playlist_get_playing ();
+        int entry = aud_playlist_get_position (playlist);
+        aud_playlist_entry_describe (playlist, entry, & title, & artist, & album, TRUE);
+    }
+
+    if (title == last_title && artist == last_artist && album == last_album)
+    {
+        str_unref (title);
+        str_unref (artist);
+        str_unref (album);
+        return;
+    }
+
+    str_unref (last_title);
+    str_unref (last_artist);
+    str_unref (last_album);
+    last_title = title;
+    last_artist = artist;
+    last_album = album;
+
+    GVariant * elems[3];
+    int nelems = 0;
+
+    if (title)
+    {
+        GVariant * key = g_variant_new_string ("xesam:title");
+        GVariant * str = g_variant_new_string (title);
+        GVariant * var = g_variant_new_variant (str);
+        elems[nelems ++] = g_variant_new_dict_entry (key, var);
+    }
+
+    if (artist)
+    {
+        GVariant * key = g_variant_new_string ("xesam:artist");
+        GVariant * str = g_variant_new_string (artist);
+        GVariant * array = g_variant_new_array (G_VARIANT_TYPE_STRING, & str, 1);
+        GVariant * var = g_variant_new_variant (array);
+        elems[nelems ++] = g_variant_new_dict_entry (key, var);
+    }
+
+    if (album)
+    {
+        GVariant * key = g_variant_new_string ("xesam:album");
+        GVariant * str = g_variant_new_string (album);
+        GVariant * var = g_variant_new_variant (str);
+        elems[nelems ++] = g_variant_new_dict_entry (key, var);
+    }
+
+    if (! metadata_type)
+        metadata_type = g_variant_type_new ("{sv}");
+
+    GVariant * array = g_variant_new_array (metadata_type, elems, nelems);
+    g_object_set (object, "metadata", array, NULL);
 }
 
 static void update_playback_status (void * data, GObject * object)
@@ -106,9 +170,24 @@ void mpris2_cleanup (void)
     hook_dissociate ("playback stop", (HookFunction) update_playback_status);
     hook_dissociate ("playback unpause", (HookFunction) update_playback_status);
 
+    hook_dissociate ("playback begin", (HookFunction) update_metadata);
+    hook_dissociate ("playback stop", (HookFunction) update_metadata);
+    hook_dissociate ("playlist update", (HookFunction) update_metadata);
+
     g_dbus_connection_close_sync (bus, NULL, NULL);
     g_object_unref (object_core);
     g_object_unref (object_player);
+
+    str_unref (last_title);
+    str_unref (last_artist);
+    str_unref (last_album);
+    last_title = last_artist = last_album = NULL;
+
+    if (metadata_type)
+    {
+        g_variant_type_free (metadata_type);
+        metadata_type = NULL;
+    }
 }
 
 bool_t mpris2_init (void)
@@ -156,6 +235,10 @@ bool_t mpris2_init (void)
     hook_associate ("playback pause", (HookFunction) update_playback_status, object_player);
     hook_associate ("playback stop", (HookFunction) update_playback_status, object_player);
     hook_associate ("playback unpause", (HookFunction) update_playback_status, object_player);
+
+    hook_associate ("playback begin", (HookFunction) update_metadata, object_player);
+    hook_associate ("playback stop", (HookFunction) update_metadata, object_player);
+    hook_associate ("playlist update", (HookFunction) update_metadata, object_player);
 
     g_signal_connect (object_player, "handle-next", (GCallback) next_cb, NULL);
     g_signal_connect (object_player, "handle-pause", (GCallback) pause_cb, NULL);

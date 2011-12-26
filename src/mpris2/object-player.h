@@ -65,6 +65,8 @@ struct _MprisMediaPlayer2PlayerIface
 
   gboolean  (*get_can_seek) (MprisMediaPlayer2Player *object);
 
+  GVariant * (*get_metadata) (MprisMediaPlayer2Player *object);
+
   const gchar * (*get_playback_status) (MprisMediaPlayer2Player *object);
 
 };
@@ -219,6 +221,10 @@ void mpris_media_player2_player_set_can_play (MprisMediaPlayer2Player *object, g
 
 gboolean mpris_media_player2_player_get_can_seek (MprisMediaPlayer2Player *object);
 void mpris_media_player2_player_set_can_seek (MprisMediaPlayer2Player *object, gboolean value);
+
+GVariant *mpris_media_player2_player_get_metadata (MprisMediaPlayer2Player *object);
+GVariant *mpris_media_player2_player_dup_metadata (MprisMediaPlayer2Player *object);
+void mpris_media_player2_player_set_metadata (MprisMediaPlayer2Player *object, GVariant *value);
 
 const gchar *mpris_media_player2_player_get_playback_status (MprisMediaPlayer2Player *object);
 gchar *mpris_media_player2_player_dup_playback_status (MprisMediaPlayer2Player *object);
