@@ -280,7 +280,8 @@ bool_t mpris2_init (void)
 
 AUD_GENERAL_PLUGIN
 (
-    .name = "MPRIS2 Server",
+    .name = "MPRIS 2 Server",
+    .enabled_by_default = TRUE,
     .init = mpris2_init,
     .cleanup = mpris2_cleanup
 )
