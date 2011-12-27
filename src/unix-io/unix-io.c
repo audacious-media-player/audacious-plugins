@@ -79,14 +79,14 @@ static void * unix_fopen (const gchar * uri, const gchar * mode)
     if (handle < 0)
     {
         unix_error ("Cannot open %s: %s.", filename, strerror (errno));
-        goto DONE;
+        g_free (filename);
+        return NULL;
     }
 
 #ifdef HAVE_FCNTL
     fcntl (handle, F_SETFD, FD_CLOEXEC);
 #endif
 
-DONE:
     g_free (filename);
     return GINT_TO_POINTER (handle);
 }
