@@ -30,7 +30,8 @@
 
 static GDBusConnection * bus;
 static GObject * object_core, * object_player;
-static char * last_title, * last_artist, * last_album;
+static char * last_title, * last_artist, * last_album, * last_file;
+static const char * image_file;
 static GVariantType * metadata_type;
 
 static bool_t quit_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation * call,
@@ -51,31 +52,43 @@ static bool_t raise_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation *
 
 static void update_metadata (void * data, GObject * object)
 {
-    char * title = NULL, * artist = NULL, * album = NULL;
+    char * title = NULL, * artist = NULL, * album = NULL, * file = NULL;
 
     if (aud_drct_get_playing ())
     {
         int playlist = aud_playlist_get_playing ();
         int entry = aud_playlist_get_position (playlist);
         aud_playlist_entry_describe (playlist, entry, & title, & artist, & album, TRUE);
+        file = aud_playlist_entry_get_filename (playlist, entry);
     }
 
-    if (title == last_title && artist == last_artist && album == last_album)
+    if (title == last_title && artist == last_artist && album == last_album &&
+     file == last_file)
     {
         str_unref (title);
         str_unref (artist);
         str_unref (album);
+        str_unref (file);
         return;
+    }
+
+    if (file != last_file)
+    {
+        if (image_file)
+            aud_art_unref (last_file);
+        image_file = file ? aud_art_get_file (file) : NULL;
     }
 
     str_unref (last_title);
     str_unref (last_artist);
     str_unref (last_album);
+    str_unref (last_file);
     last_title = title;
     last_artist = artist;
     last_album = album;
+    last_file = file;
 
-    GVariant * elems[3];
+    GVariant * elems[4];
     int nelems = 0;
 
     if (title)
@@ -99,6 +112,14 @@ static void update_metadata (void * data, GObject * object)
     {
         GVariant * key = g_variant_new_string ("xesam:album");
         GVariant * str = g_variant_new_string (album);
+        GVariant * var = g_variant_new_variant (str);
+        elems[nelems ++] = g_variant_new_dict_entry (key, var);
+    }
+
+    if (image_file)
+    {
+        GVariant * key = g_variant_new_string ("mpris:artUrl");
+        GVariant * str = g_variant_new_string (image_file);
         GVariant * var = g_variant_new_variant (str);
         elems[nelems ++] = g_variant_new_dict_entry (key, var);
     }
@@ -195,10 +216,17 @@ void mpris2_cleanup (void)
     g_object_unref (object_core);
     g_object_unref (object_player);
 
+    if (image_file)
+    {
+        aud_art_unref (last_file);
+        image_file = NULL;
+    }
+
     str_unref (last_title);
     str_unref (last_artist);
     str_unref (last_album);
-    last_title = last_artist = last_album = NULL;
+    str_unref (last_file);
+    last_title = last_artist = last_album = last_file = NULL;
 
     if (metadata_type)
     {
