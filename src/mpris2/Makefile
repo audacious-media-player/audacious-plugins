@@ -7,6 +7,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
-CPPFLAGS += -I../.. ${GLIB_CFLAGS} `pkg-config --cflags gio-unix-2.0`
+CPPFLAGS += -I../.. ${GLIB_CFLAGS} ${GIO_UNIX_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
-LIBS += ${GLIB_LIBS} `pkg-config --libs gio-unix-2.0`
+LIBS += ${GLIB_LIBS} ${GIO_UNIX_LIBS}

@@ -362,6 +362,23 @@ if test "x$have_notify" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS notify"
 fi
 
+dnl MPRIS 2 (requires GDBus)
+dnl ========================
+
+AC_ARG_ENABLE(mpris2,
+ AS_HELP_STRING([--disable-mpris2], [disable MPRIS 2 support (default=enabled)]),
+ [enable_mpris2=$enableval], [enable_mpris2=yes])
+
+if test $enable_mpris2 = yes ; then
+    PKG_CHECK_MODULES([GIO_UNIX], [gio-unix-2.0 >= 2.26],
+     [enable_mpris2=yes], [enable_mpris2=no])
+fi
+
+if test $enable_mpris2 = yes ; then
+	GENERAL_PLUGINS="$GENERAL_PLUGINS mpris2"
+	AC_SUBST(GIO_UNIX_CFLAGS)
+	AC_SUBST(GIO_UNIX_LIBS)
+fi
 
 dnl *** AdPlug requirement (libbinio)
 
@@ -1195,6 +1212,7 @@ echo "  Dynamic Range Compressor:               yes"
 echo "  Echo/Surround:                          yes"
 echo "  Extra Stereo:                           yes"
 echo "  LADSPA Host:                            yes"
+echo "  MPRIS 2 Server:                         $enable_mpris2"
 echo "  SndStretch:                             yes"
 echo "  Voice Removal:                          yes"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
