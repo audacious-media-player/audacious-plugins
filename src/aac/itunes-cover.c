@@ -18,7 +18,7 @@ static const gchar * const hier[] = {"moov", "udta", "meta", "ilst", "covr",
 static const gint skip[] = {0, 0, 4, 0, 0, 8};
 
 gboolean read_itunes_cover (const gchar * filename, VFSFile * file, void * *
- data, gint * size)
+ data, gint64 * size)
 {
     guchar b[8];
     gint bsize;

@@ -991,7 +991,7 @@ static gboolean mp4_play (InputPlayback * playback, const gchar * filename,
 }
 
 gboolean read_itunes_cover (const gchar * filename, VFSFile * file, void * *
- data, gint * size);
+ data, gint64 * size);
 
 AUD_INPUT_PLUGIN
 (

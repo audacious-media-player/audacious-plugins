@@ -516,7 +516,7 @@ static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
 }
 
 static gboolean get_song_image (const gchar * filename, VFSFile * file,
- void * * data, gint * size)
+ void * * data, gint64 * size)
 {
     OggVorbis_File vfile;
 

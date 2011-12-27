@@ -193,7 +193,7 @@ ERR:
     return FALSE;
 }
 
-gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint *length)
+gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint64 *length)
 {
     AUDDBG("Probe for song image.\n");
 
@@ -227,7 +227,7 @@ gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint *l
             AUDDBG("FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER found.");
 
             *data = g_memdup(metadata->data.picture.data, metadata->data.picture.data_length);
-            *length = (guint32) metadata->data.picture.data_length;
+            *length = metadata->data.picture.data_length;
             has_image = TRUE;
         }
     }

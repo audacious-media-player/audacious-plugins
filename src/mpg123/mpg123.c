@@ -540,7 +540,7 @@ static gboolean mpg123_write_tag (const Tuple * tuple, VFSFile * handle)
 }
 
 static gboolean mpg123_get_image (const gchar * filename, VFSFile * handle,
- void * * data, gint * length)
+ void * * data, gint64 * length)
 {
 	if (! handle || vfs_is_streaming (handle))
 		return FALSE;
