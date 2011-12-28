@@ -78,7 +78,7 @@ static GtkWidget *equalizerwin_presets;
 static GtkWidget *equalizerwin_preamp,*equalizerwin_bands[10];
 static GtkWidget *equalizerwin_volume, *equalizerwin_balance;
 
-static GList *equalizer_presets = NULL, *equalizer_auto_presets = NULL;
+static Index * equalizer_presets = NULL, * equalizer_auto_presets = NULL;
 
 static void
 equalizer_preset_free(EqualizerPreset * preset)
@@ -447,78 +447,64 @@ void equalizerwin_show (gboolean show)
     }
 }
 
-static EqualizerPreset *
-equalizerwin_find_preset(GList * list, const gchar * name)
+static int equalizerwin_find_preset (Index * list, const char * name)
 {
-    GList *node = list;
-    EqualizerPreset *preset;
-
-    while (node) {
-        preset = node->data;
+    for (int p = 0; p < index_count (list); p ++)
+    {
+        EqualizerPreset * preset = index_get (list, p);
         if (!strcasecmp(preset->name, name))
-            return preset;
-        node = g_list_next(node);
+            return p;
     }
-    return NULL;
+
+    return -1;
 }
 
-static gboolean
-equalizerwin_load_preset(GList * list, const gchar * name)
+static bool_t equalizerwin_load_preset (Index * list, const char * name)
 {
-    EqualizerPreset *preset;
-    gint i;
+    int p = equalizerwin_find_preset (list, name);
+    if (p < 0)
+        return FALSE;
 
-    if ((preset = equalizerwin_find_preset(list, name)) != NULL) {
-        equalizerwin_set_preamp(preset->preamp);
-        for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
-            equalizerwin_set_band(i, preset->bands[i]);
+    EqualizerPreset * preset = index_get (list, p);
+    equalizerwin_set_preamp (preset->preamp);
 
-        return TRUE;
-    }
-    return FALSE;
+    for (int i = 0; i < AUD_EQUALIZER_NBANDS; i ++)
+        equalizerwin_set_band (i, preset->bands[i]);
+
+    return TRUE;
 }
 
-static GList *
-equalizerwin_save_preset(GList * list, const gchar * name,
-                         const gchar * filename)
+static void equalizerwin_save_preset (Index * list, const char * name,
+ const char * filename)
 {
-    gint i;
-    EqualizerPreset *preset;
+    int p = equalizerwin_find_preset (list, name);
+    EqualizerPreset * preset = (p >= 0) ? index_get (list, p) : NULL;
 
-    if (!(preset = equalizerwin_find_preset(list, name))) {
+    if (! preset)
+    {
         preset = g_new0(EqualizerPreset, 1);
         preset->name = g_strdup(name);
-        list = g_list_append(list, preset);
+        index_append (list, preset);
     }
 
     preset->preamp = equalizerwin_get_preamp();
-    for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
+    for (int i = 0; i < AUD_EQUALIZER_NBANDS; i ++)
         preset->bands[i] = equalizerwin_get_band(i);
 
     aud_equalizer_write_preset_file(list, filename);
-
-    return list;
 }
 
-static GList *
-equalizerwin_delete_preset(GList * list, gchar * name, gchar * filename)
+static void equalizerwin_delete_preset (Index * list, gchar * name, gchar * filename)
 {
-    EqualizerPreset *preset;
-    GList *node;
+    int p = equalizerwin_find_preset (list, name);
+    if (p < 0)
+        return;
 
-    if (!(preset = equalizerwin_find_preset(list, name)))
-        return list;
-
-    if (!(node = g_list_find(list, preset)))
-        return list;
-
-    list = g_list_remove_link(list, node);
+    EqualizerPreset * preset = index_get (list, p);
     equalizer_preset_free(preset);
-    g_list_free_1(node);
+    index_delete (list, p, 1);
 
     aud_equalizer_write_preset_file(list, filename);
-
-    return list;
 }
 
 static void
@@ -557,40 +543,43 @@ equalizerwin_delete_selected_presets(GtkTreeView *view, gchar *filename)
         gtk_tree_model_get(model, &iter, 0, &text, -1);
 
         if (!strcmp(filename, "eq.preset"))
-            equalizer_presets = equalizerwin_delete_preset(equalizer_presets, text, filename);
+            equalizerwin_delete_preset (equalizer_presets, text, filename);
         else if (!strcmp(filename, "eq.auto_preset"))
-            equalizer_auto_presets = equalizerwin_delete_preset(equalizer_auto_presets, text, filename);
+            equalizerwin_delete_preset (equalizer_auto_presets, text, filename);
 
         gtk_list_store_remove(GTK_LIST_STORE(model), &iter);
     }
 }
 
-static void
-free_cb (gpointer data, gpointer user_data)
+static void free_presets (Index * presets)
 {
-    equalizer_preset_free((EqualizerPreset*)data);
+    for (int p = 0; p < index_count (presets); p ++)
+        equalizer_preset_free (index_get (presets, p));
+
+    index_free (presets);
 }
 
 static void
 equalizerwin_read_winamp_eqf(VFSFile * file)
 {
-    GList *presets;
-    gint i;
-
+    Index * presets;
     if ((presets = aud_import_winamp_eqf(file)) == NULL)
         return;
 
+    if (! index_count (presets))
+        goto DONE;
+
     /* just get the first preset --asphyx */
-    EqualizerPreset *preset = (EqualizerPreset*)presets->data;
+    EqualizerPreset * preset = index_get (presets, 0);
     equalizerwin_set_preamp(preset->preamp);
 
-    for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
+    for (int i = 0; i < AUD_EQUALIZER_NBANDS; i ++)
         equalizerwin_set_band(i, preset->bands[i]);
 
-    g_list_foreach(presets, free_cb, NULL);
-    g_list_free(presets);
-
     equalizerwin_eq_changed();
+
+DONE:
+    free_presets (presets);
 }
 
 static gboolean equalizerwin_read_aud_preset (const gchar * file)
@@ -611,9 +600,10 @@ equalizerwin_save_ok(GtkWidget * widget, gpointer data)
     const gchar *text;
 
     text = gtk_entry_get_text(GTK_ENTRY(equalizerwin_save_entry));
-    if (strlen(text) != 0)
-        equalizer_presets =
-            equalizerwin_save_preset(equalizer_presets, text, "eq.preset");
+
+    if (text[0])
+        equalizerwin_save_preset (equalizer_presets, text, "eq.preset");
+
     gtk_widget_destroy(equalizerwin_save_window);
 }
 
@@ -682,10 +672,10 @@ equalizerwin_save_auto_ok(GtkWidget *widget, gpointer data)
     const gchar *text;
 
     text = gtk_entry_get_text(GTK_ENTRY(equalizerwin_save_auto_entry));
-    if (strlen(text) != 0)
-        equalizer_auto_presets =
-            equalizerwin_save_preset(equalizer_auto_presets, text,
-                                     "eq.auto_preset");
+
+    if (text[0])
+        equalizerwin_save_preset (equalizer_auto_presets, text, "eq.auto_preset");
+
     gtk_widget_destroy(equalizerwin_save_auto_window);
 }
 
@@ -783,16 +773,20 @@ load_winamp_file(const gchar * filename)
 static void
 import_winamp_file(const gchar * filename)
 {
-    VFSFile *file;
-    GList *list;
-
-    if (!(file = open_vfs_file(filename, "rb")) ||
-        !(list = aud_import_winamp_eqf(file)))
+    VFSFile * file = open_vfs_file (filename, "r");
+    if (! file)
         return;
 
-    equalizer_presets = g_list_concat(equalizer_presets, list);
+    Index * list = aud_import_winamp_eqf (file);
+    if (! list)
+        goto CLOSE;
+
+    index_merge_append (equalizer_presets, list);
+    index_free (list);
+
     aud_equalizer_write_preset_file(equalizer_presets, "eq.preset");
 
+CLOSE:
     vfs_fclose(file);
 }
 
@@ -832,8 +826,7 @@ ERR:
     return FALSE;
 }
 
-static GtkWidget *
-equalizerwin_create_list_window(GList *preset_list,
+static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
                                 const gchar *title,
                                 GtkWidget **window,
                                 GtkSelectionMode sel_mode,
@@ -844,7 +837,6 @@ equalizerwin_create_list_window(GList *preset_list,
 {
     GtkWidget *vbox, *scrolled_window, *bbox, *view;
     GtkWidget *button_cancel, *button_action;
-    GList *node;
 
     GtkListStore *store;
     GtkTreeIter iter;
@@ -876,12 +868,11 @@ equalizerwin_create_list_window(GList *preset_list,
 
     /* fill the store with the names of all available presets */
     store = gtk_list_store_new(1, G_TYPE_STRING);
-    for (node = preset_list; node; node = g_list_next(node))
+    for (int p = 0; p < index_count (preset_list); p ++)
     {
+        EqualizerPreset * preset = index_get (preset_list, p);
         gtk_list_store_append(store, &iter);
-        gtk_list_store_set(store, &iter,
-                           0, ((EqualizerPreset*)node->data)->name,
-                           -1);
+        gtk_list_store_set (store, & iter, 0, preset->name, -1);
     }
     model = GTK_TREE_MODEL(store);
 
@@ -1108,11 +1099,9 @@ action_equ_save_auto_preset(void)
     }
 }
 
-void
-action_equ_save_default_preset(void)
+void action_equ_save_default_preset (void)
 {
-    equalizer_presets =
-        equalizerwin_save_preset(equalizer_presets, _("Default"), "eq.preset");
+    equalizerwin_save_preset (equalizer_presets, _("Default"), "eq.preset");
 }
 
 void
@@ -1263,6 +1252,9 @@ static void position_cb (void * data, void * user_data)
 
 void eq_init_hooks (void)
 {
+    equalizer_presets = index_new ();
+    equalizer_auto_presets = index_new ();
+
     gint playlist = aud_playlist_get_playing ();
 
     /* Load preset for the first song. FIXME: Doing this at interface load is
@@ -1277,6 +1269,11 @@ void eq_init_hooks (void)
 void eq_end_hooks (void)
 {
     hook_dissociate ("playlist position", position_cb);
+
+    free_presets (equalizer_presets);
+    free_presets (equalizer_auto_presets);
+    equalizer_presets = NULL;
+    equalizer_auto_presets = NULL;
 }
 
 void action_show_equalizer (GtkToggleAction * action)
