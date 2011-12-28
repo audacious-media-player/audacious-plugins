@@ -39,7 +39,7 @@ static void title_change (void)
     {
         gchar * title = aud_drct_get_title ();
         mainwin_set_song_title (title);
-        g_free (title);
+        str_unref (title);
     }
     else
         mainwin_set_song_title ("Buffering ...");

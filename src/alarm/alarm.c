@@ -719,17 +719,12 @@ static gboolean alarm_timeout (void * unused)
        }
      }
 
-     AUDDBG("strcmp playlist, playlist is [%s]\n", playlist);
-     if(strcmp(playlist, ""))
+     bool_t started = FALSE;
+
+     if (playlist[0])
      {
-       AUDDBG("playlist is not blank, aparently\n");
-       GList list;
-
-       list.prev = list.next = NULL;
-       list.data = playlist;
-
-       aud_drct_pl_clear();
-       aud_drct_pl_add_list (& list, -1);
+       aud_drct_pl_open (playlist);
+       started = TRUE;
      }
 
      if(fading)
@@ -741,7 +736,9 @@ static gboolean alarm_timeout (void * unused)
 
        /* start playing */
        play_start = time(NULL);
-       aud_drct_play();
+
+       if (! started)
+         aud_drct_play ();
 
        /* fade volume */
        fade_vols.start = quietvol;

@@ -73,8 +73,6 @@
 				<menuitem action="playback previous" />
 				<menuitem action="playback next" />
 				<separator />
-				<menuitem action="jump to playlist start" />
-				<separator />
 				<menuitem action="ab set" />
 				<menuitem action="ab clear" />
 				<separator />

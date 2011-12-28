@@ -93,7 +93,7 @@ void playlist_delete_selected (void)
     gint focus = playlist_get_focus (list);
     focus -= playlist_count_selected_in_range (list, 0, focus);
 
-    aud_drct_pl_delete_selected ();
+    aud_drct_pl_delete_selected (list);
 
     if (aud_playlist_selected_count (list)) /* song changed? */
         return;

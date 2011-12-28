@@ -127,27 +127,28 @@ static void execute_command(char *cmd)
  *   r - track title
  */
 /* do_command(): do @cmd after replacing the format codes
-   @cmd: command to run
-   @current_file: file name of current song
-   @pos: playlist_pos */
-static void do_command(char *cmd, const char *current_file, int pos)
+   @cmd: command to run */
+static void do_command (char * cmd)
 {
-    int length;
-    char *str, *shstring = NULL, *temp, numbuf[32];
+    int playlist = aud_playlist_get_playing ();
+    int pos = aud_playlist_get_position (playlist);
+
+    char *shstring = NULL, *temp, numbuf[32];
     gboolean playing;
     Formatter *formatter;
 
     if (cmd && strlen(cmd) > 0)
     {
         formatter = formatter_new();
-        str = aud_drct_pl_get_title(pos);
-        if (str)
+
+        char * ctitle = aud_playlist_entry_get_title (playlist, pos, FALSE);
+        if (ctitle)
         {
-            temp = escape_shell_chars(str);
+            temp = escape_shell_chars (ctitle);
             formatter_associate(formatter, 's', temp);
             formatter_associate(formatter, 'n', temp);
-            g_free(str);
             g_free(temp);
+            str_unref (ctitle);
         }
         else
         {
@@ -155,18 +156,22 @@ static void do_command(char *cmd, const char *current_file, int pos)
             formatter_associate(formatter, 'n', "");
         }
 
-        if (current_file)
+        char * filename = aud_playlist_entry_get_filename (playlist, pos);
+        if (filename)
         {
-            temp = escape_shell_chars(current_file);
+            temp = escape_shell_chars (filename);
             formatter_associate(formatter, 'f', temp);
             g_free(temp);
+            str_unref (filename);
         }
         else
             formatter_associate(formatter, 'f', "");
+
         g_snprintf(numbuf, sizeof(numbuf), "%02d", pos + 1);
         formatter_associate(formatter, 't', numbuf);
-        length = aud_drct_pl_get_time(pos);
-        if (length != -1)
+
+        int length = aud_playlist_entry_get_length (playlist, pos, FALSE);
+        if (length > 0)
         {
             g_snprintf(numbuf, sizeof(numbuf), "%d", length);
             formatter_associate(formatter, 'l', numbuf);
@@ -331,28 +336,12 @@ static gboolean init (void)
 
 static void songchange_playback_begin(gpointer unused, gpointer unused2)
 {
-    int pos;
-    char *current_file;
-
-    pos = aud_drct_pl_get_pos();
-    current_file = aud_drct_pl_get_file(pos);
-
-    do_command(cmd_line, current_file, pos);
-
-    g_free(current_file);
+    do_command (cmd_line);
 }
 
 static void songchange_playback_end(gpointer unused, gpointer unused2)
 {
-    int pos;
-    char *current_file;
-
-    pos = aud_drct_pl_get_pos();
-    current_file = aud_drct_pl_get_file(pos);
-
-    do_command(cmd_line_after, current_file, pos);
-
-    g_free(current_file);
+    do_command (cmd_line_after);
 }
 
 #if 0
@@ -405,15 +394,7 @@ songchange_playback_ttc(gpointer plentry_gp, gpointer prevs_gp)
 
 static void songchange_playlist_eof(gpointer unused, gpointer unused2)
 {
-    gint pos;
-    gchar *current_file;
-
-    pos = aud_drct_pl_get_pos();
-    current_file = aud_drct_pl_get_file(pos);
-
-    do_command(cmd_line_end, current_file, pos);
-
-    g_free(current_file);
+    do_command (cmd_line_end);
 }
 
 typedef struct {

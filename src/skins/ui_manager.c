@@ -412,9 +412,6 @@ static GtkActionEntry action_entries_others[] = {
     { "ab clear", NULL , N_("Clear A-B"), "<Shift>A",
       N_("Clear A-B"), G_CALLBACK(action_ab_clear) },
 
-    { "jump to playlist start", GTK_STOCK_GOTO_TOP , N_("Jump to Playlist Start"), "<Ctrl>Z",
-      N_("Jump to Playlist Start"), G_CALLBACK(action_jump_to_playlist_start) },
-
     { "jump to file", GTK_STOCK_JUMP_TO , N_("Jump to File"), "J",
       N_("Jump to File"), G_CALLBACK(audgui_jump_to_track) },
 

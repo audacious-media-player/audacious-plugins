@@ -156,7 +156,7 @@ static gboolean title_change_cb (void)
             gchar * title_s = g_strdup_printf (_("%s - Audacious"), title);
             gtk_window_set_title ((GtkWindow *) window, title_s);
             g_free (title_s);
-            g_free (title);
+            str_unref (title);
         }
         else
             gtk_window_set_title ((GtkWindow *) window, _("Buffering ..."));

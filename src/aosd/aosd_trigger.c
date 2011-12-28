@@ -186,7 +186,7 @@ aosd_trigger_func_pb_start_onoff(gboolean turn_on)
 static void
 aosd_trigger_func_pb_start_cb(gpointer hook_data, gpointer user_data)
 {
-    gchar *title = aud_drct_pl_get_title(aud_drct_pl_get_pos());
+    char * title = aud_drct_get_title ();
 
     if (title != NULL)
     {
@@ -200,8 +200,8 @@ aosd_trigger_func_pb_start_cb(gpointer hook_data, gpointer user_data)
             g_free(utf8_title_markup);
         }
         g_free(utf8_title);
+        str_unref (title);
     }
-    return;
 }
 
 typedef struct
@@ -422,7 +422,7 @@ aosd_trigger_func_hook_cb ( gpointer markup_text , gpointer unused )
     aosd_osd_display( markup_text , global_config->osd , FALSE );
   } else {
     /* Display currently playing song */
-    aosd_trigger_func_pb_start_cb ( GINT_TO_POINTER(aud_drct_pl_get_pos()), NULL );
+    aosd_trigger_func_pb_start_cb (NULL, NULL);
   }
   return;
 }

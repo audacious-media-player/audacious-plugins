@@ -1086,8 +1086,6 @@ action_equ_save_preset(void)
 void
 action_equ_save_auto_preset(void)
 {
-    gchar *name;
-
     if (equalizerwin_save_auto_window)
         gtk_window_present(GTK_WINDOW(equalizerwin_save_auto_window));
     else
@@ -1100,13 +1098,13 @@ action_equ_save_auto_preset(void)
                                         G_CALLBACK(equalizerwin_save_auto_ok),
                                         G_CALLBACK(equalizerwin_save_auto_select));
 
-    name = aud_drct_pl_get_file (aud_drct_pl_get_pos ());
+    char * name = aud_drct_get_filename ();
 
     if (name != NULL)
     {
         gtk_entry_set_text(GTK_ENTRY(equalizerwin_save_auto_entry),
                            g_basename(name));
-        g_free(name);
+        str_unref (name);
     }
 }
 
@@ -1122,7 +1120,6 @@ action_equ_save_preset_file(void)
 {
     GtkWidget *dialog;
     gchar *file_uri;
-    gchar *songname;
     gint i;
 
     dialog = make_filebrowser(_("Save equalizer preset"), TRUE);
@@ -1139,7 +1136,7 @@ action_equ_save_preset_file(void)
         g_free(file_uri);
     }
 
-    songname = aud_drct_pl_get_file (aud_drct_pl_get_pos ());
+    char * songname = aud_drct_get_filename ();
 
     if (songname != NULL)
     {
@@ -1149,7 +1146,7 @@ action_equ_save_preset_file(void)
                                       eqname);
         g_free (eqname);
         g_free (ext);
-        g_free (songname);
+        str_unref (songname);
     }
 
     gtk_widget_destroy(dialog);

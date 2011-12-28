@@ -939,11 +939,6 @@ void action_queue_toggle (void)
         aud_playlist_queue_delete (active_playlist, at, 1);
 }
 
-void action_jump_to_playlist_start (void)
-{
-    aud_drct_pl_set_pos (0);
-}
-
 void action_playlist_sort_by_track_number (void)
 {
     aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_TRACK);
