@@ -42,7 +42,7 @@
 #include "util.h"
 
 static gboolean playlist_load_pls (const gchar * filename, VFSFile * file,
- gchar * * title, struct index * filenames, struct index * tuples)
+ gchar * * title, Index * filenames, Index * tuples)
 {
     gint i, count;
     gchar line_key[16];
@@ -80,7 +80,7 @@ static gboolean playlist_load_pls (const gchar * filename, VFSFile * file,
 }
 
 static gboolean playlist_save_pls (const gchar * filename, VFSFile * file,
- const gchar * title, struct index * filenames, struct index * tuples)
+ const gchar * title, Index * filenames, Index * tuples)
 {
     gint entries = index_count (filenames);
     gint count;

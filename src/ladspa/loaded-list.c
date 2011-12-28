@@ -67,8 +67,8 @@ static void shift_rows (void * user, int row, int before)
     if (before == row)
         return;
 
-    struct index * move = index_new ();
-    struct index * others = index_new ();
+    Index * move = index_new ();
+    Index * others = index_new ();
 
     int begin, end;
     if (before < row)

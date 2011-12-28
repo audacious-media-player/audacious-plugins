@@ -57,7 +57,7 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, gint tuple_type, gint pti)
 }
 
 static gboolean playlist_load_cue (const gchar * cue_filename, VFSFile * file,
- gchar * * title, struct index * filenames, struct index * tuples)
+ gchar * * title, Index * filenames, Index * tuples)
 {
     gint64 size = vfs_fsize (file);
     gchar * buffer = g_malloc (size + 1);

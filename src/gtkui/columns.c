@@ -75,7 +75,7 @@ typedef struct {
 
 static GtkWidget * window = NULL;
 static GtkWidget * chosen_list = NULL, * avail_list = NULL;
-static struct index * chosen = NULL, * avail = NULL;
+static Index * chosen = NULL, * avail = NULL;
 
 static void get_value (void * user, gint row, gint column, GValue * value)
 {
@@ -112,8 +112,8 @@ static void shift_rows (void * user, gint row, gint before)
     if (before == row)
         return;
 
-    struct index * move = index_new ();
-    struct index * others = index_new ();
+    Index * move = index_new ();
+    Index * others = index_new ();
 
     gint begin, end;
     if (before < row)
@@ -164,9 +164,9 @@ static const AudguiListCallbacks callbacks = {
  .select_all = select_all,
  .shift_rows = shift_rows};
 
-static void transfer (struct index * source)
+static void transfer (Index * source)
 {
-    struct index * dest;
+    Index * dest;
     GtkWidget * source_list, * dest_list;
     if (source == chosen)
     {

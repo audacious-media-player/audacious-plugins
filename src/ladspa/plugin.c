@@ -43,9 +43,9 @@ static const gchar * const ladspa_defaults[] = {
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 char * module_path;
-struct index * modules; /* (void *) */
-struct index * plugins; /* (PluginData *) */
-struct index * loadeds; /* (LoadedPlugin *) */
+Index * modules; /* (void *) */
+Index * plugins; /* (PluginData *) */
+Index * loadeds; /* (LoadedPlugin *) */
 
 GtkWidget * about_win;
 GtkWidget * config_win;

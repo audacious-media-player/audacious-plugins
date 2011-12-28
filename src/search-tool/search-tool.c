@@ -53,7 +53,7 @@ static gchar * * search_terms;
 
 static GHashTable * added_table;
 static GHashTable * dicts[FIELDS];
-static struct index * items;
+static Index * items;
 static GArray * selection;
 
 static gboolean adding, dicts_valid;
@@ -251,7 +251,7 @@ static void do_search (void)
         if (! dicts[f])
             continue;
 
-        struct index * index = index_new ();
+        Index * index = index_new ();
         g_hash_table_foreach (dicts[f], search_cb, index);
 
         if (index_count (index) <= MAX_RESULTS)
@@ -312,7 +312,7 @@ static void begin_add (const gchar * path)
     aud_playlist_delete_selected (list);
     aud_playlist_remove_failed (list);
 
-    struct index * add = index_new ();
+    Index * add = index_new ();
     index_append (add, str_get (uri));
     aud_playlist_entry_insert_filtered (list, -1, add, NULL, filter_cb, NULL, FALSE);
 
@@ -484,8 +484,8 @@ static void do_add (gboolean play, gchar * * title)
     gint n_items = index_count (items);
     gint n_selected = 0;
 
-    struct index * filenames = index_new ();
-    struct index * tuples = index_new ();
+    Index * filenames = index_new ();
+    Index * tuples = index_new ();
 
     for (gint i = 0; i < n_items; i ++)
     {

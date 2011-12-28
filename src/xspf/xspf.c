@@ -81,7 +81,7 @@ static const xspf_entry_t xspf_entries[] = {
 static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entries[0]));
 
 static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
- * base, struct index * filenames, struct index * tuples)
+ * base, Index * filenames, Index * tuples)
 {
     xmlNode *nptr;
     gchar *location = NULL;
@@ -170,7 +170,7 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
 
 
 static void xspf_find_track (xmlNode * tracklist, const gchar * filename, const
- gchar * base, struct index * filenames, struct index * tuples)
+ gchar * base, Index * filenames, Index * tuples)
 {
     xmlNode *nptr;
 
@@ -197,7 +197,7 @@ static gint close_cb (void * file)
 }
 
 static gboolean xspf_playlist_load (const gchar * filename, VFSFile * file,
- gchar * * title, struct index * filenames, struct index * tuples)
+ gchar * * title, Index * filenames, Index * tuples)
 {
     xmlDoc * doc = xmlReadIO (read_cb, close_cb, file, filename, NULL,
      XML_PARSE_RECOVER);
@@ -355,7 +355,7 @@ static void xspf_add_node(xmlNodePtr node, TupleValueType type,
 
 
 static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
- const gchar * title, struct index * filenames, struct index * tuples)
+ const gchar * title, Index * filenames, Index * tuples)
 {
     gint entries = index_count (filenames);
     xmlDocPtr doc;

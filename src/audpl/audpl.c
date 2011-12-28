@@ -102,7 +102,7 @@ static bool_t write_key (VFSFile * file, const char * key, const char * val)
 }
 
 static bool_t audpl_load (const char * path, VFSFile * file, char * * title,
- struct index * filenames, struct index * tuples)
+ Index * filenames, Index * tuples)
 {
     ReadState * state = malloc (sizeof (ReadState));
     state->file = file;
@@ -155,7 +155,7 @@ static bool_t audpl_load (const char * path, VFSFile * file, char * * title,
 }
 
 static bool_t audpl_save (const char * path, VFSFile * file,
- const char * title, struct index * filenames, struct index * tuples)
+ const char * title, Index * filenames, Index * tuples)
 {
     if (! write_key (file, "title", title))
         return FALSE;

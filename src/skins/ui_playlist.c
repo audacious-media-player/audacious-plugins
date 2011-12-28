@@ -210,8 +210,8 @@ static void copy_selected_to_new (gint playlist)
 {
     gint entries = aud_playlist_entry_count (playlist);
     gint new = aud_playlist_count ();
-    struct index * filenames = index_new ();
-    struct index * tuples = index_new ();
+    Index * filenames = index_new ();
+    Index * tuples = index_new ();
     gint entry;
 
     aud_playlist_insert (new);

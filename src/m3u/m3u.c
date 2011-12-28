@@ -66,7 +66,7 @@ static gchar * split_line (gchar * line)
 }
 
 static gboolean playlist_load_m3u (const gchar * path, VFSFile * file,
- gchar * * title, struct index * filenames, struct index * tuples)
+ gchar * * title, Index * filenames, Index * tuples)
 {
     gchar * text = read_win_text (file);
     if (! text)
@@ -104,7 +104,7 @@ NEXT:
 }
 
 static gboolean playlist_save_m3u (const gchar * path, VFSFile * file,
- const gchar * title, struct index * filenames, struct index * tuples)
+ const gchar * title, Index * filenames, Index * tuples)
 {
     gint count = index_count (filenames);
 
