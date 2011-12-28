@@ -203,13 +203,6 @@ static gboolean xspf_playlist_load (const gchar * filename, VFSFile * file,
     if (! doc)
         return FALSE;
 
-/* workaround for uninitialized libxml func pointers; see:
- * http://www.linuxquestions.org/questions/programming-9/[solved]using-libxml2-on-mingw-xmlfree-crashes-839802 */
-#ifdef _WIN32
-    if (! xmlFree)
-        xmlMemGet (& xmlFree, & xmlMalloc, & xmlRealloc, NULL);
-#endif
-
     * title = NULL;
 
     xmlNode *nptr, *nptr2;
