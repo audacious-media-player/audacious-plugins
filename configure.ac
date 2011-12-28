@@ -37,7 +37,7 @@ dnl Check for Audacious
 dnl ===================
 
 PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.2],
-    [ADD_PC_REQUIRES([audacious >= 3.2])],
+    [],
     [AC_MSG_ERROR([Cannot find Audacious 3.2; have you installed Audacious yet?])]
 )
 
@@ -82,7 +82,7 @@ AC_ARG_ENABLE(gio,
  enable_gio=$enableval, enable_gio=no)
 
 if test "x$enable_gio" = "xyes"; then
-    PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0], [ADD_PC_REQUIRES([gio-2.0 >= 2.0])], [enable_gio=no])
+    PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0], [enable_gio=yes], [enable_gio=no])
 fi
 
 if test "x$enable_gio" = "xyes"; then

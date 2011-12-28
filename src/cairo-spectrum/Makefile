@@ -8,5 +8,5 @@ include ../../extra.mk
 plugindir := ${plugindir}/${VISUALIZATION_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../..
-LIBS += -lm
+CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. ${GTK_CFLAGS}
+LIBS += -lm ${GTK_LIBS}

@@ -2,6 +2,7 @@
  * some functions for MP4 files
 */
 
+#include <glib.h>
 #include <stdlib.h>
 
 #include "mp4ff.h"

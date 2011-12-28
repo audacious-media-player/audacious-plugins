@@ -1,3 +1,4 @@
+#include <glib.h>
 #include <audacious/plugin.h>
 
 gboolean Init (void);

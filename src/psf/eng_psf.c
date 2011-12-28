@@ -64,7 +64,6 @@ extern void psx_hw_init(void);
 extern void psx_hw_slice(void);
 extern void psx_hw_frame(void);
 extern void setlength(int32 stop, int32 fade);
-extern gboolean stop_flag;
 
 int32 psf_start(uint8 *buffer, uint32 length)
 {

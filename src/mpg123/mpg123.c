@@ -22,6 +22,7 @@
 /* must come before <mpg123.h> to get _FILE_OFFSET_BITS */
 #include "config.h"
 
+#include <glib.h>
 #include <string.h>
 #include <mpg123.h>
 

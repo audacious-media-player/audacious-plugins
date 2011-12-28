@@ -53,8 +53,6 @@ extern void SPUinjectRAMImage(unsigned short *source);
 
 extern void setlength(int32 stop, int32 fade);
 
-extern gboolean stop_flag;
-
 static uint8 *start_of_file, *song_ptr;
 static uint32 cur_tick, cur_event, num_events, next_tick, end_tick;
 static int old_fmt;

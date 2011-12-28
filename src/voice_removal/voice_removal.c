@@ -18,6 +18,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <glib.h>
+
 #include "config.h"
 
 #include <audacious/plugin.h>

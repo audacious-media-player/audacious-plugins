@@ -19,6 +19,8 @@
  * using our public API to be a derived work.
  */
 
+#include <glib.h>
+
 #include "ffaudio-stdinc.h"
 
 #define IOBUF 4096

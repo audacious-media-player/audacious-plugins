@@ -159,6 +159,6 @@ DATA = Skins/Classic/balance.png	\
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
-CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../..
+CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. ${GTK_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
-LIBS += -lm
+LIBS += -lm ${GTK_LIBS}

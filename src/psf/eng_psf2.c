@@ -88,7 +88,6 @@ extern void psx_hw_init(void);
 extern void ps2_hw_slice(void);
 extern void ps2_hw_frame(void);
 extern void setlength2(int32 stop, int32 fade);
-extern gboolean stop_flag;
 
 static void do_iopmod(uint8 *start, uint32 offset)
 {
