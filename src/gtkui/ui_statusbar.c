@@ -135,6 +135,7 @@ static void ui_statusbar_destroy_cb(GtkWidget *widget, gpointer user_data)
     hook_dissociate("playback ready", (HookFunction) ui_statusbar_info_change);
     hook_dissociate("info change", (HookFunction) ui_statusbar_info_change);
     hook_dissociate("playback stop", (HookFunction) ui_statusbar_playback_stop);
+    hook_dissociate("playlist activate", (HookFunction) ui_statusbar_update_playlist_length);
     hook_dissociate("playlist update", (HookFunction) ui_statusbar_update_playlist_length);
 }
 
@@ -158,6 +159,7 @@ ui_statusbar_new(void)
     gtk_box_pack_start(GTK_BOX(hbox), length, FALSE, FALSE, 5);
     ui_statusbar_update_playlist_length(NULL, length);
 
+    hook_associate("playlist activate", (HookFunction) ui_statusbar_update_playlist_length, length);
     hook_associate("playlist update", (HookFunction) ui_statusbar_update_playlist_length, length);
 
     g_signal_connect(G_OBJECT(hbox), "destroy", G_CALLBACK(ui_statusbar_destroy_cb), NULL);
