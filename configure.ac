@@ -569,7 +569,8 @@ if test $enable_jack = yes ; then
         PKG_CHECK_MODULES(JACK, [jack >= 0.120.1 jack < 1.0],
          [enable_jack=$enable_jack], [enable_jack=no])
     ])
-    AC_CHECK_LIB([samplerate], [src_process],
+
+    PKG_CHECK_MODULES([SAMPLERATE], [samplerate],
      [enable_jack=$enable_jack], [enable_jack=no])
 
     if test $enable_jack = yes ; then
@@ -1045,8 +1046,8 @@ AC_ARG_ENABLE(resample,
 )
 
 if test "x$enable_resample" = "xyes"; then
-    AC_CHECK_LIB([samplerate], [src_process], [enable_resample=yes],
-     [enable_resample=no])
+    PKG_CHECK_MODULES([SAMPLERATE], [samplerate],
+     [enable_resample=yes], [enable_resample=no])
 fi
 
 if test "x$enable_resample" = "xyes"; then
