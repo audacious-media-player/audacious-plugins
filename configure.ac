@@ -370,7 +370,7 @@ AC_ARG_ENABLE(mpris2,
  [enable_mpris2=$enableval], [enable_mpris2=yes])
 
 if test $enable_mpris2 = yes ; then
-    PKG_CHECK_MODULES([GIO_UNIX], [gio-unix-2.0 >= 2.26],
+    PKG_CHECK_MODULES([GIO_UNIX], [gio-unix-2.0 >= 2.30],
      [enable_mpris2=yes], [enable_mpris2=no])
 fi
 
