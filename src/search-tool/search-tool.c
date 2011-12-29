@@ -102,10 +102,11 @@ static void find_playlist (void)
 
 static gint create_playlist (void)
 {
-    aud_playlist_insert (0);
-    aud_playlist_set_title (0, _("Library"));
-    playlist_id = aud_playlist_get_unique_id (0);
-    return 0;
+    gint list = aud_playlist_get_blank ();
+    aud_playlist_set_title (list, _("Library"));
+    aud_playlist_set_active (list);
+    playlist_id = aud_playlist_get_unique_id (list);
+    return list;
 }
 
 static gint get_playlist (gboolean require_added, gboolean require_scanned)
