@@ -61,8 +61,6 @@ src/filewriter/mp3.c
 src/filewriter/vorbis.c
 src/flacng/plugin.c
 src/gnomeshortcuts/gnomeshortcuts.c
-src/gntui/fileselector.c
-src/gntui/gntui.c
 src/gtkui/columns.c
 src/gtkui/layout.c
 src/gtkui/menus.c
@@ -106,12 +104,8 @@ src/sndstretch/sndstretch_xmms.c
 src/song_change/song_change.c
 src/statusicon/statusicon.c
 src/stereo_plugin/stereo.c
-src/streambrowser/gui/streambrowser_win.c
-src/streambrowser/streambrowser.c
 src/tonegen/tonegen.c
 src/unix-io/gtk.c
-src/usf/recompiler_cpu.c
-src/usf/rsp_recompiler_cpu.c
 src/vorbis/vorbis.c
 src/vtx/about.c
 src/wavpack/wavpack.c
