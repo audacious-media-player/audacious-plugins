@@ -94,13 +94,13 @@ ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
 
 static void repeat_toggled (void * data, void * user)
 {
-    bool_t repeat = aud_get_bool (NULL, "repeat");
+    gboolean repeat = aud_get_bool (NULL, "repeat");
     check_set (toggleaction_group_others, "playback repeat", repeat);
 }
 
 static void shuffle_toggled (void * data, void * user)
 {
-    bool_t shuffle = aud_get_bool (NULL, "shuffle");
+    gboolean shuffle = aud_get_bool (NULL, "shuffle");
     check_set (toggleaction_group_others, "playback shuffle", shuffle);
 }
 
