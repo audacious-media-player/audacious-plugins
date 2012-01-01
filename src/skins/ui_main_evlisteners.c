@@ -92,6 +92,18 @@ ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
     mainwin_clear_song_info ();
 }
 
+static void repeat_toggled (void * data, void * user)
+{
+    bool_t repeat = aud_get_bool (NULL, "repeat");
+    check_set (toggleaction_group_others, "playback repeat", repeat);
+}
+
+static void shuffle_toggled (void * data, void * user)
+{
+    bool_t shuffle = aud_get_bool (NULL, "shuffle");
+    check_set (toggleaction_group_others, "playback shuffle", shuffle);
+}
+
 static void stop_after_song_toggled (void * hook_data, void * user_data)
 {
     mainwin_enable_status_message (FALSE);
@@ -270,6 +282,9 @@ ui_main_evlistener_init(void)
     hook_associate ("info change", (HookFunction) info_change, NULL);
 
     hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
+
+    hook_associate ("set repeat", repeat_toggled, NULL);
+    hook_associate ("set shuffle", shuffle_toggled, NULL);
     hook_associate ("set stop_after_current_song", stop_after_song_toggled, NULL);
 }
 
@@ -286,6 +301,9 @@ ui_main_evlistener_dissociate(void)
     hook_dissociate ("info change", (HookFunction) info_change);
 
     hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
+
+    hook_dissociate ("set repeat", repeat_toggled);
+    hook_dissociate ("set shuffle", shuffle_toggled);
     hook_dissociate ("set stop_after_current_song", stop_after_song_toggled);
 }
 
