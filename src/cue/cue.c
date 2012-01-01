@@ -82,7 +82,9 @@ static gboolean playlist_load_cue (const gchar * cue_filename, VFSFile * file,
 
     Track * current = cd_get_track (cd, 1);
     g_return_val_if_fail (current != NULL, FALSE);
-    gchar * filename = aud_construct_uri (track_get_filename (current),
+    gchar * track_filename = track_get_filename (current);
+    g_return_val_if_fail (track_filename != NULL, FALSE);
+    gchar * filename = aud_construct_uri (track_filename,
      cue_filename);
 
     Tuple * base_tuple = NULL;
