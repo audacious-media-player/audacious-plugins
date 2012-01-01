@@ -784,5 +784,4 @@ void check_set (GtkActionGroup * action_group, const gchar * action_name,
     g_return_if_fail (action != NULL);
 
     gtk_toggle_action_set_active ((GtkToggleAction *) action, is_on);
-    hook_call (action_name, GINT_TO_POINTER (is_on));
 }
