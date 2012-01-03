@@ -73,13 +73,9 @@ static void make_add_button (GtkWidget * notebook)
 }
 #endif
 
-static gboolean close_button_cb (GtkWidget * button, GdkEventButton * event, void * id)
+static void close_button_cb (GtkWidget * button, void * id)
 {
-    if (event->type != GDK_BUTTON_PRESS || event->button != 1)
-        return FALSE;
-
     audgui_confirm_playlist_delete (aud_playlist_by_unique_id (GPOINTER_TO_INT (id)));
-    return TRUE;
 }
 
 #if ! GTK_CHECK_VERSION (3, 0, 0)
@@ -99,7 +95,7 @@ static GtkWidget * make_close_button (gint list)
     gtk_button_set_focus_on_click ((GtkButton *) button, FALSE);
     gtk_widget_set_name (button, "gtkui-tab-close-button");
     gtk_widget_set_tooltip_text (button, _("Close"));
-    g_signal_connect (button, "button-press-event", (GCallback) close_button_cb,
+    g_signal_connect (button, "clicked", (GCallback) close_button_cb,
      GINT_TO_POINTER (aud_playlist_get_unique_id (list)));
 
 #if GTK_CHECK_VERSION (3, 0, 0)
