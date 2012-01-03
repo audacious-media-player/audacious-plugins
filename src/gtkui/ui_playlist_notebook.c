@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2011  Audacious development team
+ *  Copyright (C) 2005-2012  Audacious development team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <audacious/i18n.h>
 #include <libaudgui/list.h>
 #include <libaudgui/libaudgui.h>
 
@@ -81,18 +82,64 @@ static gboolean close_button_cb (GtkWidget * button, GdkEventButton * event, voi
     return TRUE;
 }
 
+#if ! GTK_CHECK_VERSION (3, 0, 0)
+static void close_button_style_set(GtkWidget * button, GtkRcStyle * previous_style,
+ gpointer user_data)
+{
+    gint w, h;
+    gtk_icon_size_lookup_for_settings (gtk_widget_get_settings (button), GTK_ICON_SIZE_MENU, &w, &h);
+    gtk_widget_set_size_request (button, w + 2, h + 2);
+}
+#endif
+
 static GtkWidget * make_close_button (gint list)
 {
-    GtkWidget * evbox = gtk_event_box_new ();
-    gtk_event_box_set_visible_window ((GtkEventBox *) evbox, FALSE);
-    g_signal_connect (evbox, "button-press-event", (GCallback) close_button_cb,
+    GtkWidget * button = gtk_button_new ();
+    gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
+    gtk_button_set_focus_on_click ((GtkButton *) button, FALSE);
+    gtk_widget_set_name (button, "gtkui-tab-close-button");
+    gtk_widget_set_tooltip_text (button, _("Close"));
+    g_signal_connect (button, "button-press-event", (GCallback) close_button_cb,
      GINT_TO_POINTER (aud_playlist_get_unique_id (list)));
 
-    GtkWidget * icon = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
-    gtk_container_add ((GtkContainer *) evbox, icon);
+#if GTK_CHECK_VERSION (3, 0, 0)
+    GtkCssProvider * provider = gtk_css_provider_new ();
+    gtk_css_provider_load_from_data (provider,
+     "#gtkui-tab-close-button {"
+     " -GtkButton-default-border: 0;"
+     " -GtkButton-default-outside-border: 0;"
+     " -GtkButton-inner-border: 0;"
+     " -GtkWidget-focus-padding: 0;"
+     " -GtkWidget-focus-line-width: 0;"
+     " margin: 0;"
+     " padding: 0; }",
+     -1, NULL);
 
-    gtk_widget_show_all (evbox);
-    return evbox;
+    gtk_style_context_add_provider (gtk_widget_get_style_context (button),
+     GTK_STYLE_PROVIDER (provider),
+     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    g_object_unref (provider);
+#else
+    gtk_rc_parse_string (
+     "style \"gtkui-tab-close-button-style\" {"
+     " GtkWidget::focus-padding = 0"
+     " GtkWidget::focus-line-width = 0"
+     " xthickness = 0"
+     " ythickness = 0 }"
+     "widget \"*.gtkui-tab-close-button\" style \"gtkui-tab-close-button-style\""
+    );
+
+    g_signal_connect (button, "style-set", (GCallback) close_button_style_set, NULL);
+#endif
+
+    GtkWidget * icon = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
+    gtk_container_add ((GtkContainer *) button, icon);
+
+    GtkWidget * align = gtk_alignment_new (1.0, 0.5, 0.0, 0.0);
+    gtk_container_add ((GtkContainer *) align, button);
+
+    gtk_widget_show_all (align);
+    return align;
 }
 
 GtkNotebook *ui_playlist_get_notebook(void)
