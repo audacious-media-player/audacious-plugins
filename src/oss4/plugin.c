@@ -1,20 +1,20 @@
 /*
- * OSS4 Output Plugin for Audacious
+ * plugin.c
  * Copyright 2010-2011 Michał Lipski <tallica@o2.pl>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions, and the following disclaimer.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions, and the following disclaimer in the documentation
+ *    provided with the distribution.
  *
+ * This software is provided "as is" and without any warranty, express or
+ * implied. In no event shall the authors be liable for any damages arising from
+ * the use of this software.
  */
 
 #include "oss.h"
@@ -53,14 +53,14 @@ void oss_about(void)
     "Copyright 2010-2011 Michał Lipski <tallica@o2.pl>\n\n"
     "I would like to thank people on #audacious, especially Tony Vroon and "
     "John Lindgren and of course the authors of the previous OSS plugin.\n\n"
-    "This program is free software: you can redistribute it and/or modify "
-    "it under the terms of the GNU General Public License as published by "
-    "the Free Software Foundation, either version 3 of the License, or "
-    "(at your option) any later version.\n\n"
-    "This program is distributed in the hope that it will be useful, "
-    "but WITHOUT ANY WARRANTY; without even the implied warranty of "
-    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
-    "GNU General Public License for more details.\n\n"
-    "You should have received a copy of the GNU General Public License "
-    "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n");
+    "Redistribution and use in source and binary forms, with or without "
+    "modification, are permitted provided that the following conditions are met:\n\n"
+    "1. Redistributions of source code must retain the above copyright notice, "
+    "this list of conditions, and the following disclaimer.\n\n"
+    "2. Redistributions in binary form must reproduce the above copyright notice, "
+    "this list of conditions, and the following disclaimer in the documentation "
+    "provided with the distribution.\n\n"
+    "This software is provided \"as is\" and without any warranty, express or "
+    "implied. In no event shall the authors be liable for any damages arising from "
+    "the use of this software.");
 }
