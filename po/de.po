@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2012-01-07 23:37+0100\n"
-"PO-Revision-Date: 2012-01-07 23:40+0100\n"
+"PO-Revision-Date: 2012-01-08 00:12+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -1938,7 +1938,7 @@ msgstr "Fehler"
 
 #: src/gtkui/ui_playlist_notebook.c:97
 msgid "Close"
-msgstr "S_chließen"
+msgstr "Schließen"
 
 #: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:460
 msgid "mono"
