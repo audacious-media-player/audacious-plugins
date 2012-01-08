@@ -246,7 +246,7 @@ static AVFormatContext * open_input_file (const gchar * name, VFSFile * file)
 static void close_input_file (AVFormatContext * c)
 {
     AVIOContext * io = c->pb;
-    av_close_input_file (c);
+    avformat_close_input (&c);
     io_context_free (io);
 }
 
