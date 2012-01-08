@@ -90,7 +90,6 @@ FREE:
     str_unref (title);
     str_unref (artist);
     str_unref (album);
-    str_unref (message);
 }
 
 void event_init (void)
