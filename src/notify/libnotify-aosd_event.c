@@ -71,7 +71,10 @@ static void update (void * unused, void * explicit)
 
     if (! GPOINTER_TO_INT (explicit) && last_title && last_message && ! strcmp
      (title, last_title) && ! strcmp (message, last_message))
+    {
+        g_free (message);
         goto FREE;
+    }
 
     GdkPixbuf * pb = audgui_pixbuf_for_current ();
     if (pb)
