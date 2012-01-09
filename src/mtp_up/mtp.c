@@ -217,7 +217,11 @@ gint upload_file(Tuple *from_tuple)
     LIBMTP_track_t *gentrack;
     gentrack = track_metadata(from_tuple);
     from_path = strdup_tuple_filename (from_tuple);
-    if(gentrack == NULL) return 1;
+    if(gentrack == NULL)
+    {
+        g_free(from_path);
+        return 1;
+    }
     tmp = g_strescape(from_path,NULL);
     filename=g_filename_from_uri(tmp,NULL,NULL);
 
