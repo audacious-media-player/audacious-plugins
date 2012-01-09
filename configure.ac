@@ -549,7 +549,7 @@ AC_ARG_ENABLE(ffaudio,
 
 if test $enable_ffaudio = yes ; then
     PKG_CHECK_MODULES([FFMPEG],
-     [libavcodec >= 53.40.0 libavformat >= 53.24.1 libavutil >= 50.42.0],
+     [libavcodec >= 53.40.0 libavformat >= 53.5.0 libavutil >= 50.42.0],
      [have_ffaudio=yes], [have_ffaudio=no])
 fi
 
