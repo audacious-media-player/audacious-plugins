@@ -88,14 +88,16 @@ static gboolean playlist_load_cue (const gchar * cue_filename, VFSFile * file,
      cue_filename);
 
     Tuple * base_tuple = NULL;
+    gboolean base_tuple_scanned = FALSE;
 
     for (gint track = 1; track <= tracks; track ++)
     {
         g_return_val_if_fail (current != NULL, FALSE);
         g_return_val_if_fail (filename != NULL, FALSE);
 
-        if (base_tuple == NULL)
+        if (base_tuple == NULL && ! base_tuple_scanned)
         {
+            base_tuple_scanned = TRUE;
             PluginHandle * decoder = aud_file_find_decoder (filename, FALSE);
             if (decoder != NULL)
                 base_tuple = aud_file_read_tuple (filename, decoder);
@@ -144,6 +146,7 @@ static gboolean playlist_load_cue (const gchar * cue_filename, VFSFile * file,
         {
             tuple_unref (base_tuple);
             base_tuple = NULL;
+            base_tuple_scanned = FALSE;
         }
     }
 
