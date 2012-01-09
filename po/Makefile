@@ -12,6 +12,7 @@ LOCALES = ca.po \
 	  cy.po \
 	  de.po \
 	  es.po \
+	  es_MX.po \
 	  et.po \
 	  eu.po \
 	  fr.po \
