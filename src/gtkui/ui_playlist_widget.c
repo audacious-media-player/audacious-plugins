@@ -1,6 +1,7 @@
 /*
  * ui_playlist_widget.c
  * Copyright 2011 John Lindgren
+ * Copyright 2012 Michał Lipski
  *
  * This file is part of Audacious.
  *
