@@ -46,6 +46,7 @@ static const gboolean pw_col_label[PW_COLS] = {FALSE, TRUE, TRUE, TRUE, TRUE,
 typedef struct {
     gint list;
     GList * queue;
+    gint popup_source, popup_pos;
 } PlaylistWidgetData;
 
 static void set_int_from_tuple (GValue * value, const Tuple * tuple, gint field)
@@ -207,6 +208,49 @@ static void shift_rows (void * user, gint row, gint before)
     aud_playlist_shift (list, row, before - row);
 }
 
+static gboolean popup_show (PlaylistWidgetData * data)
+{
+    audgui_infopopup_show (data->list, data->popup_pos);
+
+    g_source_remove (data->popup_source);
+    data->popup_source = 0;
+    return FALSE;
+}
+
+static void popup_hide (PlaylistWidgetData * data)
+{
+    if (data->popup_source)
+    {
+        g_source_remove (data->popup_source);
+        data->popup_source = 0;
+    }
+
+    audgui_infopopup_hide ();
+    data->popup_pos = -1;
+}
+
+static void popup_trigger (PlaylistWidgetData * data, gint pos)
+{
+    popup_hide (data);
+
+    data->popup_pos = pos;
+    data->popup_source = g_timeout_add (aud_get_int (NULL, "filepopup_delay") *
+     100, (GSourceFunc) popup_show, data);
+}
+
+static void mouse_motion (void * user, GdkEventMotion * event, gint row)
+{
+    PlaylistWidgetData * data = (PlaylistWidgetData *) user;
+
+    if (aud_get_bool (NULL, "show_filepopup_for_tuple") && data->popup_pos != row)
+        popup_trigger (data, row);
+}
+
+static void mouse_leave (void * user, GdkEventMotion * event, gint row)
+{
+    popup_hide ((PlaylistWidgetData *) user);
+}
+
 static void get_data (void * user, void * * data, gint * length)
 {
     gchar * text = audgui_urilist_create_from_selected
@@ -233,6 +277,8 @@ static const AudguiListCallbacks callbacks = {
  .activate_row = activate_row,
  .right_click = right_click,
  .shift_rows = shift_rows,
+ .mouse_motion = mouse_motion,
+ .mouse_leave = mouse_leave,
  .data_type = "text/uri-list",
  .get_data = get_data,
  .receive_data = receive_data};
@@ -301,6 +347,8 @@ GtkWidget * ui_playlist_widget_new (gint playlist)
     PlaylistWidgetData * data = g_malloc0 (sizeof (PlaylistWidgetData));
     data->list = playlist;
     data->queue = NULL;
+    data->popup_source = 0;
+    data->popup_pos = -1;
 
     GtkWidget * list = audgui_list_new (& callbacks, data,
      aud_playlist_entry_count (playlist));
