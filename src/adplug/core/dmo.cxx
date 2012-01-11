@@ -63,9 +63,15 @@ CdmoLoader::load (VFSFile * fd, const CFileProvider & fp)
 
   f = fp.open (fd);
   if (!f)
+  {
+    delete unpacker;
     return false;
+  }
   if (!fp.extension (filename, ".dmo"))
+  {
+    delete unpacker;
     return false;
+  }
 
   f->readString ((char *) chkhdr, 16);
 
