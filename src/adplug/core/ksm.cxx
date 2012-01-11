@@ -56,6 +56,7 @@ CksmPlayer::load (VFSFile * fd, const CFileProvider & fp)
   {
     AdPlug_LogWrite ("CksmPlayer::load(,\"%s\"): File doesn't have '.ksm' "
                      "extension! Rejected!\n", filename.c_str ());
+    delete[]fn;
     return false;
   }
   AdPlug_LogWrite ("*** CksmPlayer::load(,\"%s\") ***\n", filename.c_str ());
