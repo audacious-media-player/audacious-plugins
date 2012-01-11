@@ -65,6 +65,7 @@ src/gtkui/columns.c
 src/gtkui/layout.c
 src/gtkui/menus.c
 src/gtkui/ui_gtk.c
+src/gtkui/ui_playlist_notebook.c
 src/gtkui/ui_playlist_widget.c
 src/gtkui/ui_statusbar.c
 src/hotkey/gui.c

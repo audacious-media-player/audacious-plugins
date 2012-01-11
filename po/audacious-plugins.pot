@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2011-12-29 19:29-0500\n"
+"POT-Creation-Date: 2012-01-11 09:01-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1176,7 +1176,7 @@ msgstr ""
 msgid "Volume: (%)"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:798
+#: src/ffaudio/ffaudio-core.c:725
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1192,7 +1192,7 @@ msgid ""
 "libavutil %s (%s)\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:812
+#: src/ffaudio/ffaudio-core.c:739
 msgid "About FFaudio Plugin"
 msgstr ""
 
@@ -1772,6 +1772,10 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
+#: src/gtkui/ui_playlist_notebook.c:97
+msgid "Close"
+msgstr ""
+
 #: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:460
 msgid "mono"
 msgstr ""
@@ -2050,15 +2054,15 @@ msgstr ""
 msgid "Surround"
 msgstr ""
 
-#: src/mtp_up/mtp.c:336
+#: src/mtp_up/mtp.c:340
 msgid "Upload in progress..."
 msgstr ""
 
-#: src/mtp_up/mtp.c:348
+#: src/mtp_up/mtp.c:352
 msgid "Upload to MTP Device"
 msgstr ""
 
-#: src/mtp_up/mtp.c:349
+#: src/mtp_up/mtp.c:353
 msgid "Disconnect MTP Device"
 msgstr ""
 
