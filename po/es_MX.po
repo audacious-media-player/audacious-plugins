@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2011-12-29 19:29-0500\n"
-"PO-Revision-Date: 2012-01-09 05:37+0000\n"
+"POT-Creation-Date: 2012-01-11 09:01-0500\n"
+"PO-Revision-Date: 2012-01-12 01:23+0000\n"
 "Last-Translator: Jorge A. García Sosa <jagsmd@gmail.com>\n"
 "Language-Team: Spanish (Mexican)\n"
 "MIME-Version: 1.0\n"
@@ -1304,7 +1304,7 @@ msgstr "Feedback: (%)"
 msgid "Volume: (%)"
 msgstr "Volumen: (%)"
 
-#: src/ffaudio/ffaudio-core.c:798
+#: src/ffaudio/ffaudio-core.c:725
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1331,7 +1331,7 @@ msgstr ""
 "libavformat %s (%s)\n"
 "libavutil %s (%s)\n"
 
-#: src/ffaudio/ffaudio-core.c:812
+#: src/ffaudio/ffaudio-core.c:739
 msgid "About FFaudio Plugin"
 msgstr "Acerca del Plugin FFaudio"
 
@@ -1922,6 +1922,10 @@ msgstr "Audacious"
 msgid "Error"
 msgstr "Error"
 
+#: src/gtkui/ui_playlist_notebook.c:97
+msgid "Close"
+msgstr "Cerrar"
+
 #: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:460
 msgid "mono"
 msgstr "monoaural"
@@ -2237,15 +2241,15 @@ msgstr "Los cambios tendrán efecto en el siguiente cambio de pista."
 msgid "Surround"
 msgstr "Envolvente"
 
-#: src/mtp_up/mtp.c:336
+#: src/mtp_up/mtp.c:340
 msgid "Upload in progress..."
 msgstr "Carga en progreso..."
 
-#: src/mtp_up/mtp.c:348
+#: src/mtp_up/mtp.c:352
 msgid "Upload to MTP Device"
 msgstr "Cargar en un dispositivo MTP"
 
-#: src/mtp_up/mtp.c:349
+#: src/mtp_up/mtp.c:353
 msgid "Disconnect MTP Device"
 msgstr "Desconectar dispositivo MTP"
 
