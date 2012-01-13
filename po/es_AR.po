@@ -1,4 +1,4 @@
-# Spanish translation for Audacious Plugins
+# Argentinian Spanish translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
@@ -12,13 +12,13 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2012-01-11 09:01-0500\n"
-"PO-Revision-Date: 2012-01-12 04:29+0000\n"
+"PO-Revision-Date: 2012-01-12 11:23+0000\n"
 "Last-Translator: Adrián Ramirez Escalante <buried.prophet@gmail.com>\n"
-"Language-Team: Spanish\n"
+"Language-Team: Spanish (Argentinian)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
+"Language: es_AR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: src/aac/libmp4.c:256
@@ -56,7 +56,7 @@ msgstr "Alarma"
 
 #: src/alarm/interface.c:40
 msgid "This is your wakeup call."
-msgstr "Esta es su llamada para despertar."
+msgstr "Esta es su llamada despertador"
 
 #: src/alarm/interface.c:55 src/alarm/interface.c:1213
 msgid "OK"
@@ -64,7 +64,7 @@ msgstr "Aceptar"
 
 #: src/alarm/interface.c:214
 msgid "Alarm Settings"
-msgstr "Ajustes de alarma"
+msgstr "Configuración de la alarma"
 
 #: src/alarm/interface.c:229 src/alarm/interface.c:401
 #: src/alarm/interface.c:773
@@ -1060,7 +1060,7 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:552
 msgid "Audio CD"
-msgstr "CD de música"
+msgstr "CD de audio"
 
 #: src/cdaudio-ng/cdaudio-ng.c:924
 msgid "Drive is empty."
@@ -1072,7 +1072,7 @@ msgstr "Tipo de disco no soportado."
 
 #: src/cdaudio-ng/configure.c:148
 msgid "CD Audio Plugin Configuration"
-msgstr "Configuración de complemento de CD de música"
+msgstr "Configuración de complemento de CD de audio"
 
 #: src/cdaudio-ng/configure.c:160
 msgid "Digital audio extraction"
@@ -1126,7 +1126,7 @@ msgstr "Reproducir CD"
 
 #: src/cd-menu-items/cd-menu-items.c:34
 msgid "Add CD"
-msgstr "Añadir CD"
+msgstr "Agregar CD"
 
 #: src/compressor/plugin.c:63
 msgid "About Dynamic Range Compression Plugin"
@@ -2014,13 +2014,13 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"No se recomienda asociar los botones principales del ratón sin modificadores.\n"
+"No se recomienda asociar los botones principales del mouse sin cambios.\n"
 "\n"
 "¿Quiere continuar?"
 
 #: src/hotkey/gui.c:234
 msgid "Binding mouse buttons"
-msgstr "Asociar botones del ratón"
+msgstr "Asociar botones del mouse"
 
 #: src/hotkey/gui.c:384
 msgid "Global Hotkey Plugin Configuration"
@@ -2459,8 +2459,8 @@ msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"Para importar su biblioteca musical en Audacious, seleccione una carpeta y "
-"pulse el botón «actualizar»."
+"Para importar su colección musical en Audacious, elija una carpeta y pulse "
+"el botón «actualizar»."
 
 #: src/search-tool/search-tool.c:653
 msgid "Please wait ..."
@@ -2468,7 +2468,7 @@ msgstr "Espere por favor..."
 
 #: src/search-tool/search-tool.c:675
 msgid "Choose Folder"
-msgstr "Seleccione un directorio"
+msgstr "Elija una carpeta"
 
 #: src/skins/plugin.c:167
 msgid "About Skinned GUI"
