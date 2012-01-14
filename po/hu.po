@@ -4,13 +4,13 @@
 #
 # Translators:
 # Peter Polonkai <polesz@nedudu.hu>, 2010.
-# Péter Polonkai <polesz@nedudu.hu>, 2011.
+# Péter Polonkai <polesz@nedudu.hu>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2011-12-19 14:26-0500\n"
-"PO-Revision-Date: 2011-12-22 16:48+0000\n"
+"POT-Creation-Date: 2012-01-11 09:01-0500\n"
+"PO-Revision-Date: 2012-01-12 06:38+0000\n"
 "Last-Translator: Péter Polonkai <polesz@nedudu.hu>\n"
 "Language-Team: Hungarian\n"
 "MIME-Version: 1.0\n"
@@ -94,8 +94,8 @@ msgstr "Válassza ki a riasztás napját a következőekből"
 #: src/alarm/interface.c:533 src/alarm/interface.c:581
 #: src/alarm/interface.c:629 src/alarm/interface.c:677
 #: src/alarm/interface.c:725 src/bs2b/plugin.c:198 src/OSS/configure.c:153
-#: src/skins/ui_equalizer.c:1117 src/skins/ui_manager.c:450
-#: src/skins/ui_manager.c:471
+#: src/skins/ui_equalizer.c:1104 src/skins/ui_manager.c:447
+#: src/skins/ui_manager.c:468
 msgid "Default"
 msgstr "Alapértelmezett"
 
@@ -1204,7 +1204,7 @@ msgstr "Visszacsatolás: (%)"
 msgid "Volume: (%)"
 msgstr "Hangerő: (%)"
 
-#: src/ffaudio/ffaudio-core.c:792
+#: src/ffaudio/ffaudio-core.c:725
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1220,7 +1220,7 @@ msgid ""
 "libavutil %s (%s)\n"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:806
+#: src/ffaudio/ffaudio-core.c:739
 msgid "About FFaudio Plugin"
 msgstr "FFaudio bővítmény névjegye"
 
@@ -1284,11 +1284,11 @@ msgstr "Automatikus"
 msgid "Joint Stereo"
 msgstr "Joint Stereo"
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:190
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:191
 msgid "Stereo"
 msgstr "Sztereó"
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:190
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:191
 msgid "Mono"
 msgstr "Monó"
 
@@ -1450,22 +1450,6 @@ msgid ""
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 msgstr ""
-
-#: src/gntui/fileselector.c:75 src/gntui/gntui.c:272
-msgid "Open Files"
-msgstr "Fájlok megnyitása"
-
-#: src/gntui/fileselector.c:75 src/gntui/gntui.c:271
-msgid "Add Files"
-msgstr "Fájlok hozzáadása"
-
-#: src/gntui/gntui.c:270
-msgid "Audacious2"
-msgstr "Audacious2"
-
-#: src/gntui/gntui.c:311
-msgid "gnt interface"
-msgstr "gnt felület"
 
 #: src/gtkui/columns.c:36
 msgid "Entry number"
@@ -1769,7 +1753,7 @@ msgstr "_Kimenet"
 
 #: src/gtkui/menus.c:209
 msgid "_View"
-msgstr ""
+msgstr "_Nézet"
 
 #: src/gtkui/menus.c:213
 msgid "_Queue/Unqueue"
@@ -1808,13 +1792,17 @@ msgstr "%s - Audacious"
 msgid "Buffering ..."
 msgstr "Pufferelés ..."
 
-#: src/gtkui/ui_gtk.c:165 src/skins/ui_main.c:305 src/skins/ui_main.c:1500
+#: src/gtkui/ui_gtk.c:165 src/skins/ui_main.c:305 src/skins/ui_main.c:1504
 msgid "Audacious"
 msgstr "Audacious"
 
 #: src/gtkui/ui_gtk.c:216 src/skins/plugin.c:190
 msgid "Error"
 msgstr "Hiba"
+
+#: src/gtkui/ui_playlist_notebook.c:97
+msgid "Close"
+msgstr ""
 
 #: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:460
 msgid "mono"
@@ -1876,7 +1864,7 @@ msgstr "Hangerő fel"
 msgid "Volume Down"
 msgstr "Hangerő le"
 
-#: src/hotkey/gui.c:81 src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
+#: src/hotkey/gui.c:81 src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
 msgid "Jump to File"
 msgstr "Ugrás fájlhoz"
 
@@ -2039,7 +2027,7 @@ msgstr "Engedélyezett modulok:"
 msgid "Settings"
 msgstr "Beállítások"
 
-#: src/lyricwiki/lyricwiki.c:274
+#: src/lyricwiki/lyricwiki.c:267
 msgid ""
 "\n"
 "Looking for lyrics..."
@@ -2047,7 +2035,7 @@ msgstr ""
 "\n"
 "Dalszöveg keresése ..."
 
-#: src/lyricwiki/lyricwiki.c:311
+#: src/lyricwiki/lyricwiki.c:304
 msgid ""
 "\n"
 "Connecting to lyrics.wikia.com..."
@@ -2055,7 +2043,7 @@ msgstr ""
 "\n"
 "Csatlakozás a lyrics.wikia.com-hoz ..."
 
-#: src/lyricwiki/lyricwiki.c:384
+#: src/lyricwiki/lyricwiki.c:377
 msgid ""
 "\n"
 "No lyrics were found."
@@ -2102,19 +2090,19 @@ msgstr "Kimeneti csatornák:"
 msgid "Changes take effect at the next song change."
 msgstr "Változások a következő dal váltáskor lépnek életbe."
 
-#: src/mpg123/mpg123.c:190
+#: src/mpg123/mpg123.c:191
 msgid "Surround"
 msgstr "Térhatású"
 
-#: src/mtp_up/mtp.c:336
+#: src/mtp_up/mtp.c:340
 msgid "Upload in progress..."
 msgstr "Feltöltés folyamatban..."
 
-#: src/mtp_up/mtp.c:348
+#: src/mtp_up/mtp.c:352
 msgid "Upload to MTP Device"
 msgstr "Feltöltés az MTP Eszközre"
 
-#: src/mtp_up/mtp.c:349
+#: src/mtp_up/mtp.c:353
 msgid "Disconnect MTP Device"
 msgstr "MTP Eszköz leválasztása"
 
@@ -2302,33 +2290,33 @@ msgstr "SDL hiba"
 msgid "Genre"
 msgstr "Műfaj"
 
-#: src/search-tool/search-tool.c:90 src/search-tool/search-tool.c:100
+#: src/search-tool/search-tool.c:96 src/search-tool/search-tool.c:106
 msgid "Library"
 msgstr "Gyűjtemény"
 
-#: src/search-tool/search-tool.c:584
+#: src/search-tool/search-tool.c:591
 msgid "_Create Playlist"
 msgstr "_Lejátszólista létrehozása"
 
-#: src/search-tool/search-tool.c:591
+#: src/search-tool/search-tool.c:598
 msgid "_Add to Playlist"
 msgstr "Lejátszólistához hozzá_ad"
 
-#: src/search-tool/search-tool.c:634
+#: src/search-tool/search-tool.c:641
 msgid "Search library"
 msgstr "Keresés a gyűjteményben"
 
-#: src/search-tool/search-tool.c:638
+#: src/search-tool/search-tool.c:645
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
 
-#: src/search-tool/search-tool.c:646
+#: src/search-tool/search-tool.c:653
 msgid "Please wait ..."
 msgstr "Kérem várjon ..."
 
-#: src/search-tool/search-tool.c:668
+#: src/search-tool/search-tool.c:675
 msgid "Choose Folder"
 msgstr "Mappa választás"
 
@@ -2428,40 +2416,40 @@ msgstr "16 kHz"
 msgid "Audacious Equalizer"
 msgstr "Audacious Equalizer"
 
-#: src/skins/ui_equalizer.c:896
+#: src/skins/ui_equalizer.c:887
 msgid "Presets"
 msgstr "Profilok"
 
-#: src/skins/ui_equalizer.c:977 src/skins/ui_manager.c:445
+#: src/skins/ui_equalizer.c:968 src/skins/ui_manager.c:442
 msgid "Load preset"
 msgstr "Előre beállított betöltése"
 
-#: src/skins/ui_equalizer.c:994
+#: src/skins/ui_equalizer.c:985
 msgid "Load auto-preset"
 msgstr ""
 
-#: src/skins/ui_equalizer.c:1024 src/skins/ui_equalizer.c:1042
-#: src/skins/ui_equalizer.c:1058
+#: src/skins/ui_equalizer.c:1015 src/skins/ui_equalizer.c:1033
+#: src/skins/ui_equalizer.c:1049
 msgid "Load equalizer preset"
 msgstr ""
 
-#: src/skins/ui_equalizer.c:1077 src/skins/ui_manager.c:466
+#: src/skins/ui_equalizer.c:1068 src/skins/ui_manager.c:463
 msgid "Save preset"
 msgstr ""
 
-#: src/skins/ui_equalizer.c:1095
+#: src/skins/ui_equalizer.c:1084
 msgid "Save auto-preset"
 msgstr ""
 
-#: src/skins/ui_equalizer.c:1128 src/skins/ui_equalizer.c:1164
+#: src/skins/ui_equalizer.c:1114 src/skins/ui_equalizer.c:1150
 msgid "Save equalizer preset"
 msgstr ""
 
-#: src/skins/ui_equalizer.c:1183 src/skins/ui_manager.c:481
+#: src/skins/ui_equalizer.c:1169 src/skins/ui_manager.c:478
 msgid "Delete preset"
 msgstr ""
 
-#: src/skins/ui_equalizer.c:1200
+#: src/skins/ui_equalizer.c:1186
 msgid "Delete auto-preset"
 msgstr ""
 
@@ -2521,19 +2509,19 @@ msgstr "Fájl Információs doboz"
 msgid "Visualization Menu"
 msgstr "Megjelenítési menü"
 
-#: src/skins/ui_main.c:1649
+#: src/skins/ui_main.c:1653
 msgid "Single mode."
 msgstr "Egyszerű mód."
 
-#: src/skins/ui_main.c:1651
+#: src/skins/ui_main.c:1655
 msgid "Playlist mode."
 msgstr "Lejátszólista mód."
 
-#: src/skins/ui_main.c:1673
+#: src/skins/ui_main.c:1677
 msgid "Stopping after song."
 msgstr "Leállítás az aktuális dal után."
 
-#: src/skins/ui_main.c:1675
+#: src/skins/ui_main.c:1679
 msgid "Not stopping after song."
 msgstr "Nincs leállítás az aktuális dal után."
 
@@ -3040,125 +3028,121 @@ msgstr "Beállítás A-B"
 msgid "Clear A-B"
 msgstr "Törlés A-B"
 
-#: src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
-msgid "Jump to Playlist Start"
-msgstr "Ugrás a lejátszólista kezdetére"
-
-#: src/skins/ui_manager.c:421 src/skins/ui_manager.c:422
+#: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
 msgid "Jump to Time"
 msgstr "Ugrás a megadott időre"
 
-#: src/skins/ui_manager.c:424
+#: src/skins/ui_manager.c:421
 msgid "Queue Toggle"
 msgstr "Várakozási sor váltása"
 
-#: src/skins/ui_manager.c:425
+#: src/skins/ui_manager.c:422
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Engedélyezi/letiltja az elemek lejátszólista várósorba helyezését."
 
-#: src/skins/ui_manager.c:428
+#: src/skins/ui_manager.c:425
 msgid "Copy"
 msgstr "Másolás"
 
-#: src/skins/ui_manager.c:430
+#: src/skins/ui_manager.c:427
 msgid "Cut"
 msgstr "Kivágás"
 
-#: src/skins/ui_manager.c:432
+#: src/skins/ui_manager.c:429
 msgid "Paste"
 msgstr "Beillesztés"
 
-#: src/skins/ui_manager.c:439
+#: src/skins/ui_manager.c:436
 msgid "Load"
 msgstr "Betöltés"
 
-#: src/skins/ui_manager.c:440
+#: src/skins/ui_manager.c:437
 msgid "Import"
 msgstr "Importálás"
 
-#: src/skins/ui_manager.c:441
+#: src/skins/ui_manager.c:438
 msgid "Save"
 msgstr "Mentés"
 
-#: src/skins/ui_manager.c:442
+#: src/skins/ui_manager.c:439
 msgid "Delete"
 msgstr "Törlés"
 
-#: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
-#: src/skins/ui_manager.c:480
+#: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
+#: src/skins/ui_manager.c:477
 msgid "Preset"
 msgstr "Előre beállított"
 
-#: src/skins/ui_manager.c:447 src/skins/ui_manager.c:468
-#: src/skins/ui_manager.c:483
+#: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
+#: src/skins/ui_manager.c:480
 msgid "Auto-load preset"
 msgstr "Előre beállított automatikus betöltése"
 
-#: src/skins/ui_manager.c:448
+#: src/skins/ui_manager.c:445
 msgid "Load auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:451
+#: src/skins/ui_manager.c:448
 msgid "Load default preset into equalizer"
 msgstr ""
 
-#: src/skins/ui_manager.c:453
+#: src/skins/ui_manager.c:450
 msgid "Zero"
 msgstr "Nulla"
 
-#: src/skins/ui_manager.c:454
+#: src/skins/ui_manager.c:451
 msgid "Set equalizer preset levels to zero"
 msgstr "Legyen minden hangszínszabályozó értéke nulla"
 
-#: src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:453
 msgid "From file"
 msgstr "Fájlból"
 
-#: src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:454
 msgid "Load preset from file"
 msgstr ""
 
-#: src/skins/ui_manager.c:459
+#: src/skins/ui_manager.c:456
 msgid "From WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:460
+#: src/skins/ui_manager.c:457
 msgid "Load preset from WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:462
+#: src/skins/ui_manager.c:459
 msgid "WinAMP Presets"
 msgstr ""
 
-#: src/skins/ui_manager.c:463
+#: src/skins/ui_manager.c:460
 msgid "Import WinAMP presets"
 msgstr ""
 
-#: src/skins/ui_manager.c:469
+#: src/skins/ui_manager.c:466
 msgid "Save auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:469
 msgid "Save default preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:474
+#: src/skins/ui_manager.c:471
 msgid "To file"
 msgstr "Fájlba"
 
-#: src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:472
 msgid "Save preset to file"
 msgstr ""
 
-#: src/skins/ui_manager.c:477
+#: src/skins/ui_manager.c:474
 msgid "To WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:478
+#: src/skins/ui_manager.c:475
 msgid "Save preset to WinAMP EQF file"
 msgstr ""
 
-#: src/skins/ui_manager.c:484
+#: src/skins/ui_manager.c:481
 msgid "Delete auto-load preset"
 msgstr ""
 
@@ -3256,29 +3240,29 @@ msgstr "Skála"
 msgid "SndStretch - Configuration"
 msgstr "SndStretch - beállítások"
 
-#: src/song_change/song_change.c:456
+#: src/song_change/song_change.c:437
 msgid "Command to run when Audacious starts a new song."
 msgstr "Parancs futtatása ha az Audacious elindít egy új számot."
 
-#: src/song_change/song_change.c:458 src/song_change/song_change.c:464
-#: src/song_change/song_change.c:470 src/song_change/song_change.c:476
+#: src/song_change/song_change.c:439 src/song_change/song_change.c:445
+#: src/song_change/song_change.c:451 src/song_change/song_change.c:457
 msgid "Command:"
 msgstr "Parancs:"
 
-#: src/song_change/song_change.c:462
+#: src/song_change/song_change.c:443
 msgid "Command to run toward the end of a song."
 msgstr "Parancs futtatása a dal végén."
 
-#: src/song_change/song_change.c:468
+#: src/song_change/song_change.c:449
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Parancs futtatása amikor Audacious elér a lejátszási lista végéhez."
 
-#: src/song_change/song_change.c:474
+#: src/song_change/song_change.c:455
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr "Parancs futtatása ha a dal cím változik (pl. hálózati stream-címek)."
 
-#: src/song_change/song_change.c:480
+#: src/song_change/song_change.c:461
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3297,17 +3281,17 @@ msgid ""
 "%T: Track title"
 msgstr ""
 
-#: src/song_change/song_change.c:507
+#: src/song_change/song_change.c:488
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
 
-#: src/song_change/song_change.c:518
+#: src/song_change/song_change.c:499
 msgid "Commands"
 msgstr "Parancsok"
 
-#: src/song_change/song_change.c:548
+#: src/song_change/song_change.c:529
 msgid "Song Change"
 msgstr "Szám váltás"
 
@@ -3394,44 +3378,6 @@ msgstr "Extra sztereó bővítmény névjegye"
 #: src/stereo_plugin/stereo.c:95
 msgid "Configure Extra Stereo"
 msgstr "Extra sztereó beállítások"
-
-#: src/streambrowser/gui/streambrowser_win.c:78
-msgid "Search:"
-msgstr "Keresés:"
-
-#: src/streambrowser/gui/streambrowser_win.c:97
-#: src/streambrowser/gui/streambrowser_win.c:372
-msgid "Add Bookmark"
-msgstr "Könyvjelző hozzáadása"
-
-#: src/streambrowser/gui/streambrowser_win.c:324
-msgid "Stream name"
-msgstr "Folyam neve"
-
-#: src/streambrowser/gui/streambrowser_win.c:331
-msgid "Now playing"
-msgstr "Most játszott"
-
-#: src/streambrowser/gui/streambrowser_win.c:369
-msgid "Remove Bookmark"
-msgstr "Könyvjelző törlése"
-
-#: src/streambrowser/streambrowser.c:330
-msgid "About Stream Browser"
-msgstr "Folyam böngésző névjegye"
-
-#: src/streambrowser/streambrowser.c:331
-msgid ""
-"Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n"
-"\n"
-"This is a simple stream browser that includes the most popular streaming directories.\n"
-"Many thanks to the Streamtuner developers <http://www.nongnu.org/streamtuner>,\n"
-"\tand of course to the whole Audacious community.\n"
-"\n"
-"Also thank you Tony Vroon for mentoring & guiding me, again.\n"
-"\n"
-"This was a Google Summer of Code 2008 project."
-msgstr ""
 
 #: src/tonegen/tonegen.c:49
 msgid "About Tone Generator"

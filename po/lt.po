@@ -4,14 +4,14 @@
 #
 # Translators:
 # Algimantas Margevičius <gymka@mail.ru>, 2011.
-# Algimantas Margevičius <margevicius.algimantas@gmail.com>, 2011.
+# Algimantas Margevičius <margevicius.algimantas@gmail.com>, 2011, 2012.
 # gymka <gymka@mail.ru>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2011-12-19 14:26-0500\n"
-"PO-Revision-Date: 2011-12-20 11:32+0000\n"
+"POT-Creation-Date: 2012-01-11 09:01-0500\n"
+"PO-Revision-Date: 2012-01-13 12:23+0000\n"
 "Last-Translator: Algimantas Margevičius <margevicius.algimantas@gmail.com>\n"
 "Language-Team: Lithuanian\n"
 "MIME-Version: 1.0\n"
@@ -98,8 +98,8 @@ msgstr "Pasirinkite dienas kuriomis žadinti"
 #: src/alarm/interface.c:533 src/alarm/interface.c:581
 #: src/alarm/interface.c:629 src/alarm/interface.c:677
 #: src/alarm/interface.c:725 src/bs2b/plugin.c:198 src/OSS/configure.c:153
-#: src/skins/ui_equalizer.c:1117 src/skins/ui_manager.c:450
-#: src/skins/ui_manager.c:471
+#: src/skins/ui_equalizer.c:1104 src/skins/ui_manager.c:447
+#: src/skins/ui_manager.c:468
 msgid "Default"
 msgstr "Numatytasis"
 
@@ -1303,7 +1303,7 @@ msgstr "Aidas: (%)"
 msgid "Volume: (%)"
 msgstr "Garsas: (%)"
 
-#: src/ffaudio/ffaudio-core.c:792
+#: src/ffaudio/ffaudio-core.c:725
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1330,7 +1330,7 @@ msgstr ""
 "libavformat %s (%s)\n"
 "libavutil %s (%s)\n"
 
-#: src/ffaudio/ffaudio-core.c:806
+#: src/ffaudio/ffaudio-core.c:739
 msgid "About FFaudio Plugin"
 msgstr "Apie FFaudio įskiepį"
 
@@ -1394,11 +1394,11 @@ msgstr "Auto"
 msgid "Joint Stereo"
 msgstr "Sujungtas stereo"
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:190
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:191
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:190
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:191
 msgid "Mono"
 msgstr "Mono"
 
@@ -1571,22 +1571,6 @@ msgstr ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
-
-#: src/gntui/fileselector.c:75 src/gntui/gntui.c:272
-msgid "Open Files"
-msgstr "Atverti failus"
-
-#: src/gntui/fileselector.c:75 src/gntui/gntui.c:271
-msgid "Add Files"
-msgstr "Pridėti failus"
-
-#: src/gntui/gntui.c:270
-msgid "Audacious2"
-msgstr "Audacious2"
-
-#: src/gntui/gntui.c:311
-msgid "gnt interface"
-msgstr "gnt vartotojo sąsaja"
 
 #: src/gtkui/columns.c:36
 msgid "Entry number"
@@ -1929,13 +1913,17 @@ msgstr "%s - Audacious"
 msgid "Buffering ..."
 msgstr "Įkraunama į atmintį ..."
 
-#: src/gtkui/ui_gtk.c:165 src/skins/ui_main.c:305 src/skins/ui_main.c:1500
+#: src/gtkui/ui_gtk.c:165 src/skins/ui_main.c:305 src/skins/ui_main.c:1504
 msgid "Audacious"
 msgstr "Audacious"
 
 #: src/gtkui/ui_gtk.c:216 src/skins/plugin.c:190
 msgid "Error"
 msgstr "Klaida"
+
+#: src/gtkui/ui_playlist_notebook.c:97
+msgid "Close"
+msgstr "Užverti"
 
 #: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:460
 msgid "mono"
@@ -1998,7 +1986,7 @@ msgstr "Pagarsinti"
 msgid "Volume Down"
 msgstr "Patildyti"
 
-#: src/hotkey/gui.c:81 src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
+#: src/hotkey/gui.c:81 src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
 msgid "Jump to File"
 msgstr "Šokti į failą"
 
@@ -2181,7 +2169,7 @@ msgstr "Įjungti įskiepiai:"
 msgid "Settings"
 msgstr "Nustatymai"
 
-#: src/lyricwiki/lyricwiki.c:274
+#: src/lyricwiki/lyricwiki.c:267
 msgid ""
 "\n"
 "Looking for lyrics..."
@@ -2189,7 +2177,7 @@ msgstr ""
 "\n"
 "Ieškoma dainos žodžių..."
 
-#: src/lyricwiki/lyricwiki.c:311
+#: src/lyricwiki/lyricwiki.c:304
 msgid ""
 "\n"
 "Connecting to lyrics.wikia.com..."
@@ -2197,7 +2185,7 @@ msgstr ""
 "\n"
 "Jungiamasi prie lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.c:384
+#: src/lyricwiki/lyricwiki.c:377
 msgid ""
 "\n"
 "No lyrics were found."
@@ -2249,19 +2237,19 @@ msgstr "Išvesties kanalai:"
 msgid "Changes take effect at the next song change."
 msgstr "Pakeitimai įsigalios nuo sekančios dainos."
 
-#: src/mpg123/mpg123.c:190
+#: src/mpg123/mpg123.c:191
 msgid "Surround"
 msgstr "Apsupimas"
 
-#: src/mtp_up/mtp.c:336
+#: src/mtp_up/mtp.c:340
 msgid "Upload in progress..."
 msgstr "Išsiunčiama..."
 
-#: src/mtp_up/mtp.c:348
+#: src/mtp_up/mtp.c:352
 msgid "Upload to MTP Device"
 msgstr "Išsiųsti į MTP įrenginį"
 
-#: src/mtp_up/mtp.c:349
+#: src/mtp_up/mtp.c:353
 msgid "Disconnect MTP Device"
 msgstr "Atjungti MTP įrenginį"
 
@@ -2452,23 +2440,23 @@ msgstr "SDL klaida"
 msgid "Genre"
 msgstr "Žanras"
 
-#: src/search-tool/search-tool.c:90 src/search-tool/search-tool.c:100
+#: src/search-tool/search-tool.c:96 src/search-tool/search-tool.c:106
 msgid "Library"
 msgstr "Fonoteka"
 
-#: src/search-tool/search-tool.c:584
+#: src/search-tool/search-tool.c:591
 msgid "_Create Playlist"
 msgstr "_Sukurti grojaraštį"
 
-#: src/search-tool/search-tool.c:591
+#: src/search-tool/search-tool.c:598
 msgid "_Add to Playlist"
 msgstr "_Pridėti į grojaraštį"
 
-#: src/search-tool/search-tool.c:634
+#: src/search-tool/search-tool.c:641
 msgid "Search library"
 msgstr "Ieškoti fonotekoje"
 
-#: src/search-tool/search-tool.c:638
+#: src/search-tool/search-tool.c:645
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2476,11 +2464,11 @@ msgstr ""
 "Norėdami importuoti muziką į Audacious fonoteką, pasirinkite aplanką ir "
 "paspauskite „atnaujinti“ piktogramą."
 
-#: src/search-tool/search-tool.c:646
+#: src/search-tool/search-tool.c:653
 msgid "Please wait ..."
 msgstr "Palaukite..."
 
-#: src/search-tool/search-tool.c:668
+#: src/search-tool/search-tool.c:675
 msgid "Choose Folder"
 msgstr "Pasirinkite aplanką"
 
@@ -2580,40 +2568,40 @@ msgstr "16 kHz"
 msgid "Audacious Equalizer"
 msgstr "Audacious ekvalaizeris"
 
-#: src/skins/ui_equalizer.c:896
+#: src/skins/ui_equalizer.c:887
 msgid "Presets"
 msgstr "Šablonai"
 
-#: src/skins/ui_equalizer.c:977 src/skins/ui_manager.c:445
+#: src/skins/ui_equalizer.c:968 src/skins/ui_manager.c:442
 msgid "Load preset"
 msgstr "Įkrauti šabloną"
 
-#: src/skins/ui_equalizer.c:994
+#: src/skins/ui_equalizer.c:985
 msgid "Load auto-preset"
 msgstr "Įkrauti auto išankstinius nustatymus"
 
-#: src/skins/ui_equalizer.c:1024 src/skins/ui_equalizer.c:1042
-#: src/skins/ui_equalizer.c:1058
+#: src/skins/ui_equalizer.c:1015 src/skins/ui_equalizer.c:1033
+#: src/skins/ui_equalizer.c:1049
 msgid "Load equalizer preset"
 msgstr "Įkrauti ekvalaizerio išankstinius nustatymus"
 
-#: src/skins/ui_equalizer.c:1077 src/skins/ui_manager.c:466
+#: src/skins/ui_equalizer.c:1068 src/skins/ui_manager.c:463
 msgid "Save preset"
 msgstr "Išsaugoti šablonus"
 
-#: src/skins/ui_equalizer.c:1095
+#: src/skins/ui_equalizer.c:1084
 msgid "Save auto-preset"
 msgstr "Išsaugoti auto išankstinius nustatymus"
 
-#: src/skins/ui_equalizer.c:1128 src/skins/ui_equalizer.c:1164
+#: src/skins/ui_equalizer.c:1114 src/skins/ui_equalizer.c:1150
 msgid "Save equalizer preset"
 msgstr "Išsaugoti ekvalaizerio išankstinius nustatymus"
 
-#: src/skins/ui_equalizer.c:1183 src/skins/ui_manager.c:481
+#: src/skins/ui_equalizer.c:1169 src/skins/ui_manager.c:478
 msgid "Delete preset"
 msgstr "Ištrinti šabloną"
 
-#: src/skins/ui_equalizer.c:1200
+#: src/skins/ui_equalizer.c:1186
 msgid "Delete auto-preset"
 msgstr "Ištrinti auto išankstinius nustatymus"
 
@@ -2673,19 +2661,19 @@ msgstr "Failo informacijos langas"
 msgid "Visualization Menu"
 msgstr "Vizualizacijos meniu"
 
-#: src/skins/ui_main.c:1649
+#: src/skins/ui_main.c:1653
 msgid "Single mode."
 msgstr "Vieno režimas."
 
-#: src/skins/ui_main.c:1651
+#: src/skins/ui_main.c:1655
 msgid "Playlist mode."
 msgstr "Grojaraščio režimas."
 
-#: src/skins/ui_main.c:1673
+#: src/skins/ui_main.c:1677
 msgid "Stopping after song."
 msgstr "Sustabdymas po dainos."
 
-#: src/skins/ui_main.c:1675
+#: src/skins/ui_main.c:1679
 msgid "Not stopping after song."
 msgstr "Nesustabdyti po dainos."
 
@@ -3187,125 +3175,121 @@ msgstr "Nustatyti A-B"
 msgid "Clear A-B"
 msgstr "Išvalyti A-B"
 
-#: src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
-msgid "Jump to Playlist Start"
-msgstr "Šokti į grojaraščio pradžią"
-
-#: src/skins/ui_manager.c:421 src/skins/ui_manager.c:422
+#: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
 msgid "Jump to Time"
 msgstr "Šokti į laiką"
 
-#: src/skins/ui_manager.c:424
+#: src/skins/ui_manager.c:421
 msgid "Queue Toggle"
 msgstr "Perjungti eilę"
 
-#: src/skins/ui_manager.c:425
+#: src/skins/ui_manager.c:422
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Įjungia/Išjungia įrašą grojaraščio eilėje."
 
-#: src/skins/ui_manager.c:428
+#: src/skins/ui_manager.c:425
 msgid "Copy"
 msgstr "Kopijuoti"
 
-#: src/skins/ui_manager.c:430
+#: src/skins/ui_manager.c:427
 msgid "Cut"
 msgstr "Iškirpti"
 
-#: src/skins/ui_manager.c:432
+#: src/skins/ui_manager.c:429
 msgid "Paste"
 msgstr "Įklijuoti"
 
-#: src/skins/ui_manager.c:439
+#: src/skins/ui_manager.c:436
 msgid "Load"
 msgstr "Įkrauti"
 
-#: src/skins/ui_manager.c:440
+#: src/skins/ui_manager.c:437
 msgid "Import"
 msgstr "Įkelti"
 
-#: src/skins/ui_manager.c:441
+#: src/skins/ui_manager.c:438
 msgid "Save"
 msgstr "Išsaugoti"
 
-#: src/skins/ui_manager.c:442
+#: src/skins/ui_manager.c:439
 msgid "Delete"
 msgstr "Ištrinti"
 
-#: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
-#: src/skins/ui_manager.c:480
+#: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
+#: src/skins/ui_manager.c:477
 msgid "Preset"
 msgstr "Šablonas"
 
-#: src/skins/ui_manager.c:447 src/skins/ui_manager.c:468
-#: src/skins/ui_manager.c:483
+#: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
+#: src/skins/ui_manager.c:480
 msgid "Auto-load preset"
 msgstr "Savaime įsikraunantis šablonas"
 
-#: src/skins/ui_manager.c:448
+#: src/skins/ui_manager.c:445
 msgid "Load auto-load preset"
 msgstr "Įkrauti savaime įsikraunantį šabloną"
 
-#: src/skins/ui_manager.c:451
+#: src/skins/ui_manager.c:448
 msgid "Load default preset into equalizer"
 msgstr "Įkrauti numatytąjį šabloną į ekvalaizerį"
 
-#: src/skins/ui_manager.c:453
+#: src/skins/ui_manager.c:450
 msgid "Zero"
 msgstr "Nulis"
 
-#: src/skins/ui_manager.c:454
+#: src/skins/ui_manager.c:451
 msgid "Set equalizer preset levels to zero"
 msgstr "Nustatyti ekvalaizerio šablono lygius į nulius"
 
-#: src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:453
 msgid "From file"
 msgstr "Iš failo"
 
-#: src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:454
 msgid "Load preset from file"
 msgstr "Įkrauti šabloną iš failo"
 
-#: src/skins/ui_manager.c:459
+#: src/skins/ui_manager.c:456
 msgid "From WinAMP EQF file"
 msgstr "Iš WinAMP EQF failo"
 
-#: src/skins/ui_manager.c:460
+#: src/skins/ui_manager.c:457
 msgid "Load preset from WinAMP EQF file"
 msgstr "Įkrauti šabloną iš WinAMP EQF failo"
 
-#: src/skins/ui_manager.c:462
+#: src/skins/ui_manager.c:459
 msgid "WinAMP Presets"
 msgstr "WinAMP šablonai"
 
-#: src/skins/ui_manager.c:463
+#: src/skins/ui_manager.c:460
 msgid "Import WinAMP presets"
 msgstr "Importuoti WinAMP šablonus"
 
-#: src/skins/ui_manager.c:469
+#: src/skins/ui_manager.c:466
 msgid "Save auto-load preset"
 msgstr "Išsaugoti savaime įsikraunantį šabloną"
 
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:469
 msgid "Save default preset"
 msgstr "Išsaugoti numatytąjį šabloną"
 
-#: src/skins/ui_manager.c:474
+#: src/skins/ui_manager.c:471
 msgid "To file"
 msgstr "Į failą"
 
-#: src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:472
 msgid "Save preset to file"
 msgstr "Išsaugoti šabloną į failą"
 
-#: src/skins/ui_manager.c:477
+#: src/skins/ui_manager.c:474
 msgid "To WinAMP EQF file"
 msgstr "Į WinAMP EQF failą"
 
-#: src/skins/ui_manager.c:478
+#: src/skins/ui_manager.c:475
 msgid "Save preset to WinAMP EQF file"
 msgstr "Išsaugoti šabloną į WinAMP EQF failą"
 
-#: src/skins/ui_manager.c:484
+#: src/skins/ui_manager.c:481
 msgid "Delete auto-load preset"
 msgstr "Ištrinti savaime įsikraunantį šabloną"
 
@@ -3407,31 +3391,31 @@ msgstr "Mastas"
 msgid "SndStretch - Configuration"
 msgstr "SndStretch - Konfiguravimas"
 
-#: src/song_change/song_change.c:456
+#: src/song_change/song_change.c:437
 msgid "Command to run when Audacious starts a new song."
 msgstr "Komanda kurią paleisti kai Audacious paleidžia naują dainą."
 
-#: src/song_change/song_change.c:458 src/song_change/song_change.c:464
-#: src/song_change/song_change.c:470 src/song_change/song_change.c:476
+#: src/song_change/song_change.c:439 src/song_change/song_change.c:445
+#: src/song_change/song_change.c:451 src/song_change/song_change.c:457
 msgid "Command:"
 msgstr "Komanda:"
 
-#: src/song_change/song_change.c:462
+#: src/song_change/song_change.c:443
 msgid "Command to run toward the end of a song."
 msgstr "Komanda kurią paleisti prieš pasibaigiant dainai."
 
-#: src/song_change/song_change.c:468
+#: src/song_change/song_change.c:449
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Komanda kurią paleisti kai Audacious pasiekia grojaraščio pabaigą."
 
-#: src/song_change/song_change.c:474
+#: src/song_change/song_change.c:455
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "Komanda kurią paleisti kai dainos pavadinimas pasikeičia (t.y. interneto "
 "srautų pavadinimai)"
 
-#: src/song_change/song_change.c:480
+#: src/song_change/song_change.c:461
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3465,7 +3449,7 @@ msgstr ""
 "%b: Albumas\n"
 "%T: Takelio pavadinimas"
 
-#: src/song_change/song_change.c:507
+#: src/song_change/song_change.c:488
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -3473,11 +3457,11 @@ msgstr ""
 "<span size='small'>Parametrai pateikti komandų interpretatoriui turi būt "
 "kabutėse. Darant kitaip rizikuojate savo saugumu.</span>"
 
-#: src/song_change/song_change.c:518
+#: src/song_change/song_change.c:499
 msgid "Commands"
 msgstr "Komandos"
 
-#: src/song_change/song_change.c:548
+#: src/song_change/song_change.c:529
 msgid "Song Change"
 msgstr "Dainos keitimas"
 
@@ -3563,53 +3547,6 @@ msgstr "Apie Extra Stereo įskiepį"
 #: src/stereo_plugin/stereo.c:95
 msgid "Configure Extra Stereo"
 msgstr "Konfigūruoti Extra Stereo"
-
-#: src/streambrowser/gui/streambrowser_win.c:78
-msgid "Search:"
-msgstr "Ieškoti:"
-
-#: src/streambrowser/gui/streambrowser_win.c:97
-#: src/streambrowser/gui/streambrowser_win.c:372
-msgid "Add Bookmark"
-msgstr "Pridėti žymą"
-
-#: src/streambrowser/gui/streambrowser_win.c:324
-msgid "Stream name"
-msgstr "Srauto pavadinimas"
-
-#: src/streambrowser/gui/streambrowser_win.c:331
-msgid "Now playing"
-msgstr "Dabar grojama"
-
-#: src/streambrowser/gui/streambrowser_win.c:369
-msgid "Remove Bookmark"
-msgstr "Ištrinti žymą"
-
-#: src/streambrowser/streambrowser.c:330
-msgid "About Stream Browser"
-msgstr "Apie Stream browser"
-
-#: src/streambrowser/streambrowser.c:331
-msgid ""
-"Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n"
-"\n"
-"This is a simple stream browser that includes the most popular streaming directories.\n"
-"Many thanks to the Streamtuner developers <http://www.nongnu.org/streamtuner>,\n"
-"\tand of course to the whole Audacious community.\n"
-"\n"
-"Also thank you Tony Vroon for mentoring & guiding me, again.\n"
-"\n"
-"This was a Google Summer of Code 2008 project."
-msgstr ""
-"Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n"
-"\n"
-"This is a simple stream browser that includes the most popular streaming directories.\n"
-"Many thanks to the Streamtuner developers <http://www.nongnu.org/streamtuner>,\n"
-"\tand of course to the whole Audacious community.\n"
-"\n"
-"Also thank you Tony Vroon for mentoring & guiding me, again.\n"
-"\n"
-"This was a Google Summer of Code 2008 project."
 
 #: src/tonegen/tonegen.c:49
 msgid "About Tone Generator"
