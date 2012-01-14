@@ -1,6 +1,6 @@
-# Russian translation for Audacious
+# Russian translation for Audacious Plugins
 # Copyright (C) Audacious translators
-# This file is distributed under the same license as the Audacious package.
+# This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
 # Alexander Orlov <alxorlov@pochta.ru>, 2007.
@@ -9,10 +9,10 @@
 # Sergey V. Mironov <sergo@bk.ru>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2011-12-29 19:29-0500\n"
-"PO-Revision-Date: 2012-01-11 01:03+0000\n"
+"POT-Creation-Date: 2012-01-11 09:01-0500\n"
+"PO-Revision-Date: 2012-01-13 11:36+0000\n"
 "Last-Translator: NaiLi Rootaerc <theism@mail.ru>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -1305,7 +1305,7 @@ msgstr "Обратная связь (%):"
 msgid "Volume: (%)"
 msgstr "Громкость (%):"
 
-#: src/ffaudio/ffaudio-core.c:798
+#: src/ffaudio/ffaudio-core.c:725
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1331,7 +1331,7 @@ msgstr ""
 "libavformat %s (%s)\n"
 "libavutil %s (%s)\n"
 
-#: src/ffaudio/ffaudio-core.c:812
+#: src/ffaudio/ffaudio-core.c:739
 msgid "About FFaudio Plugin"
 msgstr "О модуле FFaudio"
 
@@ -1923,6 +1923,10 @@ msgstr "Audacious"
 msgid "Error"
 msgstr "Ошибка"
 
+#: src/gtkui/ui_playlist_notebook.c:97
+msgid "Close"
+msgstr "Закрыть"
+
 #: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:460
 msgid "mono"
 msgstr "моно"
@@ -2241,15 +2245,15 @@ msgstr "Изменения осуществляются при смене вос
 msgid "Surround"
 msgstr "Объёмное звучание"
 
-#: src/mtp_up/mtp.c:336
+#: src/mtp_up/mtp.c:340
 msgid "Upload in progress..."
 msgstr "Проводится выгрузка..."
 
-#: src/mtp_up/mtp.c:348
+#: src/mtp_up/mtp.c:352
 msgid "Upload to MTP Device"
 msgstr "Загрузить на MTP-устройство"
 
-#: src/mtp_up/mtp.c:349
+#: src/mtp_up/mtp.c:353
 msgid "Disconnect MTP Device"
 msgstr "Отключить MTP-устройство"
 

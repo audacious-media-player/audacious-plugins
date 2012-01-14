@@ -5,15 +5,16 @@
 # Translators:
 # fedenko <fedenko@ukr.net>, 2011.
 # Kostyantyn Fedenko <fedenko@ukr.net>, 2011.
+# NaiLi Rootaerc <theism@mail.ru>, 2012.
 # Rax Garfield (http://biokillaz.com/), 2012.
 # Rax Garfield (http://biokillaz.com)/, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2011-12-29 19:29-0500\n"
-"PO-Revision-Date: 2012-01-09 16:44+0000\n"
-"Last-Translator: Rax Garfield <admin@dvizho.ks.ua>\n"
+"POT-Creation-Date: 2012-01-11 09:01-0500\n"
+"PO-Revision-Date: 2012-01-13 11:37+0000\n"
+"Last-Translator: NaiLi Rootaerc <theism@mail.ru>\n"
 "Language-Team: Ukrainian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1304,7 +1305,7 @@ msgstr "Зворотній зв’язок (%):"
 msgid "Volume: (%)"
 msgstr "Гучність (%): "
 
-#: src/ffaudio/ffaudio-core.c:798
+#: src/ffaudio/ffaudio-core.c:725
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1331,7 +1332,7 @@ msgstr ""
 "libavformat %s (%s)\n"
 "libavutil %s (%s)\n"
 
-#: src/ffaudio/ffaudio-core.c:812
+#: src/ffaudio/ffaudio-core.c:739
 msgid "About FFaudio Plugin"
 msgstr "Про плаґін FFaudio"
 
@@ -1922,6 +1923,10 @@ msgstr "Audacious"
 msgid "Error"
 msgstr "Помилка"
 
+#: src/gtkui/ui_playlist_notebook.c:97
+msgid "Close"
+msgstr "Закрити"
+
 #: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:460
 msgid "mono"
 msgstr "моно"
@@ -2238,15 +2243,15 @@ msgstr "Зміни здійснюються при зміні відтворюв
 msgid "Surround"
 msgstr "Об’ємний звук"
 
-#: src/mtp_up/mtp.c:336
+#: src/mtp_up/mtp.c:340
 msgid "Upload in progress..."
 msgstr "Завантажую..."
 
-#: src/mtp_up/mtp.c:348
+#: src/mtp_up/mtp.c:352
 msgid "Upload to MTP Device"
 msgstr "Завантажити на MTP-прилад"
 
-#: src/mtp_up/mtp.c:349
+#: src/mtp_up/mtp.c:353
 msgid "Disconnect MTP Device"
 msgstr "Від’єднати MTP-прилад"
 
