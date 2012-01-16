@@ -48,6 +48,7 @@ typedef struct {
     gint list;
     GList * queue;
     gint popup_source, popup_pos;
+    gboolean popup_shown;
 } PlaylistWidgetData;
 
 static void set_int_from_tuple (GValue * value, const Tuple * tuple, gint field)
@@ -212,6 +213,7 @@ static void shift_rows (void * user, gint row, gint before)
 static gboolean popup_show (PlaylistWidgetData * data)
 {
     audgui_infopopup_show (data->list, data->popup_pos);
+    data->popup_shown = TRUE;
 
     g_source_remove (data->popup_source);
     data->popup_source = 0;
@@ -226,7 +228,12 @@ static void popup_hide (PlaylistWidgetData * data)
         data->popup_source = 0;
     }
 
-    audgui_infopopup_hide ();
+    if (data->popup_shown)
+    {
+        audgui_infopopup_hide ();
+        data->popup_shown = FALSE;
+    }
+
     data->popup_pos = -1;
 }
 
@@ -237,6 +244,14 @@ static void popup_trigger (PlaylistWidgetData * data, gint pos)
     data->popup_pos = pos;
     data->popup_source = g_timeout_add (aud_get_int (NULL, "filepopup_delay") *
      100, (GSourceFunc) popup_show, data);
+}
+
+static void popup_update (PlaylistWidgetData * data, gint row)
+{
+    popup_hide (data);
+
+    audgui_infopopup_show (data->list, row);
+    data->popup_shown = TRUE;
 }
 
 static void mouse_motion (void * user, GdkEventMotion * event, gint row)
@@ -350,6 +365,7 @@ GtkWidget * ui_playlist_widget_new (gint playlist)
     data->queue = NULL;
     data->popup_source = 0;
     data->popup_pos = -1;
+    data->popup_shown = FALSE;
 
     GtkWidget * list = audgui_list_new (& callbacks, data,
      aud_playlist_entry_count (playlist));
@@ -455,4 +471,24 @@ void ui_playlist_widget_update (GtkWidget * widget, gint type, gint at,
 
     audgui_list_update_selection (widget, at, count);
     update_queue (widget, data);
+}
+
+void ui_playlist_widget_scroll (GtkWidget * widget)
+{
+    PlaylistWidgetData * data = audgui_list_get_user (widget);
+    g_return_if_fail (data);
+
+    gint x, y;
+    gtk_widget_get_pointer (widget, &x, &y);
+    gint row = audgui_list_row_at_point (widget, x, y);
+
+    if (data->popup_shown)
+    {
+        if (row < 0)
+            popup_hide (data);
+        else
+            popup_update (data, row);
+    }
+    else if (data->popup_source)
+        data->popup_pos = row;
 }

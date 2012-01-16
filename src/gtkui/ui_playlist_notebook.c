@@ -267,9 +267,11 @@ void ui_playlist_notebook_create_tab(gint playlist)
 {
     GtkWidget *scrollwin, *treeview;
     GtkWidget *label, *entry, *ebox, *hbox;
+    GtkAdjustment *vscroll;
     gint position = aud_playlist_get_position (playlist);
 
     scrollwin = gtk_scrolled_window_new(NULL, NULL);
+    vscroll = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(scrollwin));
 
     treeview = ui_playlist_widget_new(playlist);
     g_object_set_data(G_OBJECT(scrollwin), "treeview", treeview);
@@ -316,6 +318,8 @@ void ui_playlist_notebook_create_tab(gint playlist)
     g_signal_connect(ebox, "button-press-event", G_CALLBACK(tab_button_press_cb), NULL);
     g_signal_connect(ebox, "key-press-event", G_CALLBACK(tab_key_press_cb), NULL);
     g_signal_connect(entry, "activate", G_CALLBACK(tab_title_save), ebox);
+    g_signal_connect_swapped (vscroll, "value-changed",
+     G_CALLBACK(ui_playlist_widget_scroll), treeview);
 }
 
 void ui_playlist_notebook_populate(void)
