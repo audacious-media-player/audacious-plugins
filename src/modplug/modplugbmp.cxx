@@ -7,6 +7,7 @@
 #include <fstream>
 #include <stdint.h>
 #include <unistd.h>
+#include <sys/types.h>
 #include <math.h>
 
 #include <libmodplug/stdafx.h>
