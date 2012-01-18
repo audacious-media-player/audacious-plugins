@@ -248,7 +248,11 @@ static void popup_trigger (PlaylistWidgetData * data, gint pos)
 
 static void popup_update (PlaylistWidgetData * data, gint row)
 {
-    popup_hide (data);
+    if (data->popup_source)
+    {
+        g_source_remove (data->popup_source);
+        data->popup_source = 0;
+    }
 
     audgui_infopopup_show (data->list, row);
     data->popup_shown = TRUE;
