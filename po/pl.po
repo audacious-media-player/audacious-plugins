@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2011-12-29 19:29-0500\n"
-"PO-Revision-Date: 2012-01-11 10:47+0000\n"
+"POT-Creation-Date: 2012-01-11 09:01-0500\n"
+"PO-Revision-Date: 2012-01-16 21:02+0000\n"
 "Last-Translator: Piotr Sokół <psokol@jabster.pl>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -1298,7 +1298,7 @@ msgstr "Oddźwięk: (%)"
 msgid "Volume: (%)"
 msgstr "Głośność: (%)"
 
-#: src/ffaudio/ffaudio-core.c:798
+#: src/ffaudio/ffaudio-core.c:725
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1325,7 +1325,7 @@ msgstr ""
 "libavformat %s (%s)\n"
 "libavutil %s (%s)\n"
 
-#: src/ffaudio/ffaudio-core.c:812
+#: src/ffaudio/ffaudio-core.c:739
 msgid "About FFaudio Plugin"
 msgstr "O wtyczce FFaudio"
 
@@ -1916,6 +1916,10 @@ msgstr "Audacious"
 msgid "Error"
 msgstr "Błąd"
 
+#: src/gtkui/ui_playlist_notebook.c:97
+msgid "Close"
+msgstr ""
+
 #: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:460
 msgid "mono"
 msgstr "mono"
@@ -1979,7 +1983,7 @@ msgstr "Zmniejsz głośność"
 
 #: src/hotkey/gui.c:81 src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
 msgid "Jump to File"
-msgstr "Przeskocz do pliku"
+msgstr "Przejdź do nagrania"
 
 #: src/hotkey/gui.c:82
 msgid "Toggle Player Windows"
@@ -1987,7 +1991,7 @@ msgstr "Przełącz okno odtwarzacza"
 
 #: src/hotkey/gui.c:83
 msgid "Show On-Screen-Display"
-msgstr "Pokaż OSD"
+msgstr "Pokaż menu ekranowe"
 
 #: src/hotkey/gui.c:84
 msgid "Toggle Repeat"
@@ -1999,7 +2003,7 @@ msgstr "Przełącz losowanie"
 
 #: src/hotkey/gui.c:95
 msgid "(none)"
-msgstr "(---)"
+msgstr "(brak)"
 
 #: src/hotkey/gui.c:232
 msgid ""
@@ -2233,15 +2237,15 @@ msgstr "Zmiany zostaną zastosowane przy przejściu do następnego utworu."
 msgid "Surround"
 msgstr "Surround"
 
-#: src/mtp_up/mtp.c:336
+#: src/mtp_up/mtp.c:340
 msgid "Upload in progress..."
 msgstr "Trwa wgrywanie..."
 
-#: src/mtp_up/mtp.c:348
+#: src/mtp_up/mtp.c:352
 msgid "Upload to MTP Device"
 msgstr "Wgraj do urządzenia MTP"
 
-#: src/mtp_up/mtp.c:349
+#: src/mtp_up/mtp.c:353
 msgid "Disconnect MTP Device"
 msgstr "Rozłącz urządzenie MTP"
 
@@ -2562,11 +2566,11 @@ msgstr "Equalizer Audacious"
 
 #: src/skins/ui_equalizer.c:887
 msgid "Presets"
-msgstr "Schematy ustawień"
+msgstr "Profile ustawień"
 
 #: src/skins/ui_equalizer.c:968 src/skins/ui_manager.c:442
 msgid "Load preset"
-msgstr "Wczytaj ustawienia"
+msgstr "Wczytywanie profilu"
 
 #: src/skins/ui_equalizer.c:985
 msgid "Load auto-preset"
@@ -2579,11 +2583,11 @@ msgstr ""
 
 #: src/skins/ui_equalizer.c:1068 src/skins/ui_manager.c:463
 msgid "Save preset"
-msgstr "Zapisz ustawienia"
+msgstr "Zapisywanie profilu"
 
 #: src/skins/ui_equalizer.c:1084
 msgid "Save auto-preset"
-msgstr ""
+msgstr "Zapisywanie domyślnego profilu"
 
 #: src/skins/ui_equalizer.c:1114 src/skins/ui_equalizer.c:1150
 msgid "Save equalizer preset"
@@ -2591,7 +2595,7 @@ msgstr ""
 
 #: src/skins/ui_equalizer.c:1169 src/skins/ui_manager.c:478
 msgid "Delete preset"
-msgstr "Usuń ustawienia"
+msgstr "Usuwanie profilu"
 
 #: src/skins/ui_equalizer.c:1186
 msgid "Delete auto-preset"
@@ -2599,7 +2603,7 @@ msgstr ""
 
 #: src/skins/ui_main.c:444
 msgid "kbps"
-msgstr "kbps"
+msgstr "kb/s"
 
 #: src/skins/ui_main.c:452
 msgid "kHz"
@@ -2683,27 +2687,27 @@ msgstr "Wierzchołki"
 
 #: src/skins/ui_manager.c:76 src/skins/ui_manager.c:77
 msgid "Repeat"
-msgstr "Powtarzaj"
+msgstr "Powtarzanie"
 
 #: src/skins/ui_manager.c:79 src/skins/ui_manager.c:80
 msgid "Shuffle"
-msgstr "Losuj"
+msgstr "Losowanie kolejności"
 
 #: src/skins/ui_manager.c:82 src/skins/ui_manager.c:83
 msgid "No Playlist Advance"
-msgstr "Odtwarzaj pojedynczo"
+msgstr "Pojedynczo"
 
 #: src/skins/ui_manager.c:85 src/skins/ui_manager.c:86
 msgid "Show Player"
-msgstr "Pokaż odtwarzacz"
+msgstr "Odtwarzacz"
 
 #: src/skins/ui_manager.c:88 src/skins/ui_manager.c:89
 msgid "Show Playlist Editor"
-msgstr "Pokaż listę odtwarzania"
+msgstr "Edytor list odtwarzania"
 
 #: src/skins/ui_manager.c:91 src/skins/ui_manager.c:92
 msgid "Show Equalizer"
-msgstr "Pokaż korektor graficzny"
+msgstr "Korektor graficzny"
 
 #: src/skins/ui_manager.c:94 src/skins/ui_manager.c:95
 msgid "Always on Top"
@@ -2804,7 +2808,7 @@ msgstr "Najszybszy"
 
 #: src/skins/ui_manager.c:166
 msgid "Time Elapsed"
-msgstr "Miniony czas"
+msgstr "Bieżący czas"
 
 #: src/skins/ui_manager.c:167
 msgid "Time Remaining"
@@ -2812,15 +2816,15 @@ msgstr "Pozostały czas"
 
 #: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
 msgid "Pause"
-msgstr "Pauza"
+msgstr "Wstrzymaj"
 
 #: src/skins/ui_manager.c:187 src/skins/ui_manager.c:188
 msgid "Previous"
-msgstr "Poprzedni"
+msgstr "Poprzednie nagranie"
 
 #: src/skins/ui_manager.c:190 src/skins/ui_manager.c:191
 msgid "Next"
-msgstr "Następny"
+msgstr "Następne nagranie"
 
 #: src/skins/ui_manager.c:196
 msgid "Visualization"
@@ -3102,7 +3106,7 @@ msgstr "Według numeru ścieżki"
 
 #: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
 msgid "Sorts the list by track number."
-msgstr "Porządkuje listę na podstawie numeru utworu."
+msgstr "Porządkuje listę na podstawie numeru ścieżki."
 
 #: src/skins/ui_manager.c:345
 msgid "Sort Selected"
@@ -3211,7 +3215,7 @@ msgstr "Usuń"
 #: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
 #: src/skins/ui_manager.c:477
 msgid "Preset"
-msgstr "Ustawienia"
+msgstr "Profil"
 
 #: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
 #: src/skins/ui_manager.c:480
@@ -3240,7 +3244,7 @@ msgstr "Z pliku"
 
 #: src/skins/ui_manager.c:454
 msgid "Load preset from file"
-msgstr "Wczytaj ustawienia z pliku"
+msgstr "Wczytuje profil ustawień z pliku"
 
 #: src/skins/ui_manager.c:456
 msgid "From WinAMP EQF file"
