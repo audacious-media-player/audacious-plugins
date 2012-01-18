@@ -474,13 +474,11 @@ void ui_playlist_widget_scroll (GtkWidget * widget)
     gtk_widget_get_pointer (widget, &x, &y);
     gint row = audgui_list_row_at_point (widget, x, y);
 
-    if (data->popup_shown)
-    {
-        if (row < 0)
-            popup_hide (data);
-        else
-            popup_trigger (data, row);
-    }
-    else if (data->popup_source)
-        data->popup_pos = row;
+    /* Only update the info popup if it is already shown or about to be shown;
+     * this makes sure that it doesn't pop up when the Audacious window isn't
+     * even visible. */
+    if (row >= 0 && (data->popup_source || data->popup_shown))
+        popup_trigger (data, row);
+    else
+        popup_hide (data);
 }
