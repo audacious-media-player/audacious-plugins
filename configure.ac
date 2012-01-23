@@ -239,6 +239,21 @@ if test "x$have_gnomeshortcuts" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS gnomeshortcuts"
 fi
 
+dnl Linux Infrared Remote Control (LIRC)
+dnl ====================================
+
+AC_ARG_ENABLE(lirc,
+ AS_HELP_STRING([--disable-lirc], [disable LIRC support (default=enabled)]),
+ [enable_lirc=$enableval], [enable_lirc=yes])
+
+if test $enable_lirc = yes ; then
+    AC_CHECK_HEADERS([lirc/lirc_client.h], [enable_lirc=yes], [enable_lirc=no])
+fi
+
+if test $enable_lirc = yes ; then
+	GENERAL_PLUGINS="$GENERAL_PLUGINS lirc"
+fi
+
 dnl Song Change
 dnl ===========
 
@@ -1193,6 +1208,7 @@ echo "  General"
 echo "  -------"
 echo "  Alarm:                                  yes"
 echo "  Album Art:                              yes"
+echo "  Linux Infrared Remote Control (LIRC)    $enable_lirc"
 echo "  MPRIS 2 Server:                         $enable_mpris2"
 echo "  Search Tool:                            yes"
 echo "  Song Change:                            $enable_songchange"
