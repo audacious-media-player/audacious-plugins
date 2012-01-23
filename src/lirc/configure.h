@@ -1,4 +1,4 @@
-/* Audacious Lirc plugin - configure.h
+/* Audacious LIRC plugin - configure.h
 
    Copyright (C) 2012 Joonas Harjumäki (jharjuma@gmail.com)
 
@@ -33,10 +33,8 @@ extern gint b_enable_reconnect;
 extern gint reconnect_timeout;
 extern gchar *aosd_font;
 
-void load_cfg(void);
+void load_cfg (void);
 
-void configure(void);
+void configure (void);
 
-GtkWidget* create_lirc_cfg (void);
-
-
+GtkWidget *create_lirc_cfg (void);

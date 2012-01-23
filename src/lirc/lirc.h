@@ -1,4 +1,4 @@
-/* Audacious Lirc plugin - lirc.h
+/* Audacious LIRC plugin - lirc.h
 
    Copyright (C) 2012 Joonas Harjumäki (jharjuma@gmail.com)
 
@@ -28,6 +28,5 @@
 
 #include <glib.h>
 
-gboolean lirc_input_callback(GIOChannel *source, GIOCondition condition,
-		gpointer data);
-
+gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition,
+                              gpointer data);
