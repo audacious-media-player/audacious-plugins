@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2012-01-11 09:01-0500\n"
-"PO-Revision-Date: 2012-01-12 01:23+0000\n"
+"PO-Revision-Date: 2012-01-23 16:42+0000\n"
 "Last-Translator: Jorge A. García Sosa <jagsmd@gmail.com>\n"
 "Language-Team: Spanish (Mexican)\n"
 "MIME-Version: 1.0\n"
@@ -751,8 +751,8 @@ msgstr "Iniciar Reproducción"
 #: src/aosd/aosd_trigger.c:79
 msgid "Triggers OSD when a playlist entry is played."
 msgstr ""
-"Muestra el Notificación en Pantalla cuando se reproduce un elemento de la "
-"lista de reproducción"
+"Muestra Notificación en Pantalla cuando se reproduce un elemento de la lista"
+" de reproducción"
 
 #: src/aosd/aosd_trigger.c:83
 msgid "Title Change"
@@ -1020,15 +1020,15 @@ msgstr "Preferencias Bauer stereophonic-to-binaural"
 
 #: src/bs2b/plugin.c:168
 msgid "Feed level:"
-msgstr "Nivel de alimentación"
+msgstr "Nivel de alimentación:"
 
 #: src/bs2b/plugin.c:182
 msgid "Cut frequency:"
-msgstr "Frecuencia de corte"
+msgstr "Frecuencia de corte:"
 
 #: src/bs2b/plugin.c:196
 msgid "Presets:"
-msgstr "Predefinidos"
+msgstr "Predefinidos:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:242
 msgid "About Audio CD Plugin"
@@ -1138,11 +1138,11 @@ msgstr "Preferencias del Compresor de Rango Dinámico "
 
 #: src/compressor/plugin.c:107
 msgid "Center volume:"
-msgstr "Centrar volumen"
+msgstr "Centrar volumen:"
 
 #: src/compressor/plugin.c:120
 msgid "Dynamic range:"
-msgstr "Rango dinámico"
+msgstr "Rango dinámico:"
 
 #: src/console/configure.c:136
 msgid "Game Console Music Decoder"
@@ -1207,8 +1207,8 @@ msgid ""
 " provide length information (i.e. looping tracks)."
 msgstr ""
 "La duración predeterminada de la pista, expresada en segundos, es usada para"
-" pistas que no proveen información de su duracióngth (por ejemplo: pistas de"
-" repetición)."
+" pistas que no proveen información de su duración (por ejemplo: pistas de "
+"repetición)."
 
 #: src/console/plugin.c:33
 msgid "About the Game Console Music Decoder"
@@ -1221,7 +1221,7 @@ msgid ""
 "Audacious implementation by: William Pitcock <nenolod@dereferenced.org>, \n"
 "        Shay Green <gblargg@gmail.com>\n"
 msgstr ""
-"Motor del descofificador de música de consola basado en Game_Music_Emu 0.5.2.\n"
+"Motor del descodificador de música de consola basado en Game_Music_Emu 0.5.2.\n"
 "Formatos soportados: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
 "Implementación en Audacious por: William Pitcock <nenolod@dereferenced.org>, \n"
 "        Shay Green <gblargg@gmail.com>\n"
@@ -3629,7 +3629,7 @@ msgstr ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>\n"
 "\n"
-"Visita la Fundación Xiph.org Foundation en http://www.xiph.org/\n"
+"Visita la Fundación Xiph.org en http://www.xiph.org/\n"
 
 #: src/vtx/about.c:14
 msgid "About Vortex Player"
@@ -3651,7 +3651,7 @@ msgstr ""
 "La música en formato vtx puede ser encontrada en  http://vtx.microfor.ru/music.htm\n"
 "y otros sitios de música AY/YM.\n"
 "\n"
-"Implementación en Audacious por Pavel Vymetalek <pvymetalek@seznam.cz>"
+"Implementación para Audacious por Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/wavpack/wavpack.c:353
 #, c-format
@@ -3665,7 +3665,7 @@ msgid ""
 "Some of the plugin code was by Miles Egan\n"
 "Visit the Wavpack site at http://www.wavpack.com/\n"
 msgstr ""
-"Copyright (c) 2006 William Pitcock <nenolod -en- nenolod.net>\n"
+"Copyright (c) 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
 "Algo del código del plugin code fue por Miles Egan\n"
 "Visita el sitio Wavpack en http://www.wavpack.com/\n"
