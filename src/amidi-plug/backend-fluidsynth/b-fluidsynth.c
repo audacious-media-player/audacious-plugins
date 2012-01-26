@@ -41,7 +41,7 @@ gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint 
                         "to FluidSynth, a real-time software synthesizer based "
                         "on the SoundFont2 specification (www.fluidsynth.org).\n"
                         "Produced audio can be manipulated via player effect "
-                        "plugins and is processed by chosen ouput plugin.\n"
+                        "plugins and is processed by chosen output plugin.\n"
                         "Backend written by Giacomo Lozito.") );
   if ( ppos != NULL )
     *ppos = 2; /* preferred position in backend list */
