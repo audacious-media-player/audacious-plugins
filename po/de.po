@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-01-07 23:37+0100\n"
-"PO-Revision-Date: 2012-01-08 00:12+0100\n"
+"POT-Creation-Date: 2012-01-26 23:55+0100\n"
+"PO-Revision-Date: 2012-01-27 00:14+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -392,7 +392,7 @@ msgid ""
 "time software synthesizer based on the SoundFont2 specification (www."
 "fluidsynth.org).\n"
 "Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen ouput plugin.\n"
+"by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
 "Diesed Backend erzeugt Audiomaterial durch Senden von MIDI Events an "
@@ -1318,7 +1318,7 @@ msgstr "Rückkopplung: (%)"
 msgid "Volume: (%)"
 msgstr "Lautstärke: (%)"
 
-#: src/ffaudio/ffaudio-core.c:719
+#: src/ffaudio/ffaudio-core.c:725
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -1345,7 +1345,7 @@ msgstr ""
 "libavformat %s (%s)\n"
 "libavutil %s (%s)\n"
 
-#: src/ffaudio/ffaudio-core.c:733
+#: src/ffaudio/ffaudio-core.c:739
 msgid "About FFaudio Plugin"
 msgstr "Über FFaudio Plugin"
 
@@ -2186,6 +2186,66 @@ msgstr "Aktive Plugins:"
 msgid "Settings"
 msgstr "Einstellungen"
 
+#: src/lirc/configure.c:141
+msgid "LIRC plugin settings"
+msgstr "LIRC Plugin Einstellungen"
+
+#: src/lirc/configure.c:169
+msgid "Reconnect to LIRC server"
+msgstr "Zum LIRC Server wiederverbinden"
+
+#: src/lirc/configure.c:177
+msgid "Timeout before reconnecting (seconds): "
+msgstr "Zeitspanne bis zum Wiederverbinden (Sekunden): "
+
+#: src/lirc/configure.c:186
+msgid "Reconnect"
+msgstr "Wiederverbinden"
+
+#: src/lirc/configure.c:190
+msgid "Connection"
+msgstr "Verbindung"
+
+#: src/lirc/lirc.c:77
+#, c-format
+msgid "%s: could not init LIRC support\n"
+msgstr "%s: konnte LIRC Unterstützung nicht initialisieren\n"
+
+#: src/lirc/lirc.c:84
+#, c-format
+msgid ""
+"%s: could not read LIRC config file\n"
+"%s: please read the documentation of LIRC\n"
+"%s: how to create a proper config file\n"
+msgstr ""
+"%s: konnte LIRC Konfigurationsdatei nicht lesen\n"
+"%s: lies bitte in der Dokumentation von LIRC\n"
+"%s: wie man eine korrekte Datei erstellt\n"
+
+#: src/lirc/lirc.c:115
+#, c-format
+msgid "%s: trying to reconnect...\n"
+msgstr "%s: versuche neu zu verbinden...\n"
+
+#: src/lirc/lirc.c:125
+msgid "About LIRC Audacious Plugin"
+msgstr "Über LIRC Audacious Plugin"
+
+#: src/lirc/lirc.c:398
+#, c-format
+msgid "%s: unknown command \"%s\"\n"
+msgstr "%s: unbekannter Befehl \"%s\"\n"
+
+#: src/lirc/lirc.c:409
+#, c-format
+msgid "%s: disconnected from LIRC\n"
+msgstr "%s: von LIRC getrennt\n"
+
+#: src/lirc/lirc.c:414
+#, c-format
+msgid "%s: will try reconnect every %d seconds...\n"
+msgstr "%s: versuche jede %d Sekunden neu zu verbinden...\n"
+
 #: src/lyricwiki/lyricwiki.c:267
 msgid ""
 "\n"
@@ -2258,15 +2318,15 @@ msgstr "Änderungen werden mit dem nächsten Titelwechsel wirksam"
 msgid "Surround"
 msgstr "Surround"
 
-#: src/mtp_up/mtp.c:336
+#: src/mtp_up/mtp.c:340
 msgid "Upload in progress..."
 msgstr "Upload läuft..."
 
-#: src/mtp_up/mtp.c:348
+#: src/mtp_up/mtp.c:352
 msgid "Upload to MTP Device"
 msgstr "Auf MTP Gerät hochladen"
 
-#: src/mtp_up/mtp.c:349
+#: src/mtp_up/mtp.c:353
 msgid "Disconnect MTP Device"
 msgstr "MTP Gerät trennen"
 
