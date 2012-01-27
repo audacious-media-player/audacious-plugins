@@ -130,7 +130,7 @@ GtkWidget *create_lirc_cfg (void)
     GtkWidget *label3;
     GtkWidget *reconnectcheck;
     GtkWidget *reconnectspin;
-    GtkAdjustment *reconnectspin_adj;
+    GtkObject *reconnectspin_adj;
     GtkWidget *label2;
     GtkWidget *label1;
     GtkWidget *dialog_action_area1;
