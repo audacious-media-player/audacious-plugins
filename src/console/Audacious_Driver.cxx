@@ -153,23 +153,26 @@ gint ConsoleFileHandler::load(gint sample_rate)
     return 0;
 }
 
+static inline void set_str (Tuple * tuple, int field, const char * str)
+{
+    char * valid = str_to_utf8 (str);
+    tuple_set_str (tuple, field, NULL, valid);
+    free (valid);
+}
+
 static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const gint track)
 {
     Tuple *ti = tuple_new_from_filename(path);
 
     if (ti != NULL)
     {
-        gint length;
-        tuple_set_str(ti, FIELD_ARTIST, NULL, info->author);
-        tuple_set_str(ti, FIELD_ALBUM, NULL, info->game);
-        tuple_set_str(ti, -1, "game", info->game);
-        tuple_set_str(ti, FIELD_TITLE, NULL, (info->song && info->song[0]) ? info->song : g_path_get_basename(path));
-        tuple_set_str(ti, FIELD_COPYRIGHT, NULL, info->copyright);
-        tuple_set_str(ti, -1, "console", info->system);
-        tuple_set_str(ti, FIELD_CODEC, NULL, info->system);
-        tuple_set_str(ti, FIELD_QUALITY, NULL, "sequenced");
-        tuple_set_str(ti, -1, "dumper", info->dumper);
-        tuple_set_str(ti, FIELD_COMMENT, NULL, info->comment);
+        set_str (ti, FIELD_ARTIST, info->author);
+        set_str (ti, FIELD_ALBUM, info->game);
+        set_str (ti, FIELD_TITLE, info->song);
+        set_str (ti, FIELD_COPYRIGHT, info->copyright);
+        set_str (ti, FIELD_CODEC, info->system);
+        set_str (ti, FIELD_COMMENT, info->comment);
+
         if (track >= 0)
         {
             tuple_set_int(ti, FIELD_TRACK_NUMBER, NULL, track + 1);
@@ -179,7 +182,7 @@ static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const g
         else
             tuple_set_subtunes (ti, info->track_count, NULL);
 
-        length = info->length;
+        int length = info->length;
         if (length <= 0)
             length = info->intro_length + 2 * info->loop_length;
         if (length <= 0)
