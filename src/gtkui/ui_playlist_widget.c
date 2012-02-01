@@ -250,6 +250,12 @@ static void mouse_motion (void * user, GdkEventMotion * event, gint row)
 {
     PlaylistWidgetData * data = (PlaylistWidgetData *) user;
 
+    if (row < 0)
+    {
+        popup_hide (data);
+        return;
+    }
+
     if (aud_get_bool (NULL, "show_filepopup_for_tuple") && data->popup_pos != row)
         popup_trigger (data, row);
 }
