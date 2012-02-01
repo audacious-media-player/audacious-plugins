@@ -129,15 +129,13 @@ static void draw_text (GtkWidget * widget, cairo_t * cr, gint x, gint y, gint
  width, gfloat r, gfloat g, gfloat b, gfloat a, const gchar * font,
  const gchar * text)
 {
-    gchar * str = g_markup_escape_text (text, -1);
-
     cairo_move_to(cr, x, y);
     cairo_set_operator(cr, CAIRO_OPERATOR_ATOP);
     cairo_set_source_rgba(cr, r, g, b, a);
 
     PangoFontDescription * desc = pango_font_description_from_string (font);
     PangoLayout * pl = gtk_widget_create_pango_layout (widget, NULL);
-    pango_layout_set_markup(pl, str, -1);
+    pango_layout_set_text (pl, text, -1);
     pango_layout_set_font_description(pl, desc);
     pango_font_description_free(desc);
     pango_layout_set_width (pl, width * PANGO_SCALE);
@@ -146,7 +144,6 @@ static void draw_text (GtkWidget * widget, cairo_t * cr, gint x, gint y, gint
     pango_cairo_show_layout(cr, pl);
 
     g_object_unref(pl);
-    g_free(str);
 }
 
 /****************************************************************************/
