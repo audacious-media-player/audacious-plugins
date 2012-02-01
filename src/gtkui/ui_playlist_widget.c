@@ -462,6 +462,8 @@ void ui_playlist_widget_update (GtkWidget * widget, gint type, gint at,
             audgui_list_delete_rows (widget, at, -diff);
 
         audgui_list_set_highlight (widget, aud_playlist_get_position (data->list));
+
+        ui_playlist_widget_scroll (widget);
     }
 
     if (type >= PLAYLIST_UPDATE_METADATA)
