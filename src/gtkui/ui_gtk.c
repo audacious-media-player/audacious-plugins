@@ -17,12 +17,13 @@
  *  Audacious or using our public API to be a derived work.
  */
 
+#include <string.h>
+
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
 #include <audacious/debug.h>
 #include <audacious/drct.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
@@ -488,8 +489,8 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event, voi
       case GDK_CONTROL_MASK:
         switch (event->keyval)
         {
-          case GDK_ISO_Left_Tab:
-          case GDK_Tab:
+          case GDK_KEY_ISO_Left_Tab:
+          case GDK_KEY_Tab:
             aud_playlist_set_active ((aud_playlist_get_active () + 1) %
              aud_playlist_count ());
             break;
@@ -501,8 +502,8 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event, voi
       case (GDK_CONTROL_MASK | GDK_SHIFT_MASK):
         switch (event->keyval)
         {
-          case GDK_ISO_Left_Tab:
-          case GDK_Tab:
+          case GDK_KEY_ISO_Left_Tab:
+          case GDK_KEY_Tab:
             aud_playlist_set_active (aud_playlist_get_active () ?
              aud_playlist_get_active () - 1 : aud_playlist_count () - 1);
             break;
@@ -513,11 +514,11 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event, voi
       case GDK_MOD1_MASK:
         switch (event->keyval)
         {
-          case GDK_Left:
+          case GDK_KEY_Left:
             if (aud_drct_get_playing ())
                 aud_drct_seek (aud_drct_get_time () - 5000);
             break;
-          case GDK_Right:
+          case GDK_KEY_Right:
             if (aud_drct_get_playing ())
                 aud_drct_seek (aud_drct_get_time () + 5000);
             break;
@@ -538,13 +539,13 @@ static gboolean playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event, v
     case 0:
         switch (event->keyval)
         {
-        case GDK_Escape:
+        case GDK_KEY_Escape:
             ui_playlist_notebook_position (GINT_TO_POINTER (aud_playlist_get_active ()), NULL);
             return TRUE;
-        case GDK_Delete:
+        case GDK_KEY_Delete:
             playlist_delete_selected ();
             return TRUE;
-        case GDK_Menu:
+        case GDK_KEY_Menu:
             popup_menu_rclick (0, event->time);
             return TRUE;
         }

@@ -28,10 +28,6 @@
 
 #include <gtk/gtk.h>
 
-#if GTK_CHECK_VERSION (3, 0, 0)
-#define MASK_IS_REGION
-#endif
-
 #define COLOR(r,g,b) (((guint32) (r) << 16) | ((guint32) (g) << 8) | (guint32) (b))
 #define COLOR_R(c) ((gint) (((c) & 0xff0000) >> 16))
 #define COLOR_G(c) ((gint) (((c) & 0xff00) >> 8))
@@ -175,11 +171,7 @@ typedef struct {
     cairo_surface_t * pixmaps[SKIN_PIXMAP_COUNT];
     guint32 colors[SKIN_COLOR_COUNT];
     guint32 vis_colors[24];
-#ifdef MASK_IS_REGION
     cairo_region_t * masks[SKIN_MASK_COUNT];
-#else
-    GdkBitmap * masks[SKIN_MASK_COUNT];
-#endif
     SkinProperties properties;
 } Skin;
 

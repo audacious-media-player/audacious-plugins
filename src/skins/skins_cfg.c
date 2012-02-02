@@ -19,10 +19,10 @@
  * Audacious or using our public API to be a derived work.
  */
 
+#include <string.h>
 #include <gtk/gtk.h>
 
 #include <audacious/debug.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/preferences.h>

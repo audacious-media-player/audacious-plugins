@@ -38,7 +38,6 @@
 #include "ui_skinned_playlist_slider.h"
 
 #include <audacious/drct.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudgui/libaudgui.h>
@@ -551,35 +550,35 @@ gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
       case 0:
         switch (event->keyval)
         {
-          case GDK_Up:
+          case GDK_KEY_Up:
             select_single (data, TRUE, -1);
             break;
-          case GDK_Down:
+          case GDK_KEY_Down:
             select_single (data, TRUE, 1);
             break;
-          case GDK_Page_Up:
+          case GDK_KEY_Page_Up:
             select_single (data, TRUE, - data->rows);
             break;
-          case GDK_Page_Down:
+          case GDK_KEY_Page_Down:
             select_single (data, TRUE, data->rows);
             break;
-          case GDK_Home:
+          case GDK_KEY_Home:
             select_single (data, FALSE, 0);
             break;
-          case GDK_End:
+          case GDK_KEY_End:
             select_single (data, FALSE, active_length - 1);
             break;
-          case GDK_Return:
+          case GDK_KEY_Return:
             select_single (data, TRUE, 0);
             aud_playlist_set_playing (active_playlist);
             aud_playlist_set_position (active_playlist, data->focused);
             aud_drct_play ();
             break;
-          case GDK_Escape:
+          case GDK_KEY_Escape:
             select_single (data, FALSE, aud_playlist_get_position
              (active_playlist));
             break;
-          case GDK_Delete:
+          case GDK_KEY_Delete:
             delete_selected (data);
             break;
           default:
@@ -589,22 +588,22 @@ gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
       case GDK_SHIFT_MASK:
         switch (event->keyval)
         {
-          case GDK_Up:
+          case GDK_KEY_Up:
             select_extend (data, TRUE, -1);
             break;
-          case GDK_Down:
+          case GDK_KEY_Down:
             select_extend (data, TRUE, 1);
             break;
-          case GDK_Page_Up:
+          case GDK_KEY_Page_Up:
             select_extend (data, TRUE, -data->rows);
             break;
-          case GDK_Page_Down:
+          case GDK_KEY_Page_Down:
             select_extend (data, TRUE, data->rows);
             break;
-          case GDK_Home:
+          case GDK_KEY_Home:
             select_extend (data, FALSE, 0);
             break;
-          case GDK_End:
+          case GDK_KEY_End:
             select_extend (data, FALSE, active_length - 1);
             break;
           default:
@@ -614,25 +613,25 @@ gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
       case GDK_CONTROL_MASK:
         switch (event->keyval)
         {
-          case GDK_space:
+          case GDK_KEY_space:
             select_toggle (data, TRUE, 0);
             break;
-          case GDK_Up:
+          case GDK_KEY_Up:
             select_slide (data, TRUE, -1);
             break;
-          case GDK_Down:
+          case GDK_KEY_Down:
             select_slide (data, TRUE, 1);
             break;
-          case GDK_Page_Up:
+          case GDK_KEY_Page_Up:
             select_slide (data, TRUE, -data->rows);
             break;
-          case GDK_Page_Down:
+          case GDK_KEY_Page_Down:
             select_slide (data, TRUE, data->rows);
             break;
-          case GDK_Home:
+          case GDK_KEY_Home:
             select_slide (data, FALSE, 0);
             break;
-          case GDK_End:
+          case GDK_KEY_End:
             select_slide (data, FALSE, active_length - 1);
             break;
           default:
@@ -642,22 +641,22 @@ gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
       case GDK_MOD1_MASK:
         switch (event->keyval)
         {
-          case GDK_Up:
+          case GDK_KEY_Up:
             select_move (data, TRUE, -1);
             break;
-          case GDK_Down:
+          case GDK_KEY_Down:
             select_move (data, TRUE, 1);
             break;
-          case GDK_Page_Up:
+          case GDK_KEY_Page_Up:
             select_move (data, TRUE, -data->rows);
             break;
-          case GDK_Page_Down:
+          case GDK_KEY_Page_Down:
             select_move (data, TRUE, data->rows);
             break;
-          case GDK_Home:
+          case GDK_KEY_Home:
             select_move (data, FALSE, 0);
             break;
-          case GDK_End:
+          case GDK_KEY_End:
             select_move (data, FALSE, active_length - 1);
             break;
           default:

@@ -24,13 +24,13 @@
  */
 
 #include <inttypes.h>
+#include <string.h>
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
 #include <audacious/debug.h>
 #include <audacious/drct.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
@@ -1180,7 +1180,7 @@ playlistwin_select_search_kp_cb(GtkWidget *entry, GdkEventKey *event,
 {
     switch (event->keyval)
     {
-        case GDK_Return:
+        case GDK_KEY_Return:
             gtk_dialog_response(GTK_DIALOG(searchdlg_win), GTK_RESPONSE_ACCEPT);
             return TRUE;
         default:

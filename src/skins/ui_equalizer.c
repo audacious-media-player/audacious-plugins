@@ -23,10 +23,10 @@
  *  Audacious or using our public API to be a derived work.
  */
 
+#include <string.h>
 #include <gtk/gtk.h>
 
 #include <audacious/drct.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
@@ -93,12 +93,7 @@ equalizer_preset_free(EqualizerPreset * preset)
 void equalizerwin_set_shape (void)
 {
     gint id = config.equalizer_shaded ? SKIN_MASK_EQ_SHADE : SKIN_MASK_EQ;
-
-#ifdef MASK_IS_REGION
     gtk_widget_shape_combine_region (equalizerwin, active_skin->masks[id]);
-#else
-    gtk_widget_shape_combine_mask (equalizerwin, active_skin->masks[id], 0, 0);
-#endif
 }
 
 static void

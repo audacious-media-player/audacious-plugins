@@ -24,7 +24,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugins.h>
@@ -254,7 +253,7 @@ static gboolean delete_cb (GtkWidget * widget)
 
 static gboolean escape_cb (GtkWidget * widget, GdkEventKey * event)
 {
-    if (event->keyval == GDK_Escape)
+    if (event->keyval == GDK_KEY_Escape)
     {
         layout_disable (widget);
         return TRUE;

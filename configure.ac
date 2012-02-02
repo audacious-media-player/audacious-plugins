@@ -55,25 +55,6 @@ VISUALIZATION_PLUGINS="blur_scope cairo-spectrum"
 CONTAINER_PLUGINS="audpl m3u pls asx"
 TRANSPORT_PLUGINS="unix-io"
 
-dnl Check for GTK+
-dnl ==============
-
-AC_ARG_ENABLE([gtk3],
- [AS_HELP_STRING([--disable-gtk3], [Use GTK2 even if GTK3 is present])],
- [use_gtk3=$enableval], [use_gtk3=yes])
-
-if test $use_gtk3 = yes ; then
-    PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.0.0], [use_gtk3=yes], [use_gtk3=no])
-fi
-
-if test $use_gtk3 = no ; then
-    PKG_CHECK_MODULES([GTK], [gtk+-2.0 >= 2.12.0], [use_gtk3=no],
-     AC_MSG_ERROR([Cannot find GTK headers.  Aborting ...]))
-fi
-
-AC_SUBST([GTK_LIBS])
-AC_SUBST([GTK_CFLAGS])
-
 dnl Check for GIO
 dnl =============
 
@@ -202,11 +183,7 @@ AC_ARG_ENABLE(hotkey,
 )
 
 if test "x$enable_hotkey" = "xyes"; then
-    if test $use_gtk3 = yes ; then
-        PKG_CHECK_MODULES(GDKX11, [gdk-x11-3.0], [have_hotkey="yes"], [have_hotkey="no"])
-    else
-        PKG_CHECK_MODULES(GDKX11, [gdk-x11-2.0], [have_hotkey="yes"], [have_hotkey="no"])
-    fi
+    PKG_CHECK_MODULES(GDKX11, [gdk-x11-3.0], [have_hotkey="yes"], [have_hotkey="no"])
 else
     AC_MSG_RESULT([*** X11 Global Hotkey plugin disabled per user request ***])
     have_hotkey="no"
@@ -277,15 +254,6 @@ dnl ===========
 AC_ARG_ENABLE(statusicon,
  [  --disable-statusicon    disable X11 Status Icon plugin (default=enabled)],
  [have_statusicon=$enableval], [have_statusicon="yes"])
-
-if test $have_statusicon = yes ; then
-    if test $use_gtk3 != yes ; then
-        PKG_CHECK_MODULES(GTK216, [gtk+-2.0 >= 2.16.0], [have_statusicon=yes],
-         [have_statusicon=no])
-    fi
-else
-    AC_MSG_RESULT([*** X11 Status Icon plugin disabled per user request ***])
-fi
 
 if test "x$have_statusicon" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS statusicon"
