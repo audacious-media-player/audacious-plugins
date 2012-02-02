@@ -24,7 +24,6 @@
 #include <gtk/gtk.h>
 
 #include <audacious/drct.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
@@ -235,14 +234,8 @@ static void get_color (GtkWidget * widget, gint i, gfloat * r, gfloat * g,
     hsv_to_rgb (h, s, v, r, g, b);
 }
 
-#if GTK_CHECK_VERSION (3, 0, 0)
 static gboolean draw_vis_cb (GtkWidget * vis, cairo_t * cr)
 {
-#else
-static gboolean expose_vis_cb (GtkWidget * vis, GdkEventExpose * event)
-{
-    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (vis));
-#endif
     g_return_val_if_fail (area, FALSE);
 
     clear (vis, cr);
@@ -265,9 +258,6 @@ static gboolean expose_vis_cb (GtkWidget * vis, GdkEventExpose * event)
         cairo_fill (cr);
     }
 
-#if ! GTK_CHECK_VERSION (3, 0, 0)
-    cairo_destroy (cr);
-#endif
     return TRUE;
 }
 
@@ -318,14 +308,8 @@ static void draw_title (cairo_t * cr)
          0.7, 0.7, area->last_alpha, "Sans 9", area->last_album);
 }
 
-#if GTK_CHECK_VERSION (3, 0, 0)
 static gboolean draw_cb (GtkWidget * widget, cairo_t * cr)
 {
-#else
-static gboolean expose_cb (GtkWidget * widget, GdkEventExpose * event)
-{
-    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
-#endif
     g_return_val_if_fail (area, FALSE);
 
     clear (widget, cr);
@@ -333,9 +317,6 @@ static gboolean expose_cb (GtkWidget * widget, GdkEventExpose * event)
     draw_album_art (cr);
     draw_title (cr);
 
-#if ! GTK_CHECK_VERSION (3, 0, 0)
-    cairo_destroy (cr);
-#endif
     return TRUE;
 }
 
@@ -522,13 +503,8 @@ GtkWidget * ui_infoarea_new (void)
     gtk_widget_set_size_request (area->vis, VIS_WIDTH + 2 * SPACING, HEIGHT);
     gtk_box_pack_start ((GtkBox *) area->box, area->vis, FALSE, FALSE, 0);
 
-#if GTK_CHECK_VERSION (3, 0, 0)
     g_signal_connect (area->main, "draw", (GCallback) draw_cb, NULL);
     g_signal_connect (area->vis, "draw", (GCallback) draw_vis_cb, NULL);
-#else
-    g_signal_connect (area->main, "expose-event", (GCallback) expose_cb, NULL);
-    g_signal_connect (area->vis, "expose-event", (GCallback) expose_vis_cb, NULL);
-#endif
 
     hook_associate ("playlist update", (HookFunction) ui_infoarea_set_title, NULL);
     hook_associate ("playback begin", (HookFunction) ui_infoarea_playback_start, NULL);

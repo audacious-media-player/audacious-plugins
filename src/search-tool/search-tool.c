@@ -23,7 +23,6 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
@@ -634,9 +633,7 @@ static void * search_get_widget (void)
     gtk_container_set_border_width ((GtkContainer *) vbox, 3);
 
     GtkWidget * entry = gtk_entry_new ();
-#if GTK_CHECK_VERSION (2, 16, 0)
     gtk_entry_set_icon_from_stock ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, GTK_STOCK_FIND);
-#endif
 #if GTK_CHECK_VERSION (3, 2, 0)
     gtk_entry_set_placeholder_text ((GtkEntry *) entry, _("Search library"));
 #endif

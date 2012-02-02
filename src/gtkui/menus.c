@@ -23,7 +23,6 @@
 #include <gtk/gtk.h>
 
 #include <audacious/drct.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
@@ -138,11 +137,11 @@ static const struct MenuItem file_items[] = {
  {N_("_Quit"), GTK_STOCK_QUIT, 'q', CTRL, .func = aud_drct_quit}};
 
 static const struct MenuItem playback_items[] = {
- {N_("_Play"), GTK_STOCK_MEDIA_PLAY, GDK_Return, CTRL, .func = aud_drct_play},
+ {N_("_Play"), GTK_STOCK_MEDIA_PLAY, GDK_KEY_Return, CTRL, .func = aud_drct_play},
  {N_("Paus_e"), GTK_STOCK_MEDIA_PAUSE, ',', CTRL, .func = aud_drct_pause},
  {N_("_Stop"), GTK_STOCK_MEDIA_STOP, '.', CTRL, .func = aud_drct_stop},
- {N_("Pre_vious"), GTK_STOCK_MEDIA_PREVIOUS, GDK_Up, ALT, .func = aud_drct_pl_prev},
- {N_("_Next"), GTK_STOCK_MEDIA_NEXT, GDK_Down, ALT, .func = aud_drct_pl_next},
+ {N_("Pre_vious"), GTK_STOCK_MEDIA_PREVIOUS, GDK_KEY_Up, ALT, .func = aud_drct_pl_prev},
+ {N_("_Next"), GTK_STOCK_MEDIA_NEXT, GDK_KEY_Down, ALT, .func = aud_drct_pl_next},
  {.sep = TRUE},
  {N_("_Repeat"), NULL, 'r', CTRL, .get = repeat_get, repeat_set, "set repeat"},
  {N_("S_huffle"), NULL, 's', CTRL, .get = shuffle_get, shuffle_set, "set shuffle"},
@@ -166,7 +165,7 @@ static const struct MenuItem sort_items[] = {
  {N_("_Random Order"), .func = pl_random}};
 
 static const struct MenuItem playlist_items[] = {
- {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_F5, .func = pl_refresh},
+ {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_KEY_F5, .func = pl_refresh},
  {N_("Remove _Unavailable Files"), GTK_STOCK_REMOVE, .func = pl_remove_failed},
  {.sep = TRUE},
  {N_("_Sort"), GTK_STOCK_SORT_ASCENDING, .items = sort_items, G_N_ELEMENTS (sort_items)},
@@ -211,7 +210,7 @@ static const struct MenuItem main_items[] = {
 static const struct MenuItem rclick_items[] = {
  {N_("Song _Info ..."), GTK_STOCK_INFO, 'i', ALT, .func = playlist_song_info},
  {N_("_Queue/Unqueue"), AUD_STOCK_QUEUETOGGLE, 'q', ALT, .func = playlist_queue_toggle},
- {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_F6, .func = pl_refresh_sel},
+ {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_KEY_F6, .func = pl_refresh_sel},
  {.sep = TRUE},
  {N_("Cu_t"), GTK_STOCK_CUT, .func = playlist_cut},
  {N_("_Copy"), GTK_STOCK_COPY, .func = playlist_copy},
@@ -221,7 +220,7 @@ static const struct MenuItem rclick_items[] = {
  {N_("_Services"), .get_sub = get_services_pl}};
 
 static const struct MenuItem tab_items[] = {
- {N_("_Rename"), GTK_STOCK_EDIT, GDK_F2, .func = pl_rename},
+ {N_("_Rename"), GTK_STOCK_EDIT, GDK_KEY_F2, .func = pl_rename},
  {N_("_Close"), GTK_STOCK_CLOSE, .func = pl_close}};
 
 static void toggled_cb (GtkCheckMenuItem * check, const struct MenuItem * item)

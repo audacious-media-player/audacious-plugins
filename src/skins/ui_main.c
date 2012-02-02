@@ -25,13 +25,13 @@
 
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/time.h>
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
 #include <audacious/drct.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <libaudcore/audstrings.h>
@@ -147,12 +147,7 @@ mainwin_set_shade(gboolean shaded)
 void mainwin_set_shape (void)
 {
     gint id = config.player_shaded ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN;
-
-#ifdef MASK_IS_REGION
     gtk_widget_shape_combine_region (mainwin, active_skin->masks[id]);
-#else
-    gtk_widget_shape_combine_mask (mainwin, active_skin->masks[id], 0, 0);
-#endif
 }
 
 static void mainwin_vis_set_type (VisType mode)
@@ -560,42 +555,42 @@ gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
 
     switch (event->keyval)
     {
-        case GDK_minus:
+        case GDK_KEY_minus:
             mainwin_set_volume_diff (-5);
             break;
-        case GDK_plus:
+        case GDK_KEY_plus:
             mainwin_set_volume_diff (5);
             break;
-        case GDK_Left:
-        case GDK_KP_Left:
-        case GDK_KP_7:
+        case GDK_KEY_Left:
+        case GDK_KEY_KP_Left:
+        case GDK_KEY_KP_7:
             aud_drct_seek (aud_drct_get_time () - 5000);
             break;
-        case GDK_Right:
-        case GDK_KP_Right:
-        case GDK_KP_9:
+        case GDK_KEY_Right:
+        case GDK_KEY_KP_Right:
+        case GDK_KEY_KP_9:
             aud_drct_seek (aud_drct_get_time () + 5000);
             break;
-        case GDK_KP_4:
+        case GDK_KEY_KP_4:
             aud_drct_pl_prev ();
             break;
-        case GDK_KP_6:
+        case GDK_KEY_KP_6:
             aud_drct_pl_next ();
             break;
-        case GDK_KP_Insert:
+        case GDK_KEY_KP_Insert:
             audgui_jump_to_track ();
             break;
-        case GDK_space:
+        case GDK_KEY_space:
             aud_drct_pause();
             break;
-        case GDK_Tab: /* GtkUIManager does not handle tab, apparently. */
+        case GDK_KEY_Tab: /* GtkUIManager does not handle tab, apparently. */
             if (event->state & GDK_SHIFT_MASK)
                 action_playlist_prev ();
             else
                 action_playlist_next ();
 
             break;
-        case GDK_ISO_Left_Tab:
+        case GDK_KEY_ISO_Left_Tab:
             action_playlist_prev ();
             break;
         default:

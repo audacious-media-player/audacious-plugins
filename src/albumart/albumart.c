@@ -23,7 +23,6 @@
 
 #include <audacious/debug.h>
 #include <audacious/drct.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
@@ -33,14 +32,14 @@
 static gint width;
 static gint height;
 
-static void draw_albumart(GtkWidget *widget, cairo_t *cr)
+static gboolean draw_event (GtkWidget * widget, cairo_t * cr, void * unused)
 {
     GdkPixbuf *album = NULL;
 
     if (aud_drct_get_playing() && album == NULL)
     {
         album = audgui_pixbuf_for_current ();
-        g_return_if_fail (album != NULL);
+        g_return_val_if_fail (album != NULL, TRUE);
         if (gdk_pixbuf_get_width(album) > width ||
             gdk_pixbuf_get_height(album) > height)
             audgui_pixbuf_scale_within(&album, width < height ? width : height);
@@ -55,24 +54,8 @@ static void draw_albumart(GtkWidget *widget, cairo_t *cr)
         cairo_paint_with_alpha(cr, 1.0);
     }
 
-#if ! GTK_CHECK_VERSION (3, 0, 0)
-    cairo_destroy(cr);
-#endif
-
     if (album != NULL)
         g_object_unref(album);
-}
-
-#if GTK_CHECK_VERSION (3, 0, 0)
-static gboolean draw_event (GtkWidget * widget, cairo_t * cr, gpointer unused)
-{
-#else
-static gboolean expose_event (GtkWidget * widget, GdkEventExpose * event, gpointer unused)
-{
-    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
-#endif
-
-    draw_albumart(widget, cr);
 
     return TRUE;
 }
@@ -95,11 +78,7 @@ static /* GtkWidget * */ gpointer get_widget (void)
 {
     GtkWidget *area = gtk_drawing_area_new();
 
-#if GTK_CHECK_VERSION (3, 0, 0)
     g_signal_connect(area, "draw", (GCallback) draw_event, NULL);
-#else
-    g_signal_connect(area, "expose-event", (GCallback) expose_event, NULL);
-#endif
     g_signal_connect(area, "configure-event", (GCallback) configure_event, NULL);
 
     hook_associate("playback begin", (HookFunction) playback_start, area);

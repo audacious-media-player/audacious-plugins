@@ -22,22 +22,13 @@
 #ifndef SKINS_DRAW_COMPAT_H
 #define SKINS_DRAW_COMPAT_H
 
-#include <gdk/gdk.h>
 #include <gtk/gtk.h>
-
-#include <audacious/gtk-compat.h>
 
 static void widget_realized (GtkWidget * w)
 {
     GdkWindow * window = gtk_widget_get_window (w);
-#if GTK_CHECK_VERSION (3, 0, 0)
     gdk_window_set_background_pattern (window, NULL);
-#else
-    gdk_window_set_back_pixmap (window, NULL, FALSE);
-#endif
 }
-
-#if GTK_CHECK_VERSION (3, 0, 0)
 
 #define DRAW_SIGNAL "draw"
 #define DRAW_FUNC_BEGIN(n) static gboolean n (GtkWidget * wid, cairo_t * cr) { \
@@ -48,28 +39,5 @@ static void widget_realized (GtkWidget * w)
     g_signal_connect (w, "realize", (GCallback) widget_realized, NULL); \
     g_signal_connect (w, DRAW_SIGNAL, (GCallback) f, NULL); \
  } while (0);
-
-#else
-
-#define DRAW_SIGNAL "expose-event"
-#define DRAW_FUNC_BEGIN(n) static gboolean n (GtkWidget * wid, GdkEventExpose * ev) { \
- g_return_val_if_fail (wid, FALSE); \
- cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (wid)); \
- g_return_val_if_fail (cr, FALSE);
-#define DRAW_FUNC_END cairo_destroy (cr); \
- return TRUE; }
-
-/* We set None as the background pixmap in order to avoid flickering.  Setting
- * a blank GtkStyle prevents GTK 2.x from overriding this. */
-
-#define DRAW_CONNECT(w,f) do { \
-    GtkStyle * style = gtk_style_new (); \
-    gtk_widget_set_style (w, style); \
-    g_object_unref (style); \
-    g_signal_connect (w, "realize", (GCallback) widget_realized, NULL); \
-    g_signal_connect (w, DRAW_SIGNAL, (GCallback) f, NULL); \
- } while (0);
-
-#endif
 
 #endif

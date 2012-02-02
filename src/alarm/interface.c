@@ -16,7 +16,6 @@
 #include "interface.h"
 
 #include <audacious/i18n.h>
-#include <audacious/gtk-compat.h>
 
 GtkWidget*
 create_alarm_dialog (void)

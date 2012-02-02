@@ -22,7 +22,6 @@
 #include "config.h"
 
 #include <gtk/gtk.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>

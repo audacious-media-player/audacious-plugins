@@ -23,7 +23,6 @@
 #include <gtk/gtk.h>
 
 #include <audacious/debug.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
@@ -38,10 +37,6 @@
 
 #define CURRENT_POS (-2)
 
-#if GTK_CHECK_VERSION(2, 20, 0)
-#define HAVE_ADD_BUTTON
-#endif
-
 static GtkWidget * notebook = NULL;
 static GQueue follow_queue = G_QUEUE_INIT;
 static gint highlighted = -1;
@@ -51,7 +46,6 @@ static GtkWidget *ui_playlist_notebook_tab_title_editing;
 static gint switch_handler = 0;
 static gint reorder_handler = 0;
 
-#ifdef HAVE_ADD_BUTTON
 static void add_button_cb (GtkButton * button, void * unused)
 {
     aud_playlist_insert (-1);
@@ -71,22 +65,11 @@ static void make_add_button (GtkWidget * notebook)
 
     gtk_notebook_set_action_widget ((GtkNotebook *) notebook, button, GTK_PACK_END);
 }
-#endif
 
 static void close_button_cb (GtkWidget * button, void * id)
 {
     audgui_confirm_playlist_delete (aud_playlist_by_unique_id (GPOINTER_TO_INT (id)));
 }
-
-#if ! GTK_CHECK_VERSION (3, 0, 0)
-static void close_button_style_set(GtkWidget * button, GtkRcStyle * previous_style,
- gpointer user_data)
-{
-    gint w, h;
-    gtk_icon_size_lookup_for_settings (gtk_widget_get_settings (button), GTK_ICON_SIZE_MENU, &w, &h);
-    gtk_widget_set_size_request (button, w + 2, h + 2);
-}
-#endif
 
 static GtkWidget * make_close_button (gint list)
 {
@@ -98,7 +81,6 @@ static GtkWidget * make_close_button (gint list)
     g_signal_connect (button, "clicked", (GCallback) close_button_cb,
      GINT_TO_POINTER (aud_playlist_get_unique_id (list)));
 
-#if GTK_CHECK_VERSION (3, 0, 0)
     GtkCssProvider * provider = gtk_css_provider_new ();
     gtk_css_provider_load_from_data (provider,
      "#gtkui-tab-close-button {"
@@ -115,18 +97,6 @@ static GtkWidget * make_close_button (gint list)
      GTK_STYLE_PROVIDER (provider),
      GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     g_object_unref (provider);
-#else
-    gtk_rc_parse_string (
-     "style \"gtkui-tab-close-button-style\" {"
-     " GtkWidget::focus-padding = 0"
-     " GtkWidget::focus-line-width = 0"
-     " xthickness = 0"
-     " ythickness = 0 }"
-     "widget \"*.gtkui-tab-close-button\" style \"gtkui-tab-close-button-style\""
-    );
-
-    g_signal_connect (button, "style-set", (GCallback) close_button_style_set, NULL);
-#endif
 
     GtkWidget * icon = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
     gtk_container_add ((GtkContainer *) button, icon);
@@ -166,7 +136,7 @@ static void tab_title_save(GtkEntry *entry, gpointer ebox)
 
 static gboolean tab_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
-    if (event->keyval == GDK_Escape)
+    if (event->keyval == GDK_KEY_Escape)
         tab_title_reset(widget);
 
     return FALSE;
@@ -547,9 +517,7 @@ GtkWidget *ui_playlist_notebook_new()
     gtk_notebook_set_scrollable(UI_PLAYLIST_NOTEBOOK, TRUE);
     gtk_notebook_set_show_border(UI_PLAYLIST_NOTEBOOK, FALSE);
 
-#ifdef HAVE_ADD_BUTTON
     make_add_button (notebook);
-#endif
 
     g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
     return notebook;

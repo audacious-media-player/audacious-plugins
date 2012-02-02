@@ -26,7 +26,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <audacious/gtk-compat.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 

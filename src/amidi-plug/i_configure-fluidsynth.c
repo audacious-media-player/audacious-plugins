@@ -20,7 +20,6 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/gtk-compat.h>
 
 #include "i_configure-fluidsynth.h"
 #include "backend-fluidsynth/b-fluidsynth-config.h"

@@ -23,7 +23,6 @@
 
 #include <audacious/debug.h>
 #include <audacious/drct.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
@@ -239,23 +238,13 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
 	return TRUE;
 }
 
-#if GTK_CHECK_VERSION (3, 0, 0)
 static gboolean draw_event (GtkWidget * widget, cairo_t * cr, GtkWidget * area)
 {
-#else
-static gboolean expose_event (GtkWidget * widget, GdkEventExpose * event, GtkWidget * area)
-{
-	cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
-#endif
 
 	draw_background (widget, cr);
 	draw_visualizer (widget, cr);
 #if 0
 	draw_grid (widget, cr);
-#endif
-
-#if ! GTK_CHECK_VERSION (3, 0, 0)
-	cairo_destroy (cr);
 #endif
 
 	return TRUE;
@@ -273,11 +262,7 @@ static /* GtkWidget * */ gpointer get_widget(void)
 	GtkWidget *area = gtk_drawing_area_new();
 	spect_widget = area;
 
-#if GTK_CHECK_VERSION (3, 0, 0)
 	g_signal_connect(area, "draw", (GCallback) draw_event, NULL);
-#else
-	g_signal_connect(area, "expose-event", (GCallback) expose_event, NULL);
-#endif
 	g_signal_connect(area, "configure-event", (GCallback) configure_event, NULL);
 	g_signal_connect(area, "destroy", (GCallback) destroy_event, NULL);
 

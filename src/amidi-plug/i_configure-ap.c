@@ -20,7 +20,6 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/gtk-compat.h>
 
 #include "i_configure-ap.h"
 #include "amidi-plug-icon.xpm"

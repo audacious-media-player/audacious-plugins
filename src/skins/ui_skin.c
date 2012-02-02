@@ -31,7 +31,6 @@
 #include <gtk/gtk.h>
 
 #include <audacious/debug.h>
-#include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 
 #include "plugin.h"
@@ -130,15 +129,9 @@ static const guint32 default_vis_colors[24] = {
  COLOR (200, 200, 200)
 };
 
-#ifdef MASK_IS_REGION
 static cairo_region_t * skin_create_transparent_mask (const gchar * path, const
  gchar * file, const gchar * section, GdkWindow * window, gint width, gint
  height);
-#else
-static GdkBitmap * skin_create_transparent_mask (const gchar * path, const
- gchar * file, const gchar * section, GdkWindow * window, gint width, gint
- height);
-#endif
 
 gboolean active_skin_load (const gchar * path)
 {
@@ -199,12 +192,7 @@ skin_free(Skin * skin)
 
     for (i = 0; i < SKIN_MASK_COUNT; i++) {
         if (skin->masks[i])
-#ifdef MASK_IS_REGION
             cairo_region_destroy (skin->masks[i]);
-#else
-            g_object_unref (skin->masks[i]);
-#endif
-
         skin->masks[i] = NULL;
     }
 
@@ -343,29 +331,11 @@ static void skin_mask_create (Skin * skin, const gchar * path, gint id,
      skin_mask_info[id].height);
 }
 
-#ifdef MASK_IS_REGION
 static cairo_region_t * create_default_mask (GdkWindow * parent, gint w, gint h)
 {
     cairo_rectangle_int_t rect = {0, 0, w, h};
     return cairo_region_create_rectangle (& rect);
 }
-#else
-static GdkBitmap * create_default_mask (GdkWindow * parent, gint w, gint h)
-{
-    GdkBitmap *ret;
-    GdkGC *gc;
-    GdkColor pattern;
-
-    ret = gdk_pixmap_new(parent, w, h, 1);
-    gc = gdk_gc_new(ret);
-    pattern.pixel = 1;
-    gdk_gc_set_foreground(gc, &pattern);
-    gdk_draw_rectangle(ret, gc, TRUE, 0, 0, w, h);
-    g_object_unref(gc);
-
-    return ret;
-}
-#endif
 
 static gint color_diff (guint32 a, guint32 b)
 {
@@ -685,15 +655,9 @@ static guint32 skin_load_color (INIFile * inifile, const gchar * section,
     return COLOR (red, green, blue);
 }
 
-#ifdef MASK_IS_REGION
 static cairo_region_t * skin_create_transparent_mask (const gchar * path, const
  gchar * file, const gchar * section, GdkWindow * window, gint width, gint
  height)
-#else
-static GdkBitmap * skin_create_transparent_mask (const gchar * path, const
- gchar * file, const gchar * section, GdkWindow * window, gint width, gint
- height)
-#endif
 {
     gchar *filename = NULL;
     INIFile *inifile = NULL;
@@ -726,19 +690,7 @@ static GdkBitmap * skin_create_transparent_mask (const gchar * path, const
 
     close_ini_file(inifile);
 
-#ifdef MASK_IS_REGION
     cairo_region_t * mask = cairo_region_create ();
-#else
-    GdkBitmap * mask = gdk_pixmap_new (window, width, height, 1);
-    GdkGC * gc = gdk_gc_new (mask);
-
-    GdkColor pattern;
-    pattern.pixel = 0;
-    gdk_gc_set_foreground(gc, &pattern);
-    gdk_draw_rectangle(mask, gc, TRUE, 0, 0, width, height);
-    pattern.pixel = 1;
-    gdk_gc_set_foreground(gc, &pattern);
-#endif
 
     j = 0;
     for (i = 0; i < num->len; i ++)
@@ -754,7 +706,6 @@ static GdkBitmap * skin_create_transparent_mask (const gchar * path, const
             gpoints[k].y = g_array_index (point, gint, j + k * 2 + 1);
         }
 
-#ifdef MASK_IS_REGION
         gint xmin = width, ymin = height, xmax = 0, ymax = 0;
         for (k = 0; k < n_points; k ++)
         {
@@ -769,9 +720,6 @@ static GdkBitmap * skin_create_transparent_mask (const gchar * path, const
             cairo_rectangle_int_t rect = {xmin, ymin, xmax - xmin, ymax - ymin};
             cairo_region_union_rectangle (mask, & rect);
         }
-#else
-        gdk_draw_polygon (mask, gc, TRUE, gpoints, n_points);
-#endif
 
         created_mask = TRUE;
         j += n_points * 2;
@@ -783,17 +731,9 @@ static GdkBitmap * skin_create_transparent_mask (const gchar * path, const
 
     if (!created_mask)
     {
-#ifdef MASK_IS_REGION
         cairo_rectangle_int_t rect = {0, 0, width, height};
         cairo_region_union_rectangle (mask, & rect);
-#else
-        gdk_draw_rectangle(mask, gc, TRUE, 0, 0, width, height);
-#endif
     }
-
-#ifndef MASK_IS_REGION
-    g_object_unref(gc);
-#endif
 
     return mask;
 }

@@ -26,7 +26,6 @@
 #include <gtk/gtk.h>
 #include <string.h>
 
-#include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
@@ -114,19 +113,11 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
     return TRUE;
 }
 
-#if GTK_CHECK_VERSION (3, 0, 0)
 static gboolean draw_cb (GtkWidget * widget, cairo_t * cr)
 {
     bscope_draw_to_cairo (cr);
     return TRUE;
 }
-#else
-static gboolean expose_event (GtkWidget * widget)
-{
-    bscope_draw ();
-    return TRUE;
-}
-#endif
 
 static void /* GtkWidget */ * bscope_get_widget (void)
 {
@@ -134,11 +125,7 @@ static void /* GtkWidget */ * bscope_get_widget (void)
     gtk_widget_set_size_request (area, D_WIDTH, D_HEIGHT);
     bscope_resize (D_WIDTH, D_HEIGHT);
 
-#if GTK_CHECK_VERSION (3, 0, 0)
     g_signal_connect (area, "draw", (GCallback) draw_cb, NULL);
-#else
-    g_signal_connect (area, "expose-event", (GCallback) expose_event, NULL);
-#endif
     g_signal_connect (area, "configure-event", (GCallback) configure_event, NULL);
     g_signal_connect (area, "destroy", (GCallback) gtk_widget_destroyed, & area);
 

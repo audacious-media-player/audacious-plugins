@@ -27,7 +27,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include <audacious/gtk-compat.h>
 #include <audacious/misc.h>
 
 static void vorbis_init(write_output_callback write_output_func);
