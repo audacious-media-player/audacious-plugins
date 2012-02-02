@@ -373,7 +373,7 @@ static GtkWidget * combo_new (const char * title, GtkListStore * list,
     GtkWidget * hbox, * label;
     GtkCellRenderer * cell;
 
-    hbox = gtk_hbox_new (0, 6);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 
     label = gtk_label_new (title);
     gtk_box_pack_start ((GtkBox *) hbox, label, 0, 0, 0);
@@ -439,7 +439,7 @@ static void create_window (void)
      "Preferences"));
     gtk_container_set_border_width ((GtkContainer *) window, 6);
 
-    vbox = gtk_vbox_new (0, 6);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
     gtk_container_add ((GtkContainer *) window, vbox);
 
     gtk_box_pack_start ((GtkBox *) vbox, combo_new (_("PCM device:"), pcm_list,
@@ -455,7 +455,7 @@ static void create_window (void)
      alsa_config_drain_workaround);
     gtk_box_pack_start ((GtkBox *) vbox, drain_workaround_check, 0, 0, 0);
 
-    hbox = gtk_hbox_new (0, 6);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
 
     ok_button = gtk_button_new_from_stock (GTK_STOCK_OK);

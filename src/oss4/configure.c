@@ -141,10 +141,10 @@ static void window_create(void)
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
 
-    vbox = gtk_vbox_new(FALSE, 10);
+    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_container_add(GTK_CONTAINER(window), vbox);
 
-    dev_list_box = gtk_hbox_new(FALSE, 0);
+    dev_list_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_pack_start(GTK_BOX(vbox), dev_list_box, FALSE, FALSE, 0);
 
     dev_label = gtk_label_new(_("Audio device:"));
@@ -172,7 +172,7 @@ static void window_create(void)
 
     gtk_box_pack_start(GTK_BOX(dev_list_box), dev_list_combo, TRUE, TRUE, 5);
 
-    alt_dev_box = gtk_hbox_new(FALSE, 0);
+    alt_dev_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_pack_start(GTK_BOX(vbox), alt_dev_box, FALSE, FALSE, 0);
 
     alt_dev_check = gtk_check_button_new_with_label(_("Use alternate device:"));
@@ -187,7 +187,7 @@ static void window_create(void)
     gtk_box_pack_start(GTK_BOX(alt_dev_box), alt_dev_text, TRUE, TRUE, 5);
     g_free(device);
 
-    option_box = gtk_vbox_new(FALSE, 0);
+    option_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_box_pack_start(GTK_BOX(vbox), option_box, FALSE, FALSE, 0);
 
     vol_check = gtk_check_button_new_with_label(_("Save volume between sessions"));
@@ -202,7 +202,7 @@ static void window_create(void)
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(exclusive_check), aud_get_bool("oss4", "exclusive"));
     gtk_box_pack_start(GTK_BOX(option_box), exclusive_check, FALSE, FALSE, 5);
 
-    button_box = gtk_hbutton_box_new();
+    button_box = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
     gtk_button_box_set_layout(GTK_BUTTON_BOX(button_box), GTK_BUTTONBOX_END);
     gtk_box_set_spacing(GTK_BOX(button_box), 5);
     gtk_box_pack_start(GTK_BOX(vbox), button_box, TRUE, TRUE, 5);

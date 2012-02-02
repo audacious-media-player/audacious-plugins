@@ -93,13 +93,13 @@ static void null_configure(void)
     g_signal_connect(G_OBJECT(configurewin), "destroy",
             G_CALLBACK(gtk_widget_destroyed), &configurewin);
 
-    vbox = gtk_vbox_new(FALSE, 10);
+    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_container_add(GTK_CONTAINER(configurewin), vbox);
 
     rt_btn = gtk_check_button_new_with_label(_("Run in real time"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rt_btn), aud_get_bool("null", "real_time"));
     gtk_box_pack_start(GTK_BOX(vbox), rt_btn, FALSE, FALSE, 0);
-    bbox = gtk_hbutton_box_new();
+    bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
     gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
     gtk_box_set_spacing(GTK_BOX(bbox), 5);
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
