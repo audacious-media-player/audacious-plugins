@@ -146,10 +146,10 @@ static void resample_configure (void)
         g_signal_connect (config_window, "destroy", (GCallback)
          gtk_widget_destroyed, & config_window);
 
-        vbox = gtk_vbox_new (FALSE, 6);
+        vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
         gtk_container_add ((GtkContainer *) config_window, vbox);
 
-        hbox = gtk_hbox_new (FALSE, 6);
+        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
         gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("Rate "
@@ -157,7 +157,7 @@ static void resample_configure (void)
 
         for (count = 0; count < n_common_rates; count ++)
         {
-            hbox = gtk_hbox_new (FALSE, 6);
+            hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
             gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
             snprintf (scratch, sizeof scratch, "%d:", common_rates[count]);
@@ -172,7 +172,7 @@ static void resample_configure (void)
              value_changed, & converted_rates[count]);
         }
 
-        hbox = gtk_hbox_new (FALSE, 6);
+        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
         gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("All others:")),
@@ -184,7 +184,7 @@ static void resample_configure (void)
         g_signal_connect (button, "value-changed", (GCallback)
          value_changed, & fallback_rate);
 
-        hbox = gtk_hbox_new (FALSE, 6);
+        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
         gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("Method:")),
@@ -192,7 +192,7 @@ static void resample_configure (void)
         gtk_box_pack_start ((GtkBox *) hbox, make_method_list (), FALSE, FALSE,
          0);
 
-        hbox = gtk_hbox_new (FALSE, 6);
+        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
         button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);

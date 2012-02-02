@@ -77,12 +77,12 @@ bscope_configure(void)
     g_signal_connect(G_OBJECT(configure_win), "destroy",
                      G_CALLBACK(gtk_widget_destroyed), &configure_win);
 
-    vbox = gtk_vbox_new(FALSE, 5);
+    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 
     options_frame = gtk_frame_new(_("Options:"));
     gtk_container_set_border_width(GTK_CONTAINER(options_frame), 5);
 
-    options_vbox = gtk_vbox_new(FALSE, 5);
+    options_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     gtk_container_set_border_width(GTK_CONTAINER(options_vbox), 5);
 
     options_colorpicker = gtk_color_selection_new();
@@ -106,7 +106,7 @@ bscope_configure(void)
     gtk_box_pack_start(GTK_BOX(vbox), options_frame, TRUE, TRUE, 0);
     gtk_widget_show(options_frame);
 
-    bbox = gtk_hbutton_box_new();
+    bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
     gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 

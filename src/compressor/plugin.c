@@ -97,36 +97,36 @@ static void compressor_configure (void)
         g_signal_connect (config_window, "destroy", (GCallback)
          gtk_widget_destroyed, & config_window);
 
-        vbox = gtk_vbox_new (FALSE, 6);
+        vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
         gtk_container_add ((GtkContainer *) config_window, vbox);
 
-        hbox = gtk_hbox_new (FALSE, 6);
+        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
         gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("Center "
          "volume:")), FALSE, FALSE, 0);
 
-        slider = gtk_hscale_new_with_range (0.1, 1.0, 0.1);
+        slider = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.1, 1.0, 0.1);
         gtk_range_set_value ((GtkRange *) slider, compressor_center);
         gtk_widget_set_size_request (slider, 100, -1);
         gtk_box_pack_start ((GtkBox *) hbox, slider, FALSE, FALSE, 0);
         g_signal_connect (slider, "value-changed", (GCallback) value_changed,
          & compressor_center);
 
-        hbox = gtk_hbox_new (FALSE, 6);
+        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
         gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("Dynamic "
          "range:")), FALSE, FALSE, 0);
 
-        slider = gtk_hscale_new_with_range (0.0, 3.0, 0.1);
+        slider = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.0, 3.0, 0.1);
         gtk_range_set_value ((GtkRange *) slider, compressor_range);
         gtk_widget_set_size_request (slider, 250, -1);
         gtk_box_pack_start ((GtkBox *) hbox, slider, FALSE, FALSE, 0);
         g_signal_connect (slider, "value-changed", (GCallback) value_changed,
          & compressor_range);
 
-        hbox = gtk_hbox_new (FALSE, 6);
+        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
         button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);

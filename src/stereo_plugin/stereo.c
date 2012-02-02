@@ -98,18 +98,18 @@ static void configure(void)
 	 ((GtkDialog *) conf_dialog), label, TRUE, TRUE, 0);
 	gtk_widget_show(label);
 
-	hbox = gtk_hbox_new(FALSE, 10);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
 	gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area
 	 ((GtkDialog *) conf_dialog), hbox, TRUE, TRUE, 10);
 	gtk_widget_show(hbox);
 
 	GtkAdjustment * adjustment = (GtkAdjustment *) gtk_adjustment_new
 	 (value, 0, 15 + 1, 0.1, 1.0, 1.0);
-	scale = gtk_hscale_new(GTK_ADJUSTMENT(adjustment));
+	scale = gtk_scale_new(GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT(adjustment));
 	gtk_box_pack_start(GTK_BOX(hbox), scale, TRUE, TRUE, 10);
 	gtk_widget_show(scale);
 
-	bbox = gtk_hbutton_box_new();
+	bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
 	gtk_box_pack_start ((GtkBox *) gtk_dialog_get_action_area ((GtkDialog *)
 	 conf_dialog), bbox, TRUE, TRUE, 0);

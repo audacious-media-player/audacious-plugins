@@ -236,7 +236,7 @@ void configure_create_gui ()
     deviceentry = gtk_entry_new ();
     gtk_table_attach_defaults (GTK_TABLE (misctable), deviceentry, 1, 2, 0, 1);
 
-    buttonbox = gtk_hbutton_box_new ();
+    buttonbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
     gtk_button_box_set_layout (GTK_BUTTON_BOX (buttonbox), GTK_BUTTONBOX_END);
     gtk_box_set_spacing (GTK_BOX (buttonbox), 10);
     gtk_table_attach_defaults (GTK_TABLE (maintable), buttonbox, 0, 2, 3, 4);

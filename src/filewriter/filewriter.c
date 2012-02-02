@@ -462,11 +462,11 @@ static void file_configure(void)
 
         gtk_container_set_border_width(GTK_CONTAINER(configure_win), 10);
 
-        configure_vbox = gtk_vbox_new(FALSE, 10);
+        configure_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
         gtk_container_add(GTK_CONTAINER(configure_win), configure_vbox);
 
 
-        fileext_hbox = gtk_hbox_new(FALSE, 5);
+        fileext_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), fileext_hbox, FALSE, FALSE, 0);
 
         fileext_label = gtk_label_new(_("Output file format:"));
@@ -495,11 +495,11 @@ static void file_configure(void)
 
 
 
-        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
 
 
 
-        saveplace_hbox = gtk_hbox_new(FALSE, 5);
+        saveplace_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_container_add(GTK_CONTAINER(configure_vbox), saveplace_hbox);
 
         saveplace = gtk_radio_button_new_with_label(NULL, _("Save into original directory"));
@@ -514,7 +514,7 @@ static void file_configure(void)
         g_signal_connect(G_OBJECT(saveplace), "toggled", G_CALLBACK(saveplace_custom_cb), NULL);
         gtk_box_pack_start(GTK_BOX(saveplace_hbox), saveplace, FALSE, FALSE, 0);
 
-        path_hbox = gtk_hbox_new(FALSE, 5);
+        path_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), path_hbox, FALSE, FALSE, 0);
 
         path_label = gtk_label_new(_("Output file folder:"));
@@ -532,12 +532,12 @@ static void file_configure(void)
 
 
 
-        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
 
 
 
 
-        filenamefrom_hbox = gtk_hbox_new(FALSE, 5);
+        filenamefrom_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_container_add(GTK_CONTAINER(configure_vbox), filenamefrom_hbox);
 
         filenamefrom_label = gtk_label_new(_("Get filename from:"));
@@ -569,7 +569,7 @@ static void file_configure(void)
 
 
 
-        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
 
 
 
@@ -580,7 +580,7 @@ static void file_configure(void)
 
 
 
-        configure_bbox = gtk_hbutton_box_new();
+        configure_bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
         gtk_button_box_set_layout(GTK_BUTTON_BOX(configure_bbox),
                                   GTK_BUTTONBOX_END);
         gtk_box_pack_start(GTK_BOX(configure_vbox), configure_bbox,
