@@ -744,8 +744,8 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, gint time, gint len,
     if (used)
     {
         * buflen -= used;
-        memmove (buf, buf + used, * buflen);
-        * buflen += vfs_fread (buf + * buflen, 1, size - * buflen, file);
+        memmove (buf, (char *) buf + used, * buflen);
+        * buflen += vfs_fread ((char *) buf + * buflen, 1, size - * buflen, file);
     }
 
     /* == START DECODING == */
@@ -756,8 +756,8 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, gint time, gint len,
     if ((used = NeAACDecInit (dec, buf, * buflen, & rate, & chan)))
     {
         * buflen -= used;
-        memmove (buf, buf + used, * buflen);
-        * buflen += vfs_fread (buf + * buflen, 1, size - * buflen, file);
+        memmove (buf, (char *) buf + used, * buflen);
+        * buflen += vfs_fread ((char *) buf + * buflen, 1, size - * buflen, file);
     }
 }
 
