@@ -74,14 +74,6 @@ void crossfade_cleanup (void)
     reset ();
 }
 
-static int message_cb (void * data)
-{
-    void (* message) (void) = data;
-
-    message ();
-    return 0;
-}
-
 void crossfade_start (int * channels, int * rate)
 {
     AUDDBG ("Start (state was %d).\n", state);
@@ -90,12 +82,12 @@ void crossfade_start (int * channels, int * rate)
         reset ();
     else if (* channels != current_channels)
     {
-        g_timeout_add (0, message_cb, crossfade_show_channels_message);
+        g_timeout_add (0, (GSourceFunc) crossfade_show_channels_message, NULL);
         reset ();
     }
     else if (* rate != current_rate)
     {
-        g_timeout_add (0, message_cb, crossfade_show_rate_message);
+        g_timeout_add (0, (GSourceFunc) crossfade_show_rate_message, NULL);
         reset ();
     }
 
