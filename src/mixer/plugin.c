@@ -95,7 +95,7 @@ static void mixer_configure (void)
 
     GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) config_win);
 
-    GtkWidget * hbox = gtk_hbox_new (0, 6);
+    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
 
     GtkWidget * label = gtk_label_new (_("Output channels:"));
@@ -105,7 +105,7 @@ static void mixer_configure (void)
     gtk_spin_button_set_value ((GtkSpinButton *) spin, mixer_channels);
     gtk_box_pack_start ((GtkBox *) hbox, spin, 0, 0, 0);
 
-    hbox = gtk_hbox_new (0, 6);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
 
     label = gtk_label_new (_("Changes take effect at the next song change."));

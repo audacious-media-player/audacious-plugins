@@ -138,7 +138,7 @@ void console_cfg_ui(void)
                       G_CALLBACK(gtk_widget_destroyed) , &configwin );
     button_ok = gtk_button_new_from_stock( GTK_STOCK_OK );
 
-    configwin_vbox = gtk_vbox_new( FALSE , 6 );
+    configwin_vbox = gtk_box_new( GTK_ORIENTATION_VERTICAL , 6 );
     gtk_container_add( GTK_CONTAINER(configwin) , configwin_vbox );
 
     configwin_notebook = gtk_notebook_new();
@@ -146,7 +146,7 @@ void console_cfg_ui(void)
     gtk_box_pack_start( GTK_BOX(configwin_vbox) , configwin_notebook , TRUE , TRUE , 2 );
 
     // GENERAL PAGE
-    configwin_gen_vbox = gtk_vbox_new( FALSE , 3 );
+    configwin_gen_vbox = gtk_box_new( GTK_ORIENTATION_VERTICAL , 3 );
     gtk_container_set_border_width( GTK_CONTAINER(configwin_gen_vbox), 5 );
     gtk_notebook_append_page( GTK_NOTEBOOK(configwin_notebook) ,
                               configwin_gen_vbox , gtk_label_new( _("General") ) );
@@ -154,13 +154,13 @@ void console_cfg_ui(void)
     configwin_gen_playback_frame = gtk_frame_new( _("Playback") );
     gtk_box_pack_start( GTK_BOX(configwin_gen_vbox) ,
                         configwin_gen_playback_frame , TRUE , TRUE , 0 );
-    configwin_gen_playback_vbox = gtk_vbox_new( FALSE , 4 );
+    configwin_gen_playback_vbox = gtk_box_new( GTK_ORIENTATION_VERTICAL , 4 );
     gtk_container_set_border_width( GTK_CONTAINER(configwin_gen_playback_vbox), 4 );
     gtk_container_add( GTK_CONTAINER(configwin_gen_playback_frame) , configwin_gen_playback_vbox );
-    configwin_gen_playback_tb_hbox = gtk_hbox_new( FALSE , 0 );
+    configwin_gen_playback_tb_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 0 );
     gtk_box_pack_start( GTK_BOX(configwin_gen_playback_vbox) ,
                         configwin_gen_playback_tb_hbox , FALSE , FALSE , 0 );
-    configwin_gen_playback_tb_bass_hbox = gtk_hbox_new( FALSE , 4 );
+    configwin_gen_playback_tb_bass_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
     configwin_gen_playback_tb_bass_spbt = gtk_spin_button_new_with_range( -100 , 100 , 1 );
     gtk_spin_button_set_value( GTK_SPIN_BUTTON(configwin_gen_playback_tb_bass_spbt) , audcfg.bass );
     g_signal_connect_swapped( G_OBJECT(button_ok) , "clicked" ,
@@ -171,7 +171,7 @@ void console_cfg_ui(void)
                         configwin_gen_playback_tb_bass_spbt , FALSE , FALSE , 0 );
     gtk_box_pack_start( GTK_BOX(configwin_gen_playback_tb_bass_hbox) ,
                         gtk_label_new(_("secs")) , FALSE , FALSE , 0 );
-    configwin_gen_playback_tb_treble_hbox = gtk_hbox_new( FALSE , 4 );
+    configwin_gen_playback_tb_treble_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
     configwin_gen_playback_tb_treble_spbt = gtk_spin_button_new_with_range( -100 , 100 , 1 );
     gtk_spin_button_set_value( GTK_SPIN_BUTTON(configwin_gen_playback_tb_treble_spbt) , audcfg.treble );
     g_signal_connect_swapped( G_OBJECT(button_ok) , "clicked" ,
@@ -185,12 +185,12 @@ void console_cfg_ui(void)
     gtk_box_pack_start( GTK_BOX(configwin_gen_playback_tb_hbox) ,
                         configwin_gen_playback_tb_bass_hbox , TRUE , TRUE , 0 );
     gtk_box_pack_start( GTK_BOX(configwin_gen_playback_tb_hbox) ,
-                        gtk_vseparator_new() , FALSE , FALSE , 4 );
+                        gtk_separator_new( GTK_ORIENTATION_VERTICAL ) , FALSE , FALSE , 4 );
     gtk_box_pack_start( GTK_BOX(configwin_gen_playback_tb_hbox) ,
                         configwin_gen_playback_tb_treble_hbox , TRUE , TRUE , 0 );
     gtk_box_pack_start( GTK_BOX(configwin_gen_playback_vbox) ,
-                        gtk_hseparator_new() , FALSE , FALSE , 0 );
-    configwin_gen_playback_deflen_hbox = gtk_hbox_new( FALSE , 4 );
+                        gtk_separator_new( GTK_ORIENTATION_HORIZONTAL ) , FALSE , FALSE , 0 );
+    configwin_gen_playback_deflen_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
     gtk_box_pack_start( GTK_BOX(configwin_gen_playback_vbox) ,
                         configwin_gen_playback_deflen_hbox , FALSE , FALSE , 0 );
     configwin_gen_playback_deflen_spbt = gtk_spin_button_new_with_range( 1 , 7200 , 10 );
@@ -207,7 +207,7 @@ void console_cfg_ui(void)
     configwin_gen_resample_frame = gtk_frame_new( _("Resampling") );
     gtk_box_pack_start( GTK_BOX(configwin_gen_vbox) ,
                         configwin_gen_resample_frame , TRUE , TRUE , 0 );
-    configwin_gen_resample_vbox = gtk_vbox_new( FALSE , 4 );
+    configwin_gen_resample_vbox = gtk_box_new( GTK_ORIENTATION_VERTICAL , 4 );
     gtk_container_set_border_width( GTK_CONTAINER(configwin_gen_resample_vbox), 4 );
     gtk_container_add( GTK_CONTAINER(configwin_gen_resample_frame) , configwin_gen_resample_vbox );
     configwin_gen_resample_cbt = gtk_check_button_new_with_label( _("Enable audio resampling") );
@@ -216,8 +216,8 @@ void console_cfg_ui(void)
     gtk_box_pack_start( GTK_BOX(configwin_gen_resample_vbox) ,
                         configwin_gen_resample_cbt , FALSE , FALSE , 0 );
     gtk_box_pack_start( GTK_BOX(configwin_gen_resample_vbox) ,
-                        gtk_hseparator_new() , FALSE , FALSE , 0 );
-    configwin_gen_resample_val_hbox = gtk_hbox_new( FALSE , 4 );
+                        gtk_separator_new( GTK_ORIENTATION_HORIZONTAL ) , FALSE , FALSE , 0 );
+    configwin_gen_resample_val_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
     configwin_gen_resample_val_spbt = gtk_spin_button_new_with_range( 11025 , 96000 , 100 );
     gtk_spin_button_set_value( GTK_SPIN_BUTTON(configwin_gen_resample_val_spbt) , audcfg.resample_rate );
     g_signal_connect_swapped( G_OBJECT(button_ok) , "clicked" ,
@@ -237,7 +237,7 @@ void console_cfg_ui(void)
 
 
     // SPC PAGE
-    configwin_spc_vbox = gtk_vbox_new( FALSE , 3 );
+    configwin_spc_vbox = gtk_box_new( GTK_ORIENTATION_VERTICAL , 3 );
     gtk_container_set_border_width( GTK_CONTAINER(configwin_spc_vbox), 5 );
     gtk_notebook_append_page( GTK_NOTEBOOK(configwin_notebook) ,
                               configwin_spc_vbox , gtk_label_new( _("SPC") ) );
@@ -255,7 +255,7 @@ void console_cfg_ui(void)
                         configwin_spc_increverb_cbt , FALSE , FALSE , 0 );
 
     // horizontal separator and buttons
-    hbuttonbox = gtk_hbutton_box_new();
+    hbuttonbox = gtk_button_box_new( GTK_ORIENTATION_HORIZONTAL );
     gtk_button_box_set_layout( GTK_BUTTON_BOX(hbuttonbox) , GTK_BUTTONBOX_END );
     button_cancel = gtk_button_new_from_stock( GTK_STOCK_CANCEL );
     g_signal_connect_swapped( G_OBJECT(button_cancel) , "clicked" ,

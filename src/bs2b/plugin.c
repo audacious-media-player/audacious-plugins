@@ -158,15 +158,15 @@ static void configure (void)
         g_signal_connect (config_window, "destroy", (GCallback)
                 gtk_widget_destroyed, & config_window);
 
-        vbox = gtk_vbox_new (FALSE, 6);
+        vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
         gtk_container_add ((GtkContainer *) config_window, vbox);
 
-        hbox = gtk_hbox_new (FALSE, 6);
+        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
         gtk_box_pack_start(GTK_BOX(hbox), gtk_label_new(_("Feed level:")), TRUE, FALSE, 0);
 
-        feed_slider = gtk_hscale_new_with_range(BS2B_MINFEED, BS2B_MAXFEED, 1.0);
+        feed_slider = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, BS2B_MINFEED, BS2B_MAXFEED, 1.0);
         gtk_range_set_value (GTK_RANGE(feed_slider), feed_level);
         gtk_widget_set_size_request (feed_slider, 200, -1);
         gtk_box_pack_start ((GtkBox *) hbox, feed_slider, FALSE, FALSE, 0);
@@ -175,12 +175,12 @@ static void configure (void)
         g_signal_connect (feed_slider, "format-value", (GCallback) feed_format_value,
                 NULL);
 
-        hbox = gtk_hbox_new (FALSE, 6);
+        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
         gtk_box_pack_start (GTK_BOX(hbox), gtk_label_new(_("Cut frequency:")), TRUE, FALSE, 0);
 
-        fcut_slider = gtk_hscale_new_with_range(BS2B_MINFCUT, BS2B_MAXFCUT, 1.0);
+        fcut_slider = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, BS2B_MINFCUT, BS2B_MAXFCUT, 1.0);
         gtk_range_set_value (GTK_RANGE(fcut_slider), fcut_level);
         gtk_widget_set_size_request (fcut_slider, 200, -1);
         gtk_box_pack_start ((GtkBox *) hbox, fcut_slider, FALSE, FALSE, 0);
@@ -189,7 +189,7 @@ static void configure (void)
         g_signal_connect (fcut_slider, "format-value", (GCallback) fcut_format_value,
                 NULL);
 
-        hbox = gtk_hbox_new (FALSE, 6);
+        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
         gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new(_("Presets:")), TRUE, FALSE, 0);
@@ -203,7 +203,7 @@ static void configure (void)
         button = preset_button("J. Meier", BS2B_JMEIER_CLEVEL);
         gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
 
-        hbox = gtk_hbox_new (FALSE, 6);
+        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
         button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);

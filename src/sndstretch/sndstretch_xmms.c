@@ -159,15 +159,15 @@ void sndstretch_about(void)
 	copylabel  = gtk_label_new(sndstretch_about_text);
 	gtk_label_set_justify(GTK_LABEL(copylabel), GTK_JUSTIFY_LEFT);
 
-	copy_lbox = gtk_hbox_new(FALSE,0);
-	copy_rbox = gtk_hbox_new(FALSE,0);
+	copy_lbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,0);
+	copy_rbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,0);
 	gtk_box_pack_end  (GTK_BOX(copy_lbox), FBlogo,    FALSE, TRUE,  0);
 	gtk_box_pack_start(GTK_BOX(copy_rbox), copylabel, FALSE, TRUE,  0);
-	copyhbox = gtk_hbox_new(FALSE,0);
+	copyhbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,0);
 	gtk_box_pack_start(GTK_BOX(copyhbox), copy_lbox,    TRUE, TRUE,  5);
 	gtk_box_pack_start(GTK_BOX(copyhbox), copy_rbox,    TRUE, TRUE,  5);
 
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
 	 sndstretch_about_dialog), vbox, TRUE, TRUE, 5);
 
@@ -294,7 +294,7 @@ void sndstretch_config(void)
 	 sndstretch_config_logobutton_cb, NULL);
 	gtk_widget_set_can_default (logobutton, TRUE);
 
-	logohbox = gtk_hbox_new(FALSE,0);  // to make it rightbound
+	logohbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,0);  // to make it rightbound
 	gtk_box_pack_end(GTK_BOX(logohbox), logobutton, FALSE, TRUE, 4);
 
 	SS.speed_adj = (GtkAdjustment *) gtk_adjustment_new (100 * log (SS.speed) /
@@ -320,9 +320,9 @@ void sndstretch_config(void)
 	g_signal_connect (overlap_toggle, "toggled", (GCallback) overlap_toggle_cb,
 	 NULL);
 
-	speed_scale = gtk_hscale_new(GTK_ADJUSTMENT(SS.speed_adj));
-	pitch_scale = gtk_hscale_new(GTK_ADJUSTMENT(SS.pitch_adj));
-	scale_scale = gtk_hscale_new(GTK_ADJUSTMENT(SS.scale_adj));
+	speed_scale = gtk_scale_new(GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT(SS.speed_adj));
+	pitch_scale = gtk_scale_new(GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT(SS.pitch_adj));
+	scale_scale = gtk_scale_new(GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT(SS.scale_adj));
 	gtk_scale_set_draw_value (GTK_SCALE(speed_scale),FALSE);
 	gtk_scale_set_draw_value (GTK_SCALE(pitch_scale),FALSE);
 	gtk_scale_set_draw_value (GTK_SCALE(scale_scale),FALSE);
@@ -334,10 +334,10 @@ void sndstretch_config(void)
 	gtk_entry_set_max_length (GTK_ENTRY(speed_spin),7);
 	gtk_entry_set_max_length (GTK_ENTRY(scale_spin),7);
 
-	speed_hbox = gtk_hbox_new(FALSE,5);
-	pitch_hbox = gtk_hbox_new(FALSE,5);
-	scale_hbox = gtk_hbox_new(FALSE,5);
-	opt_hbox   = gtk_hbox_new(FALSE,5);
+	speed_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,5);
+	pitch_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,5);
+	scale_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,5);
+	opt_hbox   = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,5);
 	gtk_container_set_border_width(GTK_CONTAINER(speed_hbox), 3);
 	gtk_container_set_border_width(GTK_CONTAINER(pitch_hbox), 3);
 	gtk_container_set_border_width(GTK_CONTAINER(scale_hbox), 3);
@@ -364,7 +364,7 @@ void sndstretch_config(void)
 	gtk_container_set_border_width(GTK_CONTAINER(scale_frame), 5);
 	gtk_container_set_border_width(GTK_CONTAINER(opt_frame),   5);
 
-	vbox=gtk_vbox_new(FALSE,0);
+	vbox=gtk_box_new(GTK_ORIENTATION_VERTICAL,0);
 	gtk_box_pack_start(GTK_BOX(vbox), pitch_frame,   FALSE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), speed_frame,   FALSE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), scale_frame,   FALSE, TRUE, 0);

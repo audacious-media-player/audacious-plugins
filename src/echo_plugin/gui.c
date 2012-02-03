@@ -94,22 +94,22 @@ void echo_configure(void)
 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3, GTK_FILL, GTK_FILL, 0, 0);
 	gtk_widget_show(label);
 
-	hscale = gtk_hscale_new(GTK_ADJUSTMENT(echo_delay_adj));
+	hscale = gtk_scale_new(GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT(echo_delay_adj));
 	gtk_scale_set_digits(GTK_SCALE(hscale), 0);
 	gtk_table_attach_defaults(GTK_TABLE(table), hscale, 1, 2, 0, 1);
 	gtk_widget_show(hscale);
 
-	hscale = gtk_hscale_new(GTK_ADJUSTMENT(echo_feedback_adj));
+	hscale = gtk_scale_new(GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT(echo_feedback_adj));
 	gtk_scale_set_digits(GTK_SCALE(hscale), 0);
 	gtk_table_attach_defaults(GTK_TABLE(table), hscale, 1, 2, 1, 2);
 	gtk_widget_show(hscale);
 
-	hscale = gtk_hscale_new(GTK_ADJUSTMENT(echo_volume_adj));
+	hscale = gtk_scale_new(GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT(echo_volume_adj));
 	gtk_scale_set_digits(GTK_SCALE(hscale), 0);
 	gtk_table_attach_defaults(GTK_TABLE(table), hscale, 1, 2, 2, 3);
 	gtk_widget_show(hscale);
 
-	bbox = gtk_hbutton_box_new();
+	bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
 	gtk_box_pack_start ((GtkBox *) gtk_dialog_get_action_area ((GtkDialog *)
 	 conf_dialog), bbox, TRUE, TRUE, 0);

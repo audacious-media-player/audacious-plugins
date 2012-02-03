@@ -239,7 +239,7 @@ static void vorbis_configure(void)
         gtk_window_set_title(GTK_WINDOW(configure_win), _("Vorbis Encoder Configuration"));
         gtk_container_set_border_width(GTK_CONTAINER(configure_win), 5);
 
-        vbox = gtk_vbox_new(FALSE, 5);
+        vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
         gtk_container_add(GTK_CONTAINER(configure_win), vbox);
 
         /* quality options */
@@ -247,12 +247,12 @@ static void vorbis_configure(void)
         gtk_container_set_border_width(GTK_CONTAINER(quality_frame), 5);
         gtk_box_pack_start(GTK_BOX(vbox), quality_frame, FALSE, FALSE, 2);
 
-        quality_vbox = gtk_vbox_new(FALSE, 5);
+        quality_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
         gtk_container_set_border_width(GTK_CONTAINER(quality_vbox), 10);
         gtk_container_add(GTK_CONTAINER(quality_frame), quality_vbox);
 
         /* quality option: vbr level */
-        quality_hbox1 = gtk_hbox_new(FALSE, 5);
+        quality_hbox1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_container_set_border_width(GTK_CONTAINER(quality_hbox1), 10);
         gtk_container_add(GTK_CONTAINER(quality_vbox), quality_hbox1);
 
@@ -268,7 +268,7 @@ static void vorbis_configure(void)
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(quality_spin), (v_base_quality * 10));
 
         /* buttons */
-        bbox = gtk_hbutton_box_new();
+        bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
         gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
         gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
