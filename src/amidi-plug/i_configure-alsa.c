@@ -223,12 +223,12 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
   gboolean alsa_module_ok = FALSE;
   gchar * alsa_module_pathfilename;
 
-  alsa_page_vbox = gtk_vbox_new( FALSE , 0 );
+  alsa_page_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
 
   title_widget = i_configure_gui_draw_title( _("ALSA BACKEND CONFIGURATION") );
   gtk_box_pack_start( GTK_BOX(alsa_page_vbox) , title_widget , FALSE , FALSE , 2 );
 
-  content_vbox = gtk_vbox_new( TRUE , 2 );
+  content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2 );
 
   /* check if the ALSA module is available */
   while ( backend_list != NULL )
@@ -441,7 +441,7 @@ void i_configure_gui_tablabel_alsa( GtkWidget * alsa_page_alignment ,
 {
   GtkWidget *pagelabel_vbox, *pagelabel_image, *pagelabel_label;
   GdkPixbuf *pagelabel_image_pix;
-  pagelabel_vbox = gtk_vbox_new( FALSE , 1 );
+  pagelabel_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 1 );
   pagelabel_image_pix = gdk_pixbuf_new_from_xpm_data( (const gchar **)backend_alsa_icon_xpm );
   pagelabel_image = gtk_image_new_from_pixbuf( pagelabel_image_pix ); g_object_unref( pagelabel_image_pix );
   pagelabel_label = gtk_label_new( "" );

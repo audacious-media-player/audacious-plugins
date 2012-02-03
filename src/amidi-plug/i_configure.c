@@ -50,9 +50,6 @@ void i_configure_cfg_ap_read( void );
 GtkWidget * i_configure_gui_draw_title( gchar * title_string )
 {
   GtkWidget *title_label, *title_evbox, *title_frame;
-  GtkStyle * style = gtk_widget_get_default_style();
-  GdkColor title_fgcol = style->fg[GTK_STATE_SELECTED];
-  GdkColor title_bgcol = style->bg[GTK_STATE_SELECTED];
   title_label = gtk_label_new( title_string );
   title_evbox = gtk_event_box_new();
   title_frame = gtk_frame_new( NULL );
@@ -60,8 +57,6 @@ GtkWidget * i_configure_gui_draw_title( gchar * title_string )
   gtk_container_add( GTK_CONTAINER(title_evbox) , title_label );
   gtk_container_set_border_width( GTK_CONTAINER(title_evbox) , 5 );
   gtk_container_add( GTK_CONTAINER(title_frame) , title_evbox );
-  gtk_widget_modify_fg( GTK_WIDGET(title_label) , GTK_STATE_NORMAL , &title_fgcol );
-  gtk_widget_modify_bg( GTK_WIDGET(title_evbox) , GTK_STATE_NORMAL , &title_bgcol );
   return title_frame;
 }
 
@@ -141,7 +136,7 @@ void i_configure_gui( void )
   gtk_window_set_geometry_hints( GTK_WINDOW(configwin) , GTK_WIDGET(configwin) ,
                                  &cw_hints , GDK_HINT_MIN_SIZE );
 
-  configwin_vbox = gtk_vbox_new( FALSE , 0 );
+  configwin_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
   gtk_container_add( GTK_CONTAINER(configwin) , configwin_vbox );
 
   configwin_notebook = gtk_notebook_new();
@@ -182,9 +177,9 @@ void i_configure_gui( void )
   i_backend_list_free( backend_list_h ); /* done, free the list of available backends */
 
   /* horizontal separator and buttons */
-  hseparator = gtk_hseparator_new();
+  hseparator = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start( GTK_BOX(configwin_vbox) , hseparator , FALSE , FALSE , 4 );
-  hbuttonbox = gtk_hbutton_box_new();
+  hbuttonbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_button_box_set_layout( GTK_BUTTON_BOX(hbuttonbox) , GTK_BUTTONBOX_END );
   button_apply = gtk_button_new_from_stock( GTK_STOCK_APPLY );
   gtk_container_add( GTK_CONTAINER(hbuttonbox) , button_apply );

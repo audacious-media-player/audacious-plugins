@@ -264,12 +264,12 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
   GSList * backend_list = backend_list_p;
   gboolean fsyn_module_ok = FALSE;
 
-  fsyn_page_vbox = gtk_vbox_new( FALSE , 0 );
+  fsyn_page_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
 
   title_widget = i_configure_gui_draw_title( _("FLUIDSYNTH BACKEND CONFIGURATION") );
   gtk_box_pack_start( GTK_BOX(fsyn_page_vbox) , title_widget , FALSE , FALSE , 2 );
 
-  content_vbox = gtk_vbox_new( FALSE , 2 );
+  content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2 );
 
   /* check if the FluidSynth module is available */
   while ( backend_list != NULL )
@@ -310,7 +310,7 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
 
     /* soundfont settings */
     soundfont_frame = gtk_frame_new( _("SoundFont settings") );
-    soundfont_vbox = gtk_vbox_new( FALSE , 2 );
+    soundfont_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2 );
     gtk_container_set_border_width( GTK_CONTAINER(soundfont_vbox), 4 );
     gtk_container_add( GTK_CONTAINER(soundfont_frame) , soundfont_vbox );
     /* soundfont settings - soundfont files - listview */
@@ -335,7 +335,7 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
       }
       g_strfreev( sffiles );
     }
-    soundfont_file_hbox = gtk_hbox_new( FALSE , 2 );
+    soundfont_file_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2 );
     soundfont_file_lv = gtk_tree_view_new_with_model( GTK_TREE_MODEL(soundfont_file_store) );
     gtk_tree_view_set_rules_hint( GTK_TREE_VIEW(soundfont_file_lv), TRUE );
     g_object_unref( soundfont_file_store );
@@ -359,7 +359,7 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     gtk_container_add( GTK_CONTAINER(soundfont_file_lv_sw) , soundfont_file_lv );
     gtk_container_add( GTK_CONTAINER(soundfont_file_lv_frame) , soundfont_file_lv_sw );
     /* soundfont settings - soundfont files - buttonbox */
-    soundfont_file_bbox_vbox = gtk_vbox_new( TRUE , 0 );
+    soundfont_file_bbox_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
     soundfont_file_bbox_addbt = gtk_button_new();
     gtk_button_set_image( GTK_BUTTON(soundfont_file_bbox_addbt) ,
                           gtk_image_new_from_stock( GTK_STOCK_ADD , GTK_ICON_SIZE_MENU ) );
@@ -391,8 +391,8 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     gtk_box_pack_start( GTK_BOX(soundfont_vbox) , soundfont_file_hbox , FALSE , FALSE , 0 );
 
     /* soundfont settings - load */
-    soundfont_load_hsep = gtk_hseparator_new();
-    soundfont_load_hbox = gtk_hbox_new( FALSE , 0 );
+    soundfont_load_hsep = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
+    soundfont_load_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0 );
     soundfont_load_option[0] = gtk_radio_button_new_with_label( NULL ,
                                  _("Load SF on player start") );
     g_object_set_data( G_OBJECT(soundfont_load_option[0]) , "val" , GINT_TO_POINTER(0) );
@@ -405,7 +405,7 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     else
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(soundfont_load_option[1]) , TRUE );
     gtk_box_pack_start( GTK_BOX(soundfont_load_hbox) , soundfont_load_option[0] , TRUE , TRUE , 0 );
-    gtk_box_pack_start( GTK_BOX(soundfont_load_hbox) , gtk_vseparator_new() , FALSE , FALSE , 4 );
+    gtk_box_pack_start( GTK_BOX(soundfont_load_hbox) , gtk_separator_new (GTK_ORIENTATION_VERTICAL) , FALSE , FALSE , 4 );
     gtk_box_pack_start( GTK_BOX(soundfont_load_hbox) , soundfont_load_option[1] , TRUE , TRUE , 0 );
     gtk_box_pack_start( GTK_BOX(soundfont_vbox) , soundfont_load_hsep , FALSE , FALSE , 3 );
     gtk_box_pack_start( GTK_BOX(soundfont_vbox) , soundfont_load_hbox , FALSE , FALSE , 0 );
@@ -414,23 +414,23 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
 
     /* synth settings */
     synth_frame = gtk_frame_new( _("Synthesizer settings") );
-    synth_hbox = gtk_hbox_new( FALSE , 4 );
+    synth_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4 );
     gtk_container_set_border_width( GTK_CONTAINER(synth_hbox), 4 );
     gtk_container_add( GTK_CONTAINER(synth_frame) , synth_hbox );
-    synth_leftcol_vbox = gtk_vbox_new( TRUE , 0 );
-    synth_rightcol_vbox = gtk_vbox_new( FALSE , 0 );
+    synth_leftcol_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
+    synth_rightcol_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
     gtk_box_pack_start( GTK_BOX(synth_hbox) , synth_leftcol_vbox , TRUE , TRUE , 0 );
     gtk_box_pack_start( GTK_BOX(synth_hbox) , synth_rightcol_vbox , FALSE , FALSE , 0 );
     /* synth settings - gain */
     synth_gain_frame = gtk_frame_new( _("gain") );
     gtk_frame_set_label_align( GTK_FRAME(synth_gain_frame) , 0.5 , 0.5 );
     gtk_box_pack_start( GTK_BOX(synth_leftcol_vbox) , synth_gain_frame , TRUE , TRUE , 0 );
-    synth_gain_hbox = gtk_hbox_new( TRUE , 2 );
+    synth_gain_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2 );
     gtk_container_set_border_width( GTK_CONTAINER(synth_gain_hbox), 2 );
     gtk_container_add( GTK_CONTAINER(synth_gain_frame) , synth_gain_hbox );
     synth_gain_defcheckbt = gtk_check_button_new_with_label( _("use default") );
     gtk_box_pack_start( GTK_BOX(synth_gain_hbox) , synth_gain_defcheckbt , FALSE , FALSE , 0 );
-    synth_gain_value_hbox = gtk_hbox_new( FALSE , 4 );
+    synth_gain_value_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4 );
     synth_gain_value_label = gtk_label_new( _("value:") );
     synth_gain_value_spin = gtk_spin_button_new_with_range( 0.0 , 10.0 , 0.1 );
     gtk_spin_button_set_value( GTK_SPIN_BUTTON(synth_gain_value_spin) , 0.2 );
@@ -453,12 +453,12 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     synth_poly_frame = gtk_frame_new( _("poliphony") );
     gtk_frame_set_label_align( GTK_FRAME(synth_poly_frame) , 0.5 , 0.5 );
     gtk_box_pack_start( GTK_BOX(synth_leftcol_vbox) , synth_poly_frame , TRUE , TRUE , 0 );
-    synth_poly_hbox = gtk_hbox_new( TRUE , 2 );
+    synth_poly_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2 );
     gtk_container_set_border_width( GTK_CONTAINER(synth_poly_hbox), 2 );
     gtk_container_add( GTK_CONTAINER(synth_poly_frame) , synth_poly_hbox );
     synth_poly_defcheckbt = gtk_check_button_new_with_label( _("use default") );
     gtk_box_pack_start( GTK_BOX(synth_poly_hbox) , synth_poly_defcheckbt , FALSE , FALSE , 0 );
-    synth_poly_value_hbox = gtk_hbox_new( FALSE , 4 );
+    synth_poly_value_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4 );
     synth_poly_value_label = gtk_label_new( _("value:") );
     synth_poly_value_spin = gtk_spin_button_new_with_range( 16 , 4096 , 1 );
     gtk_spin_button_set_value( GTK_SPIN_BUTTON(synth_poly_value_spin) , 256 );
@@ -481,12 +481,12 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     synth_reverb_frame = gtk_frame_new( _("reverb") );
     gtk_frame_set_label_align( GTK_FRAME(synth_reverb_frame) , 0.5 , 0.5 );
     gtk_box_pack_start( GTK_BOX(synth_leftcol_vbox) , synth_reverb_frame , TRUE , TRUE , 0 );
-    synth_reverb_hbox = gtk_hbox_new( TRUE , 2 );
+    synth_reverb_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2 );
     gtk_container_set_border_width( GTK_CONTAINER(synth_reverb_hbox), 2 );
     gtk_container_add( GTK_CONTAINER(synth_reverb_frame) , synth_reverb_hbox );
     synth_reverb_defcheckbt = gtk_check_button_new_with_label( _("use default") );
     gtk_box_pack_start( GTK_BOX(synth_reverb_hbox) , synth_reverb_defcheckbt , FALSE , FALSE , 0 );
-    synth_reverb_value_hbox = gtk_hbox_new( TRUE , 4 );
+    synth_reverb_value_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4 );
     synth_reverb_value_option[0] = gtk_radio_button_new_with_label( NULL , _("yes") );
     synth_reverb_value_option[1] = gtk_radio_button_new_with_label_from_widget(
                                      GTK_RADIO_BUTTON(synth_reverb_value_option[0]) , _("no") );
@@ -512,12 +512,12 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     synth_chorus_frame = gtk_frame_new( _("chorus") );
     gtk_frame_set_label_align( GTK_FRAME(synth_chorus_frame) , 0.5 , 0.5 );
     gtk_box_pack_start( GTK_BOX(synth_leftcol_vbox) , synth_chorus_frame , TRUE , TRUE , 0 );
-    synth_chorus_hbox = gtk_hbox_new( TRUE , 2 );
+    synth_chorus_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2 );
     gtk_container_set_border_width( GTK_CONTAINER(synth_chorus_hbox), 2 );
     gtk_container_add( GTK_CONTAINER(synth_chorus_frame) , synth_chorus_hbox );
     synth_chorus_defcheckbt = gtk_check_button_new_with_label( _("use default") );
     gtk_box_pack_start( GTK_BOX(synth_chorus_hbox) , synth_chorus_defcheckbt , FALSE , FALSE , 0 );
-    synth_chorus_value_hbox = gtk_hbox_new( TRUE , 4 );
+    synth_chorus_value_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4 );
     synth_chorus_value_option[0] = gtk_radio_button_new_with_label( NULL , _("yes") );
     synth_chorus_value_option[1] = gtk_radio_button_new_with_label_from_widget(
                                      GTK_RADIO_BUTTON(synth_chorus_value_option[0]) , _("no") );
@@ -542,7 +542,7 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     /* synth settings - samplerate */
     synth_samplerate_frame = gtk_frame_new( _("sample rate") );
     gtk_frame_set_label_align( GTK_FRAME(synth_samplerate_frame) , 0.5 , 0.5 );
-    synth_samplerate_vbox = gtk_vbox_new( TRUE , 0 );
+    synth_samplerate_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
     gtk_container_set_border_width( GTK_CONTAINER(synth_samplerate_vbox), 6 );
     gtk_container_add( GTK_CONTAINER(synth_samplerate_frame) , synth_samplerate_vbox );
     gtk_box_pack_start( GTK_BOX(synth_rightcol_vbox) , synth_samplerate_frame , FALSE , FALSE , 0 );
@@ -556,7 +556,7 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     g_object_set_data( G_OBJECT(synth_samplerate_option[2]) , "val" , GINT_TO_POINTER(96000) );
     synth_samplerate_option[3] = gtk_radio_button_new_with_label_from_widget(
                                    GTK_RADIO_BUTTON(synth_samplerate_option[0]) , _("custom ") );
-    synth_samplerate_optionhbox = gtk_hbox_new( FALSE , 4 );
+    synth_samplerate_optionhbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4 );
     synth_samplerate_optionentry = gtk_entry_new();
     gtk_widget_set_sensitive( GTK_WIDGET(synth_samplerate_optionentry) , FALSE );
     gtk_entry_set_width_chars( GTK_ENTRY(synth_samplerate_optionentry) , 8 );
@@ -632,7 +632,7 @@ void i_configure_gui_tablabel_fsyn( GtkWidget * fsyn_page_alignment ,
 {
   GtkWidget *pagelabel_vbox, *pagelabel_image, *pagelabel_label;
   GdkPixbuf *pagelabel_image_pix;
-  pagelabel_vbox = gtk_vbox_new( FALSE , 1 );
+  pagelabel_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 1 );
   pagelabel_image_pix = gdk_pixbuf_new_from_xpm_data( (const gchar **)backend_fluidsynth_icon_xpm );
   pagelabel_image = gtk_image_new_from_pixbuf( pagelabel_image_pix ); g_object_unref( pagelabel_image_pix );
   pagelabel_label = gtk_label_new( "" );

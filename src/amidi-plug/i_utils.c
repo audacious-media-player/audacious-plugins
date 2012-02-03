@@ -45,9 +45,9 @@ void i_about_gui( void )
   gtk_container_set_border_width( GTK_CONTAINER(aboutwin), 10 );
   g_signal_connect( G_OBJECT(aboutwin) , "destroy" , G_CALLBACK(gtk_widget_destroyed) , &aboutwin );
 
-  aboutwin_vbox = gtk_vbox_new( FALSE , 0 );
+  aboutwin_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
 
-  logoandinfo_vbox = gtk_vbox_new( TRUE , 2 );
+  logoandinfo_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2 );
   gtk_container_add( GTK_CONTAINER(aboutwin) , aboutwin_vbox );
 
   logo_pixbuf = gdk_pixbuf_new_from_xpm_data( (const gchar **)amidiplug_xpm_logo );
@@ -94,9 +94,9 @@ void i_about_gui( void )
   gtk_box_pack_start( GTK_BOX(aboutwin_vbox) , logoandinfo_vbox , TRUE , TRUE , 0 );
 
   /* horizontal separator and buttons */
-  hseparator = gtk_hseparator_new();
+  hseparator = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start( GTK_BOX(aboutwin_vbox) , hseparator , FALSE , FALSE , 4 );
-  hbuttonbox = gtk_hbutton_box_new();
+  hbuttonbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_button_box_set_layout( GTK_BUTTON_BOX(hbuttonbox) , GTK_BUTTONBOX_END );
   button_ok = gtk_button_new_from_stock( GTK_STOCK_OK );
   g_signal_connect_swapped( G_OBJECT(button_ok) , "clicked" , G_CALLBACK(gtk_widget_destroy) , aboutwin );
