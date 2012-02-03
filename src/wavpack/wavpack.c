@@ -325,7 +325,7 @@ wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
     if (ctx == NULL)
         return NULL;
 
-	AUDDBG("starting probe of %p\n", fd);
+	AUDDBG("starting probe of %p\n", (void *) fd);
 
 	vfs_rewind(fd);
 	tu = tuple_new_from_filename(filename);
@@ -340,7 +340,7 @@ wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
 
     WavpackCloseFile(ctx);
 
-	AUDDBG("returning tuple %p for file %p\n", tu, fd);
+	AUDDBG("returning tuple %p for file %p\n", (void *) tu, (void *) fd);
 	return tu;
 }
 
