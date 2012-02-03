@@ -33,7 +33,7 @@ struct midievent_stru {
     guint length;			/* length of sysex data */
     gchar * metat;			/* meta-event text */
   } data;
-  guchar sysex[0];
+  guchar * sysex;
 };
 
 typedef struct midievent_stru midievent_t;
