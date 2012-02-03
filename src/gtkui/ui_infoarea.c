@@ -212,14 +212,27 @@ static void hsv_to_rgb (gfloat h, gfloat s, gfloat v, gfloat * r, gfloat * g,
     * b = v * (1 - s * (1 - * b));
 }
 
-static void get_color (GtkWidget * widget, gint i, gfloat * r, gfloat * g,
- gfloat * b)
+static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
 {
-    GdkColor * c = (gtk_widget_get_style (widget))->base + GTK_STATE_SELECTED;
+    static GdkRGBA c;
+    static bool_t valid = FALSE;
     gfloat h, s, v, n;
 
-    rgb_to_hsv (c->red / 65535.0, c->green / 65535.0, c->blue / 65535.0, & h,
-     & s, & v);
+    if (! valid)
+    {
+        /* we want a color that matches the current theme
+         * selected color of a GtkEntry should be reasonable */
+        GtkStyleContext * style = gtk_style_context_new ();
+        GtkWidgetPath * path = gtk_widget_path_new ();
+        gtk_widget_path_append_type (path, GTK_TYPE_ENTRY);
+        gtk_style_context_set_path (style, path);
+        gtk_widget_path_free (path);
+        gtk_style_context_get_background_color (style, GTK_STATE_FLAG_SELECTED, & c);
+        g_object_unref (style);
+        valid = TRUE;
+    }
+
+    rgb_to_hsv (c.red, c.green, c.blue, & h, & s, & v);
 
     if (s < 0.1) /* monochrome theme? use blue instead */
     {
@@ -247,7 +260,7 @@ static gboolean draw_vis_cb (GtkWidget * vis, cairo_t * cr)
         gint m = MIN (VIS_CENTER + area->bars[i], HEIGHT);
 
         gfloat r, g, b;
-        get_color (vis, i, & r, & g, & b);
+        get_color (i, & r, & g, & b);
 
         cairo_set_source_rgb (cr, r, g, b);
         cairo_rectangle (cr, x, t, 6, VIS_CENTER - t);
@@ -493,7 +506,7 @@ GtkWidget * ui_infoarea_new (void)
     g_return_val_if_fail (! area, NULL);
     area = g_slice_new0 (UIInfoArea);
 
-    area->box = gtk_hbox_new (FALSE, 0);
+    area->box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
     area->main = gtk_drawing_area_new ();
     gtk_widget_set_size_request (area->main, ICON_SIZE + 2 * SPACING, HEIGHT);

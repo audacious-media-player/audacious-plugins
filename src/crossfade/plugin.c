@@ -128,20 +128,22 @@ static void crossfade_configure (void)
     gtk_window_present ((GtkWindow *) config_window);
 }
 
-void crossfade_show_channels_message (void)
+int crossfade_show_channels_message (void)
 {
     audgui_simple_message (& error_window, GTK_MESSAGE_ERROR,
      _("Crossfade Error"), _("Crossfading failed because the songs had a "
      "different number of channels."));
+    return 0;
 }
 
-void crossfade_show_rate_message (void)
+int crossfade_show_rate_message (void)
 {
     audgui_simple_message (& error_window, GTK_MESSAGE_ERROR, _("Crossfade "
      "Error"),
      _("Crossfading failed because the songs had different sample rates.\n\n"
      "You can use the Sample Rate Converter effect to resample the songs to "
      "the same rate."));
+    return 0;
 }
 
 AUD_EFFECT_PLUGIN

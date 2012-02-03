@@ -21,8 +21,8 @@ extern int crossfade_length;
 
 void crossfade_config_load (void);
 void crossfade_config_save (void);
-void crossfade_show_channels_message (void);
-void crossfade_show_rate_message (void);
+int crossfade_show_channels_message (void);
+int crossfade_show_rate_message (void);
 
 int crossfade_init (void);
 void crossfade_cleanup (void);

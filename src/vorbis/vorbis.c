@@ -550,7 +550,7 @@ static gboolean get_song_image (const gchar * filename, VFSFile * file,
         goto PARSE_ERR;
 
     * data = g_malloc (* size);
-    memcpy (* data, data2 + 8 + mime_length + 4 + desc_length + 20, * size);
+    memcpy (* data, (char *) data2 + 8 + mime_length + 4 + desc_length + 20, * size);
 
     g_free (data2);
     ov_clear (& vfile);

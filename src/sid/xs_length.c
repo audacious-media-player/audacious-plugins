@@ -117,7 +117,7 @@ sldb_node_t * xs_sldb_read_entry(gchar *inLine)
     /* Get hash value */
     linePos = 0;
     for (i = 0; i < XS_MD5HASH_LENGTH; i++, linePos += 2) {
-        gint tmpu;
+        guint tmpu;
         sscanf(&inLine[linePos], "%2x", &tmpu);
         tmnode->md5Hash[i] = tmpu;
     }

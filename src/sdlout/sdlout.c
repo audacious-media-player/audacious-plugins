@@ -252,7 +252,7 @@ void sdlout_write_audio (void * data, int len)
     {
         int part = buffer_size - start;
         memcpy (buffer + start, data, part);
-        memcpy (buffer, data + part, len - part);
+        memcpy (buffer, (char *) data + part, len - part);
     }
 
     buffer_data_len += len;

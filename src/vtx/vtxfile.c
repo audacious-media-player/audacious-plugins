@@ -231,7 +231,7 @@ static void append_number(char *buf, const int sz, const int num)
 {
   char s[32];
   snprintf(s, sizeof(s), "%d", num);
-  return append_string(buf, sz, s);
+  append_string(buf, sz, s);
 }
 
 static void append_char(char *buf, const int sz, const char c)

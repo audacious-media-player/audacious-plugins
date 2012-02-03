@@ -147,7 +147,7 @@ ui_statusbar_new(void)
     GtkWidget *hbox;
     GtkWidget *status, *length;
 
-    hbox = gtk_hbox_new(FALSE, 3);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
 
     status = gtk_widget_new(GTK_TYPE_LABEL, "xalign", 0.0, NULL);
     gtk_label_set_ellipsize ((GtkLabel *) status, PANGO_ELLIPSIZE_END);

@@ -368,32 +368,6 @@ GtkWidget * ui_playlist_widget_new (gint playlist)
     GtkWidget * list = audgui_list_new (& callbacks, data,
      aud_playlist_entry_count (playlist));
 
-    if (aud_get_bool ("gtkui", "custom_playlist_colors"))
-    {
-        GdkColor c;
-        gchar * tmp;
-
-        tmp = aud_get_string ("gtkui", "playlist_bg");
-        gdk_color_parse (tmp, & c);
-        gtk_widget_modify_base(list, GTK_STATE_NORMAL, &c);
-
-        tmp = aud_get_string ("gtkui", "playlist_fg");
-        gdk_color_parse (tmp, & c);
-        gtk_widget_modify_text(list, GTK_STATE_NORMAL, &c);
-    }
-
-    gchar * font = aud_get_string ("gtkui", "playlist_font");
-    if (font[0])
-    {
-        PangoFontDescription *desc;
-
-        desc = pango_font_description_from_string (font);
-        gtk_widget_modify_font(list, desc);
-
-        pango_font_description_free(desc);
-    }
-    g_free (font);
-
     gtk_tree_view_set_headers_visible ((GtkTreeView *) list,
      aud_get_bool ("gtkui", "playlist_headers"));
     gtk_tree_view_set_search_equal_func ((GtkTreeView *) list, search_cb, data,

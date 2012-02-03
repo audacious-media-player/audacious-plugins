@@ -111,9 +111,8 @@ midievent_t * i_midi_file_new_event(midifile_track_t * track, gint sysex_length)
 {
   midievent_t * event;
 
-  event = g_malloc(sizeof(midievent_t) + sysex_length);
-  /* check_mem(event); */
-
+  event = g_malloc (sizeof (midievent_t));
+  event->sysex = sysex_length ? g_malloc (sysex_length) : NULL;
   event->next = NULL;
 
   /* append at the end of the track's linked list */
@@ -537,7 +536,9 @@ void i_midi_free( midifile_t * mf )
         if (( event_tmp->type == SND_SEQ_EVENT_META_TEXT ) ||
             ( event_tmp->type == SND_SEQ_EVENT_META_LYRIC ))
           g_free( event_tmp->data.metat );
-        g_free( event_tmp );
+
+        g_free (event_tmp->sysex);
+        g_free (event_tmp);
       }
     }
     /* free track array */

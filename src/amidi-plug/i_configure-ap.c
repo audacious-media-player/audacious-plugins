@@ -190,12 +190,12 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   GtkTreeIter iter;
   GSList * backend_list = backend_list_p;
 
-  ap_page_vbox = gtk_vbox_new( FALSE , 0 );
+  ap_page_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
 
   title_widget = i_configure_gui_draw_title( _("AMIDI-PLUG PREFERENCES") );
   gtk_box_pack_start( GTK_BOX(ap_page_vbox) , title_widget , FALSE , FALSE , 2 );
 
-  content_vbox = gtk_vbox_new( TRUE , 2 );
+  content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2 );
 
   backend_store = gtk_list_store_new( LISTBACKEND_N_COLUMNS , G_TYPE_STRING , G_TYPE_STRING ,
                                       G_TYPE_STRING , G_TYPE_STRING , G_TYPE_INT );
@@ -239,9 +239,9 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   g_signal_connect_swapped( G_OBJECT(commit_button) , "ap-commit" ,
                             G_CALLBACK(i_configure_ev_backendlv_commit) , backend_lv );
 
-  backend_lv_hbox = gtk_hbox_new( FALSE , 0 );
+  backend_lv_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0 );
   gtk_box_pack_start( GTK_BOX(backend_lv_hbox) , backend_lv_sw , TRUE , TRUE , 0 );
-  backend_lv_vbbox = gtk_vbox_new( FALSE , 2 );
+  backend_lv_vbbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2 );
   gtk_box_pack_start( GTK_BOX(backend_lv_hbox) , backend_lv_vbbox , FALSE , FALSE , 3 );
   backend_lv_infobt = gtk_button_new();
   gtk_button_set_image( GTK_BUTTON(backend_lv_infobt) ,
@@ -251,13 +251,13 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   gtk_box_pack_start( GTK_BOX(backend_lv_vbbox) , backend_lv_infobt , FALSE , FALSE , 0 );
   gtk_container_add( GTK_CONTAINER(backend_lv_frame) , backend_lv_hbox );
 
-  settings_vbox = gtk_vbox_new( FALSE , 2 );
+  settings_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2 );
 
   settplay_frame = gtk_frame_new( _("Playback settings") );
-  settplay_vbox = gtk_vbox_new( FALSE , 0 );
+  settplay_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
   gtk_container_set_border_width( GTK_CONTAINER(settplay_vbox), 4 );
-  settplay_transpose_and_drumshift_hbox = gtk_hbox_new( FALSE , 12 );
-  settplay_transpose_hbox = gtk_hbox_new( FALSE , 0 );
+  settplay_transpose_and_drumshift_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12 );
+  settplay_transpose_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0 );
   settplay_transpose_label1 = gtk_label_new( _("Transpose: ") );
   settplay_transpose_spinbt = gtk_spin_button_new_with_range( -20 , 20 , 1 );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(settplay_transpose_spinbt) ,
@@ -266,7 +266,7 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   gtk_box_pack_start( GTK_BOX(settplay_transpose_hbox) , settplay_transpose_spinbt , FALSE , FALSE , 2 );
   gtk_box_pack_start( GTK_BOX(settplay_transpose_and_drumshift_hbox) ,
                       settplay_transpose_hbox , FALSE , FALSE , 0 );
-  settplay_drumshift_hbox = gtk_hbox_new( FALSE , 0 );
+  settplay_drumshift_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0 );
   settplay_drumshift_label1 = gtk_label_new( _("Drum shift: ") );
   settplay_drumshift_spinbt = gtk_spin_button_new_with_range( 0 , 127 , 1 );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(settplay_drumshift_spinbt) ,
@@ -286,7 +286,7 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   gtk_box_pack_start( GTK_BOX(settings_vbox) , settplay_frame , TRUE , TRUE , 0 );
 
   settadva_frame = gtk_frame_new( _("Advanced settings") );
-  settadva_vbox = gtk_vbox_new( FALSE , 0 );
+  settadva_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
   gtk_container_set_border_width( GTK_CONTAINER(settadva_vbox), 4 );
   settadva_precalc_checkbt = gtk_check_button_new_with_label(
                                _("pre-calculate length of MIDI files in playlist") );
@@ -325,7 +325,7 @@ void i_configure_gui_tablabel_ap( GtkWidget * ap_page_alignment ,
 {
   GtkWidget *pagelabel_vbox, *pagelabel_image, *pagelabel_label;
   GdkPixbuf *pagelabel_image_pix;
-  pagelabel_vbox = gtk_vbox_new( FALSE , 1 );
+  pagelabel_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 1 );
   pagelabel_image_pix = gdk_pixbuf_new_from_xpm_data( (const gchar **)amidi_plug_icon_xpm );
   pagelabel_image = gtk_image_new_from_pixbuf( pagelabel_image_pix ); g_object_unref( pagelabel_image_pix );
   pagelabel_label = gtk_label_new( "" );
