@@ -77,7 +77,7 @@ static int check_magic(ayemu_ay_t *ay)
 {
   if (ay->magic == MAGIC1)
     return 1;
-  fprintf(stderr, "libayemu: passed pointer %p to uninitialized ayemu_ay_t structure\n", ay);
+  fprintf(stderr, "libayemu: passed pointer %p to uninitialized ayemu_ay_t structure\n", (void *) ay);
   return 0;
 }
 
