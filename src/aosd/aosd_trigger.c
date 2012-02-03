@@ -41,20 +41,18 @@ enum
 {
   AOSD_TRIGGER_PB_START = 0,
   AOSD_TRIGGER_PB_TITLECHANGE = 1,
-  AOSD_TRIGGER_VOL_CHANGE = 2,
-  AOSD_TRIGGER_PB_PAUSEON = 3,
-  AOSD_TRIGGER_PB_PAUSEOFF = 4
+  AOSD_TRIGGER_PB_PAUSEON = 2,
+  AOSD_TRIGGER_PB_PAUSEOFF = 3
 };
 
 /* trigger codes array size */
-#define AOSD_TRIGGER_CODES_ARRAY_SIZE 5
+#define AOSD_TRIGGER_CODES_ARRAY_SIZE 4
 
 /* trigger codes array */
 gint aosd_trigger_codes[] =
 {
   AOSD_TRIGGER_PB_START,
   AOSD_TRIGGER_PB_TITLECHANGE,
-  AOSD_TRIGGER_VOL_CHANGE,
   AOSD_TRIGGER_PB_PAUSEON,
   AOSD_TRIGGER_PB_PAUSEOFF
 };
@@ -64,8 +62,6 @@ static void aosd_trigger_func_pb_start_onoff ( gboolean );
 static void aosd_trigger_func_pb_start_cb ( gpointer , gpointer );
 static void aosd_trigger_func_pb_titlechange_onoff ( gboolean );
 static void aosd_trigger_func_pb_titlechange_cb ( gpointer , gpointer );
-static void aosd_trigger_func_vol_change_onoff ( gboolean );
-static void aosd_trigger_func_vol_change_cb ( gpointer , gpointer );
 static void aosd_trigger_func_pb_pauseon_onoff ( gboolean );
 static void aosd_trigger_func_pb_pauseon_cb ( gpointer , gpointer );
 static void aosd_trigger_func_pb_pauseoff_onoff ( gboolean );
@@ -86,11 +82,6 @@ aosd_trigger_t aosd_triggers[] =
                                        "title changes in internet streams.") ,
                                     aosd_trigger_func_pb_titlechange_onoff ,
                                     aosd_trigger_func_pb_titlechange_cb },
-
-  [AOSD_TRIGGER_VOL_CHANGE] = { N_("Volume Change") ,
-                                N_("Triggers OSD when volume is changed.") ,
-                                aosd_trigger_func_vol_change_onoff ,
-                                aosd_trigger_func_vol_change_cb },
 
   [AOSD_TRIGGER_PB_PAUSEON] = { N_("Pause On") ,
                                 N_("Triggers OSD when playback is paused.") ,
@@ -294,63 +285,6 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
     str_unref (pl_entry_title);
   }
 }
-
-static void
-aosd_trigger_func_vol_change_onoff ( gboolean turn_on )
-{
-  if ( turn_on == TRUE )
-    hook_associate( "volume set" , aosd_trigger_func_vol_change_cb , NULL );
-  else
-    hook_dissociate( "volume set" , aosd_trigger_func_vol_change_cb );
-  return;
-}
-
-typedef struct
-{
-  gint h_vol[2];
-  gint sid;
-}
-aosd_vol_change_bucket_t;
-
-static gboolean
-aosd_trigger_func_vol_change_timeout ( gpointer bucket_gp )
-{
-  aosd_vol_change_bucket_t *bucket = bucket_gp;
-  gchar *utf8_title_markup = g_markup_printf_escaped(
-    "<span font_desc='%s'>Volume Change - L: %i , R: %i</span>" ,
-    global_config->osd->text.fonts_name[0] , bucket->h_vol[0] , bucket->h_vol[1] );
-  aosd_osd_display( utf8_title_markup , global_config->osd , FALSE );
-  g_free( utf8_title_markup );
-  bucket->sid = 0; /* reset source id value */
-  return FALSE;
-}
-
-static void
-aosd_trigger_func_vol_change_cb ( gpointer h_vol_gp , gpointer unused )
-{
-  gint *h_vol = h_vol_gp;
-  static aosd_vol_change_bucket_t bucket = { { 0 , 0 } , 0 };
-
-  bucket.h_vol[0] = h_vol[0];
-  bucket.h_vol[1] = h_vol[1];
-
-  /* in order to avoid repeated display of osd for each volume variation, use a
-     timer to prevent it from appearing more than once when multiple volume
-     changes are performed in a short time interval (500 msec) */
-  if ( bucket.sid == 0 )
-  {
-    /* first call in the time interval */
-    bucket.sid = g_timeout_add( 500 , aosd_trigger_func_vol_change_timeout , &bucket );
-  }
-  else
-  {
-    /* another call in the same interval, reset the interval */
-    g_source_remove( bucket.sid );
-    bucket.sid = g_timeout_add( 500 , aosd_trigger_func_vol_change_timeout , &bucket );
-  }
-  return;
-}
-
 
 static void
 aosd_trigger_func_pb_pauseon_onoff ( gboolean turn_on )
