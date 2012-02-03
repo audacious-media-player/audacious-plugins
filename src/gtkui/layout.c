@@ -141,7 +141,7 @@ static GtkWidget * vbox_new (GtkWidget * widget, const gchar * name)
 {
     g_return_val_if_fail (widget && name, NULL);
 
-    GtkWidget * vbox = gtk_vbox_new (FALSE, 0);
+    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
     GtkWidget * ebox = gtk_event_box_new ();
     gtk_box_pack_start ((GtkBox *) vbox, ebox, FALSE, FALSE, 0);
@@ -184,7 +184,8 @@ static gboolean restore_size_cb (RestoreSizeData * d)
 
 static GtkWidget * paned_new (gboolean vertical, gboolean after, gint w, gint h)
 {
-    GtkWidget * paned = vertical ? gtk_vpaned_new () : gtk_hpaned_new ();
+    GtkWidget * paned = gtk_paned_new (vertical ? GTK_ORIENTATION_VERTICAL :
+     GTK_ORIENTATION_HORIZONTAL);
 
     GtkWidget * mine = gtk_alignment_new (0, 0, 1, 1);
     GtkWidget * next = gtk_alignment_new (0, 0, 1, 1);

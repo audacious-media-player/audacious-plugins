@@ -678,17 +678,17 @@ static gboolean init (void)
     accel = gtk_accel_group_new ();
     gtk_window_add_accel_group ((GtkWindow *) window, accel);
 
-    vbox_outer = gtk_vbox_new (FALSE, 0);
+    vbox_outer = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add ((GtkContainer *) window, vbox_outer);
 
-    menu_box = gtk_hbox_new (FALSE, 0);
+    menu_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_pack_start ((GtkBox *) vbox_outer, menu_box, FALSE, FALSE, 0);
     show_menu (aud_get_bool ("gtkui", "menu_visible"));
 
-    tophbox = gtk_hbox_new(FALSE, 0);
+    tophbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_pack_start ((GtkBox *) vbox_outer, tophbox, FALSE, FALSE, 0);
 
-    buttonbox = gtk_hbox_new(FALSE, 0);
+    buttonbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
     if (search_tool)
     {
@@ -724,10 +724,10 @@ static gboolean init (void)
     evbox = gtk_event_box_new ();
     gtk_box_pack_start ((GtkBox *) tophbox, evbox, TRUE, TRUE, 0);
 
-    shbox = gtk_hbox_new(FALSE, 0);
+    shbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_container_add ((GtkContainer *) evbox, shbox);
 
-    slider = gtk_hscale_new(NULL);
+    slider = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, NULL);
     gtk_scale_set_draw_value(GTK_SCALE(slider), FALSE);
     gtk_widget_set_size_request(slider, 120, -1);
     gtk_widget_set_can_focus(slider, FALSE);
@@ -762,7 +762,7 @@ static gboolean init (void)
     GtkWidget * layout = layout_new ();
     gtk_box_pack_start ((GtkBox *) vbox_outer, layout, TRUE, TRUE, 0);
 
-    vbox = gtk_vbox_new (FALSE, 0);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     layout_add_center (vbox);
 
     /* Create playlist notebook */

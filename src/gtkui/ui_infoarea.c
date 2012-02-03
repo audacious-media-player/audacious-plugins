@@ -215,6 +215,7 @@ static void hsv_to_rgb (gfloat h, gfloat s, gfloat v, gfloat * r, gfloat * g,
 static void get_color (GtkWidget * widget, gint i, gfloat * r, gfloat * g,
  gfloat * b)
 {
+#if 0
     GdkColor * c = (gtk_widget_get_style (widget))->base + GTK_STATE_SELECTED;
     gfloat h, s, v, n;
 
@@ -226,6 +227,9 @@ static void get_color (GtkWidget * widget, gint i, gfloat * r, gfloat * g,
         h = 5;
         s = 0.75;
     }
+#else
+    gfloat h = 5, s = 0.75, v, n;
+#endif
 
     n = i / 11.0;
     s = 1 - 0.9 * n;
@@ -493,7 +497,7 @@ GtkWidget * ui_infoarea_new (void)
     g_return_val_if_fail (! area, NULL);
     area = g_slice_new0 (UIInfoArea);
 
-    area->box = gtk_hbox_new (FALSE, 0);
+    area->box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
     area->main = gtk_drawing_area_new ();
     gtk_widget_set_size_request (area->main, ICON_SIZE + 2 * SPACING, HEIGHT);

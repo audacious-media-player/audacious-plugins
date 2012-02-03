@@ -281,11 +281,11 @@ void pw_col_choose (void)
     g_signal_connect (window, "response", (GCallback) response_cb, NULL);
     g_signal_connect (window, "destroy", (GCallback) destroy_cb, NULL);
 
-    GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
+    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
      window), hbox, TRUE, TRUE, 0);
 
-    GtkWidget * vbox = gtk_vbox_new (FALSE, 3);
+    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
     gtk_box_pack_start ((GtkBox *) hbox, vbox, TRUE, TRUE, 0);
 
     GtkWidget * label = gtk_label_new (_("Available:"));
@@ -304,7 +304,7 @@ void pw_col_choose (void)
     audgui_list_add_column (avail_list, NULL, 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scroll, avail_list);
 
-    vbox = gtk_vbox_new (FALSE, 6);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
     gtk_box_pack_start ((GtkBox *) hbox, vbox, FALSE, FALSE, 0);
 
     GtkWidget * button = gtk_button_new ();
@@ -319,7 +319,7 @@ void pw_col_choose (void)
     gtk_box_pack_start ((GtkBox *) vbox, button, TRUE, FALSE, 0);
     g_signal_connect_swapped (button, "clicked", (GCallback) transfer, chosen);
 
-    vbox = gtk_vbox_new (FALSE, 3);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
     gtk_box_pack_start ((GtkBox *) hbox, vbox, TRUE, TRUE, 0);
 
     label = gtk_label_new (_("Chosen:"));
