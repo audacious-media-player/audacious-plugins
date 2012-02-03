@@ -435,7 +435,7 @@ static void pulse_write(void* ptr, int length) {
          writeoffs < length;
          writeoffs += writable, remain -= writable)
     {
-         gpointer pptr = ptr + writeoffs;
+         gpointer pptr = (char *) ptr + writeoffs;
 
          writable = length - writeoffs;
          size_t fragsize = pa_stream_writable_size(stream);
