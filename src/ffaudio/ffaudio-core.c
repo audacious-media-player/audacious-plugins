@@ -27,7 +27,6 @@
 
 #undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
-#define FFAUDIO_USE_AUDTAG  /* Use Audacious tagging library */
 
 #include "config.h"
 #include "ffaudio-stdinc.h"
@@ -35,9 +34,7 @@
 #include <audacious/debug.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
-#ifdef FFAUDIO_USE_AUDTAG
 #include <audacious/audtag.h>
-#endif
 #include <libaudcore/audstrings.h>
 
 static GMutex *ctrl_mutex = NULL;
@@ -391,15 +388,12 @@ ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
     if (t == NULL)
         return NULL;
 
-#ifdef FFAUDIO_USE_AUDTAG
     vfs_rewind(fd);
     tag_tuple_read(t, fd);
-#endif
 
     return t;
 }
 
-#ifdef FFAUDIO_USE_AUDTAG
 static gboolean ffaudio_write_tag (const Tuple * tuple, VFSFile * file)
 {
     if (! file)
@@ -410,7 +404,6 @@ static gboolean ffaudio_write_tag (const Tuple * tuple, VFSFile * file)
 
     return tag_tuple_write(tuple, file, TAG_TYPE_NONE);
 }
-#endif
 
 static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
  VFSFile * file, gint start_time, gint stop_time, gboolean pause)
@@ -761,9 +754,7 @@ AUD_INPUT_PLUGIN
     .about = ffaudio_about,
     .name = "FFmpeg Support",
     .extensions = ffaudio_fmts,
-#ifdef FFAUDIO_USE_AUDTAG
     .update_song_tuple = ffaudio_write_tag,
-#endif
 
     /* FFMPEG probing takes forever on network files, so try everything else
      * first. -jlindgren */
