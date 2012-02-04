@@ -138,7 +138,7 @@ gint64 gio_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
         {
             uc = GPOINTER_TO_INT(handle->stream_stack->data);
             handle->stream_stack = g_slist_delete_link(handle->stream_stack, handle->stream_stack);
-            memcpy(ptr + count, &uc, 1);
+            memcpy((char *) ptr + count, &uc, 1);
             count++;
         }
     }
@@ -147,7 +147,7 @@ gint64 gio_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
     while (realsize - bytes_read > 0)
     {
         ret = g_input_stream_read(G_INPUT_STREAM(handle->istream),
-            ptr + bytes_read + count, realsize - bytes_read - count, NULL, NULL) + count;
+            (char *) ptr + bytes_read + count, realsize - bytes_read - count, NULL, NULL) + count;
 
         if (ret > 0)
             bytes_read += ret;
