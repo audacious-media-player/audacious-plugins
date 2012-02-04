@@ -76,7 +76,7 @@ xmms_urldecode_plain(const gchar * encoded_path)
 {
     const gchar *cur, *ext;
     gchar *path, *tmp;
-    gint realchar;
+    guint realchar;
 
     if (!encoded_path)
         return NULL;
