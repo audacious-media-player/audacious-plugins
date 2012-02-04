@@ -394,9 +394,9 @@ static void add_remove_pages (void)
         /* do we have an orphaned treeview? */
         if (aud_playlist_by_unique_id (tree_id) < 0)
         {
-            g_signal_handlers_block_by_func (notebook, tab_changed, NULL);
+            g_signal_handlers_block_by_func (notebook, (void *) tab_changed, NULL);
             gtk_notebook_remove_page ((GtkNotebook *) notebook, i);
-            g_signal_handlers_unblock_by_func (notebook, tab_changed, NULL);
+            g_signal_handlers_unblock_by_func (notebook, (void *) tab_changed, NULL);
             pages --;
             continue;
         }
@@ -423,9 +423,9 @@ static void add_remove_pages (void)
             /* found it? move it to the right place */
             if (tree_id == list_id)
             {
-                g_signal_handlers_block_by_func (notebook, tab_reordered, NULL);
+                g_signal_handlers_block_by_func (notebook, (void *) tab_reordered, NULL);
                 gtk_notebook_reorder_child ((GtkNotebook *) notebook, page, i);
-                g_signal_handlers_unblock_by_func (notebook, tab_reordered, NULL);
+                g_signal_handlers_unblock_by_func (notebook, (void *) tab_reordered, NULL);
                 found = TRUE;
                 break;
             }
