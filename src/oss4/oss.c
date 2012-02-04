@@ -181,7 +181,7 @@ void oss_write_audio(void *data, gint length)
 
     while (length > 0)
     {
-        written = write(oss_data->fd, data + start, length);
+        written = write(oss_data->fd, (char *) data + start, length);
 
         if (written < 0)
         {
