@@ -624,7 +624,7 @@ static void id3_only_version(GtkToggleButton * togglebutton,
 {
     if (!strcmp(user_data, "v1") && inside != 1) {
         if (gtk_toggle_button_get_active
-            (GTK_TOGGLE_BUTTON(tags_only_v1_toggle)) == TRUE);
+            (GTK_TOGGLE_BUTTON(tags_only_v1_toggle)) == TRUE)
         {
             inside = 1;
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
@@ -638,7 +638,7 @@ static void id3_only_version(GtkToggleButton * togglebutton,
     }
     else if (!strcmp(user_data, "v2") && inside != 1) {
         if (gtk_toggle_button_get_active
-            (GTK_TOGGLE_BUTTON(tags_only_v2_toggle)) == TRUE);
+            (GTK_TOGGLE_BUTTON(tags_only_v2_toggle)) == TRUE)
         {
             inside = 1;
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
