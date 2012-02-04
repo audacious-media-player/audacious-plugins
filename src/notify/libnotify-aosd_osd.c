@@ -66,12 +66,12 @@ void osd_show (const gchar * title, const gchar * _message, const gchar * icon,
 		, NULL);
 #endif
 		g_signal_connect(notification, "closed", G_CALLBACK(osd_closed_handler), NULL);
-		AUDDBG("new osd created! (notification=%p)\n", notification);
+		AUDDBG("new osd created! (notification=%p)\n", (void *) notification);
 	} else {
 		if(notify_notification_update(notification, title, message, pb == NULL ? icon : NULL)) {
-			AUDDBG("old osd updated! (notification=%p)\n", notification);
+			AUDDBG("old osd updated! (notification=%p)\n", (void *) notification);
 		} else {
-			AUDDBG("could not update old osd! (notification=%p)\n", notification);
+			AUDDBG("could not update old osd! (notification=%p)\n", (void *) notification);
 		}
 	}
 
