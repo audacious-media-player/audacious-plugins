@@ -152,7 +152,7 @@ GtkWidget *create_lirc_cfg (void)
     notebook1 = gtk_notebook_new ();
     gtk_box_pack_start (GTK_BOX (dialog_vbox1), notebook1, TRUE, TRUE, 0);
 
-    vbox2 = gtk_vbox_new (FALSE, 0);
+    vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add (GTK_CONTAINER (notebook1), vbox2);
 
     frame1 = gtk_frame_new (NULL);
@@ -162,7 +162,7 @@ GtkWidget *create_lirc_cfg (void)
     gtk_container_add (GTK_CONTAINER (frame1), alignment1);
     gtk_alignment_set_padding (GTK_ALIGNMENT (alignment1), 0, 0, 12, 0);
 
-    vbox3 = gtk_vbox_new (FALSE, 0);
+    vbox3 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add (GTK_CONTAINER (alignment1), vbox3);
 
     reconnectcheck =
@@ -171,7 +171,7 @@ GtkWidget *create_lirc_cfg (void)
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (reconnectcheck),
                                   (gboolean) b_enable_reconnect);
 
-    hbox1 = gtk_hbox_new (FALSE, 0);
+    hbox1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_pack_start (GTK_BOX (vbox3), hbox1, TRUE, TRUE, 0);
 
     label3 = gtk_label_new (_("Timeout before reconnecting (seconds): "));
