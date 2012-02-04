@@ -245,7 +245,7 @@ create_config_dialog (void)
   gtk_table_set_row_spacings (GTK_TABLE (table3), 5);
   gtk_table_set_col_spacings (GTK_TABLE (table3), 15);
 
-  hbox21 = gtk_hbox_new (FALSE, 0);
+  hbox21 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox21, "hbox21");
   g_object_ref (hbox21);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox21", hbox21,
@@ -274,7 +274,7 @@ create_config_dialog (void)
   gtk_widget_show (label75);
   gtk_box_pack_start (GTK_BOX (hbox21), label75, FALSE, FALSE, 0);
 
-  hbox22 = gtk_hbox_new (FALSE, 0);
+  hbox22 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox22, "hbox22");
   g_object_ref (hbox22);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox22", hbox22,
@@ -305,7 +305,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox22), label76, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label76), 5, 0);
 
-  hbox23 = gtk_hbox_new (FALSE, 0);
+  hbox23 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox23, "hbox23");
   g_object_ref (hbox23);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox23", hbox23,
@@ -335,7 +335,7 @@ create_config_dialog (void)
   gtk_widget_show (label77);
   gtk_box_pack_start (GTK_BOX (hbox23), label77, FALSE, FALSE, 0);
 
-  hbox24 = gtk_hbox_new (FALSE, 0);
+  hbox24 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox24, "hbox24");
   g_object_ref (hbox24);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox24", hbox24,
@@ -423,7 +423,7 @@ create_config_dialog (void)
   gtk_container_add (GTK_CONTAINER (frame15), table4);
   gtk_container_set_border_width (GTK_CONTAINER (table4), 5);
 
-  hbox31 = gtk_hbox_new (FALSE, 0);
+  hbox31 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox31, "hbox31");
   g_object_ref (hbox31);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox31", hbox31,
@@ -471,7 +471,7 @@ create_config_dialog (void)
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (mon_m), TRUE);
   gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (mon_m), TRUE);
 
-  hbox32 = gtk_hbox_new (FALSE, 0);
+  hbox32 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox32, "hbox32");
   g_object_ref (hbox32);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox32", hbox32,
@@ -519,7 +519,7 @@ create_config_dialog (void)
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (tue_m), TRUE);
   gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (tue_m), TRUE);
 
-  hbox33 = gtk_hbox_new (FALSE, 0);
+  hbox33 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox33, "hbox33");
   g_object_ref (hbox33);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox33", hbox33,
@@ -567,7 +567,7 @@ create_config_dialog (void)
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (wed_m), TRUE);
   gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (wed_m), TRUE);
 
-  hbox34 = gtk_hbox_new (FALSE, 0);
+  hbox34 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox34, "hbox34");
   g_object_ref (hbox34);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox34", hbox34,
@@ -615,7 +615,7 @@ create_config_dialog (void)
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (thu_m), TRUE);
   gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (thu_m), TRUE);
 
-  hbox35 = gtk_hbox_new (FALSE, 0);
+  hbox35 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox35, "hbox35");
   g_object_ref (hbox35);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox35", hbox35,
@@ -663,7 +663,7 @@ create_config_dialog (void)
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fri_m), TRUE);
   gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (fri_m), TRUE);
 
-  hbox36 = gtk_hbox_new (FALSE, 0);
+  hbox36 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox36, "hbox36");
   g_object_ref (hbox36);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox36", hbox36,
@@ -711,7 +711,7 @@ create_config_dialog (void)
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (sat_m), TRUE);
   gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (sat_m), TRUE);
 
-  hbox37 = gtk_hbox_new (FALSE, 0);
+  hbox37 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox37, "hbox37");
   g_object_ref (hbox37);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox37", hbox37,
@@ -863,7 +863,7 @@ create_config_dialog (void)
   gtk_widget_show (label72);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 1), label72);
 
-  vbox8 = gtk_vbox_new (FALSE, 0);
+  vbox8 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_set_name (vbox8, "vbox8");
   g_object_ref (vbox8);
   g_object_set_data_full (G_OBJECT (config_dialog), "vbox8", vbox8,
@@ -889,7 +889,7 @@ create_config_dialog (void)
   gtk_container_add (GTK_CONTAINER (frame11), alignment10);
   gtk_container_set_border_width (GTK_CONTAINER (alignment10), 8);
 
-  hbox25 = gtk_hbox_new (FALSE, 0);
+  hbox25 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox25, "hbox25");
   g_object_ref (hbox25);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox25", hbox25,
@@ -925,7 +925,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (vbox8), frame12, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (frame12), 10);
 
-  vbox9 = gtk_vbox_new (FALSE, 10);
+  vbox9 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
   gtk_widget_set_name (vbox9, "vbox9");
   g_object_ref (vbox9);
   g_object_set_data_full (G_OBJECT (config_dialog), "vbox9", vbox9,
@@ -960,7 +960,7 @@ create_config_dialog (void)
   gtk_label_set_justify (GTK_LABEL (label82), GTK_JUSTIFY_LEFT);
   gtk_misc_set_alignment (GTK_MISC (label82), 7.45058e-09, 0.5);
 
-  hbox26 = gtk_hbox_new (FALSE, 0);
+  hbox26 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox26, "hbox26");
   g_object_ref (hbox26);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox26", hbox26,
@@ -968,7 +968,7 @@ create_config_dialog (void)
   gtk_widget_show (hbox26);
   gtk_box_pack_start (GTK_BOX (vbox9), hbox26, TRUE, TRUE, 0);
 
-  quiet_vol_scale = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (20, 0, 100, 1, 5, 0)));
+  quiet_vol_scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT (gtk_adjustment_new (20, 0, 100, 1, 5, 0)));
   gtk_widget_set_name (quiet_vol_scale, "quiet_vol_scale");
   g_object_ref (quiet_vol_scale);
   g_object_set_data_full (G_OBJECT (config_dialog), "quiet_vol_scale", quiet_vol_scale,
@@ -986,7 +986,7 @@ create_config_dialog (void)
   gtk_widget_show (label83);
   gtk_box_pack_start (GTK_BOX (hbox26), label83, FALSE, FALSE, 0);
 
-  hseparator2 = gtk_hseparator_new ();
+  hseparator2 = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_widget_set_name (hseparator2, "hseparator2");
   g_object_ref (hseparator2);
   g_object_set_data_full (G_OBJECT (config_dialog), "hseparator2", hseparator2,
@@ -1004,7 +1004,7 @@ create_config_dialog (void)
   gtk_label_set_justify (GTK_LABEL (label84), GTK_JUSTIFY_LEFT);
   gtk_misc_set_alignment (GTK_MISC (label84), 0, 0.5);
 
-  hbox27 = gtk_hbox_new (FALSE, 0);
+  hbox27 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox27, "hbox27");
   g_object_ref (hbox27);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox27", hbox27,
@@ -1012,7 +1012,7 @@ create_config_dialog (void)
   gtk_widget_show (hbox27);
   gtk_box_pack_start (GTK_BOX (vbox9), hbox27, TRUE, TRUE, 0);
 
-  vol_scale = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (80, 0, 100, 1, 5, 0)));
+  vol_scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT (gtk_adjustment_new (80, 0, 100, 1, 5, 0)));
   gtk_widget_set_name (vol_scale, "vol_scale");
   g_object_ref (vol_scale);
   g_object_set_data_full (G_OBJECT (config_dialog), "vol_scale", vol_scale,
@@ -1039,7 +1039,7 @@ create_config_dialog (void)
   gtk_widget_show (label73);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 2), label73);
 
-  vbox10 = gtk_vbox_new (FALSE, 0);
+  vbox10 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_set_name (vbox10, "vbox10");
   g_object_ref (vbox10);
   g_object_set_data_full (G_OBJECT (config_dialog), "vbox10", vbox10,
@@ -1056,7 +1056,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (vbox10), frame13, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (frame13), 10);
 
-  hbox28 = gtk_hbox_new (FALSE, 5);
+  hbox28 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
   gtk_widget_set_name (hbox28, "hbox28");
   g_object_ref (hbox28);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox28", hbox28,
@@ -1090,7 +1090,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (vbox10), frame14, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (frame14), 10);
 
-  hbox29 = gtk_hbox_new (FALSE, 5);
+  hbox29 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
   gtk_widget_set_name (hbox29, "hbox29");
   g_object_ref (hbox29);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox29", hbox29,
@@ -1124,7 +1124,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (vbox10), frame18, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (frame18), 10);
 
-  hbox38 = gtk_hbox_new (FALSE, 0);
+  hbox38 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox38, "hbox38");
   g_object_ref (hbox38);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox38", hbox38,
@@ -1200,7 +1200,7 @@ create_config_dialog (void)
   gtk_widget_show (dialog_action_area5);
   gtk_container_set_border_width (GTK_CONTAINER (dialog_action_area5), 10);
 
-  hbox20 = gtk_hbox_new (TRUE, 5);
+  hbox20 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
   gtk_widget_set_name (hbox20, "hbox20");
   g_object_ref (hbox20);
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox20", hbox20,

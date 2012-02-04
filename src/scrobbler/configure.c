@@ -17,7 +17,6 @@
 #include "plugin.h"
 
 GtkWidget *entry1, *entry2, *entry3, *cfgdlg;
-static GdkColor disabled_color;
 guint apply_timeout = 0; /* ID of timeout to save new config */
 gboolean running = TRUE; /* if plugin threads are running */
 
@@ -108,7 +107,6 @@ static void entry_focus_in(GtkWidget *widget, gpointer data)
 {
   gtk_entry_set_text(GTK_ENTRY(widget), "");
   gtk_entry_set_visibility(GTK_ENTRY(widget), FALSE);
-  gtk_widget_modify_text(widget, GTK_STATE_NORMAL, NULL);
 }
 
 static void entry_focus_out(GtkWidget *widget, gpointer data)
@@ -121,7 +119,6 @@ static void entry_focus_out(GtkWidget *widget, gpointer data)
 
   entry_changed(widget, data);
   gtk_entry_set_text(GTK_ENTRY(widget), _("Change password"));
-  gtk_widget_modify_text(widget, GTK_STATE_NORMAL, &disabled_color);
   gtk_entry_set_visibility(GTK_ENTRY(widget), TRUE);
 }
 
@@ -137,9 +134,8 @@ create_cfgdlg(void)
   GtkWidget *label4;
   GtkWidget *align1;
   GtkWidget *notebook1;
-  GtkStyle *style;
 
-  vbox2 = gtk_vbox_new (FALSE, 0);
+  vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   label1 = gtk_label_new (_("<b>Services</b>"));
   gtk_widget_show (label1);
@@ -180,8 +176,8 @@ create_cfgdlg(void)
   label4 = gtk_label_new (_("Scrobbler URL:"));
   gtk_widget_show (label4);
   gtk_table_attach (GTK_TABLE (table1), label4, 0, 1, 4, 5,
-  					(GtkAttachOptions) (GTK_FILL),
-  					(GtkAttachOptions) (0), 0, 0);
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
   gtk_label_set_justify (GTK_LABEL (label4), GTK_JUSTIFY_RIGHT);
   gtk_misc_set_alignment (GTK_MISC (label4), 1, 0.5);
 
@@ -190,11 +186,6 @@ create_cfgdlg(void)
   gtk_table_attach_defaults (GTK_TABLE (table1), entry1, 1, 2, 2, 3);
 
   entry2 = gtk_entry_new ();
-
-  style = gtk_widget_get_style(entry2);
-  memcpy(&disabled_color, &(style->text[GTK_STATE_INSENSITIVE]), sizeof(GdkColor));
-  gtk_widget_modify_text(entry2, GTK_STATE_NORMAL, &disabled_color);
-
   gtk_entry_set_text(GTK_ENTRY(entry2), _("Change password"));
   g_signal_connect(G_OBJECT(entry2), "focus-in-event",
                    G_CALLBACK(entry_focus_in),

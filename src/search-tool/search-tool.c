@@ -629,7 +629,7 @@ static void refresh_cb (GtkButton * button, GtkWidget * chooser)
 
 static void * search_get_widget (void)
 {
-    GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
+    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
     gtk_container_set_border_width ((GtkContainer *) vbox, 3);
 
     GtkWidget * entry = gtk_entry_new ();
@@ -666,7 +666,7 @@ static void * search_get_widget (void)
     audgui_list_add_column (results_list, NULL, 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scrolled, results_list);
 
-    GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
+    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_end ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
     GtkWidget * chooser = gtk_file_chooser_button_new (_("Choose Folder"),
