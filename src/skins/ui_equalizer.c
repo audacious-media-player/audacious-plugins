@@ -853,7 +853,7 @@ static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
     g_signal_connect(*window, "destroy",
                      G_CALLBACK(gtk_widget_destroyed), window);
 
-    vbox = gtk_vbox_new(FALSE, 10);
+    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_container_add(GTK_CONTAINER(*window), vbox);
 
     scrolled_window = gtk_scrolled_window_new(NULL, NULL);
@@ -899,7 +899,7 @@ static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
         gtk_box_pack_start(GTK_BOX(vbox), *entry, FALSE, FALSE, 0);
     }
 
-    bbox = gtk_hbutton_box_new();
+    bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
     gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
     gtk_box_set_spacing(GTK_BOX(bbox), 5);
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);

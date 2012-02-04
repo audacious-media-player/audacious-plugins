@@ -181,19 +181,19 @@ oss_configure(void)
     gtk_window_set_position(GTK_WINDOW(configure_win), GTK_WIN_POS_CENTER);
     gtk_container_set_border_width(GTK_CONTAINER(configure_win), 10);
 
-    vbox = gtk_vbox_new(FALSE, 10);
+    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_container_add(GTK_CONTAINER(configure_win), vbox);
 
     notebook = gtk_notebook_new();
     gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
 
-    dev_vbox = gtk_vbox_new(FALSE, 5);
+    dev_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     gtk_container_set_border_width(GTK_CONTAINER(dev_vbox), 5);
 
     adevice_frame = gtk_frame_new(_("Audio device:"));
     gtk_box_pack_start(GTK_BOX(dev_vbox), adevice_frame, FALSE, FALSE, 0);
 
-    adevice_box = gtk_vbox_new(FALSE, 5);
+    adevice_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     gtk_container_set_border_width(GTK_CONTAINER(adevice_box), 5);
     gtk_container_add(GTK_CONTAINER(adevice_frame), adevice_box);
 
@@ -210,7 +210,7 @@ oss_configure(void)
 
     audio_device = oss_cfg.audio_device;
     gtk_combo_box_set_active(GTK_COMBO_BOX(adevice), oss_cfg.audio_device);
-    audio_alt_box = gtk_hbox_new(FALSE, 0);
+    audio_alt_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_pack_start(GTK_BOX(adevice_box), audio_alt_box, FALSE, FALSE, 0);
     adevice_use_alt_check =
         gtk_check_button_new_with_label(_("Use alternate device:"));
@@ -236,7 +236,7 @@ oss_configure(void)
     mdevice_frame = gtk_frame_new(_("Mixer device:"));
     gtk_box_pack_start(GTK_BOX(dev_vbox), mdevice_frame, FALSE, FALSE, 0);
 
-    mdevice_box = gtk_vbox_new(FALSE, 0);
+    mdevice_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_set_border_width(GTK_CONTAINER(mdevice_box), 5);
     gtk_container_add(GTK_CONTAINER(mdevice_frame), mdevice_box);
 
@@ -253,7 +253,7 @@ oss_configure(void)
 
     mixer_device = oss_cfg.mixer_device;
     gtk_combo_box_set_active(GTK_COMBO_BOX(mdevice), oss_cfg.mixer_device);
-    mixer_alt_box = gtk_hbox_new(FALSE, 0);
+    mixer_alt_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_pack_start(GTK_BOX(mdevice_box), mixer_alt_box, FALSE, FALSE, 0);
     mdevice_use_alt_check =
         gtk_check_button_new_with_label(_("Use alternate device:"));
@@ -282,14 +282,14 @@ oss_configure(void)
     buffer_frame = gtk_frame_new(_("Buffering:"));
     gtk_container_set_border_width(GTK_CONTAINER(buffer_frame), 5);
 
-    buffer_vbox = gtk_vbox_new(FALSE, 0);
+    buffer_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add(GTK_CONTAINER(buffer_frame), buffer_vbox);
 
     buffer_table = gtk_table_new(2, 1, TRUE);
     gtk_container_set_border_width(GTK_CONTAINER(buffer_table), 5);
     gtk_box_pack_start(GTK_BOX(buffer_vbox), buffer_table, FALSE, FALSE, 0);
 
-    buffer_pre_box = gtk_hbox_new(FALSE, 5);
+    buffer_pre_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
     gtk_table_attach_defaults(GTK_TABLE(buffer_table), buffer_pre_box, 1,
                               2, 0, 1);
     buffer_pre_label = gtk_label_new(_("Pre-buffer (percent):"));
@@ -318,7 +318,7 @@ oss_configure(void)
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), mixer_frame,
                              gtk_label_new(_("Mixer")));
 
-    bbox = gtk_hbutton_box_new();
+    bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
     gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
     gtk_box_set_spacing(GTK_BOX(bbox), 5);
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);

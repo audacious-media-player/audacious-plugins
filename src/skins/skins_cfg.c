@@ -277,22 +277,22 @@ void skins_configure (void)
     GtkWidget *alignment95;
     GtkWidget *skin_view_scrolled_window;
 
-    appearance_page_vbox = gtk_vbox_new (FALSE, 0);
+    appearance_page_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
-    vbox37 = gtk_vbox_new (FALSE, 0);
+    vbox37 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     gtk_box_pack_start (GTK_BOX (appearance_page_vbox), vbox37, TRUE, TRUE, 0);
 
-    vbox38 = gtk_vbox_new (FALSE, 0);
+    vbox38 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     gtk_box_pack_start (GTK_BOX (vbox37), vbox38, FALSE, TRUE, 0);
 
-    hbox12 = gtk_hbox_new (FALSE, 0);
+    hbox12 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_pack_start (GTK_BOX (vbox38), hbox12, TRUE, TRUE, 0);
 
     alignment94 = gtk_alignment_new (0.5, 0.5, 1, 1);
     gtk_box_pack_start (GTK_BOX (hbox12), alignment94, TRUE, TRUE, 0);
     gtk_alignment_set_padding (GTK_ALIGNMENT (alignment94), 0, 4, 0, 0);
 
-    hbox13 = gtk_hbox_new (FALSE, 0);
+    hbox13 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_container_add (GTK_CONTAINER (alignment94), hbox13);
 
     label103 = gtk_label_new_with_mnemonic (_("<b>_Skin</b>"));
@@ -327,7 +327,7 @@ void skins_configure (void)
                      G_CALLBACK(mainwin_drag_data_received),
                      skin_view);
 
-    GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
+    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start ((GtkBox *) appearance_page_vbox, hbox, FALSE, FALSE, 0);
 
     GtkWidget * button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);

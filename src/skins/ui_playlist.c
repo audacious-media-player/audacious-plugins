@@ -251,7 +251,7 @@ playlistwin_select_search(void)
     gtk_window_set_position(GTK_WINDOW(searchdlg_win), GTK_WIN_POS_CENTER);
 
     /* help text and logo */
-    searchdlg_hbox = gtk_hbox_new( FALSE , 4 );
+    searchdlg_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
     searchdlg_logo = gtk_image_new_from_stock( GTK_STOCK_FIND , GTK_ICON_SIZE_DIALOG );
     searchdlg_helptext = gtk_label_new( _("Select entries in playlist by filling one or more "
       "fields. Fields use regular expressions syntax, case-insensitive. If you don't know how "

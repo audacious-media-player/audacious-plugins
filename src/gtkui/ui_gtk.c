@@ -102,8 +102,8 @@ AUD_IFACE_PLUGIN
     .show_error = ui_show_error,
     .show_filebrowser = audgui_run_filebrowser,
     .show_jump_to_track = audgui_jump_to_track,
-    .run_gtk_plugin = (void *) layout_add,
-    .stop_gtk_plugin = (void *) layout_remove,
+    .run_gtk_plugin = (void (*) (void *, const gchar *)) layout_add,
+    .stop_gtk_plugin = (void (*) (void *)) layout_remove,
 )
 
 static void save_window_size (void)

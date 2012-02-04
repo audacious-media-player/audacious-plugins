@@ -122,7 +122,7 @@ static gint64 mms_vfs_fread_impl (void * buf, gint64 size, gint64 count,
 
         memcpy (buf, h->buf + h->used, copy);
         h->used += copy;
-        buf += copy;
+        buf = (char *) buf + copy;
         total += copy;
     }
 

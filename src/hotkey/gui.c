@@ -386,13 +386,13 @@ void show_configure ()
 	gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
 	gtk_container_set_border_width (GTK_CONTAINER (window), 5);
 
-	main_vbox = gtk_vbox_new (FALSE, 4);
+	main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
 	gtk_container_add (GTK_CONTAINER (window), main_vbox);
 
 	alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
 	gtk_box_pack_start (GTK_BOX (main_vbox), alignment, FALSE, TRUE, 0);
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 4, 0, 0, 0);
-	hbox = gtk_hbox_new (FALSE, 2);
+	hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
 	gtk_container_add (GTK_CONTAINER (alignment), hbox);
 	image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_INFO, GTK_ICON_SIZE_DIALOG);
 	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, TRUE, 0);
@@ -468,10 +468,10 @@ void show_configure ()
 
 
 
-	hbox = gtk_hbox_new(FALSE, 0);
+	hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 	gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, TRUE, 0);
 
-	button_box = gtk_hbutton_box_new ( );
+	button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
 	gtk_box_pack_start (GTK_BOX (hbox), button_box, FALSE, TRUE, 0);
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_START);
 	gtk_box_set_spacing (GTK_BOX (button_box), 4);
@@ -481,7 +481,7 @@ void show_configure ()
 	g_signal_connect (G_OBJECT (button), "clicked",
 			G_CALLBACK (add_callback), first_controls);
 
-	button_box = gtk_hbutton_box_new ( );
+	button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
 	gtk_box_pack_start (GTK_BOX (hbox), button_box, TRUE, TRUE, 0);
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_END);
 	gtk_box_set_spacing (GTK_BOX (button_box), 4);

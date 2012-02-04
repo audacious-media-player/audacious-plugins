@@ -349,7 +349,7 @@ static gint jack_open(gint fmt, gint sample_rate, gint num_channels)
   retval = JACK_Open(&driver, bits_per_sample, floating_point, &rate, output.channels);
   output.frequency = rate; /* avoid compile warning as output.frequency differs in type
                               from what JACK_Open() wants for the type of the rate parameter */
-  if((retval == ERR_RATE_MISMATCH))
+  if(retval == ERR_RATE_MISMATCH)
   {
     TRACE("set the resampling rate properly");
     return 0;

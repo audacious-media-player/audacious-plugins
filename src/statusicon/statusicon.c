@@ -145,14 +145,16 @@ static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, gpo
 
 static gboolean si_popup_show(gpointer icon)
 {
-    GdkDisplay *display = gdk_display_get_default();
-    GdkScreen *screen = gdk_display_get_default_screen(display);
     GdkRectangle area;
     gint x, y;
     static gint count = 0;
 
-    gdk_display_get_pointer(display, &screen, &x, &y, NULL);
-    gtk_status_icon_get_geometry(icon, &screen, &area, NULL);
+    GdkDisplay * display = gdk_display_get_default ();
+    GdkDeviceManager * manager = gdk_display_get_device_manager (display);
+    GdkDevice * device = gdk_device_manager_get_client_pointer (manager);
+    gdk_device_get_position (device, NULL, & x, & y);
+
+    gtk_status_icon_get_geometry (icon, NULL, & area, NULL);
 
     if (x < area.x || x > area.x + area.width || y < area.y || y > area.y + area.width)
     {
@@ -455,11 +457,11 @@ void si_config(void)
     gtk_window_set_geometry_hints(GTK_WINDOW(prefs_win), GTK_WIDGET(prefs_win), &prefs_win_hints, GDK_HINT_MIN_SIZE);
     g_signal_connect(G_OBJECT(prefs_win), "destroy", G_CALLBACK(gtk_widget_destroyed), &prefs_win);
 
-    prefs_vbox = gtk_vbox_new(FALSE, 0);
+    prefs_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add(GTK_CONTAINER(prefs_win), prefs_vbox);
 
     prefs_rclick_frame = gtk_frame_new(_("Right-Click Menu"));
-    prefs_rclick_vbox = gtk_vbox_new(TRUE, 0);
+    prefs_rclick_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_set_border_width(GTK_CONTAINER(prefs_rclick_vbox), 6);
     gtk_container_add(GTK_CONTAINER(prefs_rclick_frame), prefs_rclick_vbox);
     prefs_rclick_smallmenu1_rbt = gtk_radio_button_new_with_label (NULL,
@@ -483,7 +485,7 @@ void si_config(void)
     gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_rclick_frame, TRUE, TRUE, 0);
 
     prefs_scroll_frame = gtk_frame_new(_("Mouse Scroll Action"));
-    prefs_scroll_vbox = gtk_vbox_new(TRUE, 0);
+    prefs_scroll_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_set_border_width(GTK_CONTAINER(prefs_scroll_vbox), 6);
     gtk_container_add(GTK_CONTAINER(prefs_scroll_frame), prefs_scroll_vbox);
     prefs_scroll_vol_rbt = gtk_radio_button_new_with_label(NULL, _("Change volume"));
@@ -502,7 +504,7 @@ void si_config(void)
     gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_scroll_frame, TRUE, TRUE, 0);
 
     prefs_other_frame = gtk_frame_new(_("Other settings"));
-    prefs_other_vbox = gtk_vbox_new(TRUE, 0);
+    prefs_other_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_set_border_width(GTK_CONTAINER(prefs_other_vbox), 6);
     gtk_container_add(GTK_CONTAINER(prefs_other_frame), prefs_other_vbox);
 
@@ -529,8 +531,8 @@ void si_config(void)
     gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_other_frame, TRUE, TRUE, 0);
 
     /* horizontal separator and buttons */
-    gtk_box_pack_start(GTK_BOX(prefs_vbox), gtk_hseparator_new(), FALSE, FALSE, 4);
-    prefs_bbar_bbox = gtk_hbutton_box_new();
+    gtk_box_pack_start(GTK_BOX(prefs_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 4);
+    prefs_bbar_bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
     gtk_button_box_set_layout(GTK_BUTTON_BOX(prefs_bbar_bbox), GTK_BUTTONBOX_END);
     prefs_bbar_bt_cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
     g_signal_connect_swapped(G_OBJECT(prefs_bbar_bt_cancel), "clicked", G_CALLBACK(gtk_widget_destroy), prefs_win);
