@@ -30,14 +30,14 @@ armcp15_t *armcp15_new(armcpu_t * c)
 	int i;
 	armcp15_t *armcp15 = (armcp15_t*)malloc(sizeof(armcp15_t));
 	if(!armcp15) return NULL;
-	
+
 	armcp15->cpu = c;
 	armcp15->IDCode = 0x41049460;
 	armcp15->cacheType = 0x0F0D2112;
 	armcp15->TCMSize = 0x00140140;
 	armcp15->ctrl = 0x00000000;
-	armcp15->DCConfig = 0x0;    
-	armcp15->ICConfig = 0x0;    
+	armcp15->DCConfig = 0x0;
+	armcp15->ICConfig = 0x0;
 	armcp15->writeBuffCtrl = 0x0;
 	armcp15->und = 0x0;
 	armcp15->DaccessPerm = 0x22222222;
@@ -57,7 +57,7 @@ armcp15_t *armcp15_new(armcpu_t * c)
 	armcp15->DTCMRegion = 0x0080000A;
 	armcp15->processID = 0;
 
-    /* preset calculated regionmasks */	
+    /* preset calculated regionmasks */
 	for (i=0;i<8;i++) {
         armcp15->regionWriteMask_USR[i] = 0 ;
         armcp15->regionWriteMask_SYS[i] = 0 ;
@@ -72,7 +72,7 @@ armcp15_t *armcp15_new(armcpu_t * c)
         armcp15->regionExecuteSet_USR[i] = 0 ;
         armcp15->regionExecuteSet_SYS[i] = 0 ;
     } ;
-	
+
 	return armcp15;
 }
 
@@ -188,7 +188,7 @@ void armcp15_setSingleRegionAccess(armcp15_t *armcp15,unsigned long dAccess,unsi
 			armcp15->regionExecuteSet_SYS[num] = set ;
 			break ;
 	}
-} ;
+}
 
 /* precalculate region masks/sets from cp15 register */
 void armcp15_maskPrecalc(armcp15_t *armcp15)
@@ -264,7 +264,7 @@ BOOL armcp15_store(armcp15_t *armcp15, u8 CRd, u8 adr)
 BOOL armcp15_moveCP2ARM(armcp15_t *armcp15, u32 * R, u8 CRn, u8 CRm, u8 opcode1, u8 opcode2)
 {
 	if(armcp15->cpu->CPSR.bits.mode == USR) return FALSE;
-	
+
 	switch(CRn)
 	{
 		case 0 :
@@ -291,7 +291,7 @@ BOOL armcp15_moveCP2ARM(armcp15_t *armcp15, u32 * R, u8 CRn, u8 CRm, u8 opcode1,
 				return TRUE;
 			}
 			return FALSE;
-			
+
 		case 2 :
 			if((opcode1==0) && (CRm==0))
 			{
@@ -434,7 +434,7 @@ u32 CP15wait4IRQ(armcpu_t *cpu)
 BOOL armcp15_moveARM2CP(armcp15_t *armcp15, u32 val, u8 CRn, u8 CRm, u8 opcode1, u8 opcode2)
 {
 	if(armcp15->cpu->CPSR.bits.mode == USR) return FALSE;
-	
+
 	switch(CRn)
 	{
 		case 1 :
