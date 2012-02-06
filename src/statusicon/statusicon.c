@@ -322,7 +322,7 @@ static void si_enable(gboolean enable)
         g_object_set_data(G_OBJECT(si_applet), "timer_active", GINT_TO_POINTER(0));
         g_object_set_data(G_OBJECT(si_applet), "popup_active", GINT_TO_POINTER(0));
 
-        g_signal_connect(G_OBJECT(si_applet), "button-release-event", G_CALLBACK(si_cb_btpress), NULL);
+        g_signal_connect(G_OBJECT(si_applet), "button-press-event", G_CALLBACK(si_cb_btpress), NULL);
         g_signal_connect(G_OBJECT(si_applet), "scroll-event", G_CALLBACK(si_cb_btscroll), NULL);
         g_signal_connect(G_OBJECT(si_applet), "query-tooltip", G_CALLBACK(si_cb_tooltip), NULL);
 
