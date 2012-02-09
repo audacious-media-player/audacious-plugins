@@ -43,6 +43,7 @@
 #include "playlist_util.h"
 
 static const gchar * const gtkui_defaults[] = {
+ "infoarea_show_vis", "TRUE",
  "infoarea_visible", "TRUE",
  "menu_visible", "TRUE",
  "player_visible", "TRUE",
@@ -61,7 +62,6 @@ static const gchar * const gtkui_defaults[] = {
  "always_on_top", "FALSE",
  "save_window_position", "TRUE",
  "show_song_titles", "TRUE",
- "custom_playlist_colors", "FALSE",
  NULL};
 
 static PluginHandle * search_tool;
@@ -769,11 +769,7 @@ static gboolean init (void)
     ui_playlist_notebook_new ();
     gtk_box_pack_start ((GtkBox *) vbox, (GtkWidget *) UI_PLAYLIST_NOTEBOOK, TRUE, TRUE, 0);
 
-    if (aud_get_bool ("gtkui", "infoarea_visible"))
-    {
-        infoarea = ui_infoarea_new ();
-        gtk_box_pack_end (GTK_BOX(vbox), infoarea, FALSE, FALSE, 0);
-    }
+    show_infoarea (aud_get_bool ("gtkui", "infoarea_visible"));
 
     if (aud_get_bool ("gtkui", "statusbar_visible"))
     {
@@ -902,6 +898,7 @@ void show_infoarea (gboolean show)
     if (show && ! infoarea)
     {
         infoarea = ui_infoarea_new ();
+        ui_infoarea_show_vis (aud_get_bool ("gtkui", "infoarea_show_vis"));
         gtk_box_pack_end ((GtkBox *) vbox, infoarea, FALSE, FALSE, 0);
         gtk_widget_show_all (infoarea);
     }
@@ -911,6 +908,12 @@ void show_infoarea (gboolean show)
         gtk_widget_destroy (infoarea);
         infoarea = NULL;
     }
+}
+
+void show_infoarea_vis (gboolean show)
+{
+    aud_set_bool ("gtkui", "infoarea_show_vis", show);
+    ui_infoarea_show_vis (show);
 }
 
 void show_statusbar (gboolean show)

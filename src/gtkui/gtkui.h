@@ -33,6 +33,7 @@ GtkWidget * make_menu_tab (GtkAccelGroup * accel);
 /* ui_gtk.c */
 void show_menu (gboolean show);
 void show_infoarea (gboolean show);
+void show_infoarea_vis (gboolean show);
 void show_statusbar (gboolean show);
 void popup_menu_rclick (guint button, guint32 time);
 void popup_menu_tab (guint button, guint32 time);

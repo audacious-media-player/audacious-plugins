@@ -31,6 +31,7 @@
 
 #include <audacious/debug.h>
 #include <audacious/drct.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
@@ -580,10 +581,17 @@ static int pulse_open(gint fmt, int rate, int nch) {
     pa_stream_set_latency_update_callback(stream, stream_latency_update_cb, NULL);
 
     /* Connect stream with sink and default volume */
-    if (pa_stream_connect_playback(stream, NULL, NULL, PA_STREAM_INTERPOLATE_TIMING|PA_STREAM_AUTO_TIMING_UPDATE, NULL, NULL) < 0) {
+    /* Buffer struct */
+
+    int aud_buffer = aud_get_int(NULL, "output_buffer_size");
+    size_t buffer_size = pa_usec_to_bytes(aud_buffer, &ss) * 1000;
+    pa_buffer_attr buffer = {(uint32_t) -1, buffer_size, (uint32_t) -1, (uint32_t) -1, buffer_size};
+
+    if (pa_stream_connect_playback(stream, NULL, &buffer, PA_STREAM_INTERPOLATE_TIMING|PA_STREAM_AUTO_TIMING_UPDATE, NULL, NULL) < 0) {
         ERROR ("Failed to connect stream: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
+
 
     /* Wait until the stream is ready */
     pa_threaded_mainloop_wait(mainloop);

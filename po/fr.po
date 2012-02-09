@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2012-01-11 09:01-0500\n"
-"PO-Revision-Date: 2012-01-16 11:14+0000\n"
+"PO-Revision-Date: 2012-01-28 17:57+0000\n"
 "Last-Translator: Oxayotl <jagw40k@free.fr>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr "À propos du décodeur « MP4 AAC »"
 
 #: src/alarm/alarm.c:312
 msgid "About Alarm"
-msgstr ""
+msgstr "À propos du module « Alarme »"
 
 #: src/alarm/alarm.c:313
 msgid ""
@@ -1177,7 +1177,7 @@ msgstr ""
 
 #: src/console/plugin.c:33
 msgid "About the Game Console Music Decoder"
-msgstr "À propos de « Game Console Music Decoder »"
+msgstr "À propos du module « Game Console Music Decoder »"
 
 #: src/console/plugin.c:34
 msgid ""
@@ -1287,6 +1287,16 @@ msgid ""
 "libavformat %s (%s)\n"
 "libavutil %s (%s)\n"
 msgstr ""
+"Module de décodage audio multi-format pour Audacious basé sur l'ensemble de bibliothèques multimédia FFmpeg (http://www.ffmpeg.org/)\n"
+"Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
+"\n"
+"Module pour Audacious par :\n"
+"            William Pitcock <nenolod@nenolod.net>,\n"
+"            Matti Hämäläinen <ccr@tnsp.org>\n"
+"\n"
+"libavcodec %s (%s)\n"
+"libavformat %s (%s)\n"
+"libavutil %s (%s)\n"
 
 #: src/ffaudio/ffaudio-core.c:739
 msgid "About FFaudio Plugin"
@@ -2117,8 +2127,10 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
-"<small>Séparez les différents chemins par deux points («:»).⏎ \n"
-"Les greffons seront recherchés dans ces chemins ainsi que deux de LADSPA_PATH.⏎ Après avoir ajouté de nouveaux chemins, pressez Entrée pour mettre à jour les greffons disponibles.</small>"
+"<small>Séparez les différents chemins par deux points («:»).\n"
+" \n"
+"Les greffons seront recherchés dans ces chemins ainsi que deux de LADSPA_PATH.\n"
+"Après avoir ajouté de nouveaux chemins, pressez Entrée pour mettre à jour les greffons disponibles.</small>"
 
 #: src/ladspa/plugin.c:614
 msgid "Available plugins:"
@@ -2134,7 +2146,7 @@ msgstr "Greffons activés :"
 
 #: src/ladspa/plugin.c:647
 msgid "Settings"
-msgstr ""
+msgstr "Paramètres"
 
 #: src/lyricwiki/lyricwiki.c:267
 msgid ""
@@ -3344,7 +3356,7 @@ msgstr "À propos du module « sndfile »"
 
 #: src/sndstretch/sndstretch_xmms.c:155
 msgid "About SndStretch"
-msgstr "À propos de « SndStretch »"
+msgstr "À propos du module « SndStretch »"
 
 #: src/sndstretch/sndstretch_xmms.c:308
 msgid "Volume corr."
@@ -3523,7 +3535,7 @@ msgstr ""
 
 #: src/stereo_plugin/stereo.c:64
 msgid "About Extra Stereo Plugin"
-msgstr "À propos de « Extra Stereo »"
+msgstr "À propos du module « Extra Stereo »"
 
 #: src/stereo_plugin/stereo.c:95
 msgid "Configure Extra Stereo"
@@ -3531,7 +3543,7 @@ msgstr "Configuration de « Extra Stereo »"
 
 #: src/tonegen/tonegen.c:49
 msgid "About Tone Generator"
-msgstr "À propos de « Tone Generator »"
+msgstr "À propos du module « Tone Generator »"
 
 #: src/tonegen/tonegen.c:51
 msgid ""
@@ -3606,7 +3618,7 @@ msgstr ""
 
 #: src/vtx/about.c:14
 msgid "About Vortex Player"
-msgstr "À propos du lecteur « Vortex »"
+msgstr "À propos du module « lecteur Vortex »"
 
 #: src/vtx/about.c:15
 msgid ""
