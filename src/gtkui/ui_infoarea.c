@@ -42,7 +42,7 @@
 #define VIS_FALLOFF 2 /* falloff in pixels per frame */
 
 typedef struct {
-    GtkWidget * box, * main, * vis;
+    GtkWidget * box, * main;
 
     gchar * title, * artist, * album; /* pooled */
     gchar * last_title, * last_artist, * last_album; /* pooled */
@@ -50,11 +50,15 @@ typedef struct {
 
     gboolean stopped;
     gint fade_timeout;
-    gchar bars[VIS_BANDS];
-    gchar delay[VIS_BANDS];
 
     GdkPixbuf * pb, * last_pb;
 } UIInfoArea;
+
+static struct {
+    GtkWidget * widget;
+    gchar bars[VIS_BANDS];
+    gchar delay[VIS_BANDS];
+} vis;
 
 /****************************************************************************/
 
@@ -62,8 +66,6 @@ static UIInfoArea * area = NULL;
 
 static void vis_render_cb (const gfloat * freq)
 {
-    g_return_if_fail (area);
-
     const gfloat xscale[VIS_BANDS + 1] = {0.00, 0.59, 1.52, 3.00, 5.36, 9.10,
      15.0, 24.5, 39.4, 63.2, 101, 161, 256}; /* logarithmic scale - 1 */
 
@@ -86,32 +88,32 @@ static void vis_render_cb (const gfloat * freq)
         }
 
         /* 40 dB range */
-        int x = 20 * log10 (n * 100);
+        gint x = 20 * log10 (n * 100);
         x = CLAMP (x, 0, 40);
 
-        area->bars[i] -= MAX (0, VIS_FALLOFF - area->delay[i]);
+        vis.bars[i] -= MAX (0, VIS_FALLOFF - vis.delay[i]);
 
-        if (area->delay[i])
-            area->delay[i] --;
+        if (vis.delay[i])
+            vis.delay[i] --;
 
-        if (x > area->bars[i])
+        if (x > vis.bars[i])
         {
-            area->bars[i] = x;
-            area->delay[i] = VIS_DELAY;
+            vis.bars[i] = x;
+            vis.delay[i] = VIS_DELAY;
         }
     }
 
-    gtk_widget_queue_draw (area->vis);
+    if (vis.widget)
+        gtk_widget_queue_draw (vis.widget);
 }
 
 static void vis_clear_cb (void)
 {
-    g_return_if_fail (area);
+    memset (vis.bars, 0, sizeof vis.bars);
+    memset (vis.delay, 0, sizeof vis.delay);
 
-    memset (area->bars, 0, sizeof area->bars);
-    memset (area->delay, 0, sizeof area->delay);
-
-    gtk_widget_queue_draw (area->vis);
+    if (vis.widget)
+        gtk_widget_queue_draw (vis.widget);
 }
 
 /****************************************************************************/
@@ -216,7 +218,6 @@ static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
 {
     static GdkRGBA c;
     static bool_t valid = FALSE;
-    gfloat h, s, v, n;
 
     if (! valid)
     {
@@ -232,6 +233,7 @@ static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
         valid = TRUE;
     }
 
+    gfloat h, s, v;
     rgb_to_hsv (c.red, c.green, c.blue, & h, & s, & v);
 
     if (s < 0.1) /* monochrome theme? use blue instead */
@@ -240,24 +242,21 @@ static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
         s = 0.75;
     }
 
-    n = i / 11.0;
-    s = 1 - 0.9 * n;
-    v = 0.75 + 0.25 * n;
+    s = 1 - 0.9 * i / (VIS_BANDS - 1);
+    v = 0.75 + 0.25 * i / (VIS_BANDS - 1);
 
     hsv_to_rgb (h, s, v, r, g, b);
 }
 
-static gboolean draw_vis_cb (GtkWidget * vis, cairo_t * cr)
+static gboolean draw_vis_cb (GtkWidget * widget, cairo_t * cr)
 {
-    g_return_val_if_fail (area, FALSE);
-
-    clear (vis, cr);
+    clear (widget, cr);
 
     for (gint i = 0; i < VIS_BANDS; i++)
     {
         gint x = SPACING + 8 * i;
-        gint t = VIS_CENTER - area->bars[i];
-        gint m = MIN (VIS_CENTER + area->bars[i], HEIGHT);
+        gint t = VIS_CENTER - vis.bars[i];
+        gint m = MIN (VIS_CENTER + vis.bars[i], HEIGHT);
 
         gfloat r, g, b;
         get_color (i, & r, & g, & b);
@@ -358,16 +357,7 @@ static gboolean ui_infoarea_do_fade (void)
     return ret;
 }
 
-static gint strcmp_null (const gchar * a, const gchar * b)
-{
-    if (! a)
-        return (! b) ? 0 : -1;
-    if (! b)
-        return 1;
-    return strcmp (a, b);
-}
-
-void ui_infoarea_set_title (void)
+static void ui_infoarea_set_title (void)
 {
     g_return_if_fail (area);
 
@@ -380,8 +370,8 @@ void ui_infoarea_set_title (void)
     gchar * title, * artist, * album;
     aud_playlist_entry_describe (playlist, entry, & title, & artist, & album, TRUE);
 
-    if (! strcmp_null (title, area->title) && ! strcmp_null (artist,
-     area->artist) && ! strcmp_null (album, area->album))
+    if (! g_strcmp0 (title, area->title) && ! g_strcmp0 (artist, area->artist)
+     && ! g_strcmp0 (album, area->album))
     {
         str_unref (title);
         str_unref (artist);
@@ -466,18 +456,51 @@ static void ui_infoarea_playback_stop (void)
          ui_infoarea_do_fade, area);
 }
 
+void ui_infoarea_show_vis (gboolean show)
+{
+    if (! area)
+        return;
+
+    if (show)
+    {
+        if (vis.widget)
+            return;
+
+        vis.widget = gtk_drawing_area_new ();
+        gtk_widget_set_size_request (vis.widget, VIS_WIDTH + 2 * SPACING, HEIGHT);
+        gtk_box_pack_start ((GtkBox *) area->box, vis.widget, FALSE, FALSE, 0);
+
+        g_signal_connect (vis.widget, "draw", (GCallback) draw_vis_cb, NULL);
+        gtk_widget_show (vis.widget);
+
+        aud_vis_func_add (AUD_VIS_TYPE_CLEAR, (VisFunc) vis_clear_cb);
+        aud_vis_func_add (AUD_VIS_TYPE_FREQ, (VisFunc) vis_render_cb);
+    }
+    else
+    {
+        if (! vis.widget)
+            return;
+
+        aud_vis_func_remove ((VisFunc) vis_clear_cb);
+        aud_vis_func_remove ((VisFunc) vis_render_cb);
+
+        gtk_widget_destroy (vis.widget);
+
+        memset (& vis, 0, sizeof vis);
+    }
+}
+
 static void destroy_cb (GtkWidget * widget)
 {
     g_return_if_fail (area);
+
+    ui_infoarea_show_vis (FALSE);
 
     hook_dissociate ("playlist update", (HookFunction) ui_infoarea_set_title);
     hook_dissociate ("playback begin", (HookFunction)
      ui_infoarea_playback_start);
     hook_dissociate ("playback stop", (HookFunction)
      ui_infoarea_playback_stop);
-
-    aud_vis_func_remove ((VisFunc) vis_clear_cb);
-    aud_vis_func_remove ((VisFunc) vis_render_cb);
 
     if (area->fade_timeout)
     {
@@ -512,19 +535,11 @@ GtkWidget * ui_infoarea_new (void)
     gtk_widget_set_size_request (area->main, ICON_SIZE + 2 * SPACING, HEIGHT);
     gtk_box_pack_start ((GtkBox *) area->box, area->main, TRUE, TRUE, 0);
 
-    area->vis = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (area->vis, VIS_WIDTH + 2 * SPACING, HEIGHT);
-    gtk_box_pack_start ((GtkBox *) area->box, area->vis, FALSE, FALSE, 0);
-
     g_signal_connect (area->main, "draw", (GCallback) draw_cb, NULL);
-    g_signal_connect (area->vis, "draw", (GCallback) draw_vis_cb, NULL);
 
     hook_associate ("playlist update", (HookFunction) ui_infoarea_set_title, NULL);
     hook_associate ("playback begin", (HookFunction) ui_infoarea_playback_start, NULL);
     hook_associate ("playback stop", (HookFunction) ui_infoarea_playback_stop, NULL);
-
-    aud_vis_func_add (AUD_VIS_TYPE_CLEAR, (VisFunc) vis_clear_cb);
-    aud_vis_func_add (AUD_VIS_TYPE_FREQ, (VisFunc) vis_render_cb);
 
     g_signal_connect (area->box, "destroy", (GCallback) destroy_cb, NULL);
 

@@ -120,7 +120,8 @@ static void volume_down (void)
 }
 
 static gboolean menu_bar_get (void) {return aud_get_bool ("gtkui", "menu_visible"); }
-static gboolean info_bar_get (void) {return aud_get_bool ("gtkui", "infoarea_visible"); }
+static gboolean infoarea_get (void) {return aud_get_bool ("gtkui", "infoarea_visible"); }
+static gboolean infoarea_vis_get (void) {return aud_get_bool ("gtkui", "infoarea_show_vis"); }
 static gboolean status_bar_get (void) {return aud_get_bool ("gtkui", "statusbar_visible"); }
 static gboolean column_headers_get (void) {return aud_get_bool ("gtkui", "playlist_headers"); }
 static gboolean autoscroll_get (void) {return aud_get_bool ("gtkui", "autoscroll"); }
@@ -192,7 +193,8 @@ static const struct MenuItem view_items[] = {
  {N_("_Visualizations"), .get_sub = audgui_create_vis_menu},
  {.sep = TRUE},
  {N_("Show _Menu Bar"), NULL, 'm', SHIFT | CTRL, .get = menu_bar_get, show_menu},
- {N_("Show I_nfo Bar"), NULL, 'i', SHIFT | CTRL, .get = info_bar_get, show_infoarea},
+ {N_("Show I_nfo Bar"), NULL, 'i', SHIFT | CTRL, .get = infoarea_get, show_infoarea},
+ {N_("Show Info Bar Vis_ualization"), .get = infoarea_vis_get, show_infoarea_vis},
  {N_("Show _Status Bar"), NULL, 's', SHIFT | CTRL, .get = status_bar_get, show_statusbar},
  {.sep = TRUE},
  {N_("Show Column _Headers"), .get = column_headers_get, playlist_show_headers},
