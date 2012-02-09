@@ -61,7 +61,6 @@ static const gchar * const gtkui_defaults[] = {
  "always_on_top", "FALSE",
  "save_window_position", "TRUE",
  "show_song_titles", "TRUE",
- "custom_playlist_colors", "FALSE",
  NULL};
 
 static PluginHandle * search_tool;
