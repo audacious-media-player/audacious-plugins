@@ -509,11 +509,11 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event, voi
         case 'b':
             aud_drct_pl_next ();
             return TRUE;
-        case GDK_KEY_Left:
+        case GDK_Left:
             if (aud_drct_get_playing ())
                 aud_drct_seek (aud_drct_get_time () - 5000);
             return TRUE;
-        case GDK_KEY_Right:
+        case GDK_Right:
             if (aud_drct_get_playing ())
                 aud_drct_seek (aud_drct_get_time () + 5000);
             break;
