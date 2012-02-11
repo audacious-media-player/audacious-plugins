@@ -516,10 +516,11 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event, voi
         case GDK_Right:
             if (aud_drct_get_playing ())
                 aud_drct_seek (aud_drct_get_time () + 5000);
-            break;
+            return TRUE;
         }
 
-        break;
+        return FALSE;
+
       case GDK_CONTROL_MASK:
         switch (event->keyval)
         {
