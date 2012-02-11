@@ -46,8 +46,6 @@
 #include "ui_skinned_window.h"
 #include "util.h"
 
-#include "images/audacious_eq.xpm"
-
 enum PresetViewCols {
     PRESET_VIEW_COL_NAME,
     PRESET_VIEW_N_COLS
@@ -365,8 +363,6 @@ static void eq_win_draw (GtkWidget * window, cairo_t * cr)
 static void
 equalizerwin_create_window(void)
 {
-    GdkPixbuf *icon;
-
     equalizerwin = window_new (& config.equalizer_x, & config.equalizer_y, 275,
      config.equalizer_shaded ? 14 : 116, FALSE, config.equalizer_shaded,
      eq_win_draw);
@@ -377,10 +373,6 @@ equalizerwin_create_window(void)
     gtk_window_set_transient_for(GTK_WINDOW(equalizerwin),
                                  GTK_WINDOW(mainwin));
     gtk_window_set_skip_taskbar_hint(GTK_WINDOW(equalizerwin), TRUE);
-
-    icon = gdk_pixbuf_new_from_xpm_data((const gchar **) audacious_eq_icon);
-    gtk_window_set_icon(GTK_WINDOW(equalizerwin), icon);
-    g_object_unref(icon);
 
     gtk_widget_set_app_paintable(equalizerwin, TRUE);
 
