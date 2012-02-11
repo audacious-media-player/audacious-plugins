@@ -979,3 +979,14 @@ void popup_menu_tab (guint button, guint32 time)
 {
     gtk_menu_popup ((GtkMenu *) menu_tab, NULL, NULL, NULL, NULL, button, time);
 }
+
+void activate_search_tool (void)
+{
+    if (! search_tool)
+        return;
+
+    if (! aud_plugin_get_enabled (search_tool))
+        aud_plugin_enable (search_tool, TRUE);
+
+    aud_plugin_send_message (search_tool, "grab focus", NULL, 0);
+}
