@@ -51,8 +51,6 @@
 #include "ui_skinned_textbox.h"
 #include "ui_skinned_window.h"
 
-#include "images/audacious_playlist.xpm"
-
 #define PLAYLISTWIN_MIN_WIDTH           MAINWIN_WIDTH
 #define PLAYLISTWIN_MIN_HEIGHT          MAINWIN_HEIGHT
 #define PLAYLISTWIN_WIDTH_SNAP          25
@@ -756,8 +754,6 @@ static void pl_win_draw (GtkWidget * window, cairo_t * cr)
 static void
 playlistwin_create_window(void)
 {
-    GdkPixbuf *icon;
-
     playlistwin = window_new (& config.playlist_x, & config.playlist_y,
      config.playlist_width, config.playlist_shaded ? PLAYLISTWIN_SHADED_HEIGHT :
      config.playlist_height, FALSE, config.playlist_shaded, pl_win_draw);
@@ -767,10 +763,6 @@ playlistwin_create_window(void)
     gtk_window_set_transient_for(GTK_WINDOW(playlistwin),
                                  GTK_WINDOW(mainwin));
     gtk_window_set_skip_taskbar_hint(GTK_WINDOW(playlistwin), TRUE);
-
-    icon = gdk_pixbuf_new_from_xpm_data((const gchar **) audacious_playlist_icon);
-    gtk_window_set_icon(GTK_WINDOW(playlistwin), icon);
-    g_object_unref(icon);
 
     gtk_widget_add_events(playlistwin, GDK_POINTER_MOTION_MASK |
                           GDK_FOCUS_CHANGE_MASK | GDK_BUTTON_MOTION_MASK |

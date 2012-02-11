@@ -37,5 +37,6 @@ void show_infoarea_vis (gboolean show);
 void show_statusbar (gboolean show);
 void popup_menu_rclick (guint button, guint32 time);
 void popup_menu_tab (guint button, guint32 time);
+void activate_search_tool (void);
 
 #endif

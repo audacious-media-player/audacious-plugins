@@ -486,6 +486,42 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event, voi
 {
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
+      case 0:;
+        /* single-key shortcuts; must not interfere with text entry */
+        GtkWidget * focused = gtk_window_get_focus ((GtkWindow *) window);
+        if (focused && GTK_IS_ENTRY (focused))
+            return FALSE;
+
+        switch (event->keyval)
+        {
+        case 'z':
+            aud_drct_pl_prev ();
+            return TRUE;
+        case 'x':
+            aud_drct_play ();
+            return TRUE;
+        case 'c':
+        case ' ':
+            aud_drct_pause ();
+            return TRUE;
+        case 'v':
+            aud_drct_stop ();
+            return TRUE;
+        case 'b':
+            aud_drct_pl_next ();
+            return TRUE;
+        case GDK_KEY_Left:
+            if (aud_drct_get_playing ())
+                aud_drct_seek (aud_drct_get_time () - 5000);
+            return TRUE;
+        case GDK_KEY_Right:
+            if (aud_drct_get_playing ())
+                aud_drct_seek (aud_drct_get_time () + 5000);
+            return TRUE;
+        }
+
+        return FALSE;
+
       case GDK_CONTROL_MASK:
         switch (event->keyval)
         {
@@ -943,4 +979,15 @@ void popup_menu_rclick (guint button, guint32 time)
 void popup_menu_tab (guint button, guint32 time)
 {
     gtk_menu_popup ((GtkMenu *) menu_tab, NULL, NULL, NULL, NULL, button, time);
+}
+
+void activate_search_tool (void)
+{
+    if (! search_tool)
+        return;
+
+    if (! aud_plugin_get_enabled (search_tool))
+        aud_plugin_enable (search_tool, TRUE);
+
+    aud_plugin_send_message (search_tool, "grab focus", NULL, 0);
 }

@@ -19,6 +19,7 @@
  * using our public API to be a derived work.
  */
 
+#include <errno.h>
 #include <string.h>
 
 #include <gtk/gtk.h>
@@ -58,7 +59,7 @@ static GArray * selection;
 static gboolean adding, dicts_valid;
 static gint search_source;
 
-static GtkWidget * help_label, * wait_label, * scrolled, * results_list;
+static GtkWidget * entry, * help_label, * wait_label, * scrolled, * results_list;
 
 /* str_unref() may be a macro */
 static void str_unref_cb (void * str)
@@ -632,11 +633,12 @@ static void * search_get_widget (void)
     GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
     gtk_container_set_border_width ((GtkContainer *) vbox, 3);
 
-    GtkWidget * entry = gtk_entry_new ();
+    entry = gtk_entry_new ();
     gtk_entry_set_icon_from_stock ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, GTK_STOCK_FIND);
 #if GTK_CHECK_VERSION (3, 2, 0)
     gtk_entry_set_placeholder_text ((GtkEntry *) entry, _("Search library"));
 #endif
+    g_signal_connect (entry, "destroy", (GCallback) gtk_widget_destroyed, & entry);
     gtk_box_pack_start ((GtkBox *) vbox, entry, FALSE, FALSE, 0);
 
     help_label = gtk_label_new (_("To import your music library into "
@@ -694,10 +696,23 @@ static void * search_get_widget (void)
     return vbox;
 }
 
+int search_take_message (const char * code, const void * data, int size)
+{
+    if (! strcmp (code, "grab focus"))
+    {
+        if (entry)
+            gtk_widget_grab_focus (entry);
+        return 0;
+    }
+
+    return EINVAL;
+}
+
 AUD_GENERAL_PLUGIN
 (
     .name = "Search Tool",
     .init = search_init,
     .cleanup = search_cleanup,
-    .get_widget = search_get_widget
+    .get_widget = search_get_widget,
+    .take_message = search_take_message
 )
