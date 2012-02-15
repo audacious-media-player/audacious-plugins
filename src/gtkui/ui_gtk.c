@@ -934,6 +934,7 @@ void show_infoarea (gboolean show)
     if (show && ! infoarea)
     {
         infoarea = ui_infoarea_new ();
+        g_signal_connect (infoarea, "destroy", (GCallback) gtk_widget_destroyed, & infoarea);
         ui_infoarea_show_vis (aud_get_bool ("gtkui", "infoarea_show_vis"));
         gtk_box_pack_end ((GtkBox *) vbox, infoarea, FALSE, FALSE, 0);
         gtk_widget_show_all (infoarea);
