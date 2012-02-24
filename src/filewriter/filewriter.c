@@ -290,7 +290,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
     if (output_file == NULL)
         return 0;
 
-    convert_init(fmt, plugin->format_required, nch);
+    convert_init (fmt, plugin->format_required (fmt), nch);
 
     rv = (plugin->open)();
 

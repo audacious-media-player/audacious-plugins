@@ -37,22 +37,7 @@ static const gint modes[MODES] = {MODE_AUTO, MODE_JOINT, MODE_STEREO, MODE_MONO}
 static const gchar * const mode_names[MODES] = {N_("Auto"), N_("Joint Stereo"),
  N_("Stereo"), N_("Mono")};
 
-static void mp3_init(write_output_callback write_output_func);
-static void mp3_configure(void);
-static gint mp3_open(void);
-static void mp3_write(void *ptr, gint length);
-static void mp3_close(void);
 static gint (*write_output)(void *ptr, gint length);
-
-FileWriter mp3_plugin =
-{
-    .init = mp3_init,
-    .configure = mp3_configure,
-    .open = mp3_open,
-    .write = mp3_write,
-    .close = mp3_close,
-    .format_required = FMT_S16_NE,
-};
 
 static GtkWidget *configure_win = NULL;
 static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
@@ -1263,5 +1248,20 @@ static void mp3_configure(void)
 
     }
 }
+
+static int mp3_format_required (int fmt)
+{
+    return FMT_S16_NE;
+}
+
+FileWriter mp3_plugin =
+{
+    .init = mp3_init,
+    .configure = mp3_configure,
+    .open = mp3_open,
+    .write = mp3_write,
+    .close = mp3_close,
+    .format_required = mp3_format_required,
+};
 
 #endif
