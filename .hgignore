@@ -1,0 +1,18 @@
+syntax: glob
+aclocal.m4
+autom4te.cache
+buildsys.mk
+config.h
+config.h.in
+config.log
+config.status
+configure
+extra.mk
+.deps
+*.a
+*.mo
+*.o
+*.so
+*~
+*.patch
+*.diff
