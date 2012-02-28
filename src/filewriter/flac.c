@@ -26,21 +26,6 @@
 #include <FLAC/all.h>
 #include <stdlib.h>
 
-
-static gint flac_open(void);
-static void flac_write(gpointer data, gint length);
-static void flac_close(void);
-
-FileWriter flac_plugin =
-{
-    .init = NULL,
-    .configure = NULL,
-    .open = flac_open,
-    .write = flac_write,
-    .close = flac_close,
-    .format_required = FMT_S16_NE,
-};
-
 static FLAC__StreamEncoder *flac_encoder;
 
 static FLAC__StreamEncoderWriteStatus flac_write_cb(const FLAC__StreamEncoder *encoder,
@@ -188,5 +173,20 @@ static void flac_close(void)
     FLAC__stream_encoder_finish(flac_encoder);
     FLAC__stream_encoder_delete(flac_encoder);
 }
+
+static int flac_format_required (int fmt)
+{
+    return FMT_S16_NE;
+}
+
+FileWriter flac_plugin =
+{
+    .init = NULL,
+    .configure = NULL,
+    .open = flac_open,
+    .write = flac_write,
+    .close = flac_close,
+    .format_required = flac_format_required,
+};
 
 #endif

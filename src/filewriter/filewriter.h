@@ -53,7 +53,7 @@ typedef struct _FileWriter
     gint (*open)(void);
     void (*write)(void *ptr, gint length);
     void (*close)(void);
-    gint format_required;
+    int (*format_required)(int fmt);
 } FileWriter;
 
 #endif

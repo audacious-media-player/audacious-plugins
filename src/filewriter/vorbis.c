@@ -29,22 +29,7 @@
 
 #include <audacious/misc.h>
 
-static void vorbis_init(write_output_callback write_output_func);
-static void vorbis_configure(void);
-static gint vorbis_open(void);
-static void vorbis_write(gpointer data, gint length);
-static void vorbis_close(void);
 static gint (*write_output)(void *ptr, gint length);
-
-FileWriter vorbis_plugin =
-{
-    .init = vorbis_init,
-    .configure = vorbis_configure,
-    .open = vorbis_open,
-    .write = vorbis_write,
-    .close = vorbis_close,
-    .format_required = FMT_FLOAT,
-};
 
 static ogg_stream_state os;
 static ogg_page og;
@@ -284,5 +269,20 @@ static void vorbis_configure(void)
 
     gtk_widget_show_all(configure_win);
 }
+
+static int vorbis_format_required (int fmt)
+{
+    return FMT_FLOAT;
+}
+
+FileWriter vorbis_plugin =
+{
+    .init = vorbis_init,
+    .configure = vorbis_configure,
+    .open = vorbis_open,
+    .write = vorbis_write,
+    .close = vorbis_close,
+    .format_required = vorbis_format_required,
+};
 
 #endif

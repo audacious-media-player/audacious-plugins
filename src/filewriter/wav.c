@@ -1,4 +1,5 @@
 /*  FileWriter-Plugin
+ *  (C) copyright 2012 Michał Lipski
  *  (C) copyright 2007 merging of Disk Writer and Out-Lame by Michael Färber
  *
  *  Original Out-Lame-Plugin:
@@ -21,20 +22,6 @@
  */
 
 #include "plugins.h"
-
-static gint wav_open(void);
-static void wav_write(void *ptr, gint length);
-static void wav_close(void);
-
-FileWriter wav_plugin =
-{
-    .init = NULL,
-    .configure = NULL,
-    .open = wav_open,
-    .write = wav_write,
-    .close = wav_close,
-    .format_required = FMT_S16_LE,
-};
 
 #pragma pack(push) /* must be byte-aligned */
 #pragma pack(1)
@@ -67,13 +54,18 @@ static gint wav_open(void)
     memcpy(&header.chunk_type, "WAVE", 4);
     memcpy(&header.sub_chunk, "fmt ", 4);
     header.sc_len = GUINT32_TO_LE(16);
-    header.format = GUINT16_TO_LE(1);
+    if (input.format == FMT_FLOAT)
+        header.format = GUINT16_TO_LE(3);
+    else
+        header.format = GUINT16_TO_LE(1);
     header.modus = GUINT16_TO_LE(input.channels);
     header.sample_fq = GUINT32_TO_LE(input.frequency);
-    if (input.format == FMT_U8 || input.format == FMT_S8)
-        header.bit_p_spl = GUINT16_TO_LE(8);
-    else
+    if (input.format == FMT_S16_LE)
         header.bit_p_spl = GUINT16_TO_LE(16);
+    else if (input.format == FMT_S24_LE)
+        header.bit_p_spl = GUINT16_TO_LE(24);
+    else
+        header.bit_p_spl = GUINT16_TO_LE(32);
     header.byte_p_sec = GUINT32_TO_LE(input.frequency * header.modus * (GUINT16_FROM_LE(header.bit_p_spl) / 8));
     header.byte_p_spl = GUINT16_TO_LE((GUINT16_FROM_LE(header.bit_p_spl) / (8 / input.channels)));
     memcpy(&header.data_chunk, "data", 4);
@@ -87,11 +79,34 @@ static gint wav_open(void)
     return 1;
 }
 
+static void pack24 (void * * data, int * len)
+{
+    int samples = (* len) / sizeof (int32_t);
+    char * new = g_malloc (samples * 3);
+    int32_t * data32 = * data;
+    int32_t * end = data32 + samples;
+
+    * data = new;
+    * len = samples * 3;
+
+    while (data32 < end)
+    {
+        memcpy (new, data32 ++, 3);
+        new += 3;
+    }
+}
+
 static void wav_write (void * data, gint len)
 {
+    if (input.format == FMT_S24_LE)
+        pack24 (& data, & len);
+
     written += len;
     if (vfs_fwrite (data, 1, len, output_file) != len)
         fprintf (stderr, "Error while writing to .wav output file.\n");
+
+    if (input.format == FMT_S24_LE)
+        g_free (data);
 }
 
 static void wav_close(void)
@@ -106,3 +121,27 @@ static void wav_close(void)
             fprintf (stderr, "Error while writing to .wav output file.\n");
     }
 }
+
+static int wav_format_required (int fmt)
+{
+    switch (fmt)
+    {
+        case FMT_S16_LE:
+        case FMT_S24_LE:
+        case FMT_S32_LE:
+        case FMT_FLOAT:
+            return fmt;
+        default:
+            return FMT_S16_LE;
+    }
+}
+
+FileWriter wav_plugin =
+{
+    .init = NULL,
+    .configure = NULL,
+    .open = wav_open,
+    .write = wav_write,
+    .close = wav_close,
+    .format_required = wav_format_required,
+};
