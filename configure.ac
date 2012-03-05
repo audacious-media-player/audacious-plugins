@@ -256,7 +256,7 @@ dnl *** Audacious OSD plugin (pangocairo-based)
 AC_ARG_ENABLE(aosd,
     [  --disable-aosd          disable Audacious OSD plugin (default=enabled)],
     [enable_aosd=$enableval],
-    [enable_aosd="guess"]
+    [enable_aosd="yes"]
 )
 
 AC_ARG_ENABLE(aosd_xcomp,
@@ -265,7 +265,7 @@ AC_ARG_ENABLE(aosd_xcomp,
     [enable_aosd_xcomp="yes"]
 )
 
-if test "x$enable_aosd" = "xguess"; then
+if test "x$enable_aosd" = "xyes"; then
     have_aosd="yes"
     PKG_CHECK_MODULES(PANGO,[pango >= 1.14.7],,
         [have_aosd="no"
@@ -295,24 +295,8 @@ if test "x$enable_aosd" = "xguess"; then
         have_aosd_xcomp="no"
     fi
 else
-    if test "x$enable_aosd" = "xyes"; then
-        AC_MSG_RESULT([*** Audacious OSD plugin has been forcefully enabled ***])
-        have_aosd="yes"
-        if test "x$enable_aosd_xcomp" = "xyes"; then
-            have_aosd_xcomp="yes"
-            PKG_CHECK_MODULES(XCOMPOSITE, xcomposite,
-                [AC_DEFINE([HAVE_XCOMPOSITE],[],[X Composite extension available])],
-                [have_aosd_xcomp="no"
-                AC_MSG_RESULT([*** X Composite extension not found, composite support for Audacious OSD will not be compiled ***])]
-            )
-        else
-            AC_MSG_RESULT([*** X Composite support for Audacious OSD plugin disabled per user request ***])
-            have_aosd_xcomp="no"
-        fi
-    else
-        AC_MSG_RESULT([*** Audacious OSD plugin disabled per user request ***])
-        have_aosd="no"
-    fi
+    AC_MSG_RESULT([*** Audacious OSD plugin disabled per user request ***])
+    have_aosd="no"
 fi
 
 if test "x$have_aosd" = "xyes"; then
