@@ -926,6 +926,13 @@ static void refresh_trackinfo (gboolean warning)
                 cdaudio_error (_("Unsupported disk type."));
         }
 
+        /* reset libcdio, else it will not read a new disk correctly */
+        if (pcdrom_drive)
+        {
+            cdda_close (pcdrom_drive);
+            pcdrom_drive = NULL;
+        }
+
         g_free (trackinfo);
         trackinfo = NULL;
         return;
