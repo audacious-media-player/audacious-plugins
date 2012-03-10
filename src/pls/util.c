@@ -67,12 +67,33 @@ INIFile * open_ini_file (VFSFile * file)
     gpointer section_hash, key_hash;
     gsize off = 0;
 
+    gchar * buffer = NULL;
     gint64 filesize = vfs_fsize (file);
-    if (filesize < 1)
-        return NULL;
 
-    gchar * buffer = g_malloc (filesize);
-    filesize = vfs_fread (buffer, 1, filesize, file);
+    if (filesize > 0)
+    {
+        buffer = g_malloc (filesize);
+        filesize = vfs_fread (buffer, 1, filesize, file);
+    }
+    else
+    {
+        gint64 readed;
+        filesize = 0;
+
+        do
+        {
+            buffer = g_realloc (buffer, filesize + 4096);
+            readed = vfs_fread (buffer + filesize, 1, 4096, file);
+            filesize += readed;
+        }
+        while (readed > 0);
+    }
+
+    if (filesize < 1)
+    {
+        g_free (buffer);
+        return NULL;
+    }
 
     section_name = g_string_new("");
     key_name = g_string_new(NULL);
