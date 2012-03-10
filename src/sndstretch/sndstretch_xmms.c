@@ -304,8 +304,8 @@ void sndstretch_config(void)
 	SS.scale_adj = (GtkAdjustment *) gtk_adjustment_new (100 * log (SS.scale) /
 	 log (2), -100, 100 + 10, 2, 10, 0);
 
-	volume_toggle  = gtk_check_button_new_with_label(_("Volume corr."));
-	overlap_toggle = gtk_check_button_new_with_label(_("Short Overlap"));
+	volume_toggle  = gtk_check_button_new_with_label(_("Volume correction"));
+	overlap_toggle = gtk_check_button_new_with_label(_("Short overlap"));
 	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(volume_toggle), SS.volume_corr );
 	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(overlap_toggle), SS.short_overlap );
 

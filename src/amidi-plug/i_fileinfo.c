@@ -208,7 +208,7 @@ void i_fileinfo_gui( const gchar * filename_uri )
   i_fileinfo_table_add_entry( _("Length (msec):") , value_gstring->str , info_table , 1 , pangoattrlist );
   /* midi num of tracks */
   G_STRING_PRINTF( value_gstring , "%i" , mf->num_tracks );
-  i_fileinfo_table_add_entry( _("Num of Tracks:") , value_gstring->str , info_table , 2 , pangoattrlist );
+  i_fileinfo_table_add_entry( _("No. of Tracks:") , value_gstring->str , info_table , 2 , pangoattrlist );
   /* midi bpm */
   if ( bpm > 0 )
     G_STRING_PRINTF( value_gstring , "%i" , bpm ); /* fixed bpm */
