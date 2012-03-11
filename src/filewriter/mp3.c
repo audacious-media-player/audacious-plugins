@@ -1122,7 +1122,7 @@ static void mp3_configure(void)
 
         /* Frame Params */
 
-        tags_frames_frame = gtk_frame_new(_("Frame params:"));
+        tags_frames_frame = gtk_frame_new(_("Frame parameters:"));
         gtk_container_set_border_width(GTK_CONTAINER(tags_frames_frame),
                                        5);
         gtk_box_pack_start(GTK_BOX(tags_vbox), tags_frames_frame, FALSE,

@@ -73,7 +73,7 @@ fi
 ### ---------------------------------------------------------------------------
 dnl Pthread support
 dnl ===============
-ACX_PTHREAD
+AX_PTHREAD
 AC_SUBST([PTHREAD_LIBS])
 AC_SUBST([PTHREAD_CFLAGS])
 

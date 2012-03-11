@@ -15,8 +15,5 @@ void vtx_about (void)
      _("Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
      "Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
      "\n"
-     "Music in vtx format can be found at http://vtx.microfor.ru/music.htm\n"
-     "and other AY/YM music sites.\n"
-     "\n"
      "Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"));
 }

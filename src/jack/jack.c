@@ -431,15 +431,11 @@ static void jack_about(void)
 
     if (aboutbox == NULL)
     {
-        gchar *description = g_strdup_printf(
-            _("XMMS jack Driver 0.17\n\n"
-              "xmms-jack.sf.net\nChris Morgan<cmorgan@alum.wpi.edu>\n\n"
-              "Audacious port by\nGiacomo Lozito from develia.org"));
-
         audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
-         _("About JACK Output Plugin 0.17"), description);
-
-        g_free(description);
+         _("About JACK Output Plugin"),
+         _("Based on xmms-jack, by Chris Morgan:\n"
+           "http://xmms-jack.sourceforge.net/\n\n"
+           "Ported to Audacious by Giacomo Lozito."));
     }
 }
 
