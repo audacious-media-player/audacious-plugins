@@ -234,6 +234,10 @@ static void window_create(void)
     g_signal_connect_swapped(G_OBJECT(button_ok), "clicked",
                              G_CALLBACK(gtk_widget_destroy), window);
 
+    g_signal_connect(G_OBJECT(window), "destroy",
+                     G_CALLBACK(gtk_widget_destroyed), &window);
+
+
     gtk_widget_show_all(window);
 }
 
