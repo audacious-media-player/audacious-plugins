@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2012-02-17 12:03-0500\n"
-"PO-Revision-Date: 2012-03-07 20:05+0000\n"
+"PO-Revision-Date: 2012-03-12 15:18+0000\n"
 "Last-Translator: Alain-Olivier  Breysse <yahoe.001@gmail.com>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -374,7 +374,7 @@ msgstr "<span size=\"smaller\">Sortie\n\"ALSA\"</span>"
 
 #: src/amidi-plug/i_configure-ap.c:59
 msgid "AMIDI-Plug - backend information"
-msgstr "Informations sur le système de sortie AMIDI-Plug"
+msgstr "AMIDI-Plug - Informations sur le système de sortie"
 
 #: src/amidi-plug/i_configure-ap.c:196
 msgid "AMIDI-PLUG PREFERENCES"
@@ -406,15 +406,15 @@ msgstr "Paramètres avancés"
 
 #: src/amidi-plug/i_configure-ap.c:293
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr "Précalculer la durée des fichiers MIDI dans la liste de lecture"
+msgstr "précalculer la durée des fichiers MIDI dans la liste de lecture"
 
 #: src/amidi-plug/i_configure-ap.c:298
 msgid "extract comments from MIDI file (if available)"
-msgstr "Extraire les commentaires des fichiers MIDI (s'ils sont disponibles)"
+msgstr "extraire les commentaires des fichiers MIDI (s'ils sont disponibles)"
 
 #: src/amidi-plug/i_configure-ap.c:303
 msgid "extract lyrics from MIDI file (if available)"
-msgstr "Extraire les paroles des fichiers MIDI (si elles sont disponibles)"
+msgstr "extraire les paroles des fichiers MIDI (si elles sont disponibles)"
 
 #: src/amidi-plug/i_configure-ap.c:333
 msgid ""
@@ -464,7 +464,7 @@ msgstr "Paramètres du synthétiseur"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:426
 msgid "gain"
-msgstr "Gain"
+msgstr " gain"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:432
 #: src/amidi-plug/i_configure-fluidsynth.c:460
@@ -480,45 +480,45 @@ msgstr "valeur :"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:454
 msgid "poliphony"
-msgstr "Polyphonie"
+msgstr "polyphonie"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:482
 msgid "reverb"
-msgstr "Réverbération"
+msgstr "réverbération"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:491
 #: src/amidi-plug/i_configure-fluidsynth.c:522
 msgid "yes"
-msgstr "Oui"
+msgstr "oui"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:493
 #: src/amidi-plug/i_configure-fluidsynth.c:524
 msgid "no"
-msgstr "Non"
+msgstr "non"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:513
 msgid "chorus"
-msgstr "Effet de choeur"
+msgstr "effet de choeur"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:544
 msgid "sample rate"
-msgstr "Fréquence d'échantillonnage"
+msgstr "fréquence d'échantillonnage"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:550
 msgid "22050 Hz "
-msgstr "22050 Hz"
+msgstr "22050 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:553
 msgid "44100 Hz "
-msgstr "44100 Hz"
+msgstr "44100 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:556
 msgid "96000 Hz "
-msgstr "96000 Hz"
+msgstr "96000 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:559
 msgid "custom "
-msgstr "Personnalisé "
+msgstr "personnalisé "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:568
 msgid "Hz "
