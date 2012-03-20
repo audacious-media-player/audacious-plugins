@@ -75,7 +75,8 @@ static gboolean set_format(gint format, gint rate, gint channels)
 
     param = rate;
     CHECK_NOISY(ioctl, oss_data->fd, SNDCTL_DSP_SPEED, &param);
-    CHECK_VAL(param == rate, ERROR_NOISY, "Selected sample rate is not supported by the device.\n");
+    CHECK_VAL(param >= rate * 9 / 10 && param <= rate * 11 / 10, ERROR_NOISY,
+     "Selected sample rate is not supported by the device.\n");
 
     param = channels;
     CHECK_NOISY(ioctl, oss_data->fd, SNDCTL_DSP_CHANNELS, &param);
