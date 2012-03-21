@@ -8,7 +8,7 @@ SRCS = fmt.c			\
 include ../../buildsys.mk
 include ../../extra.mk
 
-PACKAGE = audacious
+PACKAGE_NAME = audacious
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
