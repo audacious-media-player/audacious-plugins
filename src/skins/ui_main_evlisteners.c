@@ -104,6 +104,12 @@ static void shuffle_toggled (void * data, void * user)
     check_set (toggleaction_group_others, "playback shuffle", shuffle);
 }
 
+static void no_advance_toggled (void * data, void * user)
+{
+    bool_t no_advance = aud_get_bool (NULL, "no_playlist_advance");
+    check_set (toggleaction_group_others, "playback no playlist advance", no_advance);
+}
+
 static void stop_after_song_toggled (void * hook_data, void * user_data)
 {
     mainwin_enable_status_message (FALSE);
@@ -285,6 +291,7 @@ ui_main_evlistener_init(void)
 
     hook_associate ("set repeat", repeat_toggled, NULL);
     hook_associate ("set shuffle", shuffle_toggled, NULL);
+    hook_associate ("set no_playlist_advance", no_advance_toggled, NULL);
     hook_associate ("set stop_after_current_song", stop_after_song_toggled, NULL);
 }
 
@@ -304,6 +311,7 @@ ui_main_evlistener_dissociate(void)
 
     hook_dissociate ("set repeat", repeat_toggled);
     hook_dissociate ("set shuffle", shuffle_toggled);
+    hook_dissociate ("set no_playlist_advance", no_advance_toggled);
     hook_dissociate ("set stop_after_current_song", stop_after_song_toggled);
 }
 
