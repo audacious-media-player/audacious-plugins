@@ -454,10 +454,10 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     codec_opened = TRUE;
 
     switch (c->sample_fmt) {
-        case SAMPLE_FMT_U8: out_fmt = FMT_U8; break;
-        case SAMPLE_FMT_S16: out_fmt = FMT_S16_NE; break;
-        case SAMPLE_FMT_S32: out_fmt = FMT_S32_NE; break;
-        case SAMPLE_FMT_FLT: out_fmt = FMT_FLOAT; break;
+        case AV_SAMPLE_FMT_U8: out_fmt = FMT_U8; break;
+        case AV_SAMPLE_FMT_S16: out_fmt = FMT_S16_NE; break;
+        case AV_SAMPLE_FMT_S32: out_fmt = FMT_S32_NE; break;
+        case AV_SAMPLE_FMT_FLT: out_fmt = FMT_FLOAT; break;
     default:
         fprintf (stderr, "ffaudio: Unsupported audio format %d\n", (int) c->sample_fmt);
         goto error_exit;
