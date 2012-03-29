@@ -196,7 +196,7 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 	{
 		gint64 size = vfs_fsize (file);
 		gint64 samples = mpg123_length (decoder);
-		gint length = (samples > 0) ? samples * 1000 / rate : 0;
+		gint length = (samples > 0 && rate > 0) ? samples * 1000 / rate : 0;
 
 		if (length > 0)
 			tuple_set_int (tuple, FIELD_LENGTH, NULL, length);
