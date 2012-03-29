@@ -117,7 +117,7 @@ void xs_init_configuration(void)
     xs_pstrcpy(&xs_cfg.titleFormat, "%p - %t (%c) <%n/%N> [%m/%C]");
 #endif
 
-    xs_cfg.subAutoEnable = FALSE;
+    xs_cfg.subAutoEnable = TRUE;
     xs_cfg.subAutoMinOnly = TRUE;
     xs_cfg.subAutoMinTime = 15;
 
