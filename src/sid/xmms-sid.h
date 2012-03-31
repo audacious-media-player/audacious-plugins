@@ -162,11 +162,7 @@ void        xs_error(const gchar *, ...);
 
 /* Debugging
  */
-#ifdef DEBUG
 void    XSDEBUG(const gchar *, ...);
-#else
-#  define XSDEBUG(...) /* stub */
-#endif
 
 
 /* And even some Gtk+ macro crap here, yay.
