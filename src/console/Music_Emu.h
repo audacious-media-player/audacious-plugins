@@ -13,94 +13,94 @@ public:
 
 	// Set output sample rate. Must be called only once before loading file.
 	blargg_err_t set_sample_rate( long sample_rate );
-	
+
 	// Start a track, where 0 is the first track. Also clears warning string.
 	blargg_err_t start_track( int );
-	
+
 	// Generate 'count' samples info 'buf'. Output is in stereo. Any emulation
 	// errors set warning string, and major errors also end track.
 	typedef short sample_t;
 	blargg_err_t play( long count, sample_t* buf );
-	
+
 // Informational
-	
+
 	// Sample rate sound is generated at
 	long sample_rate() const;
-	
+
 	// Index of current track or -1 if one hasn't been started
 	int current_track() const;
-	
+
 	// Number of voices used by currently loaded file
 	int voice_count() const;
-	
+
 	// Names of voices
 	const char** voice_names() const;
-	
+
 // Track status/control
 
 	// Number of milliseconds (1000 msec = 1 second) played since beginning of track
 	long tell() const;
-	
+
 	// Seek to new time in track. Seeking backwards or far forward can take a while.
 	blargg_err_t seek( long msec );
-	
+
 	// Skip n samples
 	blargg_err_t skip( long n );
-	
+
 	// True if a track has reached its end
 	bool track_ended() const;
-	
+
 	// Set start time and length of track fade out. Once fade ends track_ended() returns
 	// true. Fade time can be changed while track is playing.
 	void set_fade( long start_msec, long length_msec = 8000 );
-	
+
 	// Disable automatic end-of-track detection and skipping of silence at beginning
 	void ignore_silence( bool disable = true );
-	
+
 	// Info for current track
-	Gme_File::track_info;
+	using Gme_File::track_info;
 	blargg_err_t track_info( track_info_t* out ) const;
-	
+
 // Sound customization
-	
+
 	// Adjust song tempo, where 1.0 = normal, 0.5 = half speed, 2.0 = double speed.
 	// Track length as returned by track_info() assumes a tempo of 1.0.
 	void set_tempo( double );
-	
+
 	// Mute/unmute voice i, where voice 0 is first voice
 	void mute_voice( int index, bool mute = true );
-	
+
 	// Set muting state of all voices at once using a bit mask, where -1 mutes them all,
 	// 0 unmutes them all, 0x01 mutes just the first voice, etc.
 	void mute_voices( int mask );
-	
+
 	// Change overall output amplitude, where 1.0 results in minimal clamping.
 	// Must be called before set_sample_rate().
 	void set_gain( double );
-	
+
 	// Request use of custom multichannel buffer. Only supported by "classic" emulators;
 	// on others this has no effect. Should be called only once *before* set_sample_rate().
 	virtual void set_buffer( Multi_Buffer* ) { }
-	
+
 	// Enables/disables accurate emulation options, if any are supported. Might change
 	// equalizer settings.
 	void enable_accuracy( bool enable = true );
-	
+
 // Sound equalization (treble/bass)
 
 	// Frequency equalizer parameters (see gme.txt)
 	// See gme.h for definition of struct gme_equalizer_t.
 	typedef gme_equalizer_t equalizer_t;
-	
+
 	// Current frequency equalizater parameters
 	equalizer_t const& equalizer() const;
-	
+
 	// Set frequency equalizer parameters
 	void set_equalizer( equalizer_t const& );
-	
+
 	// Equalizer settings for TV speaker
 	static equalizer_t const tv_eq;
-	
+
 public:
 	Music_Emu();
 	~Music_Emu();
@@ -113,7 +113,7 @@ protected:
 	double gain() const                         { return gain_; }
 	double tempo() const                        { return tempo_; }
 	void remute_voices();
-	
+
 	virtual blargg_err_t set_sample_rate_( long sample_rate ) = 0;
 	virtual void set_equalizer_( equalizer_t const& ) { }
 	virtual void enable_accuracy_( bool enable ) { }
@@ -135,10 +135,10 @@ private:
 	int mute_mask_;
 	double tempo_;
 	double gain_;
-	
+
 	long sample_rate_;
 	blargg_long msec_to_samples( blargg_long msec ) const;
-	
+
 	// track-specific
 	int current_track_;
 	blargg_long out_time;  // number of samples played since start of track
@@ -147,12 +147,12 @@ private:
 	volatile bool track_ended_;
 	void clear_track_vars();
 	void end_track_if_error( blargg_err_t );
-	
+
 	// fading
 	blargg_long fade_start;
 	int fade_step;
 	void handle_fade( long count, sample_t* out );
-	
+
 	// silence detection
 	int silence_lookahead; // speed to run emulator when looking ahead for silence
 	bool ignore_silence_;
@@ -163,7 +163,7 @@ private:
 	blargg_vector<sample_t> buf;
 	void fill_buf();
 	void emu_play( long count, sample_t* out );
-	
+
 	Multi_Buffer* effects_buffer;
 	friend Music_Emu* gme_new_emu( gme_type_t, int );
 	friend void gme_set_stereo_depth( Music_Emu*, double );
