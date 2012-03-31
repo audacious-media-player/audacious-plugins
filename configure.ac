@@ -558,23 +558,13 @@ fi
 dnl OSS output
 dnl ==========
 
-AC_ARG_ENABLE(oss,
- [  --enable-oss            enable OSS3 output plugin],
- [enable_oss="$enableval"],
- [enable_oss="no"]
-)
-
 AC_ARG_ENABLE(oss4,
- [  --disable-oss4          disable OSS4 output plugin],
- [enable_oss4="$enableval"],
- [enable_oss4="yes"]
-)
+ AS_HELP_STRING([--disable-oss4],[disable OSS4 output plugin]),
+ [enable_oss4="$enableval"], [enable_oss4="yes"])
 
-have_oss="no"
-have_oss4="no"
 OSS_CFLAGS=""
 
-if test "$enable_oss" = "yes" || test "$enable_oss4" = "yes" ; then
+if test "$enable_oss4" = "yes" ; then
     if test -f "/etc/oss.conf"; then
         . "/etc/oss.conf"
         OSS_CFLAGS="-I$OSSLIBDIR/include"
@@ -582,44 +572,25 @@ if test "$enable_oss" = "yes" || test "$enable_oss4" = "yes" ; then
 
     OLD_CPPFLAGS="$CPPFLAGS"
     CPPFLAGS="$CPPFLAGS $OSS_CFLAGS"
+    AC_CHECK_HEADERS([sys/soundcard.h soundcard.h])
+    AC_MSG_CHECKING(for OSS4)
 
-    AC_CHECK_HEADERS([sys/soundcard.h soundcard.h],
-     [have_oss="yes"], [have_oss="$have_oss"])
+    AC_EGREP_CPP(yes,
+     [#ifdef HAVE_SYS_SOUNDCARD_H
+      #include <sys/soundcard.h>
+      #elifdef HAVE_SOUNDCARD_H
+      #include <soundcard.h>
+      #endif
+      #if OSS_VERSION >= 0x40000 || SOUND_VERSION >= 0x40000
+          yes
+      #endif],
+     [enable_oss4="yes"], [enable_oss4="no"])
 
-    if test "$enable_oss4" = "yes" && test "$have_oss" = "yes" ; then
-        AC_MSG_CHECKING(for OSS4)
-
-        AC_EGREP_CPP(yes,
-            [#ifdef HAVE_SYS_SOUNDCARD_H
-             #include <sys/soundcard.h>
-             #else
-             #include <soundcard.h>
-             #endif
-             #if OSS_VERSION >= 0x40000 || SOUND_VERSION >= 0x40000
-                 yes
-             #endif],
-            [have_oss4="yes"],
-            [have_oss4="no"])
-
-        AC_MSG_RESULT([$have_oss4])
-    fi
-
+    AC_MSG_RESULT([$enable_oss4])
     CPPFLAGS="$OLD_CPPFLAGS"
 fi
 
 AC_SUBST(OSS_CFLAGS)
-
-if test "$enable_oss" = "yes" && test "$have_oss" = "no" ; then
-    enable_oss="no"
-fi
-
-if test "$enable_oss" = "yes"; then
-    OUTPUT_PLUGINS="$OUTPUT_PLUGINS OSS"
-fi
-
-if test "$enable_oss4" = "yes" && test "$have_oss4" = "no" ; then
-    enable_oss4="no"
-fi
 
 if test "$enable_oss4" = "yes"; then
     OUTPUT_PLUGINS="$OUTPUT_PLUGINS oss4"
@@ -1121,7 +1092,6 @@ echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
 echo "    -> FileWriter FLAC output part:       $have_writer_flac"
 echo "  Null Audio output (null):               yes"
-echo "  Open Sound System v3 (deprecated):      $enable_oss"
 echo
 echo "  Input Plugins"
 echo "  -------------"
