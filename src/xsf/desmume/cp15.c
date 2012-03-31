@@ -366,7 +366,7 @@ BOOL armcp15_moveCP2ARM(armcp15_t *armcp15, u32 * R, u8 CRn, u8 CRm, u8 opcode1,
 			}
 			return FALSE;
 		case 9 :
-			if((opcode1==0))
+			if(opcode1==0)
 			{
 				switch(CRm)
 				{
@@ -545,7 +545,7 @@ BOOL armcp15_moveARM2CP(armcp15_t *armcp15, u32 val, u8 CRn, u8 CRm, u8 opcode1,
 		}
 		return FALSE;
 		case 9 :
-		if((opcode1==0))
+		if(opcode1==0)
 		{
 			switch(CRm)
 			{
