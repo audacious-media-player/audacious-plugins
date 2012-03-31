@@ -16,28 +16,28 @@ extern "C" {
 }
 
 /* Module files have their magic deep inside the file, at offset 1080; source: http://www.onicos.com/staff/iz/formats/mod.html and information by Michael Doering from UADE */
-#define MOD_MAGIC_PROTRACKER4	(unsigned char [4]) { 0x4D, 0x2E, 0x4B, 0x2E }  // "M.K." - Protracker 4 channel
-#define MOD_MAGIC_PROTRACKER4X	(unsigned char [4]) { 0x4D, 0x21, 0x4B, 0x21 }  // "M!K!" - Protracker 4 channel
-#define MOD_MAGIC_NOISETRACKER	(unsigned char [4]) { 0x4D, 0x26, 0x4B, 0x21 }  // "M&K!" - Noisetracker 1.3 by Kaktus & Mahoney
-#define MOD_MAGIC_STARTRACKER4	(unsigned char [4]) { 0x46, 0x4C, 0x54, 0x34 }  // "FLT4" - Startracker 4 channel (Startrekker/AudioSculpture)
-#define MOD_MAGIC_STARTRACKER8	(unsigned char [4]) { 0x46, 0x4C, 0x54, 0x38 }  // "FLT8" - Startracker 8 channel (Startrekker/AudioSculpture)
-#define MOD_MAGIC_STARTRACKER4X	(unsigned char [4]) { 0x45, 0x58, 0x30, 0x34 }  // "EX04" - Startracker 4 channel (Startrekker/AudioSculpture)
-#define MOD_MAGIC_STARTRACKER8X	(unsigned char [4]) { 0x45, 0x58, 0x30, 0x38 }  // "EX08" - Startracker 8 channel (Startrekker/AudioSculpture)
-#define MOD_MAGIC_FASTTRACKER4	(unsigned char [4]) { 0x34, 0x43, 0x48, 0x4E }  // "4CHN" - Fasttracker 4 channel
-#define MOD_MAGIC_OKTALYZER8	(unsigned char [4]) { 0x43, 0x44, 0x38, 0x31 }  // "CD81" - Atari oktalyzer 8 channel
-#define MOD_MAGIC_OKTALYZER8X	(unsigned char [4]) { 0x4F, 0x4B, 0x54, 0x41 }  // "OKTA" - Atari oktalyzer 8 channel
-#define MOD_MAGIC_TAKETRACKER16	(unsigned char [4]) { 0x31, 0x36, 0x43, 0x4E }  // "16CN" - Taketracker 16 channel
-#define MOD_MAGIC_TAKETRACKER32 (unsigned char [4]) { 0x33, 0x32, 0x43, 0x4E }  // "32CN" - Taketracker 32 channel
+#define MOD_MAGIC_PROTRACKER4	"M.K."  // Protracker 4 channel
+#define MOD_MAGIC_PROTRACKER4X	"M!K!"  // Protracker 4 channel
+#define MOD_MAGIC_NOISETRACKER	"M&K!"  // Noisetracker 1.3 by Kaktus & Mahoney
+#define MOD_MAGIC_STARTRACKER4	"FLT4"  // Startracker 4 channel (Startrekker/AudioSculpture)
+#define MOD_MAGIC_STARTRACKER8	"FLT8"  // Startracker 8 channel (Startrekker/AudioSculpture)
+#define MOD_MAGIC_STARTRACKER4X	"EX04"  // Startracker 4 channel (Startrekker/AudioSculpture)
+#define MOD_MAGIC_STARTRACKER8X	"EX08"  // Startracker 8 channel (Startrekker/AudioSculpture)
+#define MOD_MAGIC_FASTTRACKER4	"4CHN"  // Fasttracker 4 channel
+#define MOD_MAGIC_OKTALYZER8	"CD81"  // Atari oktalyzer 8 channel
+#define MOD_MAGIC_OKTALYZER8X	"OKTA"  // Atari oktalyzer 8 channel
+#define MOD_MAGIC_TAKETRACKER16	"16CN"  // Taketracker 16 channel
+#define MOD_MAGIC_TAKETRACKER32 "32CN"  // Taketracker 32 channel
 
-#define S3M_MAGIC	(unsigned char [4]) { 0x53, 0x43, 0x52, 0x4D }			/* This is the SCRM string at offset 44 to 47 in the S3M header */
+#define S3M_MAGIC	"SCRM"  /* This is the SCRM string at offset 44 to 47 in the S3M header */
 
 /* These nicer formats have the magic bytes at the front of the file where they belong */
-#define UMX_MAGIC	(unsigned char [4]) { 0xC1, 0x83, 0x2A, 0x9E }
-#define XM_MAGIC	(unsigned char [4]) { 0x45, 0x78, 0x74, 0x65 }			/* Exte(nded Module) */
-#define M669_MAGIC	(unsigned char [4]) { 0x69, 0x66, 0x20, 0x20 }			/* Last two bytes are bogus, and not checked */
-#define IT_MAGIC	(unsigned char [4]) { 0x49, 0x4D, 0x50, 0x4D }			/* IMPM */
-#define MTM_MAGIC	(unsigned char [4]) { 0x4D, 0x54, 0x4D, 0x10 }
-#define PSM_MAGIC	(unsigned char [4]) { 0x50, 0x53, 0x4D, 0x20 }
+#define UMX_MAGIC	"\xC1\x83\x2A\x9E"
+#define XM_MAGIC	"Exte"              /* Exte(nded Module) */
+#define M669_MAGIC	"if  "              /* Last two bytes are bogus, and not checked */
+#define IT_MAGIC	"IMPM"              /* IMPM */
+#define MTM_MAGIC	"\x4D\x54\x4D\x10"
+#define PSM_MAGIC	"PSM "
 
 using namespace std;
 
