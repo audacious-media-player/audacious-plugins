@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
+#include <audacious/debug.h>
 #include <libaudcore/audstrings.h>
 
 #include "xs_config.h"
@@ -59,15 +60,15 @@ void xs_error(const gchar *fmt, ...)
     va_end(ap);
 }
 
-#ifdef DEBUG
 void XSDEBUG(const gchar *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    g_logv("AUD-SID", G_LOG_LEVEL_DEBUG, fmt, ap);
+    char * str = g_strdup_vprintf (fmt, ap);
+    AUDDBG ("%s", str);
+    g_free (str);
     va_end(ap);
 }
-#endif
 
 
 /*
