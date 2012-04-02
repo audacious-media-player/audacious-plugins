@@ -70,13 +70,6 @@ if test "x$enable_gio" = "xyes"; then
     TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS gio"
 fi
 
-### ---------------------------------------------------------------------------
-dnl Pthread support
-dnl ===============
-AX_PTHREAD
-AC_SUBST([PTHREAD_LIBS])
-AC_SUBST([PTHREAD_CFLAGS])
-
 dnl IPv6 support
 dnl ========================
 AC_ARG_ENABLE(ipv6,

@@ -10,6 +10,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${EFFECT_PLUGIN_DIR}
 
-CPPFLAGS += -I../.. ${PTHREAD_CFLAGS} ${GTK_CFLAGS} ${GMODULE_CFLAGS}
+CPPFLAGS += -I../.. ${GTK_CFLAGS} ${GMODULE_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
-LIBS += -lm ${PTHREAD_LIBS} ${GTK_LIBS} ${GMODULE_LIBS}
+LIBS += -lm ${GTK_LIBS} ${GMODULE_LIBS}
