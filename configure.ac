@@ -571,7 +571,7 @@ if test "$enable_oss4" = "yes" ; then
     AC_EGREP_CPP(yes,
      [#ifdef HAVE_SYS_SOUNDCARD_H
       #include <sys/soundcard.h>
-      #elifdef HAVE_SOUNDCARD_H
+      #elif defined HAVE_SOUNDCARD_H
       #include <soundcard.h>
       #endif
       #if OSS_VERSION >= 0x40000 || SOUND_VERSION >= 0x40000
