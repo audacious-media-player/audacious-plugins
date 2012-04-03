@@ -60,7 +60,7 @@ static int seek_cb(FLAC__IOHandle handle, FLAC__int64 offset, int whence)
 {
     if (vfs_fseek(handle, offset, whence) != 0)
     {
-        FLACNG_ERROR("Could not seek to %lld!\n", (long long)offset);
+        FLACNG_ERROR("Could not seek to %ld!\n", (long)offset);
         return -1;
     }
 
