@@ -222,8 +222,9 @@ aosd_osd_create ( void )
   {
     max_width = screen_width - pad_left - pad_right - abs(osd_data->cfg_osd->position.offset_x);
   }
-  osd_data->pango_context = pango_cairo_font_map_create_context(
-                              PANGO_CAIRO_FONT_MAP(pango_cairo_font_map_get_default()));
+
+  osd_data->pango_context = pango_font_map_create_context
+   (pango_cairo_font_map_get_default ());
   osd_data->pango_layout = pango_layout_new(osd_data->pango_context);
   pango_layout_set_markup( osd_data->pango_layout, osd_data->markup_message , -1 );
   pango_layout_set_ellipsize( osd_data->pango_layout , PANGO_ELLIPSIZE_NONE );
@@ -463,7 +464,7 @@ aosd_osd_init ( gint transparency_mode )
 #else
       osd = ghosd_new();
 #endif
-    
+
     if ( osd == NULL )
       g_warning( "Unable to load osd object; OSD will not work properly!\n" );
   }
@@ -471,7 +472,7 @@ aosd_osd_init ( gint transparency_mode )
 }
 
 
-void 
+void
 aosd_osd_cleanup ( void )
 {
   if ( osd != NULL )
@@ -500,7 +501,7 @@ aosd_osd_check_composite_mgr ( void )
      ones (xcompmgr) do not use this hint; so let's also check if xcompmgr
      is running before reporting a likely absence of running comp.managers */
   int have_comp_mgr = ghosd_check_composite_mgr();
-  
+
   if ( have_comp_mgr != 0 )
   {
     DEBUGMSG("running composite manager found\n");
@@ -513,7 +514,7 @@ aosd_osd_check_composite_mgr ( void )
        systems, but this is more than enough for its purpose */
     gchar *soutput = NULL, *serror = NULL;
     gint exit_status;
-    
+
     if ( g_spawn_command_line_sync( "ps -eo comm" ,
            &soutput , &serror , &exit_status , NULL ) == TRUE )
     {
@@ -533,7 +534,7 @@ aosd_osd_check_composite_mgr ( void )
       g_warning("command 'ps -eo comm' failed, unable to check if xcompgr is running\n");
       have_comp_mgr = 0;
     }
-    
+
     g_free( soutput );
     g_free( serror );
     return have_comp_mgr;

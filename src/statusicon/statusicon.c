@@ -149,11 +149,7 @@ static gboolean si_popup_show(gpointer icon)
     gint x, y;
     static gint count = 0;
 
-    GdkDisplay * display = gdk_display_get_default ();
-    GdkDeviceManager * manager = gdk_display_get_device_manager (display);
-    GdkDevice * device = gdk_device_manager_get_client_pointer (manager);
-    gdk_device_get_position (device, NULL, & x, & y);
-
+    audgui_get_mouse_coords (NULL, & x, & y);
     gtk_status_icon_get_geometry (icon, NULL, & area, NULL);
 
     if (x < area.x || x > area.x + area.width || y < area.y || y > area.y + area.width)

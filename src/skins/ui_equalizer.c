@@ -1080,8 +1080,9 @@ action_equ_save_auto_preset(void)
 
     if (name != NULL)
     {
-        gtk_entry_set_text(GTK_ENTRY(equalizerwin_save_auto_entry),
-                           g_basename(name));
+        char * base = g_path_get_basename (name);
+        gtk_entry_set_text ((GtkEntry *) equalizerwin_save_auto_entry, base);
+        g_free (base);
         str_unref (name);
     }
 }

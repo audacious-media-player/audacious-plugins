@@ -68,10 +68,10 @@ void checkADTSForSeeking (FILE * fd,
         {
             break;
         }
-        if (!g_strncasecmp (header, "ID3", 3))
-        {
+
+        if (! g_ascii_strncasecmp (header, "ID3", 3))
             break;
-        }
+
         if (!frameCount)
         {
             /* id = header[1] & 0x08; */

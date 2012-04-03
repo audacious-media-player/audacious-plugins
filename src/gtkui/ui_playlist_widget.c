@@ -29,6 +29,7 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
 
 #include "config.h"
@@ -458,7 +459,7 @@ void ui_playlist_widget_scroll (GtkWidget * widget)
     g_return_if_fail (data);
 
     gint x, y;
-    gtk_widget_get_pointer (widget, &x, &y);
+    audgui_get_mouse_coords (widget, & x, & y);
     gint row = audgui_list_row_at_point (widget, x, y);
 
     /* Only update the info popup if it is already shown or about to be shown;

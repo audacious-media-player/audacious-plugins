@@ -349,7 +349,8 @@ void i_fileinfo_gui( const gchar * filename_uri )
     filename_utf8 = g_strconcat( convert_str , _("  (invalid UTF-8)") , NULL );
     g_free(convert_str);
   }
-  title = g_strdup_printf( "%s - " PLAYER_NAME , g_basename(filename_utf8));
+
+  title = g_path_get_basename (filename_utf8);
   gtk_window_set_title( GTK_WINDOW(fileinfowin) , title);
   g_free(title);
   /* set the text for the filename header too */
