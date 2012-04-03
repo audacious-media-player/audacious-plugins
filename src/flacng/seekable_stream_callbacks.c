@@ -64,7 +64,7 @@ FLAC__StreamDecoderSeekStatus seek_callback(const FLAC__StreamDecoder *decoder, 
 
     if (vfs_fseek(info->fd, offset, SEEK_SET) != 0)
     {
-        FLACNG_ERROR("Could not seek to %lld!\n", (long long)offset);
+        FLACNG_ERROR("Could not seek to %ld!\n", (long)offset);
         return FLAC__STREAM_DECODER_SEEK_STATUS_ERROR;
     }
 
@@ -174,7 +174,7 @@ void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMet
     if (metadata->type == FLAC__METADATA_TYPE_STREAMINFO)
     {
         info->stream.samples = metadata->data.stream_info.total_samples;
-        AUDDBG("total_samples=%lld\n", (long long) metadata->data.stream_info.total_samples);
+        AUDDBG("total_samples=%ld\n", (long) metadata->data.stream_info.total_samples);
 
         info->stream.bits_per_sample = metadata->data.stream_info.bits_per_sample;
         AUDDBG("bits_per_sample=%d\n", metadata->data.stream_info.bits_per_sample);
