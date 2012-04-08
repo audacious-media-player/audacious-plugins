@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2012-03-22 11:25+0100\n"
-"PO-Revision-Date: 2012-03-22 11:39+0100\n"
+"PO-Revision-Date: 2012-04-08 18:16+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -2595,7 +2595,7 @@ msgstr "Interface-Einstellungen"
 
 #: src/skins/ui_equalizer.c:323
 msgid "Preamp"
-msgstr "Vorverstärkung"
+msgstr "Vorverstaerkung"
 
 #: src/skins/ui_equalizer.c:327
 msgid "31 Hz"
