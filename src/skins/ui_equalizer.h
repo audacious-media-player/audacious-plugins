@@ -28,9 +28,6 @@
 
 #include <gtk/gtk.h>
 
-void eq_init_hooks (void);
-void eq_end_hooks (void);
-
 void equalizerwin_set_shape (void);
 void equalizerwin_create(void);
 void equalizerwin_show(gboolean show);

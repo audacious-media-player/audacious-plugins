@@ -128,7 +128,6 @@ static gboolean skins_init (void)
 
     mainwin_show (config.player_visible);
 
-    eq_init_hooks ();
     update_source = g_timeout_add (250, update_cb, NULL);
 
     return TRUE;
@@ -142,7 +141,6 @@ static void skins_cleanup (void)
 
         mainwin_unhook ();
         playlistwin_unhook ();
-        eq_end_hooks ();
         g_source_remove (update_source);
 
         skins_cfg_save();

@@ -56,6 +56,8 @@ static gfloat equalizerwin_get_band (gint band);
 static void equalizerwin_set_preamp (gfloat preamp);
 static void equalizerwin_set_band (gint band, gfloat value);
 
+static void position_cb (void * data, void * user_data);
+
 GtkWidget *equalizerwin;
 static GtkWidget *equalizerwin_graph;
 
@@ -86,6 +88,14 @@ equalizer_preset_free(EqualizerPreset * preset)
 
     g_free(preset->name);
     g_free(preset);
+}
+
+static void free_presets (Index * presets)
+{
+    for (int p = 0; p < index_count (presets); p ++)
+        equalizer_preset_free (index_get (presets, p));
+
+    index_free (presets);
 }
 
 void equalizerwin_set_shape (void)
@@ -389,6 +399,13 @@ static void equalizerwin_destroyed (void)
     hook_dissociate ("set equalizer_active", (HookFunction) update_from_config);
     hook_dissociate ("set equalizer_bands", (HookFunction) update_from_config);
     hook_dissociate ("set equalizer_preamp", (HookFunction) update_from_config);
+
+    hook_dissociate ("playlist position", position_cb);
+
+    free_presets (equalizer_presets);
+    free_presets (equalizer_auto_presets);
+    equalizer_presets = NULL;
+    equalizer_auto_presets = NULL;
 }
 
 void
@@ -396,6 +413,11 @@ equalizerwin_create(void)
 {
     equalizer_presets = aud_equalizer_read_presets("eq.preset");
     equalizer_auto_presets = aud_equalizer_read_presets("eq.auto_preset");
+
+    if (! equalizer_presets)
+        equalizer_presets = index_new ();
+    if (! equalizer_auto_presets)
+        equalizer_auto_presets = index_new ();
 
     equalizerwin_create_window();
 
@@ -409,6 +431,16 @@ equalizerwin_create(void)
     hook_associate ("set equalizer_active", (HookFunction) update_from_config, NULL);
     hook_associate ("set equalizer_bands", (HookFunction) update_from_config, NULL);
     hook_associate ("set equalizer_preamp", (HookFunction) update_from_config, NULL);
+
+    int playlist = aud_playlist_get_playing ();
+
+    /* Load preset for the first song. FIXME: Doing this at interface load is
+     really too late as the song may already be started. Really, this stuff
+     shouldn't be in the interface plugin at all but in core. -jlindgren */
+    if (playlist != -1)
+        position_cb (GINT_TO_POINTER (playlist), NULL);
+
+    hook_associate ("playlist position", position_cb, NULL);
 }
 
 static void equalizerwin_real_show (gboolean show)
@@ -536,14 +568,6 @@ equalizerwin_delete_selected_presets(GtkTreeView *view, gchar *filename)
 
         gtk_list_store_remove(GTK_LIST_STORE(model), &iter);
     }
-}
-
-static void free_presets (Index * presets)
-{
-    for (int p = 0; p < index_count (presets); p ++)
-        equalizer_preset_free (index_get (presets, p));
-
-    index_free (presets);
 }
 
 static void
@@ -1236,32 +1260,6 @@ static void position_cb (void * data, void * user_data)
     gchar * filename = aud_playlist_entry_get_filename (playlist, position);
     load_auto_preset (filename);
     str_unref (filename);
-}
-
-void eq_init_hooks (void)
-{
-    equalizer_presets = index_new ();
-    equalizer_auto_presets = index_new ();
-
-    gint playlist = aud_playlist_get_playing ();
-
-    /* Load preset for the first song. FIXME: Doing this at interface load is
-     really too late as the song may already be started. Really, this stuff
-     shouldn't be in the interface plugin at all but in core. -jlindgren */
-    if (playlist != -1)
-        position_cb (GINT_TO_POINTER (playlist), NULL);
-
-    hook_associate ("playlist position", position_cb, NULL);
-}
-
-void eq_end_hooks (void)
-{
-    hook_dissociate ("playlist position", position_cb);
-
-    free_presets (equalizer_presets);
-    free_presets (equalizer_auto_presets);
-    equalizer_presets = NULL;
-    equalizer_auto_presets = NULL;
 }
 
 void action_show_equalizer (GtkToggleAction * action)
