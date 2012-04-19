@@ -910,7 +910,7 @@ void show_menu (gboolean show)
             g_signal_connect (menu, "destroy", (GCallback) gtk_widget_destroyed,
              & menu);
             gtk_widget_show (menu);
-            gtk_container_add ((GtkContainer *) menu_box, menu);
+            gtk_box_pack_start ((GtkBox *) menu_box, menu, TRUE, TRUE, 0);
         }
     }
     else
