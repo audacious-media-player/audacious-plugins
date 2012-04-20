@@ -701,9 +701,10 @@ static gboolean init (void)
     gint w = aud_get_int ("gtkui", "player_width");
     gint h = aud_get_int ("gtkui", "player_height");
 
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size ((GtkWindow *) window, w, h);
     gtk_window_set_keep_above ((GtkWindow *) window, aud_get_bool ("gtkui", "always_on_top"));
+    gtk_window_set_has_resize_grip ((GtkWindow *) window, FALSE);
 
     if (aud_get_bool ("gtkui", "save_window_position") && (x != -1 || y != -1))
         gtk_window_move ((GtkWindow *) window, x, y);
