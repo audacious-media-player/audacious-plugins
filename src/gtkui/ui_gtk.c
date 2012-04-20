@@ -73,9 +73,11 @@ static gulong volume_change_handler_id;
 
 static GtkAccelGroup * accel;
 
-static GtkToolItem * search_button, * button_play, * button_stop, * button_shuffle, * button_repeat;
+static GtkWidget * window, * vbox_outer, * menu_box, * menu, * toolbar, * vbox,
+ * infoarea, * statusbar;
+static GtkToolItem * menu_button, * search_button, * button_play, * button_stop,
+ * button_shuffle, * button_repeat;
 static GtkWidget * slider, * label_time;
-static GtkWidget * window, * vbox_outer, * vbox, * menu_box, * menu, * infoarea, * statusbar;
 static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
 static GtkWidget * error_win = NULL;
@@ -413,18 +415,6 @@ static void ui_playback_stop (void)
     gtk_widget_hide (label_time);
 }
 
-static gboolean rclick_cb (GtkWidget * widget, GdkEventButton * event)
-{
-    if (event->button != 3)
-        return FALSE;
-
-    if (event->type == GDK_BUTTON_PRESS && menu_main)
-        gtk_menu_popup ((GtkMenu *) menu_main, NULL, NULL, NULL, NULL,
-         event->button, event->time);
-
-    return TRUE;
-}
-
 static GtkToolItem * toolbar_button_add (GtkWidget * toolbar,
  void (* callback) (void), const gchar * stock_id)
 {
@@ -432,8 +422,6 @@ static GtkToolItem * toolbar_button_add (GtkWidget * toolbar,
     gtk_toolbar_insert ((GtkToolbar *) toolbar, item, -1);
 
     g_signal_connect (item, "clicked", callback, NULL);
-    g_signal_connect (item, "button-press-event", (GCallback) rclick_cb, NULL);
-
     return item;
 }
 
@@ -703,9 +691,8 @@ static gboolean init (void)
 
     menu_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_pack_start ((GtkBox *) vbox_outer, menu_box, FALSE, FALSE, 0);
-    show_menu (aud_get_bool ("gtkui", "menu_visible"));
 
-    GtkWidget * toolbar = gtk_toolbar_new ();
+    toolbar = gtk_toolbar_new ();
     GtkStyleContext * context = gtk_widget_get_style_context (toolbar);
     gtk_style_context_add_class (context, GTK_STYLE_CLASS_PRIMARY_TOOLBAR);
     gtk_box_pack_start ((GtkBox *) vbox_outer, toolbar, FALSE, FALSE, 0);
@@ -772,6 +759,7 @@ static gboolean init (void)
 
     gtk_box_pack_start ((GtkBox *) box2, volume, FALSE, FALSE, 0);
 
+    /* main UI layout */
     layout_load ();
 
     GtkWidget * layout = layout_new ();
@@ -780,10 +768,11 @@ static gboolean init (void)
     vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     layout_add_center (vbox);
 
-    /* Create playlist notebook */
     ui_playlist_notebook_new ();
     gtk_box_pack_start ((GtkBox *) vbox, (GtkWidget *) UI_PLAYLIST_NOTEBOOK, TRUE, TRUE, 0);
 
+    /* optional UI elements */
+    show_menu (aud_get_bool ("gtkui", "menu_visible"));
     show_infoarea (aud_get_bool ("gtkui", "infoarea_visible"));
 
     if (aud_get_bool ("gtkui", "statusbar_visible"))
@@ -874,14 +863,39 @@ static void cleanup (void)
     layout_cleanup ();
 }
 
+static void menu_position_cb (GtkMenu * menu, int * x, int * y, int * push, void * button)
+{
+    GdkWindow * win = gtk_widget_get_window (button);
+    gdk_window_get_origin (win, x, y);
+    * y += gtk_widget_get_allocated_height (button);
+    * push = TRUE;
+}
+
+static void menu_button_cb (void)
+{
+    if (gtk_toggle_tool_button_get_active ((GtkToggleToolButton *) menu_button))
+        gtk_menu_popup ((GtkMenu *) menu_main, NULL, NULL, menu_position_cb,
+         menu_button, 0, gtk_get_current_event_time ());
+    else
+        gtk_widget_hide (menu_main);
+}
+
+static void menu_hide_cb (void)
+{
+    gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) menu_button, FALSE);
+}
+
 void show_menu (gboolean show)
 {
     aud_set_bool ("gtkui", "menu_visible", show);
 
     if (show)
     {
+        /* remove menu button from toolbar and show menu bar */
         if (menu_main)
             gtk_widget_destroy (menu_main);
+        if (menu_button)
+            gtk_widget_destroy ((GtkWidget *) menu_button);
 
         if (! menu)
         {
@@ -894,6 +908,7 @@ void show_menu (gboolean show)
     }
     else
     {
+        /* hide menu bar and add menu item to toolbar */
         if (menu)
             gtk_widget_destroy (menu);
 
@@ -902,6 +917,17 @@ void show_menu (gboolean show)
             menu_main = make_menu_main (accel);
             g_signal_connect (menu_main, "destroy", (GCallback)
              gtk_widget_destroyed, & menu_main);
+            g_signal_connect (menu_main, "hide", (GCallback) menu_hide_cb, NULL);
+        }
+
+        if (! menu_button)
+        {
+            menu_button = gtk_toggle_tool_button_new_from_stock (AUD_STOCK_AUDACIOUS);
+            g_signal_connect (menu_button, "destroy", (GCallback)
+             gtk_widget_destroyed, & menu_button);
+            gtk_widget_show ((GtkWidget *) menu_button);
+            gtk_toolbar_insert ((GtkToolbar *) toolbar, menu_button, 0);
+            g_signal_connect (menu_button, "toggled", (GCallback) menu_button_cb, NULL);
         }
     }
 }
