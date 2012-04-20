@@ -122,8 +122,18 @@ static void clear (GtkWidget * widget, cairo_t * cr)
 {
     GtkAllocation alloc;
     gtk_widget_get_allocation (widget, & alloc);
+
+    cairo_pattern_t * gradient = cairo_pattern_create_linear (0, 0, 0, alloc.height);
+    cairo_pattern_add_color_stop_rgb (gradient, 0, 0.25, 0.25, 0.25);
+    cairo_pattern_add_color_stop_rgb (gradient, 0.5, 0.15, 0.15, 0.15);
+    cairo_pattern_add_color_stop_rgb (gradient, 0.5, 0.1, 0.1, 0.1);
+    cairo_pattern_add_color_stop_rgb (gradient, 1, 0, 0, 0);
+
+    cairo_set_source (cr, gradient);
     cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
     cairo_fill (cr);
+
+    cairo_pattern_destroy (gradient);
 }
 
 static void draw_text (GtkWidget * widget, cairo_t * cr, gint x, gint y, gint
