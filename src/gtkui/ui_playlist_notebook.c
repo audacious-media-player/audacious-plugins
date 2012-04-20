@@ -26,7 +26,6 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
-#include <audacious/i18n.h>
 #include <libaudgui/list.h>
 #include <libaudgui/libaudgui.h>
 
@@ -57,7 +56,7 @@ static void make_add_button (GtkWidget * notebook)
     GtkWidget * button = gtk_button_new ();
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_stock
-     (GTK_STOCK_ADD, GTK_ICON_SIZE_BUTTON));
+     (GTK_STOCK_ADD, GTK_ICON_SIZE_MENU));
     gtk_widget_set_can_focus (button, FALSE);
 
     g_signal_connect (button, "clicked", (GCallback) add_button_cb, NULL);
@@ -77,7 +76,6 @@ static GtkWidget * make_close_button (gint list)
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
     gtk_button_set_focus_on_click ((GtkButton *) button, FALSE);
     gtk_widget_set_name (button, "gtkui-tab-close-button");
-    gtk_widget_set_tooltip_text (button, _("Close"));
     g_signal_connect (button, "clicked", (GCallback) close_button_cb,
      GINT_TO_POINTER (aud_playlist_get_unique_id (list)));
 
@@ -253,7 +251,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
     ebox = gtk_event_box_new();
     gtk_event_box_set_visible_window ((GtkEventBox *) ebox, FALSE);
 
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
 
     label = gtk_label_new ("");
     set_tab_label (playlist, (GtkLabel *) label);
@@ -509,14 +507,11 @@ static void destroy_cb (void)
     reorder_handler = 0;
 }
 
-GtkWidget *ui_playlist_notebook_new()
+GtkWidget * ui_playlist_notebook_new (void)
 {
-    AUDDBG("playlist notebook create\n");
-
-    notebook = gtk_notebook_new();
-    gtk_notebook_set_scrollable(UI_PLAYLIST_NOTEBOOK, TRUE);
-    gtk_notebook_set_show_border(UI_PLAYLIST_NOTEBOOK, FALSE);
-
+    notebook = gtk_notebook_new ();
+    gtk_container_set_border_width ((GtkContainer *) notebook, 2);
+    gtk_notebook_set_scrollable ((GtkNotebook *) notebook, TRUE);
     make_add_button (notebook);
 
     g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
