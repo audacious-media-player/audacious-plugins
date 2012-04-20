@@ -303,22 +303,22 @@ static void draw_title (cairo_t * cr)
 
     if (area->title != NULL)
         draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, area->alpha,
-         "Sans 18", area->title);
+         "18", area->title);
     if (area->last_title != NULL)
         draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, area->last_alpha,
-         "Sans 18", area->last_title);
+         "18", area->last_title);
     if (area->artist != NULL)
         draw_text (area->main, cr, x, SPACING + ICON_SIZE / 2, width, 1, 1, 1,
-         area->alpha, "Sans 9", area->artist);
+         area->alpha, "9", area->artist);
     if (area->last_artist != NULL)
         draw_text (area->main, cr, x, SPACING + ICON_SIZE / 2, width, 1, 1, 1,
-         area->last_alpha, "Sans 9", area->last_artist);
+         area->last_alpha, "9", area->last_artist);
     if (area->album != NULL)
         draw_text (area->main, cr, x, SPACING + ICON_SIZE * 3 / 4, width, 0.7,
-         0.7, 0.7, area->alpha, "Sans 9", area->album);
+         0.7, 0.7, area->alpha, "9", area->album);
     if (area->last_album != NULL)
         draw_text (area->main, cr, x, SPACING + ICON_SIZE * 3 / 4, width, 0.7,
-         0.7, 0.7, area->last_alpha, "Sans 9", area->last_album);
+         0.7, 0.7, area->last_alpha, "9", area->last_album);
 }
 
 #if GTK_CHECK_VERSION (3, 0, 0)
