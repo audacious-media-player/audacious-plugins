@@ -435,11 +435,7 @@ static GtkToolItem * toggle_button_new (const gchar * icon, const gchar * alt,
     else if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), icon))
         gtk_tool_button_set_icon_name ((GtkToolButton *) item, icon);
     else
-    {
-        gchar * markup = g_markup_printf_escaped ("<small>%s</small>", alt);
-        gtk_tool_button_set_label ((GtkToolButton *) item, markup);
-        g_free (markup);
-    }
+        gtk_tool_button_set_label ((GtkToolButton *) item, alt);
 
     g_signal_connect (item, "toggled", (GCallback) toggled, NULL);
     return item;
@@ -694,6 +690,7 @@ static gboolean init (void)
     gtk_box_pack_start ((GtkBox *) vbox_outer, menu_box, FALSE, FALSE, 0);
 
     toolbar = gtk_toolbar_new ();
+    gtk_toolbar_set_style ((GtkToolbar *) toolbar, GTK_TOOLBAR_ICONS);
     GtkStyleContext * context = gtk_widget_get_style_context (toolbar);
     gtk_style_context_add_class (context, GTK_STYLE_CLASS_PRIMARY_TOOLBAR);
     gtk_box_pack_start ((GtkBox *) vbox_outer, toolbar, FALSE, FALSE, 0);
@@ -737,9 +734,9 @@ static gboolean init (void)
     gtk_widget_set_no_show_all (label_time, TRUE);
 
     /* repeat and shuffle buttons */
-    button_repeat = toggle_button_new ("media-playlist-repeat", "REP", toggle_repeat);
+    button_repeat = toggle_button_new ("media-playlist-repeat", "RP", toggle_repeat);
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_repeat, -1);
-    button_shuffle = toggle_button_new ("media-playlist-shuffle", "SHUF", toggle_shuffle);
+    button_shuffle = toggle_button_new ("media-playlist-shuffle", "SF", toggle_shuffle);
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_shuffle, -1);
 
     /* volume button */
