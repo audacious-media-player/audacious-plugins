@@ -865,9 +865,13 @@ static void cleanup (void)
 
 static void menu_position_cb (GtkMenu * menu, int * x, int * y, int * push, void * button)
 {
-    GdkWindow * win = gtk_widget_get_window (button);
-    gdk_window_get_origin (win, x, y);
-    * y += gtk_widget_get_allocated_height (button);
+    int xorig, yorig, xwin, ywin;
+
+    gdk_window_get_origin (gtk_widget_get_window (window), & xorig, & yorig);
+    gtk_widget_translate_coordinates (button, window, 0, 0, & xwin, & ywin);
+
+    * x = xorig + xwin;
+    * y = yorig + ywin + gtk_widget_get_allocated_height (button);
     * push = TRUE;
 }
 
