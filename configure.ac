@@ -59,8 +59,8 @@ dnl Check for GIO
 dnl =============
 
 AC_ARG_ENABLE(gio,
- AS_HELP_STRING([--enable-gio], [enable GIO support (default=disabled)]),
- enable_gio=$enableval, enable_gio=no)
+ AS_HELP_STRING([--disable-gio], [disable GIO support]),
+ enable_gio=$enableval, enable_gio=yes)
 
 if test "x$enable_gio" = "xyes"; then
     PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.22], [enable_gio=yes], [enable_gio=no])
@@ -1149,7 +1149,7 @@ echo "  Transport"
 echo "  ---------"
 echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
-echo "  GIO transport (experimental):           $enable_gio"
+echo "  GIO:                                    $enable_gio"
 echo "  SMB transport (experimental):           $enable_smb"
 echo
 echo "  Container"
