@@ -63,7 +63,7 @@ AC_ARG_ENABLE(gio,
  enable_gio=$enableval, enable_gio=no)
 
 if test "x$enable_gio" = "xyes"; then
-    PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0], [enable_gio=yes], [enable_gio=no])
+    PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.22], [enable_gio=yes], [enable_gio=no])
 fi
 
 if test "x$enable_gio" = "xyes"; then

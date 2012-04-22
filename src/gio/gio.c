@@ -1,310 +1,312 @@
-/*  Audacious
- *  Copyright (c) 2009 William Pitcock
- *  Copyright (c) 2011 Michał Lipski
+/*
+ * GIO Transport Plugin for Audacious
+ * Copyright 2009-2012 John Lindgren
  *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions, and the following disclaimer.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions, and the following disclaimer in the documentation
+ *    provided with the distribution.
+ *
+ * This software is provided "as is" and without any warranty, express or
+ * implied. In no event shall the authors be liable for any damages arising from
+ * the use of this software.
  */
 
-#include "config.h"
-#include <audacious/plugin.h>
+#include <stdint.h>
 #include <stdio.h>
-#include <gio/gio.h>
-
-#include <unistd.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-
+#include <stdlib.h>
 #include <string.h>
 
+#include <gio/gio.h>
+
+#include <audacious/plugin.h>
+
 typedef struct {
-    GFile *file;
-    GFileInputStream *istream;
-    GFileOutputStream *ostream;
-    GSeekable *seekable;
-    GSList *stream_stack;
-} VFSGIOHandle;
+    GFile * file;
+    GIOStream * iostream;
+    GInputStream * istream;
+    GOutputStream * ostream;
+    GSeekable * seekable;
+} FileData;
 
-void *
-gio_vfs_fopen_impl(const gchar *path, const gchar *mode)
+/* in gtk.c */
+void gio_error (const char * format, ...);
+void gio_about (void);
+
+#define CHECK_ERROR(op, name) do { \
+    if (error) { \
+        gio_error ("Cannot %s %s: %s.", op, name, error->message); \
+        g_error_free (error); \
+        goto FAILED; \
+    } \
+} while (0)
+
+static void * gio_fopen (const char * filename, const char * mode)
 {
-    VFSGIOHandle *handle;
-    GError *error = NULL;
-    gchar *scheme;
-    static const gchar *const *schemes = NULL;
-    gboolean supported = FALSE;
-    guint num;
+    GError * error = 0;
 
-    if (path == NULL || mode == NULL)
-        return NULL;
+    FileData * data = malloc (sizeof (FileData));
+    memset (data, 0, sizeof (FileData));
 
-    if (schemes == NULL)
-        schemes = g_vfs_get_supported_uri_schemes(g_vfs_get_default());
+    data->file = g_file_new_for_uri (filename);
 
-    num = g_strv_length((gchar **) schemes);
-
-    if (num == 0)
-        return NULL;
-
-    handle = g_slice_new0(VFSGIOHandle);
-    handle->file = g_file_new_for_uri(path);
-    scheme = g_file_get_uri_scheme(handle->file);
-
-    for (gint i = 0; schemes[i]; i++)
-        if (strcmp(schemes[i], scheme) == 0)
+    switch (mode[0])
+    {
+    case 'r':
+        if (strchr (mode, '+'))
         {
-            supported = TRUE;
-            break;
+            data->iostream = (GIOStream *) g_file_open_readwrite (data->file, 0, & error);
+            CHECK_ERROR ("open", filename);
+            data->istream = g_io_stream_get_input_stream (data->iostream);
+            data->ostream = g_io_stream_get_output_stream (data->iostream);
+            data->seekable = (GSeekable *) data->iostream;
         }
-
-    g_free(scheme);
-
-    if (!supported)
-        goto CLEANUP;
-
-    if (*mode == 'r')
-    {
-        handle->istream = g_file_read(handle->file, NULL, &error);
-        handle->seekable = G_SEEKABLE(handle->istream);
-    }
-    else if (*mode == 'w')
-    {
-        handle->ostream = g_file_replace(handle->file, NULL, FALSE, G_FILE_CREATE_NONE, NULL, &error);
-        handle->seekable = G_SEEKABLE(handle->ostream);
-    }
-    else
-    {
-        g_warning("UNSUPPORTED ACCESS MODE: %s", mode);
-        goto CLEANUP;
-    }
-
-    if (handle->istream == NULL && handle->ostream == NULL)
-    {
-        g_warning("Could not open %s for reading or writing: %s", path, error->message);
-        g_error_free(error);
-        goto CLEANUP;
-    }
-
-    return handle;
-
-CLEANUP:
-    g_object_unref(handle->file);
-    g_slice_free(VFSGIOHandle, handle);
-    return NULL;
-}
-
-gint
-gio_vfs_fclose_impl(VFSFile * file)
-{
-    gint ret = 0;
-    VFSGIOHandle *handle = vfs_get_handle(file);
-
-    if (handle->istream)
-        g_object_unref(handle->istream);
-
-    if (handle->ostream)
-        g_object_unref(handle->ostream);
-
-    g_object_unref(handle->file);
-    g_slice_free(VFSGIOHandle, handle);
-
-    return ret;
-}
-
-gint64 gio_vfs_fread_impl (void * ptr, gint64 size, gint64 nmemb, VFSFile *
- file)
-{
-    VFSGIOHandle *handle = vfs_get_handle(file);
-    goffset count = 0;
-    gsize realsize = (size * nmemb);
-    gsize ret, bytes_read;
-
-    /* handle ungetc() *grumble* --nenolod */
-    if (handle->stream_stack != NULL)
-    {
-        guchar uc;
-        while ((count < realsize) && (handle->stream_stack != NULL))
-        {
-            uc = GPOINTER_TO_INT(handle->stream_stack->data);
-            handle->stream_stack = g_slist_delete_link(handle->stream_stack, handle->stream_stack);
-            memcpy((char *) ptr + count, &uc, 1);
-            count++;
-        }
-    }
-
-    bytes_read = 0;
-    while (realsize - bytes_read > 0)
-    {
-        ret = g_input_stream_read(G_INPUT_STREAM(handle->istream),
-            (char *) ptr + bytes_read + count, realsize - bytes_read - count, NULL, NULL) + count;
-
-        if (ret > 0)
-            bytes_read += ret;
         else
-            break;
+        {
+            data->istream = (GInputStream *) g_file_read (data->file, 0, & error);
+            CHECK_ERROR ("open", filename);
+            data->seekable = (GSeekable *) data->istream;
+        }
+        break;
+    case 'w':
+        if (strchr (mode, '+'))
+        {
+            data->iostream = (GIOStream *) g_file_replace_readwrite (data->file, 0, 0, 0, 0, & error);
+            CHECK_ERROR ("open", filename);
+            data->istream = g_io_stream_get_input_stream (data->iostream);
+            data->ostream = g_io_stream_get_output_stream (data->iostream);
+            data->seekable = (GSeekable *) data->iostream;
+        }
+        else
+        {
+            data->ostream = (GOutputStream *) g_file_replace (data->file, 0, 0, 0, 0, & error);
+            CHECK_ERROR ("open", filename);
+            data->seekable = (GSeekable *) data->ostream;
+        }
+        break;
+    case 'a':
+        if (strchr (mode, '+'))
+        {
+            gio_error ("Cannot open %s: GIO does not support read-and-append mode.", filename);
+            goto FAILED;
+        }
+        else
+        {
+            data->ostream = (GOutputStream *) g_file_append_to (data->file, 0, 0, & error);
+            CHECK_ERROR ("open", filename);
+            data->seekable = (GSeekable *) data->ostream;
+        }
+        break;
+    default:
+        gio_error ("Cannot open %s: invalid mode.", filename);
+        goto FAILED;
     }
 
-    return bytes_read;
+    return data;
+
+FAILED:
+    free (data);
+    return 0;
 }
 
-gint64 gio_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
- VFSFile * file)
+static int gio_fclose (VFSFile * file)
 {
-    VFSGIOHandle *handle = vfs_get_handle(file);
-    gsize ret;
+    FileData * data = vfs_get_handle (file);
+    GError * error = 0;
 
-    ret = g_output_stream_write(G_OUTPUT_STREAM(handle->ostream), ptr, size * nmemb, NULL, NULL);
-    return (size > 0) ? ret / size : 0;
-}
-
-gint
-gio_vfs_getc_impl(VFSFile *file)
-{
-    guchar buf;
-    VFSGIOHandle *handle = vfs_get_handle(file);
-
-    if (handle->stream_stack != NULL)
+    if (data->iostream)
     {
-        buf = GPOINTER_TO_INT(handle->stream_stack->data);
-        handle->stream_stack = g_slist_delete_link(handle->stream_stack, handle->stream_stack);
-        return buf;
+        g_io_stream_close (data->iostream, 0, & error);
+        g_object_unref (data->iostream);
+        CHECK_ERROR ("close", vfs_get_filename (file));
     }
-    else if (g_input_stream_read(G_INPUT_STREAM(handle->istream), &buf, 1, NULL, NULL) != 1)
-        return EOF;
-
-    return buf;
-}
-
-gint
-gio_vfs_ungetc_impl(gint c, VFSFile * file)
-{
-    VFSGIOHandle *handle = vfs_get_handle(file);
-
-    handle->stream_stack = g_slist_prepend(handle->stream_stack, GINT_TO_POINTER(c));
-    if (handle->stream_stack != NULL)
-        return c;
-
-    return EOF;
-}
-
-gint
-gio_vfs_fseek_impl(VFSFile * file,
-          gint64 offset,
-          gint whence)
-{
-    VFSGIOHandle *handle = vfs_get_handle(file);
-    GSeekType seektype;
-
-    if (!g_seekable_can_seek(handle->seekable))
-        return -1;
-
-    if (handle->stream_stack != NULL)
+    else if (data->istream)
     {
-        g_slist_free(handle->stream_stack);
-        handle->stream_stack = NULL;
+        g_input_stream_close (data->istream, 0, & error);
+        g_object_unref (data->istream);
+        CHECK_ERROR ("close", vfs_get_filename (file));
     }
+    else if (data->ostream)
+    {
+        g_output_stream_close (data->ostream, 0, & error);
+        g_object_unref (data->ostream);
+        CHECK_ERROR ("close", vfs_get_filename (file));
+    }
+
+    if (data->file)
+        g_object_unref (data->file);
+
+    return 0;
+
+FAILED:
+    if (data->file)
+        g_object_unref (data->file);
+
+    return -1;
+}
+
+static int64_t gio_fread (void * buf, int64_t size, int64_t nitems, VFSFile * file)
+{
+    FileData * data = vfs_get_handle (file);
+    GError * error = 0;
+
+    if (! data->istream)
+    {
+        gio_error ("Cannot read from %s: not open for reading.", vfs_get_filename (file));
+        return 0;
+    }
+
+    int64_t readed = g_input_stream_read (data->istream, buf, size * nitems, 0, & error);
+    CHECK_ERROR ("read from", vfs_get_filename (file));
+
+    return (size > 0) ? readed / size : 0;
+
+FAILED:
+    return 0;
+}
+
+static int64_t gio_fwrite (const void * buf, int64_t size, int64_t nitems, VFSFile * file)
+{
+    FileData * data = vfs_get_handle (file);
+    GError * error = 0;
+
+    if (! data->ostream)
+    {
+        gio_error ("Cannot write to %s: not open for writing.", vfs_get_filename (file));
+        return 0;
+    }
+
+    int64_t written = g_output_stream_write (data->ostream, buf, size * nitems, 0, & error);
+    CHECK_ERROR ("write to", vfs_get_filename (file));
+
+    return (size > 0) ? written / size : 0;
+
+FAILED:
+    return 0;
+}
+
+static int gio_fseek (VFSFile * file, int64_t offset, int whence)
+{
+    FileData * data = vfs_get_handle (file);
+    GError * error = 0;
+    GSeekType gwhence;
 
     switch (whence)
     {
+    case SEEK_SET:
+        gwhence = G_SEEK_SET;
+        break;
     case SEEK_CUR:
-        seektype = G_SEEK_CUR;
+        gwhence = G_SEEK_CUR;
         break;
     case SEEK_END:
-        seektype = G_SEEK_END;
+        gwhence = G_SEEK_END;
         break;
     default:
-        seektype = G_SEEK_SET;
-        break;
-    }
-
-    return (g_seekable_seek(handle->seekable, offset, seektype, NULL, NULL) ? 0 : -1);
-}
-
-void
-gio_vfs_rewind_impl(VFSFile * file)
-{
-    gio_vfs_fseek_impl(file, 0, SEEK_SET);
-}
-
-gint64
-gio_vfs_ftell_impl(VFSFile * file)
-{
-    VFSGIOHandle *handle = vfs_get_handle(file);
-
-    return (glong) (g_seekable_tell(handle->seekable) - g_slist_length(handle->stream_stack));
-}
-
-gboolean gio_vfs_feof_impl (VFSFile * file)
-{
-    guchar test;
-
-    if (gio_vfs_fread_impl (& test, 1, 1, file) < 1)
-        return TRUE;
-
-    gio_vfs_ungetc_impl (test, file);
-    return FALSE;
-}
-
-gint gio_vfs_ftruncate_impl (VFSFile * file, gint64 size)
-{
-    VFSGIOHandle *handle = vfs_get_handle(file);
-    return g_seekable_truncate (handle->seekable, size, NULL, NULL) ? 0 : -1;
-}
-
-gint64
-gio_vfs_fsize_impl(VFSFile * file)
-{
-    GFileInfo *info;
-    VFSGIOHandle *handle = vfs_get_handle(file);
-    GError *error = NULL;
-    gint64 size;
-
-    info = g_file_query_info(handle->file, G_FILE_ATTRIBUTE_STANDARD_SIZE, G_FILE_QUERY_INFO_NONE, NULL, &error);
-
-    if (info == NULL)
-    {
-        g_warning("gio fsize(): error: %s", error->message);
-        g_error_free(error);
+        gio_error ("Cannot seek within %s: invalid whence.", vfs_get_filename (file));
         return -1;
     }
 
-    size = g_file_info_get_attribute_uint64(info, G_FILE_ATTRIBUTE_STANDARD_SIZE);
-    g_object_unref(info);
+    g_seekable_seek (data->seekable, offset, gwhence, NULL, & error);
+    CHECK_ERROR ("seek within", vfs_get_filename (file));
 
-    return size;
+    return 0;
+
+FAILED:
+    return -1;
 }
 
-static const gchar * const gio_schemes[] = {"ftp", "sftp", "smb", NULL};
+static int64_t gio_ftell (VFSFile * file)
+{
+    FileData * data = vfs_get_handle (file);
+    return g_seekable_tell (data->seekable);
+}
+
+static int gio_getc (VFSFile * file)
+{
+    unsigned char c;
+    return (gio_fread (& c, 1, 1, file) == 1) ? c : -1;
+}
+
+static int gio_ungetc (int c, VFSFile * file)
+{
+    return (! gio_fseek (file, -1, SEEK_CUR)) ? c : -1;
+}
+
+static void gio_rewind (VFSFile * file)
+{
+    gio_fseek (file, 0, SEEK_SET);
+}
+
+static bool_t gio_feof (VFSFile * file)
+{
+    int test = gio_getc (file);
+
+    if (test < 0)
+        return TRUE;
+
+    gio_ungetc (test, file);
+    return FALSE;
+}
+
+static int gio_ftruncate (VFSFile * file, int64_t length)
+{
+    FileData * data = vfs_get_handle (file);
+    GError * error = 0;
+
+    g_seekable_truncate (data->seekable, length, NULL, & error);
+    CHECK_ERROR ("truncate", vfs_get_filename (file));
+
+    return 0;
+
+FAILED:
+    return -1;
+}
+
+static int64_t gio_fsize (VFSFile * file)
+{
+    FileData * data = vfs_get_handle (file);
+    GError * error = 0;
+
+    GFileInfo * info = g_file_query_info (data->file,
+     G_FILE_ATTRIBUTE_STANDARD_SIZE, 0, 0, & error);
+    CHECK_ERROR ("get size of", vfs_get_filename (file));
+
+    int64_t size = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_STANDARD_SIZE);
+
+    g_object_unref (info);
+    return size;
+
+FAILED:
+    return -1;
+}
+
+static const char * const gio_schemes[] = {"ftp", "sftp", "smb", 0};
 
 static VFSConstructor constructor = {
- .vfs_fopen_impl = gio_vfs_fopen_impl,
- .vfs_fclose_impl = gio_vfs_fclose_impl,
- .vfs_fread_impl = gio_vfs_fread_impl,
- .vfs_fwrite_impl = gio_vfs_fwrite_impl,
- .vfs_getc_impl = gio_vfs_getc_impl,
- .vfs_ungetc_impl = gio_vfs_ungetc_impl,
- .vfs_fseek_impl = gio_vfs_fseek_impl,
- .vfs_rewind_impl = gio_vfs_rewind_impl,
- .vfs_ftell_impl = gio_vfs_ftell_impl,
- .vfs_feof_impl = gio_vfs_feof_impl,
- .vfs_ftruncate_impl = gio_vfs_ftruncate_impl,
- .vfs_fsize_impl = gio_vfs_fsize_impl
+ .vfs_fopen_impl = gio_fopen,
+ .vfs_fclose_impl = gio_fclose,
+ .vfs_fread_impl = gio_fread,
+ .vfs_fwrite_impl = gio_fwrite,
+ .vfs_getc_impl = gio_getc,
+ .vfs_ungetc_impl = gio_ungetc,
+ .vfs_fseek_impl = gio_fseek,
+ .vfs_rewind_impl = gio_rewind,
+ .vfs_ftell_impl = gio_ftell,
+ .vfs_feof_impl = gio_feof,
+ .vfs_ftruncate_impl = gio_ftruncate,
+ .vfs_fsize_impl = gio_fsize
 };
 
 AUD_TRANSPORT_PLUGIN
 (
  .name = "GIO Support",
+ .about = gio_about,
  .schemes = gio_schemes,
  .vtable = & constructor
 )
