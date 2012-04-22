@@ -54,6 +54,11 @@ static off_t replace_lseek (void * file, off_t to, int whence)
 	return (! vfs_fseek (file, to, whence)) ? vfs_ftell (file) : -1;
 }
 
+static off_t replace_lseek_dummy (void * file, off_t to, int whence)
+{
+	return -1;
+}
+
 /** plugin glue **/
 static gboolean aud_mpg123_init (void)
 {
@@ -110,7 +115,12 @@ static gboolean mpg123_probe_for_fd (const gchar * fname, VFSFile * file)
 	mpg123_handle * dec = mpg123_new (NULL, NULL);
 	g_return_val_if_fail (dec, FALSE);
 	mpg123_param (dec, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
-	mpg123_replace_reader_handle (dec, replace_read, replace_lseek, NULL);
+
+	if (vfs_is_streaming (file))
+		mpg123_replace_reader_handle (dec, replace_read, replace_lseek_dummy, NULL);
+	else
+		mpg123_replace_reader_handle (dec, replace_read, replace_lseek, NULL);
+
 	set_format (dec);
 
 	gint res;
@@ -159,6 +169,7 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 	if (! file)
 		return NULL;
 
+	bool_t stream = vfs_is_streaming (file);
 	mpg123_handle * decoder = mpg123_new (NULL, NULL);
 	gint result;
 	glong rate;
@@ -168,7 +179,11 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 
 	g_return_val_if_fail (decoder, NULL);
 	mpg123_param (decoder, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
-	mpg123_replace_reader_handle (decoder, replace_read, replace_lseek, NULL);
+
+	if (stream)
+		mpg123_replace_reader_handle (decoder, replace_read, replace_lseek_dummy, NULL);
+	else
+		mpg123_replace_reader_handle (decoder, replace_read, replace_lseek, NULL);
 
 	if ((result = mpg123_open_handle (decoder, file)) < 0)
 		goto ERR;
@@ -192,7 +207,7 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 	tuple_set_str (tuple, FIELD_QUALITY, NULL, scratch);
 	tuple_set_int (tuple, FIELD_BITRATE, NULL, info.bitrate);
 
-	if (! vfs_is_streaming (file))
+	if (! stream)
 	{
 		gint64 size = vfs_fsize (file);
 		gint64 samples = mpg123_length (decoder);
@@ -206,7 +221,7 @@ static Tuple * mpg123_probe_for_tuple (const gchar * filename, VFSFile * file)
 
 	mpg123_delete (decoder);
 
-	if (! vfs_is_streaming (file))
+	if (! stream)
 	{
 		vfs_rewind (file);
 		tag_tuple_read (tuple, file);
@@ -317,7 +332,12 @@ static gboolean mpg123_playback_worker (InputPlayback * data, const gchar *
 	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
 	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, MPG123_GAPLESS, 0);
 	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, MPG123_SEEKBUFFER, 0);
-	mpg123_replace_reader_handle (ctx.decoder, replace_read, replace_lseek, NULL);
+
+	if (ctx.stream)
+		mpg123_replace_reader_handle (ctx.decoder, replace_read, replace_lseek_dummy, NULL);
+	else
+		mpg123_replace_reader_handle (ctx.decoder, replace_read, replace_lseek, NULL);
+
 	set_format (ctx.decoder);
 
 	if (mpg123_open_handle (ctx.decoder, file) < 0)

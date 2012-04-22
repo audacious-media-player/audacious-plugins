@@ -273,6 +273,13 @@ static int64_t gio_fsize (VFSFile * file)
     FileData * data = vfs_get_handle (file);
     GError * error = 0;
 
+    /* Audacious core expects one of two cases:
+     *  1) File size is known and file is seekable.
+     *  2) File size is unknown and file is not seekable.
+     * Therefore, we return -1 for size if file is not seekable. */
+    if (! g_seekable_can_seek (data->seekable))
+        return -1;
+
     GFileInfo * info = g_file_query_info (data->file,
      G_FILE_ATTRIBUTE_STANDARD_SIZE, 0, 0, & error);
     CHECK_ERROR ("get size of", vfs_get_filename (file));
