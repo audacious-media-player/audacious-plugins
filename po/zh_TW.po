@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins 3.1\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2011-12-29 19:29-0500\n"
-"PO-Revision-Date: 2012-04-23 23:47+0800\n"
+"PO-Revision-Date: 2012-04-24 09:03+0800\n"
 "Last-Translator: Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>\n"
 "Language-Team: Chinese (traditional)\n"
 "Language: \n"
@@ -1769,7 +1769,7 @@ msgstr "介面(_I)"
 
 #: src/gtkui/menus.c:193
 msgid "_Visualizations"
-msgstr "視覺化(_V)"
+msgstr "視覺特效(_V)"
 
 #: src/gtkui/menus.c:195
 msgid "Show _Menu Bar"
@@ -2577,19 +2577,19 @@ msgstr "啟用置頂"
 
 #: src/skins/ui_main.c:990
 msgid "File Info Box"
-msgstr ""
+msgstr "檔案資訊視窗"
 
 #: src/skins/ui_main.c:995
 msgid "Visualization Menu"
-msgstr "視覺化選單"
+msgstr "視覺特效選單"
 
 #: src/skins/ui_main.c:1653
 msgid "Single mode."
-msgstr ""
+msgstr "單一模式。"
 
 #: src/skins/ui_main.c:1655
 msgid "Playlist mode."
-msgstr ""
+msgstr "播放清單模式。"
 
 #: src/skins/ui_main.c:1677
 msgid "Stopping after song."
@@ -2778,11 +2778,11 @@ msgstr "下一個"
 
 #: src/skins/ui_manager.c:196
 msgid "Visualization"
-msgstr "視覺化"
+msgstr "視覺特效"
 
 #: src/skins/ui_manager.c:197
 msgid "Visualization Mode"
-msgstr "視覺化模式"
+msgstr "視覺特效模式"
 
 #: src/skins/ui_manager.c:198
 msgid "Analyzer Mode"
@@ -2942,11 +2942,11 @@ msgstr ""
 
 #: src/skins/ui_manager.c:279
 msgid "Remove Unavailable Files"
-msgstr "移除不存在的檔案"
+msgstr "移除無法使用的檔案"
 
 #: src/skins/ui_manager.c:280
 msgid "Removes unavailable files from the playlist."
-msgstr ""
+msgstr "從播放清單中移除無法使用的檔案。"
 
 #: src/skins/ui_manager.c:283
 msgid "Remove Duplicates"
@@ -3004,7 +3004,7 @@ msgstr "清單隨機排序"
 
 #: src/skins/ui_manager.c:308
 msgid "Randomizes the playlist."
-msgstr ""
+msgstr "隨機排序播放清單。"
 
 #: src/skins/ui_manager.c:311
 msgid "Reverse List"
@@ -3012,7 +3012,7 @@ msgstr "清單反向排序"
 
 #: src/skins/ui_manager.c:312
 msgid "Reverses the playlist."
-msgstr ""
+msgstr "反向排序播放清單。"
 
 #: src/skins/ui_manager.c:315
 msgid "Sort List"
@@ -3351,7 +3351,7 @@ msgstr "音階"
 
 #: src/sndstretch/sndstretch_xmms.c:377
 msgid "SndStretch - Configuration"
-msgstr "SndStretch - 設定"
+msgstr "SndStretch - 組態設定"
 
 #: src/song_change/song_change.c:437
 msgid "Command to run when Audacious starts a new song."
@@ -3563,7 +3563,7 @@ msgstr ""
 #: src/wavpack/wavpack.c:353
 #, c-format
 msgid "Wavpack Decoder Plugin %s"
-msgstr ""
+msgstr "Wavpack 解碼器外掛 %s"
 
 #: src/wavpack/wavpack.c:354
 msgid ""
@@ -3572,17 +3572,4 @@ msgid ""
 "Some of the plugin code was by Miles Egan\n"
 "Visit the Wavpack site at http://www.wavpack.com/\n"
 msgstr ""
-
-#~ msgid "Close"
-#~ msgstr "關閉"
-#~ msgid "Sorry"
-#~ msgstr "抱歉"
-#~ msgid "Warning"
-#~ msgstr "警告"
-#~ msgid "Jump to Playlist Start"
-#~ msgstr "跳至播放清單開頭"
-#~ msgid "Stream name"
-#~ msgstr "串流名稱"
-#~ msgid "About Stream Browser"
-#~ msgstr "關於串流瀏覽器"
 
