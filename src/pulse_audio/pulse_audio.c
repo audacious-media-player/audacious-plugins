@@ -675,7 +675,7 @@ static void pulse_about(void) {
     static GtkWidget *dialog;
     audgui_simple_message(& dialog, GTK_MESSAGE_INFO,
             _("About Audacious PulseAudio Output Plugin"),
-            "Audacious PulseAudio Output Plugin\n\n "
+            "Audacious PulseAudio Output Plugin\n\n"
             "This program is free software; you can redistribute it and/or modify\n"
             "it under the terms of the GNU General Public License as published by\n"
             "the Free Software Foundation; either version 2 of the License, or\n"
