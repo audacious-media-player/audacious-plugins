@@ -17,6 +17,7 @@
  * the use of this software.
  */
 
+#include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -35,7 +36,7 @@ static char * last_title, * last_artist, * last_album, * last_file;
 static int last_length;
 static const char * image_file;
 static GVariantType * metadata_type;
-static int update_position_source;
+static int update_timer;
 
 static bool_t quit_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation * call,
  void * unused)
@@ -151,14 +152,26 @@ static void update_metadata (void * data, GObject * object)
     g_object_set (object, "metadata", array, NULL);
 }
 
-static bool_t update_position (GObject * object)
+static void volume_changed (GObject * object)
+{
+    double vol;
+    g_object_get (object, "volume", & vol, NULL);
+    aud_drct_set_volume_main (round (vol * 100));
+}
+
+static bool_t update (GObject * object)
 {
     int64_t pos = 0;
+    int vol = 0;
 
     if (aud_drct_get_playing () && aud_drct_get_ready ())
         pos = (int64_t) aud_drct_get_time () * 1000;
 
-    g_object_set (object, "position", pos, NULL);
+    aud_drct_get_volume_main (& vol);
+
+    g_signal_handlers_block_by_func (object, (void *) volume_changed, NULL);
+    g_object_set (object, "position", pos, "volume", (double) vol / 100, NULL);
+    g_signal_handlers_unblock_by_func (object, (void *) volume_changed, NULL);
     return TRUE;
 }
 
@@ -167,25 +180,12 @@ static void update_playback_status (void * data, GObject * object)
     const char * status;
 
     if (aud_drct_get_playing ())
-    {
         status = aud_drct_get_paused () ? "Paused" : "Playing";
-
-        if (! update_position_source)
-            update_position_source = g_timeout_add (250, (GSourceFunc) update_position, object);
-    }
     else
-    {
         status = "Stopped";
 
-        if (update_position_source)
-        {
-            g_source_remove (update_position_source);
-            update_position_source = 0;
-        }
-    }
-
     g_object_set (object, "playback-status", status, NULL);
-    update_position (object);
+    update (object);
 }
 
 static void emit_seek (void * data, GObject * object)
@@ -285,10 +285,10 @@ void mpris2_cleanup (void)
     hook_dissociate ("playback ready", (HookFunction) emit_seek);
     hook_dissociate ("playback seek", (HookFunction) emit_seek);
 
-    if (update_position_source)
+    if (update_timer)
     {
-        g_source_remove (update_position_source);
-        update_position_source = 0;
+        g_source_remove (update_timer);
+        update_timer = 0;
     }
 
     g_dbus_connection_close_sync (bus, NULL, NULL);
@@ -353,6 +353,7 @@ bool_t mpris2_init (void)
      "can-seek", TRUE,
      NULL);
 
+    update_timer = g_timeout_add (250, (GSourceFunc) update, object_player);
     update_playback_status (NULL, object_player);
 
     if (aud_drct_get_playing () && aud_drct_get_ready ())
@@ -378,6 +379,8 @@ bool_t mpris2_init (void)
     g_signal_connect (object_player, "handle-seek", (GCallback) seek_cb, NULL);
     g_signal_connect (object_player, "handle-set-position", (GCallback) set_position_cb, NULL);
     g_signal_connect (object_player, "handle-stop", (GCallback) stop_cb, NULL);
+
+    g_signal_connect (object_player, "notify::volume", (GCallback) volume_changed, NULL);
 
     if (! g_dbus_interface_skeleton_export ((GDBusInterfaceSkeleton *)
      object_core, bus, "/org/mpris/MediaPlayer2", & error) ||

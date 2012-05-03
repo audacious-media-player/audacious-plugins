@@ -9,6 +9,7 @@
         <property name="Metadata" type="a{sv}" access="read"/>
         <property name="PlaybackStatus" type="s" access="read"/>
         <property name="Position" type="x" access="read"/>
+        <property name="Volume" type="d" access="readwrite"/>
         <method name="Next"/>
         <method name="Pause"/>
         <method name="Play"/>

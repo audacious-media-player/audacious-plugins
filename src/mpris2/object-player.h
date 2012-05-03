@@ -83,6 +83,8 @@ struct _MprisMediaPlayer2PlayerIface
 
   gint64  (*get_position) (MprisMediaPlayer2Player *object);
 
+  gdouble  (*get_volume) (MprisMediaPlayer2Player *object);
+
   void (*seeked) (
     MprisMediaPlayer2Player *object,
     gint64 arg_Position);
@@ -303,6 +305,9 @@ void mpris_media_player2_player_set_playback_status (MprisMediaPlayer2Player *ob
 
 gint64 mpris_media_player2_player_get_position (MprisMediaPlayer2Player *object);
 void mpris_media_player2_player_set_position (MprisMediaPlayer2Player *object, gint64 value);
+
+gdouble mpris_media_player2_player_get_volume (MprisMediaPlayer2Player *object);
+void mpris_media_player2_player_set_volume (MprisMediaPlayer2Player *object, gdouble value);
 
 
 /* ---- */
