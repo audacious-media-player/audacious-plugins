@@ -8,11 +8,22 @@
         <property name="CanSeek" type="b" access="read"/>
         <property name="Metadata" type="a{sv}" access="read"/>
         <property name="PlaybackStatus" type="s" access="read"/>
+        <property name="Position" type="x" access="read"/>
         <method name="Next"/>
         <method name="Pause"/>
         <method name="Play"/>
         <method name="PlayPause"/>
         <method name="Previous"/>
+        <method name="Seek">
+            <arg name="Offset" type="x" direction="in"/>
+        </method>
+        <method name="SetPosition">
+            <arg name="TrackId" type="o" direction="in"/>
+            <arg name="Position" type="x" direction="in"/>
+        </method>
         <method name="Stop"/>
+        <signal name="Seeked">
+            <arg name="Position" type="x" direction="out"/>
+        </signal>
     </interface>
 </node>

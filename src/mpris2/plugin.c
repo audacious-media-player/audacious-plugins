@@ -1,6 +1,6 @@
 /*
  * MPRIS 2 Server for Audacious
- * Copyright 2011 John Lindgren
+ * Copyright 2011-2012 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,6 +17,7 @@
  * the use of this software.
  */
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include <audacious/drct.h>
@@ -31,8 +32,10 @@
 static GDBusConnection * bus;
 static GObject * object_core, * object_player;
 static char * last_title, * last_artist, * last_album, * last_file;
+static int last_length;
 static const char * image_file;
 static GVariantType * metadata_type;
+static int update_position_source;
 
 static bool_t quit_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation * call,
  void * unused)
@@ -53,17 +56,20 @@ static bool_t raise_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation *
 static void update_metadata (void * data, GObject * object)
 {
     char * title = NULL, * artist = NULL, * album = NULL, * file = NULL;
+    int length = 0;
 
-    if (aud_drct_get_playing ())
+    int playlist = aud_playlist_get_playing ();
+    int entry = (playlist >= 0) ? aud_playlist_get_position (playlist) : -1;
+
+    if (entry >= 0)
     {
-        int playlist = aud_playlist_get_playing ();
-        int entry = aud_playlist_get_position (playlist);
         aud_playlist_entry_describe (playlist, entry, & title, & artist, & album, TRUE);
         file = aud_playlist_entry_get_filename (playlist, entry);
+        length = aud_playlist_entry_get_length (playlist, entry, TRUE);
     }
 
     if (title == last_title && artist == last_artist && album == last_album &&
-     file == last_file)
+     file == last_file && length == last_length)
     {
         str_unref (title);
         str_unref (artist);
@@ -87,8 +93,9 @@ static void update_metadata (void * data, GObject * object)
     last_artist = artist;
     last_album = album;
     last_file = file;
+    last_length = length;
 
-    GVariant * elems[4];
+    GVariant * elems[6];
     int nelems = 0;
 
     if (title)
@@ -116,6 +123,14 @@ static void update_metadata (void * data, GObject * object)
         elems[nelems ++] = g_variant_new_dict_entry (key, var);
     }
 
+    if (length > 0)
+    {
+        GVariant * key = g_variant_new_string ("mpris:length");
+        GVariant * val = g_variant_new_int64 ((int64_t) length * 1000);
+        GVariant * var = g_variant_new_variant (val);
+        elems[nelems ++] = g_variant_new_dict_entry (key, var);
+    }
+
     if (image_file)
     {
         GVariant * key = g_variant_new_string ("mpris:artUrl");
@@ -124,6 +139,11 @@ static void update_metadata (void * data, GObject * object)
         elems[nelems ++] = g_variant_new_dict_entry (key, var);
     }
 
+    GVariant * key = g_variant_new_string ("mpris:trackid");
+    GVariant * str = g_variant_new_string ("/org/mpris/MediaPlayer2/CurrentTrack");
+    GVariant * var = g_variant_new_variant (str);
+    elems[nelems ++] = g_variant_new_dict_entry (key, var);
+
     if (! metadata_type)
         metadata_type = g_variant_type_new ("{sv}");
 
@@ -131,16 +151,46 @@ static void update_metadata (void * data, GObject * object)
     g_object_set (object, "metadata", array, NULL);
 }
 
+static bool_t update_position (GObject * object)
+{
+    int64_t pos = 0;
+
+    if (aud_drct_get_playing () && aud_drct_get_ready ())
+        pos = (int64_t) aud_drct_get_time () * 1000;
+
+    g_object_set (object, "position", pos, NULL);
+    return TRUE;
+}
+
 static void update_playback_status (void * data, GObject * object)
 {
     const char * status;
 
     if (aud_drct_get_playing ())
+    {
         status = aud_drct_get_paused () ? "Paused" : "Playing";
+
+        if (! update_position_source)
+            update_position_source = g_timeout_add (250, (GSourceFunc) update_position, object);
+    }
     else
+    {
         status = "Stopped";
 
+        if (update_position_source)
+        {
+            g_source_remove (update_position_source);
+            update_position_source = 0;
+        }
+    }
+
     g_object_set (object, "playback-status", status, NULL);
+    update_position (object);
+}
+
+static void emit_seek (void * data, GObject * object)
+{
+    g_signal_emit_by_name (object, "seeked", (int64_t) aud_drct_get_time () * 1000);
 }
 
 static bool_t next_cb (MprisMediaPlayer2Player * object, GDBusMethodInvocation *
@@ -191,6 +241,26 @@ static bool_t previous_cb (MprisMediaPlayer2Player * object,
     return TRUE;
 }
 
+static bool_t seek_cb (MprisMediaPlayer2Player * object,
+ GDBusMethodInvocation * call, int64_t offset, void * unused)
+{
+    if (aud_drct_get_playing ())
+        aud_drct_seek (aud_drct_get_time () + offset / 1000);
+
+    mpris_media_player2_player_complete_seek (object, call);
+    return TRUE;
+}
+
+static bool_t set_position_cb (MprisMediaPlayer2Player * object,
+ GDBusMethodInvocation * call, const char * track, int64_t pos, void * unused)
+{
+    if (aud_drct_get_playing ())
+        aud_drct_seek (pos / 1000);
+
+    mpris_media_player2_player_complete_set_position (object, call);
+    return TRUE;
+}
+
 static bool_t stop_cb (MprisMediaPlayer2Player * object, GDBusMethodInvocation *
  call, void * unused)
 {
@@ -208,9 +278,18 @@ void mpris2_cleanup (void)
     hook_dissociate ("playback stop", (HookFunction) update_playback_status);
     hook_dissociate ("playback unpause", (HookFunction) update_playback_status);
 
-    hook_dissociate ("playback begin", (HookFunction) update_metadata);
-    hook_dissociate ("playback stop", (HookFunction) update_metadata);
+    hook_dissociate ("playlist set playing", (HookFunction) update_metadata);
+    hook_dissociate ("playlist position", (HookFunction) update_metadata);
     hook_dissociate ("playlist update", (HookFunction) update_metadata);
+
+    hook_dissociate ("playback ready", (HookFunction) emit_seek);
+    hook_dissociate ("playback seek", (HookFunction) emit_seek);
+
+    if (update_position_source)
+    {
+        g_source_remove (update_position_source);
+        update_position_source = 0;
+    }
 
     g_dbus_connection_close_sync (bus, NULL, NULL);
     g_object_unref (object_core);
@@ -227,6 +306,7 @@ void mpris2_cleanup (void)
     str_unref (last_album);
     str_unref (last_file);
     last_title = last_artist = last_album = last_file = NULL;
+    last_length = 0;
 
     if (metadata_type)
     {
@@ -256,7 +336,6 @@ bool_t mpris2_init (void)
      "can-quit", TRUE,
      "can-raise", TRUE,
      "desktop-entry", "audacious",
-     "has-track-list", FALSE,
      "identity", "Audacious",
      NULL);
 
@@ -271,25 +350,33 @@ bool_t mpris2_init (void)
      "can-go-previous", TRUE,
      "can-pause", TRUE,
      "can-play", TRUE,
-     "can-seek", FALSE,
+     "can-seek", TRUE,
      NULL);
 
     update_playback_status (NULL, object_player);
+
+    if (aud_drct_get_playing () && aud_drct_get_ready ())
+        emit_seek (NULL, object_player);
 
     hook_associate ("playback begin", (HookFunction) update_playback_status, object_player);
     hook_associate ("playback pause", (HookFunction) update_playback_status, object_player);
     hook_associate ("playback stop", (HookFunction) update_playback_status, object_player);
     hook_associate ("playback unpause", (HookFunction) update_playback_status, object_player);
 
-    hook_associate ("playback begin", (HookFunction) update_metadata, object_player);
-    hook_associate ("playback stop", (HookFunction) update_metadata, object_player);
+    hook_associate ("playlist set playing", (HookFunction) update_metadata, object_player);
+    hook_associate ("playlist position", (HookFunction) update_metadata, object_player);
     hook_associate ("playlist update", (HookFunction) update_metadata, object_player);
+
+    hook_associate ("playback ready", (HookFunction) emit_seek, object_player);
+    hook_associate ("playback seek", (HookFunction) emit_seek, object_player);
 
     g_signal_connect (object_player, "handle-next", (GCallback) next_cb, NULL);
     g_signal_connect (object_player, "handle-pause", (GCallback) pause_cb, NULL);
     g_signal_connect (object_player, "handle-play", (GCallback) play_cb, NULL);
     g_signal_connect (object_player, "handle-play-pause", (GCallback) play_pause_cb, NULL);
     g_signal_connect (object_player, "handle-previous", (GCallback) previous_cb, NULL);
+    g_signal_connect (object_player, "handle-seek", (GCallback) seek_cb, NULL);
+    g_signal_connect (object_player, "handle-set-position", (GCallback) set_position_cb, NULL);
     g_signal_connect (object_player, "handle-stop", (GCallback) stop_cb, NULL);
 
     if (! g_dbus_interface_skeleton_export ((GDBusInterfaceSkeleton *)
