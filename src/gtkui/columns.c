@@ -278,6 +278,7 @@ void pw_col_choose (void)
      GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
      NULL);
     gtk_window_set_default_size ((GtkWindow *) window, 400, 300);
+    gtk_window_set_position ((GtkWindow *) window, GTK_WIN_POS_CENTER);
     g_signal_connect (window, "response", (GCallback) response_cb, NULL);
     g_signal_connect (window, "destroy", (GCallback) destroy_cb, NULL);
 
