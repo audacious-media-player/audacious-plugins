@@ -497,10 +497,28 @@ int SPUasync(u32 cycles, void *data)
   *pS++=sr;
  }
 
- if (( (u8 *) pS - (u8*) pSpuBuffer ) > 1024)
+ if (seektime != 0 && sampcount < seektime)
  {
-   psf2_update((u8*)pSpuBuffer, (u8*)pS-(u8*)pSpuBuffer, data);
-   pS=(s16 *)pSpuBuffer;
+   pS=(short *)pSpuBuffer;
+ }
+ else if ((((unsigned char *)pS)-((unsigned char *)pSpuBuffer)) == (735*4))
+ {
+   short *pSilenceIter = (short *)pSpuBuffer;
+   int iSilenceCount = 0;
+
+   for (; pSilenceIter < pS; pSilenceIter++)
+   {
+      if (*pSilenceIter == 0)
+        iSilenceCount++;
+
+      if (iSilenceCount > 20)
+        break;
+   }
+
+   if (iSilenceCount < 20)
+     psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer, data);
+
+   pS=(short *)pSpuBuffer;
  }
 
  return(1);
