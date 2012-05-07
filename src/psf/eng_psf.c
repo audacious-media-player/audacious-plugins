@@ -185,11 +185,18 @@ int32 psf_start(uint8 *buffer, uint32 length)
 		// now patch the file into RAM
 		offset = lib_decoded[0x18] | lib_decoded[0x19]<<8 | lib_decoded[0x1a]<<16 | lib_decoded[0x1b]<<24;
 		offset &= 0x3fffffff;	// kill any MIPS cache segment indicators
-		plength = lib_decoded[0x1c] | lib_decoded[0x1d]<<8 | lib_decoded[0x1e]<<16 | lib_decoded[0x1f]<<24;
+
+		/* valid PS-X EXE image must be at least 2048 bytes, plength section may be wrong on
+		 * shite rips... --nenolod */
+		if (lib_len < 2048)
+			plength = 0;
+		else
+			plength = lib_len - 2048;
+
 		#if DEBUG_LOADER
 		printf("library offset: %x plength: %d\n", offset, plength);
 		#endif
-		memcpy(&psx_ram[offset/4], lib_decoded+2048, plength);
+		memcpy(&psx_ram[offset/4], lib_decoded + 2048, plength);
 
 		// Dispose the corlett structure for the lib - we don't use it
 		free(lib);
@@ -198,14 +205,13 @@ int32 psf_start(uint8 *buffer, uint32 length)
 	// now patch the main file into RAM OVER the libraries (but not the aux lib)
 	offset = file[0x18] | file[0x19]<<8 | file[0x1a]<<16 | file[0x1b]<<24;
 	offset &= 0x3fffffff;	// kill any MIPS cache segment indicators
-	plength = file[0x1c] | file[0x1d]<<8 | file[0x1e]<<16 | file[0x1f]<<24;
 
-	// Philosoma has an illegal "plength".  *sigh*
-	if (plength > (file_len-2048))
-	{
-		plength = file_len-2048;
-	}
-	memcpy(&psx_ram[offset/4], file+2048, plength);
+	if (file_len < 2048)
+		plength = 0;
+	else
+		plength = file_len - 2048;
+
+	memcpy(&psx_ram[offset/4], file + 2048, plength);
 
 	// load any auxiliary libraries now
 	for (i = 0; i < 8; i++)
@@ -251,8 +257,13 @@ int32 psf_start(uint8 *buffer, uint32 length)
 			// now patch the file into RAM
 			offset = alib_decoded[0x18] | alib_decoded[0x19]<<8 | alib_decoded[0x1a]<<16 | alib_decoded[0x1b]<<24;
 			offset &= 0x3fffffff;	// kill any MIPS cache segment indicators
-			plength = alib_decoded[0x1c] | alib_decoded[0x1d]<<8 | alib_decoded[0x1e]<<16 | alib_decoded[0x1f]<<24;
-			memcpy(&psx_ram[offset/4], alib_decoded+2048, plength);
+
+			if (alib_len < 2048)
+				plength = 0;
+			else
+				plength = alib_len - 2048;
+
+			memcpy(&psx_ram[offset/4], alib_decoded + 2048, plength);
 
 			// Dispose the corlett structure for the lib - we don't use it
 			free(lib);
