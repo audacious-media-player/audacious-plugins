@@ -230,6 +230,9 @@ int32 psf_start(uint8 *buffer, uint32 length)
 			}
 			lib_raw_length = tmp_length;
 
+			if (lib_raw_file == NULL)
+				return AO_FAIL;
+
 			if (corlett_decode(lib_raw_file, lib_raw_length, &alib_decoded, &alib_len, &lib) != AO_SUCCESS)
 			{
 				free(lib_raw_file);
