@@ -683,7 +683,7 @@ static const gchar *ffaudio_fmts[] = {
     "wav",
 
     /* Handle OGG streams (FLAC/Vorbis etc.) */
-    "ogg",
+    "ogg", "oga",
 
     /* Speex */
     "spx",
