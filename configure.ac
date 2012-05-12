@@ -616,7 +616,7 @@ AC_ARG_ENABLE(sdlout,
  [enable_sdlout=$enableval], [enable_sdlout=yes])
 
 if test $enable_sdlout = yes ; then
-    AM_PATH_SDL(1.2.5, [enable_sdlout=yes], [enable_sdlout=no])
+    PKG_CHECK_MODULES([SDL], [sdl >= 1.2.11], [enable_sdlout=yes], [enable_sdlout=no])
 fi
 
 if test $enable_sdlout = yes ; then

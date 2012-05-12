@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-03-22 11:25+0100\n"
-"PO-Revision-Date: 2012-04-08 18:16+0100\n"
+"POT-Creation-Date: 2012-05-04 00:05+0200\n"
+"PO-Revision-Date: 2012-05-04 00:08+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -91,8 +91,8 @@ msgstr "Tage wählen, an denen der Alarm ausgelöst werden soll"
 #: src/alarm/interface.c:436 src/alarm/interface.c:484
 #: src/alarm/interface.c:532 src/alarm/interface.c:580
 #: src/alarm/interface.c:628 src/alarm/interface.c:676
-#: src/alarm/interface.c:724 src/bs2b/plugin.c:197 src/OSS/configure.c:152
-#: src/skins/ui_equalizer.c:1091 src/skins/ui_manager.c:447
+#: src/alarm/interface.c:724 src/bs2b/plugin.c:197
+#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:447
 #: src/skins/ui_manager.c:468
 msgid "Default"
 msgstr "Standard"
@@ -330,7 +330,7 @@ msgstr "ALSA-Ausgabeplugin-Einstellungen"
 msgid "PCM device:"
 msgstr "PCM-Gerät:"
 
-#: src/alsa/config.c:447 src/OSS/configure.c:236
+#: src/alsa/config.c:447
 msgid "Mixer device:"
 msgstr "Mixer-Gerät:"
 
@@ -1401,11 +1401,11 @@ msgstr "Automatisch"
 msgid "Joint Stereo"
 msgstr "Joint-Stereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:191
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:206
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:191
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:206
 msgid "Mono"
 msgstr "Mono"
 
@@ -1560,6 +1560,10 @@ msgstr ""
 "Ralf Ertzinger <ralf@skytale.net>\n"
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
+
+#: src/gio/gtk.c:34
+msgid "About GIO Plugin"
+msgstr "Über das GIO-Plugin"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:303
 msgid "About Gnome Shortcut Plugin"
@@ -1919,30 +1923,26 @@ msgstr "_Alles auswählen"
 msgid "_Rename"
 msgstr "_Umbenennen"
 
-#: src/gtkui/ui_gtk.c:96
+#: src/gtkui/ui_gtk.c:98
 msgid "GTK Interface"
 msgstr "GTK Interface"
 
-#: src/gtkui/ui_gtk.c:157 src/skins/ui_main.c:298
+#: src/gtkui/ui_gtk.c:167 src/skins/ui_main.c:298
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:163
+#: src/gtkui/ui_gtk.c:173
 msgid "Buffering ..."
 msgstr "Puffern ..."
 
-#: src/gtkui/ui_gtk.c:166 src/skins/ui_main.c:300 src/skins/ui_main.c:1499
+#: src/gtkui/ui_gtk.c:176 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:217 src/skins/plugin.c:190
+#: src/gtkui/ui_gtk.c:227 src/skins/plugin.c:188
 msgid "Error"
 msgstr "Fehler"
-
-#: src/gtkui/ui_playlist_notebook.c:80
-msgid "Close"
-msgstr "Schließen"
 
 #: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:455
 msgid "mono"
@@ -2312,7 +2312,7 @@ msgstr "Ausgabe-Kanäle:"
 msgid "Changes take effect at the next song change."
 msgstr "Änderungen werden mit dem nächsten Titelwechsel wirksam"
 
-#: src/mpg123/mpg123.c:191
+#: src/mpg123/mpg123.c:206
 msgid "Surround"
 msgstr "Surround"
 
@@ -2368,11 +2368,11 @@ msgstr "1. Standardgerät"
 msgid "OSS4 Output Plugin Preferences"
 msgstr "OSS4-Ausgabeplugin-Einstellungen"
 
-#: src/oss4/configure.c:150 src/OSS/configure.c:193
+#: src/oss4/configure.c:150
 msgid "Audio device:"
 msgstr "Audiogerät:"
 
-#: src/oss4/configure.c:178 src/OSS/configure.c:216 src/OSS/configure.c:259
+#: src/oss4/configure.c:178
 msgid "Use alternate device:"
 msgstr "Alternatives Gerät benutzen:"
 
@@ -2395,47 +2395,6 @@ msgstr "Über OSS4-Plugin"
 #: src/oss4/utils.c:211
 msgid "OSS4 error"
 msgstr "OSS4 Fehler"
-
-#: src/OSS/configure.c:136
-#, c-format
-msgid "Default (%s)"
-msgstr "Standard (%s)"
-
-#: src/OSS/configure.c:177
-msgid "OSS Driver configuration"
-msgstr "OSS-Treiber-Konfiguration"
-
-#: src/OSS/configure.c:280
-msgid "Devices"
-msgstr "Geräte"
-
-#: src/OSS/configure.c:282
-msgid "Buffering:"
-msgstr "Zwischenspeichern:"
-
-#: src/OSS/configure.c:295
-msgid "Pre-buffer (percent):"
-msgstr "Vorpuffer (Prozent):"
-
-#: src/OSS/configure.c:306
-msgid "Buffering"
-msgstr "Zwischenspeichern"
-
-#: src/OSS/configure.c:307
-msgid "Mixer Settings:"
-msgstr "Mixer-Einstellungen:"
-
-#: src/OSS/configure.c:313
-msgid "Volume controls Master not PCM"
-msgstr "Master anstatt PCM regeln"
-
-#: src/OSS/configure.c:319
-msgid "Mixer"
-msgstr "Mixer"
-
-#: src/OSS/OSS.c:41
-msgid "About OSS Driver"
-msgstr "Über OSS-Treiber"
 
 #: src/pulse_audio/pulse_audio.c:677
 msgid "About Audacious PulseAudio Output Plugin"
@@ -2545,11 +2504,11 @@ msgstr "Bitte warten ..."
 msgid "Choose Folder"
 msgstr "Ordner auswählen"
 
-#: src/skins/plugin.c:167
+#: src/skins/plugin.c:165
 msgid "About Skinned GUI"
 msgstr "Über Skinned GUI"
 
-#: src/skins/plugin.c:168
+#: src/skins/plugin.c:166
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -2593,88 +2552,88 @@ msgstr "<b>_Skin</b>"
 msgid "Interface Preferences"
 msgstr "Interface-Einstellungen"
 
-#: src/skins/ui_equalizer.c:323
+#: src/skins/ui_equalizer.c:333
 msgid "Preamp"
 msgstr "Vorverstaerkung"
 
-#: src/skins/ui_equalizer.c:327
+#: src/skins/ui_equalizer.c:337
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.c:328
+#: src/skins/ui_equalizer.c:338
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.c:328
+#: src/skins/ui_equalizer.c:338
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.c:328
+#: src/skins/ui_equalizer.c:338
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.c:328
+#: src/skins/ui_equalizer.c:338
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.c:328
+#: src/skins/ui_equalizer.c:338
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.c:329
+#: src/skins/ui_equalizer.c:339
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.c:329
+#: src/skins/ui_equalizer.c:339
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.c:329
+#: src/skins/ui_equalizer.c:339
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.c:329
+#: src/skins/ui_equalizer.c:339
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.c:370
+#: src/skins/ui_equalizer.c:380
 msgid "Audacious Equalizer"
 msgstr "Audacious Equalizer"
 
-#: src/skins/ui_equalizer.c:874
+#: src/skins/ui_equalizer.c:898
 msgid "Presets"
 msgstr "Standard"
 
-#: src/skins/ui_equalizer.c:955 src/skins/ui_manager.c:442
+#: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:442
 msgid "Load preset"
 msgstr "Voreinstellungen laden"
 
-#: src/skins/ui_equalizer.c:972
+#: src/skins/ui_equalizer.c:996
 msgid "Load auto-preset"
 msgstr "Voreinstellungen automatisch laden"
 
-#: src/skins/ui_equalizer.c:1002 src/skins/ui_equalizer.c:1020
-#: src/skins/ui_equalizer.c:1036
+#: src/skins/ui_equalizer.c:1026 src/skins/ui_equalizer.c:1044
+#: src/skins/ui_equalizer.c:1060
 msgid "Load equalizer preset"
 msgstr "Equalizer-Voreinstellungen laden"
 
-#: src/skins/ui_equalizer.c:1055 src/skins/ui_manager.c:463
+#: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:463
 msgid "Save preset"
 msgstr "Speichere Voreinstellungen"
 
-#: src/skins/ui_equalizer.c:1071
+#: src/skins/ui_equalizer.c:1095
 msgid "Save auto-preset"
 msgstr "Speichere automatische Voreinstellungen"
 
-#: src/skins/ui_equalizer.c:1101 src/skins/ui_equalizer.c:1137
+#: src/skins/ui_equalizer.c:1126 src/skins/ui_equalizer.c:1162
 msgid "Save equalizer preset"
 msgstr "Equalizer-Voreinstellungen speichern"
 
-#: src/skins/ui_equalizer.c:1156 src/skins/ui_manager.c:478
+#: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:478
 msgid "Delete preset"
 msgstr "Lösche Voreinstellungen"
 
-#: src/skins/ui_equalizer.c:1173
+#: src/skins/ui_equalizer.c:1198
 msgid "Delete auto-preset"
 msgstr "Lösche automatische Voreinstellungen"
 
@@ -2690,63 +2649,63 @@ msgstr "kHz"
 msgid "surround"
 msgstr "Surround"
 
-#: src/skins/ui_main.c:802
+#: src/skins/ui_main.c:804
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Suche nach %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.c:823
+#: src/skins/ui_main.c:825
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Lautstaerke: (%d%%)"
 
-#: src/skins/ui_main.c:846
+#: src/skins/ui_main.c:848
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Balance: %d%% links"
 
-#: src/skins/ui_main.c:848
+#: src/skins/ui_main.c:850
 msgid "Balance: center"
 msgstr "Balance: Mitte"
 
-#: src/skins/ui_main.c:850
+#: src/skins/ui_main.c:852
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Balance: %d%% rechts"
 
-#: src/skins/ui_main.c:976
+#: src/skins/ui_main.c:978
 msgid "Options Menu"
 msgstr "Optionen"
 
-#: src/skins/ui_main.c:980
+#: src/skins/ui_main.c:982
 msgid "Disable 'Always On Top'"
 msgstr "'Immer im Vordergrund' aus"
 
-#: src/skins/ui_main.c:982
+#: src/skins/ui_main.c:984
 msgid "Enable 'Always On Top'"
 msgstr "'Immer im Vordergrund' an"
 
-#: src/skins/ui_main.c:985
+#: src/skins/ui_main.c:987
 msgid "File Info Box"
 msgstr "Dateiinformationen"
 
-#: src/skins/ui_main.c:990
+#: src/skins/ui_main.c:992
 msgid "Visualization Menu"
 msgstr "Visualisierungs-Menü"
 
-#: src/skins/ui_main.c:1648
+#: src/skins/ui_main.c:1650
 msgid "Single mode."
 msgstr "Single-Modus."
 
-#: src/skins/ui_main.c:1650
+#: src/skins/ui_main.c:1652
 msgid "Playlist mode."
 msgstr "Wiedergabelistenmodus"
 
-#: src/skins/ui_main.c:1672
+#: src/skins/ui_main.c:1674
 msgid "Stopping after song."
 msgstr "Nach Titel stoppen."
 
-#: src/skins/ui_main.c:1674
+#: src/skins/ui_main.c:1676
 msgid "Not stopping after song."
 msgstr "Nicht nach Titel stoppen."
 
@@ -3540,11 +3499,11 @@ msgstr "Befehle"
 msgid "Song Change"
 msgstr "Songwechsel"
 
-#: src/statusicon/statusicon.c:381
+#: src/statusicon/statusicon.c:377
 msgid "About Status Icon Plugin"
 msgstr "Über Status-Icon-Plugin"
 
-#: src/statusicon/statusicon.c:382
+#: src/statusicon/statusicon.c:378
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3562,47 +3521,47 @@ msgstr ""
 "Dieses Plugin stellt ein Status-Icon bereit, welches\n"
 "im System-Tray des Fenstermanagers angezeigt wird.\n"
 
-#: src/statusicon/statusicon.c:453
+#: src/statusicon/statusicon.c:449
 msgid "Status Icon Plugin - Preferences"
 msgstr "Status-Icon-Plugin - Einstellungen"
 
-#: src/statusicon/statusicon.c:463
+#: src/statusicon/statusicon.c:459
 msgid "Right-Click Menu"
 msgstr "Rechtsklick-Menü"
 
-#: src/statusicon/statusicon.c:468
+#: src/statusicon/statusicon.c:464
 msgid "Small playback menu #1"
 msgstr "Kleines Wiedergabe-Menü #1"
 
-#: src/statusicon/statusicon.c:471
+#: src/statusicon/statusicon.c:467
 msgid "Small playback menu #2"
 msgstr "Kleines Wiedergabe-Menü #2"
 
-#: src/statusicon/statusicon.c:487
+#: src/statusicon/statusicon.c:483
 msgid "Mouse Scroll Action"
 msgstr "Maus-Scroll-Aktion"
 
-#: src/statusicon/statusicon.c:491
+#: src/statusicon/statusicon.c:487
 msgid "Change volume"
 msgstr "Lautstärke ändern"
 
-#: src/statusicon/statusicon.c:493
+#: src/statusicon/statusicon.c:489
 msgid "Change playing song"
 msgstr "Aktiven Titel ändern"
 
-#: src/statusicon/statusicon.c:506
+#: src/statusicon/statusicon.c:502
 msgid "Other settings"
 msgstr "Andere Einstellungen"
 
-#: src/statusicon/statusicon.c:511
+#: src/statusicon/statusicon.c:507
 msgid "Disable the popup window"
 msgstr "PopUp-Fenster deaktivieren"
 
-#: src/statusicon/statusicon.c:518
+#: src/statusicon/statusicon.c:514
 msgid "Close to the notification area (system tray)"
 msgstr "In den Informationsbereich beenden (System-Tray)"
 
-#: src/statusicon/statusicon.c:526
+#: src/statusicon/statusicon.c:522
 msgid "Advance in playlist when scrolling upward"
 msgstr "Durch Hochscrollen in Wiedergabeliste fortschreiten"
 
