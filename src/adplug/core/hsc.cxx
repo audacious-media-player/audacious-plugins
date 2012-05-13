@@ -96,6 +96,12 @@ ChscPlayer::update ()
     songend = 1;
   }
 
+  if (pattnr >= 50 || pattpos >= 64)
+  {
+    fprintf (stderr, "hsc: Invalid pattnr (%d) or pattpos (%d)!\n", (int) pattnr, (int) pattpos);
+    return false;
+  }
+
   pattoff = pattpos * 9;
   for (chan = 0; chan < 9; chan++)
   {                             // handle all channels
