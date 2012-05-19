@@ -353,30 +353,26 @@ if test "x$have_adplug" = "xyes"; then
 	AC_SUBST(BINIO_CFLAGS)
 fi
 
-dnl *** Ogg Vorbis
+dnl Ogg Vorbis
+dnl ==========
+dnl This test is reused later to enable/disable Vorbis support in filewriter.
 
 AC_ARG_ENABLE(vorbis,
-    [  --disable-vorbis        disable Ogg Vorbis input plugin (default=enabled)],
-    [enable_vorbis=$enableval],
-    [enable_vorbis="yes"]
-)
+ AS_HELP_STRING([--disable-vorbis], [disable Ogg Vorbis decoding and encoding]),
+ [enable_vorbis=$enableval], [enable_vorbis=yes])
 
-if test "x$enable_vorbis" = "xyes"; then
-    PKG_CHECK_MODULES(OGG_VORBIS, [ogg >= 1.0 vorbis >= 1.1 vorbisfile >= 1.1],
-        [have_oggvorbis=yes],
-        [AC_MSG_WARN([*** Cannot find libogg/libvorbis, Ogg Vorbis support will not be built ***])
-         have_oggvorbis=no]
-    )
-else
-    AC_MSG_RESULT([*** Ogg Vorbis plugin disabled per user request ***])
-    have_oggvorbis=no
+if test $enable_vorbis = yes ; then
+    PKG_CHECK_MODULES(VORBIS,
+     [ogg >= 1.0 vorbis >= 1.0 vorbisenc >= 1.0 vorbisfile >= 1.0],
+     [enable_vorbis=yes], [enable_vorbis=no])
 fi
 
-if test "x$have_oggvorbis" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS vorbis"
+if test $enable_vorbis = yes ; then
+    INPUT_PLUGINS="$INPUT_PLUGINS vorbis"
 fi
 
-dnl *** FLACng
+dnl FLAC
+dnl ====
 
 AC_ARG_ENABLE(flacng,
     [  --disable-flacng        disable flac input plugin (default=enabled)],
@@ -897,22 +893,13 @@ if test "x$enable_filewriter_mp3" = "xyes"; then
    fi
 fi
 
+dnl Vorbis support reuses test done for Vorbis input plugin.
 
-AC_ARG_ENABLE(filewriter_vorbis,
-    [  --disable-filewriter_vorbis disable FileWriter Vorbis output part (default=enabled) ],
-    [enable_filewriter_vorbis=$enableval], [enable_filewriter_vorbis=yes]
-)
-
-if test "x$enable_filewriter_vorbis" = "xyes"; then
-   PKG_CHECK_MODULES(OGG_VORBIS, [ogg >= 1.0 vorbis >= 1.0 vorbisfile >= 1.0],
-   [have_vorbisenc=yes], [have_vorbisenc=no])
-   if test "x$have_vorbisenc" = "xyes"; then
-      AC_DEFINE(FILEWRITER_VORBIS, 1, [Define if Vorbis output part should be built])
-      FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS  `pkg-config --cflags vorbisenc`"
-      FILEWRITER_LIBS="$FILEWRITER_LIBS  `pkg-config --libs vorbisenc`"
-   fi
+if test $enable_vorbis = yes ; then
+    AC_DEFINE(FILEWRITER_VORBIS, 1, [Define if Vorbis output part should be built])
+    FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS $VORBIS_CFLAGS"
+    FILEWRITER_LIBS="$FILEWRITER_LIBS $VORBIS_LIBS"
 fi
-
 
 AC_ARG_ENABLE(filewriter_flac,
     [  --disable-filewriter_flac   disable FileWriter FLAC output part (default=enabled) ],
@@ -1080,7 +1067,7 @@ echo "  Jack Audio Connection Kit (jack):       $enable_jack"
 echo "  Simple DirectMedia Layer (sdlout):      $enable_sdlout"
 echo "  FileWriter:                             $enable_filewriter"
 echo "    -> FileWriter MP3 output part:        $have_lame"
-echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
+echo "    -> FileWriter Vorbis output part:     $enable_vorbis"
 echo "    -> FileWriter FLAC output part:       $have_writer_flac"
 echo "  Null Audio output (null):               yes"
 echo
@@ -1096,7 +1083,7 @@ echo "    -> FluidSynth backend:                $enable_amidiplug_fluidsynth"
 echo "  CD Digital Audio (cdaudio_ng):          $enable_cdaudio_ng"
 echo "  sndfile extensions:                     $enable_sndfile"
 echo "  Tone Generator:                         yes"
-echo "  Ogg Vorbis (vorbis):                    $have_oggvorbis"
+echo "  Ogg Vorbis (vorbis):                    $enable_vorbis"
 echo "  Free Lossless Audio Codec (flacng):     $have_flacng"
 echo "  Commodore 64 audio (SID):               $have_sidplay $xs_have_sidplay2_api"
 echo "    -> libSIDPlay1 support:               $xs_have_sidplay1"
