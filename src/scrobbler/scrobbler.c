@@ -991,9 +991,9 @@ static void read_cache(void)
                      I_TIME (item), i, I_ALBUM (item));
             }
 
-            free(artist);
-            free(title);
-            free(album);
+            g_free(artist);
+            g_free(title);
+            g_free(album);
             i++;
         }
         g_strfreev(entry);
