@@ -89,7 +89,7 @@ CcffLoader::load (VFSFile * fd, const CFileProvider & fp)
 
     if (memcmp (&module[0x5E1], "CUD-FM-File - SEND A POSTCARD -", 31))
     {
-      delete module[];
+      delete[] module;
       return false;
     }
   }
