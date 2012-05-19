@@ -148,7 +148,7 @@ CdtmLoader::load (VFSFile * fd, const CFileProvider & fp)
 
     if (!unpacked_length)
     {
-      delete pattern;
+      delete[] pattern;
       fp.close (f);
       return false;
     }
