@@ -39,25 +39,25 @@
 
 enum {GENRE, ARTIST, ALBUM, TITLE, FIELDS};
 
-static const gchar * const field_names[] = {N_("Genre"), N_("Artist"),
+static const char * const field_names[] = {N_("Genre"), N_("Artist"),
  N_("Album"), N_("Title")};
 
 typedef struct {
-    gint field;
-    gchar * name, * folded;
+    int field;
+    char * name, * folded;
     GArray * matches;
 } Item;
 
-static gint playlist_id;
-static gchar * * search_terms;
+static int playlist_id;
+static char * * search_terms;
 
 static GHashTable * added_table;
 static GHashTable * dicts[FIELDS];
 static Index * items;
 static GArray * selection;
 
-static gboolean adding, dicts_valid;
-static gint search_source;
+static bool_t adding, dicts_valid;
+static int search_source;
 
 static GtkWidget * entry, * help_label, * wait_label, * scrolled, * results_list;
 
@@ -67,13 +67,13 @@ static void str_unref_cb (void * str)
     str_unref (str);
 }
 
-static Item * item_new (gint field, gchar * name)
+static Item * item_new (int field, char * name)
 {
     Item * item = g_slice_new (Item);
     item->field = field;
     item->name = name;
     item->folded = g_utf8_casefold (name, -1);
-    item->matches = g_array_new (FALSE, FALSE, sizeof (gint));
+    item->matches = g_array_new (FALSE, FALSE, sizeof (int));
     return item;
 }
 
@@ -89,9 +89,9 @@ static void find_playlist (void)
 {
     playlist_id = -1;
 
-    for (gint p = 0; playlist_id < 0 && p < aud_playlist_count (); p ++)
+    for (int p = 0; playlist_id < 0 && p < aud_playlist_count (); p ++)
     {
-        gchar * title = aud_playlist_get_title (p);
+        char * title = aud_playlist_get_title (p);
 
         if (! strcmp (title, _("Library")))
             playlist_id = aud_playlist_get_unique_id (p);
@@ -100,21 +100,21 @@ static void find_playlist (void)
     }
 }
 
-static gint create_playlist (void)
+static int create_playlist (void)
 {
-    gint list = aud_playlist_get_blank ();
+    int list = aud_playlist_get_blank ();
     aud_playlist_set_title (list, _("Library"));
     aud_playlist_set_active (list);
     playlist_id = aud_playlist_get_unique_id (list);
     return list;
 }
 
-static gint get_playlist (gboolean require_added, gboolean require_scanned)
+static int get_playlist (bool_t require_added, bool_t require_scanned)
 {
     if (playlist_id < 0)
         return -1;
 
-    gint list = aud_playlist_by_unique_id (playlist_id);
+    int list = aud_playlist_by_unique_id (playlist_id);
 
     if (list < 0)
     {
@@ -130,18 +130,18 @@ static gint get_playlist (gboolean require_added, gboolean require_scanned)
     return list;
 }
 
-static void set_search_phrase (const gchar * phrase)
+static void set_search_phrase (const char * phrase)
 {
     g_strfreev (search_terms);
 
-    gchar * folded = g_utf8_casefold (phrase, -1);
+    char * folded = g_utf8_casefold (phrase, -1);
     search_terms = g_strsplit (folded, " ", -1);
     g_free (folded);
 }
 
-static gchar * get_path (void)
+static char * get_path (void)
 {
-    gchar * path = aud_get_string ("search-tool", "path");
+    char * path = aud_get_string ("search-tool", "path");
     if (g_file_test (path, G_FILE_TEST_EXISTS))
         return path;
 
@@ -168,7 +168,7 @@ static void destroy_dicts (void)
     if (items)
         index_delete (items, 0, index_count (items));
 
-    for (gint f = 0; f < FIELDS; f ++)
+    for (int f = 0; f < FIELDS; f ++)
     {
         if (! dicts[f])
             continue;
@@ -178,18 +178,18 @@ static void destroy_dicts (void)
     }
 }
 
-static void create_dicts (gint list)
+static void create_dicts (int list)
 {
     destroy_dicts ();
-    for (gint f = 0; f < FIELDS; f ++)
+    for (int f = 0; f < FIELDS; f ++)
         dicts[f] = g_hash_table_new_full (g_str_hash, g_str_equal, str_unref_cb,
          (GDestroyNotify) item_free);
 
-    gint entries = aud_playlist_entry_count (list);
+    int entries = aud_playlist_entry_count (list);
 
-    for (gint e = 0; e < entries; e ++)
+    for (int e = 0; e < entries; e ++)
     {
-        gchar * fields[FIELDS];
+        char * fields[FIELDS];
 
         Tuple * tuple = aud_playlist_entry_get_tuple (list, e, TRUE);
         fields[GENRE] = tuple ? tuple_get_str (tuple, FIELD_GENRE, NULL) : NULL;
@@ -199,7 +199,7 @@ static void create_dicts (gint list)
         aud_playlist_entry_describe (list, e, & fields[TITLE], & fields[ARTIST],
          & fields[ALBUM], TRUE);
 
-        for (gint f = 0; f < FIELDS; f ++)
+        for (int f = 0; f < FIELDS; f ++)
         {
             if (! fields[f])
                 continue;
@@ -224,7 +224,7 @@ static void search_cb (void * key, void * item, void * index)
     if (index_count (index) > MAX_RESULTS)
         return;
 
-    for (gint t = 0; search_terms[t]; t ++)
+    for (int t = 0; search_terms[t]; t ++)
     {
         if (! strstr (((Item *) item)->folded, search_terms[t]))
             return;
@@ -233,7 +233,7 @@ static void search_cb (void * key, void * item, void * index)
     index_append (index, item);
 }
 
-static gint item_compare (const void * _a, const void * _b)
+static int item_compare (const void * _a, const void * _b)
 {
     const Item * a = _a, * b = _b;
 
@@ -247,7 +247,7 @@ static void do_search (void)
 {
     index_delete (items, 0, index_count (items));
 
-    for (gint f = 0; f < FIELDS; f ++)
+    for (int f = 0; f < FIELDS; f ++)
     {
         if (! dicts[f])
             continue;
@@ -270,32 +270,32 @@ static void do_search (void)
         selection->data[0] = 1;
 }
 
-static gboolean filter_cb (const gchar * filename, void * unused)
+static bool_t filter_cb (const char * filename, void * unused)
 {
     return added_table && ! g_hash_table_lookup_extended (added_table, filename, NULL, NULL);
 }
 
-static void begin_add (const gchar * path)
+static void begin_add (const char * path)
 {
-    gint list = get_playlist (FALSE, FALSE);
+    int list = get_playlist (FALSE, FALSE);
 
     if (list < 0)
         list = create_playlist ();
 
     aud_set_string ("search-tool", "path", path);
 
-    gchar * uri = filename_to_uri (path);
+    char * uri = filename_to_uri (path);
     g_return_if_fail (uri);
-    gchar * prefix = g_str_has_suffix (uri, "/") ? g_strdup (uri) : g_strconcat (uri, "/", NULL);
+    char * prefix = g_str_has_suffix (uri, "/") ? g_strdup (uri) : g_strconcat (uri, "/", NULL);
 
     destroy_added_table ();
     added_table = g_hash_table_new_full (g_str_hash, g_str_equal, str_unref_cb, NULL);
 
-    gint entries = aud_playlist_entry_count (list);
+    int entries = aud_playlist_entry_count (list);
 
-    for (gint entry = 0; entry < entries; entry ++)
+    for (int entry = 0; entry < entries; entry ++)
     {
-        gchar * filename = aud_playlist_entry_get_filename (list, entry);
+        char * filename = aud_playlist_entry_get_filename (list, entry);
 
         if (g_str_has_prefix (filename, prefix) && ! g_hash_table_lookup_extended
          (added_table, filename, NULL, NULL))
@@ -350,7 +350,7 @@ static void show_hide_widgets (void)
     }
 }
 
-static gint search_timeout (void * unused)
+static int search_timeout (void * unused)
 {
     do_search ();
 
@@ -379,7 +379,7 @@ static void schedule_search (void)
 
 static void update_dicts (void)
 {
-    gint list = get_playlist (TRUE, TRUE);
+    int list = get_playlist (TRUE, TRUE);
 
     if (list >= 0)
     {
@@ -403,7 +403,7 @@ static void add_complete_cb (void * unused, void * unused2)
 {
     if (adding)
     {
-        gint list = get_playlist (TRUE, FALSE);
+        int list = get_playlist (TRUE, FALSE);
 
         if (list >= 0 && ! aud_playlist_add_in_progress (list))
         {
@@ -429,8 +429,8 @@ static void playlist_update_cb (void * data, void * unused)
         update_dicts ();
     else
     {
-        gint list = get_playlist (TRUE, TRUE);
-        gint at, count;
+        int list = get_playlist (TRUE, TRUE);
+        int at, count;
 
         if (list < 0 || aud_playlist_updated_range (list, & at, & count) >=
          PLAYLIST_UPDATE_METADATA)
@@ -438,7 +438,7 @@ static void playlist_update_cb (void * data, void * unused)
     }
 }
 
-static gboolean search_init (void)
+static bool_t search_init (void)
 {
     find_playlist ();
 
@@ -479,25 +479,25 @@ static void search_cleanup (void)
     destroy_dicts ();
 }
 
-static void do_add (gboolean play, gchar * * title)
+static void do_add (bool_t play, char * * title)
 {
-    gint list = aud_playlist_by_unique_id (playlist_id);
-    gint n_items = index_count (items);
-    gint n_selected = 0;
+    int list = aud_playlist_by_unique_id (playlist_id);
+    int n_items = index_count (items);
+    int n_selected = 0;
 
     Index * filenames = index_new ();
     Index * tuples = index_new ();
 
-    for (gint i = 0; i < n_items; i ++)
+    for (int i = 0; i < n_items; i ++)
     {
         if (! selection->data[i])
             continue;
 
         Item * item = index_get (items, i);
 
-        for (gint m = 0; m < item->matches->len; m ++)
+        for (int m = 0; m < item->matches->len; m ++)
         {
-            gint entry = g_array_index (item->matches, gint, m);
+            int entry = g_array_index (item->matches, int, m);
             index_append (filenames, aud_playlist_entry_get_filename (list, entry));
             index_append (tuples, aud_playlist_entry_get_tuple (list, entry, TRUE));
         }
@@ -516,7 +516,7 @@ static void do_add (gboolean play, gchar * * title)
 
 static void action_play (void)
 {
-    gint list = aud_playlist_get_temporary ();
+    int list = aud_playlist_get_temporary ();
     aud_playlist_set_active (list);
 
     if (aud_get_bool (NULL, "clear_playlist"))
@@ -529,7 +529,7 @@ static void action_play (void)
 
 static void action_create_playlist (void)
 {
-    gchar * title;
+    char * title;
 
     aud_playlist_insert (-1);
     aud_playlist_set_active (aud_playlist_count () - 1);
@@ -547,7 +547,7 @@ static void action_add_to_playlist (void)
     do_add (FALSE, NULL);
 }
 
-static void list_get_value (void * user, gint row, gint column, GValue * value)
+static void list_get_value (void * user, int row, int column, GValue * value)
 {
     g_return_if_fail (items && row >= 0 && row < index_count (items));
 
@@ -556,25 +556,25 @@ static void list_get_value (void * user, gint row, gint column, GValue * value)
      _(field_names[item->field]), item->name));
 }
 
-static gboolean list_get_selected (void * user, gint row)
+static bool_t list_get_selected (void * user, int row)
 {
     g_return_val_if_fail (selection && row >= 0 && row < selection->len, FALSE);
     return selection->data[row];
 }
 
-static void list_set_selected (void * user, gint row, gboolean selected)
+static void list_set_selected (void * user, int row, bool_t selected)
 {
     g_return_if_fail (selection && row >= 0 && row < selection->len);
     selection->data[row] = selected;
 }
 
-static void list_select_all (void * user, gboolean selected)
+static void list_select_all (void * user, bool_t selected)
 {
     g_return_if_fail (selection);
     memset (selection->data, selected, selection->len);
 }
 
-static void list_activate_row (void * user, gint row)
+static void list_activate_row (void * user, int row)
 {
     action_play ();
 }
@@ -621,7 +621,7 @@ static void entry_cb (GtkEntry * entry, void * unused)
 
 static void refresh_cb (GtkButton * button, GtkWidget * chooser)
 {
-    gchar * path = gtk_file_chooser_get_filename ((GtkFileChooser *) chooser);
+    char * path = gtk_file_chooser_get_filename ((GtkFileChooser *) chooser);
     begin_add (path);
     g_free (path);
 
@@ -675,7 +675,7 @@ static void * search_get_widget (void)
      GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
     gtk_box_pack_start ((GtkBox *) hbox, chooser, TRUE, TRUE, 0);
 
-    gchar * path = get_path ();
+    char * path = get_path ();
     gtk_file_chooser_set_filename ((GtkFileChooser *) chooser, path);
     g_free (path);
 
