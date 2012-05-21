@@ -44,6 +44,8 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
+#include <X11/XKBlib.h>
+
 #include "plugin.h"
 #include "gui.h"
 #include "grab.h"
@@ -101,7 +103,7 @@ static void set_keytext (GtkWidget *entry, gint key, gint mask, gint type)
 		if (type == TYPE_KEY)
 		{
 			KeySym keysym;
-			keysym = XKeycodeToKeysym(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()), key, 0);
+			keysym = XkbKeycodeToKeysym(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()), key, 0, 0);
 			if (keysym == 0 || keysym == NoSymbol)
 			{
 				keytext = g_strdup_printf("#%d", key);
