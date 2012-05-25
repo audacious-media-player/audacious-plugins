@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2012-02-17 12:03-0500\n"
-"PO-Revision-Date: 2012-03-26 10:34+0000\n"
+"PO-Revision-Date: 2012-05-24 11:49+0000\n"
 "Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgstr "A utilizar libfaad2 %s para a descodificação.\nDescodificador FAAD2 AA
 
 #: src/aac/libmp4.c:261
 msgid "About MP4 AAC decoder plugin"
-msgstr "Sobre o plug-in de descodificação MP4 AAC"
+msgstr "Sobre o descodificador MP4 AAC"
 
 #: src/alarm/alarm.c:312
 msgid "About Alarm"
@@ -40,7 +40,7 @@ msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
-msgstr "Um plug-in para iniciar a reprodução a uma determinada hora\n\nDesenvolvido por Adam Feakin e Daniel Stodden"
+msgstr "Um suplemento para iniciar a reprodução a uma determinada hora\n\nDesenvolvido por Adam Feakin e Daniel Stodden"
 
 #: src/alarm/interface.c:33
 msgid "Alarm"
@@ -48,7 +48,7 @@ msgstr "Alarme"
 
 #: src/alarm/interface.c:40
 msgid "This is your wakeup call."
-msgstr "Esta é a tua chamada de atenção"
+msgstr "Esta é a sua chamada de atenção"
 
 #: src/alarm/interface.c:55 src/alarm/interface.c:1213
 msgid "OK"
@@ -150,7 +150,7 @@ msgstr "Atual"
 
 #: src/alarm/interface.c:954
 msgid "Start at"
-msgstr "Iniciar em"
+msgstr "Ao iniciar"
 
 #: src/alarm/interface.c:982 src/alarm/interface.c:1026
 msgid "%"
@@ -158,7 +158,7 @@ msgstr "%"
 
 #: src/alarm/interface.c:998
 msgid "Final"
-msgstr "Finalizar"
+msgstr "Ao terminar"
 
 #: src/alarm/interface.c:1051
 msgid "Additional Command"
@@ -174,7 +174,7 @@ msgstr "Lista de reprodução (opcional)"
 
 #: src/alarm/interface.c:1111
 msgid "Browse..."
-msgstr "Explorar..."
+msgstr "Procurar..."
 
 #: src/alarm/interface.c:1119 src/alarm/interface.c:1283
 msgid "Reminder"
@@ -275,7 +275,7 @@ msgstr "Dispositivo misturador pré-definido"
 
 #: src/alsa/config.c:438
 msgid "ALSA Output Plugin Preferences"
-msgstr "Preferências do plug-in Alsa"
+msgstr "Preferências do suplemento Alsa"
 
 #: src/alsa/config.c:445
 msgid "PCM device:"
@@ -295,7 +295,7 @@ msgstr "Solução para impedir a suspensão"
 
 #: src/alsa/plugin.c:59
 msgid "About ALSA Output Plugin"
-msgstr "Sobre o plug-in Alsa"
+msgstr "Sobre o suplemento Alsa"
 
 #: src/alsa/plugin.c:81
 msgid "ALSA error"
@@ -305,7 +305,7 @@ msgstr "Erro Alsa"
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
-msgstr "Ainda não escolheu as portas para a reprodução Midi. Pode escolher as opções nas preferências do plug-in"
+msgstr "Ainda não escolheu as portas para a reprodução Midi. Pode escolher as opções nas preferências do suplemento"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -316,7 +316,7 @@ msgid ""
 "This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
 "This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
-msgstr "Esta infraestrutura envia os eventos Midi para as portas do grupo de utilizadores Alsa. A interface Alsa é versátil e providencia as portas para os sintetizadores das placas de som internas (ex.: emu10k1) e para os dispositivos externos e aplicações de sintetização\nEsta infraestrutura não produz som. uma vez que os eventos Midi são geridos pelos programas ou dispositivos das portas Alsa. Por exemplo, os eventos Midi enviados para os dispositivos sintetizadores serão reproduzidos diretamente\nInfraestrutura desenvolvida por Giacomo Lozito"
+msgstr "Esta infraestrutura envia os eventos Midi para as portas do grupo de utilizadores Alsa. A interface Alsa é versátil e providencia as portas para os sintetizadores das placas de som internas (ex.: emu10k1) e para os dispositivos externos e aplicações de sintetização\nEsta infraestrutura não produz som, uma vez que os eventos Midi são geridos pelos programas ou dispositivos das portas Alsa. Por exemplo, os eventos Midi enviados para os dispositivos sintetizadores serão reproduzidos diretamente\nInfraestrutura desenvolvida por Giacomo Lozito"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
@@ -327,7 +327,7 @@ msgid ""
 "This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
 "Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
-msgstr "Esta infraestrutura produz os sons, enviando os eventos Midi para o FluidSynth, um sintetizador baseado nas especificações SoundFont2 (www.fluidsynth.org)\nOs sons produzidos podem ser manipulados através dos plug-ins e são processados pelo plug-in de som escolhido pelo utilizador\nInfraestrutura desenvolvida por Giacomo Lozito."
+msgstr "Esta infraestrutura produz os sons, enviando os eventos Midi para o FluidSynth, um sintetizador baseado nas especificações SoundFont2 (www.fluidsynth.org)\nOs sons produzidos podem ser manipulados através dos \"plugins\" e são processados pelo suplemento de som escolhido pelo utilizador\nInfraestrutura desenvolvida por Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:228
 msgid "ALSA BACKEND CONFIGURATION"
@@ -377,7 +377,7 @@ msgstr "Informações da infraestrutura Amidi"
 
 #: src/amidi-plug/i_configure-ap.c:196
 msgid "AMIDI-PLUG PREFERENCES"
-msgstr "Preferências do plug-in AMidi"
+msgstr "Preferências do AMidi"
 
 #: src/amidi-plug/i_configure-ap.c:223
 msgid "Backend selection"
@@ -419,19 +419,19 @@ msgstr "extrair letra das músicas dos ficheiros midi (se existente)"
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr "<span size=\"smaller\">Plug-in\nAMidi</span>"
+msgstr "<span size=\"smaller\">Suplemento\nAmidi</span>"
 
 #: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug - select file"
-msgstr "AMidi - selecione o ficheiro"
+msgstr "Amidi - selecione o ficheiro"
 
 #: src/amidi-plug/i_configure.c:129
 msgid "AMIDI-Plug - configuration"
-msgstr "Configuração do plug-in AMidi"
+msgstr "Configuração do Amidi"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMidi - selecione o ficheiro SoundFont"
+msgstr "Amidi - selecione o ficheiro SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:270
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
@@ -585,7 +585,7 @@ msgstr "Div. de tempo:"
 
 #: src/amidi-plug/i_fileinfo.c:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr "<span size=\"smaller\">Comentários e letra das faixas midi</span>"
+msgstr "<span size=\"smaller\">Comentários e letras das faixas midi</span>"
 
 #: src/amidi-plug/i_fileinfo.c:288
 msgid "* no comments available in this MIDI file *"
@@ -601,13 +601,13 @@ msgstr "  (UTF-8 inválido)"
 
 #: src/amidi-plug/i_utils.c:43
 msgid "AMIDI-Plug - about"
-msgstr "Sobre o plug-in AMidi"
+msgstr "Sobre o Amidi"
 
 #: src/amidi-plug/i_utils.c:68
 msgid ""
 "\n"
 "AMIDI-Plug "
-msgstr "\nPlug-in AMidi"
+msgstr "\nSuplemento AMidi"
 
 #: src/amidi-plug/i_utils.c:69
 msgid ""
@@ -632,7 +632,7 @@ msgid ""
 "Tony Vroon\n"
 "for the good help with alpha testing\n"
 "\n"
-msgstr "\nReprodutor de faixas midi\nhttp://www.develia.org/projects.php?p=amidiplug\n\ndesenvolvido por Giacomo Lozito\n< james@develia.org >\n\n\num especial obrigado a...\n\nClemens Ladisch e Jaroslav Kysela\npelos programas aplaymidi e amixer e\naos documentos alsa-lib sobre\nas informações da API Alsa\n\nAlfredo Spadafina\npelo logótipo do teclado midi\n\nTony Vroon\npela sua ajuda ao testar o módulo\n\n"
+msgstr "\nUm reprodutor de faixas midi\nhttp://www.develia.org/projects.php?p=amidiplug\n\ndesenvolvido por Giacomo Lozito\n< james@develia.org >\n\n\nUm especial obrigado a...\n\nClemens Ladisch e Jaroslav Kysela\npelos programas aplaymidi e amixer e\naos documentos alsa-lib para\nas informações da API Alsa\n\nAlfredo Spadafina\npelo logótipo do teclado midi\n\nTony Vroon\npela sua ajuda ao testar o módulo\n\n"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -687,7 +687,7 @@ msgstr "Ativar OSD se a reprodução for colocada em pausa"
 
 #: src/aosd/aosd_trigger.c:100
 msgid "Pause Off"
-msgstr "A retirar da pausa"
+msgstr "Ao retirar da pausa"
 
 #: src/aosd/aosd_trigger.c:101
 msgid "Triggers OSD when playback is unpaused."
@@ -920,7 +920,7 @@ msgstr "Pré-ajuste:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:242
 msgid "About Audio CD Plugin"
-msgstr "Sobre o plug-in Audio CD"
+msgstr "Sobre o Audio CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:243
 msgid ""
@@ -950,7 +950,7 @@ msgstr "Tipo de disco não suportado"
 
 #: src/cdaudio-ng/configure.c:148
 msgid "CD Audio Plugin Configuration"
-msgstr "Configuração do plug-in Audio CD"
+msgstr "Configuração do Audio CD"
 
 #: src/cdaudio-ng/configure.c:160
 msgid "Digital audio extraction"
@@ -1008,7 +1008,7 @@ msgstr "Adicionar CD"
 
 #: src/compressor/plugin.c:63
 msgid "About Dynamic Range Compression Plugin"
-msgstr "Sobre o plug-in Dynamic Range Compression"
+msgstr "Sobre o Dynamic Range Compression"
 
 #: src/compressor/plugin.c:95
 msgid "Dynamic Range Compressor Preferences"
@@ -1123,7 +1123,7 @@ msgid ""
 "Crossfading failed because the songs had different sample rates.\n"
 "\n"
 "You can use the Sample Rate Converter effect to resample the songs to the same rate."
-msgstr "A sobreposição falhou porque as faixas possuem frequências diferentes\n\nPode utilizar o plug-in Sample Rate Converter para as converter para a mesmo frequência"
+msgstr "A sobreposição falhou porque as faixas possuem frequências diferentes\n\nPode utilizar o Sample Rate Converter para as converter para a mesmo frequência"
 
 #: src/crystalizer/crystalizer.c:100
 msgid "Configure Crystalizer"
@@ -1144,11 +1144,11 @@ msgid ""
 "By Johan Levin 1999.\n"
 "\n"
 "Surround echo by Carl van Schaik 1999"
-msgstr "Plug-in Echo\npor Johan Levin 1999.\n\nSurround echo por Carl van Schaik 1999"
+msgstr "Suplemento Echo\npor Johan Levin 1999.\n\nSurround echo por Carl van Schaik 1999"
 
 #: src/echo_plugin/gui.c:27
 msgid "About Echo Plugin"
-msgstr "Sobre o plug-in Echo"
+msgstr "Sobre o Echo"
 
 #: src/echo_plugin/gui.c:67
 msgid "Configure Echo"
@@ -1180,15 +1180,15 @@ msgid ""
 "libavcodec %s (%s)\n"
 "libavformat %s (%s)\n"
 "libavutil %s (%s)\n"
-msgstr "Um plug-in de descodificação áudio para o Audacious, baseado\nno programa FFmpeg (http://www.ffmpeg.org/)\nDireitos de autor (c) 2000-2009, Fabrice Bellard e outros\n\nImplementação no Audacious por:\n            William Pitcock <nenolod@nenolod.net>,\n            Matti Hämäläinen <ccr@tnsp.org>\n\nlibavcodec %s (%s)\nlibavformat %s (%s)\nlibavutil %s (%s)\n"
+msgstr "Um suplemento de descodificação áudio para o Audacious, baseado\nno programa FFmpeg (http://www.ffmpeg.org/)\nDireitos de autor (c) 2000-2009, Fabrice Bellard e outros\n\nImplementação no Audacious por:\n            William Pitcock <nenolod@nenolod.net>,\n            Matti Hämäläinen <ccr@tnsp.org>\n\nlibavcodec %s (%s)\nlibavformat %s (%s)\nlibavutil %s (%s)\n"
 
 #: src/ffaudio/ffaudio-core.c:732
 msgid "About FFaudio Plugin"
-msgstr "Sobre o plug-in FFaudio"
+msgstr "Sobre o FFaudio"
 
 #: src/filewriter/filewriter.c:166
 msgid "About FileWriter-Plugin"
-msgstr "Sobre o plug-in FileWriter"
+msgstr "Sobre o FileWriter"
 
 #: src/filewriter/filewriter.c:461
 msgid "File Writer Configuration"
@@ -1388,7 +1388,7 @@ msgstr "Qualidade (0 - 10):"
 
 #: src/flacng/plugin.c:380
 msgid "About FLAC Audio Plugin"
-msgstr "Sobre o plug-in Flac Audio"
+msgstr "Sobre o Flac Audio"
 
 #: src/flacng/plugin.c:381
 msgid ""
@@ -1402,7 +1402,7 @@ msgstr "\n\nCódigo original:\nRalf Ertzinger <ralf@skytale.net>\n\nhttp://www.s
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:303
 msgid "About Gnome Shortcut Plugin"
-msgstr "Sobre o plug-in Gnome Shortcut"
+msgstr "Sobre o Gnome Shortcuts"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:304
 msgid ""
@@ -1411,7 +1411,7 @@ msgid ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
-msgstr "Plug-in Gnome Shortcut\nPermite controlar o reprodutor com as teclas de atalho Gnome\n\nDireitos de autor (C) 2007-2008, Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
+msgstr "Suplemento Gnome Shortcuts\nPermite controlar o reprodutor com as teclas de atalho Gnome\n\nDireitos de autor (C) 2007-2008, Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
 
 #: src/gtkui/columns.c:36
 msgid "Entry number"
@@ -1499,7 +1499,7 @@ msgstr "Desativar"
 
 #: src/gtkui/menus.c:131
 msgid "_Open Files ..."
-msgstr "_Abrir ficheiros..."
+msgstr "Abrir ficheir_os..."
 
 #: src/gtkui/menus.c:132
 msgid "Open _URL ..."
@@ -1527,7 +1527,7 @@ msgstr "_Sair"
 
 #: src/gtkui/menus.c:141
 msgid "_Play"
-msgstr "_Reproduzir"
+msgstr "Re_produzir"
 
 #: src/gtkui/menus.c:142
 msgid "Paus_e"
@@ -1651,7 +1651,7 @@ msgstr "A_umentar volume"
 
 #: src/gtkui/menus.c:185
 msgid "Volume _Down"
-msgstr "_Reduzir volume"
+msgstr "Re_duzir volume"
 
 #: src/gtkui/menus.c:187
 msgid "_Equalizer"
@@ -1699,7 +1699,7 @@ msgstr "_Ficheiro"
 
 #: src/gtkui/menus.c:205
 msgid "_Playback"
-msgstr "_Reprodução"
+msgstr "Re_produção"
 
 #: src/gtkui/menus.c:206
 msgid "P_laylist"
@@ -1735,7 +1735,7 @@ msgstr "Co_lar"
 
 #: src/gtkui/menus.c:219
 msgid "Select _All"
-msgstr "Selecio_ar tudo"
+msgstr "Selecion_ar tudo"
 
 #: src/gtkui/menus.c:224
 msgid "_Rename"
@@ -1863,13 +1863,13 @@ msgstr "Associação de botões do rato"
 
 #: src/hotkey/gui.c:384
 msgid "Global Hotkey Plugin Configuration"
-msgstr "Configuração do plug-in Global Hotkey"
+msgstr "Configuração do Global Hotkey"
 
 #: src/hotkey/gui.c:400
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr "Prima a combinação de teclas no campo de texo\nTambém pode associar os botões do rato"
+msgstr "Prima a combinação de teclas no campo de texto\nTambém pode associar os botões do rato"
 
 #: src/hotkey/gui.c:405
 msgid "Hotkeys:"
@@ -1885,7 +1885,7 @@ msgstr "<b>Associação de teclas:</b>"
 
 #: src/hotkey/gui.c:663
 msgid "About Global Hotkey Plugin"
-msgstr "Sobre o plug-in Global Hotkey"
+msgstr "Sobre o Global Hotkey"
 
 #: src/hotkey/gui.c:664
 msgid ""
@@ -1901,7 +1901,7 @@ msgid ""
 "\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
 "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
 "\n"
-msgstr "Plug-in Global Hotkey\nPermite controlar o reprodutor com as teclas multimédia ou com as teclas globais\n\nDireitos de autor (C) 2007-2008, Sascha Hlusiak <contact@saschahlusiak.de>\n\nContributos:\nDireitos de autor (C) 2006-2007, Vladimir Paskov <vlado.paskov@gmail.com>\nDireitos de autor (C) 2000-2002, Ville Syrjälä <syrjala@sci.fi>\n\t\t\tBryn Davies <curious@ihug.com.au>\n\t\t\tJonathan A. Davis <davis@jdhouse.org>\n\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n\n"
+msgstr "Suplemento Global Hotkey\nPermite controlar o reprodutor com as teclas multimédia ou com as teclas globais\n\nDireitos de autor (C) 2007-2008, Sascha Hlusiak <contact@saschahlusiak.de>\n\nContributos:\nDireitos de autor (C) 2006-2007, Vladimir Paskov <vlado.paskov@gmail.com>\nDireitos de autor (C) 2000-2002, Ville Syrjälä <syrjala@sci.fi>\n\t\t\tBryn Davies <curious@ihug.com.au>\n\t\t\tJonathan A. Davis <davis@jdhouse.org>\n\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n\n"
 
 #: src/jack/configure.c:66
 msgid "Connect to all available jack ports"
@@ -1917,7 +1917,7 @@ msgstr "Não ligar às portas"
 
 #: src/jack/configure.c:98
 msgid "jack Plugin configuration"
-msgstr "Configuração do plug-in Jack"
+msgstr "Configuração do Jack"
 
 #: src/jack/configure.c:116
 msgid "Connection mode:"
@@ -1940,7 +1940,7 @@ msgstr "Controlador XMMS Jack 0.17\n\nxmms-jack.sf.net\nChris Morgan<cmorgan@alu
 
 #: src/jack/jack.c:440
 msgid "About JACK Output Plugin 0.17"
-msgstr "Sobre o plug-in Jack 0.17"
+msgstr "Sobre o Jack 0.17"
 
 #: src/ladspa/plugin.c:415
 msgid "About LADSPA Host"
@@ -1964,11 +1964,11 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr "<small>Separe os caminhos com uma vírgula\nEstes caminhos serão adicionados ao LADSPA_PATH.\nApós a adição dos caminhos, prima Enter para procurar os novos plug-ins</small>"
+msgstr "<small>Separe os caminhos com vírgulas\nEstes caminhos serão adicionados ao LADSPA_PATH.\nApós a adição dos caminhos, prima Enter para procurar os novos suplementos</small>"
 
 #: src/ladspa/plugin.c:614
 msgid "Available plugins:"
-msgstr "Plug-ins disponíveis:"
+msgstr "Suplemento disponíveis:"
 
 #: src/ladspa/plugin.c:626
 msgid "Enable"
@@ -1976,7 +1976,7 @@ msgstr "Ativar"
 
 #: src/ladspa/plugin.c:632
 msgid "Enabled plugins:"
-msgstr "Plug-ins ativos:"
+msgstr "Suplementos ativos:"
 
 #: src/ladspa/plugin.c:647
 msgid "Settings"
@@ -2065,13 +2065,13 @@ msgstr "O Audacious não está a reproduzir"
 
 #: src/null/null.c:64
 msgid "Null output plugin "
-msgstr "Plug-in Null output"
+msgstr "Suplemento Null output"
 
 #: src/null/null.c:65
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
 "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
-msgstr "por Christian Birchinger <joker@netswarm.net>\nbaseado no plug-in XMMS de Håvard Kvål <havardk@xmms.org>"
+msgstr "por Christian Birchinger <joker@netswarm.net>\nbaseado no suplemento XMMS de Håvard Kvål <havardk@xmms.org>"
 
 #: src/null/null.c:68
 msgid "About Null Output"
@@ -2079,7 +2079,7 @@ msgstr "Sobre o Null Output"
 
 #: src/null/null.c:89
 msgid "Null output preferences"
-msgstr "Preferências Null output"
+msgstr "Preferências do Null output"
 
 #: src/null/null.c:100
 msgid "Run in real time"
@@ -2087,11 +2087,11 @@ msgstr "Em tempo real"
 
 #: src/oss4/configure.c:81
 msgid "1. Default device"
-msgstr "1.  Dispositivo pré-definido"
+msgstr "1. Dispositivo pré-definido"
 
 #: src/oss4/configure.c:138
 msgid "OSS4 Output Plugin Preferences"
-msgstr "Preferências do plug-in OSS4"
+msgstr "Preferências do suplemento OSS4"
 
 #: src/oss4/configure.c:150 src/OSS/configure.c:194
 msgid "Audio device:"
@@ -2107,7 +2107,7 @@ msgstr "Gravar volume entre as sessões"
 
 #: src/oss4/configure.c:197
 msgid "Enable format conversions made by the OSS software."
-msgstr "Ativar conversões de formato através do programa OSS"
+msgstr "Ativar conversão de formatos com o programa OSS"
 
 #: src/oss4/configure.c:201
 msgid "Enable exclusive mode to prevent virtual mixing."
@@ -2115,7 +2115,7 @@ msgstr "Ativar modo exclusivo para prevenir mistura virtual"
 
 #: src/oss4/plugin.c:51
 msgid "About OSS4 Plugin"
-msgstr "Sobre o plug-in OSS4"
+msgstr "Sobre o OSS4"
 
 #: src/oss4/utils.c:211
 msgid "OSS4 error"
@@ -2164,19 +2164,19 @@ msgstr "Sobre o controlador OSS"
 
 #: src/pulse_audio/pulse_audio.c:677
 msgid "About Audacious PulseAudio Output Plugin"
-msgstr "Sobre o plug-in Audacious PulseAudio"
+msgstr "Sobre o Audacious PulseAudio"
 
 #: src/resample/plugin.c:89
 msgid "About Sample Rate Converter Plugin"
-msgstr "Sobre o plug-in Sample Rate Converter"
+msgstr "Sobre o Sample Rate Converter"
 
 #: src/resample/plugin.c:144
 msgid "Sample Rate Converter Preferences"
-msgstr "Preferências de Sample Rate Converter"
+msgstr "Preferências do Sample Rate Converter"
 
 #: src/resample/plugin.c:156
 msgid "Rate mappings:"
-msgstr "Avaliar mapeamento:"
+msgstr "Mapeamento:"
 
 #: src/resample/plugin.c:179
 msgid "All others:"
@@ -2219,15 +2219,15 @@ msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
 "Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>\n"
-msgstr "Plug-in Audacious AudioScrobbler\n\nDesenvolvido por Audun Hove <audun@nlc.no> e Pipian <pipian@pipian.com>\n"
+msgstr "Suplemento Audacious AudioScrobbler\n\nDesenvolvido por Audun Hove <audun@nlc.no> e Pipian <pipian@pipian.com>\n"
 
 #: src/scrobbler/plugin.c:196
 msgid "About Scrobbler Plugin"
-msgstr "Sobre o plug-in Scrobbler"
+msgstr "Sobre o AudioScrobbler"
 
 #: src/sdlout/plugin.c:58
 msgid "About SDL Output Plugin"
-msgstr "Sobre o plug-in SDL"
+msgstr "Sobre o SDL"
 
 #: src/sdlout/plugin.c:78
 msgid "SDL error"
@@ -2476,7 +2476,7 @@ msgstr "Deslocar nome automaticamente"
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
-msgstr "Parr após a faixa atual"
+msgstr "Parar após a faixa atual"
 
 #: src/skins/ui_manager.c:73 src/skins/ui_manager.c:74
 msgid "Peaks"
@@ -2528,7 +2528,7 @@ msgstr "Enrolar equalizador"
 
 #: src/skins/ui_manager.c:115
 msgid "Analyzer"
-msgstr "Analyser"
+msgstr "Analyzer"
 
 #: src/skins/ui_manager.c:116
 msgid "Scope"
@@ -2653,7 +2653,7 @@ msgstr "Recurso do Analyzer"
 
 #: src/skins/ui_manager.c:203
 msgid "Peaks Falloff"
-msgstr "Recurso de Peaks"
+msgstr "Recurso do Peaks"
 
 #: src/skins/ui_manager.c:208
 msgid "Playlist"
@@ -2914,7 +2914,7 @@ msgstr "Ficheiro"
 
 #: src/skins/ui_manager.c:384
 msgid "Plugin Services"
-msgstr "Serviços do plug-in"
+msgstr "Serviços do suplemento"
 
 #: src/skins/ui_manager.c:386 src/skins/ui_manager.c:389
 msgid "View Track Details"
@@ -2946,7 +2946,7 @@ msgstr "Reproduzir ficheiros da localização escolhida"
 
 #: src/skins/ui_manager.c:401
 msgid "Plugin services"
-msgstr "Serviços do plug-in"
+msgstr "Serviços do suplemento"
 
 #: src/skins/ui_manager.c:403
 msgid "Preferences"
@@ -3096,7 +3096,7 @@ msgid ""
 " expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr "Seleciona entradas da lista de reprodução, preenchendo um ou mais campos. Os campos utilizam expressões regulares, sem distinção entre maiúsculas e minúsculas. Se não souber como funcionam as expressões regulares, basta inserir uma parte do que pretende procurar."
+msgstr "Seleciona as entradas da lista de reprodução, preenchendo um ou mais campos. Os campos utilizam expressões regulares, sem distinção entre maiúsculas e minúsculas. Se não souber o que são expressões regulares, basta inserir uma parte do que pretende procurar."
 
 #: src/skins/ui_playlist.c:264
 msgid "Title: "
@@ -3116,7 +3116,7 @@ msgstr "Nome do ficheiro:"
 
 #: src/skins/ui_playlist.c:293
 msgid "Clear previous selection before searching"
-msgstr "Apaga a seleção anterior antes de procurar"
+msgstr "Apagar seleção anterior antes de procurar"
 
 #: src/skins/ui_playlist.c:296
 msgid "Automatically toggle queue for matching entries"
@@ -3150,7 +3150,7 @@ msgstr "Não foi possível criar o diretório (%s): %s\n"
 
 #: src/sndfile/plugin.c:456
 msgid "About sndfile plugin"
-msgstr "Sobre o plug-in sndfile"
+msgstr "Sobre o Sndfile"
 
 #: src/sndstretch/sndstretch_xmms.c:155
 msgid "About SndStretch"
@@ -3182,7 +3182,7 @@ msgstr "Configuração do SndStretch"
 
 #: src/song_change/song_change.c:437
 msgid "Command to run when Audacious starts a new song."
-msgstr "Comando a executar ao inicar uma nova faixa"
+msgstr "Comando a executar ao iniciar uma nova faixa"
 
 #: src/song_change/song_change.c:439 src/song_change/song_change.c:445
 #: src/song_change/song_change.c:451 src/song_change/song_change.c:457
@@ -3237,7 +3237,7 @@ msgstr "Ao alterar faixa"
 
 #: src/statusicon/statusicon.c:379
 msgid "About Status Icon Plugin"
-msgstr "Sobre o plug-in Status Icon"
+msgstr "Sobre o Status Icon"
 
 #: src/statusicon/statusicon.c:380
 msgid ""
@@ -3248,11 +3248,11 @@ msgid ""
 "\n"
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager.\n"
-msgstr "Plug-in Status Icon\n\nDireitos de autor 2005-2007, Giacomo Lozito <james@develia.org>\nDireitos de autor 2010, Michał Lipski <tallica@o2.pl>\n\nEste plug-in disponibiliza um ícone na barra de estado\nda área de notificação do gestor de janelas.\n"
+msgstr "Suplemento Status Icon\n\nDireitos de autor 2005-2007, Giacomo Lozito <james@develia.org>\nDireitos de autor 2010, Michał Lipski <tallica@o2.pl>\n\nEste suplemento disponibiliza um ícone na barra de estado\nda área de notificação do gestor de janelas.\n"
 
 #: src/statusicon/statusicon.c:451
 msgid "Status Icon Plugin - Preferences"
-msgstr "Preferências do plug-in Status Icon"
+msgstr "Preferências do Status Icon"
 
 #: src/statusicon/statusicon.c:461
 msgid "Right-Click Menu"
@@ -3299,11 +3299,11 @@ msgid ""
 "Extra Stereo Plugin\n"
 "\n"
 "By Johan Levin 1999."
-msgstr "Plug-in Extra Stereo\n\nPor Johan Levin 1999."
+msgstr "Suplemento Extra Stereo\n\nPor Johan Levin 1999."
 
 #: src/stereo_plugin/stereo.c:64
 msgid "About Extra Stereo Plugin"
-msgstr "Sobre o plug-in Extra Stereo"
+msgstr "Sobre o Extra Stereo"
 
 #: src/stereo_plugin/stereo.c:95
 msgid "Configure Extra Stereo"
@@ -3333,11 +3333,11 @@ msgstr "Gerador de tons:"
 
 #: src/unix-io/gtk.c:34
 msgid "About File I/O Plugin"
-msgstr "Sobre o plug-in File I/O"
+msgstr "Sobre o File I/O"
 
 #: src/vorbis/vorbis.c:573
 msgid "About Ogg Vorbis Audio Plugin"
-msgstr "Sobre o plug-in Ogg Vorbis"
+msgstr "Sobre o Ogg Vorbis"
 
 #: src/vorbis/vorbis.c:578
 msgid ""
@@ -3356,7 +3356,7 @@ msgid ""
 "Eugene Zagidullin <e.asphyx@gmail.com>\n"
 "\n"
 "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
-msgstr "Plug-in Ogg Vorbis pela Xiph.org Foundation\n\nCódigo original:\nTony Arcieri <bascule@inferno.tusculum.edu>\nContributos:\nChris Montgomery <monty@xiph.org>\nPeter Alm <peter@xmms.org>\nMichael Smith <msmith@labyrinth.edu.au>\nJack Moffitt <jack@icecast.org>\nJorn Baayen <jorn@nl.linux.org>\nHaavard Kvaalen <havardk@xmms.org>\nGian-Carlo Pascutto <gcp@sjeng.org>\nEugene Zagidullin <e.asphyx@gmail.com>\n\nConsulte a página Xiph.org Foundation em http://www.xiph.org/\n"
+msgstr "Suplemento Ogg Vorbis pela Xiph.org Foundation\n\nCódigo original:\nTony Arcieri <bascule@inferno.tusculum.edu>\nContributos:\nChris Montgomery <monty@xiph.org>\nPeter Alm <peter@xmms.org>\nMichael Smith <msmith@labyrinth.edu.au>\nJack Moffitt <jack@icecast.org>\nJorn Baayen <jorn@nl.linux.org>\nHaavard Kvaalen <havardk@xmms.org>\nGian-Carlo Pascutto <gcp@sjeng.org>\nEugene Zagidullin <e.asphyx@gmail.com>\n\nConsulte a página Xiph.org Foundation em http://www.xiph.org/\n"
 
 #: src/vtx/about.c:14
 msgid "About Vortex Player"
@@ -3376,7 +3376,7 @@ msgstr "Reprodutor do formato Vortex por Sashnov Alexander <sashnov@ngs.ru>\nCri
 #: src/wavpack/wavpack.c:353
 #, c-format
 msgid "Wavpack Decoder Plugin %s"
-msgstr "Plug-in de descodificação Wavpack %s"
+msgstr "Suplemento de descodificação Wavpack %s"
 
 #: src/wavpack/wavpack.c:354
 msgid ""

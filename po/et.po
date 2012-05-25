@@ -1,21 +1,23 @@
-# Audacious'e pluginate eesti keele tõlge.
-# Estonian translation of Audacious Plugins.
+# Estonian translation for Audacious Plugins
+# Copyright (C) Audacious translators
+# This file is distributed under the same license as the Audacious Plugins package.
 #
-# Copyright (C) 2007 Free Software Foundation, Inc.
+# Translators:
 # Ivar Smolin <okul at linux ee>, 2007.
-#
+# Ivar Smolin <okul@linux.ee>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious-plugins 1.4.2\n"
-"Report-Msgid-Bugs-To: http://jira.atheme.org/\n"
-"POT-Creation-Date: 2011-07-17 18:49-0400\n"
-"PO-Revision-Date: 2007-12-30 17:49+0200\n"
+"Project-Id-Version: Audacious Plugins\n"
+"Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
+"POT-Creation-Date: 2012-02-17 12:03-0500\n"
+"PO-Revision-Date: 2012-05-20 02:25+0000\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
-"Language-Team: Estonian <et@li.org>\n"
-"Language: et\n"
+"Language-Team: Estonian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: et\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: src/aac/libmp4.c:256
 #, c-format
@@ -23,111 +25,329 @@ msgid ""
 "Using libfaad2-%s for decoding.\n"
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Audacious team"
-msgstr ""
+msgstr "Dekodeerimiseks kasutatakse teeki libfaad2-%s.\nFAAD2 AAC/HE-AAC/HE-AACv2/DRM dekooder (c) Nero AG, www.nero.com\nAutoriõigused (c) 2005-2006 Audaciouse meeskond"
 
 #: src/aac/libmp4.c:261
-#, fuzzy
 msgid "About MP4 AAC decoder plugin"
-msgstr "MP4 AAC esituspluginast lähemalt"
+msgstr "MP4 AAC dekooderpluginast lähemalt"
+
+#: src/alarm/alarm.c:312
+msgid "About Alarm"
+msgstr "Äratusest lähemalt"
+
+#: src/alarm/alarm.c:313
+msgid ""
+"A plugin that can be used to start playing at a certain time.\n"
+"\n"
+"Originally written by Adam Feakin and Daniel Stodden."
+msgstr "Plugin esituste alustamiseks kindlaksmääratud ajal.\n\nEsialgse koodi autorid on Adam Feakin ja Daniel Stodden."
+
+#: src/alarm/interface.c:33
+msgid "Alarm"
+msgstr "Äratus"
+
+#: src/alarm/interface.c:40
+msgid "This is your wakeup call."
+msgstr "See on sinu äratus."
+
+#: src/alarm/interface.c:55 src/alarm/interface.c:1213
+msgid "OK"
+msgstr "Olgu"
+
+#: src/alarm/interface.c:214
+msgid "Alarm Settings"
+msgstr "Äratuste sätted"
+
+#: src/alarm/interface.c:229 src/alarm/interface.c:401
+#: src/alarm/interface.c:773
+msgid "Time"
+msgstr "Aeg"
+
+#: src/alarm/interface.c:270
+msgid "hours"
+msgstr "tundi"
+
+#: src/alarm/interface.c:331
+msgid "h"
+msgstr " "
+
+#: src/alarm/interface.c:361
+msgid "minutes"
+msgstr "minutit"
+
+#: src/alarm/interface.c:379
+msgid "Quiet after:"
+msgstr "Vaigistamine pärast:"
+
+#: src/alarm/interface.c:389
+msgid "Alarm at (default):"
+msgstr "Vaikimisi äratuskell (vaikimisi):"
+
+#: src/alarm/interface.c:409
+msgid "Choose the days for the alarm to come on"
+msgstr "Vali päevad, mil äratus tööle hakkab"
+
+#: src/alarm/interface.c:437 src/alarm/interface.c:485
+#: src/alarm/interface.c:533 src/alarm/interface.c:581
+#: src/alarm/interface.c:629 src/alarm/interface.c:677
+#: src/alarm/interface.c:725 src/bs2b/plugin.c:198 src/OSS/configure.c:153
+#: src/skins/ui_equalizer.c:1104 src/skins/ui_manager.c:447
+#: src/skins/ui_manager.c:468
+msgid "Default"
+msgstr "Vaikimisi"
+
+#: src/alarm/interface.c:763
+msgid "Day"
+msgstr "Päev"
+
+#: src/alarm/interface.c:783
+msgid "Tuesday"
+msgstr "Teisipäev"
+
+#: src/alarm/interface.c:794
+msgid "Wednesday"
+msgstr "Kolmapäev"
+
+#: src/alarm/interface.c:805
+msgid "Thursday"
+msgstr "Neljapäev"
+
+#: src/alarm/interface.c:816
+msgid "Friday"
+msgstr "Reede"
+
+#: src/alarm/interface.c:827
+msgid "Saturday"
+msgstr "Laupäev"
+
+#: src/alarm/interface.c:838
+msgid "Sunday"
+msgstr "Pühapäev"
+
+#: src/alarm/interface.c:848
+msgid "Monday"
+msgstr "Esmaspäev"
+
+#: src/alarm/interface.c:859
+msgid "Days"
+msgstr "Päevad"
+
+#: src/alarm/interface.c:875
+msgid "Fading"
+msgstr "Sumbumine"
+
+#: src/alarm/interface.c:912
+msgid "seconds"
+msgstr "sekundit"
+
+#: src/alarm/interface.c:920 src/alarm/interface.c:1035
+msgid "Volume"
+msgstr "Valjus"
+
+#: src/alarm/interface.c:946
+msgid "Current"
+msgstr "Praegune"
+
+#: src/alarm/interface.c:954
+msgid "Start at"
+msgstr "Alguses"
+
+#: src/alarm/interface.c:982 src/alarm/interface.c:1026
+msgid "%"
+msgstr "%"
+
+#: src/alarm/interface.c:998
+msgid "Final"
+msgstr "Lõpuks"
+
+#: src/alarm/interface.c:1051
+msgid "Additional Command"
+msgstr "Täiendav käsk"
+
+#: src/alarm/interface.c:1077
+msgid "enable"
+msgstr "lubatud"
+
+#: src/alarm/interface.c:1085
+msgid "Playlist (optional)"
+msgstr "Esitusnimekiri (valikuline)"
+
+#: src/alarm/interface.c:1111
+msgid "Browse..."
+msgstr "Sirvi..."
+
+#: src/alarm/interface.c:1119 src/alarm/interface.c:1283
+msgid "Reminder"
+msgstr "Meeldetuletaja"
+
+#: src/alarm/interface.c:1136
+msgid "Use reminder"
+msgstr "Kasutan meeldetuletajat"
+
+#: src/alarm/interface.c:1152 src/sndstretch/sndstretch_xmms.c:358
+msgid "Options"
+msgstr "Valikud"
+
+#: src/alarm/interface.c:1160
+msgid "What do these options mean?"
+msgstr "Mida need valikud tähendavad?"
+
+#: src/alarm/interface.c:1188
+msgid ""
+"\n"
+"Time\n"
+"  Alarm at: \n"
+"    The time for the alarm to come on.\n"
+"\n"
+"  Quiet After: \n"
+"    Stop alarm after this amount of time.\n"
+"       (if the wakeup dialog is not closed)\n"
+"\n"
+"\n"
+"Days\n"
+"  Day:\n"
+"    Select the days for the alarm to activate.\n"
+"\n"
+"  Time:\n"
+"    Choose the time for the alarm on each day,\n"
+"    or select the toggle button to use the default\n"
+"    time.\n"
+"\n"
+"\n"
+"Volume\n"
+"  Fading: \n"
+"    Fade the volume up to the chosen volume \n"
+"    for this amount of time.\n"
+"\n"
+"  Start at: \n"
+"    Start fading from this volume.\n"
+"\n"
+"  Final: \n"
+"    The volume to stop fading at.  If the fading\n"
+"    time is 0 then set volume to this and start\n"
+"    playing.\n"
+"\n"
+"\n"
+"Options:\n"
+"  Additional Command:\n"
+"    Run this command at the alarm time.\n"
+"\n"
+"  Playlist: \n"
+"    Load this playlist for playing songs from \n"
+"    (must have .m3u extension).  If no playlist\n"
+"    is given then the songs which are currently\n"
+"    in the list will be used.\n"
+"    The URL of an mp3/ogg stream can also be\n"
+"    entered here, but loading of playlists from\n"
+"    URLs is not currently supported by xmms.\n"
+"\n"
+"  Reminder:\n"
+"    Display a reminder when the alarm goes off,\n"
+"    type the reminder in the box and turn on the\n"
+"    toggle button if you want it to be shown.\n"
+msgstr ""
+
+#: src/alarm/interface.c:1190 src/skins/ui_manager.c:382
+msgid "Help"
+msgstr "Abi"
+
+#: src/alarm/interface.c:1222 src/cdaudio-ng/configure.c:249
+#: src/crystalizer/crystalizer.c:130 src/echo_plugin/gui.c:125
+#: src/jack/configure.c:148 src/null/null.c:108 src/stereo_plugin/stereo.c:125
+msgid "Cancel"
+msgstr "Loobu"
+
+#: src/alarm/interface.c:1290
+msgid "Your reminder for today is.."
+msgstr "Sinu tänane meeldetuletaja on ..."
+
+#: src/alarm/interface.c:1315
+msgid "Thankyou"
+msgstr "Aitäh"
 
 #: src/alsa/config.c:210
-#, fuzzy
 msgid "Default PCM device"
-msgstr "Vaikimisi PCM-seade (%s)"
+msgstr "Vaikimisi PCM-seade"
 
 #: src/alsa/config.c:235
-#, fuzzy
 msgid "Default mixer device"
-msgstr "Vaikimisi PCM-seade (%s)"
+msgstr "Vaikimisi mikserseade"
 
-#: src/alsa/config.c:447
-#, fuzzy
+#: src/alsa/config.c:438
 msgid "ALSA Output Plugin Preferences"
-msgstr "Olekuikooni plugina eelistused"
+msgstr "ALSA väljundplugina eelistused"
 
-#: src/alsa/config.c:454
-#, fuzzy
+#: src/alsa/config.c:445
 msgid "PCM device:"
-msgstr "Miksimisseade:"
+msgstr "PCM-seade:"
 
-#: src/alsa/config.c:456 src/OSS/configure.c:246
+#: src/alsa/config.c:447 src/OSS/configure.c:237
 msgid "Mixer device:"
 msgstr "Miksimisseade:"
 
-#: src/alsa/config.c:458
-#, fuzzy
+#: src/alsa/config.c:449
 msgid "Mixer element:"
-msgstr "Miksimisseade:"
+msgstr "Miksimiselement:"
 
-#: src/alsa/config.c:461
+#: src/alsa/config.c:452
 msgid "Work around drain hangup"
 msgstr ""
 
 #: src/alsa/plugin.c:59
-#, fuzzy
 msgid "About ALSA Output Plugin"
-msgstr "JACK väljundplugina versioonist 0.17 lähemalt"
+msgstr "ALSA väljundpluginast lähemalt"
 
 #: src/alsa/plugin.c:81
-#, fuzzy
 msgid "ALSA error"
-msgstr "Viga!"
+msgstr "ALSA viga"
 
-#: src/amidi-plug/amidi-plug.c:335
+#: src/amidi-plug/amidi-plug.c:326
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
-msgstr ""
+msgstr "Sa pole MIDI esitamiseks valinud ühtegi sekventseriporti.  Seda saab teha MIDI-plugina eelistustest."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
-msgstr ""
+msgstr "ALSA taustaprogramm "
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
-msgstr ""
+msgstr "FluidSynth taustaprogramm "
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen ouput plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
+msgstr "See taustaprogramm saadab MIDI-sündmused SoundFont2 spetsifikatsioonil põhinevale tarkvaralisele süntesaatorprogrammile FluidSynth (www.fluidsynth.org).\nSünteesitud heli esitatakse valitud väljundplugina abil ning seda on võimalik efektipluginate abil järeltöödelda.\nTaustaprogrammi autor on Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:228
 msgid "ALSA BACKEND CONFIGURATION"
-msgstr ""
+msgstr "ALSA TAUSTAPROGRAMMI SÄTTED"
 
 #: src/amidi-plug/i_configure-alsa.c:331
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: src/amidi-plug/i_configure-alsa.c:333
 msgid "Client name"
-msgstr ""
+msgstr "Kliendi nimi"
 
 #: src/amidi-plug/i_configure-alsa.c:335
 msgid "Port name"
-msgstr ""
+msgstr "Pordi nimi"
 
 #: src/amidi-plug/i_configure-alsa.c:346
 msgid "ALSA output ports"
-msgstr ""
+msgstr "ALSA väljundi pordid"
 
 #: src/amidi-plug/i_configure-alsa.c:399
 msgid "Soundcard: "
@@ -143,29 +363,29 @@ msgstr "Mikseri sätted"
 
 #: src/amidi-plug/i_configure-alsa.c:429
 msgid "ALSA Backend not loaded or not available"
-msgstr ""
+msgstr "ALSA taustaprogrammi pole laaditud või pole see saadaval"
 
 #: src/amidi-plug/i_configure-alsa.c:448
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">ALSA taustaprogramm</span>"
 
 #: src/amidi-plug/i_configure-ap.c:59
 msgid "AMIDI-Plug - backend information"
-msgstr ""
+msgstr "AMIDI-Plug - taustaprogrammi andmed"
 
 #: src/amidi-plug/i_configure-ap.c:196
 msgid "AMIDI-PLUG PREFERENCES"
-msgstr ""
+msgstr "AMIDI-PLUG EELISTUSED"
 
 #: src/amidi-plug/i_configure-ap.c:223
 msgid "Backend selection"
-msgstr ""
+msgstr "Taustaprogrammi valimine"
 
 #: src/amidi-plug/i_configure-ap.c:227
 msgid "Available backends"
-msgstr ""
+msgstr "Saadaolevad taustaprogrammid"
 
 #: src/amidi-plug/i_configure-ap.c:257
 msgid "Playback settings"
@@ -185,41 +405,41 @@ msgstr "Laiendatud sätted"
 
 #: src/amidi-plug/i_configure-ap.c:293
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr ""
+msgstr "esitusnimekirjas olevate MIDI-failide kestuse eelarvutamine"
 
 #: src/amidi-plug/i_configure-ap.c:298
 msgid "extract comments from MIDI file (if available)"
-msgstr ""
+msgstr "MIDI-failidest eraldatakse kommentaarid (kui need on saadaval)"
 
 #: src/amidi-plug/i_configure-ap.c:303
 msgid "extract lyrics from MIDI file (if available)"
-msgstr ""
+msgstr "MIDI-failidest eraldatakse laulusõnad (kui need on saadaval)"
 
 #: src/amidi-plug/i_configure-ap.c:333
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">AMIDI\nPlug</span>"
 
 #: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug - select file"
-msgstr ""
+msgstr "AMIDI-Plug - faili valimine"
 
 #: src/amidi-plug/i_configure.c:129
 msgid "AMIDI-Plug - configuration"
-msgstr ""
+msgstr "AMIDI-Plug - sätted"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr ""
+msgstr "AMIDI-Plug - SoundFont faili valimine"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:270
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
-msgstr ""
+msgstr "FLUIDSYNTH TAUSTAPROGRAMMI SÄTTED"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:313
 msgid "SoundFont settings"
-msgstr ""
+msgstr "SoundFont sätted"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:345
 msgid "Filename"
@@ -227,7 +447,7 @@ msgstr "Failinimi"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:349
 msgid "Size (bytes)"
-msgstr ""
+msgstr "Suurus (baitides)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:398
 msgid "Load SF on player start"
@@ -250,7 +470,7 @@ msgstr ""
 #: src/amidi-plug/i_configure-fluidsynth.c:488
 #: src/amidi-plug/i_configure-fluidsynth.c:519
 msgid "use default"
-msgstr ""
+msgstr "vaikimisi väärtus"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:435
 #: src/amidi-plug/i_configure-fluidsynth.c:463
@@ -281,7 +501,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:544
 msgid "sample rate"
-msgstr ""
+msgstr "Diskreetimissagedus"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:550
 msgid "22050 Hz "
@@ -297,7 +517,7 @@ msgstr "96000 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:559
 msgid "custom "
-msgstr ""
+msgstr "kohandatud "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:568
 msgid "Hz "
@@ -311,7 +531,7 @@ msgstr ""
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">FluidSynth \ntaustaprogramm</span>"
 
 #: src/amidi-plug/i_configure-timidity.c:39
 msgid "TIMIDITY BACKEND CONFIGURATION"
@@ -325,17 +545,15 @@ msgstr "TiMidity taustaprogrammi pole laetud või pole see saadaval"
 msgid ""
 "<span size=\"smaller\">TiMidity\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">TiMidity\n"
-"taustaprogramm</span>"
+msgstr "<span size=\"smaller\">TiMidity\ntaustaprogramm</span>"
 
-#: src/amidi-plug/i_fileinfo.c:169 src/sid/xs_interface.c:1769
+#: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
 msgstr "Nimi:"
 
 #: src/amidi-plug/i_fileinfo.c:193
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> MIDI-andmed </span>"
 
 #: src/amidi-plug/i_fileinfo.c:205
 msgid "Format:"
@@ -347,7 +565,7 @@ msgstr "Kestus (msek):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "Num of Tracks:"
-msgstr ""
+msgstr "Radade arv:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -367,15 +585,15 @@ msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> MIDI kommentaarid ja laulusõnad </span>"
 
 #: src/amidi-plug/i_fileinfo.c:288
 msgid "* no comments available in this MIDI file *"
-msgstr ""
+msgstr "* selles MIDI-failis pole kommentaare *"
 
 #: src/amidi-plug/i_fileinfo.c:301
 msgid "* no lyrics available in this MIDI file *"
-msgstr ""
+msgstr "* selles MIDI-failis pole laulusõnu *"
 
 #: src/amidi-plug/i_fileinfo.c:349
 msgid "  (invalid UTF-8)"
@@ -383,13 +601,13 @@ msgstr "  (vigane UTF-8)"
 
 #: src/amidi-plug/i_utils.c:43
 msgid "AMIDI-Plug - about"
-msgstr ""
+msgstr "AMIDI-Plug plugina andmed"
 
 #: src/amidi-plug/i_utils.c:68
 msgid ""
 "\n"
 "AMIDI-Plug "
-msgstr ""
+msgstr "\nAMIDI-Plug "
 
 #: src/amidi-plug/i_utils.c:69
 msgid ""
@@ -414,259 +632,256 @@ msgid ""
 "Tony Vroon\n"
 "for the good help with alpha testing\n"
 "\n"
-msgstr ""
+msgstr "\nmodulaarne MIDI-muusikaesitaja\nhttp://www.develia.org/projects.php?p=amidiplug\n\nAutor: Giacomo Lozito\n< james@develia.org >\n\n\neriline tänu...\n\nClemens Ladisch ja Jaroslav Kysela\nnende poolt loodud lahedate programmide aplaymidi\nja amixer eest. Nendest oli ALSA API õppimisel lisaks\nalsa-lib dokumentide kõrval väga palju abi.\n\nAlfredo Spadafina\nkena midi klaveri logo eest\n\nTony Vroon\ntõhusa abi eest alfatestimisel\n\n"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
-msgstr ""
+msgstr "Ristkülik"
 
 #: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
-msgstr ""
+msgstr "Ümarnurkne ristkülik"
 
 #: src/aosd/aosd_style.c:83
 msgid "Concave Rectangle"
-msgstr ""
+msgstr "Nõgus ristkülik"
 
 #: src/aosd/aosd_style.c:87
 msgid "None"
-msgstr ""
+msgstr "Puudub"
 
-#: src/aosd/aosd_trigger.c:77
+#: src/aosd/aosd_trigger.c:78
 msgid "Playback Start"
 msgstr "Esitamise alustamine"
 
-#: src/aosd/aosd_trigger.c:78
+#: src/aosd/aosd_trigger.c:79
 msgid "Triggers OSD when a playlist entry is played."
-msgstr ""
+msgstr "OSD käivitamine loo esitamisel esitusnimekirjast."
 
-#: src/aosd/aosd_trigger.c:82
+#: src/aosd/aosd_trigger.c:83
 msgid "Title Change"
 msgstr "Pealkirja muutumine"
 
-#: src/aosd/aosd_trigger.c:83
+#: src/aosd/aosd_trigger.c:84
 msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
-msgstr ""
+msgstr "OSD käivitamine kui esitamise ajal loo pealkiri muutub, kuid esitatav fail või andmevoog jääb samaks. See on kasulik internetiraadiote puhul."
 
-#: src/aosd/aosd_trigger.c:89
+#: src/aosd/aosd_trigger.c:90
 msgid "Volume Change"
 msgstr "Valjuse muutumine"
 
-#: src/aosd/aosd_trigger.c:90
+#: src/aosd/aosd_trigger.c:91
 msgid "Triggers OSD when volume is changed."
-msgstr ""
+msgstr "OSD käivitamine helivaljuse muutmisel."
 
-#: src/aosd/aosd_trigger.c:94
+#: src/aosd/aosd_trigger.c:95
 msgid "Pause On"
 msgstr "Pausimine"
 
-#: src/aosd/aosd_trigger.c:95
+#: src/aosd/aosd_trigger.c:96
 msgid "Triggers OSD when playback is paused."
-msgstr ""
+msgstr "OSD käivitamine loo pausimisel."
 
-#: src/aosd/aosd_trigger.c:99
+#: src/aosd/aosd_trigger.c:100
 msgid "Pause Off"
 msgstr "Pausi lõpetamine"
 
-#: src/aosd/aosd_trigger.c:100
+#: src/aosd/aosd_trigger.c:101
 msgid "Triggers OSD when playback is unpaused."
-msgstr ""
+msgstr "OSD käivitamine pausitud loo jätkamisel."
 
-#: src/aosd/aosd_ui.c:180
+#: src/aosd/aosd_ui.c:179
 msgid "Placement"
 msgstr "Paigutamine"
 
-#: src/aosd/aosd_ui.c:219
+#: src/aosd/aosd_ui.c:218
 msgid "Relative X offset:"
-msgstr "Suhteline X-nihe:"
+msgstr "Suhteline nihe X-teljel:"
 
-#: src/aosd/aosd_ui.c:228
+#: src/aosd/aosd_ui.c:227
 msgid "Relative Y offset:"
-msgstr "Suhteline Y-nihe:"
+msgstr "Suhteline nihe Y-teljel:"
 
-#: src/aosd/aosd_ui.c:237
+#: src/aosd/aosd_ui.c:236
 msgid "Max OSD width:"
 msgstr "Suurim OSD laius:"
 
-#: src/aosd/aosd_ui.c:250
+#: src/aosd/aosd_ui.c:249
 msgid "Multi-Monitor options"
 msgstr "Mitme monitori valikud"
 
-#: src/aosd/aosd_ui.c:254
+#: src/aosd/aosd_ui.c:253
 msgid "Display OSD using:"
-msgstr "OSD-d kuvatakse:"
+msgstr "OSD kuvatakse:"
 
-#: src/aosd/aosd_ui.c:265
+#: src/aosd/aosd_ui.c:264
 msgid "all monitors"
 msgstr "kõigil monitoridel"
 
-#: src/aosd/aosd_ui.c:268
+#: src/aosd/aosd_ui.c:267
 #, c-format
 msgid "monitor %i"
 msgstr "%i. monitoril"
 
-#: src/aosd/aosd_ui.c:323
+#: src/aosd/aosd_ui.c:322
 msgid "Timing (ms)"
 msgstr "Ajastus (millisekundites)"
 
-#: src/aosd/aosd_ui.c:328
+#: src/aosd/aosd_ui.c:327
 msgid "Display:"
 msgstr "Kuvamine:"
 
-#: src/aosd/aosd_ui.c:333
+#: src/aosd/aosd_ui.c:332
 msgid "Fade in:"
 msgstr "Sujuv näitamine:"
 
-#: src/aosd/aosd_ui.c:338
+#: src/aosd/aosd_ui.c:337
 msgid "Fade out:"
 msgstr "Sujuv peitmine:"
 
-#: src/aosd/aosd_ui.c:419
+#: src/aosd/aosd_ui.c:418
 msgid "Fonts"
 msgstr "Kirjatüübid"
 
-#: src/aosd/aosd_ui.c:427
+#: src/aosd/aosd_ui.c:426
 #, c-format
 msgid "Font %i:"
 msgstr "Kirjatüüp %i:"
 
-#: src/aosd/aosd_ui.c:444
+#: src/aosd/aosd_ui.c:443
 msgid "Shadow"
 msgstr "Vari"
 
-#: src/aosd/aosd_ui.c:479
+#: src/aosd/aosd_ui.c:478
 msgid "Internationalization"
-msgstr ""
+msgstr "Internatsionaliseerimine"
 
-#: src/aosd/aosd_ui.c:485
+#: src/aosd/aosd_ui.c:484
 msgid "Disable UTF-8 conversion of text (in aosd)"
-msgstr ""
+msgstr "Teksti UTF-8 teisendused on keelatud (aosd jaoks)"
 
-#: src/aosd/aosd_ui.c:503
+#: src/aosd/aosd_ui.c:502
 msgid "Select Skin File"
-msgstr ""
+msgstr "Rüüfaili valimine"
 
-#: src/aosd/aosd_ui.c:614
+#: src/aosd/aosd_ui.c:613
 msgid "Render Style"
 msgstr "Renderdamise laad"
 
-#: src/aosd/aosd_ui.c:630
+#: src/aosd/aosd_ui.c:629
 msgid "Colors"
 msgstr "Värvused"
 
-#: src/aosd/aosd_ui.c:643
+#: src/aosd/aosd_ui.c:642
 #, c-format
 msgid "Color %i:"
 msgstr "Värvus %i:"
 
-#: src/aosd/aosd_ui.c:663
+#: src/aosd/aosd_ui.c:662
 msgid "Custom Skin"
-msgstr ""
+msgstr "Kohandatud rüü"
 
-#: src/aosd/aosd_ui.c:669
+#: src/aosd/aosd_ui.c:668
 msgid "Skin file:"
-msgstr ""
+msgstr "Rüüfail:"
 
-#: src/aosd/aosd_ui.c:672 src/sid/xs_interface.c:1044
-#: src/sid/xs_interface.c:1236 src/sid/xs_interface.c:1292
+#: src/aosd/aosd_ui.c:671
 msgid "Browse"
-msgstr ""
+msgstr "Sirvi"
 
-#: src/aosd/aosd_ui.c:774
+#: src/aosd/aosd_ui.c:773
 msgid "Enable trigger"
 msgstr "Päästik on lubatud"
 
-#: src/aosd/aosd_ui.c:801
+#: src/aosd/aosd_ui.c:800
 msgid "Event"
 msgstr "Sündmus"
 
-#: src/aosd/aosd_ui.c:829
+#: src/aosd/aosd_ui.c:828
 msgid "Composite manager detected"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:836
+#: src/aosd/aosd_ui.c:835
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:844
+#: src/aosd/aosd_ui.c:843
 msgid "Composite manager not required for fake transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:882
+#: src/aosd/aosd_ui.c:881
 msgid "Transparency"
 msgstr "Läbipaistvus"
 
-#: src/aosd/aosd_ui.c:888
+#: src/aosd/aosd_ui.c:887
 msgid "Fake transparency"
 msgstr "Võltsitud läbipaistvus"
 
-#: src/aosd/aosd_ui.c:890
+#: src/aosd/aosd_ui.c:889
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr "Tegelik läbipaistvus (vajab X Composite laiendust)"
 
-#: src/aosd/aosd_ui.c:932
+#: src/aosd/aosd_ui.c:931
 msgid "Composite extension not loaded"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:940
+#: src/aosd/aosd_ui.c:939
 msgid "Composite extension not available"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:959
+#: src/aosd/aosd_ui.c:958
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1040
+#: src/aosd/aosd_ui.c:1039
 msgid "Audacious OSD - configuration"
-msgstr ""
+msgstr "Audacious OSD - sätted"
 
-#: src/aosd/aosd_ui.c:1061
+#: src/aosd/aosd_ui.c:1060
 msgid "Test"
 msgstr "Proovi"
 
-#: src/aosd/aosd_ui.c:1076
+#: src/aosd/aosd_ui.c:1075
 msgid "Position"
 msgstr "Asukoht"
 
-#: src/aosd/aosd_ui.c:1081
+#: src/aosd/aosd_ui.c:1080
 msgid "Animation"
 msgstr "Animatsioon"
 
-#: src/aosd/aosd_ui.c:1086
+#: src/aosd/aosd_ui.c:1085
 msgid "Text"
 msgstr "Tekst"
 
-#: src/aosd/aosd_ui.c:1091
+#: src/aosd/aosd_ui.c:1090
 msgid "Decoration"
 msgstr "Kaunistused"
 
-#: src/aosd/aosd_ui.c:1096
+#: src/aosd/aosd_ui.c:1095
 msgid "Trigger"
 msgstr "Päästikud"
 
-#: src/aosd/aosd_ui.c:1101 src/cdaudio-ng/configure.c:171
-#: src/sid/xs_interface.c:1302
+#: src/aosd/aosd_ui.c:1100 src/cdaudio-ng/configure.c:171
 msgid "Misc"
 msgstr "Muu"
 
-#: src/aosd/aosd_ui.c:1138
+#: src/aosd/aosd_ui.c:1137
 msgid "Audacious OSD - about"
-msgstr ""
+msgstr "Audaciouse OSD-st lähemalt"
 
-#: src/aosd/aosd_ui.c:1168
+#: src/aosd/aosd_ui.c:1167
 msgid ""
 "\n"
 "Audacious OSD "
-msgstr ""
+msgstr "\nAudacious OSD "
 
-#: src/aosd/aosd_ui.c:1169
+#: src/aosd/aosd_ui.c:1168
 msgid ""
 "\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
@@ -677,26 +892,39 @@ msgid ""
 "written by Evan Martin\n"
 "http://neugierig.org/software/ghosd/\n"
 "\n"
-msgstr ""
+msgstr "\nhttp://www.develia.org/projects.php?p=audacious#aosd\nAutor: Giacomo Lozito\n< james@develia.org >\n\nOn-Screen-Display põhineb Ghosd teegil\nAutor: Evan Martin\nhttp://neugierig.org/software/ghosd/\n\n"
 
 #: src/blur_scope/config.c:73
 msgid "Blur Scope: Color selection"
-msgstr ""
+msgstr "Hägustatud ostsilloskoop: värvuse valimine"
 
-#: src/blur_scope/config.c:83 src/jack/configure.c:111
+#: src/blur_scope/config.c:83 src/jack/configure.c:106
 msgid "Options:"
 msgstr "Valikud:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:264
-#, fuzzy
-msgid "About Audio CD Plugin"
-msgstr "FLAC audiopluginast lähemalt"
+#: src/bs2b/plugin.c:157
+msgid "Bauer stereophonic-to-binaural Preferences"
+msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:265
-#, fuzzy
+#: src/bs2b/plugin.c:168
+msgid "Feed level:"
+msgstr ""
+
+#: src/bs2b/plugin.c:182
+msgid "Cut frequency:"
+msgstr ""
+
+#: src/bs2b/plugin.c:196
+msgid "Presets:"
+msgstr "Valmisseadistused:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:242
+msgid "About Audio CD Plugin"
+msgstr "Audaciouse CD-pluginast lähemalt"
+
+#: src/cdaudio-ng/cdaudio-ng.c:243
 msgid ""
-"Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
-"Team.\n"
+"Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n"
 "\n"
 "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
 "\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n"
@@ -706,26 +934,17 @@ msgid ""
 "This was a Google Summer of Code 2007 project.\n"
 "\n"
 "Copyright 2009 John Lindgren"
-msgstr ""
-"Autoriõigused (c) 2007, Calin Crisan <ccrisan@gmail.com> ja Audacious'e "
-"meeskond.\n"
-"\n"
-"Palju tänu libcdio arendajatele <http://www.gnu.org/software/libcdio/>\n"
-"\tja libcddb arendajatele <http://libcddb.sourceforge.net/>.\n"
-"\n"
-"Samuti tänan Tony Vroon'i minu juhendamise eest.\n"
-"\n"
-"See projekt loodi Google Summer of Code 2007 raames."
+msgstr "Autoriõigused (c) 2007 Calin Crisan <ccrisan@gmail.com> ja Audaciouse meeskond.\n\nSuur tänu libcdio arendajatele <http://www.gnu.org/software/libcdio/>\n<span class=\"whitespace other\" title=\"Tab\">»</span> ja libcddb arendajatele <http://libcddb.sourceforge.net/>.\n\nSamuti palju tänu Tony Vroonile minu juhendamise eest.\n\nSee projekt valmis Google Summer of Code 2007 raames.\n\nAutoriõigused 2009 John Lindgren"
 
-#: src/cdaudio-ng/cdaudio-ng.c:558
+#: src/cdaudio-ng/cdaudio-ng.c:552
 msgid "Audio CD"
-msgstr ""
+msgstr "Audio-CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:913
+#: src/cdaudio-ng/cdaudio-ng.c:924
 msgid "Drive is empty."
-msgstr ""
+msgstr "Seade on tühi."
 
-#: src/cdaudio-ng/cdaudio-ng.c:915
+#: src/cdaudio-ng/cdaudio-ng.c:926
 msgid "Unsupported disk type."
 msgstr ""
 
@@ -743,7 +962,7 @@ msgstr "Pealkirja andmed"
 
 #: src/cdaudio-ng/configure.c:176
 msgid "Disc speed:"
-msgstr ""
+msgstr "Plaadi kiirus:"
 
 #: src/cdaudio-ng/configure.c:184
 msgid "Use cd-text if available"
@@ -758,9 +977,8 @@ msgid "Server: "
 msgstr "Server: "
 
 #: src/cdaudio-ng/configure.c:201
-#, fuzzy
 msgid "Path: "
-msgstr "Muster: "
+msgstr "Rada: "
 
 #: src/cdaudio-ng/configure.c:205
 msgid "Port: "
@@ -768,119 +986,108 @@ msgstr "Port: "
 
 #: src/cdaudio-ng/configure.c:218
 msgid "Use HTTP instead of CDDBP"
-msgstr ""
+msgstr "CDDBP asemel kasutatakse HTTP-d"
 
 #: src/cdaudio-ng/configure.c:230
 msgid "Override default device: "
 msgstr "Vaikimisi seadme asemel kasutatakse: "
 
-#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:131
-#: src/echo_plugin/gui.c:123 src/jack/configure.c:146 src/null/null.c:112
-#: src/stereo_plugin/stereo.c:125
+#: src/cdaudio-ng/configure.c:244 src/crystalizer/crystalizer.c:123
+#: src/echo_plugin/gui.c:118 src/jack/configure.c:141 src/null/null.c:107
+#: src/stereo_plugin/stereo.c:118
 msgid "Ok"
 msgstr "Olgu"
 
-#: src/cdaudio-ng/configure.c:249 src/crystalizer/crystalizer.c:138
-#: src/echo_plugin/gui.c:130 src/jack/configure.c:153 src/null/null.c:113
-#: src/stereo_plugin/stereo.c:132
-msgid "Cancel"
-msgstr "Loobu"
-
 #: src/cd-menu-items/cd-menu-items.c:34
-#, fuzzy
 msgid "Play CD"
-msgstr "Esitamine"
+msgstr "Esita CD-lt"
 
 #: src/cd-menu-items/cd-menu-items.c:34
 msgid "Add CD"
 msgstr "Lisa CD"
 
-#: src/compressor/plugin.c:67
-#, fuzzy
+#: src/compressor/plugin.c:63
 msgid "About Dynamic Range Compression Plugin"
-msgstr "Ekstra stereo pluginast lähemalt"
+msgstr ""
 
-#: src/compressor/plugin.c:99
+#: src/compressor/plugin.c:95
 msgid "Dynamic Range Compressor Preferences"
 msgstr ""
 
-#: src/compressor/plugin.c:111
-#, fuzzy
+#: src/compressor/plugin.c:107
 msgid "Center volume:"
-msgstr "Muudetakse valjust"
+msgstr ""
 
-#: src/compressor/plugin.c:124
+#: src/compressor/plugin.c:120
 msgid "Dynamic range:"
 msgstr ""
 
-#: src/console/configure.c:138
-#, fuzzy
+#: src/console/configure.c:136
 msgid "Game Console Music Decoder"
-msgstr "Console Music Decoder pluginast lähemalt"
+msgstr "Mängukonsooli muusikadekooder"
 
-#: src/console/configure.c:155
+#: src/console/configure.c:153
 msgid "General"
 msgstr "Üldine"
 
-#: src/console/configure.c:157 src/skins/ui_manager.c:176
+#: src/console/configure.c:155 src/skins/ui_manager.c:176
 msgid "Playback"
 msgstr "Esitamine"
 
-#: src/console/configure.c:172
+#: src/console/configure.c:170
 msgid "Bass:"
-msgstr ""
+msgstr "Madalad:"
 
-#: src/console/configure.c:176 src/console/configure.c:187
-#: src/console/configure.c:208
+#: src/console/configure.c:174 src/console/configure.c:185
+#: src/console/configure.c:206
 msgid "secs"
-msgstr ""
+msgstr "sek"
 
-#: src/console/configure.c:183
+#: src/console/configure.c:181
 msgid "Treble:"
-msgstr ""
+msgstr "Kõrged:"
 
-#: src/console/configure.c:204
+#: src/console/configure.c:202
 msgid "Default song length:"
-msgstr ""
+msgstr "Loo vaikimisi kestus:"
 
-#: src/console/configure.c:210 src/sid/xs_interface.c:666
+#: src/console/configure.c:208
 msgid "Resampling"
 msgstr ""
 
-#: src/console/configure.c:216
+#: src/console/configure.c:214
 msgid "Enable audio resampling"
 msgstr ""
 
-#: src/console/configure.c:231
+#: src/console/configure.c:229
 msgid "Resampling rate:"
 msgstr ""
 
-#: src/console/configure.c:235 src/sid/xs_interface.c:354
+#: src/console/configure.c:233
 msgid "Hz"
 msgstr "Hz"
 
-#: src/console/configure.c:246
+#: src/console/configure.c:244
 msgid "SPC"
-msgstr ""
+msgstr "SPC"
 
-#: src/console/configure.c:247
+#: src/console/configure.c:245
 msgid "Ignore length from SPC tags"
-msgstr ""
+msgstr "SPC-siltidest pärit pikkust tuleb eirata"
 
-#: src/console/configure.c:248
+#: src/console/configure.c:246
 msgid "Increase reverb"
 msgstr ""
 
-#: src/console/configure.c:273
+#: src/console/configure.c:271
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
+"The default song length, expressed in seconds, is used for songs that do not"
+" provide length information (i.e. looping tracks)."
 msgstr ""
 
 #: src/console/plugin.c:33
-#, fuzzy
 msgid "About the Game Console Music Decoder"
-msgstr "Console Music Decoder pluginast lähemalt"
+msgstr "Mängukonsooli muusikadekoodrist lähemalt"
 
 #: src/console/plugin.c:34
 msgid ""
@@ -888,56 +1095,48 @@ msgid ""
 "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
 "Audacious implementation by: William Pitcock <nenolod@dereferenced.org>, \n"
 "        Shay Green <gblargg@gmail.com>\n"
-msgstr ""
+msgstr "Mängukonsoolide muusikavormingute dekoodimismootor põhineb programmil Game_Music_Emu 0.5.2.\nToetatud vormingud: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\nAudaciouse plugina autorid on William Pitcock <nenolod@dereferenced.org>, \n        Shay Green <gblargg@gmail.com>\n"
 
-#: src/crossfade/plugin.c:65
-#, fuzzy
+#: src/crossfade/plugin.c:60
 msgid "About Crossfade"
-msgstr "Kajapluginast lähemalt"
+msgstr "Sujuvast üleminekust lähemalt"
 
-#: src/crossfade/plugin.c:97
+#: src/crossfade/plugin.c:92
 msgid "Crossfade Preferences"
-msgstr ""
+msgstr "Sujuva ülemineku eelistused"
 
-#: src/crossfade/plugin.c:109
+#: src/crossfade/plugin.c:104
 msgid "Overlap (in seconds):"
-msgstr ""
+msgstr "Kattuva osa kestus (sekundites):"
 
-#: src/crossfade/plugin.c:140 src/crossfade/plugin.c:146
-#, fuzzy
+#: src/crossfade/plugin.c:135 src/crossfade/plugin.c:141
 msgid "Crossfade Error"
-msgstr "ModPlug'i sätted"
+msgstr "Sujuva ülemineku viga"
 
-#: src/crossfade/plugin.c:140
+#: src/crossfade/plugin.c:135
 msgid ""
 "Crossfading failed because the songs had a different number of channels."
 msgstr ""
 
-#: src/crossfade/plugin.c:148
+#: src/crossfade/plugin.c:143
 msgid ""
 "Crossfading failed because the songs had different sample rates.\n"
 "\n"
-"You can use the Sample Rate Converter effect to resample the songs to the "
-"same rate."
+"You can use the Sample Rate Converter effect to resample the songs to the same rate."
 msgstr ""
 
-#: src/crystalizer/crystalizer.c:108
-#, fuzzy
+#: src/crystalizer/crystalizer.c:100
 msgid "Configure Crystalizer"
-msgstr "Seadista..."
-
-#: src/crystalizer/crystalizer.c:110 src/stereo_plugin/stereo.c:104
-msgid "Effect intensity:"
 msgstr ""
 
-#: src/crystalizer/crystalizer.c:144 src/echo_plugin/gui.c:136
-#: src/stereo_plugin/stereo.c:138
+#: src/crystalizer/crystalizer.c:102 src/stereo_plugin/stereo.c:97
+msgid "Effect intensity:"
+msgstr "Efekti intensiivsus:"
+
+#: src/crystalizer/crystalizer.c:136 src/echo_plugin/gui.c:131
+#: src/stereo_plugin/stereo.c:131
 msgid "Apply"
 msgstr "Rakenda"
-
-#: src/daemon/daemon.c:58
-msgid "Daemon Interface (like old headless mode)"
-msgstr ""
 
 #: src/echo_plugin/gui.c:15
 msgid ""
@@ -945,33 +1144,29 @@ msgid ""
 "By Johan Levin 1999.\n"
 "\n"
 "Surround echo by Carl van Schaik 1999"
-msgstr ""
-"Kajaplugin\n"
-"Autor: Johan Levin 1999.\n"
-"\n"
-"Surround-kaja autor: Carl van Schaik 1999"
+msgstr "Kajaplugin\nAutor: Johan Levin 1999.\n\nSurround-kaja autor: Carl van Schaik 1999"
 
 #: src/echo_plugin/gui.c:27
 msgid "About Echo Plugin"
 msgstr "Kajapluginast lähemalt"
 
-#: src/echo_plugin/gui.c:72
+#: src/echo_plugin/gui.c:67
 msgid "Configure Echo"
 msgstr "Kaja seadistamine"
 
-#: src/echo_plugin/gui.c:88
+#: src/echo_plugin/gui.c:83
 msgid "Delay: (ms)"
 msgstr "Viivitus (ms)"
 
-#: src/echo_plugin/gui.c:93
+#: src/echo_plugin/gui.c:88
 msgid "Feedback: (%)"
-msgstr ""
+msgstr "Uuestikostumine: (%)"
 
-#: src/echo_plugin/gui.c:98
+#: src/echo_plugin/gui.c:93
 msgid "Volume: (%)"
 msgstr "Valjus: (%)"
 
-#: src/ffaudio/ffaudio-core.c:763
+#: src/ffaudio/ffaudio-core.c:718
 #, c-format
 msgid ""
 "Multi-format audio decoding plugin for Audacious based on\n"
@@ -985,255 +1180,217 @@ msgid ""
 "libavcodec %s (%s)\n"
 "libavformat %s (%s)\n"
 "libavutil %s (%s)\n"
-msgstr ""
+msgstr "Paljude vormingute audiodekoodimise plugin Audaciousele põhineb\nFFmpeg multimeediaraamistikul (http://www.ffmpeg.org/)\nAutoriõigused (c) 2000-2009 Fabrice Bellard, et al.\n\nAudaciouse plugina autorid:\n            William Pitcock <nenolod@nenolod.net>,\n            Matti Hämäläinen <ccr@tnsp.org>\n\nlibavcodec %s (%s)\nlibavformat %s (%s)\nlibavutil %s (%s)\n"
 
-#: src/ffaudio/ffaudio-core.c:777
-#, fuzzy
+#: src/ffaudio/ffaudio-core.c:732
 msgid "About FFaudio Plugin"
-msgstr "FLAC audiopluginast lähemalt"
+msgstr "FFaudio pluginast lähemalt"
 
-#: src/filewriter/filewriter.c:155
+#: src/filewriter/filewriter.c:166
 msgid "About FileWriter-Plugin"
 msgstr "FailiKirjutaja pluginast lähemalt"
 
-#: src/filewriter/filewriter.c:156
-#, fuzzy
-msgid ""
-"FileWriter-Plugin\n"
-"\n"
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Audacious'e ESounD plugin\n"
-"\n"
-" See programm on vaba tarkvara. Te võite seda edasi levitada ja/või\n"
-"muuta vastavalt GNU Üldise Avaliku Litsentsi tingimustele, nagu need\n"
-"on Vaba Tarkvara Fondi poolt avaldatud; kas Litsentsi versioon number\n"
-"2 või (vastavalt Teie valikule) ükskõik milline hilisem versioon.\n"
-"\n"
-"Seda programmi levitatakse lootuses, et see on kasulik, kuid ILMA\n"
-"IGASUGUSE GARANTIITA; isegi KESKMISE/TAVALISE KVALITEEDIGARANTIITA\n"
-"või SOBIVUSELE TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata\n"
-"GNU Üldist Avalikku Litsentsi.\n"
-"\n"
-"Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos käesoleva\n"
-"programmiga; kui ei, siis võtke ühendust Free Software Foundation'iga,\n"
-"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#: src/filewriter/filewriter.c:450
+#: src/filewriter/filewriter.c:461
 msgid "File Writer Configuration"
 msgstr "Failikirjutaja sätted"
 
-#: src/filewriter/filewriter.c:462
+#: src/filewriter/filewriter.c:473
 msgid "Output file format:"
 msgstr "Väljundfaili vorming:"
 
-#: src/filewriter/filewriter.c:480
+#: src/filewriter/filewriter.c:491
 msgid "Configure"
 msgstr "Seadista..."
 
-#: src/filewriter/filewriter.c:495
+#: src/filewriter/filewriter.c:506
 msgid "Save into original directory"
 msgstr "Salvestatakse algkataloogi"
 
-#: src/filewriter/filewriter.c:500
+#: src/filewriter/filewriter.c:511
 msgid "Save into custom directory"
 msgstr "Salvestatakse kohandatud kataloogi"
 
-#: src/filewriter/filewriter.c:510
+#: src/filewriter/filewriter.c:521
 msgid "Output file folder:"
 msgstr "Väljundkataloog:"
 
-#: src/filewriter/filewriter.c:514
+#: src/filewriter/filewriter.c:525
 msgid "Pick a folder"
 msgstr "Kataloogi valimine"
 
-#: src/filewriter/filewriter.c:533
+#: src/filewriter/filewriter.c:544
 msgid "Get filename from:"
 msgstr "Failinimi tuletatakse lähtefaili:"
 
-#: src/filewriter/filewriter.c:536
+#: src/filewriter/filewriter.c:547
 msgid "original file tags"
 msgstr "siltidest"
 
-#: src/filewriter/filewriter.c:542
+#: src/filewriter/filewriter.c:553
 msgid "original filename"
 msgstr "nimest"
 
-#: src/filewriter/filewriter.c:552
+#: src/filewriter/filewriter.c:563
 msgid "Don't strip file name extension"
 msgstr "Algse faili laiendit maha ei lõigata"
 
-#: src/filewriter/filewriter.c:567
+#: src/filewriter/filewriter.c:578
 msgid "Prepend track number to filename"
 msgstr ""
 
-#: src/filewriter/mp3.c:38 src/filewriter/mp3.c:783
+#: src/filewriter/mp3.c:38 src/filewriter/mp3.c:765
 msgid "Auto"
 msgstr ""
 
 #: src/filewriter/mp3.c:38
-#, fuzzy
 msgid "Joint Stereo"
-msgstr "Stereo"
+msgstr ""
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:308
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:191
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:183 src/sid/xs_interface.c:301
+#: src/filewriter/mp3.c:39 src/mpg123/mpg123.c:191
 msgid "Mono"
 msgstr "Mono"
 
-#: src/filewriter/mp3.c:724
+#: src/filewriter/mp3.c:706
 msgid "MP3 Configuration"
 msgstr "MP3 sätted"
 
-#: src/filewriter/mp3.c:747
+#: src/filewriter/mp3.c:729
 msgid "Algorithm Quality:"
 msgstr "Algoritmi kvaliteet:"
 
-#: src/filewriter/mp3.c:772
+#: src/filewriter/mp3.c:754
 msgid "Output Samplerate:"
 msgstr ""
 
-#: src/filewriter/mp3.c:800
+#: src/filewriter/mp3.c:782
 msgid "(Hz)"
 msgstr "(Hz)"
 
-#: src/filewriter/mp3.c:807
+#: src/filewriter/mp3.c:789
 msgid "Bitrate / Compression ratio:"
 msgstr "Bitikiirus / pakkimistihedus:"
 
-#: src/filewriter/mp3.c:831
+#: src/filewriter/mp3.c:813
 msgid "Bitrate (kbps):"
 msgstr "Bitikiirus (kbps):"
 
-#: src/filewriter/mp3.c:864
+#: src/filewriter/mp3.c:846
 msgid "Compression ratio:"
-msgstr ""
+msgstr "Pakkimistihedus"
 
-#: src/filewriter/mp3.c:888
+#: src/filewriter/mp3.c:870
 msgid "Audio Mode:"
-msgstr ""
+msgstr "Audiorežiim:"
 
-#: src/filewriter/mp3.c:913
+#: src/filewriter/mp3.c:895
 msgid "Misc:"
 msgstr ""
 
-#: src/filewriter/mp3.c:924
+#: src/filewriter/mp3.c:906
 msgid "Enforce strict ISO complience"
 msgstr ""
 
-#: src/filewriter/mp3.c:935
+#: src/filewriter/mp3.c:917
 msgid "Error protection"
-msgstr ""
+msgstr "Veakaitse"
 
-#: src/filewriter/mp3.c:947 src/filewriter/vorbis.c:245
+#: src/filewriter/mp3.c:929 src/filewriter/vorbis.c:247
 msgid "Quality"
 msgstr "Kvaliteet"
 
-#: src/filewriter/mp3.c:957
+#: src/filewriter/mp3.c:939
 msgid "Enable VBR/ABR"
 msgstr ""
 
-#: src/filewriter/mp3.c:967
+#: src/filewriter/mp3.c:949
 msgid "Type:"
 msgstr "Liik:"
 
-#: src/filewriter/mp3.c:1000
+#: src/filewriter/mp3.c:982
 msgid "VBR Options:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1016
+#: src/filewriter/mp3.c:998
 msgid "Minimum bitrate (kbps):"
 msgstr "Vähim bitikiirus (kbps):"
 
-#: src/filewriter/mp3.c:1043
+#: src/filewriter/mp3.c:1025
 msgid "Maximum bitrate (kbps):"
 msgstr "Suurim bitikiirus (kbps):"
 
-#: src/filewriter/mp3.c:1066
+#: src/filewriter/mp3.c:1048
 msgid "Strictly enforce minimum bitrate"
 msgstr ""
 
-#: src/filewriter/mp3.c:1078
+#: src/filewriter/mp3.c:1060
 msgid "ABR Options:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1088
+#: src/filewriter/mp3.c:1070
 msgid "Average bitrate (kbps):"
 msgstr "Keskmine bitikiirus (kbps):"
 
-#: src/filewriter/mp3.c:1116
+#: src/filewriter/mp3.c:1098
 msgid "VBR quality level:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1135
+#: src/filewriter/mp3.c:1117
 msgid "Don't write Xing VBR header"
 msgstr ""
 
-#: src/filewriter/mp3.c:1149
+#: src/filewriter/mp3.c:1131
 msgid "VBR/ABR"
 msgstr ""
 
-#: src/filewriter/mp3.c:1159
+#: src/filewriter/mp3.c:1141
 msgid "Frame params:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1171
+#: src/filewriter/mp3.c:1153
 msgid "Mark as copyright"
 msgstr ""
 
-#: src/filewriter/mp3.c:1182
+#: src/filewriter/mp3.c:1164
 msgid "Mark as original"
 msgstr ""
 
-#: src/filewriter/mp3.c:1194
+#: src/filewriter/mp3.c:1176
 msgid "ID3 params:"
-msgstr ""
+msgstr "ID3-parameetrid:"
 
-#: src/filewriter/mp3.c:1205
+#: src/filewriter/mp3.c:1187
 msgid "Force addition of version 2 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1215
+#: src/filewriter/mp3.c:1197
 msgid "Only add v1 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1222
+#: src/filewriter/mp3.c:1204
 msgid "Only add v2 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1243
+#: src/filewriter/mp3.c:1225
 msgid "Tags"
-msgstr ""
+msgstr "Sildid"
 
-#: src/filewriter/vorbis.c:238
+#: src/filewriter/vorbis.c:240
 msgid "Vorbis Encoder Configuration"
 msgstr "Vorbis-kodeerija sätted"
 
-#: src/filewriter/vorbis.c:258
+#: src/filewriter/vorbis.c:260
 msgid "Quality level (0 - 10):"
 msgstr "Kvaliteedi tase (0-10):"
 
-#: src/flacng/plugin.c:379
+#: src/flacng/plugin.c:380
 msgid "About FLAC Audio Plugin"
 msgstr "FLAC audiopluginast lähemalt"
 
-#: src/flacng/plugin.c:380
+#: src/flacng/plugin.c:381
 msgid ""
 "\n"
 "\n"
@@ -1241,20 +1398,13 @@ msgid ""
 "Ralf Ertzinger <ralf@skytale.net>\n"
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
-msgstr ""
-"\n"
-"\n"
-"Algse koodi autor:\n"
-"Ralf Ertzinger <ralf@skytale.net>\n"
-"\n"
-"http://www.skytale.net/projects/bmp-flac2/"
+msgstr "\n\nAlgse koodi autor:\nRalf Ertzinger <ralf@skytale.net>\n\nhttp://www.skytale.net/projects/bmp-flac2/"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:303
 msgid "About Gnome Shortcut Plugin"
 msgstr "Gnome kiirklahvide pluginast lähemalt"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:304
-#, fuzzy
 msgid ""
 "Gnome Shortcut Plugin\n"
 "Let's you control the player with Gnome's shortcuts.\n"
@@ -1262,476 +1412,423 @@ msgid ""
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 msgstr ""
-"Gnome kiirklahvide plugin\n"
-"Esitusprogrammi juhtimine GNOME kiirklahvide abil.\n"
-"\n"
-"Autoriõigused (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
-
-#: src/gntui/fileselector.c:75 src/gntui/gntui.c:272
-msgid "Open Files"
-msgstr ""
-
-#: src/gntui/fileselector.c:75 src/gntui/gntui.c:271
-#, fuzzy
-msgid "Add Files"
-msgstr "Failinimi"
-
-#: src/gntui/gntui.c:270
-#, fuzzy
-msgid "Audacious2"
-msgstr "%s - Audacious"
-
-#: src/gntui/gntui.c:311
-msgid "gnt interface"
-msgstr ""
 
 #: src/gtkui/columns.c:36
-#, fuzzy
 msgid "Entry number"
-msgstr "Loo number:"
+msgstr "Kirje number"
 
-#: src/gtkui/columns.c:36 src/sid/xs_interface.c:1103
+#: src/gtkui/columns.c:36 src/search-tool/search-tool.c:43
 msgid "Title"
 msgstr "Pealkiri"
 
-#: src/gtkui/columns.c:37
-#, fuzzy
+#: src/gtkui/columns.c:37 src/search-tool/search-tool.c:42
 msgid "Artist"
-msgstr "Esitaja:"
+msgstr "Esitaja"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Year"
-msgstr "Aasta:"
+msgstr "Aasta"
 
-#: src/gtkui/columns.c:37
-#, fuzzy
+#: src/gtkui/columns.c:37 src/search-tool/search-tool.c:43
 msgid "Album"
-msgstr "Album:"
+msgstr "Album"
 
 #: src/gtkui/columns.c:37
 msgid "Track"
-msgstr ""
+msgstr "Lugu"
 
 #: src/gtkui/columns.c:37
-#, fuzzy
 msgid "Queue position"
-msgstr "Asukoht"
+msgstr "Asukoht järjekorras"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "Length"
-msgstr "Kestus:"
+msgstr "Kestus"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "File path"
-msgstr "Failinimi"
+msgstr "Faili rada"
 
 #: src/gtkui/columns.c:38
-#, fuzzy
 msgid "File name"
-msgstr "Failinimi"
+msgstr "Faili nimi"
 
 #: src/gtkui/columns.c:38
 msgid "Custom title"
-msgstr ""
+msgstr "Kohandatud pealkiri"
 
 #: src/gtkui/columns.c:39
-#, fuzzy
 msgid "Bitrate"
-msgstr "Bitikiirus:"
+msgstr "Bitikiirus"
 
-#: src/gtkui/columns.c:286
+#: src/gtkui/columns.c:278
 msgid "Choose Columns"
-msgstr ""
+msgstr "Veergude valimine"
 
-#: src/gtkui/columns.c:300
+#: src/gtkui/columns.c:292
 msgid "Available:"
-msgstr ""
+msgstr "Saadaval:"
 
-#: src/gtkui/columns.c:334
+#: src/gtkui/columns.c:326
 msgid "Chosen:"
-msgstr ""
+msgstr "Valitud:"
 
 #: src/gtkui/layout.c:122
 msgid "Dock at Left"
-msgstr ""
+msgstr "Doki vasakule"
 
 #: src/gtkui/layout.c:122
 msgid "Dock at Right"
-msgstr ""
+msgstr "Doki paremale"
 
 #: src/gtkui/layout.c:123
 msgid "Dock at Top"
-msgstr ""
+msgstr "Doki üles"
 
 #: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
-msgstr ""
+msgstr "Doki alla"
 
 #: src/gtkui/layout.c:123
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:123
-#, fuzzy
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:644
 msgid "Disable"
-msgstr "lubatud"
+msgstr "Keela"
+
+#: src/gtkui/menus.c:131
+msgid "_Open Files ..."
+msgstr "_Ava failid ..."
 
 #: src/gtkui/menus.c:132
-#, fuzzy
-msgid "_Open Files ..."
-msgstr "Failinimi"
+msgid "Open _URL ..."
+msgstr "Ava _URL ..."
 
 #: src/gtkui/menus.c:133
-msgid "Open _URL ..."
-msgstr ""
+msgid "_Add Files ..."
+msgstr "_Lisa faile ..."
 
 #: src/gtkui/menus.c:134
-#, fuzzy
-msgid "_Add File ..."
-msgstr "Failinimi"
-
-#: src/gtkui/menus.c:135
-#, fuzzy
 msgid "Add U_RL ..."
-msgstr "Failinimi"
+msgstr "Lisa U_RL ..."
+
+#: src/gtkui/menus.c:136
+msgid "A_bout ..."
+msgstr "_Programmist lähemalt"
 
 #: src/gtkui/menus.c:137
-#, fuzzy
-msgid "A_bout ..."
-msgstr "\"%s\" pluginast lähemalt"
-
-#: src/gtkui/menus.c:138
 msgid "_Preferences ..."
-msgstr ""
+msgstr "_Eelistused ..."
 
-#: src/gtkui/menus.c:139 src/skins/ui_manager.c:412
-#, fuzzy
+#: src/gtkui/menus.c:138 src/skins/ui_manager.c:406
 msgid "_Quit"
-msgstr "Kvaliteet"
+msgstr "_Välju"
+
+#: src/gtkui/menus.c:141
+msgid "_Play"
+msgstr "_Esita"
 
 #: src/gtkui/menus.c:142
-#, fuzzy
-msgid "_Play"
-msgstr "Esitamine"
+msgid "Paus_e"
+msgstr "_Peata"
 
 #: src/gtkui/menus.c:143
-#, fuzzy
-msgid "Paus_e"
-msgstr "Pausimine"
+msgid "_Stop"
+msgstr "_Seiska"
 
 #: src/gtkui/menus.c:144
-#, fuzzy
-msgid "_Stop"
-msgstr "Stereo"
+msgid "Pre_vious"
+msgstr "Ee_lmine"
 
 #: src/gtkui/menus.c:145
-msgid "Pre_vious"
-msgstr ""
-
-#: src/gtkui/menus.c:146
-#, fuzzy
 msgid "_Next"
-msgstr "Tekst"
+msgstr "_Järgmine"
+
+#: src/gtkui/menus.c:147
+msgid "_Repeat"
+msgstr "Ko_rduv"
 
 #: src/gtkui/menus.c:148
-msgid "_Repeat"
-msgstr ""
+msgid "S_huffle"
+msgstr "Se_gatud"
 
 #: src/gtkui/menus.c:149
-msgid "S_huffle"
-msgstr ""
+msgid "N_o Playlist Advance"
+msgstr "Esitusnimekirja ei _kasutata"
 
 #: src/gtkui/menus.c:150
-#, fuzzy
-msgid "N_o Playlist Advance"
-msgstr "Esitusnimekirja valimine"
-
-#: src/gtkui/menus.c:151
 msgid "Stop _After This Song"
-msgstr ""
+msgstr "Seisk_a pärast praegust lugu"
 
-#: src/gtkui/menus.c:153 src/gtkui/menus.c:210
+#: src/gtkui/menus.c:152 src/gtkui/menus.c:212
 msgid "Song _Info ..."
-msgstr ""
+msgstr "L_oo andmed ..."
 
-#: src/gtkui/menus.c:154
+#: src/gtkui/menus.c:153
 msgid "Jump to _Time ..."
 msgstr ""
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:154
 msgid "_Jump to Song ..."
-msgstr ""
+msgstr "_Vaheta lugu ..."
+
+#: src/gtkui/menus.c:157
+msgid "By Track _Number"
+msgstr "Loo _numbri järgi"
 
 #: src/gtkui/menus.c:158
-#, fuzzy
-msgid "By Track _Number"
-msgstr "Loo number:"
+msgid "By _Title"
+msgstr "Peal_kirja järgi"
 
 #: src/gtkui/menus.c:159
-#, fuzzy
-msgid "By _Title"
-msgstr "Pealkiri"
+msgid "By _Artist"
+msgstr "_Esitaja järgi"
 
 #: src/gtkui/menus.c:160
-#, fuzzy
-msgid "By _Artist"
-msgstr "Esitaja:"
+msgid "By A_lbum"
+msgstr "_Albumi järgi"
 
 #: src/gtkui/menus.c:161
-#, fuzzy
-msgid "By A_lbum"
-msgstr "Album:"
+msgid "By Release _Date"
+msgstr "_Väljalaske kuupäeva järgi"
 
 #: src/gtkui/menus.c:162
-#, fuzzy
-msgid "By Release _Date"
-msgstr "Kuupäev:"
+msgid "By _File Path"
+msgstr "_Faili raja järgi"
 
 #: src/gtkui/menus.c:163
-#, fuzzy
-msgid "By _File Path"
-msgstr "Failinimi"
-
-#: src/gtkui/menus.c:164
-#, fuzzy
 msgid "By _Custom Title"
-msgstr "Pealkiri"
+msgstr "Ko_handatud pealkirja järgi"
+
+#: src/gtkui/menus.c:165
+msgid "R_everse Order"
+msgstr "_Pööra järjestus tagurpidi"
 
 #: src/gtkui/menus.c:166
-msgid "R_everse Order"
-msgstr ""
-
-#: src/gtkui/menus.c:167
 msgid "_Random Order"
-msgstr ""
+msgstr "_Järjestus juhuslikuks"
 
-#: src/gtkui/menus.c:170 src/gtkui/menus.c:212
+#: src/gtkui/menus.c:169 src/gtkui/menus.c:214
 msgid "_Refresh"
-msgstr ""
+msgstr "_Värskenda"
+
+#: src/gtkui/menus.c:170
+msgid "Remove _Unavailable Files"
+msgstr "Ee_malda kättesaamatud failid"
 
 #: src/gtkui/menus.c:172
-#, fuzzy
 msgid "_Sort"
-msgstr "Vabandust"
+msgstr "_Sordi"
 
 #: src/gtkui/menus.c:174
 msgid "_New"
-msgstr ""
+msgstr "_Uus"
 
-#: src/gtkui/menus.c:175
-#, fuzzy
+#: src/gtkui/menus.c:175 src/gtkui/menus.c:225
 msgid "_Close"
-msgstr "Sulge"
+msgstr "Sul_ge"
 
 #: src/gtkui/menus.c:177
-#, fuzzy
 msgid "_Import ..."
-msgstr "Esitusnimekirja andmed kiiresti"
+msgstr "_Impordi ..."
 
 #: src/gtkui/menus.c:178
-#, fuzzy
 msgid "_Export ..."
-msgstr "Esitusnimekirja andmed kiiresti"
+msgstr "_Ekspordi ..."
 
 #: src/gtkui/menus.c:180
-#, fuzzy
 msgid "_Playlist Manager ..."
-msgstr "Esitusnimekirja valimine"
+msgstr "_Halda esitusnimekirju..."
 
-#: src/gtkui/menus.c:183
-#, fuzzy
-msgid "Volume _Up"
-msgstr "Valjus"
+#: src/gtkui/menus.c:181
+msgid "_Queue Manager ..."
+msgstr "Halda _järjekorda ..."
 
 #: src/gtkui/menus.c:184
-#, fuzzy
+msgid "Volume _Up"
+msgstr "_Valjemaks"
+
+#: src/gtkui/menus.c:185
 msgid "Volume _Down"
-msgstr "Valjus"
+msgstr "Va_iksemaks"
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:187
 msgid "_Equalizer"
-msgstr ""
+msgstr "_Ekvalaiser"
 
-#: src/gtkui/menus.c:188
-#, fuzzy
+#: src/gtkui/menus.c:189
 msgid "E_ffects"
-msgstr "Efektid"
+msgstr "E_fektid"
 
-#: src/gtkui/menus.c:191
+#: src/gtkui/menus.c:192
 msgid "_Interface"
-msgstr ""
+msgstr "_Liides"
 
 #: src/gtkui/menus.c:193
-msgid "Show _Menu Bar"
-msgstr ""
-
-#: src/gtkui/menus.c:194
-msgid "Show I_nfo Bar"
-msgstr ""
+msgid "_Visualizations"
+msgstr "_Visualiseerimine"
 
 #: src/gtkui/menus.c:195
-#, fuzzy
-msgid "Show _Status Bar"
-msgstr "Olek"
+msgid "Show _Menu Bar"
+msgstr "_Menüüriba on nähtaval"
+
+#: src/gtkui/menus.c:196
+msgid "Show I_nfo Bar"
+msgstr "_Teaberiba on nähtaval"
 
 #: src/gtkui/menus.c:197
-msgid "Show Column _Headers"
-msgstr ""
-
-#: src/gtkui/menus.c:198
-msgid "Choose _Columns ..."
-msgstr ""
+msgid "Show _Status Bar"
+msgstr "_Olekuriba on nähtaval"
 
 #: src/gtkui/menus.c:199
-#, fuzzy
+msgid "Show Column _Headers"
+msgstr "Veergude _päised on nähtaval"
+
+#: src/gtkui/menus.c:200
+msgid "Choose _Columns ..."
+msgstr "Vee_rgude valimine ..."
+
+#: src/gtkui/menus.c:201
 msgid "Scrol_l on Song Change"
-msgstr "Loo sõnum"
-
-#: src/gtkui/menus.c:202
-#, fuzzy
-msgid "_File"
-msgstr "Failinimi"
-
-#: src/gtkui/menus.c:203
-#, fuzzy
-msgid "_Playback"
-msgstr "Esitamine"
+msgstr "_Kerimine loo vahetumisel"
 
 #: src/gtkui/menus.c:204
-#, fuzzy
-msgid "P_laylist"
-msgstr "Esitusnimekirja valimine"
+msgid "_File"
+msgstr "_Fail"
 
-#: src/gtkui/menus.c:205 src/gtkui/menus.c:219
-#, fuzzy
-msgid "_Services"
-msgstr "Seadmed"
+#: src/gtkui/menus.c:205
+msgid "_Playback"
+msgstr "_Esitamine"
 
 #: src/gtkui/menus.c:206
+msgid "P_laylist"
+msgstr "E_situsnimekiri"
+
+#: src/gtkui/menus.c:207 src/gtkui/menus.c:221
+msgid "_Services"
+msgstr "_Teenused"
+
+#: src/gtkui/menus.c:208
 msgid "_Output"
-msgstr ""
+msgstr "Väl_jund"
 
-#: src/gtkui/menus.c:207
+#: src/gtkui/menus.c:209
 msgid "_View"
-msgstr ""
+msgstr "_Vaade"
 
-#: src/gtkui/menus.c:211
+#: src/gtkui/menus.c:213
 msgid "_Queue/Unqueue"
-msgstr ""
-
-#: src/gtkui/menus.c:214
-msgid "Cu_t"
-msgstr ""
-
-#: src/gtkui/menus.c:215
-msgid "_Copy"
-msgstr ""
+msgstr "_Järjekorda/järjekorrast maha"
 
 #: src/gtkui/menus.c:216
-msgid "_Paste"
-msgstr ""
+msgid "Cu_t"
+msgstr "_Lõika"
 
 #: src/gtkui/menus.c:217
-#, fuzzy
+msgid "_Copy"
+msgstr "_Kopeeri"
+
+#: src/gtkui/menus.c:218
+msgid "_Paste"
+msgstr "_Aseta"
+
+#: src/gtkui/menus.c:219
 msgid "Select _All"
-msgstr "Esitusnimekirja valimine"
+msgstr "Val_i kõik"
 
-#: src/gtkui/menus.c:222
-#, fuzzy
+#: src/gtkui/menus.c:224
 msgid "_Rename"
-msgstr "Failinimi"
+msgstr "_Muuda nime"
 
-#: src/gtkui/ui_gtk.c:75
+#: src/gtkui/ui_gtk.c:95
 msgid "GTK Interface"
-msgstr ""
+msgstr "GTK liides"
 
-#: src/gtkui/ui_gtk.c:132 src/skins/ui_main.c:303
+#: src/gtkui/ui_gtk.c:156 src/skins/ui_main.c:303
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:138 src/skins/ui_main.c:305 src/skins/ui_main.c:1498
-#, fuzzy
+#: src/gtkui/ui_gtk.c:162
+msgid "Buffering ..."
+msgstr "Puhverdamine ..."
+
+#: src/gtkui/ui_gtk.c:165 src/skins/ui_main.c:305 src/skins/ui_main.c:1504
 msgid "Audacious"
-msgstr "%s - Audacious"
+msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:177 src/skins/plugin.c:185
+#: src/gtkui/ui_gtk.c:216 src/skins/plugin.c:190
 msgid "Error"
-msgstr ""
+msgstr "Viga"
 
-#: src/gtkui/ui_statusbar.c:102 src/skins/ui_main.c:460
-#, fuzzy
+#: src/gtkui/ui_playlist_notebook.c:97
+msgid "Close"
+msgstr "Sulge"
+
+#: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:460
 msgid "mono"
-msgstr "Mono"
+msgstr "mono"
 
-#: src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:459
-#, fuzzy
+#: src/gtkui/ui_statusbar.c:107 src/skins/ui_main.c:459
 msgid "stereo"
-msgstr "Stereo"
+msgstr "stereo"
 
-#: src/gtkui/ui_statusbar.c:106
-#, fuzzy, c-format
+#: src/gtkui/ui_statusbar.c:109
+#, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "Kanaleid"
-msgstr[1] "Kanaleid"
+msgstr[0] "%d kanal"
+msgstr[1] "%d kanalit"
 
-#: src/gtkui/ui_statusbar.c:121
+#: src/gtkui/ui_statusbar.c:124
 #, c-format
 msgid "%d kbps"
-msgstr ""
+msgstr "%d kbps"
 
 #: src/hotkey/gui.c:71
 msgid "Previous Track"
-msgstr ""
+msgstr "Eelmine lugu"
 
 #: src/hotkey/gui.c:72 src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
-#, fuzzy
 msgid "Play"
-msgstr "Esitamine"
+msgstr "Esita"
 
 #: src/hotkey/gui.c:73
 msgid "Pause/Resume"
 msgstr ""
 
 #: src/hotkey/gui.c:74 src/skins/ui_manager.c:184 src/skins/ui_manager.c:185
-#, fuzzy
 msgid "Stop"
-msgstr "Stereo"
+msgstr "Seiska"
 
 #: src/hotkey/gui.c:75
 msgid "Next Track"
-msgstr ""
+msgstr "Järgmine lugu"
 
 #: src/hotkey/gui.c:76
 msgid "Forward 5 Seconds"
-msgstr ""
+msgstr "Edasikerimine 5 sekundit"
 
 #: src/hotkey/gui.c:77
 msgid "Rewind 5 Seconds"
-msgstr ""
+msgstr "Tagasikerimine 5 sekundit"
 
 #: src/hotkey/gui.c:78
 msgid "Mute"
 msgstr ""
 
 #: src/hotkey/gui.c:79
-#, fuzzy
 msgid "Volume Up"
-msgstr "Valjus"
+msgstr "Valjemaks"
 
 #: src/hotkey/gui.c:80
-#, fuzzy
 msgid "Volume Down"
-msgstr "Valjus"
+msgstr "Vaiksemaks"
 
-#: src/hotkey/gui.c:81 src/skins/ui_manager.c:424 src/skins/ui_manager.c:425
+#: src/hotkey/gui.c:81 src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
 msgid "Jump to File"
-msgstr ""
+msgstr "Hüppa failile"
 
 #: src/hotkey/gui.c:82
 msgid "Toggle Player Windows"
@@ -1755,19 +1852,18 @@ msgstr ""
 
 #: src/hotkey/gui.c:232
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "Peamisi hiirenuppe pole soovitatav ilma muuteklahvideta siduda.\n\nKas soovid jätkata?"
 
 #: src/hotkey/gui.c:234
 msgid "Binding mouse buttons"
-msgstr ""
+msgstr "Hiirenuppude sidumine"
 
 #: src/hotkey/gui.c:384
 msgid "Global Hotkey Plugin Configuration"
-msgstr ""
+msgstr "Globaalsete kiirklahvide plugina sätted"
 
 #: src/hotkey/gui.c:400
 msgid ""
@@ -1776,22 +1872,20 @@ msgid ""
 msgstr ""
 
 #: src/hotkey/gui.c:405
-#, fuzzy
 msgid "Hotkeys:"
-msgstr "Host:"
+msgstr "Kiirklahvid:"
 
 #: src/hotkey/gui.c:424
-#, fuzzy
 msgid "<b>Action:</b>"
-msgstr "<b>Failinimi: </b>"
+msgstr "<b>Tegevus:</b>"
 
 #: src/hotkey/gui.c:432
 msgid "<b>Key Binding:</b>"
-msgstr ""
+msgstr "<b>Kiirklahv:</b>"
 
 #: src/hotkey/gui.c:663
 msgid "About Global Hotkey Plugin"
-msgstr ""
+msgstr "Globaalsete kiirklahvide pluginast lähemalt"
 
 #: src/hotkey/gui.c:664
 msgid ""
@@ -1807,33 +1901,33 @@ msgid ""
 "\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
 "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
 "\n"
-msgstr ""
+msgstr "Globaalsete kiirklahvide plugin\nAudaciouse juhtimine globaalsete klahvikombinatsioonide või multimeediaklahvide abil.\n\nAutoriõigused (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\nKaasaaitajad:\nAutoriõigused (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\nAutoriõigused (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>Bryn Davies <curious@ihug.com.au>\n<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>Jonathan A. Davis <davis@jdhouse.org>\n<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>Jeremy Tan <nsx@nsx.homeip.net>\n\n"
 
-#: src/jack/configure.c:71
+#: src/jack/configure.c:66
 msgid "Connect to all available jack ports"
 msgstr ""
 
-#: src/jack/configure.c:78
+#: src/jack/configure.c:73
 msgid "Connect only the output ports"
 msgstr ""
 
-#: src/jack/configure.c:85
+#: src/jack/configure.c:80
 msgid "Connect to no ports"
 msgstr ""
 
-#: src/jack/configure.c:103
+#: src/jack/configure.c:98
 msgid "jack Plugin configuration"
-msgstr ""
+msgstr "jack-plugina sätted"
 
-#: src/jack/configure.c:121
+#: src/jack/configure.c:116
 msgid "Connection mode:"
-msgstr ""
+msgstr "Ühendumisrežiim:"
 
-#: src/jack/configure.c:133
+#: src/jack/configure.c:128
 msgid "Enable debug printing"
-msgstr ""
+msgstr "Silumisandmete printimise lubamine"
 
-#: src/jack/jack.c:438
+#: src/jack/jack.c:435
 msgid ""
 "XMMS jack Driver 0.17\n"
 "\n"
@@ -1842,947 +1936,336 @@ msgid ""
 "\n"
 "Audacious port by\n"
 "Giacomo Lozito from develia.org"
-msgstr ""
+msgstr "XMMS-i jack-draiver 0.17\n\nxmms-jack.sf.net\nChris Morgan<cmorgan@alum.wpi.edu>\n\nAudaciousele portis\nGiacomo Lozito - develia.org"
 
-#: src/jack/jack.c:443
+#: src/jack/jack.c:440
 msgid "About JACK Output Plugin 0.17"
 msgstr "JACK väljundplugina versioonist 0.17 lähemalt"
 
-#: src/lyricwiki/lyricwiki.c:226
+#: src/ladspa/plugin.c:415
+msgid "About LADSPA Host"
+msgstr "LADSPA hostist lähemalt"
+
+#: src/ladspa/plugin.c:516
+#, c-format
+msgid "%s Settings"
+msgstr "%s sätted"
+
+#: src/ladspa/plugin.c:584
+msgid "LADSPA Host Settings"
+msgstr "LADSPA hosti sätted"
+
+#: src/ladspa/plugin.c:593
+msgid "Module paths:"
+msgstr "Moodulite rajad:"
+
+#: src/ladspa/plugin.c:598
+msgid ""
+"<small>Separate multiple paths with a colon.\n"
+"These paths are searched in addition to LADSPA_PATH.\n"
+"After adding new paths, press Enter to scan for new plugins.</small>"
+msgstr "<small>Eralda rajad kooloniga.\nMooduleid otsitakse LADSPA_PATH keskkonnamuutujas ning siin määratud radadelt.\nPärast uute radade lisamist vajuta uute pluginate otsimiseks Enterit.</small>"
+
+#: src/ladspa/plugin.c:614
+msgid "Available plugins:"
+msgstr "Saadaolevad pluginad:"
+
+#: src/ladspa/plugin.c:626
+msgid "Enable"
+msgstr "Luba"
+
+#: src/ladspa/plugin.c:632
+msgid "Enabled plugins:"
+msgstr "Lubatud pluginad:"
+
+#: src/ladspa/plugin.c:647
+msgid "Settings"
+msgstr "Sätted"
+
+#: src/lyricwiki/lyricwiki.c:267
 msgid ""
 "\n"
 "Looking for lyrics..."
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:249
+#: src/lyricwiki/lyricwiki.c:304
 msgid ""
 "\n"
 "Connecting to lyrics.wikia.com..."
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:337
+#: src/lyricwiki/lyricwiki.c:377
 msgid ""
 "\n"
 "No lyrics were found."
-msgstr ""
+msgstr "\nLaulusõnu ei leitud."
 
-#: src/metronom/metronom.c:85
+#: src/metronom/metronom.c:86
 msgid "About Metronom"
 msgstr "Metronoomist lähemalt"
 
-#: src/metronom/metronom.c:86
+#: src/metronom/metronom.c:87
 msgid ""
 "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
 "To use it, add a URL: tact://beats*num/den\n"
 "e.g. tact://77 to play 77 beats per minute\n"
 "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
-msgstr ""
+msgstr "Taktigeneraator.\nAutor: Martin Strauss <mys@faveve.uni-stuttgart.de>\n\nGeneraatori kasutamiseks lisa URL: tact://beats*num/den\nnäiteks 77 lööki  minutis: tact://77\nvõi 60 lööki minutis taktimõõduga 3/4: tact://60*3/4"
 
-#: src/metronom/metronom.c:143
+#: src/metronom/metronom.c:144
 #, c-format
 msgid "Tact generator: %d bpm"
 msgstr "Taktigeneraator: %d bpm"
 
-#: src/metronom/metronom.c:145
+#: src/metronom/metronom.c:146
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "Taktigeneraator: %d bpm %d/%d"
 
-#: src/mpg123/mpg123.c:183
-msgid "Surround"
-msgstr ""
+#: src/mixer/plugin.c:64
+msgid "About Channel Mixer"
+msgstr "Kanalimiksrist lähemalt"
 
-#: src/mtp_up/mtp.c:298
+#: src/mixer/plugin.c:93
+msgid "Channel Mixer Settings"
+msgstr "Kanalimiksri sätted"
+
+#: src/mixer/plugin.c:102
+msgid "Output channels:"
+msgstr "Väljundkanalite arv:"
+
+#: src/mixer/plugin.c:112
+msgid "Changes take effect at the next song change."
+msgstr "Muutused rakenduvad pärast järgmist loovahetust."
+
+#: src/mpg123/mpg123.c:191
+msgid "Surround"
+msgstr "Ruumiline heli"
+
+#: src/mtp_up/mtp.c:340
 msgid "Upload in progress..."
 msgstr ""
 
-#: src/mtp_up/mtp.c:310
+#: src/mtp_up/mtp.c:352
 msgid "Upload to MTP Device"
 msgstr ""
 
-#: src/mtp_up/mtp.c:311
+#: src/mtp_up/mtp.c:353
 msgid "Disconnect MTP Device"
 msgstr ""
 
-#: src/notify/libnotify-aosd_event.c:47
-#, fuzzy
+#: src/notify/libnotify-aosd_event.c:48
 msgid "Stopped"
-msgstr "Stereo"
+msgstr ""
 
-#: src/notify/libnotify-aosd_event.c:47
-#, fuzzy
+#: src/notify/libnotify-aosd_event.c:48
 msgid "Audacious is not playing."
-msgstr "Esitusnimekirja andmed kiiresti"
+msgstr ""
 
 #: src/null/null.c:64
 msgid "Null output plugin "
-msgstr ""
+msgstr "Nullväljundi plugin "
 
 #: src/null/null.c:65
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
 "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
-msgstr ""
+msgstr " Autor: Christian Birchinger <joker@netswarm.net>\npõhineb XMMS-i pluginal, mille autor on Håvard Kvål <havardk@xmms.org>"
 
 #: src/null/null.c:68
 msgid "About Null Output"
 msgstr "Nullväljundist lähemalt"
 
-#: src/null/null.c:94
+#: src/null/null.c:89
 msgid "Null output preferences"
 msgstr "Nullväljundi eelistused"
 
-#: src/null/null.c:105
+#: src/null/null.c:100
 msgid "Run in real time"
 msgstr ""
 
-#: src/oss4/configure.c:89
-#, fuzzy
+#: src/oss4/configure.c:81
 msgid "1. Default device"
-msgstr "Vaikimisi PCM-seade (%s)"
+msgstr "1. Vaikimisi seade"
 
-#: src/oss4/configure.c:151
-#, fuzzy
+#: src/oss4/configure.c:138
 msgid "OSS4 Output Plugin Preferences"
-msgstr "Olekuikooni plugina eelistused"
+msgstr "OSS4 väljundplugina eelistused"
 
-#: src/oss4/configure.c:163 src/OSS/configure.c:203
+#: src/oss4/configure.c:150 src/OSS/configure.c:194
 msgid "Audio device:"
 msgstr "Audioseade:"
 
-#: src/oss4/configure.c:189 src/OSS/configure.c:226 src/OSS/configure.c:269
+#: src/oss4/configure.c:178 src/OSS/configure.c:217 src/OSS/configure.c:260
 msgid "Use alternate device:"
-msgstr "Kasutatakse alternatiivseadet:"
+msgstr "Kasutatakse alternatiivset seadet:"
 
-#: src/oss4/configure.c:202
+#: src/oss4/configure.c:193
 msgid "Save volume between sessions"
-msgstr ""
+msgstr "Seansside vahel helivajluse tase salvestatakse"
 
-#: src/oss4/configure.c:206
+#: src/oss4/configure.c:197
 msgid "Enable format conversions made by the OSS software."
 msgstr ""
 
-#: src/oss4/plugin.c:51
-#, fuzzy
-msgid "About OSS4 Plugin"
-msgstr "ESounD'i pluginast lähemalt"
-
-#: src/oss4/plugin.c:52
-#, fuzzy
-msgid ""
-"OSS4 Output Plugin for Audacious\n"
-"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
-"\n"
-"I would like to thank people on #audacious, especially Tony Vroon and John "
-"Lindgren and of course the authors of the previous OSS plugin.\n"
-"\n"
-"This program is free software: you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation, either version 3 of the License, or (at your option) "
-"any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>.\n"
+#: src/oss4/configure.c:201
+msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr ""
-"Audacious'e PulseAudio väljundplugin\n"
-"\n"
-" See programm on vaba tarkvara. Te võite seda edasi levitada ja/või\n"
-"muuta vastavalt GNU Üldise Avaliku Litsentsi tingimustele, nagu need\n"
-"on Vaba Tarkvara Fondi poolt avaldatud; kas Litsentsi versioon number\n"
-"2 või (vastavalt Teie valikule) ükskõik milline hilisem versioon.\n"
-"\n"
-"Seda programmi levitatakse lootuses, et see on kasulik, kuid ILMA\n"
-"IGASUGUSE GARANTIITA; isegi KESKMISE/TAVALISE KVALITEEDIGARANTIITA\n"
-"või SOBIVUSELE TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata\n"
-"GNU Üldist Avalikku Litsentsi.\n"
-"\n"
-"Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos käesoleva\n"
-"programmiga; kui ei, siis võtke ühendust Free Software Foundation'iga,\n"
-"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/oss4/utils.c:204
-#, fuzzy
+#: src/oss4/plugin.c:51
+msgid "About OSS4 Plugin"
+msgstr "OSS4 pluginast lähemalt"
+
+#: src/oss4/utils.c:211
 msgid "OSS4 error"
-msgstr "Viga!"
+msgstr "OSS4 viga"
 
-#: src/OSS/configure.c:146
+#: src/OSS/configure.c:137
 #, c-format
 msgid "Default (%s)"
 msgstr "Vaikimisi (%s)"
 
-#: src/OSS/configure.c:162 src/skins/ui_manager.c:456
-#: src/skins/ui_manager.c:477
-msgid "Default"
-msgstr "Vaikimisi"
-
-#: src/OSS/configure.c:187
+#: src/OSS/configure.c:178
 msgid "OSS Driver configuration"
 msgstr "OSS draiveri sätted"
 
-#: src/OSS/configure.c:290
+#: src/OSS/configure.c:281
 msgid "Devices"
 msgstr "Seadmed"
 
-#: src/OSS/configure.c:292
+#: src/OSS/configure.c:283
 msgid "Buffering:"
 msgstr "Puhverdamine:"
 
-#: src/OSS/configure.c:305
+#: src/OSS/configure.c:296
 msgid "Pre-buffer (percent):"
 msgstr "Eelpuhver (protsentides):"
 
-#: src/OSS/configure.c:316
+#: src/OSS/configure.c:307
 msgid "Buffering"
 msgstr "Puhverdamine"
 
-#: src/OSS/configure.c:317
+#: src/OSS/configure.c:308
 msgid "Mixer Settings:"
 msgstr "Mikseri sätted"
 
-#: src/OSS/configure.c:323
+#: src/OSS/configure.c:314
 msgid "Volume controls Master not PCM"
 msgstr ""
 
-#: src/OSS/configure.c:329
+#: src/OSS/configure.c:320
 msgid "Mixer"
 msgstr "Mikser"
 
-#: src/OSS/OSS.c:40
+#: src/OSS/OSS.c:41
 msgid "About OSS Driver"
 msgstr "OSS draiverist lähemalt"
 
-#: src/OSS/OSS.c:41
-msgid ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Audacious'e OSS draiver\n"
-"\n"
-" See programm on vaba tarkvara. Te võite seda edasi levitada ja/või\n"
-"muuta vastavalt GNU Üldise Avaliku Litsentsi tingimustele, nagu need\n"
-"on Vaba Tarkvara Fondi poolt avaldatud; kas Litsentsi versioon number\n"
-"2 või (vastavalt Teie valikule) ükskõik milline hilisem versioon.\n"
-"\n"
-"Seda programmi levitatakse lootuses, et see on kasulik, kuid ILMA\n"
-"IGASUGUSE GARANTIITA; isegi KESKMISE/TAVALISE KVALITEEDIGARANTIITA\n"
-"või SOBIVUSELE TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata\n"
-"GNU Üldist Avalikku Litsentsi.\n"
-"\n"
-"Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos käesoleva\n"
-"programmiga; kui ei, siis võtke ühendust Free Software Foundation'iga,\n"
-"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#: src/pulse_audio/pulse_audio.c:687
+#: src/pulse_audio/pulse_audio.c:677
 msgid "About Audacious PulseAudio Output Plugin"
-msgstr "Audacious'e PulseAudio väljundpluginast lähemalt"
+msgstr "Audaciouse PulseAudio väljundpluginast lähemalt"
 
-#: src/pulse_audio/pulse_audio.c:688
-msgid ""
-"Audacious PulseAudio Output Plugin\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Audacious'e PulseAudio väljundplugin\n"
-"\n"
-" See programm on vaba tarkvara. Te võite seda edasi levitada ja/või\n"
-"muuta vastavalt GNU Üldise Avaliku Litsentsi tingimustele, nagu need\n"
-"on Vaba Tarkvara Fondi poolt avaldatud; kas Litsentsi versioon number\n"
-"2 või (vastavalt Teie valikule) ükskõik milline hilisem versioon.\n"
-"\n"
-"Seda programmi levitatakse lootuses, et see on kasulik, kuid ILMA\n"
-"IGASUGUSE GARANTIITA; isegi KESKMISE/TAVALISE KVALITEEDIGARANTIITA\n"
-"või SOBIVUSELE TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata\n"
-"GNU Üldist Avalikku Litsentsi.\n"
-"\n"
-"Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos käesoleva\n"
-"programmiga; kui ei, siis võtke ühendust Free Software Foundation'iga,\n"
-"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#: src/resample/plugin.c:91
-#, fuzzy
+#: src/resample/plugin.c:89
 msgid "About Sample Rate Converter Plugin"
-msgstr "Olekuikooni pluginast lähemalt"
+msgstr ""
 
-#: src/resample/plugin.c:146
+#: src/resample/plugin.c:144
 msgid "Sample Rate Converter Preferences"
-msgstr ""
+msgstr "Diskreetimissageduste teisendaja eelistused"
 
-#: src/resample/plugin.c:158
+#: src/resample/plugin.c:156
 msgid "Rate mappings:"
-msgstr ""
+msgstr "Sageduste vastavused:"
 
-#: src/resample/plugin.c:181
+#: src/resample/plugin.c:179
 msgid "All others:"
-msgstr ""
+msgstr "Kõik ülejäänud:"
 
-#: src/resample/plugin.c:193
+#: src/resample/plugin.c:191
 msgid "Method:"
+msgstr "Meetod:"
+
+#: src/scrobbler/configure.c:123 src/scrobbler/configure.c:198
+msgid "Change password"
 msgstr ""
 
-#: src/scrobbler/configure.c:128 src/scrobbler/configure.c:204
-#, fuzzy
-msgid "Change password"
-msgstr "Vahetatakse esitatavat lugu"
-
-#: src/scrobbler/configure.c:150
+#: src/scrobbler/configure.c:144
 msgid "<b>Services</b>"
 msgstr "<b>Teenused</b>"
 
-#: src/scrobbler/configure.c:172
+#: src/scrobbler/configure.c:166
 msgid "Username:"
 msgstr "Kasutajanimi:"
 
-#: src/scrobbler/configure.c:178
+#: src/scrobbler/configure.c:172
 msgid "Password:"
 msgstr "Parool:"
 
-#: src/scrobbler/configure.c:186
+#: src/scrobbler/configure.c:180
 msgid "Scrobbler URL:"
 msgstr ""
 
-#: src/scrobbler/configure.c:218
+#: src/scrobbler/configure.c:212
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:262
+#: src/scrobbler/configure.c:239
 msgid "Scrobbler"
 msgstr ""
 
-#: src/scrobbler/plugin.c:213
+#: src/scrobbler/plugin.c:194
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
-"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
-"com>\n"
-msgstr ""
+"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>\n"
+msgstr "Audaciouse AudioScrobbler plugin\n\nAlgupärase plugina autorid: Audun Hove <audun@nlc.no> ja Pipian <pipian@pipian.com>\n"
 
-#: src/scrobbler/plugin.c:215
+#: src/scrobbler/plugin.c:196
 msgid "About Scrobbler Plugin"
 msgstr ""
 
 #: src/sdlout/plugin.c:58
-#, fuzzy
 msgid "About SDL Output Plugin"
-msgstr "JACK väljundplugina versioonist 0.17 lähemalt"
+msgstr "SDL väljundpluginast lähemalt"
 
 #: src/sdlout/plugin.c:78
-#, fuzzy
 msgid "SDL error"
-msgstr "Viga!"
+msgstr "SDL-i viga"
 
-#: src/sid/xs_about.c:84
-#, c-format
-msgid "About %s"
-msgstr "\"%s\" pluginast lähemalt"
+#: src/search-tool/search-tool.c:42
+msgid "Genre"
+msgstr "Žanr"
 
-#: src/sid/xs_about.c:214 src/sid/xs_interface.c:1825
-msgid "Close"
-msgstr "Sulge"
+#: src/search-tool/search-tool.c:96 src/search-tool/search-tool.c:106
+msgid "Library"
+msgstr "Teek"
 
-#: src/sid/xs_config.c:326
-#, fuzzy
-msgid " Error"
-msgstr "Viga!"
+#: src/search-tool/search-tool.c:591
+msgid "_Create Playlist"
+msgstr "Loo _esitusnimekiri"
 
-#: src/sid/xs_config.c:326
-msgid "OK"
-msgstr "Olgu"
+#: src/search-tool/search-tool.c:598
+msgid "_Add to Playlist"
+msgstr "_Lisa esitusnimekirja"
 
-#: src/sid/xs_fileinfo.c:151
-msgid "General info"
-msgstr "Üldandmed"
+#: src/search-tool/search-tool.c:641
+msgid "Search library"
+msgstr "Otsing audiokogust"
 
-#: src/sid/xs_fileinfo.c:164
-#, c-format
-msgid "Tune #%i: "
-msgstr ""
-
-#: src/sid/xs_glade.c:90 src/sid/xs_glade.c:114
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr ""
-
-#: src/sid/xs_interface.c:234
-msgid "Audacious-SID configuration"
-msgstr ""
-
-#: src/sid/xs_interface.c:270
-msgid "8-bit"
-msgstr ""
-
-#: src/sid/xs_interface.c:277
-msgid "16-bit"
-msgstr ""
-
-#: src/sid/xs_interface.c:284
-msgid "Resolution:"
-msgstr ""
-
-#: src/sid/xs_interface.c:315
-msgid "Autopanning"
-msgstr ""
-
-#: src/sid/xs_interface.c:322
-msgid "Channels:"
-msgstr "Kanaleid:"
-
-#: src/sid/xs_interface.c:366
-msgid "Samplerate:"
-msgstr ""
-
-#: src/sid/xs_interface.c:383
-msgid "Use oversampling"
-msgstr ""
-
-#: src/sid/xs_interface.c:394
-msgid "Factor:"
-msgstr ""
-
-#: src/sid/xs_interface.c:406
-msgid "Large factors require more CPU-power"
-msgstr ""
-
-#: src/sid/xs_interface.c:412
-msgid "Oversampling:"
-msgstr ""
-
-#: src/sid/xs_interface.c:417
-msgid "Audio"
-msgstr ""
-
-#: src/sid/xs_interface.c:445
-msgid "Force speed"
-msgstr ""
-
-#: src/sid/xs_interface.c:449
+#: src/search-tool/search-tool.c:645
 msgid ""
-"If enabled, this option \"forces\" the emulation engine to use the selected "
-"clock speed/frequency. Otherwise the speed is determined from played file "
-"itself."
-msgstr ""
-
-#: src/sid/xs_interface.c:451
-msgid "PAL (50 Hz)"
-msgstr ""
-
-#: src/sid/xs_interface.c:455
-msgid ""
-"PAL is the european TV standard, which uses 50Hz vertical refresh frequency. "
-"Most of SID-tunes have been made for PAL computers."
-msgstr ""
-
-#: src/sid/xs_interface.c:459
-msgid "NTSC (60 Hz)"
-msgstr ""
-
-#: src/sid/xs_interface.c:463
-msgid ""
-"NTSC is the TV standard with 60Hz vertical refresh rate (and other features "
-"that differ from PAL). It is mainly used in United States, Japan and certain "
-"other countries."
-msgstr ""
-
-#: src/sid/xs_interface.c:467
-msgid "Clock speed:"
-msgstr ""
-
-#: src/sid/xs_interface.c:484
-msgid "Force model"
-msgstr ""
-
-#: src/sid/xs_interface.c:488
-msgid ""
-"If enabled, this option \"forces\" the emulation engine to use the selected "
-"SID-chip model. Otherwise the preferred SID model is determined from the "
-"file (if PSIDv2NG type) or if not available, this setting is used."
-msgstr ""
-
-#: src/sid/xs_interface.c:490
-msgid "MOS 6581"
-msgstr ""
-
-#: src/sid/xs_interface.c:494
-msgid ""
-"MOS/CSG 6581 is the earlier major version of SID chip. It differs from 8580 "
-"in few ways, having much fuller filter (which, due to design error, is never "
-"same between two different SID-chips) and has the \"volume adjustment bug\", "
-"which enables playing of digital samples."
-msgstr ""
-
-#: src/sid/xs_interface.c:498
-msgid "MOS 8580"
-msgstr ""
-
-#: src/sid/xs_interface.c:505
-msgid "SID model:"
-msgstr ""
-
-#: src/sid/xs_interface.c:522
-msgid "SIDPlay 1 (frame-based)"
-msgstr ""
-
-#: src/sid/xs_interface.c:526
-msgid ""
-"Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most "
-"cases, though."
-msgstr ""
-
-#: src/sid/xs_interface.c:530
-msgid "SIDPlay 2 (cycle-based)"
-msgstr ""
-
-#: src/sid/xs_interface.c:534
-msgid ""
-"Use libSIDPlay 2.x emulation, which requires powerful CPU due to more exact "
-"emulation."
-msgstr ""
-
-#: src/sid/xs_interface.c:538
-msgid "Emulation library selection:"
-msgstr ""
-
-#: src/sid/xs_interface.c:555
-msgid "Real C64 (SIDPlay 2 only)"
-msgstr ""
-
-#: src/sid/xs_interface.c:562
-msgid "Bank switching"
-msgstr ""
-
-#: src/sid/xs_interface.c:569
-msgid "Transparent ROM"
-msgstr ""
-
-#: src/sid/xs_interface.c:576
-msgid "PlaySID environment"
-msgstr ""
-
-#: src/sid/xs_interface.c:583
-msgid "Memory mode:"
-msgstr ""
-
-#: src/sid/xs_interface.c:588
-msgid "Emu#1"
-msgstr ""
-
-#: src/sid/xs_interface.c:611
-msgid "Optimization mode (faster, inaccurate)"
-msgstr ""
-
-#: src/sid/xs_interface.c:615
-msgid ""
-"This setting can be used to enable libSIDPlay2's \"optimization mode\", "
-"which in downgrades the emulation from cycle-exact to something similar to "
-"frame-exact. The result is lower CPU usage, but worse accuracy."
-msgstr ""
-
-#: src/sid/xs_interface.c:617
-msgid "reSID-emulation"
-msgstr ""
-
-#: src/sid/xs_interface.c:621
-msgid ""
-"reSID is the software SID-chip simulator based on SID reverse-engineering, "
-"created by Dag Lem. It is probably the closest thing to real SID available "
-"as software-only emulation."
-msgstr ""
-
-#: src/sid/xs_interface.c:625
-msgid "HardSID"
-msgstr ""
-
-#: src/sid/xs_interface.c:629
-msgid ""
-"HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a "
-"real SID-chip. Software can be used to control the HardSID and combined with "
-"software emulation of rest of C64 via libSIDPlay2 HardSID can be used to "
-"achieve \"near 100%\" similarity to real C64. For more information, see "
-"http://www.hardsid.com/"
-msgstr ""
-
-#: src/sid/xs_interface.c:633
-msgid "SIDPlay 2 options:"
-msgstr ""
-
-#: src/sid/xs_interface.c:650
-msgid "Fast (nearest neighbour)"
-msgstr ""
-
-#: src/sid/xs_interface.c:654
-msgid ""
-"Fastest and also worst sounding sampling method, simply picks nearest "
-"neighbouring sample."
-msgstr ""
-
-#: src/sid/xs_interface.c:658
-msgid "Linear interpolation"
-msgstr ""
-
-#: src/sid/xs_interface.c:662
-msgid ""
-"Uses linear interpolation between samples, yielding higher audio quality "
-"with less sampling noise."
-msgstr ""
-
-#: src/sid/xs_interface.c:673
-msgid "Resampling (FIR)"
-msgstr ""
-
-#: src/sid/xs_interface.c:680
-msgid "reSID sampling options:"
-msgstr ""
-
-#: src/sid/xs_interface.c:685
-msgid "Emu#2"
-msgstr ""
-
-#: src/sid/xs_interface.c:697
-msgid "Emulate filters"
-msgstr ""
-
-#: src/sid/xs_interface.c:701
-msgid ""
-"This option enables emulation of SID filter. The filter is an essential part "
-"of SID's sound capacity, but accurate emulation of it may require quite much "
-"CPU power. However, if filter emulation is disabled, tunes won't sound "
-"authentic at all if they utilize the filter."
-msgstr ""
-
-#: src/sid/xs_interface.c:726
-msgid "FS"
-msgstr ""
-
-#: src/sid/xs_interface.c:743
-msgid "FM"
-msgstr ""
-
-#: src/sid/xs_interface.c:760
-msgid "FT"
-msgstr ""
-
-#: src/sid/xs_interface.c:771
-msgid "Reset values"
-msgstr ""
-
-#: src/sid/xs_interface.c:776
-msgid "SIDPlay1"
-msgstr ""
-
-#: src/sid/xs_interface.c:817
-msgid "Export"
-msgstr ""
-
-#: src/sid/xs_interface.c:825
-msgid "Use"
-msgstr ""
-
-#: src/sid/xs_interface.c:833 src/skins/ui_manager.c:447
-msgid "Save"
-msgstr ""
-
-#: src/sid/xs_interface.c:841 src/skins/ui_manager.c:446
-msgid "Import"
-msgstr ""
-
-#: src/sid/xs_interface.c:849 src/skins/ui_manager.c:448
-msgid "Delete"
-msgstr ""
-
-#: src/sid/xs_interface.c:863
-msgid "Filter curve:"
-msgstr ""
-
-#: src/sid/xs_interface.c:868
-msgid "SIDPlay2"
-msgstr ""
-
-#: src/sid/xs_interface.c:874
-msgid "Filters"
-msgstr ""
-
-#: src/sid/xs_interface.c:897
-msgid "Play at least for specified time"
-msgstr ""
-
-#: src/sid/xs_interface.c:901
-msgid ""
-"If enabled, the tune is played at least for the specified time, adding "
-"silence to the end if necessary."
-msgstr ""
-
-#: src/sid/xs_interface.c:908 src/sid/xs_interface.c:962
-#: src/sid/xs_interface.c:1142
-msgid "Playtime:"
-msgstr ""
-
-#: src/sid/xs_interface.c:921 src/sid/xs_interface.c:975
-#: src/sid/xs_interface.c:1155
-msgid "seconds"
-msgstr "sekundit"
-
-#: src/sid/xs_interface.c:928
-msgid "Minimum playtime:"
-msgstr ""
-
-#: src/sid/xs_interface.c:945
-msgid "Play for specified time maximum"
-msgstr ""
-
-#: src/sid/xs_interface.c:949
-msgid ""
-"If enabled, tune is played until specified duration is reached (aka maximum "
-"playtime)."
-msgstr ""
-
-#: src/sid/xs_interface.c:951
-msgid "Only when song length is unknown"
-msgstr ""
-
-#: src/sid/xs_interface.c:955
-msgid ""
-"If enabled, the maximum playtime is applied only if song/tune length is not "
-"known."
-msgstr ""
-
-#: src/sid/xs_interface.c:982
-msgid "Maximum playtime:"
-msgstr ""
-
-#: src/sid/xs_interface.c:999
-msgid "Use XSIDPLAY-compatible database"
-msgstr ""
-
-#: src/sid/xs_interface.c:1003
-msgid ""
-"This option enables using of XSIDPLAY compatible song length database. "
-"(Refer to Audacious-SID documentation for more information)"
-msgstr ""
-
-#: src/sid/xs_interface.c:1010
-msgid "DB-file:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1020
-msgid "Database path and filename"
-msgstr ""
-
-#: src/sid/xs_interface.c:1027
-msgid "Browse for song length-database file"
-msgstr ""
-
-#: src/sid/xs_interface.c:1049
-msgid "Song length database:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1054
-msgid "Songlength"
-msgstr ""
-
-#: src/sid/xs_interface.c:1072
-msgid "Override generic Tuplez format string"
-msgstr ""
-
-#: src/sid/xs_interface.c:1076
-msgid ""
-"By enabling this option you can specify a custom Tuplez formatting string "
-"for SID-files. The SID-plugin specific Tuplez tags are described shortly "
-"below."
-msgstr ""
-
-#: src/sid/xs_interface.c:1087
-msgid "Tuplez format string for SID-files"
-msgstr ""
-
-#: src/sid/xs_interface.c:1090
-msgid ""
-"<u>SID-specific Tuplez fields:</u>\n"
-"\n"
-"<b>sid-format</b>\t\t- Specific fileformat\n"
-"<b>sid-model</b>\t\t- 6581 or 8580\n"
-"<b>sid-speed</b>\t\t- Timing or speed: PAL/NTSC/etc.\n"
-"\n"
-"<u>Other \"special\" fields set:</u>\n"
-"\n"
-"<b>subsong-num, subsong-id</b>"
-msgstr ""
-
-#: src/sid/xs_interface.c:1098
-msgid "Song title format:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1125
-msgid "Add sub-tunes to playlist"
-msgstr ""
-
-#: src/sid/xs_interface.c:1129
-msgid ""
-"If enabled, sub-tunes of each file will be added to playlist. If disabled, "
-"only the default sub-tune will be added."
-msgstr ""
-
-#: src/sid/xs_interface.c:1131
-msgid "Only tunes with specified minimum duration"
-msgstr ""
-
-#: src/sid/xs_interface.c:1135
-msgid "Only add sub-tunes that have a duration of at least specified time."
-msgstr ""
-
-#: src/sid/xs_interface.c:1162
-msgid "Sub-tune handling:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1179
-msgid "Use STIL database"
-msgstr ""
-
-#: src/sid/xs_interface.c:1183
-msgid ""
-"If this option is enabled (and the database & HVSC settings below are "
-"correctly set), Audacious-SID will use and display additional information "
-"from STIL database when HVSC SIDs are played."
-msgstr ""
-
-#: src/sid/xs_interface.c:1190
-msgid "STIL file:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1206
-msgid ""
-"Path and filename of STIL database file (STIL.txt), usually found from "
-"HVSC's DOCUMENTS-subdirectory."
-msgstr ""
-
-#: src/sid/xs_interface.c:1219
-msgid "Browse for STIL-database file"
-msgstr ""
-
-#: src/sid/xs_interface.c:1246
-msgid "HVSC path:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1262
-msgid ""
-"Path to base-directory of your High Voltage SID Collection (HVSC), for "
-"example /media/C64Music/"
-msgstr ""
-
-#: src/sid/xs_interface.c:1275
-msgid "Browse for HVSC path"
-msgstr ""
-
-#: src/sid/xs_interface.c:1297
-msgid "SID Tune Information List (STIL) database:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1321
-msgid "Cancel any changes"
-msgstr ""
-
-#: src/sid/xs_interface.c:1328
-msgid "Accept and update changes"
-msgstr ""
-
-#: src/sid/xs_interface.c:1628
-msgid "Audacious-SID Fileinfo"
-msgstr ""
-
-#: src/sid/xs_interface.c:1649
-msgid "Filename:"
-msgstr "Failinimi:"
-
-#: src/sid/xs_interface.c:1657
-msgid "Songname:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1665
-msgid "Composer:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1673
-msgid "Copyright:"
-msgstr "Autoriõigused:"
-
-#: src/sid/xs_interface.c:1717
-msgid "Song Information:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1752
-msgid "Author:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1786
-msgid "Duration:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1820
-msgid "Sub-tune Information:"
-msgstr ""
-
-#: src/sid/xs_interface.c:1881
-msgid "Select HVSC song length database"
-msgstr ""
-
-#: src/sid/xs_interface.c:1922
-msgid "Select STIL-database"
-msgstr ""
-
-#: src/sid/xs_interface.c:1963
-msgid "Select HVSC location prefix"
-msgstr ""
-
-#: src/sid/xs_interface.c:2004
-msgid "Select SIDPlay2 filters file for importing"
-msgstr ""
-
-#: src/sid/xs_interface.c:2045
-msgid "Select SIDPlay2 filters file for exporting"
-msgstr ""
-
-#: src/sid/xs_interface.c:2093 src/sid/xs_interface.c:2106
-msgid "Confirm selected action"
-msgstr ""
-
-#: src/sid/xs_interface.c:2123
-msgid "Yes"
-msgstr ""
-
-#: src/sid/xs_interface.c:2129
-msgid "No"
-msgstr ""
+"To import your music library into Audacious, choose a folder and then click "
+"the \"refresh\" icon."
+msgstr "Oma audiokogu importimiseks Audaciousesse vali kataloog ja vajuta värskendamise ikoonile."
+
+#: src/search-tool/search-tool.c:653
+msgid "Please wait ..."
+msgstr "Palun oota..."
+
+#: src/search-tool/search-tool.c:675
+msgid "Choose Folder"
+msgstr "Kataloogi valimine"
 
 #: src/skins/plugin.c:167
 msgid "About Skinned GUI"
@@ -2792,48 +2275,43 @@ msgstr ""
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
-msgstr ""
+msgstr "Autoriõigused (c) 2008, Tomasz Moń <desowin@gmail.com>\n\n"
 
-#: src/skins/skins_cfg.c:254
-#, fuzzy
+#: src/skins/skins_cfg.c:207
 msgid "_Player:"
-msgstr "Esitamine"
+msgstr "_Esitaja:"
 
-#: src/skins/skins_cfg.c:254
+#: src/skins/skins_cfg.c:208
 msgid "Select main player window font:"
 msgstr ""
 
-#: src/skins/skins_cfg.c:255
-#, fuzzy
+#: src/skins/skins_cfg.c:210
 msgid "_Playlist:"
-msgstr "Esitusnimekirja valimine"
+msgstr "_Esitusnimekiri:"
 
-#: src/skins/skins_cfg.c:255
-#, fuzzy
+#: src/skins/skins_cfg.c:211
 msgid "Select playlist font:"
-msgstr "Esitusnimekirja valimine"
+msgstr "Esitusnimekirja kirjatüübi valimine:"
 
-#: src/skins/skins_cfg.c:259
-#, fuzzy
+#: src/skins/skins_cfg.c:215
 msgid "<b>_Fonts</b>"
-msgstr "<b>Failinimi: </b>"
+msgstr "<b>_Kirjatüübid</b>"
 
-#: src/skins/skins_cfg.c:261
+#: src/skins/skins_cfg.c:218
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr ""
+msgstr "Kasutatakse rasterkirja (toetab ainult ASCII kooditabelit)"
 
-#: src/skins/skins_cfg.c:263
+#: src/skins/skins_cfg.c:220
 msgid "Scroll song title in both directions"
-msgstr ""
+msgstr "Loo nime keritakse mõlemas suunas"
 
-#: src/skins/skins_cfg.c:346
-#, fuzzy
+#: src/skins/skins_cfg.c:298
 msgid "<b>_Skin</b>"
-msgstr "<b>Failinimi: </b>"
+msgstr "<b>_Rüü</b>"
 
-#: src/skins/skins_cfg.c:393
+#: src/skins/skins_cfg.c:345
 msgid "Interface Preferences"
-msgstr ""
+msgstr "Liidese eelistused"
 
 #: src/skins/ui_equalizer.c:330
 msgid "Preamp"
@@ -2841,57 +2319,83 @@ msgstr ""
 
 #: src/skins/ui_equalizer.c:334
 msgid "31 Hz"
-msgstr ""
+msgstr "31 Hz"
 
 #: src/skins/ui_equalizer.c:335
 msgid "63 Hz"
-msgstr ""
+msgstr "63 Hz"
 
 #: src/skins/ui_equalizer.c:335
 msgid "125 Hz"
-msgstr ""
+msgstr "125 Hz"
 
 #: src/skins/ui_equalizer.c:335
-#, fuzzy
 msgid "250 Hz"
-msgstr "22050 Hz "
+msgstr "250 Hz"
 
 #: src/skins/ui_equalizer.c:335
-#, fuzzy
 msgid "500 Hz"
-msgstr "11000 Hz"
+msgstr "500 Hz"
 
 #: src/skins/ui_equalizer.c:335
-#, fuzzy
 msgid "1 kHz"
-msgstr "11 kHz"
+msgstr "1 kHz"
 
 #: src/skins/ui_equalizer.c:336
-#, fuzzy
 msgid "2 kHz"
-msgstr "22 kHz"
+msgstr "2 kHz"
 
 #: src/skins/ui_equalizer.c:336
-#, fuzzy
 msgid "4 kHz"
-msgstr "44 kHz"
+msgstr "4 kHz"
 
 #: src/skins/ui_equalizer.c:336
-#, fuzzy
 msgid "8 kHz"
-msgstr "44 kHz"
+msgstr "8 kHz"
 
 #: src/skins/ui_equalizer.c:336
-#, fuzzy
 msgid "16 kHz"
-msgstr "44 kHz"
+msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.c:378
+#: src/skins/ui_equalizer.c:379
 msgid "Audacious Equalizer"
+msgstr "Audaciouse ekvalaiser"
+
+#: src/skins/ui_equalizer.c:887
+msgid "Presets"
+msgstr "Valmisseadistused"
+
+#: src/skins/ui_equalizer.c:968 src/skins/ui_manager.c:442
+msgid "Load preset"
+msgstr "Valmisseadistuste laadimine"
+
+#: src/skins/ui_equalizer.c:985
+msgid "Load auto-preset"
 msgstr ""
 
-#: src/skins/ui_equalizer.c:884
-msgid "Presets"
+#: src/skins/ui_equalizer.c:1015 src/skins/ui_equalizer.c:1033
+#: src/skins/ui_equalizer.c:1049
+msgid "Load equalizer preset"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:1068 src/skins/ui_manager.c:463
+msgid "Save preset"
+msgstr "Valmisseadistuste salvestamine"
+
+#: src/skins/ui_equalizer.c:1084
+msgid "Save auto-preset"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:1114 src/skins/ui_equalizer.c:1150
+msgid "Save equalizer preset"
+msgstr "Ekvalaiseri valmisseadistuse salvestamine"
+
+#: src/skins/ui_equalizer.c:1169 src/skins/ui_manager.c:478
+msgid "Delete preset"
+msgstr "Valmisseadistuse kustutamine"
+
+#: src/skins/ui_equalizer.c:1186
+msgid "Delete auto-preset"
 msgstr ""
 
 #: src/skins/ui_main.c:444
@@ -2899,14 +2403,12 @@ msgid "kbps"
 msgstr ""
 
 #: src/skins/ui_main.c:452
-#, fuzzy
 msgid "kHz"
-msgstr "Hz"
+msgstr "kHz"
 
 #: src/skins/ui_main.c:459
-#, fuzzy
 msgid "surround"
-msgstr "Surround-kaja"
+msgstr ""
 
 #: src/skins/ui_main.c:807
 #, c-format
@@ -2914,9 +2416,9 @@ msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr ""
 
 #: src/skins/ui_main.c:828
-#, fuzzy, c-format
+#, c-format
 msgid "Volume: %d%%"
-msgstr "Valjus: (%)"
+msgstr "Valjus: %d%%"
 
 #: src/skins/ui_main.c:851
 #, c-format
@@ -2933,9 +2435,8 @@ msgid "Balance: %d%% right"
 msgstr ""
 
 #: src/skins/ui_main.c:981
-#, fuzzy
 msgid "Options Menu"
-msgstr "Valikud"
+msgstr "Valikute menüü"
 
 #: src/skins/ui_main.c:985
 msgid "Disable 'Always On Top'"
@@ -2946,95 +2447,92 @@ msgid "Enable 'Always On Top'"
 msgstr ""
 
 #: src/skins/ui_main.c:990
-#, fuzzy
 msgid "File Info Box"
-msgstr "Faili andmed"
+msgstr ""
 
 #: src/skins/ui_main.c:995
 msgid "Visualization Menu"
-msgstr ""
+msgstr "Visualiseerimismenüü"
 
-#: src/skins/ui_main.c:1645
+#: src/skins/ui_main.c:1653
 msgid "Single mode."
-msgstr ""
+msgstr "Ühe loo režiim."
 
-#: src/skins/ui_main.c:1647
-#, fuzzy
+#: src/skins/ui_main.c:1655
 msgid "Playlist mode."
-msgstr "Esitusnimekirja valimine"
+msgstr "Esitusnimekirja režiim."
 
-#: src/skins/ui_main.c:1669
+#: src/skins/ui_main.c:1677
 msgid "Stopping after song."
-msgstr ""
+msgstr "Seiskamine pärast loo lõppu."
 
-#: src/skins/ui_main.c:1671
+#: src/skins/ui_main.c:1679
 msgid "Not stopping after song."
-msgstr ""
+msgstr "Jätkamine pärast loo lõppu."
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
 msgid "Autoscroll Songname"
-msgstr ""
+msgstr "Loo nime automaatkerimine"
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
-msgstr ""
+msgstr "Seiskamine pärast loo lõppu"
 
 #: src/skins/ui_manager.c:73 src/skins/ui_manager.c:74
 msgid "Peaks"
-msgstr ""
+msgstr "Tipud"
 
 #: src/skins/ui_manager.c:76 src/skins/ui_manager.c:77
 msgid "Repeat"
-msgstr ""
+msgstr "Korduv"
 
 #: src/skins/ui_manager.c:79 src/skins/ui_manager.c:80
 msgid "Shuffle"
-msgstr ""
+msgstr "Segatud"
 
 #: src/skins/ui_manager.c:82 src/skins/ui_manager.c:83
 msgid "No Playlist Advance"
-msgstr ""
+msgstr "Esitusnimekirja ei kasutata"
 
 #: src/skins/ui_manager.c:85 src/skins/ui_manager.c:86
 msgid "Show Player"
-msgstr ""
+msgstr "Näita esitaja akent"
 
 #: src/skins/ui_manager.c:88 src/skins/ui_manager.c:89
 msgid "Show Playlist Editor"
-msgstr ""
+msgstr "Näita esitusnimekirja redaktorit"
 
 #: src/skins/ui_manager.c:91 src/skins/ui_manager.c:92
 msgid "Show Equalizer"
-msgstr ""
+msgstr "Näita ekvalaiserit"
 
 #: src/skins/ui_manager.c:94 src/skins/ui_manager.c:95
 msgid "Always on Top"
-msgstr ""
+msgstr "Alati pealmine"
 
 #: src/skins/ui_manager.c:97 src/skins/ui_manager.c:98
 msgid "Put on All Workspaces"
-msgstr ""
+msgstr "Näidatakse kõigil tööaladel"
 
 #: src/skins/ui_manager.c:100 src/skins/ui_manager.c:101
 msgid "Roll up Player"
-msgstr ""
+msgstr "Keri esitaja aken kokku"
 
 #: src/skins/ui_manager.c:103 src/skins/ui_manager.c:104
 msgid "Roll up Playlist Editor"
-msgstr ""
+msgstr "Keri esitusnimekirja redaktor kokku"
 
 #: src/skins/ui_manager.c:106 src/skins/ui_manager.c:107
 msgid "Roll up Equalizer"
-msgstr ""
+msgstr "Keri ekvalaiser kokku"
 
 #: src/skins/ui_manager.c:115
 msgid "Analyzer"
-msgstr ""
+msgstr "Analüsaator"
 
 #: src/skins/ui_manager.c:116
-#, fuzzy
 msgid "Scope"
-msgstr "Stereo"
+msgstr "Skoop"
 
 #: src/skins/ui_manager.c:117
 msgid "Voiceprint"
@@ -3042,111 +2540,104 @@ msgstr ""
 
 #: src/skins/ui_manager.c:118
 msgid "Off"
-msgstr ""
+msgstr "Väljas"
 
 #: src/skins/ui_manager.c:122 src/skins/ui_manager.c:139
 #: src/skins/ui_manager.c:145
-#, fuzzy
 msgid "Normal"
-msgstr "Vorming"
+msgstr "Tavaline"
 
 #: src/skins/ui_manager.c:123 src/skins/ui_manager.c:140
 msgid "Fire"
-msgstr ""
+msgstr "Tuli"
 
 #: src/skins/ui_manager.c:124
 msgid "Vertical Lines"
-msgstr ""
+msgstr "Püstjoontega"
 
 #: src/skins/ui_manager.c:128
-#, fuzzy
 msgid "Lines"
-msgstr "minutit"
+msgstr "Jooned"
 
 #: src/skins/ui_manager.c:129
 msgid "Bars"
-msgstr ""
+msgstr "Tulbad"
 
 #: src/skins/ui_manager.c:133
-#, fuzzy
 msgid "Dot Scope"
-msgstr "Ei korrata"
+msgstr "Punktidega"
 
 #: src/skins/ui_manager.c:134
 msgid "Line Scope"
-msgstr ""
+msgstr "Joonega"
 
 #: src/skins/ui_manager.c:135
 msgid "Solid Scope"
-msgstr ""
+msgstr "Ühtlane"
 
 #: src/skins/ui_manager.c:141
 msgid "Ice"
-msgstr ""
+msgstr "Jää"
 
 #: src/skins/ui_manager.c:146
 msgid "Smooth"
-msgstr ""
+msgstr "Pehme"
 
 #: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
 msgid "Slowest"
-msgstr ""
+msgstr "Väga aeglane"
 
 #: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
-#, fuzzy
 msgid "Slow"
-msgstr "Vari"
+msgstr "Aeglane"
 
 #: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
 msgid "Medium"
-msgstr ""
+msgstr "Keskmine"
 
 #: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
-#, fuzzy
 msgid "Fast"
-msgstr "Vorming"
+msgstr "Kiire"
 
 #: src/skins/ui_manager.c:154 src/skins/ui_manager.c:162
 msgid "Fastest"
-msgstr ""
+msgstr "Väga kiire"
 
 #: src/skins/ui_manager.c:166
 msgid "Time Elapsed"
-msgstr ""
+msgstr "Kulunud aeg"
 
 #: src/skins/ui_manager.c:167
 msgid "Time Remaining"
-msgstr ""
+msgstr "Järelejäänud aeg"
 
 #: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
-#, fuzzy
 msgid "Pause"
-msgstr "Pausimine"
+msgstr "Pausi"
 
 #: src/skins/ui_manager.c:187 src/skins/ui_manager.c:188
 msgid "Previous"
-msgstr ""
+msgstr "Eelmine"
 
 #: src/skins/ui_manager.c:190 src/skins/ui_manager.c:191
-#, fuzzy
 msgid "Next"
-msgstr "Tekst"
+msgstr "Järgmine"
 
 #: src/skins/ui_manager.c:196
 msgid "Visualization"
-msgstr ""
+msgstr "Visualiseerimine"
 
 #: src/skins/ui_manager.c:197
 msgid "Visualization Mode"
-msgstr ""
+msgstr "Visualiseerimisrežiim"
 
 #: src/skins/ui_manager.c:198
 msgid "Analyzer Mode"
-msgstr ""
+msgstr "Analüsaatori režiim"
 
 #: src/skins/ui_manager.c:199
 msgid "Scope Mode"
-msgstr ""
+msgstr "Skoobi režiim"
 
 #: src/skins/ui_manager.c:200
 msgid "Voiceprint Mode"
@@ -3158,644 +2649,560 @@ msgstr ""
 
 #: src/skins/ui_manager.c:202
 msgid "Analyzer Falloff"
-msgstr ""
+msgstr "Analüsaatori tagasikukkumine"
 
 #: src/skins/ui_manager.c:203
 msgid "Peaks Falloff"
-msgstr ""
+msgstr "Tippude tagasikukkumine"
 
 #: src/skins/ui_manager.c:208
-#, fuzzy
 msgid "Playlist"
-msgstr "Esitusnimekirja valimine"
+msgstr "Esitusnimekiri"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "New Playlist"
-msgstr "Esitusnimekirja valimine"
+msgstr "Uus esitusnimekiri"
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
-#, fuzzy
 msgid "Select Next Playlist"
-msgstr "Esitusnimekirja valimine"
+msgstr "Vali järgmine esitusnimekiri"
 
 #: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
-#, fuzzy
 msgid "Select Previous Playlist"
-msgstr "Esitusnimekirja valimine"
+msgstr "Vali eelmine esitusnimekiri"
 
 #: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
-#, fuzzy
 msgid "Delete Playlist"
-msgstr "Esitusnimekirja valimine"
+msgstr "Kustuta esitusnimekiri"
 
 #: src/skins/ui_manager.c:222
-#, fuzzy
 msgid "Import Playlist"
-msgstr "Esitusnimekirja andmed kiiresti"
+msgstr "Impordi esitusnimekiri"
 
 #: src/skins/ui_manager.c:223
 msgid "Loads a playlist file into the selected playlist."
-msgstr ""
+msgstr "Esitusnimekirja faili laadimine valitud esitusnimekirja."
 
 #: src/skins/ui_manager.c:226
-#, fuzzy
 msgid "Export Playlist"
-msgstr "Esitusnimekirja andmed kiiresti"
+msgstr "Ekspordi esitusnimekiri"
 
 #: src/skins/ui_manager.c:227
-#, fuzzy
 msgid "Saves the selected playlist."
-msgstr "Esitusnimekirja valimine"
+msgstr "Valitud esitusnimekirja salvestamine."
 
 #: src/skins/ui_manager.c:229
-#, fuzzy
-msgid "Save All Playlists"
-msgstr "Esitusnimekirja valimine"
+msgid "Refresh List"
+msgstr "Värskenda nimekirja"
 
 #: src/skins/ui_manager.c:230
-msgid ""
-"Saves all the playlists that are open. Note that this is done automatically "
-"when Audacious quits."
-msgstr ""
+msgid "Refreshes metadata associated with a playlist entry."
+msgstr "Esitusnimekirjas valitud kirjega seotud metaandmete värskendamine."
+
+#: src/skins/ui_manager.c:233
+msgid "Playlist Manager"
+msgstr "Esitusnimekirjade haldus"
 
 #: src/skins/ui_manager.c:234
-msgid "Refresh List"
-msgstr ""
+msgid "Queue Manager"
+msgstr "Järjekorra haldus"
 
-#: src/skins/ui_manager.c:235
-msgid "Refreshes metadata associated with a playlist entry."
-msgstr ""
+#: src/skins/ui_manager.c:237
+msgid "View"
+msgstr "Vaade"
 
 #: src/skins/ui_manager.c:238
-msgid "List Manager"
-msgstr ""
+msgid "Interface"
+msgstr "Liides"
 
 #: src/skins/ui_manager.c:239
-msgid "Opens the playlist manager."
-msgstr ""
+msgid "Interface Preferences ..."
+msgstr "Liidese eelistused..."
 
 #: src/skins/ui_manager.c:243
-msgid "View"
-msgstr ""
+msgid "Add Internet Address..."
+msgstr "Lisa internetiaadress..."
 
 #: src/skins/ui_manager.c:244
-msgid "Interface"
-msgstr ""
-
-#: src/skins/ui_manager.c:245
-msgid "Interface Preferences ..."
-msgstr ""
-
-#: src/skins/ui_manager.c:249
-msgid "Add Internet Address..."
-msgstr ""
-
-#: src/skins/ui_manager.c:250
 msgid "Adds a remote track to the playlist."
-msgstr ""
+msgstr "Võrgus asuva loo lisamine esitusnimekirja."
+
+#: src/skins/ui_manager.c:247
+msgid "Add Files..."
+msgstr "Lisa faile..."
+
+#: src/skins/ui_manager.c:248
+msgid "Adds files to the playlist."
+msgstr "Failide lisamine esitusnimekirja"
 
 #: src/skins/ui_manager.c:253
-msgid "Add Files..."
-msgstr ""
-
-#: src/skins/ui_manager.c:254
-msgid "Adds files to the playlist."
-msgstr ""
-
-#: src/skins/ui_manager.c:259
 msgid "Search and Select"
 msgstr ""
 
-#: src/skins/ui_manager.c:260
+#: src/skins/ui_manager.c:254
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
 msgstr ""
 
-#: src/skins/ui_manager.c:263
-#, fuzzy
+#: src/skins/ui_manager.c:257
 msgid "Invert Selection"
-msgstr "Vormingute valimine"
+msgstr ""
 
-#: src/skins/ui_manager.c:264
+#: src/skins/ui_manager.c:258
 msgid "Inverts the selected and unselected entries."
 msgstr ""
 
-#: src/skins/ui_manager.c:267
-#, fuzzy
+#: src/skins/ui_manager.c:261
 msgid "Select All"
-msgstr "Esitusnimekirja valimine"
+msgstr "Vali kõik"
 
-#: src/skins/ui_manager.c:268
+#: src/skins/ui_manager.c:262
 msgid "Selects all of the playlist entries."
+msgstr "Kõigi esitusnimekirja kirjete valimine."
+
+#: src/skins/ui_manager.c:265
+msgid "Select None"
 msgstr ""
+
+#: src/skins/ui_manager.c:266
+msgid "Deselects all of the playlist entries."
+msgstr "Kõigi esitusnimekirja kirjete kustutamine."
 
 #: src/skins/ui_manager.c:271
-#, fuzzy
-msgid "Select None"
-msgstr "Loo lõpp tuvastatakse"
+msgid "Remove All"
+msgstr "Eemalda kõik"
 
 #: src/skins/ui_manager.c:272
-msgid "Deselects all of the playlist entries."
-msgstr ""
-
-#: src/skins/ui_manager.c:277
-#, fuzzy
-msgid "Remove All"
-msgstr "Eemalda"
-
-#: src/skins/ui_manager.c:278
 msgid "Removes all entries from the playlist."
-msgstr ""
+msgstr "Esitusnimekirjast kõikide kirjete eemaldamine"
 
-#: src/skins/ui_manager.c:281
+#: src/skins/ui_manager.c:275
 msgid "Clear Queue"
 msgstr ""
 
-#: src/skins/ui_manager.c:282
+#: src/skins/ui_manager.c:276
 msgid "Clears the queue associated with this playlist."
 msgstr ""
 
-#: src/skins/ui_manager.c:285
+#: src/skins/ui_manager.c:279
 msgid "Remove Unavailable Files"
-msgstr ""
+msgstr "Eemalda kättesaamatud failid"
+
+#: src/skins/ui_manager.c:280
+msgid "Removes unavailable files from the playlist."
+msgstr "Kättesaamatute failide eemaldamine esitusnimekirjast."
+
+#: src/skins/ui_manager.c:283
+msgid "Remove Duplicates"
+msgstr "Eemalda korduvad kirjed"
+
+#: src/skins/ui_manager.c:285 src/skins/ui_manager.c:317
+#: src/skins/ui_manager.c:347
+msgid "By Title"
+msgstr "Pealkirja järgi"
 
 #: src/skins/ui_manager.c:286
-msgid "Removes unavailable files from the playlist."
-msgstr ""
-
-#: src/skins/ui_manager.c:289
-msgid "Remove Duplicates"
-msgstr ""
-
-#: src/skins/ui_manager.c:291 src/skins/ui_manager.c:323
-#: src/skins/ui_manager.c:353
-#, fuzzy
-msgid "By Title"
-msgstr "Pealkiri"
-
-#: src/skins/ui_manager.c:292
 msgid "Removes duplicate entries from the playlist by title."
-msgstr ""
+msgstr "Esitusnimekirjast korduvate kirjete eemaldamine pealkirja järgi."
 
-#: src/skins/ui_manager.c:295 src/skins/ui_manager.c:335
-#: src/skins/ui_manager.c:365
-#, fuzzy
+#: src/skins/ui_manager.c:289 src/skins/ui_manager.c:329
+#: src/skins/ui_manager.c:359
 msgid "By Filename"
-msgstr "Failinimi"
+msgstr "Failinime järgi"
 
-#: src/skins/ui_manager.c:296
+#: src/skins/ui_manager.c:290
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr ""
+msgstr "Esitusnimekirjast korduvate kirjete eemaldamine failinime järgi."
 
-#: src/skins/ui_manager.c:299 src/skins/ui_manager.c:339
-#: src/skins/ui_manager.c:369
-#, fuzzy
+#: src/skins/ui_manager.c:293 src/skins/ui_manager.c:333
+#: src/skins/ui_manager.c:363
 msgid "By Path + Filename"
-msgstr "Failinimi"
+msgstr "Raja ja failinime järgi"
 
-#: src/skins/ui_manager.c:300
+#: src/skins/ui_manager.c:294
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr ""
+msgstr "Esitusnimekirjast korduvate kirjete eemaldamine faili täisraja järgi."
 
-#: src/skins/ui_manager.c:303
+#: src/skins/ui_manager.c:297
 msgid "Remove Unselected"
-msgstr ""
+msgstr "Eemalda valimata kirjed"
 
-#: src/skins/ui_manager.c:304
+#: src/skins/ui_manager.c:298
 msgid "Remove unselected entries from the playlist."
-msgstr ""
+msgstr "Valimata kirjete eemaldamine esitusnimekirjast."
+
+#: src/skins/ui_manager.c:301
+msgid "Remove Selected"
+msgstr "Eemalda valik"
+
+#: src/skins/ui_manager.c:302
+msgid "Remove selected entries from the playlist."
+msgstr "Valitud kirjete eemaldamine esitusnimekirjast"
 
 #: src/skins/ui_manager.c:307
-msgid "Remove Selected"
-msgstr ""
+msgid "Randomize List"
+msgstr "Sega nimekiri"
 
 #: src/skins/ui_manager.c:308
-msgid "Remove selected entries from the playlist."
-msgstr ""
-
-#: src/skins/ui_manager.c:313
-msgid "Randomize List"
-msgstr ""
-
-#: src/skins/ui_manager.c:314
-#, fuzzy
 msgid "Randomizes the playlist."
-msgstr "Esitusnimekirja valimine"
+msgstr "Nimekirja segiajamine"
 
-#: src/skins/ui_manager.c:317
+#: src/skins/ui_manager.c:311
 msgid "Reverse List"
-msgstr ""
+msgstr "Pööra järjestus ümber"
 
-#: src/skins/ui_manager.c:318
+#: src/skins/ui_manager.c:312
 msgid "Reverses the playlist."
-msgstr ""
+msgstr "Esitusnimekirja järjekorra ümberpööramine"
 
-#: src/skins/ui_manager.c:321
-#, fuzzy
+#: src/skins/ui_manager.c:315
 msgid "Sort List"
-msgstr "Esitaja:"
+msgstr "Nimekirja sortimine"
 
-#: src/skins/ui_manager.c:324 src/skins/ui_manager.c:354
+#: src/skins/ui_manager.c:318 src/skins/ui_manager.c:348
 msgid "Sorts the list by title."
-msgstr ""
+msgstr "Nimekirja sortimine pealkirja järgi."
 
-#: src/skins/ui_manager.c:327 src/skins/ui_manager.c:357
-#, fuzzy
+#: src/skins/ui_manager.c:321 src/skins/ui_manager.c:351
 msgid "By Album"
-msgstr "Album:"
+msgstr "Albumi järgi"
 
-#: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
+#: src/skins/ui_manager.c:322 src/skins/ui_manager.c:352
 msgid "Sorts the list by album."
-msgstr ""
+msgstr "Nimekirja sortimine albumi järgi."
 
-#: src/skins/ui_manager.c:331 src/skins/ui_manager.c:361
-#, fuzzy
+#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
 msgid "By Artist"
-msgstr "Esitaja:"
+msgstr "Esitaja järgi"
 
-#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
+#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
 msgid "Sorts the list by artist."
-msgstr ""
+msgstr "Nimekirja sortimine esitaja järgi."
 
-#: src/skins/ui_manager.c:336 src/skins/ui_manager.c:366
+#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
 msgid "Sorts the list by filename."
-msgstr ""
+msgstr "Nimekirja sortimine failinime järgi."
 
-#: src/skins/ui_manager.c:340 src/skins/ui_manager.c:370
+#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
 msgid "Sorts the list by full pathname."
-msgstr ""
+msgstr "Nimekirja sortimine täisraja järgi."
 
-#: src/skins/ui_manager.c:343 src/skins/ui_manager.c:373
-#, fuzzy
+#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
 msgid "By Date"
-msgstr "Kuupäev:"
+msgstr "Kuupäeva järgi"
 
-#: src/skins/ui_manager.c:344 src/skins/ui_manager.c:374
+#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
 msgid "Sorts the list by modification time."
-msgstr ""
+msgstr "Nimekirja sortimine muutmise aja järgi."
 
-#: src/skins/ui_manager.c:347 src/skins/ui_manager.c:377
-#, fuzzy
+#: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
 msgid "By Track Number"
-msgstr "Loo number:"
+msgstr "Loo numbri järgi"
 
-#: src/skins/ui_manager.c:348 src/skins/ui_manager.c:378
+#: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
 msgid "Sorts the list by track number."
-msgstr ""
+msgstr "Nimekirja sortimine loo numbri järgi."
 
-#: src/skins/ui_manager.c:351
-#, fuzzy
+#: src/skins/ui_manager.c:345
 msgid "Sort Selected"
-msgstr "Vormingute valimine"
+msgstr "Valiku sortimine"
 
-#: src/skins/ui_manager.c:387
-#, fuzzy
+#: src/skins/ui_manager.c:381
 msgid "File"
-msgstr "Failinimi"
+msgstr "Fail"
 
-#: src/skins/ui_manager.c:388
-msgid "Help"
-msgstr "Abi"
-
-#: src/skins/ui_manager.c:390
+#: src/skins/ui_manager.c:384
 msgid "Plugin Services"
-msgstr ""
+msgstr "Pluginate teenused"
 
-#: src/skins/ui_manager.c:392 src/skins/ui_manager.c:395
+#: src/skins/ui_manager.c:386 src/skins/ui_manager.c:389
 msgid "View Track Details"
-msgstr ""
+msgstr "Vaata loo andmeid"
 
-#: src/skins/ui_manager.c:393 src/skins/ui_manager.c:396
+#: src/skins/ui_manager.c:387 src/skins/ui_manager.c:390
 msgid "View track details"
 msgstr ""
 
-#: src/skins/ui_manager.c:398 src/skins/ui_manager.c:399
-#, fuzzy
+#: src/skins/ui_manager.c:392 src/skins/ui_manager.c:393
 msgid "About Audacious"
-msgstr "Audacious'e LIRC pluginast lähemalt"
+msgstr "Audaciousest lähemalt"
+
+#: src/skins/ui_manager.c:395
+msgid "Play File"
+msgstr "Esita faili"
+
+#: src/skins/ui_manager.c:396
+msgid "Load and play a file"
+msgstr "Faili laadimine ja esitamine"
+
+#: src/skins/ui_manager.c:398
+msgid "Play Location"
+msgstr "Esita asukohalt"
+
+#: src/skins/ui_manager.c:399
+msgid "Play media from the selected location"
+msgstr "Meedia esitamine määratud asukohast"
 
 #: src/skins/ui_manager.c:401
-#, fuzzy
-msgid "Play File"
-msgstr "Esitamine"
+msgid "Plugin services"
+msgstr "Pluginate teenused"
 
-#: src/skins/ui_manager.c:402
-msgid "Load and play a file"
-msgstr ""
+#: src/skins/ui_manager.c:403
+msgid "Preferences"
+msgstr "Eelistused"
 
 #: src/skins/ui_manager.c:404
-#, fuzzy
-msgid "Play Location"
-msgstr "Esitusnimekiri (valikuline)"
-
-#: src/skins/ui_manager.c:405
-msgid "Play media from the selected location"
-msgstr ""
-
-#: src/skins/ui_manager.c:407
-msgid "Plugin services"
-msgstr ""
-
-#: src/skins/ui_manager.c:409
-msgid "Preferences"
-msgstr ""
-
-#: src/skins/ui_manager.c:410
 msgid "Open preferences window"
 msgstr ""
 
-#: src/skins/ui_manager.c:413
-#, fuzzy
+#: src/skins/ui_manager.c:407
 msgid "Quit Audacious"
-msgstr "%s - Audacious"
+msgstr "Audaciouse töö lõpetamine"
 
-#: src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
+#: src/skins/ui_manager.c:409 src/skins/ui_manager.c:410
 msgid "Set A-B"
 msgstr ""
 
-#: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
+#: src/skins/ui_manager.c:412 src/skins/ui_manager.c:413
 msgid "Clear A-B"
 msgstr ""
 
-#: src/skins/ui_manager.c:421 src/skins/ui_manager.c:422
-msgid "Jump to Playlist Start"
-msgstr ""
-
-#: src/skins/ui_manager.c:427 src/skins/ui_manager.c:428
+#: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
 msgid "Jump to Time"
-msgstr ""
+msgstr "Hüppa ajahetkele"
 
-#: src/skins/ui_manager.c:430
+#: src/skins/ui_manager.c:421
 msgid "Queue Toggle"
 msgstr ""
 
-#: src/skins/ui_manager.c:431
+#: src/skins/ui_manager.c:422
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr ""
 
-#: src/skins/ui_manager.c:434
+#: src/skins/ui_manager.c:425
 msgid "Copy"
-msgstr ""
+msgstr "Kopeeri"
+
+#: src/skins/ui_manager.c:427
+msgid "Cut"
+msgstr "Lõika"
+
+#: src/skins/ui_manager.c:429
+msgid "Paste"
+msgstr "Aseta"
 
 #: src/skins/ui_manager.c:436
-#, fuzzy
-msgid "Cut"
-msgstr "Praegune"
+msgid "Load"
+msgstr "Laadi"
+
+#: src/skins/ui_manager.c:437
+msgid "Import"
+msgstr ""
 
 #: src/skins/ui_manager.c:438
-msgid "Paste"
-msgstr ""
+msgid "Save"
+msgstr "Salvesta"
 
-#: src/skins/ui_manager.c:445
-msgid "Load"
-msgstr ""
+#: src/skins/ui_manager.c:439
+msgid "Delete"
+msgstr "Kustuta"
 
-#: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
-#: src/skins/ui_manager.c:486
-#, fuzzy
+#: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
+#: src/skins/ui_manager.c:477
 msgid "Preset"
-msgstr "Proovi"
-
-#: src/skins/ui_manager.c:451
-msgid "Load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:453 src/skins/ui_manager.c:474
-#: src/skins/ui_manager.c:489
+#: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
+#: src/skins/ui_manager.c:480
 msgid "Auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:454
+#: src/skins/ui_manager.c:445
 msgid "Load auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:457
-#, fuzzy
+#: src/skins/ui_manager.c:448
 msgid "Load default preset into equalizer"
-msgstr "Laadi vaikeväärtused"
+msgstr ""
 
-#: src/skins/ui_manager.c:459
-#, fuzzy
+#: src/skins/ui_manager.c:450
 msgid "Zero"
-msgstr "Stereo"
+msgstr ""
 
-#: src/skins/ui_manager.c:460
+#: src/skins/ui_manager.c:451
 msgid "Set equalizer preset levels to zero"
 msgstr ""
 
-#: src/skins/ui_manager.c:462
+#: src/skins/ui_manager.c:453
 msgid "From file"
-msgstr ""
+msgstr "Failist"
 
-#: src/skins/ui_manager.c:463
+#: src/skins/ui_manager.c:454
 msgid "Load preset from file"
-msgstr ""
+msgstr "Valmisseadistuste laadimine failist"
 
-#: src/skins/ui_manager.c:465
+#: src/skins/ui_manager.c:456
 msgid "From WinAMP EQF file"
-msgstr ""
+msgstr "WinAMPi EQF-failist"
+
+#: src/skins/ui_manager.c:457
+msgid "Load preset from WinAMP EQF file"
+msgstr "Valmisseadistuste laadimine WinAMPi EQF-failist"
+
+#: src/skins/ui_manager.c:459
+msgid "WinAMP Presets"
+msgstr "WinAMPi valmisseadistused"
+
+#: src/skins/ui_manager.c:460
+msgid "Import WinAMP presets"
+msgstr "WinAMPi valmisseadistuste importimine"
 
 #: src/skins/ui_manager.c:466
-msgid "Load preset from WinAMP EQF file"
-msgstr ""
-
-#: src/skins/ui_manager.c:468
-msgid "WinAMP Presets"
-msgstr ""
-
-#: src/skins/ui_manager.c:469
-msgid "Import WinAMP presets"
-msgstr ""
-
-#: src/skins/ui_manager.c:472
-msgid "Save preset"
-msgstr ""
-
-#: src/skins/ui_manager.c:475
 msgid "Save auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:478
-#, fuzzy
+#: src/skins/ui_manager.c:469
 msgid "Save default preset"
-msgstr "Laadi vaikeväärtused"
+msgstr "Vaikimisi valmisseadistuste salvestamine"
 
-#: src/skins/ui_manager.c:480
-#, fuzzy
+#: src/skins/ui_manager.c:471
 msgid "To file"
-msgstr "Pealkiri"
+msgstr "Faili"
+
+#: src/skins/ui_manager.c:472
+msgid "Save preset to file"
+msgstr "Valmisseadistuste salvestamine faili"
+
+#: src/skins/ui_manager.c:474
+msgid "To WinAMP EQF file"
+msgstr "WinAMPi EQF-faili"
+
+#: src/skins/ui_manager.c:475
+msgid "Save preset to WinAMP EQF file"
+msgstr "Valmisseadistuste salvestamine WinAMPi EQF-faili"
 
 #: src/skins/ui_manager.c:481
-msgid "Save preset to file"
-msgstr ""
-
-#: src/skins/ui_manager.c:483
-msgid "To WinAMP EQF file"
-msgstr ""
-
-#: src/skins/ui_manager.c:484
-msgid "Save preset to WinAMP EQF file"
-msgstr ""
-
-#: src/skins/ui_manager.c:487
-msgid "Delete preset"
-msgstr ""
-
-#: src/skins/ui_manager.c:490
 msgid "Delete auto-load preset"
 msgstr ""
 
-#: src/skins/ui_playlist.c:244
+#: src/skins/ui_playlist.c:248
 msgid "Search entries in active playlist"
-msgstr ""
+msgstr "Otsi aktiivsest esitusnimekirjast"
 
-#: src/skins/ui_playlist.c:252
+#: src/skins/ui_playlist.c:256
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr ""
+msgstr "Esitusnimekirjast ühe või enama välja järgi otsimine. Otsinguväljadel kasutatakse tõstutundetut regulaaravaldise süntaksit. Kui sa pole regulaaravaldistega tuttav, siis sisesta lihtsalt otsitav sõnaosa."
 
-#: src/skins/ui_playlist.c:260
+#: src/skins/ui_playlist.c:264
 msgid "Title: "
 msgstr "Pealkiri: "
 
-#: src/skins/ui_playlist.c:267
-#, fuzzy
+#: src/skins/ui_playlist.c:271
 msgid "Album: "
-msgstr "Album:"
+msgstr "Album: "
 
-#: src/skins/ui_playlist.c:274
-#, fuzzy
+#: src/skins/ui_playlist.c:278
 msgid "Artist: "
-msgstr "Esitaja:"
+msgstr "Esitaja: "
 
-#: src/skins/ui_playlist.c:281
-#, fuzzy
+#: src/skins/ui_playlist.c:285
 msgid "Filename: "
-msgstr "Failinimi:"
+msgstr "Failinimi: "
 
-#: src/skins/ui_playlist.c:289
+#: src/skins/ui_playlist.c:293
 msgid "Clear previous selection before searching"
 msgstr ""
 
-#: src/skins/ui_playlist.c:292
+#: src/skins/ui_playlist.c:296
 msgid "Automatically toggle queue for matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:295
+#: src/skins/ui_playlist.c:299
 msgid "Create a new playlist with matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:762
-#, fuzzy
+#: src/skins/ui_playlist.c:765
 msgid "Audacious Playlist Editor"
-msgstr "Esitusnimekirja andmed kiiresti"
+msgstr "Audaciouse esitusnimekirja redaktor"
 
-#: src/skins/ui_playlist.c:809
+#: src/skins/ui_playlist.c:812
 #, c-format
 msgid "%s (%d of %d)"
-msgstr ""
+msgstr "%s (%d/%d-st)"
 
 #: src/skins/ui_skinselector.c:162
 msgid "Archived Winamp 2.x skin"
-msgstr ""
+msgstr "Arhiveeritud Winamp 2.x rüü"
 
 #: src/skins/ui_skinselector.c:167
 msgid "Unarchived Winamp 2.x skin"
-msgstr ""
+msgstr "Arhiveerimata Winamp 2.x rüü"
 
-#: src/skins/util.c:773
+#: src/skins/util.c:774
 #, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr ""
+msgstr "Kataloogi (%s) pole võimalik luua: %s\n"
 
-#: src/sndfile/plugin.c:438
-#, fuzzy
+#: src/sndfile/plugin.c:456
 msgid "About sndfile plugin"
-msgstr "ESounD'i pluginast lähemalt"
-
-#: src/sndfile/plugin.c:439
-msgid ""
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the xmms_sndfile plugin which is:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"This program is free software ; you can redistribute it and/or modify \n"
-"it under the terms of the GNU General Public License as published by \n"
-"the Free Software Foundation ; either version 2 of the License, or \n"
-"(at your option) any later version. \n"
-" \n"
-"This program is distributed in the hope that it will be useful, \n"
-"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-"See the GNU General Public License for more details. \n"
-"\n"
-"You should have received a copy of the GNU General Public \n"
-"License along with this program ; if not, write to \n"
-"the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
-msgstr ""
+msgstr "Sndfile pluginast lähemalt"
 
 #: src/sndstretch/sndstretch_xmms.c:155
 msgid "About SndStretch"
-msgstr ""
+msgstr "SndStretch pluginast lähemalt"
 
-#: src/sndstretch/sndstretch_xmms.c:313
+#: src/sndstretch/sndstretch_xmms.c:308
 msgid "Volume corr."
-msgstr ""
+msgstr "Valjuse korrektsioon"
 
-#: src/sndstretch/sndstretch_xmms.c:314
+#: src/sndstretch/sndstretch_xmms.c:309
 msgid "Short Overlap"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:360
+#: src/sndstretch/sndstretch_xmms.c:355
 msgid "Speed"
 msgstr "Kiirus"
 
-#: src/sndstretch/sndstretch_xmms.c:361
+#: src/sndstretch/sndstretch_xmms.c:356
 msgid "Pitch"
-msgstr ""
+msgstr "Kõrgus"
 
-#: src/sndstretch/sndstretch_xmms.c:362
+#: src/sndstretch/sndstretch_xmms.c:357
 msgid "Scale"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:363
-msgid "Options"
-msgstr "Valikud"
-
-#: src/sndstretch/sndstretch_xmms.c:382
+#: src/sndstretch/sndstretch_xmms.c:377
 msgid "SndStretch - Configuration"
-msgstr ""
+msgstr "SndStretch - sätted"
 
-#: src/song_change/song_change.c:464
+#: src/song_change/song_change.c:437
 msgid "Command to run when Audacious starts a new song."
-msgstr ""
+msgstr "Uue loo alustamisel käivitatav käsk:"
 
-#: src/song_change/song_change.c:465 src/song_change/song_change.c:469
-#: src/song_change/song_change.c:473 src/song_change/song_change.c:477
+#: src/song_change/song_change.c:439 src/song_change/song_change.c:445
+#: src/song_change/song_change.c:451 src/song_change/song_change.c:457
 msgid "Command:"
-msgstr ""
+msgstr "Käsk:"
 
-#: src/song_change/song_change.c:468
+#: src/song_change/song_change.c:443
 msgid "Command to run toward the end of a song."
-msgstr ""
+msgstr "Loo lõppemisel käivitatav käsk:"
 
-#: src/song_change/song_change.c:472
+#: src/song_change/song_change.c:449
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr ""
+msgstr "Esitusnimekirja lõppu jõudmisel käivitatav käsk:"
 
-#: src/song_change/song_change.c:476
+#: src/song_change/song_change.c:455
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr ""
+msgstr "Loo pealkirja muutumisel käivitatav käsk (näiteks võrguraadio pealkirja muutumisel)."
 
-#: src/song_change/song_change.c:480
+#: src/song_change/song_change.c:461
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3814,26 +3221,25 @@ msgid ""
 "%T: Track title"
 msgstr ""
 
-#: src/song_change/song_change.c:507
+#: src/song_change/song_change.c:488
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
 
-#: src/song_change/song_change.c:518
+#: src/song_change/song_change.c:499
 msgid "Commands"
-msgstr ""
+msgstr "Käsud"
 
-#: src/song_change/song_change.c:555
-#, fuzzy
+#: src/song_change/song_change.c:529
 msgid "Song Change"
-msgstr "Loo sõnum"
+msgstr "Loovahetus"
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.c:379
 msgid "About Status Icon Plugin"
 msgstr "Olekuikooni pluginast lähemalt"
 
-#: src/statusicon/statusicon.c:379
+#: src/statusicon/statusicon.c:380
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3842,69 +3248,72 @@ msgid ""
 "\n"
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager.\n"
-msgstr ""
+msgstr "Olekuikooni plugin\n\nAutoriõigused 2005-2007 Giacomo Lozito <james@develia.org>\nAutoriõigused 2010 Michał Lipski <tallica@o2.pl>\n\nSee plugin loob Audaciouse ikooni ja paigutab\nselle aknahalduri süsteemisalve. \n"
 
-#: src/statusicon/statusicon.c:447
+#: src/statusicon/statusicon.c:451
 msgid "Status Icon Plugin - Preferences"
 msgstr "Olekuikooni plugina eelistused"
 
-#: src/statusicon/statusicon.c:457
+#: src/statusicon/statusicon.c:461
 msgid "Right-Click Menu"
 msgstr "Paremklõpsu menüü"
 
-#: src/statusicon/statusicon.c:462
+#: src/statusicon/statusicon.c:466
 msgid "Small playback menu #1"
 msgstr "Väike esitusmenüü nr. 1"
 
-#: src/statusicon/statusicon.c:465
+#: src/statusicon/statusicon.c:469
 msgid "Small playback menu #2"
 msgstr "Väike esitusmenüü nr. 2"
 
-#: src/statusicon/statusicon.c:481
+#: src/statusicon/statusicon.c:485
 msgid "Mouse Scroll Action"
 msgstr "Hiire kerimisel"
 
-#: src/statusicon/statusicon.c:485
+#: src/statusicon/statusicon.c:489
 msgid "Change volume"
 msgstr "Muudetakse valjust"
 
-#: src/statusicon/statusicon.c:487
+#: src/statusicon/statusicon.c:491
 msgid "Change playing song"
 msgstr "Vahetatakse esitatavat lugu"
 
-#: src/statusicon/statusicon.c:500
-#, fuzzy
+#: src/statusicon/statusicon.c:504
 msgid "Other settings"
-msgstr "Mikseri sätted"
+msgstr "Muud sätted"
 
-#: src/statusicon/statusicon.c:505
+#: src/statusicon/statusicon.c:509
 msgid "Disable the popup window"
-msgstr ""
+msgstr "Hüpikaken on keelatud"
 
-#: src/statusicon/statusicon.c:512
+#: src/statusicon/statusicon.c:516
 msgid "Close to the notification area (system tray)"
+msgstr "Sulgemisel jäetakse teavitusalale (süsteemisalve)"
+
+#: src/statusicon/statusicon.c:524
+msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/stereo_plugin/stereo.c:41
+#: src/stereo_plugin/stereo.c:45
 msgid ""
 "Extra Stereo Plugin\n"
 "\n"
 "By Johan Levin 1999."
-msgstr ""
+msgstr "Täiendava stereo plugin\n\nAutor: Johan Levin, 1999."
 
-#: src/stereo_plugin/stereo.c:65
+#: src/stereo_plugin/stereo.c:64
 msgid "About Extra Stereo Plugin"
 msgstr "Ekstra stereo pluginast lähemalt"
 
-#: src/stereo_plugin/stereo.c:102
+#: src/stereo_plugin/stereo.c:95
 msgid "Configure Extra Stereo"
-msgstr ""
+msgstr "Täiendava stereo seadistamine"
 
-#: src/tonegen/tonegen.c:48
+#: src/tonegen/tonegen.c:49
 msgid "About Tone Generator"
 msgstr "Toonigeneraatorist lähemalt"
 
-#: src/tonegen/tonegen.c:50
+#: src/tonegen/tonegen.c:51
 msgid ""
 "Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
 "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
@@ -3913,43 +3322,24 @@ msgid ""
 "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
 msgstr ""
 
-#: src/tonegen/tonegen.c:100
+#: src/tonegen/tonegen.c:101
 #, c-format
 msgid "%s %.1f Hz"
-msgstr ""
+msgstr "%s %.1f Hz"
 
-#: src/tonegen/tonegen.c:100
+#: src/tonegen/tonegen.c:101
 msgid "Tone Generator: "
-msgstr ""
+msgstr "Toonigeneraator: "
 
 #: src/unix-io/gtk.c:34
-#, fuzzy
 msgid "About File I/O Plugin"
-msgstr "ESounD'i pluginast lähemalt"
+msgstr "Faili sisend-/väljundpluginast lähemalt"
 
-#: src/vorbis/configure.c:31
-msgid "Override generic titles"
-msgstr "Kasutatakse oma pealkirjavormingut"
-
-#: src/vorbis/configure.c:32
-msgid "Title format:"
-msgstr "Pealkirja vorming:"
-
-#: src/vorbis/configure.c:36
-#, fuzzy
-msgid "Ogg Vorbis Tags"
-msgstr "Ogg Vorbis sildid:"
-
-#: src/vorbis/configure.c:69
-msgid "Ogg Vorbis Audio Plugin Configuration"
-msgstr "Ogg Vorbis audioplugina sätted"
-
-#: src/vorbis/vorbis.c:581
+#: src/vorbis/vorbis.c:573
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Ogg Vorbis audiopluginast lähemalt"
 
-#: src/vorbis/vorbis.c:586
-#, fuzzy
+#: src/vorbis/vorbis.c:578
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -3966,21 +3356,7 @@ msgid ""
 "Eugene Zagidullin <e.asphyx@gmail.com>\n"
 "\n"
 "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
-msgstr ""
-"Ogg Vorbis plugin (Xiph.org)\n"
-"\n"
-"Algupärase koodi autorid:\n"
-"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-"Contributions from\n"
-"Chris Montgomery <monty@xiph.org>\n"
-"Peter Alm <peter@xmms.org>\n"
-"Michael Smith <msmith@labyrinth.edu.au>\n"
-"Jack Moffitt <jack@icecast.org>\n"
-"Jorn Baayen <jorn@nl.linux.org>\n"
-"Haavard Kvaalen <havardk@xmms.org>\n"
-"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-"\n"
-"Külasta ka Xiph.org kodulehte at http://www.xiph.org/\n"
+msgstr "Ogg Vorbis plugin Xiph.org Foundationilt\n\nAlgnse koodi autor:\nTony Arcieri <bascule@inferno.tusculum.edu>\nAbistajad:\nChris Montgomery <monty@xiph.org>\nPeter Alm <peter@xmms.org>\nMichael Smith <msmith@labyrinth.edu.au>\nJack Moffitt <jack@icecast.org>\nJorn Baayen <jorn@nl.linux.org>\nHaavard Kvaalen <havardk@xmms.org>\nGian-Carlo Pascutto <gcp@sjeng.org>\nEugene Zagidullin <e.asphyx@gmail.com>\n\nKülasta Xiph.org Foundationi asukohas http://www.xiph.org/\n"
 
 #: src/vtx/about.c:14
 msgid "About Vortex Player"
@@ -3989,8 +3365,7 @@ msgstr ""
 #: src/vtx/about.c:15
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
-"Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor."
-"ru>\n"
+"Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "\n"
 "Music in vtx format can be found at http://vtx.microfor.ru/music.htm\n"
 "and other AY/YM music sites.\n"
@@ -4009,1202 +3384,4 @@ msgid ""
 "\n"
 "Some of the plugin code was by Miles Egan\n"
 "Visit the Wavpack site at http://www.wavpack.com/\n"
-msgstr ""
-
-#, fuzzy
-#~ msgid "Use Bitmap fonts if available"
-#~ msgstr "Võimaluse korral kasutatakse CDDB-d"
-
-#, fuzzy
-#~ msgid "<b>_Miscellaneous</b>"
-#~ msgstr "<b>Teenused</b>"
-
-#~ msgid "AdPlug :: Configuration"
-#~ msgstr "AdPlug'i sätted"
-
-#~ msgid "Sound quality"
-#~ msgstr "Helikvaliteet"
-
-#~ msgid "8bit"
-#~ msgstr "8-bitine"
-
-#~ msgid "16bit"
-#~ msgstr "16-bitine"
-
-#~ msgid "Channels"
-#~ msgstr "Kanaleid"
-
-#~ msgid "Frequency"
-#~ msgstr "Sagedus"
-
-#~ msgid "Detect songend"
-#~ msgstr "Loo lõpp tuvastatakse"
-
-#~ msgid "Formats"
-#~ msgstr "Vormingud"
-
-#~ msgid "Format selection"
-#~ msgstr "Vormingute valimine"
-
-#~ msgid "Format"
-#~ msgstr "Vorming"
-
-#~ msgid "Extension"
-#~ msgstr "Laiend"
-
-#~ msgid "Author: "
-#~ msgstr "Autor: "
-
-#~ msgid "File Type: "
-#~ msgstr "Faili tüüp: "
-
-#~ msgid "Instruments: "
-#~ msgstr "Instrumendid: "
-
-#~ msgid "Patterns: "
-#~ msgstr "Mustrid: "
-
-#~ msgid "Instrument name"
-#~ msgstr "Instrumendi nimi"
-
-#~ msgid "Song message"
-#~ msgstr "Loo sõnum"
-
-#~ msgid "Pattern: "
-#~ msgstr "Muster: "
-
-#~ msgid "Speed: "
-#~ msgstr "Kiirus: "
-
-#~ msgid "About XMMS Alarm"
-#~ msgstr "XMMS-alarmist lähemalt"
-
-#~ msgid "XMMS Alarm"
-#~ msgstr "XMMS-alarm"
-
-#~ msgid ""
-#~ "An XMMS plugin which can be used\n"
-#~ "to start playing at a certain time.\n"
-#~ "\n"
-#~ "Send all complaints to:\n"
-#~ "Adam Feakin <adamf@snika.uklinux.net>\n"
-#~ "Daniel Stodden <stodden@in.tum.de>\n"
-#~ "\n"
-#~ "http://www.snika.uklinux.net/xmms-alarm/"
-#~ msgstr ""
-#~ "XMMS-plugin, mida saab kasutada esitamise\n"
-#~ "alustamiseks kindlaksmääratud ajal.\n"
-#~ "\n"
-#~ "Kaebused paluks saata aadressidele:\n"
-#~ "Adam Feakin <adamf@snika.uklinux.net>\n"
-#~ "Daniel Stodden <stodden@in.tum.de>\n"
-#~ "\n"
-#~ "http://www.snika.uklinux.net/xmms-alarm/"
-
-#~ msgid "Alarm"
-#~ msgstr "Alarm"
-
-#~ msgid "This is your wakeup call."
-#~ msgstr "See on sinu äratus."
-
-#~ msgid "Select Playlist"
-#~ msgstr "Esitusnimekirja valimine"
-
-#~ msgid "Sorry"
-#~ msgstr "Vabandust"
-
-#~ msgid "Warning"
-#~ msgstr "Hoiatus"
-
-#~ msgid "Alarm Settings"
-#~ msgstr "Alarmi sätted"
-
-#~ msgid "Time"
-#~ msgstr "Aeg"
-
-#~ msgid "hours"
-#~ msgstr "tundi"
-
-#~ msgid "h"
-#~ msgstr "t"
-
-#~ msgid "minutes"
-#~ msgstr "minutit"
-
-#~ msgid "Quiet after:"
-#~ msgstr "Vait pärast:"
-
-#~ msgid "Alarm at (default):"
-#~ msgstr "Alarmi aeg (vaikimisi):"
-
-#~ msgid "Choose the days for the alarm to come on"
-#~ msgstr "Alarmi töölehakkamise päevade valimine"
-
-#~ msgid "Day"
-#~ msgstr "Päev"
-
-#~ msgid "Tuesday"
-#~ msgstr "Teisipäeval"
-
-#~ msgid "Wednesday"
-#~ msgstr "Kolmapäeval"
-
-#~ msgid "Thursday"
-#~ msgstr "Neljapäeval"
-
-#~ msgid "Friday"
-#~ msgstr "Reedel"
-
-#~ msgid "Saturday"
-#~ msgstr "Laupäeval"
-
-#~ msgid "Sunday"
-#~ msgstr "Pühapäeval"
-
-#~ msgid "Monday"
-#~ msgstr "Esmaspäeval"
-
-#~ msgid "Days"
-#~ msgstr "Päevad"
-
-#~ msgid "Fading"
-#~ msgstr "Kahanemine"
-
-#~ msgid "Volume"
-#~ msgstr "Valjus"
-
-#~ msgid "Current"
-#~ msgstr "Praegune"
-
-#~ msgid "Start at"
-#~ msgstr "Alguses"
-
-#~ msgid "%"
-#~ msgstr "%"
-
-#~ msgid "Final"
-#~ msgstr "Lõpus"
-
-#~ msgid "Additional Command"
-#~ msgstr "Täiendav käsk"
-
-#~ msgid "enable"
-#~ msgstr "lubatud"
-
-#~ msgid "Playlist (optional)"
-#~ msgstr "Esitusnimekiri (valikuline)"
-
-#~ msgid "Browse..."
-#~ msgstr "Sirvi..."
-
-#~ msgid "Reminder"
-#~ msgstr "Meeldetuletaja"
-
-#~ msgid "Use reminder"
-#~ msgstr "Meeldetuletaja on kasutusel"
-
-#~ msgid "What do these options mean?"
-#~ msgstr "Mida need valikud tähendavad?"
-
-#, fuzzy
-#~ msgid "Current Headset"
-#~ msgstr "Praegune"
-
-#, fuzzy
-#~ msgid "_Connect"
-#~ msgstr "Asukoht:"
-
-#, fuzzy
-#~ msgid "Class"
-#~ msgstr "Sulge"
-
-#, fuzzy
-#~ msgid "Address:"
-#~ msgstr "Seadme aadress"
-
-#, fuzzy
-#~ msgid "Detected"
-#~ msgstr "Loo lõpp tuvastatakse"
-
-#, fuzzy
-#~ msgid "Not Detected"
-#~ msgstr "Vormingute valimine"
-
-#~ msgid "Device name:"
-#~ msgstr "Seadne nimi:"
-
-#~ msgid "Device file:"
-#~ msgstr "Seadmefail:"
-
-#~ msgid "Active"
-#~ msgstr "Aktiivne"
-
-#~ msgid "Status"
-#~ msgstr "Olek"
-
-#~ msgid "Device Name"
-#~ msgstr "Seadme nimi"
-
-#~ msgid "Device File"
-#~ msgstr "Seadmefail"
-
-#~ msgid "Device Address"
-#~ msgstr "Seadme aadress"
-
-#~ msgid "<b>Name: </b>"
-#~ msgstr "<b>Nimi: </b>"
-
-#~ msgid "<b>Filename: </b>"
-#~ msgstr "<b>Failinimi: </b>"
-
-#~ msgid "Name"
-#~ msgstr "Nimi"
-
-#~ msgid "UID"
-#~ msgstr "UID"
-
-#~ msgid "Installed plugins"
-#~ msgstr "Paigaldatud pluginad"
-
-#~ msgid "Running plugins"
-#~ msgstr "Töötavad pluginad"
-
-#~ msgid "Add"
-#~ msgstr "Lisa"
-
-#~ msgid "Remove"
-#~ msgstr "Eemalda"
-
-#~ msgid "LADSPA Plugin Catalog"
-#~ msgstr "LADSPA pluginate kataloog"
-
-#~ msgid "About LIRC Audacious Plugin"
-#~ msgstr "Audacious'e LIRC pluginast lähemalt"
-
-#, fuzzy
-#~ msgid "Connection"
-#~ msgstr "Asukoht:"
-
-#~ msgid "ModPlug Configuration"
-#~ msgstr "ModPlug'i sätted"
-
-#~ msgid "16 bit"
-#~ msgstr "16-bitine"
-
-#~ msgid "8 bit"
-#~ msgstr "8-bitine"
-
-#, fuzzy
-#~ msgid "96 kHz"
-#~ msgstr "44 kHz"
-
-#, fuzzy
-#~ msgid "48 kHz"
-#~ msgstr "44 kHz"
-
-#~ msgid "44 kHz"
-#~ msgstr "44 kHz"
-
-#~ msgid "22 kHz"
-#~ msgstr "22 kHz"
-
-#~ msgid "Sampling Rate"
-#~ msgstr "Diskreetimissagedus"
-
-#~ msgid "Enable"
-#~ msgstr "Lubatud"
-
-#~ msgid "Depth"
-#~ msgstr "Sügavus"
-
-#~ msgid "Delay"
-#~ msgstr "Viivitus"
-
-#~ msgid "Effects"
-#~ msgstr "Efektid"
-
-#~ msgid "Use Filename as Song Title"
-#~ msgstr "Failinime kasutatakse pealkirjaks"
-
-#~ msgid "Fast Playlist Info"
-#~ msgstr "Esitusnimekirja andmed kiiresti"
-
-#~ msgid "Noise Reduction"
-#~ msgstr "Müra vähendatakse"
-
-#~ msgid "Play Amiga MOD"
-#~ msgstr "Esitatakse Amiga MOD-e"
-
-#~ msgid "Don't loop"
-#~ msgstr "Ei korrata"
-
-#~ msgid "Loop"
-#~ msgstr "Korratakse"
-
-#~ msgid "time(s)"
-#~ msgstr "kord(a)"
-
-#~ msgid "Loop forever"
-#~ msgstr "Korratakse igavesti"
-
-#~ msgid "Looping"
-#~ msgstr "Kordamine"
-
-#~ msgid "MOD Info"
-#~ msgstr "MOD-i andmed"
-
-#~ msgid ""
-#~ "Filename:\n"
-#~ "Title:\n"
-#~ "Type:\n"
-#~ "Length:\n"
-#~ "Speed:\n"
-#~ "Tempo:\n"
-#~ "Samples:\n"
-#~ "Instruments:\n"
-#~ "Patterns:\n"
-#~ "Channels:"
-#~ msgstr ""
-#~ "Failinimi:\n"
-#~ "Pealkiri:\n"
-#~ "Liik:\n"
-#~ "Kestus:\n"
-#~ "Kiirus:\n"
-#~ "Tempo:\n"
-#~ "Sämpleid:\n"
-#~ "Instrumente:\n"
-#~ "Mustreid:\n"
-#~ "Kanaleid:"
-
-#~ msgid ""
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---"
-#~ msgstr ""
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---\n"
-#~ "---"
-
-#~ msgid "Samples"
-#~ msgstr "Sämplid"
-
-#~ msgid "Instruments"
-#~ msgstr "Instrumendid"
-
-#~ msgid "Message"
-#~ msgstr "Sõnum"
-
-#, fuzzy
-#~ msgid ""
-#~ "\n"
-#~ "Modplug sound engine written by Olivier Lapicque.\n"
-#~ "XMMS interface for Modplug by Kenton Varda.\n"
-#~ "(c)2000 Olivier Lapicque and Kenton Varda.\n"
-#~ "Updates and maintenance by Konstanty Bialkowski.\n"
-#~ "Ported to BMP by Theofilos Intzoglou."
-#~ msgstr ""
-#~ "\n"
-#~ "Modplug helimootor, autor: Olivier Lapicque.\n"
-#~ "Modplug'i XMMS-liidese autor: Kenton Varda.\n"
-#~ "Autoriõigused (c) 2000 Olivier Lapicque ja Kenton Varda.\n"
-#~ "Uuendused ja hooldus: Konstanty Bialkowski.\n"
-#~ "BMP jaoks portinud Theofilos Intzoglou."
-
-#~ msgid "About Modplug"
-#~ msgstr "Modplug'ist lähemalt"
-
-#, fuzzy
-#~ msgid "Blue"
-#~ msgstr "Valjus"
-
-#, fuzzy
-#~ msgid "Search:"
-#~ msgstr "Aasta:"
-
-#, fuzzy
-#~ msgid "Stream name"
-#~ msgstr "Instrumendi nimi"
-
-#, fuzzy
-#~ msgid "Now playing"
-#~ msgstr "Esitusnimekirja valimine"
-
-#, fuzzy
-#~ msgid "About Stream Browser"
-#~ msgstr "OSS draiverist lähemalt"
-
-#, fuzzy
-#~ msgid ""
-#~ "Copyright (c) 2008, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
-#~ "Team.\n"
-#~ "\n"
-#~ "This is a simple stream browser that includes the most popular streaming "
-#~ "directories.\n"
-#~ "Many thanks to the Streamtuner developers <http://www.nongnu.org/"
-#~ "streamtuner>,\n"
-#~ "\tand of course to the whole Audacious community.\n"
-#~ "\n"
-#~ "Also thank you Tony Vroon for mentoring & guiding me, again.\n"
-#~ "\n"
-#~ "This was a Google Summer of Code 2008 project."
-#~ msgstr ""
-#~ "Autoriõigused (c) 2007, Calin Crisan <ccrisan@gmail.com> ja Audacious'e "
-#~ "meeskond.\n"
-#~ "\n"
-#~ "Palju tänu libcdio arendajatele <http://www.gnu.org/software/libcdio/>\n"
-#~ "\tja libcddb arendajatele <http://libcddb.sourceforge.net/>.\n"
-#~ "\n"
-#~ "Samuti tänan Tony Vroon'i minu juhendamise eest.\n"
-#~ "\n"
-#~ "See projekt loodi Google Summer of Code 2007 raames."
-
-#, fuzzy
-#~ msgid "minutes:seconds"
-#~ msgstr "minutit"
-
-#, fuzzy
-#~ msgid "Track length:"
-#~ msgstr "Loo number:"
-
-#, fuzzy
-#~ msgid "Show/hide statusbar"
-#~ msgstr "Esitusnimekirja valimine"
-
-#, fuzzy
-#~ msgid "Refresh Selected"
-#~ msgstr "Vormingute valimine"
-
-#, fuzzy
-#~ msgid "Edit the playlist title."
-#~ msgstr "Esitusnimekirja valimine"
-
-#, fuzzy
-#~ msgid "By Formatted Title"
-#~ msgstr "Pealkiri"
-
-#, fuzzy
-#~ msgid "Components"
-#~ msgstr "Kommentaar:"
-
-#, fuzzy
-#~ msgid "Save as Static Playlist"
-#~ msgstr "Esitusnimekirja valimine"
-
-#, fuzzy
-#~ msgid "Load Playlist"
-#~ msgstr "Esitusnimekirja andmed kiiresti"
-
-#, fuzzy
-#~ msgid "Save Playlist"
-#~ msgstr "Esitusnimekirja valimine"
-
-#~ msgid ""
-#~ "best/slowest:0;\n"
-#~ "worst/fastest:9;\n"
-#~ "recommended:2;\n"
-#~ "default:5;"
-#~ msgstr ""
-#~ "parim/aeglaseim:0;\n"
-#~ "halvim/kiireim:9;\n"
-#~ "soovitatav:2;\n"
-#~ "vaikimisi:5;"
-
-#~ msgid "Variable bitrate"
-#~ msgstr "Muutuv bitikiirus"
-
-#~ msgid "Average bitrate"
-#~ msgstr "Keskmine bitikiirus"
-
-#, fuzzy
-#~ msgid "Show playlists"
-#~ msgstr "Esitusnimekirja valimine"
-
-#, fuzzy
-#~ msgid "Show/hide playlists"
-#~ msgstr "Esitusnimekirja valimine"
-
-#~ msgid "Buffer size (ms):"
-#~ msgstr "Puhvri suurus (ms):"
-
-#, fuzzy
-#~ msgid "Target volume:"
-#~ msgstr "Muudetakse valjust"
-
-#, fuzzy
-#~ msgid "Effect strength:"
-#~ msgstr "Efektid"
-
-#~ msgid "FLAC Audio Plugin "
-#~ msgstr "FLAC audioplugin "
-
-#~ msgid "Audacious standard menu"
-#~ msgstr "Audacious'e standardmenüü"
-
-#~ msgid "Surround echo"
-#~ msgstr "Surround-kaja"
-
-#~ msgid "About ESounD Plugin"
-#~ msgstr "ESounD'i pluginast lähemalt"
-
-#~ msgid ""
-#~ "Audacious ESounD Plugin\n"
-#~ "\n"
-#~ " This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
-#~ "USA."
-#~ msgstr ""
-#~ "Audacious'e ESounD plugin\n"
-#~ "\n"
-#~ " See programm on vaba tarkvara. Te võite seda edasi levitada ja/või\n"
-#~ "muuta vastavalt GNU Üldise Avaliku Litsentsi tingimustele, nagu need\n"
-#~ "on Vaba Tarkvara Fondi poolt avaldatud; kas Litsentsi versioon number\n"
-#~ "2 või (vastavalt Teie valikule) ükskõik milline hilisem versioon.\n"
-#~ "\n"
-#~ "Seda programmi levitatakse lootuses, et see on kasulik, kuid ILMA\n"
-#~ "IGASUGUSE GARANTIITA; isegi KESKMISE/TAVALISE KVALITEEDIGARANTIITA\n"
-#~ "või SOBIVUSELE TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata\n"
-#~ "GNU Üldist Avalikku Litsentsi.\n"
-#~ "\n"
-#~ "Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos käesoleva\n"
-#~ "programmiga; kui ei, siis võtke ühendust Free Software Foundation'iga,\n"
-#~ "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#~ msgid "ESD Output Plugin configuration"
-#~ msgstr "ESD väljundplugina sätted"
-
-#~ msgid "Host:"
-#~ msgstr "Host:"
-
-#~ msgid "Port:"
-#~ msgstr "Port:"
-
-#~ msgid "Server"
-#~ msgstr "Server"
-
-#, fuzzy
-#~ msgid "About RoarAudio Plugin"
-#~ msgstr "FLAC audiopluginast lähemalt"
-
-#, fuzzy
-#~ msgid "RoarAudio Audacious Plugin..."
-#~ msgstr "Audacious'e LIRC pluginast lähemalt"
-
-#, fuzzy
-#~ msgid "RoarAudio Plugin - Configuration"
-#~ msgstr "Audioplaatide plugina sätted"
-
-#, fuzzy
-#~ msgid "Server Type:"
-#~ msgstr "Server: "
-
-#, fuzzy
-#~ msgid "<b>Host:</b>"
-#~ msgstr "<b>Failinimi: </b>"
-
-#, fuzzy
-#~ msgid "Proxy Address"
-#~ msgstr "Seadme aadress"
-
-#, fuzzy
-#~ msgid "<b>Proxy</b>"
-#~ msgstr "<b>Gerpok</b>"
-
-#, fuzzy
-#~ msgid "Player Name:"
-#~ msgstr "Esitamine"
-
-#, fuzzy
-#~ msgid "<b>Player</b>"
-#~ msgstr "<b>Nimi:</b>"
-
-#, fuzzy
-#~ msgid "<b>Current Song</b>"
-#~ msgstr "<b>Failinimi: </b>"
-
-#, fuzzy
-#~ msgid "ALSA Gapless Output Plugin Preferences"
-#~ msgstr "Olekuikooni plugina eelistused"
-
-#~ msgid "Buffer settings"
-#~ msgstr "Puhvri sätted"
-
-#~ msgid "About AudioCompress"
-#~ msgstr "AudioCompress pluginast lähemalt"
-
-#~ msgid " History "
-#~ msgstr " Ajalugu "
-
-#~ msgid "Load default values"
-#~ msgstr "Laadi vaikeväärtused"
-
-#~ msgid "Limit read speed to: "
-#~ msgstr "Lugemiskiiruse piirang:"
-
-#, fuzzy
-#~ msgid "End of playlist"
-#~ msgstr "Esitusnimekirja andmed kiiresti"
-
-#, fuzzy
-#~ msgid "Advanced crossfade"
-#~ msgstr "Laiendatud sätted"
-
-#, fuzzy
-#~ msgid "Fadein"
-#~ msgstr "Sujuv näitamine:"
-
-#, fuzzy
-#~ msgid "Fadeout"
-#~ msgstr "Sujuv peitmine:"
-
-#, fuzzy
-#~ msgid "Fadeout/Fadein"
-#~ msgstr "Sujuv peitmine:"
-
-#, fuzzy
-#~ msgid ""
-#~ "Audacious Crossfade Plugin\n"
-#~ "\n"
-#~ "Copyright © 2009 William Pitcock <nenolod@atheme.org>\n"
-#~ "\n"
-#~ "...based in part on XMMS-Crossfade:\n"
-#~ "Copyright © 2000-2009 Peter Eisenlohr <peter@eisenlohr.org>\n"
-#~ "\n"
-#~ "based on the original OSS Output Plugin  Copyright (C) 1998-2000\n"
-#~ "Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front "
-#~ "Technologies\n"
-#~ "\n"
-#~ "This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
-#~ "USA."
-#~ msgstr ""
-#~ "FailiKirjutaja plugin\n"
-#~ "\n"
-#~ " See programm on vaba tarkvara. Te võite seda edasi levitada ja/või\n"
-#~ "muuta vastavalt GNU Üldise Avaliku Litsentsi tingimustele, nagu need\n"
-#~ "on Vaba Tarkvara Fondi poolt avaldatud; kas Litsentsi versioon number\n"
-#~ "2 või (vastavalt Teie valikule) ükskõik milline hilisem versioon.\n"
-#~ "\n"
-#~ "Seda programmi levitatakse lootuses, et see on kasulik, kuid ILMA\n"
-#~ "IGASUGUSE GARANTIITA; isegi KESKMISE/TAVALISE KVALITEEDIGARANTIITA\n"
-#~ "või SOBIVUSELE TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata\n"
-#~ "GNU Üldist Avalikku Litsentsi.\n"
-#~ "\n"
-#~ "Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos käesoleva\n"
-#~ "programmiga; kui ei, siis võtke ühendust Free Software Foundation'iga,\n"
-#~ "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#, fuzzy
-#~ msgid "About"
-#~ msgstr "\"%s\" pluginast lähemalt"
-
-#, fuzzy
-#~ msgid "Throttle Output"
-#~ msgstr "aRts väljundist lähemalt"
-
-#, fuzzy
-#~ msgid "Mixing buffer size (ms):"
-#~ msgstr "Puhvri suurus (ms):"
-
-#, fuzzy
-#~ msgid "Reopen"
-#~ msgstr "Eemalda"
-
-#, fuzzy
-#~ msgid "Length (ms):"
-#~ msgstr "Kestus (msek):"
-
-#, fuzzy
-#~ msgid "Start volume (%):"
-#~ msgstr "Valjus: (%)"
-
-#, fuzzy
-#~ msgid "Fade in"
-#~ msgstr "Sujuv näitamine:"
-
-#, fuzzy
-#~ msgid "Simple XF"
-#~ msgstr "Sämplid"
-
-#, fuzzy
-#~ msgid "End volume (%):"
-#~ msgstr "Valjus: (%)"
-
-#, fuzzy
-#~ msgid "Fade out"
-#~ msgstr "Sujuv peitmine:"
-
-#, fuzzy
-#~ msgid "Custom (ms):"
-#~ msgstr "Puhverdamise aeg (ms):"
-
-#, fuzzy
-#~ msgid "Offset"
-#~ msgstr "Efektid"
-
-#, fuzzy
-#~ msgid " Enable"
-#~ msgstr "Lubatud"
-
-#, fuzzy
-#~ msgid "Advanced XF"
-#~ msgstr "Laiendatud sätted"
-
-#, fuzzy
-#~ msgid "Additional silence"
-#~ msgstr "Täiendav käsk"
-
-#, fuzzy
-#~ msgid "Fade out (ms):"
-#~ msgstr "Sujuv peitmine:"
-
-#, fuzzy
-#~ msgid "Fade in (ms):"
-#~ msgstr "Sujuv näitamine:"
-
-#, fuzzy
-#~ msgid "Max. length (ms):"
-#~ msgstr "Kestus (msek):"
-
-#, fuzzy
-#~ msgid "Advanced"
-#~ msgstr "Laiendatud sätted"
-
-#, fuzzy
-#~ msgid "Debug options"
-#~ msgstr "Kaunistused"
-
-#, fuzzy
-#~ msgid "Enable volume control"
-#~ msgstr "<b>Helivaljuse juhtimine:</b>"
-
-#, fuzzy
-#~ msgid "Volume control options"
-#~ msgstr "Hiire kerimisel"
-
-#, fuzzy
-#~ msgid "same file"
-#~ msgstr "Pealkiri"
-
-#, fuzzy
-#~ msgid "Limit OP buffer usage (ms):"
-#~ msgstr "Puhvri suurus (ms):"
-
-#, fuzzy
-#~ msgid "Advanced options"
-#~ msgstr "Laiendatud sätted"
-
-#, fuzzy
-#~ msgid "Save Default List"
-#~ msgstr "Vaikimisi (%s)"
-
-#, fuzzy
-#~ msgid "About Icecast-Plugin"
-#~ msgstr "Kajapluginast lähemalt"
-
-#, fuzzy
-#~ msgid ""
-#~ "Icecast-Plugin\n"
-#~ "\n"
-#~ "This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
-#~ "USA."
-#~ msgstr ""
-#~ "Audacious'e ESounD plugin\n"
-#~ "\n"
-#~ " See programm on vaba tarkvara. Te võite seda edasi levitada ja/või\n"
-#~ "muuta vastavalt GNU Üldise Avaliku Litsentsi tingimustele, nagu need\n"
-#~ "on Vaba Tarkvara Fondi poolt avaldatud; kas Litsentsi versioon number\n"
-#~ "2 või (vastavalt Teie valikule) ükskõik milline hilisem versioon.\n"
-#~ "\n"
-#~ "Seda programmi levitatakse lootuses, et see on kasulik, kuid ILMA\n"
-#~ "IGASUGUSE GARANTIITA; isegi KESKMISE/TAVALISE KVALITEEDIGARANTIITA\n"
-#~ "või SOBIVUSELE TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata\n"
-#~ "GNU Üldist Avalikku Litsentsi.\n"
-#~ "\n"
-#~ "Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos käesoleva\n"
-#~ "programmiga; kui ei, siis võtke ühendust Free Software Foundation'iga,\n"
-#~ "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#, fuzzy
-#~ msgid "Icecast Configuration"
-#~ msgstr "MP3 sätted"
-
-#, fuzzy
-#~ msgid "Output stream format:"
-#~ msgstr "Väljundfaili vorming:"
-
-#, fuzzy
-#~ msgid "Server address:"
-#~ msgstr "Seadme aadress"
-
-#, fuzzy
-#~ msgid "Mount point:"
-#~ msgstr "Kirjatüüp %i:"
-
-#, fuzzy
-#~ msgid "User name:"
-#~ msgstr "Kasutajanimi:"
-
-#, fuzzy
-#~ msgid "Buffer size (bytes):"
-#~ msgstr "Puhvri suurus (ms):"
-
-#, fuzzy
-#~ msgid "Stream description:"
-#~ msgstr "Kirjeldus:"
-
-#, fuzzy
-#~ msgid "Metadata Settings"
-#~ msgstr "Mikseri sätted"
-
-#~ msgid "MPEG Audio Plugin Configuration"
-#~ msgstr "MPEG audioplugina sätted"
-
-#~ msgid ""
-#~ "Audacious MPEG Audio Plugin\n"
-#~ "\n"
-#~ "Compiled against libMAD version: %d.%d.%d%s\n"
-#~ "\n"
-#~ "Written by:\n"
-#~ "    William Pitcock <nenolod@sacredspiral.co.uk>\n"
-#~ "    Yoshiki Yazawa <yaz@cc.rim.or.jp>\n"
-#~ "\n"
-#~ "Portions derived from XMMS-MAD by:\n"
-#~ "    Sam Clegg\n"
-#~ "\n"
-#~ "ReplayGain support by:\n"
-#~ "    Samuel Krempp"
-#~ msgstr ""
-#~ "Audacious MPEG audioplugin\n"
-#~ "\n"
-#~ "Kompileeritud libMAD versiooniga: %d.%d.%d%s\n"
-#~ "\n"
-#~ "Programmeerijad:\n"
-#~ "    William Pitcock <nenolod@sacredspiral.co.uk>\n"
-#~ "    Yoshiki Yazawa <yaz@cc.rim.or.jp>\n"
-#~ "\n"
-#~ "XMMS-MAD pluginast tuletatud osade autor:\n"
-#~ "    Sam Clegg\n"
-#~ "\n"
-#~ "ReplayGain tugi:\n"
-#~ "    Samuel Krempp"
-
-#~ msgid "About MPEG Audio Plugin"
-#~ msgstr "MPEG audiopluginast lähemalt"
-
-#~ msgid "About OSSv4 Driver"
-#~ msgstr "OSSv4 draiverist lähemalt"
-
-#, fuzzy
-#~ msgid ""
-#~ "Audacious OSSv4 Driver\n"
-#~ "\n"
-#~ "Based on the OSSv3 Output plugin,\n"
-#~ "Ported to OSSv4's VMIX by Cristi Magherusan <majeru@gentoo.ro>\n"
-#~ "\n"
-#~ "This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
-#~ "USA.\n"
-#~ "\n"
-#~ "Note: For any issues regarding this plugin (including patches and \n"
-#~ "suggestions) please contact the maintainer, and NO other \n"
-#~ "Audacious developers\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Audacious'e OSSv4 draiver\n"
-#~ "\n"
-#~ " See programm on vaba tarkvara. Te võite seda edasi levitada ja/või\n"
-#~ "muuta vastavalt GNU Üldise Avaliku Litsentsi tingimustele, nagu need\n"
-#~ "on Vaba Tarkvara Fondi poolt avaldatud; kas Litsentsi versioon number\n"
-#~ "2 või (vastavalt Teie valikule) ükskõik milline hilisem versioon.\n"
-#~ "\n"
-#~ "Seda programmi levitatakse lootuses, et see on kasulik, kuid ILMA\n"
-#~ "IGASUGUSE GARANTIITA; isegi KESKMISE/TAVALISE KVALITEEDIGARANTIITA\n"
-#~ "või SOBIVUSELE TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata\n"
-#~ "GNU Üldist Avalikku Litsentsi.\n"
-#~ "\n"
-#~ "Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos käesoleva\n"
-#~ "programmiga; kui ei, siis võtke ühendust Free Software Foundation'iga,\n"
-#~ "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#~ msgid "TiMidity Configuration"
-#~ msgstr "TiMidity sätted"
-
-#~ msgid "22000 Hz"
-#~ msgstr "22000 Hz"
-
-#~ msgid "44100 Hz"
-#~ msgstr "44100 Hz"
-
-#~ msgid "TiMidity Configuration File"
-#~ msgstr "TiMidity sätete fail"
-
-#~ msgid "TiMidity Plugin %s"
-#~ msgstr "TiMidity plugin %s"
-
-#~ msgid ""
-#~ "TiMidity Plugin\n"
-#~ "http://libtimidity.sourceforge.net\n"
-#~ "by Konstantin Korikov"
-#~ msgstr ""
-#~ "TiMidity plugin\n"
-#~ "http://libtimidity.sourceforge.net\n"
-#~ "autor: Konstantin Korikov"
-
-#~ msgid "Couldn't load MIDI file"
-#~ msgstr "MIDI-faili pole võimalik laadida"
-
-#~ msgid "Title:"
-#~ msgstr "Pealkiri:"
-
-#~ msgid "Comment:"
-#~ msgstr "Kommentaar:"
-
-#~ msgid "Genre:"
-#~ msgstr "Žanr:"
-
-#~ msgid "version %d"
-#~ msgstr "versioon %d"
-
-#~ msgid "average bitrate: %6.1f kbps"
-#~ msgstr "keskmine bitikiirus: %6.1f kbps"
-
-#~ msgid "channels: %d"
-#~ msgstr "kanaleid: %d"
-
-#~ msgid "length: %d:%.2d"
-#~ msgstr "kestus: %d:%.2d"
-
-#~ msgid "file size: %d Bytes"
-#~ msgstr "faili suurus: %d baiti"
-
-#~ msgid "File Info - %s"
-#~ msgstr "Faili andmed: %s"
-
-#, fuzzy
-#~ msgid "ReplayGain Settings"
-#~ msgstr "Alarmi sätted"
-
-#~ msgid "Unknown soundcard"
-#~ msgstr "Tundmatu helikaart"
-
-#~ msgid "Default PCM device (%s)"
-#~ msgstr "Vaikimisi PCM-seade (%s)"
-
-#, fuzzy
-#~ msgid "Device:"
-#~ msgstr "Seadmed"
-
-#~ msgid "Mixer:"
-#~ msgstr "Mikser:"
-
-#, fuzzy
-#~ msgid "Override default devices"
-#~ msgstr "Vaikimisi seadme asemel kasutatakse: "
-
-#, fuzzy
-#~ msgid "Card:"
-#~ msgstr "Aasta:"
-
-#~ msgid "Mixer card:"
-#~ msgstr "Miksimiskaart:"
-
-#~ msgid "About Apple Lossless Audio Plugin"
-#~ msgstr "Apple Lossless Audio pluginast lähemalt"
-
-#~ msgid ""
-#~ "Copyright (c) 2006 Audacious team\n"
-#~ "Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"
-#~ msgstr ""
-#~ "Autoriõigused (c) 2006 Audacious'e meeskond\n"
-#~ "Osaliselt ka (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"
-
-#, fuzzy
-#~ msgid "About Monkey's Audio Plugin"
-#~ msgstr "MPEG audiopluginast lähemalt"
-
-#~ msgid "ID3 format:"
-#~ msgstr "ID3 vorming:"
-
-#~ msgid "ALSA Driver configuration"
-#~ msgstr "ALSA draiveri sätted"
-
-#~ msgid "Device settings"
-#~ msgstr "Seadme sätted"
-
-#~ msgid "About CD Audio Plugin NG"
-#~ msgstr "CD Audio Plugin NG'st lähemalt"
-
-#, fuzzy
-#~ msgid "By Playlist Entry"
-#~ msgstr "Esitusnimekirja andmed kiiresti"
-
-#~ msgid "Average bitrate: %6.1f kbps"
-#~ msgstr "Keskmine bitikiirus: %6.1f kbps"
-
-#~ msgid "Channels: %d"
-#~ msgstr "Kanaleid: %d"
-
-#~ msgid "Length: %d:\\%.2d"
-#~ msgstr "Kestus: %d:\\%.2d"
-
-#~ msgid " Close "
-#~ msgstr " Sulge "
-
-#, fuzzy
-#~ msgid "Audio Settings"
-#~ msgstr "Alarmi sätted"
-
-#, fuzzy
-#~ msgid "Miscellaneous Settings"
-#~ msgstr "Mikseri sätted"
-
-#~ msgid "About ALSA Driver"
-#~ msgstr "ALSA draiverist lähemalt"
-
-#~ msgid ""
-#~ "Audacious ALSA Driver\n"
-#~ "\n"
-#~ " This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-#~ "02110-1301,\n"
-#~ "USA.\n"
-#~ "Author: Matthieu Sozeau (mattam@altern.org)"
-#~ msgstr ""
-#~ "Audacious'e ALSA draiver\n"
-#~ "\n"
-#~ " See programm on vaba tarkvara. Te võite seda edasi levitada ja/või\n"
-#~ "muuta vastavalt GNU Üldise Avaliku Litsentsi tingimustele, nagu need\n"
-#~ "on Vaba Tarkvara Fondi poolt avaldatud; kas Litsentsi versioon number\n"
-#~ "2 või (vastavalt Teie valikule) ükskõik milline hilisem versioon.\n"
-#~ "\n"
-#~ "Seda programmi levitatakse lootuses, et see on kasulik, kuid ILMA\n"
-#~ "IGASUGUSE GARANTIITA; isegi KESKMISE/TAVALISE KVALITEEDIGARANTIITA\n"
-#~ "või SOBIVUSELE TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata\n"
-#~ "GNU Üldist Avalikku Litsentsi.\n"
-#~ "\n"
-#~ "Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos käesoleva\n"
-#~ "programmiga; kui ei, siis võtke ühendust Free Software Foundation'iga,\n"
-#~ "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n"
-#~ "Autor: Matthieu Sozeau (mattam@altern.org)"
-
-#~ msgid "Soundcard:"
-#~ msgstr "Helikaart:"
-
-#~ msgid ""
-#~ "<b><big>No playable CD found.</big></b>\n"
-#~ "\n"
-#~ "No CD inserted, or inserted CD is not an audio CD.\n"
-#~ msgstr ""
-#~ "<b><big>Esitatavat CD-plaati ei leitud.</big></b>\n"
-#~ "\n"
-#~ "CD-plaati pole sisestatud või pole see audioplaat.\n"
-
-#~ msgid "Print debug information"
-#~ msgstr "Silumisandmeid prinditakse"
-
-#, fuzzy
-#~ msgid "Audacious Skinned GUI Configuration"
-#~ msgstr "Audioplaatide plugina sätted"
-
-#~ msgid "Couldn't open file!"
-#~ msgstr "Faili pole võimalik avada!"
-
-#~ msgid "Couldn't write tag!"
-#~ msgstr "Silti pole võimalik kirjutada!"
-
-#~ msgid "Unknown"
-#~ msgstr "Tundmatu"
-
-#~ msgid "%d Hz"
-#~ msgstr "%d Hz"
-
-#~ msgid "%d:%02d (%d seconds)"
-#~ msgstr "%d:%02d (%d sekundit)"
-
-#~ msgid "Version:"
-#~ msgstr "Versioon:"
-
-#~ msgid "File size:"
-#~ msgstr "Faili suurus:"
-
-#~ msgid "%d"
-#~ msgstr "%d"
-
-#~ msgid "%d:%.2d"
-#~ msgstr "%d:%.2d"
-
-#~ msgid "%d Bytes"
-#~ msgstr "%d baiti"
+msgstr "Autoriõigused (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n\nPlugina koodi autor on osaliselt ka Miles Egan\nKülasta Wavpacki saiti aadressil http://www.wavpack.com/\n"
