@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2012-02-17 12:03-0500\n"
-"PO-Revision-Date: 2012-02-26 20:54+0000\n"
+"PO-Revision-Date: 2012-04-29 19:35+0000\n"
 "Last-Translator: Jorge A. García Sosa <jagsmd@gmail.com>\n"
-"Language-Team: Mexican Spanish\n"
+"Language-Team: Spanish (Mexican)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +24,7 @@ msgid ""
 "Using libfaad2-%s for decoding.\n"
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Audacious team"
-msgstr "Usando libfaad2-%s para decodificar.\nFAAD2 AAC/HE-AAC/HE-AACv2/DRM descoficador (c) Nero AG, www.nero.com\nCopyright (c) 2005-2006 Audacious team"
+msgstr "Usando libfaad2-%s para decodificar.\nDescodificador FAAD2 AAC/HE-AAC/HE-AACv2/DRM  (c) Nero AG, www.nero.com\nCopyright (c) 2005-2006 Audacious team"
 
 #: src/aac/libmp4.c:261
 msgid "About MP4 AAC decoder plugin"
@@ -244,7 +244,7 @@ msgid ""
 "    Display a reminder when the alarm goes off,\n"
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
-msgstr "\nTiempo\n  Alarma a las: \n    La hora a la que sonará la alarma.\n\n  Detener Después de: \n    Detener la alarma después de esta cantidad de tiempo.\n       (si el diálogo deif the wakeup dialog is not closed)\n\n\nDías\n  Día:\n    Selecciona los días que la alarma se activará.\n\n  Hora:\n    Escoge la hora para la alarma de cada día,\n    o selecciona Predeterminada para utilizar la hora\n    predeterminada.\n\n\nVolumen\n  Disminución: \n    Disminuye el volumen al volumen seleccionado \n    para esta cantidad de tiempo.\n\n  Comenzar a: \n    Comienza la disminución a este volumen.\n\n  Finalizar: \n    El volumen a la que se detendrá la disminución.  Si la hora de\n    disminución es 0 entonces el volumen se ajustara a esto y comenzará \n    reproducir.\n\n\nOpciones:\n  Comando Adicional:\n    Ejecuta este comando a la hora de la alarma.\n\n  Lista de Reproducción: \n    Carga esta lista de reproducción para reproducir sus pistas \n    (debe tener la extensión .m3u).  Si no es dada una\n    lista de repoducción entonces serán reproducidas las de la actual\n    lista de reproducción.\n    También puede ser introducido aquí el URL de un stream de mp3/ogg,\n    pero cargar listas de repoducción desde URLs\n    no es soportado actualmente por xmms.\n\n  Recordatorio:\n    Muestra un recordatorio cuando la alarma se apague,\n    escribe el recordatorio en la caja y selecciona la type the reminder in the box and turn on the\n    opción Habilitar Recordatorio si quieres que sea mostrado.\n"
+msgstr "\nTiempo\n  Alarma a las: \n    La hora a la que sonará la alarma.\n\n  Detener Después de: \n    Detener la alarma después de esta cantidad de tiempo.\n       (si el diálogo de despertar no está cerrado)\n\n\nDías\n  Día:\n    Selecciona los días que la alarma se activará.\n\n  Hora:\n    Escoge la hora para la alarma de cada día,\n    o selecciona Predeterminada para utilizar la hora\n    predeterminada.\n\n\nVolumen\n  Disminución: \n    Disminuye el volumen al volumen seleccionado \n    para esta cantidad de tiempo.\n\n  Comenzar a: \n    Comienza la disminución a este volumen.\n\n  Finalizar: \n    El volumen a la que se detendrá la disminución.  Si la hora de\n    disminución es 0 entonces el volumen se ajustara a esto y comenzará \n    reproducir.\n\n\nOpciones:\n  Comando Adicional:\n    Ejecuta este comando a la hora de la alarma.\n\n  Lista de Reproducción: \n    Carga esta lista de reproducción para reproducir sus pistas \n    (debe tener la extensión .m3u).  Si no es dada una\n    lista de repoducción entonces serán reproducidas las de la actual\n    lista de reproducción.\n    También puede ser introducido aquí el URL de un stream de mp3/ogg,\n    pero cargar listas de repoducción desde URLs\n    no es soportado actualmente por xmms.\n\n  Recordatorio:\n    Muestra un recordatorio cuando la alarma se apague,\n    escribe el recordatorio en la caja y selecciona la type the reminder in the box and turn on the\n    opción Habilitar Recordatorio si quieres que sea mostrado.\n"
 
 #: src/alarm/interface.c:1190 src/skins/ui_manager.c:382
 msgid "Help"
@@ -278,11 +278,11 @@ msgstr "Preferencias del plugin de salida ALSA"
 
 #: src/alsa/config.c:445
 msgid "PCM device:"
-msgstr "Dispositivo PCM"
+msgstr "Dispositivo PCM:"
 
 #: src/alsa/config.c:447 src/OSS/configure.c:237
 msgid "Mixer device:"
-msgstr "Dispositivo mezclador"
+msgstr "Dispositivo mezclador:"
 
 #: src/alsa/config.c:449
 msgid "Mixer element:"
@@ -330,7 +330,7 @@ msgstr "Este motor produce audio enviando eventos MIDI a FluidSynth, un sintetiz
 
 #: src/amidi-plug/i_configure-alsa.c:228
 msgid "ALSA BACKEND CONFIGURATION"
-msgstr "CONFIGURACIÓN DEL MOTOR ALSA"
+msgstr "CONFIGURACIÓN DEL BACKEND ALSA"
 
 #: src/amidi-plug/i_configure-alsa.c:331
 msgid "Port"
@@ -354,7 +354,7 @@ msgstr "Tarjeta de sonido:"
 
 #: src/amidi-plug/i_configure-alsa.c:401
 msgid "Mixer control: "
-msgstr "Control de Mezcla"
+msgstr "Control del mezclador:"
 
 #: src/amidi-plug/i_configure-alsa.c:413
 msgid "Mixer settings"
@@ -380,11 +380,11 @@ msgstr "PREFERENCIAS AMIDI-PLUG"
 
 #: src/amidi-plug/i_configure-ap.c:223
 msgid "Backend selection"
-msgstr "Selección del motor"
+msgstr "Selección del backend"
 
 #: src/amidi-plug/i_configure-ap.c:227
 msgid "Available backends"
-msgstr "Motores disponibles"
+msgstr "Backends disponibles"
 
 #: src/amidi-plug/i_configure-ap.c:257
 msgid "Playback settings"
@@ -434,7 +434,7 @@ msgstr "AMIDI-Plug - seleccionar archivo SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:270
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
-msgstr "CONFIGURACIÓN DEL MOTOR FLUIDSYNTH "
+msgstr "CONFIGURACIÓN DEL BACKEND FLUIDSYNTH "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:313
 msgid "SoundFont settings"
@@ -524,27 +524,27 @@ msgstr "Hz"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:621
 msgid "FluidSynth Backend not loaded or not available"
-msgstr "Motor FluidSynth no cargado o no está disponible"
+msgstr "Backend FluidSynth no cargado o no está disponible"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:640
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr "<span size=\"smaller\">Motor\nFluidSynth</span>"
+msgstr "<span size=\"smaller\">Backend\nFluidSynth</span>"
 
 #: src/amidi-plug/i_configure-timidity.c:39
 msgid "TIMIDITY BACKEND CONFIGURATION"
-msgstr "CONFIGURACIÓN DEL MOTOR TIMIDITY"
+msgstr "CONFIGURACIÓN DEL BACKEND TIMIDITY"
 
 #: src/amidi-plug/i_configure-timidity.c:64
 msgid "TiMidity Backend not loaded or not available"
-msgstr "Motor TiMidity no cargado o no está disponible"
+msgstr "Backend TiMidity no cargado o no está disponible"
 
 #: src/amidi-plug/i_configure-timidity.c:83
 msgid ""
 "<span size=\"smaller\">TiMidity\n"
 "backend</span>"
-msgstr "<span size=\"smaller\">Motor\nTiMidity</span>"
+msgstr "<span size=\"smaller\">Backend\nTiMidity</span>"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -564,7 +564,7 @@ msgstr "Duración (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "Num of Tracks:"
-msgstr "Núm de Pistas"
+msgstr "Núm de Pistas:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -572,15 +572,15 @@ msgstr "variable"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "BPM:"
-msgstr "BPM"
+msgstr "BPM:"
 
 #: src/amidi-plug/i_fileinfo.c:223
 msgid "BPM (wavg):"
-msgstr "BPM (wavg)"
+msgstr "BPM (wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:226
 msgid "Time Div:"
-msgstr "Div tiempo"
+msgstr "Div. tiempo:"
 
 #: src/amidi-plug/i_fileinfo.c:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
@@ -706,7 +706,7 @@ msgstr "Compensación relativa en Y:"
 
 #: src/aosd/aosd_ui.c:236
 msgid "Max OSD width:"
-msgstr "Ancho máximo de OSD"
+msgstr "Ancho máximo de OSD:"
 
 #: src/aosd/aosd_ui.c:249
 msgid "Multi-Monitor options"
@@ -735,11 +735,11 @@ msgstr "Mostrar:"
 
 #: src/aosd/aosd_ui.c:332
 msgid "Fade in:"
-msgstr "Desvanecimiento al aparecer"
+msgstr "Desvanecimiento al aparecer:"
 
 #: src/aosd/aosd_ui.c:337
 msgid "Fade out:"
-msgstr "Desvanecimiento al desaparecer"
+msgstr "Desvanecimiento al desaparecer:"
 
 #: src/aosd/aosd_ui.c:418
 msgid "Fonts"
@@ -777,7 +777,7 @@ msgstr "Colores"
 #: src/aosd/aosd_ui.c:642
 #, c-format
 msgid "Color %i:"
-msgstr "Color %i"
+msgstr "Color %i:"
 
 #: src/aosd/aosd_ui.c:662
 msgid "Custom Skin"
@@ -899,7 +899,7 @@ msgstr "Osciloscopio borroso: Selección de color"
 
 #: src/blur_scope/config.c:83 src/jack/configure.c:106
 msgid "Options:"
-msgstr "Opciones"
+msgstr "Opciones:"
 
 #: src/bs2b/plugin.c:157
 msgid "Bauer stereophonic-to-binaural Preferences"
@@ -941,11 +941,11 @@ msgstr "CD de Audio"
 
 #: src/cdaudio-ng/cdaudio-ng.c:924
 msgid "Drive is empty."
-msgstr "La unidad de disco está vacía"
+msgstr "La unidad de disco está vacía."
 
 #: src/cdaudio-ng/cdaudio-ng.c:926
 msgid "Unsupported disk type."
-msgstr "Tipo de disco no soportado"
+msgstr "Tipo de disco no soportado."
 
 #: src/cdaudio-ng/configure.c:148
 msgid "CD Audio Plugin Configuration"
@@ -977,7 +977,7 @@ msgstr "Servidor: "
 
 #: src/cdaudio-ng/configure.c:201
 msgid "Path: "
-msgstr "Ruta"
+msgstr "Ruta:"
 
 #: src/cdaudio-ng/configure.c:205
 msgid "Port: "
@@ -1106,7 +1106,7 @@ msgstr "Preferencias de Crossfade"
 
 #: src/crossfade/plugin.c:104
 msgid "Overlap (in seconds):"
-msgstr "Encimar (en segundos)"
+msgstr "Encimar (en segundos):"
 
 #: src/crossfade/plugin.c:135 src/crossfade/plugin.c:141
 msgid "Crossfade Error"
@@ -1130,7 +1130,7 @@ msgstr "Configurar Cristalizador"
 
 #: src/crystalizer/crystalizer.c:102 src/stereo_plugin/stereo.c:97
 msgid "Effect intensity:"
-msgstr "Intensidad del efecto"
+msgstr "Intensidad del efecto:"
 
 #: src/crystalizer/crystalizer.c:136 src/echo_plugin/gui.c:131
 #: src/stereo_plugin/stereo.c:131
@@ -1195,7 +1195,7 @@ msgstr "Configuración del Escritor de Archivos"
 
 #: src/filewriter/filewriter.c:473
 msgid "Output file format:"
-msgstr "Formato del archivo de salida"
+msgstr "Formato del archivo de salida:"
 
 #: src/filewriter/filewriter.c:491
 msgid "Configure"
@@ -1211,7 +1211,7 @@ msgstr "Guardar en un directorio personalizado"
 
 #: src/filewriter/filewriter.c:521
 msgid "Output file folder:"
-msgstr "Carpeta del archivo de salida"
+msgstr "Carpeta del archivo de salida:"
 
 #: src/filewriter/filewriter.c:525
 msgid "Pick a folder"
@@ -1223,11 +1223,11 @@ msgstr "Obtener el nombre del archivo desde:"
 
 #: src/filewriter/filewriter.c:547
 msgid "original file tags"
-msgstr "Etiquetas del archivo original"
+msgstr "etiquetas del archivo original"
 
 #: src/filewriter/filewriter.c:553
 msgid "original filename"
-msgstr "Nombre del archivo original"
+msgstr "nombre del archivo original"
 
 #: src/filewriter/filewriter.c:563
 msgid "Don't strip file name extension"
@@ -1259,11 +1259,11 @@ msgstr "Configuración MP3"
 
 #: src/filewriter/mp3.c:729
 msgid "Algorithm Quality:"
-msgstr "Calidad del algoritmo"
+msgstr "Calidad del algoritmo:"
 
 #: src/filewriter/mp3.c:754
 msgid "Output Samplerate:"
-msgstr "Frecuencia de muestrei de salida"
+msgstr "Frecuencia de muestrei de salida:"
 
 #: src/filewriter/mp3.c:782
 msgid "(Hz)"
@@ -1283,11 +1283,11 @@ msgstr "Tasa de Compresión"
 
 #: src/filewriter/mp3.c:870
 msgid "Audio Mode:"
-msgstr "Modo de audio"
+msgstr "Modo de audio:"
 
 #: src/filewriter/mp3.c:895
 msgid "Misc:"
-msgstr "Misc."
+msgstr "Misc.:"
 
 #: src/filewriter/mp3.c:906
 msgid "Enforce strict ISO complience"
@@ -1470,23 +1470,23 @@ msgstr "Disponibles:"
 
 #: src/gtkui/columns.c:326
 msgid "Chosen:"
-msgstr "Seleccionadas"
+msgstr "Seleccionadas:"
 
 #: src/gtkui/layout.c:122
 msgid "Dock at Left"
-msgstr "Dock a la izquierda"
+msgstr "Acoplar a la izquierda"
 
 #: src/gtkui/layout.c:122
 msgid "Dock at Right"
-msgstr "Dock a la derecha"
+msgstr "Acoplar a la derecha"
 
 #: src/gtkui/layout.c:123
 msgid "Dock at Top"
-msgstr "Dock arriba"
+msgstr "Acoplar arriba"
 
 #: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
-msgstr "Dock abajo"
+msgstr "Acoplar abajo"
 
 #: src/gtkui/layout.c:123
 msgid "Undock"
@@ -1642,7 +1642,7 @@ msgstr "Aministrador de _Listas de Reprod..."
 
 #: src/gtkui/menus.c:181
 msgid "_Queue Manager ..."
-msgstr "Administrador de _Colas"
+msgstr "Administrador de _Colas ..."
 
 #: src/gtkui/menus.c:184
 msgid "Volume _Up"
@@ -1686,7 +1686,7 @@ msgstr "Mostrar Encabezados de _Columna"
 
 #: src/gtkui/menus.c:200
 msgid "Choose _Columns ..."
-msgstr "Seleccionar _Columnas..."
+msgstr "Seleccionar _Columnas ..."
 
 #: src/gtkui/menus.c:201
 msgid "Scrol_l on Song Change"
@@ -1858,7 +1858,7 @@ msgstr "No se recomienda asociar los botones primarios del ratón sin modificado
 
 #: src/hotkey/gui.c:234
 msgid "Binding mouse buttons"
-msgstr "Asociat botones del ratón"
+msgstr "Asociar botones del ratón"
 
 #: src/hotkey/gui.c:384
 msgid "Global Hotkey Plugin Configuration"
@@ -1872,7 +1872,7 @@ msgstr "Presiona una combinación de teclas dentro de un campo de texto.\nTambi�
 
 #: src/hotkey/gui.c:405
 msgid "Hotkeys:"
-msgstr "Atajos del teclado"
+msgstr "Atajos del teclado:"
 
 #: src/hotkey/gui.c:424
 msgid "<b>Action:</b>"
@@ -1880,7 +1880,7 @@ msgstr "<b>Acción:</b>"
 
 #: src/hotkey/gui.c:432
 msgid "<b>Key Binding:</b>"
-msgstr "Asociación de Teclas"
+msgstr "<b>Asociación de Teclas:</b>"
 
 #: src/hotkey/gui.c:663
 msgid "About Global Hotkey Plugin"
@@ -1975,7 +1975,7 @@ msgstr "Habilitar"
 
 #: src/ladspa/plugin.c:632
 msgid "Enabled plugins:"
-msgstr "Habilitar plugins"
+msgstr "Habilitar plugins:"
 
 #: src/ladspa/plugin.c:647
 msgid "Settings"
@@ -2110,7 +2110,7 @@ msgstr "Habilitar las conversiones de formato hechas por el software OSS."
 
 #: src/oss4/configure.c:201
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr "Habilitar modo exclusivo para prevenir mezclado virtual"
+msgstr "Habilitar modo exclusivo para prevenir mezclado virtual."
 
 #: src/oss4/plugin.c:51
 msgid "About OSS4 Plugin"
@@ -2139,7 +2139,7 @@ msgstr "Buffering:"
 
 #: src/OSS/configure.c:296
 msgid "Pre-buffer (percent):"
-msgstr "Pre-buffer (percent):"
+msgstr "Pre-buffer (porcentaje):"
 
 #: src/OSS/configure.c:307
 msgid "Buffering"
@@ -2151,7 +2151,7 @@ msgstr "Configuraciones del mezclador:"
 
 #: src/OSS/configure.c:314
 msgid "Volume controls Master not PCM"
-msgstr "Volumen controla al Maestro, no al PCM"
+msgstr "Volumen controla al Maestro, no a PCM"
 
 #: src/OSS/configure.c:320
 msgid "Mixer"
@@ -2203,11 +2203,11 @@ msgstr "Contraseña:"
 
 #: src/scrobbler/configure.c:180
 msgid "Scrobbler URL:"
-msgstr "URL de Scrobler:"
+msgstr "URL de Scrobbler:"
 
 #: src/scrobbler/configure.c:212
 msgid "<b>Last.FM</b>"
-msgstr "Last.FM"
+msgstr "<b>Last.FM</b>"
 
 #: src/scrobbler/configure.c:239
 msgid "Scrobbler"
@@ -2624,7 +2624,7 @@ msgstr "Siguiente"
 
 #: src/skins/ui_manager.c:196
 msgid "Visualization"
-msgstr "visualización"
+msgstr "Visualización"
 
 #: src/skins/ui_manager.c:197
 msgid "Visualization Mode"
@@ -2732,7 +2732,7 @@ msgstr "Agregar Archivos..."
 
 #: src/skins/ui_manager.c:248
 msgid "Adds files to the playlist."
-msgstr "Agregar archivos a la Lista de Reproducción"
+msgstr "Agregar archivos a la Lista de Reproducción."
 
 #: src/skins/ui_manager.c:253
 msgid "Search and Select"
@@ -2961,7 +2961,7 @@ msgstr "Salir de Audacious"
 
 #: src/skins/ui_manager.c:409 src/skins/ui_manager.c:410
 msgid "Set A-B"
-msgstr "Ajusta A-b"
+msgstr "Ajusta A-B"
 
 #: src/skins/ui_manager.c:412 src/skins/ui_manager.c:413
 msgid "Clear A-B"
@@ -3063,7 +3063,7 @@ msgstr "Guardar preset auto-load"
 
 #: src/skins/ui_manager.c:469
 msgid "Save default preset"
-msgstr "guardar preset predeterminado"
+msgstr "Guardar preset predeterminado"
 
 #: src/skins/ui_manager.c:471
 msgid "To file"
@@ -3218,7 +3218,7 @@ msgid ""
 "%a: Artist\n"
 "%b: Album\n"
 "%T: Track title"
-msgstr "Puedes usar las siguientes cadena de formato las cuales\nserán sustituidas antes de llamar al comando\n(no todas son útiles para el comando al finalizar la lista de reproducción).\n\n%F: Frecuencia (en hertz)\n%c: Número de canales\n%f: nombre del archivo (ruta completa)\n%l: duración (en milisegundos)\n%n ó %s: Nombre de la Pista\n%r: Tasa (en bits por segundo)\n%t: Posición en la Lista de Reproducción (%02d)\n%p: Reproduciendo actualmente (1 ó 0)\n%a: Artista\n%b: Álbum\n%T: Título de la Pista"
+msgstr "Puedes usar las siguientes cadenas de formato las cuales\nserán sustituidas antes de llamar al comando\n(no todas son útiles para el comando al finalizar la lista de reproducción).\n\n%F: Frecuencia (en hertz)\n%c: Número de canales\n%f: nombre del archivo (ruta completa)\n%l: duración (en milisegundos)\n%n ó %s: Nombre de la Pista\n%r: Tasa (en bits por segundo)\n%t: Posición en la Lista de Reproducción (%02d)\n%p: Reproduciendo actualmente (1 ó 0)\n%a: Artista\n%b: Álbum\n%T: Título de la Pista"
 
 #: src/song_change/song_change.c:488
 msgid ""
