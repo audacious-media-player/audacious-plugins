@@ -1780,7 +1780,6 @@ msgid_plural "%d channels"
 msgstr[0] "%d канал"
 msgstr[1] "%d канала"
 msgstr[2] "%d канала"
-msgstr[3] "један канал"
 
 #: src/gtkui/ui_statusbar.c:124
 #, c-format
