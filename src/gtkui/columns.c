@@ -275,9 +275,11 @@ void pw_col_choose (void)
     }
 
     window = gtk_dialog_new_with_buttons (_("Choose Columns"), NULL, 0,
-     GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+     GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
      NULL);
     gtk_window_set_default_size ((GtkWindow *) window, 400, 300);
+    gtk_dialog_set_default_response ((GtkDialog *) window, GTK_RESPONSE_ACCEPT);
+
     g_signal_connect (window, "response", (GCallback) response_cb, NULL);
     g_signal_connect (window, "destroy", (GCallback) destroy_cb, NULL);
 
