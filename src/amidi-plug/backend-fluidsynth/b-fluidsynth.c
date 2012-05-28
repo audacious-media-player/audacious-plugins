@@ -64,8 +64,8 @@ gint backend_init( i_cfg_get_file_cb callback )
   fluid_settings_setnum( sc.settings , "synth.sample-rate" , amidiplug_cfg_fsyn.fsyn_synth_samplerate );
   if ( amidiplug_cfg_fsyn.fsyn_synth_gain != -1 )
     fluid_settings_setnum( sc.settings , "synth.gain" , (gdouble)amidiplug_cfg_fsyn.fsyn_synth_gain / 10 );
-  if ( amidiplug_cfg_fsyn.fsyn_synth_poliphony != -1 )
-    fluid_settings_setint( sc.settings , "synth.poliphony" , amidiplug_cfg_fsyn.fsyn_synth_poliphony );
+  if ( amidiplug_cfg_fsyn.fsyn_synth_polyphony != -1 )
+    fluid_settings_setint( sc.settings , "synth.polyphony" , amidiplug_cfg_fsyn.fsyn_synth_polyphony );
   if ( amidiplug_cfg_fsyn.fsyn_synth_reverb == 1 )
     fluid_settings_setstr( sc.settings , "synth.reverb.active" , "yes" );
   else if ( amidiplug_cfg_fsyn.fsyn_synth_reverb == 0 )
@@ -418,7 +418,7 @@ void i_cfg_read( i_cfg_get_file_cb callback )
     amidiplug_cfg_fsyn.fsyn_soundfont_load = 1;
     amidiplug_cfg_fsyn.fsyn_synth_samplerate = 44100;
     amidiplug_cfg_fsyn.fsyn_synth_gain = -1;
-    amidiplug_cfg_fsyn.fsyn_synth_poliphony = -1;
+    amidiplug_cfg_fsyn.fsyn_synth_polyphony = -1;
     amidiplug_cfg_fsyn.fsyn_synth_reverb = -1;
     amidiplug_cfg_fsyn.fsyn_synth_chorus = -1;
   }
@@ -441,11 +441,11 @@ void i_cfg_read( i_cfg_get_file_cb callback )
         ( !i_bounds_check( amidiplug_cfg_fsyn.fsyn_synth_gain , 0 , 100 ) ))
       amidiplug_cfg_fsyn.fsyn_synth_gain = -1;
 
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_poliphony" ,
-                         &amidiplug_cfg_fsyn.fsyn_synth_poliphony , -1 );
-    if (( amidiplug_cfg_fsyn.fsyn_synth_poliphony != -1 ) &&
-        ( !i_bounds_check( amidiplug_cfg_fsyn.fsyn_synth_poliphony , 0 , 100 ) ))
-      amidiplug_cfg_fsyn.fsyn_synth_poliphony = -1;
+    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_polyphony" ,
+                         &amidiplug_cfg_fsyn.fsyn_synth_polyphony , -1 );
+    if (( amidiplug_cfg_fsyn.fsyn_synth_polyphony != -1 ) &&
+        ( !i_bounds_check( amidiplug_cfg_fsyn.fsyn_synth_polyphony , 0 , 100 ) ))
+      amidiplug_cfg_fsyn.fsyn_synth_polyphony = -1;
 
     i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_reverb" ,
                          &amidiplug_cfg_fsyn.fsyn_synth_reverb , -1 );

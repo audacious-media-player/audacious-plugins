@@ -185,9 +185,9 @@ void i_configure_ev_sypoly_commit( gpointer poly_spinbt )
 {
   amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
   if (gtk_widget_get_sensitive (poly_spinbt))
-    fsyncfg->fsyn_synth_poliphony = (gint)(gtk_spin_button_get_value(GTK_SPIN_BUTTON(poly_spinbt)));
+    fsyncfg->fsyn_synth_polyphony = (gint)(gtk_spin_button_get_value(GTK_SPIN_BUTTON(poly_spinbt)));
   else
-    fsyncfg->fsyn_synth_poliphony = -1;
+    fsyncfg->fsyn_synth_polyphony = -1;
 }
 
 
@@ -376,7 +376,7 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     g_object_set_data( G_OBJECT(soundfont_load_option[0]) , "val" , GINT_TO_POINTER(0) );
     soundfont_load_option[1] = gtk_radio_button_new_with_label_from_widget(
                                  GTK_RADIO_BUTTON(soundfont_load_option[0]) ,
-                                 _("Load SF on first midifile play") );
+                                 _("Load SF on first MIDI file play") );
     g_object_set_data( G_OBJECT(soundfont_load_option[1]) , "val" , GINT_TO_POINTER(1) );
     if ( fsyncfg->fsyn_soundfont_load == 0 )
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(soundfont_load_option[0]) , TRUE );
@@ -425,8 +425,8 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     gtk_box_pack_start( GTK_BOX(synth_gain_hbox) , synth_gain_value_hbox , FALSE , FALSE , 0 );
     gtk_box_pack_start( GTK_BOX(synth_gain_value_hbox) , synth_gain_value_label , FALSE , FALSE , 0 );
     gtk_box_pack_start( GTK_BOX(synth_gain_value_hbox) , synth_gain_value_spin , FALSE , FALSE , 0 );
-    /* synth settings - poliphony */
-    synth_poly_frame = gtk_frame_new( _("poliphony") );
+    /* synth settings - polyphony */
+    synth_poly_frame = gtk_frame_new( _("polyphony") );
     gtk_frame_set_label_align( GTK_FRAME(synth_poly_frame) , 0.5 , 0.5 );
     gtk_box_pack_start( GTK_BOX(synth_leftcol_vbox) , synth_poly_frame , TRUE , TRUE , 0 );
     synth_poly_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2 );
@@ -440,7 +440,7 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     gtk_spin_button_set_value( GTK_SPIN_BUTTON(synth_poly_value_spin) , 256 );
     g_signal_connect( G_OBJECT(synth_poly_defcheckbt) , "toggled" ,
                       G_CALLBACK(i_configure_ev_toggle_default) , synth_poly_value_hbox );
-    if ( fsyncfg->fsyn_synth_poliphony < 0 )
+    if ( fsyncfg->fsyn_synth_polyphony < 0 )
     {
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(synth_poly_defcheckbt) , TRUE );
     }
@@ -448,7 +448,7 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     {
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(synth_poly_defcheckbt) , FALSE );
       gtk_spin_button_set_value( GTK_SPIN_BUTTON(synth_poly_value_spin) ,
-                                 (gdouble)fsyncfg->fsyn_synth_poliphony );
+                                 (gdouble)fsyncfg->fsyn_synth_polyphony );
     }
     gtk_box_pack_start( GTK_BOX(synth_poly_hbox) , synth_poly_value_hbox , FALSE , FALSE , 0 );
     gtk_box_pack_start( GTK_BOX(synth_poly_value_hbox) , synth_poly_value_label , FALSE , FALSE , 0 );
@@ -639,7 +639,7 @@ void i_configure_cfg_fsyn_read( pcfg_t * cfgfile )
     fsyncfg->fsyn_soundfont_load = 1;
     fsyncfg->fsyn_synth_samplerate = 44100;
     fsyncfg->fsyn_synth_gain = -1;
-    fsyncfg->fsyn_synth_poliphony = -1;
+    fsyncfg->fsyn_synth_polyphony = -1;
     fsyncfg->fsyn_synth_reverb = -1;
     fsyncfg->fsyn_synth_chorus = -1;
   }
@@ -649,7 +649,7 @@ void i_configure_cfg_fsyn_read( pcfg_t * cfgfile )
     i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_soundfont_load" , &fsyncfg->fsyn_soundfont_load , 1 );
     i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_samplerate" , &fsyncfg->fsyn_synth_samplerate , 44100 );
     i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_gain" , &fsyncfg->fsyn_synth_gain , -1 );
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_poliphony" , &fsyncfg->fsyn_synth_poliphony , -1 );
+    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_polyphony" , &fsyncfg->fsyn_synth_polyphony , -1 );
     i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_reverb" , &fsyncfg->fsyn_synth_reverb , -1 );
     i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_chorus" , &fsyncfg->fsyn_synth_chorus , -1 );
   }
@@ -664,7 +664,7 @@ void i_configure_cfg_fsyn_save( pcfg_t * cfgfile )
   i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_soundfont_load" , fsyncfg->fsyn_soundfont_load );
   i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_synth_samplerate" , fsyncfg->fsyn_synth_samplerate );
   i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_synth_gain" , fsyncfg->fsyn_synth_gain );
-  i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_synth_poliphony" , fsyncfg->fsyn_synth_poliphony );
+  i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_synth_polyphony" , fsyncfg->fsyn_synth_polyphony );
   i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_synth_reverb" , fsyncfg->fsyn_synth_reverb );
   i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_synth_chorus" , fsyncfg->fsyn_synth_chorus );
 }

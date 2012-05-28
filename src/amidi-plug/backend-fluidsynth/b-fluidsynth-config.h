@@ -28,7 +28,7 @@ typedef struct
   gint		fsyn_soundfont_load;
   gint		fsyn_synth_samplerate;
   gint		fsyn_synth_gain;
-  gint		fsyn_synth_poliphony;
+  gint		fsyn_synth_polyphony;
   gint		fsyn_synth_reverb;
   gint		fsyn_synth_chorus;
 }
