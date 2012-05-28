@@ -39,7 +39,7 @@ static const char * const cryst_defaults[] = {
  NULL};
 
 static PreferencesWidget cryst_prefs_widgets[] = {
- {WIDGET_LABEL, N_("<b>Effect</b>")},
+ {WIDGET_LABEL, N_("<b>Crystalizer</b>")},
  {WIDGET_SPIN_BTN, N_("Intensity:"),
   .cfg_type = VALUE_FLOAT, .csect = "crystalizer", .cname = "intensity",
   .data = {.spin_btn = {0, 10, 0.1}}}};
