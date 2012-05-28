@@ -1,6 +1,6 @@
 /*
  * Dynamic Range Compression Plugin for Audacious
- * Copyright 2010 John Lindgren
+ * Copyright 2010-2012 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,21 +17,21 @@
  * the use of this software.
  */
 
-#include <glib.h>
 #include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "compressor.h"
+#include <audacious/misc.h>
 
-double compressor_center, compressor_range;
+#include "compressor.h"
 
 /* Response time adjustments.  Maybe this should be adjustable.  Or maybe that
  * would just be confusing.  I don't know. */
 #define CHUNK_TIME 0.2 /* seconds */
 #define CHUNKS 5
 #define DECAY 0.3
+
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
 
 static float * buffer, * output, * peaks;
 static int output_size;
@@ -82,11 +82,12 @@ static float calc_peak (float * data, int length)
 
 static void do_ramp (float * data, int length, float peak_a, float peak_b)
 {
-    float a = powf (peak_a / compressor_center, compressor_range - 1);
-    float b = powf (peak_b / compressor_center, compressor_range - 1);
-    int count;
+    float center = aud_get_double ("compressor", "center");
+    float range = aud_get_double ("compressor", "range");
+    float a = powf (peak_a / center, range - 1);
+    float b = powf (peak_b / center, range - 1);
 
-    for (count = 0; count < length; count ++)
+    for (int count = 0; count < length; count ++)
     {
         * data = (* data) * (a * (length - count) + b * count) / length;
         data ++;
@@ -123,7 +124,6 @@ static inline float FMAX (float a, float b)
 
 static void do_compress (float * * data, int * samples, char finish)
 {
-    int count;
     float new_peak;
 
     output_filled = 0;
@@ -145,7 +145,7 @@ static void do_compress (float * * data, int * samples, char finish)
         new_peak = FMAX (0.01, GET_PEAK (0));
         new_peak = FMAX (new_peak, current_peak * (1.0 - DECAY));
 
-        for (count = 1; count < CHUNKS; count ++)
+        for (int count = 1; count < CHUNKS; count ++)
             new_peak = FMAX (new_peak, current_peak + (GET_PEAK (count) -
              current_peak) / count);
 
