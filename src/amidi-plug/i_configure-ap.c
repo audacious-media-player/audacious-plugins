@@ -45,10 +45,9 @@ void i_configure_ev_backendlv_info( gpointer backend_lv )
   if ( gtk_tree_selection_get_selected( sel , &store , &iter ) )
   {
     GtkWidget *bidialog;
-    GdkGeometry bi_hints;
-    GtkWidget *title_label, *title_frame;
-    GtkWidget *filename_entry, *filename_frame;
-    GtkWidget *description_label, *description_frame;
+    GtkWidget *title_label;
+    GtkWidget *filename_label;
+    GtkWidget *description_label;
     GtkWidget *parent_window = gtk_widget_get_toplevel( backend_lv );
     gchar *longname_title, *longname, *filename, *description;
     gtk_tree_model_get( GTK_TREE_MODEL(store) , &iter ,
@@ -59,41 +58,27 @@ void i_configure_ev_backendlv_info( gpointer backend_lv )
                                             GTK_WINDOW(parent_window) ,
                                             GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL ,
                                             GTK_STOCK_OK , GTK_RESPONSE_NONE , NULL );
-    bi_hints.min_width = 360; bi_hints.min_height = -1;
-    gtk_window_set_geometry_hints( GTK_WINDOW(bidialog) , GTK_WIDGET(bidialog) ,
-                                   &bi_hints , GDK_HINT_MIN_SIZE );
+    gtk_window_set_resizable ((GtkWindow *) bidialog, FALSE);
 
     longname_title = g_markup_printf_escaped( "<span size=\"larger\" weight=\"bold\" >%s</span>" , longname );
-    title_frame = gtk_frame_new( NULL );
     title_label = gtk_label_new( "" );
     gtk_label_set_markup( GTK_LABEL(title_label) , longname_title );
     g_free( longname_title ); g_free( longname );
-    gtk_container_add( GTK_CONTAINER(title_frame) , title_label );
     gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
-     bidialog), title_frame, FALSE, FALSE, 0);
+     bidialog), title_label, FALSE, FALSE, 0);
 
-    filename_frame = gtk_frame_new( NULL );
-    filename_entry = gtk_entry_new();
-    gtk_entry_set_text( GTK_ENTRY(filename_entry) , filename );
-    gtk_entry_set_alignment( GTK_ENTRY(filename_entry) , 0.5 );
-    gtk_editable_set_editable( GTK_EDITABLE(filename_entry) , FALSE );
-    gtk_entry_set_has_frame( GTK_ENTRY(filename_entry) , FALSE );
+    filename_label = gtk_label_new (filename);
     g_free( filename );
-    gtk_container_add( GTK_CONTAINER(filename_frame) , filename_entry );
     gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
-     bidialog), filename_frame, FALSE, FALSE, 0);
+     bidialog), filename_label, FALSE, FALSE, 0);
 
-    description_frame = gtk_frame_new( NULL );
     description_label = gtk_label_new( description );
-    gtk_misc_set_padding( GTK_MISC(description_label) , 4 , 4 );
     gtk_label_set_line_wrap( GTK_LABEL(description_label) , TRUE );
     g_free( description );
-    gtk_container_add( GTK_CONTAINER(description_frame) , description_label );
     gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
-     bidialog), description_frame, FALSE, FALSE, 0);
+     bidialog), description_label, FALSE, FALSE, 0);
 
     gtk_widget_show_all( bidialog );
-    gtk_window_set_focus( GTK_WINDOW(bidialog) , NULL );
     gtk_dialog_run( GTK_DIALOG(bidialog) );
     gtk_widget_destroy( bidialog );
   }
@@ -220,10 +205,13 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   }
 
   backend_lv_frame = gtk_frame_new( _("Backend selection") );
+
   backend_lv = gtk_tree_view_new_with_model( GTK_TREE_MODEL(backend_store) );
+  gtk_tree_view_set_headers_visible ((GtkTreeView *) backend_lv, FALSE);
   g_object_unref( backend_store );
+
   backend_lv_text_rndr = gtk_cell_renderer_text_new();
-  backend_lv_name_col = gtk_tree_view_column_new_with_attributes( _("Available backends") ,
+  backend_lv_name_col = gtk_tree_view_column_new_with_attributes( NULL ,
                                                                   backend_lv_text_rndr ,
                                                                   "text" , 1 , NULL );
   gtk_tree_view_append_column( GTK_TREE_VIEW(backend_lv), backend_lv_name_col );
@@ -235,8 +223,9 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
     gtk_tree_selection_select_iter (backend_lv_sel, & backend_lv_iter_selected);
 
   backend_lv_sw = gtk_scrolled_window_new( NULL , NULL );
-  gtk_scrolled_window_set_policy( GTK_SCROLLED_WINDOW(backend_lv_sw) ,
-                                  GTK_POLICY_NEVER , GTK_POLICY_ALWAYS );
+  gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) backend_lv_sw, GTK_SHADOW_IN);
+  gtk_scrolled_window_set_policy ((GtkScrolledWindow *) backend_lv_sw,
+   GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
   gtk_container_add( GTK_CONTAINER(backend_lv_sw) , backend_lv );
   g_signal_connect_swapped( G_OBJECT(commit_button) , "ap-commit" ,
                             G_CALLBACK(i_configure_ev_backendlv_commit) , backend_lv );

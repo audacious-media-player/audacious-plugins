@@ -259,8 +259,6 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
                                gpointer backend_list_p ,
                                gpointer commit_button )
 {
-  GSList * backend_list = backend_list_p;
-
   GtkWidget * content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
   if (1)
@@ -269,11 +267,11 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     GtkListStore *soundfont_file_store;
     GtkCellRenderer *soundfont_file_lv_text_rndr;
     GtkTreeViewColumn *soundfont_file_lv_fname_col, *soundfont_file_lv_fsize_col;
-    GtkWidget *soundfont_file_hbox, *soundfont_file_lv, *soundfont_file_lv_sw, *soundfont_file_lv_frame;
+    GtkWidget *soundfont_file_hbox, *soundfont_file_lv, *soundfont_file_lv_sw;
     GtkTreeSelection *soundfont_file_lv_sel;
     GtkWidget *soundfont_file_bbox_vbox, *soundfont_file_bbox_addbt, *soundfont_file_bbox_rembt;
     GtkWidget *soundfont_file_bbox_mvupbt, *soundfont_file_bbox_mvdownbt;
-    GtkWidget *soundfont_load_hsep, *soundfont_load_hbox, *soundfont_load_option[2];
+    GtkWidget *soundfont_load_hbox, *soundfont_load_option[2];
     GtkWidget *synth_frame, *synth_hbox, *synth_leftcol_vbox, *synth_rightcol_vbox;
     GtkWidget *synth_samplerate_frame, *synth_samplerate_vbox, *synth_samplerate_option[4];
     GtkWidget *synth_samplerate_optionhbox, *synth_samplerate_optionentry, *synth_samplerate_optionlabel;
@@ -332,12 +330,13 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     gtk_tree_view_append_column( GTK_TREE_VIEW(soundfont_file_lv), soundfont_file_lv_fsize_col );
     soundfont_file_lv_sel = gtk_tree_view_get_selection( GTK_TREE_VIEW(soundfont_file_lv) );
     gtk_tree_selection_set_mode( GTK_TREE_SELECTION(soundfont_file_lv_sel) , GTK_SELECTION_SINGLE );
+
     soundfont_file_lv_sw = gtk_scrolled_window_new( NULL , NULL );
-    gtk_scrolled_window_set_policy( GTK_SCROLLED_WINDOW(soundfont_file_lv_sw) ,
-                                    GTK_POLICY_NEVER , GTK_POLICY_ALWAYS );
-    soundfont_file_lv_frame = gtk_frame_new( NULL );
+    gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) soundfont_file_lv_sw, GTK_SHADOW_IN);
+    gtk_scrolled_window_set_policy ((GtkScrolledWindow *) soundfont_file_lv_sw,
+     GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
     gtk_container_add( GTK_CONTAINER(soundfont_file_lv_sw) , soundfont_file_lv );
-    gtk_container_add( GTK_CONTAINER(soundfont_file_lv_frame) , soundfont_file_lv_sw );
+
     /* soundfont settings - soundfont files - buttonbox */
     soundfont_file_bbox_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
     soundfont_file_bbox_addbt = gtk_button_new();
@@ -366,13 +365,12 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     g_signal_connect( G_OBJECT(soundfont_file_bbox_mvdownbt) , "clicked" ,
                       G_CALLBACK(i_configure_ev_sflist_swap) , soundfont_file_lv );
     gtk_box_pack_start( GTK_BOX(soundfont_file_bbox_vbox) , soundfont_file_bbox_mvdownbt , FALSE , FALSE , 0 );
-    gtk_box_pack_start( GTK_BOX(soundfont_file_hbox) , soundfont_file_lv_frame , TRUE , TRUE , 0 );
+    gtk_box_pack_start( GTK_BOX(soundfont_file_hbox) , soundfont_file_lv_sw , TRUE , TRUE , 0 );
     gtk_box_pack_start( GTK_BOX(soundfont_file_hbox) , soundfont_file_bbox_vbox , FALSE , FALSE , 0 );
     gtk_box_pack_start( GTK_BOX(soundfont_vbox) , soundfont_file_hbox , FALSE , FALSE , 0 );
 
     /* soundfont settings - load */
-    soundfont_load_hsep = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
-    soundfont_load_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0 );
+    soundfont_load_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
     soundfont_load_option[0] = gtk_radio_button_new_with_label( NULL ,
                                  _("Load SF on player start") );
     g_object_set_data( G_OBJECT(soundfont_load_option[0]) , "val" , GINT_TO_POINTER(0) );
@@ -385,9 +383,7 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     else
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(soundfont_load_option[1]) , TRUE );
     gtk_box_pack_start( GTK_BOX(soundfont_load_hbox) , soundfont_load_option[0] , TRUE , TRUE , 0 );
-    gtk_box_pack_start( GTK_BOX(soundfont_load_hbox) , gtk_separator_new (GTK_ORIENTATION_VERTICAL) , FALSE , FALSE , 4 );
     gtk_box_pack_start( GTK_BOX(soundfont_load_hbox) , soundfont_load_option[1] , TRUE , TRUE , 0 );
-    gtk_box_pack_start( GTK_BOX(soundfont_vbox) , soundfont_load_hsep , FALSE , FALSE , 3 );
     gtk_box_pack_start( GTK_BOX(soundfont_vbox) , soundfont_load_hbox , FALSE , FALSE , 0 );
 
     gtk_box_pack_start( GTK_BOX(content_vbox) , soundfont_frame , FALSE , FALSE , 0 );

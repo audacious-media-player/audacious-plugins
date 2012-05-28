@@ -331,9 +331,12 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
     gtk_tree_view_append_column( GTK_TREE_VIEW(port_lv), port_lv_portname_col );
     port_lv_sel = gtk_tree_view_get_selection( GTK_TREE_VIEW(port_lv) );
     gtk_tree_selection_set_mode( GTK_TREE_SELECTION(port_lv_sel) , GTK_SELECTION_NONE );
+
     port_lv_sw = gtk_scrolled_window_new( NULL , NULL );
-    gtk_scrolled_window_set_policy( GTK_SCROLLED_WINDOW(port_lv_sw),
-                                    GTK_POLICY_NEVER, GTK_POLICY_ALWAYS );
+    gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) port_lv_sw, GTK_SHADOW_IN);
+    gtk_scrolled_window_set_policy ((GtkScrolledWindow *) port_lv_sw,
+     GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
     port_lv_frame = gtk_frame_new( _("ALSA output ports") );
     gtk_container_add( GTK_CONTAINER(port_lv_sw) , port_lv );
     gtk_container_add( GTK_CONTAINER(port_lv_frame) , port_lv_sw );
