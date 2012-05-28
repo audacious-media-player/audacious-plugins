@@ -1,17 +1,13 @@
-#include "config.h"
-#include <stdlib.h>
-#include <stdio.h>
+#include <glib.h>
 #include <string.h>
-#include <gtk/gtk.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <audacious/preferences.h>
 
+#include "config.h"
 #include "echo.h"
-
-static gboolean init (void);
-static void cleanup(void);
 
 #define MAX_SRATE 50000
 #define MAX_CHANNELS 2
@@ -26,18 +22,30 @@ static const gchar * const echo_defaults[] = {
  "volume", "50",
  NULL};
 
+static PreferencesWidget echo_prefs_widgets[] = {
+ {WIDGET_LABEL, N_("<b>Echo</b>")},
+ {WIDGET_SPIN_BTN, N_("Delay:"),
+  .cfg_type = VALUE_INT, .csect = "echo_plugin", .cname = "delay",
+  .data = {.spin_btn = {0, MAX_DELAY, 10, N_("ms")}}},
+ {WIDGET_SPIN_BTN, N_("Feedback:"),
+  .cfg_type = VALUE_INT, .csect = "echo_plugin", .cname = "feedback",
+  .data = {.spin_btn = {0, 100, 1, "%"}}},
+ {WIDGET_SPIN_BTN, N_("Volume:"),
+  .cfg_type = VALUE_INT, .csect = "echo_plugin", .cname = "volume",
+  .data = {.spin_btn = {0, 100, 1, "%"}}}};
+
+static PluginPreferences echo_prefs = {
+ .domain = PACKAGE,
+ .title = N_("Echo Settings"),
+ .prefs = echo_prefs_widgets,
+ .n_prefs = G_N_ELEMENTS (echo_prefs_widgets)};
+
 static gfloat *buffer = NULL;
-gint echo_delay, echo_feedback, echo_volume;
 static int w_ofs;
 
 static gboolean init (void)
 {
 	aud_config_set_defaults ("echo_plugin", echo_defaults);
-
-	echo_delay = aud_get_int ("echo_plugin", "delay");
-	echo_feedback = aud_get_int ("echo_plugin", "feedback");
-	echo_volume = aud_get_int ("echo_plugin", "volume");
-
 	return TRUE;
 }
 
@@ -71,12 +79,16 @@ static void echo_start(gint *channels, gint *rate)
 
 static void echo_process(gfloat **d, gint *samples)
 {
+	gint delay = aud_get_int ("echo_plugin", "delay");
+	gint feedback = aud_get_int ("echo_plugin", "feedback");
+	gint volume = aud_get_int ("echo_plugin", "volume");
+
 	gfloat in, out, buf;
 	gint r_ofs;
 	gfloat *data = *d;
 	gfloat *end = *d + *samples;
 
-	r_ofs = w_ofs - (echo_rate * echo_delay / 1000) * echo_channels;
+	r_ofs = w_ofs - (echo_rate * delay / 1000) * echo_channels;
 	if (r_ofs < 0)
 		r_ofs += BUFFER_SHORTS;
 
@@ -85,8 +97,8 @@ static void echo_process(gfloat **d, gint *samples)
 		in = *data;
 
 		buf = buffer[r_ofs];
-		out = in + buf * echo_volume / 100;
-		buf = in + buf * echo_feedback / 100;
+		out = in + buf * volume / 100;
+		buf = in + buf * feedback / 100;
 		buffer[w_ofs] = buf;
 		*data = out;
 
@@ -108,8 +120,9 @@ AUD_EFFECT_PLUGIN
 	.init = init,
 	.cleanup = cleanup,
 	.about = echo_about,
-	.configure = echo_configure,
+	.settings = & echo_prefs,
 	.start = echo_start,
 	.process = echo_process,
-	.finish = echo_finish
+	.finish = echo_finish,
+	.preserves_format = TRUE
 )
