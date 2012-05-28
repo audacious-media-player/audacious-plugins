@@ -105,11 +105,13 @@ static const char * const cdaudio_defaults[] = {
  NULL};
 
 static PreferencesWidget cdaudio_prefs_widgets[] = {
- {WIDGET_SPIN_BTN, N_("Disc speed:"),
+ {WIDGET_LABEL, N_("<b>Device</b>")},
+ {WIDGET_SPIN_BTN, N_("Read speed:"),
   .cfg_type = VALUE_INT, .csect = "CDDA", .cname = "disc_speed",
   .data = {.spin_btn = {MIN_DISC_SPEED, MAX_DISC_SPEED, 1}}},
  {WIDGET_ENTRY, N_("Override device:"),
   .cfg_type = VALUE_STRING, .csect = "CDDA", .cname = "device"},
+ {WIDGET_LABEL, N_("<b>Metadata</b>")},
  {WIDGET_CHK_BTN, N_("Use CD-Text"),
   .cfg_type = VALUE_BOOLEAN, .csect = "CDDA", .cname = "use_cdtext"},
  {WIDGET_CHK_BTN, N_("Use CDDB"),
@@ -243,12 +245,11 @@ static void cdaudio_about (void)
 
     audgui_simple_message (& about_window, GTK_MESSAGE_INFO,
      _("About Audio CD Plugin"),
-     _("Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
+     "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n\n"
      "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
-     "\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
-     "Also thank you Tony Vroon for mentoring & guiding me.\n\n"
-     "This was a Google Summer of Code 2007 project.\n\n"
-     "Copyright 2009 John Lindgren"));
+     "and to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
+     "Also thank you to Tony Vroon for mentoring and guiding me.\n\n"
+     "This was a Google Summer of Code 2007 project.");
 }
 
 /* thread safe (mutex may be locked) */
