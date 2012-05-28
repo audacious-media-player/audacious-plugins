@@ -110,10 +110,16 @@ void i_backend_list_free( GSList * backend_list )
 
 gint i_backend_load( gchar * module_name )
 {
-  gchar * module_pathfilename = g_strjoin( "" , AMIDIPLUGBACKENDDIR , "/ap-" , module_name , ".so" , NULL );
-  DEBUGMSG( "loading backend '%s'\n" , module_pathfilename );
-  backend.gmodule = g_module_open (module_pathfilename, G_MODULE_BIND_LAZY |
-   G_MODULE_BIND_LOCAL);
+  gchar * module_pathfilename = NULL;
+
+  if (module_name && module_name[0])
+  {
+    module_pathfilename = g_strjoin ("", AMIDIPLUGBACKENDDIR, "/ap-", module_name, ".so", NULL);
+    DEBUGMSG ("loading backend '%s'\n", module_pathfilename);
+    backend.gmodule = g_module_open (module_pathfilename, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
+  }
+  else
+    backend.gmodule = NULL;
 
   if ( backend.gmodule != NULL )
   {
@@ -160,9 +166,13 @@ gint i_backend_load( gchar * module_name )
   }
   else
   {
+    if (module_pathfilename)
+    {
+      g_warning ("unable to load backend '%s'\n", module_pathfilename);
+      g_free (module_pathfilename);
+    }
+
     backend.name = NULL;
-    g_warning( "unable to load backend '%s'\n" , module_pathfilename );
-    g_free( module_pathfilename );
     return 0;
   }
 }
@@ -181,8 +191,5 @@ gint i_backend_unload( void )
     return 1;
   }
   else
-  {
-    g_warning( "attempting to unload backend, but no backend is loaded\n" );
     return 0;
-  }
 }

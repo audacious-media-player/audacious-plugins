@@ -709,6 +709,14 @@ if test "x$enable_amidiplug" = "xyes"; then
     fi
   fi
   AC_SUBST(AMIDIPLUG_BACKENDS)
+
+  if test "$enable_amidiplug_alsa" = "yes" ; then
+    AC_DEFINE([AMIDIPLUG_ALSA], [1], [Define if amidi-plug ALSA backend is to be built])
+  fi
+
+  if test "$enable_amidiplug_fluidsynth" = "yes" ; then
+    AC_DEFINE([AMIDIPLUG_FLUIDSYNTH], [1], [Define if amidi-plug FluidSynth backend is to be built])
+  fi
 fi
 
 dnl Audio CD

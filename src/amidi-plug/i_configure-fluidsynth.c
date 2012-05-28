@@ -18,14 +18,15 @@
 *
 */
 
+#include <glib/gstdio.h>
 #include <gtk/gtk.h>
 
-
 #include "i_configure-fluidsynth.h"
+
+#ifdef AMIDIPLUG_FLUIDSYNTH
+
 #include "backend-fluidsynth/b-fluidsynth-config.h"
 #include "backend-fluidsynth/backend-fluidsynth-icon.xpm"
-#include <glib/gstdio.h>
-
 
 enum
 {
@@ -700,3 +701,5 @@ void i_configure_cfg_fsyn_save( pcfg_t * cfgfile )
   i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_synth_reverb" , fsyncfg->fsyn_synth_reverb );
   i_pcfg_write_integer( cfgfile , "fsyn" , "fsyn_synth_chorus" , fsyncfg->fsyn_synth_chorus );
 }
+
+#endif /* AMIDIPLUG_FLUIDSYNTH */

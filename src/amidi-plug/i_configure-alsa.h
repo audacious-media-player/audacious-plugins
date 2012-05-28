@@ -21,8 +21,11 @@
 #ifndef _I_CONFIGURE_ALSA_H
 #define _I_CONFIGURE_ALSA_H 1
 
-#include "i_configure_private.h"
+#include "config.h"
 
+#ifdef AMIDIPLUG_ALSA
+
+#include "i_configure_private.h"
 
 extern amidiplug_cfg_backend_t * amidiplug_cfg_backend;
 
@@ -32,5 +35,7 @@ void i_configure_cfg_alsa_alloc( void );
 void i_configure_cfg_alsa_free( void );
 void i_configure_cfg_alsa_read( pcfg_t * );
 void i_configure_cfg_alsa_save( pcfg_t * );
+
+#endif /* AMIDIPLUG_ALSA */
 
 #endif /* !_I_CONFIGURE_ALSA_H */

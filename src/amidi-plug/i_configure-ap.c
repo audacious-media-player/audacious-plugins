@@ -204,6 +204,9 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   gtk_tree_sortable_set_sort_column_id( GTK_TREE_SORTABLE(backend_store) ,
                                         GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID ,
                                         GTK_SORT_ASCENDING );
+
+  gboolean backend_lv_iter_selected_valid = FALSE;
+
   while ( backend_list != NULL )
   {
     amidiplug_sequencer_backend_name_t * mn = backend_list->data;
@@ -214,8 +217,13 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
                          LISTBACKEND_DESC_COLUMN , mn->desc ,
                          LISTBACKEND_FILENAME_COLUMN , mn->filename ,
                          LISTBACKEND_PPOS_COLUMN , mn->ppos , -1 );
+
     if ( !strcmp( mn->name , amidiplug_cfg_ap.ap_seq_backend ) )
+    {
       backend_lv_iter_selected = iter;
+      backend_lv_iter_selected_valid = TRUE;
+    }
+
     backend_list = backend_list->next;
   }
 
@@ -230,7 +238,9 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
 
   backend_lv_sel = gtk_tree_view_get_selection( GTK_TREE_VIEW(backend_lv) );
   gtk_tree_selection_set_mode( GTK_TREE_SELECTION(backend_lv_sel) , GTK_SELECTION_BROWSE );
-  gtk_tree_selection_select_iter( GTK_TREE_SELECTION(backend_lv_sel) , &backend_lv_iter_selected );
+
+  if (backend_lv_iter_selected_valid)
+    gtk_tree_selection_select_iter (backend_lv_sel, & backend_lv_iter_selected);
 
   backend_lv_sw = gtk_scrolled_window_new( NULL , NULL );
   gtk_scrolled_window_set_policy( GTK_SCROLLED_WINDOW(backend_lv_sw) ,

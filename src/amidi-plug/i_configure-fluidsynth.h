@@ -21,8 +21,11 @@
 #ifndef _I_CONFIGURE_FLUIDSYNTH_H
 #define _I_CONFIGURE_FLUIDSYNTH_H 1
 
-#include "i_configure_private.h"
+#include "config.h"
 
+#ifdef AMIDIPLUG_FLUIDSYNTH
+
+#include "i_configure_private.h"
 
 extern amidiplug_cfg_backend_t * amidiplug_cfg_backend;
 
@@ -32,5 +35,7 @@ void i_configure_cfg_fsyn_alloc( void );
 void i_configure_cfg_fsyn_free( void );
 void i_configure_cfg_fsyn_read( pcfg_t * );
 void i_configure_cfg_fsyn_save( pcfg_t * );
+
+#endif /* AMIDIPLUG_FLUIDSYNTH */
 
 #endif /* !_I_CONFIGURE_FLUIDSYNTH_H */

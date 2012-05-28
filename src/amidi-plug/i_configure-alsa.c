@@ -18,11 +18,12 @@
 *
 */
 
-
 #include "i_configure-alsa.h"
+
+#ifdef AMIDIPLUG_ALSA
+
 #include "backend-alsa/b-alsa-config.h"
 #include "backend-alsa/backend-alsa-icon.xpm"
-
 
 enum
 {
@@ -539,3 +540,5 @@ void i_configure_cfg_alsa_save( pcfg_t * cfgfile )
   i_pcfg_write_string( cfgfile , "alsa" , "alsa_mixer_ctl_name" , alsacfg->alsa_mixer_ctl_name );
   i_pcfg_write_integer( cfgfile , "alsa" , "alsa_mixer_ctl_id" , alsacfg->alsa_mixer_ctl_id );
 }
+
+#endif /* AMIDIPLUG_ALSA */
