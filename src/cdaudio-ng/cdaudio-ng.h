@@ -19,9 +19,31 @@
 #ifndef CDAUDIO_NG_H
 #define CDAUDIO_NG_H
 
+#include <libaudcore/core.h>
+
 #define DEF_STRING_LEN			256
 
 #define MIN_DISC_SPEED 2
 #define MAX_DISC_SPEED 24
+
+typedef struct {
+    bool_t use_cdtext;
+    bool_t use_cddb;
+    char * device;
+    char * cddb_server;
+    char * cddb_path;
+    int cddb_port;
+    bool_t cddb_http;
+    int disc_speed;
+    bool_t use_proxy;
+    char * proxy_host;
+    int proxy_port;
+    char * proxy_username;
+    char * proxy_password;
+} cdng_cfg_t;
+
+extern cdng_cfg_t cdng_cfg;
+
+void configure_show_gui (void);
 
 #endif // CDAUDIO_NG_H

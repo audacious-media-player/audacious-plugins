@@ -7,9 +7,8 @@
 #include "config.h"
 
 #include "cdaudio-ng.h"
-#include "configure.h"
 
-extern cdng_cfg_t cdng_cfg;
+static int pstrcpy (char * * res, const char * str);
 
 static GtkWidget *configwindow = NULL,
     *okbutton = NULL,
@@ -139,7 +138,7 @@ static void checkbutton_toggled (GtkWidget * widget, gpointer data)
 }
 
 
-void configure_create_gui ()
+static void configure_create_gui ()
 {
     configwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_type_hint (GTK_WINDOW (configwindow),
@@ -266,7 +265,7 @@ void configure_show_gui (void)
 }
 
 
-int pstrcpy (char ** res, const char * str)
+static int pstrcpy (char * * res, const char * str)
 {
     if (!res || !str)
         return -1;

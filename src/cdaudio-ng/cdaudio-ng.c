@@ -46,7 +46,6 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "cdaudio-ng.h"
-#include "configure.h"
 
 #define MAX_RETRIES 10
 #define MAX_SKIPS 10
