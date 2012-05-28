@@ -152,7 +152,7 @@ static const struct MenuItem playback_items[] = {
  {N_("Stop _After This Song"), NULL, 'm', CTRL, .get = stop_after_get, stop_after_set, "set stop_after_current_song"},
  {.sep = TRUE},
  {N_("Song _Info ..."), GTK_STOCK_INFO, 'i', CTRL, .func = audgui_infowin_show_current},
- {N_("Jump to _Time ..."), GTK_STOCK_JUMP_TO, .func = audgui_jump_to_time},
+ {N_("Jump to _Time ..."), GTK_STOCK_JUMP_TO, 'k', CTRL, .func = audgui_jump_to_time},
  {N_("_Jump to Song ..."), GTK_STOCK_JUMP_TO, 'j', CTRL, .func = audgui_jump_to_track}};
 
 static const struct MenuItem sort_items[] = {
