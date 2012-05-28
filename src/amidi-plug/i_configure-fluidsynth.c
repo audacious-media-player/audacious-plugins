@@ -259,32 +259,11 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
                                gpointer backend_list_p ,
                                gpointer commit_button )
 {
-  GtkWidget *fsyn_page_vbox;
-  GtkWidget *title_widget;
-  GtkWidget *content_vbox; /* this vbox will contain the various frames for config sections */
   GSList * backend_list = backend_list_p;
-  gboolean fsyn_module_ok = FALSE;
 
-  fsyn_page_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
+  GtkWidget * content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
-  title_widget = i_configure_gui_draw_title( _("FLUIDSYNTH BACKEND CONFIGURATION") );
-  gtk_box_pack_start( GTK_BOX(fsyn_page_vbox) , title_widget , FALSE , FALSE , 2 );
-
-  content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2 );
-
-  /* check if the FluidSynth module is available */
-  while ( backend_list != NULL )
-  {
-    amidiplug_sequencer_backend_name_t * mn = backend_list->data;
-    if ( !strcmp( mn->name , "fluidsynth" ) )
-    {
-      fsyn_module_ok = TRUE;
-      break;
-    }
-    backend_list = backend_list->next;
-  }
-
-  if ( fsyn_module_ok )
+  if (1)
   {
     GtkWidget *soundfont_frame, *soundfont_vbox;
     GtkListStore *soundfont_file_store;
@@ -614,16 +593,8 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     g_signal_connect_swapped( G_OBJECT(commit_button) , "ap-commit" ,
                               G_CALLBACK(i_configure_ev_sysamplerate_commit) , synth_samplerate_option[3] );
   }
-  else
-  {
-    /* display "not available" information */
-    GtkWidget * info_label;
-    info_label = gtk_label_new( _("FluidSynth Backend not loaded or not available") );
-    gtk_box_pack_start( GTK_BOX(fsyn_page_vbox) , info_label , FALSE , FALSE , 2 );
-  }
 
-  gtk_box_pack_start( GTK_BOX(fsyn_page_vbox) , content_vbox , TRUE , TRUE , 2 );
-  gtk_container_add( GTK_CONTAINER(fsyn_page_alignment) , fsyn_page_vbox );
+  gtk_container_add ((GtkContainer *) fsyn_page_alignment, content_vbox);
 }
 
 

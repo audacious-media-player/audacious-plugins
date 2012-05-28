@@ -35,7 +35,6 @@ typedef struct
 amidiplug_cfg_backend_t;
 
 
-GtkWidget * i_configure_gui_draw_title( gchar * );
 void i_configure_ev_browse_for_entry( GtkWidget * );
 
 #endif /* !_I_CONFIGURE_PRIVATE_H */

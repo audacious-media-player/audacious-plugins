@@ -55,20 +55,6 @@ void i_configure_cfg_ap_save( void );
 void i_configure_cfg_ap_read( void );
 
 
-GtkWidget * i_configure_gui_draw_title( gchar * title_string )
-{
-  GtkWidget *title_label, *title_evbox, *title_frame;
-  title_label = gtk_label_new( title_string );
-  title_evbox = gtk_event_box_new();
-  title_frame = gtk_frame_new( NULL );
-  gtk_frame_set_shadow_type( GTK_FRAME(title_frame) , GTK_SHADOW_OUT );
-  gtk_container_add( GTK_CONTAINER(title_evbox) , title_label );
-  gtk_container_set_border_width( GTK_CONTAINER(title_evbox) , 5 );
-  gtk_container_add( GTK_CONTAINER(title_frame) , title_evbox );
-  return title_frame;
-}
-
-
 void i_configure_ev_browse_for_entry( GtkWidget * target_entry )
 {
   GtkWidget *parent_window = gtk_widget_get_toplevel( target_entry );

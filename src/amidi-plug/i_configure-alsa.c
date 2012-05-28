@@ -217,19 +217,10 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
                                gpointer backend_list_p ,
                                gpointer commit_button )
 {
-  GtkWidget *alsa_page_vbox;
-  GtkWidget *title_widget;
-  GtkWidget *content_vbox; /* this vbox will contain two items of equal space (50%/50%) */
   GSList * backend_list = backend_list_p;
-  gboolean alsa_module_ok = FALSE;
-  gchar * alsa_module_pathfilename;
+  gchar * alsa_module_pathfilename = NULL;
 
-  alsa_page_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
-
-  title_widget = i_configure_gui_draw_title( _("ALSA BACKEND CONFIGURATION") );
-  gtk_box_pack_start( GTK_BOX(alsa_page_vbox) , title_widget , FALSE , FALSE , 2 );
-
-  content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2 );
+  GtkWidget * content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
   /* check if the ALSA module is available */
   while ( backend_list != NULL )
@@ -237,14 +228,13 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
     amidiplug_sequencer_backend_name_t * mn = backend_list->data;
     if ( !strcmp( mn->name , "alsa" ) )
     {
-      alsa_module_ok = TRUE;
       alsa_module_pathfilename = mn->filename;
       break;
     }
     backend_list = backend_list->next;
   }
 
-  if ( alsa_module_ok )
+  if (alsa_module_pathfilename)
   {
     GtkListStore *port_store, *mixer_card_store;
     GtkWidget *port_lv, *port_lv_sw, *port_lv_frame;
@@ -423,16 +413,8 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
     free_port_list( wports_h );
     g_module_close( alsa_module );
   }
-  else
-  {
-    /* display "not available" information */
-    GtkWidget * info_label;
-    info_label = gtk_label_new( _("ALSA Backend not loaded or not available") );
-    gtk_box_pack_start( GTK_BOX(alsa_page_vbox) , info_label , FALSE , FALSE , 2 );
-  }
 
-  gtk_box_pack_start( GTK_BOX(alsa_page_vbox) , content_vbox , TRUE , TRUE , 2 );
-  gtk_container_add( GTK_CONTAINER(alsa_page_alignment) , alsa_page_vbox );
+  gtk_container_add ((GtkContainer *) alsa_page_alignment, content_vbox);
 }
 
 

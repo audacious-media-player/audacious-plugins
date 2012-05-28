@@ -170,9 +170,6 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
                                gpointer backend_list_p ,
                                gpointer commit_button )
 {
-  GtkWidget *ap_page_vbox;
-  GtkWidget *title_widget;
-  GtkWidget *content_vbox; /* this vbox will contain two items of equal space (50%/50%) */
   GtkWidget *settings_vbox; /* this vbox will contain all settings vbox (playback, advanced) */
   GtkWidget *settplay_frame, *settplay_vbox;
   GtkWidget *settplay_transpose_and_drumshift_hbox;
@@ -190,12 +187,7 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   GtkTreeIter iter;
   GSList * backend_list = backend_list_p;
 
-  ap_page_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
-
-  title_widget = i_configure_gui_draw_title( _("AMIDI-PLUG PREFERENCES") );
-  gtk_box_pack_start( GTK_BOX(ap_page_vbox) , title_widget , FALSE , FALSE , 2 );
-
-  content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2 );
+  GtkWidget * content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
   backend_store = gtk_list_store_new( LISTBACKEND_N_COLUMNS , G_TYPE_STRING , G_TYPE_STRING ,
                                       G_TYPE_STRING , G_TYPE_STRING , G_TYPE_INT );
@@ -324,8 +316,8 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
 
   gtk_box_pack_start( GTK_BOX(content_vbox) , backend_lv_frame , TRUE , TRUE , 0 );
   gtk_box_pack_start( GTK_BOX(content_vbox) , settings_vbox , TRUE , TRUE , 0 );
-  gtk_box_pack_start( GTK_BOX(ap_page_vbox) , content_vbox , TRUE , TRUE , 2 );
-  gtk_container_add( GTK_CONTAINER(ap_page_alignment) , ap_page_vbox );
+
+  gtk_container_add ((GtkContainer *) ap_page_alignment, content_vbox);
 }
 
 
