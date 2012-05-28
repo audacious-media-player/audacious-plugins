@@ -55,46 +55,46 @@
 
 typedef struct
 {
-    gchar performer[DEF_STRING_LEN];
-    gchar name[DEF_STRING_LEN];
-    gchar genre[DEF_STRING_LEN];
-    gint startlsn;
-    gint endlsn;
+    char performer[DEF_STRING_LEN];
+    char name[DEF_STRING_LEN];
+    char genre[DEF_STRING_LEN];
+    int startlsn;
+    int endlsn;
 }
 trackinfo_t;
 
 static GMutex *mutex;
-static gint seek_time;
-static gboolean stop_flag;
+static int seek_time;
+static bool_t stop_flag;
 
 /* lock mutex to read / set these variables */
 cdng_cfg_t cdng_cfg;
-static gint firsttrackno = -1;
-static gint lasttrackno = -1;
-static gint n_audio_tracks;
+static int firsttrackno = -1;
+static int lasttrackno = -1;
+static int n_audio_tracks;
 static cdrom_drive_t *pcdrom_drive = NULL;
 static trackinfo_t *trackinfo = NULL;
-static gint monitor_source = 0;
+static int monitor_source = 0;
 
 /* read / set these variables in main thread only */
 
-static gboolean cdaudio_init (void);
+static bool_t cdaudio_init (void);
 static void cdaudio_about (void);
 static void cdaudio_configure (void);
-static gint cdaudio_is_our_file (const gchar * filename, VFSFile * file);
-static gboolean cdaudio_play (InputPlayback * p, const gchar * name, VFSFile *
- file, gint start, gint stop, gboolean pause);
+static int cdaudio_is_our_file (const char * filename, VFSFile * file);
+static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
+ file, int start, int stop, bool_t pause);
 static void cdaudio_stop (InputPlayback * pinputplayback);
-static void cdaudio_pause (InputPlayback * p, gboolean paused);
-static void cdaudio_mseek (InputPlayback * p, gint time);
+static void cdaudio_pause (InputPlayback * p, bool_t paused);
+static void cdaudio_mseek (InputPlayback * p, int time);
 static void cdaudio_cleanup (void);
-static Tuple * make_tuple (const gchar * filename, VFSFile * file);
+static Tuple * make_tuple (const char * filename, VFSFile * file);
 static void scan_cd (void);
-static void refresh_trackinfo (gboolean warning);
-static gint calculate_track_length (gint startlsn, gint endlsn);
-static gint find_trackno_from_filename (const gchar * filename);
+static void refresh_trackinfo (bool_t warning);
+static int calculate_track_length (int startlsn, int endlsn);
+static int find_trackno_from_filename (const char * filename);
 
-static const gchar * const schemes[] = {"cdda", NULL};
+static const char * const schemes[] = {"cdda", NULL};
 
 AUD_INPUT_PLUGIN
 (
@@ -113,10 +113,10 @@ AUD_INPUT_PLUGIN
     .have_subtune = TRUE,
 )
 
-static void cdaudio_error (const gchar * message_format, ...)
+static void cdaudio_error (const char * message_format, ...)
 {
     va_list args;
-    gchar *msg = NULL;
+    char *msg = NULL;
 
     va_start (args, message_format);
     msg = g_markup_vprintf_escaped (message_format, args);
@@ -127,13 +127,13 @@ static void cdaudio_error (const gchar * message_format, ...)
 }
 
 /* main thread only */
-static void purge_playlist (gint playlist)
+static void purge_playlist (int playlist)
 {
-    gint length = aud_playlist_entry_count (playlist);
+    int length = aud_playlist_entry_count (playlist);
 
-    for (gint count = 0; count < length; count ++)
+    for (int count = 0; count < length; count ++)
     {
-        gchar * filename = aud_playlist_entry_get_filename (playlist, count);
+        char * filename = aud_playlist_entry_get_filename (playlist, count);
 
         if (cdaudio_is_our_file (filename, NULL))
         {
@@ -149,15 +149,15 @@ static void purge_playlist (gint playlist)
 /* main thread only */
 static void purge_all_playlists (void)
 {
-    gint playlists = aud_playlist_count ();
-    gint count;
+    int playlists = aud_playlist_count ();
+    int count;
 
     for (count = 0; count < playlists; count++)
         purge_playlist (count);
 }
 
 /* main thread only */
-static gboolean monitor (gpointer unused)
+static bool_t monitor (gpointer unused)
 {
     g_mutex_lock (mutex);
 
@@ -190,7 +190,7 @@ static void trigger_monitor (void)
 #endif
 }
 
-static const gchar * const cdaudio_defaults[] = {
+static const char * const cdaudio_defaults[] = {
  "use_cdtext", "TRUE",
  "use_cddb", "TRUE",
  "cddbserver", "freedb.org",
@@ -200,7 +200,7 @@ static const gchar * const cdaudio_defaults[] = {
  NULL};
 
 /* main thread only */
-static gboolean cdaudio_init (void)
+static bool_t cdaudio_init (void)
 {
     mutex = g_mutex_new ();
 
@@ -255,15 +255,15 @@ static void cdaudio_configure ()
 }
 
 /* thread safe (mutex may be locked) */
-static gint cdaudio_is_our_file (const gchar * filename, VFSFile * file)
+static int cdaudio_is_our_file (const char * filename, VFSFile * file)
 {
     return !strncmp (filename, "cdda://", 7);
 }
 
 /* thread safe (mutex may be locked) */
 static void cdaudio_set_strinfo (trackinfo_t * t,
-                                 const gchar * performer, const gchar * name,
-                                 const gchar * genre)
+                                 const char * performer, const char * name,
+                                 const char * genre)
 {
     g_strlcpy (t->performer, performer, DEF_STRING_LEN);
     g_strlcpy (t->name, name, DEF_STRING_LEN);
@@ -273,8 +273,8 @@ static void cdaudio_set_strinfo (trackinfo_t * t,
 /* thread safe (mutex may be locked) */
 static void cdaudio_set_fullinfo (trackinfo_t * t,
                                   const lsn_t startlsn, const lsn_t endlsn,
-                                  const gchar * performer, const gchar * name,
-                                  const gchar * genre)
+                                  const char * performer, const char * name,
+                                  const char * genre)
 {
     t->startlsn = startlsn;
     t->endlsn = endlsn;
@@ -282,8 +282,8 @@ static void cdaudio_set_fullinfo (trackinfo_t * t,
 }
 
 /* play thread only */
-static gboolean cdaudio_play (InputPlayback * p, const gchar * name, VFSFile *
- file, gint start, gint stop, gboolean pause)
+static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
+ file, int start, int stop, bool_t pause)
 {
     g_mutex_lock (mutex);
 
@@ -299,7 +299,7 @@ ERR:
         }
     }
 
-    gint trackno = find_trackno_from_filename (name);
+    int trackno = find_trackno_from_filename (name);
 
     if (trackno < 0)
     {
@@ -320,8 +320,8 @@ ERR:
         goto ERR;
     }
 
-    gint startlsn = trackinfo[trackno].startlsn;
-    gint endlsn = trackinfo[trackno].endlsn;
+    int startlsn = trackinfo[trackno].startlsn;
+    int endlsn = trackinfo[trackno].endlsn;
 
     if (! p->output->open_audio (FMT_S16_LE, 44100, 2))
     {
@@ -343,11 +343,11 @@ ERR:
 
     g_mutex_unlock (mutex);
 
-    gint buffer_size = aud_get_int (NULL, "output_buffer_size");
-    gint sectors = CLAMP (buffer_size / 2, 50, 250) * cdng_cfg.disc_speed * 75 / 1000;
+    int buffer_size = aud_get_int (NULL, "output_buffer_size");
+    int sectors = CLAMP (buffer_size / 2, 50, 250) * cdng_cfg.disc_speed * 75 / 1000;
     guchar buffer[2352 * sectors];
-    gint currlsn = startlsn;
-    gint retry_count = 0, skip_count = 0;
+    int currlsn = startlsn;
+    int retry_count = 0, skip_count = 0;
 
     while (1)
     {
@@ -434,7 +434,7 @@ static void cdaudio_stop (InputPlayback * p)
 }
 
 /* main thread only */
-static void cdaudio_pause (InputPlayback * p, gboolean pause)
+static void cdaudio_pause (InputPlayback * p, bool_t pause)
 {
     g_mutex_lock (mutex);
 
@@ -445,7 +445,7 @@ static void cdaudio_pause (InputPlayback * p, gboolean pause)
 }
 
 /* main thread only */
-static void cdaudio_mseek (InputPlayback * p, gint time)
+static void cdaudio_mseek (InputPlayback * p, int time)
 {
     g_mutex_lock (mutex);
 
@@ -505,10 +505,10 @@ static void cdaudio_cleanup (void)
 }
 
 /* thread safe */
-static Tuple * make_tuple (const gchar * filename, VFSFile * file)
+static Tuple * make_tuple (const char * filename, VFSFile * file)
 {
     Tuple *tuple = NULL;
-    gint trackno;
+    int trackno;
 
     g_mutex_lock (mutex);
 
@@ -521,8 +521,8 @@ static Tuple * make_tuple (const gchar * filename, VFSFile * file)
     {
         tuple = tuple_new_from_filename (filename);
 
-        gint subtunes[n_audio_tracks];
-        gint i = 0;
+        int subtunes[n_audio_tracks];
+        int i = 0;
 
         /* only add the audio tracks to the playlist */
         for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
@@ -604,7 +604,7 @@ static void open_cd (void)
     }
     else
     {
-        gchar **ppcd_drives =
+        char **ppcd_drives =
             cdio_get_devices_with_cap (NULL, CDIO_FS_AUDIO, false);
 
         if (ppcd_drives != NULL && *ppcd_drives != NULL)
@@ -636,7 +636,7 @@ static void scan_cd (void)
     g_return_if_fail (pcdrom_drive != NULL);
     g_return_if_fail (trackinfo == NULL);
 
-    gint trackno;
+    int trackno;
 
     /* general track initialization */
 
@@ -714,7 +714,7 @@ static void scan_cd (void)
     }
 
     /* get track information from cdtext */
-    gboolean cdtext_was_available = FALSE;
+    bool_t cdtext_was_available = FALSE;
     for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
     {
         cdtext_t *pcdtext = NULL;
@@ -818,7 +818,7 @@ static void scan_cd (void)
                 AUDDBG ("CDDB disc id = %x\n", discid);
 #endif
 
-                gint matches;
+                int matches;
                 if ((matches = cddb_query (pcddb_conn, pcddb_disc)) == -1)
                 {
                     if (cddb_errno (pcddb_conn) == CDDB_ERR_OK)
@@ -864,7 +864,7 @@ static void scan_cd (void)
                                                  cddb_disc_get_genre
                                                  (pcddb_disc));
 
-                            gint trackno;
+                            int trackno;
                             for (trackno = firsttrackno; trackno <= lasttrackno;
                                  trackno++)
                             {
@@ -900,7 +900,7 @@ static void scan_cd (void)
 }
 
 /* mutex must be locked */
-static void refresh_trackinfo (gboolean warning)
+static void refresh_trackinfo (bool_t warning)
 {
     trigger_monitor ();
 
@@ -947,15 +947,15 @@ static void refresh_trackinfo (gboolean warning)
 }
 
 /* thread safe (mutex may be locked) */
-static gint calculate_track_length (gint startlsn, gint endlsn)
+static int calculate_track_length (int startlsn, int endlsn)
 {
     return ((endlsn - startlsn + 1) * 1000) / 75;
 }
 
 /* thread safe (mutex may be locked) */
-static gint find_trackno_from_filename (const gchar * filename)
+static int find_trackno_from_filename (const char * filename)
 {
-    gint track;
+    int track;
 
     if (strncmp (filename, "cdda://?", 8) || sscanf (filename + 8, "%d",
                                                      &track) != 1)

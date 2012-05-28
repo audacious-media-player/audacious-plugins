@@ -36,7 +36,7 @@ static GtkWidget *configwindow = NULL,
 
 static void configure_values_to_gui (void)
 {
-    gchar portstr[16];
+    char portstr[16];
 
     gtk_spin_button_set_value ((GtkSpinButton *) disc_speed_button,
      cdng_cfg.disc_speed);
@@ -92,7 +92,7 @@ static void configure_gui_to_values (void)
 }
 
 
-static gboolean delete_window (GtkWidget * widget, GdkEvent * event,
+static bool_t delete_window (GtkWidget * widget, GdkEvent * event,
                                gpointer data)
 {
     (void) widget;
@@ -266,13 +266,13 @@ void configure_show_gui (void)
 }
 
 
-gint pstrcpy (gchar ** res, const gchar * str)
+int pstrcpy (char ** res, const char * str)
 {
     if (!res || !str)
         return -1;
 
     g_free (*res);
-    if ((*res = (gchar *) g_malloc (strlen (str) + 1)) == NULL)
+    if ((*res = (char *) g_malloc (strlen (str) + 1)) == NULL)
         return -2;
 
     strcpy (*res, str);
