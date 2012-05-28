@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2008 William Pitcock <nenolod@nenolod.net>
- * Copyright (c) 2010 John Lindgren <john.lindgren@tds.net>
+ * Copyright (c) 2010-2012 John Lindgren <john.lindgren@tds.net>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -20,7 +20,7 @@
 
 #include "config.h"
 
-#include <glib.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <audacious/i18n.h>
@@ -28,15 +28,15 @@
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
 
-static gboolean init (void);
-static void cryst_start (gint * channels, gint * rate);
-static void cryst_process (gfloat * * data, gint * samples);
+static bool_t init (void);
+static void cryst_start (int * channels, int * rate);
+static void cryst_process (float * * data, int * samples);
 static void cryst_flush ();
-static void cryst_finish (gfloat * * data, gint * samples);
-static gint cryst_decoder_to_output_time (gint time);
-static gint cryst_output_to_decoder_time (gint time);
+static void cryst_finish (float * * data, int * samples);
+static int cryst_decoder_to_output_time (int time);
+static int cryst_output_to_decoder_time (int time);
 
-static const gchar * const cryst_defaults[] = {
+static const char * const cryst_defaults[] = {
  "intensity", "1",
  NULL};
 
@@ -50,7 +50,7 @@ static PluginPreferences cryst_prefs = {
  .domain = PACKAGE,
  .title = N_("Crystalizer Settings"),
  .prefs = cryst_prefs_widgets,
- .n_prefs = G_N_ELEMENTS (cryst_prefs_widgets)};
+ .n_prefs = sizeof cryst_prefs_widgets / sizeof cryst_prefs_widgets[0]};
 
 AUD_EFFECT_PLUGIN
 (
@@ -66,34 +66,34 @@ AUD_EFFECT_PLUGIN
     .preserves_format = TRUE,
 )
 
-static gint cryst_channels;
-static gfloat * cryst_prev;
+static int cryst_channels;
+static float * cryst_prev;
 
-static gboolean init (void)
+static bool_t init (void)
 {
     aud_config_set_defaults ("crystalizer", cryst_defaults);
     return TRUE;
 }
 
-static void cryst_start (gint * channels, gint * rate)
+static void cryst_start (int * channels, int * rate)
 {
     cryst_channels = * channels;
-    cryst_prev = g_realloc (cryst_prev, sizeof (gfloat) * cryst_channels);
-    memset (cryst_prev, 0, sizeof (gfloat) * cryst_channels);
+    cryst_prev = realloc (cryst_prev, sizeof (float) * cryst_channels);
+    memset (cryst_prev, 0, sizeof (float) * cryst_channels);
 }
 
-static void cryst_process (gfloat * * data, gint * samples)
+static void cryst_process (float * * data, int * samples)
 {
-    gfloat value = aud_get_double ("crystalizer", "intensity");
-    gfloat * f = * data;
-    gfloat * end = f + (* samples);
-    gint channel;
+    float value = aud_get_double ("crystalizer", "intensity");
+    float * f = * data;
+    float * end = f + (* samples);
+    int channel;
 
     while (f < end)
     {
         for (channel = 0; channel < cryst_channels; channel ++)
         {
-            gfloat current = * f;
+            float current = * f;
 
             * f ++ = current + (current - cryst_prev[channel]) * value;
             cryst_prev[channel] = current;
@@ -103,20 +103,20 @@ static void cryst_process (gfloat * * data, gint * samples)
 
 static void cryst_flush ()
 {
-    memset (cryst_prev, 0, sizeof (gfloat) * cryst_channels);
+    memset (cryst_prev, 0, sizeof (float) * cryst_channels);
 }
 
-static void cryst_finish (gfloat * * data, gint * samples)
+static void cryst_finish (float * * data, int * samples)
 {
     cryst_process (data, samples);
 }
 
-static gint cryst_decoder_to_output_time (gint time)
+static int cryst_decoder_to_output_time (int time)
 {
     return time;
 }
 
-static gint cryst_output_to_decoder_time (gint time)
+static int cryst_output_to_decoder_time (int time)
 {
     return time;
 }
