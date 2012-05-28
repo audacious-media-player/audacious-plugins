@@ -27,49 +27,31 @@
 void i_about_gui( void )
 {
   static GtkWidget * aboutwin = NULL;
-  GtkWidget *logoandinfo_vbox , *aboutwin_vbox;
-  GtkWidget *logo_image , *logo_frame;
-  GtkWidget *info_frame , *info_scrolledwin , *info_textview;
-  GtkWidget *hseparator , *hbuttonbox , *button_ok;
-  GtkTextBuffer *info_textbuffer;
+  GtkWidget *logo_image;
   GdkPixbuf *logo_pixbuf;
-  gchar *info_textbuffer_content = NULL;
 
   if ( aboutwin != NULL )
     return;
 
-  aboutwin = gtk_window_new( GTK_WINDOW_TOPLEVEL );
-  gtk_window_set_type_hint( GTK_WINDOW(aboutwin), GDK_WINDOW_TYPE_HINT_DIALOG );
-  gtk_window_set_title( GTK_WINDOW(aboutwin), _("AMIDI-Plug - about") );
+  aboutwin = gtk_dialog_new_with_buttons (_("About AMIDI-Plug"), NULL, 0,
+   GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
   gtk_window_set_resizable( GTK_WINDOW(aboutwin) , FALSE );
-  gtk_container_set_border_width( GTK_CONTAINER(aboutwin), 10 );
+
+  g_signal_connect (aboutwin, "response", (GCallback) gtk_widget_destroy, NULL);
   g_signal_connect( G_OBJECT(aboutwin) , "destroy" , G_CALLBACK(gtk_widget_destroyed) , &aboutwin );
 
-  aboutwin_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0 );
-
-  logoandinfo_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2 );
-  gtk_container_add( GTK_CONTAINER(aboutwin) , aboutwin_vbox );
+  GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) aboutwin);
 
   logo_pixbuf = gdk_pixbuf_new_from_xpm_data( (const gchar **)amidiplug_xpm_logo );
   logo_image = gtk_image_new_from_pixbuf( logo_pixbuf );
+  gtk_box_pack_start ((GtkBox *) vbox, logo_image, FALSE, FALSE, 0);
   g_object_unref( logo_pixbuf );
 
-  logo_frame = gtk_frame_new( NULL );
-  gtk_container_add( GTK_CONTAINER(logo_frame) , logo_image );
-  gtk_box_pack_start( GTK_BOX(logoandinfo_vbox) , logo_frame , TRUE , TRUE , 0 );
-
-  info_textview = gtk_text_view_new();
-  info_textbuffer = gtk_text_view_get_buffer( GTK_TEXT_VIEW(info_textview) );
-  gtk_text_view_set_editable( GTK_TEXT_VIEW(info_textview) , FALSE );
-  gtk_text_view_set_cursor_visible( GTK_TEXT_VIEW(info_textview) , FALSE );
-  gtk_text_view_set_justification( GTK_TEXT_VIEW(info_textview) , GTK_JUSTIFY_LEFT );
-  gtk_text_view_set_left_margin( GTK_TEXT_VIEW(info_textview) , 10 );
-
-  info_textbuffer_content = g_strjoin( NULL , _("\nAMIDI-Plug ") , AMIDIPLUG_VERSION ,
-                                       _("\nmodular MIDI music player\n"
+  gchar * text = g_strjoin (NULL, "AMIDI-Plug ", AMIDIPLUG_VERSION,
+                                         "\nmodular MIDI music player\n"
                                          "http://www.develia.org/projects.php?p=amidiplug\n\n"
                                          "written by Giacomo Lozito\n"
-                                         "< james@develia.org >\n\n\n"
+                                         "<james@develia.org>\n\n"
                                          "special thanks to...\n\n"
                                          "Clemens Ladisch and Jaroslav Kysela\n"
                                          "for their cool programs aplaymidi and amixer; those\n"
@@ -78,30 +60,11 @@ void i_about_gui( void )
                                          "Alfredo Spadafina\n"
                                          "for the nice midi keyboard logo\n\n"
                                          "Tony Vroon\n"
-                                         "for the good help with alpha testing\n\n") , NULL );
-  gtk_text_buffer_set_text( info_textbuffer , info_textbuffer_content , -1 );
-  g_free( info_textbuffer_content );
+                                         "for the good help with alpha testing", NULL);
 
-  info_scrolledwin = gtk_scrolled_window_new( NULL , NULL );
-  gtk_scrolled_window_set_policy( GTK_SCROLLED_WINDOW(info_scrolledwin) ,
-                                  GTK_POLICY_NEVER , GTK_POLICY_ALWAYS );
-  gtk_container_add( GTK_CONTAINER(info_scrolledwin) , info_textview );
-  info_frame = gtk_frame_new( NULL );
-  gtk_container_add( GTK_CONTAINER(info_frame) , info_scrolledwin );
-
-  gtk_box_pack_start( GTK_BOX(logoandinfo_vbox) , info_frame , TRUE , TRUE , 0 );
-
-  gtk_box_pack_start( GTK_BOX(aboutwin_vbox) , logoandinfo_vbox , TRUE , TRUE , 0 );
-
-  /* horizontal separator and buttons */
-  hseparator = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
-  gtk_box_pack_start( GTK_BOX(aboutwin_vbox) , hseparator , FALSE , FALSE , 4 );
-  hbuttonbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
-  gtk_button_box_set_layout( GTK_BUTTON_BOX(hbuttonbox) , GTK_BUTTONBOX_END );
-  button_ok = gtk_button_new_from_stock( GTK_STOCK_OK );
-  g_signal_connect_swapped( G_OBJECT(button_ok) , "clicked" , G_CALLBACK(gtk_widget_destroy) , aboutwin );
-  gtk_container_add( GTK_CONTAINER(hbuttonbox) , button_ok );
-  gtk_box_pack_start( GTK_BOX(aboutwin_vbox) , hbuttonbox , FALSE , FALSE , 0 );
+  GtkWidget * label = gtk_label_new (text);
+  gtk_box_pack_start ((GtkBox *) vbox, label, FALSE, FALSE, 0);
+  g_free (text);
 
   gtk_widget_show_all( aboutwin );
 }
