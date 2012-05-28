@@ -20,15 +20,15 @@
 
 #include "config.h"
 
+#include <glib.h>
 #include <string.h>
-#include <gtk/gtk.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <audacious/preferences.h>
 
 static gboolean init (void);
-static void configure(void);
 static void cryst_start (gint * channels, gint * rate);
 static void cryst_process (gfloat * * data, gint * samples);
 static void cryst_flush ();
@@ -36,11 +36,27 @@ static void cryst_finish (gfloat * * data, gint * samples);
 static gint cryst_decoder_to_output_time (gint time);
 static gint cryst_output_to_decoder_time (gint time);
 
+static const gchar * const cryst_defaults[] = {
+ "intensity", "1",
+ NULL};
+
+static PreferencesWidget cryst_prefs_widgets[] = {
+ {WIDGET_LABEL, N_("<b>Effect</b>")},
+ {WIDGET_SPIN_BTN, N_("Intensity:"),
+  .cfg_type = VALUE_FLOAT, .csect = "crystalizer", .cname = "intensity",
+  .data = {.spin_btn = {0, 10, 0.1}}}};
+
+static PluginPreferences cryst_prefs = {
+ .domain = PACKAGE,
+ .title = N_("Crystalizer Settings"),
+ .prefs = cryst_prefs_widgets,
+ .n_prefs = G_N_ELEMENTS (cryst_prefs_widgets)};
+
 AUD_EFFECT_PLUGIN
 (
-    .name = "Crystalizer", /* Description */
+    .name = "Crystalizer",
     .init = init,
-    .configure = configure,
+    .settings = & cryst_prefs,
     .start = cryst_start,
     .process = cryst_process,
     .flush = cryst_flush,
@@ -50,99 +66,13 @@ AUD_EFFECT_PLUGIN
     .preserves_format = TRUE,
 )
 
-static GtkWidget *conf_dialog = NULL;
-static gdouble value;
 static gint cryst_channels;
 static gfloat * cryst_prev;
-
-static const gchar * const cryst_defaults[] = {
- "intensity", "1",
- NULL};
 
 static gboolean init (void)
 {
     aud_config_set_defaults ("crystalizer", cryst_defaults);
-    value = aud_get_double ("crystalizer", "intensity");
-
     return TRUE;
-}
-
-/* conf dialog stuff stolen from stereo plugin --nenolod */
-static void conf_ok_cb (GtkButton * button, GtkAdjustment * adj)
-{
-    value = gtk_adjustment_get_value (adj);
-    aud_set_double ("crystalizer", "intensity", value);
-
-    gtk_widget_destroy(conf_dialog);
-}
-
-static void conf_cancel_cb(GtkButton * button, gpointer data)
-{
-    gtk_widget_destroy(conf_dialog);
-}
-
-static void conf_apply_cb (GtkButton * button, GtkAdjustment * adj)
-{
-    value = gtk_adjustment_get_value (adj);
-}
-
-static void configure(void)
-{
-    GtkWidget *hbox, *label, *scale, *button, *bbox;
-    GtkAdjustment * adjustment;
-
-    if (conf_dialog != NULL)
-        return;
-
-    conf_dialog = gtk_dialog_new();
-    g_signal_connect (conf_dialog, "destroy", (GCallback)
-     gtk_widget_destroyed, & conf_dialog);
-    gtk_window_set_title(GTK_WINDOW(conf_dialog), _("Configure Crystalizer"));
-
-    label = gtk_label_new(_("Effect intensity:"));
-    gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area
-     ((GtkDialog *) conf_dialog), label, TRUE, TRUE, 0);
-    gtk_widget_show(label);
-
-    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
-    gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area
-     ((GtkDialog *) conf_dialog), hbox, TRUE, TRUE, 10);
-    gtk_widget_show(hbox);
-
-    adjustment = (GtkAdjustment *) gtk_adjustment_new (value, 0, 15 + 1,
-     0.1, 1, 1);
-    scale = gtk_scale_new(GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT(adjustment));
-    gtk_box_pack_start(GTK_BOX(hbox), scale, TRUE, TRUE, 10);
-    gtk_widget_show(scale);
-
-    bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-    gtk_box_pack_start ((GtkBox *) gtk_dialog_get_action_area ((GtkDialog *)
-     conf_dialog), bbox, TRUE, TRUE, 0);
-
-    button = gtk_button_new_with_label(_("Ok"));
-    gtk_widget_set_can_default (button, TRUE);
-    gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-    g_signal_connect (button, "clicked", (GCallback) conf_ok_cb, adjustment);
-    gtk_widget_grab_default(button);
-    gtk_widget_show(button);
-
-    button = gtk_button_new_with_label(_("Cancel"));
-    gtk_widget_set_can_default (button, TRUE);
-    gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-    g_signal_connect (button, "clicked", (GCallback) conf_cancel_cb, NULL);
-    gtk_widget_show(button);
-
-    button = gtk_button_new_with_label(_("Apply"));
-    gtk_widget_set_can_default (button, TRUE);
-    gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-    g_signal_connect (button, "clicked", (GCallback) conf_apply_cb,
-     adjustment);
-    gtk_widget_show(button);
-
-    gtk_widget_show(bbox);
-
-    gtk_widget_show(conf_dialog);
 }
 
 static void cryst_start (gint * channels, gint * rate)
@@ -154,6 +84,7 @@ static void cryst_start (gint * channels, gint * rate)
 
 static void cryst_process (gfloat * * data, gint * samples)
 {
+    gfloat value = aud_get_double ("crystalizer", "intensity");
     gfloat * f = * data;
     gfloat * end = f + (* samples);
     gint channel;
