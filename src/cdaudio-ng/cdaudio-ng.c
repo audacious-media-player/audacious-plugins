@@ -2,8 +2,8 @@
  * Audacious CD Digital Audio plugin
  *
  * Copyright (c) 2007 Calin Crisan <ccrisan@gmail.com>
- * Copyright 2009 John Lindgren
- * Copyright 2009 Tomasz Moń <desowin@gmail.com>
+ * Copyright (c) 2009-2012 John Lindgren <john.lindgren@aol.com>
+ * Copyright (c) 2009 Tomasz Moń <desowin@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,11 +41,15 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <audacious/preferences.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "cdaudio-ng.h"
+#define DEF_STRING_LEN 256
+
+#define MIN_DISC_SPEED 2
+#define MAX_DISC_SPEED 24
 
 #define MAX_RETRIES 10
 #define MAX_SKIPS 10
@@ -67,7 +71,6 @@ static int seek_time;
 static bool_t stop_flag;
 
 /* lock mutex to read / set these variables */
-cdng_cfg_t cdng_cfg;
 static int firsttrackno = -1;
 static int lasttrackno = -1;
 static int n_audio_tracks;
@@ -75,11 +78,8 @@ static cdrom_drive_t *pcdrom_drive = NULL;
 static trackinfo_t *trackinfo = NULL;
 static int monitor_source = 0;
 
-/* read / set these variables in main thread only */
-
 static bool_t cdaudio_init (void);
 static void cdaudio_about (void);
-static void cdaudio_configure (void);
 static int cdaudio_is_our_file (const char * filename, VFSFile * file);
 static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
  file, int start, int stop, bool_t pause);
@@ -95,12 +95,47 @@ static int find_trackno_from_filename (const char * filename);
 
 static const char * const schemes[] = {"cdda", NULL};
 
+static const char * const cdaudio_defaults[] = {
+ "disc_speed", "2",
+ "use_cdtext", "TRUE",
+ "use_cddb", "TRUE",
+ "cddbhttp", "FALSE",
+ "cddbserver", "freedb.org",
+ "cddbport", "8880",
+ NULL};
+
+static PreferencesWidget cdaudio_prefs_widgets[] = {
+ {WIDGET_SPIN_BTN, N_("Disc speed:"),
+  .cfg_type = VALUE_INT, .csect = "CDDA", .cname = "disc_speed",
+  .data = {.spin_btn = {MIN_DISC_SPEED, MAX_DISC_SPEED, 1}}},
+ {WIDGET_ENTRY, N_("Override device:"),
+  .cfg_type = VALUE_STRING, .csect = "CDDA", .cname = "device"},
+ {WIDGET_CHK_BTN, N_("Use CD-Text"),
+  .cfg_type = VALUE_BOOLEAN, .csect = "CDDA", .cname = "use_cdtext"},
+ {WIDGET_CHK_BTN, N_("Use CDDB"),
+  .cfg_type = VALUE_BOOLEAN, .csect = "CDDA", .cname = "use_cddb"},
+ {WIDGET_CHK_BTN, N_("Use HTTP instead of CDDBP"), .child = TRUE,
+  .cfg_type = VALUE_BOOLEAN, .csect = "CDDA", .cname = "cddbhttp"},
+ {WIDGET_ENTRY, N_("Server:"), .child = TRUE,
+  .cfg_type = VALUE_STRING, .csect = "CDDA", .cname = "cddbserver"},
+ {WIDGET_ENTRY, N_("Path:"), .child = TRUE,
+  .cfg_type = VALUE_STRING, .csect = "CDDA", .cname = "cddbpath"},
+ {WIDGET_SPIN_BTN, N_("Port:"), .child = TRUE,
+  .cfg_type = VALUE_INT, .csect = "CDDA", .cname = "cddbport",
+  .data = {.spin_btn = {0, 65535, 1}}}};
+
+static PluginPreferences cdaudio_prefs = {
+ .domain = PACKAGE,
+ .title = N_("Audio CD Settings"),
+ .prefs = cdaudio_prefs_widgets,
+ .n_prefs = G_N_ELEMENTS (cdaudio_prefs_widgets)};
+
 AUD_INPUT_PLUGIN
 (
     .name = "Audio CD Support",
     .init = cdaudio_init,
     .about = cdaudio_about,
-    .configure = cdaudio_configure,
+    .settings = & cdaudio_prefs,
     .is_our_file_from_vfs = cdaudio_is_our_file,
     .play = cdaudio_play,
     .stop = cdaudio_stop,
@@ -179,24 +214,9 @@ static bool_t monitor (gpointer unused)
 /* mutex must be locked */
 static void trigger_monitor (void)
 {
-    if (monitor_source)
-        return;
-
-#if GLIB_CHECK_VERSION (2, 14, 0)
-    monitor_source = g_timeout_add_seconds (1, monitor, NULL);
-#else
-    monitor_source = g_timeout_add (1000, monitor, NULL);
-#endif
+    if (! monitor_source)
+        monitor_source = g_timeout_add_seconds (1, monitor, NULL);
 }
-
-static const char * const cdaudio_defaults[] = {
- "use_cdtext", "TRUE",
- "use_cddb", "TRUE",
- "cddbserver", "freedb.org",
- "cddbport", "8880",
- "cddbhttp", "FALSE",
- "disc_speed", "2",
- NULL};
 
 /* main thread only */
 static bool_t cdaudio_init (void)
@@ -204,22 +224,6 @@ static bool_t cdaudio_init (void)
     mutex = g_mutex_new ();
 
     aud_config_set_defaults ("CDDA", cdaudio_defaults);
-
-    cdng_cfg.use_cdtext = aud_get_bool ("CDDA", "use_cdtext");
-    cdng_cfg.use_cddb = aud_get_bool ("CDDA", "use_cddb");
-    cdng_cfg.device = aud_get_string ("CDDA", "device");
-    cdng_cfg.cddb_server = aud_get_string ("CDDA", "cddbserver");
-    cdng_cfg.cddb_path = aud_get_string ("CDDA", "cddbpath");
-    cdng_cfg.cddb_port = aud_get_int ("CDDA", "cddbport");
-    cdng_cfg.cddb_http = aud_get_bool ("CDDA", "cddbhttp");
-    cdng_cfg.disc_speed = aud_get_int ("CDDA", "disc_speed");
-    cdng_cfg.disc_speed = CLAMP (cdng_cfg.disc_speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
-
-    cdng_cfg.use_proxy = aud_get_bool (NULL, "use_proxy");
-    cdng_cfg.proxy_host = aud_get_string (NULL, "proxy_host");
-    cdng_cfg.proxy_port = aud_get_int (NULL, "proxy_port");
-    cdng_cfg.proxy_username = aud_get_string (NULL, "proxy_user");
-    cdng_cfg.proxy_password = aud_get_string (NULL, "proxy_pass");
 
     if (!cdio_init ())
     {
@@ -245,12 +249,6 @@ static void cdaudio_about (void)
      "Also thank you Tony Vroon for mentoring & guiding me.\n\n"
      "This was a Google Summer of Code 2007 project.\n\n"
      "Copyright 2009 John Lindgren"));
-}
-
-/* main thread only */
-static void cdaudio_configure ()
-{
-    configure_show_gui ();
 }
 
 /* thread safe (mutex may be locked) */
@@ -343,7 +341,9 @@ ERR:
     g_mutex_unlock (mutex);
 
     int buffer_size = aud_get_int (NULL, "output_buffer_size");
-    int sectors = CLAMP (buffer_size / 2, 50, 250) * cdng_cfg.disc_speed * 75 / 1000;
+    int speed = aud_get_int ("CDDA", "disc_speed");
+    speed = CLAMP (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
+    int sectors = CLAMP (buffer_size / 2, 50, 250) * speed * 75 / 1000;
     guchar buffer[2352 * sectors];
     int currlsn = startlsn;
     int retry_count = 0, skip_count = 0;
@@ -473,6 +473,7 @@ static void cdaudio_cleanup (void)
         cdda_close (pcdrom_drive);
         pcdrom_drive = NULL;
     }
+
     if (trackinfo != NULL)
     {
         g_free (trackinfo);
@@ -480,24 +481,6 @@ static void cdaudio_cleanup (void)
     }
 
     libcddb_shutdown ();
-
-    // todo: destroy the gui
-
-    aud_set_bool ("CDDA", "use_cdtext", cdng_cfg.use_cdtext);
-    aud_set_bool ("CDDA", "use_cddb", cdng_cfg.use_cddb);
-    aud_set_string ("CDDA", "device", cdng_cfg.device);
-    aud_set_string ("CDDA", "cddbserver", cdng_cfg.cddb_server);
-    aud_set_string ("CDDA", "cddbpath", cdng_cfg.cddb_path);
-    aud_set_int ("CDDA", "cddbport", cdng_cfg.cddb_port);
-    aud_set_bool ("CDDA", "cddbhttp", cdng_cfg.cddb_http);
-    aud_set_int ("CDDA", "disc_speed", cdng_cfg.disc_speed);
-
-    g_free (cdng_cfg.device);
-    g_free (cdng_cfg.cddb_server);
-    g_free (cdng_cfg.cddb_path);
-    g_free (cdng_cfg.proxy_host);
-    g_free (cdng_cfg.proxy_username);
-    g_free (cdng_cfg.proxy_password);
 
     g_mutex_unlock (mutex);
     g_mutex_free (mutex);
@@ -591,41 +574,30 @@ static void open_cd (void)
     AUDDBG ("Opening CD drive.\n");
     g_return_if_fail (pcdrom_drive == NULL);
 
-    /* find an available, audio capable, cd drive  */
-    if (cdng_cfg.device != NULL && strlen (cdng_cfg.device) > 0)
+    char * device = aud_get_string ("CDDA", "device");
+
+    if (device[0])
     {
-        pcdrom_drive = cdda_identify (cdng_cfg.device, 1, NULL);
-        if (pcdrom_drive == NULL)
-        {
-            cdaudio_error ("Failed to open CD device \"%s\".", cdng_cfg.device);
-            return;
-        }
+        if (! (pcdrom_drive = cdda_identify (device, 1, NULL)))
+            cdaudio_error ("Failed to open CD device %s.", device);
     }
     else
     {
-        char **ppcd_drives =
-            cdio_get_devices_with_cap (NULL, CDIO_FS_AUDIO, false);
+        char * * ppcd_drives = cdio_get_devices_with_cap (NULL, CDIO_FS_AUDIO, FALSE);
 
-        if (ppcd_drives != NULL && *ppcd_drives != NULL)
-        {                       /* we have at least one audio capable cd drive */
-            pcdrom_drive = cdda_identify (*ppcd_drives, 1, NULL);
-            if (pcdrom_drive == NULL)
-            {
-                cdaudio_error ("Failed to open CD.");
-                return;
-            }
-            AUDDBG ("found cd drive \"%s\" with audio capable media\n",
-                   *ppcd_drives);
+        if (ppcd_drives && ppcd_drives[0])
+        {
+            if (! (pcdrom_drive = cdda_identify (ppcd_drives[0], 1, NULL)))
+                cdaudio_error ("Failed to open CD device %s.", ppcd_drives[0]);
         }
         else
-        {
             cdaudio_error ("No audio capable CD drive found.");
-            return;
-        }
 
-        if (ppcd_drives != NULL && *ppcd_drives != NULL)
+        if (ppcd_drives)
             cdio_free_device_list (ppcd_drives);
     }
+
+    free (device);
 }
 
 /* mutex must be locked */
@@ -650,7 +622,9 @@ static void scan_cd (void)
         goto ERR;
     }
 
-    if (cdda_speed_set (pcdrom_drive, cdng_cfg.disc_speed) != DRIVER_OP_SUCCESS)
+    int speed = aud_get_int ("CDDA", "disc_speed");
+    speed = CLAMP (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
+    if (cdda_speed_set (pcdrom_drive, speed) != DRIVER_OP_SUCCESS)
         warn ("Cannot set drive speed.\n");
 
     firsttrackno = cdio_get_first_track_num (pcdrom_drive->p_cdio);
@@ -692,7 +666,7 @@ static void scan_cd (void)
     }
 
     /* get trackinfo[0] cdtext information (the disc) */
-    if (cdng_cfg.use_cdtext)
+    if (aud_get_bool ("CDDA", "use_cdtext"))
     {
         AUDDBG ("getting cd-text information for disc\n");
         cdtext_t *pcdtext = cdio_get_cdtext (pcdrom_drive->p_cdio, 0);
@@ -717,7 +691,7 @@ static void scan_cd (void)
     for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
     {
         cdtext_t *pcdtext = NULL;
-        if (cdng_cfg.use_cdtext)
+        if (aud_get_bool ("CDDA", "use_cdtext"))
         {
             AUDDBG ("getting cd-text information for track %d\n", trackno);
             pcdtext = cdio_get_cdtext (pcdrom_drive->p_cdio, trackno);
@@ -755,7 +729,7 @@ static void scan_cd (void)
         cddb_track_t *pcddb_track = NULL;
         lba_t lba;              /* Logical Block Address */
 
-        if (cdng_cfg.use_cddb)
+        if (aud_get_bool ("CDDA", "use_cddb"))
         {
             pcddb_conn = cddb_new ();
             if (pcddb_conn == NULL)
@@ -767,32 +741,45 @@ static void scan_cd (void)
                 cddb_cache_enable (pcddb_conn);
                 // cddb_cache_set_dir(pcddb_conn, "~/.cddbslave");
 
-                if (cdng_cfg.use_proxy)
+                char * server = aud_get_string ("CDDA", "cddbserver");
+                char * path = aud_get_string ("CDDA", "cddbpath");
+                int port = aud_get_int ("CDDA", "cddbport");
+
+                if (aud_get_bool (NULL, "use_proxy"))
                 {
+                    char * prhost = aud_get_string (NULL, "proxy_host");
+                    int prport = aud_get_int (NULL, "proxy_port");
+                    char * pruser = aud_get_string (NULL, "proxy_user");
+                    char * prpass = aud_get_string (NULL, "proxy_pass");
+
                     cddb_http_proxy_enable (pcddb_conn);
-                    cddb_set_http_proxy_server_name (pcddb_conn,
-                                                     cdng_cfg.proxy_host);
-                    cddb_set_http_proxy_server_port (pcddb_conn,
-                                                     cdng_cfg.proxy_port);
-                    cddb_set_http_proxy_username (pcddb_conn,
-                                                  cdng_cfg.proxy_username);
-                    cddb_set_http_proxy_password (pcddb_conn,
-                                                  cdng_cfg.proxy_password);
-                    cddb_set_server_name (pcddb_conn, cdng_cfg.cddb_server);
-                    cddb_set_server_port (pcddb_conn, cdng_cfg.cddb_port);
+                    cddb_set_http_proxy_server_name (pcddb_conn, prhost);
+                    cddb_set_http_proxy_server_port (pcddb_conn, prport);
+                    cddb_set_http_proxy_username (pcddb_conn, pruser);
+                    cddb_set_http_proxy_password (pcddb_conn, prpass);
+
+                    free (prhost);
+                    free (pruser);
+                    free (prpass);
+
+                    cddb_set_server_name (pcddb_conn, server);
+                    cddb_set_server_port (pcddb_conn, port);
                 }
-                else if (cdng_cfg.cddb_http)
+                else if (aud_get_bool ("CDDA", "cddbhttp"))
                 {
                     cddb_http_enable (pcddb_conn);
-                    cddb_set_server_name (pcddb_conn, cdng_cfg.cddb_server);
-                    cddb_set_server_port (pcddb_conn, cdng_cfg.cddb_port);
-                    cddb_set_http_path_query (pcddb_conn, cdng_cfg.cddb_path);
+                    cddb_set_server_name (pcddb_conn, server);
+                    cddb_set_server_port (pcddb_conn, port);
+                    cddb_set_http_path_query (pcddb_conn, path);
                 }
                 else
                 {
-                    cddb_set_server_name (pcddb_conn, cdng_cfg.cddb_server);
-                    cddb_set_server_port (pcddb_conn, cdng_cfg.cddb_port);
+                    cddb_set_server_name (pcddb_conn, server);
+                    cddb_set_server_port (pcddb_conn, port);
                 }
+
+                free (server);
+                free (path);
 
                 pcddb_disc = cddb_disc_new ();
 
