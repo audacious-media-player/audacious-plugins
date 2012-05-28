@@ -155,7 +155,5 @@ AUD_EFFECT_PLUGIN
     .process = compressor_process,
     .flush = compressor_flush,
     .finish = compressor_finish,
-    .decoder_to_output_time = compressor_decoder_to_output_time,
-    .output_to_decoder_time = compressor_output_to_decoder_time,
-    .preserves_format = TRUE,
+    .preserves_format = TRUE
 )

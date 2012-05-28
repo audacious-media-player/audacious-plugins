@@ -230,13 +230,3 @@ void compressor_finish (float * * data, int * samples)
 {
     do_compress (data, samples, 1);
 }
-
-int compressor_decoder_to_output_time (int time)
-{
-    return time;
-}
-
-int compressor_output_to_decoder_time (int time)
-{
-    return time;
-}

@@ -46,7 +46,6 @@ void sndstretch_config         (void);
 
 static void sndstretch_start (gint * channels, gint * rate);
 static void sndstretch_process (gfloat * * data, gint * samples);
-static void sndstretch_flush ();
 static void sndstretch_finish (gfloat * * data, gint * samples);
 static gint sndstretch_decoder_to_output_time (gint time);
 static gint sndstretch_output_to_decoder_time (gint time);
@@ -59,7 +58,6 @@ AUD_EFFECT_PLUGIN
 	.configure = sndstretch_config,
     .start = sndstretch_start,
     .process = sndstretch_process,
-    .flush = sndstretch_flush,
     .finish = sndstretch_finish,
     .decoder_to_output_time = sndstretch_decoder_to_output_time,
     .output_to_decoder_time = sndstretch_output_to_decoder_time,
@@ -457,10 +455,6 @@ static void sndstretch_process (gfloat * * data, gint * samples)
 
     * data = reconverted;
     * samples = new_samples;
-}
-
-static void sndstretch_flush ()
-{
 }
 
 static void sndstretch_finish (gfloat * * data, gint * samples)

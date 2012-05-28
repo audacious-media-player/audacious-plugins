@@ -130,13 +130,3 @@ void resample_finish (float * * data, int * samples)
     do_resample (data, samples, 1);
     resample_flush ();
 }
-
-int resample_decoder_to_output_time (int time)
-{
-    return time;
-}
-
-int resample_output_to_decoder_time (int time)
-{
-    return time;
-}

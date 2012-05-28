@@ -221,8 +221,6 @@ AUD_EFFECT_PLUGIN
     .process = resample_process,
     .flush = resample_flush,
     .finish = resample_finish,
-    .decoder_to_output_time = resample_decoder_to_output_time,
-    .output_to_decoder_time = resample_output_to_decoder_time,
 
-    .order = 2, /* must be before crossfade */
+    .order = 2 /* must be before crossfade */
 )

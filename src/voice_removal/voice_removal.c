@@ -56,28 +56,10 @@ static void voice_finish(gfloat **d, gint *samples)
 	voice_process(d, samples);
 }
 
-static void voice_flush(void)
-{
-
-}
-
-static gint voice_decoder_to_output_time(gint time)
-{
-	return time;
-}
-
-static gint voice_output_to_decoder_time(gint time)
-{
-	return time;
-}
-
 AUD_EFFECT_PLUGIN
 (
 	.name = "Voice Removal",
 	.start = voice_start,
 	.process = voice_process,
-	.finish = voice_finish,
-	.flush = voice_flush,
-	.decoder_to_output_time = voice_decoder_to_output_time,
-	.output_to_decoder_time = voice_output_to_decoder_time
+	.finish = voice_finish
 )

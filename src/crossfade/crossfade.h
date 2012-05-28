@@ -30,5 +30,3 @@ void crossfade_start (int * channels, int * rate);
 void crossfade_process (float * * data, int * samples);
 void crossfade_flush (void);
 void crossfade_finish (float * * data, int * samples);
-int crossfade_decoder_to_output_time (int time);
-int crossfade_output_to_decoder_time (int time);

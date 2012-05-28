@@ -10,7 +10,6 @@
 
 #include "echo.h"
 
-
 static gboolean init (void);
 static void cleanup(void);
 
@@ -70,21 +69,6 @@ static void echo_start(gint *channels, gint *rate)
 	}
 }
 
-static void echo_flush(void)
-{
-
-}
-
-static gint echo_decoder_to_output_time(gint time)
-{
-	return time;
-}
-
-static gint echo_output_to_decoder_time(gint time)
-{
-	return time;
-}
-
 static void echo_process(gfloat **d, gint *samples)
 {
 	gfloat in, out, buf;
@@ -127,8 +111,5 @@ AUD_EFFECT_PLUGIN
 	.configure = echo_configure,
 	.start = echo_start,
 	.process = echo_process,
-	.flush = echo_flush,
-	.finish = echo_finish,
-	.decoder_to_output_time = echo_decoder_to_output_time,
-	.output_to_decoder_time = echo_output_to_decoder_time
+	.finish = echo_finish
 )

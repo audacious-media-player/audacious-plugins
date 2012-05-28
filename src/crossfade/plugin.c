@@ -157,8 +157,6 @@ AUD_EFFECT_PLUGIN
     .process = crossfade_process,
     .flush = crossfade_flush,
     .finish = crossfade_finish,
-    .decoder_to_output_time = crossfade_decoder_to_output_time,
-    .output_to_decoder_time = crossfade_output_to_decoder_time,
 
-    .order = 5, /* must be after resample */
+    .order = 5 /* must be after resample */
 )

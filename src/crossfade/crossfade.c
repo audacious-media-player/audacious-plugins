@@ -249,13 +249,3 @@ void crossfade_finish (float * * data, int * samples)
         state = STATE_BETWEEN;
     }
 }
-
-int crossfade_decoder_to_output_time (int time)
-{
-    return time;
-}
-
-int crossfade_output_to_decoder_time (int time)
-{
-    return time;
-}

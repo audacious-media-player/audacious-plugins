@@ -33,8 +33,6 @@ static void cryst_start (int * channels, int * rate);
 static void cryst_process (float * * data, int * samples);
 static void cryst_flush ();
 static void cryst_finish (float * * data, int * samples);
-static int cryst_decoder_to_output_time (int time);
-static int cryst_output_to_decoder_time (int time);
 
 static const char * const cryst_defaults[] = {
  "intensity", "1",
@@ -61,9 +59,7 @@ AUD_EFFECT_PLUGIN
     .process = cryst_process,
     .flush = cryst_flush,
     .finish = cryst_finish,
-    .decoder_to_output_time = cryst_decoder_to_output_time,
-    .output_to_decoder_time = cryst_output_to_decoder_time,
-    .preserves_format = TRUE,
+    .preserves_format = TRUE
 )
 
 static int cryst_channels;
@@ -109,14 +105,4 @@ static void cryst_flush ()
 static void cryst_finish (float * * data, int * samples)
 {
     cryst_process (data, samples);
-}
-
-static int cryst_decoder_to_output_time (int time)
-{
-    return time;
-}
-
-static int cryst_output_to_decoder_time (int time)
-{
-    return time;
 }

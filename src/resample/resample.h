@@ -39,5 +39,3 @@ void resample_start (int * channels, int * rate);
 void resample_process (float * * data, int * samples);
 void resample_flush (void);
 void resample_finish (float * * data, int * samples);
-int resample_decoder_to_output_time (int time);
-int resample_output_to_decoder_time (int time);

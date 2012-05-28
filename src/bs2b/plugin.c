@@ -84,23 +84,9 @@ static void bs2b_process (gfloat * * data, gint * samples)
     bs2b_cross_feed_f (bs2b, * data, (* samples) / 2);
 }
 
-static void bs2b_flush (void)
-{
-}
-
 static void bs2b_finish (gfloat * * data, gint * samples)
 {
     bs2b_process (data, samples);
-}
-
-static gint bs2b_decoder_to_output_time (gint time)
-{
-    return time;
-}
-
-static gint bs2b_output_to_decoder_time (gint time)
-{
-    return time;
 }
 
 static void feed_value_changed(GtkRange *range, gpointer data)
@@ -216,9 +202,6 @@ AUD_EFFECT_PLUGIN
     .configure = configure,
     .start = bs2b_start,
     .process = bs2b_process,
-    .flush = bs2b_flush,
     .finish = bs2b_finish,
-    .decoder_to_output_time = bs2b_decoder_to_output_time,
-    .output_to_decoder_time = bs2b_output_to_decoder_time,
-    .preserves_format = TRUE,
+    .preserves_format = TRUE
 )

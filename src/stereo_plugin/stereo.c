@@ -17,10 +17,7 @@ static void configure(void);
 
 static void stereo_start (gint * channels, gint * rate);
 static void stereo_process (gfloat * * data, gint * samples);
-static void stereo_flush ();
 static void stereo_finish (gfloat * * data, gint * samples);
-static gint stereo_decoder_to_output_time (gint time);
-static gint stereo_output_to_decoder_time (gint time);
 
 AUD_EFFECT_PLUGIN
 (
@@ -30,11 +27,8 @@ AUD_EFFECT_PLUGIN
     .configure = configure,
     .start = stereo_start,
     .process = stereo_process,
-    .flush = stereo_flush,
     .finish = stereo_finish,
-    .decoder_to_output_time = stereo_decoder_to_output_time,
-    .output_to_decoder_time = stereo_output_to_decoder_time,
-    .preserves_format = TRUE,
+    .preserves_format = TRUE
 )
 
 static const gchar * const stereo_defaults[] = {
@@ -164,21 +158,7 @@ static void stereo_process (gfloat * * data, gint * samples)
     }
 }
 
-static void stereo_flush ()
-{
-}
-
 static void stereo_finish (gfloat * * data, gint * samples)
 {
     stereo_process (data, samples);
-}
-
-static gint stereo_decoder_to_output_time (gint time)
-{
-    return time;
-}
-
-static gint stereo_output_to_decoder_time (gint time)
-{
-    return time;
 }

@@ -28,5 +28,3 @@ void compressor_start (int * channels, int * rate);
 void compressor_process (float * * data, int * samples);
 void compressor_flush (void);
 void compressor_finish (float * * data, int * samples);
-int compressor_decoder_to_output_time (int time);
-int compressor_output_to_decoder_time (int time);
