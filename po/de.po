@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-05-30 17:12+0200\n"
-"PO-Revision-Date: 2012-05-30 17:39+0100\n"
+"POT-Creation-Date: 2012-05-30 17:58+0200\n"
+"PO-Revision-Date: 2012-05-30 18:03+0100\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -300,8 +300,7 @@ msgstr ""
 msgid "Help"
 msgstr "Hilfe"
 
-#: src/alarm/interface.c:1221 src/echo_plugin/gui.c:124
-#: src/jack/configure.c:148 src/null/null.c:107 src/stereo_plugin/stereo.c:118
+#: src/alarm/interface.c:1221 src/jack/configure.c:148 src/null/null.c:107
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -942,7 +941,6 @@ msgid "<b>Device</b>"
 msgstr "<b>Gerät</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:109
-
 msgid "Read speed:"
 msgstr "Lesegeschwindigkeit:"
 
@@ -1143,10 +1141,10 @@ msgstr ""
 "Bitrate zu resamplen."
 
 #: src/crystalizer/crystalizer.c:42
-msgid "<b>Effect</b>"
-msgstr "<b>Effect</b>"
+msgid "<b>Crystalizer</b>"
+msgstr "<b>Crystalizer</b>"
 
-#: src/crystalizer/crystalizer.c:43
+#: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
 msgid "Intensity:"
 msgstr "Intensität:"
 
@@ -1154,7 +1152,31 @@ msgstr "Intensität:"
 msgid "Crystalizer Settings"
 msgstr "Crystalizer Einstellungen"
 
-#: src/echo_plugin/gui.c:14
+#: src/echo_plugin/echo.c:26
+msgid "<b>Echo</b>"
+msgstr "<b>Echo</b>"
+
+#: src/echo_plugin/echo.c:27
+msgid "Delay:"
+msgstr "Verzögerung:"
+
+#: src/echo_plugin/echo.c:29
+msgid "ms"
+msgstr "ms"
+
+#: src/echo_plugin/echo.c:30
+msgid "Feedback:"
+msgstr "Rückkopplung:"
+
+#: src/echo_plugin/echo.c:33
+msgid "Volume:"
+msgstr "Lautstärke:"
+
+#: src/echo_plugin/echo.c:39
+msgid "Echo Settings"
+msgstr "Echo Einstellungen"
+
+#: src/echo_plugin/gui.c:8
 msgid ""
 "Echo Plugin\n"
 "By Johan Levin 1999.\n"
@@ -1166,34 +1188,9 @@ msgstr ""
 "\n"
 "Surround Echo von Carl van Schaik 1999"
 
-#: src/echo_plugin/gui.c:26
+#: src/echo_plugin/gui.c:17
 msgid "About Echo Plugin"
 msgstr "Über Echo-Plugin"
-
-#: src/echo_plugin/gui.c:66
-msgid "Configure Echo"
-msgstr "Echo-Plugin konfigurieren"
-
-#: src/echo_plugin/gui.c:82
-msgid "Delay: (ms)"
-msgstr "Verzögerung: (ms)"
-
-#: src/echo_plugin/gui.c:87
-msgid "Feedback: (%)"
-msgstr "Rückkopplung: (%)"
-
-#: src/echo_plugin/gui.c:92
-msgid "Volume: (%)"
-msgstr "Lautstärke: (%)"
-
-#: src/echo_plugin/gui.c:117 src/jack/configure.c:141 src/null/null.c:106
-#: src/stereo_plugin/stereo.c:111
-msgid "Ok"
-msgstr "OK"
-
-#: src/echo_plugin/gui.c:130 src/stereo_plugin/stereo.c:124
-msgid "Apply"
-msgstr "Übernehmen"
 
 #: src/ffaudio/ffaudio-core.c:718
 #, c-format
@@ -2009,6 +2006,10 @@ msgstr "Verbindungs-Modus:"
 msgid "Enable debug printing"
 msgstr "Debug-Ausgabe aktivieren"
 
+#: src/jack/configure.c:141 src/null/null.c:106
+msgid "Ok"
+msgstr "OK"
+
 #: src/jack/jack.c:435
 msgid "About JACK Output Plugin"
 msgstr "Über JACK Output Plugin"
@@ -2379,6 +2380,7 @@ msgstr ""
 " aus %s von %s"
 
 #: src/search-tool/search-tool.c:630
+#, c-format
 msgid "%d album"
 msgid_plural "%d albums"
 msgstr[0] "%d Album"
@@ -3503,7 +3505,15 @@ msgstr "In den Informationsbereich beenden (System-Tray)"
 msgid "Advance in playlist when scrolling upward"
 msgstr "Durch Hochscrollen in Wiedergabeliste fortschreiten"
 
-#: src/stereo_plugin/stereo.c:38
+#: src/stereo_plugin/stereo.c:27
+msgid "<b>Extra Stereo</b>"
+msgstr "<b>Extra Stereo</b>"
+
+#: src/stereo_plugin/stereo.c:34
+msgid "Extra Stereo Settings"
+msgstr "Extra Stereo Einstellungen"
+
+#: src/stereo_plugin/stereo.c:50
 msgid ""
 "Extra Stereo Plugin\n"
 "\n"
@@ -3513,17 +3523,9 @@ msgstr ""
 "\n"
 "Von Johan Levin 1999."
 
-#: src/stereo_plugin/stereo.c:57
+#: src/stereo_plugin/stereo.c:64
 msgid "About Extra Stereo Plugin"
 msgstr "Über das Extra Stereo Plugin"
-
-#: src/stereo_plugin/stereo.c:88
-msgid "Configure Extra Stereo"
-msgstr "Extra Stereo konfigurieren"
-
-#: src/stereo_plugin/stereo.c:90
-msgid "Effect intensity:"
-msgstr "Effektstärke:"
 
 #: src/tonegen/tonegen.c:49
 msgid "About Tone Generator"
