@@ -11,7 +11,6 @@ src/amidi-plug/i_configure-alsa.c
 src/amidi-plug/i_configure-ap.c
 src/amidi-plug/i_configure.c
 src/amidi-plug/i_configure-fluidsynth.c
-src/amidi-plug/i_configure-timidity.c
 src/amidi-plug/i_fileinfo.c
 src/amidi-plug/i_utils.c
 src/aosd/aosd_style.c
@@ -20,7 +19,6 @@ src/aosd/aosd_ui.c
 src/blur_scope/config.c
 src/bs2b/plugin.c
 src/cdaudio-ng/cdaudio-ng.c
-src/cdaudio-ng/configure.c
 src/cd-menu-items/cd-menu-items.c
 src/compressor/plugin.c
 src/console/abstract_file.cxx
@@ -54,12 +52,14 @@ src/console/Vgm_Emu.cxx
 src/console/Ym2612_Emu.cxx
 src/crossfade/plugin.c
 src/crystalizer/crystalizer.c
+src/echo_plugin/echo.c
 src/echo_plugin/gui.c
 src/ffaudio/ffaudio-core.c
 src/filewriter/filewriter.c
 src/filewriter/mp3.c
 src/filewriter/vorbis.c
 src/flacng/plugin.c
+src/gio/gtk.c
 src/gnomeshortcuts/gnomeshortcuts.c
 src/gtkui/columns.c
 src/gtkui/layout.c
@@ -72,6 +72,8 @@ src/jack/bio2jack.c
 src/jack/configure.c
 src/jack/jack.c
 src/ladspa/plugin.c
+src/lirc/configure.c
+src/lirc/lirc.c
 src/lyricwiki/lyricwiki.c
 src/metronom/metronom.c
 src/mixer/plugin.c
@@ -82,8 +84,6 @@ src/null/null.c
 src/oss4/configure.c
 src/oss4/plugin.c
 src/oss4/utils.c
-src/OSS/configure.c
-src/OSS/OSS.c
 src/pulse_audio/pulse_audio.c
 src/resample/plugin.c
 src/scrobbler/configure.c
