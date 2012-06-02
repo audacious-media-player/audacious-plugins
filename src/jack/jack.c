@@ -424,28 +424,18 @@ static void jack_pause (gboolean p)
     JACK_SetState(driver, PLAYING);
 }
 
-
-static void jack_about(void)
-{
-    static GtkWidget *aboutbox = NULL;
-
-    if (aboutbox == NULL)
-    {
-        audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
-         _("About JACK Output Plugin"),
-         _("Based on xmms-jack, by Chris Morgan:\n"
-           "http://xmms-jack.sourceforge.net/\n\n"
-           "Ported to Audacious by Giacomo Lozito."));
-    }
-}
+static const char jack_about[] =
+ "Based on xmms-jack, by Chris Morgan:\n"
+ "http://xmms-jack.sourceforge.net/\n\n"
+ "Ported to Audacious by Giacomo Lozito";
 
 AUD_OUTPUT_PLUGIN
 (
     .name = N_("JACK Output"),
     .domain = PACKAGE,
+    .about_text = jack_about,
     .init = jack_init,
     .cleanup = jack_cleanup,
-    .about = jack_about,
 #if 0
     .configure = jack_configure,
 #endif
