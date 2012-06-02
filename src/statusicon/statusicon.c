@@ -368,24 +368,6 @@ void si_cleanup(void)
     si_cfg_save();
 }
 
-void si_about(void)
-{
-    static GtkWidget *about_dlg = NULL;
-
-    if (about_dlg != NULL)
-    {
-        gtk_window_present(GTK_WINDOW(about_dlg));
-        return;
-    }
-
-    audgui_simple_message(&about_dlg, GTK_MESSAGE_INFO, _("About Status Icon Plugin"),
-                        _("Status Icon Plugin\n\n"
-                          "Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
-                          "Copyright 2010 Michał Lipski <tallica@o2.pl>\n\n"
-                          "This plugin provides a status icon, placed in\n"
-                          "the system tray area of the window manager.\n"));
-}
-
 static GtkWidget *prefs_disable_popup_chkbtn;
 static GtkWidget *prefs_close_to_tray_chkbtn;
 static GtkWidget * reverse_scroll_toggle;
@@ -545,12 +527,19 @@ void si_config(void)
     gtk_widget_show_all(prefs_win);
 }
 
+static const char si_about[] =
+ "Status Icon Plugin\n\n"
+ "Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+ "Copyright 2010 Michał Lipski <tallica@o2.pl>\n\n"
+ "This plugin provides a status icon, placed in\n"
+ "the system tray area of the window manager.";
+
 AUD_GENERAL_PLUGIN
 (
     .name = N_("Status Icon"),
     .domain = PACKAGE,
+    .about_text = si_about,
     .init = si_init,
     .cleanup = si_cleanup,
-    .about = si_about,
     .configure = si_config
 )
