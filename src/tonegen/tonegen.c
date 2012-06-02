@@ -1,5 +1,5 @@
 /*
- *  Copyright 2000,2001 Haavard Kvaalen <havardk@sol.no>
+ *  Copyright 2000, 2001 Håvard Kvålen <havardk@sol.no>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -40,19 +40,6 @@
 #endif
 
 static gboolean stop_flag = FALSE;
-
-static void tone_about (void)
-{
-    static GtkWidget * aboutbox = NULL;
-
-    audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO,
-     _("About Tone Generator"),
-     /* I18N: UTF-8 Translation: "Haavard Kvaalen" -> "H\303\245vard Kv\303\245len" */
-     _("Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
-     "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n\n"
-     "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
-     "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"));
-}
 
 static gboolean tone_is_our_fd(const gchar *filename, VFSFile *fd)
 {
@@ -211,14 +198,20 @@ static Tuple *tone_probe_for_tuple(const gchar *filename, VFSFile *fd)
     return tuple;
 }
 
+static const char tone_about[] =
+ "Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
+ "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n\n"
+ "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+ "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone";
+
 static const gchar * const schemes[] = {"tone", NULL};
 
 AUD_INPUT_PLUGIN
 (
     .name = N_("Tone Generator"),
     .domain = PACKAGE,
+    .about_text = tone_about,
     .schemes = schemes,
-    .about = tone_about,
     .is_our_file_from_vfs = tone_is_our_fd,
     .play = tone_play,
     .stop = tone_stop,
