@@ -28,7 +28,8 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "config.h"
-#include "libnotify-aosd_common.h"
+#include "libnotify-aosd_event.h"
+#include "libnotify-aosd_osd.h"
 
 static gchar * last_title = NULL, * last_message = NULL;
 

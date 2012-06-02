@@ -20,7 +20,8 @@
 #include <glib.h>
 #include <audacious/debug.h>
 #include <libnotify/notify.h>
-#include "libnotify-aosd_common.h"
+
+#include "libnotify-aosd_osd.h"
 
 #ifndef NOTIFY_CHECK_VERSION
 #define NOTIFY_CHECK_VERSION(x,y,z) 0
@@ -30,7 +31,7 @@ NotifyNotification *notification = NULL;
 
 gboolean osd_init() {
 	notification = NULL;
-	return notify_init(PLUGIN_NAME);
+	return notify_init ("Audacious");
 }
 
 void osd_uninit (void)

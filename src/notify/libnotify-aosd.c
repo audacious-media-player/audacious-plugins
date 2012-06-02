@@ -25,14 +25,33 @@
 #include <audacious/debug.h>
 
 #include "config.h"
-#include "libnotify-aosd_common.h"
+#include "libnotify-aosd_event.h"
+#include "libnotify-aosd_osd.h"
+
+gboolean plugin_init (void);
+void plugin_cleanup (void);
+
+static const char plugin_about[] =
+ "Based on libnotify-aosd by Maximilian Bogner:\n"
+ "http://www.mbogner.de/projects/libnotify-aosd/\n\n"
+ "Copyright (C) 2010 Maximilian Bogner\n"
+ "Copyright (C) 2011 John Lindgren\n\n"
+ "This plugin is free software: you can redistribute it and/or modify "
+ "it under the terms of the GNU General Public License as published by "
+ "the Free Software Foundation, version 3 of the License.\n\n"
+ "This plugin is distributed in the hope that it will be useful, "
+ "but WITHOUT ANY WARRANTY; without even the implied warranty of "
+ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
+ "GNU General Public License for more details.\n\n"
+ "You should have received a copy of the GNU General Public License "
+ "along with this program.  If not, see <http://www.gnu.org/licenses/>.";
 
 AUD_GENERAL_PLUGIN
 (
     .name = N_("Desktop Notifications"),
     .domain = PACKAGE,
+    .about_text = plugin_about,
     .init = plugin_init,
-    .about = plugin_about,
     .cleanup = plugin_cleanup
 )
 
@@ -60,16 +79,4 @@ void plugin_cleanup() {
 		plugin_active = 0;
 		AUDDBG("done!\n");
 	}
-}
-
-void plugin_about() {
-	const gchar *authors[] = {PLUGIN_AUTHORS, NULL};
-
-	gtk_show_about_dialog(NULL, "program-name", PLUGIN_NAME,
-				"version", PLUGIN_VERSION,
-				"license", PLUGIN_LICENSE,
-				"wrap-license", TRUE,
-				"copyright", PLUGIN_COPYRIGHT,
-				"authors", authors,
-				"website", PLUGIN_WEBSITE, NULL);
 }
