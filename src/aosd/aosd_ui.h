@@ -28,8 +28,6 @@
 #include "aosd_cfg.h"
 #include <glib.h>
 
-
 void aosd_ui_configure ( aosd_cfg_t * );
-void aosd_ui_about ( void );
 
 #endif /* !_I_AOSD_UI_H */

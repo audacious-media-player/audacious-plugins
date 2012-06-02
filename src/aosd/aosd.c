@@ -25,12 +25,19 @@
 #include "aosd_trigger.h"
 #include <audacious/i18n.h>
 
+static const char aosd_about[] =
+ "Audacious OSD " AOSD_VERSION_PLUGIN "\n"
+ "http://www.develia.org/projects.php?p=audacious#aosd\n\n"
+ "Written by Giacomo Lozito <james@develia.org>\n\n"
+ "Based in part on Evan Martin's Ghosd library:\n"
+ "http://neugierig.org/software/ghosd/";
+
 AUD_GENERAL_PLUGIN
 (
     .name = N_("AOSD (On-Screen Display)"),
     .domain = PACKAGE,
+    .about_text = aosd_about,
     .init = aosd_init,
-    .about = aosd_about,
     .configure = aosd_configure,
     .cleanup = aosd_cleanup
 )
@@ -92,13 +99,5 @@ aosd_configure ( void )
   aosd_ui_configure( cfg );
   /* delete configuration object */
   aosd_cfg_delete( cfg );
-  return;
-}
-
-
-void
-aosd_about ( void )
-{
-  aosd_ui_about();
   return;
 }

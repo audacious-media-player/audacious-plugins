@@ -31,6 +31,5 @@
 gboolean aosd_init (void);
 void aosd_cleanup ( void );
 void aosd_configure ( void );
-void aosd_about ( void );
 
 #endif /* !_I_AOSD_H */
