@@ -38,7 +38,6 @@ void sdlout_flush (int time);
 void sdlout_set_written_time (int time);
 
 /* plugin.c */
-void sdlout_about (void);
 void sdlout_error (const char * format, ...);
 
 #endif
