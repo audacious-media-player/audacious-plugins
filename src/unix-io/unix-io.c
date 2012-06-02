@@ -28,8 +28,11 @@
 
 #include <glib.h>
 
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+
+#include "config.h"
 
 /* in gtk.c */
 void unix_error (const gchar * format, ...);
@@ -264,7 +267,8 @@ static VFSConstructor constructor = {
 
 AUD_TRANSPORT_PLUGIN
 (
- .name = "File I/O",
+ .name = N_("File I/O Plugin"),
+ .domain = PACKAGE,
  .about = unix_about,
  .schemes = unix_schemes,
  .vtable = & constructor

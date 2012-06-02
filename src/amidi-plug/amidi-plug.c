@@ -36,7 +36,8 @@ static Tuple * amidiplug_get_song_tuple (const gchar * filename_uri, VFSFile *
 
 AUD_INPUT_PLUGIN
 (
-    .name = "AMIDI-Plug (MIDI Player)",
+    .name = N_("AMIDI-Plug (MIDI Player)"),
+    .domain = PACKAGE,
     .init = amidiplug_init,
     .about = amidiplug_aboutbox,
     .configure = amidiplug_configure,

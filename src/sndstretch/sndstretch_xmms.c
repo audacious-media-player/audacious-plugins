@@ -52,7 +52,8 @@ static gint sndstretch_output_to_decoder_time (gint time);
 
 AUD_EFFECT_PLUGIN
 (
-	.name = "SndStretch",
+	.name = N_("SndStretch"),
+	.domain = PACKAGE,
 	.init = sndstretch_init,
 	.about = sndstretch_about,
 	.configure = sndstretch_config,

@@ -838,7 +838,8 @@ static void alarm_cleanup(void)
 
 AUD_GENERAL_PLUGIN
 (
-     .name = "Alarm",
+     .name = N_("Alarm"),
+     .domain = PACKAGE,
      .init = alarm_init,
      .about = alarm_about,
      .configure = alarm_configure,

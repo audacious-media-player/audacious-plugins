@@ -441,7 +441,8 @@ static void jack_about(void)
 
 AUD_OUTPUT_PLUGIN
 (
-    .name = "JACK",
+    .name = N_("JACK Output"),
+    .domain = PACKAGE,
     .init = jack_init,
     .cleanup = jack_cleanup,
     .about = jack_about,

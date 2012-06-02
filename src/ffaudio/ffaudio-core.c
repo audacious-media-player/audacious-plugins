@@ -743,6 +743,8 @@ ffaudio_about(void)
 
 AUD_INPUT_PLUGIN
 (
+    .name = N_("FFmpeg Plugin"),
+    .domain = PACKAGE,
     .init = ffaudio_init,
     .cleanup = ffaudio_cleanup,
     .is_our_file_from_vfs = ffaudio_probe,
@@ -752,7 +754,6 @@ AUD_INPUT_PLUGIN
     .pause = ffaudio_pause,
     .mseek = ffaudio_seek,
     .about = ffaudio_about,
-    .name = "FFmpeg Support",
     .extensions = ffaudio_fmts,
     .update_song_tuple = ffaudio_write_tag,
 

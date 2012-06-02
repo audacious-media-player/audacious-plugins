@@ -122,7 +122,7 @@ static const char oss_about[] =
 
 AUD_OUTPUT_PLUGIN
 (
-    .name = "OSS4",
+    .name = N_("OSS4 Output"),
     .domain = PACKAGE,
     .probe_priority = 5,
     .init = oss_init,

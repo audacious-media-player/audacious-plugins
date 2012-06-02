@@ -30,10 +30,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 #include "ao.h"
+#include "config.h"
 #include "corlett.h"
 #include "vio2sf.h"
 
@@ -298,7 +300,8 @@ static const gchar *xsf_fmts[] = { "2sf", "mini2sf", NULL };
 
 AUD_INPUT_PLUGIN
 (
-	.name = "2SF Audio",
+	.name = N_("2SF Decoder"),
+	.domain = PACKAGE,
 	.init = xsf_init,
 	.cleanup = xsf_cleanup,
 	.play = xsf_play,

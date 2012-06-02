@@ -196,7 +196,8 @@ static void configure (void)
 
 AUD_EFFECT_PLUGIN
 (
-    .name = "Bauer Stereophonic-to-Binaural",
+    .name = N_("Bauer Stereophonic-to-Binaural (BS2B)"),
+    .domain = PACKAGE,
     .init = init,
     .cleanup = cleanup,
     .configure = configure,

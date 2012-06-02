@@ -19,13 +19,18 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
+
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <audacious/debug.h>
+
+#include "config.h"
 #include "libnotify-aosd_common.h"
 
 AUD_GENERAL_PLUGIN
 (
-    .name = "Desktop Notifications",
+    .name = N_("Desktop Notifications"),
+    .domain = PACKAGE,
     .init = plugin_init,
     .about = plugin_about,
     .cleanup = plugin_cleanup

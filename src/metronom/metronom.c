@@ -264,7 +264,8 @@ static const gchar * const schemes[] = {"tact", NULL};
 
 AUD_INPUT_PLUGIN
 (
-    .name = "Tact Generator",
+    .name = N_("Tact Generator"),
+    .domain = PACKAGE,
     .schemes = schemes,
     .about = metronom_about,
     .is_our_file_from_vfs = metronom_is_our_fd,

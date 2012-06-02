@@ -227,7 +227,8 @@ static int null_get_output_time(void)
 
 AUD_OUTPUT_PLUGIN
 (
- .name = "No Output",
+ .name = N_("No Output"),
+ .domain = PACKAGE,
  .probe_priority = 0,
  .init = null_init,
  .about = null_about,

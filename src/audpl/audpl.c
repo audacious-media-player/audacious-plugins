@@ -21,8 +21,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+
+#include "config.h"
 
 typedef struct {
     VFSFile * file;
@@ -218,7 +221,8 @@ static const char * const audpl_exts[] = {"audpl", NULL};
 
 AUD_PLAYLIST_PLUGIN
 (
-    .name = "Audacious playlist format",
+    .name = N_("Audacious Playlists (audpl)"),
+    .domain = PACKAGE,
     .extensions = audpl_exts,
     .load = audpl_load,
     .save = audpl_save

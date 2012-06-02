@@ -574,9 +574,10 @@ static const gchar *mpg123_fmts[] = { "mp3", "mp2", "mp1", "bmu", NULL };
 
 AUD_INPUT_PLUGIN
 (
+	.name = N_("MPG123 Plugin"),
+	.domain = PACKAGE,
 	.init = aud_mpg123_init,
 	.cleanup = aud_mpg123_deinit,
-	.name = "MPG123",
 	.extensions = mpg123_fmts,
 	.is_our_file_from_vfs = mpg123_probe_for_fd,
 	.probe_for_tuple = mpg123_probe_for_tuple,

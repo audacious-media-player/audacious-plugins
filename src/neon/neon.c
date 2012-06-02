@@ -26,6 +26,7 @@
 
 #include "neon.h"
 
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
@@ -36,6 +37,7 @@
 #include <ne_request.h>
 #include <ne_auth.h>
 
+#include "config.h"
 #include "debug.h"
 #include "rb.h"
 #include "cert_verification.h"
@@ -1236,7 +1238,8 @@ static VFSConstructor constructor = {
 
 AUD_TRANSPORT_PLUGIN
 (
- .name = "Neon HTTP/HTTPS Support",
+ .name = N_("Neon HTTP/HTTPS Plugin"),
+ .domain = PACKAGE,
  .schemes = neon_schemes,
  .init = neon_plugin_init,
  .cleanup = neon_plugin_fini,

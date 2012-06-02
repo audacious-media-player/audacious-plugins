@@ -47,7 +47,8 @@ static void show_error_message (const gchar * text);
 
 AUD_IFACE_PLUGIN
 (
-    .name = "Winamp Classic Interface",
+    .name = N_("Winamp Classic Interface"),
+    .domain = PACKAGE,
     .init = skins_init,
     .cleanup = skins_cleanup,
     .about = skins_about,

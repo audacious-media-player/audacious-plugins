@@ -18,18 +18,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <audacious/plugin.h>
+#include <math.h>
 #include <gtk/gtk.h>
 
 #include <audacious/debug.h>
 #include <audacious/drct.h>
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
+#include <audacious/plugin.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include <math.h>
+#include "config.h"
 
 #define MAX_BANDS   (256)
 #define VIS_DELAY 2 /* delay before falloff in frames */
@@ -288,6 +290,7 @@ static /* GtkWidget * */ gpointer get_widget(void)
 
 AUD_VIS_PLUGIN
 (
-    .name = "Cairo Spectrum",
+    .name = N_("Spectrum Analyzer"),
+    .domain = PACKAGE,
     .get_widget = get_widget
 )

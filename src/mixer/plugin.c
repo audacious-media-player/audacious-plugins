@@ -120,7 +120,8 @@ static void mixer_configure (void)
 
 AUD_EFFECT_PLUGIN
 (
-    .name = "Channel Mixer",
+    .name = N_("Channel Mixer"),
+    .domain = PACKAGE,
     .init = mixer_init,
     .cleanup = mixer_cleanup,
     .about = mixer_about,

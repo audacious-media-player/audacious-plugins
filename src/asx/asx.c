@@ -21,10 +21,12 @@
 
 #include <string.h>
 
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
+#include "config.h"
 #include "util.h"
 
 static gboolean playlist_load_asx (const gchar * filename, VFSFile * file,
@@ -92,7 +94,8 @@ static const gchar * const asx_exts[] = {"asx", NULL};
 
 AUD_PLAYLIST_PLUGIN
 (
- .name = "ASXv1/ASXv2 Playlist Format",
+ .name = N_("ASXv1/ASXv2 Playlists"),
+ .domain = PACKAGE,
  .extensions = asx_exts,
  .load = playlist_load_asx,
  .save = playlist_save_asx

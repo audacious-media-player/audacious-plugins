@@ -58,7 +58,8 @@ void cd_cleanup (void)
 
 AUD_GENERAL_PLUGIN
 (
-    .name = "Audio CD Menu Items",
+    .name = N_("Audio CD Menu Items"),
+    .domain = PACKAGE,
     .enabled_by_default = TRUE,
     .init = cd_init,
     .cleanup = cd_cleanup,

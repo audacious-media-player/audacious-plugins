@@ -22,10 +22,13 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+
+#include "config.h"
 
 static void strip_char (gchar * text, gchar c)
 {
@@ -118,7 +121,8 @@ static const gchar * const m3u_exts[] = {"m3u", "m3u8", NULL};
 
 AUD_PLAYLIST_PLUGIN
 (
- .name = "M3U Playlist Format",
+ .name = N_("M3U Playlists"),
+ .domain = PACKAGE,
  .extensions = m3u_exts,
  .load = playlist_load_m3u,
  .save = playlist_save_m3u

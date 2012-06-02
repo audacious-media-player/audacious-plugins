@@ -432,7 +432,8 @@ get_widget(void)
 
 AUD_GENERAL_PLUGIN
 (
-	.name = "LyricWiki",
+	.name = N_("LyricWiki Plugin"),
+	.domain = PACKAGE,
 	.init = init,
 	.cleanup = cleanup,
 	.get_widget = get_widget,

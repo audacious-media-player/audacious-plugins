@@ -260,7 +260,8 @@ void vtx_pause(InputPlayback * playback, gboolean pause)
 
 AUD_INPUT_PLUGIN
 (
-    .name = "VTX Audio",
+    .name = N_("VTX Decoder"),
+    .domain = PACKAGE,
     .init = vtx_init,
     .cleanup = vtx_cleanup,
     .about = vtx_about,

@@ -34,11 +34,13 @@
 #include <sys/stat.h>
 
 #include <audacious/debug.h>
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
+#include "config.h"
 #include "util.h"
 
 static gboolean playlist_load_pls (const gchar * filename, VFSFile * file,
@@ -109,7 +111,8 @@ static const gchar * const pls_exts[] = {"pls", NULL};
 
 AUD_PLAYLIST_PLUGIN
 (
- .name = "PLS Playlist Format",
+ .name = N_("PLS Playlists"),
+ .domain = PACKAGE,
  .extensions = pls_exts,
  .load = playlist_load_pls,
  .save = playlist_save_pls

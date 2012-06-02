@@ -388,7 +388,8 @@ static const gchar *flac_fmts[] = { "flac", "fla", NULL };
 
 AUD_INPUT_PLUGIN
 (
-    .name = "FLAC",
+    .name = N_("FLAC Decoder"),
+    .domain = PACKAGE,
     .init = flac_init,
     .cleanup = flac_cleanup,
     .about = flac_aboutbox,

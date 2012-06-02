@@ -22,11 +22,13 @@
 #include <stdio.h>
 
 #include <audacious/drct.h>
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/hook.h>
 
+#include "config.h"
 #include "object-core.h"
 #include "object-player.h"
 
@@ -398,7 +400,8 @@ bool_t mpris2_init (void)
 
 AUD_GENERAL_PLUGIN
 (
-    .name = "MPRIS 2 Server",
+    .name = N_("MPRIS 2 Server"),
+    .domain = PACKAGE,
     .enabled_by_default = TRUE,
     .init = mpris2_init,
     .cleanup = mpris2_cleanup

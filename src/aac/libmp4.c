@@ -995,7 +995,8 @@ gboolean read_itunes_cover (const gchar * filename, VFSFile * file, void * *
 
 AUD_INPUT_PLUGIN
 (
-    .name = "MP4 AAC decoder",
+    .name = N_("AAC Decoder"),
+    .domain = PACKAGE,
     .init = mp4_init,
     .about = mp4_about,
     .play = mp4_play,

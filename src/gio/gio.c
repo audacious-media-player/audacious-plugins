@@ -24,7 +24,10 @@
 
 #include <gio/gio.h>
 
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
+
+#include "config.h"
 
 typedef struct {
     GFile * file;
@@ -312,7 +315,8 @@ static VFSConstructor constructor = {
 
 AUD_TRANSPORT_PLUGIN
 (
- .name = "GIO Support",
+ .name = N_("GIO Plugin"),
+ .domain = PACKAGE,
  .about = gio_about,
  .schemes = gio_schemes,
  .vtable = & constructor

@@ -547,7 +547,8 @@ void si_config(void)
 
 AUD_GENERAL_PLUGIN
 (
-    .name = "Status Icon",
+    .name = N_("Status Icon"),
+    .domain = PACKAGE,
     .init = si_init,
     .cleanup = si_cleanup,
     .about = si_about,

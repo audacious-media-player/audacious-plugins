@@ -96,6 +96,7 @@ static void ui_show_error (const gchar * text);
 AUD_IFACE_PLUGIN
 (
     .name = N_("GTK Interface"),
+    .domain = PACKAGE,
     .init = init,
     .cleanup = cleanup,
     .show = ui_show,

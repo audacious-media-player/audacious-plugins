@@ -21,11 +21,14 @@
 #include <glib.h>
 #include <string.h>
 
+#include <libcue/libcue.h>
+
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
-#include <libcue/libcue.h>
+#include "config.h"
 
 typedef struct {
     gint tuple_type;
@@ -157,7 +160,8 @@ static const gchar * const cue_exts[] = {"cue", NULL};
 
 AUD_PLAYLIST_PLUGIN
 (
- .name = "Cue Sheet Support",
+ .name = N_("Cue Sheet Plugin"),
+ .domain = PACKAGE,
  .extensions = cue_exts,
  .load = playlist_load_cue
 )

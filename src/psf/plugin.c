@@ -30,10 +30,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 #include "ao.h"
+#include "config.h"
 #include "corlett.h"
 #include "eng_protos.h"
 
@@ -265,7 +267,8 @@ static const gchar *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu",
 
 AUD_INPUT_PLUGIN
 (
-	.name = "OpenPSF PSF1/PSF2",
+	.name = N_("OpenPSF PSF1/PSF2 Decoder"),
+	.domain = PACKAGE,
 	.play = psf2_play,
 	.stop = psf2_Stop,
 	.pause = psf2_pause,

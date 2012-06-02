@@ -694,7 +694,8 @@ static void pulse_about(void) {
 
 AUD_OUTPUT_PLUGIN
 (
-        .name = "PulseAudio",
+        .name = N_("PulseAudio Output"),
+        .domain = PACKAGE,
         .probe_priority = 8,
         .init = pulse_init,
         .about = pulse_about,

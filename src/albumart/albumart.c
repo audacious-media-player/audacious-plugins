@@ -18,16 +18,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <audacious/plugin.h>
 #include <gtk/gtk.h>
 
 #include <audacious/debug.h>
 #include <audacious/drct.h>
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
+#include <audacious/plugin.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
+
+#include "config.h"
 
 static gint width;
 static gint height;
@@ -95,7 +98,8 @@ static void cleanup(void)
 
 AUD_GENERAL_PLUGIN
 (
-    .name = "Album Art",
+    .name = N_("Album Art"),
+    .domain = PACKAGE,
     .cleanup = cleanup,
     .get_widget = get_widget
 )

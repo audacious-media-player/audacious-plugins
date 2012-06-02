@@ -609,7 +609,8 @@ static const gchar * const mimes[] = {"application/ogg", NULL};
 
 AUD_INPUT_PLUGIN
 (
-    .name = "Ogg Vorbis",
+    .name = N_("Ogg Vorbis Decoder"),
+    .domain = PACKAGE,
     .init = vorbis_init,
     .about = vorbis_aboutbox,
     .play = vorbis_play,

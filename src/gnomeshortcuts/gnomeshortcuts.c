@@ -45,7 +45,8 @@ static DBusGProxy *media_player_keys_proxy = NULL;
 
 AUD_GENERAL_PLUGIN
 (
-	.name = "Gnome Shortcuts",
+	.name = N_("Gnome Shortcuts"),
+	.domain = PACKAGE,
 	.init = init,
 	.about = about,
 	.cleanup = cleanup

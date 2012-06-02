@@ -663,7 +663,8 @@ static void configure (void)
 
 AUD_EFFECT_PLUGIN
 (
-    .name = "LADSPA Host",
+    .name = N_("LADSPA Host"),
+    .domain = PACKAGE,
     .init = init,
     .cleanup = cleanup,
     .about = about,

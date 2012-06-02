@@ -1,5 +1,9 @@
 #include <glib.h>
+
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
+
+#include "config.h"
 
 gboolean Init (void);
 void ShowAboutBox(void);
@@ -19,7 +23,8 @@ static const gchar *fmts[] =
 
 AUD_INPUT_PLUGIN
 (
-    .name = "ModPlug",
+    .name = N_("ModPlug (Module Player)"),
+    .domain = PACKAGE,
     .init = Init,
     .play = PlayFile,
     .stop = Stop,

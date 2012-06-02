@@ -31,7 +31,8 @@
 
 AUD_OUTPUT_PLUGIN
 (
-    .name = "ALSA",
+    .name = N_("ALSA Output"),
+    .domain = PACKAGE,
     .probe_priority = 5,
     .init = alsa_init,
     .cleanup = alsa_cleanup,

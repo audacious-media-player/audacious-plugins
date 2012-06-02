@@ -32,7 +32,10 @@
 #include <libmms/mmsh.h>
 
 #include <audacious/debug.h>
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
+
+#include "config.h"
 
 #define BUFSIZE 65536
 #define BLOCKSIZE 4096
@@ -225,7 +228,8 @@ static VFSConstructor constructor = {
 
 AUD_TRANSPORT_PLUGIN
 (
- .name = "MMS Support",
+ .name = N_("MMS Plugin"),
+ .domain = PACKAGE,
  .schemes = mms_schemes,
  .vtable = & constructor
 )

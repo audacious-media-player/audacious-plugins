@@ -46,7 +46,8 @@ void mtp_cleanup ( void );
 
 AUD_GENERAL_PLUGIN
 (
-    .name = "MTP Upload",
+    .name = N_("MTP Upload Plugin"),
+    .domain = PACKAGE,
     .init = mtp_init,
     .cleanup = mtp_cleanup
 )

@@ -66,7 +66,8 @@ static gboolean loaded = FALSE;
 
 AUD_GENERAL_PLUGIN
 (
-	.name = "Global Hotkey",
+	.name = N_("Global Hotkeys"),
+	.domain = PACKAGE,
 	.init = init,
 	.about = show_about,
 	.configure = show_configure,

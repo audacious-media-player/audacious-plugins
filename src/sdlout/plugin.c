@@ -31,7 +31,8 @@
 
 AUD_OUTPUT_PLUGIN
 (
-    .name = "SDL",
+    .name = N_("SDL Output"),
+    .domain = PACKAGE,
     .init = sdlout_init,
     .cleanup = sdlout_cleanup,
     .about = sdlout_about,

@@ -26,10 +26,12 @@
 #include <gtk/gtk.h>
 #include <string.h>
 
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 #include "blur_scope.h"
+#include "config.h"
 
 #define D_WIDTH 64
 #define D_HEIGHT 32
@@ -42,7 +44,8 @@ static void /* GtkWidget */ * bscope_get_widget (void);
 
 AUD_VIS_PLUGIN
 (
-    .name = "Blur Scope",                       /* description */
+    .name = N_("Blur Scope"),
+    .domain = PACKAGE,
     .init = bscope_init,                /* init */
     .cleanup = bscope_cleanup,             /* cleanup */
     .configure = bscope_configure,           /* configure */

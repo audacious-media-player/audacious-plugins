@@ -197,7 +197,8 @@ static const gchar * const smb_schemes[] = {"smb", NULL};
 
 AUD_TRANSPORT_PLUGIN
 (
- .name = "SMB transport",
+ .name = N_("SMB Plugin"),
+ .domain = PACKAGE,
  .init = init,
  .schemes = smb_schemes,
  .vtable = & smb_const

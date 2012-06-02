@@ -212,7 +212,8 @@ static void resample_configure (void)
 
 AUD_EFFECT_PLUGIN
 (
-    .name = "Sample Rate Converter",
+    .name = N_("Sample Rate Converter"),
+    .domain = PACKAGE,
     .init = resample_init,
     .cleanup = resample_cleanup,
     .about = resample_about,

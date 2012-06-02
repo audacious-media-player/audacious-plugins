@@ -215,7 +215,8 @@ static const gchar * const schemes[] = {"tone", NULL};
 
 AUD_INPUT_PLUGIN
 (
-    .name = "Tone Generator",
+    .name = N_("Tone Generator"),
+    .domain = PACKAGE,
     .schemes = schemes,
     .about = tone_about,
     .is_our_file_from_vfs = tone_is_our_fd,

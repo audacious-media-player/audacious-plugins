@@ -20,9 +20,10 @@
 
 #include <glib.h>
 
-#include "config.h"
-
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
+
+#include "config.h"
 
 static gint voice_channels;
 
@@ -58,7 +59,8 @@ static void voice_finish(gfloat **d, gint *samples)
 
 AUD_EFFECT_PLUGIN
 (
-	.name = "Voice Removal",
+	.name = N_("Voice Removal"),
+	.domain = PACKAGE,
 	.start = voice_start,
 	.process = voice_process,
 	.finish = voice_finish

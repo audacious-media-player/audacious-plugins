@@ -27,7 +27,8 @@
 
 AUD_GENERAL_PLUGIN
 (
-    .name = "Audacious OSD",
+    .name = N_("AOSD (On-Screen Display)"),
+    .domain = PACKAGE,
     .init = aosd_init,
     .about = aosd_about,
     .configure = aosd_configure,

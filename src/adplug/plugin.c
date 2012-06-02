@@ -1,6 +1,8 @@
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
 
 #include "adplug-xmms.h"
+#include "config.h"
 
 static const gchar *fmts[] =
     { "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
@@ -11,7 +13,8 @@ static const gchar *fmts[] =
 
 AUD_INPUT_PLUGIN
 (
-  .name = "AdPlug (AdLib Sound Player)",
+  .name = N_("AdPlug (AdLib Player)"),
+  .domain = PACKAGE,
   .init = adplug_init,
   .cleanup = adplug_quit,
   .play = adplug_play,

@@ -798,7 +798,8 @@ int search_take_message (const char * code, const void * data, int size)
 
 AUD_GENERAL_PLUGIN
 (
-    .name = "Search Tool",
+    .name = N_("Search Tool"),
+    .domain = PACKAGE,
     .init = search_init,
     .cleanup = search_cleanup,
     .get_widget = search_get_widget,

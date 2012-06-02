@@ -379,7 +379,8 @@ static const gchar *wv_fmts[] = { "wv", NULL };
 
 AUD_INPUT_PLUGIN
 (
-    .name = "WavPack decoder",
+    .name = N_("WavPack Decoder"),
+    .domain = PACKAGE,
     .init = wv_init,
     .cleanup = wv_cleanup,
     .about = wv_about_box,

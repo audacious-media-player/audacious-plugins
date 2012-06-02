@@ -31,7 +31,10 @@
 #include <libxml/xpathInternals.h>
 #include <libxml/uri.h>
 
+#include <audacious/i18n.h>
 #include <audacious/plugin.h>
+
+#include "config.h"
 
 #define XSPF_ROOT_NODE_NAME "playlist"
 #define XSPF_XMLNS "http://xspf.org/ns/0/"
@@ -436,7 +439,8 @@ static const gchar * const xspf_exts[] = {"xspf", NULL};
 
 AUD_PLAYLIST_PLUGIN
 (
- .name = "XML Shareable Playlist Format",
+ .name = N_("XML Shareable Playlists (XSPF)"),
+ .domain = PACKAGE,
  .extensions = xspf_exts,
  .load = xspf_playlist_load,
  .save = xspf_playlist_save

@@ -476,7 +476,8 @@ static const gchar *sndfile_fmts[] = { "aiff", "au", "raw", "wav", NULL };
 
 AUD_INPUT_PLUGIN
 (
-    .name = "libsndfile Support",
+    .name = N_("Sndfile Plugin"),
+    .domain = PACKAGE,
     .init = plugin_init,
     .about = plugin_about,
     .play = play_start,

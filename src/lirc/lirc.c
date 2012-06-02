@@ -422,7 +422,8 @@ gboolean lirc_input_callback (GIOChannel * source,
 
 AUD_GENERAL_PLUGIN
 (
-    .name = "LIRC Plugin",
+    .name = N_("LIRC Plugin"),
+    .domain = PACKAGE,
     .init = init,
     .about = about,
     .configure = configure,

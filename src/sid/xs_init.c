@@ -28,6 +28,7 @@ static const gchar *xs_sid_fmts[] = { "sid", "psid", NULL };
 AUD_INPUT_PLUGIN
 (
     .name = XS_PACKAGE_STRING,          /* Plugin description */
+    .domain = PACKAGE,
     .init = xs_init,                    /* Initialization */
     .cleanup = xs_close,                /* Cleanup */
     .play = xs_play_file,               /* Play given file */

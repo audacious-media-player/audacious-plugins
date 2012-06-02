@@ -148,7 +148,8 @@ int crossfade_show_rate_message (void)
 
 AUD_EFFECT_PLUGIN
 (
-    .name = "Crossfade",
+    .name = N_("Crossfade Effect"),
+    .domain = PACKAGE,
     .init = crossfade_init,
     .cleanup = crossfade_cleanup,
     .about = crossfade_about,

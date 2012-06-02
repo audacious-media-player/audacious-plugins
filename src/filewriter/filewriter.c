@@ -604,7 +604,8 @@ static void file_configure(void)
 
 AUD_OUTPUT_PLUGIN
 (
- .name = "FileWriter",
+ .name = N_("FileWriter Plugin"),
+ .domain = PACKAGE,
  .init = file_init,
  .cleanup = file_cleanup,
  .about = file_about,

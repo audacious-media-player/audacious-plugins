@@ -46,7 +46,8 @@ static const gchar *gme_fmts[] = {
 
 AUD_INPUT_PLUGIN
 (
-    .name = "Game Console Music Decoder",
+    .name = N_("Game Console Music Decoder"),
+    .domain = PACKAGE,
     .init = console_init,
     .cleanup = console_cleanup,
     .about = console_aboutbox,
