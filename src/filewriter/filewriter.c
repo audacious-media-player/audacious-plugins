@@ -157,29 +157,6 @@ static void file_cleanup (void)
     file_path = NULL;
 }
 
-void file_about (void)
-{
-    static GtkWidget * dialog;
-
-    audgui_simple_message (& dialog, GTK_MESSAGE_INFO,
-     _("About FileWriter-Plugin"),
-     "FileWriter-Plugin\n\n"
-     "This program is free software; you can redistribute it and/or modify\n"
-     "it under the terms of the GNU General Public License as published by\n"
-     "the Free Software Foundation; either version 2 of the License, or\n"
-     "(at your option) any later version.\n"
-     "\n"
-     "This program is distributed in the hope that it will be useful,\n"
-     "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-     "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-     "GNU General Public License for more details.\n"
-     "\n"
-     "You should have received a copy of the GNU General Public License\n"
-     "along with this program; if not, write to the Free Software\n"
-     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-     "USA.");
-}
-
 static VFSFile * safe_create (const gchar * filename)
 {
     if (! vfs_file_test (filename, G_FILE_TEST_EXISTS))
@@ -602,13 +579,29 @@ static void file_configure(void)
     }
 }
 
+static const char file_about[] =
+ "This program is free software; you can redistribute it and/or modify\n"
+ "it under the terms of the GNU General Public License as published by\n"
+ "the Free Software Foundation; either version 2 of the License, or\n"
+ "(at your option) any later version.\n"
+ "\n"
+ "This program is distributed in the hope that it will be useful,\n"
+ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+ "GNU General Public License for more details.\n"
+ "\n"
+ "You should have received a copy of the GNU General Public License\n"
+ "along with this program; if not, write to the Free Software\n"
+ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+ "USA.";
+
 AUD_OUTPUT_PLUGIN
 (
  .name = N_("FileWriter Plugin"),
  .domain = PACKAGE,
+ .about_text = file_about,
  .init = file_init,
  .cleanup = file_cleanup,
- .about = file_about,
  .configure = file_configure,
  .probe_priority = 0,
  .open_audio = file_open,
