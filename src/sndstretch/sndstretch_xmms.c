@@ -92,9 +92,9 @@ static struct sndstretch_settings SS;
 static const char sndstretch_title_text[] = "SndStretch xmms - " SNDSTRETCH_VERSION_STRING;
 
 static const gchar sndstretch_about_text[] =
-	"Copyright (C) 2001 Florian Berger\n<harpin_floh@yahoo.de>\n"
-	"Ported to Audacious by Michael Färber\n"
-	"http://www.geocities.com/harpin_floh/home.html";
+	"Copyright (C) 2001 Florian Berger <harpin_floh@yahoo.de>\n"
+	"http://www.oocities.org/harpin_floh/sndstretch_page.html\n\n"
+	"Ported to Audacious by Michael Färber";
 
 static const gchar sndstretch_GPL_text[] =
 	"This program is free software; you can redistribute it and/or modify "
@@ -131,17 +131,13 @@ void sndstretch_about(void)
 {
 	GtkWidget * vbox, * scrolltext, * button;
 	GtkWidget * titlelabel, * copylabel;
-	GtkWidget * text;
-	GtkTextBuffer * textbuffer;
-	GtkTextIter iter;
 	GtkWidget * copyhbox, * copy_rbox, * copy_lbox;
-
 
 	if (sndstretch_about_dialog != NULL)
 		return;
 
 	sndstretch_about_dialog = gtk_dialog_new();
-	gtk_widget_show(sndstretch_about_dialog);
+	gtk_window_set_resizable ((GtkWindow *) sndstretch_about_dialog, FALSE);
 
 	GtkWidget * logo = gtk_image_new_from_pixbuf (gdk_pixbuf_new_from_xpm_data
 	 ((const gchar * *) sndstretch_xmms_logo_xpm));
@@ -170,21 +166,8 @@ void sndstretch_about(void)
 	gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
 	 sndstretch_about_dialog), vbox, TRUE, TRUE, 5);
 
-	scrolltext = gtk_scrolled_window_new(NULL,NULL);
-	text = gtk_text_view_new();
-	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(text), GTK_WRAP_WORD);
-	gtk_text_view_set_editable(GTK_TEXT_VIEW(text), FALSE);
-	textbuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text));
-	gtk_text_buffer_get_iter_at_offset(textbuffer, &iter, 0);
-	gtk_text_buffer_insert(textbuffer, &iter,
-						   sndstretch_GPL_text, strlen(sndstretch_GPL_text));
-
-
-	scrolltext = gtk_scrolled_window_new(NULL, NULL);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolltext),
-								   GTK_POLICY_AUTOMATIC,
-								   GTK_POLICY_AUTOMATIC);
-	gtk_container_add(GTK_CONTAINER(scrolltext), text);
+	scrolltext = gtk_label_new (sndstretch_GPL_text);
+	gtk_label_set_line_wrap ((GtkLabel *) scrolltext, TRUE);
 
 	gtk_box_pack_start(GTK_BOX(vbox), logo, FALSE, TRUE, 5);
 	gtk_box_pack_start(GTK_BOX(vbox), titlelabel, FALSE, TRUE, 5);
