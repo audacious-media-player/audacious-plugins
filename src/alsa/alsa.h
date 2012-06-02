@@ -79,7 +79,6 @@ void alsa_config_save (void);
 void alsa_configure (void);
 
 /* plugin.c */
-void alsa_about (void);
 void alsa_error (const char * format, ...);
 
 #endif
