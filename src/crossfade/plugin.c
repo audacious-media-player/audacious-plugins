@@ -28,7 +28,6 @@
 #include "config.h"
 #include "crossfade.h"
 
-static GtkWidget * about_window = NULL;
 static GtkWidget * config_window = NULL;
 static GtkWidget * error_window = NULL;
 
@@ -44,33 +43,12 @@ void crossfade_config_load (void)
 
 void crossfade_config_save (void)
 {
-    if (about_window != NULL)
-        gtk_widget_destroy (about_window);
     if (config_window != NULL)
         gtk_widget_destroy (config_window);
     if (error_window != NULL)
         gtk_widget_destroy (error_window);
 
     aud_set_int ("crossfade", "length", crossfade_length);
-}
-
-static void crossfade_about (void)
-{
-    audgui_simple_message (& about_window, GTK_MESSAGE_INFO, _("About "
-     "Crossfade"),
-     "Crossfade Plugin for Audacious\n"
-     "Copyright 2010 John Lindgren\n\n"
-     "Redistribution and use in source and binary forms, with or without "
-     "modification, are permitted provided that the following conditions are "
-     "met:\n\n"
-     "1. Redistributions of source code must retain the above copyright "
-     "notice, this list of conditions, and the following disclaimer.\n\n"
-     "2. Redistributions in binary form must reproduce the above copyright "
-     "notice, this list of conditions, and the following disclaimer in the "
-     "documentation provided with the distribution.\n\n"
-     "This software is provided \"as is\" and without any warranty, express or "
-     "implied. In no event shall the authors be liable for any damages arising "
-     "from the use of this software.");
 }
 
 static void value_changed (GtkRange * range, void * data)
@@ -146,13 +124,28 @@ int crossfade_show_rate_message (void)
     return 0;
 }
 
+static const char crossfade_about[] =
+ "Crossfade Plugin for Audacious\n"
+ "Copyright 2010 John Lindgren\n\n"
+ "Redistribution and use in source and binary forms, with or without "
+ "modification, are permitted provided that the following conditions are "
+ "met:\n\n"
+ "1. Redistributions of source code must retain the above copyright "
+ "notice, this list of conditions, and the following disclaimer.\n\n"
+ "2. Redistributions in binary form must reproduce the above copyright "
+ "notice, this list of conditions, and the following disclaimer in the "
+ "documentation provided with the distribution.\n\n"
+ "This software is provided \"as is\" and without any warranty, express or "
+ "implied. In no event shall the authors be liable for any damages arising "
+ "from the use of this software.";
+
 AUD_EFFECT_PLUGIN
 (
     .name = N_("Crossfade Effect"),
     .domain = PACKAGE,
+    .about_text = crossfade_about,
     .init = crossfade_init,
     .cleanup = crossfade_cleanup,
-    .about = crossfade_about,
     .configure = crossfade_configure,
     .start = crossfade_start,
     .process = crossfade_process,
