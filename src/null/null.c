@@ -52,24 +52,6 @@ static gboolean null_init (void)
     return TRUE;
 }
 
-static void null_about(void)
-{
-    static GtkWidget *about;
-    gchar *about_text;
-
-    if (about)
-        return;
-
-    about_text = g_strjoin("", _("Null output plugin "), VERSION,
-    _(" by Christian Birchinger <joker@netswarm.net>\n"
-      "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"), NULL);
-
-    audgui_simple_message (& about, GTK_MESSAGE_INFO, _("About Null Output"),
-     about_text);
-
-    g_free(about_text);
-}
-
 static void null_configure_ok_cb(GtkButton *w, gpointer data)
 {
     aud_set_bool("null", "real_time", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(data)));
@@ -225,13 +207,18 @@ static int null_get_output_time(void)
     return ELAPSED_TIME;
 }
 
+static const char null_about[] =
+ "Null Output Plugin\n\n"
+ "By Christian Birchinger <joker@netswarm.net>\n"
+ "Based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>";
+
 AUD_OUTPUT_PLUGIN
 (
  .name = N_("No Output"),
  .domain = PACKAGE,
+ .about_text = null_about,
  .probe_priority = 0,
  .init = null_init,
- .about = null_about,
  .configure = null_configure,
  .open_audio = null_open,
  .write_audio = null_write,
