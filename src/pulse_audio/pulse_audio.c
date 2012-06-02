@@ -671,34 +671,30 @@ static gboolean pulse_init (void)
     return TRUE;
 }
 
-static void pulse_about(void) {
-    static GtkWidget *dialog;
-    audgui_simple_message(& dialog, GTK_MESSAGE_INFO,
-            _("About Audacious PulseAudio Output Plugin"),
-            "Audacious PulseAudio Output Plugin\n\n"
-            "This program is free software; you can redistribute it and/or modify\n"
-            "it under the terms of the GNU General Public License as published by\n"
-            "the Free Software Foundation; either version 2 of the License, or\n"
-            "(at your option) any later version.\n"
-            "\n"
-            "This program is distributed in the hope that it will be useful,\n"
-            "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-            "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-            "GNU General Public License for more details.\n"
-            "\n"
-            "You should have received a copy of the GNU General Public License\n"
-            "along with this program; if not, write to the Free Software\n"
-            "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-            "USA.");
-}
+static const char pulse_about[] =
+ "Audacious PulseAudio Output Plugin\n\n"
+ "This program is free software; you can redistribute it and/or modify\n"
+ "it under the terms of the GNU General Public License as published by\n"
+ "the Free Software Foundation; either version 2 of the License, or\n"
+ "(at your option) any later version.\n"
+ "\n"
+ "This program is distributed in the hope that it will be useful,\n"
+ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+ "GNU General Public License for more details.\n"
+ "\n"
+ "You should have received a copy of the GNU General Public License\n"
+ "along with this program; if not, write to the Free Software\n"
+ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+ "USA.";
 
 AUD_OUTPUT_PLUGIN
 (
         .name = N_("PulseAudio Output"),
         .domain = PACKAGE,
+        .about_text = pulse_about,
         .probe_priority = 8,
         .init = pulse_init,
-        .about = pulse_about,
         .get_volume = pulse_get_volume,
         .set_volume = pulse_set_volume,
         .open_audio = pulse_open,
