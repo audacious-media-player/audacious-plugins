@@ -1,8 +1,6 @@
 PLUGIN = notify${PLUGIN_SUFFIX}
 
-SRCS = libnotify-aosd.c \
-       libnotify-aosd_event.c \
-       libnotify-aosd_osd.c
+SRCS = event.c notify.c osd.c
 
 include ../../buildsys.mk
 include ../../extra.mk
