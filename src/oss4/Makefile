@@ -2,7 +2,6 @@ PLUGIN = oss4${PLUGIN_SUFFIX}
 
 SRCS = plugin.c     \
        oss.c        \
-       configure.c  \
        utils.c
 
 include ../../buildsys.mk

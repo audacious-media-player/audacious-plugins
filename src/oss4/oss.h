@@ -1,6 +1,6 @@
 /*
  * oss.h
- * Copyright 2010-2011 Michał Lipski <tallica@o2.pl>
+ * Copyright 2010-2012 Michał Lipski <tallica@o2.pl>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -114,9 +114,6 @@ void oss_set_volume(gint left, gint right);
 
 /* configure.c */
 void oss_configure(void);
-
-/* plugin.c */
-void oss_about(void);
 
 /* utils.c */
 gint oss_convert_aud_format(gint aud_format);
