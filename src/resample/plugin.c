@@ -35,7 +35,6 @@ int converted_rates[G_N_ELEMENTS (common_rates)];
 int fallback_rate;
 int method;
 
-static GtkWidget * about_window = NULL;
 static GtkWidget * config_window = NULL;
 
 static const gchar * const resample_defaults[] = {
@@ -67,8 +66,6 @@ void resample_config_load (void)
 
 void resample_config_save (void)
 {
-    if (about_window != NULL)
-        gtk_widget_destroy (about_window);
     if (config_window != NULL)
         gtk_widget_destroy (config_window);
 
@@ -81,25 +78,6 @@ void resample_config_save (void)
 
     aud_set_int ("resample", "fallback_rate", fallback_rate);
     aud_set_int ("resample", "method", method);
-}
-
-static void resample_about (void)
-{
-    audgui_simple_message (& about_window, GTK_MESSAGE_INFO, _("About Sample "
-     "Rate Converter Plugin"),
-     "Sample Rate Converter Plugin for Audacious\n"
-     "Copyright 2010 John Lindgren\n\n"
-     "Redistribution and use in source and binary forms, with or without "
-     "modification, are permitted provided that the following conditions are "
-     "met:\n\n"
-     "1. Redistributions of source code must retain the above copyright "
-     "notice, this list of conditions, and the following disclaimer.\n\n"
-     "2. Redistributions in binary form must reproduce the above copyright "
-     "notice, this list of conditions, and the following disclaimer in the "
-     "documentation provided with the distribution.\n\n"
-     "This software is provided \"as is\" and without any warranty, express or "
-     "implied. In no event shall the authors be liable for any damages arising "
-     "from the use of this software.");
 }
 
 static void value_changed (GtkSpinButton * button, void * data)
@@ -210,18 +188,32 @@ static void resample_configure (void)
     gtk_window_present ((GtkWindow *) config_window);
 }
 
+static const char resample_about[] =
+ "Sample Rate Converter Plugin for Audacious\n"
+ "Copyright 2010 John Lindgren\n\n"
+ "Redistribution and use in source and binary forms, with or without "
+ "modification, are permitted provided that the following conditions are "
+ "met:\n\n"
+ "1. Redistributions of source code must retain the above copyright "
+ "notice, this list of conditions, and the following disclaimer.\n\n"
+ "2. Redistributions in binary form must reproduce the above copyright "
+ "notice, this list of conditions, and the following disclaimer in the "
+ "documentation provided with the distribution.\n\n"
+ "This software is provided \"as is\" and without any warranty, express or "
+ "implied. In no event shall the authors be liable for any damages arising "
+ "from the use of this software.";
+
 AUD_EFFECT_PLUGIN
 (
     .name = N_("Sample Rate Converter"),
     .domain = PACKAGE,
+    .about_text = resample_about,
     .init = resample_init,
     .cleanup = resample_cleanup,
-    .about = resample_about,
     .configure = resample_configure,
     .start = resample_start,
     .process = resample_process,
     .flush = resample_flush,
     .finish = resample_finish,
-
     .order = 2 /* must be before crossfade */
 )
