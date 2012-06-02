@@ -13,11 +13,14 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 static gboolean init (void);
-static void about(void);
 
 static void stereo_start (gint * channels, gint * rate);
 static void stereo_process (gfloat * * data, gint * samples);
 static void stereo_finish (gfloat * * data, gint * samples);
+
+static const char stereo_about[] =
+ "Extra Stereo Plugin\n\n"
+ "By Johan Levin, 1999";
 
 static const gchar * const stereo_defaults[] = {
  "intensity", "2.5",
@@ -37,30 +40,19 @@ AUD_EFFECT_PLUGIN
 (
     .name = N_("Extra Stereo"),
     .domain = PACKAGE,
+    .about_text = stereo_about,
     .prefs = & stereo_prefs,
     .init = init,
-    .about = about,
     .start = stereo_start,
     .process = stereo_process,
     .finish = stereo_finish,
     .preserves_format = TRUE
 )
 
-static const char *about_text = N_("Extra Stereo Plugin\n\n"
-                                   "By Johan Levin 1999.");
-
 static gboolean init (void)
 {
     aud_config_set_defaults ("extra_stereo", stereo_defaults);
     return TRUE;
-}
-
-static void about (void)
-{
-    static GtkWidget * about_dialog = NULL;
-
-    audgui_simple_message (& about_dialog, GTK_MESSAGE_INFO,
-     _("About Extra Stereo Plugin"), _(about_text));
 }
 
 static gint stereo_channels;
