@@ -344,18 +344,6 @@ wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
 	return tu;
 }
 
-static void
-wv_about_box()
-{
-    static GtkWidget *about_window = NULL;
-
-    audgui_simple_message(&about_window, GTK_MESSAGE_INFO,
-    g_strdup_printf(_("Wavpack Decoder Plugin %s"), VERSION),
-    _("Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n\n"
-    "Some of the plugin code was by Miles Egan\n"
-    "Visit the Wavpack site at http://www.wavpack.com/\n"));
-}
-
 static gboolean wv_init (void)
 {
     ctrl_mutex = g_mutex_new();
@@ -375,15 +363,19 @@ static gboolean wv_write_tag (const Tuple * tuple, VFSFile * handle)
     return tag_tuple_write(tuple, handle, TAG_TYPE_APE);
 }
 
+static const char wv_about[] =
+ "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n\n"
+ "Some of the plugin code was by Miles Egan.";
+
 static const gchar *wv_fmts[] = { "wv", NULL };
 
 AUD_INPUT_PLUGIN
 (
     .name = N_("WavPack Decoder"),
     .domain = PACKAGE,
+    .about_text = wv_about,
     .init = wv_init,
     .cleanup = wv_cleanup,
-    .about = wv_about_box,
     .play = wv_play,
     .stop = wv_stop,
     .pause = wv_pause,
