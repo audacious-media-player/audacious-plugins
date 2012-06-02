@@ -81,7 +81,6 @@ src/mpg123/mpg123.c
 src/mtp_up/mtp.c
 src/notify/libnotify-aosd_event.c
 src/null/null.c
-src/oss4/configure.c
 src/oss4/plugin.c
 src/oss4/utils.c
 src/pulse_audio/pulse_audio.c

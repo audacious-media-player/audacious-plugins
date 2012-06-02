@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-01 20:03-0400\n"
+"POT-Creation-Date: 2012-06-02 15:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -847,63 +847,59 @@ msgstr ""
 msgid "Presets:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:108
+#: src/cdaudio-ng/cdaudio-ng.c:116
 msgid "<b>Device</b>"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:109
+#: src/cdaudio-ng/cdaudio-ng.c:117
 msgid "Read speed:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:112
+#: src/cdaudio-ng/cdaudio-ng.c:120
 msgid "Override device:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:114
+#: src/cdaudio-ng/cdaudio-ng.c:122
 msgid "<b>Metadata</b>"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:115
+#: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "Use CD-Text"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:117
+#: src/cdaudio-ng/cdaudio-ng.c:125
 msgid "Use CDDB"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:119
+#: src/cdaudio-ng/cdaudio-ng.c:127
 msgid "Use HTTP instead of CDDBP"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "Server:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:123
+#: src/cdaudio-ng/cdaudio-ng.c:131
 msgid "Path:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:125
+#: src/cdaudio-ng/cdaudio-ng.c:133
 msgid "Port:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:131
-msgid "Audio CD Settings"
+#: src/cdaudio-ng/cdaudio-ng.c:143
+msgid "Audio CD Plugin"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:247
-msgid "About Audio CD Plugin"
-msgstr ""
-
-#: src/cdaudio-ng/cdaudio-ng.c:535
+#: src/cdaudio-ng/cdaudio-ng.c:528
 msgid "Audio CD"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:911
+#: src/cdaudio-ng/cdaudio-ng.c:904
 msgid "Drive is empty."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:913
+#: src/cdaudio-ng/cdaudio-ng.c:906
 msgid "Unsupported disk type."
 msgstr ""
 
@@ -927,12 +923,12 @@ msgstr ""
 msgid "Dynamic range:"
 msgstr ""
 
-#: src/compressor/plugin.c:51
-msgid "Dynamic Range Compressor Settings"
+#: src/compressor/plugin.c:68
+msgid "About Dynamic Range Compression Plugin"
 msgstr ""
 
-#: src/compressor/plugin.c:70
-msgid "About Dynamic Range Compression Plugin"
+#: src/compressor/plugin.c:87
+msgid "Dynamic Range Compressor"
 msgstr ""
 
 #: src/console/configure.c:135
@@ -1047,8 +1043,8 @@ msgstr ""
 msgid "Intensity:"
 msgstr ""
 
-#: src/crystalizer/crystalizer.c:49
-msgid "Crystalizer Settings"
+#: src/crystalizer/crystalizer.c:53
+msgid "Crystalizer"
 msgstr ""
 
 #: src/echo_plugin/echo.c:26
@@ -1071,8 +1067,8 @@ msgstr ""
 msgid "Volume:"
 msgstr ""
 
-#: src/echo_plugin/echo.c:39
-msgid "Echo Settings"
+#: src/echo_plugin/echo.c:117
+msgid "Echo"
 msgstr ""
 
 #: src/echo_plugin/gui.c:8
@@ -2077,36 +2073,28 @@ msgstr ""
 msgid "Run in real time"
 msgstr ""
 
-#: src/oss4/configure.c:81
+#: src/oss4/plugin.c:37
 msgid "1. Default device"
 msgstr ""
 
-#: src/oss4/configure.c:138
-msgid "OSS4 Output Plugin Preferences"
-msgstr ""
-
-#: src/oss4/configure.c:150
+#: src/oss4/plugin.c:74
 msgid "Audio device:"
 msgstr ""
 
-#: src/oss4/configure.c:178
+#: src/oss4/plugin.c:77
 msgid "Use alternate device:"
 msgstr ""
 
-#: src/oss4/configure.c:193
-msgid "Save volume between sessions"
+#: src/oss4/plugin.c:81
+msgid "Save volume between sessions."
 msgstr ""
 
-#: src/oss4/configure.c:197
+#: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
 msgstr ""
 
-#: src/oss4/configure.c:201
+#: src/oss4/plugin.c:85
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr ""
-
-#: src/oss4/plugin.c:51
-msgid "About OSS4 Plugin"
 msgstr ""
 
 #: src/oss4/utils.c:211
@@ -2161,11 +2149,7 @@ msgstr ""
 msgid "<b>Last.FM</b>"
 msgstr ""
 
-#: src/scrobbler/configure.c:230
-msgid "Scrobbler"
-msgstr ""
-
-#: src/scrobbler/plugin.c:194
+#: src/scrobbler/plugin.c:193
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -2173,8 +2157,12 @@ msgid ""
 "com>\n"
 msgstr ""
 
-#: src/scrobbler/plugin.c:196
+#: src/scrobbler/plugin.c:195
 msgid "About Scrobbler Plugin"
+msgstr ""
+
+#: src/scrobbler/plugin.c:203
+msgid "Scrobbler"
 msgstr ""
 
 #: src/sdlout/plugin.c:58
@@ -3172,29 +3160,33 @@ msgstr ""
 msgid "SndStretch - Configuration"
 msgstr ""
 
-#: src/song_change/song_change.c:437
+#: src/song_change/song_change.c:56
+msgid "Song Change"
+msgstr ""
+
+#: src/song_change/song_change.c:438
 msgid "Command to run when Audacious starts a new song."
 msgstr ""
 
-#: src/song_change/song_change.c:439 src/song_change/song_change.c:445
-#: src/song_change/song_change.c:451 src/song_change/song_change.c:457
+#: src/song_change/song_change.c:440 src/song_change/song_change.c:446
+#: src/song_change/song_change.c:452 src/song_change/song_change.c:458
 msgid "Command:"
 msgstr ""
 
-#: src/song_change/song_change.c:443
+#: src/song_change/song_change.c:444
 msgid "Command to run toward the end of a song."
 msgstr ""
 
-#: src/song_change/song_change.c:449
+#: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr ""
 
-#: src/song_change/song_change.c:455
+#: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 
-#: src/song_change/song_change.c:461
+#: src/song_change/song_change.c:462
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3213,18 +3205,14 @@ msgid ""
 "%T: Track title"
 msgstr ""
 
-#: src/song_change/song_change.c:488
+#: src/song_change/song_change.c:489
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
 
-#: src/song_change/song_change.c:499
+#: src/song_change/song_change.c:500
 msgid "Commands"
-msgstr ""
-
-#: src/song_change/song_change.c:529
-msgid "Song Change"
 msgstr ""
 
 #: src/statusicon/statusicon.c:381
@@ -3290,18 +3278,18 @@ msgstr ""
 msgid "<b>Extra Stereo</b>"
 msgstr ""
 
-#: src/stereo_plugin/stereo.c:34
-msgid "Extra Stereo Settings"
+#: src/stereo_plugin/stereo.c:38
+msgid "Extra Stereo"
 msgstr ""
 
-#: src/stereo_plugin/stereo.c:50
+#: src/stereo_plugin/stereo.c:49
 msgid ""
 "Extra Stereo Plugin\n"
 "\n"
 "By Johan Levin 1999."
 msgstr ""
 
-#: src/stereo_plugin/stereo.c:64
+#: src/stereo_plugin/stereo.c:63
 msgid "About Extra Stereo Plugin"
 msgstr ""
 
