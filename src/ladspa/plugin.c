@@ -46,7 +46,6 @@ Index * modules; /* (void *) */
 Index * plugins; /* (PluginData *) */
 Index * loadeds; /* (LoadedPlugin *) */
 
-GtkWidget * about_win;
 GtkWidget * config_win;
 GtkWidget * plugin_list;
 GtkWidget * loaded_list;
@@ -383,8 +382,6 @@ static int init (void)
 
 static void cleanup (void)
 {
-    if (about_win)
-        gtk_widget_destroy (about_win);
     if (config_win)
         gtk_widget_destroy (config_win);
 
@@ -406,24 +403,6 @@ static void cleanup (void)
     module_path = NULL;
 
     pthread_mutex_unlock (& mutex);
-}
-
-static void about (void)
-{
-    audgui_simple_message (& about_win, GTK_MESSAGE_INFO,
-     _("About LADSPA Host"), "LADSPA Host for Audacious\n"
-     "Copyright 2011 John Lindgren\n\n"
-     "Redistribution and use in source and binary forms, with or without "
-     "modification, are permitted provided that the following conditions are "
-     "met:\n\n"
-     "1. Redistributions of source code must retain the above copyright "
-     "notice, this list of conditions, and the following disclaimer.\n\n"
-     "2. Redistributions in binary form must reproduce the above copyright "
-     "notice, this list of conditions, and the following disclaimer in the "
-     "documentation provided with the distribution.\n\n"
-     "This software is provided \"as is\" and without any warranty, express or "
-     "implied. In no event shall the authors be liable for any damages arising "
-     "from the use of this software.");
 }
 
 static void set_module_path (GtkEntry * entry)
@@ -661,13 +640,28 @@ static void configure (void)
     gtk_widget_show_all (config_win);
 }
 
+static const char about[] =
+ "LADSPA Host for Audacious\n"
+ "Copyright 2011 John Lindgren\n\n"
+ "Redistribution and use in source and binary forms, with or without "
+ "modification, are permitted provided that the following conditions are "
+ "met:\n\n"
+ "1. Redistributions of source code must retain the above copyright "
+ "notice, this list of conditions, and the following disclaimer.\n\n"
+ "2. Redistributions in binary form must reproduce the above copyright "
+ "notice, this list of conditions, and the following disclaimer in the "
+ "documentation provided with the distribution.\n\n"
+ "This software is provided \"as is\" and without any warranty, express or "
+ "implied. In no event shall the authors be liable for any damages arising "
+ "from the use of this software.";
+
 AUD_EFFECT_PLUGIN
 (
     .name = N_("LADSPA Host"),
     .domain = PACKAGE,
+    .about_text = about,
     .init = init,
     .cleanup = cleanup,
-    .about = about,
     .configure = configure,
     .start = ladspa_start,
     .process = ladspa_process,
