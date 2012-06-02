@@ -18,8 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses>.
  */
 
-#include "config.h"
-
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -32,6 +30,8 @@
 #include <cdio/audio.h>
 #include <cdio/sector.h>
 #include <cdio/cd_types.h>
+#include <cdio/cdio_unconfig.h>
+
 #include <cddb/cddb.h>
 
 #include <glib.h>
@@ -45,6 +45,8 @@
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
+
+#include "config.h"
 
 #define DEF_STRING_LEN 256
 
@@ -79,7 +81,6 @@ static trackinfo_t *trackinfo = NULL;
 static int monitor_source = 0;
 
 static bool_t cdaudio_init (void);
-static void cdaudio_about (void);
 static int cdaudio_is_our_file (const char * filename, VFSFile * file);
 static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
  file, int start, int stop, bool_t pause);
@@ -92,6 +93,13 @@ static void scan_cd (void);
 static void refresh_trackinfo (bool_t warning);
 static int calculate_track_length (int startlsn, int endlsn);
 static int find_trackno_from_filename (const char * filename);
+
+static const char cdaudio_about[] =
+ "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n\n"
+ "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+ "and to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
+ "Also thank you to Tony Vroon for mentoring and guiding me.\n\n"
+ "This was a Google Summer of Code 2007 project.";
 
 static const char * const schemes[] = {"cdda", NULL};
 
@@ -134,10 +142,10 @@ AUD_INPUT_PLUGIN
 (
     .name = N_("Audio CD Plugin"),
     .domain = PACKAGE,
+    .about_text = cdaudio_about,
     .prefs = & cdaudio_prefs,
     .init = cdaudio_init,
     .cleanup = cdaudio_cleanup,
-    .about = cdaudio_about,
     .is_our_file_from_vfs = cdaudio_is_our_file,
     .play = cdaudio_play,
     .stop = cdaudio_stop,
@@ -235,20 +243,6 @@ static bool_t cdaudio_init (void)
     libcddb_init ();
 
     return TRUE;
-}
-
-/* main thread only */
-static void cdaudio_about (void)
-{
-    static GtkWidget * about_window = NULL;
-
-    audgui_simple_message (& about_window, GTK_MESSAGE_INFO,
-     _("About Audio CD Plugin"),
-     "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n\n"
-     "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
-     "and to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
-     "Also thank you to Tony Vroon for mentoring and guiding me.\n\n"
-     "This was a Google Summer of Code 2007 project.");
 }
 
 /* thread safe (mutex may be locked) */
