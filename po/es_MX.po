@@ -1,4 +1,4 @@
-# Mexican Spanish translation for Audacious Plugins
+# Spanish (Mexican) translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-01 20:01-0400\n"
-"PO-Revision-Date: 2012-04-29 19:35+0000\n"
-"Last-Translator: Jorge A. García Sosa <jagsmd@gmail.com>\n"
+"POT-Creation-Date: 2012-06-01 20:51-0400\n"
+"PO-Revision-Date: 2012-06-02 00:48+0000\n"
+"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
 "Language-Team: Spanish (Mexican)\n"
 "Language: es_MX\n"
 "MIME-Version: 1.0\n"
@@ -494,11 +494,8 @@ msgid "AMIDI-Plug - select file"
 msgstr "AMIDI-Plug - seleccionar archivo"
 
 #: src/amidi-plug/i_configure.c:110
-#, fuzzy
 msgid "AMIDI-Plug Settings"
 msgstr ""
-"\n"
-"AMIDI-Plug "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -521,9 +518,8 @@ msgid "Load SF on player start"
 msgstr "Cargar SF al iniciar el reproductor"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
-#, fuzzy
 msgid "Load SF on first MIDI file play"
-msgstr "Cargar SF al reproducir el primer archivo MIDI"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
@@ -546,9 +542,8 @@ msgid "value:"
 msgstr "valor:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
-#, fuzzy
 msgid "polyphony"
-msgstr "polifonía"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -617,9 +612,8 @@ msgid "Length (msec):"
 msgstr "Duración (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:211
-#, fuzzy
 msgid "No. of Tracks:"
-msgstr "Núm de Pistas:"
+msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -654,11 +648,8 @@ msgid "  (invalid UTF-8)"
 msgstr "  (UTF-8 inválido)"
 
 #: src/amidi-plug/i_utils.c:36
-#, fuzzy
 msgid "About AMIDI-Plug"
 msgstr ""
-"\n"
-"AMIDI-Plug "
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -943,9 +934,8 @@ msgid "Options:"
 msgstr "Opciones:"
 
 #: src/bs2b/plugin.c:138
-#, fuzzy
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr "Preferencias Bauer stereophonic-to-binaural"
+msgstr ""
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
@@ -960,24 +950,20 @@ msgid "Presets:"
 msgstr "Predefinidos:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:108
-#, fuzzy
 msgid "<b>Device</b>"
-msgstr "<b>Services</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:109
-#, fuzzy
 msgid "Read speed:"
-msgstr "Velocidad del disco:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:112
-#, fuzzy
 msgid "Override device:"
-msgstr "Anular dispositivo determinado: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:114
-#, fuzzy
 msgid "<b>Metadata</b>"
-msgstr "<b>Last.FM</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:115
 msgid "Use CD-Text"
@@ -992,24 +978,20 @@ msgid "Use HTTP instead of CDDBP"
 msgstr "Utilizar HTTP en vez de CDDBP"
 
 #: src/cdaudio-ng/cdaudio-ng.c:121
-#, fuzzy
 msgid "Server:"
-msgstr "Servidor: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
-#, fuzzy
 msgid "Path:"
-msgstr "Ruta:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:125
-#, fuzzy
 msgid "Port:"
-msgstr "Puerto: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:131
-#, fuzzy
 msgid "Audio CD Settings"
-msgstr "Ajustes de Alarma"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:247
 msgid "About Audio CD Plugin"
@@ -1036,9 +1018,8 @@ msgid "Add CD"
 msgstr "Agregar CD"
 
 #: src/compressor/plugin.c:41
-#, fuzzy
 msgid "<b>Compression</b>"
-msgstr "<b>Acción:</b>"
+msgstr ""
 
 #: src/compressor/plugin.c:42
 msgid "Center volume:"
@@ -1049,9 +1030,8 @@ msgid "Dynamic range:"
 msgstr "Rango dinámico:"
 
 #: src/compressor/plugin.c:51
-#, fuzzy
 msgid "Dynamic Range Compressor Settings"
-msgstr "Preferencias del Compresor de Rango Dinámico "
+msgstr ""
 
 #: src/compressor/plugin.c:70
 msgid "About Dynamic Range Compression Plugin"
@@ -1178,48 +1158,40 @@ msgstr ""
 "muestrear las pistas a la misma frecuencia."
 
 #: src/crystalizer/crystalizer.c:42
-#, fuzzy
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Services</b>"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
-#, fuzzy
 msgid "Intensity:"
-msgstr "Intensidad del efecto:"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:49
-#, fuzzy
 msgid "Crystalizer Settings"
-msgstr "Ajustes de Mezclador de Canales"
+msgstr ""
 
 #: src/echo_plugin/echo.c:26
-#, fuzzy
 msgid "<b>Echo</b>"
-msgstr "<b>Acción:</b>"
+msgstr ""
 
 #: src/echo_plugin/echo.c:27
-#, fuzzy
 msgid "Delay:"
-msgstr "Mostrar:"
+msgstr ""
 
 #: src/echo_plugin/echo.c:29
 msgid "ms"
 msgstr ""
 
 #: src/echo_plugin/echo.c:30
-#, fuzzy
 msgid "Feedback:"
-msgstr "Feedback: (%)"
+msgstr ""
 
 #: src/echo_plugin/echo.c:33
-#, fuzzy
 msgid "Volume:"
-msgstr "Volumen"
+msgstr ""
 
 #: src/echo_plugin/echo.c:39
-#, fuzzy
 msgid "Echo Settings"
-msgstr "Ajustes"
+msgstr ""
 
 #: src/echo_plugin/gui.c:8
 msgid ""
@@ -1429,9 +1401,8 @@ msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1125
-#, fuzzy
 msgid "Frame parameters:"
-msgstr "Parámetros de cuadro:"
+msgstr ""
 
 #: src/filewriter/mp3.c:1137
 msgid "Mark as copyright"
@@ -1490,9 +1461,8 @@ msgstr ""
 "http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/gio/gtk.c:34
-#, fuzzy
 msgid "About GIO Plugin"
-msgstr "Acerca del Plugin OSS4"
+msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:303
 msgid "About Gnome Shortcut Plugin"
@@ -1617,9 +1587,8 @@ msgid "Add U_RL ..."
 msgstr "Agregar U_RL..."
 
 #: src/gtkui/menus.c:136
-#, fuzzy
 msgid "_Search Library"
-msgstr "Buscar librería"
+msgstr ""
 
 #: src/gtkui/menus.c:138
 msgid "A_bout ..."
@@ -1786,9 +1755,8 @@ msgid "Show I_nfo Bar"
 msgstr "Mostrar Barra de I_nformación"
 
 #: src/gtkui/menus.c:199
-#, fuzzy
 msgid "Show Info Bar Vis_ualization"
-msgstr "Visualización"
+msgstr ""
 
 #: src/gtkui/menus.c:200
 msgid "Show _Status Bar"
@@ -2059,9 +2027,8 @@ msgid "Ok"
 msgstr "Ok"
 
 #: src/jack/jack.c:435
-#, fuzzy
 msgid "About JACK Output Plugin"
-msgstr "Acerca del Plugin de Salida JACK 0.17"
+msgstr ""
 
 #: src/jack/jack.c:436
 msgid ""
@@ -2132,9 +2099,8 @@ msgid "Reconnect"
 msgstr ""
 
 #: src/lirc/configure.c:190
-#, fuzzy
 msgid "Connection"
-msgstr "Modo de conexión:"
+msgstr ""
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -2155,9 +2121,8 @@ msgid "%s: trying to reconnect...\n"
 msgstr ""
 
 #: src/lirc/lirc.c:125
-#, fuzzy
 msgid "About LIRC Audacious Plugin"
-msgstr "Acerca del plugin de audio FLAC"
+msgstr ""
 
 #: src/lirc/lirc.c:398
 #, c-format
@@ -2407,9 +2372,8 @@ msgid "Library"
 msgstr "Librería"
 
 #: src/search-tool/search-tool.c:221
-#, fuzzy
 msgid "Unknown Artist"
-msgstr "Por Artista"
+msgstr ""
 
 #: src/search-tool/search-tool.c:223
 msgid "Unknown Album"
@@ -2423,11 +2387,11 @@ msgid ""
 msgstr ""
 
 #: src/search-tool/search-tool.c:630
-#, fuzzy, c-format
+#, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "Por Álbum"
-msgstr[1] "Por Álbum"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/search-tool/search-tool.c:632
 #, c-format
@@ -2685,9 +2649,8 @@ msgid "Not stopping after song."
 msgstr "No detener después de la pista"
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
-#, fuzzy
 msgid "Autoscroll Song Name"
-msgstr "Desplazamiento automático del Título"
+msgstr ""
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
@@ -3386,14 +3349,12 @@ msgid "About SndStretch"
 msgstr "Acerca de SndStretch"
 
 #: src/sndstretch/sndstretch_xmms.c:305
-#, fuzzy
 msgid "Volume correction"
-msgstr "Corr. volumen"
+msgstr ""
 
 #: src/sndstretch/sndstretch_xmms.c:306
-#, fuzzy
 msgid "Short overlap"
-msgstr "Encimado corto"
+msgstr ""
 
 #: src/sndstretch/sndstretch_xmms.c:352
 msgid "Speed"
@@ -3438,7 +3399,6 @@ msgstr ""
 "títulos de flujos de red)."
 
 #: src/song_change/song_change.c:461
-#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3456,22 +3416,6 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
-"Puedes usar las siguientes cadenas de formato las cuales\n"
-"serán sustituidas antes de llamar al comando\n"
-"(no todas son útiles para el comando al finalizar la lista de "
-"reproducción).\n"
-"\n"
-"%F: Frecuencia (en hertz)\n"
-"%c: Número de canales\n"
-"%f: nombre del archivo (ruta completa)\n"
-"%l: duración (en milisegundos)\n"
-"%n ó %s: Nombre de la Pista\n"
-"%r: Tasa (en bits por segundo)\n"
-"%t: Posición en la Lista de Reproducción (%02d)\n"
-"%p: Reproduciendo actualmente (1 ó 0)\n"
-"%a: Artista\n"
-"%b: Álbum\n"
-"%T: Título de la Pista"
 
 #: src/song_change/song_change.c:488
 msgid ""
@@ -3556,14 +3500,12 @@ msgid "Advance in playlist when scrolling upward"
 msgstr "Avanzar en la lista de reproducción cuando se desplace hacía arriba"
 
 #: src/stereo_plugin/stereo.c:27
-#, fuzzy
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Services</b>"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:34
-#, fuzzy
 msgid "Extra Stereo Settings"
-msgstr "Configuraciones del mezclador:"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:50
 msgid ""
@@ -3654,7 +3596,6 @@ msgid "About Vortex Player"
 msgstr "Acerca del Reproducción Vortex"
 
 #: src/vtx/about.c:15
-#, fuzzy
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor."
@@ -3662,16 +3603,6 @@ msgid ""
 "\n"
 "Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
-"Reproductor de archivos en formato Vortex por Sashnov Alexander <sashnov@ngs."
-"ru>\n"
-"Fundamentado en el código fuente original in_vtx.dll por Roman Sherbakov "
-"<v_soft@microfor.ru>\n"
-"\n"
-"La música en formato vtx puede ser encontrada en  http://vtx.microfor.ru/"
-"music.htm\n"
-"y otros sitios de música AY/YM.\n"
-"\n"
-"Implementación para Audacious por Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/wavpack/wavpack.c:353
 #, c-format
@@ -3689,197 +3620,3 @@ msgstr ""
 "\n"
 "Algo del código del plugin code fue por Miles Egan\n"
 "Visita el sitio Wavpack en http://www.wavpack.com/\n"
-
-#~ msgid "ALSA BACKEND CONFIGURATION"
-#~ msgstr "CONFIGURACIÓN DEL BACKEND ALSA"
-
-#~ msgid "ALSA Backend not loaded or not available"
-#~ msgstr "El Motor ALSA no está cargado o no está disponible"
-
-#~ msgid "AMIDI-PLUG PREFERENCES"
-#~ msgstr "PREFERENCIAS AMIDI-PLUG"
-
-#~ msgid "Available backends"
-#~ msgstr "Backends disponibles"
-
-#~ msgid "AMIDI-Plug - configuration"
-#~ msgstr "AMIDI-Plug - configuración"
-
-#~ msgid "FLUIDSYNTH BACKEND CONFIGURATION"
-#~ msgstr "CONFIGURACIÓN DEL BACKEND FLUIDSYNTH "
-
-#~ msgid "FluidSynth Backend not loaded or not available"
-#~ msgstr "Backend FluidSynth no cargado o no está disponible"
-
-#~ msgid "TIMIDITY BACKEND CONFIGURATION"
-#~ msgstr "CONFIGURACIÓN DEL BACKEND TIMIDITY"
-
-#~ msgid "TiMidity Backend not loaded or not available"
-#~ msgstr "Backend TiMidity no cargado o no está disponible"
-
-#~ msgid ""
-#~ "<span size=\"smaller\">TiMidity\n"
-#~ "backend</span>"
-#~ msgstr ""
-#~ "<span size=\"smaller\">Backend\n"
-#~ "TiMidity</span>"
-
-#~ msgid "AMIDI-Plug - about"
-#~ msgstr "AMIDI-Plug - acerca de"
-
-#~ msgid ""
-#~ "\n"
-#~ "modular MIDI music player\n"
-#~ "http://www.develia.org/projects.php?p=amidiplug\n"
-#~ "\n"
-#~ "written by Giacomo Lozito\n"
-#~ "< james@develia.org >\n"
-#~ "\n"
-#~ "\n"
-#~ "special thanks to...\n"
-#~ "\n"
-#~ "Clemens Ladisch and Jaroslav Kysela\n"
-#~ "for their cool programs aplaymidi and amixer; those\n"
-#~ "were really useful, along with alsa-lib docs, in order\n"
-#~ "to learn more about the ALSA API\n"
-#~ "\n"
-#~ "Alfredo Spadafina\n"
-#~ "for the nice midi keyboard logo\n"
-#~ "\n"
-#~ "Tony Vroon\n"
-#~ "for the good help with alpha testing\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "reproductor musical modular MIDI\n"
-#~ "http://www.develia.org/projects.php?p=amidiplug\n"
-#~ "\n"
-#~ "escrito por Giacomo Lozito\n"
-#~ "< james@develia.org >\n"
-#~ "\n"
-#~ "\n"
-#~ "agradecimientos especiales a...\n"
-#~ "\n"
-#~ "Clemens Ladisch y Jaroslav Kysela\n"
-#~ "por sus chingones programas aplaymidi y amixer; estos\n"
-#~ "fueron realmente útiles, junto con la documentación alsa-lib docs, para\n"
-#~ "aprender más sobre la API ALSA\n"
-#~ "\n"
-#~ "Alfredo Spadafina\n"
-#~ "por el lindo logotipo de teclado midi\n"
-#~ "\n"
-#~ "Tony Vroon\n"
-#~ "por la buena ayuda con las pruebas alfa\n"
-#~ "\n"
-
-#~ msgid "Volume Change"
-#~ msgstr "Cambiar Volumen"
-
-#~ msgid "Triggers OSD when volume is changed."
-#~ msgstr "Muestra Notificación en Pantalla cuando cambia el volumen."
-
-#~ msgid ""
-#~ "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
-#~ "Team.\n"
-#~ "\n"
-#~ "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
-#~ "\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n"
-#~ "\n"
-#~ "Also thank you Tony Vroon for mentoring & guiding me.\n"
-#~ "\n"
-#~ "This was a Google Summer of Code 2007 project.\n"
-#~ "\n"
-#~ "Copyright 2009 John Lindgren"
-#~ msgstr ""
-#~ "Copyright (c) 2007, por Calin Crisan <ccrisan@gmail.com> y el Audacious "
-#~ "Team.\n"
-#~ "\n"
-#~ "Muchas gracias a los desarroladores de libcdio <http://www.gnu.org/"
-#~ "software/libcdio/>\n"
-#~ "\ty a los desarolladores de libcddb <http://libcddb.sourceforge.net/>.\n"
-#~ "\n"
-#~ "Gracias también a Tony Vroon por ser mi mentor y guiarme.\n"
-#~ "\n"
-#~ "Este fue un proyecto de Google Summer of Code 2007.\n"
-#~ "\n"
-#~ "Copyright 2009 John Lindgren"
-
-#~ msgid "CD Audio Plugin Configuration"
-#~ msgstr "Configuración del plugin CD Audio"
-
-#~ msgid "Digital audio extraction"
-#~ msgstr "Extración de audio digital"
-
-#~ msgid "Title information"
-#~ msgstr "Información de título"
-
-#~ msgid "Use cd-text if available"
-#~ msgstr "Utilizar cd-text si está disponible"
-
-#~ msgid "Use CDDB if available"
-#~ msgstr "Utilizar CDDB si está disponible"
-
-#~ msgid "Configure Crystalizer"
-#~ msgstr "Configurar Cristalizador"
-
-#~ msgid "Apply"
-#~ msgstr "Aplicar"
-
-#~ msgid "Configure Echo"
-#~ msgstr "Configurar Eco"
-
-#~ msgid "Delay: (ms)"
-#~ msgstr "Retraso: (ms)"
-
-#~ msgid "Volume: (%)"
-#~ msgstr "Volumen: (%)"
-
-#~ msgid "Close"
-#~ msgstr "Cerrar"
-
-#~ msgid ""
-#~ "XMMS jack Driver 0.17\n"
-#~ "\n"
-#~ "xmms-jack.sf.net\n"
-#~ "Chris Morgan<cmorgan@alum.wpi.edu>\n"
-#~ "\n"
-#~ "Audacious port by\n"
-#~ "Giacomo Lozito from develia.org"
-#~ msgstr ""
-#~ "Controlador jack XMMS 0.17\n"
-#~ "\n"
-#~ "xmms-jack.sf.net\n"
-#~ "Chris Morgan<cmorgan@alum.wpi.edu>\n"
-#~ "\n"
-#~ "Puerto Audacious por\n"
-#~ "Giacomo Lozito desde develia.org"
-
-#~ msgid "Default (%s)"
-#~ msgstr "Predeterminado (%s)"
-
-#~ msgid "OSS Driver configuration"
-#~ msgstr "Configuración del Controlador OSS"
-
-#~ msgid "Devices"
-#~ msgstr "Dispositivos"
-
-#~ msgid "Buffering:"
-#~ msgstr "Buffering:"
-
-#~ msgid "Pre-buffer (percent):"
-#~ msgstr "Pre-buffer (porcentaje):"
-
-#~ msgid "Buffering"
-#~ msgstr "Buffering"
-
-#~ msgid "Volume controls Master not PCM"
-#~ msgstr "Volumen controla al Maestro, no a PCM"
-
-#~ msgid "Mixer"
-#~ msgstr "Mezclador"
-
-#~ msgid "About OSS Driver"
-#~ msgstr "Acerca del Controlador OSS"
-
-#~ msgid "Configure Extra Stereo"
-#~ msgstr "Configurar Extra Stereo"

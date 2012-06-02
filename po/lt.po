@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-01 20:01-0400\n"
-"PO-Revision-Date: 2012-02-19 14:43+0000\n"
-"Last-Translator: Algimantas Margevičius <margevicius.algimantas@gmail.com>\n"
+"POT-Creation-Date: 2012-06-01 20:51-0400\n"
+"PO-Revision-Date: 2012-06-02 00:48+0000\n"
+"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
 "Language-Team: Lithuanian\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
@@ -495,11 +495,8 @@ msgid "AMIDI-Plug - select file"
 msgstr "AMIDI-Plug - pasirinkti failą"
 
 #: src/amidi-plug/i_configure.c:110
-#, fuzzy
 msgid "AMIDI-Plug Settings"
 msgstr ""
-"\n"
-"AMIDI-Plug "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -522,9 +519,8 @@ msgid "Load SF on player start"
 msgstr "Įkrauti SF paleidžiant grotuvą"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
-#, fuzzy
 msgid "Load SF on first MIDI file play"
-msgstr "Įkrauti SF pirmą kart paleidus midi failą"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
@@ -547,9 +543,8 @@ msgid "value:"
 msgstr "vertė:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
-#, fuzzy
 msgid "polyphony"
-msgstr "polifonija"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -618,9 +613,8 @@ msgid "Length (msec):"
 msgstr "Trukmė (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:211
-#, fuzzy
 msgid "No. of Tracks:"
-msgstr "Takelių kiekis:"
+msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -655,11 +649,8 @@ msgid "  (invalid UTF-8)"
 msgstr "  (neteisingas UTF-8)"
 
 #: src/amidi-plug/i_utils.c:36
-#, fuzzy
 msgid "About AMIDI-Plug"
 msgstr ""
-"\n"
-"AMIDI-Plug "
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -939,9 +930,8 @@ msgid "Options:"
 msgstr "Pasirinktys:"
 
 #: src/bs2b/plugin.c:138
-#, fuzzy
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr "Bauer stereofoninis-į-binaural nustatymai"
+msgstr ""
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
@@ -956,24 +946,20 @@ msgid "Presets:"
 msgstr "Profiliai:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:108
-#, fuzzy
 msgid "<b>Device</b>"
-msgstr "<b>Tarnybos</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:109
-#, fuzzy
 msgid "Read speed:"
-msgstr "Disko greitis:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:112
-#, fuzzy
 msgid "Override device:"
-msgstr "Nepaisyti numatytojo įrenginio:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:114
-#, fuzzy
 msgid "<b>Metadata</b>"
-msgstr "<b>Last.FM</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:115
 msgid "Use CD-Text"
@@ -988,24 +974,20 @@ msgid "Use HTTP instead of CDDBP"
 msgstr "Naudoti HTTP vietoj CDDBP"
 
 #: src/cdaudio-ng/cdaudio-ng.c:121
-#, fuzzy
 msgid "Server:"
-msgstr "Serveris:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
-#, fuzzy
 msgid "Path:"
-msgstr "Kelias:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:125
-#, fuzzy
 msgid "Port:"
-msgstr "Prievadas:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:131
-#, fuzzy
 msgid "Audio CD Settings"
-msgstr "Žadintuvo nustatymai"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:247
 msgid "About Audio CD Plugin"
@@ -1032,9 +1014,8 @@ msgid "Add CD"
 msgstr "Pridėti CD"
 
 #: src/compressor/plugin.c:41
-#, fuzzy
 msgid "<b>Compression</b>"
-msgstr "<b>Veiksmas:</b>"
+msgstr ""
 
 #: src/compressor/plugin.c:42
 msgid "Center volume:"
@@ -1045,9 +1026,8 @@ msgid "Dynamic range:"
 msgstr "Dinaminė sritis:"
 
 #: src/compressor/plugin.c:51
-#, fuzzy
 msgid "Dynamic Range Compressor Settings"
-msgstr "Dynamic Range Compressor Nustatymai"
+msgstr ""
 
 #: src/compressor/plugin.c:70
 msgid "About Dynamic Range Compression Plugin"
@@ -1170,48 +1150,40 @@ msgstr ""
 "dažnius tokius pat."
 
 #: src/crystalizer/crystalizer.c:42
-#, fuzzy
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Tarnybos</b>"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
-#, fuzzy
 msgid "Intensity:"
-msgstr "Efekto intensyvumas:"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:49
-#, fuzzy
 msgid "Crystalizer Settings"
-msgstr "Kanalų Mikšerio nustatymai"
+msgstr ""
 
 #: src/echo_plugin/echo.c:26
-#, fuzzy
 msgid "<b>Echo</b>"
-msgstr "<b>Veiksmas:</b>"
+msgstr ""
 
 #: src/echo_plugin/echo.c:27
-#, fuzzy
 msgid "Delay:"
-msgstr "Monitorius:"
+msgstr ""
 
 #: src/echo_plugin/echo.c:29
 msgid "ms"
 msgstr ""
 
 #: src/echo_plugin/echo.c:30
-#, fuzzy
 msgid "Feedback:"
-msgstr "Aidas: (%)"
+msgstr ""
 
 #: src/echo_plugin/echo.c:33
-#, fuzzy
 msgid "Volume:"
-msgstr "Garsas"
+msgstr ""
 
 #: src/echo_plugin/echo.c:39
-#, fuzzy
 msgid "Echo Settings"
-msgstr "Nustatymai"
+msgstr ""
 
 #: src/echo_plugin/gui.c:8
 msgid ""
@@ -1421,9 +1393,8 @@ msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1125
-#, fuzzy
 msgid "Frame parameters:"
-msgstr "Kadro parametrai:"
+msgstr ""
 
 #: src/filewriter/mp3.c:1137
 msgid "Mark as copyright"
@@ -1482,9 +1453,8 @@ msgstr ""
 "http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/gio/gtk.c:34
-#, fuzzy
 msgid "About GIO Plugin"
-msgstr "Apie OSS4 įskiepį"
+msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:303
 msgid "About Gnome Shortcut Plugin"
@@ -1609,9 +1579,8 @@ msgid "Add U_RL ..."
 msgstr "Pridėti U_RL ..."
 
 #: src/gtkui/menus.c:136
-#, fuzzy
 msgid "_Search Library"
-msgstr "Ieškoti fonotekoje"
+msgstr ""
 
 #: src/gtkui/menus.c:138
 msgid "A_bout ..."
@@ -1778,9 +1747,8 @@ msgid "Show I_nfo Bar"
 msgstr "Rodyti i_nfo juostą"
 
 #: src/gtkui/menus.c:199
-#, fuzzy
 msgid "Show Info Bar Vis_ualization"
-msgstr "Vizualizacija"
+msgstr ""
 
 #: src/gtkui/menus.c:200
 msgid "Show _Status Bar"
@@ -2053,9 +2021,8 @@ msgid "Ok"
 msgstr "Gerai"
 
 #: src/jack/jack.c:435
-#, fuzzy
 msgid "About JACK Output Plugin"
-msgstr "Apie JACK išvesties įskiepį 0.17"
+msgstr ""
 
 #: src/jack/jack.c:436
 msgid ""
@@ -2126,9 +2093,8 @@ msgid "Reconnect"
 msgstr ""
 
 #: src/lirc/configure.c:190
-#, fuzzy
 msgid "Connection"
-msgstr "Prisijungimo režimas:"
+msgstr ""
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -2149,9 +2115,8 @@ msgid "%s: trying to reconnect...\n"
 msgstr ""
 
 #: src/lirc/lirc.c:125
-#, fuzzy
 msgid "About LIRC Audacious Plugin"
-msgstr "Apie FLAC Audio įskiepį"
+msgstr ""
 
 #: src/lirc/lirc.c:398
 #, c-format
@@ -2400,9 +2365,8 @@ msgid "Library"
 msgstr "Fonoteka"
 
 #: src/search-tool/search-tool.c:221
-#, fuzzy
 msgid "Unknown Artist"
-msgstr "Pagal atlikėją"
+msgstr ""
 
 #: src/search-tool/search-tool.c:223
 msgid "Unknown Album"
@@ -2416,12 +2380,12 @@ msgid ""
 msgstr ""
 
 #: src/search-tool/search-tool.c:630
-#, fuzzy, c-format
+#, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "Pagal albumą"
-msgstr[1] "Pagal albumą"
-msgstr[2] "Pagal albumą"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: src/search-tool/search-tool.c:632
 #, c-format
@@ -2681,9 +2645,8 @@ msgid "Not stopping after song."
 msgstr "Nesustabdyti po dainos."
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
-#, fuzzy
 msgid "Autoscroll Song Name"
-msgstr "Automatiškai slinkti dainos pavadinimą"
+msgstr ""
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
@@ -3372,14 +3335,12 @@ msgid "About SndStretch"
 msgstr "Apie SndStretch"
 
 #: src/sndstretch/sndstretch_xmms.c:305
-#, fuzzy
 msgid "Volume correction"
-msgstr "Garso taisymas"
+msgstr ""
 
 #: src/sndstretch/sndstretch_xmms.c:306
-#, fuzzy
 msgid "Short overlap"
-msgstr "Trumpas užklojimas"
+msgstr ""
 
 #: src/sndstretch/sndstretch_xmms.c:352
 msgid "Speed"
@@ -3422,7 +3383,6 @@ msgstr ""
 "srautų pavadinimai)"
 
 #: src/song_change/song_change.c:461
-#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3440,21 +3400,6 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
-"Galite naudoti tokio formato žymas\n"
-"kurios bus pakeistos prieš kviečiant komandą\n"
-"(nevisos yra naudingos end-of-playlist komandai).\n"
-"\n"
-"%F: Dažnis ( hercais)\n"
-"%c: Kanalų kiekis\n"
-"%f: failo vardas (pilnas kelias)\n"
-"%l: trukmė (milisekundėmis)\n"
-"%n arba %s: Dainos pavadinimas\n"
-"%r: Rate (bitais per sekundę)\n"
-"%t: Grojaraščio vieta (%02d)\n"
-"%p: Dabar grojama (1 or 0)\n"
-"%a: Atlikėjas\n"
-"%b: Albumas\n"
-"%T: Takelio pavadinimas"
 
 #: src/song_change/song_change.c:488
 msgid ""
@@ -3538,14 +3483,12 @@ msgid "Advance in playlist when scrolling upward"
 msgstr "Slenkant aukštyn, žengti grojaraščiu"
 
 #: src/stereo_plugin/stereo.c:27
-#, fuzzy
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Tarnybos</b>"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:34
-#, fuzzy
 msgid "Extra Stereo Settings"
-msgstr "Mikšerio nustatymai:"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:50
 msgid ""
@@ -3635,7 +3578,6 @@ msgid "About Vortex Player"
 msgstr "Apie Vortex Player"
 
 #: src/vtx/about.c:15
-#, fuzzy
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor."
@@ -3643,14 +3585,6 @@ msgid ""
 "\n"
 "Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
-"Vortex formato grotuvą kūrė  Sashnov Alexander <sashnov@ngs.ru>\n"
-"Sukurtas remiantis kodu rastu _vtx.dll kurį kūrė Roman Sherbakov "
-"<v_soft@microfor.ru>\n"
-"\n"
-"Muzikos vtx formatu galim rast http://vtx.microfor.ru/music.htm\n"
-"ir kitose AY/YM muzikos svetainėse.\n"
-"\n"
-"Integravo į Audacious Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/wavpack/wavpack.c:353
 #, c-format
@@ -3668,196 +3602,3 @@ msgstr ""
 "\n"
 "Dalį įskiepio sukūrė Miles Egan\n"
 "Aplankykite Wavpack puslapį http://www.wavpack.com/\n"
-
-#~ msgid "ALSA BACKEND CONFIGURATION"
-#~ msgstr "ALSA POSISTEMĖS KONFIGŪRAVIMAS"
-
-#~ msgid "ALSA Backend not loaded or not available"
-#~ msgstr "ALSA posistemė neįkrauta arba neprieinama"
-
-#~ msgid "AMIDI-PLUG PREFERENCES"
-#~ msgstr "AMIDI-PLUG NUSTATYMAI"
-
-#~ msgid "Available backends"
-#~ msgstr "Prieinamos posistemės"
-
-#~ msgid "AMIDI-Plug - configuration"
-#~ msgstr "AMIDI-Plug - konfigūracija"
-
-#~ msgid "FLUIDSYNTH BACKEND CONFIGURATION"
-#~ msgstr "FLUIDSYNTH POSISTEMĖS KONFIGŪRAVIMAS"
-
-#~ msgid "FluidSynth Backend not loaded or not available"
-#~ msgstr "FluidSynth posistemė neįkrauta arba neprieinama"
-
-#~ msgid "TIMIDITY BACKEND CONFIGURATION"
-#~ msgstr "TIMIDITY POSISTEMĖS KONFIGŪRACIJA"
-
-#~ msgid "TiMidity Backend not loaded or not available"
-#~ msgstr "TiMidity posistemė neįkrauta arba neprieinama"
-
-#~ msgid ""
-#~ "<span size=\"smaller\">TiMidity\n"
-#~ "backend</span>"
-#~ msgstr ""
-#~ "<span size=\"smaller\">TiMidity\n"
-#~ "posistemė</span>"
-
-#~ msgid "AMIDI-Plug - about"
-#~ msgstr "AMIDI-Plug - apie"
-
-#~ msgid ""
-#~ "\n"
-#~ "modular MIDI music player\n"
-#~ "http://www.develia.org/projects.php?p=amidiplug\n"
-#~ "\n"
-#~ "written by Giacomo Lozito\n"
-#~ "< james@develia.org >\n"
-#~ "\n"
-#~ "\n"
-#~ "special thanks to...\n"
-#~ "\n"
-#~ "Clemens Ladisch and Jaroslav Kysela\n"
-#~ "for their cool programs aplaymidi and amixer; those\n"
-#~ "were really useful, along with alsa-lib docs, in order\n"
-#~ "to learn more about the ALSA API\n"
-#~ "\n"
-#~ "Alfredo Spadafina\n"
-#~ "for the nice midi keyboard logo\n"
-#~ "\n"
-#~ "Tony Vroon\n"
-#~ "for the good help with alpha testing\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "MIDI muzikos grotuvas\n"
-#~ "http://www.develia.org/projects.php?p=amidiplug\n"
-#~ "\n"
-#~ "sukūrė Giacomo Lozito\n"
-#~ "< james@develia.org >\n"
-#~ "\n"
-#~ "\n"
-#~ "ypatinga padėka...\n"
-#~ "\n"
-#~ "Clemens Ladisch ir Jaroslav Kysela\n"
-#~ "už jų puikias programas aplaymidi ir amixer; jos\n"
-#~ "iš tikro buvo naudingos, su alsa-lib docs, norint \n"
-#~ "daugiau sužinot apie ALSA API\n"
-#~ "\n"
-#~ "Alfredo Spadafina\n"
-#~ "už gražų midi klaviatūros logo\n"
-#~ "\n"
-#~ "Tony Vroon\n"
-#~ "už pagalbą testuojant alpha versiją\n"
-#~ "\n"
-
-#~ msgid "Volume Change"
-#~ msgstr "Garso keitimas"
-
-#~ msgid "Triggers OSD when volume is changed."
-#~ msgstr "Sužadina OSD kai garsas pakeičiamas."
-
-#~ msgid ""
-#~ "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
-#~ "Team.\n"
-#~ "\n"
-#~ "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
-#~ "\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n"
-#~ "\n"
-#~ "Also thank you Tony Vroon for mentoring & guiding me.\n"
-#~ "\n"
-#~ "This was a Google Summer of Code 2007 project.\n"
-#~ "\n"
-#~ "Copyright 2009 John Lindgren"
-#~ msgstr ""
-#~ "Autorinės teisės (c) 2007, sukūrė Calin Crisan <ccrisan@gmail.com> ir The "
-#~ "Audacious Team.\n"
-#~ "\n"
-#~ "Didelis dėkui libcdio kūrėjams <http://www.gnu.org/software/libcdio/>\n"
-#~ "\tir libcddb kūrėjams <http://libcddb.sourceforge.net/>.\n"
-#~ "\n"
-#~ "Beto dėkui Tony Vroon už pamokymus ir užvedimą ant kelio.\n"
-#~ "\n"
-#~ "Čia buvo Google Summer Code 2007 projektas.\n"
-#~ "\n"
-#~ "Autorinės teisės 2009 John Lindgren"
-
-#~ msgid "CD Audio Plugin Configuration"
-#~ msgstr "CD Audio Plugin Konfigūracija"
-
-#~ msgid "Digital audio extraction"
-#~ msgstr "Skaitmeninio garso išėmimas"
-
-#~ msgid "Title information"
-#~ msgstr "Pavadinimo informacija"
-
-#~ msgid "Use cd-text if available"
-#~ msgstr "Jei įmanoma naudoti cd-tekstą"
-
-#~ msgid "Use CDDB if available"
-#~ msgstr "Jei įmanoma naudoti CDDB"
-
-#~ msgid "Configure Crystalizer"
-#~ msgstr "Konfigūruoti Crystalizer"
-
-#~ msgid "Apply"
-#~ msgstr "Pritaikyti"
-
-#~ msgid "Configure Echo"
-#~ msgstr "Konfigūruoti Echo"
-
-#~ msgid "Delay: (ms)"
-#~ msgstr "Vėlavimas: (ms)"
-
-#~ msgid "Volume: (%)"
-#~ msgstr "Garsas: (%)"
-
-#~ msgid "Close"
-#~ msgstr "Užverti"
-
-#~ msgid ""
-#~ "XMMS jack Driver 0.17\n"
-#~ "\n"
-#~ "xmms-jack.sf.net\n"
-#~ "Chris Morgan<cmorgan@alum.wpi.edu>\n"
-#~ "\n"
-#~ "Audacious port by\n"
-#~ "Giacomo Lozito from develia.org"
-#~ msgstr ""
-#~ "XMMS jack Driver 0.17\n"
-#~ "\n"
-#~ "xmms-jack.sf.net\n"
-#~ "Chris Morgan<cmorgan@alum.wpi.edu>\n"
-#~ "\n"
-#~ "Pritaikė Audacious programai\n"
-#~ "Giacomo Lozito from develia.org"
-
-#~ msgid "Default (%s)"
-#~ msgstr "Numatytasis (%s)"
-
-#~ msgid "OSS Driver configuration"
-#~ msgstr "OSS Driver konfigūracija"
-
-#~ msgid "Devices"
-#~ msgstr "Įrenginiai"
-
-#~ msgid "Buffering:"
-#~ msgstr "Buferiavimas:"
-
-#~ msgid "Pre-buffer (percent):"
-#~ msgstr "Priešlaikinis buferiavimas (procentais):"
-
-#~ msgid "Buffering"
-#~ msgstr "Buferiavimas"
-
-#~ msgid "Volume controls Master not PCM"
-#~ msgstr "Garso valdymas Master ne PCM"
-
-#~ msgid "Mixer"
-#~ msgstr "Mikšeris"
-
-#~ msgid "About OSS Driver"
-#~ msgstr "Apie OSS Driver"
-
-#~ msgid "Configure Extra Stereo"
-#~ msgstr "Konfigūruoti Extra Stereo"

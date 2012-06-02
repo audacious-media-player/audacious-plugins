@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-01 20:01-0400\n"
-"PO-Revision-Date: 2012-02-25 12:07+0000\n"
-"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"POT-Creation-Date: 2012-06-01 20:51-0400\n"
+"PO-Revision-Date: 2012-06-02 00:48+0000\n"
+"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
 "Language-Team: Ukrainian\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
@@ -500,11 +500,8 @@ msgid "AMIDI-Plug - select file"
 msgstr "AMIDI-Plug - вибір файлу"
 
 #: src/amidi-plug/i_configure.c:110
-#, fuzzy
 msgid "AMIDI-Plug Settings"
 msgstr ""
-"\n"
-"AMIDI-Plug "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -527,9 +524,8 @@ msgid "Load SF on player start"
 msgstr "Завантажувати з програвачем"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
-#, fuzzy
 msgid "Load SF on first MIDI file play"
-msgstr "Завантажувати при відтворенні MIDI"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
@@ -552,9 +548,8 @@ msgid "value:"
 msgstr "значення:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
-#, fuzzy
 msgid "polyphony"
-msgstr "Поліфонія"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -623,9 +618,8 @@ msgid "Length (msec):"
 msgstr "Тривалість (мс):"
 
 #: src/amidi-plug/i_fileinfo.c:211
-#, fuzzy
 msgid "No. of Tracks:"
-msgstr "Кількість доріжок:"
+msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -660,11 +654,8 @@ msgid "  (invalid UTF-8)"
 msgstr "  (недійсний UTF-8)"
 
 #: src/amidi-plug/i_utils.c:36
-#, fuzzy
 msgid "About AMIDI-Plug"
 msgstr ""
-"\n"
-"AMIDI-Plug "
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -944,9 +935,8 @@ msgid "Options:"
 msgstr "Опції:"
 
 #: src/bs2b/plugin.c:138
-#, fuzzy
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr "Налаштування перетворення стереозвуку в бінауральний за Бауером"
+msgstr ""
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
@@ -961,24 +951,20 @@ msgid "Presets:"
 msgstr "Пресети:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:108
-#, fuzzy
 msgid "<b>Device</b>"
-msgstr "<b>Служби</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:109
-#, fuzzy
 msgid "Read speed:"
-msgstr "Швидкість обертання диска:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:112
-#, fuzzy
 msgid "Override device:"
-msgstr "Примусово встановити пристрій: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:114
-#, fuzzy
 msgid "<b>Metadata</b>"
-msgstr "<b>Last.FM</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:115
 msgid "Use CD-Text"
@@ -993,24 +979,20 @@ msgid "Use HTTP instead of CDDBP"
 msgstr "Використовувати HTTP замість CDDBP"
 
 #: src/cdaudio-ng/cdaudio-ng.c:121
-#, fuzzy
 msgid "Server:"
-msgstr "Сервер: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
-#, fuzzy
 msgid "Path:"
-msgstr "Шлях: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:125
-#, fuzzy
 msgid "Port:"
-msgstr "Порт: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:131
-#, fuzzy
 msgid "Audio CD Settings"
-msgstr "Налаштування будильника"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:247
 msgid "About Audio CD Plugin"
@@ -1037,9 +1019,8 @@ msgid "Add CD"
 msgstr "Додати CD"
 
 #: src/compressor/plugin.c:41
-#, fuzzy
 msgid "<b>Compression</b>"
-msgstr "<b>Дія:</b>"
+msgstr ""
 
 #: src/compressor/plugin.c:42
 msgid "Center volume:"
@@ -1050,9 +1031,8 @@ msgid "Dynamic range:"
 msgstr "Динамічний діапазон:"
 
 #: src/compressor/plugin.c:51
-#, fuzzy
 msgid "Dynamic Range Compressor Settings"
-msgstr "Налаштування компресора звукового діапазону"
+msgstr ""
 
 #: src/compressor/plugin.c:70
 msgid "About Dynamic Range Compression Plugin"
@@ -1176,48 +1156,40 @@ msgstr ""
 "встановлення частоти дискретизації."
 
 #: src/crystalizer/crystalizer.c:42
-#, fuzzy
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Служби</b>"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
-#, fuzzy
 msgid "Intensity:"
-msgstr "Інтенсивність ефекту:"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:49
-#, fuzzy
 msgid "Crystalizer Settings"
-msgstr "Налаштування змішувача каналів"
+msgstr ""
 
 #: src/echo_plugin/echo.c:26
-#, fuzzy
 msgid "<b>Echo</b>"
-msgstr "<b>Дія:</b>"
+msgstr ""
 
 #: src/echo_plugin/echo.c:27
-#, fuzzy
 msgid "Delay:"
-msgstr "Показ:"
+msgstr ""
 
 #: src/echo_plugin/echo.c:29
 msgid "ms"
 msgstr ""
 
 #: src/echo_plugin/echo.c:30
-#, fuzzy
 msgid "Feedback:"
-msgstr "Зворотній зв’язок (%):"
+msgstr ""
 
 #: src/echo_plugin/echo.c:33
-#, fuzzy
 msgid "Volume:"
-msgstr "Гучність"
+msgstr ""
 
 #: src/echo_plugin/echo.c:39
-#, fuzzy
 msgid "Echo Settings"
-msgstr "Налаштування"
+msgstr ""
 
 #: src/echo_plugin/gui.c:8
 msgid ""
@@ -1428,9 +1400,8 @@ msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1125
-#, fuzzy
 msgid "Frame parameters:"
-msgstr "Позначки:"
+msgstr ""
 
 #: src/filewriter/mp3.c:1137
 msgid "Mark as copyright"
@@ -1488,9 +1459,8 @@ msgstr ""
 "http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/gio/gtk.c:34
-#, fuzzy
 msgid "About GIO Plugin"
-msgstr "Про плаґін виводу в OSS4"
+msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:303
 msgid "About Gnome Shortcut Plugin"
@@ -1615,9 +1585,8 @@ msgid "Add U_RL ..."
 msgstr "Додати файли _за посиланням..."
 
 #: src/gtkui/menus.c:136
-#, fuzzy
 msgid "_Search Library"
-msgstr "Шукати в бібліотеці"
+msgstr ""
 
 #: src/gtkui/menus.c:138
 msgid "A_bout ..."
@@ -1784,9 +1753,8 @@ msgid "Show I_nfo Bar"
 msgstr "Показувати панель і_нформації"
 
 #: src/gtkui/menus.c:199
-#, fuzzy
 msgid "Show Info Bar Vis_ualization"
-msgstr "Візуалізація"
+msgstr ""
 
 #: src/gtkui/menus.c:200
 msgid "Show _Status Bar"
@@ -2059,9 +2027,8 @@ msgid "Ok"
 msgstr "Гаразд"
 
 #: src/jack/jack.c:435
-#, fuzzy
 msgid "About JACK Output Plugin"
-msgstr "Про плаґін виводу JACK"
+msgstr ""
 
 #: src/jack/jack.c:436
 msgid ""
@@ -2131,9 +2098,8 @@ msgid "Reconnect"
 msgstr ""
 
 #: src/lirc/configure.c:190
-#, fuzzy
 msgid "Connection"
-msgstr "Режим з’єднання:"
+msgstr ""
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -2154,9 +2120,8 @@ msgid "%s: trying to reconnect...\n"
 msgstr ""
 
 #: src/lirc/lirc.c:125
-#, fuzzy
 msgid "About LIRC Audacious Plugin"
-msgstr "Про плаґін вводу з FLAC"
+msgstr ""
 
 #: src/lirc/lirc.c:398
 #, c-format
@@ -2405,9 +2370,8 @@ msgid "Library"
 msgstr "Бібліотека"
 
 #: src/search-tool/search-tool.c:221
-#, fuzzy
 msgid "Unknown Artist"
-msgstr "За виконавцем"
+msgstr ""
 
 #: src/search-tool/search-tool.c:223
 msgid "Unknown Album"
@@ -2421,12 +2385,12 @@ msgid ""
 msgstr ""
 
 #: src/search-tool/search-tool.c:630
-#, fuzzy, c-format
+#, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "За альбомом"
-msgstr[1] "За альбомом"
-msgstr[2] "За альбомом"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: src/search-tool/search-tool.c:632
 #, c-format
@@ -2686,9 +2650,8 @@ msgid "Not stopping after song."
 msgstr "Продовжити після цієї доріжки."
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
-#, fuzzy
 msgid "Autoscroll Song Name"
-msgstr "Прокручувати назву доріжки"
+msgstr ""
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
@@ -3376,14 +3339,12 @@ msgid "About SndStretch"
 msgstr "Про SndStretch"
 
 #: src/sndstretch/sndstretch_xmms.c:305
-#, fuzzy
 msgid "Volume correction"
-msgstr "Коригувати гучність"
+msgstr ""
 
 #: src/sndstretch/sndstretch_xmms.c:306
-#, fuzzy
 msgid "Short overlap"
-msgstr "Придушувати відлуння"
+msgstr ""
 
 #: src/sndstretch/sndstretch_xmms.c:352
 msgid "Speed"
@@ -3424,7 +3385,6 @@ msgid ""
 msgstr "Виконувати при зміні назви доріжки (онлайн-потоки тощо)."
 
 #: src/song_change/song_change.c:461
-#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3442,20 +3402,6 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
-"Наступні змінні Audacious надає для використання в командах\n"
-"(не всі можна викориfor the end-of-playlist command):\n"
-"\n"
-"%F: Frequency (in hertz)\n"
-"%c: Number of channels\n"
-"%f: filename (full path)\n"
-"%l: length (in milliseconds)\n"
-"%n or %s: Song name\n"
-"%r: Rate (in bits per second)\n"
-"%t: Playlist position (%02d)\n"
-"%p: Currently playing (1 or 0)\n"
-"%a: Artist\n"
-"%b: Album\n"
-"%T: Track title"
 
 #: src/song_change/song_change.c:488
 msgid ""
@@ -3540,14 +3486,12 @@ msgid "Advance in playlist when scrolling upward"
 msgstr "Просуватися списком відтворення при прокручуванні догори"
 
 #: src/stereo_plugin/stereo.c:27
-#, fuzzy
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Служби</b>"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:34
-#, fuzzy
 msgid "Extra Stereo Settings"
-msgstr "Налаштування мікшера:"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:50
 msgid ""
@@ -3638,7 +3582,6 @@ msgid "About Vortex Player"
 msgstr "Про плаґін вводу з Vortex"
 
 #: src/vtx/about.c:15
-#, fuzzy
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor."
@@ -3646,16 +3589,6 @@ msgid ""
 "\n"
 "Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
-"Програвач файлів формату Vortex написаний Олександром Сашновим <sashnov@ngs."
-"ru>\n"
-"на основі джерела оригінального in_vtx.dll, написаного Романом Щербаковим "
-"<v_soft@microfor.ru>\n"
-"\n"
-"Музику в форматі VTX можна знайти на http://vtx.microfor.ru/music.htm (вже "
-"немає),\n"
-"http://bulba.untergrund.net/ та інших сайтах про AY/YM.\n"
-"\n"
-"Імплементацію для Audacious написав Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/wavpack/wavpack.c:353
 #, c-format
@@ -3673,195 +3606,3 @@ msgstr ""
 "\n"
 "Деякий код написав Miles Egan.\n"
 "Відвідайте сайт Wavpack: http://www.wavpack.com/\n"
-
-#~ msgid "ALSA BACKEND CONFIGURATION"
-#~ msgstr "Налаштування постпроцесора ALSA"
-
-#~ msgid "ALSA Backend not loaded or not available"
-#~ msgstr "Постпроцесор ALSA вимкнений або недоступний."
-
-#~ msgid "AMIDI-PLUG PREFERENCES"
-#~ msgstr "Налаштування AMIDI-Plug"
-
-#~ msgid "Available backends"
-#~ msgstr "Наявні постпроцесори"
-
-#~ msgid "AMIDI-Plug - configuration"
-#~ msgstr "AMIDI-Plug - налаштування"
-
-#~ msgid "FLUIDSYNTH BACKEND CONFIGURATION"
-#~ msgstr "Налаштування постпроцесора FluidSynth"
-
-#~ msgid "FluidSynth Backend not loaded or not available"
-#~ msgstr "Постпроцесор FluidSynth вимкнений або недоступний."
-
-#~ msgid "TIMIDITY BACKEND CONFIGURATION"
-#~ msgstr "Налаштування постпроцесора TiMidity"
-
-#~ msgid "TiMidity Backend not loaded or not available"
-#~ msgstr "Постпроцесор TiMidity вимкнений або недоступний."
-
-#~ msgid ""
-#~ "<span size=\"smaller\">TiMidity\n"
-#~ "backend</span>"
-#~ msgstr ""
-#~ "<span size=\"smaller\">Постпроцесор\n"
-#~ "TiMidity</span>"
-
-#~ msgid "AMIDI-Plug - about"
-#~ msgstr "Про AMIDI-Plug"
-
-#~ msgid ""
-#~ "\n"
-#~ "modular MIDI music player\n"
-#~ "http://www.develia.org/projects.php?p=amidiplug\n"
-#~ "\n"
-#~ "written by Giacomo Lozito\n"
-#~ "< james@develia.org >\n"
-#~ "\n"
-#~ "\n"
-#~ "special thanks to...\n"
-#~ "\n"
-#~ "Clemens Ladisch and Jaroslav Kysela\n"
-#~ "for their cool programs aplaymidi and amixer; those\n"
-#~ "were really useful, along with alsa-lib docs, in order\n"
-#~ "to learn more about the ALSA API\n"
-#~ "\n"
-#~ "Alfredo Spadafina\n"
-#~ "for the nice midi keyboard logo\n"
-#~ "\n"
-#~ "Tony Vroon\n"
-#~ "for the good help with alpha testing\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "модульний MIDI-програвач\n"
-#~ "http://www.develia.org/projects.php?p=amidiplug\n"
-#~ "\n"
-#~ "написаний Giacomo Lozito\n"
-#~ "< james@develia.org >\n"
-#~ "\n"
-#~ "Особлива подяка:\n"
-#~ "\n"
-#~ "Clemens Ladisch та Jaroslav Kysela\n"
-#~ "за їхні класні програми aplaymidi й amixer, котрі були \n"
-#~ "дуже корисними, разом із документацією alsa-lib,\n"
-#~ "у вивченні ALSA API;\n"
-#~ "\n"
-#~ "Alfredo Spadafina\n"
-#~ "за гарненький логотип MIDI-клавіатури;\n"
-#~ "\n"
-#~ "Tony Vroon\n"
-#~ "за допомогу з альфа-тестуванням.\n"
-#~ "\n"
-
-#~ msgid "Volume Change"
-#~ msgstr "Зміна гучності"
-
-#~ msgid "Triggers OSD when volume is changed."
-#~ msgstr "Показує повідомлення при зміні гучності."
-
-#~ msgid ""
-#~ "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
-#~ "Team.\n"
-#~ "\n"
-#~ "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
-#~ "\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n"
-#~ "\n"
-#~ "Also thank you Tony Vroon for mentoring & guiding me.\n"
-#~ "\n"
-#~ "This was a Google Summer of Code 2007 project.\n"
-#~ "\n"
-#~ "Copyright 2009 John Lindgren"
-#~ msgstr ""
-#~ "(c) 2007, Calin Crisan <ccrisan@gmail.com> і Команда Audacious.\n"
-#~ "\n"
-#~ "(c) 2009, John Lindgren.\n"
-#~ "\n"
-#~ "Велике спасибі розробникам libcdio <http://www.gnu.org/software/libcdio/"
-#~ ">\n"
-#~ "і розробникам libcddb <http://libcddb.sourceforge.net/>.\n"
-#~ "\n"
-#~ "Також дякую Tony Vroon за наставництво й спрямовування.\n"
-#~ "\n"
-#~ "Це був проект \"Google Summer of Code 2007\"."
-
-#~ msgid "CD Audio Plugin Configuration"
-#~ msgstr "Налаштування плаґіну відтворення CD"
-
-#~ msgid "Digital audio extraction"
-#~ msgstr "Цифрове добування аудіо"
-
-#~ msgid "Title information"
-#~ msgstr "Інформація про назви"
-
-#~ msgid "Use cd-text if available"
-#~ msgstr "Використовувати CD-Text за наявності"
-
-#~ msgid "Use CDDB if available"
-#~ msgstr "Використовувати CDDB за можливості"
-
-#~ msgid "Configure Crystalizer"
-#~ msgstr "Налаштування Кристалізатора"
-
-#~ msgid "Apply"
-#~ msgstr "Застосувати"
-
-#~ msgid "Configure Echo"
-#~ msgstr "Налаштування відлуння"
-
-#~ msgid "Delay: (ms)"
-#~ msgstr "Затримка (мс):"
-
-#~ msgid "Volume: (%)"
-#~ msgstr "Гучність (%): "
-
-#~ msgid "Close"
-#~ msgstr "Закрити"
-
-#~ msgid ""
-#~ "XMMS jack Driver 0.17\n"
-#~ "\n"
-#~ "xmms-jack.sf.net\n"
-#~ "Chris Morgan<cmorgan@alum.wpi.edu>\n"
-#~ "\n"
-#~ "Audacious port by\n"
-#~ "Giacomo Lozito from develia.org"
-#~ msgstr ""
-#~ "Драйвер JACK до XMMS 0.17\n"
-#~ "\n"
-#~ "xmms-jack.sf.net\n"
-#~ "Автор: Chris Morgan <cmorgan@alum.wpi.edu>\n"
-#~ "\n"
-#~ "Giacomo Lozito із develia.org\n"
-#~ "спортував під Audacious"
-
-#~ msgid "Default (%s)"
-#~ msgstr "Типово (%s)"
-
-#~ msgid "OSS Driver configuration"
-#~ msgstr "Налаштування драйвера OSS"
-
-#~ msgid "Devices"
-#~ msgstr "Прилади"
-
-#~ msgid "Buffering:"
-#~ msgstr "Буферування:"
-
-#~ msgid "Pre-buffer (percent):"
-#~ msgstr "Попередня буферизація (%):"
-
-#~ msgid "Buffering"
-#~ msgstr "Буферування"
-
-#~ msgid "Volume controls Master not PCM"
-#~ msgstr "Гучність контролює Master, не PCM."
-
-#~ msgid "Mixer"
-#~ msgstr "Мікшер"
-
-#~ msgid "About OSS Driver"
-#~ msgstr "Про драйвер OSS"
-
-#~ msgid "Configure Extra Stereo"
-#~ msgstr "Налаштування розширеного стерео"

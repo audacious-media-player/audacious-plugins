@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-01 20:01-0400\n"
-"PO-Revision-Date: 2012-02-13 14:41+0000\n"
-"Last-Translator: Tomáš Vadina <kyberdev@gmail.com>\n"
+"POT-Creation-Date: 2012-06-01 20:51-0400\n"
+"PO-Revision-Date: 2012-06-02 00:48+0000\n"
+"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
 "Language-Team: Slovak\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
@@ -392,7 +392,6 @@ msgid "FluidSynth Backend "
 msgstr "Koncové zariadenie FluidSynth "
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
-#, fuzzy
 msgid ""
 "This backend produces audio by sending MIDI events to FluidSynth, a real-"
 "time software synthesizer based on the SoundFont2 specification (www."
@@ -401,12 +400,6 @@ msgid ""
 "by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"Toto koncové zariadenie vytvára zvuk posielaním MIDI udalostí do FluidSynth "
-"(softvérový syntetizátor pracujúci v reálnom čase založený na špecifikácii "
-"SoundFont2 www.fluidsynth.org).\n"
-"Vyprodukovaný zvuk môže byť upravený efektovými modulmi prehrávača a "
-"následne je spracovaný zvoleným výstupným modulom.\n"
-"Ovládač koncového zariadenia napísal Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
@@ -493,11 +486,8 @@ msgid "AMIDI-Plug - select file"
 msgstr "AMIDI-Plug - vyberte súbor"
 
 #: src/amidi-plug/i_configure.c:110
-#, fuzzy
 msgid "AMIDI-Plug Settings"
 msgstr ""
-"\n"
-"AMIDI-Plug "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -520,9 +510,8 @@ msgid "Load SF on player start"
 msgstr "Načítať SoundFont pri spustení prehrávača"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
-#, fuzzy
 msgid "Load SF on first MIDI file play"
-msgstr "Načítať SoundFont pri prehrávaní prvého MIDI súboru"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
@@ -545,9 +534,8 @@ msgid "value:"
 msgstr "hodnota:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
-#, fuzzy
 msgid "polyphony"
-msgstr "viachlas"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -616,9 +604,8 @@ msgid "Length (msec):"
 msgstr "Dĺžka (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:211
-#, fuzzy
 msgid "No. of Tracks:"
-msgstr "Počet stôp:"
+msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -653,11 +640,8 @@ msgid "  (invalid UTF-8)"
 msgstr "  (neplatné UTF-8)"
 
 #: src/amidi-plug/i_utils.c:36
-#, fuzzy
 msgid "About AMIDI-Plug"
 msgstr ""
-"\n"
-"AMIDI-Plug "
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -938,9 +922,8 @@ msgid "Options:"
 msgstr "Možnosti:"
 
 #: src/bs2b/plugin.c:138
-#, fuzzy
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr "Predvoľby Bauer stereophonic-to-binaural"
+msgstr ""
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
@@ -955,24 +938,20 @@ msgid "Presets:"
 msgstr "Predvoľby:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:108
-#, fuzzy
 msgid "<b>Device</b>"
-msgstr "<b>Služby</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:109
-#, fuzzy
 msgid "Read speed:"
-msgstr "Rýchlosť disku:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:112
-#, fuzzy
 msgid "Override device:"
-msgstr "Nahradiť predvolené zariadenie: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:114
-#, fuzzy
 msgid "<b>Metadata</b>"
-msgstr "<b>Last.FM</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:115
 msgid "Use CD-Text"
@@ -987,24 +966,20 @@ msgid "Use HTTP instead of CDDBP"
 msgstr "Namiesto CDDBP použiť HTTP"
 
 #: src/cdaudio-ng/cdaudio-ng.c:121
-#, fuzzy
 msgid "Server:"
-msgstr "Server: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
-#, fuzzy
 msgid "Path:"
-msgstr "Cesta: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:125
-#, fuzzy
 msgid "Port:"
-msgstr "Port: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:131
-#, fuzzy
 msgid "Audio CD Settings"
-msgstr "Nastavenie Alarmu"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:247
 msgid "About Audio CD Plugin"
@@ -1031,9 +1006,8 @@ msgid "Add CD"
 msgstr "Pridať CD"
 
 #: src/compressor/plugin.c:41
-#, fuzzy
 msgid "<b>Compression</b>"
-msgstr "<b>Činnosť:</b>"
+msgstr ""
 
 #: src/compressor/plugin.c:42
 msgid "Center volume:"
@@ -1044,9 +1018,8 @@ msgid "Dynamic range:"
 msgstr "Dynamický rozsah:"
 
 #: src/compressor/plugin.c:51
-#, fuzzy
 msgid "Dynamic Range Compressor Settings"
-msgstr "Nastavenia kompresie dynamického rozsahu"
+msgstr ""
 
 #: src/compressor/plugin.c:70
 msgid "About Dynamic Range Compression Plugin"
@@ -1167,48 +1140,40 @@ msgstr ""
 "modul „Konvertor vzorkovacej frekvencie“."
 
 #: src/crystalizer/crystalizer.c:42
-#, fuzzy
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Služby</b>"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
-#, fuzzy
 msgid "Intensity:"
-msgstr "Sila efektu:"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:49
-#, fuzzy
 msgid "Crystalizer Settings"
-msgstr "Nastavenie zniešavača kanálov"
+msgstr ""
 
 #: src/echo_plugin/echo.c:26
-#, fuzzy
 msgid "<b>Echo</b>"
-msgstr "<b>Činnosť:</b>"
+msgstr ""
 
 #: src/echo_plugin/echo.c:27
-#, fuzzy
 msgid "Delay:"
-msgstr "Zobrazenie:"
+msgstr ""
 
 #: src/echo_plugin/echo.c:29
 msgid "ms"
 msgstr ""
 
 #: src/echo_plugin/echo.c:30
-#, fuzzy
 msgid "Feedback:"
-msgstr "Spätná väzba: (%)"
+msgstr ""
 
 #: src/echo_plugin/echo.c:33
-#, fuzzy
 msgid "Volume:"
-msgstr "Hlasitosť"
+msgstr ""
 
 #: src/echo_plugin/echo.c:39
-#, fuzzy
 msgid "Echo Settings"
-msgstr "Nastavenie"
+msgstr ""
 
 #: src/echo_plugin/gui.c:8
 msgid ""
@@ -1418,9 +1383,8 @@ msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1125
-#, fuzzy
 msgid "Frame parameters:"
-msgstr "Parametre rámcov:"
+msgstr ""
 
 #: src/filewriter/mp3.c:1137
 msgid "Mark as copyright"
@@ -1479,9 +1443,8 @@ msgstr ""
 "http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/gio/gtk.c:34
-#, fuzzy
 msgid "About GIO Plugin"
-msgstr "O module OSS4"
+msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:303
 msgid "About Gnome Shortcut Plugin"
@@ -1606,9 +1569,8 @@ msgid "Add U_RL ..."
 msgstr "Pridať U_RL ..."
 
 #: src/gtkui/menus.c:136
-#, fuzzy
 msgid "_Search Library"
-msgstr "Vyhľadať knižnicu"
+msgstr ""
 
 #: src/gtkui/menus.c:138
 msgid "A_bout ..."
@@ -1775,9 +1737,8 @@ msgid "Show I_nfo Bar"
 msgstr "Zobraziť panel s i_nformáciami"
 
 #: src/gtkui/menus.c:199
-#, fuzzy
 msgid "Show Info Bar Vis_ualization"
-msgstr "Vizualizácia"
+msgstr ""
 
 #: src/gtkui/menus.c:200
 msgid "Show _Status Bar"
@@ -2050,9 +2011,8 @@ msgid "Ok"
 msgstr "OK"
 
 #: src/jack/jack.c:435
-#, fuzzy
 msgid "About JACK Output Plugin"
-msgstr "O výstupnom module JACK 0.17"
+msgstr ""
 
 #: src/jack/jack.c:436
 msgid ""
@@ -2123,9 +2083,8 @@ msgid "Reconnect"
 msgstr ""
 
 #: src/lirc/configure.c:190
-#, fuzzy
 msgid "Connection"
-msgstr "Režim pripojenia:"
+msgstr ""
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -2146,9 +2105,8 @@ msgid "%s: trying to reconnect...\n"
 msgstr ""
 
 #: src/lirc/lirc.c:125
-#, fuzzy
 msgid "About LIRC Audacious Plugin"
-msgstr "O module FLAC Audio"
+msgstr ""
 
 #: src/lirc/lirc.c:398
 #, c-format
@@ -2398,9 +2356,8 @@ msgid "Library"
 msgstr "Knižnica"
 
 #: src/search-tool/search-tool.c:221
-#, fuzzy
 msgid "Unknown Artist"
-msgstr "Podľa umelca"
+msgstr ""
 
 #: src/search-tool/search-tool.c:223
 msgid "Unknown Album"
@@ -2414,12 +2371,12 @@ msgid ""
 msgstr ""
 
 #: src/search-tool/search-tool.c:630
-#, fuzzy, c-format
+#, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "Podľa albumu"
-msgstr[1] "Podľa albumu"
-msgstr[2] "Podľa albumu"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: src/search-tool/search-tool.c:632
 #, c-format
@@ -2679,9 +2636,8 @@ msgid "Not stopping after song."
 msgstr "Nezastaviť po skončení skladby."
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
-#, fuzzy
 msgid "Autoscroll Song Name"
-msgstr "Automatický posun názvu skladby"
+msgstr ""
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
@@ -3371,14 +3327,12 @@ msgid "About SndStretch"
 msgstr "O module SndStretch"
 
 #: src/sndstretch/sndstretch_xmms.c:305
-#, fuzzy
 msgid "Volume correction"
-msgstr "Oprava hlasitosti"
+msgstr ""
 
 #: src/sndstretch/sndstretch_xmms.c:306
-#, fuzzy
 msgid "Short overlap"
-msgstr "Krátke presahy"
+msgstr ""
 
 #: src/sndstretch/sndstretch_xmms.c:352
 msgid "Speed"
@@ -3422,7 +3376,6 @@ msgstr ""
 "prúdoch)."
 
 #: src/song_change/song_change.c:461
-#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3440,21 +3393,6 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
-"Môžete použiť nasledujúce formátovacie reťazce,\n"
-"ktoré budú pri spustení príkazu nahradené (nie všetky\n"
-"sú užitočné pre príkaz spúšťaný na konci zoznamu skladieb).\n"
-"\n"
-"%F: Frekvencia (v hertzoch)\n"
-"%c: Počet kanálov\n"
-"%f: Názov súboru (celá cesta)\n"
-"%l: Dĺžka (v milisekundách)\n"
-"%n alebo %s: Názov skladby\n"
-"%r: Dátový tok (v bitoch za sekundu)\n"
-"%t: Pozícia v zozname skladieb (%02d)\n"
-"%p: Práve sa hrá (1 alebo 0)\n"
-"%a: Umelec\n"
-"%b: Album\n"
-"%T: Názov stopy"
 
 #: src/song_change/song_change.c:488
 msgid ""
@@ -3540,14 +3478,12 @@ msgid "Advance in playlist when scrolling upward"
 msgstr "Pokračovať v zozname skladieb ak sa posúva smerom hore"
 
 #: src/stereo_plugin/stereo.c:27
-#, fuzzy
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Služby</b>"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:34
-#, fuzzy
 msgid "Extra Stereo Settings"
-msgstr "Nastavenia mixéra:"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:50
 msgid ""
@@ -3638,7 +3574,6 @@ msgid "About Vortex Player"
 msgstr "O prehrávači Vortex"
 
 #: src/vtx/about.c:15
-#, fuzzy
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor."
@@ -3646,14 +3581,6 @@ msgid ""
 "\n"
 "Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
-"Prehrávač hudobného formátu Vortex napísal <sashnov@ngs.ru>\n"
-"Založené na pôvodom zdrojovom kóde in_vtx.dll od Romana Sherbakova "
-"<v_soft@microfor.ru>\n"
-"\n"
-"Hudba vo formáte vtx môže byť nájdená na  http://vtx.microfor.ru/music.htm a "
-"ďalších AY/YM hudobných stránkach.\n"
-"\n"
-"Pre Audacious upravil Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/wavpack/wavpack.c:353
 #, c-format
@@ -3671,198 +3598,3 @@ msgstr ""
 "\n"
 "Niektoré časti kódu modulu napísal Miles Egan\n"
 "Navštívte stránku Wavpack na adrese http://www.wavpack.com/\n"
-
-#~ msgid "ALSA BACKEND CONFIGURATION"
-#~ msgstr "KONFIGURÁCIA KONCOVÉHO ZARIADENIE PRE ALSA"
-
-#~ msgid "ALSA Backend not loaded or not available"
-#~ msgstr ""
-#~ "Ovládač koncového zariadenia ALSA nie je načítaný, alebo nie je dostupný"
-
-#~ msgid "AMIDI-PLUG PREFERENCES"
-#~ msgstr "PREDVOĽBY AMIDI-PLUG"
-
-#~ msgid "Available backends"
-#~ msgstr "Dostupné koncové zariadenia"
-
-#~ msgid "AMIDI-Plug - configuration"
-#~ msgstr "AMIDI-Plug - nastavenie"
-
-#~ msgid "FLUIDSYNTH BACKEND CONFIGURATION"
-#~ msgstr "NASTAVENIE KONCOV0HO ZARIADENIA FLUIDSYNTH"
-
-#~ msgid "FluidSynth Backend not loaded or not available"
-#~ msgstr ""
-#~ "Ovládač koncového zariadenia FluidSynth nie je načítaný, alebo nie je "
-#~ "dostupný"
-
-#~ msgid "TIMIDITY BACKEND CONFIGURATION"
-#~ msgstr "NASTAVENIE KONCOVÉHO ZARIADENIA TIMIDITY"
-
-#~ msgid "TiMidity Backend not loaded or not available"
-#~ msgstr "Koncové zariadenie TiMidity nie je načítané, alebo nie je dostupné"
-
-#~ msgid ""
-#~ "<span size=\"smaller\">TiMidity\n"
-#~ "backend</span>"
-#~ msgstr ""
-#~ "<span size=\"smaller\">Koncové zariadenie\n"
-#~ "TiMidity</span>"
-
-#~ msgid "AMIDI-Plug - about"
-#~ msgstr "O module AMIDI-Plug"
-
-#~ msgid ""
-#~ "\n"
-#~ "modular MIDI music player\n"
-#~ "http://www.develia.org/projects.php?p=amidiplug\n"
-#~ "\n"
-#~ "written by Giacomo Lozito\n"
-#~ "< james@develia.org >\n"
-#~ "\n"
-#~ "\n"
-#~ "special thanks to...\n"
-#~ "\n"
-#~ "Clemens Ladisch and Jaroslav Kysela\n"
-#~ "for their cool programs aplaymidi and amixer; those\n"
-#~ "were really useful, along with alsa-lib docs, in order\n"
-#~ "to learn more about the ALSA API\n"
-#~ "\n"
-#~ "Alfredo Spadafina\n"
-#~ "for the nice midi keyboard logo\n"
-#~ "\n"
-#~ "Tony Vroon\n"
-#~ "for the good help with alpha testing\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "modulárny prehrávač MIDI hudby\n"
-#~ "http://www.develia.org/projects.php?p=amidiplug\n"
-#~ "\n"
-#~ "napísal Giacomo Lozito\n"
-#~ "< james@develia.org >\n"
-#~ "\n"
-#~ "\n"
-#~ "zvláštne poďakovanie patrí…\n"
-#~ "\n"
-#~ "Clemensovi Ladischovi a Jaroslavovi Kyselovi\n"
-#~ "za ich úžasné programy aplaymidi a amixer; tieto\n"
-#~ "boli naozaj užitočné, spolu s dokumentáciou alsa-lib,\n"
-#~ "aby som sa dozvedel viac o ALSA API\n"
-#~ " <<<<<<<<<<<\n"
-#~ "Alfredovi Spadafinovi\n"
-#~ "za pekné logo MIDI klávesnice\n"
-#~ "\n"
-#~ "Tonymu Vroonovi\n"
-#~ "za pomoc pri testovaní alfa verzie\n"
-#~ "\n"
-
-#~ msgid "Volume Change"
-#~ msgstr "Zmena hlasitosti"
-
-#~ msgid "Triggers OSD when volume is changed."
-#~ msgstr "OSD sa zobrazí pri zmene hlasitosti."
-
-#~ msgid ""
-#~ "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
-#~ "Team.\n"
-#~ "\n"
-#~ "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
-#~ "\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n"
-#~ "\n"
-#~ "Also thank you Tony Vroon for mentoring & guiding me.\n"
-#~ "\n"
-#~ "This was a Google Summer of Code 2007 project.\n"
-#~ "\n"
-#~ "Copyright 2009 John Lindgren"
-#~ msgstr ""
-#~ "Copyright (c) 2007, Calin Crisan <ccrisan@gmail.com> a tím Audacious.\n"
-#~ "\n"
-#~ "Veľká vďaka patrí vývojárom libcdio <http://www.gnu.org/software/libcdio/"
-#~ "> a libcddb <http://libcddb.sourceforge.net/>.\n"
-#~ "\n"
-#~ "Taktiež ďakujem Tonymu Vroonovi za rady a vedenie.\n"
-#~ "\n"
-#~ "Toto bol Google Summer of Code 2007 projekt.\n"
-#~ "\n"
-#~ "Copyright 2009 John Lindgren"
-
-#~ msgid "CD Audio Plugin Configuration"
-#~ msgstr "Nastavenie modulu zvukových CD"
-
-#~ msgid "Digital audio extraction"
-#~ msgstr "Digitálne získane zvuku"
-
-#~ msgid "Title information"
-#~ msgstr "Informácie o titule"
-
-#~ msgid "Use cd-text if available"
-#~ msgstr "Ak je k dispozícii, použiť cd-text"
-
-#~ msgid "Use CDDB if available"
-#~ msgstr "Ak je k dispozícii, použiť CDDB"
-
-#~ msgid "Configure Crystalizer"
-#~ msgstr "Nastaviť Crystalizer"
-
-#~ msgid "Apply"
-#~ msgstr "Použiť"
-
-#~ msgid "Configure Echo"
-#~ msgstr "Nastaviť ozvenu"
-
-#~ msgid "Delay: (ms)"
-#~ msgstr "Oneskorenie: (ms)"
-
-#~ msgid "Volume: (%)"
-#~ msgstr "Hlasitosť: (%)"
-
-#~ msgid "Close"
-#~ msgstr "Zatvoriť"
-
-#~ msgid ""
-#~ "XMMS jack Driver 0.17\n"
-#~ "\n"
-#~ "xmms-jack.sf.net\n"
-#~ "Chris Morgan<cmorgan@alum.wpi.edu>\n"
-#~ "\n"
-#~ "Audacious port by\n"
-#~ "Giacomo Lozito from develia.org"
-#~ msgstr ""
-#~ "Ovládač jack pre XMMS 0.17\n"
-#~ "\n"
-#~ "xmms-jack.sf.net\n"
-#~ "Chris Morgan<cmorgan@alum.wpi.edu>\n"
-#~ "\n"
-#~ "Pre Audacious upravil\n"
-#~ "Giacomo Lozito z develia.org"
-
-#~ msgid "Default (%s)"
-#~ msgstr "Predvolené (%s)"
-
-#~ msgid "OSS Driver configuration"
-#~ msgstr "Nastavenie ovládača OSS"
-
-#~ msgid "Devices"
-#~ msgstr "Zariadenia"
-
-#~ msgid "Buffering:"
-#~ msgstr "Vyrovnávanie:"
-
-#~ msgid "Pre-buffer (percent):"
-#~ msgstr "Dopredu načítať (v percentách):"
-
-#~ msgid "Buffering"
-#~ msgstr "Vyrovnávanie"
-
-#~ msgid "Volume controls Master not PCM"
-#~ msgstr "Hlasitosť je ovládaná kanálom Master a nie PCM"
-
-#~ msgid "Mixer"
-#~ msgstr "Mixér"
-
-#~ msgid "About OSS Driver"
-#~ msgstr "O module OSS"
-
-#~ msgid "Configure Extra Stereo"
-#~ msgstr "Nastaviť Extra stereo"
