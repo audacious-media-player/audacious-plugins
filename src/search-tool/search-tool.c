@@ -303,6 +303,9 @@ static void do_search (void)
 {
     index_delete (items, 0, index_count (items));
 
+    if (! database)
+        return;
+
     SearchState state;
 
     for (int f = 0; f < FIELDS; f ++)
