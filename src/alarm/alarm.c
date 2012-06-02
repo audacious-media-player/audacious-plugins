@@ -303,18 +303,6 @@ static void alarm_read_config(void)
 }
 
 /*
- * display an about box
- */
-static void alarm_about(void)
-{
-   static GtkWidget *about_dialog = NULL;
-
-   audgui_simple_message (& about_dialog, GTK_MESSAGE_INFO, _("About Alarm"),
-    _("A plugin that can be used to start playing at a certain time.\n\n"
-    "Originally written by Adam Feakin and Daniel Stodden."));
-}
-
-/*
  * displays the configuration window and opens the config file.
  */
 static void alarm_configure(void)
@@ -836,12 +824,16 @@ static void alarm_cleanup(void)
    cmdstr = NULL;
 }
 
+static const char alarm_about[] =
+ "A plugin that can be used to start playing at a certain time.\n\n"
+ "Originally written by Adam Feakin and Daniel Stodden.";
+
 AUD_GENERAL_PLUGIN
 (
      .name = N_("Alarm"),
      .domain = PACKAGE,
+     .about_text = alarm_about,
      .init = alarm_init,
-     .about = alarm_about,
      .configure = alarm_configure,
      .cleanup = alarm_cleanup,
 )
