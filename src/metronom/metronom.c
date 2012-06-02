@@ -1,6 +1,5 @@
 /*
- *  Copyright 2000 Martin Strau? <mys@faveve.uni-stuttgart.de>
- *
+ *  Copyright 2000 Martin Strauss <mys@faveve.uni-stuttgart.de>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -78,17 +77,6 @@ gdouble tact_form[TACT_ID_MAX][TACT_FORM_MAX] = {
 };
 
 static gboolean stop_flag = FALSE;
-
-static void metronom_about (void)
-{
-    static GtkWidget * aboutbox = NULL;
-
-    audgui_simple_message (& aboutbox, GTK_MESSAGE_INFO, _("About Metronom"),
-     _("A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\n"
-     "To use it, add a URL: tact://beats*num/den\n"
-     "e.g. tact://77 to play 77 beats per minute\n"
-     "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"));
-}
 
 static gboolean metronom_is_our_fd(const gchar * filename, VFSFile *fd)
 {
@@ -260,14 +248,20 @@ static Tuple *metronom_probe_for_tuple(const gchar * filename, VFSFile *fd)
     return tuple;
 }
 
+static const char metronom_about[] =
+ "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\n"
+ "To use it, add a URL: tact://beats*num/den\n"
+ "e.g. tact://77 to play 77 beats per minute\n"
+ "or tact://60*3/4 to play 60 bpm in 3/4 tacts";
+
 static const gchar * const schemes[] = {"tact", NULL};
 
 AUD_INPUT_PLUGIN
 (
     .name = N_("Tact Generator"),
     .domain = PACKAGE,
+    .about_text = metronom_about,
     .schemes = schemes,
-    .about = metronom_about,
     .is_our_file_from_vfs = metronom_is_our_fd,
     .play = metronom_play,
     .stop = metronom_stop,
