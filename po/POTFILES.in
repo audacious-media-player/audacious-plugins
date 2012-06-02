@@ -1,7 +1,9 @@
 # Please don't update this file manually - use ./update-potfiles.sh instead!
 src/aac/libmp4.c
+src/adplug/plugin.c
 src/alarm/alarm.c
 src/alarm/interface.c
+src/albumart/albumart.c
 src/alsa/config.c
 src/alsa/plugin.c
 src/amidi-plug/amidi-plug.c
@@ -13,11 +15,16 @@ src/amidi-plug/i_configure.c
 src/amidi-plug/i_configure-fluidsynth.c
 src/amidi-plug/i_fileinfo.c
 src/amidi-plug/i_utils.c
+src/aosd/aosd.c
 src/aosd/aosd_style.c
 src/aosd/aosd_trigger.c
 src/aosd/aosd_ui.c
+src/asx/asx.c
+src/audpl/audpl.c
+src/blur_scope/blur_scope.c
 src/blur_scope/config.c
 src/bs2b/plugin.c
+src/cairo-spectrum/cairo-spectrum.c
 src/cdaudio-ng/cdaudio-ng.c
 src/cd-menu-items/cd-menu-items.c
 src/compressor/plugin.c
@@ -52,6 +59,7 @@ src/console/Vgm_Emu.cxx
 src/console/Ym2612_Emu.cxx
 src/crossfade/plugin.c
 src/crystalizer/crystalizer.c
+src/cue/cue.c
 src/echo_plugin/echo.c
 src/echo_plugin/gui.c
 src/ffaudio/ffaudio-core.c
@@ -59,6 +67,7 @@ src/filewriter/filewriter.c
 src/filewriter/mp3.c
 src/filewriter/vorbis.c
 src/flacng/plugin.c
+src/gio/gio.c
 src/gio/gtk.c
 src/gnomeshortcuts/gnomeshortcuts.c
 src/gtkui/columns.c
@@ -68,6 +77,7 @@ src/gtkui/ui_gtk.c
 src/gtkui/ui_playlist_widget.c
 src/gtkui/ui_statusbar.c
 src/hotkey/gui.c
+src/hotkey/plugin.c
 src/jack/bio2jack.c
 src/jack/configure.c
 src/jack/jack.c
@@ -75,14 +85,22 @@ src/ladspa/plugin.c
 src/lirc/configure.c
 src/lirc/lirc.c
 src/lyricwiki/lyricwiki.c
+src/m3u/m3u.c
 src/metronom/metronom.c
 src/mixer/plugin.c
+src/mms/mms.c
+src/modplug/plugin_main.c
 src/mpg123/mpg123.c
+src/mpris2/plugin.c
 src/mtp_up/mtp.c
+src/neon/neon.c
+src/notify/libnotify-aosd.c
 src/notify/libnotify-aosd_event.c
 src/null/null.c
 src/oss4/plugin.c
 src/oss4/utils.c
+src/pls/pls.c
+src/psf/plugin.c
 src/pulse_audio/pulse_audio.c
 src/resample/plugin.c
 src/scrobbler/configure.c
@@ -98,6 +116,7 @@ src/skins/ui_manager.c
 src/skins/ui_playlist.c
 src/skins/ui_skinselector.c
 src/skins/util.c
+src/smb/smb.c
 src/sndfile/plugin.c
 src/sndstretch/sndstretch_xmms.c
 src/song_change/song_change.c
@@ -105,6 +124,11 @@ src/statusicon/statusicon.c
 src/stereo_plugin/stereo.c
 src/tonegen/tonegen.c
 src/unix-io/gtk.c
+src/unix-io/unix-io.c
+src/voice_removal/voice_removal.c
 src/vorbis/vorbis.c
 src/vtx/about.c
+src/vtx/vtx.c
 src/wavpack/wavpack.c
+src/xsf/plugin.c
+src/xspf/xspf.c

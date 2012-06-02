@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-02 15:45+0200\n"
+"POT-Creation-Date: 2012-06-02 11:45-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,6 +30,14 @@ msgstr ""
 msgid "About MP4 AAC decoder plugin"
 msgstr ""
 
+#: src/aac/libmp4.c:998
+msgid "AAC Decoder"
+msgstr ""
+
+#: src/adplug/plugin.c:16
+msgid "AdPlug (AdLib Player)"
+msgstr ""
+
 #: src/alarm/alarm.c:312
 msgid "About Alarm"
 msgstr ""
@@ -41,7 +49,7 @@ msgid ""
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
 
-#: src/alarm/interface.c:32
+#: src/alarm/alarm.c:841 src/alarm/interface.c:32
 msgid "Alarm"
 msgstr ""
 
@@ -183,7 +191,7 @@ msgstr ""
 msgid "Use reminder"
 msgstr ""
 
-#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:355
+#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:356
 msgid "Options"
 msgstr ""
 
@@ -262,6 +270,10 @@ msgstr ""
 msgid "Thankyou"
 msgstr ""
 
+#: src/albumart/albumart.c:101
+msgid "Album Art"
+msgstr ""
+
 #: src/alsa/config.c:210
 msgid "Default PCM device"
 msgstr ""
@@ -290,15 +302,23 @@ msgstr ""
 msgid "Work around drain hangup"
 msgstr ""
 
-#: src/alsa/plugin.c:59
+#: src/alsa/plugin.c:34
+msgid "ALSA Output"
+msgstr ""
+
+#: src/alsa/plugin.c:60
 msgid "About ALSA Output Plugin"
 msgstr ""
 
-#: src/alsa/plugin.c:81
+#: src/alsa/plugin.c:82
 msgid "ALSA error"
 msgstr ""
 
-#: src/amidi-plug/amidi-plug.c:326
+#: src/amidi-plug/amidi-plug.c:39
+msgid "AMIDI-Plug (MIDI Player)"
+msgstr ""
+
+#: src/amidi-plug/amidi-plug.c:327
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
@@ -570,6 +590,10 @@ msgstr ""
 msgid "About AMIDI-Plug"
 msgstr ""
 
+#: src/aosd/aosd.c:30
+msgid "AOSD (On-Screen Display)"
+msgstr ""
+
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
 msgstr ""
@@ -823,6 +847,18 @@ msgid ""
 "\n"
 msgstr ""
 
+#: src/asx/asx.c:97
+msgid "ASXv1/ASXv2 Playlists"
+msgstr ""
+
+#: src/audpl/audpl.c:224
+msgid "Audacious Playlists (audpl)"
+msgstr ""
+
+#: src/blur_scope/blur_scope.c:47
+msgid "Blur Scope"
+msgstr ""
+
 #: src/blur_scope/config.c:72
 msgid "Blur Scope: Color selection"
 msgstr ""
@@ -845,6 +881,14 @@ msgstr ""
 
 #: src/bs2b/plugin.c:177
 msgid "Presets:"
+msgstr ""
+
+#: src/bs2b/plugin.c:199
+msgid "Bauer Stereophonic-to-Binaural (BS2B)"
+msgstr ""
+
+#: src/cairo-spectrum/cairo-spectrum.c:293
+msgid "Spectrum Analyzer"
 msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:116
@@ -911,6 +955,10 @@ msgstr ""
 msgid "Add CD"
 msgstr ""
 
+#: src/cd-menu-items/cd-menu-items.c:61
+msgid "Audio CD Menu Items"
+msgstr ""
+
 #: src/compressor/plugin.c:41
 msgid "<b>Compression</b>"
 msgstr ""
@@ -931,7 +979,7 @@ msgstr ""
 msgid "Dynamic Range Compressor"
 msgstr ""
 
-#: src/console/configure.c:135
+#: src/console/configure.c:135 src/console/plugin.c:49
 msgid "Game Console Music Decoder"
 msgstr ""
 
@@ -1035,6 +1083,10 @@ msgid ""
 "same rate."
 msgstr ""
 
+#: src/crossfade/plugin.c:151
+msgid "Crossfade Effect"
+msgstr ""
+
 #: src/crystalizer/crystalizer.c:42
 msgid "<b>Crystalizer</b>"
 msgstr ""
@@ -1045,6 +1097,10 @@ msgstr ""
 
 #: src/crystalizer/crystalizer.c:53
 msgid "Crystalizer"
+msgstr ""
+
+#: src/cue/cue.c:163
+msgid "Cue Sheet Plugin"
 msgstr ""
 
 #: src/echo_plugin/echo.c:26
@@ -1103,6 +1159,10 @@ msgstr ""
 msgid "About FFaudio Plugin"
 msgstr ""
 
+#: src/ffaudio/ffaudio-core.c:746
+msgid "FFmpeg Plugin"
+msgstr ""
+
 #: src/filewriter/filewriter.c:165
 msgid "About FileWriter-Plugin"
 msgstr ""
@@ -1153,6 +1213,10 @@ msgstr ""
 
 #: src/filewriter/filewriter.c:577
 msgid "Prepend track number to filename"
+msgstr ""
+
+#: src/filewriter/filewriter.c:607
+msgid "FileWriter Plugin"
 msgstr ""
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:749
@@ -1317,15 +1381,27 @@ msgid ""
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
 
+#: src/flacng/plugin.c:391
+msgid "FLAC Decoder"
+msgstr ""
+
+#: src/gio/gio.c:318
+msgid "GIO Plugin"
+msgstr ""
+
 #: src/gio/gtk.c:34
 msgid "About GIO Plugin"
 msgstr ""
 
-#: src/gnomeshortcuts/gnomeshortcuts.c:303
-msgid "About Gnome Shortcut Plugin"
+#: src/gnomeshortcuts/gnomeshortcuts.c:48
+msgid "Gnome Shortcuts"
 msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:304
+msgid "About Gnome Shortcut Plugin"
+msgstr ""
+
+#: src/gnomeshortcuts/gnomeshortcuts.c:305
 msgid ""
 "Gnome Shortcut Plugin\n"
 "Let's you control the player with Gnome's shortcuts.\n"
@@ -1678,20 +1754,20 @@ msgstr ""
 msgid "GTK Interface"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:167 src/skins/ui_main.c:298
+#: src/gtkui/ui_gtk.c:168 src/skins/ui_main.c:298
 #, c-format
 msgid "%s - Audacious"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:173
+#: src/gtkui/ui_gtk.c:174
 msgid "Buffering ..."
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:176 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
+#: src/gtkui/ui_gtk.c:177 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
 msgid "Audacious"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:227 src/skins/plugin.c:188
+#: src/gtkui/ui_gtk.c:228 src/skins/plugin.c:189
 msgid "Error"
 msgstr ""
 
@@ -1833,6 +1909,10 @@ msgid ""
 "\n"
 msgstr ""
 
+#: src/hotkey/plugin.c:69
+msgid "Global Hotkeys"
+msgstr ""
+
 #: src/jack/configure.c:66
 msgid "Connect to all available jack ports"
 msgstr ""
@@ -1873,6 +1953,10 @@ msgid ""
 "Ported to Audacious by Giacomo Lozito."
 msgstr ""
 
+#: src/jack/jack.c:444
+msgid "JACK Output"
+msgstr ""
+
 #: src/ladspa/plugin.c:414
 msgid "About LADSPA Host"
 msgstr ""
@@ -1911,6 +1995,10 @@ msgstr ""
 
 #: src/ladspa/plugin.c:646
 msgid "Settings"
+msgstr ""
+
+#: src/ladspa/plugin.c:666
+msgid "LADSPA Host"
 msgstr ""
 
 #: src/lirc/configure.c:141
@@ -1970,6 +2058,10 @@ msgstr ""
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr ""
 
+#: src/lirc/lirc.c:425
+msgid "LIRC Plugin"
+msgstr ""
+
 #: src/lyricwiki/lyricwiki.c:267
 msgid ""
 "\n"
@@ -1986,6 +2078,14 @@ msgstr ""
 msgid ""
 "\n"
 "No lyrics were found."
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:435
+msgid "LyricWiki Plugin"
+msgstr ""
+
+#: src/m3u/m3u.c:124
+msgid "M3U Playlists"
 msgstr ""
 
 #: src/metronom/metronom.c:86
@@ -2011,6 +2111,10 @@ msgstr ""
 msgid "Tact generator: %d bpm %d/%d"
 msgstr ""
 
+#: src/metronom/metronom.c:267
+msgid "Tact Generator"
+msgstr ""
+
 #: src/mixer/plugin.c:63
 msgid "About Channel Mixer"
 msgstr ""
@@ -2027,20 +2131,52 @@ msgstr ""
 msgid "Changes take effect at the next song change."
 msgstr ""
 
+#: src/mixer/plugin.c:123
+msgid "Channel Mixer"
+msgstr ""
+
+#: src/mms/mms.c:231
+msgid "MMS Plugin"
+msgstr ""
+
+#: src/modplug/plugin_main.c:26
+msgid "ModPlug (Module Player)"
+msgstr ""
+
 #: src/mpg123/mpg123.c:206
 msgid "Surround"
 msgstr ""
 
-#: src/mtp_up/mtp.c:340
+#: src/mpg123/mpg123.c:577
+msgid "MPG123 Plugin"
+msgstr ""
+
+#: src/mpris2/plugin.c:403
+msgid "MPRIS 2 Server"
+msgstr ""
+
+#: src/mtp_up/mtp.c:49
+msgid "MTP Upload Plugin"
+msgstr ""
+
+#: src/mtp_up/mtp.c:341
 msgid "Upload in progress..."
 msgstr ""
 
-#: src/mtp_up/mtp.c:352
+#: src/mtp_up/mtp.c:353
 msgid "Upload to MTP Device"
 msgstr ""
 
-#: src/mtp_up/mtp.c:353
+#: src/mtp_up/mtp.c:354
 msgid "Disconnect MTP Device"
+msgstr ""
+
+#: src/neon/neon.c:1241
+msgid "Neon HTTP/HTTPS Plugin"
+msgstr ""
+
+#: src/notify/libnotify-aosd.c:32
+msgid "Desktop Notifications"
 msgstr ""
 
 #: src/notify/libnotify-aosd_event.c:48
@@ -2073,6 +2209,10 @@ msgstr ""
 msgid "Run in real time"
 msgstr ""
 
+#: src/null/null.c:230
+msgid "No Output"
+msgstr ""
+
 #: src/oss4/plugin.c:37
 msgid "1. Default device"
 msgstr ""
@@ -2097,12 +2237,28 @@ msgstr ""
 msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr ""
 
+#: src/oss4/plugin.c:125
+msgid "OSS4 Output"
+msgstr ""
+
 #: src/oss4/utils.c:211
 msgid "OSS4 error"
 msgstr ""
 
+#: src/pls/pls.c:114
+msgid "PLS Playlists"
+msgstr ""
+
+#: src/psf/plugin.c:270
+msgid "OpenPSF PSF1/PSF2 Decoder"
+msgstr ""
+
 #: src/pulse_audio/pulse_audio.c:677
 msgid "About Audacious PulseAudio Output Plugin"
+msgstr ""
+
+#: src/pulse_audio/pulse_audio.c:697
+msgid "PulseAudio Output"
 msgstr ""
 
 #: src/resample/plugin.c:88
@@ -2123,6 +2279,10 @@ msgstr ""
 
 #: src/resample/plugin.c:190
 msgid "Method:"
+msgstr ""
+
+#: src/resample/plugin.c:215
+msgid "Sample Rate Converter"
 msgstr ""
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:189
@@ -2165,11 +2325,15 @@ msgstr ""
 msgid "Scrobbler"
 msgstr ""
 
-#: src/sdlout/plugin.c:58
+#: src/sdlout/plugin.c:34
+msgid "SDL Output"
+msgstr ""
+
+#: src/sdlout/plugin.c:59
 msgid "About SDL Output Plugin"
 msgstr ""
 
-#: src/sdlout/plugin.c:78
+#: src/sdlout/plugin.c:79
 msgid "SDL error"
 msgstr ""
 
@@ -2247,11 +2411,19 @@ msgstr ""
 msgid "Choose Folder"
 msgstr ""
 
-#: src/skins/plugin.c:165
-msgid "About Skinned GUI"
+#: src/search-tool/search-tool.c:801
+msgid "Search Tool"
+msgstr ""
+
+#: src/skins/plugin.c:50
+msgid "Winamp Classic Interface"
 msgstr ""
 
 #: src/skins/plugin.c:166
+msgid "About Skinned GUI"
+msgstr ""
+
+#: src/skins/plugin.c:167
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
@@ -3128,35 +3300,47 @@ msgstr ""
 msgid "Could not create directory (%s): %s\n"
 msgstr ""
 
+#: src/smb/smb.c:200
+msgid "SMB Plugin"
+msgstr ""
+
 #: src/sndfile/plugin.c:456
 msgid "About sndfile plugin"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:152
+#: src/sndfile/plugin.c:479
+msgid "Sndfile Plugin"
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:55
+msgid "SndStretch"
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:153
 msgid "About SndStretch"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:305
+#: src/sndstretch/sndstretch_xmms.c:306
 msgid "Volume correction"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:306
+#: src/sndstretch/sndstretch_xmms.c:307
 msgid "Short overlap"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:352
+#: src/sndstretch/sndstretch_xmms.c:353
 msgid "Speed"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:353
+#: src/sndstretch/sndstretch_xmms.c:354
 msgid "Pitch"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:354
+#: src/sndstretch/sndstretch_xmms.c:355
 msgid "Scale"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:374
+#: src/sndstretch/sndstretch_xmms.c:375
 msgid "SndStretch - Configuration"
 msgstr ""
 
@@ -3274,6 +3458,10 @@ msgstr ""
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
+#: src/statusicon/statusicon.c:550
+msgid "Status Icon"
+msgstr ""
+
 #: src/stereo_plugin/stereo.c:27
 msgid "<b>Extra Stereo</b>"
 msgstr ""
@@ -3315,8 +3503,20 @@ msgstr ""
 msgid "Tone Generator: "
 msgstr ""
 
+#: src/tonegen/tonegen.c:218
+msgid "Tone Generator"
+msgstr ""
+
 #: src/unix-io/gtk.c:34
 msgid "About File I/O Plugin"
+msgstr ""
+
+#: src/unix-io/unix-io.c:270
+msgid "File I/O Plugin"
+msgstr ""
+
+#: src/voice_removal/voice_removal.c:62
+msgid "Voice Removal"
 msgstr ""
 
 #: src/vorbis/vorbis.c:573
@@ -3342,6 +3542,10 @@ msgid ""
 "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
 msgstr ""
 
+#: src/vorbis/vorbis.c:612
+msgid "Ogg Vorbis Decoder"
+msgstr ""
+
 #: src/vtx/about.c:14
 msgid "About Vortex Player"
 msgstr ""
@@ -3355,6 +3559,10 @@ msgid ""
 "Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
 
+#: src/vtx/vtx.c:263
+msgid "VTX Decoder"
+msgstr ""
+
 #: src/wavpack/wavpack.c:353
 #, c-format
 msgid "Wavpack Decoder Plugin %s"
@@ -3366,4 +3574,16 @@ msgid ""
 "\n"
 "Some of the plugin code was by Miles Egan\n"
 "Visit the Wavpack site at http://www.wavpack.com/\n"
+msgstr ""
+
+#: src/wavpack/wavpack.c:382
+msgid "WavPack Decoder"
+msgstr ""
+
+#: src/xsf/plugin.c:303
+msgid "2SF Decoder"
+msgstr ""
+
+#: src/xspf/xspf.c:442
+msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
