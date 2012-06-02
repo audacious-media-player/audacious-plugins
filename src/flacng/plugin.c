@@ -373,16 +373,10 @@ static void flac_seek (InputPlayback * playback, gint time)
     g_mutex_unlock(seek_mutex);
 }
 
-static void flac_aboutbox(void)
-{
-    static GtkWidget * window = NULL;
-
-    audgui_simple_message(& window, GTK_MESSAGE_INFO, _("About FLAC Audio Plugin"),
-        _("\n\nOriginal code by\n"
-          "Ralf Ertzinger <ralf@skytale.net>\n\n"
-          "http://www.skytale.net/projects/bmp-flac2/")
-);
-}
+static const char flac_about[] =
+ "Original code by\n"
+ "Ralf Ertzinger <ralf@skytale.net>\n\n"
+ "http://www.skytale.net/projects/bmp-flac2/";
 
 static const gchar *flac_fmts[] = { "flac", "fla", NULL };
 
@@ -390,9 +384,9 @@ AUD_INPUT_PLUGIN
 (
     .name = N_("FLAC Decoder"),
     .domain = PACKAGE,
+    .about_text = flac_about,
     .init = flac_init,
     .cleanup = flac_cleanup,
-    .about = flac_aboutbox,
     .play = flac_play,
     .stop = flac_stop,
     .pause = flac_pause,
