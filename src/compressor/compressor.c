@@ -202,8 +202,6 @@ void compressor_cleanup (void)
     free (buffer);
     free (output);
     free (peaks);
-
-    compressor_config_save ();
 }
 
 void compressor_start (int * channels, int * rate)

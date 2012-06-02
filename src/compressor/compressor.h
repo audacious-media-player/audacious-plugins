@@ -18,7 +18,6 @@
  */
 
 void compressor_config_load (void);
-void compressor_config_save (void);
 
 int compressor_init (void);
 void compressor_cleanup (void);

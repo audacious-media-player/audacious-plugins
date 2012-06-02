@@ -17,16 +17,12 @@
  * the use of this software.
  */
 
-#include <gtk/gtk.h>
-
 #include "config.h"
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "compressor.h"
 
@@ -48,48 +44,36 @@ static const PreferencesWidget compressor_widgets[] = {
 
 static const PluginPreferences compressor_prefs = {
  .widgets = compressor_widgets,
- .n_widgets = G_N_ELEMENTS (compressor_widgets)};
-
-static GtkWidget * about_window = NULL;
+ .n_widgets = sizeof compressor_widgets / sizeof compressor_widgets[0]};
 
 void compressor_config_load (void)
 {
     aud_config_set_defaults ("compressor", compressor_defaults);
 }
 
-void compressor_config_save (void)
-{
-    if (about_window != NULL)
-        gtk_widget_destroy (about_window);
-}
-
-static void compressor_about (void)
-{
-    audgui_simple_message (& about_window, GTK_MESSAGE_INFO, _("About Dynamic "
-     "Range Compression Plugin"),
-     "Dynamic Range Compression Plugin for Audacious\n"
-     "Copyright 2010-2012 John Lindgren\n\n"
-     "Redistribution and use in source and binary forms, with or without "
-     "modification, are permitted provided that the following conditions are "
-     "met:\n\n"
-     "1. Redistributions of source code must retain the above copyright "
-     "notice, this list of conditions, and the following disclaimer.\n\n"
-     "2. Redistributions in binary form must reproduce the above copyright "
-     "notice, this list of conditions, and the following disclaimer in the "
-     "documentation provided with the distribution.\n\n"
-     "This software is provided \"as is\" and without any warranty, express or "
-     "implied. In no event shall the authors be liable for any damages arising "
-     "from the use of this software.");
-}
+static const char compressor_about[] =
+ "Dynamic Range Compression Plugin for Audacious\n"
+ "Copyright 2010-2012 John Lindgren\n\n"
+ "Redistribution and use in source and binary forms, with or without "
+ "modification, are permitted provided that the following conditions are "
+ "met:\n\n"
+ "1. Redistributions of source code must retain the above copyright "
+ "notice, this list of conditions, and the following disclaimer.\n\n"
+ "2. Redistributions in binary form must reproduce the above copyright "
+ "notice, this list of conditions, and the following disclaimer in the "
+ "documentation provided with the distribution.\n\n"
+ "This software is provided \"as is\" and without any warranty, express or "
+ "implied. In no event shall the authors be liable for any damages arising "
+ "from the use of this software.";
 
 AUD_EFFECT_PLUGIN
 (
     .name = N_("Dynamic Range Compressor"),
     .domain = PACKAGE,
+    .about_text = compressor_about,
     .prefs = & compressor_prefs,
     .init = compressor_init,
     .cleanup = compressor_cleanup,
-    .about = compressor_about,
     .start = compressor_start,
     .process = compressor_process,
     .flush = compressor_flush,
