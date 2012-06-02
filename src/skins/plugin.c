@@ -40,7 +40,6 @@ gchar * skins_paths[SKINS_PATH_COUNT];
 
 static gboolean skins_init (void);
 static void skins_cleanup (void);
-static void skins_about (void);
 static gboolean ui_is_shown (void);
 static gboolean ui_is_focused (void);
 static void show_error_message (const gchar * text);
@@ -51,7 +50,6 @@ AUD_IFACE_PLUGIN
     .domain = PACKAGE,
     .init = skins_init,
     .cleanup = skins_cleanup,
-    .about = skins_about,
     .configure = skins_configure,
     .show = mainwin_show,
     .is_shown = ui_is_shown,
@@ -156,15 +154,6 @@ static void skins_cleanup (void)
 
         plugin_is_active = FALSE;
     }
-}
-
-static void skins_about (void)
-{
-    static GtkWidget * about_window = NULL;
-
-    audgui_simple_message (& about_window, GTK_MESSAGE_INFO,
-     _("About Skinned GUI"),
-     _("Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n\n"));
 }
 
 static gboolean ui_is_shown (void)
