@@ -35,7 +35,6 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 static gboolean init (void);
-static void about (void);
 static void cleanup (void);
 void gnome_remote_init();
 void gnome_remote_uninit();
@@ -43,12 +42,17 @@ void gnome_remote_uninit();
 static gboolean loaded = FALSE;
 static DBusGProxy *media_player_keys_proxy = NULL;
 
+static const char about[] =
+ "Gnome Shortcut Plugin\n"
+ "Lets you control the player with Gnome's shortcuts.\n\n"
+ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>";
+
 AUD_GENERAL_PLUGIN
 (
 	.name = N_("Gnome Shortcuts"),
 	.domain = PACKAGE,
+	.about_text = about,
 	.init = init,
-	.about = about,
 	.cleanup = cleanup
 )
 
@@ -294,17 +298,6 @@ void gnome_remote_init ()
 		dbus_g_proxy_connect_signal (media_player_keys_proxy, "MediaPlayerKeyPressed",
 				G_CALLBACK (on_media_player_key_pressed), NULL, NULL);
 	}
-}
-
-static void about (void)
-{
-    static GtkWidget * dialog = NULL;
-
-    audgui_simple_message (& dialog, GTK_MESSAGE_INFO,
-     _("About Gnome Shortcut Plugin"),
-     _("Gnome Shortcut Plugin\n"
-     "Let's you control the player with Gnome's shortcuts.\n\n"
-     "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"));
 }
 
 static gboolean init (void)
