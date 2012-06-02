@@ -1,6 +1,6 @@
 /*
  * Copyright (C) Tony Arcieri <bascule@inferno.tusculum.edu>
- * Copyright (C) 2001-2002  Haavard Kvaalen <havardk@xmms.org>
+ * Copyright (C) 2001-2002 Håvard Kvålen <havardk@xmms.org>
  * Copyright (C) 2007 William Pitcock <nenolod@sacredspiral.co.uk>
  * Copyright (C) 2008 Cristi Măgherușan <majeru@gentoo.ro>
  * Copyright (C) 2008 Eugene Zagidullin <e.asphyx@gmail.com>
@@ -565,31 +565,6 @@ ERR:
     return FALSE;
 }
 
-static void vorbis_aboutbox (void)
-{
-    static GtkWidget * about_window = NULL;
-
-    audgui_simple_message (& about_window, GTK_MESSAGE_INFO,
-     _("About Ogg Vorbis Audio Plugin"),
-     /*
-      * I18N: UTF-8 Translation: "Haavard Kvaalen" ->
-      * "H\303\245vard Kv\303\245len"
-      */
-     _("Ogg Vorbis Plugin by the Xiph.org Foundation\n\n"
-     "Original code by\n"
-     "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-     "Contributions from\n"
-     "Chris Montgomery <monty@xiph.org>\n"
-     "Peter Alm <peter@xmms.org>\n"
-     "Michael Smith <msmith@labyrinth.edu.au>\n"
-     "Jack Moffitt <jack@icecast.org>\n"
-     "Jorn Baayen <jorn@nl.linux.org>\n"
-     "Haavard Kvaalen <havardk@xmms.org>\n"
-     "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-     "Eugene Zagidullin <e.asphyx@gmail.com>\n\n"
-     "Visit the Xiph.org Foundation at http://www.xiph.org/\n"));
-}
-
 static gboolean vorbis_init (void)
 {
     seek_mutex = g_mutex_new();
@@ -604,6 +579,22 @@ vorbis_cleanup(void)
     g_cond_free(seek_cond);
 }
 
+static const char vorbis_about[] =
+ "Audacious Ogg Vorbis Decoder\n\n"
+ "Based on the Xiph.org Foundation's Ogg Vorbis Plugin:\n"
+ "http://www.xiph.org/\n\n"
+ "Original code by:\n"
+ "Tony Arcieri <bascule@inferno.tusculum.edu>\n\n"
+ "Contributions from:\n"
+ "Chris Montgomery <monty@xiph.org>\n"
+ "Peter Alm <peter@xmms.org>\n"
+ "Michael Smith <msmith@labyrinth.edu.au>\n"
+ "Jack Moffitt <jack@icecast.org>\n"
+ "Jorn Baayen <jorn@nl.linux.org>\n"
+ "Håvard Kvålen <havardk@xmms.org>\n"
+ "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+ "Eugene Zagidullin <e.asphyx@gmail.com>";
+
 static const gchar *vorbis_fmts[] = { "ogg", "ogm", "oga", NULL };
 static const gchar * const mimes[] = {"application/ogg", NULL};
 
@@ -611,8 +602,8 @@ AUD_INPUT_PLUGIN
 (
     .name = N_("Ogg Vorbis Decoder"),
     .domain = PACKAGE,
+    .about_text = vorbis_about,
     .init = vorbis_init,
-    .about = vorbis_aboutbox,
     .play = vorbis_play,
     .stop = vorbis_stop,
     .pause = vorbis_pause,
