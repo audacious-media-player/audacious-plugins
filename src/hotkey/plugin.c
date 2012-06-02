@@ -64,12 +64,23 @@ static void cleanup (void);
 static PluginConfig plugin_cfg;
 static gboolean loaded = FALSE;
 
+static const char about[] =
+ "Global Hotkey Plugin\n"
+ "Control the player with global key combinations or multimedia keys.\n\n"
+ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
+ "Contributers include:\n"
+ "Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+ "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+ " Bryn Davies <curious@ihug.com.au>,\n"
+ " Jonathan A. Davis <davis@jdhouse.org>,\n"
+ " Jeremy Tan <nsx@nsx.homeip.net>";
+
 AUD_GENERAL_PLUGIN
 (
 	.name = N_("Global Hotkeys"),
 	.domain = PACKAGE,
+	.about_text = about,
 	.init = init,
-	.about = show_about,
 	.configure = show_configure,
 	.cleanup = cleanup
 )
