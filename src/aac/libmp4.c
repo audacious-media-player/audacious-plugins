@@ -24,7 +24,6 @@
  */
 #define BUFFER_SIZE (FAAD_MIN_STREAMSIZE * 16)
 
-static void mp4_about (void);
 static void mp4_cleanup (void);
 static gint mp4_is_our_fd (const char *, VFSFile *);
 
@@ -244,24 +243,6 @@ static gboolean mp4_is_our_fd (const gchar * filename, VFSFile * file)
     if (vfs_fseek (file, 0, SEEK_SET))
         return FALSE;
     return parse_aac_stream (file);
-}
-
-static void mp4_about (void)
-{
-    static GtkWidget *aboutbox = NULL;
-
-    if (aboutbox == NULL)
-    {
-        gchar *about_text =
-         g_strdup_printf (_("Using libfaad2-%s for decoding.\n"
-         "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
-         "Copyright (c) 2005-2006 Audacious team"), FAAD2_VERSION);
-
-        audgui_simple_message (&aboutbox, GTK_MESSAGE_INFO,
-         _("About MP4 AAC decoder plugin"), about_text);
-
-        g_free (about_text);
-    }
 }
 
 static void mp4_cleanup (void)
@@ -998,7 +979,6 @@ AUD_INPUT_PLUGIN
     .name = N_("AAC Decoder"),
     .domain = PACKAGE,
     .init = mp4_init,
-    .about = mp4_about,
     .play = mp4_play,
     .stop = mp4_stop,
     .pause = mp4_pause,
