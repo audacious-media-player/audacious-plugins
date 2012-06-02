@@ -117,24 +117,6 @@ gboolean reconnect_lirc (gpointer data)
     return (lirc_fd == -1);
 }
 
-void about (void)
-{
-    static GtkWidget *about_widget = NULL;
-
-    audgui_simple_message (&about_widget, GTK_MESSAGE_INFO,
-                           _("About LIRC Audacious Plugin"),
-                           "A simple plugin that lets you control\n"
-                           "Audacious using the LIRC remote control daemon\n\n"
-                           "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org> and\n"
-                           "Joonas Harjumäki <jharjuma@gmail.com>\n"
-                           "from the XMMS LIRC plugin by:\n"
-                           "Carl van Schaik <carl@leg.uct.ac.za>\n"
-                           "Christoph Bartelmus <xmms@bartelmus.de>\n"
-                           "Andrew O. Shadoura <bugzilla@tut.by>\n"
-                           "You can get LIRC information at:\n"
-                           "http://lirc.org");
-}
-
 void cleanup ()
 {
     if (config)
@@ -420,12 +402,23 @@ gboolean lirc_input_callback (GIOChannel * source,
     return TRUE;
 }
 
+static const char about[] =
+ "A simple plugin to control Audacious using the LIRC remote control daemon\n\n"
+ "Adapted for Audacious by:\n"
+ "Tony Vroon <chainsaw@gentoo.org>\n"
+ "Joonas Harjumäki <jharjuma@gmail.com>\n\n"
+ "Based on the XMMS LIRC plugin by:\n"
+ "Carl van Schaik <carl@leg.uct.ac.za>\n"
+ "Christoph Bartelmus <xmms@bartelmus.de>\n"
+ "Andrew O. Shadoura <bugzilla@tut.by>\n\n"
+ "For more information about LIRC, see http://lirc.org.";
+
 AUD_GENERAL_PLUGIN
 (
     .name = N_("LIRC Plugin"),
     .domain = PACKAGE,
+    .about_text = about,
     .init = init,
-    .about = about,
     .configure = configure,
     .cleanup = cleanup
 )
