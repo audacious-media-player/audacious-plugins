@@ -7,8 +7,8 @@
 #include <audacious/preferences.h>
 
 #include "config.h"
-#include "echo.h"
 
+#define MAX_DELAY 1000
 #define MAX_SRATE 50000
 #define MAX_CHANNELS 2
 #define BYTES_PS sizeof(gfloat)
@@ -112,14 +112,19 @@ static void echo_finish(gfloat **d, gint *samples)
 	echo_process(d, samples);
 }
 
+static const char echo_about[] =
+ "Echo Plugin\n"
+ "By Johan Levin, 1999\n\n"
+ "Surround echo by Carl van Schaik, 1999";
+
 AUD_EFFECT_PLUGIN
 (
 	.name = N_("Echo"),
 	.domain = PACKAGE,
+	.about_text = echo_about,
 	.prefs = & echo_prefs,
 	.init = init,
 	.cleanup = cleanup,
-	.about = echo_about,
 	.start = echo_start,
 	.process = echo_process,
 	.finish = echo_finish,
