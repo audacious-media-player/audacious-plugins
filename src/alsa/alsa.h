@@ -21,9 +21,14 @@
 #define AUDACIOUS_ALSA_H
 
 #include <stdio.h>
+#include <audacious/misc.h>
 
 #define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
-#define ERROR_NOISY alsa_error
+
+#define ERROR_NOISY(...) do { \
+    SPRINTF (ERROR_NOISY_buf, "ALSA error: " __VA_ARGS__); \
+    aud_interface_show_error (ERROR_NOISY_buf); \
+} while (0)
 
 #define CHECK_VAL(value, function, ...) \
 do { \
@@ -36,15 +41,15 @@ do { \
 
 #define CHECK(function, ...) \
 do { \
-    int error; \
-    CHECK_VAL (error, function, __VA_ARGS__); \
+    int CHECK_error; \
+    CHECK_VAL (CHECK_error, function, __VA_ARGS__); \
 } while (0)
 
 #define CHECK_NOISY(function, ...) \
 do { \
-    int error = function (__VA_ARGS__); \
-    if (error < 0) { \
-        ERROR_NOISY ("%s failed: %s.\n", #function, snd_strerror (error)); \
+    int CHECK_NOISY_error = function (__VA_ARGS__); \
+    if (CHECK_NOISY_error < 0) { \
+        ERROR_NOISY ("%s failed: %s.\n", #function, snd_strerror (CHECK_NOISY_error)); \
         goto FAILED; \
     } \
 } while (0)
@@ -53,7 +58,7 @@ do { \
 int alsa_init (void);
 void alsa_soft_init (void);
 void alsa_cleanup (void);
-int alsa_open_audio (gint aud_format, int rate, int channels);
+int alsa_open_audio (int aud_format, int rate, int channels);
 void alsa_close_audio (void);
 int alsa_buffer_free (void);
 void alsa_write_audio (void * data, int length);
@@ -77,8 +82,5 @@ extern int alsa_config_drop_workaround, alsa_config_drain_workaround,
 void alsa_config_load (void);
 void alsa_config_save (void);
 void alsa_configure (void);
-
-/* plugin.c */
-void alsa_error (const char * format, ...);
 
 #endif

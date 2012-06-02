@@ -17,14 +17,8 @@
  * the use of this software.
  */
 
-#include <stdarg.h>
-
-#include <gtk/gtk.h>
-
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "alsa.h"
 #include "config.h"
@@ -69,25 +63,3 @@ AUD_OUTPUT_PLUGIN
     .get_volume = alsa_get_volume,
     .configure = alsa_configure,
 )
-
-static int show_error (void * message)
-{
-    static GtkWidget * window = NULL;
-
-    audgui_simple_message (& window, GTK_MESSAGE_ERROR, _("ALSA error"),
-     message);
-    g_free (message);
-    return 0;
-}
-
-void alsa_error (const gchar * format, ...)
-{
-    va_list args;
-    char * message;
-
-    va_start (args, format);
-    message = g_strdup_vprintf (format, args);
-    va_end (args);
-
-    g_timeout_add (0, show_error, message);
-}
