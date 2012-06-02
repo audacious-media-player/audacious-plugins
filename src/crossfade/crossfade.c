@@ -1,6 +1,6 @@
 /*
  * Crossfade Plugin for Audacious
- * Copyright 2010 John Lindgren
+ * Copyright 2010-2012 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,13 +17,15 @@
  * the use of this software.
  */
 
-#include <glib.h>
+#include <stdlib.h>
 #include <string.h>
 
-#include <audacious/debug.h>
+#include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <audacious/preferences.h>
 
-#include "crossfade.h"
+#include "config.h"
 
 enum
 {
@@ -34,7 +36,9 @@ enum
     STATE_STOPPING,
 };
 
-int crossfade_length; /* seconds */
+static const char * const crossfade_defaults[] = {
+ "length", "3",
+ NULL};
 
 static char state = STATE_OFF;
 static int current_channels = 0, current_rate = 0;
@@ -46,48 +50,46 @@ static int output_size = 0;
 
 static void reset (void)
 {
-    AUDDBG ("Reset.\n");
     state = STATE_OFF;
     current_channels = 0;
     current_rate = 0;
-    g_free (buffer);
+    free (buffer);
     buffer = NULL;
     buffer_size = 0;
     buffer_filled = 0;
     prebuffer_filled = 0;
-    g_free (output);
+    free (output);
     output = NULL;
     output_size = 0;
 }
 
-int crossfade_init (void)
+static bool_t crossfade_init (void)
 {
-    AUDDBG ("Init.\n");
-    crossfade_config_load ();
-    return 1;
+    aud_config_set_defaults ("crossfade", crossfade_defaults);
+    return TRUE;
 }
 
-void crossfade_cleanup (void)
+static void crossfade_cleanup (void)
 {
-    AUDDBG ("Cleanup.\n");
-    crossfade_config_save ();
     reset ();
 }
 
-void crossfade_start (int * channels, int * rate)
+static void crossfade_start (int * channels, int * rate)
 {
-    AUDDBG ("Start (state was %d).\n", state);
-
     if (state != STATE_BETWEEN)
         reset ();
     else if (* channels != current_channels)
     {
-        g_timeout_add (0, (GSourceFunc) crossfade_show_channels_message, NULL);
+        aud_interface_show_error (_("Crossfading failed because the songs had "
+         "a different number of channels.  You can use the Channel Mixer to "
+         "convert the songs to the same number of channels."));
         reset ();
     }
     else if (* rate != current_rate)
     {
-        g_timeout_add (0, (GSourceFunc) crossfade_show_rate_message, NULL);
+        aud_interface_show_error (_("Crossfading failed because the songs had "
+         "different sample rates.  You can use the Sample Rate Converter to "
+         "convert the songs to the same sample rate."));
         reset ();
     }
 
@@ -118,7 +120,7 @@ static void enlarge_buffer (int length)
 {
     if (length > buffer_size)
     {
-        buffer = g_realloc (buffer, sizeof (float) * length);
+        buffer = realloc (buffer, sizeof (float) * length);
         buffer_size = length;
     }
 }
@@ -127,7 +129,7 @@ static void add_data (float * data, int length)
 {
     if (state == STATE_PREBUFFER)
     {
-        int full = current_channels * current_rate * crossfade_length;
+        int full = current_channels * current_rate * aud_get_int ("crossfade", "length");
 
         if (prebuffer_filled < full)
         {
@@ -166,7 +168,6 @@ static void add_data (float * data, int length)
         if (prebuffer_filled < buffer_filled)
             return;
 
-        AUDDBG ("Prebuffer complete.\n");
         state = STATE_RUNNING;
     }
 
@@ -182,14 +183,14 @@ static void enlarge_output (int length)
 {
     if (length > output_size)
     {
-        output = g_realloc (output, sizeof (float) * length);
+        output = realloc (output, sizeof (float) * length);
         output_size = length;
     }
 }
 
 static void return_data (float * * data, int * length)
 {
-    int full = current_channels * current_rate * crossfade_length;
+    int full = current_channels * current_rate * aud_get_int ("crossfade", "length");
     int copy = buffer_filled - full;
 
     /* only return if we have at least 1/2 second -- this reduces memmove's */
@@ -208,16 +209,14 @@ static void return_data (float * * data, int * length)
     * length = copy;
 }
 
-void crossfade_process (float * * data, int * samples)
+static void crossfade_process (float * * data, int * samples)
 {
     add_data (* data, * samples);
     return_data (data, samples);
 }
 
-void crossfade_flush (void)
+static void crossfade_flush (void)
 {
-    AUDDBG ("Flush.\n");
-
     if (state == STATE_PREBUFFER || state == STATE_RUNNING)
     {
         state = STATE_RUNNING;
@@ -225,11 +224,10 @@ void crossfade_flush (void)
     }
 }
 
-void crossfade_finish (float * * data, int * samples)
+static void crossfade_finish (float * * data, int * samples)
 {
     if (state == STATE_BETWEEN) /* second call, end of last song */
     {
-        AUDDBG ("End of last song.\n");
         enlarge_output (buffer_filled);
         memcpy (output, buffer, sizeof (float) * buffer_filled);
         * data = output;
@@ -244,8 +242,47 @@ void crossfade_finish (float * * data, int * samples)
 
     if (state == STATE_PREBUFFER || state == STATE_RUNNING)
     {
-        AUDDBG ("Fade out.\n");
         do_ramp (buffer, buffer_filled, 1.0, 0.0);
         state = STATE_BETWEEN;
     }
 }
+
+static const char crossfade_about[] =
+ "Crossfade Plugin for Audacious\n"
+ "Copyright 2010-2012 John Lindgren\n\n"
+ "Redistribution and use in source and binary forms, with or without "
+ "modification, are permitted provided that the following conditions are "
+ "met:\n\n"
+ "1. Redistributions of source code must retain the above copyright "
+ "notice, this list of conditions, and the following disclaimer.\n\n"
+ "2. Redistributions in binary form must reproduce the above copyright "
+ "notice, this list of conditions, and the following disclaimer in the "
+ "documentation provided with the distribution.\n\n"
+ "This software is provided \"as is\" and without any warranty, express or "
+ "implied. In no event shall the authors be liable for any damages arising "
+ "from the use of this software.";
+
+static const PreferencesWidget crossfade_widgets[] = {
+ {WIDGET_LABEL, N_("<b>Crossfade</b>")},
+ {WIDGET_SPIN_BTN, N_("Overlap:"),
+  .cfg_type = VALUE_INT, .csect = "crossfade", .cname = "length",
+  .data = {.spin_btn = {1, 10, 1, N_("seconds")}}}};
+
+static const PluginPreferences crossfade_prefs = {
+ .widgets = crossfade_widgets,
+ .n_widgets = sizeof crossfade_widgets / sizeof crossfade_widgets[0]};
+
+AUD_EFFECT_PLUGIN
+(
+    .name = N_("Crossfade"),
+    .domain = PACKAGE,
+    .about_text = crossfade_about,
+    .prefs = & crossfade_prefs,
+    .init = crossfade_init,
+    .cleanup = crossfade_cleanup,
+    .start = crossfade_start,
+    .process = crossfade_process,
+    .flush = crossfade_flush,
+    .finish = crossfade_finish,
+    .order = 5 /* must be after resample and mixer */
+)
