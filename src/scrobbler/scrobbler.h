@@ -4,8 +4,11 @@
 #include <glib.h>
 
 #include <libaudcore/tuple.h>
+#include <audacious/preferences.h>
 
 #define SC_CURL_TIMEOUT 60
+
+extern const PluginPreferences preferences;
 
 gboolean sc_timeout(gpointer data);
 

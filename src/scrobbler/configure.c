@@ -226,11 +226,8 @@ static PreferencesWidget settings[] = {
  {WIDGET_CUSTOM, .data = {.populate = create_cfgdlg}}};
 
 PluginPreferences preferences = {
-    .domain = PACKAGE,
-    .title = N_("Scrobbler"),
-    .prefs = settings,
-    .n_prefs = G_N_ELEMENTS(settings),
+    .widgets = settings,
+    .n_widgets = G_N_ELEMENTS (settings),
     .apply = configure_apply,
-    .cleanup = configure_cleanup,
+    .cleanup = configure_cleanup
 };
-

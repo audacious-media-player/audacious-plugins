@@ -10,7 +10,6 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
-#include <audacious/preferences.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
@@ -199,13 +198,12 @@ static void about_show(void)
 	g_free(tmp);
 }
 
-extern PluginPreferences preferences;
-
 AUD_GENERAL_PLUGIN
 (
-	.name = "Scrobbler",
+	.name = N_("Scrobbler"),
+	.domain = PACKAGE,
+	.prefs = & preferences,
 	.init = init,
 	.about = about_show,
-	.cleanup = cleanup,
-	.settings = &preferences,
+	.cleanup = cleanup
 )

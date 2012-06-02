@@ -27,7 +27,7 @@
 
 #include "formatter.h"
 
-static PluginPreferences preferences;
+static const PluginPreferences preferences;
 
 static gboolean init (void);
 static void cleanup(void);
@@ -53,10 +53,11 @@ static GtkWidget *cmd_warn_label, *cmd_warn_img;
 
 AUD_GENERAL_PLUGIN
 (
-    .name = "Song Change",
+    .name = N_("Song Change"),
+    .domain = PACKAGE,
+    .prefs = & preferences,
     .init = init,
-    .cleanup = cleanup,
-    .settings = &preferences,
+    .cleanup = cleanup
 )
 
 /**
@@ -433,7 +434,7 @@ static void configure_ok_cb()
     g_free(cmd_ttc);
 }
 
-static PreferencesWidget elements[] = {
+static const PreferencesWidget elements[] = {
     {WIDGET_LABEL, N_("Command to run when Audacious starts a new song."),
         .data = {.label = {.single_line = TRUE}}},
     {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
@@ -495,7 +496,7 @@ static void * custom_warning (void)
     return bbox_hbox;
 }
 
-static PreferencesWidget settings[] = {
+static const PreferencesWidget settings[] = {
     {WIDGET_BOX, N_("Commands"), .data = {.box = {elements, G_N_ELEMENTS (elements), .frame = TRUE}}},
     {WIDGET_CUSTOM, .data = {.populate = custom_warning}}};
 
@@ -524,12 +525,9 @@ static void configure_cleanup(void)
     config.cmd_ttc = NULL;
 }
 
-static PluginPreferences preferences = {
-    .domain = PACKAGE,
-    .title = N_("Song Change"),
-    /*    .imgurl = DATA_DIR "/images/plugins.png", */
-    .prefs = settings,
-    .n_prefs = G_N_ELEMENTS(settings),
+static const PluginPreferences preferences = {
+    .widgets = settings,
+    .n_widgets = G_N_ELEMENTS (settings),
     .init = configure_init,
     .cleanup = configure_cleanup,
 };

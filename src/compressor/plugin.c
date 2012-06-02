@@ -37,7 +37,7 @@ static const char * const compressor_defaults[] = {
  "range", "0.5",
  NULL};
 
-static PreferencesWidget compressor_prefs_widgets[] = {
+static const PreferencesWidget compressor_widgets[] = {
  {WIDGET_LABEL, N_("<b>Compression</b>")},
  {WIDGET_SPIN_BTN, N_("Center volume:"),
   .cfg_type = VALUE_FLOAT, .csect = "compressor", .cname = "center",
@@ -46,11 +46,9 @@ static PreferencesWidget compressor_prefs_widgets[] = {
   .cfg_type = VALUE_FLOAT, .csect = "compressor", .cname = "range",
   .data = {.spin_btn = {0.0, 3.0, 0.1}}}};
 
-static PluginPreferences compressor_prefs = {
- .domain = PACKAGE,
- .title = N_("Dynamic Range Compressor Settings"),
- .prefs = compressor_prefs_widgets,
- .n_prefs = G_N_ELEMENTS (compressor_prefs_widgets)};
+static const PluginPreferences compressor_prefs = {
+ .widgets = compressor_widgets,
+ .n_widgets = G_N_ELEMENTS (compressor_widgets)};
 
 static GtkWidget * about_window = NULL;
 
@@ -86,11 +84,12 @@ static void compressor_about (void)
 
 AUD_EFFECT_PLUGIN
 (
-    .name = "Dynamic Range Compressor",
+    .name = N_("Dynamic Range Compressor"),
+    .domain = PACKAGE,
+    .prefs = & compressor_prefs,
     .init = compressor_init,
     .cleanup = compressor_cleanup,
     .about = compressor_about,
-    .settings = & compressor_prefs,
     .start = compressor_start,
     .process = compressor_process,
     .flush = compressor_flush,

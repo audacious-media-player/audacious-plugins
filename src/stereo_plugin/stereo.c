@@ -23,24 +23,23 @@ static const gchar * const stereo_defaults[] = {
  "intensity", "2.5",
  NULL};
 
-static PreferencesWidget stereo_prefs_widgets[] = {
+static const PreferencesWidget stereo_widgets[] = {
  {WIDGET_LABEL, N_("<b>Extra Stereo</b>")},
  {WIDGET_SPIN_BTN, N_("Intensity:"),
   .cfg_type = VALUE_FLOAT, .csect = "extra_stereo", .cname = "intensity",
   .data = {.spin_btn = {0, 10, 0.1}}}};
 
-static PluginPreferences stereo_prefs = {
- .domain = PACKAGE,
- .title = N_("Extra Stereo Settings"),
- .prefs = stereo_prefs_widgets,
- .n_prefs = G_N_ELEMENTS (stereo_prefs_widgets)};
+static const PluginPreferences stereo_prefs = {
+ .widgets = stereo_widgets,
+ .n_widgets = G_N_ELEMENTS (stereo_widgets)};
 
 AUD_EFFECT_PLUGIN
 (
-    .name = "Extra Stereo",
+    .name = N_("Extra Stereo"),
+    .domain = PACKAGE,
+    .prefs = & stereo_prefs,
     .init = init,
     .about = about,
-    .settings = & stereo_prefs,
     .start = stereo_start,
     .process = stereo_process,
     .finish = stereo_finish,

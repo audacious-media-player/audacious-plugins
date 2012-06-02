@@ -22,7 +22,7 @@ static const gchar * const echo_defaults[] = {
  "volume", "50",
  NULL};
 
-static PreferencesWidget echo_prefs_widgets[] = {
+static const PreferencesWidget echo_widgets[] = {
  {WIDGET_LABEL, N_("<b>Echo</b>")},
  {WIDGET_SPIN_BTN, N_("Delay:"),
   .cfg_type = VALUE_INT, .csect = "echo_plugin", .cname = "delay",
@@ -34,11 +34,9 @@ static PreferencesWidget echo_prefs_widgets[] = {
   .cfg_type = VALUE_INT, .csect = "echo_plugin", .cname = "volume",
   .data = {.spin_btn = {0, 100, 1, "%"}}}};
 
-static PluginPreferences echo_prefs = {
- .domain = PACKAGE,
- .title = N_("Echo Settings"),
- .prefs = echo_prefs_widgets,
- .n_prefs = G_N_ELEMENTS (echo_prefs_widgets)};
+static const PluginPreferences echo_prefs = {
+ .widgets = echo_widgets,
+ .n_widgets = G_N_ELEMENTS (echo_widgets)};
 
 static gfloat *buffer = NULL;
 static int w_ofs;
@@ -116,11 +114,12 @@ static void echo_finish(gfloat **d, gint *samples)
 
 AUD_EFFECT_PLUGIN
 (
-	.name = "Echo",
+	.name = N_("Echo"),
+	.domain = PACKAGE,
+	.prefs = & echo_prefs,
 	.init = init,
 	.cleanup = cleanup,
 	.about = echo_about,
-	.settings = & echo_prefs,
 	.start = echo_start,
 	.process = echo_process,
 	.finish = echo_finish,

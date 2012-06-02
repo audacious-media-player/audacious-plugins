@@ -38,23 +38,22 @@ static const char * const cryst_defaults[] = {
  "intensity", "1",
  NULL};
 
-static PreferencesWidget cryst_prefs_widgets[] = {
+static const PreferencesWidget cryst_widgets[] = {
  {WIDGET_LABEL, N_("<b>Crystalizer</b>")},
  {WIDGET_SPIN_BTN, N_("Intensity:"),
   .cfg_type = VALUE_FLOAT, .csect = "crystalizer", .cname = "intensity",
   .data = {.spin_btn = {0, 10, 0.1}}}};
 
-static PluginPreferences cryst_prefs = {
- .domain = PACKAGE,
- .title = N_("Crystalizer Settings"),
- .prefs = cryst_prefs_widgets,
- .n_prefs = sizeof cryst_prefs_widgets / sizeof cryst_prefs_widgets[0]};
+static const PluginPreferences cryst_prefs = {
+ .widgets = cryst_widgets,
+ .n_widgets = sizeof cryst_widgets / sizeof cryst_widgets[0]};
 
 AUD_EFFECT_PLUGIN
 (
-    .name = "Crystalizer",
+    .name = N_("Crystalizer"),
+    .domain = PACKAGE,
+    .prefs = & cryst_prefs,
     .init = init,
-    .settings = & cryst_prefs,
     .start = cryst_start,
     .process = cryst_process,
     .flush = cryst_flush,

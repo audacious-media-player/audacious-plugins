@@ -104,7 +104,7 @@ static const char * const cdaudio_defaults[] = {
  "cddbport", "8880",
  NULL};
 
-static PreferencesWidget cdaudio_prefs_widgets[] = {
+static const PreferencesWidget cdaudio_widgets[] = {
  {WIDGET_LABEL, N_("<b>Device</b>")},
  {WIDGET_SPIN_BTN, N_("Read speed:"),
   .cfg_type = VALUE_INT, .csect = "CDDA", .cname = "disc_speed",
@@ -126,24 +126,23 @@ static PreferencesWidget cdaudio_prefs_widgets[] = {
   .cfg_type = VALUE_INT, .csect = "CDDA", .cname = "cddbport",
   .data = {.spin_btn = {0, 65535, 1}}}};
 
-static PluginPreferences cdaudio_prefs = {
- .domain = PACKAGE,
- .title = N_("Audio CD Settings"),
- .prefs = cdaudio_prefs_widgets,
- .n_prefs = G_N_ELEMENTS (cdaudio_prefs_widgets)};
+static const PluginPreferences cdaudio_prefs = {
+ .widgets = cdaudio_widgets,
+ .n_widgets = G_N_ELEMENTS (cdaudio_widgets)};
 
 AUD_INPUT_PLUGIN
 (
-    .name = "Audio CD Support",
+    .name = N_("Audio CD Plugin"),
+    .domain = PACKAGE,
+    .prefs = & cdaudio_prefs,
     .init = cdaudio_init,
+    .cleanup = cdaudio_cleanup,
     .about = cdaudio_about,
-    .settings = & cdaudio_prefs,
     .is_our_file_from_vfs = cdaudio_is_our_file,
     .play = cdaudio_play,
     .stop = cdaudio_stop,
     .pause = cdaudio_pause,
     .mseek = cdaudio_mseek,
-    .cleanup = cdaudio_cleanup,
     .probe_for_tuple = make_tuple,
     .schemes = schemes,
     .have_subtune = TRUE,
