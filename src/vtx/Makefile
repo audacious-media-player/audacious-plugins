@@ -1,7 +1,6 @@
 PLUGIN = vtx${PLUGIN_SUFFIX}
 
-SRCS = about.c		\
-       ay8912.c		\
+SRCS = ay8912.c		\
        info.c		\
        lh5dec.c		\
        vtx.c		\

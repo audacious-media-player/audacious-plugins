@@ -258,13 +258,18 @@ void vtx_pause(InputPlayback * playback, gboolean pause)
     g_mutex_unlock(seek_mutex);
 }
 
+static const char vtx_about[] =
+ "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+ "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
+ "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>";
+
 AUD_INPUT_PLUGIN
 (
     .name = N_("VTX Decoder"),
     .domain = PACKAGE,
+    .about_text = vtx_about,
     .init = vtx_init,
     .cleanup = vtx_cleanup,
-    .about = vtx_about,
     .play = vtx_play,
     .stop = vtx_stop,
     .pause = vtx_pause,

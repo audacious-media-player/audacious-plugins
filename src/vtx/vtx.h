@@ -9,7 +9,6 @@
 
 #include <audacious/plugin.h>
 
-void vtx_about(void);
 void vtx_file_info(const char *filename);
 
 #endif
