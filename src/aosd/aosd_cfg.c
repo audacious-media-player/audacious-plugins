@@ -243,6 +243,8 @@ static const gchar * const aosd_defaults[] = {
 gint
 aosd_cfg_load ( aosd_cfg_t * cfg )
 {
+  aud_config_set_defaults ("aosd", aosd_defaults);
+
   gint i = 0;
   gint max_numcol;
   gchar *trig_active_str;
