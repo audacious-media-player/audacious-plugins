@@ -185,25 +185,16 @@ void setup_proxy(CURL *curl)
     }
 }
 
-static void about_show(void)
-{
-	static GtkWidget *aboutbox = NULL;
-	gchar *tmp;
-
-	tmp = g_strdup_printf(_("Audacious AudioScrobbler Plugin\n\n"
-				"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>\n"));
-	audgui_simple_message(&aboutbox, GTK_MESSAGE_INFO, _("About Scrobbler Plugin"),
-			tmp);
-
-	g_free(tmp);
-}
+static const char about[] =
+ "Audacious AudioScrobbler Plugin\n\n"
+ "Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>";
 
 AUD_GENERAL_PLUGIN
 (
-	.name = N_("Scrobbler"),
-	.domain = PACKAGE,
-	.prefs = & preferences,
-	.init = init,
-	.about = about_show,
-	.cleanup = cleanup
+ .name = N_("Scrobbler"),
+ .domain = PACKAGE,
+ .about_text = about,
+ .prefs = & preferences,
+ .init = init,
+ .cleanup = cleanup
 )
