@@ -38,24 +38,21 @@
  *   - handle seeking/stopping while paused
  */
 
-#include "config.h"
-
-#include <glib.h>
 #include <math.h>
+#include <pthread.h>
 #include <stdlib.h>
-
-#include <audacious/plugin.h>
-#include <audacious/i18n.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
+#include <unistd.h>
 
 #include <sndfile.h>
 
-static GMutex * control_mutex;
-static GCond * control_cond;
-static gint seek_value;
-static gboolean stop_flag;
+#include <audacious/plugin.h>
+#include <audacious/i18n.h>
 
+#include "config.h"
+
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static int seek_value;
+static bool_t stop_flag;
 
 /* Virtual file access wrappers for libsndfile
  */
@@ -98,40 +95,25 @@ static SF_VIRTUAL_IO sf_virtual_io =
     sf_tell
 };
 
-/* Plugin initialization
- */
-static gboolean plugin_init (void)
+static void copy_string (SNDFILE * sf, int sf_id, Tuple * tup, int tup_id)
 {
-    control_mutex = g_mutex_new ();
-    control_cond = g_cond_new ();
-    return TRUE;
-}
-
-static void plugin_cleanup (void)
-{
-    g_cond_free (control_cond);
-    g_mutex_free (control_mutex);
-}
-
-static void copy_string (SNDFILE * sf, gint sf_id, Tuple * tup, gint tup_id)
-{
-    const gchar * str = sf_get_string (sf, sf_id);
+    const char * str = sf_get_string (sf, sf_id);
     if (str)
         tuple_set_str (tup, tup_id, NULL, str);
 }
 
-static void copy_int (SNDFILE * sf, gint sf_id, Tuple * tup, gint tup_id)
+static void copy_int (SNDFILE * sf, int sf_id, Tuple * tup, int tup_id)
 {
-    const gchar * str = sf_get_string (sf, sf_id);
+    const char * str = sf_get_string (sf, sf_id);
     if (str && atoi (str))
         tuple_set_int (tup, tup_id, NULL, atoi (str));
 }
 
-static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
+static Tuple * get_song_tuple (const char * filename, VFSFile * file)
 {
     SNDFILE *sndfile;
     SF_INFO sfinfo;
-    gchar *codec, *format, *subformat;
+    const char *format, *subformat;
     Tuple * ti;
 
     sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo, file);
@@ -156,7 +138,7 @@ static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
     if (sfinfo.samplerate > 0)
     {
         tuple_set_int(ti, FIELD_LENGTH, NULL,
-        (gint) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
+        (int) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
     }
 
     switch (sfinfo.format & SF_FORMAT_TYPEMASK)
@@ -299,18 +281,18 @@ static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
     }
 
     if (subformat != NULL)
-        codec = g_strdup_printf("%s (%s)", format, subformat);
+    {
+        SPRINTF (codec, "%s (%s)", format, subformat);
+        tuple_set_format (ti, codec, sfinfo.channels, sfinfo.samplerate, 0);
+    }
     else
-        codec = g_strdup_printf("%s", format);
+        tuple_set_format (ti, format, sfinfo.channels, sfinfo.samplerate, 0);
 
-    tuple_set_format (ti, codec, sfinfo.channels, sfinfo.samplerate, 0);
-
-    g_free (codec);
     return ti;
 }
 
-static gboolean play_start (InputPlayback * playback, const gchar * filename,
- VFSFile * file, gint start_time, gint stop_time, gboolean pause)
+static bool_t play_start (InputPlayback * playback, const char * filename,
+ VFSFile * file, int start_time, int stop_time, bool_t pause)
 {
     if (file == NULL)
         return FALSE;
@@ -337,99 +319,93 @@ static gboolean play_start (InputPlayback * playback, const gchar * filename,
     stop_flag = FALSE;
     playback->set_pb_ready(playback);
 
-    gint size = sfinfo.channels * (sfinfo.samplerate / 50);
-    gfloat * buffer = g_malloc (sizeof (gfloat) * size);
+    int size = sfinfo.channels * (sfinfo.samplerate / 50);
+    float * buffer = malloc (sizeof (float) * size);
 
     while (stop_time < 0 || playback->output->written_time () < stop_time)
     {
-        g_mutex_lock (control_mutex);
+        pthread_mutex_lock (& mutex);
 
         if (stop_flag)
         {
-            g_mutex_unlock (control_mutex);
+            pthread_mutex_unlock (& mutex);
             break;
         }
 
         if (seek_value != -1)
         {
-            sf_seek (sndfile, (gint64) seek_value * sfinfo.samplerate / 1000,
+            sf_seek (sndfile, (int64_t) seek_value * sfinfo.samplerate / 1000,
              SEEK_SET);
             playback->output->flush (seek_value);
             seek_value = -1;
-            g_cond_signal (control_cond);
         }
 
-        g_mutex_unlock (control_mutex);
+        pthread_mutex_unlock (& mutex);
 
-        gint samples = sf_read_float (sndfile, buffer, size);
+        int samples = sf_read_float (sndfile, buffer, size);
 
         if (! samples)
             break;
 
-        playback->output->write_audio (buffer, sizeof (gfloat) * samples);
+        playback->output->write_audio (buffer, sizeof (float) * samples);
     }
 
     sf_close (sndfile);
-    g_free (buffer);
+    free (buffer);
 
     if (! stop_flag)
     {
         while (playback->output->buffer_playing ())
-            g_usleep (20000);
+            usleep (20000);
     }
 
     playback->output->close_audio();
 
-    g_mutex_lock (control_mutex);
+    pthread_mutex_lock (& mutex);
     stop_flag = TRUE;
-    g_cond_signal (control_cond); /* wake up any waiting request */
-    g_mutex_unlock (control_mutex);
+    pthread_mutex_unlock (& mutex);
 
     return TRUE;
 }
 
-static void play_pause (InputPlayback * p, gboolean pause)
+static void play_pause (InputPlayback * p, bool_t pause)
 {
-    g_mutex_lock (control_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (! stop_flag)
         p->output->pause (pause);
 
-    g_mutex_unlock (control_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
 static void play_stop (InputPlayback * p)
 {
-    g_mutex_lock (control_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (! stop_flag)
     {
         stop_flag = TRUE;
         p->output->abort_write ();
-        g_cond_signal (control_cond);
-        g_cond_wait (control_cond, control_mutex);
     }
 
-    g_mutex_unlock (control_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
-static void file_mseek (InputPlayback * p, gint time)
+static void file_mseek (InputPlayback * p, int time)
 {
-    g_mutex_lock (control_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (! stop_flag)
     {
         seek_value = time;
         p->output->abort_write();
-        g_cond_signal (control_cond);
-        g_cond_wait (control_cond, control_mutex);
     }
 
-    g_mutex_unlock (control_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
-static gint
-is_our_file_from_vfs(const gchar *filename, VFSFile *fin)
+static int
+is_our_file_from_vfs(const char *filename, VFSFile *fin)
 {
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
@@ -463,18 +439,16 @@ const char plugin_about[] =
  "along with this program; if not, write to the Free Software "
  "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.";
 
-static const gchar *sndfile_fmts[] = { "aiff", "au", "raw", "wav", NULL };
+static const char *sndfile_fmts[] = { "aiff", "au", "raw", "wav", NULL };
 
 AUD_INPUT_PLUGIN
 (
     .name = N_("Sndfile Plugin"),
     .domain = PACKAGE,
     .about_text = plugin_about,
-    .init = plugin_init,
     .play = play_start,
     .stop = play_stop,
     .pause = play_pause,
-    .cleanup = plugin_cleanup,
     .probe_for_tuple = get_song_tuple,
     .is_our_file_from_vfs = is_our_file_from_vfs,
     .extensions = sndfile_fmts,
