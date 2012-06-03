@@ -1,6 +1,6 @@
 /*
  * Channel Mixer Plugin for Audacious
- * Copyright 2011 John Lindgren
+ * Copyright 2011-2012 John Lindgren and Michał Lipski
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,14 +17,23 @@
  * the use of this software.
  */
 
-/* TODO: implement surround converters */
+/* TODO: implement more surround converters */
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "mixer.h"
+#include <audacious/i18n.h>
+#include <audacious/misc.h>
+#include <audacious/plugin.h>
+#include <audacious/preferences.h>
+
+#include "config.h"
+
+#define MAX_CHANNELS 8
 
 typedef void (* Converter) (float * * data, int * samples);
+
+static float * mixer_buf;
 
 static void mono_to_stereo (float * * data, int * samples)
 {
@@ -60,7 +69,7 @@ static void stereo_to_mono (float * * data, int * samples)
     }
 }
 
-static void quadro_to_stereo(float * * data, int * samples)
+static void quadro_to_stereo (float * * data, int * samples)
 {
     int frames = * samples / 4;
     float * get = * data;
@@ -80,7 +89,7 @@ static void quadro_to_stereo(float * * data, int * samples)
     }
 }
 
-static void surround_5p1_to_stereo(float * * data, int * samples)
+static void surround_5p1_to_stereo (float * * data, int * samples)
 {
     int frames = * samples / 6;
     float * get = * data;
@@ -113,7 +122,8 @@ static int input_channels, output_channels;
 void mixer_start (int * channels, int * rate)
 {
     input_channels = * channels;
-    output_channels = mixer_channels;
+    output_channels = aud_get_int ("mixer", "channels");
+    output_channels = CLAMP (output_channels, 1, MAX_CHANNELS);
 
     if (input_channels == output_channels)
         return;
@@ -141,6 +151,57 @@ void mixer_process (float * * data, int * samples)
     converters[input_channels][output_channels] (data, samples);
 }
 
-void mixer_flush (void)
+static const char * const mixer_defaults[] = {
+ "channels", "2",
+  NULL};
+
+static bool_t mixer_init (void)
 {
+    aud_config_set_defaults ("mixer", mixer_defaults);
+    return TRUE;
 }
+
+static void mixer_cleanup (void)
+{
+    free (mixer_buf);
+    mixer_buf = 0;
+}
+
+static const char mixer_about[] =
+ "Channel Mixer Plugin for Audacious\n"
+ "Copyright 2011-2012 John Lindgren and Michał Lipski\n\n"
+ "Redistribution and use in source and binary forms, with or without "
+ "modification, are permitted provided that the following conditions are "
+ "met:\n\n"
+ "1. Redistributions of source code must retain the above copyright "
+ "notice, this list of conditions, and the following disclaimer.\n\n"
+ "2. Redistributions in binary form must reproduce the above copyright "
+ "notice, this list of conditions, and the following disclaimer in the "
+ "documentation provided with the distribution.\n\n"
+ "This software is provided \"as is\" and without any warranty, express or "
+ "implied. In no event shall the authors be liable for any damages arising "
+ "from the use of this software.";
+
+static const PreferencesWidget mixer_widgets[] = {
+ {WIDGET_LABEL, N_("<b>Channel Mixer</b>")},
+ {WIDGET_SPIN_BTN, N_("Output channels:"),
+  .cfg_type = VALUE_INT, .csect = "mixer", .cname = "channels",
+  .data = {.spin_btn = {1, MAX_CHANNELS, 1}}}};
+
+static const PluginPreferences mixer_prefs = {
+ .widgets = mixer_widgets,
+ .n_widgets = sizeof mixer_widgets / sizeof mixer_widgets[0]};
+
+AUD_EFFECT_PLUGIN
+(
+    .name = N_("Channel Mixer"),
+    .domain = PACKAGE,
+    .about_text = mixer_about,
+    .prefs = & mixer_prefs,
+    .init = mixer_init,
+    .cleanup = mixer_cleanup,
+    .start = mixer_start,
+    .process = mixer_process,
+    .finish = mixer_process,
+    .order = 2, /* must be before crossfade */
+)
