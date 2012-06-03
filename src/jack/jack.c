@@ -7,17 +7,17 @@
  */
 
 #include <dlfcn.h>
+#include <limits.h>
 #include <stdio.h>
-#include "config.h"
-#include "bio2jack.h" /* includes for the bio2jack library */
-#include "jack.h"
 #include <string.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
+
+#include "config.h"
+#include "bio2jack.h" /* includes for the bio2jack library */
+#include "jack.h"
 
 /* set to 1 for verbose output */
 #define VERBOSE_OUTPUT          0
@@ -44,7 +44,7 @@ jackconfig jack_cfg;
 static int driver = 0; /* handle to the jack output device */
 
 typedef struct format_info {
-  gint format;
+  int format;
   long    frequency;
   int     channels;
   long    bps;
@@ -54,8 +54,8 @@ static format_info_t input;
 static format_info_t effect;
 static format_info_t output;
 
-static gboolean output_opened; /* true if we have a connection to jack */
-static gboolean paused;
+static bool_t output_opened; /* true if we have a connection to jack */
+static bool_t paused;
 
 
 /* Giacomo's note: removed the destructor from the original xmms-jack, cause
@@ -123,7 +123,7 @@ static void jack_get_volume(int *l, int *r)
 
 /* Return the number of milliseconds of audio data that has been */
 /* written out to the device */
-static gint jack_get_written_time(void)
+static int jack_get_written_time(void)
 {
   long return_val;
   return_val = JACK_GetPosition(driver, MILLISECONDS, WRITTEN);
@@ -132,7 +132,7 @@ static gint jack_get_written_time(void)
   return return_val;
 }
 
-static void jack_set_written_time(gint time)
+static void jack_set_written_time(int time)
 {
   JACK_SetPosition(driver, MILLISECONDS, time);
 }
@@ -140,9 +140,9 @@ static void jack_set_written_time(gint time)
 
 /* Return the current number of milliseconds of audio data that has */
 /* been played out of the audio device, not including the buffer */
-static gint jack_get_output_time(void)
+static int jack_get_output_time(void)
 {
-  gint return_val;
+  int return_val;
 
   /* don't try to get any values if the device is still closed */
   if(JACK_GetState(driver) == CLOSED)
@@ -159,9 +159,9 @@ static gint jack_get_output_time(void)
 /* NOTE: this was confusing at first BUT, if the device is open and there */
 /* is no more audio to be played, then the device is NOT PLAYING */
 #if 0
-static gint jack_playing(void)
+static int jack_playing(void)
 {
-  gint return_val;
+  int return_val;
 
   /* If we are playing see if we ACTUALLY have something to play */
   if(JACK_GetState(driver) == PLAYING)
@@ -199,7 +199,7 @@ void jack_set_port_connection_mode()
   JACK_SetPortConnectionMode(mode);
 }
 
-static const gchar * const jack_defaults[] = {
+static const char * const jack_defaults[] = {
  "isTraceEnabled", "FALSE",
  "port_connection_mode", "CONNECT_ALL",
  "volume_left", "25",
@@ -207,7 +207,7 @@ static const gchar * const jack_defaults[] = {
  NULL};
 
 /* Initialize necessary things */
-static gboolean jack_init (void)
+static bool_t jack_init (void)
 {
   aud_config_set_defaults ("jack", jack_defaults);
 
@@ -234,7 +234,7 @@ static gboolean jack_init (void)
 
 
 /* Return the amount of data that can be written to the device */
-static gint audacious_jack_free(void)
+static int audacious_jack_free(void)
 {
   unsigned long return_val = JACK_GetBytesFreeSpace(driver);
   unsigned long tmp;
@@ -250,10 +250,10 @@ static gint audacious_jack_free(void)
     TRACE("adjusting from %ld to %ld free bytes to compensate for frequency differences\n", tmp, return_val);
   }
 
-  if(return_val > G_MAXINT)
+  if(return_val > INT_MAX)
   {
-      TRACE("Warning: return_val > G_MAXINT\n");
-      return_val = G_MAXINT;
+      TRACE("Warning: return_val > INT_MAX\n");
+      return_val = INT_MAX;
   }
 
   TRACE("free space of %ld bytes\n", return_val);
@@ -274,7 +274,7 @@ static void jack_close(void)
 
 
 /* Open the device up */
-static gint jack_open(gint fmt, gint sample_rate, gint num_channels)
+static int jack_open(int fmt, int sample_rate, int num_channels)
 {
   int bits_per_sample;
   int floating_point = FALSE;
@@ -368,7 +368,7 @@ static gint jack_open(gint fmt, gint sample_rate, gint num_channels)
 
 
 /* write some audio out to the device */
-static void jack_write(gpointer ptr, gint length)
+static void jack_write(void * ptr, int length)
 {
   long written;
 
@@ -393,7 +393,7 @@ static void jack_write(gpointer ptr, gint length)
 /* the number of milliseconds of offset passed in */
 /* This is done so the driver itself keeps track of */
 /* current playing position of the mp3 */
-static void jack_flush(gint ms_offset_time)
+static void jack_flush(int ms_offset_time)
 {
   TRACE("setting values for ms_offset_time of %d\n", ms_offset_time);
 
@@ -410,7 +410,7 @@ static void jack_flush(gint ms_offset_time)
 
 
 /* Pause the jack device */
-static void jack_pause (gboolean p)
+static void jack_pause (bool_t p)
 {
   TRACE("p == %d\n", p);
 

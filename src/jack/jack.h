@@ -1,13 +1,13 @@
 #ifndef _JACK_H
 #define _JACK_H
 
-#include <glib.h>
+#include <libaudcore/core.h>
 
 void jack_configure(void);
 
 typedef struct
 {
-    gboolean isTraceEnabled; /* if true we will print debug information to the console */
+    bool_t isTraceEnabled; /* if true we will print debug information to the console */
     int volume_left, volume_right; /* for loading the stored volume setting */
     char *port_connection_mode; /* the port connection mode setting */
 } jackconfig;
