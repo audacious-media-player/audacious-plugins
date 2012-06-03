@@ -1,6 +1,6 @@
 /*
  * UNIX Transport Plugin for Audacious
- * Copyright 2009-2011 John Lindgren
+ * Copyright 2009-2012 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -18,6 +18,7 @@
  */
 
 #include <errno.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,22 +27,26 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include <glib.h>
-
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
 #include "config.h"
 
-/* in gtk.c */
-void unix_error (const gchar * format, ...);
+#define INT_TO_POINTER(x) ((void *) (ptrdiff_t) (x))
+#define POINTER_TO_INT(x) ((int) (ptrdiff_t) (x))
 
-static void * unix_fopen (const gchar * uri, const gchar * mode)
+#define unix_error(...) do { \
+    SPRINTF (unix_error_buf, __VA_ARGS__); \
+    aud_interface_show_error (unix_error_buf); \
+} while (0)
+
+static void * unix_fopen (const char * uri, const char * mode)
 {
-    gboolean update;
+    bool_t update;
     mode_t mode_flag;
-    gint handle;
+    int handle;
 
     update = (strchr (mode, '+') != NULL);
 
@@ -64,7 +69,7 @@ static void * unix_fopen (const gchar * uri, const gchar * mode)
     mode_flag |= O_BINARY;
 #endif
 
-    gchar * filename = uri_to_filename (uri);
+    char * filename = uri_to_filename (uri);
     if (! filename)
         return NULL;
 
@@ -81,7 +86,7 @@ static void * unix_fopen (const gchar * uri, const gchar * mode)
     if (handle < 0)
     {
         unix_error ("Cannot open %s: %s.", filename, strerror (errno));
-        g_free (filename);
+        free (filename);
         return NULL;
     }
 
@@ -89,14 +94,14 @@ static void * unix_fopen (const gchar * uri, const gchar * mode)
     fcntl (handle, F_SETFD, FD_CLOEXEC);
 #endif
 
-    g_free (filename);
-    return GINT_TO_POINTER (handle);
+    free (filename);
+    return INT_TO_POINTER (handle);
 }
 
-static gint unix_fclose (VFSFile * file)
+static int unix_fclose (VFSFile * file)
 {
-    gint handle = GPOINTER_TO_INT (vfs_get_handle (file));
-    gint result = 0;
+    int handle = POINTER_TO_INT (vfs_get_handle (file));
+    int result = 0;
 
 #ifdef HAVE_FSYNC
     if (fsync (handle) < 0)
@@ -115,15 +120,15 @@ static gint unix_fclose (VFSFile * file)
     return result;
 }
 
-static gint64 unix_fread (void * ptr, gint64 size, gint64 nitems, VFSFile * file)
+static int64_t unix_fread (void * ptr, int64_t size, int64_t nitems, VFSFile * file)
 {
-    gint handle = GPOINTER_TO_INT (vfs_get_handle (file));
-    gint64 goal = size * nitems;
-    gint64 total = 0;
+    int handle = POINTER_TO_INT (vfs_get_handle (file));
+    int64_t goal = size * nitems;
+    int64_t total = 0;
 
     while (total < goal)
     {
-        gint64 readed = read (handle, (gchar *) ptr + total, goal - total);
+        int64_t readed = read (handle, (char *) ptr + total, goal - total);
 
         if (readed < 0)
         {
@@ -140,16 +145,16 @@ static gint64 unix_fread (void * ptr, gint64 size, gint64 nitems, VFSFile * file
     return (size > 0) ? total / size : 0;
 }
 
-static gint64 unix_fwrite (const void * ptr, gint64 size, gint64 nitems,
+static int64_t unix_fwrite (const void * ptr, int64_t size, int64_t nitems,
  VFSFile * file)
 {
-    gint handle = GPOINTER_TO_INT (vfs_get_handle (file));
-    gint64 goal = size * nitems;
-    gint64 total = 0;
+    int handle = POINTER_TO_INT (vfs_get_handle (file));
+    int64_t goal = size * nitems;
+    int64_t total = 0;
 
     while (total < goal)
     {
-        gint64 written = write (handle, (gchar *) ptr + total, goal - total);
+        int64_t written = write (handle, (char *) ptr + total, goal - total);
 
         if (written < 0)
         {
@@ -163,9 +168,9 @@ static gint64 unix_fwrite (const void * ptr, gint64 size, gint64 nitems,
     return (size > 0) ? total / size : 0;
 }
 
-static gint unix_fseek (VFSFile * file, gint64 offset, gint whence)
+static int unix_fseek (VFSFile * file, int64_t offset, int whence)
 {
-    gint handle = GPOINTER_TO_INT (vfs_get_handle (file));
+    int handle = POINTER_TO_INT (vfs_get_handle (file));
 
     if (lseek (handle, offset, whence) < 0)
     {
@@ -176,10 +181,10 @@ static gint unix_fseek (VFSFile * file, gint64 offset, gint whence)
     return 0;
 }
 
-static gint64 unix_ftell (VFSFile * file)
+static int64_t unix_ftell (VFSFile * file)
 {
-    gint handle = GPOINTER_TO_INT (vfs_get_handle (file));
-    gint64 result = lseek (handle, 0, SEEK_CUR);
+    int handle = POINTER_TO_INT (vfs_get_handle (file));
+    int64_t result = lseek (handle, 0, SEEK_CUR);
 
     if (result < 0)
         unix_error ("lseek failed: %s.", strerror (errno));
@@ -187,14 +192,14 @@ static gint64 unix_ftell (VFSFile * file)
     return result;
 }
 
-static gint unix_getc (VFSFile * file)
+static int unix_getc (VFSFile * file)
 {
-    guchar c;
+    unsigned char c;
 
     return (unix_fread (& c, 1, 1, file) == 1) ? c : -1;
 }
 
-static gint unix_ungetc (gint c, VFSFile * file)
+static int unix_ungetc (int c, VFSFile * file)
 {
     return (! unix_fseek (file, -1, SEEK_CUR)) ? c : -1;
 }
@@ -204,9 +209,9 @@ static void unix_rewind (VFSFile * file)
     unix_fseek (file, 0, SEEK_SET);
 }
 
-static gboolean unix_feof (VFSFile * file)
+static bool_t unix_feof (VFSFile * file)
 {
-    gint test = unix_getc (file);
+    int test = unix_getc (file);
 
     if (test < 0)
         return TRUE;
@@ -215,11 +220,11 @@ static gboolean unix_feof (VFSFile * file)
     return FALSE;
 }
 
-static gint unix_ftruncate (VFSFile * file, gint64 length)
+static int unix_ftruncate (VFSFile * file, int64_t length)
 {
-    gint handle = GPOINTER_TO_INT (vfs_get_handle (file));
+    int handle = POINTER_TO_INT (vfs_get_handle (file));
 
-    gint result = ftruncate (handle, length);
+    int result = ftruncate (handle, length);
 
     if (result < 0)
         unix_error ("ftruncate failed: %s.", strerror (errno));
@@ -227,9 +232,9 @@ static gint unix_ftruncate (VFSFile * file, gint64 length)
     return result;
 }
 
-static gint64 unix_fsize (VFSFile * file)
+static int64_t unix_fsize (VFSFile * file)
 {
-    gint64 position, length;
+    int64_t position, length;
 
     position = unix_ftell (file);
 
@@ -249,7 +254,7 @@ static gint64 unix_fsize (VFSFile * file)
 
 static const char unix_about[] =
  "File I/O Plugin for Audacious\n"
- "Copyright 2009-2011 John Lindgren\n\n"
+ "Copyright 2009-2012 John Lindgren\n\n"
  "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT.\n\n"
  "Redistribution and use in source and binary forms, with or without "
  "modification, are permitted provided that the following conditions are "
@@ -263,7 +268,7 @@ static const char unix_about[] =
  "implied. In no event shall the authors be liable for any damages arising "
  "from the use of this software.";
 
-static const gchar * const unix_schemes[] = {"file", NULL};
+static const char * const unix_schemes[] = {"file", NULL};
 
 static VFSConstructor constructor = {
  .vfs_fopen_impl = unix_fopen,
