@@ -1,4 +1,4 @@
-#include <glib.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <audacious/i18n.h>
@@ -11,12 +11,12 @@
 #define MAX_DELAY 1000
 #define MAX_SRATE 50000
 #define MAX_CHANNELS 2
-#define BYTES_PS sizeof(gfloat)
+#define BYTES_PS sizeof(float)
 #define BUFFER_SAMPLES (MAX_SRATE * MAX_DELAY / 1000)
 #define BUFFER_SHORTS (BUFFER_SAMPLES * MAX_CHANNELS)
 #define BUFFER_BYTES (BUFFER_SHORTS * BYTES_PS)
 
-static const gchar * const echo_defaults[] = {
+static const char * const echo_defaults[] = {
  "delay", "500",
  "feedback", "50",
  "volume", "50",
@@ -36,12 +36,12 @@ static const PreferencesWidget echo_widgets[] = {
 
 static const PluginPreferences echo_prefs = {
  .widgets = echo_widgets,
- .n_widgets = G_N_ELEMENTS (echo_widgets)};
+ .n_widgets = sizeof echo_widgets / sizeof echo_widgets[0]};
 
-static gfloat *buffer = NULL;
+static float *buffer = NULL;
 static int w_ofs;
 
-static gboolean init (void)
+static bool_t init (void)
 {
 	aud_config_set_defaults ("echo_plugin", echo_defaults);
 	return TRUE;
@@ -49,19 +49,19 @@ static gboolean init (void)
 
 static void cleanup(void)
 {
-	g_free(buffer);
+	free(buffer);
 	buffer = NULL;
 }
 
-static gint echo_channels = 0;
-static gint echo_rate = 0;
+static int echo_channels = 0;
+static int echo_rate = 0;
 
-static void echo_start(gint *channels, gint *rate)
+static void echo_start(int *channels, int *rate)
 {
-	static gint old_srate, old_nch;
+	static int old_srate, old_nch;
 
 	if (buffer == NULL)
-		buffer = g_malloc0(BUFFER_BYTES + sizeof(gfloat));
+		buffer = malloc (BUFFER_BYTES);
 
 	echo_channels = *channels;
 	echo_rate = *rate;
@@ -75,16 +75,16 @@ static void echo_start(gint *channels, gint *rate)
 	}
 }
 
-static void echo_process(gfloat **d, gint *samples)
+static void echo_process(float **d, int *samples)
 {
-	gint delay = aud_get_int ("echo_plugin", "delay");
-	gint feedback = aud_get_int ("echo_plugin", "feedback");
-	gint volume = aud_get_int ("echo_plugin", "volume");
+	int delay = aud_get_int ("echo_plugin", "delay");
+	int feedback = aud_get_int ("echo_plugin", "feedback");
+	int volume = aud_get_int ("echo_plugin", "volume");
 
-	gfloat in, out, buf;
-	gint r_ofs;
-	gfloat *data = *d;
-	gfloat *end = *d + *samples;
+	float in, out, buf;
+	int r_ofs;
+	float *data = *d;
+	float *end = *d + *samples;
 
 	r_ofs = w_ofs - (echo_rate * delay / 1000) * echo_channels;
 	if (r_ofs < 0)
@@ -107,7 +107,7 @@ static void echo_process(gfloat **d, gint *samples)
 	}
 }
 
-static void echo_finish(gfloat **d, gint *samples)
+static void echo_finish(float **d, int *samples)
 {
 	echo_process(d, samples);
 }
