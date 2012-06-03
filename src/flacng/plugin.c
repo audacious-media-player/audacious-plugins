@@ -18,23 +18,24 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <pthread.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
+#include <audacious/plugin.h>
 
+#include "config.h"
 #include "flacng.h"
 
 FLAC__StreamDecoder *main_decoder;
 callback_info *main_info;
-static GMutex *seek_mutex;
-static GCond *seek_cond;
-static gint seek_value;
-static gboolean stop_flag = FALSE;
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static int seek_value;
+static bool_t stop_flag = FALSE;
 
-static gboolean flac_init (void)
+static bool_t flac_init (void)
 {
     FLAC__StreamDecoderInitStatus ret;
 
@@ -69,40 +70,34 @@ static gboolean flac_init (void)
         return FALSE;
     }
 
-    seek_mutex = g_mutex_new();
-    seek_cond = g_cond_new();
-
     AUDDBG("Plugin initialized.\n");
     return TRUE;
 }
 
 static void flac_cleanup(void)
 {
-    g_mutex_free(seek_mutex);
-    g_cond_free(seek_cond);
-
     FLAC__stream_decoder_delete(main_decoder);
     clean_callback_info(main_info);
 }
 
-gboolean flac_is_our_fd(const gchar *filename, VFSFile *fd)
+bool_t flac_is_our_fd(const char *filename, VFSFile *fd)
 {
     AUDDBG("Probe for FLAC.\n");
 
-    gchar buf[4];
+    char buf[4];
     if (vfs_fread (buf, 1, sizeof buf, fd) != sizeof buf)
         return FALSE;
 
     return ! strncmp (buf, "fLaC", sizeof buf);
 }
 
-static void squeeze_audio(gint32* src, void* dst, guint count, guint res)
+static void squeeze_audio(int32_t* src, void* dst, unsigned count, unsigned res)
 {
-    gint i;
-    gint32* rp = src;
-    gint8*  wp = dst;
-    gint16* wp2 = dst;
-    gint32* wp4 = dst;
+    int i;
+    int32_t* rp = src;
+    int8_t*  wp = dst;
+    int16_t* wp2 = dst;
+    int32_t* wp4 = dst;
 
     switch (res)
     {
@@ -127,18 +122,18 @@ static void squeeze_audio(gint32* src, void* dst, guint count, guint res)
     }
 }
 
-static gboolean flac_play (InputPlayback * playback, const gchar * filename,
- VFSFile * file, gint start_time, gint stop_time, gboolean pause)
+static bool_t flac_play (InputPlayback * playback, const char * filename,
+ VFSFile * file, int start_time, int stop_time, bool_t pause)
 {
     if (file == NULL)
         return FALSE;
 
-    gint32 *read_pointer;
-    gint elements_left;
+    int32_t *read_pointer;
+    int elements_left;
     struct stream_info stream_info;
-    guint sample_count;
-    gpointer play_buffer = NULL;
-    gboolean error = FALSE;
+    unsigned sample_count;
+    void * play_buffer = NULL;
+    bool_t error = FALSE;
 
     main_info->fd = file;
 
@@ -168,7 +163,7 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
         goto ERR_NO_CLOSE;
     }
 
-    if ((play_buffer = g_malloc0(BUFFER_SIZE_BYTE)) == NULL)
+    if ((play_buffer = malloc (BUFFER_SIZE_BYTE)) == NULL)
     {
         FLACNG_ERROR("Could not allocate conversion buffer\n");
         error = TRUE;
@@ -201,24 +196,23 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
 
     while (1)
     {
-        g_mutex_lock(seek_mutex);
+        pthread_mutex_lock (& mutex);
 
         if (stop_flag)
         {
-            g_mutex_unlock(seek_mutex);
+            pthread_mutex_unlock (& mutex);
             break;
         }
 
         if (seek_value >= 0)
         {
             playback->output->flush (seek_value);
-            FLAC__stream_decoder_seek_absolute (main_decoder, (gint64)
+            FLAC__stream_decoder_seek_absolute (main_decoder, (int64_t)
              seek_value * main_info->stream.samplerate / 1000);
             seek_value = -1;
-            g_cond_signal(seek_cond);
         }
 
-        g_mutex_unlock(seek_mutex);
+        pthread_mutex_unlock (& mutex);
 
         /* Try to decode a single frame of audio */
         if (FLAC__stream_decoder_process_single(main_decoder) == FALSE)
@@ -314,18 +308,18 @@ static gboolean flac_play (InputPlayback * playback, const gchar * filename,
 
 CLEANUP:
     while (playback->output->buffer_playing())
-        g_usleep(20000);
+        usleep (20000);
 
-    g_mutex_lock(seek_mutex);
-    g_cond_signal(seek_cond); /* wake up any waiting request */
-    g_mutex_unlock(seek_mutex);
+    pthread_mutex_lock (& mutex);
+    stop_flag = TRUE;
+    pthread_mutex_unlock (& mutex);
 
     AUDDBG("Closing audio device.\n");
     playback->output->close_audio();
     AUDDBG("Audio device closed.\n");
 
 ERR_NO_CLOSE:
-    g_free(play_buffer);
+    free (play_buffer);
     reset_info(main_info);
 
     if (FLAC__stream_decoder_flush(main_decoder) == FALSE)
@@ -336,41 +330,38 @@ ERR_NO_CLOSE:
 
 static void flac_stop(InputPlayback *playback)
 {
-    g_mutex_lock(seek_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (!stop_flag)
     {
         stop_flag = TRUE;
         playback->output->abort_write();
-        g_cond_signal(seek_cond);
     }
 
-    g_mutex_unlock (seek_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
-static void flac_pause(InputPlayback *playback, gboolean pause)
+static void flac_pause(InputPlayback *playback, bool_t pause)
 {
-    g_mutex_lock(seek_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (!stop_flag)
         playback->output->pause(pause);
 
-    g_mutex_unlock(seek_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
-static void flac_seek (InputPlayback * playback, gint time)
+static void flac_seek (InputPlayback * playback, int time)
 {
-    g_mutex_lock(seek_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (!stop_flag)
     {
         seek_value = time;
         playback->output->abort_write();
-        g_cond_signal(seek_cond);
-        g_cond_wait(seek_cond, seek_mutex);
     }
 
-    g_mutex_unlock(seek_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
 static const char flac_about[] =
@@ -378,7 +369,7 @@ static const char flac_about[] =
  "Ralf Ertzinger <ralf@skytale.net>\n\n"
  "http://www.skytale.net/projects/bmp-flac2/";
 
-static const gchar *flac_fmts[] = { "flac", "fla", NULL };
+static const char *flac_fmts[] = { "flac", "fla", NULL };
 
 AUD_INPUT_PLUGIN
 (

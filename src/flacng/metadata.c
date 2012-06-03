@@ -19,7 +19,10 @@
  *
  */
 
+#include <limits.h>
+#include <stdio.h>
 #include <string.h>
+
 #include <audacious/debug.h>
 
 #include "flacng.h"
@@ -69,7 +72,7 @@ static int seek_cb(FLAC__IOHandle handle, FLAC__int64 offset, int whence)
 
 static FLAC__int64 tell_cb(FLAC__IOHandle handle)
 {
-    guint64 offset;
+    uint64_t offset;
 
     if ((offset = vfs_ftell(handle)) == -1)
     {
@@ -77,7 +80,7 @@ static FLAC__int64 tell_cb(FLAC__IOHandle handle)
         return -1;
     }
 
-    AUDDBG ("Current position: %d\n", (gint) offset);
+    AUDDBG ("Current position: %d\n", (int) offset);
     return offset;
 }
 
@@ -96,47 +99,39 @@ static FLAC__IOCallbacks io_callbacks = {
 };
 
 static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
- const Tuple * tuple, gint tuple_name, gchar * field_name)
+ const Tuple * tuple, int tuple_name, char * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
-    gchar *str;
-    gchar *val = tuple_get_str(tuple, tuple_name, NULL);
+    char *val = tuple_get_str(tuple, tuple_name, NULL);
 
     if (val == NULL)
         return;
 
-    str  = g_strdup_printf("%s=%s", field_name, val);
+    SPRINTF (str, "%s=%s", field_name, val);
     entry.entry = (FLAC__byte *) str;
     entry.length = strlen(str);
     FLAC__metadata_object_vorbiscomment_insert_comment(vc_block,
         vc_block->data.vorbis_comment.num_comments, entry, true);
-    g_free(str);
     str_unref(val);
 }
 
 static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
- const Tuple * tuple, gint tuple_name, gchar * field_name)
+ const Tuple * tuple, int tuple_name, char * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
-    gchar *str;
-    gint val = tuple_get_int(tuple, tuple_name, NULL);
+    int val = tuple_get_int(tuple, tuple_name, NULL);
 
     if (val <= 0)
         return;
 
-    if (FIELD_TRACK_NUMBER == tuple_name)
-        str  = g_strdup_printf("%s=%.2d", field_name, val);
-    else
-        str  = g_strdup_printf("%s=%d", field_name, val);
-
+    SPRINTF (str, "%s=%d", field_name, val);
     entry.entry = (FLAC__byte *) str;
     entry.length = strlen(str);
     FLAC__metadata_object_vorbiscomment_insert_comment(vc_block,
         vc_block->data.vorbis_comment.num_comments, entry, true);
-    g_free(str);
 }
 
-gboolean flac_update_song_tuple(const Tuple *tuple, VFSFile *fd)
+bool_t flac_update_song_tuple(const Tuple *tuple, VFSFile *fd)
 {
     AUDDBG("Update song tuple.\n");
 
@@ -146,13 +141,11 @@ gboolean flac_update_song_tuple(const Tuple *tuple, VFSFile *fd)
     FLAC__Metadata_ChainStatus status;
 
     chain = FLAC__metadata_chain_new();
-    g_return_val_if_fail(chain != NULL, FALSE);
 
     if (!FLAC__metadata_chain_read_with_callbacks(chain, fd, io_callbacks))
         goto ERR;
 
     iter = FLAC__metadata_iterator_new();
-    g_return_val_if_fail(iter != NULL, FALSE);
 
     FLAC__metadata_iterator_init(iter, chain);
 
@@ -193,7 +186,7 @@ ERR:
     return FALSE;
 }
 
-gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint64 *length)
+bool_t flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *length)
 {
     AUDDBG("Probe for song image.\n");
 
@@ -201,16 +194,14 @@ gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint64 
     FLAC__Metadata_Chain *chain;
     FLAC__StreamMetadata *metadata = NULL;
     FLAC__Metadata_ChainStatus status;
-    gboolean has_image = FALSE;
+    bool_t has_image = FALSE;
 
     chain = FLAC__metadata_chain_new();
-    g_return_val_if_fail(chain != NULL, FALSE);
 
     if (!FLAC__metadata_chain_read_with_callbacks(chain, fd, io_callbacks))
         goto ERR;
 
     iter = FLAC__metadata_iterator_new();
-    g_return_val_if_fail(iter != NULL, FALSE);
 
     FLAC__metadata_iterator_init(iter, chain);
 
@@ -226,8 +217,9 @@ gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint64 
         {
             AUDDBG("FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER found.");
 
-            *data = g_memdup(metadata->data.picture.data, metadata->data.picture.data_length);
-            *length = metadata->data.picture.data_length;
+            * data = malloc (metadata->data.picture.data_length);
+            * length = metadata->data.picture.data_length;
+            memcpy (* data, metadata->data.picture.data, * length);
             has_image = TRUE;
         }
     }
@@ -245,9 +237,9 @@ ERR:
     return FALSE;
 }
 
-static void parse_gain_text(const gchar *text, gint *value, gint *unit)
+static void parse_gain_text(const char *text, int *value, int *unit)
 {
-    gint sign = 1;
+    int sign = 1;
 
     *value = 0;
     *unit = 1;
@@ -268,7 +260,7 @@ static void parse_gain_text(const gchar *text, gint *value, gint *unit)
     {
         text++;
 
-        while (*text >= '0' && *text <= '9' && *value < G_MAXINT / 10)
+        while (*text >= '0' && *text <= '9' && *value < INT_MAX / 10)
         {
             *value = *value * 10 + (*text - '0');
             *unit = *unit * 10;
@@ -279,28 +271,27 @@ static void parse_gain_text(const gchar *text, gint *value, gint *unit)
     *value = *value * sign;
 }
 
-static void set_gain_info(Tuple *tuple, gint field, gint unit_field, const gchar *text)
+static void set_gain_info(Tuple *tuple, int field, int unit_field, const char *text)
 {
-    gint value, unit;
+    int value, unit;
 
     parse_gain_text(text, &value, &unit);
 
     if (tuple_get_value_type(tuple, unit_field, NULL) == TUPLE_INT)
-        value = value * (gint64) tuple_get_int(tuple, unit_field, NULL) / unit;
+        value = value * (int64_t) tuple_get_int(tuple, unit_field, NULL) / unit;
     else
         tuple_set_int(tuple, unit_field, NULL, unit);
 
     tuple_set_int(tuple, field, NULL, value);
 }
 
-static void add_text (Tuple * tuple, gint field, const gchar * value)
+static void add_text (Tuple * tuple, int field, const char * value)
 {
-    gchar * cur = tuple_get_str (tuple, field, NULL);
+    char * cur = tuple_get_str (tuple, field, NULL);
     if (cur)
     {
-        gchar * both = g_strconcat (cur, ", ", value, NULL);
+        SPRINTF (both, "%s, %s", cur, value);
         tuple_set_str (tuple, field, NULL, both);
-        g_free(both);
     }
     else
         tuple_set_str (tuple, field, NULL, value);
@@ -308,12 +299,12 @@ static void add_text (Tuple * tuple, gint field, const gchar * value)
     str_unref(cur);
 }
 
-static void parse_comment (Tuple * tuple, const gchar * key, const gchar * value)
+static void parse_comment (Tuple * tuple, const char * key, const char * value)
 {
     AUDDBG ("Found key %s <%s>\n", key, value);
 
     const struct {
-        const gchar * key;
+        const char * key;
         int field;
     } tfields[] = {
      {"ARTIST", FIELD_ARTIST},
@@ -322,7 +313,7 @@ static void parse_comment (Tuple * tuple, const gchar * key, const gchar * value
      {"COMMENT", FIELD_COMMENT},
      {"GENRE", FIELD_GENRE}};
 
-    for (gint i = 0; i < G_N_ELEMENTS (tfields); i ++)
+    for (int i = 0; i < sizeof tfields / sizeof tfields[0]; i ++)
     {
         if (! strcasecmp (key, tfields[i].key))
         {
@@ -345,7 +336,7 @@ static void parse_comment (Tuple * tuple, const gchar * key, const gchar * value
         set_gain_info(tuple, FIELD_GAIN_ALBUM_PEAK, FIELD_GAIN_PEAK_UNIT, value);
 }
 
-Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
+Tuple *flac_probe_for_tuple(const char *filename, VFSFile *fd)
 {
     AUDDBG("Probe for tuple.\n");
 
@@ -355,8 +346,8 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
     FLAC__StreamMetadata *metadata = NULL;
     FLAC__Metadata_ChainStatus status;
     FLAC__StreamMetadata_VorbisComment_Entry *entry;
-    gchar *key;
-    gchar *value;
+    char *key;
+    char *value;
 
     tuple = tuple_new_from_filename(filename);
 
@@ -364,13 +355,11 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
     tuple_set_str(tuple, FIELD_QUALITY, NULL, "lossless");
 
     chain = FLAC__metadata_chain_new();
-    g_return_val_if_fail(chain != NULL, FALSE);
 
     if (!FLAC__metadata_chain_read_with_callbacks(chain, fd, io_callbacks))
         goto ERR;
 
     iter = FLAC__metadata_iterator_new();
-    g_return_val_if_fail(iter != NULL, FALSE);
 
     FLAC__metadata_iterator_init(iter, chain);
 
@@ -389,15 +378,15 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
 
                     entry = metadata->data.vorbis_comment.comments;
 
-                    for (gint i = 0; i < metadata->data.vorbis_comment.num_comments; i++, entry++)
+                    for (int i = 0; i < metadata->data.vorbis_comment.num_comments; i++, entry++)
                     {
                         if (FLAC__metadata_object_vorbiscomment_entry_to_name_value_pair(*entry, &key, &value) == false)
                             AUDDBG("Could not parse comment\n");
                         else
                         {
                             parse_comment(tuple, key, value);
-                            g_free(key);
-                            g_free(value);
+                            free(key);
+                            free(value);
                         }
                     }
                 }
@@ -419,14 +408,14 @@ Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd)
                     AUDDBG("Stream length: %d seconds\n", tuple_get_int(tuple, FIELD_LENGTH, NULL));
                 }
 
-                gsize size = vfs_fsize(fd);
+                int64_t size = vfs_fsize(fd);
 
                 if (size == -1 || metadata->data.stream_info.total_samples == 0)
                     tuple_set_int(tuple, FIELD_BITRATE, NULL, 0);
                 else
                 {
-                    gint bitrate = 8 * size *
-                        (gint64) metadata->data.stream_info.sample_rate / metadata->data.stream_info.total_samples;
+                    int bitrate = 8 * size *
+                        (int64_t) metadata->data.stream_info.sample_rate / metadata->data.stream_info.total_samples;
 
                     tuple_set_int(tuple, FIELD_BITRATE, NULL, (bitrate + 500) / 1000);
                 }

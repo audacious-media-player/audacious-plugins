@@ -16,14 +16,15 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+
 #ifndef FLACNG_H
 #define FLACNG_H
 
-#include "config.h"
-#include <glib.h>
-#include <audacious/plugin.h>
-#include <audacious/i18n.h>
 #include <FLAC/all.h>
+
+#include <libaudcore/audio.h>
+#include <libaudcore/tuple.h>
+#include <libaudcore/vfs.h>
 
 #define FLACNG_ERROR(...) do { \
     printf("flacng: " __VA_ARGS__); \
@@ -34,7 +35,7 @@
 #define BUFFER_SIZE_SAMP (FLAC__MAX_BLOCK_SIZE * FLAC__MAX_CHANNELS)
 #define BUFFER_SIZE_BYTE (BUFFER_SIZE_SAMP * (FLAC__MAX_BITS_PER_SAMPLE/8))
 
-#define SAMPLE_SIZE(a) (a == 8 ? sizeof(guint8) : (a == 16 ? sizeof(guint16) : sizeof(guint32)))
+#define SAMPLE_SIZE(a) (a == 8 ? 1 : (a == 16 ? 2 : 4))
 #define SAMPLE_FMT(a) (a == 8 ? FMT_S8 : (a == 16 ? FMT_S16_NE : (a == 24 ? FMT_S24_NE : FMT_S32_NE)))
 
 /*
@@ -42,11 +43,11 @@
  * the metadata header
  */
 struct stream_info {
-    guint bits_per_sample;
-    guint samplerate;
-    guint channels;
-    gulong samples;
-    gboolean has_seektable;
+    unsigned bits_per_sample;
+    unsigned samplerate;
+    unsigned channels;
+    unsigned long samples;
+    bool_t has_seektable;
 };
 
 /*
@@ -55,27 +56,27 @@ struct stream_info {
  * in the stream buffer.
  */
 struct frame_info {
-    guint bits_per_sample;
-    guint samplerate;
-    guint channels;
+    unsigned bits_per_sample;
+    unsigned samplerate;
+    unsigned channels;
 };
 
 typedef struct callback_info {
-    gint32* output_buffer;
-    gint32* write_pointer;
-    guint buffer_free;
-    guint buffer_used;
+    int32_t* output_buffer;
+    int32_t* write_pointer;
+    unsigned buffer_free;
+    unsigned buffer_used;
     VFSFile* fd;
     struct stream_info stream;
-    gboolean metadata_changed;
+    bool_t metadata_changed;
     struct frame_info frame;
-    gint bitrate;
+    int bitrate;
 } callback_info;
 
 /* metadata.c */
-gboolean flac_update_song_tuple(const Tuple *tuple, VFSFile *fd);
-gboolean flac_get_image(const gchar *filename, VFSFile *fd, void **data, gint64 *length);
-Tuple *flac_probe_for_tuple(const gchar *filename, VFSFile *fd);
+bool_t flac_update_song_tuple(const Tuple *tuple, VFSFile *fd);
+bool_t flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *length);
+Tuple *flac_probe_for_tuple(const char *filename, VFSFile *fd);
 
 /* seekable_stream_callbacks.c */
 FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data);
@@ -91,6 +92,6 @@ void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMet
 callback_info* init_callback_info(void);
 void clean_callback_info(callback_info* info);
 void reset_info(callback_info* info);
-gboolean read_metadata(FLAC__StreamDecoder* decoder, callback_info* info);
+bool_t read_metadata(FLAC__StreamDecoder* decoder, callback_info* info);
 
 #endif

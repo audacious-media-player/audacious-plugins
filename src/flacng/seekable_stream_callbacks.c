@@ -20,7 +20,6 @@
 
 #include <string.h>
 #include <FLAC/all.h>
-#include <glib.h>
 
 #include <audacious/debug.h>
 
@@ -81,7 +80,7 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
         return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
     }
 
-    AUDDBG ("Current position: %d\n", (gint) * offset);
+    AUDDBG ("Current position: %d\n", (int) * offset);
 
     return FLAC__STREAM_DECODER_TELL_STATUS_OK;
 }
@@ -108,15 +107,15 @@ FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decod
         return FLAC__STREAM_DECODER_LENGTH_STATUS_UNSUPPORTED;
     }
 
-    AUDDBG ("Stream length is %d bytes\n", (gint) * length);
+    AUDDBG ("Stream length is %d bytes\n", (int) * length);
 
     return FLAC__STREAM_DECODER_LENGTH_STATUS_OK;
 }
 
 FLAC__StreamDecoderWriteStatus write_callback(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 *const buffer[], void *client_data)
 {
-    glong sample;
-    gshort channel;
+    long sample;
+    short channel;
     callback_info *info = (callback_info*) client_data;
 
     /*
@@ -169,7 +168,7 @@ void error_callback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderError
 void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data)
 {
     callback_info *info = (callback_info*) client_data;
-    gsize size;
+    int64_t size;
 
     if (metadata->type == FLAC__METADATA_TYPE_STREAMINFO)
     {
@@ -190,7 +189,7 @@ void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMet
         if (size == -1 || info->stream.samples == 0)
             info->bitrate = 0;
         else
-            info->bitrate = 8 * size * (gint64) info->stream.samplerate / info->stream.samples;
+            info->bitrate = 8 * size * (int64_t) info->stream.samplerate / info->stream.samples;
 
         AUDDBG("bitrate=%d\n", info->bitrate);
 
