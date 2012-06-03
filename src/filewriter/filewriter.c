@@ -37,8 +37,6 @@ struct format_info input;
 
 static GtkWidget *configure_win = NULL, *configure_vbox;
 static GtkWidget *path_hbox, *path_label, *path_dirbrowser;
-static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
-
 static GtkWidget *fileext_hbox, *fileext_label, *fileext_combo, *plugin_button;
 
 enum fileext_t
@@ -334,8 +332,14 @@ static gint file_get_time (void)
     return samples_written * 1000 / (input.channels * input.frequency);
 }
 
-static void configure_ok_cb(gpointer data)
+static void configure_response_cb (GtkWidget * window, int response)
 {
+    if (response != GTK_RESPONSE_OK)
+    {
+        gtk_widget_destroy (window);
+        return;
+    }
+
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
 
     g_free (file_path);
@@ -354,9 +358,7 @@ static void configure_ok_cb(gpointer data)
     aud_set_bool ("filewriter", "save_original", save_original);
     aud_set_bool ("filewriter", "use_suffix", use_suffix);
 
-    gtk_widget_destroy(configure_win);
-    if (path_dirbrowser)
-        gtk_widget_destroy(path_dirbrowser);
+    gtk_widget_destroy (window);
 }
 
 static void fileext_cb(GtkWidget *combo, gpointer data)
@@ -414,34 +416,19 @@ static void filenamefromfilename_cb(GtkWidget *button, gpointer data)
     }
 }
 
-
-static void configure_destroy(void)
-{
-    if (path_dirbrowser)
-        gtk_widget_destroy(path_dirbrowser);
-}
-
 static void file_configure(void)
 {
     if (!configure_win)
     {
-        configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_type_hint(GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
+        configure_win = gtk_dialog_new_with_buttons
+         (_("FileWriter Configuration"), NULL, 0, GTK_STOCK_CANCEL,
+         GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
 
-        g_signal_connect (configure_win, "destroy", (GCallback)
-         configure_destroy, NULL);
+        g_signal_connect (configure_win, "response", (GCallback) configure_response_cb, NULL);
         g_signal_connect (configure_win, "destroy", (GCallback)
          gtk_widget_destroyed, & configure_win);
 
-        gtk_window_set_title(GTK_WINDOW(configure_win),
-                             _("File Writer Configuration"));
-        gtk_window_set_position(GTK_WINDOW(configure_win), GTK_WIN_POS_MOUSE);
-
-        gtk_container_set_border_width(GTK_CONTAINER(configure_win), 10);
-
-        configure_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-        gtk_container_add(GTK_CONTAINER(configure_win), configure_vbox);
-
+        configure_vbox = gtk_dialog_get_content_area ((GtkDialog *) configure_win);
 
         fileext_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), fileext_hbox, FALSE, FALSE, 0);
@@ -469,12 +456,7 @@ static void file_configure(void)
         g_signal_connect(G_OBJECT(plugin_button), "clicked", G_CALLBACK(plugin_configure_cb), NULL);
         gtk_box_pack_end(GTK_BOX(fileext_hbox), plugin_button, FALSE, FALSE, 0);
 
-
-
-
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
-
-
 
         saveplace_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_container_add(GTK_CONTAINER(configure_vbox), saveplace_hbox);
@@ -506,13 +488,7 @@ static void file_configure(void)
         if (save_original)
             gtk_widget_set_sensitive(path_hbox, FALSE);
 
-
-
-
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
-
-
-
 
         filenamefrom_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_container_add(GTK_CONTAINER(configure_vbox), filenamefrom_hbox);
@@ -533,9 +509,6 @@ static void file_configure(void)
         if (!filenamefromtags)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(filenamefrom_toggle), TRUE);
 
-
-
-
         use_suffix_toggle = gtk_check_button_new_with_label(_("Don't strip file name extension"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), use_suffix);
         gtk_box_pack_start(GTK_BOX(configure_vbox), use_suffix_toggle, FALSE, FALSE, 0);
@@ -543,37 +516,11 @@ static void file_configure(void)
         if (filenamefromtags)
             gtk_widget_set_sensitive(use_suffix_toggle, FALSE);
 
-
-
-
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
-
-
-
 
         prependnumber_toggle = gtk_check_button_new_with_label(_("Prepend track number to filename"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prependnumber_toggle), prependnumber);
         gtk_box_pack_start(GTK_BOX(configure_vbox), prependnumber_toggle, FALSE, FALSE, 0);
-
-
-
-        configure_bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-        gtk_button_box_set_layout(GTK_BUTTON_BOX(configure_bbox),
-                                  GTK_BUTTONBOX_END);
-        gtk_box_pack_start(GTK_BOX(configure_vbox), configure_bbox,
-                           FALSE, FALSE, 0);
-
-        configure_cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-        g_signal_connect_swapped (configure_cancel, "clicked", (GCallback)
-         gtk_widget_destroy, configure_win);
-        gtk_box_pack_start(GTK_BOX(configure_bbox), configure_cancel,
-                           TRUE, TRUE, 0);
-
-        configure_ok = gtk_button_new_from_stock(GTK_STOCK_OK);
-        g_signal_connect (configure_ok, "clicked", (GCallback) configure_ok_cb,
-         NULL);
-        gtk_box_pack_start(GTK_BOX(configure_bbox), configure_ok,
-                           TRUE, TRUE, 0);
 
         gtk_widget_show_all(configure_win);
     }

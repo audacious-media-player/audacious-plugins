@@ -40,7 +40,6 @@ static const gchar * const mode_names[MODES] = {N_("Auto"), N_("Joint Stereo"),
 static gint (*write_output)(void *ptr, gint length);
 
 static GtkWidget *configure_win = NULL;
-static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
 static GtkWidget *alg_quality_spin;
 static GtkWidget *alg_quality_hbox;
 static GtkAdjustment * alg_quality_adj;
@@ -640,8 +639,14 @@ static void id3_only_version(GtkToggleButton * togglebutton,
 
 /* Save Configuration */
 
-static void configure_ok_cb(gpointer data)
+static void configure_response_cb (GtkWidget * window, int response)
 {
+    if (response != GTK_RESPONSE_OK)
+    {
+        gtk_widget_destroy (window);
+        return;
+    }
+
     if (vbr_min_val > vbr_max_val)
         vbr_max_val = vbr_min_val;
 
@@ -667,7 +672,7 @@ static void configure_ok_cb(gpointer data)
     aud_set_int ("filewriter_mp3", "enforce_iso_val", enforce_iso_val);
     aud_set_int ("filewriter_mp3", "error_protect_val", error_protect_val);
 
-    gtk_widget_destroy(configure_win);
+    gtk_widget_destroy (window);
 }
 
 
@@ -678,26 +683,20 @@ static void configure_ok_cb(gpointer data)
 
 static void mp3_configure(void)
 {
-    gint i;
+    if (! configure_win)
+    {
+        configure_win = gtk_dialog_new_with_buttons (_("MP3 Configuration"),
+         NULL, 0, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK,
+         GTK_RESPONSE_OK, NULL);
 
-    if (!configure_win) {
-        configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_type_hint(GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
-
+        g_signal_connect (configure_win, "response", (GCallback) configure_response_cb, NULL);
         g_signal_connect (configure_win, "destroy", (GCallback)
          gtk_widget_destroyed, & configure_win);
-        gtk_window_set_title(GTK_WINDOW(configure_win),
-                             _("MP3 Configuration"));
-        gtk_window_set_position(GTK_WINDOW(configure_win),
-                                GTK_WIN_POS_MOUSE);
-        gtk_container_set_border_width(GTK_CONTAINER(configure_win), 5);
 
-        vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-        gtk_container_add(GTK_CONTAINER(configure_win), vbox);
+        vbox = gtk_dialog_get_content_area ((GtkDialog *) configure_win);
 
         notebook = gtk_notebook_new();
         gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
-
 
         /* Quality */
 
@@ -750,7 +749,7 @@ static void mp3_configure(void)
         if (! out_samplerate_val)
             gtk_combo_box_set_active ((GtkComboBox *) combo, 0);
 
-        for (i = 0; i < G_N_ELEMENTS (available_samplerates); i ++)
+        for (int i = 0; i < G_N_ELEMENTS (available_samplerates); i ++)
         {
             gchar buf[10];
             snprintf (buf, sizeof buf, "%d", available_samplerates[i]);
@@ -801,7 +800,7 @@ static void mp3_configure(void)
 
         combo = gtk_combo_box_text_new ();
 
-        for (i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
+        for (int i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
         {
             gchar buf[10];
             snprintf (buf, sizeof buf, "%d", available_bitrates[i]);
@@ -862,7 +861,7 @@ static void mp3_configure(void)
 
         combo = gtk_combo_box_text_new ();
 
-        for (i = 0; i < MODES; i ++)
+        for (int i = 0; i < MODES; i ++)
         {
             gtk_combo_box_text_append_text ((GtkComboBoxText *) combo,
              _(mode_names[i]));
@@ -911,7 +910,6 @@ static void mp3_configure(void)
         /* Add the Notebook */
         gtk_notebook_append_page(GTK_NOTEBOOK(notebook), quality_vbox,
                                  gtk_label_new(_("Quality")));
-
 
         /* VBR/ABR */
 
@@ -986,7 +984,7 @@ static void mp3_configure(void)
 
         combo = gtk_combo_box_text_new ();
 
-        for (i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
+        for (int i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
         {
             gchar buf[10];
             snprintf (buf, sizeof buf, "%d", available_bitrates[i]);
@@ -1013,7 +1011,7 @@ static void mp3_configure(void)
 
         combo = gtk_combo_box_text_new ();
 
-        for (i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
+        for (int i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
         {
             gchar buf[10];
             snprintf (buf, sizeof buf, "%d", available_bitrates[i]);
@@ -1057,7 +1055,7 @@ static void mp3_configure(void)
 
         combo = gtk_combo_box_text_new ();
 
-        for (i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
+        for (int i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
         {
             gchar buf[10];
             snprintf (buf, sizeof buf, "%d", available_bitrates[i]);
@@ -1108,12 +1106,10 @@ static void mp3_configure(void)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
                                          (xing_header_toggle), TRUE);
 
-
         /* Add the Notebook */
 
         gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbr_vbox,
                                  gtk_label_new(_("VBR/ABR")));
-
 
         /* Tags */
 
@@ -1208,31 +1204,6 @@ static void mp3_configure(void)
         gtk_notebook_append_page(GTK_NOTEBOOK(notebook), tags_vbox,
                                  gtk_label_new(_("Tags")));
 
-
-
-
-        /* The Rest */
-
-        /* Buttons */
-
-        configure_bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-        gtk_button_box_set_layout(GTK_BUTTON_BOX(configure_bbox),
-                                  GTK_BUTTONBOX_END);
-        gtk_box_pack_start(GTK_BOX(vbox), configure_bbox, FALSE, FALSE, 0);
-
-        configure_cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-        g_signal_connect_swapped (configure_cancel, "clicked", (GCallback)
-         gtk_widget_destroy, configure_win);
-        gtk_box_pack_start(GTK_BOX(configure_bbox), configure_cancel, TRUE,
-                           TRUE, 0);
-
-        configure_ok = gtk_button_new_from_stock(GTK_STOCK_OK);
-        g_signal_connect (configure_ok, "clicked", (GCallback) configure_ok_cb,
-         NULL);
-        gtk_box_pack_start(GTK_BOX(configure_bbox), configure_ok, TRUE,
-                           TRUE, 0);
-        gtk_widget_show(configure_ok);
-
         /* Set States */
 
         if (vbr_on == 1)
@@ -1245,7 +1216,6 @@ static void mp3_configure(void)
         /* Show it! */
 
         gtk_widget_show_all(configure_win);
-
     }
 }
 

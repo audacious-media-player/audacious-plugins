@@ -201,31 +201,22 @@ static GtkAdjustment * quality_adj;
 static void quality_change(GtkAdjustment *adjustment, gpointer user_data)
 {
     v_base_quality = gtk_spin_button_get_value ((GtkSpinButton *) quality_spin) / 10;
-}
-
-static void configure_ok_cb(gpointer data)
-{
     aud_set_double ("filewrite_vorbis", "base_quality", v_base_quality);
-
-    gtk_widget_hide(configure_win);
 }
 
 static void vorbis_configure(void)
 {
-    GtkWidget *vbox, *bbox;
-    GtkWidget *button;
-
-    if (configure_win == NULL)
+    if (! configure_win)
     {
-        configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_type_hint(GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
-        g_signal_connect(G_OBJECT(configure_win), "destroy", G_CALLBACK(gtk_widget_destroyed), NULL);
+        configure_win = gtk_dialog_new_with_buttons
+         (_("Vorbis Encoder Configuration"), NULL, 0, GTK_STOCK_CLOSE,
+         GTK_RESPONSE_CLOSE, NULL);
 
-        gtk_window_set_title(GTK_WINDOW(configure_win), _("Vorbis Encoder Configuration"));
-        gtk_container_set_border_width(GTK_CONTAINER(configure_win), 5);
+        g_signal_connect (configure_win, "response", (GCallback) gtk_widget_destroy, NULL);
+        g_signal_connect (configure_win, "destroy", (GCallback)
+         gtk_widget_destroyed, & configure_win);
 
-        vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-        gtk_container_add(GTK_CONTAINER(configure_win), vbox);
+        GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) configure_win);
 
         /* quality options */
         quality_frame = gtk_frame_new(_("Quality"));
@@ -251,20 +242,6 @@ static void vorbis_configure(void)
         g_signal_connect(G_OBJECT(quality_adj), "value-changed", G_CALLBACK(quality_change), NULL);
 
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(quality_spin), (v_base_quality * 10));
-
-        /* buttons */
-        bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-        gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-        gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
-
-        button = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-        g_signal_connect_swapped (button, "clicked", (GCallback)
-         gtk_widget_hide, configure_win);
-        gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-
-        button = gtk_button_new_from_stock(GTK_STOCK_OK);
-        g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(configure_ok_cb), NULL);
-        gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
     }
 
     gtk_widget_show_all(configure_win);
