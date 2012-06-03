@@ -1,7 +1,7 @@
 /*
  * notify.c
  *
- * Copyright (C) 2010 Maximilian Bogner	<max@mbogner.de>
+ * Copyright (C) 2010 Maximilian Bogner <max@mbogner.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,24 +60,24 @@ short plugin_active = 0;
 
 gboolean plugin_init (void)
 {
-	AUDDBG("started!\n");
-	if(!osd_init()) {
-		AUDDBG("osd_init failed!\n");
-  		return FALSE;
-	}
-	event_init();
+    AUDDBG("started!\n");
+    if(!osd_init()) {
+        AUDDBG("osd_init failed!\n");
+        return FALSE;
+    }
+    event_init();
 
-	plugin_active = 1;
-	return TRUE;
+    plugin_active = 1;
+    return TRUE;
 }
 
 
 void plugin_cleanup() {
-	if(plugin_active) {
-		AUDDBG("started!\n");
-		event_uninit();
-    		osd_uninit();
-		plugin_active = 0;
-		AUDDBG("done!\n");
-	}
+    if(plugin_active) {
+        AUDDBG("started!\n");
+        event_uninit();
+        osd_uninit();
+        plugin_active = 0;
+        AUDDBG("done!\n");
+    }
 }
