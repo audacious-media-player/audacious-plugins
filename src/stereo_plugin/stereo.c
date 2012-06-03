@@ -3,26 +3,23 @@
  * Modified by John Lindgren, 2009-2012 */
 
 #include "config.h"
-#include <gtk/gtk.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
-static gboolean init (void);
+static bool_t init (void);
 
-static void stereo_start (gint * channels, gint * rate);
-static void stereo_process (gfloat * * data, gint * samples);
-static void stereo_finish (gfloat * * data, gint * samples);
+static void stereo_start (int * channels, int * rate);
+static void stereo_process (float * * data, int * samples);
+static void stereo_finish (float * * data, int * samples);
 
 static const char stereo_about[] =
  "Extra Stereo Plugin\n\n"
  "By Johan Levin, 1999";
 
-static const gchar * const stereo_defaults[] = {
+static const char * const stereo_defaults[] = {
  "intensity", "2.5",
  NULL};
 
@@ -34,7 +31,7 @@ static const PreferencesWidget stereo_widgets[] = {
 
 static const PluginPreferences stereo_prefs = {
  .widgets = stereo_widgets,
- .n_widgets = G_N_ELEMENTS (stereo_widgets)};
+ .n_widgets = sizeof stereo_widgets / sizeof stereo_widgets[0]};
 
 AUD_EFFECT_PLUGIN
 (
@@ -49,24 +46,24 @@ AUD_EFFECT_PLUGIN
     .preserves_format = TRUE
 )
 
-static gboolean init (void)
+static bool_t init (void)
 {
     aud_config_set_defaults ("extra_stereo", stereo_defaults);
     return TRUE;
 }
 
-static gint stereo_channels;
+static int stereo_channels;
 
-static void stereo_start (gint * channels, gint * rate)
+static void stereo_start (int * channels, int * rate)
 {
     stereo_channels = * channels;
 }
 
-static void stereo_process (gfloat * * data, gint * samples)
+static void stereo_process (float * * data, int * samples)
 {
-    gfloat value = aud_get_double ("extra_stereo", "intensity");
-    gfloat * f, * end;
-    gfloat center;
+    float value = aud_get_double ("extra_stereo", "intensity");
+    float * f, * end;
+    float center;
 
     if (stereo_channels != 2 || samples == 0)
         return;
@@ -81,7 +78,7 @@ static void stereo_process (gfloat * * data, gint * samples)
     }
 }
 
-static void stereo_finish (gfloat * * data, gint * samples)
+static void stereo_finish (float * * data, int * samples)
 {
     stereo_process (data, samples);
 }
