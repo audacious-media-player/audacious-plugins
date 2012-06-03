@@ -48,7 +48,7 @@ dnl Default Set of Plugins
 dnl ======================
 
 INPUT_PLUGINS="tonegen metronom vtx"
-OUTPUT_PLUGINS="null"
+OUTPUT_PLUGINS=""
 EFFECT_PLUGINS="compressor crossfade crystalizer ladspa mixer sndstretch stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS="alarm albumart search-tool"
 VISUALIZATION_PLUGINS="blur_scope cairo-spectrum"
@@ -1060,7 +1060,6 @@ echo "  FileWriter:                             $enable_filewriter"
 echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $enable_vorbis"
 echo "    -> FileWriter FLAC output part:       $have_writer_flac"
-echo "  Null Audio output (null):               yes"
 echo
 echo "  Input Plugins"
 echo "  -------------"
