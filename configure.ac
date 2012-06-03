@@ -68,6 +68,8 @@ fi
 
 if test "x$enable_gio" = "xyes"; then
     TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS gio"
+    AC_SUBST(GIO_CFLAGS)
+    AC_SUBST(GIO_LIBS)
 fi
 
 dnl IPv6 support
