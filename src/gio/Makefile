@@ -1,12 +1,12 @@
 PLUGIN = gio${PLUGIN_SUFFIX}
 
-SRCS = gio.c gtk.c
+SRCS = gio.c
 
 include ../../buildsys.mk
 include ../../extra.mk
 
 plugindir := ${plugindir}/${TRANSPORT_PLUGIN_DIR}
 
-CPPFLAGS += -I../.. ${GIO_CFLAGS} ${GTK_CFLAGS}
+CPPFLAGS += -I../.. ${GIO_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
-LIBS += ${GIO_LIBS} ${GTK_LIBS}
+LIBS += ${GIO_LIBS}

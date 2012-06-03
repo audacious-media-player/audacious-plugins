@@ -25,6 +25,7 @@
 #include <gio/gio.h>
 
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 #include "config.h"
@@ -37,8 +38,10 @@ typedef struct {
     GSeekable * seekable;
 } FileData;
 
-/* in gtk.c */
-void gio_error (const char * format, ...);
+#define gio_error(...) do { \
+    SPRINTF (gio_error_buf, __VA_ARGS__); \
+    aud_interface_show_error (gio_error_buf); \
+} while (0)
 
 #define CHECK_ERROR(op, name) do { \
     if (error) { \
