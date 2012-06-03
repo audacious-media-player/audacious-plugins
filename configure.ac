@@ -829,25 +829,6 @@ if test $enable_smb = yes ; then
     fi
 fi
 
-dnl *** MTP Upload
-
-AC_ARG_ENABLE(mtp_up,
-[  --disable-mtp_up           disable mtp upload support. (default=enabled)],
-[have_mtp_up=$enableval],
-[have_mtp_up=yes])
-
-if test "x$have_mtp_up" = "xyes"; then
-    have_mtp_up=yes
-    PKG_CHECK_MODULES(MTP, [libmtp >= 0.3.5], [GENERAL_PLUGINS="$GENERAL_PLUGINS mtp_up" ], [have_mtp_up="no"])
-    MTP_LIBS=`pkg-config --libs libmtp`
-    MTP_CFLAGS=`pkg-config --cflags libmtp`
-else
-    have_mtp_up=no
-    AC_MSG_RESULT([*** mtp upload plugin disabled by request ***])
-fi
-AC_SUBST(MTP_LIBS)
-AC_SUBST(MTP_CFLAGS)
-
 dnl XSPF
 dnl ----
 
@@ -1121,7 +1102,6 @@ echo "  libnotify OSD:                          $have_notify"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  AudioScrobbler Client:                  $have_scrobbler"
-echo "  Upload to MTP device:                   $have_mtp_up"
 echo "  LyricWiki viewer:                       $enable_lyricwiki"
 echo
 echo "  Effect"
