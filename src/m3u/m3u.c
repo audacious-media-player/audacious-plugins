@@ -18,7 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <glib.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -30,10 +29,10 @@
 
 #include "config.h"
 
-static void strip_char (gchar * text, gchar c)
+static void strip_char (char * text, char c)
 {
-    gchar * set = text;
-    gchar a;
+    char * set = text;
+    char a;
 
     while ((a = * text ++))
         if (a != c)
@@ -42,25 +41,25 @@ static void strip_char (gchar * text, gchar c)
     * set = 0;
 }
 
-static gchar * read_win_text (VFSFile * file)
+static char * read_win_text (VFSFile * file)
 {
-    gint64 size = vfs_fsize (file);
+    int64_t size = vfs_fsize (file);
     if (size < 1)
         return NULL;
 
-    gchar * raw = g_malloc (size + 1);
+    char * raw = malloc (size + 1);
     size = vfs_fread (raw, 1, size, file);
     raw[size] = 0;
 
     strip_char (raw, '\r');
-    gchar * text = str_to_utf8 (raw);
-    g_free (raw);
+    char * text = str_to_utf8 (raw);
+    free (raw);
     return text;
 }
 
-static gchar * split_line (gchar * line)
+static char * split_line (char * line)
 {
-    gchar * feed = strchr (line, '\n');
+    char * feed = strchr (line, '\n');
     if (! feed)
         return NULL;
 
@@ -68,20 +67,20 @@ static gchar * split_line (gchar * line)
     return feed + 1;
 }
 
-static gboolean playlist_load_m3u (const gchar * path, VFSFile * file,
- gchar * * title, Index * filenames, Index * tuples)
+static bool_t playlist_load_m3u (const char * path, VFSFile * file,
+ char * * title, Index * filenames, Index * tuples)
 {
-    gchar * text = read_win_text (file);
+    char * text = read_win_text (file);
     if (! text)
         return FALSE;
 
     * title = NULL;
 
-    gchar * parse = text;
+    char * parse = text;
 
     while (parse)
     {
-        gchar * next = split_line (parse);
+        char * next = split_line (parse);
 
         while (* parse == ' ' || * parse == '\t')
             parse ++;
@@ -92,32 +91,32 @@ static gboolean playlist_load_m3u (const gchar * path, VFSFile * file,
         if (* parse == '#')
             goto NEXT;
 
-        gchar * s = aud_construct_uri (parse, path);
+        char * s = aud_construct_uri (parse, path);
         if (s)
             index_append (filenames, str_get (s));
 
-        g_free (s);
+        free (s);
 
 NEXT:
         parse = next;
     }
 
-    g_free (text);
+    free (text);
     return TRUE;
 }
 
-static gboolean playlist_save_m3u (const gchar * path, VFSFile * file,
- const gchar * title, Index * filenames, Index * tuples)
+static bool_t playlist_save_m3u (const char * path, VFSFile * file,
+ const char * title, Index * filenames, Index * tuples)
 {
-    gint count = index_count (filenames);
+    int count = index_count (filenames);
 
-    for (gint i = 0; i < count; i ++)
-        vfs_fprintf (file, "%s\n", (const gchar *) index_get (filenames, i));
+    for (int i = 0; i < count; i ++)
+        vfs_fprintf (file, "%s\n", (const char *) index_get (filenames, i));
 
     return TRUE;
 }
 
-static const gchar * const m3u_exts[] = {"m3u", "m3u8", NULL};
+static const char * const m3u_exts[] = {"m3u", "m3u8", NULL};
 
 AUD_PLAYLIST_PLUGIN
 (
