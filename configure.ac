@@ -307,7 +307,7 @@ AC_ARG_ENABLE(notify,
  [enable_notify=$enableval], [enable_notify="yes"])
 
 if test "x$enable_notify" = "xyes"; then
-    PKG_CHECK_MODULES(NOTIFY, [libnotify], [have_notify="yes"], [have_notify="no"])
+    PKG_CHECK_MODULES(NOTIFY, [libnotify >= 0.7], [have_notify="yes"], [have_notify="no"])
 else
     have_notify="no"
 fi
