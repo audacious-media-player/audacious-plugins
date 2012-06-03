@@ -17,14 +17,8 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <glib.h>
-
 #include <stdio.h>
-
-#include <unistd.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-
+#include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 
@@ -43,17 +37,18 @@
 typedef struct {
     mms_t *mms;
     mmsh_t *mmsh;
-    guchar * buf;
-    gint64 offset;
-    gint len, used;
+    unsigned char * buf;
+    int64_t offset;
+    int len, used;
 } MMSHandle;
 
-static void * mms_vfs_fopen_impl (const gchar * path, const gchar * mode)
+static void * mms_vfs_fopen_impl (const char * path, const char * mode)
 {
     AUDDBG("Opening %s.\n", path);
 
-    MMSHandle *handle;
-    handle = g_new0(MMSHandle, 1);
+    MMSHandle * handle = malloc (sizeof (MMSHandle));
+    memset (handle, 0, sizeof (MMSHandle));
+
     handle->mmsh = mmsh_connect(NULL, NULL, path, 128 * 1024);
 
     if (handle->mmsh == NULL) {
@@ -64,15 +59,15 @@ static void * mms_vfs_fopen_impl (const gchar * path, const gchar * mode)
     if (handle->mms == NULL && handle->mmsh == NULL)
     {
         fprintf(stderr, "mms: Failed to open %s.\n", path);
-        g_free(handle);
+        free(handle);
         return NULL;
     }
 
-    handle->buf = g_malloc (BUFSIZE);
+    handle->buf = malloc (BUFSIZE);
     return handle;
 }
 
-static gint mms_vfs_fclose_impl (VFSFile * file)
+static int mms_vfs_fclose_impl (VFSFile * file)
 {
     MMSHandle *handle = (MMSHandle *) vfs_get_handle (file);
 
@@ -81,18 +76,18 @@ static gint mms_vfs_fclose_impl (VFSFile * file)
     else /* if (handle->mmsh != NULL) */
         mmsh_close(handle->mmsh);
 
-    g_free (handle->buf);
-    g_free (handle);
+    free (handle->buf);
+    free (handle);
 
     return 0;
 }
 
-static gint64 mms_vfs_fread_impl (void * buf, gint64 size, gint64 count,
+static int64_t mms_vfs_fread_impl (void * buf, int64_t size, int64_t count,
  VFSFile * file)
 {
     MMSHandle * h = vfs_get_handle (file);
-    gint64 goal = size * count;
-    gint64 total = 0;
+    int64_t goal = size * count;
+    int64_t total = 0;
 
     while (total < goal)
     {
@@ -106,12 +101,12 @@ static gint64 mms_vfs_fread_impl (void * buf, gint64 size, gint64 count,
                 h->used = BUFSIZE - BLOCKSIZE;
             }
 
-            gint size = MIN (BLOCKSIZE, BUFSIZE - h->len);
+            int size = MIN (BLOCKSIZE, BUFSIZE - h->len);
 
             if (h->mms)
-                size = mms_read (NULL, h->mms, (gchar *) h->buf + h->len, size);
+                size = mms_read (NULL, h->mms, (char *) h->buf + h->len, size);
             else /* if (h->mmsh) */
-                size = mmsh_read (NULL, h->mmsh, (gchar *) h->buf + h->len, size);
+                size = mmsh_read (NULL, h->mmsh, (char *) h->buf + h->len, size);
 
             if (size < 0)
                 fprintf (stderr, "mms: Read error: %s.\n", strerror (errno));
@@ -121,7 +116,7 @@ static gint64 mms_vfs_fread_impl (void * buf, gint64 size, gint64 count,
             h->len += size;
         }
 
-        gint copy = MIN (h->len - h->used, goal - total);
+        int copy = MIN (h->len - h->used, goal - total);
 
         memcpy (buf, h->buf + h->used, copy);
         h->used += copy;
@@ -132,14 +127,14 @@ static gint64 mms_vfs_fread_impl (void * buf, gint64 size, gint64 count,
     return (size > 0) ? total / size : 0;
 }
 
-static gint64 mms_vfs_fwrite_impl (const void * data, gint64 size, gint64 count,
+static int64_t mms_vfs_fwrite_impl (const void * data, int64_t size, int64_t count,
  VFSFile * file)
 {
     fprintf (stderr, "mms: Writing is not supported.\n");
     return 0;
 }
 
-static gint mms_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
+static int mms_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
 {
     MMSHandle * h = vfs_get_handle (file);
 
@@ -164,24 +159,24 @@ static void mms_vfs_rewind_impl (VFSFile * file)
     mms_vfs_fseek_impl (file, 0, SEEK_SET);
 }
 
-static gint64 mms_vfs_ftell_impl (VFSFile * file)
+static int64_t mms_vfs_ftell_impl (VFSFile * file)
 {
     MMSHandle * h = vfs_get_handle (file);
     return h->offset + h->used;
 }
 
-static gint mms_vfs_getc_impl (VFSFile * file)
+static int mms_vfs_getc_impl (VFSFile * file)
 {
-    guchar c;
+    unsigned char c;
     return (mms_vfs_fread_impl (& c, 1, 1, file) == 1) ? c : EOF;
 }
 
-static gint mms_vfs_ungetc_impl (gint c, VFSFile * file)
+static int mms_vfs_ungetc_impl (int c, VFSFile * file)
 {
     return (! mms_vfs_fseek_impl (file, -1, SEEK_CUR)) ? c : EOF;
 }
 
-static gboolean mms_vfs_feof_impl (VFSFile * file)
+static bool_t mms_vfs_feof_impl (VFSFile * file)
 {
     return FALSE;
 
@@ -193,13 +188,13 @@ static gboolean mms_vfs_feof_impl (VFSFile * file)
         return (h->offset + h->used == mmsh_get_length (h->mmsh));
 }
 
-static gint mms_vfs_truncate_impl (VFSFile * file, gint64 size)
+static int mms_vfs_truncate_impl (VFSFile * file, int64_t size)
 {
     fprintf (stderr, "mms: Truncating is not supported.\n");
     return -1;
 }
 
-static gint64 mms_vfs_fsize_impl (VFSFile * file)
+static int64_t mms_vfs_fsize_impl (VFSFile * file)
 {
     MMSHandle * h = vfs_get_handle (file);
 
@@ -209,7 +204,7 @@ static gint64 mms_vfs_fsize_impl (VFSFile * file)
         return mmsh_get_length (h->mmsh);
 }
 
-static const gchar * const mms_schemes[] = {"mms", NULL};
+static const char * const mms_schemes[] = {"mms", NULL};
 
 static VFSConstructor constructor = {
  .vfs_fopen_impl = mms_vfs_fopen_impl,
