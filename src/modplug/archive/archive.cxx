@@ -6,14 +6,14 @@
 
 #include "archive.h"
 
-
+using namespace std;
 
 ///* Open a read pipe */ File f;
 //f=popen("gzip -d compressed.file.name","r");
 ///* Read some data in the usual manner, for example */
 //fscanf(f,"%d %f %f",name,&age,$id);
 ///* Close the pipe */
-//pclose(f); 
+//pclose(f);
 
 Archive::~Archive()
 {
@@ -22,13 +22,13 @@ Archive::~Archive()
 bool Archive::IsOurFile(const string& aFileName)
 {
 	string lExt;
-	uint32 lPos;
+	uint32_t lPos;
 
 	lPos = aFileName.find_last_of('.');
 	if((int)lPos == -1)
 		return false;
 	lExt = aFileName.substr(lPos);
-	for(uint32 i = 0; i < lExt.length(); i++)
+	for(uint32_t i = 0; i < lExt.length(); i++)
 		lExt[i] = tolower(lExt[i]);
 
 	if (lExt == ".669")
@@ -73,6 +73,6 @@ bool Archive::IsOurFile(const string& aFileName)
 		return true;
 	if (lExt == ".psm")
 		return true;
-	
+
 	return false;
 }

@@ -7,12 +7,13 @@
 #ifndef __MODPLUGXMMS_CMODPLUGXMMS_H_INCLUDED__
 #define __MODPLUGXMMS_CMODPLUGXMMS_H_INCLUDED__
 
+#include <pthread.h>
 #include <string>
-#include <glib.h>
-#include "stddefs.h"
 
 extern "C" {
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
+#include "plugin.h"
 }
 
 /* Module files have their magic deep inside the file, at offset 1080; source: http://www.onicos.com/staff/iz/formats/mod.html and information by Michael Doering from UADE */
@@ -39,7 +40,8 @@ extern "C" {
 #define MTM_MAGIC	"\x4D\x54\x4D\x10"
 #define PSM_MAGIC	"PSM "
 
-using namespace std;
+#define MODPLUG_CFGID    "modplug"
+#define MODPLUG_CONVERT  str_to_utf8
 
 class CSoundFile;
 class Archive;
@@ -49,46 +51,46 @@ class ModplugXMMS
 public:
 	struct Settings
 	{
-		gboolean   mSurround;
-		gboolean   mOversamp;
-		gboolean   mMegabass;
-		gboolean   mNoiseReduction;
-		gboolean   mVolumeRamp;
-		gboolean   mReverb;
-		gboolean   mFastinfo;
-		gboolean   mUseFilename;
-		gboolean   mGrabAmigaMOD;
-		gboolean   mPreamp;
+		bool_t   mSurround;
+		bool_t   mOversamp;
+		bool_t   mMegabass;
+		bool_t   mNoiseReduction;
+		bool_t   mVolumeRamp;
+		bool_t   mReverb;
+		bool_t   mFastinfo;
+		bool_t   mUseFilename;
+		bool_t   mGrabAmigaMOD;
+		bool_t   mPreamp;
 
-		gint       mChannels;
-		gint       mBits;
-		gint       mFrequency;
-		gint       mResamplingMode;
+		int       mChannels;
+		int       mBits;
+		int       mFrequency;
+		int       mResamplingMode;
 
-		gint       mReverbDepth;
-		gint       mReverbDelay;
-		gint       mBassAmount;
-		gint       mBassRange;
-		gint       mSurroundDepth;
-		gint       mSurroundDelay;
-		gfloat     mPreampLevel;
-		gint       mLoopCount;
+		int       mReverbDepth;
+		int       mReverbDelay;
+		int       mBassAmount;
+		int       mBassRange;
+		int       mSurroundDepth;
+		int       mSurroundDelay;
+		float     mPreampLevel;
+		int       mLoopCount;
 	};
 
 	ModplugXMMS();
 	~ModplugXMMS();
 
-	void Init();                      // Called when the plugin is loaded
-	bool CanPlayFileFromVFS(const string& aFilename, VFSFile *file);	// Return true if the plugin can handle the file
+	void Init();
+	bool CanPlayFileFromVFS(const std::string& aFilename, VFSFile *file);
 
 	void CloseConfigureBox();
 
-	bool PlayFile(const string& aFilename, InputPlayback *data);// Play the file.
-	void Stop(InputPlayback *data);         // Stop playing.
-	void mseek (InputPlayback * playback, gint time);
-	void pause (InputPlayback * playback, gboolean paused);
+	bool PlayFile(const std::string& aFilename, InputPlayback *data);
+	void Stop(InputPlayback *data);
+	void mseek (InputPlayback * playback, int time);
+	void pause (InputPlayback * playback, bool_t paused);
 
-	Tuple* GetSongTuple(const string& aFilename);
+	Tuple* GetSongTuple(const std::string& aFilename);
 
 	void SetInputPlugin(InputPlugin& aInPlugin);
 
@@ -98,19 +100,18 @@ public:
 private:
 	InputPlugin*  mInPlug;
 
-	uchar*  mBuffer;
-	uint32  mBufSize;
+	unsigned char*  mBuffer;
+	uint32_t  mBufSize;
 
-    GMutex * control_mutex;
-    GCond * control_cond;
-    gint seek_time;
+    pthread_mutex_t mutex;
+    int seek_time;
 	bool          mPaused;
 
 	Settings mModProps;
 
-	gint mFormat;
+	int mFormat;
 
-	uint32  mBufTime;		//milliseconds
+	uint32_t  mBufTime;		//milliseconds
 
 	CSoundFile* mSoundFile;
 	Archive*    mArchive;

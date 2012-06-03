@@ -14,15 +14,15 @@
 #include <libmodplug/sndfile.h>
 
 extern "C" {
-#include <audacious/debug.h>
 #include <audacious/misc.h>
 }
 
 #include "modplugbmp.h"
-#include "stddefs.h"
 #include "archive/open.h"
 
-static gboolean stop_flag = FALSE;
+using namespace std;
+
+static bool_t stop_flag = FALSE;
 
 // ModplugXMMS member functions ===============================
 
@@ -30,17 +30,15 @@ static gboolean stop_flag = FALSE;
 ModplugXMMS::ModplugXMMS()
 {
 	mSoundFile = new CSoundFile;
-    control_mutex = g_mutex_new ();
-    control_cond = g_cond_new ();
+	pthread_mutex_init (& mutex, 0);
 }
 ModplugXMMS::~ModplugXMMS()
 {
 	delete mSoundFile;
-    g_mutex_free (control_mutex);
-    g_cond_free (control_cond);
+	pthread_mutex_destroy (& mutex);
 }
 
-static const gchar * const modplug_defaults[] = {
+static const char * const modplug_defaults[] = {
  "Surround", "TRUE",
  "Oversampling", "TRUE",
  "Megabass", "FALSE",
@@ -96,7 +94,7 @@ void ModplugXMMS::Init(void)
 bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 {
 	string lExt;
-	uint32 lPos;
+	uint32_t lPos;
 	const int magicSize = 32;
 	char magic[magicSize];
 
@@ -171,7 +169,7 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 	if((int)lPos == -1)
 		return false;
 	lExt = aFilename.substr(lPos);
-	for(uint32 i = 0; i < lExt.length(); i++)
+	for(uint32_t i = 0; i < lExt.length(); i++)
 		lExt[i] = tolower(lExt[i]);
 
 	if (lExt == ".amf")
@@ -202,34 +200,33 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 
 void ModplugXMMS::PlayLoop(InputPlayback *playback)
 {
-	uint32 lLength;
+	uint32_t lLength;
 
-    g_mutex_lock (control_mutex);
+    pthread_mutex_lock (& mutex);
     seek_time = -1;
     stop_flag = FALSE;
     playback->set_pb_ready (playback);
-    g_mutex_unlock (control_mutex);
+    pthread_mutex_unlock (& mutex);
 
     while (1)
     {
-        g_mutex_lock (control_mutex);
+        pthread_mutex_lock (& mutex);
 
         if (stop_flag)
         {
-            g_mutex_unlock (control_mutex);
+            pthread_mutex_unlock (& mutex);
             break;
         }
 
         if (seek_time != -1)
         {
-            mSoundFile->SetCurrentPos (seek_time * (gint64)
+            mSoundFile->SetCurrentPos (seek_time * (int64_t)
              mSoundFile->GetMaxPosition () / (mSoundFile->GetSongTime () * 1000));
             playback->output->flush (seek_time);
             seek_time = -1;
-            g_cond_signal (control_cond);
         }
 
-        g_mutex_unlock (control_mutex);
+        pthread_mutex_unlock (& mutex);
 
         lLength = mSoundFile->Read (mBuffer, mBufSize);
 
@@ -255,12 +252,12 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 			else
 			{
 				for(uint i = 0; i < mBufSize; i++) {
-					uchar old = ((uchar*)mBuffer)[i];
-					((uchar*)mBuffer)[i] *= (short int)mPreampFactor;
+					unsigned char old = ((unsigned char*)mBuffer)[i];
+					((unsigned char*)mBuffer)[i] *= (short int)mPreampFactor;
 					// detect overflow and clip!
 					if ((old & 0x80) !=
-					 (((uchar*)mBuffer)[i] & 0x80))
-					  ((uchar*)mBuffer)[i] = old | 0x7F;
+					 (((unsigned char*)mBuffer)[i] & 0x80))
+					  ((unsigned char*)mBuffer)[i] = old | 0x7F;
 				}
 			}
 		}
@@ -268,14 +265,13 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
         playback->output->write_audio (mBuffer, mBufSize);
 	}
 
-    g_mutex_lock (control_mutex);
+    pthread_mutex_lock (& mutex);
 
     while (!stop_flag && playback->output->buffer_playing ())
-        g_usleep (10000);
+        usleep (10000);
 
     stop_flag = TRUE;
-    g_cond_signal (control_cond); /* wake up any waiting request */
-    g_mutex_unlock (control_mutex);
+    pthread_mutex_unlock (& mutex);
 
 	//Unload the file
 	mSoundFile->Destroy();
@@ -310,7 +306,7 @@ bool ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 	mBufSize *= mModProps.mChannels;
 	mBufSize *= mModProps.mBits / 8;
 
-	mBuffer = new uchar[mBufSize];
+	mBuffer = new unsigned char[mBufSize];
 	if(!mBuffer)
 		return true;        //out of memory!
 
@@ -364,7 +360,7 @@ bool ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 
 	mSoundFile->Create
 	(
-		(uchar*)mArchive->Map(),
+		(unsigned char*)mArchive->Map(),
 		mArchive->Size()
 	);
 
@@ -392,48 +388,45 @@ bool ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 
 void ModplugXMMS::Stop (InputPlayback * playback)
 {
-	g_mutex_lock(control_mutex);
+	pthread_mutex_lock (& mutex);
 
 	if (!stop_flag)
 	{
 		stop_flag = TRUE;
 		playback->output->abort_write();
-		g_cond_signal(control_cond);
 	}
 
-	g_mutex_unlock(control_mutex);
+	pthread_mutex_unlock (& mutex);
 }
 
-void ModplugXMMS::pause (InputPlayback * playback, gboolean pause)
+void ModplugXMMS::pause (InputPlayback * playback, bool_t pause)
 {
-	g_mutex_lock(control_mutex);
+	pthread_mutex_lock (& mutex);
 
 	if (!stop_flag)
 		playback->output->pause(pause);
 
-	g_mutex_unlock(control_mutex);
+	pthread_mutex_unlock (& mutex);
 }
 
-void ModplugXMMS::mseek (InputPlayback * playback, gint time)
+void ModplugXMMS::mseek (InputPlayback * playback, int time)
 {
-    g_mutex_lock (control_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (!stop_flag)
     {
         seek_time = time;
         playback->output->abort_write();
-        g_cond_signal (control_cond);
-        g_cond_wait (control_cond, control_mutex);
     }
 
-    g_mutex_unlock (control_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
 Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 {
 	CSoundFile* lSoundFile;
 	Archive* lArchive;
-	const gchar *tmps;
+	const char *tmps;
 
 	//open and mmap the file
         lArchive = OpenArchive(aFilename);
@@ -445,7 +438,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 
 	Tuple *ti = tuple_new_from_filename(aFilename.c_str());
 	lSoundFile = new CSoundFile;
-	lSoundFile->Create((uchar*)lArchive->Map(), lArchive->Size());
+	lSoundFile->Create((unsigned char*)lArchive->Map(), lArchive->Size());
 
 	switch(lSoundFile->GetType())
         {
@@ -476,12 +469,12 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	tuple_set_str(ti, FIELD_QUALITY, NULL, "sequenced");
 	tuple_set_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
 
-	gchar *tmps2 = MODPLUG_CONVERT(lSoundFile->GetTitle());
+	char *tmps2 = MODPLUG_CONVERT(lSoundFile->GetTitle());
 	// Chop any leading spaces off. They are annoying in the playlist.
-	gchar *tmps3 = tmps2; // Make another pointer so tmps2 can still be free()d
+	char *tmps3 = tmps2; // Make another pointer so tmps2 can still be free()d
 	while ( *tmps3 == ' ' ) tmps3++ ;
 	tuple_set_str(ti, FIELD_TITLE, NULL, tmps3);
-	g_free(tmps2);
+	free(tmps2);
 
 	//unload the file
 	lSoundFile->Destroy();

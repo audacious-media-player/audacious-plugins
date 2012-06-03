@@ -8,9 +8,8 @@
 #define __MODPLUG_ARCHIVE_OPEN_H__INCLUDED__
 
 #include "archive.h"
-#include <string>
 
-Archive* OpenArchive(const string& aFileName);
-bool ContainsMod(const string& aFileName);
+Archive* OpenArchive(const std::string& aFileName);
+bool ContainsMod(const std::string& aFileName);
 
 #endif

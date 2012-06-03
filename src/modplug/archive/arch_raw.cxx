@@ -15,6 +15,8 @@
 
 #include "arch_raw.h"
 
+using namespace std;
+
 arch_Raw::arch_Raw(const string& aFileName)
 {
 	mFileDesc = vfs_fopen(aFileName.c_str(), "r");
