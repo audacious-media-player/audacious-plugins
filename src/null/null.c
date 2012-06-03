@@ -4,7 +4,6 @@
  *  Based on the XMMS plugin:
  *  Copyright 2000 Håvard Kvålen <havardk@sol.no>
  *
- *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -19,21 +18,21 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#include "config.h"
-#include <glib.h>
-#include <gtk/gtk.h>
 
+#include <glib.h>
+
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
-#include <audacious/i18n.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
+#include <audacious/preferences.h>
+
+#include "config.h"
 
 static GTimer *timer;
 static gulong offset_time, written;
 static gint bps;
 static gboolean paused, started;
-static GtkWidget *configurewin;
+
 static struct {
     gint format;
     gint frequency;
@@ -50,54 +49,6 @@ static gboolean null_init (void)
 {
     aud_config_set_defaults("null", null_defaults);
     return TRUE;
-}
-
-static void null_configure_ok_cb(GtkButton *w, gpointer data)
-{
-    aud_set_bool("null", "real_time", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(data)));
-    gtk_widget_destroy(configurewin);
-}
-
-
-static void null_configure(void)
-{
-    GtkWidget *rt_btn, *ok_button, *cancel_button, *vbox, *bbox;
-
-    if (configurewin)
-        return;
-
-    configurewin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(configurewin), _("Null output preferences"));
-    gtk_window_set_type_hint(GTK_WINDOW(configurewin), GDK_WINDOW_TYPE_HINT_DIALOG);
-    gtk_window_set_resizable(GTK_WINDOW(configurewin), FALSE);
-    gtk_window_set_position(GTK_WINDOW(configurewin), GTK_WIN_POS_CENTER);
-    gtk_container_set_border_width(GTK_CONTAINER(configurewin), 10);
-    g_signal_connect(G_OBJECT(configurewin), "destroy",
-            G_CALLBACK(gtk_widget_destroyed), &configurewin);
-
-    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_container_add(GTK_CONTAINER(configurewin), vbox);
-
-    rt_btn = gtk_check_button_new_with_label(_("Run in real time"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rt_btn), aud_get_bool("null", "real_time"));
-    gtk_box_pack_start(GTK_BOX(vbox), rt_btn, FALSE, FALSE, 0);
-    bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-    gtk_box_set_spacing(GTK_BOX(bbox), 5);
-    gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
-    ok_button = gtk_button_new_with_label(_("Ok"));
-    cancel_button = gtk_button_new_with_label(_("Cancel"));
-    gtk_widget_set_can_default(ok_button, TRUE);
-    gtk_widget_set_can_default(cancel_button, TRUE);
-    g_signal_connect_swapped(G_OBJECT(cancel_button), "clicked",
-            G_CALLBACK(gtk_widget_destroy), configurewin);
-    g_signal_connect(G_OBJECT(ok_button), "clicked",
-            G_CALLBACK(null_configure_ok_cb), rt_btn);
-    gtk_box_pack_start(GTK_BOX(bbox), ok_button, FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(bbox), cancel_button, FALSE, FALSE, 0);
-    gtk_widget_grab_default(ok_button);
-
-    gtk_widget_show_all(configurewin);
 }
 
 static int null_open(gint fmt, int rate, int nch)
@@ -212,14 +163,23 @@ static const char null_about[] =
  "By Christian Birchinger <joker@netswarm.net>\n"
  "Based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>";
 
+static const PreferencesWidget null_widgets[] = {
+ {WIDGET_LABEL, N_("<b>Output</b>")},
+ {WIDGET_CHK_BTN, N_("Run in real time"),
+  .cfg_type = VALUE_BOOLEAN, .csect = "null", .cname = "real_time"}};
+
+static const PluginPreferences null_prefs = {
+ .widgets = null_widgets,
+ .n_widgets = sizeof null_widgets / sizeof null_widgets[0]};
+
 AUD_OUTPUT_PLUGIN
 (
  .name = N_("No Output"),
  .domain = PACKAGE,
  .about_text = null_about,
+ .prefs = & null_prefs,
  .probe_priority = 0,
  .init = null_init,
- .configure = null_configure,
  .open_audio = null_open,
  .write_audio = null_write,
  .close_audio = null_close,
@@ -227,5 +187,5 @@ AUD_OUTPUT_PLUGIN
  .pause = null_pause,
  .buffer_free = null_buffer_free,
  .output_time = null_get_output_time,
- .written_time = null_get_written_time,
- )
+ .written_time = null_get_written_time
+)
