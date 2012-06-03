@@ -8,5 +8,5 @@ include ../../extra.mk
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${WAVPACK_CFLAGS} -I../..
-LIBS += ${WAVPACK_LIBS} ${GTK_LIBS} ${GLIB_LIBS} -laudtag
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${WAVPACK_CFLAGS} -I../..
+LIBS += ${WAVPACK_LIBS} -laudtag

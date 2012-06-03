@@ -1,62 +1,62 @@
-#include "config.h"
+#include <pthread.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
 #include <wavpack/wavpack.h>
 
-#include <audacious/debug.h>
-#include <audacious/plugin.h>
-#include <audacious/i18n.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 #include <audacious/audtag.h>
-#include <glib.h>
-#include <gtk/gtk.h>
-#include <string.h>
+#include <audacious/debug.h>
+#include <audacious/i18n.h>
+#include <audacious/plugin.h>
+
+#include "config.h"
 
 #define BUFFER_SIZE 256 /* read buffer size, in samples / frames */
-#define SAMPLE_SIZE(a) (a == 8 ? sizeof(guint8) : (a == 16 ? sizeof(guint16) : sizeof(guint32)))
+#define SAMPLE_SIZE(a) (a == 8 ? sizeof(uint8_t) : (a == 16 ? sizeof(uint16_t) : sizeof(uint32_t)))
 #define SAMPLE_FMT(a) (a == 8 ? FMT_S8 : (a == 16 ? FMT_S16_NE : (a == 24 ? FMT_S24_NE : FMT_S32_NE)))
 
 
 /* Global mutexes etc.
  */
-static GMutex *ctrl_mutex = NULL;
-static GCond *ctrl_cond = NULL;
-static gint64 seek_value = -1;
-static gboolean stop_flag = FALSE;
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static int64_t seek_value = -1;
+static bool_t stop_flag = FALSE;
 
 /* Audacious VFS wrappers for Wavpack stream reading
  */
 
-static gint32
-wv_read_bytes(void *id, void *data, gint32 bcount)
+static int32_t
+wv_read_bytes(void *id, void *data, int32_t bcount)
 {
     return vfs_fread(data, 1, bcount, (VFSFile *) id);
 }
 
-static guint32
+static uint32_t
 wv_get_pos(void *id)
 {
     return vfs_ftell((VFSFile *) id);
 }
 
-static gint
-wv_set_pos_abs(void *id, guint32 pos)
+static int
+wv_set_pos_abs(void *id, uint32_t pos)
 {
     return vfs_fseek((VFSFile *) id, pos, SEEK_SET);
 }
 
-static gint
-wv_set_pos_rel(void *id, gint32 delta, gint mode)
+static int
+wv_set_pos_rel(void *id, int32_t delta, int mode)
 {
     return vfs_fseek((VFSFile *) id, delta, mode);
 }
 
-static gint
-wv_push_back_byte(void *id, gint c)
+static int
+wv_push_back_byte(void *id, int c)
 {
     return vfs_ungetc(c, (VFSFile *) id);
 }
 
-static guint32
+static uint32_t
 wv_get_length(void *id)
 {
     VFSFile *file = (VFSFile *) id;
@@ -67,12 +67,12 @@ wv_get_length(void *id)
     return vfs_fsize(file);
 }
 
-static gint wv_can_seek(void *id)
+static int wv_can_seek(void *id)
 {
     return (vfs_is_streaming((VFSFile *) id) == FALSE);
 }
 
-static gint32 wv_write_bytes(void *id, void *data, gint32 bcount)
+static int32_t wv_write_bytes(void *id, void *data, int32_t bcount)
 {
     return vfs_fwrite(data, 1, bcount, (VFSFile *) id);
 }
@@ -88,16 +88,13 @@ WavpackStreamReader wv_readers = {
     wv_write_bytes
 };
 
-static gboolean wv_attach (const gchar * filename, VFSFile * wv_input,
- VFSFile * * wvc_input, WavpackContext * * ctx, gchar * error, gint flags)
+static bool_t wv_attach (const char * filename, VFSFile * wv_input,
+ VFSFile * * wvc_input, WavpackContext * * ctx, char * error, int flags)
 {
-    gchar *corrFilename;
-
     if (flags & OPEN_WVC)
     {
-        corrFilename = g_strconcat(filename, "c", NULL);
+        SPRINTF (corrFilename, "%sc", filename);
         *wvc_input = vfs_fopen(corrFilename, "rb");
-        g_free(corrFilename);
     }
 
     * ctx = WavpackOpenFileInputEx (& wv_readers, wv_input, * wvc_input, error,
@@ -116,24 +113,24 @@ static void wv_deattach (VFSFile * wvc_input, WavpackContext * ctx)
     WavpackCloseFile(ctx);
 }
 
-static gboolean wv_play (InputPlayback * playback, const gchar * filename,
- VFSFile * file, gint start_time, gint stop_time, gboolean pause)
+static bool_t wv_play (InputPlayback * playback, const char * filename,
+ VFSFile * file, int start_time, int stop_time, bool_t pause)
 {
     if (file == NULL)
         return FALSE;
 
-    gint32 *input = NULL;
+    int32_t *input = NULL;
     void *output = NULL;
-    gint sample_rate, num_channels, bits_per_sample;
-    guint num_samples;
+    int sample_rate, num_channels, bits_per_sample;
+    unsigned num_samples;
     WavpackContext *ctx = NULL;
     VFSFile *wvc_input = NULL;
-    gboolean error = FALSE;
+    bool_t error = FALSE;
 
     if (! wv_attach (filename, file, & wvc_input, & ctx, NULL, OPEN_TAGS |
      OPEN_WVC))
     {
-        g_warning("Error opening Wavpack file '%s'.", filename);
+        fprintf (stderr, "Error opening Wavpack file '%s'.", filename);
         error = TRUE;
         goto error_exit;
     }
@@ -145,7 +142,7 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
 
     if (!playback->output->open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
     {
-        g_warning("Error opening audio output.");
+        fprintf (stderr, "Error opening audio output.");
         error = TRUE;
         goto error_exit;
     }
@@ -153,16 +150,16 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
     if (pause)
         playback->output->pause(TRUE);
 
-    input = g_malloc(BUFFER_SIZE * num_channels * sizeof(guint32));
-    output = g_malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));
+    input = malloc(BUFFER_SIZE * num_channels * sizeof(uint32_t));
+    output = malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));
     if (input == NULL || output == NULL)
         goto error_exit;
 
     playback->set_gain_from_playlist(playback);
 
-    g_mutex_lock(ctrl_mutex);
+    pthread_mutex_lock (& mutex);
 
-    playback->set_params(playback, (gint) WavpackGetAverageBitrate(ctx, num_channels),
+    playback->set_params(playback, (int) WavpackGetAverageBitrate(ctx, num_channels),
         sample_rate, num_channels);
 
     seek_value = (start_time > 0) ? start_time : -1;
@@ -170,26 +167,25 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
 
     playback->set_pb_ready(playback);
 
-    g_mutex_unlock(ctrl_mutex);
+    pthread_mutex_unlock (& mutex);
 
     while (!stop_flag && (stop_time < 0 ||
      playback->output->written_time () < stop_time))
     {
-        gint ret;
-        guint samples_left;
+        int ret;
+        unsigned samples_left;
 
         /* Handle seek and pause requests */
-        g_mutex_lock(ctrl_mutex);
+        pthread_mutex_lock (& mutex);
 
         if (seek_value >= 0)
         {
             playback->output->flush (seek_value);
-            WavpackSeekSample (ctx, (gint64) seek_value * sample_rate / 1000);
+            WavpackSeekSample (ctx, (int64_t) seek_value * sample_rate / 1000);
             seek_value = -1;
-            g_cond_signal(ctrl_cond);
         }
 
-        g_mutex_unlock(ctrl_mutex);
+        pthread_mutex_unlock (& mutex);
 
         /* Decode audio data */
         samples_left = num_samples - WavpackGetSampleIndex(ctx);
@@ -199,17 +195,17 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
             stop_flag = TRUE;
         else if (ret < 0)
         {
-            g_warning("Error decoding file.\n");
+            fprintf (stderr, "Error decoding file.\n");
             break;
         }
         else
         {
             /* Perform audio data conversion and output */
-            guint i;
-            gint32 *rp = input;
-            gint8 *wp = output;
-            gint16 *wp2 = output;
-            gint32 *wp4 = output;
+            unsigned i;
+            int32_t *rp = input;
+            int8_t *wp = output;
+            int16_t *wp2 = output;
+            int32_t *wp4 = output;
 
             if (bits_per_sample == 8)
             {
@@ -232,18 +228,17 @@ static gboolean wv_play (InputPlayback * playback, const gchar * filename,
     }
 
     /* Flush buffer */
-    g_mutex_lock(ctrl_mutex);
+    pthread_mutex_lock (& mutex);
 
     while (!stop_flag && playback->output->buffer_playing())
-        g_usleep(20000);
+        usleep(20000);
 
-    g_cond_signal(ctrl_cond);
-    g_mutex_unlock(ctrl_mutex);
+    pthread_mutex_unlock (& mutex);
 
 error_exit:
 
-    g_free(input);
-    g_free(output);
+    free(input);
+    free(output);
     wv_deattach (wvc_input, ctx);
 
     stop_flag = TRUE;
@@ -254,49 +249,46 @@ error_exit:
 static void
 wv_stop(InputPlayback * playback)
 {
-    g_mutex_lock(ctrl_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (!stop_flag)
     {
         stop_flag = TRUE;
         playback->output->abort_write();
-        g_cond_signal(ctrl_cond);
     }
 
-    g_mutex_unlock (ctrl_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
 static void
-wv_pause(InputPlayback * playback, gboolean pause)
+wv_pause(InputPlayback * playback, bool_t pause)
 {
-    g_mutex_lock(ctrl_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (!stop_flag)
         playback->output->pause(pause);
 
-    g_mutex_unlock(ctrl_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
-static void wv_seek (InputPlayback * playback, gint time)
+static void wv_seek (InputPlayback * playback, int time)
 {
-    g_mutex_lock(ctrl_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (!stop_flag)
     {
         seek_value = time;
         playback->output->abort_write();
-        g_cond_signal(ctrl_cond);
-        g_cond_wait(ctrl_cond, ctrl_mutex);
     }
 
-    g_mutex_unlock(ctrl_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
-static gchar *
+static char *
 wv_get_quality(WavpackContext *ctx)
 {
-    gint mode = WavpackGetMode(ctx);
-    const gchar *quality;
+    int mode = WavpackGetMode(ctx);
+    const char *quality;
 
     if (mode & MODE_LOSSLESS)
         quality = "lossless";
@@ -305,7 +297,7 @@ wv_get_quality(WavpackContext *ctx)
     else
         quality = "lossy";
 
-    return g_strdup_printf("%s%s%s", quality,
+    return str_printf ("%s%s%s", quality,
         (mode & MODE_WVC) ? " (wvc corrected)" : "",
 #ifdef MODE_DNS /* WavPack 4.50 or later */
         (mode & MODE_DNS) ? " (dynamic noise shaped)" :
@@ -314,11 +306,11 @@ wv_get_quality(WavpackContext *ctx)
 }
 
 static Tuple *
-wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
+wv_probe_for_tuple(const char * filename, VFSFile * fd)
 {
     WavpackContext *ctx;
     Tuple *tu;
-    gchar error[1024];
+    char error[1024];
 
     ctx = WavpackOpenFileInputEx(&wv_readers, fd, NULL, error, OPEN_TAGS, 0);
 
@@ -334,9 +326,12 @@ wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
 	tag_tuple_read(tu, fd);
 
 	tuple_set_int(tu, FIELD_LENGTH, NULL,
-        ((guint64) WavpackGetNumSamples(ctx) * 1000) / (guint64) WavpackGetSampleRate(ctx));
+        ((uint64_t) WavpackGetNumSamples(ctx) * 1000) / (uint64_t) WavpackGetSampleRate(ctx));
     tuple_set_str(tu, FIELD_CODEC, NULL, "WavPack");
-    tuple_set_str(tu, FIELD_QUALITY, NULL, wv_get_quality(ctx));
+
+    char * quality = wv_get_quality (ctx);
+    tuple_set_str (tu, FIELD_QUALITY, NULL, quality);
+    str_unref (quality);
 
     WavpackCloseFile(ctx);
 
@@ -344,21 +339,7 @@ wv_probe_for_tuple(const gchar * filename, VFSFile * fd)
 	return tu;
 }
 
-static gboolean wv_init (void)
-{
-    ctrl_mutex = g_mutex_new();
-    ctrl_cond = g_cond_new();
-    return TRUE;
-}
-
-static void
-wv_cleanup(void)
-{
-    g_mutex_free(ctrl_mutex);
-    g_cond_free(ctrl_cond);
-}
-
-static gboolean wv_write_tag (const Tuple * tuple, VFSFile * handle)
+static bool_t wv_write_tag (const Tuple * tuple, VFSFile * handle)
 {
     return tag_tuple_write(tuple, handle, TAG_TYPE_APE);
 }
@@ -367,15 +348,13 @@ static const char wv_about[] =
  "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n\n"
  "Some of the plugin code was by Miles Egan.";
 
-static const gchar *wv_fmts[] = { "wv", NULL };
+static const char *wv_fmts[] = { "wv", NULL };
 
 AUD_INPUT_PLUGIN
 (
     .name = N_("WavPack Decoder"),
     .domain = PACKAGE,
     .about_text = wv_about,
-    .init = wv_init,
-    .cleanup = wv_cleanup,
     .play = wv_play,
     .stop = wv_stop,
     .pause = wv_pause,
