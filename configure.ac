@@ -812,23 +812,6 @@ else
     AC_MSG_RESULT([*** mms plugin disabled by request ***])
 fi
 
-dnl SMB
-dnl ===
-
-AC_ARG_ENABLE(smb,
- AS_HELP_STRING([--enable-smb], [enable SMB transport (default=disabled)]),
- [enable_smb="$enableval"], [enable_smb="no"])
-
-if test $enable_smb = yes ; then
-    AC_CHECK_HEADERS([libsmbclient.h], [enable_smb=yes], [enable_smb=no])
-
-    if test $enable_smb = yes ; then
-        TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS smb"
-    else
-        AC_MSG_RESULT([*** libsmbclient not found; SMB client disabled])
-    fi
-fi
-
 dnl XSPF
 dnl ----
 
@@ -1126,7 +1109,6 @@ echo "  ---------"
 echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
 echo "  GIO:                                    $enable_gio"
-echo "  SMB transport (experimental):           $enable_smb"
 echo
 echo "  Container"
 echo "  ---------"
