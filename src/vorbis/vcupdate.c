@@ -21,7 +21,6 @@
 #include "config.h"
 
 #include <glib.h>
-#include <gtk/gtk.h>
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>

@@ -43,8 +43,6 @@
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "vorbis.h"
 
