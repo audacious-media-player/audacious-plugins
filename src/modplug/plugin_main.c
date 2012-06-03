@@ -1,5 +1,4 @@
 #include <audacious/i18n.h>
-#include <audacious/plugin.h>
 
 #include "config.h"
 #include "plugin.h"

@@ -11,7 +11,6 @@
 #include <string>
 
 extern "C" {
-#include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 #include "plugin.h"
 }
