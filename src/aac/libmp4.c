@@ -28,7 +28,7 @@ static int mp4_is_our_fd (const char *, VFSFile *);
 
 static const char *fmts[] = { "m4a", "mp4", "aac", NULL };
 
-static pthread_mutex_t mutex;
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static int seek_value;
 static bool_t stop_flag;
 
