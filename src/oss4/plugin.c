@@ -29,12 +29,12 @@ static void combo_init(ComboBoxElements ** elements, int * n_elements)
     CHECK(ioctl, mixerfd, SNDCTL_SYSINFO, &sysinfo);
     CHECK_NOISY(oss_probe_for_adev, &sysinfo);
 
-    * elements = g_new0(ComboBoxElements, sysinfo.numaudios + 1);
+    * elements = (ComboBoxElements *) malloc((sysinfo.numaudios + 1) * sizeof(ComboBoxElements));
     * n_elements = 1;
     ComboBoxElements * tmp = * elements;
 
-    tmp->value = DEFAULT_DSP;
     tmp->label = N_("1. Default device");
+    tmp->value = DEFAULT_DSP;
 
     for (int i = 0; i < sysinfo.numaudios; i++)
     {
@@ -46,9 +46,10 @@ static void combo_init(ComboBoxElements ** elements, int * n_elements)
         if (ainfo.caps & PCM_CAP_OUTPUT)
         {
             tmp++;
-            tmp->value = g_strdup(ainfo.devnode);
-            tmp->label = g_strdup_printf("%d. %s", ++ (* n_elements), ainfo.name);
-
+            (* n_elements) ++;
+            SPRINTF(str, "%d. %s", * n_elements, ainfo.name);
+            tmp->label = strdup(str);
+            tmp->value = strdup(ainfo.devnode);
         }
         else
             continue;
@@ -63,11 +64,11 @@ static void combo_cleanup(ComboBoxElements * elements, int n_elements)
     /* first elements were allocated statically */
     for (int i = 1; i < n_elements; i++)
     {
-        g_free(elements[i].value);
-        g_free((char *) elements[i].label);
+        free(elements[i].value);
+        free((char *) elements[i].label);
     }
 
-    g_free(elements);
+    free(elements);
 }
 
 static PreferencesWidget oss_widgets[] = {
@@ -99,7 +100,7 @@ static void prefs_cleanup()
 
 static const PluginPreferences oss_prefs = {
  .widgets = oss_widgets,
- .n_widgets = G_N_ELEMENTS(oss_widgets),
+ .n_widgets = N_ELEMENTS(oss_widgets),
  .init = prefs_init,
  .cleanup = prefs_cleanup};
 

@@ -22,10 +22,10 @@
 
 #include "config.h"
 
+#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
-#include <glib.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/ioctl.h>
@@ -49,7 +49,8 @@ do { \
 
 #define ERROR_NOISY(...) \
 do { \
-    oss_error(__VA_ARGS__); \
+    SPRINTF(buf, __VA_ARGS__); \
+    aud_interface_show_error(buf); \
     ERROR(__VA_ARGS__); \
 } while (0) \
 
@@ -82,50 +83,50 @@ do { \
     } \
 } while (0)
 
+#define N_ELEMENTS(arr) (sizeof (arr) / sizeof ((arr)[0]))
+
 #define DEFAULT_MIXER "/dev/mixer"
 #define DEFAULT_DSP "/dev/dsp"
 
 typedef struct
 {
-    gint fd;
-    gint format;
-    gint rate;
-    gint channels;
-    gint bits_per_sample;
+    int fd;
+    int format;
+    int rate;
+    int channels;
+    int bits_per_sample;
 } oss_data_t;
 
 extern oss_data_t *oss_data;
 
 /* oss.c */
-gboolean oss_init(void);
+bool_t oss_init(void);
 void oss_cleanup(void);
-gint oss_open_audio(gint aud_format, gint rate, gint channels);
+int oss_open_audio(int aud_format, int rate, int channels);
 void oss_close_audio(void);
-void oss_write_audio(void *data, gint length);
+void oss_write_audio(void *data, int length);
 void oss_drain(void);
-gint oss_buffer_free(void);
-void oss_set_written_time(gint time);
-gint oss_written_time(void);
-gint oss_output_time(void);
-void oss_flush(gint time);
-void oss_pause(gboolean pause);
-void oss_get_volume(gint *left, gint *right);
-void oss_set_volume(gint left, gint right);
+int oss_buffer_free(void);
+void oss_set_written_time(int time);
+int oss_written_time(void);
+int oss_output_time(void);
+void oss_flush(int time);
+void oss_pause(bool_t pause);
+void oss_get_volume(int *left, int *right);
+void oss_set_volume(int left, int right);
 
 /* configure.c */
 void oss_configure(void);
 
 /* utils.c */
-gint oss_convert_aud_format(gint aud_format);
-gchar *oss_format_to_text(gint format);
-gint oss_format_to_bits(gint format);
-gint oss_frames_to_bytes(gint frames);
-gint oss_bytes_to_frames(gint bytes);
-gint oss_calc_bitrate(void);
-gchar *oss_describe_error(void);
-gint oss_probe_for_adev(oss_sysinfo *sysinfo);
-gboolean oss_hardware_present(void);
-gint oss_show_error(gpointer message);
-void oss_error(const gchar *format, ...);
+int oss_convert_aud_format(int aud_format);
+char *oss_format_to_text(int format);
+int oss_format_to_bits(int format);
+int oss_frames_to_bytes(int frames);
+int oss_bytes_to_frames(int bytes);
+int oss_calc_bitrate(void);
+char *oss_describe_error(void);
+int oss_probe_for_adev(oss_sysinfo *sysinfo);
+bool_t oss_hardware_present(void);
 
 #endif

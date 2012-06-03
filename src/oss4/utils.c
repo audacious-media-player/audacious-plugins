@@ -18,15 +18,13 @@
  */
 
 #include "oss.h"
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
-gchar *oss_format_to_text(gint format)
+char *oss_format_to_text(int format)
 {
     const struct
     {
-        gint format;
-        gchar *format_text;
+        int format;
+        char *format_text;
     }
     table[] =
     {
@@ -45,9 +43,9 @@ gchar *oss_format_to_text(gint format)
         {AFMT_S32_BE, "AFMT_S32_BE"},
     };
 
-    gint count;
+    int count;
 
-    for (count = 0; count < G_N_ELEMENTS(table); count++)
+    for (count = 0; count < N_ELEMENTS(table); count++)
     {
         if (table[count].format == format)
         {
@@ -58,12 +56,12 @@ gchar *oss_format_to_text(gint format)
     return "FMT_UNKNOWN";
 }
 
-gint oss_convert_aud_format(gint aud_format)
+int oss_convert_aud_format(int aud_format)
 {
     const struct
     {
-        gint aud_format;
-        gint format;
+        int aud_format;
+        int format;
     }
     table[] =
     {
@@ -82,9 +80,9 @@ gint oss_convert_aud_format(gint aud_format)
         {FMT_S32_BE, AFMT_S32_BE},
     };
 
-    gint count;
+    int count;
 
-    for (count = 0; count < G_N_ELEMENTS(table); count++)
+    for (count = 0; count < N_ELEMENTS(table); count++)
     {
         if (table[count].aud_format == aud_format)
         {
@@ -95,9 +93,9 @@ gint oss_convert_aud_format(gint aud_format)
     return -1;
 }
 
-gint oss_format_to_bits(gint format)
+int oss_format_to_bits(int format)
 {
-    gchar bits;
+    char bits;
 
     switch (format)
     {
@@ -129,27 +127,27 @@ gint oss_format_to_bits(gint format)
     return bits;
 }
 
-gint oss_frames_to_bytes(gint frames)
+int oss_frames_to_bytes(int frames)
 {
     return frames * oss_data->bits_per_sample * oss_data->channels / 8;
 }
 
-gint oss_bytes_to_frames(gint bytes)
+int oss_bytes_to_frames(int bytes)
 {
     return bytes * 8 / oss_data->channels / oss_data->bits_per_sample;
 }
 
-gint oss_calc_bitrate(void)
+int oss_calc_bitrate(void)
 {
     return (oss_data->rate * oss_data->channels * oss_data->bits_per_sample) >> 3;
 }
 
-gchar *oss_describe_error(void)
+char *oss_describe_error(void)
 {
     const struct
     {
-        gint error;
-        gchar *text;
+        int error;
+        char *text;
     }
     table[] =
     {
@@ -165,8 +163,8 @@ gchar *oss_describe_error(void)
                  "and started Open Sound System yet."},
     };
 
-    gint count;
-    for (count = 0; count < G_N_ELEMENTS(table); count++)
+    int count;
+    for (count = 0; count < N_ELEMENTS(table); count++)
     {
         if (table[count].error == errno)
             return table[count].text;
@@ -175,9 +173,9 @@ gchar *oss_describe_error(void)
     return strerror(errno);
 }
 
-gint oss_probe_for_adev(oss_sysinfo *sysinfo)
+int oss_probe_for_adev(oss_sysinfo *sysinfo)
 {
-    gint num;
+    int num;
     if ((num = sysinfo->numaudios) < 1)
     {
         errno = ENXIO;
@@ -187,9 +185,9 @@ gint oss_probe_for_adev(oss_sysinfo *sysinfo)
     return num;
 }
 
-gboolean oss_hardware_present(void)
+bool_t oss_hardware_present(void)
 {
-    gint mixerfd;
+    int mixerfd;
     oss_sysinfo sysinfo;
 
     CHECK_NOISY(mixerfd = open, DEFAULT_MIXER, O_RDWR, 0);
@@ -202,26 +200,4 @@ gboolean oss_hardware_present(void)
 FAILED:
     close(mixerfd);
     return FALSE;
-}
-
-gint oss_show_error(gpointer message)
-{
-    static GtkWidget *dialog = NULL;
-
-    audgui_simple_message (&dialog, GTK_MESSAGE_ERROR, _("OSS4 error"), message);
-    g_free(message);
-
-    return 0;
-}
-
-void oss_error(const gchar * format, ...)
-{
-    va_list args;
-    gchar *message;
-
-    va_start(args, format);
-    message = g_strdup_vprintf(format, args);
-    va_end(args);
-
-    g_timeout_add(0, oss_show_error, message);
 }
