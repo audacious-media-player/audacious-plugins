@@ -31,8 +31,6 @@
 #include <audacious/drct.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 static gboolean init (void);
 static void cleanup (void);
