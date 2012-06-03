@@ -15,13 +15,13 @@ extern "C" {
 
 class arch_Raw: public Archive
 {
-	VFSFile *mFileDesc;
+    VFSFile *mFileDesc;
 
 public:
-	arch_Raw(const std::string& aFileName);
-	virtual ~arch_Raw();
+    arch_Raw(const std::string& aFileName);
+    virtual ~arch_Raw();
 
-	static bool ContainsMod(const std::string& aFileName);
+    static bool ContainsMod(const std::string& aFileName);
 };
 
 #endif

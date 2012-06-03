@@ -11,5 +11,5 @@ using namespace std;
 
 Archive* OpenArchive(const string& aFileName) //aFilename is url --yaz
 {
-	return new arch_Raw(aFileName);
+    return new arch_Raw(aFileName);
 }

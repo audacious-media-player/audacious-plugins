@@ -13,17 +13,17 @@
 class Archive
 {
 protected:
-	uint32_t mSize;
-	void* mMap;
+    uint32_t mSize;
+    void* mMap;
 
-	//This version of IsOurFile is slightly different...
-	static bool IsOurFile(const std::string& aFileName);
+    //This version of IsOurFile is slightly different...
+    static bool IsOurFile(const std::string& aFileName);
 
 public:
-	virtual ~Archive();
+    virtual ~Archive();
 
-	inline uint32_t Size() {return mSize;}
-	inline void* Map() {return mMap;}
+    inline uint32_t Size() {return mSize;}
+    inline void* Map() {return mMap;}
 };
 
 #endif
