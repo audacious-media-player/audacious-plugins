@@ -593,6 +593,7 @@ static void configure (void)
     gtk_box_pack_start ((GtkBox *) vbox2, label, 0, 0, 0);
 
     GtkWidget * scrolled = gtk_scrolled_window_new (NULL, NULL);
+    gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
     gtk_box_pack_start ((GtkBox *) vbox2, scrolled, 1, 1, 0);
 
     plugin_list = create_plugin_list ();
@@ -611,6 +612,7 @@ static void configure (void)
     gtk_box_pack_start ((GtkBox *) vbox2, label, 0, 0, 0);
 
     scrolled = gtk_scrolled_window_new (NULL, NULL);
+    gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
     gtk_box_pack_start ((GtkBox *) vbox2, scrolled, 1, 1, 0);
 
     loaded_list = create_loaded_list ();
